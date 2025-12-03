@@ -1,53 +1,53 @@
 @interface MNTransitLocationTracker
-- (MNTransitLocationTracker)initWithNavigationSession:(id)a3;
+- (MNTransitLocationTracker)initWithNavigationSession:(id)session;
 - (double)_timeToDisplayStaleGPSLocation;
-- (id)_clRegionWithCenter:(id)a3 identifier:(id)a4 signalStrength:(int)a5;
-- (id)_correctedLocationForLocation:(id)a3;
-- (id)_locationForInaccurateLocation:(id)a3;
-- (id)_matchedLocationForLocation:(id)a3;
-- (id)_roadMatchForOffRouteLocation:(id)a3 routeMatch:(id)a4;
-- (id)_stepForRegionAlert:(id)a3;
-- (void)_initRegionAlertsForRoute:(id)a3;
+- (id)_clRegionWithCenter:(id)center identifier:(id)identifier signalStrength:(int)strength;
+- (id)_correctedLocationForLocation:(id)location;
+- (id)_locationForInaccurateLocation:(id)location;
+- (id)_matchedLocationForLocation:(id)location;
+- (id)_roadMatchForOffRouteLocation:(id)location routeMatch:(id)match;
+- (id)_stepForRegionAlert:(id)alert;
+- (void)_initRegionAlertsForRoute:(id)route;
 - (void)_startMonitoringTransitAlerts;
 - (void)_stopMonitoringAllRegions;
-- (void)_stopMonitoringForRegionWithIdentifier:(id)a3;
-- (void)_triggerAlertForRegionId:(id)a3;
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4;
-- (void)locationManager:(id)a3 didExitRegion:(id)a4;
-- (void)locationManager:(id)a3 monitoringDidFailForRegionIdentifier:(id)a4 withError:(id)a5;
-- (void)reroute:(id)a3 reason:(unint64_t)a4;
-- (void)startTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4;
+- (void)_stopMonitoringForRegionWithIdentifier:(id)identifier;
+- (void)_triggerAlertForRegionId:(id)id;
+- (void)locationManager:(id)manager didEnterRegion:(id)region;
+- (void)locationManager:(id)manager didExitRegion:(id)region;
+- (void)locationManager:(id)manager monitoringDidFailForRegionIdentifier:(id)identifier withError:(id)error;
+- (void)reroute:(id)reroute reason:(unint64_t)reason;
+- (void)startTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index;
 - (void)stopTracking;
 @end
 
 @implementation MNTransitLocationTracker
 
-- (void)locationManager:(id)a3 monitoringDidFailForRegionIdentifier:(id)a4 withError:(id)a5
+- (void)locationManager:(id)manager monitoringDidFailForRegionIdentifier:(id)identifier withError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  errorCopy = error;
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = [(NSMutableDictionary *)self->_monitoredRegions valueForKey:v7];
+    v10 = [(NSMutableDictionary *)self->_monitoredRegions valueForKey:identifierCopy];
     v12 = 138412802;
     v13 = v10;
     v14 = 2112;
-    v15 = v7;
+    v15 = identifierCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = errorCopy;
     _os_log_impl(&dword_1D311E000, v9, OS_LOG_TYPE_ERROR, "Failed to track region %@ with region identifier=%@ error=%@", &v12, 0x20u);
   }
 
-  [(MNTransitLocationTracker *)self _stopMonitoringForRegionWithIdentifier:v7];
+  [(MNTransitLocationTracker *)self _stopMonitoringForRegionWithIdentifier:identifierCopy];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)locationManager:(id)a3 didExitRegion:(id)a4
+- (void)locationManager:(id)manager didExitRegion:(id)region
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  regionCopy = region;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -56,40 +56,40 @@
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_DEBUG, "%s", &v14, 0xCu);
   }
 
-  v7 = [v5 identifier];
+  identifier = [regionCopy identifier];
   v8 = [@"Maps_Transit" copy];
-  v9 = [v7 hasPrefix:v8];
+  v9 = [identifier hasPrefix:v8];
 
   if (v9)
   {
-    v10 = [(NSMutableDictionary *)self->_transitRegions valueForKey:v7];
+    v10 = [(NSMutableDictionary *)self->_transitRegions valueForKey:identifier];
     if (!v10)
     {
       v11 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = regionCopy;
         _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_ERROR, "No transit trigger region found for region: %@", &v14, 0xCu);
       }
 
       v12 = +[MNLocationManager shared];
-      [v12 stopMonitoringFor:v5];
+      [v12 stopMonitoringFor:regionCopy];
     }
 
     if (![v10 transition] || objc_msgSend(v10, "transition") == 2)
     {
-      [(MNTransitLocationTracker *)self _triggerAlertForRegionId:v7];
+      [(MNTransitLocationTracker *)self _triggerAlertForRegionId:identifier];
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4
+- (void)locationManager:(id)manager didEnterRegion:(id)region
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  regionCopy = region;
   v6 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -98,43 +98,43 @@
     _os_log_impl(&dword_1D311E000, v6, OS_LOG_TYPE_DEBUG, "%s", &v14, 0xCu);
   }
 
-  v7 = [v5 identifier];
+  identifier = [regionCopy identifier];
   v8 = [@"Maps_Transit" copy];
-  v9 = [v7 hasPrefix:v8];
+  v9 = [identifier hasPrefix:v8];
 
   if (v9)
   {
-    v10 = [(NSMutableDictionary *)self->_transitRegions valueForKey:v7];
+    v10 = [(NSMutableDictionary *)self->_transitRegions valueForKey:identifier];
     if (!v10)
     {
       v11 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v14 = 138412290;
-        v15 = v5;
+        v15 = regionCopy;
         _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_ERROR, "No transit trigger region found for region: %@", &v14, 0xCu);
       }
 
       v12 = +[MNLocationManager shared];
-      [v12 stopMonitoringFor:v5];
+      [v12 stopMonitoringFor:regionCopy];
     }
 
     if (![v10 transition] || objc_msgSend(v10, "transition") == 1)
     {
-      [(MNTransitLocationTracker *)self _triggerAlertForRegionId:v7];
+      [(MNTransitLocationTracker *)self _triggerAlertForRegionId:identifier];
     }
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_triggerAlertForRegionId:(id)a3
+- (void)_triggerAlertForRegionId:(id)id
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_transitAlerts valueForKey:v4];
+  idCopy = id;
+  v5 = [(NSMutableDictionary *)self->_transitAlerts valueForKey:idCopy];
   v6 = [(MNTransitLocationTracker *)self _stepForRegionAlert:v5];
-  v7 = [(NSMutableDictionary *)self->_transitRegions valueForKey:v4];
+  v7 = [(NSMutableDictionary *)self->_transitRegions valueForKey:idCopy];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -167,13 +167,13 @@
   if (v6)
   {
     objc_initWeak(location, self);
-    v12 = [v7 hasDelaySeconds];
-    if (v12)
+    hasDelaySeconds = [v7 hasDelaySeconds];
+    if (hasDelaySeconds)
     {
-      v12 = [v7 delaySeconds];
+      hasDelaySeconds = [v7 delaySeconds];
     }
 
-    v13 = dispatch_time(0, (v12 * 1000000000.0));
+    v13 = dispatch_time(0, (hasDelaySeconds * 1000000000.0));
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke;
@@ -217,24 +217,24 @@ void __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke(uint
   [v2 locationTracker:v3 didReceiveTransitAlert:v11];
 }
 
-- (id)_stepForRegionAlert:(id)a3
+- (id)_stepForRegionAlert:(id)alert
 {
-  v4 = a3;
-  v5 = [(MNLocationTracker *)self navigationSession];
-  v6 = [v5 routeManager];
-  v7 = [v6 currentRoute];
-  v8 = [v7 steps];
-  v9 = [v8 firstObject];
+  alertCopy = alert;
+  navigationSession = [(MNLocationTracker *)self navigationSession];
+  routeManager = [navigationSession routeManager];
+  currentRoute = [routeManager currentRoute];
+  steps = [currentRoute steps];
+  firstObject = [steps firstObject];
 
-  if (v9)
+  if (firstObject)
   {
     do
     {
-      if ([v9 transportType] == 1)
+      if ([firstObject transportType] == 1)
       {
-        v10 = v9;
-        v11 = [v10 regionAlerts];
-        v12 = [v11 containsObject:v4];
+        getNextStep = firstObject;
+        regionAlerts = [getNextStep regionAlerts];
+        v12 = [regionAlerts containsObject:alertCopy];
 
         if (v12)
         {
@@ -242,26 +242,26 @@ void __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke(uint
         }
       }
 
-      v10 = [v9 getNextStep];
+      getNextStep = [firstObject getNextStep];
 
-      v9 = v10;
+      firstObject = getNextStep;
     }
 
-    while (v10);
+    while (getNextStep);
   }
 
   else
   {
-    v10 = 0;
+    getNextStep = 0;
   }
 
-  return v10;
+  return getNextStep;
 }
 
-- (void)_stopMonitoringForRegionWithIdentifier:(id)a3
+- (void)_stopMonitoringForRegionWithIdentifier:(id)identifier
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -271,10 +271,10 @@ void __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke(uint
   }
 
   v6 = +[MNLocationManager shared];
-  v7 = [(NSMutableDictionary *)self->_monitoredRegions valueForKey:v4];
+  v7 = [(NSMutableDictionary *)self->_monitoredRegions valueForKey:identifierCopy];
   [v6 stopMonitoringFor:v7];
 
-  [(NSMutableDictionary *)self->_monitoredRegions removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_monitoredRegions removeObjectForKey:identifierCopy];
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -285,8 +285,8 @@ void __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke(uint
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMutableDictionary *)self->_monitoredRegions allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allKeys = [(NSMutableDictionary *)self->_monitoredRegions allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -298,14 +298,14 @@ void __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke(uint
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(MNTransitLocationTracker *)self _stopMonitoringForRegionWithIdentifier:*(*(&v10 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -317,23 +317,23 @@ void __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke(uint
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_clRegionWithCenter:(id)a3 identifier:(id)a4 signalStrength:(int)a5
+- (id)_clRegionWithCenter:(id)center identifier:(id)identifier signalStrength:(int)strength
 {
-  v6 = a3;
+  centerCopy = center;
   v7 = MEMORY[0x1E695FBB0];
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = [v7 alloc];
-  [v6 lat];
+  [centerCopy lat];
   v11 = v10;
-  [v6 lng];
+  [centerCopy lng];
   v13 = CLLocationCoordinate2DMake(v11, v12);
   GEOConfigGetDouble();
-  v15 = [v9 initWithCenter:v8 radius:v13.latitude identifier:{v13.longitude, v14}];
+  v15 = [v9 initWithCenter:identifierCopy radius:v13.latitude identifier:{v13.longitude, v14}];
 
   v16 = MEMORY[0x1E69A1E80];
-  [v6 lat];
+  [centerCopy lat];
   v18 = v17;
-  [v6 lng];
+  [centerCopy lng];
   if ([v16 isLocationShiftRequiredForCoordinate:{v18, v19}])
   {
     [v15 setGeoReferenceFrame:2];
@@ -384,8 +384,8 @@ void __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke(uint
 
         v10 = *(*(&v22 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_transitRegions valueForKey:v10];
-        v12 = [v11 location];
-        v13 = -[MNTransitLocationTracker _clRegionWithCenter:identifier:signalStrength:](self, "_clRegionWithCenter:identifier:signalStrength:", v12, v10, [v11 signalStrength]);
+        location = [v11 location];
+        v13 = -[MNTransitLocationTracker _clRegionWithCenter:identifier:signalStrength:](self, "_clRegionWithCenter:identifier:signalStrength:", location, v10, [v11 signalStrength]);
 
         v14 = +[MNLocationManager shared];
         [v14 startMonitoringFor:v13];
@@ -417,8 +417,8 @@ void __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke(uint
     v8 = 1;
   }
 
-  v18 = [(MNLocationTracker *)self delegate];
-  [v18 locationTracker:self didReceiveRouteSignalStrength:v8];
+  delegate = [(MNLocationTracker *)self delegate];
+  [delegate locationTracker:self didReceiveRouteSignalStrength:v8];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -432,57 +432,57 @@ void __53__MNTransitLocationTracker__triggerAlertForRegionId___block_invoke(uint
   return v4;
 }
 
-- (id)_roadMatchForOffRouteLocation:(id)a3 routeMatch:(id)a4
+- (id)_roadMatchForOffRouteLocation:(id)location routeMatch:(id)match
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(GEORoadMatcher *)self->_roadMatcher matchLocation:v6 forTransportType:0];
+  locationCopy = location;
+  matchCopy = match;
+  v8 = [(GEORoadMatcher *)self->_roadMatcher matchLocation:locationCopy forTransportType:0];
   if (!v8)
   {
     goto LABEL_9;
   }
 
-  if (![v7 isGoodMatch])
+  if (![matchCopy isGoodMatch])
   {
     goto LABEL_4;
   }
 
-  [v7 distanceFromRoute];
+  [matchCopy distanceFromRoute];
   v10 = v9;
   [v8 distanceFromRoad];
   v12 = v11;
-  [v6 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   if (v10 > v13 + v12)
   {
     goto LABEL_4;
   }
 
-  if (![v6 hasAccurateCourse])
+  if (![locationCopy hasAccurateCourse])
   {
     goto LABEL_9;
   }
 
-  [v6 speedAccuracy];
+  [locationCopy speedAccuracy];
   if (v15 < 0.0)
   {
     goto LABEL_9;
   }
 
-  [v6 speed];
+  [locationCopy speed];
   if (v16 <= 3.0)
   {
     goto LABEL_9;
   }
 
-  [v6 course];
-  [v7 matchedCourse];
+  [locationCopy course];
+  [matchCopy matchedCourse];
   GEOAngleDifferenceDegrees();
   v18 = fabs(v17);
-  [v6 course];
+  [locationCopy course];
   [v8 courseOnRoad];
   GEOAngleDifferenceDegrees();
   v20 = fabs(v19);
-  [v6 courseAccuracy];
+  [locationCopy courseAccuracy];
   if (v18 > v20 + v21)
   {
 LABEL_4:
@@ -498,37 +498,37 @@ LABEL_9:
   return v14;
 }
 
-- (id)_locationForInaccurateLocation:(id)a3
+- (id)_locationForInaccurateLocation:(id)location
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v5 = MNGetPuckTrackingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 uuid];
+    uuid = [locationCopy uuid];
     *buf = 138412290;
-    *&buf[4] = v6;
+    *&buf[4] = uuid;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - in _locationForInaccurateLocation:", buf, 0xCu);
   }
 
-  v7 = v4;
-  v8 = [(MNLocation *)self->_lastMatchedLocation routeMatch];
-  v9 = [(MNLocationTracker *)self navigationSession];
-  v10 = [v9 routeManager];
-  v11 = [v10 currentRoute];
+  v7 = locationCopy;
+  routeMatch = [(MNLocation *)self->_lastMatchedLocation routeMatch];
+  navigationSession = [(MNLocationTracker *)self navigationSession];
+  routeManager = [navigationSession routeManager];
+  currentRoute = [routeManager currentRoute];
 
   v12 = v7;
-  if ([v8 isGoodMatch])
+  if ([routeMatch isGoodMatch])
   {
-    v13 = [v8 route];
+    route = [routeMatch route];
 
     v12 = v7;
-    if (v13 == v11)
+    if (route == currentRoute)
     {
       v14 = objc_alloc(MEMORY[0x1E69A2548]);
-      v15 = [(MNLocationTracker *)self navigationSession];
-      v16 = [v15 auditToken];
-      v17 = [v14 initWithRoute:v11 auditToken:v16];
+      navigationSession2 = [(MNLocationTracker *)self navigationSession];
+      auditToken = [navigationSession2 auditToken];
+      v17 = [v14 initWithRoute:currentRoute auditToken:auditToken];
 
       v18 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:v7];
       v19 = [v17 matchToRouteWithLocation:v18];
@@ -542,7 +542,7 @@ LABEL_9:
         v12 = v7;
         if (v22 < v23)
         {
-          v24 = [v11 segmentForPointIndex:{objc_msgSend(v20, "routeCoordinate")}];
+          v24 = [currentRoute segmentForPointIndex:{objc_msgSend(v20, "routeCoordinate")}];
           v12 = v7;
           if ([v24 type] == 6)
           {
@@ -581,8 +581,8 @@ LABEL_9:
             v30 = *(MEMORY[0x1E69A19F8] + 8);
             if (GEOConfigGetBOOL())
             {
-              v31 = [(MNLocation *)v7 uuid];
-              [(MNLocation *)v12 setUuid:v31];
+              uuid2 = [(MNLocation *)v7 uuid];
+              [(MNLocation *)v12 setUuid:uuid2];
             }
           }
         }
@@ -595,11 +595,11 @@ LABEL_9:
   return v12;
 }
 
-- (id)_correctedLocationForLocation:(id)a3
+- (id)_correctedLocationForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(MNLocation *)self->_lastMatchedLocation routeMatch];
-  v6 = [(GEOTransitRouteMatcher *)self->_transitRouteMatcher matchToRouteWithLocation:v4 previousRouteMatch:v5];
+  locationCopy = location;
+  routeMatch = [(MNLocation *)self->_lastMatchedLocation routeMatch];
+  v6 = [(GEOTransitRouteMatcher *)self->_transitRouteMatcher matchToRouteWithLocation:locationCopy previousRouteMatch:routeMatch];
   v7 = v6;
   if (v6)
   {
@@ -608,61 +608,61 @@ LABEL_9:
 
   else
   {
-    v8 = v5;
+    v8 = routeMatch;
   }
 
   v9 = v8;
 
-  [v4 coordinate];
+  [locationCopy coordinate];
   v57 = v10;
-  [v4 coordinate];
+  [locationCopy coordinate];
   v12 = v11;
   v13 = -1.0;
-  if ([v4 hasCourse])
+  if ([locationCopy hasCourse])
   {
-    [v4 course];
+    [locationCopy course];
     v13 = v14;
   }
 
   v15 = 0;
-  if ([v4 hasSpeed])
+  if ([locationCopy hasSpeed])
   {
-    [v4 speed];
+    [locationCopy speed];
     v15 = v16;
   }
 
-  [v4 horizontalAccuracy];
+  [locationCopy horizontalAccuracy];
   v56 = v17;
   v18 = -1.0;
   v19 = -1.0;
-  if ([v4 hasCourseAccuracy])
+  if ([locationCopy hasCourseAccuracy])
   {
-    [v4 courseAccuracy];
+    [locationCopy courseAccuracy];
     v19 = v20;
   }
 
-  if ([v4 hasSpeedAccuracy])
+  if ([locationCopy hasSpeedAccuracy])
   {
-    [v4 speedAccuracy];
+    [locationCopy speedAccuracy];
     v18 = v21;
   }
 
-  [v4 timestamp];
+  [locationCopy timestamp];
   v54 = v22;
   if (self->_debugSnapToTransitLines)
   {
-    v23 = [v9 transitTripStep];
-    v24 = v23;
+    transitTripStep = [v9 transitTripStep];
+    v24 = transitTripStep;
     v55 = 0;
     v52 = v19;
     v53 = v15;
-    if (!v23)
+    if (!transitTripStep)
     {
       v33 = 0;
       goto LABEL_21;
     }
 
-    if ([v23 maneuver] != 4 && objc_msgSend(v24, "maneuver") != 5)
+    if ([transitTripStep maneuver] != 4 && objc_msgSend(v24, "maneuver") != 5)
     {
       goto LABEL_25;
     }
@@ -715,7 +715,7 @@ LABEL_25:
       goto LABEL_30;
     }
 
-    v37 = [(MNTransitLocationTracker *)self _roadMatchForOffRouteLocation:v4 routeMatch:v9];
+    v37 = [(MNTransitLocationTracker *)self _roadMatchForOffRouteLocation:locationCopy routeMatch:v9];
     v38 = v37;
     if (v37)
     {
@@ -758,7 +758,7 @@ LABEL_29:
   v35 = v12;
   v36 = v57;
 LABEL_35:
-  if ([v9 transitID] && objc_msgSend(v4, "hasTransitID"))
+  if ([v9 transitID] && objc_msgSend(locationCopy, "hasTransitID"))
   {
     [v9 modifiedHorizontalAccuracy];
     v56 = v48;
@@ -800,24 +800,24 @@ LABEL_35:
   return v50;
 }
 
-- (id)_matchedLocationForLocation:(id)a3
+- (id)_matchedLocationForLocation:(id)location
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  locationCopy = location;
   v5 = MNGetPuckTrackingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 uuid];
+    uuid = [locationCopy uuid];
     v35 = 138412290;
-    v36 = v6;
+    v36 = uuid;
     _os_log_impl(&dword_1D311E000, v5, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - in MNTransitLocationTracker::_matchedLocationForLocation:", &v35, 0xCu);
   }
 
   lastLocationTimestamp = self->_lastLocationTimestamp;
   if (lastLocationTimestamp)
   {
-    v8 = [v4 timestamp];
-    v9 = [(NSDate *)lastLocationTimestamp compare:v8];
+    timestamp = [locationCopy timestamp];
+    v9 = [(NSDate *)lastLocationTimestamp compare:timestamp];
 
     if (v9 == 1)
     {
@@ -832,16 +832,16 @@ LABEL_35:
     }
   }
 
-  v11 = [v4 timestamp];
+  timestamp2 = [locationCopy timestamp];
   v12 = self->_lastLocationTimestamp;
-  self->_lastLocationTimestamp = v11;
+  self->_lastLocationTimestamp = timestamp2;
 
-  if ([(MNTransitLocationTracker *)self _isInaccurateLocation:v4])
+  if ([(MNTransitLocationTracker *)self _isInaccurateLocation:locationCopy])
   {
     if (self->_lastAccurateLocationDate)
     {
-      v13 = [v4 timestamp];
-      [v13 timeIntervalSinceDate:self->_lastAccurateLocationDate];
+      timestamp3 = [locationCopy timestamp];
+      [timestamp3 timeIntervalSinceDate:self->_lastAccurateLocationDate];
       v15 = v14;
 
       if (v15 < 60.0)
@@ -859,75 +859,75 @@ LABEL_11:
       _os_log_impl(&dword_1D311E000, v27, OS_LOG_TYPE_DEBUG, "Using an inaccurate location.", &v35, 2u);
     }
 
-    v21 = [(MNTransitLocationTracker *)self _locationForInaccurateLocation:v4];
+    v21 = [(MNTransitLocationTracker *)self _locationForInaccurateLocation:locationCopy];
 
-    v28 = [v21 timestamp];
-    v29 = v28;
-    if (v28)
+    timestamp4 = [v21 timestamp];
+    v29 = timestamp4;
+    if (timestamp4)
     {
-      v30 = v28;
+      date = timestamp4;
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
-    v17 = v30;
+    v17 = date;
 
     [(MNTransitLocationTracker *)self _timeToDisplayStaleGPSLocation];
-    v20 = [v17 dateByAddingTimeInterval:?];
-    [v21 setExpirationDate:v20];
+    uuid3 = [v17 dateByAddingTimeInterval:?];
+    [v21 setExpirationDate:uuid3];
   }
 
   else
   {
-    v17 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:v4];
+    v17 = [objc_alloc(MEMORY[0x1E69A1E70]) initWithCLLocation:locationCopy];
     v18 = MNGetPuckTrackingLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v4 uuid];
+      uuid2 = [locationCopy uuid];
       v35 = 138412290;
-      v36 = v19;
+      v36 = uuid2;
       _os_log_impl(&dword_1D311E000, v18, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - calling _correctedLocationForLocation:", &v35, 0xCu);
     }
 
-    v20 = [v4 uuid];
+    uuid3 = [locationCopy uuid];
     v21 = [(MNTransitLocationTracker *)self _correctedLocationForLocation:v17];
 
     v22 = MNGetPuckTrackingLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
-      v23 = [v21 uuid];
+      uuid4 = [v21 uuid];
       v35 = 138412546;
-      v36 = v20;
+      v36 = uuid3;
       v37 = 2112;
-      v38 = v23;
+      v38 = uuid4;
       _os_log_impl(&dword_1D311E000, v22, OS_LOG_TYPE_INFO, "[MN] [%@] - Processing - MUTATED to corrected location => %@", &v35, 0x16u);
     }
 
     objc_storeStrong(&self->_lastAccurateLocationDate, self->_lastLocationTimestamp);
-    v24 = [v21 timestamp];
-    v25 = v24;
-    if (v24)
+    timestamp5 = [v21 timestamp];
+    v25 = timestamp5;
+    if (timestamp5)
     {
-      v26 = v24;
+      date2 = timestamp5;
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DF00] date];
+      date2 = [MEMORY[0x1E695DF00] date];
     }
 
-    v31 = v26;
+    v31 = date2;
 
     [(MNTransitLocationTracker *)self _timeToDisplayStaleGPSLocation];
     v32 = [v31 dateByAddingTimeInterval:?];
     [v21 setExpirationDate:v32];
   }
 
-  v4 = v21;
-  v16 = v4;
+  locationCopy = v21;
+  v16 = locationCopy;
 LABEL_27:
 
   v33 = *MEMORY[0x1E69E9840];
@@ -935,10 +935,10 @@ LABEL_27:
   return v16;
 }
 
-- (void)_initRegionAlertsForRoute:(id)a3
+- (void)_initRegionAlertsForRoute:(id)route
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  routeCopy = route;
   v5 = objc_opt_new();
   transitRegions = self->_transitRegions;
   self->_transitRegions = v5;
@@ -951,15 +951,15 @@ LABEL_27:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v42 = v4;
-  v9 = [v4 steps];
-  v10 = [v9 countByEnumeratingWithState:&v60 objects:v68 count:16];
+  v42 = routeCopy;
+  steps = [routeCopy steps];
+  v10 = [steps countByEnumeratingWithState:&v60 objects:v68 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v61;
     v43 = *v61;
-    v44 = v9;
+    v44 = steps;
     do
     {
       v13 = 0;
@@ -968,19 +968,19 @@ LABEL_27:
       {
         if (*v61 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(steps);
         }
 
         v14 = *(*(&v60 + 1) + 8 * v13);
         if ([v14 transportType] == 1)
         {
           v15 = v14;
-          v16 = [v15 regionAlerts];
-          if (v16)
+          regionAlerts = [v15 regionAlerts];
+          if (regionAlerts)
           {
-            v17 = v16;
-            v18 = [v15 regionAlerts];
-            v19 = [v18 count];
+            v17 = regionAlerts;
+            regionAlerts2 = [v15 regionAlerts];
+            v19 = [regionAlerts2 count];
 
             if (v19)
             {
@@ -990,14 +990,14 @@ LABEL_27:
               v59 = 0u;
               v56 = 0u;
               v57 = 0u;
-              v20 = [v15 regionAlerts];
-              v21 = [v20 countByEnumeratingWithState:&v56 objects:v67 count:16];
+              regionAlerts3 = [v15 regionAlerts];
+              v21 = [regionAlerts3 countByEnumeratingWithState:&v56 objects:v67 count:16];
               if (v21)
               {
                 v22 = v21;
                 v23 = *v57;
                 v48 = *v57;
-                v49 = v20;
+                v49 = regionAlerts3;
                 do
                 {
                   v24 = 0;
@@ -1006,20 +1006,20 @@ LABEL_27:
                   {
                     if (*v57 != v23)
                     {
-                      objc_enumerationMutation(v20);
+                      objc_enumerationMutation(regionAlerts3);
                     }
 
                     v51 = v24;
                     v25 = *(*(&v56 + 1) + 8 * v24);
-                    v26 = [v25 triggerRegions];
-                    if (v26 && (v27 = v26, [v25 triggerRegions], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "count"), v28, v27, v29))
+                    triggerRegions = [v25 triggerRegions];
+                    if (triggerRegions && (v27 = triggerRegions, [v25 triggerRegions], v28 = objc_claimAutoreleasedReturnValue(), v29 = objc_msgSend(v28, "count"), v28, v27, v29))
                     {
                       v54 = 0u;
                       v55 = 0u;
                       v52 = 0u;
                       v53 = 0u;
-                      v30 = [v25 triggerRegions];
-                      v31 = [v30 countByEnumeratingWithState:&v52 objects:v66 count:16];
+                      triggerRegions2 = [v25 triggerRegions];
+                      v31 = [triggerRegions2 countByEnumeratingWithState:&v52 objects:v66 count:16];
                       if (v31)
                       {
                         v32 = v31;
@@ -1030,37 +1030,37 @@ LABEL_27:
                           {
                             if (*v53 != v33)
                             {
-                              objc_enumerationMutation(v30);
+                              objc_enumerationMutation(triggerRegions2);
                             }
 
                             v35 = *(*(&v52 + 1) + 8 * i);
                             v36 = MEMORY[0x1E696AEC0];
                             v37 = objc_opt_new();
-                            v38 = [v37 UUIDString];
-                            v39 = [v36 stringWithFormat:@"%@_%@", @"Maps_Transit", v38];
+                            uUIDString = [v37 UUIDString];
+                            v39 = [v36 stringWithFormat:@"%@_%@", @"Maps_Transit", uUIDString];
 
                             [(NSMutableDictionary *)self->_transitAlerts setValue:v25 forKey:v39];
                             [(NSMutableDictionary *)self->_transitRegions setValue:v35 forKey:v39];
                           }
 
-                          v32 = [v30 countByEnumeratingWithState:&v52 objects:v66 count:16];
+                          v32 = [triggerRegions2 countByEnumeratingWithState:&v52 objects:v66 count:16];
                         }
 
                         while (v32);
                         v23 = v48;
-                        v20 = v49;
+                        regionAlerts3 = v49;
                         v22 = v50;
                       }
                     }
 
                     else
                     {
-                      v30 = GEOFindOrCreateLog();
-                      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+                      triggerRegions2 = GEOFindOrCreateLog();
+                      if (os_log_type_enabled(triggerRegions2, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138412290;
                         v65 = v25;
-                        _os_log_impl(&dword_1D311E000, v30, OS_LOG_TYPE_ERROR, "Found a transit alert with no corresponding region: %@", buf, 0xCu);
+                        _os_log_impl(&dword_1D311E000, triggerRegions2, OS_LOG_TYPE_ERROR, "Found a transit alert with no corresponding region: %@", buf, 0xCu);
                       }
                     }
 
@@ -1068,14 +1068,14 @@ LABEL_27:
                   }
 
                   while (v51 + 1 != v22);
-                  v22 = [v20 countByEnumeratingWithState:&v56 objects:v67 count:16];
+                  v22 = [regionAlerts3 countByEnumeratingWithState:&v56 objects:v67 count:16];
                 }
 
                 while (v22);
               }
 
               v12 = v43;
-              v9 = v44;
+              steps = v44;
               v11 = v45;
               v15 = v46;
               v13 = v47;
@@ -1087,7 +1087,7 @@ LABEL_27:
       }
 
       while (v13 != v11);
-      v11 = [v9 countByEnumeratingWithState:&v60 objects:v68 count:16];
+      v11 = [steps countByEnumeratingWithState:&v60 objects:v68 count:16];
     }
 
     while (v11);
@@ -1106,11 +1106,11 @@ LABEL_27:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reroute:(id)a3 reason:(unint64_t)a4
+- (void)reroute:(id)reroute reason:(unint64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 != 15)
+  rerouteCopy = reroute;
+  if (reason != 15)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1127,8 +1127,8 @@ LABEL_27:
     }
   }
 
-  v7 = [v6 route];
-  [(MNTransitLocationTracker *)self _initRegionAlertsForRoute:v7];
+  route = [rerouteCopy route];
+  [(MNTransitLocationTracker *)self _initRegionAlertsForRoute:route];
 
   [(MNTransitLocationTracker *)self _startMonitoringTransitAlerts];
   v8 = *MEMORY[0x1E69E9840];
@@ -1145,66 +1145,66 @@ LABEL_27:
   [(MNSteppingLocationTracker *)&v4 stopTracking];
 }
 
-- (void)startTrackingWithInitialLocation:(id)a3 targetLegIndex:(unint64_t)a4
+- (void)startTrackingWithInitialLocation:(id)location targetLegIndex:(unint64_t)index
 {
   v7.receiver = self;
   v7.super_class = MNTransitLocationTracker;
-  [(MNSteppingLocationTracker *)&v7 startTrackingWithInitialLocation:a3 targetLegIndex:a4];
+  [(MNSteppingLocationTracker *)&v7 startTrackingWithInitialLocation:location targetLegIndex:index];
   v5 = +[MNLocationManager shared];
   [v5 registerObserver:self];
 
   [(MNTransitLocationTracker *)self _startMonitoringTransitAlerts];
   if (GEOConfigGetBOOL())
   {
-    v6 = [(MNLocationTracker *)self delegate];
-    [v6 locationTracker:self didReceiveRouteSignalStrength:2];
+    delegate = [(MNLocationTracker *)self delegate];
+    [delegate locationTracker:self didReceiveRouteSignalStrength:2];
   }
 }
 
-- (MNTransitLocationTracker)initWithNavigationSession:(id)a3
+- (MNTransitLocationTracker)initWithNavigationSession:(id)session
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sessionCopy = session;
   v42.receiver = self;
   v42.super_class = MNTransitLocationTracker;
-  v5 = [(MNSteppingLocationTracker *)&v42 initWithNavigationSession:v4];
+  v5 = [(MNSteppingLocationTracker *)&v42 initWithNavigationSession:sessionCopy];
   if (v5)
   {
-    v6 = [v4 routeManager];
-    v7 = [v6 currentRoute];
+    routeManager = [sessionCopy routeManager];
+    currentRoute = [routeManager currentRoute];
 
-    v8 = [v4 motionContext];
+    motionContext = [sessionCopy motionContext];
     v9 = objc_alloc(MEMORY[0x1E69A2678]);
-    v10 = [v4 auditToken];
-    v35 = v8;
-    v11 = [v9 initWithRoute:v7 motionContext:v8 auditToken:v10];
+    auditToken = [sessionCopy auditToken];
+    v35 = motionContext;
+    v11 = [v9 initWithRoute:currentRoute motionContext:motionContext auditToken:auditToken];
     transitRouteMatcher = v5->_transitRouteMatcher;
     v5->_transitRouteMatcher = v11;
 
-    v13 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     startDate = v5->_startDate;
-    v5->_startDate = v13;
+    v5->_startDate = date;
 
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v36 = v7;
-    v15 = [v7 steps];
-    v16 = [v15 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    v36 = currentRoute;
+    steps = [currentRoute steps];
+    v16 = [steps countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v16)
     {
       v17 = v16;
       v18 = *v39;
       v19 = &OBJC_IVAR____MNJunctionViewPreloadEvent__needsPreload;
-      v37 = v4;
+      v37 = sessionCopy;
       do
       {
         for (i = 0; i != v17; ++i)
         {
           if (*v39 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(steps);
           }
 
           v21 = *(*(&v38 + 1) + 8 * i);
@@ -1220,21 +1220,21 @@ LABEL_27:
               {
                 v26 = v5;
                 v27 = objc_alloc(MEMORY[0x1E69A24F8]);
-                v28 = [v4 auditToken];
+                auditToken2 = [sessionCopy auditToken];
                 v29 = v27;
                 v5 = v26;
                 v19 = &OBJC_IVAR____MNJunctionViewPreloadEvent__needsPreload;
-                v30 = [v29 initWithAuditToken:v28];
+                v30 = [v29 initWithAuditToken:auditToken2];
                 v31 = *(&v5->super.super.super.isa + v24);
                 *(&v5->super.super.super.isa + v24) = v30;
 
-                v4 = v37;
+                sessionCopy = v37;
               }
             }
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v17 = [steps countByEnumeratingWithState:&v38 objects:v43 count:16];
       }
 
       while (v17);

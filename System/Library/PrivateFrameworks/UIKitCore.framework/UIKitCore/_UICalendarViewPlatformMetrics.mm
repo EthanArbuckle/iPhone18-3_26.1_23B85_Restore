@@ -4,7 +4,7 @@
 - (UIEdgeInsets)monthYearContainerEdgeInsets;
 - (UIOffset)monthYearContainerOffset;
 - (_UICalendarViewPlatformMetrics)init;
-- (void)setHighlightedContentTransform:(CATransform3D *)a3;
+- (void)setHighlightedContentTransform:(CATransform3D *)transform;
 @end
 
 @implementation _UICalendarViewPlatformMetrics
@@ -80,8 +80,8 @@
   [v2 contentInsets];
   [v2 setContentInsets:?];
   v3 = +[UIColor clearColor];
-  v4 = [v2 background];
-  [v4 setBackgroundColor:v3];
+  background = [v2 background];
+  [background setBackgroundColor:v3];
 
   return v2;
 }
@@ -116,19 +116,19 @@
   return self;
 }
 
-- (void)setHighlightedContentTransform:(CATransform3D *)a3
+- (void)setHighlightedContentTransform:(CATransform3D *)transform
 {
-  v3 = *&a3->m11;
-  v4 = *&a3->m13;
-  v5 = *&a3->m23;
-  *&self->_highlightedContentTransform.m21 = *&a3->m21;
+  v3 = *&transform->m11;
+  v4 = *&transform->m13;
+  v5 = *&transform->m23;
+  *&self->_highlightedContentTransform.m21 = *&transform->m21;
   *&self->_highlightedContentTransform.m23 = v5;
   *&self->_highlightedContentTransform.m11 = v3;
   *&self->_highlightedContentTransform.m13 = v4;
-  v6 = *&a3->m31;
-  v7 = *&a3->m33;
-  v8 = *&a3->m43;
-  *&self->_highlightedContentTransform.m41 = *&a3->m41;
+  v6 = *&transform->m31;
+  v7 = *&transform->m33;
+  v8 = *&transform->m43;
+  *&self->_highlightedContentTransform.m41 = *&transform->m41;
   *&self->_highlightedContentTransform.m43 = v8;
   *&self->_highlightedContentTransform.m31 = v6;
   *&self->_highlightedContentTransform.m33 = v7;

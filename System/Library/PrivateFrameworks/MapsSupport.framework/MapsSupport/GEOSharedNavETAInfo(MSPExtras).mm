@@ -7,11 +7,11 @@
 - (uint64_t)mspDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 waypointIndex];
-  [a1 remainingTime];
+  waypointIndex = [self waypointIndex];
+  [self remainingTime];
   v5 = (v4 / 60.0);
-  [a1 remainingDistance];
-  return [v2 stringWithFormat:@"[%lu] remaining (%d min, %d km)", v3, v5, (v6 / 1000.0)];
+  [self remainingDistance];
+  return [v2 stringWithFormat:@"[%lu] remaining (%d min, %d km)", waypointIndex, v5, (v6 / 1000.0)];
 }
 
 @end

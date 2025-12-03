@@ -1,18 +1,18 @@
 @interface FMHorizontalRule
-+ (id)imageWithColor:(id)a3 leading:(BOOL)a4;
++ (id)imageWithColor:(id)color leading:(BOOL)leading;
 - (CGSize)preferredContentSize;
 - (void)commonSetup;
 @end
 
 @implementation FMHorizontalRule
 
-+ (id)imageWithColor:(id)a3 leading:(BOOL)a4
++ (id)imageWithColor:(id)color leading:(BOOL)leading
 {
-  v4 = a4;
+  leadingCopy = leading;
   v5 = MEMORY[0x277D759A0];
-  v6 = a3;
-  v7 = [v5 mainScreen];
-  [v7 scale];
+  colorCopy = color;
+  mainScreen = [v5 mainScreen];
+  [mainScreen scale];
   v9 = v8;
 
   v10 = 1.0;
@@ -24,15 +24,15 @@
   if (v9 > 1.0)
   {
     v10 = 1.0 / v9;
-    if (!v4)
+    if (!leadingCopy)
     {
       v11 = 1.0 - v10;
     }
   }
 
-  v13 = [v6 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v13);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v19.size.width = 1.0;
   v19.origin.x = 0.0;
   v19.origin.y = v11;
@@ -50,8 +50,8 @@
   v4.receiver = self;
   v4.super_class = FMHorizontalRule;
   [(FMRule *)&v4 commonSetup];
-  v3 = [(FMRule *)self imageView];
-  [v3 setAutoresizingMask:18];
+  imageView = [(FMRule *)self imageView];
+  [imageView setAutoresizingMask:18];
 }
 
 - (CGSize)preferredContentSize

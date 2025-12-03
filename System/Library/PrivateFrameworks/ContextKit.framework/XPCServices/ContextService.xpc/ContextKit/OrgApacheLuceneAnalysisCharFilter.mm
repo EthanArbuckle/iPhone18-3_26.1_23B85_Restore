@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneAnalysisCharFilter
-- (OrgApacheLuceneAnalysisCharFilter)initWithJavaIoReader:(id)a3;
+- (OrgApacheLuceneAnalysisCharFilter)initWithJavaIoReader:(id)reader;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneAnalysisCharFilter
 
-- (OrgApacheLuceneAnalysisCharFilter)initWithJavaIoReader:(id)a3
+- (OrgApacheLuceneAnalysisCharFilter)initWithJavaIoReader:(id)reader
 {
-  JavaIoReader_initWithId_(self, a3);
-  JreStrongAssign(&self->input_, a3);
+  JavaIoReader_initWithId_(self, reader);
+  JreStrongAssign(&self->input_, reader);
   return self;
 }
 

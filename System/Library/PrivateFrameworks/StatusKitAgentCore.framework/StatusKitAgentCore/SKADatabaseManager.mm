@@ -1,133 +1,133 @@
 @interface SKADatabaseManager
 + (id)logger;
-- (BOOL)activePresenceAssertionsExistWithDatabaseContext:(id)a3;
-- (BOOL)activePresenceSubscriptionForChannelIdentifier:(id)a3 databaseContext:(id)a4;
+- (BOOL)activePresenceAssertionsExistWithDatabaseContext:(id)context;
+- (BOOL)activePresenceSubscriptionForChannelIdentifier:(id)identifier databaseContext:(id)context;
 - (BOOL)clearPersistentHistoryIfNeeded;
-- (BOOL)clearPresentDevicesForChannel:(id)a3 databaseContext:(id)a4;
-- (BOOL)copyInvitedUsersFromChannel:(id)a3 toChannel:(id)a4 databaseContext:(id)a5;
-- (BOOL)createOrUpdateOrDeleteSubscribedLocalStatus:(id)a3 databaseContext:(id)a4 error:(id *)a5;
-- (BOOL)createOrUpdatePresentDevice:(id)a3 channel:(id)a4 databaseContext:(id)a5;
-- (BOOL)createOrUpdatePublishedLocalStatusDevices:(id)a3 databaseContext:(id)a4 error:(id *)a5;
-- (BOOL)createOrUpdatePublishedLocalStatuses:(id)a3 databaseContext:(id)a4 error:(id *)a5;
-- (BOOL)decommissionAllOldChannelsWithPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5;
-- (BOOL)decommissionAllPersonalChannelsWithStatusTypeIdentifier:(id)a3 databaseContext:(id)a4;
-- (BOOL)decommissionChannelWithIdentifier:(id)a3 databaseContext:(id)a4;
-- (BOOL)deleteAllInvitedUsersForPersonalChannel:(id)a3 databaseContext:(id)a4;
-- (BOOL)deleteAllPresenceAssertionsWithDatabaseContext:(id)a3;
-- (BOOL)deleteAllPresenceSubscriptionsWithDatabaseContext:(id)a3;
-- (BOOL)deleteInvitedUserForHandle:(id)a3 personalChannel:(id)a4 databaseContext:(id)a5;
-- (BOOL)deleteInvitedUserForHandle:(id)a3 presenceChannel:(id)a4 databaseContext:(id)a5;
-- (BOOL)deletePendingPublishRequestWithWithUniqueIdentifier:(id)a3 databaseContext:(id)a4;
-- (BOOL)deletePersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4;
-- (BOOL)deletePresenceAssertionForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5;
-- (BOOL)deletePresentDevice:(id)a3 channel:(id)a4 databaseContext:(id)a5;
-- (BOOL)deletePublishedLocalStatusDevices:(id)a3 databaseContext:(id)a4 error:(id *)a5;
-- (BOOL)deleteRemovedUserWithHandle:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5;
-- (BOOL)deleteRemovedUserWithHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5;
-- (BOOL)deleteSubscriptionAssertionWithSubscriptionIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5;
-- (BOOL)incrementPendingPublishRequestRetryCountWithUniqueIdentifier:(id)a3 databaseContext:(id)a4;
-- (BOOL)saveContextIfNeeded:(id)a3;
-- (BOOL)setCurrentCheckpointForChannel:(id)a3 checkpoint:(unint64_t)a4 databaseContext:(id)a5;
-- (SKADatabaseManager)initWithDatabaseProvider:(id)a3 delegate:(id)a4;
+- (BOOL)clearPresentDevicesForChannel:(id)channel databaseContext:(id)context;
+- (BOOL)copyInvitedUsersFromChannel:(id)channel toChannel:(id)toChannel databaseContext:(id)context;
+- (BOOL)createOrUpdateOrDeleteSubscribedLocalStatus:(id)status databaseContext:(id)context error:(id *)error;
+- (BOOL)createOrUpdatePresentDevice:(id)device channel:(id)channel databaseContext:(id)context;
+- (BOOL)createOrUpdatePublishedLocalStatusDevices:(id)devices databaseContext:(id)context error:(id *)error;
+- (BOOL)createOrUpdatePublishedLocalStatuses:(id)statuses databaseContext:(id)context error:(id *)error;
+- (BOOL)decommissionAllOldChannelsWithPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context;
+- (BOOL)decommissionAllPersonalChannelsWithStatusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (BOOL)decommissionChannelWithIdentifier:(id)identifier databaseContext:(id)context;
+- (BOOL)deleteAllInvitedUsersForPersonalChannel:(id)channel databaseContext:(id)context;
+- (BOOL)deleteAllPresenceAssertionsWithDatabaseContext:(id)context;
+- (BOOL)deleteAllPresenceSubscriptionsWithDatabaseContext:(id)context;
+- (BOOL)deleteInvitedUserForHandle:(id)handle personalChannel:(id)channel databaseContext:(id)context;
+- (BOOL)deleteInvitedUserForHandle:(id)handle presenceChannel:(id)channel databaseContext:(id)context;
+- (BOOL)deletePendingPublishRequestWithWithUniqueIdentifier:(id)identifier databaseContext:(id)context;
+- (BOOL)deletePersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (BOOL)deletePresenceAssertionForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context;
+- (BOOL)deletePresentDevice:(id)device channel:(id)channel databaseContext:(id)context;
+- (BOOL)deletePublishedLocalStatusDevices:(id)devices databaseContext:(id)context error:(id *)error;
+- (BOOL)deleteRemovedUserWithHandle:(id)handle presenceIdentifier:(id)identifier databaseContext:(id)context;
+- (BOOL)deleteRemovedUserWithHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (BOOL)deleteSubscriptionAssertionWithSubscriptionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context;
+- (BOOL)incrementPendingPublishRequestRetryCountWithUniqueIdentifier:(id)identifier databaseContext:(id)context;
+- (BOOL)saveContextIfNeeded:(id)needed;
+- (BOOL)setCurrentCheckpointForChannel:(id)channel checkpoint:(unint64_t)checkpoint databaseContext:(id)context;
+- (SKADatabaseManager)initWithDatabaseProvider:(id)provider delegate:(id)delegate;
 - (SKADatabaseManagingDelegate)delegate;
-- (id)_existingChannelCheckpointForChannelIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)_existingChannelsForChannelIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)_existingChannelsForDatabaseChannel:(id)a3 databaseContext:(id)a4;
-- (id)_existingDecommissionedChannelsWithDatabaseContext:(id)a3;
-- (id)_existingInvitedUsersForDatabaseInvitedUser:(id)a3 databaseChannel:(id)a4 databaseContext:(id)a5;
-- (id)_existingInvitedUsersForInvitedHandle:(id)a3 channel:(id)a4 databaseContext:(id)a5;
-- (id)_existingPendingPublishRequestForUniqueIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)_existingPendingPublishRequestsForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)_existingPendingPublishRequestsWithDatabaseContext:(id)a3;
-- (id)_existingPersonalChannelForDatabaseChannel:(id)a3 databaseContext:(id)a4;
-- (id)_existingPersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)_existingPersonalChannelsForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)_existingPresenceSubscriptionForChannelIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)_existingPresentDeviceForChannel:(id)a3 deviceIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)_existingPresentDevicesForChannel:(id)a3 databaseContext:(id)a4;
-- (id)_existingReceivedInvitationsForChannelIdentifier:(id)a3 sortedByDateReceived:(BOOL)a4 databaseContect:(id)a5;
-- (id)_existingReceivedInvitationsForHandle:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)_existingReceivedInvitationsForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)_existingRemovedUsersForHandle:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)_existingRemovedUsersForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)_existingSubscriptionAssertionForSubscriptionIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)_existingSubscriptionAssertionsForStatusTypeIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)_existingTransientSubscriptionHistoryForChannelIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)allExistingChannelsForHandle:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)allExistingChannelsForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)allExistingChannelsForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5;
-- (id)allExistingChannelsForStatusTypeIdentifier:(id)a3 includingPersonalChannel:(BOOL)a4 databaseContext:(id)a5;
-- (id)allExistingPresenceSubscriptionsForDatabaseContext:(id)a3;
-- (id)allPersistentSubscriptionAssertionChannelIdentifiersWithDatabaseContext:(id)a3;
-- (id)allPublishedLocalStatusDevicesInDatabaseContext:(id)a3 error:(id *)a4;
-- (id)allPublishedLocalStatusesInDatabaseContext:(id)a3 error:(id *)a4;
-- (id)allSubscribedLocalStatusesInDatabaseContext:(id)a3 error:(id *)a4;
-- (id)createChannelForStatusTypeIdentifier:(id)a3 channelIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)createGeneratedEncryptionKeyWithOriginalOutgoingRatchetState:(id)a3 personalChannel:(id)a4 databaseContext:(id)a5;
-- (id)createInvitedUserWithHandle:(id)a3 senderHandle:(id)a4 invitationPayload:(id)a5 channel:(id)a6 databaseContext:(id)a7;
-- (id)createOrUpdatePresenceAssertionForPresenceIdentifier:(id)a3 presenceOptions:(id)a4 assertionOptions:(id)a5 payload:(id)a6 databaseContext:(id)a7;
-- (id)createOrUpdatePresenceSubscriptionForChannelIdentifier:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)createOrUpdateTransientSubscriptionHistoryForChannelIdentifier:(id)a3 lastSubscriptionDate:(id)a4 databaseContext:(id)a5;
-- (id)createPendingPublishRequestWithUniqueIdentifier:(id)a3 dateCreated:(id)a4 payloadData:(id)a5 statusTypeIdentifier:(id)a6 databaseContext:(id)a7;
-- (id)createPersonalChannelForStatusTypeIdentifier:(id)a3 channelIdentifier:(id)a4 channelToken:(id)a5 databaseContext:(id)a6;
-- (id)createPresenceChannelForPresenceIdentifier:(id)a3 channelIdentifier:(id)a4 channelToken:(id)a5 peerKey:(id)a6 serverKey:(id)a7 membershipKey:(id)a8 creationDate:(id)a9 options:(id)a10 databaseContext:(id)a11;
-- (id)createReceivedInvitationForChannel:(id)a3 senderHandle:(id)a4 invitedHandle:(id)a5 invitationIdentifier:(id)a6 dateInvitationCreated:(id)a7 incomingRatchetState:(id)a8 presenceIdentifier:(id)a9 channelToken:(id)a10 serverKey:(id)a11 peerKey:(id)a12 invitationPayload:(id)a13 databaseContext:(id)a14;
-- (id)createRemovedUserWithHandle:(id)a3 dateRemoved:(id)a4 presenceIdentifier:(id)a5 databaseContext:(id)a6;
-- (id)createRemovedUserWithHandle:(id)a3 dateRemoved:(id)a4 statusTypeIdentifier:(id)a5 databaseContext:(id)a6;
-- (id)createStatusWithUniqueIdentifier:(id)a3 dateCreated:(id)a4 datePublished:(id)a5 dateReceived:(id)a6 dateExpired:(id)a7 rawData:(id)a8 channelIdentifier:(id)a9 databaseContext:(id)a10;
-- (id)createSubscriptionAssertionForSubscriptionIdentifier:(id)a3 applicationIdentifier:(id)a4 statusTypeIdentifier:(id)a5 databaseContext:(id)a6;
-- (id)existingChannelForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)existingChannelForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5;
-- (id)existingChannelForSubscriptionIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)existingInvitedUsersForInvitedHandle:(id)a3 onChannel:(id)a4 databaseContext:(id)a5;
-- (id)existingInvitedUsersForPersonalChannel:(id)a3 databaseContext:(id)a4;
-- (id)existingPendingPublishRequestForUniqueIdentifier:(id)a3 withDatabaseContext:(id)a4;
-- (id)existingPendingPublishRequestsForStatusTypeIdentifier:(id)a3 withDatabaseContext:(id)a4;
-- (id)existingPendingPublishRequestsWithDatabaseContext:(id)a3;
-- (id)existingPersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)existingPresenceAssertionForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5;
-- (id)existingPresenceSubscriptionForChannelIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)existingRecentTransientSubscriptionHistoriesWithLimit:(int64_t)a3 databaseContext:(id)a4;
-- (id)existingRemovedUserWithHandle:(id)a3 presenceIdentifier:(id)a4 withDatabaseContext:(id)a5;
-- (id)existingRemovedUserWithHandle:(id)a3 statusTypeIdentifier:(id)a4 withDatabaseContext:(id)a5;
-- (id)existingStatusForChannel:(id)a3 databaseContext:(id)a4;
-- (id)existingStatusForUniqueIdentifier:(id)a3 databaseContext:(id)a4;
-- (id)existingSubscriptionAssertionForSubscriptionIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)existingSubscriptionAssertionsForStatusTypeIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5;
-- (id)generatedEncryptionKeysForPersonalChannel:(id)a3 databaseContext:(id)a4;
-- (id)presentDevicesForChannel:(id)a3 databaseContext:(id)a4;
-- (id)receivedInvitationsForChannel:(id)a3 databaseContext:(id)a4;
-- (id)receivedInvitationsForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5;
-- (id)updateInvitationPayload:(id)a3 onExistingInvitedUser:(id)a4 channel:(id)a5 databaseContext:(id)a6;
-- (id)updatePersonalChannel:(id)a3 withCurrentOutgoingRatchetState:(id)a4 databaseContext:(id)a5;
-- (unint64_t)currentCheckpointForChannel:(id)a3 databaseContext:(id)a4;
+- (id)_existingChannelCheckpointForChannelIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingChannelsForChannelIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingChannelsForDatabaseChannel:(id)channel databaseContext:(id)context;
+- (id)_existingDecommissionedChannelsWithDatabaseContext:(id)context;
+- (id)_existingInvitedUsersForDatabaseInvitedUser:(id)user databaseChannel:(id)channel databaseContext:(id)context;
+- (id)_existingInvitedUsersForInvitedHandle:(id)handle channel:(id)channel databaseContext:(id)context;
+- (id)_existingPendingPublishRequestForUniqueIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingPendingPublishRequestsForStatusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingPendingPublishRequestsWithDatabaseContext:(id)context;
+- (id)_existingPersonalChannelForDatabaseChannel:(id)channel databaseContext:(id)context;
+- (id)_existingPersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingPersonalChannelsForStatusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingPresenceSubscriptionForChannelIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingPresentDeviceForChannel:(id)channel deviceIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingPresentDevicesForChannel:(id)channel databaseContext:(id)context;
+- (id)_existingReceivedInvitationsForChannelIdentifier:(id)identifier sortedByDateReceived:(BOOL)received databaseContect:(id)contect;
+- (id)_existingReceivedInvitationsForHandle:(id)handle presenceIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingReceivedInvitationsForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingRemovedUsersForHandle:(id)handle presenceIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingRemovedUsersForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (id)_existingSubscriptionAssertionForSubscriptionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context;
+- (id)_existingSubscriptionAssertionsForStatusTypeIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context;
+- (id)_existingTransientSubscriptionHistoryForChannelIdentifier:(id)identifier databaseContext:(id)context;
+- (id)allExistingChannelsForHandle:(id)handle presenceIdentifier:(id)identifier databaseContext:(id)context;
+- (id)allExistingChannelsForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (id)allExistingChannelsForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context;
+- (id)allExistingChannelsForStatusTypeIdentifier:(id)identifier includingPersonalChannel:(BOOL)channel databaseContext:(id)context;
+- (id)allExistingPresenceSubscriptionsForDatabaseContext:(id)context;
+- (id)allPersistentSubscriptionAssertionChannelIdentifiersWithDatabaseContext:(id)context;
+- (id)allPublishedLocalStatusDevicesInDatabaseContext:(id)context error:(id *)error;
+- (id)allPublishedLocalStatusesInDatabaseContext:(id)context error:(id *)error;
+- (id)allSubscribedLocalStatusesInDatabaseContext:(id)context error:(id *)error;
+- (id)createChannelForStatusTypeIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier databaseContext:(id)context;
+- (id)createGeneratedEncryptionKeyWithOriginalOutgoingRatchetState:(id)state personalChannel:(id)channel databaseContext:(id)context;
+- (id)createInvitedUserWithHandle:(id)handle senderHandle:(id)senderHandle invitationPayload:(id)payload channel:(id)channel databaseContext:(id)context;
+- (id)createOrUpdatePresenceAssertionForPresenceIdentifier:(id)identifier presenceOptions:(id)options assertionOptions:(id)assertionOptions payload:(id)payload databaseContext:(id)context;
+- (id)createOrUpdatePresenceSubscriptionForChannelIdentifier:(id)identifier presenceIdentifier:(id)presenceIdentifier databaseContext:(id)context;
+- (id)createOrUpdateTransientSubscriptionHistoryForChannelIdentifier:(id)identifier lastSubscriptionDate:(id)date databaseContext:(id)context;
+- (id)createPendingPublishRequestWithUniqueIdentifier:(id)identifier dateCreated:(id)created payloadData:(id)data statusTypeIdentifier:(id)typeIdentifier databaseContext:(id)context;
+- (id)createPersonalChannelForStatusTypeIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier channelToken:(id)token databaseContext:(id)context;
+- (id)createPresenceChannelForPresenceIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier channelToken:(id)token peerKey:(id)key serverKey:(id)serverKey membershipKey:(id)membershipKey creationDate:(id)date options:(id)self0 databaseContext:(id)self1;
+- (id)createReceivedInvitationForChannel:(id)channel senderHandle:(id)handle invitedHandle:(id)invitedHandle invitationIdentifier:(id)identifier dateInvitationCreated:(id)created incomingRatchetState:(id)state presenceIdentifier:(id)presenceIdentifier channelToken:(id)self0 serverKey:(id)self1 peerKey:(id)self2 invitationPayload:(id)self3 databaseContext:(id)self4;
+- (id)createRemovedUserWithHandle:(id)handle dateRemoved:(id)removed presenceIdentifier:(id)identifier databaseContext:(id)context;
+- (id)createRemovedUserWithHandle:(id)handle dateRemoved:(id)removed statusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (id)createStatusWithUniqueIdentifier:(id)identifier dateCreated:(id)created datePublished:(id)published dateReceived:(id)received dateExpired:(id)expired rawData:(id)data channelIdentifier:(id)channelIdentifier databaseContext:(id)self0;
+- (id)createSubscriptionAssertionForSubscriptionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier statusTypeIdentifier:(id)typeIdentifier databaseContext:(id)context;
+- (id)existingChannelForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (id)existingChannelForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context;
+- (id)existingChannelForSubscriptionIdentifier:(id)identifier databaseContext:(id)context;
+- (id)existingInvitedUsersForInvitedHandle:(id)handle onChannel:(id)channel databaseContext:(id)context;
+- (id)existingInvitedUsersForPersonalChannel:(id)channel databaseContext:(id)context;
+- (id)existingPendingPublishRequestForUniqueIdentifier:(id)identifier withDatabaseContext:(id)context;
+- (id)existingPendingPublishRequestsForStatusTypeIdentifier:(id)identifier withDatabaseContext:(id)context;
+- (id)existingPendingPublishRequestsWithDatabaseContext:(id)context;
+- (id)existingPersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (id)existingPresenceAssertionForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context;
+- (id)existingPresenceSubscriptionForChannelIdentifier:(id)identifier databaseContext:(id)context;
+- (id)existingRecentTransientSubscriptionHistoriesWithLimit:(int64_t)limit databaseContext:(id)context;
+- (id)existingRemovedUserWithHandle:(id)handle presenceIdentifier:(id)identifier withDatabaseContext:(id)context;
+- (id)existingRemovedUserWithHandle:(id)handle statusTypeIdentifier:(id)identifier withDatabaseContext:(id)context;
+- (id)existingStatusForChannel:(id)channel databaseContext:(id)context;
+- (id)existingStatusForUniqueIdentifier:(id)identifier databaseContext:(id)context;
+- (id)existingSubscriptionAssertionForSubscriptionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context;
+- (id)existingSubscriptionAssertionsForStatusTypeIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context;
+- (id)generatedEncryptionKeysForPersonalChannel:(id)channel databaseContext:(id)context;
+- (id)presentDevicesForChannel:(id)channel databaseContext:(id)context;
+- (id)receivedInvitationsForChannel:(id)channel databaseContext:(id)context;
+- (id)receivedInvitationsForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context;
+- (id)updateInvitationPayload:(id)payload onExistingInvitedUser:(id)user channel:(id)channel databaseContext:(id)context;
+- (id)updatePersonalChannel:(id)channel withCurrentOutgoingRatchetState:(id)state databaseContext:(id)context;
+- (unint64_t)currentCheckpointForChannel:(id)channel databaseContext:(id)context;
 - (void)_deleteAllPresenceSubscriptionsAndAssertionsIfNecessary;
-- (void)cleanUpPresentDevicesWithoutActiveChannelsWithDatabaseContext:(id)a3;
-- (void)cleanupDecommissionedChannelsWithDatabaseContext:(id)a3;
-- (void)cleanupOldChannelsForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5;
-- (void)cleanupOldReceivedInvitationsForChannelIdentifier:(id)a3 excludingInvitation:(id)a4 databaseContext:(id)a5;
-- (void)cleanupOldStatusUpdatesForChannelIdentifier:(id)a3 excludingStatusUniqueIdentifier:(id)a4 databaseContext:(id)a5;
-- (void)deletePresenceSubscriptionsForChannelIdentifier:(id)a3 databaseContext:(id)a4;
-- (void)deletePresenceSubscriptionsForPresenceIdentifier:(id)a3 databaseContext:(id)a4;
-- (void)deviceToDeviceEncryptedDatabaseCapableWithCompletion:(id)a3;
-- (void)logMostDuplicatedChannelFromDatabaseContext:(id)a3;
+- (void)cleanUpPresentDevicesWithoutActiveChannelsWithDatabaseContext:(id)context;
+- (void)cleanupDecommissionedChannelsWithDatabaseContext:(id)context;
+- (void)cleanupOldChannelsForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context;
+- (void)cleanupOldReceivedInvitationsForChannelIdentifier:(id)identifier excludingInvitation:(id)invitation databaseContext:(id)context;
+- (void)cleanupOldStatusUpdatesForChannelIdentifier:(id)identifier excludingStatusUniqueIdentifier:(id)uniqueIdentifier databaseContext:(id)context;
+- (void)deletePresenceSubscriptionsForChannelIdentifier:(id)identifier databaseContext:(id)context;
+- (void)deletePresenceSubscriptionsForPresenceIdentifier:(id)identifier databaseContext:(id)context;
+- (void)deviceToDeviceEncryptedDatabaseCapableWithCompletion:(id)completion;
+- (void)logMostDuplicatedChannelFromDatabaseContext:(id)context;
 - (void)systemDidLeaveFirstDataProtectionLock;
 @end
 
 @implementation SKADatabaseManager
 
-- (SKADatabaseManager)initWithDatabaseProvider:(id)a3 delegate:(id)a4
+- (SKADatabaseManager)initWithDatabaseProvider:(id)provider delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = SKADatabaseManager;
   v9 = [(SKADatabaseManager *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_databaseProvider, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_databaseProvider, provider);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = +[SKASystemMonitor sharedInstance];
     [v11 addListener:v10];
 
@@ -137,10 +137,10 @@
   return v10;
 }
 
-- (id)existingPersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4
+- (id)existingPersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -152,9 +152,9 @@
   v12[2] = __85__SKADatabaseManager_existingPersonalChannelForStatusTypeIdentifier_databaseContext___block_invoke;
   v12[3] = &unk_27843E3A0;
   v12[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v14 = v9;
   v15 = &v16;
   [v9 performBlockAndWait:v12];
@@ -183,15 +183,15 @@ void __85__SKADatabaseManager_existingPersonalChannelForStatusTypeIdentifier_dat
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingPersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4
+- (id)_existingPersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
   v34[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v6 = +[Channel fetchRequest];
   v7 = MEMORY[0x277CCA920];
-  v27 = v5;
-  v8 = [Channel predicateForStatusTypeIdentifier:v5];
+  v27 = identifierCopy;
+  v8 = [Channel predicateForStatusTypeIdentifier:identifierCopy];
   v34[0] = v8;
   v9 = [Channel predicateForPersonal:1];
   v34[1] = v9;
@@ -212,13 +212,13 @@ void __85__SKADatabaseManager_existingPersonalChannelForStatusTypeIdentifier_dat
 
   [v6 setFetchLimit:1];
   v28 = 0;
-  v17 = [v26 executeFetchRequest:v6 error:&v28];
+  v17 = [contextCopy executeFetchRequest:v6 error:&v28];
 
   v18 = v28;
   if (v18)
   {
-    v19 = +[SKADatabaseManager logger];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    firstObject = +[SKADatabaseManager logger];
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       [SKADatabaseManager _existingPersonalChannelForStatusTypeIdentifier:databaseContext:];
     }
@@ -229,23 +229,23 @@ void __85__SKADatabaseManager_existingPersonalChannelForStatusTypeIdentifier_dat
 
   else
   {
-    v19 = [v17 firstObject];
+    firstObject = [v17 firstObject];
     v22 = +[SKADatabaseManager logger];
     v21 = v27;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v19 identifier];
+      identifier = [firstObject identifier];
       *buf = 138412546;
       v30 = v27;
       v31 = 2112;
-      v32 = v23;
+      v32 = identifier;
       _os_log_impl(&dword_220099000, v22, OS_LOG_TYPE_DEFAULT, "Fetch request for personal status channel type %@ completed with result: %@", buf, 0x16u);
     }
 
-    if (v19)
+    if (firstObject)
     {
-      v19 = v19;
-      v20 = v19;
+      firstObject = firstObject;
+      v20 = firstObject;
     }
 
     else
@@ -259,10 +259,10 @@ void __85__SKADatabaseManager_existingPersonalChannelForStatusTypeIdentifier_dat
   return v20;
 }
 
-- (id)_existingDecommissionedChannelsWithDatabaseContext:(id)a3
+- (id)_existingDecommissionedChannelsWithDatabaseContext:(id)context
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = +[Channel fetchRequest];
   v5 = [Channel predicateForDecommissioned:1];
   [v4 setPredicate:v5];
@@ -273,7 +273,7 @@ void __85__SKADatabaseManager_existingPersonalChannelForStatusTypeIdentifier_dat
   [v4 setSortDescriptors:v7];
 
   v16 = 0;
-  v8 = [v3 executeFetchRequest:v4 error:&v16];
+  v8 = [contextCopy executeFetchRequest:v4 error:&v16];
 
   v9 = v16;
   v10 = +[SKADatabaseManager logger];
@@ -311,15 +311,15 @@ LABEL_10:
   return v12;
 }
 
-- (id)_existingPersonalChannelsForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4
+- (id)_existingPersonalChannelsForStatusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
   v34[5] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v26 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v6 = +[Channel fetchRequest];
   v7 = MEMORY[0x277CCA920];
-  v27 = v5;
-  v8 = [Channel predicateForStatusTypeIdentifier:v5];
+  v27 = identifierCopy;
+  v8 = [Channel predicateForStatusTypeIdentifier:identifierCopy];
   v34[0] = v8;
   v9 = [Channel predicateForPersonal:1];
   v34[1] = v9;
@@ -339,13 +339,13 @@ LABEL_10:
   [v6 setSortDescriptors:v16];
 
   v28 = 0;
-  v17 = [v26 executeFetchRequest:v6 error:&v28];
+  v17 = [contextCopy executeFetchRequest:v6 error:&v28];
 
   v18 = v28;
   if (v18)
   {
-    v19 = +[SKADatabaseManager logger];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    firstObject = +[SKADatabaseManager logger];
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       [SKADatabaseManager _existingPersonalChannelForStatusTypeIdentifier:databaseContext:];
     }
@@ -356,20 +356,20 @@ LABEL_10:
 
   else
   {
-    v19 = [v17 firstObject];
+    firstObject = [v17 firstObject];
     v22 = +[SKADatabaseManager logger];
     v21 = v27;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v19 identifier];
+      identifier = [firstObject identifier];
       *buf = 138412546;
       v30 = v27;
       v31 = 2112;
-      v32 = v23;
+      v32 = identifier;
       _os_log_impl(&dword_220099000, v22, OS_LOG_TYPE_DEFAULT, "Fetch request for personal status channel type %@ completed with result: %@", buf, 0x16u);
     }
 
-    if (v19)
+    if (firstObject)
     {
       v20 = [v17 copy];
     }
@@ -385,10 +385,10 @@ LABEL_10:
   return v20;
 }
 
-- (BOOL)deletePersonalChannelForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4
+- (BOOL)deletePersonalChannelForStatusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -398,16 +398,16 @@ LABEL_10:
   v11[2] = __83__SKADatabaseManager_deletePersonalChannelForStatusTypeIdentifier_databaseContext___block_invoke;
   v11[3] = &unk_27843E3A0;
   v11[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v13 = v9;
   v14 = &v15;
   [v9 performBlockAndWait:v11];
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(identifierCopy) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return identifierCopy;
 }
 
 void __83__SKADatabaseManager_deletePersonalChannelForStatusTypeIdentifier_databaseContext___block_invoke(uint64_t a1)
@@ -440,10 +440,10 @@ void __83__SKADatabaseManager_deletePersonalChannelForStatusTypeIdentifier_datab
   *(*(*(a1 + 56) + 8) + 24) = v4;
 }
 
-- (id)existingChannelForSubscriptionIdentifier:(id)a3 databaseContext:(id)a4
+- (id)existingChannelForSubscriptionIdentifier:(id)identifier databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -455,9 +455,9 @@ void __83__SKADatabaseManager_deletePersonalChannelForStatusTypeIdentifier_datab
   v12[2] = __79__SKADatabaseManager_existingChannelForSubscriptionIdentifier_databaseContext___block_invoke;
   v12[3] = &unk_27843E3A0;
   v12[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v14 = v9;
   v15 = &v16;
   [v9 performBlockAndWait:v12];
@@ -480,10 +480,10 @@ void __79__SKADatabaseManager_existingChannelForSubscriptionIdentifier_databaseC
   }
 }
 
-- (id)existingChannelForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5
+- (id)existingChannelForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -495,10 +495,10 @@ void __79__SKADatabaseManager_existingChannelForSubscriptionIdentifier_databaseC
   v14[2] = __86__SKADatabaseManager_existingChannelForPresenceIdentifier_isPersonal_databaseContext___block_invoke;
   v14[3] = &unk_27843E3C8;
   v14[4] = self;
-  v10 = v8;
+  v10 = identifierCopy;
   v15 = v10;
-  v18 = a4;
-  v11 = v9;
+  personalCopy = personal;
+  v11 = contextCopy;
   v16 = v11;
   v17 = &v19;
   [v11 performBlockAndWait:v14];
@@ -521,51 +521,51 @@ void __86__SKADatabaseManager_existingChannelForPresenceIdentifier_isPersonal_da
   }
 }
 
-- (id)_existingChannelsForDatabaseChannel:(id)a3 databaseContext:(id)a4
+- (id)_existingChannelsForDatabaseChannel:(id)channel databaseContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 identifier];
-  v9 = [v7 isPersonal];
+  contextCopy = context;
+  channelCopy = channel;
+  identifier = [channelCopy identifier];
+  isPersonal = [channelCopy isPersonal];
 
-  v10 = [(SKADatabaseManager *)self _existingChannelsForChannelIdentifier:v8 isPersonal:v9 databaseContext:v6];
+  v10 = [(SKADatabaseManager *)self _existingChannelsForChannelIdentifier:identifier isPersonal:isPersonal databaseContext:contextCopy];
 
   return v10;
 }
 
-- (id)_existingPersonalChannelForDatabaseChannel:(id)a3 databaseContext:(id)a4
+- (id)_existingPersonalChannelForDatabaseChannel:(id)channel databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = [(SKADatabaseManager *)self _existingChannelsForDatabaseChannel:v6 databaseContext:a4];
+  channelCopy = channel;
+  v7 = [(SKADatabaseManager *)self _existingChannelsForDatabaseChannel:channelCopy databaseContext:context];
   if ([v7 count] != 1)
   {
     v8 = +[SKADatabaseManager logger];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [SKADatabaseManager _existingPersonalChannelForDatabaseChannel:v6 databaseContext:v8];
+      [SKADatabaseManager _existingPersonalChannelForDatabaseChannel:channelCopy databaseContext:v8];
     }
   }
 
-  v9 = [v7 firstObject];
+  firstObject = [v7 firstObject];
 
-  return v9;
+  return firstObject;
 }
 
-- (id)_existingChannelsForChannelIdentifier:(id)a3 databaseContext:(id)a4
+- (id)_existingChannelsForChannelIdentifier:(id)identifier databaseContext:(id)context
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v7 = +[Channel fetchRequest];
   v8 = MEMORY[0x277CCA920];
-  v9 = [Channel predicateForChannelIdentifier:v5];
+  v9 = [Channel predicateForChannelIdentifier:identifierCopy];
   v21[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
   v11 = [v8 andPredicateWithSubpredicates:v10];
   [v7 setPredicate:v11];
 
   v18 = 0;
-  v12 = [v6 executeFetchRequest:v7 error:&v18];
+  v12 = [contextCopy executeFetchRequest:v7 error:&v18];
 
   v13 = v18;
   if (v13)
@@ -588,7 +588,7 @@ void __86__SKADatabaseManager_existingChannelForPresenceIdentifier_isPersonal_da
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v5;
+      v20 = identifierCopy;
       _os_log_impl(&dword_220099000, v15, OS_LOG_TYPE_DEFAULT, "Fetch request for channel by identifier %@ found no match.", buf, 0xCu);
     }
   }
@@ -610,11 +610,11 @@ LABEL_13:
   return v12;
 }
 
-- (id)existingChannelForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5
+- (id)existingChannelForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -626,11 +626,11 @@ LABEL_13:
   v16[2] = __84__SKADatabaseManager_existingChannelForHandle_statusTypeIdentifier_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = handleCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v19 = v13;
   v20 = &v21;
   [v13 performBlockAndWait:v16];
@@ -723,11 +723,11 @@ LABEL_17:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allExistingChannelsForHandle:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5
+- (id)allExistingChannelsForHandle:(id)handle presenceIdentifier:(id)identifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -739,11 +739,11 @@ LABEL_17:
   v16[2] = __86__SKADatabaseManager_allExistingChannelsForHandle_presenceIdentifier_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = handleCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v19 = v13;
   v20 = &v21;
   [v13 performBlockAndWait:v16];
@@ -859,11 +859,11 @@ void __86__SKADatabaseManager_allExistingChannelsForHandle_presenceIdentifier_da
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allExistingChannelsForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5
+- (id)allExistingChannelsForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -875,11 +875,11 @@ void __86__SKADatabaseManager_allExistingChannelsForHandle_presenceIdentifier_da
   v16[2] = __88__SKADatabaseManager_allExistingChannelsForHandle_statusTypeIdentifier_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = handleCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v19 = v13;
   v20 = &v21;
   [v13 performBlockAndWait:v16];
@@ -995,10 +995,10 @@ void __88__SKADatabaseManager_allExistingChannelsForHandle_statusTypeIdentifier_
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logMostDuplicatedChannelFromDatabaseContext:(id)a3
+- (void)logMostDuplicatedChannelFromDatabaseContext:(id)context
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1021,7 +1021,7 @@ void __88__SKADatabaseManager_allExistingChannelsForHandle_statusTypeIdentifier_
   v8[1] = 3221225472;
   v8[2] = __66__SKADatabaseManager_logMostDuplicatedChannelFromDatabaseContext___block_invoke;
   v8[3] = &unk_27843E418;
-  v4 = v3;
+  v4 = contextCopy;
   v9 = v4;
   v10 = &v25;
   v11 = &v19;
@@ -1030,9 +1030,9 @@ void __88__SKADatabaseManager_allExistingChannelsForHandle_statusTypeIdentifier_
   if (v20[5] && v14[5] && [v26[5] integerValue])
   {
     v31[0] = &unk_2833EBA68;
-    v5 = [v20[5] clientIDFromPresenceIdentifier];
+    clientIDFromPresenceIdentifier = [v20[5] clientIDFromPresenceIdentifier];
     v31[1] = &unk_2833EBA80;
-    v32[0] = v5;
+    v32[0] = clientIDFromPresenceIdentifier;
     v32[1] = v26[5];
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
     [SKACALogger logEvent:3 withMetadata:v6];
@@ -1152,10 +1152,10 @@ void __66__SKADatabaseManager_logMostDuplicatedChannelFromDatabaseContext___bloc
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allExistingChannelsForStatusTypeIdentifier:(id)a3 includingPersonalChannel:(BOOL)a4 databaseContext:(id)a5
+- (id)allExistingChannelsForStatusTypeIdentifier:(id)identifier includingPersonalChannel:(BOOL)channel databaseContext:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1166,10 +1166,10 @@ void __66__SKADatabaseManager_logMostDuplicatedChannelFromDatabaseContext___bloc
   v14 = 3221225472;
   v15 = __106__SKADatabaseManager_allExistingChannelsForStatusTypeIdentifier_includingPersonalChannel_databaseContext___block_invoke;
   v16 = &unk_27843E440;
-  v9 = v7;
+  v9 = identifierCopy;
   v17 = v9;
-  v20 = a4;
-  v10 = v8;
+  channelCopy = channel;
+  v10 = contextCopy;
   v18 = v10;
   v19 = &v21;
   [v10 performBlockAndWait:&v13];
@@ -1354,10 +1354,10 @@ LABEL_34:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allExistingChannelsForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5
+- (id)allExistingChannelsForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1368,10 +1368,10 @@ LABEL_34:
   v14 = 3221225472;
   v15 = __90__SKADatabaseManager_allExistingChannelsForPresenceIdentifier_isPersonal_databaseContext___block_invoke;
   v16 = &unk_27843E440;
-  v9 = v7;
+  v9 = identifierCopy;
   v17 = v9;
-  v20 = a4;
-  v10 = v8;
+  personalCopy = personal;
+  v10 = contextCopy;
   v18 = v10;
   v19 = &v21;
   [v10 performBlockAndWait:&v13];
@@ -1536,12 +1536,12 @@ void __90__SKADatabaseManager_allExistingChannelsForPresenceIdentifier_isPersona
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createPersonalChannelForStatusTypeIdentifier:(id)a3 channelIdentifier:(id)a4 channelToken:(id)a5 databaseContext:(id)a6
+- (id)createPersonalChannelForStatusTypeIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier channelToken:(id)token databaseContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  channelIdentifierCopy = channelIdentifier;
+  tokenCopy = token;
+  contextCopy = context;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -1552,18 +1552,18 @@ void __90__SKADatabaseManager_allExistingChannelsForPresenceIdentifier_isPersona
   v21[1] = 3221225472;
   v21[2] = __114__SKADatabaseManager_createPersonalChannelForStatusTypeIdentifier_channelIdentifier_channelToken_databaseContext___block_invoke;
   v21[3] = &unk_27843E3F0;
-  v14 = v13;
+  v14 = contextCopy;
   v22 = v14;
-  v15 = v10;
+  v15 = identifierCopy;
   v23 = v15;
-  v16 = v11;
+  v16 = channelIdentifierCopy;
   v24 = v16;
-  v17 = v12;
+  v17 = tokenCopy;
   v25 = v17;
   v26 = &v27;
   [v14 performBlockAndWait:v21];
-  v18 = [(SKADatabaseManager *)self delegate];
-  [v18 databaseManager:self didCreateChannel:v28[5]];
+  delegate = [(SKADatabaseManager *)self delegate];
+  [delegate databaseManager:self didCreateChannel:v28[5]];
 
   v19 = v28[5];
   _Block_object_dispose(&v27, 8);
@@ -1607,17 +1607,17 @@ void __114__SKADatabaseManager_createPersonalChannelForStatusTypeIdentifier_chan
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createPresenceChannelForPresenceIdentifier:(id)a3 channelIdentifier:(id)a4 channelToken:(id)a5 peerKey:(id)a6 serverKey:(id)a7 membershipKey:(id)a8 creationDate:(id)a9 options:(id)a10 databaseContext:(id)a11
+- (id)createPresenceChannelForPresenceIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier channelToken:(id)token peerKey:(id)key serverKey:(id)serverKey membershipKey:(id)membershipKey creationDate:(id)date options:(id)self0 databaseContext:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v36 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
+  identifierCopy = identifier;
+  channelIdentifierCopy = channelIdentifier;
+  tokenCopy = token;
+  keyCopy = key;
+  serverKeyCopy = serverKey;
+  membershipKeyCopy = membershipKey;
+  dateCopy = date;
+  optionsCopy = options;
+  contextCopy = context;
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -1628,28 +1628,28 @@ void __114__SKADatabaseManager_createPersonalChannelForStatusTypeIdentifier_chan
   v38[1] = 3221225472;
   v38[2] = __165__SKADatabaseManager_createPresenceChannelForPresenceIdentifier_channelIdentifier_channelToken_peerKey_serverKey_membershipKey_creationDate_options_databaseContext___block_invoke;
   v38[3] = &unk_27843E468;
-  v24 = v23;
+  v24 = contextCopy;
   v39 = v24;
-  v35 = v16;
+  v35 = identifierCopy;
   v40 = v35;
-  v25 = v17;
+  v25 = channelIdentifierCopy;
   v41 = v25;
-  v26 = v18;
+  v26 = tokenCopy;
   v42 = v26;
-  v27 = v21;
+  v27 = dateCopy;
   v43 = v27;
-  v28 = v19;
+  v28 = keyCopy;
   v44 = v28;
-  v29 = v20;
+  v29 = serverKeyCopy;
   v45 = v29;
-  v30 = v36;
+  v30 = membershipKeyCopy;
   v46 = v30;
-  v31 = v22;
+  v31 = optionsCopy;
   v47 = v31;
   v48 = &v49;
   [v24 performBlockAndWait:v38];
-  v32 = [(SKADatabaseManager *)self delegate];
-  [v32 databaseManager:self didCreateChannel:v50[5]];
+  delegate = [(SKADatabaseManager *)self delegate];
+  [delegate databaseManager:self didCreateChannel:v50[5]];
 
   v33 = v50[5];
   _Block_object_dispose(&v49, 8);
@@ -1698,11 +1698,11 @@ void __165__SKADatabaseManager_createPresenceChannelForPresenceIdentifier_channe
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createChannelForStatusTypeIdentifier:(id)a3 channelIdentifier:(id)a4 databaseContext:(id)a5
+- (id)createChannelForStatusTypeIdentifier:(id)identifier channelIdentifier:(id)channelIdentifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  channelIdentifierCopy = channelIdentifier;
+  contextCopy = context;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1713,11 +1713,11 @@ void __165__SKADatabaseManager_createPresenceChannelForPresenceIdentifier_channe
   v18 = 3221225472;
   v19 = __93__SKADatabaseManager_createChannelForStatusTypeIdentifier_channelIdentifier_databaseContext___block_invoke;
   v20 = &unk_27843E3A0;
-  v11 = v10;
+  v11 = contextCopy;
   v21 = v11;
-  v12 = v8;
+  v12 = identifierCopy;
   v22 = v12;
-  v13 = v9;
+  v13 = channelIdentifierCopy;
   v23 = v13;
   v24 = &v25;
   [v11 performBlockAndWait:&v17];
@@ -1763,11 +1763,11 @@ void __93__SKADatabaseManager_createChannelForStatusTypeIdentifier_channelIdenti
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updatePersonalChannel:(id)a3 withCurrentOutgoingRatchetState:(id)a4 databaseContext:(id)a5
+- (id)updatePersonalChannel:(id)channel withCurrentOutgoingRatchetState:(id)state databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  channelCopy = channel;
+  stateCopy = state;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1779,11 +1779,11 @@ void __93__SKADatabaseManager_createChannelForStatusTypeIdentifier_channelIdenti
   v16[2] = __92__SKADatabaseManager_updatePersonalChannel_withCurrentOutgoingRatchetState_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = channelCopy;
   v17 = v11;
-  v12 = v10;
+  v12 = contextCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = stateCopy;
   v19 = v13;
   v20 = &v21;
   [v12 performBlockAndWait:v16];
@@ -1823,10 +1823,10 @@ void __92__SKADatabaseManager_updatePersonalChannel_withCurrentOutgoingRatchetSt
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)decommissionAllPersonalChannelsWithStatusTypeIdentifier:(id)a3 databaseContext:(id)a4
+- (BOOL)decommissionAllPersonalChannelsWithStatusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1836,16 +1836,16 @@ void __92__SKADatabaseManager_updatePersonalChannel_withCurrentOutgoingRatchetSt
   v11[2] = __94__SKADatabaseManager_decommissionAllPersonalChannelsWithStatusTypeIdentifier_databaseContext___block_invoke;
   v11[3] = &unk_27843E3A0;
   v11[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v13 = v9;
   v14 = &v15;
   [v9 performBlockAndWait:v11];
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(identifierCopy) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return identifierCopy;
 }
 
 void __94__SKADatabaseManager_decommissionAllPersonalChannelsWithStatusTypeIdentifier_databaseContext___block_invoke(uint64_t a1)
@@ -1899,10 +1899,10 @@ void __94__SKADatabaseManager_decommissionAllPersonalChannelsWithStatusTypeIdent
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)decommissionAllOldChannelsWithPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5
+- (BOOL)decommissionAllOldChannelsWithPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -1912,10 +1912,10 @@ void __94__SKADatabaseManager_decommissionAllPersonalChannelsWithStatusTypeIdent
   v13[2] = __98__SKADatabaseManager_decommissionAllOldChannelsWithPresenceIdentifier_isPersonal_databaseContext___block_invoke;
   v13[3] = &unk_27843E3C8;
   v13[4] = self;
-  v10 = v8;
+  v10 = identifierCopy;
   v14 = v10;
-  v17 = a4;
-  v11 = v9;
+  personalCopy = personal;
+  v11 = contextCopy;
   v15 = v11;
   v16 = &v18;
   [v11 performBlockAndWait:v13];
@@ -2025,10 +2025,10 @@ void __98__SKADatabaseManager_decommissionAllOldChannelsWithPresenceIdentifier_i
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)decommissionChannelWithIdentifier:(id)a3 databaseContext:(id)a4
+- (BOOL)decommissionChannelWithIdentifier:(id)identifier databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -2038,16 +2038,16 @@ void __98__SKADatabaseManager_decommissionAllOldChannelsWithPresenceIdentifier_i
   v11[2] = __72__SKADatabaseManager_decommissionChannelWithIdentifier_databaseContext___block_invoke;
   v11[3] = &unk_27843E3A0;
   v11[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v13 = v9;
   v14 = &v15;
   [v9 performBlockAndWait:v11];
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(identifierCopy) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return identifierCopy;
 }
 
 void __72__SKADatabaseManager_decommissionChannelWithIdentifier_databaseContext___block_invoke(uint64_t a1)
@@ -2101,11 +2101,11 @@ void __72__SKADatabaseManager_decommissionChannelWithIdentifier_databaseContext_
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createGeneratedEncryptionKeyWithOriginalOutgoingRatchetState:(id)a3 personalChannel:(id)a4 databaseContext:(id)a5
+- (id)createGeneratedEncryptionKeyWithOriginalOutgoingRatchetState:(id)state personalChannel:(id)channel databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  channelCopy = channel;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2117,11 +2117,11 @@ void __72__SKADatabaseManager_decommissionChannelWithIdentifier_databaseContext_
   v16[2] = __115__SKADatabaseManager_createGeneratedEncryptionKeyWithOriginalOutgoingRatchetState_personalChannel_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v9;
+  v11 = channelCopy;
   v17 = v11;
-  v12 = v10;
+  v12 = contextCopy;
   v18 = v12;
-  v13 = v8;
+  v13 = stateCopy;
   v19 = v13;
   v20 = &v21;
   [v12 performBlockAndWait:v16];
@@ -2161,22 +2161,22 @@ void __115__SKADatabaseManager_createGeneratedEncryptionKeyWithOriginalOutgoingR
   *(v9 + 40) = v8;
 }
 
-- (id)generatedEncryptionKeysForPersonalChannel:(id)a3 databaseContext:(id)a4
+- (id)generatedEncryptionKeysForPersonalChannel:(id)channel databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  contextCopy = context;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __80__SKADatabaseManager_generatedEncryptionKeysForPersonalChannel_databaseContext___block_invoke;
   v17 = &unk_27843E490;
-  v18 = self;
-  v19 = v6;
-  v20 = v7;
+  selfCopy = self;
+  v19 = channelCopy;
+  v20 = contextCopy;
   v21 = v8;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = contextCopy;
+  v11 = channelCopy;
   [v10 performBlockAndWait:&v14];
   v12 = [v9 copy];
 
@@ -2247,18 +2247,18 @@ void __80__SKADatabaseManager_generatedEncryptionKeysForPersonalChannel_database
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allPersistentSubscriptionAssertionChannelIdentifiersWithDatabaseContext:(id)a3
+- (id)allPersistentSubscriptionAssertionChannelIdentifiersWithDatabaseContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __94__SKADatabaseManager_allPersistentSubscriptionAssertionChannelIdentifiersWithDatabaseContext___block_invoke;
   v12 = &unk_27843E330;
-  v13 = v3;
+  v13 = contextCopy;
   v14 = v4;
   v5 = v4;
-  v6 = v3;
+  v6 = contextCopy;
   [v6 performBlockAndWait:&v9];
   v7 = [v5 copy];
 
@@ -2333,18 +2333,18 @@ void __94__SKADatabaseManager_allPersistentSubscriptionAssertionChannelIdentifie
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingSubscriptionAssertionForSubscriptionIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5
+- (id)_existingSubscriptionAssertionForSubscriptionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  applicationIdentifierCopy = applicationIdentifier;
+  identifierCopy = identifier;
   v10 = +[SubscriptionAssertion fetchRequest];
   v11 = MEMORY[0x277CCA920];
-  v12 = [SubscriptionAssertion predicateForChannelIdentifier:v9];
+  v12 = [SubscriptionAssertion predicateForChannelIdentifier:identifierCopy];
 
   v23[0] = v12;
-  v13 = [SubscriptionAssertion predicateForApplicationIdentifier:v8];
+  v13 = [SubscriptionAssertion predicateForApplicationIdentifier:applicationIdentifierCopy];
 
   v23[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
@@ -2353,7 +2353,7 @@ void __94__SKADatabaseManager_allPersistentSubscriptionAssertionChannelIdentifie
 
   [v10 setFetchLimit:1];
   v22 = 0;
-  v16 = [v7 executeFetchRequest:v10 error:&v22];
+  v16 = [contextCopy executeFetchRequest:v10 error:&v22];
 
   v17 = v22;
   if (v17)
@@ -2365,18 +2365,18 @@ void __94__SKADatabaseManager_allPersistentSubscriptionAssertionChannelIdentifie
     }
   }
 
-  v19 = [v16 firstObject];
+  firstObject = [v16 firstObject];
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return firstObject;
 }
 
-- (id)existingSubscriptionAssertionForSubscriptionIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5
+- (id)existingSubscriptionAssertionForSubscriptionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2388,11 +2388,11 @@ void __94__SKADatabaseManager_allPersistentSubscriptionAssertionChannelIdentifie
   v16[2] = __115__SKADatabaseManager_existingSubscriptionAssertionForSubscriptionIdentifier_applicationIdentifier_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = applicationIdentifierCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v19 = v13;
   v20 = &v21;
   [v13 performBlockAndWait:v16];
@@ -2418,11 +2418,11 @@ void __115__SKADatabaseManager_existingSubscriptionAssertionForSubscriptionIdent
   }
 }
 
-- (id)existingSubscriptionAssertionsForStatusTypeIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5
+- (id)existingSubscriptionAssertionsForStatusTypeIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2434,11 +2434,11 @@ void __115__SKADatabaseManager_existingSubscriptionAssertionForSubscriptionIdent
   v16[2] = __114__SKADatabaseManager_existingSubscriptionAssertionsForStatusTypeIdentifier_applicationIdentifier_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = applicationIdentifierCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v19 = v13;
   v20 = &v21;
   [v13 performBlockAndWait:v16];
@@ -2498,18 +2498,18 @@ void __114__SKADatabaseManager_existingSubscriptionAssertionsForStatusTypeIdenti
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingSubscriptionAssertionsForStatusTypeIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5
+- (id)_existingSubscriptionAssertionsForStatusTypeIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  applicationIdentifierCopy = applicationIdentifier;
+  identifierCopy = identifier;
   v10 = +[SubscriptionAssertion fetchRequest];
   v11 = MEMORY[0x277CCA920];
-  v12 = [SubscriptionAssertion predicateForStatusTypeIdentifier:v9];
+  v12 = [SubscriptionAssertion predicateForStatusTypeIdentifier:identifierCopy];
 
   v22[0] = v12;
-  v13 = [SubscriptionAssertion predicateForApplicationIdentifier:v8];
+  v13 = [SubscriptionAssertion predicateForApplicationIdentifier:applicationIdentifierCopy];
 
   v22[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
@@ -2518,7 +2518,7 @@ void __114__SKADatabaseManager_existingSubscriptionAssertionsForStatusTypeIdenti
 
   [v10 setFetchLimit:1];
   v21 = 0;
-  v16 = [v7 executeFetchRequest:v10 error:&v21];
+  v16 = [contextCopy executeFetchRequest:v10 error:&v21];
 
   v17 = v21;
   if (v17)
@@ -2535,12 +2535,12 @@ void __114__SKADatabaseManager_existingSubscriptionAssertionsForStatusTypeIdenti
   return v16;
 }
 
-- (id)createSubscriptionAssertionForSubscriptionIdentifier:(id)a3 applicationIdentifier:(id)a4 statusTypeIdentifier:(id)a5 databaseContext:(id)a6
+- (id)createSubscriptionAssertionForSubscriptionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier statusTypeIdentifier:(id)typeIdentifier databaseContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  typeIdentifierCopy = typeIdentifier;
+  contextCopy = context;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -2551,13 +2551,13 @@ void __114__SKADatabaseManager_existingSubscriptionAssertionsForStatusTypeIdenti
   v19[1] = 3221225472;
   v19[2] = __134__SKADatabaseManager_createSubscriptionAssertionForSubscriptionIdentifier_applicationIdentifier_statusTypeIdentifier_databaseContext___block_invoke;
   v19[3] = &unk_27843E3F0;
-  v13 = v12;
+  v13 = contextCopy;
   v20 = v13;
-  v14 = v9;
+  v14 = identifierCopy;
   v21 = v14;
-  v15 = v10;
+  v15 = applicationIdentifierCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = typeIdentifierCopy;
   v23 = v16;
   v24 = &v25;
   [v13 performBlockAndWait:v19];
@@ -2593,11 +2593,11 @@ void __134__SKADatabaseManager_createSubscriptionAssertionForSubscriptionIdentif
   *(v7 + 40) = v6;
 }
 
-- (BOOL)deleteSubscriptionAssertionWithSubscriptionIdentifier:(id)a3 applicationIdentifier:(id)a4 databaseContext:(id)a5
+- (BOOL)deleteSubscriptionAssertionWithSubscriptionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -2607,18 +2607,18 @@ void __134__SKADatabaseManager_createSubscriptionAssertionForSubscriptionIdentif
   v15[2] = __114__SKADatabaseManager_deleteSubscriptionAssertionWithSubscriptionIdentifier_applicationIdentifier_databaseContext___block_invoke;
   v15[3] = &unk_27843E3F0;
   v15[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = applicationIdentifierCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v18 = v13;
   v19 = &v20;
   [v13 performBlockAndWait:v15];
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(identifierCopy) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return v8;
+  return identifierCopy;
 }
 
 void __114__SKADatabaseManager_deleteSubscriptionAssertionWithSubscriptionIdentifier_applicationIdentifier_databaseContext___block_invoke(uint64_t a1)
@@ -2651,14 +2651,14 @@ void __114__SKADatabaseManager_deleteSubscriptionAssertionWithSubscriptionIdenti
   *(*(*(a1 + 64) + 8) + 24) = v4;
 }
 
-- (id)_existingTransientSubscriptionHistoryForChannelIdentifier:(id)a3 databaseContext:(id)a4
+- (id)_existingTransientSubscriptionHistoryForChannelIdentifier:(id)identifier databaseContext:(id)context
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  identifierCopy = identifier;
   v7 = +[TransientSubscriptionHistory fetchRequest];
   v8 = MEMORY[0x277CCA920];
-  v9 = [TransientSubscriptionHistory predicateForChannelIdentifier:v6];
+  v9 = [TransientSubscriptionHistory predicateForChannelIdentifier:identifierCopy];
 
   v19[0] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
@@ -2667,7 +2667,7 @@ void __114__SKADatabaseManager_deleteSubscriptionAssertionWithSubscriptionIdenti
 
   [v7 setFetchLimit:1];
   v18 = 0;
-  v12 = [v5 executeFetchRequest:v7 error:&v18];
+  v12 = [contextCopy executeFetchRequest:v7 error:&v18];
 
   v13 = v18;
   if (v13)
@@ -2679,18 +2679,18 @@ void __114__SKADatabaseManager_deleteSubscriptionAssertionWithSubscriptionIdenti
     }
   }
 
-  v15 = [v12 firstObject];
+  firstObject = [v12 firstObject];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
-- (id)createOrUpdateTransientSubscriptionHistoryForChannelIdentifier:(id)a3 lastSubscriptionDate:(id)a4 databaseContext:(id)a5
+- (id)createOrUpdateTransientSubscriptionHistoryForChannelIdentifier:(id)identifier lastSubscriptionDate:(id)date databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dateCopy = date;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -2702,11 +2702,11 @@ void __114__SKADatabaseManager_deleteSubscriptionAssertionWithSubscriptionIdenti
   v16[2] = __122__SKADatabaseManager_createOrUpdateTransientSubscriptionHistoryForChannelIdentifier_lastSubscriptionDate_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v17 = v11;
-  v12 = v10;
+  v12 = contextCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = dateCopy;
   v19 = v13;
   v20 = &v21;
   [v12 performBlockAndWait:v16];
@@ -2781,9 +2781,9 @@ void __122__SKADatabaseManager_createOrUpdateTransientSubscriptionHistoryForChan
   }
 }
 
-- (id)existingRecentTransientSubscriptionHistoriesWithLimit:(int64_t)a3 databaseContext:(id)a4
+- (id)existingRecentTransientSubscriptionHistoriesWithLimit:(int64_t)limit databaseContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -2795,8 +2795,8 @@ void __122__SKADatabaseManager_createOrUpdateTransientSubscriptionHistoryForChan
   v10[2] = __92__SKADatabaseManager_existingRecentTransientSubscriptionHistoriesWithLimit_databaseContext___block_invoke;
   v10[3] = &unk_27843E4B8;
   v10[4] = self;
-  v13 = a3;
-  v7 = v6;
+  limitCopy = limit;
+  v7 = contextCopy;
   v11 = v7;
   v12 = &v14;
   [v7 performBlockAndWait:v10];
@@ -2856,13 +2856,13 @@ void __92__SKADatabaseManager_existingRecentTransientSubscriptionHistoriesWithLi
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createInvitedUserWithHandle:(id)a3 senderHandle:(id)a4 invitationPayload:(id)a5 channel:(id)a6 databaseContext:(id)a7
+- (id)createInvitedUserWithHandle:(id)handle senderHandle:(id)senderHandle invitationPayload:(id)payload channel:(id)channel databaseContext:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  handleCopy = handle;
+  senderHandleCopy = senderHandle;
+  payloadCopy = payload;
+  channelCopy = channel;
+  contextCopy = context;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -2873,16 +2873,16 @@ void __92__SKADatabaseManager_existingRecentTransientSubscriptionHistoriesWithLi
   v24[1] = 3221225472;
   v24[2] = __105__SKADatabaseManager_createInvitedUserWithHandle_senderHandle_invitationPayload_channel_databaseContext___block_invoke;
   v24[3] = &unk_27843E4E0;
-  v17 = v13;
+  v17 = senderHandleCopy;
   v25 = v17;
-  v18 = v12;
+  v18 = handleCopy;
   v26 = v18;
-  v27 = self;
-  v19 = v15;
+  selfCopy = self;
+  v19 = channelCopy;
   v28 = v19;
-  v20 = v16;
+  v20 = contextCopy;
   v29 = v20;
-  v21 = v14;
+  v21 = payloadCopy;
   v30 = v21;
   v31 = &v32;
   [v20 performBlockAndWait:v24];
@@ -2930,11 +2930,11 @@ void __105__SKADatabaseManager_createInvitedUserWithHandle_senderHandle_invitati
   }
 }
 
-- (BOOL)copyInvitedUsersFromChannel:(id)a3 toChannel:(id)a4 databaseContext:(id)a5
+- (BOOL)copyInvitedUsersFromChannel:(id)channel toChannel:(id)toChannel databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  channelCopy = channel;
+  toChannelCopy = toChannel;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -2944,18 +2944,18 @@ void __105__SKADatabaseManager_createInvitedUserWithHandle_senderHandle_invitati
   v15[2] = __76__SKADatabaseManager_copyInvitedUsersFromChannel_toChannel_databaseContext___block_invoke;
   v15[3] = &unk_27843E3F0;
   v15[4] = self;
-  v11 = v8;
+  v11 = channelCopy;
   v16 = v11;
-  v12 = v10;
+  v12 = contextCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = toChannelCopy;
   v18 = v13;
   v19 = &v20;
   [v12 performBlockAndWait:v15];
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(channelCopy) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return v8;
+  return channelCopy;
 }
 
 void __76__SKADatabaseManager_copyInvitedUsersFromChannel_toChannel_databaseContext___block_invoke(uint64_t a1)
@@ -3051,12 +3051,12 @@ void __76__SKADatabaseManager_copyInvitedUsersFromChannel_toChannel_databaseCont
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateInvitationPayload:(id)a3 onExistingInvitedUser:(id)a4 channel:(id)a5 databaseContext:(id)a6
+- (id)updateInvitationPayload:(id)payload onExistingInvitedUser:(id)user channel:(id)channel databaseContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  payloadCopy = payload;
+  userCopy = user;
+  channelCopy = channel;
+  contextCopy = context;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -3068,13 +3068,13 @@ void __76__SKADatabaseManager_copyInvitedUsersFromChannel_toChannel_databaseCont
   v20[2] = __92__SKADatabaseManager_updateInvitationPayload_onExistingInvitedUser_channel_databaseContext___block_invoke;
   v20[3] = &unk_27843E508;
   v20[4] = self;
-  v14 = v11;
+  v14 = userCopy;
   v21 = v14;
-  v15 = v12;
+  v15 = channelCopy;
   v22 = v15;
-  v16 = v13;
+  v16 = contextCopy;
   v23 = v16;
-  v17 = v10;
+  v17 = payloadCopy;
   v24 = v17;
   v25 = &v26;
   [v16 performBlockAndWait:v20];
@@ -3169,11 +3169,11 @@ void __92__SKADatabaseManager_updateInvitationPayload_onExistingInvitedUser_chan
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)existingInvitedUsersForInvitedHandle:(id)a3 onChannel:(id)a4 databaseContext:(id)a5
+- (id)existingInvitedUsersForInvitedHandle:(id)handle onChannel:(id)channel databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  channelCopy = channel;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -3185,11 +3185,11 @@ void __92__SKADatabaseManager_updateInvitationPayload_onExistingInvitedUser_chan
   v16[2] = __85__SKADatabaseManager_existingInvitedUsersForInvitedHandle_onChannel_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v9;
+  v11 = channelCopy;
   v17 = v11;
-  v12 = v10;
+  v12 = contextCopy;
   v18 = v12;
-  v13 = v8;
+  v13 = handleCopy;
   v19 = v13;
   v20 = &v21;
   [v12 performBlockAndWait:v16];
@@ -3256,10 +3256,10 @@ void __85__SKADatabaseManager_existingInvitedUsersForInvitedHandle_onChannel_dat
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)existingInvitedUsersForPersonalChannel:(id)a3 databaseContext:(id)a4
+- (id)existingInvitedUsersForPersonalChannel:(id)channel databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -3271,9 +3271,9 @@ void __85__SKADatabaseManager_existingInvitedUsersForInvitedHandle_onChannel_dat
   v12[2] = __77__SKADatabaseManager_existingInvitedUsersForPersonalChannel_databaseContext___block_invoke;
   v12[3] = &unk_27843E3A0;
   v12[4] = self;
-  v8 = v6;
+  v8 = channelCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v14 = v9;
   v15 = &v16;
   [v9 performBlockAndWait:v12];
@@ -3341,20 +3341,20 @@ void __77__SKADatabaseManager_existingInvitedUsersForPersonalChannel_databaseCon
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingInvitedUsersForDatabaseInvitedUser:(id)a3 databaseChannel:(id)a4 databaseContext:(id)a5
+- (id)_existingInvitedUsersForDatabaseInvitedUser:(id)user databaseChannel:(id)channel databaseContext:(id)context
 {
   v29[3] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SKADatabaseManager *)self _existingPersonalChannelForDatabaseChannel:a4 databaseContext:v8];
-  v11 = [v9 invitedHandle];
-  v12 = [v9 senderHandle];
+  contextCopy = context;
+  userCopy = user;
+  v10 = [(SKADatabaseManager *)self _existingPersonalChannelForDatabaseChannel:channel databaseContext:contextCopy];
+  invitedHandle = [userCopy invitedHandle];
+  senderHandle = [userCopy senderHandle];
 
   v13 = +[InvitedUser fetchRequest];
   v14 = MEMORY[0x277CCA920];
-  v15 = [InvitedUser predicateForInvitedHandle:v11];
+  v15 = [InvitedUser predicateForInvitedHandle:invitedHandle];
   v29[0] = v15;
-  v16 = [InvitedUser predicateForSenderHandle:v12];
+  v16 = [InvitedUser predicateForSenderHandle:senderHandle];
   v29[1] = v16;
   v17 = [InvitedUser predicateForChannel:v10];
   v29[2] = v17;
@@ -3363,7 +3363,7 @@ void __77__SKADatabaseManager_existingInvitedUsersForPersonalChannel_databaseCon
   [v13 setPredicate:v19];
 
   v26 = 0;
-  v20 = [v8 executeFetchRequest:v13 error:&v26];
+  v20 = [contextCopy executeFetchRequest:v13 error:&v26];
 
   v21 = v26;
   v22 = +[SKADatabaseManager logger];
@@ -3388,27 +3388,27 @@ void __77__SKADatabaseManager_existingInvitedUsersForPersonalChannel_databaseCon
   return v20;
 }
 
-- (id)_existingInvitedUsersForInvitedHandle:(id)a3 channel:(id)a4 databaseContext:(id)a5
+- (id)_existingInvitedUsersForInvitedHandle:(id)handle channel:(id)channel databaseContext:(id)context
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 normalizedHandleString];
-  if ([v10 length])
+  handleCopy = handle;
+  channelCopy = channel;
+  contextCopy = context;
+  normalizedHandleString = [handleCopy normalizedHandleString];
+  if ([normalizedHandleString length])
   {
     v11 = +[InvitedUser fetchRequest];
     v12 = MEMORY[0x277CCA920];
-    v13 = [InvitedUser predicateForInvitedHandle:v10];
+    v13 = [InvitedUser predicateForInvitedHandle:normalizedHandleString];
     v26[0] = v13;
-    v14 = [InvitedUser predicateForChannel:v8];
+    v14 = [InvitedUser predicateForChannel:channelCopy];
     v26[1] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
     v16 = [v12 andPredicateWithSubpredicates:v15];
     [v11 setPredicate:v16];
 
     v23 = 0;
-    v17 = [v9 executeFetchRequest:v11 error:&v23];
+    v17 = [contextCopy executeFetchRequest:v11 error:&v23];
     v18 = v23;
     v19 = +[SKADatabaseManager logger];
     v20 = v19;
@@ -3433,7 +3433,7 @@ void __77__SKADatabaseManager_existingInvitedUsersForPersonalChannel_databaseCon
     v11 = +[SKADatabaseManager logger];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [SKADatabaseManager _existingInvitedUsersForInvitedHandle:v7 channel:? databaseContext:?];
+      [SKADatabaseManager _existingInvitedUsersForInvitedHandle:handleCopy channel:? databaseContext:?];
     }
 
     v17 = 0;
@@ -3444,11 +3444,11 @@ void __77__SKADatabaseManager_existingInvitedUsersForPersonalChannel_databaseCon
   return v17;
 }
 
-- (BOOL)deleteInvitedUserForHandle:(id)a3 personalChannel:(id)a4 databaseContext:(id)a5
+- (BOOL)deleteInvitedUserForHandle:(id)handle personalChannel:(id)channel databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  channelCopy = channel;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -3458,11 +3458,11 @@ void __77__SKADatabaseManager_existingInvitedUsersForPersonalChannel_databaseCon
   v15[2] = __81__SKADatabaseManager_deleteInvitedUserForHandle_personalChannel_databaseContext___block_invoke;
   v15[3] = &unk_27843E3F0;
   v15[4] = self;
-  v11 = v9;
+  v11 = channelCopy;
   v16 = v11;
-  v12 = v10;
+  v12 = contextCopy;
   v17 = v12;
-  v13 = v8;
+  v13 = handleCopy;
   v18 = v13;
   v19 = &v20;
   [v12 performBlockAndWait:v15];
@@ -3573,11 +3573,11 @@ void __81__SKADatabaseManager_deleteInvitedUserForHandle_personalChannel_databas
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteInvitedUserForHandle:(id)a3 presenceChannel:(id)a4 databaseContext:(id)a5
+- (BOOL)deleteInvitedUserForHandle:(id)handle presenceChannel:(id)channel databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  channelCopy = channel;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -3587,11 +3587,11 @@ void __81__SKADatabaseManager_deleteInvitedUserForHandle_personalChannel_databas
   v15[2] = __81__SKADatabaseManager_deleteInvitedUserForHandle_presenceChannel_databaseContext___block_invoke;
   v15[3] = &unk_27843E3F0;
   v15[4] = self;
-  v11 = v9;
+  v11 = channelCopy;
   v16 = v11;
-  v12 = v10;
+  v12 = contextCopy;
   v17 = v12;
-  v13 = v8;
+  v13 = handleCopy;
   v18 = v13;
   v19 = &v20;
   [v12 performBlockAndWait:v15];
@@ -3705,10 +3705,10 @@ void __81__SKADatabaseManager_deleteInvitedUserForHandle_presenceChannel_databas
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteAllInvitedUsersForPersonalChannel:(id)a3 databaseContext:(id)a4
+- (BOOL)deleteAllInvitedUsersForPersonalChannel:(id)channel databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -3718,16 +3718,16 @@ void __81__SKADatabaseManager_deleteInvitedUserForHandle_presenceChannel_databas
   v11[2] = __78__SKADatabaseManager_deleteAllInvitedUsersForPersonalChannel_databaseContext___block_invoke;
   v11[3] = &unk_27843E3A0;
   v11[4] = self;
-  v8 = v6;
+  v8 = channelCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v13 = v9;
   v14 = &v15;
   [v9 performBlockAndWait:v11];
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(channelCopy) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return channelCopy;
 }
 
 void __78__SKADatabaseManager_deleteAllInvitedUsersForPersonalChannel_databaseContext___block_invoke(uint64_t a1)
@@ -3831,16 +3831,16 @@ void __78__SKADatabaseManager_deleteAllInvitedUsersForPersonalChannel_databaseCo
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createStatusWithUniqueIdentifier:(id)a3 dateCreated:(id)a4 datePublished:(id)a5 dateReceived:(id)a6 dateExpired:(id)a7 rawData:(id)a8 channelIdentifier:(id)a9 databaseContext:(id)a10
+- (id)createStatusWithUniqueIdentifier:(id)identifier dateCreated:(id)created datePublished:(id)published dateReceived:(id)received dateExpired:(id)expired rawData:(id)data channelIdentifier:(id)channelIdentifier databaseContext:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  identifierCopy = identifier;
+  createdCopy = created;
+  publishedCopy = published;
+  receivedCopy = received;
+  expiredCopy = expired;
+  dataCopy = data;
+  channelIdentifierCopy = channelIdentifier;
+  contextCopy = context;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -3851,21 +3851,21 @@ void __78__SKADatabaseManager_deleteAllInvitedUsersForPersonalChannel_databaseCo
   v33[1] = 3221225472;
   v33[2] = __148__SKADatabaseManager_createStatusWithUniqueIdentifier_dateCreated_datePublished_dateReceived_dateExpired_rawData_channelIdentifier_databaseContext___block_invoke;
   v33[3] = &unk_27843E530;
-  v23 = v22;
+  v23 = contextCopy;
   v34 = v23;
-  v24 = v15;
+  v24 = identifierCopy;
   v35 = v24;
-  v25 = v21;
+  v25 = channelIdentifierCopy;
   v36 = v25;
-  v26 = v16;
+  v26 = createdCopy;
   v37 = v26;
-  v27 = v17;
+  v27 = publishedCopy;
   v38 = v27;
-  v28 = v18;
+  v28 = receivedCopy;
   v39 = v28;
-  v29 = v20;
+  v29 = dataCopy;
   v40 = v29;
-  v30 = v19;
+  v30 = expiredCopy;
   v41 = v30;
   v42 = &v43;
   [v23 performBlockAndWait:v33];
@@ -3905,10 +3905,10 @@ void __148__SKADatabaseManager_createStatusWithUniqueIdentifier_dateCreated_date
   *(v7 + 40) = v6;
 }
 
-- (id)existingStatusForChannel:(id)a3 databaseContext:(id)a4
+- (id)existingStatusForChannel:(id)channel databaseContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  channelCopy = channel;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -3919,9 +3919,9 @@ void __148__SKADatabaseManager_createStatusWithUniqueIdentifier_dateCreated_date
   v11[1] = 3221225472;
   v11[2] = __63__SKADatabaseManager_existingStatusForChannel_databaseContext___block_invoke;
   v11[3] = &unk_27843E558;
-  v7 = v5;
+  v7 = channelCopy;
   v12 = v7;
-  v8 = v6;
+  v8 = contextCopy;
   v13 = v8;
   v14 = &v15;
   [v8 performBlockAndWait:v11];
@@ -4005,10 +4005,10 @@ LABEL_11:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)existingStatusForUniqueIdentifier:(id)a3 databaseContext:(id)a4
+- (id)existingStatusForUniqueIdentifier:(id)identifier databaseContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -4019,9 +4019,9 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = __72__SKADatabaseManager_existingStatusForUniqueIdentifier_databaseContext___block_invoke;
   v11[3] = &unk_27843E558;
-  v7 = v5;
+  v7 = identifierCopy;
   v12 = v7;
-  v8 = v6;
+  v8 = contextCopy;
   v13 = v8;
   v14 = &v15;
   [v8 performBlockAndWait:v11];
@@ -4099,10 +4099,10 @@ LABEL_11:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)currentCheckpointForChannel:(id)a3 databaseContext:(id)a4
+- (unint64_t)currentCheckpointForChannel:(id)channel databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -4112,9 +4112,9 @@ LABEL_11:
   v12[2] = __66__SKADatabaseManager_currentCheckpointForChannel_databaseContext___block_invoke;
   v12[3] = &unk_27843E3A0;
   v12[4] = self;
-  v8 = v6;
+  v8 = channelCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v14 = v9;
   v15 = &v16;
   [v9 performBlockAndWait:v12];
@@ -4163,10 +4163,10 @@ void __66__SKADatabaseManager_currentCheckpointForChannel_databaseContext___bloc
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)setCurrentCheckpointForChannel:(id)a3 checkpoint:(unint64_t)a4 databaseContext:(id)a5
+- (BOOL)setCurrentCheckpointForChannel:(id)channel checkpoint:(unint64_t)checkpoint databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  channelCopy = channel;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -4176,17 +4176,17 @@ void __66__SKADatabaseManager_currentCheckpointForChannel_databaseContext___bloc
   v13[2] = __80__SKADatabaseManager_setCurrentCheckpointForChannel_checkpoint_databaseContext___block_invoke;
   v13[3] = &unk_27843E580;
   v13[4] = self;
-  v10 = v8;
+  v10 = channelCopy;
   v14 = v10;
-  v11 = v9;
+  v11 = contextCopy;
   v16 = &v18;
-  v17 = a4;
+  checkpointCopy = checkpoint;
   v15 = v11;
   [v11 performBlockAndWait:v13];
-  LOBYTE(a4) = *(v19 + 24);
+  LOBYTE(checkpoint) = *(v19 + 24);
 
   _Block_object_dispose(&v18, 8);
-  return a4;
+  return checkpoint;
 }
 
 void __80__SKADatabaseManager_setCurrentCheckpointForChannel_checkpoint_databaseContext___block_invoke(uint64_t a1)
@@ -4269,17 +4269,17 @@ void __80__SKADatabaseManager_setCurrentCheckpointForChannel_checkpoint_database
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingChannelCheckpointForChannelIdentifier:(id)a3 databaseContext:(id)a4
+- (id)_existingChannelCheckpointForChannelIdentifier:(id)identifier databaseContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  identifierCopy = identifier;
   v7 = +[ChannelCheckpoint fetchRequest];
-  v8 = [ChannelCheckpoint predicateForChannelIdentifier:v6];
+  v8 = [ChannelCheckpoint predicateForChannelIdentifier:identifierCopy];
 
   [v7 setPredicate:v8];
   [v7 setFetchLimit:1];
   v14 = 0;
-  v9 = [v5 executeFetchRequest:v7 error:&v14];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v14];
 
   v10 = v14;
   if (v10)
@@ -4291,15 +4291,15 @@ void __80__SKADatabaseManager_setCurrentCheckpointForChannel_checkpoint_database
     }
   }
 
-  v12 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)presentDevicesForChannel:(id)a3 databaseContext:(id)a4
+- (id)presentDevicesForChannel:(id)channel databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -4310,15 +4310,15 @@ void __80__SKADatabaseManager_setCurrentCheckpointForChannel_checkpoint_database
   v14 = 3221225472;
   v15 = __63__SKADatabaseManager_presentDevicesForChannel_databaseContext___block_invoke;
   v16 = &unk_27843E3A0;
-  v17 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = channelCopy;
   v18 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v19 = v9;
   v20 = &v21;
   [v9 performBlockAndWait:&v13];
   v10 = objc_alloc(MEMORY[0x277CBEA60]);
-  v11 = [v10 initWithArray:{v22[5], v13, v14, v15, v16, v17}];
+  v11 = [v10 initWithArray:{v22[5], v13, v14, v15, v16, selfCopy}];
 
   _Block_object_dispose(&v21, 8);
 
@@ -4364,11 +4364,11 @@ void __63__SKADatabaseManager_presentDevicesForChannel_databaseContext___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)createOrUpdatePresentDevice:(id)a3 channel:(id)a4 databaseContext:(id)a5
+- (BOOL)createOrUpdatePresentDevice:(id)device channel:(id)channel databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  channelCopy = channel;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -4378,18 +4378,18 @@ void __63__SKADatabaseManager_presentDevicesForChannel_databaseContext___block_i
   v15[2] = __74__SKADatabaseManager_createOrUpdatePresentDevice_channel_databaseContext___block_invoke;
   v15[3] = &unk_27843E3F0;
   v15[4] = self;
-  v11 = v9;
+  v11 = channelCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = deviceCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v18 = v13;
   v19 = &v20;
   [v13 performBlockAndWait:v15];
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(deviceCopy) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return v8;
+  return deviceCopy;
 }
 
 void __74__SKADatabaseManager_createOrUpdatePresentDevice_channel_databaseContext___block_invoke(uint64_t a1)
@@ -4452,15 +4452,15 @@ void __74__SKADatabaseManager_createOrUpdatePresentDevice_channel_databaseContex
   }
 }
 
-- (void)cleanUpPresentDevicesWithoutActiveChannelsWithDatabaseContext:(id)a3
+- (void)cleanUpPresentDevicesWithoutActiveChannelsWithDatabaseContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __84__SKADatabaseManager_cleanUpPresentDevicesWithoutActiveChannelsWithDatabaseContext___block_invoke;
   v5[3] = &unk_27843E5A8;
-  v6 = v3;
-  v4 = v3;
+  v6 = contextCopy;
+  v4 = contextCopy;
   [v4 performBlock:v5];
 }
 
@@ -4585,10 +4585,10 @@ void __84__SKADatabaseManager_cleanUpPresentDevicesWithoutActiveChannelsWithData
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)clearPresentDevicesForChannel:(id)a3 databaseContext:(id)a4
+- (BOOL)clearPresentDevicesForChannel:(id)channel databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -4598,16 +4598,16 @@ void __84__SKADatabaseManager_cleanUpPresentDevicesWithoutActiveChannelsWithData
   v11[2] = __68__SKADatabaseManager_clearPresentDevicesForChannel_databaseContext___block_invoke;
   v11[3] = &unk_27843E3A0;
   v11[4] = self;
-  v8 = v6;
+  v8 = channelCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v13 = v9;
   v14 = &v15;
   [v9 performBlockAndWait:v11];
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(channelCopy) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return channelCopy;
 }
 
 void __68__SKADatabaseManager_clearPresentDevicesForChannel_databaseContext___block_invoke(uint64_t a1)
@@ -4689,11 +4689,11 @@ void __68__SKADatabaseManager_clearPresentDevicesForChannel_databaseContext___bl
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deletePresentDevice:(id)a3 channel:(id)a4 databaseContext:(id)a5
+- (BOOL)deletePresentDevice:(id)device channel:(id)channel databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  channelCopy = channel;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -4703,18 +4703,18 @@ void __68__SKADatabaseManager_clearPresentDevicesForChannel_databaseContext___bl
   v15[2] = __66__SKADatabaseManager_deletePresentDevice_channel_databaseContext___block_invoke;
   v15[3] = &unk_27843E3F0;
   v15[4] = self;
-  v11 = v9;
+  v11 = channelCopy;
   v16 = v11;
-  v12 = v8;
+  v12 = deviceCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v18 = v13;
   v19 = &v20;
   [v13 performBlockAndWait:v15];
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(deviceCopy) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return v8;
+  return deviceCopy;
 }
 
 void __66__SKADatabaseManager_deletePresentDevice_channel_databaseContext___block_invoke(uint64_t a1)
@@ -4771,11 +4771,11 @@ void __66__SKADatabaseManager_deletePresentDevice_channel_databaseContext___bloc
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingPresentDeviceForChannel:(id)a3 deviceIdentifier:(id)a4 databaseContext:(id)a5
+- (id)_existingPresentDeviceForChannel:(id)channel deviceIdentifier:(id)identifier databaseContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  channelCopy = channel;
+  identifierCopy = identifier;
+  contextCopy = context;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -4786,12 +4786,12 @@ void __66__SKADatabaseManager_deletePresentDevice_channel_databaseContext___bloc
   v17 = 3221225472;
   v18 = __88__SKADatabaseManager__existingPresentDeviceForChannel_deviceIdentifier_databaseContext___block_invoke;
   v19 = &unk_27843E5D0;
-  v10 = v7;
+  v10 = channelCopy;
   v20 = v10;
-  v11 = v8;
+  v11 = identifierCopy;
   v21 = v11;
   v23 = &v24;
-  v12 = v9;
+  v12 = contextCopy;
   v22 = v12;
   [v12 performBlockAndWait:&v16];
   if ([v25[5] count] >= 2)
@@ -4803,11 +4803,11 @@ void __66__SKADatabaseManager_deletePresentDevice_channel_databaseContext___bloc
     }
   }
 
-  v14 = [v25[5] firstObject];
+  firstObject = [v25[5] firstObject];
 
   _Block_object_dispose(&v24, 8);
 
-  return v14;
+  return firstObject;
 }
 
 void __88__SKADatabaseManager__existingPresentDeviceForChannel_deviceIdentifier_databaseContext___block_invoke(void *a1)
@@ -4834,18 +4834,18 @@ void __88__SKADatabaseManager__existingPresentDeviceForChannel_deviceIdentifier_
   }
 }
 
-- (id)_existingPresentDevicesForChannel:(id)a3 databaseContext:(id)a4
+- (id)_existingPresentDevicesForChannel:(id)channel databaseContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  channelCopy = channel;
   v7 = +[PresentDevice fetchRequest];
-  v8 = [v6 identifier];
+  identifier = [channelCopy identifier];
 
-  v9 = [PresentDevice predicateForChannel:v8];
+  v9 = [PresentDevice predicateForChannel:identifier];
   [v7 setPredicate:v9];
 
   v14 = 0;
-  v10 = [v5 executeFetchRequest:v7 error:&v14];
+  v10 = [contextCopy executeFetchRequest:v7 error:&v14];
 
   v11 = v14;
   if (v11)
@@ -4860,10 +4860,10 @@ void __88__SKADatabaseManager__existingPresentDeviceForChannel_deviceIdentifier_
   return v10;
 }
 
-- (id)existingPresenceAssertionForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5
+- (id)existingPresenceAssertionForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -4875,10 +4875,10 @@ void __88__SKADatabaseManager__existingPresentDeviceForChannel_deviceIdentifier_
   v14[2] = __96__SKADatabaseManager_existingPresenceAssertionForPresenceIdentifier_isPersonal_databaseContext___block_invoke;
   v14[3] = &unk_27843E3C8;
   v14[4] = self;
-  v10 = v8;
+  v10 = identifierCopy;
   v15 = v10;
-  v18 = a4;
-  v11 = v9;
+  personalCopy = personal;
+  v11 = contextCopy;
   v16 = v11;
   v17 = &v19;
   [v11 performBlockAndWait:v14];
@@ -4904,9 +4904,9 @@ void __96__SKADatabaseManager_existingPresenceAssertionForPresenceIdentifier_isP
   }
 }
 
-- (BOOL)activePresenceAssertionsExistWithDatabaseContext:(id)a3
+- (BOOL)activePresenceAssertionsExistWithDatabaseContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[PresenceAssertion fetchRequest];
   [v4 setFetchLimit:1];
   v14 = 0;
@@ -4920,13 +4920,13 @@ void __96__SKADatabaseManager_existingPresenceAssertionForPresenceIdentifier_isP
   v10[2] = __71__SKADatabaseManager_activePresenceAssertionsExistWithDatabaseContext___block_invoke;
   v10[3] = &unk_27843E5F8;
   v13 = &v14;
-  v5 = v3;
+  v5 = contextCopy;
   v11 = v5;
   v6 = v4;
   v12 = v6;
   [v5 performBlockAndWait:v10];
-  v7 = [v15[5] firstObject];
-  v8 = v7 != 0;
+  firstObject = [v15[5] firstObject];
+  v8 = firstObject != 0;
 
   _Block_object_dispose(&v14, 8);
   return v8;
@@ -4953,13 +4953,13 @@ void __71__SKADatabaseManager_activePresenceAssertionsExistWithDatabaseContext__
   }
 }
 
-- (id)createOrUpdatePresenceAssertionForPresenceIdentifier:(id)a3 presenceOptions:(id)a4 assertionOptions:(id)a5 payload:(id)a6 databaseContext:(id)a7
+- (id)createOrUpdatePresenceAssertionForPresenceIdentifier:(id)identifier presenceOptions:(id)options assertionOptions:(id)assertionOptions payload:(id)payload databaseContext:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  assertionOptionsCopy = assertionOptions;
+  payloadCopy = payload;
+  contextCopy = context;
   v31 = 0;
   v32 = &v31;
   v33 = 0x3032000000;
@@ -4971,15 +4971,15 @@ void __71__SKADatabaseManager_activePresenceAssertionsExistWithDatabaseContext__
   v24[2] = __132__SKADatabaseManager_createOrUpdatePresenceAssertionForPresenceIdentifier_presenceOptions_assertionOptions_payload_databaseContext___block_invoke;
   v24[3] = &unk_27843E4E0;
   v24[4] = self;
-  v17 = v12;
+  v17 = identifierCopy;
   v25 = v17;
-  v18 = v13;
+  v18 = optionsCopy;
   v26 = v18;
-  v19 = v16;
+  v19 = contextCopy;
   v27 = v19;
-  v20 = v14;
+  v20 = assertionOptionsCopy;
   v28 = v20;
-  v21 = v15;
+  v21 = payloadCopy;
   v29 = v21;
   v30 = &v31;
   [v19 performBlockAndWait:v24];
@@ -5064,10 +5064,10 @@ void __132__SKADatabaseManager_createOrUpdatePresenceAssertionForPresenceIdentif
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deletePresenceAssertionForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5
+- (BOOL)deletePresenceAssertionForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -5077,10 +5077,10 @@ void __132__SKADatabaseManager_createOrUpdatePresenceAssertionForPresenceIdentif
   v13[2] = __94__SKADatabaseManager_deletePresenceAssertionForPresenceIdentifier_isPersonal_databaseContext___block_invoke;
   v13[3] = &unk_27843E3C8;
   v13[4] = self;
-  v10 = v8;
+  v10 = identifierCopy;
   v14 = v10;
-  v17 = a4;
-  v11 = v9;
+  personalCopy = personal;
+  v11 = contextCopy;
   v15 = v11;
   v16 = &v18;
   [v11 performBlockAndWait:v13];
@@ -5133,9 +5133,9 @@ void __94__SKADatabaseManager_deletePresenceAssertionForPresenceIdentifier_isPer
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteAllPresenceAssertionsWithDatabaseContext:(id)a3
+- (BOOL)deleteAllPresenceAssertionsWithDatabaseContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -5145,7 +5145,7 @@ void __94__SKADatabaseManager_deletePresenceAssertionForPresenceIdentifier_isPer
   v9[1] = 3221225472;
   v9[2] = __69__SKADatabaseManager_deleteAllPresenceAssertionsWithDatabaseContext___block_invoke;
   v9[3] = &unk_27843E558;
-  v5 = v3;
+  v5 = contextCopy;
   v10 = v5;
   v6 = v4;
   v11 = v6;
@@ -5251,9 +5251,9 @@ LABEL_21:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allExistingPresenceSubscriptionsForDatabaseContext:(id)a3
+- (id)allExistingPresenceSubscriptionsForDatabaseContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -5264,7 +5264,7 @@ LABEL_21:
   v8 = 3221225472;
   v9 = __73__SKADatabaseManager_allExistingPresenceSubscriptionsForDatabaseContext___block_invoke;
   v10 = &unk_27843E620;
-  v4 = v3;
+  v4 = contextCopy;
   v11 = v4;
   v12 = &v13;
   [v4 performBlockAndWait:&v7];
@@ -5327,18 +5327,18 @@ void __73__SKADatabaseManager_allExistingPresenceSubscriptionsForDatabaseContext
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)activePresenceSubscriptionForChannelIdentifier:(id)a3 databaseContext:(id)a4
+- (BOOL)activePresenceSubscriptionForChannelIdentifier:(id)identifier databaseContext:(id)context
 {
-  v4 = [(SKADatabaseManager *)self existingPresenceSubscriptionForChannelIdentifier:a3 databaseContext:a4];
+  v4 = [(SKADatabaseManager *)self existingPresenceSubscriptionForChannelIdentifier:identifier databaseContext:context];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (id)existingPresenceSubscriptionForChannelIdentifier:(id)a3 databaseContext:(id)a4
+- (id)existingPresenceSubscriptionForChannelIdentifier:(id)identifier databaseContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -5349,9 +5349,9 @@ void __73__SKADatabaseManager_allExistingPresenceSubscriptionsForDatabaseContext
   v11[1] = 3221225472;
   v11[2] = __87__SKADatabaseManager_existingPresenceSubscriptionForChannelIdentifier_databaseContext___block_invoke;
   v11[3] = &unk_27843E558;
-  v7 = v5;
+  v7 = identifierCopy;
   v12 = v7;
-  v8 = v6;
+  v8 = contextCopy;
   v13 = v8;
   v14 = &v15;
   [v8 performBlockAndWait:v11];
@@ -5389,10 +5389,10 @@ void __87__SKADatabaseManager_existingPresenceSubscriptionForChannelIdentifier_d
   }
 }
 
-- (id)_existingPresenceSubscriptionForChannelIdentifier:(id)a3 databaseContext:(id)a4
+- (id)_existingPresenceSubscriptionForChannelIdentifier:(id)identifier databaseContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -5403,9 +5403,9 @@ void __87__SKADatabaseManager_existingPresenceSubscriptionForChannelIdentifier_d
   v11[1] = 3221225472;
   v11[2] = __88__SKADatabaseManager__existingPresenceSubscriptionForChannelIdentifier_databaseContext___block_invoke;
   v11[3] = &unk_27843E558;
-  v7 = v5;
+  v7 = identifierCopy;
   v12 = v7;
-  v8 = v6;
+  v8 = contextCopy;
   v13 = v8;
   v14 = &v15;
   [v8 performBlockAndWait:v11];
@@ -5433,11 +5433,11 @@ void __88__SKADatabaseManager__existingPresenceSubscriptionForChannelIdentifier_
   *(v8 + 40) = v7;
 }
 
-- (id)createOrUpdatePresenceSubscriptionForChannelIdentifier:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5
+- (id)createOrUpdatePresenceSubscriptionForChannelIdentifier:(id)identifier presenceIdentifier:(id)presenceIdentifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  presenceIdentifierCopy = presenceIdentifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -5449,11 +5449,11 @@ void __88__SKADatabaseManager__existingPresenceSubscriptionForChannelIdentifier_
   v16[2] = __112__SKADatabaseManager_createOrUpdatePresenceSubscriptionForChannelIdentifier_presenceIdentifier_databaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = identifierCopy;
   v17 = v11;
-  v12 = v10;
+  v12 = contextCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = presenceIdentifierCopy;
   v19 = v13;
   v20 = &v21;
   [v12 performBlockAndWait:v16];
@@ -5508,18 +5508,18 @@ void __112__SKADatabaseManager_createOrUpdatePresenceSubscriptionForChannelIdent
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePresenceSubscriptionsForChannelIdentifier:(id)a3 databaseContext:(id)a4
+- (void)deletePresenceSubscriptionsForChannelIdentifier:(id)identifier databaseContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__SKADatabaseManager_deletePresenceSubscriptionsForChannelIdentifier_databaseContext___block_invoke;
   v9[3] = &unk_27843E330;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = identifierCopy;
+  v11 = contextCopy;
+  v7 = contextCopy;
+  v8 = identifierCopy;
   [v7 performBlockAndWait:v9];
 }
 
@@ -5580,18 +5580,18 @@ void __86__SKADatabaseManager_deletePresenceSubscriptionsForChannelIdentifier_da
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deletePresenceSubscriptionsForPresenceIdentifier:(id)a3 databaseContext:(id)a4
+- (void)deletePresenceSubscriptionsForPresenceIdentifier:(id)identifier databaseContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __87__SKADatabaseManager_deletePresenceSubscriptionsForPresenceIdentifier_databaseContext___block_invoke;
   v9[3] = &unk_27843E330;
-  v10 = v5;
-  v11 = v6;
-  v7 = v6;
-  v8 = v5;
+  v10 = identifierCopy;
+  v11 = contextCopy;
+  v7 = contextCopy;
+  v8 = identifierCopy;
   [v7 performBlockAndWait:v9];
 }
 
@@ -5652,9 +5652,9 @@ void __87__SKADatabaseManager_deletePresenceSubscriptionsForPresenceIdentifier_d
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deleteAllPresenceSubscriptionsWithDatabaseContext:(id)a3
+- (BOOL)deleteAllPresenceSubscriptionsWithDatabaseContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -5663,7 +5663,7 @@ void __87__SKADatabaseManager_deletePresenceSubscriptionsForPresenceIdentifier_d
   v7[1] = 3221225472;
   v7[2] = __72__SKADatabaseManager_deleteAllPresenceSubscriptionsWithDatabaseContext___block_invoke;
   v7[3] = &unk_27843E620;
-  v4 = v3;
+  v4 = contextCopy;
   v8 = v4;
   v9 = &v10;
   [v4 performBlockAndWait:v7];
@@ -5779,29 +5779,29 @@ LABEL_21:
       _os_log_impl(&dword_220099000, v4, OS_LOG_TYPE_DEFAULT, "Clearing presence assertions and subscriptions as this is our first launch this boot session", v7, 2u);
     }
 
-    v5 = [(SKADatabaseManager *)self newBackgroundContext];
-    [(SKADatabaseManager *)self deleteAllPresenceAssertionsWithDatabaseContext:v5];
+    newBackgroundContext = [(SKADatabaseManager *)self newBackgroundContext];
+    [(SKADatabaseManager *)self deleteAllPresenceAssertionsWithDatabaseContext:newBackgroundContext];
 
-    v6 = [(SKADatabaseManager *)self newBackgroundContext];
-    [(SKADatabaseManager *)self deleteAllPresenceSubscriptionsWithDatabaseContext:v6];
+    newBackgroundContext2 = [(SKADatabaseManager *)self newBackgroundContext];
+    [(SKADatabaseManager *)self deleteAllPresenceSubscriptionsWithDatabaseContext:newBackgroundContext2];
   }
 }
 
-- (void)cleanupOldStatusUpdatesForChannelIdentifier:(id)a3 excludingStatusUniqueIdentifier:(id)a4 databaseContext:(id)a5
+- (void)cleanupOldStatusUpdatesForChannelIdentifier:(id)identifier excludingStatusUniqueIdentifier:(id)uniqueIdentifier databaseContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  contextCopy = context;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __114__SKADatabaseManager_cleanupOldStatusUpdatesForChannelIdentifier_excludingStatusUniqueIdentifier_databaseContext___block_invoke;
   v13[3] = &unk_27843E358;
-  v14 = v7;
-  v15 = v9;
-  v16 = v8;
-  v10 = v8;
-  v11 = v9;
-  v12 = v7;
+  v14 = identifierCopy;
+  v15 = contextCopy;
+  v16 = uniqueIdentifierCopy;
+  v10 = uniqueIdentifierCopy;
+  v11 = contextCopy;
+  v12 = identifierCopy;
   [v11 performBlockAndWait:v13];
 }
 
@@ -5969,17 +5969,17 @@ LABEL_6:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingPendingPublishRequestForUniqueIdentifier:(id)a3 databaseContext:(id)a4
+- (id)_existingPendingPublishRequestForUniqueIdentifier:(id)identifier databaseContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  identifierCopy = identifier;
   v7 = +[PendingPublishRequest fetchRequest];
-  v8 = [PendingPublishRequest predicateForStatusUniqueIdentifier:v6];
+  v8 = [PendingPublishRequest predicateForStatusUniqueIdentifier:identifierCopy];
 
   [v7 setPredicate:v8];
   [v7 setFetchLimit:1];
   v14 = 0;
-  v9 = [v5 executeFetchRequest:v7 error:&v14];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v14];
 
   v10 = v14;
   if (v10)
@@ -5991,21 +5991,21 @@ LABEL_6:
     }
   }
 
-  v12 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)_existingPendingPublishRequestsForStatusTypeIdentifier:(id)a3 databaseContext:(id)a4
+- (id)_existingPendingPublishRequestsForStatusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
+  contextCopy = context;
+  identifierCopy = identifier;
   v7 = +[PendingPublishRequest fetchRequest];
-  v8 = [PendingPublishRequest predicateForStatusTypeIdentifier:v6];
+  v8 = [PendingPublishRequest predicateForStatusTypeIdentifier:identifierCopy];
 
   [v7 setPredicate:v8];
   v13 = 0;
-  v9 = [v5 executeFetchRequest:v7 error:&v13];
+  v9 = [contextCopy executeFetchRequest:v7 error:&v13];
 
   v10 = v13;
   if (v10)
@@ -6020,12 +6020,12 @@ LABEL_6:
   return v9;
 }
 
-- (id)_existingPendingPublishRequestsWithDatabaseContext:(id)a3
+- (id)_existingPendingPublishRequestsWithDatabaseContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = +[PendingPublishRequest fetchRequest];
   v9 = 0;
-  v5 = [v3 executeFetchRequest:v4 error:&v9];
+  v5 = [contextCopy executeFetchRequest:v4 error:&v9];
 
   v6 = v9;
   if (v6)
@@ -6040,13 +6040,13 @@ LABEL_6:
   return v5;
 }
 
-- (id)createPendingPublishRequestWithUniqueIdentifier:(id)a3 dateCreated:(id)a4 payloadData:(id)a5 statusTypeIdentifier:(id)a6 databaseContext:(id)a7
+- (id)createPendingPublishRequestWithUniqueIdentifier:(id)identifier dateCreated:(id)created payloadData:(id)data statusTypeIdentifier:(id)typeIdentifier databaseContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  identifierCopy = identifier;
+  createdCopy = created;
+  dataCopy = data;
+  typeIdentifierCopy = typeIdentifier;
+  contextCopy = context;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -6057,15 +6057,15 @@ LABEL_6:
   v23[1] = 3221225472;
   v23[2] = __131__SKADatabaseManager_createPendingPublishRequestWithUniqueIdentifier_dateCreated_payloadData_statusTypeIdentifier_databaseContext___block_invoke;
   v23[3] = &unk_27843E508;
-  v16 = v15;
+  v16 = contextCopy;
   v24 = v16;
-  v17 = v12;
+  v17 = createdCopy;
   v25 = v17;
-  v18 = v11;
+  v18 = identifierCopy;
   v26 = v18;
-  v19 = v13;
+  v19 = dataCopy;
   v27 = v19;
-  v20 = v14;
+  v20 = typeIdentifierCopy;
   v28 = v20;
   v29 = &v30;
   [v16 performBlockAndWait:v23];
@@ -6103,10 +6103,10 @@ void __131__SKADatabaseManager_createPendingPublishRequestWithUniqueIdentifier_d
   *(v7 + 40) = v6;
 }
 
-- (id)existingPendingPublishRequestForUniqueIdentifier:(id)a3 withDatabaseContext:(id)a4
+- (id)existingPendingPublishRequestForUniqueIdentifier:(id)identifier withDatabaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -6118,9 +6118,9 @@ void __131__SKADatabaseManager_createPendingPublishRequestWithUniqueIdentifier_d
   v12[2] = __91__SKADatabaseManager_existingPendingPublishRequestForUniqueIdentifier_withDatabaseContext___block_invoke;
   v12[3] = &unk_27843E3A0;
   v12[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v14 = v9;
   v15 = &v16;
   [v9 performBlockAndWait:v12];
@@ -6146,10 +6146,10 @@ void __91__SKADatabaseManager_existingPendingPublishRequestForUniqueIdentifier_w
   }
 }
 
-- (id)existingPendingPublishRequestsForStatusTypeIdentifier:(id)a3 withDatabaseContext:(id)a4
+- (id)existingPendingPublishRequestsForStatusTypeIdentifier:(id)identifier withDatabaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -6161,9 +6161,9 @@ void __91__SKADatabaseManager_existingPendingPublishRequestForUniqueIdentifier_w
   v12[2] = __96__SKADatabaseManager_existingPendingPublishRequestsForStatusTypeIdentifier_withDatabaseContext___block_invoke;
   v12[3] = &unk_27843E3A0;
   v12[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v13 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v14 = v9;
   v15 = &v16;
   [v9 performBlockAndWait:v12];
@@ -6215,9 +6215,9 @@ void __96__SKADatabaseManager_existingPendingPublishRequestsForStatusTypeIdentif
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)existingPendingPublishRequestsWithDatabaseContext:(id)a3
+- (id)existingPendingPublishRequestsWithDatabaseContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -6229,7 +6229,7 @@ void __96__SKADatabaseManager_existingPendingPublishRequestsForStatusTypeIdentif
   v8[2] = __72__SKADatabaseManager_existingPendingPublishRequestsWithDatabaseContext___block_invoke;
   v8[3] = &unk_27843E558;
   v8[4] = self;
-  v5 = v4;
+  v5 = contextCopy;
   v9 = v5;
   v10 = &v11;
   [v5 performBlockAndWait:v8];
@@ -6281,10 +6281,10 @@ void __72__SKADatabaseManager_existingPendingPublishRequestsWithDatabaseContext_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deletePendingPublishRequestWithWithUniqueIdentifier:(id)a3 databaseContext:(id)a4
+- (BOOL)deletePendingPublishRequestWithWithUniqueIdentifier:(id)identifier databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -6294,16 +6294,16 @@ void __72__SKADatabaseManager_existingPendingPublishRequestsWithDatabaseContext_
   v11[2] = __90__SKADatabaseManager_deletePendingPublishRequestWithWithUniqueIdentifier_databaseContext___block_invoke;
   v11[3] = &unk_27843E3A0;
   v11[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v13 = v9;
   v14 = &v15;
   [v9 performBlockAndWait:v11];
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(identifierCopy) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return identifierCopy;
 }
 
 void __90__SKADatabaseManager_deletePendingPublishRequestWithWithUniqueIdentifier_databaseContext___block_invoke(uint64_t a1)
@@ -6356,10 +6356,10 @@ void __90__SKADatabaseManager_deletePendingPublishRequestWithWithUniqueIdentifie
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)incrementPendingPublishRequestRetryCountWithUniqueIdentifier:(id)a3 databaseContext:(id)a4
+- (BOOL)incrementPendingPublishRequestRetryCountWithUniqueIdentifier:(id)identifier databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -6369,16 +6369,16 @@ void __90__SKADatabaseManager_deletePendingPublishRequestWithWithUniqueIdentifie
   v11[2] = __99__SKADatabaseManager_incrementPendingPublishRequestRetryCountWithUniqueIdentifier_databaseContext___block_invoke;
   v11[3] = &unk_27843E3A0;
   v11[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v12 = v8;
-  v9 = v7;
+  v9 = contextCopy;
   v13 = v9;
   v14 = &v15;
   [v9 performBlockAndWait:v11];
-  LOBYTE(v6) = *(v16 + 24);
+  LOBYTE(identifierCopy) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return v6;
+  return identifierCopy;
 }
 
 void __99__SKADatabaseManager_incrementPendingPublishRequestRetryCountWithUniqueIdentifier_databaseContext___block_invoke(uint64_t a1)
@@ -6432,12 +6432,12 @@ void __99__SKADatabaseManager_incrementPendingPublishRequestRetryCountWithUnique
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createRemovedUserWithHandle:(id)a3 dateRemoved:(id)a4 statusTypeIdentifier:(id)a5 databaseContext:(id)a6
+- (id)createRemovedUserWithHandle:(id)handle dateRemoved:(id)removed statusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  handleCopy = handle;
+  removedCopy = removed;
+  identifierCopy = identifier;
+  contextCopy = context;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -6448,13 +6448,13 @@ void __99__SKADatabaseManager_incrementPendingPublishRequestRetryCountWithUnique
   v19[1] = 3221225472;
   v19[2] = __99__SKADatabaseManager_createRemovedUserWithHandle_dateRemoved_statusTypeIdentifier_databaseContext___block_invoke;
   v19[3] = &unk_27843E3F0;
-  v13 = v12;
+  v13 = contextCopy;
   v20 = v13;
-  v14 = v10;
+  v14 = removedCopy;
   v21 = v14;
-  v15 = v11;
+  v15 = identifierCopy;
   v22 = v15;
-  v16 = v9;
+  v16 = handleCopy;
   v23 = v16;
   v24 = &v25;
   [v13 performBlockAndWait:v19];
@@ -6492,11 +6492,11 @@ void __99__SKADatabaseManager_createRemovedUserWithHandle_dateRemoved_statusType
   *(v8 + 40) = v7;
 }
 
-- (id)existingRemovedUserWithHandle:(id)a3 statusTypeIdentifier:(id)a4 withDatabaseContext:(id)a5
+- (id)existingRemovedUserWithHandle:(id)handle statusTypeIdentifier:(id)identifier withDatabaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -6508,11 +6508,11 @@ void __99__SKADatabaseManager_createRemovedUserWithHandle_dateRemoved_statusType
   v16[2] = __93__SKADatabaseManager_existingRemovedUserWithHandle_statusTypeIdentifier_withDatabaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = handleCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v19 = v13;
   v20 = &v21;
   [v13 performBlockAndWait:v16];
@@ -6536,11 +6536,11 @@ void __93__SKADatabaseManager_existingRemovedUserWithHandle_statusTypeIdentifier
   }
 }
 
-- (BOOL)deleteRemovedUserWithHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5
+- (BOOL)deleteRemovedUserWithHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -6550,18 +6550,18 @@ void __93__SKADatabaseManager_existingRemovedUserWithHandle_statusTypeIdentifier
   v15[2] = __87__SKADatabaseManager_deleteRemovedUserWithHandle_statusTypeIdentifier_databaseContext___block_invoke;
   v15[3] = &unk_27843E3F0;
   v15[4] = self;
-  v11 = v8;
+  v11 = handleCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v18 = v13;
   v19 = &v20;
   [v13 performBlockAndWait:v15];
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(handleCopy) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return v8;
+  return handleCopy;
 }
 
 void __87__SKADatabaseManager_deleteRemovedUserWithHandle_statusTypeIdentifier_databaseContext___block_invoke(uint64_t a1)
@@ -6643,18 +6643,18 @@ void __87__SKADatabaseManager_deleteRemovedUserWithHandle_statusTypeIdentifier_d
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingRemovedUsersForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5
+- (id)_existingRemovedUsersForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  identifierCopy = identifier;
+  handleCopy = handle;
   v10 = +[RemovedUser fetchRequest];
   v11 = MEMORY[0x277CCA920];
-  v12 = [RemovedUser predicateForHandle:v9];
+  v12 = [RemovedUser predicateForHandle:handleCopy];
 
   v22[0] = v12;
-  v13 = [RemovedUser predicateForStatusTypeIdentifier:v8];
+  v13 = [RemovedUser predicateForStatusTypeIdentifier:identifierCopy];
 
   v22[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
@@ -6663,7 +6663,7 @@ void __87__SKADatabaseManager_deleteRemovedUserWithHandle_statusTypeIdentifier_d
 
   [v10 setFetchLimit:1];
   v21 = 0;
-  v16 = [v7 executeFetchRequest:v10 error:&v21];
+  v16 = [contextCopy executeFetchRequest:v10 error:&v21];
 
   v17 = v21;
   if (v17)
@@ -6680,12 +6680,12 @@ void __87__SKADatabaseManager_deleteRemovedUserWithHandle_statusTypeIdentifier_d
   return v16;
 }
 
-- (id)createRemovedUserWithHandle:(id)a3 dateRemoved:(id)a4 presenceIdentifier:(id)a5 databaseContext:(id)a6
+- (id)createRemovedUserWithHandle:(id)handle dateRemoved:(id)removed presenceIdentifier:(id)identifier databaseContext:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  handleCopy = handle;
+  removedCopy = removed;
+  identifierCopy = identifier;
+  contextCopy = context;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -6696,13 +6696,13 @@ void __87__SKADatabaseManager_deleteRemovedUserWithHandle_statusTypeIdentifier_d
   v19[1] = 3221225472;
   v19[2] = __97__SKADatabaseManager_createRemovedUserWithHandle_dateRemoved_presenceIdentifier_databaseContext___block_invoke;
   v19[3] = &unk_27843E3F0;
-  v13 = v12;
+  v13 = contextCopy;
   v20 = v13;
-  v14 = v10;
+  v14 = removedCopy;
   v21 = v14;
-  v15 = v11;
+  v15 = identifierCopy;
   v22 = v15;
-  v16 = v9;
+  v16 = handleCopy;
   v23 = v16;
   v24 = &v25;
   [v13 performBlockAndWait:v19];
@@ -6740,11 +6740,11 @@ void __97__SKADatabaseManager_createRemovedUserWithHandle_dateRemoved_presenceId
   *(v8 + 40) = v7;
 }
 
-- (id)existingRemovedUserWithHandle:(id)a3 presenceIdentifier:(id)a4 withDatabaseContext:(id)a5
+- (id)existingRemovedUserWithHandle:(id)handle presenceIdentifier:(id)identifier withDatabaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  contextCopy = context;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -6756,11 +6756,11 @@ void __97__SKADatabaseManager_createRemovedUserWithHandle_dateRemoved_presenceId
   v16[2] = __91__SKADatabaseManager_existingRemovedUserWithHandle_presenceIdentifier_withDatabaseContext___block_invoke;
   v16[3] = &unk_27843E3F0;
   v16[4] = self;
-  v11 = v8;
+  v11 = handleCopy;
   v17 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v18 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v19 = v13;
   v20 = &v21;
   [v13 performBlockAndWait:v16];
@@ -6784,11 +6784,11 @@ void __91__SKADatabaseManager_existingRemovedUserWithHandle_presenceIdentifier_w
   }
 }
 
-- (BOOL)deleteRemovedUserWithHandle:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5
+- (BOOL)deleteRemovedUserWithHandle:(id)handle presenceIdentifier:(id)identifier databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -6798,18 +6798,18 @@ void __91__SKADatabaseManager_existingRemovedUserWithHandle_presenceIdentifier_w
   v15[2] = __85__SKADatabaseManager_deleteRemovedUserWithHandle_presenceIdentifier_databaseContext___block_invoke;
   v15[3] = &unk_27843E3F0;
   v15[4] = self;
-  v11 = v8;
+  v11 = handleCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v17 = v12;
-  v13 = v10;
+  v13 = contextCopy;
   v18 = v13;
   v19 = &v20;
   [v13 performBlockAndWait:v15];
-  LOBYTE(v8) = *(v21 + 24);
+  LOBYTE(handleCopy) = *(v21 + 24);
 
   _Block_object_dispose(&v20, 8);
-  return v8;
+  return handleCopy;
 }
 
 void __85__SKADatabaseManager_deleteRemovedUserWithHandle_presenceIdentifier_databaseContext___block_invoke(uint64_t a1)
@@ -6891,18 +6891,18 @@ void __85__SKADatabaseManager_deleteRemovedUserWithHandle_presenceIdentifier_dat
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_existingRemovedUsersForHandle:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5
+- (id)_existingRemovedUsersForHandle:(id)handle presenceIdentifier:(id)identifier databaseContext:(id)context
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  contextCopy = context;
+  identifierCopy = identifier;
+  handleCopy = handle;
   v10 = +[RemovedUser fetchRequest];
   v11 = MEMORY[0x277CCA920];
-  v12 = [RemovedUser predicateForHandle:v9];
+  v12 = [RemovedUser predicateForHandle:handleCopy];
 
   v22[0] = v12;
-  v13 = [RemovedUser predicateForPresenceIdentifier:v8];
+  v13 = [RemovedUser predicateForPresenceIdentifier:identifierCopy];
 
   v22[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
@@ -6911,7 +6911,7 @@ void __85__SKADatabaseManager_deleteRemovedUserWithHandle_presenceIdentifier_dat
 
   [v10 setFetchLimit:1];
   v21 = 0;
-  v16 = [v7 executeFetchRequest:v10 error:&v21];
+  v16 = [contextCopy executeFetchRequest:v10 error:&v21];
 
   v17 = v21;
   if (v17)
@@ -6928,17 +6928,17 @@ void __85__SKADatabaseManager_deleteRemovedUserWithHandle_presenceIdentifier_dat
   return v16;
 }
 
-- (id)_existingReceivedInvitationsForHandle:(id)a3 presenceIdentifier:(id)a4 databaseContext:(id)a5
+- (id)_existingReceivedInvitationsForHandle:(id)handle presenceIdentifier:(id)identifier databaseContext:(id)context
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  contextCopy = context;
   v10 = +[ReceivedInvitation fetchRequest];
   v11 = MEMORY[0x277CCA920];
-  v12 = [ReceivedInvitation predicateForSenderHandle:v7];
+  v12 = [ReceivedInvitation predicateForSenderHandle:handleCopy];
   v37[0] = v12;
-  v13 = [ReceivedInvitation predicateForPresenceIdentifier:v8];
+  v13 = [ReceivedInvitation predicateForPresenceIdentifier:identifierCopy];
   v37[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
   v15 = [v11 andPredicateWithSubpredicates:v14];
@@ -6953,16 +6953,16 @@ void __85__SKADatabaseManager_deleteRemovedUserWithHandle_presenceIdentifier_dat
   v18 = +[SKADatabaseManager logger];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v7 handleString];
+    handleString = [handleCopy handleString];
     *buf = 138412546;
-    v33 = v19;
+    v33 = handleString;
     v34 = 2112;
-    v35 = v8;
+    v35 = identifierCopy;
     _os_log_impl(&dword_220099000, v18, OS_LOG_TYPE_DEFAULT, "Beginning fetch request for ReceivedInvitation from handle %@ presenceIdentifier: %@", buf, 0x16u);
   }
 
   v31 = 0;
-  v20 = [v9 executeFetchRequest:v10 error:&v31];
+  v20 = [contextCopy executeFetchRequest:v10 error:&v31];
 
   v21 = v31;
   if (v21)
@@ -7017,17 +7017,17 @@ LABEL_12:
   return v20;
 }
 
-- (id)_existingReceivedInvitationsForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5
+- (id)_existingReceivedInvitationsForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  contextCopy = context;
   v10 = +[ReceivedInvitation fetchRequest];
   v11 = MEMORY[0x277CCA920];
-  v12 = [ReceivedInvitation predicateForSenderHandle:v7];
+  v12 = [ReceivedInvitation predicateForSenderHandle:handleCopy];
   v37[0] = v12;
-  v13 = [ReceivedInvitation predicateForStatusTypeIdentifier:v8];
+  v13 = [ReceivedInvitation predicateForStatusTypeIdentifier:identifierCopy];
   v37[1] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
   v15 = [v11 andPredicateWithSubpredicates:v14];
@@ -7042,16 +7042,16 @@ LABEL_12:
   v18 = +[SKADatabaseManager logger];
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v7 handleString];
+    handleString = [handleCopy handleString];
     *buf = 138412546;
-    v33 = v19;
+    v33 = handleString;
     v34 = 2112;
-    v35 = v8;
+    v35 = identifierCopy;
     _os_log_impl(&dword_220099000, v18, OS_LOG_TYPE_DEFAULT, "Beginning fetch request for ReceivedInvitation from handle %@ statusTypeIdentifier: %@", buf, 0x16u);
   }
 
   v31 = 0;
-  v20 = [v9 executeFetchRequest:v10 error:&v31];
+  v20 = [contextCopy executeFetchRequest:v10 error:&v31];
 
   v21 = v31;
   if (v21)
@@ -7106,20 +7106,20 @@ LABEL_12:
   return v20;
 }
 
-- (id)createReceivedInvitationForChannel:(id)a3 senderHandle:(id)a4 invitedHandle:(id)a5 invitationIdentifier:(id)a6 dateInvitationCreated:(id)a7 incomingRatchetState:(id)a8 presenceIdentifier:(id)a9 channelToken:(id)a10 serverKey:(id)a11 peerKey:(id)a12 invitationPayload:(id)a13 databaseContext:(id)a14
+- (id)createReceivedInvitationForChannel:(id)channel senderHandle:(id)handle invitedHandle:(id)invitedHandle invitationIdentifier:(id)identifier dateInvitationCreated:(id)created incomingRatchetState:(id)state presenceIdentifier:(id)presenceIdentifier channelToken:(id)self0 serverKey:(id)self1 peerKey:(id)self2 invitationPayload:(id)self3 databaseContext:(id)self4
 {
-  v36 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v38 = a7;
-  v39 = a8;
-  v45 = a9;
-  v40 = a10;
-  v43 = a11;
-  v44 = a12;
-  v22 = a13;
-  v23 = a14;
+  channelCopy = channel;
+  handleCopy = handle;
+  invitedHandleCopy = invitedHandle;
+  identifierCopy = identifier;
+  createdCopy = created;
+  stateCopy = state;
+  presenceIdentifierCopy = presenceIdentifier;
+  tokenCopy = token;
+  keyCopy = key;
+  peerKeyCopy = peerKey;
+  payloadCopy = payload;
+  contextCopy = context;
   v61 = 0;
   v62 = &v61;
   v63 = 0x3032000000;
@@ -7130,30 +7130,30 @@ LABEL_12:
   v46[1] = 3221225472;
   v46[2] = __232__SKADatabaseManager_createReceivedInvitationForChannel_senderHandle_invitedHandle_invitationIdentifier_dateInvitationCreated_incomingRatchetState_presenceIdentifier_channelToken_serverKey_peerKey_invitationPayload_databaseContext___block_invoke;
   v46[3] = &unk_27843E648;
-  v37 = v36;
+  v37 = channelCopy;
   v47 = v37;
-  v48 = self;
-  v24 = v23;
+  selfCopy = self;
+  v24 = contextCopy;
   v49 = v24;
-  v42 = v19;
+  v42 = handleCopy;
   v50 = v42;
-  v35 = v20;
+  v35 = invitedHandleCopy;
   v51 = v35;
-  v25 = v21;
+  v25 = identifierCopy;
   v52 = v25;
-  v26 = v38;
+  v26 = createdCopy;
   v53 = v26;
-  v27 = v39;
+  v27 = stateCopy;
   v54 = v27;
-  v28 = v22;
+  v28 = payloadCopy;
   v55 = v28;
-  v29 = v40;
+  v29 = tokenCopy;
   v56 = v29;
-  v30 = v45;
+  v30 = presenceIdentifierCopy;
   v57 = v30;
-  v31 = v43;
+  v31 = keyCopy;
   v58 = v31;
-  v32 = v44;
+  v32 = peerKeyCopy;
   v59 = v32;
   v60 = &v61;
   [v24 performBlockAndWait:v46];
@@ -7213,17 +7213,17 @@ void __232__SKADatabaseManager_createReceivedInvitationForChannel_senderHandle_i
   *(v14 + 40) = v13;
 }
 
-- (id)_existingReceivedInvitationsForChannelIdentifier:(id)a3 sortedByDateReceived:(BOOL)a4 databaseContect:(id)a5
+- (id)_existingReceivedInvitationsForChannelIdentifier:(id)identifier sortedByDateReceived:(BOOL)received databaseContect:(id)contect
 {
-  v6 = a4;
+  receivedCopy = received;
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v32 = a5;
-  v9 = [(SKADatabaseManager *)self _existingChannelsForChannelIdentifier:v8 databaseContext:?];
+  identifierCopy = identifier;
+  contectCopy = contect;
+  v9 = [(SKADatabaseManager *)self _existingChannelsForChannelIdentifier:identifierCopy databaseContext:?];
   if ([v9 count])
   {
-    v29 = v6;
-    v31 = v8;
+    v29 = receivedCopy;
+    v31 = identifierCopy;
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v37 = 0u;
     v38 = 0u;
@@ -7246,12 +7246,12 @@ void __232__SKADatabaseManager_createReceivedInvitationForChannel_senderHandle_i
           }
 
           v16 = *(*(&v37 + 1) + 8 * i);
-          v17 = [v16 receivedInvitations];
+          receivedInvitations = [v16 receivedInvitations];
           v33 = 0u;
           v34 = 0u;
           v35 = 0u;
           v36 = 0u;
-          v18 = [v17 countByEnumeratingWithState:&v33 objects:v42 count:16];
+          v18 = [receivedInvitations countByEnumeratingWithState:&v33 objects:v42 count:16];
           if (v18)
           {
             v19 = v18;
@@ -7262,19 +7262,19 @@ void __232__SKADatabaseManager_createReceivedInvitationForChannel_senderHandle_i
               {
                 if (*v34 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(receivedInvitations);
                 }
 
                 [v10 addObject:*(*(&v33 + 1) + 8 * j)];
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v33 objects:v42 count:16];
+              v19 = [receivedInvitations countByEnumeratingWithState:&v33 objects:v42 count:16];
             }
 
             while (v19);
           }
 
-          [v32 refreshObject:v16 mergeChanges:0];
+          [contectCopy refreshObject:v16 mergeChanges:0];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v37 objects:v43 count:16];
@@ -7300,7 +7300,7 @@ void __232__SKADatabaseManager_createReceivedInvitationForChannel_senderHandle_i
     }
 
     v9 = v30;
-    v8 = v31;
+    identifierCopy = v31;
   }
 
   else
@@ -7319,22 +7319,22 @@ void __232__SKADatabaseManager_createReceivedInvitationForChannel_senderHandle_i
   return v26;
 }
 
-- (id)receivedInvitationsForChannel:(id)a3 databaseContext:(id)a4
+- (id)receivedInvitationsForChannel:(id)channel databaseContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  channelCopy = channel;
+  contextCopy = context;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __68__SKADatabaseManager_receivedInvitationsForChannel_databaseContext___block_invoke;
   v17 = &unk_27843E490;
-  v18 = v6;
-  v19 = self;
-  v20 = v7;
+  v18 = channelCopy;
+  selfCopy = self;
+  v20 = contextCopy;
   v21 = v8;
   v9 = v8;
-  v10 = v7;
-  v11 = v6;
+  v10 = contextCopy;
+  v11 = channelCopy;
   [v10 performBlockAndWait:&v14];
   v12 = [v9 copy];
 
@@ -7386,23 +7386,23 @@ void __68__SKADatabaseManager_receivedInvitationsForChannel_databaseContext___bl
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)receivedInvitationsForPresenceIdentifier:(id)a3 isPersonal:(BOOL)a4 databaseContext:(id)a5
+- (id)receivedInvitationsForPresenceIdentifier:(id)identifier isPersonal:(BOOL)personal databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  contextCopy = context;
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __90__SKADatabaseManager_receivedInvitationsForPresenceIdentifier_isPersonal_databaseContext___block_invoke;
   v16[3] = &unk_27843E670;
   v16[4] = self;
-  v17 = v8;
-  v20 = a4;
-  v18 = v9;
+  v17 = identifierCopy;
+  personalCopy = personal;
+  v18 = contextCopy;
   v19 = v10;
   v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v12 = contextCopy;
+  v13 = identifierCopy;
   [v12 performBlockAndWait:v16];
   v14 = [v11 copy];
 
@@ -7483,22 +7483,22 @@ void __90__SKADatabaseManager_receivedInvitationsForPresenceIdentifier_isPersona
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanupOldReceivedInvitationsForChannelIdentifier:(id)a3 excludingInvitation:(id)a4 databaseContext:(id)a5
+- (void)cleanupOldReceivedInvitationsForChannelIdentifier:(id)identifier excludingInvitation:(id)invitation databaseContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  invitationCopy = invitation;
+  contextCopy = context;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __108__SKADatabaseManager_cleanupOldReceivedInvitationsForChannelIdentifier_excludingInvitation_databaseContext___block_invoke;
   v14[3] = &unk_27843E490;
   v14[4] = self;
-  v15 = v8;
-  v16 = v10;
-  v17 = v9;
-  v11 = v9;
-  v12 = v10;
-  v13 = v8;
+  v15 = identifierCopy;
+  v16 = contextCopy;
+  v17 = invitationCopy;
+  v11 = invitationCopy;
+  v12 = contextCopy;
+  v13 = identifierCopy;
   [v12 performBlockAndWait:v14];
 }
 
@@ -7583,16 +7583,16 @@ LABEL_12:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanupDecommissionedChannelsWithDatabaseContext:(id)a3
+- (void)cleanupDecommissionedChannelsWithDatabaseContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __71__SKADatabaseManager_cleanupDecommissionedChannelsWithDatabaseContext___block_invoke;
   v6[3] = &unk_27843E330;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = contextCopy;
+  v5 = contextCopy;
   [v5 performBlock:v6];
 }
 
@@ -7667,9 +7667,9 @@ void __71__SKADatabaseManager_cleanupDecommissionedChannelsWithDatabaseContext__
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanupOldChannelsForHandle:(id)a3 statusTypeIdentifier:(id)a4 databaseContext:(id)a5
+- (void)cleanupOldChannelsForHandle:(id)handle statusTypeIdentifier:(id)identifier databaseContext:(id)context
 {
-  v5 = [SKADatabaseManager logger:a3];
+  v5 = [SKADatabaseManager logger:handle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *v6 = 0;
@@ -7677,22 +7677,22 @@ void __71__SKADatabaseManager_cleanupDecommissionedChannelsWithDatabaseContext__
   }
 }
 
-- (void)deviceToDeviceEncryptedDatabaseCapableWithCompletion:(id)a3
+- (void)deviceToDeviceEncryptedDatabaseCapableWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(SKADatabaseManager *)self databaseProvider];
+  completionCopy = completion;
+  databaseProvider = [(SKADatabaseManager *)self databaseProvider];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __75__SKADatabaseManager_deviceToDeviceEncryptedDatabaseCapableWithCompletion___block_invoke;
   v7[3] = &unk_27843DD10;
-  v8 = v4;
-  v6 = v4;
-  [v5 deviceToDeviceEncryptedDatabaseCapableWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [databaseProvider deviceToDeviceEncryptedDatabaseCapableWithCompletion:v7];
 }
 
-- (id)allPublishedLocalStatusesInDatabaseContext:(id)a3 error:(id *)a4
+- (id)allPublishedLocalStatusesInDatabaseContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -7709,7 +7709,7 @@ void __71__SKADatabaseManager_cleanupDecommissionedChannelsWithDatabaseContext__
   v10[1] = 3221225472;
   v10[2] = __71__SKADatabaseManager_allPublishedLocalStatusesInDatabaseContext_error___block_invoke;
   v10[3] = &unk_27843E6E8;
-  v6 = v5;
+  v6 = contextCopy;
   v11 = v6;
   v12 = &v14;
   v13 = &v20;
@@ -7720,9 +7720,9 @@ void __71__SKADatabaseManager_cleanupDecommissionedChannelsWithDatabaseContext__
     v8 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -7805,10 +7805,10 @@ void __71__SKADatabaseManager_allPublishedLocalStatusesInDatabaseContext_error__
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)createOrUpdatePublishedLocalStatuses:(id)a3 databaseContext:(id)a4 error:(id *)a5
+- (BOOL)createOrUpdatePublishedLocalStatuses:(id)statuses databaseContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  statusesCopy = statuses;
+  contextCopy = context;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -7823,17 +7823,17 @@ void __71__SKADatabaseManager_allPublishedLocalStatusesInDatabaseContext_error__
   v13[1] = 3221225472;
   v13[2] = __81__SKADatabaseManager_createOrUpdatePublishedLocalStatuses_databaseContext_error___block_invoke;
   v13[3] = &unk_27843E710;
-  v9 = v7;
+  v9 = statusesCopy;
   v14 = v9;
-  v10 = v8;
+  v10 = contextCopy;
   v15 = v10;
   v16 = &v24;
   v17 = &v18;
   [v10 performBlockAndWait:v13];
   v11 = *(v25 + 24);
-  if (a5 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -8043,9 +8043,9 @@ void __81__SKADatabaseManager_createOrUpdatePublishedLocalStatuses_databaseConte
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allPublishedLocalStatusDevicesInDatabaseContext:(id)a3 error:(id *)a4
+- (id)allPublishedLocalStatusDevicesInDatabaseContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -8062,7 +8062,7 @@ void __81__SKADatabaseManager_createOrUpdatePublishedLocalStatuses_databaseConte
   v10[1] = 3221225472;
   v10[2] = __76__SKADatabaseManager_allPublishedLocalStatusDevicesInDatabaseContext_error___block_invoke;
   v10[3] = &unk_27843E6E8;
-  v6 = v5;
+  v6 = contextCopy;
   v11 = v6;
   v12 = &v14;
   v13 = &v20;
@@ -8073,9 +8073,9 @@ void __81__SKADatabaseManager_createOrUpdatePublishedLocalStatuses_databaseConte
     v8 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -8157,10 +8157,10 @@ void __76__SKADatabaseManager_allPublishedLocalStatusDevicesInDatabaseContext_er
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)createOrUpdatePublishedLocalStatusDevices:(id)a3 databaseContext:(id)a4 error:(id *)a5
+- (BOOL)createOrUpdatePublishedLocalStatusDevices:(id)devices databaseContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  devicesCopy = devices;
+  contextCopy = context;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -8175,17 +8175,17 @@ void __76__SKADatabaseManager_allPublishedLocalStatusDevicesInDatabaseContext_er
   v13[1] = 3221225472;
   v13[2] = __86__SKADatabaseManager_createOrUpdatePublishedLocalStatusDevices_databaseContext_error___block_invoke;
   v13[3] = &unk_27843E710;
-  v9 = v7;
+  v9 = devicesCopy;
   v14 = v9;
-  v10 = v8;
+  v10 = contextCopy;
   v15 = v10;
   v16 = &v24;
   v17 = &v18;
   [v10 performBlockAndWait:v13];
   v11 = *(v25 + 24);
-  if (a5 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -8619,10 +8619,10 @@ LABEL_85:
   v85 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)deletePublishedLocalStatusDevices:(id)a3 databaseContext:(id)a4 error:(id *)a5
+- (BOOL)deletePublishedLocalStatusDevices:(id)devices databaseContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  devicesCopy = devices;
+  contextCopy = context;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -8637,17 +8637,17 @@ LABEL_85:
   v13[1] = 3221225472;
   v13[2] = __78__SKADatabaseManager_deletePublishedLocalStatusDevices_databaseContext_error___block_invoke;
   v13[3] = &unk_27843E710;
-  v9 = v7;
+  v9 = devicesCopy;
   v14 = v9;
-  v10 = v8;
+  v10 = contextCopy;
   v15 = v10;
   v16 = &v24;
   v17 = &v18;
   [v10 performBlockAndWait:v13];
   v11 = *(v25 + 24);
-  if (a5 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -8754,10 +8754,10 @@ void __78__SKADatabaseManager_deletePublishedLocalStatusDevices_databaseContext_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)createOrUpdateOrDeleteSubscribedLocalStatus:(id)a3 databaseContext:(id)a4 error:(id *)a5
+- (BOOL)createOrUpdateOrDeleteSubscribedLocalStatus:(id)status databaseContext:(id)context error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  contextCopy = context;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -8772,17 +8772,17 @@ void __78__SKADatabaseManager_deletePublishedLocalStatusDevices_databaseContext_
   v13[1] = 3221225472;
   v13[2] = __88__SKADatabaseManager_createOrUpdateOrDeleteSubscribedLocalStatus_databaseContext_error___block_invoke;
   v13[3] = &unk_27843E710;
-  v9 = v7;
+  v9 = statusCopy;
   v14 = v9;
-  v10 = v8;
+  v10 = contextCopy;
   v15 = v10;
   v16 = &v24;
   v17 = &v18;
   [v10 performBlockAndWait:v13];
   v11 = *(v25 + 24);
-  if (a5 && (v25[3] & 1) == 0)
+  if (error && (v25[3] & 1) == 0)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -8960,9 +8960,9 @@ LABEL_33:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (id)allSubscribedLocalStatusesInDatabaseContext:(id)a3 error:(id *)a4
+- (id)allSubscribedLocalStatusesInDatabaseContext:(id)context error:(id *)error
 {
-  v5 = a3;
+  contextCopy = context;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -8979,7 +8979,7 @@ LABEL_33:
   v10[1] = 3221225472;
   v10[2] = __72__SKADatabaseManager_allSubscribedLocalStatusesInDatabaseContext_error___block_invoke;
   v10[3] = &unk_27843E6E8;
-  v6 = v5;
+  v6 = contextCopy;
   v11 = v6;
   v12 = &v20;
   v13 = &v14;
@@ -8990,9 +8990,9 @@ LABEL_33:
     v8 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -9070,9 +9070,9 @@ void __72__SKADatabaseManager_allSubscribedLocalStatusesInDatabaseContext_error_
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)saveContextIfNeeded:(id)a3
+- (BOOL)saveContextIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -9081,7 +9081,7 @@ void __72__SKADatabaseManager_allSubscribedLocalStatusesInDatabaseContext_error_
   v7[1] = 3221225472;
   v7[2] = __42__SKADatabaseManager_saveContextIfNeeded___block_invoke;
   v7[3] = &unk_27843E620;
-  v4 = v3;
+  v4 = neededCopy;
   v8 = v4;
   v9 = &v10;
   [v4 performBlockAndWait:v7];
@@ -9108,10 +9108,10 @@ void __42__SKADatabaseManager_saveContextIfNeeded___block_invoke(uint64_t a1)
 
 - (BOOL)clearPersistentHistoryIfNeeded
 {
-  v2 = [(SKADatabaseManager *)self databaseProvider];
-  v3 = [v2 clearPersistentHistoryIfNeeded];
+  databaseProvider = [(SKADatabaseManager *)self databaseProvider];
+  clearPersistentHistoryIfNeeded = [databaseProvider clearPersistentHistoryIfNeeded];
 
-  return v3;
+  return clearPersistentHistoryIfNeeded;
 }
 
 - (void)systemDidLeaveFirstDataProtectionLock

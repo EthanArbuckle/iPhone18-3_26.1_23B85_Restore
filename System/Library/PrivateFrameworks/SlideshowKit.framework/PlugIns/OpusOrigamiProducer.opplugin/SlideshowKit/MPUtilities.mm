@@ -1,86 +1,86 @@
 @interface MPUtilities
-+ ($421962E1114BB55FD51FACB03C2AC210)scaledFilterPresetVectorValue:(SEL)a3 withKey:(id *)a4 forFilterID:(id)a5 andPresetID:(id)a6;
-+ (CGColor)CGColorFromString:(id)a3;
-+ (CGColor)CGColorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
++ ($421962E1114BB55FD51FACB03C2AC210)scaledFilterPresetVectorValue:(SEL)value withKey:(id *)key forFilterID:(id)d andPresetID:(id)iD;
++ (CGColor)CGColorFromString:(id)string;
++ (CGColor)CGColorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 + (CGColor)blackCGColor;
-+ (CGPoint)computePointValueForAnimationPath:(id)a3 atTime:(double)a4 defaultsTo:(CGPoint)a5;
-+ (CGPoint)scaledFilterPresetPointValue:(CGPoint)a3 withKey:(id)a4 forFilterID:(id)a5 andPresetID:(id)a6;
-+ (double)aspectRatioOfLayerable:(id)a3 relativeToAspectRatio:(double)a4;
-+ (double)computeScalarValueForAnimationPath:(id)a3 atTime:(double)a4 defaultsTo:(double)a5 context:(id)a6;
-+ (double)displayTimeForText:(id)a3;
-+ (double)scaledFilterPresetScalarValue:(double)a3 withKey:(id)a4 forFilterID:(id)a5 andPresetID:(id)a6;
-+ (double)transformTime:(double)a3 forAnimationPath:(id)a4;
-+ (id)animationsPathsFromFilterID:(id)a3 andPresetID:(id)a4;
-+ (id)attributesFormMPFilter:(id)a3 atTime:(double)a4;
-+ (id)attributesFromAnimationPathsInFilter:(id)a3 atTime:(double)a4;
-+ (id)computeVectorValueForAnimationPath:(id)a3 atTime:(double)a4 defaultsTo:(id)a5;
-+ (id)createMCAction:(id)a3 forPlug:(id)a4 withKey:(id)a5;
-+ (id)createPlugInContainer:(id)a3 forLayer:(id)a4 key:(id)a5 inDocument:(id)a6;
-+ (id)createPlugInSlide:(id)a3 forLayer:(id)a4 inDocument:(id)a5;
-+ (id)createPlugPathToContainer:(id)a3 inDocument:(id)a4;
-+ (id)createPlugPathToObject:(id)a3 inDocument:(id)a4;
-+ (id)effectContainersForTime:(double)a3 inDocument:(id)a4;
-+ (id)effectForMCContainerEffect:(id)a3 inDocument:(id)a4;
-+ (id)effectForMCContainerWithObjectID:(id)a3 inDocument:(id)a4;
-+ (id)executeScript:(id)a3 withHeader:(id)a4 andAttributes:(id)a5;
-+ (id)idOfCombinedID:(id)a3;
-+ (id)layerForContainer:(id)a3 inDocument:(id)a4;
-+ (id)parentsOfObject:(id)a3;
-+ (id)placesPinLabelForSlideAssetPath:(id)a3 inDocument:(id)a4;
-+ (id)presetIDOfCombinedID:(id)a3;
-+ (id)slideForElementID:(id)a3 withMCContainerEffect:(id)a4 inDocument:(id)a5;
-+ (id)slideForPath:(id)a3 inDocument:(id)a4;
-+ (id)slideForSlide:(id)a3 inDocument:(id)a4;
-+ (id)stringFromCGColor:(CGColor *)a3;
++ (CGPoint)computePointValueForAnimationPath:(id)path atTime:(double)time defaultsTo:(CGPoint)to;
++ (CGPoint)scaledFilterPresetPointValue:(CGPoint)value withKey:(id)key forFilterID:(id)d andPresetID:(id)iD;
++ (double)aspectRatioOfLayerable:(id)layerable relativeToAspectRatio:(double)ratio;
++ (double)computeScalarValueForAnimationPath:(id)path atTime:(double)time defaultsTo:(double)to context:(id)context;
++ (double)displayTimeForText:(id)text;
++ (double)scaledFilterPresetScalarValue:(double)value withKey:(id)key forFilterID:(id)d andPresetID:(id)iD;
++ (double)transformTime:(double)time forAnimationPath:(id)path;
++ (id)animationsPathsFromFilterID:(id)d andPresetID:(id)iD;
++ (id)attributesFormMPFilter:(id)filter atTime:(double)time;
++ (id)attributesFromAnimationPathsInFilter:(id)filter atTime:(double)time;
++ (id)computeVectorValueForAnimationPath:(id)path atTime:(double)time defaultsTo:(id)to;
++ (id)createMCAction:(id)action forPlug:(id)plug withKey:(id)key;
++ (id)createPlugInContainer:(id)container forLayer:(id)layer key:(id)key inDocument:(id)document;
++ (id)createPlugInSlide:(id)slide forLayer:(id)layer inDocument:(id)document;
++ (id)createPlugPathToContainer:(id)container inDocument:(id)document;
++ (id)createPlugPathToObject:(id)object inDocument:(id)document;
++ (id)effectContainersForTime:(double)time inDocument:(id)document;
++ (id)effectForMCContainerEffect:(id)effect inDocument:(id)document;
++ (id)effectForMCContainerWithObjectID:(id)d inDocument:(id)document;
++ (id)executeScript:(id)script withHeader:(id)header andAttributes:(id)attributes;
++ (id)idOfCombinedID:(id)d;
++ (id)layerForContainer:(id)container inDocument:(id)document;
++ (id)parentsOfObject:(id)object;
++ (id)placesPinLabelForSlideAssetPath:(id)path inDocument:(id)document;
++ (id)presetIDOfCombinedID:(id)d;
++ (id)slideForElementID:(id)d withMCContainerEffect:(id)effect inDocument:(id)document;
++ (id)slideForPath:(id)path inDocument:(id)document;
++ (id)slideForSlide:(id)slide inDocument:(id)document;
++ (id)stringFromCGColor:(CGColor *)color;
 + (id)stringWithNewUUID;
-+ (id)textForElementID:(id)a3 withMCContainerEffect:(id)a4 inDocument:(id)a5;
-+ (id)textForIndex:(int64_t)a3 inMCContainerWithObjectID:(id)a4 inDocument:(id)a5;
-+ (id)textsDisplayedAtTime:(double)a3 inDocument:(id)a4;
-+ (unint64_t)timeOffSetFromString:(id)a3;
-+ (void)collectAllActionableLayers:(id)a3 inDictionary:(id)a4;
-+ (void)syncAnimationPaths:(id)a3;
++ (id)textForElementID:(id)d withMCContainerEffect:(id)effect inDocument:(id)document;
++ (id)textForIndex:(int64_t)index inMCContainerWithObjectID:(id)d inDocument:(id)document;
++ (id)textsDisplayedAtTime:(double)time inDocument:(id)document;
++ (unint64_t)timeOffSetFromString:(id)string;
++ (void)collectAllActionableLayers:(id)layers inDictionary:(id)dictionary;
++ (void)syncAnimationPaths:(id)paths;
 @end
 
 @implementation MPUtilities
 
-+ (unint64_t)timeOffSetFromString:(id)a3
++ (unint64_t)timeOffSetFromString:(id)string
 {
-  if ([a3 isEqualToString:@"relativeFromTimeInForFullDuration"])
+  if ([string isEqualToString:@"relativeFromTimeInForFullDuration"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"relativeFromTimeInForPhaseInDuration"])
+  if ([string isEqualToString:@"relativeFromTimeInForPhaseInDuration"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"relativeFromMainStartForPhaseInDuration"])
+  if ([string isEqualToString:@"relativeFromMainStartForPhaseInDuration"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"relativeFromMainStartForMainDuration"])
+  if ([string isEqualToString:@"relativeFromMainStartForMainDuration"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"relativeFromMainEndForMainDuration"])
+  if ([string isEqualToString:@"relativeFromMainEndForMainDuration"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"relativeFromMainEndForPhaseOutDuration"])
+  if ([string isEqualToString:@"relativeFromMainEndForPhaseOutDuration"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"relativeFromTimeOutForPhaseOutDuration"])
+  if ([string isEqualToString:@"relativeFromTimeOutForPhaseOutDuration"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"relativeFromTimeOutForFullDuration"])
+  if ([string isEqualToString:@"relativeFromTimeOutForFullDuration"])
   {
     return 7;
   }
@@ -88,18 +88,18 @@
   return 0;
 }
 
-+ (double)transformTime:(double)a3 forAnimationPath:(id)a4
++ (double)transformTime:(double)time forAnimationPath:(id)path
 {
-  v6 = [a4 orderedKeyframes];
-  v7 = [v6 count];
+  orderedKeyframes = [path orderedKeyframes];
+  v7 = [orderedKeyframes count];
   v8 = 0.0;
-  if (a3 <= 0.0 || v7 < 2)
+  if (time <= 0.0 || v7 < 2)
   {
     return v8;
   }
 
   v8 = 1.0;
-  if (a3 >= 1.0)
+  if (time >= 1.0)
   {
     return v8;
   }
@@ -109,8 +109,8 @@
   v12 = 1;
   while (1)
   {
-    [a4 relativeTimeForKeyframe:{objc_msgSend(v6, "objectAtIndex:", v12)}];
-    if (v13 >= a3)
+    [path relativeTimeForKeyframe:{objc_msgSend(orderedKeyframes, "objectAtIndex:", v12)}];
+    if (v13 >= time)
     {
       break;
     }
@@ -123,36 +123,36 @@
     }
   }
 
-  v15 = [v6 objectAtIndex:v11];
-  v16 = [v6 objectAtIndex:v12];
-  [a4 relativeTimeForKeyframe:v15];
+  v15 = [orderedKeyframes objectAtIndex:v11];
+  v16 = [orderedKeyframes objectAtIndex:v12];
+  [path relativeTimeForKeyframe:v15];
   v18 = v17;
-  [a4 relativeTimeForKeyframe:v16];
+  [path relativeTimeForKeyframe:v16];
   v20 = v19 - v18;
-  v21 = (a3 - v18) / (v19 - v18);
+  v21 = (time - v18) / (v19 - v18);
   [v15 postControl];
   v23 = v22;
   [v16 preControl];
   return v18 + Spline1(v21, 0.0, v23, v24 + 1.0, 1.0, 0.0, 0.0, 1.0, 1.0) * v20;
 }
 
-+ (double)computeScalarValueForAnimationPath:(id)a3 atTime:(double)a4 defaultsTo:(double)a5 context:(id)a6
++ (double)computeScalarValueForAnimationPath:(id)path atTime:(double)time defaultsTo:(double)to context:(id)context
 {
-  v10 = [a3 animationPath];
-  v11 = [objc_msgSend(a3 "parent")];
-  v12 = [v10 orderedKeyframesWithPlugTiming:v11];
+  animationPath = [path animationPath];
+  v11 = [objc_msgSend(path "parent")];
+  v12 = [animationPath orderedKeyframesWithPlugTiming:v11];
   v13 = [v12 count];
-  v14 = [v10 isTriggered];
+  isTriggered = [animationPath isTriggered];
   if (v13)
   {
-    v15 = v14;
-    if (((a4 <= 0.0) & v14) == 0)
+    v15 = isTriggered;
+    if (((time <= 0.0) & isTriggered) == 0)
     {
-      if (a4 > 0.0 && (v13 != &dword_0 + 1) | v14 & 1)
+      if (time > 0.0 && (v13 != &dword_0 + 1) | isTriggered & 1)
       {
-        if (a4 < 1.0)
+        if (time < 1.0)
         {
-          v16 = v14 ^ 1;
+          v16 = isTriggered ^ 1;
           if (v13 > v16)
           {
             v17 = v16 + 1;
@@ -161,7 +161,7 @@
               +[MCAnimationPathKeyframed timeForKeyframe:withPlugTiming:](MCAnimationPathKeyframed, "timeForKeyframe:withPlugTiming:", [v12 objectAtIndex:v16], v11);
               v19 = v18;
               [v11 fullDuration];
-              if (v19 / v20 >= a4)
+              if (v19 / v20 >= time)
               {
                 break;
               }
@@ -200,8 +200,8 @@ LABEL_13:
                 v30 = v29;
                 [v11 fullDuration];
                 v32 = v30 / v31;
-                v33 = v30 / v31 <= a4 || v28 > a4;
-                v34 = a5;
+                v33 = v30 / v31 <= time || v28 > time;
+                toCopy2 = to;
                 if ([v23 function])
                 {
                   v35 = qword_1EF3E0;
@@ -230,24 +230,24 @@ LABEL_13:
                     [qword_1EF3E0 setObject:v39 forKey:{objc_msgSend(v23, "function")}];
                   }
 
-                  v40 = [v23 functionParameters];
-                  if (v40)
+                  functionParameters = [v23 functionParameters];
+                  if (functionParameters)
                   {
-                    [(MUMathExpressionFloatBased *)v37 setVariableValues:v40];
+                    [(MUMathExpressionFloatBased *)v37 setVariableValues:functionParameters];
                   }
 
-                  if (a6)
+                  if (context)
                   {
-                    [(MUMathExpressionFloatBased *)v37 setVariableValues:a6];
+                    [(MUMathExpressionFloatBased *)v37 setVariableValues:context];
                   }
 
                   v41 = 0.0;
-                  if (v28 < a4)
+                  if (v28 < time)
                   {
                     v41 = 1.0;
-                    if (v32 > a4)
+                    if (v32 > time)
                     {
-                      v41 = (a4 - v28) / (v32 - v28);
+                      v41 = (time - v28) / (v32 - v28);
                     }
                   }
 
@@ -259,26 +259,26 @@ LABEL_13:
                   [(MUMathExpressionFloatBased *)v37 setValue:@"time" forVariable:v45];
                   if (v15)
                   {
-                    *&v46 = a5;
+                    *&v46 = to;
                     [(MUMathExpressionFloatBased *)v37 setValue:@"startValue" forVariable:v46];
                   }
 
                   [(MUMathExpressionFloatBased *)v37 evaluate];
-                  v34 = v47;
+                  toCopy2 = v47;
                 }
               }
 
               else
               {
                 [v23 value];
-                v34 = v38;
+                toCopy2 = v38;
                 v33 = 1;
               }
             }
 
             else
             {
-              v34 = a5;
+              toCopy2 = to;
               v33 = 1;
               v28 = 0.0;
             }
@@ -286,7 +286,7 @@ LABEL_13:
 LABEL_37:
             if (!v33 || !v24)
             {
-              return v34;
+              return toCopy2;
             }
 
             [MCAnimationPathKeyframed timeForKeyframe:v24 withPlugTiming:v11];
@@ -298,11 +298,11 @@ LABEL_37:
             {
               [v24 value];
 LABEL_57:
-              v52 = v56;
+              toCopy3 = v56;
               goto LABEL_58;
             }
 
-            v52 = a5;
+            toCopy3 = to;
             if ([v24 function])
             {
               v53 = qword_1EF3E0;
@@ -318,15 +318,15 @@ LABEL_57:
                 v55 = v54;
                 [(MUMathExpressionFloatBased *)v54 resetAllVariables];
 LABEL_50:
-                v58 = [v24 functionParameters];
-                if (v58)
+                functionParameters2 = [v24 functionParameters];
+                if (functionParameters2)
                 {
-                  [(MUMathExpressionFloatBased *)v55 setVariableValues:v58];
+                  [(MUMathExpressionFloatBased *)v55 setVariableValues:functionParameters2];
                 }
 
-                if (a6)
+                if (context)
                 {
-                  [(MUMathExpressionFloatBased *)v55 setVariableValues:a6];
+                  [(MUMathExpressionFloatBased *)v55 setVariableValues:context];
                 }
 
                 [v24 functionTimeOffset];
@@ -334,7 +334,7 @@ LABEL_50:
                 [(MUMathExpressionFloatBased *)v55 setValue:@"time" forVariable:v59];
                 if (v15)
                 {
-                  *&v60 = v52;
+                  *&v60 = toCopy3;
                   [(MUMathExpressionFloatBased *)v55 setValue:@"startValue" forVariable:v60];
                 }
 
@@ -354,7 +354,7 @@ LABEL_50:
 
 LABEL_58:
             v61 = v51 - v28;
-            v62 = (a4 - v28) / (v51 - v28);
+            v62 = (time - v28) / (v51 - v28);
             [v23 postControl];
             v64 = v63;
             [v24 preControl];
@@ -365,36 +365,36 @@ LABEL_58:
               v67 = v66 / v61;
             }
 
-            return (v34 + ((v52 - v34) * v67));
+            return (toCopy2 + ((toCopy3 - toCopy2) * v67));
           }
         }
 
 LABEL_10:
-        v22 = [v12 lastObject];
+        lastObject = [v12 lastObject];
       }
 
       else
       {
-        v22 = [v12 objectAtIndex:0];
+        lastObject = [v12 objectAtIndex:0];
       }
 
-      v23 = v22;
+      v23 = lastObject;
       v24 = 0;
       goto LABEL_13;
     }
   }
 
-  return a5;
+  return to;
 }
 
-+ (CGPoint)computePointValueForAnimationPath:(id)a3 atTime:(double)a4 defaultsTo:(CGPoint)a5
++ (CGPoint)computePointValueForAnimationPath:(id)path atTime:(double)time defaultsTo:(CGPoint)to
 {
-  y = a5.y;
-  x = a5.x;
-  [a1 transformTime:a4 forAnimationPath:?];
+  y = to.y;
+  x = to.x;
+  [self transformTime:time forAnimationPath:?];
   v9 = v8;
-  v10 = [a3 orderedKeyframes];
-  v11 = [v10 count];
+  orderedKeyframes = [path orderedKeyframes];
+  v11 = [orderedKeyframes count];
   if (!v11)
   {
     goto LABEL_17;
@@ -402,9 +402,9 @@ LABEL_10:
 
   if (v11 == &dword_0 + 1 || v9 <= 0.0)
   {
-    v20 = [v10 objectAtIndex:0];
+    lastObject = [orderedKeyframes objectAtIndex:0];
 LABEL_16:
-    [v20 point];
+    [lastObject point];
     x = v21;
     y = v22;
     goto LABEL_17;
@@ -412,7 +412,7 @@ LABEL_16:
 
   if (v9 >= 1.0)
   {
-    v20 = [v10 lastObject];
+    lastObject = [orderedKeyframes lastObject];
     goto LABEL_16;
   }
 
@@ -420,7 +420,7 @@ LABEL_16:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v12 = [v10 countByEnumeratingWithState:&v45 objects:v49 count:16];
+  v12 = [orderedKeyframes countByEnumeratingWithState:&v45 objects:v49 count:16];
   if (v12)
   {
     v13 = v12;
@@ -434,11 +434,11 @@ LABEL_16:
       {
         if (*v46 != v15)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(orderedKeyframes);
         }
 
         v14 = *(*(&v45 + 1) + 8 * v16);
-        [a3 relativeTimeForKeyframe:v14];
+        [path relativeTimeForKeyframe:v14];
         if (v18 > v9)
         {
           v19 = v14;
@@ -451,7 +451,7 @@ LABEL_16:
       }
 
       while (v13 != v16);
-      v13 = [v10 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      v13 = [orderedKeyframes countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (v13)
       {
         continue;
@@ -464,9 +464,9 @@ LABEL_16:
 LABEL_19:
     if (v14)
     {
-      [a3 relativeTimeForKeyframe:v14];
+      [path relativeTimeForKeyframe:v14];
       v26 = v25;
-      [a3 relativeTimeForKeyframe:v19];
+      [path relativeTimeForKeyframe:v19];
       v28 = v27;
       [v14 point];
       v30 = v29;
@@ -508,20 +508,20 @@ LABEL_17:
   return result;
 }
 
-+ (id)computeVectorValueForAnimationPath:(id)a3 atTime:(double)a4 defaultsTo:(id)a5
++ (id)computeVectorValueForAnimationPath:(id)path atTime:(double)time defaultsTo:(id)to
 {
-  [a1 transformTime:a4 forAnimationPath:?];
+  [self transformTime:time forAnimationPath:?];
   v8 = v7;
-  v9 = [a3 orderedKeyframes];
-  v10 = [v9 count];
+  orderedKeyframes = [path orderedKeyframes];
+  v10 = [orderedKeyframes count];
   if (!v10)
   {
-    return a5;
+    return to;
   }
 
   if (v10 == &dword_0 + 1 || v8 <= 0.0)
   {
-    v33 = [v9 objectAtIndex:0];
+    lastObject = [orderedKeyframes objectAtIndex:0];
   }
 
   else
@@ -532,7 +532,7 @@ LABEL_17:
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v11 = [v9 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v11 = [orderedKeyframes countByEnumeratingWithState:&v38 objects:v42 count:16];
       if (v11)
       {
         v12 = v11;
@@ -545,11 +545,11 @@ LABEL_7:
         {
           if (*v39 != v14)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(orderedKeyframes);
           }
 
           v13 = *(*(&v38 + 1) + 8 * v15);
-          [a3 relativeTimeForKeyframe:v13];
+          [path relativeTimeForKeyframe:v13];
           if (v17 > v8)
           {
             break;
@@ -559,7 +559,7 @@ LABEL_7:
           v16 = v13;
           if (v12 == v15)
           {
-            v12 = [v9 countByEnumeratingWithState:&v38 objects:v42 count:16];
+            v12 = [orderedKeyframes countByEnumeratingWithState:&v38 objects:v42 count:16];
             if (v12)
             {
               goto LABEL_7;
@@ -575,11 +575,11 @@ LABEL_7:
         {
           v36 = 0uLL;
           v37 = 0;
-          v18 = [a5 count];
-          LOBYTE(v36) = [a5 count];
-          [a3 relativeTimeForKeyframe:v16];
+          v18 = [to count];
+          LOBYTE(v36) = [to count];
+          [path relativeTimeForKeyframe:v16];
           v20 = v19;
-          [a3 relativeTimeForKeyframe:v13];
+          [path relativeTimeForKeyframe:v13];
           if (v18)
           {
             v22 = 0;
@@ -615,28 +615,28 @@ LABEL_7:
         }
       }
 
-      return a5;
+      return to;
     }
 
-    v33 = [v9 lastObject];
+    lastObject = [orderedKeyframes lastObject];
   }
 
-  return [v33 vector];
+  return [lastObject vector];
 }
 
-+ (double)scaledFilterPresetScalarValue:(double)a3 withKey:(id)a4 forFilterID:(id)a5 andPresetID:(id)a6
++ (double)scaledFilterPresetScalarValue:(double)value withKey:(id)key forFilterID:(id)d andPresetID:(id)iD
 {
-  if (!a6)
+  if (!iD)
   {
-    return a3;
+    return value;
   }
 
-  v7 = [+[MPFilterManager sharedManager](MPFilterManager sharedManager];
-  v8 = [v7 objectForKey:@"boxMin"];
-  v9 = [v7 objectForKey:@"boxMax"];
+  sharedManager = [+[MPFilterManager sharedManager](MPFilterManager sharedManager];
+  v8 = [sharedManager objectForKey:@"boxMin"];
+  v9 = [sharedManager objectForKey:@"boxMax"];
   if (!(v8 | v9))
   {
-    return a3;
+    return value;
   }
 
   v10 = v9;
@@ -650,7 +650,7 @@ LABEL_7:
 
 LABEL_8:
     v14 = 1.0;
-    return v12 + (v14 - v12) * a3;
+    return v12 + (v14 - v12) * value;
   }
 
   [v8 floatValue];
@@ -663,18 +663,18 @@ LABEL_8:
 LABEL_5:
   [v10 floatValue];
   v14 = v13;
-  return v12 + (v14 - v12) * a3;
+  return v12 + (v14 - v12) * value;
 }
 
-+ (CGPoint)scaledFilterPresetPointValue:(CGPoint)a3 withKey:(id)a4 forFilterID:(id)a5 andPresetID:(id)a6
++ (CGPoint)scaledFilterPresetPointValue:(CGPoint)value withKey:(id)key forFilterID:(id)d andPresetID:(id)iD
 {
-  y = a3.y;
-  x = a3.x;
-  if (a6)
+  y = value.y;
+  x = value.x;
+  if (iD)
   {
     v9 = [+[MPFilterManager sharedManager](MPFilterManager "sharedManager")];
-    v10 = [v9 objectForKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"boxMin %@", a4)}];
-    v11 = [v9 objectForKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"boxMax %@", a4)}];
+    v10 = [v9 objectForKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"boxMin %@", key)}];
+    v11 = [v9 objectForKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"boxMax %@", key)}];
     if (v10 | v11)
     {
       v12 = v11;
@@ -714,17 +714,17 @@ LABEL_9:
   return result;
 }
 
-+ ($421962E1114BB55FD51FACB03C2AC210)scaledFilterPresetVectorValue:(SEL)a3 withKey:(id *)a4 forFilterID:(id)a5 andPresetID:(id)a6
++ ($421962E1114BB55FD51FACB03C2AC210)scaledFilterPresetVectorValue:(SEL)value withKey:(id *)key forFilterID:(id)d andPresetID:(id)iD
 {
   if (a7)
   {
     v10 = [+[MPFilterManager sharedManager](MPFilterManager "sharedManager")];
-    v11 = [v10 objectForKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"boxMin %@", a5)}];
-    result = [v10 objectForKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"boxMax %@", a5)}];
+    v11 = [v10 objectForKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"boxMin %@", d)}];
+    result = [v10 objectForKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"boxMax %@", d)}];
     if (v11 | result)
     {
       v12 = result;
-      var0 = a4->var0;
+      var0 = key->var0;
       v14 = [MPVector vectorFromString:@"0. 0. 0. 0."];
       result = [MPVector vectorFromString:@"0. 0. 0. 0."];
       v15 = result;
@@ -743,7 +743,7 @@ LABEL_9:
       if (var0)
       {
         v16 = 0;
-        var1 = a4->var1;
+        var1 = key->var1;
         do
         {
           [($421962E1114BB55FD51FACB03C2AC210 *)v15 valueAtIndex:v16];
@@ -761,25 +761,25 @@ LABEL_9:
     }
   }
 
-  *&retstr->var0 = *&a4->var0;
-  retstr->var1[3] = a4->var1[3];
+  *&retstr->var0 = *&key->var0;
+  retstr->var1[3] = key->var1[3];
   return result;
 }
 
-+ (id)attributesFormMPFilter:(id)a3 atTime:(double)a4
++ (id)attributesFormMPFilter:(id)filter atTime:(double)time
 {
   v6 = +[NSMutableDictionary dictionary];
-  [v6 addEntriesFromDictionary:{objc_msgSend(+[MPFilterManager sharedManager](MPFilterManager, "sharedManager"), "attributesForFilterID:andPresetID:", objc_msgSend(a3, "filterID"), objc_msgSend(a3, "presetID"))}];
-  [v6 addEntriesFromDictionary:{+[MPUtilities attributesFromAnimationPathsInFilter:atTime:](MPUtilities, "attributesFromAnimationPathsInFilter:atTime:", a3, a4)}];
+  [v6 addEntriesFromDictionary:{objc_msgSend(+[MPFilterManager sharedManager](MPFilterManager, "sharedManager"), "attributesForFilterID:andPresetID:", objc_msgSend(filter, "filterID"), objc_msgSend(filter, "presetID"))}];
+  [v6 addEntriesFromDictionary:{+[MPUtilities attributesFromAnimationPathsInFilter:atTime:](MPUtilities, "attributesFromAnimationPathsInFilter:atTime:", filter, time)}];
   return v6;
 }
 
-+ (id)attributesFromAnimationPathsInFilter:(id)a3 atTime:(double)a4
++ (id)attributesFromAnimationPathsInFilter:(id)filter atTime:(double)time
 {
   v6 = [MPUtilities defaultAttributesForMPFilter:?];
   v7 = +[NSMutableDictionary dictionary];
-  v8 = +[NSMutableDictionary dictionaryWithDictionary:](NSMutableDictionary, "dictionaryWithDictionary:", +[MPUtilities animationsPathsFromFilterID:andPresetID:](MPUtilities, "animationsPathsFromFilterID:andPresetID:", [a3 filterID], objc_msgSend(a3, "presetID")));
-  -[NSMutableDictionary addEntriesFromDictionary:](v8, "addEntriesFromDictionary:", [a3 animationPaths]);
+  v8 = +[NSMutableDictionary dictionaryWithDictionary:](NSMutableDictionary, "dictionaryWithDictionary:", +[MPUtilities animationsPathsFromFilterID:andPresetID:](MPUtilities, "animationsPathsFromFilterID:andPresetID:", [filter filterID], objc_msgSend(filter, "presetID")));
+  -[NSMutableDictionary addEntriesFromDictionary:](v8, "addEntriesFromDictionary:", [filter animationPaths]);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -803,30 +803,30 @@ LABEL_9:
         if (v14)
         {
           v15 = v14;
-          v16 = [v14 orderedKeyframes];
-          if ([objc_msgSend(v16 "lastObject")])
+          orderedKeyframes = [v14 orderedKeyframes];
+          if ([objc_msgSend(orderedKeyframes "lastObject")])
           {
             [objc_msgSend(v6 objectForKey:{v13), "floatValue"}];
-            [MPUtilities computeScalarValueForAnimationPath:v15 atTime:0 defaultsTo:a4 context:v17];
+            [MPUtilities computeScalarValueForAnimationPath:v15 atTime:0 defaultsTo:time context:v17];
             *&v18 = v18;
             v19 = [NSNumber numberWithFloat:v18];
           }
 
-          else if ([objc_msgSend(v16 "lastObject")])
+          else if ([objc_msgSend(orderedKeyframes "lastObject")])
           {
             v20 = CGPointFromString([v6 objectForKey:v13]);
-            [MPUtilities computePointValueForAnimationPath:v15 atTime:a4 defaultsTo:v20.x, v20.y];
+            [MPUtilities computePointValueForAnimationPath:v15 atTime:time defaultsTo:v20.x, v20.y];
             v19 = NSStringFromCGPoint(v27);
           }
 
           else
           {
-            if (![objc_msgSend(v16 "lastObject")])
+            if (![objc_msgSend(orderedKeyframes "lastObject")])
             {
               continue;
             }
 
-            v19 = [+[MPUtilities computeVectorValueForAnimationPath:atTime:defaultsTo:](MPUtilities computeVectorValueForAnimationPath:v15 atTime:+[MPVector vectorFromString:](MPVector defaultsTo:{"vectorFromString:", objc_msgSend(v6, "objectForKey:", v13)), a4), "CIColorString"}];
+            v19 = [+[MPUtilities computeVectorValueForAnimationPath:atTime:defaultsTo:](MPUtilities computeVectorValueForAnimationPath:v15 atTime:+[MPVector vectorFromString:](MPVector defaultsTo:{"vectorFromString:", objc_msgSend(v6, "objectForKey:", v13)), time), "CIColorString"}];
           }
 
           [v7 setValue:v19 forKey:v13];
@@ -842,13 +842,13 @@ LABEL_9:
   return v7;
 }
 
-+ (id)animationsPathsFromFilterID:(id)a3 andPresetID:(id)a4
++ (id)animationsPathsFromFilterID:(id)d andPresetID:(id)iD
 {
   v6 = +[MPFilterManager sharedManager];
-  v40 = a3;
-  v7 = a3;
-  v8 = a4;
-  v9 = [v6 animationsForFilterID:v7 andPresetID:a4];
+  dCopy = d;
+  dCopy2 = d;
+  iDCopy = iD;
+  v9 = [v6 animationsForFilterID:dCopy2 andPresetID:iD];
   v37 = +[NSMutableDictionary dictionary];
   v47 = 0u;
   v48 = 0u;
@@ -892,7 +892,7 @@ LABEL_9:
               for (i = 0; i != v14; ++i)
               {
                 [objc_msgSend(objc_msgSend(v13 objectForKey:{@"values", "objectAtIndex:", i), "CGPointValue"}];
-                [MPUtilities scaledFilterPresetPointValue:v11 withKey:v40 forFilterID:v8 andPresetID:?];
+                [MPUtilities scaledFilterPresetPointValue:v11 withKey:dCopy forFilterID:iDCopy andPresetID:?];
                 v26 = v25;
                 v28 = v27;
                 v29 = [objc_msgSend(v13 objectForKey:{@"keyTimes", "objectAtIndex:", i}];
@@ -918,7 +918,7 @@ LABEL_9:
               v44 = 0;
               v41 = v45;
               v42 = v46;
-              [MPUtilities scaledFilterPresetVectorValue:&v41 withKey:v11 forFilterID:v40 andPresetID:v8];
+              [MPUtilities scaledFilterPresetVectorValue:&v41 withKey:v11 forFilterID:dCopy andPresetID:iDCopy];
               v32 = [objc_msgSend(v13 objectForKey:{@"keyTimes", "objectAtIndex:", j}];
               if (isKindOfClass)
               {
@@ -940,7 +940,7 @@ LABEL_9:
           do
           {
             [objc_msgSend(objc_msgSend(v13 objectForKey:{@"values", "objectAtIndex:", v16), "floatValue"}];
-            [MPUtilities scaledFilterPresetScalarValue:v11 withKey:v40 forFilterID:v8 andPresetID:v18];
+            [MPUtilities scaledFilterPresetScalarValue:v11 withKey:dCopy forFilterID:iDCopy andPresetID:v18];
             v20 = v19;
             v21 = [objc_msgSend(v13 objectForKey:{@"keyTimes", "objectAtIndex:", v16}];
             if (isKindOfClass)
@@ -972,16 +972,16 @@ LABEL_9:
   return v37;
 }
 
-+ (void)syncAnimationPaths:(id)a3
++ (void)syncAnimationPaths:(id)paths
 {
   v35 = +[NSMutableArray array];
-  obj = a3;
+  obj = paths;
   v41 = +[NSMutableSet set];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v34 = [a3 countByEnumeratingWithState:&v56 objects:v63 count:16];
+  v34 = [paths countByEnumeratingWithState:&v56 objects:v63 count:16];
   if (v34)
   {
     v33 = *v57;
@@ -1003,8 +1003,8 @@ LABEL_9:
         v54 = 0u;
         v55 = 0u;
         v6 = v5;
-        v38 = [v5 keyframes];
-        v7 = [v38 countByEnumeratingWithState:&v52 objects:v62 count:16];
+        keyframes = [v5 keyframes];
+        v7 = [keyframes countByEnumeratingWithState:&v52 objects:v62 count:16];
         if (v7)
         {
           v8 = v7;
@@ -1015,7 +1015,7 @@ LABEL_9:
             {
               if (*v53 != v9)
               {
-                objc_enumerationMutation(v38);
+                objc_enumerationMutation(keyframes);
               }
 
               v11 = *(*(&v52 + 1) + 8 * i);
@@ -1027,7 +1027,7 @@ LABEL_9:
               [v41 addObject:v13];
             }
 
-            v8 = [v38 countByEnumeratingWithState:&v52 objects:v62 count:16];
+            v8 = [keyframes countByEnumeratingWithState:&v52 objects:v62 count:16];
           }
 
           while (v8);
@@ -1131,15 +1131,15 @@ LABEL_9:
   }
 }
 
-+ (id)effectContainersForTime:(double)a3 inDocument:(id)a4
++ (id)effectContainersForTime:(double)time inDocument:(id)document
 {
   v6 = +[NSMutableSet set];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v7 = [a4 layers];
-  v8 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+  layers = [document layers];
+  v8 = [layers countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1150,7 +1150,7 @@ LABEL_9:
       {
         if (*v31 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(layers);
         }
 
         v12 = *(*(&v30 + 1) + 8 * i);
@@ -1160,8 +1160,8 @@ LABEL_9:
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v15 = [v12 effectContainers];
-        v16 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        effectContainers = [v12 effectContainers];
+        v16 = [effectContainers countByEnumeratingWithState:&v26 objects:v34 count:16];
         if (v16)
         {
           v17 = v16;
@@ -1172,14 +1172,14 @@ LABEL_9:
             {
               if (*v27 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(effectContainers);
               }
 
               v20 = *(*(&v26 + 1) + 8 * j);
-              if (v14 <= a3)
+              if (v14 <= time)
               {
                 [*(*(&v26 + 1) + 8 * j) duration];
-                if (v14 + v21 >= a3)
+                if (v14 + v21 >= time)
                 {
                   [v6 addObject:v20];
                 }
@@ -1191,14 +1191,14 @@ LABEL_9:
               v14 = v14 + v23 - v24;
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v26 objects:v34 count:16];
+            v17 = [effectContainers countByEnumeratingWithState:&v26 objects:v34 count:16];
           }
 
           while (v17);
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
+      v9 = [layers countByEnumeratingWithState:&v30 objects:v35 count:16];
     }
 
     while (v9);
@@ -1207,41 +1207,41 @@ LABEL_9:
   return v6;
 }
 
-+ (id)textForIndex:(int64_t)a3 inMCContainerWithObjectID:(id)a4 inDocument:(id)a5
++ (id)textForIndex:(int64_t)index inMCContainerWithObjectID:(id)d inDocument:(id)document
 {
-  v7 = [objc_msgSend(a5 "montage")];
+  v7 = [objc_msgSend(document "montage")];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  v8 = [MPUtilities effectForMCContainerEffect:v7 inDocument:a5];
-  if ([objc_msgSend(v8 "texts")] <= a3)
+  v8 = [MPUtilities effectForMCContainerEffect:v7 inDocument:document];
+  if ([objc_msgSend(v8 "texts")] <= index)
   {
     return 0;
   }
 
-  v9 = [v8 texts];
+  texts = [v8 texts];
 
-  return [v9 objectAtIndex:a3];
+  return [texts objectAtIndex:index];
 }
 
-+ (id)effectForMCContainerWithObjectID:(id)a3 inDocument:(id)a4
++ (id)effectForMCContainerWithObjectID:(id)d inDocument:(id)document
 {
-  v5 = [objc_msgSend(a4 "montage")];
+  v5 = [objc_msgSend(document "montage")];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  return [MPUtilities effectForMCContainerEffect:v5 inDocument:a4];
+  return [MPUtilities effectForMCContainerEffect:v5 inDocument:document];
 }
 
-+ (id)effectForMCContainerEffect:(id)a3 inDocument:(id)a4
++ (id)effectForMCContainerEffect:(id)effect inDocument:(id)document
 {
-  result = [a1 createPlugPathToContainer:? inDocument:?];
+  result = [self createPlugPathToContainer:? inDocument:?];
   if (!result)
   {
     return result;
@@ -1266,7 +1266,7 @@ LABEL_9:
 
   v8 = result;
   v9 = *v36;
-  v25 = a3;
+  effectCopy = effect;
   v26 = v7;
   while (2)
   {
@@ -1279,14 +1279,14 @@ LABEL_9:
 
       v11 = *(*(&v35 + 1) + 8 * i);
       HasPrefix = NSStringHasPrefix(v11, "SI_");
-      if (!HasPrefix && (([a4 conformsToProtocol:&OBJC_PROTOCOL___MPManualLayerSupport] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
+      if (!HasPrefix && (([document conformsToProtocol:&OBJC_PROTOCOL___MPManualLayerSupport] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
       {
-        v14 = [a4 layerForKey:{v11, v25}];
-        if (!v14)
+        documentCopy2 = [document layerForKey:{v11, effectCopy}];
+        if (!documentCopy2)
         {
-          if (([a4 conformsToProtocol:&OBJC_PROTOCOL___MPAutomaticLayerSupport] & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v15 = objc_msgSend(a4, "layers"), v31 = 0u, v32 = 0u, v33 = 0u, v34 = 0u, (v16 = objc_msgSend(v15, "countByEnumeratingWithState:objects:count:", &v31, v40, 16)) == 0))
+          if (([document conformsToProtocol:&OBJC_PROTOCOL___MPAutomaticLayerSupport] & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v15 = objc_msgSend(document, "layers"), v31 = 0u, v32 = 0u, v33 = 0u, v34 = 0u, (v16 = objc_msgSend(v15, "countByEnumeratingWithState:objects:count:", &v31, v40, 16)) == 0))
           {
-            v14 = 0;
+            documentCopy2 = 0;
             goto LABEL_44;
           }
 
@@ -1301,8 +1301,8 @@ LABEL_19:
               objc_enumerationMutation(v15);
             }
 
-            v14 = *(*(&v31 + 1) + 8 * v19);
-            if ([objc_msgSend(objc_msgSend(v14 "plug")])
+            documentCopy2 = *(*(&v31 + 1) + 8 * v19);
+            if ([objc_msgSend(objc_msgSend(documentCopy2 "plug")])
             {
               break;
             }
@@ -1310,7 +1310,7 @@ LABEL_19:
             if (v17 == ++v19)
             {
               v17 = [v15 countByEnumeratingWithState:&v31 objects:v40 count:16];
-              v14 = 0;
+              documentCopy2 = 0;
               v7 = v26;
               if (v17)
               {
@@ -1331,7 +1331,7 @@ LABEL_41:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [a4 layerForKey:v11];
+          v13 = [document layerForKey:v11];
         }
 
         else
@@ -1339,9 +1339,9 @@ LABEL_41:
           if (!HasPrefix || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
           {
             objc_opt_class();
-            if ((objc_opt_isKindOfClass() & 1) == 0 || [a4 countOfEffects] < 2 || (v20 = objc_msgSend(a4, "effects"), v27 = 0u, v28 = 0u, v29 = 0u, v30 = 0u, (v21 = objc_msgSend(v20, "countByEnumeratingWithState:objects:count:", &v27, v39, 16)) == 0))
+            if ((objc_opt_isKindOfClass() & 1) == 0 || [document countOfEffects] < 2 || (v20 = objc_msgSend(document, "effects"), v27 = 0u, v28 = 0u, v29 = 0u, v30 = 0u, (v21 = objc_msgSend(v20, "countByEnumeratingWithState:objects:count:", &v27, v39, 16)) == 0))
             {
-              v14 = a4;
+              documentCopy2 = document;
               goto LABEL_44;
             }
 
@@ -1356,8 +1356,8 @@ LABEL_33:
                 objc_enumerationMutation(v20);
               }
 
-              v14 = *(*(&v27 + 1) + 8 * v24);
-              if ([objc_msgSend(objc_msgSend(v14 plug])
+              documentCopy2 = *(*(&v27 + 1) + 8 * v24);
+              if ([objc_msgSend(objc_msgSend(documentCopy2 plug])
               {
                 break;
               }
@@ -1370,31 +1370,31 @@ LABEL_33:
                   goto LABEL_33;
                 }
 
-                v14 = a4;
+                documentCopy2 = document;
                 break;
               }
             }
 
-            a3 = v25;
+            effect = effectCopy;
             goto LABEL_41;
           }
 
-          v13 = [objc_msgSend(a4 "effectContainers")];
+          v13 = [objc_msgSend(document "effectContainers")];
         }
 
-        v14 = v13;
+        documentCopy2 = v13;
       }
 
 LABEL_44:
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 countOfEffects] == &dword_0 + 1)
+      if ((objc_opt_isKindOfClass() & 1) != 0 && [documentCopy2 countOfEffects] == &dword_0 + 1)
       {
-        a4 = [objc_msgSend(v14 "effects")];
+        document = [objc_msgSend(documentCopy2 "effects")];
       }
 
       else
       {
-        a4 = v14;
+        document = documentCopy2;
       }
 
       objc_opt_class();
@@ -1407,9 +1407,9 @@ LABEL_44:
         }
       }
 
-      if ([a4 container] == a3)
+      if ([document container] == effect)
       {
-        return a4;
+        return document;
       }
     }
 
@@ -1424,9 +1424,9 @@ LABEL_44:
   }
 }
 
-+ (id)slideForSlide:(id)a3 inDocument:(id)a4
++ (id)slideForSlide:(id)slide inDocument:(id)document
 {
-  v5 = +[MPUtilities effectForMCContainerEffect:inDocument:](MPUtilities, "effectForMCContainerEffect:inDocument:", [a3 container], a4);
+  v5 = +[MPUtilities effectForMCContainerEffect:inDocument:](MPUtilities, "effectForMCContainerEffect:inDocument:", [slide container], document);
   if (!v5)
   {
     return 0;
@@ -1434,28 +1434,28 @@ LABEL_44:
 
   v6 = v5;
   v7 = [objc_msgSend(v5 "slides")];
-  if (v7 <= [a3 index])
+  if (v7 <= [slide index])
   {
     return 0;
   }
 
-  v8 = [v6 slides];
-  v9 = [a3 index];
+  slides = [v6 slides];
+  index = [slide index];
 
-  return [v8 objectAtIndex:v9];
+  return [slides objectAtIndex:index];
 }
 
-+ (id)slideForPath:(id)a3 inDocument:(id)a4
++ (id)slideForPath:(id)path inDocument:(id)document
 {
-  v5 = [objc_msgSend(a4 "montage")];
+  v5 = [objc_msgSend(document "montage")];
   if (!v5)
   {
     return 0;
   }
 
   v6 = v5;
-  v7 = [v5 slides];
-  if (![v7 count])
+  slides = [v5 slides];
+  if (![slides count])
   {
     return 0;
   }
@@ -1464,7 +1464,7 @@ LABEL_44:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [slides countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v8)
   {
     return 0;
@@ -1478,16 +1478,16 @@ LABEL_5:
   {
     if (*v19 != v10)
     {
-      objc_enumerationMutation(v7);
+      objc_enumerationMutation(slides);
     }
 
     v12 = *(*(&v18 + 1) + 8 * v11);
-    v13 = +[MPUtilities effectForMCContainerEffect:inDocument:](MPUtilities, "effectForMCContainerEffect:inDocument:", [v12 container], a4);
+    v13 = +[MPUtilities effectForMCContainerEffect:inDocument:](MPUtilities, "effectForMCContainerEffect:inDocument:", [v12 container], document);
     if (v13)
     {
       v14 = v13;
-      v15 = [v12 index];
-      if (v15 < [objc_msgSend(v14 "slides")])
+      index = [v12 index];
+      if (index < [objc_msgSend(v14 "slides")])
       {
         v16 = [objc_msgSend(v14 "slides")];
         if ([objc_msgSend(v6 "path")])
@@ -1499,7 +1499,7 @@ LABEL_5:
 
     if (v9 == ++v11)
     {
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [slides countByEnumeratingWithState:&v18 objects:v22 count:16];
       v16 = 0;
       if (v9)
       {
@@ -1511,9 +1511,9 @@ LABEL_5:
   }
 }
 
-+ (id)textsDisplayedAtTime:(double)a3 inDocument:(id)a4
++ (id)textsDisplayedAtTime:(double)time inDocument:(id)document
 {
-  v5 = [MPUtilities effectContainersForTime:a4 inDocument:?];
+  v5 = [MPUtilities effectContainersForTime:document inDocument:?];
   v6 = +[NSMutableSet set];
   v42 = 0u;
   v43 = 0u;
@@ -1542,12 +1542,12 @@ LABEL_5:
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v11 = [v8 effects];
-        v12 = [v11 countByEnumeratingWithState:&v38 objects:v47 count:16];
+        effects = [v8 effects];
+        v12 = [effects countByEnumeratingWithState:&v38 objects:v47 count:16];
         if (v12)
         {
           v13 = v12;
-          v14 = a3 - v10;
+          v14 = time - v10;
           v15 = *v39;
           do
           {
@@ -1555,7 +1555,7 @@ LABEL_5:
             {
               if (*v39 != v15)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(effects);
               }
 
               v17 = *(*(&v38 + 1) + 8 * i);
@@ -1563,8 +1563,8 @@ LABEL_5:
               v35 = 0u;
               v36 = 0u;
               v37 = 0u;
-              v18 = [v17 texts];
-              v19 = [v18 countByEnumeratingWithState:&v34 objects:v46 count:16];
+              texts = [v17 texts];
+              v19 = [texts countByEnumeratingWithState:&v34 objects:v46 count:16];
               if (v19)
               {
                 v20 = v19;
@@ -1575,7 +1575,7 @@ LABEL_5:
                   {
                     if (*v35 != v21)
                     {
-                      objc_enumerationMutation(v18);
+                      objc_enumerationMutation(texts);
                     }
 
                     v23 = *(*(&v34 + 1) + 8 * j);
@@ -1589,14 +1589,14 @@ LABEL_5:
                     }
                   }
 
-                  v20 = [v18 countByEnumeratingWithState:&v34 objects:v46 count:16];
+                  v20 = [texts countByEnumeratingWithState:&v34 objects:v46 count:16];
                 }
 
                 while (v20);
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v38 objects:v47 count:16];
+            v13 = [effects countByEnumeratingWithState:&v38 objects:v47 count:16];
           }
 
           while (v13);
@@ -1615,10 +1615,10 @@ LABEL_5:
   return v6;
 }
 
-+ (id)textForElementID:(id)a3 withMCContainerEffect:(id)a4 inDocument:(id)a5
++ (id)textForElementID:(id)d withMCContainerEffect:(id)effect inDocument:(id)document
 {
-  v6 = [MPUtilities effectForMCContainerEffect:a4 inDocument:a5];
-  v7 = [objc_msgSend(a3 stringByTrimmingCharactersInSet:{+[NSCharacterSet letterCharacterSet](NSCharacterSet, "letterCharacterSet")), "integerValue"}];
+  v6 = [MPUtilities effectForMCContainerEffect:effect inDocument:document];
+  v7 = [objc_msgSend(d stringByTrimmingCharactersInSet:{+[NSCharacterSet letterCharacterSet](NSCharacterSet, "letterCharacterSet")), "integerValue"}];
   if (!v6)
   {
     return 0;
@@ -1630,21 +1630,21 @@ LABEL_5:
     return 0;
   }
 
-  v9 = [v6 texts];
+  texts = [v6 texts];
 
-  return [v9 objectAtIndex:v8];
+  return [texts objectAtIndex:v8];
 }
 
-+ (id)slideForElementID:(id)a3 withMCContainerEffect:(id)a4 inDocument:(id)a5
++ (id)slideForElementID:(id)d withMCContainerEffect:(id)effect inDocument:(id)document
 {
-  v6 = [MPUtilities effectForMCContainerEffect:a4 inDocument:a5];
+  v6 = [MPUtilities effectForMCContainerEffect:effect inDocument:document];
   if (!v6)
   {
     return 0;
   }
 
   v7 = v6;
-  v8 = [objc_msgSend(a3 stringByTrimmingCharactersInSet:{+[NSCharacterSet letterCharacterSet](NSCharacterSet, "letterCharacterSet")), "integerValue"}];
+  v8 = [objc_msgSend(d stringByTrimmingCharactersInSet:{+[NSCharacterSet letterCharacterSet](NSCharacterSet, "letterCharacterSet")), "integerValue"}];
   if (![objc_msgSend(v7 "slides")] || v8 >= objc_msgSend(objc_msgSend(v7, "slides"), "count"))
   {
     if ([objc_msgSend(v7 "secondarySlides")])
@@ -1655,7 +1655,7 @@ LABEL_5:
         v8 -= v10;
         if (v8 < [objc_msgSend(v7 "secondarySlides")])
         {
-          v9 = [v7 secondarySlides];
+          secondarySlides = [v7 secondarySlides];
           goto LABEL_9;
         }
       }
@@ -1664,19 +1664,19 @@ LABEL_5:
     return 0;
   }
 
-  v9 = [v7 slides];
+  secondarySlides = [v7 slides];
 LABEL_9:
 
-  return [v9 objectAtIndex:v8];
+  return [secondarySlides objectAtIndex:v8];
 }
 
-+ (id)layerForContainer:(id)a3 inDocument:(id)a4
++ (id)layerForContainer:(id)container inDocument:(id)document
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [objc_msgSend(a4 "documentLayerGroup")];
+  v5 = [objc_msgSend(document "documentLayerGroup")];
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (!v6)
   {
@@ -1695,7 +1695,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([objc_msgSend(v10 "plug")] == a3)
+    if ([objc_msgSend(v10 "plug")] == container)
     {
       return v10;
     }
@@ -1713,20 +1713,20 @@ LABEL_3:
   }
 }
 
-+ (id)idOfCombinedID:(id)a3
++ (id)idOfCombinedID:(id)d
 {
-  v4 = [a3 componentsSeparatedByString:@"/"];
+  v4 = [d componentsSeparatedByString:@"/"];
   if (![v4 count])
   {
-    return a3;
+    return d;
   }
 
   return [v4 objectAtIndex:0];
 }
 
-+ (id)presetIDOfCombinedID:(id)a3
++ (id)presetIDOfCombinedID:(id)d
 {
-  v3 = [a3 componentsSeparatedByString:@"/"];
+  v3 = [d componentsSeparatedByString:@"/"];
   if ([v3 count] < 2)
   {
     return @"Default";
@@ -1735,27 +1735,27 @@ LABEL_3:
   return [v3 objectAtIndex:1];
 }
 
-+ (id)placesPinLabelForSlideAssetPath:(id)a3 inDocument:(id)a4
++ (id)placesPinLabelForSlideAssetPath:(id)path inDocument:(id)document
 {
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v5 = [a4 layers];
-  result = [v5 countByEnumeratingWithState:&v52 objects:v59 count:16];
+  layers = [document layers];
+  result = [layers countByEnumeratingWithState:&v52 objects:v59 count:16];
   if (result)
   {
     v7 = result;
     v8 = *v53;
     v30 = *v53;
-    v31 = v5;
+    v31 = layers;
     do
     {
       for (i = 0; i != v7; i = i + 1)
       {
         if (*v53 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(layers);
         }
 
         v10 = *(*(&v52 + 1) + 8 * i);
@@ -1763,8 +1763,8 @@ LABEL_3:
         v49 = 0u;
         v50 = 0u;
         v51 = 0u;
-        v11 = [v10 effectContainers];
-        v12 = [v11 countByEnumeratingWithState:&v48 objects:v58 count:16];
+        effectContainers = [v10 effectContainers];
+        v12 = [effectContainers countByEnumeratingWithState:&v48 objects:v58 count:16];
         if (v12)
         {
           v13 = v12;
@@ -1772,7 +1772,7 @@ LABEL_3:
           v34 = i;
           v35 = v7;
           v32 = *v49;
-          v33 = v11;
+          v33 = effectContainers;
           do
           {
             v15 = 0;
@@ -1780,7 +1780,7 @@ LABEL_3:
             {
               if (*v49 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(effectContainers);
               }
 
               v37 = v15;
@@ -1831,7 +1831,7 @@ LABEL_3:
                               objc_enumerationMutation(v22);
                             }
 
-                            v29 = [objc_msgSend(*(*(&v40 + 1) + 8 * v27) objectForKey:{@"photos", "indexOfObject:", a3}];
+                            v29 = [objc_msgSend(*(*(&v40 + 1) + 8 * v27) objectForKey:{@"photos", "indexOfObject:", path}];
                             if (v29 != 0x7FFFFFFFFFFFFFFFLL)
                             {
                               if (v29)
@@ -1864,11 +1864,11 @@ LABEL_3:
 
                   v18 = [obj countByEnumeratingWithState:&v44 objects:v57 count:16];
                   v8 = v30;
-                  v5 = v31;
+                  layers = v31;
                   i = v34;
                   v7 = v35;
                   v14 = v32;
-                  v11 = v33;
+                  effectContainers = v33;
                   v13 = v36;
                 }
 
@@ -1879,14 +1879,14 @@ LABEL_3:
             }
 
             while ((v37 + 1) != v13);
-            v13 = [v11 countByEnumeratingWithState:&v48 objects:v58 count:16];
+            v13 = [effectContainers countByEnumeratingWithState:&v48 objects:v58 count:16];
           }
 
           while (v13);
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v52 objects:v59 count:16];
+      v7 = [layers countByEnumeratingWithState:&v52 objects:v59 count:16];
       result = 0;
     }
 
@@ -1896,7 +1896,7 @@ LABEL_3:
   return result;
 }
 
-+ (double)aspectRatioOfLayerable:(id)a3 relativeToAspectRatio:(double)a4
++ (double)aspectRatioOfLayerable:(id)layerable relativeToAspectRatio:(double)ratio
 {
   v6 = [+[MPUtilities parentsOfObject:](MPUtilities "parentsOfObject:"reverseObjectEnumerator"")];
   v17 = 0u;
@@ -1927,7 +1927,7 @@ LABEL_3:
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             [v11 size];
-            a4 = a4 * (v12 / v13);
+            ratio = ratio * (v12 / v13);
           }
         }
 
@@ -1941,36 +1941,36 @@ LABEL_3:
     while (v8);
   }
 
-  [a3 size];
-  return a4 * (v14 / v15);
+  [layerable size];
+  return ratio * (v14 / v15);
 }
 
-+ (double)displayTimeForText:(id)a3
++ (double)displayTimeForText:(id)text
 {
-  v4 = [a3 parentEffect];
-  if (!v4)
+  parentEffect = [text parentEffect];
+  if (!parentEffect)
   {
     return 0.0;
   }
 
-  v5 = v4;
-  v6 = [v4 parentDocument];
-  v7 = [v6 titleEffect];
-  if (v5 == v7)
+  v5 = parentEffect;
+  parentDocument = [parentEffect parentDocument];
+  titleEffect = [parentDocument titleEffect];
+  if (v5 == titleEffect)
   {
-    v11 = v7;
-    v12 = [v7 effectID];
+    v11 = titleEffect;
+    effectID = [titleEffect effectID];
     [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
     v9 = v13;
     if (([+[MPEffectManager sharedManager](MPEffectManager "sharedManager")] & 1) == 0)
     {
       v14 = +[MREffectManager sharedManager];
-      v15 = [v11 formattedAttributes];
-      v16 = [v11 effectID];
-      v17 = [v11 slides];
-      v18 = [v11 texts];
-      [v6 aspectRatio];
-      v19 = [v14 customTimingWithEffectID:v16 effectAttributes:v15 slideInformation:v17 textInformation:v18 inAspectRatio:?];
+      formattedAttributes = [v11 formattedAttributes];
+      effectID2 = [v11 effectID];
+      slides = [v11 slides];
+      texts = [v11 texts];
+      [parentDocument aspectRatio];
+      v19 = [v14 customTimingWithEffectID:effectID2 effectAttributes:formattedAttributes slideInformation:slides textInformation:texts inAspectRatio:?];
       if (v19)
       {
         v20 = v19;
@@ -1986,11 +1986,11 @@ LABEL_3:
 
       else
       {
-        [v14 defaultMainDurationForEffectID:v12];
+        [v14 defaultMainDurationForEffectID:effectID];
         v59 = v58;
-        [v14 defaultPhaseInDurationForEffectID:v12];
+        [v14 defaultPhaseInDurationForEffectID:effectID];
         v61 = v60;
-        [v14 defaultPhaseOutDurationForEffectID:v12];
+        [v14 defaultPhaseOutDurationForEffectID:effectID];
         v63 = v62;
         [v11 fullDuration];
         v28 = v64 / (v59 + v61 + v63);
@@ -2002,7 +2002,7 @@ LABEL_3:
     goto LABEL_19;
   }
 
-  [a3 displayTime];
+  [text displayTime];
   if (v8 != 0.0)
   {
     v9 = v8;
@@ -2011,16 +2011,16 @@ LABEL_19:
     return v9 + v65;
   }
 
-  v29 = [v5 effectID];
+  effectID3 = [v5 effectID];
   [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   v31 = v30;
   v32 = +[MREffectManager sharedManager];
-  v33 = [v5 formattedAttributes];
-  v34 = [v5 effectID];
-  v35 = [v5 slides];
-  v36 = [v5 texts];
-  [v6 aspectRatio];
-  v37 = [v32 customTimingWithEffectID:v34 effectAttributes:v33 slideInformation:v35 textInformation:v36 inAspectRatio:?];
+  formattedAttributes2 = [v5 formattedAttributes];
+  effectID4 = [v5 effectID];
+  slides2 = [v5 slides];
+  texts2 = [v5 texts];
+  [parentDocument aspectRatio];
+  v37 = [v32 customTimingWithEffectID:effectID4 effectAttributes:formattedAttributes2 slideInformation:slides2 textInformation:texts2 inAspectRatio:?];
   if (v37)
   {
     v38 = v37;
@@ -2036,11 +2036,11 @@ LABEL_19:
 
   else
   {
-    [v32 defaultMainDurationForEffectID:v29];
+    [v32 defaultMainDurationForEffectID:effectID3];
     v48 = v47;
-    [v32 defaultPhaseInDurationForEffectID:v29];
+    [v32 defaultPhaseInDurationForEffectID:effectID3];
     v50 = v49;
-    [v32 defaultPhaseOutDurationForEffectID:v29];
+    [v32 defaultPhaseOutDurationForEffectID:effectID3];
     v52 = v51;
     [v5 fullDuration];
     v46 = v53 / (v48 + v50 + v52);
@@ -2055,7 +2055,7 @@ LABEL_19:
 
   [objc_msgSend(v5 "parentContainer")];
   v57 = v56 + v54;
-  [v6 videoDuration];
+  [parentDocument videoDuration];
   if (v57 < result)
   {
     return v57;
@@ -2064,14 +2064,14 @@ LABEL_19:
   return result;
 }
 
-+ (id)executeScript:(id)a3 withHeader:(id)a4 andAttributes:(id)a5
++ (id)executeScript:(id)script withHeader:(id)header andAttributes:(id)attributes
 {
-  if (!a3)
+  if (!script)
   {
     return 0;
   }
 
-  v7 = [a3 componentsSeparatedByString:{@", "}];
+  v7 = [script componentsSeparatedByString:{@", "}];
   v8 = [objc_msgSend(v7 objectAtIndex:{0), "stringByTrimmingCharactersInSet:", +[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
   v9 = [objc_msgSend(v7 objectAtIndex:{1), "stringByTrimmingCharactersInSet:", +[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
   v10 = [[MUMathExpressionFloatBased alloc] initWithString:v8 error:0];
@@ -2080,7 +2080,7 @@ LABEL_19:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v12 = [a5 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  v12 = [attributes countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2091,11 +2091,11 @@ LABEL_19:
       {
         if (*v39 != v14)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(attributes);
         }
 
         v16 = *(*(&v38 + 1) + 8 * i);
-        v17 = [a5 objectForKey:v16];
+        v17 = [attributes objectForKey:v16];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -2114,7 +2114,7 @@ LABEL_19:
         [(MUMathExpressionFloatBased *)v11 setValue:v16 forVariable:v20];
       }
 
-      v13 = [a5 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v13 = [attributes countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v13);
@@ -2124,7 +2124,7 @@ LABEL_19:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v21 = [a4 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  v21 = [header countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v21)
   {
     v22 = v21;
@@ -2135,11 +2135,11 @@ LABEL_19:
       {
         if (*v35 != v23)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(header);
         }
 
         v25 = *(*(&v34 + 1) + 8 * j);
-        v26 = [a4 objectForKey:v25];
+        v26 = [header objectForKey:v25];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -2152,7 +2152,7 @@ LABEL_19:
         }
       }
 
-      v22 = [a4 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v22 = [header countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v22);
@@ -2178,23 +2178,23 @@ LABEL_19:
   return v4;
 }
 
-+ (CGColor)CGColorFromString:(id)a3
++ (CGColor)CGColorFromString:(id)string
 {
-  components = CGRectFromString(a3);
+  components = CGRectFromString(string);
   v3 = +[MPUtilities newColorSpaceForDevice];
   v4 = CGColorCreate(v3, &components.origin.x);
   CGColorSpaceRelease(v3);
   return v4;
 }
 
-+ (id)stringFromCGColor:(CGColor *)a3
++ (id)stringFromCGColor:(CGColor *)color
 {
-  if (!a3)
+  if (!color)
   {
     return 0;
   }
 
-  Components = CGColorGetComponents(a3);
+  Components = CGColorGetComponents(color);
   v4 = *Components;
   v5 = *(Components + 1);
   v6 = *(Components + 2);
@@ -2203,12 +2203,12 @@ LABEL_19:
   return NSStringFromCGRect(*&v4);
 }
 
-+ (CGColor)CGColorWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
++ (CGColor)CGColorWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
-  components[0] = a3;
-  components[1] = a4;
-  components[2] = a5;
-  components[3] = a6;
+  components[0] = red;
+  components[1] = green;
+  components[2] = blue;
+  components[3] = alpha;
   v6 = +[MPUtilities newColorSpaceForDevice];
   v7 = CGColorCreate(v6, components);
   CGColorSpaceRelease(v6);
@@ -2223,27 +2223,27 @@ LABEL_19:
   return v3;
 }
 
-+ (id)createPlugPathToContainer:(id)a3 inDocument:(id)a4
++ (id)createPlugPathToContainer:(id)container inDocument:(id)document
 {
-  if (!a3)
+  if (!container)
   {
     return 0;
   }
 
   v6 = +[NSMutableArray array];
-  v7 = [a4 montage];
-  v8 = [a3 referencingPlug];
-  if (!v8)
+  montage = [document montage];
+  referencingPlug = [container referencingPlug];
+  if (!referencingPlug)
   {
     return 0;
   }
 
-  for (i = v8; i != [v7 rootPlug]; i = objc_msgSend(objc_msgSend(i, "supercontainer"), "referencingPlug"))
+  for (i = referencingPlug; i != [montage rootPlug]; i = objc_msgSend(objc_msgSend(i, "supercontainer"), "referencingPlug"))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = NSStringWithInteger("SI_", [i index]);
+      idInSupercontainer = NSStringWithInteger("SI_", [i index]);
     }
 
     else
@@ -2258,19 +2258,19 @@ LABEL_19:
         }
       }
 
-      v10 = [i idInSupercontainer];
+      idInSupercontainer = [i idInSupercontainer];
     }
 
-    [v6 insertObject:v10 atIndex:0];
+    [v6 insertObject:idInSupercontainer atIndex:0];
   }
 
   return v6;
 }
 
-+ (id)createPlugPathToObject:(id)a3 inDocument:(id)a4
++ (id)createPlugPathToObject:(id)object inDocument:(id)document
 {
   v6 = +[NSMutableArray array];
-  v7 = [a4 montage];
+  montage = [document montage];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -2286,27 +2286,27 @@ LABEL_19:
           return 0;
         }
 
-        if (![a3 plug])
+        if (![object plug])
         {
-          a3 = [a3 parentContainer];
+          object = [object parentContainer];
         }
       }
     }
   }
 
-  v8 = [a3 plug];
-  if (!v8)
+  plug = [object plug];
+  if (!plug)
   {
     return 0;
   }
 
-  v9 = v8;
-  while (v9 != [v7 rootPlug])
+  v9 = plug;
+  while (v9 != [montage rootPlug])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = NSStringWithInteger("SI_", [v9 index]);
+      idInSupercontainer = NSStringWithInteger("SI_", [v9 index]);
     }
 
     else
@@ -2322,23 +2322,23 @@ LABEL_19:
         }
       }
 
-      v10 = [v9 idInSupercontainer];
+      idInSupercontainer = [v9 idInSupercontainer];
     }
 
-    [v6 insertObject:v10 atIndex:0];
+    [v6 insertObject:idInSupercontainer atIndex:0];
     v9 = [objc_msgSend(v9 "supercontainer")];
   }
 
   return v6;
 }
 
-+ (id)createMCAction:(id)a3 forPlug:(id)a4 withKey:(id)a5
++ (id)createMCAction:(id)action forPlug:(id)plug withKey:(id)key
 {
-  v8 = [a3 targetObject];
+  targetObject = [action targetObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = +[MCTransitionTrigger transitionForTargetPlugObjectID:withTransitionID:](MCTransitionTrigger, "transitionForTargetPlugObjectID:withTransitionID:", [v8 objectID], objc_msgSend(a3, "transitionID"));
+    v9 = +[MCTransitionTrigger transitionForTargetPlugObjectID:withTransitionID:](MCTransitionTrigger, "transitionForTargetPlugObjectID:withTransitionID:", [targetObject objectID], objc_msgSend(action, "transitionID"));
   }
 
   else
@@ -2346,7 +2346,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = +[MCAnimationTrigger animationTriggerForTargetPlugObjectID:withAnimationKey:](MCAnimationTrigger, "animationTriggerForTargetPlugObjectID:withAnimationKey:", [v8 objectID], objc_msgSend(a3, "animationKey"));
+      v9 = +[MCAnimationTrigger animationTriggerForTargetPlugObjectID:withAnimationKey:](MCAnimationTrigger, "animationTriggerForTargetPlugObjectID:withAnimationKey:", [targetObject objectID], objc_msgSend(action, "animationKey"));
     }
 
     else
@@ -2354,7 +2354,7 @@ LABEL_19:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = +[MCActionTrigger actionTriggerForTargetPlugObjectID:withActionKey:](MCActionTrigger, "actionTriggerForTargetPlugObjectID:withActionKey:", [v8 objectID], objc_msgSend(a3, "actionKey"));
+        v9 = +[MCActionTrigger actionTriggerForTargetPlugObjectID:withActionKey:](MCActionTrigger, "actionTriggerForTargetPlugObjectID:withActionKey:", [targetObject objectID], objc_msgSend(action, "actionKey"));
       }
 
       else
@@ -2362,7 +2362,7 @@ LABEL_19:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = +[MCStateOperationExpression stateOperationForTargetPlugObjectID:withStateKey:andExpression:](MCStateOperationExpression, "stateOperationForTargetPlugObjectID:withStateKey:andExpression:", [v8 objectID], objc_msgSend(a3, "stateKey"), objc_msgSend(a3, "operation"));
+          v9 = +[MCStateOperationExpression stateOperationForTargetPlugObjectID:withStateKey:andExpression:](MCStateOperationExpression, "stateOperationForTargetPlugObjectID:withStateKey:andExpression:", [targetObject objectID], objc_msgSend(action, "stateKey"), objc_msgSend(action, "operation"));
         }
 
         else
@@ -2390,7 +2390,7 @@ LABEL_19:
                 goto LABEL_16;
               }
 
-              v9 = +[MCGenericAction genericActionForTargetPlugObjectID:withAttributes:](MCGenericAction, "genericActionForTargetPlugObjectID:withAttributes:", [v8 objectID], objc_msgSend(a3, "attributes"));
+              v9 = +[MCGenericAction genericActionForTargetPlugObjectID:withAttributes:](MCGenericAction, "genericActionForTargetPlugObjectID:withAttributes:", [targetObject objectID], objc_msgSend(action, "attributes"));
             }
           }
         }
@@ -2400,17 +2400,17 @@ LABEL_19:
 
   v10 = v9;
 LABEL_16:
-  [a4 setAction:v10 forKey:a5];
+  [plug setAction:v10 forKey:key];
   return v10;
 }
 
-+ (void)collectAllActionableLayers:(id)a3 inDictionary:(id)a4
++ (void)collectAllActionableLayers:(id)layers inDictionary:(id)dictionary
 {
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [layers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2421,50 +2421,50 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(layers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [a4 setObject:v10 forKey:{objc_msgSend(v10, "uuid")}];
-          v11 = [v10 keyedLayers];
+          [dictionary setObject:v10 forKey:{objc_msgSend(v10, "uuid")}];
+          keyedLayers = [v10 keyedLayers];
         }
 
         else
         {
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
-          [a4 setObject:v10 forKey:{objc_msgSend(v10, "uuid")}];
+          [dictionary setObject:v10 forKey:{objc_msgSend(v10, "uuid")}];
           if ((isKindOfClass & 1) == 0)
           {
             continue;
           }
 
-          v11 = [v10 layers];
+          keyedLayers = [v10 layers];
         }
 
-        +[MPUtilities collectAllActionableLayers:inDictionary:](MPUtilities, "collectAllActionableLayers:inDictionary:", [v11 allValues], a4);
+        +[MPUtilities collectAllActionableLayers:inDictionary:](MPUtilities, "collectAllActionableLayers:inDictionary:", [keyedLayers allValues], dictionary);
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [layers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (id)createPlugInContainer:(id)a3 forLayer:(id)a4 key:(id)a5 inDocument:(id)a6
++ (id)createPlugInContainer:(id)container forLayer:(id)layer key:(id)key inDocument:(id)document
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [objc_msgSend(a6 "montage")];
-    v11 = [a3 setPlugForContainer:v10 forID:a5];
-    [a4 setMontage:{objc_msgSend(a6, "montage")}];
-    [a4 setPlug:v11];
-    [a4 setLayerSerializer:v10];
+    v10 = [objc_msgSend(document "montage")];
+    v11 = [container setPlugForContainer:v10 forID:key];
+    [layer setMontage:{objc_msgSend(document, "montage")}];
+    [layer setPlug:v11];
+    [layer setLayerSerializer:v10];
   }
 
   else
@@ -2472,11 +2472,11 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [objc_msgSend(a6 "montage")];
-      v11 = [a3 setPlugForContainer:v12 forID:a5];
-      [a4 setMontage:{objc_msgSend(a6, "montage")}];
-      [a4 setPlug:v11];
-      [a4 setLayerEffect:v12];
+      v12 = [objc_msgSend(document "montage")];
+      v11 = [container setPlugForContainer:v12 forID:key];
+      [layer setMontage:{objc_msgSend(document, "montage")}];
+      [layer setPlug:v11];
+      [layer setLayerEffect:v12];
     }
 
     else
@@ -2484,7 +2484,7 @@ LABEL_16:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v13 = [objc_msgSend(a6 "montage")];
+        v13 = [objc_msgSend(document "montage")];
       }
 
       else
@@ -2495,34 +2495,34 @@ LABEL_16:
           return 0;
         }
 
-        v13 = [objc_msgSend(a6 "montage")];
+        v13 = [objc_msgSend(document "montage")];
       }
 
       v14 = v13;
-      v11 = [a3 setPlugForContainer:v13 forID:a5];
-      [a4 setContainer:v14];
-      [a4 setPlug:v11];
+      v11 = [container setPlugForContainer:v13 forID:key];
+      [layer setContainer:v14];
+      [layer setPlug:v11];
     }
   }
 
   return v11;
 }
 
-+ (id)createPlugInSlide:(id)a3 forLayer:(id)a4 inDocument:(id)a5
++ (id)createPlugInSlide:(id)slide forLayer:(id)layer inDocument:(id)document
 {
-  v7 = [objc_msgSend(a5 montage];
-  v8 = -[MCObject initFromScratchWithMontage:]([MCPlugSlide alloc], "initFromScratchWithMontage:", [a5 montage]);
-  [v8 setContainer:v7];
-  [a4 setContainer:v7];
-  [a4 setPlug:v8];
+  montage = [objc_msgSend(document montage];
+  v8 = -[MCObject initFromScratchWithMontage:]([MCPlugSlide alloc], "initFromScratchWithMontage:", [document montage]);
+  [v8 setContainer:montage];
+  [layer setContainer:montage];
+  [layer setPlug:v8];
 
   return v8;
 }
 
-+ (id)parentsOfObject:(id)a3
++ (id)parentsOfObject:(id)object
 {
   v4 = +[NSMutableArray array];
-  while (a3)
+  while (object)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -2533,13 +2533,13 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a3 = [a3 parentContainer];
+      object = [object parentContainer];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a3 parentLayer];
+      parentLayer = [object parentLayer];
     }
 
     else
@@ -2558,12 +2558,12 @@ LABEL_16:
         }
       }
 
-      v5 = [a3 parent];
+      parentLayer = [object parent];
     }
 
-    a3 = v5;
+    object = parentLayer;
 LABEL_12:
-    [v4 addObject:a3];
+    [v4 addObject:object];
   }
 
   return v4;

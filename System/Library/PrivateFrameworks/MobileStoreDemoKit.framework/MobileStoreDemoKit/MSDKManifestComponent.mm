@@ -1,17 +1,17 @@
 @interface MSDKManifestComponent
-- (MSDKManifestComponent)initWithIdentifier:(id)a3 componentType:(int64_t)a4 andDictionary:(id)a5;
-- (id)_parseDataItem:(id)a3;
-- (id)_parseDataItemsForAppComponent:(id)a3;
-- (id)_parseFileItems:(id)a3;
-- (void)addDependency:(id)a3;
+- (MSDKManifestComponent)initWithIdentifier:(id)identifier componentType:(int64_t)type andDictionary:(id)dictionary;
+- (id)_parseDataItem:(id)item;
+- (id)_parseDataItemsForAppComponent:(id)component;
+- (id)_parseFileItems:(id)items;
+- (void)addDependency:(id)dependency;
 @end
 
 @implementation MSDKManifestComponent
 
-- (MSDKManifestComponent)initWithIdentifier:(id)a3 componentType:(int64_t)a4 andDictionary:(id)a5
+- (MSDKManifestComponent)initWithIdentifier:(id)identifier componentType:(int64_t)type andDictionary:(id)dictionary
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = MSDKManifestComponent;
   v11 = [(MSDKManifestComponent *)&v37 init];
@@ -21,16 +21,16 @@
     goto LABEL_19;
   }
 
-  [(MSDKManifestComponent *)v11 setType:a4];
-  objc_storeStrong(&v12->_identifier, a3);
+  [(MSDKManifestComponent *)v11 setType:type];
+  objc_storeStrong(&v12->_identifier, identifier);
   v13 = objc_opt_new();
   [(MSDKManifestComponent *)v12 setMutableDependencies:v13];
 
-  v14 = [v10 objectForKey:@"Manifest" ofType:objc_opt_class()];
+  v14 = [dictionaryCopy objectForKey:@"Manifest" ofType:objc_opt_class()];
   v15 = v14;
   if (!v14)
   {
-    v15 = [v10 objectForKey:@"Settings" ofType:objc_opt_class()];
+    v15 = [dictionaryCopy objectForKey:@"Settings" ofType:objc_opt_class()];
     if (!v15)
     {
       v36 = defaultLogHandle();
@@ -134,9 +134,9 @@ LABEL_36:
   v20 = [v15 objectForKey:@"Dependencies" ofType:objc_opt_class()];
   [(MSDKManifestComponent *)v12 setRawDependencyDict:v20];
 
-  v21 = [(MSDKManifestComponent *)v12 rawDependencyDict];
+  rawDependencyDict = [(MSDKManifestComponent *)v12 rawDependencyDict];
 
-  if (!v21)
+  if (!rawDependencyDict)
   {
     v36 = defaultLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -160,11 +160,11 @@ LABEL_18:
   platformType = v12->_platformType;
   v12->_platformType = v28;
 
-  v30 = [v10 objectForKey:@"Certificate" ofType:objc_opt_class()];
+  v30 = [dictionaryCopy objectForKey:@"Certificate" ofType:objc_opt_class()];
   certificate = v12->_certificate;
   v12->_certificate = v30;
 
-  v32 = [v10 objectForKey:@"Signature" ofType:objc_opt_class()];
+  v32 = [dictionaryCopy objectForKey:@"Signature" ofType:objc_opt_class()];
   signature = v12->_signature;
   v12->_signature = v32;
 
@@ -175,20 +175,20 @@ LABEL_20:
   return v34;
 }
 
-- (void)addDependency:(id)a3
+- (void)addDependency:(id)dependency
 {
-  v4 = a3;
-  v5 = [(MSDKManifestComponent *)self mutableDependencies];
-  [v5 addObject:v4];
+  dependencyCopy = dependency;
+  mutableDependencies = [(MSDKManifestComponent *)self mutableDependencies];
+  [mutableDependencies addObject:dependencyCopy];
 }
 
-- (id)_parseDataItemsForAppComponent:(id)a3
+- (id)_parseDataItemsForAppComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = objc_opt_new();
   v6 = [MSDKManifestInstallableItem alloc];
-  v7 = [(MSDKManifestComponent *)self identifier];
-  v8 = [(MSDKManifestInstallableItem *)v6 initWithIdentifier:v7 andDictionary:v4 forComponent:self];
+  identifier = [(MSDKManifestComponent *)self identifier];
+  v8 = [(MSDKManifestInstallableItem *)v6 initWithIdentifier:identifier andDictionary:componentCopy forComponent:self];
 
   if (v8)
   {
@@ -205,13 +205,13 @@ LABEL_20:
   return v9;
 }
 
-- (id)_parseDataItem:(id)a3
+- (id)_parseDataItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_opt_new();
   v6 = [MSDKManifestDataItem alloc];
-  v7 = [(MSDKManifestComponent *)self identifier];
-  v8 = [(MSDKManifestDataItem *)v6 initWithIdentifier:v7 andDictionary:v4 forComponent:self];
+  identifier = [(MSDKManifestComponent *)self identifier];
+  v8 = [(MSDKManifestDataItem *)v6 initWithIdentifier:identifier andDictionary:itemCopy forComponent:self];
 
   if (v8)
   {
@@ -228,16 +228,16 @@ LABEL_20:
   return v9;
 }
 
-- (id)_parseFileItems:(id)a3
+- (id)_parseFileItems:(id)items
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {

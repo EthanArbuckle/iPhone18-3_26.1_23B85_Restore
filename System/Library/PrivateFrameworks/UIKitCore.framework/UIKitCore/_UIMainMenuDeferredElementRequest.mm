@@ -1,52 +1,52 @@
 @interface _UIMainMenuDeferredElementRequest
-- (BOOL)isEqual:(id)a3;
-- (_UIMainMenuDeferredElementRequest)initWithCoder:(id)a3;
-- (_UIMainMenuDeferredElementRequest)initWithDeferredElementIdentifier:(id)a3 session:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (_UIMainMenuDeferredElementRequest)initWithCoder:(id)coder;
+- (_UIMainMenuDeferredElementRequest)initWithDeferredElementIdentifier:(id)identifier session:(id)session;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIMainMenuDeferredElementRequest
 
-- (_UIMainMenuDeferredElementRequest)initWithDeferredElementIdentifier:(id)a3 session:(id)a4
+- (_UIMainMenuDeferredElementRequest)initWithDeferredElementIdentifier:(id)identifier session:(id)session
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  sessionCopy = session;
   v9 = [(_UIMainMenuDeferredElementRequest *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deferredElementIdentifier, a3);
-    objc_storeStrong(&v10->_providedSession, a4);
-    v11 = [v8 identifier];
+    objc_storeStrong(&v9->_deferredElementIdentifier, identifier);
+    objc_storeStrong(&v10->_providedSession, session);
+    identifier = [sessionCopy identifier];
     sessionIdentifier = v10->_sessionIdentifier;
-    v10->_sessionIdentifier = v11;
+    v10->_sessionIdentifier = identifier;
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deferredElementIdentifier = self->_deferredElementIdentifier;
-  v5 = a3;
-  [v5 encodeObject:deferredElementIdentifier forKey:@"DeferredElementIdentifier"];
-  [v5 encodeObject:self->_sessionIdentifier forKey:@"SessionIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deferredElementIdentifier forKey:@"DeferredElementIdentifier"];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:@"SessionIdentifier"];
 }
 
-- (_UIMainMenuDeferredElementRequest)initWithCoder:(id)a3
+- (_UIMainMenuDeferredElementRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(_UIMainMenuDeferredElementRequest *)self init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"DeferredElementIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"DeferredElementIdentifier"];
     deferredElementIdentifier = v5->_deferredElementIdentifier;
     v5->_deferredElementIdentifier = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"SessionIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"SessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v10;
   }
@@ -54,10 +54,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -69,7 +69,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       deferredElementIdentifier = v7->_deferredElementIdentifier;
       v9 = self->_deferredElementIdentifier;
       v10 = deferredElementIdentifier;
@@ -133,9 +133,9 @@ LABEL_18:
   v4 = [v3 appendObject:self->_deferredElementIdentifier withName:@"deferredElementIdentifier"];
   v5 = [v3 appendObject:self->_providedSession withName:@"session" skipIfNil:1];
   v6 = [v3 appendObject:self->_sessionIdentifier withName:@"_sessionIdentifier"];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

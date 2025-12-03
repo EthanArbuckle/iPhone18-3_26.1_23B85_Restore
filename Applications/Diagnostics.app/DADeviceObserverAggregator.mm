@@ -1,37 +1,37 @@
 @interface DADeviceObserverAggregator
-+ (id)aggregatorWithObserverClasses:(id)a3;
++ (id)aggregatorWithObserverClasses:(id)classes;
 - (DADeviceObserverAggregator)init;
-- (DADeviceObserverAggregator)initWithObserverClasses:(id)a3;
+- (DADeviceObserverAggregator)initWithObserverClasses:(id)classes;
 - (id)allDevices;
-- (id)beginDiscoveringDevicesWithHandler:(id)a3;
+- (id)beginDiscoveringDevicesWithHandler:(id)handler;
 - (void)_beginObserving;
 - (void)_endObserving;
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3;
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3;
-- (void)observerDidChangeDevices:(id)a3;
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler;
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier;
+- (void)observerDidChangeDevices:(id)devices;
 @end
 
 @implementation DADeviceObserverAggregator
 
-+ (id)aggregatorWithObserverClasses:(id)a3
++ (id)aggregatorWithObserverClasses:(id)classes
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObserverClasses:v4];
+  classesCopy = classes;
+  v5 = [[self alloc] initWithObserverClasses:classesCopy];
 
   return v5;
 }
 
 - (DADeviceObserverAggregator)init
 {
-  v3 = [objc_opt_class() defaultObserverClasses];
-  v4 = [(DADeviceObserverAggregator *)self initWithObserverClasses:v3];
+  defaultObserverClasses = [objc_opt_class() defaultObserverClasses];
+  v4 = [(DADeviceObserverAggregator *)self initWithObserverClasses:defaultObserverClasses];
 
   return v4;
 }
 
-- (DADeviceObserverAggregator)initWithObserverClasses:(id)a3
+- (DADeviceObserverAggregator)initWithObserverClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   v26.receiver = self;
   v26.super_class = DADeviceObserverAggregator;
   v5 = [(DADeviceObserverAggregator *)&v26 init];
@@ -41,12 +41,12 @@
     discoveryQueue = v5->_discoveryQueue;
     v5->_discoveryQueue = v6;
 
-    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [classesCopy count]);
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = v4;
+    v9 = classesCopy;
     v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v10)
     {
@@ -96,8 +96,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(DADeviceObserverAggregator *)self observers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observers = [(DADeviceObserverAggregator *)self observers];
+  v5 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -108,14 +108,14 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(observers);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) devices];
-        [v3 unionSet:v9];
+        devices = [*(*(&v11 + 1) + 8 * i) devices];
+        [v3 unionSet:devices];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [observers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -124,31 +124,31 @@
   return v3;
 }
 
-- (id)beginDiscoveringDevicesWithHandler:(id)a3
+- (id)beginDiscoveringDevicesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSUUID UUID];
-  v6 = [(DADeviceObserverAggregator *)self handlers];
-  objc_sync_enter(v6);
-  v7 = [v4 copy];
+  handlers = [(DADeviceObserverAggregator *)self handlers];
+  objc_sync_enter(handlers);
+  v7 = [handlerCopy copy];
   v8 = objc_retainBlock(v7);
-  v9 = [(DADeviceObserverAggregator *)self handlers];
-  [v9 setObject:v8 forKeyedSubscript:v5];
+  handlers2 = [(DADeviceObserverAggregator *)self handlers];
+  [handlers2 setObject:v8 forKeyedSubscript:v5];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(handlers);
   [(DADeviceObserverAggregator *)self _beginObserving];
 
   return v5;
 }
 
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DADeviceObserverAggregator *)self handlers];
-  [v5 removeObjectForKey:v4];
+  identifierCopy = identifier;
+  handlers = [(DADeviceObserverAggregator *)self handlers];
+  [handlers removeObjectForKey:identifierCopy];
 
-  v6 = [(DADeviceObserverAggregator *)self handlers];
-  v7 = [v6 count];
+  handlers2 = [(DADeviceObserverAggregator *)self handlers];
+  v7 = [handlers2 count];
 
   if (!v7)
   {
@@ -157,33 +157,33 @@
   }
 }
 
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(21, 0);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001DB74;
   v7[3] = &unk_1001BC5A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)observerDidChangeDevices:(id)a3
+- (void)observerDidChangeDevices:(id)devices
 {
   v4 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(DADeviceObserverAggregator *)self handlers];
+    handlers = [(DADeviceObserverAggregator *)self handlers];
     *buf = 138412290;
-    v24 = v5;
+    v24 = handlers;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Handlers: %@", buf, 0xCu);
   }
 
-  v6 = [(DADeviceObserverAggregator *)self handlers];
-  v7 = [v6 copy];
+  handlers2 = [(DADeviceObserverAggregator *)self handlers];
+  v7 = [handlers2 copy];
 
   v21 = 0u;
   v22 = 0u;
@@ -210,7 +210,7 @@
         v14 = [v8 objectForKeyedSubscript:{*(*(&v19 + 1) + 8 * v13), v18, v19}];
         if (v14)
         {
-          v15 = [(DADeviceObserverAggregator *)self allDevices];
+          allDevices = [(DADeviceObserverAggregator *)self allDevices];
           v16 = DiagnosticLogHandleForCategory();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
@@ -218,11 +218,11 @@
             *buf = v18;
             v24 = v17;
             v25 = 2112;
-            v26 = v15;
+            v26 = allDevices;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Calling handler: %@ with devices: %@", buf, 0x16u);
           }
 
-          (v14)[2](v14, v15);
+          (v14)[2](v14, allDevices);
         }
 
         v13 = v13 + 1;
@@ -242,8 +242,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(DADeviceObserverAggregator *)self observers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  observers = [(DADeviceObserverAggregator *)self observers];
+  v3 = [observers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -255,7 +255,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(observers);
         }
 
         [*(*(&v7 + 1) + 8 * v6) begin];
@@ -263,7 +263,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [observers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -276,8 +276,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(DADeviceObserverAggregator *)self observers];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  observers = [(DADeviceObserverAggregator *)self observers];
+  v3 = [observers countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -289,7 +289,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(observers);
         }
 
         [*(*(&v7 + 1) + 8 * v6) end];
@@ -297,7 +297,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [observers countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);

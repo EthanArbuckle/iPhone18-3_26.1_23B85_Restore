@@ -1,27 +1,27 @@
 @interface NLXSchemaCDMRequestEnded
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMRequestEnded)initWithDictionary:(id)a3;
-- (NLXSchemaCDMRequestEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMRequestEnded)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMRequestEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addParses:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addParses:(id)parses;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMRequestEnded
 
-- (NLXSchemaCDMRequestEnded)initWithDictionary:(id)a3
+- (NLXSchemaCDMRequestEnded)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = NLXSchemaCDMRequestEnded;
   v5 = [(NLXSchemaCDMRequestEnded *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"parses"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"parses"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v15 = [v4 objectForKeyedSubscript:{@"languageVariantClassifierResult", v19}];
+    v15 = [dictionaryCopy objectForKeyedSubscript:{@"languageVariantClassifierResult", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,30 +79,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMRequestEnded)initWithJSON:(id)a3
+- (NLXSchemaCDMRequestEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMRequestEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMRequestEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMRequestEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -116,26 +116,26 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_languageVariantClassifierResult)
   {
-    v4 = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    languageVariantClassifierResult = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
+    dictionaryRepresentation = [languageVariantClassifierResult dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"languageVariantClassifierResult"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"languageVariantClassifierResult"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"languageVariantClassifierResult"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"languageVariantClassifierResult"];
     }
   }
 
   if ([(NSArray *)self->_parses count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -155,16 +155,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation2 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -174,36 +174,36 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"parses"];
+    [dictionary setObject:array forKeyedSubscript:@"parses"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(NLXSchemaCDMRequestEnded *)self parses];
-  v6 = [v4 parses];
-  if ((v5 != 0) == (v6 == 0))
+  parses = [(NLXSchemaCDMRequestEnded *)self parses];
+  parses2 = [equalCopy parses];
+  if ((parses != 0) == (parses2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(NLXSchemaCDMRequestEnded *)self parses];
-  if (v7)
+  parses3 = [(NLXSchemaCDMRequestEnded *)self parses];
+  if (parses3)
   {
-    v8 = v7;
-    v9 = [(NLXSchemaCDMRequestEnded *)self parses];
-    v10 = [v4 parses];
-    v11 = [v9 isEqual:v10];
+    v8 = parses3;
+    parses4 = [(NLXSchemaCDMRequestEnded *)self parses];
+    parses5 = [equalCopy parses];
+    v11 = [parses4 isEqual:parses5];
 
     if (!v11)
     {
@@ -215,12 +215,12 @@
   {
   }
 
-  v5 = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
-  v6 = [v4 languageVariantClassifierResult];
-  if ((v5 != 0) != (v6 == 0))
+  parses = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
+  parses2 = [equalCopy languageVariantClassifierResult];
+  if ((parses != 0) != (parses2 == 0))
   {
-    v12 = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
-    if (!v12)
+    languageVariantClassifierResult = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
+    if (!languageVariantClassifierResult)
     {
 
 LABEL_15:
@@ -228,10 +228,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
-    v15 = [v4 languageVariantClassifierResult];
-    v16 = [v14 isEqual:v15];
+    v13 = languageVariantClassifierResult;
+    languageVariantClassifierResult2 = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
+    languageVariantClassifierResult3 = [equalCopy languageVariantClassifierResult];
+    v16 = [languageVariantClassifierResult2 isEqual:languageVariantClassifierResult3];
 
     if (v16)
     {
@@ -251,10 +251,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -286,48 +286,48 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
+  languageVariantClassifierResult = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
 
-  if (v10)
+  if (languageVariantClassifierResult)
   {
-    v11 = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
+    languageVariantClassifierResult2 = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addParses:(id)a3
+- (void)addParses:(id)parses
 {
-  v4 = a3;
+  parsesCopy = parses;
   parses = self->_parses;
-  v8 = v4;
+  v8 = parsesCopy;
   if (!parses)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_parses;
-    self->_parses = v6;
+    self->_parses = array;
 
-    v4 = v8;
+    parsesCopy = v8;
     parses = self->_parses;
   }
 
-  [(NSArray *)parses addObject:v4];
+  [(NSArray *)parses addObject:parsesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = NLXSchemaCDMRequestEnded;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMRequestEnded *)self parses:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(NLXSchemaCDMRequestEnded *)self setParses:v7];
 
-  v8 = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
+  languageVariantClassifierResult = [(NLXSchemaCDMRequestEnded *)self languageVariantClassifierResult];
+  v9 = [languageVariantClassifierResult applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v9 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v9 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaCDMRequestEnded *)self deleteLanguageVariantClassifierResult];
   }

@@ -1,33 +1,33 @@
 @interface NSArray
-- (id)elementsToString:(char)a3 debug:;
+- (id)elementsToString:(char)string debug:;
 @end
 
 @implementation NSArray
 
-- (id)elementsToString:(char)a3 debug:
+- (id)elementsToString:(char)string debug:
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v10 = 0;
     v11 = &v10;
     v12 = 0x3032000000;
     v13 = __Block_byref_object_copy__0;
     v14 = __Block_byref_object_dispose__0;
-    v15 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __48__NSArray_RunningBoard__elementsToString_debug___block_invoke;
     v7[3] = &unk_1E7276338;
     v7[4] = &v10;
     v8 = a2;
-    v9 = a3;
-    [v3 enumerateObjectsUsingBlock:v7];
-    v3 = v11[5];
+    stringCopy = string;
+    [selfCopy enumerateObjectsUsingBlock:v7];
+    selfCopy = v11[5];
     _Block_object_dispose(&v10, 8);
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __48__NSArray_RunningBoard__elementsToString_debug___block_invoke(uint64_t a1, void *a2, uint64_t a3)

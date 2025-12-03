@@ -1,24 +1,24 @@
 @interface HAPBTLETuple
-+ (id)atvState2String:(unint64_t)a3;
-+ (id)state2String:(BTStatus *)a3;
-+ (void)bandwidthFromATVState:(unint64_t)a3 MinBandwidth:(float *)a4 MaxBandwidth:(float *)a5;
++ (id)atvState2String:(unint64_t)string;
++ (id)state2String:(BTStatus *)string;
++ (void)bandwidthFromATVState:(unint64_t)state MinBandwidth:(float *)bandwidth MaxBandwidth:(float *)maxBandwidth;
 - (BTStatus)state;
 - (id)description;
-- (void)setState:(BTStatus *)a3;
+- (void)setState:(BTStatus *)state;
 @end
 
 @implementation HAPBTLETuple
 
-+ (void)bandwidthFromATVState:(unint64_t)a3 MinBandwidth:(float *)a4 MaxBandwidth:(float *)a5
++ (void)bandwidthFromATVState:(unint64_t)state MinBandwidth:(float *)bandwidth MaxBandwidth:(float *)maxBandwidth
 {
   v5 = 0;
-  v6 = (a3 >> 1) & 2;
-  if ((a3 & 2) != 0)
+  v6 = (state >> 1) & 2;
+  if ((state & 2) != 0)
   {
     v6 = 1;
   }
 
-  while ((qword_10023A930[v5] & a3) == 0)
+  while ((qword_10023A930[v5] & state) == 0)
   {
     if (++v5 == 4)
     {
@@ -30,8 +30,8 @@
   v7 = v5 + 1;
 LABEL_7:
   v8 = 0;
-  v9 = vand_s8(vshl_u32(vdup_n_s32(a3), 0xFFFFFFF9FFFFFFFALL), 0x100000001);
-  while ((qword_10023A950[v8] & a3) == 0)
+  v9 = vand_s8(vshl_u32(vdup_n_s32(state), 0xFFFFFFF9FFFFFFFALL), 0x100000001);
+  while ((qword_10023A950[v8] & state) == 0)
   {
     if (++v8 == 3)
     {
@@ -43,7 +43,7 @@ LABEL_7:
   v10 = v8 + 1;
 LABEL_12:
   v11 = 0;
-  while ((qword_10023A968[v11] & a3) == 0)
+  while ((qword_10023A968[v11] & state) == 0)
   {
     if (++v11 == 3)
     {
@@ -55,7 +55,7 @@ LABEL_12:
   v12 = v11 + 1;
 LABEL_17:
   v13 = 0;
-  while ((qword_10023A980[v13] & a3) == 0)
+  while ((qword_10023A980[v13] & state) == 0)
   {
     if (++v13 == 3)
     {
@@ -83,19 +83,19 @@ LABEL_22:
   }
 
   while (v15 != 7);
-  *a4 = v17;
-  *a5 = v16;
+  *bandwidth = v17;
+  *maxBandwidth = v16;
 }
 
-+ (id)atvState2String:(unint64_t)a3
++ (id)atvState2String:(unint64_t)string
 {
-  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d ("), a3;
+  v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%d ("), string;
   if ([&off_100282538 count])
   {
     v5 = 0;
     do
     {
-      if ((qword_10023A9E0[v5] & a3) != 0)
+      if ((qword_10023A9E0[v5] & string) != 0)
       {
         v6 = [&off_100282538 objectAtIndexedSubscript:v5];
         v7 = [NSString stringWithFormat:@"%@|%@", v4, v6];
@@ -114,40 +114,40 @@ LABEL_22:
   return v8;
 }
 
-+ (id)state2String:(BTStatus *)a3
++ (id)state2String:(BTStatus *)string
 {
-  v4 = [NSString stringWithFormat:@"%@ LE devices            : %zu \n", &stru_10027BDA0, a3->lowEnergyConnections];
-  v5 = [NSString stringWithFormat:@"%@ classic devices       : %zu \n", v4, a3->connectedDevices];
+  v4 = [NSString stringWithFormat:@"%@ LE devices            : %zu \n", &stru_10027BDA0, string->lowEnergyConnections];
+  v5 = [NSString stringWithFormat:@"%@ classic devices       : %zu \n", v4, string->connectedDevices];
 
-  v6 = [NSString stringWithFormat:@"%@ leRemote              : %zu \n", v5, a3->leRemote];
+  v6 = [NSString stringWithFormat:@"%@ leRemote              : %zu \n", v5, string->leRemote];
 
-  v7 = [NSString stringWithFormat:@"%@ leAcc                 : %zu \n", v6, a3->leAcc];
+  v7 = [NSString stringWithFormat:@"%@ leAcc                 : %zu \n", v6, string->leAcc];
 
-  v8 = [NSString stringWithFormat:@"%@ btKb                  : %zu \n", v7, a3->btKB];
+  v8 = [NSString stringWithFormat:@"%@ btKb                  : %zu \n", v7, string->btKB];
 
-  v9 = [NSString stringWithFormat:@"%@ a2dp                  : %zu \n", v8, a3->a2dp];
+  v9 = [NSString stringWithFormat:@"%@ a2dp                  : %zu \n", v8, string->a2dp];
 
-  v10 = [NSString stringWithFormat:@"%@ btGC                  : %zu \n", v9, a3->btGC];
+  v10 = [NSString stringWithFormat:@"%@ btGC                  : %zu \n", v9, string->btGC];
 
-  v11 = [NSString stringWithFormat:@"%@ eAcc                  : %zu \n", v10, a3->eAcc];
+  v11 = [NSString stringWithFormat:@"%@ eAcc                  : %zu \n", v10, string->eAcc];
 
-  v12 = [NSString stringWithFormat:@"%@ HK                    : %zu \n", v11, a3->hk];
+  v12 = [NSString stringWithFormat:@"%@ HK                    : %zu \n", v11, string->hk];
 
-  v13 = [NSString stringWithFormat:@"%@ non-HID               : %zu \n", v12, a3->nonHIDConnections];
+  v13 = [NSString stringWithFormat:@"%@ non-HID               : %zu \n", v12, string->nonHIDConnections];
 
-  v14 = [NSString stringWithFormat:@"%@ HID                   : %zu \n", v13, a3->connectedHIDDevices];
+  v14 = [NSString stringWithFormat:@"%@ HID                   : %zu \n", v13, string->connectedHIDDevices];
 
-  v15 = [NSString stringWithFormat:@"%@ oneSniffAttemptDevices: %zu \n", v14, a3->oneSniffAttemptDevices];
+  v15 = [NSString stringWithFormat:@"%@ oneSniffAttemptDevices: %zu \n", v14, string->oneSniffAttemptDevices];
 
-  v16 = [NSString stringWithFormat:@"%@ twoSniffAttemptDevices: %zu \n", v15, a3->twoSniffAttemptDevices];
+  v16 = [NSString stringWithFormat:@"%@ twoSniffAttemptDevices: %zu \n", v15, string->twoSniffAttemptDevices];
 
-  v17 = [NSString stringWithFormat:@"%@ sco                   : %zu \n", v16, a3->sco];
+  v17 = [NSString stringWithFormat:@"%@ sco                   : %zu \n", v16, string->sco];
 
-  v18 = [NSString stringWithFormat:@"%@ wiap                  : %zu \n", v17, a3->wiap];
+  v18 = [NSString stringWithFormat:@"%@ wiap                  : %zu \n", v17, string->wiap];
 
-  v19 = [NSString stringWithFormat:@"%@ remote                : %zu \n", v18, a3->remote];
+  v19 = [NSString stringWithFormat:@"%@ remote                : %zu \n", v18, string->remote];
 
-  if (a3->isScanning)
+  if (string->isScanning)
   {
     v20 = @"YES";
   }
@@ -159,7 +159,7 @@ LABEL_22:
 
   v21 = [NSString stringWithFormat:@"%@ scanning              : %@ \n", v19, v20];
 
-  if (a3->isDiscoverable)
+  if (string->isDiscoverable)
   {
     v22 = @"YES";
   }
@@ -171,7 +171,7 @@ LABEL_22:
 
   v23 = [NSString stringWithFormat:@"%@ discoverable          : %@ \n", v21, v22];
 
-  if (a3->isConnectable)
+  if (string->isConnectable)
   {
     v24 = @"YES";
   }
@@ -220,20 +220,20 @@ LABEL_22:
   return self;
 }
 
-- (void)setState:(BTStatus *)a3
+- (void)setState:(BTStatus *)state
 {
-  *&self->_state.leRemote = *&a3->leRemote;
-  v3 = *&a3->btKB;
-  v4 = *&a3->btGC;
-  v5 = *&a3->nonHIDConnections;
-  *&self->_state.hk = *&a3->hk;
+  *&self->_state.leRemote = *&state->leRemote;
+  v3 = *&state->btKB;
+  v4 = *&state->btGC;
+  v5 = *&state->nonHIDConnections;
+  *&self->_state.hk = *&state->hk;
   *&self->_state.nonHIDConnections = v5;
   *&self->_state.btKB = v3;
   *&self->_state.btGC = v4;
-  v6 = *&a3->oneSniffAttemptDevices;
-  v7 = *&a3->sco;
-  v8 = *&a3->remote;
-  *&self->_state.isScanning = *&a3->isScanning;
+  v6 = *&state->oneSniffAttemptDevices;
+  v7 = *&state->sco;
+  v8 = *&state->remote;
+  *&self->_state.isScanning = *&state->isScanning;
   *&self->_state.sco = v7;
   *&self->_state.remote = v8;
   *&self->_state.oneSniffAttemptDevices = v6;

@@ -1,14 +1,14 @@
 @interface HFTemperatureStatusItem
 + (id)customValueFormatter;
-+ (id)titleStringForState:(int64_t)a3;
-+ (unint64_t)abstractCurrentModeInResponse:(id)a3;
-+ (unint64_t)abstractTargetModeInResponse:(id)a3;
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3;
++ (id)titleStringForState:(int64_t)state;
++ (unint64_t)abstractCurrentModeInResponse:(id)response;
++ (unint64_t)abstractTargetModeInResponse:(id)response;
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects;
 @end
 
 @implementation HFTemperatureStatusItem
 
-- (id)iconDescriptorForRepresentedHomeKitObjects:(id)a3
+- (id)iconDescriptorForRepresentedHomeKitObjects:(id)objects
 {
   v3 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:@"thermometer"];
 
@@ -96,31 +96,31 @@ uint64_t __49__HFTemperatureStatusItem_displayValueComparator__block_invoke_2(ui
 + (id)customValueFormatter
 {
   v2 = +[HFFormatterManager sharedInstance];
-  v3 = [v2 temperatureFormatter];
+  temperatureFormatter = [v2 temperatureFormatter];
 
-  [v3 setInputIsCelsius:1];
+  [temperatureFormatter setInputIsCelsius:1];
 
-  return v3;
+  return temperatureFormatter;
 }
 
-+ (id)titleStringForState:(int64_t)a3
++ (id)titleStringForState:(int64_t)state
 {
-  if (a3 > 4)
+  if (state > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = _HFLocalizedStringWithDefaultValue(off_277E02458[a3], off_277E02458[a3], 1);
+    v4 = _HFLocalizedStringWithDefaultValue(off_277E02458[state], off_277E02458[state], 1);
   }
 
   return v4;
 }
 
-+ (unint64_t)abstractTargetModeInResponse:(id)a3
++ (unint64_t)abstractTargetModeInResponse:(id)response
 {
-  v3 = [(HFTemperatureItemUtilities *)HFThermostatItemUtilities targetHeatingCoolingModeValueInResponse:a3];
+  v3 = [(HFTemperatureItemUtilities *)HFThermostatItemUtilities targetHeatingCoolingModeValueInResponse:response];
   v4 = v3;
   if (v3)
   {
@@ -135,9 +135,9 @@ uint64_t __49__HFTemperatureStatusItem_displayValueComparator__block_invoke_2(ui
   return v5;
 }
 
-+ (unint64_t)abstractCurrentModeInResponse:(id)a3
++ (unint64_t)abstractCurrentModeInResponse:(id)response
 {
-  v3 = [(HFTemperatureItemUtilities *)HFThermostatItemUtilities currentHeatingCoolingModeValueInResponse:a3];
+  v3 = [(HFTemperatureItemUtilities *)HFThermostatItemUtilities currentHeatingCoolingModeValueInResponse:response];
   v4 = v3;
   if (v3)
   {

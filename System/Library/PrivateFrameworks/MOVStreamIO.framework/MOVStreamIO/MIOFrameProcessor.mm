@@ -1,20 +1,20 @@
 @interface MIOFrameProcessor
-- (MIOFrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3;
-- (opaqueCMFormatDescription)updatedFormatDescriptionIfNeededWithBuffer:(__CVBuffer *)a3 currentFormatDescription:(opaqueCMFormatDescription *)a4;
+- (MIOFrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description;
+- (opaqueCMFormatDescription)updatedFormatDescriptionIfNeededWithBuffer:(__CVBuffer *)buffer currentFormatDescription:(opaqueCMFormatDescription *)description;
 - (void)dealloc;
 @end
 
 @implementation MIOFrameProcessor
 
-- (MIOFrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3
+- (MIOFrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description
 {
   v6.receiver = self;
   v6.super_class = MIOFrameProcessor;
   v4 = [(MIOFrameProcessor *)&v6 init];
   if (v4)
   {
-    CFRetain(a3);
-    v4->_formatDesc = a3;
+    CFRetain(description);
+    v4->_formatDesc = description;
     [(MIOFrameProcessor *)v4 setBufferCacheMode:0];
   }
 
@@ -34,20 +34,20 @@
   [(MIOFrameProcessor *)&v4 dealloc];
 }
 
-- (opaqueCMFormatDescription)updatedFormatDescriptionIfNeededWithBuffer:(__CVBuffer *)a3 currentFormatDescription:(opaqueCMFormatDescription *)a4
+- (opaqueCMFormatDescription)updatedFormatDescriptionIfNeededWithBuffer:(__CVBuffer *)buffer currentFormatDescription:(opaqueCMFormatDescription *)description
 {
   if (![(MIOFrameProcessor *)self formatDescriptionNeedsUpdate])
   {
-    return a4;
+    return description;
   }
 
   [(MIOFrameProcessor *)self setFormatDescriptionNeedsUpdate:0];
-  if (a4)
+  if (description)
   {
-    CFRelease(a4);
+    CFRelease(description);
   }
 
-  return [MOVStreamIOUtility createFormatDescriptionFromPixelBuffer:a3];
+  return [MOVStreamIOUtility createFormatDescriptionFromPixelBuffer:buffer];
 }
 
 @end

@@ -3,9 +3,9 @@
 + (id)CNToVCardSocialProfileConstantsMapping;
 + (id)vCardToCNInstantMessageConstantsMapping;
 + (id)vCardToCNSocialProfileConstantsMapping;
-- (CNVCardConstantsMapping)initWithMapping:(id)a3;
+- (CNVCardConstantsMapping)initWithMapping:(id)mapping;
 - (id)invertedMapping;
-- (id)mappedConstant:(id)a3;
+- (id)mappedConstant:(id)constant;
 @end
 
 @implementation CNVCardConstantsMapping
@@ -67,7 +67,7 @@ void __66__CNVCardConstantsMapping_CNToVCardInstantMessageConstantsMapping__bloc
   block[1] = 3221225472;
   block[2] = __66__CNVCardConstantsMapping_vCardToCNInstantMessageConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (vCardToCNInstantMessageConstantsMapping_onceToken != -1)
   {
     dispatch_once(&vCardToCNInstantMessageConstantsMapping_onceToken, block);
@@ -134,7 +134,7 @@ void __65__CNVCardConstantsMapping_CNToVCardSocialProfileConstantsMapping__block
   block[1] = 3221225472;
   block[2] = __65__CNVCardConstantsMapping_vCardToCNSocialProfileConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (vCardToCNSocialProfileConstantsMapping_onceToken != -1)
   {
     dispatch_once(&vCardToCNSocialProfileConstantsMapping_onceToken, block);
@@ -153,15 +153,15 @@ void __65__CNVCardConstantsMapping_vCardToCNSocialProfileConstantsMapping__block
   vCardToCNSocialProfileConstantsMapping_s_mapping = v1;
 }
 
-- (CNVCardConstantsMapping)initWithMapping:(id)a3
+- (CNVCardConstantsMapping)initWithMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v9.receiver = self;
   v9.super_class = CNVCardConstantsMapping;
   v5 = [(CNVCardConstantsMapping *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [mappingCopy copy];
     mapping = v5->_mapping;
     v5->_mapping = v6;
   }
@@ -172,13 +172,13 @@ void __65__CNVCardConstantsMapping_vCardToCNSocialProfileConstantsMapping__block
 - (id)invertedMapping
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CNVCardConstantsMapping *)self mapping];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  mapping = [(CNVCardConstantsMapping *)self mapping];
+  v5 = [mapping countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -189,32 +189,32 @@ void __65__CNVCardConstantsMapping_vCardToCNSocialProfileConstantsMapping__block
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mapping);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(CNVCardConstantsMapping *)self mapping];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        mapping2 = [(CNVCardConstantsMapping *)self mapping];
+        v11 = [mapping2 objectForKeyedSubscript:v9];
 
-        [v3 setObject:v9 forKeyedSubscript:v11];
+        [dictionary setObject:v9 forKeyedSubscript:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [mapping countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [objc_alloc(objc_opt_class()) initWithMapping:v3];
+  v12 = [objc_alloc(objc_opt_class()) initWithMapping:dictionary];
 
   return v12;
 }
 
-- (id)mappedConstant:(id)a3
+- (id)mappedConstant:(id)constant
 {
-  v4 = a3;
-  v5 = [(CNVCardConstantsMapping *)self mapping];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  constantCopy = constant;
+  mapping = [(CNVCardConstantsMapping *)self mapping];
+  v6 = [mapping objectForKeyedSubscript:constantCopy];
 
   if (v6)
   {
@@ -223,7 +223,7 @@ void __65__CNVCardConstantsMapping_vCardToCNSocialProfileConstantsMapping__block
 
   else
   {
-    v7 = v4;
+    v7 = constantCopy;
   }
 
   v8 = v7;

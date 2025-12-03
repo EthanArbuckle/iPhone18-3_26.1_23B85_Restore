@@ -1,32 +1,32 @@
 @interface LNFetchOptionsDefaultValueConnectionOperation
-- (LNFetchOptionsDefaultValueConnectionOperation)initWithConnectionInterface:(id)a3 action:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)finishWithError:(id)a3;
+- (LNFetchOptionsDefaultValueConnectionOperation)initWithConnectionInterface:(id)interface action:(id)action queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchOptionsDefaultValueConnectionOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchOptionsDefaultValueConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchOptionsDefaultValueConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchOptionsDefaultValueConnectionOperation *)self result];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    result = [(LNFetchOptionsDefaultValueConnectionOperation *)self result];
+    v7 = [(LNConnectionOperation *)self validatingResult:result error:errorCopy];
 
-    v8 = [(LNFetchOptionsDefaultValueConnectionOperation *)self completionHandler];
-    v9 = [(LNFetchOptionsDefaultValueConnectionOperation *)self result];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNFetchOptionsDefaultValueConnectionOperation *)self completionHandler];
+    result2 = [(LNFetchOptionsDefaultValueConnectionOperation *)self result];
+    (completionHandler2)[2](completionHandler2, result2, v7);
 
     [(LNFetchOptionsDefaultValueConnectionOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNFetchOptionsDefaultValueConnectionOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -38,21 +38,21 @@
   v3 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(LNFetchOptionsDefaultValueConnectionOperation *)self action];
-    v5 = [v4 identifier];
+    action = [(LNFetchOptionsDefaultValueConnectionOperation *)self action];
+    identifier = [action identifier];
     *buf = 138412290;
-    v12 = v5;
+    v12 = identifier;
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Fetching options default values for action %@", buf, 0xCu);
   }
 
-  v6 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v7 = [(LNFetchOptionsDefaultValueConnectionOperation *)self action];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  action2 = [(LNFetchOptionsDefaultValueConnectionOperation *)self action];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__LNFetchOptionsDefaultValueConnectionOperation_start__block_invoke;
   v9[3] = &unk_1E74B1958;
   v9[4] = self;
-  [v6 fetchOptionsDefaultValuesForAction:v7 completionHandler:v9];
+  [connectionInterface fetchOptionsDefaultValuesForAction:action2 completionHandler:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -69,16 +69,16 @@ void __54__LNFetchOptionsDefaultValueConnectionOperation_start__block_invoke(uin
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchOptionsDefaultValueConnectionOperation)initWithConnectionInterface:(id)a3 action:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (LNFetchOptionsDefaultValueConnectionOperation)initWithConnectionInterface:(id)interface action:(id)action queue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = v14;
-  if (v12)
+  interfaceCopy = interface;
+  actionCopy = action;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v15 = handlerCopy;
+  if (actionCopy)
   {
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -86,8 +86,8 @@ void __54__LNFetchOptionsDefaultValueConnectionOperation_start__block_invoke(uin
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"LNFetchOptionsDefaultValueConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchOptionsDefaultValueConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
     if (v15)
     {
@@ -95,18 +95,18 @@ void __54__LNFetchOptionsDefaultValueConnectionOperation_start__block_invoke(uin
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"LNFetchOptionsDefaultValueConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchOptionsDefaultValueConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_3:
-  v16 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v26.receiver = self;
   v26.super_class = LNFetchOptionsDefaultValueConnectionOperation;
-  v17 = [(LNInterfaceConnectionOperation *)&v26 initWithIdentifier:v16 connectionInterface:v11 priority:1 queue:v13 activity:&__block_literal_global_10078];
+  v17 = [(LNInterfaceConnectionOperation *)&v26 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_10078];
 
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [actionCopy copy];
     action = v17->_action;
     v17->_action = v18;
 

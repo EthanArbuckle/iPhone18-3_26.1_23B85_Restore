@@ -1,23 +1,23 @@
 @interface FCSetValueMapTable
 - (FCSetValueMapTable)init;
-- (id)_setForKey:(id)a3;
+- (id)_setForKey:(id)key;
 - (id)description;
 - (id)keyEnumerator;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)objectEnumerator;
-- (id)objectsForKey:(id)a3;
-- (void)addObject:(id)a3 forKey:(id)a4;
-- (void)addObjects:(id)a3 forKey:(id)a4;
-- (void)removeObject:(id)a3 forKey:(id)a4;
-- (void)removeObjectsForKey:(id)a3;
+- (id)objectsForKey:(id)key;
+- (void)addObject:(id)object forKey:(id)key;
+- (void)addObjects:(id)objects forKey:(id)key;
+- (void)removeObject:(id)object forKey:(id)key;
+- (void)removeObjectsForKey:(id)key;
 @end
 
 @implementation FCSetValueMapTable
 
 - (id)description
 {
-  v2 = [(FCSetValueMapTable *)self backingMapTable];
-  v3 = [v2 description];
+  backingMapTable = [(FCSetValueMapTable *)self backingMapTable];
+  v3 = [backingMapTable description];
 
   return v3;
 }
@@ -37,21 +37,21 @@
   return v2;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x1E69E9840];
   v5 = [+[FCSetValueMapTable allocWithZone:](FCSetValueMapTable init];
-  v6 = [(FCSetValueMapTable *)self backingMapTable];
+  backingMapTable = [(FCSetValueMapTable *)self backingMapTable];
   v19 = v5;
-  v7 = [(FCSetValueMapTable *)v5 backingMapTable];
+  backingMapTable2 = [(FCSetValueMapTable *)v5 backingMapTable];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = [(FCSetValueMapTable *)self backingMapTable];
-  v9 = [v8 keyEnumerator];
+  backingMapTable3 = [(FCSetValueMapTable *)self backingMapTable];
+  keyEnumerator = [backingMapTable3 keyEnumerator];
 
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -62,16 +62,16 @@
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v6 objectForKey:v14];
-        v16 = [v15 copyWithZone:a3];
-        [v7 setObject:v16 forKey:v14];
+        v15 = [backingMapTable objectForKey:v14];
+        v16 = [v15 copyWithZone:zone];
+        [backingMapTable2 setObject:v16 forKey:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [keyEnumerator countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
@@ -81,68 +81,68 @@
   return v19;
 }
 
-- (void)addObject:(id)a3 forKey:(id)a4
+- (void)addObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(FCSetValueMapTable *)self _setForKey:a4];
-  [v7 addObject:v6];
+  objectCopy = object;
+  v7 = [(FCSetValueMapTable *)self _setForKey:key];
+  [v7 addObject:objectCopy];
 }
 
-- (void)removeObject:(id)a3 forKey:(id)a4
+- (void)removeObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(FCSetValueMapTable *)self _setForKey:a4];
-  [v7 removeObject:v6];
+  objectCopy = object;
+  v7 = [(FCSetValueMapTable *)self _setForKey:key];
+  [v7 removeObject:objectCopy];
 }
 
-- (void)addObjects:(id)a3 forKey:(id)a4
+- (void)addObjects:(id)objects forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(FCSetValueMapTable *)self _setForKey:a4];
-  [v7 unionSet:v6];
+  objectsCopy = objects;
+  v7 = [(FCSetValueMapTable *)self _setForKey:key];
+  [v7 unionSet:objectsCopy];
 }
 
-- (id)objectsForKey:(id)a3
+- (id)objectsForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FCSetValueMapTable *)self backingMapTable];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  backingMapTable = [(FCSetValueMapTable *)self backingMapTable];
+  v6 = [backingMapTable objectForKey:keyCopy];
 
   return v6;
 }
 
-- (void)removeObjectsForKey:(id)a3
+- (void)removeObjectsForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FCSetValueMapTable *)self backingMapTable];
-  [v5 removeObjectForKey:v4];
+  keyCopy = key;
+  backingMapTable = [(FCSetValueMapTable *)self backingMapTable];
+  [backingMapTable removeObjectForKey:keyCopy];
 }
 
 - (id)keyEnumerator
 {
-  v2 = [(FCSetValueMapTable *)self backingMapTable];
-  v3 = [v2 keyEnumerator];
+  backingMapTable = [(FCSetValueMapTable *)self backingMapTable];
+  keyEnumerator = [backingMapTable keyEnumerator];
 
-  return v3;
+  return keyEnumerator;
 }
 
 - (id)objectEnumerator
 {
-  v2 = [(FCSetValueMapTable *)self backingMapTable];
-  v3 = [v2 objectEnumerator];
+  backingMapTable = [(FCSetValueMapTable *)self backingMapTable];
+  objectEnumerator = [backingMapTable objectEnumerator];
 
-  return v3;
+  return objectEnumerator;
 }
 
-- (id)_setForKey:(id)a3
+- (id)_setForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(FCSetValueMapTable *)self backingMapTable];
-  v6 = [v5 objectForKey:v4];
+  keyCopy = key;
+  backingMapTable = [(FCSetValueMapTable *)self backingMapTable];
+  v6 = [backingMapTable objectForKey:keyCopy];
   if (!v6)
   {
     v6 = objc_opt_new();
-    [v5 setObject:v6 forKey:v4];
+    [backingMapTable setObject:v6 forKey:keyCopy];
   }
 
   return v6;

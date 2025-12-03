@@ -1,67 +1,67 @@
 @interface MADImageCaptionRequest
-- (MADImageCaptionRequest)initWithCoder:(id)a3;
-- (MADImageCaptionRequest)initWithModelType:(int64_t)a3 safetyType:(int64_t)a4;
+- (MADImageCaptionRequest)initWithCoder:(id)coder;
+- (MADImageCaptionRequest)initWithModelType:(int64_t)type safetyType:(int64_t)safetyType;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADImageCaptionRequest
 
-- (MADImageCaptionRequest)initWithModelType:(int64_t)a3 safetyType:(int64_t)a4
+- (MADImageCaptionRequest)initWithModelType:(int64_t)type safetyType:(int64_t)safetyType
 {
   v7.receiver = self;
   v7.super_class = MADImageCaptionRequest;
   result = [(MADImageCaptionRequest *)&v7 init];
   if (result)
   {
-    result->_modelType = a3;
-    result->_safetyType = a4;
+    result->_modelType = type;
+    result->_safetyType = safetyType;
   }
 
   return result;
 }
 
-- (MADImageCaptionRequest)initWithCoder:(id)a3
+- (MADImageCaptionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = MADImageCaptionRequest;
-  v5 = [(MADRequest *)&v7 initWithCoder:v4];
+  v5 = [(MADRequest *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_modelType = [v4 decodeIntegerForKey:@"ImageCaptionModelType"];
-    v5->_safetyType = [v4 decodeIntegerForKey:@"ImageCaptionSafetyType"];
+    v5->_modelType = [coderCopy decodeIntegerForKey:@"ImageCaptionModelType"];
+    v5->_safetyType = [coderCopy decodeIntegerForKey:@"ImageCaptionSafetyType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MADImageCaptionRequest;
-  v4 = a3;
-  [(MADRequest *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_modelType forKey:{@"ImageCaptionModelType", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_safetyType forKey:@"ImageCaptionSafetyType"];
+  coderCopy = coder;
+  [(MADRequest *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_modelType forKey:{@"ImageCaptionModelType", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_safetyType forKey:@"ImageCaptionSafetyType"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"imageCaptionModelType: %ld, ", -[MADImageCaptionRequest modelType](self, "modelType")];
-  [v3 appendFormat:@"imageCaptionSafetyType: %ld, ", -[MADImageCaptionRequest safetyType](self, "safetyType")];
-  v6 = [(MADRequest *)self results];
-  [v3 appendFormat:@"results: %@, ", v6];
+  [string appendFormat:@"imageCaptionModelType: %ld, ", -[MADImageCaptionRequest modelType](self, "modelType")];
+  [string appendFormat:@"imageCaptionSafetyType: %ld, ", -[MADImageCaptionRequest safetyType](self, "safetyType")];
+  results = [(MADRequest *)self results];
+  [string appendFormat:@"results: %@, ", results];
 
-  v7 = [(MADRequest *)self error];
-  [v3 appendFormat:@"error: %@>", v7];
+  error = [(MADRequest *)self error];
+  [string appendFormat:@"error: %@>", error];
 
-  return v3;
+  return string;
 }
 
 @end

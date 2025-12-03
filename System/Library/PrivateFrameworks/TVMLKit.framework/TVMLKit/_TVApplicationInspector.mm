@@ -1,28 +1,28 @@
 @interface _TVApplicationInspector
 - (NSHashTable)highlightViews;
 - (TVApplicationController)applicationController;
-- (_TVApplicationInspector)initWithApplicationController:(id)a3;
+- (_TVApplicationInspector)initWithApplicationController:(id)controller;
 - (_TVInspectorCapturingView)capturingView;
-- (id)_highlightViewForElement:(id)a3 contentColor:(id)a4 borderColor:(id)a5;
+- (id)_highlightViewForElement:(id)element contentColor:(id)color borderColor:(id)borderColor;
 - (id)rootView;
 - (void)cancelHighlight;
-- (void)capturingView:(id)a3 didCaptureTapOnView:(id)a4;
-- (void)highlightViewElements:(id)a3 contentColor:(id)a4 borderColor:(id)a5;
-- (void)setInspectionModeEnabled:(BOOL)a3;
+- (void)capturingView:(id)view didCaptureTapOnView:(id)onView;
+- (void)highlightViewElements:(id)elements contentColor:(id)color borderColor:(id)borderColor;
+- (void)setInspectionModeEnabled:(BOOL)enabled;
 @end
 
 @implementation _TVApplicationInspector
 
-- (_TVApplicationInspector)initWithApplicationController:(id)a3
+- (_TVApplicationInspector)initWithApplicationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = _TVApplicationInspector;
   v5 = [(_TVApplicationInspector *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_applicationController, v4);
+    objc_storeWeak(&v5->_applicationController, controllerCopy);
     v6->_inspectionModeEnabled = 0;
   }
 
@@ -34,9 +34,9 @@
   highlightViews = self->_highlightViews;
   if (!highlightViews)
   {
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v5 = self->_highlightViews;
-    self->_highlightViews = v4;
+    self->_highlightViews = weakObjectsHashTable;
 
     highlightViews = self->_highlightViews;
   }
@@ -63,24 +63,24 @@
 
 - (id)rootView
 {
-  v3 = [(_TVApplicationInspector *)self applicationController];
-  v4 = [v3 keyTraitEnvironment];
+  applicationController = [(_TVApplicationInspector *)self applicationController];
+  keyTraitEnvironment = [applicationController keyTraitEnvironment];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = [v3 keyTraitEnvironment];
-  v7 = v6;
+  keyTraitEnvironment2 = [applicationController keyTraitEnvironment];
+  v7 = keyTraitEnvironment2;
   if (isKindOfClass)
   {
-    v8 = [v6 view];
+    view = [keyTraitEnvironment2 view];
 LABEL_5:
-    v9 = v8;
+    v9 = view;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v3 keyTraitEnvironment];
+    view = [applicationController keyTraitEnvironment];
     goto LABEL_5;
   }
 
@@ -89,74 +89,74 @@ LABEL_7:
 
   if (v9)
   {
-    v10 = v9;
+    window = v9;
   }
 
   else
   {
-    v11 = [(_TVApplicationInspector *)self applicationController];
-    v12 = [v11 navigationController];
-    v13 = [v12 view];
-    v10 = [v13 window];
+    applicationController2 = [(_TVApplicationInspector *)self applicationController];
+    navigationController = [applicationController2 navigationController];
+    view2 = [navigationController view];
+    window = [view2 window];
   }
 
-  return v10;
+  return window;
 }
 
-- (void)setInspectionModeEnabled:(BOOL)a3
+- (void)setInspectionModeEnabled:(BOOL)enabled
 {
-  if (self->_inspectionModeEnabled != a3)
+  if (self->_inspectionModeEnabled != enabled)
   {
-    self->_inspectionModeEnabled = a3;
-    if (a3)
+    self->_inspectionModeEnabled = enabled;
+    if (enabled)
     {
-      v7 = [(_TVApplicationInspector *)self rootView];
-      v5 = [(_TVApplicationInspector *)self capturingView];
-      [v7 bounds];
-      [v5 setFrame:?];
+      rootView = [(_TVApplicationInspector *)self rootView];
+      capturingView = [(_TVApplicationInspector *)self capturingView];
+      [rootView bounds];
+      [capturingView setFrame:?];
 
-      v6 = [(_TVApplicationInspector *)self capturingView];
-      [v7 addSubview:v6];
+      capturingView2 = [(_TVApplicationInspector *)self capturingView];
+      [rootView addSubview:capturingView2];
     }
 
     else
     {
-      v7 = [(_TVApplicationInspector *)self capturingView];
-      [v7 removeFromSuperview];
+      rootView = [(_TVApplicationInspector *)self capturingView];
+      [rootView removeFromSuperview];
     }
   }
 }
 
-- (void)capturingView:(id)a3 didCaptureTapOnView:(id)a4
+- (void)capturingView:(id)view didCaptureTapOnView:(id)onView
 {
-  v5 = [MEMORY[0x277D1B128] tv_approximateViewElementForView:a4];
+  v5 = [MEMORY[0x277D1B128] tv_approximateViewElementForView:onView];
   if (v5)
   {
     v8 = v5;
-    v6 = [(_TVApplicationInspector *)self applicationController];
-    v7 = [v6 _appContext];
-    [v7 inspectElement:v8];
+    applicationController = [(_TVApplicationInspector *)self applicationController];
+    _appContext = [applicationController _appContext];
+    [_appContext inspectElement:v8];
 
     [(_TVApplicationInspector *)self setInspectionModeEnabled:0];
     v5 = v8;
   }
 }
 
-- (void)highlightViewElements:(id)a3 contentColor:(id)a4 borderColor:(id)a5
+- (void)highlightViewElements:(id)elements contentColor:(id)color borderColor:(id)borderColor
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elementsCopy = elements;
+  colorCopy = color;
+  borderColorCopy = borderColor;
   [(_TVApplicationInspector *)self cancelHighlight];
-  v11 = [(_TVApplicationInspector *)self highlightViews];
-  [v11 removeAllObjects];
+  highlightViews = [(_TVApplicationInspector *)self highlightViews];
+  [highlightViews removeAllObjects];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v8;
+  v12 = elementsCopy;
   v13 = [v12 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v13)
   {
@@ -174,11 +174,11 @@ LABEL_7:
         }
 
         v18 = *(*(&v23 + 1) + 8 * i);
-        v19 = [(_TVApplicationInspector *)self _highlightViewForElement:v18 contentColor:v9 borderColor:v10, v22, v23];
+        v19 = [(_TVApplicationInspector *)self _highlightViewForElement:v18 contentColor:colorCopy borderColor:borderColorCopy, v22, v23];
         if (v19)
         {
-          v20 = [(_TVApplicationInspector *)self highlightViews];
-          [v20 addObject:v19];
+          highlightViews2 = [(_TVApplicationInspector *)self highlightViews];
+          [highlightViews2 addObject:v19];
         }
 
         else
@@ -208,8 +208,8 @@ LABEL_7:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(_TVApplicationInspector *)self highlightViews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  highlightViews = [(_TVApplicationInspector *)self highlightViews];
+  v3 = [highlightViews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -221,29 +221,29 @@ LABEL_7:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(highlightViews);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) removeFromSuperview];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [highlightViews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (id)_highlightViewForElement:(id)a3 contentColor:(id)a4 borderColor:(id)a5
+- (id)_highlightViewForElement:(id)element contentColor:(id)color borderColor:(id)borderColor
 {
   v57 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 tv_proxyView];
-  v11 = [v10 window];
-  if (!v11 || ([v10 isHidden] & 1) != 0)
+  elementCopy = element;
+  colorCopy = color;
+  borderColorCopy = borderColor;
+  tv_proxyView = [elementCopy tv_proxyView];
+  window = [tv_proxyView window];
+  if (!window || ([tv_proxyView isHidden] & 1) != 0)
   {
 
 LABEL_4:
@@ -251,7 +251,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  [v10 alpha];
+  [tv_proxyView alpha];
   v15 = v14;
 
   if (v15 <= 0.0)
@@ -259,30 +259,30 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v47 = v10;
+  v47 = tv_proxyView;
   v16 = [_TVInspectorHighlightView alloc];
   v17 = [(_TVInspectorHighlightView *)v16 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  v49 = v8;
-  [(_TVInspectorHighlightView *)v17 setContentColor:v8];
+  v49 = colorCopy;
+  [(_TVInspectorHighlightView *)v17 setContentColor:colorCopy];
   v46 = v17;
-  v48 = v9;
-  [(_TVInspectorHighlightView *)v17 setBorderColor:v9];
+  v48 = borderColorCopy;
+  [(_TVInspectorHighlightView *)v17 setBorderColor:borderColorCopy];
   v18 = objc_alloc(MEMORY[0x277CCAB48]);
-  v19 = [v7 elementName];
-  v20 = [v18 initWithString:v19];
+  elementName = [elementCopy elementName];
+  v20 = [v18 initWithString:elementName];
 
   v21 = *MEMORY[0x277D740A8];
   v22 = [MEMORY[0x277D74300] monospacedDigitSystemFontOfSize:15.0 weight:0.0];
-  v23 = [v20 string];
-  [v20 addAttribute:v21 value:v22 range:{0, objc_msgSend(v23, "length")}];
+  string = [v20 string];
+  [v20 addAttribute:v21 value:v22 range:{0, objc_msgSend(string, "length")}];
 
   v24 = *MEMORY[0x277D740C0];
-  v25 = [MEMORY[0x277D75348] systemDarkPinkColor];
-  v26 = [v20 string];
-  [v20 addAttribute:v24 value:v25 range:{0, objc_msgSend(v26, "length")}];
+  systemDarkPinkColor = [MEMORY[0x277D75348] systemDarkPinkColor];
+  string2 = [v20 string];
+  [v20 addAttribute:v24 value:systemDarkPinkColor range:{0, objc_msgSend(string2, "length")}];
 
-  v27 = [v7 attributes];
-  v28 = [v27 objectForKeyedSubscript:*MEMORY[0x277D1AF30]];
+  attributes = [elementCopy attributes];
+  v28 = [attributes objectForKeyedSubscript:*MEMORY[0x277D1AF30]];
 
   if ([v28 length])
   {
@@ -291,8 +291,8 @@ LABEL_4:
     v31 = [MEMORY[0x277D74300] monospacedDigitSystemFontOfSize:15.0 weight:0.0];
     [v30 addAttribute:v21 value:v31 range:{0, objc_msgSend(v29, "length")}];
 
-    v32 = [MEMORY[0x277D75348] systemBlueColor];
-    [v30 addAttribute:v24 value:v32 range:{0, objc_msgSend(v29, "length")}];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [v30 addAttribute:v24 value:systemBlueColor range:{0, objc_msgSend(v29, "length")}];
 
     [v20 appendAttributedString:v30];
   }
@@ -301,9 +301,9 @@ LABEL_4:
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v50 = v7;
-  v33 = [v7 attributes];
-  v34 = [v33 objectForKeyedSubscript:*MEMORY[0x277D1AF20]];
+  v50 = elementCopy;
+  attributes2 = [elementCopy attributes];
+  v34 = [attributes2 objectForKeyedSubscript:*MEMORY[0x277D1AF20]];
   v35 = [v34 componentsSeparatedByString:@" "];
 
   obj = v35;
@@ -326,11 +326,11 @@ LABEL_4:
         v42 = [MEMORY[0x277D74300] monospacedDigitSystemFontOfSize:15.0 weight:0.0];
         [v41 addAttribute:v21 value:v42 range:{0, objc_msgSend(v40, "length")}];
 
-        v43 = [MEMORY[0x277D75348] systemDarkPinkColor];
-        [v41 addAttribute:v24 value:v43 range:{0, 1}];
+        systemDarkPinkColor2 = [MEMORY[0x277D75348] systemDarkPinkColor];
+        [v41 addAttribute:v24 value:systemDarkPinkColor2 range:{0, 1}];
 
-        v44 = [MEMORY[0x277D75348] systemRedColor];
-        [v41 addAttribute:v24 value:v44 range:{1, objc_msgSend(v40, "length") - 1}];
+        systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+        [v41 addAttribute:v24 value:systemRedColor range:{1, objc_msgSend(v40, "length") - 1}];
 
         [v20 appendAttributedString:v41];
       }
@@ -342,15 +342,15 @@ LABEL_4:
   }
 
   v12 = v46;
-  v45 = [(_TVInspectorHighlightView *)v46 descriptionLabel];
-  [v45 setAttributedText:v20];
+  descriptionLabel = [(_TVInspectorHighlightView *)v46 descriptionLabel];
+  [descriptionLabel setAttributedText:v20];
 
-  v10 = v47;
+  tv_proxyView = v47;
   [(_TVInspectorHighlightView *)v46 highlightView:v47];
 
-  v8 = v49;
-  v7 = v50;
-  v9 = v48;
+  colorCopy = v49;
+  elementCopy = v50;
+  borderColorCopy = v48;
 LABEL_5:
 
   return v12;

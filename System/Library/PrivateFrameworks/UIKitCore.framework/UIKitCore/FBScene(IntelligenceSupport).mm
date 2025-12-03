@@ -6,20 +6,20 @@
 
 - (id)ui_intelligenceComponent
 {
-  v2 = [a1 ui_intelligenceComponentIfExists];
-  v3 = v2;
-  if (v2)
+  ui_intelligenceComponentIfExists = [self ui_intelligenceComponentIfExists];
+  v3 = ui_intelligenceComponentIfExists;
+  if (ui_intelligenceComponentIfExists)
   {
-    v4 = v2;
+    ui_intelligenceComponentIfExists2 = ui_intelligenceComponentIfExists;
   }
 
   else
   {
-    [a1 addExtension:objc_opt_class()];
-    v4 = [a1 ui_intelligenceComponentIfExists];
+    [self addExtension:objc_opt_class()];
+    ui_intelligenceComponentIfExists2 = [self ui_intelligenceComponentIfExists];
   }
 
-  v5 = v4;
+  v5 = ui_intelligenceComponentIfExists2;
 
   return v5;
 }

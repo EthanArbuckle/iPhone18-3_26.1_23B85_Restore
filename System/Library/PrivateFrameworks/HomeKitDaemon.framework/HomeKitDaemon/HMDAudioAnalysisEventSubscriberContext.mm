@@ -4,7 +4,7 @@
 - (BOOL)isAudioAnalysisEventNotificationEnabled;
 - (BOOL)isCurrentAccessory;
 - (HMDAppleMediaAccessory)accessory;
-- (HMDAudioAnalysisEventSubscriberContext)initWithAccessory:(id)a3 queue:(id)a4;
+- (HMDAudioAnalysisEventSubscriberContext)initWithAccessory:(id)accessory queue:(id)queue;
 - (HMDDevice)device;
 - (HMDHome)home;
 - (HMEEventForwarder)eventForwarder;
@@ -16,9 +16,9 @@
 - (NSUUID)spiClientIdentifier;
 - (NSUUID)uuid;
 - (id)logIdentifier;
-- (void)forwardEvent:(id)a3 topic:(id)a4 completion:(id)a5;
-- (void)submitLogEvent:(id)a3;
-- (void)submitLogEvent:(id)a3 error:(id)a4;
+- (void)forwardEvent:(id)event topic:(id)topic completion:(id)completion;
+- (void)submitLogEvent:(id)event;
+- (void)submitLogEvent:(id)event error:(id)error;
 @end
 
 @implementation HMDAudioAnalysisEventSubscriberContext
@@ -30,116 +30,116 @@
   return WeakRetained;
 }
 
-- (void)forwardEvent:(id)a3 topic:(id)a4 completion:(id)a5
+- (void)forwardEvent:(id)event topic:(id)topic completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HMDAudioAnalysisEventSubscriberContext *)self eventForwarder];
+  completionCopy = completion;
+  topicCopy = topic;
+  eventCopy = event;
+  eventForwarder = [(HMDAudioAnalysisEventSubscriberContext *)self eventForwarder];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__HMDAudioAnalysisEventSubscriberContext_forwardEvent_topic_completion___block_invoke;
   v13[3] = &unk_278688DD0;
-  v14 = v8;
-  v12 = v8;
-  [v11 forwardEvent:v10 topic:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [eventForwarder forwardEvent:eventCopy topic:topicCopy completion:v13];
 }
 
-- (void)submitLogEvent:(id)a3 error:(id)a4
+- (void)submitLogEvent:(id)event error:(id)error
 {
-  v5 = a4;
-  v6 = a3;
+  errorCopy = error;
+  eventCopy = event;
   v7 = +[HMDMetricsManager sharedLogEventSubmitter];
-  [v7 submitLogEvent:v6 error:v5];
+  [v7 submitLogEvent:eventCopy error:errorCopy];
 }
 
-- (void)submitLogEvent:(id)a3
+- (void)submitLogEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[HMDMetricsManager sharedLogEventSubmitter];
-  [v4 submitLogEvent:v3];
+  [v4 submitLogEvent:eventCopy];
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDAudioAnalysisEventSubscriberContext *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (HMDHome)home
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 home];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  home = [accessory home];
 
-  return v3;
+  return home;
 }
 
 - (NSString)roomName
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 room];
-  v4 = [v3 name];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  room = [accessory room];
+  name = [room name];
 
-  return v4;
+  return name;
 }
 
 - (BOOL)isCurrentAccessory
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 isCurrentAccessory];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  isCurrentAccessory = [accessory isCurrentAccessory];
 
-  return v3;
+  return isCurrentAccessory;
 }
 
 - (NSUUID)spiClientIdentifier
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 spiClientIdentifier];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  spiClientIdentifier = [accessory spiClientIdentifier];
 
-  return v3;
+  return spiClientIdentifier;
 }
 
 - (NSUUID)uuid
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 uuid];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  uuid = [accessory uuid];
 
-  return v3;
+  return uuid;
 }
 
 - (NSString)name
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 name];
-  v4 = [v3 copy];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  name = [accessory name];
+  v4 = [name copy];
 
   return v4;
 }
 
 - (HMELastEventStoreReadHandle)eventStoreReadHandle
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 home];
-  v4 = [v3 homeManager];
-  v5 = [v4 eventStoreReadHandle];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  home = [accessory home];
+  homeManager = [home homeManager];
+  eventStoreReadHandle = [homeManager eventStoreReadHandle];
 
-  return v5;
+  return eventStoreReadHandle;
 }
 
-- (HMDAudioAnalysisEventSubscriberContext)initWithAccessory:(id)a3 queue:(id)a4
+- (HMDAudioAnalysisEventSubscriberContext)initWithAccessory:(id)accessory queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = HMDAudioAnalysisEventSubscriberContext;
   v8 = [(HMDAudioAnalysisEventSubscriberContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_accessory, v6);
-    objc_storeStrong(&v9->_workQueue, a4);
+    objc_storeWeak(&v8->_accessory, accessoryCopy);
+    objc_storeStrong(&v9->_workQueue, queue);
   }
 
   return v9;
@@ -147,53 +147,53 @@
 
 - (BOOL)dropInEnabled
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self home];
-  v3 = [v2 currentUser];
-  v4 = [v3 audioAnalysisUserDropInAccessLevel] == 2;
+  home = [(HMDAudioAnalysisEventSubscriberContext *)self home];
+  currentUser = [home currentUser];
+  v4 = [currentUser audioAnalysisUserDropInAccessLevel] == 2;
 
   return v4;
 }
 
 - (HMFMessageDispatcher)dispatcher
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 msgDispatcher];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  msgDispatcher = [accessory msgDispatcher];
 
-  return v3;
+  return msgDispatcher;
 }
 
 - (HMEEventForwarder)eventForwarder
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 home];
-  v4 = [v3 homeManager];
-  v5 = [v4 eventForwarder];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  home = [accessory home];
+  homeManager = [home homeManager];
+  eventForwarder = [homeManager eventForwarder];
 
-  return v5;
+  return eventForwarder;
 }
 
 - (HMDDevice)device
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 device];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  device = [accessory device];
 
-  return v3;
+  return device;
 }
 
 - (NSPredicate)audioAnalysisEventNotificationCondition
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 audioAnalysisEventNotificationCondition];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  audioAnalysisEventNotificationCondition = [accessory audioAnalysisEventNotificationCondition];
 
-  return v3;
+  return audioAnalysisEventNotificationCondition;
 }
 
 - (BOOL)isAudioAnalysisEventNotificationEnabled
 {
-  v2 = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
-  v3 = [v2 isAudioAnalysisEventNotificationEnabled];
+  accessory = [(HMDAudioAnalysisEventSubscriberContext *)self accessory];
+  isAudioAnalysisEventNotificationEnabled = [accessory isAudioAnalysisEventNotificationEnabled];
 
-  return v3;
+  return isAudioAnalysisEventNotificationEnabled;
 }
 
 + (id)logCategory

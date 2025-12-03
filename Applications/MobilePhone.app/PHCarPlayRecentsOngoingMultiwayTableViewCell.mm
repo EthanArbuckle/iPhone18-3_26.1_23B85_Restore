@@ -1,9 +1,9 @@
 @interface PHCarPlayRecentsOngoingMultiwayTableViewCell
 - (NSString)callName;
-- (PHCarPlayRecentsOngoingMultiwayTableViewCell)initWithCoder:(id)a3;
-- (PHCarPlayRecentsOngoingMultiwayTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)setCallName:(id)a3;
+- (PHCarPlayRecentsOngoingMultiwayTableViewCell)initWithCoder:(id)coder;
+- (PHCarPlayRecentsOngoingMultiwayTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)setCallName:(id)name;
 @end
 
 @implementation PHCarPlayRecentsOngoingMultiwayTableViewCell
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (void)setCallName:(id)a3
+- (void)setCallName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -44,36 +44,36 @@
   swift_beginAccess();
   *v7 = v4;
   v7[1] = v6;
-  v8 = self;
+  selfCopy = self;
 
-  [(PHCarPlayRecentsOngoingMultiwayTableViewCell *)v8 setNeedsUpdateConfiguration];
+  [(PHCarPlayRecentsOngoingMultiwayTableViewCell *)selfCopy setNeedsUpdateConfiguration];
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v4 = type metadata accessor for UICellConfigurationState();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   PHCarPlayRecentsOngoingMultiwayTableViewCell.updateConfiguration(using:)(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (PHCarPlayRecentsOngoingMultiwayTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PHCarPlayRecentsOngoingMultiwayTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    v5 = a3;
+    styleCopy = style;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = (self + OBJC_IVAR___PHCarPlayRecentsOngoingMultiwayTableViewCell_callName);
     *v6 = 0;
     v6[1] = 0;
     v7 = String._bridgeToObjectiveC()();
 
-    a3 = v5;
+    style = styleCopy;
   }
 
   else
@@ -86,20 +86,20 @@
 
   v11.receiver = self;
   v11.super_class = PHCarPlayRecentsOngoingMultiwayTableViewCell;
-  v9 = [(PHCarPlayGenericTableViewCell *)&v11 initWithStyle:a3 reuseIdentifier:v7];
+  v9 = [(PHCarPlayGenericTableViewCell *)&v11 initWithStyle:style reuseIdentifier:v7];
 
   return v9;
 }
 
-- (PHCarPlayRecentsOngoingMultiwayTableViewCell)initWithCoder:(id)a3
+- (PHCarPlayRecentsOngoingMultiwayTableViewCell)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR___PHCarPlayRecentsOngoingMultiwayTableViewCell_callName);
   *v3 = 0;
   v3[1] = 0;
   v7.receiver = self;
   v7.super_class = PHCarPlayRecentsOngoingMultiwayTableViewCell;
-  v4 = a3;
-  v5 = [(PHCarPlayRecentsOngoingMultiwayTableViewCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PHCarPlayRecentsOngoingMultiwayTableViewCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

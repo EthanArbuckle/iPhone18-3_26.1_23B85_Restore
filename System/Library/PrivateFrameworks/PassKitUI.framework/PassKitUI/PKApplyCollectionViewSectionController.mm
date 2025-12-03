@@ -1,64 +1,64 @@
 @interface PKApplyCollectionViewSectionController
-- (BOOL)_hasFooterContentForIdentifier:(id)a3;
-- (BOOL)_hasHeaderContentForIdentifier:(id)a3;
-- (BOOL)shouldHighlightItem:(id)a3;
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4;
-- (PKApplyCollectionViewSectionController)initWithController:(id)a3 applyPage:(id)a4;
-- (id)cellRegistrationForItem:(id)a3;
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (id)listLayoutConfigurationWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4;
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5;
-- (void)didSelectItem:(id)a3;
+- (BOOL)_hasFooterContentForIdentifier:(id)identifier;
+- (BOOL)_hasHeaderContentForIdentifier:(id)identifier;
+- (BOOL)shouldHighlightItem:(id)item;
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier;
+- (PKApplyCollectionViewSectionController)initWithController:(id)controller applyPage:(id)page;
+- (id)cellRegistrationForItem:(id)item;
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (id)listLayoutConfigurationWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier;
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier;
+- (void)didSelectItem:(id)item;
 @end
 
 @implementation PKApplyCollectionViewSectionController
 
-- (PKApplyCollectionViewSectionController)initWithController:(id)a3 applyPage:(id)a4
+- (PKApplyCollectionViewSectionController)initWithController:(id)controller applyPage:(id)page
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  pageCopy = page;
   v12.receiver = self;
   v12.super_class = PKApplyCollectionViewSectionController;
   v9 = [(PKPaymentSetupListSectionController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_controller, a3);
-    objc_storeStrong(&v10->_page, a4);
+    objc_storeStrong(&v9->_controller, controller);
+    objc_storeStrong(&v10->_page, page);
   }
 
   return v10;
 }
 
-- (id)listLayoutConfigurationWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)listLayoutConfigurationWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(PKPaymentSetupListSectionController *)self defaultListLayout];
-  if ([(PKApplyCollectionViewSectionController *)self _hasHeaderContentForIdentifier:v5])
+  identifierCopy = identifier;
+  defaultListLayout = [(PKPaymentSetupListSectionController *)self defaultListLayout];
+  if ([(PKApplyCollectionViewSectionController *)self _hasHeaderContentForIdentifier:identifierCopy])
   {
-    [v6 setHeaderMode:1];
+    [defaultListLayout setHeaderMode:1];
   }
 
-  if ([(PKApplyCollectionViewSectionController *)self _hasFooterContentForIdentifier:v5])
+  if ([(PKApplyCollectionViewSectionController *)self _hasFooterContentForIdentifier:identifierCopy])
   {
-    [v6 setFooterMode:1];
+    [defaultListLayout setFooterMode:1];
   }
 
-  return v6;
+  return defaultListLayout;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC800];
-  v6 = [v4 cellClass];
+  cellClass = [itemCopy cellClass];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __66__PKApplyCollectionViewSectionController_cellRegistrationForItem___block_invoke;
   v9[3] = &unk_1E8022FA0;
   objc_copyWeak(&v10, &location);
-  v7 = [v5 registrationWithCellClass:v6 configurationHandler:v9];
+  v7 = [v5 registrationWithCellClass:cellClass configurationHandler:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 
@@ -73,14 +73,14 @@ void __66__PKApplyCollectionViewSectionController_cellRegistrationForItem___bloc
   [WeakRetained configureCellForRegistration:v7 item:v6];
 }
 
-- (id)layoutWithLayoutEnvironment:(id)a3 sectionIdentifier:(id)a4
+- (id)layoutWithLayoutEnvironment:(id)environment sectionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentSetupListSectionController *)self identifiers];
-  v9 = [v8 firstObject];
-  v10 = v6;
-  v11 = v9;
+  identifierCopy = identifier;
+  environmentCopy = environment;
+  identifiers = [(PKPaymentSetupListSectionController *)self identifiers];
+  firstObject = [identifiers firstObject];
+  v10 = identifierCopy;
+  v11 = firstObject;
   v12 = v11;
   v13 = 0.0;
   v14 = 0.0;
@@ -105,8 +105,8 @@ void __66__PKApplyCollectionViewSectionController_cellRegistrationForItem___bloc
   }
 
   v15 = [(PKApplyCollectionViewSectionController *)self _hasFooterContentForIdentifier:v10];
-  v16 = [(PKApplyCollectionViewSectionController *)self listLayoutConfigurationWithLayoutEnvironment:v7 sectionIdentifier:v10];
-  v17 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v16 layoutEnvironment:v7];
+  v16 = [(PKApplyCollectionViewSectionController *)self listLayoutConfigurationWithLayoutEnvironment:environmentCopy sectionIdentifier:v10];
+  v17 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v16 layoutEnvironment:environmentCopy];
 
   [v17 contentInsets];
   if (v15)
@@ -120,29 +120,29 @@ void __66__PKApplyCollectionViewSectionController_cellRegistrationForItem___bloc
   return v17;
 }
 
-- (Class)supplementaryRegistrationClassForKind:(id)a3 sectionIdentifier:(id)a4
+- (Class)supplementaryRegistrationClassForKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKApplyCollectionViewSectionController *)self headerViewClassForSectionIdentifier:v7];
-  v9 = [(PKApplyCollectionViewSectionController *)self footerViewClassForSectionIdentifier:v7];
-  if (*MEMORY[0x1E69DDC08] != v6 || v8 == 0)
+  kindCopy = kind;
+  identifierCopy = identifier;
+  v8 = [(PKApplyCollectionViewSectionController *)self headerViewClassForSectionIdentifier:identifierCopy];
+  v9 = [(PKApplyCollectionViewSectionController *)self footerViewClassForSectionIdentifier:identifierCopy];
+  if (*MEMORY[0x1E69DDC08] != kindCopy || v8 == 0)
   {
-    if (*MEMORY[0x1E69DDC00] != v6 || v9 == 0)
+    if (*MEMORY[0x1E69DDC00] != kindCopy || v9 == 0)
     {
       objc_opt_class();
     }
 
     else
     {
-      [(PKApplyCollectionViewSectionController *)self footerViewClassForSectionIdentifier:v7];
+      [(PKApplyCollectionViewSectionController *)self footerViewClassForSectionIdentifier:identifierCopy];
     }
     v12 = ;
   }
 
   else
   {
-    v12 = [(PKApplyCollectionViewSectionController *)self headerViewClassForSectionIdentifier:v7];
+    v12 = [(PKApplyCollectionViewSectionController *)self headerViewClassForSectionIdentifier:identifierCopy];
   }
 
   v13 = v12;
@@ -150,17 +150,17 @@ void __66__PKApplyCollectionViewSectionController_cellRegistrationForItem___bloc
   return v13;
 }
 
-- (void)configureSupplementaryRegistration:(id)a3 elementKind:(id)a4 sectionIdentifier:(id)a5
+- (void)configureSupplementaryRegistration:(id)registration elementKind:(id)kind sectionIdentifier:(id)identifier
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (*MEMORY[0x1E69DDC08] == v8)
+  registrationCopy = registration;
+  kindCopy = kind;
+  identifierCopy = identifier;
+  if (*MEMORY[0x1E69DDC08] == kindCopy)
   {
-    v10 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:v9];
-    if ([(PKApplyCollectionViewSectionController *)self headerViewClassForSectionIdentifier:v9])
+    v10 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:identifierCopy];
+    if ([(PKApplyCollectionViewSectionController *)self headerViewClassForSectionIdentifier:identifierCopy])
     {
-      [(PKApplyCollectionViewSectionController *)self configureHeaderView:v25 forSectionIdentifier:v9];
+      [(PKApplyCollectionViewSectionController *)self configureHeaderView:registrationCopy forSectionIdentifier:identifierCopy];
       goto LABEL_21;
     }
 
@@ -169,12 +169,12 @@ void __66__PKApplyCollectionViewSectionController_cellRegistrationForItem___bloc
       goto LABEL_21;
     }
 
-    v11 = [MEMORY[0x1E69DCC28] plainHeaderConfiguration];
-    [v11 setAttributedText:v10];
-    v12 = [(PKPaymentSetupListSectionController *)self identifiers];
-    v13 = [v12 firstObject];
-    v14 = v9;
-    v15 = v13;
+    plainHeaderConfiguration = [MEMORY[0x1E69DCC28] plainHeaderConfiguration];
+    [plainHeaderConfiguration setAttributedText:v10];
+    identifiers = [(PKPaymentSetupListSectionController *)self identifiers];
+    firstObject = [identifiers firstObject];
+    v14 = identifierCopy;
+    v15 = firstObject;
     v16 = v15;
     if (v15 == v14)
     {
@@ -206,116 +206,116 @@ void __66__PKApplyCollectionViewSectionController_cellRegistrationForItem___bloc
       v20 = 10.0;
     }
 
-    v22 = v11;
+    v22 = plainHeaderConfiguration;
     v21 = v19;
 LABEL_20:
     [v22 setDirectionalLayoutMargins:{v18, v19, v20, v21}];
-    [v25 setContentConfiguration:v11];
+    [registrationCopy setContentConfiguration:plainHeaderConfiguration];
 
     goto LABEL_21;
   }
 
-  if (*MEMORY[0x1E69DDC00] != v8)
+  if (*MEMORY[0x1E69DDC00] != kindCopy)
   {
     goto LABEL_22;
   }
 
-  v10 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:v9];
-  if (![(PKApplyCollectionViewSectionController *)self footerViewClassForSectionIdentifier:v9])
+  v10 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:identifierCopy];
+  if (![(PKApplyCollectionViewSectionController *)self footerViewClassForSectionIdentifier:identifierCopy])
   {
     if (!v10)
     {
       goto LABEL_21;
     }
 
-    v11 = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
-    [v11 setAttributedText:v10];
+    plainHeaderConfiguration = [MEMORY[0x1E69DCC28] plainFooterConfiguration];
+    [plainHeaderConfiguration setAttributedText:v10];
     v18 = 10.0;
     v19 = 0.0;
     v20 = 10.0;
     v21 = 0.0;
-    v22 = v11;
+    v22 = plainHeaderConfiguration;
     goto LABEL_20;
   }
 
-  [(PKApplyCollectionViewSectionController *)self configureFooterView:v25 forSectionIdentifier:v9];
+  [(PKApplyCollectionViewSectionController *)self configureFooterView:registrationCopy forSectionIdentifier:identifierCopy];
 LABEL_21:
 
 LABEL_22:
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v8 = a3;
-  v4 = [v8 conformsToProtocol:&unk_1F3D1E238];
-  v5 = v8;
+  itemCopy = item;
+  v4 = [itemCopy conformsToProtocol:&unk_1F3D1E238];
+  v5 = itemCopy;
   if (v4)
   {
-    v6 = v8;
+    v6 = itemCopy;
     if (objc_opt_respondsToSelector())
     {
       [v6 handleCellSelection];
-      v7 = [(PKApplyCollectionViewSectionController *)self dynamicCollectionDelegate];
-      [v7 deselectCells];
+      dynamicCollectionDelegate = [(PKApplyCollectionViewSectionController *)self dynamicCollectionDelegate];
+      [dynamicCollectionDelegate deselectCells];
     }
 
-    v5 = v8;
+    v5 = itemCopy;
   }
 }
 
-- (BOOL)shouldHighlightItem:(id)a3
+- (BOOL)shouldHighlightItem:(id)item
 {
-  v3 = a3;
-  if ([v3 conformsToProtocol:&unk_1F3D1E238])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_1F3D1E238])
   {
-    v4 = v3;
+    v4 = itemCopy;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 shouldHighlightItem];
+      shouldHighlightItem = [v4 shouldHighlightItem];
     }
 
     else
     {
-      v5 = 0;
+      shouldHighlightItem = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    shouldHighlightItem = 0;
   }
 
-  return v5;
+  return shouldHighlightItem;
 }
 
-- (BOOL)_hasHeaderContentForIdentifier:(id)a3
+- (BOOL)_hasHeaderContentForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(PKApplyCollectionViewSectionController *)self headerViewClassForSectionIdentifier:v4])
+  identifierCopy = identifier;
+  if ([(PKApplyCollectionViewSectionController *)self headerViewClassForSectionIdentifier:identifierCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:v4];
+    v6 = [(PKPaymentSetupListSectionController *)self headerAttributedStringForIdentifier:identifierCopy];
     v5 = v6 != 0;
   }
 
   return v5;
 }
 
-- (BOOL)_hasFooterContentForIdentifier:(id)a3
+- (BOOL)_hasFooterContentForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(PKApplyCollectionViewSectionController *)self footerViewClassForSectionIdentifier:v4])
+  identifierCopy = identifier;
+  if ([(PKApplyCollectionViewSectionController *)self footerViewClassForSectionIdentifier:identifierCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:v4];
+    v6 = [(PKPaymentSetupListSectionController *)self footerAttributedStringForIdentifier:identifierCopy];
     v5 = v6 != 0;
   }
 

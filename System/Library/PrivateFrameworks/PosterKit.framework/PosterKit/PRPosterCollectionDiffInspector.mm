@@ -5,18 +5,18 @@
 - (NSSet)removedPosters;
 - (NSSet)updatedAssocPosters;
 - (NSSet)updatedPosters;
-- (PRPosterCollectionDiffInspector)initWithCollection:(id)a3 newCollection:(id)a4;
+- (PRPosterCollectionDiffInspector)initWithCollection:(id)collection newCollection:(id)newCollection;
 - (id)description;
 @end
 
 @implementation PRPosterCollectionDiffInspector
 
-- (PRPosterCollectionDiffInspector)initWithCollection:(id)a3 newCollection:(id)a4
+- (PRPosterCollectionDiffInspector)initWithCollection:(id)collection newCollection:(id)newCollection
 {
   v70 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  collectionCopy = collection;
+  newCollectionCopy = newCollection;
+  v10 = collectionCopy;
   if (v10)
   {
     NSClassFromString(&cfstr_Prpostercollec_0.isa);
@@ -26,7 +26,7 @@
     }
   }
 
-  v11 = v9;
+  v11 = newCollectionCopy;
   NSClassFromString(&cfstr_Prpostercollec_0.isa);
   if (!v11)
   {
@@ -44,49 +44,49 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_lhsCollection, a3);
-    objc_storeStrong(&v13->_rhsCollection, a4);
+    objc_storeStrong(&v12->_lhsCollection, collection);
+    objc_storeStrong(&v13->_rhsCollection, newCollection);
     if (v10)
     {
-      v14 = [(PRPosterCollection *)v13->_rhsCollection orderedPosters];
-      v15 = [(PRPosterCollection *)v13->_lhsCollection orderedPosters];
-      v16 = [v14 differenceFromOrderedSet:v15 withOptions:0 usingEquivalenceTest:&__block_literal_global_107];
+      orderedPosters = [(PRPosterCollection *)v13->_rhsCollection orderedPosters];
+      orderedPosters2 = [(PRPosterCollection *)v13->_lhsCollection orderedPosters];
+      v16 = [orderedPosters differenceFromOrderedSet:orderedPosters2 withOptions:0 usingEquivalenceTest:&__block_literal_global_107];
       postersDiff = v13->_postersDiff;
       v13->_postersDiff = v16;
     }
 
     else
     {
-      v14 = v13->_postersDiff;
+      orderedPosters = v13->_postersDiff;
       v13->_postersDiff = 0;
     }
 
-    v18 = [(PRPosterCollection *)v13->_lhsCollection orderedPosters];
-    v19 = [v18 set];
-    v20 = [(PRPosterCollection *)v13->_rhsCollection orderedPosters];
-    v21 = [v20 set];
+    orderedPosters3 = [(PRPosterCollection *)v13->_lhsCollection orderedPosters];
+    v19 = [orderedPosters3 set];
+    orderedPosters4 = [(PRPosterCollection *)v13->_rhsCollection orderedPosters];
+    v21 = [orderedPosters4 set];
     v13->_postersAreEqual = BSEqualObjects();
 
     v13->_orderedPostersAreEqual = ![(NSOrderedCollectionDifference *)v13->_postersDiff hasChanges];
-    v22 = [(PRPosterCollection *)v13->_lhsCollection selectedPoster];
-    v23 = [(PRPosterCollection *)v13->_rhsCollection selectedPoster];
-    v54 = [v22 _path];
-    v24 = [v54 serverIdentity];
-    v25 = [v24 posterUUID];
-    v26 = [v23 _path];
-    v27 = [v26 serverIdentity];
-    v28 = [v27 posterUUID];
+    selectedPoster = [(PRPosterCollection *)v13->_lhsCollection selectedPoster];
+    selectedPoster2 = [(PRPosterCollection *)v13->_rhsCollection selectedPoster];
+    _path = [selectedPoster _path];
+    serverIdentity = [_path serverIdentity];
+    posterUUID = [serverIdentity posterUUID];
+    _path2 = [selectedPoster2 _path];
+    serverIdentity2 = [_path2 serverIdentity];
+    posterUUID2 = [serverIdentity2 posterUUID];
     v57 = v11;
     v58 = v10;
-    v55 = v23;
-    v56 = v22;
+    v55 = selectedPoster2;
+    v56 = selectedPoster;
     if (BSEqualObjects())
     {
-      v29 = [v22 _path];
-      v30 = [v29 serverIdentity];
-      v31 = [v23 _path];
-      v32 = [v31 serverIdentity];
-      v13->_selectedPostersAreEqual = [v30 compare:v32] == 0;
+      _path3 = [selectedPoster _path];
+      serverIdentity3 = [_path3 serverIdentity];
+      _path4 = [selectedPoster2 _path];
+      serverIdentity4 = [_path4 serverIdentity];
+      v13->_selectedPostersAreEqual = [serverIdentity3 compare:serverIdentity4] == 0;
       p_selectedPostersAreEqual = &v13->_selectedPostersAreEqual;
     }
 
@@ -101,8 +101,8 @@
     v64 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v34 = [(PRPosterCollection *)v13->_lhsCollection orderedPosters];
-    v35 = [v34 countByEnumeratingWithState:&v63 objects:v69 count:16];
+    orderedPosters5 = [(PRPosterCollection *)v13->_lhsCollection orderedPosters];
+    v35 = [orderedPosters5 countByEnumeratingWithState:&v63 objects:v69 count:16];
     if (v35)
     {
       v36 = v35;
@@ -113,17 +113,17 @@
         {
           if (*v64 != v37)
           {
-            objc_enumerationMutation(v34);
+            objc_enumerationMutation(orderedPosters5);
           }
 
-          v39 = [(PRPosterCollection *)v13->_lhsCollection associatedPosterForPoster:*(*(&v63 + 1) + 8 * i), p_selectedPostersAreEqual];
-          if (v39)
+          p_selectedPostersAreEqual = [(PRPosterCollection *)v13->_lhsCollection associatedPosterForPoster:*(*(&v63 + 1) + 8 * i), p_selectedPostersAreEqual];
+          if (p_selectedPostersAreEqual)
           {
-            [v33 addObject:v39];
+            [v33 addObject:p_selectedPostersAreEqual];
           }
         }
 
-        v36 = [v34 countByEnumeratingWithState:&v63 objects:v69 count:16];
+        v36 = [orderedPosters5 countByEnumeratingWithState:&v63 objects:v69 count:16];
       }
 
       while (v36);
@@ -134,8 +134,8 @@
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v41 = [(PRPosterCollection *)v13->_rhsCollection orderedPosters];
-    v42 = [v41 countByEnumeratingWithState:&v59 objects:v68 count:16];
+    orderedPosters6 = [(PRPosterCollection *)v13->_rhsCollection orderedPosters];
+    v42 = [orderedPosters6 countByEnumeratingWithState:&v59 objects:v68 count:16];
     if (v42)
     {
       v43 = v42;
@@ -146,17 +146,17 @@
         {
           if (*v60 != v44)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(orderedPosters6);
           }
 
-          v46 = [(PRPosterCollection *)v13->_rhsCollection associatedPosterForPoster:*(*(&v59 + 1) + 8 * j), p_selectedPostersAreEqual];
-          if (v46)
+          p_selectedPostersAreEqual2 = [(PRPosterCollection *)v13->_rhsCollection associatedPosterForPoster:*(*(&v59 + 1) + 8 * j), p_selectedPostersAreEqual];
+          if (p_selectedPostersAreEqual2)
           {
-            [v40 addObject:v46];
+            [v40 addObject:p_selectedPostersAreEqual2];
           }
         }
 
-        v43 = [v41 countByEnumeratingWithState:&v59 objects:v68 count:16];
+        v43 = [orderedPosters6 countByEnumeratingWithState:&v59 objects:v68 count:16];
       }
 
       while (v43);
@@ -234,8 +234,8 @@ uint64_t __68__PRPosterCollectionDiffInspector_initWithCollection_newCollection_
   else
   {
     v5 = MEMORY[0x1E695DFA8];
-    v6 = [(NSOrderedCollectionDifference *)self->_postersDiff removals];
-    v7 = [v6 bs_mapNoNulls:&__block_literal_global_113];
+    removals = [(NSOrderedCollectionDifference *)self->_postersDiff removals];
+    v7 = [removals bs_mapNoNulls:&__block_literal_global_113];
     v8 = [v5 setWithArray:v7];
 
     v23 = 0u;
@@ -258,13 +258,13 @@ uint64_t __68__PRPosterCollectionDiffInspector_initWithCollection_newCollection_
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [(NSOrderedCollectionDifference *)self->_postersDiff insertions];
+          insertions = [(NSOrderedCollectionDifference *)self->_postersDiff insertions];
           v20[0] = MEMORY[0x1E69E9820];
           v20[1] = 3221225472;
           v20[2] = __49__PRPosterCollectionDiffInspector_removedPosters__block_invoke_2;
           v20[3] = &unk_1E7844CB0;
           v20[4] = v13;
-          v15 = [v14 bs_containsObjectPassingTest:v20];
+          v15 = [insertions bs_containsObjectPassingTest:v20];
 
           if (v15)
           {
@@ -308,15 +308,15 @@ uint64_t __49__PRPosterCollectionDiffInspector_removedPosters__block_invoke_2(ui
     if (postersDiff)
     {
       v5 = MEMORY[0x1E695DFA8];
-      v6 = [(NSOrderedCollectionDifference *)postersDiff insertions];
-      v7 = [v6 bs_map:&__block_literal_global_116];
-      v8 = [v5 setWithArray:v7];
+      insertions = [(NSOrderedCollectionDifference *)postersDiff insertions];
+      v7 = [insertions bs_map:&__block_literal_global_116];
+      orderedPosters = [v5 setWithArray:v7];
 
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      obj = [v8 copy];
+      obj = [orderedPosters copy];
       v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v9)
       {
@@ -332,17 +332,17 @@ uint64_t __49__PRPosterCollectionDiffInspector_removedPosters__block_invoke_2(ui
             }
 
             v13 = *(*(&v25 + 1) + 8 * i);
-            v14 = [(NSOrderedCollectionDifference *)self->_postersDiff removals];
+            removals = [(NSOrderedCollectionDifference *)self->_postersDiff removals];
             v24[0] = MEMORY[0x1E69E9820];
             v24[1] = 3221225472;
             v24[2] = __47__PRPosterCollectionDiffInspector_addedPosters__block_invoke_2;
             v24[3] = &unk_1E7844CB0;
             v24[4] = v13;
-            v15 = [v14 bs_containsObjectPassingTest:v24];
+            v15 = [removals bs_containsObjectPassingTest:v24];
 
             if (v15)
             {
-              [v8 removeObject:v13];
+              [orderedPosters removeObject:v13];
             }
           }
 
@@ -352,15 +352,15 @@ uint64_t __49__PRPosterCollectionDiffInspector_removedPosters__block_invoke_2(ui
         while (v10);
       }
 
-      v16 = [v8 copy];
+      v16 = [orderedPosters copy];
       v17 = self->_addedPosters;
       self->_addedPosters = v16;
     }
 
     else
     {
-      v8 = [(PRPosterCollection *)self->_rhsCollection orderedPosters];
-      v18 = [v8 set];
+      orderedPosters = [(PRPosterCollection *)self->_rhsCollection orderedPosters];
+      v18 = [orderedPosters set];
       v19 = [v18 copy];
       v20 = self->_addedPosters;
       self->_addedPosters = v19;
@@ -417,18 +417,18 @@ uint64_t __47__PRPosterCollectionDiffInspector_addedPosters__block_invoke_2(uint
 
           v8 = *(*(&v24 + 1) + 8 * i);
           rhsCollection = self->_rhsCollection;
-          v10 = [v8 _path];
-          v11 = [v10 serverIdentity];
-          v12 = [v11 posterUUID];
-          v13 = [(PRPosterCollection *)rhsCollection posterWithUUID:v12];
+          _path = [v8 _path];
+          serverIdentity = [_path serverIdentity];
+          posterUUID = [serverIdentity posterUUID];
+          v13 = [(PRPosterCollection *)rhsCollection posterWithUUID:posterUUID];
 
           if (v13)
           {
-            v14 = [v13 _path];
-            v15 = [v14 serverIdentity];
-            v16 = [v8 _path];
-            v17 = [v16 serverIdentity];
-            v18 = [v15 isNewerVersionOfIdentity:v17];
+            _path2 = [v13 _path];
+            serverIdentity2 = [_path2 serverIdentity];
+            _path3 = [v8 _path];
+            serverIdentity3 = [_path3 serverIdentity];
+            v18 = [serverIdentity2 isNewerVersionOfIdentity:serverIdentity3];
 
             if (v18)
             {
@@ -462,14 +462,14 @@ uint64_t __47__PRPosterCollectionDiffInspector_addedPosters__block_invoke_2(uint
 
   else
   {
-    v4 = self;
+    selfCopy = self;
     v28 = objc_opt_new();
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v5 = [(PRPosterCollection *)v4->_lhsCollection orderedPosters];
-    v6 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    orderedPosters = [(PRPosterCollection *)selfCopy->_lhsCollection orderedPosters];
+    v6 = [orderedPosters countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v6)
     {
       v7 = v6;
@@ -482,36 +482,36 @@ uint64_t __47__PRPosterCollectionDiffInspector_addedPosters__block_invoke_2(uint
         {
           if (*v33 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(orderedPosters);
           }
 
           v10 = *(*(&v32 + 1) + 8 * v9);
-          rhsCollection = v4->_rhsCollection;
-          v12 = [v10 _path];
-          v13 = [v12 serverIdentity];
-          v14 = [v13 posterUUID];
-          v15 = [(PRPosterCollection *)rhsCollection posterWithUUID:v14];
+          rhsCollection = selfCopy->_rhsCollection;
+          _path = [v10 _path];
+          serverIdentity = [_path serverIdentity];
+          posterUUID = [serverIdentity posterUUID];
+          v15 = [(PRPosterCollection *)rhsCollection posterWithUUID:posterUUID];
 
           if (v15)
           {
-            v16 = [(PRPosterCollection *)v4->_lhsCollection associatedPosterForPoster:v10];
+            v16 = [(PRPosterCollection *)selfCopy->_lhsCollection associatedPosterForPoster:v10];
             if (v16)
             {
-              v17 = [(PRPosterCollection *)v4->_rhsCollection associatedPosterForPoster:v15];
+              v17 = [(PRPosterCollection *)selfCopy->_rhsCollection associatedPosterForPoster:v15];
               v18 = v17;
               if (v17)
               {
-                v31 = [v17 _path];
-                v19 = [v31 serverIdentity];
-                v20 = [v16 _path];
-                [v20 serverIdentity];
+                _path2 = [v17 _path];
+                serverIdentity2 = [_path2 serverIdentity];
+                _path3 = [v16 _path];
+                [_path3 serverIdentity];
                 v21 = v8;
-                v22 = v4;
-                v24 = v23 = v5;
-                v30 = [v19 isNewerVersionOfIdentity:v24];
+                v22 = selfCopy;
+                v24 = v23 = orderedPosters;
+                v30 = [serverIdentity2 isNewerVersionOfIdentity:v24];
 
-                v5 = v23;
-                v4 = v22;
+                orderedPosters = v23;
+                selfCopy = v22;
                 v8 = v21;
 
                 v7 = v29;
@@ -527,17 +527,17 @@ uint64_t __47__PRPosterCollectionDiffInspector_addedPosters__block_invoke_2(uint
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v7 = [orderedPosters countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v7);
     }
 
     v25 = [v28 copy];
-    v26 = v4->_updatedAssocPosters;
-    v4->_updatedAssocPosters = v25;
+    v26 = selfCopy->_updatedAssocPosters;
+    selfCopy->_updatedAssocPosters = v25;
 
-    v3 = v4->_updatedAssocPosters;
+    v3 = selfCopy->_updatedAssocPosters;
   }
 
   return v3;
@@ -555,8 +555,8 @@ uint64_t __47__PRPosterCollectionDiffInspector_addedPosters__block_invoke_2(uint
   else
   {
     v5 = objc_opt_new();
-    v6 = [(NSOrderedCollectionDifference *)self->_assocPostersDiff removals];
-    v7 = [v6 bs_mapNoNulls:&__block_literal_global_118];
+    removals = [(NSOrderedCollectionDifference *)self->_assocPostersDiff removals];
+    v7 = [removals bs_mapNoNulls:&__block_literal_global_118];
     [v5 addObjectsFromArray:v7];
 
     v22 = 0u;
@@ -579,13 +579,13 @@ uint64_t __47__PRPosterCollectionDiffInspector_addedPosters__block_invoke_2(uint
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [(NSOrderedCollectionDifference *)self->_assocPostersDiff insertions];
+          insertions = [(NSOrderedCollectionDifference *)self->_assocPostersDiff insertions];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __54__PRPosterCollectionDiffInspector_removedAssocPosters__block_invoke_2;
           v19[3] = &unk_1E7844CB0;
           v19[4] = v12;
-          v14 = [v13 bs_containsObjectPassingTest:v19];
+          v14 = [insertions bs_containsObjectPassingTest:v19];
 
           if (v14)
           {
@@ -631,8 +631,8 @@ uint64_t __54__PRPosterCollectionDiffInspector_removedAssocPosters__block_invoke
   else
   {
     v5 = objc_opt_new();
-    v6 = [(NSOrderedCollectionDifference *)self->_assocPostersDiff insertions];
-    v7 = [v6 bs_mapNoNulls:&__block_literal_global_120];
+    insertions = [(NSOrderedCollectionDifference *)self->_assocPostersDiff insertions];
+    v7 = [insertions bs_mapNoNulls:&__block_literal_global_120];
     [v5 addObjectsFromArray:v7];
 
     v22 = 0u;
@@ -655,13 +655,13 @@ uint64_t __54__PRPosterCollectionDiffInspector_removedAssocPosters__block_invoke
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [(NSOrderedCollectionDifference *)self->_assocPostersDiff removals];
+          removals = [(NSOrderedCollectionDifference *)self->_assocPostersDiff removals];
           v19[0] = MEMORY[0x1E69E9820];
           v19[1] = 3221225472;
           v19[2] = __52__PRPosterCollectionDiffInspector_addedAssocPosters__block_invoke_2;
           v19[3] = &unk_1E7844CB0;
           v19[4] = v12;
-          v14 = [v13 bs_containsObjectPassingTest:v19];
+          v14 = [removals bs_containsObjectPassingTest:v19];
 
           if (v14)
           {
@@ -712,27 +712,27 @@ uint64_t __52__PRPosterCollectionDiffInspector_addedAssocPosters__block_invoke_2
 
     else
     {
-      v6 = [(PRPosterCollection *)self->_lhsCollection selectedPoster];
-      v7 = [(PRPosterCollection *)self->_rhsCollection selectedPoster];
-      v8 = [v6 pr_posterUUID];
-      v9 = [v3 appendObject:v8 withName:@"previousSelectedPoster"];
+      selectedPoster = [(PRPosterCollection *)self->_lhsCollection selectedPoster];
+      selectedPoster2 = [(PRPosterCollection *)self->_rhsCollection selectedPoster];
+      pr_posterUUID = [selectedPoster pr_posterUUID];
+      v9 = [v3 appendObject:pr_posterUUID withName:@"previousSelectedPoster"];
 
-      v10 = [v7 pr_posterUUID];
-      v11 = [v3 appendObject:v10 withName:@"newSelectedPoster"];
+      pr_posterUUID2 = [selectedPoster2 pr_posterUUID];
+      v11 = [v3 appendObject:pr_posterUUID2 withName:@"newSelectedPoster"];
     }
 
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
     v16 = __46__PRPosterCollectionDiffInspector_description__block_invoke;
     v17 = &unk_1E7843070;
-    v18 = self;
+    selfCopy = self;
     v19 = v3;
     [v19 appendBodySectionWithName:@"changes" multilinePrefix:@"\n" block:&v14];
   }
 
-  v12 = [v3 build];
+  build = [v3 build];
 
-  return v12;
+  return build;
 }
 
 void __46__PRPosterCollectionDiffInspector_description__block_invoke(uint64_t a1)

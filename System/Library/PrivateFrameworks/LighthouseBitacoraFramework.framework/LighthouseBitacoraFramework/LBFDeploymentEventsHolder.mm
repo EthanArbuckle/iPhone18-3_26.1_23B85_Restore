@@ -1,26 +1,26 @@
 @interface LBFDeploymentEventsHolder
 - (BOOL)dumpFetchedEvents;
-- (LBFDeploymentEventsHolder)initWithExperimentOrTaskId:(id)a3 deploymentId:(id)a4;
-- (id)eventToJSONDictionary:(id)a3;
-- (id)eventToJSONString:(id)a3;
+- (LBFDeploymentEventsHolder)initWithExperimentOrTaskId:(id)id deploymentId:(id)deploymentId;
+- (id)eventToJSONDictionary:(id)dictionary;
+- (id)eventToJSONString:(id)string;
 - (id)fetchedEventsInDictionaries;
 - (id)getSortedEvents;
 @end
 
 @implementation LBFDeploymentEventsHolder
 
-- (LBFDeploymentEventsHolder)initWithExperimentOrTaskId:(id)a3 deploymentId:(id)a4
+- (LBFDeploymentEventsHolder)initWithExperimentOrTaskId:(id)id deploymentId:(id)deploymentId
 {
-  v7 = a3;
-  v8 = a4;
+  idCopy = id;
+  deploymentIdCopy = deploymentId;
   v19.receiver = self;
   v19.super_class = LBFDeploymentEventsHolder;
   v9 = [(LBFDeploymentEventsHolder *)&v19 init];
   if (v9)
   {
     LBFLoggingUtilsInit();
-    objc_storeStrong(&v9->_experimentOrTaskId, a3);
-    objc_storeStrong(&v9->_deploymentId, a4);
+    objc_storeStrong(&v9->_experimentOrTaskId, id);
+    objc_storeStrong(&v9->_deploymentId, deploymentId);
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
     mlruntimedEvents = v9->_mlruntimedEvents;
     v9->_mlruntimedEvents = v10;
@@ -41,10 +41,10 @@
   return v9;
 }
 
-- (id)eventToJSONDictionary:(id)a3
+- (id)eventToJSONDictionary:(id)dictionary
 {
   v102[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v101[0] = &unk_286800FD0;
   v101[1] = &unk_286800FE8;
   v102[0] = @"Unknown";
@@ -54,7 +54,7 @@
   v102[2] = @"Activation";
   v102[3] = @"Deactivation";
   v5 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v4, v102, v101, 4);
-  objc_msgSend_json(v3, v6, v7, v8, v9);
+  objc_msgSend_json(dictionaryCopy, v6, v7, v8, v9);
   v92 = v99 = 0;
   v11 = objc_msgSend_JSONObjectWithData_options_error_(MEMORY[0x277CCAAA0], v10, v92, 0, &v99);
   v90 = v99;
@@ -63,7 +63,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v21 = objc_msgSend_eventType(v3, v17, v18, v19, v20);
+    v21 = objc_msgSend_eventType(dictionaryCopy, v17, v18, v19, v20);
     v25 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v22, v21, v23, v24);
     v29 = objc_msgSend_objectForKey_(v5, v26, v25, v27, v28);
 
@@ -71,7 +71,7 @@
   }
 
   v93 = v5;
-  v94 = v3;
+  v94 = dictionaryCopy;
   v32 = objc_msgSend_null(MEMORY[0x277CBEB68], v17, v18, v19, v20);
   v36 = objc_msgSend_allKeysForObject_(v16, v33, v32, v34, v35);
 
@@ -128,10 +128,10 @@
   return v86;
 }
 
-- (id)eventToJSONString:(id)a3
+- (id)eventToJSONString:(id)string
 {
   v5 = MEMORY[0x277CCAAA0];
-  v6 = objc_msgSend_eventToJSONDictionary_(self, a2, a3, v3, v4);
+  v6 = objc_msgSend_eventToJSONDictionary_(self, a2, string, v3, v4);
   v14 = 0;
   v8 = objc_msgSend_dataWithJSONObject_options_error_(v5, v7, v6, 1, &v14);
 

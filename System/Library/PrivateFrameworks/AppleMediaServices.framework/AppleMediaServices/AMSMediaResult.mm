@@ -1,23 +1,23 @@
 @interface AMSMediaResult
-- (AMSMediaResult)initWithResult:(id)a3;
+- (AMSMediaResult)initWithResult:(id)result;
 - (NSArray)responseDataItems;
 @end
 
 @implementation AMSMediaResult
 
-- (AMSMediaResult)initWithResult:(id)a3
+- (AMSMediaResult)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = AMSMediaResult;
-  v5 = [(AMSURLResult *)&v10 initWithResult:v4];
+  v5 = [(AMSURLResult *)&v10 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 object];
+    object = [resultCopy object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = object;
     }
 
     else
@@ -34,8 +34,8 @@
 
 - (NSArray)responseDataItems
 {
-  v2 = [(AMSMediaResult *)self responseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"data"];
+  responseDictionary = [(AMSMediaResult *)self responseDictionary];
+  v3 = [responseDictionary objectForKeyedSubscript:@"data"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

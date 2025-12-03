@@ -4,13 +4,13 @@
 - (NSData)archivedTripSharingState;
 - (NSData)sessionState;
 - (NSUUID)currentHistoryEntryRouteIdentifier;
-- (NavigationRouteHistoryInfoProvider)initWithNavigationService:(id)a3;
+- (NavigationRouteHistoryInfoProvider)initWithNavigationService:(id)service;
 - (id)_composedRoute;
 - (id)auxiliaryTasksManager;
 - (id)legacyRouteRepresentation;
 - (id)originalWaypointRouteRepresentation;
 - (id)routeId;
-- (void)updateHistoryEntryRoute:(id)a3;
+- (void)updateHistoryEntryRoute:(id)route;
 @end
 
 @implementation NavigationRouteHistoryInfoProvider
@@ -18,20 +18,20 @@
 - (NSData)archivedTripSharingState
 {
   v2 = +[MSPSharedTripService sharedInstance];
-  v3 = [v2 archivedSharingState];
+  archivedSharingState = [v2 archivedSharingState];
 
-  return v3;
+  return archivedSharingState;
 }
 
 - (GEORouteAttributes)routeAttributes
 {
-  v3 = [(MNNavigationService *)self->_navigationService lastLocation];
-  if (v3)
+  lastLocation = [(MNNavigationService *)self->_navigationService lastLocation];
+  if (lastLocation)
   {
     v4 = [GEOLatLng alloc];
-    [v3 coordinate];
+    [lastLocation coordinate];
     v6 = v5;
-    [v3 coordinate];
+    [lastLocation coordinate];
     v7 = [v4 initWithLatitude:v6 longitude:?];
   }
 
@@ -40,15 +40,15 @@
     v7 = 0;
   }
 
-  v8 = [(MNNavigationService *)self->_navigationService currentRequest];
-  v9 = [v8 waypointTypeds];
-  v10 = [v9 lastObject];
-  v11 = [v10 locationForWaypoint];
+  currentRequest = [(MNNavigationService *)self->_navigationService currentRequest];
+  waypointTypeds = [currentRequest waypointTypeds];
+  lastObject = [waypointTypeds lastObject];
+  locationForWaypoint = [lastObject locationForWaypoint];
 
-  if (v7 && v11)
+  if (v7 && locationForWaypoint)
   {
     v22 = v7;
-    v23 = v11;
+    v23 = locationForWaypoint;
     v12 = &v22;
     v13 = 2;
 LABEL_12:
@@ -56,7 +56,7 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (v7 | v11)
+  if (v7 | locationForWaypoint)
   {
     if (v7)
     {
@@ -65,7 +65,7 @@ LABEL_12:
 
     else
     {
-      v14 = v11;
+      v14 = locationForWaypoint;
     }
 
     v21 = v14;
@@ -77,101 +77,101 @@ LABEL_12:
   v15 = 0;
 LABEL_14:
   v16 = [MNRouteAttributes alloc];
-  v17 = [(NavigationRouteHistoryInfoProvider *)self _composedRoute];
-  v18 = [v17 routeAttributes];
-  v19 = [v16 initWithAttributes:v18 latLngs:v15];
+  _composedRoute = [(NavigationRouteHistoryInfoProvider *)self _composedRoute];
+  routeAttributes = [_composedRoute routeAttributes];
+  v19 = [v16 initWithAttributes:routeAttributes latLngs:v15];
 
   return v19;
 }
 
 - (NSUUID)currentHistoryEntryRouteIdentifier
 {
-  v2 = [(NavigationRouteHistoryInfoProvider *)self historyEntryRoute];
-  v3 = [v2 historyEntry];
-  v4 = [v3 storageIdentifier];
+  historyEntryRoute = [(NavigationRouteHistoryInfoProvider *)self historyEntryRoute];
+  historyEntry = [historyEntryRoute historyEntry];
+  storageIdentifier = [historyEntry storageIdentifier];
 
-  return v4;
+  return storageIdentifier;
 }
 
-- (void)updateHistoryEntryRoute:(id)a3
+- (void)updateHistoryEntryRoute:(id)route
 {
-  v4 = a3;
-  v6 = [(NavigationRouteHistoryInfoProvider *)self auxiliaryTasksManager];
-  v5 = [v6 routePlanningSessionRouteLoadedNotifier];
-  [v5 setCurrentRouteHistoryEntry:v4];
+  routeCopy = route;
+  auxiliaryTasksManager = [(NavigationRouteHistoryInfoProvider *)self auxiliaryTasksManager];
+  routePlanningSessionRouteLoadedNotifier = [auxiliaryTasksManager routePlanningSessionRouteLoadedNotifier];
+  [routePlanningSessionRouteLoadedNotifier setCurrentRouteHistoryEntry:routeCopy];
 }
 
 - (HistoryEntryRecentsItem)historyEntryRoute
 {
-  v2 = [(NavigationRouteHistoryInfoProvider *)self auxiliaryTasksManager];
-  v3 = [v2 routePlanningSessionRouteLoadedNotifier];
-  v4 = [v3 currentRouteHistoryEntry];
+  auxiliaryTasksManager = [(NavigationRouteHistoryInfoProvider *)self auxiliaryTasksManager];
+  routePlanningSessionRouteLoadedNotifier = [auxiliaryTasksManager routePlanningSessionRouteLoadedNotifier];
+  currentRouteHistoryEntry = [routePlanningSessionRouteLoadedNotifier currentRouteHistoryEntry];
 
-  return v4;
+  return currentRouteHistoryEntry;
 }
 
 - (id)auxiliaryTasksManager
 {
   v2 = +[UIApplication sharedMapsDelegate];
-  v3 = [v2 appSessionController];
-  v4 = [v3 currentlyNavigatingPlatformController];
-  v5 = [v4 auxiliaryTasksManager];
+  appSessionController = [v2 appSessionController];
+  currentlyNavigatingPlatformController = [appSessionController currentlyNavigatingPlatformController];
+  auxiliaryTasksManager = [currentlyNavigatingPlatformController auxiliaryTasksManager];
 
-  return v5;
+  return auxiliaryTasksManager;
 }
 
 - (NSData)sessionState
 {
-  v2 = [(NavigationRouteHistoryInfoProvider *)self _composedRoute];
-  v3 = [v2 routeInitializerData];
-  v4 = [v3 directionsResponse];
-  v5 = [v4 sessionState];
+  _composedRoute = [(NavigationRouteHistoryInfoProvider *)self _composedRoute];
+  routeInitializerData = [_composedRoute routeInitializerData];
+  directionsResponse = [routeInitializerData directionsResponse];
+  sessionState = [directionsResponse sessionState];
 
-  return v5;
+  return sessionState;
 }
 
 - (id)originalWaypointRouteRepresentation
 {
-  v2 = [(NavigationRouteHistoryInfoProvider *)self navigationService];
-  v3 = [v2 originalWaypointRouteRepresentation];
+  navigationService = [(NavigationRouteHistoryInfoProvider *)self navigationService];
+  originalWaypointRouteRepresentation = [navigationService originalWaypointRouteRepresentation];
 
-  return v3;
+  return originalWaypointRouteRepresentation;
 }
 
 - (id)legacyRouteRepresentation
 {
-  v2 = [(NavigationRouteHistoryInfoProvider *)self navigationService];
-  v3 = [v2 legacyRouteRepresentation];
+  navigationService = [(NavigationRouteHistoryInfoProvider *)self navigationService];
+  legacyRouteRepresentation = [navigationService legacyRouteRepresentation];
 
-  return v3;
+  return legacyRouteRepresentation;
 }
 
 - (id)routeId
 {
-  v2 = [(NavigationRouteHistoryInfoProvider *)self navigationService];
-  v3 = [v2 routeId];
+  navigationService = [(NavigationRouteHistoryInfoProvider *)self navigationService];
+  routeId = [navigationService routeId];
 
-  return v3;
+  return routeId;
 }
 
 - (id)_composedRoute
 {
-  v2 = [(NavigationRouteHistoryInfoProvider *)self navigationService];
-  v3 = [v2 route];
+  navigationService = [(NavigationRouteHistoryInfoProvider *)self navigationService];
+  route = [navigationService route];
 
-  return v3;
+  return route;
 }
 
-- (NavigationRouteHistoryInfoProvider)initWithNavigationService:(id)a3
+- (NavigationRouteHistoryInfoProvider)initWithNavigationService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v9.receiver = self;
   v9.super_class = NavigationRouteHistoryInfoProvider;
   v6 = [(NavigationRouteHistoryInfoProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_navigationService, a3);
+    objc_storeStrong(&v6->_navigationService, service);
   }
 
   return v7;

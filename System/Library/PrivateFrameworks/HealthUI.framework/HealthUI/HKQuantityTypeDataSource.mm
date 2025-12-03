@@ -1,32 +1,32 @@
 @interface HKQuantityTypeDataSource
-- (BOOL)requiresPointRealignmentToMidnightForStatisticsInterval:(id)a3;
+- (BOOL)requiresPointRealignmentToMidnightForStatisticsInterval:(id)interval;
 - (HKQuantityType)quantityType;
-- (HKQuantityTypeDataSource)initWithUnitController:(id)a3 options:(unint64_t)a4 displayType:(id)a5 healthStore:(id)a6;
-- (id)_averageByInterval:(id)a3 startDate:(id)a4 statistics:(id)a5;
-- (id)_createMappingFunction:(id)a3;
-- (id)_dailyAverageQueriesWithStartDate:(id)a3 endDate:(id)a4 statisticsInterval:(id)a5 completion:(id)a6;
-- (id)_defaultQueriesForStartDate:(id)a3 endDate:(id)a4 statisticsInterval:(id)a5 completionHandler:(id)a6;
-- (id)_unshiftedDateIntervalIfNecessaryForStatisticsInterval:(id)a3 startDate:(id)a4 endDate:(id)a5 gregorianCalendar:(id)a6;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
-- (id)mappingFunctionForContext:(id)a3;
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4;
+- (HKQuantityTypeDataSource)initWithUnitController:(id)controller options:(unint64_t)options displayType:(id)type healthStore:(id)store;
+- (id)_averageByInterval:(id)interval startDate:(id)date statistics:(id)statistics;
+- (id)_createMappingFunction:(id)function;
+- (id)_dailyAverageQueriesWithStartDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval completion:(id)completion;
+- (id)_defaultQueriesForStartDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval completionHandler:(id)handler;
+- (id)_unshiftedDateIntervalIfNecessaryForStatisticsInterval:(id)interval startDate:(id)date endDate:(id)endDate gregorianCalendar:(id)calendar;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
+- (id)mappingFunctionForContext:(id)context;
+- (id)queriesForRequest:(id)request completionHandler:(id)handler;
 - (id)queryDescription;
 @end
 
 @implementation HKQuantityTypeDataSource
 
-- (HKQuantityTypeDataSource)initWithUnitController:(id)a3 options:(unint64_t)a4 displayType:(id)a5 healthStore:(id)a6
+- (HKQuantityTypeDataSource)initWithUnitController:(id)controller options:(unint64_t)options displayType:(id)type healthStore:(id)store
 {
-  v11 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = HKQuantityTypeDataSource;
-  v12 = [(HKHealthQueryChartCacheDataSource *)&v19 initWithDisplayType:a5 healthStore:a6];
+  v12 = [(HKHealthQueryChartCacheDataSource *)&v19 initWithDisplayType:type healthStore:store];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_unitController, a3);
-    v13->_statisticsOptions = a4;
+    objc_storeStrong(&v12->_unitController, controller);
+    v13->_statisticsOptions = options;
     v14 = [[_HKQuantityTypeDataSourceMapping alloc] initWithQuantityTypeDataSource:v13];
     mappingState = v13->_mappingState;
     v13->_mappingState = v14;
@@ -41,28 +41,28 @@
 
 - (HKQuantityType)quantityType
 {
-  v2 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v3 = [v2 sampleType];
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  sampleType = [displayType sampleType];
 
-  return v3;
+  return sampleType;
 }
 
-- (id)mappingFunctionForContext:(id)a3
+- (id)mappingFunctionForContext:(id)context
 {
   v3 = _Block_copy(self->_mappingFunction);
 
   return v3;
 }
 
-- (id)_createMappingFunction:(id)a3
+- (id)_createMappingFunction:(id)function
 {
-  v3 = a3;
+  functionCopy = function;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __51__HKQuantityTypeDataSource__createMappingFunction___block_invoke;
   aBlock[3] = &unk_1E81B9308;
-  v8 = v3;
-  v4 = v3;
+  v8 = functionCopy;
+  v4 = functionCopy;
   v5 = _Block_copy(aBlock);
 
   return v5;
@@ -71,61 +71,61 @@
 - (id)queryDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(HKQuantityTypeDataSource *)self quantityType];
-  v4 = [v3 hk_localizedName];
-  v5 = [v2 stringWithFormat:@"HKQuantityType(%@)", v4];
+  quantityType = [(HKQuantityTypeDataSource *)self quantityType];
+  hk_localizedName = [quantityType hk_localizedName];
+  v5 = [v2 stringWithFormat:@"HKQuantityType(%@)", hk_localizedName];
 
   return v5;
 }
 
-- (id)queriesForRequest:(id)a3 completionHandler:(id)a4
+- (id)queriesForRequest:(id)request completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E696C660];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 statisticsInterval];
-  v10 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v11 = [v10 sampleType];
-  v12 = [v6 shouldUseDailyAverageWithDateComponents:v9 sampleType:v11];
+  handlerCopy = handler;
+  requestCopy = request;
+  statisticsInterval = [requestCopy statisticsInterval];
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  sampleType = [displayType sampleType];
+  v12 = [v6 shouldUseDailyAverageWithDateComponents:statisticsInterval sampleType:sampleType];
 
-  v13 = [v8 startDate];
-  v14 = [v8 endDate];
-  v15 = [v8 statisticsInterval];
+  startDate = [requestCopy startDate];
+  endDate = [requestCopy endDate];
+  statisticsInterval2 = [requestCopy statisticsInterval];
 
   if (v12)
   {
-    [(HKQuantityTypeDataSource *)self _dailyAverageQueriesWithStartDate:v13 endDate:v14 statisticsInterval:v15 completion:v7];
+    [(HKQuantityTypeDataSource *)self _dailyAverageQueriesWithStartDate:startDate endDate:endDate statisticsInterval:statisticsInterval2 completion:handlerCopy];
   }
 
   else
   {
-    [(HKQuantityTypeDataSource *)self _defaultQueriesForStartDate:v13 endDate:v14 statisticsInterval:v15 completionHandler:v7];
+    [(HKQuantityTypeDataSource *)self _defaultQueriesForStartDate:startDate endDate:endDate statisticsInterval:statisticsInterval2 completionHandler:handlerCopy];
   }
   v16 = ;
 
   return v16;
 }
 
-- (id)_dailyAverageQueriesWithStartDate:(id)a3 endDate:(id)a4 statisticsInterval:(id)a5 completion:(id)a6
+- (id)_dailyAverageQueriesWithStartDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  intervalCopy = interval;
+  completionCopy = completion;
   v13 = MEMORY[0x1E695DF10];
-  v14 = a4;
-  v15 = [v13 hk_oneDay];
+  endDateCopy = endDate;
+  hk_oneDay = [v13 hk_oneDay];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __100__HKQuantityTypeDataSource__dailyAverageQueriesWithStartDate_endDate_statisticsInterval_completion___block_invoke;
   v21[3] = &unk_1E81B9330;
   v21[4] = self;
-  v22 = v11;
-  v23 = v10;
-  v24 = v12;
-  v16 = v10;
-  v17 = v11;
-  v18 = v12;
-  v19 = [(HKQuantityTypeDataSource *)self _defaultQueriesForStartDate:v16 endDate:v14 statisticsInterval:v15 completionHandler:v21];
+  v22 = intervalCopy;
+  v23 = dateCopy;
+  v24 = completionCopy;
+  v16 = dateCopy;
+  v17 = intervalCopy;
+  v18 = completionCopy;
+  v19 = [(HKQuantityTypeDataSource *)self _defaultQueriesForStartDate:v16 endDate:endDateCopy statisticsInterval:hk_oneDay completionHandler:v21];
 
   return v19;
 }
@@ -141,35 +141,35 @@ void __100__HKQuantityTypeDataSource__dailyAverageQueriesWithStartDate_endDate_s
   (*(v6 + 16))(v6, v9, v8);
 }
 
-- (id)_averageByInterval:(id)a3 startDate:(id)a4 statistics:(id)a5
+- (id)_averageByInterval:(id)interval startDate:(id)date statistics:(id)statistics
 {
-  v8 = a3;
+  intervalCopy = interval;
   unitController = self->_unitController;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v13 = [(HKUnitPreferenceController *)unitController unitForDisplayType:v12];
+  statisticsCopy = statistics;
+  dateCopy = date;
+  displayType = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  v13 = [(HKUnitPreferenceController *)unitController unitForDisplayType:displayType];
 
-  v14 = [(HKHealthQueryChartCacheDataSource *)self displayType];
-  v15 = [v14 sampleType];
+  displayType2 = [(HKHealthQueryChartCacheDataSource *)self displayType];
+  sampleType = [displayType2 sampleType];
 
-  v16 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v17 = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x1E695DEE8] hk_gregorianCalendarWithLocalTimeZone];
   v18 = MEMORY[0x1E696C660];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __68__HKQuantityTypeDataSource__averageByInterval_startDate_statistics___block_invoke;
   v25[3] = &unk_1E81B9358;
   v26 = v13;
-  v27 = self;
-  v28 = v8;
-  v29 = v17;
-  v30 = v15;
-  v19 = v15;
-  v20 = v17;
-  v21 = v8;
+  selfCopy = self;
+  v28 = intervalCopy;
+  v29 = hk_gregorianCalendarWithLocalTimeZone;
+  v30 = sampleType;
+  v19 = sampleType;
+  v20 = hk_gregorianCalendarWithLocalTimeZone;
+  v21 = intervalCopy;
   v22 = v13;
-  v23 = [v18 arrayByCoalescingObjects:v10 startDate:v11 intervalComponents:v21 calendar:v16 combiningBlock:v25];
+  v23 = [v18 arrayByCoalescingObjects:statisticsCopy startDate:dateCopy intervalComponents:v21 calendar:currentCalendar combiningBlock:v25];
 
   return v23;
 }
@@ -250,31 +250,31 @@ HKQuantityTypeDataSourceValue *__68__HKQuantityTypeDataSource__averageByInterval
   return v21;
 }
 
-- (id)_defaultQueriesForStartDate:(id)a3 endDate:(id)a4 statisticsInterval:(id)a5 completionHandler:(id)a6
+- (id)_defaultQueriesForStartDate:(id)date endDate:(id)endDate statisticsInterval:(id)interval completionHandler:(id)handler
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:v10 endDate:v11 options:0];
+  dateCopy = date;
+  endDateCopy = endDate;
+  intervalCopy = interval;
+  handlerCopy = handler;
+  v14 = [MEMORY[0x1E696C378] predicateForSamplesWithStartDate:dateCopy endDate:endDateCopy options:0];
   v15 = objc_alloc(MEMORY[0x1E696C4D8]);
-  v16 = [(HKQuantityTypeDataSource *)self quantityType];
-  v17 = [v15 initWithQuantityType:v16 quantitySamplePredicate:v14 options:self->_statisticsOptions anchorDate:v10 intervalComponents:v12];
+  quantityType = [(HKQuantityTypeDataSource *)self quantityType];
+  v17 = [v15 initWithQuantityType:quantityType quantitySamplePredicate:v14 options:self->_statisticsOptions anchorDate:dateCopy intervalComponents:intervalCopy];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __101__HKQuantityTypeDataSource__defaultQueriesForStartDate_endDate_statisticsInterval_completionHandler___block_invoke;
   v24[3] = &unk_1E81B93A8;
-  v25 = v10;
-  v26 = v11;
-  v27 = self;
-  v28 = v12;
-  v29 = v13;
-  v18 = v13;
-  v19 = v12;
-  v20 = v11;
-  v21 = v10;
+  v25 = dateCopy;
+  v26 = endDateCopy;
+  selfCopy = self;
+  v28 = intervalCopy;
+  v29 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = intervalCopy;
+  v20 = endDateCopy;
+  v21 = dateCopy;
   [v17 setInitialResultsHandler:v24];
   [v17 setDebugIdentifier:@"charting (quantity)"];
   v30[0] = v17;
@@ -375,15 +375,15 @@ void __101__HKQuantityTypeDataSource__defaultQueriesForStartDate_endDate_statist
   }
 }
 
-- (BOOL)requiresPointRealignmentToMidnightForStatisticsInterval:(id)a3
+- (BOOL)requiresPointRealignmentToMidnightForStatisticsInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   if ([(HKHealthQueryChartCacheDataSource *)self queryAlignment]== 1)
   {
-    [v4 hk_approximateDuration];
+    [intervalCopy hk_approximateDuration];
     v6 = v5;
-    v7 = [MEMORY[0x1E695DF10] hk_oneDay];
-    [v7 hk_approximateDuration];
+    hk_oneDay = [MEMORY[0x1E695DF10] hk_oneDay];
+    [hk_oneDay hk_approximateDuration];
     v9 = v6 >= v8;
   }
 
@@ -395,19 +395,19 @@ void __101__HKQuantityTypeDataSource__defaultQueriesForStartDate_endDate_statist
   return v9;
 }
 
-- (id)_unshiftedDateIntervalIfNecessaryForStatisticsInterval:(id)a3 startDate:(id)a4 endDate:(id)a5 gregorianCalendar:(id)a6
+- (id)_unshiftedDateIntervalIfNecessaryForStatisticsInterval:(id)interval startDate:(id)date endDate:(id)endDate gregorianCalendar:(id)calendar
 {
-  v10 = a6;
+  calendarCopy = calendar;
   v11 = MEMORY[0x1E696AB80];
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[v11 alloc] initWithStartDate:v13 endDate:v12];
+  endDateCopy = endDate;
+  dateCopy = date;
+  intervalCopy = interval;
+  v15 = [[v11 alloc] initWithStartDate:dateCopy endDate:endDateCopy];
 
-  LODWORD(v13) = [(HKQuantityTypeDataSource *)self requiresPointRealignmentToMidnightForStatisticsInterval:v14];
-  if (v13)
+  LODWORD(dateCopy) = [(HKQuantityTypeDataSource *)self requiresPointRealignmentToMidnightForStatisticsInterval:intervalCopy];
+  if (dateCopy)
   {
-    v16 = [v15 hk_dateIntervalUnshiftedFromQueryAlignment:1 calendar:v10];
+    v16 = [v15 hk_dateIntervalUnshiftedFromQueryAlignment:1 calendar:calendarCopy];
   }
 
   else
@@ -420,32 +420,32 @@ void __101__HKQuantityTypeDataSource__defaultQueriesForStartDate_endDate_statist
   return v17;
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __94__HKQuantityTypeDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v23[3] = &unk_1E81B7088;
-  v24 = v8;
-  v25 = self;
-  v26 = v10;
-  v11 = v10;
-  v12 = v8;
+  v24 = requestCopy;
+  selfCopy = self;
+  v26 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = requestCopy;
   v13 = [(HKQuantityTypeDataSource *)self queriesForRequest:v12 completionHandler:v23];
-  v14 = [v13 firstObject];
-  [v9 executeQuery:v14];
+  firstObject = [v13 firstObject];
+  [storeCopy executeQuery:firstObject];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __94__HKQuantityTypeDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke_3;
   aBlock[3] = &unk_1E81B5AD0;
-  v21 = v9;
+  v21 = storeCopy;
   v22 = v13;
   v15 = v13;
-  v16 = v9;
+  v16 = storeCopy;
   v17 = _Block_copy(aBlock);
   v18 = _Block_copy(v17);
 
@@ -548,14 +548,14 @@ void __94__HKQuantityTypeDataSource_generateSharableQueryDataForRequest_healthSt
   [v1 stopQuery:v2];
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v4 = a3;
-  if ([v4 hasTimeZoneName])
+  dataCopy = data;
+  if ([dataCopy hasTimeZoneName])
   {
     v5 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v6 = [v4 timeZoneName];
-    v7 = [v5 initWithName:v6];
+    timeZoneName = [dataCopy timeZoneName];
+    v7 = [v5 initWithName:timeZoneName];
   }
 
   else
@@ -564,19 +564,19 @@ void __94__HKQuantityTypeDataSource_generateSharableQueryDataForRequest_healthSt
   }
 
   v8 = [HKCodableChartQuantityDataSourceQueryData alloc];
-  v9 = [v4 queryDataObject];
-  v10 = [(HKCodableChartQuantityDataSourceQueryData *)v8 initWithData:v9];
+  queryDataObject = [dataCopy queryDataObject];
+  v10 = [(HKCodableChartQuantityDataSourceQueryData *)v8 initWithData:queryDataObject];
 
   v11 = objc_alloc_init(HKGraphSeriesDataBlock);
-  v12 = [(HKCodableChartQuantityDataSourceQueryData *)v10 statisticsCollection];
-  v13 = [v12 statistics];
+  statisticsCollection = [(HKCodableChartQuantityDataSourceQueryData *)v10 statisticsCollection];
+  statistics = [statisticsCollection statistics];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __76__HKQuantityTypeDataSource_chartPointsFromQueryData_dataIsFromRemoteSource___block_invoke;
   v17[3] = &unk_1E81B6B90;
   v18 = v7;
   v14 = v7;
-  v15 = [v13 hk_map:v17];
+  v15 = [statistics hk_map:v17];
   [(HKGraphSeriesDataBlock *)v11 setChartPoints:v15];
 
   return v11;

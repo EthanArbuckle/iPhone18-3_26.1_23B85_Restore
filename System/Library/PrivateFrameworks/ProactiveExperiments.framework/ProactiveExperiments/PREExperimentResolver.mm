@@ -2,31 +2,31 @@
 + (id)sharedInstance;
 + (id)sharedQueue;
 - (PREExperimentResolver)init;
-- (id)_getDefaultResponseSuggestionsExperimentConfig:(id)a3;
-- (id)getResponseSuggestionsExperimentConfig:(id)a3 shouldDownloadAssets:(BOOL)a4;
+- (id)_getDefaultResponseSuggestionsExperimentConfig:(id)config;
+- (id)getResponseSuggestionsExperimentConfig:(id)config shouldDownloadAssets:(BOOL)assets;
 @end
 
 @implementation PREExperimentResolver
 
-- (id)_getDefaultResponseSuggestionsExperimentConfig:(id)a3
+- (id)_getDefaultResponseSuggestionsExperimentConfig:(id)config
 {
   v3 = [[PREResponseSuggestionsExpConfig alloc] initWithNamespaceName:0 withTrialClient:self->_trialClient shouldDownloadAssets:0];
 
   return v3;
 }
 
-- (id)getResponseSuggestionsExperimentConfig:(id)a3 shouldDownloadAssets:(BOOL)a4
+- (id)getResponseSuggestionsExperimentConfig:(id)config shouldDownloadAssets:(BOOL)assets
 {
-  v6 = a3;
+  configCopy = config;
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
   v41 = __Block_byref_object_copy_;
   v42 = __Block_byref_object_dispose_;
   v43 = 0;
-  if ([v6 length])
+  if ([configCopy length])
   {
-    v7 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:v6];
+    v7 = [MEMORY[0x277D3A248] languageForLocaleIdentifier:configCopy];
 
     v8 = [(NSDictionary *)self->_smartReplyLangAndNamespaces objectForKey:v7];
     v9 = v8;
@@ -58,10 +58,10 @@
         objc_copyWeak(&v26, &location);
         v25 = buf;
         v24 = v11;
-        v27 = a4;
+        assetsCopy = assets;
         v13 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-        v14 = [objc_opt_class() sharedQueue];
-        dispatch_async(v14, v13);
+        sharedQueue = [objc_opt_class() sharedQueue];
+        dispatch_async(sharedQueue, v13);
 
         v15 = dispatch_time(0, 1000000000);
         dispatch_block_wait(v13, v15);
@@ -110,7 +110,7 @@
   else
   {
     v20 = 0;
-    v7 = v6;
+    v7 = configCopy;
   }
 
   _Block_object_dispose(&v38, 8);
@@ -225,8 +225,8 @@ uint64_t __85__PREExperimentResolver_getResponseSuggestionsExperimentConfig_shou
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v12 = [(NSDictionary *)v2->_smartReplyLangAndNamespaces allValues];
-    v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    allValues = [(NSDictionary *)v2->_smartReplyLangAndNamespaces allValues];
+    v13 = [allValues countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v13)
     {
       v14 = *v24;
@@ -237,7 +237,7 @@ uint64_t __85__PREExperimentResolver_getResponseSuggestionsExperimentConfig_shou
         {
           if (*v24 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(allValues);
           }
 
           v16 = *(*(&v23 + 1) + 8 * v15);
@@ -254,7 +254,7 @@ uint64_t __85__PREExperimentResolver_getResponseSuggestionsExperimentConfig_shou
         }
 
         while (v13 != v15);
-        v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v13 = [allValues countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v13);
@@ -342,7 +342,7 @@ void __36__PREExperimentResolver_sharedQueue__block_invoke()
   block[1] = 3221225472;
   block[2] = __39__PREExperimentResolver_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__pasOnceToken3 != -1)
   {
     dispatch_once(&sharedInstance__pasOnceToken3, block);

@@ -1,10 +1,10 @@
 @interface PCStatusConditionsDefaultsSettings
-+ (id)storageWithDefaultValues:(id)a3;
++ (id)storageWithDefaultValues:(id)values;
 @end
 
 @implementation PCStatusConditionsDefaultsSettings
 
-+ (id)storageWithDefaultValues:(id)a3
++ (id)storageWithDefaultValues:(id)values
 {
   v3 = NSStringFromSelector("whitelistingsDisabled");
   v7 = v3;

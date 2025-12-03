@@ -1,63 +1,63 @@
 @interface ICQDaemonOfferStubs
-- (BOOL)_isValidServerStubs:(id)a3 key:(id)a4;
-- (BOOL)_stubsArrayContainsOfferID:(id)a3 stubs:(id)a4;
-- (BOOL)containsOfferID:(id)a3;
-- (ICQDaemonOfferStubs)initWithDictionary:(id)a3;
-- (id)_chooseStubFromServerStubs:(id)a3 conditions:(id)a4;
-- (id)_chooseStubFromServerStubs:(id)a3 offerType:(int64_t)a4;
-- (id)_initWithAccount:(id)a3 error:(id)a4;
-- (id)_initWithAccount:(id)a3 serverDictionary:(id)a4;
+- (BOOL)_isValidServerStubs:(id)stubs key:(id)key;
+- (BOOL)_stubsArrayContainsOfferID:(id)d stubs:(id)stubs;
+- (BOOL)containsOfferID:(id)d;
+- (ICQDaemonOfferStubs)initWithDictionary:(id)dictionary;
+- (id)_chooseStubFromServerStubs:(id)stubs conditions:(id)conditions;
+- (id)_chooseStubFromServerStubs:(id)stubs offerType:(int64_t)type;
+- (id)_initWithAccount:(id)account error:(id)error;
+- (id)_initWithAccount:(id)account serverDictionary:(id)dictionary;
 - (id)chooseBuddyStub;
-- (id)chooseBuddyStubForConditions:(id)a3;
-- (id)chooseBuddyStubForOfferType:(int64_t)a3;
+- (id)chooseBuddyStubForConditions:(id)conditions;
+- (id)chooseBuddyStubForOfferType:(int64_t)type;
 - (id)chooseDefaultStub;
-- (id)chooseDefaultStubForConditions:(id)a3;
+- (id)chooseDefaultStubForConditions:(id)conditions;
 - (id)chooseEventStub;
-- (id)chooseEventStubForConditions:(id)a3;
+- (id)chooseEventStubForConditions:(id)conditions;
 - (id)chooseFirstDefaultStub;
 - (id)chooseFirstEventStub;
 - (id)chooseFirstPremiumStub;
 - (id)chooseFirstStub;
 - (id)choosePremiumStub;
-- (id)choosePremiumStubForConditions:(id)a3;
+- (id)choosePremiumStubForConditions:(id)conditions;
 - (id)chooseStub;
-- (id)chooseStubForConditions:(id)a3;
-- (id)chooseStubForOfferType:(int64_t)a3;
+- (id)chooseStubForConditions:(id)conditions;
+- (id)chooseStubForOfferType:(int64_t)type;
 - (void)_initServerStubsFromServerDictionary;
-- (void)setServerDictionary:(id)a3;
+- (void)setServerDictionary:(id)dictionary;
 @end
 
 @implementation ICQDaemonOfferStubs
 
 - (id)chooseStub
 {
-  v3 = [(ICQDaemonOfferStubs *)self serverStubs];
+  serverStubs = [(ICQDaemonOfferStubs *)self serverStubs];
   v4 = +[ICQDaemonOfferConditions currentConditions];
-  v5 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v3 conditions:v4];
+  v5 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:serverStubs conditions:v4];
 
   return v5;
 }
 
-- (id)chooseStubForConditions:(id)a3
+- (id)chooseStubForConditions:(id)conditions
 {
-  v4 = a3;
-  v5 = [(ICQDaemonOfferStubs *)self serverStubs];
-  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v5 conditions:v4];
+  conditionsCopy = conditions;
+  serverStubs = [(ICQDaemonOfferStubs *)self serverStubs];
+  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:serverStubs conditions:conditionsCopy];
 
   return v6;
 }
 
 - (id)chooseFirstStub
 {
-  v3 = [(ICQDaemonOfferStubs *)self serverStubs];
-  v4 = [v3 count];
+  serverStubs = [(ICQDaemonOfferStubs *)self serverStubs];
+  v4 = [serverStubs count];
 
   if (v4)
   {
-    v5 = [(ICQDaemonOfferStubs *)self serverStubs];
-    v6 = [v5 firstObject];
+    serverStubs2 = [(ICQDaemonOfferStubs *)self serverStubs];
+    firstObject = [serverStubs2 firstObject];
 
-    v7 = [[ICQDaemonOfferStub alloc] initWithServerDictionary:v6];
+    v7 = [[ICQDaemonOfferStub alloc] initWithServerDictionary:firstObject];
   }
 
   else
@@ -70,51 +70,51 @@
 
 - (id)chooseBuddyStub
 {
-  v3 = [(ICQDaemonOfferStubs *)self buddyStubs];
+  buddyStubs = [(ICQDaemonOfferStubs *)self buddyStubs];
   v4 = +[ICQDaemonOfferConditions currentConditions];
-  v5 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v3 conditions:v4];
+  v5 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:buddyStubs conditions:v4];
 
   return v5;
 }
 
-- (id)chooseBuddyStubForConditions:(id)a3
+- (id)chooseBuddyStubForConditions:(id)conditions
 {
-  v4 = a3;
-  v5 = [(ICQDaemonOfferStubs *)self buddyStubs];
-  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v5 conditions:v4];
+  conditionsCopy = conditions;
+  buddyStubs = [(ICQDaemonOfferStubs *)self buddyStubs];
+  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:buddyStubs conditions:conditionsCopy];
 
   return v6;
 }
 
 - (id)chooseDefaultStub
 {
-  v3 = [(ICQDaemonOfferStubs *)self defaultStubs];
+  defaultStubs = [(ICQDaemonOfferStubs *)self defaultStubs];
   v4 = +[ICQDaemonOfferConditions currentConditions];
-  v5 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v3 conditions:v4];
+  v5 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:defaultStubs conditions:v4];
 
   return v5;
 }
 
-- (id)chooseDefaultStubForConditions:(id)a3
+- (id)chooseDefaultStubForConditions:(id)conditions
 {
-  v4 = a3;
-  v5 = [(ICQDaemonOfferStubs *)self defaultStubs];
-  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v5 conditions:v4];
+  conditionsCopy = conditions;
+  defaultStubs = [(ICQDaemonOfferStubs *)self defaultStubs];
+  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:defaultStubs conditions:conditionsCopy];
 
   return v6;
 }
 
 - (id)chooseFirstDefaultStub
 {
-  v3 = [(ICQDaemonOfferStubs *)self defaultStubs];
-  v4 = [v3 count];
+  defaultStubs = [(ICQDaemonOfferStubs *)self defaultStubs];
+  v4 = [defaultStubs count];
 
   if (v4)
   {
-    v5 = [(ICQDaemonOfferStubs *)self defaultStubs];
-    v6 = [v5 firstObject];
+    defaultStubs2 = [(ICQDaemonOfferStubs *)self defaultStubs];
+    firstObject = [defaultStubs2 firstObject];
 
-    v7 = [[ICQDaemonOfferStub alloc] initWithServerDictionary:v6];
+    v7 = [[ICQDaemonOfferStub alloc] initWithServerDictionary:firstObject];
   }
 
   else
@@ -127,33 +127,33 @@
 
 - (id)choosePremiumStub
 {
-  v3 = [(ICQDaemonOfferStubs *)self premiumStubs];
+  premiumStubs = [(ICQDaemonOfferStubs *)self premiumStubs];
   v4 = +[ICQDaemonOfferConditions currentConditions];
-  v5 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v3 conditions:v4];
+  v5 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:premiumStubs conditions:v4];
 
   return v5;
 }
 
-- (id)choosePremiumStubForConditions:(id)a3
+- (id)choosePremiumStubForConditions:(id)conditions
 {
-  v4 = a3;
-  v5 = [(ICQDaemonOfferStubs *)self premiumStubs];
-  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v5 conditions:v4];
+  conditionsCopy = conditions;
+  premiumStubs = [(ICQDaemonOfferStubs *)self premiumStubs];
+  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:premiumStubs conditions:conditionsCopy];
 
   return v6;
 }
 
 - (id)chooseFirstPremiumStub
 {
-  v3 = [(ICQDaemonOfferStubs *)self premiumStubs];
-  v4 = [v3 count];
+  premiumStubs = [(ICQDaemonOfferStubs *)self premiumStubs];
+  v4 = [premiumStubs count];
 
   if (v4)
   {
-    v5 = [(ICQDaemonOfferStubs *)self premiumStubs];
-    v6 = [v5 firstObject];
+    premiumStubs2 = [(ICQDaemonOfferStubs *)self premiumStubs];
+    firstObject = [premiumStubs2 firstObject];
 
-    v7 = [[ICQDaemonOfferStub alloc] initWithServerDictionary:v6];
+    v7 = [[ICQDaemonOfferStub alloc] initWithServerDictionary:firstObject];
   }
 
   else
@@ -172,26 +172,26 @@
   return v4;
 }
 
-- (id)chooseEventStubForConditions:(id)a3
+- (id)chooseEventStubForConditions:(id)conditions
 {
-  v4 = a3;
-  v5 = [(ICQDaemonOfferStubs *)self eventStubs];
-  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v5 conditions:v4];
+  conditionsCopy = conditions;
+  eventStubs = [(ICQDaemonOfferStubs *)self eventStubs];
+  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:eventStubs conditions:conditionsCopy];
 
   return v6;
 }
 
 - (id)chooseFirstEventStub
 {
-  v3 = [(ICQDaemonOfferStubs *)self eventStubs];
-  v4 = [v3 count];
+  eventStubs = [(ICQDaemonOfferStubs *)self eventStubs];
+  v4 = [eventStubs count];
 
   if (v4)
   {
-    v5 = [(ICQDaemonOfferStubs *)self eventStubs];
-    v6 = [v5 firstObject];
+    eventStubs2 = [(ICQDaemonOfferStubs *)self eventStubs];
+    firstObject = [eventStubs2 firstObject];
 
-    v7 = [[ICQDaemonOfferStub alloc] initWithServerDictionary:v6];
+    v7 = [[ICQDaemonOfferStub alloc] initWithServerDictionary:firstObject];
     v8 = +[ICQDaemonOfferConditions currentConditions];
     [(ICQDaemonOfferStub *)v7 setConditionsWhenChosen:v8];
   }
@@ -204,43 +204,43 @@
   return v7;
 }
 
-- (BOOL)containsOfferID:(id)a3
+- (BOOL)containsOfferID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICQDaemonOfferStubs *)self serverStubs];
-  if ([(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:v4 stubs:v5])
+  dCopy = d;
+  serverStubs = [(ICQDaemonOfferStubs *)self serverStubs];
+  if ([(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:dCopy stubs:serverStubs])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(ICQDaemonOfferStubs *)self premiumStubs];
-    if ([(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:v4 stubs:v7])
+    premiumStubs = [(ICQDaemonOfferStubs *)self premiumStubs];
+    if ([(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:dCopy stubs:premiumStubs])
     {
       v6 = 1;
     }
 
     else
     {
-      v8 = [(ICQDaemonOfferStubs *)self defaultStubs];
-      if ([(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:v4 stubs:v8])
+      defaultStubs = [(ICQDaemonOfferStubs *)self defaultStubs];
+      if ([(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:dCopy stubs:defaultStubs])
       {
         v6 = 1;
       }
 
       else
       {
-        v9 = [(ICQDaemonOfferStubs *)self buddyStubs];
-        if ([(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:v4 stubs:v9])
+        buddyStubs = [(ICQDaemonOfferStubs *)self buddyStubs];
+        if ([(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:dCopy stubs:buddyStubs])
         {
           v6 = 1;
         }
 
         else
         {
-          v10 = [(ICQDaemonOfferStubs *)self eventStubs];
-          v6 = [(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:v4 stubs:v10];
+          eventStubs = [(ICQDaemonOfferStubs *)self eventStubs];
+          v6 = [(ICQDaemonOfferStubs *)self _stubsArrayContainsOfferID:dCopy stubs:eventStubs];
         }
       }
     }
@@ -249,11 +249,11 @@
   return v6;
 }
 
-- (id)_initWithAccount:(id)a3 serverDictionary:(id)a4
+- (id)_initWithAccount:(id)account serverDictionary:(id)dictionary
 {
   v7.receiver = self;
   v7.super_class = ICQDaemonOfferStubs;
-  v4 = [(ICQDaemonPersisted *)&v7 _initWithAccount:a3 serverDictionary:a4];
+  v4 = [(ICQDaemonPersisted *)&v7 _initWithAccount:account serverDictionary:dictionary];
   v5 = v4;
   if (v4)
   {
@@ -263,11 +263,11 @@
   return v5;
 }
 
-- (id)_initWithAccount:(id)a3 error:(id)a4
+- (id)_initWithAccount:(id)account error:(id)error
 {
   v13.receiver = self;
   v13.super_class = ICQDaemonOfferStubs;
-  v4 = [(ICQDaemonPersisted *)&v13 _initWithAccount:a3 error:a4];
+  v4 = [(ICQDaemonPersisted *)&v13 _initWithAccount:account error:error];
   v5 = v4;
   if (v4)
   {
@@ -291,11 +291,11 @@
   return v5;
 }
 
-- (ICQDaemonOfferStubs)initWithDictionary:(id)a3
+- (ICQDaemonOfferStubs)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = ICQDaemonOfferStubs;
-  v3 = [(ICQDaemonPersisted *)&v6 initWithDictionary:a3];
+  v3 = [(ICQDaemonPersisted *)&v6 initWithDictionary:dictionary];
   v4 = v3;
   if (v3)
   {
@@ -305,11 +305,11 @@
   return v4;
 }
 
-- (void)setServerDictionary:(id)a3
+- (void)setServerDictionary:(id)dictionary
 {
   v4.receiver = self;
   v4.super_class = ICQDaemonOfferStubs;
-  [(ICQDaemonPersisted *)&v4 setServerDictionary:a3];
+  [(ICQDaemonPersisted *)&v4 setServerDictionary:dictionary];
   [(ICQDaemonOfferStubs *)self _initServerStubsFromServerDictionary];
 }
 
@@ -361,8 +361,8 @@ LABEL_9:
 
 - (void)_initServerStubsFromServerDictionary
 {
-  v3 = [(ICQDaemonPersisted *)self serverDictionary];
-  v22 = [v3 objectForKeyedSubscript:@"deviceOffers"];
+  serverDictionary = [(ICQDaemonPersisted *)self serverDictionary];
+  v22 = [serverDictionary objectForKeyedSubscript:@"deviceOffers"];
 
   if ([(ICQDaemonOfferStubs *)self _isValidServerStubs:v22 key:@"deviceOffers"])
   {
@@ -377,8 +377,8 @@ LABEL_9:
   serverStubs = self->_serverStubs;
   self->_serverStubs = v4;
 
-  v6 = [(ICQDaemonPersisted *)self serverDictionary];
-  v7 = [v6 objectForKeyedSubscript:@"buddyOffers"];
+  serverDictionary2 = [(ICQDaemonPersisted *)self serverDictionary];
+  v7 = [serverDictionary2 objectForKeyedSubscript:@"buddyOffers"];
 
   if ([(ICQDaemonOfferStubs *)self _isValidServerStubs:v7 key:@"buddyOffers"])
   {
@@ -393,8 +393,8 @@ LABEL_9:
   buddyStubs = self->_buddyStubs;
   self->_buddyStubs = v8;
 
-  v10 = [(ICQDaemonPersisted *)self serverDictionary];
-  v11 = [v10 objectForKeyedSubscript:@"defaultOffers"];
+  serverDictionary3 = [(ICQDaemonPersisted *)self serverDictionary];
+  v11 = [serverDictionary3 objectForKeyedSubscript:@"defaultOffers"];
 
   if ([(ICQDaemonOfferStubs *)self _isValidServerStubs:v11 key:@"defaultOffers"])
   {
@@ -409,8 +409,8 @@ LABEL_9:
   defaultStubs = self->_defaultStubs;
   self->_defaultStubs = v12;
 
-  v14 = [(ICQDaemonPersisted *)self serverDictionary];
-  v15 = [v14 objectForKeyedSubscript:@"premiumOffers"];
+  serverDictionary4 = [(ICQDaemonPersisted *)self serverDictionary];
+  v15 = [serverDictionary4 objectForKeyedSubscript:@"premiumOffers"];
 
   if ([(ICQDaemonOfferStubs *)self _isValidServerStubs:v15 key:@"premiumOffers"])
   {
@@ -425,8 +425,8 @@ LABEL_9:
   premiumStubs = self->_premiumStubs;
   self->_premiumStubs = v16;
 
-  v18 = [(ICQDaemonPersisted *)self serverDictionary];
-  v19 = [v18 objectForKeyedSubscript:@"eventOffers"];
+  serverDictionary5 = [(ICQDaemonPersisted *)self serverDictionary];
+  v19 = [serverDictionary5 objectForKeyedSubscript:@"eventOffers"];
 
   if ([(ICQDaemonOfferStubs *)self _isValidServerStubs:v19 key:@"eventOffers"])
   {
@@ -442,22 +442,22 @@ LABEL_9:
   self->_eventStubs = v20;
 }
 
-- (BOOL)_isValidServerStubs:(id)a3 key:(id)a4
+- (BOOL)_isValidServerStubs:(id)stubs key:(id)key
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  stubsCopy = stubs;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
-  if (!v5)
+  if (!stubsCopy)
   {
     v8 = _ICQGetLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v21 = v6;
+      v21 = keyCopy;
       _os_log_impl(&dword_275572000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ is missing", buf, 0xCu);
     }
 
@@ -472,7 +472,7 @@ LABEL_9:
     {
       v9 = objc_opt_class();
       *buf = 138543618;
-      v21 = v6;
+      v21 = keyCopy;
       v22 = 2112;
       v23 = v9;
       v10 = v9;
@@ -490,9 +490,9 @@ LABEL_9:
   v13[1] = 3221225472;
   v13[2] = __47__ICQDaemonOfferStubs__isValidServerStubs_key___block_invoke;
   v13[3] = &unk_27A652D40;
-  v14 = v6;
+  v14 = keyCopy;
   v15 = &v16;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [stubsCopy enumerateObjectsUsingBlock:v13];
 
   v7 = *(v17 + 24);
 LABEL_10:
@@ -530,19 +530,19 @@ void __47__ICQDaemonOfferStubs__isValidServerStubs_key___block_invoke(uint64_t a
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_chooseStubFromServerStubs:(id)a3 conditions:(id)a4
+- (id)_chooseStubFromServerStubs:(id)stubs conditions:(id)conditions
 {
   v41 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  stubsCopy = stubs;
+  conditionsCopy = conditions;
+  if ([stubsCopy count])
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v27 = v5;
-    obj = v5;
+    v27 = stubsCopy;
+    obj = stubsCopy;
     v7 = [obj countByEnumeratingWithState:&v30 objects:v40 count:16];
     if (v7)
     {
@@ -567,7 +567,7 @@ LABEL_4:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           _ICQStringForKey(v13, @"offerType");
-          v17 = v6;
+          v17 = conditionsCopy;
           v19 = v18 = v10;
           _ICQStringForKey(v13, @"type");
           v21 = v20 = v8;
@@ -581,12 +581,12 @@ LABEL_4:
 
           v8 = v20;
           v10 = v18;
-          v6 = v17;
+          conditionsCopy = v17;
           v9 = v28;
           v11 = 0x27A650000;
         }
 
-        if ([v15 isSatisfiedByConditions:v6])
+        if ([v15 isSatisfiedByConditions:conditionsCopy])
         {
           break;
         }
@@ -610,7 +610,7 @@ LABEL_4:
         goto LABEL_15;
       }
 
-      [(ICQDaemonOfferStub *)v22 setConditionsWhenChosen:v6];
+      [(ICQDaemonOfferStub *)v22 setConditionsWhenChosen:conditionsCopy];
     }
 
     else
@@ -628,7 +628,7 @@ LABEL_15:
       v22 = 0;
     }
 
-    v5 = v27;
+    stubsCopy = v27;
   }
 
   else
@@ -648,16 +648,16 @@ LABEL_15:
   return v22;
 }
 
-- (BOOL)_stubsArrayContainsOfferID:(id)a3 stubs:(id)a4
+- (BOOL)_stubsArrayContainsOfferID:(id)d stubs:(id)stubs
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dCopy = d;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  stubsCopy = stubs;
+  v7 = [stubsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -668,11 +668,11 @@ LABEL_15:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(stubsCopy);
         }
 
         v11 = [*(*(&v16 + 1) + 8 * i) objectForKeyedSubscript:{@"offerId", v16}];
-        v12 = [v11 isEqualToString:v5];
+        v12 = [v11 isEqualToString:dCopy];
 
         if (v12)
         {
@@ -681,7 +681,7 @@ LABEL_15:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [stubsCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -698,36 +698,36 @@ LABEL_11:
   return v13;
 }
 
-- (id)chooseStubForOfferType:(int64_t)a3
+- (id)chooseStubForOfferType:(int64_t)type
 {
-  v5 = [(ICQDaemonOfferStubs *)self serverStubs];
-  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v5 offerType:a3];
+  serverStubs = [(ICQDaemonOfferStubs *)self serverStubs];
+  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:serverStubs offerType:type];
 
   return v6;
 }
 
-- (id)chooseBuddyStubForOfferType:(int64_t)a3
+- (id)chooseBuddyStubForOfferType:(int64_t)type
 {
-  v5 = [(ICQDaemonOfferStubs *)self buddyStubs];
-  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:v5 offerType:a3];
+  buddyStubs = [(ICQDaemonOfferStubs *)self buddyStubs];
+  v6 = [(ICQDaemonOfferStubs *)self _chooseStubFromServerStubs:buddyStubs offerType:type];
 
   return v6;
 }
 
-- (id)_chooseStubFromServerStubs:(id)a3 offerType:(int64_t)a4
+- (id)_chooseStubFromServerStubs:(id)stubs offerType:(int64_t)type
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  stubsCopy = stubs;
   v6 = +[ICQDaemonOfferConditions currentConditions];
-  if ([v5 count])
+  if ([stubsCopy count])
   {
     v24 = v6;
-    v25 = v5;
+    v25 = stubsCopy;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v5;
+    obj = stubsCopy;
     v7 = [obj countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v7)
     {
@@ -747,7 +747,7 @@ LABEL_4:
         v13 = _ICQOfferTypeForServerString(v12);
         v14 = _ICQGetLogSystem();
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-        if (v13 == a4)
+        if (v13 == type)
         {
           break;
         }
@@ -755,7 +755,7 @@ LABEL_4:
         if (v15)
         {
           v16 = _ICQStringForOfferType(v13);
-          v17 = _ICQStringForOfferType(a4);
+          v17 = _ICQStringForOfferType(type);
           *buf = 138412802;
           v32 = v16;
           v33 = 2112;
@@ -779,7 +779,7 @@ LABEL_4:
 
       if (v15)
       {
-        v18 = _ICQStringForOfferType(a4);
+        v18 = _ICQStringForOfferType(type);
         *buf = 138412546;
         v32 = v18;
         v33 = 2112;
@@ -788,7 +788,7 @@ LABEL_4:
       }
 
       v19 = [[ICQDaemonOfferStub alloc] initWithServerDictionary:v11];
-      v5 = v25;
+      stubsCopy = v25;
       if (v19)
       {
         goto LABEL_21;
@@ -799,13 +799,13 @@ LABEL_4:
     {
 LABEL_12:
 
-      v5 = v25;
+      stubsCopy = v25;
     }
 
     v20 = _ICQGetLogSystem();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = _ICQStringForOfferType(a4);
+      v21 = _ICQStringForOfferType(type);
       *buf = 138412290;
       v32 = v21;
       _os_log_impl(&dword_275572000, v20, OS_LOG_TYPE_DEFAULT, "choose offer type (%@): none found", buf, 0xCu);

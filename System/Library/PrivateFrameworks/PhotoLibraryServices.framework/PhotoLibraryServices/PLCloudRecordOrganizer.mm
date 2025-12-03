@@ -1,20 +1,20 @@
 @interface PLCloudRecordOrganizer
-+ (BOOL)records:(id)a3 containsScopedIdentifier:(id)a4;
-- (PLCloudRecordOrganizer)initWithPhotoLibrary:(id)a3;
-- (void)organizeRecords:(id)a3;
++ (BOOL)records:(id)records containsScopedIdentifier:(id)identifier;
+- (PLCloudRecordOrganizer)initWithPhotoLibrary:(id)library;
+- (void)organizeRecords:(id)records;
 @end
 
 @implementation PLCloudRecordOrganizer
 
-- (void)organizeRecords:(id)a3
+- (void)organizeRecords:(id)records
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  v5 = [recordsCopy countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v5)
   {
     v7 = v5;
@@ -30,16 +30,16 @@
       {
         if (*v31 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(recordsCopy);
         }
 
         v12 = *(*(&v30 + 1) + 8 * v11);
-        v13 = [v12 changeType];
-        if ((v13 & 0x400) == 0)
+        changeType = [v12 changeType];
+        if ((changeType & 0x400) == 0)
         {
-          v14 = [v12 inExpunged];
+          inExpunged = [v12 inExpunged];
           v15 = p_expungedRecords;
-          if (v14)
+          if (inExpunged)
           {
 LABEL_11:
             [*v15 addObject:v12];
@@ -48,7 +48,7 @@ LABEL_11:
               goto LABEL_60;
             }
 
-            if ((v13 & 0x400) != 0)
+            if ((changeType & 0x400) != 0)
             {
               goto LABEL_17;
             }
@@ -95,7 +95,7 @@ LABEL_17:
             [(NSMutableArray *)self->_assetRecordsWithContainerChange addObject:v18];
           }
 
-          if ((v13 & 0x400) == 0)
+          if ((changeType & 0x400) == 0)
           {
             [(NSMutableArray *)self->_assetRecords addObject:v18];
           }
@@ -112,23 +112,23 @@ LABEL_17:
               [(NSMutableArray *)self->_albumRecordsWithContainerChange addObject:v19];
             }
 
-            if ((v13 & 0x400) == 0)
+            if ((changeType & 0x400) == 0)
             {
               v20 = v19;
               if (![v20 albumType] || objc_msgSend(v20, "albumType") == 3 || objc_msgSend(v20, "albumType") == 7)
               {
-                v21 = [v20 scopedIdentifier];
-                v22 = [v21 identifier];
+                scopedIdentifier = [v20 scopedIdentifier];
+                identifier = [scopedIdentifier identifier];
 
-                if ([@"----Root-Folder----" isEqualToString:v22] & 1) != 0 || (objc_msgSend(@"----Project-Root-Folder----", "isEqualToString:", v22))
+                if ([@"----Root-Folder----" isEqualToString:identifier] & 1) != 0 || (objc_msgSend(@"----Project-Root-Folder----", "isEqualToString:", identifier))
                 {
-                  if ([@"----Root-Folder----" isEqualToString:v22])
+                  if ([@"----Root-Folder----" isEqualToString:identifier])
                   {
                     v23 = [(PLGenericAlbum *)PLManagedFolder rootFolderInLibrary:self->_photoLibrary];
                     goto LABEL_41;
                   }
 
-                  if ([@"----Project-Root-Folder----" isEqualToString:v22])
+                  if ([@"----Project-Root-Folder----" isEqualToString:identifier])
                   {
                     v23 = [(PLGenericAlbum *)PLManagedFolder projectAlbumRootFolderInLibrary:self->_photoLibrary];
 LABEL_41:
@@ -145,7 +145,7 @@ LABEL_41:
                         *buf = 138412546;
                         v35 = v20;
                         v36 = 2112;
-                        v37 = v22;
+                        v37 = identifier;
                         _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Received unexpected root folder type in CPLAlbumChange: %@, with identifier: %@", buf, 0x16u);
                       }
                     }
@@ -153,14 +153,14 @@ LABEL_41:
                     v24 = 0;
                   }
 
-                  v26 = [v24 customSortAscending];
-                  if (v26 != [v20 albumSortAscending])
+                  customSortAscending = [v24 customSortAscending];
+                  if (customSortAscending != [v20 albumSortAscending])
                   {
                     [v24 setCustomSortAscending:{objc_msgSend(v20, "albumSortAscending")}];
                   }
 
-                  v27 = [v24 customSortKey];
-                  if (v27 != [v20 albumSortType])
+                  customSortKey = [v24 customSortKey];
+                  if (customSortKey != [v20 albumSortType])
                   {
                     [v24 setCustomSortKey:{objc_msgSend(v20, "albumSortType")}];
                   }
@@ -182,12 +182,12 @@ LABEL_57:
 
               else if ((*MEMORY[0x1E6994D48] & 1) == 0)
               {
-                v22 = __CPLAssetsdOSLogDomain();
-                if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+                identifier = __CPLAssetsdOSLogDomain();
+                if (os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = v29;
                   v35 = v20;
-                  _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_DEFAULT, "We are dropping record %@, not yet handling that type", buf, 0xCu);
+                  _os_log_impl(&dword_19BF1F000, identifier, OS_LOG_TYPE_DEFAULT, "We are dropping record %@, not yet handling that type", buf, 0xCu);
                 }
 
                 goto LABEL_57;
@@ -199,7 +199,7 @@ LABEL_57:
             goto LABEL_60;
           }
 
-          if ((v13 & 0x400) == 0)
+          if ((changeType & 0x400) == 0)
           {
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -257,7 +257,7 @@ LABEL_60:
       }
 
       while (v7 != v11);
-      v28 = [v4 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v28 = [recordsCopy countByEnumeratingWithState:&v30 objects:v38 count:16];
       v7 = v28;
     }
 
@@ -265,16 +265,16 @@ LABEL_60:
   }
 }
 
-- (PLCloudRecordOrganizer)initWithPhotoLibrary:(id)a3
+- (PLCloudRecordOrganizer)initWithPhotoLibrary:(id)library
 {
-  v5 = a3;
+  libraryCopy = library;
   v40.receiver = self;
   v40.super_class = PLCloudRecordOrganizer;
   v6 = [(PLCloudRecordOrganizer *)&v40 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_photoLibrary, a3);
+    objc_storeStrong(&v6->_photoLibrary, library);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     assetRecordsWithContainerChange = v7->_assetRecordsWithContainerChange;
     v7->_assetRecordsWithContainerChange = v8;
@@ -341,16 +341,16 @@ LABEL_60:
   return v7;
 }
 
-+ (BOOL)records:(id)a3 containsScopedIdentifier:(id)a4
++ (BOOL)records:(id)records containsScopedIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  recordsCopy = records;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = recordsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -364,8 +364,8 @@ LABEL_60:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) scopedIdentifier];
-        v12 = [v11 isEqual:v6];
+        scopedIdentifier = [*(*(&v14 + 1) + 8 * i) scopedIdentifier];
+        v12 = [scopedIdentifier isEqual:identifierCopy];
 
         if (v12)
         {

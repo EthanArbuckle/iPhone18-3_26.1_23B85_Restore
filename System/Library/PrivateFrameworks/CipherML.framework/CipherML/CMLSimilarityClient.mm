@@ -1,57 +1,57 @@
 @interface CMLSimilarityClient
-- (CMLSimilarityClient)initWithClientConfig:(id)a3;
-- (CMLSimilarityClient)initWithClientConfig:(id)a3 dispatchQueue:(id)a4;
-- (CMLSimilarityClient)initWithClientConfig:(id)a3 dispatchQueue:(id)a4 connection:(id)a5;
+- (CMLSimilarityClient)initWithClientConfig:(id)config;
+- (CMLSimilarityClient)initWithClientConfig:(id)config dispatchQueue:(id)queue;
+- (CMLSimilarityClient)initWithClientConfig:(id)config dispatchQueue:(id)queue connection:(id)connection;
 - (NSString)useCase;
-- (id)asyncResponseSimilarityScoresForElements:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5;
-- (id)asyncResponseSimilarityScoresForElements:(id)a3 shardIndices:(id)a4 error:(id *)a5;
-- (id)decryptBatchOfSimilarityScores:(id)a3 error:(id *)a4;
-- (id)decryptSimilarityScores:(id)a3 error:(id *)a4;
-- (id)encryptBatchOfElements:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5;
-- (id)encryptBatchOfElements:(id)a3 shardIndices:(id)a4 error:(id *)a5;
-- (id)encryptDifferentiallyPrivateFakes:(id)a3 shardIndex:(unint64_t)a4 shardCount:(unint64_t)a5 error:(id *)a6;
-- (id)encryptElement:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5;
-- (id)encryptElement:(id)a3 shardIndices:(id)a4 error:(id *)a5;
-- (id)setPECConfig:(id)a3 error:(id *)a4;
-- (id)similarityScoresForElement:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5;
-- (id)similarityScoresForElement:(id)a3 shardIndices:(id)a4 error:(id *)a5;
-- (id)similarityScoresForElements:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5;
-- (id)similarityScoresForElements:(id)a3 shardIndices:(id)a4 error:(id *)a5;
+- (id)asyncResponseSimilarityScoresForElements:(id)elements shardIndex:(unint64_t)index error:(id *)error;
+- (id)asyncResponseSimilarityScoresForElements:(id)elements shardIndices:(id)indices error:(id *)error;
+- (id)decryptBatchOfSimilarityScores:(id)scores error:(id *)error;
+- (id)decryptSimilarityScores:(id)scores error:(id *)error;
+- (id)encryptBatchOfElements:(id)elements shardIndex:(unint64_t)index error:(id *)error;
+- (id)encryptBatchOfElements:(id)elements shardIndices:(id)indices error:(id *)error;
+- (id)encryptDifferentiallyPrivateFakes:(id)fakes shardIndex:(unint64_t)index shardCount:(unint64_t)count error:(id *)error;
+- (id)encryptElement:(id)element shardIndex:(unint64_t)index error:(id *)error;
+- (id)encryptElement:(id)element shardIndices:(id)indices error:(id *)error;
+- (id)setPECConfig:(id)config error:(id *)error;
+- (id)similarityScoresForElement:(id)element shardIndex:(unint64_t)index error:(id *)error;
+- (id)similarityScoresForElement:(id)element shardIndices:(id)indices error:(id *)error;
+- (id)similarityScoresForElements:(id)elements shardIndex:(unint64_t)index error:(id *)error;
+- (id)similarityScoresForElements:(id)elements shardIndices:(id)indices error:(id *)error;
 - (void)dealloc;
-- (void)requestSimilarityScoresForElement:(id)a3 shardIndex:(unint64_t)a4 completionHandler:(id)a5;
-- (void)requestSimilarityScoresForElement:(id)a3 shardIndices:(id)a4 completionHandler:(id)a5;
-- (void)requestSimilarityScoresForElements:(id)a3 shardIndex:(unint64_t)a4 completionHandler:(id)a5;
-- (void)requestSimilarityScoresForElements:(id)a3 shardIndices:(id)a4 completionHandler:(id)a5;
+- (void)requestSimilarityScoresForElement:(id)element shardIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)requestSimilarityScoresForElement:(id)element shardIndices:(id)indices completionHandler:(id)handler;
+- (void)requestSimilarityScoresForElements:(id)elements shardIndex:(unint64_t)index completionHandler:(id)handler;
+- (void)requestSimilarityScoresForElements:(id)elements shardIndices:(id)indices completionHandler:(id)handler;
 @end
 
 @implementation CMLSimilarityClient
 
 - (NSString)useCase
 {
-  v2 = [(CMLSimilarityClient *)self clientConfig];
-  v3 = [v2 useCase];
+  clientConfig = [(CMLSimilarityClient *)self clientConfig];
+  useCase = [clientConfig useCase];
 
-  return v3;
+  return useCase;
 }
 
-- (CMLSimilarityClient)initWithClientConfig:(id)a3
+- (CMLSimilarityClient)initWithClientConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v5 = dispatch_queue_create("com.apple.CipherML.CMLSimilarityClient", 0);
-  v6 = [(CMLSimilarityClient *)self initWithClientConfig:v4 dispatchQueue:v5];
+  v6 = [(CMLSimilarityClient *)self initWithClientConfig:configCopy dispatchQueue:v5];
 
   return v6;
 }
 
-- (CMLSimilarityClient)initWithClientConfig:(id)a3 dispatchQueue:(id)a4
+- (CMLSimilarityClient)initWithClientConfig:(id)config dispatchQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  queueCopy = queue;
   v8 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.ciphermld" options:0];
   if (v8)
   {
-    self = [(CMLSimilarityClient *)self initWithClientConfig:v6 dispatchQueue:v7 connection:v8];
-    v9 = self;
+    self = [(CMLSimilarityClient *)self initWithClientConfig:configCopy dispatchQueue:queueCopy connection:v8];
+    selfCopy = self;
   }
 
   else
@@ -62,29 +62,29 @@
       [CMLSimilarityClient initWithClientConfig:v10 dispatchQueue:?];
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (CMLSimilarityClient)initWithClientConfig:(id)a3 dispatchQueue:(id)a4 connection:(id)a5
+- (CMLSimilarityClient)initWithClientConfig:(id)config dispatchQueue:(id)queue connection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configCopy = config;
+  queueCopy = queue;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = CMLSimilarityClient;
   v12 = [(CMLSimilarityClient *)&v15 init];
   if (v12)
   {
     v13 = +[CMLXPC interfaceDescription];
-    [v11 setRemoteObjectInterface:v13];
+    [connectionCopy setRemoteObjectInterface:v13];
 
-    [v11 activate];
-    objc_storeStrong(&v12->_clientConfig, a3);
-    objc_storeStrong(&v12->_dispatchQueue, a4);
-    objc_storeStrong(&v12->_connection, a5);
+    [connectionCopy activate];
+    objc_storeStrong(&v12->_clientConfig, config);
+    objc_storeStrong(&v12->_dispatchQueue, queue);
+    objc_storeStrong(&v12->_connection, connection);
   }
 
   return v12;
@@ -98,36 +98,36 @@
   [(CMLSimilarityClient *)&v3 dealloc];
 }
 
-- (void)requestSimilarityScoresForElement:(id)a3 shardIndex:(unint64_t)a4 completionHandler:(id)a5
+- (void)requestSimilarityScoresForElement:(id)element shardIndex:(unint64_t)index completionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCABB0];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 numberWithUnsignedInteger:a4];
+  handlerCopy = handler;
+  elementCopy = element;
+  v11 = [v8 numberWithUnsignedInteger:index];
   v14[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  [(CMLSimilarityClient *)self requestSimilarityScoresForElement:v10 shardIndices:v12 completionHandler:v9];
+  [(CMLSimilarityClient *)self requestSimilarityScoresForElement:elementCopy shardIndices:v12 completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSimilarityScoresForElement:(id)a3 shardIndices:(id)a4 completionHandler:(id)a5
+- (void)requestSimilarityScoresForElement:(id)element shardIndices:(id)indices completionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v17[0] = a3;
+  handlerCopy = handler;
+  v17[0] = element;
   v9 = MEMORY[0x277CBEA60];
-  v10 = a4;
-  v11 = a3;
+  indicesCopy = indices;
+  elementCopy = element;
   v12 = [v9 arrayWithObjects:v17 count:1];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __88__CMLSimilarityClient_requestSimilarityScoresForElement_shardIndices_completionHandler___block_invoke;
   v15[3] = &unk_278541988;
-  v16 = v8;
-  v13 = v8;
-  [(CMLSimilarityClient *)self requestSimilarityScoresForElements:v12 shardIndices:v10 completionHandler:v15];
+  v16 = handlerCopy;
+  v13 = handlerCopy;
+  [(CMLSimilarityClient *)self requestSimilarityScoresForElements:v12 shardIndices:indicesCopy completionHandler:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -140,36 +140,36 @@ void __88__CMLSimilarityClient_requestSimilarityScoresForElement_shardIndices_co
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)requestSimilarityScoresForElements:(id)a3 shardIndex:(unint64_t)a4 completionHandler:(id)a5
+- (void)requestSimilarityScoresForElements:(id)elements shardIndex:(unint64_t)index completionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCABB0];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 numberWithUnsignedInteger:a4];
+  handlerCopy = handler;
+  elementsCopy = elements;
+  v11 = [v8 numberWithUnsignedInteger:index];
   v14[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  [(CMLSimilarityClient *)self requestSimilarityScoresForElements:v10 shardIndices:v12 completionHandler:v9];
+  [(CMLSimilarityClient *)self requestSimilarityScoresForElements:elementsCopy shardIndices:v12 completionHandler:handlerCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestSimilarityScoresForElements:(id)a3 shardIndices:(id)a4 completionHandler:(id)a5
+- (void)requestSimilarityScoresForElements:(id)elements shardIndices:(id)indices completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  handlerCopy = handler;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__CMLSimilarityClient_requestSimilarityScoresForElements_shardIndices_completionHandler___block_invoke;
   aBlock[3] = &unk_2785419B0;
-  v10 = v9;
+  v10 = handlerCopy;
   v26 = v10;
-  v11 = a4;
-  v12 = a3;
+  indicesCopy = indices;
+  elementsCopy = elements;
   v13 = _Block_copy(aBlock);
-  v14 = [(CMLSimilarityClient *)self connection];
-  v15 = [(CMLSimilarityClient *)self dispatchQueue];
-  v16 = [CMLXPC asyncProxyToConnection:v14 dispatchQueue:v15 errorHandler:v13];
+  connection = [(CMLSimilarityClient *)self connection];
+  dispatchQueue = [(CMLSimilarityClient *)self dispatchQueue];
+  v16 = [CMLXPC asyncProxyToConnection:connection dispatchQueue:dispatchQueue errorHandler:v13];
 
   v17 = +[CMLLog client];
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -180,7 +180,7 @@ void __88__CMLSimilarityClient_requestSimilarityScoresForElement_shardIndices_co
     _os_log_impl(&dword_224E26000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v19 = [(CMLSimilarityClient *)self clientConfig];
+  clientConfig = [(CMLSimilarityClient *)self clientConfig];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __89__CMLSimilarityClient_requestSimilarityScoresForElements_shardIndices_completionHandler___block_invoke_65;
@@ -189,7 +189,7 @@ void __88__CMLSimilarityClient_requestSimilarityScoresForElement_shardIndices_co
   v24 = a2;
   v22[4] = self;
   v20 = v10;
-  [v16 similarityScoresForElements:v12 shardIndices:v11 clientConfig:v19 reply:v22];
+  [v16 similarityScoresForElements:elementsCopy shardIndices:indicesCopy clientConfig:clientConfig reply:v22];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -243,31 +243,31 @@ void __89__CMLSimilarityClient_requestSimilarityScoresForElements_shardIndices_c
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)similarityScoresForElement:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5
+- (id)similarityScoresForElement:(id)element shardIndex:(unint64_t)index error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCABB0];
-  v9 = a3;
-  v10 = [v8 numberWithUnsignedInteger:a4];
+  elementCopy = element;
+  v10 = [v8 numberWithUnsignedInteger:index];
   v15[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v12 = [(CMLSimilarityClient *)self similarityScoresForElement:v9 shardIndices:v11 error:a5];
+  v12 = [(CMLSimilarityClient *)self similarityScoresForElement:elementCopy shardIndices:v11 error:error];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)similarityScoresForElement:(id)a3 shardIndices:(id)a4 error:(id *)a5
+- (id)similarityScoresForElement:(id)element shardIndices:(id)indices error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  elementCopy = element;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 arrayWithObjects:&v16 count:1];
+  indicesCopy = indices;
+  elementCopy2 = element;
+  v11 = [v8 arrayWithObjects:&elementCopy count:1];
 
-  v12 = [(CMLSimilarityClient *)self similarityScoresForElements:v11 shardIndices:v9 error:a5, v16, v17];
+  v12 = [(CMLSimilarityClient *)self similarityScoresForElements:v11 shardIndices:indicesCopy error:error, elementCopy, v17];
 
   v13 = [v12 objectAtIndexedSubscript:0];
 
@@ -276,29 +276,29 @@ void __89__CMLSimilarityClient_requestSimilarityScoresForElements_shardIndices_c
   return v13;
 }
 
-- (id)similarityScoresForElements:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5
+- (id)similarityScoresForElements:(id)elements shardIndex:(unint64_t)index error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCABB0];
-  v9 = a3;
-  v10 = [v8 numberWithUnsignedInteger:a4];
+  elementsCopy = elements;
+  v10 = [v8 numberWithUnsignedInteger:index];
   v15[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v12 = [(CMLSimilarityClient *)self similarityScoresForElements:v9 shardIndices:v11 error:a5];
+  v12 = [(CMLSimilarityClient *)self similarityScoresForElements:elementsCopy shardIndices:v11 error:error];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)similarityScoresForElements:(id)a3 shardIndices:(id)a4 error:(id *)a5
+- (id)similarityScoresForElements:(id)elements shardIndices:(id)indices error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  elementsCopy = elements;
+  indicesCopy = indices;
   v39 = 0;
-  v11 = [(CMLSimilarityClient *)self connection];
-  v12 = [CMLXPC syncProxyToConnection:v11 error:&v39];
+  connection = [(CMLSimilarityClient *)self connection];
+  v12 = [CMLXPC syncProxyToConnection:connection error:&v39];
 
   v33 = 0;
   v34 = &v33;
@@ -321,7 +321,7 @@ void __89__CMLSimilarityClient_requestSimilarityScoresForElements_shardIndices_c
     _os_log_impl(&dword_224E26000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending request", buf, 0xCu);
   }
 
-  v15 = [(CMLSimilarityClient *)self clientConfig];
+  clientConfig = [(CMLSimilarityClient *)self clientConfig];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __70__CMLSimilarityClient_similarityScoresForElements_shardIndices_error___block_invoke;
@@ -329,7 +329,7 @@ void __89__CMLSimilarityClient_requestSimilarityScoresForElements_shardIndices_c
   v26[4] = &v27;
   v26[5] = &v33;
   v26[6] = a2;
-  [v12 similarityScoresForElements:v9 shardIndices:v10 clientConfig:v15 reply:v26];
+  [v12 similarityScoresForElements:elementsCopy shardIndices:indicesCopy clientConfig:clientConfig reply:v26];
 
   if (!v28[5] && !v34[5])
   {
@@ -338,7 +338,7 @@ void __89__CMLSimilarityClient_requestSimilarityScoresForElements_shardIndices_c
     v34[5] = v16;
   }
 
-  if (a5)
+  if (error)
   {
     v18 = v39;
     if (!v39)
@@ -346,7 +346,7 @@ void __89__CMLSimilarityClient_requestSimilarityScoresForElements_shardIndices_c
       v18 = v34[5];
     }
 
-    *a5 = v18;
+    *error = v18;
   }
 
   v19 = +[CMLLog client];
@@ -403,13 +403,13 @@ void __70__CMLSimilarityClient_similarityScoresForElements_shardIndices_error___
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setPECConfig:(id)a3 error:(id *)a4
+- (id)setPECConfig:(id)config error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  configCopy = config;
   v30 = 0;
-  v8 = [(CMLSimilarityClient *)self connection];
-  v9 = [CMLXPC syncProxyToConnection:v8 error:&v30];
+  connection = [(CMLSimilarityClient *)self connection];
+  v9 = [CMLXPC syncProxyToConnection:connection error:&v30];
 
   v24 = 0;
   v25 = &v24;
@@ -432,8 +432,8 @@ void __70__CMLSimilarityClient_similarityScoresForElements_shardIndices_error___
     _os_log_impl(&dword_224E26000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending request", buf, 0xCu);
   }
 
-  [(CMLSimilarityClient *)self setClientPecConfig:v7];
-  v12 = [(CMLSimilarityClient *)self clientConfig];
+  [(CMLSimilarityClient *)self setClientPecConfig:configCopy];
+  clientConfig = [(CMLSimilarityClient *)self clientConfig];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __42__CMLSimilarityClient_setPECConfig_error___block_invoke;
@@ -441,9 +441,9 @@ void __70__CMLSimilarityClient_similarityScoresForElements_shardIndices_error___
   v17[4] = &v18;
   v17[5] = &v24;
   v17[6] = a2;
-  [v9 setPECConfig:v7 clientConfig:v12 reply:v17];
+  [v9 setPECConfig:configCopy clientConfig:clientConfig reply:v17];
 
-  if (a4)
+  if (error)
   {
     v13 = v30;
     if (!v30)
@@ -451,7 +451,7 @@ void __70__CMLSimilarityClient_similarityScoresForElements_shardIndices_error___
       v13 = v25[5];
     }
 
-    *a4 = v13;
+    *error = v13;
   }
 
   v14 = v19[5];
@@ -493,70 +493,70 @@ void __42__CMLSimilarityClient_setPECConfig_error___block_invoke(uint64_t a1, vo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)encryptElement:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5
+- (id)encryptElement:(id)element shardIndex:(unint64_t)index error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v17[0] = a3;
+  v17[0] = element;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a3;
+  elementCopy = element;
   v10 = [v8 arrayWithObjects:v17 count:1];
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v16 = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v16 count:1];
 
-  v13 = [(CMLSimilarityClient *)self encryptBatchOfElements:v10 shardIndices:v12 error:a5];
+  v13 = [(CMLSimilarityClient *)self encryptBatchOfElements:v10 shardIndices:v12 error:error];
 
   v14 = *MEMORY[0x277D85DE8];
 
   return v13;
 }
 
-- (id)encryptElement:(id)a3 shardIndices:(id)a4 error:(id *)a5
+- (id)encryptElement:(id)element shardIndices:(id)indices error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v15 = a3;
+  elementCopy = element;
   v8 = MEMORY[0x277CBEA60];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 arrayWithObjects:&v15 count:1];
+  indicesCopy = indices;
+  elementCopy2 = element;
+  v11 = [v8 arrayWithObjects:&elementCopy count:1];
 
-  v12 = [(CMLSimilarityClient *)self encryptBatchOfElements:v11 shardIndices:v9 error:a5, v15, v16];
+  v12 = [(CMLSimilarityClient *)self encryptBatchOfElements:v11 shardIndices:indicesCopy error:error, elementCopy, v16];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)decryptSimilarityScores:(id)a3 error:(id *)a4
+- (id)decryptSimilarityScores:(id)scores error:(id *)error
 {
-  v4 = [(CMLSimilarityClient *)self decryptBatchOfSimilarityScores:a3 error:a4];
+  v4 = [(CMLSimilarityClient *)self decryptBatchOfSimilarityScores:scores error:error];
   v5 = [v4 objectAtIndexedSubscript:0];
 
   return v5;
 }
 
-- (id)encryptBatchOfElements:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5
+- (id)encryptBatchOfElements:(id)elements shardIndex:(unint64_t)index error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCABB0];
-  v9 = a3;
-  v10 = [v8 numberWithUnsignedInteger:a4];
+  elementsCopy = elements;
+  v10 = [v8 numberWithUnsignedInteger:index];
   v15[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v12 = [(CMLSimilarityClient *)self encryptBatchOfElements:v9 shardIndices:v11 error:a5];
+  v12 = [(CMLSimilarityClient *)self encryptBatchOfElements:elementsCopy shardIndices:v11 error:error];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)encryptDifferentiallyPrivateFakes:(id)a3 shardIndex:(unint64_t)a4 shardCount:(unint64_t)a5 error:(id *)a6
+- (id)encryptDifferentiallyPrivateFakes:(id)fakes shardIndex:(unint64_t)index shardCount:(unint64_t)count error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v28 = a3;
+  fakesCopy = fakes;
   v42 = 0;
-  v11 = [(CMLSimilarityClient *)self connection];
-  v12 = [CMLXPC syncProxyToConnection:v11 error:&v42];
+  connection = [(CMLSimilarityClient *)self connection];
+  v12 = [CMLXPC syncProxyToConnection:connection error:&v42];
 
   v36 = 0;
   v37 = &v36;
@@ -587,9 +587,9 @@ void __42__CMLSimilarityClient_setPECConfig_error___block_invoke(uint64_t a1, vo
     _os_log_impl(&dword_224E26000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending request", buf, 0xCu);
   }
 
-  v16 = [(CMLSimilarityClient *)self clientPecConfig];
-  v17 = [(CMLSimilarityClient *)self clientConfig];
-  [v12 encryptDifferentiallyPrivateFakes:v28 shardIndex:a4 shardCount:a5 pecConfig:v16 clientConfig:v17 reply:v13];
+  clientPecConfig = [(CMLSimilarityClient *)self clientPecConfig];
+  clientConfig = [(CMLSimilarityClient *)self clientConfig];
+  [v12 encryptDifferentiallyPrivateFakes:fakesCopy shardIndex:index shardCount:count pecConfig:clientPecConfig clientConfig:clientConfig reply:v13];
 
   if (!v31[5] && !v37[5])
   {
@@ -598,7 +598,7 @@ void __42__CMLSimilarityClient_setPECConfig_error___block_invoke(uint64_t a1, vo
     v37[5] = v18;
   }
 
-  if (a6)
+  if (error)
   {
     v20 = v42;
     if (!v42)
@@ -606,7 +606,7 @@ void __42__CMLSimilarityClient_setPECConfig_error___block_invoke(uint64_t a1, vo
       v20 = v37[5];
     }
 
-    *a6 = v20;
+    *error = v20;
   }
 
   v21 = +[CMLLog client];
@@ -663,14 +663,14 @@ void __85__CMLSimilarityClient_encryptDifferentiallyPrivateFakes_shardIndex_shar
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)encryptBatchOfElements:(id)a3 shardIndices:(id)a4 error:(id *)a5
+- (id)encryptBatchOfElements:(id)elements shardIndices:(id)indices error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  elementsCopy = elements;
+  indicesCopy = indices;
   v39 = 0;
-  v11 = [(CMLSimilarityClient *)self connection];
-  v12 = [CMLXPC syncProxyToConnection:v11 error:&v39];
+  connection = [(CMLSimilarityClient *)self connection];
+  v12 = [CMLXPC syncProxyToConnection:connection error:&v39];
 
   v33 = 0;
   v34 = &v33;
@@ -693,7 +693,7 @@ void __85__CMLSimilarityClient_encryptDifferentiallyPrivateFakes_shardIndex_shar
     _os_log_impl(&dword_224E26000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending request", buf, 0xCu);
   }
 
-  v15 = [(CMLSimilarityClient *)self clientConfig];
+  clientConfig = [(CMLSimilarityClient *)self clientConfig];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __65__CMLSimilarityClient_encryptBatchOfElements_shardIndices_error___block_invoke;
@@ -701,7 +701,7 @@ void __85__CMLSimilarityClient_encryptDifferentiallyPrivateFakes_shardIndex_shar
   v26[4] = &v27;
   v26[5] = &v33;
   v26[6] = a2;
-  [v12 encryptBatchOfElements:v9 shardIndices:v10 clientConfig:v15 reply:v26];
+  [v12 encryptBatchOfElements:elementsCopy shardIndices:indicesCopy clientConfig:clientConfig reply:v26];
 
   if (!v28[5] && !v34[5])
   {
@@ -710,7 +710,7 @@ void __85__CMLSimilarityClient_encryptDifferentiallyPrivateFakes_shardIndex_shar
     v34[5] = v16;
   }
 
-  if (a5)
+  if (error)
   {
     v18 = v39;
     if (!v39)
@@ -718,7 +718,7 @@ void __85__CMLSimilarityClient_encryptDifferentiallyPrivateFakes_shardIndex_shar
       v18 = v34[5];
     }
 
-    *a5 = v18;
+    *error = v18;
   }
 
   v19 = +[CMLLog client];
@@ -775,13 +775,13 @@ void __65__CMLSimilarityClient_encryptBatchOfElements_shardIndices_error___block
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)decryptBatchOfSimilarityScores:(id)a3 error:(id *)a4
+- (id)decryptBatchOfSimilarityScores:(id)scores error:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  scoresCopy = scores;
   v36 = 0;
-  v8 = [(CMLSimilarityClient *)self connection];
-  v9 = [CMLXPC syncProxyToConnection:v8 error:&v36];
+  connection = [(CMLSimilarityClient *)self connection];
+  v9 = [CMLXPC syncProxyToConnection:connection error:&v36];
 
   v30 = 0;
   v31 = &v30;
@@ -804,7 +804,7 @@ void __65__CMLSimilarityClient_encryptBatchOfElements_shardIndices_error___block
     _os_log_impl(&dword_224E26000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v12 = [(CMLSimilarityClient *)self clientConfig];
+  clientConfig = [(CMLSimilarityClient *)self clientConfig];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __60__CMLSimilarityClient_decryptBatchOfSimilarityScores_error___block_invoke;
@@ -812,7 +812,7 @@ void __65__CMLSimilarityClient_encryptBatchOfElements_shardIndices_error___block
   v23[4] = &v24;
   v23[5] = &v30;
   v23[6] = a2;
-  [v9 decryptBatchOfSimilarityScores:v7 clientConfig:v12 reply:v23];
+  [v9 decryptBatchOfSimilarityScores:scoresCopy clientConfig:clientConfig reply:v23];
 
   if (!v25[5] && !v31[5])
   {
@@ -821,7 +821,7 @@ void __65__CMLSimilarityClient_encryptBatchOfElements_shardIndices_error___block
     v31[5] = v13;
   }
 
-  if (a4)
+  if (error)
   {
     v15 = v36;
     if (!v36)
@@ -829,7 +829,7 @@ void __65__CMLSimilarityClient_encryptBatchOfElements_shardIndices_error___block
       v15 = v31[5];
     }
 
-    *a4 = v15;
+    *error = v15;
   }
 
   v16 = +[CMLLog client];
@@ -886,29 +886,29 @@ void __60__CMLSimilarityClient_decryptBatchOfSimilarityScores_error___block_invo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)asyncResponseSimilarityScoresForElements:(id)a3 shardIndex:(unint64_t)a4 error:(id *)a5
+- (id)asyncResponseSimilarityScoresForElements:(id)elements shardIndex:(unint64_t)index error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCABB0];
-  v9 = a3;
-  v10 = [v8 numberWithUnsignedInteger:a4];
+  elementsCopy = elements;
+  v10 = [v8 numberWithUnsignedInteger:index];
   v15[0] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
-  v12 = [(CMLSimilarityClient *)self asyncResponseSimilarityScoresForElements:v9 shardIndices:v11 error:a5];
+  v12 = [(CMLSimilarityClient *)self asyncResponseSimilarityScoresForElements:elementsCopy shardIndices:v11 error:error];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)asyncResponseSimilarityScoresForElements:(id)a3 shardIndices:(id)a4 error:(id *)a5
+- (id)asyncResponseSimilarityScoresForElements:(id)elements shardIndices:(id)indices error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  elementsCopy = elements;
+  indicesCopy = indices;
   v33 = 0;
-  v11 = [(CMLSimilarityClient *)self connection];
-  v12 = [CMLXPC syncProxyToConnection:v11 error:&v33];
+  connection = [(CMLSimilarityClient *)self connection];
+  v12 = [CMLXPC syncProxyToConnection:connection error:&v33];
 
   v27 = 0;
   v28 = &v27;
@@ -931,7 +931,7 @@ void __60__CMLSimilarityClient_decryptBatchOfSimilarityScores_error___block_invo
     _os_log_impl(&dword_224E26000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Sending XPC request", buf, 0xCu);
   }
 
-  v15 = [(CMLSimilarityClient *)self clientConfig];
+  clientConfig = [(CMLSimilarityClient *)self clientConfig];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __83__CMLSimilarityClient_asyncResponseSimilarityScoresForElements_shardIndices_error___block_invoke;
@@ -939,9 +939,9 @@ void __60__CMLSimilarityClient_decryptBatchOfSimilarityScores_error___block_invo
   v20[4] = &v21;
   v20[5] = &v27;
   v20[6] = a2;
-  [v12 asyncResponseSimilarityScoresForElements:v9 shardIndices:v10 clientConfig:v15 reply:v20];
+  [v12 asyncResponseSimilarityScoresForElements:elementsCopy shardIndices:indicesCopy clientConfig:clientConfig reply:v20];
 
-  if (a5)
+  if (error)
   {
     v16 = v33;
     if (!v33)
@@ -949,7 +949,7 @@ void __60__CMLSimilarityClient_decryptBatchOfSimilarityScores_error___block_invo
       v16 = v28[5];
     }
 
-    *a5 = v16;
+    *error = v16;
   }
 
   v17 = v22[5];

@@ -1,16 +1,16 @@
 @interface CWFNearbyDeviceDiscoveryManager
 - (CWFNearbyDeviceDiscoveryManager)init;
-- (id)getEDSResultFromReport:(id)a3;
-- (id)getRequestDataFromParams:(id)a3;
-- (int)handleEvent:(int64_t)a3 withData:(id)a4 interface:(id)a5;
-- (int)handleNDDDoneEvent:(id)a3 interface:(id)a4;
-- (int)handleNDDRequestWithParams:(id)a3 clientName:(id)a4 interface:(id)a5;
-- (int)handleNDDResultEvent:(id)a3 interface:(id)a4;
-- (int)handleRequest:(int64_t)a3 withData:(id)a4 interface:(id)a5;
-- (int)isNDDRequestValid:(id)a3;
+- (id)getEDSResultFromReport:(id)report;
+- (id)getRequestDataFromParams:(id)params;
+- (int)handleEvent:(int64_t)event withData:(id)data interface:(id)interface;
+- (int)handleNDDDoneEvent:(id)event interface:(id)interface;
+- (int)handleNDDRequestWithParams:(id)params clientName:(id)name interface:(id)interface;
+- (int)handleNDDResultEvent:(id)event interface:(id)interface;
+- (int)handleRequest:(int64_t)request withData:(id)data interface:(id)interface;
+- (int)isNDDRequestValid:(id)valid;
 - (void)handleDextCrashEvent;
 - (void)handleDriverAvailableEvent;
-- (void)setSendNDDRequest:(id)a3;
+- (void)setSendNDDRequest:(id)request;
 @end
 
 @implementation CWFNearbyDeviceDiscoveryManager
@@ -33,10 +33,10 @@
   return v3;
 }
 
-- (void)setSendNDDRequest:(id)a3
+- (void)setSendNDDRequest:(id)request
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [a3 copy];
+  v4 = [request copy];
   sendNDDRequest = self->_sendNDDRequest;
   self->_sendNDDRequest = v4;
 
@@ -69,12 +69,12 @@
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (int)handleEvent:(int64_t)a3 withData:(id)a4 interface:(id)a5
+- (int)handleEvent:(int64_t)event withData:(id)data interface:(id)interface
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  dataCopy = data;
+  interfaceCopy = interface;
+  if (!dataCopy)
   {
     v15 = CWFGetOSLog();
     if (v15)
@@ -102,19 +102,19 @@
     goto LABEL_17;
   }
 
-  if (a3 == 55)
+  if (event == 55)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [(CWFNearbyDeviceDiscoveryManager *)self _serviceQueue];
+      _serviceQueue = [(CWFNearbyDeviceDiscoveryManager *)self _serviceQueue];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = sub_1E0D03E64;
       v26[3] = &unk_1E86E6420;
-      v27 = v8;
-      v28 = self;
-      dispatch_sync(v13, v26);
+      v27 = dataCopy;
+      selfCopy = self;
+      dispatch_sync(_serviceQueue, v26);
 
       v11 = v27;
       goto LABEL_11;
@@ -144,24 +144,24 @@
     v39 = 1024;
     v40 = 134;
     v41 = 2114;
-    v42 = v8;
+    v42 = dataCopy;
     goto LABEL_17;
   }
 
-  if (a3 == 239)
+  if (event == 239)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = [(CWFNearbyDeviceDiscoveryManager *)self _serviceQueue];
+      _serviceQueue2 = [(CWFNearbyDeviceDiscoveryManager *)self _serviceQueue];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = sub_1E0D03D34;
       v29[3] = &unk_1E86E6060;
       v29[4] = self;
-      v30 = v8;
-      v31 = v9;
-      dispatch_sync(v12, v29);
+      v30 = dataCopy;
+      v31 = interfaceCopy;
+      dispatch_sync(_serviceQueue2, v29);
 
       v11 = v30;
       goto LABEL_11;
@@ -191,11 +191,11 @@
     v39 = 1024;
     v40 = 123;
     v41 = 2114;
-    v42 = v8;
+    v42 = dataCopy;
     goto LABEL_17;
   }
 
-  if (a3 != 238)
+  if (event != 238)
   {
 LABEL_19:
     v14 = -3900;
@@ -229,7 +229,7 @@ LABEL_19:
     v39 = 1024;
     v40 = 112;
     v41 = 2114;
-    v42 = v8;
+    v42 = dataCopy;
 LABEL_17:
     _os_log_send_and_compose_impl();
 LABEL_18:
@@ -237,15 +237,15 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v10 = [(CWFNearbyDeviceDiscoveryManager *)self _serviceQueue];
+  _serviceQueue3 = [(CWFNearbyDeviceDiscoveryManager *)self _serviceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D03C04;
   block[3] = &unk_1E86E6060;
   block[4] = self;
-  v33 = v8;
-  v34 = v9;
-  dispatch_sync(v10, block);
+  v33 = dataCopy;
+  v34 = interfaceCopy;
+  dispatch_sync(_serviceQueue3, block);
 
   v11 = v33;
 LABEL_11:
@@ -257,16 +257,16 @@ LABEL_20:
   return v14;
 }
 
-- (int)handleRequest:(int64_t)a3 withData:(id)a4 interface:(id)a5
+- (int)handleRequest:(int64_t)request withData:(id)data interface:(id)interface
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  interfaceCopy = interface;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (!v8)
+  if (!dataCopy)
   {
     v14 = CWFGetOSLog();
     if (v14)
@@ -294,7 +294,7 @@ LABEL_20:
     goto LABEL_18;
   }
 
-  if (a3 != 238)
+  if (request != 238)
   {
     v11 = -3900;
     goto LABEL_6;
@@ -324,7 +324,7 @@ LABEL_20:
       v31 = 1024;
       v32 = 170;
       v33 = 2114;
-      v34 = v8;
+      v34 = dataCopy;
       _os_log_send_and_compose_impl();
     }
 
@@ -335,16 +335,16 @@ LABEL_18:
     goto LABEL_6;
   }
 
-  v10 = [(CWFNearbyDeviceDiscoveryManager *)self _serviceQueue];
+  _serviceQueue = [(CWFNearbyDeviceDiscoveryManager *)self _serviceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E0D04278;
   block[3] = &unk_1E86E92B8;
   v22 = &v23;
   block[4] = self;
-  v20 = v8;
-  v21 = v9;
-  dispatch_sync(v10, block);
+  v20 = dataCopy;
+  v21 = interfaceCopy;
+  dispatch_sync(_serviceQueue, block);
 
   v11 = *(v24 + 6);
 LABEL_6:
@@ -354,12 +354,12 @@ LABEL_6:
   return v11;
 }
 
-- (int)isNDDRequestValid:(id)a3
+- (int)isNDDRequestValid:(id)valid
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  validCopy = valid;
+  v4 = validCopy;
+  if (!validCopy)
   {
     v35 = CWFGetOSLog();
     if (v35)
@@ -381,7 +381,7 @@ LABEL_6:
     goto LABEL_36;
   }
 
-  if ([v3 operation] < 1 || objc_msgSend(v4, "operation") >= 3)
+  if ([validCopy operation] < 1 || objc_msgSend(v4, "operation") >= 3)
   {
     v34 = CWFGetOSLog();
     if (v34)
@@ -432,8 +432,8 @@ LABEL_28:
     goto LABEL_38;
   }
 
-  v5 = [v4 filters];
-  if (![v5 count])
+  filters = [v4 filters];
+  if (![filters count])
   {
 
 LABEL_10:
@@ -457,16 +457,16 @@ LABEL_10:
     goto LABEL_36;
   }
 
-  v6 = [v4 filters];
-  v7 = [v6 count];
+  filters2 = [v4 filters];
+  v7 = [filters2 count];
 
   if (v7 > 8)
   {
     goto LABEL_10;
   }
 
-  v10 = [v4 filters];
-  v11 = [v10 count];
+  filters3 = [v4 filters];
+  v11 = [filters3 count];
 
   if (!v11)
   {
@@ -502,10 +502,10 @@ LABEL_36:
   v13 = 0;
   while (1)
   {
-    v14 = [v4 filters];
-    v15 = [v14 objectAtIndexedSubscript:v12];
-    v16 = [v15 receiverMacAddress];
-    if (!v16)
+    filters4 = [v4 filters];
+    v15 = [filters4 objectAtIndexedSubscript:v12];
+    receiverMacAddress = [v15 receiverMacAddress];
+    if (!receiverMacAddress)
     {
       break;
     }
@@ -514,8 +514,8 @@ LABEL_19:
 
 LABEL_20:
     v12 = ++v13;
-    v22 = [v4 filters];
-    v23 = [v22 count];
+    filters5 = [v4 filters];
+    v23 = [filters5 count];
 
     if (v23 <= v13)
     {
@@ -523,31 +523,31 @@ LABEL_20:
     }
   }
 
-  v16 = [v4 filters];
-  v17 = [v16 objectAtIndexedSubscript:v12];
-  v18 = [v17 transmitterMacAddress];
-  if (v18)
+  receiverMacAddress = [v4 filters];
+  v17 = [receiverMacAddress objectAtIndexedSubscript:v12];
+  transmitterMacAddress = [v17 transmitterMacAddress];
+  if (transmitterMacAddress)
   {
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v19 = [v4 filters];
-  v20 = [v19 objectAtIndexedSubscript:v12];
-  v21 = [v20 bssid];
-  if (v21)
+  filters6 = [v4 filters];
+  v20 = [filters6 objectAtIndexedSubscript:v12];
+  bssid = [v20 bssid];
+  if (bssid)
   {
 
-    v18 = 0;
+    transmitterMacAddress = 0;
     goto LABEL_18;
   }
 
-  v40 = [v4 filters];
-  v24 = [v40 objectAtIndexedSubscript:v12];
-  v41 = [v24 frameType];
+  filters7 = [v4 filters];
+  v24 = [filters7 objectAtIndexedSubscript:v12];
+  frameType = [v24 frameType];
 
-  if (v41)
+  if (frameType)
   {
     goto LABEL_20;
   }
@@ -566,8 +566,8 @@ LABEL_18:
 
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v33 = [v4 filters];
-    v42 = [v33 objectAtIndexedSubscript:v12];
+    filters8 = [v4 filters];
+    v42 = [filters8 objectAtIndexedSubscript:v12];
     _os_log_send_and_compose_impl();
   }
 
@@ -580,13 +580,13 @@ LABEL_38:
   return v26;
 }
 
-- (id)getRequestDataFromParams:(id)a3
+- (id)getRequestDataFromParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
   v50 = 0;
   memset(v49, 0, sizeof(v49));
-  v4 = [v3 filters];
-  v5 = [v4 count];
+  filters = [paramsCopy filters];
+  v5 = [filters count];
 
   if (v5)
   {
@@ -594,16 +594,16 @@ LABEL_38:
     v7 = v49 + 4;
     do
     {
-      v8 = [v3 filters];
-      v9 = [v8 objectAtIndexedSubscript:v6];
-      v10 = [v9 receiverMacAddress];
+      filters2 = [paramsCopy filters];
+      v9 = [filters2 objectAtIndexedSubscript:v6];
+      receiverMacAddress = [v9 receiverMacAddress];
 
-      if (v10)
+      if (receiverMacAddress)
       {
-        v11 = [v3 filters];
-        v12 = [v11 objectAtIndexedSubscript:v6];
-        v13 = [v12 receiverMacAddress];
-        v14 = ether_aton([v13 UTF8String]);
+        filters3 = [paramsCopy filters];
+        v12 = [filters3 objectAtIndexedSubscript:v6];
+        receiverMacAddress2 = [v12 receiverMacAddress];
+        v14 = ether_aton([receiverMacAddress2 UTF8String]);
 
         if (v14)
         {
@@ -613,16 +613,16 @@ LABEL_38:
         }
       }
 
-      v16 = [v3 filters];
-      v17 = [v16 objectAtIndexedSubscript:v6];
-      v18 = [v17 transmitterMacAddress];
+      filters4 = [paramsCopy filters];
+      v17 = [filters4 objectAtIndexedSubscript:v6];
+      transmitterMacAddress = [v17 transmitterMacAddress];
 
-      if (v18)
+      if (transmitterMacAddress)
       {
-        v19 = [v3 filters];
-        v20 = [v19 objectAtIndexedSubscript:v6];
-        v21 = [v20 transmitterMacAddress];
-        v22 = ether_aton([v21 UTF8String]);
+        filters5 = [paramsCopy filters];
+        v20 = [filters5 objectAtIndexedSubscript:v6];
+        transmitterMacAddress2 = [v20 transmitterMacAddress];
+        v22 = ether_aton([transmitterMacAddress2 UTF8String]);
 
         if (v22)
         {
@@ -632,16 +632,16 @@ LABEL_38:
         }
       }
 
-      v24 = [v3 filters];
-      v25 = [v24 objectAtIndexedSubscript:v6];
-      v26 = [v25 bssid];
+      filters6 = [paramsCopy filters];
+      v25 = [filters6 objectAtIndexedSubscript:v6];
+      bssid = [v25 bssid];
 
-      if (v26)
+      if (bssid)
       {
-        v27 = [v3 filters];
-        v28 = [v27 objectAtIndexedSubscript:v6];
-        v29 = [v28 bssid];
-        v30 = ether_aton([v29 UTF8String]);
+        filters7 = [paramsCopy filters];
+        v28 = [filters7 objectAtIndexedSubscript:v6];
+        bssid2 = [v28 bssid];
+        v30 = ether_aton([bssid2 UTF8String]);
 
         if (v30)
         {
@@ -651,16 +651,16 @@ LABEL_38:
         }
       }
 
-      v32 = [v3 filters];
-      v33 = [v32 objectAtIndexedSubscript:v6];
+      filters8 = [paramsCopy filters];
+      v33 = [filters8 objectAtIndexedSubscript:v6];
       *v7 = [v33 frameType];
 
-      v34 = [v3 filters];
-      v35 = [v34 objectAtIndexedSubscript:v6];
+      filters9 = [paramsCopy filters];
+      v35 = [filters9 objectAtIndexedSubscript:v6];
       if ([v35 numReports])
       {
-        v36 = [v3 filters];
-        v37 = [v36 objectAtIndexedSubscript:v6];
+        filters10 = [paramsCopy filters];
+        v37 = [filters10 objectAtIndexedSubscript:v6];
         if ([v37 numReports] > 0x31)
         {
           *(v7 + 1) = 50;
@@ -668,8 +668,8 @@ LABEL_38:
 
         else
         {
-          v38 = [v3 filters];
-          v39 = [v38 objectAtIndexedSubscript:v6];
+          filters11 = [paramsCopy filters];
+          v39 = [filters11 objectAtIndexedSubscript:v6];
           *(v7 + 1) = [v39 numReports];
         }
       }
@@ -680,8 +680,8 @@ LABEL_38:
       }
 
       ++v6;
-      v40 = [v3 filters];
-      v41 = [v40 count];
+      filters12 = [paramsCopy filters];
+      v41 = [filters12 count];
 
       v7 += 28;
     }
@@ -695,20 +695,20 @@ LABEL_38:
   }
 
   v48 = v6;
-  LOWORD(v49[0]) = v49[0] & 0xC700 | [v3 channel] | 0x2000;
-  if ([v3 band] == 1)
+  LOWORD(v49[0]) = v49[0] & 0xC700 | [paramsCopy channel] | 0x2000;
+  if ([paramsCopy band] == 1)
   {
     v42 = v49[0] & 0x3FFF;
   }
 
-  else if ([v3 band] == 2)
+  else if ([paramsCopy band] == 2)
   {
     v42 = LOWORD(v49[0]) | 0xC000;
   }
 
   else
   {
-    if ([v3 band] != 4)
+    if ([paramsCopy band] != 4)
     {
       goto LABEL_28;
     }
@@ -718,7 +718,7 @@ LABEL_38:
 
   LOWORD(v49[0]) = v42;
 LABEL_28:
-  if ([v3 operation] == 1)
+  if ([paramsCopy operation] == 1)
   {
     v43 = 1;
   }
@@ -729,14 +729,14 @@ LABEL_28:
   }
 
   *v47 = v43;
-  if ([v3 type] == 1)
+  if ([paramsCopy type] == 1)
   {
     v44 = 0x12C00000001;
   }
 
   else
   {
-    v44 = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32([v3 type] == 2), 0x1FuLL)), 0x12C00000001, 0x753000000002);
+    v44 = vbsl_s8(vcltz_s32(vshl_n_s32(vdup_n_s32([paramsCopy type] == 2), 0x1FuLL)), 0x12C00000001, 0x753000000002);
   }
 
   *&v47[4] = v44;
@@ -745,13 +745,13 @@ LABEL_28:
   return v45;
 }
 
-- (int)handleNDDRequestWithParams:(id)a3 clientName:(id)a4 interface:(id)a5
+- (int)handleNDDRequestWithParams:(id)params clientName:(id)name interface:(id)interface
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CWFNearbyDeviceDiscoveryManager *)self isNDDRequestValid:v8];
+  paramsCopy = params;
+  nameCopy = name;
+  interfaceCopy = interface;
+  v11 = [(CWFNearbyDeviceDiscoveryManager *)self isNDDRequestValid:paramsCopy];
   if (v11)
   {
     v18 = v11;
@@ -777,31 +777,31 @@ LABEL_28:
 
   else
   {
-    v12 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDRequest];
+    sendNDDRequest = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDRequest];
 
-    if (v12)
+    if (sendNDDRequest)
     {
-      v13 = [(CWFNearbyDeviceDiscoveryManager *)self getRequestDataFromParams:v8];
+      v13 = [(CWFNearbyDeviceDiscoveryManager *)self getRequestDataFromParams:paramsCopy];
       if (v13)
       {
         v14 = v13;
-        if ([v8 operation] == 2 || objc_msgSend(v8, "type") == 3 || (-[CWFNearbyDeviceDiscoveryManager isNDDAllowed](self, "isNDDAllowed"), v15 = objc_claimAutoreleasedReturnValue(), v16 = (v15)[2](v15, v9, objc_msgSend(v8, "band") == 2), v15, (v16 & 1) != 0))
+        if ([paramsCopy operation] == 2 || objc_msgSend(paramsCopy, "type") == 3 || (-[CWFNearbyDeviceDiscoveryManager isNDDAllowed](self, "isNDDAllowed"), v15 = objc_claimAutoreleasedReturnValue(), v16 = (v15)[2](v15, nameCopy, objc_msgSend(paramsCopy, "band") == 2), v15, (v16 & 1) != 0))
         {
-          v17 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDRequest];
-          v18 = (v17)[2](v17, v14);
+          sendNDDRequest2 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDRequest];
+          v18 = (sendNDDRequest2)[2](sendNDDRequest2, v14);
 
           if (!v18)
           {
-            if ([v8 operation] == 1)
+            if ([paramsCopy operation] == 1)
             {
-              [(CWFNearbyDeviceDiscoveryManager *)self set_currentNDDRequest:v8];
-              v19 = self;
-              v20 = v10;
+              [(CWFNearbyDeviceDiscoveryManager *)self set_currentNDDRequest:paramsCopy];
+              selfCopy2 = self;
+              v20 = interfaceCopy;
             }
 
             else
             {
-              if ([v8 operation] != 2)
+              if ([paramsCopy operation] != 2)
               {
 LABEL_13:
                 v18 = 0;
@@ -809,11 +809,11 @@ LABEL_13:
               }
 
               [(CWFNearbyDeviceDiscoveryManager *)self set_currentNDDRequest:0];
-              v19 = self;
+              selfCopy2 = self;
               v20 = 0;
             }
 
-            [(CWFNearbyDeviceDiscoveryManager *)v19 set_interface:v20];
+            [(CWFNearbyDeviceDiscoveryManager *)selfCopy2 set_interface:v20];
             goto LABEL_13;
           }
 
@@ -912,13 +912,13 @@ LABEL_14:
   return v18;
 }
 
-- (id)getEDSResultFromReport:(id)a3
+- (id)getEDSResultFromReport:(id)report
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  reportCopy = report;
   v4 = objc_alloc_init(CWFNearbyDeviceDiscoveryReport);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (!v3 || ![v3 bytes] || objc_msgSend(v3, "length") != 48)
+  if (!reportCopy || ![reportCopy bytes] || objc_msgSend(reportCopy, "length") != 48)
   {
     v19 = CWFGetOSLog();
     if (v19)
@@ -966,23 +966,23 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  v6 = [v3 bytes];
-  v7 = [MEMORY[0x1E695DF00] date];
-  [(CWFNearbyDeviceDiscoveryReport *)v4 setTimeStamp:v7];
+  bytes = [reportCopy bytes];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CWFNearbyDeviceDiscoveryReport *)v4 setTimeStamp:date];
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:ether_ntoa((v6 + 16))];
+  v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:ether_ntoa((bytes + 16))];
   [(CWFNearbyDeviceDiscoveryReport *)v4 setReceiver:v8];
 
-  v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:ether_ntoa((v6 + 22))];
+  v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:ether_ntoa((bytes + 22))];
   [(CWFNearbyDeviceDiscoveryReport *)v4 setTransmitter:v9];
 
-  v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:ether_ntoa((v6 + 28))];
+  v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:ether_ntoa((bytes + 28))];
   [(CWFNearbyDeviceDiscoveryReport *)v4 setBssid:v10];
 
-  [(CWFNearbyDeviceDiscoveryReport *)v4 setFrameType:*(v6 + 8)];
-  [(CWFNearbyDeviceDiscoveryReport *)v4 setBandwidth:(*(v6 + 34) >> 11) & 7];
-  [(CWFNearbyDeviceDiscoveryReport *)v4 setChannel:*(v6 + 34)];
-  v11 = *(v6 + 34);
+  [(CWFNearbyDeviceDiscoveryReport *)v4 setFrameType:*(bytes + 8)];
+  [(CWFNearbyDeviceDiscoveryReport *)v4 setBandwidth:(*(bytes + 34) >> 11) & 7];
+  [(CWFNearbyDeviceDiscoveryReport *)v4 setChannel:*(bytes + 34)];
+  v11 = *(bytes + 34);
   if (v11 >= 0x4000)
   {
     v13 = v11 >> 14;
@@ -1011,7 +1011,7 @@ LABEL_31:
 LABEL_13:
   for (i = 0; i != 4; ++i)
   {
-    v15 = *(v6 + 2 + i);
+    v15 = *(bytes + 2 + i);
     if ((v15 | 0x80) != 0x80)
     {
       v16 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
@@ -1020,7 +1020,7 @@ LABEL_13:
   }
 
   [(CWFNearbyDeviceDiscoveryReport *)v4 setRssi:v5];
-  [(CWFNearbyDeviceDiscoveryReport *)v4 setRateMbps:*(v6 + 12)];
+  [(CWFNearbyDeviceDiscoveryReport *)v4 setRateMbps:*(bytes + 12)];
 LABEL_18:
 
   v17 = *MEMORY[0x1E69E9840];
@@ -1028,15 +1028,15 @@ LABEL_18:
   return v4;
 }
 
-- (int)handleNDDResultEvent:(id)a3 interface:(id)a4
+- (int)handleNDDResultEvent:(id)event interface:(id)interface
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  interfaceCopy = interface;
   v8 = objc_alloc_init(CWFXPCEvent);
-  v9 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDXPCEvent];
+  sendNDDXPCEvent = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDXPCEvent];
 
-  if (!v9)
+  if (!sendNDDXPCEvent)
   {
     v18 = CWFGetOSLog();
     if (v18)
@@ -1064,7 +1064,7 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  if (!v6)
+  if (!eventCopy)
   {
     v19 = CWFGetOSLog();
     if (v19)
@@ -1094,7 +1094,7 @@ LABEL_18:
     goto LABEL_21;
   }
 
-  v10 = [(CWFNearbyDeviceDiscoveryManager *)self getEDSResultFromReport:v6];
+  v10 = [(CWFNearbyDeviceDiscoveryManager *)self getEDSResultFromReport:eventCopy];
   if (!v10)
   {
     v20 = CWFGetOSLog();
@@ -1121,7 +1121,7 @@ LABEL_18:
     v30 = 1024;
     v31 = 397;
     v32 = 2048;
-    v33 = v6;
+    v33 = eventCopy;
 LABEL_21:
     _os_log_send_and_compose_impl();
 LABEL_22:
@@ -1131,17 +1131,17 @@ LABEL_22:
 
   v11 = v10;
   [(CWFXPCEvent *)v8 setType:35];
-  v12 = [MEMORY[0x1E695DF00] date];
-  [(CWFXPCEvent *)v8 setTimestamp:v12];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CWFXPCEvent *)v8 setTimestamp:date];
 
-  [(CWFXPCEvent *)v8 setInterfaceName:v7];
+  [(CWFXPCEvent *)v8 setInterfaceName:interfaceCopy];
   v24 = @"NDDResult";
   v25 = v11;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
   [(CWFXPCEvent *)v8 setInfo:v13];
 
-  v14 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDXPCEvent];
-  (v14)[2](v14, v8);
+  sendNDDXPCEvent2 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDXPCEvent];
+  (sendNDDXPCEvent2)[2](sendNDDXPCEvent2, v8);
 
   v15 = 0;
 LABEL_5:
@@ -1150,35 +1150,35 @@ LABEL_5:
   return v15;
 }
 
-- (int)handleNDDDoneEvent:(id)a3 interface:(id)a4
+- (int)handleNDDDoneEvent:(id)event interface:(id)interface
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  interfaceCopy = interface;
+  eventCopy = event;
   v8 = objc_alloc_init(CWFXPCEvent);
   v9 = *MEMORY[0x1E696A798];
-  v10 = [v7 integerValue];
-  v11 = [v7 integerValue];
+  integerValue = [eventCopy integerValue];
+  integerValue2 = [eventCopy integerValue];
 
-  v12 = CWFErrorDescription(v9, v11);
-  v13 = CWFErrorWithDescription(v9, v10, v12);
+  v12 = CWFErrorDescription(v9, integerValue2);
+  v13 = CWFErrorWithDescription(v9, integerValue, v12);
 
-  v14 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDXPCEvent];
+  sendNDDXPCEvent = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDXPCEvent];
 
-  if (v14)
+  if (sendNDDXPCEvent)
   {
     [(CWFXPCEvent *)v8 setType:36];
-    v15 = [MEMORY[0x1E695DF00] date];
-    [(CWFXPCEvent *)v8 setTimestamp:v15];
+    date = [MEMORY[0x1E695DF00] date];
+    [(CWFXPCEvent *)v8 setTimestamp:date];
 
-    [(CWFXPCEvent *)v8 setInterfaceName:v6];
+    [(CWFXPCEvent *)v8 setInterfaceName:interfaceCopy];
     v24 = @"NDDDone";
     v25 = v13;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
     [(CWFXPCEvent *)v8 setInfo:v16];
 
-    v17 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDXPCEvent];
-    (v17)[2](v17, v8);
+    sendNDDXPCEvent2 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDXPCEvent];
+    (sendNDDXPCEvent2)[2](sendNDDXPCEvent2, v8);
 
     [(CWFNearbyDeviceDiscoveryManager *)self set_currentNDDRequest:0];
     [(CWFNearbyDeviceDiscoveryManager *)self set_interface:0];
@@ -1220,18 +1220,18 @@ LABEL_5:
 - (void)handleDextCrashEvent
 {
   [(CWFNearbyDeviceDiscoveryManager *)self set_didDriverCrash:1];
-  v3 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
-  if (v3)
+  _currentNDDRequest = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
+  if (_currentNDDRequest)
   {
-    v4 = v3;
-    v5 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
-    v6 = [v5 type];
+    v4 = _currentNDDRequest;
+    _currentNDDRequest2 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
+    type = [_currentNDDRequest2 type];
 
-    if (v6 != 3)
+    if (type != 3)
     {
       v8 = [MEMORY[0x1E696AD98] numberWithInteger:-3931];
-      v7 = [(CWFNearbyDeviceDiscoveryManager *)self _interface];
-      [(CWFNearbyDeviceDiscoveryManager *)self handleNDDDoneEvent:v8 interface:v7];
+      _interface = [(CWFNearbyDeviceDiscoveryManager *)self _interface];
+      [(CWFNearbyDeviceDiscoveryManager *)self handleNDDDoneEvent:v8 interface:_interface];
     }
   }
 }
@@ -1244,25 +1244,25 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v3 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
-  if (!v3)
+  _currentNDDRequest = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
+  if (!_currentNDDRequest)
   {
     goto LABEL_5;
   }
 
-  v4 = v3;
-  v5 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
-  v6 = [v5 type];
+  v4 = _currentNDDRequest;
+  _currentNDDRequest2 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
+  type = [_currentNDDRequest2 type];
 
-  if (v6 != 3)
+  if (type != 3)
   {
     goto LABEL_5;
   }
 
-  v7 = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDRequest];
-  v8 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
-  v9 = [(CWFNearbyDeviceDiscoveryManager *)self getRequestDataFromParams:v8];
-  v10 = (v7)[2](v7, v9);
+  sendNDDRequest = [(CWFNearbyDeviceDiscoveryManager *)self sendNDDRequest];
+  _currentNDDRequest3 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
+  v9 = [(CWFNearbyDeviceDiscoveryManager *)self getRequestDataFromParams:_currentNDDRequest3];
+  v10 = (sendNDDRequest)[2](sendNDDRequest, v9);
 
   if (v10 != -3931)
   {
@@ -1280,7 +1280,7 @@ LABEL_5:
 
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v16 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
+      _currentNDDRequest4 = [(CWFNearbyDeviceDiscoveryManager *)self _currentNDDRequest];
       _os_log_send_and_compose_impl();
     }
 

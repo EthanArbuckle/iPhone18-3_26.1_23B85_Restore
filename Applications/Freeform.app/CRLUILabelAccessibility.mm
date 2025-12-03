@@ -1,25 +1,25 @@
 @interface CRLUILabelAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)isAccessibilityElement;
 @end
 
 @implementation CRLUILabelAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(CRLUILabelAccessibility *)self crlaxTarget];
-  v4 = [v3 text];
+  crlaxTarget = [(CRLUILabelAccessibility *)self crlaxTarget];
+  text = [crlaxTarget text];
   v5 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  v6 = [text stringByTrimmingCharactersInSet:v5];
   v7 = [v6 length];
 
   if (!v7)

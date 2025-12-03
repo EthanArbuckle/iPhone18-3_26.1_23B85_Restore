@@ -1,7 +1,7 @@
 @interface DSRemotePairingWrapper
 - (DSRemotePairingWrapper)init;
 - (id)removeAllPairedDevices;
-- (void)removeSelectedDevices:(id)a3 onQueue:(id)a4 withCompletion:(id)a5;
+- (void)removeSelectedDevices:(id)devices onQueue:(id)queue withCompletion:(id)completion;
 @end
 
 @implementation DSRemotePairingWrapper
@@ -16,19 +16,19 @@
 
 - (id)removeAllPairedDevices
 {
-  v2 = [(DSRemotePairingWrapper *)self remotePairing];
-  v3 = [v2 removeAllPairedDevices];
+  remotePairing = [(DSRemotePairingWrapper *)self remotePairing];
+  removeAllPairedDevices = [remotePairing removeAllPairedDevices];
 
-  return v3;
+  return removeAllPairedDevices;
 }
 
-- (void)removeSelectedDevices:(id)a3 onQueue:(id)a4 withCompletion:(id)a5
+- (void)removeSelectedDevices:(id)devices onQueue:(id)queue withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(DSRemotePairingWrapper *)self remotePairing];
-  [v11 removeSelectedDevices:v10 invokingCompletionHandlerOn:v9 completion:v8];
+  completionCopy = completion;
+  queueCopy = queue;
+  devicesCopy = devices;
+  remotePairing = [(DSRemotePairingWrapper *)self remotePairing];
+  [remotePairing removeSelectedDevices:devicesCopy invokingCompletionHandlerOn:queueCopy completion:completionCopy];
 }
 
 @end

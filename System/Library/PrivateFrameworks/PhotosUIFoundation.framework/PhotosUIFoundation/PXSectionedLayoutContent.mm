@@ -2,18 +2,18 @@
 - (CGSize)contentSize;
 - (CGSize)internalContentSize;
 - (NSArray)sections;
-- (PXSectionedLayoutContent)initWithAxis:(int64_t)a3 insets:(UIEdgeInsets)a4;
+- (PXSectionedLayoutContent)initWithAxis:(int64_t)axis insets:(UIEdgeInsets)insets;
 - (UIEdgeInsets)edgeInsets;
 - (id)description;
-- (void)_addSection:(id)a3;
-- (void)_adjustSectionsFromIndex:(int64_t)a3;
-- (void)_exchangeSectionAtIndex:(unint64_t)a3 withSectionAtIndex:(unint64_t)a4;
-- (void)_insertSection:(id)a3 atIndex:(unint64_t)a4;
-- (void)_removeSection:(id)a3;
-- (void)insertSection:(id)a3 atIndex:(int64_t)a4;
+- (void)_addSection:(id)section;
+- (void)_adjustSectionsFromIndex:(int64_t)index;
+- (void)_exchangeSectionAtIndex:(unint64_t)index withSectionAtIndex:(unint64_t)atIndex;
+- (void)_insertSection:(id)section atIndex:(unint64_t)index;
+- (void)_removeSection:(id)section;
+- (void)insertSection:(id)section atIndex:(int64_t)index;
 - (void)removeAllSections;
-- (void)removeSections:(id)a3;
-- (void)updateSections:(id)a3;
+- (void)removeSections:(id)sections;
+- (void)updateSections:(id)sections;
 @end
 
 @implementation PXSectionedLayoutContent
@@ -40,31 +40,31 @@
   return result;
 }
 
-- (void)_adjustSectionsFromIndex:(int64_t)a3
+- (void)_adjustSectionsFromIndex:(int64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   width = *MEMORY[0x1E695F060];
   height = *(MEMORY[0x1E695F060] + 8);
-  if ([(NSMutableArray *)self->_sections count]> a3)
+  if ([(NSMutableArray *)self->_sections count]> index)
   {
-    if (v3 <= 1)
+    if (indexCopy <= 1)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = v3;
+      v8 = indexCopy;
     }
 
     v9 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:v8 - 1];
     v10 = v9;
-    if (v3)
+    if (indexCopy)
     {
       [v9 frame];
       left = v11;
       top = v13;
-      if (v3 >= 1)
+      if (indexCopy >= 1)
       {
         axis = self->_axis;
         if (axis)
@@ -98,8 +98,8 @@
 
         else
         {
-          v20 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v20 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:191 description:@"axis == PXAxisUndefined"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:191 description:@"axis == PXAxisUndefined"];
         }
       }
     }
@@ -110,14 +110,14 @@
       left = self->_edgeInsets.left;
     }
 
-    for (; v3 < [(NSMutableArray *)self->_sections count]; ++v3)
+    for (; indexCopy < [(NSMutableArray *)self->_sections count]; ++indexCopy)
     {
-      v21 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:v3];
+      v21 = [(NSMutableArray *)self->_sections objectAtIndexedSubscript:indexCopy];
       [v21 frame];
       v23 = v22;
       v25 = v24;
       [v21 setFrame:{left, top}];
-      [v21 setIndex:v3];
+      [v21 setIndex:indexCopy];
       v26 = self->_axis;
       if (v26)
       {
@@ -183,8 +183,8 @@
 
       else
       {
-        v31 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v31 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:220 description:@"axis == PXAxisUndefined"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:220 description:@"axis == PXAxisUndefined"];
       }
     }
   }
@@ -208,95 +208,95 @@
 
   else
   {
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:239 description:@"axis == PXAxisUndefined"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:239 description:@"axis == PXAxisUndefined"];
   }
 
   [(PXSectionedLayoutContent *)self setInternalContentSize:width, height];
 }
 
-- (void)_exchangeSectionAtIndex:(unint64_t)a3 withSectionAtIndex:(unint64_t)a4
+- (void)_exchangeSectionAtIndex:(unint64_t)index withSectionAtIndex:(unint64_t)atIndex
 {
   [NSMutableArray exchangeObjectAtIndex:"exchangeObjectAtIndex:withObjectAtIndex:" withObjectAtIndex:?];
-  if (a3 >= a4)
+  if (index >= atIndex)
   {
-    v7 = a4;
+    indexCopy = atIndex;
   }
 
   else
   {
-    v7 = a3;
+    indexCopy = index;
   }
 
-  [(PXSectionedLayoutContent *)self _adjustSectionsFromIndex:v7];
+  [(PXSectionedLayoutContent *)self _adjustSectionsFromIndex:indexCopy];
 }
 
-- (void)_insertSection:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertSection:(id)section atIndex:(unint64_t)index
 {
-  v8 = a3;
-  if ([(NSMutableArray *)self->_sections count]< a4)
+  sectionCopy = section;
+  if ([(NSMutableArray *)self->_sections count]< index)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:157 description:{@"index %lu out of bounds %lu", a4, -[NSMutableArray count](self->_sections, "count")}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:157 description:{@"index %lu out of bounds %lu", index, -[NSMutableArray count](self->_sections, "count")}];
   }
 
-  [(NSMutableArray *)self->_sections insertObject:v8 atIndex:a4];
-  [(PXSectionedLayoutContent *)self _adjustSectionsFromIndex:a4];
+  [(NSMutableArray *)self->_sections insertObject:sectionCopy atIndex:index];
+  [(PXSectionedLayoutContent *)self _adjustSectionsFromIndex:index];
 }
 
-- (void)_removeSection:(id)a3
+- (void)_removeSection:(id)section
 {
   sections = self->_sections;
-  v6 = a3;
-  if (([(NSMutableArray *)sections containsObject:v6]& 1) == 0)
+  sectionCopy = section;
+  if (([(NSMutableArray *)sections containsObject:sectionCopy]& 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:150 description:@"section is not contained."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:150 description:@"section is not contained."];
   }
 
-  v7 = [v6 index];
-  [(NSMutableArray *)self->_sections removeObject:v6];
+  index = [sectionCopy index];
+  [(NSMutableArray *)self->_sections removeObject:sectionCopy];
 
-  [(PXSectionedLayoutContent *)self _adjustSectionsFromIndex:v7];
+  [(PXSectionedLayoutContent *)self _adjustSectionsFromIndex:index];
 }
 
-- (void)_addSection:(id)a3
+- (void)_addSection:(id)section
 {
-  v6 = a3;
+  sectionCopy = section;
   if ([(NSMutableArray *)self->_sections containsObject:?])
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:143 description:@"section already inserted."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:143 description:@"section already inserted."];
   }
 
-  [(NSMutableArray *)self->_sections addObject:v6];
+  [(NSMutableArray *)self->_sections addObject:sectionCopy];
   [(PXSectionedLayoutContent *)self _adjustSectionsFromIndex:[(NSMutableArray *)self->_sections count]- 1];
 }
 
-- (void)insertSection:(id)a3 atIndex:(int64_t)a4
+- (void)insertSection:(id)section atIndex:(int64_t)index
 {
-  v7 = a3;
-  v9 = v7;
-  if (!v7)
+  sectionCopy = section;
+  v9 = sectionCopy;
+  if (!sectionCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:138 description:@"section to insert is nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:138 description:@"section to insert is nil"];
 
-    v7 = 0;
+    sectionCopy = 0;
   }
 
-  [(PXSectionedLayoutContent *)self _insertSection:v7 atIndex:a4];
+  [(PXSectionedLayoutContent *)self _insertSection:sectionCopy atIndex:index];
 }
 
-- (void)updateSections:(id)a3
+- (void)updateSections:(id)sections
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sectionsCopy = sections;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [sectionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -308,13 +308,13 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sectionsCopy);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) index];
-        if (v8 >= v10)
+        index = [*(*(&v12 + 1) + 8 * i) index];
+        if (v8 >= index)
         {
-          v11 = v10;
+          v11 = index;
         }
 
         else
@@ -324,7 +324,7 @@
 
         if (v8 == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v8 = v10;
+          v8 = index;
         }
 
         else
@@ -333,7 +333,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [sectionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -347,15 +347,15 @@
   [(PXSectionedLayoutContent *)self _adjustSectionsFromIndex:v8];
 }
 
-- (void)removeSections:(id)a3
+- (void)removeSections:(id)sections
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sectionsCopy = sections;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [sectionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -367,14 +367,14 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sectionsCopy);
         }
 
         [(PXSectionedLayoutContent *)self _removeSection:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [sectionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -403,8 +403,8 @@
   else
   {
     v8 = v3;
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:90 description:@"axis == PXAxisUndefined"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:90 description:@"axis == PXAxisUndefined"];
 
     v3 = v8;
   }
@@ -450,16 +450,16 @@
   return v10;
 }
 
-- (PXSectionedLayoutContent)initWithAxis:(int64_t)a3 insets:(UIEdgeInsets)a4
+- (PXSectionedLayoutContent)initWithAxis:(int64_t)axis insets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  if (!a3)
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  if (!axis)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:36 description:@"axis cannot be PXAxisUndefined"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSectionedLayoutContent.m" lineNumber:36 description:@"axis cannot be PXAxisUndefined"];
   }
 
   v17.receiver = self;
@@ -468,14 +468,14 @@
   v11 = v10;
   if (v10)
   {
-    v10->_axis = a3;
+    v10->_axis = axis;
     v10->_edgeInsets.top = top;
     v10->_edgeInsets.left = left;
     v10->_edgeInsets.bottom = bottom;
     v10->_edgeInsets.right = right;
-    v12 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     sections = v11->_sections;
-    v11->_sections = v12;
+    v11->_sections = array;
   }
 
   return v11;

@@ -1,12 +1,12 @@
 @interface EpisodePlayProgressView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC23ShelfKitCollectionViews23EpisodePlayProgressView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC23ShelfKitCollectionViews23EpisodePlayProgressView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation EpisodePlayProgressView
 
-- (_TtC23ShelfKitCollectionViews23EpisodePlayProgressView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews23EpisodePlayProgressView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC23ShelfKitCollectionViews23EpisodePlayProgressView__progress;
   *v3 = 0;
@@ -17,9 +17,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = OBJC_IVAR____TtC23ShelfKitCollectionViews23EpisodePlayProgressView_barHeight;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
@@ -31,7 +31,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   EpisodePlayProgressView.layoutSubviews()();
 }
 

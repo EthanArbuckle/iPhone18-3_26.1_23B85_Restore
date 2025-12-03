@@ -1,28 +1,28 @@
 @interface AFUIPasswordsController
-+ (BOOL)isPasswordPickerViewControllerAuthenticating:(id)a3;
++ (BOOL)isPasswordPickerViewControllerAuthenticating:(id)authenticating;
 - (AFUIPasswordPickerDelegate)passwordPickerDelegate;
-- (AFUIPasswordsController)initWithDocumentTraits:(id)a3;
+- (AFUIPasswordsController)initWithDocumentTraits:(id)traits;
 - (id)makePasswordPickerViewController;
-- (void)passwordViewController:(id)a3 fillPassword:(id)a4;
-- (void)passwordViewController:(id)a3 fillText:(id)a4;
-- (void)passwordViewController:(id)a3 fillUsername:(id)a4;
-- (void)passwordViewController:(id)a3 fillVerificationCode:(id)a4;
-- (void)passwordViewController:(id)a3 selectedCredential:(id)a4;
-- (void)passwordViewControllerDidFinish:(id)a3;
-- (void)presentPasswordPickerFromViewController:(id)a3 didFinishAuthenticationBlock:(id)a4;
+- (void)passwordViewController:(id)controller fillPassword:(id)password;
+- (void)passwordViewController:(id)controller fillText:(id)text;
+- (void)passwordViewController:(id)controller fillUsername:(id)username;
+- (void)passwordViewController:(id)controller fillVerificationCode:(id)code;
+- (void)passwordViewController:(id)controller selectedCredential:(id)credential;
+- (void)passwordViewControllerDidFinish:(id)finish;
+- (void)presentPasswordPickerFromViewController:(id)controller didFinishAuthenticationBlock:(id)block;
 @end
 
 @implementation AFUIPasswordsController
 
-- (AFUIPasswordsController)initWithDocumentTraits:(id)a3
+- (AFUIPasswordsController)initWithDocumentTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   v10.receiver = self;
   v10.super_class = AFUIPasswordsController;
   v5 = [(AFUIPasswordsController *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [traitsCopy copy];
     documentTraits = v5->_documentTraits;
     v5->_documentTraits = v6;
 
@@ -36,30 +36,30 @@
 {
   v3 = [objc_alloc(get_SFAppAutoFillPasswordViewControllerClass()) init];
   [v3 setDelegate:self];
-  v4 = [(RTIDocumentTraits *)self->_documentTraits appId];
-  [v3 setRemoteAppID:v4];
+  appId = [(RTIDocumentTraits *)self->_documentTraits appId];
+  [v3 setRemoteAppID:appId];
 
-  v5 = [(RTIDocumentTraits *)self->_documentTraits localizedAppName];
-  [v3 setRemoteLocalizedAppName:v5];
+  localizedAppName = [(RTIDocumentTraits *)self->_documentTraits localizedAppName];
+  [v3 setRemoteLocalizedAppName:localizedAppName];
 
-  v6 = [(RTIDocumentTraits *)self->_documentTraits appName];
-  [v3 setRemoteUnlocalizedAppName:v6];
+  appName = [(RTIDocumentTraits *)self->_documentTraits appName];
+  [v3 setRemoteUnlocalizedAppName:appName];
 
-  v7 = [(RTIDocumentTraits *)self->_documentTraits associatedDomains];
-  [v3 setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:v7];
+  associatedDomains = [(RTIDocumentTraits *)self->_documentTraits associatedDomains];
+  [v3 setExternallyVerifiedAndApprovedSharedWebCredentialsDomains:associatedDomains];
 
-  v8 = [(RTIDocumentTraits *)self->_documentTraits autofillContext];
-  v9 = [v8 objectForKeyedSubscript:@"_WebViewURL"];
+  autofillContext = [(RTIDocumentTraits *)self->_documentTraits autofillContext];
+  v9 = [autofillContext objectForKeyedSubscript:@"_WebViewURL"];
 
   [v3 setWebViewURL:v9];
-  v10 = [(RTIDocumentTraits *)self->_documentTraits autofillContext];
-  v11 = [v10 objectForKeyedSubscript:@"_page_id"];
+  autofillContext2 = [(RTIDocumentTraits *)self->_documentTraits autofillContext];
+  v11 = [autofillContext2 objectForKeyedSubscript:@"_page_id"];
 
-  v12 = [(RTIDocumentTraits *)self->_documentTraits autofillContext];
-  v13 = [v12 objectForKeyedSubscript:@"_frame_id"];
+  autofillContext3 = [(RTIDocumentTraits *)self->_documentTraits autofillContext];
+  v13 = [autofillContext3 objectForKeyedSubscript:@"_frame_id"];
 
-  v14 = [(RTIDocumentTraits *)self->_documentTraits autofillContext];
-  v15 = [v14 objectForKeyedSubscript:@"_credential_type"];
+  autofillContext4 = [(RTIDocumentTraits *)self->_documentTraits autofillContext];
+  v15 = [autofillContext4 objectForKeyedSubscript:@"_credential_type"];
 
   [v3 setPageID:v11 frameID:v13 credentialType:v15];
   [v3 setSystemAutoFillDocumentTraits:self->_documentTraits];
@@ -67,24 +67,24 @@
   return v3;
 }
 
-- (void)presentPasswordPickerFromViewController:(id)a3 didFinishAuthenticationBlock:(id)a4
+- (void)presentPasswordPickerFromViewController:(id)controller didFinishAuthenticationBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AFUIPasswordsController *)self makePasswordPickerViewController];
-  [v8 setModalPresentationStyle:4];
-  v9 = [(AFUIPasswordsController *)self _shouldPresentAllPasswordsViewInPopover];
+  controllerCopy = controller;
+  blockCopy = block;
+  makePasswordPickerViewController = [(AFUIPasswordsController *)self makePasswordPickerViewController];
+  [makePasswordPickerViewController setModalPresentationStyle:4];
+  _shouldPresentAllPasswordsViewInPopover = [(AFUIPasswordsController *)self _shouldPresentAllPasswordsViewInPopover];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __96__AFUIPasswordsController_presentPasswordPickerFromViewController_didFinishAuthenticationBlock___block_invoke;
   v13[3] = &unk_1E8424900;
-  v15 = v8;
-  v16 = v7;
-  v14 = v6;
-  v10 = v8;
-  v11 = v6;
-  v12 = v7;
-  [v10 authenticateToPresentInPopover:v9 completion:v13];
+  v15 = makePasswordPickerViewController;
+  v16 = blockCopy;
+  v14 = controllerCopy;
+  v10 = makePasswordPickerViewController;
+  v11 = controllerCopy;
+  v12 = blockCopy;
+  [v10 authenticateToPresentInPopover:_shouldPresentAllPasswordsViewInPopover completion:v13];
 }
 
 uint64_t __96__AFUIPasswordsController_presentPasswordPickerFromViewController_didFinishAuthenticationBlock___block_invoke(void *a1, int a2)
@@ -106,14 +106,14 @@ uint64_t __96__AFUIPasswordsController_presentPasswordPickerFromViewController_d
   return result;
 }
 
-+ (BOOL)isPasswordPickerViewControllerAuthenticating:(id)a3
++ (BOOL)isPasswordPickerViewControllerAuthenticating:(id)authenticating
 {
-  v3 = a3;
+  authenticatingCopy = authenticating;
   get_SFAppAutoFillPasswordViewControllerClass();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 presentedViewController];
-    v5 = v4 == 0;
+    presentedViewController = [authenticatingCopy presentedViewController];
+    v5 = presentedViewController == 0;
   }
 
   else
@@ -124,64 +124,64 @@ uint64_t __96__AFUIPasswordsController_presentPasswordPickerFromViewController_d
   return v5;
 }
 
-- (void)passwordViewControllerDidFinish:(id)a3
+- (void)passwordViewControllerDidFinish:(id)finish
 {
   WeakRetained = objc_loadWeakRetained(&self->_passwordPickerDelegate);
   [WeakRetained passwordsControllerDidFinish:self];
 }
 
-- (void)passwordViewController:(id)a3 selectedCredential:(id)a4
+- (void)passwordViewController:(id)controller selectedCredential:(id)credential
 {
-  v6 = a4;
+  credentialCopy = credential;
   WeakRetained = objc_loadWeakRetained(&self->_passwordPickerDelegate);
   [WeakRetained passwordsControllerDidFinish:self];
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained passwordsController:self selectedCredential:v6];
+    [WeakRetained passwordsController:self selectedCredential:credentialCopy];
   }
 }
 
-- (void)passwordViewController:(id)a3 fillUsername:(id)a4
+- (void)passwordViewController:(id)controller fillUsername:(id)username
 {
-  v6 = a4;
+  usernameCopy = username;
   WeakRetained = objc_loadWeakRetained(&self->_passwordPickerDelegate);
   [WeakRetained passwordsControllerDidFinish:self];
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained passwordsController:self fillUsername:v6];
+    [WeakRetained passwordsController:self fillUsername:usernameCopy];
   }
 }
 
-- (void)passwordViewController:(id)a3 fillPassword:(id)a4
+- (void)passwordViewController:(id)controller fillPassword:(id)password
 {
-  v6 = a4;
+  passwordCopy = password;
   WeakRetained = objc_loadWeakRetained(&self->_passwordPickerDelegate);
   [WeakRetained passwordsControllerDidFinish:self];
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained passwordsController:self fillPassword:v6];
+    [WeakRetained passwordsController:self fillPassword:passwordCopy];
   }
 }
 
-- (void)passwordViewController:(id)a3 fillVerificationCode:(id)a4
+- (void)passwordViewController:(id)controller fillVerificationCode:(id)code
 {
-  v6 = a4;
+  codeCopy = code;
   WeakRetained = objc_loadWeakRetained(&self->_passwordPickerDelegate);
   [WeakRetained passwordsControllerDidFinish:self];
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained passwordsController:self fillVerificationCode:v6];
+    [WeakRetained passwordsController:self fillVerificationCode:codeCopy];
   }
 }
 
-- (void)passwordViewController:(id)a3 fillText:(id)a4
+- (void)passwordViewController:(id)controller fillText:(id)text
 {
-  v6 = a4;
+  textCopy = text;
   WeakRetained = objc_loadWeakRetained(&self->_passwordPickerDelegate);
   [WeakRetained passwordsControllerDidFinish:self];
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained passwordsController:self fillText:v6];
+    [WeakRetained passwordsController:self fillText:textCopy];
   }
 }
 

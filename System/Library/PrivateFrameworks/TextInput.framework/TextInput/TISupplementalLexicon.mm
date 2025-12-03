@@ -1,10 +1,10 @@
 @interface TISupplementalLexicon
-- (BOOL)isEqual:(id)a3;
-- (TISupplementalLexicon)initWithCoder:(id)a3;
-- (TISupplementalLexicon)initWithItems:(id)a3 searchPrefixes:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (TISupplementalLexicon)initWithCoder:(id)coder;
+- (TISupplementalLexicon)initWithItems:(id)items searchPrefixes:(unint64_t)prefixes;
 - (id)description;
 - (unsigned)searchPrefixCharacter;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TISupplementalLexicon
@@ -66,10 +66,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -77,26 +77,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TISupplementalLexicon *)self isEqualToSupplementalLexicon:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TISupplementalLexicon *)self isEqualToSupplementalLexicon:equalCopy];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   items = self->_items;
-  v5 = a3;
-  [v5 encodeObject:items forKey:@"items"];
-  [v5 encodeInteger:self->_searchPrefixes forKey:@"searchPrefixes"];
+  coderCopy = coder;
+  [coderCopy encodeObject:items forKey:@"items"];
+  [coderCopy encodeInteger:self->_searchPrefixes forKey:@"searchPrefixes"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_identifier];
-  [v5 encodeObject:v6 forKey:@"identifier"];
+  [coderCopy encodeObject:v6 forKey:@"identifier"];
 }
 
-- (TISupplementalLexicon)initWithCoder:(id)a3
+- (TISupplementalLexicon)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TISupplementalLexicon *)self init];
   if (v5)
   {
@@ -106,12 +106,12 @@
     v16 = objc_opt_class();
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:3];
     v8 = [v6 setWithArray:{v7, v14, v15}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"items"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"items"];
     items = v5->_items;
     v5->_items = v9;
 
-    v5->_searchPrefixes = [v4 decodeIntegerForKey:@"searchPrefixes"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v5->_searchPrefixes = [coderCopy decodeIntegerForKey:@"searchPrefixes"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v5->_identifier = [v11 unsignedLongLongValue];
 
     v12 = v5;
@@ -122,32 +122,32 @@
 
 - (unsigned)searchPrefixCharacter
 {
-  v2 = [(TISupplementalLexicon *)self searchPrefixes];
-  if (v2 == 2)
+  searchPrefixes = [(TISupplementalLexicon *)self searchPrefixes];
+  if (searchPrefixes == 2)
   {
     return 35;
   }
 
   else
   {
-    return (v2 == 1) << 6;
+    return (searchPrefixes == 1) << 6;
   }
 }
 
-- (TISupplementalLexicon)initWithItems:(id)a3 searchPrefixes:(unint64_t)a4
+- (TISupplementalLexicon)initWithItems:(id)items searchPrefixes:(unint64_t)prefixes
 {
-  v6 = a3;
+  itemsCopy = items;
   v13.receiver = self;
   v13.super_class = TISupplementalLexicon;
   v7 = [(TISupplementalLexicon *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [itemsCopy copy];
     items = v7->_items;
     v7->_items = v8;
 
     v10 = ++generateIdentifier_count_9909;
-    v7->_searchPrefixes = a4;
+    v7->_searchPrefixes = prefixes;
     v7->_identifier = v10;
     v11 = v7;
   }

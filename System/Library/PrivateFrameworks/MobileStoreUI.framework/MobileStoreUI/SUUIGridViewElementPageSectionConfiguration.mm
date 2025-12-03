@@ -1,38 +1,38 @@
 @interface SUUIGridViewElementPageSectionConfiguration
-- (BOOL)_isContainedWithinExploreTemplateWithGridViewElement:(id)a3;
+- (BOOL)_isContainedWithinExploreTemplateWithGridViewElement:(id)element;
 - (BOOL)_useOrdinalPadding;
-- (BOOL)viewElementIsStandardCard:(id)a3;
-- (CGSize)cellSizeForViewElement:(id)a3 indexPath:(id)a4;
-- (Class)_cardCellClassForCard:(id)a3;
-- (Class)cellClassForViewElement:(id)a3;
-- (Class)lockupCellClassWithLockup:(id)a3;
+- (BOOL)viewElementIsStandardCard:(id)card;
+- (CGSize)cellSizeForViewElement:(id)element indexPath:(id)path;
+- (Class)_cardCellClassForCard:(id)card;
+- (Class)cellClassForViewElement:(id)element;
+- (Class)lockupCellClassWithLockup:(id)lockup;
 - (SUUIGridViewElementPageSectionConfigurationDataSource)dataSource;
-- (UIEdgeInsets)_cellInsetsForViewElement:(id)a3 indexPath:(id)a4;
-- (UIEdgeInsets)_normalizedContentInsetForViewElement:(id)a3 indexPath:(id)a4;
-- (UIEdgeInsets)sectionContentInsetAdjustedFromValue:(UIEdgeInsets)a3 forGridViewElement:(id)a4;
+- (UIEdgeInsets)_cellInsetsForViewElement:(id)element indexPath:(id)path;
+- (UIEdgeInsets)_normalizedContentInsetForViewElement:(id)element indexPath:(id)path;
+- (UIEdgeInsets)sectionContentInsetAdjustedFromValue:(UIEdgeInsets)value forGridViewElement:(id)element;
 - (double)_cellContentWidth;
-- (double)_cellHeightForViewElement:(id)a3 width:(double)a4;
-- (double)_columnContentWidthPaddingForWidth:(double)a3;
+- (double)_cellHeightForViewElement:(id)element width:(double)width;
+- (double)_columnContentWidthPaddingForWidth:(double)width;
 - (double)columnContentWidth;
 - (double)columnWidth;
-- (id)_cardArtworkBoundingSizeForIndexPath:(id)a3;
-- (id)_lockupCellReuseIdentifierWithLockup:(id)a3;
-- (id)backgroundColorForViewElement:(id)a3;
-- (id)cellForViewElement:(id)a3 indexPath:(id)a4;
-- (int64_t)_lockupTypeForLockup:(id)a3;
-- (int64_t)_numberOfColumnsForWidth:(double)a3 style:(id)a4;
-- (int64_t)positionForIndexPath:(id)a3;
-- (void)_enumerateViewElementsForRowOfIndexPath:(id)a3 usingBlock:(id)a4;
+- (id)_cardArtworkBoundingSizeForIndexPath:(id)path;
+- (id)_lockupCellReuseIdentifierWithLockup:(id)lockup;
+- (id)backgroundColorForViewElement:(id)element;
+- (id)cellForViewElement:(id)element indexPath:(id)path;
+- (int64_t)_lockupTypeForLockup:(id)lockup;
+- (int64_t)_numberOfColumnsForWidth:(double)width style:(id)style;
+- (int64_t)positionForIndexPath:(id)path;
+- (void)_enumerateViewElementsForRowOfIndexPath:(id)path usingBlock:(id)block;
 - (void)_reloadCellPaddingIfNeeded;
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3;
-- (void)configureCell:(id)a3 forViewElement:(id)a4 indexPath:(id)a5;
-- (void)registerReusableClassesForCollectionView:(id)a3;
-- (void)reloadCellWithIndexPath:(id)a3 forViewElement:(id)a4 reason:(int64_t)a5;
-- (void)requestCellLayoutForViewElement:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setNumberOfColumns:(int64_t)a3;
-- (void)updateLayoutPropertiesForGridViewElement:(id)a3;
-- (void)updateStylePropertiesForGridViewElement:(id)a3 gridItemViewElements:(id)a4 numberOfGridItems:(unint64_t)a5;
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes;
+- (void)configureCell:(id)cell forViewElement:(id)element indexPath:(id)path;
+- (void)registerReusableClassesForCollectionView:(id)view;
+- (void)reloadCellWithIndexPath:(id)path forViewElement:(id)element reason:(int64_t)reason;
+- (void)requestCellLayoutForViewElement:(id)element;
+- (void)setDataSource:(id)source;
+- (void)setNumberOfColumns:(int64_t)columns;
+- (void)updateLayoutPropertiesForGridViewElement:(id)element;
+- (void)updateStylePropertiesForGridViewElement:(id)element gridItemViewElements:(id)elements numberOfGridItems:(unint64_t)items;
 @end
 
 @implementation SUUIGridViewElementPageSectionConfiguration
@@ -54,21 +54,21 @@
 
   [(SUUIStorePageSectionContext *)self->_pageSectionContext activePageWidth];
   v4 = v3;
-  v5 = [MEMORY[0x277D759A0] mainScreen];
-  [v5 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v7 = v4 * v6;
 
   v8 = floor(v7 / self->_numberOfColumns);
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v11 = v8 / v10;
 
   return v11;
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   if (WeakRetained != obj)
@@ -78,9 +78,9 @@
   }
 }
 
-- (void)setNumberOfColumns:(int64_t)a3
+- (void)setNumberOfColumns:(int64_t)columns
 {
-  self->_numberOfColumns = a3;
+  self->_numberOfColumns = columns;
   self->_cellContentWidth = 0.0;
   self->_cellPaddingLeftEdgeHorizontal = 0.0;
   self->_cellPaddingRightEdgeHorizontal = 0.0;
@@ -88,39 +88,39 @@
   self->_cellPaddingNeedsReloading = 1;
 }
 
-- (id)backgroundColorForViewElement:(id)a3
+- (id)backgroundColorForViewElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 style];
-  v5 = [v4 ikBackgroundColor];
-  v6 = [v5 color];
+  elementCopy = element;
+  style = [elementCopy style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (!v6)
+  if (!color)
   {
-    if ([v3 elementType] == 48)
+    if ([elementCopy elementType] == 48)
     {
-      v6 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+      color = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
     }
 
     else
     {
-      v6 = 0;
+      color = 0;
     }
   }
 
-  return v6;
+  return color;
 }
 
-- (Class)cellClassForViewElement:(id)a3
+- (Class)cellClassForViewElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 elementType];
+  elementCopy = element;
+  elementType = [elementCopy elementType];
   v6 = 0;
-  if (v5 > 48)
+  if (elementType > 48)
   {
-    if (v5 <= 65)
+    if (elementType <= 65)
     {
-      if (v5 == 49 || v5 == 50)
+      if (elementType == 49 || elementType == 50)
       {
         goto LABEL_16;
       }
@@ -128,28 +128,28 @@
 
     else
     {
-      if (v5 == 66)
+      if (elementType == 66)
       {
-        v7 = [(SUUIGridViewElementPageSectionConfiguration *)self lockupCellClassWithLockup:v4];
+        v7 = [(SUUIGridViewElementPageSectionConfiguration *)self lockupCellClassWithLockup:elementCopy];
         goto LABEL_17;
       }
 
-      if (v5 == 141 || v5 == 152)
+      if (elementType == 141 || elementType == 152)
       {
         goto LABEL_16;
       }
     }
   }
 
-  else if (v5 > 13)
+  else if (elementType > 13)
   {
-    if (v5 == 14)
+    if (elementType == 14)
     {
-      v7 = [(SUUIGridViewElementPageSectionConfiguration *)self _cardCellClassForCard:v4];
+      v7 = [(SUUIGridViewElementPageSectionConfiguration *)self _cardCellClassForCard:elementCopy];
       goto LABEL_17;
     }
 
-    if (v5 == 48)
+    if (elementType == 48)
     {
 LABEL_16:
       v7 = objc_opt_class();
@@ -158,7 +158,7 @@ LABEL_17:
     }
   }
 
-  else if ((v5 - 12) < 2 || v5 == 4)
+  else if ((elementType - 12) < 2 || elementType == 4)
   {
     goto LABEL_16;
   }
@@ -168,23 +168,23 @@ LABEL_17:
   return v6;
 }
 
-- (id)cellForViewElement:(id)a3 indexPath:(id)a4
+- (id)cellForViewElement:(id)element indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  pathCopy = path;
   v8 = self->_pageSectionContext;
-  v9 = [v6 elementType];
+  elementType = [elementCopy elementType];
   v10 = 0;
-  if (v9 <= 48)
+  if (elementType <= 48)
   {
-    if (v9 > 13)
+    if (elementType > 13)
     {
-      if (v9 == 14)
+      if (elementType == 14)
       {
-        v16 = [v6 cardType];
-        v11 = [(SUUIStorePageSectionContext *)v8 collectionView];
-        v12 = v11;
-        if (v16 == 3)
+        cardType = [elementCopy cardType];
+        collectionView = [(SUUIStorePageSectionContext *)v8 collectionView];
+        v12 = collectionView;
+        if (cardType == 3)
         {
           v13 = 0x286AFDBE0;
         }
@@ -197,46 +197,46 @@ LABEL_17:
 
       else
       {
-        if (v9 != 48)
+        if (elementType != 48)
         {
           goto LABEL_20;
         }
 
-        v11 = [(SUUIStorePageSectionContext *)v8 collectionView];
-        v12 = v11;
+        collectionView = [(SUUIStorePageSectionContext *)v8 collectionView];
+        v12 = collectionView;
         v13 = 0x286AFEA40;
       }
 
       goto LABEL_17;
     }
 
-    if ((v9 - 12) >= 2)
+    if ((elementType - 12) >= 2)
     {
-      if (v9 != 4)
+      if (elementType != 4)
       {
         goto LABEL_20;
       }
 
-      v11 = [(SUUIStorePageSectionContext *)v8 collectionView];
-      v12 = v11;
+      collectionView = [(SUUIStorePageSectionContext *)v8 collectionView];
+      v12 = collectionView;
       v13 = 0x286AF8420;
       goto LABEL_17;
     }
 
 LABEL_16:
-    v11 = [(SUUIStorePageSectionContext *)v8 collectionView];
-    v12 = v11;
+    collectionView = [(SUUIStorePageSectionContext *)v8 collectionView];
+    v12 = collectionView;
     v13 = 0x286AF8440;
 LABEL_17:
-    v10 = [v11 dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:v7];
+    v10 = [collectionView dequeueReusableCellWithReuseIdentifier:v13 forIndexPath:pathCopy];
     goto LABEL_18;
   }
 
-  if (v9 <= 65)
+  if (elementType <= 65)
   {
-    if (v9 != 49)
+    if (elementType != 49)
     {
-      if (v9 != 50)
+      if (elementType != 50)
       {
         goto LABEL_20;
       }
@@ -247,12 +247,12 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  switch(v9)
+  switch(elementType)
   {
     case 66:
-      v12 = [(SUUIGridViewElementPageSectionConfiguration *)self _lockupCellReuseIdentifierWithLockup:v6];
-      v17 = [(SUUIStorePageSectionContext *)v8 collectionView];
-      v10 = [v17 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:v7];
+      v12 = [(SUUIGridViewElementPageSectionConfiguration *)self _lockupCellReuseIdentifierWithLockup:elementCopy];
+      collectionView2 = [(SUUIStorePageSectionContext *)v8 collectionView];
+      v10 = [collectionView2 dequeueReusableCellWithReuseIdentifier:v12 forIndexPath:pathCopy];
 
 LABEL_18:
       if (!v10)
@@ -265,14 +265,14 @@ LABEL_18:
       goto LABEL_16;
     case 152:
 LABEL_23:
-      v15 = [(SUUIStorePageSectionContext *)v8 collectionView];
-      v10 = [v15 dequeueReusableCellWithReuseIdentifier:0x286AF3680 forIndexPath:v7];
+      collectionView3 = [(SUUIStorePageSectionContext *)v8 collectionView];
+      v10 = [collectionView3 dequeueReusableCellWithReuseIdentifier:0x286AF3680 forIndexPath:pathCopy];
 
       [v10 setShowsReflectionImage:0];
       if (v10)
       {
 LABEL_19:
-        [(SUUIGridViewElementPageSectionConfiguration *)self configureCell:v10 forViewElement:v6 indexPath:v7];
+        [(SUUIGridViewElementPageSectionConfiguration *)self configureCell:v10 forViewElement:elementCopy indexPath:pathCopy];
       }
 
       break;
@@ -283,10 +283,10 @@ LABEL_20:
   return v10;
 }
 
-- (CGSize)cellSizeForViewElement:(id)a3 indexPath:(id)a4
+- (CGSize)cellSizeForViewElement:(id)element indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  pathCopy = path;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3010000000;
@@ -297,12 +297,12 @@ LABEL_20:
   *(v40 + 4) = v8;
   [(SUUIStorePageSectionContext *)self->_pageSectionContext activePageWidth];
   v10 = v9;
-  if ([v6 elementType] == 48)
+  if ([elementCopy elementType] == 48)
   {
-    [(SUUIGridViewElementPageSectionConfiguration *)self _cellInsetsForViewElement:v6 indexPath:v7];
+    [(SUUIGridViewElementPageSectionConfiguration *)self _cellInsetsForViewElement:elementCopy indexPath:pathCopy];
     v12 = v11;
     v14 = v13;
-    [(SUUIGridViewElementPageSectionConfiguration *)self _cellHeightForViewElement:v6 width:v10 - v15 - v16];
+    [(SUUIGridViewElementPageSectionConfiguration *)self _cellHeightForViewElement:elementCopy width:v10 - v15 - v16];
     v17 = v40;
     v19 = v14 + v12 + v18;
     v40[4] = v10;
@@ -332,7 +332,7 @@ LABEL_20:
     v27 = &v31;
     v28 = &v39;
     v29 = v37;
-    v26 = v7;
+    v26 = pathCopy;
     [(SUUIGridViewElementPageSectionConfiguration *)self _enumerateViewElementsForRowOfIndexPath:v26 usingBlock:v25];
     v40[5] = v32[6] + v32[4] + v40[5];
 
@@ -430,29 +430,29 @@ void __80__SUUIGridViewElementPageSectionConfiguration_cellSizeForViewElement_in
   }
 }
 
-- (void)collectionViewWillApplyLayoutAttributes:(id)a3
+- (void)collectionViewWillApplyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 indexPath];
-  [v4 setPosition:{-[SUUIGridViewElementPageSectionConfiguration positionForIndexPath:](self, "positionForIndexPath:", v5)}];
+  attributesCopy = attributes;
+  indexPath = [attributesCopy indexPath];
+  [attributesCopy setPosition:{-[SUUIGridViewElementPageSectionConfiguration positionForIndexPath:](self, "positionForIndexPath:", indexPath)}];
 }
 
-- (void)configureCell:(id)a3 forViewElement:(id)a4 indexPath:(id)a5
+- (void)configureCell:(id)cell forViewElement:(id)element indexPath:(id)path
 {
-  v70 = a3;
-  v8 = a4;
-  v9 = a5;
+  cellCopy = cell;
+  elementCopy = element;
+  pathCopy = path;
   v10 = self->_pageSectionContext;
-  v11 = [v8 elementType];
+  elementType = [elementCopy elementType];
   v12 = 0;
   v13 = 0;
-  if (v11 <= 48)
+  if (elementType <= 48)
   {
-    if (v11 == 14)
+    if (elementType == 14)
     {
-      if ([v8 cardType] != 3)
+      if ([elementCopy cardType] != 3)
       {
-        v12 = v70;
+        v12 = cellCopy;
         v13 = 0;
         goto LABEL_7;
       }
@@ -466,7 +466,7 @@ LABEL_7:
     }
 
     v14 = 0;
-    if (v11 == 48)
+    if (elementType == 48)
     {
       v12 = 0;
       v14 = 0;
@@ -476,17 +476,17 @@ LABEL_7:
 
   else
   {
-    if (v11 == 49)
+    if (elementType == 49)
     {
 LABEL_5:
-      [v70 setShowsReflectionImage:0];
+      [cellCopy setShowsReflectionImage:0];
       goto LABEL_6;
     }
 
-    if (v11 != 66)
+    if (elementType != 66)
     {
       v14 = 0;
-      if (v11 != 152)
+      if (elementType != 152)
       {
         goto LABEL_12;
       }
@@ -494,7 +494,7 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v15 = [(SUUIGridViewElementPageSectionConfiguration *)self _lockupCellReuseIdentifierWithLockup:v8];
+    v15 = [(SUUIGridViewElementPageSectionConfiguration *)self _lockupCellReuseIdentifierWithLockup:elementCopy];
     v14 = v15 == @"SUUIHorizontalLockupReuseID";
 
     v13 = 0;
@@ -513,14 +513,14 @@ LABEL_12:
   v24 = self->_separatorMargins.right;
   if (v13)
   {
-    v25 = [v8 style];
-    separatorStyle = [v25 valueForStyle:*MEMORY[0x277D1AFB8]];
+    style = [elementCopy style];
+    separatorStyle = [style valueForStyle:*MEMORY[0x277D1AFB8]];
 
-    v68 = v9;
+    v68 = pathCopy;
     v67 = v14;
     if (separatorStyle)
     {
-      [v25 borderWidths];
+      [style borderWidths];
       top = v27;
       left = v28;
       bottom = v29;
@@ -529,21 +529,21 @@ LABEL_12:
     }
 
     v31 = v10;
-    v32 = [v25 valueForStyle:*MEMORY[0x277D1AFA8]];
+    v32 = [style valueForStyle:*MEMORY[0x277D1AFA8]];
 
     if (v32)
     {
-      v33 = [v25 ikBorderColor];
-      v34 = [v33 color];
+      ikBorderColor = [style ikBorderColor];
+      color = [ikBorderColor color];
 
-      v16 = v34;
+      v16 = color;
     }
 
-    v35 = [v25 valueForStyle:*MEMORY[0x277D1AFB0]];
+    v35 = [style valueForStyle:*MEMORY[0x277D1AFB0]];
 
     if (v35)
     {
-      [v25 borderMargins];
+      [style borderMargins];
       v21 = v36;
       v22 = v37;
       v23 = v38;
@@ -551,18 +551,18 @@ LABEL_12:
     }
 
     v69 = right;
-    v40 = [v8 parent];
-    v41 = [v40 style];
-    v42 = [v41 ikBackgroundColor];
+    parent = [elementCopy parent];
+    style2 = [parent style];
+    ikBackgroundColor = [style2 ikBackgroundColor];
 
-    if (v42 && [v42 colorType] == 3)
+    if (ikBackgroundColor && [ikBackgroundColor colorType] == 3)
     {
       self->_hasHeader = 1;
     }
 
     v43 = v22;
 
-    v9 = v68;
+    pathCopy = v68;
     v10 = v31;
     v14 = v67;
   }
@@ -572,14 +572,14 @@ LABEL_12:
     v69 = self->_separatorWidths.right;
     separatorStyle = self->_separatorStyle;
     v43 = self->_separatorMargins.left;
-    if (self->_hasHeader && [v9 item] == 1)
+    if (self->_hasHeader && [pathCopy item] == 1)
     {
       separatorStyle = 0;
     }
   }
 
   v44 = v21;
-  if ([v8 elementType] == 48)
+  if ([elementCopy elementType] == 48)
   {
     [(SUUIStorePageSectionContext *)v10 activePageWidth];
     v46 = v45;
@@ -595,33 +595,33 @@ LABEL_12:
     v50 = v51;
   }
 
-  [v70 reloadWithViewElement:v8 width:self->_cellLayoutContext context:v50];
-  [v70 setSeparatorColor:v16];
-  [v70 setSeparatorStyle:separatorStyle];
-  [v70 setSeparatorWidths:{top, left, bottom, v69}];
-  [v70 setSeparatorInsets:{v44, v43, v23, v24}];
+  [cellCopy reloadWithViewElement:elementCopy width:self->_cellLayoutContext context:v50];
+  [cellCopy setSeparatorColor:v16];
+  [cellCopy setSeparatorStyle:separatorStyle];
+  [cellCopy setSeparatorWidths:{top, left, bottom, v69}];
+  [cellCopy setSeparatorInsets:{v44, v43, v23, v24}];
   if (v14)
   {
-    [v70 setEditing:self->_showsEditMode animated:0];
+    [cellCopy setEditing:self->_showsEditMode animated:0];
   }
 
-  [(SUUIGridViewElementPageSectionConfiguration *)self _normalizedContentInsetForViewElement:v8 indexPath:v9];
+  [(SUUIGridViewElementPageSectionConfiguration *)self _normalizedContentInsetForViewElement:elementCopy indexPath:pathCopy];
   v53 = v52;
   v55 = v54;
   v57 = v56;
   v59 = v58;
-  if (-[SUUIGridViewElementPageSectionConfiguration rendersWithPerspective](self, "rendersWithPerspective") && [v70 conformsToProtocol:&unk_286C2FC68])
+  if (-[SUUIGridViewElementPageSectionConfiguration rendersWithPerspective](self, "rendersWithPerspective") && [cellCopy conformsToProtocol:&unk_286C2FC68])
   {
-    v60 = v70;
-    v61 = [(SUUIStorePageSectionContext *)self->_pageSectionContext parentViewController];
-    v62 = [v61 view];
+    v60 = cellCopy;
+    parentViewController = [(SUUIStorePageSectionContext *)self->_pageSectionContext parentViewController];
+    view = [parentViewController view];
 
-    [v60 setPerspectiveTargetView:v62];
-    [v62 bounds];
+    [v60 setPerspectiveTargetView:view];
+    [view bounds];
     [v60 setVanishingPoint:{CGRectGetMidX(v72), -800.0}];
-    if ([v8 rendersWithPerspective])
+    if ([elementCopy rendersWithPerspective])
     {
-      [objc_opt_class() sizeThatFitsWidth:v8 viewElement:self->_cellLayoutContext context:v50];
+      [objc_opt_class() sizeThatFitsWidth:elementCopy viewElement:self->_cellLayoutContext context:v50];
       [objc_opt_class() maximumPerspectiveHeightForSize:{v63, v64}];
       if (v53 < v65)
       {
@@ -630,17 +630,17 @@ LABEL_12:
     }
   }
 
-  [v70 setContentInset:{v53, v55, v57, v59}];
+  [cellCopy setContentInset:{v53, v55, v57, v59}];
   if (v12)
   {
-    v66 = [(SUUIGridViewElementPageSectionConfiguration *)self _cardArtworkBoundingSizeForIndexPath:v9];
+    v66 = [(SUUIGridViewElementPageSectionConfiguration *)self _cardArtworkBoundingSizeForIndexPath:pathCopy];
     [v12 setArtworkBoundingSize:v66];
   }
 }
 
-- (Class)lockupCellClassWithLockup:(id)a3
+- (Class)lockupCellClassWithLockup:(id)lockup
 {
-  if ([(SUUIGridViewElementPageSectionConfiguration *)self _lockupTypeForLockup:a3]<= 8)
+  if ([(SUUIGridViewElementPageSectionConfiguration *)self _lockupTypeForLockup:lockup]<= 8)
   {
     v3 = objc_opt_class();
   }
@@ -648,62 +648,62 @@ LABEL_12:
   return v3;
 }
 
-- (int64_t)positionForIndexPath:(id)a3
+- (int64_t)positionForIndexPath:(id)path
 {
-  v5 = [a3 item];
-  v6 = 1;
+  item = [path item];
+  integerValue = 1;
   v11 = 1;
-  if ((v5 & 0x8000000000000000) == 0)
+  if ((item & 0x8000000000000000) == 0)
   {
-    v7 = v5;
-    if (v5 >= [(NSArray *)self->_positions count])
+    v7 = item;
+    if (item >= [(NSArray *)self->_positions count])
     {
-      v6 = 1;
+      integerValue = 1;
     }
 
     else
     {
       v8 = [(NSArray *)self->_positions objectAtIndex:v7];
-      v6 = [v8 integerValue];
-      v11 = v6;
+      integerValue = [v8 integerValue];
+      v11 = integerValue;
     }
   }
 
   if (*&self->_dataSourceRespondsToSelectorFlags)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    [WeakRetained gridViewElementPageSectionConfiguration:self configurePosition:&v11 forItemAtIndexPath:a3];
+    [WeakRetained gridViewElementPageSectionConfiguration:self configurePosition:&v11 forItemAtIndexPath:path];
 
     return v11;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (void)registerReusableClassesForCollectionView:(id)a3
+- (void)registerReusableClassesForCollectionView:(id)view
 {
-  v3 = a3;
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF8420];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF8440];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFFD60];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFDBE0];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFE180];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF3680];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFFCE0];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFEA40];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF7FC0];
+  viewCopy = view;
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF8420];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF8440];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFFD60];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFDBE0];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFE180];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF3680];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFFCE0];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AFEA40];
+  [viewCopy registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF7FC0];
 }
 
-- (void)reloadCellWithIndexPath:(id)a3 forViewElement:(id)a4 reason:(int64_t)a5
+- (void)reloadCellWithIndexPath:(id)path forViewElement:(id)element reason:(int64_t)reason
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [(SUUIStorePageSectionContext *)self->_pageSectionContext collectionView];
-  v10 = [v9 cellForItemAtIndexPath:v12];
+  pathCopy = path;
+  elementCopy = element;
+  collectionView = [(SUUIStorePageSectionContext *)self->_pageSectionContext collectionView];
+  v10 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   [(SUUIGridViewElementPageSectionConfiguration *)self _cellContentWidth];
-  [v10 reloadWithViewElement:v8 width:self->_cellLayoutContext context:?];
-  if (a5 == 1)
+  [v10 reloadWithViewElement:elementCopy width:self->_cellLayoutContext context:?];
+  if (reason == 1)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -712,21 +712,21 @@ LABEL_12:
     }
   }
 
-  if ([(SUUIGridViewElementPageSectionConfiguration *)self viewElementIsStandardCard:v8])
+  if ([(SUUIGridViewElementPageSectionConfiguration *)self viewElementIsStandardCard:elementCopy])
   {
-    v11 = [(SUUIGridViewElementPageSectionConfiguration *)self _cardArtworkBoundingSizeForIndexPath:v12];
+    v11 = [(SUUIGridViewElementPageSectionConfiguration *)self _cardArtworkBoundingSizeForIndexPath:pathCopy];
     [v10 setArtworkBoundingSize:v11];
   }
 
-  [(SUUIGridViewElementPageSectionConfiguration *)self _normalizedContentInsetForViewElement:v8 indexPath:v12];
+  [(SUUIGridViewElementPageSectionConfiguration *)self _normalizedContentInsetForViewElement:elementCopy indexPath:pathCopy];
   [v10 setContentInset:?];
 }
 
-- (void)requestCellLayoutForViewElement:(id)a3
+- (void)requestCellLayoutForViewElement:(id)element
 {
-  v11 = a3;
-  v4 = [(SUUIGridViewElementPageSectionConfiguration *)self cellClassForViewElement:v11];
-  if ([v11 elementType] == 48)
+  elementCopy = element;
+  v4 = [(SUUIGridViewElementPageSectionConfiguration *)self cellClassForViewElement:elementCopy];
+  if ([elementCopy elementType] == 48)
   {
     [(SUUIStorePageSectionContext *)self->_pageSectionContext activePageWidth];
     v6 = v5;
@@ -741,18 +741,18 @@ LABEL_12:
     [(SUUIGridViewElementPageSectionConfiguration *)self _cellContentWidth];
   }
 
-  [(objc_class *)v4 requestLayoutForViewElement:v11 width:self->_cellLayoutContext context:v10];
+  [(objc_class *)v4 requestLayoutForViewElement:elementCopy width:self->_cellLayoutContext context:v10];
 }
 
-- (UIEdgeInsets)sectionContentInsetAdjustedFromValue:(UIEdgeInsets)a3 forGridViewElement:(id)a4
+- (UIEdgeInsets)sectionContentInsetAdjustedFromValue:(UIEdgeInsets)value forGridViewElement:(id)element
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = value.right;
+  bottom = value.bottom;
+  left = value.left;
+  top = value.top;
   v16 = 0;
-  v8 = [a4 style];
-  v9 = SUUIViewElementPaddingForStyle(v8, &v16);
+  style = [element style];
+  v9 = SUUIViewElementPaddingForStyle(style, &v16);
   v11 = v10;
 
   if (v16)
@@ -784,24 +784,24 @@ LABEL_12:
   return result;
 }
 
-- (void)updateLayoutPropertiesForGridViewElement:(id)a3
+- (void)updateLayoutPropertiesForGridViewElement:(id)element
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
-  [v5 activePageWidth];
+  elementCopy = element;
+  pageSectionContext = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
+  [pageSectionContext activePageWidth];
   v7 = v6;
   self->_cellContentWidth = 0.0;
-  v8 = [v4 style];
-  [(SUUIGridViewElementPageSectionConfiguration *)self setNumberOfColumns:[(SUUIGridViewElementPageSectionConfiguration *)self _numberOfColumnsForWidth:v8 style:v7]];
+  style = [elementCopy style];
+  [(SUUIGridViewElementPageSectionConfiguration *)self setNumberOfColumns:[(SUUIGridViewElementPageSectionConfiguration *)self _numberOfColumnsForWidth:style style:v7]];
 
-  v9 = [v5 clientContext];
-  v10 = SUUIUserInterfaceIdiom(v9);
+  clientContext = [pageSectionContext clientContext];
+  v10 = SUUIUserInterfaceIdiom(clientContext);
 
-  v31 = v5;
+  v31 = pageSectionContext;
   if (v10 == 1)
   {
-    if ([(SUUIGridViewElementPageSectionConfiguration *)self _isContainedWithinExploreTemplateWithGridViewElement:v4, v5])
+    if ([(SUUIGridViewElementPageSectionConfiguration *)self _isContainedWithinExploreTemplateWithGridViewElement:elementCopy, pageSectionContext])
     {
       v11 = 3;
     }
@@ -838,8 +838,8 @@ LABEL_11:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v32 = v4;
-  obj = [v4 flattenedChildren];
+  v32 = elementCopy;
+  obj = [elementCopy flattenedChildren];
   v13 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (!v13)
   {
@@ -944,41 +944,41 @@ LABEL_37:
   for (; v15 < [(NSArray *)v12 count]; ++v15)
   {
     v27 = [(NSArray *)v12 objectAtIndex:v15, v31];
-    v28 = [v27 integerValue];
+    integerValue = [v27 integerValue];
 
-    v29 = [MEMORY[0x277CCABB0] numberWithInt:v28 | 0x20u];
-    [(NSArray *)v12 replaceObjectAtIndex:v15 withObject:v29];
+    0x20u = [MEMORY[0x277CCABB0] numberWithInt:integerValue | 0x20u];
+    [(NSArray *)v12 replaceObjectAtIndex:v15 withObject:0x20u];
   }
 
   positions = self->_positions;
   self->_positions = v12;
 }
 
-- (void)updateStylePropertiesForGridViewElement:(id)a3 gridItemViewElements:(id)a4 numberOfGridItems:(unint64_t)a5
+- (void)updateStylePropertiesForGridViewElement:(id)element gridItemViewElements:(id)elements numberOfGridItems:(unint64_t)items
 {
   v73 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277D75348] separatorColor];
-  v10 = [MEMORY[0x277D759A0] mainScreen];
-  [v10 scale];
+  elementCopy = element;
+  elementsCopy = elements;
+  separatorColor = [MEMORY[0x277D75348] separatorColor];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v12 = v11;
 
-  if ([v7 elementType] == 45)
+  if ([elementCopy elementType] == 45)
   {
-    v13 = [v7 showsEditMode];
+    showsEditMode = [elementCopy showsEditMode];
   }
 
   else
   {
-    v13 = 0;
+    showsEditMode = 0;
   }
 
-  self->_showsEditMode = v13;
-  v14 = [v7 style];
-  v15 = [v14 itemWidth];
-  v16 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v17 = [v15 stringByTrimmingCharactersInSet:v16];
+  self->_showsEditMode = showsEditMode;
+  style = [elementCopy style];
+  itemWidth = [style itemWidth];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v17 = [itemWidth stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   [v17 floatValue];
   self->_gridViewElementStyleItemWidth = v18;
@@ -992,13 +992,13 @@ LABEL_37:
     p_gridIsEdgeToEdge = &self->_gridIsEdgeToEdge;
     if (gridViewElementStyleItemWidth == 100.0)
     {
-      v22 = [MEMORY[0x277D75348] whiteColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
 
       v24 = *MEMORY[0x277D768C8];
       v23 = *(MEMORY[0x277D768C8] + 8);
       v25 = *(MEMORY[0x277D768C8] + 16);
       v26 = *(MEMORY[0x277D768C8] + 24);
-      v9 = v22;
+      separatorColor = whiteColor;
       goto LABEL_9;
     }
   }
@@ -1015,15 +1015,15 @@ LABEL_37:
   v24 = 0.0;
 LABEL_9:
   v27 = 1.0 / v12;
-  v28 = [v14 ikBorderColor];
-  v29 = [v28 color];
+  ikBorderColor = [style ikBorderColor];
+  color = [ikBorderColor color];
 
-  if (v29)
+  if (color)
   {
-    if (CGColorGetAlpha([v29 CGColor]) <= 0.00000011920929)
+    if (CGColorGetAlpha([color CGColor]) <= 0.00000011920929)
     {
 
-      v9 = 0;
+      separatorColor = 0;
       v32 = 0;
       v33 = v27;
       v34 = v27;
@@ -1031,38 +1031,38 @@ LABEL_9:
       goto LABEL_39;
     }
 
-    v30 = v29;
+    v30 = color;
 
-    v9 = v30;
+    separatorColor = v30;
   }
 
-  v31 = [v14 dividerType];
-  if ([v31 isEqualToString:@"grid-full"])
+  dividerType = [style dividerType];
+  if ([dividerType isEqualToString:@"grid-full"])
   {
     v32 = 2;
   }
 
-  else if ([v31 isEqualToString:@"grid-top"])
+  else if ([dividerType isEqualToString:@"grid-top"])
   {
     v32 = 3;
   }
 
-  else if ([v31 isEqualToString:@"full"])
+  else if ([dividerType isEqualToString:@"full"])
   {
     v32 = 4;
   }
 
-  else if ([v31 isEqualToString:@"grid-vertical"])
+  else if ([dividerType isEqualToString:@"grid-vertical"])
   {
     v32 = 6;
   }
 
-  else if ([v31 isEqualToString:@"none"])
+  else if ([dividerType isEqualToString:@"none"])
   {
     v32 = 0;
   }
 
-  else if (*p_gridIsEdgeToEdge || ([v31 isEqualToString:@"edge-to-edge"] & 1) != 0)
+  else if (*p_gridIsEdgeToEdge || ([dividerType isEqualToString:@"edge-to-edge"] & 1) != 0)
   {
     v32 = 7;
   }
@@ -1073,7 +1073,7 @@ LABEL_9:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    obj = v8;
+    obj = elementsCopy;
     v36 = [(NSArray *)obj countByEnumeratingWithState:&v68 objects:v72 count:16];
     if (v36)
     {
@@ -1114,14 +1114,14 @@ LABEL_34:
     }
   }
 
-  v39 = [v14 valueForStyle:*MEMORY[0x277D1AFB8]];
+  v39 = [style valueForStyle:*MEMORY[0x277D1AFB8]];
 
   v33 = v27;
   v34 = v27;
   v35 = v27;
   if (v39)
   {
-    [v14 borderWidths];
+    [style borderWidths];
     v35 = v40;
     v34 = v41;
     v33 = v42;
@@ -1129,35 +1129,35 @@ LABEL_34:
   }
 
 LABEL_39:
-  v44 = v8;
-  v45 = [v14 valueForStyle:*MEMORY[0x277D1AFB0]];
+  v44 = elementsCopy;
+  v45 = [style valueForStyle:*MEMORY[0x277D1AFB0]];
 
   if (v45)
   {
-    [v14 borderMargins];
+    [style borderMargins];
     v24 = v46;
     v23 = v47;
     v25 = v48;
     v26 = v49;
   }
 
-  v50 = [v14 valueForStyle:*MEMORY[0x277D1AFF0]];
+  v50 = [style valueForStyle:*MEMORY[0x277D1AFF0]];
   v51 = 1;
   if (!v50)
   {
-    v52 = [v14 valueForStyle:@"itml-padding"];
+    v52 = [style valueForStyle:@"itml-padding"];
     v51 = v52 != 0;
   }
 
-  self->_hasGridViewElementStyle = v14 != 0 && v51;
-  [v14 elementPadding];
+  self->_hasGridViewElementStyle = style != 0 && v51;
+  [style elementPadding];
   self->_gridViewElementStyleElementPadding.top = v53;
   self->_gridViewElementStyleElementPadding.left = v54;
   self->_gridViewElementStyleElementPadding.bottom = v55;
   self->_gridViewElementStyleElementPadding.right = v56;
-  self->_numberOfGridItems = a5;
+  self->_numberOfGridItems = items;
   self->_separatorStyle = v32;
-  objc_storeStrong(&self->_separatorColor, v9);
+  objc_storeStrong(&self->_separatorColor, separatorColor);
   self->_separatorMargins.top = v24;
   self->_separatorMargins.left = v23;
   self->_separatorMargins.bottom = v25;
@@ -1174,12 +1174,12 @@ LABEL_39:
   self->_cellPaddingLeftEdgeHorizontal = 0.0;
   self->_cellPaddingRightEdgeHorizontal = 0.0;
   self->_cellPaddingInteriorHorizontal = 0.0;
-  v58 = [v7 style];
-  v59 = [v58 lockupType];
+  style2 = [elementCopy style];
+  lockupType = [style2 lockupType];
 
-  if (v59)
+  if (lockupType)
   {
-    v60 = SUUILockupViewTypeForString(v59);
+    v60 = SUUILockupViewTypeForString(lockupType);
   }
 
   else
@@ -1188,11 +1188,11 @@ LABEL_39:
   }
 
   self->_lockupType = v60;
-  v61 = [v14 itemHeight];
-  if (v61 || ([v14 rowHeight], (v61 = objc_claimAutoreleasedReturnValue()) != 0))
+  itemHeight = [style itemHeight];
+  if (itemHeight || ([style rowHeight], (itemHeight = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v62 = v61;
-    [v61 floatValue];
+    v62 = itemHeight;
+    [itemHeight floatValue];
     self->_minimumCellHeight = v63;
   }
 
@@ -1202,17 +1202,17 @@ LABEL_39:
   }
 }
 
-- (BOOL)viewElementIsStandardCard:(id)a3
+- (BOOL)viewElementIsStandardCard:(id)card
 {
-  v3 = a3;
-  v4 = [v3 elementType] == 14 && objc_msgSend(v3, "cardType") != 3;
+  cardCopy = card;
+  v4 = [cardCopy elementType] == 14 && objc_msgSend(cardCopy, "cardType") != 3;
 
   return v4;
 }
 
-- (id)_cardArtworkBoundingSizeForIndexPath:(id)a3
+- (id)_cardArtworkBoundingSizeForIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = 0;
   v10 = 0;
   v11 = &v10;
@@ -1230,7 +1230,7 @@ LABEL_39:
     v9[6] = v6;
     v9[4] = self;
     v9[5] = &v10;
-    [(SUUIGridViewElementPageSectionConfiguration *)self _enumerateViewElementsForRowOfIndexPath:v4 usingBlock:v9];
+    [(SUUIGridViewElementPageSectionConfiguration *)self _enumerateViewElementsForRowOfIndexPath:pathCopy usingBlock:v9];
     v5 = v11[5];
   }
 
@@ -1262,9 +1262,9 @@ void __84__SUUIGridViewElementPageSectionConfiguration__cardArtworkBoundingSizeF
   }
 }
 
-- (Class)_cardCellClassForCard:(id)a3
+- (Class)_cardCellClassForCard:(id)card
 {
-  [a3 cardType];
+  [card cardType];
   v3 = objc_opt_class();
 
   return v3;
@@ -1307,8 +1307,8 @@ void __84__SUUIGridViewElementPageSectionConfiguration__cardArtworkBoundingSizeF
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 elementType];
-        if (v15 == 66)
+        elementType = [v14 elementType];
+        if (elementType == 66)
         {
           if ([v14 lockupViewType] == 7)
           {
@@ -1342,9 +1342,9 @@ LABEL_28:
           goto LABEL_33;
         }
 
-        if (v15 != 48)
+        if (elementType != 48)
         {
-          if (v15 == 14 && [(SUUIGridViewElementPageSectionConfiguration *)self viewElementIsStandardCard:v14])
+          if (elementType == 14 && [(SUUIGridViewElementPageSectionConfiguration *)self viewElementIsStandardCard:v14])
           {
             [SUUICardViewElementCollectionViewCell preferredSizeForViewElement:v14 context:self->_cellLayoutContext];
             cellContentWidth = self->_cellContentWidth;
@@ -1397,13 +1397,13 @@ LABEL_36:
   return result;
 }
 
-- (double)_cellHeightForViewElement:(id)a3 width:(double)a4
+- (double)_cellHeightForViewElement:(id)element width:(double)width
 {
-  v6 = a3;
-  v7 = [(SUUIGridViewElementPageSectionConfiguration *)self cellClassForViewElement:v6];
+  elementCopy = element;
+  v7 = [(SUUIGridViewElementPageSectionConfiguration *)self cellClassForViewElement:elementCopy];
   if (v7)
   {
-    [(objc_class *)v7 sizeThatFitsWidth:v6 viewElement:self->_cellLayoutContext context:a4];
+    [(objc_class *)v7 sizeThatFitsWidth:elementCopy viewElement:self->_cellLayoutContext context:width];
     v9 = v8;
   }
 
@@ -1412,22 +1412,22 @@ LABEL_36:
     v9 = 0.0;
   }
 
-  v10 = [v6 style];
-  v11 = [v10 itemHeight];
-  v12 = v11;
-  if (v11)
+  style = [elementCopy style];
+  itemHeight = [style itemHeight];
+  v12 = itemHeight;
+  if (itemHeight)
   {
-    [v11 floatValue];
+    [itemHeight floatValue];
     v14 = v13;
   }
 
   else
   {
-    v15 = [v10 rowHeight];
-    v16 = v15;
-    if (v15)
+    rowHeight = [style rowHeight];
+    v16 = rowHeight;
+    if (rowHeight)
     {
-      [v15 floatValue];
+      [rowHeight floatValue];
       v14 = v17;
     }
 
@@ -1445,17 +1445,17 @@ LABEL_36:
   return v9;
 }
 
-- (UIEdgeInsets)_cellInsetsForViewElement:(id)a3 indexPath:(id)a4
+- (UIEdgeInsets)_cellInsetsForViewElement:(id)element indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  pathCopy = path;
   v9 = *MEMORY[0x277D768C8];
   v8 = *(MEMORY[0x277D768C8] + 8);
   v11 = *(MEMORY[0x277D768C8] + 16);
   v10 = *(MEMORY[0x277D768C8] + 24);
-  v12 = [v6 style];
+  style = [elementCopy style];
   v58 = 0;
-  v13 = SUUIViewElementPaddingForStyle(v12, &v58);
+  v13 = SUUIViewElementPaddingForStyle(style, &v58);
   if (v58 == 1)
   {
     v17 = v9 + v13;
@@ -1471,12 +1471,12 @@ LABEL_36:
   v17 = v9;
   if (!self->_hasGridViewElementStyle)
   {
-    v21 = [v6 elementType];
-    if (v21 <= 47)
+    elementType = [elementCopy elementType];
+    if (elementType <= 47)
     {
-      if ((v21 - 12) >= 2)
+      if ((elementType - 12) >= 2)
       {
-        if (v21 == 14 && [(SUUIGridViewElementPageSectionConfiguration *)self viewElementIsStandardCard:v6])
+        if (elementType == 14 && [(SUUIGridViewElementPageSectionConfiguration *)self viewElementIsStandardCard:elementCopy])
         {
           cardVerticalSpacingStyle = self->_cardVerticalSpacingStyle;
           if (cardVerticalSpacingStyle <= 1)
@@ -1516,7 +1516,7 @@ LABEL_36:
           {
             if (cardVerticalSpacingStyle == 3)
             {
-              v52 = [v6 firstChildForElementType:66];
+              v52 = [elementCopy firstChildForElementType:66];
 
               if (v52)
               {
@@ -1587,9 +1587,9 @@ LABEL_20:
       goto LABEL_22;
     }
 
-    if (v21 != 48)
+    if (elementType != 48)
     {
-      if (v21 != 141 && v21 != 50)
+      if (elementType != 141 && elementType != 50)
       {
         goto LABEL_21;
       }
@@ -1606,7 +1606,7 @@ LABEL_20:
   }
 
 LABEL_24:
-  if ([v6 elementType] != 48)
+  if ([elementCopy elementType] != 48)
   {
     v57 = v8;
     [(SUUIGridViewElementPageSectionConfiguration *)self _cellPaddingInteriorHorizontal];
@@ -1622,7 +1622,7 @@ LABEL_24:
 
     [(SUUIGridViewElementPageSectionConfiguration *)self _cellPaddingInteriorHorizontal];
     v30 = v29;
-    v31 = [(SUUIGridViewElementPageSectionConfiguration *)self positionForIndexPath:v7];
+    v31 = [(SUUIGridViewElementPageSectionConfiguration *)self positionForIndexPath:pathCopy];
     if (v31)
     {
       [(SUUIGridViewElementPageSectionConfiguration *)self _cellPaddingLeftEdgeHorizontal];
@@ -1647,14 +1647,14 @@ LABEL_24:
 
     v19 = v19 + v34;
     v20 = v20 + v32;
-    if ([v6 elementType] == 66)
+    if ([elementCopy elementType] == 66)
     {
       v55 = v9;
       v56 = v18;
       v53 = v11;
       v54 = v10;
-      v35 = [(SUUIGridViewElementPageSectionConfiguration *)self cellLayoutContext];
-      [v35 largeScreenElementPadding];
+      cellLayoutContext = [(SUUIGridViewElementPageSectionConfiguration *)self cellLayoutContext];
+      [cellLayoutContext largeScreenElementPadding];
       v37 = v36;
       v39 = v38;
       v41 = v40;
@@ -1688,14 +1688,14 @@ LABEL_24:
   return result;
 }
 
-- (double)_columnContentWidthPaddingForWidth:(double)a3
+- (double)_columnContentWidthPaddingForWidth:(double)width
 {
-  v5 = [(SUUIGridViewElementPageSectionConfiguration *)self _useOrdinalPadding];
-  v6 = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
-  [v6 horizontalPadding];
-  v8 = a3 - v7;
-  v9 = a3 + v7 * -2.0;
-  if (v5)
+  _useOrdinalPadding = [(SUUIGridViewElementPageSectionConfiguration *)self _useOrdinalPadding];
+  pageSectionContext = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
+  [pageSectionContext horizontalPadding];
+  v8 = width - v7;
+  v9 = width + v7 * -2.0;
+  if (_useOrdinalPadding)
   {
     v10 = v8;
   }
@@ -1708,16 +1708,16 @@ LABEL_24:
   return v10;
 }
 
-- (void)_enumerateViewElementsForRowOfIndexPath:(id)a3 usingBlock:(id)a4
+- (void)_enumerateViewElementsForRowOfIndexPath:(id)path usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 item] / self->_numberOfColumns * self->_numberOfColumns;
-  v18 = v6;
-  v9 = [v6 section];
+  pathCopy = path;
+  blockCopy = block;
+  v8 = [pathCopy item] / self->_numberOfColumns * self->_numberOfColumns;
+  v18 = pathCopy;
+  section = [pathCopy section];
   v19 = 0;
   numberOfGridItems = self->_numberOfGridItems;
-  v11 = [(SUUIGridViewElementPageSectionConfiguration *)self dataSource];
+  dataSource = [(SUUIGridViewElementPageSectionConfiguration *)self dataSource];
   v12 = v8;
   do
   {
@@ -1727,12 +1727,12 @@ LABEL_24:
     }
 
     v14 = objc_autoreleasePoolPush();
-    v15 = [MEMORY[0x277CCAA70] indexPathForItem:v12 inSection:v9];
-    v16 = [v11 gridViewElementPageSectionConfiguration:self viewElementForIndexPath:v15];
+    v15 = [MEMORY[0x277CCAA70] indexPathForItem:v12 inSection:section];
+    v16 = [dataSource gridViewElementPageSectionConfiguration:self viewElementForIndexPath:v15];
     v17 = v16;
     if (v16 && [v16 elementType] != 48)
     {
-      v7[2](v7, v17, v15, &v19);
+      blockCopy[2](blockCopy, v17, v15, &v19);
     }
 
     objc_autoreleasePoolPop(v14);
@@ -1742,23 +1742,23 @@ LABEL_24:
   while ((v19 & 1) == 0);
 }
 
-- (BOOL)_isContainedWithinExploreTemplateWithGridViewElement:(id)a3
+- (BOOL)_isContainedWithinExploreTemplateWithGridViewElement:(id)element
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  elementCopy = element;
+  v4 = elementCopy;
+  if (elementCopy)
   {
-    v5 = v3;
+    v5 = elementCopy;
     do
     {
-      v6 = [v5 elementType];
-      v7 = [v5 parent];
+      elementType = [v5 elementType];
+      parent = [v5 parent];
 
-      v5 = v7;
-      v8 = v6 == 37;
+      v5 = parent;
+      v8 = elementType == 37;
     }
 
-    while (!v8 && v7);
+    while (!v8 && parent);
   }
 
   else
@@ -1769,9 +1769,9 @@ LABEL_24:
   return v8;
 }
 
-- (id)_lockupCellReuseIdentifierWithLockup:(id)a3
+- (id)_lockupCellReuseIdentifierWithLockup:(id)lockup
 {
-  v3 = [(SUUIGridViewElementPageSectionConfiguration *)self _lockupTypeForLockup:a3];
+  v3 = [(SUUIGridViewElementPageSectionConfiguration *)self _lockupTypeForLockup:lockup];
   if (v3 <= 8)
   {
     v4 = *off_2798FB1F0[v3];
@@ -1780,42 +1780,42 @@ LABEL_24:
   return v4;
 }
 
-- (int64_t)_lockupTypeForLockup:(id)a3
+- (int64_t)_lockupTypeForLockup:(id)lockup
 {
   result = self->_lockupType;
   if (result == -1)
   {
-    return [a3 lockupViewType];
+    return [lockup lockupViewType];
   }
 
   return result;
 }
 
-- (UIEdgeInsets)_normalizedContentInsetForViewElement:(id)a3 indexPath:(id)a4
+- (UIEdgeInsets)_normalizedContentInsetForViewElement:(id)element indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  pathCopy = path;
   v24 = 0;
   v25 = &v24;
   v26 = 0x4010000000;
   v27 = "";
   v28 = 0u;
   v29 = 0u;
-  [(SUUIGridViewElementPageSectionConfiguration *)self _cellInsetsForViewElement:v6 indexPath:v7];
+  [(SUUIGridViewElementPageSectionConfiguration *)self _cellInsetsForViewElement:elementCopy indexPath:pathCopy];
   *&v28 = v8;
   *(&v28 + 1) = v9;
   *&v29 = v10;
   *(&v29 + 1) = v11;
-  if ([v6 elementType] != 48)
+  if ([elementCopy elementType] != 48)
   {
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __95__SUUIGridViewElementPageSectionConfiguration__normalizedContentInsetForViewElement_indexPath___block_invoke;
     v20[3] = &unk_2798FB188;
-    v21 = v6;
-    v22 = self;
+    v21 = elementCopy;
+    selfCopy = self;
     v23 = &v24;
-    [(SUUIGridViewElementPageSectionConfiguration *)self _enumerateViewElementsForRowOfIndexPath:v7 usingBlock:v20];
+    [(SUUIGridViewElementPageSectionConfiguration *)self _enumerateViewElementsForRowOfIndexPath:pathCopy usingBlock:v20];
   }
 
   v12 = v25[4];
@@ -1861,19 +1861,19 @@ uint64_t __95__SUUIGridViewElementPageSectionConfiguration__normalizedContentIns
   return result;
 }
 
-- (int64_t)_numberOfColumnsForWidth:(double)a3 style:(id)a4
+- (int64_t)_numberOfColumnsForWidth:(double)width style:(id)style
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  styleCopy = style;
+  v7 = styleCopy;
+  if (styleCopy)
   {
-    v8 = [v6 columnCount];
-    v9 = [(SUUIStorePageSectionContext *)self->_pageSectionContext layoutStyle];
-    if (v8 != -1)
+    columnCount = [styleCopy columnCount];
+    layoutStyle = [(SUUIStorePageSectionContext *)self->_pageSectionContext layoutStyle];
+    if (columnCount != -1)
     {
-      if ((v8 * 320.0) + 320.0 <= a3)
+      if ((columnCount * 320.0) + 320.0 <= width)
       {
-        ++v8;
+        ++columnCount;
       }
 
       goto LABEL_18;
@@ -1882,10 +1882,10 @@ uint64_t __95__SUUIGridViewElementPageSectionConfiguration__normalizedContentIns
 
   else
   {
-    v9 = [(SUUIStorePageSectionContext *)self->_pageSectionContext layoutStyle];
+    layoutStyle = [(SUUIStorePageSectionContext *)self->_pageSectionContext layoutStyle];
   }
 
-  v10 = (a3 / 320.0);
+  v10 = (width / 320.0);
   if (v10 <= 1)
   {
     v10 = 1;
@@ -1897,29 +1897,29 @@ uint64_t __95__SUUIGridViewElementPageSectionConfiguration__normalizedContentIns
   }
 
   v11 = 1;
-  if (a3 >= 640.0)
+  if (width >= 640.0)
   {
     v11 = 2;
   }
 
-  if (v9 == 2)
+  if (layoutStyle == 2)
   {
     v10 = v11;
   }
 
-  if (v9 == 1)
+  if (layoutStyle == 1)
   {
-    v8 = 1;
+    columnCount = 1;
   }
 
   else
   {
-    v8 = v10;
+    columnCount = v10;
   }
 
 LABEL_18:
 
-  return v8;
+  return columnCount;
 }
 
 - (void)_reloadCellPaddingIfNeeded
@@ -1929,8 +1929,8 @@ LABEL_18:
     [(SUUIStorePageSectionContext *)self->_pageSectionContext activePageWidth];
     if (v3 <= 0.0)
     {
-      v8 = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
-      [v8 horizontalPadding];
+      pageSectionContext = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
+      [pageSectionContext horizontalPadding];
       v7 = v9 + v9;
     }
 
@@ -1943,8 +1943,8 @@ LABEL_18:
       v7 = floorf(*&v6);
     }
 
-    v10 = [(SUUIGridViewElementPageSectionConfiguration *)self _useOrdinalPadding];
-    v11 = v10;
+    _useOrdinalPadding = [(SUUIGridViewElementPageSectionConfiguration *)self _useOrdinalPadding];
+    v11 = _useOrdinalPadding;
     if (self->_numberOfColumns > 1)
     {
       if (self->_hasGridViewElementStyle)
@@ -1955,8 +1955,8 @@ LABEL_18:
 
       else
       {
-        v16 = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
-        [v16 horizontalPadding];
+        pageSectionContext2 = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
+        [pageSectionContext2 horizontalPadding];
         left = v17;
 
         if (v11)
@@ -1967,8 +1967,8 @@ LABEL_18:
 
         else
         {
-          v18 = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
-          [v18 horizontalPadding];
+          pageSectionContext3 = [(SUUIGridViewElementPageSectionConfiguration *)self pageSectionContext];
+          [pageSectionContext3 horizontalPadding];
           right = v19;
         }
       }
@@ -2019,7 +2019,7 @@ LABEL_18:
 
     else
     {
-      if (v10)
+      if (_useOrdinalPadding)
       {
         self->_cellPaddingLeftEdgeHorizontal = 0.0;
         self->_cellPaddingRightEdgeHorizontal = v7;
@@ -2046,15 +2046,15 @@ LABEL_25:
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(NSArray *)self->_viewElements firstObject];
-  if ([v3 elementType] == 48 && -[NSArray count](self->_viewElements, "count") >= 2)
+  firstObject = [(NSArray *)self->_viewElements firstObject];
+  if ([firstObject elementType] == 48 && -[NSArray count](self->_viewElements, "count") >= 2)
   {
     v4 = [(NSArray *)self->_viewElements objectAtIndex:1];
 
-    v3 = v4;
+    firstObject = v4;
   }
 
-  if ([v3 elementType] == 66)
+  if ([firstObject elementType] == 66)
   {
     [(SUUIViewElementLayoutContext *)self->_cellLayoutContext largeScreenElementPadding];
     v6.f64[1] = v5;
@@ -2066,7 +2066,7 @@ LABEL_25:
       v11[2] = __65__SUUIGridViewElementPageSectionConfiguration__useOrdinalPadding__block_invoke;
       v11[3] = &unk_2798F5FB8;
       v11[4] = &v12;
-      [v3 enumerateChildrenUsingBlock:v11];
+      [firstObject enumerateChildrenUsingBlock:v11];
     }
   }
 

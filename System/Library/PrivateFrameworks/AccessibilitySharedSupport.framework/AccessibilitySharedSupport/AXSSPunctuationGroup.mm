@@ -1,7 +1,7 @@
 @interface AXSSPunctuationGroup
-+ (id)punctuationGroupFromJSONRepresentation:(id)a3;
++ (id)punctuationGroupFromJSONRepresentation:(id)representation;
 - (AXSSPunctuationGroup)init;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSystemPunctuationGroup;
 - (NSData)jsonRepresentation;
 - (NSDictionary)jsonDictionary;
@@ -17,8 +17,8 @@
   v5.receiver = self;
   v5.super_class = AXSSPunctuationGroup;
   v2 = [(AXSSPunctuationGroup *)&v5 init];
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  [(AXSSPunctuationGroup *)v2 setUuid:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(AXSSPunctuationGroup *)v2 setUuid:uUID];
 
   [(AXSSPunctuationGroup *)v2 setBasePunctuationUUID:AXSSVoiceOverPunctuationGroupSome];
   [(AXSSPunctuationGroup *)v2 setInDatabase:0];
@@ -26,10 +26,10 @@
   return v2;
 }
 
-+ (id)punctuationGroupFromJSONRepresentation:(id)a3
++ (id)punctuationGroupFromJSONRepresentation:(id)representation
 {
   v22 = 0;
-  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:1 error:&v22];
+  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:representation options:1 error:&v22];
   v4 = v22;
   if (v4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -134,16 +134,16 @@ id __63__AXSSPunctuationGroup_punctuationGroupFromJSONRepresentation___block_inv
 {
   v23[5] = *MEMORY[0x1E69E9840];
   v22[0] = @"name";
-  v21 = [(AXSSPunctuationGroup *)self name];
-  v23[0] = v21;
+  name = [(AXSSPunctuationGroup *)self name];
+  v23[0] = name;
   v22[1] = @"basePunctuationUUID";
   v3 = +[AXSSPunctuationManager sharedDatabase];
   v4 = [v3 mostBasePunctuationGroupForGroup:self];
-  v5 = [v4 UUIDString];
-  v6 = v5;
-  if (v5)
+  uUIDString = [v4 UUIDString];
+  v6 = uUIDString;
+  if (uUIDString)
   {
-    v7 = v5;
+    v7 = uUIDString;
   }
 
   else
@@ -153,12 +153,12 @@ id __63__AXSSPunctuationGroup_punctuationGroupFromJSONRepresentation___block_inv
 
   v23[1] = v7;
   v22[2] = @"uuid";
-  v8 = [(AXSSPunctuationGroup *)self uuid];
-  v9 = [v8 UUIDString];
-  v10 = v9;
-  if (v9)
+  uuid = [(AXSSPunctuationGroup *)self uuid];
+  uUIDString2 = [uuid UUIDString];
+  v10 = uUIDString2;
+  if (uUIDString2)
   {
-    v11 = v9;
+    v11 = uUIDString2;
   }
 
   else
@@ -171,8 +171,8 @@ id __63__AXSSPunctuationGroup_punctuationGroupFromJSONRepresentation___block_inv
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:{-[AXSSPunctuationGroup version](self, "version")}];
   v23[3] = v12;
   v22[4] = @"entries";
-  v13 = [(AXSSPunctuationGroup *)self entries];
-  v14 = [v13 ax_mappedArrayUsingBlock:&__block_literal_global_27];
+  entries = [(AXSSPunctuationGroup *)self entries];
+  v14 = [entries ax_mappedArrayUsingBlock:&__block_literal_global_27];
   v15 = v14;
   v16 = MEMORY[0x1E695E0F0];
   if (v14)
@@ -191,8 +191,8 @@ id __63__AXSSPunctuationGroup_punctuationGroupFromJSONRepresentation___block_inv
 
 - (NSString)name
 {
-  v3 = [(AXSSPunctuationGroup *)self uuid];
-  v4 = [v3 isEqual:AXSSVoiceOverPunctuationGroupNone];
+  uuid = [(AXSSPunctuationGroup *)self uuid];
+  v4 = [uuid isEqual:AXSSVoiceOverPunctuationGroupNone];
 
   if (v4)
   {
@@ -205,8 +205,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v8 = [(AXSSPunctuationGroup *)self uuid];
-  v9 = [v8 isEqual:AXSSVoiceOverPunctuationGroupSome];
+  uuid2 = [(AXSSPunctuationGroup *)self uuid];
+  v9 = [uuid2 isEqual:AXSSVoiceOverPunctuationGroupSome];
 
   if (v9)
   {
@@ -216,8 +216,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v10 = [(AXSSPunctuationGroup *)self uuid];
-  v11 = [v10 isEqual:AXSSVoiceOverPunctuationGroupAll];
+  uuid3 = [(AXSSPunctuationGroup *)self uuid];
+  v11 = [uuid3 isEqual:AXSSVoiceOverPunctuationGroupAll];
 
   if (v11)
   {
@@ -236,9 +236,9 @@ LABEL_8:
 - (NSData)jsonRepresentation
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(AXSSPunctuationGroup *)self jsonDictionary];
+  jsonDictionary = [(AXSSPunctuationGroup *)self jsonDictionary];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDictionary options:1 error:&v8];
   v5 = v8;
 
   if (v5)
@@ -256,8 +256,8 @@ LABEL_8:
 - (BOOL)isSystemPunctuationGroup
 {
   v3 = +[AXSSPunctuationManager sharedDatabase];
-  v4 = [(AXSSPunctuationGroup *)self uuid];
-  v5 = [v3 isBasePunctuationGroup:v4];
+  uuid = [(AXSSPunctuationGroup *)self uuid];
+  v5 = [v3 isBasePunctuationGroup:uuid];
 
   return v5;
 }
@@ -268,25 +268,25 @@ LABEL_8:
   v12.receiver = self;
   v12.super_class = AXSSPunctuationGroup;
   v4 = [(AXSSPunctuationGroup *)&v12 description];
-  v5 = [(AXSSPunctuationGroup *)self inCloud];
-  v6 = [(AXSSPunctuationGroup *)self ckChangeTag];
-  v7 = [(AXSSPunctuationGroup *)self name];
-  v8 = [(AXSSPunctuationGroup *)self autoSwitchContexts];
-  v9 = [(AXSSPunctuationGroup *)self entries];
-  v10 = [v3 stringWithFormat:@"%@[%d/%@]: name: %@, contexts: %@, entries: %@", v4, v5, v6, v7, v8, v9];
+  inCloud = [(AXSSPunctuationGroup *)self inCloud];
+  ckChangeTag = [(AXSSPunctuationGroup *)self ckChangeTag];
+  name = [(AXSSPunctuationGroup *)self name];
+  autoSwitchContexts = [(AXSSPunctuationGroup *)self autoSwitchContexts];
+  entries = [(AXSSPunctuationGroup *)self entries];
+  v10 = [v3 stringWithFormat:@"%@[%d/%@]: name: %@, contexts: %@, entries: %@", v4, inCloud, ckChangeTag, name, autoSwitchContexts, entries];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 uuid];
-    v6 = [(AXSSPunctuationGroup *)self uuid];
-    v7 = [v5 isEqual:v6];
+    uuid = [equalCopy uuid];
+    uuid2 = [(AXSSPunctuationGroup *)self uuid];
+    v7 = [uuid isEqual:uuid2];
   }
 
   else
@@ -312,7 +312,7 @@ LABEL_8:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C0E8A000, a2, OS_LOG_TYPE_ERROR, "Could not json: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

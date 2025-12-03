@@ -1,33 +1,33 @@
 @interface HMDHomeConfigurationLogEvent
-- (HMDHomeConfigurationLogEvent)initWithDataSource:(id)a3 home:(id)a4 configuredWidgetsCount:(int64_t)a5;
-- (HMDHomeConfigurationLogEvent)initWithIsOwnerUser:(BOOL)a3 isResidentAvailable:(BOOL)a4 isCurrentDeviceResidentEnabled:(BOOL)a5 isPrimaryResident:(BOOL)a6 isCurrentDeviceLocalToHome:(BOOL)a7 isNetworkProtectionEnabled:(BOOL)a8 isUserRoeProvisioned:(BOOL)a9 isResidentFirstEnabled:(BOOL)a10 isResidentElectionV2Enabled:(BOOL)a11 isSmokeAlarmEnabled:(BOOL)a12;
+- (HMDHomeConfigurationLogEvent)initWithDataSource:(id)source home:(id)home configuredWidgetsCount:(int64_t)count;
+- (HMDHomeConfigurationLogEvent)initWithIsOwnerUser:(BOOL)user isResidentAvailable:(BOOL)available isCurrentDeviceResidentEnabled:(BOOL)enabled isPrimaryResident:(BOOL)resident isCurrentDeviceLocalToHome:(BOOL)home isNetworkProtectionEnabled:(BOOL)protectionEnabled isUserRoeProvisioned:(BOOL)provisioned isResidentFirstEnabled:(BOOL)self0 isResidentElectionV2Enabled:(BOOL)self1 isSmokeAlarmEnabled:(BOOL)self2;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (id)initForUnitTesting;
-- (int64_t)daysSinceDate:(id)a3 trimAtMaximumValue:(unint64_t)a4;
-- (int64_t)weeksSinceDate:(id)a3 trimAtMaximumValue:(unint64_t)a4;
+- (int64_t)daysSinceDate:(id)date trimAtMaximumValue:(unint64_t)value;
+- (int64_t)weeksSinceDate:(id)date trimAtMaximumValue:(unint64_t)value;
 - (unint64_t)currentUserPrivilegeBitMask;
 - (unint64_t)numTelevisionServiceAccessories;
 - (void)setHomeConfigurationBitMasks;
-- (void)updateConfigWithAccessory:(id)a3 reportNetworkProtectionMetrics:(BOOL)a4 networkProtectionEnabled:(BOOL)a5 hapServiceTypes:(id)a6 primaryHAPServiceTypes:(id)a7;
+- (void)updateConfigWithAccessory:(id)accessory reportNetworkProtectionMetrics:(BOOL)metrics networkProtectionEnabled:(BOOL)enabled hapServiceTypes:(id)types primaryHAPServiceTypes:(id)serviceTypes;
 @end
 
 @implementation HMDHomeConfigurationLogEvent
 
-- (HMDHomeConfigurationLogEvent)initWithIsOwnerUser:(BOOL)a3 isResidentAvailable:(BOOL)a4 isCurrentDeviceResidentEnabled:(BOOL)a5 isPrimaryResident:(BOOL)a6 isCurrentDeviceLocalToHome:(BOOL)a7 isNetworkProtectionEnabled:(BOOL)a8 isUserRoeProvisioned:(BOOL)a9 isResidentFirstEnabled:(BOOL)a10 isResidentElectionV2Enabled:(BOOL)a11 isSmokeAlarmEnabled:(BOOL)a12
+- (HMDHomeConfigurationLogEvent)initWithIsOwnerUser:(BOOL)user isResidentAvailable:(BOOL)available isCurrentDeviceResidentEnabled:(BOOL)enabled isPrimaryResident:(BOOL)resident isCurrentDeviceLocalToHome:(BOOL)home isNetworkProtectionEnabled:(BOOL)protectionEnabled isUserRoeProvisioned:(BOOL)provisioned isResidentFirstEnabled:(BOOL)self0 isResidentElectionV2Enabled:(BOOL)self1 isSmokeAlarmEnabled:(BOOL)self2
 {
   result = [(HMDHomeConfigurationLogEvent *)self initForUnitTesting];
   if (result)
   {
-    result->_ownerUser = a3;
-    result->_isResidentAvailable = a4;
-    result->_isCurrentDeviceResidentEnabled = a5;
-    result->_isCurrentDevicePrimaryResident = a6;
-    result->_isCurrentDeviceLocalToHome = a7;
-    result->_networkProtectionEnabled = a8;
-    result->_hasHomeKeyInWallet = a9;
-    result->_isResidentFirstEnabled = a10;
-    result->_isResidentElectionV2Enabled = a11;
-    result->_isSmokeAlarmEnabled = a12;
+    result->_ownerUser = user;
+    result->_isResidentAvailable = available;
+    result->_isCurrentDeviceResidentEnabled = enabled;
+    result->_isCurrentDevicePrimaryResident = resident;
+    result->_isCurrentDeviceLocalToHome = home;
+    result->_networkProtectionEnabled = protectionEnabled;
+    result->_hasHomeKeyInWallet = provisioned;
+    result->_isResidentFirstEnabled = firstEnabled;
+    result->_isResidentElectionV2Enabled = v2Enabled;
+    result->_isSmokeAlarmEnabled = alarmEnabled;
   }
 
   return result;
@@ -35,10 +35,10 @@
 
 - (id)initForUnitTesting
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v6.receiver = self;
   v6.super_class = HMDHomeConfigurationLogEvent;
-  v4 = [(HMMHomeLogEvent *)&v6 initWithHomeUUID:v3];
+  v4 = [(HMMHomeLogEvent *)&v6 initWithHomeUUID:uUID];
 
   return v4;
 }
@@ -49,8 +49,8 @@
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDHomeConfigurationLogEvent homeIndex](self, "homeIndex")}];
   [v3 setObject:v4 forKeyedSubscript:@"homeIndex"];
 
-  v5 = [(HMMHomeLogEvent *)self homeUUIDString];
-  [v3 setObject:v5 forKeyedSubscript:@"homeUUID"];
+  homeUUIDString = [(HMMHomeLogEvent *)self homeUUIDString];
+  [v3 setObject:homeUUIDString forKeyedSubscript:@"homeUUID"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDHomeConfigurationLogEvent homeCategoryBitMask](self, "homeCategoryBitMask")}];
   [v3 setObject:v6 forKeyedSubscript:@"homeCategoryBitMask"];
@@ -461,12 +461,12 @@
   v120 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDHomeConfigurationLogEvent numConfiguredWidgets](self, "numConfiguredWidgets")}];
   [v3 setObject:v120 forKeyedSubscript:@"numHomeWidgetsEnabled"];
 
-  v121 = [(HMDHomeConfigurationLogEvent *)self numBSPs];
+  numBSPs = [(HMDHomeConfigurationLogEvent *)self numBSPs];
 
-  if (v121)
+  if (numBSPs)
   {
-    v122 = [(HMDHomeConfigurationLogEvent *)self numBSPs];
-    [v3 setObject:v122 forKeyedSubscript:@"numBSPs"];
+    numBSPs2 = [(HMDHomeConfigurationLogEvent *)self numBSPs];
+    [v3 setObject:numBSPs2 forKeyedSubscript:@"numBSPs"];
   }
 
   v123 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDHomeConfigurationLogEvent numWoLAccessories](self, "numWoLAccessories")}];
@@ -584,34 +584,34 @@
 
 - (unint64_t)currentUserPrivilegeBitMask
 {
-  v2 = [(HMDHomeConfigurationLogEvent *)self currentUserPrivilege];
-  if (v2 - 1 > 3)
+  currentUserPrivilege = [(HMDHomeConfigurationLogEvent *)self currentUserPrivilege];
+  if (currentUserPrivilege - 1 > 3)
   {
     return 1;
   }
 
   else
   {
-    return qword_253D4BAF0[v2 - 1];
+    return qword_253D4BAF0[currentUserPrivilege - 1];
   }
 }
 
 - (unint64_t)numTelevisionServiceAccessories
 {
-  v3 = [(HMDHomeConfigurationLogEvent *)self numTelevisionAccessories];
-  v4 = [(HMDHomeConfigurationLogEvent *)self numTelevisionSetTopBoxAccessories]+ v3;
+  numTelevisionAccessories = [(HMDHomeConfigurationLogEvent *)self numTelevisionAccessories];
+  v4 = [(HMDHomeConfigurationLogEvent *)self numTelevisionSetTopBoxAccessories]+ numTelevisionAccessories;
   return v4 + [(HMDHomeConfigurationLogEvent *)self numTelevisionStreamingStickAccessories];
 }
 
-- (void)updateConfigWithAccessory:(id)a3 reportNetworkProtectionMetrics:(BOOL)a4 networkProtectionEnabled:(BOOL)a5 hapServiceTypes:(id)a6 primaryHAPServiceTypes:(id)a7
+- (void)updateConfigWithAccessory:(id)accessory reportNetworkProtectionMetrics:(BOOL)metrics networkProtectionEnabled:(BOOL)enabled hapServiceTypes:(id)types primaryHAPServiceTypes:(id)serviceTypes
 {
-  v9 = a5;
-  v10 = a4;
+  enabledCopy = enabled;
+  metricsCopy = metrics;
   v145 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a6;
-  v123 = a7;
-  v14 = v12;
+  accessoryCopy = accessory;
+  typesCopy = types;
+  serviceTypesCopy = serviceTypes;
+  v14 = accessoryCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -640,7 +640,7 @@
   v124 = v18;
 
   v19 = v17;
-  v20 = v13;
+  v20 = typesCopy;
   v21 = v19;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -659,48 +659,48 @@
   if (v16)
   {
     [v16 hostAccessory];
-    v24 = v23 = v9;
+    v24 = v23 = enabledCopy;
     objc_opt_class();
     v25 = (objc_opt_isKindOfClass() & 1) != 0 ? v24 : 0;
     v26 = v25;
 
-    v9 = v23;
+    enabledCopy = v23;
     if (v26)
     {
       goto LABEL_190;
     }
   }
 
-  if (v10)
+  if (metricsCopy)
   {
     if ([v125 wiFiCredentialType] == 3)
     {
       ++self->_numAccessoriesWiFiPPSKCredential;
     }
 
-    if (v9)
+    if (enabledCopy)
     {
       v27 = v125;
       if ([v27 supportsNetworkProtection])
       {
-        v28 = [v27 networkClientIdentifier];
+        networkClientIdentifier = [v27 networkClientIdentifier];
 
-        if (v28)
+        if (networkClientIdentifier)
         {
-          v29 = [v27 targetNetworkProtectionMode];
-          v30 = [v27 currentNetworkProtectionMode];
-          if (!v29 && v30 == 4)
+          targetNetworkProtectionMode = [v27 targetNetworkProtectionMode];
+          currentNetworkProtectionMode = [v27 currentNetworkProtectionMode];
+          if (!targetNetworkProtectionMode && currentNetworkProtectionMode == 4)
           {
 
             v31 = 400;
             goto LABEL_174;
           }
 
-          if (!v29 && v30 == 2)
+          if (!targetNetworkProtectionMode && currentNetworkProtectionMode == 2)
           {
-            v105 = [v27 networkClientLAN];
+            networkClientLAN = [v27 networkClientLAN];
 
-            if (v105 == 3)
+            if (networkClientLAN == 3)
             {
               v31 = 416;
             }
@@ -718,8 +718,8 @@ LABEL_174:
             }
 
 LABEL_29:
-            v121 = [v16 certificationStatus];
-            if (v121 == 2)
+            certificationStatus = [v16 certificationStatus];
+            if (certificationStatus == 2)
             {
               v34 = &OBJC_IVAR___HMDHomeConfigurationLogEvent__numCertifiedAccessories;
             }
@@ -741,9 +741,9 @@ LABEL_34:
               if (![v16 supportsCHIP])
               {
 LABEL_79:
-                v61 = [v16 metric_threadCapabilities];
-                v62 = [v16 metricLoggingTransportDetails];
-                v63 = [v62 isThreadAccessory];
+                metric_threadCapabilities = [v16 metric_threadCapabilities];
+                metricLoggingTransportDetails = [v16 metricLoggingTransportDetails];
+                isThreadAccessory = [metricLoggingTransportDetails isThreadAccessory];
 
                 if ([v16 hasIPLink] && (objc_msgSend(v16, "isPrimary") & 1) != 0)
                 {
@@ -752,7 +752,7 @@ LABEL_79:
 
                 else
                 {
-                  if (![v16 hasBTLELink] || !objc_msgSend(v16, "isPrimary") || (++self->_numBTAccessories, (v63 & 1) != 0))
+                  if (![v16 hasBTLELink] || !objc_msgSend(v16, "isPrimary") || (++self->_numBTAccessories, (isThreadAccessory & 1) != 0))
                   {
 LABEL_87:
                     if ([v16 custom1WoBLE])
@@ -763,18 +763,18 @@ LABEL_87:
                     if ([v16 supportsWoL])
                     {
                       ++self->_numWOLANAccessories;
-                      v65 = [v16 connectivityInfo];
-                      v66 = [v65 woWLANInfo];
-                      v67 = [v66 wakeType];
+                      connectivityInfo = [v16 connectivityInfo];
+                      woWLANInfo = [connectivityInfo woWLANInfo];
+                      wakeType = [woWLANInfo wakeType];
 
-                      if (v67 == 2)
+                      if (wakeType == 2)
                       {
                         v68 = &OBJC_IVAR___HMDHomeConfigurationLogEvent__numWOLANV1DarkWakeAccessories;
                       }
 
                       else
                       {
-                        if (v67 != 1)
+                        if (wakeType != 1)
                         {
                           goto LABEL_95;
                         }
@@ -786,16 +786,16 @@ LABEL_87:
                     }
 
 LABEL_95:
-                    if (v63)
+                    if (isThreadAccessory)
                     {
                       ++self->_numThreadAccessories;
-                      if (v61)
+                      if (metric_threadCapabilities)
                       {
-                        self->_numThreadAccessoryMinCapable += v61 & 1;
-                        self->_numThreadAccessorySleepCapable += (v61 >> 1) & 1;
-                        self->_numThreadAccessoryFullCapable += (v61 >> 2) & 1;
-                        self->_numThreadAccessoryRouterCapable += (v61 >> 3) & 1;
-                        v69 = (v61 >> 4) & 1;
+                        self->_numThreadAccessoryMinCapable += metric_threadCapabilities & 1;
+                        self->_numThreadAccessorySleepCapable += (metric_threadCapabilities >> 1) & 1;
+                        self->_numThreadAccessoryFullCapable += (metric_threadCapabilities >> 2) & 1;
+                        self->_numThreadAccessoryRouterCapable += (metric_threadCapabilities >> 3) & 1;
+                        v69 = (metric_threadCapabilities >> 4) & 1;
                         v70 = &OBJC_IVAR___HMDHomeConfigurationLogEvent__numThreadAccessoryBorderRouterCapable;
                       }
 
@@ -818,8 +818,8 @@ LABEL_95:
                     v126 = 0u;
                     v127 = 0u;
                     v71 = v16;
-                    v72 = [v16 services];
-                    v73 = [v72 countByEnumeratingWithState:&v126 objects:v142 count:16];
+                    services = [v16 services];
+                    v73 = [services countByEnumeratingWithState:&v126 objects:v142 count:16];
                     if (v73)
                     {
                       v74 = v73;
@@ -830,14 +830,14 @@ LABEL_95:
                         {
                           if (*v127 != v75)
                           {
-                            objc_enumerationMutation(v72);
+                            objc_enumerationMutation(services);
                           }
 
-                          v77 = [*(*(&v126 + 1) + 8 * i) type];
-                          [v20 addObject:v77];
+                          type = [*(*(&v126 + 1) + 8 * i) type];
+                          [v20 addObject:type];
                         }
 
-                        v74 = [v72 countByEnumeratingWithState:&v126 objects:v142 count:16];
+                        v74 = [services countByEnumeratingWithState:&v126 objects:v142 count:16];
                       }
 
                       while (v74);
@@ -847,7 +847,7 @@ LABEL_95:
                     v78 = [HMDMetricsUtilities primaryServiceTypeForHAPAccessory:v71];
                     if (v78)
                     {
-                      [v123 addObject:v78];
+                      [serviceTypesCopy addObject:v78];
                     }
 
                     v79 = [v71 findServiceWithServiceType:*MEMORY[0x277CD0DE8]];
@@ -865,7 +865,7 @@ LABEL_95:
                     if ([v71 supportsTargetController])
                     {
                       ++self->_numTargetControllers;
-                      if (v121 == 2)
+                      if (certificationStatus == 2)
                       {
                         ++self->_numCertifiedTargetControllers;
                       }
@@ -873,7 +873,7 @@ LABEL_95:
                       if (([v71 isPrimary] & 1) == 0)
                       {
                         ++self->_numBridgedTargetControllers;
-                        if (v121 == 2)
+                        if (certificationStatus == 2)
                         {
                           ++self->_numCertifiedBridgedTargetControllers;
                         }
@@ -888,24 +888,24 @@ LABEL_95:
                         ++self->_numCameraAccessoriesSupportRecording;
                       }
 
-                      v80 = [v71 cameraProfileSettingsManager];
-                      if ([v80 isRecordingEnabled])
+                      cameraProfileSettingsManager = [v71 cameraProfileSettingsManager];
+                      if ([cameraProfileSettingsManager isRecordingEnabled])
                       {
                         ++self->_numCameraAccessoriesRecordingEnabled;
                       }
 
-                      v81 = [v80 currentSettings];
-                      v82 = [v81 notificationSettings];
-                      v83 = [v82 isReachabilityEventNotificationEnabled];
+                      currentSettings = [cameraProfileSettingsManager currentSettings];
+                      notificationSettings = [currentSettings notificationSettings];
+                      isReachabilityEventNotificationEnabled = [notificationSettings isReachabilityEventNotificationEnabled];
 
-                      if (v83)
+                      if (isReachabilityEventNotificationEnabled)
                       {
                         ++self->_numCameraAccessoriesReachabilityNotificationEnabled;
                       }
 
-                      v84 = [v80 currentSettings];
-                      v85 = [v84 activityZones];
-                      v86 = [v85 count];
+                      currentSettings2 = [cameraProfileSettingsManager currentSettings];
+                      activityZones = [currentSettings2 activityZones];
+                      v86 = [activityZones count];
 
                       if (v86)
                       {
@@ -934,17 +934,17 @@ LABEL_141:
 
                       if (self->_isCurrentDevicePrimaryResident)
                       {
-                        v98 = [v16 siriEndpointProfile];
-                        v99 = v98;
-                        if (v98 && ([v98 siriTouchToUse] == 1 || objc_msgSend(v99, "siriListening") == 1))
+                        siriEndpointProfile = [v16 siriEndpointProfile];
+                        v99 = siriEndpointProfile;
+                        if (siriEndpointProfile && ([siriEndpointProfile siriTouchToUse] == 1 || objc_msgSend(v99, "siriListening") == 1))
                         {
                           ++self->_numEnabledSiriEndpointAccessories;
                         }
                       }
 
-                      v100 = [v16 category];
-                      v101 = [v100 categoryType];
-                      v102 = [v101 isEqualToString:*MEMORY[0x277CCE890]];
+                      category = [v16 category];
+                      categoryType = [category categoryType];
+                      v102 = [categoryType isEqualToString:*MEMORY[0x277CCE890]];
 
                       if (v102)
                       {
@@ -969,8 +969,8 @@ LABEL_141:
                         }
                       }
 
-                      v103 = [v16 services];
-                      self->_numServices += [v103 count];
+                      services2 = [v16 services];
+                      self->_numServices += [services2 count];
 
                       if (v91 != 3)
                       {
@@ -985,9 +985,9 @@ LABEL_181:
                       goto LABEL_189;
                     }
 
-                    v87 = [v16 category];
-                    v88 = [v87 categoryType];
-                    v89 = [v88 isEqualToString:*MEMORY[0x277CCE920]];
+                    category2 = [v16 category];
+                    categoryType2 = [category2 categoryType];
+                    v89 = [categoryType2 isEqualToString:*MEMORY[0x277CCE920]];
 
                     if (v89)
                     {
@@ -996,9 +996,9 @@ LABEL_181:
 
                     else
                     {
-                      v92 = [v16 category];
-                      v93 = [v92 categoryType];
-                      v94 = [v93 isEqualToString:*MEMORY[0x277CCE930]];
+                      category3 = [v16 category];
+                      categoryType3 = [category3 categoryType];
+                      v94 = [categoryType3 isEqualToString:*MEMORY[0x277CCE930]];
 
                       if (v94)
                       {
@@ -1007,9 +1007,9 @@ LABEL_181:
 
                       else
                       {
-                        v95 = [v16 category];
-                        v96 = [v95 categoryType];
-                        v97 = [v96 isEqualToString:*MEMORY[0x277CCE938]];
+                        category4 = [v16 category];
+                        categoryType4 = [category4 categoryType];
+                        v97 = [categoryType4 isEqualToString:*MEMORY[0x277CCE938]];
 
                         if (!v97)
                         {
@@ -1034,9 +1034,9 @@ LABEL_140:
               }
 
               ++self->_numCHIPAccessories;
-              v37 = [v16 firmwareUpdateProfile];
+              firmwareUpdateProfile = [v16 firmwareUpdateProfile];
 
-              if (v37)
+              if (firmwareUpdateProfile)
               {
                 ++self->_numCHIPAccessoriesFirmwareUpdateEligible;
               }
@@ -1045,8 +1045,8 @@ LABEL_140:
               v133 = 0u;
               v130 = 0u;
               v131 = 0u;
-              v38 = [v16 lightProfiles];
-              v39 = [v38 countByEnumeratingWithState:&v130 objects:v143 count:16];
+              lightProfiles = [v16 lightProfiles];
+              v39 = [lightProfiles countByEnumeratingWithState:&v130 objects:v143 count:16];
               if (!v39)
               {
 LABEL_78:
@@ -1056,7 +1056,7 @@ LABEL_78:
 
               v40 = v39;
               v119 = v16;
-              v120 = v13;
+              v120 = typesCopy;
               v41 = *v131;
               do
               {
@@ -1064,7 +1064,7 @@ LABEL_78:
                 {
                   if (*v131 != v41)
                   {
-                    objc_enumerationMutation(v38);
+                    objc_enumerationMutation(lightProfiles);
                   }
 
                   v43 = *(*(&v130 + 1) + 8 * j);
@@ -1073,16 +1073,16 @@ LABEL_78:
                     ++self->_numMatterLightProfilesWithNaturalLightingSupported;
                   }
 
-                  v44 = [MEMORY[0x277CBEAA8] date];
-                  v45 = [v44 dateByAddingTimeInterval:-86400.0];
+                  date = [MEMORY[0x277CBEAA8] date];
+                  v45 = [date dateByAddingTimeInterval:-86400.0];
 
                   if (([v43 isNaturalLightingEnabled] & 1) != 0 || (objc_msgSend(v43, "mostRecentNaturalLightingEnabledDate"), v46 = objc_claimAutoreleasedReturnValue(), v47 = objc_msgSend(v46, "compare:", v45), v46, v47 == 1))
                   {
                     ++self->_numMatterLightProfilesWithNaturalLightingEnabled;
                   }
 
-                  v48 = [v43 mostRecentNaturalLightingUsedDate];
-                  v49 = [v48 compare:v45];
+                  mostRecentNaturalLightingUsedDate = [v43 mostRecentNaturalLightingUsedDate];
+                  v49 = [mostRecentNaturalLightingUsedDate compare:v45];
 
                   if (v49 == 1)
                   {
@@ -1090,7 +1090,7 @@ LABEL_78:
                   }
                 }
 
-                v40 = [v38 countByEnumeratingWithState:&v130 objects:v143 count:16];
+                v40 = [lightProfiles countByEnumeratingWithState:&v130 objects:v143 count:16];
               }
 
               while (v40);
@@ -1101,14 +1101,14 @@ LABEL_76:
             }
 
             ++self->_numHAPAccessories;
-            v35 = [v16 firmwareUpdateProfile];
+            firmwareUpdateProfile2 = [v16 firmwareUpdateProfile];
 
-            if (v35)
+            if (firmwareUpdateProfile2)
             {
               ++self->_numHAPAccessoriesFirmwareUpdateEligible;
             }
 
-            v120 = v13;
+            v120 = typesCopy;
             if ([v16 hasIPLink] && (objc_msgSend(v16, "isPrimary") & 1) != 0)
             {
               v36 = &OBJC_IVAR___HMDHomeConfigurationLogEvent__numHAPIPAccessories;
@@ -1130,11 +1130,11 @@ LABEL_62:
             v137 = 0u;
             v134 = 0u;
             v135 = 0u;
-            v38 = [v16 lightProfiles];
-            v50 = [v38 countByEnumeratingWithState:&v134 objects:v144 count:16];
+            lightProfiles = [v16 lightProfiles];
+            v50 = [lightProfiles countByEnumeratingWithState:&v134 objects:v144 count:16];
             if (!v50)
             {
-              v20 = v13;
+              v20 = typesCopy;
               goto LABEL_78;
             }
 
@@ -1147,7 +1147,7 @@ LABEL_62:
               {
                 if (*v135 != v52)
                 {
-                  objc_enumerationMutation(v38);
+                  objc_enumerationMutation(lightProfiles);
                 }
 
                 v54 = *(*(&v134 + 1) + 8 * k);
@@ -1156,16 +1156,16 @@ LABEL_62:
                   ++self->_numLightProfilesWithNaturalLightingSupported;
                 }
 
-                v55 = [MEMORY[0x277CBEAA8] date];
-                v56 = [v55 dateByAddingTimeInterval:-86400.0];
+                date2 = [MEMORY[0x277CBEAA8] date];
+                v56 = [date2 dateByAddingTimeInterval:-86400.0];
 
                 if (([v54 isNaturalLightingEnabled] & 1) != 0 || (objc_msgSend(v54, "mostRecentNaturalLightingEnabledDate"), v57 = objc_claimAutoreleasedReturnValue(), v58 = objc_msgSend(v57, "compare:", v56), v57, v58 == 1))
                 {
                   ++self->_numLightProfilesWithNaturalLightingEnabled;
                 }
 
-                v59 = [v54 mostRecentNaturalLightingUsedDate];
-                v60 = [v59 compare:v56];
+                mostRecentNaturalLightingUsedDate2 = [v54 mostRecentNaturalLightingUsedDate];
+                v60 = [mostRecentNaturalLightingUsedDate2 compare:v56];
 
                 if (v60 == 1)
                 {
@@ -1173,21 +1173,21 @@ LABEL_62:
                 }
               }
 
-              v51 = [v38 countByEnumeratingWithState:&v134 objects:v144 count:16];
+              v51 = [lightProfiles countByEnumeratingWithState:&v134 objects:v144 count:16];
             }
 
             while (v51);
             goto LABEL_76;
           }
 
-          if (v29 == 1 && v30 == 1)
+          if (targetNetworkProtectionMode == 1 && currentNetworkProtectionMode == 1)
           {
 
             v31 = 432;
             goto LABEL_174;
           }
 
-          if (v29 == 3 && v30 == 3)
+          if (targetNetworkProtectionMode == 3 && currentNetworkProtectionMode == 3)
           {
 
             v31 = 424;
@@ -1202,10 +1202,10 @@ LABEL_62:
 
     else
     {
-      v32 = [v16 category];
-      v33 = [v32 isWiFiRouterAccessoryCategory];
+      category5 = [v16 category];
+      isWiFiRouterAccessoryCategory = [category5 isWiFiRouterAccessoryCategory];
 
-      if (v33)
+      if (isWiFiRouterAccessoryCategory)
       {
         self->_networkProtectionStatus = 1;
         if (!v16)
@@ -1226,18 +1226,18 @@ LABEL_62:
 LABEL_175:
   if (v124)
   {
-    v106 = [v124 category];
-    v107 = [v106 categoryType];
+    category6 = [v124 category];
+    categoryType5 = [category6 categoryType];
     v108 = *MEMORY[0x277CCE870];
     v109 = HMFEqualObjects();
 
     if (v109)
     {
       ++self->_numAppleTVAccessories;
-      v110 = [v124 capabilities];
-      v111 = [v110 supportsThreadBorderRouter];
+      capabilities = [v124 capabilities];
+      supportsThreadBorderRouter = [capabilities supportsThreadBorderRouter];
 
-      if ((v111 & 1) == 0)
+      if ((supportsThreadBorderRouter & 1) == 0)
       {
         goto LABEL_185;
       }
@@ -1259,10 +1259,10 @@ LABEL_175:
 LABEL_185:
     if ([v124 isCurrentAccessory])
     {
-      v113 = [v124 fallbackMediaUserType];
-      if ((v113 - 1) < 3)
+      fallbackMediaUserType = [v124 fallbackMediaUserType];
+      if ((fallbackMediaUserType - 1) < 3)
       {
-        self->_currentMediaAccessoryFallbackMediaUserType = v113;
+        self->_currentMediaAccessoryFallbackMediaUserType = fallbackMediaUserType;
       }
     }
 
@@ -1277,7 +1277,7 @@ LABEL_185:
   }
 
   v115 = objc_autoreleasePoolPush();
-  v116 = self;
+  selfCopy = self;
   v117 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v117, OS_LOG_TYPE_ERROR))
   {
@@ -1295,29 +1295,29 @@ LABEL_190:
   v114 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHomeConfigurationLogEvent)initWithDataSource:(id)a3 home:(id)a4 configuredWidgetsCount:(int64_t)a5
+- (HMDHomeConfigurationLogEvent)initWithDataSource:(id)source home:(id)home configuredWidgetsCount:(int64_t)count
 {
   v219 = *MEMORY[0x277D85DE8];
-  v137 = a3;
-  v138 = a4;
-  v8 = [v137 uuid];
+  sourceCopy = source;
+  homeCopy = home;
+  uuid = [sourceCopy uuid];
   v196.receiver = self;
   v196.super_class = HMDHomeConfigurationLogEvent;
-  v9 = [(HMMHomeLogEvent *)&v196 initWithHomeUUID:v8];
+  v9 = [(HMMHomeLogEvent *)&v196 initWithHomeUUID:uuid];
 
   if (v9)
   {
-    v9->_numConfiguredWidgets = a5;
+    v9->_numConfiguredWidgets = count;
     v151 = [MEMORY[0x277CBEB58] set];
     v149 = [MEMORY[0x277CBEB58] set];
     v9->_isCurrentDeviceResidentEnabled = 0;
-    v10 = [v137 enabledResidents];
-    v9->_numResidentsEnabled = [v10 count];
+    enabledResidents = [sourceCopy enabledResidents];
+    v9->_numResidentsEnabled = [enabledResidents count];
     v192 = 0u;
     v193 = 0u;
     v194 = 0u;
     v195 = 0u;
-    obj = v10;
+    obj = enabledResidents;
     v11 = [obj countByEnumeratingWithState:&v192 objects:v217 count:16];
     if (v11)
     {
@@ -1345,50 +1345,50 @@ LABEL_190:
       while (v11);
     }
 
-    v9->_isResidentAvailable = [v138 _residentDeviceAvailable];
-    v9->_isResidentFirstEnabled = [v137 isResidentFirstAccessoryCommunicationEnabled];
-    v15 = [v138 residentDeviceManager];
-    v9->_isResidentElectionV2Enabled = [v15 isResidentElectionV2Enabled];
+    v9->_isResidentAvailable = [homeCopy _residentDeviceAvailable];
+    v9->_isResidentFirstEnabled = [sourceCopy isResidentFirstAccessoryCommunicationEnabled];
+    residentDeviceManager = [homeCopy residentDeviceManager];
+    v9->_isResidentElectionV2Enabled = [residentDeviceManager isResidentElectionV2Enabled];
 
-    v136 = [v137 currentDevice];
-    v16 = [v136 capabilities];
-    v9->_isCurrentDeviceResidentCapable = [v16 isResidentCapable];
+    currentDevice = [sourceCopy currentDevice];
+    capabilities = [currentDevice capabilities];
+    v9->_isCurrentDeviceResidentCapable = [capabilities isResidentCapable];
 
-    v17 = [v138 primaryResident];
-    v18 = [v17 device];
-    v9->_isCurrentDevicePrimaryResident = [v18 isEqual:v136];
+    primaryResident = [homeCopy primaryResident];
+    device = [primaryResident device];
+    v9->_isCurrentDevicePrimaryResident = [device isEqual:currentDevice];
 
-    v9->_isCurrentDeviceLocalToHome = [v138 homeLocation] == 1;
-    v9->_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = [v138 isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
-    v19 = [v138 availableBorderRouters];
-    v9->_numThreadBorderRouters = [v19 unsignedIntegerValue];
+    v9->_isCurrentDeviceLocalToHome = [homeCopy homeLocation] == 1;
+    v9->_isAutomaticThirdPartyAccessorySoftwareUpdateEnabled = [homeCopy isAutomaticThirdPartyAccessorySoftwareUpdateEnabled];
+    availableBorderRouters = [homeCopy availableBorderRouters];
+    v9->_numThreadBorderRouters = [availableBorderRouters unsignedIntegerValue];
 
-    v20 = [v137 triggerOwnedActionSets];
-    v9->_numTriggerOwnedConfiguredScenes = [v20 count];
+    triggerOwnedActionSets = [sourceCopy triggerOwnedActionSets];
+    v9->_numTriggerOwnedConfiguredScenes = [triggerOwnedActionSets count];
 
-    v21 = [v137 actionSets];
-    v9->_numScenes = [v21 count];
+    actionSets = [sourceCopy actionSets];
+    v9->_numScenes = [actionSets count];
 
-    v22 = [v138 rooms];
-    v9->_numRooms = [v22 count] + 1;
+    rooms = [homeCopy rooms];
+    v9->_numRooms = [rooms count] + 1;
 
-    v23 = [v138 zones];
-    v9->_numZones = [v23 count];
+    zones = [homeCopy zones];
+    v9->_numZones = [zones count];
 
-    v24 = [v138 serviceGroups];
-    v9->_numAccessoryServiceGroups = [v24 count];
+    serviceGroups = [homeCopy serviceGroups];
+    v9->_numAccessoryServiceGroups = [serviceGroups count];
 
-    v25 = [v138 availableBSPsCount];
+    availableBSPsCount = [homeCopy availableBSPsCount];
     numBSPs = v9->_numBSPs;
-    v9->_numBSPs = v25;
+    v9->_numBSPs = availableBSPsCount;
 
-    v154 = [v138 isOwnerUser];
-    if ([v138 networkRouterSupport])
+    isOwnerUser = [homeCopy isOwnerUser];
+    if ([homeCopy networkRouterSupport])
     {
-      v27 = [v138 protectionMode];
-      v147 = v27 == 1;
-      v28 = v154;
-      if (v27 != 1)
+      protectionMode = [homeCopy protectionMode];
+      v147 = protectionMode == 1;
+      v28 = isOwnerUser;
+      if (protectionMode != 1)
       {
         v28 = 0;
       }
@@ -1410,8 +1410,8 @@ LABEL_190:
     v189 = 0u;
     v190 = 0u;
     v191 = 0u;
-    v29 = [v137 users];
-    v30 = [v29 countByEnumeratingWithState:&v188 objects:v216 count:16];
+    users = [sourceCopy users];
+    v30 = [users countByEnumeratingWithState:&v188 objects:v216 count:16];
     if (v30)
     {
       v31 = *v189;
@@ -1421,23 +1421,23 @@ LABEL_190:
         {
           if (*v189 != v31)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(users);
           }
 
           v33 = *(*(&v188 + 1) + 8 * j);
           if (([v33 isRemoteGateway] & 1) == 0)
           {
-            v34 = [v33 privilege];
-            if (v34 > 2)
+            privilege = [v33 privilege];
+            if (privilege > 2)
             {
-              if (v34 == 3)
+              if (privilege == 3)
               {
                 v36 = 8;
               }
 
               else
               {
-                if (v34 != 4)
+                if (privilege != 4)
                 {
                   goto LABEL_30;
                 }
@@ -1450,7 +1450,7 @@ LABEL_190:
 
             else
             {
-              if (v34 == 1)
+              if (privilege == 1)
               {
                 v35 = 2;
 LABEL_33:
@@ -1458,7 +1458,7 @@ LABEL_33:
                 goto LABEL_37;
               }
 
-              if (v34 == 2)
+              if (privilege == 2)
               {
                 v35 = 4;
                 goto LABEL_33;
@@ -1466,13 +1466,13 @@ LABEL_33:
 
 LABEL_30:
               v9->_userPrivilegeBitMask |= 1uLL;
-              if ((v34 - 3) > 1)
+              if ((privilege - 3) > 1)
               {
 LABEL_37:
                 ++v9->_numUsers;
-                v37 = [v33 accessCode];
+                accessCode = [v33 accessCode];
 
-                if (v37)
+                if (accessCode)
                 {
                   ++v9->_ownerPerspectiveNumUsersWithAccessCode;
                 }
@@ -1486,19 +1486,19 @@ LABEL_37:
           }
         }
 
-        v30 = [v29 countByEnumeratingWithState:&v188 objects:v216 count:16];
+        v30 = [users countByEnumeratingWithState:&v188 objects:v216 count:16];
       }
 
       while (v30);
     }
 
-    v38 = [v137 users];
-    v145 = [MEMORY[0x277CBEB18] array];
+    users2 = [sourceCopy users];
+    array = [MEMORY[0x277CBEB18] array];
     v206 = 0u;
     v207 = 0u;
     v204 = 0u;
     v205 = 0u;
-    v139 = v38;
+    v139 = users2;
     v39 = [v139 countByEnumeratingWithState:&v204 objects:v218 count:16];
     if (v39)
     {
@@ -1515,14 +1515,14 @@ LABEL_37:
           v42 = *(*(&v204 + 1) + 8 * k);
           v43 = objc_alloc_init(HMDAnalyticsMultiUserSettings);
           -[HMDAnalyticsMultiUserSettings setIsOwner:](v43, "setIsOwner:", [v42 isCurrentUser]);
-          v44 = [MEMORY[0x277CBEB18] array];
-          [(HMDAnalyticsMultiUserSettings *)v43 setMultiUserSettingsValuesByKeyPaths:v44];
+          array2 = [MEMORY[0x277CBEB18] array];
+          [(HMDAnalyticsMultiUserSettings *)v43 setMultiUserSettingsValuesByKeyPaths:array2];
 
-          v45 = [v42 privateSettingValuesByKeyPath];
-          v46 = [v45 mutableCopy];
+          privateSettingValuesByKeyPath = [v42 privateSettingValuesByKeyPath];
+          v46 = [privateSettingValuesByKeyPath mutableCopy];
 
-          v47 = [v42 sharedSettingValuesByKeyPath];
-          [v46 addEntriesFromDictionary:v47];
+          sharedSettingValuesByKeyPath = [v42 sharedSettingValuesByKeyPath];
+          [v46 addEntriesFromDictionary:sharedSettingValuesByKeyPath];
 
           if ([v46 count])
           {
@@ -1531,7 +1531,7 @@ LABEL_37:
             v200 = 0x3032000000;
             v201 = __Block_byref_object_copy__66458;
             v202 = __Block_byref_object_dispose__66459;
-            v203 = [MEMORY[0x277CBEB18] array];
+            array3 = [MEMORY[0x277CBEB18] array];
             v197[0] = MEMORY[0x277D85DD0];
             v197[1] = 3221225472;
             v197[2] = ___legacyMultiUserSettings_block_invoke;
@@ -1541,7 +1541,7 @@ LABEL_37:
             v48 = [v199[5] copy];
             [(HMDAnalyticsMultiUserSettings *)v43 setMultiUserSettingsValuesByKeyPaths:v48];
 
-            [v145 addObject:v43];
+            [array addObject:v43];
             _Block_object_dispose(&v198, 8);
           }
         }
@@ -1552,22 +1552,22 @@ LABEL_37:
       while (v39);
     }
 
-    v49 = [v145 copy];
+    v49 = [array copy];
     multiUserSettings = v9->_multiUserSettings;
     v9->_multiUserSettings = v49;
 
-    v9->_ownerUser = [v137 isOwnerUser];
-    v51 = [v137 currentUser];
-    v9->_currentUserPrivilege = [v51 privilege];
+    v9->_ownerUser = [sourceCopy isOwnerUser];
+    currentUser = [sourceCopy currentUser];
+    v9->_currentUserPrivilege = [currentUser privilege];
 
-    v9->_accessToHomeAllowed = [v137 isAccessToHomeAllowed];
-    v52 = [v137 accessories];
-    v9->_numAccessories = [v52 count];
+    v9->_accessToHomeAllowed = [sourceCopy isAccessToHomeAllowed];
+    accessories = [sourceCopy accessories];
+    v9->_numAccessories = [accessories count];
     v184 = 0u;
     v185 = 0u;
     v186 = 0u;
     v187 = 0u;
-    v146 = v52;
+    v146 = accessories;
     v53 = [v146 countByEnumeratingWithState:&v184 objects:v215 count:16];
     if (v53)
     {
@@ -1581,7 +1581,7 @@ LABEL_37:
             objc_enumerationMutation(v146);
           }
 
-          [(HMDHomeConfigurationLogEvent *)v9 updateConfigWithAccessory:*(*(&v184 + 1) + 8 * m) reportNetworkProtectionMetrics:v154 networkProtectionEnabled:v147 hapServiceTypes:v151 primaryHAPServiceTypes:v149];
+          [(HMDHomeConfigurationLogEvent *)v9 updateConfigWithAccessory:*(*(&v184 + 1) + 8 * m) reportNetworkProtectionMetrics:isOwnerUser networkProtectionEnabled:v147 hapServiceTypes:v151 primaryHAPServiceTypes:v149];
         }
 
         v53 = [v146 countByEnumeratingWithState:&v184 objects:v215 count:16];
@@ -1658,41 +1658,41 @@ LABEL_37:
     hapServices = v9->_hapServices;
     v9->_hapServices = v65;
 
-    v67 = [v137 accessories];
-    v68 = [v67 na_filter:&__block_literal_global_66462];
+    accessories2 = [sourceCopy accessories];
+    v68 = [accessories2 na_filter:&__block_literal_global_66462];
     v9->_numHomePodMinis = [v68 count];
 
-    v69 = [v137 accessories];
-    v70 = [v69 na_filter:&__block_literal_global_22_66463];
+    accessories3 = [sourceCopy accessories];
+    v70 = [accessories3 na_filter:&__block_literal_global_22_66463];
     v9->_numHomePod2ndGen = [v70 count];
 
-    v71 = [v137 accessories];
-    v72 = [v71 na_filter:&__block_literal_global_24_66464];
+    accessories4 = [sourceCopy accessories];
+    v72 = [accessories4 na_filter:&__block_literal_global_24_66464];
     v9->_numHomePods = [v72 count];
 
-    v73 = [v138 mediaSystems];
-    v9->_numMediaSystems = [v73 count];
+    mediaSystems = [homeCopy mediaSystems];
+    v9->_numMediaSystems = [mediaSystems count];
 
-    v74 = [v138 mediaSystems];
-    v75 = [v74 na_filter:&__block_literal_global_27_66465];
+    mediaSystems2 = [homeCopy mediaSystems];
+    v75 = [mediaSystems2 na_filter:&__block_literal_global_27_66465];
     v9->_numHomePodMiniStereoPairs = [v75 count];
 
-    v76 = [v138 mediaSystems];
-    v77 = [v76 na_filter:&__block_literal_global_31_66466];
+    mediaSystems3 = [homeCopy mediaSystems];
+    v77 = [mediaSystems3 na_filter:&__block_literal_global_31_66466];
     v9->_numHomePod2ndGenStereoPairs = [v77 count];
 
-    v78 = [v138 mediaSystems];
-    v79 = [v78 na_filter:&__block_literal_global_35_66467];
+    mediaSystems4 = [homeCopy mediaSystems];
+    v79 = [mediaSystems4 na_filter:&__block_literal_global_35_66467];
     v9->_numHomePodStereoPairs = [v79 count];
 
-    v80 = [v137 triggers];
-    v9->_numTriggers += [v80 count];
-    v133 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v80, "count")}];
+    triggers = [sourceCopy triggers];
+    v9->_numTriggers += [triggers count];
+    v133 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(triggers, "count")}];
     v174 = 0u;
     v175 = 0u;
     v172 = 0u;
     v173 = 0u;
-    v134 = v80;
+    v134 = triggers;
     v140 = [v134 countByEnumeratingWithState:&v172 objects:v212 count:16];
     if (v140)
     {
@@ -1745,12 +1745,12 @@ LABEL_37:
             ++v9->_numTimerTriggers;
           }
 
-          v143 = [v83 actionSets];
+          actionSets2 = [v83 actionSets];
           v170 = 0u;
           v171 = 0u;
           v168 = 0u;
           v169 = 0u;
-          v88 = [v143 countByEnumeratingWithState:&v168 objects:v211 count:16];
+          v88 = [actionSets2 countByEnumeratingWithState:&v168 objects:v211 count:16];
           if (v88)
           {
             v152 = *v169;
@@ -1760,7 +1760,7 @@ LABEL_37:
               {
                 if (*v169 != v152)
                 {
-                  objc_enumerationMutation(v143);
+                  objc_enumerationMutation(actionSets2);
                 }
 
                 v90 = *(*(&v168 + 1) + 8 * jj);
@@ -1768,8 +1768,8 @@ LABEL_37:
                 v165 = 0u;
                 v166 = 0u;
                 v167 = 0u;
-                v91 = [v90 actions];
-                v92 = [v91 countByEnumeratingWithState:&v164 objects:v210 count:16];
+                actions = [v90 actions];
+                v92 = [actions countByEnumeratingWithState:&v164 objects:v210 count:16];
                 if (v92)
                 {
                   v93 = *v165;
@@ -1779,7 +1779,7 @@ LABEL_37:
                     {
                       if (*v165 != v93)
                       {
-                        objc_enumerationMutation(v91);
+                        objc_enumerationMutation(actions);
                       }
 
                       v95 = *(*(&v164 + 1) + 8 * kk);
@@ -1790,14 +1790,14 @@ LABEL_37:
                       }
                     }
 
-                    v92 = [v91 countByEnumeratingWithState:&v164 objects:v210 count:16];
+                    v92 = [actions countByEnumeratingWithState:&v164 objects:v210 count:16];
                   }
 
                   while (v92);
                 }
               }
 
-              v88 = [v143 countByEnumeratingWithState:&v168 objects:v211 count:16];
+              v88 = [actionSets2 countByEnumeratingWithState:&v168 objects:v211 count:16];
             }
 
             while (v88);
@@ -1817,12 +1817,12 @@ LABEL_37:
     eventTriggers = v9->_eventTriggers;
     v9->_eventTriggers = v96;
 
-    v144 = [v137 actionSets];
+    actionSets3 = [sourceCopy actionSets];
     v162 = 0u;
     v163 = 0u;
     v160 = 0u;
     v161 = 0u;
-    v98 = [v144 countByEnumeratingWithState:&v160 objects:v209 count:16];
+    v98 = [actionSets3 countByEnumeratingWithState:&v160 objects:v209 count:16];
     if (v98)
     {
       v99 = *v161;
@@ -1832,11 +1832,11 @@ LABEL_37:
         {
           if (*v161 != v99)
           {
-            objc_enumerationMutation(v144);
+            objc_enumerationMutation(actionSets3);
           }
 
-          v101 = [*(*(&v160 + 1) + 8 * mm) actions];
-          v102 = [v101 count];
+          actions2 = [*(*(&v160 + 1) + 8 * mm) actions];
+          v102 = [actions2 count];
 
           if (v102)
           {
@@ -1844,35 +1844,35 @@ LABEL_37:
           }
         }
 
-        v98 = [v144 countByEnumeratingWithState:&v160 objects:v209 count:16];
+        v98 = [actionSets3 countByEnumeratingWithState:&v160 objects:v209 count:16];
       }
 
       while (v98);
     }
 
     [(HMDHomeConfigurationLogEvent *)v9 setHomeConfigurationBitMasks];
-    v103 = [v138 creationDate];
-    v9->_homeCreationCohortWeek = [(HMDHomeConfigurationLogEvent *)v9 weeksSinceDate:v103 trimAtMaximumValue:13];
+    creationDate = [homeCopy creationDate];
+    v9->_homeCreationCohortWeek = [(HMDHomeConfigurationLogEvent *)v9 weeksSinceDate:creationDate trimAtMaximumValue:13];
 
-    v104 = [v138 firstHAPAccessoryAddedDate];
-    v9->_firstHAPAccessoryAddedCohortWeek = [(HMDHomeConfigurationLogEvent *)v9 weeksSinceDate:v104 trimAtMaximumValue:13];
+    firstHAPAccessoryAddedDate = [homeCopy firstHAPAccessoryAddedDate];
+    v9->_firstHAPAccessoryAddedCohortWeek = [(HMDHomeConfigurationLogEvent *)v9 weeksSinceDate:firstHAPAccessoryAddedDate trimAtMaximumValue:13];
 
-    v105 = [v138 accessoriesWithWalletKeySupport];
-    v9->_numAccessoriesWithWalletKeySupported = [v105 count];
+    accessoriesWithWalletKeySupport = [homeCopy accessoriesWithWalletKeySupport];
+    v9->_numAccessoriesWithWalletKeySupported = [accessoriesWithWalletKeySupport count];
 
-    v106 = [v138 walletKeyManager];
-    v9->_hasHomeKeyInWallet = [v106 hasHomeKeyInWallet];
+    walletKeyManager = [homeCopy walletKeyManager];
+    v9->_hasHomeKeyInWallet = [walletKeyManager hasHomeKeyInWallet];
 
-    v9->_isSmokeAlarmEnabled = [v137 isSmokeAlarmEnabled];
-    v9->_isSiriPhraseOptionsHeySiriEnabled = [v137 isSiriPhraseOptionsHeySiriEnabled];
-    v9->_isSiriPhraseOptionsJustSiriEnabled = [v137 isSiriPhraseOptionsJustSiriEnabled];
+    v9->_isSmokeAlarmEnabled = [sourceCopy isSmokeAlarmEnabled];
+    v9->_isSiriPhraseOptionsHeySiriEnabled = [sourceCopy isSiriPhraseOptionsHeySiriEnabled];
+    v9->_isSiriPhraseOptionsJustSiriEnabled = [sourceCopy isSiriPhraseOptionsJustSiriEnabled];
     v156 = 0u;
     v157 = 0u;
     v158 = 0u;
     v159 = 0u;
-    v141 = [v137 appleMediaAccessories];
+    appleMediaAccessories = [sourceCopy appleMediaAccessories];
     v107 = 0;
-    v108 = [v141 countByEnumeratingWithState:&v156 objects:v208 count:16];
+    v108 = [appleMediaAccessories countByEnumeratingWithState:&v156 objects:v208 count:16];
     if (v108)
     {
       v153 = 0;
@@ -1883,31 +1883,31 @@ LABEL_37:
         {
           if (*v157 != v109)
           {
-            objc_enumerationMutation(v141);
+            objc_enumerationMutation(appleMediaAccessories);
           }
 
           v111 = *(*(&v156 + 1) + 8 * nn);
           if (!v107 || ([*(*(&v156 + 1) + 8 * nn) softwareVersion], (v112 = objc_claimAutoreleasedReturnValue()) != 0) && (objc_msgSend(v111, "softwareVersion"), v113 = objc_claimAutoreleasedReturnValue(), v114 = objc_msgSend(v107, "isGreaterThanVersion:", v113), v113, v112, v114))
           {
-            v115 = [v111 softwareVersion];
+            softwareVersion = [v111 softwareVersion];
 
-            v107 = v115;
+            v107 = softwareVersion;
           }
 
-          v116 = [v111 device];
-          v117 = [v138 primaryResident];
-          v118 = [v117 device];
-          v119 = [v116 isEqual:v118];
+          device2 = [v111 device];
+          primaryResident2 = [homeCopy primaryResident];
+          device3 = [primaryResident2 device];
+          v119 = [device2 isEqual:device3];
 
           if (v119)
           {
-            v120 = [v111 softwareVersion];
+            softwareVersion2 = [v111 softwareVersion];
 
-            v153 = v120;
+            v153 = softwareVersion2;
           }
         }
 
-        v108 = [v141 countByEnumeratingWithState:&v156 objects:v208 count:16];
+        v108 = [appleMediaAccessories countByEnumeratingWithState:&v156 objects:v208 count:16];
       }
 
       while (v108);
@@ -1918,21 +1918,21 @@ LABEL_37:
       v153 = 0;
     }
 
-    v121 = [v107 shortVersionString];
+    shortVersionString = [v107 shortVersionString];
     oldestTVOSVersionInHome = v9->_oldestTVOSVersionInHome;
-    v9->_oldestTVOSVersionInHome = v121;
+    v9->_oldestTVOSVersionInHome = shortVersionString;
 
-    v123 = [v107 buildVersion];
+    buildVersion = [v107 buildVersion];
     oldestTVOSBuildInHome = v9->_oldestTVOSBuildInHome;
-    v9->_oldestTVOSBuildInHome = v123;
+    v9->_oldestTVOSBuildInHome = buildVersion;
 
-    v125 = [v153 shortVersionString];
+    shortVersionString2 = [v153 shortVersionString];
     primaryResidentVersionInHome = v9->_primaryResidentVersionInHome;
-    v9->_primaryResidentVersionInHome = v125;
+    v9->_primaryResidentVersionInHome = shortVersionString2;
 
-    v127 = [v153 buildVersion];
+    buildVersion2 = [v153 buildVersion];
     primaryResidentBuildInHome = v9->_primaryResidentBuildInHome;
-    v9->_primaryResidentBuildInHome = v127;
+    v9->_primaryResidentBuildInHome = buildVersion2;
 
     v129 = v9;
   }
@@ -2085,9 +2085,9 @@ BOOL __79__HMDHomeConfigurationLogEvent_initWithDataSource_home_configuredWidget
   return v5 == 2;
 }
 
-- (int64_t)weeksSinceDate:(id)a3 trimAtMaximumValue:(unint64_t)a4
+- (int64_t)weeksSinceDate:(id)date trimAtMaximumValue:(unint64_t)value
 {
-  v5 = [(HMDHomeConfigurationLogEvent *)self daysSinceDate:a3 trimAtMaximumValue:0];
+  v5 = [(HMDHomeConfigurationLogEvent *)self daysSinceDate:date trimAtMaximumValue:0];
   if ((v5 & 0x8000000000000000) != 0)
   {
     return -1;
@@ -2103,19 +2103,19 @@ BOOL __79__HMDHomeConfigurationLogEvent_initWithDataSource_home_configuredWidget
     v6 = 0;
   }
 
-  if (v6 >= a4)
+  if (v6 >= value)
   {
-    v8 = a4;
+    valueCopy = value;
   }
 
   else
   {
-    v8 = v6;
+    valueCopy = v6;
   }
 
-  if (a4)
+  if (value)
   {
-    return v8;
+    return valueCopy;
   }
 
   else
@@ -2124,17 +2124,17 @@ BOOL __79__HMDHomeConfigurationLogEvent_initWithDataSource_home_configuredWidget
   }
 }
 
-- (int64_t)daysSinceDate:(id)a3 trimAtMaximumValue:(unint64_t)a4
+- (int64_t)daysSinceDate:(id)date trimAtMaximumValue:(unint64_t)value
 {
-  if (!a3)
+  if (!date)
   {
     return -1;
   }
 
   v5 = MEMORY[0x277CBEAA8];
-  v6 = a3;
+  dateCopy = date;
   v7 = [v5 now];
-  [v7 timeIntervalSinceDate:v6];
+  [v7 timeIntervalSinceDate:dateCopy];
   v9 = v8;
 
   v10 = v9 / 0x15180uLL;
@@ -2143,19 +2143,19 @@ BOOL __79__HMDHomeConfigurationLogEvent_initWithDataSource_home_configuredWidget
     v10 = -1;
   }
 
-  if (v10 >= a4)
+  if (v10 >= value)
   {
-    v11 = a4;
+    valueCopy = value;
   }
 
   else
   {
-    v11 = v10;
+    valueCopy = v10;
   }
 
-  if (a4)
+  if (value)
   {
-    return v11;
+    return valueCopy;
   }
 
   else

@@ -1,53 +1,53 @@
 @interface PHAWallpaperSuggestionRefreshSession
 + (id)lastGalleryRefreshDate;
-+ (void)refreshPosterConfigurationWithPosterService:(id)a3 retryCount:(int64_t)a4 configuration:(id)a5 sessionInfo:(id)a6 log:(id)a7 completion:(id)a8;
-+ (void)saveLastGalleryRefreshDate:(id)a3 loggingConnection:(id)a4;
-- (BOOL)_prepareWithError:(id *)a3;
-- (BOOL)prepareWithError:(id *)a3;
-- (BOOL)reloadWallpaperSuggestionsForUUIDs:(id)a3 progress:(id)a4 error:(id *)a5;
-- (BOOL)saveMessagesBackdropPreviewResourcesForAsset:(id)a3 atURL:(id)a4 withClassification:(unint64_t)a5 error:(id *)a6;
-- (BOOL)saveOnboardingPreviewSegmentationResourcesForAsset:(id)a3 atURL:(id)a4 withClassification:(unint64_t)a5 style:(id)a6 enableSpatialPhoto:(BOOL)a7 error:(id *)a8;
-- (BOOL)savePreviewSegmentationResourcesForAsset:(id)a3 atURL:(id)a4 withClassification:(unint64_t)a5 styleCategory:(id)a6 enableSettlingEffect:(BOOL)a7 enableSpatialPhoto:(BOOL)a8 error:(id *)a9;
-- (BOOL)saveSegmentationResourcesForAsset:(id)a3 atURL:(id)a4 withOptions:(id)a5 classification:(unint64_t)a6 error:(id *)a7;
-- (BOOL)saveShuffleSegmentationResourcesForAsset:(id)a3 atURL:(id)a4 withClassification:(unint64_t)a5 style:(id)a6 enableSpatialPhoto:(BOOL)a7 error:(id *)a8;
-- (PHAWallpaperSuggestionRefreshSession)initWithGraphManager:(id)a3;
-- (id)consolidatedShuffleConfigurationFromPosterConfigurations:(id)a3;
-- (id)createAndExportMediaForSuggestionLocalIdentifiers:(id)a3 editConfiguration:(id)a4 toURL:(id)a5 error:(id *)a6;
-- (id)currentlyFeaturedSuggestionUUIDsForTop:(BOOL)a3;
-- (id)featuredPhotoDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)a3 count:(unint64_t)a4;
-- (id)fetchSuggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:(id)a3;
-- (id)keyAssetBySuggestionUUIDFromSuggestions:(id)a3;
-- (id)posterDescriptorOfType:(int64_t)a3 withSuggestion:(id)a4 assetBySuggestionUUID:(id)a5;
-- (id)randomizeSuggestions:(id)a3;
-- (id)randomizedWallpaperSuggesstionWithSubtype:(unsigned __int16)a3 suggestionUUIDsToAvoid:(id)a4;
-- (id)settlingEffectDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)a3;
-- (id)spatialPhotoDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)a3;
-- (id)suggestionUUIDsForPosterDescriptors:(id)a3;
-- (id)suggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:(id)a3;
-- (id)updateIfNeededPosterDescriptors:(id)a3 fromCurrentPosterDescriptors:(id)a4 partialErrors:(id *)a5 progressReporter:(id)a6;
-- (id)updatedPosterDescriptorsFromSuggestions:(id)a3;
-- (id)uuidsOfSuggestions:(id)a3;
++ (void)refreshPosterConfigurationWithPosterService:(id)service retryCount:(int64_t)count configuration:(id)configuration sessionInfo:(id)info log:(id)log completion:(id)completion;
++ (void)saveLastGalleryRefreshDate:(id)date loggingConnection:(id)connection;
+- (BOOL)_prepareWithError:(id *)error;
+- (BOOL)prepareWithError:(id *)error;
+- (BOOL)reloadWallpaperSuggestionsForUUIDs:(id)ds progress:(id)progress error:(id *)error;
+- (BOOL)saveMessagesBackdropPreviewResourcesForAsset:(id)asset atURL:(id)l withClassification:(unint64_t)classification error:(id *)error;
+- (BOOL)saveOnboardingPreviewSegmentationResourcesForAsset:(id)asset atURL:(id)l withClassification:(unint64_t)classification style:(id)style enableSpatialPhoto:(BOOL)photo error:(id *)error;
+- (BOOL)savePreviewSegmentationResourcesForAsset:(id)asset atURL:(id)l withClassification:(unint64_t)classification styleCategory:(id)category enableSettlingEffect:(BOOL)effect enableSpatialPhoto:(BOOL)photo error:(id *)error;
+- (BOOL)saveSegmentationResourcesForAsset:(id)asset atURL:(id)l withOptions:(id)options classification:(unint64_t)classification error:(id *)error;
+- (BOOL)saveShuffleSegmentationResourcesForAsset:(id)asset atURL:(id)l withClassification:(unint64_t)classification style:(id)style enableSpatialPhoto:(BOOL)photo error:(id *)error;
+- (PHAWallpaperSuggestionRefreshSession)initWithGraphManager:(id)manager;
+- (id)consolidatedShuffleConfigurationFromPosterConfigurations:(id)configurations;
+- (id)createAndExportMediaForSuggestionLocalIdentifiers:(id)identifiers editConfiguration:(id)configuration toURL:(id)l error:(id *)error;
+- (id)currentlyFeaturedSuggestionUUIDsForTop:(BOOL)top;
+- (id)featuredPhotoDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)avoid count:(unint64_t)count;
+- (id)fetchSuggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:(id)avoid;
+- (id)keyAssetBySuggestionUUIDFromSuggestions:(id)suggestions;
+- (id)posterDescriptorOfType:(int64_t)type withSuggestion:(id)suggestion assetBySuggestionUUID:(id)d;
+- (id)randomizeSuggestions:(id)suggestions;
+- (id)randomizedWallpaperSuggesstionWithSubtype:(unsigned __int16)subtype suggestionUUIDsToAvoid:(id)avoid;
+- (id)settlingEffectDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)avoid;
+- (id)spatialPhotoDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)avoid;
+- (id)suggestionUUIDsForPosterDescriptors:(id)descriptors;
+- (id)suggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:(id)avoid;
+- (id)updateIfNeededPosterDescriptors:(id)descriptors fromCurrentPosterDescriptors:(id)posterDescriptors partialErrors:(id *)errors progressReporter:(id)reporter;
+- (id)updatedPosterDescriptorsFromSuggestions:(id)suggestions;
+- (id)uuidsOfSuggestions:(id)suggestions;
 - (void)_cleanup;
-- (void)_removeIfNeededFeaturedContent:(id)a3 withCompletion:(id)a4;
+- (void)_removeIfNeededFeaturedContent:(id)content withCompletion:(id)completion;
 - (void)cleanup;
 - (void)dealloc;
-- (void)enumerateRefreshableShufflePosterConfigurationsIn:(id)a3 usingBlock:(id)a4;
-- (void)refreshAmbientDescriptorsWithProgressReporter:(id)a3 completion:(id)a4;
-- (void)refreshPosterConfigurationsForNightlyRefresh:(BOOL)a3 progressReporter:(id)a4 passingFilter:(id)a5 withCompletion:(id)a6;
-- (void)refreshPosterDescriptorsWithProgressReporter:(id)a3 completion:(id)a4;
+- (void)enumerateRefreshableShufflePosterConfigurationsIn:(id)in usingBlock:(id)block;
+- (void)refreshAmbientDescriptorsWithProgressReporter:(id)reporter completion:(id)completion;
+- (void)refreshPosterConfigurationsForNightlyRefresh:(BOOL)refresh progressReporter:(id)reporter passingFilter:(id)filter withCompletion:(id)completion;
+- (void)refreshPosterDescriptorsWithProgressReporter:(id)reporter completion:(id)completion;
 - (void)sendHasSmartShuffleWallpaperBiomeEvent;
-- (void)updateSuggestionFeaturedStateWithNewSuggestionUUIDs:(id)a3 oldSuggestionUUIDs:(id)a4;
+- (void)updateSuggestionFeaturedStateWithNewSuggestionUUIDs:(id)ds oldSuggestionUUIDs:(id)iDs;
 @end
 
 @implementation PHAWallpaperSuggestionRefreshSession
 
-- (void)refreshAmbientDescriptorsWithProgressReporter:(id)a3 completion:(id)a4
+- (void)refreshAmbientDescriptorsWithProgressReporter:(id)reporter completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  reporterCopy = reporter;
+  completionCopy = completion;
   if (PNStandbyModeAvailable())
   {
-    v8 = v6;
+    v8 = reporterCopy;
     v20 = 0;
     v21 = &v20;
     v22 = 0x2020000000;
@@ -65,7 +65,7 @@
       }
 
       v12 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:16];
-      v7[2](v7, 0, v12);
+      completionCopy[2](completionCopy, 0, v12);
     }
 
     else
@@ -83,8 +83,8 @@
       v14[3] = &unk_2788B2A40;
       v18 = &v20;
       v15 = v8;
-      v16 = self;
-      v17 = v7;
+      selfCopy = self;
+      v17 = completionCopy;
       [(PRSService *)posterService refreshPosterDescriptorsForExtension:@"com.apple.PhotosUIPrivate.PhotosAmbientPosterProvider" completion:v14];
 
       v12 = v15;
@@ -95,7 +95,7 @@
 
   else
   {
-    v7[2](v7, MEMORY[0x277CBEC10], 0);
+    completionCopy[2](completionCopy, MEMORY[0x277CBEC10], 0);
   }
 }
 
@@ -201,16 +201,16 @@ void __97__PHAWallpaperSuggestionRefreshSession_refreshAmbientDescriptorsWithPro
   }
 }
 
-- (id)suggestionUUIDsForPosterDescriptors:(id)a3
+- (id)suggestionUUIDsForPosterDescriptors:(id)descriptors
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = descriptorsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -225,16 +225,16 @@ void __97__PHAWallpaperSuggestionRefreshSession_refreshAmbientDescriptorsWithPro
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) media];
-        v11 = [v10 firstObject];
+        media = [*(*(&v14 + 1) + 8 * i) media];
+        firstObject = [media firstObject];
 
-        if (v11)
+        if (firstObject)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v12 = [v11 suggestionUUID];
-            [v4 addObject:v12];
+            suggestionUUID = [firstObject suggestionUUID];
+            [v4 addObject:suggestionUUID];
           }
         }
       }
@@ -248,16 +248,16 @@ void __97__PHAWallpaperSuggestionRefreshSession_refreshAmbientDescriptorsWithPro
   return v4;
 }
 
-- (id)uuidsOfSuggestions:(id)a3
+- (id)uuidsOfSuggestions:(id)suggestions
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = suggestionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -272,8 +272,8 @@ void __97__PHAWallpaperSuggestionRefreshSession_refreshAmbientDescriptorsWithPro
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) uuid];
-        [v4 addObject:v10];
+        uuid = [*(*(&v12 + 1) + 8 * i) uuid];
+        [v4 addObject:uuid];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -285,11 +285,11 @@ void __97__PHAWallpaperSuggestionRefreshSession_refreshAmbientDescriptorsWithPro
   return v4;
 }
 
-- (id)currentlyFeaturedSuggestionUUIDsForTop:(BOOL)a3
+- (id)currentlyFeaturedSuggestionUUIDsForTop:(BOOL)top
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  if (a3)
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  if (top)
   {
     [MEMORY[0x277CD99E0] predicateForAllTopWallpaperSuggestions];
   }
@@ -299,9 +299,9 @@ void __97__PHAWallpaperSuggestionRefreshSession_refreshAmbientDescriptorsWithPro
     [MEMORY[0x277CD99E0] predicateForAllShuffleWallpaperSuggestions];
   }
   v7 = ;
-  [v6 setPredicate:v7];
+  [librarySpecificFetchOptions setPredicate:v7];
 
-  v8 = [MEMORY[0x277CD99E0] fetchWallpaperSuggestionsWithFeaturedState:1 withOptions:v6];
+  v8 = [MEMORY[0x277CD99E0] fetchWallpaperSuggestionsWithFeaturedState:1 withOptions:librarySpecificFetchOptions];
   v9 = [(PHAWallpaperSuggestionRefreshSession *)self uuidsOfSuggestions:v8];
 
   objc_autoreleasePoolPop(v5);
@@ -309,25 +309,25 @@ void __97__PHAWallpaperSuggestionRefreshSession_refreshAmbientDescriptorsWithPro
   return v9;
 }
 
-- (void)updateSuggestionFeaturedStateWithNewSuggestionUUIDs:(id)a3 oldSuggestionUUIDs:(id)a4
+- (void)updateSuggestionFeaturedStateWithNewSuggestionUUIDs:(id)ds oldSuggestionUUIDs:(id)iDs
 {
   v26 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CBEB58];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[v6 alloc] initWithSet:v8];
-  [v9 minusSet:v7];
-  v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:v7];
+  iDsCopy = iDs;
+  dsCopy = ds;
+  v9 = [[v6 alloc] initWithSet:dsCopy];
+  [v9 minusSet:iDsCopy];
+  v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithSet:iDsCopy];
 
-  [v10 minusSet:v8];
+  [v10 minusSet:dsCopy];
   v11 = [v9 setByAddingObjectsFromSet:v10];
   if ([v11 count])
   {
-    v12 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"uuid", v11];
-    [v12 setPredicate:v13];
+    [librarySpecificFetchOptions setPredicate:v13];
 
-    v14 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v12];
+    v14 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
     if ([v14 count])
     {
       photoLibrary = self->_photoLibrary;
@@ -411,12 +411,12 @@ void __111__PHAWallpaperSuggestionRefreshSession_updateSuggestionFeaturedStateWi
 - (void)sendHasSmartShuffleWallpaperBiomeEvent
 {
   v3 = BiomeLibrary();
-  v4 = [v3 Discoverability];
-  v5 = [v4 Signals];
+  discoverability = [v3 Discoverability];
+  signals = [discoverability Signals];
 
   v6 = [objc_alloc(MEMORY[0x277CF1168]) initWithContentIdentifier:@"com.apple.photoanalysisd.has-smart-shuffle-wallpaper" context:0 osBuild:0 userInfo:0];
-  v7 = [v5 source];
-  [v7 sendEvent:v6];
+  source = [signals source];
+  [source sendEvent:v6];
 
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
@@ -426,18 +426,18 @@ void __111__PHAWallpaperSuggestionRefreshSession_updateSuggestionFeaturedStateWi
   }
 }
 
-- (id)createAndExportMediaForSuggestionLocalIdentifiers:(id)a3 editConfiguration:(id)a4 toURL:(id)a5 error:(id *)a6
+- (id)createAndExportMediaForSuggestionLocalIdentifiers:(id)identifiers editConfiguration:(id)configuration toURL:(id)l error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v42 = a4;
-  v40 = self;
-  v41 = a5;
-  v11 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"localIdentifier", v10];
-  [v11 setPredicate:v12];
+  identifiersCopy = identifiers;
+  configurationCopy = configuration;
+  selfCopy = self;
+  lCopy = l;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  identifiersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"localIdentifier", identifiersCopy];
+  [librarySpecificFetchOptions setPredicate:identifiersCopy];
 
-  v13 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:v11];
+  v13 = [MEMORY[0x277CD99E0] fetchSuggestionsWithOptions:librarySpecificFetchOptions];
   v49 = 0;
   v14 = [MEMORY[0x277D3C808] mediaFromSuggestions:v13 assetBySuggestionUUID:&v49];
   v43 = v49;
@@ -451,9 +451,9 @@ void __111__PHAWallpaperSuggestionRefreshSession_updateSuggestionFeaturedStateWi
   {
     v16 = v15;
     v35 = v13;
-    v36 = v11;
-    v37 = a6;
-    v38 = v10;
+    v36 = librarySpecificFetchOptions;
+    errorCopy = error;
+    v38 = identifiersCopy;
     v17 = 0;
     v18 = *v46;
     while (2)
@@ -467,19 +467,19 @@ void __111__PHAWallpaperSuggestionRefreshSession_updateSuggestionFeaturedStateWi
 
         v20 = *(*(&v45 + 1) + 8 * i);
         v21 = objc_autoreleasePoolPush();
-        v22 = [v20 suggestionUUID];
-        v23 = [v43 objectForKeyedSubscript:v22];
+        suggestionUUID = [v20 suggestionUUID];
+        v23 = [v43 objectForKeyedSubscript:suggestionUUID];
 
         if (v23)
         {
-          v24 = [v20 subpath];
-          v25 = [v41 URLByAppendingPathComponent:v24];
+          subpath = [v20 subpath];
+          v25 = [lCopy URLByAppendingPathComponent:subpath];
 
           v26 = [MEMORY[0x277D3C810] posterClassificationForSuggestionMedia:v20];
-          v27 = [v42 isSpatialPhotoEnabled];
-          v28 = [v42 style];
+          isSpatialPhotoEnabled = [configurationCopy isSpatialPhotoEnabled];
+          style = [configurationCopy style];
           v44 = v17;
-          LODWORD(v26) = [(PHAWallpaperSuggestionRefreshSession *)v40 saveShuffleSegmentationResourcesForAsset:v23 atURL:v25 withClassification:v26 style:v28 enableSpatialPhoto:v27 error:&v44];
+          LODWORD(v26) = [(PHAWallpaperSuggestionRefreshSession *)selfCopy saveShuffleSegmentationResourcesForAsset:v23 atURL:v25 withClassification:v26 style:style enableSpatialPhoto:isSpatialPhotoEnabled error:&v44];
           v29 = v44;
 
           if (!v26)
@@ -508,10 +508,10 @@ void __111__PHAWallpaperSuggestionRefreshSession_updateSuggestionFeaturedStateWi
     v30 = 1;
     v29 = v17;
 LABEL_13:
-    a6 = v37;
-    v10 = v38;
+    error = errorCopy;
+    identifiersCopy = v38;
     v13 = v35;
-    v11 = v36;
+    librarySpecificFetchOptions = v36;
   }
 
   else
@@ -520,10 +520,10 @@ LABEL_13:
     v30 = 1;
   }
 
-  if (a6)
+  if (error)
   {
     v31 = v29;
-    *a6 = v29;
+    *error = v29;
   }
 
   if (v30)
@@ -541,17 +541,17 @@ LABEL_13:
   return v32;
 }
 
-- (id)consolidatedShuffleConfigurationFromPosterConfigurations:(id)a3
+- (id)consolidatedShuffleConfigurationFromPosterConfigurations:(id)configurations
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  configurationsCopy = configurations;
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v3;
+  v6 = configurationsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -567,14 +567,14 @@ LABEL_13:
           objc_enumerationMutation(v6);
         }
 
-        v12 = [*(*(&v17 + 1) + 8 * i) shuffleConfiguration];
-        v13 = [v12 personLocalIdentifiers];
-        [v4 unionSet:v13];
+        shuffleConfiguration = [*(*(&v17 + 1) + 8 * i) shuffleConfiguration];
+        personLocalIdentifiers = [shuffleConfiguration personLocalIdentifiers];
+        [v4 unionSet:personLocalIdentifiers];
 
-        v14 = [v12 albumCloudIdentifiers];
-        [v5 unionSet:v14];
+        albumCloudIdentifiers = [shuffleConfiguration albumCloudIdentifiers];
+        [v5 unionSet:albumCloudIdentifiers];
 
-        v9 |= [v12 shuffleSmartAlbums];
+        v9 |= [shuffleConfiguration shuffleSmartAlbums];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -596,16 +596,16 @@ LABEL_13:
   return v15;
 }
 
-- (void)enumerateRefreshableShufflePosterConfigurationsIn:(id)a3 usingBlock:(id)a4
+- (void)enumerateRefreshableShufflePosterConfigurationsIn:(id)in usingBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
+  inCopy = in;
+  blockCopy = block;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = v6;
+  v7 = inCopy;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v8)
   {
@@ -624,22 +624,22 @@ LABEL_13:
 
         v13 = *(*(&v23 + 1) + 8 * i);
         v14 = MEMORY[0x277D3B490];
-        v15 = [v13 assetDirectory];
+        assetDirectory = [v13 assetDirectory];
         v22 = 0;
-        v16 = [v14 loadFromURL:v15 error:&v22];
+        v16 = [v14 loadFromURL:assetDirectory error:&v22];
         v17 = v22;
 
         if (v16)
         {
           if ([v16 configurationType] == 1)
           {
-            v18 = [v16 shuffleConfiguration];
-            if ([v18 shuffleType] != 1)
+            shuffleConfiguration = [v16 shuffleConfiguration];
+            if ([shuffleConfiguration shuffleType] != 1)
             {
-              if (v18)
+              if (shuffleConfiguration)
               {
                 buf[0] = 0;
-                v21[2](v21, v13, v16, buf);
+                blockCopy[2](blockCopy, v13, v16, buf);
                 if (buf[0])
                 {
 
@@ -652,12 +652,12 @@ LABEL_13:
 
 LABEL_15:
 
-            v18 = 0;
+            shuffleConfiguration = 0;
           }
 
           else
           {
-            v18 = 0;
+            shuffleConfiguration = 0;
             if ([0 shuffleType] == 1)
             {
               goto LABEL_15;
@@ -691,11 +691,11 @@ LABEL_17:
 LABEL_19:
 }
 
-- (BOOL)reloadWallpaperSuggestionsForUUIDs:(id)a3 progress:(id)a4 error:(id *)a5
+- (BOOL)reloadWallpaperSuggestionsForUUIDs:(id)ds progress:(id)progress error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 isCancelledWithProgress:0.0])
+  dsCopy = ds;
+  progressCopy = progress;
+  if ([progressCopy isCancelledWithProgress:0.0])
   {
     loggingConnection = self->_loggingConnection;
     if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
@@ -704,10 +704,10 @@ LABEL_19:
       _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Wallpaper suggestions refresh was canceled", buf, 2u);
     }
 
-    if (a5)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:16];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
     }
 
     else
@@ -727,8 +727,8 @@ LABEL_19:
   v60 = __Block_byref_object_copy__6732;
   v61 = __Block_byref_object_dispose__6733;
   v62 = 0;
-  v14 = [v9 progressReportersForParallelOperationsWithCount:3];
-  if (v8 && ![v8 count])
+  v14 = [progressCopy progressReportersForParallelOperationsWithCount:3];
+  if (dsCopy && ![dsCopy count])
   {
     v35 = self->_loggingConnection;
     if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -741,16 +741,16 @@ LABEL_19:
   else
   {
     dispatch_group_enter(v12);
-    v15 = [v14 firstObject];
-    v16 = v15;
-    if (v15)
+    firstObject = [v14 firstObject];
+    v16 = firstObject;
+    if (firstObject)
     {
-      v17 = v15;
+      v17 = firstObject;
     }
 
     else
     {
-      v17 = v9;
+      v17 = progressCopy;
     }
 
     v18 = v17;
@@ -759,14 +759,14 @@ LABEL_19:
     v55[1] = 3221225472;
     v55[2] = __90__PHAWallpaperSuggestionRefreshSession_reloadWallpaperSuggestionsForUUIDs_progress_error___block_invoke;
     v55[3] = &unk_2788B29F0;
-    v56 = v8;
+    v56 = dsCopy;
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __90__PHAWallpaperSuggestionRefreshSession_reloadWallpaperSuggestionsForUUIDs_progress_error___block_invoke_2;
     v50[3] = &unk_2788B2A18;
     v54 = buf;
     v51 = v13;
-    v52 = self;
+    selfCopy = self;
     v53 = v12;
     [(PHAWallpaperSuggestionRefreshSession *)self refreshPosterConfigurationsForNightlyRefresh:0 progressReporter:v18 passingFilter:v55 withCompletion:v50];
   }
@@ -774,7 +774,7 @@ LABEL_19:
   dispatch_group_enter(v12);
   if ([v14 count] < 2)
   {
-    v19 = v9;
+    v19 = progressCopy;
   }
 
   else
@@ -790,14 +790,14 @@ LABEL_19:
   v21 = v13;
   v48 = buf;
   v45 = v21;
-  v46 = self;
+  selfCopy2 = self;
   v22 = v12;
   v47 = v22;
   [(PHAWallpaperSuggestionRefreshSession *)self refreshPosterDescriptorsWithProgressReporter:v20 completion:v44];
   dispatch_group_enter(v22);
   if ([v14 count] < 3)
   {
-    v23 = v9;
+    v23 = progressCopy;
   }
 
   else
@@ -813,14 +813,14 @@ LABEL_19:
   v25 = v21;
   v43 = buf;
   v40 = v25;
-  v41 = self;
+  selfCopy3 = self;
   v26 = v22;
   v42 = v26;
   [(PHAWallpaperSuggestionRefreshSession *)self refreshAmbientDescriptorsWithProgressReporter:v24 completion:&v36];
   dispatch_group_leave(v26);
   v27 = dispatch_time(0, 300000000000);
   v28 = dispatch_group_wait(v26, v27);
-  if ([v9 isCancelledWithProgress:{1.0, v36, v37, v38, v39}])
+  if ([progressCopy isCancelledWithProgress:{1.0, v36, v37, v38, v39}])
   {
     [v25 lock];
     if (!*(v58 + 5))
@@ -864,9 +864,9 @@ LABEL_29:
     [v25 unlock];
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = *(v58 + 5);
+    *error = *(v58 + 5);
   }
 
   v11 = *(v58 + 5) == 0;
@@ -1046,10 +1046,10 @@ void __90__PHAWallpaperSuggestionRefreshSession_reloadWallpaperSuggestionsForUUI
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (void)_removeIfNeededFeaturedContent:(id)a3 withCompletion:(id)a4
+- (void)_removeIfNeededFeaturedContent:(id)content withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 count];
+  completionCopy = completion;
+  v7 = [content count];
   loggingConnection = self->_loggingConnection;
   v9 = os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT);
   if (v7)
@@ -1061,8 +1061,8 @@ void __90__PHAWallpaperSuggestionRefreshSession_reloadWallpaperSuggestionsForUUI
     }
 
     v10 = objc_alloc_init(MEMORY[0x277D3E9E8]);
-    v11 = [(NSURL *)self->_refreshSessionURL path];
-    [v10 setIdentifier:v11];
+    path = [(NSURL *)self->_refreshSessionURL path];
+    [v10 setIdentifier:path];
 
     posterService = self->_posterService;
     v13[0] = MEMORY[0x277D85DD0];
@@ -1070,7 +1070,7 @@ void __90__PHAWallpaperSuggestionRefreshSession_reloadWallpaperSuggestionsForUUI
     v13[2] = __86__PHAWallpaperSuggestionRefreshSession__removeIfNeededFeaturedContent_withCompletion___block_invoke;
     v13[3] = &unk_2788B29C8;
     v13[4] = self;
-    v14 = v6;
+    v14 = completionCopy;
     [(PRSService *)posterService refreshPosterDescriptorsForExtension:@"com.apple.PhotosUIPrivate.PhotosPosterProvider" sessionInfo:v10 completion:v13];
   }
 
@@ -1082,7 +1082,7 @@ void __90__PHAWallpaperSuggestionRefreshSession_reloadWallpaperSuggestionsForUUI
       _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Not allowed to feature content, and no existing poster descriptors", buf, 2u);
     }
 
-    (*(v6 + 2))(v6, MEMORY[0x277CBEC10], 0);
+    (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEC10], 0);
   }
 }
 
@@ -1111,12 +1111,12 @@ void __86__PHAWallpaperSuggestionRefreshSession__removeIfNeededFeaturedContent_w
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)saveSegmentationResourcesForAsset:(id)a3 atURL:(id)a4 withOptions:(id)a5 classification:(unint64_t)a6 error:(id *)a7
+- (BOOL)saveSegmentationResourcesForAsset:(id)asset atURL:(id)l withOptions:(id)options classification:(unint64_t)classification error:(id *)error
 {
   v56 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  assetCopy = asset;
+  lCopy = l;
+  optionsCopy = options;
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -1140,37 +1140,37 @@ void __86__PHAWallpaperSuggestionRefreshSession__removeIfNeededFeaturedContent_w
     _os_signpost_emit_with_name_impl(&dword_22FA28000, v17, OS_SIGNPOST_INTERVAL_BEGIN, spid, "saveSegmentation", "", buf, 2u);
   }
 
-  v19 = [MEMORY[0x277D3C810] mediaAnalysisTypeForPosterClassification:a6];
+  v19 = [MEMORY[0x277D3C810] mediaAnalysisTypeForPosterClassification:classification];
   v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v20 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D26828]];
-  if (v13)
+  if (optionsCopy)
   {
-    [v20 addEntriesFromDictionary:v13];
+    [v20 addEntriesFromDictionary:optionsCopy];
   }
 
   v21 = self->_loggingConnection;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v31 = [v11 uuid];
+    uuid = [assetCopy uuid];
     *buf = 138412546;
-    v53 = v31;
+    v53 = uuid;
     v54 = 2112;
     v55 = v20;
     _os_log_debug_impl(&dword_22FA28000, v21, OS_LOG_TYPE_DEBUG, "[PHAWallpaperSuggestionRefreshSession] Requesting analysis for asset %@ with options %@", buf, 0x16u);
   }
 
   mediaAnalysisService = self->_mediaAnalysisService;
-  v51 = v11;
+  v51 = assetCopy;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v51 count:1];
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __113__PHAWallpaperSuggestionRefreshSession_saveSegmentationResourcesForAsset_atURL_withOptions_classification_error___block_invoke_2;
   v34[3] = &unk_2788B29A0;
-  v24 = v11;
+  v24 = assetCopy;
   v39 = &v47;
   v35 = v24;
-  v36 = self;
-  v25 = v12;
+  selfCopy = self;
+  v25 = lCopy;
   v37 = v25;
   v40 = &v41;
   v26 = v14;
@@ -1186,9 +1186,9 @@ void __86__PHAWallpaperSuggestionRefreshSession__removeIfNeededFeaturedContent_w
     _os_signpost_emit_with_name_impl(&dword_22FA28000, v28, OS_SIGNPOST_INTERVAL_END, spid, "saveSegmentation", "", buf, 2u);
   }
 
-  if (a7)
+  if (error)
   {
-    *a7 = v42[5];
+    *error = v42[5];
   }
 
   v29 = *(v48 + 24);
@@ -1363,24 +1363,24 @@ LABEL_28:
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (BOOL)saveOnboardingPreviewSegmentationResourcesForAsset:(id)a3 atURL:(id)a4 withClassification:(unint64_t)a5 style:(id)a6 enableSpatialPhoto:(BOOL)a7 error:(id *)a8
+- (BOOL)saveOnboardingPreviewSegmentationResourcesForAsset:(id)asset atURL:(id)l withClassification:(unint64_t)classification style:(id)style enableSpatialPhoto:(BOOL)photo error:(id *)error
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  if (a6)
+  photoCopy = photo;
+  assetCopy = asset;
+  lCopy = l;
+  if (style)
   {
-    a6 = [MEMORY[0x277D3B480] dictionaryWithStyle:a6];
+    style = [MEMORY[0x277D3B480] dictionaryWithStyle:style];
   }
 
-  v16 = [MEMORY[0x277D3B530] deviceSupportsLandscapeConfiguration];
+  deviceSupportsLandscapeConfiguration = [MEMORY[0x277D3B530] deviceSupportsLandscapeConfiguration];
   v17 = 8;
-  if (v16)
+  if (deviceSupportsLandscapeConfiguration)
   {
     v17 = 136;
   }
 
-  if (v9)
+  if (photoCopy)
   {
     v18 = v17 | 0x500;
   }
@@ -1391,31 +1391,31 @@ LABEL_28:
   }
 
   v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:classification];
   [v19 setObject:v20 forKeyedSubscript:@"Classification"];
 
   v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v18];
   [v19 setObject:v21 forKeyedSubscript:@"LayerStackOptions"];
 
-  [v19 setObject:a6 forKeyedSubscript:@"Style"];
+  [v19 setObject:style forKeyedSubscript:@"Style"];
   [v19 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"OutOfProcess"];
   [v19 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SpatialPhoto"];
-  v22 = [(PHAWallpaperSuggestionRefreshSession *)self saveSegmentationResourcesForAsset:v14 atURL:v15 withOptions:v19 classification:a5 error:a8];
+  v22 = [(PHAWallpaperSuggestionRefreshSession *)self saveSegmentationResourcesForAsset:assetCopy atURL:lCopy withOptions:v19 classification:classification error:error];
 
   return v22;
 }
 
-- (BOOL)saveShuffleSegmentationResourcesForAsset:(id)a3 atURL:(id)a4 withClassification:(unint64_t)a5 style:(id)a6 enableSpatialPhoto:(BOOL)a7 error:(id *)a8
+- (BOOL)saveShuffleSegmentationResourcesForAsset:(id)asset atURL:(id)l withClassification:(unint64_t)classification style:(id)style enableSpatialPhoto:(BOOL)photo error:(id *)error
 {
-  v8 = a7;
-  v13 = a6;
+  photoCopy = photo;
+  styleCopy = style;
   v14 = MEMORY[0x277CBEB38];
-  v15 = a4;
-  v16 = a3;
+  lCopy = l;
+  assetCopy = asset;
   v17 = objc_alloc_init(v14);
-  if (v13)
+  if (styleCopy)
   {
-    v18 = [MEMORY[0x277D3B480] dictionaryWithStyle:v13];
+    v18 = [MEMORY[0x277D3B480] dictionaryWithStyle:styleCopy];
   }
 
   else
@@ -1433,14 +1433,14 @@ LABEL_28:
     v19 = 1;
   }
 
-  v20 = [MEMORY[0x277D3B530] deviceSupportsLandscapeConfiguration];
+  deviceSupportsLandscapeConfiguration = [MEMORY[0x277D3B530] deviceSupportsLandscapeConfiguration];
   v21 = v19 | 0x22;
-  if (!v20)
+  if (!deviceSupportsLandscapeConfiguration)
   {
     v21 = v19;
   }
 
-  if (v8)
+  if (photoCopy)
   {
     v22 = v21 | 0x100;
   }
@@ -1450,7 +1450,7 @@ LABEL_28:
     v22 = v21;
   }
 
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:classification];
   [v17 setObject:v23 forKeyedSubscript:@"Classification"];
 
   [v17 setObject:v18 forKeyedSubscript:@"Style"];
@@ -1459,18 +1459,18 @@ LABEL_28:
 
   [v17 setObject:&unk_2844CC9D8 forKeyedSubscript:@"Priority"];
   [v17 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"SpatialPhoto"];
-  v25 = [(PHAWallpaperSuggestionRefreshSession *)self saveSegmentationResourcesForAsset:v16 atURL:v15 withOptions:v17 classification:a5 error:a8];
+  v25 = [(PHAWallpaperSuggestionRefreshSession *)self saveSegmentationResourcesForAsset:assetCopy atURL:lCopy withOptions:v17 classification:classification error:error];
 
   return v25;
 }
 
-- (BOOL)saveMessagesBackdropPreviewResourcesForAsset:(id)a3 atURL:(id)a4 withClassification:(unint64_t)a5 error:(id *)a6
+- (BOOL)saveMessagesBackdropPreviewResourcesForAsset:(id)asset atURL:(id)l withClassification:(unint64_t)classification error:(id *)error
 {
   v10 = MEMORY[0x277CBEB38];
-  v11 = a4;
-  v12 = a3;
+  lCopy = l;
+  assetCopy = asset;
   v13 = objc_alloc_init(v10);
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:classification];
   [v13 setObject:v14 forKeyedSubscript:@"Classification"];
 
   [v13 setObject:&unk_2844CC9C0 forKeyedSubscript:@"LayerStackOptions"];
@@ -1479,32 +1479,32 @@ LABEL_28:
   [v13 setObject:v15 forKeyedSubscript:@"OutOfProcess"];
   [v13 setObject:&unk_2844CC9A8 forKeyedSubscript:@"SettlingEffectGatingLevel"];
   [v13 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"DisableSegmentation"];
-  LOBYTE(a6) = [(PHAWallpaperSuggestionRefreshSession *)self saveSegmentationResourcesForAsset:v12 atURL:v11 withOptions:v13 classification:a5 error:a6];
+  LOBYTE(error) = [(PHAWallpaperSuggestionRefreshSession *)self saveSegmentationResourcesForAsset:assetCopy atURL:lCopy withOptions:v13 classification:classification error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)savePreviewSegmentationResourcesForAsset:(id)a3 atURL:(id)a4 withClassification:(unint64_t)a5 styleCategory:(id)a6 enableSettlingEffect:(BOOL)a7 enableSpatialPhoto:(BOOL)a8 error:(id *)a9
+- (BOOL)savePreviewSegmentationResourcesForAsset:(id)asset atURL:(id)l withClassification:(unint64_t)classification styleCategory:(id)category enableSettlingEffect:(BOOL)effect enableSpatialPhoto:(BOOL)photo error:(id *)error
 {
-  v9 = a8;
-  v10 = a7;
+  photoCopy = photo;
+  effectCopy = effect;
   v15 = MEMORY[0x277D3B530];
-  v16 = a6;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v15 deviceSupportsLandscapeConfiguration];
+  categoryCopy = category;
+  lCopy = l;
+  assetCopy = asset;
+  deviceSupportsLandscapeConfiguration = [v15 deviceSupportsLandscapeConfiguration];
   v20 = 8;
-  if (v19)
+  if (deviceSupportsLandscapeConfiguration)
   {
     v20 = 136;
   }
 
-  if (v10)
+  if (effectCopy)
   {
     v20 |= 0x40uLL;
   }
 
-  if (v9)
+  if (photoCopy)
   {
     v21 = v20 | 0x500;
   }
@@ -1515,7 +1515,7 @@ LABEL_28:
   }
 
   v22 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:classification];
   [v22 setObject:v23 forKeyedSubscript:@"Classification"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v21];
@@ -1523,29 +1523,29 @@ LABEL_28:
 
   v25 = MEMORY[0x277CBEC38];
   [v22 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"EnableSettlingEffect"];
-  [v22 setObject:v16 forKeyedSubscript:@"StyleCategory"];
+  [v22 setObject:categoryCopy forKeyedSubscript:@"StyleCategory"];
 
   v26 = MEMORY[0x277CBEC28];
   [v22 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"OutOfProcess"];
   [v22 setObject:&unk_2844CC9A8 forKeyedSubscript:@"SettlingEffectGatingLevel"];
   [v22 setObject:v26 forKeyedSubscript:@"EnableSettlingEffect"];
   [v22 setObject:v25 forKeyedSubscript:@"SpatialPhoto"];
-  v27 = [(PHAWallpaperSuggestionRefreshSession *)self saveSegmentationResourcesForAsset:v18 atURL:v17 withOptions:v22 classification:a5 error:a9];
+  v27 = [(PHAWallpaperSuggestionRefreshSession *)self saveSegmentationResourcesForAsset:assetCopy atURL:lCopy withOptions:v22 classification:classification error:error];
 
   return v27;
 }
 
-- (id)updateIfNeededPosterDescriptors:(id)a3 fromCurrentPosterDescriptors:(id)a4 partialErrors:(id *)a5 progressReporter:(id)a6
+- (id)updateIfNeededPosterDescriptors:(id)descriptors fromCurrentPosterDescriptors:(id)posterDescriptors partialErrors:(id *)errors progressReporter:(id)reporter
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  descriptorsCopy = descriptors;
+  posterDescriptorsCopy = posterDescriptors;
+  reporterCopy = reporter;
   v45 = 0;
   v46 = &v45;
   v47 = 0x2020000000;
   v48 = 0;
-  v13 = [v12 isCancelledWithProgress:0.0];
+  v13 = [reporterCopy isCancelledWithProgress:0.0];
   *(v46 + 24) = v13;
   if (v13)
   {
@@ -1556,7 +1556,7 @@ LABEL_28:
       _os_log_impl(&dword_22FA28000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Poster Descriptors refresh was canceled", buf, 2u);
     }
 
-    if (!a5)
+    if (!errors)
     {
       v16 = 0;
       goto LABEL_21;
@@ -1565,7 +1565,7 @@ LABEL_28:
     v15 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:16];
     v51[0] = v15;
     [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
-    *a5 = v16 = 0;
+    *errors = v16 = 0;
   }
 
   else
@@ -1580,12 +1580,12 @@ LABEL_28:
     v40[1] = v40;
     v40[2] = 0x2020000000;
     v40[3] = 0;
-    v19 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
     v20 = *MEMORY[0x277CD9B10];
     v50[0] = *MEMORY[0x277CD9AD0];
     v50[1] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:2];
-    [v19 addFetchPropertySets:v21];
+    [librarySpecificFetchOptions addFetchPropertySets:v21];
 
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
@@ -1593,17 +1593,17 @@ LABEL_28:
     v30[3] = &unk_2788B2958;
     v37 = &v45;
     v38 = v40;
-    v31 = v12;
-    v32 = self;
+    v31 = reporterCopy;
+    selfCopy = self;
     v22 = v18;
     v33 = v22;
-    v34 = v11;
-    v23 = v19;
+    v34 = posterDescriptorsCopy;
+    v23 = librarySpecificFetchOptions;
     v35 = v23;
     v39 = buf;
     v15 = v17;
     v36 = v15;
-    [v10 enumerateKeysAndObjectsUsingBlock:v30];
+    [descriptorsCopy enumerateKeysAndObjectsUsingBlock:v30];
     if (*(v46 + 24) == 1)
     {
       v24 = self->_loggingConnection;
@@ -1613,11 +1613,11 @@ LABEL_28:
         _os_log_impl(&dword_22FA28000, v24, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Poster Descriptors refresh was canceled", v29, 2u);
       }
 
-      if (a5)
+      if (errors)
       {
         v25 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:16];
         v49 = v25;
-        *a5 = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
+        *errors = [MEMORY[0x277CBEA60] arrayWithObjects:&v49 count:1];
       }
 
       v16 = 0;
@@ -1625,10 +1625,10 @@ LABEL_28:
 
     else
     {
-      if (a5)
+      if (errors)
       {
         v26 = v22;
-        *a5 = v22;
+        *errors = v22;
       }
 
       if (v42[24] == 1)
@@ -2077,32 +2077,32 @@ LABEL_83:
 LABEL_93:
 }
 
-- (id)posterDescriptorOfType:(int64_t)a3 withSuggestion:(id)a4 assetBySuggestionUUID:(id)a5
+- (id)posterDescriptorOfType:(int64_t)type withSuggestion:(id)suggestion assetBySuggestionUUID:(id)d
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 uuid];
-  v10 = [v7 objectForKeyedSubscript:v9];
+  dCopy = d;
+  suggestionCopy = suggestion;
+  uuid = [suggestionCopy uuid];
+  v10 = [dCopy objectForKeyedSubscript:uuid];
 
-  v11 = [v10 uuid];
+  uuid2 = [v10 uuid];
 
   v12 = objc_alloc(MEMORY[0x277D3B4A8]);
-  v13 = [v8 subtype];
+  subtype = [suggestionCopy subtype];
 
-  v14 = [v12 initWithAssetUUID:v11 suggestionUUID:v9 suggestionSubtype:v13];
+  v14 = [v12 initWithAssetUUID:uuid2 suggestionUUID:uuid suggestionSubtype:subtype];
   v15 = objc_alloc(MEMORY[0x277D3B498]);
   v19[0] = v14;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  v17 = [v15 initWithDescriptorType:a3 media:v16];
+  v17 = [v15 initWithDescriptorType:type media:v16];
 
   return v17;
 }
 
-- (id)spatialPhotoDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)a3
+- (id)spatialPhotoDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)avoid
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D3C810] fetchFeaturedGyroPosterSuggestionsInPhotoLibrary:self->_photoLibrary avoiding:a3 limit:&unk_2844CC990];
+  v4 = [MEMORY[0x277D3C810] fetchFeaturedGyroPosterSuggestionsInPhotoLibrary:self->_photoLibrary avoiding:avoid limit:&unk_2844CC990];
   v5 = [(PHAWallpaperSuggestionRefreshSession *)self keyAssetBySuggestionUUIDFromSuggestions:v4];
   v29 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v30 = 0u;
@@ -2129,23 +2129,23 @@ LABEL_93:
         v11 = *(*(&v30 + 1) + 8 * i);
         v12 = [(PHAWallpaperSuggestionRefreshSession *)self posterDescriptorOfType:5 withSuggestion:v11 assetBySuggestionUUID:v5, v27];
         v13 = MEMORY[0x277D3B498];
-        v14 = [v11 uuid];
-        v36 = v14;
+        uuid = [v11 uuid];
+        v36 = uuid;
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
         v16 = [v13 descriptorIdentifierForDescriptorType:5 uuids:v15];
         [v12 setIdentifier:v16];
 
-        v17 = [v11 uuid];
-        v18 = [v5 objectForKeyedSubscript:v17];
+        uuid2 = [v11 uuid];
+        v18 = [v5 objectForKeyedSubscript:uuid2];
 
         v19 = [MEMORY[0x277D3C810] wallpaperGalleryPosterTitleForSuggestion:v11 withAsset:v18];
         loggingConnection = self->_loggingConnection;
         if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
         {
           v21 = loggingConnection;
-          v22 = [v11 uuid];
+          uuid3 = [v11 uuid];
           *buf = v27;
-          *v35 = v22;
+          *v35 = uuid3;
           *&v35[8] = 2112;
           *&v35[10] = v19;
           _os_log_impl(&dword_22FA28000, v21, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Spatial Poster Suggestion UUID: %@. Selected localized poster title %@.", buf, 0x16u);
@@ -2180,31 +2180,31 @@ LABEL_93:
   return v29;
 }
 
-- (id)settlingEffectDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)a3
+- (id)settlingEffectDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)avoid
 {
   v79[5] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  avoidCopy = avoid;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v6 = MEMORY[0x277CCA920];
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"state", 4];
   v79[0] = v7;
-  v8 = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper];
-  v79[1] = v8;
-  v61 = v4;
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", v4];
-  v79[2] = v9;
+  predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper = [MEMORY[0x277CD99E0] predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper];
+  v79[1] = predicateForAllFeaturedStateEnabledSuggestionTypesForWallpaper;
+  v61 = avoidCopy;
+  avoidCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", avoidCopy];
+  v79[2] = avoidCopy;
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K >= %d", @"subtype", 602];
   v79[3] = v10;
   v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K <= %d", @"subtype", 605];
   v79[4] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v79 count:5];
   v13 = [v6 andPredicateWithSubpredicates:v12];
-  [v5 setPredicate:v13];
+  [librarySpecificFetchOptions setPredicate:v13];
 
-  v60 = v5;
-  v14 = [MEMORY[0x277D3C810] fetchSettlingEffectSuggestionsWithOptions:v5];
+  v60 = librarySpecificFetchOptions;
+  v14 = [MEMORY[0x277D3C810] fetchSettlingEffectSuggestionsWithOptions:librarySpecificFetchOptions];
   v15 = [(PHAWallpaperSuggestionRefreshSession *)self randomizeSuggestions:v14];
-  v65 = self;
+  selfCopy = self;
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -2240,22 +2240,22 @@ LABEL_93:
       }
 
       v24 = *(*(&v70 + 1) + 8 * i);
-      v25 = [v24 subtype];
+      subtype = [v24 subtype];
       v26 = PHSuggestionStringWithSubtype();
-      if ((v25 & 0xFFFE) == 0x25A)
+      if ((subtype & 0xFFFE) == 0x25A)
       {
-        v27 = [v24 uuid];
-        v28 = [v64 objectForKeyedSubscript:v27];
+        uuid = [v24 uuid];
+        v28 = [v64 objectForKeyedSubscript:uuid];
 
         if ([v18 assetIsUsingHeadroom:v28])
         {
-          v29 = v65->_loggingConnection;
+          v29 = selfCopy->_loggingConnection;
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             v30 = v29;
-            v31 = [v24 uuid];
+            uuid2 = [v24 uuid];
             *buf = 138412290;
-            *v77 = v31;
+            *v77 = uuid2;
             _os_log_impl(&dword_22FA28000, v30, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Skip suggestion %@ for settling effect descriptor donation because it's using headroom", buf, 0xCu);
           }
 
@@ -2263,15 +2263,15 @@ LABEL_93:
         }
       }
 
-      v32 = v65->_loggingConnection;
+      v32 = selfCopy->_loggingConnection;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         v33 = v32;
-        v34 = [v24 uuid];
+        uuid3 = [v24 uuid];
         *buf = 138412546;
         *v77 = v26;
         *&v77[8] = 2112;
-        *&v77[10] = v34;
+        *&v77[10] = uuid3;
         _os_log_impl(&dword_22FA28000, v33, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Select (%@) suggestion %@ for settling effect descriptor donation", buf, 0x16u);
       }
 
@@ -2301,8 +2301,8 @@ LABEL_21:
   {
     v59 = v19;
     v62 = v18;
-    v36 = [(PHAWallpaperSuggestionRefreshSession *)v65 uuidsOfSuggestions:v63];
-    v37 = v65->_loggingConnection;
+    v36 = [(PHAWallpaperSuggestionRefreshSession *)selfCopy uuidsOfSuggestions:v63];
+    v37 = selfCopy->_loggingConnection;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
       v38 = v37;
@@ -2335,10 +2335,10 @@ LABEL_21:
           }
 
           v46 = *(*(&v66 + 1) + 8 * j);
-          v47 = [(PHAWallpaperSuggestionRefreshSession *)v65 posterDescriptorOfType:3 withSuggestion:v46 assetBySuggestionUUID:v64];
+          v47 = [(PHAWallpaperSuggestionRefreshSession *)selfCopy posterDescriptorOfType:3 withSuggestion:v46 assetBySuggestionUUID:v64];
           v48 = MEMORY[0x277D3B498];
-          v49 = [v46 uuid];
-          v74 = v49;
+          uuid4 = [v46 uuid];
+          v74 = uuid4;
           v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v74 count:1];
           v51 = [v48 descriptorIdentifierForDescriptorType:3 uuids:v50];
           [v47 setIdentifier:v51];
@@ -2352,7 +2352,7 @@ LABEL_21:
       while (v43);
     }
 
-    v52 = v65->_loggingConnection;
+    v52 = selfCopy->_loggingConnection;
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
       v53 = v52;
@@ -2373,7 +2373,7 @@ LABEL_21:
 
   else
   {
-    v57 = v65->_loggingConnection;
+    v57 = selfCopy->_loggingConnection;
     v56 = v61;
     if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
     {
@@ -2388,18 +2388,18 @@ LABEL_21:
   return v40;
 }
 
-- (id)updatedPosterDescriptorsFromSuggestions:(id)a3
+- (id)updatedPosterDescriptorsFromSuggestions:(id)suggestions
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PHAWallpaperSuggestionRefreshSession *)self keyAssetBySuggestionUUIDFromSuggestions:v4];
+  suggestionsCopy = suggestions;
+  v5 = [(PHAWallpaperSuggestionRefreshSession *)self keyAssetBySuggestionUUIDFromSuggestions:suggestionsCopy];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v26 = v4;
-  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v4];
-  v8 = [v7 lastObject];
-  if (v8)
+  v26 = suggestionsCopy;
+  v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:suggestionsCopy];
+  lastObject = [v7 lastObject];
+  if (lastObject)
   {
-    v9 = [(PHAWallpaperSuggestionRefreshSession *)self posterDescriptorOfType:2 withSuggestion:v8 assetBySuggestionUUID:v5];
+    v9 = [(PHAWallpaperSuggestionRefreshSession *)self posterDescriptorOfType:2 withSuggestion:lastObject assetBySuggestionUUID:v5];
     v10 = [MEMORY[0x277D3B498] descriptorTypeStringWithType:2];
     [v9 setIdentifier:v10];
 
@@ -2407,7 +2407,7 @@ LABEL_21:
     [v7 removeLastObject];
   }
 
-  v25 = v8;
+  v25 = lastObject;
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
@@ -2430,20 +2430,20 @@ LABEL_21:
 
         v15 = *(*(&v29 + 1) + 8 * i);
         v16 = [(PHAWallpaperSuggestionRefreshSession *)self posterDescriptorOfType:1 withSuggestion:v15 assetBySuggestionUUID:v5, v25];
-        v17 = [v15 uuid];
-        [v16 setIdentifier:v17];
+        uuid = [v15 uuid];
+        [v16 setIdentifier:uuid];
 
-        v18 = [v15 uuid];
-        v19 = [v5 objectForKeyedSubscript:v18];
+        uuid2 = [v15 uuid];
+        v19 = [v5 objectForKeyedSubscript:uuid2];
 
         v20 = [MEMORY[0x277D3C810] wallpaperGalleryPosterTitleForSuggestion:v15 withAsset:v19];
         loggingConnection = self->_loggingConnection;
         if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
         {
           v22 = loggingConnection;
-          v23 = [v15 uuid];
+          uuid3 = [v15 uuid];
           *buf = 138412546;
-          v34 = v23;
+          v34 = uuid3;
           v35 = 2112;
           v36 = v20;
           _os_log_impl(&dword_22FA28000, v22, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Featured Poster Suggestion UUID: %@. Selected localized poster title %@.", buf, 0x16u);
@@ -2467,54 +2467,54 @@ LABEL_21:
   return v6;
 }
 
-- (id)keyAssetBySuggestionUUIDFromSuggestions:(id)a3
+- (id)keyAssetBySuggestionUUIDFromSuggestions:(id)suggestions
 {
   photoLibrary = self->_photoLibrary;
-  v5 = a3;
-  v6 = [(PHPhotoLibrary *)photoLibrary librarySpecificFetchOptions];
+  suggestionsCopy = suggestions;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)photoLibrary librarySpecificFetchOptions];
   v7 = [MEMORY[0x277D3BC60] assetFetchPropertySetsIncludingGating:1];
-  [v6 setFetchPropertySets:v7];
+  [librarySpecificFetchOptions setFetchPropertySets:v7];
 
-  v8 = [objc_alloc(MEMORY[0x277CD98D0]) initWithObjects:v5 photoLibrary:self->_photoLibrary fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
-  v9 = [MEMORY[0x277CD97A8] fetchKeyAssetBySuggestionUUIDForSuggestions:v8 options:v6];
+  v8 = [objc_alloc(MEMORY[0x277CD98D0]) initWithObjects:suggestionsCopy photoLibrary:self->_photoLibrary fetchType:0 fetchPropertySets:0 identifier:0 registerIfNeeded:0];
+  v9 = [MEMORY[0x277CD97A8] fetchKeyAssetBySuggestionUUIDForSuggestions:v8 options:librarySpecificFetchOptions];
 
   return v9;
 }
 
-- (id)randomizeSuggestions:(id)a3
+- (id)randomizeSuggestions:(id)suggestions
 {
   v3 = MEMORY[0x277D3C810];
-  v4 = a3;
-  v5 = [v3 randomNumberGeneratorForWallpaperDonation];
+  suggestionsCopy = suggestions;
+  randomNumberGeneratorForWallpaperDonation = [v3 randomNumberGeneratorForWallpaperDonation];
   v6 = objc_alloc(MEMORY[0x277CBEB18]);
-  v7 = [v4 fetchedObjects];
+  fetchedObjects = [suggestionsCopy fetchedObjects];
 
-  v8 = [v6 initWithArray:v7];
+  v8 = [v6 initWithArray:fetchedObjects];
   PFMutableArrayShuffleWithRandomNumberGenerator();
 
   return v8;
 }
 
-- (id)randomizedWallpaperSuggesstionWithSubtype:(unsigned __int16)a3 suggestionUUIDsToAvoid:(id)a4
+- (id)randomizedWallpaperSuggesstionWithSubtype:(unsigned __int16)subtype suggestionUUIDsToAvoid:(id)avoid
 {
-  v4 = a3;
+  subtypeCopy = subtype;
   v26[3] = *MEMORY[0x277D85DE8];
   photoLibrary = self->_photoLibrary;
-  v7 = a4;
-  v8 = [(PHPhotoLibrary *)photoLibrary librarySpecificFetchOptions];
+  avoidCopy = avoid;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)photoLibrary librarySpecificFetchOptions];
   v9 = MEMORY[0x277CCA920];
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"state", 4];
   v26[0] = v10;
-  v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d", @"subtype", v4];
-  v26[1] = v11;
-  v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", v7];
+  subtypeCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d", @"subtype", subtypeCopy];
+  v26[1] = subtypeCopy;
+  avoidCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", avoidCopy];
 
-  v26[2] = v12;
+  v26[2] = avoidCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:3];
   v14 = [v9 andPredicateWithSubpredicates:v13];
-  [v8 setPredicate:v14];
+  [librarySpecificFetchOptions setPredicate:v14];
 
-  v15 = [MEMORY[0x277CD99E0] fetchAllFeaturedStateEnabledSuggestionsWithOptions:v8];
+  v15 = [MEMORY[0x277CD99E0] fetchAllFeaturedStateEnabledSuggestionsWithOptions:librarySpecificFetchOptions];
   loggingConnection = self->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
@@ -2533,10 +2533,10 @@ LABEL_21:
   return v20;
 }
 
-- (id)fetchSuggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:(id)a3
+- (id)fetchSuggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:(id)avoid
 {
   v62[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  avoidCopy = avoid;
   v5 = self->_loggingConnection;
   v6 = os_signpost_id_generate(v5);
   info = 0;
@@ -2554,20 +2554,20 @@ LABEL_21:
   v41 = v8;
 
   v39 = mach_absolute_time();
-  v9 = [(PHAWallpaperSuggestionRefreshSession *)self randomizedWallpaperSuggesstionWithSubtype:602 suggestionUUIDsToAvoid:v4];
-  v10 = [v9 objectEnumerator];
-  v62[0] = v10;
-  v11 = [(PHAWallpaperSuggestionRefreshSession *)self randomizedWallpaperSuggesstionWithSubtype:603 suggestionUUIDsToAvoid:v4];
-  v12 = [v11 objectEnumerator];
-  v62[1] = v12;
-  v13 = [(PHAWallpaperSuggestionRefreshSession *)self randomizedWallpaperSuggesstionWithSubtype:604 suggestionUUIDsToAvoid:v4];
-  v14 = [v13 objectEnumerator];
-  v62[2] = v14;
-  v40 = self;
-  v43 = v4;
-  v15 = [(PHAWallpaperSuggestionRefreshSession *)self randomizedWallpaperSuggesstionWithSubtype:605 suggestionUUIDsToAvoid:v4];
-  v16 = [v15 objectEnumerator];
-  v62[3] = v16;
+  v9 = [(PHAWallpaperSuggestionRefreshSession *)self randomizedWallpaperSuggesstionWithSubtype:602 suggestionUUIDsToAvoid:avoidCopy];
+  objectEnumerator = [v9 objectEnumerator];
+  v62[0] = objectEnumerator;
+  v11 = [(PHAWallpaperSuggestionRefreshSession *)self randomizedWallpaperSuggesstionWithSubtype:603 suggestionUUIDsToAvoid:avoidCopy];
+  objectEnumerator2 = [v11 objectEnumerator];
+  v62[1] = objectEnumerator2;
+  v13 = [(PHAWallpaperSuggestionRefreshSession *)self randomizedWallpaperSuggesstionWithSubtype:604 suggestionUUIDsToAvoid:avoidCopy];
+  objectEnumerator3 = [v13 objectEnumerator];
+  v62[2] = objectEnumerator3;
+  selfCopy = self;
+  v43 = avoidCopy;
+  v15 = [(PHAWallpaperSuggestionRefreshSession *)self randomizedWallpaperSuggesstionWithSubtype:605 suggestionUUIDsToAvoid:avoidCopy];
+  objectEnumerator4 = [v15 objectEnumerator];
+  v62[3] = objectEnumerator4;
   v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:4];
 
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2602,30 +2602,30 @@ LABEL_21:
             objc_enumerationMutation(v21);
           }
 
-          v27 = [*(*(&v46 + 1) + 8 * i) nextObject];
-          if (v27)
+          nextObject = [*(*(&v46 + 1) + 8 * i) nextObject];
+          if (nextObject)
           {
-            [v17 addObject:v27];
-            v28 = [v27 subtype];
-            if (v28 > 603)
+            [v17 addObject:nextObject];
+            subtype = [nextObject subtype];
+            if (subtype > 603)
             {
-              if (v28 == 604)
+              if (subtype == 604)
               {
                 ++v18;
               }
 
-              else if (v28 == 605)
+              else if (subtype == 605)
               {
                 ++v45;
               }
             }
 
-            else if (v28 == 602)
+            else if (subtype == 602)
             {
               ++*&v20;
             }
 
-            else if (v28 == 603)
+            else if (subtype == 603)
             {
               ++v19;
             }
@@ -2662,7 +2662,7 @@ LABEL_29:
   }
 
   while (v24 < [v21 count]);
-  loggingConnection = v40->_loggingConnection;
+  loggingConnection = selfCopy->_loggingConnection;
   if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
     v30 = loggingConnection;
@@ -2703,10 +2703,10 @@ LABEL_29:
   return v17;
 }
 
-- (id)suggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:(id)a3
+- (id)suggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:(id)avoid
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  avoidCopy = avoid;
   v5 = self->_loggingConnection;
   v6 = os_signpost_id_generate(v5);
   info = 0;
@@ -2730,7 +2730,7 @@ LABEL_29:
 
   if (PLIsFeaturedContentAllowed())
   {
-    v12 = [(PHAWallpaperSuggestionRefreshSession *)self fetchSuggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:v4];
+    v12 = [(PHAWallpaperSuggestionRefreshSession *)self fetchSuggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:avoidCopy];
     v13 = mach_absolute_time();
     numer = info.numer;
     denom = info.denom;
@@ -2791,10 +2791,10 @@ LABEL_29:
   return v12;
 }
 
-- (id)featuredPhotoDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)a3 count:(unint64_t)a4
+- (id)featuredPhotoDescriptorsForDonationWithSuggestionUUIDsToAvoid:(id)avoid count:(unint64_t)count
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = [(PHAWallpaperSuggestionRefreshSession *)self suggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:a3];
+  v6 = [(PHAWallpaperSuggestionRefreshSession *)self suggestionsForGalleryDonationWithSuggestionUUIDsToAvoid:avoid];
   if ([v6 count])
   {
     v7 = [(PHAWallpaperSuggestionRefreshSession *)self uuidsOfSuggestions:v6];
@@ -2810,17 +2810,17 @@ LABEL_29:
     }
 
     v10 = [v6 count];
-    if (v10 >= a4)
+    if (v10 >= count)
     {
-      v11 = a4;
+      countCopy = count;
     }
 
     else
     {
-      v11 = v10;
+      countCopy = v10;
     }
 
-    v12 = [v6 subarrayWithRange:{0, v11}];
+    v12 = [v6 subarrayWithRange:{0, countCopy}];
     v13 = [(PHAWallpaperSuggestionRefreshSession *)self updatedPosterDescriptorsFromSuggestions:v12];
     v14 = self->_loggingConnection;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -2850,14 +2850,14 @@ LABEL_29:
   return v13;
 }
 
-- (void)refreshPosterConfigurationsForNightlyRefresh:(BOOL)a3 progressReporter:(id)a4 passingFilter:(id)a5 withCompletion:(id)a6
+- (void)refreshPosterConfigurationsForNightlyRefresh:(BOOL)refresh progressReporter:(id)reporter passingFilter:(id)filter withCompletion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  reporterCopy = reporter;
+  filterCopy = filter;
+  completionCopy = completion;
   if (self->_refreshSessionIdentifier)
   {
-    v13 = v10;
+    v13 = reporterCopy;
     *v33 = 0;
     v34 = v33;
     v35 = 0x2020000000;
@@ -2874,7 +2874,7 @@ LABEL_29:
       }
 
       v16 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:16];
-      v12[2](v12, 0, v16);
+      completionCopy[2](completionCopy, 0, v16);
     }
 
     else
@@ -2887,15 +2887,15 @@ LABEL_29:
       v23[2] = __131__PHAWallpaperSuggestionRefreshSession_refreshPosterConfigurationsForNightlyRefresh_progressReporter_passingFilter_withCompletion___block_invoke;
       v23[3] = &unk_2788B2908;
       v23[4] = self;
-      v28 = v12;
+      v28 = completionCopy;
       v30 = v33;
       v24 = v13;
-      v29 = v11;
+      v29 = filterCopy;
       v21 = v19;
       v25 = v21;
       v22 = v20;
       v26 = v22;
-      v31 = a3;
+      refreshCopy = refresh;
       v16 = v18;
       v27 = v16;
       [(PRSService *)v16 fetchPosterConfigurationsForExtension:@"com.apple.PhotosUIPrivate.PhotosPosterProvider" completion:v23];
@@ -2914,7 +2914,7 @@ LABEL_29:
     }
 
     v13 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:2];
-    v12[2](v12, 0, v13);
+    completionCopy[2](completionCopy, 0, v13);
   }
 }
 
@@ -3866,14 +3866,14 @@ void __131__PHAWallpaperSuggestionRefreshSession_refreshPosterConfigurationsForN
   dispatch_group_leave(*(a1 + 96));
 }
 
-- (void)refreshPosterDescriptorsWithProgressReporter:(id)a3 completion:(id)a4
+- (void)refreshPosterDescriptorsWithProgressReporter:(id)reporter completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  reporterCopy = reporter;
+  completionCopy = completion;
   if (self->_refreshSessionIdentifier)
   {
-    v8 = v6;
+    v8 = reporterCopy;
     *v21 = 0;
     v22 = v21;
     v23 = 0x2020000000;
@@ -3890,7 +3890,7 @@ void __131__PHAWallpaperSuggestionRefreshSession_refreshPosterConfigurationsForN
       }
 
       v11 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:16];
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
     }
 
     else
@@ -3898,9 +3898,9 @@ void __131__PHAWallpaperSuggestionRefreshSession_refreshPosterConfigurationsForN
       v13 = loggingConnection;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [objc_opt_class() lastGalleryRefreshDate];
+        lastGalleryRefreshDate = [objc_opt_class() lastGalleryRefreshDate];
         *buf = 138412290;
-        v26 = v14;
+        v26 = lastGalleryRefreshDate;
         _os_log_impl(&dword_22FA28000, v13, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] LastGalleryRefreshDate: %@", buf, 0xCu);
       }
 
@@ -3910,7 +3910,7 @@ void __131__PHAWallpaperSuggestionRefreshSession_refreshPosterConfigurationsForN
       v16[2] = __96__PHAWallpaperSuggestionRefreshSession_refreshPosterDescriptorsWithProgressReporter_completion___block_invoke;
       v16[3] = &unk_2788B2838;
       v16[4] = self;
-      v19 = v7;
+      v19 = completionCopy;
       v20 = v21;
       v17 = v8;
       v18 = v17;
@@ -3930,7 +3930,7 @@ void __131__PHAWallpaperSuggestionRefreshSession_refreshPosterConfigurationsForN
     }
 
     v8 = [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:2];
-    v7[2](v7, 0, v8);
+    completionCopy[2](completionCopy, 0, v8);
   }
 }
 
@@ -4604,10 +4604,10 @@ void __96__PHAWallpaperSuggestionRefreshSession_refreshPosterDescriptorsWithProg
   v17 = *MEMORY[0x277D85DE8];
   if (self->_refreshSessionIdentifier)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     refreshSessionURL = self->_refreshSessionURL;
     v12 = 0;
-    v5 = [v3 removeItemAtURL:refreshSessionURL error:&v12];
+    v5 = [defaultManager removeItemAtURL:refreshSessionURL error:&v12];
     v6 = v12;
 
     loggingConnection = self->_loggingConnection;
@@ -4658,13 +4658,13 @@ void __96__PHAWallpaperSuggestionRefreshSession_refreshPosterDescriptorsWithProg
   dispatch_sync(workQueue, block);
 }
 
-- (BOOL)_prepareWithError:(id *)a3
+- (BOOL)_prepareWithError:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
   refreshSessionIdentifier = self->_refreshSessionIdentifier;
   if (refreshSessionIdentifier)
   {
-    if (a3)
+    if (error)
     {
       loggingConnection = self->_loggingConnection;
       if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
@@ -4675,7 +4675,7 @@ void __96__PHAWallpaperSuggestionRefreshSession_refreshPosterDescriptorsWithProg
       }
 
       [MEMORY[0x277CCA9B8] pl_analysisErrorWithCode:2];
-      *a3 = LOBYTE(v7) = 0;
+      *error = LOBYTE(v7) = 0;
     }
 
     else
@@ -4686,10 +4686,10 @@ void __96__PHAWallpaperSuggestionRefreshSession_refreshPosterDescriptorsWithProg
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     v10 = self->_refreshSessionIdentifier;
-    self->_refreshSessionIdentifier = v9;
+    self->_refreshSessionIdentifier = uUIDString;
 
     v11 = self->_loggingConnection;
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -4708,10 +4708,10 @@ void __96__PHAWallpaperSuggestionRefreshSession_refreshPosterDescriptorsWithProg
     refreshSessionURL = self->_refreshSessionURL;
     self->_refreshSessionURL = v16;
 
-    v18 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v19 = self->_refreshSessionURL;
     v27 = 0;
-    v7 = [v18 createDirectoryAtURL:v19 withIntermediateDirectories:1 attributes:0 error:&v27];
+    v7 = [defaultManager createDirectoryAtURL:v19 withIntermediateDirectories:1 attributes:0 error:&v27];
     v20 = v27;
 
     v21 = self->_loggingConnection;
@@ -4741,10 +4741,10 @@ void __96__PHAWallpaperSuggestionRefreshSession_refreshPosterDescriptorsWithProg
       v23 = self->_refreshSessionIdentifier;
       self->_refreshSessionIdentifier = 0;
 
-      if (a3)
+      if (error)
       {
         v24 = v20;
-        *a3 = v20;
+        *error = v20;
       }
     }
   }
@@ -4752,7 +4752,7 @@ void __96__PHAWallpaperSuggestionRefreshSession_refreshPosterDescriptorsWithProg
   return v7;
 }
 
-- (BOOL)prepareWithError:(id *)a3
+- (BOOL)prepareWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -4773,9 +4773,9 @@ void __96__PHAWallpaperSuggestionRefreshSession_refreshPosterDescriptorsWithProg
   block[5] = &v14;
   block[6] = &v8;
   dispatch_sync(workQueue, block);
-  if (a3)
+  if (error)
   {
-    *a3 = v9[5];
+    *error = v9[5];
   }
 
   v5 = *(v15 + 24);
@@ -4817,32 +4817,32 @@ void __57__PHAWallpaperSuggestionRefreshSession_prepareWithError___block_invoke(
   [(PHAWallpaperSuggestionRefreshSession *)&v5 dealloc];
 }
 
-- (PHAWallpaperSuggestionRefreshSession)initWithGraphManager:(id)a3
+- (PHAWallpaperSuggestionRefreshSession)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v24.receiver = self;
   v24.super_class = PHAWallpaperSuggestionRefreshSession;
   v6 = [(PHAWallpaperSuggestionRefreshSession *)&v24 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphManager, a3);
-    v8 = [v5 photoLibrary];
+    objc_storeStrong(&v6->_graphManager, manager);
+    photoLibrary = [managerCopy photoLibrary];
     photoLibrary = v7->_photoLibrary;
-    v7->_photoLibrary = v8;
+    v7->_photoLibrary = photoLibrary;
 
     v10 = objc_alloc_init(MEMORY[0x277D3EA00]);
     posterService = v7->_posterService;
     v7->_posterService = v10;
 
-    v12 = [MEMORY[0x277D267E8] analysisService];
+    analysisService = [MEMORY[0x277D267E8] analysisService];
     mediaAnalysisService = v7->_mediaAnalysisService;
-    v7->_mediaAnalysisService = v12;
+    v7->_mediaAnalysisService = analysisService;
 
-    v14 = [v5 workingContext];
-    v15 = [v14 loggingConnection];
+    workingContext = [managerCopy workingContext];
+    loggingConnection = [workingContext loggingConnection];
     loggingConnection = v7->_loggingConnection;
-    v7->_loggingConnection = v15;
+    v7->_loggingConnection = loggingConnection;
 
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_attr_make_with_qos_class(v17, QOS_CLASS_UTILITY, 0);
@@ -4851,9 +4851,9 @@ void __57__PHAWallpaperSuggestionRefreshSession_prepareWithError___block_invoke(
     workQueue = v7->_workQueue;
     v7->_workQueue = v19;
 
-    v21 = [v5 analytics];
+    analytics = [managerCopy analytics];
     analytics = v7->_analytics;
-    v7->_analytics = v21;
+    v7->_analytics = analytics;
   }
 
   return v7;
@@ -4861,51 +4861,51 @@ void __57__PHAWallpaperSuggestionRefreshSession_prepareWithError___block_invoke(
 
 + (id)lastGalleryRefreshDate
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"PHAWallpaperSuggestionLastGalleryRefreshDate"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"PHAWallpaperSuggestionLastGalleryRefreshDate"];
 
   return v3;
 }
 
-+ (void)saveLastGalleryRefreshDate:(id)a3 loggingConnection:(id)a4
++ (void)saveLastGalleryRefreshDate:(id)date loggingConnection:(id)connection
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 setObject:v5 forKey:@"PHAWallpaperSuggestionLastGalleryRefreshDate"];
+  dateCopy = date;
+  connectionCopy = connection;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:dateCopy forKey:@"PHAWallpaperSuggestionLastGalleryRefreshDate"];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
-    _os_log_impl(&dword_22FA28000, v6, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Saved lastGalleryRefreshDate: %@", &v8, 0xCu);
+    v9 = dateCopy;
+    _os_log_impl(&dword_22FA28000, connectionCopy, OS_LOG_TYPE_DEFAULT, "[PHAWallpaperSuggestionRefreshSession] Saved lastGalleryRefreshDate: %@", &v8, 0xCu);
   }
 }
 
-+ (void)refreshPosterConfigurationWithPosterService:(id)a3 retryCount:(int64_t)a4 configuration:(id)a5 sessionInfo:(id)a6 log:(id)a7 completion:(id)a8
++ (void)refreshPosterConfigurationWithPosterService:(id)service retryCount:(int64_t)count configuration:(id)configuration sessionInfo:(id)info log:(id)log completion:(id)completion
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  serviceCopy = service;
+  configurationCopy = configuration;
+  infoCopy = info;
+  logCopy = log;
+  completionCopy = completion;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __136__PHAWallpaperSuggestionRefreshSession_refreshPosterConfigurationWithPosterService_retryCount_configuration_sessionInfo_log_completion___block_invoke;
   v24[3] = &unk_2788B2930;
-  v25 = v17;
-  v26 = v15;
-  v30 = a4;
-  v31 = a1;
-  v27 = v14;
-  v28 = v16;
-  v29 = v18;
-  v19 = v18;
-  v20 = v16;
-  v21 = v14;
-  v22 = v15;
-  v23 = v17;
+  v25 = logCopy;
+  v26 = configurationCopy;
+  countCopy = count;
+  selfCopy = self;
+  v27 = serviceCopy;
+  v28 = infoCopy;
+  v29 = completionCopy;
+  v19 = completionCopy;
+  v20 = infoCopy;
+  v21 = serviceCopy;
+  v22 = configurationCopy;
+  v23 = logCopy;
   [v21 refreshPosterConfiguration:v22 sessionInfo:v20 completion:v24];
 }
 

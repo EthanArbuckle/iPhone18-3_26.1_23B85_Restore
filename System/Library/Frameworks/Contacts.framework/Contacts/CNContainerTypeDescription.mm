@@ -1,45 +1,45 @@
 @interface CNContainerTypeDescription
-- (BOOL)isConvertibleABValue:(void *)a3;
-- (BOOL)isValidValue:(id)a3 error:(id *)a4;
-- (BOOL)setABValue:(void *)a3 onABSource:(void *)a4 error:(__CFError *)a5;
-- (id)CNValueForContainer:(id)a3;
-- (id)CNValueFromABValue:(void *)a3;
-- (void)ABValueFromCNValue:(id)a3;
-- (void)setCNValue:(id)a3 onContainer:(id)a4;
+- (BOOL)isConvertibleABValue:(void *)value;
+- (BOOL)isValidValue:(id)value error:(id *)error;
+- (BOOL)setABValue:(void *)value onABSource:(void *)source error:(__CFError *)error;
+- (id)CNValueForContainer:(id)container;
+- (id)CNValueFromABValue:(void *)value;
+- (void)ABValueFromCNValue:(id)value;
+- (void)setCNValue:(id)value onContainer:(id)container;
 @end
 
 @implementation CNContainerTypeDescription
 
-- (BOOL)isValidValue:(id)a3 error:(id *)a4
+- (BOOL)isValidValue:(id)value error:(id *)error
 {
-  v5 = [a3 integerValue];
-  v6 = v5;
-  if (v5 >= 4 && v5 - 1002 >= 3 && *a4)
+  integerValue = [value integerValue];
+  v6 = integerValue;
+  if (integerValue >= 4 && integerValue - 1002 >= 3 && *error)
   {
-    *a4 = [CNErrorFactory errorWithCode:301 userInfo:0];
+    *error = [CNErrorFactory errorWithCode:301 userInfo:0];
   }
 
   return v6 < 4 || v6 - 1002 < 3;
 }
 
-- (id)CNValueForContainer:(id)a3
+- (id)CNValueForContainer:(id)container
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 type];
+  type = [container type];
 
-  return [v3 numberWithInteger:v4];
+  return [v3 numberWithInteger:type];
 }
 
-- (void)setCNValue:(id)a3 onContainer:(id)a4
+- (void)setCNValue:(id)value onContainer:(id)container
 {
-  v5 = a4;
-  [v5 setType:{objc_msgSend(a3, "integerValue")}];
+  containerCopy = container;
+  [containerCopy setType:{objc_msgSend(value, "integerValue")}];
 }
 
-- (BOOL)isConvertibleABValue:(void *)a3
+- (BOOL)isConvertibleABValue:(void *)value
 {
   valuePtr = 0;
-  Value = CFNumberGetValue(a3, kCFNumberIntType, &valuePtr);
+  Value = CFNumberGetValue(value, kCFNumberIntType, &valuePtr);
   if (Value)
   {
     v4 = valuePtr > 7 || ((1 << valuePtr) & 0x93) == 0;
@@ -49,15 +49,15 @@
   return Value;
 }
 
-- (void)ABValueFromCNValue:(id)a3
+- (void)ABValueFromCNValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = +[CNiOSABConstantsMapping CNToABSourceTypeConstantsMapping];
-  v5 = [v4 mappedConstant:v3];
+  v5 = [v4 mappedConstant:valueCopy];
 
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v5 == v6)
+  if (v5 == null)
   {
     v7 = 0;
   }
@@ -70,24 +70,24 @@
   return v7;
 }
 
-- (id)CNValueFromABValue:(void *)a3
+- (id)CNValueFromABValue:(void *)value
 {
   v4 = +[CNiOSABConstantsMapping ABToCNContainerTypeConstantsMapping];
-  v5 = [v4 mappedConstant:a3];
+  v5 = [v4 mappedConstant:value];
 
   return v5;
 }
 
-- (BOOL)setABValue:(void *)a3 onABSource:(void *)a4 error:(__CFError *)a5
+- (BOOL)setABValue:(void *)value onABSource:(void *)source error:(__CFError *)error
 {
-  if (!a3)
+  if (!value)
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = CNContainerTypeDescription;
-  return [(CNContainerPropertyDescription *)&v6 setABValue:a3 onABSource:a4 error:a5];
+  return [(CNContainerPropertyDescription *)&v6 setABValue:value onABSource:source error:error];
 }
 
 @end

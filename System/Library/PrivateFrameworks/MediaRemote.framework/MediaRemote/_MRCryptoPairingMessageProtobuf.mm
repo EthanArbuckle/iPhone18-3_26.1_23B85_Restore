@@ -1,22 +1,22 @@
 @interface _MRCryptoPairingMessageProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsRetrying:(BOOL)a3;
-- (void)setHasIsUsingSystemPairing:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsRetrying:(BOOL)retrying;
+- (void)setHasIsUsingSystemPairing:(BOOL)pairing;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRCryptoPairingMessageProtobuf
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsRetrying:(BOOL)a3
+- (void)setHasIsRetrying:(BOOL)retrying
 {
-  if (a3)
+  if (retrying)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsUsingSystemPairing:(BOOL)a3
+- (void)setHasIsUsingSystemPairing:(BOOL)pairing
 {
-  if (a3)
+  if (pairing)
   {
     v3 = 8;
   }
@@ -65,20 +65,20 @@
   v8.receiver = self;
   v8.super_class = _MRCryptoPairingMessageProtobuf;
   v4 = [(_MRCryptoPairingMessageProtobuf *)&v8 description];
-  v5 = [(_MRCryptoPairingMessageProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRCryptoPairingMessageProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   pairingData = self->_pairingData;
   if (pairingData)
   {
-    [v3 setObject:pairingData forKey:@"pairingData"];
+    [dictionary setObject:pairingData forKey:@"pairingData"];
   }
 
   has = self->_has;
@@ -136,14 +136,14 @@ LABEL_8:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_pairingData)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -151,7 +151,7 @@ LABEL_8:
   {
     status = self->_status;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -172,7 +172,7 @@ LABEL_5:
 
   isRetrying = self->_isRetrying;
   PBDataWriterWriteBOOLField();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -188,33 +188,33 @@ LABEL_6:
 LABEL_13:
   isUsingSystemPairing = self->_isUsingSystemPairing;
   PBDataWriterWriteBOOLField();
-  v4 = v10;
+  toCopy = v10;
   if (*&self->_has)
   {
 LABEL_7:
     state = self->_state;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_pairingData)
   {
-    v6 = v4;
-    [v4 setPairingData:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setPairingData:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v4 + 5) = self->_status;
-    *(v4 + 28) |= 2u;
+    *(toCopy + 5) = self->_status;
+    *(toCopy + 28) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -233,8 +233,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 24) = self->_isRetrying;
-  *(v4 + 28) |= 4u;
+  *(toCopy + 24) = self->_isRetrying;
+  *(toCopy + 28) |= 4u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -248,22 +248,22 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(v4 + 25) = self->_isUsingSystemPairing;
-  *(v4 + 28) |= 8u;
+  *(toCopy + 25) = self->_isUsingSystemPairing;
+  *(toCopy + 28) |= 8u;
   if (*&self->_has)
   {
 LABEL_7:
-    *(v4 + 4) = self->_state;
-    *(v4 + 28) |= 1u;
+    *(toCopy + 4) = self->_state;
+    *(toCopy + 28) |= 1u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_pairingData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_pairingData copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -317,16 +317,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   pairingData = self->_pairingData;
-  if (pairingData | *(v4 + 1))
+  if (pairingData | *(equalCopy + 1))
   {
     if (![(NSData *)pairingData isEqual:?])
     {
@@ -336,47 +336,47 @@ LABEL_5:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 28) & 2) == 0 || self->_status != *(v4 + 5))
+    if ((*(equalCopy + 28) & 2) == 0 || self->_status != *(equalCopy + 5))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 28) & 2) != 0)
+  else if ((*(equalCopy + 28) & 2) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 28) & 4) == 0)
+    if ((*(equalCopy + 28) & 4) == 0)
     {
       goto LABEL_28;
     }
 
-    v7 = *(v4 + 24);
+    v7 = *(equalCopy + 24);
     if (self->_isRetrying)
     {
-      if ((*(v4 + 24) & 1) == 0)
+      if ((*(equalCopy + 24) & 1) == 0)
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(v4 + 24))
+    else if (*(equalCopy + 24))
     {
       goto LABEL_28;
     }
   }
 
-  else if ((*(v4 + 28) & 4) != 0)
+  else if ((*(equalCopy + 28) & 4) != 0)
   {
     goto LABEL_28;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 28) & 8) == 0)
+    if ((*(equalCopy + 28) & 8) == 0)
     {
       goto LABEL_13;
     }
@@ -386,30 +386,30 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if ((*(v4 + 28) & 8) == 0)
+  if ((*(equalCopy + 28) & 8) == 0)
   {
     goto LABEL_28;
   }
 
-  v8 = *(v4 + 25);
+  v8 = *(equalCopy + 25);
   if (self->_isUsingSystemPairing)
   {
-    if ((*(v4 + 25) & 1) == 0)
+    if ((*(equalCopy + 25) & 1) == 0)
     {
       goto LABEL_28;
     }
   }
 
-  else if (*(v4 + 25))
+  else if (*(equalCopy + 25))
   {
     goto LABEL_28;
   }
 
 LABEL_13:
-  v6 = (*(v4 + 28) & 1) == 0;
+  v6 = (*(equalCopy + 28) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 28) & 1) == 0 || self->_state != *(v4 + 4))
+    if ((*(equalCopy + 28) & 1) == 0 || self->_state != *(equalCopy + 4))
     {
       goto LABEL_28;
     }
@@ -477,22 +477,22 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(_MRCryptoPairingMessageProtobuf *)self setPairingData:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 2) != 0)
   {
-    self->_status = *(v4 + 5);
+    self->_status = *(fromCopy + 5);
     *&self->_has |= 2u;
-    v5 = *(v4 + 28);
+    v5 = *(fromCopy + 28);
     if ((v5 & 4) == 0)
     {
 LABEL_5:
@@ -505,14 +505,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 28) & 4) == 0)
+  else if ((*(fromCopy + 28) & 4) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_isRetrying = *(v4 + 24);
+  self->_isRetrying = *(fromCopy + 24);
   *&self->_has |= 4u;
-  v5 = *(v4 + 28);
+  v5 = *(fromCopy + 28);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -525,12 +525,12 @@ LABEL_6:
   }
 
 LABEL_13:
-  self->_isUsingSystemPairing = *(v4 + 25);
+  self->_isUsingSystemPairing = *(fromCopy + 25);
   *&self->_has |= 8u;
-  if (*(v4 + 28))
+  if (*(fromCopy + 28))
   {
 LABEL_7:
-    self->_state = *(v4 + 4);
+    self->_state = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

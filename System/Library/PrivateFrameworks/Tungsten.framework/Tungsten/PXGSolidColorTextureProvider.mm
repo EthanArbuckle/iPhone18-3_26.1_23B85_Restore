@@ -1,16 +1,16 @@
 @interface PXGSolidColorTextureProvider
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)_requestTextureForColor:(id)a3 targetSize:(CGSize)a4 traitCollection:(id)a5 requestID:(int)a6;
-- (void)viewEnvironmentDidChange:(id)a3;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)_requestTextureForColor:(id)color targetSize:(CGSize)size traitCollection:(id)collection requestID:(int)d;
+- (void)viewEnvironmentDidChange:(id)change;
 @end
 
 @implementation PXGSolidColorTextureProvider
 
-- (void)_requestTextureForColor:(id)a3 targetSize:(CGSize)a4 traitCollection:(id)a5 requestID:(int)a6
+- (void)_requestTextureForColor:(id)color targetSize:(CGSize)size traitCollection:(id)collection requestID:(int)d
 {
-  v6 = *&a6;
-  v9 = a3;
-  v10 = a5;
+  v6 = *&d;
+  colorCopy = color;
+  collectionCopy = collection;
   if ([(PXGTextureProvider *)self isRequestActive:v6])
   {
     if (PXPixelSizeAreaIsZero())
@@ -24,8 +24,8 @@
       v13[1] = 3221225472;
       v13[2] = __93__PXGSolidColorTextureProvider__requestTextureForColor_targetSize_traitCollection_requestID___block_invoke;
       v13[3] = &unk_2782AA0A8;
-      v14 = v9;
-      v15 = v10;
+      v14 = colorCopy;
+      v15 = collectionCopy;
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __93__PXGSolidColorTextureProvider__requestTextureForColor_targetSize_traitCollection_requestID___block_invoke_3;
@@ -64,26 +64,26 @@ void __93__PXGSolidColorTextureProvider__requestTextureForColor_targetSize_trait
   CGContextFillRect(a2, *&v11);
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  v12 = a7;
+  layoutCopy = layout;
   v37.receiver = self;
   v37.super_class = PXGSolidColorTextureProvider;
-  v29 = a6;
-  v13 = [(PXGTextureProvider *)&v37 requestTexturesForSpritesInRange:a3 geometries:a4 styles:a5 infos:a6 inLayout:v12];
+  infosCopy = infos;
+  v13 = [(PXGTextureProvider *)&v37 requestTexturesForSpritesInRange:range geometries:geometries styles:styles infos:infos inLayout:layoutCopy];
   v27 = v14;
   v28 = v13;
-  v15 = [v12 contentSource];
-  v16 = HIDWORD(*&a3);
-  if (HIDWORD(*&a3))
+  contentSource = [layoutCopy contentSource];
+  v16 = HIDWORD(*&range);
+  if (HIDWORD(*&range))
   {
     v17 = v28;
     do
     {
-      v18 = *(&v29->var3 + 5 * a3.location);
-      if (v15)
+      v18 = *(&infosCopy->var3 + 5 * range.location);
+      if (contentSource)
       {
-        [v15 colorAtIndex:a3 inLayout:v12];
+        [contentSource colorAtIndex:range inLayout:layoutCopy];
       }
 
       else
@@ -91,11 +91,11 @@ void __93__PXGSolidColorTextureProvider__requestTextureForColor_targetSize_trait
         [MEMORY[0x277D75348] magentaColor];
       }
       v19 = ;
-      v20 = [(PXGTextureProvider *)self viewEnvironment];
-      v21 = [v20 traitCollection];
+      viewEnvironment = [(PXGTextureProvider *)self viewEnvironment];
+      traitCollection = [viewEnvironment traitCollection];
 
       objc_initWeak(&location, self);
-      v22 = [(PXGTextureProvider *)self requestQueue];
+      requestQueue = [(PXGTextureProvider *)self requestQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __98__PXGSolidColorTextureProvider_requestTexturesForSpritesInRange_geometries_styles_infos_inLayout___block_invoke;
@@ -103,16 +103,16 @@ void __93__PXGSolidColorTextureProvider__requestTextureForColor_targetSize_trait
       objc_copyWeak(&v33, &location);
       v34 = vcvtq_f64_f32(v18);
       v31 = v19;
-      v32 = v21;
+      v32 = traitCollection;
       v35 = v17;
-      v23 = v21;
+      v23 = traitCollection;
       v24 = v19;
-      dispatch_async(v22, block);
+      dispatch_async(requestQueue, block);
 
       objc_destroyWeak(&v33);
       objc_destroyWeak(&location);
       ++v17;
-      a3 = (a3.location + 1);
+      range = (range.location + 1);
       --v16;
     }
 
@@ -132,23 +132,23 @@ void __98__PXGSolidColorTextureProvider_requestTexturesForSpritesInRange_geometr
   [WeakRetained _requestTextureForColor:*(a1 + 32) targetSize:*(a1 + 40) traitCollection:*(a1 + 72) requestID:{*(a1 + 56), *(a1 + 64)}];
 }
 
-- (void)viewEnvironmentDidChange:(id)a3
+- (void)viewEnvironmentDidChange:(id)change
 {
-  v10 = a3;
-  v4 = [(PXGTextureProvider *)self viewEnvironment];
-  v5 = [v4 traitCollection];
-  v6 = [v10 traitCollection];
-  if (v5 != v6 && ([v5 isEqual:v6] & 1) == 0)
+  changeCopy = change;
+  viewEnvironment = [(PXGTextureProvider *)self viewEnvironment];
+  traitCollection = [viewEnvironment traitCollection];
+  traitCollection2 = [changeCopy traitCollection];
+  if (traitCollection != traitCollection2 && ([traitCollection isEqual:traitCollection2] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v7 = [(PXGTextureProvider *)self viewEnvironment];
-  v8 = [v7 userInterfaceStyle];
-  v9 = [v10 userInterfaceStyle];
+  viewEnvironment2 = [(PXGTextureProvider *)self viewEnvironment];
+  userInterfaceStyle = [viewEnvironment2 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v8 != v9)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 LABEL_6:
     [(PXGCGImageTextureProvider *)self invalidateCache];

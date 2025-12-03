@@ -1,23 +1,23 @@
 @interface FMR1ItemLocalizerContext
 - (NSString)description;
 - (_TtC11FMFindingUI24FMR1ItemLocalizerContext)init;
-- (void)didFailWithError:(id)a3;
-- (void)didUpdateDevicePose:(id)a3;
-- (void)didUpdateItemPosition:(id)a3;
-- (void)didUpdateRangeEstimate:(id)a3;
-- (void)itemChangedState:(unint64_t)a3;
-- (void)itemLocalizerChangedActivity:(unint64_t)a3;
-- (void)itemLocalizerChangedState:(unint64_t)a3;
-- (void)pathIsDegenerate:(id)a3;
-- (void)willIntegrateDevicePose:(id)a3;
-- (void)willIntegrateProximity:(id)a3;
+- (void)didFailWithError:(id)error;
+- (void)didUpdateDevicePose:(id)pose;
+- (void)didUpdateItemPosition:(id)position;
+- (void)didUpdateRangeEstimate:(id)estimate;
+- (void)itemChangedState:(unint64_t)state;
+- (void)itemLocalizerChangedActivity:(unint64_t)activity;
+- (void)itemLocalizerChangedState:(unint64_t)state;
+- (void)pathIsDegenerate:(id)degenerate;
+- (void)willIntegrateDevicePose:(id)pose;
+- (void)willIntegrateProximity:(id)proximity;
 @end
 
 @implementation FMR1ItemLocalizerContext
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A56B750();
 
   v3 = sub_24A62EBE4();
@@ -25,71 +25,71 @@
   return v3;
 }
 
-- (void)willIntegrateProximity:(id)a3
+- (void)willIntegrateProximity:(id)proximity
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A56BAB8(v4);
+  proximityCopy = proximity;
+  selfCopy = self;
+  sub_24A56BAB8(proximityCopy);
 }
 
-- (void)willIntegrateDevicePose:(id)a3
+- (void)willIntegrateDevicePose:(id)pose
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A56BCB8(v4);
+  poseCopy = pose;
+  selfCopy = self;
+  sub_24A56BCB8(poseCopy);
 }
 
-- (void)itemLocalizerChangedState:(unint64_t)a3
+- (void)itemLocalizerChangedState:(unint64_t)state
 {
-  v4 = self;
-  sub_24A56BEB8(a3);
+  selfCopy = self;
+  sub_24A56BEB8(state);
 }
 
-- (void)itemLocalizerChangedActivity:(unint64_t)a3
+- (void)itemLocalizerChangedActivity:(unint64_t)activity
 {
-  v4 = self;
-  sub_24A56C2C8(a3);
+  selfCopy = self;
+  sub_24A56C2C8(activity);
 }
 
-- (void)itemChangedState:(unint64_t)a3
+- (void)itemChangedState:(unint64_t)state
 {
-  v4 = self;
-  sub_24A56C640(a3);
+  selfCopy = self;
+  sub_24A56C640(state);
 }
 
-- (void)didUpdateRangeEstimate:(id)a3
+- (void)didUpdateRangeEstimate:(id)estimate
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A56CC74(v4);
+  estimateCopy = estimate;
+  selfCopy = self;
+  sub_24A56CC74(estimateCopy);
 }
 
-- (void)didUpdateItemPosition:(id)a3
+- (void)didUpdateItemPosition:(id)position
 {
-  v5 = a3;
-  v6 = self;
-  sub_24A56D15C(a3);
+  positionCopy = position;
+  selfCopy = self;
+  sub_24A56D15C(position);
 }
 
-- (void)didUpdateDevicePose:(id)a3
+- (void)didUpdateDevicePose:(id)pose
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A56D35C(v4);
+  poseCopy = pose;
+  selfCopy = self;
+  sub_24A56D35C(poseCopy);
 }
 
-- (void)pathIsDegenerate:(id)a3
+- (void)pathIsDegenerate:(id)degenerate
 {
-  v4 = a3;
-  v5 = self;
-  sub_24A56D558(v4);
+  degenerateCopy = degenerate;
+  selfCopy = self;
+  sub_24A56D558(degenerateCopy);
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v5 = a3;
-  v4 = self;
-  sub_24A56D8F4(v5);
+  errorCopy = error;
+  selfCopy = self;
+  sub_24A56D8F4(errorCopy);
 }
 
 - (_TtC11FMFindingUI24FMR1ItemLocalizerContext)init

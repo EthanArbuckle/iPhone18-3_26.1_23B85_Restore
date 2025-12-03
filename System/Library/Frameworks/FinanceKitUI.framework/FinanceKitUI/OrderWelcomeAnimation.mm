@@ -1,16 +1,16 @@
 @interface OrderWelcomeAnimation
-- (_TtC12FinanceKitUIP33_172278BA321E1BA0EC85D0F29C77481C21OrderWelcomeAnimation)initWithCoder:(id)a3;
-- (_TtC12FinanceKitUIP33_172278BA321E1BA0EC85D0F29C77481C21OrderWelcomeAnimation)initWithFrame:(CGRect)a3;
+- (_TtC12FinanceKitUIP33_172278BA321E1BA0EC85D0F29C77481C21OrderWelcomeAnimation)initWithCoder:(id)coder;
+- (_TtC12FinanceKitUIP33_172278BA321E1BA0EC85D0F29C77481C21OrderWelcomeAnimation)initWithFrame:(CGRect)frame;
 @end
 
 @implementation OrderWelcomeAnimation
 
-- (_TtC12FinanceKitUIP33_172278BA321E1BA0EC85D0F29C77481C21OrderWelcomeAnimation)initWithFrame:(CGRect)a3
+- (_TtC12FinanceKitUIP33_172278BA321E1BA0EC85D0F29C77481C21OrderWelcomeAnimation)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_23875ED50();
   sub_23875ED40();
   sub_23875ECE0();
@@ -24,7 +24,7 @@
   return v7;
 }
 
-- (_TtC12FinanceKitUIP33_172278BA321E1BA0EC85D0F29C77481C21OrderWelcomeAnimation)initWithCoder:(id)a3
+- (_TtC12FinanceKitUIP33_172278BA321E1BA0EC85D0F29C77481C21OrderWelcomeAnimation)initWithCoder:(id)coder
 {
   sub_23875ED50();
   sub_23875ED40();

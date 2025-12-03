@@ -151,9 +151,9 @@ void __27__PLSSettings__getBootArgs__block_invoke(uint64_t a1)
 - (NSDictionary)infoPlistDict
 {
   v2 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v3 = [v2 infoDictionary];
+  infoDictionary = [v2 infoDictionary];
 
-  return v3;
+  return infoDictionary;
 }
 
 - (NSDictionary)streamDefaults
@@ -267,8 +267,8 @@ void __27__PLSSettings__getBootArgs__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = [(PLSSettings *)&v9 _checkOOLPortArrayEnforced];
-    [(PLSSettings *)v7 _getcamDispConfig];
+    _checkOOLPortArrayEnforced = [(PLSSettings *)&v9 _checkOOLPortArrayEnforced];
+    [(PLSSettings *)_checkOOLPortArrayEnforced _getcamDispConfig];
   }
 }
 
@@ -363,8 +363,8 @@ void __27__PLSSettings__getBootArgs__block_invoke(uint64_t a1)
 - (uint64_t)_checkOOLPortArrayEnforced
 {
   v13 = *MEMORY[0x277D85DE8];
-  *a1 = 0;
-  asprintf(a1, "Missing required boot-arg. Please add ool_port_array_enforced=0 to your boot-args to continue using Polaris on iOS. Please reach out to Polaris team if you have questions.");
+  *self = 0;
+  asprintf(self, "Missing required boot-arg. Please add ool_port_array_enforced=0 to your boot-args to continue using Polaris on iOS. Please reach out to Polaris team if you have questions.");
   v2 = __PLSLogSharedInstance();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_FAULT))
   {
@@ -395,7 +395,7 @@ void __27__PLSSettings__getBootArgs__block_invoke(uint64_t a1)
     usleep(0x1E8480u);
   }
 
-  v6 = *a1;
+  v6 = *self;
   v7 = abort_with_reason();
   return [PLSDevice getAriadneID:v7];
 }

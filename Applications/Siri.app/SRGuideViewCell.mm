@@ -2,27 +2,27 @@
 + (BOOL)_allowsTextToWrap;
 + (BOOL)placesImageAboveText;
 + (UIEdgeInsets)defaultInsets;
-+ (double)heightOfCellWithName:(id)a3 tagPhrase:(id)a4 width:(double)a5;
-- (SRGuideViewCell)initWithFrame:(CGRect)a3;
-- (void)setIconImage:(id)a3;
++ (double)heightOfCellWithName:(id)name tagPhrase:(id)phrase width:(double)width;
+- (SRGuideViewCell)initWithFrame:(CGRect)frame;
+- (void)setIconImage:(id)image;
 - (void)updateConstraints;
 @end
 
 @implementation SRGuideViewCell
 
-- (SRGuideViewCell)initWithFrame:(CGRect)a3
+- (SRGuideViewCell)initWithFrame:(CGRect)frame
 {
   v24.receiver = self;
   v24.super_class = SRGuideViewCell;
-  v3 = [(SRGuideViewCell *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SRGuideViewCell *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(SRGuideViewCell *)v3 setKeylineType:0];
     [(SRGuideViewCell *)v4 setHasChevron:1];
-    v5 = [(SRGuideViewCell *)v4 selectedBackgroundView];
+    selectedBackgroundView = [(SRGuideViewCell *)v4 selectedBackgroundView];
     v6 = +[UIColor siriui_lightHighlightColor];
-    [v5 setBackgroundColor:v6];
+    [selectedBackgroundView setBackgroundColor:v6];
 
     v7 = objc_alloc_init(UIImageView);
     iconImageView = v4->_iconImageView;
@@ -35,8 +35,8 @@
     v4->_nameLabel = v9;
 
     v11 = v4->_nameLabel;
-    v12 = [objc_opt_class() _nameLabelFont];
-    [(SiriSharedUIContentLabel *)v11 setFont:v12];
+    _nameLabelFont = [objc_opt_class() _nameLabelFont];
+    [(SiriSharedUIContentLabel *)v11 setFont:_nameLabelFont];
 
     v13 = v4->_nameLabel;
     v14 = +[UIColor siriui_lightTextColor];
@@ -48,8 +48,8 @@
     v4->_tagPhraseLabel = v15;
 
     v17 = v4->_tagPhraseLabel;
-    v18 = [objc_opt_class() _tagPhraseLabelFont];
-    [(SiriSharedUIContentLabel *)v17 setFont:v18];
+    _tagPhraseLabelFont = [objc_opt_class() _tagPhraseLabelFont];
+    [(SiriSharedUIContentLabel *)v17 setFont:_tagPhraseLabelFont];
 
     [(SiriSharedUIContentLabel *)v4->_tagPhraseLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v19 = v4->_tagPhraseLabel;
@@ -77,7 +77,7 @@
 + (BOOL)_allowsTextToWrap
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
   IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory();
 
   return IsAccessibilityContentSizeCategory;
@@ -86,7 +86,7 @@
 + (BOOL)placesImageAboveText
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v2 preferredContentSizeCategory];
   IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory();
 
   return IsAccessibilityContentSizeCategory;
@@ -181,43 +181,43 @@
   }
 }
 
-+ (double)heightOfCellWithName:(id)a3 tagPhrase:(id)a4 width:(double)a5
++ (double)heightOfCellWithName:(id)name tagPhrase:(id)phrase width:(double)width
 {
-  v8 = a3;
-  v9 = a4;
-  if ([a1 _allowsTextToWrap])
+  nameCopy = name;
+  phraseCopy = phrase;
+  if ([self _allowsTextToWrap])
   {
-    [a1 defaultInsets];
-    v11 = a5 - v10;
-    [a1 chevronTrailingMargin];
+    [self defaultInsets];
+    v11 = width - v10;
+    [self chevronTrailingMargin];
     v13 = v11 - v12;
     v33 = NSFontAttributeName;
-    v14 = [a1 _nameLabelFont];
-    v34 = v14;
+    _nameLabelFont = [self _nameLabelFont];
+    v34 = _nameLabelFont;
     v15 = [NSDictionary dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-    [v8 boundingRectWithSize:1 options:v15 attributes:0 context:{v13, 1.79769313e308}];
+    [nameCopy boundingRectWithSize:1 options:v15 attributes:0 context:{v13, 1.79769313e308}];
     v17 = v16 + 22.0;
 
     v31 = NSFontAttributeName;
-    v18 = [a1 _tagPhraseLabelFont];
-    v32 = v18;
+    _tagPhraseLabelFont = [self _tagPhraseLabelFont];
+    v32 = _tagPhraseLabelFont;
     v19 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-    [v9 boundingRectWithSize:1 options:v19 attributes:0 context:{v13, 1.79769313e308}];
+    [phraseCopy boundingRectWithSize:1 options:v19 attributes:0 context:{v13, 1.79769313e308}];
     v21 = v17 + v20;
   }
 
   else
   {
     v22 = +[UIApplication sharedApplication];
-    v23 = [v22 preferredContentSizeCategory];
+    preferredContentSizeCategory = [v22 preferredContentSizeCategory];
     v24 = _UIContentSizeCategoryCompareToContentSizeCategory();
 
     if (v24 == 1)
     {
-      v25 = [a1 _nameLabelFont];
-      [v25 lineHeight];
-      v26 = [a1 _tagPhraseLabelFont];
-      [v26 lineHeight];
+      _nameLabelFont2 = [self _nameLabelFont];
+      [_nameLabelFont2 lineHeight];
+      _tagPhraseLabelFont2 = [self _tagPhraseLabelFont];
+      [_tagPhraseLabelFont2 lineHeight];
 
       v27 = +[UIFont siriui_mediumWeightBodySizeFont];
       [v27 lineHeight];
@@ -234,7 +234,7 @@
     }
   }
 
-  if ([a1 placesImageAboveText])
+  if ([self placesImageAboveText])
   {
     v21 = v21 + 42.5;
   }
@@ -258,9 +258,9 @@
   return result;
 }
 
-- (void)setIconImage:(id)a3
+- (void)setIconImage:(id)image
 {
-  v4 = [a3 copy];
+  v4 = [image copy];
   iconImage = self->_iconImage;
   self->_iconImage = v4;
 

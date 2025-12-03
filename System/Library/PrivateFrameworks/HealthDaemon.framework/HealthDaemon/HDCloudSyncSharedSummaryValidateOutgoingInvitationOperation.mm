@@ -1,17 +1,17 @@
 @interface HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation
 - (CKUserIdentity)userIdentity;
-- (HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
+- (HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
 - (void)main;
-- (void)setUserIdentity:(id)a3;
+- (void)setUserIdentity:(id)identity;
 @end
 
 @implementation HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation
 
-- (HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5.receiver = self;
   v5.super_class = HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation;
-  result = [(HDCloudSyncOperation *)&v5 initWithConfiguration:a3 cloudState:a4];
+  result = [(HDCloudSyncOperation *)&v5 initWithConfiguration:configuration cloudState:state];
   if (result)
   {
     result->_lock._os_unfair_lock_opaque = 0;
@@ -20,18 +20,18 @@
   return result;
 }
 
-- (void)setUserIdentity:(id)a3
+- (void)setUserIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   if ([(HDCloudSyncOperation *)self status])
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"self.status == HDCloudSyncOperationStatusPending"}];
   }
 
   os_unfair_lock_lock(&self->_lock);
   userIdentity = self->_userIdentity;
-  self->_userIdentity = v5;
+  self->_userIdentity = identityCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -54,7 +54,7 @@
   {
     userIdentity = self->_userIdentity;
     *buf = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
     v27 = userIdentity;
     _os_log_impl(&dword_228986000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [summary-sharing] Beginning operation with user identity %{public}@", buf, 0x16u);
@@ -63,13 +63,13 @@
   v6 = self->_userIdentity;
   if (v6)
   {
-    v7 = [(CKUserIdentity *)v6 userRecordID];
-    v8 = [v7 recordName];
-    v9 = HDSummarySharingEntryPredicateForCloudKitIdentifierTypeStatusAndDirection(v8, 0, 0, 0);
+    userRecordID = [(CKUserIdentity *)v6 userRecordID];
+    recordName = [userRecordID recordName];
+    v9 = HDSummarySharingEntryPredicateForCloudKitIdentifierTypeStatusAndDirection(recordName, 0, 0, 0);
 
-    v10 = [(CKUserIdentity *)self->_userIdentity userRecordID];
-    v11 = [v10 recordName];
-    v12 = HDSummarySharingEntryPredicateForCloudKitIdentifierTypeStatusAndDirection(v11, 0, 1, 0);
+    userRecordID2 = [(CKUserIdentity *)self->_userIdentity userRecordID];
+    recordName2 = [userRecordID2 recordName];
+    v12 = HDSummarySharingEntryPredicateForCloudKitIdentifierTypeStatusAndDirection(recordName2, 0, 1, 0);
 
     v13 = MEMORY[0x277D10B20];
     v23[0] = v9;
@@ -77,18 +77,18 @@
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
     v15 = [v13 predicateMatchingAnyPredicates:v14];
 
-    v16 = [(HDCloudSyncOperation *)self configuration];
-    v17 = [v16 repository];
-    v18 = [v17 cloudSyncShimProvider];
-    v19 = [v18 summarySharingEntryShim];
+    configuration = [(HDCloudSyncOperation *)self configuration];
+    repository = [configuration repository];
+    cloudSyncShimProvider = [repository cloudSyncShimProvider];
+    summarySharingEntryShim = [cloudSyncShimProvider summarySharingEntryShim];
 
-    v20 = [(HDCloudSyncOperation *)self configuration];
+    configuration2 = [(HDCloudSyncOperation *)self configuration];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __67__HDCloudSyncSharedSummaryValidateOutgoingInvitationOperation_main__block_invoke;
     v22[3] = &unk_278614A68;
     v22[4] = self;
-    [v19 sharingEntryExistsWithPredicate:v15 configuration:v20 completion:v22];
+    [summarySharingEntryShim sharingEntryExistsWithPredicate:v15 configuration:configuration2 completion:v22];
   }
 
   else

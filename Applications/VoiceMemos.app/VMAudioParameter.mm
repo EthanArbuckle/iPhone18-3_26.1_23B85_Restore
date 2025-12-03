@@ -1,42 +1,42 @@
 @interface VMAudioParameter
-+ (id)parameterWithName:(id)a3 defaultValue:(float)a4 min:(float)a5 max:(float)a6 internalAddress:(int)a7 graphName:(id)a8;
-- (VMAudioParameter)initWithName:(id)a3 defaultValue:(float)a4 min:(float)a5 max:(float)a6 internalAddress:(int)a7 graphName:(id)a8;
++ (id)parameterWithName:(id)name defaultValue:(float)value min:(float)min max:(float)max internalAddress:(int)address graphName:(id)graphName;
+- (VMAudioParameter)initWithName:(id)name defaultValue:(float)value min:(float)min max:(float)max internalAddress:(int)address graphName:(id)graphName;
 - (float)currentValue;
 @end
 
 @implementation VMAudioParameter
 
-- (VMAudioParameter)initWithName:(id)a3 defaultValue:(float)a4 min:(float)a5 max:(float)a6 internalAddress:(int)a7 graphName:(id)a8
+- (VMAudioParameter)initWithName:(id)name defaultValue:(float)value min:(float)min max:(float)max internalAddress:(int)address graphName:(id)graphName
 {
-  v15 = a3;
-  v16 = a8;
+  nameCopy = name;
+  graphNameCopy = graphName;
   v20.receiver = self;
   v20.super_class = VMAudioParameter;
   v17 = [(VMAudioParameter *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_name, a3);
-    v18->_defaultValue = a4;
-    v18->_min = a5;
-    v18->_max = a6;
-    v18->_internalAddress = a7;
-    objc_storeStrong(&v18->_graphName, a8);
+    objc_storeStrong(&v17->_name, name);
+    v18->_defaultValue = value;
+    v18->_min = min;
+    v18->_max = max;
+    v18->_internalAddress = address;
+    objc_storeStrong(&v18->_graphName, graphName);
   }
 
   return v18;
 }
 
-+ (id)parameterWithName:(id)a3 defaultValue:(float)a4 min:(float)a5 max:(float)a6 internalAddress:(int)a7 graphName:(id)a8
++ (id)parameterWithName:(id)name defaultValue:(float)value min:(float)min max:(float)max internalAddress:(int)address graphName:(id)graphName
 {
-  v8 = *&a7;
-  v13 = a8;
-  v14 = a3;
+  v8 = *&address;
+  graphNameCopy = graphName;
+  nameCopy = name;
   v15 = [VMAudioParameter alloc];
-  *&v16 = a4;
-  *&v17 = a5;
-  *&v18 = a6;
-  v19 = [(VMAudioParameter *)v15 initWithName:v14 defaultValue:v8 min:v13 max:v16 internalAddress:v17 graphName:v18];
+  *&v16 = value;
+  *&v17 = min;
+  *&v18 = max;
+  v19 = [(VMAudioParameter *)v15 initWithName:nameCopy defaultValue:v8 min:graphNameCopy max:v16 internalAddress:v17 graphName:v18];
 
   return v19;
 }
@@ -44,8 +44,8 @@
 - (float)currentValue
 {
   v3 = +[NSUserDefaults standardUserDefaults];
-  v4 = [(VMAudioParameter *)self name];
-  v5 = [v3 objectForKey:v4];
+  name = [(VMAudioParameter *)self name];
+  v5 = [v3 objectForKey:name];
 
   if (v5)
   {

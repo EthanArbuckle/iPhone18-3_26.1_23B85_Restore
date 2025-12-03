@@ -1,23 +1,23 @@
 @interface BWStillImageCoreImageBlurMapRenderer
-- (id)initForRenderingWithContext:(id)a3 hairnetEnabled:(BOOL)a4;
-- (int)_allocateBlurMapPixelBufferPoolWithDimensions:(id)a3;
-- (int)_allocateBlurredGainMapPixleBufferPoolForBuffersOfWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5;
+- (id)initForRenderingWithContext:(id)context hairnetEnabled:(BOOL)enabled;
+- (int)_allocateBlurMapPixelBufferPoolWithDimensions:(id)dimensions;
+- (int)_allocateBlurredGainMapPixleBufferPoolForBuffersOfWidth:(unint64_t)width height:(unint64_t)height;
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key;
 - (void)dealloc;
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8;
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler;
 @end
 
 @implementation BWStillImageCoreImageBlurMapRenderer
 
-- (id)initForRenderingWithContext:(id)a3 hairnetEnabled:(BOOL)a4
+- (id)initForRenderingWithContext:(id)context hairnetEnabled:(BOOL)enabled
 {
   v8.receiver = self;
   v8.super_class = BWStillImageCoreImageBlurMapRenderer;
   v6 = [(BWStillImageCoreImageBlurMapRenderer *)&v8 init];
   if (v6)
   {
-    v6->_ciContext = a3;
-    v6->_hairnetEnabled = a4;
+    v6->_ciContext = context;
+    v6->_hairnetEnabled = enabled;
     v6->_blurMapFilter = [MEMORY[0x1E695F648] filterWithName:@"CIDepthEffectMakeBlurMap"];
   }
 
@@ -37,7 +37,7 @@
   [(BWStillImageCoreImageBlurMapRenderer *)&v4 dealloc];
 }
 
-- (int)_allocateBlurMapPixelBufferPoolWithDimensions:(id)a3
+- (int)_allocateBlurMapPixelBufferPoolWithDimensions:(id)dimensions
 {
   if (!self->_blurMapPixelBufferPool)
   {
@@ -51,7 +51,7 @@
       v4 = 843264104;
     }
 
-    var1 = a3.var1;
+    var1 = dimensions.var1;
     v12[0] = *MEMORY[0x1E6966208];
     v13[0] = [MEMORY[0x1E696AD98] numberWithInt:?];
     v12[1] = *MEMORY[0x1E69660B8];
@@ -76,14 +76,14 @@
   return 0;
 }
 
-- (int)_allocateBlurredGainMapPixleBufferPoolForBuffersOfWidth:(unint64_t)a3 height:(unint64_t)a4
+- (int)_allocateBlurredGainMapPixleBufferPoolForBuffersOfWidth:(unint64_t)width height:(unint64_t)height
 {
   if (!self->_blurredGainMapPixelBufferPool)
   {
     v19[0] = *MEMORY[0x1E6966208];
-    v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a3];
+    v20[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:width];
     v19[1] = *MEMORY[0x1E69660B8];
-    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:a4];
+    v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:height];
     v7 = *MEMORY[0x1E6966130];
     v20[1] = v6;
     v20[2] = &unk_1F2242760;
@@ -111,16 +111,16 @@
   return 0;
 }
 
-- (int)prepareForRenderingWithParameters:(id)a3 inputVideoFormat:(id)a4 inputMediaPropertiesByAttachedMediaKey:(id)a5
+- (int)prepareForRenderingWithParameters:(id)parameters inputVideoFormat:(id)format inputMediaPropertiesByAttachedMediaKey:(id)key
 {
-  result = [a3 prepareForRenderingWithInputVideoFormat:a4];
+  result = [parameters prepareForRenderingWithInputVideoFormat:format];
   if (!result)
   {
-    if (a4)
+    if (format)
     {
       if (!self->_blurMapPixelBufferPool)
       {
-        -[BWStillImageCoreImageBlurMapRenderer _allocateBlurMapPixelBufferPoolWithDimensions:](self, "_allocateBlurMapPixelBufferPoolWithDimensions:", FigCaptureScaledDimensions([a4 dimensions], 0.5));
+        -[BWStillImageCoreImageBlurMapRenderer _allocateBlurMapPixelBufferPoolWithDimensions:](self, "_allocateBlurMapPixelBufferPoolWithDimensions:", FigCaptureScaledDimensions([format dimensions], 0.5));
       }
 
       return 0;
@@ -135,32 +135,32 @@
   return result;
 }
 
-- (void)renderUsingParameters:(id)a3 inputPixelBuffer:(__CVBuffer *)a4 inputSampleBuffer:(opaqueCMSampleBuffer *)a5 originalPixelBuffer:(__CVBuffer *)a6 processedPixelBuffer:(__CVBuffer *)a7 completionHandler:(id)a8
+- (void)renderUsingParameters:(id)parameters inputPixelBuffer:(__CVBuffer *)buffer inputSampleBuffer:(opaqueCMSampleBuffer *)sampleBuffer originalPixelBuffer:(__CVBuffer *)pixelBuffer processedPixelBuffer:(__CVBuffer *)processedPixelBuffer completionHandler:(id)handler
 {
-  v8 = a8;
-  v9 = self;
-  v10 = 0;
-  v286 = 0;
+  handlerCopy = handler;
+  selfCopy = self;
+  selfCopy2 = 0;
+  selfCopy3 = 0;
   cf = 0;
   v11 = -12780;
-  if (!a4 || !a5)
+  if (!buffer || !sampleBuffer)
   {
     j = 0;
-    v13 = 0;
+    outputImage = 0;
     AttachedMedia = 0;
     value = 0;
     v203 = 0;
-    v15 = 0;
+    newPixelBuffer = 0;
 LABEL_91:
     v112 = v203;
-    if (!v10)
+    if (!selfCopy2)
     {
-      self = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:{0, a6, a7}];
-      v10 = self;
-      v286 = self;
+      self = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A768] code:v11 userInfo:{0, pixelBuffer, processedPixelBuffer}];
+      selfCopy2 = self;
+      selfCopy3 = self;
     }
 
-    if (v8)
+    if (handlerCopy)
     {
       goto LABEL_94;
     }
@@ -169,29 +169,29 @@ LABEL_91:
   }
 
   j = 0;
-  v13 = 0;
+  outputImage = 0;
   AttachedMedia = 0;
   value = 0;
   v203 = 0;
-  v15 = 0;
-  if (a8)
+  newPixelBuffer = 0;
+  if (handler)
   {
-    v195 = a8;
+    handlerCopy2 = handler;
     v203 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v18 = objc_autoreleasePoolPush();
-    AttachedMedia = BWSampleBufferGetAttachedMedia(a5, @"Depth");
-    v13 = BWSampleBufferGetAttachedMedia(a5, 0x1F21AABB0);
-    v19 = CMGetAttachment(a5, *off_1E798D348, 0);
+    AttachedMedia = BWSampleBufferGetAttachedMedia(sampleBuffer, @"Depth");
+    outputImage = BWSampleBufferGetAttachedMedia(sampleBuffer, 0x1F21AABB0);
+    v19 = CMGetAttachment(sampleBuffer, *off_1E798D348, 0);
     v20 = *off_1E798A3C8;
-    target = a5;
-    v21 = CMGetAttachment(a5, *off_1E798A3C8, 0);
+    target = sampleBuffer;
+    v21 = CMGetAttachment(sampleBuffer, *off_1E798A3C8, 0);
     context = v18;
     if (v21)
     {
       if (v19)
       {
         j = v21;
-        v22 = CMGetAttachment(a5, @"StillSettings", 0);
+        v22 = CMGetAttachment(sampleBuffer, @"StillSettings", 0);
         if (v22)
         {
           v185 = v22;
@@ -207,9 +207,9 @@ LABEL_91:
           j = 0x1E695F000uLL;
           v23 = MEMORY[0x1E695F990];
           v24 = MEMORY[0x1E695E118];
-          if (v13)
+          if (outputImage)
           {
-            ImageBuffer = CMSampleBufferGetImageBuffer(v13);
+            ImageBuffer = CMSampleBufferGetImageBuffer(outputImage);
             v283 = *v23;
             v284 = v24;
             v197 = ImageBuffer;
@@ -245,15 +245,15 @@ LABEL_91:
           }
 
           v281 = *v23;
-          v13 = v281;
+          outputImage = v281;
           v282 = v24;
-          v29 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:a4 options:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v282, &v281, 1)}];
+          v29 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:buffer options:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v282, &v281, 1)}];
           v183 = *MEMORY[0x1E695FAB0];
           [v203 setObject:v29 forKeyedSubscript:?];
-          v199 = v13;
+          v199 = outputImage;
           if (v197)
           {
-            v279 = v13;
+            v279 = outputImage;
             v280 = v24;
             v30 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:v197 options:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v280, &v279, 1)}];
           }
@@ -289,7 +289,7 @@ LABEL_91:
               [v203 setObject:v33 forKeyedSubscript:@"inputAuxDataMetadata"];
               if (v27)
               {
-                v273 = v13;
+                v273 = outputImage;
                 v274 = MEMORY[0x1E695E118];
                 v39 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:v27 options:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v274, &v273, 1)}];
               }
@@ -302,7 +302,7 @@ LABEL_91:
               [v203 setObject:v39 forKeyedSubscript:@"inputHairImage"];
               if (v207)
               {
-                v271 = v13;
+                v271 = outputImage;
                 v272 = MEMORY[0x1E695E118];
                 v40 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:v207 options:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v272, &v271, 1)}];
               }
@@ -369,15 +369,15 @@ LABEL_91:
                                 *(&v265 + 1) = v52;
                                 *&v266 = v53;
                                 *(&v266 + 1) = v54;
-                                v55 = [v47 normalizedPoints];
-                                v56 = [v47 pointCount];
+                                normalizedPoints = [v47 normalizedPoints];
+                                pointCount = [v47 pointCount];
                                 v57 = 0uLL;
-                                if (v56 >= 1)
+                                if (pointCount >= 1)
                                 {
-                                  v58 = v56 & 0x7FFFFFFF;
+                                  v58 = pointCount & 0x7FFFFFFF;
                                   do
                                   {
-                                    v59 = *v55++;
+                                    v59 = *normalizedPoints++;
                                     v57 = vaddq_f64(v57, v59);
                                     --v58;
                                   }
@@ -385,18 +385,18 @@ LABEL_91:
                                   while (v58);
                                 }
 
-                                v264 = vdivq_f64(v57, vdupq_lane_s64(COERCE__INT64(v56), 0));
+                                v264 = vdivq_f64(v57, vdupq_lane_s64(COERCE__INT64(pointCount), 0));
                                 v60 = &v269[64 * v209];
                                 sicibmr_landmarkToC0(v207, v264.f64, &v265, v60 + 2);
-                                v61 = [j normalizedPoints];
-                                v62 = [j pointCount];
+                                normalizedPoints2 = [j normalizedPoints];
+                                pointCount2 = [j pointCount];
                                 v63 = 0uLL;
-                                if (v62 >= 1)
+                                if (pointCount2 >= 1)
                                 {
-                                  v64 = v62 & 0x7FFFFFFF;
+                                  v64 = pointCount2 & 0x7FFFFFFF;
                                   do
                                   {
-                                    v65 = *v61++;
+                                    v65 = *normalizedPoints2++;
                                     v63 = vaddq_f64(v63, v65);
                                     --v64;
                                   }
@@ -406,15 +406,15 @@ LABEL_91:
 
                                 OUTLINED_FUNCTION_11_7();
                                 sicibmr_landmarkToC0(v207, v66, v67, v60 + 4);
-                                v68 = [v48 normalizedPoints];
-                                v69 = [v48 pointCount];
-                                if (v69 >= 1)
+                                normalizedPoints3 = [v48 normalizedPoints];
+                                pointCount3 = [v48 pointCount];
+                                if (pointCount3 >= 1)
                                 {
-                                  v70 = v69 & 0x7FFFFFFF;
+                                  v70 = pointCount3 & 0x7FFFFFFF;
                                   v71 = 0uLL;
                                   do
                                   {
-                                    v72 = *v68++;
+                                    v72 = *normalizedPoints3++;
                                     v71 = vaddq_f64(v71, v72);
                                     --v70;
                                   }
@@ -545,16 +545,16 @@ LABEL_73:
                 [v203 setObject:objc_msgSend(v99 forKeyedSubscript:{"vectorWithCGRect:", v98), @"inputFocusRect"}];
               }
 
-              [(CIFilter *)v9->_blurMapFilter setValuesForKeysWithDictionary:v203];
-              v13 = [(CIFilter *)v9->_blurMapFilter outputImage];
-              v15 = [(BWPixelBufferPool *)v9->_blurMapPixelBufferPool newPixelBuffer];
-              if (v15)
+              [(CIFilter *)selfCopy->_blurMapFilter setValuesForKeysWithDictionary:v203];
+              outputImage = [(CIFilter *)selfCopy->_blurMapFilter outputImage];
+              newPixelBuffer = [(BWPixelBufferPool *)selfCopy->_blurMapPixelBufferPool newPixelBuffer];
+              if (newPixelBuffer)
               {
-                sicibmr_renderToPixelBuffer(v9->_ciContext, v13, v15, &v286);
-                v8 = v195;
-                if (v286)
+                sicibmr_renderToPixelBuffer(selfCopy->_ciContext, outputImage, newPixelBuffer, &selfCopy3);
+                handlerCopy = handlerCopy2;
+                if (selfCopy3)
                 {
-                  v156 = v286;
+                  v156 = selfCopy3;
                   OUTLINED_FUNCTION_3_12();
                 }
 
@@ -566,10 +566,10 @@ LABEL_73:
                   {
                     v103 = CMSampleBufferGetImageBuffer(v100);
                     v104 = v103;
-                    if (!v9->_blurredGainMapPixelBufferPool)
+                    if (!selfCopy->_blurredGainMapPixelBufferPool)
                     {
                       Width = CVPixelBufferGetWidth(v103);
-                      [(BWStillImageCoreImageBlurMapRenderer *)v9 _allocateBlurredGainMapPixleBufferPoolForBuffersOfWidth:Width height:CVPixelBufferGetHeight(v104)];
+                      [(BWStillImageCoreImageBlurMapRenderer *)selfCopy _allocateBlurredGainMapPixleBufferPoolForBuffersOfWidth:Width height:CVPixelBufferGetHeight(v104)];
                     }
 
                     AttachedMedia = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -611,7 +611,7 @@ LABEL_73:
                     }
 
                     -[opaqueCMSampleBuffer setObject:forKeyedSubscript:](AttachedMedia, "setObject:forKeyedSubscript:", [v108 imageByApplyingFilter:@"CISRGBToneCurveToLinear"], v183);
-                    [(opaqueCMSampleBuffer *)AttachedMedia setObject:v13 forKeyedSubscript:@"inputBlurMap"];
+                    [(opaqueCMSampleBuffer *)AttachedMedia setObject:outputImage forKeyedSubscript:@"inputBlurMap"];
                     [(opaqueCMSampleBuffer *)AttachedMedia setObject:v108 forKeyedSubscript:@"inputGainMap"];
                     [(opaqueCMSampleBuffer *)AttachedMedia setObject:value forKeyedSubscript:@"inputAuxDataMetadata"];
                     [(opaqueCMSampleBuffer *)AttachedMedia setObject:v110 forKeyedSubscript:@"inputMatteImage"];
@@ -623,30 +623,30 @@ LABEL_73:
 
                     [(opaqueCMSampleBuffer *)AttachedMedia setObject:v189 forKeyedSubscript:@"inputLumaNoiseScale"];
                     [v209 setValuesForKeysWithDictionary:AttachedMedia];
-                    v13 = [(BWPixelBufferPool *)v9->_blurredGainMapPixelBufferPool newPixelBuffer];
-                    if (!v13)
+                    outputImage = [(BWPixelBufferPool *)selfCopy->_blurredGainMapPixelBufferPool newPixelBuffer];
+                    if (!outputImage)
                     {
                       v11 = -12786;
                       goto LABEL_89;
                     }
 
-                    v126 = [v209 outputImage];
+                    outputImage2 = [v209 outputImage];
                     v252 = @"inputRVector";
                     v255 = OUTLINED_FUNCTION_8_14();
                     v253 = @"inputGVector";
                     v256 = OUTLINED_FUNCTION_8_14();
                     v254 = @"inputBVector";
                     v257 = OUTLINED_FUNCTION_8_14();
-                    v127 = [v126 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v255, &v252, 3)}];
-                    CVBufferSetAttachment(v13, @"CVImageBufferTransferFunction", *MEMORY[0x1E6965F88], kCVAttachmentMode_ShouldPropagate);
-                    sicibmr_renderToPixelBuffer(v9->_ciContext, v127, v13, &v286);
-                    if (v286)
+                    v127 = [outputImage2 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v255, &v252, 3)}];
+                    CVBufferSetAttachment(outputImage, @"CVImageBufferTransferFunction", *MEMORY[0x1E6965F88], kCVAttachmentMode_ShouldPropagate);
+                    sicibmr_renderToPixelBuffer(selfCopy->_ciContext, v127, outputImage, &selfCopy3);
+                    if (selfCopy3)
                     {
-                      v165 = v286;
+                      v165 = selfCopy3;
                       goto LABEL_88;
                     }
 
-                    CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(v100, v13, &v9->_blurredGainMapFormatDescription, &cf);
+                    CopyWithNewPixelBuffer = BWCMSampleBufferCreateCopyWithNewPixelBuffer(v100, outputImage, &selfCopy->_blurredGainMapFormatDescription, &cf);
                     if (CopyWithNewPixelBuffer)
                     {
                       v11 = CopyWithNewPixelBuffer;
@@ -659,7 +659,7 @@ LABEL_73:
                     OUTLINED_FUNCTION_3_12();
                   }
 
-                  CMSetAttachment(target, @"PortraitStillImageFaceAdjustedBlurMap", v15, 1u);
+                  CMSetAttachment(target, @"PortraitStillImageFaceAdjustedBlurMap", newPixelBuffer, 1u);
                   CMSetAttachment(target, @"PortraitStillImageAuxDepthMetadata", value, 1u);
                   BWSampleBufferSetAttachedMedia(target, 0x1F21AAE30, cf);
                 }
@@ -668,20 +668,20 @@ LABEL_88:
                 v11 = 0;
 LABEL_89:
                 objc_autoreleasePoolPop(context);
-                v10 = v286;
+                selfCopy2 = selfCopy3;
                 goto LABEL_90;
               }
 
               OUTLINED_FUNCTION_3_12();
               v11 = -12786;
 LABEL_141:
-              v8 = v195;
+              handlerCopy = handlerCopy2;
               goto LABEL_89;
             }
 
             OUTLINED_FUNCTION_3_12();
 LABEL_140:
-            v15 = 0;
+            newPixelBuffer = 0;
             v11 = -12780;
             goto LABEL_141;
           }
@@ -694,7 +694,7 @@ LABEL_139:
 
         FigCaptureGetFrameworkRadarComponent();
         v147 = OUTLINED_FUNCTION_1_22();
-        v155 = OUTLINED_FUNCTION_9_4(v147, v148, v149, v150, v151, v152, v153, v154, v166, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, key, v18, v195, v197, v199, 0, v203, a5, v207, v209, v211, v213, v215, v217, v219, v221, v223, v225, v227, v229, v231, v233, v235, v237, v239, v241, v243, v245, v246, v247, v248, v249, v250, v251, v252, v253, v254, v255, v256, v257, v258, v259, v260);
+        v155 = OUTLINED_FUNCTION_9_4(v147, v148, v149, v150, v151, v152, v153, v154, v166, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, key, v18, handlerCopy2, v197, v199, 0, v203, sampleBuffer, v207, v209, v211, v213, v215, v217, v219, v221, v223, v225, v227, v229, v231, v233, v235, v237, v239, v241, v243, v245, v246, v247, v248, v249, v250, v251, v252, v253, v254, v255, v256, v257, v258, v259, v260);
         if (OUTLINED_FUNCTION_12(v155))
         {
           LODWORD(v288) = 136315138;
@@ -714,7 +714,7 @@ LABEL_139:
       {
         FigCaptureGetFrameworkRadarComponent();
         v138 = OUTLINED_FUNCTION_1_22();
-        v146 = OUTLINED_FUNCTION_9_4(v138, v139, v140, v141, v142, v143, v144, v145, v166, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, key, v18, v195, v197, v199, 0, v203, a5, v207, v209, v211, v213, v215, v217, v219, v221, v223, v225, v227, v229, v231, v233, v235, v237, v239, v241, v243, v245, v246, v247, v248, v249, v250, v251, v252, v253, v254, v255, v256, v257, v258, v259, v260);
+        v146 = OUTLINED_FUNCTION_9_4(v138, v139, v140, v141, v142, v143, v144, v145, v166, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, key, v18, handlerCopy2, v197, v199, 0, v203, sampleBuffer, v207, v209, v211, v213, v215, v217, v219, v221, v223, v225, v227, v229, v231, v233, v235, v237, v239, v241, v243, v245, v246, v247, v248, v249, v250, v251, v252, v253, v254, v255, v256, v257, v258, v259, v260);
         if (OUTLINED_FUNCTION_12(v146))
         {
           LODWORD(v288) = 136315138;
@@ -735,7 +735,7 @@ LABEL_139:
     {
       FigCaptureGetFrameworkRadarComponent();
       v129 = OUTLINED_FUNCTION_1_22();
-      v137 = OUTLINED_FUNCTION_9_4(v129, v130, v131, v132, v133, v134, v135, v136, v166, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, key, v18, v195, v197, v199, 0, v203, a5, v207, v209, v211, v213, v215, v217, v219, v221, v223, v225, v227, v229, v231, v233, v235, v237, v239, v241, v243, v245, v246, v247, v248, v249, v250, v251, v252, v253, v254, v255, v256, v257, v258, v259, v260);
+      v137 = OUTLINED_FUNCTION_9_4(v129, v130, v131, v132, v133, v134, v135, v136, v166, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, key, v18, handlerCopy2, v197, v199, 0, v203, sampleBuffer, v207, v209, v211, v213, v215, v217, v219, v221, v223, v225, v227, v229, v231, v233, v235, v237, v239, v241, v243, v245, v246, v247, v248, v249, v250, v251, v252, v253, v254, v255, v256, v257, v258, v259, v260);
       if (OUTLINED_FUNCTION_12(v137))
       {
         LODWORD(v288) = 136315138;
@@ -752,7 +752,7 @@ LABEL_139:
     }
 
     FigCapturePleaseFileRadar(v157, v158, v159, v160, v161, v164, v162, v163, v168);
-    free(v13);
+    free(outputImage);
     goto LABEL_139;
   }
 
@@ -763,14 +763,14 @@ LABEL_90:
   }
 
   v112 = v203;
-  if (v8)
+  if (handlerCopy)
   {
 LABEL_94:
-    self = v8[2](v8, 0, v10);
+    self = handlerCopy[2](handlerCopy, 0, selfCopy2);
   }
 
 LABEL_95:
-  v113 = OUTLINED_FUNCTION_16_9(self, a2, v10, a4, a5, a6, a7, a8, v166, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, key, context, v195, v197, v199, value, v203, target, v207, v209, v211, v213, v215, v217, v219, v221, v223, v225, v227, v229, v231, v233, v235, v237, v239, v241, 0);
+  v113 = OUTLINED_FUNCTION_16_9(self, a2, selfCopy2, buffer, sampleBuffer, pixelBuffer, processedPixelBuffer, handler, v166, v169, v171, v173, v175, v177, v179, v181, v183, v185, v187, v189, key, context, handlerCopy2, v197, v199, value, v203, target, v207, v209, v211, v213, v215, v217, v219, v221, v223, v225, v227, v229, v231, v233, v235, v237, v239, v241, 0);
   if (v113)
   {
     v114 = v113;
@@ -785,10 +785,10 @@ LABEL_95:
         }
 
         v117 = *(8 * k);
-        v118 = [(NSArray *)[(CIFilter *)v9->_blurMapFilter inputKeys] containsObject:v117];
+        v118 = [(NSArray *)[(CIFilter *)selfCopy->_blurMapFilter inputKeys] containsObject:v117];
         if (v118)
         {
-          v118 = [(CIFilter *)v9->_blurMapFilter setValue:0 forKey:v117];
+          v118 = [(CIFilter *)selfCopy->_blurMapFilter setValue:0 forKey:v117];
         }
       }
 
@@ -803,9 +803,9 @@ LABEL_95:
     CFRelease(cf);
   }
 
-  if (v13)
+  if (outputImage)
   {
-    CFRelease(v13);
+    CFRelease(outputImage);
   }
 
   if (valuea)
@@ -813,9 +813,9 @@ LABEL_95:
     CFRelease(valuea);
   }
 
-  if (v15)
+  if (newPixelBuffer)
   {
-    CFRelease(v15);
+    CFRelease(newPixelBuffer);
   }
 
   if (j)

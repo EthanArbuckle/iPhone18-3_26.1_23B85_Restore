@@ -1,6 +1,6 @@
 @interface CKDLogicalDeviceContext
 + (id)defaultContext;
-+ (id)deviceContextForTestDeviceReference:(id)a3;
++ (id)deviceContextForTestDeviceReference:(id)reference;
 + (id)existingDefaultContext;
 - (BOOL)isDetachedTestServerReference;
 - (BOOL)isLiveDevice;
@@ -14,14 +14,14 @@
 - (CKDTokenRegistrationScheduler)tokenRegistrationScheduler;
 - (CKSQLiteDatabase)deviceScopedDatabase;
 - (NSURL)cacheDirectory;
-- (id)_initWithTestDeviceReference:(id)a3;
-- (id)deviceScopedPushTopic:(id)a3;
-- (id)optionForKey:(id)a3;
-- (id)pcsCacheForContainerID:(id)a3 accountOverrideInfo:(id)a4 accountID:(id)a5 encryptionServiceName:(id)a6;
-- (int64_t)BOOLOptionForKey:(id)a3;
+- (id)_initWithTestDeviceReference:(id)reference;
+- (id)deviceScopedPushTopic:(id)topic;
+- (id)optionForKey:(id)key;
+- (id)pcsCacheForContainerID:(id)d accountOverrideInfo:(id)info accountID:(id)iD encryptionServiceName:(id)name;
+- (int64_t)BOOLOptionForKey:(id)key;
 - (int64_t)pushBehavior;
-- (void)accountDataSecurityObserver:(id)a3 didUpdateManateeStatusForAccountID:(id)a4;
-- (void)accountDataSecurityObserver:(id)a3 didUpdateWalrusStatusForAccountID:(id)a4;
+- (void)accountDataSecurityObserver:(id)observer didUpdateManateeStatusForAccountID:(id)d;
+- (void)accountDataSecurityObserver:(id)observer didUpdateWalrusStatusForAccountID:(id)d;
 - (void)clearPCSMemoryCaches;
 @end
 
@@ -69,9 +69,9 @@
 
   if (v5 && (objc_msgSend_isDetachedTestServerReference(self, v6, v7) & 1) == 0)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    v8 = v9->_testServer;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v8 = selfCopy->_testServer;
     if (!v8)
     {
       if (CKRunningInClientProcess())
@@ -91,11 +91,11 @@
         if (!v18)
         {
           v31 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v16, v17);
-          objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v31, v32, a2, v9, @"CKDLogicalDeviceContext.m", 188, @"Couldn't find CKDTestServerManager in test process");
+          objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v31, v32, a2, selfCopy, @"CKDLogicalDeviceContext.m", 188, @"Couldn't find CKDTestServerManager in test process");
         }
 
         v19 = objc_msgSend_sharedManager(v18, v16, v17);
-        v22 = objc_msgSend_testDeviceReference(v9, v20, v21);
+        v22 = objc_msgSend_testDeviceReference(selfCopy, v20, v21);
         v25 = objc_msgSend_serverReferenceProtocol(v22, v23, v24);
         v8 = objc_msgSend_existingServerForReference_(v19, v26, v25);
 
@@ -112,11 +112,11 @@
         if (v29)
         {
           v33 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v27, v28);
-          v36 = objc_msgSend_testDeviceReference(v9, v34, v35);
-          objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v33, v37, a2, v9, @"CKDLogicalDeviceContext.m", 192, @"No such test device at %@", v36);
+          v36 = objc_msgSend_testDeviceReference(selfCopy, v34, v35);
+          objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v33, v37, a2, selfCopy, @"CKDLogicalDeviceContext.m", 192, @"No such test device at %@", v36);
         }
 
-        objc_storeStrong(&v9->_testServer, v8);
+        objc_storeStrong(&selfCopy->_testServer, v8);
       }
 
       else
@@ -125,7 +125,7 @@
       }
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -342,18 +342,18 @@ LABEL_12:
   return v2;
 }
 
-+ (id)deviceContextForTestDeviceReference:(id)a3
++ (id)deviceContextForTestDeviceReference:(id)reference
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5 && (*MEMORY[0x277CBC810] & 1) != 0)
+  referenceCopy = reference;
+  if (referenceCopy && (*MEMORY[0x277CBC810] & 1) != 0)
   {
     if (qword_280D58690 != -1)
     {
       dispatch_once(&qword_280D58690, &unk_28385EA60);
     }
 
-    v6 = objc_msgSend_deviceID(v5, v3, v4);
+    v6 = objc_msgSend_deviceID(referenceCopy, v3, v4);
     v9 = v6;
     v10 = @"NO_DEVICE_ID";
     if (v6)
@@ -362,7 +362,7 @@ LABEL_12:
     }
 
     v26[0] = v10;
-    v11 = objc_msgSend_serverReferenceProtocol(v5, v7, v8);
+    v11 = objc_msgSend_serverReferenceProtocol(referenceCopy, v7, v8);
     v15 = objc_msgSend_dataDirectory(v11, v12, v13);
     v16 = v15;
     if (!v15)
@@ -382,7 +382,7 @@ LABEL_12:
     if (!v20)
     {
       v21 = [CKDLogicalDeviceContext alloc];
-      v20 = objc_msgSend__initWithTestDeviceReference_(v21, v22, v5);
+      v20 = objc_msgSend__initWithTestDeviceReference_(v21, v22, referenceCopy);
       objc_msgSend_setObject_forKey_(qword_280D58698, v23, v20, v17);
     }
 
@@ -399,14 +399,14 @@ LABEL_12:
   return v20;
 }
 
-- (id)pcsCacheForContainerID:(id)a3 accountOverrideInfo:(id)a4 accountID:(id)a5 encryptionServiceName:(id)a6
+- (id)pcsCacheForContainerID:(id)d accountOverrideInfo:(id)info accountID:(id)iD encryptionServiceName:(id)name
 {
   v84 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v74 = a5;
-  v72 = self;
-  v73 = a6;
+  dCopy = d;
+  infoCopy = info;
+  iDCopy = iD;
+  selfCopy = self;
+  nameCopy = name;
   v15 = objc_msgSend_sharedPcsCaches(self, v13, v14);
 
   if (!v15)
@@ -420,21 +420,21 @@ LABEL_12:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v80 = v11;
+      v80 = dCopy;
       _os_log_debug_impl(&dword_22506F000, v62, OS_LOG_TYPE_DEBUG, "%{public}@ creating pcsCache", buf, 0xCu);
     }
 
     v63 = [CKDPCSCache alloc];
-    v56 = objc_msgSend_initWithDeviceContext_containerID_accountOverrideInfo_accountID_encryptionServiceName_(v63, v64, v72, v11, v12, v74, v73);
+    v56 = objc_msgSend_initWithDeviceContext_containerID_accountOverrideInfo_accountID_encryptionServiceName_(v63, v64, selfCopy, dCopy, infoCopy, iDCopy, nameCopy);
 LABEL_46:
     v56 = v56;
     isEqual = v56;
     goto LABEL_47;
   }
 
-  obj = objc_msgSend_sharedPcsCaches(v72, v16, v17);
+  obj = objc_msgSend_sharedPcsCaches(selfCopy, v16, v17);
   objc_sync_enter(obj);
-  v20 = objc_msgSend_sharedPcsCaches(v72, v18, v19);
+  v20 = objc_msgSend_sharedPcsCaches(selfCopy, v18, v19);
   v23 = objc_msgSend_allObjects(v20, v21, v22);
 
   if (*MEMORY[0x277CBC880] != -1)
@@ -446,7 +446,7 @@ LABEL_46:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v80 = v11;
+    v80 = dCopy;
     _os_log_debug_impl(&dword_22506F000, v24, OS_LOG_TYPE_DEBUG, "%{public}@ searching for eligible existing pcsCache", buf, 0xCu);
   }
 
@@ -470,7 +470,7 @@ LABEL_8:
 
       v32 = *(*(&v75 + 1) + 8 * v31);
       v33 = objc_msgSend_containerID(v32, v27, v28, obj);
-      isEqual = objc_msgSend_isEqual_(v33, v34, v11);
+      isEqual = objc_msgSend_isEqual_(v33, v34, dCopy);
 
       if ((isEqual & 1) == 0)
       {
@@ -479,14 +479,14 @@ LABEL_8:
 
       v35 = objc_msgSend_accountOverrideInfo(v32, v27, v28);
       v38 = v35;
-      if (v35 == v12)
+      if (v35 == infoCopy)
       {
       }
 
       else
       {
         isEqual = objc_msgSend_accountOverrideInfo(v32, v36, v37);
-        v40 = objc_msgSend_isEqual_(isEqual, v39, v12);
+        v40 = objc_msgSend_isEqual_(isEqual, v39, infoCopy);
 
         if (!v40)
         {
@@ -496,13 +496,13 @@ LABEL_8:
 
       v41 = objc_msgSend_accountID(v32, v27, v28);
       v44 = v41;
-      if (v41 == v74)
+      if (v41 == iDCopy)
       {
 
 LABEL_20:
         v47 = objc_msgSend_encryptionServiceName(v32, v27, v28);
         v50 = v47;
-        if (v47 == v73)
+        if (v47 == nameCopy)
         {
 
 LABEL_35:
@@ -515,7 +515,7 @@ LABEL_35:
           if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
           {
             *buf = 138543618;
-            v80 = v11;
+            v80 = dCopy;
             v81 = 2114;
             v82 = v32;
             _os_log_debug_impl(&dword_22506F000, v65, OS_LOG_TYPE_DEBUG, "%{public}@ found existing pcsCache %{public}@", buf, 0x16u);
@@ -545,7 +545,7 @@ LABEL_35:
         }
 
         isEqual = objc_msgSend_encryptionServiceName(v32, v48, v49);
-        v52 = objc_msgSend_isEqual_(isEqual, v51, v73);
+        v52 = objc_msgSend_isEqual_(isEqual, v51, nameCopy);
 
         if (v52)
         {
@@ -556,7 +556,7 @@ LABEL_35:
       }
 
       isEqual = objc_msgSend_accountID(v32, v42, v43);
-      v46 = objc_msgSend_isEqual_(isEqual, v45, v74);
+      v46 = objc_msgSend_isEqual_(isEqual, v45, iDCopy);
 
       if (v46)
       {
@@ -586,13 +586,13 @@ LABEL_22:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v80 = v11;
+    v80 = dCopy;
     _os_log_debug_impl(&dword_22506F000, v53, OS_LOG_TYPE_DEBUG, "%{public}@ creating pcsCache", buf, 0xCu);
   }
 
   v54 = [CKDPCSCache alloc];
-  v56 = objc_msgSend_initWithDeviceContext_containerID_accountOverrideInfo_accountID_encryptionServiceName_(v54, v55, v72, v11, v12, v74, v73);
-  v59 = objc_msgSend_sharedPcsCaches(v72, v57, v58);
+  v56 = objc_msgSend_initWithDeviceContext_containerID_accountOverrideInfo_accountID_encryptionServiceName_(v54, v55, selfCopy, dCopy, infoCopy, iDCopy, nameCopy);
+  v59 = objc_msgSend_sharedPcsCaches(selfCopy, v57, v58);
   objc_msgSend_addObject_(v59, v60, v56);
   v61 = 1;
 LABEL_45:
@@ -673,13 +673,13 @@ LABEL_47:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_initWithTestDeviceReference:(id)a3
+- (id)_initWithTestDeviceReference:(id)reference
 {
-  v8 = a3;
+  referenceCopy = reference;
   if (*MEMORY[0x277CBC810] == 1)
   {
     v9 = CKIsRunningInTestHost();
-    if (!v8)
+    if (!referenceCopy)
     {
       if (v9)
       {
@@ -698,7 +698,7 @@ LABEL_47:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_testDeviceReference, a3);
+    objc_storeStrong(&v12->_testDeviceReference, reference);
     v14 = [CKDAccountDataSecurityObserver alloc];
     v16 = objc_msgSend_initWithDeviceContext_(v14, v15, v13);
     v17 = *(v13 + 56);
@@ -772,24 +772,24 @@ LABEL_47:
 
 - (CKDLogicalDeviceScopedStateManager)deviceScopedStateManager
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  WeakRetained = objc_loadWeakRetained(&v2->_deviceScopedStateManager);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_deviceScopedStateManager);
   if (!WeakRetained)
   {
     v4 = [CKDLogicalDeviceScopedStateManager alloc];
-    WeakRetained = objc_msgSend_initWithDeviceContext_(v4, v5, v2);
-    objc_storeWeak(&v2->_deviceScopedStateManager, WeakRetained);
+    WeakRetained = objc_msgSend_initWithDeviceContext_(v4, v5, selfCopy);
+    objc_storeWeak(&selfCopy->_deviceScopedStateManager, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
-- (id)deviceScopedPushTopic:(id)a3
+- (id)deviceScopedPushTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   objc_msgSend_pushBehavior(self, v5, v6);
   v9 = objc_msgSend_testDeviceReference(self, v7, v8);
   v12 = objc_msgSend_deviceID(v9, v10, v11);
@@ -802,19 +802,19 @@ LABEL_47:
   return v25;
 }
 
-- (id)optionForKey:(id)a3
+- (id)optionForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7 = objc_msgSend_testDevice(self, v5, v6);
   v10 = objc_msgSend_options(v7, v8, v9);
-  v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, v4);
+  v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, keyCopy);
 
   return v12;
 }
 
-- (int64_t)BOOLOptionForKey:(id)a3
+- (int64_t)BOOLOptionForKey:(id)key
 {
-  v3 = objc_msgSend_optionForKey_(self, a2, a3);
+  v3 = objc_msgSend_optionForKey_(self, a2, key);
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -830,18 +830,18 @@ LABEL_47:
   return v6;
 }
 
-- (void)accountDataSecurityObserver:(id)a3 didUpdateManateeStatusForAccountID:(id)a4
+- (void)accountDataSecurityObserver:(id)observer didUpdateManateeStatusForAccountID:(id)d
 {
-  v4 = a4;
+  dCopy = d;
   v8 = objc_msgSend_sharedNotifier(CKDAccountNotifier, v5, v6);
-  objc_msgSend_postAccountChangedNotificationWithAccountID_changeType_(v8, v7, v4, 0);
+  objc_msgSend_postAccountChangedNotificationWithAccountID_changeType_(v8, v7, dCopy, 0);
 }
 
-- (void)accountDataSecurityObserver:(id)a3 didUpdateWalrusStatusForAccountID:(id)a4
+- (void)accountDataSecurityObserver:(id)observer didUpdateWalrusStatusForAccountID:(id)d
 {
-  v4 = a4;
+  dCopy = d;
   v8 = objc_msgSend_sharedNotifier(CKDAccountNotifier, v5, v6);
-  objc_msgSend_postAccountChangedNotificationWithAccountID_changeType_(v8, v7, v4, 0);
+  objc_msgSend_postAccountChangedNotificationWithAccountID_changeType_(v8, v7, dCopy, 0);
 }
 
 @end

@@ -1,50 +1,50 @@
 @interface RUISetupAssitantLayout
 + (CGSize)_preferredContentSizeInBuddy;
-- (BOOL)_isViewControllerInBuddyiPad:(id)a3;
-- (BOOL)_isViewControllerInFormSheet:(id)a3;
-- (CGSize)preferredContentSizeForViewController:(id)a3;
-- (NSDirectionalEdgeInsets)_insetsForViewController:(id)a3;
+- (BOOL)_isViewControllerInBuddyiPad:(id)pad;
+- (BOOL)_isViewControllerInFormSheet:(id)sheet;
+- (CGSize)preferredContentSizeForViewController:(id)controller;
+- (NSDirectionalEdgeInsets)_insetsForViewController:(id)controller;
 @end
 
 @implementation RUISetupAssitantLayout
 
-- (NSDirectionalEdgeInsets)_insetsForViewController:(id)a3
+- (NSDirectionalEdgeInsets)_insetsForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v5 directionalLayoutMargins];
+  controllerCopy = controller;
+  view = [controllerCopy view];
+  [view directionalLayoutMargins];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [MEMORY[0x277D75418] currentDevice];
-  if ([v14 userInterfaceIdiom])
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice userInterfaceIdiom])
   {
   }
 
   else
   {
-    v15 = [v4 traitCollection];
-    v16 = [v15 horizontalSizeClass];
+    traitCollection = [controllerCopy traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v16 == 2)
+    if (horizontalSizeClass == 2)
     {
       v11 = 5.0;
       goto LABEL_7;
     }
   }
 
-  v17 = [MEMORY[0x277D75418] currentDevice];
-  v18 = [v17 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-  if (v18 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v11 = 5.0;
-    if (![(RUISetupAssitantLayout *)self _isViewControllerInFormSheet:v4])
+    if (![(RUISetupAssitantLayout *)self _isViewControllerInFormSheet:controllerCopy])
     {
-      v19 = [v4 view];
-      [v19 bounds];
+      view2 = [controllerCopy view];
+      [view2 bounds];
       v13 = (v20 + -624.0) * 0.5;
 
       *&v7 = 0.0;
@@ -69,49 +69,49 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)_isViewControllerInFormSheet:(id)a3
+- (BOOL)_isViewControllerInFormSheet:(id)sheet
 {
-  v3 = a3;
-  v4 = [v3 navigationController];
+  sheetCopy = sheet;
+  navigationController = [sheetCopy navigationController];
 
-  if (v4)
+  if (navigationController)
   {
-    v5 = [v3 navigationController];
+    navigationController2 = [sheetCopy navigationController];
 
-    v3 = v5;
+    sheetCopy = navigationController2;
   }
 
-  v6 = [v3 modalPresentationStyle];
+  modalPresentationStyle = [sheetCopy modalPresentationStyle];
 
-  return v6 == 2;
+  return modalPresentationStyle == 2;
 }
 
-- (BOOL)_isViewControllerInBuddyiPad:(id)a3
+- (BOOL)_isViewControllerInBuddyiPad:(id)pad
 {
-  if (![a3 conformsToProtocol:&unk_282DBDD28])
+  if (![pad conformsToProtocol:&unk_282DBDD28])
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v4 = [currentDevice userInterfaceIdiom] == 1;
 
   return v4;
 }
 
 + (CGSize)_preferredContentSizeInBuddy
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v6 = v5;
 
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 bounds];
     v9 = v8;
 
     if (v6 >= v9)
@@ -139,19 +139,19 @@ LABEL_9:
   return result;
 }
 
-- (CGSize)preferredContentSizeForViewController:(id)a3
+- (CGSize)preferredContentSizeForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   [objc_opt_class() _preferredContentSizeInBuddy];
   v5 = v4;
   v7 = v6;
-  v8 = [v3 navigationController];
+  navigationController = [controllerCopy navigationController];
 
-  if (v8)
+  if (navigationController)
   {
-    v9 = [v3 navigationController];
-    v10 = [v9 navigationBar];
-    [v10 frame];
+    navigationController2 = [controllerCopy navigationController];
+    navigationBar = [navigationController2 navigationBar];
+    [navigationBar frame];
     v7 = v7 - CGRectGetHeight(v14);
   }
 

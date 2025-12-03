@@ -1,5 +1,5 @@
 @interface ComplicationCornerStackedGaugeViewRepresentable._CornerView
-- (_TtCV19ComplicationDisplay47ComplicationCornerStackedGaugeViewRepresentable11_CornerView)initWithFontFallback:(int64_t)a3;
+- (_TtCV19ComplicationDisplay47ComplicationCornerStackedGaugeViewRepresentable11_CornerView)initWithFontFallback:(int64_t)fallback;
 - (void)layoutSubviews;
 @end
 
@@ -20,7 +20,7 @@
   v8[2] = sub_243DA5F3C;
   v8[3] = &block_descriptor_1;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
 
   [v3 performWithoutAnimation_];
   _Block_release(v6);
@@ -32,11 +32,11 @@
   }
 }
 
-- (_TtCV19ComplicationDisplay47ComplicationCornerStackedGaugeViewRepresentable11_CornerView)initWithFontFallback:(int64_t)a3
+- (_TtCV19ComplicationDisplay47ComplicationCornerStackedGaugeViewRepresentable11_CornerView)initWithFontFallback:(int64_t)fallback
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for ComplicationCornerStackedGaugeViewRepresentable._CornerView();
-  return [(CDRichComplicationCornerGaugeTextView *)&v5 initWithFontFallback:a3];
+  return [(CDRichComplicationCornerGaugeTextView *)&v5 initWithFontFallback:fallback];
 }
 
 @end

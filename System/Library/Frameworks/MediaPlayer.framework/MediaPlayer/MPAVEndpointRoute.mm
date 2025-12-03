@@ -1,6 +1,6 @@
 @interface MPAVEndpointRoute
-+ (void)getActiveEndpointRouteWithCompletion:(id)a3;
-- (BOOL)_groupLeaderIsOfDeviceSubtype:(unsigned int)a3;
++ (void)getActiveEndpointRouteWithCompletion:(id)completion;
+- (BOOL)_groupLeaderIsOfDeviceSubtype:(unsigned int)subtype;
 - (BOOL)canModifyGroupMembership;
 - (BOOL)isAirPlayingToDevice;
 - (BOOL)isB520Route;
@@ -20,8 +20,8 @@
 - (BOOL)isTVRoute;
 - (BOOL)supportsGrouping;
 - (BOOL)supportsRemoteControl;
-- (MPAVEndpointRoute)initWithCoder:(id)a3;
-- (MPAVEndpointRoute)initWithEndpointObject:(id)a3;
+- (MPAVEndpointRoute)initWithCoder:(id)coder;
+- (MPAVEndpointRoute)initWithEndpointObject:(id)object;
 - (MPAVOutputDeviceRoute)predictedOutputDevice;
 - (MPAVRouteConnection)connection;
 - (MPMRAVEndpointWrapper)endpointWrapper;
@@ -42,34 +42,34 @@
 - (int64_t)originalRouteSubtype;
 - (int64_t)routeType;
 - (unint64_t)_outputDevicesComposition;
-- (void)_endpointDidChange:(id)a3;
-- (void)_endpointOutputDevicesDidChange:(id)a3;
-- (void)_endpointPredictedOutputDeviceDidChange:(id)a3;
+- (void)_endpointDidChange:(id)change;
+- (void)_endpointOutputDevicesDidChange:(id)change;
+- (void)_endpointPredictedOutputDeviceDidChange:(id)change;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)endpoint;
 - (void)establishGroup;
 - (void)resetPredictedOutputDevice;
-- (void)setConnection:(id)a3;
-- (void)setEndpointWrapper:(id)a3;
+- (void)setConnection:(id)connection;
+- (void)setEndpointWrapper:(id)wrapper;
 @end
 
 @implementation MPAVEndpointRoute
 
 - (BOOL)isDeviceRoute
 {
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 isLocalEndpoint];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  isLocalEndpoint = [endpointObject isLocalEndpoint];
 
-  return v3;
+  return isLocalEndpoint;
 }
 
 - (MRAVEndpoint)endpointObject
 {
-  v2 = [(MPAVEndpointRoute *)self endpointWrapper];
-  v3 = [v2 unwrappedValue];
+  endpointWrapper = [(MPAVEndpointRoute *)self endpointWrapper];
+  unwrappedValue = [endpointWrapper unwrappedValue];
 
-  return v3;
+  return unwrappedValue;
 }
 
 - (MPMRAVEndpointWrapper)endpointWrapper
@@ -89,42 +89,42 @@
 
 - (id)effectiveGroupLeader
 {
-  v2 = [(MPAVEndpointRoute *)self endpoint];
-  v3 = [v2 groupLeader];
-  if (![v3 supportsMultiplayer] || objc_msgSend(v2, "isLocalEndpoint"))
+  endpoint = [(MPAVEndpointRoute *)self endpoint];
+  groupLeader = [endpoint groupLeader];
+  if (![groupLeader supportsMultiplayer] || objc_msgSend(endpoint, "isLocalEndpoint"))
   {
 
 LABEL_4:
-    v4 = [v2 groupLeader];
+    groupLeader2 = [endpoint groupLeader];
     goto LABEL_5;
   }
 
-  v6 = [v2 outputDeviceUIDs];
-  v7 = [v2 groupLeader];
-  v8 = [v7 uid];
-  v9 = [v6 containsObject:v8];
+  outputDeviceUIDs = [endpoint outputDeviceUIDs];
+  groupLeader3 = [endpoint groupLeader];
+  v8 = [groupLeader3 uid];
+  v9 = [outputDeviceUIDs containsObject:v8];
 
   if (v9)
   {
     goto LABEL_4;
   }
 
-  v10 = [v2 outputDevices];
-  v11 = [v10 sortedArrayUsingSelector:&sel_uid];
+  outputDevices = [endpoint outputDevices];
+  v11 = [outputDevices sortedArrayUsingSelector:&sel_uid];
 
-  v4 = [v11 firstObject];
+  groupLeader2 = [v11 firstObject];
 
 LABEL_5:
 
-  return v4;
+  return groupLeader2;
 }
 
 - (void)endpoint
 {
-  v2 = [(MPAVEndpointRoute *)self endpointWrapper];
-  v3 = [v2 unwrappedValue];
+  endpointWrapper = [(MPAVEndpointRoute *)self endpointWrapper];
+  unwrappedValue = [endpointWrapper unwrappedValue];
 
-  return v3;
+  return unwrappedValue;
 }
 
 - (MPAVRouteConnection)connection
@@ -151,37 +151,37 @@ LABEL_5:
 
 - (id)routeName
 {
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 localizedName];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  localizedName = [endpointObject localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)routeUID
 {
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 uniqueIdentifier];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  uniqueIdentifier = [endpointObject uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (int64_t)routeType
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(MPAVEndpointRoute *)self endpointObject];
-  if ([v3 isLocalEndpoint])
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  if ([endpointObject isLocalEndpoint])
   {
     goto LABEL_4;
   }
 
-  v4 = [v3 externalDevice];
-  v5 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v6 = v5;
-  if (v4)
+  externalDevice = [endpointObject externalDevice];
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  v6 = effectiveGroupLeader;
+  if (externalDevice)
   {
-    v7 = [v5 isRemoteControllable];
+    isRemoteControllable = [effectiveGroupLeader isRemoteControllable];
 
-    if (v7)
+    if (isRemoteControllable)
     {
 LABEL_4:
       v8 = 3;
@@ -197,8 +197,8 @@ LABEL_4:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [v3 outputDevices];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  outputDevices = [endpointObject outputDevices];
+  v10 = [outputDevices countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -210,7 +210,7 @@ LABEL_8:
     {
       if (*v16 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(outputDevices);
       }
 
       if ([*(*(&v15 + 1) + 8 * v13) canRelayCommunicationChannel])
@@ -220,7 +220,7 @@ LABEL_8:
 
       if (v11 == ++v13)
       {
-        v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v11 = [outputDevices countByEnumeratingWithState:&v15 objects:v19 count:16];
         if (v11)
         {
           goto LABEL_8;
@@ -243,8 +243,8 @@ LABEL_16:
 
 - (BOOL)isHomeTheaterRoute
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = [v2 clusterType] == 2;
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  v3 = [effectiveGroupLeader clusterType] == 2;
 
   return v3;
 }
@@ -278,14 +278,14 @@ void __32__MPAVEndpointRoute_description__block_invoke(uint64_t a1)
 - (BOOL)isSplitRoute
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 outputDevices];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = v3;
+  v4 = outputDevices;
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
@@ -331,14 +331,14 @@ LABEL_11:
 - (BOOL)isDeviceSpeakerRoute
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 outputDevices];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = outputDevices;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -377,14 +377,14 @@ LABEL_11:
 - (BOOL)isAirPlayingToDevice
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 outputDevices];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = outputDevices;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -422,9 +422,9 @@ LABEL_11:
 
 - (int64_t)numberOfOutputDevices
 {
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 outputDevices];
-  v4 = [v3 count];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
+  v4 = [outputDevices count];
 
   return v4;
 }
@@ -433,14 +433,14 @@ LABEL_11:
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v4 = [(MPAVEndpointRoute *)self endpointObject];
-  v5 = [v4 outputDevices];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v5;
+  v6 = outputDevices;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -458,15 +458,15 @@ LABEL_11:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 deviceSubtype];
-        if (v14 == 12)
+        deviceSubtype = [v13 deviceSubtype];
+        if (deviceSubtype == 12)
         {
-          v15 = [v13 logicalDeviceID];
-          if ((v9 & 1) != 0 || ([v3 containsObject:v15] & 1) == 0)
+          logicalDeviceID = [v13 logicalDeviceID];
+          if ((v9 & 1) != 0 || ([v3 containsObject:logicalDeviceID] & 1) == 0)
           {
-            if (v15)
+            if (logicalDeviceID)
             {
-              [v3 addObject:v15];
+              [v3 addObject:logicalDeviceID];
             }
           }
 
@@ -478,7 +478,7 @@ LABEL_11:
           v10 |= 4uLL;
         }
 
-        else if (v14 == 13)
+        else if (deviceSubtype == 13)
         {
           v10 |= 2uLL;
         }
@@ -504,13 +504,13 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)_groupLeaderIsOfDeviceSubtype:(unsigned int)a3
+- (BOOL)_groupLeaderIsOfDeviceSubtype:(unsigned int)subtype
 {
-  v4 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v5 = v4;
-  if (v4)
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  v5 = effectiveGroupLeader;
+  if (effectiveGroupLeader)
   {
-    v6 = [v4 deviceSubtype] == a3;
+    v6 = [effectiveGroupLeader deviceSubtype] == subtype;
   }
 
   else
@@ -521,73 +521,73 @@ LABEL_11:
   return v6;
 }
 
-- (void)_endpointPredictedOutputDeviceDidChange:(id)a3
+- (void)_endpointPredictedOutputDeviceDidChange:(id)change
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v5 uniqueIdentifier];
-  v7 = [(MPAVEndpointRoute *)self endpointObject];
-  v8 = [v7 uniqueIdentifier];
+  changeCopy = change;
+  object = [changeCopy object];
+  uniqueIdentifier = [object uniqueIdentifier];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  uniqueIdentifier2 = [endpointObject uniqueIdentifier];
 
-  if (v6 == v8)
+  if (uniqueIdentifier == uniqueIdentifier2)
   {
     v9 = os_log_create("com.apple.amp.mediaplayer", "Routing");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [v4 object];
-      v13 = [v5 predictedOutputDevice];
+      object2 = [changeCopy object];
+      predictedOutputDevice = [object predictedOutputDevice];
       v15 = 138544130;
       v16 = v10;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v12;
+      v20 = object2;
       v21 = 2114;
-      v22 = v13;
+      v22 = predictedOutputDevice;
       _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEBUG, "<%{public}@: %p> External device: %{public}@ predicted route to: %{public}@", &v15, 0x2Au);
     }
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 postNotificationName:@"MPAVRouteDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPAVRouteDidChangeNotification" object:self];
   }
 }
 
-- (void)_endpointOutputDevicesDidChange:(id)a3
+- (void)_endpointOutputDevicesDidChange:(id)change
 {
-  v8 = [a3 object];
-  v4 = [v8 uniqueIdentifier];
-  v5 = [(MPAVEndpointRoute *)self endpointObject];
-  v6 = [v5 uniqueIdentifier];
+  object = [change object];
+  uniqueIdentifier = [object uniqueIdentifier];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  uniqueIdentifier2 = [endpointObject uniqueIdentifier];
 
-  if (v4 == v6)
+  if (uniqueIdentifier == uniqueIdentifier2)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"MPAVRouteDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPAVRouteDidChangeNotification" object:self];
   }
 }
 
-- (void)_endpointDidChange:(id)a3
+- (void)_endpointDidChange:(id)change
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69B0BC0]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69B0BC0]];
 
   v7 = os_log_create("com.apple.amp.mediaplayer", "Routing");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [v4 object];
+    object = [changeCopy object];
     v12 = 138544130;
     v13 = v8;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
-    v17 = v10;
+    v17 = object;
     v18 = 2114;
     v19 = v6;
     _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEBUG, "<%{public}@: %p> External device: %{public}@ changed endpoint to: %{public}@", &v12, 0x2Au);
@@ -599,34 +599,34 @@ LABEL_11:
 
 - (BOOL)isLowFidelityRoute
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = [v2 producesLowFidelityAudio];
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  producesLowFidelityAudio = [effectiveGroupLeader producesLowFidelityAudio];
 
-  return v3;
+  return producesLowFidelityAudio;
 }
 
 - (id)designatedGroupLeaderRouteUID
 {
-  v3 = [(MPAVEndpointRoute *)self endpoint];
-  if ([v3 isLocalEndpoint])
+  endpoint = [(MPAVEndpointRoute *)self endpoint];
+  if ([endpoint isLocalEndpoint])
   {
-    v4 = [v3 uniqueIdentifier];
+    uniqueIdentifier = [endpoint uniqueIdentifier];
   }
 
   else
   {
-    v5 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-    v4 = [v5 uid];
+    effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+    uniqueIdentifier = [effectiveGroupLeader uid];
   }
 
-  return v4;
+  return uniqueIdentifier;
 }
 
 - (int64_t)clusterType
 {
   v3 = objc_opt_class();
-  v4 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v5 = [v3 clusterTypeForMRClusterType:{objc_msgSend(v4, "clusterType")}];
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  v5 = [v3 clusterTypeForMRClusterType:{objc_msgSend(effectiveGroupLeader, "clusterType")}];
 
   return v5;
 }
@@ -634,74 +634,74 @@ LABEL_11:
 - (id)clusterComposition
 {
   v3 = objc_opt_class();
-  v4 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v5 = [v3 clusterCompositionForOutputDevice:v4];
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  v5 = [v3 clusterCompositionForOutputDevice:effectiveGroupLeader];
 
   return v5;
 }
 
 - (BOOL)isSplitterCapable
 {
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 outputDevices];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
-  if ([v3 count] == 1)
+  if ([outputDevices count] == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 supportsBluetoothSharing];
+    firstObject = [outputDevices firstObject];
+    supportsBluetoothSharing = [firstObject supportsBluetoothSharing];
   }
 
   else
   {
-    v5 = 0;
+    supportsBluetoothSharing = 0;
   }
 
-  return v5;
+  return supportsBluetoothSharing;
 }
 
 - (BOOL)supportsRemoteControl
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = [v2 isRemoteControllable];
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  isRemoteControllable = [effectiveGroupLeader isRemoteControllable];
 
-  return v3;
+  return isRemoteControllable;
 }
 
 - (BOOL)supportsGrouping
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = [v2 isGroupable];
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  isGroupable = [effectiveGroupLeader isGroupable];
 
-  return v3;
+  return isGroupable;
 }
 
 - (int64_t)originalRouteSubtype
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = [objc_opt_class() routeSubtypeForMRSubtype:objc_msgSend(v2 mrType:{"deviceSubtype"), objc_msgSend(v2, "deviceType")}];
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  v3 = [objc_opt_class() routeSubtypeForMRSubtype:objc_msgSend(effectiveGroupLeader mrType:{"deviceSubtype"), objc_msgSend(effectiveGroupLeader, "deviceType")}];
 
   return v3;
 }
 
 - (id)productIdentifier
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = [v2 modelID];
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  modelID = [effectiveGroupLeader modelID];
 
-  return v3;
+  return modelID;
 }
 
 - (BOOL)isLowLatencyRoute
 {
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 outputDevices];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
-  if ([v3 count] == 1)
+  if ([outputDevices count] == 1)
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 deviceType];
+    firstObject = [outputDevices firstObject];
+    deviceType = [firstObject deviceType];
 
-    v6 = (v5 & 0xFFFFFFFE) == 4;
+    v6 = (deviceType & 0xFFFFFFFE) == 4;
   }
 
   else
@@ -715,14 +715,14 @@ LABEL_11:
 - (BOOL)isRoutingToWirelessDevice
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 outputDevices];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = v3;
+  v4 = outputDevices;
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -760,52 +760,52 @@ LABEL_11:
 
 - (BOOL)canModifyGroupMembership
 {
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 canModifyGroupMembership];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  canModifyGroupMembership = [endpointObject canModifyGroupMembership];
 
-  return v3;
+  return canModifyGroupMembership;
 }
 
 - (BOOL)isProxyGroupPlayer
 {
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 isProxyGroupPlayer];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  isProxyGroupPlayer = [endpointObject isProxyGroupPlayer];
 
-  return v3;
+  return isProxyGroupPlayer;
 }
 
 - (BOOL)isPhoneRoute
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = [v2 hostDeviceClass] == 1;
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  v3 = [effectiveGroupLeader hostDeviceClass] == 1;
 
   return v3;
 }
 
 - (BOOL)isStereoPair
 {
-  v2 = self;
+  selfCopy = self;
   if ([(MPAVEndpointRoute *)self isClusterRoute])
   {
-    v3 = [(MPAVEndpointRoute *)v2 effectiveGroupLeader];
-    LOBYTE(v2) = [v3 clusterType] == 1;
+    effectiveGroupLeader = [(MPAVEndpointRoute *)selfCopy effectiveGroupLeader];
+    LOBYTE(selfCopy) = [effectiveGroupLeader clusterType] == 1;
   }
 
   else
   {
-    return ([(MPAVEndpointRoute *)v2 _outputDevicesComposition]>> 3) & 1;
+    return ([(MPAVEndpointRoute *)selfCopy _outputDevicesComposition]>> 3) & 1;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)isB520Route
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = [v2 modelID];
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  modelID = [effectiveGroupLeader modelID];
 
-  LOBYTE(v2) = [v3 containsString:@"AudioAccessory5"];
-  return v2;
+  LOBYTE(effectiveGroupLeader) = [modelID containsString:@"AudioAccessory5"];
+  return effectiveGroupLeader;
 }
 
 - (BOOL)isHomePodRoute
@@ -825,8 +825,8 @@ LABEL_11:
 
 - (BOOL)isMacRoute
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = [v2 deviceSubtype] == 18;
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  v3 = [effectiveGroupLeader deviceSubtype] == 18;
 
   return v3;
 }
@@ -850,11 +850,11 @@ LABEL_11:
 
   else
   {
-    v4 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-    v5 = v4;
-    if (v4)
+    effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+    v5 = effectiveGroupLeader;
+    if (effectiveGroupLeader)
     {
-      v6 = [v4 uid];
+      v6 = [effectiveGroupLeader uid];
       v3 = [v6 copy];
     }
 
@@ -869,20 +869,20 @@ LABEL_11:
 
 - (void)resetPredictedOutputDevice
 {
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  [v2 resetPredictedOutputDevice];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  [endpointObject resetPredictedOutputDevice];
 }
 
 - (MPAVOutputDeviceRoute)predictedOutputDevice
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 predictedOutputDevice];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  predictedOutputDevice = [endpointObject predictedOutputDevice];
 
-  if (v3)
+  if (predictedOutputDevice)
   {
     v4 = [MPAVOutputDeviceRoute alloc];
-    v8[0] = v3;
+    v8[0] = predictedOutputDevice;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
     v6 = [(MPAVOutputDeviceRoute *)v4 initWithOutputDevices:v5];
   }
@@ -895,17 +895,17 @@ LABEL_11:
   return v6;
 }
 
-- (void)setConnection:(id)a3
+- (void)setConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__MPAVEndpointRoute_setConnection___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -938,13 +938,13 @@ void __35__MPAVEndpointRoute_setConnection___block_invoke_2(uint64_t a1)
   [v2 postNotificationName:@"MPAVRouteDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)setEndpointWrapper:(id)a3
+- (void)setEndpointWrapper:(id)wrapper
 {
-  v5 = a3;
-  if (!v5)
+  wrapperCopy = wrapper;
+  if (!wrapperCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"MPAVEndpointRoute.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"endpointWrapper"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVEndpointRoute.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"endpointWrapper"}];
   }
 
   accessQueue = self->_accessQueue;
@@ -953,8 +953,8 @@ void __35__MPAVEndpointRoute_setConnection___block_invoke_2(uint64_t a1)
   block[2] = __40__MPAVEndpointRoute_setEndpointWrapper___block_invoke;
   block[3] = &unk_1E76823C0;
   block[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = wrapperCopy;
+  v7 = wrapperCopy;
   dispatch_sync(accessQueue, block);
 }
 
@@ -1058,22 +1058,22 @@ void __40__MPAVEndpointRoute_setEndpointWrapper___block_invoke_50(uint64_t a1)
 {
   v8 = [objc_alloc(MEMORY[0x1E69B0AE0]) initWithName:@"MPAVEndpointRoute.establishGroup" requestID:0 reason:@"API Call"];
   v3 = objc_alloc(MEMORY[0x1E69B0A48]);
-  v4 = [(MPAVEndpointRoute *)self endpointObject];
-  v5 = [v4 outputDevices];
-  v6 = [v3 initWithRequestDetails:v8 type:1 outputDevices:v5];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
+  v6 = [v3 initWithRequestDetails:v8 type:1 outputDevices:outputDevices];
 
-  v7 = [(MPAVEndpointRoute *)self endpointObject];
-  [v7 modifyTopologyWithRequest:v6 withReplyQueue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_6202];
+  endpointObject2 = [(MPAVEndpointRoute *)self endpointObject];
+  [endpointObject2 modifyTopologyWithRequest:v6 withReplyQueue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_6202];
 }
 
 - (id)designatedGroupLeaderName
 {
-  v2 = [(MPAVEndpointRoute *)self effectiveGroupLeader];
-  v3 = v2;
-  if (v2)
+  effectiveGroupLeader = [(MPAVEndpointRoute *)self effectiveGroupLeader];
+  v3 = effectiveGroupLeader;
+  if (effectiveGroupLeader)
   {
-    v4 = [v2 name];
-    v5 = [v4 copy];
+    name = [effectiveGroupLeader name];
+    v5 = [name copy];
   }
 
   else
@@ -1087,16 +1087,16 @@ void __40__MPAVEndpointRoute_setEndpointWrapper___block_invoke_50(uint64_t a1)
 - (id)routeNames
 {
   v22 = *MEMORY[0x1E69E9840];
-  v2 = [(MPAVEndpointRoute *)self endpointObject];
-  v3 = [v2 outputDevices];
+  endpointObject = [(MPAVEndpointRoute *)self endpointObject];
+  outputDevices = [endpointObject outputDevices];
 
-  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(outputDevices, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(outputDevices, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v3;
+  v6 = outputDevices;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -1112,26 +1112,26 @@ void __40__MPAVEndpointRoute_setEndpointWrapper___block_invoke_50(uint64_t a1)
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 logicalDeviceID];
-        v13 = [v11 name];
-        if ([v13 length])
+        logicalDeviceID = [v11 logicalDeviceID];
+        name = [v11 name];
+        if ([name length])
         {
-          if ([v12 length])
+          if ([logicalDeviceID length])
           {
-            if ([v5 containsObject:v12])
+            if ([v5 containsObject:logicalDeviceID])
             {
               goto LABEL_12;
             }
 
-            [v4 addObject:v13];
+            [v4 addObject:name];
             v14 = v5;
-            v15 = v12;
+            v15 = logicalDeviceID;
           }
 
           else
           {
             v14 = v4;
-            v15 = v13;
+            v15 = name;
           }
 
           [v14 addObject:v15];
@@ -1173,17 +1173,17 @@ LABEL_12:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69B0B40] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69B0B40] object:0];
 
   v4.receiver = self;
   v4.super_class = MPAVEndpointRoute;
   [(MPAVEndpointRoute *)&v4 dealloc];
 }
 
-- (MPAVEndpointRoute)initWithEndpointObject:(id)a3
+- (MPAVEndpointRoute)initWithEndpointObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = MPAVEndpointRoute;
   v5 = [(MPAVEndpointRoute *)&v18 init];
@@ -1207,53 +1207,53 @@ LABEL_12:
     v5->super._wirelessDisplayRoute = 0;
 
     v5->super._displayRouteType = 3;
-    if (!v4)
+    if (!objectCopy)
     {
-      v4 = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
+      objectCopy = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
     }
 
-    v14 = [[MPMRAVEndpointWrapper alloc] initWithMRAVEndpoint:v4];
+    v14 = [[MPMRAVEndpointWrapper alloc] initWithMRAVEndpoint:objectCopy];
     [(MPAVEndpointRoute *)v5 setEndpointWrapper:v14];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v5 selector:sel__endpointOutputDevicesDidChange_ name:*MEMORY[0x1E69B0B40] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__endpointOutputDevicesDidChange_ name:*MEMORY[0x1E69B0B40] object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v5 selector:sel__endpointPredictedOutputDeviceDidChange_ name:*MEMORY[0x1E69B0B48] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v5 selector:sel__endpointPredictedOutputDeviceDidChange_ name:*MEMORY[0x1E69B0B48] object:0];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(MPAVEndpointRoute *)self endpointWrapper];
-  [v4 unwrappedValue];
+  coderCopy = coder;
+  endpointWrapper = [(MPAVEndpointRoute *)self endpointWrapper];
+  [endpointWrapper unwrappedValue];
   IsLocalEndpoint = MRAVEndpointIsLocalEndpoint();
 
-  [v7 encodeBool:IsLocalEndpoint forKey:@"localEndpoint"];
+  [coderCopy encodeBool:IsLocalEndpoint forKey:@"localEndpoint"];
   if ((IsLocalEndpoint & 1) == 0)
   {
-    v6 = [(MPAVEndpointRoute *)self endpointWrapper];
-    [v7 encodeObject:objc_msgSend(v6 forKey:{"unwrappedValue"), @"endpoint"}];
+    endpointWrapper2 = [(MPAVEndpointRoute *)self endpointWrapper];
+    [coderCopy encodeObject:objc_msgSend(endpointWrapper2 forKey:{"unwrappedValue"), @"endpoint"}];
   }
 }
 
-- (MPAVEndpointRoute)initWithCoder:(id)a3
+- (MPAVEndpointRoute)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeBoolForKey:@"localEndpoint"])
+  coderCopy = coder;
+  if ([coderCopy decodeBoolForKey:@"localEndpoint"])
   {
     LocalEndpoint = MRAVEndpointGetLocalEndpoint();
   }
 
   else
   {
-    LocalEndpoint = [v4 decodeObjectOfClass:MRAVEndpointGetClass() forKey:@"endpoint"];
+    LocalEndpoint = [coderCopy decodeObjectOfClass:MRAVEndpointGetClass() forKey:@"endpoint"];
   }
 
-  v6 = LocalEndpoint;
+  selfCopy = LocalEndpoint;
   if (LocalEndpoint)
   {
     self = [(MPAVEndpointRoute *)self initWithEndpoint:LocalEndpoint];
@@ -1264,16 +1264,16 @@ LABEL_12:
       [(MPAVEndpointRoute *)self setConnection:v8];
     }
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (void)getActiveEndpointRouteWithCompletion:(id)a3
++ (void)getActiveEndpointRouteWithCompletion:(id)completion
 {
-  v4 = a3;
-  v3 = v4;
+  completionCopy = completion;
+  v3 = completionCopy;
   MRAVEndpointResolveActiveSystemEndpoint();
 }
 

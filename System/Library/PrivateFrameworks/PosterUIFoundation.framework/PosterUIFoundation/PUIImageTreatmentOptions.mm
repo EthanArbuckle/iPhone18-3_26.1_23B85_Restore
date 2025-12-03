@@ -1,13 +1,13 @@
 @interface PUIImageTreatmentOptions
 + (PUIImageTreatmentOptions)identity;
 - (double)initWithFixedScale:(double *)result;
-- (double)initWithOriginalScale:(double)a3 reducedScale:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)initWithOriginalScale:(double)scale reducedScale:;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PUIImageTreatmentOptions
 
-- (double)initWithOriginalScale:(double)a3 reducedScale:
+- (double)initWithOriginalScale:(double)scale reducedScale:
 {
   if (result)
   {
@@ -15,7 +15,7 @@
     if (result)
     {
       result[1] = a2;
-      result[2] = a3;
+      result[2] = scale;
     }
   }
 
@@ -55,9 +55,9 @@
   return v0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [PUIImageTreatmentOptions allocWithZone:a3];
+  result = [PUIImageTreatmentOptions allocWithZone:zone];
   if (result)
   {
     v5 = *&self->_originalScale;

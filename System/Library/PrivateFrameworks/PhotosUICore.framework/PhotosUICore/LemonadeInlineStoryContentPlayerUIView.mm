@@ -1,12 +1,12 @@
 @interface LemonadeInlineStoryContentPlayerUIView
-- (_TtC12PhotosUICoreP33_D5BBB978DC5D9E9CCAD66E47379B868438LemonadeInlineStoryContentPlayerUIView)initWithCoder:(id)a3;
-- (_TtC12PhotosUICoreP33_D5BBB978DC5D9E9CCAD66E47379B868438LemonadeInlineStoryContentPlayerUIView)initWithFrame:(CGRect)a3;
+- (_TtC12PhotosUICoreP33_D5BBB978DC5D9E9CCAD66E47379B868438LemonadeInlineStoryContentPlayerUIView)initWithCoder:(id)coder;
+- (_TtC12PhotosUICoreP33_D5BBB978DC5D9E9CCAD66E47379B868438LemonadeInlineStoryContentPlayerUIView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation LemonadeInlineStoryContentPlayerUIView
 
-- (_TtC12PhotosUICoreP33_D5BBB978DC5D9E9CCAD66E47379B868438LemonadeInlineStoryContentPlayerUIView)initWithCoder:(id)a3
+- (_TtC12PhotosUICoreP33_D5BBB978DC5D9E9CCAD66E47379B868438LemonadeInlineStoryContentPlayerUIView)initWithCoder:(id)coder
 {
   result = sub_1A524E6E4();
   __break(1u);
@@ -24,7 +24,7 @@
   [v3 setFrame_];
 }
 
-- (_TtC12PhotosUICoreP33_D5BBB978DC5D9E9CCAD66E47379B868438LemonadeInlineStoryContentPlayerUIView)initWithFrame:(CGRect)a3
+- (_TtC12PhotosUICoreP33_D5BBB978DC5D9E9CCAD66E47379B868438LemonadeInlineStoryContentPlayerUIView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

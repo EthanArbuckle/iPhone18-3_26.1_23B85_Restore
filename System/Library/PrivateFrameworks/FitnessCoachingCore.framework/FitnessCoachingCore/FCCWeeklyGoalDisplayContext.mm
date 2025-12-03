@@ -1,43 +1,43 @@
 @interface FCCWeeklyGoalDisplayContext
-- (FCCWeeklyGoalDisplayContext)initWithDictionary:(id)a3;
-- (FCCWeeklyGoalDisplayContext)initWithDisplayCount:(int64_t)a3 lastDisplayDate:(id)a4;
+- (FCCWeeklyGoalDisplayContext)initWithDictionary:(id)dictionary;
+- (FCCWeeklyGoalDisplayContext)initWithDisplayCount:(int64_t)count lastDisplayDate:(id)date;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation FCCWeeklyGoalDisplayContext
 
-- (FCCWeeklyGoalDisplayContext)initWithDictionary:(id)a3
+- (FCCWeeklyGoalDisplayContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"DisplayCount"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"DisplayCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"LastDate"];
-  v8 = [(FCCWeeklyGoalDisplayContext *)self initWithDisplayCount:v6 lastDisplayDate:v7];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"LastDate"];
+  v8 = [(FCCWeeklyGoalDisplayContext *)self initWithDisplayCount:integerValue lastDisplayDate:v7];
 
   return v8;
 }
 
-- (FCCWeeklyGoalDisplayContext)initWithDisplayCount:(int64_t)a3 lastDisplayDate:(id)a4
+- (FCCWeeklyGoalDisplayContext)initWithDisplayCount:(int64_t)count lastDisplayDate:(id)date
 {
-  v7 = a4;
+  dateCopy = date;
   v11.receiver = self;
   v11.super_class = FCCWeeklyGoalDisplayContext;
   v8 = [(FCCWeeklyGoalDisplayContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_displayCount = a3;
-    objc_storeStrong(&v8->_lastDisplayDate, a4);
+    v8->_displayCount = count;
+    objc_storeStrong(&v8->_lastDisplayDate, date);
   }
 
   return v9;

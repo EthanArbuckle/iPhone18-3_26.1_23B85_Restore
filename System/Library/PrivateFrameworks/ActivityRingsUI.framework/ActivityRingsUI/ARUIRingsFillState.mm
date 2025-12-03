@@ -1,43 +1,43 @@
 @interface ARUIRingsFillState
-- (BOOL)shouldRunStateForRing:(id)a3;
-- (id)renderPipelineDescriptorFromLibrary:(id)a3;
+- (BOOL)shouldRunStateForRing:(id)ring;
+- (id)renderPipelineDescriptorFromLibrary:(id)library;
 @end
 
 @implementation ARUIRingsFillState
 
-- (id)renderPipelineDescriptorFromLibrary:(id)a3
+- (id)renderPipelineDescriptorFromLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = objc_opt_new();
-  v6 = [v4 newFunctionWithName:@"vertex_shader"];
+  v6 = [libraryCopy newFunctionWithName:@"vertex_shader"];
   [v5 setVertexFunction:v6];
 
-  v7 = [v4 newFunctionWithName:@"fragment_fillcolor"];
+  v7 = [libraryCopy newFunctionWithName:@"fragment_fillcolor"];
   [v5 setFragmentFunction:v7];
 
-  v8 = [v5 colorAttachments];
-  v9 = [v8 objectAtIndexedSubscript:0];
+  colorAttachments = [v5 colorAttachments];
+  v9 = [colorAttachments objectAtIndexedSubscript:0];
   [v9 setPixelFormat:80];
 
   [v5 configureForSourceOverBlending];
-  v10 = [(ARUIRingsFillState *)self name];
-  [v5 setLabel:v10];
+  name = [(ARUIRingsFillState *)self name];
+  [v5 setLabel:name];
 
   return v5;
 }
 
-- (BOOL)shouldRunStateForRing:(id)a3
+- (BOOL)shouldRunStateForRing:(id)ring
 {
-  v3 = a3;
-  [v3 percentage];
-  if (v4 == *&ARUIRingPercentageValueNoRing || ([v3 thickness], !ARUIFloatGreater(v5, 0.0)))
+  ringCopy = ring;
+  [ringCopy percentage];
+  if (v4 == *&ARUIRingPercentageValueNoRing || ([ringCopy thickness], !ARUIFloatGreater(v5, 0.0)))
   {
     v7 = 0;
   }
 
   else
   {
-    [v3 opacity];
+    [ringCopy opacity];
     v7 = ARUIFloatGreater(v6, 0.0);
   }
 

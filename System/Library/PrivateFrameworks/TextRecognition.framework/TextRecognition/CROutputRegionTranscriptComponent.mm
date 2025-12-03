@@ -1,25 +1,25 @@
 @interface CROutputRegionTranscriptComponent
-- (BOOL)isEqual:(id)a3;
-- (CROutputRegionTranscriptComponent)initWithOutputRegion:(id)a3 range:(_NSRange)a4;
+- (BOOL)isEqual:(id)equal;
+- (CROutputRegionTranscriptComponent)initWithOutputRegion:(id)region range:(_NSRange)range;
 - (_NSRange)representedRange;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)crCodableDataRepresentation;
 @end
 
 @implementation CROutputRegionTranscriptComponent
 
-- (CROutputRegionTranscriptComponent)initWithOutputRegion:(id)a3 range:(_NSRange)a4
+- (CROutputRegionTranscriptComponent)initWithOutputRegion:(id)region range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
+  length = range.length;
+  location = range.location;
+  regionCopy = region;
   v12.receiver = self;
   v12.super_class = CROutputRegionTranscriptComponent;
   v9 = [(CROutputRegionTranscriptComponent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_outputRegion, a3);
+    objc_storeStrong(&v9->_outputRegion, region);
     v10->_representedRange.location = location;
     v10->_representedRange.length = length;
   }
@@ -27,23 +27,23 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v5 = [(CROutputRegionTranscriptComponent *)self outputRegion];
-    v6 = [(CROutputRegionTranscriptComponent *)v4 outputRegion];
-    if ([v5 isEqual:v6])
+    outputRegion = [(CROutputRegionTranscriptComponent *)self outputRegion];
+    outputRegion2 = [(CROutputRegionTranscriptComponent *)equalCopy outputRegion];
+    if ([outputRegion isEqual:outputRegion2])
     {
-      v7 = [(CROutputRegionTranscriptComponent *)self representedRange];
+      representedRange = [(CROutputRegionTranscriptComponent *)self representedRange];
       v9 = v8;
-      v12 = v7 == [(CROutputRegionTranscriptComponent *)v4 representedRange]&& v9 == v10;
+      v12 = representedRange == [(CROutputRegionTranscriptComponent *)equalCopy representedRange]&& v9 == v10;
     }
 
     else
@@ -55,12 +55,12 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CROutputRegionTranscriptComponent allocWithZone:a3];
-  v5 = [(CROutputRegionTranscriptComponent *)self outputRegion];
-  v6 = [(CROutputRegionTranscriptComponent *)self representedRange];
-  v8 = [(CROutputRegionTranscriptComponent *)v4 initWithOutputRegion:v5 range:v6, v7];
+  v4 = [CROutputRegionTranscriptComponent allocWithZone:zone];
+  outputRegion = [(CROutputRegionTranscriptComponent *)self outputRegion];
+  representedRange = [(CROutputRegionTranscriptComponent *)self representedRange];
+  v8 = [(CROutputRegionTranscriptComponent *)v4 initWithOutputRegion:outputRegion range:representedRange, v7];
 
   return v8;
 }
@@ -69,11 +69,11 @@
 {
   v3 = objc_opt_new();
   [CRCodingUtilities appendInteger:11 toData:v3];
-  v4 = [(CROutputRegionTranscriptComponent *)self outputRegion];
-  [CRCodingUtilities appendCodable:v4 toData:v3];
+  outputRegion = [(CROutputRegionTranscriptComponent *)self outputRegion];
+  [CRCodingUtilities appendCodable:outputRegion toData:v3];
 
-  v5 = [(CROutputRegionTranscriptComponent *)self representedRange];
-  [CRCodingUtilities appendRange:v5 toData:v6, v3];
+  representedRange = [(CROutputRegionTranscriptComponent *)self representedRange];
+  [CRCodingUtilities appendRange:representedRange toData:v6, v3];
 
   return v3;
 }

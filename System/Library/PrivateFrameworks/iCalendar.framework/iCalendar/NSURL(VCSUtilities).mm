@@ -12,16 +12,16 @@
   v10 = a5;
   if ([v8 length])
   {
-    if (([a1 VCS_isValidURI:v8] & 1) == 0)
+    if (([self VCS_isValidURI:v8] & 1) == 0)
     {
       if ([v9 isEqualToString:@"mailto"] && (objc_msgSend(v8, "rangeOfString:", @"@"), v11) || objc_msgSend(v9, "isEqualToString:", @"tel") && objc_msgSend(v8, "VCS_isPhoneNumber"))
       {
-        v12 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v13 = [v8 stringByTrimmingCharactersInSet:v12];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v13 = [v8 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         v14 = MEMORY[0x277CCACA8];
-        v15 = [MEMORY[0x277CCA900] URLFragmentAllowedCharacterSet];
-        v16 = [v13 stringByAddingPercentEncodingWithAllowedCharacters:v15];
+        uRLFragmentAllowedCharacterSet = [MEMORY[0x277CCA900] URLFragmentAllowedCharacterSet];
+        v16 = [v13 stringByAddingPercentEncodingWithAllowedCharacters:uRLFragmentAllowedCharacterSet];
         v17 = [v14 stringWithFormat:@"%@:%@", v9, v16];
 
         v8 = v13;

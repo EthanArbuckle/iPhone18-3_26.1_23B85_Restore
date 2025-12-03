@@ -1,5 +1,5 @@
 @interface _UIImageViewPendingSymbolContentTransition
-+ (id)transitionWithTransition:(id)a3 sourceSymbolImage:(id)a4 targetSymbolImage:(id)a5 options:(id)a6 completion:(id)a7;
++ (id)transitionWithTransition:(id)transition sourceSymbolImage:(id)image targetSymbolImage:(id)symbolImage options:(id)options completion:(id)completion;
 - (CGRect)initialSymbolAbsoluteRect;
 - (_UIImageViewPendingSymbolContentTransition)init;
 @end
@@ -21,31 +21,31 @@
   return result;
 }
 
-+ (id)transitionWithTransition:(id)a3 sourceSymbolImage:(id)a4 targetSymbolImage:(id)a5 options:(id)a6 completion:(id)a7
++ (id)transitionWithTransition:(id)transition sourceSymbolImage:(id)image targetSymbolImage:(id)symbolImage options:(id)options completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  transitionCopy = transition;
+  imageCopy = image;
+  symbolImageCopy = symbolImage;
+  optionsCopy = options;
+  completionCopy = completion;
   v16 = objc_opt_new();
   v17 = v16[2];
-  v16[2] = v11;
-  v18 = v11;
+  v16[2] = transitionCopy;
+  v18 = transitionCopy;
 
   v19 = v16[5];
-  v16[5] = v12;
-  v20 = v12;
+  v16[5] = imageCopy;
+  v20 = imageCopy;
 
   v21 = v16[6];
-  v16[6] = v13;
-  v22 = v13;
+  v16[6] = symbolImageCopy;
+  v22 = symbolImageCopy;
 
   v23 = v16[3];
-  v16[3] = v14;
-  v24 = v14;
+  v16[3] = optionsCopy;
+  v24 = optionsCopy;
 
-  v25 = _Block_copy(v15);
+  v25 = _Block_copy(completionCopy);
   v26 = v16[4];
   v16[4] = v25;
 

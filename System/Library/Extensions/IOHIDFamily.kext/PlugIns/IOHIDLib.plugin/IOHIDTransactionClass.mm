@@ -1,23 +1,23 @@
 @interface IOHIDTransactionClass
-- (IOHIDTransactionClass)initWithDevice:(id)a3;
+- (IOHIDTransactionClass)initWithDevice:(id)device;
 - (id)device;
-- (int)addElement:(__IOHIDElement *)a3;
-- (int)commit:(void *)a3 timeout:(unsigned int)a4 callback:(void *)a5 options:(unsigned int)a6;
-- (int)containsElement:(__IOHIDElement *)a3 value:(char *)a4;
-- (int)getAsyncEventSource:(const void *)a3;
-- (int)getDirection:(unsigned int *)a3;
-- (int)getValue:(__IOHIDElement *)a3 value:(__IOHIDValue *)a4 options:(unsigned int)a5;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)removeElement:(__IOHIDElement *)a3;
-- (int)setValue:(__IOHIDElement *)a3 value:(__IOHIDValue *)a4 options:(unsigned int)a5;
+- (int)addElement:(__IOHIDElement *)element;
+- (int)commit:(void *)commit timeout:(unsigned int)timeout callback:(void *)callback options:(unsigned int)options;
+- (int)containsElement:(__IOHIDElement *)element value:(char *)value;
+- (int)getAsyncEventSource:(const void *)source;
+- (int)getDirection:(unsigned int *)direction;
+- (int)getValue:(__IOHIDElement *)value value:(__IOHIDValue *)a4 options:(unsigned int)options;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)removeElement:(__IOHIDElement *)element;
+- (int)setValue:(__IOHIDElement *)value value:(__IOHIDValue *)a4 options:(unsigned int)options;
 - (void)dealloc;
 @end
 
 @implementation IOHIDTransactionClass
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(0, 0x1Fu, 0x2Eu, 0x78u, 0xFAu, 0x9Fu, 0xFAu, 0x11u, 0xDAu, 0x90u, 0xB4u, 0, 0xDu, 0x93u, 0x6Du, 6u, 0xD2u);
   if (!CFEqual(v6, v7))
   {
@@ -30,7 +30,7 @@
     goto LABEL_3;
   }
 
-  *a4 = &self->_interface;
+  *outInterface = &self->_interface;
   CFRetain(self);
   v8 = 0;
   if (v6)
@@ -42,41 +42,41 @@ LABEL_3:
   return v8;
 }
 
-- (int)getAsyncEventSource:(const void *)a3
+- (int)getAsyncEventSource:(const void *)source
 {
-  if (!a3)
+  if (!source)
   {
     return -536870206;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_device);
-  *a3 = objc_msgSend_runLoopSource(WeakRetained, v5, v6);
+  *source = objc_msgSend_runLoopSource(WeakRetained, v5, v6);
 
   return 0;
 }
 
-- (int)getDirection:(unsigned int *)a3
+- (int)getDirection:(unsigned int *)direction
 {
-  if (!a3)
+  if (!direction)
   {
     return -536870206;
   }
 
   result = 0;
-  *a3 = self->_direction;
+  *direction = self->_direction;
   return result;
 }
 
-- (IOHIDTransactionClass)initWithDevice:(id)a3
+- (IOHIDTransactionClass)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = IOHIDTransactionClass;
   v5 = [(IOHIDIUnknown2 *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_device, v4);
+    objc_storeWeak(&v5->_device, deviceCopy);
     v7 = malloc_type_malloc(0x70uLL, 0x8004065BD1A13uLL);
     v6->_interface = v7;
     vtbl = v6->super._vtbl;
@@ -120,18 +120,18 @@ LABEL_3:
   [(IOHIDIUnknown2 *)&v3 dealloc];
 }
 
-- (int)addElement:(__IOHIDElement *)a3
+- (int)addElement:(__IOHIDElement *)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = -536870212;
-  if (a3)
+  if (element)
   {
     v6 = [HIDLibElement alloc];
-    v3 = objc_msgSend_initWithElementRef_(v6, v7, v3);
-    if (v3)
+    elementCopy = objc_msgSend_initWithElementRef_(v6, v7, elementCopy);
+    if (elementCopy)
     {
       v8 = sub_29D3F13E0();
-      if ((objc_msgSend_containsObject_(v8, v9, v10) & 1) == 0 && (self->_direction != 1 || objc_msgSend_type(v3, v11, v12) == 129 || objc_msgSend_type(v3, v13, v14) == 257))
+      if ((objc_msgSend_containsObject_(v8, v9, v10) & 1) == 0 && (self->_direction != 1 || objc_msgSend_type(elementCopy, v11, v12) == 129 || objc_msgSend_type(elementCopy, v13, v14) == 257))
       {
         v15 = sub_29D3F13E0();
         objc_msgSend_addObject_(v15, v16, v17);
@@ -148,15 +148,15 @@ LABEL_3:
   return v4;
 }
 
-- (int)removeElement:(__IOHIDElement *)a3
+- (int)removeElement:(__IOHIDElement *)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4 = -536870212;
-  if (a3)
+  if (element)
   {
     v5 = [HIDLibElement alloc];
-    v3 = objc_msgSend_initWithElementRef_(v5, v6, v3);
-    if (v3)
+    elementCopy = objc_msgSend_initWithElementRef_(v5, v6, elementCopy);
+    if (elementCopy)
     {
       v7 = sub_29D3F13E0();
       if (objc_msgSend_containsObject_(v7, v8, v9))
@@ -176,17 +176,17 @@ LABEL_3:
   return v4;
 }
 
-- (int)containsElement:(__IOHIDElement *)a3 value:(char *)a4
+- (int)containsElement:(__IOHIDElement *)element value:(char *)value
 {
   result = -536870206;
-  if (a3 && a4)
+  if (element && value)
   {
     v8 = [HIDLibElement alloc];
-    v10 = objc_msgSend_initWithElementRef_(v8, v9, a3);
+    v10 = objc_msgSend_initWithElementRef_(v8, v9, element);
     if (v10)
     {
       v12 = v10;
-      *a4 = objc_msgSend_containsObject_(self->_elements, v11, v10);
+      *value = objc_msgSend_containsObject_(self->_elements, v11, v10);
 
       return 0;
     }
@@ -200,11 +200,11 @@ LABEL_3:
   return result;
 }
 
-- (int)setValue:(__IOHIDElement *)a3 value:(__IOHIDValue *)a4 options:(unsigned int)a5
+- (int)setValue:(__IOHIDElement *)value value:(__IOHIDValue *)a4 options:(unsigned int)options
 {
   v5 = 0;
   v6 = -536870206;
-  if (!a3 || !a4)
+  if (!value || !a4)
   {
     goto LABEL_10;
   }
@@ -217,15 +217,15 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v9 = a5;
+  optionsCopy = options;
   v11 = [HIDLibElement alloc];
-  v5 = objc_msgSend_initWithElementRef_(v11, v12, a3);
+  v5 = objc_msgSend_initWithElementRef_(v11, v12, value);
   if (!v5 || !objc_msgSend_containsObject_(self->_elements, v13, v5))
   {
     goto LABEL_12;
   }
 
-  if (v9)
+  if (optionsCopy)
   {
     objc_msgSend_setDefaultValueRef_(v5, v14, a4);
   }
@@ -244,25 +244,25 @@ LABEL_10:
   return v6;
 }
 
-- (int)getValue:(__IOHIDElement *)a3 value:(__IOHIDValue *)a4 options:(unsigned int)a5
+- (int)getValue:(__IOHIDElement *)value value:(__IOHIDValue *)a4 options:(unsigned int)options
 {
   v5 = 0;
   v6 = -536870206;
-  if (a3)
+  if (value)
   {
     v8 = 0;
     if (a4)
     {
-      v9 = a5;
+      optionsCopy = options;
       v12 = [HIDLibElement alloc];
-      v8 = objc_msgSend_initWithElementRef_(v12, v13, a3);
+      v8 = objc_msgSend_initWithElementRef_(v12, v13, value);
       if (v8 && objc_msgSend_containsObject_(self->_elements, v14, v8))
       {
         elements = self->_elements;
         v17 = objc_msgSend_indexOfObject_(elements, v15, v8);
         v19 = objc_msgSend_objectAtIndex_(elements, v18, v17);
         v5 = v19;
-        if (v9)
+        if (optionsCopy)
         {
           v22 = objc_msgSend_defaultValueRef(v19, v20, v21);
         }
@@ -292,7 +292,7 @@ LABEL_10:
   return v6;
 }
 
-- (int)commit:(void *)a3 timeout:(unsigned int)a4 callback:(void *)a5 options:(unsigned int)a6
+- (int)commit:(void *)commit timeout:(unsigned int)timeout callback:(void *)callback options:(unsigned int)options
 {
   v189 = *MEMORY[0x29EDCA608];
   sub_29D3F13D4();
@@ -300,7 +300,7 @@ LABEL_10:
   entryID = 0xAAAAAAAAAAAAAAAALL;
   input = 0;
   v187 = 0;
-  v188 = 0;
+  optionsCopy = 0;
   v15 = objc_msgSend_count(*(v12 + 32), v13, v14);
   cf = 0xAAAAAAAAAAAAAAAALL;
   *&v16 = 0xAAAAAAAAAAAAAAAALL;
@@ -316,19 +316,19 @@ LABEL_10:
     goto LABEL_69;
   }
 
-  obj = a5;
+  obj = callback;
   WeakRetained = objc_loadWeakRetained(&self->_device);
   v22 = objc_msgSend_service(WeakRetained, v20, v21);
   IORegistryEntryGetRegistryEntryID(v22, &entryID);
 
-  v188 = a6;
+  optionsCopy = options;
   if (!obj)
   {
     v25 = 0;
     goto LABEL_6;
   }
 
-  input = a4;
+  input = timeout;
   v24 = malloc_type_calloc(1uLL, 0x28uLL, 0x800402FCC0CB6uLL);
   if (!v24)
   {
@@ -339,7 +339,7 @@ LABEL_69:
 
   v25 = v24;
   *v24 = obj;
-  v24[1] = a3;
+  v24[1] = commit;
   v26 = objc_loadWeakRetained(&self->_device);
   v25[2] = v26;
 

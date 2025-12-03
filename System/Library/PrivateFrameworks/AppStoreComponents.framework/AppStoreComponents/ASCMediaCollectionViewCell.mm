@@ -1,18 +1,18 @@
 @interface ASCMediaCollectionViewCell
-+ (CGSize)sizeForArtwork:(id)a3 thatFits:(CGSize)a4 usingTraitCollection:(id)a5;
-- (ASCMediaCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyArtwork:(id)a3 image:(id)a4 screenshotDisplayConfiguration:(id)a5;
++ (CGSize)sizeForArtwork:(id)artwork thatFits:(CGSize)fits usingTraitCollection:(id)collection;
+- (ASCMediaCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyArtwork:(id)artwork image:(id)image screenshotDisplayConfiguration:(id)configuration;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation ASCMediaCollectionViewCell
 
-- (ASCMediaCollectionViewCell)initWithFrame:(CGRect)a3
+- (ASCMediaCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = ASCMediaCollectionViewCell;
-  v3 = [(ASCMediaCollectionViewCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCMediaCollectionViewCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [ASCBorderedScreenshotView alloc];
@@ -26,25 +26,25 @@
     v9 = ASCLocalizedString(@"AX_ARTWORK", v8);
     [(ASCBorderedScreenshotView *)v3->_screenshotView setAccessibilityLabel:v9];
 
-    v10 = [(ASCMediaCollectionViewCell *)v3 contentView];
-    [v10 addSubview:v3->_screenshotView];
+    contentView = [(ASCMediaCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_screenshotView];
   }
 
   return v3;
 }
 
-- (void)applyArtwork:(id)a3 image:(id)a4 screenshotDisplayConfiguration:(id)a5
+- (void)applyArtwork:(id)artwork image:(id)image screenshotDisplayConfiguration:(id)configuration
 {
-  v8 = a5;
-  v9 = a4;
-  [(ASCMediaCollectionViewCell *)self setArtwork:a3];
-  v10 = [(ASCMediaCollectionViewCell *)self screenshotView];
-  v11 = [v10 artworkView];
-  [v11 setImage:v9];
+  configurationCopy = configuration;
+  imageCopy = image;
+  [(ASCMediaCollectionViewCell *)self setArtwork:artwork];
+  screenshotView = [(ASCMediaCollectionViewCell *)self screenshotView];
+  artworkView = [screenshotView artworkView];
+  [artworkView setImage:imageCopy];
 
-  v13 = [(ASCMediaCollectionViewCell *)self screenshotView];
-  v12 = [v13 artworkView];
-  [v12 setScreenshotDisplayConfiguration:v8];
+  screenshotView2 = [(ASCMediaCollectionViewCell *)self screenshotView];
+  artworkView2 = [screenshotView2 artworkView];
+  [artworkView2 setScreenshotDisplayConfiguration:configurationCopy];
 }
 
 - (void)prepareForReuse
@@ -53,14 +53,14 @@
   v8.super_class = ASCMediaCollectionViewCell;
   [(ASCMediaCollectionViewCell *)&v8 prepareForReuse];
   [(ASCMediaCollectionViewCell *)self setArtwork:0];
-  v3 = [(ASCMediaCollectionViewCell *)self screenshotView];
-  v4 = [v3 artworkView];
-  [v4 setImage:0];
+  screenshotView = [(ASCMediaCollectionViewCell *)self screenshotView];
+  artworkView = [screenshotView artworkView];
+  [artworkView setImage:0];
 
   v5 = +[ASCScreenshotDisplayConfiguration defaultConfiguration];
-  v6 = [(ASCMediaCollectionViewCell *)self screenshotView];
-  v7 = [v6 artworkView];
-  [v7 setScreenshotDisplayConfiguration:v5];
+  screenshotView2 = [(ASCMediaCollectionViewCell *)self screenshotView];
+  artworkView2 = [screenshotView2 artworkView];
+  [artworkView2 setScreenshotDisplayConfiguration:v5];
 }
 
 - (void)layoutSubviews
@@ -68,43 +68,43 @@
   v20.receiver = self;
   v20.super_class = ASCMediaCollectionViewCell;
   [(ASCMediaCollectionViewCell *)&v20 layoutSubviews];
-  v3 = [(ASCMediaCollectionViewCell *)self artwork];
-  v4 = [(ASCMediaCollectionViewCell *)self contentView];
-  [v4 bounds];
+  artwork = [(ASCMediaCollectionViewCell *)self artwork];
+  contentView = [(ASCMediaCollectionViewCell *)self contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
-  v9 = [(ASCMediaCollectionViewCell *)self traitCollection];
-  [ASCMediaCollectionViewCell sizeForArtwork:v3 thatFits:v9 usingTraitCollection:v6, v8];
+  traitCollection = [(ASCMediaCollectionViewCell *)self traitCollection];
+  [ASCMediaCollectionViewCell sizeForArtwork:artwork thatFits:traitCollection usingTraitCollection:v6, v8];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(ASCMediaCollectionViewCell *)self contentView];
-  [v14 bounds];
+  contentView2 = [(ASCMediaCollectionViewCell *)self contentView];
+  [contentView2 bounds];
   v16 = v15;
   v18 = v17;
 
-  v19 = [(ASCMediaCollectionViewCell *)self screenshotView];
-  [v19 setFrame:{(v16 - v11) * 0.5, (v18 - v13) * 0.5, v11, v13}];
+  screenshotView = [(ASCMediaCollectionViewCell *)self screenshotView];
+  [screenshotView setFrame:{(v16 - v11) * 0.5, (v18 - v13) * 0.5, v11, v13}];
 }
 
-+ (CGSize)sizeForArtwork:(id)a3 thatFits:(CGSize)a4 usingTraitCollection:(id)a5
++ (CGSize)sizeForArtwork:(id)artwork thatFits:(CGSize)fits usingTraitCollection:(id)collection
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = a5;
-  if (([v8 isPortrait] & 1) != 0 || objc_msgSend(v9, "userInterfaceIdiom"))
+  height = fits.height;
+  width = fits.width;
+  artworkCopy = artwork;
+  collectionCopy = collection;
+  if (([artworkCopy isPortrait] & 1) != 0 || objc_msgSend(collectionCopy, "userInterfaceIdiom"))
   {
-    [v8 width];
+    [artworkCopy width];
     v11 = v10;
-    [v8 height];
+    [artworkCopy height];
   }
 
   else
   {
-    [v8 height];
+    [artworkCopy height];
     v11 = v18;
-    [v8 width];
+    [artworkCopy width];
   }
 
   if (v11 / v12 <= width / height)

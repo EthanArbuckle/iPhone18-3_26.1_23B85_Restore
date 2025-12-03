@@ -1,8 +1,8 @@
 @interface SKGEventsProfiler
 + (id)sharedInstance;
 + (void)initialize;
-- (BOOL)profileCodeWithType:(id)a3 kind:(int)a4 block:(id)a5;
-- (void)endProfilingWithType:(id)a3 outcome:(id)a4;
+- (BOOL)profileCodeWithType:(id)type kind:(int)kind block:(id)block;
+- (void)endProfilingWithType:(id)type outcome:(id)outcome;
 @end
 
 @implementation SKGEventsProfiler
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __35__SKGEventsProfiler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_2 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_2, block);
@@ -45,18 +45,18 @@ void __35__SKGEventsProfiler_sharedInstance__block_invoke(uint64_t a1)
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v5 = _ongoingSessions;
-    _ongoingSessions = v4;
+    _ongoingSessions = dictionary;
   }
 }
 
-- (BOOL)profileCodeWithType:(id)a3 kind:(int)a4 block:(id)a5
+- (BOOL)profileCodeWithType:(id)type kind:(int)kind block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  typeCopy = type;
+  blockCopy = block;
   if ([(SKGEventsProfiler *)self enabled])
   {
     v10 = mach_absolute_time();
@@ -66,14 +66,14 @@ void __35__SKGEventsProfiler_sharedInstance__block_invoke(uint64_t a1)
     v13[3] = &unk_27893E888;
     v15 = v10;
     v13[4] = self;
-    v14 = v8;
-    v16 = a4;
-    v11 = v9[2](v9, v13);
+    v14 = typeCopy;
+    kindCopy = kind;
+    v11 = blockCopy[2](blockCopy, v13);
   }
 
   else
   {
-    v11 = v9[2](v9, __block_literal_global_31);
+    v11 = blockCopy[2](blockCopy, __block_literal_global_31);
   }
 
   return v11;
@@ -104,41 +104,41 @@ void __52__SKGEventsProfiler_profileCodeWithType_kind_block___block_invoke_2(uin
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)endProfilingWithType:(id)a3 outcome:(id)a4
+- (void)endProfilingWithType:(id)type outcome:(id)outcome
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  outcomeCopy = outcome;
   if ([(SKGEventsProfiler *)self enabled])
   {
-    v8 = self;
-    objc_sync_enter(v8);
-    v9 = [_ongoingSessions objectForKey:v6];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v9 = [_ongoingSessions objectForKey:typeCopy];
     v10 = [v9 objectForKeyedSubscript:@"type"];
-    v11 = [v10 unsignedLongLongValue];
+    unsignedLongLongValue = [v10 unsignedLongLongValue];
 
-    v12 = [_ongoingSessions objectForKey:v6];
+    v12 = [_ongoingSessions objectForKey:typeCopy];
     v13 = [v12 objectForKeyedSubscript:@"kind"];
-    v14 = [v13 unsignedIntValue];
+    unsignedIntValue = [v13 unsignedIntValue];
 
-    [_ongoingSessions removeObjectForKey:v6];
-    objc_sync_exit(v8);
+    [_ongoingSessions removeObjectForKey:typeCopy];
+    objc_sync_exit(selfCopy);
 
-    if (v11)
+    if (unsignedLongLongValue)
     {
-      v15 = [(SKGEventsProfiler *)v8 convertMachTimeToMilliseconds:mach_absolute_time() - v11];
-      [(SKGEventsProfiler *)v8 logResultWithType:v6 outcome:v7 elapsedTime:v15 kind:v14];
+      v15 = [(SKGEventsProfiler *)selfCopy convertMachTimeToMilliseconds:mach_absolute_time() - unsignedLongLongValue];
+      [(SKGEventsProfiler *)selfCopy logResultWithType:typeCopy outcome:outcomeCopy elapsedTime:v15 kind:unsignedIntValue];
       if (SKGLogGetCurrentLoggingLevel() >= 7)
       {
         v16 = SKGLogInit();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412802;
-          v19 = v6;
+          v19 = typeCopy;
           v20 = 2048;
           v21 = v15;
           v22 = 2112;
-          v23 = v7;
+          v23 = outcomeCopy;
           _os_log_debug_impl(&dword_231B25000, v16, OS_LOG_TYPE_DEBUG, "[CSEventsProfiler] %@ completed in %llu ms, outcome: %@", buf, 0x20u);
         }
       }
@@ -146,7 +146,7 @@ void __52__SKGEventsProfiler_profileCodeWithType_kind_block___block_invoke_2(uin
 
     else
     {
-      NSLog(&cfstr_NoSessionFound.isa, v6);
+      NSLog(&cfstr_NoSessionFound.isa, typeCopy);
     }
   }
 

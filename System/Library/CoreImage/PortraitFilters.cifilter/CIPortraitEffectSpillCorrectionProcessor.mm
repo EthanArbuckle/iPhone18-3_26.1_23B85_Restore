@@ -1,9 +1,9 @@
 @interface CIPortraitEffectSpillCorrectionProcessor
 + (BOOL)hasValidPipelines;
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (int)formatForInputAtIndex:(int)a3;
-+ (void)compilePipelines:(id)a3;
-+ (void)compilePipelinesIfNeeded:(id)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (int)formatForInputAtIndex:(int)index;
++ (void)compilePipelines:(id)pipelines;
++ (void)compilePipelinesIfNeeded:(id)needed;
 + (void)releasePipelines;
 @end
 
@@ -24,24 +24,24 @@
   return !v2;
 }
 
-+ (void)compilePipelines:(id)a3
++ (void)compilePipelines:(id)pipelines
 {
   v9 = 0;
-  v4 = [a3 newDefaultLibraryWithBundle:+[NSBundle bundleForClass:](NSBundle error:{"bundleForClass:", objc_opt_class()), 0}];
+  v4 = [pipelines newDefaultLibraryWithBundle:+[NSBundle bundleForClass:](NSBundle error:{"bundleForClass:", objc_opt_class()), 0}];
   v5 = [v4 newFunctionWithName:@"spillCorrectionPreProcess"];
-  qword_8CE78 = [a3 newComputePipelineStateWithFunction:v5 error:&v9];
+  qword_8CE78 = [pipelines newComputePipelineStateWithFunction:v5 error:&v9];
   if (v9)
   {
-    v6 = [v9 localizedDescription];
-    NSLog(@"Failed to initialize shaderSplit: %@; %@", v6, [v9 localizedFailureReason]);
+    localizedDescription = [v9 localizedDescription];
+    NSLog(@"Failed to initialize shaderSplit: %@; %@", localizedDescription, [v9 localizedFailureReason]);
   }
 
   v7 = [v4 newFunctionWithName:@"spillCorrectionPostProcess"];
-  qword_8CE80 = [a3 newComputePipelineStateWithFunction:v7 error:&v9];
+  qword_8CE80 = [pipelines newComputePipelineStateWithFunction:v7 error:&v9];
   if (v9)
   {
-    v8 = [v9 localizedDescription];
-    NSLog(@"Failed to initialize shaderApplyConstraintAndComposite: %@; %@", v8, [v9 localizedFailureReason]);
+    localizedDescription2 = [v9 localizedDescription];
+    NSLog(@"Failed to initialize shaderApplyConstraintAndComposite: %@; %@", localizedDescription2, [v9 localizedFailureReason]);
   }
 }
 
@@ -50,12 +50,12 @@
   v2 = qword_8CE80;
 }
 
-+ (void)compilePipelinesIfNeeded:(id)a3
++ (void)compilePipelinesIfNeeded:(id)needed
 {
   v5 = qword_8CE88;
-  if (qword_8CE88 == a3)
+  if (qword_8CE88 == needed)
   {
-    if ([a1 hasValidPipelines])
+    if ([self hasValidPipelines])
     {
       return;
     }
@@ -63,78 +63,78 @@
     v5 = qword_8CE88;
   }
 
-  if (v5 != a3)
+  if (v5 != needed)
   {
-    [a1 releasePipelines];
-    qword_8CE88 = a3;
+    [self releasePipelines];
+    qword_8CE88 = needed;
   }
 
-  if (([a1 hasValidPipelines] & 1) == 0)
+  if (([self hasValidPipelines] & 1) == 0)
   {
 
-    [a1 compilePipelines:a3];
+    [self compilePipelines:needed];
   }
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v9 = [a5 metalCommandBuffer];
-  if (!v9)
+  metalCommandBuffer = [output metalCommandBuffer];
+  if (!metalCommandBuffer)
   {
     sub_4AD94();
   }
 
-  v10 = v9;
-  v11 = [v9 device];
+  v10 = metalCommandBuffer;
+  device = [metalCommandBuffer device];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_29770;
   block[3] = &unk_75610;
-  block[4] = a1;
-  block[5] = v11;
-  v73 = a4;
+  block[4] = self;
+  block[5] = device;
+  argumentsCopy = arguments;
   if (qword_8CE98 != -1)
   {
     dispatch_once(&qword_8CE98, block);
   }
 
-  [a1 compilePipelinesIfNeeded:v11];
-  v78 = [a1 hasValidPipelines];
-  if (v78)
+  [self compilePipelinesIfNeeded:device];
+  hasValidPipelines = [self hasValidPipelines];
+  if (hasValidPipelines)
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{0), "region"}];
+    [objc_msgSend(inputs objectAtIndexedSubscript:{0), "region"}];
     v13 = v12;
-    [objc_msgSend(a3 objectAtIndexedSubscript:{0), "region"}];
+    [objc_msgSend(inputs objectAtIndexedSubscript:{0), "region"}];
     v15 = v14;
-    [objc_msgSend(a3 objectAtIndexedSubscript:{1), "region"}];
+    [objc_msgSend(inputs objectAtIndexedSubscript:{1), "region"}];
     v76 = v13;
     v16 = v13;
-    if (v17 != v16 || ([objc_msgSend(a3 objectAtIndexedSubscript:{1), "region"}], v75 = v15, v18 = v15, v19 != v18))
+    if (v17 != v16 || ([objc_msgSend(inputs objectAtIndexedSubscript:{1), "region"}], v75 = v15, v18 = v15, v19 != v18))
     {
       sub_4AD68();
     }
 
-    [a5 region];
-    if (v20 != v16 || ([a5 region], v21 != v18))
+    [output region];
+    if (v20 != v16 || ([output region], v21 != v18))
     {
       sub_4AD3C();
     }
 
-    v22 = [qword_8CE78 maxTotalThreadsPerThreadgroup];
-    v23 = [qword_8CE78 threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup = [qword_8CE78 maxTotalThreadsPerThreadgroup];
+    threadExecutionWidth = [qword_8CE78 threadExecutionWidth];
     v25 = v75;
     v24 = v76;
     v26 = 1;
-    if (((v22 | v23 | v76) & 1) == 0)
+    if (((maxTotalThreadsPerThreadgroup | threadExecutionWidth | v76) & 1) == 0)
     {
-      v27 = v22;
+      v27 = maxTotalThreadsPerThreadgroup;
       do
       {
         v28 = v24;
         v24 >>= 1;
-        v22 = v27 >> 1;
-        v29 = v23;
-        v23 >>= 1;
+        maxTotalThreadsPerThreadgroup = v27 >> 1;
+        v29 = threadExecutionWidth;
+        threadExecutionWidth >>= 1;
         v26 *= 2;
         if ((v28 & 2) != 0)
         {
@@ -153,14 +153,14 @@
     }
 
     v30 = 1;
-    if (((v75 | v22) & 1) == 0)
+    if (((v75 | maxTotalThreadsPerThreadgroup) & 1) == 0)
     {
       v31 = v75;
-      v32 = v22;
+      v32 = maxTotalThreadsPerThreadgroup;
       do
       {
         v25 = v31 >> 1;
-        v22 = v32 >> 1;
+        maxTotalThreadsPerThreadgroup = v32 >> 1;
         v30 *= 2;
         v33 = v31 | v32;
         v31 >>= 1;
@@ -170,14 +170,14 @@
       while ((v33 & 2) == 0);
     }
 
-    if (v23 >= v22)
+    if (threadExecutionWidth >= maxTotalThreadsPerThreadgroup)
     {
-      v34 = v22;
+      v34 = maxTotalThreadsPerThreadgroup;
     }
 
     else
     {
-      v34 = v23;
+      v34 = threadExecutionWidth;
     }
 
     if (v34)
@@ -206,13 +206,13 @@
             {
               while (1)
               {
-                while ((i & 1) == 0 && 2 * v36 * v39 <= v22)
+                while ((i & 1) == 0 && 2 * v36 * v39 <= maxTotalThreadsPerThreadgroup)
                 {
                   i >>= 1;
                   v39 *= 2;
                 }
 
-                if (i != 3 * (i / 3) || 3 * v36 * v39 > v22)
+                if (i != 3 * (i / 3) || 3 * v36 * v39 > maxTotalThreadsPerThreadgroup)
                 {
                   break;
                 }
@@ -221,7 +221,7 @@
                 i /= 3u;
               }
 
-              if (i != 5 * (i / 5) || 5 * v36 * v39 > v22)
+              if (i != 5 * (i / 5) || 5 * v36 * v39 > maxTotalThreadsPerThreadgroup)
               {
                 break;
               }
@@ -230,7 +230,7 @@
               i /= 5u;
             }
 
-            if (i % 7 || 7 * v36 * v39 > v22)
+            if (i % 7 || 7 * v36 * v39 > maxTotalThreadsPerThreadgroup)
             {
               break;
             }
@@ -262,9 +262,9 @@
       v37 = 1;
     }
 
-    [objc_msgSend(a3 objectAtIndexedSubscript:{0), "region"}];
+    [objc_msgSend(inputs objectAtIndexedSubscript:{0), "region"}];
     v46 = v45;
-    [objc_msgSend(a3 objectAtIndexedSubscript:{0), "region"}];
+    [objc_msgSend(inputs objectAtIndexedSubscript:{0), "region"}];
     v48 = v47;
     v49 = objc_opt_new();
     v50 = objc_opt_new();
@@ -276,14 +276,14 @@
     v72 = v52;
     do
     {
-      [v50 addObject:{objc_msgSend(v11, "newTextureWithDescriptor:", v51)}];
-      [v49 addObject:{objc_msgSend(v11, "newTextureWithDescriptor:", v51)}];
+      [v50 addObject:{objc_msgSend(device, "newTextureWithDescriptor:", v51)}];
+      [v49 addObject:{objc_msgSend(device, "newTextureWithDescriptor:", v51)}];
       --v53;
     }
 
     while (v53);
-    v54 = [v11 newTextureWithDescriptor:v51];
-    v55 = [v73 objectForKeyedSubscript:@"bgColor"];
+    v54 = [device newTextureWithDescriptor:v51];
+    v55 = [argumentsCopy objectForKeyedSubscript:@"bgColor"];
     [v55 red];
     v74 = v56;
     [v55 green];
@@ -295,15 +295,15 @@
     *&v59 = v59;
     LODWORD(v58.f64[1]) = LODWORD(v59);
     v91 = v58;
-    v60 = [v10 computeCommandEncoder];
-    [v60 setComputePipelineState:qword_8CE78];
-    [v60 setTexture:objc_msgSend(v50 atIndex:{"objectAtIndexedSubscript:", 0), 0}];
-    [v60 setTexture:objc_msgSend(v50 atIndex:{"objectAtIndexedSubscript:", 1), 1}];
-    [v60 setTexture:objc_msgSend(v50 atIndex:{"objectAtIndexedSubscript:", 2), 2}];
-    [v60 setTexture:v54 atIndex:3];
-    [v60 setTexture:objc_msgSend(objc_msgSend(a3 atIndex:{"objectAtIndexedSubscript:", 0), "metalTexture"), 4}];
-    [v60 setTexture:objc_msgSend(objc_msgSend(a3 atIndex:{"objectAtIndexedSubscript:", 1), "metalTexture"), 5}];
-    [v60 setBytes:&v91 length:16 atIndex:0];
+    computeCommandEncoder = [v10 computeCommandEncoder];
+    [computeCommandEncoder setComputePipelineState:qword_8CE78];
+    [computeCommandEncoder setTexture:objc_msgSend(v50 atIndex:{"objectAtIndexedSubscript:", 0), 0}];
+    [computeCommandEncoder setTexture:objc_msgSend(v50 atIndex:{"objectAtIndexedSubscript:", 1), 1}];
+    [computeCommandEncoder setTexture:objc_msgSend(v50 atIndex:{"objectAtIndexedSubscript:", 2), 2}];
+    [computeCommandEncoder setTexture:v54 atIndex:3];
+    [computeCommandEncoder setTexture:objc_msgSend(objc_msgSend(inputs atIndex:{"objectAtIndexedSubscript:", 0), "metalTexture"), 4}];
+    [computeCommandEncoder setTexture:objc_msgSend(objc_msgSend(inputs atIndex:{"objectAtIndexedSubscript:", 1), "metalTexture"), 5}];
+    [computeCommandEncoder setBytes:&v91 length:16 atIndex:0];
     v61 = (v37 * v30);
     v82 = v71;
     v83 = v75 / v61;
@@ -311,8 +311,8 @@
     v88 = v72;
     v89 = v61;
     v90 = 1;
-    [v60 dispatchThreadgroups:&v82 threadsPerThreadgroup:&v88];
-    [v60 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:&v82 threadsPerThreadgroup:&v88];
+    [computeCommandEncoder endEncoding];
     if (v76 < 0xA)
     {
       v63 = 1;
@@ -335,8 +335,8 @@
 
     LOBYTE(v69) = 1;
     LODWORD(v62) = 953267991;
-    v65 = [[MPSImageSpatioTemporalGuidedFilter alloc] initWithDevice:v11 filterDescriptor:{+[MPSImageSpatioTemporalGuidedFilterDescriptor filterDescriptorWithWidth:height:arrayLength:kernelSpatialDiameter:kernelTemporalDiameter:epsilon:sourceChannels:guideChannels:preallocateIntermediates:](MPSImageSpatioTemporalGuidedFilterDescriptor, "filterDescriptorWithWidth:height:arrayLength:kernelSpatialDiameter:kernelTemporalDiameter:epsilon:sourceChannels:guideChannels:preallocateIntermediates:", v63, v64, 1, 5, 1, 3, v62, 3, v69)}];
-    v66 = [objc_msgSend(a3 objectAtIndexedSubscript:{0), "metalTexture"}];
+    v65 = [[MPSImageSpatioTemporalGuidedFilter alloc] initWithDevice:device filterDescriptor:{+[MPSImageSpatioTemporalGuidedFilterDescriptor filterDescriptorWithWidth:height:arrayLength:kernelSpatialDiameter:kernelTemporalDiameter:epsilon:sourceChannels:guideChannels:preallocateIntermediates:](MPSImageSpatioTemporalGuidedFilterDescriptor, "filterDescriptorWithWidth:height:arrayLength:kernelSpatialDiameter:kernelTemporalDiameter:epsilon:sourceChannels:guideChannels:preallocateIntermediates:", v63, v64, 1, 5, 1, 3, v62, 3, v69)}];
+    v66 = [objc_msgSend(inputs objectAtIndexedSubscript:{0), "metalTexture"}];
     v93[0] = v54;
     v93[1] = v54;
     v93[2] = v54;
@@ -359,22 +359,22 @@
     v80[3] = &unk_75660;
     v80[4] = v65;
     [v10 addCompletedHandler:v80];
-    v67 = [v10 computeCommandEncoder];
-    [v67 setComputePipelineState:qword_8CE80];
-    [v67 setTexture:objc_msgSend(a5 atIndex:{"metalTexture"), 0}];
-    [v67 setTexture:objc_msgSend(v49 atIndex:{"objectAtIndexedSubscript:", 0), 1}];
-    [v67 setTexture:objc_msgSend(v49 atIndex:{"objectAtIndexedSubscript:", 1), 2}];
-    [v67 setTexture:objc_msgSend(v49 atIndex:{"objectAtIndexedSubscript:", 2), 3}];
-    [v67 setTexture:objc_msgSend(objc_msgSend(a3 atIndex:{"objectAtIndexedSubscript:", 0), "metalTexture"), 4}];
-    [v67 setTexture:objc_msgSend(objc_msgSend(a3 atIndex:{"objectAtIndexedSubscript:", 1), "metalTexture"), 5}];
+    computeCommandEncoder2 = [v10 computeCommandEncoder];
+    [computeCommandEncoder2 setComputePipelineState:qword_8CE80];
+    [computeCommandEncoder2 setTexture:objc_msgSend(output atIndex:{"metalTexture"), 0}];
+    [computeCommandEncoder2 setTexture:objc_msgSend(v49 atIndex:{"objectAtIndexedSubscript:", 0), 1}];
+    [computeCommandEncoder2 setTexture:objc_msgSend(v49 atIndex:{"objectAtIndexedSubscript:", 1), 2}];
+    [computeCommandEncoder2 setTexture:objc_msgSend(v49 atIndex:{"objectAtIndexedSubscript:", 2), 3}];
+    [computeCommandEncoder2 setTexture:objc_msgSend(objc_msgSend(inputs atIndex:{"objectAtIndexedSubscript:", 0), "metalTexture"), 4}];
+    [computeCommandEncoder2 setTexture:objc_msgSend(objc_msgSend(inputs atIndex:{"objectAtIndexedSubscript:", 1), "metalTexture"), 5}];
     v88 = v71;
     v89 = v75 / v61;
     v90 = 1;
     v79[0] = v72;
     v79[1] = v61;
     v79[2] = 1;
-    [v67 dispatchThreadgroups:&v88 threadsPerThreadgroup:v79];
-    [v67 endEncoding];
+    [computeCommandEncoder2 dispatchThreadgroups:&v88 threadsPerThreadgroup:v79];
+    [computeCommandEncoder2 endEncoding];
     _Block_object_dispose(&v82, 8);
   }
 
@@ -383,14 +383,14 @@
     NSLog(@"SLOG: One or more shaders not available, cannot process image");
   }
 
-  return v78;
+  return hasValidPipelines;
 }
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
-  if (a3)
+  if (index)
   {
-    if (a3 != 1)
+    if (index != 1)
     {
       sub_4ADC0();
     }

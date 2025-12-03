@@ -1,15 +1,15 @@
 @interface MapsRoutePlanningCell
 + (NSString)reuseIdentifier;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (MapsRoutePlanningCellDelegate)delegate;
 - (NSArray)autoSharingContacts;
 - (void)draw;
-- (void)setActionButtonType:(unint64_t)a3;
-- (void)setAutoSharingContacts:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setRoute:(id)a3;
-- (void)setShouldHighlight:(BOOL)a3;
-- (void)setShowPreviewRouteButton:(BOOL)a3;
+- (void)setActionButtonType:(unint64_t)type;
+- (void)setAutoSharingContacts:(id)contacts;
+- (void)setDelegate:(id)delegate;
+- (void)setRoute:(id)route;
+- (void)setShouldHighlight:(BOOL)highlight;
+- (void)setShowPreviewRouteButton:(BOOL)button;
 @end
 
 @implementation MapsRoutePlanningCell
@@ -21,12 +21,12 @@
   return v2;
 }
 
-- (void)setRoute:(id)a3
+- (void)setRoute:(id)route
 {
   v6 = *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_route);
-  *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_route) = a3;
-  v4 = a3;
-  v5 = self;
+  *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_route) = route;
+  routeCopy = route;
+  selfCopy = self;
   sub_10035C1A8(v6);
 }
 
@@ -37,32 +37,32 @@
   return Strong;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   swift_unknownObjectWeakAssign();
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_10035C7F8(Strong);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)setShouldHighlight:(BOOL)a3
+- (void)setShouldHighlight:(BOOL)highlight
 {
   v3 = *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_shouldHighlight);
-  *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_shouldHighlight) = a3;
-  if (v3 != a3)
+  *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_shouldHighlight) = highlight;
+  if (v3 != highlight)
   {
     *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell__dirty) = 1;
   }
 }
 
-- (void)setShowPreviewRouteButton:(BOOL)a3
+- (void)setShowPreviewRouteButton:(BOOL)button
 {
   v3 = *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_showPreviewRouteButton);
-  *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_showPreviewRouteButton) = a3;
-  if (v3 != a3)
+  *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_showPreviewRouteButton) = button;
+  if (v3 != button)
   {
     *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell__dirty) = 1;
   }
@@ -77,27 +77,27 @@
   return v2.super.isa;
 }
 
-- (void)setAutoSharingContacts:(id)a3
+- (void)setAutoSharingContacts:(id)contacts
 {
   sub_100014C84(0, &unk_101911D50);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_autoSharingContacts);
   *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_autoSharingContacts) = v4;
-  v6 = self;
+  selfCopy = self;
 
   LOBYTE(self) = sub_1001F11F8(v5, v4);
 
   if ((self & 1) == 0)
   {
-    *(v6 + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell__dirty) = 1;
+    *(selfCopy + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell__dirty) = 1;
   }
 }
 
-- (void)setActionButtonType:(unint64_t)a3
+- (void)setActionButtonType:(unint64_t)type
 {
   v3 = *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_actionButtonType);
-  *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_actionButtonType) = a3;
-  if (v3 != a3)
+  *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell_actionButtonType) = type;
+  if (v3 != type)
   {
     *(self + OBJC_IVAR____TtC4Maps21MapsRoutePlanningCell__dirty) = 1;
   }
@@ -105,18 +105,18 @@
 
 - (void)draw
 {
-  v2 = self;
+  selfCopy = self;
   sub_10035CDA8();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v16.receiver = self;
   v16.super_class = type metadata accessor for MapsRoutePlanningCell();
-  *&v9 = a4;
-  *&v10 = a5;
+  *&v9 = priority;
+  *&v10 = fittingPriority;
   [(MapsRoutePlanningCell *)&v16 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v9, v10];
   v13 = floor(v12);
   v14 = ceil(v12);

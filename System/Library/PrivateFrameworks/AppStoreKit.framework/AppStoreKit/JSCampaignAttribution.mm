@@ -1,17 +1,17 @@
 @interface JSCampaignAttribution
 - (_TtC11AppStoreKit21JSCampaignAttribution)init;
-- (id)processRedirectURL:(id)a3;
+- (id)processRedirectURL:(id)l;
 @end
 
 @implementation JSCampaignAttribution
 
-- (id)processRedirectURL:(id)a3
+- (id)processRedirectURL:(id)l
 {
   sub_1E1AF5DFC();
   sub_1E175AD10();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_1E1AF6D4C();
-  sub_1E1300B24(v4 + OBJC_IVAR____TtC11AppStoreKit21JSCampaignAttribution_accounts, v8);
+  sub_1E1300B24(selfCopy + OBJC_IVAR____TtC11AppStoreKit21JSCampaignAttribution_accounts, v8);
   v6 = sub_1E1AF6D5C();
 
   __swift_destroy_boxed_opaque_existential_1(v8);

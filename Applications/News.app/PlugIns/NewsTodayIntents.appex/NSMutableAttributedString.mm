@@ -1,13 +1,13 @@
 @interface NSMutableAttributedString
-- (void)fr_accessibilityApplyLowerPitchTokenToRange:(_NSRange)a3;
+- (void)fr_accessibilityApplyLowerPitchTokenToRange:(_NSRange)range;
 @end
 
 @implementation NSMutableAttributedString
 
-- (void)fr_accessibilityApplyLowerPitchTokenToRange:(_NSRange)a3
+- (void)fr_accessibilityApplyLowerPitchTokenToRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v7 = UIAccessibilityTokenLowPitch;
   v8 = &__kCFBooleanTrue;
   v6 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];

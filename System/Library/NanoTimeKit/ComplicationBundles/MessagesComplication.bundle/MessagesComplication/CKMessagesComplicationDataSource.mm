@@ -1,21 +1,21 @@
 @interface CKMessagesComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
 + (id)localizedAppName;
-- (CKMessagesComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (CKMessagesComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)currentSwitcherTemplate;
-- (id)fullColorImageProviderForUnreadCount:(unint64_t)a3 family:(int64_t)a4 template:(id)a5;
-- (id)imageProviderForUnreadCount:(unint64_t)a3 family:(int64_t)a4 template:(id)a5;
+- (id)fullColorImageProviderForUnreadCount:(unint64_t)count family:(int64_t)family template:(id)template;
+- (id)imageProviderForUnreadCount:(unint64_t)count family:(int64_t)family template:(id)template;
 - (id)lockedTemplate;
 - (id)privacyTemplate;
-- (id)templateForFamily:(int64_t)a3 unreadCount:(unint64_t)a4 locked:(BOOL)a5 privacy:(BOOL)a6;
-- (id)textProviderForUnreadCount:(unint64_t)a3 locked:(BOOL)a4 privacy:(BOOL)a5 shortText:(BOOL)a6 tintColor:(id)a7;
+- (id)templateForFamily:(int64_t)family unreadCount:(unint64_t)count locked:(BOOL)locked privacy:(BOOL)privacy;
+- (id)textProviderForUnreadCount:(unint64_t)count locked:(BOOL)locked privacy:(BOOL)privacy shortText:(BOOL)text tintColor:(id)color;
 - (void)_updateCommunicationPolicies;
 - (void)dealloc;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5;
-- (void)setDefaultBackgroundForTemplate:(id)a3;
-- (void)setInitialUnreadCount:(unint64_t)a3;
-- (void)unreadCountDidChange:(unint64_t)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler;
+- (void)setDefaultBackgroundForTemplate:(id)template;
+- (void)setInitialUnreadCount:(unint64_t)count;
+- (void)unreadCountDidChange:(unint64_t)change;
 @end
 
 @implementation CKMessagesComplicationDataSource
@@ -32,22 +32,22 @@
   return v22;
 }
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  if (a3 < 8 && ((0xDDu >> a3) & 1) != 0)
+  if (family < 8 && ((0xDDu >> family) & 1) != 0)
   {
     return 1;
   }
 
-  return *MEMORY[0x277CBB668] == a3 || a3 == 12 || (a3 - 8) < 3;
+  return *MEMORY[0x277CBB668] == family || family == 12 || (family - 8) < 3;
 }
 
-- (CKMessagesComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (CKMessagesComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
-  v8 = a5;
+  deviceCopy = device;
   v21.receiver = self;
   v21.super_class = CKMessagesComplicationDataSource;
-  v9 = [(CLKCComplicationDataSource *)&v21 initWithComplication:a3 family:a4 forDevice:v8];
+  v9 = [(CLKCComplicationDataSource *)&v21 initWithComplication:complication family:family forDevice:deviceCopy];
   if (v9)
   {
     v10 = os_log_create("com.apple.Messages", "CKMessagesComplicationDataSource");
@@ -55,7 +55,7 @@
     v9->_log = v10;
 
     v12 = [CKMessagesComplicationSpecs alloc];
-    v18 = objc_msgSend_initWithDevice_(v12, v13, v14, v15, v16, v17, v8);
+    v18 = objc_msgSend_initWithDevice_(v12, v13, v14, v15, v16, v17, deviceCopy);
     specs = v9->_specs;
     v9->_specs = v18;
   }
@@ -111,7 +111,7 @@
   [(CKMessagesComplicationDataSource *)&v8 dealloc];
 }
 
-- (void)unreadCountDidChange:(unint64_t)a3
+- (void)unreadCountDidChange:(unint64_t)change
 {
   v51 = *MEMORY[0x277D85DE8];
   v9 = objc_msgSend_log(self, a2, v3, v4, v5, v6);
@@ -120,13 +120,13 @@
     v47 = 134349312;
     v48 = objc_msgSend_unreadCount(self, v10, v11, v12, v13, v14);
     v49 = 2050;
-    v50 = a3;
+    changeCopy = change;
     _os_log_impl(&dword_23BD1C000, v9, OS_LOG_TYPE_DEFAULT, "unread count did change from: %{public}lu to: %{public}lu", &v47, 0x16u);
   }
 
-  if (objc_msgSend_unreadCount(self, v15, v16, v17, v18, v19) != a3)
+  if (objc_msgSend_unreadCount(self, v15, v16, v17, v18, v19) != change)
   {
-    objc_msgSend_setUnreadCount_(self, v20, v21, v22, v23, v24, a3);
+    objc_msgSend_setUnreadCount_(self, v20, v21, v22, v23, v24, change);
     v30 = objc_msgSend_delegate(self, v25, v26, v27, v28, v29);
     objc_msgSend_invalidateEntries(v30, v31, v32, v33, v34, v35);
 
@@ -135,7 +135,7 @@
   }
 }
 
-- (void)setInitialUnreadCount:(unint64_t)a3
+- (void)setInitialUnreadCount:(unint64_t)count
 {
   v9 = objc_msgSend_log(self, a2, v3, v4, v5, v6);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -143,7 +143,7 @@
     sub_23BD20EC8();
   }
 
-  objc_msgSend_setUnreadCount_(self, v10, v11, v12, v13, v14, a3);
+  objc_msgSend_setUnreadCount_(self, v10, v11, v12, v13, v14, count);
 }
 
 - (id)privacyTemplate
@@ -185,11 +185,11 @@
   return objc_msgSend_templateForFamily_unreadCount_locked_privacy_(self, v7, v9, v10, v11, v12, v8, 0, 1, 0);
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    v4 = a3;
+    handlerCopy = handler;
     v10 = objc_msgSend_log(self, v5, v6, v7, v8, v9);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -203,13 +203,13 @@
     v35 = objc_msgSend_date(MEMORY[0x277CBEAA8], v30, v31, v32, v33, v34);
     v41 = objc_msgSend_entryWithDate_complicationTemplate_(v29, v36, v37, v38, v39, v40, v35, v28);
 
-    v4[2](v4, v41);
+    handlerCopy[2](handlerCopy, v41);
   }
 }
 
-- (void)getLaunchURLForTimelineEntryDate:(id)a3 timeTravelDate:(id)a4 withHandler:(id)a5
+- (void)getLaunchURLForTimelineEntryDate:(id)date timeTravelDate:(id)travelDate withHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v12 = objc_msgSend_log(self, v7, v8, v9, v10, v11);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
@@ -223,15 +223,15 @@
     sub_23BD20FEC();
   }
 
-  if (v6)
+  if (handlerCopy)
   {
-    v6[2](v6, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (id)templateForFamily:(int64_t)a3 unreadCount:(unint64_t)a4 locked:(BOOL)a5 privacy:(BOOL)a6
+- (id)templateForFamily:(int64_t)family unreadCount:(unint64_t)count locked:(BOOL)locked privacy:(BOOL)privacy
 {
-  v10 = a6;
+  privacyCopy = privacy;
   v334 = *MEMORY[0x277D85DE8];
   v15 = objc_msgSend_communicationPolicies(self, a2, v6, v7, v8, v9);
 
@@ -247,32 +247,32 @@
     v33 = 0;
   }
 
-  if (a5 || v10 || v33)
+  if (locked || privacyCopy || v33)
   {
-    v34 = 0;
+    countCopy = 0;
   }
 
   else
   {
-    v34 = a4;
+    countCopy = count;
   }
 
   v35 = objc_msgSend_log(self, v16, v17, v18, v19, v20);
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
   {
-    sub_23BD21064(a3, v34, v35, v36, v37, v38, v39);
+    sub_23BD21064(family, countCopy, v35, v36, v37, v38, v39);
   }
 
   v40 = 0;
-  if (a3 <= 6)
+  if (family <= 6)
   {
-    if (a3 > 2)
+    if (family > 2)
     {
-      if (a3 != 3)
+      if (family != 3)
       {
-        if (a3 != 4)
+        if (family != 4)
         {
-          if (a3 != 6)
+          if (family != 6)
           {
             goto LABEL_60;
           }
@@ -285,7 +285,7 @@
             _os_log_impl(&dword_23BD1C000, v46, OS_LOG_TYPE_DEFAULT, "creating UtilitarianSmallFlat template", buf, 2u);
           }
 
-          v52 = objc_msgSend_imageProviderForUnreadCount_family_template_(self, v47, v48, v49, v50, v51, v34, 6, v40);
+          v52 = objc_msgSend_imageProviderForUnreadCount_family_template_(self, v47, v48, v49, v50, v51, countCopy, 6, v40);
           objc_msgSend_setImageProvider_(v40, v53, v54, v55, v56, v57, v52);
 
           v63 = objc_msgSend_textProviderWithText_(MEMORY[0x277CBBB88], v58, v59, v60, v61, v62, &stru_284E7EA48);
@@ -301,7 +301,7 @@
           _os_log_impl(&dword_23BD1C000, v221, OS_LOG_TYPE_DEFAULT, "creating CircularSmallSimpleImage template", buf, 2u);
         }
 
-        objc_msgSend_imageProviderForUnreadCount_family_template_(self, v222, v223, v224, v225, v226, v34, 4, v40);
+        objc_msgSend_imageProviderForUnreadCount_family_template_(self, v222, v223, v224, v225, v226, countCopy, 4, v40);
         goto LABEL_53;
       }
 
@@ -316,11 +316,11 @@
       v158 = objc_msgSend_imageProviderForUnreadCount_family_template_(self, v153, v154, v155, v156, v157, 0, 3, v40);
       objc_msgSend_setImageProvider_(v40, v159, v160, v161, v162, v163, v158);
 
-      if (a5 || v10 || v33)
+      if (locked || privacyCopy || v33)
       {
-        if (v10 || !a5 || v33)
+        if (privacyCopy || !locked || v33)
         {
-          if (!v10 && !v33)
+          if (!privacyCopy && !v33)
           {
             goto LABEL_70;
           }
@@ -351,7 +351,7 @@
         v274 = objc_opt_class();
         v177 = objc_msgSend_bundleForClass_(v273, v275, v276, v277, v278, v279, v274);
         v285 = objc_msgSend_localizedStringForKey_value_table_(v177, v280, v281, v282, v283, v284, @"NEW_MESSAGES_FORMAT", &stru_284E7EA48, @"MessagesComplication");
-        objc_msgSend_localizedStringWithFormat_(v272, v286, v287, v288, v289, v290, v285, a4);
+        objc_msgSend_localizedStringWithFormat_(v272, v286, v287, v288, v289, v290, v285, count);
       }
       v308 = ;
 
@@ -372,9 +372,9 @@ LABEL_70:
       goto LABEL_55;
     }
 
-    if (a3)
+    if (family)
     {
-      if (a3 != 2)
+      if (family != 2)
       {
         goto LABEL_60;
       }
@@ -387,7 +387,7 @@ LABEL_70:
         _os_log_impl(&dword_23BD1C000, v85, OS_LOG_TYPE_DEFAULT, "creating UtilitarianSmallSquare template", buf, 2u);
       }
 
-      objc_msgSend_imageProviderForUnreadCount_family_template_(self, v86, v87, v88, v89, v90, v34, 2, v40);
+      objc_msgSend_imageProviderForUnreadCount_family_template_(self, v86, v87, v88, v89, v90, countCopy, 2, v40);
     }
 
     else
@@ -400,7 +400,7 @@ LABEL_70:
         _os_log_impl(&dword_23BD1C000, v130, OS_LOG_TYPE_DEFAULT, "creating ModularSmallSimpleImage template", buf, 2u);
       }
 
-      objc_msgSend_imageProviderForUnreadCount_family_template_(self, v131, v132, v133, v134, v135, v34, 0, v40);
+      objc_msgSend_imageProviderForUnreadCount_family_template_(self, v131, v132, v133, v134, v135, countCopy, 0, v40);
     }
 
     v227 = LABEL_53:;
@@ -412,9 +412,9 @@ LABEL_55:
     goto LABEL_60;
   }
 
-  if (a3 <= 8)
+  if (family <= 8)
   {
-    if (a3 == 7)
+    if (family == 7)
     {
       v40 = objc_alloc_init(MEMORY[0x277CBB7F0]);
       v141 = objc_msgSend_log(self, v136, v137, v138, v139, v140);
@@ -424,11 +424,11 @@ LABEL_55:
         _os_log_impl(&dword_23BD1C000, v141, OS_LOG_TYPE_DEFAULT, "creating ExtraLargeSimpleImage template", buf, 2u);
       }
 
-      objc_msgSend_imageProviderForUnreadCount_family_template_(self, v142, v143, v144, v145, v146, v34, 7, v40);
+      objc_msgSend_imageProviderForUnreadCount_family_template_(self, v142, v143, v144, v145, v146, countCopy, 7, v40);
       goto LABEL_53;
     }
 
-    if (!v34 || a5)
+    if (!countCopy || locked)
     {
       v40 = objc_alloc_init(MEMORY[0x277CBB8B8]);
       v261 = objc_msgSend_log(self, v256, v257, v258, v259, v260);
@@ -439,7 +439,7 @@ LABEL_55:
       }
 
       objc_msgSend_setDefaultBackgroundForTemplate_(self, v262, v263, v264, v265, v266, v40);
-      v227 = objc_msgSend_fullColorImageProviderForUnreadCount_family_template_(self, v267, v268, v269, v270, v271, v34, 8, v40);
+      v227 = objc_msgSend_fullColorImageProviderForUnreadCount_family_template_(self, v267, v268, v269, v270, v271, countCopy, 8, v40);
       goto LABEL_54;
     }
 
@@ -448,7 +448,7 @@ LABEL_55:
     if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v333 = v34;
+      v333 = countCopy;
       _os_log_impl(&dword_23BD1C000, v96, OS_LOG_TYPE_DEFAULT, "creating GraphicCorner template with unread count %{public}lu", buf, 0xCu);
     }
 
@@ -456,11 +456,11 @@ LABEL_55:
     objc_msgSend_setImageProvider_(v40, v103, v104, v105, v106, v107, v102);
 
     v113 = objc_msgSend_bubbleTintColor(CKMessagesComplicationSpecs, v108, v109, v110, v111, v112);
-    v119 = objc_msgSend_textProviderForUnreadCount_locked_privacy_shortText_tintColor_(self, v114, v115, v116, v117, v118, v34, 0, v10, 1, v113);
+    v119 = objc_msgSend_textProviderForUnreadCount_locked_privacy_shortText_tintColor_(self, v114, v115, v116, v117, v118, countCopy, 0, privacyCopy, 1, v113);
     objc_msgSend_setTextProvider_(v40, v120, v121, v122, v123, v124, v119);
   }
 
-  else if (a3 == 9)
+  else if (family == 9)
   {
     v40 = objc_alloc_init(MEMORY[0x277CBB810]);
     v183 = objc_alloc_init(MEMORY[0x277CBB850]);
@@ -471,7 +471,7 @@ LABEL_55:
       _os_log_impl(&dword_23BD1C000, v189, OS_LOG_TYPE_DEFAULT, "creating GraphicBezel template", buf, 2u);
     }
 
-    v195 = objc_msgSend_fullColorImageProviderForUnreadCount_family_template_(self, v190, v191, v192, v193, v194, v34, 10, 0);
+    v195 = objc_msgSend_fullColorImageProviderForUnreadCount_family_template_(self, v190, v191, v192, v193, v194, countCopy, 10, 0);
     objc_msgSend_setImageProvider_(v183, v196, v197, v198, v199, v200, v195);
 
     objc_msgSend_setDefaultBackgroundForTemplate_(self, v201, v202, v203, v204, v205, v183);
@@ -481,7 +481,7 @@ LABEL_55:
 
   else
   {
-    if (a3 == 12)
+    if (family == 12)
     {
       v40 = objc_alloc_init(MEMORY[0x277CBB938]);
       v238 = objc_msgSend_log(self, v233, v234, v235, v236, v237);
@@ -491,12 +491,12 @@ LABEL_55:
         _os_log_impl(&dword_23BD1C000, v238, OS_LOG_TYPE_DEFAULT, "creating GraphicExtraLarge template", buf, 2u);
       }
 
-      objc_msgSend_fullColorImageProviderForUnreadCount_family_template_(self, v239, v240, v241, v242, v243, v34, 12, 0);
+      objc_msgSend_fullColorImageProviderForUnreadCount_family_template_(self, v239, v240, v241, v242, v243, countCopy, 12, 0);
     }
 
     else
     {
-      if (a3 != 10)
+      if (family != 10)
       {
         goto LABEL_60;
       }
@@ -509,7 +509,7 @@ LABEL_55:
         _os_log_impl(&dword_23BD1C000, v74, OS_LOG_TYPE_DEFAULT, "creating GraphicCircular template", buf, 2u);
       }
 
-      objc_msgSend_fullColorImageProviderForUnreadCount_family_template_(self, v75, v76, v77, v78, v79, v34, 10, 0);
+      objc_msgSend_fullColorImageProviderForUnreadCount_family_template_(self, v75, v76, v77, v78, v79, countCopy, 10, 0);
     }
     v244 = ;
     objc_msgSend_setImageProvider_(v40, v245, v246, v247, v248, v249, v244);
@@ -522,15 +522,15 @@ LABEL_60:
   return v40;
 }
 
-- (id)imageProviderForUnreadCount:(unint64_t)a3 family:(int64_t)a4 template:(id)a5
+- (id)imageProviderForUnreadCount:(unint64_t)count family:(int64_t)family template:(id)template
 {
-  v8 = a5;
+  templateCopy = template;
   v14 = objc_msgSend_sharedInstance(CKMessagesComplicationImageProvider, v9, v10, v11, v12, v13);
   v20 = objc_msgSend_specs(self, v15, v16, v17, v18, v19);
-  v26 = objc_msgSend_imageForUnreadCount_family_complicationTemplate_specs_(v14, v21, v22, v23, v24, v25, a3, a4, v8, v20);
+  v26 = objc_msgSend_imageForUnreadCount_family_complicationTemplate_specs_(v14, v21, v22, v23, v24, v25, count, family, templateCopy, v20);
 
   v33 = objc_msgSend_imageProviderWithOnePieceImage_(MEMORY[0x277CBBB40], v27, v28, v29, v30, v31, v26);
-  if (a4 == 6)
+  if (family == 6)
   {
     objc_msgSend_systemWhiteColor(MEMORY[0x277D75348], v32, v34, v35, v36, v37);
   }
@@ -545,29 +545,29 @@ LABEL_60:
   return v33;
 }
 
-- (id)fullColorImageProviderForUnreadCount:(unint64_t)a3 family:(int64_t)a4 template:(id)a5
+- (id)fullColorImageProviderForUnreadCount:(unint64_t)count family:(int64_t)family template:(id)template
 {
-  v8 = a5;
+  templateCopy = template;
   v14 = objc_msgSend_sharedInstance(CKMessagesComplicationImageProvider, v9, v10, v11, v12, v13);
   v20 = objc_msgSend_specs(self, v15, v16, v17, v18, v19);
-  v26 = objc_msgSend_imageForUnreadCount_family_complicationTemplate_specs_(v14, v21, v22, v23, v24, v25, a3, a4, v8, v20);
+  v26 = objc_msgSend_imageForUnreadCount_family_complicationTemplate_specs_(v14, v21, v22, v23, v24, v25, count, family, templateCopy, v20);
 
   v32 = objc_msgSend_providerWithFullColorImage_monochromeFilterType_(MEMORY[0x277CBBB10], v27, v28, v29, v30, v31, v26, 1);
 
   return v32;
 }
 
-- (id)textProviderForUnreadCount:(unint64_t)a3 locked:(BOOL)a4 privacy:(BOOL)a5 shortText:(BOOL)a6 tintColor:(id)a7
+- (id)textProviderForUnreadCount:(unint64_t)count locked:(BOOL)locked privacy:(BOOL)privacy shortText:(BOOL)text tintColor:(id)color
 {
-  v7 = a6;
-  v8 = a5;
-  v9 = a4;
-  v11 = a7;
-  if (v9 || v8)
+  textCopy = text;
+  privacyCopy = privacy;
+  lockedCopy = locked;
+  colorCopy = color;
+  if (lockedCopy || privacyCopy)
   {
-    if (!v9 || v8)
+    if (!lockedCopy || privacyCopy)
     {
-      if (!v8)
+      if (!privacyCopy)
       {
         goto LABEL_13;
       }
@@ -596,20 +596,20 @@ LABEL_12:
     goto LABEL_14;
   }
 
-  if (v7)
+  if (textCopy)
   {
     v12 = MEMORY[0x277CCACA8];
     v13 = MEMORY[0x277CCA8D8];
     v14 = objc_opt_class();
     v20 = objc_msgSend_bundleForClass_(v13, v15, v16, v17, v18, v19, v14);
     v26 = objc_msgSend_localizedStringForKey_value_table_(v20, v21, v22, v23, v24, v25, @"UNREAD_MESSAGES_FORMAT", &stru_284E7EA48, @"MessagesComplication");
-    v32 = objc_msgSend_localizedStringWithFormat_(v12, v27, v28, v29, v30, v31, v26, a3);
+    v32 = objc_msgSend_localizedStringWithFormat_(v12, v27, v28, v29, v30, v31, v26, count);
 
     v38 = objc_msgSend_textProviderWithText_(MEMORY[0x277CBBB88], v33, v34, v35, v36, v37, v32);
     v44 = v38;
-    if (v11)
+    if (colorCopy)
     {
-      objc_msgSend_setTintColor_(v38, v39, v40, v41, v42, v43, v11);
+      objc_msgSend_setTintColor_(v38, v39, v40, v41, v42, v43, colorCopy);
     }
 
     goto LABEL_12;
@@ -622,10 +622,10 @@ LABEL_14:
   return v44;
 }
 
-- (void)setDefaultBackgroundForTemplate:(id)a3
+- (void)setDefaultBackgroundForTemplate:(id)template
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  templateCopy = template;
   v10 = objc_msgSend_log(self, v5, v6, v7, v8, v9);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -635,7 +635,7 @@ LABEL_14:
   v22 = *MEMORY[0x277CBB6E8];
   v23[0] = MEMORY[0x277CBEC38];
   v16 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v11, v12, v13, v14, v15, v23, &v22, 1);
-  objc_msgSend_setMetadata_(v4, v17, v18, v19, v20, v21, v16);
+  objc_msgSend_setMetadata_(templateCopy, v17, v18, v19, v20, v21, v16);
 }
 
 @end

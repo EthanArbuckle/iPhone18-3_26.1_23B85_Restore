@@ -73,13 +73,13 @@
   v18 = 0;
   if ([v4 length])
   {
-    v5 = [v4 vk_range];
+    vk_range = [v4 vk_range];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __55__NSRegularExpression_VK__vk_rangesForMatchesInString___block_invoke;
     v12[3] = &unk_1E7BE6AB0;
     v12[4] = &v13;
-    [a1 enumerateMatchesInString:v4 options:0 range:v5 usingBlock:{v6, v12}];
+    [self enumerateMatchesInString:v4 options:0 range:vk_range usingBlock:{v6, v12}];
   }
 
   v7 = [v14[5] copy];

@@ -1,48 +1,48 @@
 @interface GKAccountRemoteUIController
-+ (void)accountRemoteUIControllerForPlayer:(id)a3 mode:(int64_t)a4 completionHandler:(id)a5;
-+ (void)accountRemoteUIControllerForPlayer:(id)a3 mode:(int64_t)a4 url:(id)a5 postBody:(id)a6 completionHandler:(id)a7;
-- (GKAccountRemoteUIController)initWithMode:(int64_t)a3;
-- (GKAccountRemoteUIController)initWithMode:(int64_t)a3 player:(id)a4;
++ (void)accountRemoteUIControllerForPlayer:(id)player mode:(int64_t)mode completionHandler:(id)handler;
++ (void)accountRemoteUIControllerForPlayer:(id)player mode:(int64_t)mode url:(id)url postBody:(id)body completionHandler:(id)handler;
+- (GKAccountRemoteUIController)initWithMode:(int64_t)mode;
+- (GKAccountRemoteUIController)initWithMode:(int64_t)mode player:(id)player;
 - (id)bagKey;
 - (id)fallbackURL;
 - (id)postBodyForInitialLoad;
 - (void)fireCompletionHandler;
-- (void)takeValuesFromClientInfo:(id)a3 withCompletionHandler:(id)a4;
-- (void)updatePostbackDictionary:(id)a3 withHandler:(id)a4;
+- (void)takeValuesFromClientInfo:(id)info withCompletionHandler:(id)handler;
+- (void)updatePostbackDictionary:(id)dictionary withHandler:(id)handler;
 @end
 
 @implementation GKAccountRemoteUIController
 
-+ (void)accountRemoteUIControllerForPlayer:(id)a3 mode:(int64_t)a4 completionHandler:(id)a5
++ (void)accountRemoteUIControllerForPlayer:(id)player mode:(int64_t)mode completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a3;
-  [objc_opt_class() accountRemoteUIControllerForPlayer:v8 mode:a4 url:0 postBody:0 completionHandler:v7];
+  handlerCopy = handler;
+  playerCopy = player;
+  [objc_opt_class() accountRemoteUIControllerForPlayer:playerCopy mode:mode url:0 postBody:0 completionHandler:handlerCopy];
 }
 
-+ (void)accountRemoteUIControllerForPlayer:(id)a3 mode:(int64_t)a4 url:(id)a5 postBody:(id)a6 completionHandler:(id)a7
++ (void)accountRemoteUIControllerForPlayer:(id)player mode:(int64_t)mode url:(id)url postBody:(id)body completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (v14)
+  playerCopy = player;
+  urlCopy = url;
+  bodyCopy = body;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v15 = [MEMORY[0x277D0C138] localPlayer];
-    [v15 setInsideAuthenticatorInvocation:1];
+    localPlayer = [MEMORY[0x277D0C138] localPlayer];
+    [localPlayer setInsideAuthenticatorInvocation:1];
 
     v16 = MEMORY[0x277D0C020];
     v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKAccountRemoteUIController.m", 45, "+[GKAccountRemoteUIController accountRemoteUIControllerForPlayer:mode:url:postBody:completionHandler:]"];
     v18 = [v16 dispatchGroupWithName:v17];
 
-    v19 = [[GKAccountRemoteUIController alloc] initWithMode:a4 player:v11];
+    v19 = [[GKAccountRemoteUIController alloc] initWithMode:mode player:playerCopy];
     v20 = v19;
-    if (v12)
+    if (urlCopy)
     {
-      [(GKAccountRemoteUIController *)v19 setUrl:v12];
-      if (v13)
+      [(GKAccountRemoteUIController *)v19 setUrl:urlCopy];
+      if (bodyCopy)
       {
-        [(GKAccountRemoteUIController *)v20 setPostBody:v13];
+        [(GKAccountRemoteUIController *)v20 setPostBody:bodyCopy];
       }
     }
 
@@ -53,7 +53,7 @@
       v26[2] = __102__GKAccountRemoteUIController_accountRemoteUIControllerForPlayer_mode_url_postBody_completionHandler___block_invoke;
       v26[3] = &unk_279669A20;
       v27 = v19;
-      v28 = v11;
+      v28 = playerCopy;
       [v18 perform:v26];
     }
 
@@ -62,8 +62,8 @@
     v22[2] = __102__GKAccountRemoteUIController_accountRemoteUIControllerForPlayer_mode_url_postBody_completionHandler___block_invoke_2;
     v22[3] = &unk_279669A48;
     v23 = v20;
-    v25 = v14;
-    v24 = v11;
+    v25 = handlerCopy;
+    v24 = playerCopy;
     v21 = v20;
     [v18 notifyOnMainQueueWithBlock:v22];
   }
@@ -131,7 +131,7 @@ uint64_t __102__GKAccountRemoteUIController_accountRemoteUIControllerForPlayer_m
   }
 }
 
-- (GKAccountRemoteUIController)initWithMode:(int64_t)a3
+- (GKAccountRemoteUIController)initWithMode:(int64_t)mode
 {
   v8.receiver = self;
   v8.super_class = GKAccountRemoteUIController;
@@ -139,24 +139,24 @@ uint64_t __102__GKAccountRemoteUIController_accountRemoteUIControllerForPlayer_m
   v5 = v4;
   if (v4)
   {
-    v4->_mode = a3;
+    v4->_mode = mode;
     v6 = v4;
   }
 
   return v5;
 }
 
-- (GKAccountRemoteUIController)initWithMode:(int64_t)a3 player:(id)a4
+- (GKAccountRemoteUIController)initWithMode:(int64_t)mode player:(id)player
 {
-  v6 = a4;
+  playerCopy = player;
   v11.receiver = self;
   v11.super_class = GKAccountRemoteUIController;
   v7 = [(GKRemoteUIController *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    [(GKRemoteUIController *)v7 setPlayerForRemoteUI:v6];
-    v8->_mode = a3;
+    [(GKRemoteUIController *)v7 setPlayerForRemoteUI:playerCopy];
+    v8->_mode = mode;
     v9 = v8;
   }
 
@@ -165,8 +165,8 @@ uint64_t __102__GKAccountRemoteUIController_accountRemoteUIControllerForPlayer_m
 
 - (void)fireCompletionHandler
 {
-  v3 = [(GKRemoteUIController *)self error];
-  if (v3 || ![(GKAccountRemoteUIController *)self authenticatePlayerOnCompletion])
+  error = [(GKRemoteUIController *)self error];
+  if (error || ![(GKAccountRemoteUIController *)self authenticatePlayerOnCompletion])
   {
   }
 
@@ -218,83 +218,83 @@ void __52__GKAccountRemoteUIController_fireCompletionHandler__block_invoke(uint6
 
 - (id)bagKey
 {
-  v2 = [(GKAccountRemoteUIController *)self mode];
-  if ((v2 - 1) <= 2)
+  mode = [(GKAccountRemoteUIController *)self mode];
+  if ((mode - 1) <= 2)
   {
-    v2 = **(&unk_279669A90 + (v2 - 1));
+    mode = **(&unk_279669A90 + (mode - 1));
   }
 
-  return v2;
+  return mode;
 }
 
 - (id)postBodyForInitialLoad
 {
   v16.receiver = self;
   v16.super_class = GKAccountRemoteUIController;
-  v3 = [(GKRemoteUIController *)&v16 postBodyForInitialLoad];
-  v4 = [(GKRemoteUIController *)self authToken];
+  postBodyForInitialLoad = [(GKRemoteUIController *)&v16 postBodyForInitialLoad];
+  authToken = [(GKRemoteUIController *)self authToken];
 
-  if (v4)
+  if (authToken)
   {
-    v5 = [(GKRemoteUIController *)self authToken];
-    [v3 setObject:v5 forKeyedSubscript:@"authToken"];
+    authToken2 = [(GKRemoteUIController *)self authToken];
+    [postBodyForInitialLoad setObject:authToken2 forKeyedSubscript:@"authToken"];
   }
 
-  v6 = [(GKRemoteUIController *)self pushToken];
+  pushToken = [(GKRemoteUIController *)self pushToken];
 
-  if (v6)
+  if (pushToken)
   {
-    v7 = [(GKRemoteUIController *)self pushToken];
-    [v3 setObject:v7 forKeyedSubscript:@"pushToken"];
+    pushToken2 = [(GKRemoteUIController *)self pushToken];
+    [postBodyForInitialLoad setObject:pushToken2 forKeyedSubscript:@"pushToken"];
   }
 
-  v8 = [(GKRemoteUIController *)self appleID];
+  appleID = [(GKRemoteUIController *)self appleID];
 
-  if (v8)
+  if (appleID)
   {
-    v9 = [(GKRemoteUIController *)self altDSID];
-    if (v9)
+    altDSID = [(GKRemoteUIController *)self altDSID];
+    if (altDSID)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"appleID"];
+      [postBodyForInitialLoad setObject:altDSID forKeyedSubscript:@"appleID"];
     }
 
     else
     {
-      v10 = [(GKRemoteUIController *)self appleID];
-      [v3 setObject:v10 forKeyedSubscript:@"appleID"];
+      appleID2 = [(GKRemoteUIController *)self appleID];
+      [postBodyForInitialLoad setObject:appleID2 forKeyedSubscript:@"appleID"];
     }
   }
 
-  v11 = [(GKRemoteUIController *)self playerID];
+  playerID = [(GKRemoteUIController *)self playerID];
 
-  if (v11)
+  if (playerID)
   {
-    v12 = [(GKRemoteUIController *)self playerID];
-    [v3 setObject:v12 forKeyedSubscript:@"playerID"];
+    playerID2 = [(GKRemoteUIController *)self playerID];
+    [postBodyForInitialLoad setObject:playerID2 forKeyedSubscript:@"playerID"];
   }
 
-  v13 = [(GKAccountRemoteUIController *)self availableExternalServices];
+  availableExternalServices = [(GKAccountRemoteUIController *)self availableExternalServices];
 
-  if (v13)
+  if (availableExternalServices)
   {
-    v14 = [(GKAccountRemoteUIController *)self availableExternalServices];
-    [v3 setObject:v14 forKeyedSubscript:@"availableExternalServices"];
+    availableExternalServices2 = [(GKAccountRemoteUIController *)self availableExternalServices];
+    [postBodyForInitialLoad setObject:availableExternalServices2 forKeyedSubscript:@"availableExternalServices"];
   }
 
   if (self->_postBody)
   {
-    [v3 addEntriesFromDictionary:?];
+    [postBodyForInitialLoad addEntriesFromDictionary:?];
   }
 
-  return v3;
+  return postBodyForInitialLoad;
 }
 
-- (void)takeValuesFromClientInfo:(id)a3 withCompletionHandler:(id)a4
+- (void)takeValuesFromClientInfo:(id)info withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"finished"];
-  v9 = [v6 objectForKeyedSubscript:@"isAuthenticated"];
+  infoCopy = info;
+  handlerCopy = handler;
+  v8 = [infoCopy objectForKeyedSubscript:@"finished"];
+  v9 = [infoCopy objectForKeyedSubscript:@"isAuthenticated"];
   v10 = v9;
   if (v9)
   {
@@ -308,7 +308,7 @@ void __52__GKAccountRemoteUIController_fireCompletionHandler__block_invoke(uint6
 
   if ([(GKAccountRemoteUIController *)self mode]== 1)
   {
-    v11 = [v6 objectForKeyedSubscript:@"alias"];
+    v11 = [infoCopy objectForKeyedSubscript:@"alias"];
 
     if (!v11)
     {
@@ -318,14 +318,14 @@ void __52__GKAccountRemoteUIController_fireCompletionHandler__block_invoke(uint6
 
   v12.receiver = self;
   v12.super_class = GKAccountRemoteUIController;
-  [(GKRemoteUIController *)&v12 takeValuesFromClientInfo:v6 withCompletionHandler:v7];
+  [(GKRemoteUIController *)&v12 takeValuesFromClientInfo:infoCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)updatePostbackDictionary:(id)a3 withHandler:(id)a4
+- (void)updatePostbackDictionary:(id)dictionary withHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 

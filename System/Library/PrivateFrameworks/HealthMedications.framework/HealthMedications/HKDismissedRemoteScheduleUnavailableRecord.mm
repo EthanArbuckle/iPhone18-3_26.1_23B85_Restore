@@ -1,13 +1,13 @@
 @interface HKDismissedRemoteScheduleUnavailableRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDismissedRemoteScheduleUnavailableRecord)init;
-- (HKDismissedRemoteScheduleUnavailableRecord)initWithCoder:(id)a3;
-- (id)_initWithMedicationIdentifier:(id)a3 scheduleType:(int64_t)a4 scheduleCompatibilityVersion:(int64_t)a5 deviceIdentifiers:(id)a6 creationDate:(id)a7;
+- (HKDismissedRemoteScheduleUnavailableRecord)initWithCoder:(id)coder;
+- (id)_initWithMedicationIdentifier:(id)identifier scheduleType:(int64_t)type scheduleCompatibilityVersion:(int64_t)version deviceIdentifiers:(id)identifiers creationDate:(id)date;
 - (id)description;
 - (id)deviceIdentifiersDatabaseString;
 - (id)deviceIdentifiersDescriptionString;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDismissedRemoteScheduleUnavailableRecord
@@ -22,44 +22,44 @@
   return 0;
 }
 
-- (id)_initWithMedicationIdentifier:(id)a3 scheduleType:(int64_t)a4 scheduleCompatibilityVersion:(int64_t)a5 deviceIdentifiers:(id)a6 creationDate:(id)a7
+- (id)_initWithMedicationIdentifier:(id)identifier scheduleType:(int64_t)type scheduleCompatibilityVersion:(int64_t)version deviceIdentifiers:(id)identifiers creationDate:(id)date
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
-  if (!v12)
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  dateCopy = date;
+  if (!identifierCopy)
   {
     [HKDismissedRemoteScheduleUnavailableRecord _initWithMedicationIdentifier:scheduleType:scheduleCompatibilityVersion:deviceIdentifiers:creationDate:];
   }
 
   v15 = HKAllMedicationScheduleTypes();
-  v16 = [v15 firstObject];
-  v17 = [v16 integerValue];
+  firstObject = [v15 firstObject];
+  integerValue = [firstObject integerValue];
 
   v18 = HKAllMedicationScheduleTypes();
-  v19 = [v18 lastObject];
-  v20 = [v19 integerValue];
+  lastObject = [v18 lastObject];
+  integerValue2 = [lastObject integerValue];
 
-  if (v17 > a4)
+  if (integerValue > type)
   {
     [HKDismissedRemoteScheduleUnavailableRecord _initWithMedicationIdentifier:scheduleType:scheduleCompatibilityVersion:deviceIdentifiers:creationDate:];
   }
 
-  if (v20 < a4)
+  if (integerValue2 < type)
   {
     [HKDismissedRemoteScheduleUnavailableRecord _initWithMedicationIdentifier:scheduleType:scheduleCompatibilityVersion:deviceIdentifiers:creationDate:];
   }
 
-  if (a5 > -2)
+  if (version > -2)
   {
-    if (v13)
+    if (identifiersCopy)
     {
       goto LABEL_9;
     }
 
 LABEL_14:
     [HKDismissedRemoteScheduleUnavailableRecord _initWithMedicationIdentifier:scheduleType:scheduleCompatibilityVersion:deviceIdentifiers:creationDate:];
-    if (v14)
+    if (dateCopy)
     {
       goto LABEL_10;
     }
@@ -68,13 +68,13 @@ LABEL_14:
   }
 
   [HKDismissedRemoteScheduleUnavailableRecord _initWithMedicationIdentifier:scheduleType:scheduleCompatibilityVersion:deviceIdentifiers:creationDate:];
-  if (!v13)
+  if (!identifiersCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (v14)
+  if (dateCopy)
   {
     goto LABEL_10;
   }
@@ -87,17 +87,17 @@ LABEL_10:
   v21 = [(HKDismissedRemoteScheduleUnavailableRecord *)&v29 init];
   if (v21)
   {
-    v22 = [v12 copy];
+    v22 = [identifierCopy copy];
     medicationIdentifier = v21->_medicationIdentifier;
     v21->_medicationIdentifier = v22;
 
-    v21->_scheduleType = a4;
-    v21->_scheduleCompatibilityVersion = a5;
-    v24 = [v13 copy];
+    v21->_scheduleType = type;
+    v21->_scheduleCompatibilityVersion = version;
+    v24 = [identifiersCopy copy];
     deviceIdentifiers = v21->_deviceIdentifiers;
     v21->_deviceIdentifiers = v24;
 
-    v26 = [v14 copy];
+    v26 = [dateCopy copy];
     creationDate = v21->_creationDate;
     v21->_creationDate = v26;
   }
@@ -140,10 +140,10 @@ LABEL_10:
   return v3 ^ v4 ^ [(NSDate *)self->_creationDate hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -153,7 +153,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       medicationIdentifier = self->_medicationIdentifier;
       v7 = v5->_medicationIdentifier;
       if (medicationIdentifier != v7 && (!v7 || ![(NSString *)medicationIdentifier isEqual:?]))
@@ -210,37 +210,37 @@ LABEL_18:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   medicationIdentifier = self->_medicationIdentifier;
-  v5 = a3;
-  [v5 encodeObject:medicationIdentifier forKey:@"MedicationIdentifier"];
-  [v5 encodeInteger:self->_scheduleType forKey:@"ScheduleType"];
-  [v5 encodeInteger:self->_scheduleCompatibilityVersion forKey:@"ScheduleCompatibilityVersion"];
-  [v5 encodeObject:self->_deviceIdentifiers forKey:@"DeviceIdentifiers"];
-  [v5 encodeObject:self->_creationDate forKey:@"CreationDate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:medicationIdentifier forKey:@"MedicationIdentifier"];
+  [coderCopy encodeInteger:self->_scheduleType forKey:@"ScheduleType"];
+  [coderCopy encodeInteger:self->_scheduleCompatibilityVersion forKey:@"ScheduleCompatibilityVersion"];
+  [coderCopy encodeObject:self->_deviceIdentifiers forKey:@"DeviceIdentifiers"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"CreationDate"];
 }
 
-- (HKDismissedRemoteScheduleUnavailableRecord)initWithCoder:(id)a3
+- (HKDismissedRemoteScheduleUnavailableRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = HKDismissedRemoteScheduleUnavailableRecord;
   v5 = [(HKDismissedRemoteScheduleUnavailableRecord *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicationIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicationIdentifier"];
     medicationIdentifier = v5->_medicationIdentifier;
     v5->_medicationIdentifier = v6;
 
-    v5->_scheduleType = [v4 decodeIntegerForKey:@"ScheduleType"];
-    v5->_scheduleCompatibilityVersion = [v4 decodeIntegerForKey:@"ScheduleCompatibilityVersion"];
+    v5->_scheduleType = [coderCopy decodeIntegerForKey:@"ScheduleType"];
+    v5->_scheduleCompatibilityVersion = [coderCopy decodeIntegerForKey:@"ScheduleCompatibilityVersion"];
     v8 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"DeviceIdentifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"DeviceIdentifiers"];
     deviceIdentifiers = v5->_deviceIdentifiers;
     v5->_deviceIdentifiers = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CreationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v11;
 

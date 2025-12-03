@@ -1,8 +1,8 @@
 @interface _UIInterfaceActionRepresentationsSequenceView
-- (CGSize)_sizeByApplyingLayoutMarginsAsOutsetToSize:(CGSize)a3;
+- (CGSize)_sizeByApplyingLayoutMarginsAsOutsetToSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (_UIInterfaceActionRepresentationsSequenceView)initWithVisualStyle:(id)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (_UIInterfaceActionRepresentationsSequenceView)initWithVisualStyle:(id)style;
 - (double)_minimumNumberOfRowsRequiredVisible;
 - (id)_systemDefaultFocusGroupIdentifier;
 - (void)_applyVisualStyleToSeparatedContentSequenceView;
@@ -13,20 +13,20 @@
 - (void)_updateMinimumHeightConstraint;
 - (void)_updateSeparatedContentSequenceViewToFitSizeIfPossible;
 - (void)layoutSubviews;
-- (void)setActionLayoutAxis:(int64_t)a3;
-- (void)setArrangedActionRepresentationViews:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setVisualCornerForcedOverride:(BOOL)a3;
-- (void)setVisualCornerPosition:(unint64_t)a3;
-- (void)setVisualStyle:(id)a3;
+- (void)setActionLayoutAxis:(int64_t)axis;
+- (void)setArrangedActionRepresentationViews:(id)views;
+- (void)setBackgroundView:(id)view;
+- (void)setVisualCornerForcedOverride:(BOOL)override;
+- (void)setVisualCornerPosition:(unint64_t)position;
+- (void)setVisualStyle:(id)style;
 - (void)updateConstraints;
 @end
 
 @implementation _UIInterfaceActionRepresentationsSequenceView
 
-- (_UIInterfaceActionRepresentationsSequenceView)initWithVisualStyle:(id)a3
+- (_UIInterfaceActionRepresentationsSequenceView)initWithVisualStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v14.receiver = self;
   v14.super_class = _UIInterfaceActionRepresentationsSequenceView;
   v6 = [(UIScrollView *)&v14 initWithFrame:0.0, 0.0, 100.0, 100.0];
@@ -36,15 +36,15 @@
     [(UIScrollView *)v6 setContentInsetAdjustmentBehavior:2];
     [(UIView *)v7 setEdgesInsettingLayoutMarginsFromSafeArea:0];
     v7->_sizingSeparatedContentSequenceViewToFitDisabledCount = 0;
-    objc_storeStrong(&v7->_visualStyle, a3);
+    objc_storeStrong(&v7->_visualStyle, style);
     v7->_actionLayoutAxis = 1;
     arrangedActionRepresentationViews = v7->_arrangedActionRepresentationViews;
     v7->_arrangedActionRepresentationViews = MEMORY[0x1E695E0F0];
 
     [(UIView *)v7 setLayoutMargins:0.0, 0.0, 0.0, 0.0];
     v9 = [_UIInterfaceActionSeparatableSequenceView alloc];
-    v10 = [(_UIInterfaceActionRepresentationsSequenceView *)v7 visualStyle];
-    v11 = [(_UIInterfaceActionSeparatableSequenceView *)v9 initWithVisualStyle:v10];
+    visualStyle = [(_UIInterfaceActionRepresentationsSequenceView *)v7 visualStyle];
+    v11 = [(_UIInterfaceActionSeparatableSequenceView *)v9 initWithVisualStyle:visualStyle];
     separatedContentSequenceView = v7->_separatedContentSequenceView;
     v7->_separatedContentSequenceView = v11;
 
@@ -60,21 +60,21 @@
   return v7;
 }
 
-- (void)setVisualStyle:(id)a3
+- (void)setVisualStyle:(id)style
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_visualStyle] & 1) == 0)
+  styleCopy = style;
+  if (([styleCopy isEqual:self->_visualStyle] & 1) == 0)
   {
-    objc_storeStrong(&self->_visualStyle, a3);
+    objc_storeStrong(&self->_visualStyle, style);
     [(_UIInterfaceActionRepresentationsSequenceView *)self reloadDisplayedContentVisualStyle];
   }
 }
 
-- (void)setActionLayoutAxis:(int64_t)a3
+- (void)setActionLayoutAxis:(int64_t)axis
 {
-  if (self->_actionLayoutAxis != a3)
+  if (self->_actionLayoutAxis != axis)
   {
-    self->_actionLayoutAxis = a3;
+    self->_actionLayoutAxis = axis;
     [(_UIInterfaceActionSeparatableSequenceView *)self->_separatedContentSequenceView setAxis:?];
     [(UIView *)self setNeedsUpdateConstraints];
 
@@ -82,30 +82,30 @@
   }
 }
 
-- (void)setVisualCornerPosition:(unint64_t)a3
+- (void)setVisualCornerPosition:(unint64_t)position
 {
-  if (self->_visualCornerPosition != a3)
+  if (self->_visualCornerPosition != position)
   {
-    self->_visualCornerPosition = a3;
+    self->_visualCornerPosition = position;
     [(_UIInterfaceActionSeparatableSequenceView *)self->_separatedContentSequenceView setVisualCornerPosition:?];
   }
 }
 
-- (void)setVisualCornerForcedOverride:(BOOL)a3
+- (void)setVisualCornerForcedOverride:(BOOL)override
 {
-  if (self->_visualCornerForcedOverride != a3)
+  if (self->_visualCornerForcedOverride != override)
   {
-    self->_visualCornerForcedOverride = a3;
+    self->_visualCornerForcedOverride = override;
     [(_UIInterfaceActionSeparatableSequenceView *)self->_separatedContentSequenceView setVisualCornerForcedOverride:?];
   }
 }
 
-- (void)setArrangedActionRepresentationViews:(id)a3
+- (void)setArrangedActionRepresentationViews:(id)views
 {
-  v5 = a3;
+  viewsCopy = views;
   if (([(NSArray *)self->_arrangedActionRepresentationViews isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_arrangedActionRepresentationViews, a3);
+    objc_storeStrong(&self->_arrangedActionRepresentationViews, views);
     [(_UIInterfaceActionSeparatableSequenceView *)self->_separatedContentSequenceView setArrangedContentViews:self->_arrangedActionRepresentationViews];
     [(UIView *)self setNeedsUpdateConstraints];
     [(UIView *)self invalidateIntrinsicContentSize];
@@ -114,22 +114,22 @@
 
 - (id)_systemDefaultFocusGroupIdentifier
 {
-  v3 = [(UIView *)self _focusBehavior];
-  v4 = [v3 focusGroupContainmentBehavior];
+  _focusBehavior = [(UIView *)self _focusBehavior];
+  focusGroupContainmentBehavior = [_focusBehavior focusGroupContainmentBehavior];
 
-  if ((v4 & 0x10) != 0)
+  if ((focusGroupContainmentBehavior & 0x10) != 0)
   {
-    v5 = 0;
+    _systemDefaultFocusGroupIdentifier = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _UIInterfaceActionRepresentationsSequenceView;
-    v5 = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
+    _systemDefaultFocusGroupIdentifier = [(UIView *)&v7 _systemDefaultFocusGroupIdentifier];
   }
 
-  return v5;
+  return _systemDefaultFocusGroupIdentifier;
 }
 
 - (void)layoutSubviews
@@ -159,8 +159,8 @@
 
 - (void)_loadDefaultSizingConstraints
 {
-  v3 = [(UIView *)self heightAnchor];
-  v4 = [v3 constraintGreaterThanOrEqualToConstant:0.0];
+  heightAnchor = [(UIView *)self heightAnchor];
+  v4 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
   minimumHeightConstraint = self->_minimumHeightConstraint;
   self->_minimumHeightConstraint = v4;
 
@@ -171,20 +171,20 @@
 
 - (void)_updateMinimumHeightConstraint
 {
-  v3 = [(_UIInterfaceActionRepresentationsSequenceView *)self arrangedActionRepresentationViews];
-  v4 = [v3 count];
+  arrangedActionRepresentationViews = [(_UIInterfaceActionRepresentationsSequenceView *)self arrangedActionRepresentationViews];
+  v4 = [arrangedActionRepresentationViews count];
 
   if (v4)
   {
-    v5 = [(_UIInterfaceActionRepresentationsSequenceView *)self visualStyle];
-    [v5 minimumActionContentSize];
+    visualStyle = [(_UIInterfaceActionRepresentationsSequenceView *)self visualStyle];
+    [visualStyle minimumActionContentSize];
     v7 = v6;
 
     if (v7 <= 0.0)
     {
-      v8 = [(_UIInterfaceActionRepresentationsSequenceView *)self arrangedActionRepresentationViews];
-      v9 = [v8 firstObject];
-      [v9 systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+      arrangedActionRepresentationViews2 = [(_UIInterfaceActionRepresentationsSequenceView *)self arrangedActionRepresentationViews];
+      firstObject = [arrangedActionRepresentationViews2 firstObject];
+      [firstObject systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
       v7 = v10;
     }
 
@@ -204,12 +204,12 @@
 
 - (double)_minimumNumberOfRowsRequiredVisible
 {
-  v3 = [(_UIInterfaceActionRepresentationsSequenceView *)self _isHorizontalLayout];
-  v4 = [(_UIInterfaceActionRepresentationsSequenceView *)self arrangedActionRepresentationViews];
-  v5 = v4;
-  if (v3)
+  _isHorizontalLayout = [(_UIInterfaceActionRepresentationsSequenceView *)self _isHorizontalLayout];
+  arrangedActionRepresentationViews = [(_UIInterfaceActionRepresentationsSequenceView *)self arrangedActionRepresentationViews];
+  v5 = arrangedActionRepresentationViews;
+  if (_isHorizontalLayout)
   {
-    if (v4)
+    if (arrangedActionRepresentationViews)
     {
       v6 = 1.0;
     }
@@ -222,7 +222,7 @@
 
   else
   {
-    v7 = [v4 count];
+    v7 = [arrangedActionRepresentationViews count];
 
     return fmin(v7, 1.5);
   }
@@ -230,10 +230,10 @@
   return v6;
 }
 
-- (CGSize)_sizeByApplyingLayoutMarginsAsOutsetToSize:(CGSize)a3
+- (CGSize)_sizeByApplyingLayoutMarginsAsOutsetToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(UIView *)self layoutMargins];
   v7 = width + v5 + v6;
   v10 = height + v8 + v9;
@@ -253,9 +253,9 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  [(_UIInterfaceActionSeparatableSequenceView *)self->_separatedContentSequenceView systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(_UIInterfaceActionSeparatableSequenceView *)self->_separatedContentSequenceView systemLayoutSizeFittingSize:size.width, size.height];
 
   [(_UIInterfaceActionRepresentationsSequenceView *)self _sizeByApplyingLayoutMarginsAsOutsetToSize:?];
   result.height = v5;
@@ -306,8 +306,8 @@
 
 - (void)_applyVisualStyleToSeparatedContentSequenceView
 {
-  v3 = [(_UIInterfaceActionRepresentationsSequenceView *)self visualStyle];
-  [(_UIInterfaceActionSeparatableSequenceView *)self->_separatedContentSequenceView setVisualStyle:v3];
+  visualStyle = [(_UIInterfaceActionRepresentationsSequenceView *)self visualStyle];
+  [(_UIInterfaceActionSeparatableSequenceView *)self->_separatedContentSequenceView setVisualStyle:visualStyle];
 
   [(UIView *)self invalidateIntrinsicContentSize];
 }
@@ -323,19 +323,19 @@
   }
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   backgroundView = self->_backgroundView;
-  if (backgroundView != v5)
+  if (backgroundView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)backgroundView removeFromSuperview];
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(UIView *)self bounds];
     [(UIView *)self->_backgroundView setFrame:?];
     [(UIScrollView *)self _addContentSubview:self->_backgroundView atBack:1];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 

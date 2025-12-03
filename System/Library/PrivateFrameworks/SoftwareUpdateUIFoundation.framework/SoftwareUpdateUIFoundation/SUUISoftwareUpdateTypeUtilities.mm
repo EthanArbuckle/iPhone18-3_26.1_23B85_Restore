@@ -1,14 +1,14 @@
 @interface SUUISoftwareUpdateTypeUtilities
-+ (id)description:(int64_t)a3;
++ (id)description:(int64_t)description;
 @end
 
 @implementation SUUISoftwareUpdateTypeUtilities
 
-+ (id)description:(int64_t)a3
++ (id)description:(int64_t)description
 {
-  if (a3)
+  if (description)
   {
-    switch(a3)
+    switch(description)
     {
       case 1:
         v4 = MEMORY[0x277D82BE0](@"SUUISoftwareUpdateTypeIncremental");

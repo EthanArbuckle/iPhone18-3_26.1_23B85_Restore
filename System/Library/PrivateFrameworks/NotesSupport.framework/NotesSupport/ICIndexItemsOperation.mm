@@ -1,12 +1,12 @@
 @interface ICIndexItemsOperation
-- (BOOL)_shouldCommitDeletionWithHasItemsToDeleteThenUpdate:(BOOL)a3 shouldForceCommit:(BOOL)a4;
-- (BOOL)_shouldCommitIndexingWithHasItemsToDeleteThenUpdate:(BOOL)a3 shouldForceCommit:(BOOL)a4;
+- (BOOL)_shouldCommitDeletionWithHasItemsToDeleteThenUpdate:(BOOL)update shouldForceCommit:(BOOL)commit;
+- (BOOL)_shouldCommitIndexingWithHasItemsToDeleteThenUpdate:(BOOL)update shouldForceCommit:(BOOL)commit;
 - (ICIndexItemsOperation)init;
-- (ICIndexItemsOperation)initWithSearchableIndex:(id)a3 dataSources:(id)a4;
-- (id)managedObjectContextForDataSource:(id)a3;
-- (void)_commitObjectIDURIsToDeleteForDataSource:(id)a3;
-- (void)_commitObjectIDsToIndexForDataSource:(id)a3;
-- (void)commitIfNecessaryForDataSource:(id)a3 hasItemsToDeleteThenUpdate:(BOOL)a4 forceCommit:(BOOL)a5;
+- (ICIndexItemsOperation)initWithSearchableIndex:(id)index dataSources:(id)sources;
+- (id)managedObjectContextForDataSource:(id)source;
+- (void)_commitObjectIDURIsToDeleteForDataSource:(id)source;
+- (void)_commitObjectIDsToIndexForDataSource:(id)source;
+- (void)commitIfNecessaryForDataSource:(id)source hasItemsToDeleteThenUpdate:(BOOL)update forceCommit:(BOOL)commit;
 - (void)main;
 - (void)processItems;
 @end
@@ -20,30 +20,30 @@
   return 0;
 }
 
-- (ICIndexItemsOperation)initWithSearchableIndex:(id)a3 dataSources:(id)a4
+- (ICIndexItemsOperation)initWithSearchableIndex:(id)index dataSources:(id)sources
 {
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  sourcesCopy = sources;
   v19.receiver = self;
   v19.super_class = ICIndexItemsOperation;
   v8 = [(ICIndexItemsOperation *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    [(ICIndexItemsOperation *)v8 setSearchableIndex:v6];
-    [(ICIndexItemsOperation *)v9 setDataSources:v7];
-    v10 = [MEMORY[0x1E695DF70] array];
+    [(ICIndexItemsOperation *)v8 setSearchableIndex:indexCopy];
+    [(ICIndexItemsOperation *)v9 setDataSources:sourcesCopy];
+    array = [MEMORY[0x1E695DF70] array];
     objectIDsToIndex = v9->_objectIDsToIndex;
-    v9->_objectIDsToIndex = v10;
+    v9->_objectIDsToIndex = array;
 
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     searchableItemsToIndex = v9->_searchableItemsToIndex;
-    v9->_searchableItemsToIndex = v12;
+    v9->_searchableItemsToIndex = array2;
 
     v9->_totalSizeOfSearchableItemsToIndex = 0;
-    v14 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     objectIDURIsToDelete = v9->_objectIDURIsToDelete;
-    v9->_objectIDURIsToDelete = v14;
+    v9->_objectIDURIsToDelete = array3;
 
     v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
     contextCache = v9->_contextCache;
@@ -53,21 +53,21 @@
   return v9;
 }
 
-- (id)managedObjectContextForDataSource:(id)a3
+- (id)managedObjectContextForDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [(ICIndexItemsOperation *)self contextCache];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  sourceCopy = source;
+  uuid = [sourceCopy uuid];
+  contextCache = [(ICIndexItemsOperation *)self contextCache];
+  newManagedObjectContext = [contextCache objectForKeyedSubscript:uuid];
 
-  if (!v7)
+  if (!newManagedObjectContext)
   {
-    v7 = [v4 newManagedObjectContext];
-    v8 = [(ICIndexItemsOperation *)self contextCache];
-    [v8 setObject:v7 forKeyedSubscript:v5];
+    newManagedObjectContext = [sourceCopy newManagedObjectContext];
+    contextCache2 = [(ICIndexItemsOperation *)self contextCache];
+    [contextCache2 setObject:newManagedObjectContext forKeyedSubscript:uuid];
   }
 
-  return v7;
+  return newManagedObjectContext;
 }
 
 - (void)main
@@ -261,34 +261,34 @@ void __37__ICIndexItemsOperation_processItems__block_invoke_6(uint64_t a1)
   }
 }
 
-- (void)commitIfNecessaryForDataSource:(id)a3 hasItemsToDeleteThenUpdate:(BOOL)a4 forceCommit:(BOOL)a5
+- (void)commitIfNecessaryForDataSource:(id)source hasItemsToDeleteThenUpdate:(BOOL)update forceCommit:(BOOL)commit
 {
-  v5 = a5;
-  v6 = a4;
-  v10 = a3;
-  v8 = [(ICIndexItemsOperation *)self _shouldCommitDeletionWithHasItemsToDeleteThenUpdate:v6 shouldForceCommit:v5];
-  v9 = [(ICIndexItemsOperation *)self _shouldCommitIndexingWithHasItemsToDeleteThenUpdate:v6 shouldForceCommit:v5];
+  commitCopy = commit;
+  updateCopy = update;
+  sourceCopy = source;
+  v8 = [(ICIndexItemsOperation *)self _shouldCommitDeletionWithHasItemsToDeleteThenUpdate:updateCopy shouldForceCommit:commitCopy];
+  v9 = [(ICIndexItemsOperation *)self _shouldCommitIndexingWithHasItemsToDeleteThenUpdate:updateCopy shouldForceCommit:commitCopy];
   if (v8)
   {
-    [(ICIndexItemsOperation *)self _commitObjectIDURIsToDeleteForDataSource:v10];
+    [(ICIndexItemsOperation *)self _commitObjectIDURIsToDeleteForDataSource:sourceCopy];
   }
 
   if (v9)
   {
-    [(ICIndexItemsOperation *)self _commitObjectIDsToIndexForDataSource:v10];
+    [(ICIndexItemsOperation *)self _commitObjectIDsToIndexForDataSource:sourceCopy];
   }
 }
 
-- (BOOL)_shouldCommitDeletionWithHasItemsToDeleteThenUpdate:(BOOL)a3 shouldForceCommit:(BOOL)a4
+- (BOOL)_shouldCommitDeletionWithHasItemsToDeleteThenUpdate:(BOOL)update shouldForceCommit:(BOOL)commit
 {
-  v5 = a3;
-  v7 = [(ICIndexItemsOperation *)self objectIDURIsToDelete];
-  v8 = [v7 count];
+  updateCopy = update;
+  objectIDURIsToDelete = [(ICIndexItemsOperation *)self objectIDURIsToDelete];
+  v8 = [objectIDURIsToDelete count];
 
   if (!v8)
   {
     v9 = 0;
-    if (!v5)
+    if (!updateCopy)
     {
       return v9;
     }
@@ -297,13 +297,13 @@ void __37__ICIndexItemsOperation_processItems__block_invoke_6(uint64_t a1)
   }
 
   v9 = 1;
-  if (!v5 && !a4)
+  if (!updateCopy && !commit)
   {
-    v10 = [(ICIndexItemsOperation *)self objectIDURIsToDelete];
-    v9 = ([v10 count] & 0xFFFFFFFFFFFFC000) != 0;
+    objectIDURIsToDelete2 = [(ICIndexItemsOperation *)self objectIDURIsToDelete];
+    v9 = ([objectIDURIsToDelete2 count] & 0xFFFFFFFFFFFFC000) != 0;
   }
 
-  if (v5)
+  if (updateCopy)
   {
 LABEL_8:
     v11 = os_log_create("com.apple.notes", "SearchIndexer");
@@ -316,9 +316,9 @@ LABEL_8:
   return v9;
 }
 
-- (void)_commitObjectIDURIsToDeleteForDataSource:(id)a3
+- (void)_commitObjectIDURIsToDeleteForDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     [ICAssert handleFailedAssertWithCondition:"![NSThread isMainThread]" functionName:"[ICIndexItemsOperation _commitObjectIDURIsToDeleteForDataSource:]" simulateCrash:1 showAlert:0 format:@"Unexpected call from main thread"];
@@ -331,23 +331,23 @@ LABEL_8:
     [(ICIndexItemsOperation *)self _commitObjectIDURIsToDeleteForDataSource:v6];
   }
 
-  v7 = [(ICIndexItemsOperation *)self objectIDURIsToDelete];
-  v8 = [v7 copy];
-  [v4 searchIndexerWillDeleteSearchableItemsWithObjectIDURIs:v8];
+  objectIDURIsToDelete = [(ICIndexItemsOperation *)self objectIDURIsToDelete];
+  v8 = [objectIDURIsToDelete copy];
+  [sourceCopy searchIndexerWillDeleteSearchableItemsWithObjectIDURIs:v8];
 
-  v9 = [(ICIndexItemsOperation *)self searchableIndex];
-  v10 = [(ICIndexItemsOperation *)self objectIDURIsToDelete];
-  v11 = [v10 copy];
+  searchableIndex = [(ICIndexItemsOperation *)self searchableIndex];
+  objectIDURIsToDelete2 = [(ICIndexItemsOperation *)self objectIDURIsToDelete];
+  v11 = [objectIDURIsToDelete2 copy];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__ICIndexItemsOperation__commitObjectIDURIsToDeleteForDataSource___block_invoke;
   v14[3] = &unk_1E8484BB8;
   v14[4] = self;
-  v15 = v4;
+  v15 = sourceCopy;
   v16 = v5;
   v12 = v5;
-  v13 = v4;
-  [v9 deleteSearchableItemsWithIdentifiers:v11 completionHandler:v14];
+  v13 = sourceCopy;
+  [searchableIndex deleteSearchableItemsWithIdentifiers:v11 completionHandler:v14];
 
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -386,16 +386,16 @@ void __66__ICIndexItemsOperation__commitObjectIDURIsToDeleteForDataSource___bloc
   dispatch_semaphore_signal(*(a1 + 48));
 }
 
-- (BOOL)_shouldCommitIndexingWithHasItemsToDeleteThenUpdate:(BOOL)a3 shouldForceCommit:(BOOL)a4
+- (BOOL)_shouldCommitIndexingWithHasItemsToDeleteThenUpdate:(BOOL)update shouldForceCommit:(BOOL)commit
 {
-  v5 = a3;
-  v7 = [(ICIndexItemsOperation *)self objectIDsToIndex];
-  v8 = [v7 count];
+  updateCopy = update;
+  objectIDsToIndex = [(ICIndexItemsOperation *)self objectIDsToIndex];
+  v8 = [objectIDsToIndex count];
 
   if (!v8)
   {
     v9 = 0;
-    if (!v5)
+    if (!updateCopy)
     {
       return v9;
     }
@@ -404,16 +404,16 @@ void __66__ICIndexItemsOperation__commitObjectIDURIsToDeleteForDataSource___bloc
   }
 
   v9 = 1;
-  if (!v5 && !a4)
+  if (!updateCopy && !commit)
   {
-    v10 = [(ICIndexItemsOperation *)self objectIDsToIndex];
-    if ([v10 count] <= 0x63)
+    objectIDsToIndex2 = [(ICIndexItemsOperation *)self objectIDsToIndex];
+    if ([objectIDsToIndex2 count] <= 0x63)
     {
       v9 = [(ICIndexItemsOperation *)self totalSizeOfSearchableItemsToIndex]>> 12 > 0x18;
     }
   }
 
-  if (v5)
+  if (updateCopy)
   {
 LABEL_10:
     v11 = os_log_create("com.apple.notes", "SearchIndexer");
@@ -426,10 +426,10 @@ LABEL_10:
   return v9;
 }
 
-- (void)_commitObjectIDsToIndexForDataSource:(id)a3
+- (void)_commitObjectIDsToIndexForDataSource:(id)source
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
     [ICAssert handleFailedAssertWithCondition:"![NSThread isMainThread]" functionName:"[ICIndexItemsOperation _commitObjectIDsToIndexForDataSource:]" simulateCrash:1 showAlert:0 format:@"Unexpected call from main thread"];
@@ -439,20 +439,20 @@ LABEL_10:
   v6 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(ICIndexItemsOperation *)self _commitObjectIDsToIndexForDataSource:v4, v6];
+    [(ICIndexItemsOperation *)self _commitObjectIDsToIndexForDataSource:sourceCopy, v6];
   }
 
-  v7 = [(ICIndexItemsOperation *)self objectIDsToIndex];
-  v8 = [v7 copy];
-  [v4 searchIndexerWillIndexObjectIDs:v8];
+  objectIDsToIndex = [(ICIndexItemsOperation *)self objectIDsToIndex];
+  v8 = [objectIDsToIndex copy];
+  [sourceCopy searchIndexerWillIndexObjectIDs:v8];
 
   v9 = [objc_alloc(MEMORY[0x1E6964E00]) initWithKeyName:@"sy_isLinkItem"];
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = [(ICIndexItemsOperation *)self searchableItemsToIndex];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  searchableItemsToIndex = [(ICIndexItemsOperation *)self searchableItemsToIndex];
+  v11 = [searchableItemsToIndex countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v11)
   {
     v12 = *v29;
@@ -463,11 +463,11 @@ LABEL_10:
       {
         if (*v29 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(searchableItemsToIndex);
         }
 
-        v14 = [*(*(&v28 + 1) + 8 * v13) attributeSet];
-        v15 = [v14 valueForCustomKey:v9];
+        attributeSet = [*(*(&v28 + 1) + 8 * v13) attributeSet];
+        v15 = [attributeSet valueForCustomKey:v9];
 
         if (v15)
         {
@@ -479,7 +479,7 @@ LABEL_10:
       }
 
       while (v11 != v13);
-      v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v11 = [searchableItemsToIndex countByEnumeratingWithState:&v28 objects:v32 count:16];
       if (v11)
       {
         continue;
@@ -493,20 +493,20 @@ LABEL_10:
 LABEL_15:
 
   objc_initWeak(&location, self);
-  v17 = [(ICIndexItemsOperation *)self searchableIndex];
-  v18 = [(ICIndexItemsOperation *)self searchableItemsToIndex];
-  v19 = [v18 copy];
+  searchableIndex = [(ICIndexItemsOperation *)self searchableIndex];
+  searchableItemsToIndex2 = [(ICIndexItemsOperation *)self searchableItemsToIndex];
+  v19 = [searchableItemsToIndex2 copy];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __62__ICIndexItemsOperation__commitObjectIDsToIndexForDataSource___block_invoke;
   v22[3] = &unk_1E8484C00;
   objc_copyWeak(&v25, &location);
-  v20 = v4;
+  v20 = sourceCopy;
   v23 = v20;
   v26 = v16;
   v21 = v5;
   v24 = v21;
-  [v17 indexSearchableItems:v19 completionHandler:v22];
+  [searchableIndex indexSearchableItems:v19 completionHandler:v22];
 
   dispatch_semaphore_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
   objc_destroyWeak(&v25);

@@ -1,45 +1,45 @@
 @interface HDCloudSyncAttachmentManagementRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isAttachmentManagementRecord:(id)a3;
-+ (BOOL)isAttachmentManagementRecordID:(id)a3;
-+ (id)recordIDForZoneID:(id)a3;
-- (HDCloudSyncAttachmentManagementRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isAttachmentManagementRecord:(id)record;
++ (BOOL)isAttachmentManagementRecordID:(id)d;
++ (id)recordIDForZoneID:(id)d;
+- (HDCloudSyncAttachmentManagementRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
 - (NSUUID)UUID;
-- (id)initInZoneID:(id)a3;
+- (id)initInZoneID:(id)d;
 @end
 
 @implementation HDCloudSyncAttachmentManagementRecord
 
-- (id)initInZoneID:(id)a3
+- (id)initInZoneID:(id)d
 {
-  v4 = a3;
-  v5 = [objc_opt_class() recordIDForZoneID:v4];
+  dCopy = d;
+  v5 = [objc_opt_class() recordIDForZoneID:dCopy];
 
   v6 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"AttachmentManagementRecord" recordID:v5];
   v7 = [(HDCloudSyncAttachmentManagementRecord *)self initWithCKRecord:v6 schemaVersion:1];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [(HDCloudSyncCodableAttachmentManagementRecord *)v7->_underlyingAttachmentManagementRecord setUuid:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [(HDCloudSyncCodableAttachmentManagementRecord *)v7->_underlyingAttachmentManagementRecord setUuid:uUIDString];
   }
 
   return v7;
 }
 
-- (HDCloudSyncAttachmentManagementRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncAttachmentManagementRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v15.receiver = self;
   v15.super_class = HDCloudSyncAttachmentManagementRecord;
-  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:a3 schemaVersion:a4];
+  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:record schemaVersion:version];
   v5 = v4;
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = [(HDCloudSyncRecord *)v4 underlyingMessage];
-  if (!v6)
+  underlyingMessage = [(HDCloudSyncRecord *)v4 underlyingMessage];
+  if (!underlyingMessage)
   {
     v11 = objc_alloc_init(HDCloudSyncCodableAttachmentManagementRecord);
     underlyingAttachmentManagementRecord = v5->_underlyingAttachmentManagementRecord;
@@ -48,7 +48,7 @@
     goto LABEL_8;
   }
 
-  v7 = [[HDCloudSyncCodableAttachmentManagementRecord alloc] initWithData:v6];
+  v7 = [[HDCloudSyncCodableAttachmentManagementRecord alloc] initWithData:underlyingMessage];
   v8 = v5->_underlyingAttachmentManagementRecord;
   v5->_underlyingAttachmentManagementRecord = v7;
 
@@ -75,28 +75,28 @@ LABEL_10:
   return v10;
 }
 
-+ (id)recordIDForZoneID:(id)a3
++ (id)recordIDForZoneID:(id)d
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  dCopy = d;
   v5 = [v3 stringWithFormat:@"%@", @"AttachmentManagement"];
-  v6 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v5 zoneID:v4];
+  v6 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v5 zoneID:dCopy];
 
   return v6;
 }
 
-+ (BOOL)isAttachmentManagementRecordID:(id)a3
++ (BOOL)isAttachmentManagementRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 isEqualToString:@"AttachmentManagement"];
+  recordName = [d recordName];
+  v4 = [recordName isEqualToString:@"AttachmentManagement"];
 
   return v4;
 }
 
-+ (BOOL)isAttachmentManagementRecord:(id)a3
++ (BOOL)isAttachmentManagementRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"AttachmentManagementRecord"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"AttachmentManagementRecord"];
 
   return v4;
 }
@@ -104,15 +104,15 @@ LABEL_10:
 - (NSUUID)UUID
 {
   v3 = objc_alloc(MEMORY[0x277CCAD78]);
-  v4 = [(HDCloudSyncCodableAttachmentManagementRecord *)self->_underlyingAttachmentManagementRecord uuid];
-  v5 = [v3 initWithUUIDString:v4];
+  uuid = [(HDCloudSyncCodableAttachmentManagementRecord *)self->_underlyingAttachmentManagementRecord uuid];
+  v5 = [v3 initWithUUIDString:uuid];
 
   return v5;
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"Version"];
+  v3 = [schema objectForKeyedSubscript:@"Version"];
   v4 = v3;
   v5 = v3 && [v3 integerValue] > 1;
 

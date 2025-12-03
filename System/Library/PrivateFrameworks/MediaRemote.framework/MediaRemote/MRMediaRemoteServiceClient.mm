@@ -4,35 +4,35 @@
 - (MRPlayerPath)activePlayerPath;
 - (MRPlayerPath)currentSessionPlayerPath;
 - (NSString)currentSessionRoutingContextID;
-- (id)addPlayerPathInvalidationHandler:(id)a3;
+- (id)addPlayerPathInvalidationHandler:(id)handler;
 - (id)debugDescription;
-- (void)_callInvalidationHandler:(uint64_t)a1;
-- (void)_initializeConnectionWithCompletion:(void *)a1;
+- (void)_callInvalidationHandler:(uint64_t)handler;
+- (void)_initializeConnectionWithCompletion:(void *)completion;
 - (void)_invalidateConnection;
-- (void)_onQueue_processPlayerPathInvalidationHandlersWithBlock:(uint64_t)a1;
+- (void)_onQueue_processPlayerPathInvalidationHandlersWithBlock:(uint64_t)block;
 - (void)_registerCallbacks;
 - (void)_restoreConnection;
 - (void)_restoreRestrictedCommandClientsState;
 - (void)_resumeConnection;
-- (void)addDiscoverySession:(id)a3;
-- (void)addDistantEndpoint:(id)a3;
-- (void)addDistantExternalDevice:(id)a3;
-- (void)addEndpointObserver:(id)a3;
-- (void)addMediaSuggestionElectedDeviceObserver:(id)a3;
-- (void)addNowPlayingController:(id)a3;
+- (void)addDiscoverySession:(id)session;
+- (void)addDistantEndpoint:(id)endpoint;
+- (void)addDistantExternalDevice:(id)device;
+- (void)addEndpointObserver:(id)observer;
+- (void)addMediaSuggestionElectedDeviceObserver:(id)observer;
+- (void)addNowPlayingController:(id)controller;
 - (void)dealloc;
-- (void)processPlayerPathInvalidationHandlersWithBlock:(id)a3;
-- (void)processPlayerPathInvalidationHandlersWithInvalidOrigin:(id)a3;
-- (void)removeDiscoverySession:(id)a3;
-- (void)removeDistantEndpoint:(id)a3;
-- (void)removeDistantExternalDevice:(id)a3;
-- (void)removeEndpointObserver:(id)a3;
-- (void)removeInvalidationHandler:(id)a3;
-- (void)removeMediaSuggestionElectedDeviceObserver:(id)a3;
-- (void)removeNowPlayingController:(id)a3;
-- (void)setActivePlayerPath:(id)a3;
-- (void)setCurrentSessionPlayerPath:(id)a3;
-- (void)setCurrentSessionRoutingContextID:(id)a3;
+- (void)processPlayerPathInvalidationHandlersWithBlock:(id)block;
+- (void)processPlayerPathInvalidationHandlersWithInvalidOrigin:(id)origin;
+- (void)removeDiscoverySession:(id)session;
+- (void)removeDistantEndpoint:(id)endpoint;
+- (void)removeDistantExternalDevice:(id)device;
+- (void)removeEndpointObserver:(id)observer;
+- (void)removeInvalidationHandler:(id)handler;
+- (void)removeMediaSuggestionElectedDeviceObserver:(id)observer;
+- (void)removeNowPlayingController:(id)controller;
+- (void)setActivePlayerPath:(id)path;
+- (void)setCurrentSessionPlayerPath:(id)path;
+- (void)setCurrentSessionRoutingContextID:(id)d;
 @end
 
 @implementation MRMediaRemoteServiceClient
@@ -89,29 +89,29 @@ void __49__MRMediaRemoteServiceClient_sharedServiceClient__block_invoke()
     v16 = *(v2 + 16);
     *(v2 + 16) = v15;
 
-    v17 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v18 = *(v2 + 10);
-    *(v2 + 10) = v17;
+    *(v2 + 10) = weakObjectsHashTable;
 
-    v19 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable2 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v20 = *(v2 + 9);
-    *(v2 + 9) = v19;
+    *(v2 + 9) = weakObjectsHashTable2;
 
-    v21 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v22 = *(v2 + 11);
-    *(v2 + 11) = v21;
+    *(v2 + 11) = weakObjectsHashTable3;
 
-    v23 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v24 = *(v2 + 12);
-    *(v2 + 12) = v23;
+    *(v2 + 12) = weakObjectsHashTable4;
 
-    v25 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v26 = *(v2 + 13);
-    *(v2 + 13) = v25;
+    *(v2 + 13) = weakObjectsHashTable5;
 
-    v27 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v28 = *(v2 + 14);
-    *(v2 + 14) = v27;
+    *(v2 + 14) = weakObjectsHashTable6;
 
     v29 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v30 = dispatch_queue_create("com.apple.MediaRemote.PlaybackQueue.serialQueue", v29);
@@ -178,28 +178,28 @@ void __46__MRMediaRemoteServiceClient_activePlayerPath__block_invoke(uint64_t a1
     v3 = MEMORY[0x1A58E3570](v15);
     MRMediaRemoteServiceSetInvalidationHandler(val[17], v2);
     MRMediaRemoteServiceSetResumeHandler(val[17], v3);
-    v4 = [val[17] mrXPCConnection];
+    mrXPCConnection = [val[17] mrXPCConnection];
     v10 = MEMORY[0x1E69E9820];
     v11 = 3221225472;
     v12 = __48__MRMediaRemoteServiceClient__registerCallbacks__block_invoke_3;
     v13 = &unk_1E769F738;
     objc_copyWeak(&v14, &location);
-    [v4 addCustomXPCHandler:&v10 forKey:0x700000000000009];
+    [mrXPCConnection addCustomXPCHandler:&v10 forKey:0x700000000000009];
 
-    v5 = [val[17] mrXPCConnection];
-    [v5 addCustomXPCHandler:&__block_literal_global_26 forKey:0x200000000000030];
+    mrXPCConnection2 = [val[17] mrXPCConnection];
+    [mrXPCConnection2 addCustomXPCHandler:&__block_literal_global_26 forKey:0x200000000000030];
 
-    v6 = [val[17] mrXPCConnection];
-    [v6 addCustomXPCHandler:&__block_literal_global_29_0 forKey:0x400000000000007];
+    mrXPCConnection3 = [val[17] mrXPCConnection];
+    [mrXPCConnection3 addCustomXPCHandler:&__block_literal_global_29_0 forKey:0x400000000000007];
 
-    v7 = [val[17] mrXPCConnection];
-    [v7 addCustomXPCHandler:&__block_literal_global_33_0 forKey:0x400000000000008];
+    mrXPCConnection4 = [val[17] mrXPCConnection];
+    [mrXPCConnection4 addCustomXPCHandler:&__block_literal_global_33_0 forKey:0x400000000000008];
 
-    v8 = [val[17] mrXPCConnection];
-    [v8 addCustomXPCHandler:&__block_literal_global_36 forKey:0x400000000000009];
+    mrXPCConnection5 = [val[17] mrXPCConnection];
+    [mrXPCConnection5 addCustomXPCHandler:&__block_literal_global_36 forKey:0x400000000000009];
 
-    v9 = [val[17] mrXPCConnection];
-    [v9 addCustomXPCHandler:&__block_literal_global_38 forKey:0x40000000000000ALL];
+    mrXPCConnection6 = [val[17] mrXPCConnection];
+    [mrXPCConnection6 addCustomXPCHandler:&__block_literal_global_38 forKey:0x40000000000000ALL];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&v16);
@@ -218,8 +218,8 @@ void __34__MRMediaRemoteServiceClient_init__block_invoke(uint64_t a1)
 - (void)dealloc
 {
   MRMediaRemoteServiceDestroy(self->_service);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = MRMediaRemoteServiceClient;
@@ -468,57 +468,57 @@ void __47__MRMediaRemoteServiceClient__resumeConnection__block_invoke(uint64_t a
   v42 = 3221225472;
   v43 = __46__MRMediaRemoteServiceClient_debugDescription__block_invoke;
   v44 = &unk_1E769A4A0;
-  v45 = self;
+  selfCopy = self;
   v5 = v3;
   v46 = v5;
   msv_dispatch_sync_on_queue();
   v6 = self->_weakEndpointObservers;
   objc_sync_enter(v6);
-  v7 = [(NSHashTable *)self->_weakEndpointObservers allObjects];
-  if ([v7 count])
+  allObjects = [(NSHashTable *)self->_weakEndpointObservers allObjects];
+  if ([allObjects count])
   {
-    v8 = MRCreateIndentedDebugDescriptionFromArray(v7);
+    v8 = MRCreateIndentedDebugDescriptionFromArray(allObjects);
     [v5 appendFormat:@"endpointObservers = %@\n", v8];
   }
 
   objc_sync_exit(v6);
   v9 = self->_weakNowPlayingControllers;
   objc_sync_enter(v9);
-  v10 = [(NSHashTable *)self->_weakNowPlayingControllers allObjects];
+  allObjects2 = [(NSHashTable *)self->_weakNowPlayingControllers allObjects];
   if ([(NSHashTable *)self->_weakNowPlayingControllers count])
   {
-    v11 = MRCreateIndentedDebugDescriptionFromArray(v10);
+    v11 = MRCreateIndentedDebugDescriptionFromArray(allObjects2);
     [v5 appendFormat:@"nowPlayingControllers = %@\n", v11];
   }
 
   objc_sync_exit(v9);
   v12 = self->_weakDiscoverySessions;
   objc_sync_enter(v12);
-  v13 = [(NSHashTable *)self->_weakDiscoverySessions allObjects];
+  allObjects3 = [(NSHashTable *)self->_weakDiscoverySessions allObjects];
   objc_sync_exit(v12);
 
-  if ([v13 count])
+  if ([allObjects3 count])
   {
-    v14 = [v13 mr_formattedDebugDescription];
-    [v5 appendFormat:@"discoverySessions = %@\n", v14];
+    mr_formattedDebugDescription = [allObjects3 mr_formattedDebugDescription];
+    [v5 appendFormat:@"discoverySessions = %@\n", mr_formattedDebugDescription];
   }
 
   v15 = self->_weakEndpoints;
   objc_sync_enter(v15);
-  v16 = [(NSHashTable *)self->_weakEndpoints allObjects];
+  allObjects4 = [(NSHashTable *)self->_weakEndpoints allObjects];
   objc_sync_exit(v15);
 
   v17 = self->_weakExternalDevices;
   objc_sync_enter(v17);
-  v18 = [(NSHashTable *)self->_weakExternalDevices allObjects];
-  v19 = [v18 mutableCopy];
+  allObjects5 = [(NSHashTable *)self->_weakExternalDevices allObjects];
+  v19 = [allObjects5 mutableCopy];
 
   objc_sync_exit(v17);
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v20 = v16;
+  v20 = allObjects4;
   v21 = [v20 countByEnumeratingWithState:&v37 objects:v47 count:16];
   if (v21)
   {
@@ -533,8 +533,8 @@ void __47__MRMediaRemoteServiceClient__resumeConnection__block_invoke(uint64_t a
           objc_enumerationMutation(v20);
         }
 
-        v24 = [*(*(&v37 + 1) + 8 * v23) externalDevice];
-        [v19 removeObject:v24];
+        externalDevice = [*(*(&v37 + 1) + 8 * v23) externalDevice];
+        [v19 removeObject:externalDevice];
 
         ++v23;
       }
@@ -548,14 +548,14 @@ void __47__MRMediaRemoteServiceClient__resumeConnection__block_invoke(uint64_t a
 
   if ([v20 count])
   {
-    v25 = [v20 mr_formattedDebugDescription];
-    [v5 appendFormat:@"distantEndpoints = %@\n", v25];
+    mr_formattedDebugDescription2 = [v20 mr_formattedDebugDescription];
+    [v5 appendFormat:@"distantEndpoints = %@\n", mr_formattedDebugDescription2];
   }
 
   if ([v19 count])
   {
-    v26 = [v19 mr_formattedDebugDescription];
-    [v5 appendFormat:@"remaining distantExternalDevices = %@\n", v26];
+    mr_formattedDebugDescription3 = [v19 mr_formattedDebugDescription];
+    [v5 appendFormat:@"remaining distantExternalDevices = %@\n", mr_formattedDebugDescription3];
   }
 
   v27 = +[MRAVDistantEndpoint externalDeviceFactory];
@@ -570,11 +570,11 @@ void __47__MRMediaRemoteServiceClient__resumeConnection__block_invoke(uint64_t a
 
   v31 = self->_weakMediaSuggestionElectedDeviceObservers;
   objc_sync_enter(v31);
-  v32 = [(NSHashTable *)self->_weakMediaSuggestionElectedDeviceObservers allObjects];
-  if ([v32 count])
+  allObjects6 = [(NSHashTable *)self->_weakMediaSuggestionElectedDeviceObservers allObjects];
+  if ([allObjects6 count])
   {
-    v33 = [v32 mr_formattedDebugDescription];
-    [v5 appendFormat:@"mediaSuggestionElectedDeviceObservers = %@\n", v33];
+    mr_formattedDebugDescription4 = [allObjects6 mr_formattedDebugDescription];
+    [v5 appendFormat:@"mediaSuggestionElectedDeviceObservers = %@\n", mr_formattedDebugDescription4];
   }
 
   objc_sync_exit(v31);
@@ -610,17 +610,17 @@ uint64_t __46__MRMediaRemoteServiceClient_debugDescription__block_invoke(uint64_
   return [v8 appendFormat:@"currentSessionRoutingContextID = %@ (%lf seconds ago)\n", v9, v10];
 }
 
-- (void)setActivePlayerPath:(id)a3
+- (void)setActivePlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__MRMediaRemoteServiceClient_setActivePlayerPath___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pathCopy;
+  v6 = pathCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -654,17 +654,17 @@ void __54__MRMediaRemoteServiceClient_currentSessionPlayerPath__block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (void)setCurrentSessionPlayerPath:(id)a3
+- (void)setCurrentSessionPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__MRMediaRemoteServiceClient_setCurrentSessionPlayerPath___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pathCopy;
+  v6 = pathCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -711,17 +711,17 @@ void __60__MRMediaRemoteServiceClient_currentSessionRoutingContextID__block_invo
   *(v3 + 40) = v2;
 }
 
-- (void)setCurrentSessionRoutingContextID:(id)a3
+- (void)setCurrentSessionRoutingContextID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__MRMediaRemoteServiceClient_setCurrentSessionRoutingContextID___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -748,18 +748,18 @@ void __64__MRMediaRemoteServiceClient_setCurrentSessionRoutingContextID___block_
   }
 }
 
-- (id)addPlayerPathInvalidationHandler:(id)a3
+- (id)addPlayerPathInvalidationHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _MRLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 playerPath];
+    playerPath = [handlerCopy playerPath];
     *buf = 134218242;
-    v16 = v4;
+    v16 = handlerCopy;
     v17 = 2114;
-    v18 = v6;
+    v18 = playerPath;
     _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEFAULT, "Added PlayerPathInvalidationHandler %p for %{public}@", buf, 0x16u);
   }
 
@@ -769,7 +769,7 @@ void __64__MRMediaRemoteServiceClient_setCurrentSessionRoutingContextID___block_
   v13[2] = __63__MRMediaRemoteServiceClient_addPlayerPathInvalidationHandler___block_invoke;
   v13[3] = &unk_1E769A4A0;
   v13[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v14 = v8;
   dispatch_async(accessQueue, v13);
   v9 = v14;
@@ -838,17 +838,17 @@ void __63__MRMediaRemoteServiceClient_addPlayerPathInvalidationHandler___block_i
   }
 }
 
-- (void)removeInvalidationHandler:(id)a3
+- (void)removeInvalidationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__MRMediaRemoteServiceClient_removeInvalidationHandler___block_invoke;
   v7[3] = &unk_1E769A4A0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = handlerCopy;
+  selfCopy = self;
+  v6 = handlerCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -875,15 +875,15 @@ void __56__MRMediaRemoteServiceClient_removeInvalidationHandler___block_invoke(u
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processPlayerPathInvalidationHandlersWithInvalidOrigin:(id)a3
+- (void)processPlayerPathInvalidationHandlersWithInvalidOrigin:(id)origin
 {
-  v4 = a3;
+  originCopy = origin;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __85__MRMediaRemoteServiceClient_processPlayerPathInvalidationHandlersWithInvalidOrigin___block_invoke;
   v6[3] = &unk_1E769F870;
-  v7 = v4;
-  v5 = v4;
+  v7 = originCopy;
+  v5 = originCopy;
   [(MRMediaRemoteServiceClient *)self processPlayerPathInvalidationHandlersWithBlock:v6];
 }
 
@@ -906,17 +906,17 @@ uint64_t __85__MRMediaRemoteServiceClient_processPlayerPathInvalidationHandlersW
   return v7;
 }
 
-- (void)processPlayerPathInvalidationHandlersWithBlock:(id)a3
+- (void)processPlayerPathInvalidationHandlersWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__MRMediaRemoteServiceClient_processPlayerPathInvalidationHandlersWithBlock___block_invoke;
   v7[3] = &unk_1E769A0A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -939,36 +939,36 @@ void __55__MRMediaRemoteServiceClient__callInvalidationHandler___block_invoke(ui
   v2[2](v2, *(a1 + 40));
 }
 
-- (void)addEndpointObserver:(id)a3
+- (void)addEndpointObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_weakEndpointObservers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakEndpointObservers addObject:v5];
+  [(NSHashTable *)self->_weakEndpointObservers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeEndpointObserver:(id)a3
+- (void)removeEndpointObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_weakEndpointObservers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakEndpointObservers removeObject:v5];
+  [(NSHashTable *)self->_weakEndpointObservers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)addNowPlayingController:(id)a3
+- (void)addNowPlayingController:(id)controller
 {
-  v8 = a3;
+  controllerCopy = controller;
   v4 = self->_weakNowPlayingControllers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakNowPlayingControllers addObject:v8];
+  [(NSHashTable *)self->_weakNowPlayingControllers addObject:controllerCopy];
   if ((addNowPlayingController__captured & 1) == 0 && [(NSHashTable *)self->_weakNowPlayingControllers count]== 100)
   {
     v5 = +[MRUserSettings currentSettings];
-    v6 = [v5 excessiveNowPlayingControllersABC];
+    excessiveNowPlayingControllersABC = [v5 excessiveNowPlayingControllersABC];
 
-    if (v6)
+    if (excessiveNowPlayingControllersABC)
     {
       v7 = dispatch_get_global_queue(-2, 0);
       dispatch_async(v7, &__block_literal_global_117_0);
@@ -980,91 +980,91 @@ void __55__MRMediaRemoteServiceClient__callInvalidationHandler___block_invoke(ui
   objc_sync_exit(v4);
 }
 
-- (void)removeNowPlayingController:(id)a3
+- (void)removeNowPlayingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v4 = self->_weakNowPlayingControllers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakNowPlayingControllers removeObject:v5];
+  [(NSHashTable *)self->_weakNowPlayingControllers removeObject:controllerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)addDiscoverySession:(id)a3
+- (void)addDiscoverySession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v4 = self->_weakDiscoverySessions;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakDiscoverySessions addObject:v5];
+  [(NSHashTable *)self->_weakDiscoverySessions addObject:sessionCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeDiscoverySession:(id)a3
+- (void)removeDiscoverySession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v4 = self->_weakDiscoverySessions;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakDiscoverySessions removeObject:v5];
+  [(NSHashTable *)self->_weakDiscoverySessions removeObject:sessionCopy];
   objc_sync_exit(v4);
 }
 
-- (void)addDistantEndpoint:(id)a3
+- (void)addDistantEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v4 = self->_weakEndpoints;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakEndpoints addObject:v5];
+  [(NSHashTable *)self->_weakEndpoints addObject:endpointCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeDistantEndpoint:(id)a3
+- (void)removeDistantEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v4 = self->_weakEndpoints;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakEndpoints removeObject:v5];
+  [(NSHashTable *)self->_weakEndpoints removeObject:endpointCopy];
   objc_sync_exit(v4);
 }
 
-- (void)addDistantExternalDevice:(id)a3
+- (void)addDistantExternalDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v4 = self->_weakExternalDevices;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakExternalDevices addObject:v5];
+  [(NSHashTable *)self->_weakExternalDevices addObject:deviceCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeDistantExternalDevice:(id)a3
+- (void)removeDistantExternalDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v4 = self->_weakExternalDevices;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakExternalDevices removeObject:v5];
+  [(NSHashTable *)self->_weakExternalDevices removeObject:deviceCopy];
   objc_sync_exit(v4);
 }
 
-- (void)addMediaSuggestionElectedDeviceObserver:(id)a3
+- (void)addMediaSuggestionElectedDeviceObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_weakMediaSuggestionElectedDeviceObservers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakMediaSuggestionElectedDeviceObservers addObject:v5];
+  [(NSHashTable *)self->_weakMediaSuggestionElectedDeviceObservers addObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)removeMediaSuggestionElectedDeviceObserver:(id)a3
+- (void)removeMediaSuggestionElectedDeviceObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_weakMediaSuggestionElectedDeviceObservers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_weakMediaSuggestionElectedDeviceObservers removeObject:v5];
+  [(NSHashTable *)self->_weakMediaSuggestionElectedDeviceObservers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)_initializeConnectionWithCompletion:(void *)a1
+- (void)_initializeConnectionWithCompletion:(void *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     v4 = _MRLogForCategory(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1073,26 +1073,26 @@ void __55__MRMediaRemoteServiceClient__callInvalidationHandler___block_invoke(ui
       _os_log_impl(&dword_1A2860000, v4, OS_LOG_TYPE_DEFAULT, "MediaRemote server initializing", buf, 2u);
     }
 
-    v5 = [a1 activePlayerPath];
-    v6 = [v5 copy];
+    activePlayerPath = [completion activePlayerPath];
+    v6 = [activePlayerPath copy];
 
-    v7 = a1[17];
-    v8 = [a1 workerQueue];
+    v7 = completion[17];
+    workerQueue = [completion workerQueue];
     OUTLINED_FUNCTION_0_3();
     v11 = 3221225472;
     v12 = __66__MRMediaRemoteServiceClient__initializeConnectionWithCompletion___block_invoke;
     v13 = &unk_1E769F820;
     v14 = v6;
-    v15 = a1;
+    completionCopy = completion;
     v16 = v3;
     v9 = v6;
-    MRMediaRemoteServiceResolvePlayerPath(v7, 0, v8, v10);
+    MRMediaRemoteServiceResolvePlayerPath(v7, 0, workerQueue, v10);
   }
 }
 
 - (void)_invalidateConnection
 {
-  if (a1 && (MRProcessIsMediaRemoteDaemon() & 1) == 0)
+  if (self && (MRProcessIsMediaRemoteDaemon() & 1) == 0)
   {
     v2 = _MRLogForCategory(8uLL);
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -1101,18 +1101,18 @@ void __55__MRMediaRemoteServiceClient__callInvalidationHandler___block_invoke(ui
       OUTLINED_FUNCTION_4_6(&dword_1A2860000, v3, v4, "MediaRemote server disconnected");
     }
 
-    v5 = a1[1];
+    v5 = self[1];
     OUTLINED_FUNCTION_0_3();
     v12 = 3221225472;
     v13 = __51__MRMediaRemoteServiceClient__invalidateConnection__block_invoke;
     v14 = &unk_1E769A228;
-    v15 = a1;
+    selfCopy = self;
     dispatch_async(v6, block);
-    v7 = [a1 notificationClient];
+    notificationClient = [self notificationClient];
     OUTLINED_FUNCTION_3_9();
     [v8 dispatchNotification:? userInfo:? object:?];
 
-    v9 = [a1 notificationClient];
+    notificationClient2 = [self notificationClient];
     OUTLINED_FUNCTION_3_9();
     [v10 dispatchNotification:? userInfo:? object:?];
   }
@@ -1120,7 +1120,7 @@ void __55__MRMediaRemoteServiceClient__callInvalidationHandler___block_invoke(ui
 
 - (void)_resumeConnection
 {
-  if (a1 && (MRProcessIsMediaRemoteDaemon() & 1) == 0)
+  if (self && (MRProcessIsMediaRemoteDaemon() & 1) == 0)
   {
     v2 = _MRLogForCategory(8uLL);
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
@@ -1133,8 +1133,8 @@ void __55__MRMediaRemoteServiceClient__callInvalidationHandler___block_invoke(ui
     v6 = 3221225472;
     v7 = __47__MRMediaRemoteServiceClient__resumeConnection__block_invoke;
     v8 = &unk_1E769AFC0;
-    v9 = a1;
-    [(MRMediaRemoteServiceClient *)a1 _initializeConnectionWithCompletion:v5];
+    selfCopy = self;
+    [(MRMediaRemoteServiceClient *)self _initializeConnectionWithCompletion:v5];
   }
 }
 
@@ -1163,18 +1163,18 @@ void __51__MRMediaRemoteServiceClient__invalidateConnection__block_invoke(uint64
   [(MRMediaRemoteServiceClient *)v8 _onQueue_processPlayerPathInvalidationHandlersWithBlock:?];
 }
 
-- (void)_onQueue_processPlayerPathInvalidationHandlersWithBlock:(uint64_t)a1
+- (void)_onQueue_processPlayerPathInvalidationHandlersWithBlock:(uint64_t)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = *(a1 + 64);
+    dispatch_assert_queue_V2(*(block + 8));
+    v4 = *(block + 64);
     OUTLINED_FUNCTION_1_0();
     v5[1] = 3221225472;
     v5[2] = __86__MRMediaRemoteServiceClient__onQueue_processPlayerPathInvalidationHandlersWithBlock___block_invoke;
     v5[3] = &unk_1E769F898;
-    v5[4] = a1;
+    v5[4] = block;
     v6 = v3;
     [v4 enumerateObjectsUsingBlock:v5];
   }
@@ -1182,9 +1182,9 @@ void __51__MRMediaRemoteServiceClient__invalidateConnection__block_invoke(uint64
 
 - (void)_restoreConnection
 {
-  if (a1)
+  if (self)
   {
-    [a1[18] restoreNowPlayingClientState];
+    [self[18] restoreNowPlayingClientState];
     v2 = +[MRNowPlayingOriginClientManager sharedManager];
     [v2 clearActiveSystemEndpointsWithReason:@"restore connection"];
 
@@ -1194,19 +1194,19 @@ void __51__MRMediaRemoteServiceClient__invalidateConnection__block_invoke(uint64
     v4 = +[MRGroupSessionRequestManager sharedManager];
     [v4 restoreState];
 
-    [(MRMediaRemoteServiceClient *)a1 _restoreRestrictedCommandClientsState];
-    v11 = [a1 currentSessionPlayerPath];
-    if (v11)
+    [(MRMediaRemoteServiceClient *)self _restoreRestrictedCommandClientsState];
+    currentSessionPlayerPath = [self currentSessionPlayerPath];
+    if (currentSessionPlayerPath)
     {
       v5 = MRCreateXPCMessage(0x30000000000002DuLL);
-      MRAddPlayerPathToXPCMessage(v5, v11);
-      v6 = [a1 service];
-      v7 = [v6 mrXPCConnection];
+      MRAddPlayerPathToXPCMessage(v5, currentSessionPlayerPath);
+      service = [self service];
+      mrXPCConnection = [service mrXPCConnection];
       OUTLINED_FUNCTION_3_9();
       [v8 sendMessage:? queue:? reply:?];
     }
 
-    v9 = [a1 notificationClient];
+    notificationClient = [self notificationClient];
     OUTLINED_FUNCTION_3_9();
     [v10 dispatchNotification:? userInfo:? object:?];
   }
@@ -1214,7 +1214,7 @@ void __51__MRMediaRemoteServiceClient__invalidateConnection__block_invoke(uint64
 
 - (void)_restoreRestrictedCommandClientsState
 {
-  if (a1 && (MRProcessIsMediaRemoteDaemon() & 1) == 0)
+  if (self && (MRProcessIsMediaRemoteDaemon() & 1) == 0)
   {
     v1 = +[MRRestrictedCommandClientsManager sharedManager];
     [v1 republishStateIfNeeded];
@@ -1232,22 +1232,22 @@ void __50__MRMediaRemoteServiceClient_setActivePlayerPath___block_invoke(uint64_
   }
 }
 
-- (void)_callInvalidationHandler:(uint64_t)a1
+- (void)_callInvalidationHandler:(uint64_t)handler
 {
   v22 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handler)
   {
     if (!v3)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MRMediaRemoteServiceClient _callInvalidationHandler:]"];
-      [v13 handleFailureInFunction:v14 file:@"MRMediaRemoteServiceClient.m" lineNumber:586 description:{@"Invalid parameter not satisfying: %@", @"invalidationHandler"}];
+      [currentHandler handleFailureInFunction:v14 file:@"MRMediaRemoteServiceClient.m" lineNumber:586 description:{@"Invalid parameter not satisfying: %@", @"invalidationHandler"}];
     }
 
-    v5 = [v4 playerPath];
-    v6 = [v5 copy];
+    playerPath = [v4 playerPath];
+    v6 = [playerPath copy];
 
     v7 = _MRLogForCategory(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -1259,15 +1259,15 @@ void __50__MRMediaRemoteServiceClient_setActivePlayerPath___block_invoke(uint64_
       _os_log_impl(&dword_1A2860000, v7, OS_LOG_TYPE_DEFAULT, "Calling PlayerPathInvalidationHandler %p for %{public}@", buf, 0x16u);
     }
 
-    v8 = [v4 queue];
-    if (v8)
+    queue = [v4 queue];
+    if (queue)
     {
-      v9 = [v4 queue];
+      queue2 = [v4 queue];
     }
 
     else
     {
-      v9 = MEMORY[0x1E69E96A0];
+      queue2 = MEMORY[0x1E69E96A0];
       v10 = MEMORY[0x1E69E96A0];
     }
 
@@ -1278,7 +1278,7 @@ void __50__MRMediaRemoteServiceClient_setActivePlayerPath___block_invoke(uint64_
     v16 = v4;
     v17 = v6;
     v11 = v6;
-    dispatch_async(v9, block);
+    dispatch_async(queue2, block);
   }
 
   v12 = *MEMORY[0x1E69E9840];

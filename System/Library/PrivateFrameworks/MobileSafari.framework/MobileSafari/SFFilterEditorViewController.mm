@@ -1,6 +1,6 @@
 @interface SFFilterEditorViewController
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (_TtC12MobileSafari28SFFilterEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (_TtC12MobileSafari28SFFilterEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -8,11 +8,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BA2B388();
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
   v4 = sub_18BC1EDD8();
   v5 = *(v4 - 8);
@@ -23,9 +23,9 @@
   return 0;
 }
 
-- (_TtC12MobileSafari28SFFilterEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12MobileSafari28SFFilterEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_18BC20BD8();
     v7 = v6;
@@ -37,8 +37,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_18BA2C734(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_18BA2C734(v5, v7, bundle);
 }
 
 @end

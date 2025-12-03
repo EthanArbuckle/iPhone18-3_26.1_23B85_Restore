@@ -1,14 +1,14 @@
 @interface ATXUnifiedActivityTransitionCombiner
-- (id)combineTransitions:(id)a3;
+- (id)combineTransitions:(id)transitions;
 @end
 
 @implementation ATXUnifiedActivityTransitionCombiner
 
-- (id)combineTransitions:(id)a3
+- (id)combineTransitions:(id)transitions
 {
-  v3 = a3;
+  transitionsCopy = transitions;
   v4 = objc_opt_new();
-  v5 = [v3 scanWithInitial:v4 nextPartialResult:&__block_literal_global_49];
+  v5 = [transitionsCopy scanWithInitial:v4 nextPartialResult:&__block_literal_global_49];
 
   v6 = [MEMORY[0x277D42648] tupleWithFirst:0 second:0];
   v7 = [v5 scanWithInitial:v6 nextPartialResult:&__block_literal_global_102];

@@ -1,40 +1,40 @@
 @interface JavaSecurityAccessController
-+ (id)doPrivilegedWithCombinerWithJavaSecurityPrivilegedAction:(id)a3;
-+ (id)doPrivilegedWithJavaSecurityPrivilegedAction:(id)a3;
-+ (id)doPrivilegedWithJavaSecurityPrivilegedAction:(id)a3 withJavaSecurityAccessControlContext:(id)a4;
++ (id)doPrivilegedWithCombinerWithJavaSecurityPrivilegedAction:(id)action;
++ (id)doPrivilegedWithJavaSecurityPrivilegedAction:(id)action;
++ (id)doPrivilegedWithJavaSecurityPrivilegedAction:(id)action withJavaSecurityAccessControlContext:(id)context;
 + (id)getContext;
 @end
 
 @implementation JavaSecurityAccessController
 
-+ (id)doPrivilegedWithJavaSecurityPrivilegedAction:(id)a3
++ (id)doPrivilegedWithJavaSecurityPrivilegedAction:(id)action
 {
-  if (!a3)
+  if (!action)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 run];
+  return [action run];
 }
 
-+ (id)doPrivilegedWithJavaSecurityPrivilegedAction:(id)a3 withJavaSecurityAccessControlContext:(id)a4
++ (id)doPrivilegedWithJavaSecurityPrivilegedAction:(id)action withJavaSecurityAccessControlContext:(id)context
 {
-  if (!a3)
+  if (!action)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 run];
+  return [action run];
 }
 
-+ (id)doPrivilegedWithCombinerWithJavaSecurityPrivilegedAction:(id)a3
++ (id)doPrivilegedWithCombinerWithJavaSecurityPrivilegedAction:(id)action
 {
-  if (!a3)
+  if (!action)
   {
     JreThrowNullPointerException();
   }
 
-  return [a3 run];
+  return [action run];
 }
 
 + (id)getContext

@@ -1,18 +1,18 @@
 @interface NEIKEv2SecurityContextAESGCM
-- (id)decryptPayloadData:(id)a3 authenticatedHeaders:(id)a4;
-- (id)initWithEncryptionProtocol:(void *)a3 outgoingEncryptionKey:(void *)a4 incomingEncryptionKey:;
+- (id)decryptPayloadData:(id)data authenticatedHeaders:(id)headers;
+- (id)initWithEncryptionProtocol:(void *)protocol outgoingEncryptionKey:(void *)key incomingEncryptionKey:;
 - (void)dealloc;
 @end
 
 @implementation NEIKEv2SecurityContextAESGCM
 
-- (id)decryptPayloadData:(id)a3 authenticatedHeaders:(id)a4
+- (id)decryptPayloadData:(id)data authenticatedHeaders:(id)headers
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  dataCopy = data;
+  headersCopy = headers;
+  v8 = headersCopy;
+  if (!dataCopy)
   {
     v12 = ne_log_obj();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -29,7 +29,7 @@ LABEL_24:
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!headersCopy)
   {
     v12 = ne_log_obj();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
@@ -43,7 +43,7 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v9 = [v6 length];
+  v9 = [dataCopy length];
   v10 = v9;
   if (self)
   {
@@ -88,7 +88,7 @@ LABEL_24:
 
   v35[0] = 0;
   __s = *(&self->super._minimumEncryptedPayloadSize + 1);
-  [v6 getBytes:v35 length:8];
+  [dataCopy getBytes:v35 length:8];
   v14 = ccgcm_set_iv();
   memset_s(&__s, 0xCuLL, 0, 0xCuLL);
   if (v14)
@@ -127,7 +127,7 @@ LABEL_34:
   }
 
   v16 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:v10 - 24];
-  [v6 bytes];
+  [dataCopy bytes];
   [v16 mutableBytes];
   v17 = ccgcm_update();
   if (v17)
@@ -150,7 +150,7 @@ LABEL_36:
     goto LABEL_33;
   }
 
-  [v6 getBytes:buf range:{v10 - 16, 16}];
+  [dataCopy getBytes:buf range:{v10 - 16, 16}];
   v18 = ccgcm_finalize();
   memset_s(buf, 0x10uLL, 0, 0x10uLL);
   if (v18)
@@ -184,14 +184,14 @@ LABEL_13:
   [(NEIKEv2SecurityContextAESGCM *)&v3 dealloc];
 }
 
-- (id)initWithEncryptionProtocol:(void *)a3 outgoingEncryptionKey:(void *)a4 incomingEncryptionKey:
+- (id)initWithEncryptionProtocol:(void *)protocol outgoingEncryptionKey:(void *)key incomingEncryptionKey:
 {
   *&v28[5] = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!a1)
+  protocolCopy = protocol;
+  keyCopy = key;
+  v10 = keyCopy;
+  if (!self)
   {
     goto LABEL_6;
   }
@@ -212,7 +212,7 @@ LABEL_22:
     goto LABEL_26;
   }
 
-  if (!v8)
+  if (!protocolCopy)
   {
     v14 = ne_log_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -226,7 +226,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (!v9)
+  if (!keyCopy)
   {
     v14 = ne_log_obj();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -242,8 +242,8 @@ LABEL_22:
 
   if (v7[2] == 20)
   {
-    a1 = [(NEIKEv2SecurityContext *)a1 initWithMinimumEncryptedPayloadSize:?];
-    if (a1)
+    self = [(NEIKEv2SecurityContext *)self initWithMinimumEncryptedPayloadSize:?];
+    if (self)
     {
       ccaes_gcm_encrypt_mode();
       v12 = ccgcm_context_size();
@@ -251,12 +251,12 @@ LABEL_22:
       if (v13)
       {
         v14 = v13;
-        [v8 getBytes:&__s range:{objc_msgSend(v8, "length") - 4, 4}];
+        [protocolCopy getBytes:&__s range:{objc_msgSend(protocolCopy, "length") - 4, 4}];
         objc_opt_self();
         arc4random_buf(v28, 8uLL);
         [v14 mutableBytes];
-        [v8 length];
-        [v8 bytes];
+        [protocolCopy length];
+        [protocolCopy bytes];
         v15 = ccgcm_init_with_iv();
         memset_s(&__s, 0xCuLL, 0, 0xCuLL);
         if (v15)
@@ -271,7 +271,7 @@ LABEL_22:
 
         else
         {
-          objc_storeStrong(a1 + 2, v14);
+          objc_storeStrong(self + 2, v14);
           ccaes_gcm_decrypt_mode();
           v16 = ccgcm_context_size();
           v17 = [(NSMutableData *)MEMORY[0x1E695DF88] mutableSensitiveDataPrefilledWithMaxCapacity:v16];
@@ -283,9 +283,9 @@ LABEL_22:
             [v10 bytes];
             if (!ccgcm_init())
             {
-              objc_storeStrong(a1 + 3, v18);
-              [v10 getBytes:a1 + 12 range:{objc_msgSend(v10, "length") - 4, 4}];
-              v11 = a1;
+              objc_storeStrong(self + 3, v18);
+              [v10 getBytes:self + 12 range:{objc_msgSend(v10, "length") - 4, 4}];
+              selfCopy = self;
 LABEL_13:
 
 LABEL_14:
@@ -314,7 +314,7 @@ LABEL_14:
           }
         }
 
-        v11 = 0;
+        selfCopy = 0;
         goto LABEL_13;
       }
 
@@ -328,17 +328,17 @@ LABEL_14:
 
       v14 = 0;
 LABEL_26:
-      v11 = 0;
+      selfCopy = 0;
       goto LABEL_14;
     }
   }
 
 LABEL_6:
-  v11 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v19 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 @end

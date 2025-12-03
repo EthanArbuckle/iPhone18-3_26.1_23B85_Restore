@@ -1,44 +1,44 @@
 @interface MRSetDefaultSupportedCommandsMessage
-- (MRSetDefaultSupportedCommandsMessage)initWithDefaultSupportedCommands:(id)a3 forPlayerPath:(id)a4 encoding:(int64_t)a5;
-- (MRSetDefaultSupportedCommandsMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4;
+- (MRSetDefaultSupportedCommandsMessage)initWithDefaultSupportedCommands:(id)commands forPlayerPath:(id)path encoding:(int64_t)encoding;
+- (MRSetDefaultSupportedCommandsMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error;
 @end
 
 @implementation MRSetDefaultSupportedCommandsMessage
 
-- (MRSetDefaultSupportedCommandsMessage)initWithDefaultSupportedCommands:(id)a3 forPlayerPath:(id)a4 encoding:(int64_t)a5
+- (MRSetDefaultSupportedCommandsMessage)initWithDefaultSupportedCommands:(id)commands forPlayerPath:(id)path encoding:(int64_t)encoding
 {
-  v8 = a3;
-  v9 = a4;
+  commandsCopy = commands;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = MRSetDefaultSupportedCommandsMessage;
   v10 = [(MRProtocolMessage *)&v17 init];
   if (v10)
   {
-    v11 = [[MRNowPlayingState alloc] initWithPlayerPath:v9];
+    v11 = [[MRNowPlayingState alloc] initWithPlayerPath:pathCopy];
     state = v10->_state;
     v10->_state = v11;
 
-    [(MRNowPlayingState *)v10->_state setSupportedCommands:v8];
-    v13 = [v9 client];
-    v14 = [v13 bundleIdentifier];
-    [(MRNowPlayingState *)v10->_state setDisplayID:v14];
+    [(MRNowPlayingState *)v10->_state setSupportedCommands:commandsCopy];
+    client = [pathCopy client];
+    bundleIdentifier = [client bundleIdentifier];
+    [(MRNowPlayingState *)v10->_state setDisplayID:bundleIdentifier];
 
-    v15 = [(MRNowPlayingState *)v10->_state protobufWithEncoding:a5];
+    v15 = [(MRNowPlayingState *)v10->_state protobufWithEncoding:encoding];
     [(MRProtocolMessage *)v10 setUnderlyingCodableMessage:v15];
   }
 
   return v10;
 }
 
-- (MRSetDefaultSupportedCommandsMessage)initWithUnderlyingCodableMessage:(id)a3 error:(id)a4
+- (MRSetDefaultSupportedCommandsMessage)initWithUnderlyingCodableMessage:(id)message error:(id)error
 {
-  v6 = a3;
+  messageCopy = message;
   v11.receiver = self;
   v11.super_class = MRSetDefaultSupportedCommandsMessage;
-  v7 = [(MRProtocolMessage *)&v11 initWithUnderlyingCodableMessage:v6 error:a4];
+  v7 = [(MRProtocolMessage *)&v11 initWithUnderlyingCodableMessage:messageCopy error:error];
   if (v7)
   {
-    v8 = [[MRNowPlayingState alloc] initWithProtobuf:v6];
+    v8 = [[MRNowPlayingState alloc] initWithProtobuf:messageCopy];
     state = v7->_state;
     v7->_state = v8;
   }

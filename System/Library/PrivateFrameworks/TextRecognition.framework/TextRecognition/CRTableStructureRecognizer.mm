@@ -1,37 +1,37 @@
 @interface CRTableStructureRecognizer
-+ (id)URLOfModelName:(id)a3;
++ (id)URLOfModelName:(id)name;
 + (id)loadCodemap;
-- (BOOL)preheatWithError:(id *)a3;
-- (CRTableStructureRecognizer)initWithComputeDeviceType:(unint64_t)a3 metalDevice:(id)a4;
-- (CRTableStructureRecognizer)initWithEncoderName:(id)a3 decoderName:(id)a4 computeDeviceType:(unint64_t)a5 metalDevice:(id)a6;
-- (CRTableStructureRecognizerInputFeatures)extractFeaturesFromImage:(SEL)a3 numConfigurationRegions:(id)a4 lines:(int64_t)a5;
-- (CRTableStructureRecognizerResultParsed)parseResult:(SEL)a3;
+- (BOOL)preheatWithError:(id *)error;
+- (CRTableStructureRecognizer)initWithComputeDeviceType:(unint64_t)type metalDevice:(id)device;
+- (CRTableStructureRecognizer)initWithEncoderName:(id)name decoderName:(id)decoderName computeDeviceType:(unint64_t)type metalDevice:(id)device;
+- (CRTableStructureRecognizerInputFeatures)extractFeaturesFromImage:(SEL)image numConfigurationRegions:(id)regions lines:(int64_t)lines;
+- (CRTableStructureRecognizerResultParsed)parseResult:(SEL)result;
 - (id).cxx_construct;
-- (id)_recognizeTableStructureBlock:(void *)a3 numConfigurationRegions:(int64_t)a4;
-- (id)alignResult:(CRTableStructureRecognizerResultParsed *)a3 lines:(id)a4 lineIndexMap:(vector<unsigned)long;
-- (id)recognizeDetectedTableInRegion:(id)a3 filteredResults:(id)a4 tableIndex:(unint64_t)a5 image:(id)a6;
-- (id)recognizeTableStructure:(void *)a3 numConfigurationRegions:(int64_t)a4;
-- (id)tableGroupRegionFromResult:(id)a3 recognizedLines:(id)a4;
-- (int)getEncoderEngine:(unint64_t)a3;
-- (int64_t)getConfigurationNumRegions:(int64_t)a3;
-- (vector<double,)readBinValuesStartingAtIndex:()vector<double tokenIndexes:(std:(SEL)a3 :(int *)a4 allocator<double>> *)self;
-- (vector<float,)normalizedLineRegions:(CRTableStructureRecognizer *)self numConfigurationRegions:(SEL)a3 usingMinMaxNorm:(id)a4;
+- (id)_recognizeTableStructureBlock:(void *)block numConfigurationRegions:(int64_t)regions;
+- (id)alignResult:(CRTableStructureRecognizerResultParsed *)result lines:(id)lines lineIndexMap:(vector<unsigned)long;
+- (id)recognizeDetectedTableInRegion:(id)region filteredResults:(id)results tableIndex:(unint64_t)index image:(id)image;
+- (id)recognizeTableStructure:(void *)structure numConfigurationRegions:(int64_t)regions;
+- (id)tableGroupRegionFromResult:(id)result recognizedLines:(id)lines;
+- (int)getEncoderEngine:(unint64_t)engine;
+- (int64_t)getConfigurationNumRegions:(int64_t)regions;
+- (vector<double,)readBinValuesStartingAtIndex:()vector<double tokenIndexes:(std:(SEL)indexes :(int *)a4 allocator<double>> *)self;
+- (vector<float,)normalizedLineRegions:(CRTableStructureRecognizer *)self numConfigurationRegions:(SEL)regions usingMinMaxNorm:(id)norm;
 - (void)reduceMemoryByResizing;
 @end
 
 @implementation CRTableStructureRecognizer
 
-- (CRTableStructureRecognizer)initWithComputeDeviceType:(unint64_t)a3 metalDevice:(id)a4
+- (CRTableStructureRecognizer)initWithComputeDeviceType:(unint64_t)type metalDevice:(id)device
 {
-  v6 = a4;
-  v7 = [objc_opt_class() defaultEncoderModelName];
-  v8 = [objc_opt_class() defaultDecoderModelName];
-  v9 = [(CRTableStructureRecognizer *)self initWithEncoderName:v7 decoderName:v8 computeDeviceType:a3 metalDevice:v6];
+  deviceCopy = device;
+  defaultEncoderModelName = [objc_opt_class() defaultEncoderModelName];
+  defaultDecoderModelName = [objc_opt_class() defaultDecoderModelName];
+  v9 = [(CRTableStructureRecognizer *)self initWithEncoderName:defaultEncoderModelName decoderName:defaultDecoderModelName computeDeviceType:type metalDevice:deviceCopy];
 
   return v9;
 }
 
-- (int)getEncoderEngine:(unint64_t)a3
+- (int)getEncoderEngine:(unint64_t)engine
 {
   v11 = *MEMORY[0x1E69E9840];
   computeDeviceType = self->_computeDeviceType;
@@ -82,16 +82,16 @@
   return v4;
 }
 
-- (CRTableStructureRecognizer)initWithEncoderName:(id)a3 decoderName:(id)a4 computeDeviceType:(unint64_t)a5 metalDevice:(id)a6
+- (CRTableStructureRecognizer)initWithEncoderName:(id)name decoderName:(id)decoderName computeDeviceType:(unint64_t)type metalDevice:(id)device
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  decoderNameCopy = decoderName;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = CRTableStructureRecognizer;
   v14 = [(CRTableStructureRecognizer *)&v19 init];
   v15 = v14;
-  if (v14 && (objc_storeStrong(&v14->_encoderName, a3), objc_storeStrong(&v15->_decoderName, a4), v15->_computeDeviceType = a5, objc_storeStrong(&v15->_metalDevice, a6), v16 = [(CRTableStructureRecognizer *)v15 loadModels], v15->_modelsLoaded = v16, v16))
+  if (v14 && (objc_storeStrong(&v14->_encoderName, name), objc_storeStrong(&v15->_decoderName, decoderName), v15->_computeDeviceType = type, objc_storeStrong(&v15->_metalDevice, device), v16 = [(CRTableStructureRecognizer *)v15 loadModels], v15->_modelsLoaded = v16, v16))
   {
     v17 = v15;
   }
@@ -104,11 +104,11 @@
   return v17;
 }
 
-+ (id)URLOfModelName:(id)a3
++ (id)URLOfModelName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v5 = [v4 pathForResource:v3 ofType:@"bundle"];
+  v5 = [v4 pathForResource:nameCopy ofType:@"bundle"];
 
   if (v5)
   {
@@ -186,9 +186,9 @@ LABEL_14:
   v10 = CROSLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
   {
-    v11 = [v9 localizedDescription];
+    localizedDescription = [v9 localizedDescription];
     *buf = 138412290;
-    v19 = v11;
+    v19 = localizedDescription;
     _os_log_impl(&dword_1B40D2000, v10, OS_LOG_TYPE_FAULT, "Failed to load table structure recognition codemap size: %@", buf, 0xCu);
   }
 
@@ -198,15 +198,15 @@ LABEL_15:
   return v12;
 }
 
-- (int64_t)getConfigurationNumRegions:(int64_t)a3
+- (int64_t)getConfigurationNumRegions:(int64_t)regions
 {
   v14 = *MEMORY[0x1E69E9840];
   for (i = 0; i < [(NSArray *)self->_modelConfigurationsNumRegions count]; ++i)
   {
     v6 = [(NSArray *)self->_modelConfigurationsNumRegions objectAtIndexedSubscript:i];
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
 
-    if (v7 >= a3)
+    if (intValue >= regions)
     {
       break;
     }
@@ -218,7 +218,7 @@ LABEL_15:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
       v12 = 134217984;
-      v13 = a3;
+      regionsCopy = regions;
       _os_log_impl(&dword_1B40D2000, v10, OS_LOG_TYPE_FAULT, "Unexpected number of input regions %lu", &v12, 0xCu);
     }
 
@@ -228,16 +228,16 @@ LABEL_15:
   else
   {
     v8 = [(NSArray *)self->_modelConfigurationsNumRegions objectAtIndexedSubscript:i];
-    v9 = [v8 intValue];
+    intValue2 = [v8 intValue];
   }
 
-  return v9;
+  return intValue2;
 }
 
-- (CRTableStructureRecognizerInputFeatures)extractFeaturesFromImage:(SEL)a3 numConfigurationRegions:(id)a4 lines:(int64_t)a5
+- (CRTableStructureRecognizerInputFeatures)extractFeaturesFromImage:(SEL)image numConfigurationRegions:(id)regions lines:(int64_t)lines
 {
   v24 = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  regionsCopy = regions;
   v11 = a6;
   v12 = [v11 count];
   v13 = CROSLogForCategory(5);
@@ -248,8 +248,8 @@ LABEL_15:
     _os_log_impl(&dword_1B40D2000, v13, OS_LOG_TYPE_DEBUG, "Num Regions: %d", buf, 8u);
   }
 
-  [(CRTableStructureRecognizer *)self normalizedLineRegions:v11 numConfigurationRegions:a5 usingMinMaxNorm:_regionMinMaxNorm];
-  v14 = [v10 imageByScalingToWidth:_modelImageSize height:_modelImageSize];
+  [(CRTableStructureRecognizer *)self normalizedLineRegions:v11 numConfigurationRegions:lines usingMinMaxNorm:_regionMinMaxNorm];
+  v14 = [regionsCopy imageByScalingToWidth:_modelImageSize height:_modelImageSize];
   v15 = v14;
   *buf = 0u;
   v23 = 0u;
@@ -258,7 +258,7 @@ LABEL_15:
     [v14 createFloatBuffer];
   }
 
-  std::vector<float>::vector[abi:ne200100](&__b, a5);
+  std::vector<float>::vector[abi:ne200100](&__b, lines);
   memset(__b, 1, 4 * v12);
   *&retstr->var0.var0 = 0u;
   *&retstr->var0.var2 = 0u;
@@ -291,69 +291,69 @@ LABEL_15:
   return result;
 }
 
-- (BOOL)preheatWithError:(id *)a3
+- (BOOL)preheatWithError:(id *)error
 {
   modelsLoaded = self->_modelsLoaded;
-  if (a3 && !self->_modelsLoaded)
+  if (error && !self->_modelsLoaded)
   {
-    *a3 = [CRImageReader errorWithErrorCode:-8];
+    *error = [CRImageReader errorWithErrorCode:-8];
     return self->_modelsLoaded;
   }
 
   return modelsLoaded;
 }
 
-- (id)recognizeDetectedTableInRegion:(id)a3 filteredResults:(id)a4 tableIndex:(unint64_t)a5 image:(id)a6
+- (id)recognizeDetectedTableInRegion:(id)region filteredResults:(id)results tableIndex:(unint64_t)index image:(id)image
 {
   v183 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v120 = v9;
-  v121 = a6;
+  regionCopy = region;
+  resultsCopy = results;
+  v120 = regionCopy;
+  imageCopy = image;
   v11 = [CRNormalizedQuad alloc];
-  v12 = [v9 tableRegions];
-  v13 = [v12 objectAtIndexedSubscript:a5];
+  tableRegions = [regionCopy tableRegions];
+  v13 = [tableRegions objectAtIndexedSubscript:index];
   [v13 topLeft];
   v15 = v14;
   v17 = v16;
-  v18 = [v9 tableRegions];
-  v19 = [v18 objectAtIndexedSubscript:a5];
+  tableRegions2 = [regionCopy tableRegions];
+  v19 = [tableRegions2 objectAtIndexedSubscript:index];
   [v19 topRight];
   v21 = v20;
   v23 = v22;
-  v24 = [v9 tableRegions];
-  v25 = [v24 objectAtIndexedSubscript:a5];
+  tableRegions3 = [regionCopy tableRegions];
+  v25 = [tableRegions3 objectAtIndexedSubscript:index];
   [v25 bottomRight];
   v27 = v26;
   v29 = v28;
-  v30 = [v9 tableRegions];
-  v31 = [v30 objectAtIndexedSubscript:a5];
+  tableRegions4 = [regionCopy tableRegions];
+  v31 = [tableRegions4 objectAtIndexedSubscript:index];
   [v31 bottomLeft];
   v33 = v32;
   v35 = v34;
-  [v121 size];
+  [imageCopy size];
   v38 = [(CRNormalizedQuad *)v11 initWithNormalizedTopLeft:v15 topRight:v17 bottomRight:v21 bottomLeft:v23 size:v27, v29, v33, v35, v36, v37];
 
   v39 = [CRTableGroupRegion alloc];
   v119 = [(CRGroupRegion *)v39 initWithBoundingQuad:v38 layoutDirection:0 subregions:MEMORY[0x1E695E0F0]];
-  v40 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+  v40 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v41 = 0;
   __src = 0;
   v165 = 0;
   v166 = 0;
-  while (v41 < [v10 count])
+  while (v41 < [resultsCopy count])
   {
-    v42 = [v10 objectAtIndexedSubscript:v41];
-    v43 = [v42 detectedLineRegion];
+    v42 = [resultsCopy objectAtIndexedSubscript:v41];
+    detectedLineRegion = [v42 detectedLineRegion];
 
-    v44 = [v43 boundingQuad];
-    [v44 midPoint];
+    boundingQuad = [detectedLineRegion boundingQuad];
+    [boundingQuad midPoint];
     v46 = v45;
     v48 = v47;
 
     if ([(CRNormalizedQuad *)v38 containsNormalizedPoint:v46, v48])
     {
-      [v40 addObject:v43];
+      [v40 addObject:detectedLineRegion];
       v49 = v165;
       if (v165 >= v166)
       {
@@ -441,8 +441,8 @@ LABEL_25:
     goto LABEL_96;
   }
 
-  v61 = [(CRGroupRegion *)v119 boundingQuad];
-  v117 = [v121 imageByRectifyingRegion:v61 toColorSpace:0 homography:&v161];
+  boundingQuad2 = [(CRGroupRegion *)v119 boundingQuad];
+  v117 = [imageCopy imageByRectifyingRegion:boundingQuad2 toColorSpace:0 homography:&v161];
 
   v62 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v40, "count")}];
   for (i = 0; [v40 count] > i; ++i)
@@ -451,13 +451,13 @@ LABEL_25:
     v65 = [v64 mutableCopy];
 
     v66 = [v40 objectAtIndexedSubscript:i];
-    v67 = [v66 boundingQuad];
+    boundingQuad3 = [v66 boundingQuad];
 
     v68 = [CRNormalizedQuad alloc];
     v130 = v162;
     v122 = v161;
     v126 = v163;
-    [v67 topLeft];
+    [boundingQuad3 topLeft];
     v71 = v69;
     v72 = v70;
     v74 = vaddq_f32(v126, vmlaq_n_f32(vmulq_n_f32(v122, v71), v130, v72));
@@ -486,7 +486,7 @@ LABEL_25:
     v131 = v162;
     v123 = v161;
     v127 = v163;
-    [v67 topRight];
+    [boundingQuad3 topRight];
     v78 = v77;
     v80 = v79;
     *&v77 = v77;
@@ -501,7 +501,7 @@ LABEL_25:
     v132 = v162;
     v124 = v161;
     v128 = v163;
-    [v67 bottomRight];
+    [boundingQuad3 bottomRight];
     v83 = v82;
     v85 = v84;
     *&v82 = v82;
@@ -516,7 +516,7 @@ LABEL_25:
     v133 = v162;
     v125 = v161;
     v129 = v163;
-    [v67 bottomLeft];
+    [boundingQuad3 bottomLeft];
     v88 = v87;
     v90 = v89;
     *&v87 = v87;
@@ -528,7 +528,7 @@ LABEL_25:
       v90 = (v91.f32[1] / v91.f32[2]);
     }
 
-    [v121 size];
+    [imageCopy size];
     v94 = [(CRNormalizedQuad *)v68 initWithNormalizedTopLeft:v75 topRight:v76 bottomRight:v78 bottomLeft:v80 size:v83, v85, v88, v90, v92, v93];
     [v65 setBoundingQuad:v94];
 
@@ -618,14 +618,14 @@ LABEL_80:
   v107 = CROSLogForCategory(5);
   if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
   {
-    v134 = [v99 programString];
-    v108 = [v99 programTokens];
-    v109 = [v108 count];
+    programString = [v99 programString];
+    programTokens = [v99 programTokens];
+    v109 = [programTokens count];
     v110 = *buf;
     v111 = *&buf[8];
     v112 = [v62 count];
     *v167 = 138413058;
-    v168 = v134;
+    v168 = programString;
     v169 = 2048;
     v170 = v109;
     v171 = 2048;
@@ -736,9 +736,9 @@ LABEL_80:
     v114 = CROSLogForCategory(5);
     if (os_log_type_enabled(v114, OS_LOG_TYPE_DEBUG))
     {
-      v115 = [v99 programString];
+      programString2 = [v99 programString];
       *v167 = 138412290;
-      v168 = v115;
+      v168 = programString2;
       _os_log_impl(&dword_1B40D2000, v114, OS_LOG_TYPE_DEBUG, "Rejecting table because program is invalid %@", v167, 0xCu);
     }
   }
@@ -776,7 +776,7 @@ LABEL_96:
   return v60;
 }
 
-- (id)recognizeTableStructure:(void *)a3 numConfigurationRegions:(int64_t)a4
+- (id)recognizeTableStructure:(void *)structure numConfigurationRegions:(int64_t)regions
 {
   v8 = 0;
   v9 = &v8;
@@ -791,8 +791,8 @@ LABEL_96:
   v7[3] = &unk_1E7BC2698;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
-  v7[7] = a4;
+  v7[6] = structure;
+  v7[7] = regions;
   dispatch_sync(queue, v7);
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -809,10 +809,10 @@ void __78__CRTableStructureRecognizer_recognizeTableStructure_numConfigurationRe
   *(v3 + 40) = v2;
 }
 
-- (id)_recognizeTableStructureBlock:(void *)a3 numConfigurationRegions:(int64_t)a4
+- (id)_recognizeTableStructureBlock:(void *)block numConfigurationRegions:(int64_t)regions
 {
   v107[17] = *MEMORY[0x1E69E9840];
-  v83 = [(CRTableStructureRecognizer *)self getConfigurationStringForNumRegions:a4];
+  v83 = [(CRTableStructureRecognizer *)self getConfigurationStringForNumRegions:regions];
   ptr = self->_encoderModel.__ptr_;
   std::string::basic_string[abi:ne200100]<0>(&__p, [v83 UTF8String]);
   v7 = CoreRecognition::EspressoModelWrapper::selectConfiguration(ptr, &__p);
@@ -867,10 +867,10 @@ LABEL_8:
 
 LABEL_15:
   v15 = self->_encoderModel.__ptr_;
-  v16 = *a3;
+  v16 = *block;
   *&__p.__r_.__value_.__l.__data_ = vdupq_n_s64(1uLL);
-  __p.__r_.__value_.__r.__words[2] = a4;
-  v106 = _numRegionFeatures;
+  __p.__r_.__value_.__r.__words[2] = regions;
+  regionsCopy = _numRegionFeatures;
   v102 = 0;
   v100 = 0;
   v101 = 0;
@@ -888,10 +888,10 @@ LABEL_15:
   }
 
   v18 = self->_encoderModel.__ptr_;
-  v19 = *(a3 + 6);
+  v19 = *(block + 6);
   __p.__r_.__value_.__r.__words[0] = 1;
   *&__p.__r_.__value_.__r.__words[1] = __PAIR128__(_modelImageSize, _numChannels);
-  v106 = _modelImageSize;
+  regionsCopy = _modelImageSize;
   v102 = 0;
   v100 = 0;
   v101 = 0;
@@ -909,10 +909,10 @@ LABEL_15:
   }
 
   v21 = self->_encoderModel.__ptr_;
-  v22 = *(a3 + 3);
+  v22 = *(block + 3);
   *&__p.__r_.__value_.__l.__data_ = vdupq_n_s64(1uLL);
   __p.__r_.__value_.__r.__words[2] = 1;
-  v106 = a4;
+  regionsCopy = regions;
   v102 = 0;
   v100 = 0;
   v101 = 0;
@@ -955,11 +955,11 @@ LABEL_24:
     }
   }
 
-  v27 = *(a3 + 6);
+  v27 = *(block + 6);
   if (v27)
   {
     free(v27);
-    *(a3 + 6) = 0;
+    *(block + 6) = 0;
   }
 
   __src = 0;
@@ -1049,7 +1049,7 @@ LABEL_24:
       v40 = self->_decoderModel.__ptr_;
       v41 = v100;
       buf = vdupq_n_s64(1uLL);
-      *&v104 = a4;
+      *&v104 = regions;
       *(&v104 + 1) = 256;
       v92 = 0;
       v93 = 0;
@@ -1070,7 +1070,7 @@ LABEL_24:
       v43 = self->_decoderModel.__ptr_;
       v44 = __p.__r_.__value_.__r.__words[0];
       buf = vdupq_n_s64(1uLL);
-      *&v104 = a4;
+      *&v104 = regions;
       *(&v104 + 1) = 32;
       v92 = 0;
       v93 = 0;
@@ -1089,10 +1089,10 @@ LABEL_24:
       }
 
       v46 = self->_decoderModel.__ptr_;
-      v47 = *(a3 + 3);
+      v47 = *(block + 3);
       buf = vdupq_n_s64(1uLL);
       *&v104 = 1;
-      *(&v104 + 1) = a4;
+      *(&v104 + 1) = regions;
       v92 = 0;
       v93 = 0;
       v91 = 0;
@@ -1143,7 +1143,7 @@ LABEL_64:
         break;
       }
 
-      v52 = a3;
+      blockCopy = block;
       v53 = [(NSArray *)self->_codemap objectAtIndexedSubscript:?];
       v54 = v95;
       if (v95 >= v96)
@@ -1196,7 +1196,7 @@ LABEL_64:
 
       v95 = v55;
       [v84 addObject:v53];
-      a3 = v52;
+      block = blockCopy;
       if (buf.i64[0] == self->_eopIndex)
       {
         v64 = 0;
@@ -1340,7 +1340,7 @@ void *__84__CRTableStructureRecognizer__recognizeTableStructureBlock_numConfigur
   return result;
 }
 
-- (vector<double,)readBinValuesStartingAtIndex:()vector<double tokenIndexes:(std:(SEL)a3 :(int *)a4 allocator<double>> *)self
+- (vector<double,)readBinValuesStartingAtIndex:()vector<double tokenIndexes:(std:(SEL)indexes :(int *)a4 allocator<double>> *)self
 {
   retstr->__begin_ = 0;
   retstr->__end_ = 0;
@@ -1354,7 +1354,7 @@ void *__84__CRTableStructureRecognizer__recognizeTableStructureBlock_numConfigur
     return self;
   }
 
-  v12 = self;
+  selfCopy = self;
   v13 = 0;
   v14 = 0;
   v15 = 0;
@@ -1362,14 +1362,14 @@ void *__84__CRTableStructureRecognizer__recognizeTableStructureBlock_numConfigur
   do
   {
     v17 = begin[v16];
-    v18 = v12[5].__begin_;
+    v18 = selfCopy[5].__begin_;
     v19 = v17 - v18;
     if (v17 < v18)
     {
       break;
     }
 
-    cap = v12[5].__cap_;
+    cap = selfCopy[5].__cap_;
     if (cap < v17)
     {
       break;
@@ -1452,7 +1452,7 @@ LABEL_11:
       if (v9 - 1 == v16)
       {
         v15 = 1;
-        v14 = v12[5].__cap_;
+        v14 = selfCopy[5].__cap_;
       }
 
       else
@@ -1472,7 +1472,7 @@ LABEL_26:
   }
 
   while (v9 > v6);
-  if (retstr->__begin_ != v13 && *(v13 - 1) < v12[5].__cap_ * 0.9)
+  if (retstr->__begin_ != v13 && *(v13 - 1) < selfCopy[5].__cap_ * 0.9)
   {
     retstr->__end_ = retstr->__begin_;
   }
@@ -1480,7 +1480,7 @@ LABEL_26:
   return self;
 }
 
-- (CRTableStructureRecognizerResultParsed)parseResult:(SEL)a3
+- (CRTableStructureRecognizerResultParsed)parseResult:(SEL)result
 {
   v87 = *MEMORY[0x1E69E9840];
   v6 = a4;
@@ -1996,17 +1996,17 @@ LABEL_114:
   return result;
 }
 
-- (id)alignResult:(CRTableStructureRecognizerResultParsed *)a3 lines:(id)a4 lineIndexMap:(vector<unsigned)long
+- (id)alignResult:(CRTableStructureRecognizerResultParsed *)result lines:(id)lines lineIndexMap:(vector<unsigned)long
 {
-  v146 = a4;
+  linesCopy = lines;
   v157 = objc_alloc_init(CRTableStructureRecognizerResult);
   __C = 0;
-  vDSP_sveD(a3->columnWidths.__begin_, 1, &__C, a3->columnWidths.__end_ - a3->columnWidths.__begin_);
+  vDSP_sveD(result->columnWidths.__begin_, 1, &__C, result->columnWidths.__end_ - result->columnWidths.__begin_);
   v187 = 0;
   v188 = 0;
   v189 = 0;
-  begin = a3->columnWidths.__begin_;
-  end = a3->columnWidths.__end_;
+  begin = result->columnWidths.__begin_;
+  end = result->columnWidths.__end_;
   if (begin != end)
   {
     v8 = 0;
@@ -2091,12 +2091,12 @@ LABEL_114:
   }
 
   __C = 0;
-  vDSP_sveD(a3->rowHeights.__begin_, 1, &__C, a3->rowHeights.__end_ - a3->rowHeights.__begin_);
+  vDSP_sveD(result->rowHeights.__begin_, 1, &__C, result->rowHeights.__end_ - result->rowHeights.__begin_);
   v184 = 0;
   v185 = 0;
   v186 = 0;
-  v23 = a3->rowHeights.__begin_;
-  v22 = a3->rowHeights.__end_;
+  v23 = result->rowHeights.__begin_;
+  v22 = result->rowHeights.__end_;
   if (v23 != v22)
   {
     v24 = 0;
@@ -2183,7 +2183,7 @@ LABEL_114:
   v181 = 0;
   v182 = 0;
   v183 = 0;
-  std::vector<CRTableStructureMerge>::__init_with_size[abi:ne200100]<CRTableStructureMerge*,CRTableStructureMerge*>(&v181, a3->merges.__begin_, a3->merges.__end_, (a3->merges.__end_ - a3->merges.__begin_) >> 5);
+  std::vector<CRTableStructureMerge>::__init_with_size[abi:ne200100]<CRTableStructureMerge*,CRTableStructureMerge*>(&v181, result->merges.__begin_, result->merges.__end_, (result->merges.__end_ - result->merges.__begin_) >> 5);
   [(CRTableStructureRecognizerResult *)v157 setMerges:&v181];
   if (v181)
   {
@@ -2459,12 +2459,12 @@ LABEL_114:
   v151 = 24 * v56;
   v153 = v77;
   v78 = MEMORY[0x1E695F060];
-  while (v75 < [v146 count])
+  while (v75 < [linesCopy count])
   {
     v160 = v75;
-    v79 = [v146 objectAtIndexedSubscript:v75];
-    v80 = [v79 boundingQuad];
-    [v80 midPoint];
+    v79 = [linesCopy objectAtIndexedSubscript:v75];
+    boundingQuad = [v79 boundingQuad];
+    [boundingQuad midPoint];
     v82 = v81;
     v84 = v83;
 
@@ -2762,12 +2762,12 @@ LABEL_128:
   return v157;
 }
 
-- (id)tableGroupRegionFromResult:(id)a3 recognizedLines:(id)a4
+- (id)tableGroupRegionFromResult:(id)result recognizedLines:(id)lines
 {
   v94 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 tableQuad];
+  resultCopy = result;
+  linesCopy = lines;
+  tableQuad = [resultCopy tableQuad];
   v90[0] = 0;
   v90[1] = 0;
   __asm { FMOV            V1.2D, #1.0 }
@@ -2775,16 +2775,16 @@ LABEL_128:
   v91 = xmmword_1B42AF250;
   v92 = _Q1;
   v93 = xmmword_1B42AF260;
-  [v7 topLeft];
+  [tableQuad topLeft];
   v89[0] = v13;
   v89[1] = v14;
-  [v7 topRight];
+  [tableQuad topRight];
   v89[2] = v15;
   v89[3] = v16;
-  [v7 bottomRight];
+  [tableQuad bottomRight];
   v89[4] = v17;
   v89[5] = v18;
-  [v7 bottomLeft];
+  [tableQuad bottomLeft];
   v89[6] = v19;
   v89[7] = v20;
   *v21.f32 = computeHomographyMatrix(v90, v89);
@@ -2792,9 +2792,9 @@ LABEL_128:
   v82 = v21;
   v78 = v23;
   v24 = MEMORY[0x1E695DF70];
-  if (v5)
+  if (resultCopy)
   {
-    [v5 rows];
+    [resultCopy rows];
     v25 = (v87 - __p) >> 5;
   }
 
@@ -2822,9 +2822,9 @@ LABEL_128:
   v28 = v78;
   v28.i32[3] = 0;
   v79 = v28;
-  if (v5)
+  if (resultCopy)
   {
-    [v5 rows];
+    [resultCopy rows];
     v29 = __p;
     if (__p != v87)
     {
@@ -2834,7 +2834,7 @@ LABEL_128:
         v31 = v29[1];
         v32 = v29[2];
         v33 = v29[3];
-        [v7 normalizationSize];
+        [tableQuad normalizationSize];
         v96.width = v34;
         v96.height = v35;
         v72.columns[1] = v81;
@@ -2861,7 +2861,7 @@ LABEL_128:
     }
 
     v37 = MEMORY[0x1E695DF70];
-    [v5 columns];
+    [resultCopy columns];
     v38 = (v87 - __p) >> 5;
   }
 
@@ -2881,9 +2881,9 @@ LABEL_128:
     operator delete(__p);
   }
 
-  if (v5)
+  if (resultCopy)
   {
-    [v5 columns];
+    [resultCopy columns];
     v39 = __p;
     if (__p != v87)
     {
@@ -2893,7 +2893,7 @@ LABEL_128:
         v41 = v39[1];
         v42 = v39[2];
         v43 = v39[3];
-        [v7 normalizationSize];
+        [tableQuad normalizationSize];
         v97.width = v44;
         v97.height = v45;
         v73.columns[1] = v81;
@@ -2920,7 +2920,7 @@ LABEL_128:
     }
 
     v47 = MEMORY[0x1E695DF70];
-    [v5 rectForCells];
+    [resultCopy rectForCells];
     v48 = (v87 - __p) >> 5;
   }
 
@@ -2941,11 +2941,11 @@ LABEL_128:
   }
 
   v49 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v5)
+  if (resultCopy)
   {
     for (i = 0; ; ++i)
     {
-      [v5 rectForCells];
+      [resultCopy rectForCells];
       v51 = (v87 - __p) >> 5;
       if (__p)
       {
@@ -2958,7 +2958,7 @@ LABEL_128:
         break;
       }
 
-      [v5 rectForCells];
+      [resultCopy rectForCells];
       v52 = (__p + 32 * i);
       v53 = *v52;
       v54 = v52[1];
@@ -2972,7 +2972,7 @@ LABEL_128:
       v101.size.height = v56;
       if (!CGRectIsEmpty(v101))
       {
-        [v7 normalizationSize];
+        [tableQuad normalizationSize];
         v98.width = v57;
         v98.height = v58;
         v74.columns[1] = v81;
@@ -2983,27 +2983,27 @@ LABEL_128:
         v102.size.width = v55;
         v102.size.height = v56;
         v59 = transformRectWithHomography(v102, v98, v74);
-        v60 = [MEMORY[0x1E695DF70] array];
-        [v5 textLineIndexesForCells];
+        array = [MEMORY[0x1E695DF70] array];
+        [resultCopy textLineIndexesForCells];
         v61 = __p + 24 * i;
         v62 = *v61;
         v63 = v61[1];
         while (v62 != v63)
         {
-          v64 = [v6 objectAtIndexedSubscript:*v62];
-          [v60 addObject:v64];
+          v64 = [linesCopy objectAtIndexedSubscript:*v62];
+          [array addObject:v64];
           [v49 addObject:v64];
 
           ++v62;
         }
 
         v65 = [CRTableCellGroupRegion alloc];
-        [v5 rowsForCells];
+        [resultCopy rowsForCells];
         v66 = (v85[0] + 16 * i);
         v67 = *v66;
         v68 = v66[1];
-        [v5 columnsForCells];
-        v69 = [(CRTableCellGroupRegion *)v65 initWithBoundingQuad:v59 layoutDirection:0 subregions:v60 rows:v67 columns:v68, v84[2 * i], v84[2 * i + 1]];
+        [resultCopy columnsForCells];
+        v69 = [(CRTableCellGroupRegion *)v65 initWithBoundingQuad:v59 layoutDirection:0 subregions:array rows:v67 columns:v68, v84[2 * i], v84[2 * i + 1]];
         [v75 addObject:v69];
 
         if (v84)
@@ -3023,7 +3023,7 @@ LABEL_128:
     }
   }
 
-  v70 = [[CRTableGroupRegion alloc] initWithBoundingQuad:v7 layoutDirection:0 cells:v75 lineRegions:v49 rowQuads:v77 columnQuads:v76];
+  v70 = [[CRTableGroupRegion alloc] initWithBoundingQuad:tableQuad layoutDirection:0 cells:v75 lineRegions:v49 rowQuads:v77 columnQuads:v76];
 
   return v70;
 }
@@ -3075,19 +3075,19 @@ LABEL_9:
   }
 }
 
-- (vector<float,)normalizedLineRegions:(CRTableStructureRecognizer *)self numConfigurationRegions:(SEL)a3 usingMinMaxNorm:(id)a4
+- (vector<float,)normalizedLineRegions:(CRTableStructureRecognizer *)self numConfigurationRegions:(SEL)regions usingMinMaxNorm:(id)norm
 {
   v6 = a6;
   v70 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v60 = [v9 count];
+  normCopy = norm;
+  v60 = [normCopy count];
   v68 = 0;
   std::vector<float>::vector[abi:ne200100](retstr, 8 * a5);
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v10 = v9;
+  v10 = normCopy;
   v11 = [v10 countByEnumeratingWithState:&v64 objects:v69 count:16];
   if (v11)
   {
@@ -3111,34 +3111,34 @@ LABEL_9:
           objc_enumerationMutation(v10);
         }
 
-        v19 = [*(*(&v64 + 1) + v16) boundingQuad];
-        [v19 boundingBox];
+        boundingQuad = [*(*(&v64 + 1) + v16) boundingQuad];
+        [boundingQuad boundingBox];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
-        [v19 topLeft];
+        [boundingQuad topLeft];
         *&v28 = v28;
         retstr->var0[v18 + v16] = *&v28;
-        [v19 topLeft];
+        [boundingQuad topLeft];
         v30 = v29;
         retstr->var0[v18 + 1 + v16] = v30;
-        [v19 topRight];
+        [boundingQuad topRight];
         *&v31 = v31;
         retstr->var0[v18 + 2 + v16] = *&v31;
-        [v19 topRight];
+        [boundingQuad topRight];
         v33 = v32;
         retstr->var0[v18 + 3 + v16] = v33;
-        [v19 bottomRight];
+        [boundingQuad bottomRight];
         *&v34 = v34;
         retstr->var0[v18 + 4 + v16] = *&v34;
-        [v19 bottomRight];
+        [boundingQuad bottomRight];
         v36 = v35;
         retstr->var0[v18 + 5 + v16] = v36;
-        [v19 bottomLeft];
+        [boundingQuad bottomLeft];
         *&v37 = v37;
         retstr->var0[v18 + 6 + v16] = *&v37;
-        [v19 bottomLeft];
+        [boundingQuad bottomLeft];
         v39 = v38;
         retstr->var0[v18 + 7 + v16] = v39;
         if (v6)

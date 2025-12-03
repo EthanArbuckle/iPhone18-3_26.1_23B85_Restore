@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __53__UIViewController_Metrics__swizzleMethodsForMetrics__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (swizzleMethodsForMetrics_onceToken != -1)
   {
     dispatch_once(&swizzleMethodsForMetrics_onceToken, block);
@@ -46,15 +46,15 @@
 
 - (void)recordViewDidAppearEvent
 {
-  if ([a1 metricsEnabled])
+  if ([self metricsEnabled])
   {
     v5 = objc_opt_new();
-    v2 = [a1 metricsName];
-    [v5 setPageType:v2];
+    metricsName = [self metricsName];
+    [v5 setPageType:metricsName];
 
     v3 = MEMORY[0x277D3DAB0];
-    v4 = [a1 metricDataSource];
-    [v3 configureEvent:v5 withDataSource:v4];
+    metricDataSource = [self metricDataSource];
+    [v3 configureEvent:v5 withDataSource:metricDataSource];
 
     [MEMORY[0x277D3DA98] recordEvent:v5];
   }
@@ -63,29 +63,29 @@
 - (uint64_t)metricsEnabled
 {
   v2 = MEMORY[0x277D3DAC0];
-  v3 = [a1 isUIKitClass] ^ 1;
+  v3 = [self isUIKitClass] ^ 1;
 
-  return [v2 associatedBoolValueForKey:@"UIViewController+Metrics-metricsEnabled" onObject:a1 withDefault:v3];
+  return [v2 associatedBoolValueForKey:@"UIViewController+Metrics-metricsEnabled" onObject:self withDefault:v3];
 }
 
 - (uint64_t)isUIKitClass
 {
-  v2 = [MEMORY[0x277D3DAC0] associatedValueForKey:@"UIViewController+Metrics-isUIKitClass" onObject:a1];
+  v2 = [MEMORY[0x277D3DAC0] associatedValueForKey:@"UIViewController+Metrics-isUIKitClass" onObject:self];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
-    v4 = ([v6 hasPrefix:@"UI"] & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"_UI") & 1) != 0 || objc_msgSend(v6, "hasPrefix:", @"_NC");
-    [MEMORY[0x277D3DAC0] associateBoolValue:v4 forKey:@"UIViewController+Metrics-isUIKitClass" onObject:a1];
+    bOOLValue = ([v6 hasPrefix:@"UI"] & 1) != 0 || (objc_msgSend(v6, "hasPrefix:", @"_UI") & 1) != 0 || objc_msgSend(v6, "hasPrefix:", @"_NC");
+    [MEMORY[0x277D3DAC0] associateBoolValue:bOOLValue forKey:@"UIViewController+Metrics-isUIKitClass" onObject:self];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)metricsName
@@ -93,26 +93,26 @@
   v2 = MEMORY[0x277D3DAC0];
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [v2 associatedValueForKey:@"UIViewController+Metrics-metricsName" onObject:a1 withDefault:v4];
+  v5 = [v2 associatedValueForKey:@"UIViewController+Metrics-metricsName" onObject:self withDefault:v4];
 
   return v5;
 }
 
 - (id)metricDataSource
 {
-  v1 = [MEMORY[0x277D3DAC0] associatedValueForKey:@"UIViewController+Metrics-metricsDataSource" onObject:a1 withDefault:a1];
+  v1 = [MEMORY[0x277D3DAC0] associatedValueForKey:@"UIViewController+Metrics-metricsDataSource" onObject:self withDefault:self];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [v1 object];
+    object = [v1 object];
   }
 
   else
   {
-    v2 = v1;
+    object = v1;
   }
 
-  v3 = v2;
+  v3 = object;
 
   return v3;
 }
@@ -122,7 +122,7 @@
   v4 = a3;
   v5 = [[MTWeakReference alloc] initWithObject:v4];
 
-  [MEMORY[0x277D3DAC0] associateValue:v5 forKey:@"UIViewController+Metrics-metricsDataSource" onObject:a1 withPolicy:1];
+  [MEMORY[0x277D3DAC0] associateValue:v5 forKey:@"UIViewController+Metrics-metricsDataSource" onObject:self withPolicy:1];
 }
 
 @end

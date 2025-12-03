@@ -1,28 +1,28 @@
 @interface PKPaymentSetupViewController
-+ (void)paymentSetupFeaturesForConfiguration:(id)a3 completion:(id)a4;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result;
++ (void)paymentSetupFeaturesForConfiguration:(id)configuration completion:(id)completion;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result;
 - (PKPaymentSetupRequestViewControllerDelegate)delegate;
-- (PKPaymentSetupViewController)initWithPaymentSetupRequest:(id)a3;
+- (PKPaymentSetupViewController)initWithPaymentSetupRequest:(id)request;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_cancelTapped;
 - (void)_hideLoadingContent;
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4;
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler;
 - (void)dealloc;
-- (void)didFinishWithPasses:(id)a3 error:(id)a4;
+- (void)didFinishWithPasses:(id)passes error:(id)error;
 - (void)loadView;
-- (void)setPresentationStyle:(int64_t)a3;
+- (void)setPresentationStyle:(int64_t)style;
 - (void)updateModalPresentationStyle;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKPaymentSetupViewController
 
-+ (void)paymentSetupFeaturesForConfiguration:(id)a3 completion:(id)a4
++ (void)paymentSetupFeaturesForConfiguration:(id)configuration completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   v30[0] = 0;
   v30[1] = v30;
@@ -42,10 +42,10 @@
   v26[3] = __Block_byref_object_copy__1;
   v26[4] = __Block_byref_object_dispose__1;
   v27 = 0;
-  v8 = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
-  v9 = [v8 _remoteLibrary];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstanceWithRemoteLibrary];
+  _remoteLibrary = [mEMORY[0x1E69B8A58] _remoteLibrary];
 
-  if (v9)
+  if (_remoteLibrary)
   {
     dispatch_group_enter(v7);
     v22[0] = MEMORY[0x1E69E9820];
@@ -55,11 +55,11 @@
     v24 = v30;
     v25 = v28;
     v23 = v7;
-    [v9 paymentSetupFeaturesForConfiguration:v5 completion:v22];
+    [_remoteLibrary paymentSetupFeaturesForConfiguration:configurationCopy completion:v22];
   }
 
   dispatch_group_enter(v7);
-  v10 = [MEMORY[0x1E69B8A58] sharedInstance];
+  mEMORY[0x1E69B8A58]2 = [MEMORY[0x1E69B8A58] sharedInstance];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __80__PKPaymentSetupViewController_paymentSetupFeaturesForConfiguration_completion___block_invoke_2;
@@ -67,18 +67,18 @@
   v21 = v26;
   v11 = v7;
   v20 = v11;
-  [v10 paymentSetupFeaturesForConfiguration:v5 completion:v19];
+  [mEMORY[0x1E69B8A58]2 paymentSetupFeaturesForConfiguration:configurationCopy completion:v19];
 
   v12 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__PKPaymentSetupViewController_paymentSetupFeaturesForConfiguration_completion___block_invoke_3;
   block[3] = &unk_1E8012BD8;
-  v15 = v6;
+  v15 = completionCopy;
   v16 = v30;
   v17 = v28;
   v18 = v26;
-  v13 = v6;
+  v13 = completionCopy;
   dispatch_group_notify(v11, v12, block);
 
   _Block_object_dispose(v26, 8);
@@ -282,16 +282,16 @@ void __80__PKPaymentSetupViewController_paymentSetupFeaturesForConfiguration_com
   }
 }
 
-- (PKPaymentSetupViewController)initWithPaymentSetupRequest:(id)a3
+- (PKPaymentSetupViewController)initWithPaymentSetupRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v14.receiver = self;
   v14.super_class = PKPaymentSetupViewController;
   v6 = [(PKPaymentSetupViewController *)&v14 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_paymentSetupRequest, a3);
+    objc_storeStrong(&v6->_paymentSetupRequest, request);
     v7->_explicitPresentationStyle = 0;
     objc_initWeak(&location, v7);
     v11[0] = MEMORY[0x1E69E9820];
@@ -352,7 +352,7 @@ void __60__PKPaymentSetupViewController_initWithPaymentSetupRequest___block_invo
   remoteVCRequest = self->_remoteVCRequest;
   if (remoteVCRequest)
   {
-    v4 = [(_UIAsyncInvocation *)remoteVCRequest invoke];
+    invoke = [(_UIAsyncInvocation *)remoteVCRequest invoke];
     v5 = self->_remoteVCRequest;
     self->_remoteVCRequest = 0;
   }
@@ -362,18 +362,18 @@ void __60__PKPaymentSetupViewController_initWithPaymentSetupRequest___block_invo
   [(PKPaymentSetupViewController *)&v6 dealloc];
 }
 
-- (void)_setRemoteVC:(id)a3 completionHandler:(id)a4
+- (void)_setRemoteVC:(id)c completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_remoteVC, a3);
+  cCopy = c;
+  handlerCopy = handler;
+  objc_storeStrong(&self->_remoteVC, c);
   [(PKPaymentSetupViewController *)self addChildViewController:self->_remoteVC];
-  v9 = [(PKRemotePaymentSetupViewController *)self->_remoteVC view];
-  v10 = [(PKPaymentSetupViewController *)self view];
-  [v10 addSubview:v9];
-  [v10 setNeedsLayout];
-  [v10 layoutIfNeeded];
-  [v9 setUserInteractionEnabled:0];
+  view = [(PKRemotePaymentSetupViewController *)self->_remoteVC view];
+  view2 = [(PKPaymentSetupViewController *)self view];
+  [view2 addSubview:view];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
+  [view setUserInteractionEnabled:0];
   [(_UIRemoteViewController *)self->_remoteVC didMoveToParentViewController:self];
   [(PKPaymentSetupViewController *)self setNeedsStatusBarAppearanceUpdate];
   [(PKPaymentSetupViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
@@ -382,17 +382,17 @@ void __60__PKPaymentSetupViewController_initWithPaymentSetupRequest___block_invo
   v27[1] = 3221225472;
   v27[2] = __63__PKPaymentSetupViewController__setRemoteVC_completionHandler___block_invoke;
   v27[3] = &unk_1E8012C28;
-  v12 = v8;
+  v12 = handlerCopy;
   v28 = v12;
   v13 = [(_UIRemoteViewController *)remoteVC serviceViewControllerProxyWithErrorHandler:v27];
   if (v13)
   {
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v15 = [v14 fixedCoordinateSpace];
-    [v15 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    fixedCoordinateSpace = [mainScreen fixedCoordinateSpace];
+    [fixedCoordinateSpace bounds];
     v17 = v16;
     v19 = v18;
-    [v14 scale];
+    [mainScreen scale];
     [v13 setDisplayPropertiesWithScreenSize:v17 scale:{v19, v20}];
 
     objc_initWeak(&location, self);
@@ -403,7 +403,7 @@ void __60__PKPaymentSetupViewController_initWithPaymentSetupRequest___block_invo
     v22[3] = &unk_1E8010F30;
     objc_copyWeak(&v25, &location);
     v24 = v12;
-    v23 = v9;
+    v23 = view;
     [v13 configureWithPaymentSetupRequest:paymentSetupRequest completion:v22];
 
     objc_destroyWeak(&v25);
@@ -460,67 +460,67 @@ void __63__PKPaymentSetupViewController__setRemoteVC_completionHandler___block_i
   }
 }
 
-- (void)setPresentationStyle:(int64_t)a3
+- (void)setPresentationStyle:(int64_t)style
 {
-  if (self->_presentationStyle != a3 || !self->_explicitPresentationStyle)
+  if (self->_presentationStyle != style || !self->_explicitPresentationStyle)
   {
-    self->_presentationStyle = 2 * (a3 == 2);
+    self->_presentationStyle = 2 * (style == 2);
     self->_explicitPresentationStyle = 1;
     [(PKPaymentSetupViewController *)self updateModalPresentationStyle];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = PKPaymentSetupViewController;
-  [(PKPaymentSetupViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(PKPaymentSetupViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(PKPaymentSetupViewController *)self updateModalPresentationStyle];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PKPaymentSetupViewController;
-  [(PKPaymentSetupViewController *)&v5 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(PKPaymentSetupViewController *)&v5 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
   [(PKPaymentSetupViewController *)self updateModalPresentationStyle];
 }
 
 - (void)updateModalPresentationStyle
 {
-  v3 = [(PKPaymentSetupViewController *)self view];
-  v10 = [v3 window];
+  view = [(PKPaymentSetupViewController *)self view];
+  window = [view window];
 
-  v4 = v10;
-  if (v10)
+  v4 = window;
+  if (window)
   {
-    v5 = [v10 windowScene];
-    v6 = v5;
-    if (v5)
+    windowScene = [window windowScene];
+    v6 = windowScene;
+    if (windowScene)
     {
-      v7 = [v5 interfaceOrientation];
+      interfaceOrientation = [windowScene interfaceOrientation];
       if ([(UIViewController *)self pkui_userInterfaceIdiomSupportsLargeLayouts])
       {
-        v8 = self;
+        selfCopy3 = self;
         presentationStyle = 16;
       }
 
-      else if ((v7 - 3) >= 2 && self->_explicitPresentationStyle)
+      else if ((interfaceOrientation - 3) >= 2 && self->_explicitPresentationStyle)
       {
         presentationStyle = self->_presentationStyle;
-        v8 = self;
+        selfCopy3 = self;
       }
 
       else
       {
-        v8 = self;
+        selfCopy3 = self;
         presentationStyle = 0;
       }
 
-      [(PKPaymentSetupViewController *)v8 setModalPresentationStyle:presentationStyle];
+      [(PKPaymentSetupViewController *)selfCopy3 setModalPresentationStyle:presentationStyle];
     }
 
-    v4 = v10;
+    v4 = window;
   }
 }
 
@@ -538,9 +538,9 @@ void __63__PKPaymentSetupViewController__setRemoteVC_completionHandler___block_i
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result
 {
-  if (self->_remoteVC != a3)
+  if (self->_remoteVC != container)
   {
     v7 = v4;
     v8 = v5;
@@ -557,16 +557,16 @@ void __63__PKPaymentSetupViewController__setRemoteVC_completionHandler___block_i
   v26.receiver = self;
   v26.super_class = PKPaymentSetupViewController;
   [(PKPaymentSetupViewController *)&v26 loadView];
-  v3 = [(PKPaymentSetupViewController *)self view];
+  view = [(PKPaymentSetupViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   spinner = self->_spinner;
   self->_spinner = v5;
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
-  [v3 addSubview:self->_spinner];
+  [view addSubview:self->_spinner];
   v7 = objc_alloc(MEMORY[0x1E69DCC10]);
   v8 = [v7 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   loadingLabel = self->_loadingLabel;
@@ -576,7 +576,7 @@ void __63__PKPaymentSetupViewController__setRemoteVC_completionHandler___block_i
   v11 = PKLocalizedString(&cfstr_Loading_1.isa);
   [(UILabel *)v10 setText:v11];
 
-  [v3 addSubview:self->_loadingLabel];
+  [view addSubview:self->_loadingLabel];
   v12 = MEMORY[0x1E69DC740];
   v13 = PKLocalizedString(&cfstr_Cancel.isa);
   v14 = [MEMORY[0x1E69DB878] systemFontOfSize:17.0];
@@ -595,7 +595,7 @@ void __63__PKPaymentSetupViewController__setRemoteVC_completionHandler___block_i
   self->_cancelButton = v18;
 
   [(UIButton *)self->_cancelButton setConfigurationUpdateHandler:&__block_literal_global_23];
-  [v3 addSubview:self->_cancelButton];
+  [view addSubview:self->_cancelButton];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -612,16 +612,16 @@ void __40__PKPaymentSetupViewController_loadView__block_invoke(uint64_t a1)
   v29.receiver = self;
   v29.super_class = PKPaymentSetupViewController;
   [(PKPaymentSetupViewController *)&v29 viewWillLayoutSubviews];
-  v3 = [(PKPaymentSetupViewController *)self view];
-  v4 = [(PKRemotePaymentSetupViewController *)self->_remoteVC view];
-  [v3 bounds];
-  [v4 setFrame:?];
+  view = [(PKPaymentSetupViewController *)self view];
+  view2 = [(PKRemotePaymentSetupViewController *)self->_remoteVC view];
+  [view bounds];
+  [view2 setFrame:?];
 
-  [v3 bounds];
+  [view bounds];
   v6 = v5;
   v28 = v7;
   [(UIActivityIndicatorView *)self->_spinner frame];
-  [v3 center];
+  [view center];
   UIRectCenteredAboutPoint();
   v9 = v8;
   v11 = v10;
@@ -643,9 +643,9 @@ void __40__PKPaymentSetupViewController_loadView__block_invoke(uint64_t a1)
   [(UIButton *)self->_cancelButton frame];
   v23 = v22;
   v25 = v24;
-  v26 = [(PKPaymentSetupViewController *)self modalPresentationStyle];
+  modalPresentationStyle = [(PKPaymentSetupViewController *)self modalPresentationStyle];
   v27 = 50.0;
-  if (v26)
+  if (modalPresentationStyle)
   {
     v27 = 10.0;
   }
@@ -669,18 +669,18 @@ void __40__PKPaymentSetupViewController_loadView__block_invoke(uint64_t a1)
   [(PKPaymentSetupViewController *)self didFinishWithPasses:0 error:v3];
 }
 
-- (void)didFinishWithPasses:(id)a3 error:(id)a4
+- (void)didFinishWithPasses:(id)passes error:(id)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  passesCopy = passes;
+  errorCopy = error;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412546;
-    v19 = v6;
+    v19 = passesCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = errorCopy;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "PKPaymentSetupViewController did finish with passes: %@ error: %@", &v18, 0x16u);
   }
 
@@ -694,21 +694,21 @@ void __40__PKPaymentSetupViewController_loadView__block_invoke(uint64_t a1)
     if (v12)
     {
       v13 = objc_loadWeakRetained(&self->_delegate);
-      [v13 paymentSetupViewController:self didFinishAddingPaymentPasses:v6 error:v7];
+      [v13 paymentSetupViewController:self didFinishAddingPaymentPasses:passesCopy error:errorCopy];
     }
   }
 
-  v14 = [(PKPaymentSetupViewController *)self presentingViewController];
-  v15 = v14;
-  if (v14)
+  presentingViewController = [(PKPaymentSetupViewController *)self presentingViewController];
+  v15 = presentingViewController;
+  if (presentingViewController)
   {
-    [v14 dismissViewControllerAnimated:1 completion:0];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 
   else
   {
-    v16 = [(PKPaymentSetupViewController *)self navigationController];
-    v17 = [v16 popViewControllerAnimated:1];
+    navigationController = [(PKPaymentSetupViewController *)self navigationController];
+    v17 = [navigationController popViewControllerAnimated:1];
   }
 }
 

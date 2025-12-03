@@ -1,34 +1,34 @@
 @interface LNViewSnippetOptions
-- (LNViewSnippetOptions)initWithCanReplacePrintableText:(BOOL)a3;
-- (LNViewSnippetOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (LNViewSnippetOptions)initWithCanReplacePrintableText:(BOOL)text;
+- (LNViewSnippetOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNViewSnippetOptions
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[LNViewSnippetOptions canReplacePrintableText](self forKey:{"canReplacePrintableText"), @"canReplacePrintableText"}];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[LNViewSnippetOptions canReplacePrintableText](self forKey:{"canReplacePrintableText"), @"canReplacePrintableText"}];
 }
 
-- (LNViewSnippetOptions)initWithCoder:(id)a3
+- (LNViewSnippetOptions)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeBoolForKey:@"canReplacePrintableText"];
+  v4 = [coder decodeBoolForKey:@"canReplacePrintableText"];
 
   return [(LNViewSnippetOptions *)self initWithCanReplacePrintableText:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(LNViewSnippetOptions *)self canReplacePrintableText];
+  canReplacePrintableText = [(LNViewSnippetOptions *)self canReplacePrintableText];
 
-  return [v4 initWithCanReplacePrintableText:v5];
+  return [v4 initWithCanReplacePrintableText:canReplacePrintableText];
 }
 
-- (LNViewSnippetOptions)initWithCanReplacePrintableText:(BOOL)a3
+- (LNViewSnippetOptions)initWithCanReplacePrintableText:(BOOL)text
 {
   v8.receiver = self;
   v8.super_class = LNViewSnippetOptions;
@@ -36,7 +36,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_canReplacePrintableText = a3;
+    v4->_canReplacePrintableText = text;
     v6 = v4;
   }
 

@@ -2,32 +2,32 @@
 - (BOOL)primaryCardSectionIsLeading;
 - (NSDirectionalEdgeInsets)leadingGroupContentInsets;
 - (NSDirectionalEdgeInsets)sectionInsets;
-- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)a3 sectionIndex:(unint64_t)a4;
+- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)attributes sectionIndex:(unint64_t)index;
 - (NSDirectionalEdgeInsets)trailingGroupContentInsets;
-- (SearchUILeadingTrailingSectionModel)initWithCardSection:(id)a3 rowModels:(id)a4 result:(id)a5 queryId:(unint64_t)a6 section:(id)a7;
-- (id)buildGroupForFractionalWidth:(double)a3 numberOfCards:(int64_t)a4 isTopAligned:(BOOL)a5 prefersSeparator:(BOOL)a6 forView:(id)a7;
-- (id)copyWithRowModels:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)layoutSectionForEnvironment:(id)a3 attributes:(id)a4 dataSource:(id)a5;
+- (SearchUILeadingTrailingSectionModel)initWithCardSection:(id)section rowModels:(id)models result:(id)result queryId:(unint64_t)id section:(id)a7;
+- (id)buildGroupForFractionalWidth:(double)width numberOfCards:(int64_t)cards isTopAligned:(BOOL)aligned prefersSeparator:(BOOL)separator forView:(id)view;
+- (id)copyWithRowModels:(id)models;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)layoutSectionForEnvironment:(id)environment attributes:(id)attributes dataSource:(id)source;
 - (id)primaryCardSection;
 - (id)rowModels;
-- (id)rowModelsForCardSections:(id)a3 result:(id)a4 queryId:(unint64_t)a5;
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3;
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3 forRowModel:(id)a4;
+- (id)rowModelsForCardSections:(id)sections result:(id)result queryId:(unint64_t)id;
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes;
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes forRowModel:(id)model;
 @end
 
 @implementation SearchUILeadingTrailingSectionModel
 
-- (SearchUILeadingTrailingSectionModel)initWithCardSection:(id)a3 rowModels:(id)a4 result:(id)a5 queryId:(unint64_t)a6 section:(id)a7
+- (SearchUILeadingTrailingSectionModel)initWithCardSection:(id)section rowModels:(id)models result:(id)result queryId:(unint64_t)id section:(id)a7
 {
-  v12 = a3;
+  sectionCopy = section;
   v13 = a7;
-  v14 = a5;
-  v15 = [v12 leadingCardSections];
-  v16 = [(SearchUILeadingTrailingSectionModel *)self rowModelsForCardSections:v15 result:v14 queryId:a6];
+  resultCopy = result;
+  leadingCardSections = [sectionCopy leadingCardSections];
+  v16 = [(SearchUILeadingTrailingSectionModel *)self rowModelsForCardSections:leadingCardSections result:resultCopy queryId:id];
 
-  v17 = [v12 trailingCardSections];
-  v18 = [(SearchUILeadingTrailingSectionModel *)self rowModelsForCardSections:v17 result:v14 queryId:a6];
+  trailingCardSections = [sectionCopy trailingCardSections];
+  v18 = [(SearchUILeadingTrailingSectionModel *)self rowModelsForCardSections:trailingCardSections result:resultCopy queryId:id];
 
   v29.receiver = self;
   v29.super_class = SearchUILeadingTrailingSectionModel;
@@ -35,16 +35,16 @@
 
   if (v19)
   {
-    objc_storeStrong(&v19->_cardSection, a3);
+    objc_storeStrong(&v19->_cardSection, section);
     objc_storeStrong(&v19->_leadingRowModels, v16);
     objc_storeStrong(&v19->_trailingRowModels, v18);
-    [v12 leadingToTrailingRatio];
+    [sectionCopy leadingToTrailingRatio];
     v20 = 0.5;
     if (v21 > 0.0)
     {
-      [v12 leadingToTrailingRatio];
+      [sectionCopy leadingToTrailingRatio];
       v23 = v22;
-      [v12 leadingToTrailingRatio];
+      [sectionCopy leadingToTrailingRatio];
       v20 = v23 / (v24 + 1.0);
     }
 
@@ -62,43 +62,43 @@
     *&v19->_trailingGroupContentInsets.bottom = v26;
   }
 
-  v27 = [(SearchUILeadingTrailingSectionModel *)v19 primaryCardSection];
-  [v27 customizeSection:v19 isLeading:{-[SearchUILeadingTrailingSectionModel primaryCardSectionIsLeading](v19, "primaryCardSectionIsLeading")}];
+  primaryCardSection = [(SearchUILeadingTrailingSectionModel *)v19 primaryCardSection];
+  [primaryCardSection customizeSection:v19 isLeading:{-[SearchUILeadingTrailingSectionModel primaryCardSectionIsLeading](v19, "primaryCardSectionIsLeading")}];
 
   return v19;
 }
 
-- (id)rowModelsForCardSections:(id)a3 result:(id)a4 queryId:(unint64_t)a5
+- (id)rowModelsForCardSections:(id)sections result:(id)result queryId:(unint64_t)id
 {
-  v5 = [SearchUITableModel tableModelWithCardSections:a3 result:a4 isInline:0 queryId:a5 shouldCombine:0];
-  v6 = [v5 tableRowModel];
-  v7 = [v6 firstObject];
+  v5 = [SearchUITableModel tableModelWithCardSections:sections result:result isInline:0 queryId:id shouldCombine:0];
+  tableRowModel = [v5 tableRowModel];
+  firstObject = [tableRowModel firstObject];
 
-  v8 = [v7 copy];
+  v8 = [firstObject copy];
 
   return v8;
 }
 
 - (BOOL)primaryCardSectionIsLeading
 {
-  v3 = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
-  if ([v3 count] == 1)
+  leadingRowModels = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
+  if ([leadingRowModels count] == 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
-    if ([v5 count] < 2)
+    leadingRowModels2 = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
+    if ([leadingRowModels2 count] < 2)
     {
       v4 = 0;
     }
 
     else
     {
-      v6 = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
-      v4 = [v6 count] != 1;
+      trailingRowModels = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
+      v4 = [trailingRowModels count] != 1;
     }
   }
 
@@ -118,44 +118,44 @@
   }
   v3 = ;
   v4 = [v3 objectAtIndexedSubscript:0];
-  v5 = [v4 cardSection];
+  cardSection = [v4 cardSection];
 
-  return v5;
+  return cardSection;
 }
 
 - (id)rowModels
 {
-  v3 = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
-  v4 = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  leadingRowModels = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
+  trailingRowModels = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
+  v5 = [leadingRowModels arrayByAddingObjectsFromArray:trailingRowModels];
 
   return v5;
 }
 
-- (id)layoutSectionForEnvironment:(id)a3 attributes:(id)a4 dataSource:(id)a5
+- (id)layoutSectionForEnvironment:(id)environment attributes:(id)attributes dataSource:(id)source
 {
   v71[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
-  if ([v11 count])
+  environmentCopy = environment;
+  attributesCopy = attributes;
+  sourceCopy = source;
+  leadingRowModels = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
+  if ([leadingRowModels count])
   {
-    v12 = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
-    v13 = [v12 count];
+    trailingRowModels = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
+    v13 = [trailingRowModels count];
 
     if (v13)
     {
       [(SearchUILeadingTrailingSectionModel *)self preferredHeight];
       v15 = v14;
       v16 = v14 <= 0.0;
-      v17 = [v10 controller];
-      v18 = [v17 view];
+      controller = [sourceCopy controller];
+      view = [controller view];
 
       [(SearchUILeadingTrailingSectionModel *)self leadingFractionalWidth];
       v20 = v19;
-      v21 = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
-      v69 = -[SearchUILeadingTrailingSectionModel buildGroupForFractionalWidth:numberOfCards:isTopAligned:prefersSeparator:forView:](self, "buildGroupForFractionalWidth:numberOfCards:isTopAligned:prefersSeparator:forView:", [v21 count], v16, -[SearchUILeadingTrailingSectionModel prefersSeparatorsInLeadingGroup](self, "prefersSeparatorsInLeadingGroup"), v18, v20);
+      leadingRowModels2 = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
+      v69 = -[SearchUILeadingTrailingSectionModel buildGroupForFractionalWidth:numberOfCards:isTopAligned:prefersSeparator:forView:](self, "buildGroupForFractionalWidth:numberOfCards:isTopAligned:prefersSeparator:forView:", [leadingRowModels2 count], v16, -[SearchUILeadingTrailingSectionModel prefersSeparatorsInLeadingGroup](self, "prefersSeparatorsInLeadingGroup"), view, v20);
 
       [(SearchUILeadingTrailingSectionModel *)self leadingGroupContentInsets];
       v23 = v22;
@@ -164,9 +164,9 @@
       v29 = v28;
       [(SearchUILeadingTrailingSectionModel *)self leadingFractionalWidth];
       v31 = 1.0 - v30;
-      v32 = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
-      v67 = v18;
-      v68 = -[SearchUILeadingTrailingSectionModel buildGroupForFractionalWidth:numberOfCards:isTopAligned:prefersSeparator:forView:](self, "buildGroupForFractionalWidth:numberOfCards:isTopAligned:prefersSeparator:forView:", [v32 count], v16, -[SearchUILeadingTrailingSectionModel prefersSeparatorsInTrailingGroup](self, "prefersSeparatorsInTrailingGroup"), v18, v31);
+      trailingRowModels2 = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
+      v67 = view;
+      v68 = -[SearchUILeadingTrailingSectionModel buildGroupForFractionalWidth:numberOfCards:isTopAligned:prefersSeparator:forView:](self, "buildGroupForFractionalWidth:numberOfCards:isTopAligned:prefersSeparator:forView:", [trailingRowModels2 count], v16, -[SearchUILeadingTrailingSectionModel prefersSeparatorsInTrailingGroup](self, "prefersSeparatorsInTrailingGroup"), view, v31);
 
       [(SearchUILeadingTrailingSectionModel *)self trailingGroupContentInsets];
       v34 = v33;
@@ -233,7 +233,7 @@
 
   v70.receiver = self;
   v70.super_class = SearchUILeadingTrailingSectionModel;
-  v56 = [(SearchUISectionModel *)&v70 layoutSectionForEnvironment:v8 attributes:v9 dataSource:v10];
+  v56 = [(SearchUISectionModel *)&v70 layoutSectionForEnvironment:environmentCopy attributes:attributesCopy dataSource:sourceCopy];
   [(SearchUILeadingTrailingSectionModel *)self sectionInsets];
   [v56 setContentInsets:?];
   [(SearchUILeadingTrailingSectionModel *)self verticalSpacing];
@@ -243,28 +243,28 @@ LABEL_9:
   return v56;
 }
 
-- (id)buildGroupForFractionalWidth:(double)a3 numberOfCards:(int64_t)a4 isTopAligned:(BOOL)a5 prefersSeparator:(BOOL)a6 forView:(id)a7
+- (id)buildGroupForFractionalWidth:(double)width numberOfCards:(int64_t)cards isTopAligned:(BOOL)aligned prefersSeparator:(BOOL)separator forView:(id)view
 {
-  v7 = a6;
-  v9 = a4;
+  separatorCopy = separator;
+  cardsCopy = cards;
   v50[1] = *MEMORY[0x1E69E9840];
-  v12 = [MEMORY[0x1E6995558] estimatedDimension:{a4, a5, a6, a7, 1.0}];
+  v12 = [MEMORY[0x1E6995558] estimatedDimension:{cards, aligned, separator, view, 1.0}];
   v49 = v12;
-  v44 = self;
-  if (a5)
+  selfCopy = self;
+  if (aligned)
   {
-    v13 = v12;
+    cardsCopy = v12;
     v14 = *MEMORY[0x1E69DC5C0];
     v15 = *(MEMORY[0x1E69DC5C0] + 8);
     v16 = *(MEMORY[0x1E69DC5C0] + 16);
     v17 = *(MEMORY[0x1E69DC5C0] + 24);
-    v18 = v13;
+    v18 = cardsCopy;
   }
 
   else
   {
     v18 = [MEMORY[0x1E6995558] fractionalHeightDimension:1.0];
-    v13 = [MEMORY[0x1E6995558] fractionalHeightDimension:1.0 / v9];
+    cardsCopy = [MEMORY[0x1E6995558] fractionalHeightDimension:1.0 / cardsCopy];
     [(SearchUILeadingTrailingSectionModel *)self verticalSpacing];
     v14 = v19 * 0.5;
     [(SearchUILeadingTrailingSectionModel *)self verticalSpacing];
@@ -275,11 +275,11 @@ LABEL_9:
 
   v21 = MEMORY[0x1E6995588];
   v22 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
-  v47 = v13;
-  v23 = [v21 sizeWithWidthDimension:v22 heightDimension:v13];
+  v47 = cardsCopy;
+  v23 = [v21 sizeWithWidthDimension:v22 heightDimension:cardsCopy];
 
   v24 = MEMORY[0x1E6995588];
-  v25 = [MEMORY[0x1E6995558] fractionalWidthDimension:a3];
+  v25 = [MEMORY[0x1E6995558] fractionalWidthDimension:width];
   v48 = v18;
   v46 = [v24 sizeWithWidthDimension:v25 heightDimension:v18];
 
@@ -297,13 +297,13 @@ LABEL_9:
   +[SearchUIUtilities standardCompactHorizontalMargin];
   [v33 setContentInsets:{0.0, v34, 0.0, 0.0}];
   v35 = objc_opt_new();
-  if (v9 >= 1)
+  if (cardsCopy >= 1)
   {
     v36 = MEMORY[0x1E695E0F0];
     do
     {
       v37 = v36;
-      if (v7 && v9 != 1)
+      if (separatorCopy && cardsCopy != 1)
       {
         v50[0] = v33;
         v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
@@ -311,24 +311,24 @@ LABEL_9:
 
       v38 = [MEMORY[0x1E6995578] itemWithLayoutSize:v23 supplementaryItems:v37];
       v39 = v38;
-      if (!a5)
+      if (!aligned)
       {
         [v38 setContentInsets:{v14, v15, v16, v17}];
       }
 
       [v35 addObject:v39];
 
-      --v9;
+      --cardsCopy;
     }
 
-    while (v9);
+    while (cardsCopy);
   }
 
   v40 = [MEMORY[0x1E6995568] verticalGroupWithLayoutSize:v46 subitems:v35];
-  if (a5)
+  if (aligned)
   {
     v41 = MEMORY[0x1E6995590];
-    [(SearchUILeadingTrailingSectionModel *)v44 verticalSpacing];
+    [(SearchUILeadingTrailingSectionModel *)selfCopy verticalSpacing];
     v42 = [v41 fixedSpacing:?];
     [v40 setInterItemSpacing:v42];
   }
@@ -336,30 +336,30 @@ LABEL_9:
   return v40;
 }
 
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3 forRowModel:(id)a4
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes forRowModel:(id)model
 {
-  v5 = a4;
-  v6 = [(SearchUILeadingTrailingSectionModel *)self primaryCardSection];
+  modelCopy = model;
+  primaryCardSection = [(SearchUILeadingTrailingSectionModel *)self primaryCardSection];
   if ([(SearchUILeadingTrailingSectionModel *)self primaryCardSectionIsLeading])
   {
     goto LABEL_7;
   }
 
-  v7 = [v5 backgroundColor];
-  if (!v7)
+  backgroundColor = [modelCopy backgroundColor];
+  if (!backgroundColor)
   {
     goto LABEL_7;
   }
 
-  v8 = v7;
-  v9 = [v5 cardSection];
-  v10 = v9;
-  if (v9 != v6)
+  v8 = backgroundColor;
+  cardSection = [modelCopy cardSection];
+  v10 = cardSection;
+  if (cardSection != primaryCardSection)
   {
 
 LABEL_7:
-    v13 = [(SearchUILeadingTrailingSectionModel *)self primaryCardSection];
-    v12 = [v13 preferredBackgroundStyleForIsLeadingPrimaryCard:{-[SearchUILeadingTrailingSectionModel primaryCardSectionIsLeading](self, "primaryCardSectionIsLeading")}];
+    primaryCardSection2 = [(SearchUILeadingTrailingSectionModel *)self primaryCardSection];
+    v12 = [primaryCardSection2 preferredBackgroundStyleForIsLeadingPrimaryCard:{-[SearchUILeadingTrailingSectionModel primaryCardSectionIsLeading](self, "primaryCardSectionIsLeading")}];
 
     goto LABEL_8;
   }
@@ -378,17 +378,17 @@ LABEL_8:
   return v12;
 }
 
-- (int64_t)sectionBackgroundStyleWithAttributes:(id)a3
+- (int64_t)sectionBackgroundStyleWithAttributes:(id)attributes
 {
-  v4 = [(SearchUILeadingTrailingSectionModel *)self primaryCardSection];
-  v5 = [v4 preferredBackgroundStyleForIsLeadingPrimaryCard:{-[SearchUILeadingTrailingSectionModel primaryCardSectionIsLeading](self, "primaryCardSectionIsLeading")}];
+  primaryCardSection = [(SearchUILeadingTrailingSectionModel *)self primaryCardSection];
+  v5 = [primaryCardSection preferredBackgroundStyleForIsLeadingPrimaryCard:{-[SearchUILeadingTrailingSectionModel primaryCardSectionIsLeading](self, "primaryCardSectionIsLeading")}];
 
   return v5;
 }
 
-- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)a3 sectionIndex:(unint64_t)a4
+- (NSDirectionalEdgeInsets)sectionInsetsWithAttributes:(id)attributes sectionIndex:(unint64_t)index
 {
-  v6 = a3;
+  attributesCopy = attributes;
   if ([(SearchUILeadingTrailingSectionModel *)self customSectionInsets])
   {
     [(SearchUILeadingTrailingSectionModel *)self sectionInsets];
@@ -398,7 +398,7 @@ LABEL_8:
   {
     v19.receiver = self;
     v19.super_class = SearchUILeadingTrailingSectionModel;
-    [(SearchUISectionModel *)&v19 sectionInsetsWithAttributes:v6 sectionIndex:a4];
+    [(SearchUISectionModel *)&v19 sectionInsetsWithAttributes:attributesCopy sectionIndex:index];
   }
 
   v11 = v7;
@@ -417,7 +417,7 @@ LABEL_8:
   return result;
 }
 
-- (id)copyWithRowModels:(id)a3
+- (id)copyWithRowModels:(id)models
 {
   v4 = SearchUIDataSourceLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -428,17 +428,17 @@ LABEL_8:
   return [(SearchUILeadingTrailingSectionModel *)self copy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = SearchUILeadingTrailingSectionModel;
-  v4 = [(SearchUISectionModel *)&v10 copyWithZone:a3];
-  v5 = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
-  v6 = [v5 copy];
+  v4 = [(SearchUISectionModel *)&v10 copyWithZone:zone];
+  leadingRowModels = [(SearchUILeadingTrailingSectionModel *)self leadingRowModels];
+  v6 = [leadingRowModels copy];
   [v4 setLeadingRowModels:v6];
 
-  v7 = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
-  v8 = [v7 copy];
+  trailingRowModels = [(SearchUILeadingTrailingSectionModel *)self trailingRowModels];
+  v8 = [trailingRowModels copy];
   [v4 setTrailingRowModels:v8];
 
   [(SearchUILeadingTrailingSectionModel *)self horizontalSpacing];

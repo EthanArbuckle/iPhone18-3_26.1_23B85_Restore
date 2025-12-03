@@ -1,61 +1,61 @@
 @interface BKWK2WebViewLoader
-- (BKWK2WebViewLoader)initWithPaginationOptions:(id)a3 ordinal:(unint64_t)a4;
+- (BKWK2WebViewLoader)initWithPaginationOptions:(id)options ordinal:(unint64_t)ordinal;
 - (BKWK2WebViewLoaderDelegate)delegate;
 - (BOOL)isVerticalDocument;
 - (BOOL)pageTextDirectionIsRTL;
 - (CGRect)contentRectForVisibleContent;
 - (CGRect)contentRectForVisiblePage;
 - (CGRect)desiredWebViewFrame;
-- (CGRect)rectForPageOffset:(unint64_t)a3;
+- (CGRect)rectForPageOffset:(unint64_t)offset;
 - (CGSize)contentSize;
-- (_NSRange)_uncheckedPageOffsetRangeForRect:(CGRect)a3;
-- (_NSRange)pageOffsetRangeForRect:(CGRect)a3;
-- (id)_pageOffsetsForFrames:(id)a3;
-- (id)anchorFrameForAnchor:(id)a3;
-- (id)locationForAnchor:(id)a3;
-- (id)locationForPageOffset:(unint64_t)a3 contentOffset:(CGPoint)a4;
+- (_NSRange)_uncheckedPageOffsetRangeForRect:(CGRect)rect;
+- (_NSRange)pageOffsetRangeForRect:(CGRect)rect;
+- (id)_pageOffsetsForFrames:(id)frames;
+- (id)anchorFrameForAnchor:(id)anchor;
+- (id)locationForAnchor:(id)anchor;
+- (id)locationForPageOffset:(unint64_t)offset contentOffset:(CGPoint)contentOffset;
 - (int64_t)_scrollPageCountFromCurrentPageSize;
-- (unint64_t)_pageOffsetForXOffset:(double)a3;
+- (unint64_t)_pageOffsetForXOffset:(double)offset;
 - (unint64_t)pageCount;
-- (unint64_t)pageOffsetForAnchor:(id)a3;
-- (unint64_t)pageOffsetForLocation:(id)a3;
-- (void)_postLoadComplete:(id)a3;
+- (unint64_t)pageOffsetForAnchor:(id)anchor;
+- (unint64_t)pageOffsetForLocation:(id)location;
+- (void)_postLoadComplete:(id)complete;
 - (void)_sendNextInfoRequest;
-- (void)_updateContentInformationWithRequest:(id)a3;
+- (void)_updateContentInformationWithRequest:(id)request;
 - (void)cancelCurrentRequest;
 - (void)clearPaginationResults;
-- (void)clientRectForEpubLocation:(id)a3 completion:(id)a4;
-- (void)clientRectsForLocation:(id)a3 completion:(id)a4;
-- (void)clientRectsForLocations:(id)a3 completion:(id)a4;
+- (void)clientRectForEpubLocation:(id)location completion:(id)completion;
+- (void)clientRectsForLocation:(id)location completion:(id)completion;
+- (void)clientRectsForLocations:(id)locations completion:(id)completion;
 - (void)dealloc;
-- (void)enqueueContentInfoRequest:(id)a3;
-- (void)generatePaginationDataCompletion:(id)a3;
-- (void)pageOffsetRangeForLocation:(id)a3 completion:(id)a4;
-- (void)parseTOCIdCssRulesForMap:(id)a3 completion:(id)a4;
+- (void)enqueueContentInfoRequest:(id)request;
+- (void)generatePaginationDataCompletion:(id)completion;
+- (void)pageOffsetRangeForLocation:(id)location completion:(id)completion;
+- (void)parseTOCIdCssRulesForMap:(id)map completion:(id)completion;
 - (void)registerForVisibleCFIUpdates;
-- (void)setDesiredWebViewFrame:(CGRect)a3;
-- (void)setPageTextDirectionIsRTL:(BOOL)a3 isVerticalDocument:(BOOL)a4;
-- (void)setWebView:(id)a3;
+- (void)setDesiredWebViewFrame:(CGRect)frame;
+- (void)setPageTextDirectionIsRTL:(BOOL)l isVerticalDocument:(BOOL)document;
+- (void)setWebView:(id)view;
 - (void)unregisterForVisibleCFIUpdates;
-- (void)updateAnchorInformation:(id)a3;
-- (void)updateMediaFrames:(id)a3;
-- (void)updatePaginationOptions:(id)a3;
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4;
+- (void)updateAnchorInformation:(id)information;
+- (void)updateMediaFrames:(id)frames;
+- (void)updatePaginationOptions:(id)options;
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message;
 @end
 
 @implementation BKWK2WebViewLoader
 
-- (BKWK2WebViewLoader)initWithPaginationOptions:(id)a3 ordinal:(unint64_t)a4
+- (BKWK2WebViewLoader)initWithPaginationOptions:(id)options ordinal:(unint64_t)ordinal
 {
-  v7 = a3;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = BKWK2WebViewLoader;
   v8 = [(BKWK2WebViewLoader *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_paginationOptions, a3);
-    v9->_ordinal = a4;
+    objc_storeStrong(&v8->_paginationOptions, options);
+    v9->_ordinal = ordinal;
     tocIdCssRules = v9->_tocIdCssRules;
     v9->_tocIdCssRules = &stru_1E7188;
 
@@ -73,10 +73,10 @@
   [(BKWK2WebViewLoader *)&v2 dealloc];
 }
 
-- (void)setWebView:(id)a3
+- (void)setWebView:(id)view
 {
-  v5 = a3;
-  if (self->_webView != v5)
+  viewCopy = view;
+  if (self->_webView != viewCopy)
   {
     if ([(BKWK2WebViewLoader *)self calculatingPageLocations])
     {
@@ -89,19 +89,19 @@
     }
 
     [(BKWK2WebViewLoader *)self unregisterForVisibleCFIUpdates];
-    v7 = [(WKWebView *)v5 configuration];
-    v8 = [v7 userContentController];
+    configuration = [(WKWebView *)viewCopy configuration];
+    userContentController = [configuration userContentController];
 
-    [v8 removeScriptMessageHandlerForName:@"cfiUpdate"];
-    [v8 removeScriptMessageHandlerForName:@"selectionChange"];
-    objc_storeStrong(&self->_webView, a3);
+    [userContentController removeScriptMessageHandlerForName:@"cfiUpdate"];
+    [userContentController removeScriptMessageHandlerForName:@"selectionChange"];
+    objc_storeStrong(&self->_webView, view);
     [(BKWK2WebViewLoader *)self desiredWebViewFrame];
     v33.origin.x = CGRectZero.origin.x;
     v33.origin.y = CGRectZero.origin.y;
     v33.size.width = CGRectZero.size.width;
     v33.size.height = CGRectZero.size.height;
     v9 = CGRectEqualToRect(v31, v33);
-    [(WKWebView *)v5 frame];
+    [(WKWebView *)viewCopy frame];
     v14 = v10;
     v15 = v11;
     v16 = v12;
@@ -127,9 +127,9 @@
         v22 = _AEWKLoaderLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = [(BKWK2WebViewLoader *)self ordinal];
+          ordinal = [(BKWK2WebViewLoader *)self ordinal];
           *buf = 134217984;
-          v30 = v23;
+          v30 = ordinal;
           _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "wkWebView frame mismatch ordinal:%lu", buf, 0xCu);
         }
 
@@ -139,18 +139,18 @@
     }
 
     [(BKWK2WebViewLoader *)self registerForVisibleCFIUpdates];
-    v24 = [(WKWebView *)self->_webView configuration];
-    v25 = [v24 userContentController];
+    configuration2 = [(WKWebView *)self->_webView configuration];
+    userContentController2 = [configuration2 userContentController];
 
-    [v25 be_addScriptMessageHandler:self name:@"selectionChange"];
+    [userContentController2 be_addScriptMessageHandler:self name:@"selectionChange"];
     objc_initWeak(buf, self);
-    v26 = [(WKWebView *)self->_webView be_navigationHandler];
+    be_navigationHandler = [(WKWebView *)self->_webView be_navigationHandler];
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_68D6C;
     v27[3] = &unk_1E4570;
     objc_copyWeak(&v28, buf);
-    [v26 performAfterLoadCompleteOrFailure:v27];
+    [be_navigationHandler performAfterLoadCompleteOrFailure:v27];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -159,17 +159,17 @@
 
 - (void)registerForVisibleCFIUpdates
 {
-  v3 = [(WKWebView *)self->_webView configuration];
-  if (v3)
+  configuration = [(WKWebView *)self->_webView configuration];
+  if (configuration)
   {
     listeningForCFIUpdates = self->_listeningForCFIUpdates;
 
     if (!listeningForCFIUpdates)
     {
       self->_listeningForCFIUpdates = 1;
-      v6 = [(WKWebView *)self->_webView configuration];
-      v5 = [v6 userContentController];
-      [v5 be_addScriptMessageHandler:self name:@"cfiUpdate"];
+      configuration2 = [(WKWebView *)self->_webView configuration];
+      userContentController = [configuration2 userContentController];
+      [userContentController be_addScriptMessageHandler:self name:@"cfiUpdate"];
     }
   }
 }
@@ -177,28 +177,28 @@
 - (void)unregisterForVisibleCFIUpdates
 {
   self->_listeningForCFIUpdates = 0;
-  v3 = [(WKWebView *)self->_webView configuration];
-  v2 = [v3 userContentController];
-  [v2 removeScriptMessageHandlerForName:@"cfiUpdate"];
+  configuration = [(WKWebView *)self->_webView configuration];
+  userContentController = [configuration userContentController];
+  [userContentController removeScriptMessageHandlerForName:@"cfiUpdate"];
 }
 
-- (void)_postLoadComplete:(id)a3
+- (void)_postLoadComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   [(BKWK2WebViewLoader *)self setWebViewLoaded:1];
   [(BKWK2WebViewLoader *)self setPageCount:[(WKWebView *)self->_webView _pageCount]];
   v5 = _AEWKLoaderLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BKWK2WebViewLoader *)self webView];
-    v7 = [(BKWK2WebViewLoader *)self ordinal];
+    webView = [(BKWK2WebViewLoader *)self webView];
+    ordinal = [(BKWK2WebViewLoader *)self ordinal];
     pageCount = self->_pageCount;
     *buf = 138413058;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v6;
+    v17 = webView;
     v18 = 2048;
-    v19 = v7;
+    v19 = ordinal;
     v20 = 2048;
     v21 = pageCount;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Loader %@ webView %@ didFinishLoadOfURL for ordinal %lu captured pageCount:%lu", buf, 0x2Au);
@@ -211,7 +211,7 @@
   v11[2] = sub_69208;
   v11[3] = &unk_1E45D8;
   objc_copyWeak(&v13, buf);
-  v10 = v4;
+  v10 = completeCopy;
   v12 = v10;
   [(WKWebView *)webView be_evaluateJavaScript:&stru_1E45B0 completion:v11];
 
@@ -219,12 +219,12 @@
   objc_destroyWeak(buf);
 }
 
-- (void)setDesiredWebViewFrame:(CGRect)a3
+- (void)setDesiredWebViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(BKWK2WebViewLoader *)self desiredWebViewFrame];
   v22.origin.x = v8;
   v22.origin.y = v9;
@@ -243,29 +243,29 @@
     v12 = _AEWKLoaderLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(BKWK2WebViewLoader *)self ordinal];
+      ordinal = [(BKWK2WebViewLoader *)self ordinal];
       v21.origin.x = x;
       v21.origin.y = y;
       v21.size.width = width;
       v21.size.height = height;
       v14 = NSStringFromCGRect(v21);
       v16 = 134218242;
-      v17 = v13;
+      v17 = ordinal;
       v18 = 2112;
       v19 = v14;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "setDesiredWebViewFrame setting webView frame ordinal: %ld to:%@", &v16, 0x16u);
     }
 
-    v15 = [(BKWK2WebViewLoader *)self webView];
-    [v15 setFrame:{x, y, width, height}];
+    webView = [(BKWK2WebViewLoader *)self webView];
+    [webView setFrame:{x, y, width, height}];
   }
 }
 
-- (void)updatePaginationOptions:(id)a3
+- (void)updatePaginationOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(BKWK2WebViewLoader *)self paginationOptions];
-  v6 = [v5 isEqual:v4];
+  optionsCopy = options;
+  paginationOptions = [(BKWK2WebViewLoader *)self paginationOptions];
+  v6 = [paginationOptions isEqual:optionsCopy];
 
   v7 = _AEWKLoaderLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -274,7 +274,7 @@
     if (v8)
     {
       *buf = 134217984;
-      v12 = [(BKWK2WebViewLoader *)self ordinal];
+      ordinal = [(BKWK2WebViewLoader *)self ordinal];
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "updatePaginationOptions equal pagination options for ordinal %lu", buf, 0xCu);
     }
   }
@@ -284,11 +284,11 @@
     if (v8)
     {
       *buf = 134217984;
-      v12 = [(BKWK2WebViewLoader *)self ordinal];
+      ordinal = [(BKWK2WebViewLoader *)self ordinal];
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "updatePaginationOptions for ordinal %lu", buf, 0xCu);
     }
 
-    [(BKWK2WebViewLoader *)self setPaginationOptions:v4];
+    [(BKWK2WebViewLoader *)self setPaginationOptions:optionsCopy];
     [(BKWK2WebViewLoader *)self setPageCount:0x7FFFFFFFFFFFFFFFLL];
     [(BKWK2WebViewLoader *)self clearPaginationResults];
     [(BKWK2WebViewLoader *)self webView];
@@ -302,14 +302,14 @@
   }
 }
 
-- (void)setPageTextDirectionIsRTL:(BOOL)a3 isVerticalDocument:(BOOL)a4
+- (void)setPageTextDirectionIsRTL:(BOOL)l isVerticalDocument:(BOOL)document
 {
-  v4 = a4;
-  v5 = a3;
+  documentCopy = document;
+  lCopy = l;
   [(BKWK2WebViewLoader *)self setTextDirectionDetermined:1];
-  [(BKWK2WebViewLoader *)self setPageTextDirectionIsRTL:v5];
+  [(BKWK2WebViewLoader *)self setPageTextDirectionIsRTL:lCopy];
 
-  [(BKWK2WebViewLoader *)self setIsVerticalDocument:v4];
+  [(BKWK2WebViewLoader *)self setIsVerticalDocument:documentCopy];
 }
 
 - (void)clearPaginationResults
@@ -318,7 +318,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = [(BKWK2WebViewLoader *)self ordinal];
+    ordinal = [(BKWK2WebViewLoader *)self ordinal];
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "clearPaginationResults for ordinal %lu", &v5, 0xCu);
   }
 
@@ -328,22 +328,22 @@
 
 - (unint64_t)pageCount
 {
-  v3 = [(BKWK2WebViewLoader *)self webView];
+  webView = [(BKWK2WebViewLoader *)self webView];
 
-  if (!v3)
+  if (!webView)
   {
     return self->_pageCount;
   }
 
-  v4 = [(BKWK2WebViewLoader *)self webView];
-  v5 = [v4 _pageCount];
+  webView2 = [(BKWK2WebViewLoader *)self webView];
+  _pageCount = [webView2 _pageCount];
 
-  v6 = [(BKWK2WebViewLoader *)self webView];
-  v7 = [v6 _paginationMode];
+  webView3 = [(BKWK2WebViewLoader *)self webView];
+  _paginationMode = [webView3 _paginationMode];
 
-  if (!v7)
+  if (!_paginationMode)
   {
-    v5 = [(BKWK2WebViewLoader *)self _scrollPageCountFromCurrentPageSize];
+    _pageCount = [(BKWK2WebViewLoader *)self _scrollPageCountFromCurrentPageSize];
   }
 
   if (self->_pageCount == 0x7FFFFFFFFFFFFFFFLL && [(BKWK2WebViewLoader *)self webViewLoaded])
@@ -352,13 +352,13 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 134218240;
-      v19 = [(BKWK2WebViewLoader *)self ordinal];
+      ordinal = [(BKWK2WebViewLoader *)self ordinal];
       v20 = 2048;
-      v21 = v5;
+      v21 = _pageCount;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Unknown page count. Ordinal: %lu capturing pageCount: %lu", &v18, 0x16u);
     }
 
-    self->_pageCount = v5;
+    self->_pageCount = _pageCount;
   }
 
   if (![(BKWK2WebViewLoader *)self webViewLoaded])
@@ -366,48 +366,48 @@
     v9 = _AEWKLoaderLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(BKWK2WebViewLoader *)self webView];
-      v11 = [v10 URL];
+      webView4 = [(BKWK2WebViewLoader *)self webView];
+      v11 = [webView4 URL];
       v12 = [NSNumber numberWithUnsignedInteger:[(BKWK2WebViewLoader *)self ordinal]];
       v18 = 138412546;
-      v19 = v11;
+      ordinal = v11;
       v20 = 2112;
       v21 = v12;
     }
   }
 
-  if (v5 != self->_pageCount)
+  if (_pageCount != self->_pageCount)
   {
     v13 = _AEWKLoaderLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [(BKWK2WebViewLoader *)self ordinal];
-      v15 = [(BKWK2WebViewLoader *)self webView];
+      ordinal2 = [(BKWK2WebViewLoader *)self ordinal];
+      webView5 = [(BKWK2WebViewLoader *)self webView];
       pageCount = self->_pageCount;
       v18 = 134349826;
-      v19 = v14;
+      ordinal = ordinal2;
       v20 = 2112;
-      v21 = v15;
+      v21 = webView5;
       v22 = 2050;
-      v23 = v5;
+      v23 = _pageCount;
       v24 = 2050;
       v25 = pageCount;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "Loader Asking PageCount for ordinal %{public}lu webView %@ webViewPageCount:%{public}lu captured pageCount:%{public}lu", &v18, 0x2Au);
     }
 
-    self->_pageCount = v5;
+    self->_pageCount = _pageCount;
   }
 
-  return v5;
+  return _pageCount;
 }
 
-- (void)parseTOCIdCssRulesForMap:(id)a3 completion:(id)a4
+- (void)parseTOCIdCssRulesForMap:(id)map completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKWK2WebViewLoader *)self webView];
+  mapCopy = map;
+  completionCopy = completion;
+  webView = [(BKWK2WebViewLoader *)self webView];
 
-  v9 = v8 == 0;
+  v9 = webView == 0;
   v10 = _AEWKLoaderLog();
   v11 = v10;
   if (!v9)
@@ -416,14 +416,14 @@
     {
       v12 = [(BKWK2WebViewLoader *)self url];
       *buf = 138412290;
-      v22 = v12;
+      ordinal = v12;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "Loader parseTOCIdCssRules %@", buf, 0xCu);
     }
 
-    if ([v6 count])
+    if ([mapCopy count])
     {
       v20 = 0;
-      v13 = [NSJSONSerialization dataWithJSONObject:v6 options:1 error:&v20];
+      v13 = [NSJSONSerialization dataWithJSONObject:mapCopy options:1 error:&v20];
       v14 = v20;
       if (!v14)
       {
@@ -434,15 +434,15 @@
           {
             v15 = [NSString stringWithFormat:@"__ibooks_content_cleanup.tocIdCssRules(%@)", v14];;
             objc_initWeak(buf, self);
-            v16 = [(BKWK2WebViewLoader *)self webView];
+            webView2 = [(BKWK2WebViewLoader *)self webView];
             v17[0] = _NSConcreteStackBlock;
             v17[1] = 3221225472;
             v17[2] = sub_69F38;
             v17[3] = &unk_1E4600;
             objc_copyWeak(&v19, buf);
             v17[4] = self;
-            v18 = v7;
-            [v16 evaluateJavaScript:v15 completionHandler:v17];
+            v18 = completionCopy;
+            [webView2 evaluateJavaScript:v15 completionHandler:v17];
 
             objc_destroyWeak(&v19);
             objc_destroyWeak(buf);
@@ -462,64 +462,64 @@ LABEL_14:
       v14 = 0;
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
     goto LABEL_14;
   }
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v22 = [(BKWK2WebViewLoader *)self ordinal];
+    ordinal = [(BKWK2WebViewLoader *)self ordinal];
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "Attempting to parseTOCIdCssRulesForMap with no web view ordinal: %lu", buf, 0xCu);
   }
 
-  v7[2](v7);
+  completionCopy[2](completionCopy);
 LABEL_15:
 }
 
-- (void)_updateContentInformationWithRequest:(id)a3
+- (void)_updateContentInformationWithRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v5 = [(BKWK2WebViewLoader *)self currentInfoRequest];
+    currentInfoRequest = [(BKWK2WebViewLoader *)self currentInfoRequest];
 
-    v6 = v5 == 0;
+    v6 = currentInfoRequest == 0;
     v7 = _AEWKLoaderLog();
     v8 = v7;
     if (v6)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(BKWK2WebViewLoader *)self webView];
+        webView = [(BKWK2WebViewLoader *)self webView];
         *buf = 138412802;
-        v43 = self;
+        selfCopy3 = self;
         v44 = 2112;
-        v45 = v16;
+        v45 = webView;
         v46 = 2112;
-        v47 = v4;
+        v47 = requestCopy;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "loader: %@ webview: %@ processing request: %@", buf, 0x20u);
       }
 
-      [(BKWK2WebViewLoader *)self setCurrentInfoRequest:v4];
-      v17 = [(BKWK2WebViewLoader *)self webView];
-      v18 = [v4 stylesheetSet];
-      [v18 applyToWebView:v17];
-      [v4 fontSize];
-      [v17 _setTextZoomFactor:?];
-      v19 = [v4 paginationOptions];
-      [v19 applyToWebView:v17];
-      [(BKWK2WebViewLoader *)self updatePaginationOptions:v19];
-      v20 = [BEContentLayoutInfo updateScriptWithOptions:v19];
-      v21 = [v4 cfiOptions];
-      [v19 gapBetweenPages];
-      v23 = +[BECFIUtilitiesJS updateScriptWithOptions:gapBetweenPages:paginatedTopToBottom:](BECFIUtilitiesJS, "updateScriptWithOptions:gapBetweenPages:paginatedTopToBottom:", v21, [v19 mode] == &dword_4, v22);
+      [(BKWK2WebViewLoader *)self setCurrentInfoRequest:requestCopy];
+      webView2 = [(BKWK2WebViewLoader *)self webView];
+      stylesheetSet = [requestCopy stylesheetSet];
+      [stylesheetSet applyToWebView:webView2];
+      [requestCopy fontSize];
+      [webView2 _setTextZoomFactor:?];
+      paginationOptions = [requestCopy paginationOptions];
+      [paginationOptions applyToWebView:webView2];
+      [(BKWK2WebViewLoader *)self updatePaginationOptions:paginationOptions];
+      v20 = [BEContentLayoutInfo updateScriptWithOptions:paginationOptions];
+      cfiOptions = [requestCopy cfiOptions];
+      [paginationOptions gapBetweenPages];
+      v23 = +[BECFIUtilitiesJS updateScriptWithOptions:gapBetweenPages:paginatedTopToBottom:](BECFIUtilitiesJS, "updateScriptWithOptions:gapBetweenPages:paginatedTopToBottom:", cfiOptions, [paginationOptions mode] == &dword_4, v22);
 
-      v24 = [v4 cleanupOptions];
-      [v19 pageLength];
+      cleanupOptions = [requestCopy cleanupOptions];
+      [paginationOptions pageLength];
       v26 = v25;
-      [v19 gapBetweenPages];
-      v28 = [BEContentCleanupJS updateScriptWithOptions:v24 pageLength:v26 gapBetweenPages:v27];
+      [paginationOptions gapBetweenPages];
+      v28 = [BEContentCleanupJS updateScriptWithOptions:cleanupOptions pageLength:v26 gapBetweenPages:v27];
 
       objc_initWeak(buf, self);
       v36[0] = _NSConcreteStackBlock;
@@ -532,8 +532,8 @@ LABEL_15:
       v38 = v30;
       v31 = v28;
       v39 = v31;
-      v40 = self;
-      v32 = v4;
+      selfCopy2 = self;
+      v32 = requestCopy;
       v41 = v32;
       v33[0] = _NSConcreteStackBlock;
       v33[1] = 3221225472;
@@ -542,7 +542,7 @@ LABEL_15:
       objc_copyWeak(&v35, buf);
       v33[4] = self;
       v34 = v32;
-      [v17 be_evaluateJavaScript:v36 completion:v33];
+      [webView2 be_evaluateJavaScript:v36 completion:v33];
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(buf);
@@ -552,64 +552,64 @@ LABEL_15:
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(BKWK2WebViewLoader *)self currentInfoRequest];
+        currentInfoRequest2 = [(BKWK2WebViewLoader *)self currentInfoRequest];
         *buf = 138412546;
-        v43 = v9;
+        selfCopy3 = currentInfoRequest2;
         v44 = 2112;
-        v45 = v4;
+        v45 = requestCopy;
         _os_log_impl(&dword_0, v8, OS_LOG_TYPE_ERROR, "Currently handling request %@ when received request %@", buf, 0x16u);
       }
 
-      v10 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
+      pendingInfoRequest = [(BKWK2WebViewLoader *)self pendingInfoRequest];
 
-      if (v10)
+      if (pendingInfoRequest)
       {
         v11 = _AEWKLoaderLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
+          pendingInfoRequest2 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
           *buf = 138412802;
-          v43 = self;
+          selfCopy3 = self;
           v44 = 2112;
-          v45 = v12;
+          v45 = pendingInfoRequest2;
           v46 = 2112;
-          v47 = v4;
+          v47 = requestCopy;
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "loader: %@ enqueueContentInfoRequest replacing pendingRequest: %@ with request %@", buf, 0x20u);
         }
 
-        v13 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
-        v14 = [v13 completion];
+        pendingInfoRequest3 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
+        completion = [pendingInfoRequest3 completion];
 
-        if (v14)
+        if (completion)
         {
-          v15 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
-          (v14)[2](v14, v15, 0);
+          pendingInfoRequest4 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
+          (completion)[2](completion, pendingInfoRequest4, 0);
         }
       }
 
-      [(BKWK2WebViewLoader *)self setPendingInfoRequest:v4];
+      [(BKWK2WebViewLoader *)self setPendingInfoRequest:requestCopy];
     }
   }
 }
 
-- (void)generatePaginationDataCompletion:(id)a3
+- (void)generatePaginationDataCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKWK2WebViewLoader *)self currentInfoRequest];
-  [v5 setState:1];
+  completionCopy = completion;
+  currentInfoRequest = [(BKWK2WebViewLoader *)self currentInfoRequest];
+  [currentInfoRequest setState:1];
 
   v6 = _AEWKLoaderLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(BKWK2WebViewLoader *)self webView];
+    webView = [(BKWK2WebViewLoader *)self webView];
     *buf = 138413058;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v7;
+    v16 = webView;
     v17 = 2048;
-    v18 = [(BKWK2WebViewLoader *)self ordinal];
+    ordinal = [(BKWK2WebViewLoader *)self ordinal];
     v19 = 2048;
-    v20 = [(BKWK2WebViewLoader *)self pageCount];
+    pageCount = [(BKWK2WebViewLoader *)self pageCount];
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Loader: %@ webView: %@ generatePaginationData for ordinal %lu using pageCount:%lu", buf, 0x2Au);
   }
 
@@ -622,7 +622,7 @@ LABEL_15:
   v10[2] = sub_6AAF0;
   v10[3] = &unk_1E4010;
   objc_copyWeak(&v12, buf);
-  v9 = v4;
+  v9 = completionCopy;
   v11 = v9;
   [(BKWK2WebViewLoader *)self updateAnchorInformation:v10];
 
@@ -630,14 +630,14 @@ LABEL_15:
   objc_destroyWeak(buf);
 }
 
-- (void)updateAnchorInformation:(id)a3
+- (void)updateAnchorInformation:(id)information
 {
-  v4 = a3;
-  v5 = [(BKWK2WebViewLoader *)self currentInfoRequest];
-  [v5 setState:3];
+  informationCopy = information;
+  currentInfoRequest = [(BKWK2WebViewLoader *)self currentInfoRequest];
+  [currentInfoRequest setState:3];
 
-  v6 = [(BKWK2WebViewLoader *)self webView];
-  if (v6 && (-[BKWK2WebViewLoader currentInfoRequest](self, "currentInfoRequest"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isRequestValid], v7, (v8 & 1) != 0))
+  webView = [(BKWK2WebViewLoader *)self webView];
+  if (webView && (-[BKWK2WebViewLoader currentInfoRequest](self, "currentInfoRequest"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isRequestValid], v7, (v8 & 1) != 0))
   {
     objc_initWeak(location, self);
     v15[0] = _NSConcreteStackBlock;
@@ -650,8 +650,8 @@ LABEL_15:
     v12[2] = sub_6AEF4;
     v12[3] = &unk_1E45D8;
     objc_copyWeak(&v14, location);
-    v13 = v4;
-    [v6 be_evaluateJavaScript:v15 completion:v12];
+    v13 = informationCopy;
+    [webView be_evaluateJavaScript:v15 completion:v12];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&v16);
@@ -668,7 +668,7 @@ LABEL_15:
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "No webview when trying to get anchor locations for ordinal:%lu !", location, 0xCu);
     }
 
-    v10 = objc_retainBlock(v4);
+    v10 = objc_retainBlock(informationCopy);
     v11 = v10;
     if (v10)
     {
@@ -677,11 +677,11 @@ LABEL_15:
   }
 }
 
-- (void)updateMediaFrames:(id)a3
+- (void)updateMediaFrames:(id)frames
 {
-  v4 = a3;
+  framesCopy = frames;
   objc_initWeak(&location, self);
-  v5 = [(BKWK2WebViewLoader *)self webView];
+  webView = [(BKWK2WebViewLoader *)self webView];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_6B200;
@@ -692,20 +692,20 @@ LABEL_15:
   v7[2] = sub_6B2C0;
   v7[3] = &unk_1E45D8;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = framesCopy;
   v8 = v6;
-  [v5 be_evaluateJavaScript:v10 completion:v7];
+  [webView be_evaluateJavaScript:v10 completion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)pageOffsetRangeForLocation:(id)a3 completion:(id)a4
+- (void)pageOffsetRangeForLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  locationCopy = location;
+  completionCopy = completion;
+  if (locationCopy)
   {
     objc_opt_class();
     v8 = BUDynamicCast();
@@ -719,7 +719,7 @@ LABEL_15:
       v32[3] = &unk_1E46A0;
       v32[4] = self;
       v33 = v8;
-      v34 = v7;
+      v34 = completionCopy;
       [(BKWK2WebViewLoader *)self clientRectsForLocation:v33 completion:v32];
 
       v10 = v33;
@@ -732,22 +732,22 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = [v6 pageOffset];
+      pageOffset = [locationCopy pageOffset];
       v14 = _AEWKLoaderLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v36 = v13;
+        ordinal2 = pageOffset;
         v37 = 2112;
-        v38 = 0;
+        ordinal = 0;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "Determined pageOffset: %lu for page location: %@", buf, 0x16u);
       }
 
-      v15 = objc_retainBlock(v7);
+      v15 = objc_retainBlock(completionCopy);
       v16 = v15;
       if (v15)
       {
-        (*(v15 + 2))(v15, v13, 1);
+        (*(v15 + 2))(v15, pageOffset, 1);
       }
 
 LABEL_25:
@@ -758,11 +758,11 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v6;
-      v17 = [v16 anchor];
-      if ([v17 length])
+      v16 = locationCopy;
+      anchor = [v16 anchor];
+      if ([anchor length])
       {
-        v18 = [(BKWK2WebViewLoader *)self pageOffsetForAnchor:v17];
+        v18 = [(BKWK2WebViewLoader *)self pageOffsetForAnchor:anchor];
       }
 
       else
@@ -774,13 +774,13 @@ LABEL_25:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v36 = v18;
+        ordinal2 = v18;
         v37 = 2112;
-        v38 = v16;
+        ordinal = v16;
         _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "Determined pageOffset: %lu for anchor location: %@", buf, 0x16u);
       }
 
-      v20 = objc_retainBlock(v7);
+      v20 = objc_retainBlock(completionCopy);
       v21 = v20;
       if (v20)
       {
@@ -798,16 +798,16 @@ LABEL_25:
       v29[3] = &unk_1E46C8;
       v29[4] = self;
       v30 = v9;
-      v31 = v7;
+      v31 = completionCopy;
       [(BKWK2WebViewLoader *)self clientRectForEpubLocation:v30 completion:v29];
 
       v10 = v30;
       goto LABEL_4;
     }
 
-    if ([v6 isMemberOfClass:objc_opt_class()])
+    if ([locationCopy isMemberOfClass:objc_opt_class()])
     {
-      v22 = objc_retainBlock(v7);
+      v22 = objc_retainBlock(completionCopy);
       v23 = v22;
       if (!v22)
       {
@@ -827,13 +827,13 @@ LABEL_36:
         v26 = objc_opt_class();
         v27 = NSStringFromClass(v26);
         *buf = 138412546;
-        v36 = v27;
+        ordinal2 = v27;
         v37 = 2048;
-        v38 = [(BKWK2WebViewLoader *)self ordinal];
+        ordinal = [(BKWK2WebViewLoader *)self ordinal];
         _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "pageOffsetRangeForLocation unsupported location type (%@) for ordinal:%lu", buf, 0x16u);
       }
 
-      v28 = objc_retainBlock(v7);
+      v28 = objc_retainBlock(completionCopy);
       v23 = v28;
       if (!v28)
       {
@@ -851,11 +851,11 @@ LABEL_36:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v36 = [(BKWK2WebViewLoader *)self ordinal];
+    ordinal2 = [(BKWK2WebViewLoader *)self ordinal];
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "pageOffsetRangeForLocation missing location for ordinal:%lu", buf, 0xCu);
   }
 
-  v12 = objc_retainBlock(v7);
+  v12 = objc_retainBlock(completionCopy);
   v8 = v12;
   if (v12)
   {
@@ -865,16 +865,16 @@ LABEL_36:
 LABEL_27:
 }
 
-- (void)clientRectsForLocations:(id)a3 completion:(id)a4
+- (void)clientRectsForLocations:(id)locations completion:(id)completion
 {
-  v5 = a3;
-  v25 = a4;
+  locationsCopy = locations;
+  completionCopy = completion;
   v6 = +[NSMutableArray array];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v5;
+  v7 = locationsCopy;
   v8 = [v7 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v8)
   {
@@ -893,20 +893,20 @@ LABEL_27:
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 cfiString];
-          [v6 addObject:v13];
+          cfiString = [v11 cfiString];
+          [v6 addObject:cfiString];
         }
 
         else
         {
-          v13 = _AEWKLoaderLog();
-          if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+          cfiString = _AEWKLoaderLog();
+          if (os_log_type_enabled(cfiString, OS_LOG_TYPE_ERROR))
           {
             v14 = objc_opt_class();
             v15 = NSStringFromClass(v14);
             *buf = 138412290;
             v37 = v15;
-            _os_log_impl(&dword_0, v13, OS_LOG_TYPE_ERROR, "We should not get any type other than a BKEpubCFILocation here but we got a %@", buf, 0xCu);
+            _os_log_impl(&dword_0, cfiString, OS_LOG_TYPE_ERROR, "We should not get any type other than a BKEpubCFILocation here but we got a %@", buf, 0xCu);
           }
         }
       }
@@ -939,7 +939,7 @@ LABEL_27:
       _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "Failed to get JSON Data from cfi strings - %@", buf, 0xCu);
     }
 
-    v23 = objc_retainBlock(v25);
+    v23 = objc_retainBlock(completionCopy);
     v18 = v23;
     if (v23)
     {
@@ -952,60 +952,60 @@ LABEL_27:
     v17 = [[NSString alloc] initWithData:v16 encoding:4];
     v18 = [NSString stringWithFormat:@"__ibooks_cfi_utilities.getClientRects(%@)", v17];;
     objc_initWeak(buf, self);
-    v19 = [(BKWK2WebViewLoader *)self webView];
+    webView = [(BKWK2WebViewLoader *)self webView];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_6C030;
     v26[3] = &unk_1E4600;
     objc_copyWeak(&v28, buf);
     v26[4] = self;
-    v27 = v25;
-    [v19 evaluateJavaScript:v18 completionHandler:v26];
+    v27 = completionCopy;
+    [webView evaluateJavaScript:v18 completionHandler:v26];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)clientRectsForLocation:(id)a3 completion:(id)a4
+- (void)clientRectsForLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v14 = v6;
+  locationCopy = location;
+  completionCopy = completion;
+  v14 = locationCopy;
   v8 = [NSArray arrayWithObjects:&v14 count:1];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_6C394;
   v11[3] = &unk_1E46F0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
+  v12 = locationCopy;
+  v13 = completionCopy;
+  v9 = locationCopy;
+  v10 = completionCopy;
   [(BKWK2WebViewLoader *)self clientRectsForLocations:v8 completion:v11];
 }
 
-- (void)clientRectForEpubLocation:(id)a3 completion:(id)a4
+- (void)clientRectForEpubLocation:(id)location completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 jsonObject];
-  v9 = v8;
-  if (v8)
+  locationCopy = location;
+  completionCopy = completion;
+  jsonObject = [locationCopy jsonObject];
+  v9 = jsonObject;
+  if (jsonObject)
   {
     v24 = @"_id";
-    v25 = v8;
+    v25 = jsonObject;
     v10 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    v11 = [BECFIUtilitiesJS upgradeAnnotationsScript:v10];
+    locationCopy = [BECFIUtilitiesJS upgradeAnnotationsScript:v10];
 
-    v12 = [(BKWK2WebViewLoader *)self webView];
+    webView = [(BKWK2WebViewLoader *)self webView];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_6C6F4;
     v19[3] = &unk_1E4718;
-    v20 = v6;
-    v21 = self;
-    v22 = v7;
-    [v12 evaluateJavaScript:v11 completionHandler:v19];
+    v20 = locationCopy;
+    selfCopy = self;
+    v22 = completionCopy;
+    [webView evaluateJavaScript:locationCopy completionHandler:v19];
 
     v13 = v20;
   }
@@ -1016,17 +1016,17 @@ LABEL_27:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v29 = v6;
+      v29 = locationCopy;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "Failed to get json object from location: %@", buf, 0xCu);
     }
 
-    v11 = [NSString stringWithFormat:@"Failed to get json object from location: %@", v6];
+    locationCopy = [NSString stringWithFormat:@"Failed to get json object from location: %@", locationCopy];
     v26 = NSDebugDescriptionErrorKey;
-    v27 = v11;
+    v27 = locationCopy;
     v15 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v13 = [NSError errorWithDomain:@"BookEPUBError" code:4 userInfo:v15];
 
-    v16 = objc_retainBlock(v7);
+    v16 = objc_retainBlock(completionCopy);
     if (v16)
     {
       size = CGRectZero.size;
@@ -1070,65 +1070,65 @@ LABEL_27:
 
 - (void)cancelCurrentRequest
 {
-  v2 = [(BKWK2WebViewLoader *)self currentInfoRequest];
-  [v2 invalidateRequest];
+  currentInfoRequest = [(BKWK2WebViewLoader *)self currentInfoRequest];
+  [currentInfoRequest invalidateRequest];
 }
 
-- (void)enqueueContentInfoRequest:(id)a3
+- (void)enqueueContentInfoRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
+  requestCopy = request;
+  pendingInfoRequest = [(BKWK2WebViewLoader *)self pendingInfoRequest];
 
-  if (v5)
+  if (pendingInfoRequest)
   {
     v6 = _AEWKLoaderLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
+      pendingInfoRequest2 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
       v11 = 138412802;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
-      v14 = v7;
+      v14 = pendingInfoRequest2;
       v15 = 2112;
-      v16 = v4;
+      v16 = requestCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "loader: %@ enqueueContentInfoRequest replacing pendingRequest: %@ with request %@", &v11, 0x20u);
     }
 
-    v8 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
-    v9 = [v8 completion];
+    pendingInfoRequest3 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
+    completion = [pendingInfoRequest3 completion];
 
-    if (v9)
+    if (completion)
     {
-      v10 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
-      (v9)[2](v9, v10, 0);
+      pendingInfoRequest4 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
+      (completion)[2](completion, pendingInfoRequest4, 0);
     }
   }
 
-  [(BKWK2WebViewLoader *)self setPendingInfoRequest:v4];
+  [(BKWK2WebViewLoader *)self setPendingInfoRequest:requestCopy];
   [(BKWK2WebViewLoader *)self _sendNextInfoRequest];
 }
 
 - (void)_sendNextInfoRequest
 {
-  v3 = [(BKWK2WebViewLoader *)self currentInfoRequest];
+  currentInfoRequest = [(BKWK2WebViewLoader *)self currentInfoRequest];
 
-  if (!v3)
+  if (!currentInfoRequest)
   {
-    v4 = [(BKWK2WebViewLoader *)self pendingInfoRequest];
-    if (v4)
+    pendingInfoRequest = [(BKWK2WebViewLoader *)self pendingInfoRequest];
+    if (pendingInfoRequest)
     {
-      v5 = v4;
+      v5 = pendingInfoRequest;
       [(BKWK2WebViewLoader *)self setPendingInfoRequest:0];
       [(BKWK2WebViewLoader *)self _updateContentInformationWithRequest:v5];
-      v4 = v5;
+      pendingInfoRequest = v5;
     }
   }
 }
 
 - (int64_t)_scrollPageCountFromCurrentPageSize
 {
-  v3 = [(BKWK2WebViewLoader *)self paginationOptions];
-  [v3 scrollPageLength];
+  paginationOptions = [(BKWK2WebViewLoader *)self paginationOptions];
+  [paginationOptions scrollPageLength];
   v5 = v4;
 
   if (v5 <= 1.0)
@@ -1136,27 +1136,27 @@ LABEL_27:
     return 1;
   }
 
-  v6 = [(BKWK2WebViewLoader *)self webView];
-  v7 = [v6 be_estimatedContentSizeValue];
+  webView = [(BKWK2WebViewLoader *)self webView];
+  be_estimatedContentSizeValue = [webView be_estimatedContentSizeValue];
 
-  if (!v7 || (([v7 CGSizeValue], CGSizeZero.width == v9) ? (v10 = CGSizeZero.height == v8) : (v10 = 0), v10))
+  if (!be_estimatedContentSizeValue || (([be_estimatedContentSizeValue CGSizeValue], CGSizeZero.width == v9) ? (v10 = CGSizeZero.height == v8) : (v10 = 0), v10))
   {
-    v16 = [(BKWK2WebViewLoader *)self webView];
-    v17 = [v16 scrollView];
-    [v17 contentSize];
+    webView2 = [(BKWK2WebViewLoader *)self webView];
+    scrollView = [webView2 scrollView];
+    [scrollView contentSize];
     v12 = v18;
     v14 = v19;
   }
 
   else
   {
-    [v7 CGSizeValue];
+    [be_estimatedContentSizeValue CGSizeValue];
     v12 = v11;
     v14 = v13;
   }
 
-  v20 = [(BKWK2WebViewLoader *)self paginationOptions];
-  if (![v20 isHorizontalScroll])
+  paginationOptions2 = [(BKWK2WebViewLoader *)self paginationOptions];
+  if (![paginationOptions2 isHorizontalScroll])
   {
     v12 = v14;
   }
@@ -1164,19 +1164,19 @@ LABEL_27:
   return vcvtmd_s64_f64(v12 / v5) + 1;
 }
 
-- (id)_pageOffsetsForFrames:(id)a3
+- (id)_pageOffsetsForFrames:(id)frames
 {
-  v4 = a3;
+  framesCopy = frames;
   v5 = objc_alloc_init(NSMutableDictionary);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_6CE78;
   v10[3] = &unk_1E4740;
   v10[4] = self;
-  v12 = [(BKWK2WebViewLoader *)self ordinal];
+  ordinal = [(BKWK2WebViewLoader *)self ordinal];
   v6 = v5;
   v11 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [framesCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   v7 = v11;
   v8 = v6;
@@ -1184,17 +1184,17 @@ LABEL_27:
   return v6;
 }
 
-- (unint64_t)_pageOffsetForXOffset:(double)a3
+- (unint64_t)_pageOffsetForXOffset:(double)offset
 {
-  v5 = [(BKWK2WebViewLoader *)self paginationOptions];
+  paginationOptions = [(BKWK2WebViewLoader *)self paginationOptions];
 
-  if (!v5)
+  if (!paginationOptions)
   {
     v6 = _AEWKLoaderLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v34 = 138412290;
-      v35 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "Invalid Pagination Options in Loader %@ when trying to determine pageOffsetForXOffset", &v34, 0xCu);
     }
   }
@@ -1205,26 +1205,26 @@ LABEL_27:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v34 = 138412290;
-      v35 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "Page count not initialied in Loader %@ when trying to determine pageOffsetForXOffset", &v34, 0xCu);
     }
   }
 
-  v8 = [(BKWK2WebViewLoader *)self paginationOptions];
-  v9 = [(BKWK2WebViewLoader *)self paginationOptions];
-  v10 = [v9 mode];
+  paginationOptions2 = [(BKWK2WebViewLoader *)self paginationOptions];
+  paginationOptions3 = [(BKWK2WebViewLoader *)self paginationOptions];
+  mode = [paginationOptions3 mode];
 
-  if (v10)
+  if (mode)
   {
-    [v8 pageLength];
+    [paginationOptions2 pageLength];
     v12 = v11;
-    [v8 gapBetweenPages];
+    [paginationOptions2 gapBetweenPages];
     v14 = v12 + v13;
   }
 
   else
   {
-    [v8 scrollPageLength];
+    [paginationOptions2 scrollPageLength];
     v14 = v15;
   }
 
@@ -1233,16 +1233,16 @@ LABEL_27:
     goto LABEL_25;
   }
 
-  v16 = [(BKWK2WebViewLoader *)self paginationOptions];
-  v17 = [v16 mode];
+  paginationOptions4 = [(BKWK2WebViewLoader *)self paginationOptions];
+  mode2 = [paginationOptions4 mode];
 
-  if (v17 == &dword_0 + 2)
+  if (mode2 == &dword_0 + 2)
   {
-    v18 = vcvtmd_u64_f64(fmax(a3, 0.0) / v14);
+    v18 = vcvtmd_u64_f64(fmax(offset, 0.0) / v14);
     goto LABEL_31;
   }
 
-  if (([v8 isHorizontalScroll] & 1) == 0 && objc_msgSend(v8, "mode") != &dword_0 + 3)
+  if (([paginationOptions2 isHorizontalScroll] & 1) == 0 && objc_msgSend(paginationOptions2, "mode") != &dword_0 + 3)
   {
     v28 = _AEWKLoaderLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1258,10 +1258,10 @@ LABEL_25:
 
   if ([(BKWK2WebViewLoader *)self pageTextDirectionIsRTL])
   {
-    v19 = [(BKWK2WebViewLoader *)self webView];
-    [v19 frame];
+    webView = [(BKWK2WebViewLoader *)self webView];
+    [webView frame];
     Width = CGRectGetWidth(v40);
-    [v8 pageLength];
+    [paginationOptions2 pageLength];
     v22 = v21 + v21;
 
     if (Width > v22)
@@ -1269,12 +1269,12 @@ LABEL_25:
       v23 = _AEBookPluginsRTLLog();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(BKWK2WebViewLoader *)self webView];
-        v25 = [NSNumber numberWithDouble:a3];
-        a3 = a3 - v14;
-        v26 = [NSNumber numberWithDouble:a3];
+        webView2 = [(BKWK2WebViewLoader *)self webView];
+        v25 = [NSNumber numberWithDouble:offset];
+        offset = offset - v14;
+        v26 = [NSNumber numberWithDouble:offset];
         v34 = 134218498;
-        v35 = v24;
+        selfCopy2 = webView2;
         v36 = 2112;
         v37 = v25;
         v38 = 2112;
@@ -1284,13 +1284,13 @@ LABEL_25:
 
       else
       {
-        a3 = a3 - v14;
+        offset = offset - v14;
       }
     }
 
-    v27 = ceil(-a3 / v14);
-    v29 = floor(a3 / v14);
-    if (a3 > 0.0)
+    v27 = ceil(-offset / v14);
+    v29 = floor(offset / v14);
+    if (offset > 0.0)
     {
       v27 = v29;
     }
@@ -1298,40 +1298,40 @@ LABEL_25:
 
   else
   {
-    v27 = fabs(floor(a3 / v14));
+    v27 = fabs(floor(offset / v14));
   }
 
   v18 = v27;
 LABEL_31:
-  v30 = [(BKWK2WebViewLoader *)self pageCount];
-  if (v18 < v30 || v30 < 1)
+  pageCount = [(BKWK2WebViewLoader *)self pageCount];
+  if (v18 < pageCount || pageCount < 1)
   {
     v32 = v18;
   }
 
   else
   {
-    v32 = v30 - 1;
+    v32 = pageCount - 1;
   }
 
   return v32;
 }
 
-- (_NSRange)pageOffsetRangeForRect:(CGRect)a3
+- (_NSRange)pageOffsetRangeForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(BKWK2WebViewLoader *)self paginationOptions];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  paginationOptions = [(BKWK2WebViewLoader *)self paginationOptions];
 
-  if (!v8)
+  if (!paginationOptions)
   {
     v9 = _AEWKLoaderLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "Invalid pagination options in loader %@", &v13, 0xCu);
     }
   }
@@ -1346,41 +1346,41 @@ LABEL_31:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "Invalid rect when getting pageOffsetForRect in loader %@", &v13, 0xCu);
     }
 
     v11 = 0;
-    v12 = 0x7FFFFFFFFFFFFFFFLL;
+    height = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v12 = [(BKWK2WebViewLoader *)self _uncheckedPageOffsetRangeForRect:x, y, width, height];
+    height = [(BKWK2WebViewLoader *)self _uncheckedPageOffsetRangeForRect:x, y, width, height];
   }
 
   result.length = v11;
-  result.location = v12;
+  result.location = height;
   return result;
 }
 
-- (_NSRange)_uncheckedPageOffsetRangeForRect:(CGRect)a3
+- (_NSRange)_uncheckedPageOffsetRangeForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(BKWK2WebViewLoader *)self paginationOptions];
-  if ([v8 mode])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  paginationOptions = [(BKWK2WebViewLoader *)self paginationOptions];
+  if ([paginationOptions mode])
   {
   }
 
   else
   {
-    v9 = [(BKWK2WebViewLoader *)self paginationOptions];
-    v10 = [v9 isHorizontalScroll];
+    paginationOptions2 = [(BKWK2WebViewLoader *)self paginationOptions];
+    isHorizontalScroll = [paginationOptions2 isHorizontalScroll];
 
-    if (!v10)
+    if (!isHorizontalScroll)
     {
       v33.origin.x = x;
       v33.origin.y = y;
@@ -1415,8 +1415,8 @@ LABEL_31:
         goto LABEL_10;
       }
 
-      v24 = [(BKWK2WebViewLoader *)self paginationOptions];
-      [v24 contentLayoutSize];
+      paginationOptions3 = [(BKWK2WebViewLoader *)self paginationOptions];
+      [paginationOptions3 contentLayoutSize];
       v26 = v25;
 
       v19 = vcvtmd_u64_f64(v22 / v26);
@@ -1500,9 +1500,9 @@ LABEL_29:
   return result;
 }
 
-- (unint64_t)pageOffsetForLocation:(id)a3
+- (unint64_t)pageOffsetForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   objc_opt_class();
   v5 = BUDynamicCast();
   v6 = v5;
@@ -1511,15 +1511,15 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v4 pageOffset];
-      v8 = _AEWKLoaderLog();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      pageOffset = [locationCopy pageOffset];
+      anchor = _AEWKLoaderLog();
+      if (os_log_type_enabled(anchor, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134218242;
-        v13 = v7;
+        v13 = pageOffset;
         v14 = 2112;
         v15 = 0;
-        _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Determined Page Offset %lu for page location %@", &v12, 0x16u);
+        _os_log_impl(&dword_0, anchor, OS_LOG_TYPE_DEFAULT, "Determined Page Offset %lu for page location %@", &v12, 0x16u);
       }
     }
 
@@ -1528,35 +1528,35 @@ LABEL_29:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if ([v4 isMemberOfClass:objc_opt_class()])
+        if ([locationCopy isMemberOfClass:objc_opt_class()])
         {
-          v7 = 0;
+          pageOffset = 0;
         }
 
         else
         {
-          v7 = 0x7FFFFFFFFFFFFFFFLL;
+          pageOffset = 0x7FFFFFFFFFFFFFFFLL;
         }
 
         goto LABEL_21;
       }
 
-      v8 = [v4 anchor];
-      if (v8)
+      anchor = [locationCopy anchor];
+      if (anchor)
       {
-        v7 = [(BKWK2WebViewLoader *)self pageOffsetForAnchor:v8];
+        pageOffset = [(BKWK2WebViewLoader *)self pageOffsetForAnchor:anchor];
       }
 
       else
       {
-        v7 = 0;
+        pageOffset = 0;
       }
 
       v10 = _AEWKLoaderLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 134218242;
-        v13 = v7;
+        v13 = pageOffset;
         v14 = 2112;
         v15 = 0;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Determined Page Offset %lu for anchor location %@", &v12, 0x16u);
@@ -1568,7 +1568,7 @@ LABEL_29:
 
   if ([v5 isPageLocation])
   {
-    v7 = [v6 pageOffset];
+    pageOffset = [v6 pageOffset];
   }
 
   else
@@ -1580,64 +1580,64 @@ LABEL_29:
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "CFI Location is not a pageLocation - unable to get pageOffset for this location", &v12, 2u);
     }
 
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    pageOffset = 0x7FFFFFFFFFFFFFFFLL;
   }
 
 LABEL_21:
 
-  return v7;
+  return pageOffset;
 }
 
-- (id)locationForPageOffset:(unint64_t)a3 contentOffset:(CGPoint)a4
+- (id)locationForPageOffset:(unint64_t)offset contentOffset:(CGPoint)contentOffset
 {
-  v5 = [BKEpubCFILocation unknownLocation:a3];
-  v6 = [(BKWK2WebViewLoader *)self currentFirstVisbleCFILocation];
+  v5 = [BKEpubCFILocation unknownLocation:offset];
+  currentFirstVisbleCFILocation = [(BKWK2WebViewLoader *)self currentFirstVisbleCFILocation];
 
-  if (v6)
+  if (currentFirstVisbleCFILocation)
   {
-    v7 = [(BKWK2WebViewLoader *)self currentFirstVisbleCFILocation];
+    currentFirstVisbleCFILocation2 = [(BKWK2WebViewLoader *)self currentFirstVisbleCFILocation];
 
-    v5 = v7;
+    v5 = currentFirstVisbleCFILocation2;
   }
 
   return v5;
 }
 
-- (id)locationForAnchor:(id)a3
+- (id)locationForAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [(BKWK2WebViewLoader *)self anchorLocations];
-  v6 = [v5 objectForKey:v4];
+  anchorCopy = anchor;
+  anchorLocations = [(BKWK2WebViewLoader *)self anchorLocations];
+  v6 = [anchorLocations objectForKey:anchorCopy];
 
   return v6;
 }
 
-- (id)anchorFrameForAnchor:(id)a3
+- (id)anchorFrameForAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [(BKWK2WebViewLoader *)self anchorFrames];
-  v6 = [v5 objectForKey:v4];
+  anchorCopy = anchor;
+  anchorFrames = [(BKWK2WebViewLoader *)self anchorFrames];
+  v6 = [anchorFrames objectForKey:anchorCopy];
 
   return v6;
 }
 
-- (unint64_t)pageOffsetForAnchor:(id)a3
+- (unint64_t)pageOffsetForAnchor:(id)anchor
 {
-  v4 = a3;
-  if (![v4 length])
+  anchorCopy = anchor;
+  if (![anchorCopy length])
   {
     v5 = _AEWKLoaderLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v11 = 134217984;
-      v12 = [(BKWK2WebViewLoader *)self ordinal];
+      ordinal = [(BKWK2WebViewLoader *)self ordinal];
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "Request to find page offset from an empty anchor ordinal:%lu", &v11, 0xCu);
     }
 
     goto LABEL_12;
   }
 
-  v5 = [(BKWK2WebViewLoader *)self locationForAnchor:v4];
+  v5 = [(BKWK2WebViewLoader *)self locationForAnchor:anchorCopy];
   v6 = _AEWKLoaderLog();
   v7 = v6;
   if (!v5)
@@ -1645,9 +1645,9 @@ LABEL_21:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412546;
-      v12 = v4;
+      ordinal = anchorCopy;
       v13 = 2048;
-      v14 = [(BKWK2WebViewLoader *)self ordinal];
+      ordinal2 = [(BKWK2WebViewLoader *)self ordinal];
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_ERROR, "Unknown location for anchor %@ ordinal:%lu", &v11, 0x16u);
     }
 
@@ -1659,34 +1659,34 @@ LABEL_12:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v5;
+    ordinal = v5;
     v13 = 2112;
-    v14 = v4;
+    ordinal2 = anchorCopy;
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Found location %@ for anchor %@", &v11, 0x16u);
   }
 
   if ([v5 pageOffset]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(BKWK2WebViewLoader *)self pageOffsetForLocation:v5];
+    pageOffset = [(BKWK2WebViewLoader *)self pageOffsetForLocation:v5];
   }
 
   else
   {
-    v8 = [v5 pageOffset];
+    pageOffset = [v5 pageOffset];
   }
 
-  v9 = v8;
+  v9 = pageOffset;
 LABEL_15:
 
   return v9;
 }
 
-- (CGRect)rectForPageOffset:(unint64_t)a3
+- (CGRect)rectForPageOffset:(unint64_t)offset
 {
   if ([(BKWK2WebViewLoader *)self pageCount]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(BKWK2WebViewLoader *)self paginationOptions];
-    [v6 contentLayoutSize];
+    paginationOptions = [(BKWK2WebViewLoader *)self paginationOptions];
+    [paginationOptions contentLayoutSize];
     v8 = v7;
     height = v9;
 
@@ -1694,7 +1694,7 @@ LABEL_15:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v42 = 134217984;
-      v43 = [(BKWK2WebViewLoader *)self ordinal];
+      ordinal = [(BKWK2WebViewLoader *)self ordinal];
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "rectForPageOffset invalid page count ordinal: %lu", &v42, 0xCu);
     }
 
@@ -1702,36 +1702,36 @@ LABEL_15:
     goto LABEL_5;
   }
 
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+  if (offset != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [(BKWK2WebViewLoader *)self paginationOptions];
-    [v15 contentLayoutSize];
+    paginationOptions2 = [(BKWK2WebViewLoader *)self paginationOptions];
+    [paginationOptions2 contentLayoutSize];
     v8 = v16;
     height = v17;
 
-    v18 = [(BKWK2WebViewLoader *)self paginationOptions];
-    v19 = [v18 mode];
+    paginationOptions3 = [(BKWK2WebViewLoader *)self paginationOptions];
+    mode = [paginationOptions3 mode];
 
-    v20 = [(BKWK2WebViewLoader *)self paginationOptions];
-    if ([v20 mode] == &dword_0 + 3)
+    paginationOptions4 = [(BKWK2WebViewLoader *)self paginationOptions];
+    if ([paginationOptions4 mode] == &dword_0 + 3)
     {
-      v21 = 1;
+      isHorizontalScroll = 1;
     }
 
     else
     {
-      v3 = [(BKWK2WebViewLoader *)self paginationOptions];
-      v21 = [v3 isHorizontalScroll];
+      paginationOptions5 = [(BKWK2WebViewLoader *)self paginationOptions];
+      isHorizontalScroll = [paginationOptions5 isHorizontalScroll];
     }
 
-    v22 = [(BKWK2WebViewLoader *)self paginationOptions];
-    v23 = [v22 mode];
-    if (v23 == &dword_4 || (-[BKWK2WebViewLoader paginationOptions](self, "paginationOptions"), v3 = objc_claimAutoreleasedReturnValue(), ![v3 mode]))
+    paginationOptions6 = [(BKWK2WebViewLoader *)self paginationOptions];
+    mode2 = [paginationOptions6 mode];
+    if (mode2 == &dword_4 || (-[BKWK2WebViewLoader paginationOptions](self, "paginationOptions"), paginationOptions5 = objc_claimAutoreleasedReturnValue(), ![paginationOptions5 mode]))
     {
-      v25 = [(BKWK2WebViewLoader *)self paginationOptions];
-      v24 = [v25 isHorizontalScroll] ^ 1;
+      paginationOptions7 = [(BKWK2WebViewLoader *)self paginationOptions];
+      v24 = [paginationOptions7 isHorizontalScroll] ^ 1;
 
-      if (v23 == &dword_4)
+      if (mode2 == &dword_4)
       {
         goto LABEL_18;
       }
@@ -1743,13 +1743,13 @@ LABEL_15:
     }
 
 LABEL_18:
-    if (v19)
+    if (mode)
     {
-      v26 = [(BKWK2WebViewLoader *)self paginationOptions];
-      [v26 gapBetweenPages];
+      paginationOptions8 = [(BKWK2WebViewLoader *)self paginationOptions];
+      [paginationOptions8 gapBetweenPages];
       v28 = v27;
 
-      if (a3)
+      if (offset)
       {
         goto LABEL_20;
       }
@@ -1758,16 +1758,16 @@ LABEL_18:
     else
     {
       v28 = 0.0;
-      if (a3)
+      if (offset)
       {
 LABEL_20:
         v29 = v28 * 0.5;
-        v30 = (a3 - 1);
+        v30 = (offset - 1);
         if (v24)
         {
           y = v29 + height + v29 + v30 * (height + v28);
           x = 0.0;
-          if ((v21 & 1) == 0)
+          if ((isHorizontalScroll & 1) == 0)
           {
             goto LABEL_34;
           }
@@ -1776,7 +1776,7 @@ LABEL_20:
         }
 
         v31 = v8 + v28;
-        if ((v21 & 1) == 0)
+        if ((isHorizontalScroll & 1) == 0)
         {
           x = v29 + v8 + v29 + v30 * v31;
 LABEL_33:
@@ -1785,12 +1785,12 @@ LABEL_33:
         }
 
 LABEL_30:
-        v32 = -(v31 * a3);
-        v33 = [(BKWK2WebViewLoader *)self webView];
-        [v33 frame];
+        v32 = -(v31 * offset);
+        webView = [(BKWK2WebViewLoader *)self webView];
+        [webView frame];
         Width = CGRectGetWidth(v44);
-        v35 = [(BKWK2WebViewLoader *)self paginationOptions];
-        [v35 pageLength];
+        paginationOptions9 = [(BKWK2WebViewLoader *)self paginationOptions];
+        [paginationOptions9 pageLength];
         v37 = v36 + v36;
 
         if (Width <= v37)
@@ -1808,7 +1808,7 @@ LABEL_30:
     }
 
     y = 0.0;
-    if ((v21 & 1) == 0)
+    if ((isHorizontalScroll & 1) == 0)
     {
 LABEL_5:
       x = 0.0;
@@ -1830,7 +1830,7 @@ LABEL_26:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     v42 = 134217984;
-    v43 = [(BKWK2WebViewLoader *)self ordinal];
+    ordinal = [(BKWK2WebViewLoader *)self ordinal];
     _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "rectForPageOffset invalid pageOffset request in ordinal: %lu", &v42, 0xCu);
   }
 
@@ -1853,22 +1853,22 @@ LABEL_34:
 
 - (CGRect)contentRectForVisibleContent
 {
-  v3 = [(BKWK2WebViewLoader *)self webView];
+  webView = [(BKWK2WebViewLoader *)self webView];
   [(BKWK2WebViewLoader *)self contentRectForVisiblePage];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 window];
-  if (v12)
+  window = [webView window];
+  if (window)
   {
-    [v3 bounds];
-    [v12 convertRect:v3 fromView:?];
+    [webView bounds];
+    [window convertRect:webView fromView:?];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    [v12 bounds];
+    [window bounds];
     v41.origin.x = v21;
     v41.origin.y = v22;
     v41.size.width = v23;
@@ -1882,8 +1882,8 @@ LABEL_34:
     y = v39.origin.y;
     width = v39.size.width;
     height = v39.size.height;
-    v29 = [v3 be_contentView];
-    [v12 convertRect:v29 toView:{x, y, width, height}];
+    be_contentView = [webView be_contentView];
+    [window convertRect:be_contentView toView:{x, y, width, height}];
     v5 = v30;
     v7 = v31;
     v9 = v32;
@@ -1903,10 +1903,10 @@ LABEL_34:
 
 - (CGRect)contentRectForVisiblePage
 {
-  v2 = [(BKWK2WebViewLoader *)self webView];
-  v3 = [v2 be_contentView];
-  [v2 bounds];
-  [v3 convertRect:v2 fromView:?];
+  webView = [(BKWK2WebViewLoader *)self webView];
+  be_contentView = [webView be_contentView];
+  [webView bounds];
+  [be_contentView convertRect:webView fromView:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1923,16 +1923,16 @@ LABEL_34:
   return result;
 }
 
-- (void)userContentController:(id)a3 didReceiveScriptMessage:(id)a4
+- (void)userContentController:(id)controller didReceiveScriptMessage:(id)message
 {
-  v5 = a4;
-  v6 = [v5 name];
-  v7 = [v6 isEqualToString:@"cfiUpdate"];
+  messageCopy = message;
+  name = [messageCopy name];
+  v7 = [name isEqualToString:@"cfiUpdate"];
 
   if (v7)
   {
     objc_opt_class();
-    v8 = [v5 body];
+    body = [messageCopy body];
     v9 = BUDynamicCast();
 
     objc_opt_class();
@@ -1953,12 +1953,12 @@ LABEL_34:
       v16 = _AEWKLoaderLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v17 = [v5 name];
-        v18 = [v5 body];
+        name2 = [messageCopy name];
+        body2 = [messageCopy body];
         *buf = 138412546;
-        v54 = v17;
+        v54 = name2;
         v55 = 2112;
-        v56 = v18;
+        v56 = body2;
         _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "Failed to get cfi string from message %@ %@", buf, 0x16u);
       }
     }
@@ -2053,11 +2053,11 @@ LABEL_34:
     [(BKWK2WebViewLoader *)self setCurrentFirstVisbleCFILocation:v21];
     [(BKWK2WebViewLoader *)self setCurrentLastVisbleCFILocation:v40];
     [(BKWK2WebViewLoader *)self setCurrentVisbleCFILocation:v42];
-    v45 = [(BKWK2WebViewLoader *)self delegate];
-    if (v45 && (objc_opt_respondsToSelector() & 1) != 0)
+    delegate = [(BKWK2WebViewLoader *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v46 = [(BKWK2WebViewLoader *)self currentVisbleCFILocation];
-      [v45 webViewLoader:self didUpdateCurrentVisibleCFILocation:v46];
+      currentVisbleCFILocation = [(BKWK2WebViewLoader *)self currentVisbleCFILocation];
+      [delegate webViewLoader:self didUpdateCurrentVisibleCFILocation:currentVisbleCFILocation];
     }
 
     v28 = v48;
@@ -2065,13 +2065,13 @@ LABEL_34:
     goto LABEL_43;
   }
 
-  v23 = [v5 name];
-  v24 = [v23 isEqualToString:@"selectionChange"];
+  name3 = [messageCopy name];
+  v24 = [name3 isEqualToString:@"selectionChange"];
 
   if (v24)
   {
     objc_opt_class();
-    v25 = [v5 body];
+    body3 = [messageCopy body];
     v26 = BUDynamicCast();
 
     if (!v26)
@@ -2095,9 +2095,9 @@ LABEL_44:
         v29 = _AEWKLoaderLog();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
-          v30 = [v5 name];
+          name4 = [messageCopy name];
           *buf = 138412546;
-          v54 = v30;
+          v54 = name4;
           v55 = 2112;
           v56 = v15;
           _os_log_impl(&dword_0, v29, OS_LOG_TYPE_ERROR, "Failed to get cfi string from message %@ %@", buf, 0x16u);
@@ -2112,13 +2112,13 @@ LABEL_44:
         v32 = BUDynamicCast();
         -[BKWK2WebViewLoader setCurrentSelectionContainsAnchor:](self, "setCurrentSelectionContainsAnchor:", [v32 BOOLValue]);
 
-        v33 = [(BKWK2WebViewLoader *)self delegate];
+        delegate2 = [(BKWK2WebViewLoader *)self delegate];
         LOBYTE(v31) = objc_opt_respondsToSelector();
 
         if (v31)
         {
-          v34 = [(BKWK2WebViewLoader *)self delegate];
-          [v34 webViewLoader:self didChangeSelection:v28];
+          delegate3 = [(BKWK2WebViewLoader *)self delegate];
+          [delegate3 webViewLoader:self didChangeSelection:v28];
         }
       }
     }

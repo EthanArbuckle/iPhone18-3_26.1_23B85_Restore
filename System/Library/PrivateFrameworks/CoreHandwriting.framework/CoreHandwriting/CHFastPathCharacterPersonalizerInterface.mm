@@ -1,28 +1,28 @@
 @interface CHFastPathCharacterPersonalizerInterface
-- (CHFastPathCharacterPersonalizerInterface)initWithStyleInventory:(id)a3 characterSet:(id)a4;
+- (CHFastPathCharacterPersonalizerInterface)initWithStyleInventory:(id)inventory characterSet:(id)set;
 - (id).cxx_construct;
-- (id)createSynthesisRequestsForCharacter:(CHFastPathCharacterSynthesisRequest *)a3 styleSamples:(id)a4;
-- (void)enumerateCharactersToSynthesize:(BOOL)a3 withPersonalizationBlock:(id)a4;
-- (void)enumeratePersonalizedCandidatesWithBlock:(id)a3;
+- (id)createSynthesisRequestsForCharacter:(CHFastPathCharacterSynthesisRequest *)character styleSamples:(id)samples;
+- (void)enumerateCharactersToSynthesize:(BOOL)synthesize withPersonalizationBlock:(id)block;
+- (void)enumeratePersonalizedCandidatesWithBlock:(id)block;
 @end
 
 @implementation CHFastPathCharacterPersonalizerInterface
 
-- (CHFastPathCharacterPersonalizerInterface)initWithStyleInventory:(id)a3 characterSet:(id)a4
+- (CHFastPathCharacterPersonalizerInterface)initWithStyleInventory:(id)inventory characterSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
+  inventoryCopy = inventory;
+  setCopy = set;
   if (objc_msgSend_init(self, v8, v9, v10, v11, v12))
   {
-    sub_1838BD8E8(&v14, v7, v6);
+    sub_1838BD8E8(&v14, setCopy, inventoryCopy);
   }
 
   return 0;
 }
 
-- (void)enumerateCharactersToSynthesize:(BOOL)a3 withPersonalizationBlock:(id)a4
+- (void)enumerateCharactersToSynthesize:(BOOL)synthesize withPersonalizationBlock:(id)block
 {
-  v11 = a4;
+  blockCopy = block;
   ptr = self->_fastPathCharacterPersonalizer._fastPathCharacterPersonalizer.__ptr_;
   p_fastPathCharacterPersonalizer = &self->_fastPathCharacterPersonalizer;
   v6 = ptr;
@@ -33,24 +33,24 @@
   }
 
   *(v6 + 5) = v8;
-  sub_1838BDC50(p_fastPathCharacterPersonalizer, v11);
+  sub_1838BDC50(p_fastPathCharacterPersonalizer, blockCopy);
 }
 
-- (id)createSynthesisRequestsForCharacter:(CHFastPathCharacterSynthesisRequest *)a3 styleSamples:(id)a4
+- (id)createSynthesisRequestsForCharacter:(CHFastPathCharacterSynthesisRequest *)character styleSamples:(id)samples
 {
-  v9[0] = a3->var0;
-  v9[1] = a3->var1;
-  var2 = a3->var2;
-  v11 = a3->var3;
-  v12 = *&a3->var4;
-  v7 = sub_1838BE130(&self->_fastPathCharacterPersonalizer, v9, a4);
+  v9[0] = character->var0;
+  v9[1] = character->var1;
+  var2 = character->var2;
+  v11 = character->var3;
+  v12 = *&character->var4;
+  v7 = sub_1838BE130(&self->_fastPathCharacterPersonalizer, v9, samples);
 
   return v7;
 }
 
-- (void)enumeratePersonalizedCandidatesWithBlock:(id)a3
+- (void)enumeratePersonalizedCandidatesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   sub_183963810(self->_fastPathCharacterPersonalizer._fastPathCharacterPersonalizer.__ptr_, &__p);
   v10 = __p;
   v11 = v24;
@@ -62,7 +62,7 @@
     {
       v14 = objc_msgSend_copy(*&v10[v12], v5, v6, v7, v8, v9);
       v20 = sub_1837A4260(*(__p + v12 + 12), v15, v16, v17, v18, v19);
-      v4[2](v4, v13, v14, v20);
+      blockCopy[2](blockCopy, v13, v14, v20);
 
       ++v13;
       v10 = __p;

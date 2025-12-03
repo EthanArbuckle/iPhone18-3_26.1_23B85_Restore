@@ -1,13 +1,13 @@
 @interface PublisherHeaderViewActionManager
 - (PublisherHeaderActionDelegate)actionDelegate;
-- (PublisherHeaderViewActionManager)initWithAttribution:(id)a3 withActionsDelegate:(id)a4 usingAnalyticsManager:(id)a5 shouldHideAppIcon:(BOOL)a6;
-- (id)createRowActionsWithStyle:(unint64_t)a3;
+- (PublisherHeaderViewActionManager)initWithAttribution:(id)attribution withActionsDelegate:(id)delegate usingAnalyticsManager:(id)manager shouldHideAppIcon:(BOOL)icon;
+- (id)createRowActionsWithStyle:(unint64_t)style;
 - (id)headerEllipsis;
 - (id)menuForPublisher;
 - (void)didTapAppButton;
-- (void)didTapShareButton:(id)a3;
+- (void)didTapShareButton:(id)button;
 - (void)didTapWebsiteButton;
-- (void)performAction:(id)a3 options:(id)a4 completion:(id)a5;
+- (void)performAction:(id)action options:(id)options completion:(id)completion;
 @end
 
 @implementation PublisherHeaderViewActionManager
@@ -19,63 +19,63 @@
   return WeakRetained;
 }
 
-- (void)didTapShareButton:(id)a3
+- (void)didTapShareButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PublisherHeaderViewActionManager *)self actionDelegate];
-  [v5 didSelectShareFromView:v4];
+  buttonCopy = button;
+  actionDelegate = [(PublisherHeaderViewActionManager *)self actionDelegate];
+  [actionDelegate didSelectShareFromView:buttonCopy];
 
-  v6 = [(PublisherHeaderViewActionManager *)self analyticsManager];
-  [v6 publisherHeaderShareButtonTapped];
+  analyticsManager = [(PublisherHeaderViewActionManager *)self analyticsManager];
+  [analyticsManager publisherHeaderShareButtonTapped];
 }
 
 - (void)didTapWebsiteButton
 {
-  v3 = [(PublisherHeaderViewActionManager *)self actionDelegate];
+  actionDelegate = [(PublisherHeaderViewActionManager *)self actionDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PublisherHeaderViewActionManager *)self actionDelegate];
-    [v5 didSelectWebsiteItem];
+    actionDelegate2 = [(PublisherHeaderViewActionManager *)self actionDelegate];
+    [actionDelegate2 didSelectWebsiteItem];
 
-    v6 = [(PublisherHeaderViewActionManager *)self analyticsManager];
-    [v6 publisherHeaderWebsiteButtonTapped];
+    analyticsManager = [(PublisherHeaderViewActionManager *)self analyticsManager];
+    [analyticsManager publisherHeaderWebsiteButtonTapped];
   }
 }
 
 - (void)didTapAppButton
 {
-  v3 = [(PublisherHeaderViewActionManager *)self actionDelegate];
+  actionDelegate = [(PublisherHeaderViewActionManager *)self actionDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PublisherHeaderViewActionManager *)self actionDelegate];
-    [v5 didSelectAppItem];
+    actionDelegate2 = [(PublisherHeaderViewActionManager *)self actionDelegate];
+    [actionDelegate2 didSelectAppItem];
 
-    v6 = [(PublisherHeaderViewActionManager *)self analyticsManager];
-    [v6 publisherHeaderAppButtonTapped];
+    analyticsManager = [(PublisherHeaderViewActionManager *)self analyticsManager];
+    [analyticsManager publisherHeaderAppButtonTapped];
   }
 }
 
-- (void)performAction:(id)a3 options:(id)a4 completion:(id)a5
+- (void)performAction:(id)action options:(id)options completion:(id)completion
 {
-  v9 = a4;
-  v7 = [a3 type];
-  if (v7 == 7)
+  optionsCopy = options;
+  type = [action type];
+  if (type == 7)
   {
     [(PublisherHeaderViewActionManager *)self didTapWebsiteButton];
   }
 
-  else if (v7 == 26)
+  else if (type == 26)
   {
     [(PublisherHeaderViewActionManager *)self didTapAppButton];
   }
 
-  else if (v7 == 16)
+  else if (type == 16)
   {
-    v8 = [v9 objectForKeyedSubscript:@"view"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"view"];
     [(PublisherHeaderViewActionManager *)self didTapShareButton:v8];
   }
 }
@@ -92,14 +92,14 @@
   [v3 setImage:v6 forState:0];
   [v3 setContextMenuInteractionEnabled:1];
   [v3 setShowsMenuAsPrimaryAction:1];
-  v7 = [(PublisherHeaderViewActionManager *)self publisherMenu];
-  [v3 setMenu:v7];
+  publisherMenu = [(PublisherHeaderViewActionManager *)self publisherMenu];
+  [v3 setMenu:publisherMenu];
 
-  v8 = [v3 heightAnchor];
-  v9 = [v8 constraintEqualToConstant:24.0];
+  heightAnchor = [v3 heightAnchor];
+  v9 = [heightAnchor constraintEqualToConstant:24.0];
   v14[0] = v9;
-  v10 = [v3 widthAnchor];
-  v11 = [v10 constraintEqualToConstant:24.0];
+  widthAnchor = [v3 widthAnchor];
+  v11 = [widthAnchor constraintEqualToConstant:24.0];
   v14[1] = v11;
   v12 = [NSArray arrayWithObjects:v14 count:2];
   [NSLayoutConstraint activateConstraints:v12];
@@ -109,12 +109,12 @@
   return v3;
 }
 
-- (id)createRowActionsWithStyle:(unint64_t)a3
+- (id)createRowActionsWithStyle:(unint64_t)style
 {
   v4 = objc_alloc_init(NSMutableArray);
-  v5 = [(PublisherHeaderViewActionManager *)self attribution];
-  v6 = [v5 applicationAdamId];
-  if ([v6 length])
+  attribution = [(PublisherHeaderViewActionManager *)self attribution];
+  applicationAdamId = [attribution applicationAdamId];
+  if ([applicationAdamId length])
   {
     v7 = !self->_shouldHideApp;
   }
@@ -124,10 +124,10 @@
     v7 = 0;
   }
 
-  v8 = [(PublisherHeaderViewActionManager *)self attribution];
-  v9 = [v8 websiteURL];
-  v10 = [v9 absoluteString];
-  v11 = [v10 length];
+  attribution2 = [(PublisherHeaderViewActionManager *)self attribution];
+  websiteURL = [attribution2 websiteURL];
+  absoluteString = [websiteURL absoluteString];
+  v11 = [absoluteString length];
 
   if (v7)
   {
@@ -162,9 +162,9 @@
 
 - (id)menuForPublisher
 {
-  v3 = [(PublisherHeaderViewActionManager *)self attribution];
-  v4 = [v3 websiteURL];
-  v5 = v4 == 0;
+  attribution = [(PublisherHeaderViewActionManager *)self attribution];
+  websiteURL = [attribution websiteURL];
+  v5 = websiteURL == 0;
 
   v6 = +[NSMutableArray array];
   if (!v5)
@@ -216,24 +216,24 @@
   return v20;
 }
 
-- (PublisherHeaderViewActionManager)initWithAttribution:(id)a3 withActionsDelegate:(id)a4 usingAnalyticsManager:(id)a5 shouldHideAppIcon:(BOOL)a6
+- (PublisherHeaderViewActionManager)initWithAttribution:(id)attribution withActionsDelegate:(id)delegate usingAnalyticsManager:(id)manager shouldHideAppIcon:(BOOL)icon
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  attributionCopy = attribution;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = PublisherHeaderViewActionManager;
   v14 = [(PublisherHeaderViewActionManager *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_attribution, a3);
-    objc_storeWeak(&v15->_actionDelegate, v12);
-    objc_storeStrong(&v15->_analyticsManager, a5);
-    v15->_shouldHideApp = a6;
-    v16 = [(PublisherHeaderViewActionManager *)v15 menuForPublisher];
+    objc_storeStrong(&v14->_attribution, attribution);
+    objc_storeWeak(&v15->_actionDelegate, delegateCopy);
+    objc_storeStrong(&v15->_analyticsManager, manager);
+    v15->_shouldHideApp = icon;
+    menuForPublisher = [(PublisherHeaderViewActionManager *)v15 menuForPublisher];
     publisherMenu = v15->_publisherMenu;
-    v15->_publisherMenu = v16;
+    v15->_publisherMenu = menuForPublisher;
   }
 
   return v15;

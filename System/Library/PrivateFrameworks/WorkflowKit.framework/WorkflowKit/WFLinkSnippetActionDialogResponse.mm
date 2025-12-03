@@ -1,33 +1,33 @@
 @interface WFLinkSnippetActionDialogResponse
-- (WFLinkSnippetActionDialogResponse)initWithBSXPCCoder:(id)a3;
-- (WFLinkSnippetActionDialogResponse)initWithCoder:(id)a3;
-- (WFLinkSnippetActionDialogResponse)initWithRequestedOpenURL:(id)a3;
-- (WFLinkSnippetActionDialogResponse)initWithResult:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFLinkSnippetActionDialogResponse)initWithBSXPCCoder:(id)coder;
+- (WFLinkSnippetActionDialogResponse)initWithCoder:(id)coder;
+- (WFLinkSnippetActionDialogResponse)initWithRequestedOpenURL:(id)l;
+- (WFLinkSnippetActionDialogResponse)initWithResult:(id)result;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLinkSnippetActionDialogResponse
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFLinkSnippetActionDialogResponse;
-  v4 = a3;
-  [(WFLinkSnippetDialogResponse *)&v6 encodeWithBSXPCCoder:v4];
+  coderCopy = coder;
+  [(WFLinkSnippetDialogResponse *)&v6 encodeWithBSXPCCoder:coderCopy];
   v5 = [(WFLinkSnippetActionDialogResponse *)self result:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"result"];
+  [coderCopy encodeObject:v5 forKey:@"result"];
 }
 
-- (WFLinkSnippetActionDialogResponse)initWithBSXPCCoder:(id)a3
+- (WFLinkSnippetActionDialogResponse)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFLinkSnippetActionDialogResponse;
-  v5 = [(WFLinkSnippetDialogResponse *)&v10 initWithBSXPCCoder:v4];
+  v5 = [(WFLinkSnippetDialogResponse *)&v10 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"result"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"result"];
     v7 = v5->_result;
     v5->_result = v6;
 
@@ -37,25 +37,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFLinkSnippetActionDialogResponse;
-  v4 = a3;
-  [(WFLinkSnippetDialogResponse *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFLinkSnippetDialogResponse *)&v6 encodeWithCoder:coderCopy];
   v5 = [(WFLinkSnippetActionDialogResponse *)self result:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"result"];
+  [coderCopy encodeObject:v5 forKey:@"result"];
 }
 
-- (WFLinkSnippetActionDialogResponse)initWithCoder:(id)a3
+- (WFLinkSnippetActionDialogResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFLinkSnippetActionDialogResponse;
-  v5 = [(WFLinkSnippetDialogResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFLinkSnippetDialogResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"result"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"result"];
     v7 = v5->_result;
     v5->_result = v6;
 
@@ -65,11 +65,11 @@
   return v5;
 }
 
-- (WFLinkSnippetActionDialogResponse)initWithRequestedOpenURL:(id)a3
+- (WFLinkSnippetActionDialogResponse)initWithRequestedOpenURL:(id)l
 {
   v8.receiver = self;
   v8.super_class = WFLinkSnippetActionDialogResponse;
-  v3 = [(WFLinkSnippetDialogResponse *)&v8 initWithRequestedOpenURL:a3];
+  v3 = [(WFLinkSnippetDialogResponse *)&v8 initWithRequestedOpenURL:l];
   v4 = v3;
   if (v3)
   {
@@ -82,16 +82,16 @@
   return v4;
 }
 
-- (WFLinkSnippetActionDialogResponse)initWithResult:(id)a3
+- (WFLinkSnippetActionDialogResponse)initWithResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v10.receiver = self;
   v10.super_class = WFLinkSnippetActionDialogResponse;
   v6 = [(WFLinkSnippetDialogResponse *)&v10 initWithResponseCode:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_result, a3);
+    objc_storeStrong(&v6->_result, result);
     v8 = v7;
   }
 

@@ -1,38 +1,38 @@
 @interface VUIMonogramView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
-- (VUIMonogramView)initWithFrame:(CGRect)a3 configuration:(id)a4;
-- (void)_loadWithMonogramDescription:(id)a3 imageProxy:(id)a4;
-- (void)_updateFocusedShadowFrameAndLayerWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
+- (VUIMonogramView)initWithFrame:(CGRect)frame configuration:(id)configuration;
+- (void)_loadWithMonogramDescription:(id)description imageProxy:(id)proxy;
+- (void)_updateFocusedShadowFrameAndLayerWithFrame:(CGRect)frame;
 - (void)_updatePlaceholerView;
-- (void)_updateUnfocusedShadowFrameAndLayerWithFrame:(CGRect)a3;
+- (void)_updateUnfocusedShadowFrameAndLayerWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setConfiguration:(id)a3;
-- (void)setFocusedShadowView:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setMonogramDescription:(id)a3;
-- (void)setOverlayView:(id)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setUnFocusedShadowView:(id)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setFocusedShadowView:(id)view;
+- (void)setImage:(id)image;
+- (void)setMonogramDescription:(id)description;
+- (void)setOverlayView:(id)view;
+- (void)setPlaceholderImage:(id)image;
+- (void)setUnFocusedShadowView:(id)view;
 - (void)updateShadowImage;
 @end
 
 @implementation VUIMonogramView
 
-- (VUIMonogramView)initWithFrame:(CGRect)a3 configuration:(id)a4
+- (VUIMonogramView)initWithFrame:(CGRect)frame configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = VUIMonogramView;
-  v11 = [(VUIMonogramView *)&v25 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(VUIMonogramView *)&v25 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_configuration, a4);
+    objc_storeStrong(&height->_configuration, configuration);
     v13 = [VUIBaseView alloc];
     [(VUIMonogramView *)v12 bounds];
     v14 = [(VUIBaseView *)v13 initWithFrame:?];
@@ -48,8 +48,8 @@
     v12->_imageView = v17;
 
     v19 = v12->_imageView;
-    v20 = [v10 focusedBgColor];
-    [(VUIImageView *)v19 _setFocusedColor:v20];
+    focusedBgColor = [configurationCopy focusedBgColor];
+    [(VUIImageView *)v19 _setFocusedColor:focusedBgColor];
 
     [(VUIImageView *)v12->_imageView setClipsToBounds:1];
     [(VUIImageView *)v12->_imageView setContentMode:1];
@@ -69,9 +69,9 @@
 
 - (void)updateShadowImage
 {
-  v3 = [(VUIMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
+  unfocusedShadowImage = [(VUIMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
 
-  if (v3)
+  if (unfocusedShadowImage)
   {
     v4 = [VUIBaseView alloc];
     v5 = [(VUIBaseView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -90,116 +90,116 @@
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_configuration != v5)
+  configurationCopy = configuration;
+  if (self->_configuration != configurationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_configuration, a3);
+    v6 = configurationCopy;
+    objc_storeStrong(&self->_configuration, configuration);
     [(VUIMonogramView *)self updateShadowImage];
-    v5 = v6;
+    configurationCopy = v6;
   }
 }
 
-- (void)setFocusedShadowView:(id)a3
+- (void)setFocusedShadowView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   focusedShadowView = self->_focusedShadowView;
-  if (focusedShadowView != v5)
+  if (focusedShadowView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUIBaseView *)focusedShadowView removeFromSuperview];
-    objc_storeStrong(&self->_focusedShadowView, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_focusedShadowView, view);
+    viewCopy = v8;
     if (self->_focusedShadowView)
     {
       imageAndShadowContainerView = self->_imageAndShadowContainerView;
       if (imageAndShadowContainerView)
       {
         [VUIBaseView insertSubview:"insertSubview:atIndex:" atIndex:?];
-        v5 = v8;
+        viewCopy = v8;
       }
     }
   }
 }
 
-- (void)setUnFocusedShadowView:(id)a3
+- (void)setUnFocusedShadowView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   unfocusedShadowView = self->_unfocusedShadowView;
-  if (unfocusedShadowView != v5)
+  if (unfocusedShadowView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(VUIBaseView *)unfocusedShadowView removeFromSuperview];
-    objc_storeStrong(&self->_unfocusedShadowView, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_unfocusedShadowView, view);
+    viewCopy = v8;
     if (self->_unfocusedShadowView)
     {
       imageAndShadowContainerView = self->_imageAndShadowContainerView;
       if (imageAndShadowContainerView)
       {
         [VUIBaseView insertSubview:"insertSubview:atIndex:" atIndex:?];
-        v5 = v8;
+        viewCopy = v8;
       }
     }
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(VUIImageView *)self->_imageView setImage:v6];
     [(VUIImageView *)self->_imageView setVuiAlpha:1.0];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v5 = a3;
-  if (self->_placeholderImage != v5)
+  imageCopy = image;
+  if (self->_placeholderImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_placeholderImage, image);
     [(VUIImageView *)self->_imageView setPlaceholderImage:v6];
     [(VUIMonogramView *)self _updatePlaceholerView];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setMonogramDescription:(id)a3
+- (void)setMonogramDescription:(id)description
 {
-  v7 = a3;
-  if (self->_monogramDescription != v7)
+  descriptionCopy = description;
+  if (self->_monogramDescription != descriptionCopy)
   {
-    objc_storeStrong(&self->_monogramDescription, a3);
-    if ([(VUIMonogramDescription *)v7 scaleMode]== 2)
+    objc_storeStrong(&self->_monogramDescription, description);
+    if ([(VUIMonogramDescription *)descriptionCopy scaleMode]== 2)
     {
-      [(VUIMonogramDescription *)v7 backgroundColor];
+      [(VUIMonogramDescription *)descriptionCopy backgroundColor];
     }
 
     else
     {
-      [(VUIMonogramDescription *)v7 fillColor];
+      [(VUIMonogramDescription *)descriptionCopy fillColor];
     }
     v5 = ;
     [(VUIBaseView *)self->_placeholderView setVuiBackgroundColor:v5];
     [(VUIMonogramView *)self _updatePlaceholerView];
-    v6 = [(VUIMonogramView *)self imageProxy];
-    [(VUIMonogramView *)self _loadWithMonogramDescription:v7 imageProxy:v6];
+    imageProxy = [(VUIMonogramView *)self imageProxy];
+    [(VUIMonogramView *)self _loadWithMonogramDescription:descriptionCopy imageProxy:imageProxy];
   }
 }
 
 - (void)_updatePlaceholerView
 {
-  v3 = [(VUIMonogramView *)self placeholderImage];
-  v4 = v3 == 0;
-  v5 = v3 != 0;
+  placeholderImage = [(VUIMonogramView *)self placeholderImage];
+  v4 = placeholderImage == 0;
+  v5 = placeholderImage != 0;
 
   [(VUIBaseView *)self->_placeholderView setHidden:v5];
   imageView = self->_imageView;
@@ -207,11 +207,11 @@
   [(VUIImageView *)imageView setHidden:v4];
 }
 
-- (void)_updateUnfocusedShadowFrameAndLayerWithFrame:(CGRect)a3
+- (void)_updateUnfocusedShadowFrameAndLayerWithFrame:(CGRect)frame
 {
-  v4 = a3.size.width / 130.0;
-  v5 = [(VUIMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
-  [v5 size];
+  v4 = frame.size.width / 130.0;
+  unfocusedShadowImage = [(VUIMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
+  [unfocusedShadowImage size];
   v7 = v6;
   v9 = v8;
 
@@ -221,21 +221,21 @@
   v12 = floor((CGRectGetWidth(v18) - v10) * 0.5);
   [(VUIMonogramView *)self bounds];
   [(VUIBaseView *)self->_unfocusedShadowView setFrame:v12, floor((CGRectGetHeight(v19) - v11) * 0.5), v10, v11];
-  v13 = [(VUIBaseView *)self->_unfocusedShadowView layer];
-  v14 = [(VUIMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
-  [v13 setContents:{objc_msgSend(v14, "vuiCGImage")}];
+  layer = [(VUIBaseView *)self->_unfocusedShadowView layer];
+  unfocusedShadowImage2 = [(VUIMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
+  [layer setContents:{objc_msgSend(unfocusedShadowImage2, "vuiCGImage")}];
 
-  v16 = [(VUIBaseView *)self->_unfocusedShadowView layer];
-  v15 = [(VUIMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
-  [v15 scale];
-  [v16 setContentsScale:?];
+  layer2 = [(VUIBaseView *)self->_unfocusedShadowView layer];
+  unfocusedShadowImage3 = [(VUIMonogramViewConfiguration *)self->_configuration unfocusedShadowImage];
+  [unfocusedShadowImage3 scale];
+  [layer2 setContentsScale:?];
 }
 
-- (void)_updateFocusedShadowFrameAndLayerWithFrame:(CGRect)a3
+- (void)_updateFocusedShadowFrameAndLayerWithFrame:(CGRect)frame
 {
-  v4 = a3.size.width / 130.0;
-  v5 = [(VUIMonogramViewConfiguration *)self->_configuration focusedShadowImage];
-  [v5 size];
+  v4 = frame.size.width / 130.0;
+  focusedShadowImage = [(VUIMonogramViewConfiguration *)self->_configuration focusedShadowImage];
+  [focusedShadowImage size];
   v7 = v6;
   v9 = v8;
 
@@ -245,29 +245,29 @@
   v12 = floor((CGRectGetWidth(v18) - v10) * 0.5);
   [(VUIMonogramView *)self bounds];
   [(VUIBaseView *)self->_focusedShadowView setFrame:v12, floor((CGRectGetHeight(v19) - v11) * 0.5), v10, v11];
-  v13 = [(VUIBaseView *)self->_focusedShadowView layer];
-  v14 = [(VUIMonogramViewConfiguration *)self->_configuration focusedShadowImage];
-  [v13 setContents:{objc_msgSend(v14, "vuiCGImage")}];
+  layer = [(VUIBaseView *)self->_focusedShadowView layer];
+  focusedShadowImage2 = [(VUIMonogramViewConfiguration *)self->_configuration focusedShadowImage];
+  [layer setContents:{objc_msgSend(focusedShadowImage2, "vuiCGImage")}];
 
-  v16 = [(VUIBaseView *)self->_focusedShadowView layer];
-  v15 = [(VUIMonogramViewConfiguration *)self->_configuration focusedShadowImage];
-  [v15 scale];
-  [v16 setContentsScale:?];
+  layer2 = [(VUIBaseView *)self->_focusedShadowView layer];
+  focusedShadowImage3 = [(VUIMonogramViewConfiguration *)self->_configuration focusedShadowImage];
+  [focusedShadowImage3 scale];
+  [layer2 setContentsScale:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(VUIMonogramView *)self vui_layoutSubviews:1 computationOnly:a3.width, a3.height];
+  [(VUIMonogramView *)self vui_layoutSubviews:1 computationOnly:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  if (a4)
+  if (only)
   {
-    [(VUIImageView *)self->_imageView vui_sizeThatFits:a3.width, a3.height];
+    [(VUIImageView *)self->_imageView vui_sizeThatFits:subviews.width, subviews.height];
     v6 = v5;
     v8 = v7;
   }
@@ -276,7 +276,7 @@
   {
     v6 = *MEMORY[0x1E695F060];
     v8 = *(MEMORY[0x1E695F060] + 8);
-    [(VUIMonogramView *)self bounds:a3.width];
+    [(VUIMonogramView *)self bounds:subviews.width];
     v23.receiver = self;
     v23.super_class = VUIMonogramView;
     [(VUIMonogramView *)&v23 vui_layoutSubviews:0 computationOnly:v9, v10];
@@ -289,9 +289,9 @@
     [(VUIBaseView *)self->_imageAndShadowContainerView setFrame:v12, v14, v16, v18];
     [(VUIBaseView *)self->_placeholderView setFrame:v12, v14, v16, v18];
     [(UIView *)self->_overlayView setFrame:v12, v14, v16, v18];
-    v19 = [(VUIBaseView *)self->_placeholderView layer];
+    layer = [(VUIBaseView *)self->_placeholderView layer];
     [(VUIMonogramView *)self bounds];
-    [v19 setCornerRadius:CGRectGetWidth(v25) * 0.5];
+    [layer setCornerRadius:CGRectGetWidth(v25) * 0.5];
 
     imageView = self->_imageView;
     [(VUIMonogramView *)self bounds];
@@ -322,64 +322,64 @@
   [(UIView *)self->_overlayView setFrame:v4, v6, v8, v10];
   [(VUIMonogramView *)self bounds];
   v11 = CGRectGetWidth(v15) * 0.5;
-  v12 = [(VUIBaseView *)self->_placeholderView layer];
-  [v12 setCornerRadius:v11];
+  layer = [(VUIBaseView *)self->_placeholderView layer];
+  [layer setCornerRadius:v11];
 
   [(VUIImageView *)self->_imageView setCornerRadius:v11];
-  v13 = [(VUIMonogramView *)self layer];
-  [v13 setCornerRadius:v11];
+  layer2 = [(VUIMonogramView *)self layer];
+  [layer2 setCornerRadius:v11];
 
   [(VUIMonogramView *)self _updateUnfocusedShadowFrameAndLayerWithFrame:v4, v6, v8, v10];
 }
 
-- (void)setOverlayView:(id)a3
+- (void)setOverlayView:(id)view
 {
-  v4 = a3;
-  [(VUIMonogramView *)self vui_addSubview:v4 oldView:self->_overlayView];
+  viewCopy = view;
+  [(VUIMonogramView *)self vui_addSubview:viewCopy oldView:self->_overlayView];
   overlayView = self->_overlayView;
-  self->_overlayView = v4;
+  self->_overlayView = viewCopy;
 }
 
-- (void)_loadWithMonogramDescription:(id)a3 imageProxy:(id)a4
+- (void)_loadWithMonogramDescription:(id)description imageProxy:(id)proxy
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 preferedMonogramType] && !v7 && self->_placeholderImage)
+  descriptionCopy = description;
+  proxyCopy = proxy;
+  if (![descriptionCopy preferedMonogramType] && !proxyCopy && self->_placeholderImage)
   {
     [(VUIBaseView *)self->_placeholderView setHidden:1];
     [(VUIImageView *)self->_imageView setHidden:0];
     [(VUIImageView *)self->_imageView setImage:0];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [(_VUIMonogramDecorator *)v10 postNotificationName:@"VUIMonogramViewImageDidUpdateNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [(_VUIMonogramDecorator *)defaultCenter postNotificationName:@"VUIMonogramViewImageDidUpdateNotification" object:self];
     goto LABEL_20;
   }
 
-  [v6 size];
-  v10 = -[VUIImageScaleDecorator initWithScaleToSize:scaleMode:]([_VUIMonogramDecorator alloc], "initWithScaleToSize:scaleMode:", [v6 scaleMode], v8, v9);
-  v11 = [v6 imageURL];
-  if (v11)
+  [descriptionCopy size];
+  defaultCenter = -[VUIImageScaleDecorator initWithScaleToSize:scaleMode:]([_VUIMonogramDecorator alloc], "initWithScaleToSize:scaleMode:", [descriptionCopy scaleMode], v8, v9);
+  imageURL = [descriptionCopy imageURL];
+  if (imageURL)
   {
-    v12 = v11;
-    v13 = [v6 imageURL];
-    v14 = [v13 vuicore_isResourceOrSymbolURL];
+    v12 = imageURL;
+    imageURL2 = [descriptionCopy imageURL];
+    vuicore_isResourceOrSymbolURL = [imageURL2 vuicore_isResourceOrSymbolURL];
 
-    if ((v14 & 1) == 0)
+    if ((vuicore_isResourceOrSymbolURL & 1) == 0)
     {
-      [v6 padding];
-      [(VUIImageScaleDecorator *)v10 setPadding:?];
-      [v6 upscaleAdjustment];
-      [(VUIImageScaleDecorator *)v10 setFocusedSizeIncrease:?];
-      if (![v6 optimizedImageRendering])
+      [descriptionCopy padding];
+      [(VUIImageScaleDecorator *)defaultCenter setPadding:?];
+      [descriptionCopy upscaleAdjustment];
+      [(VUIImageScaleDecorator *)defaultCenter setFocusedSizeIncrease:?];
+      if (![descriptionCopy optimizedImageRendering])
       {
-        v21 = [v6 backgroundColor];
-        [(VUIImageScaleDecorator *)v10 setBgColor:v21];
+        backgroundColor = [descriptionCopy backgroundColor];
+        [(VUIImageScaleDecorator *)defaultCenter setBgColor:backgroundColor];
 
-        v22 = [v6 borderColor];
-        [(_VUIMonogramDecorator *)v10 setBorderColor:v22];
+        borderColor = [descriptionCopy borderColor];
+        [(_VUIMonogramDecorator *)defaultCenter setBorderColor:borderColor];
 
-        [v6 borderWidth];
-        [(_VUIMonogramDecorator *)v10 setBorderWidth:?];
-        if (v7)
+        [descriptionCopy borderWidth];
+        [(_VUIMonogramDecorator *)defaultCenter setBorderWidth:?];
+        if (proxyCopy)
         {
           goto LABEL_7;
         }
@@ -387,38 +387,38 @@
         goto LABEL_12;
       }
 
-      v15 = [(VUIMonogramView *)self imageView];
-      [v6 borderWidth];
-      [v15 setBorderWidth:?];
+      imageView = [(VUIMonogramView *)self imageView];
+      [descriptionCopy borderWidth];
+      [imageView setBorderWidth:?];
 
-      v16 = [(VUIMonogramView *)self imageView];
-      v17 = [v6 borderColor];
-      [v16 setBorderColor:v17];
+      imageView2 = [(VUIMonogramView *)self imageView];
+      borderColor2 = [descriptionCopy borderColor];
+      [imageView2 setBorderColor:borderColor2];
 
-      v18 = [(VUIMonogramView *)self imageView];
-      v19 = [v6 backgroundColor];
-      [v18 setPlaceholderColor:v19];
+      imageView3 = [(VUIMonogramView *)self imageView];
+      backgroundColor2 = [descriptionCopy backgroundColor];
+      [imageView3 setPlaceholderColor:backgroundColor2];
     }
   }
 
-  if (v7)
+  if (proxyCopy)
   {
 LABEL_7:
-    v20 = v7;
+    v20 = proxyCopy;
     goto LABEL_13;
   }
 
 LABEL_12:
   v23 = objc_alloc(MEMORY[0x1E69DF730]);
   v24 = +[_VUIMonogramImageLoader sharedInstance];
-  v20 = [v23 initWithObject:v6 imageLoader:v24 groupType:0];
+  v20 = [v23 initWithObject:descriptionCopy imageLoader:v24 groupType:0];
 
 LABEL_13:
   [v20 setCacheOnLoad:{objc_msgSend(MEMORY[0x1E69DF6D0], "canHandleDecodingOnRenderThread") ^ 1}];
-  [v20 setDecorator:v10];
-  [v20 setOptimizedImageRendering:{objc_msgSend(v6, "optimizedImageRendering")}];
-  v25 = [v6 imageURL];
-  if (v25 && (v26 = v25, [v6 imageURL], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "vuicore_isResourceOrSymbolURL"), v27, v26, (v28 & 1) == 0))
+  [v20 setDecorator:defaultCenter];
+  [v20 setOptimizedImageRendering:{objc_msgSend(descriptionCopy, "optimizedImageRendering")}];
+  imageURL3 = [descriptionCopy imageURL];
+  if (imageURL3 && (v26 = imageURL3, [descriptionCopy imageURL], v27 = objc_claimAutoreleasedReturnValue(), v28 = objc_msgSend(v27, "vuicore_isResourceOrSymbolURL"), v27, v26, (v28 & 1) == 0))
   {
     v30 = 1.0;
     [(VUIImageView *)self->_imageView setVuiAlpha:1.0];
@@ -431,13 +431,13 @@ LABEL_13:
   }
 
   self->_unfocusedImageAlpha = v30;
-  v31 = [v6 placeholderImage];
+  placeholderImage = [descriptionCopy placeholderImage];
 
-  if (v31)
+  if (placeholderImage)
   {
-    v32 = [v6 placeholderImage];
+    placeholderImage2 = [descriptionCopy placeholderImage];
     placeholderImage = self->_placeholderImage;
-    self->_placeholderImage = v32;
+    self->_placeholderImage = placeholderImage2;
   }
 
   objc_initWeak(&location, self);
@@ -447,7 +447,7 @@ LABEL_13:
   v35[2] = __59__VUIMonogramView__loadWithMonogramDescription_imageProxy___block_invoke;
   v35[3] = &unk_1E8734B68;
   objc_copyWeak(&v37, &location);
-  v36 = v6;
+  v36 = descriptionCopy;
   [(VUIImageView *)imageView setImageProxy:v20 completion:v35];
 
   objc_destroyWeak(&v37);

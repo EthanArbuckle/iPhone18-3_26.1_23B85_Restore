@@ -1,15 +1,15 @@
 @interface DADeviceObserverMock
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (DADeviceObserverMock)init;
 - (id)_devices;
-- (id)beginDiscoveringDevicesWithHandler:(id)a3;
+- (id)beginDiscoveringDevicesWithHandler:(id)handler;
 - (void)_updateHandlers;
-- (void)createDeviceWithSerialNumber:(id)a3 attributes:(id)a4 completion:(id)a5;
-- (void)destroyDeviceWithSerialNumber:(id)a3 completion:(id)a4;
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3;
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3;
-- (void)getDeviceStateWithSerialNumber:(id)a3 completion:(id)a4;
-- (void)updateDeviceState:(id)a3 completion:(id)a4;
+- (void)createDeviceWithSerialNumber:(id)number attributes:(id)attributes completion:(id)completion;
+- (void)destroyDeviceWithSerialNumber:(id)number completion:(id)completion;
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler;
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier;
+- (void)getDeviceStateWithSerialNumber:(id)number completion:(id)completion;
+- (void)updateDeviceState:(id)state completion:(id)completion;
 @end
 
 @implementation DADeviceObserverMock
@@ -40,100 +40,100 @@
   return v2;
 }
 
-- (void)createDeviceWithSerialNumber:(id)a3 attributes:(id)a4 completion:(id)a5
+- (void)createDeviceWithSerialNumber:(id)number attributes:(id)attributes completion:(id)completion
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(DADeviceObserverMock *)self devices];
-  objc_sync_enter(v10);
-  v11 = [(DADeviceObserverMock *)self devices];
-  v12 = [v11 objectForKeyedSubscript:v17];
+  numberCopy = number;
+  attributesCopy = attributes;
+  completionCopy = completion;
+  devices = [(DADeviceObserverMock *)self devices];
+  objc_sync_enter(devices);
+  devices2 = [(DADeviceObserverMock *)self devices];
+  v12 = [devices2 objectForKeyedSubscript:numberCopy];
 
-  objc_sync_exit(v10);
+  objc_sync_exit(devices);
   v13 = v12;
   if (!v12)
   {
-    v13 = [(DADeviceRepresentation *)[DADeviceMock alloc] initWithSerialNumber:v17 isLocal:1 attributes:v8];
-    v14 = [(DADeviceObserverMock *)self devices];
-    objc_sync_enter(v14);
-    v15 = [(DADeviceObserverMock *)self devices];
-    [v15 setObject:v13 forKeyedSubscript:v17];
+    v13 = [(DADeviceRepresentation *)[DADeviceMock alloc] initWithSerialNumber:numberCopy isLocal:1 attributes:attributesCopy];
+    devices3 = [(DADeviceObserverMock *)self devices];
+    objc_sync_enter(devices3);
+    devices4 = [(DADeviceObserverMock *)self devices];
+    [devices4 setObject:v13 forKeyedSubscript:numberCopy];
 
-    objc_sync_exit(v14);
+    objc_sync_exit(devices3);
     [(DADeviceObserverMock *)self _updateHandlers];
   }
 
   v16 = [NSNumber numberWithBool:v12 == 0];
-  v9[2](v9, v16);
+  completionCopy[2](completionCopy, v16);
 }
 
-- (void)getDeviceStateWithSerialNumber:(id)a3 completion:(id)a4
+- (void)getDeviceStateWithSerialNumber:(id)number completion:(id)completion
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(DADeviceObserverMock *)self devices];
-  objc_sync_enter(v7);
-  v8 = [(DADeviceObserverMock *)self devices];
-  v9 = [v8 objectForKeyedSubscript:v11];
+  numberCopy = number;
+  completionCopy = completion;
+  devices = [(DADeviceObserverMock *)self devices];
+  objc_sync_enter(devices);
+  devices2 = [(DADeviceObserverMock *)self devices];
+  v9 = [devices2 objectForKeyedSubscript:numberCopy];
 
-  objc_sync_exit(v7);
-  v10 = [v9 state];
-  v6[2](v6, v10);
+  objc_sync_exit(devices);
+  state = [v9 state];
+  completionCopy[2](completionCopy, state);
 }
 
-- (void)updateDeviceState:(id)a3 completion:(id)a4
+- (void)updateDeviceState:(id)state completion:(id)completion
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(DADeviceObserverMock *)self devices];
-  objc_sync_enter(v7);
-  v8 = [(DADeviceObserverMock *)self devices];
-  v9 = [v13 serialNumber];
-  v10 = [v8 objectForKeyedSubscript:v9];
+  stateCopy = state;
+  completionCopy = completion;
+  devices = [(DADeviceObserverMock *)self devices];
+  objc_sync_enter(devices);
+  devices2 = [(DADeviceObserverMock *)self devices];
+  serialNumber = [stateCopy serialNumber];
+  v10 = [devices2 objectForKeyedSubscript:serialNumber];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(devices);
   if (v10)
   {
-    v11 = [v10 state];
-    [v11 updateWithDeviceState:v13];
+    state = [v10 state];
+    [state updateWithDeviceState:stateCopy];
   }
 
   v12 = [NSNumber numberWithBool:v10 != 0];
-  v6[2](v6, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)destroyDeviceWithSerialNumber:(id)a3 completion:(id)a4
+- (void)destroyDeviceWithSerialNumber:(id)number completion:(id)completion
 {
-  v12 = a3;
-  v6 = a4;
-  v7 = [(DADeviceObserverMock *)self devices];
-  objc_sync_enter(v7);
-  v8 = [(DADeviceObserverMock *)self devices];
-  v9 = [v8 objectForKeyedSubscript:v12];
+  numberCopy = number;
+  completionCopy = completion;
+  devices = [(DADeviceObserverMock *)self devices];
+  objc_sync_enter(devices);
+  devices2 = [(DADeviceObserverMock *)self devices];
+  v9 = [devices2 objectForKeyedSubscript:numberCopy];
 
   if (v9)
   {
-    v10 = [(DADeviceObserverMock *)self devices];
-    [v10 removeObjectForKey:v12];
+    devices3 = [(DADeviceObserverMock *)self devices];
+    [devices3 removeObjectForKey:numberCopy];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(devices);
     [(DADeviceObserverMock *)self _updateHandlers];
   }
 
   else
   {
-    objc_sync_exit(v7);
+    objc_sync_exit(devices);
   }
 
   v11 = [NSNumber numberWithBool:v9 != 0];
-  v6[2](v6, v11);
+  completionCopy[2](completionCopy, v11);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.diagnostics.mock-device-service"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.diagnostics.mock-device-service"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 BOOLValue])
   {
@@ -144,72 +144,72 @@
     v9 = [NSSet setWithObject:objc_opt_class()];
     [v7 setClasses:v9 forSelector:"getDeviceStateWithSerialNumber:completion:" argumentIndex:0 ofReply:1];
 
-    [v5 setExportedObject:self];
-    [v5 setExportedInterface:v7];
-    [v5 setRemoteObjectInterface:0];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setExportedInterface:v7];
+    [connectionCopy setRemoteObjectInterface:0];
+    [connectionCopy resume];
   }
 
   else
   {
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 
   return 1;
 }
 
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSSet set];
-  (*(a3 + 2))(v4, v5);
+  (*(handler + 2))(handlerCopy, v5);
 }
 
-- (id)beginDiscoveringDevicesWithHandler:(id)a3
+- (id)beginDiscoveringDevicesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSUUID UUID];
-  v6 = [(DADeviceObserverMock *)self handlers];
-  objc_sync_enter(v6);
-  v7 = objc_retainBlock(v4);
-  v8 = [(DADeviceObserverMock *)self handlers];
-  [v8 setObject:v7 forKeyedSubscript:v5];
+  handlers = [(DADeviceObserverMock *)self handlers];
+  objc_sync_enter(handlers);
+  v7 = objc_retainBlock(handlerCopy);
+  handlers2 = [(DADeviceObserverMock *)self handlers];
+  [handlers2 setObject:v7 forKeyedSubscript:v5];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(handlers);
   [(DADeviceObserverMock *)self _updateHandlers];
 
   return v5;
 }
 
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = [(DADeviceObserverMock *)self handlers];
-  objc_sync_enter(v4);
-  v5 = [(DADeviceObserverMock *)self handlers];
-  [v5 removeObjectForKey:v6];
+  identifierCopy = identifier;
+  handlers = [(DADeviceObserverMock *)self handlers];
+  objc_sync_enter(handlers);
+  handlers2 = [(DADeviceObserverMock *)self handlers];
+  [handlers2 removeObjectForKey:identifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(handlers);
 }
 
 - (id)_devices
 {
-  v2 = [(DADeviceObserverMock *)self devices];
-  v3 = [v2 allValues];
-  v4 = [NSSet setWithArray:v3];
+  devices = [(DADeviceObserverMock *)self devices];
+  allValues = [devices allValues];
+  v4 = [NSSet setWithArray:allValues];
 
   return v4;
 }
 
 - (void)_updateHandlers
 {
-  v3 = [(DADeviceObserverMock *)self _devices];
+  _devices = [(DADeviceObserverMock *)self _devices];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(DADeviceObserverMock *)self handlers];
-  v5 = [v4 copy];
+  handlers = [(DADeviceObserverMock *)self handlers];
+  v5 = [handlers copy];
 
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
@@ -227,12 +227,12 @@
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
-        v11 = [(DADeviceObserverMock *)self handlers];
-        v12 = [v11 objectForKeyedSubscript:v10];
+        handlers2 = [(DADeviceObserverMock *)self handlers];
+        v12 = [handlers2 objectForKeyedSubscript:v10];
 
         if (v12)
         {
-          (v12)[2](v12, v3);
+          (v12)[2](v12, _devices);
         }
 
         v9 = v9 + 1;

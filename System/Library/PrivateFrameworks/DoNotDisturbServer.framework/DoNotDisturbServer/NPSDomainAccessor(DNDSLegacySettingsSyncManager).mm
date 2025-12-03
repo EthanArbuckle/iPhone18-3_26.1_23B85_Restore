@@ -10,7 +10,7 @@
 - (id)dnds_bypassSettings
 {
   v5 = 0;
-  v1 = [a1 integerForKey:@"dndPrivilegedSenderTypes" keyExistsAndHasValidFormat:&v5];
+  v1 = [self integerForKey:@"dndPrivilegedSenderTypes" keyExistsAndHasValidFormat:&v5];
   if (v5 == 1)
   {
     v2 = [DNDSBypassSettingsRecord recordForLegacyPrivilegedSenderType:v1 legacyAddressBookID:0xFFFFFFFFLL];
@@ -27,25 +27,25 @@
 
 - (void)dnds_setBypassSettings:()DNDSLegacySettingsSyncManager
 {
-  v6 = [a3 makeRecord];
-  v4 = [v6 legacyPrivilegedSenderType];
-  if (v4 == 2)
+  makeRecord = [a3 makeRecord];
+  legacyPrivilegedSenderType = [makeRecord legacyPrivilegedSenderType];
+  if (legacyPrivilegedSenderType == 2)
   {
     v5 = 4;
   }
 
   else
   {
-    v5 = v4;
+    v5 = legacyPrivilegedSenderType;
   }
 
-  [a1 setInteger:v5 forKey:@"dndPrivilegedSenderTypes"];
+  [self setInteger:v5 forKey:@"dndPrivilegedSenderTypes"];
 }
 
 - (id)dnds_scheduleSettingsWithLastUpdated:()DNDSLegacySettingsSyncManager
 {
   v4 = a3;
-  v5 = [a1 objectForKey:@"dndEffectiveOverrides"];
+  v5 = [self objectForKey:@"dndEffectiveOverrides"];
   if (v5)
   {
     v17 = 0;
@@ -56,10 +56,10 @@
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
     v11 = [v6 decodeObjectOfClasses:v10 forKey:*MEMORY[0x277CCA308]];
 
-    v12 = [v11 firstObject];
-    if (v12)
+    firstObject = [v11 firstObject];
+    if (firstObject)
     {
-      v13 = [DNDSScheduleSettingsRecord recordForLegacyBehaviorOverride:v12 lastUpdated:v4];
+      v13 = [DNDSScheduleSettingsRecord recordForLegacyBehaviorOverride:firstObject lastUpdated:v4];
       v14 = [DNDSScheduleSettings settingsForRecord:v13];
     }
 
@@ -86,19 +86,19 @@
 - (void)dnds_setScheduleSettings:()DNDSLegacySettingsSyncManager
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 makeRecord];
-  v5 = [v4 legacyBehaviorOverride];
-  if (v5)
+  makeRecord = [a3 makeRecord];
+  legacyBehaviorOverride = [makeRecord legacyBehaviorOverride];
+  if (legacyBehaviorOverride)
   {
-    v6 = [MEMORY[0x277CCAAB0] dnds_secureLegacyArchiver];
-    v13[0] = v5;
+    dnds_secureLegacyArchiver = [MEMORY[0x277CCAAB0] dnds_secureLegacyArchiver];
+    v13[0] = legacyBehaviorOverride;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
-    [v6 encodeObject:v7 forKey:*MEMORY[0x277CCA308]];
+    [dnds_secureLegacyArchiver encodeObject:v7 forKey:*MEMORY[0x277CCA308]];
 
-    v8 = [v6 encodedData];
-    if (v8)
+    encodedData = [dnds_secureLegacyArchiver encodedData];
+    if (encodedData)
     {
-      [a1 setObject:v8 forKey:@"dndEffectiveOverrides"];
+      [self setObject:encodedData forKey:@"dndEffectiveOverrides"];
     }
 
     else

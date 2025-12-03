@@ -1,81 +1,81 @@
 @interface MFLibraryIMAPStore
-+ (void)setHandlerForTemporaryUidToRemoteIDMapping:(id)a3;
-- (BOOL)_changedFlagsForMessage:(id)a3 fetchResponse:(id)a4 newFlags:(unint64_t *)a5;
-- (BOOL)_doUidCopy:(id *)a3 toStore:(id)a4 newMessages:(id)a5;
-- (BOOL)_fetchDataForMimePart:(id)a3 range:(_NSRange)a4 isComplete:(BOOL *)a5 consumer:(id)a6;
-- (BOOL)_shouldContinueToPreservedUID:(unint64_t)a3;
++ (void)setHandlerForTemporaryUidToRemoteIDMapping:(id)mapping;
+- (BOOL)_changedFlagsForMessage:(id)message fetchResponse:(id)response newFlags:(unint64_t *)flags;
+- (BOOL)_doUidCopy:(id *)copy toStore:(id)store newMessages:(id)messages;
+- (BOOL)_fetchDataForMimePart:(id)part range:(_NSRange)range isComplete:(BOOL *)complete consumer:(id)consumer;
+- (BOOL)_shouldContinueToPreservedUID:(unint64_t)d;
 - (BOOL)canCompact;
-- (BOOL)connection:(id)a3 shouldHandleUntaggedResponse:(id)a4 forCommand:(id *)a5;
-- (BOOL)hasValidCacheFileForMessage:(id)a3;
-- (BOOL)performOperationRequiringConnection:(BOOL)a3 withOptions:(int)a4 operation:(id)a5;
-- (id)_dataForMessage:(id)a3 readHeadersOnly:(BOOL)a4;
-- (id)_downloadForMessageBodyData:(id)a3;
-- (id)_fetchFullBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 downloadIfNecessary:(BOOL)a5 didDownload:(BOOL *)a6;
+- (BOOL)connection:(id)connection shouldHandleUntaggedResponse:(id)response forCommand:(id *)command;
+- (BOOL)hasValidCacheFileForMessage:(id)message;
+- (BOOL)performOperationRequiringConnection:(BOOL)connection withOptions:(int)options operation:(id)operation;
+- (id)_dataForMessage:(id)message readHeadersOnly:(BOOL)only;
+- (id)_downloadForMessageBodyData:(id)data;
+- (id)_fetchFullBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available downloadIfNecessary:(BOOL)necessary didDownload:(BOOL *)download;
 - (id)_idleConditionsObservable;
-- (id)_newSearchResponseQueueForConnection:(id)a3 limit:(unsigned int)a4;
+- (id)_newSearchResponseQueueForConnection:(id)connection limit:(unsigned int)limit;
 - (id)_observeChangesInIdleConditions;
-- (id)_performBodyDataDownload:(id)a3 usingConnection:(id)a4 isPartial:(BOOL *)a5;
+- (id)_performBodyDataDownload:(id)download usingConnection:(id)connection isPartial:(BOOL *)partial;
 - (id)_searchArgumentsForSynchronize;
-- (id)_searchFlagsForUIDs:(id)a3 usingConnection:(id)a4;
-- (id)_uidsForMessages:(id)a3;
-- (id)_updateLibraryForTransferedMessages:(id)a3 toDestinationMailbox:(id)a4 newMessageInfo:(id)a5 flagsToSet:(id)a6;
-- (id)addMessages:(id)a3 newMessagesByOldMessage:(id)a4;
+- (id)_searchFlagsForUIDs:(id)ds usingConnection:(id)connection;
+- (id)_uidsForMessages:(id)messages;
+- (id)_updateLibraryForTransferedMessages:(id)messages toDestinationMailbox:(id)mailbox newMessageInfo:(id)info flagsToSet:(id)set;
+- (id)addMessages:(id)messages newMessagesByOldMessage:(id)message;
 - (id)deletedMessages;
 - (id)mailboxName;
-- (id)messageForRemoteID:(id)a3;
-- (id)messageForRemoteID:(id)a3 inMailbox:(id)a4;
-- (id)messageIdRollCall:(id)a3;
-- (id)moveMessages:(id)a3 toMailbox:(id)a4 markAsRead:(BOOL)a5;
-- (id)newDictionaryForLocalFlags:(unint64_t)a3 serverFlags:(unint64_t)a4 existingDictionary:(id)a5;
+- (id)messageForRemoteID:(id)d;
+- (id)messageForRemoteID:(id)d inMailbox:(id)mailbox;
+- (id)messageIdRollCall:(id)call;
+- (id)moveMessages:(id)messages toMailbox:(id)mailbox markAsRead:(BOOL)read;
+- (id)newDictionaryForLocalFlags:(unint64_t)flags serverFlags:(unint64_t)serverFlags existingDictionary:(id)dictionary;
 - (id)offlineCache;
 - (id)offlineCacheIfOffline;
 - (id)relativePath;
-- (id)remoteIDsFromUniqueRemoteIDs:(id)a3;
-- (id)sequenceIdentifierForUIDs:(id)a3;
-- (id)setFlagsFromDictionary:(id)a3 forMessages:(id)a4;
-- (id)uniqueRemoteIDsForMessages:(id)a3;
-- (id)willSetFlagsFromDictionary:(id)a3 forMessages:(id)a4;
-- (int64_t)fetchMessagesWithMessageIDs:(id)a3 andSetFlags:(unint64_t)a4;
-- (int64_t)fetchMessagesWithRemoteIDs:(id)a3 andSetFlags:(unint64_t)a4;
-- (int64_t)fetchNumMessages:(unint64_t)a3 preservingUID:(id)a4 options:(unint64_t)a5;
-- (unint64_t)_doAppend:(id *)a3;
-- (unint64_t)_fetchMessagesWithArguments:(id)a3 idRange:(id)a4 onConnection:(id)a5 synchronize:(BOOL)a6 limit:(unint64_t)a7 topUIDToCompact:(unint64_t)a8 topKnownUID:(unint64_t)a9 success:(BOOL *)a10 examinedRange:(_NSRange *)a11 fetchableUIDsFound:(unint64_t *)a12 preserveUID:(unint64_t *)a13 numFetchedUIDs:(unint64_t *)a14;
-- (unint64_t)appendMessages:(id)a3 unsuccessfulOnes:(id)a4 newMessageIDs:(id)a5 newMessages:(id)a6 flagsToSet:(id)a7 customIMAPFlagsToSet:(id)a8;
-- (unint64_t)fetchMessagesWithUIDs:(id)a3 connection:(id)a4 newCount:(unint64_t)a5 flagsToSet:(unint64_t)a6 queueClass:(Class)a7;
+- (id)remoteIDsFromUniqueRemoteIDs:(id)ds;
+- (id)sequenceIdentifierForUIDs:(id)ds;
+- (id)setFlagsFromDictionary:(id)dictionary forMessages:(id)messages;
+- (id)uniqueRemoteIDsForMessages:(id)messages;
+- (id)willSetFlagsFromDictionary:(id)dictionary forMessages:(id)messages;
+- (int64_t)fetchMessagesWithMessageIDs:(id)ds andSetFlags:(unint64_t)flags;
+- (int64_t)fetchMessagesWithRemoteIDs:(id)ds andSetFlags:(unint64_t)flags;
+- (int64_t)fetchNumMessages:(unint64_t)messages preservingUID:(id)d options:(unint64_t)options;
+- (unint64_t)_doAppend:(id *)append;
+- (unint64_t)_fetchMessagesWithArguments:(id)arguments idRange:(id)range onConnection:(id)connection synchronize:(BOOL)synchronize limit:(unint64_t)limit topUIDToCompact:(unint64_t)compact topKnownUID:(unint64_t)d success:(BOOL *)self0 examinedRange:(_NSRange *)self1 fetchableUIDsFound:(unint64_t *)self2 preserveUID:(unint64_t *)self3 numFetchedUIDs:(unint64_t *)self4;
+- (unint64_t)appendMessages:(id)messages unsuccessfulOnes:(id)ones newMessageIDs:(id)ds newMessages:(id)newMessages flagsToSet:(id)set customIMAPFlagsToSet:(id)toSet;
+- (unint64_t)fetchMessagesWithUIDs:(id)ds connection:(id)connection newCount:(unint64_t)count flagsToSet:(unint64_t)set queueClass:(Class)class;
 - (unint64_t)growFetchWindow;
 - (unint64_t)serverMessageCount;
-- (unint64_t)syncMessagesWithUIDs:(id)a3 connection:(id)a4 libraryDetails:(id)a5 flagSearchResults:(id)a6;
-- (void)_fetchMessagesMatchingCriterion:(id)a3 limit:(unsigned int)a4 withOptions:(int)a5 handler:(id)a6;
-- (void)_fetchServerUnreadCountWithConnection:(id)a3;
-- (void)_handleFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5;
-- (void)_performActionsOnConnection:(id)a3 uidsToFetch:(id *)a4 uidsToSync:(id *)a5 messagesToCompact:(id *)a6 libraryDetails:(id)a7 flagSearchResults:(id)a8 shouldForce:(BOOL)a9 newUIDsToFetch:(unsigned int *)a10;
-- (void)_setFlagsForMessages:(id)a3;
-- (void)_setFlagsFromDictionary:(id)a3 forMessages:(id)a4;
-- (void)_synchronouslySetFlags:(id)a3 clearFlags:(id)a4 forMessages:(id)a5 originalChanges:(id)a6;
-- (void)_updateSelectedUID:(unint64_t *)a3;
-- (void)_updateServerUnreadCount:(unint64_t)a3;
-- (void)addFlagChanges:(id)a3 forMessages:(id)a4;
+- (unint64_t)syncMessagesWithUIDs:(id)ds connection:(id)connection libraryDetails:(id)details flagSearchResults:(id)results;
+- (void)_fetchMessagesMatchingCriterion:(id)criterion limit:(unsigned int)limit withOptions:(int)options handler:(id)handler;
+- (void)_fetchServerUnreadCountWithConnection:(id)connection;
+- (void)_handleFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message;
+- (void)_performActionsOnConnection:(id)connection uidsToFetch:(id *)fetch uidsToSync:(id *)sync messagesToCompact:(id *)compact libraryDetails:(id)details flagSearchResults:(id)results shouldForce:(BOOL)force newUIDsToFetch:(unsigned int *)self0;
+- (void)_setFlagsForMessages:(id)messages;
+- (void)_setFlagsFromDictionary:(id)dictionary forMessages:(id)messages;
+- (void)_synchronouslySetFlags:(id)flags clearFlags:(id)clearFlags forMessages:(id)messages originalChanges:(id)changes;
+- (void)_updateSelectedUID:(unint64_t *)d;
+- (void)_updateServerUnreadCount:(unint64_t)count;
+- (void)addFlagChanges:(id)changes forMessages:(id)messages;
 - (void)close;
-- (void)connection:(id)a3 didBeginBodyLoad:(id)a4 section:(id)a5;
-- (void)connection:(id)a3 didFinishLoadingBodyData:(id)a4 section:(id)a5;
-- (void)connection:(id)a3 didLoadMoreBodyData:(id)a4 section:(id)a5;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4 forCommand:(id *)a5;
+- (void)connection:(id)connection didBeginBodyLoad:(id)load section:(id)section;
+- (void)connection:(id)connection didFinishLoadingBodyData:(id)data section:(id)section;
+- (void)connection:(id)connection didLoadMoreBodyData:(id)data section:(id)section;
+- (void)connection:(id)connection didReceiveResponse:(id)response forCommand:(id *)command;
 - (void)dealloc;
 - (void)doCompact;
-- (void)focusedMessageDidChange:(id)a3;
+- (void)focusedMessageDidChange:(id)change;
 - (void)removeAllLocalMessages;
 - (void)reselectMailbox;
-- (void)setAdditionalFetchHeaders:(id)a3;
-- (void)setAdditionalSynchronizationSearchArguments:(id)a3;
-- (void)setDownloadDelegate:(id)a3;
-- (void)setFlagsCancelled:(id)a3 forMessages:(id)a4;
-- (void)setFlagsForAllMessagesFromDictionary:(id)a3;
-- (void)setMailboxUidValidity:(unsigned int)a3;
-- (void)setSequenceIdentifier:(id)a3 forUIDs:(id)a4;
-- (void)setServerMessageCount:(unint64_t)a3;
-- (void)updateDeletedCountWithNotDeletedCount:(unint64_t)a3;
-- (void)updateServerUnreadCountClosingConnection:(BOOL)a3;
-- (void)willRemoveDelegation:(id)a3;
+- (void)setAdditionalFetchHeaders:(id)headers;
+- (void)setAdditionalSynchronizationSearchArguments:(id)arguments;
+- (void)setDownloadDelegate:(id)delegate;
+- (void)setFlagsCancelled:(id)cancelled forMessages:(id)messages;
+- (void)setFlagsForAllMessagesFromDictionary:(id)dictionary;
+- (void)setMailboxUidValidity:(unsigned int)validity;
+- (void)setSequenceIdentifier:(id)identifier forUIDs:(id)ds;
+- (void)setServerMessageCount:(unint64_t)count;
+- (void)updateDeletedCountWithNotDeletedCount:(unint64_t)count;
+- (void)updateServerUnreadCountClosingConnection:(BOOL)connection;
+- (void)willRemoveDelegation:(id)delegation;
 @end
 
 @implementation MFLibraryIMAPStore
@@ -107,44 +107,44 @@
   [(MFLibraryStore *)&v7 dealloc];
 }
 
-- (unint64_t)fetchMessagesWithUIDs:(id)a3 connection:(id)a4 newCount:(unint64_t)a5 flagsToSet:(unint64_t)a6 queueClass:(Class)a7
+- (unint64_t)fetchMessagesWithUIDs:(id)ds connection:(id)connection newCount:(unint64_t)count flagsToSet:(unint64_t)set queueClass:(Class)class
 {
-  v12 = objc_alloc_init(a7);
+  v12 = objc_alloc_init(class);
   v12[6] = self;
-  v12[7] = a4;
-  v12[8] = a5;
+  v12[7] = connection;
+  v12[8] = count;
   v12[10] = self->_highestModSequence;
-  v12[11] = a6;
-  [a4 sendSkeletonResponsesForUIDs:a3 includeTo:1 toQueue:v12];
+  v12[11] = set;
+  [connection sendSkeletonResponsesForUIDs:ds includeTo:1 toQueue:v12];
   [v12 flush];
   v13 = v12[9];
 
   return v13;
 }
 
-- (unint64_t)syncMessagesWithUIDs:(id)a3 connection:(id)a4 libraryDetails:(id)a5 flagSearchResults:(id)a6
+- (unint64_t)syncMessagesWithUIDs:(id)ds connection:(id)connection libraryDetails:(id)details flagSearchResults:(id)results
 {
   v11 = objc_alloc_init(MFSyncResponseQueue);
   v11->super._url = [(MFLibraryStore *)self URLString];
   v11->super._store = self;
-  v11->super._connection = a4;
-  v11->super._libraryDetails = a5;
+  v11->super._connection = connection;
+  v11->super._libraryDetails = details;
   v11->super._shouldCompact = 0;
   v11->super._shouldFetch = 0;
   *(&v11->super._isSearching + 1) = 1;
-  [a4 sendUidAndFlagResponsesForUIDs:a3 sequenceIdentifierProvider:self flagSearchResults:a6 toQueue:v11];
+  [connection sendUidAndFlagResponsesForUIDs:ds sequenceIdentifierProvider:self flagSearchResults:results toQueue:v11];
   [(MFBufferedQueue *)v11 flush];
 
   return 0;
 }
 
-- (void)_performActionsOnConnection:(id)a3 uidsToFetch:(id *)a4 uidsToSync:(id *)a5 messagesToCompact:(id *)a6 libraryDetails:(id)a7 flagSearchResults:(id)a8 shouldForce:(BOOL)a9 newUIDsToFetch:(unsigned int *)a10
+- (void)_performActionsOnConnection:(id)connection uidsToFetch:(id *)fetch uidsToSync:(id *)sync messagesToCompact:(id *)compact libraryDetails:(id)details flagSearchResults:(id)results shouldForce:(BOOL)force newUIDsToFetch:(unsigned int *)self0
 {
   v29 = *MEMORY[0x277D85DE8];
-  v17 = [*a4 count];
-  if (!a9)
+  v17 = [*fetch count];
+  if (!force)
   {
-    if (![*a5 count])
+    if (![*sync count])
     {
       goto LABEL_12;
     }
@@ -154,11 +154,11 @@
 
   if (v17)
   {
-    v26 = self;
-    if (*a10)
+    selfCopy = self;
+    if (*toFetch)
     {
       [objc_msgSend(MEMORY[0x277D283F8] "currentMonitor")];
-      v18 = *a10;
+      v18 = *toFetch;
     }
 
     else
@@ -166,28 +166,28 @@
       v18 = 0;
     }
 
-    v19 = *a4;
+    v19 = *fetch;
     v20 = objc_opt_class();
     v21 = v18;
-    self = v26;
-    [(MFLibraryIMAPStore *)v26 fetchMessagesWithUIDs:v19 connection:a3 newCount:v21 flagsToSet:0 queueClass:v20];
+    self = selfCopy;
+    [(MFLibraryIMAPStore *)selfCopy fetchMessagesWithUIDs:v19 connection:connection newCount:v21 flagsToSet:0 queueClass:v20];
   }
 
-  *a4 = 0;
-  *a10 = 0;
-  if ([*a5 count])
+  *fetch = 0;
+  *toFetch = 0;
+  if ([*sync count])
   {
     [objc_msgSend(MEMORY[0x277D283F8] "currentMonitor")];
 LABEL_11:
-    [(MFLibraryIMAPStore *)self syncMessagesWithUIDs:*a5 connection:a3 libraryDetails:a7 flagSearchResults:a8];
+    [(MFLibraryIMAPStore *)self syncMessagesWithUIDs:*sync connection:connection libraryDetails:details flagSearchResults:results];
   }
 
 LABEL_12:
 
-  *a5 = 0;
-  if (*a6 || a9)
+  *sync = 0;
+  if (*compact || force)
   {
-    v22 = [*a6 count];
+    v22 = [*compact count];
     if (v22)
     {
       v23 = v22;
@@ -202,25 +202,25 @@ LABEL_12:
       [-[MFLibraryStore library](self "library")];
     }
 
-    *a6 = 0;
+    *compact = 0;
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateSelectedUID:(unint64_t *)a3
+- (void)_updateSelectedUID:(unint64_t *)d
 {
   _MFLockGlobalLock();
   selectedUID = self->_selectedUID;
   if (selectedUID)
   {
-    v6 = [(NSString *)selectedUID intValue];
-    if (*a3 == v6)
+    intValue = [(NSString *)selectedUID intValue];
+    if (*d == intValue)
     {
       goto LABEL_6;
     }
 
-    v7 = v6;
+    v7 = intValue;
   }
 
   else
@@ -228,24 +228,24 @@ LABEL_12:
     v7 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  *a3 = v7;
+  *d = v7;
 LABEL_6:
 
   _MFUnlockGlobalLock();
 }
 
-- (void)focusedMessageDidChange:(id)a3
+- (void)focusedMessageDidChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [v4 mailbox];
+  object = [change object];
+  mailbox = [object mailbox];
   _MFLockGlobalLock();
-  if (v4 && v5 == *(&self->super.super.super.super.isa + *MEMORY[0x277D284E8]))
+  if (object && mailbox == *(&self->super.super.super.super.isa + *MEMORY[0x277D284E8]))
   {
-    v6 = [v4 remoteID];
-    if (([(NSString *)self->_selectedUID isEqual:v6]& 1) == 0)
+    remoteID = [object remoteID];
+    if (([(NSString *)self->_selectedUID isEqual:remoteID]& 1) == 0)
     {
 
-      self->_selectedUID = v6;
+      self->_selectedUID = remoteID;
     }
   }
 
@@ -258,11 +258,11 @@ LABEL_6:
   _MFUnlockGlobalLock();
 }
 
-- (id)_searchFlagsForUIDs:(id)a3 usingConnection:(id)a4
+- (id)_searchFlagsForUIDs:(id)ds usingConnection:(id)connection
 {
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [(MFLibraryStore *)self unreadCount];
-  if ([a3 count] >= 2 * v8)
+  array = [MEMORY[0x277CBEB18] array];
+  unreadCount = [(MFLibraryStore *)self unreadCount];
+  if ([ds count] >= 2 * unreadCount)
   {
     v9 = &unk_2869EBE28;
     v10 = 0;
@@ -274,22 +274,22 @@ LABEL_6:
     v10 = 1;
   }
 
-  [v7 addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 1, v9, v10)}];
-  [v7 addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 2, &unk_2869EBE58, 1)}];
-  [v7 addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 16, &unk_2869EBE70, 1)}];
-  [v7 addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 4, &unk_2869EBE88, 1)}];
+  [array addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 1, v9, v10)}];
+  [array addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 2, &unk_2869EBE58, 1)}];
+  [array addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 16, &unk_2869EBE70, 1)}];
+  [array addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 4, &unk_2869EBE88, 1)}];
   if ((*(self + 144) & 0x40) != 0)
   {
-    [v7 addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 256, &unk_2869EBEA0, 1)}];
+    [array addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 256, &unk_2869EBEA0, 1)}];
   }
 
   if ((*(self + 144) & 0x20) != 0)
   {
-    [v7 addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 256, &unk_2869EBEB8, 1)}];
+    [array addObject:{+[MFIMAPConnectionFlagSearchRequest requestWithMask:searchTerms:positiveMatch:](MFIMAPConnectionFlagSearchRequest, "requestWithMask:searchTerms:positiveMatch:", 256, &unk_2869EBEB8, 1)}];
   }
 
-  v11 = [a4 supportsCapability:16];
-  v12 = [v7 count];
+  v11 = [connection supportsCapability:16];
+  v12 = [array count];
   v13 = 75 * v12;
   if ((75 * v12) <= 2)
   {
@@ -312,21 +312,21 @@ LABEL_6:
     v15 = v13;
   }
 
-  if (v15 >= [a3 count])
+  if (v15 >= [ds count])
   {
     return 0;
   }
 
-  return [a4 searchUIDs:a3 withFlagRequests:v7];
+  return [connection searchUIDs:ds withFlagRequests:array];
 }
 
-- (unint64_t)_fetchMessagesWithArguments:(id)a3 idRange:(id)a4 onConnection:(id)a5 synchronize:(BOOL)a6 limit:(unint64_t)a7 topUIDToCompact:(unint64_t)a8 topKnownUID:(unint64_t)a9 success:(BOOL *)a10 examinedRange:(_NSRange *)a11 fetchableUIDsFound:(unint64_t *)a12 preserveUID:(unint64_t *)a13 numFetchedUIDs:(unint64_t *)a14
+- (unint64_t)_fetchMessagesWithArguments:(id)arguments idRange:(id)range onConnection:(id)connection synchronize:(BOOL)synchronize limit:(unint64_t)limit topUIDToCompact:(unint64_t)compact topKnownUID:(unint64_t)d success:(BOOL *)self0 examinedRange:(_NSRange *)self1 fetchableUIDsFound:(unint64_t *)self2 preserveUID:(unint64_t *)self3 numFetchedUIDs:(unint64_t *)self4
 {
-  v16 = a6;
-  v19 = a10;
+  synchronizeCopy = synchronize;
+  successCopy3 = success;
   v118 = *MEMORY[0x277D85DE8];
   v91 = 0;
-  v20 = [a5 searchIDSet:a4 forTerms:a3 success:&v91];
+  v20 = [connection searchIDSet:range forTerms:arguments success:&v91];
   v21 = MFLogGeneral();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -344,14 +344,14 @@ LABEL_6:
     _os_log_impl(&dword_258B7A000, v21, OS_LOG_TYPE_INFO, "[FetchActivity] Search for recent UIDs returned %lu items (success=%@)", buf, 0x16u);
   }
 
-  [(MFLibraryIMAPStore *)self _updateSelectedUID:a13];
+  [(MFLibraryIMAPStore *)self _updateSelectedUID:iD];
   if (!v91 || (v24 = [v20 count]) == 0)
   {
-    if (a11)
+    if (examinedRange)
     {
       v26 = 0;
-      *a11 = xmmword_258BBFDF0;
-      if (!a10)
+      *examinedRange = xmmword_258BBFDF0;
+      if (!success)
       {
         goto LABEL_12;
       }
@@ -360,21 +360,21 @@ LABEL_6:
     else
     {
       v26 = 0;
-      if (!a10)
+      if (!success)
       {
         goto LABEL_12;
       }
     }
 
 LABEL_11:
-    *v19 = v91;
+    *successCopy3 = v91;
     goto LABEL_12;
   }
 
   v25 = v24;
-  if (v16)
+  if (synchronizeCopy)
   {
-    v79 = [(MFLibraryIMAPStore *)self _searchFlagsForUIDs:v20 usingConnection:a5];
+    v79 = [(MFLibraryIMAPStore *)self _searchFlagsForUIDs:v20 usingConnection:connection];
   }
 
   else
@@ -382,51 +382,51 @@ LABEL_11:
     v79 = 0;
   }
 
-  if (a12)
+  if (found)
   {
-    *a12 += v25;
+    *found += v25;
   }
 
   v81 = v25;
-  v74 = v16;
+  v74 = synchronizeCopy;
   v30 = [objc_msgSend(v20 objectAtIndex:{0), "unsignedIntegerValue"}];
   v31 = [objc_msgSend(v20 "lastObject")];
-  v84 = a8;
-  if (v31 <= a8)
+  compactCopy = compact;
+  if (v31 <= compact)
   {
-    v32 = a8;
+    compactCopy2 = compact;
   }
 
   else
   {
-    v32 = v31;
+    compactCopy2 = v31;
   }
 
-  v33 = v32 - v30;
-  if (a11)
+  v33 = compactCopy2 - v30;
+  if (examinedRange)
   {
-    a11->location = v30;
-    a11->length = v33;
+    examinedRange->location = v30;
+    examinedRange->length = v33;
   }
 
-  if (v33 + 1 > a7)
+  if (v33 + 1 > limit)
   {
-    v34 = v33 + 1;
+    limitCopy = v33 + 1;
   }
 
   else
   {
-    v34 = a7;
+    limitCopy = limit;
   }
 
-  if (v34 >= 0x100)
+  if (limitCopy >= 0x100)
   {
     v35 = 256;
   }
 
   else
   {
-    v35 = v34;
+    v35 = limitCopy;
   }
 
   v89 = 0;
@@ -443,29 +443,29 @@ LABEL_11:
   v83 = v30;
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
   {
-    v76 = a4;
+    rangeCopy = range;
     v40 = v37;
-    v41 = [(MFLibraryStore *)self URLString];
-    v42 = [a5 selectedMailbox];
+    uRLString = [(MFLibraryStore *)self URLString];
+    selectedMailbox = [connection selectedMailbox];
     *buf = 138415106;
-    v95 = v41;
+    v95 = uRLString;
     v37 = v40;
     v96 = 2112;
-    v97 = v42;
+    v97 = selectedMailbox;
     v98 = 2112;
-    v99 = v76;
+    v99 = rangeCopy;
     v100 = 2048;
-    v101 = a7;
+    limitCopy2 = limit;
     v102 = 2048;
-    v103 = v84;
+    v103 = compactCopy;
     v104 = 2048;
-    v105 = a9;
+    dCopy = d;
     v106 = 2048;
     v107 = v81;
     v108 = 2048;
     v109 = v30;
     v110 = 2048;
-    v111 = v32;
+    v111 = compactCopy2;
     v112 = 2048;
     v113 = v38;
     v114 = 2048;
@@ -475,13 +475,13 @@ LABEL_11:
     _os_log_impl(&dword_258B7A000, v39, OS_LOG_TYPE_INFO, "[FetchActivity] starting UID sync for %@ (selected mailbox: %@) idRange=%@ limit=%lu topUIDToCompact=%lu topKnownUID=%lu UIDCount=%lu lowUID=%lu highUID=%lu libraryDetailsIndex=%lu libraryDetailsUIDRange=%lu:%lu", buf, 0x7Au);
   }
 
-  if (v32 < v30)
+  if (compactCopy2 < v30)
   {
     v26 = 0;
     v43 = 0;
-    v44 = a14;
-    v19 = a10;
-    if (a14)
+    dsCopy2 = ds;
+    successCopy3 = success;
+    if (ds)
     {
       goto LABEL_106;
     }
@@ -495,31 +495,31 @@ LABEL_11:
   v45 = v37 - 1;
   do
   {
-    if (v32 < v89)
+    if (compactCopy2 < v89)
     {
       LOBYTE(v73) = 0;
-      [(MFLibraryIMAPStore *)self _performActionsOnConnection:a5 uidsToFetch:&v87 uidsToSync:&v86 messagesToCompact:&v88 libraryDetails:v36 flagSearchResults:v79 shouldForce:v73 newUIDsToFetch:&v85];
-      v46 = [(MFLibraryStore *)self library];
-      v36 = [v46 getDetailsForMessages:v78 absoluteBottom:v30 topOfDesiredRange:v89 - 1 range:&v89 fromMailbox:{-[MFLibraryStore URLString](self, "URLString")}];
+      [(MFLibraryIMAPStore *)self _performActionsOnConnection:connection uidsToFetch:&v87 uidsToSync:&v86 messagesToCompact:&v88 libraryDetails:v36 flagSearchResults:v79 shouldForce:v73 newUIDsToFetch:&v85];
+      library = [(MFLibraryStore *)self library];
+      v36 = [library getDetailsForMessages:v78 absoluteBottom:v30 topOfDesiredRange:v89 - 1 range:&v89 fromMailbox:{-[MFLibraryStore URLString](self, "URLString")}];
       v38 = [v36 count] - 1;
     }
 
     v47 = [objc_msgSend(v20 objectAtIndex:{v45), "intValue"}];
-    v49 = *a13 != 0x7FFFFFFFFFFFFFFFLL && v32 >= *a13;
-    v50 = a7 != 0 || v49;
-    if (!a7 && v49)
+    v49 = *iD != 0x7FFFFFFFFFFFFFFFLL && compactCopy2 >= *iD;
+    v50 = limit != 0 || v49;
+    if (!limit && v49)
     {
       v51 = MFLogGeneral();
       if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
       {
-        v52 = *a13;
+        v52 = *iD;
         *buf = 134217984;
         v95 = v52;
         _os_log_impl(&dword_258B7A000, v51, OS_LOG_TYPE_INFO, "[FetchActivity] preserving UID %lu!", buf, 0xCu);
       }
     }
 
-    if (v32 == v47 && v50)
+    if (compactCopy2 == v47 && v50)
     {
       v30 = v83;
       if (v38 < 0)
@@ -533,7 +533,7 @@ LABEL_58:
         while (1)
         {
           v53 = [objc_msgSend(v36 objectAtIndex:{v38), "uid"}];
-          if (v32 >= v53)
+          if (compactCopy2 >= v53)
           {
             break;
           }
@@ -562,7 +562,7 @@ LABEL_58:
         v57 = v53;
       }
 
-      if (v57 != v32)
+      if (v57 != compactCopy2)
       {
         if (!v87)
         {
@@ -573,26 +573,26 @@ LABEL_58:
         if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
         {
           *buf = 134217984;
-          v95 = v32;
+          v95 = compactCopy2;
           _os_log_impl(&dword_258B7A000, v62, OS_LOG_TYPE_INFO, "[FetchActivity] Fetching %lu", buf, 0xCu);
         }
 
         v63 = [v20 objectAtIndex:v45];
         [v87 insertObject:v63 atIndex:0];
-        if ([v63 intValue] > a9)
+        if ([v63 intValue] > d)
         {
           ++v85;
           ++v77;
         }
 
-        if (a7)
+        if (limit)
         {
-          --a7;
+          --limit;
         }
 
         else
         {
-          a7 = 0;
+          limit = 0;
         }
 
         ++v82;
@@ -629,7 +629,7 @@ LABEL_100:
       if (os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134217984;
-        v95 = v32;
+        v95 = compactCopy2;
         _os_log_debug_impl(&dword_258B7A000, v65, OS_LOG_TYPE_DEBUG, "[FetchActivity] Syncing %lu", buf, 0xCu);
       }
 
@@ -654,14 +654,14 @@ LABEL_100:
         v30 = v83;
       }
 
-      if (a7)
+      if (limit)
       {
-        --a7;
+        --limit;
       }
 
       else
       {
-        a7 = 0;
+        limit = 0;
       }
 
       ++v82;
@@ -679,7 +679,7 @@ LABEL_100:
       v58 = [objc_msgSend(v36 objectAtIndex:{v38), "uid"}];
     }
 
-    if (v58 == v32)
+    if (v58 == compactCopy2)
     {
       if (!v88)
       {
@@ -690,7 +690,7 @@ LABEL_100:
       if (os_log_type_enabled(v64, OS_LOG_TYPE_INFO))
       {
         *buf = 134217984;
-        v95 = v32;
+        v95 = compactCopy2;
         _os_log_impl(&dword_258B7A000, v64, OS_LOG_TYPE_INFO, "[FetchActivity] Compacting %lu (2)", buf, 0xCu);
       }
 
@@ -698,17 +698,17 @@ LABEL_100:
     }
 
 LABEL_101:
-    v71 = v32 - 1;
-    if (!v32)
+    v71 = compactCopy2 - 1;
+    if (!compactCopy2)
     {
       break;
     }
 
-    --v32;
+    --compactCopy2;
   }
 
   while (v71 >= v30);
-  v19 = a10;
+  successCopy3 = success;
   if (v75)
   {
     v72 = *MEMORY[0x277D28320];
@@ -719,19 +719,19 @@ LABEL_101:
     -[MFLibraryStore setFlagsLocallyFromDictionary:forMessages:](self, "setFlagsLocallyFromDictionary:forMessages:", [MEMORY[0x277CBEAC0] dictionaryWithObjects:v93 forKeys:v92 count:2], v75);
   }
 
-  v44 = a14;
+  dsCopy2 = ds;
   v26 = v82;
   v43 = v77;
-  if (a14)
+  if (ds)
   {
 LABEL_106:
-    *v44 = v43;
+    *dsCopy2 = v43;
   }
 
 LABEL_107:
   LOBYTE(v73) = 1;
-  [(MFLibraryIMAPStore *)self _performActionsOnConnection:a5 uidsToFetch:&v87 uidsToSync:&v86 messagesToCompact:&v88 libraryDetails:v36 flagSearchResults:v79 shouldForce:v73 newUIDsToFetch:&v85];
-  if (v19)
+  [(MFLibraryIMAPStore *)self _performActionsOnConnection:connection uidsToFetch:&v87 uidsToSync:&v86 messagesToCompact:&v88 libraryDetails:v36 flagSearchResults:v79 shouldForce:v73 newUIDsToFetch:&v85];
+  if (successCopy3)
   {
     goto LABEL_11;
   }
@@ -749,17 +749,17 @@ LABEL_12:
   return v26;
 }
 
-- (void)updateDeletedCountWithNotDeletedCount:(unint64_t)a3
+- (void)updateDeletedCountWithNotDeletedCount:(unint64_t)count
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60__MFLibraryIMAPStore_updateDeletedCountWithNotDeletedCount___block_invoke;
   v5[3] = &unk_2798B1DB8;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = count;
   [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:1 operation:v5];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotification:{objc_msgSend(MEMORY[0x277CCAB88], "notificationWithName:object:userInfo:", *MEMORY[0x277D28530], self, 0)}];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotification:{objc_msgSend(MEMORY[0x277CCAB88], "notificationWithName:object:userInfo:", *MEMORY[0x277D28530], self, 0)}];
   *(self + 145) &= ~0x10u;
 }
 
@@ -777,7 +777,7 @@ uint64_t __60__MFLibraryIMAPStore_updateDeletedCountWithNotDeletedCount___block_
   return result;
 }
 
-- (BOOL)_shouldContinueToPreservedUID:(unint64_t)a3
+- (BOOL)_shouldContinueToPreservedUID:(unint64_t)d
 {
   v3 = [(MFLibraryIMAPStore *)self messageForRemoteID:EFStringWithUnsignedInteger()];
   if (v3)
@@ -788,27 +788,27 @@ uint64_t __60__MFLibraryIMAPStore_updateDeletedCountWithNotDeletedCount___block_
   return v3;
 }
 
-- (void)setAdditionalFetchHeaders:(id)a3
+- (void)setAdditionalFetchHeaders:(id)headers
 {
   _MFLockGlobalLock();
   additionalFetchHeaders = self->_additionalFetchHeaders;
-  if (additionalFetchHeaders != a3)
+  if (additionalFetchHeaders != headers)
   {
 
-    self->_additionalFetchHeaders = [a3 copy];
+    self->_additionalFetchHeaders = [headers copy];
   }
 
   _MFUnlockGlobalLock();
 }
 
-- (void)setAdditionalSynchronizationSearchArguments:(id)a3
+- (void)setAdditionalSynchronizationSearchArguments:(id)arguments
 {
   _MFLockGlobalLock();
   additionalSynchronizationSearchArguments = self->_additionalSynchronizationSearchArguments;
-  if (additionalSynchronizationSearchArguments != a3)
+  if (additionalSynchronizationSearchArguments != arguments)
   {
 
-    self->_additionalSynchronizationSearchArguments = [a3 copy];
+    self->_additionalSynchronizationSearchArguments = [arguments copy];
   }
 
   _MFUnlockGlobalLock();
@@ -836,9 +836,9 @@ uint64_t __60__MFLibraryIMAPStore_updateDeletedCountWithNotDeletedCount___block_
   return [(MFLibraryStore *)&v3 growFetchWindow];
 }
 
-- (int64_t)fetchNumMessages:(unint64_t)a3 preservingUID:(id)a4 options:(unint64_t)a5
+- (int64_t)fetchNumMessages:(unint64_t)messages preservingUID:(id)d options:(unint64_t)options
 {
-  v9 = [(MFMailMessageStore *)self mailboxUid];
+  mailboxUid = [(MFMailMessageStore *)self mailboxUid];
   [objc_msgSend(MEMORY[0x277D283F8] "currentMonitor")];
   v10 = MFLogGeneral();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -855,7 +855,7 @@ uint64_t __60__MFLibraryIMAPStore_updateDeletedCountWithNotDeletedCount___block_
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  if ((a5 & 0x40) != 0)
+  if ((options & 0x40) != 0)
   {
     v11 = 49;
   }
@@ -870,10 +870,10 @@ uint64_t __60__MFLibraryIMAPStore_updateDeletedCountWithNotDeletedCount___block_
   v14[2] = __61__MFLibraryIMAPStore_fetchNumMessages_preservingUID_options___block_invoke;
   v14[3] = &unk_2798B1DE0;
   v14[4] = self;
-  v14[5] = a4;
-  v14[9] = a3;
-  v14[10] = a5;
-  v14[6] = v9;
+  v14[5] = d;
+  v14[9] = messages;
+  v14[10] = options;
+  v14[6] = mailboxUid;
   v14[7] = &v19;
   v14[8] = &v15;
   [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:v11 operation:v14];
@@ -1280,9 +1280,9 @@ LABEL_112:
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateServerUnreadCountClosingConnection:(BOOL)a3
+- (void)updateServerUnreadCountClosingConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 33;
   }
@@ -1300,12 +1300,12 @@ LABEL_112:
   [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:v3 operation:v4];
 }
 
-- (void)_fetchServerUnreadCountWithConnection:(id)a3
+- (void)_fetchServerUnreadCountWithConnection:(id)connection
 {
   v19 = 0;
   if ([-[MFLibraryStore library](self "library")] && (v5 = objc_msgSend(-[MFLibraryStore library](self, "library"), "minimumRemoteIDForMailbox:", -[MFLibraryStore URLString](self, "URLString")), v5 >= 2))
   {
-    v6 = [a3 messageSetForRange:((v5 - 1) << 32) | 1];
+    v6 = [connection messageSetForRange:((v5 - 1) << 32) | 1];
     v7 = [-[MFLibraryStore mailbox](self "mailbox")];
     v8 = objc_alloc(MEMORY[0x277CBEA60]);
     if (v7)
@@ -1319,68 +1319,68 @@ LABEL_112:
     }
 
     v16 = v9;
-    v17 = [a3 countForSearchOfUidSet:v6 forTerms:v9 success:&v19];
+    v17 = [connection countForSearchOfUidSet:v6 forTerms:v9 success:&v19];
 
     if (v19 != 1)
     {
       goto LABEL_7;
     }
 
-    v10 = self;
+    selfCopy2 = self;
     v11 = v17;
   }
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
     v11 = 0;
   }
 
-  [(MFLibraryIMAPStore *)v10 _updateServerUnreadCount:v11];
+  [(MFLibraryIMAPStore *)selfCopy2 _updateServerUnreadCount:v11];
 LABEL_7:
   if (([-[MFLibraryStore mailbox](self "mailbox")] & 1) == 0)
   {
-    v12 = [a3 countForSearchOfUidSet:0x2869E37A0 forTerms:&unk_2869EBF00 success:&v19];
+    v12 = [connection countForSearchOfUidSet:0x2869E37A0 forTerms:&unk_2869EBF00 success:&v19];
     if (v19 == 1)
     {
       v13 = v12;
-      v14 = [(MFLibraryStore *)self URLString];
-      if (v14)
+      uRLString = [(MFLibraryStore *)self URLString];
+      if (uRLString)
       {
         [-[MFLibraryStore library](self "library")];
       }
     }
   }
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 postNotificationName:*MEMORY[0x277D283B8] object:{-[MFMailMessageStore mailboxUid](self, "mailboxUid")}];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277D283B8] object:{-[MFMailMessageStore mailboxUid](self, "mailboxUid")}];
 }
 
-- (void)_updateServerUnreadCount:(unint64_t)a3
+- (void)_updateServerUnreadCount:(unint64_t)count
 {
-  v5 = [(MFLibraryStore *)self library];
-  v6 = [(MFLibraryStore *)self URLString];
+  library = [(MFLibraryStore *)self library];
+  uRLString = [(MFLibraryStore *)self URLString];
 
-  [v5 setServerUnreadOnlyOnServerCount:a3 forMailbox:v6];
+  [library setServerUnreadOnlyOnServerCount:count forMailbox:uRLString];
 }
 
-- (id)_newSearchResponseQueueForConnection:(id)a3 limit:(unsigned int)a4
+- (id)_newSearchResponseQueueForConnection:(id)connection limit:(unsigned int)limit
 {
   v7 = objc_alloc_init(MFSearchResponseQueue);
-  v7->limit = a4;
+  v7->limit = limit;
   v7->super._url = [(MFLibraryStore *)self URLString];
   v7->super._store = self;
-  v7->super._connection = a3;
+  v7->super._connection = connection;
   v7->super._shouldCompact = 0;
   v7->super._shouldFetch = 1;
   v7->super._isSearching = 1;
   return v7;
 }
 
-- (void)_fetchMessagesMatchingCriterion:(id)a3 limit:(unsigned int)a4 withOptions:(int)a5 handler:(id)a6
+- (void)_fetchMessagesMatchingCriterion:(id)criterion limit:(unsigned int)limit withOptions:(int)options handler:(id)handler
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v19[0] = a3;
+  v19[0] = criterion;
   v19[1] = [MEMORY[0x277D28458] messageIsDeletedCriterion:0];
   v10 = [MEMORY[0x277D28458] andCompoundCriterionWithCriteria:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v19, 2)}];
   v11 = [MEMORY[0x277CBEB18] arrayWithObject:v10];
@@ -1392,15 +1392,15 @@ LABEL_7:
   v13[1] = 3221225472;
   v13[2] = __80__MFLibraryIMAPStore__fetchMessagesMatchingCriterion_limit_withOptions_handler___block_invoke;
   v13[3] = &unk_2798B1E30;
-  v13[6] = a6;
+  v13[6] = handler;
   v13[7] = &v15;
   v13[4] = v11;
   v13[5] = self;
-  v14 = a4;
-  [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:a5 | 1u operation:v13];
+  limitCopy = limit;
+  [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:options | 1u operation:v13];
   if ((v16[3] & 1) == 0)
   {
-    (*(a6 + 2))(a6, 0x7FFFFFFFFFFFFFFFLL, 0, [MEMORY[0x277CCA9B8] errorWithDomain:@"LibraryIMAPStoreErrorDomain" code:2 userInfo:0]);
+    (*(handler + 2))(handler, 0x7FFFFFFFFFFFFFFFLL, 0, [MEMORY[0x277CCA9B8] errorWithDomain:@"LibraryIMAPStoreErrorDomain" code:2 userInfo:0]);
   }
 
   _Block_object_dispose(&v15, 8);
@@ -1472,7 +1472,7 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)messageIdRollCall:(id)a3
+- (id)messageIdRollCall:(id)call
 {
   v6 = 0;
   v7 = &v6;
@@ -1484,7 +1484,7 @@ LABEL_14:
   v5[1] = 3221225472;
   v5[2] = __40__MFLibraryIMAPStore_messageIdRollCall___block_invoke;
   v5[3] = &unk_2798B1E58;
-  v5[4] = a3;
+  v5[4] = call;
   v5[5] = &v6;
   [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:17 operation:v5];
   v3 = v7[5];
@@ -1558,22 +1558,22 @@ id __76__MFLibraryIMAPStore_storeSearchResultMatchingCriterion_limit_offset_erro
   return result;
 }
 
-- (int64_t)fetchMessagesWithMessageIDs:(id)a3 andSetFlags:(unint64_t)a4
+- (int64_t)fetchMessagesWithMessageIDs:(id)ds andSetFlags:(unint64_t)flags
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = -1;
-  if ([a3 count])
+  if ([ds count])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __62__MFLibraryIMAPStore_fetchMessagesWithMessageIDs_andSetFlags___block_invoke;
     v9[3] = &unk_2798B1ED0;
-    v9[4] = a3;
+    v9[4] = ds;
     v9[5] = self;
     v9[6] = &v10;
-    v9[7] = a4;
+    v9[7] = flags;
     [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:1 operation:v9];
   }
 
@@ -1589,22 +1589,22 @@ uint64_t __62__MFLibraryIMAPStore_fetchMessagesWithMessageIDs_andSetFlags___bloc
   return result;
 }
 
-- (int64_t)fetchMessagesWithRemoteIDs:(id)a3 andSetFlags:(unint64_t)a4
+- (int64_t)fetchMessagesWithRemoteIDs:(id)ds andSetFlags:(unint64_t)flags
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = -1;
-  if ([a3 count])
+  if ([ds count])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __61__MFLibraryIMAPStore_fetchMessagesWithRemoteIDs_andSetFlags___block_invoke;
     v9[3] = &unk_2798B1EF8;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = ds;
     v9[6] = &v10;
-    v9[7] = a4;
+    v9[7] = flags;
     [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:17 operation:v9];
   }
 
@@ -1642,7 +1642,7 @@ uint64_t __61__MFLibraryIMAPStore_fetchMessagesWithRemoteIDs_andSetFlags___block
   return v3;
 }
 
-- (void)setMailboxUidValidity:(unsigned int)a3
+- (void)setMailboxUidValidity:(unsigned int)validity
 {
   v3 = *(&self->super.super.super.super.isa + *MEMORY[0x277D284E8]);
   v4 = EFStringWithInt();
@@ -1654,30 +1654,30 @@ uint64_t __61__MFLibraryIMAPStore_fetchMessagesWithRemoteIDs_andSetFlags___block
 {
   v6.receiver = self;
   v6.super_class = MFLibraryIMAPStore;
-  v3 = [(MFLibraryStore *)&v6 canCompact];
-  if (v3)
+  canCompact = [(MFLibraryStore *)&v6 canCompact];
+  if (canCompact)
   {
     if (*(&self->super.super.super.super.isa + *MEMORY[0x277D284F0]) == 3)
     {
       v4 = *MEMORY[0x277D284C8];
       if ([*(&self->super.super.super.super.isa + v4) isOffline])
       {
-        LOBYTE(v3) = 1;
+        LOBYTE(canCompact) = 1;
       }
 
       else
       {
-        LOBYTE(v3) = [*(&self->super.super.super.super.isa + v4) isOffline] ^ 1;
+        LOBYTE(canCompact) = [*(&self->super.super.super.super.isa + v4) isOffline] ^ 1;
       }
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(canCompact) = 0;
     }
   }
 
-  return v3;
+  return canCompact;
 }
 
 - (void)doCompact
@@ -1685,18 +1685,18 @@ uint64_t __61__MFLibraryIMAPStore_fetchMessagesWithRemoteIDs_andSetFlags___block
   v10.receiver = self;
   v10.super_class = MFLibraryIMAPStore;
   [(MFLibraryStore *)&v10 doCompact];
-  v3 = [(MFLibraryIMAPStore *)self offlineCacheIfOffline];
-  if (v3)
+  offlineCacheIfOffline = [(MFLibraryIMAPStore *)self offlineCacheIfOffline];
+  if (offlineCacheIfOffline)
   {
-    v4 = v3;
-    v5 = [(MFLibraryIMAPStore *)self deletedMessages];
-    v6 = [v5 count];
+    v4 = offlineCacheIfOffline;
+    deletedMessages = [(MFLibraryIMAPStore *)self deletedMessages];
+    v6 = [deletedMessages count];
     if (v6)
     {
       v7 = v6 - 1;
       do
       {
-        v8 = [v5 objectAtIndex:v7];
+        v8 = [deletedMessages objectAtIndex:v7];
         if ([v8 hasTemporaryUid])
         {
           [v4 expungeTemporaryUid:{objc_msgSend(v8, "uid")}];
@@ -1779,7 +1779,7 @@ uint64_t __66__MFLibraryIMAPStore_deleteMessagesOlderThanNumberOfDays_compact___
   return result;
 }
 
-+ (void)setHandlerForTemporaryUidToRemoteIDMapping:(id)a3
++ (void)setHandlerForTemporaryUidToRemoteIDMapping:(id)mapping
 {
   if (__remoteIDHandlerPred != -1)
   {
@@ -1791,7 +1791,7 @@ uint64_t __66__MFLibraryIMAPStore_deleteMessagesOlderThanNumberOfDays_compact___
     _Block_release(__remoteIDHandler);
   }
 
-  __remoteIDHandler = _Block_copy(a3);
+  __remoteIDHandler = _Block_copy(mapping);
 }
 
 void *__50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke()
@@ -1813,7 +1813,7 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
   return v2;
 }
 
-- (BOOL)_doUidCopy:(id *)a3 toStore:(id)a4 newMessages:(id)a5
+- (BOOL)_doUidCopy:(id *)copy toStore:(id)store newMessages:(id)messages
 {
   v44 = 0;
   v45 = &v44;
@@ -1823,21 +1823,21 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
   v39 = &v38;
   v40 = 0x3052000000;
   v41 = __Block_byref_object_copy__1;
-  var2 = a3->var2;
+  var2 = copy->var2;
   v42 = __Block_byref_object_dispose__1;
   v43 = var2;
-  v10 = [a4 mailboxName];
+  mailboxName = [store mailboxName];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3052000000;
   v35 = __Block_byref_object_copy__1;
   v36 = __Block_byref_object_dispose__1;
-  v37 = [(MFLibraryIMAPStore *)self offlineCacheIfOffline];
+  offlineCacheIfOffline = [(MFLibraryIMAPStore *)self offlineCacheIfOffline];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3052000000;
   v29 = __Block_byref_object_copy__1;
-  var1 = a3->var1;
+  var1 = copy->var1;
   v30 = __Block_byref_object_dispose__1;
   v31 = var1;
   v12 = [(MFLibraryIMAPStore *)self _uidsForMessages:?];
@@ -1856,22 +1856,22 @@ id __50__MFLibraryIMAPStore_copyRemoteIDForTemporaryUid___block_invoke_2(uint64_
   v24[1] = 3221225472;
   v24[2] = __53__MFLibraryIMAPStore__doUidCopy_toStore_newMessages___block_invoke;
   v24[3] = &unk_2798B1F68;
-  v24[4] = v10;
-  v24[5] = a5;
+  v24[4] = mailboxName;
+  v24[5] = messages;
   v24[8] = &v44;
   v24[9] = v25;
   v24[10] = &v32;
   v24[11] = &v26;
   v24[12] = &v38;
   v24[6] = self;
-  v24[7] = a4;
+  v24[7] = store;
   [(MFLibraryIMAPStore *)self performBatchOperationWithUIDs:v12 requiringConnection:0 withOptions:17 operation:v24];
   _Block_object_dispose(v25, 8);
   if (v33[5])
   {
 LABEL_3:
     v13 = [v27[5] count];
-    v14 = [v33[5] firstUidForCopyingMessages:v27[5] fromMailbox:-[MFLibraryIMAPStore mailboxName](self toMailbox:{"mailboxName"), v10}];
+    v14 = [v33[5] firstUidForCopyingMessages:v27[5] fromMailbox:-[MFLibraryIMAPStore mailboxName](self toMailbox:{"mailboxName"), mailboxName}];
     for (i = [objc_allocWithZone(MEMORY[0x277CBEB18]) initWithCapacity:v13]; v13; --v13)
     {
       v16 = [objc_opt_class() copyRemoteIDForTemporaryUid:v14];
@@ -1880,15 +1880,15 @@ LABEL_3:
       v14 = (v14 + 1);
     }
 
-    v17 = [(MFLibraryStore *)self library];
+    library = [(MFLibraryStore *)self library];
     v18 = v27[5];
-    v19 = [a4 mailboxUid];
+    mailboxUid = [store mailboxUid];
     LOBYTE(v23) = 1;
-    v20 = [v17 duplicateMessages:v18 newRemoteIDs:i forMailbox:v19 setFlags:0x100000000 clearFlags:0 messageFlagsForMessages:v39[5] createNewCacheFiles:v23];
+    v20 = [library duplicateMessages:v18 newRemoteIDs:i forMailbox:mailboxUid setFlags:0x100000000 clearFlags:0 messageFlagsForMessages:v39[5] createNewCacheFiles:v23];
     *(v45 + 24) = 1;
-    if (a5 && v20)
+    if (messages && v20)
     {
-      [a5 addEntriesFromDictionary:v20];
+      [messages addEntriesFromDictionary:v20];
     }
 
     [v33[5] saveChanges];
@@ -1960,9 +1960,9 @@ uint64_t __53__MFLibraryIMAPStore__doUidCopy_toStore_newMessages___block_invoke(
   return result;
 }
 
-- (unint64_t)_doAppend:(id *)a3
+- (unint64_t)_doAppend:(id *)append
 {
-  var1 = a3->var1;
+  var1 = append->var1;
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -1981,15 +1981,15 @@ uint64_t __53__MFLibraryIMAPStore__doUidCopy_toStore_newMessages___block_invoke(
   v30 = __Block_byref_object_copy__1;
   v31 = __Block_byref_object_dispose__1;
   v32 = 0;
-  v6 = [a3->var0 account];
-  if (v6 == *(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]))
+  account = [append->var0 account];
+  if (account == *(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]))
   {
     v8 = objc_allocWithZone(MEMORY[0x277CBEB38]);
     v9 = [v8 initWithCapacity:v34[3]];
-    if ([a3->var0 _doUidCopy:a3 toStore:self newMessages:v9])
+    if ([append->var0 _doUidCopy:append toStore:self newMessages:v9])
     {
       v10 = 1;
-      a3->var4 = 1;
+      append->var4 = 1;
       v38[3] = 0;
       if (v34[3])
       {
@@ -2001,7 +2001,7 @@ uint64_t __53__MFLibraryIMAPStore__doUidCopy_toStore_newMessages___block_invoke(
           v13 = [v9 objectForKey:v12];
           if (([v12 messageFlags] & 1) == 0)
           {
-            ++a3->var9;
+            ++append->var9;
           }
 
           if (v13)
@@ -2014,7 +2014,7 @@ uint64_t __53__MFLibraryIMAPStore__doUidCopy_toStore_newMessages___block_invoke(
             }
 
             [v14 addObject:v13];
-            _addIDForAppendedMessage([v13 uid], objc_msgSend(v13, "hasTemporaryUid"), a3->var7);
+            _addIDForAppendedMessage([v13 uid], objc_msgSend(v13, "hasTemporaryUid"), append->var7);
           }
 
           v11 = v38[3] + 1;
@@ -2027,7 +2027,7 @@ uint64_t __53__MFLibraryIMAPStore__doUidCopy_toStore_newMessages___block_invoke(
 
     else
     {
-      [a3->var6 addObjectsFromArray:var1];
+      [append->var6 addObjectsFromArray:var1];
       v10 = 0;
     }
 
@@ -2040,13 +2040,13 @@ uint64_t __53__MFLibraryIMAPStore__doUidCopy_toStore_newMessages___block_invoke(
     v25[1] = v25;
     v25[2] = 0x2020000000;
     v26 = 0;
-    v7 = [MEMORY[0x277D283F8] currentMonitor];
+    currentMonitor = [MEMORY[0x277D283F8] currentMonitor];
     v19 = 0;
     v20 = &v19;
     v21 = 0x3052000000;
     v22 = __Block_byref_object_copy__1;
     v23 = __Block_byref_object_dispose__1;
-    v24 = [(MFLibraryIMAPStore *)self offlineCacheIfOffline];
+    offlineCacheIfOffline = [(MFLibraryIMAPStore *)self offlineCacheIfOffline];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __32__MFLibraryIMAPStore__doAppend___block_invoke;
@@ -2055,12 +2055,12 @@ uint64_t __53__MFLibraryIMAPStore__doUidCopy_toStore_newMessages___block_invoke(
     v18[9] = &v37;
     v18[4] = self;
     v18[5] = var1;
-    v18[6] = v7;
+    v18[6] = currentMonitor;
     v18[7] = &v19;
     v18[10] = &v33;
     v18[11] = &v27;
     v18[12] = v25;
-    v18[13] = a3;
+    v18[13] = append;
     [(MFLibraryIMAPStore *)self performOperationRequiringConnection:0 withOptions:1 operation:v18];
 
     _Block_object_dispose(&v19, 8);
@@ -2069,7 +2069,7 @@ uint64_t __53__MFLibraryIMAPStore__doUidCopy_toStore_newMessages___block_invoke(
 
   if (v28[5])
   {
-    [a3->var8 addObjectsFromArray:?];
+    [append->var8 addObjectsFromArray:?];
     v15 = v28[5];
   }
 
@@ -2415,12 +2415,12 @@ LABEL_72:
   return result;
 }
 
-- (unint64_t)appendMessages:(id)a3 unsuccessfulOnes:(id)a4 newMessageIDs:(id)a5 newMessages:(id)a6 flagsToSet:(id)a7 customIMAPFlagsToSet:(id)a8
+- (unint64_t)appendMessages:(id)messages unsuccessfulOnes:(id)ones newMessageIDs:(id)ds newMessages:(id)newMessages flagsToSet:(id)set customIMAPFlagsToSet:(id)toSet
 {
-  v15 = [a3 count];
+  v15 = [messages count];
   if (![(MFLibraryIMAPStore *)self allowsAppend])
   {
-    [a4 replaceObjectsInRange:0 withObjectsFromArray:{objc_msgSend(a4, "count"), a3}];
+    [ones replaceObjectsInRange:0 withObjectsFromArray:{objc_msgSend(ones, "count"), messages}];
     return 0;
   }
 
@@ -2434,13 +2434,13 @@ LABEL_72:
   v27 = 0u;
   v28 = 0u;
   v26 = 0u;
-  v29 = a4;
-  v30 = a5;
-  v31 = a6;
+  onesCopy = ones;
+  dsCopy = ds;
+  newMessagesCopy = newMessages;
   v32 = 0;
   do
   {
-    v18 = [objc_msgSend(a3 objectAtIndex:{v16, v26, v27, v28), "messageStore"}];
+    v18 = [objc_msgSend(messages objectAtIndex:{v16, v26, v27, v28), "messageStore"}];
     if (v26 == v18)
     {
       v21 = 1;
@@ -2456,10 +2456,10 @@ LABEL_72:
 
       else
       {
-        *(&v26 + 1) = [a3 subarrayWithRange:{v17, v16 - v17}];
-        if (a7)
+        *(&v26 + 1) = [messages subarrayWithRange:{v17, v16 - v17}];
+        if (set)
         {
-          v20 = [a7 subarrayWithRange:{v17, v16 - v17}];
+          v20 = [set subarrayWithRange:{v17, v16 - v17}];
         }
 
         else
@@ -2468,9 +2468,9 @@ LABEL_72:
         }
 
         *&v27 = v20;
-        if (a8)
+        if (toSet)
         {
-          v22 = [a8 subarrayWithRange:{v17, v16 - v17}];
+          v22 = [toSet subarrayWithRange:{v17, v16 - v17}];
         }
 
         else
@@ -2497,24 +2497,24 @@ LABEL_72:
     {
       if (v17)
       {
-        *(&v26 + 1) = [a3 subarrayWithRange:{v17, v15 - v17}];
+        *(&v26 + 1) = [messages subarrayWithRange:{v17, v15 - v17}];
         v24 = v17;
         v15 -= v17;
       }
 
       else
       {
-        *(&v26 + 1) = a3;
-        if (a7)
+        *(&v26 + 1) = messages;
+        if (set)
         {
 LABEL_27:
-          *&v27 = a7;
-          if (!a8 || v17)
+          *&v27 = set;
+          if (!toSet || v17)
           {
-            a8 = [a8 subarrayWithRange:{v17, v23, v26}];
+            toSet = [toSet subarrayWithRange:{v17, v23, v26}];
           }
 
-          *(&v27 + 1) = a8;
+          *(&v27 + 1) = toSet;
           v21 = [(MFLibraryIMAPStore *)self _doAppend:&v26];
           *&v26 = 0;
           goto LABEL_31;
@@ -2523,11 +2523,11 @@ LABEL_27:
         v24 = 0;
       }
 
-      a7 = [a7 subarrayWithRange:{v24, v15, v26}];
+      set = [set subarrayWithRange:{v24, v15, v26}];
       goto LABEL_27;
     }
 
-    [a4 replaceObjectsInRange:objc_msgSend(a4 withObjectsFromArray:"count") range:{0, a3, v17, v15 - v17}];
+    [ones replaceObjectsInRange:objc_msgSend(ones withObjectsFromArray:"count") range:{0, messages, v17, v15 - v17}];
   }
 
 LABEL_31:
@@ -2538,16 +2538,16 @@ LABEL_31:
   return v21;
 }
 
-- (id)_updateLibraryForTransferedMessages:(id)a3 toDestinationMailbox:(id)a4 newMessageInfo:(id)a5 flagsToSet:(id)a6
+- (id)_updateLibraryForTransferedMessages:(id)messages toDestinationMailbox:(id)mailbox newMessageInfo:(id)info flagsToSet:(id)set
 {
   v91 = *MEMORY[0x277D85DE8];
-  v10 = [a4 store];
-  v49 = [v10 URLString];
-  v11 = [objc_msgSend(a5 objectForKeyedSubscript:{@"UIDVALIDITY", "unsignedIntValue"}];
-  v50 = a4;
-  v12 = [objc_msgSend(a4 userInfoObjectForKey:{@"UIDVALIDITY", "intValue"}];
-  v13 = [a5 objectForKey:@"Source UIDS"];
-  v14 = [a5 objectForKey:@"Destination UIDS"];
+  store = [mailbox store];
+  uRLString = [store URLString];
+  v11 = [objc_msgSend(info objectForKeyedSubscript:{@"UIDVALIDITY", "unsignedIntValue"}];
+  mailboxCopy = mailbox;
+  v12 = [objc_msgSend(mailbox userInfoObjectForKey:{@"UIDVALIDITY", "intValue"}];
+  v13 = [info objectForKey:@"Source UIDS"];
+  v14 = [info objectForKey:@"Destination UIDS"];
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v11)
@@ -2576,7 +2576,7 @@ LABEL_31:
     {
       if (!v12)
       {
-        [v10 setMailboxUidValidity:v11];
+        [store setMailboxUidValidity:v11];
       }
 
       goto LABEL_38;
@@ -2632,7 +2632,7 @@ LABEL_38:
     v38 = CFStringGetCharactersPtr(v14);
     v39 = 0;
     *(&v67 + 1) = v38;
-    v23 = self;
+    selfCopy2 = self;
     if (!v38)
     {
       v39 = CFStringGetCStringPtr(v14, 0x600u);
@@ -2643,7 +2643,7 @@ LABEL_38:
     v70 = 0uLL;
     v71 = v37;
     v40 = IMAPNextUidFromSet(buffer);
-    v32 = a6;
+    setCopy2 = set;
     if (v40)
     {
       v41 = v40;
@@ -2659,7 +2659,7 @@ LABEL_38:
         v57[2] = __105__MFLibraryIMAPStore__updateLibraryForTransferedMessages_toDestinationMailbox_newMessageInfo_flagsToSet___block_invoke;
         v57[3] = &__block_descriptor_36_e26_B16__0__MFLibraryMessage_8l;
         v58 = v41;
-        v42 = [a3 ef_firstObjectPassingTest:v57];
+        v42 = [messages ef_firstObjectPassingTest:v57];
         if (v42)
         {
           [v15 addObject:v42];
@@ -2680,8 +2680,8 @@ LABEL_38:
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v22 = [a3 countByEnumeratingWithState:&v53 objects:v90 count:16];
-  v23 = self;
+  v22 = [messages countByEnumeratingWithState:&v53 objects:v90 count:16];
+  selfCopy2 = self;
   if (v22)
   {
     v24 = v22;
@@ -2692,25 +2692,25 @@ LABEL_38:
       {
         if (*v54 != v25)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(messages);
         }
 
-        v27 = [*(*(&v53 + 1) + 8 * i) messageIDHeader];
-        if (v27)
+        messageIDHeader = [*(*(&v53 + 1) + 8 * i) messageIDHeader];
+        if (messageIDHeader)
         {
-          [v21 addObject:v27];
+          [v21 addObject:messageIDHeader];
         }
       }
 
-      v24 = [a3 countByEnumeratingWithState:&v53 objects:v90 count:16];
+      v24 = [messages countByEnumeratingWithState:&v53 objects:v90 count:16];
     }
 
     while (v24);
   }
 
-  v28 = _uidSearchForMessageIds(v10, [-[MFLibraryStore library](self "library")] + 1, v21);
+  v28 = _uidSearchForMessageIds(store, [-[MFLibraryStore library](self "library")] + 1, v21);
   v29 = [v28 count];
-  v30 = [a3 count];
+  v30 = [messages count];
   if (v29 >= v30)
   {
     v31 = v30;
@@ -2721,29 +2721,29 @@ LABEL_38:
     v31 = v29;
   }
 
-  v32 = a6;
+  setCopy2 = set;
   if (v31)
   {
     for (j = 0; j != v31; ++j)
     {
       if ([objc_msgSend(v28 objectAtIndex:{j), "unsignedIntValue"}])
       {
-        [v15 addObject:{objc_msgSend(a3, "objectAtIndex:", j)}];
+        [v15 addObject:{objc_msgSend(messages, "objectAtIndex:", j)}];
         [v16 addObject:EFStringWithInt()];
       }
     }
   }
 
 LABEL_48:
-  v43 = [v32 count];
+  v43 = [setCopy2 count];
   if (v43 == [v15 count])
   {
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __105__MFLibraryIMAPStore__updateLibraryForTransferedMessages_toDestinationMailbox_newMessageInfo_flagsToSet___block_invoke_2;
     v52[3] = &unk_2798B1FD8;
-    v52[4] = a3;
-    v52[5] = v32;
+    v52[4] = messages;
+    v52[5] = setCopy2;
     v44 = [v15 ef_map:v52];
   }
 
@@ -2755,7 +2755,7 @@ LABEL_48:
   if ([v15 count])
   {
     LOBYTE(v48) = 1;
-    v45 = [-[MFLibraryStore library](v23 "library")];
+    v45 = [-[MFLibraryStore library](selfCopy2 "library")];
   }
 
   else
@@ -2775,30 +2775,30 @@ uint64_t __105__MFLibraryIMAPStore__updateLibraryForTransferedMessages_toDestina
   return [v4 objectAtIndexedSubscript:v3];
 }
 
-- (id)moveMessages:(id)a3 toMailbox:(id)a4 markAsRead:(BOOL)a5
+- (id)moveMessages:(id)messages toMailbox:(id)mailbox markAsRead:(BOOL)read
 {
-  v5 = a5;
+  readCopy = read;
   v32[1] = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!messages)
   {
     [MFLibraryIMAPStore moveMessages:toMailbox:markAsRead:];
   }
 
-  if (!a4)
+  if (!mailbox)
   {
     [MFLibraryIMAPStore moveMessages:toMailbox:markAsRead:];
   }
 
-  v10 = [a4 account];
-  if (v10 == [(MFMailMessageStore *)self account])
+  account = [mailbox account];
+  if (account == [(MFMailMessageStore *)self account])
   {
     v31 = *MEMORY[0x277D283C8];
     v32[0] = @"YES";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-    v15 = [(MFLibraryIMAPStore *)self _uidsForMessages:a3];
-    if (v5 && [a3 count])
+    v15 = [(MFLibraryIMAPStore *)self _uidsForMessages:messages];
+    if (readCopy && [messages count])
     {
-      [(MFLibraryIMAPStore *)self setFlagsFromDictionary:v14 forMessages:a3];
+      [(MFLibraryIMAPStore *)self setFlagsFromDictionary:v14 forMessages:messages];
     }
 
     v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2812,8 +2812,8 @@ uint64_t __105__MFLibraryIMAPStore__updateLibraryForTransferedMessages_toDestina
     v26[1] = 3221225472;
     v26[2] = __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invoke;
     v26[3] = &unk_2798B2000;
-    v26[4] = a3;
-    v26[5] = a4;
+    v26[4] = messages;
+    v26[5] = mailbox;
     v26[6] = v18;
     v26[7] = self;
     v26[8] = v17;
@@ -2847,7 +2847,7 @@ uint64_t __105__MFLibraryIMAPStore__updateLibraryForTransferedMessages_toDestina
 
   else
   {
-    v11 = [objc_alloc(MEMORY[0x277D28468]) initWithResultCode:0 failedMessages:a3 transferedMessage:0];
+    v11 = [objc_alloc(MEMORY[0x277D28468]) initWithResultCode:0 failedMessages:messages transferedMessage:0];
     v12 = *MEMORY[0x277D85DE8];
 
     return v11;
@@ -2930,10 +2930,10 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
   return result;
 }
 
-- (id)newDictionaryForLocalFlags:(unint64_t)a3 serverFlags:(unint64_t)a4 existingDictionary:(id)a5
+- (id)newDictionaryForLocalFlags:(unint64_t)flags serverFlags:(unint64_t)serverFlags existingDictionary:(id)dictionary
 {
-  v7 = a3;
-  if ((((a3 & 1) == 0) ^ a4))
+  flagsCopy = flags;
+  if ((((flags & 1) == 0) ^ serverFlags))
   {
     v9 = 0;
   }
@@ -2941,18 +2941,18 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
   else
   {
     v10 = *MEMORY[0x277D283C8];
-    if (a5)
+    if (dictionary)
     {
-      v11 = a5;
+      dictionaryCopy = dictionary;
     }
 
     else
     {
-      v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
+      dictionaryCopy = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    v9 = v11;
-    if (a4)
+    v9 = dictionaryCopy;
+    if (serverFlags)
     {
       v12 = @"YES";
     }
@@ -2962,28 +2962,28 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
       v12 = @"NO";
     }
 
-    [v11 setObject:v12 forKey:v10];
+    [dictionaryCopy setObject:v12 forKey:v10];
   }
 
-  if (((v7 & 2) == 0) == ((a4 >> 1) & 1))
+  if (((flagsCopy & 2) == 0) == ((serverFlags >> 1) & 1))
   {
     v13 = *MEMORY[0x277D283C0];
     if (!v9)
     {
-      if (a5)
+      if (dictionary)
       {
-        v14 = a5;
+        dictionaryCopy2 = dictionary;
       }
 
       else
       {
-        v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
+        dictionaryCopy2 = objc_alloc_init(MEMORY[0x277CBEB38]);
       }
 
-      v9 = v14;
+      v9 = dictionaryCopy2;
     }
 
-    if ((a4 & 2) != 0)
+    if ((serverFlags & 2) != 0)
     {
       v15 = @"YES";
     }
@@ -2996,25 +2996,25 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
     [v9 setObject:v15 forKey:v13];
   }
 
-  if (((v7 & 0x10) == 0) == ((a4 >> 4) & 1))
+  if (((flagsCopy & 0x10) == 0) == ((serverFlags >> 4) & 1))
   {
     v16 = *MEMORY[0x277D28300];
     if (!v9)
     {
-      if (a5)
+      if (dictionary)
       {
-        v17 = a5;
+        dictionaryCopy3 = dictionary;
       }
 
       else
       {
-        v17 = objc_alloc_init(MEMORY[0x277CBEB38]);
+        dictionaryCopy3 = objc_alloc_init(MEMORY[0x277CBEB38]);
       }
 
-      v9 = v17;
+      v9 = dictionaryCopy3;
     }
 
-    if ((a4 & 0x10) != 0)
+    if ((serverFlags & 0x10) != 0)
     {
       v18 = @"YES";
     }
@@ -3027,25 +3027,25 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
     [v9 setObject:v18 forKey:v16];
   }
 
-  if (((v7 & 4) == 0) == ((a4 >> 2) & 1))
+  if (((flagsCopy & 4) == 0) == ((serverFlags >> 2) & 1))
   {
     v19 = *MEMORY[0x277D283D8];
     if (!v9)
     {
-      if (a5)
+      if (dictionary)
       {
-        v20 = a5;
+        dictionaryCopy4 = dictionary;
       }
 
       else
       {
-        v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
+        dictionaryCopy4 = objc_alloc_init(MEMORY[0x277CBEB38]);
       }
 
-      v9 = v20;
+      v9 = dictionaryCopy4;
     }
 
-    if ((a4 & 4) != 0)
+    if ((serverFlags & 4) != 0)
     {
       v21 = @"YES";
     }
@@ -3061,25 +3061,25 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
   v22 = *(self + 144);
   if ((v22 & 1) != 0 || (*(self + 144) & 0x20) != 0 || (*(self + 144) & 0x40) != 0)
   {
-    if (((v7 & 0x100) == 0) == ((a4 >> 8) & 1))
+    if (((flagsCopy & 0x100) == 0) == ((serverFlags >> 8) & 1))
     {
       v23 = *MEMORY[0x277D283D0];
       if (!v9)
       {
-        if (a5)
+        if (dictionary)
         {
-          v24 = a5;
+          dictionaryCopy5 = dictionary;
         }
 
         else
         {
-          v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
+          dictionaryCopy5 = objc_alloc_init(MEMORY[0x277CBEB38]);
         }
 
-        v9 = v24;
+        v9 = dictionaryCopy5;
       }
 
-      if ((a4 & 0x100) != 0)
+      if ((serverFlags & 0x100) != 0)
       {
         v25 = @"YES";
       }
@@ -3093,25 +3093,25 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
       v22 = *(self + 144);
     }
 
-    if ((v22 & 1) != 0 && ((v7 & 0x200) == 0) == ((a4 >> 9) & 1))
+    if ((v22 & 1) != 0 && ((flagsCopy & 0x200) == 0) == ((serverFlags >> 9) & 1))
     {
       v26 = *MEMORY[0x277D28328];
       if (!v9)
       {
-        if (a5)
+        if (dictionary)
         {
-          v27 = a5;
+          dictionaryCopy6 = dictionary;
         }
 
         else
         {
-          v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
+          dictionaryCopy6 = objc_alloc_init(MEMORY[0x277CBEB38]);
         }
 
-        v9 = v27;
+        v9 = dictionaryCopy6;
       }
 
-      if ((a4 & 0x200) != 0)
+      if ((serverFlags & 0x200) != 0)
       {
         v28 = @"YES";
       }
@@ -3128,23 +3128,23 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
   return v9;
 }
 
-- (void)_synchronouslySetFlags:(id)a3 clearFlags:(id)a4 forMessages:(id)a5 originalChanges:(id)a6
+- (void)_synchronouslySetFlags:(id)flags clearFlags:(id)clearFlags forMessages:(id)messages originalChanges:(id)changes
 {
   v37 = 0;
   v38 = &v37;
   v39 = 0x3052000000;
   v40 = __Block_byref_object_copy__1;
   v41 = __Block_byref_object_dispose__1;
-  v42 = [(MFLibraryIMAPStore *)self offlineCacheIfOffline];
-  v22 = a3;
-  v9 = MFMessageFlagsFromArray(a3);
-  v10 = [a5 count];
+  offlineCacheIfOffline = [(MFLibraryIMAPStore *)self offlineCacheIfOffline];
+  flagsCopy = flags;
+  v9 = MFMessageFlagsFromArray(flags);
+  v10 = [messages count];
   if (v10)
   {
     v11 = 0;
     v12 = 0;
     v21 = (v9 >> 1) & 1;
-    v24 = a3 == 0;
+    v24 = flags == 0;
     v20 = v27;
     v13 = 500;
     do
@@ -3167,11 +3167,11 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
       v29 = 0;
       v30 = &v29;
       v31 = 0x2020000000;
-      v32 = a4 == 0;
-      v16 = a5;
-      if ([a5 count] >= 0x1F5)
+      v32 = clearFlags == 0;
+      messagesCopy = messages;
+      if ([messages count] >= 0x1F5)
       {
-        v16 = [a5 subarrayWithRange:{v12, v14 + v11}];
+        messagesCopy = [messages subarrayWithRange:{v12, v14 + v11}];
       }
 
       if (v38[5])
@@ -3184,14 +3184,14 @@ uint64_t __56__MFLibraryIMAPStore_moveMessages_toMailbox_markAsRead___block_invo
       v27[0] = __84__MFLibraryIMAPStore__synchronouslySetFlags_clearFlags_forMessages_originalChanges___block_invoke;
       v27[1] = &unk_2798B2028;
       v27[2] = self;
-      v27[3] = v16;
-      v27[4] = v22;
-      v27[5] = a4;
+      v27[3] = messagesCopy;
+      v27[4] = flagsCopy;
+      v27[5] = clearFlags;
       v28 = v21;
       v27[8] = &v29;
       v27[9] = &v37;
       v27[7] = &v33;
-      v27[6] = a6;
+      v27[6] = changes;
       if (![(MFLibraryIMAPStore *)self performOperationRequiringConnection:0 withOptions:17 operation:v26])
       {
 LABEL_10:
@@ -3210,20 +3210,20 @@ LABEL_10:
 
           else
           {
-            v18 = v22;
+            v18 = flagsCopy;
           }
 
           if (*(v30 + 24))
           {
-            v19 = 0;
+            clearFlagsCopy = 0;
           }
 
           else
           {
-            v19 = a4;
+            clearFlagsCopy = clearFlags;
           }
 
-          [v17 setFlags:v18 andClearFlags:v19 forMessages:v16];
+          [v17 setFlags:v18 andClearFlags:clearFlagsCopy forMessages:messagesCopy];
           [v38[5] saveChanges];
         }
       }
@@ -3284,29 +3284,29 @@ id __84__MFLibraryIMAPStore__synchronouslySetFlags_clearFlags_forMessages_origin
   return [v8 setConnectionTag:v9 forFlagChanges:v10 forMessages:v11];
 }
 
-- (void)_setFlagsFromDictionary:(id)a3 forMessages:(id)a4
+- (void)_setFlagsFromDictionary:(id)dictionary forMessages:(id)messages
 {
-  if ([a4 count])
+  if ([messages count])
   {
     v7 = 0;
     v8 = 0;
-    if (_flagsToSetAndClearFromDictionary(self, a3, &v8, &v7))
+    if (_flagsToSetAndClearFromDictionary(self, dictionary, &v8, &v7))
     {
-      [(MFLibraryIMAPStore *)self _synchronouslySetFlags:v8 clearFlags:v7 forMessages:a4 originalChanges:a3];
+      [(MFLibraryIMAPStore *)self _synchronouslySetFlags:v8 clearFlags:v7 forMessages:messages originalChanges:dictionary];
     }
   }
 }
 
-- (void)addFlagChanges:(id)a3 forMessages:(id)a4
+- (void)addFlagChanges:(id)changes forMessages:(id)messages
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (changes)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [messages countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -3318,14 +3318,14 @@ id __84__MFLibraryIMAPStore__synchronouslySetFlags_clearFlags_forMessages_origin
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(messages);
           }
 
           [-[MFMailMessageStore account](self "account")];
         }
 
         while (v8 != v10);
-        v8 = [a4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [messages countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -3335,19 +3335,19 @@ id __84__MFLibraryIMAPStore__synchronouslySetFlags_clearFlags_forMessages_origin
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setFlagsFromDictionary:(id)a3 forMessages:(id)a4
+- (id)setFlagsFromDictionary:(id)dictionary forMessages:(id)messages
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(MFLibraryIMAPStore *)self relativePath];
   [objc_msgSend(-[MFMailMessageStore account](self "account")];
-  v25 = self;
-  [(MFLibraryIMAPStore *)self addFlagChanges:a3 forMessages:a4];
+  selfCopy = self;
+  [(MFLibraryIMAPStore *)self addFlagChanges:dictionary forMessages:messages];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = [a4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v8 = [messages countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (!v8)
   {
     v10 = 0;
@@ -3365,7 +3365,7 @@ id __84__MFLibraryIMAPStore__synchronouslySetFlags_clearFlags_forMessages_origin
     {
       if (*v32 != v12)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(messages);
       }
 
       v14 = *(*(&v31 + 1) + 8 * i);
@@ -3394,15 +3394,15 @@ LABEL_11:
       }
     }
 
-    v9 = [a4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    v9 = [messages countByEnumeratingWithState:&v31 objects:v36 count:16];
   }
 
   while (v9);
 LABEL_18:
-  v30.receiver = v25;
+  v30.receiver = selfCopy;
   v30.super_class = MFLibraryIMAPStore;
-  [v7 addObjectsFromArray:{-[MFLibraryStore setFlagsFromDictionary:forMessages:](&v30, sel_setFlagsFromDictionary_forMessages_, a3, v10)}];
-  [objc_msgSend(-[MFMailMessageStore account](v25 "account")];
+  [array addObjectsFromArray:{-[MFLibraryStore setFlagsFromDictionary:forMessages:](&v30, sel_setFlagsFromDictionary_forMessages_, dictionary, v10)}];
+  [objc_msgSend(-[MFMailMessageStore account](selfCopy "account")];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -3422,12 +3422,12 @@ LABEL_18:
         }
 
         v20 = *(*(&v26 + 1) + 8 * j);
-        v21 = [v20 messageFlags];
+        messageFlags = [v20 messageFlags];
         v22 = MFMessageFlagsByApplyingDictionary();
-        if (v22 != v21)
+        if (v22 != messageFlags)
         {
           [v20 setMessageFlags:v22];
-          [v7 addObject:v20];
+          [array addObject:v20];
         }
       }
 
@@ -3437,30 +3437,30 @@ LABEL_18:
     while (v17);
   }
 
-  [(MFLibraryIMAPStore *)v25 _setFlagsFromDictionary:a3 forMessages:a4];
+  [(MFLibraryIMAPStore *)selfCopy _setFlagsFromDictionary:dictionary forMessages:messages];
   v23 = *MEMORY[0x277D85DE8];
-  return v7;
+  return array;
 }
 
-- (id)willSetFlagsFromDictionary:(id)a3 forMessages:(id)a4
+- (id)willSetFlagsFromDictionary:(id)dictionary forMessages:(id)messages
 {
   [objc_msgSend(-[MFMailMessageStore account](self "account")];
-  [(MFLibraryIMAPStore *)self addFlagChanges:a3 forMessages:a4];
+  [(MFLibraryIMAPStore *)self addFlagChanges:dictionary forMessages:messages];
   v9.receiver = self;
   v9.super_class = MFLibraryIMAPStore;
-  v7 = [(MFLibraryStore *)&v9 setFlagsFromDictionary:a3 forMessages:a4];
+  v7 = [(MFLibraryStore *)&v9 setFlagsFromDictionary:dictionary forMessages:messages];
   [objc_msgSend(-[MFMailMessageStore account](self "account")];
   return v7;
 }
 
-- (void)setFlagsCancelled:(id)a3 forMessages:(id)a4
+- (void)setFlagsCancelled:(id)cancelled forMessages:(id)messages
 {
-  v6 = [(MFMailMessageStore *)self account];
+  account = [(MFMailMessageStore *)self account];
 
-  [v6 removeFlagChanges:a3 forMessages:a4];
+  [account removeFlagChanges:cancelled forMessages:messages];
 }
 
-- (void)setFlagsForAllMessagesFromDictionary:(id)a3
+- (void)setFlagsForAllMessagesFromDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = MFLibraryIMAPStore;
@@ -3470,7 +3470,7 @@ LABEL_18:
   v5[2] = __59__MFLibraryIMAPStore_setFlagsForAllMessagesFromDictionary___block_invoke;
   v5[3] = &unk_2798B2050;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = dictionary;
   [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:1 operation:v5];
 }
 
@@ -3500,13 +3500,13 @@ uint64_t __59__MFLibraryIMAPStore_setFlagsForAllMessagesFromDictionary___block_i
   return result;
 }
 
-- (id)_dataForMessage:(id)a3 readHeadersOnly:(BOOL)a4
+- (id)_dataForMessage:(id)message readHeadersOnly:(BOOL)only
 {
-  v4 = a4;
-  v7 = [a3 uid];
-  if ([a3 hasTemporaryUid])
+  onlyCopy = only;
+  v7 = [message uid];
+  if ([message hasTemporaryUid])
   {
-    v8 = [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) _dataForTemporaryUid:v7];
+    messageData = [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) _dataForTemporaryUid:v7];
   }
 
   else
@@ -3517,17 +3517,17 @@ uint64_t __59__MFLibraryIMAPStore_setFlagsForAllMessagesFromDictionary___block_i
       return 0;
     }
 
-    v8 = [a3 messageData];
+    messageData = [message messageData];
   }
 
-  v9 = v8;
-  if (!v4 || !v8)
+  v9 = messageData;
+  if (!onlyCopy || !messageData)
   {
     return v9;
   }
 
-  v10 = [v8 mf_rangeOfRFC822HeaderData];
-  if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+  mf_rangeOfRFC822HeaderData = [messageData mf_rangeOfRFC822HeaderData];
+  if (mf_rangeOfRFC822HeaderData == 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = MFLogGeneral();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -3539,36 +3539,36 @@ uint64_t __59__MFLibraryIMAPStore_setFlagsForAllMessagesFromDictionary___block_i
     return 0;
   }
 
-  return [v9 mf_subdataWithRange:{v10, v11}];
+  return [v9 mf_subdataWithRange:{mf_rangeOfRFC822HeaderData, v11}];
 }
 
-- (BOOL)_fetchDataForMimePart:(id)a3 range:(_NSRange)a4 isComplete:(BOOL *)a5 consumer:(id)a6
+- (BOOL)_fetchDataForMimePart:(id)part range:(_NSRange)range isComplete:(BOOL *)complete consumer:(id)consumer
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  if (([@"multipart" isEqualToString:{objc_msgSend(a3, "type")}] & 1) == 0)
+  if (([@"multipart" isEqualToString:{objc_msgSend(part, "type")}] & 1) == 0)
   {
-    [a3 range];
+    [part range];
     v15 = v14;
-    v16 = [objc_msgSend(a3 "mimeBody")];
-    v17 = [a3 partNumber];
+    v16 = [objc_msgSend(part "mimeBody")];
+    partNumber = [part partNumber];
     if (v15)
     {
       if (v16)
       {
-        v18 = v17;
+        v18 = partNumber;
         if ((objc_opt_respondsToSelector() & 1) != 0 && ([&stru_2869E1DA0 isEqualToString:v18] & 1) == 0)
         {
-          v19 = [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) fetchLimits];
-          [a3 range];
+          fetchLimits = [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) fetchLimits];
+          [part range];
           v26 = v20;
-          v21 = [v19 fetchMinBytes];
+          fetchMinBytes = [fetchLimits fetchMinBytes];
           v22 = 0x7FFFFFFFFFFFFFFFLL;
-          if (v21 != 0x7FFFFFFFFFFFFFFFLL)
+          if (fetchMinBytes != 0x7FFFFFFFFFFFFFFFLL)
           {
             if (location || length != v26)
             {
@@ -3579,11 +3579,11 @@ uint64_t __59__MFLibraryIMAPStore_setFlagsForAllMessagesFromDictionary___block_i
                   location = v26;
                 }
 
-                v25 = [v19 fetchMinBytes];
-                v23 = [v19 minBytesLeft];
-                v24 = v25;
+                fetchMinBytes2 = [fetchLimits fetchMinBytes];
+                minBytesLeft = [fetchLimits minBytesLeft];
+                v24 = fetchMinBytes2;
                 v22 = v26 - location;
-                if (length > v25)
+                if (length > fetchMinBytes2)
                 {
                   v24 = length;
                 }
@@ -3593,7 +3593,7 @@ uint64_t __59__MFLibraryIMAPStore_setFlagsForAllMessagesFromDictionary___block_i
                   v24 = v26 - location;
                 }
 
-                if (v26 - location - v24 >= v23)
+                if (v26 - location - v24 >= minBytesLeft)
                 {
                   v22 = v24;
                 }
@@ -3615,11 +3615,11 @@ uint64_t __59__MFLibraryIMAPStore_setFlagsForAllMessagesFromDictionary___block_i
           v27[4] = v16;
           v27[5] = self;
           v27[6] = v18;
-          v27[7] = a6;
-          v27[8] = a3;
+          v27[7] = consumer;
+          v27[8] = part;
           v27[9] = &v28;
           v27[12] = v15;
-          v27[13] = a5;
+          v27[13] = complete;
           [(MFLibraryIMAPStore *)self performOperationRequiringConnection:0 withOptions:5 operation:v27];
         }
       }
@@ -3674,7 +3674,7 @@ uint64_t __70__MFLibraryIMAPStore__fetchDataForMimePart_range_isComplete_consume
   return result;
 }
 
-- (id)_fetchFullBodyDataForMessage:(id)a3 andHeaderDataIfReadilyAvailable:(id *)a4 downloadIfNecessary:(BOOL)a5 didDownload:(BOOL *)a6
+- (id)_fetchFullBodyDataForMessage:(id)message andHeaderDataIfReadilyAvailable:(id *)available downloadIfNecessary:(BOOL)necessary didDownload:(BOOL *)download
 {
   v27 = 0;
   v28 = &v27;
@@ -3692,7 +3692,7 @@ uint64_t __70__MFLibraryIMAPStore__fetchDataForMimePart_range_isComplete_consume
   v20[1] = 3221225472;
   v20[2] = __115__MFLibraryIMAPStore__fetchFullBodyDataForMessage_andHeaderDataIfReadilyAvailable_downloadIfNecessary_didDownload___block_invoke;
   v20[3] = &unk_2798B20A0;
-  v20[4] = a3;
+  v20[4] = message;
   v20[5] = self;
   v20[6] = &v21;
   v20[7] = &v27;
@@ -3706,18 +3706,18 @@ uint64_t __70__MFLibraryIMAPStore__fetchDataForMimePart_range_isComplete_consume
     if (v16)
     {
       v18 = [objc_alloc(MEMORY[0x277D24F30]) initWithData:v16 partial:0 incomplete:0];
-      [(MFLibraryStore *)self _cachedBodyDataContainerForMessage:a3 valueIfNotPresent:v18];
+      [(MFLibraryStore *)self _cachedBodyDataContainerForMessage:message valueIfNotPresent:v18];
 
-      if (a6)
+      if (download)
       {
-        *a6 = 1;
+        *download = 1;
       }
     }
 
     v10 = v28;
-    if (a4)
+    if (available)
     {
-      *a4 = [v28[5] mf_subdataWithRange:{v12, v14}];
+      *available = [v28[5] mf_subdataWithRange:{v12, v14}];
       v10 = v28;
     }
   }
@@ -3729,7 +3729,7 @@ uint64_t __70__MFLibraryIMAPStore__fetchDataForMimePart_range_isComplete_consume
 
   if (!v10[5])
   {
-    _compactMessageIfNoData(self, v22[5], a3);
+    _compactMessageIfNoData(self, v22[5], message);
   }
 
   _Block_object_dispose(&v21, 8);
@@ -3762,37 +3762,37 @@ void __115__MFLibraryIMAPStore__fetchFullBodyDataForMessage_andHeaderDataIfReadi
   }
 }
 
-- (id)_downloadForMessageBodyData:(id)a3
+- (id)_downloadForMessageBodyData:(id)data
 {
-  v4 = [(MFIMAPDownloadCache *)self->_downloadCache downloadForMessage:a3];
+  v4 = [(MFIMAPDownloadCache *)self->_downloadCache downloadForMessage:data];
   [v4 setAllowsPartialDownloads:{objc_msgSend(*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]), "allowsPartialDownloads")}];
   [v4 setFetchBodyData:1];
   return v4;
 }
 
-- (id)_performBodyDataDownload:(id)a3 usingConnection:(id)a4 isPartial:(BOOL *)a5
+- (id)_performBodyDataDownload:(id)download usingConnection:(id)connection isPartial:(BOOL *)partial
 {
-  v9 = [a3 partial];
-  if (_waitForDataFromDownload(self, a3, [a3 uid], a4))
+  partial = [download partial];
+  if (_waitForDataFromDownload(self, download, [download uid], connection))
   {
-    v10 = [a3 data];
-    v9 = [a3 partial];
-    if (!a5)
+    data = [download data];
+    partial = [download partial];
+    if (!partial)
     {
-      return v10;
+      return data;
     }
 
     goto LABEL_5;
   }
 
-  v10 = 0;
-  if (a5)
+  data = 0;
+  if (partial)
   {
 LABEL_5:
-    *a5 = v9;
+    *partial = partial;
   }
 
-  return v10;
+  return data;
 }
 
 uint64_t __107__MFLibraryIMAPStore__fetchBodyDataForMessage_andHeaderDataIfReadilyAvailable_downloadIfNecessary_partial___block_invoke(uint64_t a1, void *a2)
@@ -3842,15 +3842,15 @@ uint64_t __69__MFLibraryIMAPStore__fetchHeaderDataForMessage_downloadIfNecessary
   return result;
 }
 
-- (BOOL)performOperationRequiringConnection:(BOOL)a3 withOptions:(int)a4 operation:(id)a5
+- (BOOL)performOperationRequiringConnection:(BOOL)connection withOptions:(int)options operation:(id)operation
 {
-  v7 = a3;
+  connectionCopy = connection;
   v33 = *MEMORY[0x277D85DE8];
   v9 = *(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]);
   v10 = 2 * (*(&self->super.super.super.super.isa + *MEMORY[0x277D284E0]) & 1);
   [(NSLock *)self->_cachedConnectionLock lock];
   cachedConnection = self->_cachedConnection;
-  if ((a4 & 4) != 0)
+  if ((options & 4) != 0)
   {
     if ([(MFIMAPConnection *)self->_cachedConnection mf_tryLock])
     {
@@ -3866,7 +3866,7 @@ uint64_t __69__MFLibraryIMAPStore__fetchHeaderDataForMessage_downloadIfNecessary
   v12 = cachedConnection;
   [(NSLock *)self->_cachedConnectionLock unlock];
   v24 = v9;
-  if ((a4 & 0x10) != 0 && cachedConnection)
+  if ((options & 0x10) != 0 && cachedConnection)
   {
     [(MFIMAPConnection *)cachedConnection noop];
   }
@@ -3882,7 +3882,7 @@ uint64_t __69__MFLibraryIMAPStore__fetchHeaderDataForMessage_downloadIfNecessary
     goto LABEL_19;
   }
 
-  if ((a4 & 4) != 0)
+  if ((options & 4) != 0)
   {
     [(MFIMAPConnection *)cachedConnection mf_unlock];
   }
@@ -3897,7 +3897,7 @@ uint64_t __69__MFLibraryIMAPStore__fetchHeaderDataForMessage_downloadIfNecessary
 
   [(NSLock *)self->_cachedConnectionLock unlock];
 LABEL_16:
-  cachedConnection = [v9 connectionForStore:self delegate:self options:v10 | a4];
+  cachedConnection = [v9 connectionForStore:self delegate:self options:v10 | options];
   [(NSLock *)self->_cachedConnectionLock lock];
   if (!self->_cachedConnection)
   {
@@ -3927,7 +3927,7 @@ LABEL_19:
 
   else
   {
-    v16 = !v7;
+    v16 = !connectionCopy;
   }
 
   if (v16)
@@ -3964,19 +3964,19 @@ LABEL_19:
       v29 = 2112;
       v30 = v20;
       v31 = 1024;
-      v32 = v10 | a4;
+      v32 = v10 | options;
       _os_log_impl(&dword_258B7A000, v18, OS_LOG_TYPE_INFO, "[FetchActivity] performOperationRequiringConnection: mailbox=%@ connection=%p cached=%@ options=%d", buf, 0x26u);
     }
 
-    (*(a5 + 2))(a5, cachedConnection);
+    (*(operation + 2))(operation, cachedConnection);
     if (cachedConnection)
     {
-      if ((a4 & 4) != 0)
+      if ((options & 4) != 0)
       {
         [(MFIMAPConnection *)cachedConnection mf_unlock];
       }
 
-      v21 = (a4 & 0x20) != 0 && [*(&self->super.super.super.super.isa + *MEMORY[0x277D284E8]) type] != 7;
+      v21 = (options & 0x20) != 0 && [*(&self->super.super.super.super.isa + *MEMORY[0x277D284E8]) type] != 7;
       if (cachedConnection != self->_cachedConnection || v21)
       {
         [v24 checkInConnection:cachedConnection destroy:?];
@@ -4041,7 +4041,7 @@ void *__94__MFLibraryIMAPStore_performBatchOperationWithUIDs_requiringConnection
   return result;
 }
 
-- (id)remoteIDsFromUniqueRemoteIDs:(id)a3
+- (id)remoteIDsFromUniqueRemoteIDs:(id)ds
 {
   v6 = 0;
   v7 = &v6;
@@ -4053,7 +4053,7 @@ void *__94__MFLibraryIMAPStore_performBatchOperationWithUIDs_requiringConnection
   v5[1] = 3221225472;
   v5[2] = __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke;
   v5[3] = &unk_2798B1E58;
-  v5[4] = a3;
+  v5[4] = ds;
   v5[5] = &v6;
   [(MFLibraryIMAPStore *)self performOperationRequiringConnection:1 withOptions:17 operation:v5];
   v3 = v7[5];
@@ -4134,13 +4134,13 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
   }
 }
 
-- (void)willRemoveDelegation:(id)a3
+- (void)willRemoveDelegation:(id)delegation
 {
   [(NSLock *)self->_cachedConnectionLock lock];
   cachedConnection = self->_cachedConnection;
   if (cachedConnection)
   {
-    v5 = cachedConnection == a3;
+    v5 = cachedConnection == delegation;
   }
 
   else
@@ -4152,7 +4152,7 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
   {
     self->_cachedConnection = 0;
     [(NSLock *)self->_cachedConnectionLock unlock];
-    [a3 finishIdle];
+    [delegation finishIdle];
   }
 
   else
@@ -4163,10 +4163,10 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
   }
 }
 
-- (BOOL)_changedFlagsForMessage:(id)a3 fetchResponse:(id)a4 newFlags:(unint64_t *)a5
+- (BOOL)_changedFlagsForMessage:(id)message fetchResponse:(id)response newFlags:(unint64_t *)flags
 {
-  v8 = [objc_msgSend(a4 fetchResultWithType:{10), "messageFlags"}];
-  v9 = [a3 messageFlags];
+  v8 = [objc_msgSend(response fetchResultWithType:{10), "messageFlags"}];
+  messageFlags = [message messageFlags];
   v10 = 887;
   if ((*(self + 144) & 1) == 0)
   {
@@ -4174,25 +4174,25 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
   }
 
   v11 = v8 & 0x1BFDDF703DFLL;
-  v12 = v9 & v10 & 0x357;
+  v12 = messageFlags & v10 & 0x357;
   if ((v8 & 0x1BFDDF703DFLL) != v12)
   {
-    *a5 = v9 & ~v10 & 0xFFFFFFFFFFFF0388 | v11;
+    *flags = messageFlags & ~v10 & 0xFFFFFFFFFFFF0388 | v11;
   }
 
   return v11 != v12;
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4 forCommand:(id *)a5
+- (void)connection:(id)connection didReceiveResponse:(id)response forCommand:(id *)command
 {
-  v5 = a5;
-  v6 = a4;
+  commandCopy = command;
+  responseCopy = response;
   v44 = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (command)
   {
-    if ([a4 responseType] == 2 && (v5->var0 | 4) == 0xD)
+    if ([response responseType] == 2 && (commandCopy->var0 | 4) == 0xD)
     {
-      var2 = v5->var2;
+      var2 = commandCopy->var2;
       if (var2)
       {
         *(self + 144) &= ~1u;
@@ -4210,9 +4210,9 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
         if (v9)
         {
           v10 = v9;
-          v28 = v5;
-          v29 = v6;
-          v11 = 0;
+          v28 = commandCopy;
+          v29 = responseCopy;
+          unsignedIntValue = 0;
           v12 = *v31;
           do
           {
@@ -4226,29 +4226,29 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
               v14 = *(*(&v30 + 1) + 8 * i);
               if ([v14 responseType] == 2)
               {
-                v15 = [v14 responseInfo];
-                v16 = [v14 responseCode];
-                if (v16 > 8)
+                responseInfo = [v14 responseInfo];
+                responseCode = [v14 responseCode];
+                if (responseCode > 8)
                 {
-                  if (v16 == 9)
+                  if (responseCode == 9)
                   {
-                    self->_serverUidNext = [v15 unsignedIntValue];
+                    self->_serverUidNext = [responseInfo unsignedIntValue];
                   }
 
-                  else if (v16 == 10)
+                  else if (responseCode == 10)
                   {
-                    v11 = [v15 unsignedIntValue];
+                    unsignedIntValue = [responseInfo unsignedIntValue];
                   }
                 }
 
-                else if (v16 == 5)
+                else if (responseCode == 5)
                 {
-                  if (v15)
+                  if (responseInfo)
                   {
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v17 = [v15 indexOfObject:@"\\*"];
+                      v17 = [responseInfo indexOfObject:@"\\*"];
                       v18 = *(self + 144) & 0xFE;
                       if (v17 != 0x7FFFFFFFFFFFFFFFLL)
                       {
@@ -4256,17 +4256,17 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
                       }
 
                       *(self + 144) = v18;
-                      *(self + 144) = *(self + 144) & 0xDF | (32 * ([v15 indexOfObject:@"Forwarded"] != 0x7FFFFFFFFFFFFFFFLL));
-                      *(self + 144) = *(self + 144) & 0xBF | (([v15 indexOfObject:@"$Forwarded"] != 0x7FFFFFFFFFFFFFFFLL) << 6);
-                      *(self + 144) = *(self + 144) & 0xFD | (2 * ([v15 indexOfObject:@"Junk"] != 0x7FFFFFFFFFFFFFFFLL));
-                      *(self + 144) = *(self + 144) & 0xFB | (4 * ([v15 indexOfObject:@"$Junk"] != 0x7FFFFFFFFFFFFFFFLL));
-                      *(self + 144) = *(self + 144) & 0xF7 | (8 * ([v15 indexOfObject:@"NotJunk"] != 0x7FFFFFFFFFFFFFFFLL));
-                      *(self + 144) = *(self + 144) & 0xEF | (16 * ([v15 indexOfObject:@"$NotJunk"] != 0x7FFFFFFFFFFFFFFFLL));
+                      *(self + 144) = *(self + 144) & 0xDF | (32 * ([responseInfo indexOfObject:@"Forwarded"] != 0x7FFFFFFFFFFFFFFFLL));
+                      *(self + 144) = *(self + 144) & 0xBF | (([responseInfo indexOfObject:@"$Forwarded"] != 0x7FFFFFFFFFFFFFFFLL) << 6);
+                      *(self + 144) = *(self + 144) & 0xFD | (2 * ([responseInfo indexOfObject:@"Junk"] != 0x7FFFFFFFFFFFFFFFLL));
+                      *(self + 144) = *(self + 144) & 0xFB | (4 * ([responseInfo indexOfObject:@"$Junk"] != 0x7FFFFFFFFFFFFFFFLL));
+                      *(self + 144) = *(self + 144) & 0xF7 | (8 * ([responseInfo indexOfObject:@"NotJunk"] != 0x7FFFFFFFFFFFFFFFLL));
+                      *(self + 144) = *(self + 144) & 0xEF | (16 * ([responseInfo indexOfObject:@"$NotJunk"] != 0x7FFFFFFFFFFFFFFFLL));
                     }
                   }
                 }
 
-                else if (v16 == 6)
+                else if (responseCode == 6)
                 {
                   *(&self->super.super.super.super.isa + *MEMORY[0x277D284E0]) |= 1u;
                 }
@@ -4277,15 +4277,15 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
           }
 
           while (v10);
-          v5 = v28;
-          v6 = v29;
-          if (v11)
+          commandCopy = v28;
+          responseCopy = v29;
+          if (unsignedIntValue)
           {
             v19 = [objc_msgSend(*(&self->super.super.super.super.isa + *MEMORY[0x277D284E8]) userInfoObjectForKey:{@"UIDVALIDITY", "intValue"}];
-            if (v19 != v11)
+            if (v19 != unsignedIntValue)
             {
               v20 = v19;
-              [(MFLibraryIMAPStore *)self setMailboxUidValidity:v11];
+              [(MFLibraryIMAPStore *)self setMailboxUidValidity:unsignedIntValue];
               if (v20)
               {
                 [(MFMailMessageStore *)self _flushAllMessageData];
@@ -4299,7 +4299,7 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
                   v39 = 2048;
                   v40 = v20;
                   v41 = 2048;
-                  v42 = v11;
+                  v42 = unsignedIntValue;
                   _os_log_impl(&dword_258B7A000, v21, OS_LOG_TYPE_INFO, "Forcing reload of %@ because of UIDVALIDITY change (old:%lu new:%lu)", buf, 0x20u);
                 }
 
@@ -4316,23 +4316,23 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
     }
   }
 
-  if ([v6 isAlertResponse])
+  if ([responseCopy isAlertResponse])
   {
-    [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) handleAlertResponse:{objc_msgSend(v6, "userString")}];
+    [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) handleAlertResponse:{objc_msgSend(responseCopy, "userString")}];
   }
 
-  if ([v6 isResponseWithCode:31])
+  if ([responseCopy isResponseWithCode:31])
   {
-    [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) handleOverQuotaResponse:{objc_msgSend(v6, "userString")}];
+    [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) handleOverQuotaResponse:{objc_msgSend(responseCopy, "userString")}];
   }
 
-  if (!v5 || v5->var0 == 28)
+  if (!commandCopy || commandCopy->var0 == 28)
   {
     if ([(MFLibraryIMAPStore *)self shouldUseIDLE])
     {
-      if ([v6 responseType] == 9)
+      if ([responseCopy responseType] == 9)
       {
-        -[MFLibraryIMAPStore setServerMessageCount:](self, "setServerMessageCount:", [v6 number]);
+        -[MFLibraryIMAPStore setServerMessageCount:](self, "setServerMessageCount:", [responseCopy number]);
         if (*(&self->super.super.super.super.isa + *MEMORY[0x277D284E8]))
         {
           v24 = *MEMORY[0x277D28350];
@@ -4340,8 +4340,8 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
           v35 = v24;
           v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v34 count:1];
           v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-          v26 = [MEMORY[0x277CCAB98] defaultCenter];
-          [v26 postNotificationName:*MEMORY[0x277D28348] object:*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) userInfo:v25];
+          defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+          [defaultCenter postNotificationName:*MEMORY[0x277D28348] object:*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) userInfo:v25];
         }
       }
     }
@@ -4350,15 +4350,15 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_uidsForMessages:(id)a3
+- (id)_uidsForMessages:(id)messages
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a3, "count")}];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(messages, "count")}];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [messages countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -4370,7 +4370,7 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(messages);
         }
 
         [*(*(&v11 + 1) + 8 * v8) uid];
@@ -4379,7 +4379,7 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [messages countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -4392,21 +4392,21 @@ uint64_t __51__MFLibraryIMAPStore_remoteIDsFromUniqueRemoteIDs___block_invoke(ui
 - (id)_idleConditionsObservable
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D28488] sharedInstance];
-  v4 = [v3 lowPowerModeObservable];
-  v5 = [v3 pluggedInObservable];
+  mEMORY[0x277D28488] = [MEMORY[0x277D28488] sharedInstance];
+  lowPowerModeObservable = [mEMORY[0x277D28488] lowPowerModeObservable];
+  pluggedInObservable = [mEMORY[0x277D28488] pluggedInObservable];
   v6 = [objc_msgSend(MEMORY[0x277D28480] "sharedInstance")];
   v7 = [objc_msgSend(MEMORY[0x277D28438] "sharedInstance")];
-  v8 = [MEMORY[0x277D28400] sharedInstance];
-  v9 = [v8 appStateObservable];
-  v20[0] = v8;
-  v10 = [objc_msgSend(v9 startWith:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v20, 1)), "map:", &__block_literal_global_318}];
+  mEMORY[0x277D28400] = [MEMORY[0x277D28400] sharedInstance];
+  appStateObservable = [mEMORY[0x277D28400] appStateObservable];
+  v20[0] = mEMORY[0x277D28400];
+  v10 = [objc_msgSend(appStateObservable startWith:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v20, 1)), "map:", &__block_literal_global_318}];
   objc_initWeak(&location, self);
-  v19[0] = v4;
+  v19[0] = lowPowerModeObservable;
   v19[1] = v10;
   v19[2] = v7;
   v19[3] = v6;
-  v19[4] = v5;
+  v19[4] = pluggedInObservable;
   v11 = [MEMORY[0x277D07180] combineLatest:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v19, 5)}];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -4480,7 +4480,7 @@ void __47__MFLibraryIMAPStore__idleConditionsObservable__block_invoke_3(uint64_t
 - (id)_observeChangesInIdleConditions
 {
   objc_initWeak(&location, self);
-  v3 = [(MFLibraryIMAPStore *)self _idleConditionsObservable];
+  _idleConditionsObservable = [(MFLibraryIMAPStore *)self _idleConditionsObservable];
   v4 = MEMORY[0x277D07188];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
@@ -4488,7 +4488,7 @@ void __47__MFLibraryIMAPStore__idleConditionsObservable__block_invoke_3(uint64_t
   v11 = &unk_2798B21A8;
   objc_copyWeak(&v12, &location);
   v5 = [v4 observerWithResultBlock:&v8];
-  v6 = [v3 subscribe:{v5, v8, v9, v10, v11}];
+  v6 = [_idleConditionsObservable subscribe:{v5, v8, v9, v10, v11}];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
   return v6;
@@ -4502,26 +4502,26 @@ uint64_t __53__MFLibraryIMAPStore__observeChangesInIdleConditions__block_invoke(
   return [Weak _scheduleIdleTransition:v4];
 }
 
-- (BOOL)connection:(id)a3 shouldHandleUntaggedResponse:(id)a4 forCommand:(id *)a5
+- (BOOL)connection:(id)connection shouldHandleUntaggedResponse:(id)response forCommand:(id *)command
 {
-  var0 = a5->var0;
-  v9 = [a4 responseType];
+  var0 = command->var0;
+  responseType = [response responseType];
   v10 = 1;
-  if (v9 <= 12)
+  if (responseType <= 12)
   {
-    if (v9 == 9)
+    if (responseType == 9)
     {
       v10 = (var0 & 0xFFFFFFFB) == 9;
-      -[MFLibraryIMAPStore setServerMessageCount:](self, "setServerMessageCount:", [a4 number]);
+      -[MFLibraryIMAPStore setServerMessageCount:](self, "setServerMessageCount:", [response number]);
       goto LABEL_25;
     }
 
-    if (v9 != 10)
+    if (responseType != 10)
     {
       goto LABEL_25;
     }
 
-    if ([a4 number] && a5->var0 == 1)
+    if ([response number] && command->var0 == 1)
     {
       v10 = 0;
       *(self + 145) |= 8u;
@@ -4533,14 +4533,14 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  switch(v9)
+  switch(responseType)
   {
     case 13:
-      v14 = [(MFMailMessageStore *)self account];
-      v15 = [a4 mailboxName];
-      v16 = [v14 _mailboxUidForName:v15];
-      v17 = [a4 statusEntries];
-      v18 = [v17 objectForKey:0x2869E4C80];
+      account = [(MFMailMessageStore *)self account];
+      mailboxName = [response mailboxName];
+      v16 = [account _mailboxUidForName:mailboxName];
+      statusEntries = [response statusEntries];
+      v18 = [statusEntries objectForKey:0x2869E4C80];
       if (v18)
       {
         v19 = v18;
@@ -4554,9 +4554,9 @@ LABEL_15:
         }
       }
 
-      if ([v15 isEqualToString:{-[MFLibraryIMAPStore mailboxName](self, "mailboxName")}])
+      if ([mailboxName isEqualToString:{-[MFLibraryIMAPStore mailboxName](self, "mailboxName")}])
       {
-        v21 = [v17 objectForKey:0x2869E4CE0];
+        v21 = [statusEntries objectForKey:0x2869E4CE0];
         if (v21)
         {
           -[MFLibraryIMAPStore setHighestModSequence:](self, "setHighestModSequence:", [v21 unsignedLongLongValue]);
@@ -4567,16 +4567,16 @@ LABEL_15:
     case 24:
       goto LABEL_15;
     case 17:
-      v11 = [a4 fetchResultWithType:8];
+      v11 = [response fetchResultWithType:8];
       if (v11)
       {
-        if (a5->var0 == 21)
+        if (command->var0 == 21)
         {
           v12 = v11;
           fetchPipeline = self->_fetchPipeline;
           if (fetchPipeline && [(MFIMAPCommandPipeline *)fetchPipeline isSending])
           {
-            -[MFIMAPDownloadCache handleFetchResponse:forUid:](self->_downloadCache, "handleFetchResponse:forUid:", a4, [v12 uid]);
+            -[MFIMAPDownloadCache handleFetchResponse:forUid:](self->_downloadCache, "handleFetchResponse:forUid:", response, [v12 uid]);
           }
 
 LABEL_23:
@@ -4588,30 +4588,30 @@ LABEL_23:
   }
 
 LABEL_25:
-  if ([a4 isAlertResponse])
+  if ([response isAlertResponse])
   {
-    [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) handleAlertResponse:{objc_msgSend(a4, "userString")}];
+    [*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) handleAlertResponse:{objc_msgSend(response, "userString")}];
     return 0;
   }
 
   return v10;
 }
 
-- (BOOL)hasValidCacheFileForMessage:(id)a3
+- (BOOL)hasValidCacheFileForMessage:(id)message
 {
-  v5 = [a3 uid];
-  if (![a3 hasTemporaryUid] || !v5)
+  v5 = [message uid];
+  if (![message hasTemporaryUid] || !v5)
   {
     return 0;
   }
 
   v6 = [objc_msgSend(*(&self->super.super.super.super.isa + *MEMORY[0x277D284C8]) "offlineCacheDirectoryPath")];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
 
-  return [v7 fileExistsAtPath:v6];
+  return [defaultManager fileExistsAtPath:v6];
 }
 
-- (id)addMessages:(id)a3 newMessagesByOldMessage:(id)a4
+- (id)addMessages:(id)messages newMessagesByOldMessage:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = [-[MFLibraryStore library](self "library")];
@@ -4670,7 +4670,7 @@ LABEL_25:
   return result;
 }
 
-- (void)_handleFlagsChangedForMessages:(id)a3 flags:(id)a4 oldFlagsByMessage:(id)a5
+- (void)_handleFlagsChangedForMessages:(id)messages flags:(id)flags oldFlagsByMessage:(id)message
 {
   v26 = *MEMORY[0x277D85DE8];
   v24.receiver = self;
@@ -4681,7 +4681,7 @@ LABEL_25:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v9 = [messages countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (!v9)
   {
     [(MFLibraryIMAPStore *)self mf_unlock];
@@ -4697,14 +4697,14 @@ LABEL_25:
     {
       if (*v21 != v12)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(messages);
       }
 
       v14 = *(*(&v20 + 1) + 8 * i);
-      v15 = [objc_msgSend(a5 objectForKey:{v14), "intValue"}];
-      if (a4)
+      v15 = [objc_msgSend(message objectForKey:{v14), "intValue"}];
+      if (flags)
       {
-        v16 = MFMessageFlagsByApplyingDictionary();
+        messageFlags = MFMessageFlagsByApplyingDictionary();
         if ((v15 & 2) == 0)
         {
           goto LABEL_8;
@@ -4713,11 +4713,11 @@ LABEL_25:
 
       else
       {
-        v16 = [v14 messageFlags];
+        messageFlags = [v14 messageFlags];
         if ((v15 & 2) == 0)
         {
 LABEL_8:
-          if ((v16 & 2) == 0)
+          if ((messageFlags & 2) == 0)
           {
             continue;
           }
@@ -4727,7 +4727,7 @@ LABEL_8:
         }
       }
 
-      if ((v16 & 2) != 0)
+      if ((messageFlags & 2) != 0)
       {
         continue;
       }
@@ -4738,29 +4738,29 @@ LABEL_13:
       v11 = 1;
     }
 
-    v10 = [a3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    v10 = [messages countByEnumeratingWithState:&v20 objects:v25 count:16];
   }
 
   while (v10);
   [(MFLibraryIMAPStore *)self mf_unlock];
   if (v11)
   {
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 postNotification:{objc_msgSend(MEMORY[0x277CCAB88], "notificationWithName:object:userInfo:", *MEMORY[0x277D28530], self, 0)}];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotification:{objc_msgSend(MEMORY[0x277CCAB88], "notificationWithName:object:userInfo:", *MEMORY[0x277D28530], self, 0)}];
   }
 
 LABEL_19:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setFlagsForMessages:(id)a3
+- (void)_setFlagsForMessages:(id)messages
 {
-  if (a3 && [a3 count])
+  if (messages && [messages count])
   {
-    v5 = [a3 keyEnumerator];
+    keyEnumerator = [messages keyEnumerator];
     v6 = 1;
     v7 = 1;
-    while ([v5 nextObject])
+    while ([keyEnumerator nextObject])
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -4785,16 +4785,16 @@ LABEL_19:
           _os_log_impl(&dword_258B7A000, v10, OS_LOG_TYPE_INFO, "[MFLibraryIMAPStore _setFlagsForMessages:] flagsByMessage contains mixed message types", buf, 2u);
         }
 
-        v11 = [a3 keyEnumerator];
-        v12 = [v11 nextObject];
-        if (v12)
+        keyEnumerator2 = [messages keyEnumerator];
+        nextObject = [keyEnumerator2 nextObject];
+        if (nextObject)
         {
-          v13 = v12;
+          nextObject2 = nextObject;
           v14 = 0;
           v15 = 0;
           do
           {
-            v16 = [a3 objectForKey:v13];
+            v16 = [messages objectForKey:nextObject2];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -4821,11 +4821,11 @@ LABEL_19:
               v14 = v17;
             }
 
-            [v17 setObject:v16 forKey:v13];
-            v13 = [v11 nextObject];
+            [v17 setObject:v16 forKey:nextObject2];
+            nextObject2 = [keyEnumerator2 nextObject];
           }
 
-          while (v13);
+          while (nextObject2);
           if (!v15 && v14)
           {
             v18.receiver = self;
@@ -4850,33 +4850,33 @@ LABEL_27:
     {
       v20.receiver = self;
       v20.super_class = MFLibraryIMAPStore;
-      [(MFMailMessageStore *)&v20 _setFlagsForMessages:a3];
+      [(MFMailMessageStore *)&v20 _setFlagsForMessages:messages];
     }
   }
 }
 
 - (id)offlineCache
 {
-  v2 = [(MFMailMessageStore *)self account];
+  account = [(MFMailMessageStore *)self account];
 
-  return [v2 offlineCache];
+  return [account offlineCache];
 }
 
 - (id)offlineCacheIfOffline
 {
-  v2 = [(MFMailMessageStore *)self account];
+  account = [(MFMailMessageStore *)self account];
 
-  return [v2 offlineCacheIfOffline];
+  return [account offlineCacheIfOffline];
 }
 
 - (void)close
 {
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
-    v4 = [MEMORY[0x277D28420] sharedInvocationQueue];
+    mEMORY[0x277D28420] = [MEMORY[0x277D28420] sharedInvocationQueue];
     v5 = [MEMORY[0x277D28478] mf_invocationWithSelector:a2 target:self];
 
-    [v4 addInvocation:v5];
+    [mEMORY[0x277D28420] addInvocation:v5];
   }
 
   else
@@ -4891,21 +4891,21 @@ LABEL_27:
   }
 }
 
-- (id)messageForRemoteID:(id)a3
+- (id)messageForRemoteID:(id)d
 {
-  v5 = [(MFMailMessageStore *)self mailboxUid];
+  mailboxUid = [(MFMailMessageStore *)self mailboxUid];
 
-  return [(MFLibraryIMAPStore *)self messageForRemoteID:a3 inMailbox:v5];
+  return [(MFLibraryIMAPStore *)self messageForRemoteID:d inMailbox:mailboxUid];
 }
 
-- (id)messageForRemoteID:(id)a3 inMailbox:(id)a4
+- (id)messageForRemoteID:(id)d inMailbox:(id)mailbox
 {
   v5 = [-[MFLibraryStore library](self "library")];
   [v5 setMessageStore:self];
   return v5;
 }
 
-- (id)uniqueRemoteIDsForMessages:(id)a3
+- (id)uniqueRemoteIDsForMessages:(id)messages
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = [MEMORY[0x277CBEB58] set];
@@ -4913,7 +4913,7 @@ LABEL_27:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [messages countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = *v20;
@@ -4924,14 +4924,14 @@ LABEL_27:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(messages);
         }
 
         [v5 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedLong:", objc_msgSend(*(*(&v19 + 1) + 8 * v8++), "uid"))}];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [messages countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);
@@ -4963,15 +4963,15 @@ uint64_t __49__MFLibraryIMAPStore_uniqueRemoteIDsForMessages___block_invoke(uint
   return result;
 }
 
-- (void)setServerMessageCount:(unint64_t)a3
+- (void)setServerMessageCount:(unint64_t)count
 {
   v5 = [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
   if (v5)
   {
-    v6 = [v5 unsignedIntValue];
-    if (v6)
+    unsignedIntValue = [v5 unsignedIntValue];
+    if (unsignedIntValue)
     {
-      v7 = v6;
+      v7 = unsignedIntValue;
     }
 
     else
@@ -4985,27 +4985,27 @@ uint64_t __49__MFLibraryIMAPStore_uniqueRemoteIDsForMessages___block_invoke(uint
     v7 = 300;
   }
 
-  if (v7 <= a3)
+  if (v7 <= count)
   {
-    *(&self->super.super.super.super.isa + *MEMORY[0x277D284B8]) = a3;
+    *(&self->super.super.super.super.isa + *MEMORY[0x277D284B8]) = count;
     self->_serverDeletedCount = 0;
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = [MEMORY[0x277CCAB88] notificationWithName:*MEMORY[0x277D28530] object:self userInfo:0];
 
-    [v8 postNotification:v9];
+    [defaultCenter postNotification:v9];
   }
 
   else if ((*(self + 145) & 0x10) == 0)
   {
     *(self + 145) |= 0x10u;
-    *(&self->super.super.super.super.isa + *MEMORY[0x277D284B8]) = a3;
+    *(&self->super.super.super.super.isa + *MEMORY[0x277D284B8]) = count;
     self->_serverDeletedCount = 0;
     if (([objc_msgSend(MEMORY[0x277D283F8] "currentMonitor")] & 1) == 0)
     {
-      v10 = [MEMORY[0x277D28420] sharedInvocationQueue];
+      mEMORY[0x277D28420] = [MEMORY[0x277D28420] sharedInvocationQueue];
       v11 = [MEMORY[0x277D28478] mf_invocationWithSelector:sel_updateDeletedCount target:self];
 
-      [v10 addInvocation:v11];
+      [mEMORY[0x277D28420] addInvocation:v11];
     }
   }
 }
@@ -5046,39 +5046,39 @@ uint64_t __49__MFLibraryIMAPStore_uniqueRemoteIDsForMessages___block_invoke(uint
   return result;
 }
 
-- (id)sequenceIdentifierForUIDs:(id)a3
+- (id)sequenceIdentifierForUIDs:(id)ds
 {
-  v5 = [(MFLibraryStore *)self library];
-  v6 = [(MFLibraryStore *)self URLString];
+  library = [(MFLibraryStore *)self library];
+  uRLString = [(MFLibraryStore *)self URLString];
 
-  return [v5 sequenceIdentifierForMessagesWithRemoteIDs:a3 inMailbox:v6];
+  return [library sequenceIdentifierForMessagesWithRemoteIDs:ds inMailbox:uRLString];
 }
 
-- (void)setSequenceIdentifier:(id)a3 forUIDs:(id)a4
+- (void)setSequenceIdentifier:(id)identifier forUIDs:(id)ds
 {
-  v7 = [(MFLibraryStore *)self library];
-  v8 = [(MFLibraryStore *)self URLString];
+  library = [(MFLibraryStore *)self library];
+  uRLString = [(MFLibraryStore *)self URLString];
 
-  [v7 setSequenceIdentifier:a3 forMessagesWithRemoteIDs:a4 inMailbox:v8];
+  [library setSequenceIdentifier:identifier forMessagesWithRemoteIDs:ds inMailbox:uRLString];
 }
 
-- (void)setDownloadDelegate:(id)a3
+- (void)setDownloadDelegate:(id)delegate
 {
   [(MFLibraryIMAPStore *)self mf_lock];
-  if (self->_downloadDelegate != a3)
+  if (self->_downloadDelegate != delegate)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0 || (objc_opt_respondsToSelector() & 1) == 0)
     {
-      a3 = 0;
+      delegate = 0;
     }
 
-    self->_downloadDelegate = a3;
+    self->_downloadDelegate = delegate;
   }
 
   [(MFLibraryIMAPStore *)self mf_unlock];
 }
 
-- (void)connection:(id)a3 didBeginBodyLoad:(id)a4 section:(id)a5
+- (void)connection:(id)connection didBeginBodyLoad:(id)load section:(id)section
 {
   downloadDelegate = self->_downloadDelegate;
   if (downloadDelegate)
@@ -5086,12 +5086,12 @@ uint64_t __49__MFLibraryIMAPStore_uniqueRemoteIDsForMessages___block_invoke(uint
     currentFetchUid = self->_currentFetchUid;
     if (currentFetchUid != -1)
     {
-      [downloadDelegate libraryIMAPStore:self bodyDownloadBeganForUid:currentFetchUid data:a4 section:a5];
+      [downloadDelegate libraryIMAPStore:self bodyDownloadBeganForUid:currentFetchUid data:load section:section];
     }
   }
 }
 
-- (void)connection:(id)a3 didLoadMoreBodyData:(id)a4 section:(id)a5
+- (void)connection:(id)connection didLoadMoreBodyData:(id)data section:(id)section
 {
   downloadDelegate = self->_downloadDelegate;
   if (downloadDelegate)
@@ -5099,12 +5099,12 @@ uint64_t __49__MFLibraryIMAPStore_uniqueRemoteIDsForMessages___block_invoke(uint
     currentFetchUid = self->_currentFetchUid;
     if (currentFetchUid != -1)
     {
-      [downloadDelegate libraryIMAPStore:self bodyDownloadReceivedMoreDataForUid:currentFetchUid data:a4 section:a5];
+      [downloadDelegate libraryIMAPStore:self bodyDownloadReceivedMoreDataForUid:currentFetchUid data:data section:section];
     }
   }
 }
 
-- (void)connection:(id)a3 didFinishLoadingBodyData:(id)a4 section:(id)a5
+- (void)connection:(id)connection didFinishLoadingBodyData:(id)data section:(id)section
 {
   downloadDelegate = self->_downloadDelegate;
   if (downloadDelegate)
@@ -5112,7 +5112,7 @@ uint64_t __49__MFLibraryIMAPStore_uniqueRemoteIDsForMessages___block_invoke(uint
     currentFetchUid = self->_currentFetchUid;
     if (currentFetchUid != -1)
     {
-      [downloadDelegate libraryIMAPStore:self bodyDownloadCompletedForUid:currentFetchUid data:a4 section:a5];
+      [downloadDelegate libraryIMAPStore:self bodyDownloadCompletedForUid:currentFetchUid data:data section:section];
     }
   }
 }

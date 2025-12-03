@@ -1,30 +1,30 @@
 @interface DIVerifyParams
 - (BOOL)shouldValidateShadows;
-- (BOOL)verifyWithError:(id *)a3;
-- (DIVerifyParams)initWithURL:(id)a3 error:(id *)a4;
-- (DIVerifyParams)initWithURL:(id)a3 shadowURLs:(id)a4 error:(id *)a5;
+- (BOOL)verifyWithError:(id *)error;
+- (DIVerifyParams)initWithURL:(id)l error:(id *)error;
+- (DIVerifyParams)initWithURL:(id)l shadowURLs:(id)ls error:(id *)error;
 @end
 
 @implementation DIVerifyParams
 
-- (DIVerifyParams)initWithURL:(id)a3 error:(id *)a4
+- (DIVerifyParams)initWithURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
-  v8 = [v6 array];
-  v9 = [(DIVerifyParams *)self initWithURL:v7 shadowURLs:v8 error:a4];
+  lCopy = l;
+  array = [v6 array];
+  v9 = [(DIVerifyParams *)self initWithURL:lCopy shadowURLs:array error:error];
 
   return v9;
 }
 
-- (DIVerifyParams)initWithURL:(id)a3 shadowURLs:(id)a4 error:(id *)a5
+- (DIVerifyParams)initWithURL:(id)l shadowURLs:(id)ls error:(id *)error
 {
-  v8 = a4;
+  lsCopy = ls;
   v15.receiver = self;
   v15.super_class = DIVerifyParams;
-  v9 = [(DIBaseParams *)&v15 initWithURL:a3 error:a5];
+  v9 = [(DIBaseParams *)&v15 initWithURL:l error:error];
   v10 = v9;
-  if (!v9 || -[DIBaseParams openExistingImageWithError:](v9, "openExistingImageWithError:", a5) && (-[DIBaseParams shadowChain](v10, "shadowChain"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 addShadowURLs:v8 error:a5], v11, v12))
+  if (!v9 || -[DIBaseParams openExistingImageWithError:](v9, "openExistingImageWithError:", error) && (-[DIBaseParams shadowChain](v10, "shadowChain"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 addShadowURLs:lsCopy error:error], v11, v12))
   {
     v13 = v10;
   }
@@ -39,13 +39,13 @@
 
 - (BOOL)shouldValidateShadows
 {
-  v2 = [(DIBaseParams *)self shadowChain];
-  v3 = [v2 shouldValidate];
+  shadowChain = [(DIBaseParams *)self shadowChain];
+  shouldValidate = [shadowChain shouldValidate];
 
-  return v3;
+  return shouldValidate;
 }
 
-- (BOOL)verifyWithError:(id *)a3
+- (BOOL)verifyWithError:(id *)error
 {
   v26 = *MEMORY[0x277D85DE8];
   v14 = 0;
@@ -65,7 +65,7 @@
     v22 = 2080;
     v23 = "[DIVerifyParams verifyWithError:]";
     v24 = 2114;
-    v25 = self;
+    selfCopy2 = self;
     v7 = _os_log_send_and_compose_impl();
 
     if (v7)
@@ -85,23 +85,23 @@
       v22 = 2080;
       v23 = "[DIVerifyParams verifyWithError:]";
       v24 = 2114;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_248DE0000, v8, OS_LOG_TYPE_DEFAULT, "%.*s: entry: %{public}@", buf, 0x1Cu);
     }
   }
 
   *__error() = v5;
-  if (([v15[5] connectWithError:a3] & 1) != 0 && -[DIBaseParams prepareImageWithXpcHandler:fileMode:error:](self, "prepareImageWithXpcHandler:fileMode:error:", v15[5], 2, a3))
+  if (([v15[5] connectWithError:error] & 1) != 0 && -[DIBaseParams prepareImageWithXpcHandler:fileMode:error:](self, "prepareImageWithXpcHandler:fileMode:error:", v15[5], 2, error))
   {
-    v9 = [v15[5] remoteProxy];
+    remoteProxy = [v15[5] remoteProxy];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __34__DIVerifyParams_verifyWithError___block_invoke;
     v13[3] = &unk_278F80A28;
     v13[4] = &v14;
-    [v9 verifyWithParams:self reply:v13];
+    [remoteProxy verifyWithParams:self reply:v13];
 
-    v10 = [v15[5] completeCommandWithError:a3];
+    v10 = [v15[5] completeCommandWithError:error];
   }
 
   else

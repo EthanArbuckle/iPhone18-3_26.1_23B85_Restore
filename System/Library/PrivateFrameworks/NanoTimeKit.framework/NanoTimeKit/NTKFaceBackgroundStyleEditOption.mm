@@ -1,6 +1,6 @@
 @interface NTKFaceBackgroundStyleEditOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (unint64_t)backgroundStyle;
 @end
@@ -9,8 +9,8 @@
 
 - (unint64_t)backgroundStyle
 {
-  v3 = [MEMORY[0x277CBBB70] sharedMonitor];
-  v4 = [v3 shouldHideForSensitivity:NTKGossamerUISensitivity()];
+  mEMORY[0x277CBBB70] = [MEMORY[0x277CBBB70] sharedMonitor];
+  v4 = [mEMORY[0x277CBBB70] shouldHideForSensitivity:NTKGossamerUISensitivity()];
 
   if (v4)
   {
@@ -20,23 +20,23 @@
   return [(NTKValueEditOption *)self _value];
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{a3, a4}];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{value, device}];
   v5 = [v4 description];
 
   return v5;
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"EDIT_OPTION_LABEL_FACE_BACKGROUND_STYLE_TINTED";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }

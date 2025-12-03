@@ -1,26 +1,26 @@
 @interface CLSPublicEventCacheCreator
-- (CLSPublicEventCacheCreator)initWithCache:(id)a3 queryRadius:(double)a4 analytics:(id)a5;
-- (id)_queryEventsForTimeLocationTuples:(id)a3 invalidationTokens:(id *)a4 queryContext:(id)a5 analyticsPayload:(id)a6 progressBlock:(id)a7 error:(id *)a8;
-- (id)createCacheForTimeLocationTuples:(id)a3 cachingOptions:(id)a4 progressBlock:(id)a5 error:(id *)a6;
+- (CLSPublicEventCacheCreator)initWithCache:(id)cache queryRadius:(double)radius analytics:(id)analytics;
+- (id)_queryEventsForTimeLocationTuples:(id)tuples invalidationTokens:(id *)tokens queryContext:(id)context analyticsPayload:(id)payload progressBlock:(id)block error:(id *)error;
+- (id)createCacheForTimeLocationTuples:(id)tuples cachingOptions:(id)options progressBlock:(id)block error:(id *)error;
 @end
 
 @implementation CLSPublicEventCacheCreator
 
-- (id)_queryEventsForTimeLocationTuples:(id)a3 invalidationTokens:(id *)a4 queryContext:(id)a5 analyticsPayload:(id)a6 progressBlock:(id)a7 error:(id *)a8
+- (id)_queryEventsForTimeLocationTuples:(id)tuples invalidationTokens:(id *)tokens queryContext:(id)context analyticsPayload:(id)payload progressBlock:(id)block error:(id *)error
 {
   v101 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v51 = a5;
-  v11 = a6;
-  v49 = a7;
-  v12 = _Block_copy(v49);
+  tuplesCopy = tuples;
+  contextCopy = context;
+  payloadCopy = payload;
+  blockCopy = block;
+  v12 = _Block_copy(blockCopy);
   v87 = 0;
   v88 = &v87;
   v89 = 0x2020000000;
   v90 = 0;
-  [v11 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"batchSucceeded"];
-  [v11 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"didRequestTimeout"];
-  v53 = v11;
+  [payloadCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"batchSucceeded"];
+  [payloadCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"didRequestTimeout"];
+  v53 = payloadCopy;
   if (!v12 || (LOBYTE(v81) = 0, (*(v12 + 2))(v12, &v81, 0.0), v13 = *(v88 + 24) | v81, *(v88 + 24) = v13, (v13 & 1) == 0))
   {
     buf = 0;
@@ -50,8 +50,8 @@
     v67 = 0x3032000000;
     v68 = __Block_byref_object_copy_;
     v69 = __Block_byref_object_dispose_;
-    v70 = [MEMORY[0x277CBEAC0] dictionary];
-    v50 = [(CLSPublicEventServiceClientProtocol *)self->_serviceClient publicEventQueryHelperWithTimeLocationTuples:v52 queryRadius:v51 queryContext:self->_simulatesTimeout simulatesTimeout:self->_queryRadius];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
+    v50 = [(CLSPublicEventServiceClientProtocol *)self->_serviceClient publicEventQueryHelperWithTimeLocationTuples:tuplesCopy queryRadius:contextCopy queryContext:self->_simulatesTimeout simulatesTimeout:self->_queryRadius];
     if (v50)
     {
       v15 = dispatch_block_create(0, &__block_literal_global_112);
@@ -76,9 +76,9 @@
       [v50 launchPublicEventQueryWithCancellerBlock:v62 completionBlock:v55];
       [v50 timeoutInterval];
       v19 = v18;
-      v20 = [v50 numberOfRetries];
+      numberOfRetries = [v50 numberOfRetries];
       Current = CFAbsoluteTimeGetCurrent();
-      if (v20)
+      if (numberOfRetries)
       {
         v22 = 0;
         while (1)
@@ -92,16 +92,16 @@
           }
 
           v26 = +[CLSLogging sharedLogging];
-          v27 = [v26 loggingConnection];
+          loggingConnection = [v26 loggingConnection];
 
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
-            v29 = [v52 count];
+            v29 = [tuplesCopy count];
             v91 = 134218240;
             v92 = v22;
             v93 = 2048;
             v94 = v29;
-            _os_log_error_impl(&dword_22F907000, v27, OS_LOG_TYPE_ERROR, "PublicEventCacheCreator -_queryEventsForTimeLocationTuples: timed out at retry iteration %lu, waiting for batch with %lu time location tuples to complete", &v91, 0x16u);
+            _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "PublicEventCacheCreator -_queryEventsForTimeLocationTuples: timed out at retry iteration %lu, waiting for batch with %lu time location tuples to complete", &v91, 0x16u);
           }
 
           if (v12)
@@ -116,13 +116,13 @@
               break;
             }
 
-            if (++v22 >= v20)
+            if (++v22 >= numberOfRetries)
             {
               break;
             }
           }
 
-          else if (++v22 >= v20)
+          else if (++v22 >= numberOfRetries)
           {
             v25 = 1;
             break;
@@ -135,10 +135,10 @@
         v25 = 0;
       }
 
-      v30 = [MEMORY[0x277CCABB0] numberWithDouble:CFAbsoluteTimeGetCurrent() - Current];
-      [v53 setObject:v30 forKeyedSubscript:@"requestDuration"];
+      current = [MEMORY[0x277CCABB0] numberWithDouble:CFAbsoluteTimeGetCurrent() - Current];
+      [v53 setObject:current forKeyedSubscript:@"requestDuration"];
 
-      v31 = (v20 * (v19 * 1000000000.0)) / 1000000000;
+      v31 = (numberOfRetries * (v19 * 1000000000.0)) / 1000000000;
       v32 = [MEMORY[0x277CCABB0] numberWithLongLong:v31];
       [v53 setObject:v32 forKeyedSubscript:@"requestTimeoutValue"];
 
@@ -149,16 +149,16 @@
       if (v25)
       {
         v34 = +[CLSLogging sharedLogging];
-        v35 = [v34 loggingConnection];
+        loggingConnection2 = [v34 loggingConnection];
 
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
         {
-          v45 = [v52 count];
+          v45 = [tuplesCopy count];
           v91 = 134218240;
-          v92 = v20;
+          v92 = numberOfRetries;
           v93 = 2048;
           v94 = v45;
-          _os_log_error_impl(&dword_22F907000, v35, OS_LOG_TYPE_ERROR, "PublicEventCacheCreator -_queryEventsForTimeLocationTuples: timed out after all %lu retries, waiting for batch with %lu time location tuples to complete", &v91, 0x16u);
+          _os_log_error_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_ERROR, "PublicEventCacheCreator -_queryEventsForTimeLocationTuples: timed out after all %lu retries, waiting for batch with %lu time location tuples to complete", &v91, 0x16u);
         }
 
         [v50 cancel];
@@ -198,23 +198,23 @@ LABEL_41:
     {
       if (*(v78 + 24) == 1)
       {
-        if (a4)
+        if (tokens)
         {
-          *a4 = [v72[5] invalidationTokens];
+          *tokens = [v72[5] invalidationTokens];
         }
 
-        v42 = [(CLSPublicEventCacheCreator *)self cache];
-        [v42 insertBatchesOfPublicEventsByTimeLocationIdentifier:v82[5] forTimeLocationTuples:v52];
+        cache = [(CLSPublicEventCacheCreator *)self cache];
+        [cache insertBatchesOfPublicEventsByTimeLocationIdentifier:v82[5] forTimeLocationTuples:tuplesCopy];
       }
 
-      else if (a4)
+      else if (tokens)
       {
-        *a4 = 0;
+        *tokens = 0;
       }
 
-      if (a8)
+      if (error)
       {
-        *a8 = p_buf[5];
+        *error = p_buf[5];
       }
 
       if (!v12 || (v54 = 0, (*(v12 + 2))(v12, &v54, 1.0), v43 = *(v88 + 24) | v54, *(v88 + 24) = v43, (v43 & 1) == 0))
@@ -309,18 +309,18 @@ void __133__CLSPublicEventCacheCreator__queryEventsForTimeLocationTuples_invalid
   (*(a1[4] + 16))();
 }
 
-- (id)createCacheForTimeLocationTuples:(id)a3 cachingOptions:(id)a4 progressBlock:(id)a5 error:(id *)a6
+- (id)createCacheForTimeLocationTuples:(id)tuples cachingOptions:(id)options progressBlock:(id)block error:(id *)error
 {
   v110 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v59 = a4;
-  v11 = a5;
+  tuplesCopy = tuples;
+  optionsCopy = options;
+  blockCopy = block;
   maximumBatchSize = self->_maximumBatchSize;
   v13 = objc_alloc_init(CLSPublicEventCacheCreatorResult);
-  v58 = v11;
-  if (maximumBatchSize && [v10 count])
+  v58 = blockCopy;
+  if (maximumBatchSize && [tuplesCopy count])
   {
-    v14 = _Block_copy(v11);
+    v14 = _Block_copy(blockCopy);
     v51 = v13;
     v96 = 0;
     v97 = &v96;
@@ -338,24 +338,24 @@ void __133__CLSPublicEventCacheCreator__queryEventsForTimeLocationTuples_invalid
 
     else
     {
-      v56 = v10;
-      v54 = [MEMORY[0x277CBEB38] dictionary];
-      v49 = [MEMORY[0x277CBEB38] dictionary];
+      v56 = tuplesCopy;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:maximumBatchSize];
-      v52 = a6;
-      v18 = [v10 allObjects];
-      v19 = [v18 sortedArrayUsingComparator:&__block_literal_global];
+      errorCopy = error;
+      allObjects = [tuplesCopy allObjects];
+      v19 = [allObjects sortedArrayUsingComparator:&__block_literal_global];
 
       v20 = v19;
-      v21 = [v59 fetchLimit];
+      fetchLimit = [optionsCopy fetchLimit];
       v22 = v20;
-      if (v21)
+      if (fetchLimit)
       {
         v23 = [v20 count];
         v22 = v20;
-        if (v21 < v23)
+        if (fetchLimit < v23)
         {
-          v24 = [v20 subarrayWithRange:{0, v21}];
+          v24 = [v20 subarrayWithRange:{0, fetchLimit}];
 
           v22 = v24;
         }
@@ -369,13 +369,13 @@ void __133__CLSPublicEventCacheCreator__queryEventsForTimeLocationTuples_invalid
       v25 = [v22 count];
       v48 = v20;
       v26 = +[CLSLogging sharedLogging];
-      v27 = [v26 loggingConnection];
+      loggingConnection = [v26 loggingConnection];
 
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf) = 134217984;
         *(&buf + 4) = v25;
-        _os_log_impl(&dword_22F907000, v27, OS_LOG_TYPE_DEFAULT, "PublicEventCacheCreator - populating cache with events for %lu time location tuples", &buf, 0xCu);
+        _os_log_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_DEFAULT, "PublicEventCacheCreator - populating cache with events for %lu time location tuples", &buf, 0xCu);
       }
 
       v91[0] = 0;
@@ -396,7 +396,7 @@ void __133__CLSPublicEventCacheCreator__queryEventsForTimeLocationTuples_invalid
       v107 = __Block_byref_object_copy_;
       v108 = __Block_byref_object_dispose_;
       v109 = 0;
-      v28 = [(CLSPublicEventServiceClientProtocol *)self->_serviceClient queryContext];
+      queryContext = [(CLSPublicEventServiceClientProtocol *)self->_serviceClient queryContext];
       v29 = self->_analytics;
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
@@ -405,16 +405,16 @@ void __133__CLSPublicEventCacheCreator__queryEventsForTimeLocationTuples_invalid
       v76 = &v92;
       v30 = v17;
       v66 = v30;
-      v10 = v56;
+      tuplesCopy = v56;
       v67 = v56;
-      v68 = v59;
-      v69 = self;
-      v47 = v28;
+      v68 = optionsCopy;
+      selfCopy = self;
+      v47 = queryContext;
       v70 = v47;
       v74 = v58;
-      v31 = v54;
+      v31 = dictionary;
       v71 = v31;
-      v55 = v49;
+      v55 = dictionary2;
       v72 = v55;
       v77 = &v83;
       p_buf = &buf;
@@ -430,13 +430,13 @@ void __133__CLSPublicEventCacheCreator__queryEventsForTimeLocationTuples_invalid
       if (v25)
       {
         v33 = +[CLSLogging sharedLogging];
-        v34 = [v33 loggingConnection];
+        loggingConnection2 = [v33 loggingConnection];
 
-        if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
+        if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_INFO))
         {
           v100 = 134217984;
           v101 = v25;
-          _os_log_impl(&dword_22F907000, v34, OS_LOG_TYPE_INFO, "PublicEventCacheCreator - number of tuples to fetch: %lu", &v100, 0xCu);
+          _os_log_impl(&dword_22F907000, loggingConnection2, OS_LOG_TYPE_INFO, "PublicEventCacheCreator - number of tuples to fetch: %lu", &v100, 0xCu);
         }
 
         v63 = 0u;
@@ -467,10 +467,10 @@ void __133__CLSPublicEventCacheCreator__queryEventsForTimeLocationTuples_invalid
               if ((v88[3] & 1) != 0 || *(v84 + 24) == 1)
               {
                 v39 = +[CLSLogging sharedLogging];
-                v40 = [v39 loggingConnection];
+                loggingConnection3 = [v39 loggingConnection];
 
                 v31 = v45;
-                if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+                if (os_log_type_enabled(loggingConnection3, OS_LOG_TYPE_ERROR))
                 {
                   v43 = @"NO";
                   if (*(v84 + 24))
@@ -492,7 +492,7 @@ void __133__CLSPublicEventCacheCreator__queryEventsForTimeLocationTuples_invalid
                   v101 = v44;
                   v102 = 2112;
                   v103 = v43;
-                  _os_log_error_impl(&dword_22F907000, v40, OS_LOG_TYPE_ERROR, "PublicEventCacheCreator - received service error (%@) or batchCancelled (%@), terminating loop over batches", &v100, 0x16u);
+                  _os_log_error_impl(&dword_22F907000, loggingConnection3, OS_LOG_TYPE_ERROR, "PublicEventCacheCreator - received service error (%@) or batchCancelled (%@), terminating loop over batches", &v100, 0x16u);
                 }
 
                 goto LABEL_30;
@@ -512,16 +512,16 @@ void __133__CLSPublicEventCacheCreator__queryEventsForTimeLocationTuples_invalid
 
 LABEL_30:
 
-        v10 = v56;
+        tuplesCopy = v56;
         if ([v30 count] && (v88[3] & 1) == 0 && (v84[3] & 1) == 0)
         {
           v32[2](v32);
         }
       }
 
-      if (v52 && (v84[3] & 1) != 0)
+      if (errorCopy && (v84[3] & 1) != 0)
       {
-        *v52 = *(*(&buf + 1) + 40);
+        *errorCopy = *(*(&buf + 1) + 40);
       }
 
       if (v57 && (v60 = 0, (*(v46 + 2))(v46, &v60, 1.0), v41 = *(v97 + 24) | v60, *(v97 + 24) = v41, (v41 & 1) != 0))
@@ -651,24 +651,24 @@ uint64_t __98__CLSPublicEventCacheCreator_createCacheForTimeLocationTuples_cachi
   return v7;
 }
 
-- (CLSPublicEventCacheCreator)initWithCache:(id)a3 queryRadius:(double)a4 analytics:(id)a5
+- (CLSPublicEventCacheCreator)initWithCache:(id)cache queryRadius:(double)radius analytics:(id)analytics
 {
-  v9 = a3;
-  v10 = a5;
+  cacheCopy = cache;
+  analyticsCopy = analytics;
   v16.receiver = self;
   v16.super_class = CLSPublicEventCacheCreator;
   v11 = [(CLSPublicEventCacheCreator *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_cache, a3);
-    v12->_queryRadius = a4;
+    objc_storeStrong(&v11->_cache, cache);
+    v12->_queryRadius = radius;
     v13 = +[CLSPublicEventServiceFactory publicEventServiceClient];
     serviceClient = v12->_serviceClient;
     v12->_serviceClient = v13;
 
     v12->_maximumBatchSize = [(CLSPublicEventServiceClientProtocol *)v12->_serviceClient maximumBatchSize];
-    objc_storeStrong(&v12->_analytics, a5);
+    objc_storeStrong(&v12->_analytics, analytics);
   }
 
   return v12;

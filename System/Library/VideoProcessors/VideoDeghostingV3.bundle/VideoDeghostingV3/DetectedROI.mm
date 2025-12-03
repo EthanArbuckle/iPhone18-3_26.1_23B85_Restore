@@ -1,24 +1,24 @@
 @interface DetectedROI
 - (CGRect)roi;
-- (DetectedROI)initWithTrackId:(unsigned int)a3 trackedCnt:(unsigned int)a4 andRoi:(CGRect)a5;
+- (DetectedROI)initWithTrackId:(unsigned int)id trackedCnt:(unsigned int)cnt andRoi:(CGRect)roi;
 @end
 
 @implementation DetectedROI
 
-- (DetectedROI)initWithTrackId:(unsigned int)a3 trackedCnt:(unsigned int)a4 andRoi:(CGRect)a5
+- (DetectedROI)initWithTrackId:(unsigned int)id trackedCnt:(unsigned int)cnt andRoi:(CGRect)roi
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = roi.size.height;
+  width = roi.size.width;
+  y = roi.origin.y;
+  x = roi.origin.x;
   v15.receiver = self;
   v15.super_class = DetectedROI;
   v11 = [(DetectedROI *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    v11->_trackID = a3;
-    v11->_trackedCnt = a4;
+    v11->_trackID = id;
+    v11->_trackedCnt = cnt;
     v11->_roi.origin.x = x;
     v11->_roi.origin.y = y;
     v11->_roi.size.width = width;

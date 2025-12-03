@@ -1,5 +1,5 @@
 @interface DOCCopyableLabelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axBehavesAsLink;
 - (BOOL)_axHasCopyGesture;
 - (BOOL)accessibilityActivate;
@@ -9,21 +9,21 @@
 
 @implementation DOCCopyableLabelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DocumentManagerExecutables.DOCCopyableLabel" hasInstanceMethod:@"copyDetail" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCCopyableLabel" hasSwiftField:@"supportsCopy" withSwiftType:"Bool"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCCopyableLabel" hasSwiftField:@"behaveAsLink" withSwiftType:"Bool"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCMetadataView" hasInstanceMethod:@"didTapWithLabel:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCCopyableLabel" hasSwiftField:@"delegate" withSwiftType:"Optional<DOCCopyableLabelDelegate>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCCopyableLabel" hasInstanceMethod:@"copyDetail" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCCopyableLabel" hasSwiftField:@"supportsCopy" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCCopyableLabel" hasSwiftField:@"behaveAsLink" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCMetadataView" hasInstanceMethod:@"didTapWithLabel:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCCopyableLabel" hasSwiftField:@"delegate" withSwiftType:"Optional<DOCCopyableLabelDelegate>"];
 }
 
 - (unint64_t)accessibilityTraits
 {
   v6.receiver = self;
   v6.super_class = DOCCopyableLabelAccessibility;
-  v3 = [(DOCCopyableLabelAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(DOCCopyableLabelAccessibility *)&v6 accessibilityTraits];
   if ([(DOCCopyableLabelAccessibility *)self _axHasCopyGesture])
   {
     v4 = ~*MEMORY[0x29EDC7F70];
@@ -34,26 +34,26 @@
     v4 = -1;
   }
 
-  return v4 & v3;
+  return v4 & accessibilityTraits;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v9.receiver = self;
   v9.super_class = DOCCopyableLabelAccessibility;
-  v4 = [(DOCCopyableLabelAccessibility *)&v9 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(DOCCopyableLabelAccessibility *)&v9 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   if ([(DOCCopyableLabelAccessibility *)self _axHasCopyGesture])
   {
     v5 = objc_alloc(MEMORY[0x29EDC78E0]);
     v6 = accessibilityLocalizedString(@"copy");
     v7 = [v5 initWithName:v6 target:self selector:sel__axCopyDetail];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)_axHasCopyGesture

@@ -1,15 +1,15 @@
 @interface GKVoiceChatSessionListener
-- (GKVoiceChatSessionListener)initWithSession:(id)a3;
+- (GKVoiceChatSessionListener)initWithSession:(id)session;
 - (id)currentSessions;
 - (void)dealloc;
-- (void)receivedNewVoiceChatOOBMessage:(id)a3 fromPeerID:(id)a4;
-- (void)registerNewGKVoiceChatSession:(id)a3;
-- (void)removeSession:(id)a3;
+- (void)receivedNewVoiceChatOOBMessage:(id)message fromPeerID:(id)d;
+- (void)registerNewGKVoiceChatSession:(id)session;
+- (void)removeSession:(id)session;
 @end
 
 @implementation GKVoiceChatSessionListener
 
-- (GKVoiceChatSessionListener)initWithSession:(id)a3
+- (GKVoiceChatSessionListener)initWithSession:(id)session
 {
   v7.receiver = self;
   v7.super_class = GKVoiceChatSessionListener;
@@ -17,7 +17,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_gkSession = a3;
+    v4->_gkSession = session;
     v4->_conferenceList = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
     v5->_rwlock = objc_alloc_init(GKRWLock);
   }
@@ -32,12 +32,12 @@
   [(GKVoiceChatSessionListener *)&v3 dealloc];
 }
 
-- (void)registerNewGKVoiceChatSession:(id)a3
+- (void)registerNewGKVoiceChatSession:(id)session
 {
   [(GKRWLock *)self->_rwlock wrlock];
-  if (([(NSMutableArray *)self->_conferenceList containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)self->_conferenceList containsObject:session]& 1) == 0)
   {
-    [(NSMutableArray *)self->_conferenceList addObject:a3];
+    [(NSMutableArray *)self->_conferenceList addObject:session];
   }
 
   rwlock = self->_rwlock;
@@ -45,7 +45,7 @@
   [(GKRWLock *)rwlock unlock];
 }
 
-- (void)removeSession:(id)a3
+- (void)removeSession:(id)session
 {
   v16 = *MEMORY[0x277D85DE8];
   [(GKRWLock *)self->_rwlock wrlock];
@@ -62,12 +62,12 @@
       v12 = 1024;
       v13 = 50;
       v14 = 2048;
-      v15 = a3;
+      sessionCopy = session;
       _os_log_impl(&dword_24E50C000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d GKVoiceChatSessionListener removing listener %p", &v8, 0x26u);
     }
   }
 
-  [(NSMutableArray *)self->_conferenceList removeObject:a3];
+  [(NSMutableArray *)self->_conferenceList removeObject:session];
   [(GKRWLock *)self->_rwlock unlock];
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -80,7 +80,7 @@
   return v3;
 }
 
-- (void)receivedNewVoiceChatOOBMessage:(id)a3 fromPeerID:(id)a4
+- (void)receivedNewVoiceChatOOBMessage:(id)message fromPeerID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
   [(GKRWLock *)self->_rwlock rdlock];
@@ -104,10 +104,10 @@
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 conferenceID];
-        if (v13 == [a3 conferenceID])
+        conferenceID = [v12 conferenceID];
+        if (conferenceID == [message conferenceID])
         {
-          [v12 session:self->_gkSession didReceiveOOBAudioPacket:a3 fromPeerID:a4];
+          [v12 session:self->_gkSession didReceiveOOBAudioPacket:message fromPeerID:d];
         }
       }
 

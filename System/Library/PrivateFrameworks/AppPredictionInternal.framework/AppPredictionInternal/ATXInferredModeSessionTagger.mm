@@ -1,14 +1,14 @@
 @interface ATXInferredModeSessionTagger
-- (id)biomeSessionFromScoredSession:(id)a3;
-- (void)inferModesForLastDayWithXPCActivity:(id)a3;
+- (id)biomeSessionFromScoredSession:(id)session;
+- (void)inferModesForLastDayWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXInferredModeSessionTagger
 
-- (void)inferModesForLastDayWithXPCActivity:(id)a3
+- (void)inferModesForLastDayWithXPCActivity:(id)activity
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   v5 = __atxlog_handle_modes();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -31,7 +31,7 @@
     _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, "Populated initial sessions from the data stream for app-based mode inference", buf, 2u);
   }
 
-  if (([v4 didDefer] & 1) == 0)
+  if (([activityCopy didDefer] & 1) == 0)
   {
     [(ATXModeScoringSessionRange *)v11 attachAppLaunches];
     v13 = __atxlog_handle_modes();
@@ -41,7 +41,7 @@
       _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "Attached app launches to sessions for app-based mode inference", buf, 2u);
     }
 
-    if (([v4 didDefer] & 1) == 0)
+    if (([activityCopy didDefer] & 1) == 0)
     {
       [(ATXModeScoringSessionRange *)v11 coalesceSessions];
       v14 = __atxlog_handle_modes();
@@ -51,7 +51,7 @@
         _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEFAULT, "Coalesced sessions for app-based mode inference", buf, 2u);
       }
 
-      if (([v4 didDefer] & 1) == 0)
+      if (([activityCopy didDefer] & 1) == 0)
       {
         [(ATXModeScoringSessionRange *)v11 filterSessions];
         v15 = __atxlog_handle_modes();
@@ -61,15 +61,15 @@
           _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "Filtered out ineligible sessions for app-based mode inference", buf, 2u);
         }
 
-        if (([v4 didDefer] & 1) == 0)
+        if (([activityCopy didDefer] & 1) == 0)
         {
           v25 = v6;
           v28 = 0u;
           v29 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v16 = [(ATXModeScoringSessionRange *)v11 sessions];
-          v17 = [v16 countByEnumeratingWithState:&v26 objects:v31 count:16];
+          sessions = [(ATXModeScoringSessionRange *)v11 sessions];
+          v17 = [sessions countByEnumeratingWithState:&v26 objects:v31 count:16];
           if (v17)
           {
             v18 = v17;
@@ -80,7 +80,7 @@
               {
                 if (*v27 != v19)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(sessions);
                 }
 
                 v21 = *(*(&v26 + 1) + 8 * i);
@@ -91,7 +91,7 @@
                 }
               }
 
-              v18 = [v16 countByEnumeratingWithState:&v26 objects:v31 count:16];
+              v18 = [sessions countByEnumeratingWithState:&v26 objects:v31 count:16];
             }
 
             while (v18);
@@ -113,14 +113,14 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)biomeSessionFromScoredSession:(id)a3
+- (id)biomeSessionFromScoredSession:(id)session
 {
-  v3 = a3;
-  [v3 topMode];
+  sessionCopy = session;
+  [sessionCopy topMode];
   v4 = [ATXUnifiedInferredActivitySession alloc];
-  [v3 startTimestamp];
+  [sessionCopy startTimestamp];
   v6 = v5;
-  [v3 endTimestamp];
+  [sessionCopy endTimestamp];
   v8 = v7;
 
   v9 = [(ATXUnifiedInferredActivitySession *)v4 initFromStartTime:@"appLaunchInferredMode" endTime:ATXActivityTypeFromMode() source:v6 activityType:v8 confidence:1.0];

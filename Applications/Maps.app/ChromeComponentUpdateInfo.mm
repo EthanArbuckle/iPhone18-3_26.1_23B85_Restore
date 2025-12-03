@@ -1,6 +1,6 @@
 @interface ChromeComponentUpdateInfo
 + (BOOL)supportsCallstackSymbols;
-- (ChromeComponentUpdateInfo)initWithCompletionHandler:(id)a3;
+- (ChromeComponentUpdateInfo)initWithCompletionHandler:(id)handler;
 @end
 
 @implementation ChromeComponentUpdateInfo
@@ -13,15 +13,15 @@
   return v3;
 }
 
-- (ChromeComponentUpdateInfo)initWithCompletionHandler:(id)a3
+- (ChromeComponentUpdateInfo)initWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = ChromeComponentUpdateInfo;
   v5 = [(ChromeComponentUpdateInfo *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     completionHandler = v5->_completionHandler;
     v5->_completionHandler = v6;
 

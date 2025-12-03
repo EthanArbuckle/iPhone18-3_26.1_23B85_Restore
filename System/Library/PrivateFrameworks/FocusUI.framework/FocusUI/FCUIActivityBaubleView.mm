@@ -1,23 +1,23 @@
 @interface FCUIActivityBaubleView
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (FCUIActivityBaubleView)initWithBaubleDescription:(id)a3 shadowAttributes:(id *)a4;
-- (double)_scaledValueForValue:(double)a3;
-- (double)scaledValueForValue:(double)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (FCUIActivityBaubleView)initWithBaubleDescription:(id)description shadowAttributes:(id *)attributes;
+- (double)_scaledValueForValue:(double)value;
+- (double)scaledValueForValue:(double)value;
 - (void)_setNeedsTextAttributesUpdate;
 - (void)_updateTextAttributes;
 - (void)_updateTextAttributesIfNecessary;
 - (void)layoutSubviews;
-- (void)performWithoutAdditionalScaling:(id)a3;
-- (void)setAdditionalScaleFactor:(double)a3;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
+- (void)performWithoutAdditionalScaling:(id)scaling;
+- (void)setAdditionalScaleFactor:(double)factor;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
 @end
 
 @implementation FCUIActivityBaubleView
 
-- (FCUIActivityBaubleView)initWithBaubleDescription:(id)a3 shadowAttributes:(id *)a4
+- (FCUIActivityBaubleView)initWithBaubleDescription:(id)description shadowAttributes:(id *)attributes
 {
-  v6 = a3;
+  descriptionCopy = description;
   v23.receiver = self;
   v23.super_class = FCUIActivityBaubleView;
   v7 = [(FCUIActivityBaubleView *)&v23 init];
@@ -26,58 +26,58 @@
   {
     v7->_additionalScaleFactor = 1.0;
     v7->_adjustsFontForContentSizeCategory = 1;
-    [v6 referencePointSize];
+    [descriptionCopy referencePointSize];
     v8->_referencePointSize = v9;
-    [v6 maximumPointSize];
+    [descriptionCopy maximumPointSize];
     v8->_maximumPointSize = v10;
-    [v6 referenceDimension];
+    [descriptionCopy referenceDimension];
     v8->_referenceDimension = v11;
     v12 = objc_alloc(MEMORY[0x277D755E8]);
     v13 = MEMORY[0x277D755B8];
-    v14 = [v6 systemImageName];
-    v15 = [v13 _systemImageNamed:v14];
+    systemImageName = [descriptionCopy systemImageName];
+    v15 = [v13 _systemImageNamed:systemImageName];
     v16 = [v12 initWithImage:v15];
     glyphImageView = v8->_glyphImageView;
     v8->_glyphImageView = v16;
 
     [(UIImageView *)v8->_glyphImageView setContentMode:4];
     [(FCUIActivityBaubleView *)v8 addSubview:v8->_glyphImageView];
-    v18 = [v6 tintColor];
-    [(FCUIActivityBaubleView *)v8 setTintColor:v18];
+    tintColor = [descriptionCopy tintColor];
+    [(FCUIActivityBaubleView *)v8 setTintColor:tintColor];
 
-    v19 = [MEMORY[0x277D75348] whiteColor];
-    [(FCUIActivityBaubleView *)v8 setBackgroundColor:v19];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(FCUIActivityBaubleView *)v8 setBackgroundColor:whiteColor];
 
-    v20 = [(FCUIActivityBaubleView *)v8 layer];
-    [v20 setShadowPathIsBounds:1];
-    *&v21 = a4->var0;
-    [v20 setShadowOpacity:v21];
-    [v20 setShadowOffset:{a4->var1.width, a4->var1.height}];
-    [v20 setShadowRadius:a4->var2];
+    layer = [(FCUIActivityBaubleView *)v8 layer];
+    [layer setShadowPathIsBounds:1];
+    *&v21 = attributes->var0;
+    [layer setShadowOpacity:v21];
+    [layer setShadowOffset:{attributes->var1.width, attributes->var1.height}];
+    [layer setShadowRadius:attributes->var2];
   }
 
   return v8;
 }
 
-- (void)setAdditionalScaleFactor:(double)a3
+- (void)setAdditionalScaleFactor:(double)factor
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_additionalScaleFactor = a3;
+    self->_additionalScaleFactor = factor;
 
     [(FCUIActivityBaubleView *)self _setNeedsTextAttributesUpdate];
   }
 }
 
-- (void)performWithoutAdditionalScaling:(id)a3
+- (void)performWithoutAdditionalScaling:(id)scaling
 {
   additionalScaleFactor = self->_additionalScaleFactor;
   self->_additionalScaleFactor = 1.0;
-  (*(a3 + 2))(a3, a2);
+  (*(scaling + 2))(scaling, a2);
   self->_additionalScaleFactor = additionalScaleFactor;
 }
 
-- (double)scaledValueForValue:(double)a3
+- (double)scaledValueForValue:(double)value
 {
   [(FCUIActivityBaubleView *)self _updateTextAttributesIfNecessary];
   [(FCUIActivityBaubleView *)self _scaledValueForValue:self->_referencePointSize];
@@ -86,12 +86,12 @@
     maximumPointSize = self->_maximumPointSize;
   }
 
-  return maximumPointSize / self->_referencePointSize * a3;
+  return maximumPointSize / self->_referencePointSize * value;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(FCUIActivityBaubleView *)self _updateTextAttributesIfNecessary:a3.width];
+  [(FCUIActivityBaubleView *)self _updateTextAttributesIfNecessary:fits.width];
   [(FCUIActivityBaubleView *)self scaledValueForValue:self->_referenceDimension];
 
   UISizeRoundToScale();
@@ -109,38 +109,38 @@
   [(FCUIActivityBaubleView *)self bounds];
   [(FCUIActivityBaubleView *)self _setCornerRadius:CGRectGetHeight(v6) * 0.5];
   glyphImageView = self->_glyphImageView;
-  v4 = [(UIImageView *)glyphImageView image];
-  [v4 size];
+  image = [(UIImageView *)glyphImageView image];
+  [image size];
   BSRectWithSize();
   UIRectCenteredIntegralRectScale();
   [(UIImageView *)glyphImageView setFrame:0];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  if (self->_adjustsFontForContentSizeCategory != a3)
+  if (self->_adjustsFontForContentSizeCategory != category)
   {
-    self->_adjustsFontForContentSizeCategory = a3;
+    self->_adjustsFontForContentSizeCategory = category;
     [(FCUIActivityBaubleView *)self _setNeedsTextAttributesUpdate];
   }
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [(FCUIActivityBaubleView *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  adjustsFontForContentSizeCategory = [(FCUIActivityBaubleView *)self adjustsFontForContentSizeCategory];
+  if (adjustsFontForContentSizeCategory)
   {
     [(FCUIActivityBaubleView *)self _setNeedsTextAttributesUpdate];
   }
 
-  return v3;
+  return adjustsFontForContentSizeCategory;
 }
 
-- (double)_scaledValueForValue:(double)a3
+- (double)_scaledValueForValue:(double)value
 {
   if (![(FCUIActivityBaubleView *)self adjustsFontForContentSizeCategory])
   {
-    return self->_additionalScaleFactor * a3;
+    return self->_additionalScaleFactor * value;
   }
 
   referenceFont = self->_referenceFont;
@@ -156,7 +156,7 @@
     referenceFont = self->_referenceFont;
   }
 
-  [(UIFont *)referenceFont _scaledValueForValue:a3];
+  [(UIFont *)referenceFont _scaledValueForValue:value];
   return v11 * self->_additionalScaleFactor;
 }
 
@@ -170,10 +170,10 @@
 
 - (void)_updateTextAttributes
 {
-  v3 = [(FCUIActivityBaubleView *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
+  traitCollection = [(FCUIActivityBaubleView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
   preferredContentSizeCategory = self->_preferredContentSizeCategory;
-  self->_preferredContentSizeCategory = v4;
+  self->_preferredContentSizeCategory = preferredContentSizeCategory;
 
   glyphImageView = self->_glyphImageView;
   v7 = MEMORY[0x277D755D0];

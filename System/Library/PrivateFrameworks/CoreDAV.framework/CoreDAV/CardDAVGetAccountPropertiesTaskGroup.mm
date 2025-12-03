@@ -1,7 +1,7 @@
 @interface CardDAVGetAccountPropertiesTaskGroup
 - (id)_copyAccountPropertiesPropFindElements;
 - (id)description;
-- (void)_setPropertiesFromParsedResponses:(id)a3;
+- (void)_setPropertiesFromParsedResponses:(id)responses;
 @end
 
 @implementation CardDAVGetAccountPropertiesTaskGroup
@@ -23,22 +23,22 @@
 {
   v5.receiver = self;
   v5.super_class = CardDAVGetAccountPropertiesTaskGroup;
-  v2 = [(CoreDAVGetAccountPropertiesTaskGroup *)&v5 _copyAccountPropertiesPropFindElements];
-  v3 = [v2 mutableCopy];
+  _copyAccountPropertiesPropFindElements = [(CoreDAVGetAccountPropertiesTaskGroup *)&v5 _copyAccountPropertiesPropFindElements];
+  v3 = [_copyAccountPropertiesPropFindElements mutableCopy];
   [v3 CDVAddItemParserMappingWithNameSpace:@"urn:ietf:params:xml:ns:carddav" name:@"addressbook-home-set" parseClass:objc_opt_class()];
   [v3 CDVAddItemParserMappingWithNameSpace:@"urn:ietf:params:xml:ns:carddav" name:@"directory-gateway" parseClass:objc_opt_class()];
 
   return v3;
 }
 
-- (void)_setPropertiesFromParsedResponses:(id)a3
+- (void)_setPropertiesFromParsedResponses:(id)responses
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = a3;
+  obj = responses;
   v4 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
@@ -53,12 +53,12 @@
           objc_enumerationMutation(obj);
         }
 
-        v7 = [*(*(&v18 + 1) + 8 * i) successfulPropertiesToValues];
-        v8 = [v7 CDVObjectForKeyWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:@"addressbook-home-set"];
-        v9 = [v8 hrefsAsFullURLs];
-        if ([v9 count])
+        successfulPropertiesToValues = [*(*(&v18 + 1) + 8 * i) successfulPropertiesToValues];
+        v8 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:@"addressbook-home-set"];
+        hrefsAsFullURLs = [v8 hrefsAsFullURLs];
+        if ([hrefsAsFullURLs count])
         {
-          v10 = v9;
+          v10 = hrefsAsFullURLs;
         }
 
         else
@@ -67,11 +67,11 @@
         }
 
         objc_storeStrong(&self->_addressBookHomes, v10);
-        v11 = [v7 CDVObjectForKeyWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:@"directory-gateway"];
-        v12 = [v11 hrefsAsFullURLs];
-        if ([v12 count])
+        v11 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"urn:ietf:params:xml:ns:carddav" andName:@"directory-gateway"];
+        hrefsAsFullURLs2 = [v11 hrefsAsFullURLs];
+        if ([hrefsAsFullURLs2 count])
         {
-          v13 = v12;
+          v13 = hrefsAsFullURLs2;
         }
 
         else

@@ -1,7 +1,7 @@
 @interface ACDPreferences
 + (ACDPreferences)sharedPreferences;
 - (double)serverTimeoutInterval;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (void)reset;
 @end
 
@@ -26,9 +26,9 @@ uint64_t __35__ACDPreferences_sharedPreferences__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.accounts");
+  v3 = CFPreferencesCopyAppValue(key, @"com.apple.accounts");
 
   return v3;
 }
@@ -39,15 +39,15 @@ uint64_t __35__ACDPreferences_sharedPreferences__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 15.0;
+    intValue = 15.0;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (void)reset

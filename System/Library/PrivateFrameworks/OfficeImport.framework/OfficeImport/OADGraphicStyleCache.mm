@@ -1,16 +1,16 @@
 @interface OADGraphicStyleCache
-+ (int)fillCatagory:(id)a3;
++ (int)fillCatagory:(id)catagory;
 - (OADGraphicStyleCache)init;
-- (id)tableStyleForId:(id)a3;
-- (unint64_t)cacheDrawablePropertiesOfCategory:(int)a3 withFillCategory:(int)a4 fillIndex:(unint64_t)a5 strokeIndex:(unint64_t)a6 shadowIndex:(unint64_t)a7 reflectionOpacity:(float)a8 textStyleIndex:(unint64_t)a9;
-- (unint64_t)cacheDrawablePropertiesOfCategory:(int)a3 withGraphicProperties:(id)a4 textBodyProperties:(id)a5 paragraphProperties:(id)a6 characterProperties:(id)a7 colorContext:(id)a8;
-- (unint64_t)cacheFill:(id)a3 returnCategory:(int *)a4;
-- (unint64_t)cacheStroke:(id)a3;
-- (void)applyCachedDrawableStyle:(id)a3 toGraphicProperties:(id)a4;
-- (void)applyCachedDrawableStyle:(id)a3 toParagraphProperties:(id)a4;
-- (void)applyCachedDrawableStyle:(id)a3 toTextBodyProperties:(id)a4;
-- (void)cacheChartStyleId:(int)a3;
-- (void)cacheTableStyle:(id)a3;
+- (id)tableStyleForId:(id)id;
+- (unint64_t)cacheDrawablePropertiesOfCategory:(int)category withFillCategory:(int)fillCategory fillIndex:(unint64_t)index strokeIndex:(unint64_t)strokeIndex shadowIndex:(unint64_t)shadowIndex reflectionOpacity:(float)opacity textStyleIndex:(unint64_t)styleIndex;
+- (unint64_t)cacheDrawablePropertiesOfCategory:(int)category withGraphicProperties:(id)properties textBodyProperties:(id)bodyProperties paragraphProperties:(id)paragraphProperties characterProperties:(id)characterProperties colorContext:(id)context;
+- (unint64_t)cacheFill:(id)fill returnCategory:(int *)category;
+- (unint64_t)cacheStroke:(id)stroke;
+- (void)applyCachedDrawableStyle:(id)style toGraphicProperties:(id)properties;
+- (void)applyCachedDrawableStyle:(id)style toParagraphProperties:(id)properties;
+- (void)applyCachedDrawableStyle:(id)style toTextBodyProperties:(id)properties;
+- (void)cacheChartStyleId:(int)id;
+- (void)cacheTableStyle:(id)style;
 - (void)dealloc;
 @end
 
@@ -116,19 +116,19 @@
   [(OADGraphicStyleCache *)&v15 dealloc];
 }
 
-+ (int)fillCatagory:(id)a3
++ (int)fillCatagory:(id)catagory
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  catagoryCopy = catagory;
+  if (catagoryCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v5 = objc_opt_class();
-    v6 = TSUDynamicCast(v5, v3);
+    v6 = TSUDynamicCast(v5, catagoryCopy);
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 color];
-      [OADColor alphaWithColor:v8];
+      color = [v6 color];
+      [OADColor alphaWithColor:color];
       v10 = v9;
 
       if (v10 <= 0.08)
@@ -145,7 +145,7 @@
     else
     {
       v11 = objc_opt_class();
-      v12 = TSUDynamicCast(v11, v3);
+      v12 = TSUDynamicCast(v11, catagoryCopy);
       v13 = v12;
       if (v12)
       {
@@ -153,8 +153,8 @@
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v14 = [v12 stops];
-        v15 = [v14 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        stops = [v12 stops];
+        v15 = [stops countByEnumeratingWithState:&v32 objects:v36 count:16];
         if (v15)
         {
           v16 = *v33;
@@ -164,11 +164,11 @@
             {
               if (*v33 != v16)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(stops);
               }
 
-              v18 = [*(*(&v32 + 1) + 8 * i) color];
-              [OADColor alphaWithColor:v18];
+              color2 = [*(*(&v32 + 1) + 8 * i) color];
+              [OADColor alphaWithColor:color2];
               v20 = v19 <= 0.08;
 
               if (!v20)
@@ -178,7 +178,7 @@
               }
             }
 
-            v15 = [v14 countByEnumeratingWithState:&v32 objects:v36 count:16];
+            v15 = [stops countByEnumeratingWithState:&v32 objects:v36 count:16];
             if (v15)
             {
               continue;
@@ -195,19 +195,19 @@ LABEL_19:
       else
       {
         v21 = objc_opt_class();
-        v22 = TSUDynamicCast(v21, v3);
+        v22 = TSUDynamicCast(v21, catagoryCopy);
         v23 = v22;
         if (v22)
         {
-          v24 = [v22 blipRef];
-          v25 = [v24 effectCount];
-          if (v25)
+          blipRef = [v22 blipRef];
+          effectCount = [blipRef effectCount];
+          if (effectCount)
           {
             v26 = 0;
             while (1)
             {
               v27 = objc_opt_class();
-              v28 = [v24 effectAtIndex:v26];
+              v28 = [blipRef effectAtIndex:v26];
               v29 = TSUDynamicCast(v27, v28);
 
               if (v29)
@@ -219,7 +219,7 @@ LABEL_19:
                 }
               }
 
-              if (v25 == ++v26)
+              if (effectCount == ++v26)
               {
                 goto LABEL_26;
               }
@@ -260,13 +260,13 @@ LABEL_26:
   return v4;
 }
 
-- (unint64_t)cacheFill:(id)a3 returnCategory:(int *)a4
+- (unint64_t)cacheFill:(id)fill returnCategory:(int *)category
 {
-  v6 = a3;
-  v7 = [OADGraphicStyleCache fillCatagory:v6];
-  if (a4)
+  fillCopy = fill;
+  v7 = [OADGraphicStyleCache fillCatagory:fillCopy];
+  if (category)
   {
-    *a4 = v7;
+    *category = v7;
   }
 
   if (v7 > 3)
@@ -276,17 +276,17 @@ LABEL_26:
 
   else
   {
-    v8 = [(OADGraphicFeatureCache *)self->mFillCacheArray[v7] cacheFeature:v6];
+    v8 = [(OADGraphicFeatureCache *)self->mFillCacheArray[v7] cacheFeature:fillCopy];
   }
 
   return v8;
 }
 
-- (unint64_t)cacheStroke:(id)a3
+- (unint64_t)cacheStroke:(id)stroke
 {
-  v4 = a3;
-  v5 = [v4 fill];
-  v6 = [OADGraphicStyleCache fillCatagory:v5];
+  strokeCopy = stroke;
+  fill = [strokeCopy fill];
+  v6 = [OADGraphicStyleCache fillCatagory:fill];
 
   if (v6 == 4)
   {
@@ -295,16 +295,16 @@ LABEL_26:
 
   else
   {
-    v7 = [(OADGraphicFeatureCache *)self->mStrokeCache cacheFeature:v4];
+    v7 = [(OADGraphicFeatureCache *)self->mStrokeCache cacheFeature:strokeCopy];
   }
 
   return v7;
 }
 
-- (void)cacheTableStyle:(id)a3
+- (void)cacheTableStyle:(id)style
 {
-  v6 = a3;
-  v4 = [v6 id];
+  styleCopy = style;
+  v4 = [styleCopy id];
   if ([v4 hasPrefix:@"{"] && objc_msgSend(v4, "hasSuffix:", @"}") && objc_msgSend(v4, "length") == 38)
   {
     v5 = [v4 substringWithRange:{1, objc_msgSend(v4, "length") - 2}];
@@ -315,51 +315,51 @@ LABEL_26:
   if (v4)
   {
     [(OADGraphicFeatureCache *)self->mTableIdCache cacheFeature:v4];
-    [(NSMutableDictionary *)self->mTableStyleCache setObject:v6 forKey:v4];
+    [(NSMutableDictionary *)self->mTableStyleCache setObject:styleCopy forKey:v4];
   }
 }
 
-- (id)tableStyleForId:(id)a3
+- (id)tableStyleForId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->mTableStyleCache objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mTableStyleCache objectForKey:id];
 
   return v3;
 }
 
-- (void)cacheChartStyleId:(int)a3
+- (void)cacheChartStyleId:(int)id
 {
   mChartIdCache = self->mChartIdCache;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&id];
   [(OADGraphicFeatureCache *)mChartIdCache cacheFeature:?];
 }
 
-- (unint64_t)cacheDrawablePropertiesOfCategory:(int)a3 withFillCategory:(int)a4 fillIndex:(unint64_t)a5 strokeIndex:(unint64_t)a6 shadowIndex:(unint64_t)a7 reflectionOpacity:(float)a8 textStyleIndex:(unint64_t)a9
+- (unint64_t)cacheDrawablePropertiesOfCategory:(int)category withFillCategory:(int)fillCategory fillIndex:(unint64_t)index strokeIndex:(unint64_t)strokeIndex shadowIndex:(unint64_t)shadowIndex reflectionOpacity:(float)opacity textStyleIndex:(unint64_t)styleIndex
 {
-  v11 = [[OADCachedDrawableStyle alloc] initWithFillCategory:*&a4 mFillIndex:a5 strokeIndex:a6 shadowIndex:a7 reflectionOpacity:(a8 * 255.0) textStyleIndex:a9];
-  v12 = [(OADGraphicFeatureCache *)self->mDrawableStyleCacheArray[a3] cacheFeature:v11];
+  v11 = [[OADCachedDrawableStyle alloc] initWithFillCategory:*&fillCategory mFillIndex:index strokeIndex:strokeIndex shadowIndex:shadowIndex reflectionOpacity:(opacity * 255.0) textStyleIndex:styleIndex];
+  v12 = [(OADGraphicFeatureCache *)self->mDrawableStyleCacheArray[category] cacheFeature:v11];
 
   return v12;
 }
 
-- (unint64_t)cacheDrawablePropertiesOfCategory:(int)a3 withGraphicProperties:(id)a4 textBodyProperties:(id)a5 paragraphProperties:(id)a6 characterProperties:(id)a7 colorContext:(id)a8
+- (unint64_t)cacheDrawablePropertiesOfCategory:(int)category withGraphicProperties:(id)properties textBodyProperties:(id)bodyProperties paragraphProperties:(id)paragraphProperties characterProperties:(id)characterProperties colorContext:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v37 = a5;
-  v38 = a6;
-  v39 = a7;
-  v40 = a8;
-  v41 = v14;
+  propertiesCopy = properties;
+  bodyPropertiesCopy = bodyProperties;
+  paragraphPropertiesCopy = paragraphProperties;
+  characterPropertiesCopy = characterProperties;
+  contextCopy = context;
+  v41 = propertiesCopy;
   v46 = 4;
-  if (a3)
+  if (category)
   {
     v15 = 0;
   }
 
   else
   {
-    v16 = [v14 fill];
-    v15 = [(OADGraphicStyleCache *)self cacheFill:v16 returnCategory:&v46];
+    fill = [propertiesCopy fill];
+    v15 = [(OADGraphicStyleCache *)self cacheFill:fill returnCategory:&v46];
 
     if (!v15)
     {
@@ -368,19 +368,19 @@ LABEL_26:
     }
   }
 
-  v17 = [v14 stroke];
-  v18 = [(OADGraphicStyleCache *)self cacheStroke:v17];
+  stroke = [propertiesCopy stroke];
+  v18 = [(OADGraphicStyleCache *)self cacheStroke:stroke];
 
-  if (v18 || ((v19 = 0, !a3) ? (v20 = v15 == 0) : (v20 = 0), !v20 ? (v21 = 0) : (v21 = 1), (a3 - 1) >= 2 && (v21 & 1) == 0))
+  if (v18 || ((v19 = 0, !category) ? (v20 = v15 == 0) : (v20 = 0), !v20 ? (v21 = 0) : (v21 = 1), (category - 1) >= 2 && (v21 & 1) == 0))
   {
-    [v14 effects];
+    [propertiesCopy effects];
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v22 = v43 = 0u;
     v23 = [v22 countByEnumeratingWithState:&v42 objects:v47 count:16];
     v35 = v18;
-    v36 = self;
+    selfCopy = self;
     v24 = 0;
     v25 = 0;
     if (!v23)
@@ -446,22 +446,22 @@ LABEL_26:
       {
 LABEL_31:
 
-        v29 = [(OADGraphicStyleCache *)v36 cacheShadow:v24];
+        v29 = [(OADGraphicStyleCache *)selfCopy cacheShadow:v24];
         [v25 startOpacity];
         v31 = LODWORD(v30);
-        if ((a3 & 0xFFFFFFFD) == 1)
+        if ((category & 0xFFFFFFFD) == 1)
         {
           v32 = 0;
         }
 
         else
         {
-          v33 = [[OADCachedTextStyle alloc] initWithTextBodyProperties:v37 paragraphProperties:v38 characterProperties:v39 colorContext:v40 graphicStyleCache:v36];
-          v32 = [(OADGraphicFeatureCache *)v36->mTextStyleCache cacheFeature:v33];
+          v33 = [[OADCachedTextStyle alloc] initWithTextBodyProperties:bodyPropertiesCopy paragraphProperties:paragraphPropertiesCopy characterProperties:characterPropertiesCopy colorContext:contextCopy graphicStyleCache:selfCopy];
+          v32 = [(OADGraphicFeatureCache *)selfCopy->mTextStyleCache cacheFeature:v33];
         }
 
         LODWORD(v30) = v31;
-        v19 = [(OADGraphicStyleCache *)v36 cacheDrawablePropertiesOfCategory:a3 withFillCategory:v46 fillIndex:v15 strokeIndex:v35 shadowIndex:v29 reflectionOpacity:v32 textStyleIndex:v30];
+        v19 = [(OADGraphicStyleCache *)selfCopy cacheDrawablePropertiesOfCategory:category withFillCategory:v46 fillIndex:v15 strokeIndex:v35 shadowIndex:v29 reflectionOpacity:v32 textStyleIndex:v30];
 
         break;
       }
@@ -473,67 +473,67 @@ LABEL_35:
   return v19;
 }
 
-- (void)applyCachedDrawableStyle:(id)a3 toGraphicProperties:(id)a4
+- (void)applyCachedDrawableStyle:(id)style toGraphicProperties:(id)properties
 {
-  v18 = a3;
-  v6 = a4;
-  if ([v18 fillCategory] > 3 || (-[OADGraphicFeatureCache countedFeatureAtIndex:](self->mFillCacheArray[objc_msgSend(v18, "fillCategory")], "countedFeatureAtIndex:", objc_msgSend(v18, "fillIndex")), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "feature"), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
+  styleCopy = style;
+  propertiesCopy = properties;
+  if ([styleCopy fillCategory] > 3 || (-[OADGraphicFeatureCache countedFeatureAtIndex:](self->mFillCacheArray[objc_msgSend(styleCopy, "fillCategory")], "countedFeatureAtIndex:", objc_msgSend(styleCopy, "fillIndex")), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "feature"), v8 = objc_claimAutoreleasedReturnValue(), v7, !v8))
   {
     v8 = +[OADNullFill nullFill];
   }
 
-  v9 = -[OADGraphicFeatureCache countedFeatureAtIndex:](self->mStrokeCache, "countedFeatureAtIndex:", [v18 strokeIndex]);
-  v10 = [v9 feature];
+  v9 = -[OADGraphicFeatureCache countedFeatureAtIndex:](self->mStrokeCache, "countedFeatureAtIndex:", [styleCopy strokeIndex]);
+  feature = [v9 feature];
 
-  if (!v10)
+  if (!feature)
   {
-    v10 = +[OADStroke nullStroke];
+    feature = +[OADStroke nullStroke];
   }
 
-  v11 = [MEMORY[0x277CBEA60] array];
-  v12 = -[OADGraphicFeatureCache countedFeatureAtIndex:](self->mShadowCache, "countedFeatureAtIndex:", [v18 shadowIndex]);
-  v13 = [v12 feature];
+  array = [MEMORY[0x277CBEA60] array];
+  v12 = -[OADGraphicFeatureCache countedFeatureAtIndex:](self->mShadowCache, "countedFeatureAtIndex:", [styleCopy shadowIndex]);
+  feature2 = [v12 feature];
 
-  if (v13)
+  if (feature2)
   {
-    v14 = [v11 arrayByAddingObject:v13];
+    v14 = [array arrayByAddingObject:feature2];
 
-    v11 = v14;
+    array = v14;
   }
 
-  if ([v18 reflectionOpacity])
+  if ([styleCopy reflectionOpacity])
   {
     v15 = objc_alloc_init(OADReflectionEffect);
-    *&v16 = [v18 reflectionOpacity];
+    *&v16 = [styleCopy reflectionOpacity];
     [(OADReflectionEffect *)v15 setStartOpacity:v16];
-    v17 = [v11 arrayByAddingObject:v15];
+    v17 = [array arrayByAddingObject:v15];
 
-    v11 = v17;
+    array = v17;
   }
 
-  [v6 setFill:v8];
-  [v6 setStroke:v10];
-  [v6 setEffects:v11];
+  [propertiesCopy setFill:v8];
+  [propertiesCopy setStroke:feature];
+  [propertiesCopy setEffects:array];
 }
 
-- (void)applyCachedDrawableStyle:(id)a3 toParagraphProperties:(id)a4
+- (void)applyCachedDrawableStyle:(id)style toParagraphProperties:(id)properties
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = -[OADGraphicFeatureCache countedFeatureAtIndex:](self->mTextStyleCache, "countedFeatureAtIndex:", [v9 textStyleIndex]);
-  v8 = [v7 feature];
+  styleCopy = style;
+  propertiesCopy = properties;
+  v7 = -[OADGraphicFeatureCache countedFeatureAtIndex:](self->mTextStyleCache, "countedFeatureAtIndex:", [styleCopy textStyleIndex]);
+  feature = [v7 feature];
 
-  [v8 applyToParagraphProperties:v6 graphicStyleCache:self];
+  [feature applyToParagraphProperties:propertiesCopy graphicStyleCache:self];
 }
 
-- (void)applyCachedDrawableStyle:(id)a3 toTextBodyProperties:(id)a4
+- (void)applyCachedDrawableStyle:(id)style toTextBodyProperties:(id)properties
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = -[OADGraphicFeatureCache countedFeatureAtIndex:](self->mTextStyleCache, "countedFeatureAtIndex:", [v9 textStyleIndex]);
-  v8 = [v7 feature];
+  styleCopy = style;
+  propertiesCopy = properties;
+  v7 = -[OADGraphicFeatureCache countedFeatureAtIndex:](self->mTextStyleCache, "countedFeatureAtIndex:", [styleCopy textStyleIndex]);
+  feature = [v7 feature];
 
-  [v8 applyToTextBodyProperties:v6 graphicStyleCache:self];
+  [feature applyToTextBodyProperties:propertiesCopy graphicStyleCache:self];
 }
 
 @end

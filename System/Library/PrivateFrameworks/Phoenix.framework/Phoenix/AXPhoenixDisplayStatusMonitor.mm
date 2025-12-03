@@ -2,10 +2,10 @@
 + (id)sharedInstance;
 - (AXPhoenixDisplayStatusMonitor)init;
 - (BOOL)_queryIsDisplayOn;
-- (void)_displayStateChanged:(double)a3;
-- (void)_notifyObserver:(id)a3 isDisplayOn:(BOOL)a4 timestamp:(double)a5;
-- (void)_registerForSpringboardNotificationsWithQueue:(id)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_displayStateChanged:(double)changed;
+- (void)_notifyObserver:(id)observer isDisplayOn:(BOOL)on timestamp:(double)timestamp;
+- (void)_registerForSpringboardNotificationsWithQueue:(id)queue;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 - (void)_unregisterForSpringboardNotifications;
 @end
@@ -55,13 +55,13 @@ uint64_t __47__AXPhoenixDisplayStatusMonitor_sharedInstance__block_invoke()
   return v3;
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&v11, v13);
+  objc_storeStrong(location, queue);
+  objc_initWeak(&v11, selfCopy);
   queue = location[0];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
@@ -118,12 +118,12 @@ void __59__AXPhoenixDisplayStatusMonitor__startMonitoringWithQueue___block_invok
 - (void)_stopMonitoring
 {
   v6 = *MEMORY[0x277D85DE8];
-  v4 = self;
+  selfCopy = self;
   oslog[1] = a2;
-  v2 = [(AXPhoenixDisplayStatusMonitor *)self queue];
-  dispatch_assert_queue_V2(v2);
-  MEMORY[0x277D82BD8](v2);
-  [(AXPhoenixDisplayStatusMonitor *)v4 _unregisterForSpringboardNotifications];
+  queue = [(AXPhoenixDisplayStatusMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
+  MEMORY[0x277D82BD8](queue);
+  [(AXPhoenixDisplayStatusMonitor *)selfCopy _unregisterForSpringboardNotifications];
   oslog[0] = AXLogBackTap();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
@@ -135,14 +135,14 @@ void __59__AXPhoenixDisplayStatusMonitor__startMonitoringWithQueue___block_invok
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerForSpringboardNotificationsWithQueue:(id)a3
+- (void)_registerForSpringboardNotificationsWithQueue:(id)queue
 {
   v17 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_initWeak(&from, v15);
+  objc_storeStrong(location, queue);
+  objc_initWeak(&from, selfCopy);
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -152,7 +152,7 @@ void __59__AXPhoenixDisplayStatusMonitor__startMonitoringWithQueue___block_invok
   v12 = MEMORY[0x25F8B5270](&v6);
   out_token = 0;
   v4 = notify_register_dispatch(springboardDisplayNotificationName, &out_token, location[0], v12);
-  [(AXPhoenixDisplayStatusMonitor *)v15 setNotifyToken:out_token];
+  [(AXPhoenixDisplayStatusMonitor *)selfCopy setNotifyToken:out_token];
   if (v4)
   {
     oslog = AXLogBackTap();
@@ -220,20 +220,20 @@ void __79__AXPhoenixDisplayStatusMonitor__registerForSpringboardNotificationsWit
   [(AXPhoenixDisplayStatusMonitor *)self setNotifyToken:0xFFFFFFFFLL];
 }
 
-- (void)_displayStateChanged:(double)a3
+- (void)_displayStateChanged:(double)changed
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
-  v3 = v13;
+  v3 = selfCopy;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __54__AXPhoenixDisplayStatusMonitor__displayStateChanged___block_invoke;
   v8 = &unk_279A20AF0;
   objc_copyWeak(v9, &location);
-  v9[1] = *&v11;
+  v9[1] = *&changedCopy;
   [(AXPhoenixEventMonitor *)v3 enumerateObserversInQueue:&v4];
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
@@ -295,16 +295,16 @@ LABEL_9:
   return v8 & 1;
 }
 
-- (void)_notifyObserver:(id)a3 isDisplayOn:(BOOL)a4 timestamp:(double)a5
+- (void)_notifyObserver:(id)observer isDisplayOn:(BOOL)on timestamp:(double)timestamp
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AXPhoenixEventMonitor *)v7 notifyObserver:location[0]];
+  objc_storeStrong(location, observer);
+  [(AXPhoenixEventMonitor *)selfCopy notifyObserver:location[0]];
   if (objc_opt_respondsToSelector())
   {
-    [location[0] phoenixDisplayStatusMonitor:v7 didReceiveDisplayStateChanged:-[AXPhoenixDisplayStatusMonitor isDisplayOn](v7 timestamp:{"isDisplayOn"), a5}];
+    [location[0] phoenixDisplayStatusMonitor:selfCopy didReceiveDisplayStateChanged:-[AXPhoenixDisplayStatusMonitor isDisplayOn](selfCopy timestamp:{"isDisplayOn"), timestamp}];
   }
 
   objc_storeStrong(location, 0);

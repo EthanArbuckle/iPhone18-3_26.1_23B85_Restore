@@ -1,18 +1,18 @@
 @interface BRCTLLogCommand
-+ (id)dateComponentsFromUTF8String:(const char *)a3;
-+ (id)dateFromUTF8String:(const char *)a3;
-- (BOOL)outputEvents:(id)a3 error:(id)a4;
++ (id)dateComponentsFromUTF8String:(const char *)string;
++ (id)dateFromUTF8String:(const char *)string;
+- (BOOL)outputEvents:(id)events error:(id)error;
 - (BRCTLLogCommand)init;
-- (id)_parseMessage:(const char *)a3;
-- (int)dumpOrStreamLogArchiveToFd:(int)a3;
-- (void)_dumpLevel:(int)a3;
+- (id)_parseMessage:(const char *)message;
+- (int)dumpOrStreamLogArchiveToFd:(int)fd;
+- (void)_dumpLevel:(int)level;
 - (void)buildPredicateFromString;
-- (void)buildPredicateString:(id)a3;
-- (void)computeRealOptionsForFd:(id)a3;
-- (void)getDepth:(int *)a3 current:(id *)a4 previous:(id *)a5 forThread:(id)a6;
-- (void)outputEvent:(id)a3;
-- (void)parseOption:(int)a3 arg:(const char *)a4;
-- (void)pushSection:(id)a3 forThread:(id)a4;
+- (void)buildPredicateString:(id)string;
+- (void)computeRealOptionsForFd:(id)fd;
+- (void)getDepth:(int *)depth current:(id *)current previous:(id *)previous forThread:(id)thread;
+- (void)outputEvent:(id)event;
+- (void)parseOption:(int)option arg:(const char *)arg;
+- (void)pushSection:(id)section forThread:(id)thread;
 @end
 
 @implementation BRCTLLogCommand
@@ -67,10 +67,10 @@
   return v2;
 }
 
-- (void)computeRealOptionsForFd:(id)a3
+- (void)computeRealOptionsForFd:(id)fd
 {
-  v6 = a3;
-  if (v6 && isatty([v6 intValue]))
+  fdCopy = fd;
+  if (fdCopy && isatty([fdCopy intValue]))
   {
     if (!self->_use_color)
     {
@@ -96,29 +96,29 @@
   }
 }
 
-- (void)_dumpLevel:(int)a3
+- (void)_dumpLevel:(int)level
 {
-  if (a3 >= 8)
+  if (level >= 8)
   {
-    v4 = 8;
+    levelCopy = 8;
   }
 
   else
   {
-    v4 = a3;
+    levelCopy = level;
   }
 
-  [(BRCTermDumper *)self->_dumper startFgColor:dword_100019AC8[v4] attr:dword_100019AEC[v4]];
+  [(BRCTermDumper *)self->_dumper startFgColor:dword_100019AC8[levelCopy] attr:dword_100019AEC[levelCopy]];
   dumper = self->_dumper;
-  v6 = off_100024A68[v4];
+  v6 = off_100024A68[levelCopy];
 
   [(BRCTermDumper *)dumper puts:v6];
 }
 
-- (id)_parseMessage:(const char *)a3
+- (id)_parseMessage:(const char *)message
 {
-  v3 = a3;
-  if (a3)
+  messageCopy = message;
+  if (message)
   {
     if ([(BRCTermDumper *)self->_dumper useColor])
     {
@@ -127,8 +127,8 @@
         v5 = objc_alloc_init(NSMutableArray);
         v6 = +[NSRegularExpression regularExpressionWithPattern:options:error:](NSRegularExpression, "regularExpressionWithPattern:options:error:", @"([0-9A-F]{8})-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}", 0, 0);
         v7 = [(BRCTermDumper *)self->_dumper startStringForFgColor:3 bgColor:0xFFFFFFFFLL attr:0];
-        v8 = [(BRCTermDumper *)self->_dumper stringForReset];
-        v9 = [NSString stringWithFormat:@"%@<$1>%@", v7, v8];
+        stringForReset = [(BRCTermDumper *)self->_dumper stringForReset];
+        v9 = [NSString stringWithFormat:@"%@<$1>%@", v7, stringForReset];
         v51[0] = @"template";
         v51[1] = @"regex";
         v52[0] = v9;
@@ -140,9 +140,9 @@
 
         v12 = [(BRCTermDumper *)self->_dumper startStringForFgColor:6 bgColor:0xFFFFFFFFLL attr:0];
 
-        v13 = [(BRCTermDumper *)self->_dumper stringForReset];
+        stringForReset2 = [(BRCTermDumper *)self->_dumper stringForReset];
 
-        v14 = [NSString stringWithFormat:@"%@$1%@", v12, v13];
+        v14 = [NSString stringWithFormat:@"%@$1%@", v12, stringForReset2];
 
         v49[0] = @"template";
         v49[1] = @"regex";
@@ -155,9 +155,9 @@
 
         v17 = [(BRCTermDumper *)self->_dumper startStringForFgColor:6 bgColor:0xFFFFFFFFLL attr:0];
 
-        v18 = [(BRCTermDumper *)self->_dumper stringForReset];
+        stringForReset3 = [(BRCTermDumper *)self->_dumper stringForReset];
 
-        v19 = [NSString stringWithFormat:@"%@'$1'%@", v17, v18];
+        v19 = [NSString stringWithFormat:@"%@'$1'%@", v17, stringForReset3];
 
         v47[0] = @"template";
         v47[1] = @"regex";
@@ -173,9 +173,9 @@
 
         v24 = [(BRCTermDumper *)self->_dumper startStringForFgColor:0xFFFFFFFFLL bgColor:0xFFFFFFFFLL attr:2];
 
-        v25 = [(BRCTermDumper *)self->_dumper stringForReset];
+        stringForReset4 = [(BRCTermDumper *)self->_dumper stringForReset];
 
-        v26 = [NSString stringWithFormat:@"%@$1%@", v24, v25];
+        v26 = [NSString stringWithFormat:@"%@$1%@", v24, stringForReset4];
 
         v45[0] = @"template";
         v45[1] = @"regex";
@@ -188,7 +188,7 @@
         self->_regularExpressionReplacementInfos = v5;
       }
 
-      v3 = [NSString stringWithUTF8String:v3];
+      messageCopy = [NSString stringWithUTF8String:messageCopy];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
@@ -202,7 +202,7 @@
         do
         {
           v32 = 0;
-          v33 = v3;
+          v33 = messageCopy;
           do
           {
             if (*v41 != v31)
@@ -214,10 +214,10 @@
             v35 = [v34 objectForKeyedSubscript:@"regex"];
             v36 = [v33 length];
             v37 = [v34 objectForKeyedSubscript:@"template"];
-            v3 = [v35 stringByReplacingMatchesInString:v33 options:0 range:0 withTemplate:{v36, v37}];
+            messageCopy = [v35 stringByReplacingMatchesInString:v33 options:0 range:0 withTemplate:{v36, v37}];
 
             v32 = v32 + 1;
-            v33 = v3;
+            v33 = messageCopy;
           }
 
           while (v30 != v32);
@@ -230,31 +230,31 @@
 
     else
     {
-      v3 = 0;
+      messageCopy = 0;
     }
   }
 
-  return v3;
+  return messageCopy;
 }
 
-- (void)pushSection:(id)a3 forThread:(id)a4
+- (void)pushSection:(id)section forThread:(id)thread
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_sectionsByThread objectForKeyedSubscript:v6];
+  sectionCopy = section;
+  threadCopy = thread;
+  v7 = [(NSMutableDictionary *)self->_sectionsByThread objectForKeyedSubscript:threadCopy];
   if (!v7)
   {
     v7 = +[NSMutableArray array];
-    [(NSMutableDictionary *)self->_sectionsByThread setObject:v7 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_sectionsByThread setObject:v7 forKeyedSubscript:threadCopy];
   }
 
-  [v7 addObject:v8];
+  [v7 addObject:sectionCopy];
 }
 
-- (void)getDepth:(int *)a3 current:(id *)a4 previous:(id *)a5 forThread:(id)a6
+- (void)getDepth:(int *)depth current:(id *)current previous:(id *)previous forThread:(id)thread
 {
-  v10 = a6;
-  [(NSMutableDictionary *)self->_sectionsByThread objectForKeyedSubscript:v10];
+  threadCopy = thread;
+  [(NSMutableDictionary *)self->_sectionsByThread objectForKeyedSubscript:threadCopy];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -263,10 +263,10 @@
   if (v12)
   {
     v13 = v12;
-    v26 = a3;
-    v27 = a4;
-    v28 = a5;
-    v29 = v10;
+    depthCopy = depth;
+    currentCopy = current;
+    previousCopy = previous;
+    v29 = threadCopy;
     v14 = 0;
     v15 = 0;
     v16 = 0;
@@ -308,16 +308,16 @@
 
     while (v13);
 
-    a4 = v27;
-    *v26 = v15;
-    a5 = v28;
-    v10 = v29;
+    current = currentCopy;
+    *depthCopy = v15;
+    previous = previousCopy;
+    threadCopy = v29;
     if (v15)
     {
-      *v27 = [v11 objectAtIndex:&v14[v15 - 1]];
+      *currentCopy = [v11 objectAtIndex:&v14[v15 - 1]];
       if (v15 != 1)
       {
-        *v28 = [v11 objectAtIndex:&v14[v15 - 2]];
+        *previousCopy = [v11 objectAtIndex:&v14[v15 - 2]];
       }
     }
   }
@@ -325,17 +325,17 @@
   else
   {
 
-    *a3 = 0;
+    *depth = 0;
   }
 
-  v22 = *a4;
+  v22 = *current;
   v23 = +[NSNull null];
   if (v22 == v23)
   {
     sub_100015100();
   }
 
-  v24 = *a5;
+  v24 = *previous;
   v25 = +[NSNull null];
   if (v24 == v25)
   {
@@ -343,20 +343,20 @@
   }
 }
 
-- (void)outputEvent:(id)a3
+- (void)outputEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
-  if ([v4 eventType] == 1024)
+  if ([eventCopy eventType] == 1024)
   {
-    v6 = v4;
-    v7 = [v6 messageType];
+    v6 = eventCopy;
+    messageType = [v6 messageType];
     v8 = 0;
-    if (v7 <= 1)
+    if (messageType <= 1)
     {
-      if (v7)
+      if (messageType)
       {
-        if (v7 == 1)
+        if (messageType == 1)
         {
           v8 = 6;
         }
@@ -370,7 +370,7 @@
 
     else
     {
-      switch(v7)
+      switch(messageType)
       {
         case 2:
           v8 = 7;
@@ -384,36 +384,36 @@
       }
     }
 
-    v9 = [v6 eventMessage];
+    eventMessage = [v6 eventMessage];
 
-    if (!v9)
+    if (!eventMessage)
     {
       [v6 setEventMessage:@"<libtrace was unable to decode this message>"];
     }
 
     v10 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v6 threadID]);
-    v11 = [v6 eventMessage];
-    v12 = [v11 UTF8String];
+    eventMessage2 = [v6 eventMessage];
+    uTF8String = [eventMessage2 UTF8String];
 
     if (self->_quickMode)
     {
-      v54 = [v6 category];
+      category = [v6 category];
       [v6 subsystem];
       v52 = v56 = v10;
-      v50 = [v6 threadID];
+      threadID = [v6 threadID];
       [v6 processImagePath];
-      v13 = v48 = v12;
-      v14 = [v13 lastPathComponent];
-      v15 = [v6 processID];
+      v13 = v48 = uTF8String;
+      lastPathComponent = [v13 lastPathComponent];
+      processID = [v6 processID];
       [v6 timestamp];
       v16 = v5;
-      v18 = v17 = v4;
-      v19 = [v6 timezone];
+      v18 = v17 = eventCopy;
+      timezone = [v6 timezone];
       LOBYTE(v42) = [v6 br_isOversize];
       LODWORD(v41) = v8;
-      [(BRCTLLogCommand *)self printLogWithFacility:v54 subsystem:v52 message:v48 threadID:v50 kind:0 sender:v14 sendPID:v15 depth:v41 level:v18 timestamp:v19 timezone:0 sectionID:v42 isOversize:0 previousSectionID:?];
+      [(BRCTLLogCommand *)self printLogWithFacility:category subsystem:v52 message:v48 threadID:threadID kind:0 sender:lastPathComponent sendPID:processID depth:v41 level:v18 timestamp:timezone timezone:0 sectionID:v42 isOversize:0 previousSectionID:?];
 
-      v4 = v17;
+      eventCopy = v17;
       v5 = v16;
 
       v10 = v56;
@@ -423,53 +423,53 @@ LABEL_67:
     }
 
     [(NSMutableArray *)self->_allEvents addObject:v6];
-    v20 = [v6 category];
+    category2 = [v6 category];
 
-    if (!v20)
+    if (!category2)
     {
       goto LABEL_67;
     }
 
-    if (!strncmp(v12, "[CRIT] ", 7uLL))
+    if (!strncmp(uTF8String, "[CRIT] ", 7uLL))
     {
-      v22 = (v12 + 7);
+      v22 = (uTF8String + 7);
       v23 = 2;
     }
 
-    else if (!strncmp(v12, "[ERROR] ", 8uLL))
+    else if (!strncmp(uTF8String, "[ERROR] ", 8uLL))
     {
-      v22 = (v12 + 8);
+      v22 = (uTF8String + 8);
       v23 = 3;
     }
 
-    else if (!strncmp(v12, "[WARNING] ", 0xAuLL))
+    else if (!strncmp(uTF8String, "[WARNING] ", 0xAuLL))
     {
-      v22 = (v12 + 10);
+      v22 = (uTF8String + 10);
       v23 = 4;
     }
 
-    else if (!strncmp(v12, "[NOTICE] ", 9uLL))
+    else if (!strncmp(uTF8String, "[NOTICE] ", 9uLL))
     {
-      v22 = (v12 + 9);
+      v22 = (uTF8String + 9);
       v23 = 5;
     }
 
-    else if (!strncmp(v12, "[INFO] ", 7uLL))
+    else if (!strncmp(uTF8String, "[INFO] ", 7uLL))
     {
-      v22 = (v12 + 7);
+      v22 = (uTF8String + 7);
       v23 = 6;
     }
 
-    else if (!strncmp(v12, "[DEBUG] ", 8uLL))
+    else if (!strncmp(uTF8String, "[DEBUG] ", 8uLL))
     {
-      v22 = (v12 + 8);
+      v22 = (uTF8String + 8);
       v23 = 7;
     }
 
     else
     {
-      v21 = strncmp(v12, "[NOTIF] ", 8uLL);
-      v22 = &v12[8 * (v21 == 0)];
+      v21 = strncmp(uTF8String, "[NOTIF] ", 8uLL);
+      v22 = &uTF8String[8 * (v21 == 0)];
       v23 = v21 ? v8 : 7;
     }
 
@@ -522,14 +522,14 @@ LABEL_59:
             v51 = v23;
             v53 = v22;
             v55 = v5;
-            v57 = v4;
+            v57 = eventCopy;
             v58 = 0;
             LODWORD(__endptr[0]) = 0;
             v59 = 0;
             [(BRCTLLogCommand *)self getDepth:__endptr current:&v59 previous:&v58 forThread:v10];
             v45 = v59;
             v26 = v58;
-            v47 = self;
+            selfCopy = self;
             v46 = v25;
             if (v25 == 3)
             {
@@ -552,22 +552,22 @@ LABEL_59:
               if (v25 != 4)
               {
 LABEL_66:
-                v44 = [v6 category];
-                v32 = [v6 subsystem];
-                v43 = [v6 threadID];
-                v33 = [v6 processImagePath];
-                v34 = [v33 lastPathComponent];
-                v35 = [v6 processID];
+                category3 = [v6 category];
+                subsystem = [v6 subsystem];
+                threadID2 = [v6 threadID];
+                processImagePath = [v6 processImagePath];
+                lastPathComponent2 = [processImagePath lastPathComponent];
+                processID2 = [v6 processID];
                 v36 = __endptr[0];
                 [v6 timestamp];
                 v38 = v37 = v10;
-                v39 = [v6 timezone];
+                timezone2 = [v6 timezone];
                 LOBYTE(v42) = [v6 br_isOversize];
                 LODWORD(v41) = v51;
-                [(BRCTLLogCommand *)v47 printLogWithFacility:v44 subsystem:v32 message:v53 threadID:v43 kind:v46 sender:v34 sendPID:__PAIR64__(v36 depth:v35) level:v41 timestamp:v38 timezone:v39 sectionID:v45 isOversize:v42 previousSectionID:v26];
+                [(BRCTLLogCommand *)selfCopy printLogWithFacility:category3 subsystem:subsystem message:v53 threadID:threadID2 kind:v46 sender:lastPathComponent2 sendPID:__PAIR64__(v36 depth:processID2) level:v41 timestamp:v38 timezone:timezone2 sectionID:v45 isOversize:v42 previousSectionID:v26];
 
                 v10 = v37;
-                v4 = v57;
+                eventCopy = v57;
                 v5 = v55;
                 goto LABEL_67;
               }
@@ -611,14 +611,14 @@ LABEL_68:
   objc_autoreleasePoolPop(v5);
 }
 
-- (BOOL)outputEvents:(id)a3 error:(id)a4
+- (BOOL)outputEvents:(id)events error:(id)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  eventsCopy = events;
+  v7 = eventsCopy;
+  if (error)
   {
     dumper = self->_dumper;
-    v9 = [a4 description];
+    v9 = [error description];
     -[BRCTermDumper write:](dumper, "write:", "error while reading logs: %s", [v9 UTF8String]);
   }
 
@@ -628,7 +628,7 @@ LABEL_68:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v10 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v10 = [eventsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
       v11 = v10;
@@ -655,10 +655,10 @@ LABEL_68:
     }
   }
 
-  return a4 == 0;
+  return error == 0;
 }
 
-- (int)dumpOrStreamLogArchiveToFd:(int)a3
+- (int)dumpOrStreamLogArchiveToFd:(int)fd
 {
   predicate = self->_predicate;
   v4 = [NSArray arrayWithObjects:&predicate count:1];
@@ -709,11 +709,11 @@ LABEL_12:
 
     if (self->_lastDateComponent)
     {
-      v19 = [v17 endDate];
-      v20 = v19;
-      if (v19)
+      endDate = [v17 endDate];
+      v20 = endDate;
+      if (endDate)
       {
-        v21 = v19;
+        v21 = endDate;
       }
 
       else
@@ -754,12 +754,12 @@ LABEL_19:
         [(BRCTermDumper *)self->_dumper startPager];
       }
 
-      v22 = [(NSString *)self->_log_path fileSystemRepresentation];
+      fileSystemRepresentation = [(NSString *)self->_log_path fileSystemRepresentation];
       v37[0] = _NSConcreteStackBlock;
       v37[1] = 3221225472;
       v38 = sub_100004350;
       v39 = &unk_100024B48;
-      v40 = self;
+      selfCopy = self;
       v23 = v37;
       v45 = 0;
       v46 = &v45;
@@ -780,7 +780,7 @@ LABEL_19:
       v24 = v23;
       v42.st_atimespec.tv_sec = v24;
       v25 = &v42;
-      if (*v22 == 45 && !v22[1])
+      if (*fileSystemRepresentation == 45 && !fileSystemRepresentation[1])
       {
         v26 = __stdinp;
         if (__stdinp)
@@ -791,7 +791,7 @@ LABEL_19:
 
       else
       {
-        v26 = fopen(v22, "r");
+        v26 = fopen(fileSystemRepresentation, "r");
         if (v26)
         {
 LABEL_24:
@@ -893,7 +893,7 @@ LABEL_46:
   }
 
   v12 = __stderrp;
-  v13 = [(NSString *)self->_log_path fileSystemRepresentation];
+  fileSystemRepresentation2 = [(NSString *)self->_log_path fileSystemRepresentation];
   v14 = __error();
   v15 = strerror(*v14);
   v16 = -1;
@@ -902,9 +902,9 @@ LABEL_48:
   return v16;
 }
 
-+ (id)dateFromUTF8String:(const char *)a3
++ (id)dateFromUTF8String:(const char *)string
 {
-  v3 = [NSString stringWithUTF8String:a3];
+  v3 = [NSString stringWithUTF8String:string];
   v4 = objc_opt_new();
   [v4 setDateFormat:@"yyyy-MM-dd HH:mm:ssZZZ"];
   v5 = [v4 dateFromString:v3];
@@ -929,9 +929,9 @@ LABEL_48:
   return v6;
 }
 
-+ (id)dateComponentsFromUTF8String:(const char *)a3
++ (id)dateComponentsFromUTF8String:(const char *)string
 {
-  v3 = [NSString stringWithUTF8String:a3];
+  v3 = [NSString stringWithUTF8String:string];
   v4 = [v3 length];
   v18 = 0;
   v5 = [NSRegularExpression regularExpressionWithPattern:@"^(\\d+)([mhd])$" options:0 error:&v18];
@@ -971,10 +971,10 @@ LABEL_48:
   return v16;
 }
 
-- (void)buildPredicateString:(id)a3
+- (void)buildPredicateString:(id)string
 {
   predicateString = self->_predicateString;
-  v5 = a3;
+  stringCopy = string;
   if (predicateString)
   {
     [(NSMutableString *)predicateString appendString:@" || "];
@@ -987,7 +987,7 @@ LABEL_48:
     self->_predicateString = v6;
   }
 
-  [(NSMutableString *)self->_predicateString appendString:a3];
+  [(NSMutableString *)self->_predicateString appendString:string];
 }
 
 - (void)buildPredicateFromString
@@ -1008,15 +1008,15 @@ LABEL_48:
   self->_predicateString = 0;
 }
 
-- (void)parseOption:(int)a3 arg:(const char *)a4
+- (void)parseOption:(int)option arg:(const char *)arg
 {
-  switch(a3)
+  switch(option)
   {
     case 'D':
       v5 = @"(subsystem == com.apple.FileProvider && subsystem == com.apple.LiveFS)";
       goto LABEL_38;
     case 'E':
-      endDate = [objc_opt_class() dateFromUTF8String:a4];
+      endDate = [objc_opt_class() dateFromUTF8String:arg];
       v24 = endDate;
       if (!endDate)
       {
@@ -1029,7 +1029,7 @@ LABEL_48:
       v5 = @"subsystem == com.apple.FileProvider || subsystem == com.apple.FruitBasket || subsystem == com.example.FruitBasket";
       goto LABEL_38;
     case 'H':
-      v9 = [NSString stringWithUTF8String:a4];
+      v9 = [NSString stringWithUTF8String:arg];
       home_path = self->_home_path;
       self->_home_path = v9;
       goto LABEL_42;
@@ -1037,7 +1037,7 @@ LABEL_48:
       v5 = CFSTR("(process == Provider && (subsystem == com.apple.network || sender == CFNetwork)");
       goto LABEL_38;
     case 'S':
-      endDate = [objc_opt_class() dateFromUTF8String:a4];
+      endDate = [objc_opt_class() dateFromUTF8String:arg];
       v24 = endDate;
       if (!endDate)
       {
@@ -1055,12 +1055,12 @@ LABEL_48:
       v5 = @"subsystem == com.apple.clouddocs";
       goto LABEL_38;
     case 'c':
-      v20 = sub_1000083B4(99, a4, &off_100027F08);
+      v20 = sub_1000083B4(99, arg, &off_100027F08);
       use_color = self->_use_color;
       self->_use_color = v20;
       goto LABEL_42;
     case 'd':
-      v18 = [NSString stringWithUTF8String:a4];
+      v18 = [NSString stringWithUTF8String:arg];
       log_path = self->_log_path;
       self->_log_path = v18;
       goto LABEL_42;
@@ -1077,17 +1077,17 @@ LABEL_48:
       self->_darkMode = 1;
       return;
     case 'l':
-      v14 = [NSNumber numberWithLongLong:strtoll(a4, 0, 10)];
+      v14 = [NSNumber numberWithLongLong:strtoll(arg, 0, 10)];
       level = self->_level;
       self->_level = v14;
       goto LABEL_42;
     case 'm':
-      v16 = sub_1000083B4(109, a4, &off_100027F08);
+      v16 = sub_1000083B4(109, arg, &off_100027F08);
       use_multiline = self->_use_multiline;
       self->_use_multiline = v16;
       goto LABEL_42;
     case 'n':
-      v22 = [NSNumber numberWithLongLong:strtoll(a4, 0, 10)];
+      v22 = [NSNumber numberWithLongLong:strtoll(arg, 0, 10)];
       initial_count = self->_initial_count;
       self->_initial_count = v22;
 LABEL_42:
@@ -1114,7 +1114,7 @@ LABEL_38:
       self->_shorten = 1;
       return;
     case 'u':
-      endDate = [objc_opt_class() dateComponentsFromUTF8String:a4];
+      endDate = [objc_opt_class() dateComponentsFromUTF8String:arg];
       v24 = endDate;
       if (!endDate)
       {

@@ -1,10 +1,10 @@
 @interface CPParagraph
-- (BOOL)isPreformattedWithUnitWidth:(double *)a3;
+- (BOOL)isPreformattedWithUnitWidth:(double *)width;
 - (CGRect)bounds;
 - (CGRect)reducedBounds;
 - (CPParagraph)init;
 - (double)selectionBottom;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)index;
 - (void)dealloc;
 - (void)explode;
@@ -38,13 +38,13 @@
           objc_enumerationMutation(children);
         }
 
-        v11 = [*(*(&v22 + 1) + 8 * i) charSequence];
-        if ([v11 length])
+        charSequence = [*(*(&v22 + 1) + 8 * i) charSequence];
+        if ([charSequence length])
         {
           v12 = 0;
           do
           {
-            v13 = [v11 charAtIndex:v12];
+            v13 = [charSequence charAtIndex:v12];
             v14 = __sincos_stret(*(v13 + 168) * 0.0174532925);
             v15 = *v13;
             v16 = *(v13 + 8);
@@ -71,7 +71,7 @@
             v12 = (v12 + 1);
           }
 
-          while (v12 < [v11 length]);
+          while (v12 < [charSequence length]);
         }
       }
 
@@ -100,12 +100,12 @@
   return result;
 }
 
-- (BOOL)isPreformattedWithUnitWidth:(double *)a3
+- (BOOL)isPreformattedWithUnitWidth:(double *)width
 {
   listItem = self->listItem;
-  if (a3)
+  if (width)
   {
-    *a3 = *&listItem;
+    *width = *&listItem;
   }
 
   if (*&listItem == 0.0)
@@ -118,8 +118,8 @@
       while (1)
       {
         v10 = [(NSMutableArray *)self->super.super.super.super.children objectAtIndex:v9];
-        v6 = [v10 isMonospaced];
-        if (!v6)
+        isMonospaced = [v10 isMonospaced];
+        if (!isMonospaced)
         {
           break;
         }
@@ -196,9 +196,9 @@
                   if (v8 == ++v22)
                   {
                     *&self->listItem = v23;
-                    if (a3)
+                    if (width)
                     {
-                      *a3 = v23;
+                      *width = v23;
                     }
 
                     goto LABEL_4;
@@ -216,17 +216,17 @@
     else
     {
 LABEL_22:
-      LOBYTE(v6) = 0;
+      LOBYTE(isMonospaced) = 0;
     }
   }
 
   else
   {
 LABEL_4:
-    LOBYTE(v6) = 1;
+    LOBYTE(isMonospaced) = 1;
   }
 
-  return v6;
+  return isMonospaced;
 }
 
 - (double)selectionBottom
@@ -234,10 +234,10 @@ LABEL_4:
   v3 = 0.0;
   if ([(CPObject *)self count])
   {
-    v4 = [(CPObject *)self lastChild];
-    if (v4)
+    lastChild = [(CPObject *)self lastChild];
+    if (lastChild)
     {
-      [v4 bounds];
+      [lastChild bounds];
       v3 = v6;
       if (v7 < 0.0 || v8 < 0.0)
       {
@@ -296,16 +296,16 @@ LABEL_4:
 
 - (unint64_t)index
 {
-  v3 = [(CPObject *)self->super.super.super.super.parent children];
+  children = [(CPObject *)self->super.super.super.super.parent children];
 
-  return [v3 indexOfObject:self];
+  return [children indexOfObject:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = CPParagraph;
-  result = [(CPRegion *)&v4 copyWithZone:a3];
+  result = [(CPRegion *)&v4 copyWithZone:zone];
   *(result + 24) = 0;
   return result;
 }

@@ -1,17 +1,17 @@
 @interface NewsNotificationService
-- (void)didReceiveNotificationRequest:(id)a3 withContentHandler:(id)a4;
+- (void)didReceiveNotificationRequest:(id)request withContentHandler:(id)handler;
 - (void)serviceExtensionTimeWillExpire;
 @end
 
 @implementation NewsNotificationService
 
-- (void)didReceiveNotificationRequest:(id)a3 withContentHandler:(id)a4
+- (void)didReceiveNotificationRequest:(id)request withContentHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_100018498(v7, v8, v6);
+  requestCopy = request;
+  selfCopy = self;
+  sub_100018498(requestCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

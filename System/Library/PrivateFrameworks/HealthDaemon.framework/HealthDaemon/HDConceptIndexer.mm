@@ -1,11 +1,11 @@
 @interface HDConceptIndexer
-+ (BOOL)indexSamplesForProfile:(id)a3 limit:(unint64_t)a4 outIndexedSamplesCount:(int64_t *)a5 error:(id *)a6;
-+ (BOOL)resetIndexManagerStateForProfile:(id)a3 withError:(id *)a4;
-+ (BOOL)storeState:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (HDConceptIndexState)_stateWithKeyValueDomain:(uint64_t)a1 transaction:(void *)a2 error:(void *)a3;
-+ (HDKeyValueDomain)_keyValueDomainWithProfile:(uint64_t)a1;
-+ (id)stateWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (uint64_t)_storeState:(uint64_t)a1 keyValueDomain:(void *)a2 transaction:(void *)a3 error:(uint64_t)a4;
++ (BOOL)indexSamplesForProfile:(id)profile limit:(unint64_t)limit outIndexedSamplesCount:(int64_t *)count error:(id *)error;
++ (BOOL)resetIndexManagerStateForProfile:(id)profile withError:(id *)error;
++ (BOOL)storeState:(id)state profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (HDConceptIndexState)_stateWithKeyValueDomain:(uint64_t)domain transaction:(void *)transaction error:(void *)error;
++ (HDKeyValueDomain)_keyValueDomainWithProfile:(uint64_t)profile;
++ (id)stateWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
++ (uint64_t)_storeState:(uint64_t)state keyValueDomain:(void *)domain transaction:(void *)transaction error:(uint64_t)error;
 - (HDConceptIndexer)init;
 @end
 
@@ -21,22 +21,22 @@
   return 0;
 }
 
-+ (BOOL)indexSamplesForProfile:(id)a3 limit:(unint64_t)a4 outIndexedSamplesCount:(int64_t *)a5 error:(id *)a6
++ (BOOL)indexSamplesForProfile:(id)profile limit:(unint64_t)limit outIndexedSamplesCount:(int64_t *)count error:(id *)error
 {
-  v10 = a3;
-  v11 = [v10 database];
+  profileCopy = profile;
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__HDConceptIndexer_indexSamplesForProfile_limit_outIndexedSamplesCount_error___block_invoke;
   v14[3] = &unk_278629D48;
-  v17 = a4;
-  v18 = a5;
-  v15 = v10;
-  v16 = a1;
-  v12 = v10;
-  LOBYTE(a6) = [(HDHealthEntity *)HDMedicalRecordEntity performWriteTransactionWithHealthDatabase:v11 error:a6 block:v14];
+  limitCopy = limit;
+  countCopy = count;
+  v15 = profileCopy;
+  selfCopy = self;
+  v12 = profileCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDMedicalRecordEntity performWriteTransactionWithHealthDatabase:database error:error block:v14];
 
-  return a6;
+  return error;
 }
 
 BOOL __78__HDConceptIndexer_indexSamplesForProfile_limit_outIndexedSamplesCount_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -596,25 +596,25 @@ LABEL_99:
   return v103;
 }
 
-+ (BOOL)resetIndexManagerStateForProfile:(id)a3 withError:(id *)a4
++ (BOOL)resetIndexManagerStateForProfile:(id)profile withError:(id *)error
 {
-  v5 = a3;
+  profileCopy = profile;
   v6 = objc_alloc_init(HDConceptIndexResetOperation);
-  LOBYTE(a4) = [(HDJournalableOperation *)v6 performOrJournalWithProfile:v5 error:a4];
+  LOBYTE(error) = [(HDJournalableOperation *)v6 performOrJournalWithProfile:profileCopy error:error];
 
-  return a4;
+  return error;
 }
 
-+ (id)stateWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)stateWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDConceptIndexer *)a1 _keyValueDomainWithProfile:a3];
-  v10 = [HDConceptIndexer _stateWithKeyValueDomain:a1 transaction:v9 error:a5];
+  transactionCopy = transaction;
+  v9 = [(HDConceptIndexer *)self _keyValueDomainWithProfile:profile];
+  v10 = [HDConceptIndexer _stateWithKeyValueDomain:self transaction:v9 error:error];
 
   return v10;
 }
 
-+ (HDKeyValueDomain)_keyValueDomainWithProfile:(uint64_t)a1
++ (HDKeyValueDomain)_keyValueDomainWithProfile:(uint64_t)profile
 {
   v2 = a2;
   objc_opt_self();
@@ -623,29 +623,29 @@ LABEL_99:
   return v3;
 }
 
-+ (HDConceptIndexState)_stateWithKeyValueDomain:(uint64_t)a1 transaction:(void *)a2 error:(void *)a3
++ (HDConceptIndexState)_stateWithKeyValueDomain:(uint64_t)domain transaction:(void *)transaction error:(void *)error
 {
-  v4 = a2;
+  transactionCopy = transaction;
   objc_opt_self();
   v12 = 0;
-  v5 = [v4 dataForKey:@"Indexer-State" error:&v12];
+  v5 = [transactionCopy dataForKey:@"Indexer-State" error:&v12];
 
   v6 = v12;
   v7 = v6;
   if (v5)
   {
-    v8 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v5 error:a3];
+    v8 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v5 error:error];
     [v8 setClass:objc_opt_class() forClassName:@"HDConceptIndexManagerState"];
     v9 = [v8 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
   }
 
   else if (v6)
   {
-    if (a3)
+    if (error)
     {
       v11 = v6;
       v9 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -663,26 +663,26 @@ LABEL_99:
   return v9;
 }
 
-+ (BOOL)storeState:(id)a3 profile:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)storeState:(id)state profile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [(HDConceptIndexer *)a1 _keyValueDomainWithProfile:a4];
-  LOBYTE(a6) = [HDConceptIndexer _storeState:a1 keyValueDomain:v11 transaction:v12 error:a6];
+  transactionCopy = transaction;
+  stateCopy = state;
+  v12 = [(HDConceptIndexer *)self _keyValueDomainWithProfile:profile];
+  LOBYTE(error) = [HDConceptIndexer _storeState:self keyValueDomain:stateCopy transaction:v12 error:error];
 
-  return a6;
+  return error;
 }
 
-+ (uint64_t)_storeState:(uint64_t)a1 keyValueDomain:(void *)a2 transaction:(void *)a3 error:(uint64_t)a4
++ (uint64_t)_storeState:(uint64_t)state keyValueDomain:(void *)domain transaction:(void *)transaction error:(uint64_t)error
 {
-  v6 = a3;
-  v7 = a2;
+  transactionCopy = transaction;
+  domainCopy = domain;
   objc_opt_self();
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:a4];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:domainCopy requiringSecureCoding:1 error:error];
 
   if (v8)
   {
-    v9 = [v6 setData:v8 forKey:@"Indexer-State" error:a4];
+    v9 = [transactionCopy setData:v8 forKey:@"Indexer-State" error:error];
   }
 
   else

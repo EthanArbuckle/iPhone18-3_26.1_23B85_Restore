@@ -1,29 +1,29 @@
 @interface CSDCallController
 - (CSDCallContainer)callContainer;
-- (CSDCallController)initWithDataSources:(id)a3 queue:(id)a4;
+- (CSDCallController)initWithDataSources:(id)sources queue:(id)queue;
 - (CSDCallStateController)callStateController;
 - (id)callChanged;
-- (void)registerCall:(id)a3;
-- (void)setCallChanged:(id)a3;
-- (void)setCallStateController:(id)a3;
+- (void)registerCall:(id)call;
+- (void)setCallChanged:(id)changed;
+- (void)setCallStateController:(id)controller;
 @end
 
 @implementation CSDCallController
 
 - (CSDCallContainer)callContainer
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000B23C();
   v4 = v3;
 
   return v4;
 }
 
-- (void)registerCall:(id)a3
+- (void)registerCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  sub_100023490(v4);
+  callCopy = call;
+  selfCopy = self;
+  sub_100023490(callCopy);
 }
 
 - (CSDCallStateController)callStateController
@@ -33,11 +33,11 @@
   return v2;
 }
 
-- (void)setCallStateController:(id)a3
+- (void)setCallStateController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_100326D24(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100326D24(controller);
 }
 
 - (id)callChanged
@@ -62,9 +62,9 @@
   return v4;
 }
 
-- (void)setCallChanged:(id)a3
+- (void)setCallChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -77,15 +77,15 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_100326EFC(v4, v5);
 }
 
-- (CSDCallController)initWithDataSources:(id)a3 queue:(id)a4
+- (CSDCallController)initWithDataSources:(id)sources queue:(id)queue
 {
   sub_100006AF0(0, &qword_1006A5990, off_1006165E8);
   v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  return sub_100326F1C(v5, a4);
+  return sub_100326F1C(v5, queue);
 }
 
 @end

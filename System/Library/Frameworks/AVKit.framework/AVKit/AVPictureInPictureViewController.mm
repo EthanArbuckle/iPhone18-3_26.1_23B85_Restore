@@ -1,11 +1,11 @@
 @interface AVPictureInPictureViewController
 - (AVPictureInPicturePlayerLayerView)pictureInPicturePlayerLayerView;
-- (AVPictureInPictureViewController)initWithCoder:(id)a3;
-- (AVPictureInPictureViewController)initWithPictureInPicturePlayerLayerView:(id)a3;
+- (AVPictureInPictureViewController)initWithCoder:(id)coder;
+- (AVPictureInPictureViewController)initWithPictureInPicturePlayerLayerView:(id)view;
 - (AVPictureInPictureViewControllerDelegate)delegate;
 - (void)dealloc;
 - (void)didAnimatePictureInPictureStop;
-- (void)setContentViewController:(id)a3;
+- (void)setContentViewController:(id)controller;
 - (void)willAnimatePictureInPictureStart;
 @end
 
@@ -18,39 +18,39 @@
   return WeakRetained;
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v13 = a3;
+  controllerCopy = controller;
   v5 = self->_contentViewController;
-  if (v5 != v13)
+  if (v5 != controllerCopy)
   {
-    objc_storeStrong(&self->_contentViewController, a3);
-    if (v13)
+    objc_storeStrong(&self->_contentViewController, controller);
+    if (controllerCopy)
     {
-      [(AVPictureInPictureViewController *)self addChildViewController:v13];
-      v6 = [(AVPictureInPictureViewController *)v13 view];
-      [v6 setTranslatesAutoresizingMaskIntoConstraints:1];
+      [(AVPictureInPictureViewController *)self addChildViewController:controllerCopy];
+      view = [(AVPictureInPictureViewController *)controllerCopy view];
+      [view setTranslatesAutoresizingMaskIntoConstraints:1];
 
-      v7 = [(AVPictureInPictureViewController *)v13 view];
-      [v7 setAutoresizingMask:18];
+      view2 = [(AVPictureInPictureViewController *)controllerCopy view];
+      [view2 setAutoresizingMask:18];
 
-      v8 = [(AVPictureInPictureViewController *)v13 view];
-      v9 = [(AVPictureInPictureViewController *)self view];
-      [v9 bounds];
-      [v8 setFrame:?];
+      view3 = [(AVPictureInPictureViewController *)controllerCopy view];
+      view4 = [(AVPictureInPictureViewController *)self view];
+      [view4 bounds];
+      [view3 setFrame:?];
 
-      v10 = [(AVPictureInPictureViewController *)self view];
-      v11 = [(AVPictureInPictureViewController *)v13 view];
-      [v10 addSubview:v11];
+      view5 = [(AVPictureInPictureViewController *)self view];
+      view6 = [(AVPictureInPictureViewController *)controllerCopy view];
+      [view5 addSubview:view6];
 
-      [(AVPictureInPictureViewController *)v13 didMoveToParentViewController:self];
+      [(AVPictureInPictureViewController *)controllerCopy didMoveToParentViewController:self];
     }
 
     if (v5)
     {
       [(AVPictureInPictureViewController *)v5 willMoveToParentViewController:0];
-      v12 = [(AVPictureInPictureViewController *)v5 view];
-      [v12 removeFromSuperview];
+      view7 = [(AVPictureInPictureViewController *)v5 view];
+      [view7 removeFromSuperview];
 
       [(AVPictureInPictureViewController *)v5 removeFromParentViewController];
     }
@@ -59,10 +59,10 @@
 
 - (AVPictureInPicturePlayerLayerView)pictureInPicturePlayerLayerView
 {
-  v3 = [(AVPictureInPictureViewController *)self contentViewController];
-  v4 = [v3 pictureInPicturePlayerLayerView];
-  pictureInPicturePlayerLayerView = v4;
-  if (!v4)
+  contentViewController = [(AVPictureInPictureViewController *)self contentViewController];
+  pictureInPicturePlayerLayerView = [contentViewController pictureInPicturePlayerLayerView];
+  pictureInPicturePlayerLayerView = pictureInPicturePlayerLayerView;
+  if (!pictureInPicturePlayerLayerView)
   {
     pictureInPicturePlayerLayerView = self->_pictureInPicturePlayerLayerView;
   }
@@ -72,7 +72,7 @@
   return pictureInPicturePlayerLayerView;
 }
 
-- (AVPictureInPictureViewController)initWithCoder:(id)a3
+- (AVPictureInPictureViewController)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
@@ -94,7 +94,7 @@
     v7 = 1024;
     v8 = 49;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
   }
 
@@ -103,10 +103,10 @@
   [(AVPictureInPictureViewController *)&v4 dealloc];
 }
 
-- (AVPictureInPictureViewController)initWithPictureInPicturePlayerLayerView:(id)a3
+- (AVPictureInPictureViewController)initWithPictureInPicturePlayerLayerView:(id)view
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -115,7 +115,7 @@
     v12 = 1024;
     v13 = 35;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
   }
 
@@ -124,14 +124,14 @@
   v6 = [(AVPictureInPictureViewController *)&v9 initWithNibName:0 bundle:0];
   if (v6)
   {
-    v7 = v4;
-    if (!v4)
+    v7 = viewCopy;
+    if (!viewCopy)
     {
       v7 = objc_alloc_init(AVPictureInPicturePlayerLayerView);
     }
 
     objc_storeStrong(&v6->_pictureInPicturePlayerLayerView, v7);
-    if (!v4)
+    if (!viewCopy)
     {
     }
   }
@@ -141,14 +141,14 @@
 
 - (void)didAnimatePictureInPictureStop
 {
-  v3 = [(AVPictureInPictureViewController *)self delegate];
-  [v3 pictureInPictureViewControllerViewWillDisappear:self];
+  delegate = [(AVPictureInPictureViewController *)self delegate];
+  [delegate pictureInPictureViewControllerViewWillDisappear:self];
 }
 
 - (void)willAnimatePictureInPictureStart
 {
-  v3 = [(AVPictureInPictureViewController *)self delegate];
-  [v3 pictureInPictureViewControllerViewDidAppear:self];
+  delegate = [(AVPictureInPictureViewController *)self delegate];
+  [delegate pictureInPictureViewControllerViewDidAppear:self];
 }
 
 @end

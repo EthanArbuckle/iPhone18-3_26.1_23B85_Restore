@@ -1,14 +1,14 @@
 @interface PUPickerWallpaperSuggestion
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUPickerWallpaperSuggestion
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PickerWallpaperSuggestion.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PickerWallpaperSuggestion.encode(with:)(coderCopy);
 }
 
 @end

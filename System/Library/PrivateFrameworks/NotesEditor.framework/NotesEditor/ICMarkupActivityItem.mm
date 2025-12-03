@@ -1,19 +1,19 @@
 @interface ICMarkupActivityItem
-- (ICMarkupActivityItem)initWithAttachment:(id)a3;
+- (ICMarkupActivityItem)initWithAttachment:(id)attachment;
 @end
 
 @implementation ICMarkupActivityItem
 
-- (ICMarkupActivityItem)initWithAttachment:(id)a3
+- (ICMarkupActivityItem)initWithAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v8.receiver = self;
   v8.super_class = ICMarkupActivityItem;
   v5 = [(ICMarkupActivityItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICMarkupActivityItem *)v5 setAttachment:v4];
+    [(ICMarkupActivityItem *)v5 setAttachment:attachmentCopy];
   }
 
   return v6;

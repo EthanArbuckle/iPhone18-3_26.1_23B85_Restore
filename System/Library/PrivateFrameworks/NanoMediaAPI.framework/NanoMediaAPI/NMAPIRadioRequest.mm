@@ -1,20 +1,20 @@
 @interface NMAPIRadioRequest
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4;
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error;
 @end
 
 @implementation NMAPIRadioRequest
 
-- (id)urlComponentsWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)urlComponentsWithStoreURLBag:(id)bag error:(id *)error
 {
   v32[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  bagCopy = bag;
   v30.receiver = self;
   v30.super_class = NMAPIRadioRequest;
-  v7 = [(NMAPIRequest *)&v30 urlComponentsWithStoreURLBag:v6 error:a4];
-  v8 = MusicURLPathStorefrontWithURLBag(v6);
+  v7 = [(NMAPIRequest *)&v30 urlComponentsWithStoreURLBag:bagCopy error:error];
+  v8 = MusicURLPathStorefrontWithURLBag(bagCopy);
   if (v8)
   {
-    v9 = [v6 dictionaryForBagKey:*MEMORY[0x277D7F9E8]];
+    v9 = [bagCopy dictionaryForBagKey:*MEMORY[0x277D7F9E8]];
     v10 = [v9 valueForKeyPath:@"radioTabGroupingName"];
     if (v10)
     {
@@ -26,7 +26,7 @@
       v13 = [v11 pathWithComponents:v12];
       [v7 setPath:v13];
 
-      v14 = [v7 queryItems];
+      queryItems = [v7 queryItems];
       v29 = v9;
       v27 = [MEMORY[0x277CCAD18] queryItemWithName:@"name" value:v10];
       v31[0] = v27;
@@ -40,7 +40,7 @@
       v19 = [MEMORY[0x277CCAD18] queryItemWithName:@"art[url]" value:{@"f, c"}];
       v31[3] = v19;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
-      v21 = [v14 arrayByAddingObjectsFromArray:v20];
+      v21 = [queryItems arrayByAddingObjectsFromArray:v20];
       [v7 setQueryItems:v21];
 
       v9 = v29;
@@ -57,10 +57,10 @@
         [NMAPIRadioRequest urlComponentsWithStoreURLBag:v24 error:?];
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
-        *a4 = v22 = 0;
+        *error = v22 = 0;
       }
 
       else
@@ -78,10 +78,10 @@
       [NMAPIRadioRequest urlComponentsWithStoreURLBag:v23 error:?];
     }
 
-    if (a4)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D7F900] code:-7201 userInfo:0];
-      *a4 = v22 = 0;
+      *error = v22 = 0;
     }
 
     else

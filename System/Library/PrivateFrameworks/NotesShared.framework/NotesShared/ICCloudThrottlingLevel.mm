@@ -1,6 +1,6 @@
 @interface ICCloudThrottlingLevel
 - (ICCloudThrottlingLevel)init;
-- (ICCloudThrottlingLevel)initWithBatchInterval:(double)a3 maximumBatchIntervalFactor:(double)a4 numberOfBatches:(unint64_t)a5;
+- (ICCloudThrottlingLevel)initWithBatchInterval:(double)interval maximumBatchIntervalFactor:(double)factor numberOfBatches:(unint64_t)batches;
 - (id)description;
 @end
 
@@ -22,16 +22,16 @@
   return 0;
 }
 
-- (ICCloudThrottlingLevel)initWithBatchInterval:(double)a3 maximumBatchIntervalFactor:(double)a4 numberOfBatches:(unint64_t)a5
+- (ICCloudThrottlingLevel)initWithBatchInterval:(double)interval maximumBatchIntervalFactor:(double)factor numberOfBatches:(unint64_t)batches
 {
   v9.receiver = self;
   v9.super_class = ICCloudThrottlingLevel;
   result = [(ICCloudThrottlingLevel *)&v9 init];
   if (result)
   {
-    result->_batchInterval = a3;
-    result->_maximumBatchIntervalFactor = a4;
-    result->_numberOfBatches = a5;
+    result->_batchInterval = interval;
+    result->_maximumBatchIntervalFactor = factor;
+    result->_numberOfBatches = batches;
   }
 
   return result;

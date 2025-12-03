@@ -2,16 +2,16 @@
 + (id)settingsControllerModule;
 - (_TtC5UIKit14_UIToolbarSpec)initWithDefaultValues;
 - (void)setDefaultValues;
-- (void)setPadding:(id)a3;
+- (void)setPadding:(id)padding;
 @end
 
 @implementation _UIToolbarSpec
 
-- (void)setPadding:(id)a3
+- (void)setPadding:(id)padding
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit14_UIToolbarSpec_padding);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit14_UIToolbarSpec_padding) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit14_UIToolbarSpec_padding) = padding;
+  paddingCopy = padding;
 }
 
 - (void)setDefaultValues

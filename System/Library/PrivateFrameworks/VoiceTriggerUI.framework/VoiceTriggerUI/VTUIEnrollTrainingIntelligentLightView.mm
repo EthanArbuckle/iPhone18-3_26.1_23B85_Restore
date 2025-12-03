@@ -1,24 +1,24 @@
 @interface VTUIEnrollTrainingIntelligentLightView
-- (VTUIEnrollTrainingIntelligentLightView)initWithFrame:(CGRect)a3;
+- (VTUIEnrollTrainingIntelligentLightView)initWithFrame:(CGRect)frame;
 - (VTUIEnrollTrainingViewDelegate)delegate;
 - (void)_setupUI;
-- (void)animateSuccessfulStepWithCompletion:(id)a3;
+- (void)animateSuccessfulStepWithCompletion:(id)completion;
 - (void)clearInstructionLabel;
 - (void)dealloc;
-- (void)setContinuationLabel:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPreludeLabel:(id)a3;
-- (void)showRadarExitButton:(id)a3;
-- (void)slideInText:(id)a3 afterDelay:(double)a4 completion:(id)a5;
+- (void)setContinuationLabel:(id)label;
+- (void)setDelegate:(id)delegate;
+- (void)setPreludeLabel:(id)label;
+- (void)showRadarExitButton:(id)button;
+- (void)slideInText:(id)text afterDelay:(double)delay completion:(id)completion;
 @end
 
 @implementation VTUIEnrollTrainingIntelligentLightView
 
-- (VTUIEnrollTrainingIntelligentLightView)initWithFrame:(CGRect)a3
+- (VTUIEnrollTrainingIntelligentLightView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VTUIEnrollTrainingIntelligentLightView;
-  v3 = [(VTUIEnrollTrainingIntelligentLightView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VTUIEnrollTrainingIntelligentLightView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -32,7 +32,7 @@
 {
   v166[4] = *MEMORY[0x277D85DE8];
   v157 = +[VTUIStyle sharedStyle];
-  v156 = [(VTUIEnrollTrainingIntelligentLightView *)self readableContentGuide];
+  readableContentGuide = [(VTUIEnrollTrainingIntelligentLightView *)self readableContentGuide];
   if ([v157 isIpad])
   {
     [MEMORY[0x277D75348] systemBackgroundColor];
@@ -64,8 +64,8 @@
   [(SUICIntelligentLightLayer *)self->_lightLayer setColorPalette:104];
   [(SUICIntelligentLightLayer *)self->_lightLayer setPaused:0];
   v11 = [(BSUICAPackageView *)self->_lightView publishedObjectWithName:@"lightlayer"];
-  v12 = [v11 superlayer];
-  [v12 insertSublayer:self->_lightLayer above:v11];
+  superlayer = [v11 superlayer];
+  [superlayer insertSublayer:self->_lightLayer above:v11];
 
   v155 = v11;
   [v11 removeFromSuperlayer];
@@ -75,31 +75,31 @@
   *&v14 = vabdd_f64(v14, v15) * 0.5;
   [(BSUICAPackageView *)self->_lightView setTranslatesAutoresizingMaskIntoConstraints:0];
   v144 = MEMORY[0x277CCAAD0];
-  v153 = [(BSUICAPackageView *)self->_lightView topAnchor];
-  v151 = [(VTUIEnrollTrainingIntelligentLightView *)self topAnchor];
-  v149 = [v153 constraintEqualToAnchor:v151];
+  topAnchor = [(BSUICAPackageView *)self->_lightView topAnchor];
+  topAnchor2 = [(VTUIEnrollTrainingIntelligentLightView *)self topAnchor];
+  v149 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v166[0] = v149;
-  v147 = [(BSUICAPackageView *)self->_lightView bottomAnchor];
-  v16 = [(VTUIEnrollTrainingIntelligentLightView *)self bottomAnchor];
-  v17 = [v147 constraintEqualToAnchor:v16];
+  bottomAnchor = [(BSUICAPackageView *)self->_lightView bottomAnchor];
+  bottomAnchor2 = [(VTUIEnrollTrainingIntelligentLightView *)self bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v166[1] = v17;
-  v18 = [(BSUICAPackageView *)self->_lightView trailingAnchor];
-  v19 = [(VTUIEnrollTrainingIntelligentLightView *)self trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19 constant:*&v14];
+  trailingAnchor = [(BSUICAPackageView *)self->_lightView trailingAnchor];
+  trailingAnchor2 = [(VTUIEnrollTrainingIntelligentLightView *)self trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:*&v14];
   v166[2] = v20;
-  v21 = [(BSUICAPackageView *)self->_lightView leadingAnchor];
-  v22 = [(VTUIEnrollTrainingIntelligentLightView *)self leadingAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:-*&v14];
+  leadingAnchor = [(BSUICAPackageView *)self->_lightView leadingAnchor];
+  leadingAnchor2 = [(VTUIEnrollTrainingIntelligentLightView *)self leadingAnchor];
+  v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-*&v14];
   v166[3] = v23;
   v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v166 count:4];
   [v144 activateConstraints:v24];
 
-  v25 = [MEMORY[0x277D75780] appearance];
+  appearance = [MEMORY[0x277D75780] appearance];
   v164 = *MEMORY[0x277D740C0];
-  v26 = [MEMORY[0x277D75348] whiteColor];
-  v165 = v26;
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v165 = whiteColor;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v165 forKeys:&v164 count:1];
-  [v25 setTitleTextAttributes:v27];
+  [appearance setTitleTextAttributes:v27];
 
   v28 = objc_opt_new();
   enrollmentTextViewManager = self->_enrollmentTextViewManager;
@@ -135,13 +135,13 @@
   self->_enrollmentViewModel = v44;
 
   v148 = [(GMEnrollmentTextViewManager *)self->_enrollmentTextViewManager createViewControllerWithEnrollmentViewModel:self->_enrollmentViewModel];
-  v46 = [v148 view];
-  [v46 setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  [v46 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v47 = [MEMORY[0x277D75348] clearColor];
-  [v46 setBackgroundColor:v47];
+  view = [v148 view];
+  [view setFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  [(VTUIEnrollTrainingIntelligentLightView *)self addSubview:v46];
+  [(VTUIEnrollTrainingIntelligentLightView *)self addSubview:view];
   v48 = objc_alloc_init(MEMORY[0x277D756B8]);
   statusLabel = self->_statusLabel;
   self->_statusLabel = v48;
@@ -152,8 +152,8 @@
   [(UILabel *)self->_statusLabel setFont:v50];
 
   [(UILabel *)self->_statusLabel setNumberOfLines:4];
-  v51 = [MEMORY[0x277D75348] systemWhiteColor];
-  [(UILabel *)self->_statusLabel setTextColor:v51];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [(UILabel *)self->_statusLabel setTextColor:systemWhiteColor];
 
   [(VTUIEnrollTrainingIntelligentLightView *)self addSubview:self->_statusLabel];
   v52 = +[VTUIButton _vtuiButtonWithSecondaryStyle];
@@ -161,8 +161,8 @@
   self->_skipButton = v52;
 
   v54 = self->_skipButton;
-  v55 = [MEMORY[0x277D75348] systemWhiteColor];
-  [(UIButton *)v54 setTitleColor:v55 forState:0];
+  systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+  [(UIButton *)v54 setTitleColor:systemWhiteColor2 forState:0];
 
   [(UIButton *)self->_skipButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v56 = self->_skipButton;
@@ -171,129 +171,129 @@
 
   [(VTUIEnrollTrainingIntelligentLightView *)self addSubview:self->_skipButton];
   v128 = MEMORY[0x277CCAAD0];
-  v138 = [v46 topAnchor];
-  v145 = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
-  v133 = [v145 topAnchor];
+  topAnchor3 = [view topAnchor];
+  safeAreaLayoutGuide = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
   [v157 instructionOffsetFromTopTrainingForGM];
-  v129 = [v138 constraintEqualToAnchor:v133 constant:?];
+  v129 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:?];
   v163[0] = v129;
-  v127 = [v46 leadingAnchor];
-  v58 = [v156 leadingAnchor];
+  leadingAnchor3 = [view leadingAnchor];
+  leadingAnchor4 = [readableContentGuide leadingAnchor];
   [v157 instructionHorizontalPadding];
-  v59 = [v127 constraintEqualToAnchor:v58 constant:?];
+  v59 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:?];
   v163[1] = v59;
-  v60 = [v46 trailingAnchor];
-  v61 = [v156 trailingAnchor];
+  trailingAnchor3 = [view trailingAnchor];
+  trailingAnchor4 = [readableContentGuide trailingAnchor];
   [v157 instructionHorizontalPadding];
-  v63 = [v60 constraintEqualToAnchor:v61 constant:-v62];
+  v63 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-v62];
   v163[2] = v63;
   v64 = [MEMORY[0x277CBEA60] arrayWithObjects:v163 count:3];
   [v128 activateConstraints:v64];
 
   LODWORD(v65) = 1148846080;
-  [v46 setContentHuggingPriority:1 forAxis:v65];
+  [view setContentHuggingPriority:1 forAxis:v65];
   v134 = MEMORY[0x277CCAAD0];
-  v139 = [(UILabel *)self->_statusLabel topAnchor];
-  v146 = v46;
-  v66 = [v46 topAnchor];
-  v67 = [v139 constraintEqualToAnchor:v66 constant:72.0];
+  topAnchor5 = [(UILabel *)self->_statusLabel topAnchor];
+  v146 = view;
+  topAnchor6 = [view topAnchor];
+  v67 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:72.0];
   v162[0] = v67;
-  v68 = [(UILabel *)self->_statusLabel leadingAnchor];
-  v69 = [v156 leadingAnchor];
-  v70 = [v68 constraintEqualToAnchor:v69];
+  leadingAnchor5 = [(UILabel *)self->_statusLabel leadingAnchor];
+  leadingAnchor6 = [readableContentGuide leadingAnchor];
+  v70 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v162[1] = v70;
-  v71 = [(UILabel *)self->_statusLabel trailingAnchor];
-  v72 = [v156 trailingAnchor];
-  v73 = [v71 constraintEqualToAnchor:v72];
+  trailingAnchor5 = [(UILabel *)self->_statusLabel trailingAnchor];
+  trailingAnchor6 = [readableContentGuide trailingAnchor];
+  v73 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v162[2] = v73;
   v74 = [MEMORY[0x277CBEA60] arrayWithObjects:v162 count:3];
   [v134 activateConstraints:v74];
 
   if (+[VTUIFeatureFlags isNaturalUIEnabled])
   {
-    v75 = [v157 isIpad];
+    isIpad = [v157 isIpad];
     v130 = MEMORY[0x277CCAAD0];
-    v76 = [(UIButton *)self->_skipButton leftAnchor];
-    v140 = v76;
-    if (v75)
+    leftAnchor = [(UIButton *)self->_skipButton leftAnchor];
+    v140 = leftAnchor;
+    if (isIpad)
     {
-      v135 = [v156 leftAnchor];
-      v77 = [v76 constraintEqualToAnchor:30.0 constant:?];
+      leftAnchor2 = [readableContentGuide leftAnchor];
+      v77 = [leftAnchor constraintEqualToAnchor:30.0 constant:?];
       v161[0] = v77;
-      v78 = [(UIButton *)self->_skipButton rightAnchor];
-      v79 = [v156 rightAnchor];
-      v80 = [v78 constraintEqualToAnchor:v79 constant:-30.0];
+      rightAnchor = [(UIButton *)self->_skipButton rightAnchor];
+      rightAnchor2 = [readableContentGuide rightAnchor];
+      v80 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-30.0];
       v161[1] = v80;
       v81 = v161;
     }
 
     else
     {
-      v135 = [(VTUIEnrollTrainingIntelligentLightView *)self leftAnchor];
-      v77 = [v76 constraintEqualToAnchor:38.0 constant:?];
+      leftAnchor2 = [(VTUIEnrollTrainingIntelligentLightView *)self leftAnchor];
+      v77 = [leftAnchor constraintEqualToAnchor:38.0 constant:?];
       v160[0] = v77;
-      v78 = [(UIButton *)self->_skipButton rightAnchor];
-      v79 = [(VTUIEnrollTrainingIntelligentLightView *)self rightAnchor];
-      v80 = [v78 constraintEqualToAnchor:v79 constant:-38.0];
+      rightAnchor = [(UIButton *)self->_skipButton rightAnchor];
+      rightAnchor2 = [(VTUIEnrollTrainingIntelligentLightView *)self rightAnchor];
+      v80 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-38.0];
       v160[1] = v80;
       v81 = v160;
     }
 
-    v92 = [(UIButton *)self->_skipButton bottomAnchor];
-    v93 = [(VTUIEnrollTrainingIntelligentLightView *)self bottomAnchor];
-    v94 = [v92 constraintEqualToAnchor:v93 constant:-38.0];
+    bottomAnchor3 = [(UIButton *)self->_skipButton bottomAnchor];
+    bottomAnchor4 = [(VTUIEnrollTrainingIntelligentLightView *)self bottomAnchor];
+    v94 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-38.0];
     v81[2] = v94;
     v95 = [MEMORY[0x277CBEA60] arrayWithObjects:v81 count:3];
     [v130 activateConstraints:v95];
 
-    v82 = +[VTUIStyle sharedStyle];
-    [v82 primaryButtonHeight];
+    leftAnchor3 = +[VTUIStyle sharedStyle];
+    [leftAnchor3 primaryButtonHeight];
     v97 = v96;
     v98 = [MEMORY[0x277D75520] metricsForTextStyle:*MEMORY[0x277D769A8]];
     [v98 scaledValueForValue:v97];
     v100 = v99;
 
-    v101 = [(UIButton *)self->_skipButton heightAnchor];
-    v102 = [v101 constraintEqualToConstant:v100];
+    heightAnchor = [(UIButton *)self->_skipButton heightAnchor];
+    v102 = [heightAnchor constraintEqualToConstant:v100];
     [v102 setActive:1];
 
     [(UIButton *)self->_skipButton _setCornerRadius:v100 * 0.5];
-    v103 = [v82 isIpad];
+    isIpad2 = [leftAnchor3 isIpad];
     v104 = self->_skipButton;
-    if (v103)
+    if (isIpad2)
     {
-      v105 = [MEMORY[0x277D75348] blackColor];
-      [(UIButton *)v104 setTitleColor:v105 forState:0];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UIButton *)v104 setTitleColor:blackColor forState:0];
     }
 
     else
     {
-      v106 = [MEMORY[0x277D75348] secondaryLabelColor];
-      [(UIButton *)v104 setTitleColor:v106 forState:0];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      [(UIButton *)v104 setTitleColor:secondaryLabelColor forState:0];
 
       [(UIButton *)self->_skipButton setOverrideUserInterfaceStyle:2];
     }
 
-    v83 = [MEMORY[0x277D75230] _glassButtonConfiguration];
-    [(UIButton *)self->_skipButton setConfiguration:v83];
+    _glassButtonConfiguration = [MEMORY[0x277D75230] _glassButtonConfiguration];
+    [(UIButton *)self->_skipButton setConfiguration:_glassButtonConfiguration];
   }
 
   else
   {
     v131 = MEMORY[0x277CCAAD0];
-    v82 = [(UIButton *)self->_skipButton leftAnchor];
-    v83 = [v156 leftAnchor];
-    v141 = [v82 constraintEqualToAnchor:v83];
+    leftAnchor3 = [(UIButton *)self->_skipButton leftAnchor];
+    _glassButtonConfiguration = [readableContentGuide leftAnchor];
+    v141 = [leftAnchor3 constraintEqualToAnchor:_glassButtonConfiguration];
     v159[0] = v141;
-    v136 = [(UIButton *)self->_skipButton rightAnchor];
-    v84 = [v156 rightAnchor];
-    v85 = [v136 constraintEqualToAnchor:v84];
+    rightAnchor3 = [(UIButton *)self->_skipButton rightAnchor];
+    rightAnchor4 = [readableContentGuide rightAnchor];
+    v85 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
     v159[1] = v85;
-    v86 = [(UIButton *)self->_skipButton bottomAnchor];
-    v87 = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
-    v88 = [v87 bottomAnchor];
+    bottomAnchor5 = [(UIButton *)self->_skipButton bottomAnchor];
+    safeAreaLayoutGuide2 = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
+    bottomAnchor6 = [safeAreaLayoutGuide2 bottomAnchor];
     [v157 footerSkipButtonBaselineFromBottom];
-    v90 = [v86 constraintEqualToAnchor:v88 constant:-v89];
+    v90 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:-v89];
     v159[2] = v90;
     v91 = [MEMORY[0x277CBEA60] arrayWithObjects:v159 count:3];
     [v131 activateConstraints:v91];
@@ -312,28 +312,28 @@
     self->_radarButton = v110;
 
     [(SiriUIContentButton *)self->_radarButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v112 = [MEMORY[0x277D75348] systemWhiteColor];
-    v113 = [v112 colorWithAlphaComponent:0.6];
+    systemWhiteColor3 = [MEMORY[0x277D75348] systemWhiteColor];
+    v113 = [systemWhiteColor3 colorWithAlphaComponent:0.6];
     [(SiriUIContentButton *)self->_radarButton setDefaultColorForTemplate:v113];
 
-    v114 = [MEMORY[0x277D75348] systemWhiteColor];
-    v115 = [v114 colorWithAlphaComponent:0.2];
+    systemWhiteColor4 = [MEMORY[0x277D75348] systemWhiteColor];
+    v115 = [systemWhiteColor4 colorWithAlphaComponent:0.2];
     [(SiriUIContentButton *)self->_radarButton setHighlightColorForTemplate:v115];
 
     [(VTUIEnrollTrainingIntelligentLightView *)self setRadarButtonHidden:0];
     [(VTUIEnrollTrainingIntelligentLightView *)self addSubview:self->_radarButton];
     v132 = MEMORY[0x277CCAAD0];
-    v137 = [(SiriUIContentButton *)self->_radarButton trailingAnchor];
-    v116 = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
-    v117 = [v116 trailingAnchor];
+    trailingAnchor7 = [(SiriUIContentButton *)self->_radarButton trailingAnchor];
+    safeAreaLayoutGuide3 = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
+    trailingAnchor8 = [safeAreaLayoutGuide3 trailingAnchor];
     [v157 radarBtnHorizontalPadding];
-    v119 = [v137 constraintEqualToAnchor:v117 constant:-v118];
+    v119 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8 constant:-v118];
     v158[0] = v119;
-    v120 = [(SiriUIContentButton *)self->_radarButton bottomAnchor];
-    v121 = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
-    v122 = [v121 bottomAnchor];
+    bottomAnchor7 = [(SiriUIContentButton *)self->_radarButton bottomAnchor];
+    safeAreaLayoutGuide4 = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
+    bottomAnchor8 = [safeAreaLayoutGuide4 bottomAnchor];
     [v157 radarBtnVerticalPadding];
-    v124 = [v120 constraintEqualToAnchor:v122 constant:-v123];
+    v124 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8 constant:-v123];
     v158[1] = v124;
     v125 = [MEMORY[0x277CBEA60] arrayWithObjects:v158 count:2];
     [v132 activateConstraints:v125];
@@ -354,40 +354,40 @@
   [(VTUIEnrollTrainingIntelligentLightView *)&v2 dealloc];
 }
 
-- (void)showRadarExitButton:(id)a3
+- (void)showRadarExitButton:(id)button
 {
   v26[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D75220];
-  v5 = a3;
+  buttonCopy = button;
   v6 = [v4 buttonWithType:0];
   radarExitButton = self->_radarExitButton;
   self->_radarExitButton = v6;
 
   [(SiriUIContentButton *)self->_radarButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(UIButton *)self->_radarExitButton titleLabel];
-  [v8 setTextAlignment:1];
+  titleLabel = [(UIButton *)self->_radarExitButton titleLabel];
+  [titleLabel setTextAlignment:1];
 
-  [(UIButton *)self->_radarExitButton setTitle:v5 forState:0];
+  [(UIButton *)self->_radarExitButton setTitle:buttonCopy forState:0];
   v9 = self->_radarExitButton;
-  v10 = [MEMORY[0x277D75348] systemBlueColor];
-  [(UIButton *)v9 setTitleColor:v10 forState:0];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  [(UIButton *)v9 setTitleColor:systemBlueColor forState:0];
 
   [(VTUIEnrollTrainingIntelligentLightView *)self addSubview:self->_radarExitButton];
   v22 = MEMORY[0x277CCAAD0];
-  v24 = [(UIButton *)self->_radarExitButton leftAnchor];
-  v25 = [(VTUIEnrollTrainingIntelligentLightView *)self readableContentGuide];
-  v23 = [v25 leftAnchor];
-  v11 = [v24 constraintEqualToAnchor:v23];
+  leftAnchor = [(UIButton *)self->_radarExitButton leftAnchor];
+  readableContentGuide = [(VTUIEnrollTrainingIntelligentLightView *)self readableContentGuide];
+  leftAnchor2 = [readableContentGuide leftAnchor];
+  v11 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v26[0] = v11;
-  v12 = [(UIButton *)self->_radarExitButton rightAnchor];
-  v13 = [(VTUIEnrollTrainingIntelligentLightView *)self readableContentGuide];
-  v14 = [v13 rightAnchor];
-  v15 = [v12 constraintEqualToAnchor:v14];
+  rightAnchor = [(UIButton *)self->_radarExitButton rightAnchor];
+  readableContentGuide2 = [(VTUIEnrollTrainingIntelligentLightView *)self readableContentGuide];
+  rightAnchor2 = [readableContentGuide2 rightAnchor];
+  v15 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v26[1] = v15;
-  v16 = [(UIButton *)self->_radarExitButton bottomAnchor];
-  v17 = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
-  v18 = [v17 bottomAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  bottomAnchor = [(UIButton *)self->_radarExitButton bottomAnchor];
+  safeAreaLayoutGuide = [(VTUIEnrollTrainingIntelligentLightView *)self safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v26[2] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:3];
   [v22 activateConstraints:v20];
@@ -395,31 +395,31 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   [UIButton addTarget:"addTarget:action:forControlEvents:" action:? forControlEvents:?];
   radarButton = self->_radarButton;
   if (radarButton)
   {
-    [(SiriUIContentButton *)radarButton addTarget:v5 action:sel_enrollTrainingViewRadarButtonPressed_ forControlEvents:64];
+    [(SiriUIContentButton *)radarButton addTarget:delegateCopy action:sel_enrollTrainingViewRadarButtonPressed_ forControlEvents:64];
   }
 }
 
-- (void)slideInText:(id)a3 afterDelay:(double)a4 completion:(id)a5
+- (void)slideInText:(id)text afterDelay:(double)delay completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = dispatch_time(0, (a4 * 1000000000.0));
+  textCopy = text;
+  completionCopy = completion;
+  v10 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __76__VTUIEnrollTrainingIntelligentLightView_slideInText_afterDelay_completion___block_invoke;
   block[3] = &unk_279E54B70;
   block[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = textCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = textCopy;
   dispatch_after(v10, MEMORY[0x277D85CD0], block);
 }
 
@@ -435,27 +435,27 @@ uint64_t __76__VTUIEnrollTrainingIntelligentLightView_slideInText_afterDelay_com
 
 - (void)clearInstructionLabel
 {
-  v2 = [(VTUIEnrollTrainingIntelligentLightView *)self enrollmentViewModel];
-  [v2 setIntructionLabel:&stru_2881E5778];
+  enrollmentViewModel = [(VTUIEnrollTrainingIntelligentLightView *)self enrollmentViewModel];
+  [enrollmentViewModel setIntructionLabel:&stru_2881E5778];
 }
 
-- (void)setPreludeLabel:(id)a3
+- (void)setPreludeLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(VTUIEnrollTrainingIntelligentLightView *)self enrollmentViewModel];
-  [v5 setPreludeLabel:v4];
+  labelCopy = label;
+  enrollmentViewModel = [(VTUIEnrollTrainingIntelligentLightView *)self enrollmentViewModel];
+  [enrollmentViewModel setPreludeLabel:labelCopy];
 }
 
-- (void)setContinuationLabel:(id)a3
+- (void)setContinuationLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(VTUIEnrollTrainingIntelligentLightView *)self enrollmentViewModel];
-  [v5 setContinuationLabel:v4];
+  labelCopy = label;
+  enrollmentViewModel = [(VTUIEnrollTrainingIntelligentLightView *)self enrollmentViewModel];
+  [enrollmentViewModel setContinuationLabel:labelCopy];
 }
 
-- (void)animateSuccessfulStepWithCompletion:(id)a3
+- (void)animateSuccessfulStepWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   [(BSUICAPackageView *)self->_lightView setState:@"State 1" animated:1];
   v5 = dispatch_time(0, 1000000000);
@@ -465,7 +465,7 @@ uint64_t __76__VTUIEnrollTrainingIntelligentLightView_slideInText_afterDelay_com
   v6[3] = &unk_279E541F8;
   objc_copyWeak(&v7, &location);
   dispatch_after(v5, MEMORY[0x277D85CD0], v6);
-  v4[2](v4);
+  completionCopy[2](completionCopy);
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }

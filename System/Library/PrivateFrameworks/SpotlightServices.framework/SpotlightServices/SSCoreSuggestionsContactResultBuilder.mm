@@ -1,30 +1,30 @@
 @interface SSCoreSuggestionsContactResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SSCoreSuggestionsContactResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SSCoreSuggestionsContactResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 @end
 
 @implementation SSCoreSuggestionsContactResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v4 = [a3 sectionBundleIdentifier];
-  v5 = [a1 bundleId];
-  v6 = [v4 isEqual:v5];
+  sectionBundleIdentifier = [result sectionBundleIdentifier];
+  bundleId = [self bundleId];
+  v6 = [sectionBundleIdentifier isEqual:bundleId];
 
   return v6;
 }
 
-- (SSCoreSuggestionsContactResultBuilder)initWithResult:(id)a3
+- (SSCoreSuggestionsContactResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v8.receiver = self;
   v8.super_class = SSCoreSuggestionsContactResultBuilder;
-  v5 = [(SSContactResultBuilder *)&v8 initWithResult:v4];
+  v5 = [(SSContactResultBuilder *)&v8 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 identifier];
-    [(SSCoreSuggestionsContactResultBuilder *)v5 setSuggestedContactIdentifier:v6];
+    identifier = [resultCopy identifier];
+    [(SSCoreSuggestionsContactResultBuilder *)v5 setSuggestedContactIdentifier:identifier];
   }
 
   return v5;
@@ -33,8 +33,8 @@
 - (id)buildCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SSCoreSuggestionsContactResultBuilder *)self suggestedContactIdentifier];
-  [v3 setContactIdentifier:v4];
+  suggestedContactIdentifier = [(SSCoreSuggestionsContactResultBuilder *)self suggestedContactIdentifier];
+  [v3 setContactIdentifier:suggestedContactIdentifier];
 
   [v3 setIsSuggestedContact:1];
 

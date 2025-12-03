@@ -1,25 +1,25 @@
 @interface IDSKeychainKeyElectionStore
-- (BOOL)removeFullClusterWithIdentifier:(id)a3 error:(id *)a4;
-- (IDSKeychainKeyElectionStore)initWithKeychainWrapper:(id)a3;
-- (id)_fullClusterFromData:(id)a3 error:(id *)a4;
-- (id)_keychainEntryForCluster:(id)a3;
-- (id)fetchFullClusterWithIdentifier:(id)a3 error:(id *)a4;
-- (id)identifierForFullCluster:(id)a3;
-- (void)_storeData:(id)a3 forIdentifier:(id)a4 completion:(id)a5;
-- (void)storeFullCluster:(id)a3 completion:(id)a4;
+- (BOOL)removeFullClusterWithIdentifier:(id)identifier error:(id *)error;
+- (IDSKeychainKeyElectionStore)initWithKeychainWrapper:(id)wrapper;
+- (id)_fullClusterFromData:(id)data error:(id *)error;
+- (id)_keychainEntryForCluster:(id)cluster;
+- (id)fetchFullClusterWithIdentifier:(id)identifier error:(id *)error;
+- (id)identifierForFullCluster:(id)cluster;
+- (void)_storeData:(id)data forIdentifier:(id)identifier completion:(id)completion;
+- (void)storeFullCluster:(id)cluster completion:(id)completion;
 @end
 
 @implementation IDSKeychainKeyElectionStore
 
-- (id)identifierForFullCluster:(id)a3
+- (id)identifierForFullCluster:(id)cluster
 {
-  v3 = a3;
-  v4 = [v3 fullAccountIdentity];
-  if (v4)
+  clusterCopy = cluster;
+  fullAccountIdentity = [clusterCopy fullAccountIdentity];
+  if (fullAccountIdentity)
   {
     v5 = _IDSEngramKeyElectorVersion();
-    v6 = [v4 publicName];
-    v7 = [NSString stringWithFormat:@"group-pai-%@-%@", v5, v6];
+    publicName = [fullAccountIdentity publicName];
+    v7 = [NSString stringWithFormat:@"group-pai-%@-%@", v5, publicName];
   }
 
   else
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v11 = v3;
+      v11 = clusterCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Failed to get name for full account identity cluster {cluster: %{public}@}", buf, 0xCu);
     }
 
@@ -38,24 +38,24 @@
   return v7;
 }
 
-- (IDSKeychainKeyElectionStore)initWithKeychainWrapper:(id)a3
+- (IDSKeychainKeyElectionStore)initWithKeychainWrapper:(id)wrapper
 {
-  v5 = a3;
+  wrapperCopy = wrapper;
   v9.receiver = self;
   v9.super_class = IDSKeychainKeyElectionStore;
   v6 = [(IDSKeychainKeyElectionStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keychainWrapper, a3);
+    objc_storeStrong(&v6->_keychainWrapper, wrapper);
   }
 
   return v7;
 }
 
-- (id)fetchFullClusterWithIdentifier:(id)a3 error:(id *)a4
+- (id)fetchFullClusterWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[IDSFoundationLog accountIdentity];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -67,13 +67,13 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "!setState keychainClusterIdentifier=%@", buf, 0xCu);
   }
 
-  v9 = [(IDSKeychainKeyElectionStore *)self keychainWrapper];
+  keychainWrapper = [(IDSKeychainKeyElectionStore *)self keychainWrapper];
   v22 = 0;
-  v10 = [v9 dataForIdentifier:v6 error:&v22];
+  v10 = [keychainWrapper dataForIdentifier:identifierCopy error:&v22];
   v11 = v22;
 
   if (!v10)
@@ -82,7 +82,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v24 = v6;
+      v24 = identifierCopy;
       v25 = 2114;
       v26 = v11;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Failed to get keychain data {identifier: %{public}@, error: %{public}@}", buf, 0x16u);
@@ -157,11 +157,11 @@ LABEL_24:
 LABEL_25:
 LABEL_26:
 
-    if (a4)
+    if (error)
     {
       v18 = v11;
       v15 = 0;
-      *a4 = v11;
+      *error = v11;
     }
 
     else
@@ -183,20 +183,20 @@ LABEL_29:
   return v15;
 }
 
-- (void)storeFullCluster:(id)a3 completion:(id)a4
+- (void)storeFullCluster:(id)cluster completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  clusterCopy = cluster;
+  completionCopy = completion;
   v8 = +[IDSFoundationLog accountIdentity];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v23 = v6;
+    v23 = clusterCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Storing cluster in Keychain {fullCluster: %{public}@}", buf, 0xCu);
   }
 
   v21 = 0;
-  v9 = [v6 dataRepresentationWithError:&v21];
+  v9 = [clusterCopy dataRepresentationWithError:&v21];
   v10 = v21;
   if (v9)
   {
@@ -209,13 +209,13 @@ LABEL_29:
 
     if (v12)
     {
-      v14 = [(IDSKeychainKeyElectionStore *)self identifierForFullCluster:v6];
+      v14 = [(IDSKeychainKeyElectionStore *)self identifierForFullCluster:clusterCopy];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
       v17[2] = sub_1003FDE4C;
       v17[3] = &unk_100BD97D8;
-      v18 = v6;
-      v19 = v7;
+      v18 = clusterCopy;
+      v19 = completionCopy;
       [(IDSKeychainKeyElectionStore *)self _storeData:v12 forIdentifier:v14 completion:v17];
     }
 
@@ -225,7 +225,7 @@ LABEL_29:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543875;
-        v23 = v6;
+        v23 = clusterCopy;
         v24 = 2113;
         v25 = v11;
         v26 = 2114;
@@ -233,7 +233,7 @@ LABEL_29:
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Failed to serialize cluster data {fullCluster: %{public}@, dictionary: %{private}@, error: %{public}@}", buf, 0x20u);
       }
 
-      (*(v7 + 2))(v7, 0, v13);
+      (*(completionCopy + 2))(completionCopy, 0, v13);
     }
   }
 
@@ -243,29 +243,29 @@ LABEL_29:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v23 = v6;
+      v23 = clusterCopy;
       v24 = 2114;
       v25 = v10;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Failed to create data from cluster {fullCluster: %{public}@, error: %{public}@}", buf, 0x16u);
     }
 
-    (*(v7 + 2))(v7, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, v10);
     v13 = v10;
   }
 }
 
-- (void)_storeData:(id)a3 forIdentifier:(id)a4 completion:(id)a5
+- (void)_storeData:(id)data forIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IDSKeychainKeyElectionStore *)self keychainWrapper];
-  [v11 saveData:v10 forIdentifier:v9 dataProtectionClass:1 withCompletion:v8];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  dataCopy = data;
+  keychainWrapper = [(IDSKeychainKeyElectionStore *)self keychainWrapper];
+  [keychainWrapper saveData:dataCopy forIdentifier:identifierCopy dataProtectionClass:1 withCompletion:completionCopy];
 }
 
-- (BOOL)removeFullClusterWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeFullClusterWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[IDSFoundationLog accountIdentity];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -277,29 +277,29 @@ LABEL_29:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v6;
+    v14 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "!setState keychainClusterIdentifier=%@", &v13, 0xCu);
   }
 
-  v9 = [(IDSKeychainKeyElectionStore *)self keychainWrapper];
-  v10 = [v9 removeDataForIdentifier:v6 dataProtectionClass:1 error:a4];
+  keychainWrapper = [(IDSKeychainKeyElectionStore *)self keychainWrapper];
+  v10 = [keychainWrapper removeDataForIdentifier:identifierCopy dataProtectionClass:1 error:error];
 
   if ((v10 & 1) == 0)
   {
     v11 = +[IDSFoundationLog accountIdentity];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      sub_10091C9F0(v6, a4, v11);
+      sub_10091C9F0(identifierCopy, error, v11);
     }
   }
 
   return v10;
 }
 
-- (id)_keychainEntryForCluster:(id)a3
+- (id)_keychainEntryForCluster:(id)cluster
 {
   v10 = 0;
-  v3 = [a3 dataRepresentationWithError:&v10];
+  v3 = [cluster dataRepresentationWithError:&v10];
   v4 = v10;
   if (v3)
   {
@@ -321,17 +321,17 @@ LABEL_29:
   return v6;
 }
 
-- (id)_fullClusterFromData:(id)a3 error:(id *)a4
+- (id)_fullClusterFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v13 = 0;
-  v6 = [IDSMPFullAccountIdentityCluster clusterWithDataRepresentation:v5 error:&v13];
+  v6 = [IDSMPFullAccountIdentityCluster clusterWithDataRepresentation:dataCopy error:&v13];
   v7 = v13;
   v8 = v7;
-  if (a4)
+  if (error)
   {
     v9 = v7;
-    *a4 = v8;
+    *error = v8;
   }
 
   if (v6)
@@ -344,7 +344,7 @@ LABEL_29:
     v11 = +[IDSFoundationLog accountIdentity];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      sub_10091CA78(a4, v5, v11);
+      sub_10091CA78(error, dataCopy, v11);
     }
   }
 

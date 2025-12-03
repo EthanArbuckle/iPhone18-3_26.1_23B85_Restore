@@ -4,7 +4,7 @@
 - (BOOL)_isCoverSheetCameraVisible;
 - (BOOL)_shouldDeferToCoverSheetCamera;
 - (BOOL)_shouldDeferToNonSpringBoardProcess;
-- (SBCameraHardwareButton)initWithActivationManager:(id)a3;
+- (SBCameraHardwareButton)initWithActivationManager:(id)manager;
 - (double)longPressCancellationTimeout;
 - (uint64_t)activationManager;
 - (uint64_t)allCameraShutterButtonPIDs;
@@ -34,58 +34,58 @@
 - (uint64_t)shouldLaunchCameraCondition;
 - (uint64_t)shouldUsePocketStateDetection;
 - (uint64_t)studyLogger;
-- (void)_deferCameraPressesToApplication:(id)a3;
+- (void)_deferCameraPressesToApplication:(id)application;
 - (void)_deferCameraPressesToCameraApplication;
-- (void)_deferCameraPressesToPID:(int)a3;
+- (void)_deferCameraPressesToPID:(int)d;
 - (void)_deferCameraPressesToSpringBoard;
 - (void)_launchCameraIfReady;
 - (void)_longPressDidCancel;
-- (void)_process:(id)a3 stateDidUpdate:(id)a4;
+- (void)_process:(id)_process stateDidUpdate:(id)update;
 - (void)_reconfigureProcessMonitor;
-- (void)_reconfigureProcessMonitorForPredicates:(id)a3;
+- (void)_reconfigureProcessMonitorForPredicates:(id)predicates;
 - (void)_startWaitingForLongPressCancellation;
 - (void)_stopWaitingForLongPressCancellation;
 - (void)_updateCameraDeferringRule;
-- (void)_updateSettingsForReason:(id)a3;
-- (void)addProcessRequestingCameraButton:(int)a3 token:(id)a4;
+- (void)_updateSettingsForReason:(id)reason;
+- (void)addProcessRequestingCameraButton:(int)button token:(id)token;
 - (void)dealloc;
-- (void)handleButtonEvent:(__IOHIDEvent *)a3;
-- (void)performActionsForButtonDown:(id)a3;
-- (void)performActionsForButtonLongPress:(id)a3;
-- (void)physicalButtonSceneOverridesDidChange:(id)a3;
-- (void)removeProcessRequestingCameraButton:(int)a3;
-- (void)sceneManager:(id)a3 didAddExternalForegroundApplicationSceneHandle:(id)a4;
-- (void)sceneManager:(id)a3 didRemoveExternalForegroundApplicationSceneHandle:(id)a4;
-- (void)setActivationManager:(uint64_t)a1;
-- (void)setAllCameraShutterButtonPIDs:(uint64_t)a1;
-- (void)setApplicationController:(uint64_t)a1;
-- (void)setBacklightController:(uint64_t)a1;
-- (void)setBacklightStudyLogger:(uint64_t)a1;
-- (void)setButtonArbiter:(uint64_t)a1;
-- (void)setCoverSheetPresentationManager:(uint64_t)a1;
-- (void)setDefaults:(uint64_t)a1;
-- (void)setDeferringRuleAssertion:(uint64_t)a1;
-- (void)setDeferringTokensPerPID:(uint64_t)a1;
-- (void)setDeliveryManager:(uint64_t)a1;
-- (void)setDisableDeferringToApplications:(BOOL)a3;
-- (void)setDispatchingRuleAssertion:(uint64_t)a1;
-- (void)setForegroundCameraShutterButtonPIDs:(uint64_t)a1;
-- (void)setForegroundPendingRemovalCameraShutterButtonPIDs:(uint64_t)a1;
-- (void)setLiftToWakeStudyLogger:(uint64_t)a1;
-- (void)setLockScreenManager:(uint64_t)a1;
-- (void)setLongPressCancellationTimer:(uint64_t)a1;
-- (void)setLongPressCondition:(uint64_t)a1;
-- (void)setMainDisplaySceneManager:(uint64_t)a1;
-- (void)setOutOfPocketCondition:(uint64_t)a1;
-- (void)setPhysicalButtonOverrideObserver:(uint64_t)a1;
-- (void)setPhysicalButtonOverrideScene:(uint64_t)a1;
-- (void)setPocketStateManager:(uint64_t)a1;
-- (void)setProcessMonitor:(uint64_t)a1;
-- (void)setProximitySensorManager:(uint64_t)a1;
-- (void)setSettings:(uint64_t)a1;
-- (void)setShouldLaunchCameraCondition:(uint64_t)a1;
-- (void)setStudyLogger:(uint64_t)a1;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)handleButtonEvent:(__IOHIDEvent *)event;
+- (void)performActionsForButtonDown:(id)down;
+- (void)performActionsForButtonLongPress:(id)press;
+- (void)physicalButtonSceneOverridesDidChange:(id)change;
+- (void)removeProcessRequestingCameraButton:(int)button;
+- (void)sceneManager:(id)manager didAddExternalForegroundApplicationSceneHandle:(id)handle;
+- (void)sceneManager:(id)manager didRemoveExternalForegroundApplicationSceneHandle:(id)handle;
+- (void)setActivationManager:(uint64_t)manager;
+- (void)setAllCameraShutterButtonPIDs:(uint64_t)ds;
+- (void)setApplicationController:(uint64_t)controller;
+- (void)setBacklightController:(uint64_t)controller;
+- (void)setBacklightStudyLogger:(uint64_t)logger;
+- (void)setButtonArbiter:(uint64_t)arbiter;
+- (void)setCoverSheetPresentationManager:(uint64_t)manager;
+- (void)setDefaults:(uint64_t)defaults;
+- (void)setDeferringRuleAssertion:(uint64_t)assertion;
+- (void)setDeferringTokensPerPID:(uint64_t)d;
+- (void)setDeliveryManager:(uint64_t)manager;
+- (void)setDisableDeferringToApplications:(BOOL)applications;
+- (void)setDispatchingRuleAssertion:(uint64_t)assertion;
+- (void)setForegroundCameraShutterButtonPIDs:(uint64_t)ds;
+- (void)setForegroundPendingRemovalCameraShutterButtonPIDs:(uint64_t)ds;
+- (void)setLiftToWakeStudyLogger:(uint64_t)logger;
+- (void)setLockScreenManager:(uint64_t)manager;
+- (void)setLongPressCancellationTimer:(uint64_t)timer;
+- (void)setLongPressCondition:(uint64_t)condition;
+- (void)setMainDisplaySceneManager:(uint64_t)manager;
+- (void)setOutOfPocketCondition:(uint64_t)condition;
+- (void)setPhysicalButtonOverrideObserver:(uint64_t)observer;
+- (void)setPhysicalButtonOverrideScene:(uint64_t)scene;
+- (void)setPocketStateManager:(uint64_t)manager;
+- (void)setProcessMonitor:(uint64_t)monitor;
+- (void)setProximitySensorManager:(uint64_t)manager;
+- (void)setSettings:(uint64_t)settings;
+- (void)setShouldLaunchCameraCondition:(uint64_t)condition;
+- (void)setStudyLogger:(uint64_t)logger;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBCameraHardwareButton
@@ -131,12 +131,12 @@
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "_deferToPhysicalOverrideScene scene:%{public}@", &v12, 0xCu);
   }
 
-  v5 = [(FBScene *)self->_physicalButtonOverrideScene isActive];
-  if (v5)
+  isActive = [(FBScene *)self->_physicalButtonOverrideScene isActive];
+  if (isActive)
   {
-    v6 = [(FBScene *)self->_physicalButtonOverrideScene clientHandle];
-    v7 = [v6 processHandle];
-    v8 = [v7 pid];
+    clientHandle = [(FBScene *)self->_physicalButtonOverrideScene clientHandle];
+    processHandle = [clientHandle processHandle];
+    v8 = [processHandle pid];
 
     v9 = SBLogButtonsCamera();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -149,17 +149,17 @@
 
     if (v8 < 1)
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(isActive) = 0;
     }
 
     else
     {
       [(SBCameraHardwareButton *)self _deferCameraPressesToPID:v8];
-      LOBYTE(v5) = 1;
+      LOBYTE(isActive) = 1;
     }
   }
 
-  return v5;
+  return isActive;
 }
 
 - (BOOL)_shouldDeferToNonSpringBoardProcess
@@ -199,10 +199,10 @@
 
 - (BOOL)_shouldDeferToCoverSheetCamera
 {
-  v3 = [(SBApplicationController *)self->_applicationController cameraApplication];
-  v4 = [v3 bundleIdentifier];
-  v5 = v4 != 0;
-  if (v4)
+  cameraApplication = [(SBApplicationController *)self->_applicationController cameraApplication];
+  bundleIdentifier = [cameraApplication bundleIdentifier];
+  v5 = bundleIdentifier != 0;
+  if (bundleIdentifier)
   {
     if (![(SBCameraHardwareButton *)self _isCoverSheetCameraVisible])
     {
@@ -241,14 +241,14 @@ LABEL_10:
 {
   if ([(SBCoverSheetPresentationManager *)self->_coverSheetPresentationManager isVisible])
   {
-    v3 = [(SBCoverSheetPresentationManager *)self->_coverSheetPresentationManager coverSheetHostedAppSceneHandle];
-    v4 = [v3 application];
+    coverSheetHostedAppSceneHandle = [(SBCoverSheetPresentationManager *)self->_coverSheetPresentationManager coverSheetHostedAppSceneHandle];
+    application = [coverSheetHostedAppSceneHandle application];
 
-    v5 = [(SBApplicationController *)self->_applicationController cameraApplication];
-    v6 = v5;
-    if (v4)
+    cameraApplication = [(SBApplicationController *)self->_applicationController cameraApplication];
+    v6 = cameraApplication;
+    if (application)
     {
-      v7 = [v4 isEqual:v5];
+      v7 = [application isEqual:cameraApplication];
 
       if (v7)
       {
@@ -293,26 +293,26 @@ LABEL_10:
   }
 }
 
-- (SBCameraHardwareButton)initWithActivationManager:(id)a3
+- (SBCameraHardwareButton)initWithActivationManager:(id)manager
 {
   v69[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  managerCopy = manager;
+  if (!managerCopy)
   {
     [(SBCameraHardwareButton *)a2 initWithActivationManager:?];
   }
 
-  v7 = v6;
+  v7 = managerCopy;
   v67.receiver = self;
   v67.super_class = SBCameraHardwareButton;
   v8 = [(SBCameraHardwareButton *)&v67 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_activationManager, a3);
-    v10 = [MEMORY[0x277CF0668] sharedInstance];
+    objc_storeStrong(&v8->_activationManager, manager);
+    mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
     deliveryManager = v9->_deliveryManager;
-    v9->_deliveryManager = v10;
+    v9->_deliveryManager = mEMORY[0x277CF0668];
 
     v12 = +[SBApplicationController sharedInstance];
     applicationController = v9->_applicationController;
@@ -330,9 +330,9 @@ LABEL_10:
     backlightController = v9->_backlightController;
     v9->_backlightController = v18;
 
-    v20 = [SBApp proximitySensorManager];
+    proximitySensorManager = [SBApp proximitySensorManager];
     proximitySensorManager = v9->_proximitySensorManager;
-    v9->_proximitySensorManager = v20;
+    v9->_proximitySensorManager = proximitySensorManager;
 
     v22 = objc_alloc_init(MEMORY[0x277CC1D28]);
     pocketStateManager = v9->_pocketStateManager;
@@ -343,8 +343,8 @@ LABEL_10:
     v9->_mainDisplaySceneManager = v24;
     v63 = v24;
 
-    v26 = [(SBSceneManager *)v63 physicalButtonSceneOverrideManager];
-    v27 = [(SBPhysicalButtonSceneOverrideManager *)v26 addObserver:v9 forReason:@"camera hardware button"];
+    physicalButtonSceneOverrideManager = [(SBSceneManager *)v63 physicalButtonSceneOverrideManager];
+    v27 = [(SBPhysicalButtonSceneOverrideManager *)physicalButtonSceneOverrideManager addObserver:v9 forReason:@"camera hardware button"];
     physicalButtonOverrideObserver = v9->_physicalButtonOverrideObserver;
     v9->_physicalButtonOverrideObserver = v27;
 
@@ -393,9 +393,9 @@ LABEL_10:
 
     [(PTSettings *)v9->_settings addKeyObserver:v9];
     v51 = +[SBDefaults localDefaults];
-    v52 = [v51 cameraHardwareButtonDefaults];
+    cameraHardwareButtonDefaults = [v51 cameraHardwareButtonDefaults];
     defaults = v9->_defaults;
-    v9->_defaults = v52;
+    v9->_defaults = cameraHardwareButtonDefaults;
 
     v54 = v9->_defaults;
     v55 = [MEMORY[0x277CCACA8] stringWithUTF8String:"shutterButtonLongPressTimeout"];
@@ -430,37 +430,37 @@ LABEL_10:
   [(SBCameraHardwareButton *)&v3 dealloc];
 }
 
-- (void)setDisableDeferringToApplications:(BOOL)a3
+- (void)setDisableDeferringToApplications:(BOOL)applications
 {
-  if (self->_disableDeferringToApplications != a3)
+  if (self->_disableDeferringToApplications != applications)
   {
-    self->_disableDeferringToApplications = a3;
+    self->_disableDeferringToApplications = applications;
     [(SBCameraHardwareButton *)self _updateCameraDeferringRule];
   }
 }
 
-- (void)handleButtonEvent:(__IOHIDEvent *)a3
+- (void)handleButtonEvent:(__IOHIDEvent *)event
 {
   IntegerValue = IOHIDEventGetIntegerValue();
   v6 = IOHIDEventGetIntegerValue();
   if (IntegerValue == 144 && v6 == 33)
   {
-    [(SBCameraHardwareButtonStudyLogger *)self->_studyLogger logButtonEvent:a3];
+    [(SBCameraHardwareButtonStudyLogger *)self->_studyLogger logButtonEvent:event];
     buttonArbiter = self->_buttonArbiter;
 
-    [(SBHIDButtonStateArbiter *)buttonArbiter processEvent:a3];
+    [(SBHIDButtonStateArbiter *)buttonArbiter processEvent:event];
   }
 }
 
-- (void)addProcessRequestingCameraButton:(int)a3 token:(id)a4
+- (void)addProcessRequestingCameraButton:(int)button token:(id)token
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  tokenCopy = token;
   v7 = SBLogButtonsCamera();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13[0] = 67109120;
-    v13[1] = a3;
+    v13[1] = button;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "add pid %d", v13, 8u);
   }
 
@@ -478,53 +478,53 @@ LABEL_10:
     allCameraShutterButtonPIDs = self->_allCameraShutterButtonPIDs;
   }
 
-  [(NSMutableIndexSet *)allCameraShutterButtonPIDs addIndex:a3];
-  if (v6)
+  [(NSMutableIndexSet *)allCameraShutterButtonPIDs addIndex:button];
+  if (tokenCopy)
   {
-    [(BSMutableIntegerMap *)self->_deferringTokensPerPID setObject:v6 forKey:a3];
+    [(BSMutableIntegerMap *)self->_deferringTokensPerPID setObject:tokenCopy forKey:button];
   }
 
   [(SBCameraHardwareButton *)self _reconfigureProcessMonitor];
 }
 
-- (void)removeProcessRequestingCameraButton:(int)a3
+- (void)removeProcessRequestingCameraButton:(int)button
 {
   v7 = *MEMORY[0x277D85DE8];
   v5 = SBLogButtonsCamera();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = a3;
+    v6[1] = button;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "remove pid %d", v6, 8u);
   }
 
-  [(NSMutableIndexSet *)self->_allCameraShutterButtonPIDs removeIndex:a3];
-  [(NSMutableIndexSet *)self->_foregroundCameraShutterButtonPIDs removeIndex:a3];
-  [(NSMutableIndexSet *)self->_foregroundPendingRemovalCameraShutterButtonPIDs removeIndex:a3];
-  [(BSMutableIntegerMap *)self->_deferringTokensPerPID removeObjectForKey:a3];
+  [(NSMutableIndexSet *)self->_allCameraShutterButtonPIDs removeIndex:button];
+  [(NSMutableIndexSet *)self->_foregroundCameraShutterButtonPIDs removeIndex:button];
+  [(NSMutableIndexSet *)self->_foregroundPendingRemovalCameraShutterButtonPIDs removeIndex:button];
+  [(BSMutableIntegerMap *)self->_deferringTokensPerPID removeObjectForKey:button];
   [(SBCameraHardwareButton *)self _reconfigureProcessMonitor];
   [(SBCameraHardwareButton *)self _updateCameraDeferringRule];
 }
 
-- (void)_updateSettingsForReason:(id)a3
+- (void)_updateSettingsForReason:(id)reason
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D431C0] sharedInstance];
-  v6 = [v5 prototypeSettingsEnabled];
+  reasonCopy = reason;
+  mEMORY[0x277D431C0] = [MEMORY[0x277D431C0] sharedInstance];
+  prototypeSettingsEnabled = [mEMORY[0x277D431C0] prototypeSettingsEnabled];
 
-  if (v6)
+  if (prototypeSettingsEnabled)
   {
     [(SBCameraHardwareButtonSettings *)self->_settings shutterButtonLongPressTimeout];
     v8 = v7;
     [(SBCameraHardwareButtonSettings *)self->_settings shutterButtonLongPressCancellationTimeout];
     v10 = v9;
-    v11 = [(SBCameraHardwareButtonSettings *)self->_settings shutterButtonShouldUsePocketDetection];
+    shutterButtonShouldUsePocketDetection = [(SBCameraHardwareButtonSettings *)self->_settings shutterButtonShouldUsePocketDetection];
     v12 = SBLogButtonsCamera();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *v18 = 138543362;
-      *&v18[4] = v4;
+      *&v18[4] = reasonCopy;
       v13 = "update settings (because %{public}@) from prototype settings";
 LABEL_6:
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, v13, v18, 0xCu);
@@ -537,20 +537,20 @@ LABEL_6:
     v8 = v14;
     [(SBCameraHardwareButtonDefaults *)self->_defaults shutterButtonLongPressCancellationTimeout];
     v10 = v15;
-    v11 = [(SBCameraHardwareButtonDefaults *)self->_defaults shutterButtonShouldUsePocketDetection];
+    shutterButtonShouldUsePocketDetection = [(SBCameraHardwareButtonDefaults *)self->_defaults shutterButtonShouldUsePocketDetection];
     v12 = SBLogButtonsCamera();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *v18 = 138543362;
-      *&v18[4] = v4;
+      *&v18[4] = reasonCopy;
       v13 = "update settings (because %{public}@) from defaults";
       goto LABEL_6;
     }
   }
 
-  if (self->_shouldUsePocketStateDetection != v11 || ([(SBHIDButtonStateArbiter *)self->_buttonArbiter longPressTimeout], v16 != v8) || self->_longPressCancellationTimeout != v10)
+  if (self->_shouldUsePocketStateDetection != shutterButtonShouldUsePocketDetection || ([(SBHIDButtonStateArbiter *)self->_buttonArbiter longPressTimeout], v16 != v8) || self->_longPressCancellationTimeout != v10)
   {
-    self->_shouldUsePocketStateDetection = v11;
+    self->_shouldUsePocketStateDetection = shutterButtonShouldUsePocketDetection;
     [(SBHIDButtonStateArbiter *)self->_buttonArbiter setLongPressTimeout:fmin(fmax(v8, 0.0), 10.0), *v18];
     self->_longPressCancellationTimeout = fmin(fmax(v10, 0.0), 10.0);
     v17 = SBLogButtonsCamera();
@@ -561,41 +561,41 @@ LABEL_6:
       *&v18[12] = 2048;
       *&v18[14] = v10;
       v19 = 1024;
-      v20 = v11;
+      v20 = shutterButtonShouldUsePocketDetection;
       _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "settings update longPressTimeout:%g cancelAfter:%g pocketDetectEnabled:%{BOOL}u", v18, 0x1Cu);
     }
   }
 }
 
-- (void)_process:(id)a3 stateDidUpdate:(id)a4
+- (void)_process:(id)_process stateDidUpdate:(id)update
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  _processCopy = _process;
+  updateCopy = update;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v8 = SBLogButtonsCamera();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v7 state];
-    v10 = [v9 endowmentNamespaces];
+    state = [updateCopy state];
+    endowmentNamespaces = [state endowmentNamespaces];
     v25 = 138543874;
-    v26 = v6;
+    v26 = _processCopy;
     v27 = 2114;
-    v28 = v7;
+    v28 = updateCopy;
     v29 = 2114;
-    v30 = v10;
+    v30 = endowmentNamespaces;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "process %{public}@ update:%{public}@ endowments:%{public}@", &v25, 0x20u);
   }
 
-  v11 = [v6 pid];
-  v12 = [v7 state];
-  v13 = [v7 previousState];
-  v14 = [v12 taskState];
+  v11 = [_processCopy pid];
+  state2 = [updateCopy state];
+  previousState = [updateCopy previousState];
+  taskState = [state2 taskState];
   v15 = MEMORY[0x277D0AC90];
-  if (v14 == 4)
+  if (taskState == 4)
   {
-    v16 = [v12 endowmentNamespaces];
-    v17 = [v16 containsObject:*v15];
+    endowmentNamespaces2 = [state2 endowmentNamespaces];
+    v17 = [endowmentNamespaces2 containsObject:*v15];
   }
 
   else
@@ -603,10 +603,10 @@ LABEL_6:
     v17 = 0;
   }
 
-  if ([v13 taskState] == 4)
+  if ([previousState taskState] == 4)
   {
-    v18 = [v13 endowmentNamespaces];
-    v19 = [v18 containsObject:*v15];
+    endowmentNamespaces3 = [previousState endowmentNamespaces];
+    v19 = [endowmentNamespaces3 containsObject:*v15];
   }
 
   else
@@ -623,7 +623,7 @@ LABEL_6:
       if (v21)
       {
         v25 = 138543362;
-        v26 = v6;
+        v26 = _processCopy;
         _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "process is running / visible:%{public}@", &v25, 0xCu);
       }
 
@@ -649,7 +649,7 @@ LABEL_6:
       if (v21)
       {
         v25 = 138543362;
-        v26 = v6;
+        v26 = _processCopy;
         _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "process is not running / not visible:%{public}@", &v25, 0xCu);
       }
 
@@ -676,13 +676,13 @@ LABEL_6:
   v5 = v3;
   v12 = v5;
   [(NSMutableIndexSet *)allCameraShutterButtonPIDs enumerateIndexesUsingBlock:v11];
-  v6 = [(SBApplicationController *)self->_applicationController cameraApplication];
-  v7 = v6;
-  if (v6)
+  cameraApplication = [(SBApplicationController *)self->_applicationController cameraApplication];
+  v7 = cameraApplication;
+  if (cameraApplication)
   {
     v8 = MEMORY[0x277D46FA0];
-    v9 = [v6 bundleIdentifier];
-    v10 = [v8 predicateMatchingBundleIdentifier:v9];
+    bundleIdentifier = [cameraApplication bundleIdentifier];
+    v10 = [v8 predicateMatchingBundleIdentifier:bundleIdentifier];
 
     [v5 addObject:v10];
   }
@@ -699,11 +699,11 @@ void __52__SBCameraHardwareButton__reconfigureProcessMonitor__block_invoke(uint6
   [*(a1 + 32) addObject:v5];
 }
 
-- (void)_reconfigureProcessMonitorForPredicates:(id)a3
+- (void)_reconfigureProcessMonitorForPredicates:(id)predicates
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  predicatesCopy = predicates;
+  v5 = predicatesCopy;
+  if (predicatesCopy && [predicatesCopy count])
   {
     processMonitor = self->_processMonitor;
     if (processMonitor)
@@ -772,9 +772,9 @@ void __66__SBCameraHardwareButton__reconfigureProcessMonitorForPredicates___bloc
   BSDispatchMain();
 }
 
-- (void)_deferCameraPressesToPID:(int)a3
+- (void)_deferCameraPressesToPID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   v17 = *MEMORY[0x277D85DE8];
   lastCameraApplicationPID = self->_lastCameraApplicationPID;
   v6 = SBLogButtonsCamera();
@@ -820,14 +820,14 @@ void __66__SBCameraHardwareButton__reconfigureProcessMonitorForPredicates___bloc
   }
 }
 
-- (void)_deferCameraPressesToApplication:(id)a3
+- (void)_deferCameraPressesToApplication:(id)application
 {
-  if (a3)
+  if (application)
   {
-    v4 = [a3 processState];
-    if ([v4 isRunning])
+    processState = [application processState];
+    if ([processState isRunning])
     {
-      -[SBCameraHardwareButton _deferCameraPressesToPID:](self, "_deferCameraPressesToPID:", [v4 pid]);
+      -[SBCameraHardwareButton _deferCameraPressesToPID:](self, "_deferCameraPressesToPID:", [processState pid]);
     }
 
     else
@@ -850,8 +850,8 @@ void __66__SBCameraHardwareButton__reconfigureProcessMonitorForPredicates___bloc
 
 - (void)_deferCameraPressesToCameraApplication
 {
-  v3 = [(SBApplicationController *)self->_applicationController cameraApplication];
-  [(SBCameraHardwareButton *)self _deferCameraPressesToApplication:v3];
+  cameraApplication = [(SBApplicationController *)self->_applicationController cameraApplication];
+  [(SBCameraHardwareButton *)self _deferCameraPressesToApplication:cameraApplication];
 }
 
 - (void)_launchCameraIfReady
@@ -860,15 +860,15 @@ void __66__SBCameraHardwareButton__reconfigureProcessMonitorForPredicates___bloc
   v3 = SBLogButtonsCamera();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(_SBCameraLaunchCondition *)self->_shouldLaunchCameraCondition isMet];
-    v5 = [(_SBCameraLaunchCondition *)self->_longPressCondition isMet];
-    v6 = [(_SBCameraLaunchCondition *)self->_outOfPocketCondition isMet];
+    isMet = [(_SBCameraLaunchCondition *)self->_shouldLaunchCameraCondition isMet];
+    isMet2 = [(_SBCameraLaunchCondition *)self->_longPressCondition isMet];
+    isMet3 = [(_SBCameraLaunchCondition *)self->_outOfPocketCondition isMet];
     *buf = 67109632;
-    v20 = v4;
+    v20 = isMet;
     v21 = 1024;
-    v22 = v5;
+    v22 = isMet2;
     v23 = 1024;
-    v24 = v6;
+    v24 = isMet3;
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "_launchCameraIfReady (launch:%{BOOL}u long press:%{BOOL}u outOfPocket:%{BOOL}u)", buf, 0x14u);
   }
 
@@ -879,19 +879,19 @@ void __66__SBCameraHardwareButton__reconfigureProcessMonitorForPredicates___bloc
       goto LABEL_9;
     }
 
-    v7 = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
-    v8 = [(SBBacklightController *)self->_backlightController screenIsDim];
+    isUILocked = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
+    screenIsDim = [(SBBacklightController *)self->_backlightController screenIsDim];
     v9 = SBLogButtonsCamera();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      v20 = v7;
+      v20 = isUILocked;
       v21 = 1024;
-      v22 = v8;
+      v22 = screenIsDim;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "_launchCameraIfReady: launching screen-locked:%{BOOL}u dim:%{BOOL}u", buf, 0xEu);
     }
 
-    if (v7 && v8)
+    if (isUILocked && screenIsDim)
     {
       lockScreenManager = self->_lockScreenManager;
       v17 = @"SBUIUnlockOptionsTurnOnScreenFirstKey";
@@ -997,8 +997,8 @@ void __63__SBCameraHardwareButton__startWaitingForLongPressCancellation__block_i
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "_longPressDidCancel: returning to main coversheet page", v7, 2u);
     }
 
-    v6 = [(SBLockScreenManager *)self->_lockScreenManager coverSheetViewController];
-    [v6 activateMainPageWithCompletion:&__block_literal_global_112];
+    coverSheetViewController = [(SBLockScreenManager *)self->_lockScreenManager coverSheetViewController];
+    [coverSheetViewController activateMainPageWithCompletion:&__block_literal_global_112];
   }
 }
 
@@ -1009,13 +1009,13 @@ void __63__SBCameraHardwareButton__startWaitingForLongPressCancellation__block_i
   self->_longPressCancellationTimer = 0;
 }
 
-- (void)performActionsForButtonDown:(id)a3
+- (void)performActionsForButtonDown:(id)down
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  downCopy = down;
   hardwareButtonCoordinator = self->_hardwareButtonCoordinator;
-  v6 = [(SBCameraHardwareButton *)self hardwareButtonIdentifier];
-  LOBYTE(hardwareButtonCoordinator) = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator buttonShouldStart:v6];
+  hardwareButtonIdentifier = [(SBCameraHardwareButton *)self hardwareButtonIdentifier];
+  LOBYTE(hardwareButtonCoordinator) = [(SBHardwareButtonCoordinator *)hardwareButtonCoordinator buttonShouldStart:hardwareButtonIdentifier];
 
   if (hardwareButtonCoordinator)
   {
@@ -1041,16 +1041,16 @@ void __63__SBCameraHardwareButton__startWaitingForLongPressCancellation__block_i
       shouldLaunchCameraCondition = self->_shouldLaunchCameraCondition;
       self->_shouldLaunchCameraCondition = v12;
 
-      [v4 reset];
+      [downCopy reset];
     }
 
     else
     {
       [(SBHIDButtonStateArbiter *)self->_buttonArbiter longPressTimeout];
       v16 = v15;
-      v17 = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
-      v18 = [(SBBacklightController *)self->_backlightController screenIsDim];
-      if (v17 && v18 && [(SBCameraHardwareButtonSettings *)self->_settings shutterButtonShouldUsePocketDetection])
+      isUILocked = [(SBLockScreenManager *)self->_lockScreenManager isUILocked];
+      screenIsDim = [(SBBacklightController *)self->_backlightController screenIsDim];
+      if (isUILocked && screenIsDim && [(SBCameraHardwareButtonSettings *)self->_settings shutterButtonShouldUsePocketDetection])
       {
         v19 = SBLogButtonsCamera();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1148,16 +1148,16 @@ void __54__SBCameraHardwareButton_performActionsForButtonDown___block_invoke(uin
   }
 }
 
-- (void)performActionsForButtonLongPress:(id)a3
+- (void)performActionsForButtonLongPress:(id)press
 {
   [(_SBCameraLaunchCondition *)self->_longPressCondition setMet:1];
 
   [(SBCameraHardwareButton *)self _launchCameraIfReady];
 }
 
-- (void)physicalButtonSceneOverridesDidChange:(id)a3
+- (void)physicalButtonSceneOverridesDidChange:(id)change
 {
-  obj = [a3 cameraBehaviorScene];
+  obj = [change cameraBehaviorScene];
   if ((BSEqualObjects() & 1) == 0)
   {
     objc_storeStrong(&self->_physicalButtonOverrideScene, obj);
@@ -1165,20 +1165,20 @@ void __54__SBCameraHardwareButton_performActionsForButtonDown___block_invoke(uin
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  if (self->_settings == a3)
+  if (self->_settings == settings)
   {
-    [(SBCameraHardwareButton *)self _updateSettingsForReason:@"prototype settings changed", a4];
+    [(SBCameraHardwareButton *)self _updateSettingsForReason:@"prototype settings changed", key];
   }
 }
 
-- (void)sceneManager:(id)a3 didAddExternalForegroundApplicationSceneHandle:(id)a4
+- (void)sceneManager:(id)manager didAddExternalForegroundApplicationSceneHandle:(id)handle
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = [a4 application];
-  v6 = [v5 processState];
-  v7 = [v6 pid];
+  application = [handle application];
+  processState = [application processState];
+  v7 = [processState pid];
 
   if (v7 >= 1 && [(NSMutableIndexSet *)self->_foregroundPendingRemovalCameraShutterButtonPIDs containsIndex:v7])
   {
@@ -1196,25 +1196,25 @@ void __54__SBCameraHardwareButton_performActionsForButtonDown___block_invoke(uin
   }
 }
 
-- (void)sceneManager:(id)a3 didRemoveExternalForegroundApplicationSceneHandle:(id)a4
+- (void)sceneManager:(id)manager didRemoveExternalForegroundApplicationSceneHandle:(id)handle
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  handleCopy = handle;
   BSDispatchQueueAssertMain();
-  v8 = [v7 application];
-  v9 = [v8 processState];
-  v10 = [v9 pid];
+  application = [handleCopy application];
+  processState = [application processState];
+  v10 = [processState pid];
 
   if (v10 >= 1 && [(NSMutableIndexSet *)self->_foregroundCameraShutterButtonPIDs containsIndex:v10])
   {
-    v24 = v6;
+    v24 = managerCopy;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v11 = [v6 externalForegroundApplicationSceneHandles];
-    v12 = [v11 countByEnumeratingWithState:&v25 objects:v31 count:16];
+    externalForegroundApplicationSceneHandles = [managerCopy externalForegroundApplicationSceneHandles];
+    v12 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1225,12 +1225,12 @@ void __54__SBCameraHardwareButton_performActionsForButtonDown___block_invoke(uin
         {
           if (*v26 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(externalForegroundApplicationSceneHandles);
           }
 
-          v16 = [*(*(&v25 + 1) + 8 * i) application];
-          v17 = [v16 processState];
-          v18 = [v17 pid];
+          application2 = [*(*(&v25 + 1) + 8 * i) application];
+          processState2 = [application2 processState];
+          v18 = [processState2 pid];
 
           if (v18 == v10)
           {
@@ -1247,7 +1247,7 @@ void __54__SBCameraHardwareButton_performActionsForButtonDown___block_invoke(uin
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v25 objects:v31 count:16];
+        v13 = [externalForegroundApplicationSceneHandles countByEnumeratingWithState:&v25 objects:v31 count:16];
         if (v13)
         {
           continue;
@@ -1278,7 +1278,7 @@ void __54__SBCameraHardwareButton_performActionsForButtonDown___block_invoke(uin
     [(NSMutableIndexSet *)foregroundPendingRemovalCameraShutterButtonPIDs addIndex:v10];
     [(NSMutableIndexSet *)self->_foregroundCameraShutterButtonPIDs removeIndex:v10];
 LABEL_19:
-    v6 = v24;
+    managerCopy = v24;
     [(SBCameraHardwareButton *)self _updateCameraDeferringRule];
   }
 }
@@ -1293,27 +1293,27 @@ LABEL_19:
   return result;
 }
 
-- (void)setDispatchingRuleAssertion:(uint64_t)a1
+- (void)setDispatchingRuleAssertion:(uint64_t)assertion
 {
-  if (a1)
+  if (assertion)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((assertion + 24), a2);
   }
 }
 
-- (void)setDeferringRuleAssertion:(uint64_t)a1
+- (void)setDeferringRuleAssertion:(uint64_t)assertion
 {
-  if (a1)
+  if (assertion)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((assertion + 32), a2);
   }
 }
 
-- (void)setPhysicalButtonOverrideObserver:(uint64_t)a1
+- (void)setPhysicalButtonOverrideObserver:(uint64_t)observer
 {
-  if (a1)
+  if (observer)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((observer + 40), a2);
   }
 }
 
@@ -1337,19 +1337,19 @@ LABEL_19:
   return result;
 }
 
-- (void)setAllCameraShutterButtonPIDs:(uint64_t)a1
+- (void)setAllCameraShutterButtonPIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((ds + 48), a2);
   }
 }
 
-- (void)setForegroundCameraShutterButtonPIDs:(uint64_t)a1
+- (void)setForegroundCameraShutterButtonPIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
-    objc_storeStrong((a1 + 56), a2);
+    objc_storeStrong((ds + 56), a2);
   }
 }
 
@@ -1363,11 +1363,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setForegroundPendingRemovalCameraShutterButtonPIDs:(uint64_t)a1
+- (void)setForegroundPendingRemovalCameraShutterButtonPIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((ds + 64), a2);
   }
 }
 
@@ -1381,27 +1381,27 @@ LABEL_19:
   return result;
 }
 
-- (void)setDeferringTokensPerPID:(uint64_t)a1
+- (void)setDeferringTokensPerPID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    objc_storeStrong((a1 + 72), a2);
+    objc_storeStrong((d + 72), a2);
   }
 }
 
-- (void)setButtonArbiter:(uint64_t)a1
+- (void)setButtonArbiter:(uint64_t)arbiter
 {
-  if (a1)
+  if (arbiter)
   {
-    objc_storeStrong((a1 + 80), a2);
+    objc_storeStrong((arbiter + 80), a2);
   }
 }
 
-- (void)setProcessMonitor:(uint64_t)a1
+- (void)setProcessMonitor:(uint64_t)monitor
 {
-  if (a1)
+  if (monitor)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((monitor + 88), a2);
   }
 }
 
@@ -1415,11 +1415,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setPocketStateManager:(uint64_t)a1
+- (void)setPocketStateManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 96), a2);
+    objc_storeStrong((manager + 96), a2);
   }
 }
 
@@ -1433,11 +1433,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setShouldLaunchCameraCondition:(uint64_t)a1
+- (void)setShouldLaunchCameraCondition:(uint64_t)condition
 {
-  if (a1)
+  if (condition)
   {
-    objc_storeStrong((a1 + 104), a2);
+    objc_storeStrong((condition + 104), a2);
   }
 }
 
@@ -1451,11 +1451,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setLongPressCondition:(uint64_t)a1
+- (void)setLongPressCondition:(uint64_t)condition
 {
-  if (a1)
+  if (condition)
   {
-    objc_storeStrong((a1 + 112), a2);
+    objc_storeStrong((condition + 112), a2);
   }
 }
 
@@ -1469,11 +1469,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setOutOfPocketCondition:(uint64_t)a1
+- (void)setOutOfPocketCondition:(uint64_t)condition
 {
-  if (a1)
+  if (condition)
   {
-    objc_storeStrong((a1 + 120), a2);
+    objc_storeStrong((condition + 120), a2);
   }
 }
 
@@ -1487,11 +1487,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setLongPressCancellationTimer:(uint64_t)a1
+- (void)setLongPressCancellationTimer:(uint64_t)timer
 {
-  if (a1)
+  if (timer)
   {
-    objc_storeStrong((a1 + 128), a2);
+    objc_storeStrong((timer + 128), a2);
   }
 }
 
@@ -1505,19 +1505,19 @@ LABEL_19:
   return result;
 }
 
-- (void)setPhysicalButtonOverrideScene:(uint64_t)a1
+- (void)setPhysicalButtonOverrideScene:(uint64_t)scene
 {
-  if (a1)
+  if (scene)
   {
-    objc_storeStrong((a1 + 136), a2);
+    objc_storeStrong((scene + 136), a2);
   }
 }
 
 - (double)longPressCancellationTimeout
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 144);
+    return *(self + 144);
   }
 
   else
@@ -1538,9 +1538,9 @@ LABEL_19:
 
 - (uint64_t)shouldUsePocketStateDetection
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 9);
+    v1 = *(self + 9);
   }
 
   else
@@ -1571,11 +1571,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setDeliveryManager:(uint64_t)a1
+- (void)setDeliveryManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 152), a2);
+    objc_storeStrong((manager + 152), a2);
   }
 }
 
@@ -1589,19 +1589,19 @@ LABEL_19:
   return result;
 }
 
-- (void)setApplicationController:(uint64_t)a1
+- (void)setApplicationController:(uint64_t)controller
 {
-  if (a1)
+  if (controller)
   {
-    objc_storeStrong((a1 + 160), a2);
+    objc_storeStrong((controller + 160), a2);
   }
 }
 
-- (void)setActivationManager:(uint64_t)a1
+- (void)setActivationManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 168), a2);
+    objc_storeStrong((manager + 168), a2);
   }
 }
 
@@ -1615,11 +1615,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setLockScreenManager:(uint64_t)a1
+- (void)setLockScreenManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 176), a2);
+    objc_storeStrong((manager + 176), a2);
   }
 }
 
@@ -1633,11 +1633,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setCoverSheetPresentationManager:(uint64_t)a1
+- (void)setCoverSheetPresentationManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 184), a2);
+    objc_storeStrong((manager + 184), a2);
   }
 }
 
@@ -1651,11 +1651,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setBacklightController:(uint64_t)a1
+- (void)setBacklightController:(uint64_t)controller
 {
-  if (a1)
+  if (controller)
   {
-    objc_storeStrong((a1 + 192), a2);
+    objc_storeStrong((controller + 192), a2);
   }
 }
 
@@ -1669,11 +1669,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setProximitySensorManager:(uint64_t)a1
+- (void)setProximitySensorManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 200), a2);
+    objc_storeStrong((manager + 200), a2);
   }
 }
 
@@ -1687,11 +1687,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setMainDisplaySceneManager:(uint64_t)a1
+- (void)setMainDisplaySceneManager:(uint64_t)manager
 {
-  if (a1)
+  if (manager)
   {
-    objc_storeStrong((a1 + 208), a2);
+    objc_storeStrong((manager + 208), a2);
   }
 }
 
@@ -1705,11 +1705,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setSettings:(uint64_t)a1
+- (void)setSettings:(uint64_t)settings
 {
-  if (a1)
+  if (settings)
   {
-    objc_storeStrong((a1 + 216), a2);
+    objc_storeStrong((settings + 216), a2);
   }
 }
 
@@ -1723,11 +1723,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setDefaults:(uint64_t)a1
+- (void)setDefaults:(uint64_t)defaults
 {
-  if (a1)
+  if (defaults)
   {
-    objc_storeStrong((a1 + 224), a2);
+    objc_storeStrong((defaults + 224), a2);
   }
 }
 
@@ -1741,11 +1741,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setBacklightStudyLogger:(uint64_t)a1
+- (void)setBacklightStudyLogger:(uint64_t)logger
 {
-  if (a1)
+  if (logger)
   {
-    objc_storeStrong((a1 + 232), a2);
+    objc_storeStrong((logger + 232), a2);
   }
 }
 
@@ -1759,11 +1759,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setStudyLogger:(uint64_t)a1
+- (void)setStudyLogger:(uint64_t)logger
 {
-  if (a1)
+  if (logger)
   {
-    objc_storeStrong((a1 + 240), a2);
+    objc_storeStrong((logger + 240), a2);
   }
 }
 
@@ -1777,11 +1777,11 @@ LABEL_19:
   return result;
 }
 
-- (void)setLiftToWakeStudyLogger:(uint64_t)a1
+- (void)setLiftToWakeStudyLogger:(uint64_t)logger
 {
-  if (a1)
+  if (logger)
   {
-    objc_storeStrong((a1 + 248), a2);
+    objc_storeStrong((logger + 248), a2);
   }
 }
 

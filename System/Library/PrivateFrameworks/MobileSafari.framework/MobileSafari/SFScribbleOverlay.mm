@@ -1,20 +1,20 @@
 @interface SFScribbleOverlay
-- (SFScribbleOverlay)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_didReceiveHover:(id)a3;
-- (void)_didReceiveTapOrClick:(id)a3;
-- (void)_selectionMovedToLocation:(CGPoint)a3;
-- (void)endSelectionWithCompletion:(id)a3;
-- (void)moveSelectionToFrame:(CGRect)a3;
+- (SFScribbleOverlay)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_didReceiveHover:(id)hover;
+- (void)_didReceiveTapOrClick:(id)click;
+- (void)_selectionMovedToLocation:(CGPoint)location;
+- (void)endSelectionWithCompletion:(id)completion;
+- (void)moveSelectionToFrame:(CGRect)frame;
 @end
 
 @implementation SFScribbleOverlay
 
-- (SFScribbleOverlay)initWithFrame:(CGRect)a3
+- (SFScribbleOverlay)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = SFScribbleOverlay;
-  v3 = [(SFScribbleOverlay *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFScribbleOverlay *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -45,13 +45,13 @@
   return v4;
 }
 
-- (void)_didReceiveHover:(id)a3
+- (void)_didReceiveHover:(id)hover
 {
-  v5 = a3;
-  v4 = [v5 state];
-  if ((v4 - 1) >= 2)
+  hoverCopy = hover;
+  state = [hoverCopy state];
+  if ((state - 1) >= 2)
   {
-    if (v4 == 3)
+    if (state == 3)
     {
       [(SFScribbleOverlay *)self endSelectionWithCompletion:0];
     }
@@ -60,17 +60,17 @@
   else
   {
     [(SFScribbleSelectionOverlay *)self->_selectionOverlay setShowsHideButton:0];
-    [v5 locationInView:self];
+    [hoverCopy locationInView:self];
     [(SFScribbleOverlay *)self _selectionMovedToLocation:?];
   }
 }
 
-- (void)_didReceiveTapOrClick:(id)a3
+- (void)_didReceiveTapOrClick:(id)click
 {
-  v4 = a3;
+  clickCopy = click;
   selectionOverlay = self->_selectionOverlay;
-  v12 = v4;
-  [v4 locationInView:selectionOverlay];
+  v12 = clickCopy;
+  [clickCopy locationInView:selectionOverlay];
   if ([(SFScribbleSelectionOverlay *)selectionOverlay pointInside:0 withEvent:?])
   {
     if (-[SFScribbleOverlay allowsDeselectionByTapping](self, "allowsDeselectionByTapping") && -[SFScribbleSelectionOverlay showsHideButton](self->_selectionOverlay, "showsHideButton") && (-[SFScribbleSelectionOverlay effectiveHideButtonView](self->_selectionOverlay, "effectiveHideButtonView"), (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, -[SFScribbleSelectionOverlay effectiveHideButtonView](self->_selectionOverlay, "effectiveHideButtonView"), v8 = objc_claimAutoreleasedReturnValue(), -[SFScribbleSelectionOverlay effectiveHideButtonView](self->_selectionOverlay, "effectiveHideButtonView"), v9 = objc_claimAutoreleasedReturnValue(), [v12 locationInView:v9], v10 = objc_msgSend(v8, "pointInside:withEvent:", 0), v9, v8, v7, (v10 & 1) == 0))
@@ -93,22 +93,22 @@
   }
 }
 
-- (void)_selectionMovedToLocation:(CGPoint)a3
+- (void)_selectionMovedToLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   p_lastSelectionLocation = &self->_lastSelectionLocation;
-  if (self->_lastSelectionLocation.x != a3.x || self->_lastSelectionLocation.y != a3.y)
+  if (self->_lastSelectionLocation.x != location.x || self->_lastSelectionLocation.y != location.y)
   {
-    (*(self->_selectionHandler + 2))(a3.x, a3.y);
+    (*(self->_selectionHandler + 2))(location.x, location.y);
     p_lastSelectionLocation->x = x;
     p_lastSelectionLocation->y = y;
   }
 }
 
-- (void)endSelectionWithCompletion:(id)a3
+- (void)endSelectionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_selectionOverlay;
   v6 = v5;
   if (v5)
@@ -118,15 +118,15 @@
     v8[2] = __48__SFScribbleOverlay_endSelectionWithCompletion___block_invoke;
     v8[3] = &unk_1E721BA48;
     v9 = v5;
-    v10 = v4;
+    v10 = completionCopy;
     [(SFScribbleSelectionOverlay *)v9 fadeOutWithCompletion:v8];
     selectionOverlay = self->_selectionOverlay;
     self->_selectionOverlay = 0;
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -144,12 +144,12 @@ uint64_t __48__SFScribbleOverlay_endSelectionWithCompletion___block_invoke(uint6
   return result;
 }
 
-- (void)moveSelectionToFrame:(CGRect)a3
+- (void)moveSelectionToFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SFScribbleSelectionOverlay *)self->_selectionOverlay frame];
   v13.origin.x = x;
   v13.origin.y = y;
@@ -158,9 +158,9 @@ uint64_t __48__SFScribbleOverlay_endSelectionWithCompletion___block_invoke(uint6
   if (!CGRectEqualToRect(v12, v13))
   {
     [(SFScribbleOverlay *)self endSelectionWithCompletion:0];
-    v8 = [[SFScribbleSelectionOverlay alloc] initWithFrame:x, y, width, height];
+    height = [[SFScribbleSelectionOverlay alloc] initWithFrame:x, y, width, height];
     selectionOverlay = self->_selectionOverlay;
-    self->_selectionOverlay = v8;
+    self->_selectionOverlay = height;
 
     [(SFScribbleSelectionOverlay *)self->_selectionOverlay setHideButtonHandler:self->_hideSelectedElementHandler];
     [(SFScribbleOverlay *)self addSubview:self->_selectionOverlay];
@@ -170,11 +170,11 @@ uint64_t __48__SFScribbleOverlay_endSelectionWithCompletion___block_invoke(uint6
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -186,7 +186,7 @@ uint64_t __48__SFScribbleOverlay_endSelectionWithCompletion___block_invoke(uint6
   {
     v10.receiver = self;
     v10.super_class = SFScribbleOverlay;
-    v8 = [(SFScribbleOverlay *)&v10 hitTest:v7 withEvent:x, y];
+    v8 = [(SFScribbleOverlay *)&v10 hitTest:eventCopy withEvent:x, y];
   }
 
   return v8;

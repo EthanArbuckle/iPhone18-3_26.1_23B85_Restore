@@ -1,7 +1,7 @@
 @interface UITextRange
 - (UITextRangeImpl)_isImpl;
-- (_NSRange)_asNSRangeRelativeToDocument:(id)a3;
-- (_NSRange)_asNSRangeRelativeToDocument:(id)a3 relativeToCurrentLine:(BOOL)a4;
+- (_NSRange)_asNSRangeRelativeToDocument:(id)document;
+- (_NSRange)_asNSRangeRelativeToDocument:(id)document relativeToCurrentLine:(BOOL)line;
 - (id)_NSTextRanges;
 - (id)_unionNSTextRange;
 @end
@@ -14,28 +14,28 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UITextRange *)self textKit2Ranges];
-    if ([v3 count])
+    textKit2Ranges = [(UITextRange *)self textKit2Ranges];
+    if ([textKit2Ranges count])
     {
       goto LABEL_7;
     }
 
-    v4 = [(UITextRange *)self _unionNSTextRange];
-    if (v4)
+    _unionNSTextRange = [(UITextRange *)self _unionNSTextRange];
+    if (_unionNSTextRange)
     {
-      v5 = v4;
-      v8[0] = v4;
+      v5 = _unionNSTextRange;
+      v8[0] = _unionNSTextRange;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
 
-      v3 = v6;
+      textKit2Ranges = v6;
       goto LABEL_7;
     }
   }
 
-  v3 = 0;
+  textKit2Ranges = 0;
 LABEL_7:
 
-  return v3;
+  return textKit2Ranges;
 }
 
 - (UITextRangeImpl)_isImpl
@@ -43,55 +43,55 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (_NSRange)_asNSRangeRelativeToDocument:(id)a3
+- (_NSRange)_asNSRangeRelativeToDocument:(id)document
 {
-  v3 = [(UITextRange *)self _asNSRangeRelativeToDocument:a3 relativeToCurrentLine:0];
+  v3 = [(UITextRange *)self _asNSRangeRelativeToDocument:document relativeToCurrentLine:0];
   result.length = v4;
   result.location = v3;
   return result;
 }
 
-- (_NSRange)_asNSRangeRelativeToDocument:(id)a3 relativeToCurrentLine:(BOOL)a4
+- (_NSRange)_asNSRangeRelativeToDocument:(id)document relativeToCurrentLine:(BOOL)line
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 beginningOfDocument];
-  if (v4)
+  lineCopy = line;
+  documentCopy = document;
+  beginningOfDocument = [documentCopy beginningOfDocument];
+  if (lineCopy)
   {
-    v8 = [v6 tokenizer];
+    tokenizer = [documentCopy tokenizer];
 
-    if (v8)
+    if (tokenizer)
     {
-      v9 = [v6 tokenizer];
-      v10 = [(UITextRange *)self start];
-      v11 = [v9 positionFromPosition:v10 toBoundary:4 inDirection:1];
+      tokenizer2 = [documentCopy tokenizer];
+      start = [(UITextRange *)self start];
+      v11 = [tokenizer2 positionFromPosition:start toBoundary:4 inDirection:1];
 
       if (v11)
       {
         v12 = v11;
 
-        v7 = v12;
+        beginningOfDocument = v12;
       }
     }
   }
 
-  v13 = [(UITextRange *)self start];
-  v14 = [v6 offsetFromPosition:v7 toPosition:v13];
+  start2 = [(UITextRange *)self start];
+  v14 = [documentCopy offsetFromPosition:beginningOfDocument toPosition:start2];
 
-  v15 = [(UITextRange *)self start];
+  start3 = [(UITextRange *)self start];
   v16 = [(UITextRange *)self end];
-  v17 = [v6 offsetFromPosition:v15 toPosition:v16];
+  v17 = [documentCopy offsetFromPosition:start3 toPosition:v16];
 
   v18 = v14;
   v19 = v17;
@@ -103,14 +103,14 @@ LABEL_7:
 - (id)_unionNSTextRange
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(UITextRange *)self start];
+  start = [(UITextRange *)self start];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(UITextRange *)self start];
-    v6 = [v5 location];
+    start2 = [(UITextRange *)self start];
+    location = [start2 location];
 
     v7 = [(UITextRange *)self end];
     objc_opt_class();
@@ -119,9 +119,9 @@ LABEL_7:
     if (v8)
     {
       v9 = [(UITextRange *)self end];
-      v10 = [v9 location];
+      location2 = [v9 location];
 
-      v11 = [[off_1E70ECBF0 alloc] initWithLocation:v6 endLocation:v10];
+      v11 = [[off_1E70ECBF0 alloc] initWithLocation:location endLocation:location2];
       goto LABEL_15;
     }
 
@@ -159,25 +159,25 @@ LABEL_13:
 
   if (os_variant_has_internal_diagnostics())
   {
-    v6 = __UIFaultDebugAssertLog();
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
+    location = __UIFaultDebugAssertLog();
+    if (!os_log_type_enabled(location, OS_LOG_TYPE_FAULT))
     {
       goto LABEL_13;
     }
 
-    v13 = [(UITextRange *)self start];
+    start3 = [(UITextRange *)self start];
     v18 = 138412290;
-    v19 = v13;
+    v19 = start3;
     goto LABEL_7;
   }
 
   v12 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED4963F0) + 8);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v6 = v12;
-    v13 = [(UITextRange *)self start];
+    location = v12;
+    start3 = [(UITextRange *)self start];
     v18 = 138412290;
-    v19 = v13;
+    v19 = start3;
 LABEL_7:
 
     goto LABEL_13;

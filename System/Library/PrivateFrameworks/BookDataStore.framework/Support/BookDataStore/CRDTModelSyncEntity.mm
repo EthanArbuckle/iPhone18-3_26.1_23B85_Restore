@@ -1,48 +1,48 @@
 @interface CRDTModelSyncEntity
 + (id)propertyIDKey;
 - (NSString)debugDescription;
-- (_TtC14bookdatastored19CRDTModelSyncEntity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC14bookdatastored19CRDTModelSyncEntity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (id)identifier;
 - (id)mutableCopy;
 - (id)recordType;
 - (id)zoneName;
 - (void).cxx_construct;
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4;
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4;
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers;
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers;
 @end
 
 @implementation CRDTModelSyncEntity
 
-- (void)configureFromCloudData:(id)a3 withMergers:(id)a4
+- (void)configureFromCloudData:(id)data withMergers:(id)mergers
 {
-  v4 = a4;
-  if (a4)
+  mergersCopy = mergers;
+  if (mergers)
   {
     sub_100084528(&qword_10026FC80, &qword_1001F5970);
-    v4 = sub_1001C5F08();
+    mergersCopy = sub_1001C5F08();
   }
 
   swift_unknownObjectRetain();
-  v7 = self;
-  v8.super.super.isa = a3;
-  v8._privacyDelegate = v4;
+  selfCopy = self;
+  v8.super.super.isa = data;
+  v8._privacyDelegate = mergersCopy;
   CRDTModelSyncEntity.configure(from:withMergers:)(v8, v10);
   swift_unknownObjectRelease();
 }
 
-- (void)resolveConflictsFromRecord:(id)a3 withResolvers:(id)a4
+- (void)resolveConflictsFromRecord:(id)record withResolvers:(id)resolvers
 {
-  v4 = a4;
-  if (a4)
+  resolversCopy = resolvers;
+  if (resolvers)
   {
     sub_100084528(&qword_10026FC80, &qword_1001F5970);
-    v4 = sub_1001C5F08();
+    resolversCopy = sub_1001C5F08();
   }
 
-  v7 = a3;
-  v8 = self;
-  v10.value._rawValue = v4;
-  CRDTModelSyncEntity.resolveConflicts(from:withResolvers:)(v7, v10);
+  recordCopy = record;
+  selfCopy = self;
+  v10.value._rawValue = resolversCopy;
+  CRDTModelSyncEntity.resolveConflicts(from:withResolvers:)(recordCopy, v10);
 }
 
 + (id)propertyIDKey
@@ -52,11 +52,11 @@
   return v2;
 }
 
-- (_TtC14bookdatastored19CRDTModelSyncEntity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC14bookdatastored19CRDTModelSyncEntity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CRDTModelSyncEntity();
-  return [(CRDTModelSyncEntity *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(CRDTModelSyncEntity *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void).cxx_construct
@@ -69,8 +69,8 @@
 - (id)mutableCopy
 {
   v3 = objc_allocWithZone(type metadata accessor for CRDTModelSync());
-  v4 = self;
-  result = [v3 initWithCloudData:v4];
+  selfCopy = self;
+  result = [v3 initWithCloudData:selfCopy];
   if (result)
   {
     v6 = result;
@@ -108,8 +108,8 @@
 
 - (id)recordType
 {
-  v2 = self;
-  v3 = [(CRDTModelSyncEntity *)v2 type];
+  selfCopy = self;
+  type = [(CRDTModelSyncEntity *)selfCopy type];
   v4 = sub_1001C6018();
   v6 = v5;
 
@@ -126,8 +126,8 @@
 
 - (id)identifier
 {
-  v2 = self;
-  sub_100144C20(v2);
+  selfCopy = self;
+  sub_100144C20(selfCopy);
   v4 = v3;
 
   if (v4)
@@ -145,9 +145,9 @@
 
 - (id)zoneName
 {
-  v2 = [(CRDTModelSyncEntity *)self type];
+  type = [(CRDTModelSyncEntity *)self type];
 
-  return v2;
+  return type;
 }
 
 @end

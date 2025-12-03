@@ -1,60 +1,60 @@
 @interface CuratedCollectionViewController
 - (BOOL)shouldClearSearchPins;
-- (CuratedCollectionViewController)initWithCuratedCollectionIdentifier:(id)a3;
-- (CuratedCollectionViewController)initWithFullyClientizedPlaceCollection:(id)a3;
+- (CuratedCollectionViewController)initWithCuratedCollectionIdentifier:(id)identifier;
+- (CuratedCollectionViewController)initWithFullyClientizedPlaceCollection:(id)collection;
 - (CuratedCollectionViewControllerDelegate)actionDelegate;
 - (MapModificationDelegate)mapModificationDelegate;
 - (NSArray)mapItems;
 - (ShareDelegate)shareDelegate;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (id)_searchResults;
 - (id)_websiteURL;
 - (id)keyCommands;
 - (id)menuForQuickActionButton;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
 - (void)_attachLoadingView;
-- (void)_commonInitWithCuratedCollectionProvider:(id)a3 identifier:(id)a4;
+- (void)_commonInitWithCuratedCollectionProvider:(id)provider identifier:(id)identifier;
 - (void)_didFinishResolving;
 - (void)_insertInHistory;
-- (void)_refineMapItem:(id)a3 completionHandler:(id)a4;
+- (void)_refineMapItem:(id)item completionHandler:(id)handler;
 - (void)_setWantsInsertInHistory;
 - (void)_updateHeaderAndTableViewValues;
 - (void)_updateHeaderTransition;
 - (void)addContentToMapView;
-- (void)applyAlphaToContent:(double)a3;
-- (void)dataSource:(id)a3 addPlaceToLibraryUsingCoordinator:(id)a4;
-- (void)dataSource:(id)a3 addToUserCollection:(id)a4 forMapItem:(id)a5 sourceView:(id)a6 onSaveCompletion:(id)a7;
-- (void)dataSource:(id)a3 didExpandCellAnimated:(BOOL)a4;
-- (void)dataSource:(id)a3 didFailWithErrorState:(unint64_t)a4;
-- (void)dataSource:(id)a3 itemFocused:(id)a4;
-- (void)dataSource:(id)a3 itemTapped:(id)a4;
-- (void)dataSource:(id)a3 openAppClip:(id)a4;
-- (void)dataSource:(id)a3 removePlaceFromLibraryUsingCoordinator:(id)a4;
-- (void)dataSource:(id)a3 willPunchOuToPublisherWebpageForPlaceCollectionItem:(id)a4;
-- (void)dataSourceUpdated:(id)a3;
+- (void)applyAlphaToContent:(double)content;
+- (void)dataSource:(id)source addPlaceToLibraryUsingCoordinator:(id)coordinator;
+- (void)dataSource:(id)source addToUserCollection:(id)collection forMapItem:(id)item sourceView:(id)view onSaveCompletion:(id)completion;
+- (void)dataSource:(id)source didExpandCellAnimated:(BOOL)animated;
+- (void)dataSource:(id)source didFailWithErrorState:(unint64_t)state;
+- (void)dataSource:(id)source itemFocused:(id)focused;
+- (void)dataSource:(id)source itemTapped:(id)tapped;
+- (void)dataSource:(id)source openAppClip:(id)clip;
+- (void)dataSource:(id)source removePlaceFromLibraryUsingCoordinator:(id)coordinator;
+- (void)dataSource:(id)source willPunchOuToPublisherWebpageForPlaceCollectionItem:(id)item;
+- (void)dataSourceUpdated:(id)updated;
 - (void)didBecomeCurrent;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)didSelectOpenHomePage;
 - (void)didSelectRemoveFromSavedCollection;
 - (void)didSelectSaveCollection;
-- (void)didSelectShareFromView:(id)a3;
-- (void)handleDismissAction:(id)a3;
+- (void)didSelectShareFromView:(id)view;
+- (void)handleDismissAction:(id)action;
 - (void)headerViewBrickTapped;
 - (void)headerViewPublisherLogoTapped;
-- (void)presentRAPWithSourceView:(id)a3;
+- (void)presentRAPWithSourceView:(id)view;
 - (void)removeContentFromMapView;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 - (void)seeAllGuidesMenuButtonTapped;
-- (void)setCuratedCollection:(id)a3;
-- (void)showPublisherView:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setCuratedCollection:(id)collection;
+- (void)showPublisherView:(id)view;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)websiteMenuButtonTapped;
-- (void)willChangeLayout:(unint64_t)a3;
+- (void)willChangeLayout:(unint64_t)layout;
 @end
 
 @implementation CuratedCollectionViewController
@@ -82,30 +82,30 @@
 
 - (void)didSelectOpenHomePage
 {
-  v3 = [(CuratedCollectionViewController *)self curatedCollection];
-  v5 = [v3 publisherCollectionURL];
+  curatedCollection = [(CuratedCollectionViewController *)self curatedCollection];
+  publisherCollectionURL = [curatedCollection publisherCollectionURL];
 
-  v4 = [(CuratedCollectionViewController *)self actionDelegate];
-  [v4 curatedCollectionViewController:self openURL:v5];
+  actionDelegate = [(CuratedCollectionViewController *)self actionDelegate];
+  [actionDelegate curatedCollectionViewController:self openURL:publisherCollectionURL];
 
   [(CuratedCollectionViewAnalyticsController *)self->_analyticsController logOpenWebsite];
 }
 
-- (void)didSelectShareFromView:(id)a3
+- (void)didSelectShareFromView:(id)view
 {
-  v4 = a3;
-  v5 = [(CuratedCollectionViewController *)self analyticsController];
-  [v5 logShareCuratedCollection];
+  viewCopy = view;
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logShareCuratedCollection];
 
   v6 = [CuratedCollectionShareItemSource alloc];
-  v7 = [(CuratedCollectionViewController *)self curatedCollection];
-  v8 = [(CuratedCollectionViewController *)self mapItems];
-  v11 = [(CuratedCollectionShareItemSource *)v6 initWithPlaceCollection:v7 refinedMapItems:v8];
+  curatedCollection = [(CuratedCollectionViewController *)self curatedCollection];
+  mapItems = [(CuratedCollectionViewController *)self mapItems];
+  v11 = [(CuratedCollectionShareItemSource *)v6 initWithPlaceCollection:curatedCollection refinedMapItems:mapItems];
 
-  v9 = [MUPresentationOptions optionsWithSender:v4];
+  v9 = [MUPresentationOptions optionsWithSender:viewCopy];
 
-  v10 = [(CuratedCollectionViewController *)self shareDelegate];
-  [v10 shareItem:v11 presentationOptions:v9 completion:0];
+  shareDelegate = [(CuratedCollectionViewController *)self shareDelegate];
+  [shareDelegate shareItem:v11 presentationOptions:v9 completion:0];
 }
 
 - (NSArray)mapItems
@@ -115,10 +115,10 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CuratedCollectionViewController *)self collectionProvider];
-  v5 = [v4 collectionItems];
+  collectionProvider = [(CuratedCollectionViewController *)self collectionProvider];
+  collectionItems = [collectionProvider collectionItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [collectionItems countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -129,14 +129,14 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(collectionItems);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) mapItem];
-        [v3 addObject:v10];
+        mapItem = [*(*(&v13 + 1) + 8 * i) mapItem];
+        [v3 addObject:mapItem];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [collectionItems countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -149,85 +149,85 @@
 
 - (void)didSelectRemoveFromSavedCollection
 {
-  v3 = [(CuratedCollectionViewController *)self analyticsController];
-  [v3 logRemoveCuratedCollection];
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logRemoveCuratedCollection];
 
   v5 = +[CuratedCollectionSyncManager sharedManager];
-  v4 = [(CuratedCollectionViewController *)self curatedCollection];
-  [v5 removeSavedCuratedCollection:v4 completion:0];
+  curatedCollection = [(CuratedCollectionViewController *)self curatedCollection];
+  [v5 removeSavedCuratedCollection:curatedCollection completion:0];
 }
 
 - (void)didSelectSaveCollection
 {
-  v3 = [(CuratedCollectionViewController *)self analyticsController];
-  [v3 logSaveCuratedCollection];
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logSaveCuratedCollection];
 
   v5 = +[CuratedCollectionSyncManager sharedManager];
-  v4 = [(CuratedCollectionViewController *)self curatedCollection];
-  [v5 addSavedCuratedCollection:v4 completion:0];
+  curatedCollection = [(CuratedCollectionViewController *)self curatedCollection];
+  [v5 addSavedCuratedCollection:curatedCollection completion:0];
 }
 
-- (void)_refineMapItem:(id)a3 completionHandler:(id)a4
+- (void)_refineMapItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CuratedCollectionViewController *)self actionDelegate];
-  v11 = [v8 traitsForCuratedCollectionViewController:self];
+  handlerCopy = handler;
+  itemCopy = item;
+  actionDelegate = [(CuratedCollectionViewController *)self actionDelegate];
+  v11 = [actionDelegate traitsForCuratedCollectionViewController:self];
 
   v9 = +[MKMapService sharedService];
-  v10 = [v9 ticketForMapItemToRefine:v7 traits:v11];
+  v10 = [v9 ticketForMapItemToRefine:itemCopy traits:v11];
 
-  [v10 submitWithHandler:v6 networkActivity:0];
+  [v10 submitWithHandler:handlerCopy networkActivity:0];
 }
 
-- (void)dataSource:(id)a3 openAppClip:(id)a4
+- (void)dataSource:(id)source openAppClip:(id)clip
 {
-  v5 = a4;
-  v6 = [v5 appClipURL];
-  v7 = [(CuratedCollectionViewController *)self analyticsController];
-  [v7 logOpenAppClipWithURL:v6];
+  clipCopy = clip;
+  appClipURL = [clipCopy appClipURL];
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logOpenAppClipWithURL:appClipURL];
 
   v8 = +[MKClipServices sharedInstance];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100841744;
   v10[3] = &unk_10164D910;
-  v11 = v6;
-  v9 = v6;
-  [v8 requestAppClip:v5 completion:v10];
+  v11 = appClipURL;
+  v9 = appClipURL;
+  [v8 requestAppClip:clipCopy completion:v10];
 }
 
-- (void)showPublisherView:(id)a3
+- (void)showPublisherView:(id)view
 {
-  v4 = a3;
-  v5 = [(CuratedCollectionViewController *)self analyticsController];
-  [v5 logDiscoverMoreFromPublisher];
+  viewCopy = view;
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logDiscoverMoreFromPublisher];
 
-  v6 = [(CuratedCollectionViewController *)self actionDelegate];
-  [v6 curatedCollectionViewController:self showPublisher:v4];
+  actionDelegate = [(CuratedCollectionViewController *)self actionDelegate];
+  [actionDelegate curatedCollectionViewController:self showPublisher:viewCopy];
 }
 
-- (void)presentRAPWithSourceView:(id)a3
+- (void)presentRAPWithSourceView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [RAPCuratedCollectionContext alloc];
-  v6 = [(CuratedCollectionViewController *)self curatedCollection];
-  v7 = [(CuratedCollectionViewController *)self collectionProvider];
-  v8 = [v7 collectionItems];
-  v12 = [(RAPCuratedCollectionContext *)v5 initWithCuratedCollection:v6 placeCollectionMapItems:v8];
+  curatedCollection = [(CuratedCollectionViewController *)self curatedCollection];
+  collectionProvider = [(CuratedCollectionViewController *)self collectionProvider];
+  collectionItems = [collectionProvider collectionItems];
+  v12 = [(RAPCuratedCollectionContext *)v5 initWithCuratedCollection:curatedCollection placeCollectionMapItems:collectionItems];
 
-  v9 = [(CuratedCollectionViewController *)self _maps_mapsSceneDelegate];
-  v10 = [v9 rapPresenter];
-  [v10 presentCuratedCollectionRAPWithContext:v12 sourceView:v4 completion:0];
+  _maps_mapsSceneDelegate = [(CuratedCollectionViewController *)self _maps_mapsSceneDelegate];
+  rapPresenter = [_maps_mapsSceneDelegate rapPresenter];
+  [rapPresenter presentCuratedCollectionRAPWithContext:v12 sourceView:viewCopy completion:0];
 
-  v11 = [(CuratedCollectionViewController *)self analyticsController];
-  [v11 logReportAProblem];
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logReportAProblem];
 }
 
-- (void)dataSource:(id)a3 didExpandCellAnimated:(BOOL)a4
+- (void)dataSource:(id)source didExpandCellAnimated:(BOOL)animated
 {
   v4 = 0.3;
-  if (!a4)
+  if (!animated)
   {
     v4 = 0.0;
   }
@@ -240,39 +240,39 @@
   [UIView animateWithDuration:v5 animations:v4];
 }
 
-- (void)dataSource:(id)a3 willPunchOuToPublisherWebpageForPlaceCollectionItem:(id)a4
+- (void)dataSource:(id)source willPunchOuToPublisherWebpageForPlaceCollectionItem:(id)item
 {
-  v5 = a4;
-  v6 = [(CuratedCollectionViewController *)self collectionProvider];
-  v7 = [v6 collectionItems];
-  v8 = [v7 indexOfObject:v5];
+  itemCopy = item;
+  collectionProvider = [(CuratedCollectionViewController *)self collectionProvider];
+  collectionItems = [collectionProvider collectionItems];
+  v8 = [collectionItems indexOfObject:itemCopy];
 
-  v9 = [(CuratedCollectionViewController *)self analyticsController];
-  [v9 logPunchOutToPublisherReviewWithIndex:v8];
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logPunchOutToPublisherReviewWithIndex:v8];
 }
 
-- (void)dataSource:(id)a3 didFailWithErrorState:(unint64_t)a4
+- (void)dataSource:(id)source didFailWithErrorState:(unint64_t)state
 {
-  v36 = a3;
+  sourceCopy = source;
   self->_hasFinishedResolving = 1;
-  v6 = [(CuratedCollectionViewController *)self errorView];
+  errorView = [(CuratedCollectionViewController *)self errorView];
 
-  if (!v6)
+  if (!errorView)
   {
     v7 = objc_alloc_init(ErrorModeView);
     [(CuratedCollectionViewController *)self setErrorView:v7];
 
-    v8 = [(CuratedCollectionViewController *)self errorView];
-    [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+    errorView2 = [(CuratedCollectionViewController *)self errorView];
+    [errorView2 setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
-  if (a4 > 1)
+  if (state > 1)
   {
-    if (a4 == 2)
+    if (state == 2)
     {
-      v20 = [(CuratedCollectionViewController *)self errorView];
+      errorView3 = [(CuratedCollectionViewController *)self errorView];
       v21 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubhead];
-      [v20 setTitleLabelFont:v21];
+      [errorView3 setTitleLabelFont:v21];
 
       v11 = +[NSBundle mainBundle];
       v55 = [v11 localizedStringForKey:@"[Brooklyn] Suppressed Guide Error" value:@"localized string not found" table:0];
@@ -281,7 +281,7 @@
 
     v54 = 0;
     v55 = 0;
-    if (a4 == 3)
+    if (state == 3)
     {
       v12 = +[NSBundle mainBundle];
       v54 = [v12 localizedStringForKey:@"[Brooklyn] Unable to Open Guide" value:@"localized string not found" table:0];
@@ -290,7 +290,7 @@
       v55 = [v13 localizedStringForKey:@"[Brooklyn] Internet Guide Error Title" value:@"localized string not found" table:0];
 
       objc_initWeak(&location, self);
-      v14 = [(CuratedCollectionViewController *)self errorView];
+      errorView4 = [(CuratedCollectionViewController *)self errorView];
       v15 = +[NSBundle mainBundle];
       v16 = [v15 localizedStringForKey:@"Try Again [Brooklyn]" value:@"localized string not found" table:0];
       v17 = +[UIColor systemGray5Color];
@@ -299,7 +299,7 @@
       v56[2] = sub_1008422EC;
       v56[3] = &unk_10165D828;
       objc_copyWeak(&v57, &location);
-      [v14 setButtonTitle:v16 glyphName:@"arrow.clockwise" backgroundColor:v17 handler:v56];
+      [errorView4 setButtonTitle:v16 glyphName:@"arrow.clockwise" backgroundColor:v17 handler:v56];
 
       objc_destroyWeak(&v57);
       objc_destroyWeak(&location);
@@ -308,11 +308,11 @@
 
   else
   {
-    if (!a4)
+    if (!state)
     {
-      v18 = [(CuratedCollectionViewController *)self errorView];
+      errorView5 = [(CuratedCollectionViewController *)self errorView];
       v19 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubhead];
-      [v18 setTitleLabelFont:v19];
+      [errorView5 setTitleLabelFont:v19];
 
       v11 = +[NSBundle mainBundle];
       v55 = [v11 localizedStringForKey:@"[Brooklyn] Generic Guide Error Title" value:@"localized string not found" table:0];
@@ -321,11 +321,11 @@
 
     v54 = 0;
     v55 = 0;
-    if (a4 == 1)
+    if (state == 1)
     {
-      v9 = [(CuratedCollectionViewController *)self errorView];
+      errorView6 = [(CuratedCollectionViewController *)self errorView];
       v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubhead];
-      [v9 setTitleLabelFont:v10];
+      [errorView6 setTitleLabelFont:v10];
 
       v11 = +[NSBundle mainBundle];
       v55 = [v11 localizedStringForKey:@"[Brooklyn] Blocked Guide Error Title" value:@"localized string not found" table:0];
@@ -335,144 +335,144 @@ LABEL_12:
     }
   }
 
-  v22 = [(CuratedCollectionViewController *)self loadingView];
-  [v22 removeFromSuperview];
+  loadingView = [(CuratedCollectionViewController *)self loadingView];
+  [loadingView removeFromSuperview];
 
-  v23 = [(CuratedCollectionViewController *)self cardHeaderView];
-  [v23 removeFromSuperview];
+  cardHeaderView = [(CuratedCollectionViewController *)self cardHeaderView];
+  [cardHeaderView removeFromSuperview];
 
-  v24 = [(ContaineeViewController *)self contentView];
-  v25 = [(CuratedCollectionViewController *)self errorView];
-  [v24 addSubview:v25];
+  contentView = [(ContaineeViewController *)self contentView];
+  errorView7 = [(CuratedCollectionViewController *)self errorView];
+  [contentView addSubview:errorView7];
 
-  v53 = [(CuratedCollectionViewController *)self errorView];
-  v51 = [v53 leadingAnchor];
-  v52 = [(ContaineeViewController *)self contentView];
-  v50 = [v52 leadingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  errorView8 = [(CuratedCollectionViewController *)self errorView];
+  leadingAnchor = [errorView8 leadingAnchor];
+  contentView2 = [(ContaineeViewController *)self contentView];
+  leadingAnchor2 = [contentView2 leadingAnchor];
+  v49 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v59[0] = v49;
-  v48 = [(CuratedCollectionViewController *)self errorView];
-  v46 = [v48 trailingAnchor];
-  v47 = [(ContaineeViewController *)self contentView];
-  v45 = [v47 trailingAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  errorView9 = [(CuratedCollectionViewController *)self errorView];
+  trailingAnchor = [errorView9 trailingAnchor];
+  contentView3 = [(ContaineeViewController *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v44 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v59[1] = v44;
-  v43 = [(CuratedCollectionViewController *)self errorView];
-  v41 = [v43 topAnchor];
-  v42 = [(ContaineeViewController *)self contentView];
-  v40 = [v42 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  errorView10 = [(CuratedCollectionViewController *)self errorView];
+  topAnchor = [errorView10 topAnchor];
+  contentView4 = [(ContaineeViewController *)self contentView];
+  topAnchor2 = [contentView4 topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v59[2] = v39;
-  v38 = [(CuratedCollectionViewController *)self errorView];
-  v37 = [v38 bottomAnchor];
-  v26 = [(ContaineeViewController *)self contentView];
-  v27 = [v26 bottomAnchor];
-  v28 = [v37 constraintEqualToAnchor:v27];
+  errorView11 = [(CuratedCollectionViewController *)self errorView];
+  bottomAnchor = [errorView11 bottomAnchor];
+  contentView5 = [(ContaineeViewController *)self contentView];
+  bottomAnchor2 = [contentView5 bottomAnchor];
+  v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v59[3] = v28;
-  v29 = [(CuratedCollectionViewController *)self errorView];
-  v30 = [v29 heightAnchor];
-  v31 = [(ContaineeViewController *)self contentView];
-  v32 = [v31 heightAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  errorView12 = [(CuratedCollectionViewController *)self errorView];
+  heightAnchor = [errorView12 heightAnchor];
+  contentView6 = [(ContaineeViewController *)self contentView];
+  heightAnchor2 = [contentView6 heightAnchor];
+  v33 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v59[4] = v33;
   v34 = [NSArray arrayWithObjects:v59 count:5];
   [NSLayoutConstraint activateConstraints:v34];
 
-  v35 = [(CuratedCollectionViewController *)self errorView];
-  [v35 setTitle:v54 andMessage:v55];
+  errorView13 = [(CuratedCollectionViewController *)self errorView];
+  [errorView13 setTitle:v54 andMessage:v55];
 }
 
-- (void)dataSource:(id)a3 addToUserCollection:(id)a4 forMapItem:(id)a5 sourceView:(id)a6 onSaveCompletion:(id)a7
+- (void)dataSource:(id)source addToUserCollection:(id)collection forMapItem:(id)item sourceView:(id)view onSaveCompletion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(CuratedCollectionViewController *)self analyticsController];
-  [v17 logSavePlaceItemToCuratedCollectionWithMUID:{objc_msgSend(v14, "_muid")}];
+  sourceCopy = source;
+  collectionCopy = collection;
+  itemCopy = item;
+  viewCopy = view;
+  completionCopy = completion;
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logSavePlaceItemToCuratedCollectionWithMUID:{objc_msgSend(itemCopy, "_muid")}];
 
   objc_initWeak(&location, self);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100842534;
   v21[3] = &unk_10162C7A8;
-  v18 = v13;
+  v18 = collectionCopy;
   v22 = v18;
-  v19 = v16;
+  v19 = completionCopy;
   v24 = v19;
   objc_copyWeak(&v25, &location);
-  v20 = v15;
+  v20 = viewCopy;
   v23 = v20;
-  [(CuratedCollectionViewController *)self _refineMapItem:v14 completionHandler:v21];
+  [(CuratedCollectionViewController *)self _refineMapItem:itemCopy completionHandler:v21];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
 }
 
-- (void)dataSource:(id)a3 removePlaceFromLibraryUsingCoordinator:(id)a4
+- (void)dataSource:(id)source removePlaceFromLibraryUsingCoordinator:(id)coordinator
 {
-  v6 = a4;
-  v5 = [v6 initialMapItem];
-  +[LibraryAnalytics captureAddOrRemoveFromLibraryWithPlaceMUID:captureAdd:target:](_TtC4Maps16LibraryAnalytics, "captureAddOrRemoveFromLibraryWithPlaceMUID:captureAdd:target:", [v5 _muid], 0, 259);
+  coordinatorCopy = coordinator;
+  initialMapItem = [coordinatorCopy initialMapItem];
+  +[LibraryAnalytics captureAddOrRemoveFromLibraryWithPlaceMUID:captureAdd:target:](_TtC4Maps16LibraryAnalytics, "captureAddOrRemoveFromLibraryWithPlaceMUID:captureAdd:target:", [initialMapItem _muid], 0, 259);
 
-  [v6 deletePlaceFromLibraryWithViewControllerForPresentingAlert:self];
+  [coordinatorCopy deletePlaceFromLibraryWithViewControllerForPresentingAlert:self];
 }
 
-- (void)dataSource:(id)a3 addPlaceToLibraryUsingCoordinator:(id)a4
+- (void)dataSource:(id)source addPlaceToLibraryUsingCoordinator:(id)coordinator
 {
-  v5 = a4;
-  v6 = [v5 initialMapItem];
-  +[LibraryAnalytics captureAddOrRemoveFromLibraryWithPlaceMUID:captureAdd:target:](_TtC4Maps16LibraryAnalytics, "captureAddOrRemoveFromLibraryWithPlaceMUID:captureAdd:target:", [v6 _muid], 1, 259);
+  coordinatorCopy = coordinator;
+  initialMapItem = [coordinatorCopy initialMapItem];
+  +[LibraryAnalytics captureAddOrRemoveFromLibraryWithPlaceMUID:captureAdd:target:](_TtC4Maps16LibraryAnalytics, "captureAddOrRemoveFromLibraryWithPlaceMUID:captureAdd:target:", [initialMapItem _muid], 1, 259);
 
-  v7 = [v5 initialMapItem];
+  initialMapItem2 = [coordinatorCopy initialMapItem];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100842B64;
   v9[3] = &unk_101660FB0;
-  v10 = v5;
-  v8 = v5;
-  [(CuratedCollectionViewController *)self _refineMapItem:v7 completionHandler:v9];
+  v10 = coordinatorCopy;
+  v8 = coordinatorCopy;
+  [(CuratedCollectionViewController *)self _refineMapItem:initialMapItem2 completionHandler:v9];
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4
+- (void)dataSource:(id)source itemTapped:(id)tapped
 {
-  v14 = a4;
+  tappedCopy = tapped;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v14;
-    v6 = [(CuratedCollectionProvider *)self->_collectionProvider collectionItems];
-    v7 = [v6 indexOfObject:v5];
+    v5 = tappedCopy;
+    collectionItems = [(CuratedCollectionProvider *)self->_collectionProvider collectionItems];
+    v7 = [collectionItems indexOfObject:v5];
 
-    v8 = [(CuratedCollectionViewController *)self analyticsController];
-    [v8 logTapCollectionItem:v5 atIndex:v7];
+    analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+    [analyticsController logTapCollectionItem:v5 atIndex:v7];
 
     v9 = [SearchResult alloc];
-    v10 = [v5 mapItem];
-    v11 = [(SearchResult *)v9 initWithMapItem:v10];
+    mapItem = [v5 mapItem];
+    v11 = [(SearchResult *)v9 initWithMapItem:mapItem];
 
-    v12 = [(CuratedCollectionViewController *)self actionDelegate];
-    [v12 curatedCollectionViewController:self selectSearchResult:v11];
+    actionDelegate = [(CuratedCollectionViewController *)self actionDelegate];
+    [actionDelegate curatedCollectionViewController:self selectSearchResult:v11];
 
     lastItemTapped = self->_lastItemTapped;
     self->_lastItemTapped = v5;
   }
 }
 
-- (void)dataSource:(id)a3 itemFocused:(id)a4
+- (void)dataSource:(id)source itemFocused:(id)focused
 {
-  v11 = a4;
+  focusedCopy = focused;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v11;
+    v5 = focusedCopy;
     v6 = [SearchResult alloc];
-    v7 = [v5 mapItem];
+    mapItem = [v5 mapItem];
 
-    v8 = [(SearchResult *)v6 initWithMapItem:v7];
-    v9 = [(CuratedCollectionViewController *)self mapModificationDelegate];
-    [v9 viewController:self focusSearchResult:v8];
+    mapModificationDelegate2 = [(SearchResult *)v6 initWithMapItem:mapItem];
+    mapModificationDelegate = [(CuratedCollectionViewController *)self mapModificationDelegate];
+    [mapModificationDelegate viewController:self focusSearchResult:mapModificationDelegate2];
 
     lastItemTapped = self->_lastItemTapped;
     self->_lastItemTapped = 0;
@@ -485,8 +485,8 @@ LABEL_12:
       goto LABEL_6;
     }
 
-    v8 = [(CuratedCollectionViewController *)self mapModificationDelegate];
-    [(SearchResult *)v8 viewControllerRemoveCurrentSearchResultFocus:self];
+    mapModificationDelegate2 = [(CuratedCollectionViewController *)self mapModificationDelegate];
+    [(SearchResult *)mapModificationDelegate2 viewControllerRemoveCurrentSearchResultFocus:self];
   }
 
 LABEL_6:
@@ -494,95 +494,95 @@ LABEL_6:
 
 - (void)_didFinishResolving
 {
-  v3 = [(CuratedCollectionViewController *)self collectionProvider];
-  v4 = [v3 curatedCollection];
-  [(CuratedCollectionViewController *)self setCuratedCollection:v4];
+  collectionProvider = [(CuratedCollectionViewController *)self collectionProvider];
+  curatedCollection = [collectionProvider curatedCollection];
+  [(CuratedCollectionViewController *)self setCuratedCollection:curatedCollection];
 
-  v5 = [(CuratedCollectionViewController *)self updateContentInjection];
+  updateContentInjection = [(CuratedCollectionViewController *)self updateContentInjection];
 
-  if (v5)
+  if (updateContentInjection)
   {
-    v6 = [(CuratedCollectionViewController *)self updateContentInjection];
-    (v6)[2](v6, self);
+    updateContentInjection2 = [(CuratedCollectionViewController *)self updateContentInjection];
+    (updateContentInjection2)[2](updateContentInjection2, self);
   }
 
-  v7 = [(CuratedCollectionViewController *)self loadingView];
-  [v7 removeFromSuperview];
+  loadingView = [(CuratedCollectionViewController *)self loadingView];
+  [loadingView removeFromSuperview];
 
-  v8 = [(CuratedCollectionViewController *)self errorView];
-  [v8 removeFromSuperview];
+  errorView = [(CuratedCollectionViewController *)self errorView];
+  [errorView removeFromSuperview];
 
-  v9 = [(CuratedCollectionViewController *)self view];
-  [v9 addSubview:self->_tableView];
+  view = [(CuratedCollectionViewController *)self view];
+  [view addSubview:self->_tableView];
 
-  v10 = [(CuratedCollectionViewController *)self view];
-  v11 = [(CuratedCollectionViewController *)self cardHeaderView];
-  [v10 addSubview:v11];
+  view2 = [(CuratedCollectionViewController *)self view];
+  cardHeaderView = [(CuratedCollectionViewController *)self cardHeaderView];
+  [view2 addSubview:cardHeaderView];
 
-  v12 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  [v12 setAlpha:1.0];
+  fakeHeaderView = [(CuratedCollectionViewController *)self fakeHeaderView];
+  [fakeHeaderView setAlpha:1.0];
 
-  v13 = [(CuratedCollectionViewController *)self cardHeaderView];
-  [v13 setAlpha:0.0];
+  cardHeaderView2 = [(CuratedCollectionViewController *)self cardHeaderView];
+  [cardHeaderView2 setAlpha:0.0];
 
   [(MapsThemeTableView *)self->_tableView setAlpha:0.0];
-  v14 = [(CuratedCollectionViewController *)self cardHeaderView];
-  v15 = [v14 tableViewBackgroundView];
-  [(MapsThemeTableView *)self->_tableView setBackgroundView:v15];
+  cardHeaderView3 = [(CuratedCollectionViewController *)self cardHeaderView];
+  tableViewBackgroundView = [cardHeaderView3 tableViewBackgroundView];
+  [(MapsThemeTableView *)self->_tableView setBackgroundView:tableViewBackgroundView];
 
   [(MapsThemeTableView *)self->_tableView setContentInsetAdjustmentBehavior:2];
   [(MapsThemeTableView *)self->_tableView setAutomaticallyAdjustsScrollIndicatorInsets:0];
-  v51 = [(CuratedCollectionViewController *)self cardHeaderView];
-  v49 = [v51 topAnchor];
-  v50 = [(CuratedCollectionViewController *)self view];
-  v48 = [v50 topAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  cardHeaderView4 = [(CuratedCollectionViewController *)self cardHeaderView];
+  topAnchor = [cardHeaderView4 topAnchor];
+  view3 = [(CuratedCollectionViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v47 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v55[0] = v47;
-  v46 = [(CuratedCollectionViewController *)self cardHeaderView];
-  v44 = [v46 leadingAnchor];
-  v45 = [(CuratedCollectionViewController *)self view];
-  v43 = [v45 leadingAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  cardHeaderView5 = [(CuratedCollectionViewController *)self cardHeaderView];
+  leadingAnchor = [cardHeaderView5 leadingAnchor];
+  view4 = [(CuratedCollectionViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v55[1] = v42;
-  v41 = [(CuratedCollectionViewController *)self cardHeaderView];
-  v39 = [v41 trailingAnchor];
-  v40 = [(CuratedCollectionViewController *)self view];
-  v38 = [v40 trailingAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  cardHeaderView6 = [(CuratedCollectionViewController *)self cardHeaderView];
+  trailingAnchor = [cardHeaderView6 trailingAnchor];
+  view5 = [(CuratedCollectionViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v55[2] = v37;
-  v35 = [(MapsThemeTableView *)self->_tableView topAnchor];
-  v36 = [(CuratedCollectionViewController *)self view];
-  v34 = [v36 topAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  topAnchor3 = [(MapsThemeTableView *)self->_tableView topAnchor];
+  view6 = [(CuratedCollectionViewController *)self view];
+  topAnchor4 = [view6 topAnchor];
+  v33 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v55[3] = v33;
-  v31 = [(MapsThemeTableView *)self->_tableView leadingAnchor];
-  v32 = [(CuratedCollectionViewController *)self view];
-  v30 = [v32 leadingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  leadingAnchor3 = [(MapsThemeTableView *)self->_tableView leadingAnchor];
+  view7 = [(CuratedCollectionViewController *)self view];
+  leadingAnchor4 = [view7 leadingAnchor];
+  v29 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v55[4] = v29;
-  v16 = [(MapsThemeTableView *)self->_tableView trailingAnchor];
-  v17 = [(CuratedCollectionViewController *)self view];
-  v18 = [v17 trailingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  trailingAnchor3 = [(MapsThemeTableView *)self->_tableView trailingAnchor];
+  view8 = [(CuratedCollectionViewController *)self view];
+  trailingAnchor4 = [view8 trailingAnchor];
+  v19 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v55[5] = v19;
-  v20 = [(MapsThemeTableView *)self->_tableView bottomAnchor];
-  v21 = [(CuratedCollectionViewController *)self view];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  bottomAnchor = [(MapsThemeTableView *)self->_tableView bottomAnchor];
+  view9 = [(CuratedCollectionViewController *)self view];
+  bottomAnchor2 = [view9 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v55[6] = v23;
   v24 = [NSArray arrayWithObjects:v55 count:7];
   [NSLayoutConstraint activateConstraints:v24];
 
-  v25 = [(CuratedCollectionViewController *)self view];
-  [v25 layoutIfNeeded];
+  view10 = [(CuratedCollectionViewController *)self view];
+  [view10 layoutIfNeeded];
 
   curatedCollection = self->_curatedCollection;
-  v27 = [(CuratedCollectionViewController *)self cardHeaderView];
-  [v27 setCuratedCollection:curatedCollection];
+  cardHeaderView7 = [(CuratedCollectionViewController *)self cardHeaderView];
+  [cardHeaderView7 setCuratedCollection:curatedCollection];
 
   [(CuratedCollectionViewController *)self _updateHeaderTransition];
-  v28 = [(ContaineeViewController *)self cardPresentationController];
-  [v28 updateHeightForCurrentLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateHeightForCurrentLayout];
 
   [(CuratedCollectionViewController *)self _updateHeaderAndTableViewValues];
   v54[0] = _NSConcreteStackBlock;
@@ -604,7 +604,7 @@ LABEL_6:
   [UIView animateWithDuration:2 delay:v53 options:v52 animations:0.3 completion:0.0];
 }
 
-- (void)dataSourceUpdated:(id)a3
+- (void)dataSourceUpdated:(id)updated
 {
   if (!self->_hasFinishedResolving)
   {
@@ -615,21 +615,21 @@ LABEL_6:
 
 - (BOOL)shouldClearSearchPins
 {
-  v3 = [(CuratedCollectionViewController *)self mapModificationDelegate];
-  v4 = [v3 searchResultsForViewController:self];
+  mapModificationDelegate = [(CuratedCollectionViewController *)self mapModificationDelegate];
+  v4 = [mapModificationDelegate searchResultsForViewController:self];
 
-  v5 = [(CuratedCollectionViewController *)self _searchResults];
-  LOBYTE(v3) = [v4 isEqualToArray:v5];
+  _searchResults = [(CuratedCollectionViewController *)self _searchResults];
+  LOBYTE(mapModificationDelegate) = [v4 isEqualToArray:_searchResults];
 
-  return v3;
+  return mapModificationDelegate;
 }
 
 - (void)removeContentFromMapView
 {
   if ([(CuratedCollectionViewController *)self shouldClearSearchPins])
   {
-    v3 = [(CuratedCollectionViewController *)self mapModificationDelegate];
-    [v3 viewControllerClearInjectedSearchPins:self];
+    mapModificationDelegate = [(CuratedCollectionViewController *)self mapModificationDelegate];
+    [mapModificationDelegate viewControllerClearInjectedSearchPins:self];
   }
 }
 
@@ -646,10 +646,10 @@ LABEL_6:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v6, OS_SIGNPOST_INTERVAL_BEGIN, v4, "AddingContentToMapView", "", buf, 2u);
   }
 
-  v7 = [(CuratedCollectionViewController *)self _searchResults];
-  v8 = [SearchInfo searchInfoWithResults:v7];
-  v9 = [(CuratedCollectionViewController *)self mapModificationDelegate];
-  [v9 injectSearchPinsFromSearchInfo:v8];
+  _searchResults = [(CuratedCollectionViewController *)self _searchResults];
+  v8 = [SearchInfo searchInfoWithResults:_searchResults];
+  mapModificationDelegate = [(CuratedCollectionViewController *)self mapModificationDelegate];
+  [mapModificationDelegate injectSearchPinsFromSearchInfo:v8];
 
   v10 = sub_100843878();
   v11 = v10;
@@ -667,10 +667,10 @@ LABEL_6:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(CuratedCollectionViewController *)self collectionProvider];
-  v5 = [v4 collectionItems];
+  collectionProvider = [(CuratedCollectionViewController *)self collectionProvider];
+  collectionItems = [collectionProvider collectionItems];
 
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v6 = [collectionItems countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -681,19 +681,19 @@ LABEL_6:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(collectionItems);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
         v11 = [SearchResult alloc];
-        v12 = [v10 mapItem];
-        v13 = [(SearchResult *)v11 initWithMapItem:v12];
+        mapItem = [v10 mapItem];
+        v13 = [(SearchResult *)v11 initWithMapItem:mapItem];
 
         [(SearchResultRepr *)v13 setHasIncompleteMetadata:1];
         [v3 addObject:v13];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [collectionItems countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -704,13 +704,13 @@ LABEL_6:
   return v14;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
   [(CuratedCollectionHeaderView *)self->_cardHeaderView minimumScrolledHeight];
-  if (a5->y < -v10)
+  if (offset->y < -v10)
   {
     if (y >= 0.0)
     {
@@ -724,21 +724,21 @@ LABEL_6:
 
     else
     {
-      [v9 contentInset];
+      [draggingCopy contentInset];
       v12 = -v11;
     }
 
-    a5->y = v12;
+    offset->y = v12;
   }
 
 LABEL_7:
   v14.receiver = self;
   v14.super_class = CuratedCollectionViewController;
-  [(ContaineeViewController *)&v14 scrollViewWillEndDragging:v9 withVelocity:a5 targetContentOffset:x, y];
+  [(ContaineeViewController *)&v14 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:x, y];
   if (y > 0.0)
   {
-    v13 = [(CuratedCollectionViewController *)self analyticsController];
-    [v13 logScrollDown];
+    analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+    [analyticsController logScrollDown];
 LABEL_11:
 
     goto LABEL_12;
@@ -746,8 +746,8 @@ LABEL_11:
 
   if (y < 0.0)
   {
-    v13 = [(CuratedCollectionViewController *)self analyticsController];
-    [v13 logScrollUp];
+    analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+    [analyticsController logScrollUp];
     goto LABEL_11;
   }
 
@@ -755,15 +755,15 @@ LABEL_12:
   [(CuratedCollectionViewController *)self _setWantsInsertInHistory];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v6.receiver = self;
   v6.super_class = CuratedCollectionViewController;
-  [(ContaineeViewController *)&v6 scrollViewDidScroll:a3];
-  v4 = [(CuratedCollectionViewController *)self collectionProvider];
-  v5 = [v4 isApplyingSnapshot];
+  [(ContaineeViewController *)&v6 scrollViewDidScroll:scroll];
+  collectionProvider = [(CuratedCollectionViewController *)self collectionProvider];
+  isApplyingSnapshot = [collectionProvider isApplyingSnapshot];
 
-  if ((v5 & 1) == 0)
+  if ((isApplyingSnapshot & 1) == 0)
   {
     [(CuratedCollectionViewController *)self _updateHeaderAndTableViewValues];
   }
@@ -771,65 +771,65 @@ LABEL_12:
 
 - (void)seeAllGuidesMenuButtonTapped
 {
-  v3 = [(CuratedCollectionViewController *)self actionDelegate];
-  [v3 curatedCollectionViewControllerShowAllGuides:self];
+  actionDelegate = [(CuratedCollectionViewController *)self actionDelegate];
+  [actionDelegate curatedCollectionViewControllerShowAllGuides:self];
 }
 
 - (void)websiteMenuButtonTapped
 {
-  v3 = [(CuratedCollectionViewController *)self _websiteURL];
-  if (v3)
+  _websiteURL = [(CuratedCollectionViewController *)self _websiteURL];
+  if (_websiteURL)
   {
-    v5 = v3;
-    v4 = [(CuratedCollectionViewController *)self actionDelegate];
-    [v4 curatedCollectionViewController:self openURL:v5];
+    v5 = _websiteURL;
+    actionDelegate = [(CuratedCollectionViewController *)self actionDelegate];
+    [actionDelegate curatedCollectionViewController:self openURL:v5];
 
     [(CuratedCollectionViewAnalyticsController *)self->_analyticsController logOpenWebsite];
-    v3 = v5;
+    _websiteURL = v5;
   }
 }
 
 - (void)headerViewPublisherLogoTapped
 {
-  v3 = [(CuratedCollectionViewController *)self analyticsController];
-  [v3 logDiscoverMoreFromPublisher];
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logDiscoverMoreFromPublisher];
 
-  v6 = [(CuratedCollectionViewController *)self actionDelegate];
-  v4 = [(CuratedCollectionViewController *)self curatedCollection];
-  v5 = [v4 publisher];
-  [v6 curatedCollectionViewController:self showPublisher:v5];
+  actionDelegate = [(CuratedCollectionViewController *)self actionDelegate];
+  curatedCollection = [(CuratedCollectionViewController *)self curatedCollection];
+  publisher = [curatedCollection publisher];
+  [actionDelegate curatedCollectionViewController:self showPublisher:publisher];
 }
 
 - (void)headerViewBrickTapped
 {
-  v2 = [(ContaineeViewController *)self cardPresentationController];
-  [v2 wantsExpandLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController wantsExpandLayout];
 }
 
 - (id)_websiteURL
 {
-  v3 = [(CuratedCollectionViewController *)self curatedCollection];
-  v4 = [v3 publisherCollectionURL];
+  curatedCollection = [(CuratedCollectionViewController *)self curatedCollection];
+  publisherCollectionURL = [curatedCollection publisherCollectionURL];
 
-  if (v4)
+  if (publisherCollectionURL)
   {
-    v5 = v4;
+    websiteURL = publisherCollectionURL;
   }
 
   else
   {
-    v6 = [(CuratedCollectionViewController *)self curatedCollection];
-    v7 = [v6 publisher];
-    v8 = [v7 publisherAttribution];
-    v5 = [v8 websiteURL];
+    curatedCollection2 = [(CuratedCollectionViewController *)self curatedCollection];
+    publisher = [curatedCollection2 publisher];
+    publisherAttribution = [publisher publisherAttribution];
+    websiteURL = [publisherAttribution websiteURL];
 
-    if (v5)
+    if (websiteURL)
     {
-      v9 = v5;
+      v9 = websiteURL;
     }
   }
 
-  return v5;
+  return websiteURL;
 }
 
 - (id)menuForQuickActionButton
@@ -888,8 +888,8 @@ LABEL_12:
   v17 = [UIMenu menuWithTitle:&stru_1016631F0 image:0 identifier:0 options:1 children:v16];
 
   [v3 addObject:v17];
-  v18 = [(CuratedCollectionViewController *)self _websiteURL];
-  v19 = v18 == 0;
+  _websiteURL = [(CuratedCollectionViewController *)self _websiteURL];
+  v19 = _websiteURL == 0;
 
   if (!v19)
   {
@@ -946,8 +946,8 @@ LABEL_12:
 {
   if (!self->_didInsertInHistory && self->_hasFinishedResolving)
   {
-    v3 = [(CuratedCollectionViewController *)self curatedCollection];
-    [HistoryEntryRecentsItem saveCuratedCollection:v3 completion:&stru_10162BAC0];
+    curatedCollection = [(CuratedCollectionViewController *)self curatedCollection];
+    [HistoryEntryRecentsItem saveCuratedCollection:curatedCollection completion:&stru_10162BAC0];
 
     self->_didInsertInHistory = 1;
   }
@@ -978,21 +978,21 @@ LABEL_12:
 
   else
   {
-    v10 = [(ContaineeViewController *)self cardPresentationController];
-    [v10 transitionProgressFromLayout:2 toLayout:3];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController transitionProgressFromLayout:2 toLayout:3];
     v12 = v11;
 
-    v13 = [(ContaineeViewController *)self cardPresentationController];
-    [v13 transitionProgressFromLayout:1 toLayout:2];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 transitionProgressFromLayout:1 toLayout:2];
     v4 = v14;
 
-    v15 = [(ContaineeViewController *)self cardPresentationController];
-    v16 = [v15 containerStyle];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+    containerStyle = [cardPresentationController3 containerStyle];
 
-    if (v16 == 4)
+    if (containerStyle == 4)
     {
-      v17 = [(ContaineeViewController *)self cardPresentationController];
-      [v17 transitionProgressFromLayout:1 toLayout:3];
+      cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController4 transitionProgressFromLayout:1 toLayout:3];
       v19 = v18;
 
       if (v19 < 0.5)
@@ -1060,8 +1060,8 @@ LABEL_12:
     }
   }
 
-  v8 = [(CuratedCollectionViewController *)self cardHeaderView];
-  [v8 setLayout:v7 transitionFraction:v4];
+  cardHeaderView = [(CuratedCollectionViewController *)self cardHeaderView];
+  [cardHeaderView setLayout:v7 transitionFraction:v4];
 
   [(CuratedCollectionViewController *)self _updateHeaderAndTableViewValues];
   collectionProvider = self->_collectionProvider;
@@ -1069,33 +1069,33 @@ LABEL_12:
   [(CuratedCollectionProvider *)collectionProvider setSubheaderTransitionFraction:v3];
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
-  v5 = [(CuratedCollectionViewController *)self curatedCollection];
-  if (![v5 isSuppressed])
+  actionCopy = action;
+  curatedCollection = [(CuratedCollectionViewController *)self curatedCollection];
+  if (![curatedCollection isSuppressed])
   {
     goto LABEL_4;
   }
 
   v6 = +[CuratedCollectionSyncManager sharedManager];
-  v7 = [(CuratedCollectionViewController *)self curatedCollection];
-  v8 = [v6 collectionIsSaved:v7];
+  curatedCollection2 = [(CuratedCollectionViewController *)self curatedCollection];
+  v8 = [v6 collectionIsSaved:curatedCollection2];
 
   if (v8)
   {
-    v5 = +[CuratedCollectionSyncManager sharedManager];
-    v9 = [(CuratedCollectionViewController *)self curatedCollection];
-    [v5 removeSavedCuratedCollection:v9 completion:0];
+    curatedCollection = +[CuratedCollectionSyncManager sharedManager];
+    curatedCollection3 = [(CuratedCollectionViewController *)self curatedCollection];
+    [curatedCollection removeSavedCuratedCollection:curatedCollection3 completion:0];
 
 LABEL_4:
   }
 
   v11.receiver = self;
   v11.super_class = CuratedCollectionViewController;
-  [(ContaineeViewController *)&v11 handleDismissAction:v4];
-  v10 = [(CuratedCollectionViewController *)self analyticsController];
-  [v10 logClose];
+  [(ContaineeViewController *)&v11 handleDismissAction:actionCopy];
+  analyticsController = [(CuratedCollectionViewController *)self analyticsController];
+  [analyticsController logClose];
 }
 
 - (void)viewDidLayoutSubviews
@@ -1113,11 +1113,11 @@ LABEL_4:
     [(CuratedCollectionViewController *)self _updateHeaderTransition];
   }
 
-  v3 = [(CuratedCollectionViewController *)self cardHeaderView];
-  [v3 bounds];
+  cardHeaderView = [(CuratedCollectionViewController *)self cardHeaderView];
+  [cardHeaderView bounds];
   MaxY = CGRectGetMaxY(v7);
-  v5 = [(CuratedCollectionViewController *)self view];
-  [v5 safeAreaInsets];
+  view = [(CuratedCollectionViewController *)self view];
+  [view safeAreaInsets];
   [(MapsThemeTableView *)self->_tableView setScrollIndicatorInsets:MaxY, 0.0];
 }
 
@@ -1138,22 +1138,22 @@ LABEL_4:
 
   [(CuratedCollectionHeaderView *)self->_cardHeaderView unscrolledHeightForCurrentLayout];
   v5 = v4;
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 availableHeight];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController availableHeight];
   if (v5 >= v7 + -10.0)
   {
-    v8 = [(ContaineeViewController *)self cardPresentationController];
-    [v8 availableHeight];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 availableHeight];
     v5 = v9 + -10.0;
   }
 
-  v10 = [(CuratedCollectionHeaderView *)self->_cardHeaderView layout];
-  if (v10 < 3)
+  layout = [(CuratedCollectionHeaderView *)self->_cardHeaderView layout];
+  if (layout < 3)
   {
     goto LABEL_11;
   }
 
-  if (v10 == 3)
+  if (layout == 3)
   {
     [(MapsThemeTableView *)self->_tableView isScrollEnabled];
 LABEL_11:
@@ -1162,7 +1162,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (v10 == 4)
+  if (layout == 4)
   {
     v11 = !self->_hasBeenInFullLayout;
     self->_hasBeenInFullLayout = 1;
@@ -1188,8 +1188,8 @@ LABEL_12:
     v13 = v12;
   }
 
-  v14 = [(CuratedCollectionViewController *)self view];
-  [v14 safeAreaInsets];
+  view = [(CuratedCollectionViewController *)self view];
+  [view safeAreaInsets];
   [(MapsThemeTableView *)self->_tableView setContentInset:v5, 0.0];
 
   if (v11)
@@ -1202,67 +1202,67 @@ LABEL_12:
   [(CuratedCollectionHeaderView *)cardHeaderView setTableViewContentOffset:v13];
 }
 
-- (void)setCuratedCollection:(id)a3
+- (void)setCuratedCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_curatedCollection != v5)
+  collectionCopy = collection;
+  if (self->_curatedCollection != collectionCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_curatedCollection, a3);
+    v9 = collectionCopy;
+    objc_storeStrong(&self->_curatedCollection, collection);
     [(CuratedCollectionViewAnalyticsController *)self->_analyticsController updateWithPlaceCollection:self->_curatedCollection];
     if (([(GEOPlaceCollection *)self->_curatedCollection isSuppressed]& 1) != 0 || [(GEOPlaceCollection *)self->_curatedCollection isBlocked])
     {
-      v6 = [(CuratedCollectionViewController *)self cardHeaderView];
-      [v6 removeFromSuperview];
+      cardHeaderView = [(CuratedCollectionViewController *)self cardHeaderView];
+      [cardHeaderView removeFromSuperview];
 
       [(MapsThemeTableView *)self->_tableView removeFromSuperview];
-      v7 = [(ContaineeViewController *)self cardPresentationController];
-      [v7 wantsLayout:2];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController wantsLayout:2];
     }
 
     else
     {
-      v7 = [(GEOPlaceCollection *)self->_curatedCollection collectionTitle];
-      v8 = [(CuratedCollectionViewController *)self fakeHeaderView];
-      [v8 setTitle:v7];
+      cardPresentationController = [(GEOPlaceCollection *)self->_curatedCollection collectionTitle];
+      fakeHeaderView = [(CuratedCollectionViewController *)self fakeHeaderView];
+      [fakeHeaderView setTitle:cardPresentationController];
     }
 
-    v5 = v9;
+    collectionCopy = v9;
   }
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
   v5.receiver = self;
   v5.super_class = CuratedCollectionViewController;
   [(ContaineeViewController *)&v5 applyAlphaToContent:?];
-  [(MapsThemeTableView *)self->_tableView setAlpha:a3];
+  [(MapsThemeTableView *)self->_tableView setAlpha:content];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  if (a3 == 3)
+  if (layout == 3)
   {
     if (sub_10000FA08(self) == 5)
     {
-      v6 = [(ContaineeViewController *)self cardPresentationController];
-      [v6 availableHeight];
+      cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController availableHeight];
       goto LABEL_10;
     }
 
 LABEL_12:
     v11.receiver = self;
     v11.super_class = CuratedCollectionViewController;
-    [(ContaineeViewController *)&v11 heightForLayout:a3];
+    [(ContaineeViewController *)&v11 heightForLayout:layout];
     return v9;
   }
 
-  if (a3 == 2)
+  if (layout == 2)
   {
     if (sub_10000FA08(self) == 5)
     {
-      v6 = [(CuratedCollectionViewController *)self cardHeaderView];
-      [v6 unscrolledHeightForLayout:4 transitionFraction:0.0];
+      cardPresentationController = [(CuratedCollectionViewController *)self cardHeaderView];
+      [cardPresentationController unscrolledHeightForLayout:4 transitionFraction:0.0];
       v5 = v8 + 6.0;
 LABEL_11:
 
@@ -1272,7 +1272,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 != 1)
+  if (layout != 1)
   {
     goto LABEL_12;
   }
@@ -1280,8 +1280,8 @@ LABEL_11:
   v5 = -1.0;
   if (sub_10000FA08(self) != 5)
   {
-    v6 = [(CuratedCollectionViewController *)self cardHeaderView];
-    [v6 unscrolledHeightForLayout:0 transitionFraction:0.0];
+    cardPresentationController = [(CuratedCollectionViewController *)self cardHeaderView];
+    [cardPresentationController unscrolledHeightForLayout:0 transitionFraction:0.0];
 LABEL_10:
     v5 = v7;
     goto LABEL_11;
@@ -1290,68 +1290,68 @@ LABEL_10:
   return v5;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CuratedCollectionViewController;
-  v7 = a4;
-  [(ContaineeViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(ContaineeViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1008452F0;
   v8[3] = &unk_101661710;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:&stru_10162BAA0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:&stru_10162BAA0];
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   v4.receiver = self;
   v4.super_class = CuratedCollectionViewController;
-  [(ContaineeViewController *)&v4 didChangeLayout:a3];
+  [(ContaineeViewController *)&v4 didChangeLayout:layout];
   self->_isChangingLayout = 0;
 }
 
-- (void)willChangeLayout:(unint64_t)a3
+- (void)willChangeLayout:(unint64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     self->_isChangingLayout = 1;
   }
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 containeeLayout];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containeeLayout = [cardPresentationController containeeLayout];
 
   v16.receiver = self;
   v16.super_class = CuratedCollectionViewController;
-  [(ContaineeViewController *)&v16 willChangeLayout:a3];
-  if (a3 >= 2)
+  [(ContaineeViewController *)&v16 willChangeLayout:layout];
+  if (layout >= 2)
   {
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    v8 = [v7 containeeLayout];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    containeeLayout2 = [cardPresentationController2 containeeLayout];
 
-    if (v8 < a3)
+    if (containeeLayout2 < layout)
     {
       [(CuratedCollectionViewAnalyticsController *)self->_analyticsController logPullUpCuratedCollectionView];
     }
   }
 
   [(CuratedCollectionViewController *)self _updateHeaderTransition];
-  v9 = [(CuratedCollectionViewController *)self errorView];
-  v10 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  [v10 frame];
-  [v9 setVerticalAdjustment:-v11];
+  errorView = [(CuratedCollectionViewController *)self errorView];
+  fakeHeaderView = [(CuratedCollectionViewController *)self fakeHeaderView];
+  [fakeHeaderView frame];
+  [errorView setVerticalAdjustment:-v11];
 
-  v12 = [(ContaineeViewController *)self cardPresentationController];
-  v13 = [v12 containerStyle];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController3 containerStyle];
 
-  v15 = v13 - 1 < 2 || (v13 & 0xFFFFFFFFFFFFFFFELL) == 4;
-  if (a3 - 3 <= 1 && v15)
+  v15 = containerStyle - 1 < 2 || (containerStyle & 0xFFFFFFFFFFFFFFFELL) == 4;
+  if (layout - 3 <= 1 && v15)
   {
-    if (v6)
+    if (containeeLayout)
     {
       [(CuratedCollectionViewController *)self _setWantsInsertInHistory];
     }
@@ -1363,20 +1363,20 @@ LABEL_10:
   v5.receiver = self;
   v5.super_class = CuratedCollectionViewController;
   [(ContaineeViewController *)&v5 didBecomeCurrent];
-  v3 = [(CuratedCollectionViewController *)self updateContentInjection];
+  updateContentInjection = [(CuratedCollectionViewController *)self updateContentInjection];
 
-  if (v3)
+  if (updateContentInjection)
   {
-    v4 = [(CuratedCollectionViewController *)self updateContentInjection];
-    (v4)[2](v4, self);
+    updateContentInjection2 = [(CuratedCollectionViewController *)self updateContentInjection];
+    (updateContentInjection2)[2](updateContentInjection2, self);
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CuratedCollectionViewController;
-  [(CuratedCollectionViewController *)&v4 viewDidDisappear:a3];
+  [(CuratedCollectionViewController *)&v4 viewDidDisappear:disappear];
   if ((([(CuratedCollectionViewController *)self isMovingFromParentViewController]& 1) != 0 || sub_10000FA08(self) == 5) && self->_wantsInsertInHistoryOnDismiss)
   {
     [(CuratedCollectionViewController *)self _insertInHistory];
@@ -1399,8 +1399,8 @@ LABEL_10:
   v42.receiver = self;
   v42.super_class = CuratedCollectionViewController;
   [(ContaineeViewController *)&v42 viewDidLoad];
-  v3 = [(CuratedCollectionViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"CuratedCollectionView"];
+  view = [(CuratedCollectionViewController *)self view];
+  [view setAccessibilityIdentifier:@"CuratedCollectionView"];
 
   v4 = sub_100843878();
   v5 = os_signpost_id_generate(v4);
@@ -1420,48 +1420,48 @@ LABEL_10:
   v8 = +[UIColor clearColor];
   [(MapsThemeTableView *)self->_tableView setBackgroundColor:v8];
 
-  v9 = [(MapsThemeTableView *)self->_tableView layer];
-  [v9 setAllowsGroupOpacity:0];
+  layer = [(MapsThemeTableView *)self->_tableView layer];
+  [layer setAllowsGroupOpacity:0];
 
-  v10 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
+  fakeHeaderView = [(CuratedCollectionViewController *)self fakeHeaderView];
+  [fakeHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v11 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  [v11 setDelegate:self];
+  fakeHeaderView2 = [(CuratedCollectionViewController *)self fakeHeaderView];
+  [fakeHeaderView2 setDelegate:self];
 
-  v12 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  [v12 setHairLineAlpha:0.0];
+  fakeHeaderView3 = [(CuratedCollectionViewController *)self fakeHeaderView];
+  [fakeHeaderView3 setHairLineAlpha:0.0];
 
-  v13 = [(ContaineeViewController *)self headerView];
-  v14 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  [v13 addSubview:v14];
+  headerView = [(ContaineeViewController *)self headerView];
+  fakeHeaderView4 = [(CuratedCollectionViewController *)self fakeHeaderView];
+  [headerView addSubview:fakeHeaderView4];
 
-  v15 = [(CuratedCollectionViewController *)self cardHeaderView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  cardHeaderView = [(CuratedCollectionViewController *)self cardHeaderView];
+  [cardHeaderView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v39 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  v37 = [v39 topAnchor];
-  v38 = [(ContaineeViewController *)self headerView];
-  v36 = [v38 topAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  fakeHeaderView5 = [(CuratedCollectionViewController *)self fakeHeaderView];
+  topAnchor = [fakeHeaderView5 topAnchor];
+  headerView2 = [(ContaineeViewController *)self headerView];
+  topAnchor2 = [headerView2 topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v43[0] = v35;
-  v34 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  v32 = [v34 leadingAnchor];
-  v33 = [(ContaineeViewController *)self headerView];
-  v31 = [v33 leadingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  fakeHeaderView6 = [(CuratedCollectionViewController *)self fakeHeaderView];
+  leadingAnchor = [fakeHeaderView6 leadingAnchor];
+  headerView3 = [(ContaineeViewController *)self headerView];
+  leadingAnchor2 = [headerView3 leadingAnchor];
+  v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v43[1] = v30;
-  v29 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  v28 = [v29 trailingAnchor];
-  v16 = [(ContaineeViewController *)self headerView];
-  v17 = [v16 trailingAnchor];
-  v18 = [v28 constraintEqualToAnchor:v17];
+  fakeHeaderView7 = [(CuratedCollectionViewController *)self fakeHeaderView];
+  trailingAnchor = [fakeHeaderView7 trailingAnchor];
+  headerView4 = [(ContaineeViewController *)self headerView];
+  trailingAnchor2 = [headerView4 trailingAnchor];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v43[2] = v18;
-  v19 = [(CuratedCollectionViewController *)self fakeHeaderView];
-  v20 = [v19 bottomAnchor];
-  v21 = [(ContaineeViewController *)self headerView];
-  v22 = [v21 bottomAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  fakeHeaderView8 = [(CuratedCollectionViewController *)self fakeHeaderView];
+  bottomAnchor = [fakeHeaderView8 bottomAnchor];
+  headerView5 = [(ContaineeViewController *)self headerView];
+  bottomAnchor2 = [headerView5 bottomAnchor];
+  v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v43[3] = v23;
   v24 = [NSArray arrayWithObjects:v43 count:4];
   [NSLayoutConstraint activateConstraints:v24];
@@ -1477,26 +1477,26 @@ LABEL_10:
   }
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(CuratedCollectionViewController *)self collectionProvider];
-  v8 = [v7 keyCommands];
-  v9 = [v8 containsObject:v6];
+  senderCopy = sender;
+  collectionProvider = [(CuratedCollectionViewController *)self collectionProvider];
+  keyCommands = [collectionProvider keyCommands];
+  v9 = [keyCommands containsObject:senderCopy];
 
   if (v9)
   {
-    v10 = [(CuratedCollectionViewController *)self collectionProvider];
+    collectionProvider2 = [(CuratedCollectionViewController *)self collectionProvider];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = CuratedCollectionViewController;
-    v10 = [(CuratedCollectionViewController *)&v13 targetForAction:a3 withSender:v6];
+    collectionProvider2 = [(CuratedCollectionViewController *)&v13 targetForAction:action withSender:senderCopy];
   }
 
-  v11 = v10;
+  v11 = collectionProvider2;
 
   return v11;
 }
@@ -1505,16 +1505,16 @@ LABEL_10:
 {
   v10.receiver = self;
   v10.super_class = CuratedCollectionViewController;
-  v3 = [(ContaineeViewController *)&v10 keyCommands];
-  v4 = [v3 mutableCopy];
+  keyCommands = [(ContaineeViewController *)&v10 keyCommands];
+  v4 = [keyCommands mutableCopy];
 
-  v5 = [(CuratedCollectionViewController *)self presentedViewController];
+  presentedViewController = [(CuratedCollectionViewController *)self presentedViewController];
 
-  if (!v5)
+  if (!presentedViewController)
   {
-    v6 = [(CuratedCollectionViewController *)self collectionProvider];
-    v7 = [v6 keyCommands];
-    [v4 addObjectsFromArray:v7];
+    collectionProvider = [(CuratedCollectionViewController *)self collectionProvider];
+    keyCommands2 = [collectionProvider keyCommands];
+    [v4 addObjectsFromArray:keyCommands2];
   }
 
   v8 = [v4 copy];
@@ -1522,11 +1522,11 @@ LABEL_10:
   return v8;
 }
 
-- (void)_commonInitWithCuratedCollectionProvider:(id)a3 identifier:(id)a4
+- (void)_commonInitWithCuratedCollectionProvider:(id)provider identifier:(id)identifier
 {
-  v22 = a3;
-  objc_storeStrong(&self->_collectionProvider, a3);
-  v7 = a4;
+  providerCopy = provider;
+  objc_storeStrong(&self->_collectionProvider, provider);
+  identifierCopy = identifier;
   [(DataSource *)self->_collectionProvider setDelegate:self];
   [(MapsThemeTableView *)self->_tableView setPreservesSuperviewLayoutMargins:1];
   v8 = [[ContainerHeaderView alloc] initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
@@ -1537,7 +1537,7 @@ LABEL_10:
   cardHeaderView = self->_cardHeaderView;
   self->_cardHeaderView = v10;
 
-  v12 = [[CuratedCollectionViewAnalyticsController alloc] initWithCollectionIdentifier:v7];
+  v12 = [[CuratedCollectionViewAnalyticsController alloc] initWithCollectionIdentifier:identifierCopy];
   analyticsController = self->_analyticsController;
   self->_analyticsController = v12;
 
@@ -1545,15 +1545,15 @@ LABEL_10:
   [(CuratedCollectionProvider *)self->_collectionProvider setAnalyticsController:self->_analyticsController];
   if (sub_10000FA08(self) == 5)
   {
-    v14 = [(ContaineeViewController *)self cardPresentationController];
-    [v14 setAllowResizeInFloatingStyle:1];
+    cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController setAllowResizeInFloatingStyle:1];
 
-    v15 = [(ContaineeViewController *)self cardPresentationController];
-    [v15 setDefaultContaineeLayout:3];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 setDefaultContaineeLayout:3];
   }
 
-  v16 = [(ContaineeViewController *)self cardPresentationController];
-  [v16 setGrabberBlurEnabled:1];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 setGrabberBlurEnabled:1];
 
   v17 = [LoadingModeView alloc];
   v18 = +[NSBundle mainBundle];
@@ -1565,9 +1565,9 @@ LABEL_10:
   [(LoadingModeView *)self->_loadingView setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (CuratedCollectionViewController)initWithFullyClientizedPlaceCollection:(id)a3
+- (CuratedCollectionViewController)initWithFullyClientizedPlaceCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v13.receiver = self;
   v13.super_class = CuratedCollectionViewController;
   v5 = [(CuratedCollectionViewController *)&v13 initWithNibName:0 bundle:0];
@@ -1577,21 +1577,21 @@ LABEL_10:
     tableView = v5->_tableView;
     v5->_tableView = v6;
 
-    v8 = [[CuratedCollectionProvider alloc] initWithTableView:v5->_tableView fullyClientizedCuratedCollection:v4];
+    v8 = [[CuratedCollectionProvider alloc] initWithTableView:v5->_tableView fullyClientizedCuratedCollection:collectionCopy];
     v9 = [MKMapItemIdentifier alloc];
-    v10 = [v4 collectionIdentifier];
-    v11 = [v9 initWithGEOMapItemIdentifier:v10];
+    collectionIdentifier = [collectionCopy collectionIdentifier];
+    v11 = [v9 initWithGEOMapItemIdentifier:collectionIdentifier];
 
     [(CuratedCollectionViewController *)v5 _commonInitWithCuratedCollectionProvider:v8 identifier:v11];
-    [(CuratedCollectionViewAnalyticsController *)v5->_analyticsController updateWithPlaceCollection:v4];
+    [(CuratedCollectionViewAnalyticsController *)v5->_analyticsController updateWithPlaceCollection:collectionCopy];
   }
 
   return v5;
 }
 
-- (CuratedCollectionViewController)initWithCuratedCollectionIdentifier:(id)a3
+- (CuratedCollectionViewController)initWithCuratedCollectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = CuratedCollectionViewController;
   v5 = [(CuratedCollectionViewController *)&v10 initWithNibName:0 bundle:0];
@@ -1602,8 +1602,8 @@ LABEL_10:
     v5->_tableView = v6;
 
     [(MapsThemeTableView *)v5->_tableView setAccessibilityIdentifier:@"CuratedCollectionTableView"];
-    v8 = [[CuratedCollectionProvider alloc] initWithTableView:v5->_tableView curatedCollectionIdentifier:v4];
-    [(CuratedCollectionViewController *)v5 _commonInitWithCuratedCollectionProvider:v8 identifier:v4];
+    v8 = [[CuratedCollectionProvider alloc] initWithTableView:v5->_tableView curatedCollectionIdentifier:identifierCopy];
+    [(CuratedCollectionViewController *)v5 _commonInitWithCuratedCollectionProvider:v8 identifier:identifierCopy];
   }
 
   return v5;

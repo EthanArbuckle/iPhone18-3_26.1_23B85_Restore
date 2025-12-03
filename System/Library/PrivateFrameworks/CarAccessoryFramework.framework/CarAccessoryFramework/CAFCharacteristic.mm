@@ -1,13 +1,13 @@
 @interface CAFCharacteristic
-+ (CAFCharacteristic)characteristicWithService:(id)a3 config:(id)a4;
++ (CAFCharacteristic)characteristicWithService:(id)service config:(id)config;
 + (id)characteristicFormats;
 + (id)registeredCharacteristicClasses;
 + (void)load;
-+ (void)registerCharacteristicClass:(Class)a3;
-- (BOOL)_lock_setError:(id)a3;
++ (void)registerCharacteristicClass:(Class)class;
+- (BOOL)_lock_setError:(id)error;
 - (BOOL)hasError;
 - (BOOL)isCurrent;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInitializing;
 - (BOOL)isInvalid;
 - (BOOL)supportsDisable;
@@ -17,7 +17,7 @@
 - (BOOL)supportsStates;
 - (CAFAccessory)accessory;
 - (CAFCar)car;
-- (CAFCharacteristic)initWithService:(id)a3 config:(id)a4;
+- (CAFCharacteristic)initWithService:(id)service config:(id)config;
 - (CAFService)service;
 - (NSError)error;
 - (NSString)baseFormat;
@@ -26,7 +26,7 @@
 - (NSString)formattedValue;
 - (NSString)fullDescription;
 - (id)allInstanceIDs;
-- (id)currentDescriptionForCache:(id)a3;
+- (id)currentDescriptionForCache:(id)cache;
 - (id)pluginID;
 - (id)propertiesDescription;
 - (id)readInstanceIDs;
@@ -34,20 +34,20 @@
 - (id)value;
 - (unint64_t)hash;
 - (unint64_t)state;
-- (void)_didUpdateFromGroupUpdate:(BOOL)a3;
-- (void)_readValueCompletionTransactionID:(unint64_t)a3 error:(id)a4;
+- (void)_didUpdateFromGroupUpdate:(BOOL)update;
+- (void)_readValueCompletionTransactionID:(unint64_t)d error:(id)error;
 - (void)_updateStateIfNeeded;
 - (void)dealloc;
 - (void)groupInitializationRequested;
-- (void)handleError:(id)a3 value:(id)a4;
-- (void)handleUpdateWithInstanceID:(id)a3 value:(id)a4;
-- (void)handleValueAndError:(id)a3 value:(id)a4;
-- (void)handleWrite:(id)a3 value:(id)a4;
-- (void)registerObserver:(id)a3;
-- (void)setError:(id)a3;
-- (void)setValue:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateValueRequiringRead:(BOOL)a3;
+- (void)handleError:(id)error value:(id)value;
+- (void)handleUpdateWithInstanceID:(id)d value:(id)value;
+- (void)handleValueAndError:(id)error value:(id)value;
+- (void)handleWrite:(id)write value:(id)value;
+- (void)registerObserver:(id)observer;
+- (void)setError:(id)error;
+- (void)setValue:(id)value;
+- (void)unregisterObserver:(id)observer;
+- (void)updateValueRequiringRead:(BOOL)read;
 @end
 
 @implementation CAFCharacteristic
@@ -63,7 +63,7 @@
   }
 }
 
-+ (void)registerCharacteristicClass:(Class)a3
++ (void)registerCharacteristicClass:(Class)class
 {
   v15 = *MEMORY[0x277D85DE8];
   if (registerCharacteristicClass__onceToken != -1)
@@ -77,8 +77,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(objc_class *)a3 characteristicFormats];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  characteristicFormats = [(objc_class *)class characteristicFormats];
+  v6 = [characteristicFormats countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -88,13 +88,13 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(characteristicFormats);
         }
 
-        [_registeredCharacteristicClasses setObject:a3 forKeyedSubscript:*(*(&v10 + 1) + 8 * i)];
+        [_registeredCharacteristicClasses setObject:class forKeyedSubscript:*(*(&v10 + 1) + 8 * i)];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [characteristicFormats countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -121,17 +121,17 @@ uint64_t __49__CAFCharacteristic_registerCharacteristicClass___block_invoke()
   return v3;
 }
 
-+ (CAFCharacteristic)characteristicWithService:(id)a3 config:(id)a4
++ (CAFCharacteristic)characteristicWithService:(id)service config:(id)config
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [CAFCarConfiguration getType:v5];
+  configCopy = config;
+  serviceCopy = service;
+  v7 = [CAFCarConfiguration getType:configCopy];
   v8 = +[CAFCharacteristic registeredCharacteristicClasses];
   v9 = [v8 objectForKeyedSubscript:v7];
 
   if (!v9)
   {
-    v10 = [v5 objectForKeyedSubscript:@"format"];
+    v10 = [configCopy objectForKeyedSubscript:@"format"];
     v11 = NSStringFromCharacteristicMetadataFormat([v10 intValue]);
 
     if (!v11 || (+[CAFCharacteristic registeredCharacteristicClasses](CAFCharacteristic, "registeredCharacteristicClasses"), v12 = objc_claimAutoreleasedReturnValue(), v9 = [v12 objectForKeyedSubscript:v11], v12, v11, !v9))
@@ -140,15 +140,15 @@ uint64_t __49__CAFCharacteristic_registerCharacteristicClass___block_invoke()
     }
   }
 
-  v13 = [[v9 alloc] initWithService:v6 config:v5];
+  v13 = [[v9 alloc] initWithService:serviceCopy config:configCopy];
 
   return v13;
 }
 
-- (CAFCharacteristic)initWithService:(id)a3 config:(id)a4
+- (CAFCharacteristic)initWithService:(id)service config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  configCopy = config;
   v58.receiver = self;
   v58.super_class = CAFCharacteristic;
   v8 = [(CAFCharacteristic *)&v58 init];
@@ -159,9 +159,9 @@ uint64_t __49__CAFCharacteristic_registerCharacteristicClass___block_invoke()
   }
 
   v8->_valueLock._os_unfair_lock_opaque = 0;
-  objc_storeWeak(&v8->_service, v6);
+  objc_storeWeak(&v8->_service, serviceCopy);
   objc_opt_class();
-  v10 = [v7 objectForKeyedSubscript:@"iid"];
+  v10 = [configCopy objectForKeyedSubscript:@"iid"];
   if (v10 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v11 = v10;
@@ -176,7 +176,7 @@ uint64_t __49__CAFCharacteristic_registerCharacteristicClass___block_invoke()
   v9->_instanceID = v11;
 
   objc_opt_class();
-  v13 = [v7 objectForKeyedSubscript:@"iidError"];
+  v13 = [configCopy objectForKeyedSubscript:@"iidError"];
   if (v13 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v14 = v13;
@@ -191,7 +191,7 @@ uint64_t __49__CAFCharacteristic_registerCharacteristicClass___block_invoke()
   v9->_errorInstanceID = v14;
 
   objc_opt_class();
-  v16 = [v7 objectForKeyedSubscript:@"iidDisabled"];
+  v16 = [configCopy objectForKeyedSubscript:@"iidDisabled"];
   if (v16 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v17 = v16;
@@ -206,7 +206,7 @@ uint64_t __49__CAFCharacteristic_registerCharacteristicClass___block_invoke()
   v9->_disabledInstanceID = v17;
 
   objc_opt_class();
-  v19 = [v7 objectForKeyedSubscript:@"iidNotifier"];
+  v19 = [configCopy objectForKeyedSubscript:@"iidNotifier"];
   if (v19 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v20 = v19;
@@ -221,7 +221,7 @@ uint64_t __49__CAFCharacteristic_registerCharacteristicClass___block_invoke()
   v9->_notifierInstanceID = v20;
 
   objc_opt_class();
-  v22 = [v7 objectForKeyedSubscript:@"iidRestricted"];
+  v22 = [configCopy objectForKeyedSubscript:@"iidRestricted"];
   if (v22 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v23 = v22;
@@ -240,13 +240,13 @@ uint64_t __49__CAFCharacteristic_registerCharacteristicClass___block_invoke()
     v37 = CAFCharacteristicLogging();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      [CAFCharacteristic initWithService:v6 config:?];
+      [CAFCharacteristic initWithService:serviceCopy config:?];
     }
 
     goto LABEL_31;
   }
 
-  v25 = [CAFCarConfiguration getType:v7];
+  v25 = [CAFCarConfiguration getType:configCopy];
   characteristicType = v9->_characteristicType;
   v9->_characteristicType = v25;
 
@@ -255,7 +255,7 @@ uint64_t __49__CAFCharacteristic_registerCharacteristicClass___block_invoke()
     v37 = CAFCharacteristicLogging();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
-      [CAFCharacteristic initWithService:v6 config:&v9->_instanceID];
+      [CAFCharacteristic initWithService:serviceCopy config:&v9->_instanceID];
     }
 
 LABEL_31:
@@ -263,8 +263,8 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v27 = [v6 pluginID];
-  v28 = [CAFCarConfiguration getUUID:v27 instanceID:v9->_instanceID];
+  pluginID = [serviceCopy pluginID];
+  v28 = [CAFCarConfiguration getUUID:pluginID instanceID:v9->_instanceID];
   uniqueIdentifier = v9->_uniqueIdentifier;
   v9->_uniqueIdentifier = v28;
 
@@ -272,12 +272,12 @@ LABEL_31:
   typeName = v9->_typeName;
   v9->_typeName = v30;
 
-  v32 = [v7 objectForKeyedSubscript:@"initialValue"];
+  v32 = [configCopy objectForKeyedSubscript:@"initialValue"];
   if (v32)
   {
     v9->_hasInitialValue = 1;
-    v33 = [MEMORY[0x277CBEB68] null];
-    v34 = [v32 isEqual:v33];
+    null = [MEMORY[0x277CBEB68] null];
+    v34 = [v32 isEqual:null];
 
     v35 = [CAFCharacteristicValue alloc];
     if (v34)
@@ -295,16 +295,16 @@ LABEL_31:
     v9->_characteristicValue = v39;
   }
 
-  v41 = [[CAFCharacteristicMetadata alloc] initWithConfig:v7];
+  v41 = [[CAFCharacteristicMetadata alloc] initWithConfig:configCopy];
   metaData = v9->_metaData;
   v9->_metaData = v41;
 
   if (v9->_metaData)
   {
-    v9->_writable = [CAFCarConfiguration getBoolean:v7 key:@"writable"];
-    v9->_isMutable = [CAFCarConfiguration getBoolean:v7 key:@"mutable"];
+    v9->_writable = [CAFCarConfiguration getBoolean:configCopy key:@"writable"];
+    v9->_isMutable = [CAFCarConfiguration getBoolean:configCopy key:@"mutable"];
     objc_opt_class();
-    v43 = [v7 objectForKeyedSubscript:@"priority"];
+    v43 = [configCopy objectForKeyedSubscript:@"priority"];
     if (v43 && (objc_opt_isKindOfClass() & 1) != 0)
     {
       v44 = v43;
@@ -318,16 +318,16 @@ LABEL_31:
     priority = v9->_priority;
     v9->_priority = v44;
 
-    v9->_hasLargePayload = [CAFCarConfiguration getBoolean:v7 key:@"largePayload"];
-    v9->_supportsInvalid = [CAFCarConfiguration getBoolean:v7 key:@"supportsInvalid"];
+    v9->_hasLargePayload = [CAFCarConfiguration getBoolean:configCopy key:@"largePayload"];
+    v9->_supportsInvalid = [CAFCarConfiguration getBoolean:configCopy key:@"supportsInvalid"];
     v9->_isNotificationEnabled = 0;
     v46 = [(CAFCharacteristic *)v9 car];
-    v47 = [v46 carManager];
-    v9->_shouldInitialize = [v47 shouldInitializeCharacteristic:v9];
+    carManager = [v46 carManager];
+    v9->_shouldInitialize = [carManager shouldInitializeCharacteristic:v9];
 
     v48 = objc_alloc(MEMORY[0x277CF89C0]);
-    v49 = [objc_opt_class() observerProtocol];
-    v50 = [v48 initWithProtocol:v49];
+    observerProtocol = [objc_opt_class() observerProtocol];
+    v50 = [v48 initWithProtocol:observerProtocol];
     observers = v9->_observers;
     v9->_observers = v50;
 
@@ -377,7 +377,7 @@ LABEL_52:
   v56 = CAFCharacteristicLogging();
   if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
   {
-    [CAFCharacteristic initWithService:v6 config:&v9->_instanceID];
+    [CAFCharacteristic initWithService:serviceCopy config:&v9->_instanceID];
   }
 
 LABEL_32:
@@ -399,16 +399,16 @@ LABEL_53:
 
 - (unint64_t)hash
 {
-  v2 = [(CAFCharacteristic *)self uniqueIdentifier];
-  v3 = [v2 hash];
+  uniqueIdentifier = [(CAFCharacteristic *)self uniqueIdentifier];
+  v3 = [uniqueIdentifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -418,9 +418,9 @@ LABEL_53:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CAFCharacteristic *)v4 uniqueIdentifier];
-      v6 = [(CAFCharacteristic *)self uniqueIdentifier];
-      v7 = [v5 isEqual:v6];
+      uniqueIdentifier = [(CAFCharacteristic *)equalCopy uniqueIdentifier];
+      uniqueIdentifier2 = [(CAFCharacteristic *)self uniqueIdentifier];
+      v7 = [uniqueIdentifier isEqual:uniqueIdentifier2];
     }
 
     else
@@ -434,18 +434,18 @@ LABEL_53:
 
 - (CAFCar)car
 {
-  v2 = [(CAFCharacteristic *)self accessory];
-  v3 = [v2 car];
+  accessory = [(CAFCharacteristic *)self accessory];
+  v3 = [accessory car];
 
   return v3;
 }
 
 - (CAFAccessory)accessory
 {
-  v2 = [(CAFCharacteristic *)self service];
-  v3 = [v2 accessory];
+  service = [(CAFCharacteristic *)self service];
+  accessory = [service accessory];
 
-  return v3;
+  return accessory;
 }
 
 - (BOOL)isCurrent
@@ -492,10 +492,10 @@ LABEL_53:
   return v3;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valueCopy = value;
   if ([(CAFCharacteristic *)self writable])
   {
     if ([(CAFCharacteristic *)self isDisabled])
@@ -509,10 +509,10 @@ LABEL_53:
       goto LABEL_19;
     }
 
-    v7 = [(CAFCharacteristic *)self isInitializing];
+    isInitializing = [(CAFCharacteristic *)self isInitializing];
     v5 = CAFCharacteristicLogging();
     v8 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-    if (v7)
+    if (isInitializing)
     {
       if (v8)
       {
@@ -540,10 +540,10 @@ LABEL_18:
         os_unfair_lock_lock(&self->_valueLock);
         [(CAFCharacteristic *)self setLockState:5];
         v20 = 0;
-        v5 = [(CAFCharacteristic *)self encodeValue:v4 error:&v20];
+        v5 = [(CAFCharacteristic *)self encodeValue:valueCopy error:&v20];
         v15 = v20;
         [(CAFCharacteristic *)self _lock_setError:v15];
-        [(CAFCharacteristic *)self setPendingValue:v4];
+        [(CAFCharacteristic *)self setPendingValue:valueCopy];
         [(CAFCharacteristic *)self setTransactionId:[(CAFCharacteristic *)self transactionId]+ 1];
         os_unfair_lock_unlock(&self->_valueLock);
         [(CAFCharacteristic *)self _didUpdateFromGroupUpdate:0];
@@ -570,23 +570,23 @@ LABEL_18:
 
     if (os_signpost_enabled(v9))
     {
-      v12 = [(CAFCharacteristic *)self name];
-      v13 = [(CAFCharacteristic *)self pluginID];
-      v14 = [(CAFCharacteristic *)self instanceID];
+      name = [(CAFCharacteristic *)self name];
+      pluginID = [(CAFCharacteristic *)self pluginID];
+      instanceID = [(CAFCharacteristic *)self instanceID];
       *buf = 138543874;
-      v22 = v12;
+      v22 = name;
       v23 = 2114;
-      v24 = v13;
+      v24 = pluginID;
       v25 = 2114;
-      v26 = v14;
+      v26 = instanceID;
       _os_signpost_emit_with_name_impl(&dword_231618000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v11, "Set", "Characteristic: %{public}@ pluginID: %{public}@ instanceID: %{public}@", buf, 0x20u);
     }
 
     goto LABEL_18;
   }
 
-  v6 = [MEMORY[0x277CCA9B8] CAF_writeToReadonlyError];
-  [(CAFCharacteristic *)self setError:v6];
+  cAF_writeToReadonlyError = [MEMORY[0x277CCA9B8] CAF_writeToReadonlyError];
+  [(CAFCharacteristic *)self setError:cAF_writeToReadonlyError];
 
   v5 = CAFCharacteristicLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -642,8 +642,8 @@ LABEL_7:
 
 - (NSString)formattedValue
 {
-  v2 = [(CAFCharacteristic *)self value];
-  v3 = [v2 description];
+  value = [(CAFCharacteristic *)self value];
+  v3 = [value description];
   v4 = v3;
   if (v3)
   {
@@ -662,16 +662,16 @@ LABEL_7:
 
 - (BOOL)isInvalid
 {
-  v2 = [(CAFCharacteristic *)self cachedValue];
-  v3 = v2 == 0;
+  cachedValue = [(CAFCharacteristic *)self cachedValue];
+  v3 = cachedValue == 0;
 
   return v3;
 }
 
 - (BOOL)hasError
 {
-  v2 = [(CAFCharacteristic *)self error];
-  v3 = v2 != 0;
+  error = [(CAFCharacteristic *)self error];
+  v3 = error != 0;
 
   return v3;
 }
@@ -685,11 +685,11 @@ LABEL_7:
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_valueLock);
-  v5 = [(CAFCharacteristic *)self _lock_setError:v4];
+  v5 = [(CAFCharacteristic *)self _lock_setError:errorCopy];
 
   os_unfair_lock_unlock(&self->_valueLock);
   if (v5)
@@ -699,21 +699,21 @@ LABEL_7:
   }
 }
 
-- (BOOL)_lock_setError:(id)a3
+- (BOOL)_lock_setError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   error = self->_error;
   p_error = &self->_error;
   v8 = BSEqualObjects();
   if ((v8 & 1) == 0)
   {
-    objc_storeStrong(p_error, a3);
+    objc_storeStrong(p_error, error);
   }
 
   return v8 ^ 1;
 }
 
-- (void)updateValueRequiringRead:(BOOL)a3
+- (void)updateValueRequiringRead:(BOOL)read
 {
   v38 = *MEMORY[0x277D85DE8];
   v5 = CARSignpostLogForCategory();
@@ -723,15 +723,15 @@ LABEL_7:
   {
     if (os_signpost_enabled(v5))
     {
-      v9 = [(CAFCharacteristic *)self name];
-      v10 = [(CAFCharacteristic *)self pluginID];
-      v11 = [(CAFCharacteristic *)self instanceID];
+      name = [(CAFCharacteristic *)self name];
+      pluginID = [(CAFCharacteristic *)self pluginID];
+      instanceID = [(CAFCharacteristic *)self instanceID];
       *buf = 138543874;
-      v33 = v9;
+      v33 = name;
       v34 = 2114;
-      v35 = v10;
+      v35 = pluginID;
       v36 = 2114;
-      v37 = v11;
+      v37 = instanceID;
       _os_signpost_emit_with_name_impl(&dword_231618000, v5, OS_SIGNPOST_INTERVAL_BEGIN, v7, "Get", "Characteristic: %{public}@ pluginID: %{public}@ instanceID: %{public}@", buf, 0x20u);
     }
   }
@@ -742,17 +742,17 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (!a3)
+  if (!read)
   {
-    v12 = [(CAFCharacteristic *)self characteristicValue];
-    v13 = v12 == 0;
+    characteristicValue = [(CAFCharacteristic *)self characteristicValue];
+    v13 = characteristicValue == 0;
 
     if (!v13)
     {
-      v14 = [(CAFCharacteristic *)self characteristicValue];
-      v15 = [v14 value];
+      characteristicValue2 = [(CAFCharacteristic *)self characteristicValue];
+      value = [characteristicValue2 value];
       v31 = 0;
-      v16 = [(CAFCharacteristic *)self decodeValue:v15 error:&v31];
+      v16 = [(CAFCharacteristic *)self decodeValue:value error:&v31];
       v17 = v31;
 
       [(CAFCharacteristic *)self _lock_setError:v17];
@@ -798,10 +798,10 @@ LABEL_12:
 
   else
   {
-    v22 = [(CAFCharacteristic *)self characteristicValue];
-    v23 = [v22 value];
+    characteristicValue3 = [(CAFCharacteristic *)self characteristicValue];
+    value2 = [characteristicValue3 value];
     v30 = 0;
-    v24 = [(CAFCharacteristic *)self decodeValue:v23 error:&v30];
+    v24 = [(CAFCharacteristic *)self decodeValue:value2 error:&v30];
     v25 = v30;
     [(CAFCharacteristic *)self setPendingValue:v24];
 
@@ -866,23 +866,23 @@ void __46__CAFCharacteristic_updateValueRequiringRead___block_invoke(uint64_t a1
 LABEL_7:
 }
 
-- (void)_readValueCompletionTransactionID:(unint64_t)a3 error:(id)a4
+- (void)_readValueCompletionTransactionID:(unint64_t)d error:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   os_unfair_lock_lock(&self->_valueLock);
-  v7 = [(CAFCharacteristic *)self transactionId];
-  if (v7 == a3)
+  transactionId = [(CAFCharacteristic *)self transactionId];
+  if (transactionId == d)
   {
-    v8 = [(CAFCharacteristic *)self characteristicValue];
-    v9 = [v8 value];
+    characteristicValue = [(CAFCharacteristic *)self characteristicValue];
+    value = [characteristicValue value];
     v18 = 0;
-    v10 = [(CAFCharacteristic *)self decodeValue:v9 error:&v18];
+    v10 = [(CAFCharacteristic *)self decodeValue:value error:&v18];
     v11 = v18;
 
-    if (v6)
+    if (errorCopy)
     {
-      v12 = v6;
+      v12 = errorCopy;
     }
 
     else
@@ -899,13 +899,13 @@ LABEL_7:
     v15 = CAFCharacteristicLogging();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(CAFCharacteristic *)self fullDescription];
+      fullDescription = [(CAFCharacteristic *)self fullDescription];
       *buf = 138543874;
-      v20 = v17;
+      v20 = fullDescription;
       v21 = 2114;
-      v22 = v10;
+      dCopy = v10;
       v23 = 2114;
-      v24 = v6;
+      v24 = errorCopy;
       _os_log_debug_impl(&dword_231618000, v15, OS_LOG_TYPE_DEBUG, "%{public}@ readValue completion: value=%{public}@ error=<%{public}@>", buf, 0x20u);
     }
 
@@ -914,16 +914,16 @@ LABEL_7:
 
   else
   {
-    v13 = v7;
+    v13 = transactionId;
     os_unfair_lock_unlock(&self->_valueLock);
     v10 = CAFCharacteristicLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [(CAFCharacteristic *)self fullDescription];
+      fullDescription2 = [(CAFCharacteristic *)self fullDescription];
       *buf = 138543874;
-      v20 = v14;
+      v20 = fullDescription2;
       v21 = 2048;
-      v22 = a3;
+      dCopy = d;
       v23 = 2048;
       v24 = v13;
       _os_log_debug_impl(&dword_231618000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ readValue completion: transactionID %lu != %lu", buf, 0x20u);
@@ -942,30 +942,30 @@ LABEL_7:
 
 - (NSString)baseFormat
 {
-  v2 = [(CAFCharacteristic *)self metaData];
-  v3 = [v2 formatString];
+  metaData = [(CAFCharacteristic *)self metaData];
+  formatString = [metaData formatString];
 
-  return v3;
+  return formatString;
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFCharacteristic *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFCharacteristic *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAFCharacteristic *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(CAFCharacteristic *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
 - (NSString)description
 {
-  v2 = [(CAFCharacteristic *)self cachedDescription];
-  v3 = [v2 description];
+  cachedDescription = [(CAFCharacteristic *)self cachedDescription];
+  v3 = [cachedDescription description];
 
   return v3;
 }
@@ -973,9 +973,9 @@ LABEL_7:
 - (unint64_t)state
 {
   os_unfair_lock_lock(&self->_valueLock);
-  v3 = [(CAFCharacteristic *)self lockState];
+  lockState = [(CAFCharacteristic *)self lockState];
   os_unfair_lock_unlock(&self->_valueLock);
-  return v3;
+  return lockState;
 }
 
 - (void)_updateStateIfNeeded
@@ -990,7 +990,7 @@ LABEL_7:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didUpdateFromGroupUpdate:(BOOL)a3
+- (void)_didUpdateFromGroupUpdate:(BOOL)update
 {
   v5 = dispatch_get_global_queue(33, 0);
   v6[0] = MEMORY[0x277D85DD0];
@@ -998,7 +998,7 @@ LABEL_7:
   v6[2] = __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke;
   v6[3] = &unk_27890F4A0;
   v6[4] = self;
-  v7 = a3;
+  updateCopy = update;
   dispatch_async(v5, v6);
 }
 
@@ -1024,32 +1024,32 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
 
 - (BOOL)supportsError
 {
-  v2 = [(CAFCharacteristic *)self errorInstanceID];
-  v3 = v2 != 0;
+  errorInstanceID = [(CAFCharacteristic *)self errorInstanceID];
+  v3 = errorInstanceID != 0;
 
   return v3;
 }
 
 - (BOOL)supportsDisable
 {
-  v2 = [(CAFCharacteristic *)self disabledInstanceID];
-  v3 = v2 != 0;
+  disabledInstanceID = [(CAFCharacteristic *)self disabledInstanceID];
+  v3 = disabledInstanceID != 0;
 
   return v3;
 }
 
 - (BOOL)supportsRestricted
 {
-  v2 = [(CAFCharacteristic *)self restrictedInstanceID];
-  v3 = v2 != 0;
+  restrictedInstanceID = [(CAFCharacteristic *)self restrictedInstanceID];
+  v3 = restrictedInstanceID != 0;
 
   return v3;
 }
 
 - (BOOL)supportsNotifier
 {
-  v2 = [(CAFCharacteristic *)self notifierInstanceID];
-  v3 = v2 != 0;
+  notifierInstanceID = [(CAFCharacteristic *)self notifierInstanceID];
+  v3 = notifierInstanceID != 0;
 
   return v3;
 }
@@ -1059,9 +1059,9 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
   v3 = &stru_284626CA8;
   if ([(CAFCharacteristic *)self notifies])
   {
-    v4 = [(CAFCharacteristic *)self isNotificationEnabled];
+    isNotificationEnabled = [(CAFCharacteristic *)self isNotificationEnabled];
     v5 = @"n";
-    if (v4)
+    if (isNotificationEnabled)
     {
       v5 = @"N";
     }
@@ -1130,9 +1130,9 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
     v12 = &stru_284626CA8;
   }
 
-  v13 = [(CAFCharacteristic *)self supportsStates];
+  supportsStates = [(CAFCharacteristic *)self supportsStates];
   v14 = @"S";
-  if (!v13)
+  if (!supportsStates)
   {
     v14 = &stru_284626CA8;
   }
@@ -1145,39 +1145,39 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
 - (id)allInstanceIDs
 {
   v3 = objc_opt_new();
-  v4 = [(CAFCharacteristic *)self instanceID];
-  [v3 addObject:v4];
+  instanceID = [(CAFCharacteristic *)self instanceID];
+  [v3 addObject:instanceID];
 
-  v5 = [(CAFCharacteristic *)self errorInstanceID];
+  errorInstanceID = [(CAFCharacteristic *)self errorInstanceID];
 
-  if (v5)
+  if (errorInstanceID)
   {
-    v6 = [(CAFCharacteristic *)self errorInstanceID];
-    [v3 addObject:v6];
+    errorInstanceID2 = [(CAFCharacteristic *)self errorInstanceID];
+    [v3 addObject:errorInstanceID2];
   }
 
-  v7 = [(CAFCharacteristic *)self disabledInstanceID];
+  disabledInstanceID = [(CAFCharacteristic *)self disabledInstanceID];
 
-  if (v7)
+  if (disabledInstanceID)
   {
-    v8 = [(CAFCharacteristic *)self disabledInstanceID];
-    [v3 addObject:v8];
+    disabledInstanceID2 = [(CAFCharacteristic *)self disabledInstanceID];
+    [v3 addObject:disabledInstanceID2];
   }
 
-  v9 = [(CAFCharacteristic *)self notifierInstanceID];
+  notifierInstanceID = [(CAFCharacteristic *)self notifierInstanceID];
 
-  if (v9)
+  if (notifierInstanceID)
   {
-    v10 = [(CAFCharacteristic *)self notifierInstanceID];
-    [v3 addObject:v10];
+    notifierInstanceID2 = [(CAFCharacteristic *)self notifierInstanceID];
+    [v3 addObject:notifierInstanceID2];
   }
 
-  v11 = [(CAFCharacteristic *)self restrictedInstanceID];
+  restrictedInstanceID = [(CAFCharacteristic *)self restrictedInstanceID];
 
-  if (v11)
+  if (restrictedInstanceID)
   {
-    v12 = [(CAFCharacteristic *)self restrictedInstanceID];
-    [v3 addObject:v12];
+    restrictedInstanceID2 = [(CAFCharacteristic *)self restrictedInstanceID];
+    [v3 addObject:restrictedInstanceID2];
   }
 
   return v3;
@@ -1186,31 +1186,31 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
 - (id)readInstanceIDs
 {
   v3 = objc_opt_new();
-  v4 = [(CAFCharacteristic *)self instanceID];
-  [v3 addObject:v4];
+  instanceID = [(CAFCharacteristic *)self instanceID];
+  [v3 addObject:instanceID];
 
-  v5 = [(CAFCharacteristic *)self errorInstanceID];
+  errorInstanceID = [(CAFCharacteristic *)self errorInstanceID];
 
-  if (v5)
+  if (errorInstanceID)
   {
-    v6 = [(CAFCharacteristic *)self errorInstanceID];
-    [v3 addObject:v6];
+    errorInstanceID2 = [(CAFCharacteristic *)self errorInstanceID];
+    [v3 addObject:errorInstanceID2];
   }
 
-  v7 = [(CAFCharacteristic *)self disabledInstanceID];
+  disabledInstanceID = [(CAFCharacteristic *)self disabledInstanceID];
 
-  if (v7)
+  if (disabledInstanceID)
   {
-    v8 = [(CAFCharacteristic *)self disabledInstanceID];
-    [v3 addObject:v8];
+    disabledInstanceID2 = [(CAFCharacteristic *)self disabledInstanceID];
+    [v3 addObject:disabledInstanceID2];
   }
 
-  v9 = [(CAFCharacteristic *)self restrictedInstanceID];
+  restrictedInstanceID = [(CAFCharacteristic *)self restrictedInstanceID];
 
-  if (v9)
+  if (restrictedInstanceID)
   {
-    v10 = [(CAFCharacteristic *)self restrictedInstanceID];
-    [v3 addObject:v10];
+    restrictedInstanceID2 = [(CAFCharacteristic *)self restrictedInstanceID];
+    [v3 addObject:restrictedInstanceID2];
   }
 
   return v3;
@@ -1221,32 +1221,32 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
   v3 = objc_opt_new();
   if ([(CAFCharacteristic *)self isMutable])
   {
-    v4 = [(CAFCharacteristic *)self instanceID];
-    [v3 addObject:v4];
+    instanceID = [(CAFCharacteristic *)self instanceID];
+    [v3 addObject:instanceID];
   }
 
-  v5 = [(CAFCharacteristic *)self errorInstanceID];
+  errorInstanceID = [(CAFCharacteristic *)self errorInstanceID];
 
-  if (v5)
+  if (errorInstanceID)
   {
-    v6 = [(CAFCharacteristic *)self errorInstanceID];
-    [v3 addObject:v6];
+    errorInstanceID2 = [(CAFCharacteristic *)self errorInstanceID];
+    [v3 addObject:errorInstanceID2];
   }
 
-  v7 = [(CAFCharacteristic *)self disabledInstanceID];
+  disabledInstanceID = [(CAFCharacteristic *)self disabledInstanceID];
 
-  if (v7)
+  if (disabledInstanceID)
   {
-    v8 = [(CAFCharacteristic *)self disabledInstanceID];
-    [v3 addObject:v8];
+    disabledInstanceID2 = [(CAFCharacteristic *)self disabledInstanceID];
+    [v3 addObject:disabledInstanceID2];
   }
 
-  v9 = [(CAFCharacteristic *)self restrictedInstanceID];
+  restrictedInstanceID = [(CAFCharacteristic *)self restrictedInstanceID];
 
-  if (v9)
+  if (restrictedInstanceID)
   {
-    v10 = [(CAFCharacteristic *)self restrictedInstanceID];
-    [v3 addObject:v10];
+    restrictedInstanceID2 = [(CAFCharacteristic *)self restrictedInstanceID];
+    [v3 addObject:restrictedInstanceID2];
   }
 
   return v3;
@@ -1254,47 +1254,47 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
 
 - (id)pluginID
 {
-  v2 = [(CAFCharacteristic *)self service];
-  v3 = [v2 accessory];
-  v4 = [v3 pluginID];
+  service = [(CAFCharacteristic *)self service];
+  accessory = [service accessory];
+  pluginID = [accessory pluginID];
 
-  return v4;
+  return pluginID;
 }
 
 + (id)characteristicFormats
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [a1 primaryCharacteristicFormat];
-  v9[0] = v3;
+  primaryCharacteristicFormat = [self primaryCharacteristicFormat];
+  v9[0] = primaryCharacteristicFormat;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  v5 = [a1 secondaryCharacteristicFormats];
-  v6 = [v4 arrayByAddingObjectsFromArray:v5];
+  secondaryCharacteristicFormats = [self secondaryCharacteristicFormats];
+  v6 = [v4 arrayByAddingObjectsFromArray:secondaryCharacteristicFormats];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (void)handleValueAndError:(id)a3 value:(id)a4
+- (void)handleValueAndError:(id)error value:(id)value
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CAFCharacteristic *)self instanceID];
-  v9 = [v6 isEqual:v8];
+  errorCopy = error;
+  valueCopy = value;
+  instanceID = [(CAFCharacteristic *)self instanceID];
+  v9 = [errorCopy isEqual:instanceID];
 
   if (!v9)
   {
-    v12 = [(CAFCharacteristic *)self errorInstanceID];
-    v13 = [v6 isEqual:v12];
+    errorInstanceID = [(CAFCharacteristic *)self errorInstanceID];
+    v13 = [errorCopy isEqual:errorInstanceID];
 
     if (v13)
     {
       objc_opt_class();
-      v14 = [v7 value];
-      if (v14 && (objc_opt_isKindOfClass() & 1) != 0)
+      value = [valueCopy value];
+      if (value && (objc_opt_isKindOfClass() & 1) != 0)
       {
-        v15 = v14;
+        v15 = value;
       }
 
       else
@@ -1305,14 +1305,14 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
       v19 = CAFCharacteristicLogging();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
-        v32 = [(CAFCharacteristic *)self pluginID];
-        v33 = [(CAFCharacteristic *)self instanceID];
+        pluginID = [(CAFCharacteristic *)self pluginID];
+        instanceID2 = [(CAFCharacteristic *)self instanceID];
         v38 = 138413058;
-        v39 = v32;
+        v39 = pluginID;
         v40 = 2112;
-        v41 = v33;
+        v41 = instanceID2;
         v42 = 2112;
-        v43 = v6;
+        v43 = errorCopy;
         v44 = 2112;
         v45 = v15;
         _os_log_debug_impl(&dword_231618000, v19, OS_LOG_TYPE_DEBUG, "Handle error state update pluginID: %@ instanceID: %@ (%@) state value: %@", &v38, 0x2Au);
@@ -1324,16 +1324,16 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
 
     else
     {
-      v16 = [(CAFCharacteristic *)self disabledInstanceID];
-      v17 = [v6 isEqual:v16];
+      disabledInstanceID = [(CAFCharacteristic *)self disabledInstanceID];
+      v17 = [errorCopy isEqual:disabledInstanceID];
 
       if (v17)
       {
         objc_opt_class();
-        v18 = [v7 value];
-        if (v18 && (objc_opt_isKindOfClass() & 1) != 0)
+        value2 = [valueCopy value];
+        if (value2 && (objc_opt_isKindOfClass() & 1) != 0)
         {
-          v15 = v18;
+          v15 = value2;
         }
 
         else
@@ -1344,14 +1344,14 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
         v23 = CAFCharacteristicLogging();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
         {
-          v34 = [(CAFCharacteristic *)self pluginID];
-          v35 = [(CAFCharacteristic *)self instanceID];
+          pluginID2 = [(CAFCharacteristic *)self pluginID];
+          instanceID3 = [(CAFCharacteristic *)self instanceID];
           v38 = 138413058;
-          v39 = v34;
+          v39 = pluginID2;
           v40 = 2112;
-          v41 = v35;
+          v41 = instanceID3;
           v42 = 2112;
-          v43 = v6;
+          v43 = errorCopy;
           v44 = 2112;
           v45 = v15;
           _os_log_debug_impl(&dword_231618000, v23, OS_LOG_TYPE_DEBUG, "Handle disabled state update pluginID: %@ instanceID: %@ (%@) state value: %@", &v38, 0x2Au);
@@ -1363,13 +1363,13 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
 
       else
       {
-        v20 = [(CAFCharacteristic *)self restrictedInstanceID];
-        v21 = [v6 isEqual:v20];
+        restrictedInstanceID = [(CAFCharacteristic *)self restrictedInstanceID];
+        v21 = [errorCopy isEqual:restrictedInstanceID];
 
         if (!v21)
         {
-          v24 = [(CAFCharacteristic *)self notifierInstanceID];
-          v25 = [v6 isEqual:v24];
+          notifierInstanceID = [(CAFCharacteristic *)self notifierInstanceID];
+          v25 = [errorCopy isEqual:notifierInstanceID];
 
           if (!v25)
           {
@@ -1384,11 +1384,11 @@ void __47__CAFCharacteristic__didUpdateFromGroupUpdate___block_invoke(uint64_t a
 
           if ([(CAFCharacteristic *)self shouldInitialize])
           {
-            v27 = [(CAFCharacteristic *)self service];
-            v28 = [v27 observers];
-            v29 = [v28 hasObservers];
+            service = [(CAFCharacteristic *)self service];
+            observers = [service observers];
+            hasObservers = [observers hasObservers];
 
-            if (v29)
+            if (hasObservers)
             {
               [(CAFCharacteristic *)self updateValueRequiringRead:1];
               goto LABEL_38;
@@ -1416,10 +1416,10 @@ LABEL_37:
         }
 
         objc_opt_class();
-        v22 = [v7 value];
-        if (v22 && (objc_opt_isKindOfClass() & 1) != 0)
+        value3 = [valueCopy value];
+        if (value3 && (objc_opt_isKindOfClass() & 1) != 0)
         {
-          v15 = v22;
+          v15 = value3;
         }
 
         else
@@ -1430,14 +1430,14 @@ LABEL_37:
         v30 = CAFCharacteristicLogging();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
         {
-          v36 = [(CAFCharacteristic *)self pluginID];
-          v37 = [(CAFCharacteristic *)self instanceID];
+          pluginID3 = [(CAFCharacteristic *)self pluginID];
+          instanceID4 = [(CAFCharacteristic *)self instanceID];
           v38 = 138413058;
-          v39 = v36;
+          v39 = pluginID3;
           v40 = 2112;
-          v41 = v37;
+          v41 = instanceID4;
           v42 = 2112;
-          v43 = v6;
+          v43 = errorCopy;
           v44 = 2112;
           v45 = v15;
           _os_log_debug_impl(&dword_231618000, v30, OS_LOG_TYPE_DEBUG, "Handle restricted state update pluginID: %@ instanceID: %@ (%@) state value: %@", &v38, 0x2Au);
@@ -1454,16 +1454,16 @@ LABEL_37:
   }
 
   os_unfair_lock_lock(&self->_valueLock);
-  [(CAFCharacteristic *)self setCharacteristicValue:v7];
+  [(CAFCharacteristic *)self setCharacteristicValue:valueCopy];
   os_unfair_lock_unlock(&self->_valueLock);
-  if (v7)
+  if (valueCopy)
   {
-    v10 = [v7 error];
+    error = [valueCopy error];
 
-    if (v10)
+    if (error)
     {
-      v11 = [v7 error];
-      [(CAFCharacteristic *)self setError:v11];
+      error2 = [valueCopy error];
+      [(CAFCharacteristic *)self setError:error2];
     }
   }
 
@@ -1473,10 +1473,10 @@ LABEL_38:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdateWithInstanceID:(id)a3 value:(id)a4
+- (void)handleUpdateWithInstanceID:(id)d value:(id)value
 {
   v18 = *MEMORY[0x277D85DE8];
-  [(CAFCharacteristic *)self handleValueAndError:a3 value:a4];
+  [(CAFCharacteristic *)self handleValueAndError:d value:value];
   v5 = CARSignpostLogForCategory();
   if (self)
   {
@@ -1496,15 +1496,15 @@ LABEL_38:
 
   if (os_signpost_enabled(v5))
   {
-    v8 = [(CAFCharacteristic *)self name];
-    v9 = [(CAFCharacteristic *)self pluginID];
-    v10 = [(CAFCharacteristic *)self instanceID];
+    name = [(CAFCharacteristic *)self name];
+    pluginID = [(CAFCharacteristic *)self pluginID];
+    instanceID = [(CAFCharacteristic *)self instanceID];
     v12 = 138543874;
-    v13 = v8;
+    v13 = name;
     v14 = 2114;
-    v15 = v9;
+    v15 = pluginID;
     v16 = 2114;
-    v17 = v10;
+    v17 = instanceID;
     _os_signpost_emit_with_name_impl(&dword_231618000, v5, OS_SIGNPOST_EVENT, v7, "Update", "Characteristic: %{public}@ pluginID: %{public}@ instanceID: %{public}@", &v12, 0x20u);
   }
 
@@ -1513,40 +1513,40 @@ LABEL_7:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleWrite:(id)a3 value:(id)a4
+- (void)handleWrite:(id)write value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAFCharacteristic *)self instanceID];
-  v9 = [v7 isEqual:v8];
+  valueCopy = value;
+  writeCopy = write;
+  instanceID = [(CAFCharacteristic *)self instanceID];
+  v9 = [writeCopy isEqual:instanceID];
 
   if (v9)
   {
     v10 = CAFCharacteristicLogging();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(CAFCharacteristic *)self handleWrite:v6 value:v10];
+      [(CAFCharacteristic *)self handleWrite:valueCopy value:v10];
     }
 
-    if (v6)
+    if (valueCopy)
     {
-      v11 = [v6 error];
+      error = [valueCopy error];
 
-      if (v11)
+      if (error)
       {
-        v12 = [v6 error];
-        [(CAFCharacteristic *)self setError:v12];
+        error2 = [valueCopy error];
+        [(CAFCharacteristic *)self setError:error2];
       }
     }
   }
 }
 
-- (void)handleError:(id)a3 value:(id)a4
+- (void)handleError:(id)error value:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CAFCharacteristic *)self instanceID];
-  v9 = [v7 isEqual:v8];
+  valueCopy = value;
+  errorCopy = error;
+  instanceID = [(CAFCharacteristic *)self instanceID];
+  v9 = [errorCopy isEqual:instanceID];
 
   if (v9)
   {
@@ -1556,43 +1556,43 @@ LABEL_7:
       [CAFCharacteristic handleError:value:];
     }
 
-    [(CAFCharacteristic *)self setError:v6];
+    [(CAFCharacteristic *)self setError:valueCopy];
   }
 }
 
 - (NSString)fullDescription
 {
   os_unfair_lock_lock(&self->_valueLock);
-  v4 = [(CAFCharacteristic *)self lockState];
-  v5 = [(CAFCharacteristic *)self transactionId];
+  lockState = [(CAFCharacteristic *)self lockState];
+  transactionId = [(CAFCharacteristic *)self transactionId];
   v6 = 0x277CCA000uLL;
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(CAFCharacteristic *)self characteristicValue];
-  if (v8)
+  characteristicValue = [(CAFCharacteristic *)self characteristicValue];
+  if (characteristicValue)
   {
-    v2 = [(CAFCharacteristic *)self characteristicValue];
-    v9 = [v2 value];
+    characteristicValue2 = [(CAFCharacteristic *)self characteristicValue];
+    value = [characteristicValue2 value];
   }
 
   else
   {
-    v9 = 0;
+    value = 0;
   }
 
-  v10 = [(CAFCharacteristic *)self cachedValue];
-  v11 = [(CAFCharacteristic *)self pendingValue];
-  v12 = [v7 stringWithFormat:@"[V:%@ C:%@ P:%@]", v9, v10, v11];
+  cachedValue = [(CAFCharacteristic *)self cachedValue];
+  pendingValue = [(CAFCharacteristic *)self pendingValue];
+  v12 = [v7 stringWithFormat:@"[V:%@ C:%@ P:%@]", value, cachedValue, pendingValue];
 
-  if (v8)
+  if (characteristicValue)
   {
   }
 
   v13 = [(NSError *)self->_error copy];
   os_unfair_lock_unlock(&self->_valueLock);
-  v14 = [(CAFCharacteristic *)self descriptionExtras];
-  if ([v14 length])
+  descriptionExtras = [(CAFCharacteristic *)self descriptionExtras];
+  if ([descriptionExtras length])
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@" %@", v14];
+    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@" %@", descriptionExtras];
   }
 
   else
@@ -1613,7 +1613,7 @@ LABEL_7:
       v16 = &stru_284626CA8;
     }
 
-    v17 = v5;
+    v17 = transactionId;
     if ([(CAFCharacteristic *)self hasErrorState])
     {
       v18 = @"E";
@@ -1625,7 +1625,7 @@ LABEL_7:
     }
 
     v19 = v12;
-    v20 = v4;
+    v20 = lockState;
     if ([(CAFCharacteristic *)self isDisabled])
     {
       v21 = @"D";
@@ -1636,18 +1636,18 @@ LABEL_7:
       v21 = &stru_284626CA8;
     }
 
-    v22 = [(CAFCharacteristic *)self isRestricted];
+    isRestricted = [(CAFCharacteristic *)self isRestricted];
     v23 = @"R";
-    if (!v22)
+    if (!isRestricted)
     {
       v23 = &stru_284626CA8;
     }
 
     v35 = v21;
-    v4 = v20;
+    lockState = v20;
     v12 = v19;
     v34 = v18;
-    v5 = v17;
+    transactionId = v17;
     v6 = 0x277CCA000;
     v24 = [v36 stringWithFormat:@" states=%@%@%@%@", v16, v34, v35, v23];
   }
@@ -1659,7 +1659,7 @@ LABEL_7:
 
   v25 = *(v6 + 3240);
   v26 = [(CAFCharacteristic *)self description];
-  v27 = NSStringFromCharacteristicState(v4);
+  v27 = NSStringFromCharacteristicState(lockState);
   v28 = v27;
   if (v24)
   {
@@ -1687,23 +1687,23 @@ LABEL_7:
     v31 = &stru_284626CA8;
   }
 
-  v32 = [v25 stringWithFormat:@"%@(state=%@(%lu) values=%@%@ error=%@%@)", v26, v27, v5, v12, v29, v30, v31];
+  v32 = [v25 stringWithFormat:@"%@(state=%@(%lu) values=%@%@ error=%@%@)", v26, v27, transactionId, v12, v29, v30, v31];
 
   return v32;
 }
 
-- (id)currentDescriptionForCache:(id)a3
+- (id)currentDescriptionForCache:(id)cache
 {
   v30 = MEMORY[0x277CCACA8];
   v29 = objc_opt_class();
-  v28 = [(CAFCharacteristic *)self name];
-  v34 = [(CAFCharacteristic *)self pluginID];
-  v27 = [(CAFCharacteristic *)self instanceID];
-  v4 = [(CAFCharacteristic *)self errorInstanceID];
-  v33 = v4;
-  if (v4)
+  name = [(CAFCharacteristic *)self name];
+  pluginID = [(CAFCharacteristic *)self pluginID];
+  instanceID = [(CAFCharacteristic *)self instanceID];
+  errorInstanceID = [(CAFCharacteristic *)self errorInstanceID];
+  v33 = errorInstanceID;
+  if (errorInstanceID)
   {
-    v5 = v4;
+    v5 = errorInstanceID;
   }
 
   else
@@ -1712,11 +1712,11 @@ LABEL_7:
   }
 
   v26 = v5;
-  v6 = [(CAFCharacteristic *)self disabledInstanceID];
-  v32 = v6;
-  if (v6)
+  disabledInstanceID = [(CAFCharacteristic *)self disabledInstanceID];
+  v32 = disabledInstanceID;
+  if (disabledInstanceID)
   {
-    v7 = v6;
+    v7 = disabledInstanceID;
   }
 
   else
@@ -1725,11 +1725,11 @@ LABEL_7:
   }
 
   v25 = v7;
-  v8 = [(CAFCharacteristic *)self notifierInstanceID];
-  v31 = v8;
-  if (v8)
+  notifierInstanceID = [(CAFCharacteristic *)self notifierInstanceID];
+  v31 = notifierInstanceID;
+  if (notifierInstanceID)
   {
-    v9 = v8;
+    v9 = notifierInstanceID;
   }
 
   else
@@ -1738,11 +1738,11 @@ LABEL_7:
   }
 
   v24 = v9;
-  v10 = [(CAFCharacteristic *)self restrictedInstanceID];
-  v11 = v10;
-  if (v10)
+  restrictedInstanceID = [(CAFCharacteristic *)self restrictedInstanceID];
+  v11 = restrictedInstanceID;
+  if (restrictedInstanceID)
   {
-    v12 = v10;
+    v12 = restrictedInstanceID;
   }
 
   else
@@ -1751,15 +1751,15 @@ LABEL_7:
   }
 
   v23 = v12;
-  v22 = [(CAFCharacteristic *)self characteristicType];
-  v21 = [(CAFCharacteristic *)self accessory];
-  v13 = [(CAFCharacteristic *)self accessory];
-  v14 = [v13 instanceID];
-  v15 = [(CAFCharacteristic *)self service];
-  v16 = [(CAFCharacteristic *)self service];
-  v17 = [v16 instanceID];
-  v18 = [(CAFCharacteristic *)self propertiesDescription];
-  v19 = [v30 stringWithFormat:@"<%@: %p %@ %@ %@ (%@|%@|%@|%@) type=%@ accessory=(%p)%@ service=(%p)%@ properties=%@>", v29, self, v28, v34, v27, v26, v25, v24, v23, v22, v21, v14, v15, v17, v18];
+  characteristicType = [(CAFCharacteristic *)self characteristicType];
+  accessory = [(CAFCharacteristic *)self accessory];
+  accessory2 = [(CAFCharacteristic *)self accessory];
+  instanceID2 = [accessory2 instanceID];
+  service = [(CAFCharacteristic *)self service];
+  service2 = [(CAFCharacteristic *)self service];
+  instanceID3 = [service2 instanceID];
+  propertiesDescription = [(CAFCharacteristic *)self propertiesDescription];
+  v19 = [v30 stringWithFormat:@"<%@: %p %@ %@ %@ (%@|%@|%@|%@) type=%@ accessory=(%p)%@ service=(%p)%@ properties=%@>", v29, self, name, pluginID, instanceID, v26, v25, v24, v23, characteristicType, accessory, instanceID2, service, instanceID3, propertiesDescription];
 
   return v19;
 }

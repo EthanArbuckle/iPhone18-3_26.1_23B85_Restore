@@ -1,28 +1,28 @@
 @interface BMSQLProtoUDFs
-+ (void)_addEventClass:(Class)a3 toProtoRegistry:(id)a4;
-+ (void)registerProtoUDFsWithDatabase:(id)a3 eventClasses:(id)a4 error:(id *)a5;
++ (void)_addEventClass:(Class)class toProtoRegistry:(id)registry;
++ (void)registerProtoUDFsWithDatabase:(id)database eventClasses:(id)classes error:(id *)error;
 @end
 
 @implementation BMSQLProtoUDFs
 
-+ (void)_addEventClass:(Class)a3 toProtoRegistry:(id)a4
++ (void)_addEventClass:(Class)class toProtoRegistry:(id)registry
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = NSStringFromClass(a3);
-  v8 = [v6 objectForKeyedSubscript:v7];
+  registryCopy = registry;
+  v7 = NSStringFromClass(class);
+  v8 = [registryCopy objectForKeyedSubscript:v7];
 
   if (!v8)
   {
-    v9 = [(objc_class *)a3 protoFields];
-    [v6 setObject:v9 forKeyedSubscript:v7];
+    protoFields = [(objc_class *)class protoFields];
+    [registryCopy setObject:protoFields forKeyedSubscript:v7];
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v10 = [(objc_class *)a3 protoFields];
-    v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    protoFields2 = [(objc_class *)class protoFields];
+    v11 = [protoFields2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
       v12 = v11;
@@ -33,17 +33,17 @@
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(protoFields2);
           }
 
           v15 = *(*(&v17 + 1) + 8 * i);
           if ([v15 subMessageClass])
           {
-            [a1 _addEventClass:objc_msgSend(v15 toProtoRegistry:{"subMessageClass"), v6}];
+            [self _addEventClass:objc_msgSend(v15 toProtoRegistry:{"subMessageClass"), registryCopy}];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v12 = [protoFields2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v12);
@@ -53,17 +53,17 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)registerProtoUDFsWithDatabase:(id)a3 eventClasses:(id)a4 error:(id *)a5
++ (void)registerProtoUDFsWithDatabase:(id)database eventClasses:(id)classes error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  databaseCopy = database;
+  classesCopy = classes;
   v10 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v11 = v9;
+  v11 = classesCopy;
   v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v12)
   {
@@ -79,7 +79,7 @@
           objc_enumerationMutation(v11);
         }
 
-        [a1 _addEventClass:*(*(&v24 + 1) + 8 * v15++) toProtoRegistry:{v10, v24}];
+        [self _addEventClass:*(*(&v24 + 1) + 8 * v15++) toProtoRegistry:{v10, v24}];
       }
 
       while (v13 != v15);
@@ -89,30 +89,30 @@
     while (v13);
   }
 
-  [v8 registerFunctionWithName:@"biome_extract" numArgs:3 function:&__block_literal_global_2 userData:v10 error:a5];
+  [databaseCopy registerFunctionWithName:@"biome_extract" numArgs:3 function:&__block_literal_global_2 userData:v10 error:error];
   v16 = bm_sqlite3_malloc(8);
   if (v16)
   {
     v17 = v16;
     objc_storeStrong(v16, v10);
-    module_v2 = sqlite3_create_module_v2([v8 db], "biome_each", &biome_each_module, v17, biome_each_vtab_destroy);
-    if (a5)
+    module_v2 = sqlite3_create_module_v2([databaseCopy db], "biome_each", &biome_each_module, v17, biome_each_vtab_destroy);
+    if (error)
     {
       v19 = module_v2;
       if (module_v2)
       {
-        v20 = [v8 db];
+        v20 = [databaseCopy db];
         v21 = "Unable to create biome_each module";
         v22 = v19;
 LABEL_14:
-        *a5 = BMSQLDatabaseError(v22, v20, v21);
+        *error = BMSQLDatabaseError(v22, v20, v21);
       }
     }
   }
 
-  else if (a5)
+  else if (error)
   {
-    v20 = [v8 db];
+    v20 = [databaseCopy db];
     v21 = "Unable to alloc memory for biome_each_vtab_metadata";
     v22 = 7;
     goto LABEL_14;

@@ -1,37 +1,37 @@
 @interface VNClustererReadWriteContext
-+ (id)clustererModelFileNamesFromState:(id)a3 storedInPath:(id)a4 error:(id *)a5;
-+ (id)distanceBetweenFacesWithFaceObservation:(id)a3 andFaceObservation:(id)a4 error:(id *)a5;
-+ (id)distanceBetweenFacesWithFaceprint:(id)a3 andFaceprint:(id)a4 error:(id *)a5;
-+ (id)representativenessForFaces:(id)a3 error:(id *)a4;
-- (BOOL)resetModelState:(id)a3 error:(id *)a4;
-- (VNClustererReadWriteContext)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 requestRevision:(unint64_t)a7 torsoprintRequestRevision:(unint64_t)a8 error:(id *)a9;
-- (VNClustererReadWriteContext)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 torsoThreshold:(float)a7 requestRevision:(unint64_t)a8 torsoprintRequestRevision:(unint64_t)a9 error:(id *)a10;
-- (id)_updateClustererWithOptions:(id)a3 canceller:(id)a4 error:(id *)a5;
-- (id)clusteredFaceIdsForClusterContainingFaceId:(id)a3 error:(id *)a4;
-- (id)distanceBetweenClustersWithFaceId:(id)a3 andFaceId:(id)a4 error:(id *)a5;
-- (id)distanceBetweenLevel1Clusters:(id)a3 error:(id *)a4;
-- (id)getDistances:(id)a3 to:(id)a4 error:(id *)a5;
-- (id)l1ClusteredFaceIdsGroupedByL0ClustersForClustersContainingFaceIds:(id)a3 error:(id *)a4;
-- (id)suggestionsForClustersWithFaceIds:(id)a3 affinityThreshold:(float)a4 canceller:(id)a5 error:(id *)a6;
-- (id)updateModelByAddingFaces:(id)a3 andRemovingFaces:(id)a4 canceller:(id)a5 error:(id *)a6;
-- (id)updateModelByAddingFaces:(id)a3 canceller:(id)a4 error:(id *)a5;
-- (id)updateModelByAddingFaces:(id)a3 withGroupingIdentifiers:(id)a4 andRemovingFaces:(id)a5 canceller:(id)a6 error:(id *)a7;
-- (id)updateModelByAddingPersons:(id)a3 withGroupingIdentifiers:(id)a4 andRemovingPersons:(id)a5 canceller:(id)a6 error:(id *)a7;
-- (id)updateModelByRemovingFaces:(id)a3 canceller:(id)a4 error:(id *)a5;
++ (id)clustererModelFileNamesFromState:(id)state storedInPath:(id)path error:(id *)error;
++ (id)distanceBetweenFacesWithFaceObservation:(id)observation andFaceObservation:(id)faceObservation error:(id *)error;
++ (id)distanceBetweenFacesWithFaceprint:(id)faceprint andFaceprint:(id)andFaceprint error:(id *)error;
++ (id)representativenessForFaces:(id)faces error:(id *)error;
+- (BOOL)resetModelState:(id)state error:(id *)error;
+- (VNClustererReadWriteContext)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold requestRevision:(unint64_t)revision torsoprintRequestRevision:(unint64_t)requestRevision error:(id *)error;
+- (VNClustererReadWriteContext)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold torsoThreshold:(float)torsoThreshold requestRevision:(unint64_t)revision torsoprintRequestRevision:(unint64_t)requestRevision error:(id *)self0;
+- (id)_updateClustererWithOptions:(id)options canceller:(id)canceller error:(id *)error;
+- (id)clusteredFaceIdsForClusterContainingFaceId:(id)id error:(id *)error;
+- (id)distanceBetweenClustersWithFaceId:(id)id andFaceId:(id)faceId error:(id *)error;
+- (id)distanceBetweenLevel1Clusters:(id)clusters error:(id *)error;
+- (id)getDistances:(id)distances to:(id)to error:(id *)error;
+- (id)l1ClusteredFaceIdsGroupedByL0ClustersForClustersContainingFaceIds:(id)ids error:(id *)error;
+- (id)suggestionsForClustersWithFaceIds:(id)ids affinityThreshold:(float)threshold canceller:(id)canceller error:(id *)error;
+- (id)updateModelByAddingFaces:(id)faces andRemovingFaces:(id)removingFaces canceller:(id)canceller error:(id *)error;
+- (id)updateModelByAddingFaces:(id)faces canceller:(id)canceller error:(id *)error;
+- (id)updateModelByAddingFaces:(id)faces withGroupingIdentifiers:(id)identifiers andRemovingFaces:(id)removingFaces canceller:(id)canceller error:(id *)error;
+- (id)updateModelByAddingPersons:(id)persons withGroupingIdentifiers:(id)identifiers andRemovingPersons:(id)removingPersons canceller:(id)canceller error:(id *)error;
+- (id)updateModelByRemovingFaces:(id)faces canceller:(id)canceller error:(id *)error;
 @end
 
 @implementation VNClustererReadWriteContext
 
-- (id)suggestionsForClustersWithFaceIds:(id)a3 affinityThreshold:(float)a4 canceller:(id)a5 error:(id *)a6
+- (id)suggestionsForClustersWithFaceIds:(id)ids affinityThreshold:(float)threshold canceller:(id)canceller error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  if (!v11)
+  idsCopy = ids;
+  cancellerCopy = canceller;
+  if (!cancellerCopy)
   {
-    v11 = objc_alloc_init(VNCanceller);
+    cancellerCopy = objc_alloc_init(VNCanceller);
   }
 
-  v12 = v11;
+  v12 = cancellerCopy;
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -50,8 +50,8 @@
   v19[3] = &unk_1E77B1208;
   v21 = &v30;
   v19[4] = self;
-  v13 = v10;
-  v23 = a4;
+  v13 = idsCopy;
+  thresholdCopy = threshold;
   v20 = v13;
   v22 = &v24;
   v18[0] = MEMORY[0x1E69E9820];
@@ -68,19 +68,19 @@
       goto LABEL_12;
     }
 
-    if (a6)
+    if (error)
     {
       v16 = v25[5];
       goto LABEL_10;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
     v16 = [VNError errorWithCode:1 message:@"Suggestions request has been cancelled"];
 LABEL_10:
     v15 = 0;
-    *a6 = v16;
+    *error = v16;
     goto LABEL_12;
   }
 
@@ -107,72 +107,72 @@ void __99__VNClustererReadWriteContext_suggestionsForClustersWithFaceIds_affinit
   *(v7 + 40) = v6;
 }
 
-- (id)getDistances:(id)a3 to:(id)a4 error:(id *)a5
+- (id)getDistances:(id)distances to:(id)to error:(id *)error
 {
-  v5 = [(VNClusteringReadOnly *)self->_clusterer getDistances:a3 to:a4 error:a5];
+  v5 = [(VNClusteringReadOnly *)self->_clusterer getDistances:distances to:to error:error];
 
   return v5;
 }
 
-- (id)distanceBetweenLevel1Clusters:(id)a3 error:(id *)a4
+- (id)distanceBetweenLevel1Clusters:(id)clusters error:(id *)error
 {
-  v4 = [(VNClusteringReadOnly *)self->_clusterer getDistanceBetweenLevel1Clusters:a3 error:a4];
+  v4 = [(VNClusteringReadOnly *)self->_clusterer getDistanceBetweenLevel1Clusters:clusters error:error];
 
   return v4;
 }
 
-- (id)distanceBetweenClustersWithFaceId:(id)a3 andFaceId:(id)a4 error:(id *)a5
+- (id)distanceBetweenClustersWithFaceId:(id)id andFaceId:(id)faceId error:(id *)error
 {
-  v5 = [(VNClusteringReadOnly *)self->_clusterer getDistanceBetweenLevel0ClustersWithFaceId:a3 andFaceId:a4 error:a5];
+  v5 = [(VNClusteringReadOnly *)self->_clusterer getDistanceBetweenLevel0ClustersWithFaceId:id andFaceId:faceId error:error];
 
   return v5;
 }
 
-- (id)l1ClusteredFaceIdsGroupedByL0ClustersForClustersContainingFaceIds:(id)a3 error:(id *)a4
+- (id)l1ClusteredFaceIdsGroupedByL0ClustersForClustersContainingFaceIds:(id)ids error:(id *)error
 {
-  v4 = [(VNClusteringReadOnly *)self->_clusterer getClustersForClusterIds:a3 options:0 error:a4];
+  v4 = [(VNClusteringReadOnly *)self->_clusterer getClustersForClusterIds:ids options:0 error:error];
 
   return v4;
 }
 
-- (id)clusteredFaceIdsForClusterContainingFaceId:(id)a3 error:(id *)a4
+- (id)clusteredFaceIdsForClusterContainingFaceId:(id)id error:(id *)error
 {
-  v4 = [(VNClusteringReadOnly *)self->_clusterer getLevel1ClusteredIdsGroupedByLevel0ClustersForFaceId:a3 error:a4];
+  v4 = [(VNClusteringReadOnly *)self->_clusterer getLevel1ClusteredIdsGroupedByLevel0ClustersForFaceId:id error:error];
 
   return v4;
 }
 
-- (id)updateModelByAddingFaces:(id)a3 andRemovingFaces:(id)a4 canceller:(id)a5 error:(id *)a6
+- (id)updateModelByAddingFaces:(id)faces andRemovingFaces:(id)removingFaces canceller:(id)canceller error:(id *)error
 {
-  v6 = [(VNClustererReadWriteContext *)self updateModelByAddingFaces:a3 withGroupingIdentifiers:0 andRemovingFaces:a4 canceller:a5 error:a6];
+  v6 = [(VNClustererReadWriteContext *)self updateModelByAddingFaces:faces withGroupingIdentifiers:0 andRemovingFaces:removingFaces canceller:canceller error:error];
 
   return v6;
 }
 
-- (id)updateModelByRemovingFaces:(id)a3 canceller:(id)a4 error:(id *)a5
+- (id)updateModelByRemovingFaces:(id)faces canceller:(id)canceller error:(id *)error
 {
-  v5 = [(VNClustererReadWriteContext *)self updateModelByAddingFaces:0 withGroupingIdentifiers:0 andRemovingFaces:a3 canceller:a4 error:a5];
+  v5 = [(VNClustererReadWriteContext *)self updateModelByAddingFaces:0 withGroupingIdentifiers:0 andRemovingFaces:faces canceller:canceller error:error];
 
   return v5;
 }
 
-- (id)updateModelByAddingFaces:(id)a3 canceller:(id)a4 error:(id *)a5
+- (id)updateModelByAddingFaces:(id)faces canceller:(id)canceller error:(id *)error
 {
-  v5 = [(VNClustererReadWriteContext *)self updateModelByAddingFaces:a3 withGroupingIdentifiers:0 andRemovingFaces:0 canceller:a4 error:a5];
+  v5 = [(VNClustererReadWriteContext *)self updateModelByAddingFaces:faces withGroupingIdentifiers:0 andRemovingFaces:0 canceller:canceller error:error];
 
   return v5;
 }
 
-- (id)_updateClustererWithOptions:(id)a3 canceller:(id)a4 error:(id *)a5
+- (id)_updateClustererWithOptions:(id)options canceller:(id)canceller error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  optionsCopy = options;
+  cancellerCopy = canceller;
+  if (!cancellerCopy)
   {
-    v9 = objc_alloc_init(VNCanceller);
+    cancellerCopy = objc_alloc_init(VNCanceller);
   }
 
-  v10 = v9;
+  v10 = cancellerCopy;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
@@ -197,7 +197,7 @@ void __99__VNClustererReadWriteContext_suggestionsForClustersWithFaceIds_affinit
   v18[3] = &unk_1E77B1230;
   v20 = &v34;
   v18[4] = self;
-  v11 = v8;
+  v11 = optionsCopy;
   v19 = v11;
   v21 = &v28;
   v17[0] = MEMORY[0x1E69E9820];
@@ -208,12 +208,12 @@ void __99__VNClustererReadWriteContext_suggestionsForClustersWithFaceIds_affinit
   v17[5] = &v22;
   if (![(VNCanceller *)v10 tryToPerformBlock:v18 usingSignallingBlock:v17])
   {
-    if (a5)
+    if (error)
     {
       v14 = [VNError errorWithCode:1 message:@"Clustering request has been cancelled"];
 LABEL_13:
       v15 = 0;
-      *a5 = v14;
+      *error = v14;
       goto LABEL_16;
     }
 
@@ -223,7 +223,7 @@ LABEL_13:
   v12 = v35[5];
   if (!v12)
   {
-    if (a5)
+    if (error)
     {
       v13 = v29[5];
 LABEL_12:
@@ -239,7 +239,7 @@ LABEL_14:
   v13 = v23[5];
   if (v13)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -281,88 +281,88 @@ void __75__VNClustererReadWriteContext__updateClustererWithOptions_canceller_err
   objc_storeStrong((v3 + 40), obj);
 }
 
-- (id)updateModelByAddingPersons:(id)a3 withGroupingIdentifiers:(id)a4 andRemovingPersons:(id)a5 canceller:(id)a6 error:(id *)a7
+- (id)updateModelByAddingPersons:(id)persons withGroupingIdentifiers:(id)identifiers andRemovingPersons:(id)removingPersons canceller:(id)canceller error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  personsCopy = persons;
+  identifiersCopy = identifiers;
+  removingPersonsCopy = removingPersons;
+  cancellerCopy = canceller;
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = v16;
-  if (v12)
+  if (personsCopy)
   {
-    [v16 setObject:v12 forKey:@"VNClusterOptionAddObjectsToClustering"];
+    [v16 setObject:personsCopy forKey:@"VNClusterOptionAddObjectsToClustering"];
   }
 
-  if (v14)
+  if (removingPersonsCopy)
   {
-    [v17 setObject:v14 forKey:@"VNClusterOptionRemoveObjectsFromClustering"];
+    [v17 setObject:removingPersonsCopy forKey:@"VNClusterOptionRemoveObjectsFromClustering"];
   }
 
-  if (v13)
+  if (identifiersCopy)
   {
-    [v17 setObject:v13 forKey:@"VNClusterOptionAddObjectGroupIdsToClustering"];
+    [v17 setObject:identifiersCopy forKey:@"VNClusterOptionAddObjectGroupIdsToClustering"];
   }
 
-  v18 = [(VNClustererReadWriteContext *)self _updateClustererWithOptions:v17 canceller:v15 error:a7];
+  v18 = [(VNClustererReadWriteContext *)self _updateClustererWithOptions:v17 canceller:cancellerCopy error:error];
 
   return v18;
 }
 
-- (id)updateModelByAddingFaces:(id)a3 withGroupingIdentifiers:(id)a4 andRemovingFaces:(id)a5 canceller:(id)a6 error:(id *)a7
+- (id)updateModelByAddingFaces:(id)faces withGroupingIdentifiers:(id)identifiers andRemovingFaces:(id)removingFaces canceller:(id)canceller error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v15)
+  facesCopy = faces;
+  identifiersCopy = identifiers;
+  removingFacesCopy = removingFaces;
+  cancellerCopy = canceller;
+  if (!cancellerCopy)
   {
-    v15 = objc_alloc_init(VNCanceller);
+    cancellerCopy = objc_alloc_init(VNCanceller);
   }
 
-  v16 = v15;
+  v16 = cancellerCopy;
   v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v18 = v17;
-  if (v12)
+  if (facesCopy)
   {
-    [v17 setObject:v12 forKey:@"VNClusterOptionAddObjectsToClustering"];
+    [v17 setObject:facesCopy forKey:@"VNClusterOptionAddObjectsToClustering"];
   }
 
-  if (v14)
+  if (removingFacesCopy)
   {
-    [v18 setObject:v14 forKey:@"VNClusterOptionRemoveObjectsFromClustering"];
+    [v18 setObject:removingFacesCopy forKey:@"VNClusterOptionRemoveObjectsFromClustering"];
   }
 
-  if (v13)
+  if (identifiersCopy)
   {
-    [v18 setObject:v13 forKey:@"VNClusterOptionAddObjectGroupIdsToClustering"];
+    [v18 setObject:identifiersCopy forKey:@"VNClusterOptionAddObjectGroupIdsToClustering"];
   }
 
-  v19 = [(VNClustererReadWriteContext *)self _updateClustererWithOptions:v18 canceller:v16 error:a7];
+  v19 = [(VNClustererReadWriteContext *)self _updateClustererWithOptions:v18 canceller:v16 error:error];
 
   return v19;
 }
 
-- (BOOL)resetModelState:(id)a3 error:(id *)a4
+- (BOOL)resetModelState:(id)state error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VNClustererContextBase *)self _createGreedyClusterer:objc_opt_class() state:v6 error:a4];
-  LOBYTE(a4) = v7 != 0;
+  stateCopy = state;
+  v7 = [(VNClustererContextBase *)self _createGreedyClusterer:objc_opt_class() state:stateCopy error:error];
+  LOBYTE(error) = v7 != 0;
 
-  return a4;
+  return error;
 }
 
-- (VNClustererReadWriteContext)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 torsoThreshold:(float)a7 requestRevision:(unint64_t)a8 torsoprintRequestRevision:(unint64_t)a9 error:(id *)a10
+- (VNClustererReadWriteContext)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold torsoThreshold:(float)torsoThreshold requestRevision:(unint64_t)revision torsoprintRequestRevision:(unint64_t)requestRevision error:(id *)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
+  typeCopy = type;
+  pathCopy = path;
+  stateCopy = state;
   v28.receiver = self;
   v28.super_class = VNClustererReadWriteContext;
-  *&v21 = a6;
-  *&v22 = a7;
-  v23 = [(VNClustererContextBase *)&v28 initWithType:v18 cachePath:v19 state:v20 readOnly:0 threshold:a8 torsoThreshold:a9 requestRevision:v21 torsoprintRequestRevision:v22 error:a10];
-  if (v23 && ([(VNClustererContextBase *)v23 _createGreedyClusterer:objc_opt_class() state:v20 error:a10], v24 = objc_claimAutoreleasedReturnValue(), clusterer = v23->_clusterer, v23->_clusterer = v24, clusterer, v23->_clusterer))
+  *&v21 = threshold;
+  *&v22 = torsoThreshold;
+  v23 = [(VNClustererContextBase *)&v28 initWithType:typeCopy cachePath:pathCopy state:stateCopy readOnly:0 threshold:revision torsoThreshold:requestRevision requestRevision:v21 torsoprintRequestRevision:v22 error:error];
+  if (v23 && ([(VNClustererContextBase *)v23 _createGreedyClusterer:objc_opt_class() state:stateCopy error:error], v24 = objc_claimAutoreleasedReturnValue(), clusterer = v23->_clusterer, v23->_clusterer = v24, clusterer, v23->_clusterer))
   {
     v26 = v23;
   }
@@ -375,16 +375,16 @@ void __75__VNClustererReadWriteContext__updateClustererWithOptions_canceller_err
   return v26;
 }
 
-- (VNClustererReadWriteContext)initWithType:(id)a3 cachePath:(id)a4 state:(id)a5 threshold:(float)a6 requestRevision:(unint64_t)a7 torsoprintRequestRevision:(unint64_t)a8 error:(id *)a9
+- (VNClustererReadWriteContext)initWithType:(id)type cachePath:(id)path state:(id)state threshold:(float)threshold requestRevision:(unint64_t)revision torsoprintRequestRevision:(unint64_t)requestRevision error:(id *)error
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  typeCopy = type;
+  pathCopy = path;
+  stateCopy = state;
   v25.receiver = self;
   v25.super_class = VNClustererReadWriteContext;
-  *&v19 = a6;
-  v20 = [(VNClustererContextBase *)&v25 initWithType:v16 cachePath:v17 state:v18 readOnly:0 threshold:a7 requestRevision:a8 torsoprintRequestRevision:v19 error:a9];
-  if (v20 && ([(VNClustererContextBase *)v20 _createGreedyClusterer:objc_opt_class() state:v18 error:a9], v21 = objc_claimAutoreleasedReturnValue(), clusterer = v20->_clusterer, v20->_clusterer = v21, clusterer, v20->_clusterer))
+  *&v19 = threshold;
+  v20 = [(VNClustererContextBase *)&v25 initWithType:typeCopy cachePath:pathCopy state:stateCopy readOnly:0 threshold:revision requestRevision:requestRevision torsoprintRequestRevision:v19 error:error];
+  if (v20 && ([(VNClustererContextBase *)v20 _createGreedyClusterer:objc_opt_class() state:stateCopy error:error], v21 = objc_claimAutoreleasedReturnValue(), clusterer = v20->_clusterer, v20->_clusterer = v21, clusterer, v20->_clusterer))
   {
     v23 = v20;
   }
@@ -397,33 +397,33 @@ void __75__VNClustererReadWriteContext__updateClustererWithOptions_canceller_err
   return v23;
 }
 
-+ (id)clustererModelFileNamesFromState:(id)a3 storedInPath:(id)a4 error:(id *)a5
++ (id)clustererModelFileNamesFromState:(id)state storedInPath:(id)path error:(id *)error
 {
-  v5 = [VNClustererReadOnlyContext clustererModelFileNamesFromState:a3 storedInPath:a4 error:a5];
+  v5 = [VNClustererReadOnlyContext clustererModelFileNamesFromState:state storedInPath:path error:error];
 
   return v5;
 }
 
-+ (id)distanceBetweenFacesWithFaceprint:(id)a3 andFaceprint:(id)a4 error:(id *)a5
++ (id)distanceBetweenFacesWithFaceprint:(id)faceprint andFaceprint:(id)andFaceprint error:(id *)error
 {
-  v5 = [VNClustererReadOnlyContext distanceBetweenFacesWithFaceprint:a3 andFaceprint:a4 error:a5];
+  v5 = [VNClustererReadOnlyContext distanceBetweenFacesWithFaceprint:faceprint andFaceprint:andFaceprint error:error];
 
   return v5;
 }
 
-+ (id)distanceBetweenFacesWithFaceObservation:(id)a3 andFaceObservation:(id)a4 error:(id *)a5
++ (id)distanceBetweenFacesWithFaceObservation:(id)observation andFaceObservation:(id)faceObservation error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 faceprint];
-  v9 = [v7 faceprint];
-  v10 = [VNClustererReadWriteContext distanceBetweenFacesWithFaceprint:v8 andFaceprint:v9 error:a5];
+  faceObservationCopy = faceObservation;
+  faceprint = [observation faceprint];
+  faceprint2 = [faceObservationCopy faceprint];
+  v10 = [VNClustererReadWriteContext distanceBetweenFacesWithFaceprint:faceprint andFaceprint:faceprint2 error:error];
 
   return v10;
 }
 
-+ (id)representativenessForFaces:(id)a3 error:(id *)a4
++ (id)representativenessForFaces:(id)faces error:(id *)error
 {
-  v4 = [VNClustererReadOnlyContext representativenessForFaces:a3 error:a4];
+  v4 = [VNClustererReadOnlyContext representativenessForFaces:faces error:error];
 
   return v4;
 }

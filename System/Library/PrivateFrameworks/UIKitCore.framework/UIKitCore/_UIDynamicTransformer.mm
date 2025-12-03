@@ -2,18 +2,18 @@
 - (CGAffineTransform)transform;
 - (CGPoint)center;
 - (CGRect)bounds;
-- (_UIDynamicTransformer)initWithActionBlock:(id)a3;
+- (_UIDynamicTransformer)initWithActionBlock:(id)block;
 @end
 
 @implementation _UIDynamicTransformer
 
-- (_UIDynamicTransformer)initWithActionBlock:(id)a3
+- (_UIDynamicTransformer)initWithActionBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_UIDynamicTransformer.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"actionBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDynamicTransformer.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"actionBlock"}];
   }
 
   v12.receiver = self;
@@ -21,7 +21,7 @@
   v6 = [(_UIDynamicTransformer *)&v12 init];
   if (v6)
   {
-    v7 = _Block_copy(v5);
+    v7 = _Block_copy(blockCopy);
     action = v6->_action;
     v6->_action = v7;
 

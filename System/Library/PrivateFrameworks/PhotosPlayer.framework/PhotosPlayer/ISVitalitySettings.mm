@@ -17,8 +17,8 @@
 
 - (double)maxVitalityDelay
 {
-  v2 = [(ISVitalitySettings *)self _defaultSettings];
-  [v2 maxVitalityDelay];
+  _defaultSettings = [(ISVitalitySettings *)self _defaultSettings];
+  [_defaultSettings maxVitalityDelay];
   v4 = v3;
 
   return v4;
@@ -26,8 +26,8 @@
 
 - (double)maximumDelayBeforePlayback
 {
-  v2 = [(ISVitalitySettings *)self _defaultSettings];
-  [v2 maximumDelayBeforePlayback];
+  _defaultSettings = [(ISVitalitySettings *)self _defaultSettings];
+  [_defaultSettings maximumDelayBeforePlayback];
   v4 = v3;
 
   return v4;
@@ -35,8 +35,8 @@
 
 - (double)minimumVisibilityFactor
 {
-  v2 = [(ISVitalitySettings *)self _defaultSettings];
-  [v2 minimumVisibilityFactor];
+  _defaultSettings = [(ISVitalitySettings *)self _defaultSettings];
+  [_defaultSettings minimumVisibilityFactor];
   v4 = v3;
 
   return v4;
@@ -44,8 +44,8 @@
 
 - (double)endTimeOffset
 {
-  v2 = [(ISVitalitySettings *)self _defaultSettings];
-  [v2 endTimeOffset];
+  _defaultSettings = [(ISVitalitySettings *)self _defaultSettings];
+  [_defaultSettings endTimeOffset];
   v4 = v3;
 
   return v4;
@@ -53,8 +53,8 @@
 
 - (double)playbackRate
 {
-  v2 = [(ISVitalitySettings *)self _defaultSettings];
-  [v2 playbackRate];
+  _defaultSettings = [(ISVitalitySettings *)self _defaultSettings];
+  [_defaultSettings playbackRate];
   v4 = v3;
 
   return v4;
@@ -62,8 +62,8 @@
 
 - (double)minimumPhotoTransitionDuration
 {
-  v2 = [(ISVitalitySettings *)self _defaultSettings];
-  [v2 minimumPhotoTransitionDuration];
+  _defaultSettings = [(ISVitalitySettings *)self _defaultSettings];
+  [_defaultSettings minimumPhotoTransitionDuration];
   v4 = v3;
 
   return v4;
@@ -76,8 +76,8 @@
     return 1.5;
   }
 
-  v4 = [(ISVitalitySettings *)self _defaultSettings];
-  [v4 postDuration];
+  _defaultSettings = [(ISVitalitySettings *)self _defaultSettings];
+  [_defaultSettings postDuration];
   v6 = v5;
 
   return v6;
@@ -90,8 +90,8 @@
     return 1.5;
   }
 
-  v4 = [(ISVitalitySettings *)self _defaultSettings];
-  [v4 preDuration];
+  _defaultSettings = [(ISVitalitySettings *)self _defaultSettings];
+  [_defaultSettings preDuration];
   v6 = v5;
 
   return v6;
@@ -104,10 +104,10 @@
     return 0;
   }
 
-  v4 = [(ISVitalitySettings *)self _defaultSettings];
-  v5 = [v4 behavior];
+  _defaultSettings = [(ISVitalitySettings *)self _defaultSettings];
+  behavior = [_defaultSettings behavior];
 
-  return v5;
+  return behavior;
 }
 
 - (void)setDefaultValues
@@ -118,16 +118,16 @@
   [(ISVitalitySettings *)self setUseLegacyBehavior:0];
   [(ISVitalitySettings *)self setShouldPreroll:1];
   [(ISVitalitySettings *)self setVitalityTransitionScoreMinimumValueForPlayback:0.0];
-  v3 = [(ISVitalitySettings *)self oneUpSettings];
-  [v3 setMinimumVisibilityFactor:0.05];
-  v4 = [(ISVitalitySettings *)self shareViewSettings];
-  [v4 setMinimumVisibilityFactor:0.7];
-  v5 = [(ISVitalitySettings *)self activityViewSettings];
-  [v5 setPreDuration:0.35];
-  [v5 setMinimumVisibilityFactor:0.7];
-  v6 = [(ISVitalitySettings *)self orbPreviewSettings];
-  [v6 setPreDuration:0.65];
-  [v6 setPlaybackRate:1.0];
+  oneUpSettings = [(ISVitalitySettings *)self oneUpSettings];
+  [oneUpSettings setMinimumVisibilityFactor:0.05];
+  shareViewSettings = [(ISVitalitySettings *)self shareViewSettings];
+  [shareViewSettings setMinimumVisibilityFactor:0.7];
+  activityViewSettings = [(ISVitalitySettings *)self activityViewSettings];
+  [activityViewSettings setPreDuration:0.35];
+  [activityViewSettings setMinimumVisibilityFactor:0.7];
+  orbPreviewSettings = [(ISVitalitySettings *)self orbPreviewSettings];
+  [orbPreviewSettings setPreDuration:0.65];
+  [orbPreviewSettings setPlaybackRate:1.0];
 }
 
 + (id)settingsControllerModule
@@ -179,9 +179,9 @@
 + (ISVitalitySettings)sharedInstance
 {
   v2 = +[ISRootSettings sharedInstance];
-  v3 = [v2 vitalitySettings];
+  vitalitySettings = [v2 vitalitySettings];
 
-  return v3;
+  return vitalitySettings;
 }
 
 @end

@@ -17,7 +17,7 @@
   v4 = *(*(v3 - 8) + 64);
   __chkstk_darwin(v3 - 8);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_10010E418(v6);
 
   v8 = type metadata accessor for Date();
@@ -33,7 +33,7 @@
 
 - (BOOL)isBundle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10010E67C();
 
   return v3 & 1;
@@ -41,7 +41,7 @@
 
 - (int64_t)fileSystemFreeSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10010E6DC();
 
   return v3;
@@ -49,7 +49,7 @@
 
 - (int64_t)fileSystemImportantFreeSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10010E728();
 
   return v3;
@@ -57,7 +57,7 @@
 
 - (int64_t)fileSystemOpportunisticFreeSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10010E914();
 
   return v3;
@@ -65,7 +65,7 @@
 
 - (int64_t)fileSystemSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10010E960();
 
   return v3;
@@ -73,7 +73,7 @@
 
 - (NSArray)languages
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010ED50();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -83,7 +83,7 @@
 
 - (NSString)modelPartNumber
 {
-  v2 = self;
+  selfCopy = self;
   sub_10010EE1C();
   v4 = v3;
 

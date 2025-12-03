@@ -1,45 +1,45 @@
 @interface HMKTDumpHistory
-- (int)main:(id)a3;
+- (int)main:(id)main;
 @end
 
 @implementation HMKTDumpHistory
 
-- (int)main:(id)a3
+- (int)main:(id)main
 {
-  v269 = a3;
-  v3 = [v269 firstObject];
-  v4 = [v3 isEqualToString:@"-h"];
+  mainCopy = main;
+  firstObject = [mainCopy firstObject];
+  v4 = [firstObject isEqualToString:@"-h"];
 
-  v5 = v269;
+  v5 = mainCopy;
   if (v4)
   {
     self->_useHomeModelIDs = 1;
-    [v269 removeObjectAtIndex:0];
+    [mainCopy removeObjectAtIndex:0];
   }
 
   v6 = __stdoutp;
-  if ([v269 count] == 2)
+  if ([mainCopy count] == 2)
   {
-    v7 = [v269 lastObject];
-    v8 = fopen([v7 cString], "w");
+    lastObject = [mainCopy lastObject];
+    v8 = fopen([lastObject cString], "w");
 
     if (v8)
     {
       v6 = v8;
     }
 
-    v5 = v269;
-    [v269 removeLastObject];
+    v5 = mainCopy;
+    [mainCopy removeLastObject];
   }
 
   if ([v5 count] == 1)
   {
     v261 = objc_autoreleasePoolPush();
-    v9 = [v5 lastObject];
+    lastObject2 = [v5 lastObject];
     if (!self)
     {
 LABEL_114:
-      v243 = v9;
+      v243 = lastObject2;
 
       objc_autoreleasePoolPop(v261);
       v45 = 0;
@@ -52,13 +52,13 @@ LABEL_114:
       goto LABEL_117;
     }
 
-    v260 = v9;
-    v10 = v9;
+    v260 = lastObject2;
+    v10 = lastObject2;
     v11 = objc_autoreleasePoolPush();
     v12 = v10;
     v13 = objc_autoreleasePoolPush();
     ppDb[0] = 0;
-    v14 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v301 = 0;
     v302 = &v301;
     v303 = 0x3032000000;
@@ -70,7 +70,7 @@ LABEL_114:
     {
       v16 = __stderrp;
       sqlite3_errmsg(ppDb[0]);
-      sub_1000055DC(v16, @"failed to open %s: %s \n", v17, v18, v19, v20, v21, v22, v14);
+      sub_1000055DC(v16, @"failed to open %s: %s \n", v17, v18, v19, v20, v21, v22, uTF8String);
     }
 
     *stream = _NSConcreteStackBlock;
@@ -170,8 +170,8 @@ LABEL_37:
           v75 = [NSSet setWithObject:objc_opt_class()];
           v76 = [v74 decodeObjectOfClasses:v75 forKey:@"root"];
 
-          v77 = [v74 error];
-          LOBYTE(v75) = v77 == 0;
+          error = [v74 error];
+          LOBYTE(v75) = error == 0;
 
           if (v75)
           {
@@ -182,11 +182,11 @@ LABEL_37:
           else
           {
             v78 = __stderrp;
-            v79 = [v74 error];
-            v80 = [v79 description];
+            error2 = [v74 error];
+            v80 = [error2 description];
             v81 = v80;
-            v82 = [v80 UTF8String];
-            sub_1000055DC(v78, @"Error Decoding Model - %s \n", v83, v84, v85, v86, v87, v88, v82);
+            uTF8String2 = [v80 UTF8String];
+            sub_1000055DC(v78, @"Error Decoding Model - %s \n", v83, v84, v85, v86, v87, v88, uTF8String2);
 
             v268 = 0;
           }
@@ -201,7 +201,7 @@ LABEL_37:
 
         if (v268)
         {
-          v266 = [NSURL fileURLWithPath:v12];
+          name = [NSURL fileURLWithPath:v12];
           v264 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:v268];
           v299[0] = NSReadOnlyPersistentStoreOption;
           v89 = [NSNumber numberWithBool:1];
@@ -212,7 +212,7 @@ LABEL_37:
           v259 = [NSDictionary dictionaryWithObjects:v300 forKeys:v299 count:2];
 
           v295 = 0;
-          v262 = [v264 addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:v266 options:v259 error:&v295];
+          v262 = [v264 addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:name options:v259 error:&v295];
           v97 = v295;
           if (v262)
           {
@@ -224,19 +224,19 @@ LABEL_37:
             v254 = [obj executeRequest:v263 error:&v294];
             v251 = v294;
 
-            v98 = [v254 result];
-            v99 = v98 == 0;
+            result = [v254 result];
+            v99 = result == 0;
 
             if (v99)
             {
               v138 = __stderrp;
               v139 = [v251 description];
               v140 = v139;
-              v141 = [v139 UTF8String];
+              uTF8String3 = [v139 UTF8String];
               v142 = [v262 description];
               v143 = v142;
               [v142 UTF8String];
-              sub_1000055DC(v138, @"Error Fetching History - %s for store %s \n", v144, v145, v146, v147, v148, v149, v141);
+              sub_1000055DC(v138, @"Error Fetching History - %s for store %s \n", v144, v145, v146, v147, v148, v149, uTF8String3);
             }
 
             else
@@ -261,8 +261,8 @@ LABEL_37:
               {
                 v298 = 0u;
                 memset(stream, 0, sizeof(stream));
-                v113 = [v105 result];
-                v114 = [v113 countByEnumeratingWithState:stream objects:&v301 count:16];
+                result2 = [v105 result];
+                v114 = [result2 countByEnumeratingWithState:stream objects:&v301 count:16];
                 if (v114)
                 {
                   v115 = **&stream[16];
@@ -272,20 +272,20 @@ LABEL_37:
                     {
                       if (**&stream[16] != v115)
                       {
-                        objc_enumerationMutation(v113);
+                        objc_enumerationMutation(result2);
                       }
 
                       v117 = *(*&stream[8] + 8 * i);
-                      v118 = [v117 tombstone];
-                      if ([v118 count])
+                      tombstone = [v117 tombstone];
+                      if ([tombstone count])
                       {
                         v119 = self->_tombstones;
-                        v120 = [v117 changedObjectID];
-                        [(NSMutableDictionary *)v119 setObject:v118 forKeyedSubscript:v120];
+                        changedObjectID = [v117 changedObjectID];
+                        [(NSMutableDictionary *)v119 setObject:tombstone forKeyedSubscript:changedObjectID];
                       }
                     }
 
-                    v114 = [v113 countByEnumeratingWithState:stream objects:&v301 count:16];
+                    v114 = [result2 countByEnumeratingWithState:stream objects:&v301 count:16];
                   }
 
                   while (v114);
@@ -305,8 +305,8 @@ LABEL_37:
               v293 = 0u;
               v290 = 0u;
               v291 = 0u;
-              v253 = [v254 result];
-              v255 = [v253 countByEnumeratingWithState:&v290 objects:&v301 count:16];
+              result3 = [v254 result];
+              v255 = [result3 countByEnumeratingWithState:&v290 objects:&v301 count:16];
               if (v255)
               {
                 v252 = *v291;
@@ -318,30 +318,30 @@ LABEL_37:
                     if (*v291 != v252)
                     {
                       v151 = v150;
-                      objc_enumerationMutation(v253);
+                      objc_enumerationMutation(result3);
                       v150 = v151;
                     }
 
                     v257 = v150;
                     v152 = *(*(&v290 + 1) + 8 * v150);
                     v258 = objc_autoreleasePoolPush();
-                    v153 = [v152 transactionNumber];
-                    v154 = [v152 processID];
-                    v155 = [v152 bundleID];
-                    v156 = [v152 author];
-                    v157 = [v152 timestamp];
-                    v158 = [v256 stringFromDate:v157];
-                    v267 = [NSString stringWithFormat:@"Transaction (%lld): %@:%@:%@ at %@", v153, v154, v155, v156, v158];
+                    transactionNumber = [v152 transactionNumber];
+                    processID = [v152 processID];
+                    bundleID = [v152 bundleID];
+                    author = [v152 author];
+                    timestamp = [v152 timestamp];
+                    v158 = [v256 stringFromDate:timestamp];
+                    v158 = [NSString stringWithFormat:@"Transaction (%lld): %@:%@:%@ at %@", transactionNumber, processID, bundleID, author, v158];
 
-                    v159 = v267;
-                    v160 = [v267 cStringUsingEncoding:4];
+                    v159 = v158;
+                    v160 = [v158 cStringUsingEncoding:4];
                     sub_1000055DC(v6, @"%s\n", v161, v162, v163, v164, v165, v166, v160);
                     v288 = 0u;
                     v289 = 0u;
                     v286 = 0u;
                     v287 = 0u;
-                    v270 = [v152 changes];
-                    v272 = [v270 countByEnumeratingWithState:&v286 objects:stream count:16];
+                    changes = [v152 changes];
+                    v272 = [changes countByEnumeratingWithState:&v286 objects:stream count:16];
                     if (v272)
                     {
                       v271 = *v287;
@@ -353,40 +353,40 @@ LABEL_37:
                           if (*v287 != v271)
                           {
                             v168 = v167;
-                            objc_enumerationMutation(v270);
+                            objc_enumerationMutation(changes);
                             v167 = v168;
                           }
 
                           v275 = v167;
                           v169 = *(*(&v286 + 1) + 8 * v167);
                           v277 = objc_autoreleasePoolPush();
-                          v170 = [v169 changeType];
+                          changeType = [v169 changeType];
                           contexta = [v169 changeID];
-                          if (v170 >= 3)
+                          if (changeType >= 3)
                           {
-                            v281 = [NSString stringWithFormat:@"%zd", v170];
+                            v170 = [NSString stringWithFormat:@"%zd", changeType];
                           }
 
                           else
                           {
-                            v281 = off_100030978[v170];
+                            v170 = off_100030978[changeType];
                           }
 
-                          v171 = [v169 changedObjectID];
-                          v172 = [v171 entity];
-                          v173 = [v172 attributesByName];
+                          changedObjectID2 = [v169 changedObjectID];
+                          entity = [changedObjectID2 entity];
+                          attributesByName = [entity attributesByName];
 
-                          v174 = [v173 objectForKeyedSubscript:@"modelID"];
-                          LODWORD(v172) = v174 == 0;
+                          v174 = [attributesByName objectForKeyedSubscript:@"modelID"];
+                          LODWORD(entity) = v174 == 0;
 
-                          if (v172)
+                          if (entity)
                           {
-                            v178 = sub_10000CC24(v171, 0);
+                            v178 = sub_10000CC24(changedObjectID2, 0);
                           }
 
                           else
                           {
-                            v175 = [(NSMutableDictionary *)self->_tombstones objectForKeyedSubscript:v171];
+                            v175 = [(NSMutableDictionary *)self->_tombstones objectForKeyedSubscript:changedObjectID2];
                             v176 = v175;
                             if (v175)
                             {
@@ -396,7 +396,7 @@ LABEL_37:
 
                             else
                             {
-                              v273 = [(NSManagedObjectContext *)self->_context existingObjectWithID:v171 error:0];
+                              v273 = [(NSManagedObjectContext *)self->_context existingObjectWithID:changedObjectID2 error:0];
                               v177 = v273;
                             }
 
@@ -412,7 +412,7 @@ LABEL_37:
 
                             if (self->_useHomeModelIDs)
                             {
-                              v183 = [v173 objectForKeyedSubscript:@"homeModelID"];
+                              v183 = [attributesByName objectForKeyedSubscript:@"homeModelID"];
                               v184 = v183 == 0;
 
                               if (!v184)
@@ -427,29 +427,29 @@ LABEL_37:
 
                                 v188 = v187;
 
-                                v189 = [NSString stringWithFormat:@"%@[H:%@]", v182, v188];
+                                v188 = [NSString stringWithFormat:@"%@[H:%@]", v182, v188];
 
-                                v182 = v189;
+                                v182 = v188;
                               }
                             }
 
-                            v178 = sub_10000CC24(v171, v182);
+                            v178 = sub_10000CC24(changedObjectID2, v182);
                           }
 
                           sub_1000055DC(v6, @"    Change (%lld): %@ %@", v190, v191, v192, v193, v194, v195, contexta);
-                          if (v170 == 2)
+                          if (changeType == 2)
                           {
-                            v221 = [v169 tombstone];
-                            if (![v221 count])
+                            tombstone2 = [v169 tombstone];
+                            if (![tombstone2 count])
                             {
                               goto LABEL_95;
                             }
 
-                            v222 = [v221 allKeys];
-                            if ([v222 count] <= 1)
+                            allKeys = [tombstone2 allKeys];
+                            if ([allKeys count] <= 1)
                             {
-                              v229 = [v222 firstObject];
-                              v230 = [v229 isEqualToString:@"modelID"];
+                              firstObject2 = [allKeys firstObject];
+                              v230 = [firstObject2 isEqualToString:@"modelID"];
 
                               if (v230)
                               {
@@ -466,8 +466,8 @@ LABEL_96:
                             v285 = 0u;
                             v282 = 0u;
                             v283 = 0u;
-                            v231 = [v221 allKeys];
-                            v232 = [v231 sortedArrayUsingSelector:"compare:"];
+                            allKeys2 = [tombstone2 allKeys];
+                            v232 = [allKeys2 sortedArrayUsingSelector:"compare:"];
 
                             v233 = [v232 countByEnumeratingWithState:&v282 objects:ppDb count:16];
                             if (v233)
@@ -483,7 +483,7 @@ LABEL_96:
                                   }
 
                                   v236 = *(*(&v282 + 1) + 8 * j);
-                                  v249 = [v221 objectForKeyedSubscript:v236];
+                                  v249 = [tombstone2 objectForKeyedSubscript:v236];
                                   sub_1000055DC(v6, @"        %@ = %@\n", v237, v238, v239, v240, v241, v242, v236);
                                 }
 
@@ -496,19 +496,19 @@ LABEL_96:
 
                           else
                           {
-                            if (v170 != 1)
+                            if (changeType != 1)
                             {
                               goto LABEL_96;
                             }
 
-                            v202 = [v169 updatedProperties];
-                            v203 = [v202 count];
+                            updatedProperties = [v169 updatedProperties];
+                            v203 = [updatedProperties count];
 
                             if (v203)
                             {
-                              v210 = [v169 updatedProperties];
-                              v211 = [v210 allObjects];
-                              v212 = [v211 valueForKey:@"name"];
+                              updatedProperties2 = [v169 updatedProperties];
+                              allObjects = [updatedProperties2 allObjects];
+                              v212 = [allObjects valueForKey:@"name"];
 
                               v213 = [v212 sortedArrayUsingSelector:"compare:"];
                               v214 = [v213 componentsJoinedByString:{@", "}];
@@ -527,7 +527,7 @@ LABEL_106:
                         }
 
                         while ((v275 + 1) != v272);
-                        v272 = [v270 countByEnumeratingWithState:&v286 objects:stream count:16];
+                        v272 = [changes countByEnumeratingWithState:&v286 objects:stream count:16];
                       }
 
                       while (v272);
@@ -538,7 +538,7 @@ LABEL_106:
                   }
 
                   while ((v257 + 1) != v255);
-                  v255 = [v253 countByEnumeratingWithState:&v290 objects:&v301 count:16];
+                  v255 = [result3 countByEnumeratingWithState:&v290 objects:&v301 count:16];
                 }
 
                 while (v255);
@@ -556,22 +556,22 @@ LABEL_106:
             v128 = __stderrp;
             obj = [v97 description];
             v129 = obj;
-            v130 = [obj UTF8String];
-            v263 = [v266 description];
+            uTF8String4 = [obj UTF8String];
+            v263 = [name description];
             v131 = v263;
             [v263 UTF8String];
-            sub_1000055DC(v128, @"Error Adding Store - %s at path %s \n", v132, v133, v134, v135, v136, v137, v130);
+            sub_1000055DC(v128, @"Error Adding Store - %s at path %s \n", v132, v133, v134, v135, v136, v137, uTF8String4);
           }
         }
 
         else
         {
           v121 = __stderrp;
-          v266 = [objc_opt_class() name];
+          name = [objc_opt_class() name];
           sub_1000055DC(v121, @"nil model found after decompression: %@ / %@\n", v122, v123, v124, v125, v126, v127, @"hmktool");
         }
 
-        v9 = v260;
+        lastObject2 = v260;
         goto LABEL_114;
       }
 
@@ -583,7 +583,7 @@ LABEL_106:
   }
 
   v38 = __stderrp;
-  v248 = [objc_opt_class() name];
+  name2 = [objc_opt_class() name];
   sub_1000055DC(v38, @"Usage: %@ %@ [-h] <sqlite store file>\n", v39, v40, v41, v42, v43, v44, @"hmktool");
 
   v45 = 1;

@@ -1,26 +1,26 @@
 @interface LACDTORatchetEndpointProvider
-- (LACDTORatchetEndpointProvider)initWithContextProvider:(id)a3;
-- (id)endpoint:(id *)a3;
+- (LACDTORatchetEndpointProvider)initWithContextProvider:(id)provider;
+- (id)endpoint:(id *)endpoint;
 @end
 
 @implementation LACDTORatchetEndpointProvider
 
-- (LACDTORatchetEndpointProvider)initWithContextProvider:(id)a3
+- (LACDTORatchetEndpointProvider)initWithContextProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = LACDTORatchetEndpointProvider;
   v5 = [(LACDTORatchetEndpointProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_contextProvider, v4);
+    objc_storeWeak(&v5->_contextProvider, providerCopy);
   }
 
   return v6;
 }
 
-- (id)endpoint:(id *)a3
+- (id)endpoint:(id *)endpoint
 {
   v20 = 0;
   v21 = &v20;
@@ -35,9 +35,9 @@
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_contextProvider);
-  v5 = [WeakRetained createContext];
+  createContext = [WeakRetained createContext];
 
-  if (v5)
+  if (createContext)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -45,7 +45,7 @@
     v10[3] = &unk_1E7A95D08;
     v12 = &v14;
     v13 = &v20;
-    v11 = v5;
+    v11 = createContext;
     [v11 bootstrapServiceType:@"kLAServiceTypeRatchet" completionHandler:v10];
     v6 = v11;
   }
@@ -57,9 +57,9 @@
     v15[5] = v7;
   }
 
-  if (a3)
+  if (endpoint)
   {
-    *a3 = v15[5];
+    *endpoint = v15[5];
   }
 
   v8 = v21[5];

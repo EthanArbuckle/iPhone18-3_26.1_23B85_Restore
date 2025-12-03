@@ -1,56 +1,56 @@
 @interface EARAudioReader
-- (EARAudioReader)initWithFileURL:(id)a3 sampleRate:(unint64_t)a4;
-- (id)_avf_enumerateAudioBuffersWithBlock:(id)a3;
-- (id)_opx_enumerateAudioBuffersWithBlock:(id)a3;
-- (id)_opx_enumeratePacketsWithBlock:(id)a3;
-- (id)enumerateAudioBuffersWithBlock:(id)a3;
+- (EARAudioReader)initWithFileURL:(id)l sampleRate:(unint64_t)rate;
+- (id)_avf_enumerateAudioBuffersWithBlock:(id)block;
+- (id)_opx_enumerateAudioBuffersWithBlock:(id)block;
+- (id)_opx_enumeratePacketsWithBlock:(id)block;
+- (id)enumerateAudioBuffersWithBlock:(id)block;
 @end
 
 @implementation EARAudioReader
 
-- (EARAudioReader)initWithFileURL:(id)a3 sampleRate:(unint64_t)a4
+- (EARAudioReader)initWithFileURL:(id)l sampleRate:(unint64_t)rate
 {
-  v6 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = EARAudioReader;
   v7 = [(EARAudioReader *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [lCopy copy];
     fileURL = v7->_fileURL;
     v7->_fileURL = v8;
 
-    v7->_sampleRate = a4;
+    v7->_sampleRate = rate;
   }
 
   return v7;
 }
 
-- (id)enumerateAudioBuffersWithBlock:(id)a3
+- (id)enumerateAudioBuffersWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(NSURL *)self->_fileURL pathExtension];
-  v6 = [v5 lowercaseString];
-  v7 = [v6 isEqual:@"opx"];
+  blockCopy = block;
+  pathExtension = [(NSURL *)self->_fileURL pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v7 = [lowercaseString isEqual:@"opx"];
 
   if (v7)
   {
-    [(EARAudioReader *)self _opx_enumerateAudioBuffersWithBlock:v4];
+    [(EARAudioReader *)self _opx_enumerateAudioBuffersWithBlock:blockCopy];
   }
 
   else
   {
-    [(EARAudioReader *)self _avf_enumerateAudioBuffersWithBlock:v4];
+    [(EARAudioReader *)self _avf_enumerateAudioBuffersWithBlock:blockCopy];
   }
   v8 = ;
 
   return v8;
 }
 
-- (id)_avf_enumerateAudioBuffersWithBlock:(id)a3
+- (id)_avf_enumerateAudioBuffersWithBlock:(id)block
 {
   v33[6] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  blockCopy = block;
   v6 = [MEMORY[0x1E6988170] assetWithURL:self->_fileURL];
   v31 = 0;
   v7 = [MEMORY[0x1E6987E70] assetReaderWithAsset:v6 error:&v31];
@@ -85,30 +85,30 @@
 
     if (!v20)
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"EARAudioReader.mm" lineNumber:68 description:&stru_1F2D44B60];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"EARAudioReader.mm" lineNumber:68 description:&stru_1F2D44B60];
     }
 
     if (([v7 canAddOutput:v20] & 1) == 0)
     {
-      v27 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v27 handleFailureInMethod:a2 object:self file:@"EARAudioReader.mm" lineNumber:70 description:&stru_1F2D44B60];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"EARAudioReader.mm" lineNumber:70 description:&stru_1F2D44B60];
     }
 
     [v7 addOutput:v20];
     [v7 startReading];
     while (1)
     {
-      v21 = [v20 copyNextSampleBuffer];
-      v22 = v21;
-      if (!v21)
+      copyNextSampleBuffer = [v20 copyNextSampleBuffer];
+      v22 = copyNextSampleBuffer;
+      if (!copyNextSampleBuffer)
       {
         break;
       }
 
       totalLengthOut = 0;
       dataPointerOut = 0;
-      DataBuffer = CMSampleBufferGetDataBuffer(v21);
+      DataBuffer = CMSampleBufferGetDataBuffer(copyNextSampleBuffer);
       DataPointer = CMBlockBufferGetDataPointer(DataBuffer, 0, 0, &totalLengthOut, &dataPointerOut);
       if (DataPointer)
       {
@@ -117,7 +117,7 @@
       }
 
       v28 = 0;
-      v5[2](v5, dataPointerOut, totalLengthOut >> 1, &v28);
+      blockCopy[2](blockCopy, dataPointerOut, totalLengthOut >> 1, &v28);
       if (v28 == 1)
       {
         v22 = 0;
@@ -136,9 +136,9 @@
   return v22;
 }
 
-- (id)_opx_enumerateAudioBuffersWithBlock:(id)a3
+- (id)_opx_enumerateAudioBuffersWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   inSourceFormat.mSampleRate = self->_sampleRate;
   *&inSourceFormat.mFormatID = xmmword_1B5B017F0;
   *&inSourceFormat.mBytesPerFrame = xmmword_1B5B01800;
@@ -169,7 +169,7 @@
     v17 = 320;
     v14 = v9;
     v16 = outAudioConverter;
-    v15 = v4;
+    v15 = blockCopy;
     v10 = v9;
     v11 = [(EARAudioReader *)self _opx_enumeratePacketsWithBlock:v13];
 
@@ -288,9 +288,9 @@ uint64_t __54__EARAudioReader__opx_enumerateAudioBuffersWithBlock___block_invoke
   return result;
 }
 
-- (id)_opx_enumeratePacketsWithBlock:(id)a3
+- (id)_opx_enumeratePacketsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   fileURL = self->_fileURL;
   v21 = 0;
   v6 = [MEMORY[0x1E696AC00] fileHandleForReadingFromURL:fileURL error:&v21];
@@ -355,7 +355,7 @@ LABEL_19:
     }
 
     v17 = 0;
-    v4[2](v4, v13, &v17);
+    blockCopy[2](blockCopy, v13, &v17);
     v14 = v17;
 
     v15 = 0;

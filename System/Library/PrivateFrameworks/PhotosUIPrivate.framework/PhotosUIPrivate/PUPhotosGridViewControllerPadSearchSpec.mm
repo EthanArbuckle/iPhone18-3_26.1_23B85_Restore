@@ -1,21 +1,21 @@
 @interface PUPhotosGridViewControllerPadSearchSpec
-- (void)configureCollectionViewGridLayout:(id)a3 forWidth:(double)a4 safeAreaInsets:(UIEdgeInsets)a5;
+- (void)configureCollectionViewGridLayout:(id)layout forWidth:(double)width safeAreaInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation PUPhotosGridViewControllerPadSearchSpec
 
-- (void)configureCollectionViewGridLayout:(id)a3 forWidth:(double)a4 safeAreaInsets:(UIEdgeInsets)a5
+- (void)configureCollectionViewGridLayout:(id)layout forWidth:(double)width safeAreaInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v11.receiver = self;
   v11.super_class = PUPhotosGridViewControllerPadSearchSpec;
-  v10 = a3;
-  [(PUPhotosGridViewControllerPadSpec *)&v11 configureCollectionViewGridLayout:v10 forWidth:a4 safeAreaInsets:top, left, bottom, right];
-  [v10 setSectionTopPadding:{0.0, v11.receiver, v11.super_class}];
-  [v10 setGlobalTopPadding:0.0];
+  layoutCopy = layout;
+  [(PUPhotosGridViewControllerPadSpec *)&v11 configureCollectionViewGridLayout:layoutCopy forWidth:width safeAreaInsets:top, left, bottom, right];
+  [layoutCopy setSectionTopPadding:{0.0, v11.receiver, v11.super_class}];
+  [layoutCopy setGlobalTopPadding:0.0];
 }
 
 @end

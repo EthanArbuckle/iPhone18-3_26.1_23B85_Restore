@@ -7,10 +7,10 @@
 - (id)setJuLayoutDirection:()JU_UITraitCollectionOverrides
 {
   v19 = *MEMORY[0x1E69E9840];
-  if ([a1 juLayoutDirection] != a3)
+  if ([self juLayoutDirection] != a3)
   {
-    v5 = [a1 subviews];
-    v6 = [v5 copy];
+    subviews = [self subviews];
+    v6 = [subviews copy];
 
     v16 = 0u;
     v17 = 0u;
@@ -43,7 +43,7 @@
     }
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = &off_1F3908C00;
   return objc_msgSendSuper2(&v13, sel_setJuLayoutDirection_, a3);
 }

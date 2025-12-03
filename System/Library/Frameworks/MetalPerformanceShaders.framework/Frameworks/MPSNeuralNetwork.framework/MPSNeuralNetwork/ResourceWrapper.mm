@@ -1,34 +1,34 @@
 @interface ResourceWrapper
-+ (id)wrapperWithResource:(void *)a3;
-- (ResourceWrapper)initWithCoder:(id)a3;
-- (ResourceWrapper)initWithResource:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)wrapperWithResource:(void *)resource;
+- (ResourceWrapper)initWithCoder:(id)coder;
+- (ResourceWrapper)initWithResource:(void *)resource;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ResourceWrapper
 
-+ (id)wrapperWithResource:(void *)a3
++ (id)wrapperWithResource:(void *)resource
 {
   v4 = [ResourceWrapper alloc];
-  v11 = objc_msgSend_initWithResource_(v4, v5, a3, v6, v7, v8, v9, v10);
+  v11 = objc_msgSend_initWithResource_(v4, v5, resource, v6, v7, v8, v9, v10);
 
   return v11;
 }
 
-- (ResourceWrapper)initWithResource:(void *)a3
+- (ResourceWrapper)initWithResource:(void *)resource
 {
   v5.receiver = self;
   v5.super_class = ResourceWrapper;
   result = [(ResourceWrapper *)&v5 init];
   if (result)
   {
-    result->_node = a3;
+    result->_node = resource;
   }
 
   return result;
 }
 
-- (ResourceWrapper)initWithCoder:(id)a3
+- (ResourceWrapper)initWithCoder:(id)coder
 {
   v27.receiver = self;
   v27.super_class = ResourceWrapper;
@@ -36,10 +36,10 @@
   if (v9)
   {
     v26 = 0;
-    if (objc_msgSend_decodeBytesForKey_returnedLength_(a3, v4, @"ResourceWrapper.d", &v26, v5, v6, v7, v8))
+    if (objc_msgSend_decodeBytesForKey_returnedLength_(coder, v4, @"ResourceWrapper.d", &v26, v5, v6, v7, v8))
     {
       v10 = objc_opt_class();
-      v16 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v11, v10, @"ResourceWrapper.hc", v12, v13, v14, v15);
+      v16 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v11, v10, @"ResourceWrapper.hc", v12, v13, v14, v15);
       if (v16)
       {
         v17 = NSClassFromString(v16);
@@ -48,7 +48,7 @@
           v24 = v17;
           if (!&unk_284D1B368 || objc_msgSend_conformsToProtocol_(v17, v18, &unk_284D1B368, v19, v20, v21, v22, v23))
           {
-            objc_msgSend_decodeObjectOfClass_forKey_(a3, v18, v24, @"ResourceWrapper.h", v20, v21, v22, v23);
+            objc_msgSend_decodeObjectOfClass_forKey_(coder, v18, v24, @"ResourceWrapper.h", v20, v21, v22, v23);
           }
         }
       }
@@ -62,7 +62,7 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   node = self->_node;
   v6 = node[2];
@@ -114,12 +114,12 @@
     }
 
 LABEL_11:
-    objc_msgSend_encodeBytes_length_forKey_(a3, v9, v8, v7, @"ResourceWrapper.d", v10, v11, v12);
+    objc_msgSend_encodeBytes_length_forKey_(coder, v9, v8, v7, @"ResourceWrapper.d", v10, v11, v12);
   }
 
   else
   {
-    objc_msgSend_encodeBytes_length_forKey_(a3, v9, 0, 0, @"ResourceWrapper.d", v10, v11, v12);
+    objc_msgSend_encodeBytes_length_forKey_(coder, v9, 0, 0, @"ResourceWrapper.d", v10, v11, v12);
   }
 
   v18 = *self->_node;
@@ -127,8 +127,8 @@ LABEL_11:
   {
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    objc_msgSend_encodeObject_forKey_(a3, v21, v20, @"ResourceWrapper.hc", v22, v23, v24, v25);
-    objc_msgSend_encodeObject_forKey_(a3, v26, v18, @"ResourceWrapper.h", v27, v28, v29, v30);
+    objc_msgSend_encodeObject_forKey_(coder, v21, v20, @"ResourceWrapper.hc", v22, v23, v24, v25);
+    objc_msgSend_encodeObject_forKey_(coder, v26, v18, @"ResourceWrapper.h", v27, v28, v29, v30);
   }
 
   free(v13);

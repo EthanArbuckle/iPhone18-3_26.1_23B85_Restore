@@ -1,14 +1,14 @@
 @interface PLFullSizeRenderVideoComplementVirtualResource
-- (PLFullSizeRenderVideoComplementVirtualResource)initWithAsset:(id)a3;
+- (PLFullSizeRenderVideoComplementVirtualResource)initWithAsset:(id)asset;
 @end
 
 @implementation PLFullSizeRenderVideoComplementVirtualResource
 
-- (PLFullSizeRenderVideoComplementVirtualResource)initWithAsset:(id)a3
+- (PLFullSizeRenderVideoComplementVirtualResource)initWithAsset:(id)asset
 {
   v9.receiver = self;
   v9.super_class = PLFullSizeRenderVideoComplementVirtualResource;
-  v3 = [(PLVirtualResource *)&v9 initWithAsset:a3 resourceType:3 version:2 recipeID:131272];
+  v3 = [(PLVirtualResource *)&v9 initWithAsset:asset resourceType:3 version:2 recipeID:131272];
   v4 = v3;
   if (v3)
   {
@@ -18,8 +18,8 @@
     v6 = [v5 uti];
     [(PLVirtualResource *)v4 setUniformTypeIdentifier:v6];
 
-    v7 = [v5 codecFourCharCodeName];
-    [(PLVirtualResource *)v4 setCodecFourCharCodeName:v7];
+    codecFourCharCodeName = [v5 codecFourCharCodeName];
+    [(PLVirtualResource *)v4 setCodecFourCharCodeName:codecFourCharCodeName];
   }
 
   return v4;

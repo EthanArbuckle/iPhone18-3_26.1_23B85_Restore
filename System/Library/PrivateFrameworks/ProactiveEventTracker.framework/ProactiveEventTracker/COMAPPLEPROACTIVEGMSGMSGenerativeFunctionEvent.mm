@@ -1,48 +1,48 @@
 @interface COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPromptConstructionMillis:(BOOL)a3;
-- (void)setHasResponseProcessingMillis:(BOOL)a3;
-- (void)setHasTotalLatencyMillis:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPromptConstructionMillis:(BOOL)millis;
+- (void)setHasResponseProcessingMillis:(BOOL)millis;
+- (void)setHasTotalLatencyMillis:(BOOL)millis;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 64) & 0x10) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 64) & 0x10) != 0)
   {
-    self->_version = *(v4 + 5);
+    self->_version = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
-  v6 = v4;
-  if (*(v4 + 6))
+  v6 = fromCopy;
+  if (*(fromCopy + 6))
   {
     [(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)self setFunctionIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)self setInvocationIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 8) != 0)
   {
-    self->_totalLatencyMillis = *(v4 + 4);
+    self->_totalLatencyMillis = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = *(v4 + 64);
+    v5 = *(fromCopy + 64);
     if ((v5 & 2) == 0)
     {
 LABEL_9:
@@ -55,14 +55,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 64) & 2) == 0)
+  else if ((*(fromCopy + 64) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_promptConstructionMillis = *(v4 + 2);
+  self->_promptConstructionMillis = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 64);
+  v5 = *(fromCopy + 64);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -75,12 +75,12 @@ LABEL_10:
   }
 
 LABEL_17:
-  self->_inferenceMillis = *(v4 + 1);
+  self->_inferenceMillis = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 64) & 4) != 0)
+  if ((*(fromCopy + 64) & 4) != 0)
   {
 LABEL_11:
-    self->_responseProcessingMillis = *(v4 + 3);
+    self->_responseProcessingMillis = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
@@ -239,24 +239,24 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v8 ^ v12 ^ v16 ^ v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
-  v5 = *(v4 + 64);
+  v5 = *(equalCopy + 64);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0 || self->_version != *(v4 + 5))
+    if ((*(equalCopy + 64) & 0x10) == 0 || self->_version != *(equalCopy + 5))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 64) & 0x10) != 0)
+  else if ((*(equalCopy + 64) & 0x10) != 0)
   {
 LABEL_30:
     v8 = 0;
@@ -264,13 +264,13 @@ LABEL_30:
   }
 
   functionIdentifier = self->_functionIdentifier;
-  if (functionIdentifier | *(v4 + 6) && ![(NSString *)functionIdentifier isEqual:?])
+  if (functionIdentifier | *(equalCopy + 6) && ![(NSString *)functionIdentifier isEqual:?])
   {
     goto LABEL_30;
   }
 
   invocationIdentifier = self->_invocationIdentifier;
-  if (invocationIdentifier | *(v4 + 7))
+  if (invocationIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)invocationIdentifier isEqual:?])
     {
@@ -280,47 +280,47 @@ LABEL_30:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0 || self->_totalLatencyMillis != *(v4 + 4))
+    if ((*(equalCopy + 64) & 8) == 0 || self->_totalLatencyMillis != *(equalCopy + 4))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_30;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) == 0 || self->_promptConstructionMillis != *(v4 + 2))
+    if ((*(equalCopy + 64) & 2) == 0 || self->_promptConstructionMillis != *(equalCopy + 2))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 64) & 2) != 0)
+  else if ((*(equalCopy + 64) & 2) != 0)
   {
     goto LABEL_30;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_inferenceMillis != *(v4 + 1))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_inferenceMillis != *(equalCopy + 1))
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_30;
   }
 
-  v8 = (*(v4 + 64) & 4) == 0;
+  v8 = (*(equalCopy + 64) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0 || self->_responseProcessingMillis != *(v4 + 3))
+    if ((*(equalCopy + 64) & 4) == 0 || self->_responseProcessingMillis != *(equalCopy + 3))
     {
       goto LABEL_30;
     }
@@ -333,9 +333,9 @@ LABEL_31:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -343,11 +343,11 @@ LABEL_31:
     *(v5 + 64) |= 0x10u;
   }
 
-  v7 = [(NSString *)self->_functionIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_functionIdentifier copyWithZone:zone];
   v8 = *(v6 + 48);
   *(v6 + 48) = v7;
 
-  v9 = [(NSString *)self->_invocationIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_invocationIdentifier copyWithZone:zone];
   v10 = *(v6 + 56);
   *(v6 + 56) = v9;
 
@@ -401,33 +401,33 @@ LABEL_7:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
-    v4[5] = self->_version;
-    *(v4 + 64) |= 0x10u;
+    toCopy[5] = self->_version;
+    *(toCopy + 64) |= 0x10u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_functionIdentifier)
   {
-    [v4 setFunctionIdentifier:?];
-    v4 = v6;
+    [toCopy setFunctionIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_invocationIdentifier)
   {
     [v6 setInvocationIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = *&self->_totalLatencyMillis;
-    *(v4 + 64) |= 8u;
+    toCopy[4] = *&self->_totalLatencyMillis;
+    *(toCopy + 64) |= 8u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -446,8 +446,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4[2] = *&self->_promptConstructionMillis;
-  *(v4 + 64) |= 2u;
+  toCopy[2] = *&self->_promptConstructionMillis;
+  *(toCopy + 64) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -461,21 +461,21 @@ LABEL_10:
   }
 
 LABEL_17:
-  v4[1] = *&self->_inferenceMillis;
-  *(v4 + 64) |= 1u;
+  toCopy[1] = *&self->_inferenceMillis;
+  *(toCopy + 64) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_11:
-    v4[3] = *&self->_responseProcessingMillis;
-    *(v4 + 64) |= 4u;
+    toCopy[3] = *&self->_responseProcessingMillis;
+    *(toCopy + 64) |= 4u;
   }
 
 LABEL_12:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
     version = self->_version;
@@ -544,30 +544,30 @@ LABEL_12:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 0x10) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_version];
-    [v3 setObject:v4 forKey:@"version"];
+    [dictionary setObject:v4 forKey:@"version"];
   }
 
   functionIdentifier = self->_functionIdentifier;
   if (functionIdentifier)
   {
-    [v3 setObject:functionIdentifier forKey:@"functionIdentifier"];
+    [dictionary setObject:functionIdentifier forKey:@"functionIdentifier"];
   }
 
   invocationIdentifier = self->_invocationIdentifier;
   if (invocationIdentifier)
   {
-    [v3 setObject:invocationIdentifier forKey:@"invocationIdentifier"];
+    [dictionary setObject:invocationIdentifier forKey:@"invocationIdentifier"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_totalLatencyMillis];
-    [v3 setObject:v10 forKey:@"totalLatencyMillis"];
+    [dictionary setObject:v10 forKey:@"totalLatencyMillis"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -588,7 +588,7 @@ LABEL_9:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_promptConstructionMillis];
-  [v3 setObject:v11 forKey:@"promptConstructionMillis"];
+  [dictionary setObject:v11 forKey:@"promptConstructionMillis"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -604,18 +604,18 @@ LABEL_10:
 
 LABEL_17:
   v12 = [MEMORY[0x1E696AD98] numberWithDouble:self->_inferenceMillis];
-  [v3 setObject:v12 forKey:@"inferenceMillis"];
+  [dictionary setObject:v12 forKey:@"inferenceMillis"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_11:
     v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_responseProcessingMillis];
-    [v3 setObject:v8 forKey:@"responseProcessingMillis"];
+    [dictionary setObject:v8 forKey:@"responseProcessingMillis"];
   }
 
 LABEL_12:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -624,15 +624,15 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent;
   v4 = [(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)&v8 description];
-  v5 = [(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(COMAPPLEPROACTIVEGMSGMSGenerativeFunctionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasResponseProcessingMillis:(BOOL)a3
+- (void)setHasResponseProcessingMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 4;
   }
@@ -645,9 +645,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPromptConstructionMillis:(BOOL)a3
+- (void)setHasPromptConstructionMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 2;
   }
@@ -660,9 +660,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasTotalLatencyMillis:(BOOL)a3
+- (void)setHasTotalLatencyMillis:(BOOL)millis
 {
-  if (a3)
+  if (millis)
   {
     v3 = 8;
   }
@@ -675,9 +675,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }

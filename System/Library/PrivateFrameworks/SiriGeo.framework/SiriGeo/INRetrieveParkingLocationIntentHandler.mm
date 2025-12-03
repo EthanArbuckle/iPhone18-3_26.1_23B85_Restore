@@ -1,17 +1,17 @@
 @interface INRetrieveParkingLocationIntentHandler
 - (_TtC7SiriGeo38INRetrieveParkingLocationIntentHandler)init;
-- (void)handleRetrieveParkingLocation:(id)a3 completion:(id)a4;
+- (void)handleRetrieveParkingLocation:(id)location completion:(id)completion;
 @end
 
 @implementation INRetrieveParkingLocationIntentHandler
 
-- (void)handleRetrieveParkingLocation:(id)a3 completion:(id)a4
+- (void)handleRetrieveParkingLocation:(id)location completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
+  locationCopy = location;
+  selfCopy = self;
   specialized INRetrieveParkingLocationIntentHandler.handle(intent:completion:)(partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned INDeleteParkingLocationIntentResponse) -> (), v7);
 }
 

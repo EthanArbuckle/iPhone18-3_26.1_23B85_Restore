@@ -1,18 +1,18 @@
 @interface VisionCoreSmudgeInferenceNetworkDescriptor
-+ (id)_createDescriptorWithError:(id *)a3;
-+ (id)modelFileURLForModelVersion:(unint64_t)a3 error:(id *)a4;
-+ (id)smudgeDetectionNetworkForModelVersion:(unint64_t)a3 error:(id *)a4;
-+ (int64_t)supportedANEGenerationLowerBoundForModelFileName:(id)a3;
-+ (int64_t)supportedFullANEResidencyGenerationLowerBoundForModelFileName:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_createDescriptorWithError:(id *)error;
++ (id)modelFileURLForModelVersion:(unint64_t)version error:(id *)error;
++ (id)smudgeDetectionNetworkForModelVersion:(unint64_t)version error:(id *)error;
++ (int64_t)supportedANEGenerationLowerBoundForModelFileName:(id)name;
++ (int64_t)supportedFullANEResidencyGenerationLowerBoundForModelFileName:(id)name;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation VisionCoreSmudgeInferenceNetworkDescriptor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -24,7 +24,7 @@
     {
       v7.receiver = self;
       v7.super_class = VisionCoreSmudgeInferenceNetworkDescriptor;
-      v5 = [(VisionCoreInferenceNetworkDescriptor *)&v7 isEqual:v4];
+      v5 = [(VisionCoreInferenceNetworkDescriptor *)&v7 isEqual:equalCopy];
     }
 
     else
@@ -36,28 +36,28 @@
   return v5;
 }
 
-+ (id)_createDescriptorWithError:(id *)a3
++ (id)_createDescriptorWithError:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = [a1 loadOrCompileProgramLibrary:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil" modelBaseName:@"smudgenet-v1.E5" e5rtComputeDeviceType:4 supportedOnANEFrom:objc_msgSend(a1 fullyANEResidentFrom:"supportedANEGenerationLowerBoundForModelFileName:" allowCompilation:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil" error:{objc_msgSend(a1, "supportedFullANEResidencyGenerationLowerBoundForModelFileName:", @"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil", 1, a3}];
+  v5 = [self loadOrCompileProgramLibrary:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil" modelBaseName:@"smudgenet-v1.E5" e5rtComputeDeviceType:4 supportedOnANEFrom:objc_msgSend(self fullyANEResidentFrom:"supportedANEGenerationLowerBoundForModelFileName:" allowCompilation:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil" error:{objc_msgSend(self, "supportedFullANEResidencyGenerationLowerBoundForModelFileName:", @"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil", 1, error}];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 functionNamed:@"main" error:a3];
+    v7 = [v5 functionNamed:@"main" error:error];
     if (v7)
     {
-      v8 = [a1 networkVersionForProgramLibrary:v6 function:v7];
-      v9 = [v7 descriptorOfClass:objc_opt_class() forInput:@"image" error:a3];
+      v8 = [self networkVersionForProgramLibrary:v6 function:v7];
+      v9 = [v7 descriptorOfClass:objc_opt_class() forInput:@"image" error:error];
       if (v9)
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", @"smudge_probabilities"];
         v20[0] = v10;
         v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
-        v12 = [v7 descriptorsForOutputs:v11 error:a3];
+        v12 = [v7 descriptorsForOutputs:v11 error:error];
 
         if (v12)
         {
-          v13 = [a1 alloc];
+          v13 = [self alloc];
           v19 = v9;
           v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
           v18 = v9;
@@ -91,19 +91,19 @@
   return v16;
 }
 
-+ (id)smudgeDetectionNetworkForModelVersion:(unint64_t)a3 error:(id *)a4
++ (id)smudgeDetectionNetworkForModelVersion:(unint64_t)version error:(id *)error
 {
-  if (a3 == 1)
+  if (version == 1)
   {
-    v5 = [a1 _createDescriptorWithError:a4];
+    v5 = [self _createDescriptorWithError:error];
   }
 
   else
   {
-    if (a4)
+    if (error)
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown model version %lu", a3];
-      *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:v6];
+      version = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown model version %lu", version];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:version];
     }
 
     v5 = 0;
@@ -112,19 +112,19 @@
   return v5;
 }
 
-+ (id)modelFileURLForModelVersion:(unint64_t)a3 error:(id *)a4
++ (id)modelFileURLForModelVersion:(unint64_t)version error:(id *)error
 {
-  if (a3 == 1)
+  if (version == 1)
   {
-    v5 = [VisionCoreEspressoUtils E5RTURLForModelNamed:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil" error:a4];
+    v5 = [VisionCoreEspressoUtils E5RTURLForModelNamed:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil" error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v6 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInternalErrorWithLocalizedDescription:@"Undefined model version"];
     v7 = v6;
     v5 = 0;
-    *a4 = v6;
+    *error = v6;
   }
 
   else
@@ -135,9 +135,9 @@
   return v5;
 }
 
-+ (int64_t)supportedFullANEResidencyGenerationLowerBoundForModelFileName:(id)a3
++ (int64_t)supportedFullANEResidencyGenerationLowerBoundForModelFileName:(id)name
 {
-  if ([a3 containsString:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil"])
+  if ([name containsString:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil"])
   {
     return 13;
   }
@@ -146,9 +146,9 @@
   return -1;
 }
 
-+ (int64_t)supportedANEGenerationLowerBoundForModelFileName:(id)a3
++ (int64_t)supportedANEGenerationLowerBoundForModelFileName:(id)name
 {
-  if ([a3 containsString:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil"])
+  if ([name containsString:@"smudgenet-v1.E5.bundle/smudgenet-v1.E5.mil"])
   {
     return 13;
   }

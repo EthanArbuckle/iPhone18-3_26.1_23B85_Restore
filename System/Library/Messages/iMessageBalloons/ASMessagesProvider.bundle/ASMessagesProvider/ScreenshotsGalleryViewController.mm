@@ -1,60 +1,60 @@
 @interface ScreenshotsGalleryViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)swipeStateChangedOn:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)swipeStateChangedOn:(id)on;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ScreenshotsGalleryViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_60D688(a3);
+  selfCopy = self;
+  sub_60D688(appear);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_60D8A4();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_60DDD4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_60DDD4(change);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_60DF08(a4, width, height);
+  selfCopy = self;
+  sub_60DF08(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (void)swipeStateChangedOn:(id)a3
+- (void)swipeStateChangedOn:(id)on
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] == &dword_0 + 3)
+  onCopy = on;
+  selfCopy = self;
+  if ([onCopy state] == &dword_0 + 3)
   {
-    [(ScreenshotsGalleryViewController *)v5 dismissViewControllerAnimated:1 completion:0];
+    [(ScreenshotsGalleryViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32ScreenshotsGalleryViewController_artworks);
   if (v4 >> 62)
@@ -68,49 +68,49 @@
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = sub_757640();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_60E384(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_60E384(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = sub_757640();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   sub_60F2E4();
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_757640();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   v12 = sub_7575C0();
   v13 = OBJC_IVAR____TtC18ASMessagesProvider32ScreenshotsGalleryViewController_selectedIndex;
-  if (v12 == *(&v11->super.super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32ScreenshotsGalleryViewController_selectedIndex))
+  if (v12 == *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider32ScreenshotsGalleryViewController_selectedIndex))
   {
 
     (*(v7 + 8))(v9, v6);
@@ -119,20 +119,20 @@
   else
   {
     isa = sub_757550().super.isa;
-    [v10 scrollToItemAtIndexPath:isa atScrollPosition:16 animated:1];
+    [viewCopy scrollToItemAtIndexPath:isa atScrollPosition:16 animated:1];
 
     v15 = sub_7575C0();
     (*(v7 + 8))(v9, v6);
-    *(&v11->super.super.super.super.super.isa + v13) = v15;
+    *(&selfCopy->super.super.super.super.super.isa + v13) = v15;
   }
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_60F8A0(v7, v8);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_60F8A0(viewCopy, layoutCopy);
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -149,17 +149,17 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v8 = sub_757640();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v21 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_757590();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_60FF8C(v12);
+  viewCopy = view;
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_60FF8C(viewCopy);
   v16 = v15;
   v18 = v17;
 
@@ -171,11 +171,11 @@
   return result;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  v5 = self;
-  sub_60EAC0(v4);
+  deceleratingCopy = decelerating;
+  selfCopy = self;
+  sub_60EAC0(deceleratingCopy);
 }
 
 @end

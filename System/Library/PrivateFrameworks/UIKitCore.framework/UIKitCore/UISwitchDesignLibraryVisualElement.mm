@@ -1,34 +1,34 @@
 @interface UISwitchDesignLibraryVisualElement
 + (CGSize)preferredContentSize;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UISwitchControl)switchControl;
-- (UISwitchDesignLibraryVisualElement)initWithFrame:(CGRect)a3;
-- (void)handleLongPress:(id)a3;
-- (void)handlePan:(id)a3;
-- (void)handleTap:(id)a3;
-- (void)interactiveChangeToDisplayedOn:(BOOL)a3;
+- (UISwitchDesignLibraryVisualElement)initWithFrame:(CGRect)frame;
+- (void)handleLongPress:(id)press;
+- (void)handlePan:(id)pan;
+- (void)handleTap:(id)tap;
+- (void)interactiveChangeToDisplayedOn:(BOOL)on;
 - (void)layoutSubviews;
-- (void)selectGestureChanged:(id)a3;
+- (void)selectGestureChanged:(id)changed;
 - (void)sendStateChangeActions;
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowsOnOffLabel:(BOOL)a3;
-- (void)setSwitchControl:(id)a3;
+- (void)setOn:(BOOL)on animated:(BOOL)animated;
+- (void)setShowsOnOffLabel:(BOOL)label;
+- (void)setSwitchControl:(id)control;
 @end
 
 @implementation UISwitchDesignLibraryVisualElement
 
-- (void)setOn:(BOOL)a3 animated:(BOOL)a4
+- (void)setOn:(BOOL)on animated:(BOOL)animated
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR___UISwitchDesignLibraryVisualElement_gestureTrackingSession);
   if (v4)
   {
-    v5 = a3;
-    v6 = self;
+    onCopy = on;
+    selfCopy = self;
     [v4 setDisplayedOnValue_];
-    *(&v6->super.super.super.super.isa + OBJC_IVAR___UISwitchDesignLibraryVisualElement_isOn) = v5;
+    *(&selfCopy->super.super.super.super.isa + OBJC_IVAR___UISwitchDesignLibraryVisualElement_isOn) = onCopy;
     sub_188FD3E44();
   }
 
@@ -67,73 +67,73 @@
   return result;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_188FD4A54(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_188FD4A54(recognizerCopy, gestureRecognizerCopy);
 
   return v9 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_188FD4D24(v6);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = sub_188FD4D24(recognizerCopy);
 
   return v9;
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  sub_188FD4EA4(v4);
+  pressCopy = press;
+  selfCopy = self;
+  sub_188FD4EA4(pressCopy);
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = self;
-  sub_188FD5430(v4);
+  panCopy = pan;
+  selfCopy = self;
+  sub_188FD5430(panCopy);
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  selfCopy = self;
+  if ([tapCopy state] == 3)
   {
-    ++*(&v5->super.super.super.super.isa + OBJC_IVAR___UISwitchDesignLibraryVisualElement_tapSeed);
+    ++*(&selfCopy->super.super.super.super.isa + OBJC_IVAR___UISwitchDesignLibraryVisualElement_tapSeed);
     sub_188FD3E44();
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_188FD564C(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_188FD564C(beginCopy);
 
   return self & 1;
 }
 
-- (void)selectGestureChanged:(id)a3
+- (void)selectGestureChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_188FD5A6C(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_188FD5A6C(changedCopy);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_188FD5D60(v6, v7);
+  recognizerCopy = recognizer;
+  eventCopy = event;
+  selfCopy = self;
+  v9 = sub_188FD5D60(recognizerCopy, eventCopy);
 
   return v9 & 1;
 }
@@ -142,24 +142,24 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for UISwitchDesignLibraryVisualElement();
-  v2 = [(UISwitchVisualElement *)&v4 switchControl];
+  switchControl = [(UISwitchVisualElement *)&v4 switchControl];
 
-  return v2;
+  return switchControl;
 }
 
-- (void)setSwitchControl:(id)a3
+- (void)setSwitchControl:(id)control
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_188FD70C4();
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for UISwitchDesignLibraryVisualElement();
-  [(UISwitchVisualElement *)&v6 setSwitchControl:a3];
+  [(UISwitchVisualElement *)&v6 setSwitchControl:control];
   sub_188FD5854();
   swift_unknownObjectRelease();
 }
 
-- (UISwitchDesignLibraryVisualElement)initWithFrame:(CGRect)a3
+- (UISwitchDesignLibraryVisualElement)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -168,29 +168,29 @@
 
 - (void)sendStateChangeActions
 {
-  v3 = self;
-  v2 = [(UISwitchDesignLibraryVisualElement *)v3 switchControl];
-  if (v2)
+  selfCopy = self;
+  switchControl = [(UISwitchDesignLibraryVisualElement *)selfCopy switchControl];
+  if (switchControl)
   {
-    [(UISwitchControl *)v2 visualElement:v3 transitionedToOn:*(&v3->super.super.super.super.isa + OBJC_IVAR___UISwitchDesignLibraryVisualElement_isOn)];
+    [(UISwitchControl *)switchControl visualElement:selfCopy transitionedToOn:*(&selfCopy->super.super.super.super.isa + OBJC_IVAR___UISwitchDesignLibraryVisualElement_isOn)];
     swift_unknownObjectRelease();
   }
 }
 
-- (void)interactiveChangeToDisplayedOn:(BOOL)a3
+- (void)interactiveChangeToDisplayedOn:(BOOL)on
 {
-  v4 = self;
-  sub_188FD6258(a3);
+  selfCopy = self;
+  sub_188FD6258(on);
 }
 
-- (void)setShowsOnOffLabel:(BOOL)a3
+- (void)setShowsOnOffLabel:(BOOL)label
 {
-  v3 = a3;
+  labelCopy = label;
   v5.receiver = self;
   v5.super_class = type metadata accessor for UISwitchDesignLibraryVisualElement();
   v4 = v5.receiver;
-  [(UISwitchVisualElement *)&v5 setShowsOnOffLabel:v3];
-  v4[OBJC_IVAR___UISwitchDesignLibraryVisualElement_customizations + 40] = v3;
+  [(UISwitchVisualElement *)&v5 setShowsOnOffLabel:labelCopy];
+  v4[OBJC_IVAR___UISwitchDesignLibraryVisualElement_customizations + 40] = labelCopy;
 }
 
 @end

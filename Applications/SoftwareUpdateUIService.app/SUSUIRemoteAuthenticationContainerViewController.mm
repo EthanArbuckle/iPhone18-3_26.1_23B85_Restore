@@ -2,20 +2,20 @@
 - (SUSUIRemoteAuthenticationContainerViewController)init;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismiss;
-- (void)_fireActionWithResponseIfNecessary:(BOOL)a3;
-- (void)_setRootViewController:(id)a3;
-- (void)configureWithAction:(id)a3;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)_fireActionWithResponseIfNecessary:(BOOL)necessary;
+- (void)_setRootViewController:(id)controller;
+- (void)configureWithAction:(id)action;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)handleLockButtonPressed;
 - (void)loadView;
-- (void)viewController:(id)a3 wantsStatusBarHidden:(BOOL)a4 withDuration:(double)a5;
-- (void)viewControllerAuthenticatedWithResult:(BOOL)a3;
-- (void)viewControllerWantsDismissal:(id)a3;
-- (void)viewControllerWantsIdleTimerReset:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewController:(id)controller wantsStatusBarHidden:(BOOL)hidden withDuration:(double)duration;
+- (void)viewControllerAuthenticatedWithResult:(BOOL)result;
+- (void)viewControllerWantsDismissal:(id)dismissal;
+- (void)viewControllerWantsIdleTimerReset:(id)reset;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SUSUIRemoteAuthenticationContainerViewController
@@ -48,7 +48,7 @@
 
 - (void)loadView
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = SUSUILogAuthenticationUI();
   v16 = OS_LOG_TYPE_DEFAULT;
@@ -72,28 +72,28 @@
 
   [v14 setAutoresizingMask:18];
   [v14 setOpaque:0];
-  v10 = [v14 layer];
-  [v10 setAllowsGroupBlending:0];
+  layer = [v14 layer];
+  [layer setAllowsGroupBlending:0];
 
-  v11 = [v14 layer];
-  [v11 setAllowsGroupOpacity:0];
+  layer2 = [v14 layer];
+  [layer2 setAllowsGroupOpacity:0];
 
-  [(SUSUIRemoteAuthenticationContainerViewController *)v18 setView:v14];
+  [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy setView:v14];
   objc_storeStrong(&v14, 0);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = SUSUIRemoteAuthenticationContainerViewController;
-  [(SUSUIRemoteAuthenticationContainerViewController *)&v5 viewWillAppear:a3];
+  [(SUSUIRemoteAuthenticationContainerViewController *)&v5 viewWillAppear:appear];
   oslog = SUSUILogAuthenticationUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v6)
+    if (appearCopy)
     {
       v3 = @"YES";
     }
@@ -110,18 +110,18 @@
   objc_storeStrong(&oslog, 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = SUSUIRemoteAuthenticationContainerViewController;
-  [(SUSUIRemoteAuthenticationContainerViewController *)&v5 viewDidAppear:a3];
+  [(SUSUIRemoteAuthenticationContainerViewController *)&v5 viewDidAppear:appear];
   oslog = SUSUILogAuthenticationUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v6)
+    if (appearCopy)
     {
       v3 = @"YES";
     }
@@ -138,18 +138,18 @@
   objc_storeStrong(&oslog, 0);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = SUSUIRemoteAuthenticationContainerViewController;
-  [(SUSUIRemoteAuthenticationContainerViewController *)&v5 viewWillDisappear:a3];
+  [(SUSUIRemoteAuthenticationContainerViewController *)&v5 viewWillDisappear:disappear];
   oslog = SUSUILogAuthenticationUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v6)
+    if (disappearCopy)
     {
       v3 = @"YES";
     }
@@ -166,16 +166,16 @@
   objc_storeStrong(&oslog, 0);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  disappearCopy = disappear;
   oslog = SUSUILogAuthenticationUI();
   type = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v7)
+    if (disappearCopy)
     {
       v3 = @"YES";
     }
@@ -190,57 +190,57 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v4.receiver = v9;
+  v4.receiver = selfCopy;
   v4.super_class = SUSUIRemoteAuthenticationContainerViewController;
-  [(SUSUIRemoteAuthenticationContainerViewController *)&v4 viewDidDisappear:v7];
-  [(SUSUIRemoteAuthenticationContainerViewController *)v9 _fireActionWithResponseIfNecessary:0];
+  [(SUSUIRemoteAuthenticationContainerViewController *)&v4 viewDidDisappear:disappearCopy];
+  [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy _fireActionWithResponseIfNecessary:0];
 }
 
-- (void)configureWithAction:(id)a3
+- (void)configureWithAction:(id)action
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v32->_action, location[0]);
-  if ([(SUSUIAuthenticationAlertAction *)v32->_action alertType]== 1)
+  objc_storeStrong(location, action);
+  objc_storeStrong(&selfCopy->_action, location[0]);
+  if ([(SUSUIAuthenticationAlertAction *)selfCopy->_action alertType]== 1)
   {
     v20 = [SUSUISoftwareUpdateAuthenticationViewController alloc];
-    v21 = [(SUSUIAuthenticationAlertAction *)v32->_action rollbackDescriptor];
-    v3 = [(SUSUISoftwareUpdateAuthenticationViewController *)v20 initWithRollbackDescriptor:v21 canDeferInstallation:[(SUSUIAuthenticationAlertAction *)v32->_action canDeferInstallation]];
-    authVC = v32->_authVC;
-    v32->_authVC = v3;
+    rollbackDescriptor = [(SUSUIAuthenticationAlertAction *)selfCopy->_action rollbackDescriptor];
+    v3 = [(SUSUISoftwareUpdateAuthenticationViewController *)v20 initWithRollbackDescriptor:rollbackDescriptor canDeferInstallation:[(SUSUIAuthenticationAlertAction *)selfCopy->_action canDeferInstallation]];
+    authVC = selfCopy->_authVC;
+    selfCopy->_authVC = v3;
   }
 
   else
   {
     v17 = [SUSUISoftwareUpdateAuthenticationViewController alloc];
-    v19 = [(SUSUIAuthenticationAlertAction *)v32->_action descriptor];
-    v16 = [(SUSUIAuthenticationAlertAction *)v32->_action forInstallTonight];
-    v18 = [(SUSUIAuthenticationAlertAction *)v32->_action autoInstallForecast];
-    v5 = [(SUSUISoftwareUpdateAuthenticationViewController *)v17 initWithDescriptor:v19 forInstallTonight:v16 withInstallForecast:v18 canDeferInstallation:[(SUSUIAuthenticationAlertAction *)v32->_action canDeferInstallation]];
-    v6 = v32->_authVC;
-    v32->_authVC = v5;
+    descriptor = [(SUSUIAuthenticationAlertAction *)selfCopy->_action descriptor];
+    forInstallTonight = [(SUSUIAuthenticationAlertAction *)selfCopy->_action forInstallTonight];
+    autoInstallForecast = [(SUSUIAuthenticationAlertAction *)selfCopy->_action autoInstallForecast];
+    v5 = [(SUSUISoftwareUpdateAuthenticationViewController *)v17 initWithDescriptor:descriptor forInstallTonight:forInstallTonight withInstallForecast:autoInstallForecast canDeferInstallation:[(SUSUIAuthenticationAlertAction *)selfCopy->_action canDeferInstallation]];
+    v6 = selfCopy->_authVC;
+    selfCopy->_authVC = v5;
   }
 
-  [(SUSUISoftwareUpdateAuthenticationViewController *)v32->_authVC setDelegate:v32];
-  [(SUSUIRemoteAuthenticationContainerViewController *)v32 viewController:v32->_authVC wantsStatusBarHidden:0 withDuration:0.0];
+  [(SUSUISoftwareUpdateAuthenticationViewController *)selfCopy->_authVC setDelegate:selfCopy];
+  [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy viewController:selfCopy->_authVC wantsStatusBarHidden:0 withDuration:0.0];
   v30 = SBSGetScreenLockStatus() != 0;
-  if (v30 && ([(SUSUIAuthenticationAlertAction *)v32->_action canDeferInstallation]& 1) == 0)
+  if (v30 && ([(SUSUIAuthenticationAlertAction *)selfCopy->_action canDeferInstallation]& 1) == 0)
   {
-    v15 = [(SUSUIRemoteAuthenticationContainerViewController *)v32 _remoteViewControllerProxy];
-    [v15 setDesiredHardwareButtonEvents:1];
+    _remoteViewControllerProxy = [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setDesiredHardwareButtonEvents:1];
   }
 
-  v14 = [(SUSUIRemoteAuthenticationContainerViewController *)v32 _remoteViewControllerProxy];
-  [v14 setAllowsAlertItems:0];
+  _remoteViewControllerProxy2 = [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy _remoteViewControllerProxy];
+  [_remoteViewControllerProxy2 setAllowsAlertItems:0];
 
-  [(SUSUIRemoteAuthenticationContainerViewController *)v32 _setRootViewController:v32->_authVC];
+  [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy _setRootViewController:selfCopy->_authVC];
   v29 = SUSUILogAuthenticationUI();
   v28 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    if (([(SUSUIAuthenticationAlertAction *)v32->_action forInstallTonight]& 1) != 0)
+    if (([(SUSUIAuthenticationAlertAction *)selfCopy->_action forInstallTonight]& 1) != 0)
     {
       v7 = @"YES";
     }
@@ -261,8 +261,8 @@
   {
     v11 = v27;
     v12 = v26;
-    v13 = [(SUSUIAuthenticationAlertAction *)v32->_action autoInstallForecast];
-    v25 = v13;
+    autoInstallForecast2 = [(SUSUIAuthenticationAlertAction *)selfCopy->_action autoInstallForecast];
+    v25 = autoInstallForecast2;
     sub_1000050EC(v34, v25);
     _os_log_impl(&_mh_execute_header, v11, v12, "configureWithContext: autoInstallForecast: %@", v34, 0xCu);
 
@@ -276,8 +276,8 @@
   {
     v8 = v24;
     v9 = v23;
-    v10 = [(SUSUIAuthenticationAlertAction *)v32->_action descriptor];
-    v22 = v10;
+    descriptor2 = [(SUSUIAuthenticationAlertAction *)selfCopy->_action descriptor];
+    v22 = descriptor2;
     sub_1000050EC(v33, v22);
     _os_log_impl(&_mh_execute_header, v8, v9, "configureWithContext: descriptor: %@", v33, 0xCu);
 
@@ -288,23 +288,23 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, completion);
   v13 = SUSUILogAuthenticationUI();
   v12 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     log = v13;
     type = v12;
-    v5 = v16;
-    v8 = [location[0] actions];
-    v11 = v8;
+    v5 = selfCopy;
+    actions = [location[0] actions];
+    v11 = actions;
     sub_100001A74(v17, v5, v11);
     _os_log_impl(&_mh_execute_header, log, type, "%@ - configure with context: %@", v17, 0x16u);
 
@@ -312,23 +312,23 @@
   }
 
   objc_storeStrong(&v13, 0);
-  v4 = [location[0] actions];
-  v10 = [v4 anyObject];
+  actions2 = [location[0] actions];
+  anyObject = [actions2 anyObject];
 
-  [(SUSUIRemoteAuthenticationContainerViewController *)v16 configureWithAction:v10];
+  [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy configureWithAction:anyObject];
   if (v14)
   {
     (*(v14 + 2))();
   }
 
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&anyObject, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)handleLockButtonPressed
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v2 = &_dispatch_main_q;
   queue = &_dispatch_main_q;
@@ -337,24 +337,24 @@
   v6 = 0;
   v7 = sub_10000A4C8;
   v8 = &unk_1000185A8;
-  v9[0] = v10;
+  v9[0] = selfCopy;
   dispatch_async(queue, &v4);
 
   objc_storeStrong(v9, 0);
 }
 
-- (void)viewController:(id)a3 wantsStatusBarHidden:(BOOL)a4 withDuration:(double)a5
+- (void)viewController:(id)controller wantsStatusBarHidden:(BOOL)hidden withDuration:(double)duration
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
-  v10 = *&a5;
+  objc_storeStrong(location, controller);
+  hiddenCopy = hidden;
+  v10 = *&duration;
   oslog = SUSUILogAuthenticationUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v11)
+    if (hiddenCopy)
     {
       v5 = @"YES";
     }
@@ -369,21 +369,21 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  v6 = [(SUSUIRemoteAuthenticationContainerViewController *)v13 _remoteViewControllerProxy];
-  [v6 setStatusBarHidden:v11 withDuration:*&v10];
+  _remoteViewControllerProxy = [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:hiddenCopy withDuration:*&v10];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)viewControllerAuthenticatedWithResult:(BOOL)a3
+- (void)viewControllerAuthenticatedWithResult:(BOOL)result
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  resultCopy = result;
   oslog = SUSUILogAuthenticationUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    if (v5)
+    if (resultCopy)
     {
       v3 = @"YES";
     }
@@ -393,20 +393,20 @@
       v3 = @"NO";
     }
 
-    sub_100001A74(v8, v7, v3);
+    sub_100001A74(v8, selfCopy, v3);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "%@ - Returning result to caller: %@", v8, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUSUIRemoteAuthenticationContainerViewController *)v7 _fireActionWithResponseIfNecessary:v5];
+  [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy _fireActionWithResponseIfNecessary:resultCopy];
 }
 
-- (void)viewControllerWantsDismissal:(id)a3
+- (void)viewControllerWantsDismissal:(id)dismissal
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, dismissal);
   oslog = SUSUILogAuthenticationUI();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
@@ -415,17 +415,17 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUSUIRemoteAuthenticationContainerViewController *)v5 _fireActionWithResponseIfNecessary:0];
-  [(SUSUIRemoteAuthenticationContainerViewController *)v5 _dismiss];
+  [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy _fireActionWithResponseIfNecessary:0];
+  [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy _dismiss];
   objc_storeStrong(location, 0);
 }
 
-- (void)viewControllerWantsIdleTimerReset:(id)a3
+- (void)viewControllerWantsIdleTimerReset:(id)reset
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, reset);
   v16 = SUSUILogAuthenticationUI();
   v15 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -435,11 +435,11 @@
   }
 
   objc_storeStrong(&v16, 0);
-  if (v18->_authVC == location[0])
+  if (selfCopy->_authVC == location[0])
   {
     v14 = ++dword_10001F900;
-    v4 = [(SUSUIRemoteAuthenticationContainerViewController *)v18 _remoteViewControllerProxy];
-    [v4 setIdleTimerDisabled:1 forReason:@"reset"];
+    _remoteViewControllerProxy = [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy _remoteViewControllerProxy];
+    [_remoteViewControllerProxy setIdleTimerDisabled:1 forReason:@"reset"];
 
     when = dispatch_time(0, 1000000000);
     v3 = &_dispatch_main_q;
@@ -450,7 +450,7 @@
     v10 = sub_10000AB80;
     v11 = &unk_100018A90;
     v13 = v14;
-    v12 = v18;
+    v12 = selfCopy;
     dispatch_after(when, queue, &v7);
 
     objc_storeStrong(&v12, 0);
@@ -462,9 +462,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [(UIDevice *)v3 userInterfaceIdiom];
+  userInterfaceIdiom = [(UIDevice *)v3 userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -475,49 +475,49 @@
   }
 }
 
-- (void)_fireActionWithResponseIfNecessary:(BOOL)a3
+- (void)_fireActionWithResponseIfNecessary:(BOOL)necessary
 {
   if (self->_action)
   {
-    [(SUSUIAuthenticationAlertAction *)self->_action fireCompletionIfNecessaryForResult:a3];
+    [(SUSUIAuthenticationAlertAction *)self->_action fireCompletionIfNecessaryForResult:necessary];
     objc_storeStrong(&self->_action, 0);
   }
 }
 
-- (void)_setRootViewController:(id)a3
+- (void)_setRootViewController:(id)controller
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(SUSUIRemoteAuthenticationContainerViewController *)v13 view];
-  [v7 bounds];
+  objc_storeStrong(location, controller);
+  view = [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy view];
+  [view bounds];
   *&v10 = v3;
   *(&v10 + 1) = v4;
   *&v11 = v5;
   *(&v11 + 1) = v6;
 
-  v9 = [location[0] view];
-  [v9 setFrame:{v10, v11}];
-  [v9 setAutoresizingMask:18];
-  [location[0] willMoveToParentViewController:v13];
-  v8 = [(SUSUIRemoteAuthenticationContainerViewController *)v13 view];
-  [v8 addSubview:v9];
+  view2 = [location[0] view];
+  [view2 setFrame:{v10, v11}];
+  [view2 setAutoresizingMask:18];
+  [location[0] willMoveToParentViewController:selfCopy];
+  view3 = [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy view];
+  [view3 addSubview:view2];
 
-  [(SUSUIRemoteAuthenticationContainerViewController *)v13 addChildViewController:location[0]];
-  [location[0] didMoveToParentViewController:v13];
-  objc_storeStrong(&v9, 0);
+  [(SUSUIRemoteAuthenticationContainerViewController *)selfCopy addChildViewController:location[0]];
+  [location[0] didMoveToParentViewController:selfCopy];
+  objc_storeStrong(&view2, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)_dismiss
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = SUSUIRemoteAuthenticationContainerViewController;
-  v2 = [(SUSUIRemoteAuthenticationContainerViewController *)&v3 _remoteViewControllerProxy];
-  [v2 dismiss];
+  _remoteViewControllerProxy = [(SUSUIRemoteAuthenticationContainerViewController *)&v3 _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismiss];
 }
 
 @end

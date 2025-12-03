@@ -1,17 +1,17 @@
 @interface GDXPCInternalBiomeService
-- (BOOL)viewDumpStateWithError:(id *)a3;
-- (BOOL)viewStopWithError:(id *)a3;
-- (BOOL)viewValidateWithError:(id *)a3;
+- (BOOL)viewDumpStateWithError:(id *)error;
+- (BOOL)viewStopWithError:(id *)error;
+- (BOOL)viewValidateWithError:(id *)error;
 - (GDXPCInternalBiomeService)init;
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3;
-- (id)viewClearAllDataWithViewQuery:(id)a3 error:(id *)a4;
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler;
+- (id)viewClearAllDataWithViewQuery:(id)query error:(id *)error;
 - (void)dealloc;
 - (void)locked_establishConnection;
 @end
 
 @implementation GDXPCInternalBiomeService
 
-- (BOOL)viewValidateWithError:(id *)a3
+- (BOOL)viewValidateWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -45,9 +45,9 @@
   [v6 viewValidateWithCompletion:v9];
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -57,7 +57,7 @@
   return v7 & 1;
 }
 
-- (BOOL)viewDumpStateWithError:(id *)a3
+- (BOOL)viewDumpStateWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -92,9 +92,9 @@
   [v6 viewDumpStateWithCompletion:v9];
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -104,9 +104,9 @@
   return v7 & 1;
 }
 
-- (id)viewClearAllDataWithViewQuery:(id)a3 error:(id *)a4
+- (id)viewClearAllDataWithViewQuery:(id)query error:(id *)error
 {
-  v6 = a3;
+  queryCopy = query;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -145,12 +145,12 @@
   v12[3] = &unk_1E79625F0;
   v12[4] = &v21;
   v12[5] = &v15;
-  [v8 viewClearAllDataWithViewQuery:v6 completion:v12];
+  [v8 viewClearAllDataWithViewQuery:queryCopy completion:v12];
 
   v9 = v22[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v16[5];
+    *error = v16[5];
     v9 = v22[5];
   }
 
@@ -162,7 +162,7 @@
   return v10;
 }
 
-- (BOOL)viewStopWithError:(id *)a3
+- (BOOL)viewStopWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -197,9 +197,9 @@
   [v6 viewStopWithCompletion:v9];
 
   v7 = *(v19 + 24);
-  if (a3 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a3 = v13[5];
+    *error = v13[5];
     v7 = *(v19 + 24);
   }
 
@@ -209,14 +209,14 @@
   return v7 & 1;
 }
 
-- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(GDXPCInternalBiomeService *)v5 locked_establishConnection];
-  v6 = [(NSXPCConnection *)v5->_connection synchronousRemoteObjectProxyWithErrorHandler:v4];
-  objc_sync_exit(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(GDXPCInternalBiomeService *)selfCopy locked_establishConnection];
+  v6 = [(NSXPCConnection *)selfCopy->_connection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }

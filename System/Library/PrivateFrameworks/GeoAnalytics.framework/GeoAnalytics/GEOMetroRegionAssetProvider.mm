@@ -1,33 +1,33 @@
 @interface GEOMetroRegionAssetProvider
-+ (id)_maQueryForAssetCode:(id)a3;
++ (id)_maQueryForAssetCode:(id)code;
 + (id)sharedProvider;
-+ (void)_downloadAsset:(id)a3 completion:(id)a4;
-+ (void)_downloadCatalogIfNeededThen:(id)a3;
-+ (void)_unavailableAssetForAssetCode:(id)a3 completion:(id)a4;
-+ (void)_updateCatalogWithResult:(id)a3;
-+ (void)preloadAssetForCountryCode:(id)a3 preloadQueue:(id)a4 completion:(id)a5;
++ (void)_downloadAsset:(id)asset completion:(id)completion;
++ (void)_downloadCatalogIfNeededThen:(id)then;
++ (void)_unavailableAssetForAssetCode:(id)code completion:(id)completion;
++ (void)_updateCatalogWithResult:(id)result;
++ (void)preloadAssetForCountryCode:(id)code preloadQueue:(id)queue completion:(id)completion;
 - (GEOMetroRegionAssetProvider)init;
-- (id)_acceptListForCountryCode:(id)a3 name:(id)a4;
-- (id)_bestAvailableAssetForAssetCode:(id)a3;
-- (id)urlForInstalledCountryCode:(id)a3;
-- (void)_catalogDownloadFinishedWithResult:(int64_t)a3;
-- (void)_updateCatalogAfterDelay:(double)a3;
+- (id)_acceptListForCountryCode:(id)code name:(id)name;
+- (id)_bestAvailableAssetForAssetCode:(id)code;
+- (id)urlForInstalledCountryCode:(id)code;
+- (void)_catalogDownloadFinishedWithResult:(int64_t)result;
+- (void)_updateCatalogAfterDelay:(double)delay;
 @end
 
 @implementation GEOMetroRegionAssetProvider
 
-- (void)_catalogDownloadFinishedWithResult:(int64_t)a3
+- (void)_catalogDownloadFinishedWithResult:(int64_t)result
 {
   v14 = *MEMORY[0x1E69E9840];
   v5 = GEOGetMetroRegionLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v12 = 134217984;
-    v13 = a3;
+    resultCopy = result;
     _os_log_impl(&dword_1AB634000, v5, OS_LOG_TYPE_INFO, "catalog download reply: %ld", &v12, 0xCu);
   }
 
-  if (a3)
+  if (result)
   {
     catalogLoadRetryMultiplier = self->_catalogLoadRetryMultiplier;
     if (catalogLoadRetryMultiplier <= 0xB)
@@ -44,17 +44,17 @@
   }
 
   [(GEOMetroRegionAssetProvider *)self _updateCatalogAfterDelay:v7];
-  v8 = [MEMORY[0x1E69A1CD8] sharedConfiguration];
-  v9 = [v8 countryCode];
+  mEMORY[0x1E69A1CD8] = [MEMORY[0x1E69A1CD8] sharedConfiguration];
+  countryCode = [mEMORY[0x1E69A1CD8] countryCode];
 
-  v10 = [(GEOMetroRegionAssetProvider *)self urlForInstalledCountryCode:v9];
+  v10 = [(GEOMetroRegionAssetProvider *)self urlForInstalledCountryCode:countryCode];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateCatalogAfterDelay:(double)a3
+- (void)_updateCatalogAfterDelay:(double)delay
 {
   v5 = dispatch_get_global_queue(9, 0);
-  v6 = dispatch_time(0, (a3 * 1000000000.0));
+  v6 = dispatch_time(0, (delay * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__GEOMetroRegionAssetProvider__updateCatalogAfterDelay___block_invoke;
@@ -75,11 +75,11 @@ uint64_t __56__GEOMetroRegionAssetProvider__updateCatalogAfterDelay___block_invo
   return [v3 _updateCatalogWithResult:v5];
 }
 
-- (id)_acceptListForCountryCode:(id)a3 name:(id)a4
+- (id)_acceptListForCountryCode:(id)code name:(id)name
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(GEOMetroRegionAssetProvider *)self urlForInstalledCountryCode:a3];
+  nameCopy = name;
+  v7 = [(GEOMetroRegionAssetProvider *)self urlForInstalledCountryCode:code];
   v8 = MEMORY[0x1E695DF20];
   v9 = [v7 URLByAppendingPathComponent:@"AcceptLists.plist"];
   v16 = 0;
@@ -101,7 +101,7 @@ uint64_t __56__GEOMetroRegionAssetProvider__updateCatalogAfterDelay___block_invo
 
   else
   {
-    v13 = [v10 objectForKeyedSubscript:v6];
+    v13 = [v10 objectForKeyedSubscript:nameCopy];
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -109,10 +109,10 @@ uint64_t __56__GEOMetroRegionAssetProvider__updateCatalogAfterDelay___block_invo
   return v13;
 }
 
-- (id)urlForInstalledCountryCode:(id)a3
+- (id)urlForInstalledCountryCode:(id)code
 {
-  v4 = a3;
-  v5 = [(NSCache *)self->_fileURLCache objectForKey:v4];
+  codeCopy = code;
+  v5 = [(NSCache *)self->_fileURLCache objectForKey:codeCopy];
   if (v5)
   {
     v6 = v5;
@@ -120,43 +120,43 @@ uint64_t __56__GEOMetroRegionAssetProvider__updateCatalogAfterDelay___block_invo
 
   else
   {
-    v7 = [(GEOMetroRegionAssetProvider *)self _bestAvailableAssetForAssetCode:v4];
-    v8 = [v7 getLocalFileUrl];
-    if (v8)
+    v7 = [(GEOMetroRegionAssetProvider *)self _bestAvailableAssetForAssetCode:codeCopy];
+    getLocalFileUrl = [v7 getLocalFileUrl];
+    if (getLocalFileUrl)
     {
-      [(NSCache *)self->_fileURLCache setObject:v8 forKey:v4];
+      [(NSCache *)self->_fileURLCache setObject:getLocalFileUrl forKey:codeCopy];
     }
 
-    v6 = v8;
+    v6 = getLocalFileUrl;
   }
 
   return v6;
 }
 
-- (id)_bestAvailableAssetForAssetCode:(id)a3
+- (id)_bestAvailableAssetForAssetCode:(id)code
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [objc_opt_class() _maQueryForAssetCode:v3];
-  v5 = [v4 queryMetaDataSync];
+  codeCopy = code;
+  v4 = [objc_opt_class() _maQueryForAssetCode:codeCopy];
+  queryMetaDataSync = [v4 queryMetaDataSync];
   v6 = GEOGetMetroRegionLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v25 = v5;
+    v25 = queryMetaDataSync;
     _os_log_impl(&dword_1AB634000, v6, OS_LOG_TYPE_INFO, "query result : %ld", buf, 0xCu);
   }
 
-  v7 = [v4 results];
+  results = [v4 results];
 
-  if (!v7)
+  if (!results)
   {
-    v8 = GEOGetMetroRegionLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
+    results2 = GEOGetMetroRegionLog();
+    if (os_log_type_enabled(results2, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v25 = v3;
-      _os_log_impl(&dword_1AB634000, v8, OS_LOG_TYPE_INFO, "query for '%@' has no results", buf, 0xCu);
+      v25 = codeCopy;
+      _os_log_impl(&dword_1AB634000, results2, OS_LOG_TYPE_INFO, "query for '%@' has no results", buf, 0xCu);
     }
 
     goto LABEL_19;
@@ -166,8 +166,8 @@ uint64_t __56__GEOMetroRegionAssetProvider__updateCatalogAfterDelay___block_invo
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v4 results];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  results2 = [v4 results];
+  v9 = [results2 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v9)
   {
 LABEL_19:
@@ -184,7 +184,7 @@ LABEL_19:
     {
       if (*v20 != v12)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(results2);
       }
 
       v14 = *(*(&v19 + 1) + 8 * i);
@@ -213,7 +213,7 @@ LABEL_19:
       }
     }
 
-    v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v10 = [results2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       continue;
@@ -247,11 +247,11 @@ LABEL_21:
   return v2;
 }
 
-+ (void)preloadAssetForCountryCode:(id)a3 preloadQueue:(id)a4 completion:(id)a5
++ (void)preloadAssetForCountryCode:(id)code preloadQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  codeCopy = code;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = dispatch_group_create();
   v23[0] = 0;
   v23[1] = v23;
@@ -261,21 +261,21 @@ LABEL_21:
   v18[1] = 3221225472;
   v18[2] = __82__GEOMetroRegionAssetProvider_preloadAssetForCountryCode_preloadQueue_completion___block_invoke;
   v18[3] = &unk_1E7953E28;
-  v12 = v8;
+  v12 = codeCopy;
   v19 = v12;
   v13 = v11;
   v21 = v23;
-  v22 = a1;
+  selfCopy = self;
   v20 = v13;
-  [a1 _downloadCatalogIfNeededThen:v18];
+  [self _downloadCatalogIfNeededThen:v18];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __82__GEOMetroRegionAssetProvider_preloadAssetForCountryCode_preloadQueue_completion___block_invoke_4;
   v15[3] = &unk_1E7953E50;
-  v16 = v10;
+  v16 = completionCopy;
   v17 = v23;
-  v14 = v10;
-  dispatch_group_notify(v13, v9, v15);
+  v14 = completionCopy;
+  dispatch_group_notify(v13, queueCopy, v15);
 
   _Block_object_dispose(v23, 8);
 }
@@ -358,9 +358,9 @@ void __82__GEOMetroRegionAssetProvider_preloadAssetForCountryCode_preloadQueue_c
   }
 }
 
-+ (void)_updateCatalogWithResult:(id)a3
++ (void)_updateCatalogWithResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc_init(getMADownloadOptionsClass());
   [v4 setAllowsCellularAccess:GEOConfigGetBOOL()];
   [v4 setAllowsExpensiveAccess:{objc_msgSend(v4, "allowsCellularAccess")}];
@@ -384,16 +384,16 @@ void __82__GEOMetroRegionAssetProvider_preloadAssetForCountryCode_preloadQueue_c
 
   v6 = v5;
   _Block_object_dispose(&v8, 8);
-  [v5 startCatalogDownload:@"com.apple.MobileAsset.GeoPolygonDataAssets" options:v4 then:v3];
+  [v5 startCatalogDownload:@"com.apple.MobileAsset.GeoPolygonDataAssets" options:v4 then:resultCopy];
 }
 
-+ (void)_downloadCatalogIfNeededThen:(id)a3
++ (void)_downloadCatalogIfNeededThen:(id)then
 {
-  v4 = a3;
-  v5 = [a1 _maQueryForAssetCode:@"CCALLOW"];
+  thenCopy = then;
+  v5 = [self _maQueryForAssetCode:@"CCALLOW"];
   if ([v5 isCatalogFetchedWithinThePastFewDays:1])
   {
-    v4[2](v4);
+    thenCopy[2](thenCopy);
   }
 
   else
@@ -402,23 +402,23 @@ void __82__GEOMetroRegionAssetProvider_preloadAssetForCountryCode_preloadQueue_c
     v6[1] = 3221225472;
     v6[2] = __60__GEOMetroRegionAssetProvider__downloadCatalogIfNeededThen___block_invoke;
     v6[3] = &unk_1E7953D88;
-    v7 = v4;
-    [a1 _updateCatalogWithResult:v6];
+    v7 = thenCopy;
+    [self _updateCatalogWithResult:v6];
   }
 }
 
-+ (void)_unavailableAssetForAssetCode:(id)a3 completion:(id)a4
++ (void)_unavailableAssetForAssetCode:(id)code completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a1 _maQueryForAssetCode:a3];
+  completionCopy = completion;
+  v7 = [self _maQueryForAssetCode:code];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__GEOMetroRegionAssetProvider__unavailableAssetForAssetCode_completion___block_invoke;
   v10[3] = &unk_1E7953D60;
   v11 = v7;
-  v12 = v6;
+  v12 = completionCopy;
   v8 = v7;
-  v9 = v6;
+  v9 = completionCopy;
   [v8 queryMetaDataWithError:v10];
 }
 
@@ -487,9 +487,9 @@ LABEL_14:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_maQueryForAssetCode:(id)a3
++ (id)_maQueryForAssetCode:(id)code
 {
-  v3 = a3;
+  codeCopy = code;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -513,15 +513,15 @@ LABEL_14:
   [v6 setDoNotBlockBeforeFirstUnlock:1];
   [v6 addKeyValuePair:@"Type" with:@"Metro"];
   [v6 addKeyValuePair:@"FormatVersion" with:@"1"];
-  [v6 addKeyValuePair:@"MetrosInCountry" with:v3];
+  [v6 addKeyValuePair:@"MetrosInCountry" with:codeCopy];
 
   return v6;
 }
 
-+ (void)_downloadAsset:(id)a3 completion:(id)a4
++ (void)_downloadAsset:(id)asset completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  assetCopy = asset;
+  completionCopy = completion;
   v7 = objc_alloc_init(getMADownloadOptionsClass());
   [v7 setAllowsCellularAccess:GEOConfigGetBOOL()];
   [v7 setAllowsExpensiveAccess:{objc_msgSend(v7, "allowsCellularAccess")}];
@@ -531,10 +531,10 @@ LABEL_14:
   v10[1] = 3221225472;
   v10[2] = __57__GEOMetroRegionAssetProvider__downloadAsset_completion___block_invoke;
   v10[3] = &unk_1E7953D38;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = assetCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = assetCopy;
   [v9 startDownload:v7 then:v10];
 }
 

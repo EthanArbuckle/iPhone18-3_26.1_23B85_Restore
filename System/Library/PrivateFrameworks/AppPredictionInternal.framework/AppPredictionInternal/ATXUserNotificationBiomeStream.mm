@@ -1,52 +1,52 @@
 @interface ATXUserNotificationBiomeStream
-- (ATXUserNotificationBiomeStream)initWithStoreConfig:(id)a3;
+- (ATXUserNotificationBiomeStream)initWithStoreConfig:(id)config;
 - (id)source;
-- (void)sendEvent:(id)a3;
-- (void)sendEvent:(int64_t)a3 notification:(id)a4 deliveryReason:(unint64_t)a5 interactionUI:(unint64_t)a6;
+- (void)sendEvent:(id)event;
+- (void)sendEvent:(int64_t)event notification:(id)notification deliveryReason:(unint64_t)reason interactionUI:(unint64_t)i;
 @end
 
 @implementation ATXUserNotificationBiomeStream
 
 - (id)source
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  source = v2->_source;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  source = selfCopy->_source;
   if (!source)
   {
-    v4 = [(BMStoreStream *)v2->_inner source];
-    v5 = v2->_source;
-    v2->_source = v4;
+    source = [(BMStoreStream *)selfCopy->_inner source];
+    v5 = selfCopy->_source;
+    selfCopy->_source = source;
 
-    source = v2->_source;
+    source = selfCopy->_source;
   }
 
   v6 = source;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (ATXUserNotificationBiomeStream)initWithStoreConfig:(id)a3
+- (ATXUserNotificationBiomeStream)initWithStoreConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v11.receiver = self;
   v11.super_class = ATXUserNotificationBiomeStream;
   v5 = [(ATXUserNotificationBiomeStream *)&v11 init];
   if (v5)
   {
-    if (v4)
+    if (configCopy)
     {
-      v6 = v4;
+      atx_storeConfig = configCopy;
     }
 
     else
     {
-      v6 = [MEMORY[0x277CF17F8] atx_storeConfig];
+      atx_storeConfig = [MEMORY[0x277CF17F8] atx_storeConfig];
     }
 
-    v7 = v6;
-    v8 = [objc_alloc(MEMORY[0x277CF1B30]) initWithPrivateStreamIdentifier:@"userNotificationEvents" storeConfig:v6 eventDataClass:objc_opt_class()];
+    v7 = atx_storeConfig;
+    v8 = [objc_alloc(MEMORY[0x277CF1B30]) initWithPrivateStreamIdentifier:@"userNotificationEvents" storeConfig:atx_storeConfig eventDataClass:objc_opt_class()];
     inner = v5->_inner;
     v5->_inner = v8;
   }
@@ -54,20 +54,20 @@
   return v5;
 }
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(ATXUserNotificationBiomeStream *)self source];
-  [v5 sendEvent:v4];
+  eventCopy = event;
+  source = [(ATXUserNotificationBiomeStream *)self source];
+  [source sendEvent:eventCopy];
 }
 
-- (void)sendEvent:(int64_t)a3 notification:(id)a4 deliveryReason:(unint64_t)a5 interactionUI:(unint64_t)a6
+- (void)sendEvent:(int64_t)event notification:(id)notification deliveryReason:(unint64_t)reason interactionUI:(unint64_t)i
 {
   v10 = MEMORY[0x277CEB980];
-  v11 = a4;
+  notificationCopy = notification;
   v12 = [v10 alloc];
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-  v13 = [v12 initFromUserNotification:v11 eventType:a3 timestamp:a5 deliveryReason:a6 deliveryUI:?];
+  v13 = [v12 initFromUserNotification:notificationCopy eventType:event timestamp:reason deliveryReason:i deliveryUI:?];
 
   [(ATXUserNotificationBiomeStream *)self sendEvent:v13];
 }

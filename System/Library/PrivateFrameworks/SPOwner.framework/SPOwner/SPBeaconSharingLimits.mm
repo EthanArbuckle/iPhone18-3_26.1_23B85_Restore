@@ -1,48 +1,48 @@
 @interface SPBeaconSharingLimits
-- (SPBeaconSharingLimits)initWithCoder:(id)a3;
-- (SPBeaconSharingLimits)initWithMaxCircleMembers:(int64_t)a3 maxDelegatedShares:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPBeaconSharingLimits)initWithCoder:(id)coder;
+- (SPBeaconSharingLimits)initWithMaxCircleMembers:(int64_t)members maxDelegatedShares:(int64_t)shares;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPBeaconSharingLimits
 
-- (SPBeaconSharingLimits)initWithMaxCircleMembers:(int64_t)a3 maxDelegatedShares:(int64_t)a4
+- (SPBeaconSharingLimits)initWithMaxCircleMembers:(int64_t)members maxDelegatedShares:(int64_t)shares
 {
   v7.receiver = self;
   v7.super_class = SPBeaconSharingLimits;
   result = [(SPBeaconSharingLimits *)&v7 init];
   if (result)
   {
-    result->_maxCircleMembers = a3;
-    result->_maxDelegatedShares = a4;
+    result->_maxCircleMembers = members;
+    result->_maxDelegatedShares = shares;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPBeaconSharingLimits alloc];
-  v5 = [(SPBeaconSharingLimits *)self maxCircleMembers];
-  v6 = [(SPBeaconSharingLimits *)self maxDelegatedShares];
+  maxCircleMembers = [(SPBeaconSharingLimits *)self maxCircleMembers];
+  maxDelegatedShares = [(SPBeaconSharingLimits *)self maxDelegatedShares];
 
-  return [(SPBeaconSharingLimits *)v4 initWithMaxCircleMembers:v5 maxDelegatedShares:v6];
+  return [(SPBeaconSharingLimits *)v4 initWithMaxCircleMembers:maxCircleMembers maxDelegatedShares:maxDelegatedShares];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   maxCircleMembers = self->_maxCircleMembers;
-  v5 = a3;
-  [v5 encodeInteger:maxCircleMembers forKey:@"maxCircleMembers"];
-  [v5 encodeInteger:self->_maxDelegatedShares forKey:@"maxDelegatedShares"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:maxCircleMembers forKey:@"maxCircleMembers"];
+  [coderCopy encodeInteger:self->_maxDelegatedShares forKey:@"maxDelegatedShares"];
 }
 
-- (SPBeaconSharingLimits)initWithCoder:(id)a3
+- (SPBeaconSharingLimits)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_maxCircleMembers = [v4 decodeIntegerForKey:@"maxCircleMembers"];
-  v5 = [v4 decodeIntegerForKey:@"maxDelegatedShares"];
+  coderCopy = coder;
+  self->_maxCircleMembers = [coderCopy decodeIntegerForKey:@"maxCircleMembers"];
+  v5 = [coderCopy decodeIntegerForKey:@"maxDelegatedShares"];
 
   self->_maxDelegatedShares = v5;
   return self;

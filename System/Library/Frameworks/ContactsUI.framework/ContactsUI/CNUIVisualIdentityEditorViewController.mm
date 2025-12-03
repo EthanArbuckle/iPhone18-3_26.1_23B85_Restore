@@ -2,16 +2,16 @@
 + (CNKeyDescriptor)descriptorForRequiredKeys;
 - (CGSize)preferredContentSize;
 - (CNContact)contact;
-- (CNUIVisualIdentityEditorViewController)initWithCoder:(id)a3;
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3;
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3 configuration:(id)a4;
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3 isMeContact:(BOOL)a4;
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3 isMeContact:(BOOL)a4 saveChangesToContactStore:(BOOL)a5;
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3 saveChangesToContactStore:(BOOL)a4;
-- (CNUIVisualIdentityEditorViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CNUIVisualIdentityEditorViewController)initWithCoder:(id)coder;
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact;
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact configuration:(id)configuration;
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact isMeContact:(BOOL)meContact;
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact isMeContact:(BOOL)meContact saveChangesToContactStore:(BOOL)store;
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact saveChangesToContactStore:(BOOL)store;
+- (CNUIVisualIdentityEditorViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (CNUIVisualIdentityEditorViewControllerDelegate)delegate;
-- (void)setContact:(id)a3;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setContact:(id)contact;
+- (void)setPreferredContentSize:(CGSize)size;
 - (void)viewDidLoad;
 @end
 
@@ -19,7 +19,7 @@
 
 + (CNKeyDescriptor)descriptorForRequiredKeys
 {
-  v2 = MEMORY[0x19A8F5660](a1, a2);
+  v2 = MEMORY[0x19A8F5660](self, a2);
 
   return v2;
 }
@@ -37,7 +37,7 @@
   v3 = *(self + OBJC_IVAR___CNUIVisualIdentityEditorViewController_model);
   swift_getKeyPath();
   sub_199ABEA8C();
-  v4 = self;
+  selfCopy = self;
 
   sub_199DF73AC();
 
@@ -46,71 +46,71 @@
   return v5;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v4 = a3;
-  v5 = self;
+  contactCopy = contact;
+  selfCopy = self;
 
-  sub_199ABEB30(v4);
+  sub_199ABEB30(contactCopy);
 }
 
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact
 {
   v4 = objc_allocWithZone(type metadata accessor for VisualIdentityEditorViewController());
-  v5 = a3;
-  v6 = sub_199ABED24(v5, 2, 0, 0);
+  contactCopy = contact;
+  v6 = sub_199ABED24(contactCopy, 2, 0, 0);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v6;
 }
 
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3 configuration:(id)a4
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact configuration:(id)configuration
 {
   v6 = objc_allocWithZone(type metadata accessor for VisualIdentityEditorViewController());
-  v7 = a3;
-  v8 = a4;
-  v9 = sub_199ABED24(v7, 2, 0, a4);
+  contactCopy = contact;
+  configurationCopy = configuration;
+  v9 = sub_199ABED24(contactCopy, 2, 0, configuration);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v9;
 }
 
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3 isMeContact:(BOOL)a4
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact isMeContact:(BOOL)meContact
 {
   v6 = objc_allocWithZone(type metadata accessor for VisualIdentityEditorViewController());
-  v7 = a3;
-  v8 = sub_199ABED24(v7, a4, 0, 0);
+  contactCopy = contact;
+  v8 = sub_199ABED24(contactCopy, meContact, 0, 0);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v8;
 }
 
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3 saveChangesToContactStore:(BOOL)a4
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact saveChangesToContactStore:(BOOL)store
 {
   v5 = objc_allocWithZone(type metadata accessor for VisualIdentityEditorViewController());
-  v6 = a3;
-  v7 = sub_199ABED24(v6, 0, 0, 0);
+  contactCopy = contact;
+  v7 = sub_199ABED24(contactCopy, 0, 0, 0);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v7;
 }
 
-- (CNUIVisualIdentityEditorViewController)initWithContact:(id)a3 isMeContact:(BOOL)a4 saveChangesToContactStore:(BOOL)a5
+- (CNUIVisualIdentityEditorViewController)initWithContact:(id)contact isMeContact:(BOOL)meContact saveChangesToContactStore:(BOOL)store
 {
   v8 = objc_allocWithZone(type metadata accessor for VisualIdentityEditorViewController());
-  v9 = a3;
-  v10 = sub_199ABED24(v9, a4, a5, 0);
+  contactCopy = contact;
+  v10 = sub_199ABED24(contactCopy, meContact, store, 0);
 
   swift_getObjectType();
   swift_deallocPartialClassInstance();
   return v10;
 }
 
-- (CNUIVisualIdentityEditorViewController)initWithCoder:(id)a3
+- (CNUIVisualIdentityEditorViewController)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR___CNUIVisualIdentityEditorViewController_configuration) = 0;
   swift_unknownObjectWeakInit();
@@ -121,12 +121,12 @@
 
 - (void)viewDidLoad
 {
-  v5 = self;
-  v2 = [(CNUIVisualIdentityEditorViewController *)v5 view];
-  if (v2)
+  selfCopy = self;
+  view = [(CNUIVisualIdentityEditorViewController *)selfCopy view];
+  if (view)
   {
-    v3 = v2;
-    v4 = [objc_opt_self() clearColor];
+    v3 = view;
+    clearColor = [objc_opt_self() clearColor];
     [v3 setBackgroundColor_];
 
     sub_199ABDC28();
@@ -140,11 +140,11 @@
 
 - (CGSize)preferredContentSize
 {
-  v2 = self;
-  v3 = [(CNUIVisualIdentityEditorViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(CNUIVisualIdentityEditorViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
 
     v5 = 766.0;
@@ -153,7 +153,7 @@
 
   else
   {
-    v11.receiver = v2;
+    v11.receiver = selfCopy;
     v11.super_class = type metadata accessor for VisualIdentityEditorViewController();
     [(CNUIVisualIdentityEditorViewController *)&v11 preferredContentSize];
     v8 = v7;
@@ -168,16 +168,16 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5.receiver = self;
   v5.super_class = type metadata accessor for VisualIdentityEditorViewController();
   [(CNUIVisualIdentityEditorViewController *)&v5 setPreferredContentSize:width, height];
 }
 
-- (CNUIVisualIdentityEditorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CNUIVisualIdentityEditorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

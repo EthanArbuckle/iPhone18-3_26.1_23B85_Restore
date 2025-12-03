@@ -1,27 +1,27 @@
 @interface BYODStopUsingDomainViewController
-- (BYODStopUsingDomainViewController)initWithAccount:(id)a3 domain:(id)a4;
+- (BYODStopUsingDomainViewController)initWithAccount:(id)account domain:(id)domain;
 - (id)_viewInstructionSpecifier;
 - (id)specifiers;
-- (void)_stopUsingWastapped:(id)a3;
-- (void)_viewInstructionButtonTapped:(id)a3;
-- (void)safariViewControllerDidFinish:(id)a3;
+- (void)_stopUsingWastapped:(id)wastapped;
+- (void)_viewInstructionButtonTapped:(id)tapped;
+- (void)safariViewControllerDidFinish:(id)finish;
 - (void)viewDidLoad;
 @end
 
 @implementation BYODStopUsingDomainViewController
 
-- (BYODStopUsingDomainViewController)initWithAccount:(id)a3 domain:(id)a4
+- (BYODStopUsingDomainViewController)initWithAccount:(id)account domain:(id)domain
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  domainCopy = domain;
   v12.receiver = self;
   v12.super_class = BYODStopUsingDomainViewController;
   v9 = [(BYODStopUsingDomainViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_loggedInUserAccount, a3);
-    objc_storeStrong(&v10->_domain, a4);
+    objc_storeStrong(&v9->_loggedInUserAccount, account);
+    objc_storeStrong(&v10->_domain, domain);
     v10->_didViewKBPage = 0;
   }
 
@@ -37,29 +37,29 @@
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_STOP_DOMAIN_NAV_RIGHT_BUTTON" value:&stru_B9FC8 table:@"AccountPreferences"];
   v6 = [v3 initWithTitle:v5 style:2 target:self action:"_stopUsingWastapped:"];
-  v7 = [(BYODStopUsingDomainViewController *)self navigationItem];
-  [v7 setRightBarButtonItem:v6];
+  navigationItem = [(BYODStopUsingDomainViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 
   if (!self->_didViewKBPage)
   {
-    v8 = [(BYODStopUsingDomainViewController *)self navigationItem];
-    v9 = [v8 rightBarButtonItem];
-    [v9 setEnabled:0];
+    navigationItem2 = [(BYODStopUsingDomainViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+    [rightBarButtonItem setEnabled:0];
   }
 
-  v10 = [(BYODStopUsingDomainViewController *)self navigationItem];
-  v11 = [v10 rightBarButtonItem];
+  navigationItem3 = [(BYODStopUsingDomainViewController *)self navigationItem];
+  rightBarButtonItem2 = [navigationItem3 rightBarButtonItem];
   v12 = +[UIColor systemRedColor];
-  [v11 setTintColor:v12];
+  [rightBarButtonItem2 setTintColor:v12];
 
   v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelWasTapped:"];
-  v14 = [(BYODStopUsingDomainViewController *)self navigationItem];
-  [v14 setLeftBarButtonItem:v13];
+  navigationItem4 = [(BYODStopUsingDomainViewController *)self navigationItem];
+  [navigationItem4 setLeftBarButtonItem:v13];
 
   v15 = [NSBundle bundleForClass:objc_opt_class()];
   v16 = [v15 localizedStringForKey:@"BYOD_STOP_DOMAIN_NAV_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v17 = [(BYODStopUsingDomainViewController *)self navigationItem];
-  [v17 setTitle:v16];
+  navigationItem5 = [(BYODStopUsingDomainViewController *)self navigationItem];
+  [navigationItem5 setTitle:v16];
 }
 
 - (id)specifiers
@@ -71,8 +71,8 @@
   [v4 setProperty:v6 forKey:PSFooterTextGroupKey];
 
   [v3 addObject:v4];
-  v7 = [(BYODStopUsingDomainViewController *)self _viewInstructionSpecifier];
-  [v3 addObjectsFromArray:v7];
+  _viewInstructionSpecifier = [(BYODStopUsingDomainViewController *)self _viewInstructionSpecifier];
+  [v3 addObjectsFromArray:_viewInstructionSpecifier];
 
   v8 = [v3 copy];
   v9 = OBJC_IVAR___PSListController__specifiers;
@@ -101,7 +101,7 @@
   return v3;
 }
 
-- (void)_viewInstructionButtonTapped:(id)a3
+- (void)_viewInstructionButtonTapped:(id)tapped
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_STOP_DOMAIN_VIEW_INSTRUCTIONS_KB_URL" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -115,15 +115,15 @@
   }
 }
 
-- (void)_stopUsingWastapped:(id)a3
+- (void)_stopUsingWastapped:(id)wastapped
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_STOP_DOMAIN_ALERT_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"BYOD_STOP_DOMAIN_ALERT_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v8 = [(BYODDomain *)self->_domain name];
-  v9 = [NSString stringWithFormat:v7, v8];
+  name = [(BYODDomain *)self->_domain name];
+  v9 = [NSString stringWithFormat:v7, name];
 
   v10 = [UIAlertController alertControllerWithTitle:v5 message:v9 preferredStyle:1];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
@@ -145,12 +145,12 @@
   [(BYODStopUsingDomainViewController *)self presentViewController:v10 animated:1 completion:0];
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
   self->_didViewKBPage = 1;
-  v4 = [(BYODStopUsingDomainViewController *)self navigationItem];
-  v3 = [v4 rightBarButtonItem];
-  [v3 setEnabled:1];
+  navigationItem = [(BYODStopUsingDomainViewController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 }
 
 @end

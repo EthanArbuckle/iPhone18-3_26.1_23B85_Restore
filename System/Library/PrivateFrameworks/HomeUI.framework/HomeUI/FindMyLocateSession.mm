@@ -1,12 +1,12 @@
 @interface FindMyLocateSession
 - (_TtC6HomeUI19FindMyLocateSession)init;
 - (id)meDeviceUpdateCallback;
-- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)a3;
-- (void)getThisDeviceWithCompletionHandler:(id)a3;
-- (void)setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:(id)a3;
-- (void)setMeDeviceUpdateCallback:(id)a3;
-- (void)startMonitoringPrefrenceChangesWithCompletionHandler:(id)a3;
-- (void)stopMonitoringPreferenceChangesWithCompletionHandler:(id)a3;
+- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)handler;
+- (void)getThisDeviceWithCompletionHandler:(id)handler;
+- (void)setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:(id)handler;
+- (void)setMeDeviceUpdateCallback:(id)callback;
+- (void)startMonitoringPrefrenceChangesWithCompletionHandler:(id)handler;
+- (void)stopMonitoringPreferenceChangesWithCompletionHandler:(id)handler;
 @end
 
 @implementation FindMyLocateSession
@@ -35,9 +35,9 @@
   return v4;
 }
 
-- (void)setMeDeviceUpdateCallback:(id)a3
+- (void)setMeDeviceUpdateCallback:(id)callback
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(callback);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -55,16 +55,16 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_20CEC8164(v7);
 }
 
-- (void)startMonitoringPrefrenceChangesWithCompletionHandler:(id)a3
+- (void)startMonitoringPrefrenceChangesWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -80,16 +80,16 @@
   v12[3] = 0;
   v12[4] = &unk_20D5C9778;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v7, &unk_20D5C9780, v12);
 }
 
-- (void)stopMonitoringPreferenceChangesWithCompletionHandler:(id)a3
+- (void)stopMonitoringPreferenceChangesWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -105,16 +105,16 @@
   v12[3] = 0;
   v12[4] = &unk_20D5C9758;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v7, &unk_20D5C9760, v12);
 }
 
-- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)a3
+- (void)getActiveLocationSharingDeviceWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -130,16 +130,16 @@
   v12[3] = 0;
   v12[4] = &unk_20D5C9738;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v7, &unk_20D5C9740, v12);
 }
 
-- (void)getThisDeviceWithCompletionHandler:(id)a3
+- (void)getThisDeviceWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -155,16 +155,16 @@
   v12[3] = 0;
   v12[4] = &unk_20D5C9718;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v7, &unk_20D5C9720, v12);
 }
 
-- (void)setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:(id)a3
+- (void)setActiveLocationSharingDeviceToThisDeviceWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C81C610);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -180,7 +180,7 @@
   v12[3] = 0;
   v12[4] = &unk_20D5C5200;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_20D11C1C8(0, 0, v7, &unk_20D5BCD00, v12);
 }
 

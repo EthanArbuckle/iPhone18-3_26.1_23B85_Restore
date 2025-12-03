@@ -3,10 +3,10 @@
 - (BOOL)isDeviceLocked;
 - (STKDeviceLockMonitor)init;
 - (void)_updateDeviceLockState;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)init;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation STKDeviceLockMonitor
@@ -173,36 +173,36 @@ uint64_t __38__STKDeviceLockMonitor_sharedInstance__block_invoke()
   return deviceLocked;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v8 = v4;
+    v8 = observerCopy;
     os_unfair_lock_lock(&self->_observersLock);
     observersList = self->_observersList;
     if (!observersList)
     {
-      v6 = [MEMORY[0x277CCAA50] hashTableWithWeakObjects];
+      hashTableWithWeakObjects = [MEMORY[0x277CCAA50] hashTableWithWeakObjects];
       v7 = self->_observersList;
-      self->_observersList = v6;
+      self->_observersList = hashTableWithWeakObjects;
 
       observersList = self->_observersList;
     }
 
     [(NSHashTable *)observersList addObject:v8];
     os_unfair_lock_unlock(&self->_observersLock);
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_lock_lock(&self->_observersLock);
-    [(NSHashTable *)self->_observersList removeObject:v4];
+    [(NSHashTable *)self->_observersList removeObject:observerCopy];
 
     if (![(NSHashTable *)self->_observersList count])
     {
@@ -218,7 +218,7 @@ uint64_t __38__STKDeviceLockMonitor_sharedInstance__block_invoke()
 {
   v4 = *MEMORY[0x277D85DE8];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_262BB4000, a2, OS_LOG_TYPE_ERROR, "Could not register for lock state notification: %d", v3, 8u);
   v2 = *MEMORY[0x277D85DE8];
 }

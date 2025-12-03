@@ -1,11 +1,11 @@
 @interface ACMBaseLocale
-+ (id)createLocaleForIdentifier:(id)a3;
-+ (id)localizedString:(id)a3;
++ (id)createLocaleForIdentifier:(id)identifier;
++ (id)localizedString:(id)string;
 + (id)sharedInstance;
 + (void)initialize;
 + (void)setupRecoveringPreferredLanguages;
 + (void)setupUsingPreferredLanguages;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (void)dealloc;
 @end
 
@@ -13,7 +13,7 @@
 
 + (void)initialize
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___ACMBaseLocale;
   objc_msgSendSuper2(&v10, sel_initialize);
   v2 = objc_opt_class();
@@ -54,9 +54,9 @@
   }
 }
 
-+ (id)createLocaleForIdentifier:(id)a3
++ (id)createLocaleForIdentifier:(id)identifier
 {
-  v3 = [a3 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+  v3 = [identifier stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
   v4 = [objc_msgSend(s_Locales objectForKeyedSubscript:{v3), "new"}];
 
   return v4;
@@ -75,7 +75,7 @@
   v30 = [v2 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v30)
   {
-    v3 = 0;
+    nextLocale = 0;
     v27 = *MEMORY[0x29EDB8D00];
     v28 = *v33;
     v4 = *MEMORY[0x29EDB8CF8];
@@ -134,8 +134,8 @@
 
         v17 = v6;
         v18 = [*(v6 + 3552) localeIdentifierFromComponents:{objc_msgSend(v13, "dictionaryWithObjects:forKeys:count:", v14, v15, v16)}];
-        v19 = [a1 createLocaleForIdentifier:v18];
-        v20 = [a1 createLocaleForIdentifier:v11];
+        v19 = [self createLocaleForIdentifier:v18];
+        v20 = [self createLocaleForIdentifier:v11];
         v21 = v20;
         if (!v19)
         {
@@ -190,21 +190,21 @@ LABEL_23:
         v6 = v17;
 LABEL_25:
         [v31 addObject:v11];
-        if (v3)
+        if (nextLocale)
         {
-          [v3 setNextLocale:v21];
+          [nextLocale setNextLocale:v21];
         }
 
-        v3 = v21;
+        nextLocale = v21;
         if ([v21 nextLocale])
         {
-          v3 = v21;
+          nextLocale = v21;
           do
           {
-            v3 = [v3 nextLocale];
+            nextLocale = [nextLocale nextLocale];
           }
 
-          while ([v3 nextLocale]);
+          while ([nextLocale nextLocale]);
         }
 
         v5 = v26;
@@ -255,7 +255,7 @@ LABEL_25:
           v10 = v9;
         }
 
-        v11 = [a1 createLocaleForIdentifier:v10];
+        v11 = [self createLocaleForIdentifier:v10];
         if (v11)
         {
           v12 = v11;
@@ -282,17 +282,17 @@ LABEL_25:
 
 + (id)sharedInstance
 {
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   if (!s_sharedInstance)
   {
     if ([objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(MEMORY[0x29EDC7A58] "currentDevice")] < 8)
     {
-      [a1 setupRecoveringPreferredLanguages];
+      [self setupRecoveringPreferredLanguages];
     }
 
     else
     {
-      [a1 setupUsingPreferredLanguages];
+      [self setupUsingPreferredLanguages];
     }
 
     if (!s_sharedInstance)
@@ -301,7 +301,7 @@ LABEL_25:
     }
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return s_sharedInstance;
 }
 
@@ -313,33 +313,33 @@ LABEL_25:
   [(ACMBaseLocale *)&v3 dealloc];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  result = [(NSDictionary *)[(ACMBaseLocale *)self localeStrings] objectForKey:a3];
+  result = [(NSDictionary *)[(ACMBaseLocale *)self localeStrings] objectForKey:key];
   if (!result)
   {
     if ([(ACMBaseLocale *)self nextLocale])
     {
-      v6 = [(ACMBaseLocale *)self nextLocale];
+      nextLocale = [(ACMBaseLocale *)self nextLocale];
 
-      return [(ACMBaseLocale *)v6 objectForKey:a3];
+      return [(ACMBaseLocale *)nextLocale objectForKey:key];
     }
 
     else
     {
-      return a3;
+      return key;
     }
   }
 
   return result;
 }
 
-+ (id)localizedString:(id)a3
++ (id)localizedString:(id)string
 {
-  result = [objc_msgSend(a1 "sharedInstance")];
+  result = [objc_msgSend(self "sharedInstance")];
   if (!result)
   {
-    return a3;
+    return string;
   }
 
   return result;

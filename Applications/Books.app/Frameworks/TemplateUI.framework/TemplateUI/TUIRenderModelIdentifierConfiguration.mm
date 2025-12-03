@@ -1,6 +1,6 @@
 @interface TUIRenderModelIdentifierConfiguration
 - (TUIRenderModelIdentifierConfiguration)init;
-- (TUIRenderModelIdentifierConfiguration)initWithOther:(id)a3;
+- (TUIRenderModelIdentifierConfiguration)initWithOther:(id)other;
 @end
 
 @implementation TUIRenderModelIdentifierConfiguration
@@ -18,16 +18,16 @@
   return result;
 }
 
-- (TUIRenderModelIdentifierConfiguration)initWithOther:(id)a3
+- (TUIRenderModelIdentifierConfiguration)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v8.receiver = self;
   v8.super_class = TUIRenderModelIdentifierConfiguration;
   v5 = [(TUIRenderModelIdentifierConfiguration *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    v5->_reservedViews = v4[1];
+    v5->_reservedViews = otherCopy[1];
   }
 
   return v6;

@@ -8,13 +8,13 @@
 {
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [a1 eventIdentifier];
-  v5 = [a1 title];
-  v6 = [a1 startDate];
-  v7 = [DBDateFormatter formattedDate:v6];
-  v8 = [a1 endDate];
-  v9 = [DBDateFormatter formattedDate:v8];
-  v10 = [v2 stringWithFormat:@"<%@:%p uniqueIdentifier=%@ title=%@ start=%@ end=%@>", v3, a1, v4, v5, v7, v9];
+  eventIdentifier = [self eventIdentifier];
+  title = [self title];
+  startDate = [self startDate];
+  v7 = [DBDateFormatter formattedDate:startDate];
+  endDate = [self endDate];
+  v9 = [DBDateFormatter formattedDate:endDate];
+  v10 = [v2 stringWithFormat:@"<%@:%p uniqueIdentifier=%@ title=%@ start=%@ end=%@>", v3, self, eventIdentifier, title, v7, v9];
 
   return v10;
 }

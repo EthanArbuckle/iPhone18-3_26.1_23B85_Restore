@@ -1,12 +1,12 @@
 @interface ReadingActivityDonor
 - (_TtC5Books20ReadingActivityDonor)init;
-- (_TtC5Books20ReadingActivityDonor)initWithType:(id)a3;
-- (void)donateWithConfiguration:(id)a3 context:(id)a4 donationCompleteBlock:(id)a5;
+- (_TtC5Books20ReadingActivityDonor)initWithType:(id)type;
+- (void)donateWithConfiguration:(id)configuration context:(id)context donationCompleteBlock:(id)block;
 @end
 
 @implementation ReadingActivityDonor
 
-- (_TtC5Books20ReadingActivityDonor)initWithType:(id)a3
+- (_TtC5Books20ReadingActivityDonor)initWithType:(id)type
 {
   self->BMBaseDonor_opaque[OBJC_IVAR____TtC5Books20ReadingActivityDonor_coachingPermissionApproved] = 0;
   v4 = OBJC_IVAR____TtC5Books20ReadingActivityDonor_coachingPermissionApprovedConfig;
@@ -17,13 +17,13 @@
   return result;
 }
 
-- (void)donateWithConfiguration:(id)a3 context:(id)a4 donationCompleteBlock:(id)a5
+- (void)donateWithConfiguration:(id)configuration context:(id)context donationCompleteBlock:(id)block
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(block);
+  if (context)
   {
     v9 = sub_1007A2254();
-    a4 = v10;
+    context = v10;
   }
 
   else
@@ -32,9 +32,9 @@
   }
 
   _Block_copy(v8);
-  v11 = a3;
-  v12 = self;
-  sub_10075FFA0(v11, v9, a4, v12, v8);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_10075FFA0(configurationCopy, v9, context, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }

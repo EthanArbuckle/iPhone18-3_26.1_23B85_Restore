@@ -1,19 +1,19 @@
 @interface NavdVehicleBluetoothNotificationHandler
-- (NavdVehicleBluetoothNotificationHandler)initWithCiruitBoard:(id)a3 connectTriggers:(id)a4 connectConditions:(id)a5 disconnectTriggers:(id)a6 disconnectConditions:(id)a7 resourceDepot:(id)a8 notifier:(id)a9;
+- (NavdVehicleBluetoothNotificationHandler)initWithCiruitBoard:(id)board connectTriggers:(id)triggers connectConditions:(id)conditions disconnectTriggers:(id)disconnectTriggers disconnectConditions:(id)disconnectConditions resourceDepot:(id)depot notifier:(id)notifier;
 - (id).cxx_construct;
 @end
 
 @implementation NavdVehicleBluetoothNotificationHandler
 
-- (NavdVehicleBluetoothNotificationHandler)initWithCiruitBoard:(id)a3 connectTriggers:(id)a4 connectConditions:(id)a5 disconnectTriggers:(id)a6 disconnectConditions:(id)a7 resourceDepot:(id)a8 notifier:(id)a9
+- (NavdVehicleBluetoothNotificationHandler)initWithCiruitBoard:(id)board connectTriggers:(id)triggers connectConditions:(id)conditions disconnectTriggers:(id)disconnectTriggers disconnectConditions:(id)disconnectConditions resourceDepot:(id)depot notifier:(id)notifier
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v57 = a8;
-  v58 = a9;
+  boardCopy = board;
+  triggersCopy = triggers;
+  conditionsCopy = conditions;
+  disconnectTriggersCopy = disconnectTriggers;
+  disconnectConditionsCopy = disconnectConditions;
+  depotCopy = depot;
+  notifierCopy = notifier;
   v20 = GEOConfigNavdVehicleBTNotificationEnabled[1];
   if (GEOConfigGetBOOL())
   {
@@ -22,7 +22,7 @@
     v21 = [(NavdVehicleBluetoothNotificationHandler *)&v73 init];
     if (v21)
     {
-      v56 = v19;
+      v56 = disconnectConditionsCopy;
       objc_initWeak(&location, v21);
       v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       sub_10001A824(&v70, @"NavdVehicleBluetoothNotificationHandlerQueue", v22);
@@ -36,7 +36,7 @@
       name = v21->_queue._name;
       v21->_queue._name = v25;
 
-      v55 = v18;
+      v55 = disconnectTriggersCopy;
       sub_100024668(v21);
       v27 = [MapsSuggestionsActionCircuit alloc];
       v28 = [MapsSuggestionsBlockAction alloc];
@@ -47,7 +47,7 @@
       objc_copyWeak(&v69, &location);
       v29 = v56;
       v67 = v29;
-      v30 = v58;
+      v30 = notifierCopy;
       v68 = v30;
       v31 = [v28 initWithName:@"BTDisconnectAction" block:v66];
       v32 = [v27 initWithTriggers:v55 conditions:v29 action:v31];
@@ -67,8 +67,8 @@
       clearCircuit = v21->_clearCircuit;
       v21->_clearCircuit = v37;
 
-      v39 = [v15 addCircuit:v21->_clearCircuit];
-      v40 = [v15 addCircuit:v32];
+      v39 = [boardCopy addCircuit:v21->_clearCircuit];
+      v40 = [boardCopy addCircuit:v32];
       v41 = [MapsSuggestionsBlockCondition alloc];
       v42 = v21->_queue._innerQueue;
       v61[0] = _NSConcreteStackBlock;
@@ -80,7 +80,7 @@
       locationBudgetCondition = v21->_locationBudgetCondition;
       v21->_locationBudgetCondition = v43;
 
-      v45 = [v17 mutableCopy];
+      v45 = [conditionsCopy mutableCopy];
       [v45 addObject:v21->_locationBudgetCondition];
       v46 = [MapsSuggestionsActionCircuit alloc];
       v47 = [v45 copy];
@@ -90,10 +90,10 @@
       v59[2] = sub_10002501C;
       v59[3] = &unk_100065548;
       objc_copyWeak(&v60, &location);
-      v49 = [(NavdVehicleBluetoothConnectAction *)v48 initWithConditions:v17 resourceDepot:v57 notifier:v35 completionHandler:v59];
-      v50 = [v46 initWithTriggers:v16 conditions:v47 type:2 action:v49];
+      v49 = [(NavdVehicleBluetoothConnectAction *)v48 initWithConditions:conditionsCopy resourceDepot:depotCopy notifier:v35 completionHandler:v59];
+      v50 = [v46 initWithTriggers:triggersCopy conditions:v47 type:2 action:v49];
 
-      v51 = [v15 addCircuit:v50];
+      v51 = [boardCopy addCircuit:v50];
       objc_destroyWeak(&v60);
 
       objc_destroyWeak(&v62);
@@ -101,20 +101,20 @@
 
       objc_destroyWeak(&v69);
       objc_destroyWeak(&location);
-      v18 = v55;
-      v19 = v56;
+      disconnectTriggersCopy = v55;
+      disconnectConditionsCopy = v56;
     }
 
     self = v21;
-    v52 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v52 = 0;
+    selfCopy = 0;
   }
 
-  return v52;
+  return selfCopy;
 }
 
 - (id).cxx_construct

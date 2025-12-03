@@ -1,9 +1,9 @@
 @interface SSVOperation
 - (SSVOperation)init;
-- (void)addChildRequest:(id)a3;
+- (void)addChildRequest:(id)request;
 - (void)cancel;
-- (void)removeChildRequest:(id)a3;
-- (void)runChildOperation:(id)a3;
+- (void)removeChildRequest:(id)request;
+- (void)runChildOperation:(id)operation;
 @end
 
 @implementation SSVOperation
@@ -28,17 +28,17 @@
   return v2;
 }
 
-- (void)addChildRequest:(id)a3
+- (void)addChildRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__SSVOperation_addChildRequest___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -60,30 +60,30 @@ uint64_t __32__SSVOperation_addChildRequest___block_invoke(uint64_t a1)
   return [v2 addObject:v6];
 }
 
-- (void)removeChildRequest:(id)a3
+- (void)removeChildRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__SSVOperation_removeChildRequest___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(serialQueue, v7);
 }
 
-- (void)runChildOperation:(id)a3
+- (void)runChildOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__SSVOperation_runChildOperation___block_invoke;
   block[3] = &unk_1E84AC028;
   block[4] = self;
-  v6 = v4;
+  v6 = operationCopy;
   v12 = v6;
   dispatch_async(serialQueue, block);
   [v6 main];

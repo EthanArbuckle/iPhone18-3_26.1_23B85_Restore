@@ -1,13 +1,13 @@
 @interface NTKRichComplicationHandView
-- (NTKRichComplicationHandView)initWithDotSize:(double)a3 handWidth:(double)a4 beginAngle:(double)a5 endAngle:(double)a6;
+- (NTKRichComplicationHandView)initWithDotSize:(double)size handWidth:(double)width beginAngle:(double)angle endAngle:(double)endAngle;
 - (void)_updateHandTransform;
 - (void)layoutSubviews;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (void)setValue:(float)value animated:(BOOL)animated;
 @end
 
 @implementation NTKRichComplicationHandView
 
-- (NTKRichComplicationHandView)initWithDotSize:(double)a3 handWidth:(double)a4 beginAngle:(double)a5 endAngle:(double)a6
+- (NTKRichComplicationHandView)initWithDotSize:(double)size handWidth:(double)width beginAngle:(double)angle endAngle:(double)endAngle
 {
   v18.receiver = self;
   v18.super_class = NTKRichComplicationHandView;
@@ -15,23 +15,23 @@
   v11 = v10;
   if (v10)
   {
-    v12 = [(NTKRichComplicationHandView *)v10 layer];
+    layer = [(NTKRichComplicationHandView *)v10 layer];
     v13 = objc_opt_new();
     dotLayer = v11->_dotLayer;
     v11->_dotLayer = v13;
 
-    [(CALayer *)v11->_dotLayer setBounds:0.0, 0.0, a3, a3];
-    [(CALayer *)v11->_dotLayer setCornerRadius:a3 * 0.5];
-    [v12 addSublayer:v11->_dotLayer];
+    [(CALayer *)v11->_dotLayer setBounds:0.0, 0.0, size, size];
+    [(CALayer *)v11->_dotLayer setCornerRadius:size * 0.5];
+    [layer addSublayer:v11->_dotLayer];
     v15 = objc_opt_new();
     handLayer = v11->_handLayer;
     v11->_handLayer = v15;
 
     [(CALayer *)v11->_handLayer setAnchorPoint:0.5, 1.0];
-    [v12 addSublayer:v11->_handLayer];
-    v11->_beginAngle = a5;
-    v11->_endAngle = a6;
-    v11->_handWidth = a4;
+    [layer addSublayer:v11->_handLayer];
+    v11->_beginAngle = angle;
+    v11->_endAngle = endAngle;
+    v11->_handWidth = width;
   }
 
   return v11;
@@ -42,8 +42,8 @@
   v14.receiver = self;
   v14.super_class = NTKRichComplicationHandView;
   [(NTKRichComplicationHandView *)&v14 layoutSubviews];
-  v3 = [(NTKRichComplicationHandView *)self layer];
-  [v3 bounds];
+  layer = [(NTKRichComplicationHandView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6 * 0.5;
   [(CALayer *)self->_dotLayer setPosition:v4 * 0.5, v6 * 0.5];
@@ -65,15 +65,15 @@
   [(NTKRichComplicationHandView *)self _updateHandTransform];
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  if (a3 < 0.0)
+  if (value < 0.0)
   {
-    a3 = 0.0;
+    value = 0.0;
   }
 
-  self->_value = fminf(a3, 1.0);
-  if (a4)
+  self->_value = fminf(value, 1.0);
+  if (animated)
   {
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;

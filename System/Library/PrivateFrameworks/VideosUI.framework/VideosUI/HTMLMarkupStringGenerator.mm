@@ -1,48 +1,48 @@
 @interface HTMLMarkupStringGenerator
-- (void)parser:(id)a3 didEndElement:(unint64_t)a4;
-- (void)parser:(id)a3 didFindCharacters:(id)a4;
-- (void)parser:(id)a3 didStartElement:(unint64_t)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parserDidFindNewline:(id)a3;
+- (void)parser:(id)parser didEndElement:(unint64_t)element;
+- (void)parser:(id)parser didFindCharacters:(id)characters;
+- (void)parser:(id)parser didStartElement:(unint64_t)element;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parserDidFindNewline:(id)newline;
 @end
 
 @implementation HTMLMarkupStringGenerator
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_1E3763590(v8);
+  parserCopy = parser;
+  occurredCopy = occurred;
+  selfCopy = self;
+  sub_1E3763590(occurredCopy);
 }
 
-- (void)parser:(id)a3 didStartElement:(unint64_t)a4
+- (void)parser:(id)parser didStartElement:(unint64_t)element
 {
-  v6 = a3;
-  v7 = self;
-  sub_1E3763740(a4);
+  parserCopy = parser;
+  selfCopy = self;
+  sub_1E3763740(element);
 }
 
-- (void)parser:(id)a3 didEndElement:(unint64_t)a4
+- (void)parser:(id)parser didEndElement:(unint64_t)element
 {
-  v5 = a3;
-  v6 = self;
+  parserCopy = parser;
+  selfCopy = self;
   sub_1E3763850();
 }
 
-- (void)parser:(id)a3 didFindCharacters:(id)a4
+- (void)parser:(id)parser didFindCharacters:(id)characters
 {
   v6 = sub_1E4205F14();
   v8 = v7;
-  v9 = a3;
-  v10 = self;
+  parserCopy = parser;
+  selfCopy = self;
   sub_1E3763910(v6, v8);
 }
 
-- (void)parserDidFindNewline:(id)a3
+- (void)parserDidFindNewline:(id)newline
 {
-  v4 = a3;
-  v5 = self;
+  newlineCopy = newline;
+  selfCopy = self;
   sub_1E3763C18();
 }
 

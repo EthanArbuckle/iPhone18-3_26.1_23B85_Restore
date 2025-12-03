@@ -1,22 +1,22 @@
 @interface DeveloperSilentAuthTokenDelegate
-- (void)AMSURLSession:(AMSURLSession *)a3 task:(NSURLSessionTask *)a4 handleAuthenticateRequest:(AMSAuthenticateRequest *)a5 completion:(id)a6;
+- (void)AMSURLSession:(AMSURLSession *)session task:(NSURLSessionTask *)task handleAuthenticateRequest:(AMSAuthenticateRequest *)request completion:(id)completion;
 @end
 
 @implementation DeveloperSilentAuthTokenDelegate
 
-- (void)AMSURLSession:(AMSURLSession *)a3 task:(NSURLSessionTask *)a4 handleAuthenticateRequest:(AMSAuthenticateRequest *)a5 completion:(id)a6
+- (void)AMSURLSession:(AMSURLSession *)session task:(NSURLSessionTask *)task handleAuthenticateRequest:(AMSAuthenticateRequest *)request completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
-  v11[3] = a4;
-  v11[4] = a5;
+  v11[2] = session;
+  v11[3] = task;
+  v11[4] = request;
   v11[5] = v10;
   v11[6] = self;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
+  sessionCopy = session;
+  taskCopy = task;
+  requestCopy = request;
+  selfCopy = self;
 
   sub_1928FB3BC(&unk_192FC9110, v11);
 }

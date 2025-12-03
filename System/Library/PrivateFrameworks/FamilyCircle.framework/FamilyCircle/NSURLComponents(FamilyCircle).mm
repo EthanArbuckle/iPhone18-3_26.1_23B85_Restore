@@ -9,18 +9,18 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  [a1 queryItems];
+  [self queryItems];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v5 = v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-  if (v6)
+  value = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  if (value)
   {
     v7 = *v15;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != value; i = i + 1)
       {
         if (*v15 != v7)
         {
@@ -28,18 +28,18 @@
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 name];
-        v11 = [v10 isEqualToString:v4];
+        name = [v9 name];
+        v11 = [name isEqualToString:v4];
 
         if (v11)
         {
-          v6 = [v9 value];
+          value = [v9 value];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
-      if (v6)
+      value = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      if (value)
       {
         continue;
       }
@@ -52,19 +52,19 @@ LABEL_11:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return value;
 }
 
 - (id)fa_queryItemsDictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v1 = [a1 queryItems];
-  v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v1, "count")}];
+  queryItems = [self queryItems];
+  v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(queryItems, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = v1;
+  v3 = queryItems;
   v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
@@ -80,17 +80,17 @@ LABEL_11:
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 name];
-        if (v9)
+        name = [v8 name];
+        if (name)
         {
-          v10 = v9;
-          v11 = [v8 value];
+          v10 = name;
+          value = [v8 value];
 
-          if (v11)
+          if (value)
           {
-            v12 = [v8 value];
-            v13 = [v8 name];
-            [v2 setObject:v12 forKeyedSubscript:v13];
+            value2 = [v8 value];
+            name2 = [v8 name];
+            [v2 setObject:value2 forKeyedSubscript:name2];
           }
         }
       }

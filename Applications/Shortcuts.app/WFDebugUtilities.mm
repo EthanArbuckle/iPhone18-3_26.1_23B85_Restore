@@ -1,13 +1,13 @@
 @interface WFDebugUtilities
-+ (void)setupDebuggingForWindow:(id)a3;
++ (void)setupDebuggingForWindow:(id)window;
 @end
 
 @implementation WFDebugUtilities
 
-+ (void)setupDebuggingForWindow:(id)a3
++ (void)setupDebuggingForWindow:(id)window
 {
-  v3 = a3;
-  sub_10000E16C(v3);
+  windowCopy = window;
+  sub_10000E16C(windowCopy);
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface HMDMediaAccessoryBrowseOperation
 + (double)defaultTimeout;
 + (id)logCategory;
-- (HMDMediaAccessoryBrowseOperation)initWithAccessoryIdentifier:(id)a3 timeout:(double)a4;
+- (HMDMediaAccessoryBrowseOperation)initWithAccessoryIdentifier:(id)identifier timeout:(double)timeout;
 - (HMDMediaEndpoint)endpoint;
 - (NSArray)outputDevices;
 - (unsigned)endpointFeatures;
 - (void)cancel;
 - (void)dealloc;
 - (void)main;
-- (void)setEndpointFeatures:(unsigned int)a3;
+- (void)setEndpointFeatures:(unsigned int)features;
 @end
 
 @implementation HMDMediaAccessoryBrowseOperation
@@ -27,12 +27,12 @@
 - (void)main
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaAccessoryBrowseOperation *)self endpointFeatures];
-  if (v3 != -1)
+  endpointFeatures = [(HMDMediaAccessoryBrowseOperation *)self endpointFeatures];
+  if (endpointFeatures != -1)
   {
-    v4 = v3;
+    v4 = endpointFeatures;
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
@@ -52,8 +52,8 @@
   [(HMDMediaAccessoryBrowseOperation *)self endpointFeatures];
   self->_session = MRAVReconnaissanceSessionCreateWithEndpointFeatures();
   objc_initWeak(buf, self);
-  v9 = [(HMFOperation *)self timeoutDate];
-  [v9 timeIntervalSinceNow];
+  timeoutDate = [(HMFOperation *)self timeoutDate];
+  [timeoutDate timeIntervalSinceNow];
   v11 = v10;
 
   if (v11 <= 0.0)
@@ -217,10 +217,10 @@ void __40__HMDMediaAccessoryBrowseOperation_main__block_invoke(uint64_t a1, void
   return v3;
 }
 
-- (void)setEndpointFeatures:(unsigned int)a3
+- (void)setEndpointFeatures:(unsigned int)features
 {
   os_unfair_lock_lock_with_options();
-  self->_endpointFeatures = a3;
+  self->_endpointFeatures = features;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -246,38 +246,38 @@ void __40__HMDMediaAccessoryBrowseOperation_main__block_invoke(uint64_t a1, void
   [(HMDMediaAccessoryBrowseOperation *)&v4 dealloc];
 }
 
-- (HMDMediaAccessoryBrowseOperation)initWithAccessoryIdentifier:(id)a3 timeout:(double)a4
+- (HMDMediaAccessoryBrowseOperation)initWithAccessoryIdentifier:(id)identifier timeout:(double)timeout
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    if (a4 <= 0.0)
+    if (timeout <= 0.0)
     {
       +[HMDMediaAccessoryBrowseOperation defaultTimeout];
-      a4 = v7;
+      timeout = v7;
     }
 
     v19.receiver = self;
     v19.super_class = HMDMediaAccessoryBrowseOperation;
-    v8 = [(HMFOperation *)&v19 initWithTimeout:a4];
+    v8 = [(HMFOperation *)&v19 initWithTimeout:timeout];
     v9 = v8;
     if (v8)
     {
       v8->_endpointFeatures = -1;
-      v10 = [v6 copy];
+      v10 = [identifierCopy copy];
       accessoryIdentifier = v9->_accessoryIdentifier;
       v9->_accessoryIdentifier = v10;
     }
 
-    v12 = v9;
-    v13 = v12;
+    selfCopy = v9;
+    v13 = selfCopy;
   }
 
   else
   {
     v14 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {

@@ -1,16 +1,16 @@
 @interface OrgApacheLuceneUtilPackedPacked64
 - (id)description;
-- (int64_t)getWithInt:(int)a3;
+- (int64_t)getWithInt:(int)int;
 - (int64_t)ramBytesUsed;
 - (void)dealloc;
-- (void)setWithInt:(int)a3 withLong:(int64_t)a4;
+- (void)setWithInt:(int)int withLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneUtilPackedPacked64
 
-- (int64_t)getWithInt:(int)a3
+- (int64_t)getWithInt:(int)int
 {
-  v4 = self->super.bitsPerValue_ * a3;
+  v4 = self->super.bitsPerValue_ * int;
   v5 = v4 >> 6;
   bpvMinusBlockSize = self->bpvMinusBlockSize_;
   v7 = v4 & 0x3F;
@@ -56,9 +56,9 @@ LABEL_12:
   return self->maskRight_ & (blocks->buffer_[v5] >> -v9);
 }
 
-- (void)setWithInt:(int)a3 withLong:(int64_t)a4
+- (void)setWithInt:(int)int withLong:(int64_t)long
 {
-  v5 = self->super.bitsPerValue_ * a3;
+  v5 = self->super.bitsPerValue_ * int;
   v6 = v5 >> 6;
   blocks = self->blocks_;
   v8 = (v5 & 0x3F) + self->bpvMinusBlockSize_;
@@ -80,7 +80,7 @@ LABEL_12:
         IOSArray_throwOutOfBoundsWithMsg(v14, v6);
       }
 
-      blocks->buffer_[v9] = blocks->buffer_[v9] & ~(self->maskRight_ >> v8) | (a4 >> v8);
+      blocks->buffer_[v9] = blocks->buffer_[v9] & ~(self->maskRight_ >> v8) | (long >> v8);
       v15 = self->blocks_;
       v13 = v6 << 32;
       v16 = (&_mh_execute_header + (v6 << 32)) >> 32;
@@ -96,7 +96,7 @@ LABEL_12:
         IOSArray_throwOutOfBoundsWithMsg(v17, (&_mh_execute_header + v13) >> 32);
       }
 
-      v15->buffer_[v16] = v15->buffer_[v16] & (0xFFFFFFFFFFFFFFFFLL >> (v8 & 0x3F)) | (a4 << -v8);
+      v15->buffer_[v16] = v15->buffer_[v16] & (0xFFFFFFFFFFFFFFFFLL >> (v8 & 0x3F)) | (long << -v8);
       return;
     }
 
@@ -120,7 +120,7 @@ LABEL_27:
     IOSArray_throwOutOfBoundsWithMsg(v19, v6);
   }
 
-  blocks->buffer_[v9] = blocks->buffer_[v9] & ~(self->maskRight_ << -v8) | (a4 << -v8);
+  blocks->buffer_[v9] = blocks->buffer_[v9] & ~(self->maskRight_ << -v8) | (long << -v8);
 }
 
 - (id)description

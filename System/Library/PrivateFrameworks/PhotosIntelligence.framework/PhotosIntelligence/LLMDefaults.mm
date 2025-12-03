@@ -1,15 +1,15 @@
 @interface LLMDefaults
-+ (void)setupDefaultBackendWithRemoveUserOverwrite:(BOOL)a3 enableLogging:(BOOL)a4;
++ (void)setupDefaultBackendWithRemoveUserOverwrite:(BOOL)overwrite enableLogging:(BOOL)logging;
 @end
 
 @implementation LLMDefaults
 
-+ (void)setupDefaultBackendWithRemoveUserOverwrite:(BOOL)a3 enableLogging:(BOOL)a4
++ (void)setupDefaultBackendWithRemoveUserOverwrite:(BOOL)overwrite enableLogging:(BOOL)logging
 {
-  v4 = a4;
-  v5 = a3;
+  loggingCopy = logging;
+  overwriteCopy = overwrite;
   swift_getObjCClassMetadata();
-  static LLMDefaults.setupDefaultBackend(removeUserOverwrite:enableLogging:)(v5, v4);
+  static LLMDefaults.setupDefaultBackend(removeUserOverwrite:enableLogging:)(overwriteCopy, loggingCopy);
 }
 
 @end

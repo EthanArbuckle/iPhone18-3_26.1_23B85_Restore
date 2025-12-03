@@ -6,28 +6,28 @@
 
 - (id)headerData
 {
-  v3 = [(TSUMultiPartFormPart *)self filename];
+  filename = [(TSUMultiPartFormPart *)self filename];
 
   v4 = MEMORY[0x277CCAB68];
-  v5 = [(TSUMultiPartFormPart *)self name];
-  v6 = v5;
-  if (v3)
+  name = [(TSUMultiPartFormPart *)self name];
+  v6 = name;
+  if (filename)
   {
-    v7 = [(TSUMultiPartFormPart *)self filename];
-    v8 = [v4 stringWithFormat:@"Content-Disposition: form-data name=%@; filename=%@\r\n", v6, v7];;
+    filename2 = [(TSUMultiPartFormPart *)self filename];
+    v8 = [v4 stringWithFormat:@"Content-Disposition: form-data name=%@; filename=%@\r\n", v6, filename2];;
   }
 
   else
   {
-    v8 = [v4 stringWithFormat:@"Content-Disposition: form-data name=%@\r\n", v5];;
+    v8 = [v4 stringWithFormat:@"Content-Disposition: form-data name=%@\r\n", name];;
   }
 
-  v9 = [(TSUMultiPartFormPart *)self contentType];
+  contentType = [(TSUMultiPartFormPart *)self contentType];
 
-  if (v9)
+  if (contentType)
   {
-    v10 = [(TSUMultiPartFormPart *)self contentType];
-    [v8 appendFormat:@"Content-Type: %@\r\n", v10];
+    contentType2 = [(TSUMultiPartFormPart *)self contentType];
+    [v8 appendFormat:@"Content-Type: %@\r\n", contentType2];
   }
 
   [v8 appendString:@"\r\n"];

@@ -11,14 +11,14 @@
 
 + (CTFontRef)mtui_thinTimeFontOfSize:()MTUIFonts
 {
-  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMenuItemFontType|0x80, a1, 0);
+  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMenuItemFontType|0x80, self, 0);
 
   return UIFontForLanguage;
 }
 
 + (CTFontRef)mtui_lightTimeFontOfSize:()MTUIFonts
 {
-  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMiniEmphasizedSystemFontType|0x60, a1, 0);
+  UIFontForLanguage = CTFontCreateUIFontForLanguage(kCTFontMiniEmphasizedSystemFontType|0x60, self, 0);
 
   return UIFontForLanguage;
 }
@@ -26,7 +26,7 @@
 + (id)mtui_defaultTimeDesignatorFont
 {
   v1 = MEMORY[0x277D74300];
-  [a1 mtui_defaultTimeDesignatorFontSize];
+  [self mtui_defaultTimeDesignatorFontSize];
   v2 = [v1 systemFontOfSize:? weight:?];
   v3 = [v2 mtui_fontByAddingAttributes:2];
 
@@ -35,8 +35,8 @@
 
 + (id)mtui_thinTimeFont
 {
-  [a1 mtui_defaultTimeFontSize];
-  v2 = [a1 mtui_thinTimeFontOfSize:?];
+  [self mtui_defaultTimeFontSize];
+  v2 = [self mtui_thinTimeFontOfSize:?];
   CopyOfSystemUIFontWithGrade = CTFontCreateCopyOfSystemUIFontWithGrade();
 
   return CopyOfSystemUIFontWithGrade;
@@ -44,8 +44,8 @@
 
 + (id)mtui_lightTimeFont
 {
-  [a1 mtui_defaultTimeFontSize];
-  v2 = [a1 mtui_lightTimeFontOfSize:?];
+  [self mtui_defaultTimeFontSize];
+  v2 = [self mtui_lightTimeFontOfSize:?];
   CopyOfSystemUIFontWithGrade = CTFontCreateCopyOfSystemUIFontWithGrade();
 
   return CopyOfSystemUIFontWithGrade;
@@ -57,10 +57,10 @@
   if (a3)
   {
     v4 = a3;
-    v5 = [a1 fontDescriptor];
+    fontDescriptor = [self fontDescriptor];
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v7 = MEMORY[0x277CCABB0];
-    [a1 pointSize];
+    [self pointSize];
     v8 = [v7 numberWithDouble:?];
     [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277CC4918]];
 
@@ -90,17 +90,17 @@
     }
 
     [v6 setObject:v9 forKeyedSubscript:*MEMORY[0x277D74338]];
-    v16 = [v5 fontDescriptorByAddingAttributes:v6];
+    v16 = [fontDescriptor fontDescriptorByAddingAttributes:v6];
 
-    v17 = [MEMORY[0x277D74300] fontWithDescriptor:v16 size:0.0];
+    selfCopy = [MEMORY[0x277D74300] fontWithDescriptor:v16 size:0.0];
   }
 
   else
   {
-    v17 = a1;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 @end

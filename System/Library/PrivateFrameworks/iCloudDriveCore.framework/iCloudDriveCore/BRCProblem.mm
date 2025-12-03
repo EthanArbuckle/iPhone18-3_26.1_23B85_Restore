@@ -1,27 +1,27 @@
 @interface BRCProblem
-- (BRCProblem)initWithCoder:(id)a3;
-- (BRCProblem)initWithProblem:(id)a3;
-- (BRCProblem)initWithType:(int)a3 recordName:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeWithProblem:(id)a3;
+- (BRCProblem)initWithCoder:(id)coder;
+- (BRCProblem)initWithProblem:(id)problem;
+- (BRCProblem)initWithType:(int)type recordName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeWithProblem:(id)problem;
 @end
 
 @implementation BRCProblem
 
-- (BRCProblem)initWithType:(int)a3 recordName:(id)a4
+- (BRCProblem)initWithType:(int)type recordName:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = BRCProblem;
   v7 = [(BRCProblem *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    if (v6)
+    v7->_type = type;
+    if (nameCopy)
     {
-      [MEMORY[0x277CBEB98] setWithObject:v6];
+      [MEMORY[0x277CBEB98] setWithObject:nameCopy];
     }
 
     else
@@ -36,17 +36,17 @@
   return v8;
 }
 
-- (BRCProblem)initWithProblem:(id)a3
+- (BRCProblem)initWithProblem:(id)problem
 {
-  v4 = a3;
+  problemCopy = problem;
   v10.receiver = self;
   v10.super_class = BRCProblem;
   v5 = [(BRCProblem *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v5->_type = *(v4 + 2);
-    v7 = [*(v4 + 2) copy];
+    v5->_type = *(problemCopy + 2);
+    v7 = [*(problemCopy + 2) copy];
     effectedRecordNames = v6->_effectedRecordNames;
     v6->_effectedRecordNames = v7;
   }
@@ -54,23 +54,23 @@
   return v6;
 }
 
-- (BRCProblem)initWithCoder:(id)a3
+- (BRCProblem)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = BRCProblem;
   v5 = [(BRCProblem *)&v13 init];
   if (v5)
   {
-    v5->_type = [v4 decodeInt32ForKey:@"type"];
+    v5->_type = [coderCopy decodeInt32ForKey:@"type"];
     v6 = MEMORY[0x277CBEB98];
     v14[0] = objc_opt_class();
     v14[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"recordNames"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"recordNames"];
     effectedRecordNames = v5->_effectedRecordNames;
     v5->_effectedRecordNames = v9;
   }
@@ -79,36 +79,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInt32:type forKey:@"type"];
-  [v5 encodeObject:self->_effectedRecordNames forKey:@"recordNames"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:type forKey:@"type"];
+  [coderCopy encodeObject:self->_effectedRecordNames forKey:@"recordNames"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithProblem:self];
 }
 
-- (void)mergeWithProblem:(id)a3
+- (void)mergeWithProblem:(id)problem
 {
-  v4 = a3;
-  if (self->_type != v4[2])
+  problemCopy = problem;
+  if (self->_type != problemCopy[2])
   {
     [BRCProblem mergeWithProblem:];
   }
 
   v5 = [(NSSet *)self->_effectedRecordNames count];
   v6 = [BRCUserDefaults defaultsForMangledID:0];
-  v7 = [v6 zoneHealthReportedRecordNamesCount];
+  zoneHealthReportedRecordNamesCount = [v6 zoneHealthReportedRecordNamesCount];
 
-  if (v5 < v7)
+  if (v5 < zoneHealthReportedRecordNamesCount)
   {
-    v8 = [(NSSet *)self->_effectedRecordNames setByAddingObjectsFromSet:*(v4 + 2)];
+    v8 = [(NSSet *)self->_effectedRecordNames setByAddingObjectsFromSet:*(problemCopy + 2)];
     effectedRecordNames = self->_effectedRecordNames;
     self->_effectedRecordNames = v8;
   }

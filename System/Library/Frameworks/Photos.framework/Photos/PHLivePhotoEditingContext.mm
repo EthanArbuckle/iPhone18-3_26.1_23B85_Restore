@@ -1,5 +1,5 @@
 @interface PHLivePhotoEditingContext
-+ (id)errorWithUnderlyingError:(id)a3;
++ (id)errorWithUnderlyingError:(id)error;
 - (CMTime)duration;
 - (CMTime)photoTime;
 - (PHLivePhotoEditingContext)initWithLivePhotoEditingInput:(PHContentEditingInput *)livePhotoInput;
@@ -18,17 +18,17 @@
   {
     if ([(PHContentEditingOutput *)v8 isLoopingLivePhoto])
     {
-      v11 = [(PHContentEditingOutput *)v8 renderURLWithExtensionForMediaType:1];
+      renderedContentURL = [(PHContentEditingOutput *)v8 renderURLWithExtensionForMediaType:1];
       [(PHContentEditingOutput *)v8 renderedContentURL];
     }
 
     else
     {
-      v11 = [(PHContentEditingOutput *)v8 renderedContentURL];
+      renderedContentURL = [(PHContentEditingOutput *)v8 renderedContentURL];
       [(PHContentEditingOutput *)v8 renderedVideoComplementContentURL];
     }
     v12 = ;
-    v13 = [MEMORY[0x1E69C06F8] destinationWithPhotoURL:v11 videoURL:v12];
+    v13 = [MEMORY[0x1E69C06F8] destinationWithPhotoURL:renderedContentURL videoURL:v12];
     editSession = self->_editSession;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -40,8 +40,8 @@
 
   else
   {
-    v11 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
-    (*(v10 + 2))(v10, 0, v11);
+    renderedContentURL = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:0];
+    (*(v10 + 2))(v10, 0, renderedContentURL);
   }
 }
 
@@ -136,14 +136,14 @@ void __97__PHLivePhotoEditingContext_prepareLivePhotoForPlaybackWithTargetSize_o
 - (PHLivePhotoEditingContext)initWithLivePhotoEditingInput:(PHContentEditingInput *)livePhotoInput
 {
   v4 = livePhotoInput;
-  v5 = [(PHContentEditingInput *)v4 livePhoto];
-  v6 = [v5 imageURL];
-  v7 = [v5 videoURL];
+  livePhoto = [(PHContentEditingInput *)v4 livePhoto];
+  imageURL = [livePhoto imageURL];
+  videoURL = [livePhoto videoURL];
   v16 = 0uLL;
   v17 = 0;
-  if (v5)
+  if (livePhoto)
   {
-    [v5 photoTime];
+    [livePhoto photoTime];
   }
 
   if ([(PHContentEditingInput *)v4 mediaSubtypes]== 8 && [(PHContentEditingInput *)v4 playbackStyle]== 5)
@@ -152,11 +152,11 @@ void __97__PHLivePhotoEditingContext_prepareLivePhotoForPlaybackWithTargetSize_o
     v17 = *(MEMORY[0x1E6960CC0] + 16);
   }
 
-  if (v5)
+  if (livePhoto)
   {
-    if (v6)
+    if (imageURL)
     {
-      if (v7)
+      if (videoURL)
       {
         if (BYTE12(v16))
         {
@@ -166,10 +166,10 @@ void __97__PHLivePhotoEditingContext_prepareLivePhotoForPlaybackWithTargetSize_o
           if (self)
           {
             v8 = objc_alloc(MEMORY[0x1E69C06F0]);
-            v9 = [(PHContentEditingInput *)v4 fullSizeImageOrientation];
+            fullSizeImageOrientation = [(PHContentEditingInput *)v4 fullSizeImageOrientation];
             v13 = v16;
             v14 = v17;
-            v10 = [v8 initWithPhotoURL:v6 videoURL:v7 photoTime:&v13 photoOrientation:v9];
+            v10 = [v8 initWithPhotoURL:imageURL videoURL:videoURL photoTime:&v13 photoOrientation:fullSizeImageOrientation];
             editSession = self->_editSession;
             self->_editSession = v10;
           }
@@ -181,18 +181,18 @@ void __97__PHLivePhotoEditingContext_prepareLivePhotoForPlaybackWithTargetSize_o
   return self;
 }
 
-+ (id)errorWithUnderlyingError:(id)a3
++ (id)errorWithUnderlyingError:(id)error
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  errorCopy = error;
+  v4 = errorCopy;
+  if (errorCopy)
   {
-    v5 = [v3 domain];
-    if ([v5 isEqualToString:*MEMORY[0x1E69C09C0]])
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x1E69C09C0]])
     {
-      v6 = [v4 code];
+      code = [v4 code];
 
-      if (v6 == 3)
+      if (code == 3)
       {
         v7 = 3072;
       }

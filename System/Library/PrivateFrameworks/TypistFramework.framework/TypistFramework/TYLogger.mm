@@ -1,41 +1,41 @@
 @interface TYLogger
-+ (id)openLogFile:(id)a3;
-+ (id)openLogFile:(id)a3 inDirectory:(id)a4;
++ (id)openLogFile:(id)file;
++ (id)openLogFile:(id)file inDirectory:(id)directory;
 + (void)closeLogFile;
 @end
 
 @implementation TYLogger
 
-+ (id)openLogFile:(id)a3 inDirectory:(id)a4
++ (id)openLogFile:(id)file inDirectory:(id)directory
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  directoryCopy = directory;
   v8 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v8 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss"];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v8 stringFromDate:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [v8 stringFromDate:date];
 
-  v11 = v7;
+  v11 = directoryCopy;
   v12 = v11;
   if (![v11 length])
   {
     v13 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
     v14 = [v13 objectAtIndex:0];
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = [v15 bundleIdentifier];
-    v12 = [v14 stringByAppendingPathComponent:v16];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v12 = [v14 stringByAppendingPathComponent:bundleIdentifier];
 
-    if ([v6 length])
+    if ([fileCopy length])
     {
-      v17 = [v12 stringByAppendingPathComponent:v6];
+      v17 = [v12 stringByAppendingPathComponent:fileCopy];
 
       v12 = v17;
     }
   }
 
-  if ([v6 length])
+  if ([fileCopy length])
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@_Console-%@.log", v6, v10];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@_Console-%@.log", fileCopy, v10];
   }
 
   else
@@ -45,45 +45,45 @@
   v18 = ;
   v19 = [v12 stringByAppendingPathComponent:v18];
 
-  v20 = [a1 openLogFile:v19];
+  v20 = [self openLogFile:v19];
 
   return v20;
 }
 
-+ (id)openLogFile:(id)a3
++ (id)openLogFile:(id)file
 {
-  v3 = a3;
-  if (!v3)
+  fileCopy = file;
+  if (!fileCopy)
   {
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:fileCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v14 = 0;
-    [v6 removeItemAtPath:v3 error:&v14];
+    [defaultManager2 removeItemAtPath:fileCopy error:&v14];
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [MEMORY[0x277CBEA90] data];
-  v9 = [v7 createFileAtPath:v3 contents:v8 attributes:0];
+  defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+  data = [MEMORY[0x277CBEA90] data];
+  v9 = [defaultManager3 createFileAtPath:fileCopy contents:data attributes:0];
 
   if (!v9)
   {
     goto LABEL_7;
   }
 
-  v10 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:v3];
+  v10 = [MEMORY[0x277CCA9F8] fileHandleForWritingAtPath:fileCopy];
   v11 = _logFileHandle;
   _logFileHandle = v10;
 
   if (_logFileHandle)
   {
-    v12 = v3;
+    v12 = fileCopy;
   }
 
   else

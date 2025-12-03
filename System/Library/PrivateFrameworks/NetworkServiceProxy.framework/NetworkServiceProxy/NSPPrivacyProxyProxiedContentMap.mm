@@ -1,22 +1,22 @@
 @interface NSPPrivacyProxyProxiedContentMap
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)proxiesAtIndex:(unint64_t)a3;
-- (void)addHostnames:(id)a3;
-- (void)addProcesses:(id)a3;
-- (void)addUrls:(id)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)proxiesAtIndex:(unint64_t)index;
+- (void)addHostnames:(id)hostnames;
+- (void)addProcesses:(id)processes;
+- (void)addUrls:(id)urls;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsPrivacyProxy:(BOOL)a3;
-- (void)setHasMatchExactHostnames:(BOOL)a3;
-- (void)setHasResolver:(BOOL)a3;
-- (void)setHasSupportsReverseProxying:(BOOL)a3;
-- (void)setHasSystemProcessOnly:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsPrivacyProxy:(BOOL)proxy;
+- (void)setHasMatchExactHostnames:(BOOL)hostnames;
+- (void)setHasResolver:(BOOL)resolver;
+- (void)setHasSupportsReverseProxying:(BOOL)proxying;
+- (void)setHasSystemProcessOnly:(BOOL)only;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyProxiedContentMap
@@ -29,61 +29,61 @@
   [(NSPPrivacyProxyProxiedContentMap *)&v3 dealloc];
 }
 
-- (unsigned)proxiesAtIndex:(unint64_t)a3
+- (unsigned)proxiesAtIndex:(unint64_t)index
 {
   p_proxies = &self->_proxies;
   count = self->_proxies.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_proxies->list[a3];
+  return p_proxies->list[index];
 }
 
-- (void)addHostnames:(id)a3
+- (void)addHostnames:(id)hostnames
 {
-  v4 = a3;
+  hostnamesCopy = hostnames;
   hostnames = self->_hostnames;
-  v8 = v4;
+  v8 = hostnamesCopy;
   if (!hostnames)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_hostnames;
     self->_hostnames = v6;
 
-    v4 = v8;
+    hostnamesCopy = v8;
     hostnames = self->_hostnames;
   }
 
-  [(NSMutableArray *)hostnames addObject:v4];
+  [(NSMutableArray *)hostnames addObject:hostnamesCopy];
 }
 
-- (void)addProcesses:(id)a3
+- (void)addProcesses:(id)processes
 {
-  v4 = a3;
+  processesCopy = processes;
   processes = self->_processes;
-  v8 = v4;
+  v8 = processesCopy;
   if (!processes)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_processes;
     self->_processes = v6;
 
-    v4 = v8;
+    processesCopy = v8;
     processes = self->_processes;
   }
 
-  [(NSMutableArray *)processes addObject:v4];
+  [(NSMutableArray *)processes addObject:processesCopy];
 }
 
-- (void)setHasSystemProcessOnly:(BOOL)a3
+- (void)setHasSystemProcessOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     v3 = 32;
   }
@@ -96,9 +96,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSupportsReverseProxying:(BOOL)a3
+- (void)setHasSupportsReverseProxying:(BOOL)proxying
 {
-  if (a3)
+  if (proxying)
   {
     v3 = 16;
   }
@@ -111,27 +111,27 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addUrls:(id)a3
+- (void)addUrls:(id)urls
 {
-  v4 = a3;
+  urlsCopy = urls;
   urls = self->_urls;
-  v8 = v4;
+  v8 = urlsCopy;
   if (!urls)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_urls;
     self->_urls = v6;
 
-    v4 = v8;
+    urlsCopy = v8;
     urls = self->_urls;
   }
 
-  [(NSMutableArray *)urls addObject:v4];
+  [(NSMutableArray *)urls addObject:urlsCopy];
 }
 
-- (void)setHasResolver:(BOOL)a3
+- (void)setHasResolver:(BOOL)resolver
 {
-  if (a3)
+  if (resolver)
   {
     v3 = 2;
   }
@@ -144,9 +144,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasMatchExactHostnames:(BOOL)a3
+- (void)setHasMatchExactHostnames:(BOOL)hostnames
 {
-  if (a3)
+  if (hostnames)
   {
     v3 = 8;
   }
@@ -159,9 +159,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsPrivacyProxy:(BOOL)a3
+- (void)setHasIsPrivacyProxy:(BOOL)proxy
 {
-  if (a3)
+  if (proxy)
   {
     v3 = 4;
   }
@@ -180,44 +180,44 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyProxiedContentMap;
   v4 = [(NSPPrivacyProxyProxiedContentMap *)&v8 description];
-  v5 = [(NSPPrivacyProxyProxiedContentMap *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyProxiedContentMap *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithBool:self->_enabled];
-  [v3 setObject:v4 forKey:@"enabled"];
+  [dictionary setObject:v4 forKey:@"enabled"];
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   v6 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v6 forKey:@"proxies"];
+  [dictionary setObject:v6 forKey:@"proxies"];
 
   hostnames = self->_hostnames;
   if (hostnames)
   {
-    [v3 setObject:hostnames forKey:@"hostnames"];
+    [dictionary setObject:hostnames forKey:@"hostnames"];
   }
 
   processes = self->_processes;
   if (processes)
   {
-    [v3 setObject:processes forKey:@"processes"];
+    [dictionary setObject:processes forKey:@"processes"];
   }
 
   has = self->_has;
   if ((has & 0x20) != 0)
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:self->_systemProcessOnly];
-    [v3 setObject:v15 forKey:@"systemProcessOnly"];
+    [dictionary setObject:v15 forKey:@"systemProcessOnly"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -238,27 +238,27 @@ LABEL_9:
   }
 
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_percentEnabled];
-  [v3 setObject:v16 forKey:@"percentEnabled"];
+  [dictionary setObject:v16 forKey:@"percentEnabled"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_10:
     v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsReverseProxying];
-    [v3 setObject:v10 forKey:@"supportsReverseProxying"];
+    [dictionary setObject:v10 forKey:@"supportsReverseProxying"];
   }
 
 LABEL_11:
   urls = self->_urls;
   if (urls)
   {
-    [v3 setObject:urls forKey:@"urls"];
+    [dictionary setObject:urls forKey:@"urls"];
   }
 
   v12 = self->_has;
   if ((v12 & 2) != 0)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_resolver];
-    [v3 setObject:v17 forKey:@"resolver"];
+    [dictionary setObject:v17 forKey:@"resolver"];
 
     v12 = self->_has;
     if ((v12 & 8) == 0)
@@ -279,24 +279,24 @@ LABEL_15:
   }
 
   v18 = [MEMORY[0x1E696AD98] numberWithBool:self->_matchExactHostnames];
-  [v3 setObject:v18 forKey:@"matchExactHostnames"];
+  [dictionary setObject:v18 forKey:@"matchExactHostnames"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_16:
     v13 = [MEMORY[0x1E696AD98] numberWithBool:self->_isPrivacyProxy];
-    [v3 setObject:v13 forKey:@"isPrivacyProxy"];
+    [dictionary setObject:v13 forKey:@"isPrivacyProxy"];
   }
 
 LABEL_17:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   enabled = self->_enabled;
   PBDataWriterWriteBOOLField();
   if (!self->_identifier)
@@ -478,19 +478,19 @@ LABEL_34:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[80] = self->_enabled;
-  v22 = v4;
-  [v4 setIdentifier:self->_identifier];
+  toCopy = to;
+  toCopy[80] = self->_enabled;
+  v22 = toCopy;
+  [toCopy setIdentifier:self->_identifier];
   if ([(NSPPrivacyProxyProxiedContentMap *)self proxiesCount])
   {
     [v22 clearProxies];
-    v5 = [(NSPPrivacyProxyProxiedContentMap *)self proxiesCount];
-    if (v5)
+    proxiesCount = [(NSPPrivacyProxyProxiedContentMap *)self proxiesCount];
+    if (proxiesCount)
     {
-      v6 = v5;
+      v6 = proxiesCount;
       for (i = 0; i != v6; ++i)
       {
         [v22 addProxies:{-[NSPPrivacyProxyProxiedContentMap proxiesAtIndex:](self, "proxiesAtIndex:", i)}];
@@ -501,10 +501,10 @@ LABEL_34:
   if ([(NSPPrivacyProxyProxiedContentMap *)self hostnamesCount])
   {
     [v22 clearHostnames];
-    v8 = [(NSPPrivacyProxyProxiedContentMap *)self hostnamesCount];
-    if (v8)
+    hostnamesCount = [(NSPPrivacyProxyProxiedContentMap *)self hostnamesCount];
+    if (hostnamesCount)
     {
-      v9 = v8;
+      v9 = hostnamesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NSPPrivacyProxyProxiedContentMap *)self hostnamesAtIndex:j];
@@ -516,10 +516,10 @@ LABEL_34:
   if ([(NSPPrivacyProxyProxiedContentMap *)self processesCount])
   {
     [v22 clearProcesses];
-    v12 = [(NSPPrivacyProxyProxiedContentMap *)self processesCount];
-    if (v12)
+    processesCount = [(NSPPrivacyProxyProxiedContentMap *)self processesCount];
+    if (processesCount)
     {
-      v13 = v12;
+      v13 = processesCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(NSPPrivacyProxyProxiedContentMap *)self processesAtIndex:k];
@@ -567,10 +567,10 @@ LABEL_17:
   if ([(NSPPrivacyProxyProxiedContentMap *)self urlsCount])
   {
     [v22 clearUrls];
-    v17 = [(NSPPrivacyProxyProxiedContentMap *)self urlsCount];
-    if (v17)
+    urlsCount = [(NSPPrivacyProxyProxiedContentMap *)self urlsCount];
+    if (urlsCount)
     {
-      v18 = v17;
+      v18 = urlsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(NSPPrivacyProxyProxiedContentMap *)self urlsAtIndex:m];
@@ -614,12 +614,12 @@ LABEL_24:
 LABEL_25:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 80) = self->_enabled;
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
@@ -643,7 +643,7 @@ LABEL_25:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v38 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v38 + 1) + 8 * i) copyWithZone:zone];
         [v5 addHostnames:v13];
       }
 
@@ -672,7 +672,7 @@ LABEL_25:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v34 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v34 + 1) + 8 * j) copyWithZone:zone];
         [v5 addProcesses:v19];
       }
 
@@ -734,7 +734,7 @@ LABEL_19:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v30 + 1) + 8 * k) copyWithZone:{a3, v30}];
+        v26 = [*(*(&v30 + 1) + 8 * k) copyWithZone:{zone, v30}];
         [v5 addUrls:v26];
       }
 
@@ -784,30 +784,30 @@ LABEL_30:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_50;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(equalCopy + 80);
   if (self->_enabled)
   {
-    if ((*(v4 + 80) & 1) == 0)
+    if ((*(equalCopy + 80) & 1) == 0)
     {
       goto LABEL_50;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_50;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5) && ![(NSString *)identifier isEqual:?])
+  if (identifier | *(equalCopy + 5) && ![(NSString *)identifier isEqual:?])
   {
     goto LABEL_50;
   }
@@ -818,7 +818,7 @@ LABEL_30:
   }
 
   hostnames = self->_hostnames;
-  if (hostnames | *(v4 + 4))
+  if (hostnames | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)hostnames isEqual:?])
     {
@@ -827,7 +827,7 @@ LABEL_30:
   }
 
   processes = self->_processes;
-  if (processes | *(v4 + 7))
+  if (processes | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)processes isEqual:?])
     {
@@ -836,76 +836,76 @@ LABEL_30:
   }
 
   has = self->_has;
-  v10 = *(v4 + 88);
+  v10 = *(equalCopy + 88);
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 88) & 0x20) == 0)
+    if ((*(equalCopy + 88) & 0x20) == 0)
     {
       goto LABEL_50;
     }
 
-    v11 = *(v4 + 84);
+    v11 = *(equalCopy + 84);
     if (self->_systemProcessOnly)
     {
-      if ((*(v4 + 84) & 1) == 0)
+      if ((*(equalCopy + 84) & 1) == 0)
       {
         goto LABEL_50;
       }
     }
 
-    else if (*(v4 + 84))
+    else if (*(equalCopy + 84))
     {
       goto LABEL_50;
     }
   }
 
-  else if ((*(v4 + 88) & 0x20) != 0)
+  else if ((*(equalCopy + 88) & 0x20) != 0)
   {
     goto LABEL_50;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_percentEnabled != *(v4 + 12))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_percentEnabled != *(equalCopy + 12))
     {
       goto LABEL_50;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_50;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 88) & 0x10) == 0)
+    if ((*(equalCopy + 88) & 0x10) == 0)
     {
       goto LABEL_50;
     }
 
-    v13 = *(v4 + 83);
+    v13 = *(equalCopy + 83);
     if (self->_supportsReverseProxying)
     {
-      if ((*(v4 + 83) & 1) == 0)
+      if ((*(equalCopy + 83) & 1) == 0)
       {
         goto LABEL_50;
       }
     }
 
-    else if (*(v4 + 83))
+    else if (*(equalCopy + 83))
     {
       goto LABEL_50;
     }
   }
 
-  else if ((*(v4 + 88) & 0x10) != 0)
+  else if ((*(equalCopy + 88) & 0x10) != 0)
   {
     goto LABEL_50;
   }
 
   urls = self->_urls;
-  if (urls | *(v4 + 9))
+  if (urls | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)urls isEqual:?])
     {
@@ -913,12 +913,12 @@ LABEL_30:
     }
 
     has = self->_has;
-    v10 = *(v4 + 88);
+    v10 = *(equalCopy + 88);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_resolver != *(v4 + 16))
+    if ((v10 & 2) == 0 || self->_resolver != *(equalCopy + 16))
     {
       goto LABEL_50;
     }
@@ -936,16 +936,16 @@ LABEL_30:
       goto LABEL_50;
     }
 
-    v16 = *(v4 + 82);
+    v16 = *(equalCopy + 82);
     if (self->_matchExactHostnames)
     {
-      if ((*(v4 + 82) & 1) == 0)
+      if ((*(equalCopy + 82) & 1) == 0)
       {
         goto LABEL_50;
       }
     }
 
-    else if (*(v4 + 82))
+    else if (*(equalCopy + 82))
     {
       goto LABEL_50;
     }
@@ -963,13 +963,13 @@ LABEL_30:
     {
       if (self->_isPrivacyProxy)
       {
-        if (*(v4 + 81))
+        if (*(equalCopy + 81))
         {
           goto LABEL_58;
         }
       }
 
-      else if (!*(v4 + 81))
+      else if (!*(equalCopy + 81))
       {
 LABEL_58:
         v14 = 1;
@@ -1068,23 +1068,23 @@ LABEL_11:
   return v3 ^ v4 ^ v5 ^ v6 ^ (2654435761 * enabled) ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  self->_enabled = *(v4 + 80);
-  if (*(v4 + 5))
+  fromCopy = from;
+  self->_enabled = *(fromCopy + 80);
+  if (*(fromCopy + 5))
   {
     [(NSPPrivacyProxyProxiedContentMap *)self setIdentifier:?];
   }
 
-  v5 = [v4 proxiesCount];
-  if (v5)
+  proxiesCount = [fromCopy proxiesCount];
+  if (proxiesCount)
   {
-    v6 = v5;
+    v6 = proxiesCount;
     for (i = 0; i != v6; ++i)
     {
-      -[NSPPrivacyProxyProxiedContentMap addProxies:](self, "addProxies:", [v4 proxiesAtIndex:i]);
+      -[NSPPrivacyProxyProxiedContentMap addProxies:](self, "addProxies:", [fromCopy proxiesAtIndex:i]);
     }
   }
 
@@ -1092,7 +1092,7 @@ LABEL_11:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   v9 = [v8 countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v9)
   {
@@ -1120,7 +1120,7 @@ LABEL_11:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v13 = *(v4 + 7);
+  v13 = *(fromCopy + 7);
   v14 = [v13 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v14)
   {
@@ -1144,12 +1144,12 @@ LABEL_11:
     while (v15);
   }
 
-  v18 = *(v4 + 88);
+  v18 = *(fromCopy + 88);
   if ((v18 & 0x20) != 0)
   {
-    self->_systemProcessOnly = *(v4 + 84);
+    self->_systemProcessOnly = *(fromCopy + 84);
     *&self->_has |= 0x20u;
-    v18 = *(v4 + 88);
+    v18 = *(fromCopy + 88);
     if ((v18 & 1) == 0)
     {
 LABEL_22:
@@ -1162,17 +1162,17 @@ LABEL_22:
     }
   }
 
-  else if ((*(v4 + 88) & 1) == 0)
+  else if ((*(fromCopy + 88) & 1) == 0)
   {
     goto LABEL_22;
   }
 
-  self->_percentEnabled = *(v4 + 12);
+  self->_percentEnabled = *(fromCopy + 12);
   *&self->_has |= 1u;
-  if ((*(v4 + 88) & 0x10) != 0)
+  if ((*(fromCopy + 88) & 0x10) != 0)
   {
 LABEL_23:
-    self->_supportsReverseProxying = *(v4 + 83);
+    self->_supportsReverseProxying = *(fromCopy + 83);
     *&self->_has |= 0x10u;
   }
 
@@ -1181,7 +1181,7 @@ LABEL_24:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = *(v4 + 9);
+  v19 = *(fromCopy + 9);
   v20 = [v19 countByEnumeratingWithState:&v26 objects:v38 count:16];
   if (v20)
   {
@@ -1205,18 +1205,18 @@ LABEL_24:
     while (v21);
   }
 
-  v24 = *(v4 + 88);
+  v24 = *(fromCopy + 88);
   if ((v24 & 2) == 0)
   {
-    if ((*(v4 + 88) & 8) == 0)
+    if ((*(fromCopy + 88) & 8) == 0)
     {
       goto LABEL_33;
     }
 
 LABEL_40:
-    self->_matchExactHostnames = *(v4 + 82);
+    self->_matchExactHostnames = *(fromCopy + 82);
     *&self->_has |= 8u;
-    if ((*(v4 + 88) & 4) == 0)
+    if ((*(fromCopy + 88) & 4) == 0)
     {
       goto LABEL_35;
     }
@@ -1224,9 +1224,9 @@ LABEL_40:
     goto LABEL_34;
   }
 
-  self->_resolver = *(v4 + 16);
+  self->_resolver = *(fromCopy + 16);
   *&self->_has |= 2u;
-  v24 = *(v4 + 88);
+  v24 = *(fromCopy + 88);
   if ((v24 & 8) != 0)
   {
     goto LABEL_40;
@@ -1236,7 +1236,7 @@ LABEL_33:
   if ((v24 & 4) != 0)
   {
 LABEL_34:
-    self->_isPrivacyProxy = *(v4 + 81);
+    self->_isPrivacyProxy = *(fromCopy + 81);
     *&self->_has |= 4u;
   }
 

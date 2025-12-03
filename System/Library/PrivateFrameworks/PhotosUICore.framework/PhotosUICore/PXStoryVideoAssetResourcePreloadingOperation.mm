@@ -1,10 +1,10 @@
 @interface PXStoryVideoAssetResourcePreloadingOperation
 - ($E59C7DEBCD57E98EE3F0104B12BEB13C)downloadTimeRange;
-- (PXStoryVideoAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)a3 mediaProvider:(id)a4;
-- (PXStoryVideoAssetResourcePreloadingOperation)initWithVideoAssetResource:(id)a3 mediaProvider:(id)a4 downloadTimeRange:(id *)a5 videoSessionManager:(id)a6 isExporting:(BOOL)a7 isInline:(BOOL)a8 limitVideoDownloadQuality:(BOOL)a9;
+- (PXStoryVideoAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)resource mediaProvider:(id)provider;
+- (PXStoryVideoAssetResourcePreloadingOperation)initWithVideoAssetResource:(id)resource mediaProvider:(id)provider downloadTimeRange:(id *)range videoSessionManager:(id)manager isExporting:(BOOL)exporting isInline:(BOOL)inline limitVideoDownloadQuality:(BOOL)quality;
 - (id)diagnosticDescription;
 - (void)cancel;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)px_start;
 @end
 
@@ -19,40 +19,40 @@
   return self;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (VideoContentProviderObservationContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (VideoContentProviderObservationContext == context)
   {
-    v14 = v8;
-    if ((v6 & 2) != 0)
+    v14 = observableCopy;
+    if ((changeCopy & 2) != 0)
     {
-      v9 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self progressHandler];
-      if (v9)
+      progressHandler = [(PXStoryDisplayAssetResourcePreloadingOperation *)self progressHandler];
+      if (progressHandler)
       {
-        v10 = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
-        [v10 loadingProgress];
-        v9[2](v9, 0);
+        videoContentProvider = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
+        [videoContentProvider loadingProgress];
+        progressHandler[2](progressHandler, 0);
       }
 
-      v8 = v14;
+      observableCopy = v14;
     }
 
-    if (v6)
+    if (changeCopy)
     {
-      v11 = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
-      v12 = [v11 loadingResult];
+      videoContentProvider2 = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
+      loadingResult = [videoContentProvider2 loadingResult];
 
-      if (v12)
+      if (loadingResult)
       {
-        v13 = [v12 error];
-        [(PXStoryDisplayAssetResourcePreloadingOperation *)self setError:v13];
+        error = [loadingResult error];
+        [(PXStoryDisplayAssetResourcePreloadingOperation *)self setError:error];
 
         [(PXStoryDisplayAssetResourcePreloadingOperation *)self px_finishIfPossible];
       }
 
-      v8 = v14;
+      observableCopy = v14;
     }
   }
 }
@@ -62,11 +62,11 @@
   v5.receiver = self;
   v5.super_class = PXStoryVideoAssetResourcePreloadingOperation;
   [(PXAsyncOperation *)&v5 cancel];
-  v3 = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
-  [v3 unregisterChangeObserver:self context:VideoContentProviderObservationContext];
+  videoContentProvider = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
+  [videoContentProvider unregisterChangeObserver:self context:VideoContentProviderObservationContext];
 
-  v4 = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
-  [v4 cancelLoading];
+  videoContentProvider2 = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
+  [videoContentProvider2 cancelLoading];
 }
 
 - (void)px_start
@@ -78,15 +78,15 @@
   if ([(PXStoryVideoAssetResourcePreloadingOperation *)self isExporting])
   {
     v4 = +[PXStorySettings sharedInstance];
-    v5 = [v4 exportVideoQuality];
+    exportVideoQuality = [v4 exportVideoQuality];
 
     [(PXStoryVideoAssetResourcePreloadingOperation *)self downloadTimeRange];
-    [(PXVideoSessionManagerDisplayAssetOptions *)v3 addContentDeliveryStrategyWithDeliveryQuality:v5 segmentTimeRange:&v22 streamingAllowed:0];
+    [(PXVideoSessionManagerDisplayAssetOptions *)v3 addContentDeliveryStrategyWithDeliveryQuality:exportVideoQuality segmentTimeRange:&v22 streamingAllowed:0];
     v6 = *(MEMORY[0x1E6960C98] + 16);
     v22 = *MEMORY[0x1E6960C98];
     v23 = v6;
     v24 = *(MEMORY[0x1E6960C98] + 32);
-    [(PXVideoSessionManagerDisplayAssetOptions *)v3 addContentDeliveryStrategyWithDeliveryQuality:v5 segmentTimeRange:&v22 streamingAllowed:0];
+    [(PXVideoSessionManagerDisplayAssetOptions *)v3 addContentDeliveryStrategyWithDeliveryQuality:exportVideoQuality segmentTimeRange:&v22 streamingAllowed:0];
   }
 
   else
@@ -95,24 +95,24 @@
     [(PXVideoSessionManagerDisplayAssetOptions *)v3 addContentDeliveryStrategyWithDeliveryQuality:2 segmentTimeRange:&v22 streamingAllowed:0 networkAccessAllowed:0];
     if ([(PXStoryVideoAssetResourcePreloadingOperation *)self limitVideoDownloadQuality])
     {
-      v7 = 3;
+      videoQuality = 3;
     }
 
     else
     {
       v8 = +[PXStorySettings sharedInstance];
-      v7 = [v8 videoQuality];
+      videoQuality = [v8 videoQuality];
     }
 
-    v9 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self displayAsset];
+    displayAsset = [(PXStoryDisplayAssetResourcePreloadingOperation *)self displayAsset];
     if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
     {
-      v10 = v9;
+      v10 = displayAsset;
 
       if (v10 && [v10 px_isSharedAlbumAsset])
       {
         [(PXStoryVideoAssetResourcePreloadingOperation *)self downloadTimeRange];
-        [(PXVideoSessionManagerDisplayAssetOptions *)v3 addContentDeliveryStrategyWithDeliveryQuality:v7 segmentTimeRange:&v22 streamingAllowed:1];
+        [(PXVideoSessionManagerDisplayAssetOptions *)v3 addContentDeliveryStrategyWithDeliveryQuality:videoQuality segmentTimeRange:&v22 streamingAllowed:1];
       }
     }
 
@@ -123,7 +123,7 @@
     }
 
     [(PXStoryVideoAssetResourcePreloadingOperation *)self downloadTimeRange];
-    [(PXVideoSessionManagerDisplayAssetOptions *)v3 addContentDeliveryStrategyWithDeliveryQuality:v7 segmentTimeRange:&v22 streamingAllowed:0];
+    [(PXVideoSessionManagerDisplayAssetOptions *)v3 addContentDeliveryStrategyWithDeliveryQuality:videoQuality segmentTimeRange:&v22 streamingAllowed:0];
     v11 = *(MEMORY[0x1E6960C98] + 16);
     v22 = *MEMORY[0x1E6960C98];
     v23 = v11;
@@ -132,9 +132,9 @@
   }
 
   v12 = +[PXStorySettings sharedInstance];
-  v13 = [v12 videoInlineStabilization];
+  videoInlineStabilization = [v12 videoInlineStabilization];
 
-  if (v13 && (-[PXStoryDisplayAssetResourcePreloadingOperation displayAsset](self, "displayAsset"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 playbackStyle], v14, v15 == 3))
+  if (videoInlineStabilization && (-[PXStoryDisplayAssetResourcePreloadingOperation displayAsset](self, "displayAsset"), v14 = objc_claimAutoreleasedReturnValue(), v15 = [v14 playbackStyle], v14, v15 == 3))
   {
     [(PXVideoSessionManagerDisplayAssetOptions *)v3 setShouldStabilizeLivePhotosIfPossible:1];
     v16 = 0;
@@ -145,10 +145,10 @@
     v16 = 1;
   }
 
-  v17 = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoSessionManager];
-  v18 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self displayAsset];
-  v19 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self mediaProvider];
-  v20 = [v17 contentProviderForAsset:v18 withOptions:v3 mediaProvider:v19 requestURLOnly:v16];
+  videoSessionManager = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoSessionManager];
+  displayAsset2 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self displayAsset];
+  mediaProvider = [(PXStoryDisplayAssetResourcePreloadingOperation *)self mediaProvider];
+  v20 = [videoSessionManager contentProviderForAsset:displayAsset2 withOptions:v3 mediaProvider:mediaProvider requestURLOnly:v16];
 
   [(PXStoryVideoAssetResourcePreloadingOperation *)self setVideoContentProvider:v20];
   [v20 registerChangeObserver:self context:VideoContentProviderObservationContext];
@@ -168,45 +168,45 @@
 - (id)diagnosticDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PXStoryDisplayAssetResourcePreloadingOperation *)self displayAsset];
-  v5 = [v4 uuid];
+  displayAsset = [(PXStoryDisplayAssetResourcePreloadingOperation *)self displayAsset];
+  uuid = [displayAsset uuid];
   [(PXStoryVideoAssetResourcePreloadingOperation *)self downloadTimeRange];
   v6 = PXCMTimeRangeDescription(v11);
-  v7 = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
-  [v7 loadingProgress];
-  v9 = [v3 stringWithFormat:@"Video %@, time range %@ – %.0f%%", v5, v6, v8 * 100.0];
+  videoContentProvider = [(PXStoryVideoAssetResourcePreloadingOperation *)self videoContentProvider];
+  [videoContentProvider loadingProgress];
+  v9 = [v3 stringWithFormat:@"Video %@, time range %@ – %.0f%%", uuid, v6, v8 * 100.0];
 
   return v9;
 }
 
-- (PXStoryVideoAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)a3 mediaProvider:(id)a4
+- (PXStoryVideoAssetResourcePreloadingOperation)initWithDisplayAssetResource:(id)resource mediaProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXStoryVideoAssetResourcePreloadingOperation.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXStoryVideoAssetResourcePreloadingOperation initWithDisplayAssetResource:mediaProvider:]"}];
+  resourceCopy = resource;
+  providerCopy = provider;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryVideoAssetResourcePreloadingOperation.m" lineNumber:51 description:{@"%s is not available as initializer", "-[PXStoryVideoAssetResourcePreloadingOperation initWithDisplayAssetResource:mediaProvider:]"}];
 
   abort();
 }
 
-- (PXStoryVideoAssetResourcePreloadingOperation)initWithVideoAssetResource:(id)a3 mediaProvider:(id)a4 downloadTimeRange:(id *)a5 videoSessionManager:(id)a6 isExporting:(BOOL)a7 isInline:(BOOL)a8 limitVideoDownloadQuality:(BOOL)a9
+- (PXStoryVideoAssetResourcePreloadingOperation)initWithVideoAssetResource:(id)resource mediaProvider:(id)provider downloadTimeRange:(id *)range videoSessionManager:(id)manager isExporting:(BOOL)exporting isInline:(BOOL)inline limitVideoDownloadQuality:(BOOL)quality
 {
-  v16 = a6;
+  managerCopy = manager;
   v22.receiver = self;
   v22.super_class = PXStoryVideoAssetResourcePreloadingOperation;
-  v17 = [(PXStoryDisplayAssetResourcePreloadingOperation *)&v22 initWithDisplayAssetResource:a3 mediaProvider:a4];
+  v17 = [(PXStoryDisplayAssetResourcePreloadingOperation *)&v22 initWithDisplayAssetResource:resource mediaProvider:provider];
   v18 = v17;
   if (v17)
   {
-    v20 = *&a5->var0.var3;
-    v19 = *&a5->var1.var1;
-    *(v17 + 328) = *&a5->var0.var0;
+    v20 = *&range->var0.var3;
+    v19 = *&range->var1.var1;
+    *(v17 + 328) = *&range->var0.var0;
     *(v17 + 344) = v20;
     *(v17 + 360) = v19;
-    objc_storeStrong(v17 + 39, a6);
-    v18->_isExporting = a7;
-    v18->_isInline = a8;
-    v18->_limitVideoDownloadQuality = a9;
+    objc_storeStrong(v17 + 39, manager);
+    v18->_isExporting = exporting;
+    v18->_isInline = inline;
+    v18->_limitVideoDownloadQuality = quality;
   }
 
   return v18;

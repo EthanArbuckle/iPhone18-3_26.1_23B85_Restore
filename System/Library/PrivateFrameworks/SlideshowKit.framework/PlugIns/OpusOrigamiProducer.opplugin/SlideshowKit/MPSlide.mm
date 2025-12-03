@@ -1,17 +1,17 @@
 @interface MPSlide
 + (id)slide;
-+ (id)slideWithPath:(id)a3;
++ (id)slideWithPath:(id)path;
 - (BOOL)canZoom;
-- (BOOL)determineShowTime:(double *)a3 showDuration:(double *)a4;
-- (BOOL)hasAnimationPathForKey:(id)a3;
+- (BOOL)determineShowTime:(double *)time showDuration:(double *)duration;
+- (BOOL)hasAnimationPathForKey:(id)key;
 - (BOOL)hasMovie;
-- (BOOL)isPanoramaInDocument:(id)a3;
+- (BOOL)isPanoramaInDocument:(id)document;
 - (BOOL)needsStyleUpdateOnSlideChange;
 - (BOOL)needsTimingUpdateOnSlideChange;
 - (CGPoint)center;
 - (MPSlide)init;
-- (MPSlide)initWithLayerGroup:(id)a3;
-- (MPSlide)initWithPath:(id)a3;
+- (MPSlide)initWithLayerGroup:(id)group;
+- (MPSlide)initWithPath:(id)path;
 - (NSString)absolutePath;
 - (NSString)sizingMode;
 - (double)audioVolume;
@@ -23,73 +23,73 @@
 - (double)showTime;
 - (double)startTime;
 - (id)action;
-- (id)animationPathForKey:(id)a3;
+- (id)animationPathForKey:(id)key;
 - (id)animationPaths;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fullDebugLog;
-- (id)keyframedAnimationPathForKey:(id)a3;
+- (id)keyframedAnimationPathForKey:(id)key;
 - (id)nearestLayer;
 - (id)parentSubtitleEffect;
 - (id)scriptingAnimations;
 - (id)scriptingFrame;
-- (id)userInfoAttributeForKey:(id)a3;
+- (id)userInfoAttributeForKey:(id)key;
 - (int64_t)index;
 - (int64_t)liveIndex;
-- (void)addFilter:(id)a3;
-- (void)addFilters:(id)a3;
+- (void)addFilter:(id)filter;
+- (void)addFilters:(id)filters;
 - (void)cleanup;
-- (void)copyAnimationPaths:(id)a3;
-- (void)copyFilters:(id)a3;
-- (void)copyFrame:(id)a3;
-- (void)copyLayerGroup:(id)a3;
-- (void)copyVars:(id)a3;
+- (void)copyAnimationPaths:(id)paths;
+- (void)copyFilters:(id)filters;
+- (void)copyFrame:(id)frame;
+- (void)copyLayerGroup:(id)group;
+- (void)copyVars:(id)vars;
 - (void)dealloc;
 - (void)duplicateAnimationPaths;
-- (void)insertFilters:(id)a3 atIndex:(int64_t)a4;
-- (void)insertObject:(id)a3 inFilterAtIndex:(int64_t)a4;
-- (void)moveFiltersFromIndices:(id)a3 toIndex:(int64_t)a4;
+- (void)insertFilters:(id)filters atIndex:(int64_t)index;
+- (void)insertObject:(id)object inFilterAtIndex:(int64_t)index;
+- (void)moveFiltersFromIndices:(id)indices toIndex:(int64_t)index;
 - (void)removeAllFilters;
-- (void)removeAnimationPathForKey:(id)a3;
-- (void)removeFiltersAtIndices:(id)a3;
-- (void)removeObjectFromFilterAtIndex:(int64_t)a3;
-- (void)replaceObjectInFilterAtIndex:(int64_t)a3 withObject:(id)a4;
-- (void)setAbsolutePath:(id)a3;
-- (void)setAnimationPath:(id)a3 forKey:(id)a4;
-- (void)setAudioDuckInDuration:(double)a3;
-- (void)setAudioDuckLevel:(double)a3;
-- (void)setAudioDuckOutDuration:(double)a3;
-- (void)setAudioFadeInDuration:(double)a3;
-- (void)setAudioFadeOutDuration:(double)a3;
-- (void)setAudioVolume:(double)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setDuration:(double)a3;
-- (void)setFrame:(id)a3;
-- (void)setLayerGroup:(id)a3;
-- (void)setParent:(id)a3;
-- (void)setPath:(id)a3;
-- (void)setRotation:(double)a3;
-- (void)setScale:(double)a3;
-- (void)setScriptingAnimations:(id)a3;
-- (void)setScriptingFrame:(id)a3;
-- (void)setSizingMode:(id)a3;
-- (void)setSlide:(id)a3;
-- (void)setStartTime:(double)a3;
-- (void)setUserInfoAttribute:(id)a3 forKey:(id)a4;
+- (void)removeAnimationPathForKey:(id)key;
+- (void)removeFiltersAtIndices:(id)indices;
+- (void)removeObjectFromFilterAtIndex:(int64_t)index;
+- (void)replaceObjectInFilterAtIndex:(int64_t)index withObject:(id)object;
+- (void)setAbsolutePath:(id)path;
+- (void)setAnimationPath:(id)path forKey:(id)key;
+- (void)setAudioDuckInDuration:(double)duration;
+- (void)setAudioDuckLevel:(double)level;
+- (void)setAudioDuckOutDuration:(double)duration;
+- (void)setAudioFadeInDuration:(double)duration;
+- (void)setAudioFadeOutDuration:(double)duration;
+- (void)setAudioVolume:(double)volume;
+- (void)setCenter:(CGPoint)center;
+- (void)setDuration:(double)duration;
+- (void)setFrame:(id)frame;
+- (void)setLayerGroup:(id)group;
+- (void)setParent:(id)parent;
+- (void)setPath:(id)path;
+- (void)setRotation:(double)rotation;
+- (void)setScale:(double)scale;
+- (void)setScriptingAnimations:(id)animations;
+- (void)setScriptingFrame:(id)frame;
+- (void)setSizingMode:(id)mode;
+- (void)setSlide:(id)slide;
+- (void)setStartTime:(double)time;
+- (void)setUserInfoAttribute:(id)attribute forKey:(id)key;
 @end
 
 @implementation MPSlide
 
 + (id)slide
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)slideWithPath:(id)a3
++ (id)slideWithPath:(id)path
 {
-  v3 = [[a1 alloc] initWithPath:a3];
+  v3 = [[self alloc] initWithPath:path];
 
   return v3;
 }
@@ -124,27 +124,27 @@
   return result;
 }
 
-- (MPSlide)initWithPath:(id)a3
+- (MPSlide)initWithPath:(id)path
 {
   v4 = [(MPSlide *)self init];
   v5 = v4;
-  if (a3 && v4)
+  if (path && v4)
   {
-    v4->_path = [a3 copy];
+    v4->_path = [path copy];
   }
 
   return v5;
 }
 
-- (MPSlide)initWithLayerGroup:(id)a3
+- (MPSlide)initWithLayerGroup:(id)group
 {
   v4 = [(MPSlide *)self init];
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (group)
     {
-      layerGroup = a3;
+      layerGroup = group;
       v5->_layerGroup = layerGroup;
     }
 
@@ -159,9 +159,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 copyVars:self];
   if (self->_path)
   {
@@ -188,7 +188,7 @@
     filters = [(NSMutableArray *)filters count];
   }
 
-  v5 = [(NSString *)v3 stringByAppendingFormat:@"\t                  Filter Count: %d\n", filters];
+  filters = [(NSString *)v3 stringByAppendingFormat:@"\t                  Filter Count: %d\n", filters];
   if ([(MPSlide *)self frame])
   {
     v6 = @"YES";
@@ -199,7 +199,7 @@
     v6 = @"NO";
   }
 
-  v7 = [(NSString *)v5 stringByAppendingFormat:@"\t                     Has Frame: %@\n", v6];
+  v7 = [(NSString *)filters stringByAppendingFormat:@"\t                     Has Frame: %@\n", v6];
   if (self->_slide)
   {
     v8 = @"YES";
@@ -233,7 +233,7 @@
   [(MPSlide *)&v3 dealloc];
 }
 
-- (void)setFrame:(id)a3
+- (void)setFrame:(id)frame
 {
   frame = self->_frame;
   if (frame)
@@ -242,21 +242,21 @@
     self->_frame = 0;
   }
 
-  v6 = a3;
-  self->_frame = v6;
-  [(MPFrame *)v6 setParentSlide:self];
+  frameCopy = frame;
+  self->_frame = frameCopy;
+  [(MPFrame *)frameCopy setParentSlide:self];
   if (self->_slide)
   {
-    v7 = [a3 frameID];
+    frameID = [frame frameID];
     slide = self->_slide;
 
-    [(MCSlide *)slide setFrameID:v7];
+    [(MCSlide *)slide setFrameID:frameID];
   }
 }
 
-- (void)setPath:(id)a3
+- (void)setPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     [(MPSlide *)self setLayerGroup:0];
   }
@@ -273,9 +273,9 @@
     self->_path = 0;
   }
 
-  if (a3)
+  if (path)
   {
-    self->_path = [a3 copy];
+    self->_path = [path copy];
   }
 
   v6 = -1.0;
@@ -322,25 +322,25 @@
     return path;
   }
 
-  v4 = [(MPSlide *)self parentDocument];
-  if (!v4)
+  parentDocument = [(MPSlide *)self parentDocument];
+  if (!parentDocument)
   {
     return path;
   }
 
   v5 = self->_path;
 
-  return [v4 absolutePathForAssetAtPath:v5];
+  return [parentDocument absolutePathForAssetAtPath:v5];
 }
 
-- (void)setAbsolutePath:(id)a3
+- (void)setAbsolutePath:(id)path
 {
   if (self->_path)
   {
     [-[MPSlide parentDocument](self "parentDocument")];
   }
 
-  if (a3)
+  if (path)
   {
     [-[MPSlide parentDocument](self "parentDocument")];
     self->_cachedSize.width = v5;
@@ -362,11 +362,11 @@
     slide = self->_slide;
     if (slide)
     {
-      v8 = [(MCAssetVideo *)[(MCSlide *)slide asset] slides];
-      if (v8)
+      slides = [(MCAssetVideo *)[(MCSlide *)slide asset] slides];
+      if (slides)
       {
-        v9 = v8;
-        if ([(NSSet *)v8 count]>= 2)
+        v9 = slides;
+        if ([(NSSet *)slides count]>= 2)
         {
           v20 = 0u;
           v21 = 0u;
@@ -405,7 +405,7 @@
                     v17 = v15;
                     if (([objc_msgSend(-[MPSlide parent](v15 "parent")] & 1) == 0)
                     {
-                      [(MPSlide *)v17 setAbsolutePath:a3];
+                      [(MPSlide *)v17 setAbsolutePath:path];
                     }
                   }
                 }
@@ -422,12 +422,12 @@
   }
 }
 
-- (void)setLayerGroup:(id)a3
+- (void)setLayerGroup:(id)group
 {
   layerGroup = self->_layerGroup;
-  if (layerGroup != a3)
+  if (layerGroup != group)
   {
-    if (a3)
+    if (group)
     {
       [(MPSlide *)self setPath:0];
       layerGroup = self->_layerGroup;
@@ -440,11 +440,11 @@
       self->_layerGroup = 0;
     }
 
-    if (a3)
+    if (group)
     {
-      v6 = a3;
-      self->_layerGroup = v6;
-      [(MPLayerGroup *)v6 setParent:self];
+      groupCopy = group;
+      self->_layerGroup = groupCopy;
+      [(MPLayerGroup *)groupCopy setParent:self];
     }
 
     slide = self->_slide;
@@ -468,9 +468,9 @@
   }
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = [NSArray arrayWithObject:a3];
+  v4 = [NSArray arrayWithObject:filter];
   filters = self->_filters;
   if (filters)
   {
@@ -485,7 +485,7 @@
   [(MPSlide *)self insertFilters:v4 atIndex:v6];
 }
 
-- (void)addFilters:(id)a3
+- (void)addFilters:(id)filters
 {
   filters = self->_filters;
   if (filters)
@@ -498,24 +498,24 @@
     v6 = 0;
   }
 
-  [(MPSlide *)self insertFilters:a3 atIndex:v6];
+  [(MPSlide *)self insertFilters:filters atIndex:v6];
 }
 
-- (void)insertFilters:(id)a3 atIndex:(int64_t)a4
+- (void)insertFilters:(id)filters atIndex:(int64_t)index
 {
   if (!self->_filters)
   {
     self->_filters = objc_alloc_init(NSMutableArray);
   }
 
-  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(a3, "count")}];
+  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(filters, "count")}];
   [(MPSlide *)self willChange:2 valuesAtIndexes:v7 forKey:@"filters"];
-  [(NSMutableArray *)self->_filters insertObjects:a3 atIndexes:v7];
+  [(NSMutableArray *)self->_filters insertObjects:filters atIndexes:v7];
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v51 objects:v58 count:16];
+  v8 = [filters countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (v8)
   {
     v9 = v8;
@@ -526,13 +526,13 @@
       {
         if (*v52 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(filters);
         }
 
         [*(*(&v51 + 1) + 8 * i) setParent:self];
       }
 
-      v9 = [a3 countByEnumeratingWithState:&v51 objects:v58 count:16];
+      v9 = [filters countByEnumeratingWithState:&v51 objects:v58 count:16];
     }
 
     while (v9);
@@ -544,7 +544,7 @@
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v12 = [a3 countByEnumeratingWithState:&v47 objects:v57 count:16];
+    v12 = [filters countByEnumeratingWithState:&v47 objects:v57 count:16];
     if (v12)
     {
       v13 = v12;
@@ -552,29 +552,29 @@
       do
       {
         v15 = 0;
-        v16 = a4;
+        indexCopy = index;
         do
         {
           if (*v48 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(filters);
           }
 
-          a4 = v16 + 1;
-          [*(*(&v47 + 1) + 8 * v15) setFilter:{-[MCSlide insertFilterWithFilterID:atIndex:](self->_slide, "insertFilterWithFilterID:atIndex:", objc_msgSend(*(*(&v47 + 1) + 8 * v15), "filterID"), v16)}];
+          index = indexCopy + 1;
+          [*(*(&v47 + 1) + 8 * v15) setFilter:{-[MCSlide insertFilterWithFilterID:atIndex:](self->_slide, "insertFilterWithFilterID:atIndex:", objc_msgSend(*(*(&v47 + 1) + 8 * v15), "filterID"), indexCopy)}];
           v15 = v15 + 1;
-          ++v16;
+          ++indexCopy;
         }
 
         while (v13 != v15);
-        v13 = [a3 countByEnumeratingWithState:&v47 objects:v57 count:16];
+        v13 = [filters countByEnumeratingWithState:&v47 objects:v57 count:16];
       }
 
       while (v13);
     }
   }
 
-  v17 = [(MPSlide *)self parentDocument];
+  parentDocument = [(MPSlide *)self parentDocument];
   v36 = v7;
   [(MPSlide *)self didChange:2 valuesAtIndexes:v7 forKey:@"filters"];
   if (self->_mirrorToDuplicatePaths)
@@ -582,11 +582,11 @@
     slide = self->_slide;
     if (slide)
     {
-      v19 = [(MCAssetVideo *)[(MCSlide *)slide asset] slides];
-      if (v19)
+      slides = [(MCAssetVideo *)[(MCSlide *)slide asset] slides];
+      if (slides)
       {
-        v20 = v19;
-        if ([(NSSet *)v19 count]>= 2)
+        v20 = slides;
+        if ([(NSSet *)slides count]>= 2)
         {
           v45 = 0u;
           v46 = 0u;
@@ -599,7 +599,7 @@
             v23 = *v44;
             v24 = MPAudioPlaylist;
             v37 = v20;
-            v38 = v17;
+            v38 = parentDocument;
             do
             {
               for (j = 0; j != v22; j = j + 1)
@@ -612,7 +612,7 @@
                 v26 = *(*(&v43 + 1) + 8 * j);
                 if (v26 != self->_slide)
                 {
-                  v27 = [&v24[12] slideForSlide:v26 inDocument:v17];
+                  v27 = [&v24[12] slideForSlide:v26 inDocument:parentDocument];
                   if (v27 && v27 != self)
                   {
                     v29 = v27;
@@ -650,7 +650,7 @@
                       [(MPSlide *)v29 removeAllFilters];
                       [(MPSlide *)v29 insertFilters:v30 atIndex:0];
                       v20 = v37;
-                      v17 = v38;
+                      parentDocument = v38;
                       v24 = MPAudioPlaylist;
                     }
                   }
@@ -668,17 +668,17 @@
   }
 }
 
-- (void)removeFiltersAtIndices:(id)a3
+- (void)removeFiltersAtIndices:(id)indices
 {
   filters = self->_filters;
   if (filters && [(NSMutableArray *)filters count])
   {
-    [(MPSlide *)self willChange:3 valuesAtIndexes:a3 forKey:@"filters"];
-    v6 = [(MPSlide *)self parentDocument];
-    v7 = [a3 lastIndex];
-    if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+    [(MPSlide *)self willChange:3 valuesAtIndexes:indices forKey:@"filters"];
+    parentDocument = [(MPSlide *)self parentDocument];
+    lastIndex = [indices lastIndex];
+    if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v7; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexLessThanIndex:i])
+      for (i = lastIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexLessThanIndex:i])
       {
         v9 = [(NSMutableArray *)self->_filters objectAtIndex:i];
         [v9 setParent:0];
@@ -689,20 +689,20 @@
     slide = self->_slide;
     if (slide)
     {
-      [(MCSlide *)slide removeFiltersAtIndices:a3];
+      [(MCSlide *)slide removeFiltersAtIndices:indices];
     }
 
-    [(NSMutableArray *)self->_filters removeObjectsAtIndexes:a3];
+    [(NSMutableArray *)self->_filters removeObjectsAtIndexes:indices];
     if (self->_mirrorToDuplicatePaths)
     {
       v11 = self->_slide;
       if (v11)
       {
-        v12 = [(MCAssetVideo *)[(MCSlide *)v11 asset] slides];
-        if (v12)
+        slides = [(MCAssetVideo *)[(MCSlide *)v11 asset] slides];
+        if (slides)
         {
-          v13 = v12;
-          if ([(NSSet *)v12 count]>= 2)
+          v13 = slides;
+          if ([(NSSet *)slides count]>= 2)
           {
             v24 = 0u;
             v25 = 0u;
@@ -725,7 +725,7 @@
                   v18 = *(*(&v22 + 1) + 8 * j);
                   if (v18 != self->_slide)
                   {
-                    v19 = [MPUtilities slideForSlide:v18 inDocument:v6];
+                    v19 = [MPUtilities slideForSlide:v18 inDocument:parentDocument];
                     if (v19)
                     {
                       v20 = v19 == self;
@@ -741,7 +741,7 @@
                       v21 = v19;
                       if (([objc_msgSend(-[MPSlide parent](v19 "parent")] & 1) == 0)
                       {
-                        [(MPSlide *)v21 removeFiltersAtIndices:a3];
+                        [(MPSlide *)v21 removeFiltersAtIndices:indices];
                       }
                     }
                   }
@@ -757,7 +757,7 @@
       }
     }
 
-    [(MPSlide *)self didChange:3 valuesAtIndexes:a3 forKey:@"filters"];
+    [(MPSlide *)self didChange:3 valuesAtIndexes:indices forKey:@"filters"];
   }
 }
 
@@ -782,21 +782,21 @@
   }
 }
 
-- (void)moveFiltersFromIndices:(id)a3 toIndex:(int64_t)a4
+- (void)moveFiltersFromIndices:(id)indices toIndex:(int64_t)index
 {
   if (self->_filters)
   {
-    v6 = [a3 firstIndex];
-    if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [indices firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = v6;
+      v7 = firstIndex;
       do
       {
         v8 = [(NSMutableArray *)self->_filters objectAtIndex:v7];
         [(NSMutableArray *)self->_filters removeObjectAtIndex:v7];
-        [(NSMutableArray *)self->_filters insertObject:v8 atIndex:((__PAIR128__(a4, v7) - a4) >> 64)];
-        v7 = [a3 indexGreaterThanIndex:v7];
-        ++a4;
+        [(NSMutableArray *)self->_filters insertObject:v8 atIndex:((__PAIR128__(index, v7) - index) >> 64)];
+        v7 = [indices indexGreaterThanIndex:v7];
+        ++index;
       }
 
       while (v7 != 0x7FFFFFFFFFFFFFFFLL);
@@ -805,21 +805,21 @@
     slide = self->_slide;
     if (slide)
     {
-      [(MCSlide *)slide moveFiltersAtIndices:a3 toIndex:a4];
+      [(MCSlide *)slide moveFiltersAtIndices:indices toIndex:index];
     }
 
-    v10 = [(MPSlide *)self parentDocument];
+    parentDocument = [(MPSlide *)self parentDocument];
     if (self->_mirrorToDuplicatePaths)
     {
-      v11 = v10;
+      v11 = parentDocument;
       v12 = self->_slide;
       if (v12)
       {
-        v13 = [(MCAssetVideo *)[(MCSlide *)v12 asset] slides];
-        if (v13)
+        slides = [(MCAssetVideo *)[(MCSlide *)v12 asset] slides];
+        if (slides)
         {
-          v14 = v13;
-          if ([(NSSet *)v13 count]>= 2)
+          v14 = slides;
+          if ([(NSSet *)slides count]>= 2)
           {
             v26 = 0u;
             v27 = 0u;
@@ -858,7 +858,7 @@
                       v22 = v20;
                       if (([objc_msgSend(-[MPSlide parent](v20 "parent")] & 1) == 0)
                       {
-                        [(MPSlide *)v22 moveFiltersFromIndices:a3 toIndex:a4];
+                        [(MPSlide *)v22 moveFiltersFromIndices:indices toIndex:index];
                       }
                     }
                   }
@@ -909,12 +909,12 @@
   return self->_animationPaths;
 }
 
-- (id)animationPathForKey:(id)a3
+- (id)animationPathForKey:(id)key
 {
   animationPaths = self->_animationPaths;
-  if (!animationPaths || (v6 = [(NSMutableDictionary *)animationPaths objectForKey:a3]) == 0)
+  if (!animationPaths || (v6 = [(NSMutableDictionary *)animationPaths objectForKey:key]) == 0)
   {
-    if ([a3 isEqualToString:@"center"])
+    if ([key isEqualToString:@"center"])
     {
       v6 = +[MPAnimationPathKeyframed animationPath];
       [(MPSlide *)self center];
@@ -922,7 +922,7 @@
       v7 = @"center";
     }
 
-    else if ([a3 isEqualToString:@"scale"])
+    else if ([key isEqualToString:@"scale"])
     {
       v6 = +[MPAnimationPathKeyframed animationPath];
       [(MPSlide *)self scale];
@@ -932,7 +932,7 @@
 
     else
     {
-      if (![a3 isEqualToString:@"angle"])
+      if (![key isEqualToString:@"angle"])
       {
         return 0;
       }
@@ -949,20 +949,20 @@
   return v6;
 }
 
-- (BOOL)hasAnimationPathForKey:(id)a3
+- (BOOL)hasAnimationPathForKey:(id)key
 {
   animationPaths = self->_animationPaths;
   if (animationPaths)
   {
-    LOBYTE(animationPaths) = [(NSMutableDictionary *)animationPaths objectForKeyedSubscript:a3]!= 0;
+    LOBYTE(animationPaths) = [(NSMutableDictionary *)animationPaths objectForKeyedSubscript:key]!= 0;
   }
 
   return animationPaths;
 }
 
-- (id)keyframedAnimationPathForKey:(id)a3
+- (id)keyframedAnimationPathForKey:(id)key
 {
-  v3 = [(MPSlide *)self animationPathForKey:a3];
+  v3 = [(MPSlide *)self animationPathForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -975,14 +975,14 @@
   }
 }
 
-- (void)setAnimationPath:(id)a3 forKey:(id)a4
+- (void)setAnimationPath:(id)path forKey:(id)key
 {
-  if (a3)
+  if (path)
   {
     animationPaths = self->_animationPaths;
     if (animationPaths || (animationPaths = objc_alloc_init(NSMutableDictionary), (self->_animationPaths = animationPaths) != 0))
     {
-      v8 = [(NSMutableDictionary *)animationPaths objectForKey:a4];
+      v8 = [(NSMutableDictionary *)animationPaths objectForKey:key];
       if (v8)
       {
         v9 = v8;
@@ -991,12 +991,12 @@
       }
     }
 
-    [a3 setParent:self];
-    [(NSMutableDictionary *)self->_animationPaths setObject:a3 forKey:a4];
+    [path setParent:self];
+    [(NSMutableDictionary *)self->_animationPaths setObject:path forKey:key];
     slide = self->_slide;
     if (slide)
     {
-      [(MCSlide *)slide removeAnimationPathForKey:a4];
+      [(MCSlide *)slide removeAnimationPathForKey:key];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v12 = off_1A4CB0;
@@ -1005,24 +1005,24 @@
         v12 = off_1A4CB8;
       }
 
-      v13 = [(__objc2_class *)*v12 animationPathWithKey:a4];
+      v13 = [(__objc2_class *)*v12 animationPathWithKey:key];
       [(MCSlide *)self->_slide addAnimationPath:v13];
-      [a3 setAnimationPath:v13];
+      [path setAnimationPath:v13];
     }
 
-    v27 = a3;
-    v14 = [(MPSlide *)self parentDocument];
+    pathCopy = path;
+    parentDocument = [(MPSlide *)self parentDocument];
     if (self->_mirrorToDuplicatePaths)
     {
-      v15 = v14;
+      v15 = parentDocument;
       v16 = self->_slide;
       if (v16)
       {
-        v17 = [(MCAssetVideo *)[(MCSlide *)v16 asset] slides];
-        if (v17)
+        slides = [(MCAssetVideo *)[(MCSlide *)v16 asset] slides];
+        if (slides)
         {
-          v18 = v17;
-          if ([(NSSet *)v17 count]>= 2)
+          v18 = slides;
+          if ([(NSSet *)slides count]>= 2)
           {
             v30 = 0u;
             v31 = 0u;
@@ -1061,7 +1061,7 @@
                       v26 = v24;
                       if (([objc_msgSend(-[MPSlide parent](v24 "parent")] & 1) == 0)
                       {
-                        -[MPSlide setAnimationPath:forKey:](v26, "setAnimationPath:forKey:", [v27 copy], a4);
+                        -[MPSlide setAnimationPath:forKey:](v26, "setAnimationPath:forKey:", [pathCopy copy], key);
                       }
                     }
                   }
@@ -1081,36 +1081,36 @@
   else
   {
 
-    [(MPSlide *)self removeAnimationPathForKey:a4];
+    [(MPSlide *)self removeAnimationPathForKey:key];
   }
 }
 
-- (void)removeAnimationPathForKey:(id)a3
+- (void)removeAnimationPathForKey:(id)key
 {
   animationPaths = self->_animationPaths;
   if (animationPaths)
   {
     v6 = [(NSMutableDictionary *)animationPaths objectForKey:?];
-    v7 = [(MPSlide *)self parentDocument];
+    parentDocument = [(MPSlide *)self parentDocument];
     slide = self->_slide;
     if (slide)
     {
-      [(MCSlide *)slide removeAnimationPathForKey:a3];
+      [(MCSlide *)slide removeAnimationPathForKey:key];
       [v6 setAnimationPath:0];
     }
 
     [v6 setParent:0];
-    [(NSMutableDictionary *)self->_animationPaths removeObjectForKey:a3];
+    [(NSMutableDictionary *)self->_animationPaths removeObjectForKey:key];
     if (self->_mirrorToDuplicatePaths)
     {
       v9 = self->_slide;
       if (v9)
       {
-        v10 = [(MCAssetVideo *)[(MCSlide *)v9 asset] slides];
-        if (v10)
+        slides = [(MCAssetVideo *)[(MCSlide *)v9 asset] slides];
+        if (slides)
         {
-          v11 = v10;
-          if ([(NSSet *)v10 count]>= 2)
+          v11 = slides;
+          if ([(NSSet *)slides count]>= 2)
           {
             v22 = 0u;
             v23 = 0u;
@@ -1134,7 +1134,7 @@
                   v16 = *(*(&v20 + 1) + 8 * v15);
                   if (v16 != self->_slide)
                   {
-                    v17 = [MPUtilities slideForSlide:v16 inDocument:v7];
+                    v17 = [MPUtilities slideForSlide:v16 inDocument:parentDocument];
                     if (v17)
                     {
                       v18 = v17 == self;
@@ -1150,7 +1150,7 @@
                       v19 = v17;
                       if (([objc_msgSend(-[MPSlide parent](v17 "parent")] & 1) == 0)
                       {
-                        [(MPSlide *)v19 removeAnimationPathForKey:a3];
+                        [(MPSlide *)v19 removeAnimationPathForKey:key];
                       }
                     }
                   }
@@ -1249,30 +1249,30 @@
     return 0.0;
   }
 
-  v4 = [(MPEffectSupport *)parent effectTiming];
-  if (v4)
+  effectTiming = [(MPEffectSupport *)parent effectTiming];
+  if (effectTiming)
   {
-    v5 = v4;
-    v6 = [(MPSlide *)self liveIndex];
+    v5 = effectTiming;
+    liveIndex = [(MPSlide *)self liveIndex];
 
-    [v5 displayTimeForSlideAtIndex:v6];
+    [v5 displayTimeForSlideAtIndex:liveIndex];
   }
 
   else
   {
     v7 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
-    v8 = [(MPSlide *)self index];
-    if (v8 >= [v7 count])
+    index = [(MPSlide *)self index];
+    if (index >= [v7 count])
     {
-      v9 = [v7 lastObject];
+      lastObject = [v7 lastObject];
     }
 
     else
     {
-      v9 = [v7 objectAtIndex:{-[MPSlide index](self, "index")}];
+      lastObject = [v7 objectAtIndex:{-[MPSlide index](self, "index")}];
     }
 
-    v10 = [v9 objectForKey:@"showDisplayTime"];
+    v10 = [lastObject objectForKey:@"showDisplayTime"];
     if (v10)
     {
       [v10 doubleValue];
@@ -1311,12 +1311,12 @@
 - (double)showDisplayStartTime
 {
   v13 = 0.0;
-  v3 = [(MPEffectSupport *)self->_parent effectTiming];
-  if (v3 && (v4 = v3, (objc_opt_respondsToSelector() & 1) != 0))
+  effectTiming = [(MPEffectSupport *)self->_parent effectTiming];
+  if (effectTiming && (v4 = effectTiming, (objc_opt_respondsToSelector() & 1) != 0))
   {
-    v5 = [(MPSlide *)self liveIndex];
+    liveIndex = [(MPSlide *)self liveIndex];
 
-    [v4 showTimeForSlideAtIndex:v5];
+    [v4 showTimeForSlideAtIndex:liveIndex];
   }
 
   else if ([(MPSlide *)self determineShowTime:&v13 showDuration:&v12])
@@ -1350,34 +1350,34 @@
   result = self->_startTime;
   if (result == -1.0)
   {
-    v4 = [(MPSlide *)self parentDocument];
-    if (v4)
+    parentDocument = [(MPSlide *)self parentDocument];
+    if (parentDocument)
     {
-      v5 = v4;
-      v6 = [(MPSlide *)self path];
+      v5 = parentDocument;
+      path = [(MPSlide *)self path];
 
-      [v5 startTimeForPath:v6];
+      [v5 startTimeForPath:path];
     }
 
     else
     {
       v7 = +[MPAssetManager sharedManager];
-      v8 = [(MPSlide *)self absolutePath];
+      absolutePath = [(MPSlide *)self absolutePath];
 
-      [v7 startTimeForAssetAtPath:v8];
+      [v7 startTimeForAssetAtPath:absolutePath];
     }
   }
 
   return result;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  self->_startTime = a3;
+  self->_startTime = time;
   slide = self->_slide;
-  if (a3 == -1.0 || slide == 0)
+  if (time == -1.0 || slide == 0)
   {
-    if (a3 == -1.0 && slide != 0)
+    if (time == -1.0 && slide != 0)
     {
       [(MCSlide *)slide undefineStartTime];
     }
@@ -1394,10 +1394,10 @@
   result = self->_duration;
   if (result == -1.0)
   {
-    v4 = [(MPSlide *)self parentDocument];
-    if (v4)
+    parentDocument = [(MPSlide *)self parentDocument];
+    if (parentDocument)
     {
-      [v4 stopTimeForPath:{-[MPSlide path](self, "path")}];
+      [parentDocument stopTimeForPath:{-[MPSlide path](self, "path")}];
     }
 
     else
@@ -1413,13 +1413,13 @@
   return result;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  self->_duration = a3;
+  self->_duration = duration;
   slide = self->_slide;
-  if (a3 == -1.0 || slide == 0)
+  if (duration == -1.0 || slide == 0)
   {
-    if (a3 == -1.0 && slide != 0)
+    if (duration == -1.0 && slide != 0)
     {
       [(MCSlide *)slide undefineDuration];
     }
@@ -1442,20 +1442,20 @@
   return result;
 }
 
-- (void)setAudioVolume:(double)a3
+- (void)setAudioVolume:(double)volume
 {
-  self->_audioVolume = a3;
+  self->_audioVolume = volume;
   slide = self->_slide;
   if (slide)
   {
-    *&a3 = a3;
-    [(MCSlide *)slide setAudioVolume:a3];
+    *&volume = volume;
+    [(MCSlide *)slide setAudioVolume:volume];
   }
 }
 
-- (void)setAudioFadeInDuration:(double)a3
+- (void)setAudioFadeInDuration:(double)duration
 {
-  self->_audioFadeInDuration = a3;
+  self->_audioFadeInDuration = duration;
   slide = self->_slide;
   if (slide)
   {
@@ -1463,9 +1463,9 @@
   }
 }
 
-- (void)setAudioFadeOutDuration:(double)a3
+- (void)setAudioFadeOutDuration:(double)duration
 {
-  self->_audioFadeOutDuration = a3;
+  self->_audioFadeOutDuration = duration;
   slide = self->_slide;
   if (slide)
   {
@@ -1473,9 +1473,9 @@
   }
 }
 
-- (void)setAudioDuckInDuration:(double)a3
+- (void)setAudioDuckInDuration:(double)duration
 {
-  self->_audioDuckInDuration = a3;
+  self->_audioDuckInDuration = duration;
   slide = self->_slide;
   if (slide)
   {
@@ -1483,9 +1483,9 @@
   }
 }
 
-- (void)setAudioDuckOutDuration:(double)a3
+- (void)setAudioDuckOutDuration:(double)duration
 {
-  self->_audioDuckOutDuration = a3;
+  self->_audioDuckOutDuration = duration;
   slide = self->_slide;
   if (slide)
   {
@@ -1493,14 +1493,14 @@
   }
 }
 
-- (void)setAudioDuckLevel:(double)a3
+- (void)setAudioDuckLevel:(double)level
 {
-  self->_audioDuckLevel = a3;
+  self->_audioDuckLevel = level;
   slide = self->_slide;
   if (slide)
   {
-    *&a3 = a3;
-    [(MCSlide *)slide setAudioDuckLevel:a3];
+    *&level = level;
+    [(MCSlide *)slide setAudioDuckLevel:level];
   }
 }
 
@@ -1519,15 +1519,15 @@
 
   v4 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   isSecondary = self->_isSecondary;
-  v6 = [(MPSlide *)self index];
+  index = [(MPSlide *)self index];
   if (isSecondary)
   {
-    v6 += [(MPEffectSupport *)self->_parent maxNumberOfSlides];
+    index += [(MPEffectSupport *)self->_parent maxNumberOfSlides];
   }
 
-  if (v6 < [v4 count])
+  if (index < [v4 count])
   {
-    result = [v4 objectAtIndex:v6];
+    result = [v4 objectAtIndex:index];
     if (!result)
     {
       return result;
@@ -1552,7 +1552,7 @@ LABEL_10:
   return [(NSString *)result objectForKey:@"kenBurnsType"];
 }
 
-- (void)setSizingMode:(id)a3
+- (void)setSizingMode:(id)mode
 {
   sizingMode = self->_sizingMode;
   if (sizingMode)
@@ -1561,17 +1561,17 @@ LABEL_10:
     self->_sizingMode = 0;
   }
 
-  self->_sizingMode = [a3 copy];
+  self->_sizingMode = [mode copy];
   frame = self->_frame;
   if (frame)
   {
-    [(MPFrame *)frame setFrameAttribute:a3 forKey:@"sizingMode"];
+    [(MPFrame *)frame setFrameAttribute:mode forKey:@"sizingMode"];
   }
 
   slide = self->_slide;
   if (slide && ([(MCSlide *)slide kenBurnsType]|| ![(NSString *)self->_sizingMode isEqualToString:@"Crop to Fit"]))
   {
-    [(MCSlide *)self->_slide setKenBurnsType:a3];
+    [(MCSlide *)self->_slide setKenBurnsType:mode];
   }
 
   if (self->_mirrorToDuplicatePaths)
@@ -1579,11 +1579,11 @@ LABEL_10:
     v8 = self->_slide;
     if (v8)
     {
-      v9 = [(MCAssetVideo *)[(MCSlide *)v8 asset] slides];
-      if (v9)
+      slides = [(MCAssetVideo *)[(MCSlide *)v8 asset] slides];
+      if (slides)
       {
-        v10 = v9;
-        if ([(NSSet *)v9 count]>= 2)
+        v10 = slides;
+        if ([(NSSet *)slides count]>= 2)
         {
           v21 = 0u;
           v22 = 0u;
@@ -1623,7 +1623,7 @@ LABEL_10:
                     v18 = v16;
                     if (([objc_msgSend(-[MPSlide parent](v16 "parent")] & 1) == 0)
                     {
-                      [(MPSlide *)v18 setSizingMode:a3];
+                      [(MPSlide *)v18 setSizingMode:mode];
                     }
                   }
                 }
@@ -1660,26 +1660,26 @@ LABEL_10:
   {
     if (!self->_slide || [-[MPSlide parentEffect](self "parentEffect")])
     {
-      v4 = [(MPEffectSupport *)self->_parent slides];
+      slides = [(MPEffectSupport *)self->_parent slides];
       goto LABEL_11;
     }
 
     isSecondary = self->_isSecondary;
-    v6 = [(MCSlide *)self->_slide index];
+    index = [(MCSlide *)self->_slide index];
     if (isSecondary)
     {
-      v6 -= [-[MPEffectSupport slides](self->_parent "slides")];
+      index -= [-[MPEffectSupport slides](self->_parent "slides")];
     }
 
-    return v6;
+    return index;
   }
 
   parent = self->_parent;
 LABEL_7:
-  v4 = [(MPEffectSupport *)parent secondarySlides];
+  slides = [(MPEffectSupport *)parent secondarySlides];
 LABEL_11:
 
-  return [v4 indexOfObject:self];
+  return [slides indexOfObject:self];
 }
 
 - (int64_t)liveIndex
@@ -1695,20 +1695,20 @@ LABEL_11:
   {
     if (slide)
     {
-      v5 = [(MCSlide *)self->_slide index];
-      return v5 - [-[MPEffectSupport slides](self->_parent "slides")];
+      index = [(MCSlide *)self->_slide index];
+      return index - [-[MPEffectSupport slides](self->_parent "slides")];
     }
 
-    v8 = [(MPEffectSupport *)parent secondarySlides];
+    secondarySlides = [(MPEffectSupport *)parent secondarySlides];
     goto LABEL_12;
   }
 
   if (!slide)
   {
-    v8 = [(MPEffectSupport *)parent slides];
+    secondarySlides = [(MPEffectSupport *)parent slides];
 LABEL_12:
 
-    return [v8 indexOfObject:self];
+    return [secondarySlides indexOfObject:self];
   }
 
   v7 = self->_slide;
@@ -1724,8 +1724,8 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(MPSlide *)self nearestLayer];
-  v4 = [(MPEffectSupport *)self->_parent parentContainer];
+  nearestLayer = [(MPSlide *)self nearestLayer];
+  parentContainer = [(MPEffectSupport *)self->_parent parentContainer];
   v5 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (v5)
   {
@@ -1739,12 +1739,12 @@ LABEL_12:
       v6 = 1;
     }
 
-    v4 = [v3 objectInEffectContainersAtIndex:{objc_msgSend(v4, "index") + v6}];
+    parentContainer = [nearestLayer objectInEffectContainersAtIndex:{objc_msgSend(parentContainer, "index") + v6}];
   }
 
-  v7 = [v4 effects];
+  effects = [parentContainer effects];
 
-  return [v7 lastObject];
+  return [effects lastObject];
 }
 
 - (CGPoint)center
@@ -1756,9 +1756,9 @@ LABEL_12:
   return result;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  self->_center = a3;
+  self->_center = center;
   slide = self->_slide;
   if (slide)
   {
@@ -1766,9 +1766,9 @@ LABEL_12:
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  self->_scale = a3;
+  self->_scale = scale;
   slide = self->_slide;
   if (slide)
   {
@@ -1776,9 +1776,9 @@ LABEL_12:
   }
 }
 
-- (void)setRotation:(double)a3
+- (void)setRotation:(double)rotation
 {
-  self->_rotation = a3;
+  self->_rotation = rotation;
   slide = self->_slide;
   if (slide)
   {
@@ -1786,18 +1786,18 @@ LABEL_12:
   }
 }
 
-- (id)userInfoAttributeForKey:(id)a3
+- (id)userInfoAttributeForKey:(id)key
 {
   result = self->_attributes;
   if (result)
   {
-    return [result objectForKey:a3];
+    return [result objectForKey:key];
   }
 
   return result;
 }
 
-- (void)setUserInfoAttribute:(id)a3 forKey:(id)a4
+- (void)setUserInfoAttribute:(id)attribute forKey:(id)key
 {
   attributes = self->_attributes;
   if (!attributes)
@@ -1806,7 +1806,7 @@ LABEL_12:
     self->_attributes = attributes;
   }
 
-  [(NSMutableDictionary *)attributes setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)attributes setObject:attribute forKey:key];
 }
 
 - (BOOL)hasMovie
@@ -1823,10 +1823,10 @@ LABEL_12:
     return 0;
   }
 
-  v6 = [(MPSlide *)self parentDocument];
-  if (v6)
+  parentDocument = [(MPSlide *)self parentDocument];
+  if (parentDocument)
   {
-    v7 = [v6 isMovieAtPath:{-[MPSlide path](self, "path")}];
+    v7 = [parentDocument isMovieAtPath:{-[MPSlide path](self, "path")}];
   }
 
   else
@@ -1853,31 +1853,31 @@ LABEL_12:
 {
   v3 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   isSecondary = self->_isSecondary;
-  v5 = [(MPSlide *)self index];
+  index = [(MPSlide *)self index];
   if (isSecondary)
   {
-    v5 += [(MPEffectSupport *)self->_parent maxNumberOfSlides];
+    index += [(MPEffectSupport *)self->_parent maxNumberOfSlides];
   }
 
-  if (v5 >= [v3 count])
+  if (index >= [v3 count])
   {
     if ([+[MPEffectManager sharedManager](MPEffectManager "sharedManager")] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [v3 lastObject];
+      lastObject = [v3 lastObject];
     }
 
     else
     {
-      v6 = 0;
+      lastObject = 0;
     }
   }
 
   else
   {
-    v6 = [v3 objectAtIndex:v5];
+    lastObject = [v3 objectAtIndex:index];
   }
 
-  v7 = [v6 objectForKey:@"panoType"];
+  v7 = [lastObject objectForKey:@"panoType"];
   if (v7)
   {
     v8 = [v7 integerValue] != 0;
@@ -1888,9 +1888,9 @@ LABEL_12:
     v8 = 0;
   }
 
-  v9 = [(MPSlide *)self parentDocument];
-  v10 = [v9 styleID];
-  if (v9)
+  parentDocument = [(MPSlide *)self parentDocument];
+  styleID = [parentDocument styleID];
+  if (parentDocument)
   {
     return [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")] & v8;
   }
@@ -1905,31 +1905,31 @@ LABEL_12:
 {
   v3 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   isSecondary = self->_isSecondary;
-  v5 = [(MPSlide *)self index];
+  index = [(MPSlide *)self index];
   if (isSecondary)
   {
-    v5 += [(MPEffectSupport *)self->_parent maxNumberOfSlides];
+    index += [(MPEffectSupport *)self->_parent maxNumberOfSlides];
   }
 
-  if (v5 >= [v3 count])
+  if (index >= [v3 count])
   {
     if ([+[MPEffectManager sharedManager](MPEffectManager "sharedManager")] == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [v3 lastObject];
+      lastObject = [v3 lastObject];
     }
 
     else
     {
-      v6 = 0;
+      lastObject = 0;
     }
   }
 
   else
   {
-    v6 = [v3 objectAtIndex:v5];
+    lastObject = [v3 objectAtIndex:index];
   }
 
-  v7 = [v6 objectForKey:@"panoType"];
+  v7 = [lastObject objectForKey:@"panoType"];
   if (v7)
   {
     v8 = [v7 integerValue] != 0;
@@ -1940,9 +1940,9 @@ LABEL_12:
     v8 = 0;
   }
 
-  v9 = [(MPSlide *)self parentDocument];
-  v10 = [v9 styleID];
-  if (v9)
+  parentDocument = [(MPSlide *)self parentDocument];
+  styleID = [parentDocument styleID];
+  if (parentDocument)
   {
     return [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")] & v8;
   }
@@ -2015,16 +2015,16 @@ LABEL_12:
 
 - (BOOL)canZoom
 {
-  v3 = [(MPSlide *)self parentDocument];
-  v4 = [v3 styleID];
-  if ([v4 isEqualToString:@"KenBurns"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"Classic"))
+  parentDocument = [(MPSlide *)self parentDocument];
+  styleID = [parentDocument styleID];
+  if ([styleID isEqualToString:@"KenBurns"] & 1) != 0 || (objc_msgSend(styleID, "isEqualToString:", @"Classic"))
   {
     return 1;
   }
 
   else
   {
-    return ![(MPSlide *)self isPanoramaInDocument:v3];
+    return ![(MPSlide *)self isPanoramaInDocument:parentDocument];
   }
 }
 
@@ -2036,16 +2036,16 @@ LABEL_12:
   return [v3 actionForKey:v4];
 }
 
-- (void)copyVars:(id)a3
+- (void)copyVars:(id)vars
 {
-  self->_startTime = *(a3 + 9);
-  self->_duration = *(a3 + 10);
-  self->_audioVolume = *(a3 + 20);
-  self->_audioFadeInDuration = *(a3 + 11);
-  self->_audioFadeOutDuration = *(a3 + 12);
-  self->_audioDuckInDuration = *(a3 + 13);
-  self->_audioDuckOutDuration = *(a3 + 14);
-  self->_audioDuckLevel = *(a3 + 15);
+  self->_startTime = *(vars + 9);
+  self->_duration = *(vars + 10);
+  self->_audioVolume = *(vars + 20);
+  self->_audioFadeInDuration = *(vars + 11);
+  self->_audioFadeOutDuration = *(vars + 12);
+  self->_audioDuckInDuration = *(vars + 13);
+  self->_audioDuckOutDuration = *(vars + 14);
+  self->_audioDuckLevel = *(vars + 15);
   sizingMode = self->_sizingMode;
   if (sizingMode)
   {
@@ -2053,10 +2053,10 @@ LABEL_12:
     self->_sizingMode = 0;
   }
 
-  self->_sizingMode = [*(a3 + 21) copy];
+  self->_sizingMode = [*(vars + 21) copy];
 }
 
-- (void)copyFrame:(id)a3
+- (void)copyFrame:(id)frame
 {
   frame = self->_frame;
   if (frame)
@@ -2065,11 +2065,11 @@ LABEL_12:
     self->_frame = 0;
   }
 
-  v6 = [a3 copy];
+  v6 = [frame copy];
   [(MPSlide *)self setFrame:v6];
 }
 
-- (void)copyLayerGroup:(id)a3
+- (void)copyLayerGroup:(id)group
 {
   layerGroup = self->_layerGroup;
   if (layerGroup)
@@ -2078,20 +2078,20 @@ LABEL_12:
     self->_layerGroup = 0;
   }
 
-  v6 = [a3 copy];
+  v6 = [group copy];
   [(MPSlide *)self setLayerGroup:v6];
 }
 
-- (void)copyFilters:(id)a3
+- (void)copyFilters:(id)filters
 {
-  if (a3)
+  if (filters)
   {
     v5 = objc_alloc_init(NSMutableArray);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [filters countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -2103,7 +2103,7 @@ LABEL_12:
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(filters);
           }
 
           v10 = [*(*(&v11 + 1) + 8 * v9) copy];
@@ -2113,7 +2113,7 @@ LABEL_12:
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [filters countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
@@ -2123,15 +2123,15 @@ LABEL_12:
   }
 }
 
-- (void)copyAnimationPaths:(id)a3
+- (void)copyAnimationPaths:(id)paths
 {
-  if (a3)
+  if (paths)
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2142,15 +2142,15 @@ LABEL_12:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(paths);
           }
 
           v9 = *(*(&v11 + 1) + 8 * i);
-          v10 = [objc_msgSend(a3 objectForKey:{v9), "copy"}];
+          v10 = [objc_msgSend(paths objectForKey:{v9), "copy"}];
           [(MPSlide *)self setAnimationPath:v10 forKey:v9];
         }
 
-        v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -2161,12 +2161,12 @@ LABEL_12:
 - (void)cleanup
 {
   [(MPSlide *)self removeAllFilters];
-  v3 = [(NSMutableDictionary *)self->_animationPaths allKeys];
+  allKeys = [(NSMutableDictionary *)self->_animationPaths allKeys];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2178,7 +2178,7 @@ LABEL_12:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(MPSlide *)self removeAnimationPathForKey:*(*(&v8 + 1) + 8 * v7)];
@@ -2186,7 +2186,7 @@ LABEL_12:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -2206,7 +2206,7 @@ LABEL_12:
   return [v3 parentLayer];
 }
 
-- (BOOL)determineShowTime:(double *)a3 showDuration:(double *)a4
+- (BOOL)determineShowTime:(double *)time showDuration:(double *)duration
 {
   if ([(MPSlide *)self index]== -1 || !self->_parent)
   {
@@ -2233,14 +2233,14 @@ LABEL_12:
       if (v14)
       {
         v15 = CGSizeFromString(v14);
-        if (a3)
+        if (time)
         {
-          *a3 = v15.width;
+          *time = v15.width;
         }
 
-        if (a4)
+        if (duration)
         {
-          *a4 = v15.height;
+          *duration = v15.height;
         }
       }
 
@@ -2251,7 +2251,7 @@ LABEL_12:
   return v7;
 }
 
-- (void)setSlide:(id)a3
+- (void)setSlide:(id)slide
 {
   slide = self->_slide;
   if (slide)
@@ -2260,9 +2260,9 @@ LABEL_12:
     self->_slide = 0;
   }
 
-  v6 = a3;
-  self->_slide = v6;
-  if (v6)
+  slideCopy = slide;
+  self->_slide = slideCopy;
+  if (slideCopy)
   {
     frame = self->_frame;
     if (frame)
@@ -2662,43 +2662,43 @@ LABEL_12:
   }
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if (a3 && self->_parent)
+  if (parent && self->_parent)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"A slide may one have one parent.  Please remove it first.  This is unsupported." userInfo:0, v3, v4]);
   }
 
-  self->_parent = a3;
+  self->_parent = parent;
 
   [(MPSlide *)self resetCachedTimes];
 }
 
-- (BOOL)isPanoramaInDocument:(id)a3
+- (BOOL)isPanoramaInDocument:(id)document
 {
-  [a3 resolutionForPath:{-[MPSlide path](self, "path")}];
+  [document resolutionForPath:{-[MPSlide path](self, "path")}];
   v5 = v3 / v4;
   return v5 > 2.0 || v5 < 0.5;
 }
 
-- (void)insertObject:(id)a3 inFilterAtIndex:(int64_t)a4
+- (void)insertObject:(id)object inFilterAtIndex:(int64_t)index
 {
-  v6 = [[NSArray alloc] initWithObjects:{a3, 0}];
-  [(MPSlide *)self insertFilters:v6 atIndex:a4];
+  v6 = [[NSArray alloc] initWithObjects:{object, 0}];
+  [(MPSlide *)self insertFilters:v6 atIndex:index];
 }
 
-- (void)removeObjectFromFilterAtIndex:(int64_t)a3
+- (void)removeObjectFromFilterAtIndex:(int64_t)index
 {
-  v4 = [[NSIndexSet alloc] initWithIndex:a3];
+  v4 = [[NSIndexSet alloc] initWithIndex:index];
   [(MPSlide *)self removeFiltersAtIndices:v4];
 }
 
-- (void)replaceObjectInFilterAtIndex:(int64_t)a3 withObject:(id)a4
+- (void)replaceObjectInFilterAtIndex:(int64_t)index withObject:(id)object
 {
   [(MPSlide *)self removeFiltersAtIndices:[NSIndexSet indexSetWithIndex:?]];
-  v7 = [NSArray arrayWithObject:a4];
+  v7 = [NSArray arrayWithObject:object];
 
-  [(MPSlide *)self insertFilters:v7 atIndex:a3];
+  [(MPSlide *)self insertFilters:v7 atIndex:index];
 }
 
 - (id)scriptingAnimations
@@ -2733,8 +2733,8 @@ LABEL_12:
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v7 = [v4 orderedKeyframes];
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        orderedKeyframes = [v4 orderedKeyframes];
+        v8 = [orderedKeyframes countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v8)
         {
           v9 = v8;
@@ -2745,7 +2745,7 @@ LABEL_12:
             {
               if (*v26 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(orderedKeyframes);
               }
 
               v12 = *(*(&v25 + 1) + 8 * i);
@@ -2770,7 +2770,7 @@ LABEL_12:
               [v5 addObject:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:")}];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v9 = [orderedKeyframes countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v9);
@@ -2792,13 +2792,13 @@ LABEL_12:
   return v20;
 }
 
-- (void)setScriptingAnimations:(id)a3
+- (void)setScriptingAnimations:(id)animations
 {
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v4 = [animations countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2809,11 +2809,11 @@ LABEL_12:
       {
         if (*v25 != v21)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(animations);
         }
 
         v7 = *(*(&v24 + 1) + 8 * i);
-        v8 = [a3 objectForKey:v7];
+        v8 = [animations objectForKey:v7];
         v9 = [v8 objectForKey:@"times"];
         v10 = [v8 objectForKey:@"values"];
         v11 = +[MPAnimationPathKeyframed animationPath];
@@ -2846,7 +2846,7 @@ LABEL_12:
         [(MPSlide *)self setAnimationPath:v11 forKey:v7];
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v5 = [animations countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v5);
@@ -2870,21 +2870,21 @@ LABEL_12:
   }
 }
 
-- (void)setScriptingFrame:(id)a3
+- (void)setScriptingFrame:(id)frame
 {
-  if ([a3 objectForKey:@"frameID"])
+  if ([frame objectForKey:@"frameID"])
   {
-    if ([objc_msgSend(a3 objectForKey:{@"frameID", "isEqualToString:", &stru_1AC858}])
+    if ([objc_msgSend(frame objectForKey:{@"frameID", "isEqualToString:", &stru_1AC858}])
     {
       v5 = 0;
     }
 
     else
     {
-      v5 = +[MPFrame frameWithFrameID:](MPFrame, "frameWithFrameID:", [a3 objectForKey:@"frameID"]);
-      if ([a3 objectForKey:@"presetID"])
+      v5 = +[MPFrame frameWithFrameID:](MPFrame, "frameWithFrameID:", [frame objectForKey:@"frameID"]);
+      if ([frame objectForKey:@"presetID"])
       {
-        -[MPFrame setPresetID:](v5, "setPresetID:", [a3 objectForKey:@"presetID"]);
+        -[MPFrame setPresetID:](v5, "setPresetID:", [frame objectForKey:@"presetID"]);
       }
     }
 

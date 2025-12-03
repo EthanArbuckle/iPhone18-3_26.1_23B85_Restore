@@ -1,14 +1,14 @@
 @interface DBIconImage
-+ (SBIconImageInfo)iconImageInfoForScale:(SEL)a3;
++ (SBIconImageInfo)iconImageInfoForScale:(SEL)scale;
 - (_TtC9DashBoard11DBIconImage)init;
 @end
 
 @implementation DBIconImage
 
-+ (SBIconImageInfo)iconImageInfoForScale:(SEL)a3
++ (SBIconImageInfo)iconImageInfoForScale:(SEL)scale
 {
-  v4 = [objc_opt_self() imageDescriptorNamed_];
-  [v4 size];
+  imageDescriptorNamed_ = [objc_opt_self() imageDescriptorNamed_];
+  [imageDescriptorNamed_ size];
 
   return result;
 }

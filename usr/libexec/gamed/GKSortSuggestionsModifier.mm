@@ -1,54 +1,54 @@
 @interface GKSortSuggestionsModifier
-- (GKSortSuggestionsModifier)initWithSettings:(id)a3 networkRequester:(id)a4 cachedSortedAssociationIDs:(id)a5 transactionGroupProvider:(id)a6 featureEnabledBlock:(id)a7;
-- (id)modifySuggestions:(id)a3;
-- (id)sortSuggestions:(id)a3 usingSortedContactsAssociationIDs:(id)a4 suggestionMap:(id)a5;
+- (GKSortSuggestionsModifier)initWithSettings:(id)settings networkRequester:(id)requester cachedSortedAssociationIDs:(id)ds transactionGroupProvider:(id)provider featureEnabledBlock:(id)block;
+- (id)modifySuggestions:(id)suggestions;
+- (id)sortSuggestions:(id)suggestions usingSortedContactsAssociationIDs:(id)ds suggestionMap:(id)map;
 @end
 
 @implementation GKSortSuggestionsModifier
 
-- (GKSortSuggestionsModifier)initWithSettings:(id)a3 networkRequester:(id)a4 cachedSortedAssociationIDs:(id)a5 transactionGroupProvider:(id)a6 featureEnabledBlock:(id)a7
+- (GKSortSuggestionsModifier)initWithSettings:(id)settings networkRequester:(id)requester cachedSortedAssociationIDs:(id)ds transactionGroupProvider:(id)provider featureEnabledBlock:(id)block
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  settingsCopy = settings;
+  requesterCopy = requester;
+  dsCopy = ds;
+  providerCopy = provider;
+  blockCopy = block;
   v24.receiver = self;
   v24.super_class = GKSortSuggestionsModifier;
   v18 = [(GKSortSuggestionsModifier *)&v24 init];
   if (v18)
   {
-    v19 = objc_retainBlock(v16);
+    v19 = objc_retainBlock(providerCopy);
     transactionGroupProvider = v18->_transactionGroupProvider;
     v18->_transactionGroupProvider = v19;
 
-    objc_storeStrong(&v18->_networkRequester, a4);
-    v21 = objc_retainBlock(v17);
+    objc_storeStrong(&v18->_networkRequester, requester);
+    v21 = objc_retainBlock(blockCopy);
     featureEnabledBlock = v18->_featureEnabledBlock;
     v18->_featureEnabledBlock = v21;
 
-    objc_storeStrong(&v18->_settings, a3);
-    objc_storeStrong(&v18->_cachedSortedAssociationIDs, a5);
+    objc_storeStrong(&v18->_settings, settings);
+    objc_storeStrong(&v18->_cachedSortedAssociationIDs, ds);
   }
 
   return v18;
 }
 
-- (id)modifySuggestions:(id)a3
+- (id)modifySuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [(GKSortSuggestionsModifier *)self featureEnabledBlock];
-  v6 = v5[2]();
+  suggestionsCopy = suggestions;
+  featureEnabledBlock = [(GKSortSuggestionsModifier *)self featureEnabledBlock];
+  v6 = featureEnabledBlock[2]();
 
   if (v6)
   {
-    v7 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
-    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    v7 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [suggestionsCopy count]);
+    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [suggestionsCopy count]);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v9 = v4;
+    v9 = suggestionsCopy;
     v10 = [v9 countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v10)
     {
@@ -64,11 +64,11 @@
           }
 
           v14 = *(*(&v39 + 1) + 8 * i);
-          v15 = [v14 contactAssociationID];
-          if ([v15 length])
+          contactAssociationID = [v14 contactAssociationID];
+          if ([contactAssociationID length])
           {
-            [v7 setObject:v14 forKeyedSubscript:v15];
-            [v8 addObject:v15];
+            [v7 setObject:v14 forKeyedSubscript:contactAssociationID];
+            [v8 addObject:contactAssociationID];
           }
         }
 
@@ -79,17 +79,17 @@
     }
 
     v16 = [v8 count];
-    v17 = [(GKSortSuggestionsModifier *)self settings];
-    v18 = [v17 mininumIDsForServiceRequest];
+    settings = [(GKSortSuggestionsModifier *)self settings];
+    mininumIDsForServiceRequest = [settings mininumIDsForServiceRequest];
 
-    if (v16 >= v18)
+    if (v16 >= mininumIDsForServiceRequest)
     {
-      v20 = [(GKSortSuggestionsModifier *)self settings];
-      v21 = [v20 suggestionsLimit];
+      settings2 = [(GKSortSuggestionsModifier *)self settings];
+      suggestionsLimit = [settings2 suggestionsLimit];
 
-      v22 = [(GKSortSuggestionsModifier *)self cachedSortedAssociationIDs];
+      cachedSortedAssociationIDs = [(GKSortSuggestionsModifier *)self cachedSortedAssociationIDs];
 
-      if (v22)
+      if (cachedSortedAssociationIDs)
       {
         if (!os_log_GKGeneral)
         {
@@ -102,12 +102,12 @@
           sub_1002961D0(v24, self);
         }
 
-        v25 = [(GKSortSuggestionsModifier *)self cachedSortedAssociationIDs];
+        cachedSortedAssociationIDs2 = [(GKSortSuggestionsModifier *)self cachedSortedAssociationIDs];
       }
 
       else
       {
-        if ([v8 count] <= v21)
+        if ([v8 count] <= suggestionsLimit)
         {
           v26 = [v8 copy];
           v27 = 0;
@@ -115,8 +115,8 @@
 
         else
         {
-          v26 = [v8 subarrayWithRange:{0, v21}];
-          v27 = [v8 subarrayWithRange:{v21, objc_msgSend(v8, "count") - objc_msgSend(v26, "count")}];
+          v26 = [v8 subarrayWithRange:{0, suggestionsLimit}];
+          v27 = [v8 subarrayWithRange:{suggestionsLimit, objc_msgSend(v8, "count") - objc_msgSend(v26, "count")}];
         }
 
         v28 = [NSString stringWithFormat:@"%s:%d %s", "GKSortSuggestionsModifier.m", 164, "[GKSortSuggestionsModifier modifySuggestions:]"];
@@ -133,19 +133,19 @@
         v31 = v26;
         [v30 perform:v36];
         [v30 wait];
-        v32 = [v30 result];
-        v33 = [v32 mutableCopy];
+        result = [v30 result];
+        v33 = [result mutableCopy];
 
         if ([v27 count])
         {
           [v33 addObjectsFromArray:v27];
         }
 
-        v25 = [v33 copy];
+        cachedSortedAssociationIDs2 = [v33 copy];
       }
 
       v34 = [v7 copy];
-      v19 = [(GKSortSuggestionsModifier *)self sortSuggestions:v9 usingSortedContactsAssociationIDs:v25 suggestionMap:v34];
+      v19 = [(GKSortSuggestionsModifier *)self sortSuggestions:v9 usingSortedContactsAssociationIDs:cachedSortedAssociationIDs2 suggestionMap:v34];
     }
 
     else
@@ -156,28 +156,28 @@
 
   else
   {
-    v19 = v4;
+    v19 = suggestionsCopy;
   }
 
   return v19;
 }
 
-- (id)sortSuggestions:(id)a3 usingSortedContactsAssociationIDs:(id)a4 suggestionMap:(id)a5
+- (id)sortSuggestions:(id)suggestions usingSortedContactsAssociationIDs:(id)ds suggestionMap:(id)map
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  suggestionsCopy = suggestions;
+  dsCopy = ds;
+  mapCopy = map;
+  if ([dsCopy count])
   {
-    v33 = self;
-    v11 = [NSMutableArray arrayWithCapacity:[(GKSortSuggestionsModifier *)v8 count]];
-    v12 = [NSMutableSet setWithCapacity:[(GKSortSuggestionsModifier *)v8 count]];
+    selfCopy = self;
+    v11 = [NSMutableArray arrayWithCapacity:[(GKSortSuggestionsModifier *)suggestionsCopy count]];
+    v12 = [NSMutableSet setWithCapacity:[(GKSortSuggestionsModifier *)suggestionsCopy count]];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v34 = v9;
-    v13 = v9;
+    v34 = dsCopy;
+    v13 = dsCopy;
     v14 = [v13 countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v14)
     {
@@ -192,12 +192,12 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [v10 objectForKeyedSubscript:*(*(&v39 + 1) + 8 * i)];
+          v18 = [mapCopy objectForKeyedSubscript:*(*(&v39 + 1) + 8 * i)];
           if (v18)
           {
             [v11 addObject:v18];
-            v19 = [v18 contactID];
-            [v12 addObject:v19];
+            contactID = [v18 contactID];
+            [v12 addObject:contactID];
           }
         }
 
@@ -208,17 +208,17 @@
     }
 
     v20 = [v11 count];
-    v21 = [(GKSortSuggestionsModifier *)v33 settings];
-    v22 = [v21 mininumIDsForContactAssociationIDsOnly];
+    settings = [(GKSortSuggestionsModifier *)selfCopy settings];
+    mininumIDsForContactAssociationIDsOnly = [settings mininumIDsForContactAssociationIDsOnly];
 
-    if (v20 < v22)
+    if (v20 < mininumIDsForContactAssociationIDsOnly)
     {
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v33 = v8;
-      v23 = v8;
+      selfCopy = suggestionsCopy;
+      v23 = suggestionsCopy;
       v24 = [(GKSortSuggestionsModifier *)v23 countByEnumeratingWithState:&v35 objects:v43 count:16];
       if (v24)
       {
@@ -234,8 +234,8 @@
             }
 
             v28 = *(*(&v35 + 1) + 8 * j);
-            v29 = [v28 contactID];
-            v30 = [v12 containsObject:v29];
+            contactID2 = [v28 contactID];
+            v30 = [v12 containsObject:contactID2];
 
             if ((v30 & 1) == 0)
             {
@@ -249,17 +249,17 @@
         while (v25);
       }
 
-      v8 = v33;
+      suggestionsCopy = selfCopy;
     }
 
     v31 = [v11 copy];
 
-    v9 = v34;
+    dsCopy = v34;
   }
 
   else
   {
-    v31 = v8;
+    v31 = suggestionsCopy;
   }
 
   return v31;

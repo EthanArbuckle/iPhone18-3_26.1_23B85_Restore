@@ -4,28 +4,28 @@
 - (NSArray)orderedImageIdentifiers;
 - (NSArray)requiredNonImageResourceURLs;
 - (NSArray)requiredResourceURLs;
-- (SXDocumentController)initWithDocument:(id)a3 shareURL:(id)a4;
+- (SXDocumentController)initWithDocument:(id)document shareURL:(id)l;
 - (SXMetadata)metadata;
 - (UIColor)documentBackgroundColor;
 - (UIColor)topBackgroundColor;
-- (id)additionsForComponents:(id)a3;
-- (id)allResourcesForImageIdentifier:(id)a3;
+- (id)additionsForComponents:(id)components;
+- (id)allResourcesForImageIdentifier:(id)identifier;
 - (id)componentIdentifierUsingThumbnail;
-- (id)componentIdentifierUsingThumbnailInComponents:(id)a3;
-- (id)componentLayoutForIdentifier:(id)a3;
-- (id)componentStyleForComponent:(id)a3;
+- (id)componentIdentifierUsingThumbnailInComponents:(id)components;
+- (id)componentLayoutForIdentifier:(id)identifier;
+- (id)componentStyleForComponent:(id)component;
 - (id)filterImageResources;
-- (id)imageResourceForIdentifier:(id)a3;
-- (id)mergedObjectsWithIdentifiers:(id)a3 fromDictionary:(id)a4 merger:(id)a5;
-- (id)resourceForIdentifier:(id)a3;
+- (id)imageResourceForIdentifier:(id)identifier;
+- (id)mergedObjectsWithIdentifiers:(id)identifiers fromDictionary:(id)dictionary merger:(id)merger;
+- (id)resourceForIdentifier:(id)identifier;
 @end
 
 @implementation SXDocumentController
 
-- (SXDocumentController)initWithDocument:(id)a3 shareURL:(id)a4
+- (SXDocumentController)initWithDocument:(id)document shareURL:(id)l
 {
-  v7 = a3;
-  v8 = a4;
+  documentCopy = document;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = SXDocumentController;
   v9 = [(SXDocumentController *)&v19 init];
@@ -35,12 +35,12 @@
     componentStyleMerger = v9->_componentStyleMerger;
     v9->_componentStyleMerger = v10;
 
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     componentStyles = v9->_componentStyles;
-    v9->_componentStyles = v12;
+    v9->_componentStyles = dictionary;
 
-    objc_storeStrong(&v9->_document, a3);
-    objc_storeStrong(&v9->_shareURL, a4);
+    objc_storeStrong(&v9->_document, document);
+    objc_storeStrong(&v9->_shareURL, l);
     v14 = [SXImageController alloc];
     v15 = objc_alloc_init(SXColumnCalculator);
     v16 = [(SXImageController *)v14 initWithDocumentController:v9 columnCalculator:v15];
@@ -56,9 +56,9 @@
   additions = self->_additions;
   if (!additions)
   {
-    v4 = [(SXDocumentController *)self document];
-    v5 = [v4 components];
-    v6 = [(SXDocumentController *)self additionsForComponents:v5];
+    document = [(SXDocumentController *)self document];
+    components = [document components];
+    v6 = [(SXDocumentController *)self additionsForComponents:components];
     v7 = self->_additions;
     self->_additions = v6;
 
@@ -68,46 +68,46 @@
   return additions;
 }
 
-- (id)componentStyleForComponent:(id)a3
+- (id)componentStyleForComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v5 = MEMORY[0x1E695DF70];
-  v6 = [v4 classification];
-  v7 = [v6 defaultComponentStyleIdentifiers];
-  v8 = [v5 arrayWithArray:v7];
+  classification = [componentCopy classification];
+  defaultComponentStyleIdentifiers = [classification defaultComponentStyleIdentifiers];
+  v8 = [v5 arrayWithArray:defaultComponentStyleIdentifiers];
 
-  v9 = [v4 style];
+  style = [componentCopy style];
 
-  if (v9)
+  if (style)
   {
-    v10 = [v4 style];
-    [v8 addObject:v10];
+    style2 = [componentCopy style];
+    [v8 addObject:style2];
   }
 
-  v11 = [(SXDocumentController *)self document];
-  v12 = [v11 componentStyles];
-  v13 = [(SXDocumentController *)self componentStyleMerger];
-  v14 = [(SXDocumentController *)self mergedObjectsWithIdentifiers:v8 fromDictionary:v12 merger:v13];
+  document = [(SXDocumentController *)self document];
+  componentStyles = [document componentStyles];
+  componentStyleMerger = [(SXDocumentController *)self componentStyleMerger];
+  v14 = [(SXDocumentController *)self mergedObjectsWithIdentifiers:v8 fromDictionary:componentStyles merger:componentStyleMerger];
 
   return v14;
 }
 
-- (id)resourceForIdentifier:(id)a3
+- (id)resourceForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXDocumentController *)self document];
-  v6 = [v5 resources];
-  v7 = [v6 objectForKey:v4];
+  identifierCopy = identifier;
+  document = [(SXDocumentController *)self document];
+  resources = [document resources];
+  v7 = [resources objectForKey:identifierCopy];
 
   return v7;
 }
 
-- (id)componentLayoutForIdentifier:(id)a3
+- (id)componentLayoutForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXDocumentController *)self document];
-  v6 = [v5 componentLayouts];
-  v7 = [v6 objectForKey:v4];
+  identifierCopy = identifier;
+  document = [(SXDocumentController *)self document];
+  componentLayouts = [document componentLayouts];
+  v7 = [componentLayouts objectForKey:identifierCopy];
 
   return v7;
 }
@@ -119,10 +119,10 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(SXDocumentController *)self document];
-  v3 = [v2 components];
+  document = [(SXDocumentController *)self document];
+  components = [document components];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [components countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -132,7 +132,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(components);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) requiresLinkedContent])
@@ -142,7 +142,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [components countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -157,20 +157,20 @@ LABEL_11:
   return v4;
 }
 
-- (id)imageResourceForIdentifier:(id)a3
+- (id)imageResourceForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXDocumentController *)self imageController];
-  v6 = [v5 imageResourceForIdentifier:v4];
+  identifierCopy = identifier;
+  imageController = [(SXDocumentController *)self imageController];
+  v6 = [imageController imageResourceForIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)allResourcesForImageIdentifier:(id)a3
+- (id)allResourcesForImageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXDocumentController *)self imageController];
-  v6 = [v5 allResourcesForImageIdentifier:v4];
+  identifierCopy = identifier;
+  imageController = [(SXDocumentController *)self imageController];
+  v6 = [imageController allResourcesForImageIdentifier:identifierCopy];
 
   return v6;
 }
@@ -178,15 +178,15 @@ LABEL_11:
 - (NSArray)orderedImageIdentifiers
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(SXDocumentController *)self imageController];
-  v3 = [v2 allImageResources];
+  imageController = [(SXDocumentController *)self imageController];
+  allImageResources = [imageController allImageResources];
 
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = allImageResources;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -201,8 +201,8 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) imageIdentifier];
-        [v4 addObject:v10];
+        imageIdentifier = [*(*(&v12 + 1) + 8 * i) imageIdentifier];
+        [array addObject:imageIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -211,23 +211,23 @@ LABEL_11:
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
 - (NSArray)requiredResourceURLs
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(SXDocumentController *)self filterImageResources];
-  v4 = [(SXDocumentController *)self imageController];
-  v5 = [v4 allImageResources];
-  [v3 addObjectsFromArray:v5];
+  filterImageResources = [(SXDocumentController *)self filterImageResources];
+  imageController = [(SXDocumentController *)self imageController];
+  allImageResources = [imageController allImageResources];
+  [filterImageResources addObjectsFromArray:allImageResources];
 
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v3;
+  v7 = filterImageResources;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -248,7 +248,7 @@ LABEL_11:
         if (v13)
         {
           v14 = [v12 URL];
-          [v6 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -258,19 +258,19 @@ LABEL_11:
     while (v9);
   }
 
-  return v6;
+  return array;
 }
 
 - (NSArray)requiredNonImageResourceURLs
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [(SXDocumentController *)self filterImageResources];
-  v3 = [MEMORY[0x1E695DF70] array];
+  filterImageResources = [(SXDocumentController *)self filterImageResources];
+  array = [MEMORY[0x1E695DF70] array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = v2;
+  v4 = filterImageResources;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -291,7 +291,7 @@ LABEL_11:
         if (v10)
         {
           v11 = [v9 URL];
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -301,7 +301,7 @@ LABEL_11:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)filterImageResources
@@ -309,16 +309,16 @@ LABEL_11:
   v3 = MEMORY[0x1E696AE18];
   v4 = objc_opt_class();
   v5 = [v3 predicateWithFormat:@"(class = %@) OR (class = %@)", v4, objc_opt_class()];
-  v6 = [(SXDocumentController *)self document];
-  v7 = [v6 resources];
-  v8 = [v7 allObjects];
-  v9 = [v8 filteredArrayUsingPredicate:v5];
+  document = [(SXDocumentController *)self document];
+  resources = [document resources];
+  allObjects = [resources allObjects];
+  v9 = [allObjects filteredArrayUsingPredicate:v5];
 
   v10 = MEMORY[0x1E695DF70];
-  v11 = [(SXDocumentController *)self document];
-  v12 = [v11 resources];
-  v13 = [v12 allObjects];
-  v14 = [v10 arrayWithArray:v13];
+  document2 = [(SXDocumentController *)self document];
+  resources2 = [document2 resources];
+  allObjects2 = [resources2 allObjects];
+  v14 = [v10 arrayWithArray:allObjects2];
 
   [v14 removeObjectsInArray:v9];
 
@@ -327,26 +327,26 @@ LABEL_11:
 
 - (id)componentIdentifierUsingThumbnail
 {
-  v3 = [(SXDocumentController *)self document];
-  v4 = [v3 components];
-  v5 = [(SXDocumentController *)self componentIdentifierUsingThumbnailInComponents:v4];
+  document = [(SXDocumentController *)self document];
+  components = [document components];
+  v5 = [(SXDocumentController *)self componentIdentifierUsingThumbnailInComponents:components];
 
   return v5;
 }
 
-- (id)componentIdentifierUsingThumbnailInComponents:(id)a3
+- (id)componentIdentifierUsingThumbnailInComponents:(id)components
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v38 = self;
-  v5 = [(SXDocumentController *)self metadata];
-  v6 = [v5 thumbnailImageIdentifier];
+  componentsCopy = components;
+  selfCopy = self;
+  metadata = [(SXDocumentController *)self metadata];
+  thumbnailImageIdentifier = [metadata thumbnailImageIdentifier];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v7 = v4;
+  v7 = componentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (!v8)
   {
@@ -356,7 +356,7 @@ LABEL_11:
   v9 = v8;
   v10 = 0x1E84FC000uLL;
   v39 = *v41;
-  v36 = v6;
+  v36 = thumbnailImageIdentifier;
   v37 = v7;
   do
   {
@@ -373,7 +373,7 @@ LABEL_11:
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
         v13 = v12;
-        v14 = [v13 imageIdentifier];
+        imageIdentifier = [v13 imageIdentifier];
         goto LABEL_9;
       }
 
@@ -381,14 +381,14 @@ LABEL_11:
       if (objc_opt_isKindOfClass())
       {
         v13 = v12;
-        v14 = [v13 stillImageIdentifier];
+        imageIdentifier = [v13 stillImageIdentifier];
 LABEL_9:
-        v15 = v14;
-        v16 = [v14 isEqualToString:v6];
+        v15 = imageIdentifier;
+        v16 = [imageIdentifier isEqualToString:thumbnailImageIdentifier];
 
         if (v16)
         {
-          v32 = [v13 identifier];
+          identifier = [v13 identifier];
           goto LABEL_29;
         }
 
@@ -400,17 +400,17 @@ LABEL_9:
       {
         v17 = v10;
         v18 = v12;
-        v19 = [v18 items];
-        v20 = [v19 firstObject];
+        items = [v18 items];
+        firstObject = [items firstObject];
 
-        v21 = v20;
-        v22 = [v20 imageIdentifier];
-        v6 = v36;
-        v23 = [v22 isEqualToString:?];
+        v21 = firstObject;
+        imageIdentifier2 = [firstObject imageIdentifier];
+        thumbnailImageIdentifier = v36;
+        v23 = [imageIdentifier2 isEqualToString:?];
 
         if (v23)
         {
-          v32 = [v18 identifier];
+          identifier = [v18 identifier];
 
           v7 = v37;
           goto LABEL_29;
@@ -425,25 +425,25 @@ LABEL_9:
       if (objc_opt_isKindOfClass())
       {
         v35 = v12;
-        v21 = [(SXDocumentController *)v38 componentStyleForComponent:?];
-        v24 = [v21 fill];
-        if (v24)
+        v21 = [(SXDocumentController *)selfCopy componentStyleForComponent:?];
+        fill = [v21 fill];
+        if (fill)
         {
-          v25 = v24;
-          v26 = [v21 fill];
+          v25 = fill;
+          fill2 = [v21 fill];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           v10 = 0x1E84FC000;
           if (isKindOfClass)
           {
-            v28 = [v21 fill];
-            v29 = [v28 imageIdentifier];
-            v30 = [v29 isEqualToString:v6];
+            fill3 = [v21 fill];
+            imageIdentifier3 = [fill3 imageIdentifier];
+            v30 = [imageIdentifier3 isEqualToString:thumbnailImageIdentifier];
 
             if (v30)
             {
-              v32 = [v35 identifier];
+              identifier = [v35 identifier];
 
 LABEL_35:
 LABEL_29:
@@ -455,10 +455,10 @@ LABEL_29:
           }
         }
 
-        v31 = [v35 components];
-        v32 = [(SXDocumentController *)v38 componentIdentifierUsingThumbnailInComponents:v31];
+        components = [v35 components];
+        identifier = [(SXDocumentController *)selfCopy componentIdentifierUsingThumbnailInComponents:components];
 
-        if (v32)
+        if (identifier)
         {
           goto LABEL_35;
         }
@@ -477,50 +477,50 @@ LABEL_10:
 
   while (v33);
 LABEL_27:
-  v32 = 0;
+  identifier = 0;
 LABEL_30:
 
-  return v32;
+  return identifier;
 }
 
 - (SXMetadata)metadata
 {
-  v2 = [(SXDocumentController *)self document];
-  v3 = [v2 metadata];
+  document = [(SXDocumentController *)self document];
+  metadata = [document metadata];
 
-  return v3;
+  return metadata;
 }
 
 - (UIColor)documentBackgroundColor
 {
-  v2 = [(SXDocumentController *)self document];
-  v3 = [v2 documentStyle];
-  v4 = [v3 backgroundColor];
+  document = [(SXDocumentController *)self document];
+  documentStyle = [document documentStyle];
+  backgroundColor = [documentStyle backgroundColor];
 
-  return v4;
+  return backgroundColor;
 }
 
 - (UIColor)topBackgroundColor
 {
-  v2 = [(SXDocumentController *)self document];
-  v3 = [v2 documentStyle];
-  v4 = [v3 topBackgroundColor];
+  document = [(SXDocumentController *)self document];
+  documentStyle = [document documentStyle];
+  topBackgroundColor = [documentStyle topBackgroundColor];
 
-  return v4;
+  return topBackgroundColor;
 }
 
-- (id)mergedObjectsWithIdentifiers:(id)a3 fromDictionary:(id)a4 merger:(id)a5
+- (id)mergedObjectsWithIdentifiers:(id)identifiers fromDictionary:(id)dictionary merger:(id)merger
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF70] array];
+  identifiersCopy = identifiers;
+  dictionaryCopy = dictionary;
+  mergerCopy = merger;
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v7;
+  v11 = identifiersCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -535,10 +535,10 @@ LABEL_30:
           objc_enumerationMutation(v11);
         }
 
-        v16 = [v8 objectForKey:{*(*(&v19 + 1) + 8 * i), v19}];
+        v16 = [dictionaryCopy objectForKey:{*(*(&v19 + 1) + 8 * i), v19}];
         if (v16)
         {
-          [v10 addObject:v16];
+          [array addObject:v16];
         }
       }
 
@@ -548,22 +548,22 @@ LABEL_30:
     while (v13);
   }
 
-  v17 = [v9 mergeObjects:v10];
+  v17 = [mergerCopy mergeObjects:array];
 
   return v17;
 }
 
-- (id)additionsForComponents:(id)a3
+- (id)additionsForComponents:(id)components
 {
-  v18 = self;
+  selfCopy = self;
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  componentsCopy = components;
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = componentsCopy;
   v5 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v5)
   {
@@ -583,8 +583,8 @@ LABEL_30:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = [v9 additions];
-        v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        additions = [v9 additions];
+        v11 = [additions countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {
           v12 = v11;
@@ -595,13 +595,13 @@ LABEL_30:
             {
               if (*v21 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(additions);
               }
 
-              [v4 addObject:*(*(&v20 + 1) + 8 * j)];
+              [array addObject:*(*(&v20 + 1) + 8 * j)];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v12 = [additions countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v12);
@@ -610,9 +610,9 @@ LABEL_30:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v9 components];
-          v16 = [(SXDocumentController *)v18 additionsForComponents:v15];
-          [v4 addObjectsFromArray:v16];
+          components = [v9 components];
+          v16 = [(SXDocumentController *)selfCopy additionsForComponents:components];
+          [array addObjectsFromArray:v16];
         }
       }
 
@@ -622,7 +622,7 @@ LABEL_30:
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 @end

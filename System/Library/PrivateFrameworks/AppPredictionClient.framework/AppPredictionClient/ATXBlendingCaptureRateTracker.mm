@@ -1,19 +1,19 @@
 @interface ATXBlendingCaptureRateTracker
-+ (void)logAppDirectoryCaptureWithTracker:(id)a3;
-+ (void)logAppDirectoryDiversionWithCaptureType:(int)a3 tracker:(id)a4;
-+ (void)logHomeScreenCaptureWithTracker:(id)a3;
-+ (void)logHomeScreenDiversionWithCaptureType:(int)a3 tracker:(id)a4;
-+ (void)logSpotlightActionCaptureWithTracker:(id)a3;
-+ (void)logSpotlightActionDiversionWithCaptureType:(int)a3 tracker:(id)a4;
-+ (void)logSpotlightAppCaptureWithTracker:(id)a3;
-+ (void)logSpotlightAppDiversionWithCaptureType:(int)a3 tracker:(id)a4;
++ (void)logAppDirectoryCaptureWithTracker:(id)tracker;
++ (void)logAppDirectoryDiversionWithCaptureType:(int)type tracker:(id)tracker;
++ (void)logHomeScreenCaptureWithTracker:(id)tracker;
++ (void)logHomeScreenDiversionWithCaptureType:(int)type tracker:(id)tracker;
++ (void)logSpotlightActionCaptureWithTracker:(id)tracker;
++ (void)logSpotlightActionDiversionWithCaptureType:(int)type tracker:(id)tracker;
++ (void)logSpotlightAppCaptureWithTracker:(id)tracker;
++ (void)logSpotlightAppDiversionWithCaptureType:(int)type tracker:(id)tracker;
 @end
 
 @implementation ATXBlendingCaptureRateTracker
 
-+ (void)logAppDirectoryCaptureWithTracker:(id)a3
++ (void)logAppDirectoryCaptureWithTracker:(id)tracker
 {
-  v3 = a3;
+  trackerCopy = tracker;
   v4 = objc_opt_new();
   v5 = [MEMORY[0x1E698B028] stringForConsumerSubtype:35];
   [v4 setConsumerSubType:v5];
@@ -23,7 +23,7 @@
   v6 = [MEMORY[0x1E69C5BC8] stringForExecutableType:1];
   [v4 setExecutableType:v6];
 
-  [v3 trackScalarForMessage:v4];
+  [trackerCopy trackScalarForMessage:v4];
   v7 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -31,10 +31,10 @@
   }
 }
 
-+ (void)logAppDirectoryDiversionWithCaptureType:(int)a3 tracker:(id)a4
++ (void)logAppDirectoryDiversionWithCaptureType:(int)type tracker:(id)tracker
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&type;
+  trackerCopy = tracker;
   v6 = objc_opt_new();
   v7 = [MEMORY[0x1E698B028] stringForConsumerSubtype:35];
   [v6 setConsumerSubType:v7];
@@ -44,7 +44,7 @@
   v8 = [MEMORY[0x1E69C5BC8] stringForExecutableType:1];
   [v6 setExecutableType:v8];
 
-  [v5 trackScalarForMessage:v6];
+  [trackerCopy trackScalarForMessage:v6];
   v9 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -52,9 +52,9 @@
   }
 }
 
-+ (void)logHomeScreenCaptureWithTracker:(id)a3
++ (void)logHomeScreenCaptureWithTracker:(id)tracker
 {
-  v3 = a3;
+  trackerCopy = tracker;
   v4 = objc_opt_new();
   v5 = [MEMORY[0x1E698B028] stringForConsumerSubtype:34];
   [v4 setConsumerSubType:v5];
@@ -64,7 +64,7 @@
   v6 = [MEMORY[0x1E69C5BC8] stringForExecutableType:1];
   [v4 setExecutableType:v6];
 
-  [v3 trackScalarForMessage:v4];
+  [trackerCopy trackScalarForMessage:v4];
   v7 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -72,10 +72,10 @@
   }
 }
 
-+ (void)logHomeScreenDiversionWithCaptureType:(int)a3 tracker:(id)a4
++ (void)logHomeScreenDiversionWithCaptureType:(int)type tracker:(id)tracker
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&type;
+  trackerCopy = tracker;
   v6 = objc_opt_new();
   v7 = [MEMORY[0x1E698B028] stringForConsumerSubtype:34];
   [v6 setConsumerSubType:v7];
@@ -85,7 +85,7 @@
   v8 = [MEMORY[0x1E69C5BC8] stringForExecutableType:1];
   [v6 setExecutableType:v8];
 
-  [v5 trackScalarForMessage:v6];
+  [trackerCopy trackScalarForMessage:v6];
   v9 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -93,9 +93,9 @@
   }
 }
 
-+ (void)logSpotlightAppCaptureWithTracker:(id)a3
++ (void)logSpotlightAppCaptureWithTracker:(id)tracker
 {
-  v3 = a3;
+  trackerCopy = tracker;
   v4 = objc_opt_new();
   v5 = [MEMORY[0x1E698B028] stringForConsumerSubtype:9];
   [v4 setConsumerSubType:v5];
@@ -105,7 +105,7 @@
   v6 = [MEMORY[0x1E69C5BC8] stringForExecutableType:1];
   [v4 setExecutableType:v6];
 
-  [v3 trackScalarForMessage:v4];
+  [trackerCopy trackScalarForMessage:v4];
   v7 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -113,10 +113,10 @@
   }
 }
 
-+ (void)logSpotlightAppDiversionWithCaptureType:(int)a3 tracker:(id)a4
++ (void)logSpotlightAppDiversionWithCaptureType:(int)type tracker:(id)tracker
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&type;
+  trackerCopy = tracker;
   v6 = objc_opt_new();
   v7 = [MEMORY[0x1E698B028] stringForConsumerSubtype:9];
   [v6 setConsumerSubType:v7];
@@ -126,7 +126,7 @@
   v8 = [MEMORY[0x1E69C5BC8] stringForExecutableType:1];
   [v6 setExecutableType:v8];
 
-  [v5 trackScalarForMessage:v6];
+  [trackerCopy trackScalarForMessage:v6];
   v9 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -134,9 +134,9 @@
   }
 }
 
-+ (void)logSpotlightActionCaptureWithTracker:(id)a3
++ (void)logSpotlightActionCaptureWithTracker:(id)tracker
 {
-  v3 = a3;
+  trackerCopy = tracker;
   v4 = objc_opt_new();
   v5 = [MEMORY[0x1E698B028] stringForConsumerSubtype:21];
   [v4 setConsumerSubType:v5];
@@ -146,7 +146,7 @@
   v6 = [MEMORY[0x1E69C5BC8] stringForExecutableType:2];
   [v4 setExecutableType:v6];
 
-  [v3 trackScalarForMessage:v4];
+  [trackerCopy trackScalarForMessage:v4];
   v7 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -154,10 +154,10 @@
   }
 }
 
-+ (void)logSpotlightActionDiversionWithCaptureType:(int)a3 tracker:(id)a4
++ (void)logSpotlightActionDiversionWithCaptureType:(int)type tracker:(id)tracker
 {
-  v4 = *&a3;
-  v5 = a4;
+  v4 = *&type;
+  trackerCopy = tracker;
   v6 = objc_opt_new();
   v7 = [MEMORY[0x1E698B028] stringForConsumerSubtype:21];
   [v6 setConsumerSubType:v7];
@@ -167,7 +167,7 @@
   v8 = [MEMORY[0x1E69C5BC8] stringForExecutableType:2];
   [v6 setExecutableType:v8];
 
-  [v5 trackScalarForMessage:v6];
+  [trackerCopy trackScalarForMessage:v6];
   v9 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {

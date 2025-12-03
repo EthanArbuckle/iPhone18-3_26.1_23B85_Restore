@@ -1,24 +1,24 @@
 @interface VCVirtualAVCaptureSession
-- (BOOL)connectionExists:(id)a3 output:(id)a4;
+- (BOOL)connectionExists:(id)exists output:(id)output;
 - (VCVirtualAVCaptureSession)init;
 - (id)connections;
 - (id)inputs;
-- (id)newConnectionWithInputPorts:(id)a3 outputDevice:(id)a4;
+- (id)newConnectionWithInputPorts:(id)ports outputDevice:(id)device;
 - (id)outputs;
 - (int)startInputDevices;
 - (int)stopInputDevices;
-- (void)addConnection:(id)a3;
-- (void)addConnectionWithInput:(id)a3 output:(id)a4;
-- (void)addInput:(id)a3;
-- (void)addOutput:(id)a3;
+- (void)addConnection:(id)connection;
+- (void)addConnectionWithInput:(id)input output:(id)output;
+- (void)addInput:(id)input;
+- (void)addOutput:(id)output;
 - (void)beginConfiguration;
 - (void)commitConfiguration;
 - (void)dealloc;
 - (void)init;
-- (void)postNotification:(id)a3;
-- (void)pushConfigurationBlock:(id)a3;
-- (void)removeInput:(id)a3;
-- (void)removeOutput:(id)a3;
+- (void)postNotification:(id)notification;
+- (void)pushConfigurationBlock:(id)block;
+- (void)removeInput:(id)input;
+- (void)removeOutput:(id)output;
 - (void)startInputDevices;
 - (void)startRunning;
 - (void)stopInputDevices;
@@ -255,13 +255,13 @@ _BYTE *__40__VCVirtualAVCaptureSession_stopRunning__block_invoke(uint64_t a1)
           objc_enumerationMutation(inputs);
         }
 
-        v7 = [*(*(&v12 + 1) + 8 * v6) device];
+        device = [*(*(&v12 + 1) + 8 * v6) device];
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v7 startVirtualCapture];
-          if (v8 < 0)
+          startVirtualCapture = [device startVirtualCapture];
+          if (startVirtualCapture < 0)
           {
-            [(VCVirtualAVCaptureSession *)v7 startInputDevices];
+            [(VCVirtualAVCaptureSession *)device startInputDevices];
             LODWORD(v3) = v10;
             return v3;
           }
@@ -308,13 +308,13 @@ _BYTE *__40__VCVirtualAVCaptureSession_stopRunning__block_invoke(uint64_t a1)
           objc_enumerationMutation(inputs);
         }
 
-        v7 = [*(*(&v12 + 1) + 8 * v6) device];
+        device = [*(*(&v12 + 1) + 8 * v6) device];
         if (objc_opt_respondsToSelector())
         {
-          v8 = [v7 stopVirtualCapture];
-          if ((v8 & 0x80000000) != 0)
+          stopVirtualCapture = [device stopVirtualCapture];
+          if ((stopVirtualCapture & 0x80000000) != 0)
           {
-            [(VCVirtualAVCaptureSession *)v7 stopInputDevices];
+            [(VCVirtualAVCaptureSession *)device stopInputDevices];
             LODWORD(v3) = v10;
             return v3;
           }
@@ -358,16 +358,16 @@ void __52__VCVirtualAVCaptureSession_pushConfigurationBlock___block_invoke(uint6
   }
 }
 
-- (id)newConnectionWithInputPorts:(id)a3 outputDevice:(id)a4
+- (id)newConnectionWithInputPorts:(id)ports outputDevice:(id)device
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (!ports || !device || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     [VCVirtualAVCaptureSession newConnectionWithInputPorts:? outputDevice:?];
     return v13;
   }
 
-  v6 = [[VCVirtualAVCaptureConnection alloc] initWithInputPorts:a3 output:a4];
+  v6 = [[VCVirtualAVCaptureConnection alloc] initWithInputPorts:ports output:device];
   if (!v6)
   {
     [VCVirtualAVCaptureSession newConnectionWithInputPorts:? outputDevice:?];
@@ -375,12 +375,12 @@ void __52__VCVirtualAVCaptureSession_pushConfigurationBlock___block_invoke(uint6
   }
 
   v7 = v6;
-  [a4 addConnection:v6];
+  [device addConnection:v6];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [a3 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v8 = [ports countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v8)
   {
     v9 = v8;
@@ -392,14 +392,14 @@ void __52__VCVirtualAVCaptureSession_pushConfigurationBlock___block_invoke(uint6
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(ports);
         }
 
         [*(*(&v15 + 1) + 8 * v11++) addConnection:v7];
       }
 
       while (v9 != v11);
-      v9 = [a3 countByEnumeratingWithState:&v15 objects:v14 count:16];
+      v9 = [ports countByEnumeratingWithState:&v15 objects:v14 count:16];
     }
 
     while (v9);
@@ -409,7 +409,7 @@ void __52__VCVirtualAVCaptureSession_pushConfigurationBlock___block_invoke(uint6
   return v7;
 }
 
-- (BOOL)connectionExists:(id)a3 output:(id)a4
+- (BOOL)connectionExists:(id)exists output:(id)output
 {
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
@@ -434,7 +434,7 @@ void __52__VCVirtualAVCaptureSession_pushConfigurationBlock___block_invoke(uint6
         }
 
         v12 = *(*(&v15 + 1) + 8 * v11);
-        if ([objc_msgSend(v12 "inputPorts")] && objc_msgSend(v12, "output") == a4)
+        if ([objc_msgSend(v12 "inputPorts")] && objc_msgSend(v12, "output") == output)
         {
           LOBYTE(v8) = 1;
           return v8;
@@ -492,17 +492,17 @@ void __43__VCVirtualAVCaptureSession_addConnection___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addInput:(id)a3
+- (void)addInput:(id)input
 {
   v3[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (input)
   {
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __38__VCVirtualAVCaptureSession_addInput___block_invoke;
     v3[3] = &unk_1E85F37F0;
     v3[4] = self;
-    v3[5] = a3;
+    v3[5] = input;
     [(VCVirtualAVCaptureSession *)self pushConfigurationBlock:v3];
   }
 
@@ -604,17 +604,17 @@ void __38__VCVirtualAVCaptureSession_addInput___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addOutput:(id)a3
+- (void)addOutput:(id)output
 {
   v3[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (output)
   {
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __39__VCVirtualAVCaptureSession_addOutput___block_invoke;
     v3[3] = &unk_1E85F37F0;
     v3[4] = self;
-    v3[5] = a3;
+    v3[5] = output;
     [(VCVirtualAVCaptureSession *)self pushConfigurationBlock:v3];
   }
 
@@ -682,17 +682,17 @@ void __39__VCVirtualAVCaptureSession_addOutput___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeInput:(id)a3
+- (void)removeInput:(id)input
 {
   v3[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (input)
   {
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __41__VCVirtualAVCaptureSession_removeInput___block_invoke;
     v3[3] = &unk_1E85F37F0;
     v3[4] = self;
-    v3[5] = a3;
+    v3[5] = input;
     [(VCVirtualAVCaptureSession *)self pushConfigurationBlock:v3];
   }
 
@@ -715,17 +715,17 @@ uint64_t __41__VCVirtualAVCaptureSession_removeInput___block_invoke(uint64_t a1)
   return [v3 removeObject:v2];
 }
 
-- (void)removeOutput:(id)a3
+- (void)removeOutput:(id)output
 {
   v3[6] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (output)
   {
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __42__VCVirtualAVCaptureSession_removeOutput___block_invoke;
     v3[3] = &unk_1E85F37F0;
     v3[4] = self;
-    v3[5] = a3;
+    v3[5] = output;
     [(VCVirtualAVCaptureSession *)self pushConfigurationBlock:v3];
   }
 
@@ -769,11 +769,11 @@ uint64_t __36__VCVirtualAVCaptureSession_outputs__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)postNotification:(id)a3
+- (void)postNotification:(id)notification
 {
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v5 postNotificationName:a3 object:self];
+  [defaultCenter postNotificationName:notification object:self];
 }
 
 uint64_t __48__VCVirtualAVCaptureSession_commitConfiguration__block_invoke(uint64_t result)
@@ -828,7 +828,7 @@ uint64_t __48__VCVirtualAVCaptureSession_commitConfiguration__block_invoke(uint6
   return result;
 }
 
-- (void)pushConfigurationBlock:(id)a3
+- (void)pushConfigurationBlock:(id)block
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->_stateQueue;
@@ -839,18 +839,18 @@ uint64_t __48__VCVirtualAVCaptureSession_commitConfiguration__block_invoke(uint6
     block[2] = __52__VCVirtualAVCaptureSession_pushConfigurationBlock___block_invoke;
     block[3] = &unk_1E85F4E98;
     block[4] = self;
-    block[5] = a3;
+    block[5] = block;
     dispatch_sync(stateQueue, block);
   }
 }
 
-- (void)addConnectionWithInput:(id)a3 output:(id)a4
+- (void)addConnectionWithInput:(id)input output:(id)output
 {
   v21 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_stateQueue);
-  if (!-[VCVirtualAVCaptureSession connectionExists:output:](self, "connectionExists:output:", [a3 ports], a4))
+  if (!-[VCVirtualAVCaptureSession connectionExists:output:](self, "connectionExists:output:", [input ports], output))
   {
-    v7 = -[VCVirtualAVCaptureSession newConnectionWithInputPorts:outputDevice:](self, "newConnectionWithInputPorts:outputDevice:", [a3 ports], a4);
+    v7 = -[VCVirtualAVCaptureSession newConnectionWithInputPorts:outputDevice:](self, "newConnectionWithInputPorts:outputDevice:", [input ports], output);
     if (v7)
     {
       v10 = v7;
@@ -870,19 +870,19 @@ uint64_t __48__VCVirtualAVCaptureSession_commitConfiguration__block_invoke(uint6
         v15 = 1024;
         v16 = 198;
         v17 = 2048;
-        v18 = a3;
+        inputCopy = input;
         v19 = 2048;
-        v20 = a4;
+        outputCopy = output;
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Failed to create connection for input:[%p], output:[%p]", buf, 0x30u);
       }
     }
   }
 }
 
-- (void)addConnection:(id)a3
+- (void)addConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (connection)
   {
     if (self->_stateQueue)
     {
@@ -891,7 +891,7 @@ uint64_t __48__VCVirtualAVCaptureSession_commitConfiguration__block_invoke(uint6
       v5[2] = __43__VCVirtualAVCaptureSession_addConnection___block_invoke;
       v5[3] = &unk_1E85F37F0;
       v5[4] = self;
-      v5[5] = a3;
+      v5[5] = connection;
       [(VCVirtualAVCaptureSession *)self pushConfigurationBlock:v5];
     }
   }

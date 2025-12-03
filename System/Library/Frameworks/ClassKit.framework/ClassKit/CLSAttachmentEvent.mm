@@ -1,36 +1,36 @@
 @interface CLSAttachmentEvent
-- (BOOL)validateObject:(id *)a3;
-- (CLSAttachmentEvent)initWithAttachmentID:(id)a3 classID:(id)a4 handoutID:(id)a5 eventType:(int64_t)a6;
-- (CLSAttachmentEvent)initWithCoder:(id)a3;
+- (BOOL)validateObject:(id *)object;
+- (CLSAttachmentEvent)initWithAttachmentID:(id)d classID:(id)iD handoutID:(id)handoutID eventType:(int64_t)type;
+- (CLSAttachmentEvent)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeWithObject:(id)a3;
-- (void)setAppIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeWithObject:(id)object;
+- (void)setAppIdentifier:(id)identifier;
 @end
 
 @implementation CLSAttachmentEvent
 
-- (CLSAttachmentEvent)initWithAttachmentID:(id)a3 classID:(id)a4 handoutID:(id)a5 eventType:(int64_t)a6
+- (CLSAttachmentEvent)initWithAttachmentID:(id)d classID:(id)iD handoutID:(id)handoutID eventType:(int64_t)type
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  handoutIDCopy = handoutID;
   v17.receiver = self;
   v17.super_class = CLSAttachmentEvent;
-  v14 = [(CLSInsightEvent *)&v17 initWithType:a6];
+  v14 = [(CLSInsightEvent *)&v17 initWithType:type];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_attachmentID, a3);
-    objc_storeStrong(&v15->_classID, a4);
-    objc_storeStrong(&v15->_handoutID, a5);
+    objc_storeStrong(&v14->_attachmentID, d);
+    objc_storeStrong(&v15->_classID, iD);
+    objc_storeStrong(&v15->_handoutID, handoutID);
   }
 
   return v15;
 }
 
-- (BOOL)validateObject:(id *)a3
+- (BOOL)validateObject:(id *)object
 {
   v24.receiver = self;
   v24.super_class = CLSAttachmentEvent;
@@ -68,87 +68,87 @@
     v19 = objc_msgSend_localizedStringForKey_value_table_(v17, v18, v12, &stru_284A08768, @"ClassKit");
     v21 = objc_msgSend_stringWithFormat_(v13, v20, v19);
 
-    objc_msgSend_cls_assignError_code_errorObject_description_(MEMORY[0x277CCA9B8], v22, a3, 2, self, v21);
+    objc_msgSend_cls_assignError_code_errorObject_description_(MEMORY[0x277CCA9B8], v22, object, 2, self, v21);
     LOBYTE(v5) = 0;
   }
 
   return v5;
 }
 
-- (CLSAttachmentEvent)initWithCoder:(id)a3
+- (CLSAttachmentEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = CLSAttachmentEvent;
-  v5 = [(CLSInsightEvent *)&v25 initWithCoder:v4];
+  v5 = [(CLSInsightEvent *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"attachmentID");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"attachmentID");
     attachmentID = v5->_attachmentID;
     v5->_attachmentID = v8;
 
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"classID");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"classID");
     classID = v5->_classID;
     v5->_classID = v12;
 
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"handoutID");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"handoutID");
     handoutID = v5->_handoutID;
     v5->_handoutID = v16;
 
     v18 = objc_opt_class();
-    v20 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v18, @"recipientPersonID");
+    v20 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v18, @"recipientPersonID");
     recipientPersonID = v5->_recipientPersonID;
     v5->_recipientPersonID = v20;
 
-    v5->_handoutAttachmentType = objc_msgSend_decodeIntegerForKey_(v4, v22, @"handoutAttachmentType");
-    v5->_contextType = objc_msgSend_decodeIntegerForKey_(v4, v23, @"contextType");
+    v5->_handoutAttachmentType = objc_msgSend_decodeIntegerForKey_(coderCopy, v22, @"handoutAttachmentType");
+    v5->_contextType = objc_msgSend_decodeIntegerForKey_(coderCopy, v23, @"contextType");
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CLSAttachmentEvent;
-  v4 = a3;
-  [(CLSInsightEvent *)&v11 encodeWithCoder:v4];
-  objc_msgSend_encodeObject_forKey_(v4, v5, self->_attachmentID, @"attachmentID", v11.receiver, v11.super_class);
-  objc_msgSend_encodeObject_forKey_(v4, v6, self->_classID, @"classID");
-  objc_msgSend_encodeObject_forKey_(v4, v7, self->_handoutID, @"handoutID");
-  objc_msgSend_encodeObject_forKey_(v4, v8, self->_recipientPersonID, @"recipientPersonID");
-  objc_msgSend_encodeInteger_forKey_(v4, v9, self->_handoutAttachmentType, @"handoutAttachmentType");
-  objc_msgSend_encodeInteger_forKey_(v4, v10, self->_contextType, @"contextType");
+  coderCopy = coder;
+  [(CLSInsightEvent *)&v11 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, self->_attachmentID, @"attachmentID", v11.receiver, v11.super_class);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->_classID, @"classID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_handoutID, @"handoutID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->_recipientPersonID, @"recipientPersonID");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v9, self->_handoutAttachmentType, @"handoutAttachmentType");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v10, self->_contextType, @"contextType");
 }
 
 - (id)dictionaryRepresentation
 {
   v14.receiver = self;
   v14.super_class = CLSAttachmentEvent;
-  v3 = [(CLSInsightEvent *)&v14 dictionaryRepresentation];
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v4, self->_attachmentID, @"attachmentID");
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v5, self->_classID, @"classID");
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v6, self->_handoutID, @"handoutID");
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v7, self->_recipientPersonID, @"recipientPersonID");
+  dictionaryRepresentation = [(CLSInsightEvent *)&v14 dictionaryRepresentation];
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v4, self->_attachmentID, @"attachmentID");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v5, self->_classID, @"classID");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v6, self->_handoutID, @"handoutID");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v7, self->_recipientPersonID, @"recipientPersonID");
   v9 = NSStringFromHandoutAttachmentType(self->_handoutAttachmentType, v8);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v10, v9, @"handoutAttachmentType");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v10, v9, @"handoutAttachmentType");
 
   v11 = DefaultNameFromContextType(self->_contextType);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v12, v11, @"contextType");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v12, v11, @"contextType");
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)mergeWithObject:(id)a3
+- (void)mergeWithObject:(id)object
 {
   v23[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v21.receiver = self;
   v21.super_class = CLSAttachmentEvent;
-  [(CLSInsightEvent *)&v21 mergeWithObject:v4];
+  [(CLSInsightEvent *)&v21 mergeWithObject:objectCopy];
   v23[0] = @"attachmentID";
   v23[1] = @"classID";
   v23[2] = @"handoutID";
@@ -175,7 +175,7 @@
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = objc_msgSend_valueForKey_(v4, v9, v13, v17);
+        v14 = objc_msgSend_valueForKey_(objectCopy, v9, v13, v17);
         objc_msgSend_setValue_forKey_(self, v15, v14, v13);
       }
 
@@ -188,19 +188,19 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAppIdentifier:(id)a3
+- (void)setAppIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v7 = objc_msgSend_appIdentifier(self, v5, v6);
-  if (v4 | v7)
+  if (identifierCopy | v7)
   {
     v10 = v7;
     v11 = objc_msgSend_appIdentifier(self, v8, v9);
     v14 = v11;
-    if (v4 && v11)
+    if (identifierCopy && v11)
     {
       v15 = objc_msgSend_appIdentifier(self, v12, v13);
-      isEqualToString = objc_msgSend_isEqualToString_(v15, v16, v4);
+      isEqualToString = objc_msgSend_isEqualToString_(v15, v16, identifierCopy);
 
       if (isEqualToString)
       {
@@ -212,7 +212,7 @@
     {
     }
 
-    v20 = objc_msgSend_copy(v4, v18, v19);
+    v20 = objc_msgSend_copy(identifierCopy, v18, v19);
     v21.receiver = self;
     v21.super_class = CLSAttachmentEvent;
     [(CLSObject *)&v21 setAppIdentifier:v20];

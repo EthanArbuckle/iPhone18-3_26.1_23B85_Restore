@@ -1,13 +1,13 @@
 @interface OADPresetDash
 + (id)defaultProperties;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADPresetDash)initWithDefaults;
 - (char)type;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)equivalentCustomDash;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 @end
 
 @implementation OADPresetDash
@@ -28,11 +28,11 @@
 {
   v5.receiver = self;
   v5.super_class = OADPresetDash;
-  v2 = [(OADProperties *)&v5 initWithDefaults];
-  v3 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v5 initWithDefaults];
+  v3 = initWithDefaults;
+  if (initWithDefaults)
   {
-    [(OADPresetDash *)v2 setType:0];
+    [(OADPresetDash *)initWithDefaults setType:0];
   }
 
   return v3;
@@ -93,9 +93,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*(&self->super.super + 18))
   {
@@ -119,16 +119,16 @@ void __34__OADPresetDash_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADPresetDash *)self isTypeOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v7.receiver = self;
   v7.super_class = OADPresetDash;
-  [(OADProperties *)&v7 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ((*(&self->super.super + 18) & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v7 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ((*(&self->super.super + 18) & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
-    v6 = [(OADPresetDash *)self type];
-    if (v6 == [v4 type])
+    type = [(OADPresetDash *)self type];
+    if (type == [valuesCopy type])
     {
       *(&self->super.super + 18) &= ~1u;
     }
@@ -140,14 +140,14 @@ void __34__OADPresetDash_defaultProperties__block_invoke()
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = OADPresetDash;
-  if ([(OADDash *)&v9 isEqual:v4])
+  if ([(OADDash *)&v9 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = *(&self->super.super + 18);
     if ((v5[18] ^ v6))
     {

@@ -1,35 +1,35 @@
 @interface _PSAppUsageUtilities
-+ (id)addBiomeDataToCache:(id)a3 event:(id)a4;
++ (id)addBiomeDataToCache:(id)cache event:(id)event;
 + (id)appUsageDurations;
-+ (id)boostAppsForSourceBundleId:(id)a3;
-+ (id)mostUsedAppBundleIdsUsingPredicate:(id)a3 knowledgeStore:(id)a4;
-+ (id)mostUsedAppShareExtensionsWithAppBundleIdsToShareExtensionBundleIdsMapping:(id)a3 sourceBundleId:(id)a4 sharesFromSourceToTargetBundle:(id)a5 appUsageDurations:(id)a6;
-+ (id)relativeAppUsageProbabilitiesForCandidateBundleIds:(id)a3 daysAgo:(int64_t)a4 knowledgeStore:(id)a5;
-+ (id)shareExtensionsUsedAndInstalledDaysAgo:(int64_t)a3 appBundleIdsToShareExtensionBundleIdsMapping:(id)a4 knowledgeStore:(id)a5;
++ (id)boostAppsForSourceBundleId:(id)id;
++ (id)mostUsedAppBundleIdsUsingPredicate:(id)predicate knowledgeStore:(id)store;
++ (id)mostUsedAppShareExtensionsWithAppBundleIdsToShareExtensionBundleIdsMapping:(id)mapping sourceBundleId:(id)id sharesFromSourceToTargetBundle:(id)bundle appUsageDurations:(id)durations;
++ (id)relativeAppUsageProbabilitiesForCandidateBundleIds:(id)ids daysAgo:(int64_t)ago knowledgeStore:(id)store;
++ (id)shareExtensionsUsedAndInstalledDaysAgo:(int64_t)ago appBundleIdsToShareExtensionBundleIdsMapping:(id)mapping knowledgeStore:(id)store;
 + (id)sharesFromSourceToTargetBundleValues;
-+ (id)suggestionArrayWithArray:(id)a3 appendingUniqueElementsByBundleIdFromArray:(id)a4;
-+ (id)suggestionsFromAppBundleIds:(id)a3 appBundleIdsToShareExtensionBundleIdsMapping:(id)a4;
-+ (id)suggestionsFromShareBundleIds:(id)a3 appBundleIdsToShareExtensionBundleIdsMapping:(id)a4;
-+ (void)cacheAppUsageDurations:(id)a3;
++ (id)suggestionArrayWithArray:(id)array appendingUniqueElementsByBundleIdFromArray:(id)fromArray;
++ (id)suggestionsFromAppBundleIds:(id)ids appBundleIdsToShareExtensionBundleIdsMapping:(id)mapping;
++ (id)suggestionsFromShareBundleIds:(id)ids appBundleIdsToShareExtensionBundleIdsMapping:(id)mapping;
++ (void)cacheAppUsageDurations:(id)durations;
 + (void)cacheSharesForEachApp;
 @end
 
 @implementation _PSAppUsageUtilities
 
-+ (id)mostUsedAppBundleIdsUsingPredicate:(id)a3 knowledgeStore:(id)a4
++ (id)mostUsedAppBundleIdsUsingPredicate:(id)predicate knowledgeStore:(id)store
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  predicateCopy = predicate;
+  storeCopy = store;
   v7 = MEMORY[0x1E6997968];
-  v8 = [MEMORY[0x1E69979E8] appUsageStream];
-  v54[0] = v8;
+  appUsageStream = [MEMORY[0x1E69979E8] appUsageStream];
+  v54[0] = appUsageStream;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:1];
   v10 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:0];
   v53 = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-  v37 = v5;
-  v12 = [v7 eventQueryWithPredicate:v5 eventStreams:v9 offset:0 limit:5000 sortDescriptors:v11];
+  v37 = predicateCopy;
+  v12 = [v7 eventQueryWithPredicate:predicateCopy eventStreams:v9 offset:0 limit:5000 sortDescriptors:v11];
 
   v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"_PSAppUsageUtilities.m"];
   v14 = [v13 stringByAppendingFormat:@":%d", 39];
@@ -41,8 +41,8 @@
   [v12 setGroupByProperties:&unk_1F2D8C3A8];
   v50 = 0;
   v35 = v12;
-  v36 = v6;
-  v15 = [v6 executeQuery:v12 error:&v50];
+  v36 = storeCopy;
+  v15 = [storeCopy executeQuery:v12 error:&v50];
   v34 = v50;
   v41 = v15;
   v16 = [v15 valueForKeyPath:@"@distinctUnionOfObjects.valueString"];
@@ -121,19 +121,19 @@
   return v31;
 }
 
-+ (id)shareExtensionsUsedAndInstalledDaysAgo:(int64_t)a3 appBundleIdsToShareExtensionBundleIdsMapping:(id)a4 knowledgeStore:(id)a5
++ (id)shareExtensionsUsedAndInstalledDaysAgo:(int64_t)ago appBundleIdsToShareExtensionBundleIdsMapping:(id)mapping knowledgeStore:(id)store
 {
   v105[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  mappingCopy = mapping;
+  storeCopy = store;
   v9 = MEMORY[0x1E69979D0];
-  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:(-86400 * a3)];
-  v11 = [MEMORY[0x1E695DF00] date];
-  v12 = [v9 predicateForEventsWithStartInDateRangeFrom:v10 to:v11];
+  v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:(-86400 * ago)];
+  date = [MEMORY[0x1E695DF00] date];
+  v12 = [v9 predicateForEventsWithStartInDateRangeFrom:v10 to:date];
 
   v13 = MEMORY[0x1E69979D0];
-  v14 = [v7 allKeys];
-  v15 = [v13 predicateForEventsWithStringValueInValues:v14];
+  allKeys = [mappingCopy allKeys];
+  v15 = [v13 predicateForEventsWithStringValueInValues:allKeys];
 
   v16 = MEMORY[0x1E6997968];
   v17 = MEMORY[0x1E696AB28];
@@ -143,8 +143,8 @@
   v105[1] = v15;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:2];
   v19 = [v17 andPredicateWithSubpredicates:v18];
-  v20 = [MEMORY[0x1E69979E8] appInstallStream];
-  v104 = v20;
+  appInstallStream = [MEMORY[0x1E69979E8] appInstallStream];
+  v104 = appInstallStream;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v104 count:1];
   v22 = [v16 eventQueryWithPredicate:v19 eventStreams:v21 offset:0 limit:8 sortDescriptors:0];
 
@@ -155,9 +155,9 @@
   [v22 setTracker:&__block_literal_global_44];
   [v22 setExecuteConcurrently:1];
   v97 = 0;
-  v78 = v8;
+  v78 = storeCopy;
   v70 = v22;
-  v25 = [v8 executeQuery:v22 error:&v97];
+  v25 = [storeCopy executeQuery:v22 error:&v97];
   v69 = v97;
   v26 = [MEMORY[0x1E695DFA8] set];
   v93 = 0u;
@@ -179,16 +179,16 @@
           objc_enumerationMutation(obj);
         }
 
-        v31 = [*(*(&v93 + 1) + 8 * i) value];
-        v32 = [v31 stringValue];
+        value = [*(*(&v93 + 1) + 8 * i) value];
+        stringValue = [value stringValue];
 
-        if (v32)
+        if (stringValue)
         {
-          v33 = [v7 objectForKey:v32];
+          v33 = [mappingCopy objectForKey:stringValue];
 
           if (v33)
           {
-            [v26 addObject:v32];
+            [v26 addObject:stringValue];
           }
         }
       }
@@ -206,8 +206,8 @@
     v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v102 count:1];
 
     v37 = MEMORY[0x1E6997968];
-    v38 = [MEMORY[0x1E69979E8] appUsageStream];
-    v101 = v38;
+    appUsageStream = [MEMORY[0x1E69979E8] appUsageStream];
+    v101 = appUsageStream;
     v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v101 count:1];
     v67 = v36;
     v40 = [v37 eventQueryWithPredicate:0 eventStreams:v39 offset:0 limit:1 sortDescriptors:v36];
@@ -247,12 +247,12 @@
           v88 = 0;
           v49 = [v78 executeQuery:v77 error:&v88];
           v50 = v88;
-          v51 = [v49 firstObject];
-          v52 = v51;
-          if (v51)
+          firstObject = [v49 firstObject];
+          v52 = firstObject;
+          if (firstObject)
           {
-            v53 = [v51 startDate];
-            [v74 setObject:v53 forKeyedSubscript:v47];
+            startDate = [firstObject startDate];
+            [v74 setObject:startDate forKeyedSubscript:v47];
           }
         }
 
@@ -263,7 +263,7 @@
     }
 
     v54 = [v74 keysSortedByValueUsingComparator:&__block_literal_global_49];
-    v34 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v84 = 0u;
     v85 = 0u;
     v86 = 0u;
@@ -283,8 +283,8 @@
             objc_enumerationMutation(v73);
           }
 
-          v58 = v7;
-          v59 = [v7 objectForKeyedSubscript:*(*(&v84 + 1) + 8 * k)];
+          v58 = mappingCopy;
+          v59 = [mappingCopy objectForKeyedSubscript:*(*(&v84 + 1) + 8 * k)];
           v80 = 0u;
           v81 = 0u;
           v82 = 0u;
@@ -306,7 +306,7 @@
                 v64 = [[_PSSuggestion alloc] initWithBundleID:*(*(&v80 + 1) + 8 * m) conversationIdentifier:0 groupName:0 recipients:0];
                 if (v64)
                 {
-                  [v34 addObject:v64];
+                  [array addObject:v64];
                 }
               }
 
@@ -316,7 +316,7 @@
             while (v61);
           }
 
-          v7 = v58;
+          mappingCopy = v58;
         }
 
         v56 = [v73 countByEnumeratingWithState:&v84 objects:v99 count:16];
@@ -330,25 +330,25 @@
 
   else
   {
-    v34 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   v65 = *MEMORY[0x1E69E9840];
 
-  return v34;
+  return array;
 }
 
-+ (id)suggestionsFromAppBundleIds:(id)a3 appBundleIdsToShareExtensionBundleIdsMapping:(id)a4
++ (id)suggestionsFromAppBundleIds:(id)ids appBundleIdsToShareExtensionBundleIdsMapping:(id)mapping
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  idsCopy = ids;
+  mappingCopy = mapping;
   v7 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v5;
+  obj = idsCopy;
   v8 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v8)
   {
@@ -366,11 +366,11 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [v6 objectForKeyedSubscript:*(*(&v30 + 1) + 8 * v11)];
+        v12 = [mappingCopy objectForKeyedSubscript:*(*(&v30 + 1) + 8 * v11)];
         v13 = v12;
         if (v12 && [v12 count])
         {
-          v14 = v6;
+          v14 = mappingCopy;
           v28 = 0u;
           v29 = 0u;
           v26 = 0u;
@@ -403,7 +403,7 @@
             while (v17);
           }
 
-          v6 = v14;
+          mappingCopy = v14;
           v10 = v23;
           v9 = v24;
         }
@@ -423,18 +423,18 @@
   return v7;
 }
 
-+ (id)suggestionsFromShareBundleIds:(id)a3 appBundleIdsToShareExtensionBundleIdsMapping:(id)a4
++ (id)suggestionsFromShareBundleIds:(id)ids appBundleIdsToShareExtensionBundleIdsMapping:(id)mapping
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  idsCopy = ids;
+  mappingCopy = mapping;
   v7 = objc_opt_new();
   v8 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v9 = v6;
+  v9 = mappingCopy;
   v10 = [v9 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v10)
   {
@@ -463,7 +463,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v15 = v5;
+  v15 = idsCopy;
   v16 = [v15 countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v16)
   {
@@ -500,10 +500,10 @@
   return v7;
 }
 
-+ (id)boostAppsForSourceBundleId:(id)a3
++ (id)boostAppsForSourceBundleId:(id)id
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  idCopy = id;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_alloc(MEMORY[0x1E695DFD8]);
   v6 = +[_PSConstants mobilePhotosBundleId];
@@ -511,7 +511,7 @@
   v8 = [v5 initWithObjects:{v6, v7, 0}];
 
   objc_autoreleasePoolPop(v4);
-  LODWORD(v6) = [v8 containsObject:v3];
+  LODWORD(v6) = [v8 containsObject:idCopy];
   v9 = +[_PSLogging heuristicsChannel];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
   if (v6)
@@ -519,7 +519,7 @@
     if (v10)
     {
       *buf = 138412290;
-      v23 = v3;
+      v23 = idCopy;
       _os_log_impl(&dword_1B5ED1000, v9, OS_LOG_TYPE_INFO, "Rank default (Journal > Reminders) apps for source bundleId: %@", buf, 0xCu);
     }
 
@@ -541,7 +541,7 @@
     if (v10)
     {
       *buf = 138412290;
-      v23 = v3;
+      v23 = idCopy;
       _os_log_impl(&dword_1B5ED1000, v9, OS_LOG_TYPE_INFO, "Rank default (Reminders > Journal) apps for source bundleId: %@", buf, 0xCu);
     }
 
@@ -565,30 +565,30 @@
   return v17;
 }
 
-+ (id)mostUsedAppShareExtensionsWithAppBundleIdsToShareExtensionBundleIdsMapping:(id)a3 sourceBundleId:(id)a4 sharesFromSourceToTargetBundle:(id)a5 appUsageDurations:(id)a6
++ (id)mostUsedAppShareExtensionsWithAppBundleIdsToShareExtensionBundleIdsMapping:(id)mapping sourceBundleId:(id)id sharesFromSourceToTargetBundle:(id)bundle appUsageDurations:(id)durations
 {
   v46[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 objectForKeyedSubscript:v11];
+  mappingCopy = mapping;
+  idCopy = id;
+  bundleCopy = bundle;
+  durationsCopy = durations;
+  v14 = [bundleCopy objectForKeyedSubscript:idCopy];
 
   if (v14)
   {
-    v15 = [v12 objectForKeyedSubscript:v11];
+    v15 = [bundleCopy objectForKeyedSubscript:idCopy];
     v16 = [v15 keysSortedByValueUsingComparator:&__block_literal_global_56];
-    v17 = [a1 suggestionsFromShareBundleIds:v16 appBundleIdsToShareExtensionBundleIdsMapping:v10];
+    v17 = [self suggestionsFromShareBundleIds:v16 appBundleIdsToShareExtensionBundleIdsMapping:mappingCopy];
 
-    if (v13)
+    if (durationsCopy)
     {
 LABEL_3:
-      v37 = v12;
-      v18 = [v13 keysSortedByValueUsingComparator:&__block_literal_global_59];
-      v19 = [a1 suggestionsFromAppBundleIds:v18 appBundleIdsToShareExtensionBundleIdsMapping:v10];
-      v34 = [a1 boostAppsForSourceBundleId:v11];
-      v38 = v10;
-      v20 = [a1 suggestionsFromAppBundleIds:? appBundleIdsToShareExtensionBundleIdsMapping:?];
+      v37 = bundleCopy;
+      v18 = [durationsCopy keysSortedByValueUsingComparator:&__block_literal_global_59];
+      v19 = [self suggestionsFromAppBundleIds:v18 appBundleIdsToShareExtensionBundleIdsMapping:mappingCopy];
+      v34 = [self boostAppsForSourceBundleId:idCopy];
+      v38 = mappingCopy;
+      v20 = [self suggestionsFromAppBundleIds:? appBundleIdsToShareExtensionBundleIdsMapping:?];
       v35 = v19;
       v36 = v17;
       v46[0] = v17;
@@ -617,7 +617,7 @@ LABEL_3:
               objc_enumerationMutation(v21);
             }
 
-            v25 = [a1 suggestionArrayWithArray:v27 appendingUniqueElementsByBundleIdFromArray:*(*(&v39 + 1) + 8 * v26)];
+            v25 = [self suggestionArrayWithArray:v27 appendingUniqueElementsByBundleIdFromArray:*(*(&v39 + 1) + 8 * v26)];
 
             ++v26;
             v27 = v25;
@@ -644,8 +644,8 @@ LABEL_3:
         _os_log_impl(&dword_1B5ED1000, v29, OS_LOG_TYPE_INFO, "Returning %@ share extension suggestions based on sharing app usage and most shared apps", buf, 0xCu);
       }
 
-      v12 = v37;
-      v10 = v38;
+      bundleCopy = v37;
+      mappingCopy = v38;
       v17 = v36;
       goto LABEL_21;
     }
@@ -661,7 +661,7 @@ LABEL_3:
     }
 
     v17 = MEMORY[0x1E695E0F0];
-    if (v13)
+    if (durationsCopy)
     {
       goto LABEL_3;
     }
@@ -682,20 +682,20 @@ LABEL_21:
   return v25;
 }
 
-+ (id)relativeAppUsageProbabilitiesForCandidateBundleIds:(id)a3 daysAgo:(int64_t)a4 knowledgeStore:(id)a5
++ (id)relativeAppUsageProbabilitiesForCandidateBundleIds:(id)ids daysAgo:(int64_t)ago knowledgeStore:(id)store
 {
   v86[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (v7 && [v7 count])
+  idsCopy = ids;
+  storeCopy = store;
+  if (idsCopy && [idsCopy count])
   {
     v9 = MEMORY[0x1E69979D0];
-    v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:(-86400 * a4)];
-    v11 = [MEMORY[0x1E695DF00] date];
-    v12 = [v9 predicateForEventsWithStartInDateRangeFrom:v10 to:v11];
+    v10 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:(-86400 * ago)];
+    date = [MEMORY[0x1E695DF00] date];
+    v12 = [v9 predicateForEventsWithStartInDateRangeFrom:v10 to:date];
 
-    v62 = v7;
-    v13 = [MEMORY[0x1E69979D0] predicateForEventsWithStringValueInValues:v7];
+    v62 = idsCopy;
+    v13 = [MEMORY[0x1E69979D0] predicateForEventsWithStringValueInValues:idsCopy];
     v14 = MEMORY[0x1E696AB28];
     v86[0] = v12;
     v86[1] = v13;
@@ -703,8 +703,8 @@ LABEL_21:
     v16 = [v14 andPredicateWithSubpredicates:v15];
 
     v17 = MEMORY[0x1E6997968];
-    v18 = [MEMORY[0x1E69979E8] appUsageStream];
-    v85 = v18;
+    appUsageStream = [MEMORY[0x1E69979E8] appUsageStream];
+    v85 = appUsageStream;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v85 count:1];
     v20 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:0];
     v84 = v20;
@@ -721,9 +721,9 @@ LABEL_21:
     [v22 setGroupByProperties:&unk_1F2D8C3C0];
     [v22 setExecuteConcurrently:1];
     v80 = 0;
-    v61 = v8;
+    v61 = storeCopy;
     v57 = v22;
-    v25 = [v8 executeQuery:v22 error:&v80];
+    v25 = [storeCopy executeQuery:v22 error:&v80];
     v26 = v80;
     v66 = v25;
     v27 = [v25 valueForKeyPath:@"@distinctUnionOfObjects.valueString"];
@@ -841,8 +841,8 @@ LABEL_21:
       while (v46);
     }
 
-    v8 = v61;
-    v7 = v62;
+    storeCopy = v61;
+    idsCopy = v62;
   }
 
   else
@@ -857,43 +857,43 @@ LABEL_21:
 
 + (id)sharesFromSourceToTargetBundleValues
 {
-  v2 = [MEMORY[0x1E6997A60] userContext];
+  userContext = [MEMORY[0x1E6997A60] userContext];
   v3 = [MEMORY[0x1E6997A78] keyPathWithKey:@"/appShares/value"];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [userContext objectForKeyedSubscript:v3];
 
   return v4;
 }
 
 + (id)appUsageDurations
 {
-  v2 = [MEMORY[0x1E6997A60] userContext];
+  userContext = [MEMORY[0x1E6997A60] userContext];
   v3 = [MEMORY[0x1E6997A78] keyPathWithKey:@"/appUsage/durations"];
-  v4 = [v2 objectForKeyedSubscript:v3];
+  v4 = [userContext objectForKeyedSubscript:v3];
 
   return v4;
 }
 
-+ (void)cacheAppUsageDurations:(id)a3
++ (void)cacheAppUsageDurations:(id)durations
 {
   v70[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E6997A60] userContext];
+  durationsCopy = durations;
+  userContext = [MEMORY[0x1E6997A60] userContext];
   v5 = [MEMORY[0x1E6997A78] keyPathWithKey:@"/appUsage/durations"];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v4 lastModifiedDateForContextualKeyPath:v5];
-  if (!v7)
+  date = [MEMORY[0x1E695DF00] date];
+  distantPast = [userContext lastModifiedDateForContextualKeyPath:v5];
+  if (!distantPast)
   {
-    v7 = [MEMORY[0x1E695DF00] distantPast];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  [v6 timeIntervalSinceDate:v7];
+  [date timeIntervalSinceDate:distantPast];
   if (v8 <= 0.0 || v8 >= 72000.0)
   {
-    v49 = v3;
-    v43 = v7;
-    v44 = v6;
+    v49 = durationsCopy;
+    v43 = distantPast;
+    v44 = date;
     v45 = v5;
-    v46 = v4;
+    v46 = userContext;
     v53 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v10 = 0;
     v51 = 0x7FFFFFFFFFFFFFFFLL;
@@ -903,8 +903,8 @@ LABEL_21:
     {
       v50 = objc_autoreleasePoolPush();
       v13 = *(v11 + 2408);
-      v14 = [*(v12 + 2536) appUsageStream];
-      v70[0] = v14;
+      appUsageStream = [*(v12 + 2536) appUsageStream];
+      v70[0] = appUsageStream;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:1];
       v16 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"startDate" ascending:0];
       v69 = v16;
@@ -1041,12 +1041,12 @@ LABEL_21:
 
     v41 = [v53 copy];
     v5 = v45;
-    v4 = v46;
+    userContext = v46;
     [v46 setObject:v41 forKeyedSubscript:v45];
 
-    v7 = v43;
-    v6 = v44;
-    v3 = v49;
+    distantPast = v43;
+    date = v44;
+    durationsCopy = v49;
   }
 
   else
@@ -1062,25 +1062,25 @@ LABEL_21:
   v42 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)addBiomeDataToCache:(id)a3 event:(id)a4
++ (id)addBiomeDataToCache:(id)cache event:(id)event
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 eventBody];
-  v8 = [v7 sourceBundleID];
+  cacheCopy = cache;
+  eventCopy = event;
+  eventBody = [eventCopy eventBody];
+  sourceBundleID = [eventBody sourceBundleID];
 
-  if (v8)
+  if (sourceBundleID)
   {
-    v9 = [v6 eventBody];
-    v10 = [v9 targetBundleID];
+    eventBody2 = [eventCopy eventBody];
+    targetBundleID = [eventBody2 targetBundleID];
 
-    if (v10)
+    if (targetBundleID)
     {
-      [v6 timestamp];
+      [eventCopy timestamp];
       v11 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:?];
       [v11 timeIntervalSinceNow];
       v13 = v12 / -86400.0;
-      v14 = [v5 mutableCopy];
+      v14 = [cacheCopy mutableCopy];
       v15 = v14;
       if (v13 <= 32.0)
       {
@@ -1092,40 +1092,40 @@ LABEL_21:
         v16 = 1.0;
       }
 
-      v17 = [v14 objectForKeyedSubscript:v8];
+      v17 = [v14 objectForKeyedSubscript:sourceBundleID];
 
       if (v17)
       {
-        v18 = [v5 objectForKeyedSubscript:v8];
+        v18 = [cacheCopy objectForKeyedSubscript:sourceBundleID];
         v19 = [v18 mutableCopy];
-        [v15 setObject:v19 forKeyedSubscript:v8];
+        [v15 setObject:v19 forKeyedSubscript:sourceBundleID];
       }
 
       else
       {
         v18 = objc_opt_new();
-        [v15 setObject:v18 forKeyedSubscript:v8];
+        [v15 setObject:v18 forKeyedSubscript:sourceBundleID];
       }
 
-      v22 = [v15 objectForKeyedSubscript:v8];
-      v23 = [v22 objectForKeyedSubscript:v10];
+      v22 = [v15 objectForKeyedSubscript:sourceBundleID];
+      v23 = [v22 objectForKeyedSubscript:targetBundleID];
 
       if (v23)
       {
-        v24 = [v15 objectForKeyedSubscript:v8];
-        v25 = [v24 objectForKeyedSubscript:v10];
+        v24 = [v15 objectForKeyedSubscript:sourceBundleID];
+        v25 = [v24 objectForKeyedSubscript:targetBundleID];
 
         [v25 doubleValue];
         v27 = [MEMORY[0x1E696AD98] numberWithDouble:v16 * -0.5 + 1.0 + v26];
-        v28 = [v15 objectForKeyedSubscript:v8];
-        [v28 setObject:v27 forKeyedSubscript:v10];
+        v28 = [v15 objectForKeyedSubscript:sourceBundleID];
+        [v28 setObject:v27 forKeyedSubscript:targetBundleID];
       }
 
       else
       {
         v25 = [MEMORY[0x1E696AD98] numberWithDouble:v16 * -0.5 + 1.0];
-        v27 = [v15 objectForKeyedSubscript:v8];
-        [v27 setObject:v25 forKeyedSubscript:v10];
+        v27 = [v15 objectForKeyedSubscript:sourceBundleID];
+        [v27 setObject:v25 forKeyedSubscript:targetBundleID];
       }
     }
 
@@ -1134,10 +1134,10 @@ LABEL_21:
       v21 = +[_PSLogging feedbackChannel];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [_PSAppUsageUtilities addBiomeDataToCache:v6 event:?];
+        [_PSAppUsageUtilities addBiomeDataToCache:eventCopy event:?];
       }
 
-      v15 = v5;
+      v15 = cacheCopy;
     }
   }
 
@@ -1146,10 +1146,10 @@ LABEL_21:
     v20 = +[_PSLogging feedbackChannel];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [_PSAppUsageUtilities addBiomeDataToCache:v6 event:?];
+      [_PSAppUsageUtilities addBiomeDataToCache:eventCopy event:?];
     }
 
-    v15 = v5;
+    v15 = cacheCopy;
   }
 
   return v15;
@@ -1164,7 +1164,7 @@ LABEL_21:
     _os_log_impl(&dword_1B5ED1000, v3, OS_LOG_TYPE_DEFAULT, "Caching share extension counts for each share extension", buf, 2u);
   }
 
-  v4 = [MEMORY[0x1E6997A60] userContext];
+  userContext = [MEMORY[0x1E6997A60] userContext];
   v5 = [MEMORY[0x1E6997A78] keyPathWithKey:@"/appShares/value"];
   *buf = 0;
   v33 = buf;
@@ -1173,55 +1173,55 @@ LABEL_21:
   v36 = __Block_byref_object_dispose__9;
   v37 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v6 = BiomeLibrary();
-  v7 = [v6 ShareSheet];
-  v8 = [v7 Feedback];
+  shareSheet = [v6 ShareSheet];
+  feedback = [shareSheet Feedback];
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF10]);
   [v9 setMonth:-1];
-  v10 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v11 = [MEMORY[0x1E695DF00] now];
-  v12 = [v10 dateByAddingComponents:v9 toDate:v11 options:0];
-  v29 = v10;
+  v12 = [currentCalendar dateByAddingComponents:v9 toDate:v11 options:0];
+  v29 = currentCalendar;
   v13 = [objc_alloc(MEMORY[0x1E698F2D0]) initWithStartDate:v11 endDate:v12 maxEvents:-1 lastN:0 reversed:1];
-  v14 = [v8 publisherWithOptions:v13];
+  v14 = [feedback publisherWithOptions:v13];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __45___PSAppUsageUtilities_cacheSharesForEachApp__block_invoke_84;
   v31[3] = &unk_1E7C25DE0;
   v31[4] = buf;
-  v31[5] = a1;
+  v31[5] = self;
   v15 = [v14 sinkWithCompletion:&__block_literal_global_83 receiveInput:v31];
 
-  [v4 setObject:*(v33 + 5) forKeyedSubscript:v5];
+  [userContext setObject:*(v33 + 5) forKeyedSubscript:v5];
   v27 = v12;
-  v28 = v8;
+  v28 = feedback;
   v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v17 = dispatch_queue_create("com.apple.coreduetd.shareSheetFeedback.biomeQueue", v16);
 
   v18 = [objc_alloc(MEMORY[0x1E698F258]) initWithIdentifier:@"com.apple.coreduetd.ShareSheetFeedBackSubscription" targetQueue:v17];
   v19 = v5;
-  v26 = v4;
+  v26 = userContext;
   v20 = BiomeLibrary();
-  v21 = [v20 ShareSheet];
-  v22 = [v21 Feedback];
+  shareSheet2 = [v20 ShareSheet];
+  feedback2 = [shareSheet2 Feedback];
 
-  v23 = [v22 DSLPublisher];
-  v24 = [v23 subscribeOn:v18];
+  dSLPublisher = [feedback2 DSLPublisher];
+  v24 = [dSLPublisher subscribeOn:v18];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __45___PSAppUsageUtilities_cacheSharesForEachApp__block_invoke_94;
   v30[3] = &__block_descriptor_40_e22_v16__0__BMStoreEvent_8l;
-  v30[4] = a1;
+  v30[4] = self;
   v25 = [v24 sinkWithCompletion:&__block_literal_global_93 receiveInput:v30];
 
   _Block_object_dispose(buf, 8);
 }
 
-+ (id)suggestionArrayWithArray:(id)a3 appendingUniqueElementsByBundleIdFromArray:(id)a4
++ (id)suggestionArrayWithArray:(id)array appendingUniqueElementsByBundleIdFromArray:(id)fromArray
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = [a3 arrayByAddingObjectsFromArray:a4];
-  v5 = [MEMORY[0x1E695DF70] array];
+  v4 = [array arrayByAddingObjectsFromArray:fromArray];
+  array = [MEMORY[0x1E695DF70] array];
   v6 = [MEMORY[0x1E695DFA8] set];
   v18 = 0u;
   v19 = 0u;
@@ -1243,14 +1243,14 @@ LABEL_21:
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 bundleID];
-        v14 = [v6 containsObject:v13];
+        bundleID = [v12 bundleID];
+        v14 = [v6 containsObject:bundleID];
 
         if ((v14 & 1) == 0)
         {
-          [v5 addObject:v12];
-          v15 = [v12 bundleID];
-          [v6 addObject:v15];
+          [array addObject:v12];
+          bundleID2 = [v12 bundleID];
+          [v6 addObject:bundleID2];
         }
       }
 
@@ -1262,7 +1262,7 @@ LABEL_21:
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return array;
 }
 
 + (void)addBiomeDataToCache:(void *)a1 event:.cold.1(void *a1)

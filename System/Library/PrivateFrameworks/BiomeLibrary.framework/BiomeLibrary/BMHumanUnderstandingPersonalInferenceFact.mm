@@ -1,39 +1,39 @@
 @interface BMHumanUnderstandingPersonalInferenceFact
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMHumanUnderstandingPersonalInferenceFact)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMHumanUnderstandingPersonalInferenceFact)initWithSubjectID:(id)a3 subjectAlias:(id)a4 subjectIsa:(id)a5 predicateID:(id)a6 objectID:(id)a7 objectAlias:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (BMHumanUnderstandingPersonalInferenceFact)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMHumanUnderstandingPersonalInferenceFact)initWithSubjectID:(id)d subjectAlias:(id)alias subjectIsa:(id)isa predicateID:(id)iD objectID:(id)objectID objectAlias:(id)objectAlias;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_subjectIsaJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMHumanUnderstandingPersonalInferenceFact
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectID];
-    v7 = [v5 subjectID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    subjectID = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectID];
+    subjectID2 = [v5 subjectID];
+    v8 = subjectID2;
+    if (subjectID == subjectID2)
     {
     }
 
     else
     {
-      v9 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectID];
-      v10 = [v5 subjectID];
-      v11 = [v9 isEqual:v10];
+      subjectID3 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectID];
+      subjectID4 = [v5 subjectID];
+      v11 = [subjectID3 isEqual:subjectID4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectAlias];
-    v14 = [v5 subjectAlias];
-    v15 = v14;
-    if (v13 == v14)
+    subjectAlias = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectAlias];
+    subjectAlias2 = [v5 subjectAlias];
+    v15 = subjectAlias2;
+    if (subjectAlias == subjectAlias2)
     {
     }
 
     else
     {
-      v16 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectAlias];
-      v17 = [v5 subjectAlias];
-      v18 = [v16 isEqual:v17];
+      subjectAlias3 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectAlias];
+      subjectAlias4 = [v5 subjectAlias];
+      v18 = [subjectAlias3 isEqual:subjectAlias4];
 
       if (!v18)
       {
@@ -60,18 +60,18 @@
       }
     }
 
-    v19 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectIsa];
-    v20 = [v5 subjectIsa];
-    v21 = v20;
-    if (v19 == v20)
+    subjectIsa = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectIsa];
+    subjectIsa2 = [v5 subjectIsa];
+    v21 = subjectIsa2;
+    if (subjectIsa == subjectIsa2)
     {
     }
 
     else
     {
-      v22 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectIsa];
-      v23 = [v5 subjectIsa];
-      v24 = [v22 isEqual:v23];
+      subjectIsa3 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectIsa];
+      subjectIsa4 = [v5 subjectIsa];
+      v24 = [subjectIsa3 isEqual:subjectIsa4];
 
       if (!v24)
       {
@@ -79,18 +79,18 @@
       }
     }
 
-    v25 = [(BMHumanUnderstandingPersonalInferenceFact *)self predicateID];
-    v26 = [v5 predicateID];
-    v27 = v26;
-    if (v25 == v26)
+    predicateID = [(BMHumanUnderstandingPersonalInferenceFact *)self predicateID];
+    predicateID2 = [v5 predicateID];
+    v27 = predicateID2;
+    if (predicateID == predicateID2)
     {
     }
 
     else
     {
-      v28 = [(BMHumanUnderstandingPersonalInferenceFact *)self predicateID];
-      v29 = [v5 predicateID];
-      v30 = [v28 isEqual:v29];
+      predicateID3 = [(BMHumanUnderstandingPersonalInferenceFact *)self predicateID];
+      predicateID4 = [v5 predicateID];
+      v30 = [predicateID3 isEqual:predicateID4];
 
       if (!v30)
       {
@@ -98,18 +98,18 @@
       }
     }
 
-    v31 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectID];
-    v32 = [v5 objectID];
-    v33 = v32;
-    if (v31 == v32)
+    objectID = [(BMHumanUnderstandingPersonalInferenceFact *)self objectID];
+    objectID2 = [v5 objectID];
+    v33 = objectID2;
+    if (objectID == objectID2)
     {
     }
 
     else
     {
-      v34 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectID];
-      v35 = [v5 objectID];
-      v36 = [v34 isEqual:v35];
+      objectID3 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectID];
+      objectID4 = [v5 objectID];
+      v36 = [objectID3 isEqual:objectID4];
 
       if (!v36)
       {
@@ -121,18 +121,18 @@ LABEL_22:
       }
     }
 
-    v38 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectAlias];
-    v39 = [v5 objectAlias];
-    if (v38 == v39)
+    objectAlias = [(BMHumanUnderstandingPersonalInferenceFact *)self objectAlias];
+    objectAlias2 = [v5 objectAlias];
+    if (objectAlias == objectAlias2)
     {
       v12 = 1;
     }
 
     else
     {
-      v40 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectAlias];
-      v41 = [v5 objectAlias];
-      v12 = [v40 isEqual:v41];
+      objectAlias3 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectAlias];
+      objectAlias4 = [v5 objectAlias];
+      v12 = [objectAlias3 isEqual:objectAlias4];
     }
 
     goto LABEL_22;
@@ -147,74 +147,74 @@ LABEL_23:
 - (id)jsonDictionary
 {
   v23[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectID];
-  v4 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectAlias];
-  v5 = [(BMHumanUnderstandingPersonalInferenceFact *)self _subjectIsaJSONArray];
-  v6 = [(BMHumanUnderstandingPersonalInferenceFact *)self predicateID];
-  v7 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectID];
-  v8 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectAlias];
+  subjectID = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectID];
+  subjectAlias = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectAlias];
+  _subjectIsaJSONArray = [(BMHumanUnderstandingPersonalInferenceFact *)self _subjectIsaJSONArray];
+  predicateID = [(BMHumanUnderstandingPersonalInferenceFact *)self predicateID];
+  objectID = [(BMHumanUnderstandingPersonalInferenceFact *)self objectID];
+  objectAlias = [(BMHumanUnderstandingPersonalInferenceFact *)self objectAlias];
   v22[0] = @"subjectID";
-  v9 = v3;
-  if (!v3)
+  null = subjectID;
+  if (!subjectID)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v9;
-  v23[0] = v9;
+  v20 = null;
+  v23[0] = null;
   v22[1] = @"subjectAlias";
-  v10 = v4;
-  if (!v4)
+  null2 = subjectAlias;
+  if (!subjectAlias)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v10;
-  v23[1] = v10;
+  v18 = null2;
+  v23[1] = null2;
   v22[2] = @"subjectIsa";
-  v11 = v5;
-  if (!v5)
+  null3 = _subjectIsaJSONArray;
+  if (!_subjectIsaJSONArray)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v3;
-  v23[2] = v11;
+  v21 = subjectID;
+  v23[2] = null3;
   v22[3] = @"predicateID";
-  v12 = v6;
-  if (!v6)
+  null4 = predicateID;
+  if (!predicateID)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v12;
+  v23[3] = null4;
   v22[4] = @"objectID";
-  v13 = v7;
-  if (!v7)
+  null5 = objectID;
+  if (!objectID)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v13;
+  v23[4] = null5;
   v22[5] = @"objectAlias";
-  v14 = v8;
-  if (!v8)
+  null6 = objectAlias;
+  if (!objectAlias)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[5] = v14;
+  v23[5] = null6;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:{6, v18}];
-  if (v8)
+  if (objectAlias)
   {
-    if (v7)
+    if (objectID)
     {
       goto LABEL_15;
     }
 
 LABEL_23:
 
-    if (v6)
+    if (predicateID)
     {
       goto LABEL_16;
     }
@@ -222,13 +222,13 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!v7)
+  if (!objectID)
   {
     goto LABEL_23;
   }
 
 LABEL_15:
-  if (v6)
+  if (predicateID)
   {
     goto LABEL_16;
   }
@@ -236,9 +236,9 @@ LABEL_15:
 LABEL_24:
 
 LABEL_16:
-  if (v5)
+  if (_subjectIsaJSONArray)
   {
-    if (v4)
+    if (subjectAlias)
     {
       goto LABEL_18;
     }
@@ -253,7 +253,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (!v4)
+  if (!subjectAlias)
   {
     goto LABEL_26;
   }
@@ -280,8 +280,8 @@ LABEL_19:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectIsa];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  subjectIsa = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectIsa];
+  v5 = [subjectIsa countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -292,13 +292,13 @@ LABEL_19:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subjectIsa);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [subjectIsa countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -309,19 +309,19 @@ LABEL_19:
   return v3;
 }
 
-- (BMHumanUnderstandingPersonalInferenceFact)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMHumanUnderstandingPersonalInferenceFact)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v87[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"subjectID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"subjectID"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
-        v35 = a4;
+        errorCopy = error;
         v36 = objc_alloc(MEMORY[0x1E696ABC0]);
         v37 = *MEMORY[0x1E698F240];
         v86 = *MEMORY[0x1E696A578];
@@ -331,7 +331,7 @@ LABEL_19:
         v39 = [v36 initWithDomain:v37 code:2 userInfo:v38];
         v8 = 0;
         v29 = 0;
-        *v35 = v39;
+        *errorCopy = v39;
         v10 = v38;
         goto LABEL_71;
       }
@@ -349,7 +349,7 @@ LABEL_19:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"subjectAlias"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"subjectAlias"];
   v64 = v7;
   v65 = v9;
   v66 = v8;
@@ -358,7 +358,7 @@ LABEL_19:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v40 = objc_alloc(MEMORY[0x1E696ABC0]);
         v41 = *MEMORY[0x1E698F240];
@@ -368,7 +368,7 @@ LABEL_19:
         v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v85 forKeys:&v84 count:1];
         v11 = 0;
         v29 = 0;
-        *a4 = [v40 initWithDomain:v41 code:2 userInfo:v15];
+        *error = [v40 initWithDomain:v41 code:2 userInfo:v15];
         goto LABEL_69;
       }
 
@@ -385,13 +385,13 @@ LABEL_19:
     v11 = 0;
   }
 
-  v12 = [v6 objectForKeyedSubscript:@"subjectIsa"];
-  v13 = [MEMORY[0x1E695DFB0] null];
-  v14 = [v12 isEqual:v13];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"subjectIsa"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v14 = [v12 isEqual:null];
 
   if (v14)
   {
-    v63 = self;
+    selfCopy3 = self;
 
     v12 = 0;
   }
@@ -403,19 +403,19 @@ LABEL_19:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v42 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v43 = self;
+          selfCopy2 = self;
           v44 = *MEMORY[0x1E698F240];
           v82 = *MEMORY[0x1E696A578];
           v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"subjectIsa"];
           v83 = v15;
           v23 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
           v45 = v44;
-          self = v43;
+          self = selfCopy2;
           v29 = 0;
-          *a4 = [v42 initWithDomain:v45 code:2 userInfo:v23];
+          *error = [v42 initWithDomain:v45 code:2 userInfo:v23];
           goto LABEL_68;
         }
 
@@ -424,7 +424,7 @@ LABEL_19:
       }
     }
 
-    v63 = self;
+    selfCopy3 = self;
   }
 
   v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
@@ -456,7 +456,7 @@ LABEL_19:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (a4)
+        if (error)
         {
           v30 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -470,7 +470,7 @@ LABEL_39:
           v26 = [v32 dictionaryWithObjects:v33 forKeys:v34 count:1];
           v11 = v62;
           v29 = 0;
-          *a4 = [v30 initWithDomain:v31 code:2 userInfo:v26];
+          *error = [v30 initWithDomain:v31 code:2 userInfo:v26];
           v23 = v12;
           goto LABEL_66;
         }
@@ -479,14 +479,14 @@ LABEL_42:
         v29 = 0;
         v23 = v12;
         v11 = v62;
-        self = v63;
+        self = selfCopy3;
         goto LABEL_68;
       }
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v30 = objc_alloc(MEMORY[0x1E696ABC0]);
           v31 = *MEMORY[0x1E698F240];
@@ -519,7 +519,7 @@ LABEL_42:
 
 LABEL_21:
 
-  v21 = [v6 objectForKeyedSubscript:@"predicateID"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"predicateID"];
   v61 = v21;
   if (v21)
   {
@@ -535,12 +535,12 @@ LABEL_21:
         goto LABEL_24;
       }
 
-      if (!a4)
+      if (!error)
       {
         v23 = 0;
         v29 = 0;
         v11 = v62;
-        self = v63;
+        self = selfCopy3;
         goto LABEL_67;
       }
 
@@ -555,14 +555,14 @@ LABEL_21:
       v50 = [v46 initWithDomain:v49 code:2 userInfo:v48];
       v23 = 0;
       v29 = 0;
-      *a4 = v50;
+      *error = v50;
       goto LABEL_75;
     }
   }
 
   v23 = 0;
 LABEL_24:
-  v24 = [v6 objectForKeyedSubscript:@"objectID"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"objectID"];
   v60 = v24;
   if (v24)
   {
@@ -578,7 +578,7 @@ LABEL_24:
         goto LABEL_27;
       }
 
-      if (a4)
+      if (error)
       {
         v58 = objc_alloc(MEMORY[0x1E696ABC0]);
         v51 = *MEMORY[0x1E698F240];
@@ -589,7 +589,7 @@ LABEL_24:
         v52 = [v58 initWithDomain:v51 code:2 userInfo:v27];
         v26 = 0;
         v29 = 0;
-        *a4 = v52;
+        *error = v52;
 LABEL_63:
         v11 = v62;
         goto LABEL_64;
@@ -605,7 +605,7 @@ LABEL_75:
 
   v26 = 0;
 LABEL_27:
-  v27 = [v6 objectForKeyedSubscript:@"objectAlias"];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"objectAlias"];
   if (!v27 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v28 = 0;
@@ -615,7 +615,7 @@ LABEL_27:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
     {
       v59 = objc_alloc(MEMORY[0x1E696ABC0]);
       v57 = *MEMORY[0x1E698F240];
@@ -623,7 +623,7 @@ LABEL_27:
       v53 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"objectAlias"];
       v72 = v53;
       v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-      *a4 = [v59 initWithDomain:v57 code:2 userInfo:v54];
+      *error = [v59 initWithDomain:v57 code:2 userInfo:v54];
     }
 
     v28 = 0;
@@ -634,15 +634,15 @@ LABEL_27:
   v28 = v27;
   v11 = v62;
 LABEL_30:
-  v29 = [(BMHumanUnderstandingPersonalInferenceFact *)v63 initWithSubjectID:v66 subjectAlias:v11 subjectIsa:v15 predicateID:v23 objectID:v26 objectAlias:v28];
-  v63 = v29;
+  v29 = [(BMHumanUnderstandingPersonalInferenceFact *)selfCopy3 initWithSubjectID:v66 subjectAlias:v11 subjectIsa:v15 predicateID:v23 objectID:v26 objectAlias:v28];
+  selfCopy3 = v29;
 LABEL_64:
 
   v25 = v60;
 LABEL_65:
 
 LABEL_66:
-  self = v63;
+  self = selfCopy3;
 
   v22 = v61;
 LABEL_67:
@@ -666,15 +666,15 @@ LABEL_72:
 {
   v3 = objc_opt_new();
   [(BMHumanUnderstandingPersonalInferenceFact *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_subjectID)
   {
     PBDataWriterWriteStringField();
@@ -735,9 +735,9 @@ LABEL_72:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v27.receiver = self;
   v27.super_class = BMHumanUnderstandingPersonalInferenceFact;
   v5 = [(BMEventBase *)&v27 init];
@@ -747,12 +747,12 @@ LABEL_72:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -763,18 +763,18 @@ LABEL_72:
       while (1)
       {
         v28 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v28 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v28 & 0x7F) << v8;
@@ -791,9 +791,9 @@ LABEL_72:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         break;
       }
@@ -856,18 +856,18 @@ LABEL_41:
       }
 
 LABEL_36:
-      v21 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v21 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v22 = [v6 copy];
   subjectIsa = v5->_subjectIsa;
   v5->_subjectIsa = v22;
 
-  v24 = [v4 hasError];
-  if (v24)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_38:
     v25 = 0;
@@ -885,37 +885,37 @@ LABEL_39:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectID];
-  v5 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectAlias];
-  v6 = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectIsa];
-  v7 = [(BMHumanUnderstandingPersonalInferenceFact *)self predicateID];
-  v8 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectID];
-  v9 = [(BMHumanUnderstandingPersonalInferenceFact *)self objectAlias];
-  v10 = [v3 initWithFormat:@"BMHumanUnderstandingPersonalInferenceFact with subjectID: %@, subjectAlias: %@, subjectIsa: %@, predicateID: %@, objectID: %@, objectAlias: %@", v4, v5, v6, v7, v8, v9];
+  subjectID = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectID];
+  subjectAlias = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectAlias];
+  subjectIsa = [(BMHumanUnderstandingPersonalInferenceFact *)self subjectIsa];
+  predicateID = [(BMHumanUnderstandingPersonalInferenceFact *)self predicateID];
+  objectID = [(BMHumanUnderstandingPersonalInferenceFact *)self objectID];
+  objectAlias = [(BMHumanUnderstandingPersonalInferenceFact *)self objectAlias];
+  v10 = [v3 initWithFormat:@"BMHumanUnderstandingPersonalInferenceFact with subjectID: %@, subjectAlias: %@, subjectIsa: %@, predicateID: %@, objectID: %@, objectAlias: %@", subjectID, subjectAlias, subjectIsa, predicateID, objectID, objectAlias];
 
   return v10;
 }
 
-- (BMHumanUnderstandingPersonalInferenceFact)initWithSubjectID:(id)a3 subjectAlias:(id)a4 subjectIsa:(id)a5 predicateID:(id)a6 objectID:(id)a7 objectAlias:(id)a8
+- (BMHumanUnderstandingPersonalInferenceFact)initWithSubjectID:(id)d subjectAlias:(id)alias subjectIsa:(id)isa predicateID:(id)iD objectID:(id)objectID objectAlias:(id)objectAlias
 {
-  v22 = a3;
-  v21 = a4;
-  v20 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  dCopy = d;
+  aliasCopy = alias;
+  isaCopy = isa;
+  iDCopy = iD;
+  objectIDCopy = objectID;
+  objectAliasCopy = objectAlias;
   v23.receiver = self;
   v23.super_class = BMHumanUnderstandingPersonalInferenceFact;
   v18 = [(BMEventBase *)&v23 init];
   if (v18)
   {
     v18->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v18->_subjectID, a3);
-    objc_storeStrong(&v18->_subjectAlias, a4);
-    objc_storeStrong(&v18->_subjectIsa, a5);
-    objc_storeStrong(&v18->_predicateID, a6);
-    objc_storeStrong(&v18->_objectID, a7);
-    objc_storeStrong(&v18->_objectAlias, a8);
+    objc_storeStrong(&v18->_subjectID, d);
+    objc_storeStrong(&v18->_subjectAlias, alias);
+    objc_storeStrong(&v18->_subjectIsa, isa);
+    objc_storeStrong(&v18->_predicateID, iD);
+    objc_storeStrong(&v18->_objectID, objectID);
+    objc_storeStrong(&v18->_objectAlias, objectAlias);
   }
 
   return v18;
@@ -974,13 +974,13 @@ id __52__BMHumanUnderstandingPersonalInferenceFact_columns__block_invoke(uint64_
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMHumanUnderstandingPersonalInferenceFact alloc] initByReadFrom:v6];
     v8 = v7;

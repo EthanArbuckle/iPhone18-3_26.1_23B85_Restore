@@ -1,12 +1,12 @@
 @interface CARSplashScreenViewController
-- (void)_dismissAnimated:(BOOL)a3;
-- (void)_setupXPCConnectionWithEndpoint:(id)a3;
+- (void)_dismissAnimated:(BOOL)animated;
+- (void)_setupXPCConnectionWithEndpoint:(id)endpoint;
 - (void)configureBackgroundLayer;
 - (void)configureImages;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismissAlertAnimated:(BOOL)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismissAlertAnimated:(BOOL)animated;
+- (void)handleButtonActions:(id)actions;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation CARSplashScreenViewController
@@ -26,28 +26,28 @@
   [v3 setBackgroundEffects:v5];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(CARSplashScreenViewController *)self view];
-  [v6 addSubview:v3];
+  view = [(CARSplashScreenViewController *)self view];
+  [view addSubview:v3];
 
-  v22 = [v3 leadingAnchor];
-  v23 = [(CARSplashScreenViewController *)self view];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor = [v3 leadingAnchor];
+  view2 = [(CARSplashScreenViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v27[0] = v20;
-  v18 = [v3 trailingAnchor];
-  v19 = [(CARSplashScreenViewController *)self view];
-  v17 = [v19 trailingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  trailingAnchor = [v3 trailingAnchor];
+  view3 = [(CARSplashScreenViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v27[1] = v16;
-  v7 = [v3 topAnchor];
-  v8 = [(CARSplashScreenViewController *)self view];
-  v9 = [v8 topAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  topAnchor = [v3 topAnchor];
+  view4 = [(CARSplashScreenViewController *)self view];
+  topAnchor2 = [view4 topAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v27[2] = v10;
-  v11 = [v3 bottomAnchor];
-  v12 = [(CARSplashScreenViewController *)self view];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  bottomAnchor = [v3 bottomAnchor];
+  view5 = [(CARSplashScreenViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v27[3] = v14;
   v15 = [NSArray arrayWithObjects:v27 count:4];
   [NSLayoutConstraint activateConstraints:v15];
@@ -57,8 +57,8 @@
 {
   v3 = +[_TtC19CarPlaySplashScreen24SplashScreenLogoViewHost logoView];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(CARSplashScreenViewController *)self view];
-  [v4 addSubview:v3];
+  view = [(CARSplashScreenViewController *)self view];
+  [view addSubview:v3];
 
   if ([(CARSplashScreenViewController *)self isCarPlayUltraBranded])
   {
@@ -80,12 +80,12 @@
   [v7 setTintColor:v8];
 
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(CARSplashScreenViewController *)self view];
-  [v9 addSubview:v7];
+  view2 = [(CARSplashScreenViewController *)self view];
+  [view2 addSubview:v7];
 
   v10 = objc_alloc_init(UILayoutGuide);
-  v11 = [(CARSplashScreenViewController *)self view];
-  [v11 addLayoutGuide:v10];
+  view3 = [(CARSplashScreenViewController *)self view];
+  [view3 addLayoutGuide:v10];
 
   if ([(CARSplashScreenViewController *)self isCarPlayUltraBranded])
   {
@@ -97,69 +97,69 @@
     v12 = 150.0;
   }
 
-  v54 = [v10 heightAnchor];
-  v55 = [(CARSplashScreenViewController *)self view];
-  v53 = [v55 heightAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53 multiplier:0.39];
+  heightAnchor = [v10 heightAnchor];
+  view4 = [(CARSplashScreenViewController *)self view];
+  heightAnchor2 = [view4 heightAnchor];
+  v52 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.39];
   v57[0] = v52;
-  v50 = [v10 topAnchor];
-  v51 = [(CARSplashScreenViewController *)self view];
-  v49 = [v51 topAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  topAnchor = [v10 topAnchor];
+  view5 = [(CARSplashScreenViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v57[1] = v48;
-  v45 = [v10 leftAnchor];
-  v46 = [(CARSplashScreenViewController *)self view];
-  v44 = [v46 leftAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  leftAnchor = [v10 leftAnchor];
+  view6 = [(CARSplashScreenViewController *)self view];
+  leftAnchor2 = [view6 leftAnchor];
+  v43 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v57[2] = v43;
   v47 = v10;
-  v41 = [v10 rightAnchor];
-  v42 = [(CARSplashScreenViewController *)self view];
-  v40 = [v42 rightAnchor];
-  v38 = [v41 constraintEqualToAnchor:v40];
+  rightAnchor = [v10 rightAnchor];
+  view7 = [(CARSplashScreenViewController *)self view];
+  rightAnchor2 = [view7 rightAnchor];
+  v38 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v57[3] = v38;
-  v37 = [v3 topAnchor];
-  v36 = [v10 bottomAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  topAnchor3 = [v3 topAnchor];
+  bottomAnchor = [v10 bottomAnchor];
+  v35 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v57[4] = v35;
-  v34 = [v3 widthAnchor];
-  v33 = [v34 constraintEqualToConstant:100.0];
+  widthAnchor = [v3 widthAnchor];
+  v33 = [widthAnchor constraintEqualToConstant:100.0];
   v57[5] = v33;
-  v31 = [v3 heightAnchor];
-  v30 = [v31 constraintEqualToConstant:100.0];
+  heightAnchor3 = [v3 heightAnchor];
+  v30 = [heightAnchor3 constraintEqualToConstant:100.0];
   v57[6] = v30;
   v39 = v3;
-  v28 = [v3 centerXAnchor];
-  v29 = [(CARSplashScreenViewController *)self view];
-  v27 = [v29 centerXAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  centerXAnchor = [v3 centerXAnchor];
+  view8 = [(CARSplashScreenViewController *)self view];
+  centerXAnchor2 = [view8 centerXAnchor];
+  v26 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v57[7] = v26;
   v13 = v7;
-  v25 = [v7 topAnchor];
-  v24 = [v3 bottomAnchor];
-  v14 = [v25 constraintEqualToAnchor:v24 constant:36.0];
+  topAnchor4 = [v7 topAnchor];
+  bottomAnchor2 = [v3 bottomAnchor];
+  v14 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:36.0];
   v57[8] = v14;
   v32 = v7;
-  v15 = [v7 centerXAnchor];
-  v16 = [(CARSplashScreenViewController *)self view];
-  v17 = [v16 centerXAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  centerXAnchor3 = [v7 centerXAnchor];
+  view9 = [(CARSplashScreenViewController *)self view];
+  centerXAnchor4 = [view9 centerXAnchor];
+  v18 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v57[9] = v18;
-  v19 = [v7 widthAnchor];
-  v20 = [v19 constraintEqualToConstant:v12];
+  widthAnchor2 = [v7 widthAnchor];
+  v20 = [widthAnchor2 constraintEqualToConstant:v12];
   v57[10] = v20;
-  v21 = [v13 heightAnchor];
-  v22 = [v21 constraintEqualToConstant:36.0];
+  heightAnchor4 = [v13 heightAnchor];
+  v22 = [heightAnchor4 constraintEqualToConstant:36.0];
   v57[11] = v22;
   v23 = [NSArray arrayWithObjects:v57 count:12];
   [NSLayoutConstraint activateConstraints:v23];
 }
 
-- (void)_setupXPCConnectionWithEndpoint:(id)a3
+- (void)_setupXPCConnectionWithEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v5 = objc_alloc_init(NSXPCListenerEndpoint);
-  [v5 _setEndpoint:v4];
+  [v5 _setEndpoint:endpointCopy];
   v6 = [[NSXPCConnection alloc] initWithListenerEndpoint:v5];
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DBSplashScreenDismissalService];
   [v6 setExportedInterface:v7];
@@ -180,8 +180,8 @@
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DBSplashScreenDismissalServer];
   [v6 setRemoteObjectInterface:v8];
   [v6 resume];
-  v9 = [v6 remoteObjectProxy];
-  [v9 connect];
+  remoteObjectProxy = [v6 remoteObjectProxy];
+  [remoteObjectProxy connect];
 
   [(CARSplashScreenViewController *)self setConnection:v6];
   objc_destroyWeak(&v11);
@@ -189,7 +189,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_dismissAnimated:(BOOL)a3
+- (void)_dismissAnimated:(BOOL)animated
 {
   v4 = sub_100001764();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -208,7 +208,7 @@
   [(CARSplashScreenViewController *)self synchronizeAnimationsInActions:v6];
 }
 
-- (void)dismissAlertAnimated:(BOOL)a3
+- (void)dismissAlertAnimated:(BOOL)animated
 {
   v5 = sub_100001764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -222,36 +222,36 @@
   v6[2] = sub_100002750;
   v6[3] = &unk_100008568;
   v6[4] = self;
-  v7 = a3;
+  animatedCopy = animated;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v11 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v7 = [(CARSplashScreenViewController *)self _remoteViewControllerProxyWithErrorHandler:&stru_100008588];
-  v8 = [v6 xpcEndpoint];
-  [(CARSplashScreenViewController *)self _setupXPCConnectionWithEndpoint:v8];
+  xpcEndpoint = [contextCopy xpcEndpoint];
+  [(CARSplashScreenViewController *)self _setupXPCConnectionWithEndpoint:xpcEndpoint];
 
-  v9 = [v6 userInfo];
+  userInfo = [contextCopy userInfo];
 
-  v10 = [v9 objectForKeyedSubscript:@"vehicleSupportsGaugeCluster"];
+  v10 = [userInfo objectForKeyedSubscript:@"vehicleSupportsGaugeCluster"];
   -[CARSplashScreenViewController setCarPlayUltraBranded:](self, "setCarPlayUltraBranded:", [v10 BOOLValue]);
 
   [v7 setAllowsMenuButtonDismissal:0];
   [v7 setDesiredHardwareButtonEvents:16];
-  if (v11)
+  if (completionCopy)
   {
-    v11[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v5 = a4;
-  v6 = [(CARSplashScreenViewController *)self view];
-  [v6 setAlpha:0.0];
+  completionCopy = completion;
+  view = [(CARSplashScreenViewController *)self view];
+  [view setAlpha:0.0];
 
   [BSUIAnimationFactory factoryWithDuration:0.25];
   v8[0] = _NSConcreteStackBlock;
@@ -259,17 +259,17 @@
   v8[2] = sub_100002994;
   v7 = v8[3] = &unk_100008518;
   v9 = v7;
-  v10 = self;
+  selfCopy = self;
   [(CARSplashScreenViewController *)self synchronizeAnimationsInActions:v8];
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v5 = sub_100001764();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -282,7 +282,7 @@
   v6[2] = sub_100002B3C;
   v6[3] = &unk_1000085D8;
   v6[4] = self;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [actionsCopy enumerateObjectsUsingBlock:v6];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface PSCapacityBarData
 - (NSArray)adjustedCategories;
 - (NSArray)orderedCategories;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCategories:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCategories:(id)categories;
 @end
 
 @implementation PSCapacityBarData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(PSCapacityBarData);
@@ -63,9 +63,9 @@
   orderedCategories = self->_orderedCategories;
   if (!orderedCategories)
   {
-    v4 = [(PSCapacityBarData *)self categories];
-    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-    if ([v4 count])
+    categories = [(PSCapacityBarData *)self categories];
+    v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(categories, "count")}];
+    if ([categories count])
     {
       if (self->_hideTinyCategories)
       {
@@ -81,7 +81,7 @@
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v7 = v4;
+      v7 = categories;
       v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
@@ -154,8 +154,8 @@ uint64_t __38__PSCapacityBarData_orderedCategories__block_invoke(uint64_t a1, vo
   adjustedCategories = self->_adjustedCategories;
   if (!adjustedCategories)
   {
-    v44 = [(PSCapacityBarData *)self orderedCategories];
-    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v44, "count")}];
+    orderedCategories = [(PSCapacityBarData *)self orderedCategories];
+    v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(orderedCategories, "count")}];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
@@ -185,13 +185,13 @@ uint64_t __38__PSCapacityBarData_orderedCategories__block_invoke(uint64_t a1, vo
       while (v7);
     }
 
-    v11 = self;
+    selfCopy = self;
     if ([(PSCapacityBarData *)self hideTinyCategories])
     {
       goto LABEL_43;
     }
 
-    v43 = self;
+    selfCopy2 = self;
     capacity = self->_capacity;
     v53 = 0u;
     v54 = 0u;
@@ -217,10 +217,10 @@ uint64_t __38__PSCapacityBarData_orderedCategories__block_invoke(uint64_t a1, vo
             objc_enumerationMutation(v13);
           }
 
-          v23 = [*(*(&v53 + 1) + 8 * j) bytes];
-          v16 += v23 - v20;
-          v17 += v23;
-          if (v23 <= v20)
+          bytes = [*(*(&v53 + 1) + 8 * j) bytes];
+          v16 += bytes - v20;
+          v17 += bytes;
+          if (bytes <= v20)
           {
             v24 = v20;
           }
@@ -231,14 +231,14 @@ uint64_t __38__PSCapacityBarData_orderedCategories__block_invoke(uint64_t a1, vo
           }
 
           v18 += v24;
-          if (v23 <= v20)
+          if (bytes <= v20)
           {
             v25 = 0;
           }
 
           else
           {
-            v25 = v23;
+            v25 = bytes;
           }
 
           v19 += v25;
@@ -249,7 +249,7 @@ uint64_t __38__PSCapacityBarData_orderedCategories__block_invoke(uint64_t a1, vo
 
       while (v15);
 
-      v11 = v43;
+      selfCopy = selfCopy2;
       if (!v18)
       {
         goto LABEL_43;
@@ -310,11 +310,11 @@ uint64_t __38__PSCapacityBarData_orderedCategories__block_invoke(uint64_t a1, vo
               }
 
               v33 = *(*(&v49 + 1) + 8 * m);
-              v34 = [v33 bytes];
+              bytes2 = [v33 bytes];
               v35 = v20;
-              if (v34 > v20)
+              if (bytes2 > v20)
               {
-                v35 = llround(v34 / v31 * v30);
+                v35 = llround(bytes2 / v31 * v30);
               }
 
               [v33 setBytes:v35];
@@ -328,27 +328,27 @@ uint64_t __38__PSCapacityBarData_orderedCategories__block_invoke(uint64_t a1, vo
       }
     }
 
-    v11 = v43;
+    selfCopy = selfCopy2;
 LABEL_43:
-    v41 = v11->_adjustedCategories;
-    v11->_adjustedCategories = v4;
+    v41 = selfCopy->_adjustedCategories;
+    selfCopy->_adjustedCategories = v4;
 
-    adjustedCategories = v11->_adjustedCategories;
+    adjustedCategories = selfCopy->_adjustedCategories;
   }
 
   return adjustedCategories;
 }
 
-- (void)setCategories:(id)a3
+- (void)setCategories:(id)categories
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  categoriesCopy = categories;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(categoriesCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = categoriesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {

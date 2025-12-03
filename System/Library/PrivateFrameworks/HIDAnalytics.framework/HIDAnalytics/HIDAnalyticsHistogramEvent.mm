@@ -1,7 +1,7 @@
 @interface HIDAnalyticsHistogramEvent
-- (HIDAnalyticsHistogramEvent)initWithAttributes:(id)a3 description:(id)a4;
+- (HIDAnalyticsHistogramEvent)initWithAttributes:(id)attributes description:(id)description;
 - (id)value;
-- (void)addHistogramFieldWithSegments:(id)a3 segments:(_HIDAnalyticsHistogramSegmentConfig *)a4 count:(int64_t)a5;
+- (void)addHistogramFieldWithSegments:(id)segments segments:(_HIDAnalyticsHistogramSegmentConfig *)a4 count:(int64_t)count;
 @end
 
 @implementation HIDAnalyticsHistogramEvent
@@ -12,12 +12,12 @@
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v5 = [(HIDAnalyticsHistogramEventField *)self->_field fieldName];
-    [v4 setObject:v5 forKeyedSubscript:@"Name"];
+    fieldName = [(HIDAnalyticsHistogramEventField *)self->_field fieldName];
+    [v4 setObject:fieldName forKeyedSubscript:@"Name"];
 
     [v4 setObject:&unk_2862D5FD0 forKeyedSubscript:@"Type"];
-    v6 = [(HIDAnalyticsHistogramEventField *)self->_field value];
-    [v4 setObject:v6 forKeyedSubscript:@"Value"];
+    value = [(HIDAnalyticsHistogramEventField *)self->_field value];
+    [v4 setObject:value forKeyedSubscript:@"Value"];
 
     [v3 addObject:v4];
     self->_isUpdated = 0;
@@ -42,11 +42,11 @@
   return v8;
 }
 
-- (HIDAnalyticsHistogramEvent)initWithAttributes:(id)a3 description:(id)a4
+- (HIDAnalyticsHistogramEvent)initWithAttributes:(id)attributes description:(id)description
 {
   v8.receiver = self;
   v8.super_class = HIDAnalyticsHistogramEvent;
-  v4 = [(HIDAnalyticsEvent *)&v8 initWithAttributes:a3 description:a4];
+  v4 = [(HIDAnalyticsEvent *)&v8 initWithAttributes:attributes description:description];
   v5 = v4;
   if (v4)
   {
@@ -56,10 +56,10 @@
   return v5;
 }
 
-- (void)addHistogramFieldWithSegments:(id)a3 segments:(_HIDAnalyticsHistogramSegmentConfig *)a4 count:(int64_t)a5
+- (void)addHistogramFieldWithSegments:(id)segments segments:(_HIDAnalyticsHistogramSegmentConfig *)a4 count:(int64_t)count
 {
-  v8 = a3;
-  v9 = [[HIDAnalyticsHistogramEventField alloc] initWithAttributes:v8 segments:a4 count:a5];
+  segmentsCopy = segments;
+  v9 = [[HIDAnalyticsHistogramEventField alloc] initWithAttributes:segmentsCopy segments:a4 count:count];
 
   field = self->_field;
   self->_field = v9;

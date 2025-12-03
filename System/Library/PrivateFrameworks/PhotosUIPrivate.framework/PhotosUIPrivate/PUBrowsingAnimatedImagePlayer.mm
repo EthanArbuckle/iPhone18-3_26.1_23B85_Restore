@@ -1,17 +1,17 @@
 @interface PUBrowsingAnimatedImagePlayer
 - (PUBrowsingAnimatedImagePlayer)init;
-- (PUBrowsingAnimatedImagePlayer)initWithAsset:(id)a3 mediaProvider:(id)a4;
+- (PUBrowsingAnimatedImagePlayer)initWithAsset:(id)asset mediaProvider:(id)provider;
 - (id)debugDetailedDescription;
 - (void)_cancelLoading;
-- (void)_handleAnimatedImageRequestComplete:(id)a3;
-- (void)_setAnimatedImage:(id)a3;
-- (void)_setAnimatedImageLoadingAllowed:(BOOL)a3;
+- (void)_handleAnimatedImageRequestComplete:(id)complete;
+- (void)_setAnimatedImage:(id)image;
+- (void)_setAnimatedImageLoadingAllowed:(BOOL)allowed;
 - (void)_updateAnimatedImage;
 - (void)_updateIfNeeded;
 - (void)dealloc;
 - (void)didPerformChanges;
-- (void)setAnimatedImageLoadingDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)setAsset:(id)a3;
+- (void)setAnimatedImageLoadingDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)setAsset:(id)asset;
 - (void)unloadAnimatedImage;
 @end
 
@@ -19,9 +19,9 @@
 
 - (id)debugDetailedDescription
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = [(PUBrowsingAnimatedImagePlayer *)self mediaProvider];
-  [v3 appendFormat:@"Media Provider: %@\n", v4];
+  string = [MEMORY[0x1E696AD60] string];
+  mediaProvider = [(PUBrowsingAnimatedImagePlayer *)self mediaProvider];
+  [string appendFormat:@"Media Provider: %@\n", mediaProvider];
 
   if ([(PUBrowsingAnimatedImagePlayer *)self _animatedImageRequestID])
   {
@@ -34,7 +34,7 @@
   }
 
   v6 = v5;
-  [v3 appendFormat:@"Waiting on animated image fetch: %@\n", v6];
+  [string appendFormat:@"Waiting on animated image fetch: %@\n", v6];
 
   if ([(PUBrowsingAnimatedImagePlayer *)self isAnimatedImageLoadingAllowed])
   {
@@ -47,27 +47,27 @@
   }
 
   v8 = v7;
-  [v3 appendFormat:@"Loading allowed: %@\n", v8];
+  [string appendFormat:@"Loading allowed: %@\n", v8];
 
-  v9 = [(PUBrowsingAnimatedImagePlayer *)self _animatedImageLoadingDisablingReasons];
-  [v3 appendFormat:@"Loading disabled for: %@\n", v9];
+  _animatedImageLoadingDisablingReasons = [(PUBrowsingAnimatedImagePlayer *)self _animatedImageLoadingDisablingReasons];
+  [string appendFormat:@"Loading disabled for: %@\n", _animatedImageLoadingDisablingReasons];
 
-  v10 = [(PUBrowsingAnimatedImagePlayer *)self animatedImage];
-  [v3 appendFormat:@"PHAnimatedImage: %@\n", v10];
+  animatedImage = [(PUBrowsingAnimatedImagePlayer *)self animatedImage];
+  [string appendFormat:@"PHAnimatedImage: %@\n", animatedImage];
 
   v11 = MEMORY[0x1E696AEC0];
   v12 = objc_opt_class();
   v13 = NSStringFromClass(v12);
-  v14 = [v3 pu_stringByIndentingNewLines];
-  v15 = [v11 stringWithFormat:@"<%@ %p> {\n\t%@}", v13, self, v14];
+  pu_stringByIndentingNewLines = [string pu_stringByIndentingNewLines];
+  v15 = [v11 stringWithFormat:@"<%@ %p> {\n\t%@}", v13, self, pu_stringByIndentingNewLines];
 
   return v15;
 }
 
-- (void)_handleAnimatedImageRequestComplete:(id)a3
+- (void)_handleAnimatedImageRequestComplete:(id)complete
 {
-  v4 = a3;
-  v3 = v4;
+  completeCopy = complete;
+  v3 = completeCopy;
   px_dispatch_on_main_queue();
 }
 
@@ -98,8 +98,8 @@ uint64_t __69__PUBrowsingAnimatedImagePlayer__handleAnimatedImageRequestComplete
   {
     v3 = 1;
     self->_isValid.animatedImage = 1;
-    v4 = [(PUBrowsingAnimatedImagePlayer *)self animatedImage];
-    if (!v4)
+    animatedImage = [(PUBrowsingAnimatedImagePlayer *)self animatedImage];
+    if (!animatedImage)
     {
       v3 = [(PUBrowsingAnimatedImagePlayer *)self _animatedImageRequestID]!= 0;
     }
@@ -108,8 +108,8 @@ uint64_t __69__PUBrowsingAnimatedImagePlayer__handleAnimatedImageRequestComplete
     {
       if (!v3)
       {
-        v7 = [(PUBrowsingAnimatedImagePlayer *)self mediaProvider];
-        v8 = [(PUBrowsingAnimatedImagePlayer *)self asset];
+        mediaProvider = [(PUBrowsingAnimatedImagePlayer *)self mediaProvider];
+        asset = [(PUBrowsingAnimatedImagePlayer *)self asset];
         v9 = objc_opt_new();
         [v9 setVersion:2];
         [v9 setDeliveryMode:1];
@@ -120,7 +120,7 @@ uint64_t __69__PUBrowsingAnimatedImagePlayer__handleAnimatedImageRequestComplete
         v13 = __53__PUBrowsingAnimatedImagePlayer__updateAnimatedImage__block_invoke;
         v14 = &unk_1E7B75C68;
         objc_copyWeak(&v15, &location);
-        v10 = [v7 requestAnimatedImageForAsset:v8 options:v9 resultHandler:&v11];
+        v10 = [mediaProvider requestAnimatedImageForAsset:asset options:v9 resultHandler:&v11];
         [(PUBrowsingAnimatedImagePlayer *)self _setAnimatedImageRequestID:v10, v11, v12, v13, v14];
         objc_destroyWeak(&v15);
         objc_destroyWeak(&location);
@@ -149,8 +149,8 @@ void __53__PUBrowsingAnimatedImagePlayer__updateAnimatedImage__block_invoke(uint
     [(PUBrowsingAnimatedImagePlayer *)self _updateAnimatedImage];
     if ([(PUBrowsingAnimatedImagePlayer *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:163 description:{@"[%@] Update still needed after update pass", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:163 description:{@"[%@] Update still needed after update pass", self}];
     }
   }
 }
@@ -163,17 +163,17 @@ void __53__PUBrowsingAnimatedImagePlayer__updateAnimatedImage__block_invoke(uint
   [(PUBrowsingAnimatedImagePlayer *)self _updateIfNeeded];
 }
 
-- (void)_setAnimatedImageLoadingAllowed:(BOOL)a3
+- (void)_setAnimatedImageLoadingAllowed:(BOOL)allowed
 {
-  if (self->_isAnimatedImageLoadingAllowed != a3)
+  if (self->_isAnimatedImageLoadingAllowed != allowed)
   {
-    self->_isAnimatedImageLoadingAllowed = a3;
-    v4 = [(PUViewModel *)self currentChange];
-    [v4 _setAnimatedImageLoadingAllowedDidChange:1];
+    self->_isAnimatedImageLoadingAllowed = allowed;
+    currentChange = [(PUViewModel *)self currentChange];
+    [currentChange _setAnimatedImageLoadingAllowedDidChange:1];
 
-    v5 = [(PUBrowsingAnimatedImagePlayer *)self animatedImage];
+    animatedImage = [(PUBrowsingAnimatedImagePlayer *)self animatedImage];
 
-    if (!v5)
+    if (!animatedImage)
     {
 
       [(PUBrowsingAnimatedImagePlayer *)self _invalidateAnimatedImage];
@@ -181,75 +181,75 @@ void __53__PUBrowsingAnimatedImagePlayer__updateAnimatedImage__block_invoke(uint
   }
 }
 
-- (void)setAnimatedImageLoadingDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setAnimatedImageLoadingDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
-  v10 = a4;
-  if (!v10)
+  disabledCopy = disabled;
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"reason"}];
   }
 
-  v7 = [(PUBrowsingAnimatedImagePlayer *)self _animatedImageLoadingDisablingReasons];
-  v8 = v7;
-  if (v4)
+  _animatedImageLoadingDisablingReasons = [(PUBrowsingAnimatedImagePlayer *)self _animatedImageLoadingDisablingReasons];
+  v8 = _animatedImageLoadingDisablingReasons;
+  if (disabledCopy)
   {
-    [v7 addObject:v10];
+    [_animatedImageLoadingDisablingReasons addObject:reasonCopy];
   }
 
   else
   {
-    [v7 removeObject:v10];
+    [_animatedImageLoadingDisablingReasons removeObject:reasonCopy];
   }
 
   -[PUBrowsingAnimatedImagePlayer _setAnimatedImageLoadingAllowed:](self, "_setAnimatedImageLoadingAllowed:", [v8 count] == 0);
 }
 
-- (void)_setAnimatedImage:(id)a3
+- (void)_setAnimatedImage:(id)image
 {
-  v5 = a3;
-  if (self->_animatedImage != v5)
+  imageCopy = image;
+  if (self->_animatedImage != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_animatedImage, a3);
-    v6 = [(PUViewModel *)self currentChange];
-    [v6 _setAnimatedImageDidChange:1];
+    v7 = imageCopy;
+    objc_storeStrong(&self->_animatedImage, image);
+    currentChange = [(PUViewModel *)self currentChange];
+    [currentChange _setAnimatedImageDidChange:1];
 
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v11 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     asset = self->_asset;
     v7 = v11;
-    v8 = asset;
-    v9 = v8;
-    if (v8 == v7)
+    assetCopy2 = asset;
+    v9 = assetCopy2;
+    if (assetCopy2 == v7)
     {
 
       goto LABEL_8;
     }
 
-    v10 = [(PUDisplayAsset *)v7 isContentEqualTo:v8];
+    v10 = [(PUDisplayAsset *)v7 isContentEqualTo:assetCopy2];
     if (!v10)
     {
       v10 = [(PUDisplayAsset *)v9 isContentEqualTo:v7];
     }
 
-    v5 = v11;
+    assetCopy = v11;
     if (v10 != 2)
     {
       [(PUBrowsingAnimatedImagePlayer *)self _setAnimatedImage:0];
       [(PUBrowsingAnimatedImagePlayer *)self _invalidateAnimatedImage];
 LABEL_8:
-      v5 = v11;
+      assetCopy = v11;
     }
   }
 }
@@ -265,8 +265,8 @@ LABEL_8:
 {
   if ([(PUBrowsingAnimatedImagePlayer *)self _animatedImageRequestID])
   {
-    v3 = [(PUBrowsingAnimatedImagePlayer *)self mediaProvider];
-    [v3 cancelImageRequest:{-[PUBrowsingAnimatedImagePlayer _animatedImageRequestID](self, "_animatedImageRequestID")}];
+    mediaProvider = [(PUBrowsingAnimatedImagePlayer *)self mediaProvider];
+    [mediaProvider cancelImageRequest:{-[PUBrowsingAnimatedImagePlayer _animatedImageRequestID](self, "_animatedImageRequestID")}];
 
     [(PUBrowsingAnimatedImagePlayer *)self _setAnimatedImageRequestID:0];
   }
@@ -280,22 +280,22 @@ LABEL_8:
   [(PUBrowsingAnimatedImagePlayer *)&v3 dealloc];
 }
 
-- (PUBrowsingAnimatedImagePlayer)initWithAsset:(id)a3 mediaProvider:(id)a4
+- (PUBrowsingAnimatedImagePlayer)initWithAsset:(id)asset mediaProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
+  assetCopy = asset;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = PUBrowsingAnimatedImagePlayer;
   v10 = [(PUViewModel *)&v16 init];
   if (v10)
   {
-    if (v8)
+    if (assetCopy)
     {
-      if (v9)
+      if (providerCopy)
       {
 LABEL_4:
-        objc_storeStrong(&v10->_asset, a3);
-        objc_storeStrong(&v10->_mediaProvider, a4);
+        objc_storeStrong(&v10->_asset, asset);
+        objc_storeStrong(&v10->_mediaProvider, provider);
         v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         animatedImageLoadingDisablingReasons = v10->__animatedImageLoadingDisablingReasons;
         v10->__animatedImageLoadingDisablingReasons = v11;
@@ -306,17 +306,17 @@ LABEL_4:
 
     else
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:v10 file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v10 file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"asset != nil"}];
 
-      if (v9)
+      if (providerCopy)
       {
         goto LABEL_4;
       }
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:v10 file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v10 file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"mediaProvider != nil"}];
 
     goto LABEL_4;
   }
@@ -328,8 +328,8 @@ LABEL_5:
 
 - (PUBrowsingAnimatedImagePlayer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:42 description:@"unavailable method"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUBrowsingAnimatedImagePlayer.m" lineNumber:42 description:@"unavailable method"];
 
   return 0;
 }

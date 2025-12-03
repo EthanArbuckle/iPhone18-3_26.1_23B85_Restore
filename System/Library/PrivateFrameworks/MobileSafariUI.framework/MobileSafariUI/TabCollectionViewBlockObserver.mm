@@ -1,9 +1,9 @@
 @interface TabCollectionViewBlockObserver
 + (id)observerMap;
-+ (void)beginObservingTabView:(id)a3 steadyStateBlock:(id)a4;
-+ (void)endObservingTabView:(id)a3;
-+ (void)performIgnoringObservationForTabView:(id)a3 block:(id)a4;
-- (void)tabCollectionView:(id)a3 didChangeSteadyState:(BOOL)a4;
++ (void)beginObservingTabView:(id)view steadyStateBlock:(id)block;
++ (void)endObservingTabView:(id)view;
++ (void)performIgnoringObservationForTabView:(id)view block:(id)block;
+- (void)tabCollectionView:(id)view didChangeSteadyState:(BOOL)state;
 @end
 
 @implementation TabCollectionViewBlockObserver
@@ -27,50 +27,50 @@ void __45__TabCollectionViewBlockObserver_observerMap__block_invoke()
   observerMap_map = v0;
 }
 
-+ (void)beginObservingTabView:(id)a3 steadyStateBlock:(id)a4
++ (void)beginObservingTabView:(id)view steadyStateBlock:(id)block
 {
-  v9 = a3;
-  v5 = a4;
+  viewCopy = view;
+  blockCopy = block;
   v6 = +[TabCollectionViewBlockObserver observerMap];
-  v7 = [v6 objectForKey:v9];
+  v7 = [v6 objectForKey:viewCopy];
 
   if (!v7)
   {
     v7 = objc_alloc_init(TabCollectionViewBlockObserver);
-    [v9 addPresentationObserver:v7];
+    [viewCopy addPresentationObserver:v7];
     v8 = +[TabCollectionViewBlockObserver observerMap];
-    [v8 setObject:v7 forKey:v9];
+    [v8 setObject:v7 forKey:viewCopy];
   }
 
-  [(TabCollectionViewBlockObserver *)v7 setSteadyStateBlock:v5];
+  [(TabCollectionViewBlockObserver *)v7 setSteadyStateBlock:blockCopy];
 }
 
-+ (void)endObservingTabView:(id)a3
++ (void)endObservingTabView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   v3 = +[TabCollectionViewBlockObserver observerMap];
-  v4 = [v3 objectForKey:v6];
+  v4 = [v3 objectForKey:viewCopy];
 
   if (v4)
   {
-    [v6 removePresentationObserver:v4];
+    [viewCopy removePresentationObserver:v4];
     v5 = +[TabCollectionViewBlockObserver observerMap];
-    [v5 removeObjectForKey:v6];
+    [v5 removeObjectForKey:viewCopy];
   }
 }
 
-+ (void)performIgnoringObservationForTabView:(id)a3 block:(id)a4
++ (void)performIgnoringObservationForTabView:(id)view block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
+  blockCopy = block;
+  viewCopy = view;
   v7 = +[TabCollectionViewBlockObserver observerMap];
-  v10 = [v7 objectForKey:v6];
+  v10 = [v7 objectForKey:viewCopy];
 
   if (v10)
   {
     v8 = v10[8];
     v10[8] = 1;
-    v5[2](v5);
+    blockCopy[2](blockCopy);
 
     v9 = v10;
     v10[8] = v8;
@@ -78,20 +78,20 @@ void __45__TabCollectionViewBlockObserver_observerMap__block_invoke()
 
   else
   {
-    v5[2](v5);
+    blockCopy[2](blockCopy);
 
     v9 = 0;
   }
 }
 
-- (void)tabCollectionView:(id)a3 didChangeSteadyState:(BOOL)a4
+- (void)tabCollectionView:(id)view didChangeSteadyState:(BOOL)state
 {
   if (!self->_ignoreUpdates)
   {
     steadyStateBlock = self->_steadyStateBlock;
     if (steadyStateBlock)
     {
-      steadyStateBlock[2](steadyStateBlock, a4);
+      steadyStateBlock[2](steadyStateBlock, state);
     }
   }
 }

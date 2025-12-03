@@ -1,20 +1,20 @@
 @interface SBRootFolderControllerConfiguration
 - (SBHRootFolderCustomViewPresenting)leadingCustomViewController;
 - (SBHRootFolderCustomViewPresenting)trailingCustomViewController;
-- (SBRootFolderControllerConfiguration)initWithConfiguration:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (void)setLeadingCustomViewController:(id)a3;
-- (void)setTrailingCustomViewController:(id)a3;
+- (SBRootFolderControllerConfiguration)initWithConfiguration:(id)configuration;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (void)setLeadingCustomViewController:(id)controller;
+- (void)setTrailingCustomViewController:(id)controller;
 @end
 
 @implementation SBRootFolderControllerConfiguration
 
-- (SBRootFolderControllerConfiguration)initWithConfiguration:(id)a3
+- (SBRootFolderControllerConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v27.receiver = self;
   v27.super_class = SBRootFolderControllerConfiguration;
-  v5 = [(SBFolderControllerConfiguration *)&v27 initWithConfiguration:v4];
+  v5 = [(SBFolderControllerConfiguration *)&v27 initWithConfiguration:configurationCopy];
   if (v5)
   {
     v6 = objc_opt_self();
@@ -22,81 +22,81 @@
 
     if (isKindOfClass)
     {
-      v8 = v4;
+      v8 = configurationCopy;
       v5->_forSnapshot = [v8 isForSnapshot];
       v5->_dockExternal = [v8 isDockExternal];
       v5->_showsDoneButtonWhileEditing = [v8 showsDoneButtonWhileEditing];
       v5->_showsAddWidgetButtonWhileEditingAllowedOrientations = [v8 showsAddWidgetButtonWhileEditingAllowedOrientations];
-      v9 = [v8 pullDownSearchViewController];
+      pullDownSearchViewController = [v8 pullDownSearchViewController];
       pullDownSearchViewController = v5->_pullDownSearchViewController;
-      v5->_pullDownSearchViewController = v9;
+      v5->_pullDownSearchViewController = pullDownSearchViewController;
 
-      v11 = [v8 searchPresenter];
+      searchPresenter = [v8 searchPresenter];
       searchPresenter = v5->_searchPresenter;
-      v5->_searchPresenter = v11;
+      v5->_searchPresenter = searchPresenter;
 
-      v13 = [v8 searchPresentableViewController];
+      searchPresentableViewController = [v8 searchPresentableViewController];
       searchPresentableViewController = v5->_searchPresentableViewController;
-      v5->_searchPresentableViewController = v13;
+      v5->_searchPresentableViewController = searchPresentableViewController;
 
-      v15 = [v8 scrollAccessoryAuxiliaryView];
+      scrollAccessoryAuxiliaryView = [v8 scrollAccessoryAuxiliaryView];
       scrollAccessoryAuxiliaryView = v5->_scrollAccessoryAuxiliaryView;
-      v5->_scrollAccessoryAuxiliaryView = v15;
+      v5->_scrollAccessoryAuxiliaryView = scrollAccessoryAuxiliaryView;
 
-      v17 = [v8 scrollAccessoryBackgroundView];
+      scrollAccessoryBackgroundView = [v8 scrollAccessoryBackgroundView];
       scrollAccessoryBackgroundView = v5->_scrollAccessoryBackgroundView;
-      v5->_scrollAccessoryBackgroundView = v17;
+      v5->_scrollAccessoryBackgroundView = scrollAccessoryBackgroundView;
 
-      v19 = [v8 leadingCustomViewControllers];
-      v20 = [v19 copy];
+      leadingCustomViewControllers = [v8 leadingCustomViewControllers];
+      v20 = [leadingCustomViewControllers copy];
       leadingCustomViewControllers = v5->_leadingCustomViewControllers;
       v5->_leadingCustomViewControllers = v20;
 
-      v22 = [v8 trailingCustomViewControllers];
-      v23 = [v22 copy];
+      trailingCustomViewControllers = [v8 trailingCustomViewControllers];
+      v23 = [trailingCustomViewControllers copy];
       trailingCustomViewControllers = v5->_trailingCustomViewControllers;
       v5->_trailingCustomViewControllers = v23;
 
       v5->_ignoresOverscrollOnFirstPageOrientations = [v8 ignoresOverscrollOnFirstPageOrientations];
       v5->_ignoresOverscrollOnLastPageOrientations = [v8 ignoresOverscrollOnLastPageOrientations];
-      v25 = [v8 folderPageManagementAllowedOrientations];
+      folderPageManagementAllowedOrientations = [v8 folderPageManagementAllowedOrientations];
 
-      v5->_folderPageManagementAllowedOrientations = v25;
+      v5->_folderPageManagementAllowedOrientations = folderPageManagementAllowedOrientations;
     }
   }
 
   return v5;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v27.receiver = self;
   v27.super_class = SBRootFolderControllerConfiguration;
-  v4 = [(SBFolderControllerConfiguration *)&v27 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBFolderControllerConfiguration *)&v27 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendBool:-[SBRootFolderControllerConfiguration isForSnapshot](self withName:{"isForSnapshot"), @"isForSnapshot"}];
   v6 = [v4 appendBool:-[SBRootFolderControllerConfiguration isDockExternal](self withName:{"isDockExternal"), @"isDockExternal"}];
   v7 = [v4 appendBool:-[SBRootFolderControllerConfiguration showsDoneButtonWhileEditing](self withName:{"showsDoneButtonWhileEditing"), @"showsDoneButtonWhileEditing"}];
   v8 = [v4 appendUnsignedInteger:-[SBRootFolderControllerConfiguration showsAddWidgetButtonWhileEditingAllowedOrientations](self withName:{"showsAddWidgetButtonWhileEditingAllowedOrientations"), @"showsAddWidgetButtonWhileEditingAllowedOrientations"}];
-  v9 = [(SBRootFolderControllerConfiguration *)self pullDownSearchViewController];
-  v10 = [v4 appendObject:v9 withName:@"pullDownSearchViewController"];
+  pullDownSearchViewController = [(SBRootFolderControllerConfiguration *)self pullDownSearchViewController];
+  v10 = [v4 appendObject:pullDownSearchViewController withName:@"pullDownSearchViewController"];
 
-  v11 = [(SBRootFolderControllerConfiguration *)self searchPresenter];
-  v12 = [v4 appendObject:v11 withName:@"searchPresenter"];
+  searchPresenter = [(SBRootFolderControllerConfiguration *)self searchPresenter];
+  v12 = [v4 appendObject:searchPresenter withName:@"searchPresenter"];
 
-  v13 = [(SBRootFolderControllerConfiguration *)self searchPresentableViewController];
-  v14 = [v4 appendObject:v13 withName:@"searchPresentableViewController"];
+  searchPresentableViewController = [(SBRootFolderControllerConfiguration *)self searchPresentableViewController];
+  v14 = [v4 appendObject:searchPresentableViewController withName:@"searchPresentableViewController"];
 
-  v15 = [(SBRootFolderControllerConfiguration *)self scrollAccessoryAuxiliaryView];
-  v16 = [v4 appendObject:v15 withName:@"scrollAccessoryAuxiliaryView"];
+  scrollAccessoryAuxiliaryView = [(SBRootFolderControllerConfiguration *)self scrollAccessoryAuxiliaryView];
+  v16 = [v4 appendObject:scrollAccessoryAuxiliaryView withName:@"scrollAccessoryAuxiliaryView"];
 
-  v17 = [(SBRootFolderControllerConfiguration *)self scrollAccessoryBackgroundView];
-  v18 = [v4 appendObject:v17 withName:@"scrollAccessoryBackgroundView"];
+  scrollAccessoryBackgroundView = [(SBRootFolderControllerConfiguration *)self scrollAccessoryBackgroundView];
+  v18 = [v4 appendObject:scrollAccessoryBackgroundView withName:@"scrollAccessoryBackgroundView"];
 
-  v19 = [(SBRootFolderControllerConfiguration *)self leadingCustomViewControllers];
-  v20 = [v4 appendObject:v19 withName:@"leadingCustomViewControllers"];
+  leadingCustomViewControllers = [(SBRootFolderControllerConfiguration *)self leadingCustomViewControllers];
+  v20 = [v4 appendObject:leadingCustomViewControllers withName:@"leadingCustomViewControllers"];
 
-  v21 = [(SBRootFolderControllerConfiguration *)self trailingCustomViewControllers];
-  v22 = [v4 appendObject:v21 withName:@"trailingCustomViewControllers"];
+  trailingCustomViewControllers = [(SBRootFolderControllerConfiguration *)self trailingCustomViewControllers];
+  v22 = [v4 appendObject:trailingCustomViewControllers withName:@"trailingCustomViewControllers"];
 
   v23 = [v4 appendUnsignedInteger:-[SBRootFolderControllerConfiguration ignoresOverscrollOnFirstPageOrientations](self withName:"ignoresOverscrollOnFirstPageOrientations") format:{@"ignoresOverscrollOnFirstPageOrientations", 1}];
   v24 = [v4 appendUnsignedInteger:-[SBRootFolderControllerConfiguration ignoresOverscrollOnLastPageOrientations](self withName:"ignoresOverscrollOnLastPageOrientations") format:{@"ignoresOverscrollOnLastPageOrientations", 1}];
@@ -107,20 +107,20 @@
 
 - (SBHRootFolderCustomViewPresenting)leadingCustomViewController
 {
-  v2 = [(SBRootFolderControllerConfiguration *)self leadingCustomViewControllers];
-  v3 = [v2 lastObject];
+  leadingCustomViewControllers = [(SBRootFolderControllerConfiguration *)self leadingCustomViewControllers];
+  lastObject = [leadingCustomViewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
-- (void)setLeadingCustomViewController:(id)a3
+- (void)setLeadingCustomViewController:(id)controller
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
-    v7[0] = v4;
+    v7[0] = controllerCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
     [(SBRootFolderControllerConfiguration *)self setLeadingCustomViewControllers:v6];
   }
@@ -133,20 +133,20 @@
 
 - (SBHRootFolderCustomViewPresenting)trailingCustomViewController
 {
-  v2 = [(SBRootFolderControllerConfiguration *)self trailingCustomViewControllers];
-  v3 = [v2 firstObject];
+  trailingCustomViewControllers = [(SBRootFolderControllerConfiguration *)self trailingCustomViewControllers];
+  firstObject = [trailingCustomViewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)setTrailingCustomViewController:(id)a3
+- (void)setTrailingCustomViewController:(id)controller
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  controllerCopy = controller;
+  v5 = controllerCopy;
+  if (controllerCopy)
   {
-    v7[0] = v4;
+    v7[0] = controllerCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
     [(SBRootFolderControllerConfiguration *)self setTrailingCustomViewControllers:v6];
   }

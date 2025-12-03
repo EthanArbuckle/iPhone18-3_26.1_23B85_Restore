@@ -1,40 +1,40 @@
 @interface DYEAGLReplayControllerSupport
-- (BOOL)isDebugPlaybackEngine:(id)a3;
-- (DYEAGLReplayControllerSupport)initWithCaptureStore:(id)a3;
-- (id)createDebugPlaybackEngineWithCaptureStore:(id)a3;
-- (id)createOverridingPlaybackEngineWithCaptureStore:(id)a3 experiment:(id)a4;
-- (id)experimentResultsGeneratorForPlaybackEngine:(id)a3;
-- (id)newShaderProfilerWithPlaybackEngine:(id)a3 payload:(id)a4;
-- (id)startShaderProfiler:(id)a3;
-- (id)viewControllerForPlaybackEngine:(id)a3;
-- (void)_setupContextRemapperForPlaybackEngine:(id)a3;
-- (void)disableDebugFunctions:(id)a3 playbackEngine:(id)a4;
-- (void)enableDebugFunctions:(id)a3 playbackEngine:(id)a4;
+- (BOOL)isDebugPlaybackEngine:(id)engine;
+- (DYEAGLReplayControllerSupport)initWithCaptureStore:(id)store;
+- (id)createDebugPlaybackEngineWithCaptureStore:(id)store;
+- (id)createOverridingPlaybackEngineWithCaptureStore:(id)store experiment:(id)experiment;
+- (id)experimentResultsGeneratorForPlaybackEngine:(id)engine;
+- (id)newShaderProfilerWithPlaybackEngine:(id)engine payload:(id)payload;
+- (id)startShaderProfiler:(id)profiler;
+- (id)viewControllerForPlaybackEngine:(id)engine;
+- (void)_setupContextRemapperForPlaybackEngine:(id)engine;
+- (void)disableDebugFunctions:(id)functions playbackEngine:(id)engine;
+- (void)enableDebugFunctions:(id)functions playbackEngine:(id)engine;
 @end
 
 @implementation DYEAGLReplayControllerSupport
 
-- (DYEAGLReplayControllerSupport)initWithCaptureStore:(id)a3
+- (DYEAGLReplayControllerSupport)initWithCaptureStore:(id)store
 {
-  v4 = a3;
-  v5 = [v4 metadataValueForKey:kDYCaptureSessionGraphicsAPIMetadataKey];
-  v6 = [v5 unsignedIntValue];
+  storeCopy = store;
+  v5 = [storeCopy metadataValueForKey:kDYCaptureSessionGraphicsAPIMetadataKey];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  if (v6)
+  if (unsignedIntValue)
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = DYEAGLReplayControllerSupport;
-    v7 = [(DYEAGLReplayControllerSupport *)&v9 init];
-    if (v7)
+    selfCopy = [(DYEAGLReplayControllerSupport *)&v9 init];
+    if (selfCopy)
     {
       DYSetNameReservationEncoding();
-      self = v7;
-      v7 = self;
+      self = selfCopy;
+      selfCopy = self;
     }
 
     else
@@ -43,29 +43,29 @@
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)disableDebugFunctions:(id)a3 playbackEngine:(id)a4
+- (void)disableDebugFunctions:(id)functions playbackEngine:(id)engine
 {
-  v6 = a3;
-  v5 = [a4 disabledFunctions];
-  [v5 addIndexes:v6];
+  functionsCopy = functions;
+  disabledFunctions = [engine disabledFunctions];
+  [disabledFunctions addIndexes:functionsCopy];
 }
 
-- (void)enableDebugFunctions:(id)a3 playbackEngine:(id)a4
+- (void)enableDebugFunctions:(id)functions playbackEngine:(id)engine
 {
-  v6 = a3;
-  v5 = [a4 disabledFunctions];
-  [v5 removeIndexes:v6];
+  functionsCopy = functions;
+  disabledFunctions = [engine disabledFunctions];
+  [disabledFunctions removeIndexes:functionsCopy];
 }
 
-- (id)createOverridingPlaybackEngineWithCaptureStore:(id)a3 experiment:(id)a4
+- (id)createOverridingPlaybackEngineWithCaptureStore:(id)store experiment:(id)experiment
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[DYGLExperimentResultsGenerator alloc] initWithExperiment:v7];
-  v9 = [[DYEAGLOverridingPlaybackEngine alloc] initWithCaptureStore:v6 experimentResultsGenerator:v8];
+  storeCopy = store;
+  experimentCopy = experiment;
+  v8 = [[DYGLExperimentResultsGenerator alloc] initWithExperiment:experimentCopy];
+  v9 = [[DYEAGLOverridingPlaybackEngine alloc] initWithCaptureStore:storeCopy experimentResultsGenerator:v8];
   if (!v9)
   {
     __assert_rtn("[DYEAGLReplayControllerSupport createOverridingPlaybackEngineWithCaptureStore:experiment:]", &unk_1FD61, 0, "playbackEngine");
@@ -76,10 +76,10 @@
   return v9;
 }
 
-- (id)createDebugPlaybackEngineWithCaptureStore:(id)a3
+- (id)createDebugPlaybackEngineWithCaptureStore:(id)store
 {
-  v4 = a3;
-  v5 = [[DYEAGLDebugPlaybackEngine alloc] initWithCaptureStore:v4];
+  storeCopy = store;
+  v5 = [[DYEAGLDebugPlaybackEngine alloc] initWithCaptureStore:storeCopy];
   if (!v5)
   {
     __assert_rtn("[DYEAGLReplayControllerSupport createDebugPlaybackEngineWithCaptureStore:]", &unk_1FD61, 0, "playbackEngine");
@@ -90,48 +90,48 @@
   return v5;
 }
 
-- (BOOL)isDebugPlaybackEngine:(id)a3
+- (BOOL)isDebugPlaybackEngine:(id)engine
 {
-  v3 = a3;
+  engineCopy = engine;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (id)viewControllerForPlaybackEngine:(id)a3
+- (id)viewControllerForPlaybackEngine:(id)engine
 {
-  v3 = [a3 viewController];
+  viewController = [engine viewController];
 
-  return v3;
+  return viewController;
 }
 
-- (id)experimentResultsGeneratorForPlaybackEngine:(id)a3
+- (id)experimentResultsGeneratorForPlaybackEngine:(id)engine
 {
-  v3 = a3;
+  engineCopy = engine;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 experimentResultsGenerator];
+    experimentResultsGenerator = [engineCopy experimentResultsGenerator];
   }
 
   else
   {
-    v4 = 0;
+    experimentResultsGenerator = 0;
   }
 
-  return v4;
+  return experimentResultsGenerator;
 }
 
-- (id)newShaderProfilerWithPlaybackEngine:(id)a3 payload:(id)a4
+- (id)newShaderProfilerWithPlaybackEngine:(id)engine payload:(id)payload
 {
-  v5 = a3;
-  v6 = a4;
+  engineCopy = engine;
+  payloadCopy = payload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = [[DYGLShaderProfilerFunctionPlayerSupport alloc] initWithDebugEAGLPlaybackEngine:v7 payLoad:v6];
+    v7 = engineCopy;
+    v8 = [[DYGLShaderProfilerFunctionPlayerSupport alloc] initWithDebugEAGLPlaybackEngine:v7 payLoad:payloadCopy];
   }
 
   else
@@ -142,17 +142,17 @@
   return v8;
 }
 
-- (id)startShaderProfiler:(id)a3
+- (id)startShaderProfiler:(id)profiler
 {
-  v3 = [a3 queryShaderStart];
+  queryShaderStart = [profiler queryShaderStart];
 
-  return v3;
+  return queryShaderStart;
 }
 
-- (void)_setupContextRemapperForPlaybackEngine:(id)a3
+- (void)_setupContextRemapperForPlaybackEngine:(id)engine
 {
-  v4 = a3;
-  v3 = v4;
+  engineCopy = engine;
+  v3 = engineCopy;
   DYSetContextRemappingBlock();
 }
 

@@ -1,18 +1,18 @@
 @interface WFGetFramesFromImageAction
 - (void)cancel;
-- (void)runAsynchronouslyWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
 @end
 
 @implementation WFGetFramesFromImageAction
 
 - (void)cancel
 {
-  v3 = [(WFGetFramesFromImageAction *)self cancelBlock];
+  cancelBlock = [(WFGetFramesFromImageAction *)self cancelBlock];
 
-  if (v3)
+  if (cancelBlock)
   {
-    v4 = [(WFGetFramesFromImageAction *)self cancelBlock];
-    v4[2]();
+    cancelBlock2 = [(WFGetFramesFromImageAction *)self cancelBlock];
+    cancelBlock2[2]();
 
     [(WFGetFramesFromImageAction *)self setCancelBlock:0];
   }
@@ -22,10 +22,10 @@
   [(WFGetFramesFromImageAction *)&v5 cancel];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inputCopy = input;
   v8[0] = objc_opt_class();
   v8[1] = objc_opt_class();
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
@@ -34,7 +34,7 @@
   v7[2] = __57__WFGetFramesFromImageAction_runAsynchronouslyWithInput___block_invoke;
   v7[3] = &unk_278C211D0;
   v7[4] = self;
-  [v4 generateCollectionByCoercingToItemClasses:v5 completionHandler:v7];
+  [inputCopy generateCollectionByCoercingToItemClasses:v5 completionHandler:v7];
 
   v6 = *MEMORY[0x277D85DE8];
 }

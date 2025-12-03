@@ -1,20 +1,20 @@
 @interface PPTLibraryDependentTest
 - (BOOL)hasHandler;
-- (PPTLibraryDependentTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6;
+- (PPTLibraryDependentTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test;
 @end
 
 @implementation PPTLibraryDependentTest
 
-- (PPTLibraryDependentTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6
+- (PPTLibraryDependentTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test
 {
-  v6 = a6;
-  v10 = a5;
+  testCopy = test;
+  definitionCopy = definition;
   v16.receiver = self;
   v16.super_class = PPTLibraryDependentTest;
-  v11 = [(PPTBasicTest *)&v16 initWithName:a3 options:a4 testDefinition:v10 isMainTest:v6];
+  v11 = [(PPTBasicTest *)&v16 initWithName:name options:options testDefinition:definitionCopy isMainTest:testCopy];
   if (v11)
   {
-    v12 = [v10 objectForKeyedSubscript:@"library-type"];
+    v12 = [definitionCopy objectForKeyedSubscript:@"library-type"];
     v13 = [v12 isEqualToString:@"list"];
     v14 = 1;
     if (v13)
@@ -30,8 +30,8 @@
 
 - (BOOL)hasHandler
 {
-  v3 = [(PPTBasicTest *)self bookshelf];
-  [v3 changeViewModeTo:self->_mode];
+  bookshelf = [(PPTBasicTest *)self bookshelf];
+  [bookshelf changeViewModeTo:self->_mode];
   v4 = dispatch_time(0, 2000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;

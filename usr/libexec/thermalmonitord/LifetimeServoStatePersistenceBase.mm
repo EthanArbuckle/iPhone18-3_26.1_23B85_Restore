@@ -1,31 +1,31 @@
 @interface LifetimeServoStatePersistenceBase
-+ (BOOL)writePersistedStateNvram:(const void *)a3 dataSize:(unint64_t)a4 path:(__CFString *)a5;
-+ (__CFData)copyPersistedStateNvram:(__CFString *)a3;
++ (BOOL)writePersistedStateNvram:(const void *)nvram dataSize:(unint64_t)size path:(__CFString *)path;
++ (__CFData)copyPersistedStateNvram:(__CFString *)nvram;
 + (__CFString)copyPersistenceNvramPath;
 + (id)copyFiler;
 + (unsigned)getPMPSvc;
-- (BOOL)UpdateLTSStateCommonFromPMP:(ltsStateCommon *)a3;
+- (BOOL)UpdateLTSStateCommonFromPMP:(ltsStateCommon *)p;
 - (BOOL)initializeLTSPersistence;
-- (BOOL)isNandDataValidForKey:(__CFString *)a3;
-- (BOOL)isNvramDataValid:(unint64_t *)a3;
-- (BOOL)readInteger:(unsigned int *)a3 forKey:(__CFString *)a4;
-- (BOOL)saveLTSStateToNand:(void *)a3;
-- (BOOL)sendDataToPMP:(__CFData *)a3 forKey:(__CFString *)a4;
-- (BOOL)updatePersistenceLTSState:(BOOL)a3;
-- (BOOL)writePersistedStateNvram:(void *)a3 path:(__CFString *)a4;
+- (BOOL)isNandDataValidForKey:(__CFString *)key;
+- (BOOL)isNvramDataValid:(unint64_t *)valid;
+- (BOOL)readInteger:(unsigned int *)integer forKey:(__CFString *)key;
+- (BOOL)saveLTSStateToNand:(void *)nand;
+- (BOOL)sendDataToPMP:(__CFData *)p forKey:(__CFString *)key;
+- (BOOL)updatePersistenceLTSState:(BOOL)state;
+- (BOOL)writePersistedStateNvram:(void *)nvram path:(__CFString *)path;
 - (LifetimeServoStatePersistenceBase)init;
-- (LifetimeServoStatePersistenceBase)initWithParams:(id)a3;
-- (__CFData)copyKeyFromPMP:(__CFString *)a3 is_64:(BOOL)a4;
+- (LifetimeServoStatePersistenceBase)initWithParams:(id)params;
+- (__CFData)copyKeyFromPMP:(__CFString *)p is_64:(BOOL)is_64;
 - (__CFData)readNVRAMData;
-- (unsigned)getNVRAMValueWithType:(int)a3 commonState:(ltsStateCommon *)a4;
+- (unsigned)getNVRAMValueWithType:(int)type commonState:(ltsStateCommon *)state;
 - (void)copyUpdatedLTSState;
 - (void)dealloc;
 - (void)initClassVariables;
-- (void)overrideParam:(id)a3 value:(int)a4;
+- (void)overrideParam:(id)param value:(int)value;
 - (void)readNVRAM;
-- (void)resolvePersistentLTSState:(ltsStateCommon *)a3 integratorStatePtr:(unint64_t *)a4 nandDataValidityKey:(__CFString *)a5 minValidVer:(unsigned int)a6;
-- (void)safeFreeLTSStatePtrs:(void *)a3;
-- (void)safeFreeUpdatedLTSState:(void *)a3;
+- (void)resolvePersistentLTSState:(ltsStateCommon *)state integratorStatePtr:(unint64_t *)ptr nandDataValidityKey:(__CFString *)key minValidVer:(unsigned int)ver;
+- (void)safeFreeLTSStatePtrs:(void *)ptrs;
+- (void)safeFreeUpdatedLTSState:(void *)state;
 @end
 
 @implementation LifetimeServoStatePersistenceBase
@@ -74,11 +74,11 @@
   return v3;
 }
 
-- (LifetimeServoStatePersistenceBase)initWithParams:(id)a3
+- (LifetimeServoStatePersistenceBase)initWithParams:(id)params
 {
   v5 = objc_autoreleasePoolPush();
   self->_nvramLength = 0;
-  self->_isRevDict = a3;
+  self->_isRevDict = params;
   *&self->_resolvedLTSPersistence.current_version = 0;
   self->_resolvedLTSPersistence.pmp_data_source = 0;
   *&self->_hasNvram = 0;
@@ -128,7 +128,7 @@
   }
 }
 
-- (void)safeFreeLTSStatePtrs:(void *)a3
+- (void)safeFreeLTSStatePtrs:(void *)ptrs
 {
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
@@ -156,7 +156,7 @@
   return 0;
 }
 
-- (BOOL)saveLTSStateToNand:(void *)a3
+- (BOOL)saveLTSStateToNand:(void *)nand
 {
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
@@ -166,7 +166,7 @@
   return 0;
 }
 
-- (BOOL)writePersistedStateNvram:(void *)a3 path:(__CFString *)a4
+- (BOOL)writePersistedStateNvram:(void *)nvram path:(__CFString *)path
 {
   if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
   {
@@ -176,16 +176,16 @@
   return 0;
 }
 
-- (BOOL)updatePersistenceLTSState:(BOOL)a3
+- (BOOL)updatePersistenceLTSState:(BOOL)state
 {
-  v3 = a3;
-  v5 = [(LifetimeServoStatePersistenceBase *)self copyUpdatedLTSState];
-  if (v5)
+  stateCopy = state;
+  copyUpdatedLTSState = [(LifetimeServoStatePersistenceBase *)self copyUpdatedLTSState];
+  if (copyUpdatedLTSState)
   {
-    [(LifetimeServoStatePersistenceBase *)self saveLTSStateToNand:v5];
-    if (self->_hasNvram && v3)
+    [(LifetimeServoStatePersistenceBase *)self saveLTSStateToNand:copyUpdatedLTSState];
+    if (self->_hasNvram && stateCopy)
     {
-      if ([(LifetimeServoStatePersistenceBase *)self writePersistedStateNvram:v5 path:self->_nvramPersistence])
+      if ([(LifetimeServoStatePersistenceBase *)self writePersistedStateNvram:copyUpdatedLTSState path:self->_nvramPersistence])
       {
         if (byte_1000AB2F8 == 1)
         {
@@ -204,7 +204,7 @@
       }
     }
 
-    [(LifetimeServoStatePersistenceBase *)self safeFreeUpdatedLTSState:v5];
+    [(LifetimeServoStatePersistenceBase *)self safeFreeUpdatedLTSState:copyUpdatedLTSState];
   }
 
   else
@@ -212,16 +212,16 @@
     sub_100057CA0();
   }
 
-  return v5 != 0;
+  return copyUpdatedLTSState != 0;
 }
 
-- (void)safeFreeUpdatedLTSState:(void *)a3
+- (void)safeFreeUpdatedLTSState:(void *)state
 {
-  if (a3)
+  if (state)
   {
     [(LifetimeServoStatePersistenceBase *)self safeFreeLTSStatePtrs:?];
 
-    free(a3);
+    free(state);
   }
 }
 
@@ -259,22 +259,22 @@
   return v4;
 }
 
-- (unsigned)getNVRAMValueWithType:(int)a3 commonState:(ltsStateCommon *)a4
+- (unsigned)getNVRAMValueWithType:(int)type commonState:(ltsStateCommon *)state
 {
   if (self->_hasNvram)
   {
-    if (a4)
+    if (state)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
-        var1 = a4->var1;
+        var1 = state->var1;
         v4 = "Counter";
         goto LABEL_13;
       }
 
-      if (!a3)
+      if (!type)
       {
-        var1 = a4->var0;
+        var1 = state->var0;
         v4 = "Version";
         goto LABEL_13;
       }
@@ -323,7 +323,7 @@ LABEL_13:
   return var1;
 }
 
-- (BOOL)isNvramDataValid:(unint64_t *)a3
+- (BOOL)isNvramDataValid:(unint64_t *)valid
 {
   if (!self->_hasNvram)
   {
@@ -333,13 +333,13 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!valid)
   {
     sub_100057F4C(&v9);
     goto LABEL_15;
   }
 
-  v3 = *a3;
+  v3 = *valid;
   if (byte_1000AB2F8 == 1)
   {
     v4 = qword_1000AB718;
@@ -373,9 +373,9 @@ LABEL_7:
   return v5;
 }
 
-- (void)overrideParam:(id)a3 value:(int)a4
+- (void)overrideParam:(id)param value:(int)value
 {
-  if (a4 != -1)
+  if (value != -1)
   {
     if (byte_1000AB2F8 == 1)
     {
@@ -383,16 +383,16 @@ LABEL_7:
       if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412546;
-        v12 = a3;
+        paramCopy = param;
         v13 = 1024;
-        v14 = a4;
+        valueCopy = value;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "<Notice> LSController: setting %@ to %d", &v11, 0x12u);
       }
     }
 
-    if ([a3 isEqualToString:@"LifetimeServoStateSaveIntervalMinutes"])
+    if ([param isEqualToString:@"LifetimeServoStateSaveIntervalMinutes"])
     {
-      v8 = 60000000000 * a4;
+      v8 = 60000000000 * value;
       self->_ltsStateSaveInterval = v8;
       statePersistenceTimer = self->_statePersistenceTimer;
       v10 = dispatch_time(0x8000000000000000, v8);
@@ -406,9 +406,9 @@ LABEL_7:
   }
 }
 
-- (BOOL)isNandDataValidForKey:(__CFString *)a3
+- (BOOL)isNandDataValidForKey:(__CFString *)key
 {
-  v3 = [(Filer *)self->_filer getValueForKey:a3];
+  v3 = [(Filer *)self->_filer getValueForKey:key];
   if (v3)
   {
     v10 = 0.0;
@@ -479,13 +479,13 @@ LABEL_7:
   return v3;
 }
 
-- (BOOL)readInteger:(unsigned int *)a3 forKey:(__CFString *)a4
+- (BOOL)readInteger:(unsigned int *)integer forKey:(__CFString *)key
 {
-  v6 = [(Filer *)self->_filer getValueForKey:a4];
+  v6 = [(Filer *)self->_filer getValueForKey:key];
   v7 = v6;
   if (v6)
   {
-    *a3 = [v6 unsignedIntegerValue];
+    *integer = [v6 unsignedIntegerValue];
   }
 
   else if (byte_1000AB2F8 == 1)
@@ -494,7 +494,7 @@ LABEL_7:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = a4;
+      keyCopy = key;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "<Notice> Failed to read value for key %@", &v10, 0xCu);
     }
   }
@@ -502,12 +502,12 @@ LABEL_7:
   return v7 != 0;
 }
 
-- (BOOL)sendDataToPMP:(__CFData *)a3 forKey:(__CFString *)a4
+- (BOOL)sendDataToPMP:(__CFData *)p forKey:(__CFString *)key
 {
   v6 = +[(LifetimeServoStatePersistenceBase *)LifetimeServoStatePersistence];
   if (v6)
   {
-    if (IORegistryEntrySetCFProperty(v6, a4, a3))
+    if (IORegistryEntrySetCFProperty(v6, key, p))
     {
       sub_10005807C();
       return v8;
@@ -526,9 +526,9 @@ LABEL_7:
   }
 }
 
-- (__CFData)copyKeyFromPMP:(__CFString *)a3 is_64:(BOOL)a4
+- (__CFData)copyKeyFromPMP:(__CFString *)p is_64:(BOOL)is_64
 {
-  v4 = a4;
+  is_64Copy = is_64;
   v6 = +[(LifetimeServoStatePersistenceBase *)LifetimeServoStatePersistence];
   if (!v6)
   {
@@ -536,7 +536,7 @@ LABEL_7:
     return v13;
   }
 
-  CFProperty = IORegistryEntryCreateCFProperty(v6, a3, kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(v6, p, kCFAllocatorDefault, 0);
   if (!CFProperty)
   {
     sub_100058304();
@@ -547,13 +547,13 @@ LABEL_7:
   v9 = CFGetTypeID(CFProperty);
   if (v9 != CFDataGetTypeID())
   {
-    sub_1000581C0(a3, v8, &v13);
+    sub_1000581C0(p, v8, &v13);
     return v13;
   }
 
   Length = CFDataGetLength(v8);
   v11 = 4;
-  if (v4)
+  if (is_64Copy)
   {
     v11 = 8;
   }
@@ -572,7 +572,7 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)UpdateLTSStateCommonFromPMP:(ltsStateCommon *)a3
+- (BOOL)UpdateLTSStateCommonFromPMP:(ltsStateCommon *)p
 {
   v13 = 0;
   v5 = [(LifetimeServoStatePersistenceBase *)self copyKeyFromPMP:@"lts-ctrl-die-count" is_64:0];
@@ -613,8 +613,8 @@ LABEL_7:
     }
   }
 
-  a3->var2 = v9;
-  a3->var3 = v10;
+  p->var2 = v9;
+  p->var3 = v10;
   return 1;
 }
 
@@ -634,7 +634,7 @@ LABEL_7:
   [(LifetimeServoStatePersistenceBase *)&v4 dealloc];
 }
 
-- (void)resolvePersistentLTSState:(ltsStateCommon *)a3 integratorStatePtr:(unint64_t *)a4 nandDataValidityKey:(__CFString *)a5 minValidVer:(unsigned int)a6
+- (void)resolvePersistentLTSState:(ltsStateCommon *)state integratorStatePtr:(unint64_t *)ptr nandDataValidityKey:(__CFString *)key minValidVer:(unsigned int)ver
 {
   v32 = 0;
   if (!self->_hasNvram)
@@ -645,8 +645,8 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  v11 = [(LifetimeServoStatePersistenceBase *)self getNVRAMValueWithType:0 commonState:a3];
-  v12 = [(LifetimeServoStatePersistenceBase *)self getNVRAMValueWithType:1 commonState:a3];
+  v11 = [(LifetimeServoStatePersistenceBase *)self getNVRAMValueWithType:0 commonState:state];
+  v12 = [(LifetimeServoStatePersistenceBase *)self getNVRAMValueWithType:1 commonState:state];
   pmpLTSStateversion = self->_pmpLTSStateversion;
   if (v11 > pmpLTSStateversion)
   {
@@ -688,7 +688,7 @@ LABEL_7:
   }
 
 LABEL_10:
-  if ([(LifetimeServoStatePersistenceBase *)self isNvramDataValid:a4])
+  if ([(LifetimeServoStatePersistenceBase *)self isNvramDataValid:ptr])
   {
     v15 = 1;
   }
@@ -766,7 +766,7 @@ LABEL_16:
     HIDWORD(v32) = 0;
   }
 
-  v23 = [(LifetimeServoStatePersistenceBase *)self isNandDataValidForKey:a5];
+  v23 = [(LifetimeServoStatePersistenceBase *)self isNandDataValidForKey:key];
   v24 = HIDWORD(v32);
   if (HIDWORD(v32) <= v11)
   {
@@ -778,7 +778,7 @@ LABEL_16:
     v25 = HIDWORD(v32);
   }
 
-  if (v25 >= a6 && ((v15 | v23) & 1) != 0)
+  if (v25 >= ver && ((v15 | v23) & 1) != 0)
   {
     v26 = v32;
     self->_resolvedLTSPersistence.current_version = HIDWORD(v32);
@@ -856,15 +856,15 @@ LABEL_16:
   return [[Filer alloc] initWithFileName:"com.apple.cltm" inDirectory:v5];
 }
 
-+ (__CFData)copyPersistedStateNvram:(__CFString *)a3
++ (__CFData)copyPersistedStateNvram:(__CFString *)nvram
 {
-  if (a3)
+  if (nvram)
   {
     v4 = IORegistryEntryFromPath(kIOMainPortDefault, "IODeviceTree:/options");
     if (v4)
     {
       v5 = v4;
-      CFProperty = IORegistryEntryCreateCFProperty(v4, a3, kCFAllocatorDefault, 0);
+      CFProperty = IORegistryEntryCreateCFProperty(v4, nvram, kCFAllocatorDefault, 0);
       v7 = CFProperty;
       if (CFProperty)
       {
@@ -903,16 +903,16 @@ LABEL_16:
   return v7;
 }
 
-+ (BOOL)writePersistedStateNvram:(const void *)a3 dataSize:(unint64_t)a4 path:(__CFString *)a5
++ (BOOL)writePersistedStateNvram:(const void *)nvram dataSize:(unint64_t)size path:(__CFString *)path
 {
-  if (a5)
+  if (path)
   {
     v8 = IORegistryEntryFromPath(kIOMainPortDefault, "IODeviceTree:/options");
     if (v8)
     {
       v9 = v8;
       v10 = objc_autoreleasePoolPush();
-      v11 = IORegistryEntrySetCFProperty(v9, a5, [NSData dataWithBytes:a3 length:a4]);
+      v11 = IORegistryEntrySetCFProperty(v9, path, [NSData dataWithBytes:nvram length:size]);
       v12 = v11 == 0;
       if (v11 && os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_ERROR))
       {

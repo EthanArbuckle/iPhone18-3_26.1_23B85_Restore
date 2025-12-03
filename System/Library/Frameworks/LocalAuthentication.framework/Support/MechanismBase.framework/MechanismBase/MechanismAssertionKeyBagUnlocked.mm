@@ -1,51 +1,51 @@
 @interface MechanismAssertionKeyBagUnlocked
-- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)a3;
-- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)a3 keybag:(id)a4 workQueue:(id)a5;
-- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)a3 workQueue:(id)a4;
+- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)mechanism;
+- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)mechanism keybag:(id)keybag workQueue:(id)queue;
+- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)mechanism workQueue:(id)queue;
 - (void)_handleKeybagStateUpdate;
 - (void)dealloc;
-- (void)keybagStateDidChange:(id)a3;
+- (void)keybagStateDidChange:(id)change;
 @end
 
 @implementation MechanismAssertionKeyBagUnlocked
 
-- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)a3
+- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)mechanism
 {
   v4 = MEMORY[0x277D24028];
-  v5 = a3;
+  mechanismCopy = mechanism;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v4 createDefaultSerialQueueWithIdentifier:v7];
 
-  v9 = [(MechanismAssertionKeyBagUnlocked *)self initWithMechanism:v5 workQueue:v8];
+  v9 = [(MechanismAssertionKeyBagUnlocked *)self initWithMechanism:mechanismCopy workQueue:v8];
   return v9;
 }
 
-- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)a3 workQueue:(id)a4
+- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)mechanism workQueue:(id)queue
 {
   v6 = MEMORY[0x277D24088];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 sharedInstance];
-  v10 = [v8 request];
-  v11 = [v9 keybagForUserId:{objc_msgSend(v10, "evaluationUserId")}];
+  queueCopy = queue;
+  mechanismCopy = mechanism;
+  sharedInstance = [v6 sharedInstance];
+  request = [mechanismCopy request];
+  v11 = [sharedInstance keybagForUserId:{objc_msgSend(request, "evaluationUserId")}];
 
-  v12 = [(MechanismAssertionKeyBagUnlocked *)self initWithMechanism:v8 keybag:v11 workQueue:v7];
+  v12 = [(MechanismAssertionKeyBagUnlocked *)self initWithMechanism:mechanismCopy keybag:v11 workQueue:queueCopy];
   return v12;
 }
 
-- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)a3 keybag:(id)a4 workQueue:(id)a5
+- (MechanismAssertionKeyBagUnlocked)initWithMechanism:(id)mechanism keybag:(id)keybag workQueue:(id)queue
 {
-  v9 = a4;
-  v10 = a5;
+  keybagCopy = keybag;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = MechanismAssertionKeyBagUnlocked;
-  v11 = [(MechanismAssertion *)&v14 initWithMechanism:a3];
+  v11 = [(MechanismAssertion *)&v14 initWithMechanism:mechanism];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_keybag, a4);
-    objc_storeStrong(&v12->_workQueue, a5);
+    objc_storeStrong(&v11->_keybag, keybag);
+    objc_storeStrong(&v12->_workQueue, queue);
   }
 
   return v12;
@@ -59,7 +59,7 @@
   [(MechanismAssertion *)&v3 dealloc];
 }
 
-- (void)keybagStateDidChange:(id)a3
+- (void)keybagStateDidChange:(id)change
 {
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;

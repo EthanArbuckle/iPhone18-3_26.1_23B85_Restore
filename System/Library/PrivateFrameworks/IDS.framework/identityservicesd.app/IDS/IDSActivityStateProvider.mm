@@ -1,29 +1,29 @@
 @interface IDSActivityStateProvider
 - (BOOL)hasActiveSubscription;
-- (IDSActivityStateProvider)initWithUserDefaults:(id)a3;
+- (IDSActivityStateProvider)initWithUserDefaults:(id)defaults;
 - (NSSet)storedActivityTopics;
-- (id)storedDescriptionForActivity:(id)a3;
-- (id)storedSubscriptionsForActivity:(id)a3;
-- (id)storedUpdatesForActivity:(id)a3;
-- (void)removeSubscriptionForActivity:(id)a3 subActivity:(id)a4;
-- (void)setStoredActivityTopics:(id)a3;
-- (void)storeActivityDescription:(id)a3 forActivity:(id)a4;
-- (void)storeSubscription:(id)a3 forActivity:(id)a4;
-- (void)storeUpdates:(id)a3 forActivity:(id)a4;
+- (id)storedDescriptionForActivity:(id)activity;
+- (id)storedSubscriptionsForActivity:(id)activity;
+- (id)storedUpdatesForActivity:(id)activity;
+- (void)removeSubscriptionForActivity:(id)activity subActivity:(id)subActivity;
+- (void)setStoredActivityTopics:(id)topics;
+- (void)storeActivityDescription:(id)description forActivity:(id)activity;
+- (void)storeSubscription:(id)subscription forActivity:(id)activity;
+- (void)storeUpdates:(id)updates forActivity:(id)activity;
 @end
 
 @implementation IDSActivityStateProvider
 
-- (IDSActivityStateProvider)initWithUserDefaults:(id)a3
+- (IDSActivityStateProvider)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v9.receiver = self;
   v9.super_class = IDSActivityStateProvider;
   v6 = [(IDSActivityStateProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
   }
 
   return v7;
@@ -31,8 +31,8 @@
 
 - (NSSet)storedActivityTopics
 {
-  v2 = [(IDSActivityStateProvider *)self userDefaults];
-  v3 = [v2 appValueForKey:@"activityTopics"];
+  userDefaults = [(IDSActivityStateProvider *)self userDefaults];
+  v3 = [userDefaults appValueForKey:@"activityTopics"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -86,35 +86,35 @@ LABEL_13:
   return v10;
 }
 
-- (void)setStoredActivityTopics:(id)a3
+- (void)setStoredActivityTopics:(id)topics
 {
-  v4 = a3;
-  if (v4)
+  topicsCopy = topics;
+  if (topicsCopy)
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [v4 allObjects];
+      allObjects = [topicsCopy allObjects];
       v9 = 138412290;
-      v10 = v6;
+      v10 = allObjects;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Storing activity topics: %@", &v9, 0xCu);
     }
 
-    v7 = [(IDSActivityStateProvider *)self userDefaults];
-    v8 = [v4 allObjects];
-    [v7 setAppValue:v8 forKey:@"activityTopics"];
+    userDefaults = [(IDSActivityStateProvider *)self userDefaults];
+    allObjects2 = [topicsCopy allObjects];
+    [userDefaults setAppValue:allObjects2 forKey:@"activityTopics"];
   }
 }
 
 - (BOOL)hasActiveSubscription
 {
-  v2 = self;
-  v3 = [(IDSActivityStateProvider *)self storedActivityTopics];
+  selfCopy = self;
+  storedActivityTopics = [(IDSActivityStateProvider *)self storedActivityTopics];
   v4 = +[IMRGLog registration];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v37 = v3;
+    v37 = storedActivityTopics;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Looking for an active subscription.  Stored activity topics: %@", buf, 0xCu);
   }
 
@@ -122,13 +122,13 @@ LABEL_13:
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v3;
+  v5 = storedActivityTopics;
   v24 = [v5 countByEnumeratingWithState:&v31 objects:v40 count:16];
   if (v24)
   {
     v6 = *v32;
     v22 = *v32;
-    v23 = v2;
+    v23 = selfCopy;
     v26 = v5;
     do
     {
@@ -142,7 +142,7 @@ LABEL_13:
 
         v25 = v7;
         v8 = *(*(&v31 + 1) + 8 * v7);
-        v9 = [(IDSActivityStateProvider *)v2 storedSubscriptionsForActivity:v8, v22, v23];
+        v9 = [(IDSActivityStateProvider *)selfCopy storedSubscriptionsForActivity:v8, v22, v23];
         v10 = +[IMRGLog registration];
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
@@ -172,9 +172,9 @@ LABEL_13:
                 objc_enumerationMutation(v11);
               }
 
-              v16 = [*(*(&v27 + 1) + 8 * i) expirationDate];
+              expirationDate = [*(*(&v27 + 1) + 8 * i) expirationDate];
               v17 = +[NSDate date];
-              v18 = [v16 compare:v17];
+              v18 = [expirationDate compare:v17];
 
               if (v18 == 1)
               {
@@ -204,7 +204,7 @@ LABEL_13:
 
         v7 = v25 + 1;
         v6 = v22;
-        v2 = v23;
+        selfCopy = v23;
         v5 = v26;
       }
 
@@ -226,12 +226,12 @@ LABEL_25:
   return v20;
 }
 
-- (id)storedDescriptionForActivity:(id)a3
+- (id)storedDescriptionForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(IDSActivityStateProvider *)self userDefaults];
-  v6 = [NSString stringWithFormat:@"%@-%@", @"activityDescriptions", v4];
-  v7 = [v5 appValueForKey:v6];
+  activityCopy = activity;
+  userDefaults = [(IDSActivityStateProvider *)self userDefaults];
+  activityCopy = [NSString stringWithFormat:@"%@-%@", @"activityDescriptions", activityCopy];
+  v7 = [userDefaults appValueForKey:activityCopy];
 
   if (v7)
   {
@@ -260,14 +260,14 @@ LABEL_25:
   return v9;
 }
 
-- (void)storeActivityDescription:(id)a3 forActivity:(id)a4
+- (void)storeActivityDescription:(id)description forActivity:(id)activity
 {
-  v6 = a3;
-  v7 = [NSString stringWithFormat:@"%@-%@", @"activityDescriptions", a4];
-  if (v6)
+  descriptionCopy = description;
+  activity = [NSString stringWithFormat:@"%@-%@", @"activityDescriptions", activity];
+  if (descriptionCopy)
   {
     v13 = 0;
-    v8 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v13];
+    v8 = [NSKeyedArchiver archivedDataWithRootObject:descriptionCopy requiringSecureCoding:1 error:&v13];
     v9 = v13;
     if (v9)
     {
@@ -282,24 +282,24 @@ LABEL_25:
 
     if (v8)
     {
-      v11 = [(IDSActivityStateProvider *)self userDefaults];
-      [v11 setAppValue:v8 forKey:v7];
+      userDefaults = [(IDSActivityStateProvider *)self userDefaults];
+      [userDefaults setAppValue:v8 forKey:activity];
     }
   }
 
   else
   {
-    v12 = [(IDSActivityStateProvider *)self userDefaults];
-    [v12 setAppValue:0 forKey:v7];
+    userDefaults2 = [(IDSActivityStateProvider *)self userDefaults];
+    [userDefaults2 setAppValue:0 forKey:activity];
   }
 }
 
-- (id)storedUpdatesForActivity:(id)a3
+- (id)storedUpdatesForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"%@-%@", @"activityUpdates", v4];
-  v6 = [(IDSActivityStateProvider *)self userDefaults];
-  v7 = [v6 appValueForKey:v5];
+  activityCopy = activity;
+  activityCopy = [NSString stringWithFormat:@"%@-%@", @"activityUpdates", activityCopy];
+  userDefaults = [(IDSActivityStateProvider *)self userDefaults];
+  v7 = [userDefaults appValueForKey:activityCopy];
 
   if (v7)
   {
@@ -338,31 +338,31 @@ LABEL_25:
   return v11;
 }
 
-- (void)storeUpdates:(id)a3 forActivity:(id)a4
+- (void)storeUpdates:(id)updates forActivity:(id)activity
 {
-  v10 = a3;
-  v6 = [NSString stringWithFormat:@"%@-%@", @"activityUpdates", a4];
-  if (!v10)
+  updatesCopy = updates;
+  activity = [NSString stringWithFormat:@"%@-%@", @"activityUpdates", activity];
+  if (!updatesCopy)
   {
-    v7 = [(IDSActivityStateProvider *)self userDefaults];
-    [v7 setAppValue:0 forKey:v6];
+    userDefaults = [(IDSActivityStateProvider *)self userDefaults];
+    [userDefaults setAppValue:0 forKey:activity];
   }
 
   v8 = [NSKeyedArchiver archivedDataWithRootObject:"archivedDataWithRootObject:requiringSecureCoding:error:" requiringSecureCoding:? error:?];
   if (v8)
   {
-    v9 = [(IDSActivityStateProvider *)self userDefaults];
-    [v9 setAppValue:v8 forKey:v6];
+    userDefaults2 = [(IDSActivityStateProvider *)self userDefaults];
+    [userDefaults2 setAppValue:v8 forKey:activity];
   }
 }
 
-- (void)storeSubscription:(id)a3 forActivity:(id)a4
+- (void)storeSubscription:(id)subscription forActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [NSString stringWithFormat:@"%@-%@", @"subscriptions", v7];
-  v9 = [(IDSActivityStateProvider *)self userDefaults];
-  v10 = [v9 appValueForKey:v8];
+  subscriptionCopy = subscription;
+  activityCopy = activity;
+  activityCopy = [NSString stringWithFormat:@"%@-%@", @"subscriptions", activityCopy];
+  userDefaults = [(IDSActivityStateProvider *)self userDefaults];
+  v10 = [userDefaults appValueForKey:activityCopy];
 
   v11 = objc_opt_class();
   v12 = objc_opt_class();
@@ -386,8 +386,8 @@ LABEL_25:
     v14 = +[NSMutableDictionary dictionary];
   }
 
-  v17 = [v6 subActivity];
-  [v14 setValue:v6 forKey:v17];
+  subActivity = [subscriptionCopy subActivity];
+  [v14 setValue:subscriptionCopy forKey:subActivity];
 
   v22 = 0;
   v18 = [NSKeyedArchiver archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v22];
@@ -405,18 +405,18 @@ LABEL_25:
 
   if (v18)
   {
-    v21 = [(IDSActivityStateProvider *)self userDefaults];
-    [v21 setAppValue:v18 forKey:v8];
+    userDefaults2 = [(IDSActivityStateProvider *)self userDefaults];
+    [userDefaults2 setAppValue:v18 forKey:activityCopy];
   }
 }
 
-- (void)removeSubscriptionForActivity:(id)a3 subActivity:(id)a4
+- (void)removeSubscriptionForActivity:(id)activity subActivity:(id)subActivity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [NSString stringWithFormat:@"%@-%@", @"subscriptions", v6];
-  v9 = [(IDSActivityStateProvider *)self userDefaults];
-  v10 = [v9 appValueForKey:v8];
+  activityCopy = activity;
+  subActivityCopy = subActivity;
+  activityCopy = [NSString stringWithFormat:@"%@-%@", @"subscriptions", activityCopy];
+  userDefaults = [(IDSActivityStateProvider *)self userDefaults];
+  v10 = [userDefaults appValueForKey:activityCopy];
 
   if (v10)
   {
@@ -442,7 +442,7 @@ LABEL_25:
       v14 = +[NSMutableDictionary dictionary];
     }
 
-    [v14 setValue:0 forKey:v7];
+    [v14 setValue:0 forKey:subActivityCopy];
     v17 = [NSKeyedArchiver archivedDataWithRootObject:v14 requiringSecureCoding:1 error:0];
     if (v15)
     {
@@ -457,18 +457,18 @@ LABEL_25:
 
     if (v17)
     {
-      v19 = [(IDSActivityStateProvider *)self userDefaults];
-      [v19 setAppValue:v17 forKey:v8];
+      userDefaults2 = [(IDSActivityStateProvider *)self userDefaults];
+      [userDefaults2 setAppValue:v17 forKey:activityCopy];
     }
   }
 }
 
-- (id)storedSubscriptionsForActivity:(id)a3
+- (id)storedSubscriptionsForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [NSString stringWithFormat:@"%@-%@", @"subscriptions", v4];
-  v6 = [(IDSActivityStateProvider *)self userDefaults];
-  v7 = [v6 appValueForKey:v5];
+  activityCopy = activity;
+  activityCopy = [NSString stringWithFormat:@"%@-%@", @"subscriptions", activityCopy];
+  userDefaults = [(IDSActivityStateProvider *)self userDefaults];
+  v7 = [userDefaults appValueForKey:activityCopy];
 
   if (v7)
   {
@@ -494,15 +494,15 @@ LABEL_25:
       v11 = +[NSMutableDictionary dictionary];
     }
 
-    v14 = [v11 allValues];
+    allValues = [v11 allValues];
   }
 
   else
   {
-    v14 = 0;
+    allValues = 0;
   }
 
-  return v14;
+  return allValues;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface ENAdvertisementDatabaseQuerySession
-- (BOOL)enumerateAdvertisementsMatchingKeys:(id)a3 attenuationThreshold:(unsigned __int8)a4 timestampTolerance:(double)a5 error:(id *)a6 handler:(id)a7;
-- (id)beaconCountMetricsWithStartDate:(id)a3 endDate:(id)a4 windowDuration:(double)a5 error:(id *)a6;
+- (BOOL)enumerateAdvertisementsMatchingKeys:(id)keys attenuationThreshold:(unsigned __int8)threshold timestampTolerance:(double)tolerance error:(id *)error handler:(id)handler;
+- (id)beaconCountMetricsWithStartDate:(id)date endDate:(id)endDate windowDuration:(double)duration error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -9,9 +9,9 @@
 - (void)dealloc
 {
   v3 = +[ENLoggingPrefs sharedENLoggingPrefs];
-  v4 = [v3 isSensitiveLoggingAllowed];
+  isSensitiveLoggingAllowed = [v3 isSensitiveLoggingAllowed];
 
-  if (v4 && gLogCategory_ENAdvertisementDatabaseQuerySession <= 50 && (gLogCategory_ENAdvertisementDatabaseQuerySession != -1 || _LogCategory_Initialize()))
+  if (isSensitiveLoggingAllowed && gLogCategory_ENAdvertisementDatabaseQuerySession <= 50 && (gLogCategory_ENAdvertisementDatabaseQuerySession != -1 || _LogCategory_Initialize()))
   {
     [(ENAdvertisementDatabaseQuerySession *)self dealloc];
   }
@@ -22,18 +22,18 @@
   [(ENAdvertisementDatabaseQuerySession *)&v5 dealloc];
 }
 
-- (BOOL)enumerateAdvertisementsMatchingKeys:(id)a3 attenuationThreshold:(unsigned __int8)a4 timestampTolerance:(double)a5 error:(id *)a6 handler:(id)a7
+- (BOOL)enumerateAdvertisementsMatchingKeys:(id)keys attenuationThreshold:(unsigned __int8)threshold timestampTolerance:(double)tolerance error:(id *)error handler:(id)handler
 {
   v75 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v49 = a7;
-  self->_tekCount += [v11 count];
+  keysCopy = keys;
+  handlerCopy = handler;
+  self->_tekCount += [keysCopy count];
   v12 = objc_alloc_init(MEMORY[0x277CBEB30]);
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v13 = v11;
+  v13 = keysCopy;
   v14 = [v13 countByEnumeratingWithState:&v64 objects:v74 count:16];
   if (v14)
   {
@@ -48,8 +48,8 @@
         }
 
         v17 = *(*(&v64 + 1) + 8 * i);
-        v18 = [v17 keyData];
-        [v12 setObject:v17 forKey:v18];
+        keyData = [v17 keyData];
+        [v12 setObject:v17 forKey:keyData];
       }
 
       v14 = [v13 countByEnumeratingWithState:&v64 objects:v74 count:16];
@@ -58,7 +58,7 @@
     while (v14);
   }
 
-  v19 = [v12 allValues];
+  allValues = [v12 allValues];
 
   v46 = objc_autoreleasePoolPush();
   v58 = 0;
@@ -74,23 +74,23 @@
   block[3] = &unk_278FD0FE0;
   v55 = &v58;
   block[4] = self;
-  v48 = v19;
+  v48 = allValues;
   v54 = v48;
-  v57 = a4;
-  v56 = a5;
+  thresholdCopy = threshold;
+  toleranceCopy = tolerance;
   dispatch_sync(queue, block);
   v21 = v59[5];
   v47 = v21;
   if (v21)
   {
     v22 = v21;
-    v50 = [v47 bytes];
+    bytes = [v47 bytes];
     v23 = 0;
     v24 = [v59[5] length] / 0x28uLL;
     while (v23 < v24)
     {
       contexta = objc_autoreleasePoolPush();
-      v25 = v50 + 40 * v23;
+      v25 = bytes + 40 * v23;
       v27 = *(v25 + 28);
       v26 = (v25 + 28);
       if (v27 == -1)
@@ -103,7 +103,7 @@
         v28 = objc_alloc_init(MEMORY[0x277CBEB10]);
         v29 = 0;
         v30 = *v26;
-        v31 = (v50 + 32 + 40 * v23);
+        v31 = (bytes + 32 + 40 * v23);
         v32 = v23;
         do
         {
@@ -140,9 +140,9 @@
         v32 = v24;
 LABEL_19:
         v37 = +[ENLoggingPrefs sharedENLoggingPrefs];
-        v38 = [v37 isSensitiveLoggingAllowed];
+        isSensitiveLoggingAllowed = [v37 isSensitiveLoggingAllowed];
 
-        if (v38 && gLogCategory_ENAdvertisementDatabaseQuerySession <= 10 && (gLogCategory_ENAdvertisementDatabaseQuerySession != -1 || _LogCategory_Initialize()))
+        if (isSensitiveLoggingAllowed && gLogCategory_ENAdvertisementDatabaseQuerySession <= 10 && (gLogCategory_ENAdvertisementDatabaseQuerySession != -1 || _LogCategory_Initialize()))
         {
           v44 = v32 - v23;
           v45 = v29;
@@ -151,7 +151,7 @@ LABEL_19:
         }
 
         v39 = [v48 objectAtIndexedSubscript:{v30, v43, v44, v45, v46}];
-        v49[2](v49, v39, v28);
+        handlerCopy[2](handlerCopy, v39, v28);
       }
 
       objc_autoreleasePoolPop(contexta);
@@ -170,9 +170,9 @@ LABEL_19:
     v68 = *MEMORY[0x277CCA458];
     v69 = @"Error encountered querying database";
     v40 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:&v69 forKeys:&v68 count:1];
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B0] errorWithDomain:*MEMORY[0x277CC5BD0] code:16 userInfo:v40];
+      *error = [MEMORY[0x277CCA9B0] errorWithDomain:*MEMORY[0x277CC5BD0] code:16 userInfo:v40];
     }
   }
 
@@ -188,11 +188,11 @@ void __129__ENAdvertisementDatabaseQuerySession_enumerateAdvertisementsMatchingK
   *(v3 + 40) = v2;
 }
 
-- (id)beaconCountMetricsWithStartDate:(id)a3 endDate:(id)a4 windowDuration:(double)a5 error:(id *)a6
+- (id)beaconCountMetricsWithStartDate:(id)date endDate:(id)endDate windowDuration:(double)duration error:(id *)error
 {
   v38[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (self->_database)
   {
     v29 = 0;
@@ -208,20 +208,20 @@ void __129__ENAdvertisementDatabaseQuerySession_enumerateAdvertisementsMatchingK
     v22 = __100__ENAdvertisementDatabaseQuerySession_beaconCountMetricsWithStartDate_endDate_windowDuration_error___block_invoke;
     v23 = &unk_278FD1008;
     v27 = &v29;
-    v24 = self;
-    v25 = v10;
-    v26 = v11;
-    v28 = a5;
+    selfCopy = self;
+    v25 = dateCopy;
+    v26 = endDateCopy;
+    durationCopy = duration;
     dispatch_sync(queue, &v20);
 
     objc_autoreleasePoolPop(v12);
     v14 = v30[5];
-    if (a6 && !v14)
+    if (error && !v14)
     {
       v35 = *MEMORY[0x277CCA458];
       v36 = @"Nil beacon count metrics";
-      v15 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:&v36 forKeys:&v35 count:{1, v20, v21, v22, v23, v24}];
-      *a6 = [MEMORY[0x277CCA9B0] errorWithDomain:*MEMORY[0x277CC5BD0] code:11 userInfo:v15];
+      v15 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:&v36 forKeys:&v35 count:{1, v20, v21, v22, v23, selfCopy}];
+      *error = [MEMORY[0x277CCA9B0] errorWithDomain:*MEMORY[0x277CC5BD0] code:11 userInfo:v15];
 
       v14 = v30[5];
     }
@@ -235,9 +235,9 @@ void __129__ENAdvertisementDatabaseQuerySession_enumerateAdvertisementsMatchingK
     v37 = *MEMORY[0x277CCA458];
     v38[0] = @"Nil advertisement database";
     v17 = [MEMORY[0x277CBEAC8] dictionaryWithObjects:v38 forKeys:&v37 count:1];
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B0] errorWithDomain:*MEMORY[0x277CC5BD0] code:11 userInfo:v17];
+      *error = [MEMORY[0x277CCA9B0] errorWithDomain:*MEMORY[0x277CC5BD0] code:11 userInfo:v17];
     }
 
     v16 = 0;

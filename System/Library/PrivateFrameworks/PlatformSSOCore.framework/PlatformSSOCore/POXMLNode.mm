@@ -1,10 +1,10 @@
 @interface POXMLNode
 - (POXMLNode)init;
 - (id)content;
-- (id)evaluateXPath:(id)a3;
+- (id)evaluateXPath:(id)path;
 - (id)parent;
 - (id)rawXMLString;
-- (id)valueForProperty:(id)a3;
+- (id)valueForProperty:(id)property;
 @end
 
 @implementation POXMLNode
@@ -22,19 +22,19 @@
   return result;
 }
 
-- (id)evaluateXPath:(id)a3
+- (id)evaluateXPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(POXMLNode *)self node][8] != 1)
   {
     goto LABEL_7;
   }
 
-  v5 = [(POXMLNode *)self node];
-  v6 = [v4 UTF8String];
-  v7 = [(POXMLNode *)self xpathResultSet];
-  v8 = [v7 xpathContext];
-  v9 = xmlXPathNodeEval(v5, v6, [v8 xpathCtx]);
+  node = [(POXMLNode *)self node];
+  uTF8String = [pathCopy UTF8String];
+  xpathResultSet = [(POXMLNode *)self xpathResultSet];
+  xpathContext = [xpathResultSet xpathContext];
+  v9 = xmlXPathNodeEval(node, uTF8String, [xpathContext xpathCtx]);
 
   if (!v9)
   {
@@ -63,8 +63,8 @@ LABEL_7:
   {
     v3 = objc_alloc_init(POXMLNode);
     [(POXMLNode *)v3 setNode:[(POXMLNode *)self node][40]];
-    v4 = [(POXMLNode *)self xpathResultSet];
-    [(POXMLNode *)v3 setXpathResultSet:v4];
+    xpathResultSet = [(POXMLNode *)self xpathResultSet];
+    [(POXMLNode *)v3 setXpathResultSet:xpathResultSet];
   }
 
   else
@@ -75,13 +75,13 @@ LABEL_7:
   return v3;
 }
 
-- (id)valueForProperty:(id)a3
+- (id)valueForProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(POXMLNode *)self node];
-  v6 = [v4 UTF8String];
+  propertyCopy = property;
+  node = [(POXMLNode *)self node];
+  uTF8String = [propertyCopy UTF8String];
 
-  Prop = xmlGetProp(v5, v6);
+  Prop = xmlGetProp(node, uTF8String);
   if (Prop)
   {
     v8 = Prop;
@@ -108,12 +108,12 @@ LABEL_7:
 
 - (id)rawXMLString
 {
-  v3 = [(POXMLNode *)self xpathResultSet];
-  v4 = [v3 xpathContext];
-  v5 = [v4 xmldocContext];
+  xpathResultSet = [(POXMLNode *)self xpathResultSet];
+  xpathContext = [xpathResultSet xpathContext];
+  xmldocContext = [xpathContext xmldocContext];
 
   v6 = xmlBufferCreate();
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v6->content length:xmlNodeDump(v6 encoding:{objc_msgSend(v5, "xmldoc"), -[POXMLNode node](self, "node"), 0, 0), 4}];
+  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v6->content length:xmlNodeDump(v6 encoding:{objc_msgSend(xmldocContext, "xmldoc"), -[POXMLNode node](self, "node"), 0, 0), 4}];
   xmlBufferFree(v6);
 
   return v7;

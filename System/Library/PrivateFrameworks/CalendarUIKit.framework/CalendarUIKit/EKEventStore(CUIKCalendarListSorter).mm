@@ -8,7 +8,7 @@
 
 - (id)sortedSourcesEnabledForEntityType:()CUIKCalendarListSorter
 {
-  v1 = [a1 sourcesEnabledForEntityType:?];
+  v1 = [self sourcesEnabledForEntityType:?];
   v2 = +[CUIKCalendarListSorter ekSourceComparator];
   v3 = [v1 sortedArrayUsingComparator:v2];
 
@@ -17,7 +17,7 @@
 
 - (id)sortedCalendarsForEntityType:()CUIKCalendarListSorter
 {
-  v1 = [a1 calendarsForEntityType:?];
+  v1 = [self calendarsForEntityType:?];
   v2 = +[CUIKCalendarListSorter ekCalendarComparator];
   v3 = [v1 sortedArrayUsingComparator:v2];
 
@@ -27,7 +27,7 @@
 - (id)sortedCalendarsForEntityType:()CUIKCalendarListSorter passingTest:
 {
   v6 = a4;
-  v7 = [a1 calendarsForEntityType:a3];
+  v7 = [self calendarsForEntityType:a3];
   v8 = [v7 CalFilter:v6];
 
   v9 = +[CUIKCalendarListSorter ekCalendarComparator];

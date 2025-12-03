@@ -5,26 +5,26 @@
 + (id)configurationForSuggestLessFeedback;
 + (id)storeConfigurationForFeedback;
 + (id)storeConfigurationForSuggestLessFeedback;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMShareSheetLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"Feedback"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"Feedback"])
   {
-    v5 = [a1 Feedback];
+    feedback = [self Feedback];
 LABEL_5:
-    v6 = v5;
+    v6 = feedback;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"SuggestLessFeedback"])
+  if ([nameCopy isEqualToString:@"SuggestLessFeedback"])
   {
-    v5 = [a1 SuggestLessFeedback];
+    feedback = [self SuggestLessFeedback];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForSuggestLessFeedback
 {
-  v3 = [a1 storeConfigurationForSuggestLessFeedback];
-  v4 = [a1 syncPolicyForSuggestLessFeedback];
+  storeConfigurationForSuggestLessFeedback = [self storeConfigurationForSuggestLessFeedback];
+  syncPolicyForSuggestLessFeedback = [self syncPolicyForSuggestLessFeedback];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"3DB4DF92-4316-4FEA-A5CE-83C5B758D99F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ShareSheet.SuggestLessFeedback" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ShareSheet.SuggestLessFeedback" eventClass:objc_opt_class() storeConfig:storeConfigurationForSuggestLessFeedback syncPolicy:syncPolicyForSuggestLessFeedback legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,13 +71,13 @@ LABEL_7:
 
 + (id)configurationForFeedback
 {
-  v3 = [a1 storeConfigurationForFeedback];
-  v4 = [a1 syncPolicyForFeedback];
+  storeConfigurationForFeedback = [self storeConfigurationForFeedback];
+  syncPolicyForFeedback = [self syncPolicyForFeedback];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"8CB1F423-7EFC-4F79-94E4-8FFDF1F7D5BE"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ShareSheet.Feedback" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"ShareSheet.Feedback" eventClass:objc_opt_class() storeConfig:storeConfigurationForFeedback syncPolicy:syncPolicyForFeedback legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -93,7 +93,7 @@ LABEL_7:
 + (id)SuggestLessFeedback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSuggestLessFeedback];
+  configurationForSuggestLessFeedback = [self configurationForSuggestLessFeedback];
   v3 = +[BMShareSheetSuggestLessFeedback columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -105,7 +105,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ShareSheet.SuggestLessFeedback" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ShareSheet.SuggestLessFeedback" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ShareSheet.SuggestLessFeedback" schema:v9 configuration:configurationForSuggestLessFeedback];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -115,7 +115,7 @@ LABEL_7:
 + (id)Feedback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForFeedback];
+  configurationForFeedback = [self configurationForFeedback];
   v3 = +[BMShareSheetFeedback columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -127,7 +127,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"ShareSheet.Feedback" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ShareSheet.Feedback" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"ShareSheet.Feedback" schema:v9 configuration:configurationForFeedback];
 
   v11 = *MEMORY[0x1E69E9840];
 

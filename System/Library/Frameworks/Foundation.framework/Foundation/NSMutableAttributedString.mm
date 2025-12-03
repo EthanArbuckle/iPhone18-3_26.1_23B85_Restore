@@ -1,17 +1,17 @@
 @interface NSMutableAttributedString
-+ (NSMutableAttributedString)allocWithZone:(_NSZone *)a3;
++ (NSMutableAttributedString)allocWithZone:(_NSZone *)zone;
 - (NSMutableString)mutableString;
-- (id)_formatInflectionAlternative:(id)a3 withReplacements:(id)a4;
-- (void)_addAttributesIfNotPresentMergingInlinePresentationIntents:(id)a3 toRange:(_NSRange)a4;
-- (void)_inflectWithLocale:(id)a3 replacements:(id)a4 concepts:(id)a5 preflight:(BOOL)a6;
+- (id)_formatInflectionAlternative:(id)alternative withReplacements:(id)replacements;
+- (void)_addAttributesIfNotPresentMergingInlinePresentationIntents:(id)intents toRange:(_NSRange)range;
+- (void)_inflectWithLocale:(id)locale replacements:(id)replacements concepts:(id)concepts preflight:(BOOL)preflight;
 - (void)addAttribute:(NSAttributedStringKey)name value:(id)value range:(NSRange)range;
 - (void)addAttributes:(NSDictionary *)attrs range:(NSRange)range;
-- (void)addAttributesWeakly:(id)a3 range:(_NSRange)a4;
+- (void)addAttributesWeakly:(id)weakly range:(_NSRange)range;
 - (void)appendAttributedString:(NSAttributedString *)attrString;
 - (void)appendLocalizedFormat:(NSAttributedString *)format;
 - (void)deleteCharactersInRange:(NSRange)range;
-- (void)enumerateFormattableBlocksInRange:(_NSRange)a3 usingBlock:(id)a4;
-- (void)enumerateInflectableBlocksInRange:(_NSRange)a3 usingBlock:(id)a4;
+- (void)enumerateFormattableBlocksInRange:(_NSRange)range usingBlock:(id)block;
+- (void)enumerateInflectableBlocksInRange:(_NSRange)range usingBlock:(id)block;
 - (void)removeAttribute:(NSAttributedStringKey)name range:(NSRange)range;
 - (void)replaceCharactersInRange:(NSRange)range withAttributedString:(NSAttributedString *)attrString;
 - (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str;
@@ -28,15 +28,15 @@
   return v2;
 }
 
-+ (NSMutableAttributedString)allocWithZone:(_NSZone *)a3
++ (NSMutableAttributedString)allocWithZone:(_NSZone *)zone
 {
-  v4 = a1;
-  if (objc_opt_self() == a1)
+  selfCopy = self;
+  if (objc_opt_self() == self)
   {
-    v4 = objc_opt_self();
+    selfCopy = objc_opt_self();
   }
 
-  return NSAllocateObject(v4, 0, a3);
+  return NSAllocateObject(selfCopy, 0, zone);
 }
 
 - (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str
@@ -220,20 +220,20 @@
   }
 }
 
-- (void)addAttributesWeakly:(id)a3 range:(_NSRange)a4
+- (void)addAttributesWeakly:(id)weakly range:(_NSRange)range
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     [(NSMutableAttributedString *)self beginEditing];
     do
     {
       v17 = 0;
       v18 = 0;
       v8 = [(NSAttributedString *)self attributesAtIndex:location effectiveRange:&v17];
-      v9 = [a3 mutableCopyWithZone:0];
+      v9 = [weakly mutableCopyWithZone:0];
       v10 = v9;
       if (location + length >= v18 + v17)
       {
@@ -281,7 +281,7 @@
     }
 
     while (length);
-    if ([(NSAttributedString *)self _willRequireIntentResolutionWhenContainingAttributes:a3])
+    if ([(NSAttributedString *)self _willRequireIntentResolutionWhenContainingAttributes:weakly])
     {
       [(NSAttributedString *)self _markRequiringIntentResolution];
     }
@@ -372,12 +372,12 @@
   length = range.length;
   location = range.location;
   v14 = *MEMORY[0x1E69E9840];
-  v8 = [(NSAttributedString *)attrString string];
-  v9 = [(NSString *)v8 length];
+  string = [(NSAttributedString *)attrString string];
+  v9 = [(NSString *)string length];
   v12 = 0;
   v13 = 0;
   [(NSMutableAttributedString *)self beginEditing];
-  [(NSMutableAttributedString *)self replaceCharactersInRange:location withString:length, v8];
+  [(NSMutableAttributedString *)self replaceCharactersInRange:location withString:length, string];
   if (v9)
   {
     for (i = 0; i < v9; v12 = i)
@@ -418,17 +418,17 @@
   [(NSMutableAttributedString *)self replaceCharactersInRange:0 withAttributedString:v5, attrString];
 }
 
-- (void)_addAttributesIfNotPresentMergingInlinePresentationIntents:(id)a3 toRange:(_NSRange)a4
+- (void)_addAttributesIfNotPresentMergingInlinePresentationIntents:(id)intents toRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9[7] = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([intents count])
   {
-    v8 = [a3 objectForKeyedSubscript:@"NSInlinePresentationIntent"];
-    if (v8)
+    unsignedIntegerValue = [intents objectForKeyedSubscript:@"NSInlinePresentationIntent"];
+    if (unsignedIntegerValue)
     {
-      v8 = [v8 unsignedIntegerValue];
+      unsignedIntegerValue = [unsignedIntegerValue unsignedIntegerValue];
     }
 
     v9[0] = MEMORY[0x1E69E9820];
@@ -436,8 +436,8 @@
     v9[2] = __110__NSMutableAttributedString_NSInflection___addAttributesIfNotPresentMergingInlinePresentationIntents_toRange___block_invoke;
     v9[3] = &unk_1E69F4250;
     v9[5] = self;
-    v9[6] = v8;
-    v9[4] = a3;
+    v9[6] = unsignedIntegerValue;
+    v9[4] = intents;
     [(NSAttributedString *)self enumerateAttributesInRange:location options:length usingBlock:0x100000, v9];
   }
 }
@@ -498,13 +498,13 @@ uint64_t __110__NSMutableAttributedString_NSInflection___addAttributesIfNotPrese
   return result;
 }
 
-- (id)_formatInflectionAlternative:(id)a3 withReplacements:(id)a4
+- (id)_formatInflectionAlternative:(id)alternative withReplacements:(id)replacements
 {
   v39 = *MEMORY[0x1E69E9840];
   v33 = [[NSCharacterSet characterSetWithCharactersInString:?]];
   if (_NSIsNSString())
   {
-    v6 = [[NSMutableAttributedString alloc] initWithString:a3];
+    v6 = [[NSMutableAttributedString alloc] initWithString:alternative];
   }
 
   else
@@ -516,7 +516,7 @@ LABEL_38:
       return v7;
     }
 
-    v6 = [a3 mutableCopy];
+    v6 = [alternative mutableCopy];
   }
 
   v7 = v6;
@@ -551,21 +551,21 @@ LABEL_38:
             goto LABEL_37;
           }
 
-          v17 = [(NSString *)v16 integerValue];
-          v18 = v17 - 1;
-          if (v17 < 1)
+          integerValue = [(NSString *)v16 integerValue];
+          v18 = integerValue - 1;
+          if (integerValue < 1)
           {
             goto LABEL_37;
           }
 
-          v19 = v17;
-          if (v18 >= [a4 count] || objc_msgSend(objc_msgSend(a4, "objectAtIndexedSubscript:", v18), "index") != v19 || (v20 = objc_msgSend(a4, "objectAtIndexedSubscript:", v18)) == 0)
+          v19 = integerValue;
+          if (v18 >= [replacements count] || objc_msgSend(objc_msgSend(replacements, "objectAtIndexedSubscript:", v18), "index") != v19 || (v20 = objc_msgSend(replacements, "objectAtIndexedSubscript:", v18)) == 0)
           {
             v37 = 0u;
             v38 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v21 = [a4 countByEnumeratingWithState:&v35 objects:v34 count:16];
+            v21 = [replacements countByEnumeratingWithState:&v35 objects:v34 count:16];
             if (!v21)
             {
               goto LABEL_37;
@@ -580,7 +580,7 @@ LABEL_25:
             {
               if (*v36 != v23)
               {
-                objc_enumerationMutation(a4);
+                objc_enumerationMutation(replacements);
               }
 
               v20 = *(*(&v35 + 1) + 8 * v25);
@@ -591,7 +591,7 @@ LABEL_25:
 
               if (v22 == ++v25)
               {
-                v22 = [a4 countByEnumeratingWithState:&v35 objects:v34 count:16];
+                v22 = [replacements countByEnumeratingWithState:&v35 objects:v34 count:16];
                 v12 = v24;
                 if (v22)
                 {
@@ -609,9 +609,9 @@ LABEL_25:
             }
           }
 
-          v26 = [(NSAttributedString *)self string];
-          v27 = [v20 replacementRangeInResult];
-          v29 = [(NSString *)v26 substringWithRange:v27, v28];
+          string = [(NSAttributedString *)self string];
+          replacementRangeInResult = [v20 replacementRangeInResult];
+          v29 = [(NSString *)string substringWithRange:replacementRangeInResult, v28];
           [(NSMutableString *)[(NSMutableAttributedString *)v7 mutableString] replaceCharactersInRange:v11 withString:v15 + 2, v29];
           v30 = [(NSString *)v29 length];
           if (v30 == 0x7FFFFFFFFFFFFFFFLL)
@@ -657,7 +657,7 @@ LABEL_37:
   return v7;
 }
 
-- (void)_inflectWithLocale:(id)a3 replacements:(id)a4 concepts:(id)a5 preflight:(BOOL)a6
+- (void)_inflectWithLocale:(id)locale replacements:(id)replacements concepts:(id)concepts preflight:(BOOL)preflight
 {
   v23[5] = *MEMORY[0x1E69E9840];
   v11 = +[NSTermOfAddress currentUser];
@@ -712,7 +712,7 @@ LABEL_37:
   v14[1] = 3221225472;
   v14[2] = __94__NSMutableAttributedString_NSInflection___inflectWithLocale_replacements_concepts_preflight___block_invoke_11;
   v14[3] = &unk_1E69F43E0;
-  v12[5] = a4;
+  v12[5] = replacements;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__NSMutableAttributedString_NSInflection___inflectWithLocale_replacements_concepts_preflight___block_invoke_12;
@@ -722,7 +722,7 @@ LABEL_37:
   v12[2] = __94__NSMutableAttributedString_NSInflection___inflectWithLocale_replacements_concepts_preflight___block_invoke_13;
   v12[3] = &unk_1E69F4430;
   v12[4] = self;
-  _NSInflect(a3, a4, a5, v11, v23, a6, v22, v21, v20, v19, v18, v17, v16, v15, v14, v13, v12);
+  _NSInflect(locale, replacements, concepts, v11, v23, preflight, v22, v21, v20, v19, v18, v17, v16, v15, v14, v13, v12);
 }
 
 uint64_t __94__NSMutableAttributedString_NSInflection___inflectWithLocale_replacements_concepts_preflight___block_invoke_6(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -807,7 +807,7 @@ void __94__NSMutableAttributedString_NSInflection___inflectWithLocale_replacemen
   }
 }
 
-- (void)enumerateInflectableBlocksInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateInflectableBlocksInRange:(_NSRange)range usingBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -819,21 +819,21 @@ void __94__NSMutableAttributedString_NSInflection___inflectWithLocale_replacemen
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v18 = a3.location + a3.length;
+  v18 = range.location + range.length;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __88__NSMutableAttributedString_NSInflection__enumerateInflectableBlocksInRange_usingBlock___block_invoke;
   v11 = &unk_1E69F4458;
   v13 = &v19;
   v14 = &v15;
-  v12 = a4;
+  blockCopy = block;
   [NSAttributedString enumerateAttributesInRange:"enumerateAttributesInRange:options:usingBlock:" options:? usingBlock:?];
   v5 = v20[5];
   if (v5)
   {
     v6 = v16[3];
     v7 = 0;
-    (*(a4 + 2))(a4, v5, 0, v6, &v7);
+    (*(block + 2))(block, v5, 0, v6, &v7);
   }
 
   _Block_object_dispose(&v15, 8);
@@ -877,7 +877,7 @@ uint64_t __88__NSMutableAttributedString_NSInflection__enumerateInflectableBlock
   return result;
 }
 
-- (void)enumerateFormattableBlocksInRange:(_NSRange)a3 usingBlock:(id)a4
+- (void)enumerateFormattableBlocksInRange:(_NSRange)range usingBlock:(id)block
 {
   v25 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -889,21 +889,21 @@ uint64_t __88__NSMutableAttributedString_NSInflection__enumerateInflectableBlock
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v18 = a3.location + a3.length;
+  v18 = range.location + range.length;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __88__NSMutableAttributedString_NSInflection__enumerateFormattableBlocksInRange_usingBlock___block_invoke;
   v11 = &unk_1E69F4458;
   v13 = &v19;
   v14 = &v15;
-  v12 = a4;
+  blockCopy = block;
   [NSAttributedString enumerateAttributesInRange:"enumerateAttributesInRange:options:usingBlock:" options:? usingBlock:?];
   v5 = v20[5];
   if (v5)
   {
     v6 = v16[3];
     v7 = 0;
-    (*(a4 + 2))(a4, v5, 0, v6, &v7);
+    (*(block + 2))(block, v5, 0, v6, &v7);
   }
 
   _Block_object_dispose(&v15, 8);

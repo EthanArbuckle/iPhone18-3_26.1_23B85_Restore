@@ -1,16 +1,16 @@
 @interface SearchHomeTipLayoutProvider
 - (id)cellClasses;
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5;
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8;
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item;
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme;
 @end
 
 @implementation SearchHomeTipLayoutProvider
 
-- (id)layoutSectionWithLayoutEnvironment:(id)a3 estimatedHeaderHeight:(double)a4 estimatedFooterHeight:(double)a5 deletionBlock:(id)a6 objectsCount:(unint64_t)a7 mapsTheme:(id)a8
+- (id)layoutSectionWithLayoutEnvironment:(id)environment estimatedHeaderHeight:(double)height estimatedFooterHeight:(double)footerHeight deletionBlock:(id)block objectsCount:(unint64_t)count mapsTheme:(id)theme
 {
-  v9 = [NSCollectionLayoutDimension fractionalWidthDimension:a3, a6, a7, a8, 1.0, a5];
+  footerHeight = [NSCollectionLayoutDimension fractionalWidthDimension:environment, block, count, theme, 1.0, footerHeight];
   v10 = [NSCollectionLayoutDimension estimatedDimension:100.0];
-  v11 = [NSCollectionLayoutSize sizeWithWidthDimension:v9 heightDimension:v10];
+  v11 = [NSCollectionLayoutSize sizeWithWidthDimension:footerHeight heightDimension:v10];
 
   v12 = [NSCollectionLayoutItem itemWithLayoutSize:v11];
   v13 = [NSCollectionLayoutDimension fractionalWidthDimension:1.0];
@@ -28,7 +28,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v21 = 138412290;
-      v22 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "The LayoutSection is nil for some reason in class - %@.", &v21, 0xCu);
     }
   }
@@ -36,18 +36,18 @@
   return v18;
 }
 
-- (id)cellForRowAtIndexPath:(id)a3 collectionView:(id)a4 item:(id)a5
+- (id)cellForRowAtIndexPath:(id)path collectionView:(id)view item:(id)item
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SearchHomeTipLayoutProvider *)self cellReuseIdentifier];
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v8];
+  pathCopy = path;
+  viewCopy = view;
+  itemCopy = item;
+  cellReuseIdentifier = [(SearchHomeTipLayoutProvider *)self cellReuseIdentifier];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:cellReuseIdentifier forIndexPath:pathCopy];
 
-  LODWORD(v11) = MGGetBoolAnswer();
+  LODWORD(cellReuseIdentifier) = MGGetBoolAnswer();
   v13 = +[NSBundle mainBundle];
   v14 = v13;
-  if (v11)
+  if (cellReuseIdentifier)
   {
     v15 = @"[Search Home] Search Tip Subtitle WLAN";
   }

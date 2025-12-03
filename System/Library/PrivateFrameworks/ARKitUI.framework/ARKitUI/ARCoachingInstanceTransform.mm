@@ -1,5 +1,5 @@
 @interface ARCoachingInstanceTransform
-- (ARCoachingInstanceTransform)init:(__n128)a3;
+- (ARCoachingInstanceTransform)init:(__n128)init;
 - (__n128)transform;
 - (void)doTransform;
 @end
@@ -8,27 +8,27 @@
 
 - (__n128)transform
 {
-  result = *(a1 + 80);
-  v2 = *(a1 + 96);
-  v3 = *(a1 + 112);
-  v4 = *(a1 + 128);
+  result = *(self + 80);
+  v2 = *(self + 96);
+  v3 = *(self + 112);
+  v4 = *(self + 128);
   return result;
 }
 
-- (ARCoachingInstanceTransform)init:(__n128)a3
+- (ARCoachingInstanceTransform)init:(__n128)init
 {
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = ARCoachingInstanceTransform;
   v5 = [(ARCoachingInstanceTransform *)&v17 init];
   v6 = v5;
   if (v5)
   {
     *v5->_anon_10 = a2;
-    *&v5->_anon_10[16] = a3;
+    *&v5->_anon_10[16] = init;
     *&v5->_anon_10[32] = a4;
     *&v5->_anon_10[48] = a5;
     *v5->_anon_50 = a2;
-    *&v5->_anon_50[16] = a3;
+    *&v5->_anon_50[16] = init;
     *&v5->_anon_50[32] = a4;
     *&v5->_anon_50[48] = a5;
     *v5->_localScale = 0u;

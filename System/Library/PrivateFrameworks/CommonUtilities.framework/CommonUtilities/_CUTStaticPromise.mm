@@ -1,36 +1,36 @@
 @interface _CUTStaticPromise
-- (_CUTStaticPromise)initWithResult:(id)a3 safe:(BOOL)a4;
-- (id)then:(id)a3;
+- (_CUTStaticPromise)initWithResult:(id)result safe:(BOOL)safe;
+- (id)then:(id)then;
 @end
 
 @implementation _CUTStaticPromise
 
-- (_CUTStaticPromise)initWithResult:(id)a3 safe:(BOOL)a4
+- (_CUTStaticPromise)initWithResult:(id)result safe:(BOOL)safe
 {
-  v7 = a3;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = _CUTStaticPromise;
-  v8 = [(CUTUnsafePromise *)&v11 _init];
-  v9 = v8;
-  if (v8)
+  _init = [(CUTUnsafePromise *)&v11 _init];
+  v9 = _init;
+  if (_init)
   {
-    objc_storeStrong(v8 + 1, a3);
-    v9->_safe = a4;
+    objc_storeStrong(_init + 1, result);
+    v9->_safe = safe;
   }
 
   return v9;
 }
 
-- (id)then:(id)a3
+- (id)then:(id)then
 {
   if (self->_safe)
   {
-    sub_1B232DF68(self, a3);
+    sub_1B232DF68(self, then);
   }
 
   else
   {
-    sub_1B232DCA8(self, a3);
+    sub_1B232DCA8(self, then);
   }
   v3 = ;
 

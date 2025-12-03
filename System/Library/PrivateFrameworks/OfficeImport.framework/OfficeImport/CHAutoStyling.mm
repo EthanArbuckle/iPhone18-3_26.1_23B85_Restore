@@ -1,67 +1,67 @@
 @interface CHAutoStyling
-+ (id)autoStylingWithChart:(id)a3 drawingTheme:(id)a4;
-- (CHAutoStyling)initWithChart:(id)a3 drawingTheme:(id)a4;
-- (void)replaceStrokeAndFillInEmptyMarker:(id)a3 withSeriesGraphicProperties:(id)a4;
++ (id)autoStylingWithChart:(id)chart drawingTheme:(id)theme;
+- (CHAutoStyling)initWithChart:(id)chart drawingTheme:(id)theme;
+- (void)replaceStrokeAndFillInEmptyMarker:(id)marker withSeriesGraphicProperties:(id)properties;
 @end
 
 @implementation CHAutoStyling
 
-+ (id)autoStylingWithChart:(id)a3 drawingTheme:(id)a4
++ (id)autoStylingWithChart:(id)chart drawingTheme:(id)theme
 {
-  v5 = a3;
-  v6 = a4;
-  [v5 isBinary];
-  v7 = [objc_alloc(objc_opt_class()) initWithChart:v5 drawingTheme:v6];
+  chartCopy = chart;
+  themeCopy = theme;
+  [chartCopy isBinary];
+  v7 = [objc_alloc(objc_opt_class()) initWithChart:chartCopy drawingTheme:themeCopy];
 
   return v7;
 }
 
-- (void)replaceStrokeAndFillInEmptyMarker:(id)a3 withSeriesGraphicProperties:(id)a4
+- (void)replaceStrokeAndFillInEmptyMarker:(id)marker withSeriesGraphicProperties:(id)properties
 {
-  v12 = a3;
-  v5 = a4;
-  if ([v5 hasStroke])
+  markerCopy = marker;
+  propertiesCopy = properties;
+  if ([propertiesCopy hasStroke])
   {
-    v6 = [v5 stroke];
+    stroke = [propertiesCopy stroke];
   }
 
   else
   {
-    v6 = 0;
+    stroke = 0;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 fill];
+    fill = [stroke fill];
   }
 
   else
   {
-    v7 = 0;
+    fill = 0;
   }
 
-  v8 = [v12 graphicProperties];
-  v9 = [v6 copy];
-  [v8 setStroke:v9];
+  graphicProperties = [markerCopy graphicProperties];
+  v9 = [stroke copy];
+  [graphicProperties setStroke:v9];
 
-  v10 = [v12 graphicProperties];
-  v11 = [v7 copy];
-  [v10 setFill:v11];
+  graphicProperties2 = [markerCopy graphicProperties];
+  v11 = [fill copy];
+  [graphicProperties2 setFill:v11];
 }
 
-- (CHAutoStyling)initWithChart:(id)a3 drawingTheme:(id)a4
+- (CHAutoStyling)initWithChart:(id)chart drawingTheme:(id)theme
 {
-  v7 = a3;
-  v8 = a4;
+  chartCopy = chart;
+  themeCopy = theme;
   v12.receiver = self;
   v12.super_class = CHAutoStyling;
   v9 = [(CHAutoStyling *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mChart, a3);
-    objc_storeStrong(&v10->mDrawingTheme, a4);
+    objc_storeStrong(&v9->mChart, chart);
+    objc_storeStrong(&v10->mDrawingTheme, theme);
   }
 
   return v10;

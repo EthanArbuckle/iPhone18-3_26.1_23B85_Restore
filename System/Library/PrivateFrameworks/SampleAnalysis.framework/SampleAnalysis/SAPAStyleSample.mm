@@ -1,20 +1,20 @@
 @interface SAPAStyleSample
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SAPAStyleSample
 
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v5 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleSample" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v3 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleSample" userInfo:0];
   objc_exception_throw(v3);
@@ -26,15 +26,15 @@
   objc_exception_throw(v2);
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
-  if (!a3)
+  if (!buffer)
   {
     v10 = @"NULL buffer";
     goto LABEL_8;
   }
 
-  if (*a3 != 2171757396)
+  if (*buffer != 2171757396)
   {
     v10 = @"Bad SASample magic";
     goto LABEL_8;
@@ -50,33 +50,33 @@ LABEL_8:
   }
 
   v6 = v5;
-  v7 = [SATimestamp timestampWithMachAbsTime:0 machAbsTimeSec:0 machContTime:*(a3 + 1) machContTimeSec:0.0 wallTime:*(a3 + 2)];
+  v7 = [SATimestamp timestampWithMachAbsTime:0 machAbsTimeSec:0 machContTime:*(buffer + 1) machContTimeSec:0.0 wallTime:*(buffer + 2)];
   timestamp = v6->_timestamp;
   v6->_timestamp = v7;
 
   return v6;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     v29 = @"Passed NULL buffer";
     goto LABEL_24;
   }
 
-  if (*a3 != 2171757396)
+  if (*buffer != 2171757396)
   {
     v29 = @"Bad SASample magic";
 LABEL_24:
-    v30 = [SAException exceptionWithName:@"Decoding failure" reason:v29 userInfo:0, a6];
-    objc_exception_throw(v30);
+    bufferDictionary = [SAException exceptionWithName:@"Decoding failure" reason:v29 userInfo:0, bufferDictionary];
+    objc_exception_throw(bufferDictionary);
   }
 
-  v10 = *(a3 + 3);
+  v10 = *(buffer + 3);
   v11 = objc_opt_class();
-  v12 = SASerializableNewMutableArrayFromIndexList(a3 + 32, v10, a5, a6, v11);
+  v12 = SASerializableNewMutableArrayFromIndexList(buffer + 32, v10, dictionary, bufferDictionary, v11);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;

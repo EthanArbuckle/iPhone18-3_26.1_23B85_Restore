@@ -1,23 +1,23 @@
 @interface HMDCameraSnapshotMonitorEvents
 + (id)logCategory;
-- (HMDCameraSnapshotMonitorEvents)initWithSnapshotManager:(id)a3 accessory:(id)a4 workQueue:(id)a5 msgDispatcher:(id)a6;
-- (HMDCameraSnapshotMonitorEvents)initWithSnapshotManager:(id)a3 accessory:(id)a4 workQueue:(id)a5 msgDispatcher:(id)a6 bulletinBoard:(id)a7 notificationCenter:(id)a8;
+- (HMDCameraSnapshotMonitorEvents)initWithSnapshotManager:(id)manager accessory:(id)accessory workQueue:(id)queue msgDispatcher:(id)dispatcher;
+- (HMDCameraSnapshotMonitorEvents)initWithSnapshotManager:(id)manager accessory:(id)accessory workQueue:(id)queue msgDispatcher:(id)dispatcher bulletinBoard:(id)board notificationCenter:(id)center;
 - (OS_dispatch_queue)messageReceiveQueue;
 - (id)currentCameraSettings;
-- (uint64_t)_canEnableNotificationForCharacteristic:(void *)a3 cameraSettings:;
-- (void)_characteristicsUpdated:(void *)a3 modifiedCharacteristics:;
-- (void)_enableNotificationsForCharacteristics:(void *)a3 cameraSettings:;
-- (void)_handleUpdatedBulletinSnapshotCharacteristics:(id *)a1;
-- (void)_insertUpdateOrRemoveBulletins:(void *)a3 forChangedCharacteristics:(void *)a4 snapshotData:;
-- (void)_removeBulletins:(void *)a3 sessionID:;
+- (uint64_t)_canEnableNotificationForCharacteristic:(void *)characteristic cameraSettings:;
+- (void)_characteristicsUpdated:(void *)updated modifiedCharacteristics:;
+- (void)_enableNotificationsForCharacteristics:(void *)characteristics cameraSettings:;
+- (void)_handleUpdatedBulletinSnapshotCharacteristics:(id *)characteristics;
+- (void)_insertUpdateOrRemoveBulletins:(void *)bulletins forChangedCharacteristics:(void *)characteristics snapshotData:;
+- (void)_removeBulletins:(void *)bulletins sessionID:;
 - (void)_updateHomedRelaunchRegistration;
 - (void)dealloc;
-- (void)handleBulletinBoardNotificationDidUpdateNotification:(id)a3;
-- (void)handleCameraSettingsDidUpdateNotification:(id)a3;
-- (void)handleCharacteristicsChangedNotification:(id)a3;
-- (void)listener:(id)a3 didUpdateAvailableCharacteristics:(id)a4;
+- (void)handleBulletinBoardNotificationDidUpdateNotification:(id)notification;
+- (void)handleCameraSettingsDidUpdateNotification:(id)notification;
+- (void)handleCharacteristicsChangedNotification:(id)notification;
+- (void)listener:(id)listener didUpdateAvailableCharacteristics:(id)characteristics;
 - (void)registerForMessages;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCameraSnapshotMonitorEvents
@@ -33,10 +33,10 @@
   return self;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fireCopy = fire;
   if (self)
   {
     Property = objc_getProperty(self, v4, 8, 1);
@@ -48,7 +48,7 @@
   }
 
   dispatch_assert_queue_V2(Property);
-  v7 = v5;
+  v7 = fireCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -65,23 +65,23 @@
   if (v9)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [v9 sessionID];
+      sessionID = [v9 sessionID];
       *buf = 138543618;
       v31 = v13;
       v32 = 2112;
-      v33 = v14;
+      v33 = sessionID;
       _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Timer did fire for %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
     if (self)
     {
-      v16 = objc_getProperty(v11, v15, 32, 1);
+      v16 = objc_getProperty(selfCopy, v15, 32, 1);
     }
 
     else
@@ -92,16 +92,16 @@
     if ([v16 containsObject:v9])
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = v11;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [v9 sessionID];
+        sessionID2 = [v9 sessionID];
         *buf = 138543618;
         v31 = v20;
         v32 = 2112;
-        v33 = v21;
+        v33 = sessionID2;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_INFO, "%{public}@Posting notification as timer has expired for snapshot session %@", buf, 0x16u);
       }
 
@@ -117,15 +117,15 @@
       }
 
       v24 = v23;
-      v25 = [v9 changedCharacteristics];
-      v26 = [v25 allObjects];
+      changedCharacteristics = [v9 changedCharacteristics];
+      allObjects = [changedCharacteristics allObjects];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __47__HMDCameraSnapshotMonitorEvents_timerDidFire___block_invoke;
       v28[3] = &unk_278687998;
       v28[4] = v18;
       v29 = v9;
-      [v24 insertImageBulletinsForChangedCharacteristics:v26 snapshotData:0 completion:v28];
+      [v24 insertImageBulletinsForChangedCharacteristics:allObjects snapshotData:0 completion:v28];
     }
   }
 
@@ -236,12 +236,12 @@ void __47__HMDCameraSnapshotMonitorEvents_timerDidFire___block_invoke_2(uint64_t
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeBulletins:(void *)a3 sessionID:
+- (void)_removeBulletins:(void *)bulletins sessionID:
 {
   v32 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v19 = a3;
-  Property = objc_getProperty(a1, v6, 8, 1);
+  bulletinsCopy = bulletins;
+  Property = objc_getProperty(self, v6, 8, 1);
   dispatch_assert_queue_V2(Property);
   v23 = 0u;
   v24 = 0u;
@@ -264,7 +264,7 @@ void __47__HMDCameraSnapshotMonitorEvents_timerDidFire___block_invoke_2(uint64_t
 
         v12 = *(*(&v21 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
-        v14 = a1;
+        selfCopy = self;
         v15 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
@@ -274,12 +274,12 @@ void __47__HMDCameraSnapshotMonitorEvents_timerDidFire___block_invoke_2(uint64_t
           v27 = 2112;
           v28 = v12;
           v29 = 2112;
-          v30 = v19;
+          v30 = bulletinsCopy;
           _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@A bulletin with recordID %@ has already been posted for snapshot session %@, removing it", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v13);
-        [objc_getProperty(v14 v17];
+        [objc_getProperty(selfCopy v17];
       }
 
       v9 = [obj countByEnumeratingWithState:&v21 objects:v31 count:16];
@@ -291,9 +291,9 @@ void __47__HMDCameraSnapshotMonitorEvents_timerDidFire___block_invoke_2(uint64_t
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCameraSettingsDidUpdateNotification:(id)a3
+- (void)handleCameraSettingsDidUpdateNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   if (self)
   {
     Property = objc_getProperty(self, v4, 8, 1);
@@ -308,9 +308,9 @@ void __47__HMDCameraSnapshotMonitorEvents_timerDidFire___block_invoke_2(uint64_t
   v8[1] = 3221225472;
   v8[2] = __76__HMDCameraSnapshotMonitorEvents_handleCameraSettingsDidUpdateNotification___block_invoke;
   v8[3] = &unk_27868A750;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = notificationCopy;
+  selfCopy = self;
+  v7 = notificationCopy;
   dispatch_async(Property, v8);
 }
 
@@ -356,18 +356,18 @@ void __76__HMDCameraSnapshotMonitorEvents_handleCameraSettingsDidUpdateNotificat
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enableNotificationsForCharacteristics:(void *)a3 cameraSettings:
+- (void)_enableNotificationsForCharacteristics:(void *)characteristics cameraSettings:
 {
   v43 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v7 = a3;
-  if (a1)
+  characteristicsCopy = characteristics;
+  if (self)
   {
-    Property = objc_getProperty(a1, v6, 8, 1);
+    Property = objc_getProperty(self, v6, 8, 1);
     dispatch_assert_queue_V2(Property);
     v9 = [MEMORY[0x277CBEB58] set];
     v10 = &OBJC_IVAR___HMDApplicationVendorIDStoreValue__spiClient;
-    [objc_getProperty(a1 v11];
+    [objc_getProperty(self v11];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -379,7 +379,7 @@ void __76__HMDCameraSnapshotMonitorEvents_handleCameraSettingsDidUpdateNotificat
     {
       v13 = v12;
       v33 = *v35;
-      v30 = v7;
+      v30 = characteristicsCopy;
       v31 = v9;
       do
       {
@@ -391,14 +391,14 @@ void __76__HMDCameraSnapshotMonitorEvents_handleCameraSettingsDidUpdateNotificat
           }
 
           v15 = *(*(&v34 + 1) + 8 * i);
-          v16 = [v15 service];
-          v17 = [v16 bulletinBoardNotification];
+          service = [v15 service];
+          bulletinBoardNotification = [service bulletinBoardNotification];
 
-          [objc_getProperty(a1 v18];
-          if ([v17 isEnabled] && -[HMDCameraSnapshotMonitorEvents _canEnableNotificationForCharacteristic:cameraSettings:](a1, v15, v7))
+          [objc_getProperty(self v18];
+          if ([bulletinBoardNotification isEnabled] && -[HMDCameraSnapshotMonitorEvents _canEnableNotificationForCharacteristic:cameraSettings:](self, v15, characteristicsCopy))
           {
             v19 = objc_autoreleasePoolPush();
-            v20 = a1;
+            selfCopy = self;
             v21 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
             {
@@ -409,7 +409,7 @@ void __76__HMDCameraSnapshotMonitorEvents_handleCameraSettingsDidUpdateNotificat
               v41 = v15;
               _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_INFO, "%{public}@Adding bulletin snapshot characteristic: %@", buf, 0x16u);
 
-              v7 = v30;
+              characteristicsCopy = v30;
             }
 
             objc_autoreleasePoolPop(v19);
@@ -425,24 +425,24 @@ void __76__HMDCameraSnapshotMonitorEvents_handleCameraSettingsDidUpdateNotificat
       while (v13);
     }
 
-    v23 = [a1 bulletinSnapshotCharacteristics];
-    v24 = [v23 count];
+    bulletinSnapshotCharacteristics = [self bulletinSnapshotCharacteristics];
+    v24 = [bulletinSnapshotCharacteristics count];
     if (v24 == [v9 count])
     {
 
-      [(HMDCameraSnapshotMonitorEvents *)a1 _handleUpdatedBulletinSnapshotCharacteristics:v9];
+      [(HMDCameraSnapshotMonitorEvents *)self _handleUpdatedBulletinSnapshotCharacteristics:v9];
       v5 = v29;
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    v25 = [a1 bulletinSnapshotCharacteristics];
-    if ([v25 count])
+    bulletinSnapshotCharacteristics2 = [self bulletinSnapshotCharacteristics];
+    if ([bulletinSnapshotCharacteristics2 count])
     {
       v26 = [v9 count];
 
-      [(HMDCameraSnapshotMonitorEvents *)a1 _handleUpdatedBulletinSnapshotCharacteristics:v9];
+      [(HMDCameraSnapshotMonitorEvents *)self _handleUpdatedBulletinSnapshotCharacteristics:v9];
       v5 = v29;
       if (v26)
       {
@@ -453,11 +453,11 @@ LABEL_21:
     else
     {
 
-      [(HMDCameraSnapshotMonitorEvents *)a1 _handleUpdatedBulletinSnapshotCharacteristics:v9];
+      [(HMDCameraSnapshotMonitorEvents *)self _handleUpdatedBulletinSnapshotCharacteristics:v9];
       v5 = v29;
     }
 
-    [(HMDCameraSnapshotMonitorEvents *)a1 _updateHomedRelaunchRegistration];
+    [(HMDCameraSnapshotMonitorEvents *)self _updateHomedRelaunchRegistration];
     goto LABEL_21;
   }
 
@@ -466,15 +466,15 @@ LABEL_22:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_canEnableNotificationForCharacteristic:(void *)a3 cameraSettings:
+- (uint64_t)_canEnableNotificationForCharacteristic:(void *)characteristic cameraSettings:
 {
   v61 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  Property = objc_getProperty(a1, v7, 8, 1);
+  characteristicCopy = characteristic;
+  Property = objc_getProperty(self, v7, 8, 1);
   dispatch_assert_queue_V2(Property);
   v9 = objc_autoreleasePoolPush();
-  v10 = a1;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -489,17 +489,17 @@ LABEL_22:
   objc_autoreleasePoolPop(v9);
   v13 = v5;
   objc_opt_self();
-  v14 = [v13 type];
-  if ([v14 isEqualToString:*MEMORY[0x277CCF910]])
+  type = [v13 type];
+  if ([type isEqualToString:*MEMORY[0x277CCF910]])
   {
-    v15 = [v13 service];
-    v16 = [v15 type];
-    v17 = [v16 isEqualToString:*MEMORY[0x277CD0E38]];
+    service = [v13 service];
+    type2 = [service type];
+    v17 = [type2 isEqualToString:*MEMORY[0x277CD0E38]];
 
     if (v17)
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = v10;
+      v19 = selfCopy;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
@@ -525,13 +525,13 @@ LABEL_26:
 
   v25 = v13;
   objc_opt_self();
-  v26 = [v25 type];
-  if (([v26 isEqualToString:*MEMORY[0x277CCF978]] & 1) == 0)
+  type3 = [v25 type];
+  if (([type3 isEqualToString:*MEMORY[0x277CCF978]] & 1) == 0)
   {
 
 LABEL_21:
     v44 = objc_autoreleasePoolPush();
-    v45 = v10;
+    v45 = selfCopy;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEBUG))
     {
@@ -544,18 +544,18 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  v27 = [v25 service];
-  v28 = [v27 type];
-  v29 = [v28 isEqualToString:*MEMORY[0x277CD0EC0]];
+  service2 = [v25 service];
+  type4 = [service2 type];
+  v29 = [type4 isEqualToString:*MEMORY[0x277CD0EC0]];
 
   if ((v29 & 1) == 0)
   {
     goto LABEL_21;
   }
 
-  if (v10)
+  if (selfCopy)
   {
-    WeakRetained = objc_loadWeakRetained(v10 + 5);
+    WeakRetained = objc_loadWeakRetained(selfCopy + 5);
   }
 
   else
@@ -563,12 +563,12 @@ LABEL_21:
     WeakRetained = 0;
   }
 
-  v31 = [WeakRetained isCameraRecordingFeatureSupported];
+  isCameraRecordingFeatureSupported = [WeakRetained isCameraRecordingFeatureSupported];
 
-  if ((v31 & 1) == 0)
+  if ((isCameraRecordingFeatureSupported & 1) == 0)
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v10;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -588,11 +588,11 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  [v6 currentAccessMode];
+  [characteristicCopy currentAccessMode];
   if ((HMIsMotionDetectionAllowedForCameraAccessMode() & 1) == 0)
   {
     v44 = objc_autoreleasePoolPush();
-    v45 = v10;
+    v45 = selfCopy;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
     {
@@ -612,16 +612,16 @@ LABEL_23:
     goto LABEL_28;
   }
 
-  v32 = [v6 notificationSettings];
+  notificationSettings = [characteristicCopy notificationSettings];
   v33 = MEMORY[0x277CD18C0];
-  v34 = [v32 smartBulletinBoardNotificationCondition];
-  v35 = [v33 significantEventTypesInPredicate:v34];
-  v36 = [v35 integerValue];
+  smartBulletinBoardNotificationCondition = [notificationSettings smartBulletinBoardNotificationCondition];
+  v35 = [v33 significantEventTypesInPredicate:smartBulletinBoardNotificationCondition];
+  integerValue = [v35 integerValue];
 
-  v37 = [v32 isSmartBulletinBoardNotificationEnabled];
-  if (v36)
+  isSmartBulletinBoardNotificationEnabled = [notificationSettings isSmartBulletinBoardNotificationEnabled];
+  if (integerValue)
   {
-    v38 = v37;
+    v38 = isSmartBulletinBoardNotificationEnabled;
   }
 
   else
@@ -630,7 +630,7 @@ LABEL_23:
   }
 
   v39 = objc_autoreleasePoolPush();
-  v40 = v10;
+  v40 = selfCopy;
   v41 = HMFGetOSLogHandle();
   v42 = os_log_type_enabled(v41, OS_LOG_TYPE_INFO);
   if (v38 == 1)
@@ -641,7 +641,7 @@ LABEL_23:
       v55 = 138543618;
       v56 = v43;
       v57 = 2112;
-      v58 = v32;
+      v58 = notificationSettings;
       _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_INFO, "%{public}@Disallowing notifications to be enabled because smart notifications are enabled: %@", &v55, 0x16u);
     }
   }
@@ -655,7 +655,7 @@ LABEL_23:
     v57 = 2112;
     v58 = v54;
     v59 = 2112;
-    v60 = v32;
+    v60 = notificationSettings;
     _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_INFO, "%{public}@Allowing notifications to be enabled for current access mode: %@, notification settings: %@", &v55, 0x20u);
   }
 
@@ -667,15 +667,15 @@ LABEL_28:
   return v48;
 }
 
-- (void)_handleUpdatedBulletinSnapshotCharacteristics:(id *)a1
+- (void)_handleUpdatedBulletinSnapshotCharacteristics:(id *)characteristics
 {
   v75 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  Property = objc_getProperty(a1, v4, 8, 1);
+  Property = objc_getProperty(characteristics, v4, 8, 1);
   dispatch_assert_queue_V2(Property);
-  if (a1)
+  if (characteristics)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 5);
+    WeakRetained = objc_loadWeakRetained(characteristics + 5);
   }
 
   else
@@ -684,20 +684,20 @@ LABEL_28:
   }
 
   v53 = WeakRetained;
-  v58 = [WeakRetained home];
-  v7 = [a1 characteristicsAvailabilityListener];
-  v8 = [v7 availableCharacteristics];
+  home = [WeakRetained home];
+  characteristicsAvailabilityListener = [characteristics characteristicsAvailabilityListener];
+  availableCharacteristics = [characteristicsAvailabilityListener availableCharacteristics];
 
-  v52 = v8;
+  v52 = availableCharacteristics;
   v54 = v3;
-  [v8 na_setByRemovingObjectsFromSet:v3];
+  [availableCharacteristics na_setByRemovingObjectsFromSet:v3];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v9 = v68 = 0u;
   v10 = [v9 countByEnumeratingWithState:&v65 objects:v74 count:16];
   obj = v9;
-  v57 = a1;
+  characteristicsCopy = characteristics;
   if (v10)
   {
     v11 = v10;
@@ -712,12 +712,12 @@ LABEL_28:
         }
 
         v14 = *(*(&v65 + 1) + 8 * i);
-        v15 = [v58 accessoryBulletinNotificationManager];
+        accessoryBulletinNotificationManager = [home accessoryBulletinNotificationManager];
         v16 = objc_autoreleasePoolPush();
-        v17 = a1;
+        characteristicsCopy2 = characteristics;
         v18 = HMFGetOSLogHandle();
         v19 = v18;
-        if (!v15)
+        if (!accessoryBulletinNotificationManager)
         {
           if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
           {
@@ -754,11 +754,11 @@ LABEL_28:
         v64[1] = 3221225472;
         v64[2] = __80__HMDCameraSnapshotMonitorEvents__handleUpdatedBulletinSnapshotCharacteristics___block_invoke;
         v64[3] = &unk_27868A1D8;
-        v64[4] = v17;
+        v64[4] = characteristicsCopy2;
         v64[5] = v14;
-        [v15 updateRegistrationsWithEnabledCharacteristics:v21 disabledCharacteristics:v22 conditions:v23 completion:v64];
+        [accessoryBulletinNotificationManager updateRegistrationsWithEnabledCharacteristics:v21 disabledCharacteristics:v22 conditions:v23 completion:v64];
 
-        a1 = v57;
+        characteristics = characteristicsCopy;
       }
 
       v9 = obj;
@@ -792,12 +792,12 @@ LABEL_28:
         }
 
         v28 = *(*(&v60 + 1) + 8 * j);
-        v29 = [v58 accessoryBulletinNotificationManager];
+        accessoryBulletinNotificationManager2 = [home accessoryBulletinNotificationManager];
         v30 = objc_autoreleasePoolPush();
-        v31 = a1;
+        characteristicsCopy3 = characteristics;
         v32 = HMFGetOSLogHandle();
         v33 = v32;
-        if (!v29)
+        if (!accessoryBulletinNotificationManager2)
         {
           if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
           {
@@ -822,22 +822,22 @@ LABEL_28:
         }
 
         objc_autoreleasePoolPop(v30);
-        v35 = [v28 service];
-        v36 = [v35 bulletinBoardNotification];
-        v37 = [v36 condition];
+        service = [v28 service];
+        bulletinBoardNotification = [service bulletinBoardNotification];
+        condition = [bulletinBoardNotification condition];
 
-        v38 = [v29 conditionsFromPredicate:v37];
+        v38 = [accessoryBulletinNotificationManager2 conditionsFromPredicate:condition];
         v39 = [MEMORY[0x277CBEB98] setWithObject:v28];
         v40 = [MEMORY[0x277CBEB98] set];
         v59[0] = MEMORY[0x277D85DD0];
         v59[1] = 3221225472;
         v59[2] = __80__HMDCameraSnapshotMonitorEvents__handleUpdatedBulletinSnapshotCharacteristics___block_invoke_41;
         v59[3] = &unk_27868A1D8;
-        v59[4] = v31;
+        v59[4] = characteristicsCopy3;
         v59[5] = v28;
-        [v29 updateRegistrationsWithEnabledCharacteristics:v39 disabledCharacteristics:v40 conditions:v38 completion:v59];
+        [accessoryBulletinNotificationManager2 updateRegistrationsWithEnabledCharacteristics:v39 disabledCharacteristics:v40 conditions:v38 completion:v59];
 
-        a1 = v57;
+        characteristics = characteristicsCopy;
       }
 
       v26 = [v24 countByEnumeratingWithState:&v60 objects:v69 count:16];
@@ -851,7 +851,7 @@ LABEL_28:
   }
 
   v41 = objc_autoreleasePoolPush();
-  v42 = a1;
+  characteristicsCopy4 = characteristics;
   v43 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
   {
@@ -864,7 +864,7 @@ LABEL_28:
   }
 
   objc_autoreleasePoolPop(v41);
-  [v42 setBulletinSnapshotCharacteristics:v24];
+  [characteristicsCopy4 setBulletinSnapshotCharacteristics:v24];
 LABEL_32:
   v49 = v52;
   v47 = v53;
@@ -878,13 +878,13 @@ LABEL_33:
 - (void)_updateHomedRelaunchRegistration
 {
   v17 = *MEMORY[0x277D85DE8];
-  Property = objc_getProperty(a1, a2, 8, 1);
+  Property = objc_getProperty(self, a2, 8, 1);
   dispatch_assert_queue_V2(Property);
-  v4 = [a1 bulletinSnapshotCharacteristics];
-  v5 = [v4 count];
+  bulletinSnapshotCharacteristics = [self bulletinSnapshotCharacteristics];
+  v5 = [bulletinSnapshotCharacteristics count];
 
   v6 = objc_autoreleasePoolPush();
-  v7 = a1;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
   if (v5)
@@ -899,8 +899,8 @@ LABEL_33:
 
     objc_autoreleasePoolPop(v6);
     v11 = +[HMDLaunchHandler sharedHandler];
-    v12 = [v7 uniqueIdentifier];
-    [v11 registerRelaunchClientWithUUID:v12];
+    uniqueIdentifier = [selfCopy uniqueIdentifier];
+    [v11 registerRelaunchClientWithUUID:uniqueIdentifier];
   }
 
   else
@@ -915,8 +915,8 @@ LABEL_33:
 
     objc_autoreleasePoolPop(v6);
     v11 = +[HMDLaunchHandler sharedHandler];
-    v12 = [v7 uniqueIdentifier];
-    [v11 deregisterRelaunchClientWithUUID:v12];
+    uniqueIdentifier = [selfCopy uniqueIdentifier];
+    [v11 deregisterRelaunchClientWithUUID:uniqueIdentifier];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1018,9 +1018,9 @@ LABEL_6:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCharacteristicsChangedNotification:(id)a3
+- (void)handleCharacteristicsChangedNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   if (self)
   {
     Property = objc_getProperty(self, v4, 8, 1);
@@ -1036,8 +1036,8 @@ LABEL_6:
   v8[2] = __75__HMDCameraSnapshotMonitorEvents_handleCharacteristicsChangedNotification___block_invoke;
   v8[3] = &unk_27868A750;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = notificationCopy;
+  v7 = notificationCopy;
   dispatch_async(Property, v8);
 }
 
@@ -1165,14 +1165,14 @@ LABEL_27:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_characteristicsUpdated:(void *)a3 modifiedCharacteristics:
+- (void)_characteristicsUpdated:(void *)updated modifiedCharacteristics:
 {
   v64 = *MEMORY[0x277D85DE8];
   v48 = a2;
-  v6 = a3;
-  if (a1)
+  updatedCopy = updated;
+  if (self)
   {
-    Property = objc_getProperty(a1, v5, 8, 1);
+    Property = objc_getProperty(self, v5, 8, 1);
     dispatch_assert_queue_V2(Property);
     v47 = [MEMORY[0x277CBEB98] setWithArray:v48];
     v8 = v47;
@@ -1196,12 +1196,12 @@ LABEL_5:
             objc_enumerationMutation(v9);
           }
 
-          v13 = [v6 objectForKey:*(*(&v55 + 1) + 8 * v12)];
-          v14 = [v13 updateIdentifier];
-          if (v14)
+          v13 = [updatedCopy objectForKey:*(*(&v55 + 1) + 8 * v12)];
+          updateIdentifier = [v13 updateIdentifier];
+          if (updateIdentifier)
           {
-            v15 = [v13 remoteDevice];
-            v16 = v15 == 0;
+            remoteDevice = [v13 remoteDevice];
+            v16 = remoteDevice == 0;
 
             if (!v16)
             {
@@ -1229,7 +1229,7 @@ LABEL_12:
       }
 
       v17 = objc_autoreleasePoolPush();
-      v18 = a1;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -1242,8 +1242,8 @@ LABEL_12:
       }
 
       objc_autoreleasePoolPop(v17);
-      WeakRetained = objc_loadWeakRetained(v18 + 3);
-      v21 = objc_loadWeakRetained(v18 + 5);
+      WeakRetained = objc_loadWeakRetained(selfCopy + 3);
+      v21 = objc_loadWeakRetained(selfCopy + 5);
       if ([v21 isReachable])
       {
         v22 = 7.0;
@@ -1254,27 +1254,27 @@ LABEL_12:
         v22 = 15.0;
       }
 
-      v23 = [MEMORY[0x277CCAD78] UUID];
-      v24 = [v23 UUIDString];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
 
-      v25 = [[HMDCameraSnapshotNotificationTimer alloc] initWithCameraSessionID:v24 changedCharacteristics:v9 timeInterval:v22];
-      [(HMFTimer *)v25 setDelegate:v18];
-      [(HMFTimer *)v25 setDelegateQueue:objc_getProperty(v18, v26, 8, 1)];
-      [objc_getProperty(v18 v27];
-      v28 = [MEMORY[0x277CBEB38] dictionary];
-      [v28 setObject:v24 forKeyedSubscript:@"kCameraSessionID"];
+      v25 = [[HMDCameraSnapshotNotificationTimer alloc] initWithCameraSessionID:uUIDString changedCharacteristics:v9 timeInterval:v22];
+      [(HMFTimer *)v25 setDelegate:selfCopy];
+      [(HMFTimer *)v25 setDelegateQueue:objc_getProperty(selfCopy, v26, 8, 1)];
+      [objc_getProperty(selfCopy v27];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [dictionary setObject:uUIDString forKeyedSubscript:@"kCameraSessionID"];
       if (v13)
       {
-        v29 = [v13 updateIdentifier];
-        [v28 setObject:v29 forKeyedSubscript:@"kCameraProactiveSessionID"];
+        updateIdentifier2 = [v13 updateIdentifier];
+        [dictionary setObject:updateIdentifier2 forKeyedSubscript:@"kCameraProactiveSessionID"];
 
-        v30 = [v13 remoteDevice];
-        [v28 setObject:v30 forKeyedSubscript:@"kIDSMessageSourceIDKey"];
+        remoteDevice2 = [v13 remoteDevice];
+        [dictionary setObject:remoteDevice2 forKeyedSubscript:@"kIDSMessageSourceIDKey"];
       }
 
-      [v28 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CCF5B8]];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CCF5B8]];
       v31 = objc_autoreleasePoolPush();
-      v32 = v18;
+      v32 = selfCopy;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
@@ -1282,7 +1282,7 @@ LABEL_12:
         *buf = 138543618;
         v60 = v34;
         v61 = 2112;
-        v62 = v28;
+        v62 = dictionary;
         _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@Notification payload is: %@", buf, 0x16u);
       }
 
@@ -1295,12 +1295,12 @@ LABEL_12:
       v49[3] = &unk_2786839D0;
       objc_copyWeak(&v53, &location);
       v36 = *MEMORY[0x277CCF5D0];
-      v45 = v24;
+      v45 = uUIDString;
       v50 = v45;
       v51 = v9;
       v37 = v25;
       v52 = v37;
-      v38 = [v35 messageWithName:v36 messagePayload:v28 responseHandler:v49];
+      v38 = [v35 messageWithName:v36 messagePayload:dictionary responseHandler:v49];
       [WeakRetained takeSnapshot:v38];
       v39 = objc_autoreleasePoolPush();
       v40 = v32;
@@ -1308,11 +1308,11 @@ LABEL_12:
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
       {
         v42 = HMFGetLogIdentifier();
-        v43 = [(HMDCameraSnapshotNotificationTimer *)v37 sessionID];
+        sessionID = [(HMDCameraSnapshotNotificationTimer *)v37 sessionID];
         *buf = 138543618;
         v60 = v42;
         v61 = 2112;
-        v62 = v43;
+        v62 = sessionID;
         _os_log_impl(&dword_229538000, v41, OS_LOG_TYPE_INFO, "%{public}@Starting the notification timer for identifier %@", buf, 0x16u);
       }
 
@@ -1512,15 +1512,15 @@ void __82__HMDCameraSnapshotMonitorEvents__characteristicsUpdated_modifiedCharac
   v61 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_insertUpdateOrRemoveBulletins:(void *)a3 forChangedCharacteristics:(void *)a4 snapshotData:
+- (void)_insertUpdateOrRemoveBulletins:(void *)bulletins forChangedCharacteristics:(void *)characteristics snapshotData:
 {
   v28 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  Property = objc_getProperty(a1, v10, 8, 1);
+  bulletinsCopy = bulletins;
+  characteristicsCopy = characteristics;
+  Property = objc_getProperty(self, v10, 8, 1);
   dispatch_assert_queue_V2(Property);
-  v13 = objc_getProperty(a1, v12, 64, 1);
+  v13 = objc_getProperty(self, v12, 64, 1);
   if (v7)
   {
     if (objc_opt_respondsToSelector())
@@ -1545,8 +1545,8 @@ void __82__HMDCameraSnapshotMonitorEvents__characteristicsUpdated_modifiedCharac
             }
 
             v20 = *(*(&v23 + 1) + 8 * i);
-            v21 = objc_getProperty(a1, v16, 64, 1);
-            [v21 updateBulletinWithRecordID:v20 forChangedCharacteristics:v8 snapshotData:{v9, v23}];
+            v21 = objc_getProperty(self, v16, 64, 1);
+            [v21 updateBulletinWithRecordID:v20 forChangedCharacteristics:bulletinsCopy snapshotData:{characteristicsCopy, v23}];
           }
 
           v17 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -1558,22 +1558,22 @@ void __82__HMDCameraSnapshotMonitorEvents__characteristicsUpdated_modifiedCharac
 
     else
     {
-      v14 = [v9 objectForKeyedSubscript:@"kCameraSessionID"];
-      [(HMDCameraSnapshotMonitorEvents *)a1 _removeBulletins:v7 sessionID:v14];
+      v14 = [characteristicsCopy objectForKeyedSubscript:@"kCameraSessionID"];
+      [(HMDCameraSnapshotMonitorEvents *)self _removeBulletins:v7 sessionID:v14];
     }
   }
 
   else
   {
-    [v13 insertImageBulletinsForChangedCharacteristics:v8 snapshotData:v9 completion:0];
+    [v13 insertImageBulletinsForChangedCharacteristics:bulletinsCopy snapshotData:characteristicsCopy completion:0];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleBulletinBoardNotificationDidUpdateNotification:(id)a3
+- (void)handleBulletinBoardNotificationDidUpdateNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   if (self)
   {
     Property = objc_getProperty(self, v4, 8, 1);
@@ -1589,8 +1589,8 @@ void __82__HMDCameraSnapshotMonitorEvents__characteristicsUpdated_modifiedCharac
   v8[2] = __87__HMDCameraSnapshotMonitorEvents_handleBulletinBoardNotificationDidUpdateNotification___block_invoke;
   v8[3] = &unk_27868A750;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = notificationCopy;
+  v7 = notificationCopy;
   dispatch_async(Property, v8);
 }
 
@@ -1761,25 +1761,25 @@ LABEL_34:
 
 - (id)currentCameraSettings
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     Property = objc_getProperty(self, a2, 8, 1);
     dispatch_assert_queue_V2(Property);
-    WeakRetained = objc_loadWeakRetained(v2 + 5);
-    v5 = [WeakRetained cameraProfiles];
-    v6 = [v5 anyObject];
-    v2 = [v6 currentSettings];
+    WeakRetained = objc_loadWeakRetained(selfCopy + 5);
+    cameraProfiles = [WeakRetained cameraProfiles];
+    anyObject = [cameraProfiles anyObject];
+    selfCopy = [anyObject currentSettings];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)listener:(id)a3 didUpdateAvailableCharacteristics:(id)a4
+- (void)listener:(id)listener didUpdateAvailableCharacteristics:(id)characteristics
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  characteristicsCopy = characteristics;
   if (self)
   {
     Property = objc_getProperty(self, v7, 8, 1);
@@ -1792,7 +1792,7 @@ LABEL_34:
 
   dispatch_assert_queue_V2(Property);
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -1803,8 +1803,8 @@ LABEL_34:
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = [(HMDCameraSnapshotMonitorEvents *)&v11->super.super.isa currentCameraSettings];
-  [(HMDCameraSnapshotMonitorEvents *)v11 _enableNotificationsForCharacteristics:v8 cameraSettings:v15];
+  currentCameraSettings = [(HMDCameraSnapshotMonitorEvents *)&selfCopy->super.super.isa currentCameraSettings];
+  [(HMDCameraSnapshotMonitorEvents *)selfCopy _enableNotificationsForCharacteristics:characteristicsCopy cameraSettings:currentCameraSettings];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -1813,7 +1813,7 @@ LABEL_34:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1821,14 +1821,14 @@ LABEL_34:
     *buf = 138543618;
     v15 = v6;
     v16 = 2112;
-    v17 = v4;
+    v17 = selfCopy;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Deallocating %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  if (v4)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v7, 56, 1);
+    Property = objc_getProperty(selfCopy, v7, 56, 1);
   }
 
   else
@@ -1836,13 +1836,13 @@ LABEL_34:
     Property = 0;
   }
 
-  [Property removeObserver:v4];
-  WeakRetained = objc_loadWeakRetained(&v4->_accessory);
-  v10 = [(NSSet *)v4->_bulletinSnapshotCharacteristics allObjects];
-  [WeakRetained setNotificationsEnabled:0 forCharacteristics:v10 clientIdentifier:v4->_clientIdentifier];
+  [Property removeObserver:selfCopy];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_accessory);
+  allObjects = [(NSSet *)selfCopy->_bulletinSnapshotCharacteristics allObjects];
+  [WeakRetained setNotificationsEnabled:0 forCharacteristics:allObjects clientIdentifier:selfCopy->_clientIdentifier];
 
-  [objc_getProperty(v4 v11];
-  v13.receiver = v4;
+  [objc_getProperty(selfCopy v11];
+  v13.receiver = selfCopy;
   v13.super_class = HMDCameraSnapshotMonitorEvents;
   [(HMDCameraSnapshotMonitorEvents *)&v13 dealloc];
   v12 = *MEMORY[0x277D85DE8];
@@ -1864,11 +1864,11 @@ LABEL_34:
     WeakRetained = 0;
   }
 
-  v5 = [(HMDCameraSnapshotMonitorEvents *)self characteristicsAvailabilityListener];
-  [v5 setDelegate:self];
+  characteristicsAvailabilityListener = [(HMDCameraSnapshotMonitorEvents *)self characteristicsAvailabilityListener];
+  [characteristicsAvailabilityListener setDelegate:self];
 
-  v6 = [(HMDCameraSnapshotMonitorEvents *)self characteristicsAvailabilityListener];
-  [v6 start];
+  characteristicsAvailabilityListener2 = [(HMDCameraSnapshotMonitorEvents *)self characteristicsAvailabilityListener];
+  [characteristicsAvailabilityListener2 start];
 
   if (self && objc_getProperty(self, v7, 64, 1))
   {
@@ -1878,7 +1878,7 @@ LABEL_34:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1903,52 +1903,52 @@ LABEL_10:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraSnapshotMonitorEvents)initWithSnapshotManager:(id)a3 accessory:(id)a4 workQueue:(id)a5 msgDispatcher:(id)a6 bulletinBoard:(id)a7 notificationCenter:(id)a8
+- (HMDCameraSnapshotMonitorEvents)initWithSnapshotManager:(id)manager accessory:(id)accessory workQueue:(id)queue msgDispatcher:(id)dispatcher bulletinBoard:(id)board notificationCenter:(id)center
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v54 = a8;
+  managerCopy = manager;
+  accessoryCopy = accessory;
+  queueCopy = queue;
+  dispatcherCopy = dispatcher;
+  boardCopy = board;
+  centerCopy = center;
   v55.receiver = self;
   v55.super_class = HMDCameraSnapshotMonitorEvents;
   v19 = [(HMDCameraSnapshotMonitorEvents *)&v55 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeWeak(&v19->_snapshotManager, v14);
-    objc_storeWeak(&v20->_accessory, v15);
-    objc_storeStrong(&v20->_workQueue, a5);
-    objc_storeStrong(&v20->_msgDispatcher, a6);
-    objc_storeStrong(&v20->_notificationCenter, a8);
+    objc_storeWeak(&v19->_snapshotManager, managerCopy);
+    objc_storeWeak(&v20->_accessory, accessoryCopy);
+    objc_storeStrong(&v20->_workQueue, queue);
+    objc_storeStrong(&v20->_msgDispatcher, dispatcher);
+    objc_storeStrong(&v20->_notificationCenter, center);
     v21 = [MEMORY[0x277CBEB58] set];
     snapShotNotificationResponseTimers = v20->_snapShotNotificationResponseTimers;
     v20->_snapShotNotificationResponseTimers = v21;
 
     v23 = MEMORY[0x277CCAD78];
-    v24 = [v14 uniqueIdentifier];
+    uniqueIdentifier = [managerCopy uniqueIdentifier];
     v58[0] = @"HMDCameraSnapshotMonitorEvents";
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:1];
-    v26 = [v23 hm_deriveUUIDFromBaseUUID:v24 identifierSalt:0 withSalts:v25];
+    v26 = [v23 hm_deriveUUIDFromBaseUUID:uniqueIdentifier identifierSalt:0 withSalts:v25];
     uniqueIdentifier = v20->_uniqueIdentifier;
     v20->_uniqueIdentifier = v26;
 
     v28 = MEMORY[0x277CCACA8];
-    v29 = [v15 name];
-    v30 = [(NSUUID *)v20->_uniqueIdentifier UUIDString];
-    v31 = [v28 stringWithFormat:@"%@/%@", v29, v30];
+    name = [accessoryCopy name];
+    uUIDString = [(NSUUID *)v20->_uniqueIdentifier UUIDString];
+    v31 = [v28 stringWithFormat:@"%@/%@", name, uUIDString];
     logIdentifier = v20->_logIdentifier;
     v20->_logIdentifier = v31;
 
-    if (v18)
+    if (boardCopy)
     {
-      objc_storeStrong(&v20->_bulletinBoard, a7);
+      objc_storeStrong(&v20->_bulletinBoard, board);
       v33 = getBulletinImagesPath();
-      v34 = [v15 uuid];
-      v35 = [v34 UUIDString];
-      v36 = [v33 stringByAppendingPathComponent:v35];
+      uuid = [accessoryCopy uuid];
+      uUIDString2 = [uuid UUIDString];
+      v36 = [v33 stringByAppendingPathComponent:uUIDString2];
       bulletinImagesDirectory = v20->_bulletinImagesDirectory;
       v20->_bulletinImagesDirectory = v36;
 
@@ -1971,14 +1971,14 @@ LABEL_10:
     v57[1] = v43;
     v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:2];
 
-    v45 = [[HMDCharacteristicsAvailabilityListener alloc] initWithAccessory:v15 workQueue:v16 interestedCharacteristicTypesByServiceType:v44];
+    v45 = [[HMDCharacteristicsAvailabilityListener alloc] initWithAccessory:accessoryCopy workQueue:queueCopy interestedCharacteristicTypesByServiceType:v44];
     characteristicsAvailabilityListener = v20->_characteristicsAvailabilityListener;
     v20->_characteristicsAvailabilityListener = v45;
 
     v47 = MEMORY[0x277CCACA8];
-    v48 = [MEMORY[0x277CCAD78] UUID];
-    v49 = [v48 UUIDString];
-    v50 = [v47 stringWithFormat:@"%@.%@", @"com.apple.HomeKitDaemon.serviceGroupAssociation", v49];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString3 = [uUID UUIDString];
+    v50 = [v47 stringWithFormat:@"%@.%@", @"com.apple.HomeKitDaemon.serviceGroupAssociation", uUIDString3];
     clientIdentifier = v20->_clientIdentifier;
     v20->_clientIdentifier = v50;
   }
@@ -1987,15 +1987,15 @@ LABEL_10:
   return v20;
 }
 
-- (HMDCameraSnapshotMonitorEvents)initWithSnapshotManager:(id)a3 accessory:(id)a4 workQueue:(id)a5 msgDispatcher:(id)a6
+- (HMDCameraSnapshotMonitorEvents)initWithSnapshotManager:(id)manager accessory:(id)accessory workQueue:(id)queue msgDispatcher:(id)dispatcher
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  dispatcherCopy = dispatcher;
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  managerCopy = manager;
   v14 = +[HMDCameraProfile bulletinBoard];
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  v16 = [(HMDCameraSnapshotMonitorEvents *)self initWithSnapshotManager:v13 accessory:v12 workQueue:v11 msgDispatcher:v10 bulletinBoard:v14 notificationCenter:v15];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v16 = [(HMDCameraSnapshotMonitorEvents *)self initWithSnapshotManager:managerCopy accessory:accessoryCopy workQueue:queueCopy msgDispatcher:dispatcherCopy bulletinBoard:v14 notificationCenter:defaultCenter];
 
   return v16;
 }

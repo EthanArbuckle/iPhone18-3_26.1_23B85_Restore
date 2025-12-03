@@ -1,24 +1,24 @@
 @interface PKProtobufAppletSubcredentialSharingInvitation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)deviceTypeAsString:(int)a3;
+- (id)deviceTypeAsString:(int)string;
 - (id)dictionaryRepresentation;
-- (int)StringAsDeviceType:(id)a3;
+- (int)StringAsDeviceType:(id)type;
 - (int)deviceType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEntitlement:(BOOL)a3;
-- (void)setHasSupportedRadioTechnologies:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEntitlement:(BOOL)entitlement;
+- (void)setHasSupportedRadioTechnologies:(BOOL)technologies;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufAppletSubcredentialSharingInvitation
 
-- (void)setHasEntitlement:(BOOL)a3
+- (void)setHasEntitlement:(BOOL)entitlement
 {
-  if (a3)
+  if (entitlement)
   {
     v3 = 2;
   }
@@ -44,18 +44,18 @@
   }
 }
 
-- (id)deviceTypeAsString:(int)a3
+- (id)deviceTypeAsString:(int)string
 {
-  if (a3)
+  if (string)
   {
-    if (a3 == 1)
+    if (string == 1)
     {
       v4 = @"WATCH";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
     }
   }
 
@@ -67,25 +67,25 @@
   return v4;
 }
 
-- (int)StringAsDeviceType:(id)a3
+- (int)StringAsDeviceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PHONE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"PHONE"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"WATCH"];
+    v4 = [typeCopy isEqualToString:@"WATCH"];
   }
 
   return v4;
 }
 
-- (void)setHasSupportedRadioTechnologies:(BOOL)a3
+- (void)setHasSupportedRadioTechnologies:(BOOL)technologies
 {
-  if (a3)
+  if (technologies)
   {
     v3 = 4;
   }
@@ -104,59 +104,59 @@
   v8.receiver = self;
   v8.super_class = PKProtobufAppletSubcredentialSharingInvitation;
   v4 = [(PKProtobufAppletSubcredentialSharingInvitation *)&v8 description];
-  v5 = [(PKProtobufAppletSubcredentialSharingInvitation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufAppletSubcredentialSharingInvitation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_version];
-  [v3 setObject:v4 forKey:@"version"];
+  [dictionary setObject:v4 forKey:@"version"];
 
   invitation = self->_invitation;
   if (invitation)
   {
-    [v3 setObject:invitation forKey:@"invitation"];
+    [dictionary setObject:invitation forKey:@"invitation"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   partnerIdentifier = self->_partnerIdentifier;
   if (partnerIdentifier)
   {
-    [v3 setObject:partnerIdentifier forKey:@"partnerIdentifier"];
+    [dictionary setObject:partnerIdentifier forKey:@"partnerIdentifier"];
   }
 
   pairedReaderIdentifier = self->_pairedReaderIdentifier;
   if (pairedReaderIdentifier)
   {
-    [v3 setObject:pairedReaderIdentifier forKey:@"pairedReaderIdentifier"];
+    [dictionary setObject:pairedReaderIdentifier forKey:@"pairedReaderIdentifier"];
   }
 
   recipientName = self->_recipientName;
   if (recipientName)
   {
-    [v3 setObject:recipientName forKey:@"recipientName"];
+    [dictionary setObject:recipientName forKey:@"recipientName"];
   }
 
   sharingSessionIdentifier = self->_sharingSessionIdentifier;
   if (sharingSessionIdentifier)
   {
-    [v3 setObject:sharingSessionIdentifier forKey:@"sharingSessionIdentifier"];
+    [dictionary setObject:sharingSessionIdentifier forKey:@"sharingSessionIdentifier"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_entitlement];
-    [v3 setObject:v12 forKey:@"entitlement"];
+    [dictionary setObject:v12 forKey:@"entitlement"];
 
     has = self->_has;
   }
@@ -182,39 +182,39 @@
       v14 = @"PHONE";
     }
 
-    [v3 setObject:v14 forKey:@"deviceType"];
+    [dictionary setObject:v14 forKey:@"deviceType"];
   }
 
   issuer = self->_issuer;
   if (issuer)
   {
-    [v3 setObject:issuer forKey:@"issuer"];
+    [dictionary setObject:issuer forKey:@"issuer"];
   }
 
   deviceModel = self->_deviceModel;
   if (deviceModel)
   {
-    [v3 setObject:deviceModel forKey:@"deviceModel"];
+    [dictionary setObject:deviceModel forKey:@"deviceModel"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_supportedRadioTechnologies];
-    [v3 setObject:v17 forKey:@"supportedRadioTechnologies"];
+    [dictionary setObject:v17 forKey:@"supportedRadioTechnologies"];
   }
 
   brandIdentifier = self->_brandIdentifier;
   if (brandIdentifier)
   {
-    [v3 setObject:brandIdentifier forKey:@"brandIdentifier"];
+    [dictionary setObject:brandIdentifier forKey:@"brandIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   PBDataWriterWriteUint32Field();
   if (self->_invitation)
   {
@@ -226,175 +226,175 @@
     PBDataWriterWriteStringField();
   }
 
-  v4 = v6;
+  v4 = toCopy;
   if (self->_partnerIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    v4 = toCopy;
   }
 
   if (self->_pairedReaderIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    v4 = toCopy;
   }
 
   if (self->_recipientName)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    v4 = toCopy;
   }
 
   if (self->_sharingSessionIdentifier)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    v4 = toCopy;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    v4 = toCopy;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    v4 = toCopy;
   }
 
   if (self->_issuer)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    v4 = toCopy;
   }
 
   if (self->_deviceModel)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    v4 = toCopy;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    v4 = toCopy;
   }
 
   if (self->_brandIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    v4 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[23] = self->_version;
-  v6 = v4;
+  toCopy = to;
+  toCopy[23] = self->_version;
+  v6 = toCopy;
   if (self->_invitation)
   {
-    [v4 setInvitation:?];
-    v4 = v6;
+    [toCopy setInvitation:?];
+    toCopy = v6;
   }
 
   if (self->_identifier)
   {
     [v6 setIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_partnerIdentifier)
   {
     [v6 setPartnerIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_pairedReaderIdentifier)
   {
     [v6 setPairedReaderIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_recipientName)
   {
     [v6 setRecipientName:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_sharingSessionIdentifier)
   {
     [v6 setSharingSessionIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[7] = self->_entitlement;
-    *(v4 + 96) |= 2u;
+    toCopy[7] = self->_entitlement;
+    *(toCopy + 96) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[6] = self->_deviceType;
-    *(v4 + 96) |= 1u;
+    toCopy[6] = self->_deviceType;
+    *(toCopy + 96) |= 1u;
   }
 
   if (self->_issuer)
   {
     [v6 setIssuer:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deviceModel)
   {
     [v6 setDeviceModel:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[22] = self->_supportedRadioTechnologies;
-    *(v4 + 96) |= 4u;
+    toCopy[22] = self->_supportedRadioTechnologies;
+    *(toCopy + 96) |= 4u;
   }
 
   if (self->_brandIdentifier)
   {
     [v6 setBrandIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 92) = self->_version;
-  v6 = [(NSData *)self->_invitation copyWithZone:a3];
+  v6 = [(NSData *)self->_invitation copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_partnerIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_partnerIdentifier copyWithZone:zone];
   v11 = *(v5 + 64);
   *(v5 + 64) = v10;
 
-  v12 = [(NSString *)self->_pairedReaderIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_pairedReaderIdentifier copyWithZone:zone];
   v13 = *(v5 + 56);
   *(v5 + 56) = v12;
 
-  v14 = [(NSString *)self->_recipientName copyWithZone:a3];
+  v14 = [(NSString *)self->_recipientName copyWithZone:zone];
   v15 = *(v5 + 72);
   *(v5 + 72) = v14;
 
-  v16 = [(NSData *)self->_sharingSessionIdentifier copyWithZone:a3];
+  v16 = [(NSData *)self->_sharingSessionIdentifier copyWithZone:zone];
   v17 = *(v5 + 80);
   *(v5 + 80) = v16;
 
@@ -412,11 +412,11 @@
     *(v5 + 96) |= 1u;
   }
 
-  v19 = [(NSString *)self->_issuer copyWithZone:a3];
+  v19 = [(NSString *)self->_issuer copyWithZone:zone];
   v20 = *(v5 + 48);
   *(v5 + 48) = v19;
 
-  v21 = [(NSString *)self->_deviceModel copyWithZone:a3];
+  v21 = [(NSString *)self->_deviceModel copyWithZone:zone];
   v22 = *(v5 + 16);
   *(v5 + 16) = v21;
 
@@ -426,28 +426,28 @@
     *(v5 + 96) |= 4u;
   }
 
-  v23 = [(NSString *)self->_brandIdentifier copyWithZone:a3];
+  v23 = [(NSString *)self->_brandIdentifier copyWithZone:zone];
   v24 = *(v5 + 8);
   *(v5 + 8) = v23;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
-  if (self->_version != *(v4 + 23))
+  if (self->_version != *(equalCopy + 23))
   {
     goto LABEL_36;
   }
 
   invitation = self->_invitation;
-  if (invitation | *(v4 + 5))
+  if (invitation | *(equalCopy + 5))
   {
     if (![(NSData *)invitation isEqual:?])
     {
@@ -456,7 +456,7 @@
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -465,7 +465,7 @@
   }
 
   partnerIdentifier = self->_partnerIdentifier;
-  if (partnerIdentifier | *(v4 + 8))
+  if (partnerIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)partnerIdentifier isEqual:?])
     {
@@ -474,7 +474,7 @@
   }
 
   pairedReaderIdentifier = self->_pairedReaderIdentifier;
-  if (pairedReaderIdentifier | *(v4 + 7))
+  if (pairedReaderIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)pairedReaderIdentifier isEqual:?])
     {
@@ -483,7 +483,7 @@
   }
 
   recipientName = self->_recipientName;
-  if (recipientName | *(v4 + 9))
+  if (recipientName | *(equalCopy + 9))
   {
     if (![(NSString *)recipientName isEqual:?])
     {
@@ -492,7 +492,7 @@
   }
 
   sharingSessionIdentifier = self->_sharingSessionIdentifier;
-  if (sharingSessionIdentifier | *(v4 + 10))
+  if (sharingSessionIdentifier | *(equalCopy + 10))
   {
     if (![(NSData *)sharingSessionIdentifier isEqual:?])
     {
@@ -502,13 +502,13 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 96) & 2) == 0 || self->_entitlement != *(v4 + 7))
+    if ((*(equalCopy + 96) & 2) == 0 || self->_entitlement != *(equalCopy + 7))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 96) & 2) != 0)
+  else if ((*(equalCopy + 96) & 2) != 0)
   {
 LABEL_36:
     v14 = 0;
@@ -517,25 +517,25 @@ LABEL_36:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 96) & 1) == 0 || self->_deviceType != *(v4 + 6))
+    if ((*(equalCopy + 96) & 1) == 0 || self->_deviceType != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
   }
 
-  else if (*(v4 + 96))
+  else if (*(equalCopy + 96))
   {
     goto LABEL_36;
   }
 
   issuer = self->_issuer;
-  if (issuer | *(v4 + 6) && ![(NSString *)issuer isEqual:?])
+  if (issuer | *(equalCopy + 6) && ![(NSString *)issuer isEqual:?])
   {
     goto LABEL_36;
   }
 
   deviceModel = self->_deviceModel;
-  if (deviceModel | *(v4 + 2))
+  if (deviceModel | *(equalCopy + 2))
   {
     if (![(NSString *)deviceModel isEqual:?])
     {
@@ -545,19 +545,19 @@ LABEL_36:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 96) & 4) == 0 || self->_supportedRadioTechnologies != *(v4 + 22))
+    if ((*(equalCopy + 96) & 4) == 0 || self->_supportedRadioTechnologies != *(equalCopy + 22))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 96) & 4) != 0)
+  else if ((*(equalCopy + 96) & 4) != 0)
   {
     goto LABEL_36;
   }
 
   brandIdentifier = self->_brandIdentifier;
-  if (brandIdentifier | *(v4 + 1))
+  if (brandIdentifier | *(equalCopy + 1))
   {
     v14 = [(NSString *)brandIdentifier isEqual:?];
   }
@@ -618,83 +618,83 @@ LABEL_6:
   return v14 ^ v13 ^ v3 ^ v4 ^ (2654435761 * version) ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSString *)self->_brandIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_version = v4[23];
-  v6 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  self->_version = fromCopy[23];
+  v6 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(PKProtobufAppletSubcredentialSharingInvitation *)self setInvitation:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PKProtobufAppletSubcredentialSharingInvitation *)self setIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PKProtobufAppletSubcredentialSharingInvitation *)self setPartnerIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PKProtobufAppletSubcredentialSharingInvitation *)self setPairedReaderIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(PKProtobufAppletSubcredentialSharingInvitation *)self setRecipientName:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(PKProtobufAppletSubcredentialSharingInvitation *)self setSharingSessionIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 96);
+  v5 = *(fromCopy + 96);
   if ((v5 & 2) != 0)
   {
-    self->_entitlement = v4[7];
+    self->_entitlement = fromCopy[7];
     *&self->_has |= 2u;
-    v5 = *(v4 + 96);
+    v5 = *(fromCopy + 96);
   }
 
   if (v5)
   {
-    self->_deviceType = v4[6];
+    self->_deviceType = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(PKProtobufAppletSubcredentialSharingInvitation *)self setIssuer:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PKProtobufAppletSubcredentialSharingInvitation *)self setDeviceModel:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((v4[24] & 4) != 0)
+  if ((fromCopy[24] & 4) != 0)
   {
-    self->_supportedRadioTechnologies = v4[22];
+    self->_supportedRadioTechnologies = fromCopy[22];
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(PKProtobufAppletSubcredentialSharingInvitation *)self setBrandIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

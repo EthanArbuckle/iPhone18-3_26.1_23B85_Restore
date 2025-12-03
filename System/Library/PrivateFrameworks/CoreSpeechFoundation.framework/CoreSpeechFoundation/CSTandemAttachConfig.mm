@@ -1,17 +1,17 @@
 @interface CSTandemAttachConfig
-- (CSTandemAttachConfig)initWithAllowMultiChannel:(BOOL)a3;
+- (CSTandemAttachConfig)initWithAllowMultiChannel:(BOOL)channel;
 @end
 
 @implementation CSTandemAttachConfig
 
-- (CSTandemAttachConfig)initWithAllowMultiChannel:(BOOL)a3
+- (CSTandemAttachConfig)initWithAllowMultiChannel:(BOOL)channel
 {
   v5.receiver = self;
   v5.super_class = CSTandemAttachConfig;
   result = [(CSTandemAttachConfig *)&v5 init];
   if (result)
   {
-    result->_allowMultiChannel = a3;
+    result->_allowMultiChannel = channel;
   }
 
   return result;

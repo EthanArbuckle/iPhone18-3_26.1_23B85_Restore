@@ -1,16 +1,16 @@
 @interface ARSessionDebugLogger
 - (ARSession)session;
-- (ARSessionDebugLogger)initWithSession:(id)a3;
+- (ARSessionDebugLogger)initWithSession:(id)session;
 - (void)dealloc;
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4;
-- (void)session:(id)a3 didChangeGeoTrackingStatus:(id)a4;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)session:(id)a3 requestedRunWithConfiguration:(id)a4 options:(unint64_t)a5;
-- (void)session:(id)a3 willRunWithConfiguration:(id)a4;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionWasInterrupted:(id)a3;
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state;
+- (void)session:(id)session didChangeGeoTrackingStatus:(id)status;
+- (void)session:(id)session didChangeState:(unint64_t)state;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)session:(id)session requestedRunWithConfiguration:(id)configuration options:(unint64_t)options;
+- (void)session:(id)session willRunWithConfiguration:(id)configuration;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionWasInterrupted:(id)interrupted;
 @end
 
 @implementation ARSessionDebugLogger
@@ -22,25 +22,25 @@
   return WeakRetained;
 }
 
-- (void)session:(id)a3 didChangeGeoTrackingStatus:(id)a4
+- (void)session:(id)session didChangeGeoTrackingStatus:(id)status
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  statusCopy = status;
   v7 = sub_1008A42B4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    [v6 state];
+    [statusCopy state];
     v8 = NSStringFromARGeoTrackingState();
-    [v6 stateReason];
+    [statusCopy stateReason];
     v9 = NSStringFromARGeoTrackingStateReason();
-    [v6 accuracy];
+    [statusCopy accuracy];
     v10 = NSStringFromARGeoTrackingAccuracy();
     v11 = 136316418;
     v12 = "[ARSessionDebugLogger session:didChangeGeoTrackingStatus:]";
     v13 = 2112;
-    v14 = v5;
+    v14 = sessionCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = statusCopy;
     v17 = 2112;
     v18 = v8;
     v19 = 2112;
@@ -51,70 +51,70 @@
   }
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
-  v3 = a3;
+  endedCopy = ended;
   v4 = sub_1008A42B4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 136315394;
     v6 = "[ARSessionDebugLogger sessionInterruptionEnded:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = endedCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s:%@", &v5, 0x16u);
   }
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
-  v3 = a3;
+  interruptedCopy = interrupted;
   v4 = sub_1008A42B4();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = 136315394;
     v6 = "[ARSessionDebugLogger sessionWasInterrupted:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = interruptedCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s:%@", &v5, 0x16u);
   }
 }
 
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  stateCopy = state;
   v7 = sub_1008A42B4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [v6 trackingState];
-    if (v8 >= 3)
+    trackingState = [stateCopy trackingState];
+    if (trackingState >= 3)
     {
-      v9 = [NSString stringWithFormat:@"%ld", v8];
+      v9 = [NSString stringWithFormat:@"%ld", trackingState];
     }
 
     else
     {
-      v9 = *(&off_10162D1B0 + v8);
+      v9 = *(&off_10162D1B0 + trackingState);
     }
 
     v10 = v9;
-    v11 = [v6 trackingStateReason];
-    if (v11 >= 5)
+    trackingStateReason = [stateCopy trackingStateReason];
+    if (trackingStateReason >= 5)
     {
-      v12 = [NSString stringWithFormat:@"%ld", v11];
+      v12 = [NSString stringWithFormat:@"%ld", trackingStateReason];
     }
 
     else
     {
-      v12 = *(&off_10162D1C8 + v11);
+      v12 = *(&off_10162D1C8 + trackingStateReason);
     }
 
     *buf = 136316162;
     v14 = "[ARSessionDebugLogger session:cameraDidChangeTrackingState:]";
     v15 = 2112;
-    v16 = v5;
+    v16 = sessionCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = stateCopy;
     v19 = 2112;
     v20 = v10;
     v21 = 2112;
@@ -123,29 +123,29 @@
   }
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v7 = sub_1008A42B4();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v8 = 136315650;
     v9 = "[ARSessionDebugLogger session:didFailWithError:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = sessionCopy;
     v12 = 2112;
-    v13 = v6;
+    v13 = errorCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s:%@:%@", &v8, 0x20u);
   }
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 vlState];
-  [v7 timeSinceLastLocalization];
+  sessionCopy = session;
+  frameCopy = frame;
+  vlState = [frameCopy vlState];
+  [vlState timeSinceLastLocalization];
   v9 = v8;
 
   if (v9 > 0.0)
@@ -153,35 +153,35 @@
     v10 = sub_1008A42B4();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v6 vlState];
-      v12 = [v6 vlState];
-      [v12 timeSinceLastLocalization];
+      vlState2 = [frameCopy vlState];
+      vlState3 = [frameCopy vlState];
+      [vlState3 timeSinceLastLocalization];
       v14 = v13;
-      [v6 heading];
+      [frameCopy heading];
       v16 = v15;
-      v17 = [v6 location];
-      [v6 rawHeading];
+      location = [frameCopy location];
+      [frameCopy rawHeading];
       v19 = v18;
-      v20 = [v6 rawLocation];
-      [v6 rawLocationTimestamp];
+      rawLocation = [frameCopy rawLocation];
+      [frameCopy rawLocationTimestamp];
       v22 = 136317442;
       v23 = "[ARSessionDebugLogger session:didUpdateFrame:]";
       v24 = 2112;
-      v25 = v5;
+      v25 = sessionCopy;
       v26 = 2112;
-      v27 = v6;
+      v27 = frameCopy;
       v28 = 2112;
-      v29 = v11;
+      v29 = vlState2;
       v30 = 2048;
       v31 = v14;
       v32 = 2048;
       v33 = v16;
       v34 = 2112;
-      v35 = v17;
+      v35 = location;
       v36 = 2048;
       v37 = v19;
       v38 = 2112;
-      v39 = v20;
+      v39 = rawLocation;
       v40 = 2048;
       v41 = v21;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s:%@:%@:vlState=%@:timeSinceLastLocalization=%f:heading=%f:location=%@:rawHeading=%f:rawLocation=%@:rawLocationTimestamp=%f", &v22, 0x66u);
@@ -189,10 +189,10 @@
   }
 }
 
-- (void)session:(id)a3 willRunWithConfiguration:(id)a4
+- (void)session:(id)session willRunWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  configurationCopy = configuration;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v8 = sub_1008A42B4();
@@ -201,15 +201,15 @@
   {
     if (v9)
     {
-      v10 = [v6 templateConfiguration];
+      templateConfiguration = [configurationCopy templateConfiguration];
       v11 = 136315906;
       v12 = "[ARSessionDebugLogger session:willRunWithConfiguration:]";
       v13 = 2112;
-      v14 = v5;
+      v14 = sessionCopy;
       v15 = 2112;
-      v16 = v6;
+      v16 = configurationCopy;
       v17 = 2112;
-      v18 = v10;
+      v18 = templateConfiguration;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s:%@:%@(%@)", &v11, 0x2Au);
     }
   }
@@ -219,17 +219,17 @@
     v11 = 136315650;
     v12 = "[ARSessionDebugLogger session:willRunWithConfiguration:]";
     v13 = 2112;
-    v14 = v5;
+    v14 = sessionCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s:%@:%@", &v11, 0x20u);
   }
 }
 
-- (void)session:(id)a3 requestedRunWithConfiguration:(id)a4 options:(unint64_t)a5
+- (void)session:(id)session requestedRunWithConfiguration:(id)configuration options:(unint64_t)options
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  configurationCopy = configuration;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v10 = sub_1008A42B4();
@@ -238,17 +238,17 @@
   {
     if (v11)
     {
-      v12 = [v8 templateConfiguration];
+      templateConfiguration = [configurationCopy templateConfiguration];
       v13 = 136316162;
       v14 = "[ARSessionDebugLogger session:requestedRunWithConfiguration:options:]";
       v15 = 2112;
-      v16 = v7;
+      v16 = sessionCopy;
       v17 = 2112;
-      v18 = v8;
+      v18 = configurationCopy;
       v19 = 2112;
-      v20 = v12;
+      optionsCopy2 = templateConfiguration;
       v21 = 2048;
-      v22 = a5;
+      optionsCopy = options;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s:%@:%@(%@)%lu", &v13, 0x34u);
     }
   }
@@ -258,37 +258,37 @@
     v13 = 136315906;
     v14 = "[ARSessionDebugLogger session:requestedRunWithConfiguration:options:]";
     v15 = 2112;
-    v16 = v7;
+    v16 = sessionCopy;
     v17 = 2112;
-    v18 = v8;
+    v18 = configurationCopy;
     v19 = 2048;
-    v20 = a5;
+    optionsCopy2 = options;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s:%@:%@:%lu", &v13, 0x2Au);
   }
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
-  v5 = a3;
+  sessionCopy = session;
   v6 = sub_1008A42B4();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    if (a4 >= 3)
+    if (state >= 3)
     {
-      v7 = [NSString stringWithFormat:@"%lu", a4];
+      state = [NSString stringWithFormat:@"%lu", state];
     }
 
     else
     {
-      v7 = *(&off_10162D198 + a4);
+      state = *(&off_10162D198 + state);
     }
 
     *buf = 136315650;
     v9 = "[ARSessionDebugLogger session:didChangeState:]";
     v10 = 2112;
-    v11 = v5;
+    v11 = sessionCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = state;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s:%@:%@", buf, 0x20u);
   }
 }
@@ -303,17 +303,17 @@
   [(ARSessionDebugLogger *)&v4 dealloc];
 }
 
-- (ARSessionDebugLogger)initWithSession:(id)a3
+- (ARSessionDebugLogger)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = ARSessionDebugLogger;
   v5 = [(ARSessionDebugLogger *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_session, v4);
-    [v4 _addObserver:v6];
+    v7 = objc_storeWeak(&v5->_session, sessionCopy);
+    [sessionCopy _addObserver:v6];
   }
 
   return v6;

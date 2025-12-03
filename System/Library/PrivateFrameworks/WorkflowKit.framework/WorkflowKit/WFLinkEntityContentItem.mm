@@ -7,34 +7,34 @@
 + (BOOL)isFinderNodeEntity;
 + (BOOL)isMailMessageEntity;
 + (BOOL)isNoteEntity;
-+ (BOOL)isNoteFolderEntityIdentifier:(id)a3;
++ (BOOL)isNoteFolderEntityIdentifier:(id)identifier;
 + (BOOL)isNotes;
 + (BOOL)isPhotosAssetEntity;
 + (BOOL)isRecordingEntity;
 + (BOOL)isReminderEntity;
 + (BOOL)isWorkflowEntity;
-+ (id)_localizedTypeDescriptionWithContext:(id)a3 pluralizationNumber:(int64_t)a4;
++ (id)_localizedTypeDescriptionWithContext:(id)context pluralizationNumber:(int64_t)number;
 + (id)allProperties;
-+ (id)allowedOperatorsWithQueryParameterMetadata:(id)a3 objectClasses:(id)a4 operators:(id)a5;
++ (id)allowedOperatorsWithQueryParameterMetadata:(id)metadata objectClasses:(id)classes operators:(id)operators;
 + (id)coercions;
-+ (id)localizedCountDescriptionWithValue:(int64_t)a3;
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3;
++ (id)localizedCountDescriptionWithValue:(int64_t)value;
++ (id)localizedPluralFilterDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
-+ (id)propertyBuildersForFilteringUsingQuery:(id)a3;
++ (id)propertyBuildersForFilteringUsingQuery:(id)query;
 + (void)initialize;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (BOOL)outputsFileContent;
 - (LNEntity)entity;
-- (WFLinkEntityContentItem)initWithCoder:(id)a3;
+- (WFLinkEntityContentItem)initWithCoder:(id)coder;
 - (id)debugDescription;
 - (id)name;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5;
-- (void)generateStructuredDataRepresentationWithTypeIdentifier:(int64_t)a3 completionHandler:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class;
+- (void)generateStructuredDataRepresentationWithTypeIdentifier:(int64_t)identifier completionHandler:(id)handler;
 @end
 
 @implementation WFLinkEntityContentItem
@@ -48,26 +48,26 @@
   return v4;
 }
 
-- (void)generateStructuredDataRepresentationWithTypeIdentifier:(int64_t)a3 completionHandler:(id)a4
+- (void)generateStructuredDataRepresentationWithTypeIdentifier:(int64_t)identifier completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69ACE60];
-  v7 = a4;
-  v8 = [objc_opt_class() entityMetadata];
-  v9 = [v6 policyWithEntityMetadata:v8];
+  handlerCopy = handler;
+  entityMetadata = [objc_opt_class() entityMetadata];
+  v9 = [v6 policyWithEntityMetadata:entityMetadata];
 
   v17 = 0;
   v10 = [v9 connectionWithError:&v17];
   v11 = v17;
   if (v10)
   {
-    v12 = [(WFLinkEntityContentItem *)self entity];
-    v13 = [v12 identifier];
-    v18 = v13;
+    entity = [(WFLinkEntityContentItem *)self entity];
+    identifier = [entity identifier];
+    v18 = identifier;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
-    [v10 fetchStructuredDataWithTypeIdentifier:a3 forEntityIdentifiers:v14 completionHandler:v7];
+    [v10 fetchStructuredDataWithTypeIdentifier:identifier forEntityIdentifiers:v14 completionHandler:handlerCopy];
 
-    v7 = v12;
+    handlerCopy = entity;
   }
 
   else
@@ -82,20 +82,20 @@
       _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_ERROR, "%s Unable to create connection for structured data representation fetch: %@", buf, 0x16u);
     }
 
-    (*(v7 + 2))(v7, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
   v48 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  v9 = [objc_opt_class() entityMetadata];
-  v10 = [v9 systemProtocolMetadata];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69AC2C0]];
+  representationCopy = representation;
+  typeCopy = type;
+  entityMetadata = [objc_opt_class() entityMetadata];
+  systemProtocolMetadata = [entityMetadata systemProtocolMetadata];
+  v11 = [systemProtocolMetadata objectForKeyedSubscript:*MEMORY[0x1E69AC2C0]];
 
   if (v11)
   {
@@ -118,24 +118,24 @@
 
   v13 = v12;
 
-  v14 = [v9 transferableContentTypes];
-  v15 = [v14 exportableTypes];
-  v16 = [v15 if_map:&__block_literal_global_746];
+  transferableContentTypes = [entityMetadata transferableContentTypes];
+  exportableTypes = [transferableContentTypes exportableTypes];
+  v16 = [exportableTypes if_map:&__block_literal_global_746];
 
-  v17 = [v8 string];
-  v18 = WFBestFileTypeForSupportedContentTypes(v16, v17);
+  string = [typeCopy string];
+  v18 = WFBestFileTypeForSupportedContentTypes(v16, string);
 
   if (!v18)
   {
-    v19 = [v13 supportedContentTypes];
-    v20 = [v19 if_map:&__block_literal_global_749];
+    supportedContentTypes = [v13 supportedContentTypes];
+    v20 = [supportedContentTypes if_map:&__block_literal_global_749];
 
-    v21 = [v8 string];
-    v18 = WFBestFileTypeForSupportedContentTypes(v20, v21);
+    string2 = [typeCopy string];
+    v18 = WFBestFileTypeForSupportedContentTypes(v20, string2);
   }
 
-  v22 = [objc_opt_class() isFinderNodeEntity];
-  if ((v22 & (v18 == 0)) != 0)
+  isFinderNodeEntity = [objc_opt_class() isFinderNodeEntity];
+  if ((isFinderNodeEntity & (v18 == 0)) != 0)
   {
     v23 = @"public.item";
   }
@@ -145,24 +145,24 @@
     v23 = v18;
   }
 
-  if ((v22 & 1) != 0 || v18)
+  if ((isFinderNodeEntity & 1) != 0 || v18)
   {
-    v26 = [MEMORY[0x1E69ACE60] policyWithEntityMetadata:v9];
+    v26 = [MEMORY[0x1E69ACE60] policyWithEntityMetadata:entityMetadata];
     v45 = 0;
     v27 = [v26 connectionWithError:&v45];
     v41 = v45;
     if (v27)
     {
       v39 = v26;
-      v28 = [(WFLinkEntityContentItem *)self entity];
+      entity = [(WFLinkEntityContentItem *)self entity];
       v38 = [objc_alloc(MEMORY[0x1E69AC788]) initWithContentType:v23];
       v29 = [objc_alloc(MEMORY[0x1E69ACF28]) initWithContentType:v38 preferredExtractionType:0];
-      v30 = [MEMORY[0x1E696AE30] processInfo];
-      v31 = v30;
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      v31 = processInfo;
       v40 = v13;
-      if (v30)
+      if (processInfo)
       {
-        [v30 if_auditToken];
+        [processInfo if_auditToken];
       }
 
       else
@@ -172,16 +172,16 @@
 
       v34 = [v29 configurationWithAuditToken:buf];
 
-      v46 = v28;
+      v46 = entity;
       v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __70__WFLinkEntityContentItem_generateFileRepresentation_options_forType___block_invoke_753;
       v42[3] = &unk_1E837AAA0;
-      v43 = v28;
-      v44 = v7;
-      v36 = v28;
-      [v27 exportEntities:v35 metadata:v9 withConfiguration:v34 completionHandler:v42];
+      v43 = entity;
+      v44 = representationCopy;
+      v36 = entity;
+      [v27 exportEntities:v35 metadata:entityMetadata withConfiguration:v34 completionHandler:v42];
 
       v26 = v39;
       v13 = v40;
@@ -201,7 +201,7 @@
         _os_log_impl(&dword_1CA256000, v32, OS_LOG_TYPE_ERROR, "%s Unable to create connection: %@", buf, 0x16u);
       }
 
-      (*(v7 + 2))(v7, 0, v41);
+      (*(representationCopy + 2))(representationCopy, 0, v41);
     }
   }
 
@@ -210,15 +210,15 @@
     v24 = getWFContentGraphLogObject();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      v25 = [v8 string];
+      string3 = [typeCopy string];
       *buf = 136315394;
       *&buf[4] = "[WFLinkEntityContentItem generateFileRepresentation:options:forType:]";
       *&buf[12] = 2112;
-      *&buf[14] = v25;
+      *&buf[14] = string3;
       _os_log_impl(&dword_1CA256000, v24, OS_LOG_TYPE_ERROR, "%s Failed to find a best file type for %@ returning nil!", buf, 0x16u);
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(representationCopy + 2))(representationCopy, 0, 0);
   }
 
   v37 = *MEMORY[0x1E69E9840];
@@ -261,50 +261,50 @@ void __70__WFLinkEntityContentItem_generateFileRepresentation_options_forType___
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class
 {
   v88 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(WFLinkEntityContentItem *)self entity];
+  representationCopy = representation;
+  optionsCopy = options;
+  entity = [(WFLinkEntityContentItem *)self entity];
   if ([objc_opt_class() isFinderNodeEntity])
   {
-    v11 = [objc_opt_class() entityMetadata];
-    v12 = [v11 transferableContentTypes];
-    v13 = [v12 exportableTypes];
+    entityMetadata = [objc_opt_class() entityMetadata];
+    transferableContentTypes = [entityMetadata transferableContentTypes];
+    exportableTypes = [transferableContentTypes exportableTypes];
 
-    if ([v13 count])
+    if ([exportableTypes count])
     {
-      v71 = v10;
-      v14 = v9;
-      v15 = [MEMORY[0x1E6996ED0] typeWithClass:a5];
-      v16 = [objc_opt_class() entityMetadata];
-      v17 = [v16 transferableContentTypes];
-      v18 = [v17 exportableTypes];
+      v71 = entity;
+      v14 = optionsCopy;
+      v15 = [MEMORY[0x1E6996ED0] typeWithClass:class];
+      entityMetadata2 = [objc_opt_class() entityMetadata];
+      transferableContentTypes2 = [entityMetadata2 transferableContentTypes];
+      exportableTypes2 = [transferableContentTypes2 exportableTypes];
       v84[0] = MEMORY[0x1E69E9820];
       v84[1] = 3221225472;
       v84[2] = __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass___block_invoke;
       v84[3] = &unk_1E8373140;
       v85 = v15;
       v19 = v15;
-      v20 = [v18 if_firstObjectPassingTest:v84];
+      firstObject = [exportableTypes2 if_firstObjectPassingTest:v84];
 
-      if (!v20)
+      if (!firstObject)
       {
-        v21 = [objc_opt_class() entityMetadata];
-        v22 = [v21 transferableContentTypes];
-        v23 = [v22 exportableTypes];
-        v20 = [v23 firstObject];
+        entityMetadata3 = [objc_opt_class() entityMetadata];
+        transferableContentTypes3 = [entityMetadata3 transferableContentTypes];
+        exportableTypes3 = [transferableContentTypes3 exportableTypes];
+        firstObject = [exportableTypes3 firstObject];
       }
 
       v24 = getWFContentGraphLogObject();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v20 wf_fileType];
+        wf_fileType = [firstObject wf_fileType];
         *buf = 136315394;
         *&buf[4] = "[WFLinkEntityContentItem generateObjectRepresentation:options:forClass:]";
         *&buf[12] = 2112;
-        *&buf[14] = v25;
+        *&buf[14] = wf_fileType;
         _os_log_impl(&dword_1CA256000, v24, OS_LOG_TYPE_DEFAULT, "%s [Finder Entity] Generating a file for file type: %@", buf, 0x16u);
       }
 
@@ -312,50 +312,50 @@ void __70__WFLinkEntityContentItem_generateFileRepresentation_options_forType___
       v79[1] = 3221225472;
       v79[2] = __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass___block_invoke_717;
       v79[3] = &unk_1E8373190;
-      v80 = v20;
-      v83 = a5;
-      v9 = v14;
+      v80 = firstObject;
+      classCopy = class;
+      optionsCopy = v14;
       v81 = v14;
-      v82 = v8;
-      v26 = v20;
-      v27 = [v26 wf_fileType];
-      [(WFLinkEntityContentItem *)self generateFileRepresentation:v79 options:v81 forType:v27];
+      v82 = representationCopy;
+      v26 = firstObject;
+      wf_fileType2 = [v26 wf_fileType];
+      [(WFLinkEntityContentItem *)self generateFileRepresentation:v79 options:v81 forType:wf_fileType2];
 
-      v10 = v71;
+      entity = v71;
     }
 
     else
     {
-      (*(v8 + 2))(v8, 0, 0, 0);
+      (*(representationCopy + 2))(representationCopy, 0, 0, 0);
     }
 
     goto LABEL_45;
   }
 
-  if (objc_opt_class() == a5)
+  if (objc_opt_class() == class)
   {
     v32 = objc_alloc(MEMORY[0x1E69AC818]);
-    v33 = [v10 identifier];
-    v34 = [v33 typeIdentifier];
-    v35 = [v32 initWithIdentifier:v34];
+    identifier = [entity identifier];
+    typeIdentifier = [identifier typeIdentifier];
+    v35 = [v32 initWithIdentifier:typeIdentifier];
 
-    v36 = [objc_alloc(MEMORY[0x1E69ACA90]) initWithValue:v10 valueType:v35];
-    (*(v8 + 2))(v8, v36, 0, 0);
+    v36 = [objc_alloc(MEMORY[0x1E69ACA90]) initWithValue:entity valueType:v35];
+    (*(representationCopy + 2))(representationCopy, v36, 0, 0);
   }
 
   else
   {
-    if (objc_opt_class() == a5)
+    if (objc_opt_class() == class)
     {
-      v37 = [objc_opt_class() entityMetadata];
-      v38 = [v37 systemProtocolMetadata];
-      v39 = [v38 objectForKeyedSubscript:*MEMORY[0x1E69AC2D0]];
+      entityMetadata4 = [objc_opt_class() entityMetadata];
+      systemProtocolMetadata = [entityMetadata4 systemProtocolMetadata];
+      v39 = [systemProtocolMetadata objectForKeyedSubscript:*MEMORY[0x1E69AC2D0]];
 
       if (v39)
       {
         v40 = MEMORY[0x1E69ACE60];
-        v41 = [objc_opt_class() entityMetadata];
-        v42 = [v40 policyWithEntityMetadata:v41];
+        entityMetadata5 = [objc_opt_class() entityMetadata];
+        v42 = [v40 policyWithEntityMetadata:entityMetadata5];
 
         v78 = 0;
         v43 = [v42 connectionWithError:&v78];
@@ -364,15 +364,15 @@ void __70__WFLinkEntityContentItem_generateFileRepresentation_options_forType___
         if (v43)
         {
           v72 = v44;
-          v46 = v10;
-          v47 = v9;
+          v46 = entity;
+          v47 = optionsCopy;
           v48 = [objc_alloc(MEMORY[0x1E69AC788]) initWithContentType:@"public.url"];
           v49 = [objc_alloc(MEMORY[0x1E69ACF28]) initWithContentType:v48 preferredExtractionType:0];
-          v50 = [MEMORY[0x1E696AE30] processInfo];
-          v51 = v50;
-          if (v50)
+          processInfo = [MEMORY[0x1E696AE30] processInfo];
+          v51 = processInfo;
+          if (processInfo)
           {
-            [v50 if_auditToken];
+            [processInfo if_auditToken];
           }
 
           else
@@ -385,16 +385,16 @@ void __70__WFLinkEntityContentItem_generateFileRepresentation_options_forType___
           v66 = v46;
           v86 = v46;
           v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v86 count:1];
-          v68 = [objc_opt_class() entityMetadata];
+          entityMetadata6 = [objc_opt_class() entityMetadata];
           v76[0] = MEMORY[0x1E69E9820];
           v76[1] = 3221225472;
           v76[2] = __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass___block_invoke_730;
           v76[3] = &unk_1E837B530;
-          v77 = v8;
-          [v43 exportEntities:v67 metadata:v68 withConfiguration:v65 completionHandler:v76];
+          v77 = representationCopy;
+          [v43 exportEntities:v67 metadata:entityMetadata6 withConfiguration:v65 completionHandler:v76];
 
-          v9 = v47;
-          v10 = v66;
+          optionsCopy = v47;
+          entity = v66;
           v45 = v73;
         }
 
@@ -410,7 +410,7 @@ void __70__WFLinkEntityContentItem_generateFileRepresentation_options_forType___
             _os_log_impl(&dword_1CA256000, v56, OS_LOG_TYPE_ERROR, "%s Unable to create connection for URL export: %@", buf, 0x16u);
           }
 
-          (*(v8 + 2))(v8, 0, 0, v45);
+          (*(representationCopy + 2))(representationCopy, 0, 0, v45);
         }
 
 LABEL_40:
@@ -418,22 +418,22 @@ LABEL_40:
       }
     }
 
-    else if (objc_opt_class() == a5 || objc_opt_class() == a5)
+    else if (objc_opt_class() == class || objc_opt_class() == class)
     {
       if ([objc_opt_class() isNoteEntity])
       {
-        v28 = [v10 properties];
-        v13 = [v28 if_firstObjectWithValue:@"contents" forKey:@"identifier"];
+        properties = [entity properties];
+        exportableTypes = [properties if_firstObjectWithValue:@"contents" forKey:@"identifier"];
 
-        v29 = [v13 value];
-        v30 = [v29 value];
+        value = [exportableTypes value];
+        v29Value = [value value];
 
-        if (v30)
+        if (v29Value)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v31 = v30;
+            v31 = v29Value;
           }
 
           else
@@ -449,29 +449,29 @@ LABEL_40:
 
         v57 = v31;
 
-        v58 = [(WFLinkEntityContentItem *)self name];
-        v59 = v58;
-        if (!v57 || !v58)
+        name = [(WFLinkEntityContentItem *)self name];
+        v59 = name;
+        if (!v57 || !name)
         {
-          (*(v8 + 2))(v8, 0, 0, 0);
+          (*(representationCopy + 2))(representationCopy, 0, 0, 0);
 LABEL_44:
 
 LABEL_45:
           goto LABEL_46;
         }
 
-        v60 = [v58 stringByAppendingString:@"\n"];
-        if (objc_opt_class() == a5)
+        v60 = [name stringByAppendingString:@"\n"];
+        if (objc_opt_class() == class)
         {
-          v69 = [v57 string];
-          v61 = [v60 stringByAppendingString:v69];
+          string = [v57 string];
+          v61 = [v60 stringByAppendingString:string];
 
-          (*(v8 + 2))(v8, v61, v59, 0);
+          (*(representationCopy + 2))(representationCopy, v61, v59, 0);
         }
 
         else
         {
-          if (objc_opt_class() != a5)
+          if (objc_opt_class() != class)
           {
 LABEL_43:
 
@@ -479,22 +479,22 @@ LABEL_43:
           }
 
           v61 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v60];
-          v62 = [getICTextStyleClass() titleStyle];
-          v63 = [v62 attributes];
-          [v61 setAttributes:v63 range:{0, objc_msgSend(v61, "length")}];
+          titleStyle = [getICTextStyleClass() titleStyle];
+          attributes = [titleStyle attributes];
+          [v61 setAttributes:attributes range:{0, objc_msgSend(v61, "length")}];
 
           [v61 appendAttributedString:v57];
           v64 = [v61 copy];
-          (*(v8 + 2))(v8, v64, v59, 0);
+          (*(representationCopy + 2))(representationCopy, v64, v59, 0);
         }
 
         goto LABEL_43;
       }
 
-      v52 = [objc_opt_class() entityMetadata];
-      v53 = [v52 transferableContentTypes];
-      v54 = [v53 exportableTypes];
-      v42 = [v54 if_firstObjectPassingTest:&__block_literal_global_742];
+      entityMetadata7 = [objc_opt_class() entityMetadata];
+      transferableContentTypes4 = [entityMetadata7 transferableContentTypes];
+      exportableTypes4 = [transferableContentTypes4 exportableTypes];
+      v42 = [exportableTypes4 if_firstObjectPassingTest:&__block_literal_global_742];
 
       if (v42)
       {
@@ -502,20 +502,20 @@ LABEL_43:
         v74[1] = 3221225472;
         v74[2] = __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass___block_invoke_2;
         v74[3] = &unk_1E837E3C0;
-        v75 = v8;
-        v55 = [v42 wf_fileType];
-        [(WFLinkEntityContentItem *)self generateFileRepresentation:v74 options:v9 forType:v55];
+        v75 = representationCopy;
+        wf_fileType3 = [v42 wf_fileType];
+        [(WFLinkEntityContentItem *)self generateFileRepresentation:v74 options:optionsCopy forType:wf_fileType3];
       }
 
       else
       {
-        (*(v8 + 2))(v8, 0, 0, 0);
+        (*(representationCopy + 2))(representationCopy, 0, 0, 0);
       }
 
       goto LABEL_40;
     }
 
-    (*(v8 + 2))(v8, 0, 0, 0);
+    (*(representationCopy + 2))(representationCopy, 0, 0, 0);
   }
 
 LABEL_46:
@@ -674,110 +674,110 @@ void __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = [(WFLinkEntityContentItem *)self displayRepresentation];
-  v7 = [v6 image];
-  v8 = [v7 wf_image];
+  thumbnailCopy = thumbnail;
+  displayRepresentation = [(WFLinkEntityContentItem *)self displayRepresentation];
+  image = [displayRepresentation image];
+  wf_image = [image wf_image];
 
-  if (v5 && v8)
+  if (thumbnailCopy && wf_image)
   {
-    v5[2](v5, v8, 0);
+    thumbnailCopy[2](thumbnailCopy, wf_image, 0);
   }
 
-  return v8 != 0;
+  return wf_image != 0;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WFLinkEntityContentItem *)self displayRepresentation];
-  v6 = [v5 subtitle];
-  v7 = [v6 wf_localizedString];
+  subtitleCopy = subtitle;
+  displayRepresentation = [(WFLinkEntityContentItem *)self displayRepresentation];
+  subtitle = [displayRepresentation subtitle];
+  wf_localizedString = [subtitle wf_localizedString];
 
-  if (v4 && v7)
+  if (subtitleCopy && wf_localizedString)
   {
-    v4[2](v4, v7);
+    subtitleCopy[2](subtitleCopy, wf_localizedString);
   }
 
-  return v7 != 0;
+  return wf_localizedString != 0;
 }
 
 - (id)name
 {
   v3 = [(WFLinkEntityContentItem *)self objectForClass:objc_opt_class()];
-  v4 = [v3 wfName];
+  wfName = [v3 wfName];
 
-  if (v4)
+  if (wfName)
   {
-    v5 = [v3 wfName];
+    wfName2 = [v3 wfName];
   }
 
   else
   {
-    v6 = [(WFLinkEntityContentItem *)self displayRepresentation];
-    v7 = [v6 title];
-    v8 = [v7 wf_localizedString];
-    v9 = v8;
-    if (v8)
+    displayRepresentation = [(WFLinkEntityContentItem *)self displayRepresentation];
+    title = [displayRepresentation title];
+    wf_localizedString = [title wf_localizedString];
+    v9 = wf_localizedString;
+    if (wf_localizedString)
     {
-      v10 = v8;
+      localizedTypeDescription = wf_localizedString;
     }
 
     else
     {
-      v10 = [objc_opt_class() localizedTypeDescription];
+      localizedTypeDescription = [objc_opt_class() localizedTypeDescription];
     }
 
-    v5 = v10;
+    wfName2 = localizedTypeDescription;
   }
 
-  return v5;
+  return wfName2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFLinkEntityContentItem *)self entity];
-  [v4 encodeObject:v5 forKey:@"entity"];
+  coderCopy = coder;
+  entity = [(WFLinkEntityContentItem *)self entity];
+  [coderCopy encodeObject:entity forKey:@"entity"];
 
-  v6 = [objc_opt_class() entityMetadata];
-  [v4 encodeObject:v6 forKey:@"entityMetadata"];
+  entityMetadata = [objc_opt_class() entityMetadata];
+  [coderCopy encodeObject:entityMetadata forKey:@"entityMetadata"];
 
-  v7 = [objc_opt_class() queryMetadata];
-  [v4 encodeObject:v7 forKey:@"queryMetadata"];
+  queryMetadata = [objc_opt_class() queryMetadata];
+  [coderCopy encodeObject:queryMetadata forKey:@"queryMetadata"];
 
-  v8 = [objc_opt_class() appBundleIdentifier];
-  [v4 encodeObject:v8 forKey:@"appBundleIdentifier"];
+  appBundleIdentifier = [objc_opt_class() appBundleIdentifier];
+  [coderCopy encodeObject:appBundleIdentifier forKey:@"appBundleIdentifier"];
 
-  v9 = [objc_opt_class() appBundleIdentifier];
-  [v4 encodeObject:v9 forKey:@"entityNamespace"];
+  appBundleIdentifier2 = [objc_opt_class() appBundleIdentifier];
+  [coderCopy encodeObject:appBundleIdentifier2 forKey:@"entityNamespace"];
 
-  v10 = [(WFLinkEntityContentItem *)self displayRepresentation];
-  [v4 encodeObject:v10 forKey:@"displayRepresentation"];
+  displayRepresentation = [(WFLinkEntityContentItem *)self displayRepresentation];
+  [coderCopy encodeObject:displayRepresentation forKey:@"displayRepresentation"];
 }
 
-- (WFLinkEntityContentItem)initWithCoder:(id)a3
+- (WFLinkEntityContentItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = WFLinkEntityContentItem;
   v5 = [(WFLinkEntityContentItem *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityMetadata"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryMetadata"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityMetadata"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryMetadata"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appBundleIdentifier"];
     if (!v8)
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityNamespace"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityNamespace"];
     }
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayedAppBundleIdentifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayedAppBundleIdentifier"];
     v10 = [v6 wf_contentItemClassWithQueryMetadata:v7 appBundleIdentifier:v8 displayedAppBundleIdentifier:v9];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entity"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entity"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayRepresentation"];
     v13 = [v10 itemWithObject:v11];
     [(WFLinkEntityContentItem *)v13 setDisplayRepresentation:v12];
   }
@@ -802,9 +802,9 @@ void __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass
 
   else
   {
-    v7 = [(WFLinkEntityContentItem *)self entity];
-    v8 = [v7 identifier];
-    v6 = [v5 stringWithFormat:@"WFLinkEntityContentItem <%@>", v8];
+    entity = [(WFLinkEntityContentItem *)self entity];
+    identifier = [entity identifier];
+    v6 = [v5 stringWithFormat:@"WFLinkEntityContentItem <%@>", identifier];
   }
 
   return v6;
@@ -819,7 +819,7 @@ void __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass
 
 + (id)outputTypes
 {
-  v32.receiver = a1;
+  v32.receiver = self;
   v32.super_class = &OBJC_METACLASS___WFLinkEntityContentItem;
   v3 = objc_msgSendSuper2(&v32, sel_outputTypes);
   v4 = [v3 mutableCopy];
@@ -827,13 +827,13 @@ void __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass
   v5 = [MEMORY[0x1E6996ED0] typeWithClass:objc_opt_class()];
   [v4 addObject:v5];
 
-  if ([a1 isNoteEntity])
+  if ([self isNoteEntity])
   {
     v6 = [MEMORY[0x1E6996ED0] typeWithClass:objc_opt_class()];
     [v4 insertObject:v6 atIndex:0];
   }
 
-  if ([a1 isFinderNodeEntity])
+  if ([self isFinderNodeEntity])
   {
     v7 = [MEMORY[0x1E69E0AF8] typeWithUTType:*MEMORY[0x1E6982D60]];
     [v4 insertObject:v7 atIndex:0];
@@ -842,9 +842,9 @@ void __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass
     [v4 insertObject:v8 atIndex:0];
   }
 
-  v9 = [a1 entityMetadata];
-  v10 = [v9 systemProtocolMetadata];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E69AC2D0]];
+  entityMetadata = [self entityMetadata];
+  systemProtocolMetadata = [entityMetadata systemProtocolMetadata];
+  v11 = [systemProtocolMetadata objectForKeyedSubscript:*MEMORY[0x1E69AC2D0]];
 
   if (v11)
   {
@@ -852,10 +852,10 @@ void __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass
     [v4 insertObject:v12 atIndex:0];
   }
 
-  v13 = [a1 entityMetadata];
-  v14 = [v13 transferableContentTypes];
-  v15 = [v14 exportableTypes];
-  v16 = [v15 if_map:&__block_literal_global_759];
+  entityMetadata2 = [self entityMetadata];
+  transferableContentTypes = [entityMetadata2 transferableContentTypes];
+  exportableTypes = [transferableContentTypes exportableTypes];
+  v16 = [exportableTypes if_map:&__block_literal_global_759];
   v17 = v16;
   v18 = MEMORY[0x1E695E0F0];
   if (v16)
@@ -871,9 +871,9 @@ void __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass
   v20 = v19;
 
   [v4 addObjectsFromArray:v20];
-  v21 = [a1 entityMetadata];
-  v22 = [v21 systemProtocolMetadata];
-  v23 = [v22 objectForKeyedSubscript:*MEMORY[0x1E69AC2C0]];
+  entityMetadata3 = [self entityMetadata];
+  systemProtocolMetadata2 = [entityMetadata3 systemProtocolMetadata];
+  v23 = [systemProtocolMetadata2 objectForKeyedSubscript:*MEMORY[0x1E69AC2C0]];
 
   if (v23)
   {
@@ -896,9 +896,9 @@ void __73__WFLinkEntityContentItem_generateObjectRepresentation_options_forClass
 
   v25 = v24;
 
-  v26 = [v25 supportedContentTypes];
+  supportedContentTypes = [v25 supportedContentTypes];
 
-  v27 = [v26 if_map:&__block_literal_global_762];
+  v27 = [supportedContentTypes if_map:&__block_literal_global_762];
   v28 = v27;
   if (v27)
   {
@@ -1562,66 +1562,66 @@ LABEL_70:
 + (id)coercions
 {
   v3 = objc_opt_new();
-  if ([a1 isMailMessageEntity])
+  if ([self isMailMessageEntity])
   {
     v4 = MEMORY[0x1E6996CD8];
     v5 = [MEMORY[0x1E6996ED0] typeWithClassName:@"WFEmail" frameworkName:@"ContentKit" location:1];
-    v6 = [a1 mailMessageCoercionHandler];
-    v7 = [v4 coercionToType:v5 handler:v6];
+    mailMessageCoercionHandler = [self mailMessageCoercionHandler];
+    v7 = [v4 coercionToType:v5 handler:mailMessageCoercionHandler];
     [v3 addObject:v7];
   }
 
-  if ([a1 isCalendarEventEntity])
+  if ([self isCalendarEventEntity])
   {
     v8 = MEMORY[0x1E6996CD8];
     v9 = [MEMORY[0x1E6996ED0] typeWithClassName:@"EKEvent" frameworkName:@"EventKit" location:0];
-    v10 = [a1 calendarEventCoercionHandler];
-    v11 = [v8 coercionToType:v9 handler:v10];
+    calendarEventCoercionHandler = [self calendarEventCoercionHandler];
+    v11 = [v8 coercionToType:v9 handler:calendarEventCoercionHandler];
     [v3 addObject:v11];
   }
 
-  if ([a1 isReminderEntity])
+  if ([self isReminderEntity])
   {
     v12 = MEMORY[0x1E6996CD8];
     v13 = [MEMORY[0x1E6996ED0] typeWithClassName:@"REMReminder" frameworkName:@"ReminderKit" location:1];
-    v14 = [a1 reminderCoercionHandler];
-    v15 = [v12 coercionToType:v13 handler:v14];
+    reminderCoercionHandler = [self reminderCoercionHandler];
+    v15 = [v12 coercionToType:v13 handler:reminderCoercionHandler];
     [v3 addObject:v15];
   }
 
-  if ([a1 isPhotosAssetEntity])
+  if ([self isPhotosAssetEntity])
   {
     v16 = MEMORY[0x1E6996CD8];
     v17 = [MEMORY[0x1E6996ED0] typeWithClassName:@"PHAsset" frameworkName:@"Photos" location:0];
-    v18 = [a1 photosAssetCoercionHandler];
-    v19 = [v16 coercionToType:v17 handler:v18];
+    photosAssetCoercionHandler = [self photosAssetCoercionHandler];
+    v19 = [v16 coercionToType:v17 handler:photosAssetCoercionHandler];
     [v3 addObject:v19];
   }
 
-  if ([a1 isWorkflowEntity])
+  if ([self isWorkflowEntity])
   {
     v20 = MEMORY[0x1E6996CD8];
     v21 = [MEMORY[0x1E6996ED0] typeWithClassName:@"WFWorkflowReference" frameworkName:@"WorkflowKit" location:1];
-    v22 = [a1 workflowCoercionHandler];
-    v23 = [v20 coercionToType:v21 handler:v22];
+    workflowCoercionHandler = [self workflowCoercionHandler];
+    v23 = [v20 coercionToType:v21 handler:workflowCoercionHandler];
     [v3 addObject:v23];
   }
 
-  if ([a1 isContactEntity])
+  if ([self isContactEntity])
   {
     v24 = MEMORY[0x1E6996CD8];
     v25 = [MEMORY[0x1E6996ED0] typeWithClassName:@"WFContact" frameworkName:@"WorkflowKit" location:1];
-    v26 = [a1 contactCoercionHandler];
-    v27 = [v24 coercionToType:v25 handler:v26];
+    contactCoercionHandler = [self contactCoercionHandler];
+    v27 = [v24 coercionToType:v25 handler:contactCoercionHandler];
     [v3 addObject:v27];
   }
 
-  if ([a1 isAppUsageResultEntity])
+  if ([self isAppUsageResultEntity])
   {
     v28 = MEMORY[0x1E6996CD8];
     v29 = [MEMORY[0x1E6996ED0] typeWithClassName:@"WFApp" frameworkName:@"WorkflowKit" location:1];
-    v30 = [a1 appUsageResultCoercionHandler];
-    v31 = [v28 coercionToType:v29 handler:v30];
+    appUsageResultCoercionHandler = [self appUsageResultCoercionHandler];
+    v31 = [v28 coercionToType:v29 handler:appUsageResultCoercionHandler];
     [v3 addObject:v31];
   }
 
@@ -1632,15 +1632,15 @@ LABEL_70:
 
 + (BOOL)isRecordingEntity
 {
-  v3 = [a1 appBundleIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69E0F98]];
+  appBundleIdentifier = [self appBundleIdentifier];
+  v4 = [appBundleIdentifier isEqualToString:*MEMORY[0x1E69E0F98]];
 
   if (v4)
   {
-    v5 = [a1 entityMetadata];
-    v6 = [v5 identifier];
+    entityMetadata = [self entityMetadata];
+    identifier = [entityMetadata identifier];
     v7 = *MEMORY[0x1E69970E8];
-    v8 = v6;
+    v8 = identifier;
     v9 = v7;
     v10 = v9;
     if (v8 == v9)
@@ -1663,22 +1663,22 @@ LABEL_70:
 
 + (BOOL)isAppUsageResultEntity
 {
-  v3 = [a1 appBundleIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69E0E98]];
+  appBundleIdentifier = [self appBundleIdentifier];
+  v4 = [appBundleIdentifier isEqualToString:*MEMORY[0x1E69E0E98]];
 
   if (v4)
   {
-    v5 = [a1 entityMetadata];
-    v6 = [v5 identifier];
-    v7 = v6;
-    if (v6 == @"AppUsageResultAppEntity")
+    entityMetadata = [self entityMetadata];
+    identifier = [entityMetadata identifier];
+    v7 = identifier;
+    if (identifier == @"AppUsageResultAppEntity")
     {
       LOBYTE(v4) = 1;
     }
 
-    else if (v6)
+    else if (identifier)
     {
-      LOBYTE(v4) = [(__CFString *)v6 isEqualToString:@"AppUsageResultAppEntity"];
+      LOBYTE(v4) = [(__CFString *)identifier isEqualToString:@"AppUsageResultAppEntity"];
     }
 
     else
@@ -1692,22 +1692,22 @@ LABEL_70:
 
 + (BOOL)isContactEntity
 {
-  v3 = [a1 appBundleIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69E0E58]];
+  appBundleIdentifier = [self appBundleIdentifier];
+  v4 = [appBundleIdentifier isEqualToString:*MEMORY[0x1E69E0E58]];
 
   if (v4)
   {
-    v5 = [a1 entityMetadata];
-    v6 = [v5 identifier];
-    v7 = v6;
-    if (v6 == @"ContactEntity")
+    entityMetadata = [self entityMetadata];
+    identifier = [entityMetadata identifier];
+    v7 = identifier;
+    if (identifier == @"ContactEntity")
     {
       LOBYTE(v4) = 1;
     }
 
-    else if (v6)
+    else if (identifier)
     {
-      LOBYTE(v4) = [(__CFString *)v6 isEqualToString:@"ContactEntity"];
+      LOBYTE(v4) = [(__CFString *)identifier isEqualToString:@"ContactEntity"];
     }
 
     else
@@ -1721,15 +1721,15 @@ LABEL_70:
 
 + (BOOL)isWorkflowEntity
 {
-  v3 = [a1 appBundleIdentifier];
+  appBundleIdentifier = [self appBundleIdentifier];
   v4 = VCIsShortcutsAppBundleIdentifier();
 
   if (v4)
   {
-    v5 = [a1 entityMetadata];
-    v6 = [v5 identifier];
+    entityMetadata = [self entityMetadata];
+    identifier = [entityMetadata identifier];
     v7 = *MEMORY[0x1E69970F0];
-    v8 = v6;
+    v8 = identifier;
     v9 = v7;
     v10 = v9;
     if (v8 == v9)
@@ -1752,22 +1752,22 @@ LABEL_70:
 
 + (BOOL)isPhotosAssetEntity
 {
-  v3 = [a1 appBundleIdentifier];
-  v4 = [v3 isEqualToString:*MEMORY[0x1E69E0EF0]];
+  appBundleIdentifier = [self appBundleIdentifier];
+  v4 = [appBundleIdentifier isEqualToString:*MEMORY[0x1E69E0EF0]];
 
   if (v4)
   {
-    v5 = [a1 entityMetadata];
-    v6 = [v5 identifier];
-    v7 = v6;
-    if (v6 == @"AssetEntity")
+    entityMetadata = [self entityMetadata];
+    identifier = [entityMetadata identifier];
+    v7 = identifier;
+    if (identifier == @"AssetEntity")
     {
       LOBYTE(v4) = 1;
     }
 
-    else if (v6)
+    else if (identifier)
     {
-      LOBYTE(v4) = [(__CFString *)v6 isEqualToString:@"AssetEntity"];
+      LOBYTE(v4) = [(__CFString *)identifier isEqualToString:@"AssetEntity"];
     }
 
     else
@@ -1781,12 +1781,12 @@ LABEL_70:
 
 + (BOOL)isReminderEntity
 {
-  v3 = [a1 appBundleIdentifier];
-  if ([v3 isEqual:*MEMORY[0x1E69E0F08]])
+  appBundleIdentifier = [self appBundleIdentifier];
+  if ([appBundleIdentifier isEqual:*MEMORY[0x1E69E0F08]])
   {
-    v4 = [a1 entityMetadata];
-    v5 = [v4 identifier];
-    v6 = [v5 isEqual:@"ReminderEntity"];
+    entityMetadata = [self entityMetadata];
+    identifier = [entityMetadata identifier];
+    v6 = [identifier isEqual:@"ReminderEntity"];
   }
 
   else
@@ -1799,12 +1799,12 @@ LABEL_70:
 
 + (BOOL)isCalendarEventEntity
 {
-  v3 = [a1 appBundleIdentifier];
-  if ([v3 isEqual:*MEMORY[0x1E69E0E48]])
+  appBundleIdentifier = [self appBundleIdentifier];
+  if ([appBundleIdentifier isEqual:*MEMORY[0x1E69E0E48]])
   {
-    v4 = [a1 entityMetadata];
-    v5 = [v4 identifier];
-    v6 = [v5 isEqual:@"EventEntity"];
+    entityMetadata = [self entityMetadata];
+    identifier = [entityMetadata identifier];
+    v6 = [identifier isEqual:@"EventEntity"];
   }
 
   else
@@ -1817,12 +1817,12 @@ LABEL_70:
 
 + (BOOL)isMailMessageEntity
 {
-  v3 = [a1 appBundleIdentifier];
-  if ([v3 isEqual:*MEMORY[0x1E69E0EA0]])
+  appBundleIdentifier = [self appBundleIdentifier];
+  if ([appBundleIdentifier isEqual:*MEMORY[0x1E69E0EA0]])
   {
-    v4 = [a1 entityMetadata];
-    v5 = [v4 identifier];
-    v6 = [v5 isEqual:@"MailMessageEntity"];
+    entityMetadata = [self entityMetadata];
+    identifier = [entityMetadata identifier];
+    v6 = [identifier isEqual:@"MailMessageEntity"];
   }
 
   else
@@ -1835,42 +1835,42 @@ LABEL_70:
 
 + (BOOL)hasLibrary
 {
-  v3 = [a1 queryMetadata];
-  if (v3)
+  queryMetadata = [self queryMetadata];
+  if (queryMetadata)
   {
-    v4 = 1;
+    hasInMemoryFindAction = 1;
   }
 
   else
   {
-    v4 = [a1 hasInMemoryFindAction];
+    hasInMemoryFindAction = [self hasInMemoryFindAction];
   }
 
-  return v4;
+  return hasInMemoryFindAction;
 }
 
-+ (id)localizedCountDescriptionWithValue:(int64_t)a3
++ (id)localizedCountDescriptionWithValue:(int64_t)value
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v5 = [a1 entityMetadata];
-  v6 = [v5 displayRepresentation];
-  v7 = [v6 numericFormat];
+  entityMetadata = [self entityMetadata];
+  displayRepresentation = [entityMetadata displayRepresentation];
+  numericFormat = [displayRepresentation numericFormat];
 
-  if (v7)
+  if (numericFormat)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:value];
     v17[0] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
-    v10 = [v7 localizedStringWithReplacements:v9 forLocaleIdentifier:0];
+    v10 = [numericFormat localizedStringWithReplacements:v9 forLocaleIdentifier:0];
   }
 
   else
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    v13 = [a1 localizedPluralTypeDescription];
-    v14 = [v13 localizedLowercaseString];
-    v10 = [v11 stringWithFormat:@"%@ %@", v12, v14];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:value];
+    localizedPluralTypeDescription = [self localizedPluralTypeDescription];
+    localizedLowercaseString = [localizedPluralTypeDescription localizedLowercaseString];
+    v10 = [v11 stringWithFormat:@"%@ %@", v12, localizedLowercaseString];
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1878,65 +1878,65 @@ LABEL_70:
   return v10;
 }
 
-+ (id)_localizedTypeDescriptionWithContext:(id)a3 pluralizationNumber:(int64_t)a4
++ (id)_localizedTypeDescriptionWithContext:(id)context pluralizationNumber:(int64_t)number
 {
-  v6 = a3;
-  if ([a1 isRecordingEntity])
+  contextCopy = context;
+  if ([self isRecordingEntity])
   {
-    v7 = WFLocalizedStringResourceWithKey(@"Recording", @"Recording");
-    v8 = [v6 localize:v7];
+    localizedStringResource = WFLocalizedStringResourceWithKey(@"Recording", @"Recording");
+    identifier = [contextCopy localize:localizedStringResource];
     goto LABEL_7;
   }
 
-  v9 = [a1 entityMetadata];
-  v10 = [v9 displayRepresentation];
-  v11 = [v10 name];
-  v7 = [v11 localizedStringResource];
+  entityMetadata = [self entityMetadata];
+  displayRepresentation = [entityMetadata displayRepresentation];
+  name = [displayRepresentation name];
+  localizedStringResource = [name localizedStringResource];
 
-  if (v7)
+  if (localizedStringResource)
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-    v8 = [v6 localize:v7 pluralizationNumber:v12];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:number];
+    identifier = [contextCopy localize:localizedStringResource pluralizationNumber:v12];
 
-    if ([v8 length])
+    if ([identifier length])
     {
       goto LABEL_7;
     }
   }
 
-  v13 = [a1 entityMetadata];
-  v8 = [v13 identifier];
+  entityMetadata2 = [self entityMetadata];
+  identifier = [entityMetadata2 identifier];
 
 LABEL_7:
 
-  return v8;
+  return identifier;
 }
 
-+ (id)localizedPluralFilterDescriptionWithContext:(id)a3
++ (id)localizedPluralFilterDescriptionWithContext:(id)context
 {
-  v4 = a3;
-  if ([a1 isRecordingEntity])
+  contextCopy = context;
+  if ([self isRecordingEntity])
   {
     v5 = WFLocalizedStringResourceWithKey(@"Recordings", @"Recordings");
-    v6 = [v4 localize:v5];
+    v6 = [contextCopy localize:v5];
   }
 
   else
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___WFLinkEntityContentItem;
-    v6 = objc_msgSendSuper2(&v8, sel_localizedPluralFilterDescriptionWithContext_, v4);
+    v6 = objc_msgSendSuper2(&v8, sel_localizedPluralFilterDescriptionWithContext_, contextCopy);
   }
 
   return v6;
 }
 
-+ (id)allowedOperatorsWithQueryParameterMetadata:(id)a3 objectClasses:(id)a4 operators:(id)a5
++ (id)allowedOperatorsWithQueryParameterMetadata:(id)metadata objectClasses:(id)classes operators:(id)operators
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 copy];
-  v11 = [v9 if_firstObjectPassingTest:&__block_literal_global_538];
+  metadataCopy = metadata;
+  classesCopy = classes;
+  v10 = [operators copy];
+  v11 = [classesCopy if_firstObjectPassingTest:&__block_literal_global_538];
 
   if (v11)
   {
@@ -1948,16 +1948,16 @@ LABEL_7:
       [v12 addObject:&unk_1F4A9A0D8];
     }
 
-    v13 = [v12 array];
+    array = [v12 array];
 
-    v10 = v13;
+    v10 = array;
   }
 
-  if ([a1 isNotes])
+  if ([self isNotes])
   {
-    v14 = [v8 propertyIdentifier];
-    v15 = v14;
-    if (v14 == @"creationDate" || v14 && (v16 = -[__CFString isEqualToString:](v14, "isEqualToString:", @"creationDate"), v15, (v16 & 1) != 0) || ([v8 propertyIdentifier], v17 = objc_claimAutoreleasedReturnValue(), v17 == @"modificationDate"))
+    propertyIdentifier = [metadataCopy propertyIdentifier];
+    v15 = propertyIdentifier;
+    if (propertyIdentifier == @"creationDate" || propertyIdentifier && (v16 = -[__CFString isEqualToString:](propertyIdentifier, "isEqualToString:", @"creationDate"), v15, (v16 & 1) != 0) || ([metadataCopy propertyIdentifier], v17 = objc_claimAutoreleasedReturnValue(), v17 == @"modificationDate"))
     {
     }
 
@@ -1998,7 +1998,7 @@ uint64_t __94__WFLinkEntityContentItem_allowedOperatorsWithQueryParameterMetadat
 
 + (id)allProperties
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___WFLinkEntityContentItem;
   v2 = objc_msgSendSuper2(&v5, sel_allProperties);
   v3 = [v2 if_compactMap:&__block_literal_global_536];
@@ -2091,24 +2091,24 @@ LABEL_21:
   return v11;
 }
 
-+ (id)propertyBuildersForFilteringUsingQuery:(id)a3
++ (id)propertyBuildersForFilteringUsingQuery:(id)query
 {
-  v4 = a3;
-  v5 = [a1 entityMetadata];
-  v6 = [v5 properties];
+  queryCopy = query;
+  entityMetadata = [self entityMetadata];
+  properties = [entityMetadata properties];
   v7 = objc_opt_new();
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __66__WFLinkEntityContentItem_propertyBuildersForFilteringUsingQuery___block_invoke;
   v13[3] = &unk_1E8373098;
   v14 = v7;
-  v15 = v4;
-  v16 = v5;
-  v17 = a1;
-  v8 = v5;
-  v9 = v4;
+  v15 = queryCopy;
+  v16 = entityMetadata;
+  selfCopy = self;
+  v8 = entityMetadata;
+  v9 = queryCopy;
   v10 = v7;
-  v11 = [v6 if_compactMap:v13];
+  v11 = [properties if_compactMap:v13];
 
   return v11;
 }
@@ -2952,21 +2952,21 @@ LABEL_20:
 
 + (id)propertyBuilders
 {
-  v3 = [a1 queryMetadata];
-  v4 = [a1 propertyBuildersForFilteringUsingQuery:v3];
+  queryMetadata = [self queryMetadata];
+  v4 = [self propertyBuildersForFilteringUsingQuery:queryMetadata];
 
   return v4;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3[0] = MEMORY[0x1E69E9820];
     v3[1] = 3221225472;
     v3[2] = __37__WFLinkEntityContentItem_initialize__block_invoke;
     v3[3] = &__block_descriptor_40_e30__24__0__WFContentProperty_8_16l;
-    v3[4] = a1;
+    v3[4] = self;
     [MEMORY[0x1E6996D48] registerValueMapping:v3];
   }
 }
@@ -3103,10 +3103,10 @@ LABEL_28:
 + (BOOL)hasInMemoryFindAction
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a1 appBundleIdentifier];
-  v5 = [a1 entityMetadata];
-  v6 = [v5 identifier];
-  v7 = [v3 stringWithFormat:@"%@.%@", v4, v6];
+  appBundleIdentifier = [self appBundleIdentifier];
+  entityMetadata = [self entityMetadata];
+  identifier = [entityMetadata identifier];
+  v7 = [v3 stringWithFormat:@"%@.%@", appBundleIdentifier, identifier];
 
   v8 = WFForcedLinkEntityFindActionIdentifiers();
   if ([v8 containsObject:v7])
@@ -3116,25 +3116,25 @@ LABEL_28:
 
   else
   {
-    v10 = [a1 queryMetadata];
-    v9 = [v10 capabilities] & 1;
+    queryMetadata = [self queryMetadata];
+    v9 = [queryMetadata capabilities] & 1;
   }
 
   return v9;
 }
 
-+ (BOOL)isNoteFolderEntityIdentifier:(id)a3
++ (BOOL)isNoteFolderEntityIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 == @"FolderEntity")
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy == @"FolderEntity")
   {
     v5 = 1;
   }
 
-  else if (v3)
+  else if (identifierCopy)
   {
-    v5 = [(__CFString *)v3 isEqualToString:@"FolderEntity"];
+    v5 = [(__CFString *)identifierCopy isEqualToString:@"FolderEntity"];
   }
 
   else
@@ -3147,22 +3147,22 @@ LABEL_28:
 
 + (BOOL)isNoteEntity
 {
-  if (![a1 isNotes])
+  if (![self isNotes])
   {
     return 0;
   }
 
-  v3 = [a1 entityMetadata];
-  v4 = [v3 identifier];
-  v5 = v4;
-  if (v4 == @"NoteEntity")
+  entityMetadata = [self entityMetadata];
+  identifier = [entityMetadata identifier];
+  v5 = identifier;
+  if (identifier == @"NoteEntity")
   {
     v6 = 1;
   }
 
-  else if (v4)
+  else if (identifier)
   {
-    v6 = [(__CFString *)v4 isEqualToString:@"NoteEntity"];
+    v6 = [(__CFString *)identifier isEqualToString:@"NoteEntity"];
   }
 
   else
@@ -3175,17 +3175,17 @@ LABEL_28:
 
 + (BOOL)isNotes
 {
-  v2 = [a1 appBundleIdentifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x1E69E0EE8]];
+  appBundleIdentifier = [self appBundleIdentifier];
+  v3 = [appBundleIdentifier isEqualToString:*MEMORY[0x1E69E0EE8]];
 
   return v3;
 }
 
 - (BOOL)outputsFileContent
 {
-  v2 = [(WFLinkEntityContentItem *)self supportedTypes];
-  v3 = [v2 array];
-  v4 = [v3 if_objectsPassingTest:&__block_literal_global_58738];
+  supportedTypes = [(WFLinkEntityContentItem *)self supportedTypes];
+  array = [supportedTypes array];
+  v4 = [array if_objectsPassingTest:&__block_literal_global_58738];
   v5 = v4 != 0;
 
   return v5;
@@ -3210,20 +3210,20 @@ uint64_t __53__WFLinkEntityContentItem_Finder__outputsFileContent__block_invoke(
 
 + (BOOL)isFinderNodeEntity
 {
-  v3 = [a1 appBundleIdentifier];
-  if ([v3 isEqualToString:*MEMORY[0x1E69E0E78]])
+  appBundleIdentifier = [self appBundleIdentifier];
+  if ([appBundleIdentifier isEqualToString:*MEMORY[0x1E69E0E78]])
   {
-    v4 = [a1 entityMetadata];
-    v5 = [v4 identifier];
-    v6 = v5;
-    if (v5 == @"FINodeEntity")
+    entityMetadata = [self entityMetadata];
+    identifier = [entityMetadata identifier];
+    v6 = identifier;
+    if (identifier == @"FINodeEntity")
     {
       v7 = 1;
     }
 
-    else if (v5)
+    else if (identifier)
     {
-      v7 = [(__CFString *)v5 isEqualToString:@"FINodeEntity"];
+      v7 = [(__CFString *)identifier isEqualToString:@"FINodeEntity"];
     }
 
     else

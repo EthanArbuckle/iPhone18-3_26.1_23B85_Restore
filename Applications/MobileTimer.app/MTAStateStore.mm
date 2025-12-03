@@ -4,8 +4,8 @@
 - (void)bypass;
 - (void)clear;
 - (void)localSetup;
-- (void)pushEvent:(id)a3 sync:(BOOL)a4;
-- (void)restoreLastEventWithCompletion:(id)a3;
+- (void)pushEvent:(id)event sync:(BOOL)sync;
+- (void)restoreLastEventWithCompletion:(id)completion;
 - (void)synchronize;
 @end
 
@@ -50,7 +50,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ synchronizing state store", buf, 0xCu);
   }
 
@@ -63,15 +63,15 @@
   dispatch_async(serializerQueue, block);
 }
 
-- (void)pushEvent:(id)a3 sync:(BOOL)a4
+- (void)pushEvent:(id)event sync:(BOOL)sync
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 description];
+    v7 = [eventCopy description];
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ setting event: %{public}@", buf, 0x16u);
@@ -83,14 +83,14 @@
   v10[2] = sub_100032924;
   v10[3] = &unk_1000ADAB0;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = eventCopy;
+  v9 = eventCopy;
   dispatch_sync(serializerQueue, v10);
 }
 
-- (void)restoreLastEventWithCompletion:(id)a3
+- (void)restoreLastEventWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -109,12 +109,12 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ bypassing state restore", buf, 0xCu);
     }
 
     v7 = +[MTAStateStoreEvent blankEvent];
-    v4[2](v4, v7);
+    completionCopy[2](completionCopy, v7);
 
     [(MTAStateStore *)self clear];
     self->_shouldBypass = 0;
@@ -125,7 +125,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ restoring last event", buf, 0xCu);
   }
 
@@ -158,7 +158,7 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v25 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ no latest event restored", buf, 0xCu);
     }
   }
@@ -167,7 +167,7 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v25 = self;
+    selfCopy5 = self;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ using blank event", buf, 0xCu);
   }
 
@@ -178,15 +178,15 @@ LABEL_20:
   {
     v17 = [v11 description];
     *buf = 138543618;
-    v25 = self;
+    selfCopy5 = self;
     v26 = 2114;
     v27 = v17;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ restored last event: %{public}@", buf, 0x16u);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v11);
+    completionCopy[2](completionCopy, v11);
   }
 
 LABEL_25:

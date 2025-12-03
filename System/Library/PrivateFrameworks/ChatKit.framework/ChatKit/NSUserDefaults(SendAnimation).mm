@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __62__NSUserDefaults_SendAnimation__ck_isSlowSendAnimationEnabled__block_invoke;
   block[3] = &unk_1E72EBA18;
-  block[4] = a1;
+  block[4] = self;
   if (ck_isSlowSendAnimationEnabled_onceToken != -1)
   {
     dispatch_once(&ck_isSlowSendAnimationEnabled_onceToken, block);
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __66__NSUserDefaults_SendAnimation__ck_isVerySlowSendAnimationEnabled__block_invoke;
   block[3] = &unk_1E72EBA18;
-  block[4] = a1;
+  block[4] = self;
   if (ck_isVerySlowSendAnimationEnabled_onceToken != -1)
   {
     dispatch_once(&ck_isVerySlowSendAnimationEnabled_onceToken, block);
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = __70__NSUserDefaults_SendAnimation__ck_isVeryVerySlowSendAnimationEnabled__block_invoke;
   block[3] = &unk_1E72EBA18;
-  block[4] = a1;
+  block[4] = self;
   if (ck_isVeryVerySlowSendAnimationEnabled_onceToken != -1)
   {
     dispatch_once(&ck_isVeryVerySlowSendAnimationEnabled_onceToken, block);
@@ -58,7 +58,7 @@
   block[1] = 3221225472;
   block[2] = __81__NSUserDefaults_SendAnimation__ck_isUsingSpecialGlassDuringSendAnimationEnabled__block_invoke;
   block[3] = &unk_1E72EBA18;
-  block[4] = a1;
+  block[4] = self;
   if (ck_isUsingSpecialGlassDuringSendAnimationEnabled_onceToken != -1)
   {
     dispatch_once(&ck_isUsingSpecialGlassDuringSendAnimationEnabled_onceToken, block);

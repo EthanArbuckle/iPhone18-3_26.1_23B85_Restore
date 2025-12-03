@@ -1,6 +1,6 @@
 @interface PromptUITextSuggestion
 - (_TtC23ImagePlaygroundInternal22PromptUITextSuggestion)init;
-- (_TtC23ImagePlaygroundInternal22PromptUITextSuggestion)initWithCoder:(id)a3;
+- (_TtC23ImagePlaygroundInternal22PromptUITextSuggestion)initWithCoder:(id)coder;
 @end
 
 @implementation PromptUITextSuggestion
@@ -17,7 +17,7 @@
   return [(UITextSuggestion *)&v6 init];
 }
 
-- (_TtC23ImagePlaygroundInternal22PromptUITextSuggestion)initWithCoder:(id)a3
+- (_TtC23ImagePlaygroundInternal22PromptUITextSuggestion)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   v6 = self + OBJC_IVAR____TtC23ImagePlaygroundInternal22PromptUITextSuggestion_representedObject;
@@ -26,8 +26,8 @@
   *(v6 + 4) = 0;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(UITextSuggestion *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(UITextSuggestion *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

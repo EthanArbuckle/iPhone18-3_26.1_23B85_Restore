@@ -1,11 +1,11 @@
 @interface RMSTVRemoteCoreServiceProvider
-+ (id)_serviceWithDevice:(id)a3;
++ (id)_serviceWithDevice:(id)device;
 - (RMSServiceProviderDelegate)delegate;
 - (RMSTVRemoteCoreServiceProvider)init;
-- (void)_didDiscoverDevice:(id)a3;
-- (void)_didRemoveDevice:(id)a3;
+- (void)_didDiscoverDevice:(id)device;
+- (void)_didRemoveDevice:(id)device;
 - (void)beginDiscovery;
-- (void)deviceQueryDidUpdateDevices:(id)a3;
+- (void)deviceQueryDidUpdateDevices:(id)devices;
 @end
 
 @implementation RMSTVRemoteCoreServiceProvider
@@ -17,9 +17,9 @@
   v2 = [(RMSTVRemoteCoreServiceProvider *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     services = v2->_services;
-    v2->_services = v3;
+    v2->_services = strongToStrongObjectsMapTable;
   }
 
   return v2;
@@ -41,13 +41,13 @@
   [(TVRCDeviceQuery *)deviceQuery start];
 }
 
-- (void)deviceQueryDidUpdateDevices:(id)a3
+- (void)deviceQueryDidUpdateDevices:(id)devices
 {
   v29 = *MEMORY[0x277D85DE8];
   v4 = self->_devices;
-  v5 = [(TVRCDeviceQuery *)self->_deviceQuery devices];
+  devices = [(TVRCDeviceQuery *)self->_deviceQuery devices];
   v6 = [(NSSet *)v4 mutableCopy];
-  [v6 minusSet:v5];
+  [v6 minusSet:devices];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -78,7 +78,7 @@
     while (v9);
   }
 
-  v12 = [(NSSet *)v5 mutableCopy];
+  v12 = [(NSSet *)devices mutableCopy];
   [v12 minusSet:v4];
   v21 = 0u;
   v22 = 0u;
@@ -111,56 +111,56 @@
   }
 
   devices = self->_devices;
-  self->_devices = v5;
+  self->_devices = devices;
 }
 
-- (void)_didDiscoverDevice:(id)a3
+- (void)_didDiscoverDevice:(id)device
 {
-  v4 = a3;
-  v8 = [objc_opt_class() _serviceWithDevice:v4];
+  deviceCopy = device;
+  v8 = [objc_opt_class() _serviceWithDevice:deviceCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained serviceProvider:self serviceDidBecomeAvailable:v8];
 
   services = self->_services;
-  v7 = [v8 uniqueIdentifier];
-  [(NSMapTable *)services setObject:v8 forKey:v7];
+  uniqueIdentifier = [v8 uniqueIdentifier];
+  [(NSMapTable *)services setObject:v8 forKey:uniqueIdentifier];
 }
 
-- (void)_didRemoveDevice:(id)a3
+- (void)_didRemoveDevice:(id)device
 {
-  v4 = a3;
-  v8 = [objc_opt_class() _serviceWithDevice:v4];
+  deviceCopy = device;
+  v8 = [objc_opt_class() _serviceWithDevice:deviceCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained serviceProvider:self serviceDidBecomeUnavailable:v8];
 
   services = self->_services;
-  v7 = [v8 uniqueIdentifier];
-  [(NSMapTable *)services removeObjectForKey:v7];
+  uniqueIdentifier = [v8 uniqueIdentifier];
+  [(NSMapTable *)services removeObjectForKey:uniqueIdentifier];
 }
 
-+ (id)_serviceWithDevice:(id)a3
++ (id)_serviceWithDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = objc_alloc_init(RMSService);
   [(RMSService *)v4 setServiceType:2];
   [(RMSService *)v4 setServiceFlags:2];
-  v5 = [v3 identifier];
-  [(RMSService *)v4 setUniqueIdentifier:v5];
+  identifier = [deviceCopy identifier];
+  [(RMSService *)v4 setUniqueIdentifier:identifier];
 
-  v6 = [v3 name];
-  [(RMSService *)v4 setDisplayName:v6];
+  name = [deviceCopy name];
+  [(RMSService *)v4 setDisplayName:name];
 
-  v7 = [(RMSService *)v4 uniqueIdentifier];
-  [(RMSService *)v4 setNetworkName:v7];
+  uniqueIdentifier = [(RMSService *)v4 uniqueIdentifier];
+  [(RMSService *)v4 setNetworkName:uniqueIdentifier];
 
-  v8 = [(RMSService *)v4 uniqueIdentifier];
-  [(RMSService *)v4 setHomeSharingGroupKey:v8];
+  uniqueIdentifier2 = [(RMSService *)v4 uniqueIdentifier];
+  [(RMSService *)v4 setHomeSharingGroupKey:uniqueIdentifier2];
 
   if (_os_feature_enabled_impl())
   {
-    [(RMSService *)v4 setDevice:v3];
+    [(RMSService *)v4 setDevice:deviceCopy];
   }
 
   return v4;

@@ -1,78 +1,78 @@
 @interface PXAssetsDataSourceChangeTransitionCoordinator
-- (BOOL)getFinalGeometry:(PXTileGeometry *)a3 finalUserData:(id *)a4 forDisappearingTileWithIdentifier:(PXTileIdentifier *)a5 fromGeometry:(PXTileGeometry *)a6 fromUserData:(id)a7;
-- (BOOL)getInitialGeometry:(PXTileGeometry *)a3 initialUserData:(id *)a4 forAppearingTileWithIdentifier:(PXTileIdentifier *)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7;
-- (BOOL)useDoubleSidedAnimationForUpdatedTileWithIdentifier:(PXTileIdentifier *)a3 fromGeometry:(PXTileGeometry *)a4 fromUserData:(id)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7;
-- (PXAssetsDataSourceChangeTransitionCoordinator)initWithTilingChange:(id)a3 changeHistory:(id)a4;
-- (id)optionsForAnimatingTileWithIdentifier:(PXTileIdentifier *)a3 animationType:(int64_t)a4 fromGeometry:(PXTileGeometry *)a5 fromUserData:(id)a6 toGeometry:(PXTileGeometry *)a7 toUserData:(id)a8;
+- (BOOL)getFinalGeometry:(PXTileGeometry *)geometry finalUserData:(id *)data forDisappearingTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)fromGeometry fromUserData:(id)userData;
+- (BOOL)getInitialGeometry:(PXTileGeometry *)geometry initialUserData:(id *)data forAppearingTileWithIdentifier:(PXTileIdentifier *)identifier toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData;
+- (BOOL)useDoubleSidedAnimationForUpdatedTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)geometry fromUserData:(id)data toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData;
+- (PXAssetsDataSourceChangeTransitionCoordinator)initWithTilingChange:(id)change changeHistory:(id)history;
+- (id)optionsForAnimatingTileWithIdentifier:(PXTileIdentifier *)identifier animationType:(int64_t)type fromGeometry:(PXTileGeometry *)geometry fromUserData:(id)data toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData;
 - (void)_updateAnimationDelay;
-- (void)setDelayInsertions:(BOOL)a3;
-- (void)setTreatRemovalsAsDeletes:(BOOL)a3;
+- (void)setDelayInsertions:(BOOL)insertions;
+- (void)setTreatRemovalsAsDeletes:(BOOL)deletes;
 @end
 
 @implementation PXAssetsDataSourceChangeTransitionCoordinator
 
-- (BOOL)useDoubleSidedAnimationForUpdatedTileWithIdentifier:(PXTileIdentifier *)a3 fromGeometry:(PXTileGeometry *)a4 fromUserData:(id)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7
+- (BOOL)useDoubleSidedAnimationForUpdatedTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)geometry fromUserData:(id)data toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData
 {
-  v12 = a5;
-  v13 = a7;
+  dataCopy = data;
+  userDataCopy = userData;
   v95.receiver = self;
   v95.super_class = PXAssetsDataSourceChangeTransitionCoordinator;
-  v14 = *&a3->index[5];
-  v63 = *&a3->index[3];
+  v14 = *&identifier->index[5];
+  v63 = *&identifier->index[3];
   v64 = v14;
-  v65 = *&a3->index[7];
-  *&v66 = a3->index[9];
-  v15 = *&a3->index[1];
-  origin = *&a3->length;
+  v65 = *&identifier->index[7];
+  *&v66 = identifier->index[9];
+  v15 = *&identifier->index[1];
+  origin = *&identifier->length;
   v62 = v15;
-  v16 = *&a4->contentSize.height;
-  v91 = *&a4->hidden;
+  v16 = *&geometry->contentSize.height;
+  v91 = *&geometry->hidden;
   v92 = v16;
-  v17 = *&a4->contentsRect.size.height;
-  v93 = *&a4->contentsRect.origin.y;
+  v17 = *&geometry->contentsRect.size.height;
+  v93 = *&geometry->contentsRect.origin.y;
   v94 = v17;
-  v18 = *&a4->transform.c;
-  v87 = *&a4->transform.a;
+  v18 = *&geometry->transform.c;
+  v87 = *&geometry->transform.a;
   v88 = v18;
-  v19 = *&a4->alpha;
-  v89 = *&a4->transform.tx;
+  v19 = *&geometry->alpha;
+  v89 = *&geometry->transform.tx;
   v90 = v19;
-  size = a4->frame.size;
-  v84.origin = a4->frame.origin;
+  size = geometry->frame.size;
+  v84.origin = geometry->frame.origin;
   v84.size = size;
-  v21 = a4->size;
-  center = a4->center;
+  v21 = geometry->size;
+  center = geometry->center;
   v86 = v21;
-  v22 = *&a6->contentSize.height;
-  v80 = *&a6->hidden;
+  v22 = *&toGeometry->contentSize.height;
+  v80 = *&toGeometry->hidden;
   v81 = v22;
-  v23 = *&a6->contentsRect.size.height;
-  v82 = *&a6->contentsRect.origin.y;
+  v23 = *&toGeometry->contentsRect.size.height;
+  v82 = *&toGeometry->contentsRect.origin.y;
   v83 = v23;
-  v24 = *&a6->transform.c;
-  v76 = *&a6->transform.a;
+  v24 = *&toGeometry->transform.c;
+  v76 = *&toGeometry->transform.a;
   v77 = v24;
-  v25 = *&a6->alpha;
-  v78 = *&a6->transform.tx;
+  v25 = *&toGeometry->alpha;
+  v78 = *&toGeometry->transform.tx;
   v79 = v25;
-  v26 = a6->frame.size;
-  v73.origin = a6->frame.origin;
+  v26 = toGeometry->frame.size;
+  v73.origin = toGeometry->frame.origin;
   v73.size = v26;
-  v27 = a6->size;
-  v74 = a6->center;
+  v27 = toGeometry->size;
+  v74 = toGeometry->center;
   v75 = v27;
-  v28 = [(PXAssetsTileTransitionCoordinator *)&v95 useDoubleSidedAnimationForUpdatedTileWithIdentifier:&origin fromGeometry:&v84 fromUserData:v12 toGeometry:&v73 toUserData:v13];
-  if (a3->length - 3 <= 2 && a3->index[1] != 0x7FFFFFFFFFFFFFFFLL)
+  v28 = [(PXAssetsTileTransitionCoordinator *)&v95 useDoubleSidedAnimationForUpdatedTileWithIdentifier:&origin fromGeometry:&v84 fromUserData:dataCopy toGeometry:&v73 toUserData:userDataCopy];
+  if (identifier->length - 3 <= 2 && identifier->index[1] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v29 = a3->index[0];
+    v29 = identifier->index[0];
     if (v29 == 6332437)
     {
-      v28 = a4->size.height != a6->size.height || a4->size.width != a6->size.width;
+      v28 = geometry->size.height != toGeometry->size.height || geometry->size.width != toGeometry->size.width;
     }
 
     else if (v29 == 6332435)
     {
-      v30 = v13;
+      v30 = userDataCopy;
       if (v28)
       {
         v28 = 1;
@@ -80,14 +80,14 @@
 
       else
       {
-        v31 = [v12 badgeOptions];
-        v28 = v31 != [v30 badgeOptions];
+        badgeOptions = [dataCopy badgeOptions];
+        v28 = badgeOptions != [v30 badgeOptions];
       }
     }
   }
 
-  v32 = [(PXAssetsTileTransitionCoordinator *)self _toLayout];
-  [v32 visibleRect];
+  _toLayout = [(PXAssetsTileTransitionCoordinator *)self _toLayout];
+  [_toLayout visibleRect];
   v34 = v33;
   v36 = v35;
   v38 = v37;
@@ -104,28 +104,28 @@
   center = 0u;
   v86 = 0;
   memset(&v84, 0, sizeof(v84));
-  v42 = [v32 coordinateSpaceIdentifier];
+  coordinateSpaceIdentifier = [_toLayout coordinateSpaceIdentifier];
   if (v41)
   {
-    v43 = *&a4->contentSize.height;
-    v80 = *&a4->hidden;
+    v43 = *&geometry->contentSize.height;
+    v80 = *&geometry->hidden;
     v81 = v43;
-    v44 = *&a4->contentsRect.size.height;
-    v82 = *&a4->contentsRect.origin.y;
+    v44 = *&geometry->contentsRect.size.height;
+    v82 = *&geometry->contentsRect.origin.y;
     v83 = v44;
-    v45 = *&a4->transform.c;
-    v76 = *&a4->transform.a;
+    v45 = *&geometry->transform.c;
+    v76 = *&geometry->transform.a;
     v77 = v45;
-    v46 = *&a4->alpha;
-    v78 = *&a4->transform.tx;
+    v46 = *&geometry->alpha;
+    v78 = *&geometry->transform.tx;
     v79 = v46;
-    v47 = a4->frame.size;
-    v73.origin = a4->frame.origin;
+    v47 = geometry->frame.size;
+    v73.origin = geometry->frame.origin;
     v73.size = v47;
-    v48 = a4->size;
-    v74 = a4->center;
+    v48 = geometry->size;
+    v74 = geometry->center;
     v75 = v48;
-    [v41 convertTileGeometry:&v73 toCoordinateSpaceIdentifier:v42];
+    [v41 convertTileGeometry:&v73 toCoordinateSpaceIdentifier:coordinateSpaceIdentifier];
     v82 = 0u;
     v83 = 0u;
     v80 = 0u;
@@ -137,26 +137,26 @@
     v74 = 0u;
     v75 = 0;
     memset(&v73, 0, sizeof(v73));
-    v49 = [v32 coordinateSpaceIdentifier];
-    v50 = *&a6->contentSize.height;
-    v69 = *&a6->hidden;
+    coordinateSpaceIdentifier2 = [_toLayout coordinateSpaceIdentifier];
+    v50 = *&toGeometry->contentSize.height;
+    v69 = *&toGeometry->hidden;
     v70 = v50;
-    v51 = *&a6->contentsRect.size.height;
-    v71 = *&a6->contentsRect.origin.y;
+    v51 = *&toGeometry->contentsRect.size.height;
+    v71 = *&toGeometry->contentsRect.origin.y;
     v72 = v51;
-    v52 = *&a6->transform.c;
-    v65 = *&a6->transform.a;
+    v52 = *&toGeometry->transform.c;
+    v65 = *&toGeometry->transform.a;
     v66 = v52;
-    v53 = *&a6->alpha;
-    v67 = *&a6->transform.tx;
+    v53 = *&toGeometry->alpha;
+    v67 = *&toGeometry->transform.tx;
     v68 = v53;
-    v54 = a6->frame.size;
-    origin = a6->frame.origin;
+    v54 = toGeometry->frame.size;
+    origin = toGeometry->frame.origin;
     v62 = v54;
-    v55 = a6->size;
-    v63 = a6->center;
+    v55 = toGeometry->size;
+    v63 = toGeometry->center;
     v64 = v55;
-    [v41 convertTileGeometry:&origin toCoordinateSpaceIdentifier:v49];
+    [v41 convertTileGeometry:&origin toCoordinateSpaceIdentifier:coordinateSpaceIdentifier2];
     y = v73.origin.y;
     x = v73.origin.x;
     height = v73.size.height;
@@ -176,7 +176,7 @@
     center = 0u;
     v86 = 0;
     memset(&v84, 0, sizeof(v84));
-    [v32 coordinateSpaceIdentifier];
+    [_toLayout coordinateSpaceIdentifier];
     memset(&v73, 0, sizeof(v73));
     v74 = 0u;
     v75 = 0;
@@ -241,19 +241,19 @@
   return v28;
 }
 
-- (BOOL)getFinalGeometry:(PXTileGeometry *)a3 finalUserData:(id *)a4 forDisappearingTileWithIdentifier:(PXTileIdentifier *)a5 fromGeometry:(PXTileGeometry *)a6 fromUserData:(id)a7
+- (BOOL)getFinalGeometry:(PXTileGeometry *)geometry finalUserData:(id *)data forDisappearingTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)fromGeometry fromUserData:(id)userData
 {
-  v64 = a7;
+  userDataCopy = userData;
   if ([(NSMutableDictionary *)self->_overrideFinalGeometryByTileIdentifier count])
   {
     overrideFinalGeometryByTileIdentifier = self->_overrideFinalGeometryByTileIdentifier;
-    v13 = *&a5->index[5];
-    center = *&a5->index[3];
+    v13 = *&identifier->index[5];
+    center = *&identifier->index[3];
     v75 = v13;
-    v76 = *&a5->index[7];
-    *&v77 = a5->index[9];
-    v14 = *&a5->index[1];
-    origin = *&a5->length;
+    v76 = *&identifier->index[7];
+    *&v77 = identifier->index[9];
+    v14 = *&identifier->index[1];
+    origin = *&identifier->length;
     v73 = v14;
     v15 = [MEMORY[0x1E696B098] valueWithPXTileIdentifier:&origin];
     v16 = [(NSMutableDictionary *)overrideFinalGeometryByTileIdentifier objectForKeyedSubscript:v15];
@@ -263,23 +263,23 @@
     {
       [v16 PXTileGeometryValue];
       v18 = v81;
-      *&a3->hidden = v80;
-      *&a3->contentSize.height = v18;
+      *&geometry->hidden = v80;
+      *&geometry->contentSize.height = v18;
       v19 = v83;
-      *&a3->contentsRect.origin.y = v82;
-      *&a3->contentsRect.size.height = v19;
+      *&geometry->contentsRect.origin.y = v82;
+      *&geometry->contentsRect.size.height = v19;
       v20 = v77;
-      *&a3->transform.a = v76;
-      *&a3->transform.c = v20;
+      *&geometry->transform.a = v76;
+      *&geometry->transform.c = v20;
       v21 = v79;
-      *&a3->transform.tx = v78;
-      *&a3->alpha = v21;
+      *&geometry->transform.tx = v78;
+      *&geometry->alpha = v21;
       v22 = v73;
-      a3->frame.origin = origin;
-      a3->frame.size = v22;
+      geometry->frame.origin = origin;
+      geometry->frame.size = v22;
       v23 = v75;
-      a3->center = center;
-      a3->size = v23;
+      geometry->center = center;
+      geometry->size = v23;
     }
   }
 
@@ -289,58 +289,58 @@
   }
 
   v24 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a5->length - 3 <= 2 && a5->index[1] != 0x7FFFFFFFFFFFFFFFLL)
+  if (identifier->length - 3 <= 2 && identifier->index[1] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v24 = a5->index[0];
+    v24 = identifier->index[0];
   }
 
-  v25 = [(PXAssetsTileTransitionCoordinator *)self _kindsCoveringContentTiles];
-  v26 = [v25 containsIndex:v24];
+  _kindsCoveringContentTiles = [(PXAssetsTileTransitionCoordinator *)self _kindsCoveringContentTiles];
+  v26 = [_kindsCoveringContentTiles containsIndex:v24];
 
-  v27 = [(PXAssetsTileTransitionCoordinator *)self _kindsCenteredOnContentTiles];
-  v28 = [v27 containsIndex:v24];
+  _kindsCenteredOnContentTiles = [(PXAssetsTileTransitionCoordinator *)self _kindsCenteredOnContentTiles];
+  v28 = [_kindsCenteredOnContentTiles containsIndex:v24];
 
-  if ((v26 & 1) == 0 && !v28 || (v62 = *&a5->index[1], -[PXAssetsTileTransitionCoordinator _toLayout](self, "_toLayout", a5->index[3], a5->index[4]), v29 = objc_claimAutoreleasedReturnValue(), [v29 dataSource], v30 = objc_claimAutoreleasedReturnValue(), v63 = a4, v31 = objc_msgSend(v30, "identifier"), v30, v29, v32 = v62 == v31, a4 = v63, !v32))
+  if ((v26 & 1) == 0 && !v28 || (v62 = *&identifier->index[1], -[PXAssetsTileTransitionCoordinator _toLayout](self, "_toLayout", identifier->index[3], identifier->index[4]), v29 = objc_claimAutoreleasedReturnValue(), [v29 dataSource], v30 = objc_claimAutoreleasedReturnValue(), v63 = data, v31 = objc_msgSend(v30, "identifier"), v30, v29, v32 = v62 == v31, data = v63, !v32))
   {
     if (v17)
     {
 LABEL_18:
       v51 = 1;
-      v49 = v64;
+      v49 = userDataCopy;
       goto LABEL_21;
     }
 
 LABEL_20:
     v65.receiver = self;
     v65.super_class = PXAssetsDataSourceChangeTransitionCoordinator;
-    v52 = *&a5->index[5];
-    v68 = *&a5->index[3];
+    v52 = *&identifier->index[5];
+    v68 = *&identifier->index[3];
     v69 = v52;
-    v70 = *&a5->index[7];
-    v71 = a5->index[9];
-    v53 = *&a5->index[1];
-    v66 = *&a5->length;
+    v70 = *&identifier->index[7];
+    v71 = identifier->index[9];
+    v53 = *&identifier->index[1];
+    v66 = *&identifier->length;
     v67 = v53;
-    v54 = *&a6->contentSize.height;
-    v80 = *&a6->hidden;
+    v54 = *&fromGeometry->contentSize.height;
+    v80 = *&fromGeometry->hidden;
     v81 = v54;
-    v55 = *&a6->contentsRect.size.height;
-    v82 = *&a6->contentsRect.origin.y;
+    v55 = *&fromGeometry->contentsRect.size.height;
+    v82 = *&fromGeometry->contentsRect.origin.y;
     v83 = v55;
-    v56 = *&a6->transform.c;
-    v76 = *&a6->transform.a;
+    v56 = *&fromGeometry->transform.c;
+    v76 = *&fromGeometry->transform.a;
     v77 = v56;
-    v57 = *&a6->alpha;
-    v78 = *&a6->transform.tx;
+    v57 = *&fromGeometry->alpha;
+    v78 = *&fromGeometry->transform.tx;
     v79 = v57;
-    size = a6->frame.size;
-    origin = a6->frame.origin;
+    size = fromGeometry->frame.size;
+    origin = fromGeometry->frame.origin;
     v73 = size;
-    v59 = a6->size;
-    center = a6->center;
+    v59 = fromGeometry->size;
+    center = fromGeometry->center;
     v75 = v59;
-    v49 = v64;
-    v51 = [(PXAssetsTileTransitionCoordinator *)&v65 getFinalGeometry:a3 finalUserData:a4 forDisappearingTileWithIdentifier:&v66 fromGeometry:&origin fromUserData:v64];
+    v49 = userDataCopy;
+    v51 = [(PXAssetsTileTransitionCoordinator *)&v65 getFinalGeometry:geometry finalUserData:data forDisappearingTileWithIdentifier:&v66 fromGeometry:&origin fromUserData:userDataCopy];
     goto LABEL_21;
   }
 
@@ -362,18 +362,18 @@ LABEL_20:
   v38 = *(off_1E7722248 + 3);
   center = *(off_1E7722248 + 2);
   v75 = v38;
-  v39 = [(PXAssetsTileTransitionCoordinator *)self _toLayout];
+  _toLayout = [(PXAssetsTileTransitionCoordinator *)self _toLayout];
   v66 = xmmword_1A5380D20;
   v67 = v62;
   v68 = v61;
   v69 = 0u;
   v70 = 0u;
   v71 = 0;
-  v40 = [v39 getGeometry:&origin group:0 userData:0 forTileWithIdentifier:&v66];
+  v40 = [_toLayout getGeometry:&origin group:0 userData:0 forTileWithIdentifier:&v66];
 
   if (!v40)
   {
-    a4 = v63;
+    data = v63;
     if (v17)
     {
       goto LABEL_18;
@@ -383,56 +383,56 @@ LABEL_20:
   }
 
   *&v79 = 0;
-  v41 = [(PXAssetsTileTransitionCoordinator *)self _toLayout];
-  [v41 zPositionOffsetForKind:v24];
+  _toLayout2 = [(PXAssetsTileTransitionCoordinator *)self _toLayout];
+  [_toLayout2 zPositionOffsetForKind:v24];
   *(&v79 + 1) = v42 + *(&v79 + 1);
 
   if (v28)
   {
-    v75 = a6->size;
+    v75 = fromGeometry->size;
     PXRectWithCenterAndSize();
   }
 
   v43 = v81;
-  *&a3->hidden = v80;
-  *&a3->contentSize.height = v43;
+  *&geometry->hidden = v80;
+  *&geometry->contentSize.height = v43;
   v44 = v83;
-  *&a3->contentsRect.origin.y = v82;
-  *&a3->contentsRect.size.height = v44;
+  *&geometry->contentsRect.origin.y = v82;
+  *&geometry->contentsRect.size.height = v44;
   v45 = v77;
-  *&a3->transform.a = v76;
-  *&a3->transform.c = v45;
+  *&geometry->transform.a = v76;
+  *&geometry->transform.c = v45;
   v46 = v79;
-  *&a3->transform.tx = v78;
-  *&a3->alpha = v46;
+  *&geometry->transform.tx = v78;
+  *&geometry->alpha = v46;
   v47 = v73;
-  a3->frame.origin = origin;
-  a3->frame.size = v47;
+  geometry->frame.origin = origin;
+  geometry->frame.size = v47;
   v48 = v75;
-  a3->center = center;
-  a3->size = v48;
-  v49 = v64;
-  v50 = v64;
-  *v63 = v64;
+  geometry->center = center;
+  geometry->size = v48;
+  v49 = userDataCopy;
+  v50 = userDataCopy;
+  *v63 = userDataCopy;
   v51 = 1;
 LABEL_21:
 
   return v51;
 }
 
-- (BOOL)getInitialGeometry:(PXTileGeometry *)a3 initialUserData:(id *)a4 forAppearingTileWithIdentifier:(PXTileIdentifier *)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7
+- (BOOL)getInitialGeometry:(PXTileGeometry *)geometry initialUserData:(id *)data forAppearingTileWithIdentifier:(PXTileIdentifier *)identifier toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData
 {
-  v12 = a7;
+  userDataCopy = userData;
   if ([(NSMutableDictionary *)self->_overrideInitialGeometryByTileIdentifier count])
   {
     overrideInitialGeometryByTileIdentifier = self->_overrideInitialGeometryByTileIdentifier;
-    v14 = *&a5->index[5];
-    center = *&a5->index[3];
+    v14 = *&identifier->index[5];
+    center = *&identifier->index[3];
     size = v14;
-    v72 = *&a5->index[7];
-    *&v73 = a5->index[9];
-    v15 = *&a5->index[1];
-    origin = *&a5->length;
+    v72 = *&identifier->index[7];
+    *&v73 = identifier->index[9];
+    v15 = *&identifier->index[1];
+    origin = *&identifier->length;
     v69 = v15;
     v16 = [MEMORY[0x1E696B098] valueWithPXTileIdentifier:&origin];
     v17 = [(NSMutableDictionary *)overrideInitialGeometryByTileIdentifier objectForKeyedSubscript:v16];
@@ -442,23 +442,23 @@ LABEL_21:
     {
       [v17 PXTileGeometryValue];
       v19 = v77;
-      *&a3->hidden = v76;
-      *&a3->contentSize.height = v19;
+      *&geometry->hidden = v76;
+      *&geometry->contentSize.height = v19;
       v20 = v79;
-      *&a3->contentsRect.origin.y = v78;
-      *&a3->contentsRect.size.height = v20;
+      *&geometry->contentsRect.origin.y = v78;
+      *&geometry->contentsRect.size.height = v20;
       v21 = v73;
-      *&a3->transform.a = v72;
-      *&a3->transform.c = v21;
+      *&geometry->transform.a = v72;
+      *&geometry->transform.c = v21;
       v22 = v75;
-      *&a3->transform.tx = v74;
-      *&a3->alpha = v22;
+      *&geometry->transform.tx = v74;
+      *&geometry->alpha = v22;
       v23 = v69;
-      a3->frame.origin = origin;
-      a3->frame.size = v23;
+      geometry->frame.origin = origin;
+      geometry->frame.size = v23;
       v24 = size;
-      a3->center = center;
-      a3->size = v24;
+      geometry->center = center;
+      geometry->size = v24;
     }
   }
 
@@ -468,29 +468,29 @@ LABEL_21:
   }
 
   v25 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a5->length - 3 <= 2 && a5->index[1] != 0x7FFFFFFFFFFFFFFFLL)
+  if (identifier->length - 3 <= 2 && identifier->index[1] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v25 = a5->index[0];
+    v25 = identifier->index[0];
   }
 
-  v26 = [(PXAssetsTileTransitionCoordinator *)self _kindsCoveringContentTiles];
-  v27 = [v26 containsIndex:v25];
+  _kindsCoveringContentTiles = [(PXAssetsTileTransitionCoordinator *)self _kindsCoveringContentTiles];
+  v27 = [_kindsCoveringContentTiles containsIndex:v25];
 
-  v28 = [(PXAssetsTileTransitionCoordinator *)self _kindsCenteredOnContentTiles];
-  v29 = [v28 containsIndex:v25];
+  _kindsCenteredOnContentTiles = [(PXAssetsTileTransitionCoordinator *)self _kindsCenteredOnContentTiles];
+  v29 = [_kindsCenteredOnContentTiles containsIndex:v25];
 
   if ((v27 & 1) != 0 || v29)
   {
     memset(v67, 0, sizeof(v67));
-    v59 = *&a5->index[1];
-    v30 = [(PXAssetsTileTransitionCoordinator *)self _changeDetails:a5->index[3]];
+    v59 = *&identifier->index[1];
+    v30 = [(PXAssetsTileTransitionCoordinator *)self _changeDetails:identifier->index[3]];
     origin = v59;
     v69 = v57;
     [off_1E77218B0 indexPathAfterRevertingChanges:v30 fromIndexPath:&origin hasIncrementalChanges:0 objectChanged:0];
 
     if (*off_1E7721F68)
     {
-      v60 = a4;
+      dataCopy = data;
       v58 = *(v67 + 8);
       v40 = *(&v67[1] + 1);
       v41 = *(off_1E7722248 + 9);
@@ -511,7 +511,7 @@ LABEL_21:
       v46 = *(off_1E7722248 + 3);
       center = *(off_1E7722248 + 2);
       size = v46;
-      v47 = [(PXAssetsTileTransitionCoordinator *)self _fromLayout];
+      _fromLayout = [(PXAssetsTileTransitionCoordinator *)self _fromLayout];
       v62 = xmmword_1A5380D20;
       *v63 = 0;
       *&v63[8] = v58;
@@ -519,43 +519,43 @@ LABEL_21:
       v64 = 0u;
       v65 = 0u;
       v66 = 0;
-      v48 = [v47 getGeometry:&origin group:0 userData:0 forTileWithIdentifier:&v62];
+      v48 = [_fromLayout getGeometry:&origin group:0 userData:0 forTileWithIdentifier:&v62];
 
       if (v48)
       {
         *&v75 = 0;
-        *(&v75 + 1) = *&a6->zPosition;
+        *(&v75 + 1) = *&toGeometry->zPosition;
         if (v29)
         {
-          size = a6->size;
+          size = toGeometry->size;
           PXRectWithCenterAndSize();
         }
 
         v49 = v77;
-        *&a3->hidden = v76;
-        *&a3->contentSize.height = v49;
+        *&geometry->hidden = v76;
+        *&geometry->contentSize.height = v49;
         v50 = v79;
-        *&a3->contentsRect.origin.y = v78;
-        *&a3->contentsRect.size.height = v50;
+        *&geometry->contentsRect.origin.y = v78;
+        *&geometry->contentsRect.size.height = v50;
         v51 = v73;
-        *&a3->transform.a = v72;
-        *&a3->transform.c = v51;
+        *&geometry->transform.a = v72;
+        *&geometry->transform.c = v51;
         v52 = v75;
-        *&a3->transform.tx = v74;
-        *&a3->alpha = v52;
+        *&geometry->transform.tx = v74;
+        *&geometry->alpha = v52;
         v53 = v69;
-        a3->frame.origin = origin;
-        a3->frame.size = v53;
+        geometry->frame.origin = origin;
+        geometry->frame.size = v53;
         v54 = size;
-        a3->center = center;
-        a3->size = v54;
-        v55 = v12;
-        *v60 = v12;
+        geometry->center = center;
+        geometry->size = v54;
+        v55 = userDataCopy;
+        *dataCopy = userDataCopy;
       }
 
       else
       {
-        a4 = v60;
+        data = dataCopy;
         if (!v18)
         {
           goto LABEL_13;
@@ -576,104 +576,104 @@ LABEL_19:
 LABEL_13:
   v61.receiver = self;
   v61.super_class = PXAssetsDataSourceChangeTransitionCoordinator;
-  v31 = *&a5->index[5];
-  *&v63[16] = *&a5->index[3];
+  v31 = *&identifier->index[5];
+  *&v63[16] = *&identifier->index[3];
   v64 = v31;
-  v65 = *&a5->index[7];
-  v66 = a5->index[9];
-  v32 = *&a5->index[1];
-  v62 = *&a5->length;
+  v65 = *&identifier->index[7];
+  v66 = identifier->index[9];
+  v32 = *&identifier->index[1];
+  v62 = *&identifier->length;
   *v63 = v32;
-  v33 = *&a6->contentSize.height;
-  v76 = *&a6->hidden;
+  v33 = *&toGeometry->contentSize.height;
+  v76 = *&toGeometry->hidden;
   v77 = v33;
-  v34 = *&a6->contentsRect.size.height;
-  v78 = *&a6->contentsRect.origin.y;
+  v34 = *&toGeometry->contentsRect.size.height;
+  v78 = *&toGeometry->contentsRect.origin.y;
   v79 = v34;
-  v35 = *&a6->transform.c;
-  v72 = *&a6->transform.a;
+  v35 = *&toGeometry->transform.c;
+  v72 = *&toGeometry->transform.a;
   v73 = v35;
-  v36 = *&a6->alpha;
-  v74 = *&a6->transform.tx;
+  v36 = *&toGeometry->alpha;
+  v74 = *&toGeometry->transform.tx;
   v75 = v36;
-  v37 = a6->frame.size;
-  origin = a6->frame.origin;
+  v37 = toGeometry->frame.size;
+  origin = toGeometry->frame.origin;
   v69 = v37;
-  v38 = a6->size;
-  center = a6->center;
+  v38 = toGeometry->size;
+  center = toGeometry->center;
   size = v38;
-  v39 = [(PXAssetsTileTransitionCoordinator *)&v61 getInitialGeometry:a3 initialUserData:a4 forAppearingTileWithIdentifier:&v62 toGeometry:&origin toUserData:v12];
+  v39 = [(PXAssetsTileTransitionCoordinator *)&v61 getInitialGeometry:geometry initialUserData:data forAppearingTileWithIdentifier:&v62 toGeometry:&origin toUserData:userDataCopy];
 LABEL_20:
 
   return v39;
 }
 
-- (id)optionsForAnimatingTileWithIdentifier:(PXTileIdentifier *)a3 animationType:(int64_t)a4 fromGeometry:(PXTileGeometry *)a5 fromUserData:(id)a6 toGeometry:(PXTileGeometry *)a7 toUserData:(id)a8
+- (id)optionsForAnimatingTileWithIdentifier:(PXTileIdentifier *)identifier animationType:(int64_t)type fromGeometry:(PXTileGeometry *)geometry fromUserData:(id)data toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData
 {
   v53.receiver = self;
   v53.super_class = PXAssetsDataSourceChangeTransitionCoordinator;
-  v11 = *&a3->index[5];
-  v51[2] = *&a3->index[3];
+  v11 = *&identifier->index[5];
+  v51[2] = *&identifier->index[3];
   v51[3] = v11;
-  v51[4] = *&a3->index[7];
-  v52 = a3->index[9];
-  v12 = *&a3->index[1];
-  v51[0] = *&a3->length;
+  v51[4] = *&identifier->index[7];
+  v52 = identifier->index[9];
+  v12 = *&identifier->index[1];
+  v51[0] = *&identifier->length;
   v51[1] = v12;
-  v13 = *&a5->contentSize.height;
-  v50[8] = *&a5->hidden;
+  v13 = *&geometry->contentSize.height;
+  v50[8] = *&geometry->hidden;
   v50[9] = v13;
-  v14 = *&a5->contentsRect.size.height;
-  v50[10] = *&a5->contentsRect.origin.y;
+  v14 = *&geometry->contentsRect.size.height;
+  v50[10] = *&geometry->contentsRect.origin.y;
   v50[11] = v14;
-  v15 = *&a5->transform.c;
-  v50[4] = *&a5->transform.a;
+  v15 = *&geometry->transform.c;
+  v50[4] = *&geometry->transform.a;
   v50[5] = v15;
-  v16 = *&a5->alpha;
-  v50[6] = *&a5->transform.tx;
+  v16 = *&geometry->alpha;
+  v50[6] = *&geometry->transform.tx;
   v50[7] = v16;
-  size = a5->frame.size;
-  v50[0] = a5->frame.origin;
+  size = geometry->frame.size;
+  v50[0] = geometry->frame.origin;
   v50[1] = size;
-  v18 = a5->size;
-  v50[2] = a5->center;
+  v18 = geometry->size;
+  v50[2] = geometry->center;
   v50[3] = v18;
-  v19 = *&a7->contentSize.height;
-  v46 = *&a7->hidden;
+  v19 = *&toGeometry->contentSize.height;
+  v46 = *&toGeometry->hidden;
   v47 = v19;
-  v20 = *&a7->contentsRect.size.height;
-  v48 = *&a7->contentsRect.origin.y;
+  v20 = *&toGeometry->contentsRect.size.height;
+  v48 = *&toGeometry->contentsRect.origin.y;
   v49 = v20;
-  v21 = *&a7->transform.c;
-  v42 = *&a7->transform.a;
+  v21 = *&toGeometry->transform.c;
+  v42 = *&toGeometry->transform.a;
   v43 = v21;
-  v22 = *&a7->alpha;
-  v44 = *&a7->transform.tx;
+  v22 = *&toGeometry->alpha;
+  v44 = *&toGeometry->transform.tx;
   v45 = v22;
-  v23 = a7->frame.size;
-  origin = a7->frame.origin;
+  v23 = toGeometry->frame.size;
+  origin = toGeometry->frame.origin;
   v39 = v23;
-  v24 = a7->size;
-  center = a7->center;
+  v24 = toGeometry->size;
+  center = toGeometry->center;
   v41 = v24;
-  v25 = [(PXAssetsTileTransitionCoordinator *)&v53 optionsForAnimatingTileWithIdentifier:v51 animationType:a4 fromGeometry:v50 fromUserData:a6 toGeometry:&origin toUserData:a8];
-  if (a3->length - 3 <= 2)
+  v25 = [(PXAssetsTileTransitionCoordinator *)&v53 optionsForAnimatingTileWithIdentifier:v51 animationType:type fromGeometry:v50 fromUserData:data toGeometry:&origin toUserData:userData];
+  if (identifier->length - 3 <= 2)
   {
-    v26 = a3->index[1];
+    v26 = identifier->index[1];
     if (v26 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v28 = a3->index[2];
-      v27 = a3->index[3];
-      v29 = a3->index[4];
+      v28 = identifier->index[2];
+      v27 = identifier->index[3];
+      v29 = identifier->index[4];
       LOBYTE(v51[0]) = 0;
-      if (a4 == 1)
+      if (type == 1)
       {
-        v33 = [(PXAssetsTileTransitionCoordinator *)self _changeDetails];
+        _changeDetails = [(PXAssetsTileTransitionCoordinator *)self _changeDetails];
         *&origin.x = v26;
         *&origin.y = v28;
         *&v39.width = v27;
         *&v39.height = v29;
-        [off_1E77218B0 indexPathAfterRevertingChanges:v33 fromIndexPath:&origin hasIncrementalChanges:v51 objectChanged:0];
+        [off_1E77218B0 indexPathAfterRevertingChanges:_changeDetails fromIndexPath:&origin hasIncrementalChanges:v51 objectChanged:0];
 
         if (v51[0])
         {
@@ -689,28 +689,28 @@ LABEL_16:
 
       else
       {
-        if (a4 != 3)
+        if (type != 3)
         {
           goto LABEL_17;
         }
 
-        v30 = [(PXAssetsTileTransitionCoordinator *)self _toLayout];
-        v31 = [v30 dataSource];
-        v32 = [v31 identifier];
+        _toLayout = [(PXAssetsTileTransitionCoordinator *)self _toLayout];
+        dataSource = [_toLayout dataSource];
+        identifier = [dataSource identifier];
 
-        if (v26 == v32)
+        if (v26 == identifier)
         {
           LOBYTE(v51[0]) = 1;
         }
 
         else
         {
-          v36 = [(PXAssetsTileTransitionCoordinator *)self _changeDetails];
+          _changeDetails2 = [(PXAssetsTileTransitionCoordinator *)self _changeDetails];
           *&origin.x = v26;
           *&origin.y = v28;
           *&v39.width = v27;
           *&v39.height = v29;
-          [off_1E77218B0 indexPathAfterApplyingChanges:v36 toIndexPath:&origin hasIncrementalChanges:v51 objectChanged:0];
+          [off_1E77218B0 indexPathAfterApplyingChanges:_changeDetails2 toIndexPath:&origin hasIncrementalChanges:v51 objectChanged:0];
 
           if ((v51[0] & 1) == 0)
           {
@@ -723,7 +723,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if (a3->length == 5 && a3->index[0] == 6432423)
+        if (identifier->length == 5 && identifier->index[0] == 6432423)
         {
           v34 = &OBJC_IVAR___PXAssetsDataSourceChangeTransitionCoordinator__deleteAnimationOptions;
           goto LABEL_9;
@@ -741,27 +741,27 @@ LABEL_17:
   return v25;
 }
 
-- (void)setDelayInsertions:(BOOL)a3
+- (void)setDelayInsertions:(BOOL)insertions
 {
-  v3 = a3;
-  v5 = [(PXAssetsTileTransitionCoordinator *)self delayInsertions];
+  insertionsCopy = insertions;
+  delayInsertions = [(PXAssetsTileTransitionCoordinator *)self delayInsertions];
   v6.receiver = self;
   v6.super_class = PXAssetsDataSourceChangeTransitionCoordinator;
-  [(PXAssetsTileTransitionCoordinator *)&v6 setDelayInsertions:v3];
-  if (v5 != v3)
+  [(PXAssetsTileTransitionCoordinator *)&v6 setDelayInsertions:insertionsCopy];
+  if (delayInsertions != insertionsCopy)
   {
     [(PXAssetsDataSourceChangeTransitionCoordinator *)self _updateAnimationDelay];
   }
 }
 
-- (void)setTreatRemovalsAsDeletes:(BOOL)a3
+- (void)setTreatRemovalsAsDeletes:(BOOL)deletes
 {
-  v3 = a3;
-  v5 = [(PXAssetsTileTransitionCoordinator *)self treatRemovalsAsDeletes];
+  deletesCopy = deletes;
+  treatRemovalsAsDeletes = [(PXAssetsTileTransitionCoordinator *)self treatRemovalsAsDeletes];
   v6.receiver = self;
   v6.super_class = PXAssetsDataSourceChangeTransitionCoordinator;
-  [(PXAssetsTileTransitionCoordinator *)&v6 setTreatRemovalsAsDeletes:v3];
-  if (v5 != v3)
+  [(PXAssetsTileTransitionCoordinator *)&v6 setTreatRemovalsAsDeletes:deletesCopy];
+  if (treatRemovalsAsDeletes != deletesCopy)
   {
     [(PXAssetsDataSourceChangeTransitionCoordinator *)self _updateAnimationDelay];
   }
@@ -769,40 +769,40 @@ LABEL_17:
 
 - (void)_updateAnimationDelay
 {
-  v3 = [(PXAssetsTileTransitionCoordinator *)self treatRemovalsAsDeletes];
-  v4 = [(PXAssetsTileTransitionCoordinator *)self _basicAnimationOptions];
-  v5 = v4;
-  if (v3)
+  treatRemovalsAsDeletes = [(PXAssetsTileTransitionCoordinator *)self treatRemovalsAsDeletes];
+  _basicAnimationOptions = [(PXAssetsTileTransitionCoordinator *)self _basicAnimationOptions];
+  v5 = _basicAnimationOptions;
+  if (treatRemovalsAsDeletes)
   {
-    v6 = [(PXAssetsTileTransitionCoordinator *)self _basicAnimationOptions];
-    [v6 duration];
+    _basicAnimationOptions2 = [(PXAssetsTileTransitionCoordinator *)self _basicAnimationOptions];
+    [_basicAnimationOptions2 duration];
     [v5 setDelay:v7 * 0.5];
   }
 
   else
   {
-    [v4 setDelay:0.0];
+    [_basicAnimationOptions setDelay:0.0];
   }
 
-  v8 = [(PXAssetsTileTransitionCoordinator *)self _basicAnimationOptions];
-  v9 = [v8 copy];
+  _basicAnimationOptions3 = [(PXAssetsTileTransitionCoordinator *)self _basicAnimationOptions];
+  v9 = [_basicAnimationOptions3 copy];
   insertAnimationOptions = self->_insertAnimationOptions;
   self->_insertAnimationOptions = v9;
 
   if ([(PXAssetsTileTransitionCoordinator *)self delayInsertions])
   {
     v11 = self->_insertAnimationOptions;
-    v13 = [(PXAssetsTileTransitionCoordinator *)self _basicAnimationOptions];
-    [v13 duration];
+    _basicAnimationOptions4 = [(PXAssetsTileTransitionCoordinator *)self _basicAnimationOptions];
+    [_basicAnimationOptions4 duration];
     [(PXBasicTileAnimationOptions *)v11 setDelay:v12 * 0.5];
   }
 }
 
-- (PXAssetsDataSourceChangeTransitionCoordinator)initWithTilingChange:(id)a3 changeHistory:(id)a4
+- (PXAssetsDataSourceChangeTransitionCoordinator)initWithTilingChange:(id)change changeHistory:(id)history
 {
   v13.receiver = self;
   v13.super_class = PXAssetsDataSourceChangeTransitionCoordinator;
-  v4 = [(PXAssetsTileTransitionCoordinator *)&v13 initWithTilingChange:a3 changeHistory:a4];
+  v4 = [(PXAssetsTileTransitionCoordinator *)&v13 initWithTilingChange:change changeHistory:history];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -813,8 +813,8 @@ LABEL_17:
     overrideFinalGeometryByTileIdentifier = v4->_overrideFinalGeometryByTileIdentifier;
     v4->_overrideFinalGeometryByTileIdentifier = v7;
 
-    v9 = [(PXAssetsTileTransitionCoordinator *)v4 _basicAnimationOptions];
-    v10 = [v9 copy];
+    _basicAnimationOptions = [(PXAssetsTileTransitionCoordinator *)v4 _basicAnimationOptions];
+    v10 = [_basicAnimationOptions copy];
     deleteAnimationOptions = v4->_deleteAnimationOptions;
     v4->_deleteAnimationOptions = v10;
 

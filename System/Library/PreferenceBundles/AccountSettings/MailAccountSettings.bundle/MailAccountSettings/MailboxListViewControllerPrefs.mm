@@ -1,53 +1,53 @@
 @interface MailboxListViewControllerPrefs
-- (id)_ntsMailboxesForAccount:(id)a3;
-- (id)indexPathForMailbox:(id)a3;
-- (id)mailboxForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_ntsMailboxesForAccount:(id)account;
+- (id)indexPathForMailbox:(id)mailbox;
+- (id)mailboxForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_loadMailboxes;
-- (void)_resetCell:(id)a3 isSelectedMailbox:(BOOL)a4;
+- (void)_resetCell:(id)cell isSelectedMailbox:(BOOL)mailbox;
 - (void)_updateSelection;
 - (void)refreshDisplay;
-- (void)setViewingContext:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setViewingContext:(id)context;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation MailboxListViewControllerPrefs
 
-- (void)setViewingContext:(id)a3
+- (void)setViewingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v7.receiver = self;
   v7.super_class = MailboxListViewControllerPrefs;
-  [(MailboxListViewControllerBase *)&v7 setViewingContext:v4];
-  if (v4)
+  [(MailboxListViewControllerBase *)&v7 setViewingContext:contextCopy];
+  if (contextCopy)
   {
-    self->_pickingForType = [v4 type];
-    v5 = [v4 account];
-    v6 = [v5 displayName];
-    [(MailboxListViewControllerPrefs *)self setTitle:v6];
+    self->_pickingForType = [contextCopy type];
+    account = [contextCopy account];
+    displayName = [account displayName];
+    [(MailboxListViewControllerPrefs *)self setTitle:displayName];
   }
 }
 
-- (id)mailboxForIndexPath:(id)a3
+- (id)mailboxForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (!pathCopy)
   {
     goto LABEL_6;
   }
 
-  if ([v4 section] != &dword_0 + 1)
+  if ([pathCopy section] != &dword_0 + 1)
   {
     if (![v5 section])
     {
-      v7 = [(MailboxListViewControllerBase *)self mailboxSelectionTarget];
-      if (v7 && (objc_opt_respondsToSelector() & 1) != 0)
+      mailboxSelectionTarget = [(MailboxListViewControllerBase *)self mailboxSelectionTarget];
+      if (mailboxSelectionTarget && (objc_opt_respondsToSelector() & 1) != 0)
       {
-        [v7 selectedLocally:self];
+        [mailboxSelectionTarget selectedLocally:self];
       }
 
       goto LABEL_10;
@@ -58,8 +58,8 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  v6 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v5, "row")}];
+  sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+  mailboxSelectionTarget = [sortedMailboxes objectAtIndex:{objc_msgSend(v5, "row")}];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -69,8 +69,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v7 = v7;
-  v8 = v7;
+  mailboxSelectionTarget = mailboxSelectionTarget;
+  v8 = mailboxSelectionTarget;
 LABEL_11:
 
 LABEL_12:
@@ -78,11 +78,11 @@ LABEL_12:
   return v8;
 }
 
-- (id)indexPathForMailbox:(id)a3
+- (id)indexPathForMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-  v6 = [v5 indexOfObject:v4];
+  mailboxCopy = mailbox;
+  sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+  v6 = [sortedMailboxes indexOfObject:mailboxCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -99,13 +99,13 @@ LABEL_12:
 
 - (void)_updateSelection
 {
-  v3 = [(MailboxListViewControllerPrefs *)self tableView];
+  tableView = [(MailboxListViewControllerPrefs *)self tableView];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 visibleCells];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  visibleCells = [tableView visibleCells];
+  v5 = [visibleCells countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -115,7 +115,7 @@ LABEL_12:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
@@ -123,19 +123,19 @@ LABEL_12:
         [v8 setCurrentMailbox:0];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [visibleCells countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
   }
 
-  v9 = [(MailboxListViewControllerBase *)self selectedMailbox];
+  selectedMailbox = [(MailboxListViewControllerBase *)self selectedMailbox];
 
-  if (v9)
+  if (selectedMailbox)
   {
-    v10 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-    v11 = [(MailboxListViewControllerBase *)self selectedMailbox];
-    v12 = [v10 indexOfObject:v11];
+    sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+    selectedMailbox2 = [(MailboxListViewControllerBase *)self selectedMailbox];
+    v12 = [sortedMailboxes indexOfObject:selectedMailbox2];
 
     [NSIndexPath indexPathForRow:v12 inSection:1];
   }
@@ -145,7 +145,7 @@ LABEL_12:
     [NSIndexPath indexPathForRow:0 inSection:0];
   }
   v13 = ;
-  v14 = [v3 cellForRowAtIndexPath:v13];
+  v14 = [tableView cellForRowAtIndexPath:v13];
 
   [v14 setAccessoryType:3];
   [v14 setCurrentMailbox:1];
@@ -155,13 +155,13 @@ LABEL_12:
 {
   [(MailboxListViewControllerPrefs *)self _updateSelection];
   v4 = [NSIndexPath indexPathForRow:0x7FFFFFFFFFFFFFFFLL inSection:0x7FFFFFFFFFFFFFFFLL];
-  v3 = [(MailboxListViewControllerPrefs *)self tableView];
-  [v3 selectRowAtIndexPath:v4 animated:1 scrollPosition:0];
+  tableView = [(MailboxListViewControllerPrefs *)self tableView];
+  [tableView selectRowAtIndexPath:v4 animated:1 scrollPosition:0];
 }
 
-- (id)_ntsMailboxesForAccount:(id)a3
+- (id)_ntsMailboxesForAccount:(id)account
 {
-  v3 = [a3 allMailboxUidsSortedWithSpecialsAtTopIncludingLocals:0];
+  v3 = [account allMailboxUidsSortedWithSpecialsAtTopIncludingLocals:0];
 
   return v3;
 }
@@ -176,14 +176,14 @@ LABEL_12:
   [(MailboxListViewControllerPrefs *)self performSelector:"_updateSelection" withObject:0 afterDelay:0.01];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
     v9.receiver = self;
     v9.super_class = MailboxListViewControllerPrefs;
-    v7 = [(MailboxListViewControllerBase *)&v9 tableView:v6 numberOfRowsInSection:a4];
+    v7 = [(MailboxListViewControllerBase *)&v9 tableView:viewCopy numberOfRowsInSection:section];
   }
 
   else
@@ -194,25 +194,25 @@ LABEL_12:
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] == &dword_0 + 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] == &dword_0 + 1)
   {
-    v8 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-    v9 = [v8 objectAtIndex:{objc_msgSend(v7, "row")}];
+    sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+    selectedMailbox2 = [sortedMailboxes objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"MailboxServerReuseCell"];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"MailboxServerReuseCell"];
     if (!v10)
     {
       v10 = [[MailboxGroupedPickerTableCell alloc] initWithStyle:0 reuseIdentifier:@"MailboxServerReuseCell"];
     }
 
-    [(MailboxGroupedPickerTableCell *)v10 setMailbox:v9];
-    if ([v9 type])
+    [(MailboxGroupedPickerTableCell *)v10 setMailbox:selectedMailbox2];
+    if ([selectedMailbox2 type])
     {
-      v11 = [v9 type] == self->_pickingForType;
+      v11 = [selectedMailbox2 type] == self->_pickingForType;
     }
 
     else
@@ -221,21 +221,21 @@ LABEL_12:
     }
 
     [(MailboxGroupedPickerTableCell *)v10 setCellEnabled:v11];
-    v13 = [(MailboxListViewControllerBase *)self selectedMailbox];
-    v12 = v13 == v9;
+    selectedMailbox = [(MailboxListViewControllerBase *)self selectedMailbox];
+    v12 = selectedMailbox == selectedMailbox2;
   }
 
   else
   {
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"MailboxPhoneReuseCell"];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"MailboxPhoneReuseCell"];
     if (!v10)
     {
       v10 = [[MailboxGroupedPickerTableCell alloc] initWithStyle:0 reuseIdentifier:@"MailboxPhoneReuseCell"];
     }
 
     [(MailboxGroupedPickerTableCell *)v10 setMailboxType:self->_pickingForType];
-    v9 = [(MailboxListViewControllerBase *)self selectedMailbox];
-    v12 = v9 == 0;
+    selectedMailbox2 = [(MailboxListViewControllerBase *)self selectedMailbox];
+    v12 = selectedMailbox2 == 0;
   }
 
   [(MailboxListViewControllerPrefs *)self _resetCell:v10 isSelectedMailbox:v12];
@@ -243,22 +243,22 @@ LABEL_12:
   return v10;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(MailboxListViewControllerBase *)self sortedMailboxes];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v7, "row")}];
+  cellCopy = cell;
+  pathCopy = path;
+  sortedMailboxes = [(MailboxListViewControllerBase *)self sortedMailboxes];
+  v9 = [sortedMailboxes objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v10 = [(MailboxListViewControllerBase *)self selectedMailbox];
-  [(MailboxListViewControllerPrefs *)self _resetCell:v11 isSelectedMailbox:v10 == v9];
+  selectedMailbox = [(MailboxListViewControllerBase *)self selectedMailbox];
+  [(MailboxListViewControllerPrefs *)self _resetCell:cellCopy isSelectedMailbox:selectedMailbox == v9];
 }
 
-- (void)_resetCell:(id)a3 isSelectedMailbox:(BOOL)a4
+- (void)_resetCell:(id)cell isSelectedMailbox:(BOOL)mailbox
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4)
+  mailboxCopy = mailbox;
+  cellCopy = cell;
+  if (mailboxCopy)
   {
     v6 = 3;
   }
@@ -268,22 +268,22 @@ LABEL_12:
     v6 = 0;
   }
 
-  v7 = v5;
-  [v5 setAccessoryType:v6];
-  [v7 setCurrentMailbox:v4];
+  v7 = cellCopy;
+  [cellCopy setAccessoryType:v6];
+  [v7 setCurrentMailbox:mailboxCopy];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v6 localizedStringForKey:@"ON_THE_SERVER" value:&stru_B9FC8 table:@"AccountPreferences"];
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!section)
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"ON_MY"];
@@ -299,13 +299,13 @@ LABEL_7:
   return v8;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 cellForRowAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [view cellForRowAtIndexPath:pathCopy];
   if ([v6 isCellEnabled])
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   else

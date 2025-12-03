@@ -2,26 +2,26 @@
 + (BOOL)scrollEmojiKeyboard;
 + (id)findEmojiScrollView;
 + (void)resetSelectedCategory;
-- (id)init:(id)a3 options:(id)a4;
+- (id)init:(id)init options:(id)options;
 @end
 
 @implementation TypistKeyboardEmoji
 
-- (id)init:(id)a3 options:(id)a4
+- (id)init:(id)init options:(id)options
 {
   v7.receiver = self;
   v7.super_class = TypistKeyboardEmoji;
-  v5 = [(TypistKeyboard *)&v7 setupKeyboardInfo:a3 options:a4];
+  v5 = [(TypistKeyboard *)&v7 setupKeyboardInfo:init options:options];
   [(TypistKeyboard *)self setUsePopupKeys:0];
   return self;
 }
 
 + (void)resetSelectedCategory
 {
-  v3 = [MEMORY[0x277D75670] sharedInstance];
-  [v3 setSelectedCategoryType:0];
+  mEMORY[0x277D75670] = [MEMORY[0x277D75670] sharedInstance];
+  [mEMORY[0x277D75670] setSelectedCategoryType:0];
   v2 = [MEMORY[0x277D75668] categoryForType:0];
-  [v3 setEmojiCategoryDefaultsIndex:0 forCategory:v2];
+  [mEMORY[0x277D75670] setEmojiCategoryDefaultsIndex:0 forCategory:v2];
 }
 
 + (id)findEmojiScrollView
@@ -146,7 +146,7 @@ void __42__TypistKeyboardEmoji_findEmojiScrollView__block_invoke(uint64_t a1)
     goto LABEL_7;
   }
 
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x3010000000;
@@ -168,7 +168,7 @@ void __42__TypistKeyboardEmoji_findEmojiScrollView__block_invoke(uint64_t a1)
   v13[2] = __42__TypistKeyboardEmoji_scrollEmojiKeyboard__block_invoke;
   v13[3] = &unk_279DF4CA8;
   v16 = &v21;
-  v4 = v3;
+  v4 = defaultCenter;
   v14 = v4;
   v15 = v2;
   v17 = &v35;
@@ -183,11 +183,11 @@ void __42__TypistKeyboardEmoji_findEmojiScrollView__block_invoke(uint64_t a1)
   v12[4] = v29;
   v12[5] = v27;
   v5 = [MEMORY[0x277D44358] eventStreamWithEventActions:v12];
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   do
   {
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSinceDate:v6];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [date2 timeIntervalSinceDate:date];
     v9 = v8;
 
     if (v9 > 30.0)

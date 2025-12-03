@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = OrgApacheLuceneCodecsPostingsFormat_class_();
     v3 = new_OrgApacheLuceneUtilNamedSPILoader_initWithIOSClass_(v2);

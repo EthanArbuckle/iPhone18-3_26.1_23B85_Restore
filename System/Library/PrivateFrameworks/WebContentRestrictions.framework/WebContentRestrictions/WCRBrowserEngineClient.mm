@@ -1,33 +1,33 @@
 @interface WCRBrowserEngineClient
-+ (BOOL)_shouldEvaluateURLsForConfigurationAtPath:(id)a3;
-+ (BOOL)_shouldShowAllowButton:(id)a3;
-+ (BOOL)isLegacyExemptURL:(id)a3;
++ (BOOL)_shouldEvaluateURLsForConfigurationAtPath:(id)path;
++ (BOOL)_shouldShowAllowButton:(id)button;
++ (BOOL)isLegacyExemptURL:(id)l;
 + (BOOL)shouldEvaluateURLs;
-+ (BOOL)shouldEvaluateURLsForConfigurationAtPath:(id)a3;
-+ (id)_allowList:(id)a3;
-+ (id)_allowedWebsitesOnlyList:(id)a3;
-+ (id)_denyList:(id)a3;
-+ (id)_preferredLanguageForUserName:(id)a3;
-+ (id)base64StringFromString:(id)a3;
++ (BOOL)shouldEvaluateURLsForConfigurationAtPath:(id)path;
++ (id)_allowList:(id)list;
++ (id)_allowedWebsitesOnlyList:(id)list;
++ (id)_denyList:(id)list;
++ (id)_preferredLanguageForUserName:(id)name;
++ (id)base64StringFromString:(id)string;
 + (id)generateMacOSExemptURLList;
-+ (id)urlToFormattedString:(id)a3;
-+ (unint64_t)_mode:(id)a3;
-+ (void)_evaluateURL:(id)a3 inMode:(unint64_t)a4 usingBloomFilter:(id)a5 userSettings:(id)a6 language:(id)a7 allowList:(id)a8 denyList:(id)a9 allowedWebsitesOnlyList:(id)a10 macOSExemptURLList:(id)a11 withCompletion:(id)a12 onCompletionQueue:(id)a13;
-- (WCRBrowserEngineClient)initWithConfigurationAtPath:(id)a3;
++ (id)urlToFormattedString:(id)string;
++ (unint64_t)_mode:(id)_mode;
++ (void)_evaluateURL:(id)l inMode:(unint64_t)mode usingBloomFilter:(id)filter userSettings:(id)settings language:(id)language allowList:(id)list denyList:(id)denyList allowedWebsitesOnlyList:(id)self0 macOSExemptURLList:(id)self1 withCompletion:(id)self2 onCompletionQueue:(id)self3;
+- (WCRBrowserEngineClient)initWithConfigurationAtPath:(id)path;
 - (void)_performLazyInitialization;
 - (void)_reloadConfiguration;
-- (void)evaluateURL:(id)a3 withCompletion:(id)a4;
-- (void)evaluateURL:(id)a3 withCompletion:(id)a4 onCompletionQueue:(id)a5;
-- (void)requestAllowListAuthenticationForURL:(id)a3 withCompletion:(id)a4;
+- (void)evaluateURL:(id)l withCompletion:(id)completion;
+- (void)evaluateURL:(id)l withCompletion:(id)completion onCompletionQueue:(id)queue;
+- (void)requestAllowListAuthenticationForURL:(id)l withCompletion:(id)completion;
 - (void)userDidCancel;
 - (void)userEnteredCorrectPIN;
 @end
 
 @implementation WCRBrowserEngineClient
 
-- (WCRBrowserEngineClient)initWithConfigurationAtPath:(id)a3
+- (WCRBrowserEngineClient)initWithConfigurationAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = WCRBrowserEngineClient;
   v5 = [(WCRBrowserEngineClient *)&v9 init];
@@ -37,9 +37,9 @@
     evaluationQueue = v5->_evaluationQueue;
     v5->_evaluationQueue = v6;
 
-    if (v4)
+    if (pathCopy)
     {
-      [(WCRBrowserEngineClient *)v5 setConfigurationPath:v4];
+      [(WCRBrowserEngineClient *)v5 setConfigurationPath:pathCopy];
     }
   }
 
@@ -51,43 +51,43 @@
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"Started reloading configuration"];
   [WCRLogging log:v3 withType:2];
 
-  v4 = [(WCRBrowserEngineClient *)self configurationPath];
-  v5 = v4;
-  if (v4)
+  configurationPath = [(WCRBrowserEngineClient *)self configurationPath];
+  v5 = configurationPath;
+  if (configurationPath)
   {
-    v6 = v4;
+    _defaultUserSettingsPath = configurationPath;
   }
 
   else
   {
-    v6 = [objc_opt_class() _defaultUserSettingsPath];
+    _defaultUserSettingsPath = [objc_opt_class() _defaultUserSettingsPath];
   }
 
-  v21 = v6;
+  v21 = _defaultUserSettingsPath;
 
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v21];
   [(WCRBrowserEngineClient *)self setUserSettings:v7];
 
   v8 = objc_opt_class();
-  v9 = [(WCRBrowserEngineClient *)self userSettings];
-  -[WCRBrowserEngineClient setMode:](self, "setMode:", [v8 _mode:v9]);
+  userSettings = [(WCRBrowserEngineClient *)self userSettings];
+  -[WCRBrowserEngineClient setMode:](self, "setMode:", [v8 _mode:userSettings]);
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Running web content filter in mode %lu", -[WCRBrowserEngineClient mode](self, "mode")];
   [WCRLogging log:v10 withType:2];
 
   v11 = objc_opt_class();
-  v12 = [(WCRBrowserEngineClient *)self userSettings];
-  v13 = [v11 _allowList:v12];
+  userSettings2 = [(WCRBrowserEngineClient *)self userSettings];
+  v13 = [v11 _allowList:userSettings2];
   [(WCRBrowserEngineClient *)self setAllowList:v13];
 
   v14 = objc_opt_class();
-  v15 = [(WCRBrowserEngineClient *)self userSettings];
-  v16 = [v14 _denyList:v15];
+  userSettings3 = [(WCRBrowserEngineClient *)self userSettings];
+  v16 = [v14 _denyList:userSettings3];
   [(WCRBrowserEngineClient *)self setDenyList:v16];
 
   v17 = objc_opt_class();
-  v18 = [(WCRBrowserEngineClient *)self userSettings];
-  v19 = [v17 _allowedWebsitesOnlyList:v18];
+  userSettings4 = [(WCRBrowserEngineClient *)self userSettings];
+  v19 = [v17 _allowedWebsitesOnlyList:userSettings4];
   [(WCRBrowserEngineClient *)self setAllowedWebsitesOnlyList:v19];
 
   v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Finished reloading configuration"];
@@ -96,8 +96,8 @@
 
 - (void)_performLazyInitialization
 {
-  v3 = [(WCRBrowserEngineClient *)self bloomFilter];
-  if (!v3)
+  bloomFilter = [(WCRBrowserEngineClient *)self bloomFilter];
+  if (!bloomFilter)
   {
     if ([(WCRBrowserEngineClient *)self mode]!= 1)
     {
@@ -107,14 +107,14 @@
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Loading bloom filter"];
     [WCRLogging log:v4 withType:2];
 
-    v3 = objc_opt_new();
-    [(WCRBrowserEngineClient *)self setBloomFilter:v3];
+    bloomFilter = objc_opt_new();
+    [(WCRBrowserEngineClient *)self setBloomFilter:bloomFilter];
   }
 
 LABEL_5:
-  v5 = [(WCRBrowserEngineClient *)self language];
+  language = [(WCRBrowserEngineClient *)self language];
 
-  if (!v5)
+  if (!language)
   {
     v6 = objc_opt_class();
     v8 = NSUserName();
@@ -126,23 +126,23 @@ LABEL_5:
 + (BOOL)shouldEvaluateURLs
 {
   v2 = objc_opt_class();
-  v3 = [objc_opt_class() _defaultUserSettingsPath];
-  LOBYTE(v2) = [v2 _shouldEvaluateURLsForConfigurationAtPath:v3];
+  _defaultUserSettingsPath = [objc_opt_class() _defaultUserSettingsPath];
+  LOBYTE(v2) = [v2 _shouldEvaluateURLsForConfigurationAtPath:_defaultUserSettingsPath];
 
   return v2;
 }
 
-+ (BOOL)shouldEvaluateURLsForConfigurationAtPath:(id)a3
++ (BOOL)shouldEvaluateURLsForConfigurationAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _shouldEvaluateURLsForConfigurationAtPath:v3];
+  pathCopy = path;
+  v4 = [objc_opt_class() _shouldEvaluateURLsForConfigurationAtPath:pathCopy];
 
   return v4;
 }
 
-+ (BOOL)_shouldEvaluateURLsForConfigurationAtPath:(id)a3
++ (BOOL)_shouldEvaluateURLsForConfigurationAtPath:(id)path
 {
-  v3 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:a3];
+  v3 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:path];
   v4 = [objc_opt_class() _mode:v3];
   v5 = v4 < 4;
   v6 = 0xEu >> (v4 & 0xF);
@@ -150,24 +150,24 @@ LABEL_5:
   return v5 & v6;
 }
 
-- (void)evaluateURL:(id)a3 withCompletion:(id)a4 onCompletionQueue:(id)a5
+- (void)evaluateURL:(id)l withCompletion:(id)completion onCompletionQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WCRBrowserEngineClient *)self evaluationQueue];
+  lCopy = l;
+  completionCopy = completion;
+  queueCopy = queue;
+  evaluationQueue = [(WCRBrowserEngineClient *)self evaluationQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __71__WCRBrowserEngineClient_evaluateURL_withCompletion_onCompletionQueue___block_invoke;
   v15[3] = &unk_279E7F2C0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v18 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, v15);
+  v16 = lCopy;
+  v17 = queueCopy;
+  v18 = completionCopy;
+  v12 = queueCopy;
+  v13 = completionCopy;
+  v14 = lCopy;
+  dispatch_async(evaluationQueue, v15);
 }
 
 void __71__WCRBrowserEngineClient_evaluateURL_withCompletion_onCompletionQueue___block_invoke(uint64_t a1)
@@ -202,77 +202,77 @@ void __71__WCRBrowserEngineClient_evaluateURL_withCompletion_onCompletionQueue__
   }
 }
 
-- (void)evaluateURL:(id)a3 withCompletion:(id)a4
+- (void)evaluateURL:(id)l withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  lCopy = l;
   [(WCRBrowserEngineClient *)self _reloadConfiguration];
   [(WCRBrowserEngineClient *)self _performLazyInitialization];
   v16 = objc_opt_class();
-  v8 = [(WCRBrowserEngineClient *)self mode];
-  v17 = [(WCRBrowserEngineClient *)self bloomFilter];
-  v9 = [(WCRBrowserEngineClient *)self userSettings];
-  v10 = [(WCRBrowserEngineClient *)self language];
-  v11 = [(WCRBrowserEngineClient *)self allowList];
-  v12 = [(WCRBrowserEngineClient *)self denyList];
-  v13 = [(WCRBrowserEngineClient *)self mode];
-  if (v13 == 2)
+  mode = [(WCRBrowserEngineClient *)self mode];
+  bloomFilter = [(WCRBrowserEngineClient *)self bloomFilter];
+  userSettings = [(WCRBrowserEngineClient *)self userSettings];
+  language = [(WCRBrowserEngineClient *)self language];
+  allowList = [(WCRBrowserEngineClient *)self allowList];
+  denyList = [(WCRBrowserEngineClient *)self denyList];
+  mode2 = [(WCRBrowserEngineClient *)self mode];
+  if (mode2 == 2)
   {
-    v14 = [(WCRBrowserEngineClient *)self allowedWebsitesOnlyList];
+    allowedWebsitesOnlyList = [(WCRBrowserEngineClient *)self allowedWebsitesOnlyList];
   }
 
   else
   {
-    v14 = 0;
+    allowedWebsitesOnlyList = 0;
   }
 
-  v15 = [(WCRBrowserEngineClient *)self macOSExemptURLList];
-  [v16 _evaluateURL:v7 inMode:v8 usingBloomFilter:v17 userSettings:v9 language:v10 allowList:v11 denyList:v12 allowedWebsitesOnlyList:v14 macOSExemptURLList:v15 withCompletion:v6 onCompletionQueue:0];
+  macOSExemptURLList = [(WCRBrowserEngineClient *)self macOSExemptURLList];
+  [v16 _evaluateURL:lCopy inMode:mode usingBloomFilter:bloomFilter userSettings:userSettings language:language allowList:allowList denyList:denyList allowedWebsitesOnlyList:allowedWebsitesOnlyList macOSExemptURLList:macOSExemptURLList withCompletion:completionCopy onCompletionQueue:0];
 
-  if (v13 == 2)
+  if (mode2 == 2)
   {
   }
 }
 
-+ (void)_evaluateURL:(id)a3 inMode:(unint64_t)a4 usingBloomFilter:(id)a5 userSettings:(id)a6 language:(id)a7 allowList:(id)a8 denyList:(id)a9 allowedWebsitesOnlyList:(id)a10 macOSExemptURLList:(id)a11 withCompletion:(id)a12 onCompletionQueue:(id)a13
++ (void)_evaluateURL:(id)l inMode:(unint64_t)mode usingBloomFilter:(id)filter userSettings:(id)settings language:(id)language allowList:(id)list denyList:(id)denyList allowedWebsitesOnlyList:(id)self0 macOSExemptURLList:(id)self1 withCompletion:(id)self2 onCompletionQueue:(id)self3
 {
   v83 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a5;
-  v61 = a6;
-  v60 = a7;
-  v19 = a8;
-  v59 = a9;
-  v20 = a10;
-  v58 = a11;
-  v21 = a12;
-  v22 = a13;
-  if (a4)
+  lCopy = l;
+  filterCopy = filter;
+  settingsCopy = settings;
+  languageCopy = language;
+  listCopy = list;
+  denyListCopy = denyList;
+  onlyListCopy = onlyList;
+  lListCopy = lList;
+  completionCopy = completion;
+  queueCopy = queue;
+  if (mode)
   {
-    v23 = v17;
-    if ([objc_opt_class() isLegacyExemptURL:v17])
+    v23 = lCopy;
+    if ([objc_opt_class() isLegacyExemptURL:lCopy])
     {
       v24 = __WCRDefaultLog();
-      v25 = v20;
+      v25 = onlyListCopy;
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138739971;
-        v82 = v17;
+        v82 = lCopy;
         _os_log_impl(&dword_272D8F000, v24, OS_LOG_TYPE_DEFAULT, "Legacy: %{sensitive}@ -> Allowed", buf, 0xCu);
       }
 
-      v26 = v18;
-      v27 = v61;
-      if (v21)
+      v26 = filterCopy;
+      v27 = settingsCopy;
+      if (completionCopy)
       {
-        if (v22)
+        if (queueCopy)
         {
           block[0] = MEMORY[0x277D85DD0];
           block[1] = 3221225472;
           block[2] = __180__WCRBrowserEngineClient__evaluateURL_inMode_usingBloomFilter_userSettings_language_allowList_denyList_allowedWebsitesOnlyList_macOSExemptURLList_withCompletion_onCompletionQueue___block_invoke_56;
           block[3] = &unk_279E7F2E8;
-          v78 = v21;
-          dispatch_async(v22, block);
+          v78 = completionCopy;
+          dispatch_async(queueCopy, block);
           v28 = v78;
 LABEL_13:
 
@@ -285,16 +285,16 @@ LABEL_13:
       goto LABEL_54;
     }
 
-    v54 = v17;
-    v30 = [objc_opt_class() urlToFormattedString:v17];
-    v27 = v61;
-    v51 = [objc_opt_class() _shouldShowAllowButton:v61];
-    v25 = v20;
-    if (v20)
+    v54 = lCopy;
+    v30 = [objc_opt_class() urlToFormattedString:lCopy];
+    v27 = settingsCopy;
+    v51 = [objc_opt_class() _shouldShowAllowButton:settingsCopy];
+    v25 = onlyListCopy;
+    if (onlyListCopy)
     {
-      v52 = v19;
+      v52 = listCopy;
       v56 = v30;
-      v31 = [v20 containsURLString:v30];
+      v31 = [onlyListCopy containsURLString:v30];
       v32 = __WCRDefaultLog();
       v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
       if (!v31)
@@ -306,36 +306,36 @@ LABEL_13:
           _os_log_impl(&dword_272D8F000, v32, OS_LOG_TYPE_DEFAULT, "Allowed websites only: %{sensitive}@ -> Not Allowed", buf, 0xCu);
         }
 
-        v42 = [objc_opt_class() _allowedWebsitesOnly:v61];
+        v42 = [objc_opt_class() _allowedWebsitesOnly:settingsCopy];
         v43 = objc_opt_class();
         v44 = NSUserName();
         v23 = v54;
-        v45 = [v43 _blockPageForURL:v54 forUser:v44 inLanguage:v60 isAllowedWebsitesOnlyBlock:1 withAllowedWebsites:v42 withAllowButton:v51];
+        v45 = [v43 _blockPageForURL:v54 forUser:v44 inLanguage:languageCopy isAllowedWebsitesOnlyBlock:1 withAllowedWebsites:v42 withAllowButton:v51];
 
         v46 = [v45 dataUsingEncoding:4];
-        v26 = v18;
-        v19 = v52;
-        if (v21)
+        v26 = filterCopy;
+        listCopy = v52;
+        if (completionCopy)
         {
-          if (v22)
+          if (queueCopy)
           {
             v72[0] = MEMORY[0x277D85DD0];
             v72[1] = 3221225472;
             v72[2] = __180__WCRBrowserEngineClient__evaluateURL_inMode_usingBloomFilter_userSettings_language_allowList_denyList_allowedWebsitesOnlyList_macOSExemptURLList_withCompletion_onCompletionQueue___block_invoke_58;
             v72[3] = &unk_279E7F310;
-            v74 = v21;
+            v74 = completionCopy;
             v73 = v46;
-            dispatch_async(v22, v72);
+            dispatch_async(queueCopy, v72);
           }
 
           else
           {
-            (*(v21 + 2))(v21, 1, v46);
+            (*(completionCopy + 2))(completionCopy, 1, v46);
           }
         }
 
-        v27 = v61;
-        v25 = v20;
+        v27 = settingsCopy;
+        v25 = onlyListCopy;
         v34 = v56;
         goto LABEL_53;
       }
@@ -347,21 +347,21 @@ LABEL_13:
         _os_log_impl(&dword_272D8F000, v32, OS_LOG_TYPE_DEFAULT, "Allowed websites only: %{sensitive}@ -> Allowed", buf, 0xCu);
       }
 
-      v26 = v18;
-      v19 = v52;
+      v26 = filterCopy;
+      listCopy = v52;
       v23 = v54;
-      v25 = v20;
+      v25 = onlyListCopy;
       v34 = v30;
-      if (v21)
+      if (completionCopy)
       {
-        if (v22)
+        if (queueCopy)
         {
           v75[0] = MEMORY[0x277D85DD0];
           v75[1] = 3221225472;
           v75[2] = __180__WCRBrowserEngineClient__evaluateURL_inMode_usingBloomFilter_userSettings_language_allowList_denyList_allowedWebsitesOnlyList_macOSExemptURLList_withCompletion_onCompletionQueue___block_invoke_57;
           v75[3] = &unk_279E7F2E8;
-          v76 = v21;
-          dispatch_async(v22, v75);
+          v76 = completionCopy;
+          dispatch_async(queueCopy, v75);
           v35 = v76;
 LABEL_51:
 
@@ -376,10 +376,10 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    if ([v59 containsURLString:v30])
+    if ([denyListCopy containsURLString:v30])
     {
       v57 = v30;
-      v53 = v19;
+      v53 = listCopy;
       v36 = __WCRDefaultLog();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
@@ -391,26 +391,26 @@ LABEL_53:
       v37 = objc_opt_class();
       v38 = NSUserName();
       v23 = v54;
-      v39 = [v37 _blockPageForURL:v54 forUser:v38 inLanguage:v60 isAllowedWebsitesOnlyBlock:0 withAllowedWebsites:0 withAllowButton:v51];
+      v39 = [v37 _blockPageForURL:v54 forUser:v38 inLanguage:languageCopy isAllowedWebsitesOnlyBlock:0 withAllowedWebsites:0 withAllowButton:v51];
 
       v40 = [v39 dataUsingEncoding:4];
-      v26 = v18;
+      v26 = filterCopy;
       v25 = 0;
       v34 = v57;
-      if (!v21)
+      if (!completionCopy)
       {
         goto LABEL_47;
       }
 
-      if (v22)
+      if (queueCopy)
       {
         v69[0] = MEMORY[0x277D85DD0];
         v69[1] = 3221225472;
         v69[2] = __180__WCRBrowserEngineClient__evaluateURL_inMode_usingBloomFilter_userSettings_language_allowList_denyList_allowedWebsitesOnlyList_macOSExemptURLList_withCompletion_onCompletionQueue___block_invoke_59;
         v69[3] = &unk_279E7F310;
-        v71 = v21;
+        v71 = completionCopy;
         v70 = v40;
-        dispatch_async(v22, v69);
+        dispatch_async(queueCopy, v69);
 
         v41 = v71;
 LABEL_28:
@@ -422,7 +422,7 @@ LABEL_28:
     else
     {
       v34 = v30;
-      if ([v19 containsURLString:v30])
+      if ([listCopy containsURLString:v30])
       {
         v47 = __WCRDefaultLog();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -432,45 +432,45 @@ LABEL_28:
           _os_log_impl(&dword_272D8F000, v47, OS_LOG_TYPE_DEFAULT, "Allow list: %{sensitive}@ -> Allowed", buf, 0xCu);
         }
 
-        v26 = v18;
-        v27 = v61;
+        v26 = filterCopy;
+        v27 = settingsCopy;
         v23 = v54;
-        if (!v21)
+        if (!completionCopy)
         {
           goto LABEL_53;
         }
 
-        if (v22)
+        if (queueCopy)
         {
           v67[0] = MEMORY[0x277D85DD0];
           v67[1] = 3221225472;
           v67[2] = __180__WCRBrowserEngineClient__evaluateURL_inMode_usingBloomFilter_userSettings_language_allowList_denyList_allowedWebsitesOnlyList_macOSExemptURLList_withCompletion_onCompletionQueue___block_invoke_60;
           v67[3] = &unk_279E7F2E8;
-          v68 = v21;
-          dispatch_async(v22, v67);
+          v68 = completionCopy;
+          dispatch_async(queueCopy, v67);
           v35 = v68;
           goto LABEL_51;
         }
 
 LABEL_52:
-        (*(v21 + 2))(v21, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 0, 0);
         goto LABEL_53;
       }
 
-      v26 = v18;
-      if (([v18 shouldBlock:v54] & 1) == 0)
+      v26 = filterCopy;
+      if (([filterCopy shouldBlock:v54] & 1) == 0)
       {
         v23 = v54;
-        if (v21)
+        if (completionCopy)
         {
-          if (v22)
+          if (queueCopy)
           {
             v65[0] = MEMORY[0x277D85DD0];
             v65[1] = 3221225472;
             v65[2] = __180__WCRBrowserEngineClient__evaluateURL_inMode_usingBloomFilter_userSettings_language_allowList_denyList_allowedWebsitesOnlyList_macOSExemptURLList_withCompletion_onCompletionQueue___block_invoke_2;
             v65[3] = &unk_279E7F2E8;
-            v66 = v21;
-            dispatch_async(v22, v65);
+            v66 = completionCopy;
+            dispatch_async(queueCopy, v65);
             v35 = v66;
             goto LABEL_51;
           }
@@ -481,38 +481,38 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      v53 = v19;
+      v53 = listCopy;
       v48 = objc_opt_class();
       v49 = NSUserName();
-      v39 = [v48 _blockPageForURL:v54 forUser:v49 inLanguage:v60 isAllowedWebsitesOnlyBlock:0 withAllowedWebsites:0 withAllowButton:v51];
+      v39 = [v48 _blockPageForURL:v54 forUser:v49 inLanguage:languageCopy isAllowedWebsitesOnlyBlock:0 withAllowedWebsites:0 withAllowButton:v51];
 
       v40 = [v39 dataUsingEncoding:4];
       v23 = v54;
-      if (!v21)
+      if (!completionCopy)
       {
 LABEL_47:
 
-        v27 = v61;
-        v19 = v53;
+        v27 = settingsCopy;
+        listCopy = v53;
         goto LABEL_53;
       }
 
-      if (v22)
+      if (queueCopy)
       {
         v62[0] = MEMORY[0x277D85DD0];
         v62[1] = 3221225472;
         v62[2] = __180__WCRBrowserEngineClient__evaluateURL_inMode_usingBloomFilter_userSettings_language_allowList_denyList_allowedWebsitesOnlyList_macOSExemptURLList_withCompletion_onCompletionQueue___block_invoke_3;
         v62[3] = &unk_279E7F310;
-        v64 = v21;
+        v64 = completionCopy;
         v63 = v40;
-        dispatch_async(v22, v62);
+        dispatch_async(queueCopy, v62);
 
         v41 = v64;
         goto LABEL_28;
       }
     }
 
-    (*(v21 + 2))(v21, 1, v40);
+    (*(completionCopy + 2))(completionCopy, 1, v40);
     goto LABEL_47;
   }
 
@@ -523,26 +523,26 @@ LABEL_47:
     _os_log_impl(&dword_272D8F000, v29, OS_LOG_TYPE_DEFAULT, "No evaluation necessary", buf, 2u);
   }
 
-  v23 = v17;
-  v26 = v18;
-  v27 = v61;
-  v25 = v20;
-  if (v21)
+  v23 = lCopy;
+  v26 = filterCopy;
+  v27 = settingsCopy;
+  v25 = onlyListCopy;
+  if (completionCopy)
   {
-    if (v22)
+    if (queueCopy)
     {
       v79[0] = MEMORY[0x277D85DD0];
       v79[1] = 3221225472;
       v79[2] = __180__WCRBrowserEngineClient__evaluateURL_inMode_usingBloomFilter_userSettings_language_allowList_denyList_allowedWebsitesOnlyList_macOSExemptURLList_withCompletion_onCompletionQueue___block_invoke;
       v79[3] = &unk_279E7F2E8;
-      v80 = v21;
-      dispatch_async(v22, v79);
+      v80 = completionCopy;
+      dispatch_async(queueCopy, v79);
       v28 = v80;
       goto LABEL_13;
     }
 
 LABEL_21:
-    (*(v21 + 2))(v21, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
 LABEL_54:
@@ -550,13 +550,13 @@ LABEL_54:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)urlToFormattedString:(id)a3
++ (id)urlToFormattedString:(id)string
 {
-  v3 = [a3 absoluteString];
-  v4 = [v3 stringByReplacingPercentEscapesUsingEncoding:4];
+  absoluteString = [string absoluteString];
+  v4 = [absoluteString stringByReplacingPercentEscapesUsingEncoding:4];
   if (!v4)
   {
-    v4 = v3;
+    v4 = absoluteString;
   }
 
   v5 = [v4 stringByAddingPercentEscapesUsingEncoding:4];
@@ -564,19 +564,19 @@ LABEL_54:
   return v5;
 }
 
-+ (BOOL)isLegacyExemptURL:(id)a3
++ (BOOL)isLegacyExemptURL:(id)l
 {
-  v3 = [a3 host];
-  v4 = [v3 lowercaseString];
+  host = [l host];
+  lowercaseString = [host lowercaseString];
 
-  if ([v4 isEqualToString:@"apple.com"] & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @".apple.com") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"icloud.com") & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @".icloud.com") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"me.com") & 1) != 0 || (objc_msgSend(v4, "hasSuffix:", @".me.com") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"mac.com"))
+  if ([lowercaseString isEqualToString:@"apple.com"] & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @".apple.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"icloud.com") & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @".icloud.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"me.com") & 1) != 0 || (objc_msgSend(lowercaseString, "hasSuffix:", @".me.com") & 1) != 0 || (objc_msgSend(lowercaseString, "isEqualToString:", @"mac.com"))
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 hasSuffix:@".mac.com"];
+    v5 = [lowercaseString hasSuffix:@".mac.com"];
   }
 
   return v5;
@@ -618,13 +618,13 @@ LABEL_54:
   return v2;
 }
 
-+ (unint64_t)_mode:(id)a3
++ (unint64_t)_mode:(id)_mode
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"restrictWeb"];
+  _modeCopy = _mode;
+  v4 = [_modeCopy objectForKey:@"restrictWeb"];
   if ([v4 BOOLValue])
   {
-    v5 = [v3 objectForKey:@"whitelistEnabled"];
+    v5 = [_modeCopy objectForKey:@"whitelistEnabled"];
     if ([v5 BOOLValue])
     {
       v6 = 2;
@@ -632,7 +632,7 @@ LABEL_54:
 
     else
     {
-      v7 = [v3 objectForKey:@"useContentFilter"];
+      v7 = [_modeCopy objectForKey:@"useContentFilter"];
       if ([v7 BOOLValue])
       {
         v6 = 1;
@@ -640,7 +640,7 @@ LABEL_54:
 
       else
       {
-        v8 = [v3 objectForKey:@"useContentFilterOverrides"];
+        v8 = [_modeCopy objectForKey:@"useContentFilterOverrides"];
         if ([v8 BOOLValue])
         {
           v6 = 3;
@@ -662,10 +662,10 @@ LABEL_54:
   return v6;
 }
 
-+ (id)_allowList:(id)a3
++ (id)_allowList:(id)list
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"filterWhitelist"];
+  v3 = [list objectForKey:@"filterWhitelist"];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -708,10 +708,10 @@ LABEL_54:
   return v4;
 }
 
-+ (id)_denyList:(id)a3
++ (id)_denyList:(id)list
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"filterBlacklist"];
+  v3 = [list objectForKey:@"filterBlacklist"];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -754,10 +754,10 @@ LABEL_54:
   return v4;
 }
 
-+ (id)_allowedWebsitesOnlyList:(id)a3
++ (id)_allowedWebsitesOnlyList:(id)list
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [a3 objectForKey:@"siteWhitelist"];
+  v3 = [list objectForKey:@"siteWhitelist"];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -804,9 +804,9 @@ LABEL_54:
   return v4;
 }
 
-+ (BOOL)_shouldShowAllowButton:(id)a3
++ (BOOL)_shouldShowAllowButton:(id)button
 {
-  v3 = [a3 objectForKey:@"noOverridingAllowed"];
+  v3 = [button objectForKey:@"noOverridingAllowed"];
   v4 = v3;
   if (v3)
   {
@@ -821,46 +821,46 @@ LABEL_54:
   return v5;
 }
 
-+ (id)_preferredLanguageForUserName:(id)a3
++ (id)_preferredLanguageForUserName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Looking up preferred language"];
   [WCRLogging log:v4 withType:0];
 
-  if (!v3)
+  if (!nameCopy)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Provided userName was nil"];
     [WCRLogging log:v12 withType:0];
 
-    v11 = 0;
+    firstObject = 0;
     goto LABEL_16;
   }
 
-  v5 = CFPreferencesCopyValue(@"AppleLanguages", *MEMORY[0x277CBF008], v3, *MEMORY[0x277CBF010]);
+  v5 = CFPreferencesCopyValue(@"AppleLanguages", *MEMORY[0x277CBF008], nameCopy, *MEMORY[0x277CBF010]);
   if ([v5 count])
   {
     v6 = [MEMORY[0x277CCA8D8] bundleWithPath:@"/System/Library/PrivateFrameworks/WebContentRestrictions.framework"];
     v7 = v6;
     if (!v6)
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"No framework bundle"];
-      [WCRLogging log:v8 withType:1];
-      v11 = 0;
+      localizations = [MEMORY[0x277CCACA8] stringWithFormat:@"No framework bundle"];
+      [WCRLogging log:localizations withType:1];
+      firstObject = 0;
 LABEL_14:
 
       goto LABEL_15;
     }
 
-    v8 = [v6 localizations];
-    if ([v8 count])
+    localizations = [v6 localizations];
+    if ([localizations count])
     {
-      v9 = [MEMORY[0x277CCA8D8] preferredLocalizationsFromArray:v8 forPreferences:v5];
+      v9 = [MEMORY[0x277CCA8D8] preferredLocalizationsFromArray:localizations forPreferences:v5];
       if ([v9 count])
       {
         v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Found preferred loc"];
         [WCRLogging log:v10 withType:3];
 
-        v11 = [v9 firstObject];
+        firstObject = [v9 firstObject];
 LABEL_13:
 
         goto LABEL_14;
@@ -876,23 +876,23 @@ LABEL_13:
       [WCRLogging log:v9 withType:1];
     }
 
-    v11 = 0;
+    firstObject = 0;
     goto LABEL_13;
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"No language prefs"];
   [WCRLogging log:v7 withType:1];
-  v11 = 0;
+  firstObject = 0;
 LABEL_15:
 
 LABEL_16:
 
-  return v11;
+  return firstObject;
 }
 
-+ (id)base64StringFromString:(id)a3
++ (id)base64StringFromString:(id)string
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   v4 = [v3 base64EncodedDataWithOptions:0];
   if (v4)
   {
@@ -907,20 +907,20 @@ LABEL_16:
   return v5;
 }
 
-- (void)requestAllowListAuthenticationForURL:(id)a3 withCompletion:(id)a4
+- (void)requestAllowListAuthenticationForURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  lCopy = l;
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    v9 = [v7 copy];
+    v9 = [completionCopy copy];
     [(WCRBrowserEngineClient *)self setAllowURLCompletion:v9];
   }
 
-  v10 = [MEMORY[0x277D75128] sharedApplication];
-  v11 = [v10 keyWindow];
-  v12 = [v11 rootViewController];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  keyWindow = [mEMORY[0x277D75128] keyWindow];
+  rootViewController = [keyWindow rootViewController];
 
   v13 = objc_opt_class();
   v18[0] = MEMORY[0x277D85DD0];
@@ -928,11 +928,11 @@ LABEL_16:
   v18[2] = __78__WCRBrowserEngineClient_requestAllowListAuthenticationForURL_withCompletion___block_invoke;
   v18[3] = &unk_279E7F3A8;
   v18[4] = self;
-  v19 = v6;
-  v20 = v12;
+  v19 = lCopy;
+  v20 = rootViewController;
   v21 = v8;
-  v14 = v12;
-  v15 = v6;
+  v14 = rootViewController;
+  v15 = lCopy;
   v16 = v8;
   v17 = [v13 requestViewController:@"WCRServicePINEntryNavigationController" fromServiceWithBundleIdentifier:@"com.apple.WebContentFilter.remoteUI.WebContentAnalysisUI" connectionHandler:v18];
 }
@@ -1017,13 +1017,13 @@ void __78__WCRBrowserEngineClient_requestAllowListAuthenticationForURL_withCompl
 
 - (void)userEnteredCorrectPIN
 {
-  v3 = [(WCRBrowserEngineClient *)self remoteViewController];
+  remoteViewController = [(WCRBrowserEngineClient *)self remoteViewController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __47__WCRBrowserEngineClient_userEnteredCorrectPIN__block_invoke;
   v4[3] = &unk_279E7F3D0;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [remoteViewController dismissViewControllerAnimated:1 completion:v4];
 }
 
 void __47__WCRBrowserEngineClient_userEnteredCorrectPIN__block_invoke(uint64_t a1)
@@ -1034,13 +1034,13 @@ void __47__WCRBrowserEngineClient_userEnteredCorrectPIN__block_invoke(uint64_t a
 
 - (void)userDidCancel
 {
-  v3 = [(WCRBrowserEngineClient *)self remoteViewController];
+  remoteViewController = [(WCRBrowserEngineClient *)self remoteViewController];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __39__WCRBrowserEngineClient_userDidCancel__block_invoke;
   v4[3] = &unk_279E7F3D0;
   v4[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v4];
+  [remoteViewController dismissViewControllerAnimated:1 completion:v4];
 }
 
 void __39__WCRBrowserEngineClient_userDidCancel__block_invoke(uint64_t a1)

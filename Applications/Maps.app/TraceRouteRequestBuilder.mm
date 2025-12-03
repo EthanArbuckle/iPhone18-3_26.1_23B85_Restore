@@ -1,5 +1,5 @@
 @interface TraceRouteRequestBuilder
-- (TraceRouteRequestBuilder)initWithTraceURL:(id)a3;
+- (TraceRouteRequestBuilder)initWithTraceURL:(id)l;
 - (id)buildDirectionsRequestDetails;
 @end
 
@@ -8,16 +8,16 @@
 - (id)buildDirectionsRequestDetails
 {
   v3 = [MNDirectionsRequestDetails alloc];
-  v4 = [(TraceRouteRequestBuilder *)self traceURL];
-  v5 = [v4 path];
-  v6 = [v3 initWithTracePath:v5];
+  traceURL = [(TraceRouteRequestBuilder *)self traceURL];
+  path = [traceURL path];
+  v6 = [v3 initWithTracePath:path];
 
   return v6;
 }
 
-- (TraceRouteRequestBuilder)initWithTraceURL:(id)a3
+- (TraceRouteRequestBuilder)initWithTraceURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = TraceRouteRequestBuilder;
   v6 = [(TraceRouteRequestBuilder *)&v10 init];
@@ -26,9 +26,9 @@
     goto LABEL_4;
   }
 
-  if ([v5 isFileURL])
+  if ([lCopy isFileURL])
   {
-    objc_storeStrong(&v6->_traceURL, a3);
+    objc_storeStrong(&v6->_traceURL, l);
 LABEL_4:
     v7 = v6;
     goto LABEL_8;
@@ -38,7 +38,7 @@ LABEL_4:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543362;
-    v12 = v5;
+    v12 = lCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "TraceRouteRequestBuilder is expecting a file URL, got %{public}@", buf, 0xCu);
   }
 

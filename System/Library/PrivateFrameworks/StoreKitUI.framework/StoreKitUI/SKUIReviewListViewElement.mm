@@ -14,12 +14,12 @@
     [SKUIReviewListViewElement items];
   }
 
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __34__SKUIReviewListViewElement_items__block_invoke;
   v6[3] = &unk_2781F9640;
-  v4 = v3;
+  v4 = array;
   v7 = v4;
   [(SKUIViewElement *)self enumerateChildrenUsingBlock:v6];
 

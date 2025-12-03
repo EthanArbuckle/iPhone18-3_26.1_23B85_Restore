@@ -1,10 +1,10 @@
 @interface PHVideoOverlayInsulatorView
 - (PHVideoOverlayInsulatorView)init;
 - (void)dealloc;
-- (void)displayContentView:(id)a3 animated:(BOOL)a4;
-- (void)handlePIPControllerNotification:(id)a3;
-- (void)setBackgroundView:(id)a3;
-- (void)setVideoOverlayContentView:(id)a3 animated:(BOOL)a4;
+- (void)displayContentView:(id)view animated:(BOOL)animated;
+- (void)handlePIPControllerNotification:(id)notification;
+- (void)setBackgroundView:(id)view;
+- (void)setVideoOverlayContentView:(id)view animated:(BOOL)animated;
 @end
 
 @implementation PHVideoOverlayInsulatorView
@@ -35,15 +35,15 @@
   return v2;
 }
 
-- (void)setVideoOverlayContentView:(id)a3 animated:(BOOL)a4
+- (void)setVideoOverlayContentView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PHVideoOverlayInsulatorView *)self contentView];
+  animatedCopy = animated;
+  viewCopy = view;
+  contentView = [(PHVideoOverlayInsulatorView *)self contentView];
 
-  if (v6 && v7)
+  if (viewCopy && contentView)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v8 = 0.00749999983;
     }
@@ -63,60 +63,60 @@
     v9[2] = sub_100141FC0;
     v9[3] = &unk_10035A138;
     v9[4] = self;
-    v10 = v6;
-    v11 = v4;
+    v10 = viewCopy;
+    v11 = animatedCopy;
     [UIView animateWithDuration:v12 animations:v9 completion:v8];
   }
 
-  else if (v6)
+  else if (viewCopy)
   {
-    [(PHVideoOverlayInsulatorView *)self displayContentView:v6 animated:v4];
+    [(PHVideoOverlayInsulatorView *)self displayContentView:viewCopy animated:animatedCopy];
   }
 }
 
-- (void)displayContentView:(id)a3 animated:(BOOL)a4
+- (void)displayContentView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  objc_storeStrong(&self->_contentView, a3);
-  v7 = a3;
-  v8 = [(PHVideoOverlayInsulatorView *)self contentView];
-  [v8 setAlpha:0.0];
+  animatedCopy = animated;
+  objc_storeStrong(&self->_contentView, view);
+  viewCopy = view;
+  contentView = [(PHVideoOverlayInsulatorView *)self contentView];
+  [contentView setAlpha:0.0];
 
-  v9 = [(PHVideoOverlayInsulatorView *)self contentView];
-  [(PHVideoOverlayInsulatorView *)self addSubview:v9];
+  contentView2 = [(PHVideoOverlayInsulatorView *)self contentView];
+  [(PHVideoOverlayInsulatorView *)self addSubview:contentView2];
 
-  v10 = [NSLayoutConstraint constraintWithItem:v7 attribute:7 relatedBy:-1 toItem:self attribute:7 multiplier:0.600000024 constant:0.0];
+  v10 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:7 relatedBy:-1 toItem:self attribute:7 multiplier:0.600000024 constant:0.0];
   LODWORD(v11) = 1144913920;
   [v10 setPriority:v11];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v10];
   v12 = +[UIDevice currentDevice];
   v13 = dbl_1002F9690[[v12 userInterfaceIdiom] == 1];
 
-  v14 = [NSLayoutConstraint constraintWithItem:v7 attribute:7 relatedBy:-1 toItem:0 attribute:0 multiplier:1.0 constant:v13];
+  v14 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:7 relatedBy:-1 toItem:0 attribute:0 multiplier:1.0 constant:v13];
   LODWORD(v15) = 1148846080;
   [v14 setPriority:v15];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v14];
-  v16 = [NSLayoutConstraint constraintWithItem:v7 attribute:7 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:150.0];
+  v16 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:7 relatedBy:1 toItem:0 attribute:0 multiplier:1.0 constant:150.0];
   LODWORD(v17) = 1148846080;
   [v16 setPriority:v17];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v16];
-  v18 = [NSLayoutConstraint constraintWithItem:v7 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  v18 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v18];
 
-  v19 = [NSLayoutConstraint constraintWithItem:v7 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+  v19 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
   LODWORD(v20) = 1144750080;
   [v19 setPriority:v20];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v19];
-  v21 = [NSLayoutConstraint constraintWithItem:v7 attribute:4 relatedBy:-1 toItem:self attribute:4 multiplier:1.0 constant:-70.0];
+  v21 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:4 relatedBy:-1 toItem:self attribute:4 multiplier:1.0 constant:-70.0];
   LODWORD(v22) = 1148846080;
   [v21 setPriority:v22];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v21];
-  v23 = [NSLayoutConstraint constraintWithItem:v7 attribute:3 relatedBy:1 toItem:self attribute:3 multiplier:1.0 constant:20.0];
+  v23 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:3 relatedBy:1 toItem:self attribute:3 multiplier:1.0 constant:20.0];
   LODWORD(v24) = 1148846080;
   [v23 setPriority:v24];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v23];
   v25 = 0.00749999983;
-  if (!v4)
+  if (!animatedCopy)
   {
     v25 = 0.0;
   }
@@ -129,36 +129,36 @@
   [UIView animateWithDuration:v26 animations:v25];
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v4 = a3;
-  [(PHVideoOverlayInsulatorView *)self addSubview:v4];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [NSLayoutConstraint constraintWithItem:v4 attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
+  viewCopy = view;
+  [(PHVideoOverlayInsulatorView *)self addSubview:viewCopy];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  v5 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:9 relatedBy:0 toItem:self attribute:9 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v5];
 
-  v6 = [NSLayoutConstraint constraintWithItem:v4 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+  v6 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v6];
 
-  v7 = [NSLayoutConstraint constraintWithItem:v4 attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:0.0];
+  v7 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:7 relatedBy:0 toItem:self attribute:7 multiplier:1.0 constant:0.0];
   [(PHVideoOverlayInsulatorView *)self addConstraint:v7];
 
-  v8 = [NSLayoutConstraint constraintWithItem:v4 attribute:8 relatedBy:0 toItem:self attribute:8 multiplier:1.0 constant:0.0];
+  v8 = [NSLayoutConstraint constraintWithItem:viewCopy attribute:8 relatedBy:0 toItem:self attribute:8 multiplier:1.0 constant:0.0];
 
   [(PHVideoOverlayInsulatorView *)self addConstraint:v8];
 }
 
-- (void)handlePIPControllerNotification:(id)a3
+- (void)handlePIPControllerNotification:(id)notification
 {
-  v4 = [(PHVideoOverlayInsulatorView *)self isContentViewRotatingOrResizing];
-  v5 = [(PHVideoOverlayInsulatorView *)self contentView];
-  v6 = v5;
-  if (v4)
+  isContentViewRotatingOrResizing = [(PHVideoOverlayInsulatorView *)self isContentViewRotatingOrResizing];
+  contentView = [(PHVideoOverlayInsulatorView *)self contentView];
+  v6 = contentView;
+  if (isContentViewRotatingOrResizing)
   {
-    [v5 resetView];
+    [contentView resetView];
 
-    v5 = [(PHVideoOverlayInsulatorView *)self contentView];
-    v6 = v5;
+    contentView = [(PHVideoOverlayInsulatorView *)self contentView];
+    v6 = contentView;
     v7 = 1.0;
   }
 
@@ -167,9 +167,9 @@
     v7 = 0.0;
   }
 
-  [v5 setAlpha:v7];
+  [contentView setAlpha:v7];
 
-  [(PHVideoOverlayInsulatorView *)self setIsContentViewRotatingOrResizing:v4 ^ 1];
+  [(PHVideoOverlayInsulatorView *)self setIsContentViewRotatingOrResizing:isContentViewRotatingOrResizing ^ 1];
 }
 
 - (void)dealloc

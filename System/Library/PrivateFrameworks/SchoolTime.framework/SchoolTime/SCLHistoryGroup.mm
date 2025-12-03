@@ -1,21 +1,21 @@
 @interface SCLHistoryGroup
-+ (id)historyGroupsByPrioritizingSchedule:(id)a3 forDate:(id)a4 inCalendar:(id)a5 items:(id)a6;
-- (BOOL)canContainUnlockHistoryItem:(id)a3;
-- (SCLHistoryGroup)initWithEffectiveSchedule:(id)a3 calendar:(id)a4 referenceDate:(id)a5;
++ (id)historyGroupsByPrioritizingSchedule:(id)schedule forDate:(id)date inCalendar:(id)calendar items:(id)items;
+- (BOOL)canContainUnlockHistoryItem:(id)item;
+- (SCLHistoryGroup)initWithEffectiveSchedule:(id)schedule calendar:(id)calendar referenceDate:(id)date;
 @end
 
 @implementation SCLHistoryGroup
 
-+ (id)historyGroupsByPrioritizingSchedule:(id)a3 forDate:(id)a4 inCalendar:(id)a5 items:(id)a6
++ (id)historyGroupsByPrioritizingSchedule:(id)schedule forDate:(id)date inCalendar:(id)calendar items:(id)items
 {
   v50[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v41 = a5;
+  scheduleCopy = schedule;
+  dateCopy = date;
+  calendarCopy = calendar;
   v11 = MEMORY[0x277CBEB18];
-  v12 = a6;
+  itemsCopy = items;
   v13 = objc_alloc_init(v11);
-  v14 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v15 = [MEMORY[0x277CBEB58] set];
   v45[0] = MEMORY[0x277D85DD0];
   v45[1] = 3221225472;
@@ -23,13 +23,13 @@
   v45[3] = &unk_279B6C250;
   v16 = v15;
   v46 = v16;
-  v17 = v14;
+  v17 = strongToStrongObjectsMapTable;
   v47 = v17;
-  v18 = v9;
+  v18 = scheduleCopy;
   v48 = v18;
   v19 = v13;
   v49 = v19;
-  [v12 enumerateObjectsUsingBlock:v45];
+  [itemsCopy enumerateObjectsUsingBlock:v45];
 
   [v19 enumerateObjectsUsingBlock:&__block_literal_global_1];
   v20 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"referenceDate" ascending:0];
@@ -39,7 +39,7 @@
   v43[2] = __80__SCLHistoryGroup_historyGroupsByPrioritizingSchedule_forDate_inCalendar_items___block_invoke_5;
   v43[3] = &unk_279B6C2B8;
   v22 = v16;
-  v23 = v10;
+  v23 = dateCopy;
   v24 = v22;
   v44 = v22;
   v25 = [v21 sortDescriptorWithKey:0 ascending:1 comparator:v43];
@@ -51,27 +51,27 @@
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v50 count:3];
   [v19 sortUsingDescriptors:v27];
 
-  v28 = v41;
-  v29 = [v41 component:512 fromDate:v23];
+  v28 = calendarCopy;
+  v29 = [calendarCopy component:512 fromDate:v23];
   if ([v18 isScheduledForDay:v29])
   {
-    v30 = [v19 firstObject];
-    v31 = [v41 startOfDayForDate:v23];
-    v40 = [v30 referenceDate];
-    if (!v30 || ![v24 containsObject:v30] || (objc_msgSend(v41, "isDate:inSameDayAsDate:", v31, v40) & 1) == 0)
+    firstObject = [v19 firstObject];
+    v31 = [calendarCopy startOfDayForDate:v23];
+    referenceDate = [firstObject referenceDate];
+    if (!firstObject || ![v24 containsObject:firstObject] || (objc_msgSend(calendarCopy, "isDate:inSameDayAsDate:", v31, referenceDate) & 1) == 0)
     {
       v39 = v23;
       v32 = [SCLRecurrenceSchedule alloc];
       v33 = [v18 recurrencesForDay:v29];
       v34 = [(SCLRecurrenceSchedule *)v32 initWithRecurrences:v33];
 
-      v35 = [[SCLHistoryGroup alloc] initWithEffectiveSchedule:v34 calendar:v41 referenceDate:v31];
+      v35 = [[SCLHistoryGroup alloc] initWithEffectiveSchedule:v34 calendar:calendarCopy referenceDate:v31];
       [v19 insertObject:v35 atIndex:0];
 
       v23 = v39;
     }
 
-    v28 = v41;
+    v28 = calendarCopy;
   }
 
   v36 = v19;
@@ -294,47 +294,47 @@ uint64_t __80__SCLHistoryGroup_historyGroupsByPrioritizingSchedule_forDate_inCal
   return v10;
 }
 
-- (SCLHistoryGroup)initWithEffectiveSchedule:(id)a3 calendar:(id)a4 referenceDate:(id)a5
+- (SCLHistoryGroup)initWithEffectiveSchedule:(id)schedule calendar:(id)calendar referenceDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  scheduleCopy = schedule;
+  calendarCopy = calendar;
+  dateCopy = date;
   v18.receiver = self;
   v18.super_class = SCLHistoryGroup;
   v11 = [(SCLHistoryGroup *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_calendar, a4);
-    objc_storeStrong(&v12->_referenceDate, a5);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_calendar, calendar);
+    objc_storeStrong(&v12->_referenceDate, date);
+    v13 = [scheduleCopy copy];
     effectiveSchedule = v12->_effectiveSchedule;
     v12->_effectiveSchedule = v13;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     items = v12->_items;
-    v12->_items = v15;
+    v12->_items = array;
   }
 
   return v12;
 }
 
-- (BOOL)canContainUnlockHistoryItem:(id)a3
+- (BOOL)canContainUnlockHistoryItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 unlockedInterval];
-  v6 = [v5 startDate];
+  itemCopy = item;
+  unlockedInterval = [itemCopy unlockedInterval];
+  startDate = [unlockedInterval startDate];
 
-  v7 = [(SCLHistoryGroup *)self calendar];
-  v8 = [(SCLHistoryGroup *)self referenceDate];
-  v9 = [v7 isDate:v6 inSameDayAsDate:v8];
+  calendar = [(SCLHistoryGroup *)self calendar];
+  referenceDate = [(SCLHistoryGroup *)self referenceDate];
+  v9 = [calendar isDate:startDate inSameDayAsDate:referenceDate];
 
   if (v9)
   {
-    v10 = [(SCLHistoryGroup *)self effectiveSchedule];
-    v11 = [v10 recurrences];
-    v12 = [v4 effectiveRecurrence];
-    v13 = [v11 containsObject:v12];
+    effectiveSchedule = [(SCLHistoryGroup *)self effectiveSchedule];
+    recurrences = [effectiveSchedule recurrences];
+    effectiveRecurrence = [itemCopy effectiveRecurrence];
+    v13 = [recurrences containsObject:effectiveRecurrence];
   }
 
   else

@@ -1,7 +1,7 @@
 @interface EngagementMessageTarget
 - (NSString)targetIdentifier;
 - (_TtC9SeymourUI23EngagementMessageTarget)init;
-- (void)messageCoordinator:(id)a3 didUpdatePriorityMessage:(id)a4 forTarget:(id)a5;
+- (void)messageCoordinator:(id)coordinator didUpdatePriorityMessage:(id)message forTarget:(id)target;
 @end
 
 @implementation EngagementMessageTarget
@@ -21,14 +21,14 @@
   return v2;
 }
 
-- (void)messageCoordinator:(id)a3 didUpdatePriorityMessage:(id)a4 forTarget:(id)a5
+- (void)messageCoordinator:(id)coordinator didUpdatePriorityMessage:(id)message forTarget:(id)target
 {
   v8 = sub_20C13C954();
   v10 = v9;
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
-  sub_20BAF0C14(a4, v8, v10);
+  coordinatorCopy = coordinator;
+  messageCopy = message;
+  selfCopy = self;
+  sub_20BAF0C14(message, v8, v10);
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface ARMLIntermediateDownScalingResultData
-- (ARMLIntermediateDownScalingResultData)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4 originalImageData:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ARMLIntermediateDownScalingResultData)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp originalImageData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
 @implementation ARMLIntermediateDownScalingResultData
 
-- (ARMLIntermediateDownScalingResultData)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(double)a4 originalImageData:(id)a5
+- (ARMLIntermediateDownScalingResultData)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(double)timestamp originalImageData:(id)data
 {
-  v9 = a5;
+  dataCopy = data;
   v13.receiver = self;
   v13.super_class = ARMLIntermediateDownScalingResultData;
   v10 = [(ARMLIntermediateDownScalingResultData *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_pixelBuffer = a3;
-    CVPixelBufferRetain(a3);
-    v11->_timestamp = a4;
-    objc_storeStrong(&v11->_originalImageData, a5);
+    v10->_pixelBuffer = buffer;
+    CVPixelBufferRetain(buffer);
+    v11->_timestamp = timestamp;
+    objc_storeStrong(&v11->_originalImageData, data);
   }
 
   return v11;
@@ -32,16 +32,16 @@
   [(ARMLIntermediateDownScalingResultData *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([v5 pixelBuffer] == self->_pixelBuffer && (objc_msgSend(v5, "timestamp"), v6 == self->_timestamp))
     {
-      v9 = [v5 originalImageData];
-      v7 = [v9 isEqual:self->_originalImageData];
+      originalImageData = [v5 originalImageData];
+      v7 = [originalImageData isEqual:self->_originalImageData];
     }
 
     else

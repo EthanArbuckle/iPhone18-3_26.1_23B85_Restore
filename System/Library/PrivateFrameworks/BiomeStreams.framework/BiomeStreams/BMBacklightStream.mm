@@ -13,10 +13,10 @@
   if (v2)
   {
     v3 = BMRootLibraryBridge();
-    v4 = [v3 Device];
-    v5 = [v4 Display];
-    v6 = [v5 Backlight];
-    v7 = [v6 storeStreamWithLegacyClass:objc_opt_class()];
+    device = [v3 Device];
+    display = [device Display];
+    backlight = [display Backlight];
+    v7 = [backlight storeStreamWithLegacyClass:objc_opt_class()];
     storeStream = v2->_storeStream;
     v2->_storeStream = v7;
 
@@ -36,8 +36,8 @@
 - (id)publisher
 {
   v3 = [BMDSLStreamPublisher alloc];
-  v4 = [(BMBacklightStream *)self identifier];
-  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:v4 streamType:1 eventDataClass:objc_opt_class()];
+  identifier = [(BMBacklightStream *)self identifier];
+  v5 = [(BMDSLStreamPublisher *)v3 initWithIdentifier:identifier streamType:1 eventDataClass:objc_opt_class()];
 
   return v5;
 }

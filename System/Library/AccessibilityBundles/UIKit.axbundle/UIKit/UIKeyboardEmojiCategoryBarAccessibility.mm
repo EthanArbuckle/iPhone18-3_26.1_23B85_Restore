@@ -1,20 +1,20 @@
 @interface UIKeyboardEmojiCategoryBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityElements;
-- (uint64_t)_accessibilityTraitsForElementAtIndex:(void *)a1;
-- (void)setSelectedIndex:(unint64_t)a3;
+- (uint64_t)_accessibilityTraitsForElementAtIndex:(void *)index;
+- (void)setSelectedIndex:(unint64_t)index;
 @end
 
 @implementation UIKeyboardEmojiCategoryBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v5 = @"UIKeyboardEmojiCategory";
   v4 = "q";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -31,13 +31,13 @@
 
 - (id)accessibilityElements
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v19[0] = [(UIKeyboardEmojiCategoryBarAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
   if (!v19[0])
   {
     v19[0] = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-    [(UIKeyboardEmojiCategoryBarAccessibility *)v20 _accessibilitySetRetainedValue:v19[0] forKey:*MEMORY[0x29EDC7620], MEMORY[0x29EDC9740](0).n128_f64[0]];
+    [(UIKeyboardEmojiCategoryBarAccessibility *)selfCopy _accessibilitySetRetainedValue:v19[0] forKey:*MEMORY[0x29EDC7620], MEMORY[0x29EDC9740](0).n128_f64[0]];
     v17 = 0;
     objc_opt_class();
     v5 = [NSClassFromString(&cfstr_Uikeyboardemoj.isa) safeValueForKey:@"enabledCategoryIndexes"];
@@ -54,7 +54,7 @@
     v9 = __64__UIKeyboardEmojiCategoryBarAccessibility_accessibilityElements__block_invoke;
     v10 = &unk_29F30D7E8;
     v13[1] = v14;
-    v11 = MEMORY[0x29EDC9748](v20);
+    v11 = MEMORY[0x29EDC9748](selfCopy);
     v12 = MEMORY[0x29EDC9748](v18);
     v13[0] = MEMORY[0x29EDC9748](v19[0]);
     [v4 enumerateObjectsUsingBlock:&v6];
@@ -192,15 +192,15 @@ double __64__UIKeyboardEmojiCategoryBarAccessibility_accessibilityElements__bloc
   return result;
 }
 
-- (uint64_t)_accessibilityTraitsForElementAtIndex:(void *)a1
+- (uint64_t)_accessibilityTraitsForElementAtIndex:(void *)index
 {
-  if (!a1)
+  if (!index)
   {
     return 0;
   }
 
   v3 = *MEMORY[0x29EDC7FB0];
-  if (a2 == [a1 safeUnsignedIntegerForKey:@"_selectedIndex"])
+  if (a2 == [index safeUnsignedIntegerForKey:@"_selectedIndex"])
   {
     return v3 | *MEMORY[0x29EDC7FC0];
   }
@@ -208,15 +208,15 @@ double __64__UIKeyboardEmojiCategoryBarAccessibility_accessibilityElements__bloc
   return v3;
 }
 
-- (void)setSelectedIndex:(unint64_t)a3
+- (void)setSelectedIndex:(unint64_t)index
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
+  indexCopy = index;
   v11.receiver = self;
   v11.super_class = UIKeyboardEmojiCategoryBarAccessibility;
-  [(UIKeyboardEmojiCategoryBarAccessibility *)&v11 setSelectedIndex:a3];
-  v10 = [(UIKeyboardEmojiCategoryBarAccessibility *)v14 _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
+  [(UIKeyboardEmojiCategoryBarAccessibility *)&v11 setSelectedIndex:index];
+  v10 = [(UIKeyboardEmojiCategoryBarAccessibility *)selfCopy _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
   if (v10)
   {
     v3 = v10;
@@ -225,7 +225,7 @@ double __64__UIKeyboardEmojiCategoryBarAccessibility_accessibilityElements__bloc
     v6 = 0;
     v7 = __60__UIKeyboardEmojiCategoryBarAccessibility_setSelectedIndex___block_invoke;
     v8 = &unk_29F30D218;
-    v9 = MEMORY[0x29EDC9748](v14);
+    v9 = MEMORY[0x29EDC9748](selfCopy);
     [v3 enumerateObjectsUsingBlock:&v4];
     objc_storeStrong(&v9, 0);
   }

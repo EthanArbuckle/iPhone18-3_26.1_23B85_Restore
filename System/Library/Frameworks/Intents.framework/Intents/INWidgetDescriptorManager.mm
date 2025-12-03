@@ -1,27 +1,27 @@
 @interface INWidgetDescriptorManager
 + (id)sharedManager;
 - (INWidgetDescriptorManager)init;
-- (void)_notifyCompletionHandlersWithWidgetDescriptors:(id)a3;
+- (void)_notifyCompletionHandlersWithWidgetDescriptors:(id)descriptors;
 - (void)_startObservingDescriptors;
 - (void)dealloc;
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3;
-- (void)getDescriptorForIntent:(id)a3 completionHandler:(id)a4;
-- (void)getDescriptorsWithCompletionHandler:(id)a3;
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider;
+- (void)getDescriptorForIntent:(id)intent completionHandler:(id)handler;
+- (void)getDescriptorsWithCompletionHandler:(id)handler;
 @end
 
 @implementation INWidgetDescriptorManager
 
-- (void)_notifyCompletionHandlersWithWidgetDescriptors:(id)a3
+- (void)_notifyCompletionHandlersWithWidgetDescriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __76__INWidgetDescriptorManager__notifyCompletionHandlersWithWidgetDescriptors___block_invoke;
   v7[3] = &unk_1E7287190;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = descriptorsCopy;
+  v6 = descriptorsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -128,8 +128,8 @@ uint64_t __76__INWidgetDescriptorManager__notifyCompletionHandlersWithWidgetDesc
   self->_provider = v10;
 
   [(CHSWidgetDescriptorProvider *)self->_provider addObserver:self];
-  v12 = [(CHSWidgetDescriptorProvider *)self->_provider descriptors];
-  v13 = [v12 count];
+  descriptors = [(CHSWidgetDescriptorProvider *)self->_provider descriptors];
+  v13 = [descriptors count];
 
   if (v13)
   {
@@ -144,24 +144,24 @@ uint64_t __55__INWidgetDescriptorManager__startObservingDescriptors__block_invok
   return result;
 }
 
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 descriptors];
-  v6 = [v5 count];
+  providerCopy = provider;
+  descriptors = [providerCopy descriptors];
+  v6 = [descriptors count];
 
   if (v6)
   {
-    v24 = self;
+    selfCopy = self;
     v7 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v25 = v4;
-    v8 = [v4 descriptors];
-    v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    v25 = providerCopy;
+    descriptors2 = [providerCopy descriptors];
+    v9 = [descriptors2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v9)
     {
       v10 = v9;
@@ -172,7 +172,7 @@ uint64_t __55__INWidgetDescriptorManager__startObservingDescriptors__block_invok
         {
           if (*v27 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(descriptors2);
           }
 
           v13 = *(*(&v26 + 1) + 8 * i);
@@ -191,30 +191,30 @@ uint64_t __55__INWidgetDescriptorManager__startObservingDescriptors__block_invok
             v14 = 1;
           }
 
-          v15 = [v13 intentType];
+          intentType = [v13 intentType];
 
-          if (v15)
+          if (intentType)
           {
-            v16 = [v13 intentType];
-            v17 = [v16 componentsSeparatedByString:@"."];
-            v18 = [v17 lastObject];
+            intentType2 = [v13 intentType];
+            v17 = [intentType2 componentsSeparatedByString:@"."];
+            lastObject = [v17 lastObject];
 
             v19 = [INWidgetDescriptor alloc];
-            v20 = [v13 extensionBundleIdentifier];
-            v21 = [v13 kind];
-            v22 = [(INWidgetDescriptor *)v19 initWithExtensionBundleIdentifier:v20 kind:v21 intentClassName:v18 preferredSizeClass:v14];
+            extensionBundleIdentifier = [v13 extensionBundleIdentifier];
+            kind = [v13 kind];
+            v22 = [(INWidgetDescriptor *)v19 initWithExtensionBundleIdentifier:extensionBundleIdentifier kind:kind intentClassName:lastObject preferredSizeClass:v14];
             [v7 addObject:v22];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v10 = [descriptors2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v10);
     }
 
-    [(INWidgetDescriptorManager *)v24 _notifyCompletionHandlersWithWidgetDescriptors:v7];
-    v4 = v25;
+    [(INWidgetDescriptorManager *)selfCopy _notifyCompletionHandlersWithWidgetDescriptors:v7];
+    providerCopy = v25;
   }
 
   else
@@ -257,18 +257,18 @@ uint64_t __55__INWidgetDescriptorManager__startObservingDescriptors__block_invok
   return v2;
 }
 
-- (void)getDescriptorForIntent:(id)a3 completionHandler:(id)a4
+- (void)getDescriptorForIntent:(id)intent completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  intentCopy = intent;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__INWidgetDescriptorManager_getDescriptorForIntent_completionHandler___block_invoke;
   v10[3] = &unk_1E7287168;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = intentCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = intentCopy;
   [(INWidgetDescriptorManager *)self getDescriptorsWithCompletionHandler:v10];
 }
 
@@ -322,17 +322,17 @@ LABEL_11:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getDescriptorsWithCompletionHandler:(id)a3
+- (void)getDescriptorsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__INWidgetDescriptorManager_getDescriptorsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7287140;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 

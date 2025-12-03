@@ -1,18 +1,18 @@
 @interface HUSymbolIconColorConfiguration
-+ (id)iconColorConfigurationForItem:(id)a3;
-+ (id)iconColorConfigurationForSymbolIconAccessoryType:(id)a3;
-+ (id)iconColorConfigurationForSymbolIconIdentifier:(id)a3;
-- (HUSymbolIconColorConfiguration)initWithPrimaryColor:(id)a3;
++ (id)iconColorConfigurationForItem:(id)item;
++ (id)iconColorConfigurationForSymbolIconAccessoryType:(id)type;
++ (id)iconColorConfigurationForSymbolIconIdentifier:(id)identifier;
+- (HUSymbolIconColorConfiguration)initWithPrimaryColor:(id)color;
 @end
 
 @implementation HUSymbolIconColorConfiguration
 
-+ (id)iconColorConfigurationForItem:(id)a3
++ (id)iconColorConfigurationForItem:(id)item
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28251B0C8])
+  itemCopy = item;
+  if ([itemCopy conformsToProtocol:&unk_28251B0C8])
   {
-    v5 = v4;
+    v5 = itemCopy;
   }
 
   else
@@ -22,11 +22,11 @@
 
   v6 = v5;
   objc_opt_class();
-  v7 = [v6 homeKitObject];
+  homeKitObject = [v6 homeKitObject];
 
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = homeKitObject;
   }
 
   else
@@ -36,9 +36,9 @@
 
   v9 = v8;
 
-  v10 = [v9 hf_effectiveServiceType];
+  hf_effectiveServiceType = [v9 hf_effectiveServiceType];
 
-  if (v10)
+  if (hf_effectiveServiceType)
   {
     if (_MergedGlobals_617 != -1)
     {
@@ -46,8 +46,8 @@
     }
 
     v11 = qword_281121EC8;
-    v12 = [v11 objectForKeyedSubscript:v10];
-    v13 = [a1 iconColorConfigurationForSymbolIconAccessoryType:v12];
+    v12 = [v11 objectForKeyedSubscript:hf_effectiveServiceType];
+    v13 = [self iconColorConfigurationForSymbolIconAccessoryType:v12];
   }
 
   else
@@ -75,26 +75,26 @@ void __64__HUSymbolIconColorConfiguration_iconColorConfigurationForItem___block_
   qword_281121EC8 = v3;
 }
 
-+ (id)iconColorConfigurationForSymbolIconIdentifier:(id)a3
++ (id)iconColorConfigurationForSymbolIconIdentifier:(id)identifier
 {
   v4 = HFSymbolIconAccessoryTypeForSymbol();
-  v5 = [a1 iconColorConfigurationForSymbolIconAccessoryType:v4];
+  v5 = [self iconColorConfigurationForSymbolIconAccessoryType:v4];
 
   return v5;
 }
 
-+ (id)iconColorConfigurationForSymbolIconAccessoryType:(id)a3
++ (id)iconColorConfigurationForSymbolIconAccessoryType:(id)type
 {
-  v3 = [HUSymbolIconColorProvider primaryColorForSymbolIconAccessoryType:a3];
+  v3 = [HUSymbolIconColorProvider primaryColorForSymbolIconAccessoryType:type];
   v4 = [objc_alloc(objc_opt_class()) initWithPrimaryColor:v3];
 
   return v4;
 }
 
-- (HUSymbolIconColorConfiguration)initWithPrimaryColor:(id)a3
+- (HUSymbolIconColorConfiguration)initWithPrimaryColor:(id)color
 {
-  v5 = a3;
-  if (v5)
+  colorCopy = color;
+  if (colorCopy)
   {
     v10.receiver = self;
     v10.super_class = HUSymbolIconColorConfiguration;
@@ -102,19 +102,19 @@ void __64__HUSymbolIconColorConfiguration_iconColorConfigurationForItem___block_
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_primaryColor, a3);
+      objc_storeStrong(&v6->_primaryColor, color);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

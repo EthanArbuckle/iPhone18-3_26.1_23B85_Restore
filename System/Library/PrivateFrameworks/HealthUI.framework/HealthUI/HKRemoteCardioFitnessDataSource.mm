@@ -1,42 +1,42 @@
 @interface HKRemoteCardioFitnessDataSource
-- (HKRemoteCardioFitnessDataSource)initWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5;
-- (id)_cardioFitnessUserInfoCreationBlockWithAge:(int64_t)a3 biologicalSex:(int64_t)a4;
-- (id)_userInfoBlockWithUnitController:(id)a3 displayType:(id)a4;
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4;
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5;
+- (HKRemoteCardioFitnessDataSource)initWithUnitController:(id)controller displayType:(id)type healthStore:(id)store;
+- (id)_cardioFitnessUserInfoCreationBlockWithAge:(int64_t)age biologicalSex:(int64_t)sex;
+- (id)_userInfoBlockWithUnitController:(id)controller displayType:(id)type;
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source;
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler;
 @end
 
 @implementation HKRemoteCardioFitnessDataSource
 
-- (HKRemoteCardioFitnessDataSource)initWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5
+- (HKRemoteCardioFitnessDataSource)initWithUnitController:(id)controller displayType:(id)type healthStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   v14.receiver = self;
   v14.super_class = HKRemoteCardioFitnessDataSource;
-  v10 = [(HKQuantityTypeDataSource *)&v14 initWithUnitController:v8 options:2 displayType:v9 healthStore:a5];
+  v10 = [(HKQuantityTypeDataSource *)&v14 initWithUnitController:controllerCopy options:2 displayType:typeCopy healthStore:store];
   v11 = v10;
   if (v10)
   {
-    v12 = [(HKRemoteCardioFitnessDataSource *)v10 _userInfoBlockWithUnitController:v8 displayType:v9];
+    v12 = [(HKRemoteCardioFitnessDataSource *)v10 _userInfoBlockWithUnitController:controllerCopy displayType:typeCopy];
     [(HKQuantityTypeDataSource *)v11 setUserInfoCreationBlock:v12];
   }
 
   return v11;
 }
 
-- (id)_userInfoBlockWithUnitController:(id)a3 displayType:(id)a4
+- (id)_userInfoBlockWithUnitController:(id)controller displayType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  typeCopy = type;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __80__HKRemoteCardioFitnessDataSource__userInfoBlockWithUnitController_displayType___block_invoke;
   v11[3] = &unk_1E81B6288;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = controllerCopy;
+  v13 = typeCopy;
+  v7 = typeCopy;
+  v8 = controllerCopy;
   v9 = _Block_copy(v11);
 
   return v9;
@@ -82,25 +82,25 @@ HKInteractiveChartSinglePointData *__80__HKRemoteCardioFitnessDataSource__userIn
   return v9;
 }
 
-- (id)generateSharableQueryDataForRequest:(id)a3 healthStore:(id)a4 completionHandler:(id)a5
+- (id)generateSharableQueryDataForRequest:(id)request healthStore:(id)store completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  storeCopy = store;
+  handlerCopy = handler;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __101__HKRemoteCardioFitnessDataSource_generateSharableQueryDataForRequest_healthStore_completionHandler___block_invoke;
   v24[3] = &unk_1E81B6B68;
-  v25 = v8;
-  v28 = v10;
-  v11 = v9;
+  v25 = requestCopy;
+  v28 = handlerCopy;
+  v11 = storeCopy;
   v26 = v11;
-  v27 = self;
-  v12 = v10;
-  v13 = v8;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v13 = requestCopy;
   v14 = [(HKQuantityTypeDataSource *)self queriesForRequest:v13 completionHandler:v24];
-  v15 = [v14 firstObject];
-  [v11 executeQuery:v15];
+  firstObject = [v14 firstObject];
+  [v11 executeQuery:firstObject];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
@@ -245,14 +245,14 @@ void __101__HKRemoteCardioFitnessDataSource_generateSharableQueryDataForRequest_
   [v1 stopQuery:v2];
 }
 
-- (id)chartPointsFromQueryData:(id)a3 dataIsFromRemoteSource:(BOOL)a4
+- (id)chartPointsFromQueryData:(id)data dataIsFromRemoteSource:(BOOL)source
 {
-  v5 = a3;
-  if ([v5 hasTimeZoneName])
+  dataCopy = data;
+  if ([dataCopy hasTimeZoneName])
   {
     v6 = objc_alloc(MEMORY[0x1E695DFE8]);
-    v7 = [v5 timeZoneName];
-    v8 = [v6 initWithName:v7];
+    timeZoneName = [dataCopy timeZoneName];
+    v8 = [v6 initWithName:timeZoneName];
   }
 
   else
@@ -261,8 +261,8 @@ void __101__HKRemoteCardioFitnessDataSource_generateSharableQueryDataForRequest_
   }
 
   v9 = [HKCodableChartCardioFitnessQueryData alloc];
-  v10 = [v5 queryDataObject];
-  v11 = [(HKCodableChartCardioFitnessQueryData *)v9 initWithData:v10];
+  queryDataObject = [dataCopy queryDataObject];
+  v11 = [(HKCodableChartCardioFitnessQueryData *)v9 initWithData:queryDataObject];
 
   if ([(HKCodableChartCardioFitnessQueryData *)v11 cardioFitnessLevelEnabled])
   {
@@ -271,22 +271,22 @@ void __101__HKRemoteCardioFitnessDataSource_generateSharableQueryDataForRequest_
   }
 
   v13 = objc_alloc_init(HKGraphSeriesDataBlock);
-  v14 = [(HKCodableChartCardioFitnessQueryData *)v11 quantityData];
-  v15 = [v14 statisticsCollection];
-  v16 = [v15 statistics];
+  quantityData = [(HKCodableChartCardioFitnessQueryData *)v11 quantityData];
+  statisticsCollection = [quantityData statisticsCollection];
+  statistics = [statisticsCollection statistics];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __83__HKRemoteCardioFitnessDataSource_chartPointsFromQueryData_dataIsFromRemoteSource___block_invoke;
   v20[3] = &unk_1E81B6B90;
   v21 = v8;
   v17 = v8;
-  v18 = [v16 hk_map:v20];
+  v18 = [statistics hk_map:v20];
   [(HKGraphSeriesDataBlock *)v13 setChartPoints:v18];
 
   return v13;
 }
 
-- (id)_cardioFitnessUserInfoCreationBlockWithAge:(int64_t)a3 biologicalSex:(int64_t)a4
+- (id)_cardioFitnessUserInfoCreationBlockWithAge:(int64_t)age biologicalSex:(int64_t)sex
 {
   v6 = [MEMORY[0x1E696C510] unitFromString:@"ml/kg*min"];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -294,8 +294,8 @@ void __101__HKRemoteCardioFitnessDataSource_generateSharableQueryDataForRequest_
   aBlock[2] = __92__HKRemoteCardioFitnessDataSource__cardioFitnessUserInfoCreationBlockWithAge_biologicalSex___block_invoke;
   aBlock[3] = &unk_1E81B6BB8;
   v11 = v6;
-  v12 = a4;
-  v13 = a3;
+  sexCopy = sex;
+  ageCopy = age;
   v7 = v6;
   v8 = _Block_copy(aBlock);
 

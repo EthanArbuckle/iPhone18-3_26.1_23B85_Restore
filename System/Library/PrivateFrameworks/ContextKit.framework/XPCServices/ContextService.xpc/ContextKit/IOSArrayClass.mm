@@ -1,8 +1,8 @@
 @interface IOSArrayClass
-- (BOOL)isAssignableFrom:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isInstance:(id)a3;
-- (IOSArrayClass)initWithComponentType:(id)a3;
+- (BOOL)isAssignableFrom:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isInstance:(id)instance;
+- (IOSArrayClass)initWithComponentType:(id)type;
 - (id)getInterfacesInternal;
 - (id)getSimpleName;
 - (id)newInstance;
@@ -12,46 +12,46 @@
 
 @implementation IOSArrayClass
 
-- (IOSArrayClass)initWithComponentType:(id)a3
+- (IOSArrayClass)initWithComponentType:(id)type
 {
   v6.receiver = self;
   v6.super_class = IOSArrayClass;
   v4 = [(IOSArrayClass *)&v6 init];
   if (v4)
   {
-    v4->componentType_ = a3;
+    v4->componentType_ = type;
   }
 
   return v4;
 }
 
-- (BOOL)isInstance:(id)a3
+- (BOOL)isInstance:(id)instance
 {
-  v4 = [a3 getClass];
-  v5 = [v4 isArray];
-  if (v5)
+  getClass = [instance getClass];
+  isArray = [getClass isArray];
+  if (isArray)
   {
     componentType = self->componentType_;
-    v7 = [v4 getComponentType];
+    getComponentType = [getClass getComponentType];
 
-    LOBYTE(v5) = [(IOSClass *)componentType isAssignableFrom:v7];
+    LOBYTE(isArray) = [(IOSClass *)componentType isAssignableFrom:getComponentType];
   }
 
-  return v5;
+  return isArray;
 }
 
-- (BOOL)isAssignableFrom:(id)a3
+- (BOOL)isAssignableFrom:(id)from
 {
-  v5 = [a3 isArray];
-  if (v5)
+  isArray = [from isArray];
+  if (isArray)
   {
     componentType = self->componentType_;
-    v7 = [a3 getComponentType];
+    getComponentType = [from getComponentType];
 
-    LOBYTE(v5) = [(IOSClass *)componentType isAssignableFrom:v7];
+    LOBYTE(isArray) = [(IOSClass *)componentType isAssignableFrom:getComponentType];
   }
 
-  return v5;
+  return isArray;
 }
 
 - (id)getSimpleName
@@ -88,7 +88,7 @@
   return [IOSObjectArray arrayWithLength:0 type:?];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -97,9 +97,9 @@
   }
 
   componentType = self->componentType_;
-  v6 = [a3 getComponentType];
+  getComponentType = [equal getComponentType];
 
-  return [(IOSClass *)componentType isEqual:v6];
+  return [(IOSClass *)componentType isEqual:getComponentType];
 }
 
 - (void)dealloc

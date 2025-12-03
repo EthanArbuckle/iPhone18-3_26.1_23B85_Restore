@@ -1,39 +1,39 @@
 @interface SFUnifiedTabBarItemArrangement
-- (BOOL)isEqualToArrangement:(id)a3;
-- (BOOL)isItemAtIndexInFirstUnpinnedSection:(unint64_t)a3;
-- (BOOL)isItemAtIndexInLastSection:(unint64_t)a3;
-- (BOOL)isItemFirstInSection:(id)a3;
-- (BOOL)isItemInSameSectionAsActiveItem:(id)a3;
-- (BOOL)isItemLastInSection:(id)a3;
+- (BOOL)isEqualToArrangement:(id)arrangement;
+- (BOOL)isItemAtIndexInFirstUnpinnedSection:(unint64_t)section;
+- (BOOL)isItemAtIndexInLastSection:(unint64_t)section;
+- (BOOL)isItemFirstInSection:(id)section;
+- (BOOL)isItemInSameSectionAsActiveItem:(id)item;
+- (BOOL)isItemLastInSection:(id)section;
 - (NSIndexSet)allItemIndexes;
 - (NSIndexSet)allSectionIndexes;
 - (NSOrderedSet)itemTitles;
-- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItem:(id)a3;
-- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItemIsExpanded:(BOOL)a3;
-- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItemSquishState:(int64_t)a3;
-- (SFUnifiedTabBarItemArrangement)initWithItem:(id)a3 activeItemIsExpanded:(BOOL)a4;
-- (SFUnifiedTabBarItemArrangement)initWithSections:(id)a3 activeItem:(id)a4 activeItemIsExpanded:(BOOL)a5 allowsScrollingPinnedItems:(BOOL)a6;
-- (id)_initWithItems:(id)a3 activeItem:(id)a4 activeItemIsExpanded:(BOOL)a5 allowPinning:(BOOL)a6 allowsScrollingPinnedItems:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)resolvedArrangementWithPinnedItemLimit:(unint64_t)a3 overflowItem:(id)a4;
-- (id)sectionForItem:(id)a3;
+- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItem:(id)item;
+- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItemIsExpanded:(BOOL)expanded;
+- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItemSquishState:(int64_t)state;
+- (SFUnifiedTabBarItemArrangement)initWithItem:(id)item activeItemIsExpanded:(BOOL)expanded;
+- (SFUnifiedTabBarItemArrangement)initWithSections:(id)sections activeItem:(id)item activeItemIsExpanded:(BOOL)expanded allowsScrollingPinnedItems:(BOOL)items;
+- (id)_initWithItems:(id)items activeItem:(id)item activeItemIsExpanded:(BOOL)expanded allowPinning:(BOOL)pinning allowsScrollingPinnedItems:(BOOL)pinnedItems;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)resolvedArrangementWithPinnedItemLimit:(unint64_t)limit overflowItem:(id)item;
+- (id)sectionForItem:(id)item;
 - (void)_buildSectionsByItemIfNeeded;
-- (void)_setUpWithActiveItem:(id)a3 activeItemIsExpanded:(BOOL)a4;
-- (void)determineActiveItemSquishStateIfNeeded:(BOOL)a3;
-- (void)enumerateSectionsAndItemsUsingBlock:(id)a3;
+- (void)_setUpWithActiveItem:(id)item activeItemIsExpanded:(BOOL)expanded;
+- (void)determineActiveItemSquishStateIfNeeded:(BOOL)needed;
+- (void)enumerateSectionsAndItemsUsingBlock:(id)block;
 @end
 
 @implementation SFUnifiedTabBarItemArrangement
 
-- (SFUnifiedTabBarItemArrangement)initWithItem:(id)a3 activeItemIsExpanded:(BOOL)a4
+- (SFUnifiedTabBarItemArrangement)initWithItem:(id)item activeItemIsExpanded:(BOOL)expanded
 {
-  v4 = a4;
+  expandedCopy = expanded;
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  itemCopy = item;
+  v7 = itemCopy;
+  if (itemCopy)
   {
-    v11[0] = v6;
+    v11[0] = itemCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   }
 
@@ -42,35 +42,35 @@
     v8 = MEMORY[0x1E695E0F0];
   }
 
-  v9 = [(SFUnifiedTabBarItemArrangement *)self _initWithItems:v8 activeItem:v7 activeItemIsExpanded:v4 allowPinning:0 allowsScrollingPinnedItems:0];
+  v9 = [(SFUnifiedTabBarItemArrangement *)self _initWithItems:v8 activeItem:v7 activeItemIsExpanded:expandedCopy allowPinning:0 allowsScrollingPinnedItems:0];
 
   return v9;
 }
 
-- (id)_initWithItems:(id)a3 activeItem:(id)a4 activeItemIsExpanded:(BOOL)a5 allowPinning:(BOOL)a6 allowsScrollingPinnedItems:(BOOL)a7
+- (id)_initWithItems:(id)items activeItem:(id)item activeItemIsExpanded:(BOOL)expanded allowPinning:(BOOL)pinning allowsScrollingPinnedItems:(BOOL)pinnedItems
 {
-  v8 = a6;
-  v9 = a5;
+  pinningCopy = pinning;
+  expandedCopy = expanded;
   v54 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  itemsCopy = items;
+  itemCopy = item;
   v50.receiver = self;
   v50.super_class = SFUnifiedTabBarItemArrangement;
   v14 = [(SFUnifiedTabBarItemArrangement *)&v50 init];
   v15 = v14;
   if (v14)
   {
-    if (v8)
+    if (pinningCopy)
     {
-      v44 = a7;
-      v45 = v9;
-      v16 = [MEMORY[0x1E695DF70] array];
-      v17 = [MEMORY[0x1E695DF70] array];
+      pinnedItemsCopy = pinnedItems;
+      v45 = expandedCopy;
+      array = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
-      v18 = v12;
+      v18 = itemsCopy;
       v19 = [v18 countByEnumeratingWithState:&v46 objects:v53 count:16];
       if (v19)
       {
@@ -88,12 +88,12 @@
             v23 = *(*(&v46 + 1) + 8 * i);
             if ([v23 isPinned])
             {
-              v24 = v16;
+              v24 = array;
             }
 
             else
             {
-              v24 = v17;
+              v24 = array2;
             }
 
             [v24 addObject:v23];
@@ -105,11 +105,11 @@
         while (v20);
       }
 
-      v25 = [v16 copy];
+      v25 = [array copy];
       pinnedItems = v15->_pinnedItems;
       v15->_pinnedItems = v25;
 
-      v27 = [v17 copy];
+      v27 = [array2 copy];
       unpinnedItems = v15->_unpinnedItems;
       v15->_unpinnedItems = v27;
 
@@ -117,8 +117,8 @@
       items = v15->_items;
       v15->_items = v29;
 
-      v15->_allowsScrollingPinnedItems = v44;
-      v9 = v45;
+      v15->_allowsScrollingPinnedItems = pinnedItemsCopy;
+      expandedCopy = v45;
     }
 
     else
@@ -126,12 +126,12 @@
       v31 = v14->_pinnedItems;
       v14->_pinnedItems = MEMORY[0x1E695E0F0];
 
-      v32 = [v12 copy];
+      v32 = [itemsCopy copy];
       v33 = v15->_unpinnedItems;
       v15->_unpinnedItems = v32;
 
       v34 = v32;
-      v16 = v15->_items;
+      array = v15->_items;
       v15->_items = v34;
     }
 
@@ -157,33 +157,33 @@
       v15->_sections = v41;
     }
 
-    [(SFUnifiedTabBarItemArrangement *)v15 _setUpWithActiveItem:v13 activeItemIsExpanded:v9];
+    [(SFUnifiedTabBarItemArrangement *)v15 _setUpWithActiveItem:itemCopy activeItemIsExpanded:expandedCopy];
     v42 = v15;
   }
 
   return v15;
 }
 
-- (SFUnifiedTabBarItemArrangement)initWithSections:(id)a3 activeItem:(id)a4 activeItemIsExpanded:(BOOL)a5 allowsScrollingPinnedItems:(BOOL)a6
+- (SFUnifiedTabBarItemArrangement)initWithSections:(id)sections activeItem:(id)item activeItemIsExpanded:(BOOL)expanded allowsScrollingPinnedItems:(BOOL)items
 {
-  v6 = a6;
-  v7 = a5;
+  itemsCopy = items;
+  expandedCopy = expanded;
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  sectionsCopy = sections;
+  itemCopy = item;
   v41.receiver = self;
   v41.super_class = SFUnifiedTabBarItemArrangement;
   v12 = [(SFUnifiedTabBarItemArrangement *)&v41 init];
   if (v12)
   {
-    v36 = v6;
-    v37 = v7;
-    v13 = [v10 copy];
+    v36 = itemsCopy;
+    v37 = expandedCopy;
+    v13 = [sectionsCopy copy];
     sections = v12->_sections;
     v12->_sections = v13;
 
-    v15 = v10;
-    v16 = [MEMORY[0x1E695DF70] array];
+    v15 = sectionsCopy;
+    array = [MEMORY[0x1E695DF70] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -203,8 +203,8 @@
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v42 + 1) + 8 * i) items];
-          [v16 addObjectsFromArray:v22];
+          items = [*(*(&v42 + 1) + 8 * i) items];
+          [array addObjectsFromArray:items];
         }
 
         v19 = [v17 countByEnumeratingWithState:&v42 objects:v46 count:16];
@@ -213,19 +213,19 @@
       while (v19);
     }
 
-    v23 = [v16 copy];
+    v23 = [array copy];
     items = v12->_items;
     v12->_items = v23;
 
-    v25 = [MEMORY[0x1E695DF70] array];
-    v26 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __110__SFUnifiedTabBarItemArrangement_initWithSections_activeItem_activeItemIsExpanded_allowsScrollingPinnedItems___block_invoke;
     v38[3] = &unk_1E721B6A8;
-    v27 = v25;
+    v27 = array2;
     v39 = v27;
-    v28 = v26;
+    v28 = array3;
     v40 = v28;
     [v17 enumerateObjectsUsingBlock:v38];
     v29 = [v27 copy];
@@ -243,7 +243,7 @@
     }
 
     v12->_allowsScrollingPinnedItems = v33;
-    [(SFUnifiedTabBarItemArrangement *)v12 _setUpWithActiveItem:v11 activeItemIsExpanded:v37];
+    [(SFUnifiedTabBarItemArrangement *)v12 _setUpWithActiveItem:itemCopy activeItemIsExpanded:v37];
     v34 = v12;
   }
 
@@ -266,13 +266,13 @@ void __110__SFUnifiedTabBarItemArrangement_initWithSections_activeItem_activeIte
   [v6 addObjectsFromArray:v7];
 }
 
-- (void)_setUpWithActiveItem:(id)a3 activeItemIsExpanded:(BOOL)a4
+- (void)_setUpWithActiveItem:(id)item activeItemIsExpanded:(BOOL)expanded
 {
-  v19 = a3;
+  itemCopy = item;
   overflowPinnedItems = self->_overflowPinnedItems;
   self->_overflowPinnedItems = MEMORY[0x1E695E0F0];
 
-  objc_storeStrong(&self->_activeItem, a3);
+  objc_storeStrong(&self->_activeItem, item);
   if (self->_activeItem)
   {
     v8 = [(NSArray *)self->_items indexOfObject:?];
@@ -297,15 +297,15 @@ LABEL_6:
   v10 = self->_activeItem;
   if (v10)
   {
-    v11 = a4;
+    expandedCopy = expanded;
   }
 
   else
   {
-    v11 = 0;
+    expandedCopy = 0;
   }
 
-  self->_activeItemIsExpanded = v11;
+  self->_activeItemIsExpanded = expandedCopy;
   if (!v10)
   {
     self->_activeItemIsFirstInSection = 0;
@@ -352,24 +352,24 @@ LABEL_17:
   [(SFUnifiedTabBarItemArrangement *)self setNeedsUpdateCachedItemTitles];
 }
 
-- (BOOL)isEqualToArrangement:(id)a3
+- (BOOL)isEqualToArrangement:(id)arrangement
 {
-  v4 = a3;
+  arrangementCopy = arrangement;
   pinnedItems = self->_pinnedItems;
-  v6 = [v4 pinnedItems];
-  if ([(NSArray *)pinnedItems isEqualToArray:v6])
+  pinnedItems = [arrangementCopy pinnedItems];
+  if ([(NSArray *)pinnedItems isEqualToArray:pinnedItems])
   {
     unpinnedItems = self->_unpinnedItems;
-    v8 = [v4 unpinnedItems];
-    if (-[NSArray isEqualToArray:](unpinnedItems, "isEqualToArray:", v8) && (allowsScrollingPinnedItems = self->_allowsScrollingPinnedItems, allowsScrollingPinnedItems == [v4 allowsScrollingPinnedItems]))
+    unpinnedItems = [arrangementCopy unpinnedItems];
+    if (-[NSArray isEqualToArray:](unpinnedItems, "isEqualToArray:", unpinnedItems) && (allowsScrollingPinnedItems = self->_allowsScrollingPinnedItems, allowsScrollingPinnedItems == [arrangementCopy allowsScrollingPinnedItems]))
     {
       activeItem = self->_activeItem;
-      v11 = [v4 activeItem];
-      if (activeItem == v11 && (activeItemIsExpanded = self->_activeItemIsExpanded, activeItemIsExpanded == [v4 activeItemIsExpanded]) && ((activeItemSquishState = self->_activeItemSquishState, activeItemSquishState == objc_msgSend(v4, "activeItemSquishState")) || self->_activeItemSquishState == -1 || objc_msgSend(v4, "activeItemSquishState") == -1))
+      activeItem = [arrangementCopy activeItem];
+      if (activeItem == activeItem && (activeItemIsExpanded = self->_activeItemIsExpanded, activeItemIsExpanded == [arrangementCopy activeItemIsExpanded]) && ((activeItemSquishState = self->_activeItemSquishState, activeItemSquishState == objc_msgSend(arrangementCopy, "activeItemSquishState")) || self->_activeItemSquishState == -1 || objc_msgSend(arrangementCopy, "activeItemSquishState") == -1))
       {
         sections = self->_sections;
-        v17 = [v4 sections];
-        v14 = [(NSArray *)sections isEqualToArray:v17];
+        sections = [arrangementCopy sections];
+        v14 = [(NSArray *)sections isEqualToArray:sections];
       }
 
       else
@@ -392,14 +392,14 @@ LABEL_17:
   return v14;
 }
 
-- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItem:(id)a3
+- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(SFUnifiedTabBarItemArrangement *)self copy];
   v6 = v5;
-  if (v4)
+  if (itemCopy)
   {
-    v7 = [*(v5 + 40) indexOfObject:v4];
+    v7 = [*(v5 + 40) indexOfObject:itemCopy];
   }
 
   else
@@ -415,7 +415,7 @@ LABEL_17:
 
   else
   {
-    v8 = v4;
+    v8 = itemCopy;
   }
 
   objc_storeStrong((v6 + 48), v8);
@@ -423,18 +423,18 @@ LABEL_17:
   return v6;
 }
 
-- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItemIsExpanded:(BOOL)a3
+- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItemIsExpanded:(BOOL)expanded
 {
   v4 = [(SFUnifiedTabBarItemArrangement *)self copy];
-  v4[24] = a3;
+  v4[24] = expanded;
 
   return v4;
 }
 
-- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItemSquishState:(int64_t)a3
+- (SFUnifiedTabBarItemArrangement)arrangementWithActiveItemSquishState:(int64_t)state
 {
   v4 = [(SFUnifiedTabBarItemArrangement *)self copy];
-  v4[10] = a3;
+  v4[10] = state;
 
   return v4;
 }
@@ -485,18 +485,18 @@ uint64_t __44__SFUnifiedTabBarItemArrangement_itemTitles__block_invoke_2(uint64_
   return v7;
 }
 
-- (id)resolvedArrangementWithPinnedItemLimit:(unint64_t)a3 overflowItem:(id)a4
+- (id)resolvedArrangementWithPinnedItemLimit:(unint64_t)limit overflowItem:(id)item
 {
-  v6 = a4;
+  itemCopy = item;
   if (self->_allowsScrollingPinnedItems)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  else if ([(NSArray *)self->_pinnedItems count]<= a3 + 1)
+  else if ([(NSArray *)self->_pinnedItems count]<= limit + 1)
   {
-    v7 = [(SFUnifiedTabBarItemArrangement *)self copy];
-    v7->_pinnedItemLimit = a3;
+    selfCopy = [(SFUnifiedTabBarItemArrangement *)self copy];
+    selfCopy->_pinnedItemLimit = limit;
   }
 
   else
@@ -508,7 +508,7 @@ uint64_t __44__SFUnifiedTabBarItemArrangement_itemTitles__block_invoke_2(uint64_
     v25[3] = &unk_1E721B710;
     v25[4] = self;
     v9 = [(NSArray *)pinnedItems safari_filterObjectsUsingBlock:v25];
-    v10 = [(NSArray *)self->_pinnedItems count]- a3;
+    v10 = [(NSArray *)self->_pinnedItems count]- limit;
     v11 = [v9 subarrayWithRange:{objc_msgSend(v9, "count") - v10, v10}];
     v12 = self->_pinnedItems;
     v20 = MEMORY[0x1E69E9820];
@@ -518,18 +518,18 @@ uint64_t __44__SFUnifiedTabBarItemArrangement_itemTitles__block_invoke_2(uint64_
     v13 = v11;
     v24 = v13;
     v14 = [(NSArray *)v12 safari_filterObjectsUsingBlock:&v20];
-    v15 = [v14 arrayByAddingObject:{v6, v20, v21, v22, v23}];
+    v15 = [v14 arrayByAddingObject:{itemCopy, v20, v21, v22, v23}];
     v16 = [v15 arrayByAddingObjectsFromArray:self->_unpinnedItems];
 
-    v7 = [[SFUnifiedTabBarItemArrangement alloc] initWithItems:v16 activeItem:self->_activeItem activeItemIsExpanded:self->_activeItemIsExpanded allowsScrollingPinnedItems:0];
-    v7->_activeItemSquishState = self->_activeItemSquishState;
-    overflowPinnedItems = v7->_overflowPinnedItems;
-    v7->_pinnedItemLimit = a3;
-    v7->_overflowPinnedItems = v13;
+    selfCopy = [[SFUnifiedTabBarItemArrangement alloc] initWithItems:v16 activeItem:self->_activeItem activeItemIsExpanded:self->_activeItemIsExpanded allowsScrollingPinnedItems:0];
+    selfCopy->_activeItemSquishState = self->_activeItemSquishState;
+    overflowPinnedItems = selfCopy->_overflowPinnedItems;
+    selfCopy->_pinnedItemLimit = limit;
+    selfCopy->_overflowPinnedItems = v13;
     v18 = v13;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 uint64_t __86__SFUnifiedTabBarItemArrangement_resolvedArrangementWithPinnedItemLimit_overflowItem___block_invoke(uint64_t a1, void *a2)
@@ -553,11 +553,11 @@ uint64_t __86__SFUnifiedTabBarItemArrangement_resolvedArrangementWithPinnedItemL
   return [v2 indexSetWithIndexesInRange:{0, v3}];
 }
 
-- (void)determineActiveItemSquishStateIfNeeded:(BOOL)a3
+- (void)determineActiveItemSquishStateIfNeeded:(BOOL)needed
 {
   if (self->_activeItemSquishState == -1)
   {
-    self->_activeItemSquishState = a3;
+    self->_activeItemSquishState = needed;
   }
 }
 
@@ -569,9 +569,9 @@ uint64_t __86__SFUnifiedTabBarItemArrangement_resolvedArrangementWithPinnedItemL
   return [v2 indexSetWithIndexesInRange:{0, v3}];
 }
 
-- (void)enumerateSectionsAndItemsUsingBlock:(id)a3
+- (void)enumerateSectionsAndItemsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x2020000000;
@@ -581,7 +581,7 @@ uint64_t __86__SFUnifiedTabBarItemArrangement_resolvedArrangementWithPinnedItemL
   v7[1] = 3221225472;
   v7[2] = __70__SFUnifiedTabBarItemArrangement_enumerateSectionsAndItemsUsingBlock___block_invoke;
   v7[3] = &unk_1E721B738;
-  v6 = v4;
+  v6 = blockCopy;
   v8 = v6;
   v9 = v10;
   [(NSArray *)sections enumerateObjectsUsingBlock:v7];
@@ -626,26 +626,26 @@ void __70__SFUnifiedTabBarItemArrangement_enumerateSectionsAndItemsUsingBlock___
   }
 }
 
-- (BOOL)isItemAtIndexInFirstUnpinnedSection:(unint64_t)a3
+- (BOOL)isItemAtIndexInFirstUnpinnedSection:(unint64_t)section
 {
   v5 = [(NSArray *)self->_pinnedItems count];
   if (!v5)
   {
-    v10 = [(NSArray *)self->_sections firstObject];
-    v11 = [v10 items];
-    v12 = [v11 count];
+    firstObject = [(NSArray *)self->_sections firstObject];
+    items = [firstObject items];
+    v12 = [items count];
     goto LABEL_9;
   }
 
   v6 = v5;
   v7 = [(NSArray *)self->_items count];
-  if (v6 <= a3 && v6 != v7)
+  if (v6 <= section && v6 != v7)
   {
-    v10 = [(NSArray *)self->_sections objectAtIndexedSubscript:1];
-    v11 = [v10 items];
-    v12 = [v11 count] + v6;
+    firstObject = [(NSArray *)self->_sections objectAtIndexedSubscript:1];
+    items = [firstObject items];
+    v12 = [items count] + v6;
 LABEL_9:
-    v9 = v12 > a3;
+    v9 = v12 > section;
 
     return v9;
   }
@@ -653,20 +653,20 @@ LABEL_9:
   return 0;
 }
 
-- (BOOL)isItemAtIndexInLastSection:(unint64_t)a3
+- (BOOL)isItemAtIndexInLastSection:(unint64_t)section
 {
   v5 = [(NSArray *)self->_items count];
-  v6 = [(NSArray *)self->_sections lastObject];
-  v7 = [v6 items];
-  LOBYTE(a3) = v5 - [v7 count] <= a3;
+  lastObject = [(NSArray *)self->_sections lastObject];
+  items = [lastObject items];
+  LOBYTE(section) = v5 - [items count] <= section;
 
-  return a3;
+  return section;
 }
 
-- (BOOL)isItemFirstInSection:(id)a3
+- (BOOL)isItemFirstInSection:(id)section
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sectionCopy = section;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -685,10 +685,10 @@ LABEL_9:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) items];
-        v10 = [v9 firstObject];
+        items = [*(*(&v12 + 1) + 8 * i) items];
+        firstObject = [items firstObject];
 
-        if (v10 == v4)
+        if (firstObject == sectionCopy)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -710,10 +710,10 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isItemLastInSection:(id)a3
+- (BOOL)isItemLastInSection:(id)section
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sectionCopy = section;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -732,10 +732,10 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) items];
-        v10 = [v9 lastObject];
+        items = [*(*(&v12 + 1) + 8 * i) items];
+        lastObject = [items lastObject];
 
-        if (v10 == v4)
+        if (lastObject == sectionCopy)
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -757,20 +757,20 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isItemInSameSectionAsActiveItem:(id)a3
+- (BOOL)isItemInSameSectionAsActiveItem:(id)item
 {
   if (!self->_activeItem)
   {
     return 0;
   }
 
-  v4 = [(SFUnifiedTabBarItemArrangement *)self sectionForItem:a3];
-  v5 = [v4 identifier];
+  v4 = [(SFUnifiedTabBarItemArrangement *)self sectionForItem:item];
+  identifier = [v4 identifier];
 
   v6 = [(SFUnifiedTabBarItemArrangement *)self sectionForItem:self->_activeItem];
-  v7 = [v6 identifier];
+  identifier2 = [v6 identifier];
 
-  LOBYTE(v6) = [v5 isEqual:v7];
+  LOBYTE(v6) = [identifier isEqual:identifier2];
   return v6;
 }
 
@@ -779,9 +779,9 @@ LABEL_11:
   v26 = *MEMORY[0x1E69E9840];
   if (!self->_sectionsByItem)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     sectionsByItem = self->_sectionsByItem;
-    self->_sectionsByItem = v3;
+    self->_sectionsByItem = strongToStrongObjectsMapTable;
 
     v22 = 0u;
     v23 = 0u;
@@ -808,8 +808,8 @@ LABEL_11:
           v17 = 0u;
           v18 = 0u;
           v19 = 0u;
-          v11 = [v10 items];
-          v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+          items = [v10 items];
+          v12 = [items countByEnumeratingWithState:&v16 objects:v24 count:16];
           if (v12)
           {
             v13 = v12;
@@ -821,14 +821,14 @@ LABEL_11:
               {
                 if (*v17 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(items);
                 }
 
                 [(NSMapTable *)self->_sectionsByItem setObject:v10 forKey:*(*(&v16 + 1) + 8 * v15++)];
               }
 
               while (v13 != v15);
-              v13 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+              v13 = [items countByEnumeratingWithState:&v16 objects:v24 count:16];
             }
 
             while (v13);
@@ -846,16 +846,16 @@ LABEL_11:
   }
 }
 
-- (id)sectionForItem:(id)a3
+- (id)sectionForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   [(SFUnifiedTabBarItemArrangement *)self _buildSectionsByItemIfNeeded];
-  v5 = [(NSMapTable *)self->_sectionsByItem objectForKey:v4];
+  v5 = [(NSMapTable *)self->_sectionsByItem objectForKey:itemCopy];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SFUnifiedTabBarItemArrangement);
   objc_storeStrong(&v4->_activeItem, self->_activeItem);

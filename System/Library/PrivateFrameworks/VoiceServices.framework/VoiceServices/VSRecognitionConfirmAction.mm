@@ -1,38 +1,38 @@
 @interface VSRecognitionConfirmAction
 - (VSRecognitionConfirmAction)init;
-- (VSRecognitionConfirmAction)initWithModelIdentifier:(id)a3;
+- (VSRecognitionConfirmAction)initWithModelIdentifier:(id)identifier;
 - (int)completionType;
-- (void)_setConfirmed:(BOOL)a3;
+- (void)_setConfirmed:(BOOL)confirmed;
 - (void)dealloc;
-- (void)setConfirmedAction:(id)a3;
-- (void)setDeniedAction:(id)a3;
+- (void)setConfirmedAction:(id)action;
+- (void)setDeniedAction:(id)action;
 @end
 
 @implementation VSRecognitionConfirmAction
 
-- (void)setDeniedAction:(id)a3
+- (void)setDeniedAction:(id)action
 {
   deniedAction = self->_deniedAction;
-  if (deniedAction != a3)
+  if (deniedAction != action)
   {
 
-    self->_deniedAction = a3;
+    self->_deniedAction = action;
   }
 }
 
-- (void)setConfirmedAction:(id)a3
+- (void)setConfirmedAction:(id)action
 {
   confirmedAction = self->_confirmedAction;
-  if (confirmedAction != a3)
+  if (confirmedAction != action)
   {
 
-    self->_confirmedAction = a3;
+    self->_confirmedAction = action;
   }
 }
 
-- (void)_setConfirmed:(BOOL)a3
+- (void)_setConfirmed:(BOOL)confirmed
 {
-  if (a3)
+  if (confirmed)
   {
     v3 = 2;
   }
@@ -75,7 +75,7 @@
   [(VSRecognitionRecognizeAction *)&v3 dealloc];
 }
 
-- (VSRecognitionConfirmAction)initWithModelIdentifier:(id)a3
+- (VSRecognitionConfirmAction)initWithModelIdentifier:(id)identifier
 {
   *&self->_confirmFlags |= 1u;
   v4.receiver = self;

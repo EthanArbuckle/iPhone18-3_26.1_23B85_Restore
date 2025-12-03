@@ -1,57 +1,57 @@
 @interface NPTWiFiCollector
-+ (id)BTCModeToString:(int)a3;
-+ (id)ControlModeToString:(unsigned int)a3;
-+ (id)OpModeToString:(int)a3;
-+ (id)PhyModeToString:(int)a3;
-+ (id)SecurityTypeToString:(unint64_t)a3;
-+ (id)convertBSSIDToOUI:(id)a3;
-+ (id)convertPowerStateToString:(id)a3;
-+ (id)fetchWiFiData:(id)a3;
-+ (int64_t)channelBandToInt:(unsigned int)a3;
-- (void)startCollectingWithCompletion:(id)a3;
++ (id)BTCModeToString:(int)string;
++ (id)ControlModeToString:(unsigned int)string;
++ (id)OpModeToString:(int)string;
++ (id)PhyModeToString:(int)string;
++ (id)SecurityTypeToString:(unint64_t)string;
++ (id)convertBSSIDToOUI:(id)i;
++ (id)convertPowerStateToString:(id)string;
++ (id)fetchWiFiData:(id)data;
++ (int64_t)channelBandToInt:(unsigned int)int;
+- (void)startCollectingWithCompletion:(id)completion;
 - (void)stopCollecting;
 @end
 
 @implementation NPTWiFiCollector
 
-- (void)startCollectingWithCompletion:(id)a3
+- (void)startCollectingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [(NPTWiFiCollector *)self setCachedMetadata:v6];
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v8 = [(NPTWiFiCollector *)self cachedMetadata];
-  [v8 setObject:v7 forKeyedSubscript:@"initial_state"];
+  cachedMetadata = [(NPTWiFiCollector *)self cachedMetadata];
+  [cachedMetadata setObject:v7 forKeyedSubscript:@"initial_state"];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v10 = [(NPTWiFiCollector *)self cachedMetadata];
-  [v10 setObject:v9 forKeyedSubscript:@"events"];
+  cachedMetadata2 = [(NPTWiFiCollector *)self cachedMetadata];
+  [cachedMetadata2 setObject:v9 forKeyedSubscript:@"events"];
 
   v11 = objc_alloc_init(MEMORY[0x277D02B18]);
   [(NPTWiFiCollector *)self setInterface:v11];
 
   objc_initWeak(&location, self);
-  v12 = [(NPTWiFiCollector *)self interface];
+  interface = [(NPTWiFiCollector *)self interface];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __50__NPTWiFiCollector_startCollectingWithCompletion___block_invoke;
   v32[3] = &unk_2789D4200;
   objc_copyWeak(&v33, &location);
-  [v12 setEventHandler:v32];
+  [interface setEventHandler:v32];
 
-  v13 = [(NPTWiFiCollector *)self interface];
-  [v13 activate];
+  interface2 = [(NPTWiFiCollector *)self interface];
+  [interface2 activate];
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   for (i = 0; [&unk_2848CF4E0 count] > i; ++i)
   {
     v16 = [&unk_2848CF4E0 objectAtIndexedSubscript:i];
-    v17 = [(NPTWiFiCollector *)self interface];
-    v18 = [v16 integerValue];
+    interface3 = [(NPTWiFiCollector *)self interface];
+    integerValue = [v16 integerValue];
     v31 = 0;
-    [v17 startMonitoringEventType:v18 error:&v31];
+    [interface3 startMonitoringEventType:integerValue error:&v31];
     v19 = v31;
 
     if (v19)
@@ -60,37 +60,37 @@
     }
   }
 
-  v20 = [(NPTWiFiCollector *)self interface];
-  v21 = [NPTWiFiCollector fetchWiFiData:v20];
+  interface4 = [(NPTWiFiCollector *)self interface];
+  v21 = [NPTWiFiCollector fetchWiFiData:interface4];
 
   [v5 addEntriesFromDictionary:v21];
-  v22 = [(NPTWiFiCollector *)self interface];
-  v23 = [v22 currentKnownNetworkProfile];
+  interface5 = [(NPTWiFiCollector *)self interface];
+  currentKnownNetworkProfile = [interface5 currentKnownNetworkProfile];
 
-  v24 = [(NPTWiFiCollector *)self interface];
+  interface6 = [(NPTWiFiCollector *)self interface];
   v25 = objc_opt_respondsToSelector();
 
   if (v25)
   {
-    v26 = [(NPTWiFiCollector *)self interface];
-    v27 = [v26 CCA];
+    interface7 = [(NPTWiFiCollector *)self interface];
+    v27 = [interface7 CCA];
 
     v28 = [MEMORY[0x277CCABB0] numberWithInteger:v27];
     [v5 setValue:v28 forKey:@"wifi_cwf_cca"];
   }
 
-  if (v23)
+  if (currentKnownNetworkProfile)
   {
-    v29 = [v23 dictionary];
-    [v5 addEntriesFromDictionary:v29];
+    dictionary = [currentKnownNetworkProfile dictionary];
+    [v5 addEntriesFromDictionary:dictionary];
   }
 
-  v30 = [(NPTWiFiCollector *)self cachedMetadata];
-  [v30 setObject:v5 forKeyedSubscript:@"initial_state"];
+  cachedMetadata3 = [(NPTWiFiCollector *)self cachedMetadata];
+  [cachedMetadata3 setObject:v5 forKeyedSubscript:@"initial_state"];
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v5, v14);
+    completionCopy[2](completionCopy, v5, v14);
   }
 
   objc_destroyWeak(&v33);
@@ -613,110 +613,110 @@ LABEL_94:
 
 - (void)stopCollecting
 {
-  v2 = [(NPTWiFiCollector *)self interface];
-  [v2 invalidate];
+  interface = [(NPTWiFiCollector *)self interface];
+  [interface invalidate];
 }
 
-+ (id)fetchWiFiData:(id)a3
++ (id)fetchWiFiData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v6 = [v4 BSSID];
-  [v5 setObject:v6 forKeyedSubscript:@"wifi_bssid"];
+  bSSID = [dataCopy BSSID];
+  [v5 setObject:bSSID forKeyedSubscript:@"wifi_bssid"];
 
-  v7 = [v4 BSSID];
-  v8 = [NPTWiFiCollector convertBSSIDToOUI:v7];
+  bSSID2 = [dataCopy BSSID];
+  v8 = [NPTWiFiCollector convertBSSIDToOUI:bSSID2];
   [v5 setObject:v8 forKeyedSubscript:@"wifi_oui"];
 
-  v9 = [a1 BTCModeToString:{objc_msgSend(v4, "bluetoothCoexistenceMode")}];
+  v9 = [self BTCModeToString:{objc_msgSend(dataCopy, "bluetoothCoexistenceMode")}];
   [v5 setObject:v9 forKeyedSubscript:@"wifi_btc_mode"];
 
   v10 = MEMORY[0x277CCABB0];
-  v11 = [v4 channel];
-  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v11, "channel")}];
+  channel = [dataCopy channel];
+  v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(channel, "channel")}];
   [v5 setObject:v12 forKeyedSubscript:@"wifi_channel"];
 
   v13 = MEMORY[0x277CCABB0];
-  v14 = [v4 channel];
-  v15 = [v13 numberWithInteger:{objc_msgSend(a1, "channelBandToInt:", objc_msgSend(v14, "band"))}];
+  channel2 = [dataCopy channel];
+  v15 = [v13 numberWithInteger:{objc_msgSend(self, "channelBandToInt:", objc_msgSend(channel2, "band"))}];
   [v5 setObject:v15 forKeyedSubscript:@"wifi_channel_band"];
 
   v16 = MEMORY[0x277CCABB0];
-  v17 = [v4 channel];
-  v18 = [v16 numberWithUnsignedInt:{objc_msgSend(v17, "width")}];
+  channel3 = [dataCopy channel];
+  v18 = [v16 numberWithUnsignedInt:{objc_msgSend(channel3, "width")}];
   [v5 setObject:v18 forKeyedSubscript:@"wifi_channel_width"];
 
-  v19 = [v4 countryCode];
-  [v5 setObject:v19 forKeyedSubscript:@"wifi_country_code"];
+  countryCode = [dataCopy countryCode];
+  [v5 setObject:countryCode forKeyedSubscript:@"wifi_country_code"];
 
-  v20 = [a1 ControlModeToString:{objc_msgSend(v4, "EAP8021XControlMode")}];
+  v20 = [self ControlModeToString:{objc_msgSend(dataCopy, "EAP8021XControlMode")}];
   [v5 setObject:v20 forKeyedSubscript:@"wifi_eapol_control_mode"];
 
   v21 = MEMORY[0x277CCACA8];
-  v22 = [v4 EAP8021XSupplicantState];
-  if (v22 > 8)
+  eAP8021XSupplicantState = [dataCopy EAP8021XSupplicantState];
+  if (eAP8021XSupplicantState > 8)
   {
     v23 = "<unknown>";
   }
 
   else
   {
-    v23 = SupplicantStateString_str[v22];
+    v23 = SupplicantStateString_str[eAP8021XSupplicantState];
   }
 
   v24 = [v21 stringWithUTF8String:v23];
   [v5 setObject:v24 forKeyedSubscript:@"wifi_eapol_supplicant_state"];
 
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "guardInterval")}];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "guardInterval")}];
   [v5 setObject:v25 forKeyedSubscript:@"wifi_guard_interval"];
 
-  v26 = [v4 MACAddress];
-  [v5 setObject:v26 forKeyedSubscript:@"wifi_mac_address"];
+  mACAddress = [dataCopy MACAddress];
+  [v5 setObject:mACAddress forKeyedSubscript:@"wifi_mac_address"];
 
-  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "MCSIndex")}];
+  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "MCSIndex")}];
   [v5 setObject:v27 forKeyedSubscript:@"wifi_mcs_index"];
 
-  v28 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "noise")}];
+  v28 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(dataCopy, "noise")}];
   [v5 setObject:v28 forKeyedSubscript:@"wifi_noise"];
 
-  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "numberOfSpatialStreams")}];
+  v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "numberOfSpatialStreams")}];
   [v5 setObject:v29 forKeyedSubscript:@"wifi_number_of_spatial_streams"];
 
-  v30 = [a1 OpModeToString:{objc_msgSend(v4, "opMode")}];
+  v30 = [self OpModeToString:{objc_msgSend(dataCopy, "opMode")}];
   [v5 setObject:v30 forKeyedSubscript:@"wifi_op_mode"];
 
-  v31 = [a1 PhyModeToString:{objc_msgSend(v4, "PHYMode")}];
+  v31 = [self PhyModeToString:{objc_msgSend(dataCopy, "PHYMode")}];
   [v5 setObject:v31 forKeyedSubscript:@"wifi_phy_mode"];
 
-  v32 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "RSSI")}];
+  v32 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(dataCopy, "RSSI")}];
   [v5 setObject:v32 forKeyedSubscript:@"wifi_rssi"];
 
-  v33 = [a1 SecurityTypeToString:{objc_msgSend(v4, "securityType")}];
+  v33 = [self SecurityTypeToString:{objc_msgSend(dataCopy, "securityType")}];
   [v5 setObject:v33 forKeyedSubscript:@"wifi_security"];
 
-  v34 = [v4 networkName];
-  [v5 setObject:v34 forKeyedSubscript:@"wifi_ssid"];
+  networkName = [dataCopy networkName];
+  [v5 setObject:networkName forKeyedSubscript:@"wifi_ssid"];
 
   v35 = MEMORY[0x277CCABB0];
-  [v4 txRate];
+  [dataCopy txRate];
   v36 = [v35 numberWithDouble:?];
   [v5 setObject:v36 forKeyedSubscript:@"wifi_tx_rate"];
 
-  v37 = [v4 cachedJoinStatus];
-  v38 = v37;
-  if (v37)
+  cachedJoinStatus = [dataCopy cachedJoinStatus];
+  v38 = cachedJoinStatus;
+  if (cachedJoinStatus)
   {
-    v39 = [v37 scanResult];
-    v40 = [v39 networkName];
-    v41 = [v4 networkName];
-    v42 = [v40 isEqualToString:v41];
+    scanResult = [cachedJoinStatus scanResult];
+    networkName2 = [scanResult networkName];
+    networkName3 = [dataCopy networkName];
+    v42 = [networkName2 isEqualToString:networkName3];
 
     if (v42)
     {
       v43 = MEMORY[0x277CCABB0];
-      v44 = [v4 cachedJoinStatus];
-      v45 = [v44 endedAt];
-      [v45 timeIntervalSinceNow];
+      cachedJoinStatus2 = [dataCopy cachedJoinStatus];
+      endedAt = [cachedJoinStatus2 endedAt];
+      [endedAt timeIntervalSinceNow];
       v47 = [v43 numberWithDouble:-v46];
       [v5 setObject:v47 forKeyedSubscript:@"wifi_assoc_duration"];
     }
@@ -725,7 +725,7 @@ LABEL_94:
   if (objc_opt_respondsToSelector())
   {
     v48 = MEMORY[0x277CCABB0];
-    [v4 rxRate];
+    [dataCopy rxRate];
     v49 = [v48 numberWithDouble:?];
     [v5 setObject:v49 forKeyedSubscript:@"wifi_rx_rate"];
   }
@@ -733,22 +733,22 @@ LABEL_94:
   return v5;
 }
 
-+ (id)convertBSSIDToOUI:(id)a3
++ (id)convertBSSIDToOUI:(id)i
 {
-  v3 = a3;
-  if ([v3 length])
+  iCopy = i;
+  if ([iCopy length])
   {
     v4 = 0;
     v5 = 0;
-    while ([v3 characterAtIndex:v4] != 58 || ++v5 != 3)
+    while ([iCopy characterAtIndex:v4] != 58 || ++v5 != 3)
     {
-      if ([v3 length] <= ++v4)
+      if ([iCopy length] <= ++v4)
       {
         goto LABEL_6;
       }
     }
 
-    v6 = [v3 substringToIndex:v4];
+    v6 = [iCopy substringToIndex:v4];
   }
 
   else
@@ -760,18 +760,18 @@ LABEL_6:
   return v6;
 }
 
-+ (id)SecurityTypeToString:(unint64_t)a3
++ (id)SecurityTypeToString:(unint64_t)string
 {
-  if (a3 > 15)
+  if (string > 15)
   {
-    if (a3 <= 63)
+    if (string <= 63)
     {
-      if (a3 == 16)
+      if (string == 16)
       {
         return @"WPA2 Personal";
       }
 
-      if (a3 == 32)
+      if (string == 32)
       {
         return @"WPA2 Enterprise";
       }
@@ -779,7 +779,7 @@ LABEL_6:
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 0x40uLL:
           return @"WPA3 Personal";
@@ -791,14 +791,14 @@ LABEL_6:
     }
   }
 
-  else if (a3 <= 1)
+  else if (string <= 1)
   {
-    if (a3 == -1)
+    if (string == -1)
     {
       return @"Any";
     }
 
-    if (a3 == 1)
+    if (string == 1)
     {
       return @"WEP";
     }
@@ -806,7 +806,7 @@ LABEL_6:
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 2uLL:
         return @"WAPI";
@@ -820,44 +820,44 @@ LABEL_6:
   return @"Conversion not found";
 }
 
-+ (id)BTCModeToString:(int)a3
++ (id)BTCModeToString:(int)string
 {
-  if (a3 > 8)
+  if (string > 8)
   {
     return @"Conversion not found";
   }
 
   else
   {
-    return off_2789D4450[a3];
+    return off_2789D4450[string];
   }
 }
 
-+ (id)ControlModeToString:(unsigned int)a3
++ (id)ControlModeToString:(unsigned int)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return @"Conversion not found";
   }
 
   else
   {
-    return off_2789D4498[a3];
+    return off_2789D4498[string];
   }
 }
 
-+ (id)OpModeToString:(int)a3
++ (id)OpModeToString:(int)string
 {
-  if (a3 > 15)
+  if (string > 15)
   {
-    if (a3 <= 63)
+    if (string <= 63)
     {
-      if (a3 == 16)
+      if (string == 16)
       {
         return @"MONITOR";
       }
 
-      if (a3 == 32)
+      if (string == 32)
       {
         return @"P2P_GO";
       }
@@ -865,7 +865,7 @@ LABEL_6:
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 64:
           return @"P2P_CLI";
@@ -877,14 +877,14 @@ LABEL_6:
     }
   }
 
-  else if (a3 <= 1)
+  else if (string <= 1)
   {
-    if (!a3)
+    if (!string)
     {
       return @"NONE";
     }
 
-    if (a3 == 1)
+    if (string == 1)
     {
       return @"STA";
     }
@@ -892,7 +892,7 @@ LABEL_6:
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 2:
         return @"IBSS";
@@ -906,13 +906,13 @@ LABEL_6:
   return @"Conversion not found";
 }
 
-+ (id)PhyModeToString:(int)a3
++ (id)PhyModeToString:(int)string
 {
-  if (a3 > 31)
+  if (string > 31)
   {
-    if (a3 > 255)
+    if (string > 255)
     {
-      switch(a3)
+      switch(string)
       {
         case 256:
           return @"11ax";
@@ -925,7 +925,7 @@ LABEL_6:
 
     else
     {
-      switch(a3)
+      switch(string)
       {
         case 32:
           return @"turbo_a";
@@ -937,9 +937,9 @@ LABEL_6:
     }
   }
 
-  else if (a3 > 3)
+  else if (string > 3)
   {
-    switch(a3)
+    switch(string)
     {
       case 4:
         return @"11b";
@@ -952,7 +952,7 @@ LABEL_6:
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 0:
         return @"unknown";
@@ -966,12 +966,12 @@ LABEL_6:
   return @"Conversion not found";
 }
 
-+ (id)convertPowerStateToString:(id)a3
++ (id)convertPowerStateToString:(id)string
 {
-  v3 = [a3 bytes];
-  if (v3)
+  bytes = [string bytes];
+  if (bytes)
   {
-    v4 = v3;
+    v4 = bytes;
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     if (*(v4 + 4))
     {
@@ -999,21 +999,21 @@ LABEL_6:
   return v5;
 }
 
-+ (int64_t)channelBandToInt:(unsigned int)a3
++ (int64_t)channelBandToInt:(unsigned int)int
 {
-  if (a3 >= 4)
+  if (int >= 4)
   {
     v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:?];
   }
 
   else
   {
-    v3 = qword_2789D44E0[a3];
+    v3 = qword_2789D44E0[int];
   }
 
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 @end

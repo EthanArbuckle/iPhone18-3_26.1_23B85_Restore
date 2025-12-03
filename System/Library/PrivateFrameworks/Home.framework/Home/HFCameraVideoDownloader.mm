@@ -1,61 +1,61 @@
 @interface HFCameraVideoDownloader
-- (HFCameraVideoDownloader)initWithCameraProfile:(id)a3;
+- (HFCameraVideoDownloader)initWithCameraProfile:(id)profile;
 - (HMCameraProfile)cameraProfile;
-- (id)_downloadOperationForClip:(id)a3;
-- (id)_fetchOperationForClip:(id)a3 withClipManager:(id)a4;
-- (id)downloadOperationForClip:(id)a3;
-- (id)priorityDownloadOperationForClip:(id)a3;
+- (id)_downloadOperationForClip:(id)clip;
+- (id)_fetchOperationForClip:(id)clip withClipManager:(id)manager;
+- (id)downloadOperationForClip:(id)clip;
+- (id)priorityDownloadOperationForClip:(id)clip;
 @end
 
 @implementation HFCameraVideoDownloader
 
-- (HFCameraVideoDownloader)initWithCameraProfile:(id)a3
+- (HFCameraVideoDownloader)initWithCameraProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HFCameraVideoDownloader;
   v5 = [(HFCameraVideoDownloader *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_cameraProfile, v4);
+    objc_storeWeak(&v5->_cameraProfile, profileCopy);
   }
 
   return v6;
 }
 
-- (id)priorityDownloadOperationForClip:(id)a3
+- (id)priorityDownloadOperationForClip:(id)clip
 {
-  v3 = [(HFCameraVideoDownloader *)self _downloadOperationForClip:a3];
+  v3 = [(HFCameraVideoDownloader *)self _downloadOperationForClip:clip];
   [v3 setQueuePriority:4];
   [v3 setQualityOfService:25];
 
   return v3;
 }
 
-- (id)downloadOperationForClip:(id)a3
+- (id)downloadOperationForClip:(id)clip
 {
-  v3 = [(HFCameraVideoDownloader *)self _downloadOperationForClip:a3];
+  v3 = [(HFCameraVideoDownloader *)self _downloadOperationForClip:clip];
   [v3 setQueuePriority:0];
   [v3 setQualityOfService:25];
 
   return v3;
 }
 
-- (id)_downloadOperationForClip:(id)a3
+- (id)_downloadOperationForClip:(id)clip
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clipCopy = clip;
   v5 = HFLogForCategory(0x1DuLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 hf_prettyDescription];
+    hf_prettyDescription = [clipCopy hf_prettyDescription];
     *buf = 138412290;
-    v15 = v6;
+    v15 = hf_prettyDescription;
     _os_log_impl(&dword_20D9BF000, v5, OS_LOG_TYPE_DEFAULT, "Called download block for clip: %@", buf, 0xCu);
   }
 
-  v7 = [HFCameraVideoDownloadOperation downloadOperationForClip:v4];
+  v7 = [HFCameraVideoDownloadOperation downloadOperationForClip:clipCopy];
   objc_initWeak(buf, v7);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -63,7 +63,7 @@
   v11[3] = &unk_277DF6458;
   objc_copyWeak(&v13, buf);
   v11[4] = self;
-  v8 = v4;
+  v8 = clipCopy;
   v12 = v8;
   [v7 setDownloadBlock:v11];
 
@@ -134,13 +134,13 @@ uint64_t __53__HFCameraVideoDownloader__downloadOperationForClip___block_invoke_
   }
 }
 
-- (id)_fetchOperationForClip:(id)a3 withClipManager:(id)a4
+- (id)_fetchOperationForClip:(id)clip withClipManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  clipCopy = clip;
+  managerCopy = manager;
+  if (managerCopy)
   {
-    if (v7)
+    if (clipCopy)
     {
       goto LABEL_3;
     }
@@ -148,25 +148,25 @@ uint64_t __53__HFCameraVideoDownloader__downloadOperationForClip___block_invoke_
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"HFCameraVideoDownloader.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"clipManager"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFCameraVideoDownloader.m" lineNumber:103 description:{@"Invalid parameter not satisfying: %@", @"clipManager"}];
 
-    if (v7)
+    if (clipCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"HFCameraVideoDownloader.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"cameraClip"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFCameraVideoDownloader.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"cameraClip"}];
 
 LABEL_3:
-  v9 = [objc_alloc(MEMORY[0x277CD18E8]) initWithClipManager:v8 clip:v7];
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  v9 = [objc_alloc(MEMORY[0x277CD18E8]) initWithClipManager:managerCopy clip:clipCopy];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = +[HFCameraUtilities videoCachesDirectoryURL];
-  [v10 createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:0];
+  [defaultManager createDirectoryAtURL:v11 withIntermediateDirectories:1 attributes:0 error:0];
 
-  v12 = [HFCameraUtilities videoDestinationURLForCameraClip:v7];
+  v12 = [HFCameraUtilities videoDestinationURLForCameraClip:clipCopy];
   [v9 setClipDestinationFileURL:v12];
 
   return v9;

@@ -13,9 +13,9 @@
   v2 = [(SXAnalyticsEvent *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     startDate = v2->_startDate;
-    v2->_startDate = v3;
+    v2->_startDate = date;
   }
 
   return v2;
@@ -25,26 +25,26 @@
 {
   if (!self->_endDate)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     endDate = self->_endDate;
-    self->_endDate = v4;
+    self->_endDate = date;
 
-    MEMORY[0x1EEE66BB8](v4, endDate);
+    MEMORY[0x1EEE66BB8](date, endDate);
   }
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(SXAnalyticsEvent *)self endDate];
+  endDate = [(SXAnalyticsEvent *)self endDate];
 
-  if (v4)
+  if (endDate)
   {
-    v5 = [(SXAnalyticsEvent *)self endDate];
-    [v5 timeIntervalSinceReferenceDate];
+    endDate2 = [(SXAnalyticsEvent *)self endDate];
+    [endDate2 timeIntervalSinceReferenceDate];
     v7 = v6;
-    v8 = [(SXAnalyticsEvent *)self startDate];
-    [v8 timeIntervalSinceReferenceDate];
+    startDate = [(SXAnalyticsEvent *)self startDate];
+    [startDate timeIntervalSinceReferenceDate];
     [v3 appendFormat:@"; duration: %f", v7 - v9];
   }
 

@@ -1,6 +1,6 @@
 @interface PKDPlugInHold
-- (BOOL)isEqual:(id)a3;
-- (PKDPlugInHold)initWithPlugIns:(id)a3 extensionPointName:(id)a4 forClient:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKDPlugInHold)initWithPlugIns:(id)ins extensionPointName:(id)name forClient:(id)client;
 - (PKDXpcClient)client;
 - (id)description;
 - (unint64_t)hash;
@@ -8,11 +8,11 @@
 
 @implementation PKDPlugInHold
 
-- (PKDPlugInHold)initWithPlugIns:(id)a3 extensionPointName:(id)a4 forClient:(id)a5
+- (PKDPlugInHold)initWithPlugIns:(id)ins extensionPointName:(id)name forClient:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  insCopy = ins;
+  nameCopy = name;
+  clientCopy = client;
   v17.receiver = self;
   v17.super_class = PKDPlugInHold;
   v11 = [(PKDPlugInHold *)&v17 init];
@@ -21,11 +21,11 @@
     v12 = +[NSUUID UUID];
     [(PKDPlugInHold *)v11 setUuid:v12];
 
-    v13 = [NSSet setWithArray:v8];
+    v13 = [NSSet setWithArray:insCopy];
     [(PKDPlugInHold *)v11 setBlocked:v13];
 
-    [(PKDPlugInHold *)v11 setExtensionPointName:v9];
-    [(PKDPlugInHold *)v11 setClient:v10];
+    [(PKDPlugInHold *)v11 setExtensionPointName:nameCopy];
+    [(PKDPlugInHold *)v11 setClient:clientCopy];
     v14 = +[NSDate date];
     [(PKDPlugInHold *)v11 setCreated:v14];
 
@@ -36,15 +36,15 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(PKDPlugInHold *)self uuid];
-    v6 = [v4 uuid];
-    v7 = [v5 isEqual:v6];
+    uuid = [(PKDPlugInHold *)self uuid];
+    uuid2 = [equalCopy uuid];
+    v7 = [uuid isEqual:uuid2];
   }
 
   else
@@ -57,22 +57,22 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PKDPlugInHold *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(PKDPlugInHold *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = [(PKDPlugInHold *)self uuid];
-  v4 = [(PKDPlugInHold *)self client];
-  v5 = [(PKDPlugInHold *)self created];
-  [v5 timeIntervalSince1970];
+  uuid = [(PKDPlugInHold *)self uuid];
+  client = [(PKDPlugInHold *)self client];
+  created = [(PKDPlugInHold *)self created];
+  [created timeIntervalSince1970];
   v7 = v6;
-  v8 = [(PKDPlugInHold *)self extensionPointName];
-  v9 = [(PKDPlugInHold *)self blocked];
-  v10 = [NSString stringWithFormat:@"<PKDPlugInHold: %p uuid = %@, client = %@, created = %f, EP = %@, blocking = %@>", self, v3, v4, v7, v8, v9];;
+  extensionPointName = [(PKDPlugInHold *)self extensionPointName];
+  blocked = [(PKDPlugInHold *)self blocked];
+  v10 = [NSString stringWithFormat:@"<PKDPlugInHold: %p uuid = %@, client = %@, created = %f, EP = %@, blocking = %@>", self, uuid, client, v7, extensionPointName, blocked];;
 
   return v10;
 }

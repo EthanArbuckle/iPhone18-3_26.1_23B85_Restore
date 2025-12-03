@@ -6,10 +6,10 @@
 
 - (BOOL)_canScrollX
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 2)
+  if (userInterfaceIdiom == 2)
   {
     return 0;
   }

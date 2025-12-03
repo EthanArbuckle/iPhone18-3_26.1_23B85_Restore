@@ -1,22 +1,22 @@
 @interface WebDownload
 - (WebDownload)init;
-- (WebDownload)initWithRequest:(id)a3 delegate:(id)a4;
-- (id)_initWithLoadingConnection:(id)a3 request:(id)a4 response:(id)a5 delegate:(id)a6 proxy:(id)a7;
-- (id)_initWithRequest:(id)a3 delegate:(id)a4 directory:(id)a5;
-- (void)_setRealDelegate:(id)a3;
+- (WebDownload)initWithRequest:(id)request delegate:(id)delegate;
+- (id)_initWithLoadingConnection:(id)connection request:(id)request response:(id)response delegate:(id)delegate proxy:(id)proxy;
+- (id)_initWithRequest:(id)request delegate:(id)delegate directory:(id)directory;
+- (void)_setRealDelegate:(id)delegate;
 - (void)dealloc;
 @end
 
 @implementation WebDownload
 
-- (void)_setRealDelegate:(id)a3
+- (void)_setRealDelegate:(id)delegate
 {
   if (!self->_webInternal)
   {
     v5 = objc_alloc_init(WebDownloadInternal);
     self->_webInternal = v5;
 
-    [(WebDownloadInternal *)v5 setRealDelegate:a3];
+    [(WebDownloadInternal *)v5 setRealDelegate:delegate];
   }
 }
 
@@ -46,31 +46,31 @@
   [(NSURLDownload *)&v3 dealloc];
 }
 
-- (WebDownload)initWithRequest:(id)a3 delegate:(id)a4
+- (WebDownload)initWithRequest:(id)request delegate:(id)delegate
 {
-  [(WebDownload *)self _setRealDelegate:a4];
+  [(WebDownload *)self _setRealDelegate:delegate];
   webInternal = self->_webInternal;
   v8.receiver = self;
   v8.super_class = WebDownload;
-  return [(NSURLDownload *)&v8 initWithRequest:a3 delegate:webInternal];
+  return [(NSURLDownload *)&v8 initWithRequest:request delegate:webInternal];
 }
 
-- (id)_initWithLoadingConnection:(id)a3 request:(id)a4 response:(id)a5 delegate:(id)a6 proxy:(id)a7
+- (id)_initWithLoadingConnection:(id)connection request:(id)request response:(id)response delegate:(id)delegate proxy:(id)proxy
 {
-  [(WebDownload *)self _setRealDelegate:a6];
+  [(WebDownload *)self _setRealDelegate:delegate];
   webInternal = self->_webInternal;
   v14.receiver = self;
   v14.super_class = WebDownload;
-  return [(NSURLDownload *)&v14 _initWithLoadingConnection:a3 request:a4 response:a5 delegate:webInternal proxy:a7];
+  return [(NSURLDownload *)&v14 _initWithLoadingConnection:connection request:request response:response delegate:webInternal proxy:proxy];
 }
 
-- (id)_initWithRequest:(id)a3 delegate:(id)a4 directory:(id)a5
+- (id)_initWithRequest:(id)request delegate:(id)delegate directory:(id)directory
 {
-  [(WebDownload *)self _setRealDelegate:a4];
+  [(WebDownload *)self _setRealDelegate:delegate];
   webInternal = self->_webInternal;
   v10.receiver = self;
   v10.super_class = WebDownload;
-  return [(NSURLDownload *)&v10 _initWithRequest:a3 delegate:webInternal directory:a5];
+  return [(NSURLDownload *)&v10 _initWithRequest:request delegate:webInternal directory:directory];
 }
 
 @end

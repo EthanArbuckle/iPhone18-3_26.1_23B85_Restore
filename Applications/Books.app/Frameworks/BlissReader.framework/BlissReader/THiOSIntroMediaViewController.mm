@@ -1,25 +1,25 @@
 @interface THiOSIntroMediaViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)p_isAtEnd;
 - (BOOL)prefersStatusBarHidden;
-- (CGSize)hostViewSizeForIntroMediaController:(id)a3;
-- (THiOSIntroMediaViewController)initWithDocumentRoot:(id)a3;
+- (CGSize)hostViewSizeForIntroMediaController:(id)controller;
+- (THiOSIntroMediaViewController)initWithDocumentRoot:(id)root;
 - (double)playbackRate;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
 - (id)movieGestureView;
-- (void)audioPlaybackWillStart:(id)a3;
+- (void)audioPlaybackWillStart:(id)start;
 - (void)dealloc;
 - (void)ensureReadyToPlay;
 - (void)hideControls;
 - (void)introMediaControllerShouldToggleControls;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)p_cancelUIFadeOutTimer;
 - (void)p_configureCloseButton;
-- (void)p_hideMovieControlsAnimated:(BOOL)a3;
+- (void)p_hideMovieControlsAnimated:(BOOL)animated;
 - (void)p_nextPage;
-- (void)p_playForBookOpen:(BOOL)a3;
-- (void)p_playerDidPlayToEnd:(id)a3;
+- (void)p_playForBookOpen:(BOOL)open;
+- (void)p_playerDidPlayToEnd:(id)end;
 - (void)p_releaseOutlets;
 - (void)p_removePlaybackNotifications;
 - (void)p_resetMoviePlayer;
@@ -27,30 +27,30 @@
 - (void)p_setupPlaybackNotifications;
 - (void)p_showMovieControls;
 - (void)p_unloadMoviePlayer;
-- (void)p_updateFrameForSize:(CGSize)a3;
+- (void)p_updateFrameForSize:(CGSize)size;
 - (void)p_updateSetShowsDoneButton;
 - (void)pause;
 - (void)pauseAndDismissMoviePlayer;
 - (void)playForIntroMediaBecomesVisible;
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
 - (void)prepareControlsForTOC;
 - (void)prepareMovieForTOC;
 - (void)showControls;
 - (void)stop;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willResignActive:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willResignActive:(id)active;
 @end
 
 @implementation THiOSIntroMediaViewController
 
-- (THiOSIntroMediaViewController)initWithDocumentRoot:(id)a3
+- (THiOSIntroMediaViewController)initWithDocumentRoot:(id)root
 {
   v7.receiver = self;
   v7.super_class = THiOSIntroMediaViewController;
   v4 = [(THiOSIntroMediaViewController *)&v7 initWithNibName:0 bundle:0];
   if (v4)
   {
-    v5 = [[THWIntroMediaController alloc] initWithDocumentRoot:a3];
+    v5 = [[THWIntroMediaController alloc] initWithDocumentRoot:root];
     v4->_introMediaController = v5;
     if (v5)
     {
@@ -146,10 +146,10 @@
 
   if (![(THWIntroMediaController *)self->_introMediaController isMovie])
   {
-    v14 = [(THBookDescription *)[(THDocumentRoot *)[(THWIntroMediaController *)self->_introMediaController documentRoot] bookDescription] drmContext];
-    if (v14)
+    drmContext = [(THBookDescription *)[(THDocumentRoot *)[(THWIntroMediaController *)self->_introMediaController documentRoot] bookDescription] drmContext];
+    if (drmContext)
     {
-      v15 = [UIImage imageWithData:[(PFDContext *)v14 dataWithContentsOfFile:[(NSURL *)[(THWIntroMediaController *)self->_introMediaController url] path] error:0]];
+      v15 = [UIImage imageWithData:[(PFDContext *)drmContext dataWithContentsOfFile:[(NSURL *)[(THWIntroMediaController *)self->_introMediaController url] path] error:0]];
     }
 
     else
@@ -182,7 +182,7 @@
   }
 }
 
-- (void)willResignActive:(id)a3
+- (void)willResignActive:(id)active
 {
   self->mIsResignedActive = 1;
   if ([(THiOSIntroMediaViewController *)self isPlaying])
@@ -214,11 +214,11 @@
 
 - (void)p_updateSetShowsDoneButton
 {
-  v2 = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] childViewControllerForStatusBarHidden];
+  childViewControllerForStatusBarHidden = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] childViewControllerForStatusBarHidden];
   if (objc_opt_respondsToSelector())
   {
 
-    [v2 setShowsDoneButton:1];
+    [childViewControllerForStatusBarHidden setShowsDoneButton:1];
   }
 }
 
@@ -228,11 +228,11 @@
   {
     self->mMovieNeedsUnloading = 0;
     v3 = [[AVPlayer alloc] initWithPlayerItem:{+[AVPlayerItem playerItemWithURL:](AVPlayerItem, "playerItemWithURL:", -[THWIntroMediaController url](self->_introMediaController, "url"))}];
-    v4 = [(THBookDescription *)[(THDocumentRoot *)[(THWIntroMediaController *)self->_introMediaController documentRoot] bookDescription] drmContext];
-    [v3 setAllowsExternalPlayback:{-[PFDContext kiUanAfQBD5qIUraolUj](v4, "kiUanAfQBD5qIUraolUj") ^ 1}];
-    if ([(PFDContext *)v4 kiUanAfQBD5qIUraolUj])
+    drmContext = [(THBookDescription *)[(THDocumentRoot *)[(THWIntroMediaController *)self->_introMediaController documentRoot] bookDescription] drmContext];
+    [v3 setAllowsExternalPlayback:{-[PFDContext kiUanAfQBD5qIUraolUj](drmContext, "kiUanAfQBD5qIUraolUj") ^ 1}];
+    if ([(PFDContext *)drmContext kiUanAfQBD5qIUraolUj])
     {
-      -[PFDContext authorizeAVPlayerItemForPlayback:](v4, "authorizeAVPlayerItemForPlayback:", [v3 currentItem]);
+      -[PFDContext authorizeAVPlayerItemForPlayback:](drmContext, "authorizeAVPlayerItemForPlayback:", [v3 currentItem]);
     }
 
     v5 = *&kCMTimeZero.value;
@@ -271,8 +271,8 @@
 
   if ([[(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player] currentItem]&& ![(THiOSIntroMediaViewController *)self registeredForNotification])
   {
-    v3 = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
-    [(AVPlayer *)v3 addObserver:self forKeyPath:@"status" options:1 context:off_562448];
+    player = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
+    [(AVPlayer *)player addObserver:self forKeyPath:@"status" options:1 context:off_562448];
     [+[NSNotificationCenter defaultCenter](NSNotificationCenter addObserver:"addObserver:selector:name:object:" selector:self name:"p_playerDidPlayToEnd:" object:AVPlayerItemDidPlayToEndTimeNotification, [[(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player] currentItem]];
     [(THiOSIntroMediaViewController *)self setRegisteredForNotification:1];
   }
@@ -293,9 +293,9 @@
   objc_sync_exit(self);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (off_562448 == a6 && [a3 isEqualToString:@"status"])
+  if (off_562448 == context && [path isEqualToString:@"status"])
   {
     if ([[(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player] status]== &dword_0 + 1)
     {
@@ -312,7 +312,7 @@
   {
     v11.receiver = self;
     v11.super_class = THiOSIntroMediaViewController;
-    [(THiOSIntroMediaViewController *)&v11 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(THiOSIntroMediaViewController *)&v11 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 
@@ -322,9 +322,9 @@
   [(THiOSIntroMediaViewController *)self p_unloadMoviePlayer];
   if ([(THiOSIntroMediaViewController *)self delegate])
   {
-    v3 = [(THiOSIntroMediaViewController *)self delegate];
+    delegate = [(THiOSIntroMediaViewController *)self delegate];
 
-    [(THiOSIntroMediaViewControllerDelegate *)v3 introMediaControllerShouldAdvancePast:self];
+    [(THiOSIntroMediaViewControllerDelegate *)delegate introMediaControllerShouldAdvancePast:self];
   }
 
   else
@@ -334,16 +334,16 @@
   }
 }
 
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v4 = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController:a3] player];
+  player = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController:controller] player];
 
-  [(AVPlayer *)v4 play];
+  [(AVPlayer *)player play];
 }
 
-- (void)audioPlaybackWillStart:(id)a3
+- (void)audioPlaybackWillStart:(id)start
 {
-  if (a3 != self)
+  if (start != self)
   {
     [(THiOSIntroMediaViewController *)self pause];
   }
@@ -364,12 +364,12 @@
   }
 }
 
-- (void)p_playerDidPlayToEnd:(id)a3
+- (void)p_playerDidPlayToEnd:(id)end
 {
   if (!self->mIsResignedActive)
   {
-    v4 = [(THiOSIntroMediaViewController *)self presentedViewController];
-    if (v4 == [(THiOSIntroMediaViewController *)self moviePlayerViewController])
+    presentedViewController = [(THiOSIntroMediaViewController *)self presentedViewController];
+    if (presentedViewController == [(THiOSIntroMediaViewController *)self moviePlayerViewController])
     {
       [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] dismissViewControllerAnimated:1 completion:0];
     }
@@ -391,14 +391,14 @@
 - (void)p_nextPage
 {
   [(UIButton *)[(THiOSIntroMediaViewController *)self closeButton] setAlpha:0.0];
-  v3 = [(THiOSIntroMediaViewController *)self delegate];
+  delegate = [(THiOSIntroMediaViewController *)self delegate];
 
-  [(THiOSIntroMediaViewControllerDelegate *)v3 introMediaControllerShouldAdvancePast:self];
+  [(THiOSIntroMediaViewControllerDelegate *)delegate introMediaControllerShouldAdvancePast:self];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  [a4 view];
+  [touch view];
   objc_opt_class();
   return (objc_opt_isKindOfClass() & 1) == 0;
 }
@@ -408,8 +408,8 @@
   [(THiOSIntroMediaViewController *)self p_updateSetShowsDoneButton];
   if ([(THWIntroMediaController *)self->_introMediaController isMovie])
   {
-    v3 = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
-    if (v3 && ([(AVPlayer *)v3 currentTime], v4 > 0))
+    player = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
+    if (player && ([(AVPlayer *)player currentTime], v4 > 0))
     {
       [(THiOSIntroMediaViewController *)self p_showMovieControls];
     }
@@ -430,16 +430,16 @@
 
 - (BOOL)p_isAtEnd
 {
-  v3 = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
-  if (v3)
+  player = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
+  if (player)
   {
-    [(AVPlayer *)v3 currentTime];
+    [(AVPlayer *)player currentTime];
   }
 
-  v4 = [[(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController:0] player] currentItem];
-  if (v4)
+  currentItem = [[(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController:0] player] currentItem];
+  if (currentItem)
   {
-    [(AVPlayerItem *)v4 duration];
+    [(AVPlayerItem *)currentItem duration];
     v5 = v8;
   }
 
@@ -451,21 +451,21 @@
   return vabdd_f64(0, v5) < 0.00999999978 || v5 < 0;
 }
 
-- (void)p_playForBookOpen:(BOOL)a3
+- (void)p_playForBookOpen:(BOOL)open
 {
-  v3 = a3;
+  openCopy = open;
   [(THiOSIntroMediaViewController *)self p_updateSetShowsDoneButton];
   [+[BCAudioMuxingCoordinator sharedInstance](BCAudioMuxingCoordinator notifyPlaybackWillStart:"notifyPlaybackWillStart:", self];
   if ([(THiOSIntroMediaViewController *)self p_isAtEnd])
   {
-    v5 = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
+    player = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
     v6 = *&kCMTimeZero.value;
     epoch = kCMTimeZero.epoch;
-    [(AVPlayer *)v5 seekToTime:&v6];
+    [(AVPlayer *)player seekToTime:&v6];
   }
 
   [[(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player] play];
-  if (v3)
+  if (openCopy)
   {
     [(THiOSIntroMediaViewController *)self p_hideMovieControlsAnimated:1];
   }
@@ -473,16 +473,16 @@
 
 - (void)pause
 {
-  v2 = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
+  player = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
 
-  [(AVPlayer *)v2 pause];
+  [(AVPlayer *)player pause];
 }
 
 - (void)stop
 {
-  v2 = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
+  player = [(AVPlayerViewController *)[(THiOSIntroMediaViewController *)self moviePlayerViewController] player];
 
-  [(AVPlayer *)v2 pause];
+  [(AVPlayer *)player pause];
 }
 
 - (void)ensureReadyToPlay
@@ -553,12 +553,12 @@
       v22 = 3221225472;
       v23 = sub_FF558;
       v24 = &unk_45AE00;
-      v25 = self;
+      selfCopy = self;
       v16 = _NSConcreteStackBlock;
       v17 = 3221225472;
       v18 = sub_FF5B4;
       v19 = &unk_45B188;
-      v20 = self;
+      selfCopy2 = self;
       v3 = 0.75;
       v4 = &v21;
       v5 = &v16;
@@ -571,18 +571,18 @@
       v12 = 3221225472;
       v13 = sub_FF5BC;
       v14 = &unk_45AE00;
-      v15 = self;
+      selfCopy3 = self;
       v6 = _NSConcreteStackBlock;
       v7 = 3221225472;
       v8 = sub_FF600;
       v9 = &unk_45B188;
-      v10 = self;
+      selfCopy4 = self;
       v3 = 0.75;
       v4 = &v11;
       v5 = &v6;
     }
 
-    [UIView animateWithDuration:v4 animations:v5 completion:v3, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25];
+    [UIView animateWithDuration:v4 animations:v5 completion:v3, v6, v7, v8, v9, selfCopy4, v11, v12, v13, v14, selfCopy3, v16, v17, v18, v19, selfCopy2, v21, v22, v23, v24, selfCopy];
   }
 }
 
@@ -635,9 +635,9 @@
     [(UIButton *)[(THiOSIntroMediaViewController *)self closeButton] frame];
     v20 = v19;
     v22 = v21;
-    v23 = [(THiOSIntroMediaViewController *)self closeButton];
+    closeButton = [(THiOSIntroMediaViewController *)self closeButton];
 
-    [(UIButton *)v23 setFrame:v8 + 4.0, v18 + 4.0, v20, v22];
+    [(UIButton *)closeButton setFrame:v8 + 4.0, v18 + 4.0, v20, v22];
   }
 }
 
@@ -666,7 +666,7 @@
   }
 }
 
-- (void)p_hideMovieControlsAnimated:(BOOL)a3
+- (void)p_hideMovieControlsAnimated:(BOOL)animated
 {
   if (![(THiOSIntroMediaViewController *)self controlsHidden])
   {
@@ -703,7 +703,7 @@
   return [v3 superview];
 }
 
-- (CGSize)hostViewSizeForIntroMediaController:(id)a3
+- (CGSize)hostViewSizeForIntroMediaController:(id)controller
 {
   [-[THiOSIntroMediaViewController view](self view];
   v4 = v3;
@@ -731,10 +731,10 @@
   [(THiOSIntroMediaViewController *)self setFadeoutTimer:0];
 }
 
-- (void)p_updateFrameForSize:(CGSize)a3
+- (void)p_updateFrameForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   y = CGRectZero.origin.y;
   [-[THiOSIntroMediaViewController view](self "view")];
   v19.origin.x = v7;
@@ -762,20 +762,20 @@
     [-[THiOSIntroMediaViewController view](self "view")];
     v13 = v12;
     v15 = v14;
-    v16 = [(THiOSIntroMediaViewController *)self scrimView];
+    scrimView = [(THiOSIntroMediaViewController *)self scrimView];
 
-    [(UIView *)v16 setCenter:v13, v15];
+    [(UIView *)scrimView setCenter:v13, v15];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(THiOSIntroMediaViewController *)self p_updateFrameForSize:?];
   v8.receiver = self;
   v8.super_class = THiOSIntroMediaViewController;
-  [(THiOSIntroMediaViewController *)&v8 viewWillTransitionToSize:a4 withTransitionCoordinator:width, height];
+  [(THiOSIntroMediaViewController *)&v8 viewWillTransitionToSize:coordinator withTransitionCoordinator:width, height];
 }
 
 - (id)childViewControllerForHomeIndicatorAutoHidden

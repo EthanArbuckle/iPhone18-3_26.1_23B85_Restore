@@ -1,29 +1,29 @@
 @interface AMSPaymentSheetMetricsEvent
 + (id)_propertyValueClassesForKnownProperties;
 + (id)_timestamp;
-+ (id)dictionaryForBiometricMatchState:(int64_t)a3 didBiometricsLockout:(BOOL)a4 biometricsType:(int64_t)a5;
-+ (id)dictionaryForCancellationEvent:(unint64_t)a3 didBiometricsLockout:(BOOL)a4 biometricsType:(int64_t)a5;
-+ (id)dictionaryForUserAction:(int64_t)a3 didBiometricsLockout:(BOOL)a4;
-- (void)addBiometricMatchState:(int64_t)a3;
-- (void)addBiometricsState:(int64_t)a3;
-- (void)addClientMetadataForPaymentSheetRequest:(id)a3;
-- (void)addClientMetadataForPurchaseInfo:(id)a3 metricsDictionary:(id)a4;
-- (void)addDualActionSuccess:(BOOL)a3;
++ (id)dictionaryForBiometricMatchState:(int64_t)state didBiometricsLockout:(BOOL)lockout biometricsType:(int64_t)type;
++ (id)dictionaryForCancellationEvent:(unint64_t)event didBiometricsLockout:(BOOL)lockout biometricsType:(int64_t)type;
++ (id)dictionaryForUserAction:(int64_t)action didBiometricsLockout:(BOOL)lockout;
+- (void)addBiometricMatchState:(int64_t)state;
+- (void)addBiometricsState:(int64_t)state;
+- (void)addClientMetadataForPaymentSheetRequest:(id)request;
+- (void)addClientMetadataForPurchaseInfo:(id)info metricsDictionary:(id)dictionary;
+- (void)addDualActionSuccess:(BOOL)success;
 @end
 
 @implementation AMSPaymentSheetMetricsEvent
 
-+ (id)dictionaryForBiometricMatchState:(int64_t)a3 didBiometricsLockout:(BOOL)a4 biometricsType:(int64_t)a5
++ (id)dictionaryForBiometricMatchState:(int64_t)state didBiometricsLockout:(BOOL)lockout biometricsType:(int64_t)type
 {
-  v6 = a4;
+  lockoutCopy = lockout;
   v35 = *MEMORY[0x1E69E9840];
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v10 = v9;
-  if (a3 > 3)
+  if (state > 3)
   {
-    if (a3 <= 5)
+    if (state <= 5)
     {
-      if (a3 == 4)
+      if (state == 4)
       {
         v13 = @"cancelOutside";
       }
@@ -36,7 +36,7 @@
 
     else
     {
-      switch(a3)
+      switch(state)
       {
         case 6:
           v13 = @"cancelPhysicalButton";
@@ -55,7 +55,7 @@ LABEL_22:
           v14 = @"targetId";
 LABEL_23:
           [v10 setObject:v12 forKeyedSubscript:v14];
-          if (!v6)
+          if (!lockoutCopy)
           {
             goto LABEL_25;
           }
@@ -72,9 +72,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       [v9 setObject:@"enterPassword" forKeyedSubscript:@"actionType"];
       v12 = @"EnterPassword";
@@ -85,7 +85,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (!a3)
+  if (!state)
   {
     [v9 setObject:@"error" forKeyedSubscript:@"reason"];
     v12 = @"failure";
@@ -93,7 +93,7 @@ LABEL_21:
     goto LABEL_23;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     [v9 setObject:@"authenticate" forKeyedSubscript:@"actionType"];
     v11 = @"success";
@@ -107,36 +107,36 @@ LABEL_44:
     v24 = +[AMSLogConfig sharedConfig];
   }
 
-  v25 = [v24 OSLogObject];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v24 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v26 = objc_opt_class();
     v27 = AMSSetLogKeyIfNeeded();
-    v28 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v28 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     v29 = 138543874;
     v30 = v26;
     v31 = 2114;
     v32 = v27;
     v33 = 2114;
     v34 = v28;
-    _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown biometric match state: %{public}@", &v29, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown biometric match state: %{public}@", &v29, 0x20u);
   }
 
-  if (v6)
+  if (lockoutCopy)
   {
 LABEL_24:
     [v10 setObject:&unk_1F0779868 forKeyedSubscript:@"bioLockout"];
   }
 
 LABEL_25:
-  if (a5 <= 2)
+  if (type <= 2)
   {
-    if (a5 == 1)
+    if (type == 1)
     {
       goto LABEL_36;
     }
 
-    if (a5 == 2)
+    if (type == 2)
     {
       v15 = @"touchId";
       goto LABEL_35;
@@ -145,7 +145,7 @@ LABEL_25:
 
   else
   {
-    switch(a5)
+    switch(type)
     {
       case 7:
         v15 = @"opticId";
@@ -167,48 +167,48 @@ LABEL_35:
     v19 = +[AMSLogConfig sharedConfig];
   }
 
-  v20 = [v19 OSLogObject];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+  oSLogObject2 = [v19 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
   {
     v21 = objc_opt_class();
     v22 = AMSSetLogKeyIfNeeded();
-    v23 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
+    v23 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v29 = 138543874;
     v30 = v21;
     v31 = 2114;
     v32 = v22;
     v33 = 2114;
     v34 = v23;
-    _os_log_impl(&dword_192869000, v20, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown biometric type: %{public}@", &v29, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown biometric type: %{public}@", &v29, 0x20u);
   }
 
 LABEL_36:
-  v16 = [a1 _timestamp];
-  [v10 setObject:v16 forKeyedSubscript:@"responseTime"];
+  _timestamp = [self _timestamp];
+  [v10 setObject:_timestamp forKeyedSubscript:@"responseTime"];
 
   v17 = [v10 copy];
 
   return v17;
 }
 
-+ (id)dictionaryForCancellationEvent:(unint64_t)a3 didBiometricsLockout:(BOOL)a4 biometricsType:(int64_t)a5
++ (id)dictionaryForCancellationEvent:(unint64_t)event didBiometricsLockout:(BOOL)lockout biometricsType:(int64_t)type
 {
   v7 = 0;
-  if (a3 > 3)
+  if (event > 3)
   {
-    if (a3 - 100 < 2)
+    if (event - 100 < 2)
     {
       v8 = 100;
     }
 
-    else if (a3 == 4)
+    else if (event == 4)
     {
       v8 = 6;
     }
 
     else
     {
-      if (a3 != 5)
+      if (event != 5)
       {
         goto LABEL_15;
       }
@@ -219,7 +219,7 @@ LABEL_36:
 
   else
   {
-    switch(a3)
+    switch(event)
     {
       case 1uLL:
         v8 = 4;
@@ -235,23 +235,23 @@ LABEL_36:
     }
   }
 
-  v7 = [a1 dictionaryForBiometricMatchState:v8 didBiometricsLockout:a4 biometricsType:{a5, v5}];
+  v7 = [self dictionaryForBiometricMatchState:v8 didBiometricsLockout:lockout biometricsType:{type, v5}];
 LABEL_15:
 
   return v7;
 }
 
-+ (id)dictionaryForUserAction:(int64_t)a3 didBiometricsLockout:(BOOL)a4
++ (id)dictionaryForUserAction:(int64_t)action didBiometricsLockout:(BOOL)lockout
 {
-  v4 = a4;
+  lockoutCopy = lockout;
   v28 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = v7;
-  if (a3 > 4)
+  if (action > 4)
   {
-    if (a3 <= 6)
+    if (action <= 6)
     {
-      if (a3 == 5)
+      if (action == 5)
       {
         [v7 setObject:@"invalidCredentials" forKeyedSubscript:@"reason"];
         v12 = @"failure";
@@ -267,7 +267,7 @@ LABEL_15:
 
     else
     {
-      switch(a3)
+      switch(action)
       {
         case 7:
           v12 = @"enterPasswordCancelled";
@@ -282,7 +282,7 @@ LABEL_24:
           v11 = v8;
 LABEL_25:
           [v11 setObject:v9 forKeyedSubscript:@"targetId"];
-          if (!v4)
+          if (!lockoutCopy)
           {
             goto LABEL_27;
           }
@@ -300,9 +300,9 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (a3 > 2)
+  if (action > 2)
   {
-    if (a3 != 3)
+    if (action != 3)
     {
       [v7 setObject:@"cancel" forKeyedSubscript:@"actionType"];
       [v8 setObject:@"Cancel" forKeyedSubscript:@"targetId"];
@@ -315,7 +315,7 @@ LABEL_25:
     goto LABEL_17;
   }
 
-  if (a3 == 1)
+  if (action == 1)
   {
     [v7 setObject:@"ok" forKeyedSubscript:@"actionType"];
     [v8 setObject:@"success" forKeyedSubscript:@"result"];
@@ -323,7 +323,7 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (a3 == 2)
+  if (action == 2)
   {
     v10 = @"cancel";
 LABEL_17:
@@ -339,49 +339,49 @@ LABEL_30:
     v17 = +[AMSLogConfig sharedConfig];
   }
 
-  v18 = [v17 OSLogObject];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v17 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v19 = objc_opt_class();
     v20 = AMSSetLogKeyIfNeeded();
-    v21 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v21 = [MEMORY[0x1E696AD98] numberWithInteger:action];
     v22 = 138543874;
     v23 = v19;
     v24 = 2114;
     v25 = v20;
     v26 = 2114;
     v27 = v21;
-    _os_log_impl(&dword_192869000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown user action: %{public}@", &v22, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown user action: %{public}@", &v22, 0x20u);
   }
 
-  if (v4)
+  if (lockoutCopy)
   {
 LABEL_26:
     [v8 setObject:&unk_1F0779868 forKeyedSubscript:@"bioLockout"];
   }
 
 LABEL_27:
-  v14 = [a1 _timestamp];
-  [v8 setObject:v14 forKeyedSubscript:@"responseTime"];
+  _timestamp = [self _timestamp];
+  [v8 setObject:_timestamp forKeyedSubscript:@"responseTime"];
 
   v15 = [v8 copy];
 
   return v15;
 }
 
-- (void)addBiometricMatchState:(int64_t)a3
+- (void)addBiometricMatchState:(int64_t)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3 <= 1)
+  if (state <= 1)
   {
-    if (!a3)
+    if (!state)
     {
       v6 = @"failure";
       v7 = @"result";
       goto LABEL_13;
     }
 
-    if (a3 == 1)
+    if (state == 1)
     {
       [(AMSMetricsEvent *)self setProperty:@"biometricsAnalyze" forBodyKey:@"actionType"];
       v5 = @"success";
@@ -391,7 +391,7 @@ LABEL_27:
 
   else
   {
-    switch(a3)
+    switch(state)
     {
       case 2:
         [(AMSMetricsEvent *)self setProperty:@"enterPassword" forBodyKey:@"actionType"];
@@ -424,32 +424,32 @@ LABEL_13:
     v8 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v8 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v8 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v10 = objc_opt_class();
     v11 = AMSSetLogKeyIfNeeded();
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     v13 = 138543874;
     v14 = v10;
     v15 = 2114;
     v16 = v11;
     v17 = 2114;
     v18 = v12;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown match state: %{public}@", &v13, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown match state: %{public}@", &v13, 0x20u);
   }
 }
 
-- (void)addBiometricsState:(int64_t)a3
+- (void)addBiometricsState:(int64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
     v3 = @"on";
   }
 
   else
   {
-    if (a3 != 2)
+    if (state != 2)
     {
       return;
     }
@@ -460,38 +460,38 @@ LABEL_13:
   [(AMSMetricsEvent *)self setProperty:v3 forBodyKey:@"bioAuthCommerceSetting"];
 }
 
-- (void)addClientMetadataForPaymentSheetRequest:(id)a3
+- (void)addClientMetadataForPaymentSheetRequest:(id)request
 {
-  v8 = a3;
-  v4 = [v8 salableInfoLabel];
+  requestCopy = request;
+  salableInfoLabel = [requestCopy salableInfoLabel];
 
-  if (v4)
+  if (salableInfoLabel)
   {
-    v5 = [v8 salableInfoLabel];
-    v6 = [AMSPaymentSheetRequest attributedStringByRemovingPlaceholderTagsFromAttributedString:v5];
-    v7 = [v6 string];
+    salableInfoLabel2 = [requestCopy salableInfoLabel];
+    v6 = [AMSPaymentSheetRequest attributedStringByRemovingPlaceholderTagsFromAttributedString:salableInfoLabel2];
+    string = [v6 string];
 
-    [(AMSMetricsEvent *)self setProperty:v7 forBodyKey:@"message"];
+    [(AMSMetricsEvent *)self setProperty:string forBodyKey:@"message"];
   }
 }
 
-- (void)addClientMetadataForPurchaseInfo:(id)a3 metricsDictionary:(id)a4
+- (void)addClientMetadataForPurchaseInfo:(id)info metricsDictionary:(id)dictionary
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 buyParams];
-  v9 = [v8 stringValue];
+  infoCopy = info;
+  dictionaryCopy = dictionary;
+  buyParams = [infoCopy buyParams];
+  stringValue = [buyParams stringValue];
 
-  if (v9)
+  if (stringValue)
   {
     v24 = @"buyParams";
-    v25[0] = v9;
+    v25[0] = stringValue;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     [(AMSMetricsEvent *)self setProperty:v10 forBodyKey:@"details"];
   }
 
-  v11 = [v7 objectForKeyedSubscript:@"mtClientId"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"mtClientId"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -510,23 +510,23 @@ LABEL_13:
   }
 
   [(AMSMetricsEvent *)self setProperty:@"SignIn" forBodyKey:@"dialogType"];
-  v13 = [v6 clientInfo];
-  v14 = [AMSUserAgent userAgentForProcessInfo:v13];
+  clientInfo = [infoCopy clientInfo];
+  v14 = [AMSUserAgent userAgentForProcessInfo:clientInfo];
 
   if (v14)
   {
     [(AMSMetricsEvent *)self setProperty:v14 forBodyKey:@"userAgent"];
   }
 
-  v15 = [v6 clientInfo];
-  v16 = [v15 proxyAppBundleID];
+  clientInfo2 = [infoCopy clientInfo];
+  proxyAppBundleID = [clientInfo2 proxyAppBundleID];
 
-  if (v16 || ([v6 clientInfo], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "mappedBundleInfo"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "bundleIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), v18, v17, v16) || (objc_msgSend(v6, "clientInfo"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "bundleIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), v19, v16))
+  if (proxyAppBundleID || ([infoCopy clientInfo], v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "mappedBundleInfo"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "bundleIdentifier"), proxyAppBundleID = objc_claimAutoreleasedReturnValue(), v18, v17, proxyAppBundleID) || (objc_msgSend(infoCopy, "clientInfo"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "bundleIdentifier"), proxyAppBundleID = objc_claimAutoreleasedReturnValue(), v19, proxyAppBundleID))
   {
-    [(AMSMetricsEvent *)self setProperty:v16 forBodyKey:@"hostApp"];
+    [(AMSMetricsEvent *)self setProperty:proxyAppBundleID forBodyKey:@"hostApp"];
   }
 
-  v20 = [v7 objectForKeyedSubscript:@"titleType"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"titleType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -544,7 +544,7 @@ LABEL_13:
     v21 = 0;
   }
 
-  v22 = [v7 objectForKeyedSubscript:@"titleValue"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"titleValue"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -563,9 +563,9 @@ LABEL_13:
   }
 }
 
-- (void)addDualActionSuccess:(BOOL)a3
+- (void)addDualActionSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = @"success";
   }
@@ -622,7 +622,7 @@ LABEL_13:
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:19];
   v4 = [v3 mutableCopy];
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___AMSPaymentSheetMetricsEvent;
   v5 = objc_msgSendSuper2(&v7, sel__propertyValueClassesForKnownProperties);
   [v4 addEntriesFromDictionary:v5];
@@ -632,8 +632,8 @@ LABEL_13:
 
 + (id)_timestamp
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  [v2 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v4 = v3;
 
   v5 = MEMORY[0x1E696AEC0];

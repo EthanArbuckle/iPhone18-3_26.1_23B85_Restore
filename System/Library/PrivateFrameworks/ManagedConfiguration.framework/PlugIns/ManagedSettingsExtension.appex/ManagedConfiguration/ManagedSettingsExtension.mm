@@ -1,11 +1,11 @@
 @interface ManagedSettingsExtension
 - (_TtC24ManagedSettingsExtension24ManagedSettingsExtension)init;
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 @end
 
 @implementation ManagedSettingsExtension
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
   v5[4] = nullsub_1;
   v5[5] = 0;
@@ -14,7 +14,7 @@
   v5[2] = sub_100000CBC;
   v5[3] = &unk_100004078;
   v4 = _Block_copy(v5);
-  [a3 completeRequestReturningItems:0 completionHandler:v4];
+  [context completeRequestReturningItems:0 completionHandler:v4];
   _Block_release(v4);
 }
 

@@ -1,20 +1,20 @@
 @interface TUIDSLookupManager
-+ (BOOL)isAnyDestinationAvailableInDestinations:(id)a3 usingCache:(id)a4;
++ (BOOL)isAnyDestinationAvailableInDestinations:(id)destinations usingCache:(id)cache;
 + (TUIDSLookupManager)sharedManager;
-+ (unsigned)fzHandleIDStatusForDestination:(id)a3 usingCache:(id)a4;
-- (BOOL)isAVLessSharePlayCapableForAnyDestinationInDestinations:(id)a3;
-- (BOOL)isFaceTimeAudioAvailableForAnyDestinationInDestinations:(id)a3;
-- (BOOL)isFaceTimeAudioAvailableForItem:(id)a3;
-- (BOOL)isFaceTimeMultiwayAvailableForAnyDestinationInDestinations:(id)a3;
-- (BOOL)isFaceTimeMultiwayAvailableForItem:(id)a3;
-- (BOOL)isFaceTimeVideoAvailableForAnyDestinationInDestinations:(id)a3;
-- (BOOL)isFaceTimeVideoAvailableForItem:(id)a3;
-- (BOOL)isModernFaceTimeAvailableForDestination:(id)a3;
-- (BOOL)isNameAndPhotoAvailableForDestination:(id)a3;
-- (BOOL)isVideoMessagingAvailableForAnyDestinationInDestinations:(id)a3;
-- (BOOL)isVideoMessagingAvailableForItem:(id)a3;
-- (BOOL)isWebCapableFaceTimeAvailableForDestination:(id)a3;
-- (BOOL)isiMessageAvailableForAnyDestinationInDestinations:(id)a3;
++ (unsigned)fzHandleIDStatusForDestination:(id)destination usingCache:(id)cache;
+- (BOOL)isAVLessSharePlayCapableForAnyDestinationInDestinations:(id)destinations;
+- (BOOL)isFaceTimeAudioAvailableForAnyDestinationInDestinations:(id)destinations;
+- (BOOL)isFaceTimeAudioAvailableForItem:(id)item;
+- (BOOL)isFaceTimeMultiwayAvailableForAnyDestinationInDestinations:(id)destinations;
+- (BOOL)isFaceTimeMultiwayAvailableForItem:(id)item;
+- (BOOL)isFaceTimeVideoAvailableForAnyDestinationInDestinations:(id)destinations;
+- (BOOL)isFaceTimeVideoAvailableForItem:(id)item;
+- (BOOL)isModernFaceTimeAvailableForDestination:(id)destination;
+- (BOOL)isNameAndPhotoAvailableForDestination:(id)destination;
+- (BOOL)isVideoMessagingAvailableForAnyDestinationInDestinations:(id)destinations;
+- (BOOL)isVideoMessagingAvailableForItem:(id)item;
+- (BOOL)isWebCapableFaceTimeAvailableForDestination:(id)destination;
+- (BOOL)isiMessageAvailableForAnyDestinationInDestinations:(id)destinations;
 - (TUIDSBatchIDQueryController)batchQuerySearchAudioController;
 - (TUIDSBatchIDQueryController)batchQuerySearchMultiwayController;
 - (TUIDSBatchIDQueryController)batchQuerySearchShareNameAndPhotoController;
@@ -22,28 +22,28 @@
 - (TUIDSBatchIDQueryController)batchQuerySearchVideoMessagingController;
 - (TUIDSBatchIDQueryController)batchQuerySearchiMessageController;
 - (TUIDSLookupManager)init;
-- (TUIDSLookupManager)initWithQueryController:(id)a3 batchQueryControllerCreationBlock:(id)a4;
+- (TUIDSLookupManager)initWithQueryController:(id)controller batchQueryControllerCreationBlock:(id)block;
 - (id)preferredFromID;
-- (unsigned)faceTimeAudioAvailabilityForDestination:(id)a3;
-- (unsigned)faceTimeMultiwayAvailabilityForDestination:(id)a3;
-- (unsigned)faceTimeVideoAvailabilityForDestination:(id)a3;
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6;
-- (void)beginBatchQueryWithDestinations:(id)a3 includeMessages:(BOOL)a4;
-- (void)beginBatchQueryWithDestinations:(id)a3 services:(unint64_t)a4;
-- (void)beginCachedQueryWithDestinations:(id)a3 includeMessages:(BOOL)a4;
-- (void)beginCachedQueryWithDestinations:(id)a3 onService:(id)a4;
-- (void)beginCachedQueryWithDestinations:(id)a3 services:(unint64_t)a4;
-- (void)beginQueryWithDestination:(id)a3 onService:(id)a4;
-- (void)beginQueryWithDestinations:(id)a3 includeMessages:(BOOL)a4;
-- (void)beginQueryWithDestinations:(id)a3 services:(unint64_t)a4;
-- (void)beginQueryWithRefreshForDestination:(id)a3 onService:(id)a4;
+- (unsigned)faceTimeAudioAvailabilityForDestination:(id)destination;
+- (unsigned)faceTimeMultiwayAvailabilityForDestination:(id)destination;
+- (unsigned)faceTimeVideoAvailabilityForDestination:(id)destination;
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error;
+- (void)beginBatchQueryWithDestinations:(id)destinations includeMessages:(BOOL)messages;
+- (void)beginBatchQueryWithDestinations:(id)destinations services:(unint64_t)services;
+- (void)beginCachedQueryWithDestinations:(id)destinations includeMessages:(BOOL)messages;
+- (void)beginCachedQueryWithDestinations:(id)destinations onService:(id)service;
+- (void)beginCachedQueryWithDestinations:(id)destinations services:(unint64_t)services;
+- (void)beginQueryWithDestination:(id)destination onService:(id)service;
+- (void)beginQueryWithDestinations:(id)destinations includeMessages:(BOOL)messages;
+- (void)beginQueryWithDestinations:(id)destinations services:(unint64_t)services;
+- (void)beginQueryWithRefreshForDestination:(id)destination onService:(id)service;
 - (void)cancelQueries;
 - (void)dealloc;
-- (void)filteredDestinationForMultiway:(id)a3 completionBlock:(id)a4;
-- (void)handleIDSQueryResultWithDestinationStatus:(id)a3 onService:(id)a4;
+- (void)filteredDestinationForMultiway:(id)multiway completionBlock:(id)block;
+- (void)handleIDSQueryResultWithDestinationStatus:(id)status onService:(id)service;
 - (void)postStatusChangedNotification;
-- (void)queryHasEndpointWithCapabilities:(id)a3 forMultiwayDestinations:(id)a4 completionBlock:(id)a5;
-- (void)queryHasWebOnlyEndpointsForDestinations:(id)a3 completionBlock:(id)a4;
+- (void)queryHasEndpointWithCapabilities:(id)capabilities forMultiwayDestinations:(id)destinations completionBlock:(id)block;
+- (void)queryHasWebOnlyEndpointsForDestinations:(id)destinations completionBlock:(id)block;
 @end
 
 @implementation TUIDSLookupManager
@@ -54,7 +54,7 @@
   block[1] = 3221225472;
   block[2] = __35__TUIDSLookupManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -100,17 +100,17 @@ uint64_t __35__TUIDSLookupManager_sharedManager__block_invoke(uint64_t a1)
 {
   if (TUSimulatedModeEnabled())
   {
-    v3 = objc_alloc_init(TUSimulatedIDSIDQueryController);
+    mEMORY[0x1E69A4878] = objc_alloc_init(TUSimulatedIDSIDQueryController);
     v4 = &__block_literal_global_35;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69A4878] sharedInstance];
+    mEMORY[0x1E69A4878] = [MEMORY[0x1E69A4878] sharedInstance];
     v4 = &__block_literal_global_63_2;
   }
 
-  v5 = [(TUIDSLookupManager *)self initWithQueryController:v3 batchQueryControllerCreationBlock:v4];
+  v5 = [(TUIDSLookupManager *)self initWithQueryController:mEMORY[0x1E69A4878] batchQueryControllerCreationBlock:v4];
 
   return v5;
 }
@@ -136,10 +136,10 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
   return v10;
 }
 
-- (TUIDSLookupManager)initWithQueryController:(id)a3 batchQueryControllerCreationBlock:(id)a4
+- (TUIDSLookupManager)initWithQueryController:(id)controller batchQueryControllerCreationBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  blockCopy = block;
   v53.receiver = self;
   v53.super_class = TUIDSLookupManager;
   v9 = [(TUIDSLookupManager *)&v53 init];
@@ -151,38 +151,38 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
     queue = v9->_queue;
     v9->_queue = v12;
 
-    objc_storeStrong(&v9->_queryController, a3);
-    v14 = _Block_copy(v8);
+    objc_storeStrong(&v9->_queryController, controller);
+    v14 = _Block_copy(blockCopy);
     batchQueryControllerCreationBlock = v9->_batchQueryControllerCreationBlock;
     v9->_batchQueryControllerCreationBlock = v14;
 
     v16 = [TULocked alloc];
-    v17 = [MEMORY[0x1E695DF20] dictionary];
-    v18 = [(TULocked *)v16 initWithObject:v17];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
+    v18 = [(TULocked *)v16 initWithObject:dictionary];
     idsFaceTimeVideoStatuses = v9->_idsFaceTimeVideoStatuses;
     v9->_idsFaceTimeVideoStatuses = v18;
 
     v20 = [TULocked alloc];
-    v21 = [MEMORY[0x1E695DF20] dictionary];
-    v22 = [(TULocked *)v20 initWithObject:v21];
+    dictionary2 = [MEMORY[0x1E695DF20] dictionary];
+    v22 = [(TULocked *)v20 initWithObject:dictionary2];
     idsFaceTimeAudioStatuses = v9->_idsFaceTimeAudioStatuses;
     v9->_idsFaceTimeAudioStatuses = v22;
 
     v24 = [TULocked alloc];
-    v25 = [MEMORY[0x1E695DF20] dictionary];
-    v26 = [(TULocked *)v24 initWithObject:v25];
+    dictionary3 = [MEMORY[0x1E695DF20] dictionary];
+    v26 = [(TULocked *)v24 initWithObject:dictionary3];
     idsFaceTimeMultiwayStatuses = v9->_idsFaceTimeMultiwayStatuses;
     v9->_idsFaceTimeMultiwayStatuses = v26;
 
     v28 = [TULocked alloc];
-    v29 = [MEMORY[0x1E695DF20] dictionary];
-    v30 = [(TULocked *)v28 initWithObject:v29];
+    dictionary4 = [MEMORY[0x1E695DF20] dictionary];
+    v30 = [(TULocked *)v28 initWithObject:dictionary4];
     idsVideoMessagingStatuses = v9->_idsVideoMessagingStatuses;
     v9->_idsVideoMessagingStatuses = v30;
 
     v32 = [TULocked alloc];
-    v33 = [MEMORY[0x1E695DF20] dictionary];
-    v34 = [(TULocked *)v32 initWithObject:v33];
+    dictionary5 = [MEMORY[0x1E695DF20] dictionary];
+    v34 = [(TULocked *)v32 initWithObject:dictionary5];
     idsiMessageStatuses = v9->_idsiMessageStatuses;
     v9->_idsiMessageStatuses = v34;
 
@@ -205,8 +205,8 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
     v9->_idsAVLessSharePlayCapableStatuses = v46;
 
     v48 = [TULocked alloc];
-    v49 = [MEMORY[0x1E695DF20] dictionary];
-    v50 = [(TULocked *)v48 initWithObject:v49];
+    dictionary6 = [MEMORY[0x1E695DF20] dictionary];
+    v50 = [(TULocked *)v48 initWithObject:dictionary6];
     idsNameAndPhotoStatuses = v9->_idsNameAndPhotoStatuses;
     v9->_idsNameAndPhotoStatuses = v50;
   }
@@ -224,16 +224,16 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
 
 - (TUIDSBatchIDQueryController)batchQuerySearchVideoController
 {
-  v3 = [(TUIDSLookupManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUIDSLookupManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   batchQuerySearchVideoController = self->_batchQuerySearchVideoController;
   if (!batchQuerySearchVideoController)
   {
-    v5 = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
+    batchQueryControllerCreationBlock = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
     v6 = *MEMORY[0x1E69A47F0];
-    v7 = [(TUIDSLookupManager *)self queue];
-    v8 = (v5)[2](v5, v6, self, v7);
+    queue2 = [(TUIDSLookupManager *)self queue];
+    v8 = (batchQueryControllerCreationBlock)[2](batchQueryControllerCreationBlock, v6, self, queue2);
     v9 = self->_batchQuerySearchVideoController;
     self->_batchQuerySearchVideoController = v8;
 
@@ -245,16 +245,16 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
 
 - (TUIDSBatchIDQueryController)batchQuerySearchAudioController
 {
-  v3 = [(TUIDSLookupManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUIDSLookupManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   batchQuerySearchAudioController = self->_batchQuerySearchAudioController;
   if (!batchQuerySearchAudioController)
   {
-    v5 = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
+    batchQueryControllerCreationBlock = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
     v6 = *MEMORY[0x1E69A47E8];
-    v7 = [(TUIDSLookupManager *)self queue];
-    v8 = (v5)[2](v5, v6, self, v7);
+    queue2 = [(TUIDSLookupManager *)self queue];
+    v8 = (batchQueryControllerCreationBlock)[2](batchQueryControllerCreationBlock, v6, self, queue2);
     v9 = self->_batchQuerySearchAudioController;
     self->_batchQuerySearchAudioController = v8;
 
@@ -266,16 +266,16 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
 
 - (TUIDSBatchIDQueryController)batchQuerySearchMultiwayController
 {
-  v3 = [(TUIDSLookupManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUIDSLookupManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   batchQuerySearchMultiwayController = self->_batchQuerySearchMultiwayController;
   if (!batchQuerySearchMultiwayController)
   {
-    v5 = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
+    batchQueryControllerCreationBlock = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
     v6 = *MEMORY[0x1E69A47F8];
-    v7 = [(TUIDSLookupManager *)self queue];
-    v8 = (v5)[2](v5, v6, self, v7);
+    queue2 = [(TUIDSLookupManager *)self queue];
+    v8 = (batchQueryControllerCreationBlock)[2](batchQueryControllerCreationBlock, v6, self, queue2);
     v9 = self->_batchQuerySearchMultiwayController;
     self->_batchQuerySearchMultiwayController = v8;
 
@@ -287,15 +287,15 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
 
 - (TUIDSBatchIDQueryController)batchQuerySearchVideoMessagingController
 {
-  v3 = [(TUIDSLookupManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUIDSLookupManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   batchQuerySearchVideoMessagingController = self->_batchQuerySearchVideoMessagingController;
   if (!batchQuerySearchVideoMessagingController)
   {
-    v5 = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
-    v6 = [(TUIDSLookupManager *)self queue];
-    v7 = (v5)[2](v5, @"com.apple.private.alloy.facetime.messaging", self, v6);
+    batchQueryControllerCreationBlock = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
+    queue2 = [(TUIDSLookupManager *)self queue];
+    v7 = (batchQueryControllerCreationBlock)[2](batchQueryControllerCreationBlock, @"com.apple.private.alloy.facetime.messaging", self, queue2);
     v8 = self->_batchQuerySearchVideoMessagingController;
     self->_batchQuerySearchVideoMessagingController = v7;
 
@@ -307,16 +307,16 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
 
 - (TUIDSBatchIDQueryController)batchQuerySearchiMessageController
 {
-  v3 = [(TUIDSLookupManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUIDSLookupManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   batchQuerySearchiMessageController = self->_batchQuerySearchiMessageController;
   if (!batchQuerySearchiMessageController)
   {
-    v5 = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
+    batchQueryControllerCreationBlock = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
     v6 = *MEMORY[0x1E69A4818];
-    v7 = [(TUIDSLookupManager *)self queue];
-    v8 = (v5)[2](v5, v6, self, v7);
+    queue2 = [(TUIDSLookupManager *)self queue];
+    v8 = (batchQueryControllerCreationBlock)[2](batchQueryControllerCreationBlock, v6, self, queue2);
     v9 = self->_batchQuerySearchiMessageController;
     self->_batchQuerySearchiMessageController = v8;
 
@@ -328,15 +328,15 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
 
 - (TUIDSBatchIDQueryController)batchQuerySearchShareNameAndPhotoController
 {
-  v3 = [(TUIDSLookupManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUIDSLookupManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   batchQuerySearchShareNameAndPhotoController = self->_batchQuerySearchShareNameAndPhotoController;
   if (!batchQuerySearchShareNameAndPhotoController)
   {
-    v5 = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
-    v6 = [(TUIDSLookupManager *)self queue];
-    v7 = (v5)[2](v5, @"com.apple.private.alloy.nameandphoto", self, v6);
+    batchQueryControllerCreationBlock = [(TUIDSLookupManager *)self batchQueryControllerCreationBlock];
+    queue2 = [(TUIDSLookupManager *)self queue];
+    v7 = (batchQueryControllerCreationBlock)[2](batchQueryControllerCreationBlock, @"com.apple.private.alloy.nameandphoto", self, queue2);
     v8 = self->_batchQuerySearchShareNameAndPhotoController;
     self->_batchQuerySearchShareNameAndPhotoController = v7;
 
@@ -346,167 +346,167 @@ id __26__TUIDSLookupManager_init__block_invoke_2(uint64_t a1, void *a2, void *a3
   return batchQuerySearchShareNameAndPhotoController;
 }
 
-- (BOOL)isFaceTimeVideoAvailableForItem:(id)a3
+- (BOOL)isFaceTimeVideoAvailableForItem:(id)item
 {
-  v4 = [a3 idsCanonicalDestinations];
-  LOBYTE(self) = [(TUIDSLookupManager *)self isFaceTimeVideoAvailableForAnyDestinationInDestinations:v4];
+  idsCanonicalDestinations = [item idsCanonicalDestinations];
+  LOBYTE(self) = [(TUIDSLookupManager *)self isFaceTimeVideoAvailableForAnyDestinationInDestinations:idsCanonicalDestinations];
 
   return self;
 }
 
-- (BOOL)isFaceTimeAudioAvailableForItem:(id)a3
+- (BOOL)isFaceTimeAudioAvailableForItem:(id)item
 {
-  v4 = [a3 idsCanonicalDestinations];
-  LOBYTE(self) = [(TUIDSLookupManager *)self isFaceTimeAudioAvailableForAnyDestinationInDestinations:v4];
+  idsCanonicalDestinations = [item idsCanonicalDestinations];
+  LOBYTE(self) = [(TUIDSLookupManager *)self isFaceTimeAudioAvailableForAnyDestinationInDestinations:idsCanonicalDestinations];
 
   return self;
 }
 
-- (BOOL)isFaceTimeMultiwayAvailableForItem:(id)a3
+- (BOOL)isFaceTimeMultiwayAvailableForItem:(id)item
 {
-  v4 = [a3 idsCanonicalDestinations];
-  LOBYTE(self) = [(TUIDSLookupManager *)self isFaceTimeMultiwayAvailableForAnyDestinationInDestinations:v4];
+  idsCanonicalDestinations = [item idsCanonicalDestinations];
+  LOBYTE(self) = [(TUIDSLookupManager *)self isFaceTimeMultiwayAvailableForAnyDestinationInDestinations:idsCanonicalDestinations];
 
   return self;
 }
 
-- (BOOL)isVideoMessagingAvailableForItem:(id)a3
+- (BOOL)isVideoMessagingAvailableForItem:(id)item
 {
-  v4 = [a3 idsCanonicalDestinations];
-  LOBYTE(self) = [(TUIDSLookupManager *)self isVideoMessagingAvailableForAnyDestinationInDestinations:v4];
+  idsCanonicalDestinations = [item idsCanonicalDestinations];
+  LOBYTE(self) = [(TUIDSLookupManager *)self isVideoMessagingAvailableForAnyDestinationInDestinations:idsCanonicalDestinations];
 
   return self;
 }
 
-- (BOOL)isFaceTimeVideoAvailableForAnyDestinationInDestinations:(id)a3
+- (BOOL)isFaceTimeVideoAvailableForAnyDestinationInDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = objc_opt_class();
-  v6 = [(TUIDSLookupManager *)self idsFaceTimeVideoStatuses];
-  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:v4 usingCache:v6];
+  idsFaceTimeVideoStatuses = [(TUIDSLookupManager *)self idsFaceTimeVideoStatuses];
+  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:destinationsCopy usingCache:idsFaceTimeVideoStatuses];
 
   return v5;
 }
 
-- (BOOL)isFaceTimeAudioAvailableForAnyDestinationInDestinations:(id)a3
+- (BOOL)isFaceTimeAudioAvailableForAnyDestinationInDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = objc_opt_class();
-  v6 = [(TUIDSLookupManager *)self idsFaceTimeAudioStatuses];
-  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:v4 usingCache:v6];
+  idsFaceTimeAudioStatuses = [(TUIDSLookupManager *)self idsFaceTimeAudioStatuses];
+  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:destinationsCopy usingCache:idsFaceTimeAudioStatuses];
 
   return v5;
 }
 
-- (BOOL)isFaceTimeMultiwayAvailableForAnyDestinationInDestinations:(id)a3
+- (BOOL)isFaceTimeMultiwayAvailableForAnyDestinationInDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = objc_opt_class();
-  v6 = [(TUIDSLookupManager *)self idsFaceTimeMultiwayStatuses];
-  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:v4 usingCache:v6];
+  idsFaceTimeMultiwayStatuses = [(TUIDSLookupManager *)self idsFaceTimeMultiwayStatuses];
+  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:destinationsCopy usingCache:idsFaceTimeMultiwayStatuses];
 
   return v5;
 }
 
-- (BOOL)isVideoMessagingAvailableForAnyDestinationInDestinations:(id)a3
+- (BOOL)isVideoMessagingAvailableForAnyDestinationInDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = objc_opt_class();
-  v6 = [(TUIDSLookupManager *)self idsVideoMessagingStatuses];
-  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:v4 usingCache:v6];
+  idsVideoMessagingStatuses = [(TUIDSLookupManager *)self idsVideoMessagingStatuses];
+  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:destinationsCopy usingCache:idsVideoMessagingStatuses];
 
   return v5;
 }
 
-- (BOOL)isiMessageAvailableForAnyDestinationInDestinations:(id)a3
+- (BOOL)isiMessageAvailableForAnyDestinationInDestinations:(id)destinations
 {
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = objc_opt_class();
-  v6 = [(TUIDSLookupManager *)self idsiMessageStatuses];
-  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:v4 usingCache:v6];
+  idsiMessageStatuses = [(TUIDSLookupManager *)self idsiMessageStatuses];
+  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:destinationsCopy usingCache:idsiMessageStatuses];
 
   return v5;
 }
 
-- (BOOL)isAVLessSharePlayCapableForAnyDestinationInDestinations:(id)a3
+- (BOOL)isAVLessSharePlayCapableForAnyDestinationInDestinations:(id)destinations
 {
-  v4 = a3;
-  v5 = [(TUIDSLookupManager *)self idsAVLessSharePlayCapableStatuses];
-  v6 = [v5 object];
-  v7 = [v6 intersectsSet:v4];
+  destinationsCopy = destinations;
+  idsAVLessSharePlayCapableStatuses = [(TUIDSLookupManager *)self idsAVLessSharePlayCapableStatuses];
+  object = [idsAVLessSharePlayCapableStatuses object];
+  v7 = [object intersectsSet:destinationsCopy];
 
   return v7;
 }
 
-- (unsigned)faceTimeAudioAvailabilityForDestination:(id)a3
+- (unsigned)faceTimeAudioAvailabilityForDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v5 = objc_opt_class();
-  v6 = [(TUIDSLookupManager *)self idsFaceTimeAudioStatuses];
-  LODWORD(v5) = [v5 fzHandleIDStatusForDestination:v4 usingCache:v6];
+  idsFaceTimeAudioStatuses = [(TUIDSLookupManager *)self idsFaceTimeAudioStatuses];
+  LODWORD(v5) = [v5 fzHandleIDStatusForDestination:destinationCopy usingCache:idsFaceTimeAudioStatuses];
 
   return v5;
 }
 
-- (unsigned)faceTimeVideoAvailabilityForDestination:(id)a3
+- (unsigned)faceTimeVideoAvailabilityForDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v5 = objc_opt_class();
-  v6 = [(TUIDSLookupManager *)self idsFaceTimeVideoStatuses];
-  LODWORD(v5) = [v5 fzHandleIDStatusForDestination:v4 usingCache:v6];
+  idsFaceTimeVideoStatuses = [(TUIDSLookupManager *)self idsFaceTimeVideoStatuses];
+  LODWORD(v5) = [v5 fzHandleIDStatusForDestination:destinationCopy usingCache:idsFaceTimeVideoStatuses];
 
   return v5;
 }
 
-- (unsigned)faceTimeMultiwayAvailabilityForDestination:(id)a3
+- (unsigned)faceTimeMultiwayAvailabilityForDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v5 = objc_opt_class();
-  v6 = [(TUIDSLookupManager *)self idsFaceTimeMultiwayStatuses];
-  LODWORD(v5) = [v5 fzHandleIDStatusForDestination:v4 usingCache:v6];
+  idsFaceTimeMultiwayStatuses = [(TUIDSLookupManager *)self idsFaceTimeMultiwayStatuses];
+  LODWORD(v5) = [v5 fzHandleIDStatusForDestination:destinationCopy usingCache:idsFaceTimeMultiwayStatuses];
 
   return v5;
 }
 
-- (BOOL)isModernFaceTimeAvailableForDestination:(id)a3
+- (BOOL)isModernFaceTimeAvailableForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(TUIDSLookupManager *)self idsModernStatuses];
-  v6 = [v5 object];
-  v7 = [v6 containsObject:v4];
+  destinationCopy = destination;
+  idsModernStatuses = [(TUIDSLookupManager *)self idsModernStatuses];
+  object = [idsModernStatuses object];
+  v7 = [object containsObject:destinationCopy];
 
   return v7;
 }
 
-- (BOOL)isWebCapableFaceTimeAvailableForDestination:(id)a3
+- (BOOL)isWebCapableFaceTimeAvailableForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(TUIDSLookupManager *)self idsWebCapableStatuses];
-  v6 = [v5 object];
-  v7 = [v6 containsObject:v4];
+  destinationCopy = destination;
+  idsWebCapableStatuses = [(TUIDSLookupManager *)self idsWebCapableStatuses];
+  object = [idsWebCapableStatuses object];
+  v7 = [object containsObject:destinationCopy];
 
   return v7;
 }
 
-- (BOOL)isNameAndPhotoAvailableForDestination:(id)a3
+- (BOOL)isNameAndPhotoAvailableForDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   v5 = objc_opt_class();
-  v6 = [(TUIDSLookupManager *)self idsNameAndPhotoStatuses];
-  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:v4 usingCache:v6];
+  idsNameAndPhotoStatuses = [(TUIDSLookupManager *)self idsNameAndPhotoStatuses];
+  LOBYTE(v5) = [v5 isAnyDestinationAvailableInDestinations:destinationCopy usingCache:idsNameAndPhotoStatuses];
 
   return v5;
 }
 
 - (void)cancelQueries
 {
-  v3 = [(TUIDSLookupManager *)self queue];
+  queue = [(TUIDSLookupManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__TUIDSLookupManager_cancelQueries__block_invoke;
   block[3] = &unk_1E7424950;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __35__TUIDSLookupManager_cancelQueries__block_invoke(uint64_t a1)
@@ -562,9 +562,9 @@ void __35__TUIDSLookupManager_cancelQueries__block_invoke(uint64_t a1)
   *(v21 + 136) = 0;
 }
 
-- (void)beginQueryWithDestinations:(id)a3 includeMessages:(BOOL)a4
+- (void)beginQueryWithDestinations:(id)destinations includeMessages:(BOOL)messages
 {
-  if (a4)
+  if (messages)
   {
     v4 = 63;
   }
@@ -574,33 +574,33 @@ void __35__TUIDSLookupManager_cancelQueries__block_invoke(uint64_t a1)
     v4 = 47;
   }
 
-  [(TUIDSLookupManager *)self beginQueryWithDestinations:a3 services:v4];
+  [(TUIDSLookupManager *)self beginQueryWithDestinations:destinations services:v4];
 }
 
-- (void)beginQueryWithDestinations:(id)a3 services:(unint64_t)a4
+- (void)beginQueryWithDestinations:(id)destinations services:(unint64_t)services
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  destinationsCopy = destinations;
   v7 = TUDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = v6;
+    v15 = destinationsCopy;
     v16 = 2048;
-    v17 = a4;
+    servicesCopy = services;
     _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "[TUIDSLookupManager:beginQueryWithDestinations] destinations=%@, services=%lu", buf, 0x16u);
   }
 
-  v8 = [(TUIDSLookupManager *)self queue];
+  queue = [(TUIDSLookupManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__TUIDSLookupManager_beginQueryWithDestinations_services___block_invoke;
   block[3] = &unk_1E7425028;
-  v12 = v6;
-  v13 = a4;
+  v12 = destinationsCopy;
+  servicesCopy2 = services;
   block[4] = self;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v9 = destinationsCopy;
+  dispatch_async(queue, block);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -686,18 +686,18 @@ LABEL_13:
   return [v3 beginQueryWithDestination:v4 onService:v5];
 }
 
-- (void)beginQueryWithDestination:(id)a3 onService:(id)a4
+- (void)beginQueryWithDestination:(id)destination onService:(id)service
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  serviceCopy = service;
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v26 = v6;
+    v26 = destinationCopy;
     v27 = 2112;
-    v28 = v7;
+    v28 = serviceCopy;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "[TUIDSLookupManager:beginQueryWithDestination] destinations=%@, services=%@", buf, 0x16u);
   }
 
@@ -705,44 +705,44 @@ LABEL_13:
   v20 = 3221225472;
   v21 = __58__TUIDSLookupManager_beginQueryWithDestination_onService___block_invoke;
   v22 = &unk_1E7426658;
-  v23 = self;
-  v9 = v7;
+  selfCopy = self;
+  v9 = serviceCopy;
   v24 = v9;
   v10 = _Block_copy(&v19);
   v11 = [(TUIDSLookupManager *)self preferredFromID:v19];
-  v12 = [(TUIDSLookupManager *)self queryController];
+  queryController = [(TUIDSLookupManager *)self queryController];
   v13 = objc_opt_respondsToSelector();
 
-  v14 = [(TUIDSLookupManager *)self queryController];
-  v15 = [v6 allObjects];
+  queryController2 = [(TUIDSLookupManager *)self queryController];
+  allObjects = [destinationCopy allObjects];
   v16 = *MEMORY[0x1E69A4800];
-  v17 = [(TUIDSLookupManager *)self queue];
+  queue = [(TUIDSLookupManager *)self queue];
   if (v13)
   {
-    [v14 requiredIDStatusForDestinations:v15 service:v9 preferredFromID:v11 listenerID:v16 queue:v17 completionBlock:v10];
+    [queryController2 requiredIDStatusForDestinations:allObjects service:v9 preferredFromID:v11 listenerID:v16 queue:queue completionBlock:v10];
   }
 
   else
   {
-    [v14 refreshIDStatusForDestinations:v15 service:v9 preferredFromID:v11 listenerID:v16 queue:v17 completionBlock:v10];
+    [queryController2 refreshIDStatusForDestinations:allObjects service:v9 preferredFromID:v11 listenerID:v16 queue:queue completionBlock:v10];
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginQueryWithRefreshForDestination:(id)a3 onService:(id)a4
+- (void)beginQueryWithRefreshForDestination:(id)destination onService:(id)service
 {
-  v6 = a4;
+  serviceCopy = service;
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __68__TUIDSLookupManager_beginQueryWithRefreshForDestination_onService___block_invoke;
   v20 = &unk_1E7426658;
-  v21 = self;
-  v22 = v6;
-  v7 = v6;
-  v8 = a3;
+  selfCopy = self;
+  v22 = serviceCopy;
+  v7 = serviceCopy;
+  destinationCopy = destination;
   v9 = _Block_copy(&v17);
-  v10 = [v7 isEqualToString:{@"com.apple.private.alloy.nameandphoto", v17, v18, v19, v20, v21}];
+  v10 = [v7 isEqualToString:{@"com.apple.private.alloy.nameandphoto", v17, v18, v19, v20, selfCopy}];
   v11 = TUBundleIdentifierNameAndPhotoUtilities;
   if (!v10)
   {
@@ -750,17 +750,17 @@ LABEL_13:
   }
 
   v12 = *v11;
-  v13 = [(TUIDSLookupManager *)self queryController];
-  v14 = [v8 allObjects];
+  queryController = [(TUIDSLookupManager *)self queryController];
+  allObjects = [destinationCopy allObjects];
 
-  v15 = [(TUIDSLookupManager *)self preferredFromID];
-  v16 = [(TUIDSLookupManager *)self queue];
-  [v13 refreshIDStatusForDestinations:v14 service:v7 preferredFromID:v15 listenerID:v12 queue:v16 completionBlock:v9];
+  preferredFromID = [(TUIDSLookupManager *)self preferredFromID];
+  queue = [(TUIDSLookupManager *)self queue];
+  [queryController refreshIDStatusForDestinations:allObjects service:v7 preferredFromID:preferredFromID listenerID:v12 queue:queue completionBlock:v9];
 }
 
-- (void)beginBatchQueryWithDestinations:(id)a3 includeMessages:(BOOL)a4
+- (void)beginBatchQueryWithDestinations:(id)destinations includeMessages:(BOOL)messages
 {
-  if (a4)
+  if (messages)
   {
     v4 = 63;
   }
@@ -770,33 +770,33 @@ LABEL_13:
     v4 = 47;
   }
 
-  [(TUIDSLookupManager *)self beginBatchQueryWithDestinations:a3 services:v4];
+  [(TUIDSLookupManager *)self beginBatchQueryWithDestinations:destinations services:v4];
 }
 
-- (void)beginBatchQueryWithDestinations:(id)a3 services:(unint64_t)a4
+- (void)beginBatchQueryWithDestinations:(id)destinations services:(unint64_t)services
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  destinationsCopy = destinations;
   v7 = TUDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v15 = v6;
+    v15 = destinationsCopy;
     v16 = 2048;
-    v17 = a4;
+    servicesCopy = services;
     _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "[TUIDSLookupManager:beginBatchQueryWithDestinations] destinations=%@, services=%lu", buf, 0x16u);
   }
 
-  v8 = [(TUIDSLookupManager *)self queue];
+  queue = [(TUIDSLookupManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __63__TUIDSLookupManager_beginBatchQueryWithDestinations_services___block_invoke;
   block[3] = &unk_1E7425028;
-  v12 = v6;
-  v13 = a4;
+  v12 = destinationsCopy;
+  servicesCopy2 = services;
   block[4] = self;
-  v9 = v6;
-  dispatch_async(v8, block);
+  v9 = destinationsCopy;
+  dispatch_async(queue, block);
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -900,9 +900,9 @@ LABEL_8:
   [v19 currentIDStatusForDestinations:v5 service:v6 preferredFromID:v7 listenerID:@"com.apple.TelephonyUtilities" queue:v8 completionBlock:&__block_literal_global_84];
 }
 
-- (void)beginCachedQueryWithDestinations:(id)a3 includeMessages:(BOOL)a4
+- (void)beginCachedQueryWithDestinations:(id)destinations includeMessages:(BOOL)messages
 {
-  if (a4)
+  if (messages)
   {
     v4 = 63;
   }
@@ -912,22 +912,22 @@ LABEL_8:
     v4 = 47;
   }
 
-  [(TUIDSLookupManager *)self beginCachedQueryWithDestinations:a3 services:v4];
+  [(TUIDSLookupManager *)self beginCachedQueryWithDestinations:destinations services:v4];
 }
 
-- (void)beginCachedQueryWithDestinations:(id)a3 services:(unint64_t)a4
+- (void)beginCachedQueryWithDestinations:(id)destinations services:(unint64_t)services
 {
-  v6 = a3;
-  v7 = [(TUIDSLookupManager *)self queue];
+  destinationsCopy = destinations;
+  queue = [(TUIDSLookupManager *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__TUIDSLookupManager_beginCachedQueryWithDestinations_services___block_invoke;
   block[3] = &unk_1E7425028;
-  v10 = v6;
-  v11 = a4;
+  v10 = destinationsCopy;
+  servicesCopy = services;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = destinationsCopy;
+  dispatch_async(queue, block);
 }
 
 uint64_t __64__TUIDSLookupManager_beginCachedQueryWithDestinations_services___block_invoke(uint64_t result)
@@ -1011,23 +1011,23 @@ LABEL_13:
   return [v3 beginCachedQueryWithDestinations:v4 onService:v5];
 }
 
-- (void)beginCachedQueryWithDestinations:(id)a3 onService:(id)a4
+- (void)beginCachedQueryWithDestinations:(id)destinations onService:(id)service
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TUIDSLookupManager *)self queryController];
-  v9 = [v7 allObjects];
+  serviceCopy = service;
+  destinationsCopy = destinations;
+  queryController = [(TUIDSLookupManager *)self queryController];
+  allObjects = [destinationsCopy allObjects];
 
-  v10 = [(TUIDSLookupManager *)self preferredFromID];
-  v11 = [(TUIDSLookupManager *)self queue];
+  preferredFromID = [(TUIDSLookupManager *)self preferredFromID];
+  queue = [(TUIDSLookupManager *)self queue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __65__TUIDSLookupManager_beginCachedQueryWithDestinations_onService___block_invoke;
   v13[3] = &unk_1E7426658;
   v13[4] = self;
-  v14 = v6;
-  v12 = v6;
-  [v8 currentIDStatusForDestinations:v9 service:v12 preferredFromID:v10 listenerID:@"com.apple.TelephonyUtilities" queue:v11 completionBlock:v13];
+  v14 = serviceCopy;
+  v12 = serviceCopy;
+  [queryController currentIDStatusForDestinations:allObjects service:v12 preferredFromID:preferredFromID listenerID:@"com.apple.TelephonyUtilities" queue:queue completionBlock:v13];
 }
 
 void __65__TUIDSLookupManager_beginCachedQueryWithDestinations_onService___block_invoke(uint64_t a1, void *a2)
@@ -1074,16 +1074,16 @@ void __65__TUIDSLookupManager_beginCachedQueryWithDestinations_onService___block
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isAnyDestinationAvailableInDestinations:(id)a3 usingCache:(id)a4
++ (BOOL)isAnyDestinationAvailableInDestinations:(id)destinations usingCache:(id)cache
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 object];
+  destinationsCopy = destinations;
+  object = [cache object];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = destinationsCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -1097,7 +1097,7 @@ void __65__TUIDSLookupManager_beginCachedQueryWithDestinations_onService___block
           objc_enumerationMutation(v7);
         }
 
-        v11 = [v6 objectForKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
+        v11 = [object objectForKeyedSubscript:{*(*(&v15 + 1) + 8 * i), v15}];
         v12 = v11;
         if (v11 && [v11 integerValue] == 1)
         {
@@ -1123,59 +1123,59 @@ LABEL_12:
   return v8;
 }
 
-+ (unsigned)fzHandleIDStatusForDestination:(id)a3 usingCache:(id)a4
++ (unsigned)fzHandleIDStatusForDestination:(id)destination usingCache:(id)cache
 {
-  v5 = a3;
-  v6 = [a4 object];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  destinationCopy = destination;
+  object = [cache object];
+  v7 = [object objectForKeyedSubscript:destinationCopy];
 
   if (v7)
   {
-    v8 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v8;
+  return unsignedIntValue;
 }
 
-- (void)batchQueryController:(id)a3 updatedDestinationsStatus:(id)a4 onService:(id)a5 error:(id)a6
+- (void)batchQueryController:(id)controller updatedDestinationsStatus:(id)status onService:(id)service error:(id)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  statusCopy = status;
+  serviceCopy = service;
   v10 = TUDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = TULoggableStringForObject(v8);
+    v11 = TULoggableStringForObject(statusCopy);
     v13 = 138412546;
-    v14 = v9;
+    v14 = serviceCopy;
     v15 = 2112;
     v16 = v11;
     _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Received query status response for service %@: %@", &v13, 0x16u);
   }
 
-  [(TUIDSLookupManager *)self handleIDSQueryResultWithDestinationStatus:v8 onService:v9];
+  [(TUIDSLookupManager *)self handleIDSQueryResultWithDestinationStatus:statusCopy onService:serviceCopy];
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleIDSQueryResultWithDestinationStatus:(id)a3 onService:(id)a4
+- (void)handleIDSQueryResultWithDestinationStatus:(id)status onService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:*MEMORY[0x1E69A47E8]])
+  statusCopy = status;
+  serviceCopy = service;
+  if ([serviceCopy isEqualToString:*MEMORY[0x1E69A47E8]])
   {
-    v8 = [(TUIDSLookupManager *)self idsFaceTimeAudioStatuses];
+    idsFaceTimeAudioStatuses = [(TUIDSLookupManager *)self idsFaceTimeAudioStatuses];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __74__TUIDSLookupManager_handleIDSQueryResultWithDestinationStatus_onService___block_invoke;
     v28[3] = &unk_1E7426658;
-    v29 = v6;
-    v30 = self;
-    [v8 performWhileLocked:v28];
+    v29 = statusCopy;
+    selfCopy = self;
+    [idsFaceTimeAudioStatuses performWhileLocked:v28];
 
     [(TUIDSLookupManager *)self postStatusChangedNotification];
     v9 = v29;
@@ -1184,77 +1184,77 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69A47F0]])
+  if ([serviceCopy isEqualToString:*MEMORY[0x1E69A47F0]])
   {
-    v10 = [(TUIDSLookupManager *)self idsFaceTimeVideoStatuses];
+    idsFaceTimeVideoStatuses = [(TUIDSLookupManager *)self idsFaceTimeVideoStatuses];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __74__TUIDSLookupManager_handleIDSQueryResultWithDestinationStatus_onService___block_invoke_87;
     v25[3] = &unk_1E7426658;
-    v26 = v6;
-    v27 = self;
-    [v10 performWhileLocked:v25];
+    v26 = statusCopy;
+    selfCopy2 = self;
+    [idsFaceTimeVideoStatuses performWhileLocked:v25];
 
     [(TUIDSLookupManager *)self postStatusChangedNotification];
     v9 = v26;
     goto LABEL_13;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69A47F8]])
+  if ([serviceCopy isEqualToString:*MEMORY[0x1E69A47F8]])
   {
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __74__TUIDSLookupManager_handleIDSQueryResultWithDestinationStatus_onService___block_invoke_88;
     v23[3] = &unk_1E7426658;
     v23[4] = self;
-    v24 = v6;
+    v24 = statusCopy;
     [(TUIDSLookupManager *)self filteredDestinationForMultiway:v24 completionBlock:v23];
     v9 = v24;
     goto LABEL_13;
   }
 
-  if ([v7 isEqualToString:*MEMORY[0x1E69A4818]])
+  if ([serviceCopy isEqualToString:*MEMORY[0x1E69A4818]])
   {
-    v11 = [(TUIDSLookupManager *)self idsiMessageStatuses];
+    idsiMessageStatuses = [(TUIDSLookupManager *)self idsiMessageStatuses];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __74__TUIDSLookupManager_handleIDSQueryResultWithDestinationStatus_onService___block_invoke_89;
     v20[3] = &unk_1E7426658;
-    v21 = v6;
-    v22 = self;
-    [v11 performWhileLocked:v20];
+    v21 = statusCopy;
+    selfCopy3 = self;
+    [idsiMessageStatuses performWhileLocked:v20];
 
     [(TUIDSLookupManager *)self postStatusChangedNotification];
     v9 = v21;
     goto LABEL_13;
   }
 
-  if ([v7 isEqualToString:@"com.apple.private.alloy.facetime.messaging"])
+  if ([serviceCopy isEqualToString:@"com.apple.private.alloy.facetime.messaging"])
   {
-    v12 = [(TUIDSLookupManager *)self idsVideoMessagingStatuses];
+    idsVideoMessagingStatuses = [(TUIDSLookupManager *)self idsVideoMessagingStatuses];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __74__TUIDSLookupManager_handleIDSQueryResultWithDestinationStatus_onService___block_invoke_90;
     v17[3] = &unk_1E7426658;
-    v18 = v6;
-    v19 = self;
-    [v12 performWhileLocked:v17];
+    v18 = statusCopy;
+    selfCopy4 = self;
+    [idsVideoMessagingStatuses performWhileLocked:v17];
 
     [(TUIDSLookupManager *)self postStatusChangedNotification];
     v9 = v18;
     goto LABEL_13;
   }
 
-  if ([v7 isEqualToString:@"com.apple.private.alloy.nameandphoto"])
+  if ([serviceCopy isEqualToString:@"com.apple.private.alloy.nameandphoto"])
   {
-    v13 = [(TUIDSLookupManager *)self idsNameAndPhotoStatuses];
+    idsNameAndPhotoStatuses = [(TUIDSLookupManager *)self idsNameAndPhotoStatuses];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __74__TUIDSLookupManager_handleIDSQueryResultWithDestinationStatus_onService___block_invoke_91;
     v14[3] = &unk_1E7426658;
-    v15 = v6;
-    v16 = self;
-    [v13 performWhileLocked:v14];
+    v15 = statusCopy;
+    selfCopy5 = self;
+    [idsNameAndPhotoStatuses performWhileLocked:v14];
 
     v9 = v15;
     goto LABEL_13;
@@ -1418,21 +1418,21 @@ void __74__TUIDSLookupManager_handleIDSQueryResultWithDestinationStatus_onServic
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)filteredDestinationForMultiway:(id)a3 completionBlock:(id)a4
+- (void)filteredDestinationForMultiway:(id)multiway completionBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mutableCopy];
-  v9 = [CUTWeakLinkClass() sharedInstance];
-  if ([v9 isGreenTea])
+  multiwayCopy = multiway;
+  blockCopy = block;
+  v8 = [multiwayCopy mutableCopy];
+  cUTWeakLinkClass() = [CUTWeakLinkClass() sharedInstance];
+  if ([cUTWeakLinkClass() isGreenTea])
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v10 = [v6 allKeys];
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    allKeys = [multiwayCopy allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1444,20 +1444,20 @@ void __74__TUIDSLookupManager_handleIDSQueryResultWithDestinationStatus_onServic
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allKeys);
           }
 
           [v8 setObject:&unk_1F09C6028 forKeyedSubscript:*(*(&v28 + 1) + 8 * v14++)];
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v12 = [allKeys countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v12);
     }
 
-    v7[2](v7, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   else
@@ -1469,26 +1469,26 @@ void __74__TUIDSLookupManager_handleIDSQueryResultWithDestinationStatus_onServic
     v26[3] = &unk_1E74266A0;
     v16 = v15;
     v27 = v16;
-    [v6 enumerateKeysAndObjectsUsingBlock:v26];
+    [multiwayCopy enumerateKeysAndObjectsUsingBlock:v26];
     if ([v16 count])
     {
-      v17 = [(TUIDSLookupManager *)self queryController];
+      queryController = [(TUIDSLookupManager *)self queryController];
       v21 = *MEMORY[0x1E69A47F8];
-      v18 = [(TUIDSLookupManager *)self preferredFromID];
+      preferredFromID = [(TUIDSLookupManager *)self preferredFromID];
       v19 = dispatch_get_global_queue(33, 0);
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __69__TUIDSLookupManager_filteredDestinationForMultiway_completionBlock___block_invoke_2;
       v22[3] = &unk_1E7426718;
       v23 = v8;
-      v24 = self;
-      v25 = v7;
-      [v17 currentRemoteDevicesForDestinations:v16 service:v21 preferredFromID:v18 listenerID:@"com.apple.TelephonyUtilities" queue:v19 completionBlock:v22];
+      selfCopy = self;
+      v25 = blockCopy;
+      [queryController currentRemoteDevicesForDestinations:v16 service:v21 preferredFromID:preferredFromID listenerID:@"com.apple.TelephonyUtilities" queue:v19 completionBlock:v22];
     }
 
     else
     {
-      v7[2](v7, v8);
+      blockCopy[2](blockCopy, v8);
     }
   }
 
@@ -1664,37 +1664,37 @@ void __69__TUIDSLookupManager_filteredDestinationForMultiway_completionBlock___b
   [v4 setObject:v3];
 }
 
-- (void)queryHasWebOnlyEndpointsForDestinations:(id)a3 completionBlock:(id)a4
+- (void)queryHasWebOnlyEndpointsForDestinations:(id)destinations completionBlock:(id)block
 {
   v6 = MEMORY[0x1E69A5330];
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  destinationsCopy = destinations;
   v9 = [v6 alloc];
   v10 = [MEMORY[0x1E695DFD8] setWithObject:*MEMORY[0x1E69A5050]];
   v11 = [MEMORY[0x1E695DFD8] setWithObject:*MEMORY[0x1E69A5070]];
   v12 = [v9 initWithRequiredCapabilities:v10 requiredMissingCapabilities:v11];
 
-  [(TUIDSLookupManager *)self queryHasEndpointWithCapabilities:v12 forMultiwayDestinations:v8 completionBlock:v7];
+  [(TUIDSLookupManager *)self queryHasEndpointWithCapabilities:v12 forMultiwayDestinations:destinationsCopy completionBlock:blockCopy];
 }
 
-- (void)queryHasEndpointWithCapabilities:(id)a3 forMultiwayDestinations:(id)a4 completionBlock:(id)a5
+- (void)queryHasEndpointWithCapabilities:(id)capabilities forMultiwayDestinations:(id)destinations completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TUIDSLookupManager *)self queue];
+  capabilitiesCopy = capabilities;
+  destinationsCopy = destinations;
+  blockCopy = block;
+  queue = [(TUIDSLookupManager *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __95__TUIDSLookupManager_queryHasEndpointWithCapabilities_forMultiwayDestinations_completionBlock___block_invoke;
   v15[3] = &unk_1E74264F8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = destinationsCopy;
+  v17 = capabilitiesCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = capabilitiesCopy;
+  v14 = destinationsCopy;
+  dispatch_async(queue, v15);
 }
 
 void __95__TUIDSLookupManager_queryHasEndpointWithCapabilities_forMultiwayDestinations_completionBlock___block_invoke(uint64_t a1)

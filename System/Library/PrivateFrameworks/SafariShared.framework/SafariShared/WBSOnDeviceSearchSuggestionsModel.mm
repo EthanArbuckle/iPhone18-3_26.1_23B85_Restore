@@ -1,18 +1,18 @@
 @interface WBSOnDeviceSearchSuggestionsModel
-- (BOOL)_readNextChild:(_WBSSearchSuggestionCandidate *)a3;
-- (WBSOnDeviceSearchSuggestionsModel)initWithModelFileAtPath:(id)a3;
-- (id)_readNextNumberOfBytesAsString:(unsigned int)a3 success:(BOOL *)a4;
-- (unsigned)_readMaxScoreAsRootAtAddress:(unsigned int)a3 withLeafCandidate:(_WBSSearchSuggestionCandidate *)a4 success:(BOOL *)a5;
-- (unsigned)_readNextNumberOfBytesAsInt:(unsigned int)a3 success:(BOOL *)a4;
+- (BOOL)_readNextChild:(_WBSSearchSuggestionCandidate *)child;
+- (WBSOnDeviceSearchSuggestionsModel)initWithModelFileAtPath:(id)path;
+- (id)_readNextNumberOfBytesAsString:(unsigned int)string success:(BOOL *)success;
+- (unsigned)_readMaxScoreAsRootAtAddress:(unsigned int)address withLeafCandidate:(_WBSSearchSuggestionCandidate *)candidate success:(BOOL *)success;
+- (unsigned)_readNextNumberOfBytesAsInt:(unsigned int)int success:(BOOL *)success;
 - (vector<_WBSSearchSuggestionCandidate,)readTreeNodeWithCandidate:()vector<_WBSSearchSuggestionCandidate;
 @end
 
 @implementation WBSOnDeviceSearchSuggestionsModel
 
-- (WBSOnDeviceSearchSuggestionsModel)initWithModelFileAtPath:(id)a3
+- (WBSOnDeviceSearchSuggestionsModel)initWithModelFileAtPath:(id)path
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v23.receiver = self;
   v23.super_class = WBSOnDeviceSearchSuggestionsModel;
   v5 = [(WBSOnDeviceSearchSuggestionsModel *)&v23 init];
@@ -23,7 +23,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v6 = [MEMORY[0x1E696AC00] fileHandleForReadingAtPath:v4];
+  v6 = [MEMORY[0x1E696AC00] fileHandleForReadingAtPath:pathCopy];
   modelFileHandle = v5->_modelFileHandle;
   v5->_modelFileHandle = v6;
 
@@ -47,18 +47,18 @@ LABEL_15:
     v16 = WBS_LOG_CHANNEL_PREFIXOfflineSearchSuggestions();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v10 safari_privacyPreservingError];
-      [(WBSOnDeviceSearchSuggestionsModel *)v4 initWithModelFileAtPath:v17, buf, v16];
+      safari_privacyPreservingError = [v10 safari_privacyPreservingError];
+      [(WBSOnDeviceSearchSuggestionsModel *)pathCopy initWithModelFileAtPath:safari_privacyPreservingError, buf, v16];
     }
   }
 
   else
   {
     v11 = v9;
-    v12 = [v9 bytes];
-    v13 = *v12;
+    bytes = [v9 bytes];
+    v13 = *bytes;
     v5->_addressSize = v13;
-    v14 = v12[1];
+    v14 = bytes[1];
     v5->_scoreSize = v14;
     if (v13 - 5 > 0xFFFFFFFB)
     {
@@ -99,7 +99,7 @@ LABEL_16:
   retstr->var2 = 0;
   if (!a4->var2)
   {
-    v6 = self;
+    selfCopy = self;
     v15 = 0;
     v13 = 0;
     v12 = 0;
@@ -122,7 +122,7 @@ LABEL_16:
         v11 = a4->var3;
 
         LODWORD(v9) = v8;
-        if ((unk_1F3AEA4A8(v6, "_readNextChild:", &v9) & 1) == 0)
+        if ((unk_1F3AEA4A8(selfCopy, "_readNextChild:", &v9) & 1) == 0)
         {
           break;
         }
@@ -135,7 +135,7 @@ LABEL_16:
   return self;
 }
 
-- (BOOL)_readNextChild:(_WBSSearchSuggestionCandidate *)a3
+- (BOOL)_readNextChild:(_WBSSearchSuggestionCandidate *)child
 {
   v35 = *MEMORY[0x1E69E9840];
   v34 = 0;
@@ -152,9 +152,9 @@ LABEL_31:
       return v7;
     }
 
-    v10 = [a3->var3 stringByAppendingString:v8];
-    var3 = a3->var3;
-    a3->var3 = v10;
+    v10 = [child->var3 stringByAppendingString:v8];
+    var3 = child->var3;
+    child->var3 = v10;
 
     modelFileHandle = self->_modelFileHandle;
     v33 = 0;
@@ -191,27 +191,27 @@ LABEL_31:
         if ([v20 length] == v18 - 1 && v14 == 0)
         {
           v26 = v20;
-          v27 = [v20 bytes];
+          bytes = [v20 bytes];
           v28 = malloc_type_malloc(v18, 0x100004077774924uLL);
           v29 = v28;
           if (v28)
           {
             *v28 = v16;
-            memcpy(v28 + 1, v27, (v18 - 1));
+            memcpy(v28 + 1, bytes, (v18 - 1));
             v30 = byteArrayToInteger(v29, v18) >> 1;
             free(v29);
             if (v16)
             {
-              a3->var1 = v30;
-              a3->var2 = 0;
+              child->var1 = v30;
+              child->var2 = 0;
               v7 = 1;
             }
 
             else
             {
-              a3->var0 = v30;
+              child->var0 = v30;
               v7 = 1;
-              a3->var2 = 1;
+              child->var2 = 1;
             }
 
             goto LABEL_21;
@@ -258,18 +258,18 @@ LABEL_30:
   return 0;
 }
 
-- (unsigned)_readMaxScoreAsRootAtAddress:(unsigned int)a3 withLeafCandidate:(_WBSSearchSuggestionCandidate *)a4 success:(BOOL *)a5
+- (unsigned)_readMaxScoreAsRootAtAddress:(unsigned int)address withLeafCandidate:(_WBSSearchSuggestionCandidate *)candidate success:(BOOL *)success
 {
   v20 = *MEMORY[0x1E69E9840];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __92__WBSOnDeviceSearchSuggestionsModel__readMaxScoreAsRootAtAddress_withLeafCandidate_success___block_invoke;
   v18[3] = &__block_descriptor_40_e8_v12__0B8l;
-  v18[4] = a5;
+  v18[4] = success;
   v8 = MEMORY[0x1BFB13CE0](v18, a2);
   modelFileHandle = self->_modelFileHandle;
   v17 = 0;
-  [(NSFileHandle *)modelFileHandle seekToOffset:a3 error:&v17];
+  [(NSFileHandle *)modelFileHandle seekToOffset:address error:&v17];
   v10 = v17;
   if (v10)
   {
@@ -298,8 +298,8 @@ LABEL_30:
     v14 = [(WBSOnDeviceSearchSuggestionsModel *)self _readNextNumberOfBytesAsInt:self->_scoreSize success:v19];
     if (v19[0])
     {
-      a4->var2 = 1;
-      a4->var0 = v14;
+      candidate->var2 = 1;
+      candidate->var0 = v14;
       goto LABEL_9;
     }
 
@@ -329,27 +329,27 @@ uint64_t __92__WBSOnDeviceSearchSuggestionsModel__readMaxScoreAsRootAtAddress_wi
   return result;
 }
 
-- (unsigned)_readNextNumberOfBytesAsInt:(unsigned int)a3 success:(BOOL *)a4
+- (unsigned)_readNextNumberOfBytesAsInt:(unsigned int)int success:(BOOL *)success
 {
   v16[8] = *MEMORY[0x1E69E9840];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__WBSOnDeviceSearchSuggestionsModel__readNextNumberOfBytesAsInt_success___block_invoke;
   v16[3] = &__block_descriptor_40_e8_v12__0B8l;
-  v16[4] = a4;
+  v16[4] = success;
   v6 = MEMORY[0x1BFB13CE0](v16, a2);
   v7 = v6;
-  if (a3)
+  if (int)
   {
     modelFileHandle = self->_modelFileHandle;
     v15 = 0;
-    v9 = [(NSFileHandle *)modelFileHandle readDataUpToLength:a3 error:&v15];
+    v9 = [(NSFileHandle *)modelFileHandle readDataUpToLength:int error:&v15];
     v10 = v15;
-    if ([v9 length] == a3 && v10 == 0)
+    if ([v9 length] == int && v10 == 0)
     {
       v7[2](v7, 1);
       v13 = v9;
-      a3 = byteArrayToInteger([v9 bytes], a3);
+      int = byteArrayToInteger([v9 bytes], int);
     }
 
     else
@@ -363,7 +363,7 @@ uint64_t __92__WBSOnDeviceSearchSuggestionsModel__readMaxScoreAsRootAtAddress_wi
       }
 
       v7[2](v7, 0);
-      a3 = 0;
+      int = 0;
     }
   }
 
@@ -372,7 +372,7 @@ uint64_t __92__WBSOnDeviceSearchSuggestionsModel__readMaxScoreAsRootAtAddress_wi
     (*(v6 + 16))(v6, 0);
   }
 
-  return a3;
+  return int;
 }
 
 uint64_t __73__WBSOnDeviceSearchSuggestionsModel__readNextNumberOfBytesAsInt_success___block_invoke(uint64_t result, char a2)
@@ -386,29 +386,29 @@ uint64_t __73__WBSOnDeviceSearchSuggestionsModel__readNextNumberOfBytesAsInt_suc
   return result;
 }
 
-- (id)_readNextNumberOfBytesAsString:(unsigned int)a3 success:(BOOL *)a4
+- (id)_readNextNumberOfBytesAsString:(unsigned int)string success:(BOOL *)success
 {
   v19[8] = *MEMORY[0x1E69E9840];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __76__WBSOnDeviceSearchSuggestionsModel__readNextNumberOfBytesAsString_success___block_invoke;
   v19[3] = &__block_descriptor_40_e8_v12__0B8l;
-  v19[4] = a4;
+  v19[4] = success;
   v6 = MEMORY[0x1BFB13CE0](v19, a2);
   v7 = v6;
-  if (a3)
+  if (string)
   {
     modelFileHandle = self->_modelFileHandle;
-    v9 = a3;
+    stringCopy = string;
     v18 = 0;
-    v10 = [(NSFileHandle *)modelFileHandle readDataUpToLength:a3 error:&v18];
+    v10 = [(NSFileHandle *)modelFileHandle readDataUpToLength:string error:&v18];
     v11 = v18;
-    if ([v10 length] == v9 && v11 == 0)
+    if ([v10 length] == stringCopy && v11 == 0)
     {
       v7[2](v7, 1);
       v15 = v10;
-      v16 = [v10 bytes];
-      v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v16 length:v9 encoding:4];
+      bytes = [v10 bytes];
+      v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:bytes length:stringCopy encoding:4];
     }
 
     else

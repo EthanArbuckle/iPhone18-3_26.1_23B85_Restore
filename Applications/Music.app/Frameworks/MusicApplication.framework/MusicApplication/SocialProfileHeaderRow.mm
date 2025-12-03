@@ -1,16 +1,16 @@
 @interface SocialProfileHeaderRow
 - (BOOL)isHighlighted;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
-- (_TtC16MusicApplication22SocialProfileHeaderRow)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC16MusicApplication22SocialProfileHeaderRow)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setAccessibilityTraits:(unint64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAccessibilityTraits:(unint64_t)traits;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setIsAccessibilityElement:(BOOL)element;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SocialProfileHeaderRow
@@ -22,55 +22,55 @@
   return [(SocialProfileHeaderRow *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5 = type metadata accessor for SocialProfileHeaderRow();
   v9.receiver = self;
   v9.super_class = v5;
-  v6 = self;
-  v7 = [(SocialProfileHeaderRow *)&v9 isHighlighted];
-  v8.receiver = v6;
+  selfCopy = self;
+  isHighlighted = [(SocialProfileHeaderRow *)&v9 isHighlighted];
+  v8.receiver = selfCopy;
   v8.super_class = v5;
-  [(SocialProfileHeaderRow *)&v8 setHighlighted:v3];
-  sub_4592A8(v7);
+  [(SocialProfileHeaderRow *)&v8 setHighlighted:highlightedCopy];
+  sub_4592A8(isHighlighted);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_4593A4();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  if (![(SocialProfileHeaderRow *)v8 pointInside:v7 withEvent:x, y])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  if (![(SocialProfileHeaderRow *)selfCopy pointInside:eventCopy withEvent:x, y])
   {
 
     goto LABEL_5;
   }
 
-  v9 = [(SocialProfileHeaderRow *)v8 isEnabled];
+  isEnabled = [(SocialProfileHeaderRow *)selfCopy isEnabled];
 
-  if ((v9 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
 LABEL_5:
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  [(SocialProfileHeaderRow *)v4 intrinsicContentSize];
+  width = fits.width;
+  selfCopy = self;
+  [(SocialProfileHeaderRow *)selfCopy intrinsicContentSize];
   v6 = v5;
   sub_7FD28();
   v7 = sub_AB38E0();
@@ -98,7 +98,7 @@ LABEL_5:
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_4598C8();
 
   v4 = 48.0;
@@ -108,19 +108,19 @@ LABEL_5:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_4599A4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_4599A4(change);
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = type metadata accessor for SocialProfileHeaderRow();
-  [(SocialProfileHeaderRow *)&v4 setIsAccessibilityElement:v3];
+  [(SocialProfileHeaderRow *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityLabel
@@ -141,7 +141,7 @@ LABEL_5:
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_459CC4();
   v4 = v3;
 
@@ -158,14 +158,14 @@ LABEL_5:
   return v5;
 }
 
-- (void)setAccessibilityTraits:(unint64_t)a3
+- (void)setAccessibilityTraits:(unint64_t)traits
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for SocialProfileHeaderRow();
-  [(SocialProfileHeaderRow *)&v4 setAccessibilityTraits:a3];
+  [(SocialProfileHeaderRow *)&v4 setAccessibilityTraits:traits];
 }
 
-- (_TtC16MusicApplication22SocialProfileHeaderRow)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication22SocialProfileHeaderRow)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

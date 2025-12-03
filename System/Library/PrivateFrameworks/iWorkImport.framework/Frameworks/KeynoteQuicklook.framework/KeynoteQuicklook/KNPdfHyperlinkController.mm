@@ -1,31 +1,31 @@
 @interface KNPdfHyperlinkController
-- (BOOL)ignoreUrl:(id)a3;
-- (BOOL)isDestination:(id)a3;
+- (BOOL)ignoreUrl:(id)url;
+- (BOOL)isDestination:(id)destination;
 - (CGRect)canvasRect;
-- (KNPdfHyperlinkController)initWithShow:(id)a3;
-- (id)destinationFromUrl:(id)a3;
-- (id)nameForSlide:(id)a3;
-- (id)nameFromIndex:(unint64_t)a3;
-- (int64_t)getFirstNonHiddenIndex:(unint64_t)a3 delta:(int64_t)a4;
-- (void)addHyperlinksForReps:(id)a3 targetRect:(CGRect)a4 context:(CGContext *)a5;
+- (KNPdfHyperlinkController)initWithShow:(id)show;
+- (id)destinationFromUrl:(id)url;
+- (id)nameForSlide:(id)slide;
+- (id)nameFromIndex:(unint64_t)index;
+- (int64_t)getFirstNonHiddenIndex:(unint64_t)index delta:(int64_t)delta;
+- (void)addHyperlinksForReps:(id)reps targetRect:(CGRect)rect context:(CGContext *)context;
 @end
 
 @implementation KNPdfHyperlinkController
 
-- (KNPdfHyperlinkController)initWithShow:(id)a3
+- (KNPdfHyperlinkController)initWithShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   v18.receiver = self;
   v18.super_class = KNPdfHyperlinkController;
   v7 = [(TSAPdfHyperlinkController *)&v18 init];
   if (v7)
   {
-    v8 = objc_msgSend_slideTree(v4, v5, v6);
+    v8 = objc_msgSend_slideTree(showCopy, v5, v6);
     v11 = objc_msgSend_slideNodes(v8, v9, v10);
     slides = v7->_slides;
     v7->_slides = v11;
 
-    objc_msgSend_size(v4, v13, v14);
+    objc_msgSend_size(showCopy, v13, v14);
     v7->_canvasRect.origin.x = 0.0;
     v7->_canvasRect.origin.y = 0.0;
     v7->_canvasRect.size.width = v15;
@@ -35,39 +35,39 @@
   return v7;
 }
 
-- (id)nameForSlide:(id)a3
+- (id)nameForSlide:(id)slide
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = objc_msgSend_uniqueIdentifier(a3, a2, a3);
+  v4 = objc_msgSend_uniqueIdentifier(slide, a2, slide);
   v6 = objc_msgSend_stringWithFormat_(v3, v5, @"?slideid=%@", v4);
 
   return v6;
 }
 
-- (id)nameFromIndex:(unint64_t)a3
+- (id)nameFromIndex:(unint64_t)index
 {
-  if (objc_msgSend_count(self->_slides, a2, a3) <= a3)
+  if (objc_msgSend_count(self->_slides, a2, index) <= index)
   {
     v8 = &stru_2884D8E20;
   }
 
   else
   {
-    v6 = objc_msgSend_objectAtIndex_(self->_slides, v5, a3);
+    v6 = objc_msgSend_objectAtIndex_(self->_slides, v5, index);
     v8 = objc_msgSend_nameForSlide_(self, v7, v6);
   }
 
   return v8;
 }
 
-- (int64_t)getFirstNonHiddenIndex:(unint64_t)a3 delta:(int64_t)a4
+- (int64_t)getFirstNonHiddenIndex:(unint64_t)index delta:(int64_t)delta
 {
-  v8 = objc_msgSend_count(self->_slides, a2, a3);
+  v8 = objc_msgSend_count(self->_slides, a2, index);
   result = 0;
-  v10 = a3 + a4;
-  if ((a3 + a4) >= 0 && v10 < v8)
+  v10 = index + delta;
+  if ((index + delta) >= 0 && v10 < v8)
   {
-    v11 = a3 + 2 * a4;
+    v11 = index + 2 * delta;
     while (1)
     {
       v12 = objc_msgSend_objectAtIndex_(self->_slides, v7, v10);
@@ -83,9 +83,9 @@
       result = 0;
       if ((v11 & 0x8000000000000000) == 0)
       {
-        v10 += a4;
+        v10 += delta;
         v16 = v11 < v8;
-        v11 += a4;
+        v11 += delta;
         if (v16)
         {
           continue;
@@ -101,9 +101,9 @@
   return result;
 }
 
-- (id)destinationFromUrl:(id)a3
+- (id)destinationFromUrl:(id)url
 {
-  v4 = objc_msgSend_absoluteString(a3, a2, a3);
+  v4 = objc_msgSend_absoluteString(url, a2, url);
   v7 = v4;
   if (!v4 || !objc_msgSend_length(v4, v5, v6))
   {
@@ -162,9 +162,9 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)isDestination:(id)a3
+- (BOOL)isDestination:(id)destination
 {
-  v3 = objc_msgSend_absoluteString(a3, a2, a3);
+  v3 = objc_msgSend_absoluteString(destination, a2, destination);
   v5 = v3;
   if (v3)
   {
@@ -199,9 +199,9 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)ignoreUrl:(id)a3
+- (BOOL)ignoreUrl:(id)url
 {
-  v3 = objc_msgSend_absoluteString(a3, a2, a3);
+  v3 = objc_msgSend_absoluteString(url, a2, url);
   if (objc_msgSend_isEqualToString_(v3, v4, @"?action=exitpresentation"))
   {
     isEqualToString = 1;
@@ -228,19 +228,19 @@ LABEL_9:
   return result;
 }
 
-- (void)addHyperlinksForReps:(id)a3 targetRect:(CGRect)a4 context:(CGContext *)a5
+- (void)addHyperlinksForReps:(id)reps targetRect:(CGRect)rect context:(CGContext *)context
 {
-  v27 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  contextCopy = context;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v39 = *MEMORY[0x277D85DE8];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = a3;
+  obj = reps;
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v10, &v33, v38, 16);
   if (v11)
   {
@@ -279,7 +279,7 @@ LABEL_9:
                 objc_enumerationMutation(v19);
               }
 
-              objc_msgSend_addHyperlinksForRep_(self, v22, *(*(&v29 + 1) + 8 * v25++), v27);
+              objc_msgSend_addHyperlinksForRep_(self, v22, *(*(&v29 + 1) + 8 * v25++), contextCopy);
             }
 
             while (v23 != v25);
@@ -299,7 +299,7 @@ LABEL_9:
     while (v13);
   }
 
-  objc_msgSend_commitHyperlinksToPDF_targetRect_(self, v12, v27, x, y, width, height, v27);
+  objc_msgSend_commitHyperlinksToPDF_targetRect_(self, v12, contextCopy, x, y, width, height, contextCopy);
 }
 
 @end

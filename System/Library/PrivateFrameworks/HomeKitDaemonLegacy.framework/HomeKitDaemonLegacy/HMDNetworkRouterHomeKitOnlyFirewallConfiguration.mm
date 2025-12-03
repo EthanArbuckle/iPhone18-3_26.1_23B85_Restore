@@ -1,7 +1,7 @@
 @interface HMDNetworkRouterHomeKitOnlyFirewallConfiguration
-+ (id)fallbackConfigurationForRuleset:(id)a3;
++ (id)fallbackConfigurationForRuleset:(id)ruleset;
 + (id)fallbackIdentifier;
-- (HMDNetworkRouterHomeKitOnlyFirewallConfiguration)initWithAccessory:(id)a3 sourceConfiguration:(id)a4;
+- (HMDNetworkRouterHomeKitOnlyFirewallConfiguration)initWithAccessory:(id)accessory sourceConfiguration:(id)configuration;
 - (id)description;
 @end
 
@@ -14,10 +14,10 @@
   {
     [(HMDNetworkRouterFirewallRuleConfiguration *)self hasFullAccessToLAN];
     v4 = HMFBooleanToString();
-    v5 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
-    v6 = [v5 count];
-    v7 = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
-    v8 = [v3 stringWithFormat:@"<HomeKitOnly filtered Full LAN = %@, # LAN rules = %lu, # WAN rules = %lu>", v4, v6, objc_msgSend(v7, "count")];
+    lanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
+    v6 = [lanRules count];
+    wanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
+    v8 = [v3 stringWithFormat:@"<HomeKitOnly filtered Full LAN = %@, # LAN rules = %lu, # WAN rules = %lu>", v4, v6, objc_msgSend(wanRules, "count")];
   }
 
   else
@@ -25,20 +25,20 @@
     useFallbackForRTP = self->_useFallbackForRTP;
     v4 = HMFBooleanToString();
     useFallbackForHDS = self->_useFallbackForHDS;
-    v5 = HMFBooleanToString();
-    v8 = [v3 stringWithFormat:@"<HomeKitOnly synthetic RTP = %@, HDS = %@>", v4, v5];
+    lanRules = HMFBooleanToString();
+    v8 = [v3 stringWithFormat:@"<HomeKitOnly synthetic RTP = %@, HDS = %@>", v4, lanRules];
   }
 
   return v8;
 }
 
-- (HMDNetworkRouterHomeKitOnlyFirewallConfiguration)initWithAccessory:(id)a3 sourceConfiguration:(id)a4
+- (HMDNetworkRouterHomeKitOnlyFirewallConfiguration)initWithAccessory:(id)accessory sourceConfiguration:(id)configuration
 {
   v51 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v6 = a4;
+  accessoryCopy = accessory;
+  configurationCopy = configuration;
   v46 = 0;
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -47,33 +47,33 @@
   v39 = &v38;
   v40 = 0x2020000000;
   v41 = 0;
-  if (v6)
+  if (configurationCopy)
   {
-    v8 = [v6 accessoryIdentifier];
-    v9 = [v6 lastModifiedTime];
-    v10 = [v6 lanRules];
+    accessoryIdentifier = [configurationCopy accessoryIdentifier];
+    lastModifiedTime = [configurationCopy lastModifiedTime];
+    lanRules = [configurationCopy lanRules];
 
-    if (!v10)
+    if (!lanRules)
     {
       goto LABEL_20;
     }
 
-    v11 = [v6 lanRules];
+    lanRules2 = [configurationCopy lanRules];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __90__HMDNetworkRouterHomeKitOnlyFirewallConfiguration_initWithAccessory_sourceConfiguration___block_invoke;
     v36[3] = &unk_27972A378;
-    v37 = v7;
-    [v11 hmf_enumerateWithAutoreleasePoolUsingBlock:v36];
+    v37 = array;
+    [lanRules2 hmf_enumerateWithAutoreleasePoolUsingBlock:v36];
 
-    LOBYTE(v10) = 0;
+    LOBYTE(lanRules) = 0;
     v12 = v37;
   }
 
   else
   {
-    v8 = [objc_opt_class() fallbackIdentifier];
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
+    accessoryIdentifier = [objc_opt_class() fallbackIdentifier];
+    lastModifiedTime = [MEMORY[0x277CBEAA8] distantPast];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __90__HMDNetworkRouterHomeKitOnlyFirewallConfiguration_initWithAccessory_sourceConfiguration___block_invoke_2;
@@ -81,7 +81,7 @@
     aBlock[4] = &v42;
     aBlock[5] = &v38;
     v12 = _Block_copy(aBlock);
-    v13 = v30;
+    v13 = accessoryCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,19 +98,19 @@
     if (v15)
     {
       v12[2](v12, v15);
-      v16 = [v15 identifiersForBridgedAccessories];
+      identifiersForBridgedAccessories = [v15 identifiersForBridgedAccessories];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __90__HMDNetworkRouterHomeKitOnlyFirewallConfiguration_initWithAccessory_sourceConfiguration___block_invoke_3;
       v32[3] = &unk_27972A3C8;
       v33 = v15;
       v34 = v12;
-      [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
+      [identifiersForBridgedAccessories hmf_enumerateWithAutoreleasePoolUsingBlock:v32];
 
       if (*(v43 + 24) == 1)
       {
         context = objc_autoreleasePoolPush();
-        v17 = self;
+        selfCopy = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
@@ -124,13 +124,13 @@
 
         objc_autoreleasePoolPop(context);
         v20 = [objc_opt_class() fallbackConfigurationForRuleset:@"RTP"];
-        addFallbackLANRules(&v46, v7, v20);
+        addFallbackLANRules(&v46, array, v20);
       }
 
       if (*(v39 + 24) == 1)
       {
         context = objc_autoreleasePoolPush();
-        v21 = self;
+        selfCopy2 = self;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
@@ -144,27 +144,27 @@
 
         objc_autoreleasePoolPop(context);
         v24 = [objc_opt_class() fallbackConfigurationForRuleset:@"HDS"];
-        addFallbackLANRules(&v46, v7, v24);
+        addFallbackLANRules(&v46, array, v24);
       }
 
-      LOBYTE(v10) = v46;
+      LOBYTE(lanRules) = v46;
     }
 
     else
     {
-      LOBYTE(v10) = 0;
+      LOBYTE(lanRules) = 0;
     }
   }
 
 LABEL_20:
-  v25 = [v7 copy];
+  v25 = [array copy];
   v31.receiver = self;
   v31.super_class = HMDNetworkRouterHomeKitOnlyFirewallConfiguration;
-  v26 = [(HMDNetworkRouterFirewallRuleConfiguration *)&v31 initWithAccessoryIdentifier:v8 lastModifiedTime:v9 fullAccessLAN:v10 & 1 lanRules:v25 fullAccessWAN:0 wanRules:MEMORY[0x277CBEBF8]];
+  v26 = [(HMDNetworkRouterFirewallRuleConfiguration *)&v31 initWithAccessoryIdentifier:accessoryIdentifier lastModifiedTime:lastModifiedTime fullAccessLAN:lanRules & 1 lanRules:v25 fullAccessWAN:0 wanRules:MEMORY[0x277CBEBF8]];
 
   if (v26)
   {
-    v26->_isFiltered = v6 != 0;
+    v26->_isFiltered = configurationCopy != 0;
     v26->_useFallbackForRTP = *(v43 + 24);
     v26->_useFallbackForHDS = *(v39 + 24);
   }
@@ -232,21 +232,21 @@ void __90__HMDNetworkRouterHomeKitOnlyFirewallConfiguration_initWithAccessory_so
   }
 }
 
-+ (id)fallbackConfigurationForRuleset:(id)a3
++ (id)fallbackConfigurationForRuleset:(id)ruleset
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__HMDNetworkRouterHomeKitOnlyFirewallConfiguration_fallbackConfigurationForRuleset___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v3 = fallbackConfigurationForRuleset__once;
-  v4 = a3;
+  rulesetCopy = ruleset;
   if (v3 != -1)
   {
     dispatch_once(&fallbackConfigurationForRuleset__once, block);
   }
 
-  v5 = [fallbackConfigurationForRuleset__fallback objectForKeyedSubscript:v4];
+  v5 = [fallbackConfigurationForRuleset__fallback objectForKeyedSubscript:rulesetCopy];
 
   return v5;
 }

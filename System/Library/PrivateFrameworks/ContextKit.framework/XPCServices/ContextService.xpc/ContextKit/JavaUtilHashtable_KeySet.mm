@@ -1,15 +1,15 @@
 @interface JavaUtilHashtable_KeySet
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
-- (JavaUtilHashtable_KeySet)initWithJavaUtilHashtable:(id)a3;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
+- (BOOL)removeWithId:(id)id;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
+- (JavaUtilHashtable_KeySet)initWithJavaUtilHashtable:(id)hashtable;
 - (id)description;
 - (id)iterator;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
 - (unint64_t)hash;
 - (void)__javaClone;
@@ -34,23 +34,23 @@
   return [Weak size];
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   Weak = objc_loadWeak(&self->this$0_);
 
-  return [Weak containsKeyWithId:a3];
+  return [Weak containsKeyWithId:id];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
-  v4 = self;
+  selfCopy = self;
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
-  v6 = *(objc_loadWeak(&v4->this$0_) + 4);
-  [objc_loadWeak(&v4->this$0_) removeWithId:a3];
-  LOBYTE(v4) = *(objc_loadWeak(&v4->this$0_) + 4) != v6;
+  v6 = *(objc_loadWeak(&selfCopy->this$0_) + 4);
+  [objc_loadWeak(&selfCopy->this$0_) removeWithId:id];
+  LOBYTE(selfCopy) = *(objc_loadWeak(&selfCopy->this$0_) + 4) != v6;
   objc_sync_exit(Weak);
-  return v4;
+  return selfCopy;
 }
 
 - (void)clear
@@ -60,48 +60,48 @@
   [Weak clear];
 }
 
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v7.receiver = self;
   v7.super_class = JavaUtilHashtable_KeySet;
-  LOBYTE(a3) = [(JavaUtilAbstractSet *)&v7 removeAllWithJavaUtilCollection:a3];
+  LOBYTE(collection) = [(JavaUtilAbstractSet *)&v7 removeAllWithJavaUtilCollection:collection];
   objc_sync_exit(Weak);
-  return a3;
+  return collection;
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v7.receiver = self;
   v7.super_class = JavaUtilHashtable_KeySet;
-  LOBYTE(a3) = [(JavaUtilAbstractCollection *)&v7 retainAllWithJavaUtilCollection:a3];
+  LOBYTE(collection) = [(JavaUtilAbstractCollection *)&v7 retainAllWithJavaUtilCollection:collection];
   objc_sync_exit(Weak);
-  return a3;
+  return collection;
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v7.receiver = self;
   v7.super_class = JavaUtilHashtable_KeySet;
-  LOBYTE(a3) = [(JavaUtilAbstractCollection *)&v7 containsAllWithJavaUtilCollection:a3];
+  LOBYTE(collection) = [(JavaUtilAbstractCollection *)&v7 containsAllWithJavaUtilCollection:collection];
   objc_sync_exit(Weak);
-  return a3;
+  return collection;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v7.receiver = self;
   v7.super_class = JavaUtilHashtable_KeySet;
-  LOBYTE(a3) = [(JavaUtilAbstractSet *)&v7 isEqual:a3];
+  LOBYTE(equal) = [(JavaUtilAbstractSet *)&v7 isEqual:equal];
   objc_sync_exit(Weak);
-  return a3;
+  return equal;
 }
 
 - (unint64_t)hash
@@ -132,25 +132,25 @@
   objc_sync_enter(Weak);
   v6.receiver = self;
   v6.super_class = JavaUtilHashtable_KeySet;
-  v4 = [(JavaUtilAbstractCollection *)&v6 toArray];
+  toArray = [(JavaUtilAbstractCollection *)&v6 toArray];
   objc_sync_exit(Weak);
-  return v4;
+  return toArray;
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   Weak = objc_loadWeak(&self->this$0_);
   objc_sync_enter(Weak);
   v8.receiver = self;
   v8.super_class = JavaUtilHashtable_KeySet;
-  v6 = [(JavaUtilAbstractCollection *)&v8 toArrayWithNSObjectArray:a3];
+  v6 = [(JavaUtilAbstractCollection *)&v8 toArrayWithNSObjectArray:array];
   objc_sync_exit(Weak);
   return v6;
 }
 
-- (JavaUtilHashtable_KeySet)initWithJavaUtilHashtable:(id)a3
+- (JavaUtilHashtable_KeySet)initWithJavaUtilHashtable:(id)hashtable
 {
-  objc_storeWeak(&self->this$0_, a3);
+  objc_storeWeak(&self->this$0_, hashtable);
   JavaUtilAbstractSet_init(self, v4);
   return self;
 }

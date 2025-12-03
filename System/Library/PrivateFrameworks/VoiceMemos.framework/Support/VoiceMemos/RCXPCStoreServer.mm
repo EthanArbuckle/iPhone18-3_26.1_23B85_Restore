@@ -1,16 +1,16 @@
 @interface RCXPCStoreServer
-+ (id)startStoreServers:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)startStoreServers:(id)servers;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation RCXPCStoreServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = RCXPCStoreServer;
-  if ([(RCXPCStoreServer *)&v9 listener:a3 shouldAcceptNewConnection:v6])
+  if ([(RCXPCStoreServer *)&v9 listener:listener shouldAcceptNewConnection:connectionCopy])
   {
     v7 = (*(self->_shouldAcceptDatabaseConnection + 2))();
   }
@@ -23,14 +23,14 @@
   return v7;
 }
 
-+ (id)startStoreServers:(id)a3
++ (id)startStoreServers:(id)servers
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100002EF0;
   v10[3] = &unk_100055198;
-  v11 = a3;
-  v3 = v11;
+  serversCopy = servers;
+  v3 = serversCopy;
   v4 = objc_retainBlock(v10);
   v5 = kCloudStoreXPCServiceName;
   v6 = RCCloudRecordingsStoreURL();

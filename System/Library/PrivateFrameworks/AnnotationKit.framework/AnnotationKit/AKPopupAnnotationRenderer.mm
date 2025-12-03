@@ -1,19 +1,19 @@
 @interface AKPopupAnnotationRenderer
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4;
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3;
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3;
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation;
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation;
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation;
 @end
 
 @implementation AKPopupAnnotationRenderer
 
-+ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)a3
++ (CGRect)_concreteDrawingBoundsOfAnnotation:(id)annotation
 {
-  [a3 rectangle];
+  [annotation rectangle];
 
   return CGRectInset(*&v3, -1.0, -1.0);
 }
 
-+ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)a3
++ (CGSize)_concreteDraggingBoundsInsetsForAnnotation:(id)annotation
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
@@ -22,11 +22,11 @@
   return result;
 }
 
-+ (BOOL)_concretePointIsOnInside:(CGPoint)a3 ofAnnotation:(id)a4
++ (BOOL)_concretePointIsOnInside:(CGPoint)inside ofAnnotation:(id)annotation
 {
-  y = a3.y;
-  x = a3.x;
-  [a4 rectangle];
+  y = inside.y;
+  x = inside.x;
+  [annotation rectangle];
   v10 = x;
   v11 = y;
 

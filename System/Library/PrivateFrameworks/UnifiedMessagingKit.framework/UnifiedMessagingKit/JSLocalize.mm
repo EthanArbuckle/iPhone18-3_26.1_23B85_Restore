@@ -1,13 +1,13 @@
 @interface JSLocalize
-- (id)nativeString:(id)a3;
+- (id)nativeString:(id)string;
 @end
 
 @implementation JSLocalize
 
-- (id)nativeString:(id)a3
+- (id)nativeString:(id)string
 {
   sub_2705D7564();
-  v4 = self;
+  selfCopy = self;
   sub_27059A990();
   v6 = v5;
 

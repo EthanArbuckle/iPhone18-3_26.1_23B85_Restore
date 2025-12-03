@@ -8,34 +8,34 @@
 
 - (__CFString)safari_localeStringInOfflineSearchModelFormat
 {
-  v2 = [a1 languageCode];
+  languageCode = [self languageCode];
 
-  if (v2)
+  if (languageCode)
   {
-    v3 = [a1 countryCode];
-    v4 = [v3 length];
+    countryCode = [self countryCode];
+    v4 = [countryCode length];
 
     if (v4)
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [a1 languageCode];
-      v7 = [a1 countryCode];
-      v8 = [v7 lowercaseString];
-      v9 = [v5 stringWithFormat:@"%@-%@", v6, v8];
+      languageCode2 = [self languageCode];
+      countryCode2 = [self countryCode];
+      lowercaseString = [countryCode2 lowercaseString];
+      languageCode3 = [v5 stringWithFormat:@"%@-%@", languageCode2, lowercaseString];
     }
 
     else
     {
-      v9 = [a1 languageCode];
+      languageCode3 = [self languageCode];
     }
   }
 
   else
   {
-    v9 = &stru_1F3064D08;
+    languageCode3 = &stru_1F3064D08;
   }
 
-  return v9;
+  return languageCode3;
 }
 
 + (id)safari_localeIdentifiersForMostWidelyUsedLanguages
@@ -52,33 +52,33 @@
 
 - (__CFString)safari_localeStringInWebExtensionFormat
 {
-  v2 = [a1 languageCode];
+  languageCode = [self languageCode];
 
-  if (v2)
+  if (languageCode)
   {
-    v3 = [a1 countryCode];
-    v4 = [v3 length];
+    countryCode = [self countryCode];
+    v4 = [countryCode length];
 
     if (v4)
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [a1 languageCode];
-      v7 = [a1 countryCode];
-      v8 = [v5 stringWithFormat:@"%@-%@", v6, v7];
+      languageCode2 = [self languageCode];
+      countryCode2 = [self countryCode];
+      languageCode3 = [v5 stringWithFormat:@"%@-%@", languageCode2, countryCode2];
     }
 
     else
     {
-      v8 = [a1 languageCode];
+      languageCode3 = [self languageCode];
     }
   }
 
   else
   {
-    v8 = &stru_1F3064D08;
+    languageCode3 = &stru_1F3064D08;
   }
 
-  return v8;
+  return languageCode3;
 }
 
 @end

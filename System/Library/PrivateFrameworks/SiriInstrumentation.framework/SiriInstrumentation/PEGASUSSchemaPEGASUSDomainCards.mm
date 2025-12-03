@@ -1,77 +1,77 @@
 @interface PEGASUSSchemaPEGASUSDomainCards
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSDomainCards)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSDomainCards)initWithJSON:(id)a3;
+- (PEGASUSSchemaPEGASUSDomainCards)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSDomainCards)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAmpMusicCount:(BOOL)a3;
-- (void)setHasAmpVideoCount:(BOOL)a3;
-- (void)setHasAppsCount:(BOOL)a3;
-- (void)setHasConversionsCount:(BOOL)a3;
-- (void)setHasDictionaryCount:(BOOL)a3;
-- (void)setHasEdutainmentCount:(BOOL)a3;
-- (void)setHasFlightsCount:(BOOL)a3;
-- (void)setHasKgCount:(BOOL)a3;
-- (void)setHasKgcnCount:(BOOL)a3;
-- (void)setHasMapsCount:(BOOL)a3;
-- (void)setHasMathCount:(BOOL)a3;
-- (void)setHasMediaCount:(BOOL)a3;
-- (void)setHasMoviesCount:(BOOL)a3;
-- (void)setHasNewsCount:(BOOL)a3;
-- (void)setHasPrecomputedWebanswersCount:(BOOL)a3;
-- (void)setHasSportsCount:(BOOL)a3;
-- (void)setHasStocksCount:(BOOL)a3;
-- (void)setHasTvCount:(BOOL)a3;
-- (void)setHasVideoCount:(BOOL)a3;
-- (void)setHasWeatherCount:(BOOL)a3;
-- (void)setHasWebCount:(BOOL)a3;
-- (void)setHasWebImagesCount:(BOOL)a3;
-- (void)setHasWebVideoCount:(BOOL)a3;
-- (void)setHasWritingsCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAmpMusicCount:(BOOL)count;
+- (void)setHasAmpVideoCount:(BOOL)count;
+- (void)setHasAppsCount:(BOOL)count;
+- (void)setHasConversionsCount:(BOOL)count;
+- (void)setHasDictionaryCount:(BOOL)count;
+- (void)setHasEdutainmentCount:(BOOL)count;
+- (void)setHasFlightsCount:(BOOL)count;
+- (void)setHasKgCount:(BOOL)count;
+- (void)setHasKgcnCount:(BOOL)count;
+- (void)setHasMapsCount:(BOOL)count;
+- (void)setHasMathCount:(BOOL)count;
+- (void)setHasMediaCount:(BOOL)count;
+- (void)setHasMoviesCount:(BOOL)count;
+- (void)setHasNewsCount:(BOOL)count;
+- (void)setHasPrecomputedWebanswersCount:(BOOL)count;
+- (void)setHasSportsCount:(BOOL)count;
+- (void)setHasStocksCount:(BOOL)count;
+- (void)setHasTvCount:(BOOL)count;
+- (void)setHasVideoCount:(BOOL)count;
+- (void)setHasWeatherCount:(BOOL)count;
+- (void)setHasWebCount:(BOOL)count;
+- (void)setHasWebImagesCount:(BOOL)count;
+- (void)setHasWebVideoCount:(BOOL)count;
+- (void)setHasWritingsCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSDomainCards
 
-- (PEGASUSSchemaPEGASUSDomainCards)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSDomainCards)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v56.receiver = self;
   v56.super_class = PEGASUSSchemaPEGASUSDomainCards;
   v5 = [(PEGASUSSchemaPEGASUSDomainCards *)&v56 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clockCount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clockCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setClockCount:](v5, "setClockCount:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"dictionaryCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"dictionaryCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setDictionaryCount:](v5, "setDictionaryCount:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"kgCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"kgCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setKgCount:](v5, "setKgCount:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"mapsCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"mapsCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setMapsCount:](v5, "setMapsCount:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"mathCount"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"mathCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -79,7 +79,7 @@
     }
 
     v48 = v7;
-    v11 = [v4 objectForKeyedSubscript:@"mediaCount"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"mediaCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,14 +88,14 @@
 
     v44 = v11;
     v12 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"moviesCount"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"moviesCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setMoviesCount:](v5, "setMoviesCount:", [v13 unsignedIntValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"newsCount"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"newsCount"];
     objc_opt_class();
     v55 = v14;
     if (objc_opt_isKindOfClass())
@@ -103,7 +103,7 @@
       -[PEGASUSSchemaPEGASUSDomainCards setNewsCount:](v5, "setNewsCount:", [v14 unsignedIntValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"precomputedWebanswersCount"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"precomputedWebanswersCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,7 +111,7 @@
     }
 
     v42 = v15;
-    v16 = [v4 objectForKeyedSubscript:@"sportsCount"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"sportsCount"];
     objc_opt_class();
     v54 = v16;
     v49 = v12;
@@ -121,7 +121,7 @@
     }
 
     v45 = v10;
-    v17 = [v4 objectForKeyedSubscript:@"stocksCount"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"stocksCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -129,7 +129,7 @@
     }
 
     v18 = v9;
-    v19 = [v4 objectForKeyedSubscript:@"tvCount"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"tvCount"];
     objc_opt_class();
     v53 = v19;
     if (objc_opt_isKindOfClass())
@@ -138,14 +138,14 @@
     }
 
     v20 = v8;
-    v21 = [v4 objectForKeyedSubscript:@"videoCount"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"videoCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setVideoCount:](v5, "setVideoCount:", [v21 unsignedIntValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"weatherCount"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"weatherCount"];
     objc_opt_class();
     v52 = v22;
     if (objc_opt_isKindOfClass())
@@ -153,7 +153,7 @@
       -[PEGASUSSchemaPEGASUSDomainCards setWeatherCount:](v5, "setWeatherCount:", [v22 unsignedIntValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"webCount"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"webCount"];
     objc_opt_class();
     v51 = v23;
     v24 = v20;
@@ -162,14 +162,14 @@
       -[PEGASUSSchemaPEGASUSDomainCards setWebCount:](v5, "setWebCount:", [v51 unsignedIntValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"webImagesCount"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"webImagesCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setWebImagesCount:](v5, "setWebImagesCount:", [v25 unsignedIntValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"ampVideoCount"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"ampVideoCount"];
     objc_opt_class();
     v50 = v26;
     if (objc_opt_isKindOfClass())
@@ -178,7 +178,7 @@
     }
 
     v41 = v17;
-    v27 = [v4 objectForKeyedSubscript:@"appsCount"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"appsCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -186,7 +186,7 @@
     }
 
     v47 = v24;
-    v28 = [v4 objectForKeyedSubscript:@"conversionsCount"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"conversionsCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -196,21 +196,21 @@
     v38 = v28;
     v40 = v25;
     v46 = v18;
-    v29 = [v4 objectForKeyedSubscript:@"edutainmentCount"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"edutainmentCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setEdutainmentCount:](v5, "setEdutainmentCount:", [v29 unsignedIntValue]);
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"kgcnCount"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"kgcnCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setKgcnCount:](v5, "setKgcnCount:", [v30 unsignedIntValue]);
     }
 
-    v31 = [v4 objectForKeyedSubscript:@"webVideoCount"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"webVideoCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -219,7 +219,7 @@
 
     v39 = v27;
     v43 = v13;
-    v32 = [v4 objectForKeyedSubscript:@"writingsCount"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"writingsCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -227,14 +227,14 @@
     }
 
     v33 = v21;
-    v34 = [v4 objectForKeyedSubscript:@"flightsCount"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"flightsCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSDomainCards setFlightsCount:](v5, "setFlightsCount:", [v34 unsignedIntValue]);
     }
 
-    v35 = [v4 objectForKeyedSubscript:@"ampMusicCount"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"ampMusicCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -247,30 +247,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSDomainCards)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSDomainCards)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSDomainCards *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSDomainCards *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSDomainCards *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -283,12 +283,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((*&has & 0x1000000) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards ampMusicCount](self, "ampMusicCount")}];
-    [v3 setObject:v7 forKeyedSubscript:@"ampMusicCount"];
+    [dictionary setObject:v7 forKeyedSubscript:@"ampMusicCount"];
 
     has = self->_has;
     if ((*&has & 0x10000) == 0)
@@ -309,7 +309,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards ampVideoCount](self, "ampVideoCount")}];
-  [v3 setObject:v8 forKeyedSubscript:@"ampVideoCount"];
+  [dictionary setObject:v8 forKeyedSubscript:@"ampVideoCount"];
 
   has = self->_has;
   if ((*&has & 0x20000) == 0)
@@ -325,7 +325,7 @@ LABEL_4:
 
 LABEL_32:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards appsCount](self, "appsCount")}];
-  [v3 setObject:v9 forKeyedSubscript:@"appsCount"];
+  [dictionary setObject:v9 forKeyedSubscript:@"appsCount"];
 
   has = self->_has;
   if ((*&has & 1) == 0)
@@ -341,7 +341,7 @@ LABEL_5:
 
 LABEL_33:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards clockCount](self, "clockCount")}];
-  [v3 setObject:v10 forKeyedSubscript:@"clockCount"];
+  [dictionary setObject:v10 forKeyedSubscript:@"clockCount"];
 
   has = self->_has;
   if ((*&has & 0x40000) == 0)
@@ -357,7 +357,7 @@ LABEL_6:
 
 LABEL_34:
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards conversionsCount](self, "conversionsCount")}];
-  [v3 setObject:v11 forKeyedSubscript:@"conversionsCount"];
+  [dictionary setObject:v11 forKeyedSubscript:@"conversionsCount"];
 
   has = self->_has;
   if ((*&has & 2) == 0)
@@ -373,7 +373,7 @@ LABEL_7:
 
 LABEL_35:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards dictionaryCount](self, "dictionaryCount")}];
-  [v3 setObject:v12 forKeyedSubscript:@"dictionaryCount"];
+  [dictionary setObject:v12 forKeyedSubscript:@"dictionaryCount"];
 
   has = self->_has;
   if ((*&has & 0x80000) == 0)
@@ -389,7 +389,7 @@ LABEL_8:
 
 LABEL_36:
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards edutainmentCount](self, "edutainmentCount")}];
-  [v3 setObject:v13 forKeyedSubscript:@"edutainmentCount"];
+  [dictionary setObject:v13 forKeyedSubscript:@"edutainmentCount"];
 
   has = self->_has;
   if ((*&has & 0x800000) == 0)
@@ -405,7 +405,7 @@ LABEL_9:
 
 LABEL_37:
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards flightsCount](self, "flightsCount")}];
-  [v3 setObject:v14 forKeyedSubscript:@"flightsCount"];
+  [dictionary setObject:v14 forKeyedSubscript:@"flightsCount"];
 
   has = self->_has;
   if ((*&has & 4) == 0)
@@ -421,7 +421,7 @@ LABEL_10:
 
 LABEL_38:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards kgCount](self, "kgCount")}];
-  [v3 setObject:v15 forKeyedSubscript:@"kgCount"];
+  [dictionary setObject:v15 forKeyedSubscript:@"kgCount"];
 
   has = self->_has;
   if ((*&has & 0x100000) == 0)
@@ -437,7 +437,7 @@ LABEL_11:
 
 LABEL_39:
   v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards kgcnCount](self, "kgcnCount")}];
-  [v3 setObject:v16 forKeyedSubscript:@"kgcnCount"];
+  [dictionary setObject:v16 forKeyedSubscript:@"kgcnCount"];
 
   has = self->_has;
   if ((*&has & 8) == 0)
@@ -453,7 +453,7 @@ LABEL_12:
 
 LABEL_40:
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards mapsCount](self, "mapsCount")}];
-  [v3 setObject:v17 forKeyedSubscript:@"mapsCount"];
+  [dictionary setObject:v17 forKeyedSubscript:@"mapsCount"];
 
   has = self->_has;
   if ((*&has & 0x10) == 0)
@@ -469,7 +469,7 @@ LABEL_13:
 
 LABEL_41:
   v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards mathCount](self, "mathCount")}];
-  [v3 setObject:v18 forKeyedSubscript:@"mathCount"];
+  [dictionary setObject:v18 forKeyedSubscript:@"mathCount"];
 
   has = self->_has;
   if ((*&has & 0x20) == 0)
@@ -485,7 +485,7 @@ LABEL_14:
 
 LABEL_42:
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards mediaCount](self, "mediaCount")}];
-  [v3 setObject:v19 forKeyedSubscript:@"mediaCount"];
+  [dictionary setObject:v19 forKeyedSubscript:@"mediaCount"];
 
   has = self->_has;
   if ((*&has & 0x40) == 0)
@@ -501,7 +501,7 @@ LABEL_15:
 
 LABEL_43:
   v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards moviesCount](self, "moviesCount")}];
-  [v3 setObject:v20 forKeyedSubscript:@"moviesCount"];
+  [dictionary setObject:v20 forKeyedSubscript:@"moviesCount"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -517,7 +517,7 @@ LABEL_16:
 
 LABEL_44:
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards newsCount](self, "newsCount")}];
-  [v3 setObject:v21 forKeyedSubscript:@"newsCount"];
+  [dictionary setObject:v21 forKeyedSubscript:@"newsCount"];
 
   has = self->_has;
   if ((*&has & 0x100) == 0)
@@ -533,7 +533,7 @@ LABEL_17:
 
 LABEL_45:
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards precomputedWebanswersCount](self, "precomputedWebanswersCount")}];
-  [v3 setObject:v22 forKeyedSubscript:@"precomputedWebanswersCount"];
+  [dictionary setObject:v22 forKeyedSubscript:@"precomputedWebanswersCount"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -549,7 +549,7 @@ LABEL_18:
 
 LABEL_46:
   v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards sportsCount](self, "sportsCount")}];
-  [v3 setObject:v23 forKeyedSubscript:@"sportsCount"];
+  [dictionary setObject:v23 forKeyedSubscript:@"sportsCount"];
 
   has = self->_has;
   if ((*&has & 0x400) == 0)
@@ -565,7 +565,7 @@ LABEL_19:
 
 LABEL_47:
   v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards stocksCount](self, "stocksCount")}];
-  [v3 setObject:v24 forKeyedSubscript:@"stocksCount"];
+  [dictionary setObject:v24 forKeyedSubscript:@"stocksCount"];
 
   has = self->_has;
   if ((*&has & 0x800) == 0)
@@ -581,7 +581,7 @@ LABEL_20:
 
 LABEL_48:
   v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards tvCount](self, "tvCount")}];
-  [v3 setObject:v25 forKeyedSubscript:@"tvCount"];
+  [dictionary setObject:v25 forKeyedSubscript:@"tvCount"];
 
   has = self->_has;
   if ((*&has & 0x1000) == 0)
@@ -597,7 +597,7 @@ LABEL_21:
 
 LABEL_49:
   v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards videoCount](self, "videoCount")}];
-  [v3 setObject:v26 forKeyedSubscript:@"videoCount"];
+  [dictionary setObject:v26 forKeyedSubscript:@"videoCount"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -613,7 +613,7 @@ LABEL_22:
 
 LABEL_50:
   v27 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards weatherCount](self, "weatherCount")}];
-  [v3 setObject:v27 forKeyedSubscript:@"weatherCount"];
+  [dictionary setObject:v27 forKeyedSubscript:@"weatherCount"];
 
   has = self->_has;
   if ((*&has & 0x4000) == 0)
@@ -629,7 +629,7 @@ LABEL_23:
 
 LABEL_51:
   v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards webCount](self, "webCount")}];
-  [v3 setObject:v28 forKeyedSubscript:@"webCount"];
+  [dictionary setObject:v28 forKeyedSubscript:@"webCount"];
 
   has = self->_has;
   if ((*&has & 0x8000) == 0)
@@ -645,7 +645,7 @@ LABEL_24:
 
 LABEL_52:
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards webImagesCount](self, "webImagesCount")}];
-  [v3 setObject:v29 forKeyedSubscript:@"webImagesCount"];
+  [dictionary setObject:v29 forKeyedSubscript:@"webImagesCount"];
 
   has = self->_has;
   if ((*&has & 0x200000) == 0)
@@ -661,19 +661,19 @@ LABEL_25:
 
 LABEL_53:
   v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards webVideoCount](self, "webVideoCount")}];
-  [v3 setObject:v30 forKeyedSubscript:@"webVideoCount"];
+  [dictionary setObject:v30 forKeyedSubscript:@"webVideoCount"];
 
   if ((*&self->_has & 0x400000) != 0)
   {
 LABEL_26:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PEGASUSSchemaPEGASUSDomainCards writingsCount](self, "writingsCount")}];
-    [v3 setObject:v5 forKeyedSubscript:@"writingsCount"];
+    [dictionary setObject:v5 forKeyedSubscript:@"writingsCount"];
   }
 
 LABEL_27:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -1019,16 +1019,16 @@ LABEL_42:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22 ^ v23 ^ v24 ^ v25 ^ v26 ^ v27;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_102;
   }
 
   has = self->_has;
-  v6 = v4[27];
+  v6 = equalCopy[27];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_102;
@@ -1037,13 +1037,13 @@ LABEL_42:
   if (*&has)
   {
     clockCount = self->_clockCount;
-    if (clockCount != [v4 clockCount])
+    if (clockCount != [equalCopy clockCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -1055,13 +1055,13 @@ LABEL_42:
   if (v8)
   {
     dictionaryCount = self->_dictionaryCount;
-    if (dictionaryCount != [v4 dictionaryCount])
+    if (dictionaryCount != [equalCopy dictionaryCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -1073,13 +1073,13 @@ LABEL_42:
   if (v10)
   {
     kgCount = self->_kgCount;
-    if (kgCount != [v4 kgCount])
+    if (kgCount != [equalCopy kgCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -1091,13 +1091,13 @@ LABEL_42:
   if (v12)
   {
     mapsCount = self->_mapsCount;
-    if (mapsCount != [v4 mapsCount])
+    if (mapsCount != [equalCopy mapsCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v14 = (*&has >> 4) & 1;
@@ -1109,13 +1109,13 @@ LABEL_42:
   if (v14)
   {
     mathCount = self->_mathCount;
-    if (mathCount != [v4 mathCount])
+    if (mathCount != [equalCopy mathCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v16 = (*&has >> 5) & 1;
@@ -1127,13 +1127,13 @@ LABEL_42:
   if (v16)
   {
     mediaCount = self->_mediaCount;
-    if (mediaCount != [v4 mediaCount])
+    if (mediaCount != [equalCopy mediaCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v18 = (*&has >> 6) & 1;
@@ -1145,13 +1145,13 @@ LABEL_42:
   if (v18)
   {
     moviesCount = self->_moviesCount;
-    if (moviesCount != [v4 moviesCount])
+    if (moviesCount != [equalCopy moviesCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v20 = (*&has >> 7) & 1;
@@ -1163,13 +1163,13 @@ LABEL_42:
   if (v20)
   {
     newsCount = self->_newsCount;
-    if (newsCount != [v4 newsCount])
+    if (newsCount != [equalCopy newsCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v22 = (*&has >> 8) & 1;
@@ -1181,13 +1181,13 @@ LABEL_42:
   if (v22)
   {
     precomputedWebanswersCount = self->_precomputedWebanswersCount;
-    if (precomputedWebanswersCount != [v4 precomputedWebanswersCount])
+    if (precomputedWebanswersCount != [equalCopy precomputedWebanswersCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v24 = (*&has >> 9) & 1;
@@ -1199,13 +1199,13 @@ LABEL_42:
   if (v24)
   {
     sportsCount = self->_sportsCount;
-    if (sportsCount != [v4 sportsCount])
+    if (sportsCount != [equalCopy sportsCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v26 = (*&has >> 10) & 1;
@@ -1217,13 +1217,13 @@ LABEL_42:
   if (v26)
   {
     stocksCount = self->_stocksCount;
-    if (stocksCount != [v4 stocksCount])
+    if (stocksCount != [equalCopy stocksCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v28 = (*&has >> 11) & 1;
@@ -1235,13 +1235,13 @@ LABEL_42:
   if (v28)
   {
     tvCount = self->_tvCount;
-    if (tvCount != [v4 tvCount])
+    if (tvCount != [equalCopy tvCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v30 = (*&has >> 12) & 1;
@@ -1253,13 +1253,13 @@ LABEL_42:
   if (v30)
   {
     videoCount = self->_videoCount;
-    if (videoCount != [v4 videoCount])
+    if (videoCount != [equalCopy videoCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v32 = (*&has >> 13) & 1;
@@ -1271,13 +1271,13 @@ LABEL_42:
   if (v32)
   {
     weatherCount = self->_weatherCount;
-    if (weatherCount != [v4 weatherCount])
+    if (weatherCount != [equalCopy weatherCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v34 = (*&has >> 14) & 1;
@@ -1289,13 +1289,13 @@ LABEL_42:
   if (v34)
   {
     webCount = self->_webCount;
-    if (webCount != [v4 webCount])
+    if (webCount != [equalCopy webCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v36 = (*&has >> 15) & 1;
@@ -1307,13 +1307,13 @@ LABEL_42:
   if (v36)
   {
     webImagesCount = self->_webImagesCount;
-    if (webImagesCount != [v4 webImagesCount])
+    if (webImagesCount != [equalCopy webImagesCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v38 = HIWORD(*&has) & 1;
@@ -1325,13 +1325,13 @@ LABEL_42:
   if (v38)
   {
     ampVideoCount = self->_ampVideoCount;
-    if (ampVideoCount != [v4 ampVideoCount])
+    if (ampVideoCount != [equalCopy ampVideoCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v40 = (*&has >> 17) & 1;
@@ -1343,13 +1343,13 @@ LABEL_42:
   if (v40)
   {
     appsCount = self->_appsCount;
-    if (appsCount != [v4 appsCount])
+    if (appsCount != [equalCopy appsCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v42 = (*&has >> 18) & 1;
@@ -1361,13 +1361,13 @@ LABEL_42:
   if (v42)
   {
     conversionsCount = self->_conversionsCount;
-    if (conversionsCount != [v4 conversionsCount])
+    if (conversionsCount != [equalCopy conversionsCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v44 = (*&has >> 19) & 1;
@@ -1379,13 +1379,13 @@ LABEL_42:
   if (v44)
   {
     edutainmentCount = self->_edutainmentCount;
-    if (edutainmentCount != [v4 edutainmentCount])
+    if (edutainmentCount != [equalCopy edutainmentCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v46 = (*&has >> 20) & 1;
@@ -1397,13 +1397,13 @@ LABEL_42:
   if (v46)
   {
     kgcnCount = self->_kgcnCount;
-    if (kgcnCount != [v4 kgcnCount])
+    if (kgcnCount != [equalCopy kgcnCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v48 = (*&has >> 21) & 1;
@@ -1415,13 +1415,13 @@ LABEL_42:
   if (v48)
   {
     webVideoCount = self->_webVideoCount;
-    if (webVideoCount != [v4 webVideoCount])
+    if (webVideoCount != [equalCopy webVideoCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v50 = (*&has >> 22) & 1;
@@ -1433,13 +1433,13 @@ LABEL_42:
   if (v50)
   {
     writingsCount = self->_writingsCount;
-    if (writingsCount != [v4 writingsCount])
+    if (writingsCount != [equalCopy writingsCount])
     {
       goto LABEL_102;
     }
 
     has = self->_has;
-    v6 = v4[27];
+    v6 = equalCopy[27];
   }
 
   v52 = (*&has >> 23) & 1;
@@ -1451,10 +1451,10 @@ LABEL_42:
   if (v52)
   {
     flightsCount = self->_flightsCount;
-    if (flightsCount == [v4 flightsCount])
+    if (flightsCount == [equalCopy flightsCount])
     {
       has = self->_has;
-      v6 = v4[27];
+      v6 = equalCopy[27];
       goto LABEL_98;
     }
 
@@ -1473,7 +1473,7 @@ LABEL_98:
   if (v54)
   {
     ampMusicCount = self->_ampMusicCount;
-    if (ampMusicCount != [v4 ampMusicCount])
+    if (ampMusicCount != [equalCopy ampMusicCount])
     {
       goto LABEL_102;
     }
@@ -1485,9 +1485,9 @@ LABEL_103:
   return v56;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (*&has)
   {
@@ -1828,9 +1828,9 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)setHasAmpMusicCount:(BOOL)a3
+- (void)setHasAmpMusicCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x1000000;
   }
@@ -1843,9 +1843,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFEFFFFFF | v3);
 }
 
-- (void)setHasFlightsCount:(BOOL)a3
+- (void)setHasFlightsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x800000;
   }
@@ -1858,9 +1858,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFF7FFFFF | v3);
 }
 
-- (void)setHasWritingsCount:(BOOL)a3
+- (void)setHasWritingsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x400000;
   }
@@ -1873,9 +1873,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFBFFFFF | v3);
 }
 
-- (void)setHasWebVideoCount:(BOOL)a3
+- (void)setHasWebVideoCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x200000;
   }
@@ -1888,9 +1888,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFDFFFFF | v3);
 }
 
-- (void)setHasKgcnCount:(BOOL)a3
+- (void)setHasKgcnCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x100000;
   }
@@ -1903,9 +1903,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFEFFFFF | v3);
 }
 
-- (void)setHasEdutainmentCount:(BOOL)a3
+- (void)setHasEdutainmentCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x80000;
   }
@@ -1918,9 +1918,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasConversionsCount:(BOOL)a3
+- (void)setHasConversionsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x40000;
   }
@@ -1933,9 +1933,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasAppsCount:(BOOL)a3
+- (void)setHasAppsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x20000;
   }
@@ -1948,9 +1948,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasAmpVideoCount:(BOOL)a3
+- (void)setHasAmpVideoCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x10000;
   }
@@ -1963,9 +1963,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasWebImagesCount:(BOOL)a3
+- (void)setHasWebImagesCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x8000;
   }
@@ -1978,9 +1978,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasWebCount:(BOOL)a3
+- (void)setHasWebCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x4000;
   }
@@ -1993,9 +1993,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasWeatherCount:(BOOL)a3
+- (void)setHasWeatherCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 0x2000;
   }
@@ -2008,9 +2008,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasVideoCount:(BOOL)a3
+- (void)setHasVideoCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4096;
   }
@@ -2023,9 +2023,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasTvCount:(BOOL)a3
+- (void)setHasTvCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2048;
   }
@@ -2038,9 +2038,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasStocksCount:(BOOL)a3
+- (void)setHasStocksCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 1024;
   }
@@ -2053,9 +2053,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasSportsCount:(BOOL)a3
+- (void)setHasSportsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 512;
   }
@@ -2068,9 +2068,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasPrecomputedWebanswersCount:(BOOL)a3
+- (void)setHasPrecomputedWebanswersCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -2083,9 +2083,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasNewsCount:(BOOL)a3
+- (void)setHasNewsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -2098,9 +2098,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFF7F | v3);
 }
 
-- (void)setHasMoviesCount:(BOOL)a3
+- (void)setHasMoviesCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -2113,9 +2113,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasMediaCount:(BOOL)a3
+- (void)setHasMediaCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -2128,9 +2128,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasMathCount:(BOOL)a3
+- (void)setHasMathCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -2143,9 +2143,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasMapsCount:(BOOL)a3
+- (void)setHasMapsCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -2158,9 +2158,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasKgCount:(BOOL)a3
+- (void)setHasKgCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -2173,9 +2173,9 @@ LABEL_27:
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasDictionaryCount:(BOOL)a3
+- (void)setHasDictionaryCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

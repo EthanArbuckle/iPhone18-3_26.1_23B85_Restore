@@ -1,6 +1,6 @@
 @interface ClinicalAuthorizationAccountsOverviewViewController
-- (void)cancelButtonPressed:(id)a3;
-- (void)nextButtonPressed:(id)a3;
+- (void)cancelButtonPressed:(id)pressed;
+- (void)nextButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
@@ -16,11 +16,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1C3CD9680();
 }
 
-- (void)nextButtonPressed:(id)a3
+- (void)nextButtonPressed:(id)pressed
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -30,9 +30,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (pressed)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C3D20774();
     swift_unknownObjectRelease();
@@ -41,7 +41,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   sub_1C3CDAA54();
@@ -49,7 +49,7 @@
   sub_1C396C69C(v7);
 }
 
-- (void)cancelButtonPressed:(id)a3
+- (void)cancelButtonPressed:(id)pressed
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -59,9 +59,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (pressed)
   {
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1C3D20774();
     swift_unknownObjectRelease();
@@ -70,7 +70,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v6 = self;
+    selfCopy2 = self;
   }
 
   sub_1C3CDAC84();

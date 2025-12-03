@@ -1,7 +1,7 @@
 @interface CAMZoomControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -14,35 +14,35 @@
 
 @implementation CAMZoomControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"zoomFactor" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_displayMaximumZoomFactor" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_displayMinimumZoomFactor" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"displayZoomValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_setZoomFactor:interactionType:shouldNotifyDelegate:animated:" withFullSignature:{"v", "d", "q", "B", "B", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"continueTrackingWithTouch: withEvent:" withFullSignature:{"B", "@", "@", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomFactorForDisplayZoomValue:" withFullSignature:{"d", "d", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_handleButtonTapped:forAccessoryTap:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_displayZoomFactors" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_isButtonPlatterSupportedForConfiguration" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_buttonPlatter" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomButtonPlatter" hasInstanceMethod:@"_allButtons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomButtonPlatter" hasInstanceMethod:@"zoomFactorButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomButtonPlatter" hasInstanceMethod:@"isCollapsed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"zoomButtonContentType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"zoomButtonSymbol" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomControlMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"orientation" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMZoomPoint"];
-  [v3 validateClass:@"CAMZoomPoint" hasClassMethod:@"significantIndexesInZoomPoints:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomPoints" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomFactors" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CAMZoomControl" hasInstanceMethod:@"zoomFactor" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CAMZoomPoint" hasInstanceMethod:@"displayZoomFactor" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CAMZoomButton" hasInstanceMethod:@"_focalLengthLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"zoomFactor" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_displayMaximumZoomFactor" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_displayMinimumZoomFactor" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"displayZoomValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_setZoomFactor:interactionType:shouldNotifyDelegate:animated:" withFullSignature:{"v", "d", "q", "B", "B", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"continueTrackingWithTouch: withEvent:" withFullSignature:{"B", "@", "@", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomFactorForDisplayZoomValue:" withFullSignature:{"d", "d", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_handleButtonTapped:forAccessoryTap:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_displayZoomFactors" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_isButtonPlatterSupportedForConfiguration" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_buttonPlatter" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomButtonPlatter" hasInstanceMethod:@"_allButtons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomButtonPlatter" hasInstanceMethod:@"zoomFactorButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomButtonPlatter" hasInstanceMethod:@"isCollapsed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"zoomButtonContentType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"zoomButtonSymbol" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomControlMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"orientation" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMZoomPoint"];
+  [validationsCopy validateClass:@"CAMZoomPoint" hasClassMethod:@"significantIndexesInZoomPoints:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomPoints" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"_zoomFactors" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CAMZoomControl" hasInstanceMethod:@"zoomFactor" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CAMZoomPoint" hasInstanceMethod:@"displayZoomFactor" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CAMZoomButton" hasInstanceMethod:@"_focalLengthLabel" withFullSignature:{"@", 0}];
 }
 
 uint64_t __63__CAMZoomControlAccessibility__axSetZoomFactorForDisplayValue___block_invoke(uint64_t a1)
@@ -68,16 +68,16 @@ uint64_t __63__CAMZoomControlAccessibility__axSetZoomFactorForDisplayValue___blo
   {
     v4 = @"ffc.zoomcontrol";
 LABEL_5:
-    v5 = accessibilityCameraUILocalizedString(v4);
+    accessibilityLabel = accessibilityCameraUILocalizedString(v4);
     goto LABEL_7;
   }
 
   v7.receiver = self;
   v7.super_class = CAMZoomControlAccessibility;
-  v5 = [(CAMZoomControlAccessibility *)&v7 accessibilityLabel];
+  accessibilityLabel = [(CAMZoomControlAccessibility *)&v7 accessibilityLabel];
 LABEL_7:
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -85,7 +85,7 @@ LABEL_7:
   if ([(CAMZoomControlAccessibility *)self safeIntegerForKey:@"zoomButtonContentType"]!= 1)
   {
     [(CAMZoomControlAccessibility *)self _axDisplayZoomValue];
-    v5 = AXFormatMagnificationFactor();
+    accessibilityValue = AXFormatMagnificationFactor();
     goto LABEL_9;
   }
 
@@ -100,16 +100,16 @@ LABEL_7:
   {
     v4 = @"zoomed.out";
 LABEL_7:
-    v5 = accessibilityCameraUILocalizedString(v4);
+    accessibilityValue = accessibilityCameraUILocalizedString(v4);
     goto LABEL_9;
   }
 
   v7.receiver = self;
   v7.super_class = CAMZoomControlAccessibility;
-  v5 = [(CAMZoomControlAccessibility *)&v7 accessibilityValue];
+  accessibilityValue = [(CAMZoomControlAccessibility *)&v7 accessibilityValue];
 LABEL_9:
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (void)accessibilityIncrement
@@ -243,7 +243,7 @@ LABEL_9:
         v40 = v17;
         v35 = v7;
         v36 = v4;
-        v37 = self;
+        selfCopy = self;
         v23 = v22;
         AXPerformSafeBlock();
       }
@@ -256,7 +256,7 @@ LABEL_9:
   {
     v29.receiver = self;
     v29.super_class = CAMZoomControlAccessibility;
-    v24 = [(CAMZoomControlAccessibility *)&v29 accessibilityActivate];
+    accessibilityActivate = [(CAMZoomControlAccessibility *)&v29 accessibilityActivate];
     v25 = [(CAMZoomControlAccessibility *)self safeIntegerForKey:@"zoomButtonSymbol"];
     if (v25)
     {
@@ -278,7 +278,7 @@ LABEL_9:
 LABEL_24:
     UIAccessibilitySpeakAndDoNotBeInterrupted();
 
-    return v24;
+    return accessibilityActivate;
   }
 
   return [(CAMZoomControlAccessibility *)self _axHandleZoomControlActivate];
@@ -364,11 +364,11 @@ void __59__CAMZoomControlAccessibility__axHandleZoomControlActivate__block_invok
   return result;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CAMZoomControlAccessibility;
-  v5 = [(CAMZoomControlAccessibility *)&v7 continueTrackingWithTouch:a3 withEvent:a4];
+  v5 = [(CAMZoomControlAccessibility *)&v7 continueTrackingWithTouch:touch withEvent:event];
   [(CAMZoomControlAccessibility *)self _axDisplayZoomValue];
   AXPerformSafeBlock();
   return v5;

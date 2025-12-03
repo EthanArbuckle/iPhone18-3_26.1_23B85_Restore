@@ -1,21 +1,21 @@
 @interface STUIStatusBarDisplayItemPlacementGroup
-+ (STUIStatusBarDisplayItemPlacementGroup)groupWithPriority:(int64_t)a3 placements:(id)a4;
++ (STUIStatusBarDisplayItemPlacementGroup)groupWithPriority:(int64_t)priority placements:(id)placements;
 - (BOOL)enabled;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation STUIStatusBarDisplayItemPlacementGroup
 
-+ (STUIStatusBarDisplayItemPlacementGroup)groupWithPriority:(int64_t)a3 placements:(id)a4
++ (STUIStatusBarDisplayItemPlacementGroup)groupWithPriority:(int64_t)priority placements:(id)placements
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = objc_alloc_init(a1);
+  placementsCopy = placements;
+  v7 = objc_alloc_init(self);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v8 = v6;
+  v8 = placementsCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -33,17 +33,17 @@
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        [v15 setPriority:{objc_msgSend(v15, "priority", v20) + a3}];
-        v16 = [v15 priority];
-        if (v12 >= v16)
+        [v15 setPriority:{objc_msgSend(v15, "priority", v20) + priority}];
+        priority = [v15 priority];
+        if (v12 >= priority)
         {
-          v12 = v16;
+          v12 = priority;
         }
 
-        v17 = [v15 priority];
-        if (v13 <= v17)
+        priority2 = [v15 priority];
+        if (v13 <= priority2)
         {
-          v13 = v17;
+          v13 = priority2;
         }
       }
 
@@ -70,16 +70,16 @@
 
 - (BOOL)enabled
 {
-  v2 = [(STUIStatusBarDisplayItemPlacementGroup *)self placements];
-  v3 = [v2 firstObject];
-  v4 = [v3 isEnabled];
+  placements = [(STUIStatusBarDisplayItemPlacementGroup *)self placements];
+  firstObject = [placements firstObject];
+  isEnabled = [firstObject isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
@@ -101,7 +101,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setEnabled:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) setEnabled:{enabledCopy, v9}];
       }
 
       while (v6 != v8);

@@ -1,8 +1,8 @@
 @interface BTXpcSession
 - (BTXpcSession)init;
-- (BTXpcSession)initWithConnection:(id)a3;
-- (id)_objectForKey:(const char *)a3 dict:(id)a4 optional:(BOOL)a5 converters:(id)a6;
-- (void)_handleEvent:(id)a3;
+- (BTXpcSession)initWithConnection:(id)connection;
+- (id)_objectForKey:(const char *)key dict:(id)dict optional:(BOOL)optional converters:(id)converters;
+- (void)_handleEvent:(id)event;
 @end
 
 @implementation BTXpcSession
@@ -15,16 +15,16 @@
   return 0;
 }
 
-- (BTXpcSession)initWithConnection:(id)a3
+- (BTXpcSession)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v20.receiver = self;
   v20.super_class = BTXpcSession;
   v6 = [(BTXpcSession *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = [NSString stringWithFormat:@"com.apple.%@", objc_opt_class()];
     [v8 UTF8String];
     v9 = os_transaction_create();
@@ -39,9 +39,9 @@
     if (os_log_type_enabled(qword_10001EFD0, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [(BTXpcSession *)v7 connection];
+      connection = [(BTXpcSession *)v7 connection];
       *buf = 138412290;
-      v22 = v15;
+      v22 = connection;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Started XPC session: %@", buf, 0xCu);
     }
 
@@ -59,10 +59,10 @@
   return v7;
 }
 
-- (void)_handleEvent:(id)a3
+- (void)_handleEvent:(id)event
 {
-  v4 = a3;
-  if (xpc_get_type(v4) == &_xpc_type_dictionary)
+  eventCopy = event;
+  if (xpc_get_type(eventCopy) == &_xpc_type_dictionary)
   {
     v6 = qword_10001EFD0;
     if (os_log_type_enabled(qword_10001EFD0, OS_LOG_TYPE_DEBUG))
@@ -70,25 +70,25 @@
       sub_10000E788(v6);
     }
 
-    v7 = [(BTXpcSession *)self watchdog];
-    [v7 beginTransaction];
+    watchdog = [(BTXpcSession *)self watchdog];
+    [watchdog beginTransaction];
 
-    [(BTXpcSession *)self handleMsg:v4];
-    v8 = [(BTXpcSession *)self watchdog];
-    [v8 endTransaction];
+    [(BTXpcSession *)self handleMsg:eventCopy];
+    watchdog2 = [(BTXpcSession *)self watchdog];
+    [watchdog2 endTransaction];
   }
 
-  else if (xpc_get_type(v4) == &_xpc_type_error)
+  else if (xpc_get_type(eventCopy) == &_xpc_type_error)
   {
     v9 = qword_10001EFD0;
-    if (v4 == &_xpc_error_connection_invalid)
+    if (eventCopy == &_xpc_error_connection_invalid)
     {
       if (os_log_type_enabled(qword_10001EFD0, OS_LOG_TYPE_DEFAULT))
       {
         v10 = v9;
-        v11 = [(BTXpcSession *)self connection];
+        connection = [(BTXpcSession *)self connection];
         v12 = 138412290;
-        v13 = v11;
+        v13 = connection;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Ended XPC session: %@", &v12, 0xCu);
       }
     }
@@ -109,15 +109,15 @@
   }
 }
 
-- (id)_objectForKey:(const char *)a3 dict:(id)a4 optional:(BOOL)a5 converters:(id)a6
+- (id)_objectForKey:(const char *)key dict:(id)dict optional:(BOOL)optional converters:(id)converters
 {
-  v9 = a6;
-  v10 = xpc_dictionary_get_value(a4, a3);
+  convertersCopy = converters;
+  v10 = xpc_dictionary_get_value(dict, key);
   v11 = v10;
   if (v10)
   {
     v12 = [NSValue valueWithPointer:xpc_get_type(v10)];
-    v13 = [v9 objectForKeyedSubscript:v12];
+    v13 = [convertersCopy objectForKeyedSubscript:v12];
     if (!v13)
     {
       sub_10000E828();
@@ -128,7 +128,7 @@
     goto LABEL_5;
   }
 
-  if (!a5)
+  if (!optional)
   {
     sub_10000E8A4();
     v14 = 0;

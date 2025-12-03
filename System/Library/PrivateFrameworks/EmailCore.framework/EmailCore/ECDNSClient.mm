@@ -1,8 +1,8 @@
 @interface ECDNSClient
 + (OS_os_log)log;
-- (id)_txtRecordsForDomain:(id)a3 error:(id *)a4;
-- (id)getDMARCRecordsFromDomain:(id)a3 error:(id *)a4;
-- (void)getPublicKeyRecordsFromDomain:(id)a3 withSelector:(id)a4 completionHandler:(id)a5;
+- (id)_txtRecordsForDomain:(id)domain error:(id *)error;
+- (id)getDMARCRecordsFromDomain:(id)domain error:(id *)error;
+- (void)getPublicKeyRecordsFromDomain:(id)domain withSelector:(id)selector completionHandler:(id)handler;
 @end
 
 @implementation ECDNSClient
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __18__ECDNSClient_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_1 != -1)
   {
     dispatch_once(&log_onceToken_1, block);
@@ -32,20 +32,20 @@ void __18__ECDNSClient_log__block_invoke(uint64_t a1)
   log_log_1 = v1;
 }
 
-- (void)getPublicKeyRecordsFromDomain:(id)a3 withSelector:(id)a4 completionHandler:(id)a5
+- (void)getPublicKeyRecordsFromDomain:(id)domain withSelector:(id)selector completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@._domainkey.%@", a4, a3];
+  handlerCopy = handler;
+  domain = [MEMORY[0x277CCACA8] stringWithFormat:@"%@._domainkey.%@", selector, domain];
   v13 = 0;
-  v10 = [(ECDNSClient *)self _txtRecordsForDomain:v9 error:&v13];
-  v11 = v8[2];
+  v10 = [(ECDNSClient *)self _txtRecordsForDomain:domain error:&v13];
+  v11 = handlerCopy[2];
   v12 = v13;
-  v11(v8, v10, v12);
+  v11(handlerCopy, v10, v12);
 }
 
-- (id)getDMARCRecordsFromDomain:(id)a3 error:(id *)a4
+- (id)getDMARCRecordsFromDomain:(id)domain error:(id *)error
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"_dmarc.%@", a3];
+  domain = [MEMORY[0x277CCACA8] stringWithFormat:@"_dmarc.%@", domain];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -53,7 +53,7 @@ void __18__ECDNSClient_log__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_dispose__0;
   v17 = 0;
   obj = 0;
-  v7 = [(ECDNSClient *)self _txtRecordsForDomain:v6 error:&obj];
+  v7 = [(ECDNSClient *)self _txtRecordsForDomain:domain error:&obj];
   objc_storeStrong(&v17, obj);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -61,9 +61,9 @@ void __18__ECDNSClient_log__block_invoke(uint64_t a1)
   v10[3] = &unk_27874B7B0;
   v10[4] = &v12;
   v8 = [v7 ef_compactMap:v10];
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   _Block_object_dispose(&v12, 8);
@@ -98,9 +98,9 @@ id __47__ECDNSClient_getDMARCRecordsFromDomain_error___block_invoke(uint64_t a1,
   return v3;
 }
 
-- (id)_txtRecordsForDomain:(id)a3 error:(id *)a4
+- (id)_txtRecordsForDomain:(id)domain error:(id *)error
 {
-  v5 = a3;
+  domainCopy = domain;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -119,7 +119,7 @@ id __47__ECDNSClient_getDMARCRecordsFromDomain_error___block_invoke(uint64_t a1,
   v16[5] = &v17;
   context = MEMORY[0x2318C92C0](v16);
   sdRef = 0xAAAAAAAAAAAAAAAALL;
-  v7 = [ECIDNAEncoder stringByEncodingDomainName:v5];
+  v7 = [ECIDNAEncoder stringByEncodingDomainName:domainCopy];
   v8 = DNSServiceAttributeCreate();
   if (_txtRecordsForDomain_error__onceToken != -1)
   {
@@ -130,12 +130,12 @@ id __47__ECDNSClient_getDMARCRecordsFromDomain_error___block_invoke(uint64_t a1,
   if (v9)
   {
     DNSServiceAttributeDeallocate(v8);
-    if (a4)
+    if (error)
     {
       v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ECDNSClient" code:v9 userInfo:0];
 LABEL_13:
       v13 = 0;
-      *a4 = v10;
+      *error = v10;
       goto LABEL_15;
     }
 
@@ -147,7 +147,7 @@ LABEL_13:
   if (v11)
   {
     DNSServiceRefDeallocate(sdRef);
-    if (a4)
+    if (error)
     {
       v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ECDNSClient" code:v11 userInfo:0];
       goto LABEL_13;
@@ -160,7 +160,7 @@ LABEL_13:
   DNSServiceRefDeallocate(sdRef);
   if (v12 || (v12 = *(v24 + 6)) != 0)
   {
-    if (a4)
+    if (error)
     {
       v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ECDNSClient" code:v12 userInfo:0];
       goto LABEL_13;

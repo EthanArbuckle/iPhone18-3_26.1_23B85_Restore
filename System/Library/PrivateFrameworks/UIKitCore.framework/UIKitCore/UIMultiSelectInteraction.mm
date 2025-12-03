@@ -1,15 +1,15 @@
 @interface UIMultiSelectInteraction
 - (BOOL)_areSelectionExtensionKeyCommandsEnabled;
-- (BOOL)_attemptToAutomaticallyTransitionToMultiSelectModeIfNecessaryAtPoint:(CGPoint)a3 withVelocity:(CGPoint)a4;
-- (BOOL)_isBandSelectionAllowedAtPoint:(CGPoint)a3;
-- (BOOL)_isShiftKeyBeingHeldWithGesture:(id)a3;
-- (BOOL)_shouldBeginInteractionWithGestureType:(int64_t)a3 location:(CGPoint)a4 velocity:(CGPoint)a5;
-- (BOOL)_triggeredLegacyPathInsteadForGestureRecognizer:(id)a3 velocity:(CGPoint)a4 shouldBegin:(BOOL *)a5;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)multiSelectOneFingerPanGestureShouldPreventDragInteractionGesture:(id)a3;
+- (BOOL)_attemptToAutomaticallyTransitionToMultiSelectModeIfNecessaryAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
+- (BOOL)_isBandSelectionAllowedAtPoint:(CGPoint)point;
+- (BOOL)_isShiftKeyBeingHeldWithGesture:(id)gesture;
+- (BOOL)_shouldBeginInteractionWithGestureType:(int64_t)type location:(CGPoint)location velocity:(CGPoint)velocity;
+- (BOOL)_triggeredLegacyPathInsteadForGestureRecognizer:(id)recognizer velocity:(CGPoint)velocity shouldBegin:(BOOL *)begin;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)multiSelectOneFingerPanGestureShouldPreventDragInteractionGesture:(id)gesture;
 - (NSArray)gesturesForFailureRequirements;
 - (UIMultiSelectInteraction)init;
 - (UIMultiSelectInteractionDelegate)delegate;
@@ -17,33 +17,33 @@
 - (id)_interactionDelegate;
 - (id)_viewAsScrollView;
 - (id)keyCommandsForSelectionExtension;
-- (int64_t)_gestureTypeForGestureInstance:(id)a3;
-- (unint64_t)_currentExtensionTypeForOneFingerTapGesture:(id)a3;
-- (void)_askDelegateToAutomaticallyTransitionToMultiSelectModeKeepingSelection:(BOOL)a3;
-- (void)_beginCommonPan:(id)a3;
-- (void)_beginInteractionWithTrigger:(id)a3 point:(CGPoint)a4 keepingSelection:(BOOL)a5;
+- (int64_t)_gestureTypeForGestureInstance:(id)instance;
+- (unint64_t)_currentExtensionTypeForOneFingerTapGesture:(id)gesture;
+- (void)_askDelegateToAutomaticallyTransitionToMultiSelectModeKeepingSelection:(BOOL)selection;
+- (void)_beginCommonPan:(id)pan;
+- (void)_beginInteractionWithTrigger:(id)trigger point:(CGPoint)point keepingSelection:(BOOL)selection;
 - (void)_beginObservingScrollViewOffsetUpdates;
-- (void)_cancelCommonPan:(id)a3;
-- (void)_cancelScrollingInScrollView:(id)a3;
-- (void)_cancelScrollingInViewForGesture:(id)a3;
-- (void)_didInvokeMultiSelectAppendGestureAtLocation:(CGPoint)a3;
-- (void)_didInvokeMultiSelectExtendGestureAtLocation:(CGPoint)a3;
-- (void)_endCommonPan:(id)a3;
-- (void)_endInteractionAtPoint:(CGPoint)a3 canceled:(BOOL)a4;
+- (void)_cancelCommonPan:(id)pan;
+- (void)_cancelScrollingInScrollView:(id)view;
+- (void)_cancelScrollingInViewForGesture:(id)gesture;
+- (void)_didInvokeMultiSelectAppendGestureAtLocation:(CGPoint)location;
+- (void)_didInvokeMultiSelectExtendGestureAtLocation:(CGPoint)location;
+- (void)_endCommonPan:(id)pan;
+- (void)_endInteractionAtPoint:(CGPoint)point canceled:(BOOL)canceled;
 - (void)_endObservingScrollViewOffsetUpdates;
-- (void)_handleBandSelectionInteraction:(id)a3;
-- (void)_handleCommonPanGestureStateChanged:(id)a3;
-- (void)_handleKeyboardSelectionExtensionKeyCommand:(id)a3;
-- (void)_handleSelectionExtensionTapGesture:(id)a3;
-- (void)_multiFingerTapGesture:(id)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)_sendWillBeginInteractionAtPoint:(CGPoint)a3 keepingSelection:(BOOL)a4;
-- (void)_updateCommonPan:(id)a3;
+- (void)_handleBandSelectionInteraction:(id)interaction;
+- (void)_handleCommonPanGestureStateChanged:(id)changed;
+- (void)_handleKeyboardSelectionExtensionKeyCommand:(id)command;
+- (void)_handleSelectionExtensionTapGesture:(id)gesture;
+- (void)_multiFingerTapGesture:(id)gesture;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)_sendWillBeginInteractionAtPoint:(CGPoint)point keepingSelection:(BOOL)selection;
+- (void)_updateCommonPan:(id)pan;
 - (void)_updateDelegateConformance;
-- (void)didMoveToView:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)setDelegate:(id)delegate;
+- (void)setEnabled:(BOOL)enabled;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIMultiSelectInteraction
@@ -378,15 +378,15 @@
 - (BOOL)_areSelectionExtensionKeyCommandsEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_view);
-  v4 = [WeakRetained window];
-  v5 = [v4 firstResponder];
+  window = [WeakRetained window];
+  firstResponder = [window firstResponder];
 
   if ((*&self->_optionalDelegateFlags & 0x200) != 0)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
     if ([v7 supportsKeyboardSelectionExtension])
     {
-      v6 = _UIResponderRequiresTextInput(v5) ^ 1;
+      v6 = _UIResponderRequiresTextInput(firstResponder) ^ 1;
     }
 
     else
@@ -437,49 +437,49 @@ uint64_t __32__UIMultiSelectInteraction_init__block_invoke_3(uint64_t a1, double
   return v7;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
+    enabledCopy = enabled;
+    self->_enabled = enabled;
     [(UIGestureRecognizer *)self->_multiSelectModePan setEnabled:?];
-    [(UIGestureRecognizer *)self->_multiFingerPan setEnabled:v4];
-    [(UIGestureRecognizer *)self->_multiFingerTap setEnabled:v4];
-    [(UIGestureRecognizer *)self->_singleFingerExtensionTap setEnabled:v4];
+    [(UIGestureRecognizer *)self->_multiFingerPan setEnabled:enabledCopy];
+    [(UIGestureRecognizer *)self->_multiFingerTap setEnabled:enabledCopy];
+    [(UIGestureRecognizer *)self->_singleFingerExtensionTap setEnabled:enabledCopy];
     bandSelectionInteraction = self->_bandSelectionInteraction;
 
-    [(UIBandSelectionInteraction *)bandSelectionInteraction setEnabled:v4];
+    [(UIBandSelectionInteraction *)bandSelectionInteraction setEnabled:enabledCopy];
   }
 }
 
-- (int64_t)_gestureTypeForGestureInstance:(id)a3
+- (int64_t)_gestureTypeForGestureInstance:(id)instance
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_multiSelectModePan == v4)
+  instanceCopy = instance;
+  v5 = instanceCopy;
+  if (self->_multiSelectModePan == instanceCopy)
   {
     v6 = 0;
   }
 
-  else if (self->_multiFingerPan == v4)
+  else if (self->_multiFingerPan == instanceCopy)
   {
     v6 = 1;
   }
 
-  else if (self->_multiFingerTap == v4)
+  else if (self->_multiFingerTap == instanceCopy)
   {
     v6 = 2;
   }
 
   else
   {
-    if (self->_singleFingerExtensionTap != v4)
+    if (self->_singleFingerExtensionTap != instanceCopy)
     {
       goto LABEL_5;
     }
 
-    v8 = [(UIMultiSelectInteraction *)self _currentExtensionTypeForOneFingerTapGesture:v4];
+    v8 = [(UIMultiSelectInteraction *)self _currentExtensionTypeForOneFingerTapGesture:instanceCopy];
     if (v8 == 1)
     {
       v6 = 4;
@@ -503,9 +503,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(UIMultiSelectInteraction *)self _updateDelegateConformance];
 }
@@ -514,15 +514,15 @@ LABEL_9:
 {
   if (self->_delegateConformsToProtocol)
   {
-    v4 = [(UIMultiSelectInteraction *)self delegate];
+    delegate = [(UIMultiSelectInteraction *)self delegate];
   }
 
   else
   {
-    v4 = 0;
+    delegate = 0;
   }
 
-  return v4;
+  return delegate;
 }
 
 - (NSArray)gesturesForFailureRequirements
@@ -535,9 +535,9 @@ LABEL_9:
   return v2;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  if (!a3)
+  if (!view)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
     [WeakRetained removeGestureRecognizer:self->_multiSelectModePan];
@@ -556,10 +556,10 @@ LABEL_9:
   }
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = objc_storeWeak(&self->_view, a3);
-  if (a3)
+  v4 = objc_storeWeak(&self->_view, view);
+  if (view)
   {
     WeakRetained = objc_loadWeakRetained(&self->_view);
     [WeakRetained addGestureRecognizer:self->_multiSelectModePan];
@@ -600,41 +600,41 @@ LABEL_9:
 
 - (void)_beginObservingScrollViewOffsetUpdates
 {
-  v3 = [(UIMultiSelectInteraction *)self _viewAsScrollView];
-  [v3 _addScrollViewScrollObserver:self];
+  _viewAsScrollView = [(UIMultiSelectInteraction *)self _viewAsScrollView];
+  [_viewAsScrollView _addScrollViewScrollObserver:self];
 }
 
 - (void)_endObservingScrollViewOffsetUpdates
 {
-  v3 = [(UIMultiSelectInteraction *)self _viewAsScrollView];
-  [v3 _removeScrollViewScrollObserver:self];
+  _viewAsScrollView = [(UIMultiSelectInteraction *)self _viewAsScrollView];
+  [_viewAsScrollView _removeScrollViewScrollObserver:self];
 }
 
-- (BOOL)_attemptToAutomaticallyTransitionToMultiSelectModeIfNecessaryAtPoint:(CGPoint)a3 withVelocity:(CGPoint)a4
+- (BOOL)_attemptToAutomaticallyTransitionToMultiSelectModeIfNecessaryAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  v10 = [v9 isInMultiSelectMode];
+  y = velocity.y;
+  x = velocity.x;
+  v6 = point.y;
+  v7 = point.x;
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  isInMultiSelectMode = [_interactionDelegate isInMultiSelectMode];
 
-  if (v10)
+  if (isInMultiSelectMode)
   {
     return 1;
   }
 
-  v12 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  v13 = [v12 interaction:self shouldAutomaticallyTransitionToMultiSelectModeAtPoint:v7 withVelocity:{v6, x, y}];
+  _interactionDelegate2 = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  v13 = [_interactionDelegate2 interaction:self shouldAutomaticallyTransitionToMultiSelectModeAtPoint:v7 withVelocity:{v6, x, y}];
 
   return v13;
 }
 
-- (void)_askDelegateToAutomaticallyTransitionToMultiSelectModeKeepingSelection:(BOOL)a3
+- (void)_askDelegateToAutomaticallyTransitionToMultiSelectModeKeepingSelection:(BOOL)selection
 {
-  v3 = a3;
-  v5 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  if ([v5 isInMultiSelectMode])
+  selectionCopy = selection;
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  if ([_interactionDelegate isInMultiSelectMode])
   {
     v6 = [(UIMultiSelectInteraction *)self activeGestureType]- 1;
 
@@ -648,42 +648,42 @@ LABEL_9:
   {
   }
 
-  v7 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  [v7 automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:v3];
+  _interactionDelegate2 = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  [_interactionDelegate2 automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:selectionCopy];
 }
 
-- (void)_sendWillBeginInteractionAtPoint:(CGPoint)a3 keepingSelection:(BOOL)a4
+- (void)_sendWillBeginInteractionAtPoint:(CGPoint)point keepingSelection:(BOOL)selection
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  selectionCopy = selection;
+  y = point.y;
+  x = point.x;
   optionalDelegateFlags = self->_optionalDelegateFlags;
-  v9 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  v10 = v9;
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  v10 = _interactionDelegate;
   if ((optionalDelegateFlags & 0x2000) != 0)
   {
-    [v9 willBeginMultiSelectInteraction:self atPoint:v4 keepCurrentSelection:{x, y}];
+    [_interactionDelegate willBeginMultiSelectInteraction:self atPoint:selectionCopy keepCurrentSelection:{x, y}];
   }
 
   else
   {
-    [v9 willBeginMultiSelectInteraction:self atPoint:{x, y}];
+    [_interactionDelegate willBeginMultiSelectInteraction:self atPoint:{x, y}];
   }
 }
 
-- (BOOL)_isShiftKeyBeingHeldWithGesture:(id)a3
+- (BOOL)_isShiftKeyBeingHeldWithGesture:(id)gesture
 {
   v3 = +[UIKeyboardImpl isHardwareShiftKeyBeingHeld];
   v4 = +[UIKeyboardImpl activeInstance];
-  v5 = [v4 isShiftKeyBeingHeld];
+  isShiftKeyBeingHeld = [v4 isShiftKeyBeingHeld];
 
-  return (v3 | v5) & 1;
+  return (v3 | isShiftKeyBeingHeld) & 1;
 }
 
-- (unint64_t)_currentExtensionTypeForOneFingerTapGesture:(id)a3
+- (unint64_t)_currentExtensionTypeForOneFingerTapGesture:(id)gesture
 {
-  v4 = a3;
-  if ([(UIMultiSelectInteraction *)self _isShiftKeyBeingHeldWithGesture:v4])
+  gestureCopy = gesture;
+  if ([(UIMultiSelectInteraction *)self _isShiftKeyBeingHeldWithGesture:gestureCopy])
   {
     v5 = 2;
   }
@@ -693,7 +693,7 @@ LABEL_9:
     v5 = 0;
   }
 
-  v6 = [(UIMultiSelectInteraction *)self _isCommandKeyBeingHeldWithGesture:v4];
+  v6 = [(UIMultiSelectInteraction *)self _isCommandKeyBeingHeldWithGesture:gestureCopy];
 
   if (v6)
   {
@@ -706,45 +706,45 @@ LABEL_9:
   }
 }
 
-- (BOOL)multiSelectOneFingerPanGestureShouldPreventDragInteractionGesture:(id)a3
+- (BOOL)multiSelectOneFingerPanGestureShouldPreventDragInteractionGesture:(id)gesture
 {
   if ((*&self->_optionalDelegateFlags & 1) == 0)
   {
     return 0;
   }
 
-  v5 = a3;
+  gestureCopy = gesture;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained multiSelectInteractionGestureShouldPreventDragLiftGesture:v5];
+  v7 = [WeakRetained multiSelectInteractionGestureShouldPreventDragLiftGesture:gestureCopy];
 
   return v7;
 }
 
-- (BOOL)_triggeredLegacyPathInsteadForGestureRecognizer:(id)a3 velocity:(CGPoint)a4 shouldBegin:(BOOL *)a5
+- (BOOL)_triggeredLegacyPathInsteadForGestureRecognizer:(id)recognizer velocity:(CGPoint)velocity shouldBegin:(BOOL *)begin
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  recognizerCopy = recognizer;
   optionalDelegateFlags = self->_optionalDelegateFlags;
   if ((optionalDelegateFlags & 0x1000) == 0)
   {
-    v11 = [(UIMultiSelectInteraction *)self view];
-    [(UIPanGestureRecognizer *)v9 locationInView:v11];
+    view = [(UIMultiSelectInteraction *)self view];
+    [(UIPanGestureRecognizer *)recognizerCopy locationInView:view];
     v13 = v12;
     v15 = v14;
 
-    v16 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-    if ([v16 isInMultiSelectMode])
+    _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+    if ([_interactionDelegate isInMultiSelectMode])
     {
 
 LABEL_6:
-      v18 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-      *a5 = [v18 shouldBeginMultiSelectInteraction:self atPoint:v13 withVelocity:{v15, x, y}];
+      _interactionDelegate2 = [(UIMultiSelectInteraction *)self _interactionDelegate];
+      *begin = [_interactionDelegate2 shouldBeginMultiSelectInteraction:self atPoint:v13 withVelocity:{v15, x, y}];
 
       goto LABEL_9;
     }
 
-    if (self->_multiFingerPan == v9)
+    if (self->_multiFingerPan == recognizerCopy)
     {
     }
 
@@ -752,13 +752,13 @@ LABEL_6:
     {
       multiFingerTap = self->_multiFingerTap;
 
-      if (multiFingerTap != v9)
+      if (multiFingerTap != recognizerCopy)
       {
         goto LABEL_6;
       }
     }
 
-    *a5 = [(UIMultiSelectInteraction *)self _attemptToAutomaticallyTransitionToMultiSelectModeIfNecessaryAtPoint:v13 withVelocity:v15, x, y];
+    *begin = [(UIMultiSelectInteraction *)self _attemptToAutomaticallyTransitionToMultiSelectModeIfNecessaryAtPoint:v13 withVelocity:v15, x, y];
   }
 
 LABEL_9:
@@ -766,25 +766,25 @@ LABEL_9:
   return (optionalDelegateFlags & 0x1000) == 0;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_singleFingerExtensionTap == v4)
+  beginCopy = begin;
+  if (self->_singleFingerExtensionTap == beginCopy)
   {
     v9 = 1;
     goto LABEL_13;
   }
 
-  v5 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  v6 = [v5 isInMultiSelectMode];
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  isInMultiSelectMode = [_interactionDelegate isInMultiSelectMode];
 
-  v7 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  v8 = [v7 supportsMultiSelectInteraction:self];
+  _interactionDelegate2 = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  v8 = [_interactionDelegate2 supportsMultiSelectInteraction:self];
 
   v22 = v8;
-  if (v6)
+  if (isInMultiSelectMode)
   {
-    if (((self->_multiFingerTap != v4) & v8) == 0)
+    if (((self->_multiFingerTap != beginCopy) & v8) == 0)
     {
 LABEL_4:
       v9 = 0;
@@ -797,11 +797,11 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if ([(UITapGestureRecognizer *)v4 _isGestureType:8])
+  if ([(UITapGestureRecognizer *)beginCopy _isGestureType:8])
   {
-    v10 = v4;
-    v11 = [(UIMultiSelectInteraction *)self view];
-    [(_UISingleFingerTapExtensionGesture *)v10 velocityInView:v11];
+    v10 = beginCopy;
+    view = [(UIMultiSelectInteraction *)self view];
+    [(_UISingleFingerTapExtensionGesture *)v10 velocityInView:view];
     v13 = v12;
     v15 = v14;
   }
@@ -812,19 +812,19 @@ LABEL_4:
     v15 = *(MEMORY[0x1E695EFF8] + 8);
   }
 
-  if ([(UIMultiSelectInteraction *)self _triggeredLegacyPathInsteadForGestureRecognizer:v4 velocity:&v22 shouldBegin:v13, v15])
+  if ([(UIMultiSelectInteraction *)self _triggeredLegacyPathInsteadForGestureRecognizer:beginCopy velocity:&v22 shouldBegin:v13, v15])
   {
     v9 = v22;
   }
 
   else
   {
-    v16 = [(UIMultiSelectInteraction *)self view];
-    [(UITapGestureRecognizer *)v4 locationInView:v16];
+    view2 = [(UIMultiSelectInteraction *)self view];
+    [(UITapGestureRecognizer *)beginCopy locationInView:view2];
     v18 = v17;
     v20 = v19;
 
-    v9 = [(UIMultiSelectInteraction *)self _shouldBeginInteractionWithGestureType:[(UIMultiSelectInteraction *)self _gestureTypeForGestureInstance:v4] location:v18 velocity:v20, v13, v15];
+    v9 = [(UIMultiSelectInteraction *)self _shouldBeginInteractionWithGestureType:[(UIMultiSelectInteraction *)self _gestureTypeForGestureInstance:beginCopy] location:v18 velocity:v20, v13, v15];
   }
 
 LABEL_13:
@@ -832,21 +832,21 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  v9 = (self->_multiSelectModePan == v6 || self->_multiFingerPan == v6) && ([v7 _isGestureType:8] & 1) != 0;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
+  v9 = (self->_multiSelectModePan == recognizerCopy || self->_multiFingerPan == recognizerCopy) && ([gestureRecognizerCopy _isGestureType:8] & 1) != 0;
 
   return v9;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (_isDragInteractionGestureRecognizer(v7))
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (_isDragInteractionGestureRecognizer(gestureRecognizerCopy))
   {
     v8 = 0;
   }
@@ -854,38 +854,38 @@ LABEL_13:
   else
   {
     multiFingerTap = self->_multiFingerTap;
-    if (self->_multiSelectModePan == v6)
+    if (self->_multiSelectModePan == recognizerCopy)
     {
-      v8 = multiFingerTap != v7;
+      v8 = multiFingerTap != gestureRecognizerCopy;
     }
 
     else
     {
-      v8 = multiFingerTap == v6 || self->_multiFingerPan == v6;
+      v8 = multiFingerTap == recognizerCopy || self->_multiFingerPan == recognizerCopy;
     }
   }
 
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  v8 = touchCopy;
   if (!self->_enabled)
   {
     goto LABEL_14;
   }
 
-  if (self->_singleFingerExtensionTap == v6)
+  if (self->_singleFingerExtensionTap == recognizerCopy)
   {
-    v15 = [(UIMultiSelectInteraction *)self _currentExtensionTypeForOneFingerTapGesture:v6];
+    v15 = [(UIMultiSelectInteraction *)self _currentExtensionTypeForOneFingerTapGesture:recognizerCopy];
     if (v15)
     {
       v16 = v15;
-      v17 = [(UIMultiSelectInteraction *)self view];
-      [v8 locationInView:v17];
+      view = [(UIMultiSelectInteraction *)self view];
+      [v8 locationInView:view];
       v19 = v18;
       v21 = v20;
 
@@ -913,25 +913,25 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (self->_multiFingerPan == v6)
+  if (self->_multiFingerPan == recognizerCopy)
   {
     if ((*&self->_optionalDelegateFlags & 0x20) != 0)
     {
-      v14 = [v7 _originatesFromPointerEvent];
+      _originatesFromPointerEvent = [touchCopy _originatesFromPointerEvent];
       goto LABEL_17;
     }
   }
 
-  else if (self->_multiSelectModePan == v6 && [v7 _originatesFromPointerEvent])
+  else if (self->_multiSelectModePan == recognizerCopy && [touchCopy _originatesFromPointerEvent])
   {
-    v9 = [(UIMultiSelectInteraction *)self view];
-    [v8 locationInView:v9];
+    view2 = [(UIMultiSelectInteraction *)self view];
+    [v8 locationInView:view2];
     v11 = v10;
     v13 = v12;
 
-    v14 = [(UIMultiSelectInteraction *)self _isBandSelectionAllowedAtPoint:v11, v13];
+    _originatesFromPointerEvent = [(UIMultiSelectInteraction *)self _isBandSelectionAllowedAtPoint:v11, v13];
 LABEL_17:
-    v25 = v14 ^ 1;
+    v25 = _originatesFromPointerEvent ^ 1;
     goto LABEL_15;
   }
 
@@ -941,17 +941,17 @@ LABEL_15:
   return v25;
 }
 
-- (BOOL)_isBandSelectionAllowedAtPoint:(CGPoint)a3
+- (BOOL)_isBandSelectionAllowedAtPoint:(CGPoint)point
 {
   if ((*&self->_optionalDelegateFlags & 0x20) == 0)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
-  v6 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  v7 = [v6 supportsMultiSelectInteraction:self];
+  y = point.y;
+  x = point.x;
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  v7 = [_interactionDelegate supportsMultiSelectInteraction:self];
 
   if (!v7)
   {
@@ -969,58 +969,58 @@ LABEL_15:
   return v10;
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v4 = [(_UIMultiSelectOneFingerPanGesture *)self->_multiSelectModePan activeTouch];
-  if (v4)
+  activeTouch = [(_UIMultiSelectOneFingerPanGesture *)self->_multiSelectModePan activeTouch];
+  if (activeTouch)
   {
-    v11 = v4;
-    v5 = [(UIMultiSelectInteraction *)self view];
-    [v11 locationInView:v5];
+    v11 = activeTouch;
+    view = [(UIMultiSelectInteraction *)self view];
+    [v11 locationInView:view];
     v7 = v6;
     v9 = v8;
 
-    v10 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-    [v10 multiSelectInteraction:self toggleSelectionStateUpToPoint:{v7, v9}];
+    _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+    [_interactionDelegate multiSelectInteraction:self toggleSelectionStateUpToPoint:{v7, v9}];
 
-    v4 = v11;
+    activeTouch = v11;
   }
 }
 
-- (void)_handleBandSelectionInteraction:(id)a3
+- (void)_handleBandSelectionInteraction:(id)interaction
 {
-  v22 = a3;
-  v4 = [(UIMultiSelectInteraction *)self view];
-  [v22 _locationInView:v4];
+  interactionCopy = interaction;
+  view = [(UIMultiSelectInteraction *)self view];
+  [interactionCopy _locationInView:view];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  v10 = [v22 state];
-  if (v10 == 3)
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  state = [interactionCopy state];
+  if (state == 3)
   {
     [(UIMultiSelectInteraction *)self _endInteractionAtPoint:0 canceled:v6, v8];
   }
 
-  else if (v10 == 2 || v10 == 1 && [v9 isInMultiSelectMode])
+  else if (state == 2 || state == 1 && [_interactionDelegate isInMultiSelectMode])
   {
-    [v22 selectionRect];
+    [interactionCopy selectionRect];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [v22 initialModifierFlags];
+    initialModifierFlags = [interactionCopy initialModifierFlags];
     if ([(UIMultiSelectInteraction *)self _isActive])
     {
 LABEL_14:
-      if (v19 == 0x100000 && (*&self->_optionalDelegateFlags & 0x40) != 0)
+      if (initialModifierFlags == 0x100000 && (*&self->_optionalDelegateFlags & 0x40) != 0)
       {
-        [v9 multiSelectInteraction:self toggleSelectionWithinRect:v12 leadingPoint:{v14, v16, v18, v6, v8}];
+        [_interactionDelegate multiSelectInteraction:self toggleSelectionWithinRect:v12 leadingPoint:{v14, v16, v18, v6, v8}];
       }
 
       else
       {
-        [v9 multiSelectInteraction:self selectItemsWithinRect:v12 leadingPoint:{v14, v16, v18, v6, v8}];
+        [_interactionDelegate multiSelectInteraction:self selectItemsWithinRect:v12 leadingPoint:{v14, v16, v18, v6, v8}];
       }
 
       goto LABEL_19;
@@ -1028,8 +1028,8 @@ LABEL_14:
 
     if ([(UIMultiSelectInteraction *)self _shouldBeginInteractionWithGestureType:5 location:v6 velocity:v8, 1.0, 1.0])
     {
-      v21 = v19 == 0x20000 || v19 == 0x100000;
-      [(UIMultiSelectInteraction *)self _beginInteractionWithTrigger:v22 point:v21 keepingSelection:v6, v8];
+      v21 = initialModifierFlags == 0x20000 || initialModifierFlags == 0x100000;
+      [(UIMultiSelectInteraction *)self _beginInteractionWithTrigger:interactionCopy point:v21 keepingSelection:v6, v8];
       goto LABEL_14;
     }
   }
@@ -1037,22 +1037,22 @@ LABEL_14:
 LABEL_19:
 }
 
-- (void)_cancelScrollingInScrollView:(id)a3
+- (void)_cancelScrollingInScrollView:(id)view
 {
-  v3 = [a3 panGestureRecognizer];
-  if ([v3 isEnabled])
+  panGestureRecognizer = [view panGestureRecognizer];
+  if ([panGestureRecognizer isEnabled])
   {
-    [v3 setEnabled:0];
-    [v3 setEnabled:1];
+    [panGestureRecognizer setEnabled:0];
+    [panGestureRecognizer setEnabled:1];
   }
 }
 
-- (void)_cancelScrollingInViewForGesture:(id)a3
+- (void)_cancelScrollingInViewForGesture:(id)gesture
 {
-  v4 = a3;
-  if (self->_isScrollView && self->_multiSelectModePan != v4)
+  gestureCopy = gesture;
+  if (self->_isScrollView && self->_multiSelectModePan != gestureCopy)
   {
-    v9 = v4;
+    v9 = gestureCopy;
     WeakRetained = objc_loadWeakRetained(&self->_view);
     if ((*&self->_optionalDelegateFlags & 0x800) != 0)
     {
@@ -1066,156 +1066,156 @@ LABEL_19:
 
     [(UIMultiSelectInteraction *)self _cancelScrollingInScrollView:WeakRetained];
 
-    v4 = v9;
+    gestureCopy = v9;
   }
 }
 
-- (void)_handleCommonPanGestureStateChanged:(id)a3
+- (void)_handleCommonPanGestureStateChanged:(id)changed
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if (v4 <= 2)
+  changedCopy = changed;
+  state = [changedCopy state];
+  if (state <= 2)
   {
-    if (v4 == 1)
+    if (state == 1)
     {
-      [(UIMultiSelectInteraction *)self _beginCommonPan:v7];
+      [(UIMultiSelectInteraction *)self _beginCommonPan:changedCopy];
     }
 
     else
     {
-      v5 = v4 == 2;
-      v6 = v7;
+      v5 = state == 2;
+      v6 = changedCopy;
       if (!v5)
       {
         goto LABEL_13;
       }
 
-      [(UIMultiSelectInteraction *)self _updateCommonPan:v7];
+      [(UIMultiSelectInteraction *)self _updateCommonPan:changedCopy];
     }
 
 LABEL_12:
-    v6 = v7;
+    v6 = changedCopy;
     goto LABEL_13;
   }
 
-  if (v4 == 3)
+  if (state == 3)
   {
-    [(UIMultiSelectInteraction *)self _endCommonPan:v7];
+    [(UIMultiSelectInteraction *)self _endCommonPan:changedCopy];
     goto LABEL_12;
   }
 
-  v5 = v4 == 4;
-  v6 = v7;
+  v5 = state == 4;
+  v6 = changedCopy;
   if (v5)
   {
-    [(UIMultiSelectInteraction *)self _cancelCommonPan:v7];
+    [(UIMultiSelectInteraction *)self _cancelCommonPan:changedCopy];
     goto LABEL_12;
   }
 
 LABEL_13:
 }
 
-- (void)_beginCommonPan:(id)a3
+- (void)_beginCommonPan:(id)pan
 {
-  v9 = a3;
-  v4 = [(UIMultiSelectInteraction *)self view];
-  [v9 locationInView:v4];
+  panCopy = pan;
+  view = [(UIMultiSelectInteraction *)self view];
+  [panCopy locationInView:view];
   v6 = v5;
   v8 = v7;
 
-  [(UIMultiSelectInteraction *)self _beginInteractionWithTrigger:v9 point:0 keepingSelection:v6, v8];
+  [(UIMultiSelectInteraction *)self _beginInteractionWithTrigger:panCopy point:0 keepingSelection:v6, v8];
 }
 
-- (void)_updateCommonPan:(id)a3
+- (void)_updateCommonPan:(id)pan
 {
-  v4 = a3;
-  v5 = [(UIMultiSelectInteraction *)self view];
-  [v4 locationInView:v5];
+  panCopy = pan;
+  view = [(UIMultiSelectInteraction *)self view];
+  [panCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  [v10 multiSelectInteraction:self toggleSelectionStateUpToPoint:{v7, v9}];
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  [_interactionDelegate multiSelectInteraction:self toggleSelectionStateUpToPoint:{v7, v9}];
 }
 
-- (void)_endCommonPan:(id)a3
+- (void)_endCommonPan:(id)pan
 {
-  v4 = a3;
-  v5 = [(UIMultiSelectInteraction *)self view];
-  [v4 locationInView:v5];
+  panCopy = pan;
+  view = [(UIMultiSelectInteraction *)self view];
+  [panCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  [v10 multiSelectInteraction:self toggleSelectionStateUpToPoint:{v7, v9}];
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  [_interactionDelegate multiSelectInteraction:self toggleSelectionStateUpToPoint:{v7, v9}];
 
   [(UIMultiSelectInteraction *)self _endInteractionAtPoint:0 canceled:v7, v9];
 }
 
-- (void)_cancelCommonPan:(id)a3
+- (void)_cancelCommonPan:(id)pan
 {
-  v4 = a3;
-  v5 = [(UIMultiSelectInteraction *)self view];
-  [v4 locationInView:v5];
+  panCopy = pan;
+  view = [(UIMultiSelectInteraction *)self view];
+  [panCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
   [(UIMultiSelectInteraction *)self _endInteractionAtPoint:1 canceled:v7, v9];
 }
 
-- (void)_didInvokeMultiSelectAppendGestureAtLocation:(CGPoint)a3
+- (void)_didInvokeMultiSelectAppendGestureAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(UIMultiSelectInteraction *)self _askDelegateToAutomaticallyTransitionToMultiSelectModeKeepingSelection:1];
   [(UIMultiSelectInteraction *)self _sendWillBeginInteractionAtPoint:1 keepingSelection:x, y];
-  v6 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  [v6 multiSelectInteraction:self appendSelectionAtPoint:{x, y}];
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  [_interactionDelegate multiSelectInteraction:self appendSelectionAtPoint:{x, y}];
 
-  v7 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  [v7 didEndMultiSelectInteraction:self atPoint:{x, y}];
+  _interactionDelegate2 = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  [_interactionDelegate2 didEndMultiSelectInteraction:self atPoint:{x, y}];
 }
 
-- (void)_didInvokeMultiSelectExtendGestureAtLocation:(CGPoint)a3
+- (void)_didInvokeMultiSelectExtendGestureAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   [(UIMultiSelectInteraction *)self _askDelegateToAutomaticallyTransitionToMultiSelectModeKeepingSelection:1];
   [(UIMultiSelectInteraction *)self _sendWillBeginInteractionAtPoint:1 keepingSelection:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8)];
-  v6 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  [v6 multiSelectInteraction:self toggleSelectionStateUpToPoint:{x, y}];
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  [_interactionDelegate multiSelectInteraction:self toggleSelectionStateUpToPoint:{x, y}];
 
-  v7 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  [v7 didEndMultiSelectInteraction:self atPoint:{x, y}];
+  _interactionDelegate2 = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  [_interactionDelegate2 didEndMultiSelectInteraction:self atPoint:{x, y}];
 }
 
-- (void)_multiFingerTapGesture:(id)a3
+- (void)_multiFingerTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(UIMultiSelectInteraction *)self view];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  view = [(UIMultiSelectInteraction *)self view];
+  [gestureCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v4 state];
-  if (v10 == 3)
+  state = [gestureCopy state];
+  if (state == 3)
   {
 
     [(UIMultiSelectInteraction *)self _didInvokeMultiSelectAppendGestureAtLocation:v7, v9];
   }
 }
 
-- (void)_handleSelectionExtensionTapGesture:(id)a3
+- (void)_handleSelectionExtensionTapGesture:(id)gesture
 {
-  v10 = a3;
-  v4 = [(UIMultiSelectInteraction *)self view];
-  [v10 locationInView:v4];
+  gestureCopy = gesture;
+  view = [(UIMultiSelectInteraction *)self view];
+  [gestureCopy locationInView:view];
   v6 = v5;
   v8 = v7;
 
-  if ([v10 state] == 3)
+  if ([gestureCopy state] == 3)
   {
-    v9 = [(UIMultiSelectInteraction *)self _currentExtensionTypeForOneFingerTapGesture:v10];
+    v9 = [(UIMultiSelectInteraction *)self _currentExtensionTypeForOneFingerTapGesture:gestureCopy];
     if (v9 == 2)
     {
       [(UIMultiSelectInteraction *)self _didInvokeMultiSelectExtendGestureAtLocation:v6, v8];
@@ -1228,18 +1228,18 @@ LABEL_13:
   }
 }
 
-- (void)_beginInteractionWithTrigger:(id)a3 point:(CGPoint)a4 keepingSelection:(BOOL)a5
+- (void)_beginInteractionWithTrigger:(id)trigger point:(CGPoint)point keepingSelection:(BOOL)selection
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
+  selectionCopy = selection;
+  y = point.y;
+  x = point.x;
+  triggerCopy = trigger;
   if (![(UIMultiSelectInteraction *)self _isActive])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v13;
+      v9 = triggerCopy;
       v10 = [(UIMultiSelectInteraction *)self _gestureTypeForGestureInstance:v9];
     }
 
@@ -1248,15 +1248,15 @@ LABEL_13:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v13 initialModifierFlags];
+        initialModifierFlags = [triggerCopy initialModifierFlags];
         v9 = 0;
         v12 = 5;
-        if (v11 == 0x100000)
+        if (initialModifierFlags == 0x100000)
         {
           v12 = 7;
         }
 
-        if (v11 == 0x20000)
+        if (initialModifierFlags == 0x20000)
         {
           v10 = 6;
         }
@@ -1275,22 +1275,22 @@ LABEL_13:
     }
 
     self->_activeGestureType = v10;
-    [(UIMultiSelectInteraction *)self _askDelegateToAutomaticallyTransitionToMultiSelectModeKeepingSelection:v5];
+    [(UIMultiSelectInteraction *)self _askDelegateToAutomaticallyTransitionToMultiSelectModeKeepingSelection:selectionCopy];
     [(UIMultiSelectInteraction *)self _cancelScrollingInViewForGesture:v9];
-    [(UIMultiSelectInteraction *)self _sendWillBeginInteractionAtPoint:v5 keepingSelection:x, y];
+    [(UIMultiSelectInteraction *)self _sendWillBeginInteractionAtPoint:selectionCopy keepingSelection:x, y];
     [(UIMultiSelectInteraction *)self _beginObservingScrollViewOffsetUpdates];
   }
 }
 
-- (void)_endInteractionAtPoint:(CGPoint)a3 canceled:(BOOL)a4
+- (void)_endInteractionAtPoint:(CGPoint)point canceled:(BOOL)canceled
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  canceledCopy = canceled;
+  y = point.y;
+  x = point.x;
   if ([(UIMultiSelectInteraction *)self _isActive])
   {
     [(UIMultiSelectInteraction *)self _endObservingScrollViewOffsetUpdates];
-    if (v4)
+    if (canceledCopy)
     {
       if ((*&self->_optionalDelegateFlags & 0x10) == 0)
       {
@@ -1299,33 +1299,33 @@ LABEL_7:
         return;
       }
 
-      v8 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-      [v8 didCancelMultiSelectInteraction:self atPoint:{x, y}];
+      _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+      [_interactionDelegate didCancelMultiSelectInteraction:self atPoint:{x, y}];
     }
 
     else
     {
-      v8 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-      [v8 didEndMultiSelectInteraction:self atPoint:{x, y}];
+      _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+      [_interactionDelegate didEndMultiSelectInteraction:self atPoint:{x, y}];
     }
 
     goto LABEL_7;
   }
 }
 
-- (BOOL)_shouldBeginInteractionWithGestureType:(int64_t)a3 location:(CGPoint)a4 velocity:(CGPoint)a5
+- (BOOL)_shouldBeginInteractionWithGestureType:(int64_t)type location:(CGPoint)location velocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
-  v11 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-  v12 = [v11 isInMultiSelectMode];
+  y = velocity.y;
+  x = velocity.x;
+  v7 = location.y;
+  v8 = location.x;
+  _interactionDelegate = [(UIMultiSelectInteraction *)self _interactionDelegate];
+  isInMultiSelectMode = [_interactionDelegate isInMultiSelectMode];
 
-  if ((v12 & 1) != 0 || a3 > 5 || ((1 << a3) & 0x26) == 0)
+  if ((isInMultiSelectMode & 1) != 0 || type > 5 || ((1 << type) & 0x26) == 0)
   {
-    v13 = [(UIMultiSelectInteraction *)self _interactionDelegate];
-    v14 = [v13 shouldBeginMultiSelectInteraction:self ofType:a3 atPoint:v8 withVelocity:{v7, x, y}];
+    _interactionDelegate2 = [(UIMultiSelectInteraction *)self _interactionDelegate];
+    v14 = [_interactionDelegate2 shouldBeginMultiSelectInteraction:self ofType:type atPoint:v8 withVelocity:{v7, x, y}];
 
     return v14;
   }
@@ -1337,35 +1337,35 @@ LABEL_7:
   }
 }
 
-- (void)_handleKeyboardSelectionExtensionKeyCommand:(id)a3
+- (void)_handleKeyboardSelectionExtensionKeyCommand:(id)command
 {
-  v15 = a3;
-  v4 = [(UIMultiSelectInteraction *)self _areSelectionExtensionKeyCommandsEnabled];
-  v5 = v15;
-  if (v4)
+  commandCopy = command;
+  _areSelectionExtensionKeyCommandsEnabled = [(UIMultiSelectInteraction *)self _areSelectionExtensionKeyCommandsEnabled];
+  v5 = commandCopy;
+  if (_areSelectionExtensionKeyCommandsEnabled)
   {
-    v6 = [v15 input];
-    if (v6 == @"UIKeyInputUpArrow")
+    input = [commandCopy input];
+    if (input == @"UIKeyInputUpArrow")
     {
       v9 = 2;
     }
 
     else
     {
-      v7 = [v15 input];
-      if (v7 == @"UIKeyInputDownArrow")
+      input2 = [commandCopy input];
+      if (input2 == @"UIKeyInputDownArrow")
       {
         v9 = 1;
       }
 
       else
       {
-        v8 = [v15 input];
-        v9 = v8 == @"UIKeyInputRightArrow" ? 3 : 0;
+        input3 = [commandCopy input];
+        v9 = input3 == @"UIKeyInputRightArrow" ? 3 : 0;
       }
     }
 
-    v5 = v15;
+    v5 = commandCopy;
     if ((*&self->_optionalDelegateFlags & 4) != 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1373,7 +1373,7 @@ LABEL_7:
       {
         optionalDelegateFlags = self->_optionalDelegateFlags;
 
-        v5 = v15;
+        v5 = commandCopy;
         if ((optionalDelegateFlags & 0x400) == 0)
         {
           goto LABEL_16;
@@ -1390,7 +1390,7 @@ LABEL_7:
         [WeakRetained didEndMultiSelectInteraction:self atPoint:{v12, v13}];
       }
 
-      v5 = v15;
+      v5 = commandCopy;
     }
   }
 

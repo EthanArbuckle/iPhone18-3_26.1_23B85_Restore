@@ -1,44 +1,44 @@
 @interface SBCaptureDropletZoomSwitcherModifier
-- (BOOL)isDropletEffectRequiredBehindAppLayout:(id)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBCaptureDropletZoomSwitcherModifier)initWithTransitionID:(id)a3 zoomModifier:(id)a4 appLayout:(id)a5 launchPreludeAnimationToken:(id)a6;
+- (BOOL)isDropletEffectRequiredBehindAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBCaptureDropletZoomSwitcherModifier)initWithTransitionID:(id)d zoomModifier:(id)modifier appLayout:(id)layout launchPreludeAnimationToken:(id)token;
 - (double)homeScreenBackdropBlurProgress;
-- (double)modelValueForAnimatableProperty:(id)a3 currentValue:(double)a4 creating:(BOOL)a5;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
+- (double)modelValueForAnimatableProperty:(id)property currentValue:(double)value creating:(BOOL)creating;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
 - (double)switcherDimmingAlpha;
 - (id)animatablePropertyIdentifiers;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleAnimatablePropertyChangedEvent:(id)a3;
-- (id)handleHardwareButtonDropletAnimationEvent:(id)a3;
-- (id)handleTimerEvent:(id)a3;
-- (id)settingsForAnimatableProperty:(id)a3;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleAnimatablePropertyChangedEvent:(id)event;
+- (id)handleHardwareButtonDropletAnimationEvent:(id)event;
+- (id)handleTimerEvent:(id)event;
+- (id)settingsForAnimatableProperty:(id)property;
 - (id)topMostLayoutElements;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
-- (int64_t)updateModeForAnimatableProperty:(id)a3;
-- (void)didMoveToParentModifier:(id)a3;
+- (int64_t)updateModeForAnimatableProperty:(id)property;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBCaptureDropletZoomSwitcherModifier
 
-- (SBCaptureDropletZoomSwitcherModifier)initWithTransitionID:(id)a3 zoomModifier:(id)a4 appLayout:(id)a5 launchPreludeAnimationToken:(id)a6
+- (SBCaptureDropletZoomSwitcherModifier)initWithTransitionID:(id)d zoomModifier:(id)modifier appLayout:(id)layout launchPreludeAnimationToken:(id)token
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v12)
+  dCopy = d;
+  modifierCopy = modifier;
+  layoutCopy = layout;
+  tokenCopy = token;
+  if (modifierCopy)
   {
-    if (v13)
+    if (layoutCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [SBCaptureDropletZoomSwitcherModifier initWithTransitionID:a2 zoomModifier:self appLayout:? launchPreludeAnimationToken:?];
-    if (v14)
+    if (tokenCopy)
     {
       goto LABEL_4;
     }
@@ -47,13 +47,13 @@ LABEL_8:
   }
 
   [SBCaptureDropletZoomSwitcherModifier initWithTransitionID:a2 zoomModifier:self appLayout:? launchPreludeAnimationToken:?];
-  if (!v13)
+  if (!layoutCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (tokenCopy)
   {
     goto LABEL_4;
   }
@@ -63,19 +63,19 @@ LABEL_9:
 LABEL_4:
   v23.receiver = self;
   v23.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v15 = [(SBTransitionSwitcherModifier *)&v23 initWithTransitionID:v11];
+  v15 = [(SBTransitionSwitcherModifier *)&v23 initWithTransitionID:dCopy];
   if (v15)
   {
     v16 = +[SBCaptureButtonDomain rootSettings];
     settings = v15->_settings;
     v15->_settings = v16;
 
-    objc_storeStrong(&v15->_appLayout, a5);
-    objc_storeStrong(&v15->_zoomModifier, a4);
-    objc_storeStrong(&v15->_preludeAnimationToken, a6);
+    objc_storeStrong(&v15->_appLayout, layout);
+    objc_storeStrong(&v15->_zoomModifier, modifier);
+    objc_storeStrong(&v15->_preludeAnimationToken, token);
     v15->_dropletEffectRequired = 1;
     v15->_shouldDimBackground = 0;
-    [v14 preludeAnimationRectPresentationValue];
+    [tokenCopy preludeAnimationRectPresentationValue];
     v15->_initialDropletFrame.origin.x = v18;
     v15->_initialDropletFrame.origin.y = v19;
     v15->_initialDropletFrame.size.width = v20;
@@ -85,12 +85,12 @@ LABEL_4:
   return v15;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v5.receiver = self;
   v5.super_class = SBCaptureDropletZoomSwitcherModifier;
   [(SBChainableModifier *)&v5 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (![(SBChainableModifier *)self containsChildModifier:self->_zoomModifier])
     {
@@ -115,11 +115,11 @@ LABEL_4:
   }
 }
 
-- (id)handleAnimatablePropertyChangedEvent:(id)a3
+- (id)handleAnimatablePropertyChangedEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v9 handleAnimatablePropertyChangedEvent:a3];
+  v4 = [(SBSwitcherModifier *)&v9 handleAnimatablePropertyChangedEvent:event];
   [(SBCaptureDropletZoomSwitcherModifier *)self presentationValueForAnimatableProperty:@"SBDropletZoomAnimatablePropertyIdentifier"];
   if ([(SBCaptureButtonSettings *)self->_settings enableZoomUpBlur]&& ([(SBCaptureButtonSettings *)self->_settings zoomUpBlurStartProgress], BSFloatGreaterThanOrEqualToFloat()) && !self->_allowHomeScreenBlur)
   {
@@ -151,19 +151,19 @@ LABEL_10:
   return v4;
 }
 
-- (id)handleHardwareButtonDropletAnimationEvent:(id)a3
+- (id)handleHardwareButtonDropletAnimationEvent:(id)event
 {
   v14.receiver = self;
   v14.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBSwitcherModifier *)&v14 handleHardwareButtonDropletAnimationEvent:v4];
+  eventCopy = event;
+  v5 = [(SBSwitcherModifier *)&v14 handleHardwareButtonDropletAnimationEvent:eventCopy];
   preludeAnimationToken = self->_preludeAnimationToken;
   self->_preludeAnimationToken = 0;
 
-  v7 = [v4 zoomUpToken];
+  zoomUpToken = [eventCopy zoomUpToken];
 
   zoomupAnimationToken = self->_zoomupAnimationToken;
-  self->_zoomupAnimationToken = v7;
+  self->_zoomupAnimationToken = zoomUpToken;
 
   v9 = MEMORY[0x277CCAE60];
   [(SBHardwareButtonLaunchZoomUpAnimationToken *)self->_zoomupAnimationToken preludeAnimationVelocity];
@@ -174,16 +174,16 @@ LABEL_10:
   return v12;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = BSEqualStrings();
-  if (v4)
+  LODWORD(eventCopy) = BSEqualStrings();
+  if (eventCopy)
   {
     self->_dropletEffectRequired = 0;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:4 updateMode:3];
@@ -199,7 +199,7 @@ LABEL_10:
 {
   v15.receiver = self;
   v15.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v15 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v15 transitionWillBegin];
   v4 = objc_alloc_init(SBSwitcherModifierEventResponse);
   v5 = [SBTimerEventSwitcherEventResponse alloc];
   [(SBCaptureButtonSettings *)self->_settings disableDropletEffectDelay];
@@ -217,7 +217,7 @@ LABEL_10:
   v12 = [[SBMatchMoveToDropletSwitcherEventResponse alloc] initWithAppLayout:self->_appLayout active:1];
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v12];
 
-  v13 = SBAppendSwitcherModifierResponse(v4, v3);
+  v13 = SBAppendSwitcherModifierResponse(v4, transitionWillBegin);
 
   return v13;
 }
@@ -226,7 +226,7 @@ LABEL_10:
 {
   v11.receiver = self;
   v11.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v11 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v11 transitionDidEnd];
   v4 = objc_alloc_init(SBSwitcherModifierEventResponse);
   v5 = [[SBMatchMoveToDropletSwitcherEventResponse alloc] initWithAppLayout:self->_appLayout active:0];
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v5];
@@ -240,12 +240,12 @@ LABEL_10:
   zoomupAnimationToken = self->_zoomupAnimationToken;
   self->_zoomupAnimationToken = 0;
 
-  v9 = SBAppendSwitcherModifierResponse(v4, v3);
+  v9 = SBAppendSwitcherModifierResponse(v4, transitionDidEnd);
 
   return v9;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v28.receiver = self;
   v28.super_class = SBCaptureDropletZoomSwitcherModifier;
@@ -254,14 +254,14 @@ LABEL_10:
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SBCaptureDropletZoomSwitcherModifier *)self appLayouts];
-  v14 = [v13 objectAtIndex:a3];
+  appLayouts = [(SBCaptureDropletZoomSwitcherModifier *)self appLayouts];
+  v14 = [appLayouts objectAtIndex:index];
 
   if ([v14 isEqual:self->_appLayout])
   {
     v27.receiver = self;
     v27.super_class = SBCaptureDropletZoomSwitcherModifier;
-    [(SBCaptureDropletZoomSwitcherModifier *)&v27 fullyPresentedFrameForIndex:a3 frame:v6, v8, v10, v12];
+    [(SBCaptureDropletZoomSwitcherModifier *)&v27 fullyPresentedFrameForIndex:index frame:v6, v8, v10, v12];
     v6 = v15;
     v8 = v16;
     v10 = v17;
@@ -288,10 +288,10 @@ LABEL_10:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBCaptureDropletZoomSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBCaptureDropletZoomSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_appLayout])
   {
@@ -308,7 +308,7 @@ LABEL_10:
   {
     v11.receiver = self;
     v11.super_class = SBCaptureDropletZoomSwitcherModifier;
-    [(SBCaptureDropletZoomSwitcherModifier *)&v11 scaleForIndex:a3];
+    [(SBCaptureDropletZoomSwitcherModifier *)&v11 scaleForIndex:index];
     v7 = v9;
   }
 
@@ -319,16 +319,16 @@ LABEL_10:
 {
   v6.receiver = self;
   v6.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v3 = [(SBCaptureDropletZoomSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_appLayout];
+  visibleAppLayouts = [(SBCaptureDropletZoomSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_appLayout];
 
   return v4;
 }
 
-- (BOOL)isDropletEffectRequiredBehindAppLayout:(id)a3
+- (BOOL)isDropletEffectRequiredBehindAppLayout:(id)layout
 {
-  v4 = a3;
-  if ([v4 isEqual:self->_appLayout])
+  layoutCopy = layout;
+  if ([layoutCopy isEqual:self->_appLayout])
   {
     dropletEffectRequired = self->_dropletEffectRequired;
   }
@@ -337,7 +337,7 @@ LABEL_10:
   {
     v7.receiver = self;
     v7.super_class = SBCaptureDropletZoomSwitcherModifier;
-    dropletEffectRequired = [(SBCaptureDropletZoomSwitcherModifier *)&v7 isDropletEffectRequiredBehindAppLayout:v4];
+    dropletEffectRequired = [(SBCaptureDropletZoomSwitcherModifier *)&v7 isDropletEffectRequiredBehindAppLayout:layoutCopy];
   }
 
   return dropletEffectRequired;
@@ -347,15 +347,15 @@ LABEL_10:
 {
   v13.receiver = self;
   v13.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v3 = [(SBCaptureDropletZoomSwitcherModifier *)&v13 topMostLayoutElements];
-  if (v3 && [(SBCaptureDropletZoomSwitcherModifier *)self wantsBezelEffectsLayoutElement])
+  topMostLayoutElements = [(SBCaptureDropletZoomSwitcherModifier *)&v13 topMostLayoutElements];
+  if (topMostLayoutElements && [(SBCaptureDropletZoomSwitcherModifier *)self wantsBezelEffectsLayoutElement])
   {
     v12.receiver = self;
     v12.super_class = SBCaptureDropletZoomSwitcherModifier;
-    v4 = [(SBCaptureDropletZoomSwitcherModifier *)&v12 bezelEffectsLayoutElement];
-    if (v4)
+    bezelEffectsLayoutElement = [(SBCaptureDropletZoomSwitcherModifier *)&v12 bezelEffectsLayoutElement];
+    if (bezelEffectsLayoutElement)
     {
-      v5 = [v3 mutableCopy];
+      v5 = [topMostLayoutElements mutableCopy];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __61__SBCaptureDropletZoomSwitcherModifier_topMostLayoutElements__block_invoke;
@@ -365,26 +365,26 @@ LABEL_10:
       if (v6 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v7 = v6;
-        [v5 insertObject:v4 atIndex:v6 + 1];
+        [v5 insertObject:bezelEffectsLayoutElement atIndex:v6 + 1];
         v10.receiver = self;
         v10.super_class = SBCaptureDropletZoomSwitcherModifier;
-        v8 = [(SBCaptureDropletZoomSwitcherModifier *)&v10 switcherDimmingViewLayoutElement];
-        if (v8)
+        switcherDimmingViewLayoutElement = [(SBCaptureDropletZoomSwitcherModifier *)&v10 switcherDimmingViewLayoutElement];
+        if (switcherDimmingViewLayoutElement)
         {
-          [v5 insertObject:v8 atIndex:v7 + 1];
+          [v5 insertObject:switcherDimmingViewLayoutElement atIndex:v7 + 1];
         }
       }
     }
 
     else
     {
-      v5 = v3;
+      v5 = topMostLayoutElements;
     }
   }
 
   else
   {
-    v5 = v3;
+    v5 = topMostLayoutElements;
   }
 
   return v5;
@@ -406,43 +406,43 @@ uint64_t __61__SBCaptureDropletZoomSwitcherModifier_topMostLayoutElements__block
   return v4;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v16.receiver = self;
   v16.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v16 animationAttributesForLayoutElement:v4];
-  v6 = [v4 switcherLayoutElementType];
-  if (v6 == 2)
+  v5 = [(SBTransitionSwitcherModifier *)&v16 animationAttributesForLayoutElement:elementCopy];
+  switcherLayoutElementType = [elementCopy switcherLayoutElementType];
+  if (switcherLayoutElementType == 2)
   {
     v7 = [v5 mutableCopy];
-    v14 = [(SBCaptureButtonSettings *)self->_settings zoomUpBackgroundDimAnimationSettings];
-    [v7 setOpacitySettings:v14];
+    zoomUpBackgroundDimAnimationSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpBackgroundDimAnimationSettings];
+    [v7 setOpacitySettings:zoomUpBackgroundDimAnimationSettings];
 
     [v7 setUpdateMode:3];
     goto LABEL_6;
   }
 
-  if (!v6 && [v4 isEqual:self->_appLayout])
+  if (!switcherLayoutElementType && [elementCopy isEqual:self->_appLayout])
   {
     v7 = [v5 mutableCopy];
-    v8 = [(SBCaptureButtonSettings *)self->_settings zoomUpScaleSettings];
-    [v7 setLayoutSettings:v8];
+    zoomUpScaleSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpScaleSettings];
+    [v7 setLayoutSettings:zoomUpScaleSettings];
 
-    v9 = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionXSettings];
-    [v7 setPositionSettings:v9];
+    zoomUpPositionXSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionXSettings];
+    [v7 setPositionSettings:zoomUpPositionXSettings];
 
-    v10 = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionXSettings];
-    [v7 setDropletPositionXSettings:v10];
+    zoomUpPositionXSettings2 = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionXSettings];
+    [v7 setDropletPositionXSettings:zoomUpPositionXSettings2];
 
-    v11 = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionYSettings];
-    [v7 setDropletPositionYSettings:v11];
+    zoomUpPositionYSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpPositionYSettings];
+    [v7 setDropletPositionYSettings:zoomUpPositionYSettings];
 
-    v12 = [(SBCaptureButtonSettings *)self->_settings zoomUpScaleSettings];
-    [v7 setScaleSettings:v12];
+    zoomUpScaleSettings2 = [(SBCaptureButtonSettings *)self->_settings zoomUpScaleSettings];
+    [v7 setScaleSettings:zoomUpScaleSettings2];
 
-    v13 = [(SBCaptureButtonSettings *)self->_settings zoomUpCornerRadiusSettings];
-    [v7 setCornerRadiusSettings:v13];
+    zoomUpCornerRadiusSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpCornerRadiusSettings];
+    [v7 setCornerRadiusSettings:zoomUpCornerRadiusSettings];
 
 LABEL_6:
     v5 = v7;
@@ -451,14 +451,14 @@ LABEL_6:
   return v5;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if (![v8 isEqual:self->_appLayout] || (v9 = 0.0, !-[SBTransitionSwitcherModifier isPreparingLayout](self, "isPreparingLayout")))
+  layoutCopy = layout;
+  if (![layoutCopy isEqual:self->_appLayout] || (v9 = 0.0, !-[SBTransitionSwitcherModifier isPreparingLayout](self, "isPreparingLayout")))
   {
     v12.receiver = self;
     v12.super_class = SBCaptureDropletZoomSwitcherModifier;
-    [(SBCaptureDropletZoomSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBCaptureDropletZoomSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v9 = v10;
   }
 
@@ -496,21 +496,21 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = SBCaptureDropletZoomSwitcherModifier;
-  v3 = [(SBCaptureDropletZoomSwitcherModifier *)&v6 animatablePropertyIdentifiers];
+  animatablePropertyIdentifiers = [(SBCaptureDropletZoomSwitcherModifier *)&v6 animatablePropertyIdentifiers];
   if ([(SBCaptureButtonSettings *)self->_settings enableZoomUpBlur])
   {
-    v4 = [v3 setByAddingObject:@"SBDropletZoomAnimatablePropertyIdentifier"];
+    v4 = [animatablePropertyIdentifiers setByAddingObject:@"SBDropletZoomAnimatablePropertyIdentifier"];
 
-    v3 = v4;
+    animatablePropertyIdentifiers = v4;
   }
 
-  return v3;
+  return animatablePropertyIdentifiers;
 }
 
-- (int64_t)updateModeForAnimatableProperty:(id)a3
+- (int64_t)updateModeForAnimatableProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"SBDropletZoomAnimatablePropertyIdentifier"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SBDropletZoomAnimatablePropertyIdentifier"])
   {
     v5 = 3;
   }
@@ -519,39 +519,39 @@ LABEL_6:
   {
     v7.receiver = self;
     v7.super_class = SBCaptureDropletZoomSwitcherModifier;
-    v5 = [(SBCaptureDropletZoomSwitcherModifier *)&v7 updateModeForAnimatableProperty:v4];
+    v5 = [(SBCaptureDropletZoomSwitcherModifier *)&v7 updateModeForAnimatableProperty:propertyCopy];
   }
 
   return v5;
 }
 
-- (id)settingsForAnimatableProperty:(id)a3
+- (id)settingsForAnimatableProperty:(id)property
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"SBDropletZoomAnimatablePropertyIdentifier"])
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SBDropletZoomAnimatablePropertyIdentifier"])
   {
-    v5 = [(SBCaptureButtonSettings *)self->_settings zoomUpScaleSettings];
+    zoomUpScaleSettings = [(SBCaptureButtonSettings *)self->_settings zoomUpScaleSettings];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBCaptureDropletZoomSwitcherModifier;
-    v5 = [(SBCaptureDropletZoomSwitcherModifier *)&v8 settingsForAnimatableProperty:v4];
+    zoomUpScaleSettings = [(SBCaptureDropletZoomSwitcherModifier *)&v8 settingsForAnimatableProperty:propertyCopy];
   }
 
-  v6 = v5;
+  v6 = zoomUpScaleSettings;
 
   return v6;
 }
 
-- (double)modelValueForAnimatableProperty:(id)a3 currentValue:(double)a4 creating:(BOOL)a5
+- (double)modelValueForAnimatableProperty:(id)property currentValue:(double)value creating:(BOOL)creating
 {
-  v5 = a5;
-  v8 = a3;
-  if ([v8 isEqualToString:@"SBDropletZoomAnimatablePropertyIdentifier"])
+  creatingCopy = creating;
+  propertyCopy = property;
+  if ([propertyCopy isEqualToString:@"SBDropletZoomAnimatablePropertyIdentifier"])
   {
-    if (v5)
+    if (creatingCopy)
     {
       v9 = 0.0;
     }
@@ -566,7 +566,7 @@ LABEL_6:
   {
     v12.receiver = self;
     v12.super_class = SBCaptureDropletZoomSwitcherModifier;
-    [(SBCaptureDropletZoomSwitcherModifier *)&v12 modelValueForAnimatableProperty:v8 currentValue:v5 creating:a4];
+    [(SBCaptureDropletZoomSwitcherModifier *)&v12 modelValueForAnimatableProperty:propertyCopy currentValue:creatingCopy creating:value];
     v9 = v10;
   }
 

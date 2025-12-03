@@ -1,7 +1,7 @@
 @interface AudiogramPerformanceAnalytics.Event
 - (NSString)eventName;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error;
 @end
 
 @implementation AudiogramPerformanceAnalytics.Event
@@ -13,7 +13,7 @@
   return v2;
 }
 
-- (id)makeUnrestrictedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeUnrestrictedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v4 = *self->metric;
   v5 = *&self->metric[8];
@@ -28,7 +28,7 @@
   return v9;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
   v4 = *self->metric;
   v5 = *&self->metric[8];

@@ -1,15 +1,15 @@
 @interface FHPaymentRingSuggestionController
-- (BOOL)_allMandatoryValuesAreSameAmount:(id)a3;
-- (BOOL)_fhEqualObjects:(id)a3 obj2:(id)a4;
+- (BOOL)_allMandatoryValuesAreSameAmount:(id)amount;
+- (BOOL)_fhEqualObjects:(id)objects obj2:(id)obj2;
 - (FHPaymentRingSuggestionController)init;
-- (id)_calculateThresholdForLastPaymentCategory:(unint64_t)a3 statementBalance:(id)a4 lastPaymentCategoryAmount:(id)a5 previousStatementPaymentsSum:(id)a6 statementPurchasesSum:(id)a7;
-- (id)_filterSuggestions:(id)a3 belowThreshold:(id)a4;
-- (id)_suggestedAmountsForPayOffDateForStatementBalance:(id)a3 statementPurchasesSum:(id)a4 creditUtilization:(id)a5 lastPaymentCategory:(unint64_t)a6;
-- (id)_zerothOrFirstMonthPaymentRingSuggestionsForList:(id)a3;
-- (id)generatePaymentRingSuggestion:(id)a3;
-- (id)generatePaymentRingSuggestionsFromConvertedObjects:(id)a3 previousStatementPaymentsSum:(id)a4 currentStatementPaymentsSum:(id)a5 statementPurchasesSum:(id)a6 merchantCategoryTransactionSums:(id)a7 billPaymentSelectedSuggestedAmountData:(id)a8 isMonthZero:(BOOL)a9 isMonthOne:(BOOL)a10;
-- (void)_minimumMerchcantCategoriesAboveMinimumAmount:(id)a3 minMerchantCategory1:(int64_t *)a4 minMerchantCategory2:(int64_t *)a5 minMerchantCategorySum1:(id *)a6 minMerchantCategorySum2:(id *)a7 merchantCategoryTransactionSums:(id)a8;
-- (void)recordPaymentRingAction:(id)a3;
+- (id)_calculateThresholdForLastPaymentCategory:(unint64_t)category statementBalance:(id)balance lastPaymentCategoryAmount:(id)amount previousStatementPaymentsSum:(id)sum statementPurchasesSum:(id)purchasesSum;
+- (id)_filterSuggestions:(id)suggestions belowThreshold:(id)threshold;
+- (id)_suggestedAmountsForPayOffDateForStatementBalance:(id)balance statementPurchasesSum:(id)sum creditUtilization:(id)utilization lastPaymentCategory:(unint64_t)category;
+- (id)_zerothOrFirstMonthPaymentRingSuggestionsForList:(id)list;
+- (id)generatePaymentRingSuggestion:(id)suggestion;
+- (id)generatePaymentRingSuggestionsFromConvertedObjects:(id)objects previousStatementPaymentsSum:(id)sum currentStatementPaymentsSum:(id)paymentsSum statementPurchasesSum:(id)purchasesSum merchantCategoryTransactionSums:(id)sums billPaymentSelectedSuggestedAmountData:(id)data isMonthZero:(BOOL)zero isMonthOne:(BOOL)self0;
+- (void)_minimumMerchcantCategoriesAboveMinimumAmount:(id)amount minMerchantCategory1:(int64_t *)category1 minMerchantCategory2:(int64_t *)category2 minMerchantCategorySum1:(id *)sum1 minMerchantCategorySum2:(id *)sum2 merchantCategoryTransactionSums:(id)sums;
+- (void)recordPaymentRingAction:(id)action;
 @end
 
 @implementation FHPaymentRingSuggestionController
@@ -29,10 +29,10 @@
   return v2;
 }
 
-- (id)generatePaymentRingSuggestionsFromConvertedObjects:(id)a3 previousStatementPaymentsSum:(id)a4 currentStatementPaymentsSum:(id)a5 statementPurchasesSum:(id)a6 merchantCategoryTransactionSums:(id)a7 billPaymentSelectedSuggestedAmountData:(id)a8 isMonthZero:(BOOL)a9 isMonthOne:(BOOL)a10
+- (id)generatePaymentRingSuggestionsFromConvertedObjects:(id)objects previousStatementPaymentsSum:(id)sum currentStatementPaymentsSum:(id)paymentsSum statementPurchasesSum:(id)purchasesSum merchantCategoryTransactionSums:(id)sums billPaymentSelectedSuggestedAmountData:(id)data isMonthZero:(BOOL)zero isMonthOne:(BOOL)self0
 {
   v23 = *MEMORY[0x277D85DE8];
-  v11 = RequestFromPKAccountSummary(a3, a4, a5, a6, a7, a8, a9, a10);
+  v11 = RequestFromPKAccountSummary(objects, sum, paymentsSum, purchasesSum, sums, data, zero, one);
   v12 = [(FHPaymentRingSuggestionController *)self generatePaymentRingSuggestion:v11];
   v13 = ResponseToPKBillPaymentSuggestion(v12);
   v14 = *MEMORY[0x277D087C0];
@@ -52,43 +52,43 @@
   return v13;
 }
 
-- (id)generatePaymentRingSuggestion:(id)a3
+- (id)generatePaymentRingSuggestion:(id)suggestion
 {
   v226 = *MEMORY[0x277D85DE8];
-  v171 = a3;
-  v3 = [v171 currentStatement];
-  v164 = [v3 remainingMinimumPayment];
+  suggestionCopy = suggestion;
+  currentStatement = [suggestionCopy currentStatement];
+  remainingMinimumPayment = [currentStatement remainingMinimumPayment];
 
-  v4 = [v171 currentStatement];
-  v170 = [v4 remainingStatementBalance];
+  currentStatement2 = [suggestionCopy currentStatement];
+  remainingStatementBalance = [currentStatement2 remainingStatementBalance];
 
-  v5 = [v171 currentStatement];
-  v163 = [v5 currentBalance];
+  currentStatement3 = [suggestionCopy currentStatement];
+  currentBalance = [currentStatement3 currentBalance];
 
-  v6 = [v171 currentStatement];
-  v169 = [v6 statementBalance];
+  currentStatement4 = [suggestionCopy currentStatement];
+  statementBalance = [currentStatement4 statementBalance];
 
-  v7 = [v171 currentStatement];
-  v168 = [v7 creditLimit];
+  currentStatement5 = [suggestionCopy currentStatement];
+  creditLimit = [currentStatement5 creditLimit];
 
-  v8 = [v171 currentStatement];
-  v162 = [v8 openingDate];
+  currentStatement6 = [suggestionCopy currentStatement];
+  openingDate = [currentStatement6 openingDate];
 
-  v9 = [v171 currentStatement];
-  v161 = [v9 closingDate];
+  currentStatement7 = [suggestionCopy currentStatement];
+  closingDate = [currentStatement7 closingDate];
 
-  v10 = [v171 currentStatement];
-  v11 = [v10 isMonthZero];
+  currentStatement8 = [suggestionCopy currentStatement];
+  isMonthZero = [currentStatement8 isMonthZero];
 
-  v12 = [v171 currentStatement];
-  v13 = [v12 isMonthOne];
+  currentStatement9 = [suggestionCopy currentStatement];
+  isMonthOne = [currentStatement9 isMonthOne];
 
-  v14 = [v171 currentStatement];
-  v15 = [v14 isMonthOfMerge];
+  currentStatement10 = [suggestionCopy currentStatement];
+  isMonthOfMerge = [currentStatement10 isMonthOfMerge];
 
-  v16 = [v171 paymentDetails];
+  paymentDetails = [suggestionCopy paymentDetails];
   previousSelectedSuggestion = self->_previousSelectedSuggestion;
-  self->_previousSelectedSuggestion = v16;
+  self->_previousSelectedSuggestion = paymentDetails;
 
   v204 = 0;
   v205 = &v204;
@@ -96,10 +96,10 @@
   v207 = __Block_byref_object_copy_;
   v208 = __Block_byref_object_dispose_;
   v209 = objc_opt_new();
-  if (v170)
+  if (remainingStatementBalance)
   {
-    v18 = [MEMORY[0x277CCA980] zero];
-    v19 = [v170 compare:v18] == 1;
+    zero = [MEMORY[0x277CCA980] zero];
+    v19 = [remainingStatementBalance compare:zero] == 1;
   }
 
   else
@@ -108,55 +108,55 @@
   }
 
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v165 = [MEMORY[0x277CCA980] zero];
-  if (v169)
+  zero2 = [MEMORY[0x277CCA980] zero];
+  if (statementBalance)
   {
-    if (v168)
+    if (creditLimit)
     {
-      v21 = [MEMORY[0x277CCA980] zero];
-      v22 = [v168 isEqualToNumber:v21];
+      zero3 = [MEMORY[0x277CCA980] zero];
+      v22 = [creditLimit isEqualToNumber:zero3];
 
       if ((v22 & 1) == 0)
       {
-        v23 = [v169 decimalNumberByDividingBy:v168];
+        v23 = [statementBalance decimalNumberByDividingBy:creditLimit];
 
-        v165 = v23;
+        zero2 = v23;
       }
     }
   }
 
-  if (v15)
+  if (isMonthOfMerge)
   {
-    v24 = [v171 currentStatement];
-    v25 = [v24 combinedBalance];
-    v26 = v25 == 0;
+    currentStatement11 = [suggestionCopy currentStatement];
+    combinedBalance = [currentStatement11 combinedBalance];
+    v26 = combinedBalance == 0;
 
     if (!v26)
     {
       v27 = objc_alloc(MEMORY[0x277D08818]);
-      v28 = [v171 currentStatement];
-      v29 = [v28 combinedBalance];
-      v30 = [v27 initWithAmount:v29 category:31];
+      currentStatement12 = [suggestionCopy currentStatement];
+      combinedBalance2 = [currentStatement12 combinedBalance];
+      v30 = [v27 initWithAmount:combinedBalance2 category:31];
 
       [v20 addObject:v30];
       goto LABEL_18;
     }
   }
 
-  if ((v11 | v13))
+  if ((isMonthZero | isMonthOne))
   {
     goto LABEL_14;
   }
 
-  v31 = [v171 previousStatementPaymentsSum];
-  if (!v31)
+  previousStatementPaymentsSum = [suggestionCopy previousStatementPaymentsSum];
+  if (!previousStatementPaymentsSum)
   {
     goto LABEL_14;
   }
 
-  v32 = [v171 previousStatementPaymentsSum];
-  v33 = [MEMORY[0x277CCA980] zero];
-  v34 = [(FHPaymentRingSuggestionController *)self _fhEqualObjects:v32 obj2:v33];
+  previousStatementPaymentsSum2 = [suggestionCopy previousStatementPaymentsSum];
+  zero4 = [MEMORY[0x277CCA980] zero];
+  v34 = [(FHPaymentRingSuggestionController *)self _fhEqualObjects:previousStatementPaymentsSum2 obj2:zero4];
 
   if (v34)
   {
@@ -165,7 +165,7 @@ LABEL_14:
     v36 = FinHealthLogObject();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
-      v37 = [v171 description];
+      v37 = [suggestionCopy description];
       *buf = 136315394;
       *&buf[4] = "[FHPaymentRingSuggestionController generatePaymentRingSuggestion:]";
       *&buf[12] = 2112;
@@ -173,13 +173,13 @@ LABEL_14:
       _os_log_impl(&dword_24ABD8000, v36, OS_LOG_TYPE_DEBUG, "%s Request %@", buf, 0x16u);
     }
 
-    v38 = [(FHPaymentRingSuggestionController *)self _zerothOrFirstMonthPaymentRingSuggestionsForList:v171];
+    v38 = [(FHPaymentRingSuggestionController *)self _zerothOrFirstMonthPaymentRingSuggestionsForList:suggestionCopy];
     [v20 addObjectsFromArray:v38];
 
     goto LABEL_17;
   }
 
-  if ([(FHPaymentRingSuggestionController *)self _allMandatoryValuesAreSameAmount:v171])
+  if ([(FHPaymentRingSuggestionController *)self _allMandatoryValuesAreSameAmount:suggestionCopy])
   {
 LABEL_17:
     v30 = 0;
@@ -205,8 +205,8 @@ LABEL_17:
     v195[3] = &unk_278FFB4F8;
     v198 = &v200;
     v195[4] = self;
-    v196 = v171;
-    v197 = v170;
+    v196 = suggestionCopy;
+    v197 = remainingStatementBalance;
     v199 = buf;
     [(NSArray *)v42 enumerateObjectsUsingBlock:v195];
 
@@ -220,9 +220,9 @@ LABEL_17:
   }
 
   self->_isOnPlanCompletion = v43;
-  v44 = [v171 previousStatementPaymentsSum];
+  previousStatementPaymentsSum3 = [suggestionCopy previousStatementPaymentsSum];
   v45 = 0x277CCA000;
-  if (v44)
+  if (previousStatementPaymentsSum3)
   {
     isOnPaymentPlan = self->_isOnPaymentPlan;
 
@@ -235,8 +235,8 @@ LABEL_17:
     else
     {
       v48 = objc_alloc(MEMORY[0x277D08818]);
-      v49 = [v171 previousStatementPaymentsSum];
-      v47 = [v48 initWithAmount:v49 category:2];
+      previousStatementPaymentsSum4 = [suggestionCopy previousStatementPaymentsSum];
+      v47 = [v48 initWithAmount:previousStatementPaymentsSum4 category:2];
 
       [v20 addObject:v47];
       v45 = 0x277CCA000uLL;
@@ -248,20 +248,20 @@ LABEL_17:
     v47 = 0;
   }
 
-  v50 = [v171 statementPurchasesSum];
-  if (!v50)
+  statementPurchasesSum = [suggestionCopy statementPurchasesSum];
+  if (!statementPurchasesSum)
   {
     goto LABEL_32;
   }
 
-  v51 = [v171 statementPurchasesSum];
-  v52 = [*(v45 + 2432) zero];
-  v53 = [(FHPaymentRingSuggestionController *)self _fhEqualObjects:v51 obj2:v52];
+  statementPurchasesSum2 = [suggestionCopy statementPurchasesSum];
+  zero5 = [*(v45 + 2432) zero];
+  v53 = [(FHPaymentRingSuggestionController *)self _fhEqualObjects:statementPurchasesSum2 obj2:zero5];
 
   if (!v53)
   {
-    v55 = [v171 statementPurchasesSum];
-    v54 = [objc_alloc(MEMORY[0x277D08818]) initWithAmount:v55 category:5];
+    statementPurchasesSum3 = [suggestionCopy statementPurchasesSum];
+    v54 = [objc_alloc(MEMORY[0x277D08818]) initWithAmount:statementPurchasesSum3 category:5];
 
     [v20 addObject:v54];
   }
@@ -274,17 +274,17 @@ LABEL_32:
 
   v193 = 0;
   v194 = 0;
-  v56 = [*(v45 + 2432) zero];
-  if ([v164 compare:v56] != 1)
+  zero6 = [*(v45 + 2432) zero];
+  if ([remainingMinimumPayment compare:zero6] != 1)
   {
 
 LABEL_40:
-    v60 = [MEMORY[0x277CCA980] zero];
-    if ([v170 compare:v60] == 1)
+    zero7 = [MEMORY[0x277CCA980] zero];
+    if ([remainingStatementBalance compare:zero7] == 1)
     {
-      v61 = [v170 compare:v163] == -1;
+      v61 = [remainingStatementBalance compare:currentBalance] == -1;
 
-      v59 = v170;
+      v59 = remainingStatementBalance;
       if (v61)
       {
         goto LABEL_45;
@@ -295,22 +295,22 @@ LABEL_40:
     {
     }
 
-    v59 = v163;
+    v59 = currentBalance;
     goto LABEL_45;
   }
 
-  v57 = [v164 compare:v170] == -1;
+  v57 = [remainingMinimumPayment compare:remainingStatementBalance] == -1;
 
   if (!v57)
   {
     goto LABEL_40;
   }
 
-  v58 = [v164 compare:v163];
-  v59 = v164;
+  v58 = [remainingMinimumPayment compare:currentBalance];
+  v59 = remainingMinimumPayment;
   if (v58 != -1)
   {
-    v59 = v163;
+    v59 = currentBalance;
   }
 
 LABEL_45:
@@ -332,22 +332,22 @@ LABEL_45:
 
   v191 = 0;
   v192 = 0;
-  v63 = [v171 merchantCategoryTransactionSums];
-  [(FHPaymentRingSuggestionController *)self _minimumMerchcantCategoriesAboveMinimumAmount:v154 minMerchantCategory1:&v194 minMerchantCategory2:&v193 minMerchantCategorySum1:&v192 minMerchantCategorySum2:&v191 merchantCategoryTransactionSums:v63];
+  merchantCategoryTransactionSums = [suggestionCopy merchantCategoryTransactionSums];
+  [(FHPaymentRingSuggestionController *)self _minimumMerchcantCategoriesAboveMinimumAmount:v154 minMerchantCategory1:&v194 minMerchantCategory2:&v193 minMerchantCategorySum1:&v192 minMerchantCategorySum2:&v191 merchantCategoryTransactionSums:merchantCategoryTransactionSums];
   v158 = v192;
   v157 = v191;
 
-  v64 = [v171 previousStatementPaymentsSum];
+  previousStatementPaymentsSum5 = [suggestionCopy previousStatementPaymentsSum];
 
-  if (v64)
+  if (previousStatementPaymentsSum5)
   {
     if (v158)
     {
-      v65 = [v171 previousStatementPaymentsSum];
-      v66 = [v158 decimalNumberByAdding:v65];
+      previousStatementPaymentsSum6 = [suggestionCopy previousStatementPaymentsSum];
+      v66 = [v158 decimalNumberByAdding:previousStatementPaymentsSum6];
 
-      v67 = [v171 statementPurchasesSum];
-      v68 = [v66 compare:v67] == -1;
+      statementPurchasesSum4 = [suggestionCopy statementPurchasesSum];
+      v68 = [v66 compare:statementPurchasesSum4] == -1;
 
       if (v68)
       {
@@ -370,11 +370,11 @@ LABEL_45:
 
     if (v157)
     {
-      v70 = [v171 previousStatementPaymentsSum];
-      v71 = [v157 decimalNumberByAdding:v70];
+      previousStatementPaymentsSum7 = [suggestionCopy previousStatementPaymentsSum];
+      v71 = [v157 decimalNumberByAdding:previousStatementPaymentsSum7];
 
-      v72 = [v171 statementPurchasesSum];
-      v73 = [v71 compare:v72] == -1;
+      statementPurchasesSum5 = [suggestionCopy statementPurchasesSum];
+      v73 = [v71 compare:statementPurchasesSum5] == -1;
 
       if (v73)
       {
@@ -396,16 +396,16 @@ LABEL_45:
     }
   }
 
-  if (v169)
+  if (statementBalance)
   {
-    v74 = [v171 statementPurchasesSum];
-    v75 = !v74 || v165 == 0;
+    statementPurchasesSum6 = [suggestionCopy statementPurchasesSum];
+    v75 = !statementPurchasesSum6 || zero2 == 0;
     v76 = !v75;
 
     if (v76)
     {
-      v77 = [v171 statementPurchasesSum];
-      v78 = [(FHPaymentRingSuggestionController *)self _suggestedAmountsForPayOffDateForStatementBalance:v169 statementPurchasesSum:v77 creditUtilization:v165 lastPaymentCategory:v201[3]];
+      statementPurchasesSum7 = [suggestionCopy statementPurchasesSum];
+      v78 = [(FHPaymentRingSuggestionController *)self _suggestedAmountsForPayOffDateForStatementBalance:statementBalance statementPurchasesSum:statementPurchasesSum7 creditUtilization:zero2 lastPaymentCategory:v201[3]];
 
       [v20 addObject:v78];
       v54 = v78;
@@ -421,7 +421,7 @@ LABEL_45:
   v190 = &v204;
   v81 = v79;
   v189 = v81;
-  [(FHSearchSuggestionController *)searchController paymentRingSuggestionsFromSearchFeatures:@"Payment Ring" startDate:v162 endDate:v161 completion:v188];
+  [(FHSearchSuggestionController *)searchController paymentRingSuggestionsFromSearchFeatures:@"Payment Ring" startDate:openingDate endDate:closingDate completion:v188];
   v82 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v81, v82);
   v186 = 0u;
@@ -444,13 +444,13 @@ LABEL_45:
         }
 
         v87 = *(*(&v184 + 1) + 8 * i);
-        v88 = [v87 featureRank];
-        v89 = [v87 featureLabel];
+        featureRank = [v87 featureRank];
+        featureLabel = [v87 featureLabel];
         v90 = FHPaymentRingSuggestionCategoryFromString();
 
         if (v90 != 32)
         {
-          v91 = [objc_alloc(MEMORY[0x277D08818]) initWithAmount:v88 category:v90];
+          v91 = [objc_alloc(MEMORY[0x277D08818]) initWithAmount:featureRank category:v90];
 
           [v20 addObject:v91];
           v54 = v91;
@@ -465,9 +465,9 @@ LABEL_45:
 
   if (self->_isOnPaymentPlan)
   {
-    v92 = [*(*&buf[8] + 40) paymentAmountCategory];
+    paymentAmountCategory = [*(*&buf[8] + 40) paymentAmountCategory];
     v93 = 0x277CCA000;
-    v94 = v92;
+    v94 = paymentAmountCategory;
   }
 
   else
@@ -476,13 +476,13 @@ LABEL_45:
     v93 = 0x277CCA000uLL;
   }
 
-  v160 = [*(v93 + 2432) zero];
+  zero8 = [*(v93 + 2432) zero];
   v182 = 0u;
   v183 = 0u;
   v180 = 0u;
   v181 = 0u;
-  v95 = [v171 paymentDetails];
-  v96 = [v95 countByEnumeratingWithState:&v180 objects:v212 count:16];
+  paymentDetails2 = [suggestionCopy paymentDetails];
+  v96 = [paymentDetails2 countByEnumeratingWithState:&v180 objects:v212 count:16];
   if (v96)
   {
     v97 = *v181;
@@ -492,21 +492,21 @@ LABEL_45:
       {
         if (*v181 != v97)
         {
-          objc_enumerationMutation(v95);
+          objc_enumerationMutation(paymentDetails2);
         }
 
         v99 = *(*(&v180 + 1) + 8 * j);
-        v100 = [v99 paymentAmountCategory];
-        if (v100 == v201[3])
+        paymentAmountCategory2 = [v99 paymentAmountCategory];
+        if (paymentAmountCategory2 == v201[3])
         {
-          v101 = [v99 transactionAmount];
+          transactionAmount = [v99 transactionAmount];
 
-          v160 = v101;
+          zero8 = transactionAmount;
           goto LABEL_91;
         }
       }
 
-      v96 = [v95 countByEnumeratingWithState:&v180 objects:v212 count:16];
+      v96 = [paymentDetails2 countByEnumeratingWithState:&v180 objects:v212 count:16];
       if (v96)
       {
         continue;
@@ -518,9 +518,9 @@ LABEL_45:
 
 LABEL_91:
 
-  v102 = [v171 previousStatementPaymentsSum];
-  v103 = [v171 statementPurchasesSum];
-  v159 = [(FHPaymentRingSuggestionController *)self _calculateThresholdForLastPaymentCategory:v94 statementBalance:v169 lastPaymentCategoryAmount:v160 previousStatementPaymentsSum:v102 statementPurchasesSum:v103];
+  previousStatementPaymentsSum8 = [suggestionCopy previousStatementPaymentsSum];
+  statementPurchasesSum8 = [suggestionCopy statementPurchasesSum];
+  v159 = [(FHPaymentRingSuggestionController *)self _calculateThresholdForLastPaymentCategory:v94 statementBalance:statementBalance lastPaymentCategoryAmount:zero8 previousStatementPaymentsSum:previousStatementPaymentsSum8 statementPurchasesSum:statementPurchasesSum8];
 
   v104 = FinHealthLogObject();
   if (os_log_type_enabled(v104, OS_LOG_TYPE_DEBUG))
@@ -535,25 +535,25 @@ LABEL_91:
   v106 = FinHealthLogObject();
   if (os_log_type_enabled(v106, OS_LOG_TYPE_DEBUG))
   {
-    v102 = [v105 description];
+    previousStatementPaymentsSum8 = [v105 description];
     *v214 = 138412290;
-    v215 = v102;
+    v215 = previousStatementPaymentsSum8;
     _os_log_impl(&dword_24ABD8000, v106, OS_LOG_TYPE_DEBUG, "FinHealth Suggestions after threshold value : %@", v214, 0xCu);
   }
 
-  if (!v169)
+  if (!statementBalance)
   {
     goto LABEL_108;
   }
 
-  v107 = [v171 statementPurchasesSum];
-  if (v107)
+  statementPurchasesSum9 = [suggestionCopy statementPurchasesSum];
+  if (statementPurchasesSum9)
   {
-    v108 = [v171 statementPurchasesSum];
-    v109 = [v169 compare:v108];
-    if (!v109 || ([v171 statementPurchasesSum], v102 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v169, "compare:", v102) == -1))
+    statementPurchasesSum10 = [suggestionCopy statementPurchasesSum];
+    v109 = [statementBalance compare:statementPurchasesSum10];
+    if (!v109 || ([suggestionCopy statementPurchasesSum], previousStatementPaymentsSum8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(statementBalance, "compare:", previousStatementPaymentsSum8) == -1))
     {
-      v110 = [v168 compare:v169] == 1;
+      v110 = [creditLimit compare:statementBalance] == 1;
       if (v109)
       {
 
@@ -573,11 +573,11 @@ LABEL_91:
       }
 
       v111 = [MEMORY[0x277CCA980] decimalNumberWithString:@"2"];
-      v112 = [v169 decimalNumberByDividingBy:v111];
-      v113 = [v169 decimalNumberBySubtracting:v112];
+      v112 = [statementBalance decimalNumberByDividingBy:v111];
+      v113 = [statementBalance decimalNumberBySubtracting:v112];
       v114 = [MEMORY[0x277CCA980] decimalNumberWithString:@"2"];
-      v115 = [v169 decimalNumberByDividingBy:v114];
-      v116 = [v168 decimalNumberBySubtracting:v115];
+      v115 = [statementBalance decimalNumberByDividingBy:v114];
+      v116 = [creditLimit decimalNumberBySubtracting:v115];
       v117 = [v113 decimalNumberByDividingBy:v116];
 
       v118 = [MEMORY[0x277CCA980] decimalNumberWithString:@"0.33"];
@@ -587,12 +587,12 @@ LABEL_91:
       {
         v152 = objc_alloc(MEMORY[0x277D08818]);
         v123 = [MEMORY[0x277CCA980] decimalNumberWithString:@"2"];
-        v124 = [v169 decimalNumberByDividingBy:v123];
-        v125 = [v169 decimalNumberBySubtracting:v124];
+        v124 = [statementBalance decimalNumberByDividingBy:v123];
+        v125 = [statementBalance decimalNumberBySubtracting:v124];
         v167 = [MEMORY[0x277CCA980] decimalNumberWithString:@"3"];
         v156 = [v125 decimalNumberByDividingBy:v167];
         v126 = [MEMORY[0x277CCA980] decimalNumberWithString:@"2"];
-        v127 = [v169 decimalNumberByDividingBy:v126];
+        v127 = [statementBalance decimalNumberByDividingBy:v126];
         v128 = [v156 decimalNumberByAdding:v127];
         v129 = [v152 initWithAmount:v128 category:23];
       }
@@ -604,14 +604,14 @@ LABEL_91:
 
         v122 = objc_alloc(MEMORY[0x277D08818]);
         v123 = [MEMORY[0x277CCA980] decimalNumberWithString:@"2"];
-        v124 = [v169 decimalNumberByDividingBy:v123];
-        v125 = [v169 decimalNumberBySubtracting:v124];
+        v124 = [statementBalance decimalNumberByDividingBy:v123];
+        v125 = [statementBalance decimalNumberBySubtracting:v124];
         if (v121)
         {
           v167 = [MEMORY[0x277CCA980] decimalNumberWithString:@"6"];
           v156 = [v125 decimalNumberByDividingBy:v167];
           v126 = [MEMORY[0x277CCA980] decimalNumberWithString:@"2"];
-          v127 = [v169 decimalNumberByDividingBy:v126];
+          v127 = [statementBalance decimalNumberByDividingBy:v126];
           v128 = [v156 decimalNumberByAdding:v127];
           v129 = [v122 initWithAmount:v128 category:24];
         }
@@ -621,7 +621,7 @@ LABEL_91:
           v167 = [MEMORY[0x277CCA980] decimalNumberWithString:@"9"];
           v156 = [v125 decimalNumberByDividingBy:v167];
           v126 = [MEMORY[0x277CCA980] decimalNumberWithString:@"2"];
-          v127 = [v169 decimalNumberByDividingBy:v126];
+          v127 = [statementBalance decimalNumberByDividingBy:v126];
           v128 = [v156 decimalNumberByAdding:v127];
           v129 = [v122 initWithAmount:v128 category:25];
         }
@@ -635,10 +635,10 @@ LABEL_91:
   }
 
 LABEL_106:
-  if (v164 && ![(FHPaymentRingSuggestionController *)self _categoryIsPaymentPlan:v201[3]])
+  if (remainingMinimumPayment && ![(FHPaymentRingSuggestionController *)self _categoryIsPaymentPlan:v201[3]])
   {
     v148 = objc_alloc(MEMORY[0x277D08818]);
-    v149 = [v169 decimalNumberByAdding:v164];
+    v149 = [statementBalance decimalNumberByAdding:remainingMinimumPayment];
     v150 = [MEMORY[0x277CCA980] decimalNumberWithString:@"2"];
     v151 = [v149 decimalNumberByDividingBy:v150];
     v30 = [v148 initWithAmount:v151 category:29];
@@ -669,13 +669,13 @@ LABEL_109:
         }
 
         v134 = *(*(&v176 + 1) + 8 * k);
-        v135 = [v134 featureRank];
-        v136 = [v134 featureLabel];
+        featureRank2 = [v134 featureRank];
+        featureLabel2 = [v134 featureLabel];
         v137 = FHPaymentRingSuggestionCategoryFromString();
 
         if (v137 == 32)
         {
-          v138 = [objc_alloc(MEMORY[0x277D08818]) initWithAmount:v135 category:32];
+          v138 = [objc_alloc(MEMORY[0x277D08818]) initWithAmount:featureRank2 category:32];
 
           [v105 addObject:v138];
           v30 = v138;
@@ -688,9 +688,9 @@ LABEL_109:
     while (v131);
   }
 
-  v139 = [v171 currentStatementPaymentsSum];
+  currentStatementPaymentsSum = [suggestionCopy currentStatementPaymentsSum];
 
-  if (v139)
+  if (currentStatementPaymentsSum)
   {
     v174 = 0u;
     v175 = 0u;
@@ -711,9 +711,9 @@ LABEL_109:
           }
 
           v144 = *(*(&v172 + 1) + 8 * m);
-          v145 = [v144 amount];
-          v146 = [v171 currentStatementPaymentsSum];
-          v147 = [v145 decimalNumberBySubtracting:v146];
+          amount = [v144 amount];
+          currentStatementPaymentsSum2 = [suggestionCopy currentStatementPaymentsSum];
+          v147 = [amount decimalNumberBySubtracting:currentStatementPaymentsSum2];
 
           [v144 setAmount:v147];
         }
@@ -803,25 +803,25 @@ void __67__FHPaymentRingSuggestionController_generatePaymentRingSuggestion___blo
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordPaymentRingAction:(id)a3
+- (void)recordPaymentRingAction:(id)action
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  actionCopy = action;
   v14 = objc_alloc_init(v4);
-  v6 = [v5 objectForKey:*MEMORY[0x277D08770]];
-  v7 = [v6 intValue];
+  v6 = [actionCopy objectForKey:*MEMORY[0x277D08770]];
+  intValue = [v6 intValue];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:v7 + 200];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:intValue + 200];
   [v14 setObject:v8 forKey:*MEMORY[0x277D08740]];
 
-  v9 = [v5 objectForKey:*MEMORY[0x277D08760]];
+  v9 = [actionCopy objectForKey:*MEMORY[0x277D08760]];
   [v14 setObject:v9 forKey:*MEMORY[0x277D08748]];
 
   [v14 setObject:&unk_285E21B98 forKey:*MEMORY[0x277D08738]];
-  v10 = [v5 objectForKey:*MEMORY[0x277D08758]];
+  v10 = [actionCopy objectForKey:*MEMORY[0x277D08758]];
   [v14 setObject:v10 forKey:*MEMORY[0x277D08720]];
 
-  v11 = [v5 objectForKey:*MEMORY[0x277D08768]];
+  v11 = [actionCopy objectForKey:*MEMORY[0x277D08768]];
 
   [v14 setObject:v11 forKey:*MEMORY[0x277D08730]];
   searchController = self->_searchController;
@@ -829,94 +829,94 @@ void __67__FHPaymentRingSuggestionController_generatePaymentRingSuggestion___blo
   [(FHSearchSuggestionController *)searchController recordUserInteraction:v13];
 }
 
-- (id)_zerothOrFirstMonthPaymentRingSuggestionsForList:(id)a3
+- (id)_zerothOrFirstMonthPaymentRingSuggestionsForList:(id)list
 {
   v131 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 currentStatement];
-  v6 = [v5 creditLimit];
-  v7 = v6;
-  if (v6)
+  listCopy = list;
+  currentStatement = [listCopy currentStatement];
+  creditLimit = [currentStatement creditLimit];
+  v7 = creditLimit;
+  if (creditLimit)
   {
-    v8 = v6;
+    zero = creditLimit;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCA980] zero];
+    zero = [MEMORY[0x277CCA980] zero];
   }
 
-  v101 = v8;
+  v101 = zero;
 
-  v9 = [v4 currentStatement];
-  v107 = [v9 currentBalanceForMonthZero];
+  currentStatement2 = [listCopy currentStatement];
+  currentBalanceForMonthZero = [currentStatement2 currentBalanceForMonthZero];
 
-  v10 = [v4 currentStatement];
-  v11 = [v10 remainingMinimumPayment];
-  v12 = v11;
-  if (v11)
+  currentStatement3 = [listCopy currentStatement];
+  remainingMinimumPayment = [currentStatement3 remainingMinimumPayment];
+  v12 = remainingMinimumPayment;
+  if (remainingMinimumPayment)
   {
-    v13 = v11;
+    zero2 = remainingMinimumPayment;
   }
 
   else
   {
-    v13 = [MEMORY[0x277CCA980] zero];
+    zero2 = [MEMORY[0x277CCA980] zero];
   }
 
-  v104 = v13;
+  v104 = zero2;
   v14 = v101;
 
-  v15 = [v4 currentStatement];
-  v16 = [v15 remainingStatementBalance];
-  v17 = v16;
-  if (v16)
+  currentStatement4 = [listCopy currentStatement];
+  remainingStatementBalance = [currentStatement4 remainingStatementBalance];
+  v17 = remainingStatementBalance;
+  if (remainingStatementBalance)
   {
-    v18 = v16;
+    zero3 = remainingStatementBalance;
   }
 
   else
   {
-    v18 = [MEMORY[0x277CCA980] zero];
+    zero3 = [MEMORY[0x277CCA980] zero];
   }
 
-  v103 = v18;
+  v103 = zero3;
 
-  v19 = [v4 currentStatement];
-  v20 = [v19 minimumDue];
-  v21 = v20;
-  if (v20)
+  currentStatement5 = [listCopy currentStatement];
+  minimumDue = [currentStatement5 minimumDue];
+  v21 = minimumDue;
+  if (minimumDue)
   {
-    v22 = v20;
+    zero4 = minimumDue;
   }
 
   else
   {
-    v22 = [MEMORY[0x277CCA980] zero];
+    zero4 = [MEMORY[0x277CCA980] zero];
   }
 
-  v105 = v22;
+  v105 = zero4;
 
-  v23 = [v4 currentStatement];
-  v24 = [v23 statementBalance];
-  v25 = v24;
-  if (v24)
+  currentStatement6 = [listCopy currentStatement];
+  statementBalance = [currentStatement6 statementBalance];
+  v25 = statementBalance;
+  if (statementBalance)
   {
-    v26 = v24;
+    zero5 = statementBalance;
   }
 
   else
   {
-    v26 = [MEMORY[0x277CCA980] zero];
+    zero5 = [MEMORY[0x277CCA980] zero];
   }
 
-  v106 = v26;
+  v106 = zero5;
 
-  v27 = [v4 currentStatement];
-  v28 = [v27 isMonthZero];
+  currentStatement7 = [listCopy currentStatement];
+  isMonthZero = [currentStatement7 isMonthZero];
 
-  v29 = [v4 currentStatement];
-  LODWORD(v30) = [v29 isMonthOne];
+  currentStatement8 = [listCopy currentStatement];
+  LODWORD(v30) = [currentStatement8 isMonthOne];
 
   v102 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = *MEMORY[0x277D087C0];
@@ -926,7 +926,7 @@ void __67__FHPaymentRingSuggestionController_generatePaymentRingSuggestion___blo
     *buf = 138414082;
     *&buf[4] = v101;
     v117 = 2112;
-    v118 = v107;
+    v118 = currentBalanceForMonthZero;
     v119 = 2112;
     v120 = v104;
     v121 = 2112;
@@ -936,19 +936,19 @@ void __67__FHPaymentRingSuggestionController_generatePaymentRingSuggestion___blo
     v125 = 2112;
     v126 = v106;
     v127 = 1024;
-    v128 = v28;
+    v128 = isMonthZero;
     v129 = 1024;
     v130 = v30;
     _os_log_impl(&dword_24ABD8000, v32, OS_LOG_TYPE_DEBUG, "Month-zero values CL, CB, RMP, RSB, MD, SB, isMonthZero, isMonthOne, %@, %@, %@, %@, %@, %@, %d, %d", buf, 0x4Au);
   }
 
-  v33 = [MEMORY[0x277CCA980] zero];
-  v34 = v33;
-  if (v107 && v101)
+  zero6 = [MEMORY[0x277CCA980] zero];
+  v34 = zero6;
+  if (currentBalanceForMonthZero && v101)
   {
     v35 = v30;
-    v36 = [MEMORY[0x277CCA980] zero];
-    v37 = [v101 isEqualToNumber:v36];
+    zero7 = [MEMORY[0x277CCA980] zero];
+    v37 = [v101 isEqualToNumber:zero7];
 
     if (v37)
     {
@@ -957,7 +957,7 @@ void __67__FHPaymentRingSuggestionController_generatePaymentRingSuggestion___blo
 
     else
     {
-      v39 = [v107 decimalNumberByDividingBy:v101];
+      v39 = [currentBalanceForMonthZero decimalNumberByDividingBy:v101];
 
       v40 = FinHealthLogObject();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
@@ -975,18 +975,18 @@ void __67__FHPaymentRingSuggestionController_generatePaymentRingSuggestion___blo
 
   else
   {
-    v38 = v33;
+    v38 = zero6;
   }
 
-  v100 = [MEMORY[0x277CCA980] zero];
-  if (v107 && v106)
+  zero8 = [MEMORY[0x277CCA980] zero];
+  if (currentBalanceForMonthZero && v106)
   {
     v41 = v38;
-    v42 = [MEMORY[0x277CCA980] zero];
-    if (([v107 isEqualToNumber:v42] & 1) == 0)
+    zero9 = [MEMORY[0x277CCA980] zero];
+    if (([currentBalanceForMonthZero isEqualToNumber:zero9] & 1) == 0)
     {
-      v43 = [MEMORY[0x277CCA980] zero];
-      v44 = [v101 isEqualToNumber:v43];
+      zero10 = [MEMORY[0x277CCA980] zero];
+      v44 = [v101 isEqualToNumber:zero10];
 
       if (v44)
       {
@@ -996,14 +996,14 @@ LABEL_33:
       }
 
       [v106 decimalNumberByDividingBy:v101];
-      v100 = v42 = v100;
+      zero8 = zero9 = zero8;
     }
 
     goto LABEL_33;
   }
 
 LABEL_34:
-  if ([(FHPaymentRingSuggestionController *)self _allMandatoryValuesAreSameAmount:v4])
+  if ([(FHPaymentRingSuggestionController *)self _allMandatoryValuesAreSameAmount:listCopy])
   {
     goto LABEL_89;
   }
@@ -1012,8 +1012,8 @@ LABEL_34:
   v113 = 0;
   v114 = 0;
   v112 = 0;
-  v45 = [v4 merchantCategoryTransactionSums];
-  [(FHPaymentRingSuggestionController *)self _minimumMerchcantCategoriesAboveMinimumAmount:v104 minMerchantCategory1:buf minMerchantCategory2:&v114 minMerchantCategorySum1:&v113 minMerchantCategorySum2:&v112 merchantCategoryTransactionSums:v45];
+  merchantCategoryTransactionSums = [listCopy merchantCategoryTransactionSums];
+  [(FHPaymentRingSuggestionController *)self _minimumMerchcantCategoriesAboveMinimumAmount:v104 minMerchantCategory1:buf minMerchantCategory2:&v114 minMerchantCategorySum1:&v113 minMerchantCategorySum2:&v112 merchantCategoryTransactionSums:merchantCategoryTransactionSums];
   v46 = v113;
   v98 = v112;
 
@@ -1027,12 +1027,12 @@ LABEL_34:
 
   v47 = [v46 decimalNumberByAdding:{v105, v46}];
   v48 = v102;
-  if (v28)
+  if (isMonthZero)
   {
     goto LABEL_43;
   }
 
-  if ((v30 & 1) != 0 || ([v4 previousStatementPaymentsSum], (v49 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((v30 & 1) != 0 || ([listCopy previousStatementPaymentsSum], (v49 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     if ([v47 compare:v103] != -1)
     {
@@ -1058,15 +1058,15 @@ LABEL_45:
   }
 
   v51 = [v98 decimalNumberByAdding:v105];
-  if (v28)
+  if (isMonthZero)
   {
     goto LABEL_51;
   }
 
-  if ((v30 & 1) != 0 || ([v4 previousStatementPaymentsSum], (v52 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((v30 & 1) != 0 || ([listCopy previousStatementPaymentsSum], (v52 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v53 = [v4 currentStatement];
-    [v53 remainingStatementBalance];
+    currentStatement9 = [listCopy currentStatement];
+    [currentStatement9 remainingStatementBalance];
     v30 = v54 = v30;
     v55 = [v51 compare:v30];
 
@@ -1091,7 +1091,7 @@ LABEL_52:
 LABEL_53:
   if (v38)
   {
-    v57 = v28;
+    v57 = isMonthZero;
   }
 
   else
@@ -1100,7 +1100,7 @@ LABEL_53:
   }
 
   v97 = v38;
-  if (v107 && v57)
+  if (currentBalanceForMonthZero && v57)
   {
     v58 = [MEMORY[0x277CCA980] decimalNumberWithString:@"0.33"];
     v59 = [v38 compare:v58];
@@ -1109,7 +1109,7 @@ LABEL_53:
     {
       v80 = objc_alloc(MEMORY[0x277D08818]);
       v63 = [MEMORY[0x277CCA980] decimalNumberWithString:@"3"];
-      v64 = [v107 decimalNumberByDividingBy:v63];
+      v64 = [currentBalanceForMonthZero decimalNumberByDividingBy:v63];
       v65 = v80;
       v66 = v64;
       v67 = 20;
@@ -1124,7 +1124,7 @@ LABEL_53:
       if (v61 == -1)
       {
         v63 = [MEMORY[0x277CCA980] decimalNumberWithString:@"6"];
-        v64 = [v107 decimalNumberByDividingBy:v63];
+        v64 = [currentBalanceForMonthZero decimalNumberByDividingBy:v63];
         v65 = v62;
         v66 = v64;
         v67 = 21;
@@ -1133,7 +1133,7 @@ LABEL_53:
       else
       {
         v63 = [MEMORY[0x277CCA980] decimalNumberWithString:@"9"];
-        v64 = [v107 decimalNumberByDividingBy:v63];
+        v64 = [currentBalanceForMonthZero decimalNumberByDividingBy:v63];
         v65 = v62;
         v66 = v64;
         v67 = 22;
@@ -1145,7 +1145,7 @@ LABEL_53:
 
   else
   {
-    if (v100)
+    if (zero8)
     {
       v68 = v30;
     }
@@ -1157,16 +1157,16 @@ LABEL_53:
 
     if (!v106 || (v68 & 1) == 0)
     {
-      v69 = [v4 previousStatementPaymentsSum];
+      previousStatementPaymentsSum = [listCopy previousStatementPaymentsSum];
 
-      if (v69)
+      if (previousStatementPaymentsSum)
       {
         goto LABEL_77;
       }
     }
 
     v70 = [MEMORY[0x277CCA980] decimalNumberWithString:{@"0.33", v96}];
-    v71 = [v100 compare:v70];
+    v71 = [zero8 compare:v70];
 
     if (v71 == -1)
     {
@@ -1181,7 +1181,7 @@ LABEL_53:
     else
     {
       v72 = [MEMORY[0x277CCA980] decimalNumberWithString:@"0.67"];
-      v73 = [v100 compare:v72];
+      v73 = [zero8 compare:v72];
 
       v74 = objc_alloc(MEMORY[0x277D08818]);
       if (v73 == -1)
@@ -1205,8 +1205,8 @@ LABEL_53:
 
     v82 = [v77 initWithAmount:v78 category:v79];
 
-    v83 = [v82 amount];
-    v84 = [v83 compare:v103];
+    amount = [v82 amount];
+    v84 = [amount compare:v103];
 
     v99 = v82;
     if (v84 != -1)
@@ -1218,7 +1218,7 @@ LABEL_53:
   [v48 addObject:v82];
   v99 = v82;
 LABEL_77:
-  v85 = [v4 currentStatementPaymentsSum];
+  currentStatementPaymentsSum = [listCopy currentStatementPaymentsSum];
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
@@ -1238,13 +1238,13 @@ LABEL_77:
           objc_enumerationMutation(v86);
         }
 
-        if (v85)
+        if (currentStatementPaymentsSum)
         {
           v91 = *(*(&v108 + 1) + 8 * i);
-          v92 = [v91 amount];
+          amount2 = [v91 amount];
           if (!-[FHPaymentRingSuggestionController _categoryIsCurrentBalanceType:](self, "_categoryIsCurrentBalanceType:", [v91 category]))
           {
-            v93 = [v92 decimalNumberBySubtracting:v85];
+            v93 = [amount2 decimalNumberBySubtracting:currentStatementPaymentsSum];
             [v91 setAmount:v93];
           }
         }
@@ -1265,56 +1265,56 @@ LABEL_89:
   return v102;
 }
 
-- (BOOL)_allMandatoryValuesAreSameAmount:(id)a3
+- (BOOL)_allMandatoryValuesAreSameAmount:(id)amount
 {
-  v3 = a3;
-  v4 = [v3 currentStatement];
-  v5 = [v4 currentBalance];
+  amountCopy = amount;
+  currentStatement = [amountCopy currentStatement];
+  currentBalance = [currentStatement currentBalance];
 
-  v6 = [v3 currentStatement];
-  v7 = [v6 remainingStatementBalance];
+  currentStatement2 = [amountCopy currentStatement];
+  remainingStatementBalance = [currentStatement2 remainingStatementBalance];
 
-  v8 = [v3 currentStatement];
+  currentStatement3 = [amountCopy currentStatement];
 
-  v9 = [v8 remainingMinimumPayment];
+  remainingMinimumPayment = [currentStatement3 remainingMinimumPayment];
 
-  v10 = [MEMORY[0x277CCA980] zero];
-  if (v5 && [v5 compare:v10] == -1)
+  zero = [MEMORY[0x277CCA980] zero];
+  if (currentBalance && [currentBalance compare:zero] == -1)
   {
-    v11 = v10;
+    v11 = zero;
 
-    v5 = v11;
+    currentBalance = v11;
   }
 
-  if (v7 && [v7 compare:v10] == -1)
+  if (remainingStatementBalance && [remainingStatementBalance compare:zero] == -1)
   {
-    v14 = v10;
+    v14 = zero;
 
-    v7 = v14;
-    if (!v9)
+    remainingStatementBalance = v14;
+    if (!remainingMinimumPayment)
     {
       goto LABEL_15;
     }
   }
 
-  else if (!v9)
+  else if (!remainingMinimumPayment)
   {
     goto LABEL_15;
   }
 
-  if ([v9 compare:v10] == -1)
+  if ([remainingMinimumPayment compare:zero] == -1)
   {
-    v12 = v10;
+    v12 = zero;
 
-    v9 = v12;
+    remainingMinimumPayment = v12;
   }
 
   v13 = 0;
-  if (v5 && v7 && v9)
+  if (currentBalance && remainingStatementBalance && remainingMinimumPayment)
   {
-    if ([v5 isEqual:v7])
+    if ([currentBalance isEqual:remainingStatementBalance])
     {
-      v13 = [v7 isEqual:v9];
+      v13 = [remainingStatementBalance isEqual:remainingMinimumPayment];
       goto LABEL_16;
     }
 
@@ -1327,10 +1327,10 @@ LABEL_16:
   return v13;
 }
 
-- (void)_minimumMerchcantCategoriesAboveMinimumAmount:(id)a3 minMerchantCategory1:(int64_t *)a4 minMerchantCategory2:(int64_t *)a5 minMerchantCategorySum1:(id *)a6 minMerchantCategorySum2:(id *)a7 merchantCategoryTransactionSums:(id)a8
+- (void)_minimumMerchcantCategoriesAboveMinimumAmount:(id)amount minMerchantCategory1:(int64_t *)category1 minMerchantCategory2:(int64_t *)category2 minMerchantCategorySum1:(id *)sum1 minMerchantCategorySum2:(id *)sum2 merchantCategoryTransactionSums:(id)sums
 {
-  v13 = a3;
-  v14 = a8;
+  amountCopy = amount;
+  sumsCopy = sums;
   v37 = 0;
   v38 = &v37;
   v39 = 0x2020000000;
@@ -1351,38 +1351,38 @@ LABEL_16:
   v24 = __Block_byref_object_copy_;
   v25 = __Block_byref_object_dispose_;
   v26 = 0;
-  if (v13)
+  if (amountCopy)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __205__FHPaymentRingSuggestionController__minimumMerchcantCategoriesAboveMinimumAmount_minMerchantCategory1_minMerchantCategory2_minMerchantCategorySum1_minMerchantCategorySum2_merchantCategoryTransactionSums___block_invoke;
     v15[3] = &unk_278FFB548;
-    v16 = v13;
+    v16 = amountCopy;
     v17 = &v27;
     v18 = &v37;
     v19 = &v21;
     v20 = &v33;
-    [v14 enumerateKeysAndObjectsUsingBlock:v15];
+    [sumsCopy enumerateKeysAndObjectsUsingBlock:v15];
   }
 
-  if (a4)
+  if (category1)
   {
-    *a4 = v38[3];
+    *category1 = v38[3];
   }
 
-  if (a5)
+  if (category2)
   {
-    *a5 = v34[3];
+    *category2 = v34[3];
   }
 
-  if (a6)
+  if (sum1)
   {
-    *a6 = v28[5];
+    *sum1 = v28[5];
   }
 
-  if (a7)
+  if (sum2)
   {
-    *a7 = v22[5];
+    *sum2 = v22[5];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -1453,45 +1453,45 @@ LABEL_15:
 LABEL_16:
 }
 
-- (id)_suggestedAmountsForPayOffDateForStatementBalance:(id)a3 statementPurchasesSum:(id)a4 creditUtilization:(id)a5 lastPaymentCategory:(unint64_t)a6
+- (id)_suggestedAmountsForPayOffDateForStatementBalance:(id)balance statementPurchasesSum:(id)sum creditUtilization:(id)utilization lastPaymentCategory:(unint64_t)category
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  balanceCopy = balance;
+  sumCopy = sum;
+  utilizationCopy = utilization;
+  v12 = utilizationCopy;
   v13 = 0;
-  if (v9 && v10 && v11)
+  if (balanceCopy && sumCopy && utilizationCopy)
   {
-    switch(a6)
+    switch(category)
     {
       case 6uLL:
       case 0xEuLL:
       case 0x19uLL:
         v14 = objc_alloc(MEMORY[0x277D08818]);
-        v15 = [v9 decimalNumberBySubtracting:v10];
+        v15 = [balanceCopy decimalNumberBySubtracting:sumCopy];
         v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"8"];
         v17 = [v15 decimalNumberByDividingBy:v16];
-        v18 = [v17 decimalNumberByAdding:v10];
+        v18 = [v17 decimalNumberByAdding:sumCopy];
         v19 = v14;
         v20 = v18;
         v21 = 7;
         goto LABEL_18;
       case 7uLL:
         v27 = objc_alloc(MEMORY[0x277D08818]);
-        v15 = [v9 decimalNumberBySubtracting:v10];
+        v15 = [balanceCopy decimalNumberBySubtracting:sumCopy];
         v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"7"];
         v17 = [v15 decimalNumberByDividingBy:v16];
-        v18 = [v17 decimalNumberByAdding:v10];
+        v18 = [v17 decimalNumberByAdding:sumCopy];
         v19 = v27;
         v20 = v18;
         v21 = 8;
         goto LABEL_18;
       case 8uLL:
         v24 = objc_alloc(MEMORY[0x277D08818]);
-        v15 = [v9 decimalNumberBySubtracting:v10];
+        v15 = [balanceCopy decimalNumberBySubtracting:sumCopy];
         v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"6"];
         v17 = [v15 decimalNumberByDividingBy:v16];
-        v18 = [v17 decimalNumberByAdding:v10];
+        v18 = [v17 decimalNumberByAdding:sumCopy];
         v19 = v24;
         v20 = v18;
         v21 = 9;
@@ -1500,30 +1500,30 @@ LABEL_16:
       case 0xFuLL:
       case 0x18uLL:
         v23 = objc_alloc(MEMORY[0x277D08818]);
-        v15 = [v9 decimalNumberBySubtracting:v10];
+        v15 = [balanceCopy decimalNumberBySubtracting:sumCopy];
         v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"5"];
         v17 = [v15 decimalNumberByDividingBy:v16];
-        v18 = [v17 decimalNumberByAdding:v10];
+        v18 = [v17 decimalNumberByAdding:sumCopy];
         v19 = v23;
         v20 = v18;
         v21 = 10;
         goto LABEL_18;
       case 0xAuLL:
         v26 = objc_alloc(MEMORY[0x277D08818]);
-        v15 = [v9 decimalNumberBySubtracting:v10];
+        v15 = [balanceCopy decimalNumberBySubtracting:sumCopy];
         v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"4"];
         v17 = [v15 decimalNumberByDividingBy:v16];
-        v18 = [v17 decimalNumberByAdding:v10];
+        v18 = [v17 decimalNumberByAdding:sumCopy];
         v19 = v26;
         v20 = v18;
         v21 = 11;
         goto LABEL_18;
       case 0xBuLL:
         v25 = objc_alloc(MEMORY[0x277D08818]);
-        v15 = [v9 decimalNumberBySubtracting:v10];
+        v15 = [balanceCopy decimalNumberBySubtracting:sumCopy];
         v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"3"];
         v17 = [v15 decimalNumberByDividingBy:v16];
-        v18 = [v17 decimalNumberByAdding:v10];
+        v18 = [v17 decimalNumberByAdding:sumCopy];
         v19 = v25;
         v20 = v18;
         v21 = 12;
@@ -1532,16 +1532,16 @@ LABEL_16:
       case 0x10uLL:
       case 0x17uLL:
         v22 = objc_alloc(MEMORY[0x277D08818]);
-        v15 = [v9 decimalNumberBySubtracting:v10];
+        v15 = [balanceCopy decimalNumberBySubtracting:sumCopy];
         v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"2"];
         v17 = [v15 decimalNumberByDividingBy:v16];
-        v18 = [v17 decimalNumberByAdding:v10];
+        v18 = [v17 decimalNumberByAdding:sumCopy];
         v19 = v22;
         v20 = v18;
         v21 = 13;
         goto LABEL_18;
       case 0xDuLL:
-        v13 = [objc_alloc(MEMORY[0x277D08818]) initWithAmount:v9 category:17];
+        v13 = [objc_alloc(MEMORY[0x277D08818]) initWithAmount:balanceCopy category:17];
         break;
       default:
         v28 = [MEMORY[0x277CCA980] decimalNumberWithString:@"0.33"];
@@ -1550,10 +1550,10 @@ LABEL_16:
         if (v29 == -1)
         {
           v33 = objc_alloc(MEMORY[0x277D08818]);
-          v15 = [v9 decimalNumberBySubtracting:v10];
+          v15 = [balanceCopy decimalNumberBySubtracting:sumCopy];
           v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"3"];
           v17 = [v15 decimalNumberByDividingBy:v16];
-          v18 = [v17 decimalNumberByAdding:v10];
+          v18 = [v17 decimalNumberByAdding:sumCopy];
           v19 = v33;
           v20 = v18;
           v21 = 16;
@@ -1565,12 +1565,12 @@ LABEL_16:
           v31 = [v12 compare:v30];
 
           v32 = objc_alloc(MEMORY[0x277D08818]);
-          v15 = [v9 decimalNumberBySubtracting:v10];
+          v15 = [balanceCopy decimalNumberBySubtracting:sumCopy];
           if (v31 == -1)
           {
             v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"6"];
             v17 = [v15 decimalNumberByDividingBy:v16];
-            v18 = [v17 decimalNumberByAdding:v10];
+            v18 = [v17 decimalNumberByAdding:sumCopy];
             v19 = v32;
             v20 = v18;
             v21 = 15;
@@ -1580,7 +1580,7 @@ LABEL_16:
           {
             v16 = [MEMORY[0x277CCA980] decimalNumberWithString:@"9"];
             v17 = [v15 decimalNumberByDividingBy:v16];
-            v18 = [v17 decimalNumberByAdding:v10];
+            v18 = [v17 decimalNumberByAdding:sumCopy];
             v19 = v32;
             v20 = v18;
             v21 = 14;
@@ -1597,76 +1597,76 @@ LABEL_18:
   return v13;
 }
 
-- (id)_calculateThresholdForLastPaymentCategory:(unint64_t)a3 statementBalance:(id)a4 lastPaymentCategoryAmount:(id)a5 previousStatementPaymentsSum:(id)a6 statementPurchasesSum:(id)a7
+- (id)_calculateThresholdForLastPaymentCategory:(unint64_t)category statementBalance:(id)balance lastPaymentCategoryAmount:(id)amount previousStatementPaymentsSum:(id)sum statementPurchasesSum:(id)purchasesSum
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (v13)
+  balanceCopy = balance;
+  amountCopy = amount;
+  sumCopy = sum;
+  purchasesSumCopy = purchasesSum;
+  if (sumCopy)
   {
-    v15 = v13;
-    switch(a3)
+    v15 = sumCopy;
+    switch(category)
     {
       case 0uLL:
         break;
       case 6uLL:
       case 0xEuLL:
       case 0x19uLL:
-        v16 = [v11 decimalNumberBySubtracting:v14];
+        v16 = [balanceCopy decimalNumberBySubtracting:purchasesSumCopy];
         v17 = MEMORY[0x277CCA980];
         v18 = @"8";
         goto LABEL_15;
       case 7uLL:
-        v16 = [v11 decimalNumberBySubtracting:v14];
+        v16 = [balanceCopy decimalNumberBySubtracting:purchasesSumCopy];
         v17 = MEMORY[0x277CCA980];
         v18 = @"7";
         goto LABEL_15;
       case 8uLL:
-        v16 = [v11 decimalNumberBySubtracting:v14];
+        v16 = [balanceCopy decimalNumberBySubtracting:purchasesSumCopy];
         v17 = MEMORY[0x277CCA980];
         v18 = @"6";
         goto LABEL_15;
       case 9uLL:
       case 0xFuLL:
       case 0x18uLL:
-        v16 = [v11 decimalNumberBySubtracting:v14];
+        v16 = [balanceCopy decimalNumberBySubtracting:purchasesSumCopy];
         v17 = MEMORY[0x277CCA980];
         v18 = @"5";
         goto LABEL_15;
       case 0xAuLL:
-        v16 = [v11 decimalNumberBySubtracting:v14];
+        v16 = [balanceCopy decimalNumberBySubtracting:purchasesSumCopy];
         v17 = MEMORY[0x277CCA980];
         v18 = @"4";
         goto LABEL_15;
       case 0xBuLL:
-        v16 = [v11 decimalNumberBySubtracting:v14];
+        v16 = [balanceCopy decimalNumberBySubtracting:purchasesSumCopy];
         v17 = MEMORY[0x277CCA980];
         v18 = @"3";
         goto LABEL_15;
       case 0xCuLL:
       case 0x10uLL:
       case 0x17uLL:
-        v16 = [v11 decimalNumberBySubtracting:v14];
+        v16 = [balanceCopy decimalNumberBySubtracting:purchasesSumCopy];
         v17 = MEMORY[0x277CCA980];
         v18 = @"2";
 LABEL_15:
         v21 = [v17 decimalNumberWithString:v18];
         v22 = [v16 decimalNumberByDividingBy:v21];
-        v20 = [v22 decimalNumberByAdding:v14];
+        v20 = [v22 decimalNumberByAdding:purchasesSumCopy];
 
         v15 = v16;
         goto LABEL_16;
       case 0xDuLL:
-        v19 = v11;
+        v19 = balanceCopy;
         goto LABEL_12;
       default:
-        if ([v12 compare:v15] != 1)
+        if ([amountCopy compare:v15] != 1)
         {
           break;
         }
 
-        v19 = v12;
+        v19 = amountCopy;
 LABEL_12:
         v20 = v19;
 LABEL_16:
@@ -1684,17 +1684,17 @@ LABEL_16:
   return v15;
 }
 
-- (id)_filterSuggestions:(id)a3 belowThreshold:(id)a4
+- (id)_filterSuggestions:(id)suggestions belowThreshold:(id)threshold
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  suggestionsCopy = suggestions;
+  thresholdCopy = threshold;
   v7 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = v5;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
@@ -1710,15 +1710,15 @@ LABEL_16:
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [v13 amount];
-        if ([v14 compare:v6] == 1)
+        amount = [v13 amount];
+        if ([amount compare:thresholdCopy] == 1)
         {
         }
 
         else
         {
-          v15 = [v13 amount];
-          v16 = [v15 compare:v6];
+          amount2 = [v13 amount];
+          v16 = [amount2 compare:thresholdCopy];
 
           if (v16)
           {
@@ -1740,16 +1740,16 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)_fhEqualObjects:(id)a3 obj2:(id)a4
+- (BOOL)_fhEqualObjects:(id)objects obj2:(id)obj2
 {
-  if (a3 && a4)
+  if (objects && obj2)
   {
-    return [a3 isEqual:a4];
+    return [objects isEqual:obj2];
   }
 
   else
   {
-    return a3 == a4;
+    return objects == obj2;
   }
 }
 

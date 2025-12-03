@@ -1,22 +1,22 @@
 @interface CKDAcceptShareMetadata
 - (void)dealloc;
-- (void)setSigningPCSIdentity:(_PCSIdentityData *)a3;
+- (void)setSigningPCSIdentity:(_PCSIdentityData *)identity;
 @end
 
 @implementation CKDAcceptShareMetadata
 
-- (void)setSigningPCSIdentity:(_PCSIdentityData *)a3
+- (void)setSigningPCSIdentity:(_PCSIdentityData *)identity
 {
   signingPCSIdentity = self->_signingPCSIdentity;
-  if (signingPCSIdentity != a3)
+  if (signingPCSIdentity != identity)
   {
-    if (a3)
+    if (identity)
     {
-      CFRetain(a3);
+      CFRetain(identity);
       signingPCSIdentity = self->_signingPCSIdentity;
     }
 
-    self->_signingPCSIdentity = a3;
+    self->_signingPCSIdentity = identity;
     if (signingPCSIdentity)
     {
 

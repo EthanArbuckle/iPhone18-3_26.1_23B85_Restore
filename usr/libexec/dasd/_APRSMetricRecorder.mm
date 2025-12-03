@@ -1,23 +1,23 @@
 @interface _APRSMetricRecorder
 + (id)sharedInstance;
-+ (void)reportTrialParameterWithName:(id)a3 value:(unint64_t)a4;
++ (void)reportTrialParameterWithName:(id)name value:(unint64_t)value;
 - (BOOL)initializeLedgerIndices;
 - (_APRSMetricRecorder)init;
 - (id)commonAnalytics;
-- (id)getProcessMemoryInfoForPID:(int)a3;
+- (id)getProcessMemoryInfoForPID:(int)d;
 - (id)log;
-- (void)checkFrozenApps:(id)a3;
+- (void)checkFrozenApps:(id)apps;
 - (void)dealloc;
 - (void)loadKernelTrialValues;
-- (void)processUpdateHandlerWithMonitor:(id)a3 withHandle:(id)a4 withUpdate:(id)a5;
+- (void)processUpdateHandlerWithMonitor:(id)monitor withHandle:(id)handle withUpdate:(id)update;
 - (void)recordConfigState;
 - (void)recordMemoryMetrics;
 - (void)registerForAppStateUpdate;
 - (void)registerForPPSDonation;
-- (void)reportActivationTimes:(id)a3;
-- (void)reportEvent:(id)a3 forApp:(id)a4 forEvent:(unint64_t)a5;
+- (void)reportActivationTimes:(id)times;
+- (void)reportEvent:(id)event forApp:(id)app forEvent:(unint64_t)forEvent;
 - (void)schedulePPSTimer;
-- (void)sendAnalyticsLazyWithCommonFeilds:(id)a3 forEvent:(id)a4;
+- (void)sendAnalyticsLazyWithCommonFeilds:(id)feilds forEvent:(id)event;
 @end
 
 @implementation _APRSMetricRecorder
@@ -139,25 +139,25 @@
   self->_processMonitor = v9;
 }
 
-- (void)processUpdateHandlerWithMonitor:(id)a3 withHandle:(id)a4 withUpdate:(id)a5
+- (void)processUpdateHandlerWithMonitor:(id)monitor withHandle:(id)handle withUpdate:(id)update
 {
-  v7 = a5;
-  v8 = [a4 bundle];
-  v9 = [v8 identifier];
+  updateCopy = update;
+  bundle = [handle bundle];
+  identifier = [bundle identifier];
 
-  v10 = [v7 state];
-  v47 = v7;
-  if ([v10 taskState] == 4)
+  state = [updateCopy state];
+  v47 = updateCopy;
+  if ([state taskState] == 4)
   {
-    v11 = [v7 state];
-    v12 = [v11 endowmentNamespaces];
-    v13 = [v12 containsObject:@"com.apple.frontboard.visibility"];
+    state2 = [updateCopy state];
+    endowmentNamespaces = [state2 endowmentNamespaces];
+    v13 = [endowmentNamespaces containsObject:@"com.apple.frontboard.visibility"];
 
     if (v13)
     {
-      [(_APRSMetricRecorder *)self reportEvent:@"Launched" forApp:v9 forEvent:0];
-      [(_APRSMetricRecorder *)self reportEvent:@"Launched" forApp:v9 forEvent:1];
-      [(_APRSMetricRecorder *)self reportEvent:@"Launched" forApp:v9 forEvent:2];
+      [(_APRSMetricRecorder *)self reportEvent:@"Launched" forApp:identifier forEvent:0];
+      [(_APRSMetricRecorder *)self reportEvent:@"Launched" forApp:identifier forEvent:1];
+      [(_APRSMetricRecorder *)self reportEvent:@"Launched" forApp:identifier forEvent:2];
     }
   }
 
@@ -165,13 +165,13 @@
   {
   }
 
-  v46 = v9;
+  v46 = identifier;
   v59 = 0u;
   v60 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v14 = [(NSMutableDictionary *)self->_prewarmedApps allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v57 objects:v63 count:16];
+  allKeys = [(NSMutableDictionary *)self->_prewarmedApps allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v57 objects:v63 count:16];
   if (v15)
   {
     v16 = v15;
@@ -183,14 +183,14 @@
       {
         if (*v58 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v57 + 1) + 8 * v18);
         v20 = +[NSDate date];
         v21 = [(NSMutableDictionary *)self->_prewarmedApps objectForKeyedSubscript:v19];
-        v22 = [v21 startDate];
-        [v20 timeIntervalSinceDate:v22];
+        startDate = [v21 startDate];
+        [v20 timeIntervalSinceDate:startDate];
         v24 = (v23 / 60.0);
 
         if (v24 >= 61)
@@ -202,7 +202,7 @@
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v57 objects:v63 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v57 objects:v63 count:16];
     }
 
     while (v16);
@@ -231,8 +231,8 @@
         v29 = *(*(&v53 + 1) + 8 * v28);
         v30 = +[NSDate date];
         v31 = [(NSMutableDictionary *)self->_dockedApps objectForKeyedSubscript:v29];
-        v32 = [v31 startDate];
-        [v30 timeIntervalSinceDate:v32];
+        startDate2 = [v31 startDate];
+        [v30 timeIntervalSinceDate:startDate2];
         v34 = (v33 / 60.0);
 
         if (v34 >= 61)
@@ -254,8 +254,8 @@
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v35 = [(NSMutableDictionary *)self->_frozenApps allKeys];
-  v36 = [v35 countByEnumeratingWithState:&v49 objects:v61 count:16];
+  allKeys2 = [(NSMutableDictionary *)self->_frozenApps allKeys];
+  v36 = [allKeys2 countByEnumeratingWithState:&v49 objects:v61 count:16];
   if (v36)
   {
     v37 = v36;
@@ -267,14 +267,14 @@
       {
         if (*v50 != v38)
         {
-          objc_enumerationMutation(v35);
+          objc_enumerationMutation(allKeys2);
         }
 
         v40 = *(*(&v49 + 1) + 8 * v39);
         v41 = +[NSDate date];
         v42 = [(NSMutableDictionary *)self->_frozenApps objectForKeyedSubscript:v40];
-        v43 = [v42 startDate];
-        [v41 timeIntervalSinceDate:v43];
+        startDate3 = [v42 startDate];
+        [v41 timeIntervalSinceDate:startDate3];
         v45 = (v44 / 60.0);
 
         if (v45 >= 301)
@@ -286,7 +286,7 @@
       }
 
       while (v37 != v39);
-      v37 = [v35 countByEnumeratingWithState:&v49 objects:v61 count:16];
+      v37 = [allKeys2 countByEnumeratingWithState:&v49 objects:v61 count:16];
     }
 
     while (v37);
@@ -319,17 +319,17 @@
   }
 }
 
-- (void)reportEvent:(id)a3 forApp:(id)a4 forEvent:(unint64_t)a5
+- (void)reportEvent:(id)event forApp:(id)app forEvent:(unint64_t)forEvent
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 <= 2)
+  eventCopy = event;
+  appCopy = app;
+  if (forEvent <= 2)
   {
-    v10 = (&self->_prewarmedApps)[a5];
-    v11 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:v9];
+    v10 = (&self->_prewarmedApps)[forEvent];
+    v11 = [(NSMutableDictionary *)v10 objectForKeyedSubscript:appCopy];
     if (v11)
     {
-      if ([v8 isEqualToString:@"Timeout"])
+      if ([eventCopy isEqualToString:@"Timeout"])
       {
         v12 = 0xFFFFFFFFLL;
       }
@@ -337,8 +337,8 @@
       else
       {
         v13 = +[NSDate date];
-        v14 = [v11 startDate];
-        [v13 timeIntervalSinceDate:v14];
+        startDate = [v11 startDate];
+        [v13 timeIntervalSinceDate:startDate];
         v12 = (v15 / 60.0);
       }
 
@@ -347,19 +347,19 @@
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v35 = v9;
+        v35 = appCopy;
         v36 = 2112;
-        v37 = v8;
+        v37 = eventCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Process %@ %@.", buf, 0x16u);
       }
 
       v32[0] = @"Type";
-      v17 = [qword_10020B9C0 objectAtIndexedSubscript:a5];
+      v17 = [qword_10020B9C0 objectAtIndexedSubscript:forEvent];
       v33[0] = v17;
-      v33[1] = v9;
+      v33[1] = appCopy;
       v32[1] = @"BundleID";
       v32[2] = @"State";
-      v33[2] = v8;
+      v33[2] = eventCopy;
       v32[3] = @"Interval";
       v18 = [NSNumber numberWithInt:v12];
       v33[3] = v18;
@@ -368,9 +368,9 @@
       v29 = v19;
       [(_APRSMetricRecorder *)self sendAnalyticsLazyWithCommonFeilds:v19 forEvent:@"com.apple.dasd.appResumeDetail"];
       v10 = v28;
-      [(NSMutableDictionary *)v28 removeObjectForKey:v9];
-      LODWORD(v17) = [v8 isEqualToString:@"Launched"];
-      v20 = [qword_10020B9C0 objectAtIndexedSubscript:a5];
+      [(NSMutableDictionary *)v28 removeObjectForKey:appCopy];
+      LODWORD(v17) = [eventCopy isEqualToString:@"Launched"];
+      v20 = [qword_10020B9C0 objectAtIndexedSubscript:forEvent];
       v21 = v20;
       if (v17)
       {
@@ -416,15 +416,15 @@
   }
 }
 
-- (void)checkFrozenApps:(id)a3
+- (void)checkFrozenApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v5 = +[NSMutableSet set];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = appsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -462,7 +462,7 @@
   block[3] = &unk_1001B56B8;
   v18 = v12;
   v19 = v5;
-  v20 = self;
+  selfCopy = self;
   v15 = v5;
   v16 = v12;
   dispatch_after(v13, v14, block);
@@ -495,15 +495,15 @@
 {
   v3 = +[NSMutableDictionary dictionary];
   v4 = [_DASTrialManager sharedInstanceForProject:222 withNamespace:@"COREOS_DRM_APRS"];
-  v5 = [v4 experimentID];
+  experimentID = [v4 experimentID];
 
-  if (v5)
+  if (experimentID)
   {
-    v6 = [v4 experimentID];
-    [v3 setObject:v6 forKeyedSubscript:@"CommonExperimentID"];
+    experimentID2 = [v4 experimentID];
+    [v3 setObject:experimentID2 forKeyedSubscript:@"CommonExperimentID"];
 
-    v7 = [v4 treatmentID];
-    [v3 setObject:v7 forKeyedSubscript:@"CommonTreatmentID"];
+    treatmentID = [v4 treatmentID];
+    [v3 setObject:treatmentID forKeyedSubscript:@"CommonTreatmentID"];
 
     v8 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 deploymentID]);
     [v3 setObject:v8 forKeyedSubscript:@"CommonDeploymentID"];
@@ -521,27 +521,27 @@
   return v3;
 }
 
-- (void)sendAnalyticsLazyWithCommonFeilds:(id)a3 forEvent:(id)a4
+- (void)sendAnalyticsLazyWithCommonFeilds:(id)feilds forEvent:(id)event
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  feildsCopy = feilds;
+  eventCopy = event;
+  v6 = eventCopy;
+  v7 = feildsCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)reportActivationTimes:(id)a3
+- (void)reportActivationTimes:(id)times
 {
-  v4 = a3;
+  timesCopy = times;
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [v4 sortedArrayUsingSelector:"compare:"];
+  v6 = [timesCopy sortedArrayUsingSelector:"compare:"];
   v7 = [v6 mutableCopy];
 
   v8 = [v7 count];
   if (v8)
   {
     v9 = v8;
-    v23 = self;
+    selfCopy = self;
     v10 = v8;
     v22 = [v7 objectAtIndexedSubscript:{vcvtd_n_f64_u64(v8, 2uLL)}];
     [v5 setObject:? forKeyedSubscript:?];
@@ -555,7 +555,7 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = v4;
+    v14 = timesCopy;
     v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v15)
     {
@@ -589,7 +589,7 @@
     v21 = [NSNumber numberWithDouble:v18 / v10];
     [v5 setObject:v21 forKeyedSubscript:@"activationTimeMean"];
 
-    [(_APRSMetricRecorder *)v23 sendAnalyticsLazyWithCommonFeilds:v5 forEvent:@"com.apple.dasd.appResumeHalfDayEvent"];
+    [(_APRSMetricRecorder *)selfCopy sendAnalyticsLazyWithCommonFeilds:v5 forEvent:@"com.apple.dasd.appResumeHalfDayEvent"];
   }
 }
 
@@ -734,13 +734,13 @@ LABEL_17:
   }
 }
 
-+ (void)reportTrialParameterWithName:(id)a3 value:(unint64_t)a4
++ (void)reportTrialParameterWithName:(id)name value:(unint64_t)value
 {
-  v5 = [NSString stringWithFormat:@"Trial-%@", a3];
+  name = [NSString stringWithFormat:@"Trial-%@", name];
   v9[0] = @"Parameter";
   v9[1] = @"Value";
-  v10[0] = v5;
-  v6 = [NSNumber numberWithUnsignedInteger:a4];
+  v10[0] = name;
+  v6 = [NSNumber numberWithUnsignedInteger:value];
   v10[1] = v6;
   v7 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
 
@@ -825,20 +825,20 @@ LABEL_15:
         if (v12)
         {
           v14 = [v12 objectForKeyedSubscript:@"footprint"];
-          v15 = [v14 unsignedLongLongValue];
+          unsignedLongLongValue = [v14 unsignedLongLongValue];
 
           v16 = [v13 objectForKeyedSubscript:@"residentSize"];
-          v17 = [v16 unsignedLongLongValue];
+          unsignedLongLongValue2 = [v16 unsignedLongLongValue];
 
           v18 = [v13 objectForKeyedSubscript:@"frozenSize"];
-          v19 = [v18 unsignedLongLongValue];
+          unsignedLongLongValue3 = [v18 unsignedLongLongValue];
 
           if (v10 == 75)
           {
             v25 = v61;
-            v60 += v17;
+            v60 += unsignedLongLongValue2;
             ++v57;
-            v58 += v19;
+            v58 += unsignedLongLongValue3;
             v26 = v59;
             if ((v5[5] & 4) != 0)
             {
@@ -848,7 +848,7 @@ LABEL_15:
             v59 = v26;
             if ((v5[5] & 4) != 0)
             {
-              v25 = &v61[v17];
+              v25 = &v61[unsignedLongLongValue2];
             }
 
             v61 = v25;
@@ -858,7 +858,7 @@ LABEL_15:
           {
             v21 = v63;
             v20 = v64;
-            v22 = &v64[v15];
+            v22 = &v64[unsignedLongLongValue];
             if (v10)
             {
               v23 = v63;
@@ -878,7 +878,7 @@ LABEL_15:
             if (v10 == 30)
             {
               v24 = v62 + 1;
-              v7 += v15;
+              v7 += unsignedLongLongValue;
             }
 
             else
@@ -1029,7 +1029,7 @@ LABEL_15:
   [v54 sendDataToPPS:v49 subsystem:@"OSIMemory" category:@"MemoryState"];
 }
 
-- (id)getProcessMemoryInfoForPID:(int)a3
+- (id)getProcessMemoryInfoForPID:(int)d
 {
   v20 = 0u;
   v21 = 0u;

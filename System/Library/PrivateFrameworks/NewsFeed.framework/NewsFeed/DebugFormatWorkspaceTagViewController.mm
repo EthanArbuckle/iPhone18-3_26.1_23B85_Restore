@@ -1,17 +1,17 @@
 @interface DebugFormatWorkspaceTagViewController
-- (_TtC8NewsFeed37DebugFormatWorkspaceTagViewController)initWithCoder:(id)a3;
-- (_TtC8NewsFeed37DebugFormatWorkspaceTagViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC8NewsFeed37DebugFormatWorkspaceTagViewController)initWithCoder:(id)coder;
+- (_TtC8NewsFeed37DebugFormatWorkspaceTagViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation DebugFormatWorkspaceTagViewController
 
-- (_TtC8NewsFeed37DebugFormatWorkspaceTagViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed37DebugFormatWorkspaceTagViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed37DebugFormatWorkspaceTagViewController_tableView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DD020]) initWithFrame:1 style:{0.0, 0.0, 0.0, 0.0}];
@@ -26,7 +26,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D69D8898();
 }
 
@@ -37,11 +37,11 @@
   v2 = v14.receiver;
   [(DebugFormatWorkspaceTagViewController *)&v14 viewWillLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8NewsFeed37DebugFormatWorkspaceTagViewController_tableView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -56,16 +56,16 @@
   }
 }
 
-- (_TtC8NewsFeed37DebugFormatWorkspaceTagViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed37DebugFormatWorkspaceTagViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
   }
@@ -73,9 +73,9 @@
   else
   {
     v4 = *(self + OBJC_IVAR____TtC8NewsFeed37DebugFormatWorkspaceTagViewController_sections);
-    if (*(v4 + 16) > a4)
+    if (*(v4 + 16) > section)
     {
-      return *(*(v4 + 24 * a4 + 48) + 16);
+      return *(*(v4 + 24 * section + 48) + 16);
     }
   }
 
@@ -83,31 +83,31 @@
   return self;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6, v8);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_1D69D8C50(v11, v10);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_1D69D8C50(viewCopy, v10);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 < 0)
+  if (section < 0)
   {
     __break(1u);
     goto LABEL_7;
   }
 
-  if (*(*(self + OBJC_IVAR____TtC8NewsFeed37DebugFormatWorkspaceTagViewController_sections) + 16) <= a4)
+  if (*(*(self + OBJC_IVAR____TtC8NewsFeed37DebugFormatWorkspaceTagViewController_sections) + 16) <= section)
   {
 LABEL_7:
     __break(1u);
@@ -119,15 +119,15 @@ LABEL_7:
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_1D7258DBC();
   v7 = *(v6 - 8);
   MEMORY[0x1EEE9AC00](v6, v8);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1D7258D6C();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1D69D9C3C();
 
   (*(v7 + 8))(v10, v6);

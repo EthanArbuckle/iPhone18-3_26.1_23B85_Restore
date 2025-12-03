@@ -1,13 +1,13 @@
 @interface ISDimmedEffect
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4;
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage;
 @end
 
 @implementation ISDimmedEffect
 
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage
 {
   v4 = MEMORY[0x1E695F688];
-  v5 = a3;
+  imageCopy = image;
   v6 = [v4 vectorWithX:0.5 Y:0.0 Z:0.0 W:0.0];
   v7 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:0.5 Z:0.0 W:0.0];
   v8 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:0.0 Z:0.5 W:0.0];
@@ -19,7 +19,7 @@
   [v11 setValue:v8 forKey:@"inputBVector"];
   [v11 setValue:v9 forKey:@"inputAVector"];
   [v11 setValue:v10 forKey:@"inputBiasVector"];
-  [v11 setValue:v5 forKey:*MEMORY[0x1E695FAB0]];
+  [v11 setValue:imageCopy forKey:*MEMORY[0x1E695FAB0]];
 
   return v11;
 }

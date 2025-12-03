@@ -7,7 +7,7 @@
 - (void)initWithLOIType:()RTExtensions event:
 {
   v6 = a4;
-  v14.receiver = a1;
+  v14.receiver = self;
   v14.super_class = &off_284638F90;
   v7 = objc_msgSendSuper2(&v14, sel_init);
   v8 = v7;
@@ -26,12 +26,12 @@
     [v7 setLoiType:v9];
     if (v6)
     {
-      v10 = [v6 title];
-      [v8 setEventName:v10];
+      title = [v6 title];
+      [v8 setEventName:title];
 
       [v8 setIsEventAllDay:{objc_msgSend(v6, "isAllDay")}];
-      v11 = [v6 startDate];
-      [v11 timeIntervalSinceReferenceDate];
+      startDate = [v6 startDate];
+      [startDate timeIntervalSinceReferenceDate];
       [v8 setEventDate:?];
     }
 

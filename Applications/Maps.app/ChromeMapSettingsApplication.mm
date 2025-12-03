@@ -1,17 +1,17 @@
 @interface ChromeMapSettingsApplication
-- (ChromeMapSettingsApplication)initWithSettingsDictionary:(id)a3;
+- (ChromeMapSettingsApplication)initWithSettingsDictionary:(id)dictionary;
 - (NSArray)completionHandlers;
-- (void)addCompletionHandler:(id)a3;
+- (void)addCompletionHandler:(id)handler;
 @end
 
 @implementation ChromeMapSettingsApplication
 
-- (void)addCompletionHandler:(id)a3
+- (void)addCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     completionHandlers = self->_completionHandlers;
-    v4 = [a3 copy];
+    v4 = [handler copy];
     [(NSMutableArray *)completionHandlers addObject:v4];
   }
 }
@@ -23,15 +23,15 @@
   return v2;
 }
 
-- (ChromeMapSettingsApplication)initWithSettingsDictionary:(id)a3
+- (ChromeMapSettingsApplication)initWithSettingsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = ChromeMapSettingsApplication;
   v5 = [(ChromeMapSettingsApplication *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     settingsDictionary = v5->_settingsDictionary;
     v5->_settingsDictionary = v6;
 

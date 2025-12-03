@@ -1,12 +1,12 @@
 @interface DomainNameFormatter
-+ (id)domainNameFormatter:(unint64_t)a3;
++ (id)domainNameFormatter:(unint64_t)formatter;
 + (id)domainNameSet;
-- (DomainNameFormatter)initWithMaxLength:(unint64_t)a3;
+- (DomainNameFormatter)initWithMaxLength:(unint64_t)length;
 @end
 
 @implementation DomainNameFormatter
 
-+ (id)domainNameFormatter:(unint64_t)a3
++ (id)domainNameFormatter:(unint64_t)formatter
 {
   v3 = [DomainNameFormatter alloc];
   v5 = objc_msgSend_initWithMaxLength_(v3, v4, 0);
@@ -14,11 +14,11 @@
   return v5;
 }
 
-- (DomainNameFormatter)initWithMaxLength:(unint64_t)a3
+- (DomainNameFormatter)initWithMaxLength:(unint64_t)length
 {
   v13.receiver = self;
   v13.super_class = DomainNameFormatter;
-  v5 = [(APFormatter *)&v13 initWithMaxLength:a3];
+  v5 = [(APFormatter *)&v13 initWithMaxLength:length];
   if (v5)
   {
     v6 = objc_msgSend_domainNameSet(DomainNameFormatter, v3, v4);

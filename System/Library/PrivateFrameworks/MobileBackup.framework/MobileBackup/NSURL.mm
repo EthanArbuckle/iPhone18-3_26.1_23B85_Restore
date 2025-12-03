@@ -1,31 +1,31 @@
 @interface NSURL
-- (id)_URLByInsertingUser:(id)a3;
+- (id)_URLByInsertingUser:(id)user;
 @end
 
 @implementation NSURL
 
-- (id)_URLByInsertingUser:(id)a3
+- (id)_URLByInsertingUser:(id)user
 {
-  v4 = a3;
-  if (v4 && (v5 = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, v4, @"%", @"@?:#", 0x8000100u)) != 0)
+  userCopy = user;
+  if (userCopy && (v5 = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, userCopy, @"%", @"@?:#", 0x8000100u)) != 0)
   {
     v6 = v5;
-    v7 = [(NSURL *)self scheme];
-    v8 = [(NSURL *)self host];
-    v9 = [(NSURL *)self port];
-    v10 = [(NSURL *)self path];
-    v11 = [NSString stringWithFormat:@"%@://%@@%@:%@%@", v7, v6, v8, v9, v10];
-    v12 = [NSURL URLWithString:v11];
+    scheme = [(NSURL *)self scheme];
+    host = [(NSURL *)self host];
+    port = [(NSURL *)self port];
+    path = [(NSURL *)self path];
+    v11 = [NSString stringWithFormat:@"%@://%@@%@:%@%@", scheme, v6, host, port, path];
+    selfCopy = [NSURL URLWithString:v11];
 
     CFRelease(v6);
   }
 
   else
   {
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

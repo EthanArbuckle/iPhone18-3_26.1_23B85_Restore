@@ -1,8 +1,8 @@
 @interface _FPCopyFileStatus
 - (_FPCopyFileStatus)init;
-- (void)beginCopyingFile:(id)a3 state:(_copyfile_state *)a4;
-- (void)finishCopyingFile:(id)a3 state:(_copyfile_state *)a4;
-- (void)updateCopyingFile:(id)a3 state:(_copyfile_state *)a4;
+- (void)beginCopyingFile:(id)file state:(_copyfile_state *)state;
+- (void)finishCopyingFile:(id)file state:(_copyfile_state *)state;
+- (void)updateCopyingFile:(id)file state:(_copyfile_state *)state;
 @end
 
 @implementation _FPCopyFileStatus
@@ -24,36 +24,36 @@
   return v2;
 }
 
-- (void)beginCopyingFile:(id)a3 state:(_copyfile_state *)a4
+- (void)beginCopyingFile:(id)file state:(_copyfile_state *)state
 {
-  v6 = a3;
-  copyfile_state_set(a4, 6u, copyfile_status_cb);
-  copyfile_state_set(a4, 7u, self);
-  [(_FPCopyFileStatus *)self updateCopyingFile:v6 state:a4];
+  fileCopy = file;
+  copyfile_state_set(state, 6u, copyfile_status_cb);
+  copyfile_state_set(state, 7u, self);
+  [(_FPCopyFileStatus *)self updateCopyingFile:fileCopy state:state];
 }
 
-- (void)updateCopyingFile:(id)a3 state:(_copyfile_state *)a4
+- (void)updateCopyingFile:(id)file state:(_copyfile_state *)state
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_lastBytesCopiedByFile objectForKey:v6];
-  v8 = [v7 unsignedLongLongValue];
+  fileCopy = file;
+  v7 = [(NSMutableDictionary *)self->_lastBytesCopiedByFile objectForKey:fileCopy];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
 
   dst = 0;
-  copyfile_state_get(a4, 8u, &dst);
-  if (v8 != dst)
+  copyfile_state_get(state, 8u, &dst);
+  if (unsignedLongLongValue != dst)
   {
-    v9 = [(NSProgress *)self->_progress completedUnitCount];
-    [(NSProgress *)self->_progress setCompletedUnitCount:v9 - v8 + dst];
+    completedUnitCount = [(NSProgress *)self->_progress completedUnitCount];
+    [(NSProgress *)self->_progress setCompletedUnitCount:completedUnitCount - unsignedLongLongValue + dst];
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:dst];
-    [(NSMutableDictionary *)self->_lastBytesCopiedByFile setObject:v10 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_lastBytesCopiedByFile setObject:v10 forKeyedSubscript:fileCopy];
   }
 }
 
-- (void)finishCopyingFile:(id)a3 state:(_copyfile_state *)a4
+- (void)finishCopyingFile:(id)file state:(_copyfile_state *)state
 {
-  v6 = a3;
-  [(_FPCopyFileStatus *)self updateCopyingFile:v6 state:a4];
-  [(NSMutableDictionary *)self->_lastBytesCopiedByFile removeObjectForKey:v6];
+  fileCopy = file;
+  [(_FPCopyFileStatus *)self updateCopyingFile:fileCopy state:state];
+  [(NSMutableDictionary *)self->_lastBytesCopiedByFile removeObjectForKey:fileCopy];
 }
 
 @end

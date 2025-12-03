@@ -6,9 +6,9 @@
 
 - (id)stringValueTrimmingWhitespace
 {
-  v2 = [(CCItemField *)self stringValue];
+  stringValue = [(CCItemField *)self stringValue];
   v3 = +[NSCharacterSet whitespaceCharacterSet];
-  v4 = [v2 stringByTrimmingCharactersInSet:v3];
+  v4 = [stringValue stringByTrimmingCharactersInSet:v3];
 
   return v4;
 }

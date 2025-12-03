@@ -1,98 +1,98 @@
 @interface CRLPair
-+ (CRLPair)pairWithFirst:(id)a3 second:(id)a4;
-+ (CRLPair)pairWithPair:(id)a3;
++ (CRLPair)pairWithFirst:(id)first second:(id)second;
++ (CRLPair)pairWithPair:(id)pair;
 + (id)pair;
-- (BOOL)isEqual:(id)a3;
-- (CRLPair)initWithCoder:(id)a3;
-- (CRLPair)initWithFirst:(id)a3 second:(id)a4;
-- (CRLPair)initWithPair:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CRLPair)initWithCoder:(id)coder;
+- (CRLPair)initWithFirst:(id)first second:(id)second;
+- (CRLPair)initWithPair:(id)pair;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)p_SetFirst:(id)a3;
-- (void)p_SetSecond:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)p_SetFirst:(id)first;
+- (void)p_SetSecond:(id)second;
 @end
 
 @implementation CRLPair
 
-+ (CRLPair)pairWithFirst:(id)a3 second:(id)a4
++ (CRLPair)pairWithFirst:(id)first second:(id)second
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithFirst:v7 second:v6];
+  secondCopy = second;
+  firstCopy = first;
+  v8 = [[self alloc] initWithFirst:firstCopy second:secondCopy];
 
   return v8;
 }
 
-+ (CRLPair)pairWithPair:(id)a3
++ (CRLPair)pairWithPair:(id)pair
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPair:v4];
+  pairCopy = pair;
+  v5 = [[self alloc] initWithPair:pairCopy];
 
   return v5;
 }
 
 + (id)pair
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (CRLPair)initWithFirst:(id)a3 second:(id)a4
+- (CRLPair)initWithFirst:(id)first second:(id)second
 {
-  v6 = a3;
-  v7 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v11.receiver = self;
   v11.super_class = CRLPair;
   v8 = [(CRLPair *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CRLPair *)v8 p_SetFirst:v6];
-    [(CRLPair *)v9 p_SetSecond:v7];
+    [(CRLPair *)v8 p_SetFirst:firstCopy];
+    [(CRLPair *)v9 p_SetSecond:secondCopy];
   }
 
   return v9;
 }
 
-- (CRLPair)initWithPair:(id)a3
+- (CRLPair)initWithPair:(id)pair
 {
-  v4 = a3;
-  v5 = [v4 first];
-  v6 = [v4 second];
+  pairCopy = pair;
+  first = [pairCopy first];
+  second = [pairCopy second];
 
-  v7 = [(CRLPair *)self initWithFirst:v5 second:v6];
+  v7 = [(CRLPair *)self initWithFirst:first second:second];
   return v7;
 }
 
-- (CRLPair)initWithCoder:(id)a3
+- (CRLPair)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObject];
-  v6 = [v4 decodeObject];
+  coderCopy = coder;
+  decodeObject = [coderCopy decodeObject];
+  decodeObject2 = [coderCopy decodeObject];
 
-  v7 = [(CRLPair *)self initWithFirst:v5 second:v6];
+  v7 = [(CRLPair *)self initWithFirst:decodeObject second:decodeObject2];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRLPair *)self first];
-  [v4 encodeObject:v5];
+  coderCopy = coder;
+  first = [(CRLPair *)self first];
+  [coderCopy encodeObject:first];
 
-  v6 = [(CRLPair *)self second];
-  [v4 encodeObject:v6];
+  second = [(CRLPair *)self second];
+  [coderCopy encodeObject:second];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -102,20 +102,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(CRLPair *)self first];
-      v6 = [(CRLPair *)v4 first];
-      if (v5 | v6 && ![v5 isEqual:v6])
+      first = [(CRLPair *)self first];
+      first2 = [(CRLPair *)equalCopy first];
+      if (first | first2 && ![first isEqual:first2])
       {
         v9 = 0;
       }
 
       else
       {
-        v7 = [(CRLPair *)self second];
-        v8 = [(CRLPair *)v4 second];
-        if (v7 | v8)
+        second = [(CRLPair *)self second];
+        second2 = [(CRLPair *)equalCopy second];
+        if (second | second2)
         {
-          v9 = [v7 isEqual:v8];
+          v9 = [second isEqual:second2];
         }
 
         else
@@ -134,40 +134,40 @@
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = objc_opt_class();
-  v6 = sub_100013F00(v5, v4);
+  v6 = sub_100013F00(v5, compareCopy);
 
   if (!v6)
   {
     goto LABEL_33;
   }
 
-  v7 = [(CRLPair *)self first];
-  v8 = [v6 first];
+  first = [(CRLPair *)self first];
+  first2 = [v6 first];
 
-  if (v7 == v8)
+  if (first == first2)
   {
     goto LABEL_7;
   }
 
-  v9 = [(CRLPair *)self first];
+  first3 = [(CRLPair *)self first];
 
-  if (!v9)
+  if (!first3)
   {
     goto LABEL_33;
   }
 
-  v10 = [v6 first];
+  first4 = [v6 first];
 
-  if (!v10)
+  if (!first4)
   {
     goto LABEL_12;
   }
 
-  v11 = [(CRLPair *)self first];
+  first5 = [(CRLPair *)self first];
   v12 = objc_opt_respondsToSelector();
 
   if ((v12 & 1) == 0)
@@ -197,45 +197,45 @@
 
     v26 = [NSString stringWithUTF8String:"[CRLPair compare:]"];
     v27 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLPair.m"];
-    v28 = [(CRLPair *)self first];
+    first6 = [(CRLPair *)self first];
     [CRLAssertionHandler handleFailureInFunction:v26 file:v27 lineNumber:97 isFatal:0 description:"unable to perform comparison on %{public}@", objc_opt_class()];
 LABEL_32:
 
     goto LABEL_33;
   }
 
-  v13 = [(CRLPair *)self first];
-  v14 = [v6 first];
-  v15 = [v13 compare:v14];
+  first7 = [(CRLPair *)self first];
+  first8 = [v6 first];
+  v15 = [first7 compare:first8];
 
   if (!v15)
   {
 LABEL_7:
-    v16 = [(CRLPair *)self second];
-    v17 = [v6 second];
+    second = [(CRLPair *)self second];
+    second2 = [v6 second];
 
-    if (v16 == v17)
+    if (second == second2)
     {
       v15 = 0;
       goto LABEL_34;
     }
 
-    v18 = [(CRLPair *)self second];
+    second3 = [(CRLPair *)self second];
 
-    if (v18)
+    if (second3)
     {
-      v19 = [v6 second];
+      second4 = [v6 second];
 
-      if (v19)
+      if (second4)
       {
-        v20 = [(CRLPair *)self second];
+        second5 = [(CRLPair *)self second];
         v21 = objc_opt_respondsToSelector();
 
         if (v21)
         {
-          v22 = [(CRLPair *)self second];
-          v23 = [v6 second];
-          v15 = [v22 compare:v23];
+          second6 = [(CRLPair *)self second];
+          second7 = [v6 second];
+          v15 = [second6 compare:second7];
 
           goto LABEL_34;
         }
@@ -265,7 +265,7 @@ LABEL_7:
 
         v26 = [NSString stringWithUTF8String:"[CRLPair compare:]"];
         v27 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLPair.m"];
-        v28 = [(CRLPair *)self second];
+        first6 = [(CRLPair *)self second];
         [CRLAssertionHandler handleFailureInFunction:v26 file:v27 lineNumber:114 isFatal:0 description:"unable to perform comparison on %{public}@", objc_opt_class()];
         goto LABEL_32;
       }
@@ -286,72 +286,72 @@ LABEL_34:
 
 - (unint64_t)hash
 {
-  v3 = [(CRLPair *)self first];
-  v4 = [v3 hash];
-  v5 = [(CRLPair *)self second];
-  v6 = [v5 hash];
+  first = [(CRLPair *)self first];
+  v4 = [first hash];
+  second = [(CRLPair *)self second];
+  v6 = [second hash];
 
   return v6 ^ v4;
 }
 
 - (id)description
 {
-  v3 = [(CRLPair *)self first];
-  v4 = [v3 description];
-  v5 = [(CRLPair *)self second];
-  v6 = [v5 description];
+  first = [(CRLPair *)self first];
+  v4 = [first description];
+  second = [(CRLPair *)self second];
+  v6 = [second description];
   v7 = [NSString stringWithFormat:@"%@, %@", v4, v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(CRLPair *)self first];
-  v6 = [v5 copyWithZone:a3];
+  first = [(CRLPair *)self first];
+  v6 = [first copyWithZone:zone];
 
-  v7 = [(CRLPair *)self second];
-  v8 = [v7 copyWithZone:a3];
+  second = [(CRLPair *)self second];
+  v8 = [second copyWithZone:zone];
 
-  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithFirst:second:", v6, v8}];
+  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithFirst:second:", v6, v8}];
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [(CRLPair *)self first];
-  v6 = [v5 copyWithZone:a3];
+  first = [(CRLPair *)self first];
+  v6 = [first copyWithZone:zone];
 
-  v7 = [(CRLPair *)self second];
-  v8 = [v7 copyWithZone:a3];
+  second = [(CRLPair *)self second];
+  v8 = [second copyWithZone:zone];
 
-  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithFirst:second:", v6, v8}];
+  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithFirst:second:", v6, v8}];
   return v9;
 }
 
-- (void)p_SetFirst:(id)a3
+- (void)p_SetFirst:(id)first
 {
-  v5 = a3;
+  firstCopy = first;
   mFirst = self->mFirst;
   p_mFirst = &self->mFirst;
-  if (mFirst != v5)
+  if (mFirst != firstCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mFirst, a3);
-    v5 = v8;
+    v8 = firstCopy;
+    objc_storeStrong(p_mFirst, first);
+    firstCopy = v8;
   }
 }
 
-- (void)p_SetSecond:(id)a3
+- (void)p_SetSecond:(id)second
 {
-  v5 = a3;
+  secondCopy = second;
   mSecond = self->mSecond;
   p_mSecond = &self->mSecond;
-  if (mSecond != v5)
+  if (mSecond != secondCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mSecond, a3);
-    v5 = v8;
+    v8 = secondCopy;
+    objc_storeStrong(p_mSecond, second);
+    secondCopy = v8;
   }
 }
 

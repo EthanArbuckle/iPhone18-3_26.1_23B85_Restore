@@ -3,36 +3,36 @@
 - (id)backgroundPreviewCubePath;
 - (id)previewCubePath;
 - (id)standbyCubePath;
-- (void)prewarm:(id)a3;
-- (void)prewarmFullSizeRender:(id)a3;
-- (void)prewarmWithContext:(id)a3 andProxyRendering:(BOOL)a4;
+- (void)prewarm:(id)prewarm;
+- (void)prewarmFullSizeRender:(id)render;
+- (void)prewarmWithContext:(id)context andProxyRendering:(BOOL)rendering;
 @end
 
 @implementation CIPortraitEffectV2
 
-- (void)prewarm:(id)a3
+- (void)prewarm:(id)prewarm
 {
-  if ((sub_189F0(kCIPortraitFilterV2ProxySizeBinaryArchive, a3) & 1) == 0)
+  if ((sub_189F0(kCIPortraitFilterV2ProxySizeBinaryArchive, prewarm) & 1) == 0)
   {
 
-    [(CIPortraitEffectV2 *)self prewarmWithContext:a3 andProxyRendering:1];
+    [(CIPortraitEffectV2 *)self prewarmWithContext:prewarm andProxyRendering:1];
   }
 }
 
-- (void)prewarmFullSizeRender:(id)a3
+- (void)prewarmFullSizeRender:(id)render
 {
-  if ((sub_189F0(kCIPortraitFilterV2FullSizeBinaryArchive, a3) & 1) == 0)
+  if ((sub_189F0(kCIPortraitFilterV2FullSizeBinaryArchive, render) & 1) == 0)
   {
 
-    [(CIPortraitEffectV2 *)self prewarmWithContext:a3 andProxyRendering:0];
+    [(CIPortraitEffectV2 *)self prewarmWithContext:render andProxyRendering:0];
   }
 }
 
-- (void)prewarmWithContext:(id)a3 andProxyRendering:(BOOL)a4
+- (void)prewarmWithContext:(id)context andProxyRendering:(BOOL)rendering
 {
-  v4 = a4;
+  renderingCopy = rendering;
   context = objc_autoreleasePoolPush();
-  if (!a3)
+  if (!context)
   {
     v24[0] = kCIContextWorkingFormat;
     v25[0] = [NSNumber numberWithInt:kCIFormatRGBAh];
@@ -42,7 +42,7 @@
     v24[3] = kCIContextUseMetalRenderer;
     v25[2] = &__kCFBooleanFalse;
     v25[3] = &__kCFBooleanTrue;
-    a3 = [CIContext contextWithOptions:[NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:4]];
+    context = [CIContext contextWithOptions:[NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:4]];
   }
 
   v6 = malloc_type_calloc(0x20uLL, 0x80uLL, 0x6E1F1EB9uLL);
@@ -54,7 +54,7 @@
   v11 = [CIImage imageWithColor:v10];
   do
   {
-    [a3 prepareRender:-[CIImage imageByApplyingGaussianBlurWithSigma:](v11 fromRect:"imageByApplyingGaussianBlurWithSigma:" toDestination:v9) atPoint:v8 error:{0, 0.0, 0.0, objc_msgSend(v8, "width"), objc_msgSend(v8, "height"), CGPointZero.x, CGPointZero.y}];
+    [context prepareRender:-[CIImage imageByApplyingGaussianBlurWithSigma:](v11 fromRect:"imageByApplyingGaussianBlurWithSigma:" toDestination:v9) atPoint:v8 error:{0, 0.0, 0.0, objc_msgSend(v8, "width"), objc_msgSend(v8, "height"), CGPointZero.x, CGPointZero.y}];
     v9 = v9 + 0.1;
   }
 
@@ -79,7 +79,7 @@
           objc_enumerationMutation(&off_7DFF0);
         }
 
-        [(PortraitEffetcPrewarm *)v12 run:*(*(&v19 + 1) + 8 * v16) withContext:a3 withFaceScales:&off_7E008 withProxyRendering:v4];
+        [(PortraitEffetcPrewarm *)v12 run:*(*(&v19 + 1) + 8 * v16) withContext:context withFaceScales:&off_7E008 withProxyRendering:renderingCopy];
         v16 = v16 + 1;
       }
 
@@ -90,8 +90,8 @@
     while (v14);
   }
 
-  [(PortraitEffetcPrewarm *)v12 run:@"CIPortraitEffectContourV2" withContext:a3 withFaceScales:&off_7E020 withProxyRendering:v4];
-  [(PortraitEffetcPrewarm *)v12 run:@"CIPortraitEffectStageV2" withContext:a3 withFaceScales:&off_7E038 withProxyRendering:v4];
+  [(PortraitEffetcPrewarm *)v12 run:@"CIPortraitEffectContourV2" withContext:context withFaceScales:&off_7E020 withProxyRendering:renderingCopy];
+  [(PortraitEffetcPrewarm *)v12 run:@"CIPortraitEffectStageV2" withContext:context withFaceScales:&off_7E038 withProxyRendering:renderingCopy];
 
   free(v17);
   objc_autoreleasePoolPop(context);
@@ -169,9 +169,9 @@
   if (result)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = [(CIPortraitEffectV2 *)self previewCubeName];
+    previewCubeName = [(CIPortraitEffectV2 *)self previewCubeName];
 
-    return [(NSBundle *)v4 pathForResource:v5 ofType:@"scube"];
+    return [(NSBundle *)v4 pathForResource:previewCubeName ofType:@"scube"];
   }
 
   return result;
@@ -183,9 +183,9 @@
   if (result)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = [(CIPortraitEffectV2 *)self standbyCubeName];
+    standbyCubeName = [(CIPortraitEffectV2 *)self standbyCubeName];
 
-    return [(NSBundle *)v4 pathForResource:v5 ofType:@"scube"];
+    return [(NSBundle *)v4 pathForResource:standbyCubeName ofType:@"scube"];
   }
 
   return result;
@@ -197,9 +197,9 @@
   if (result)
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = [(CIPortraitEffectV2 *)self backgroundPreviewCubeName];
+    backgroundPreviewCubeName = [(CIPortraitEffectV2 *)self backgroundPreviewCubeName];
 
-    return [(NSBundle *)v4 pathForResource:v5 ofType:@"scube"];
+    return [(NSBundle *)v4 pathForResource:backgroundPreviewCubeName ofType:@"scube"];
   }
 
   return result;

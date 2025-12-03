@@ -1,24 +1,24 @@
 @interface HFDataAnalyticsLogItem
 + (NAIdentity)na_identity;
 - (BOOL)isDisplayDisabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HFDataAnalyticsLogItem)init;
-- (HFDataAnalyticsLogItem)initWithMediaProfileContainer:(id)a3 name:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFDataAnalyticsLogItem)initWithMediaProfileContainer:(id)container name:(id)name;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)fetchLog;
 - (unint64_t)hash;
 @end
 
 @implementation HFDataAnalyticsLogItem
 
-- (HFDataAnalyticsLogItem)initWithMediaProfileContainer:(id)a3 name:(id)a4
+- (HFDataAnalyticsLogItem)initWithMediaProfileContainer:(id)container name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  containerCopy = container;
+  nameCopy = name;
+  v10 = nameCopy;
+  if (containerCopy)
   {
-    if (v9)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
@@ -26,8 +26,8 @@
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItem.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItem.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
 
     if (v10)
     {
@@ -35,8 +35,8 @@
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItem.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
 LABEL_3:
   v18.receiver = self;
@@ -45,7 +45,7 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_mediaProfileContainer, a3);
+    objc_storeStrong(&v11->_mediaProfileContainer, container);
     v13 = [v10 copy];
     name = v12->_name;
     v12->_name = v13;
@@ -56,18 +56,18 @@ LABEL_3:
 
 - (HFDataAnalyticsLogItem)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithMediaProfileContainer_name_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItem.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HFDataAnalyticsLogItem init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFDataAnalyticsLogItem.m" lineNumber:40 description:{@"%s is unavailable; use %@ instead", "-[HFDataAnalyticsLogItem init]", v5}];
 
   return 0;
 }
 
 - (id)fetchLog
 {
-  v3 = [(HFDataAnalyticsLogItem *)self mediaProfileContainer];
-  v4 = [(HFDataAnalyticsLogItem *)self name];
-  v5 = [v3 hf_fetchLog:v4 timeout:*&kHFDataAnalyticsFetchLogTimeout];
+  mediaProfileContainer = [(HFDataAnalyticsLogItem *)self mediaProfileContainer];
+  name = [(HFDataAnalyticsLogItem *)self name];
+  v5 = [mediaProfileContainer hf_fetchLog:name timeout:*&kHFDataAnalyticsFetchLogTimeout];
   v6 = [v5 flatMap:&__block_literal_global_234];
 
   return v6;
@@ -134,9 +134,9 @@ LABEL_6:
   return v12;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D2C900];
   v8[0] = MEMORY[0x277D85DD0];
@@ -172,16 +172,16 @@ void __54__HFDataAnalyticsLogItem__subclass_updateWithOptions___block_invoke(uin
 
 - (BOOL)isDisplayDisabled
 {
-  v2 = [(HFDataAnalyticsLogItem *)self mediaProfileContainer];
-  v3 = [v2 settings];
+  mediaProfileContainer = [(HFDataAnalyticsLogItem *)self mediaProfileContainer];
+  settings = [mediaProfileContainer settings];
 
-  if (v3)
+  if (settings)
   {
-    v4 = [v2 settings];
-    LODWORD(v3) = [v4 isControllable] ^ 1;
+    settings2 = [mediaProfileContainer settings];
+    LODWORD(settings) = [settings2 isControllable] ^ 1;
   }
 
-  return v3;
+  return settings;
 }
 
 + (NAIdentity)na_identity
@@ -216,17 +216,17 @@ id __37__HFDataAnalyticsLogItem_na_identity__block_invoke_3(uint64_t a1, void *a
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }

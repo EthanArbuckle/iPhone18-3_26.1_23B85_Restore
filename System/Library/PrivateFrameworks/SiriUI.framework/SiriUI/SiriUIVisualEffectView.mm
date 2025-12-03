@@ -1,16 +1,16 @@
 @interface SiriUIVisualEffectView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
 - (void)layoutSubviews;
-- (void)setCustomView:(id)a3;
+- (void)setCustomView:(id)view;
 @end
 
 @implementation SiriUIVisualEffectView
 
-- (void)setCustomView:(id)a3
+- (void)setCustomView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   customView = self->_customView;
   if (customView)
   {
@@ -18,13 +18,13 @@
   }
 
   v6 = self->_customView;
-  self->_customView = v4;
-  v7 = v4;
+  self->_customView = viewCopy;
+  v7 = viewCopy;
 
   v9.receiver = self;
   v9.super_class = SiriUIVisualEffectView;
-  v8 = [(SiriUIVisualEffectView *)&v9 contentView];
-  [v8 addSubview:v7];
+  contentView = [(SiriUIVisualEffectView *)&v9 contentView];
+  [contentView addSubview:v7];
 
   [(SiriUIVisualEffectView *)self invalidateIntrinsicContentSize];
 }
@@ -39,9 +39,9 @@
   [(UIView *)customView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIView *)self->_customView sizeThatFits:a3.width, a3.height];
+  [(UIView *)self->_customView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -55,9 +55,9 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  [(UIView *)self->_customView systemLayoutSizeFittingSize:a3.width, a3.height];
+  [(UIView *)self->_customView systemLayoutSizeFittingSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;

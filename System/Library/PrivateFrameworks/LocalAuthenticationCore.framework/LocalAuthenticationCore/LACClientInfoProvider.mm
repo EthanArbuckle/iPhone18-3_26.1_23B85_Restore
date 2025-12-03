@@ -1,14 +1,14 @@
 @interface LACClientInfoProvider
 + (LACClientInfoProvider)sharedInstance;
-- (BOOL)_isNonUiExtensionPointIdentifier:(id)a3;
+- (BOOL)_isNonUiExtensionPointIdentifier:(id)identifier;
 - (BOOL)canCallToDependencies;
-- (BOOL)processId:(int)a3 toAuditToken:(id *)a4;
-- (id)_infoForClientWithApplicationIdentityData:(id)a3;
-- (id)_infoForClientWithAuditToken:(id *)a3;
-- (id)_infoForClientWithAuditTokenData:(id)a3;
-- (id)_infoForClientWithBundleRecord:(id)a3;
-- (id)infoForXPCClient:(id)a3 evaluationOptions:(id)a4;
-- (int)processIdForAuditToken:(id *)a3;
+- (BOOL)processId:(int)id toAuditToken:(id *)token;
+- (id)_infoForClientWithApplicationIdentityData:(id)data;
+- (id)_infoForClientWithAuditToken:(id *)token;
+- (id)_infoForClientWithAuditTokenData:(id)data;
+- (id)_infoForClientWithBundleRecord:(id)record;
+- (id)infoForXPCClient:(id)client evaluationOptions:(id)options;
+- (int)processIdForAuditToken:(id *)token;
 @end
 
 @implementation LACClientInfoProvider
@@ -32,26 +32,26 @@ uint64_t __39__LACClientInfoProvider_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)infoForXPCClient:(id)a3 evaluationOptions:(id)a4
+- (id)infoForXPCClient:(id)client evaluationOptions:(id)options
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  optionsCopy = options;
   if ([(LACClientInfoProvider *)self canCallToDependencies])
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:1038];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    v9 = [optionsCopy objectForKeyedSubscript:v8];
 
     v10 = [MEMORY[0x1E696AD98] numberWithInteger:1080];
-    v11 = [v7 objectForKeyedSubscript:v10];
-    v12 = [v11 integerValue];
+    v11 = [optionsCopy objectForKeyedSubscript:v10];
+    integerValue = [v11 integerValue];
 
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:1021];
-    v14 = [v7 objectForKeyedSubscript:v13];
+    v14 = [optionsCopy objectForKeyedSubscript:v13];
     if (v14)
     {
       v15 = v14;
-      v16 = [v6 checkEntitlement:@"com.apple.private.LocalAuthentication.CallerName"];
+      v16 = [clientCopy checkEntitlement:@"com.apple.private.LocalAuthentication.CallerName"];
 
       if (!v16)
       {
@@ -65,7 +65,7 @@ uint64_t __39__LACClientInfoProvider_sharedInstance__block_invoke()
       }
 
       v13 = [MEMORY[0x1E696AD98] numberWithInteger:1021];
-      v17 = [v7 objectForKeyedSubscript:v13];
+      v17 = [optionsCopy objectForKeyedSubscript:v13];
     }
 
     else
@@ -76,7 +76,7 @@ uint64_t __39__LACClientInfoProvider_sharedInstance__block_invoke()
     if (v9)
     {
 LABEL_10:
-      if ((v12 & 4) != 0)
+      if ((integerValue & 4) != 0)
       {
         [(LACClientInfoProvider *)self _infoForClientWithApplicationIdentityData:v9];
       }
@@ -91,8 +91,8 @@ LABEL_19:
       if ([v17 length])
       {
         v21 = [LACClientInfo alloc];
-        v22 = [v19 bundleId];
-        v23 = [(LACClientInfo *)v21 initWithBundleId:v22 displayName:v17];
+        bundleId = [v19 bundleId];
+        v23 = [(LACClientInfo *)v21 initWithBundleId:bundleId displayName:v17];
 
         v19 = v23;
       }
@@ -101,9 +101,9 @@ LABEL_19:
     }
 
 LABEL_14:
-    if (v6)
+    if (clientCopy)
     {
-      [v6 auditToken];
+      [clientCopy auditToken];
     }
 
     else
@@ -120,7 +120,7 @@ LABEL_14:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(v26) = 67109120;
-    DWORD1(v26) = [v6 processId];
+    DWORD1(v26) = [clientCopy processId];
     _os_log_impl(&dword_1B0233000, v18, OS_LOG_TYPE_DEFAULT, "Skipping resolution of bundle ID for pid %d - migration in progress", &v26, 8u);
   }
 
@@ -132,18 +132,18 @@ LABEL_22:
   return v19;
 }
 
-- (int)processIdForAuditToken:(id *)a3
+- (int)processIdForAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *v5.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *v5.val = *token->var0;
   *&v5.val[4] = v3;
   return audit_token_to_pid(&v5);
 }
 
-- (BOOL)processId:(int)a3 toAuditToken:(id *)a4
+- (BOOL)processId:(int)id toAuditToken:(id *)token
 {
   tn = 0;
-  if (task_name_for_pid(*MEMORY[0x1E69E9A60], a3, &tn))
+  if (task_name_for_pid(*MEMORY[0x1E69E9A60], id, &tn))
   {
     v6 = LACLogDefault();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -157,7 +157,7 @@ LABEL_22:
   else
   {
     task_info_outCnt = 8;
-    v8 = task_info(tn, 0xFu, a4, &task_info_outCnt);
+    v8 = task_info(tn, 0xFu, token, &task_info_outCnt);
     v7 = v8 == 0;
     v9 = LACLogDefault();
     v10 = v9;
@@ -171,18 +171,18 @@ LABEL_22:
 
     else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [LACClientInfoProvider processId:a3 toAuditToken:v10];
+      [LACClientInfoProvider processId:id toAuditToken:v10];
     }
   }
 
   return v7;
 }
 
-- (id)_infoForClientWithAuditTokenData:(id)a3
+- (id)_infoForClientWithAuditTokenData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = [MEMORY[0x1E696B098] valueWithBytes:objc_msgSend(a3 objCType:{"bytes"), "{?=[8I]}"}];
+    v4 = [MEMORY[0x1E696B098] valueWithBytes:objc_msgSend(data objCType:{"bytes"), "{?=[8I]}"}];
     v5 = v4;
     if (v4)
     {
@@ -216,13 +216,13 @@ LABEL_22:
   return v7;
 }
 
-- (id)_infoForClientWithApplicationIdentityData:(id)a3
+- (id)_infoForClientWithApplicationIdentityData:(id)data
 {
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
     v16 = 0;
-    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:&v16];
+    v5 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v16];
     v6 = v16;
     v7 = v6;
     if (v5)
@@ -272,11 +272,11 @@ LABEL_22:
   return v11;
 }
 
-- (id)_infoForClientWithAuditToken:(id *)a3
+- (id)_infoForClientWithAuditToken:(id *)token
 {
   v12 = 0;
-  v4 = *&a3->var0[4];
-  v11[0] = *a3->var0;
+  v4 = *&token->var0[4];
+  v11[0] = *token->var0;
   v11[1] = v4;
   v5 = [MEMORY[0x1E6963620] bundleRecordForAuditToken:v11 error:&v12];
   v6 = v12;
@@ -301,40 +301,40 @@ LABEL_22:
   return v9;
 }
 
-- (id)_infoForClientWithBundleRecord:(id)a3
+- (id)_infoForClientWithBundleRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  if (v4)
+  recordCopy = record;
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  if (recordCopy)
   {
-    v6 = [v4 localizedName];
-    v7 = v6;
-    if (v6)
+    localizedName = [recordCopy localizedName];
+    v7 = localizedName;
+    if (localizedName)
     {
-      v8 = v6;
+      v8 = localizedName;
     }
 
     else
     {
-      v9 = [v4 localizedShortName];
-      v10 = v9;
-      if (v9)
+      localizedShortName = [recordCopy localizedShortName];
+      v10 = localizedShortName;
+      if (localizedShortName)
       {
-        v8 = v9;
+        v8 = localizedShortName;
       }
 
       else
       {
-        v11 = [v4 bundleIdentifier];
-        v12 = v11;
-        if (v11)
+        bundleIdentifier2 = [recordCopy bundleIdentifier];
+        v12 = bundleIdentifier2;
+        if (bundleIdentifier2)
         {
-          v13 = v11;
+          v13 = bundleIdentifier2;
         }
 
         else
         {
-          v13 = v5;
+          v13 = bundleIdentifier;
         }
 
         v8 = v13;
@@ -350,45 +350,45 @@ LABEL_22:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v4;
+    v14 = recordCopy;
     v15 = v14;
-    if (v4)
+    if (recordCopy)
     {
-      v16 = [v14 extensionPointRecord];
-      v17 = [v16 identifier];
+      extensionPointRecord = [v14 extensionPointRecord];
+      identifier = [extensionPointRecord identifier];
 
-      if ([v17 isEqualToString:@"com.apple.intents-service"])
+      if ([identifier isEqualToString:@"com.apple.intents-service"])
       {
 
-        v5 = @"com.apple.siri";
+        bundleIdentifier = @"com.apple.siri";
       }
 
-      if (![(LACClientInfoProvider *)self _isNonUiExtensionPointIdentifier:v17])
+      if (![(LACClientInfoProvider *)self _isNonUiExtensionPointIdentifier:identifier])
       {
-        v18 = [v15 containingBundleRecord];
-        v19 = [v18 bundleIdentifier];
+        containingBundleRecord = [v15 containingBundleRecord];
+        bundleIdentifier3 = [containingBundleRecord bundleIdentifier];
 
-        v8 = v19;
+        v8 = bundleIdentifier3;
       }
     }
   }
 
-  v20 = [[LACClientInfo alloc] initWithBundleId:v5 displayName:v8];
+  v20 = [[LACClientInfo alloc] initWithBundleId:bundleIdentifier displayName:v8];
 
   return v20;
 }
 
-- (BOOL)_isNonUiExtensionPointIdentifier:(id)a3
+- (BOOL)_isNonUiExtensionPointIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.services"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.ctk-tokens"))
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"com.apple.services"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"com.apple.ctk-tokens"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.Safari.web-extension"];
+    v4 = [identifierCopy isEqualToString:@"com.apple.Safari.web-extension"];
   }
 
   return v4;
@@ -397,9 +397,9 @@ LABEL_22:
 - (BOOL)canCallToDependencies
 {
   v2 = +[LACSetUpStateProvider sharedInstance];
-  v3 = [v2 hasCompletedSetup];
+  hasCompletedSetup = [v2 hasCompletedSetup];
 
-  return v3;
+  return hasCompletedSetup;
 }
 
 - (void)applicationIdentityDataForProcessId:.cold.1()

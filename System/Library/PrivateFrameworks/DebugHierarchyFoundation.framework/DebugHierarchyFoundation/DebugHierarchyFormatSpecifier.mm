@@ -1,31 +1,31 @@
 @interface DebugHierarchyFormatSpecifier
-+ (id)specifierWithFormat:(id)a3 label:(id)a4;
-- (DebugHierarchyFormatSpecifier)initWithFormat:(id)a3 label:(id)a4;
++ (id)specifierWithFormat:(id)format label:(id)label;
+- (DebugHierarchyFormatSpecifier)initWithFormat:(id)format label:(id)label;
 @end
 
 @implementation DebugHierarchyFormatSpecifier
 
-+ (id)specifierWithFormat:(id)a3 label:(id)a4
++ (id)specifierWithFormat:(id)format label:(id)label
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithFormat:v7 label:v6];
+  labelCopy = label;
+  formatCopy = format;
+  v8 = [[self alloc] initWithFormat:formatCopy label:labelCopy];
 
   return v8;
 }
 
-- (DebugHierarchyFormatSpecifier)initWithFormat:(id)a3 label:(id)a4
+- (DebugHierarchyFormatSpecifier)initWithFormat:(id)format label:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  formatCopy = format;
+  labelCopy = label;
   v12.receiver = self;
   v12.super_class = DebugHierarchyFormatSpecifier;
   v9 = [(DebugHierarchyFormatSpecifier *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_format, a3);
-    objc_storeStrong(&v10->_label, a4);
+    objc_storeStrong(&v9->_format, format);
+    objc_storeStrong(&v10->_label, label);
   }
 
   return v10;

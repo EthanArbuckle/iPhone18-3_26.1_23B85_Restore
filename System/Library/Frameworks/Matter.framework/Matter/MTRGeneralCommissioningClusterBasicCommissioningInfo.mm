@@ -1,6 +1,6 @@
 @interface MTRGeneralCommissioningClusterBasicCommissioningInfo
 - (MTRGeneralCommissioningClusterBasicCommissioningInfo)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGeneralCommissioningClusterBasicCommissioningInfo);
-  v5 = [(MTRGeneralCommissioningClusterBasicCommissioningInfo *)self failSafeExpiryLengthSeconds];
-  [(MTRGeneralCommissioningClusterBasicCommissioningInfo *)v4 setFailSafeExpiryLengthSeconds:v5];
+  failSafeExpiryLengthSeconds = [(MTRGeneralCommissioningClusterBasicCommissioningInfo *)self failSafeExpiryLengthSeconds];
+  [(MTRGeneralCommissioningClusterBasicCommissioningInfo *)v4 setFailSafeExpiryLengthSeconds:failSafeExpiryLengthSeconds];
 
-  v6 = [(MTRGeneralCommissioningClusterBasicCommissioningInfo *)self maxCumulativeFailsafeSeconds];
-  [(MTRGeneralCommissioningClusterBasicCommissioningInfo *)v4 setMaxCumulativeFailsafeSeconds:v6];
+  maxCumulativeFailsafeSeconds = [(MTRGeneralCommissioningClusterBasicCommissioningInfo *)self maxCumulativeFailsafeSeconds];
+  [(MTRGeneralCommissioningClusterBasicCommissioningInfo *)v4 setMaxCumulativeFailsafeSeconds:maxCumulativeFailsafeSeconds];
 
   return v4;
 }

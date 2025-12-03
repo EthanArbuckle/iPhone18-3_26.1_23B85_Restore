@@ -6,16 +6,16 @@
 
 - (uint64_t)inferParticipantPermissions
 {
-  v2 = [a1 participants];
-  if ([v2 count] < 2)
+  participants = [self participants];
+  if ([participants count] < 2)
   {
     v4 = 2;
   }
 
   else
   {
-    v3 = [a1 participants];
-    if ([v3 br_all_of:&__block_literal_global_45])
+    participants2 = [self participants];
+    if ([participants2 br_all_of:&__block_literal_global_45])
     {
       v4 = 3;
     }

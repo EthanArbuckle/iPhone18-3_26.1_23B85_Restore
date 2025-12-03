@@ -1,41 +1,41 @@
 @interface PolicyOptionsSanitizer
-- (BOOL)_fallbackTextShouldBeDefaultForMechanismUIWithState:(id)a3;
-- (BOOL)_fallbackTextShouldBeVisibleForMechanismUIWithState:(id)a3;
-- (BOOL)_needsAdditionalDTOOptionsForMechanismUIWithState:(id)a3;
-- (BOOL)_needsAdditionalPolicyOptionsForMechanismUIWithState:(id)a3;
-- (id)additionalInternalInfoForMechanismUIWithState:(id)a3;
+- (BOOL)_fallbackTextShouldBeDefaultForMechanismUIWithState:(id)state;
+- (BOOL)_fallbackTextShouldBeVisibleForMechanismUIWithState:(id)state;
+- (BOOL)_needsAdditionalDTOOptionsForMechanismUIWithState:(id)state;
+- (BOOL)_needsAdditionalPolicyOptionsForMechanismUIWithState:(id)state;
+- (id)additionalInternalInfoForMechanismUIWithState:(id)state;
 @end
 
 @implementation PolicyOptionsSanitizer
 
-- (id)additionalInternalInfoForMechanismUIWithState:(id)a3
+- (id)additionalInternalInfoForMechanismUIWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_opt_new();
-  if ([(PolicyOptionsSanitizer *)self _needsAdditionalPolicyOptionsForMechanismUIWithState:v4])
+  if ([(PolicyOptionsSanitizer *)self _needsAdditionalPolicyOptionsForMechanismUIWithState:stateCopy])
   {
     v6 = objc_opt_new();
-    v7 = [v4 policyOptions];
+    policyOptions = [stateCopy policyOptions];
     v8 = *MEMORY[0x277D23F88];
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23F88]];
-    v10 = [v7 objectForKeyedSubscript:v9];
+    v10 = [policyOptions objectForKeyedSubscript:v9];
 
-    if (!v10 && [(PolicyOptionsSanitizer *)self _fallbackTextShouldBeVisibleForMechanismUIWithState:v4])
+    if (!v10 && [(PolicyOptionsSanitizer *)self _fallbackTextShouldBeVisibleForMechanismUIWithState:stateCopy])
     {
       v11 = [MEMORY[0x277CCABB0] numberWithInteger:v8];
       [v6 setObject:MEMORY[0x277CBEC38] forKey:v11];
     }
 
-    v12 = [v4 policyOptions];
+    policyOptions2 = [stateCopy policyOptions];
     v13 = *MEMORY[0x277D23FC0];
     v14 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23FC0]];
-    v15 = [v12 objectForKeyedSubscript:v14];
+    v15 = [policyOptions2 objectForKeyedSubscript:v14];
 
-    if (!v15 && [(PolicyOptionsSanitizer *)self _fallbackTextShouldBeDefaultForMechanismUIWithState:v4])
+    if (!v15 && [(PolicyOptionsSanitizer *)self _fallbackTextShouldBeDefaultForMechanismUIWithState:stateCopy])
     {
-      v16 = [v4 defaultFallbackText];
+      defaultFallbackText = [stateCopy defaultFallbackText];
       v17 = [MEMORY[0x277CCABB0] numberWithInteger:v13];
-      [v6 setObject:v16 forKey:v17];
+      [v6 setObject:defaultFallbackText forKey:v17];
     }
 
     if ([v6 count])
@@ -44,24 +44,24 @@
     }
   }
 
-  if ([(PolicyOptionsSanitizer *)self _needsAdditionalDTOOptionsForMechanismUIWithState:v4])
+  if ([(PolicyOptionsSanitizer *)self _needsAdditionalDTOOptionsForMechanismUIWithState:stateCopy])
   {
     v18 = objc_opt_new();
-    v19 = [v4 backgroundMechanism];
-    [v19 coolOffDuration];
+    backgroundMechanism = [stateCopy backgroundMechanism];
+    [backgroundMechanism coolOffDuration];
     if (v20 > 0.0)
     {
       v21 = MEMORY[0x277CCABB0];
-      [v19 coolOffDuration];
+      [backgroundMechanism coolOffDuration];
       v22 = [v21 numberWithDouble:?];
       [v18 setObject:v22 forKey:@"CoolOffDuration"];
     }
 
-    [v19 gracePeriodDuration];
+    [backgroundMechanism gracePeriodDuration];
     if (v23 > 0.0)
     {
       v24 = MEMORY[0x277CCABB0];
-      [v19 gracePeriodDuration];
+      [backgroundMechanism gracePeriodDuration];
       v25 = [v24 numberWithDouble:?];
       [v18 setObject:v25 forKey:@"GracePeriodDuration"];
     }
@@ -75,23 +75,23 @@
   return v5;
 }
 
-- (BOOL)_needsAdditionalPolicyOptionsForMechanismUIWithState:(id)a3
+- (BOOL)_needsAdditionalPolicyOptionsForMechanismUIWithState:(id)state
 {
-  v3 = [a3 backgroundMechanism];
-  v4 = [v3 eventIdentifier];
+  backgroundMechanism = [state backgroundMechanism];
+  eventIdentifier = [backgroundMechanism eventIdentifier];
 
-  return v4 == 1 || v4 == 7;
+  return eventIdentifier == 1 || eventIdentifier == 7;
 }
 
-- (BOOL)_needsAdditionalDTOOptionsForMechanismUIWithState:(id)a3
+- (BOOL)_needsAdditionalDTOOptionsForMechanismUIWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 backgroundMechanism];
-  v5 = [v4 eventIdentifier];
+  stateCopy = state;
+  backgroundMechanism = [stateCopy backgroundMechanism];
+  eventIdentifier = [backgroundMechanism eventIdentifier];
 
-  if (v5 == 12)
+  if (eventIdentifier == 12)
   {
-    v6 = [v3 backgroundMechanism];
+    backgroundMechanism2 = [stateCopy backgroundMechanism];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -104,24 +104,24 @@
   return isKindOfClass & 1;
 }
 
-- (BOOL)_fallbackTextShouldBeVisibleForMechanismUIWithState:(id)a3
+- (BOOL)_fallbackTextShouldBeVisibleForMechanismUIWithState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 policyOptions];
+  stateCopy = state;
+  policyOptions = [stateCopy policyOptions];
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23F88]];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  v6 = [policyOptions objectForKeyedSubscript:v5];
 
   if (v6)
   {
     LOBYTE(v7) = [v6 BOOLValue];
   }
 
-  else if ([v3 policy])
+  else if ([stateCopy policy])
   {
-    v9 = [v3 policy];
-    if (v9 == *MEMORY[0x277D23F28])
+    policy = [stateCopy policy];
+    if (policy == *MEMORY[0x277D23F28])
     {
-      v7 = [v3 clientIsUsingCAPI] ^ 1;
+      v7 = [stateCopy clientIsUsingCAPI] ^ 1;
     }
 
     else
@@ -132,12 +132,12 @@
 
   else
   {
-    v10 = [v3 policyOptions];
+    policyOptions2 = [stateCopy policyOptions];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:*MEMORY[0x277D23FC0]];
-    v12 = [v10 objectForKeyedSubscript:v11];
+    v12 = [policyOptions2 objectForKeyedSubscript:v11];
 
-    v13 = [v3 fallbackMechanism];
-    if (v13)
+    fallbackMechanism = [stateCopy fallbackMechanism];
+    if (fallbackMechanism)
     {
       LOBYTE(v7) = 1;
     }
@@ -151,13 +151,13 @@
   return v7;
 }
 
-- (BOOL)_fallbackTextShouldBeDefaultForMechanismUIWithState:(id)a3
+- (BOOL)_fallbackTextShouldBeDefaultForMechanismUIWithState:(id)state
 {
-  v4 = a3;
-  if ([(PolicyOptionsSanitizer *)self _fallbackTextShouldBeVisibleForMechanismUIWithState:v4])
+  stateCopy = state;
+  if ([(PolicyOptionsSanitizer *)self _fallbackTextShouldBeVisibleForMechanismUIWithState:stateCopy])
   {
-    v5 = [v4 policy];
-    v6 = v5 != *MEMORY[0x277D23F28];
+    policy = [stateCopy policy];
+    v6 = policy != *MEMORY[0x277D23F28];
   }
 
   else

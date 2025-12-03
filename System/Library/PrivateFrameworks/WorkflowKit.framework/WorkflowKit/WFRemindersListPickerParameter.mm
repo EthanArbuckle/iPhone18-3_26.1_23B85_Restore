@@ -1,9 +1,9 @@
 @interface WFRemindersListPickerParameter
-- (WFRemindersListPickerParameter)initWithDefinition:(id)a3;
-- (id)accessoryColorForPossibleState:(id)a3;
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5;
+- (WFRemindersListPickerParameter)initWithDefinition:(id)definition;
+- (id)accessoryColorForPossibleState:(id)state;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler;
 - (void)storeDidChange;
 - (void)wasAddedToWorkflow;
 - (void)wasRemovedFromWorkflow;
@@ -11,14 +11,14 @@
 
 @implementation WFRemindersListPickerParameter
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 value];
-  v8 = [v7 allCalendars];
+  enumerationCopy = enumeration;
+  stateCopy = state;
+  value = [stateCopy value];
+  allCalendars = [value allCalendars];
 
-  if (v8)
+  if (allCalendars)
   {
     v9 = WFLocalizedString(@"All Lists");
   }
@@ -43,23 +43,23 @@
 
     v11 = v10;
     _Block_object_dispose(&v16, 8);
-    v12 = [v6 value];
-    v13 = [v12 calendarTitle];
-    v9 = [v10 displayNameFromListName:v13 isPlaceholder:0];
+    value2 = [stateCopy value];
+    calendarTitle = [value2 calendarTitle];
+    v9 = [v10 displayNameFromListName:calendarTitle isPlaceholder:0];
   }
 
   return v9;
 }
 
-- (void)loadPossibleStatesForEnumeration:(id)a3 searchTerm:(id)a4 completionHandler:(id)a5
+- (void)loadPossibleStatesForEnumeration:(id)enumeration searchTerm:(id)term completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [MEMORY[0x1E6996F38] allLists];
+  handlerCopy = handler;
+  allLists = [MEMORY[0x1E6996F38] allLists];
   v8 = objc_opt_new();
   v9 = [WFCalendarSubstitutableState alloc];
-  v10 = [[WFEKCalendarDescriptor alloc] initWithAllCalendars];
-  v11 = [(WFVariableSubstitutableParameterState *)v9 initWithValue:v10];
+  initWithAllCalendars = [[WFEKCalendarDescriptor alloc] initWithAllCalendars];
+  v11 = [(WFVariableSubstitutableParameterState *)v9 initWithValue:initWithAllCalendars];
 
   if ([(WFRemindersListPickerParameter *)self allowsAllLists])
   {
@@ -70,7 +70,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = v7;
+  v12 = allLists;
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v13)
   {
@@ -103,47 +103,47 @@
 
   [(WFDynamicEnumerationParameter *)self defaultSerializedRepresentationDidChange];
   v20 = [objc_alloc(MEMORY[0x1E696E918]) initWithItems:v8];
-  v6[2](v6, v20, 0);
+  handlerCopy[2](handlerCopy, v20, 0);
 
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration
 {
-  v3 = [(WFRemindersListPickerParameter *)self allowsAllLists];
+  allowsAllLists = [(WFRemindersListPickerParameter *)self allowsAllLists];
   v4 = [WFCalendarSubstitutableState alloc];
-  if (v3)
+  if (allowsAllLists)
   {
-    v5 = [[WFEKCalendarDescriptor alloc] initWithAllCalendars];
-    v6 = [(WFVariableSubstitutableParameterState *)v4 initWithValue:v5];
+    initWithAllCalendars = [[WFEKCalendarDescriptor alloc] initWithAllCalendars];
+    v6 = [(WFVariableSubstitutableParameterState *)v4 initWithValue:initWithAllCalendars];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E6996F38] defaultList];
-    v6 = [(WFCalendarSubstitutableState *)v4 initWithRemindersList:v5];
+    initWithAllCalendars = [MEMORY[0x1E6996F38] defaultList];
+    v6 = [(WFCalendarSubstitutableState *)v4 initWithRemindersList:initWithAllCalendars];
   }
 
   v7 = v6;
 
-  v8 = [v7 serializedRepresentation];
+  serializedRepresentation = [v7 serializedRepresentation];
 
-  return v8;
+  return serializedRepresentation;
 }
 
-- (id)accessoryColorForPossibleState:(id)a3
+- (id)accessoryColorForPossibleState:(id)state
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 value];
-  v5 = [v4 calendarRGBAValue];
+  stateCopy = state;
+  value = [stateCopy value];
+  calendarRGBAValue = [value calendarRGBAValue];
 
-  if (v5)
+  if (calendarRGBAValue)
   {
     v6 = MEMORY[0x1E69E09E0];
-    v7 = [v3 value];
-    v8 = [v7 calendarRGBAValue];
-    v9 = [v6 colorWithRGBAValue:{objc_msgSend(v8, "unsignedIntValue")}];
+    value2 = [stateCopy value];
+    calendarRGBAValue2 = [value2 calendarRGBAValue];
+    v9 = [v6 colorWithRGBAValue:{objc_msgSend(calendarRGBAValue2, "unsignedIntValue")}];
   }
 
   else
@@ -167,16 +167,16 @@
           }
 
           v13 = *(*(&v22 + 1) + 8 * i);
-          v14 = [v13 name];
-          v15 = [v3 value];
-          v16 = [v15 calendarTitle];
-          v17 = [v14 isEqualToString:v16];
+          name = [v13 name];
+          value3 = [stateCopy value];
+          calendarTitle = [value3 calendarTitle];
+          v17 = [name isEqualToString:calendarTitle];
 
           if (v17)
           {
             v18 = MEMORY[0x1E69E09E0];
-            v19 = [v13 color];
-            v9 = [v18 colorWithRemindersColor:v19];
+            color = [v13 color];
+            v9 = [v18 colorWithRemindersColor:color];
 
             goto LABEL_13;
           }
@@ -215,9 +215,9 @@ LABEL_13:
   v5.receiver = self;
   v5.super_class = WFRemindersListPickerParameter;
   [(WFParameter *)&v5 wasRemovedFromWorkflow];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [getREMStoreClass() storeDidChangeNotificationName];
-  [v3 removeObserver:self name:v4 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  storeDidChangeNotificationName = [getREMStoreClass() storeDidChangeNotificationName];
+  [defaultCenter removeObserver:self name:storeDidChangeNotificationName object:0];
 }
 
 - (void)wasAddedToWorkflow
@@ -225,23 +225,23 @@ LABEL_13:
   v5.receiver = self;
   v5.super_class = WFRemindersListPickerParameter;
   [(WFParameter *)&v5 wasAddedToWorkflow];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [getREMStoreClass() storeDidChangeNotificationName];
-  [v3 addObserver:self selector:sel_storeDidChange name:v4 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  storeDidChangeNotificationName = [getREMStoreClass() storeDidChangeNotificationName];
+  [defaultCenter addObserver:self selector:sel_storeDidChange name:storeDidChangeNotificationName object:0];
 
   [(WFDynamicEnumerationParameter *)self reloadPossibleStates];
 }
 
-- (WFRemindersListPickerParameter)initWithDefinition:(id)a3
+- (WFRemindersListPickerParameter)initWithDefinition:(id)definition
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  definitionCopy = definition;
   v16.receiver = self;
   v16.super_class = WFRemindersListPickerParameter;
-  v5 = [(WFDynamicEnumerationParameter *)&v16 initWithDefinition:v4];
+  v5 = [(WFDynamicEnumerationParameter *)&v16 initWithDefinition:definitionCopy];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AllowsAllLists"];
+    v6 = [definitionCopy objectForKey:@"AllowsAllLists"];
     v7 = objc_opt_class();
     v8 = v6;
     if (v8 && (objc_opt_isKindOfClass() & 1) == 0)

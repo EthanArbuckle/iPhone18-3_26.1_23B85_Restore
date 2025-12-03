@@ -2,16 +2,16 @@
 - (id)hintedBadgeRect;
 - (id)hintedFontSize;
 - (id)hintedImageBadgeRect;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
-- (void)updateRecipeWithImageDescriptor:(id)a3;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
+- (void)updateRecipeWithImageDescriptor:(id)descriptor;
 @end
 
 @implementation ISFolderRecipe
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v7 setSize:width, height];
   [(ISLayer *)v7 setName:@"root layer"];
@@ -19,13 +19,13 @@
   [(ISLayer *)v8 setName:@"primary content layer"];
   [(ISLayer *)v8 setSize:width, height];
   [(ISContentLayer *)v8 setContent:@"kISPrimaryResourceKey"];
-  v9 = [(ISFolderRecipe *)self tintColor];
+  tintColor = [(ISFolderRecipe *)self tintColor];
 
-  if (v9)
+  if (tintColor)
   {
     v10 = [ISMonochromeTintEffect alloc];
-    v11 = [(ISFolderRecipe *)self tintColor];
-    v12 = [(ISMonochromeTintEffect *)v10 initWithColor:v11];
+    tintColor2 = [(ISFolderRecipe *)self tintColor];
+    v12 = [(ISMonochromeTintEffect *)v10 initWithColor:tintColor2];
     [(ISLayer *)v8 setEffect:v12];
   }
 
@@ -39,25 +39,25 @@
   [(ISLayer *)v14 setName:@"tertiary resource layer"];
   [(ISLayer *)v14 setSize:width, height];
   [(ISContentLayer *)v14 setContent:@"kISTertiaryResourceKey"];
-  v15 = [(ISFolderRecipe *)self tintColor];
+  tintColor3 = [(ISFolderRecipe *)self tintColor];
 
-  if (v15)
+  if (tintColor3)
   {
     v16 = [ISMonochromeTintEffect alloc];
-    v17 = [(ISFolderRecipe *)self tintColor];
-    v18 = [(ISMonochromeTintEffect *)v16 initWithColor:v17];
+    tintColor4 = [(ISFolderRecipe *)self tintColor];
+    v18 = [(ISMonochromeTintEffect *)v16 initWithColor:tintColor4];
     [(ISLayer *)v14 setEffect:v18];
   }
 
   [(ISLayer *)v7 addSublayer:v14];
-  v19 = [(ISFolderRecipe *)self hintedFontSize];
-  [v19 hintedFloatForSize:{width, height}];
+  hintedFontSize = [(ISFolderRecipe *)self hintedFontSize];
+  [hintedFontSize hintedFloatForSize:{width, height}];
   v21 = v20;
 
   v22 = objc_alloc_init(ISTextLayer);
   [(ISLayer *)v22 setName:@"Center Emoji Text"];
-  v23 = [(ISFolderRecipe *)self hintedImageBadgeRect];
-  [v23 hintedRectForSize:{width, height}];
+  hintedImageBadgeRect = [(ISFolderRecipe *)self hintedImageBadgeRect];
+  [hintedImageBadgeRect hintedRectForSize:{width, height}];
   [(ISLayer *)v22 setFrame:?];
 
   [(ISTextLayer *)v22 setText:@"kISTextResourceKey"];
@@ -72,17 +72,17 @@
 
   v26 = objc_alloc_init(ISSymbolLayer);
   v27 = +[ISDefaults sharedInstance];
-  v28 = [v27 isSolariumEnabled];
+  isSolariumEnabled = [v27 isSolariumEnabled];
 
-  if (v28)
+  if (isSolariumEnabled)
   {
-    v29 = [MEMORY[0x1E69A8968] folderColor];
-    [(ISSymbolLayer *)v26 setColor:v29];
+    folderColor = [MEMORY[0x1E69A8968] folderColor];
+    [(ISSymbolLayer *)v26 setColor:folderColor];
   }
 
   [(ISLayer *)v26 setName:@"Center Emboss"];
-  v30 = [(ISFolderRecipe *)self hintedBadgeRect];
-  [v30 hintedRectForSize:{width, height}];
+  hintedBadgeRect = [(ISFolderRecipe *)self hintedBadgeRect];
+  [hintedBadgeRect hintedRectForSize:{width, height}];
   [(ISLayer *)v26 setFrame:?];
 
   [(ISSymbolLayer *)v26 setSymbol:@"kISBadgeResourceKey"];
@@ -187,15 +187,15 @@ uint64_t __38__ISFolderRecipe_hintedImageBadgeRect__block_invoke()
   return [v2 addHintedRect:73.0 forSize:{135.0, 366.0, 190.0, 512.0, 512.0}];
 }
 
-- (void)updateRecipeWithImageDescriptor:(id)a3
+- (void)updateRecipeWithImageDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v4 = [(ISFolderRecipe *)self tintColor];
+  descriptorCopy = descriptor;
+  tintColor = [(ISFolderRecipe *)self tintColor];
 
-  if (!v4)
+  if (!tintColor)
   {
-    v5 = [v6 tintColor];
-    [(ISFolderRecipe *)self setTintColor:v5];
+    tintColor2 = [descriptorCopy tintColor];
+    [(ISFolderRecipe *)self setTintColor:tintColor2];
   }
 }
 

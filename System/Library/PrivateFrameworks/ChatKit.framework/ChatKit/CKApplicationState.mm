@@ -1,23 +1,23 @@
 @interface CKApplicationState
 + (BOOL)isApplicationActive;
 + (BOOL)isBackground;
-+ (BOOL)isViewControllerForegroundActive:(id)a3;
-+ (void)setMainWindowForegroundActive:(BOOL)a3;
++ (BOOL)isViewControllerForegroundActive:(id)active;
++ (void)setMainWindowForegroundActive:(BOOL)active;
 @end
 
 @implementation CKApplicationState
 
 + (BOOL)isApplicationActive
 {
-  if ([a1 _isUIExtension])
+  if ([self _isUIExtension])
   {
     v2 = _isForegroundActive;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
-    v2 = [v3 applicationState] == 0;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v2 = [mEMORY[0x1E69DC668] applicationState] == 0;
   }
 
   return v2 & 1;
@@ -25,28 +25,28 @@
 
 + (BOOL)isBackground
 {
-  if ([a1 _isUIExtension])
+  if ([self _isUIExtension])
   {
     v2 = _isForegroundActive ^ 1;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
-    v2 = [v3 applicationState] == 2;
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    v2 = [mEMORY[0x1E69DC668] applicationState] == 2;
   }
 
   return v2 & 1;
 }
 
-+ (void)setMainWindowForegroundActive:(BOOL)a3
++ (void)setMainWindowForegroundActive:(BOOL)active
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (_isForegroundActive != a3)
+  if (_isForegroundActive != active)
   {
-    v3 = a3;
-    _isForegroundActive = a3;
-    if (!a3 && !CKIsRunningInMacCatalyst())
+    activeCopy = active;
+    _isForegroundActive = active;
+    if (!active && !CKIsRunningInMacCatalyst())
     {
       v4 = +[CKBalloonPluginManager sharedInstance];
       [v4 invalidateAllActivePlugins];
@@ -61,7 +61,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
         v7 = @"NO";
-        if (v3)
+        if (activeCopy)
         {
           v7 = @"YES";
         }
@@ -74,18 +74,18 @@
   }
 }
 
-+ (BOOL)isViewControllerForegroundActive:(id)a3
++ (BOOL)isViewControllerForegroundActive:(id)active
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 view];
-  v5 = [v4 window];
+  activeCopy = active;
+  view = [activeCopy view];
+  window = [view window];
 
-  v6 = [v5 windowScene];
-  v7 = v6;
-  if (v6)
+  windowScene = [window windowScene];
+  v7 = windowScene;
+  if (windowScene)
   {
-    v8 = [v6 activationState] == 0;
+    v8 = [windowScene activationState] == 0;
   }
 
   else
@@ -93,10 +93,10 @@
     v8 = 0;
   }
 
-  v9 = [v3 traitCollection];
-  v10 = [v9 activeAppearance];
+  traitCollection = [activeCopy traitCollection];
+  activeAppearance = [traitCollection activeAppearance];
 
-  v11 = v10 == 1 && v8;
+  v11 = activeAppearance == 1 && v8;
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -107,7 +107,7 @@
       v16 = 2048;
       v17 = v8;
       v18 = 2048;
-      v19 = v10 == 1;
+      v19 = activeAppearance == 1;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "isForegroundActive: %ld - isActivationStateForegroundActive %ld, viewControllerHasActiveAppearance %ld", &v14, 0x20u);
     }
   }

@@ -1,10 +1,10 @@
 @interface HDCloudSyncMedicalIDMergeOperation
-- (BOOL)performWithError:(id *)a3;
+- (BOOL)performWithError:(id *)error;
 @end
 
 @implementation HDCloudSyncMedicalIDMergeOperation
 
-- (BOOL)performWithError:(id *)a3
+- (BOOL)performWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   localMedicalIDData = self->_localMedicalIDData;
@@ -19,7 +19,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_DEFAULT))
       {
         v38 = 138543362;
-        v39 = self;
+        selfCopy10 = self;
         v9 = "%{public}@ Returning the local MedicalID since cloud MedicalID is nil";
         goto LABEL_12;
       }
@@ -38,7 +38,7 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_DEFAULT))
       {
         v38 = 138543362;
-        v39 = self;
+        selfCopy10 = self;
         v9 = "%{public}@ Merged MedicalID contains the most recently updated fields from the local and cloud MedicalID";
 LABEL_12:
         _os_log_impl(&dword_228986000, v8, OS_LOG_TYPE_DEFAULT, v9, &v38, 0xCu);
@@ -51,16 +51,16 @@ LABEL_12:
     v13 = self->_localMedicalIDData;
     v14 = self->_cloudMedicalIDData;
     v15 = v13;
-    v16 = [(_HKMedicalIDData *)self->_cloudMedicalIDData dateSaved];
-    if (v16)
+    dateSaved = [(_HKMedicalIDData *)self->_cloudMedicalIDData dateSaved];
+    if (dateSaved)
     {
     }
 
     else
     {
-      v17 = [(_HKMedicalIDData *)self->_localMedicalIDData dateSaved];
+      dateSaved2 = [(_HKMedicalIDData *)self->_localMedicalIDData dateSaved];
 
-      if (!v17)
+      if (!dateSaved2)
       {
         _HKInitializeLogging();
         v23 = *MEMORY[0x277CCC2E0];
@@ -69,7 +69,7 @@ LABEL_12:
         if (v34)
         {
           v38 = 138543362;
-          v39 = self;
+          selfCopy10 = self;
           v26 = "%{public}@ dateSaved property nil for cloud MedicalID and local MedicalID, returning cloud MedicalID";
           goto LABEL_33;
         }
@@ -78,13 +78,13 @@ LABEL_12:
       }
     }
 
-    v18 = [(_HKMedicalIDData *)self->_cloudMedicalIDData dateSaved];
+    dateSaved3 = [(_HKMedicalIDData *)self->_cloudMedicalIDData dateSaved];
 
-    if (v18)
+    if (dateSaved3)
     {
-      v19 = [(_HKMedicalIDData *)self->_localMedicalIDData dateSaved];
+      dateSaved4 = [(_HKMedicalIDData *)self->_localMedicalIDData dateSaved];
 
-      if (!v19)
+      if (!dateSaved4)
       {
         _HKInitializeLogging();
         v23 = *MEMORY[0x277CCC2E0];
@@ -93,7 +93,7 @@ LABEL_12:
         if (v29)
         {
           v38 = 138543362;
-          v39 = self;
+          selfCopy10 = self;
           v26 = "%{public}@ dateSaved property nil for local MedicalID, returning cloud MedicalID";
           goto LABEL_33;
         }
@@ -107,9 +107,9 @@ LABEL_37:
         goto LABEL_38;
       }
 
-      v20 = [(_HKMedicalIDData *)v14 dateSaved];
-      v21 = [(_HKMedicalIDData *)v15 dateSaved];
-      v22 = [v20 isEqualToDate:v21];
+      dateSaved5 = [(_HKMedicalIDData *)v14 dateSaved];
+      dateSaved6 = [(_HKMedicalIDData *)v15 dateSaved];
+      v22 = [dateSaved5 isEqualToDate:dateSaved6];
 
       if (v22)
       {
@@ -120,7 +120,7 @@ LABEL_37:
         if (v24)
         {
           v38 = 138543362;
-          v39 = self;
+          selfCopy10 = self;
           v26 = "%{public}@ Returning the cloud MedicalID since dateSaved is equal";
 LABEL_33:
           _os_log_impl(&dword_228986000, v23, OS_LOG_TYPE_DEFAULT, v26, &v38, 0xCu);
@@ -131,9 +131,9 @@ LABEL_33:
         goto LABEL_37;
       }
 
-      v30 = [(_HKMedicalIDData *)v14 dateSaved];
-      v31 = [(_HKMedicalIDData *)v15 dateSaved];
-      v32 = [v30 hk_isAfterDate:v31];
+      dateSaved7 = [(_HKMedicalIDData *)v14 dateSaved];
+      dateSaved8 = [(_HKMedicalIDData *)v15 dateSaved];
+      v32 = [dateSaved7 hk_isAfterDate:dateSaved8];
 
       _HKInitializeLogging();
       v23 = *MEMORY[0x277CCC2E0];
@@ -144,7 +144,7 @@ LABEL_33:
         if (v33)
         {
           v38 = 138543362;
-          v39 = self;
+          selfCopy10 = self;
           v26 = "%{public}@ Returning the cloud MedicalID since dateSaved is more recent";
           goto LABEL_33;
         }
@@ -159,7 +159,7 @@ LABEL_33:
       }
 
       v38 = 138543362;
-      v39 = self;
+      selfCopy10 = self;
       v28 = "%{public}@ Returning the local MedicalID since dateSaved is more recent";
     }
 
@@ -175,7 +175,7 @@ LABEL_33:
       }
 
       v38 = 138543362;
-      v39 = self;
+      selfCopy10 = self;
       v28 = "%{public}@ dateSaved property nil for cloud MedicalID, returning local MedicalID";
     }
 
@@ -192,7 +192,7 @@ LABEL_33:
     if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_DEFAULT))
     {
       v38 = 138543362;
-      v39 = self;
+      selfCopy10 = self;
       v9 = "%{public}@ Returning the cloud MedicalID since local MedicalID is nil";
       goto LABEL_12;
     }
@@ -207,11 +207,11 @@ LABEL_38:
   if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_ERROR))
   {
     v38 = 138543362;
-    v39 = self;
+    selfCopy10 = self;
     _os_log_error_impl(&dword_228986000, v11, OS_LOG_TYPE_ERROR, "%{public}@ Reached invalid state. Local and cloud MedicalID should not be nil.", &v38, 0xCu);
   }
 
-  [MEMORY[0x277CCA9B8] hk_assignError:a3 code:3 format:@"Local and cloud MedicalID should not be nil."];
+  [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Local and cloud MedicalID should not be nil."];
   result = 0;
 LABEL_39:
   v37 = *MEMORY[0x277D85DE8];

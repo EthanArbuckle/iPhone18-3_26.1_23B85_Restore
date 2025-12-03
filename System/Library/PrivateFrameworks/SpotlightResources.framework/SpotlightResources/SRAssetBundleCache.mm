@@ -1,15 +1,15 @@
 @interface SRAssetBundleCache
 + (id)cacheFilePath;
 + (id)sharedInstance;
-- (BOOL)upsertAssetBundleWithAssetType:(id)a3 language:(id)a4 deliveryType:(id)a5 bundleVersion:(id)a6 path:(id)a7;
+- (BOOL)upsertAssetBundleWithAssetType:(id)type language:(id)language deliveryType:(id)deliveryType bundleVersion:(id)version path:(id)path;
 - (SRAssetBundleCache)init;
 - (id)dumpCache;
 - (void)flushCacheToFile;
 - (void)loadCacheFromFile;
-- (void)loadFailedForLanguage:(id)a3 assetType:(id)a4 deliveryType:(id)a5;
-- (void)queryCache:(id)a3 loading:(BOOL)a4;
-- (void)removeAssetBundleWithAssetType:(id)a3 language:(id)a4 deliveryType:(id)a5;
-- (void)updateCacheWithResults:(id)a3 loading:(BOOL)a4;
+- (void)loadFailedForLanguage:(id)language assetType:(id)type deliveryType:(id)deliveryType;
+- (void)queryCache:(id)cache loading:(BOOL)loading;
+- (void)removeAssetBundleWithAssetType:(id)type language:(id)language deliveryType:(id)deliveryType;
+- (void)updateCacheWithResults:(id)results loading:(BOOL)loading;
 @end
 
 @implementation SRAssetBundleCache
@@ -78,19 +78,19 @@ uint64_t __36__SRAssetBundleCache_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)queryCache:(id)a3 loading:(BOOL)a4
+- (void)queryCache:(id)cache loading:(BOOL)loading
 {
-  v6 = a3;
+  cacheCopy = cache;
   pthread_rwlock_rdlock(&sCacheLock);
-  v7 = [v6 queryEntries];
+  queryEntries = [cacheCopy queryEntries];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __41__SRAssetBundleCache_queryCache_loading___block_invoke;
   v8[3] = &unk_1E7A2AEF8;
   v8[4] = self;
-  v9 = a4;
-  [v7 enumerateKeysAndObjectsUsingBlock:v8];
+  loadingCopy = loading;
+  [queryEntries enumerateKeysAndObjectsUsingBlock:v8];
 
   pthread_rwlock_unlock(&sCacheLock);
 }
@@ -197,36 +197,36 @@ LABEL_14:
 LABEL_11:
 }
 
-- (void)loadFailedForLanguage:(id)a3 assetType:(id)a4 deliveryType:(id)a5
+- (void)loadFailedForLanguage:(id)language assetType:(id)type deliveryType:(id)deliveryType
 {
-  v20 = a3;
-  v8 = a4;
-  v9 = a5;
+  languageCopy = language;
+  typeCopy = type;
+  deliveryTypeCopy = deliveryType;
   pthread_rwlock_wrlock(&sCacheLock);
   cache = self->_cache;
   if (cache)
   {
-    v11 = [(NSMutableDictionary *)cache objectForKeyedSubscript:v20];
+    v11 = [(NSMutableDictionary *)cache objectForKeyedSubscript:languageCopy];
     if (v11)
     {
       v12 = v11;
-      v13 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v20];
-      v14 = [v13 objectForKeyedSubscript:v8];
+      v13 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+      v14 = [v13 objectForKeyedSubscript:typeCopy];
       if (v14)
       {
         v15 = v14;
-        v16 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v20];
-        v17 = [v16 objectForKeyedSubscript:v8];
-        v18 = [v17 objectForKeyedSubscript:v9];
+        v16 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+        v17 = [v16 objectForKeyedSubscript:typeCopy];
+        v18 = [v17 objectForKeyedSubscript:deliveryTypeCopy];
 
         if (!v18)
         {
           goto LABEL_7;
         }
 
-        v12 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v20];
-        v13 = [v12 objectForKeyedSubscript:v8];
-        v19 = [v13 objectForKeyedSubscript:v9];
+        v12 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+        v13 = [v12 objectForKeyedSubscript:typeCopy];
+        v19 = [v13 objectForKeyedSubscript:deliveryTypeCopy];
         [v19 setLoaded:0];
       }
     }
@@ -236,15 +236,15 @@ LABEL_7:
   pthread_rwlock_unlock(&sCacheLock);
 }
 
-- (BOOL)upsertAssetBundleWithAssetType:(id)a3 language:(id)a4 deliveryType:(id)a5 bundleVersion:(id)a6 path:(id)a7
+- (BOOL)upsertAssetBundleWithAssetType:(id)type language:(id)language deliveryType:(id)deliveryType bundleVersion:(id)version path:(id)path
 {
   v54 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (assetTypeID(v12) == -1)
+  typeCopy = type;
+  languageCopy = language;
+  deliveryTypeCopy = deliveryType;
+  versionCopy = version;
+  pathCopy = path;
+  if (assetTypeID(typeCopy) == -1)
   {
     v27 = SRLogCategoryAssets();
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -253,18 +253,18 @@ LABEL_7:
     }
 
     *buf = 138412802;
-    v49 = v12;
+    v49 = typeCopy;
     v50 = 2112;
-    v51 = v13;
+    v51 = languageCopy;
     v52 = 2112;
-    v53 = v14;
+    v53 = deliveryTypeCopy;
     v28 = "Invalid asset type %@ for (%@, %@)";
 LABEL_20:
     _os_log_error_impl(&dword_1AE58E000, v27, OS_LOG_TYPE_ERROR, v28, buf, 0x20u);
     goto LABEL_21;
   }
 
-  if (deliveryTypeID(v14) == -1)
+  if (deliveryTypeID(deliveryTypeCopy) == -1)
   {
     v27 = SRLogCategoryAssets();
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -273,16 +273,16 @@ LABEL_20:
     }
 
     *buf = 138412802;
-    v49 = v14;
+    v49 = deliveryTypeCopy;
     v50 = 2112;
-    v51 = v13;
+    v51 = languageCopy;
     v52 = 2112;
-    v53 = v12;
+    v53 = typeCopy;
     v28 = "Invalid delivery type %@ for (%@, %@)";
     goto LABEL_20;
   }
 
-  if (!v15)
+  if (!versionCopy)
   {
     v27 = SRLogCategoryAssets();
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -291,26 +291,26 @@ LABEL_20:
     }
 
     *buf = 138412802;
-    v49 = v12;
+    v49 = typeCopy;
     v50 = 2112;
-    v51 = v13;
+    v51 = languageCopy;
     v52 = 2112;
-    v53 = v14;
+    v53 = deliveryTypeCopy;
     v28 = "Null bundle version for (%@, %@, %@)";
     goto LABEL_20;
   }
 
-  if (!v16)
+  if (!pathCopy)
   {
     v27 = SRLogCategoryAssets();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v49 = v12;
+      v49 = typeCopy;
       v50 = 2112;
-      v51 = v13;
+      v51 = languageCopy;
       v52 = 2112;
-      v53 = v14;
+      v53 = deliveryTypeCopy;
       v28 = "Null path for (%@, %@, %@)";
       goto LABEL_20;
     }
@@ -322,27 +322,27 @@ LABEL_21:
   }
 
   pthread_rwlock_wrlock(&sCacheLock);
-  v17 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v13];
+  v17 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
 
   if (!v17)
   {
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_cache setObject:v18 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)self->_cache setObject:v18 forKeyedSubscript:languageCopy];
   }
 
-  v19 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v13];
-  v20 = [v19 objectForKeyedSubscript:v12];
+  v19 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+  v20 = [v19 objectForKeyedSubscript:typeCopy];
 
   if (!v20)
   {
     v21 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v22 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v13];
-    [v22 setObject:v21 forKeyedSubscript:v12];
+    v22 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+    [v22 setObject:v21 forKeyedSubscript:typeCopy];
   }
 
-  v23 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v13];
-  v24 = [v23 objectForKeyedSubscript:v12];
-  v25 = [v24 objectForKeyedSubscript:v14];
+  v23 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+  v24 = [v23 objectForKeyedSubscript:typeCopy];
+  v25 = [v24 objectForKeyedSubscript:deliveryTypeCopy];
 
   v47 = v25;
   if (!v25)
@@ -350,29 +350,29 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  v26 = [v25 bundleVersion];
-  if ([v26 compare:v15])
+  bundleVersion = [v25 bundleVersion];
+  if ([bundleVersion compare:versionCopy])
   {
 
 LABEL_25:
     v34 = [SRAssetBundleCacheEntry alloc];
-    v35 = assetTypeID(v12);
-    v36 = [(SRAssetBundleCacheEntry *)v34 initWithAssetType:v35 language:v13 deliveryType:deliveryTypeID(v14)];
-    v37 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v13];
-    v38 = [v37 objectForKeyedSubscript:v12];
-    [v38 setObject:v36 forKeyedSubscript:v14];
+    v35 = assetTypeID(typeCopy);
+    v36 = [(SRAssetBundleCacheEntry *)v34 initWithAssetType:v35 language:languageCopy deliveryType:deliveryTypeID(deliveryTypeCopy)];
+    v37 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+    v38 = [v37 objectForKeyedSubscript:typeCopy];
+    [v38 setObject:v36 forKeyedSubscript:deliveryTypeCopy];
 
-    v29 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v13];
-    v39 = [v29 objectForKeyedSubscript:v12];
-    v40 = [v39 objectForKeyedSubscript:v14];
-    [v40 makeResultWithBundleVersion:v15 path:v16 loaded:0];
+    v29 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+    v39 = [v29 objectForKeyedSubscript:typeCopy];
+    v40 = [v39 objectForKeyedSubscript:deliveryTypeCopy];
+    [v40 makeResultWithBundleVersion:versionCopy path:pathCopy loaded:0];
 
     LOBYTE(v29) = 1;
     goto LABEL_26;
   }
 
-  v32 = [v25 path];
-  v33 = [v32 isEqualToString:v16];
+  path = [v25 path];
+  v33 = [path isEqualToString:pathCopy];
 
   if ((v33 & 1) == 0)
   {
@@ -381,22 +381,22 @@ LABEL_25:
 
   LODWORD(v29) = [v25 loaded] ^ 1;
 LABEL_26:
-  v41 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v13];
-  v42 = [v41 objectForKeyedSubscript:v12];
+  v41 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+  v42 = [v41 objectForKeyedSubscript:typeCopy];
   v43 = [v42 count];
 
   if (!v43)
   {
-    v44 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v13];
-    [v44 setObject:0 forKeyedSubscript:v12];
+    v44 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+    [v44 setObject:0 forKeyedSubscript:typeCopy];
   }
 
-  v45 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v13];
+  v45 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
   v46 = [v45 count];
 
   if (!v46)
   {
-    [(NSMutableDictionary *)self->_cache setObject:0 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)self->_cache setObject:0 forKeyedSubscript:languageCopy];
   }
 
   pthread_rwlock_unlock(&sCacheLock);
@@ -406,61 +406,61 @@ LABEL_22:
   return v29;
 }
 
-- (void)removeAssetBundleWithAssetType:(id)a3 language:(id)a4 deliveryType:(id)a5
+- (void)removeAssetBundleWithAssetType:(id)type language:(id)language deliveryType:(id)deliveryType
 {
-  v21 = a3;
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  languageCopy = language;
+  deliveryTypeCopy = deliveryType;
   pthread_rwlock_wrlock(&sCacheLock);
-  v10 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v8];
+  v10 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
 
   if (v10)
   {
-    v11 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v8];
-    v12 = [v11 objectForKeyedSubscript:v21];
+    v11 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+    v12 = [v11 objectForKeyedSubscript:typeCopy];
 
     if (v12)
     {
-      v13 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v8];
-      v14 = [v13 objectForKeyedSubscript:v21];
-      [v14 setObject:0 forKeyedSubscript:v9];
+      v13 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+      v14 = [v13 objectForKeyedSubscript:typeCopy];
+      [v14 setObject:0 forKeyedSubscript:deliveryTypeCopy];
 
-      v15 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v8];
-      v16 = [v15 objectForKeyedSubscript:v21];
+      v15 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+      v16 = [v15 objectForKeyedSubscript:typeCopy];
       v17 = [v16 count];
 
       if (!v17)
       {
-        v18 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v8];
-        [v18 setObject:0 forKeyedSubscript:v21];
+        v18 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
+        [v18 setObject:0 forKeyedSubscript:typeCopy];
       }
     }
 
-    v19 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v8];
+    v19 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:languageCopy];
     v20 = [v19 count];
 
     if (!v20)
     {
-      [(NSMutableDictionary *)self->_cache setObject:0 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_cache setObject:0 forKeyedSubscript:languageCopy];
     }
   }
 
   pthread_rwlock_unlock(&sCacheLock);
 }
 
-- (void)updateCacheWithResults:(id)a3 loading:(BOOL)a4
+- (void)updateCacheWithResults:(id)results loading:(BOOL)loading
 {
-  v6 = a3;
+  resultsCopy = results;
   pthread_rwlock_wrlock(&sCacheLock);
-  v7 = [v6 queryEntries];
+  queryEntries = [resultsCopy queryEntries];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__SRAssetBundleCache_updateCacheWithResults_loading___block_invoke;
   v8[3] = &unk_1E7A2AEF8;
   v8[4] = self;
-  v9 = a4;
-  [v7 enumerateKeysAndObjectsUsingBlock:v8];
+  loadingCopy = loading;
+  [queryEntries enumerateKeysAndObjectsUsingBlock:v8];
 
   pthread_rwlock_unlock(&sCacheLock);
 }

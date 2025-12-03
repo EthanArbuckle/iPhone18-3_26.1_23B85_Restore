@@ -1,29 +1,29 @@
 @interface NUNIAnimation
-- (BOOL)update:(float)a3;
+- (BOOL)update:(float)update;
 - (NUNIAnimatable)animatable;
-- (NUNIAnimation)initWithAnimatable:(id)a3 from:(unint64_t)a4 to:ctrl1:ctrl2:key:;
-- (NUNIAnimation)initWithAnimatable:(id)a3 value:(unint64_t)a4 key:;
-- (NUNIAnimation)initWithAnimatable:(id)a3 values:count:key:;
+- (NUNIAnimation)initWithAnimatable:(id)animatable from:(unint64_t)from to:ctrl1:ctrl2:key:;
+- (NUNIAnimation)initWithAnimatable:(id)animatable value:(unint64_t)value key:;
+- (NUNIAnimation)initWithAnimatable:(id)animatable values:count:key:;
 - (NUNIAnimationObserver)observer;
-- (void)apply:(float)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)apply:(float)apply;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation NUNIAnimation
 
-- (NUNIAnimation)initWithAnimatable:(id)a3 values:count:key:
+- (NUNIAnimation)initWithAnimatable:(id)animatable values:count:key:
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
-  v10 = a3;
+  animatableCopy = animatable;
   v19.receiver = self;
   v19.super_class = NUNIAnimation;
   v11 = [(NUNIAnimation *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_animatable, v10);
+    objc_storeWeak(&v11->_animatable, animatableCopy);
     v12->_key = v6;
     v12->_function = 3;
     __asm { FMOV            V0.2S, #-1.0 }
@@ -41,23 +41,23 @@
   return v12;
 }
 
-- (NUNIAnimation)initWithAnimatable:(id)a3 from:(unint64_t)a4 to:ctrl1:ctrl2:key:
+- (NUNIAnimation)initWithAnimatable:(id)animatable from:(unint64_t)from to:ctrl1:ctrl2:key:
 {
   v21 = v6;
   v22 = v7;
   v19 = v5;
   v20 = v4;
-  v10 = a3;
+  animatableCopy = animatable;
   v23.receiver = self;
   v23.super_class = NUNIAnimation;
   v11 = [(NUNIAnimation *)&v23 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_animatable, v10);
+    objc_storeWeak(&v11->_animatable, animatableCopy);
     *v12->_to = v19;
     *v12->_from = v20;
-    v12->_key = a4;
+    v12->_key = from;
     *v12->_ctrl1 = v21;
     *v12->_ctrl2 = v22;
     v12->_function = 1;
@@ -69,22 +69,22 @@
   return v12;
 }
 
-- (NUNIAnimation)initWithAnimatable:(id)a3 value:(unint64_t)a4 key:
+- (NUNIAnimation)initWithAnimatable:(id)animatable value:(unint64_t)value key:
 {
-  v6 = a3;
-  [v6 animatedFloatForKey:a4];
-  v7 = [NUNIAnimation initWithAnimatable:"initWithAnimatable:from:to:ctrl1:ctrl2:key:" from:v6 to:a4 ctrl1:? ctrl2:? key:?];
+  animatableCopy = animatable;
+  [animatableCopy animatedFloatForKey:value];
+  v7 = [NUNIAnimation initWithAnimatable:"initWithAnimatable:from:to:ctrl1:ctrl2:key:" from:animatableCopy to:value ctrl1:? ctrl2:? key:?];
 
   return v7;
 }
 
-- (BOOL)update:(float)a3
+- (BOOL)update:(float)update
 {
-  self->_prevTime = a3;
+  self->_prevTime = update;
   startTime = self->_startTime;
   if (startTime < 0.0)
   {
-    startTime = self->_delay + a3;
+    startTime = self->_delay + update;
     self->_startTime = startTime;
   }
 
@@ -94,8 +94,8 @@
     return 1;
   }
 
-  a3 = fmaxf(a3 - startTime, 0.0) / self->_duration;
-  if (a3 <= 1.0)
+  update = fmaxf(update - startTime, 0.0) / self->_duration;
+  if (update <= 1.0)
   {
     v8 = 1;
   }
@@ -104,20 +104,20 @@
   {
     self->_startTime = -1.0;
     v8 = 1;
-    *&a3 = 0;
+    *&update = 0;
   }
 
   else
   {
     v8 = 0;
-    a3 = 1.0;
+    update = 1.0;
   }
 
-  [(NUNIAnimation *)self apply:*&a3, v4, v10, v5, v6];
+  [(NUNIAnimation *)self apply:*&update, v4, v10, v5, v6];
   return v8;
 }
 
-- (void)apply:(float)a3
+- (void)apply:(float)apply
 {
   function = self->_function;
   v5 = 0;
@@ -130,10 +130,10 @@
         goto LABEL_27;
       }
 
-      a3 = (a3 * a3) * ((a3 * -2.0) + 3.0);
+      apply = (apply * apply) * ((apply * -2.0) + 3.0);
     }
 
-    v5 = vmlaq_n_f32(*self->_from, vsubq_f32(*self->_to, *self->_from), a3).u64[0];
+    v5 = vmlaq_n_f32(*self->_from, vsubq_f32(*self->_to, *self->_from), apply).u64[0];
   }
 
   else
@@ -141,22 +141,22 @@
     switch(function)
     {
       case 2:
-        v5 = vmlaq_n_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(*self->_from, (1.0 - a3) * ((1.0 - a3) * (1.0 - a3))), *self->_ctrl1, (((1.0 - a3) * (1.0 - a3)) * 3.0) * a3), *self->_ctrl2, (a3 * a3) * ((1.0 - a3) * 3.0)), *self->_to, (a3 * a3) * a3).u64[0];
+        v5 = vmlaq_n_f32(vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(*self->_from, (1.0 - apply) * ((1.0 - apply) * (1.0 - apply))), *self->_ctrl1, (((1.0 - apply) * (1.0 - apply)) * 3.0) * apply), *self->_ctrl2, (apply * apply) * ((1.0 - apply) * 3.0)), *self->_to, (apply * apply) * apply).u64[0];
         break;
       case 3:
         valuesCount = self->_valuesCount;
         v34 = valuesCount - 1;
         v35 = (valuesCount - 1);
         v36 = valuesCount - 2;
-        if ((v35 * a3) < v36)
+        if ((v35 * apply) < v36)
         {
-          v36 = (v35 * a3);
+          v36 = (v35 * apply);
         }
 
         v37 = v36 + 1;
         v38 = v36 / v35;
         v39 = v37 / v35;
-        v41 = (a3 - v38) / (v39 - v38);
+        v41 = (apply - v38) / (v39 - v38);
         v42 = v41 * v41;
         v43 = v41 * (v41 * v41);
         if (v36 <= 1)
@@ -197,8 +197,8 @@
         v10 = vbslq_s8(vdupq_lane_s32(*&vmvnq_s8(vcgeq_f32(v8, v9)), 0), vnegq_f32(v7), v7);
         v11 = 1.0;
         *v61 = v6;
-        v63 = a3;
-        v12 = 1.0 - a3;
+        applyCopy = apply;
+        v12 = 1.0 - apply;
         v13 = vsubq_f32(v6, v10);
         v14 = vmulq_f32(v13, v13);
         v60 = v10;
@@ -227,8 +227,8 @@
 
         v23.f32[0] = v12 * (v24 * v11);
         v25 = vdupq_lane_s32(v23, 0);
-        v26 = v63;
-        v27 = v18 * v63;
+        v26 = applyCopy;
+        v27 = v18 * applyCopy;
         v28 = 1.0;
         if (v27 != 0.0)
         {
@@ -237,7 +237,7 @@
           v29 = sinf(v27);
           v25 = v57;
           v24 = v59;
-          v26 = v63;
+          v26 = applyCopy;
           v28 = v29 / v27;
         }
 
@@ -267,13 +267,13 @@ LABEL_27:
   [WeakRetained setAnimatedFloat:self->_key forKey:v64];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     prevTime = self->_prevTime;
-    if (a3)
+    if (paused)
     {
       self->_pauseTime = prevTime;
     }

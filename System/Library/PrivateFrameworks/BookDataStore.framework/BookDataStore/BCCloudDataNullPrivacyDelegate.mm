@@ -1,6 +1,6 @@
 @interface BCCloudDataNullPrivacyDelegate
 + (id)nullPrivacyDelegate;
-- (id)recordNameFromRecordType:(id)a3 identifier:(id)a4;
+- (id)recordNameFromRecordType:(id)type identifier:(id)identifier;
 @end
 
 @implementation BCCloudDataNullPrivacyDelegate
@@ -17,25 +17,25 @@
   return v3;
 }
 
-- (id)recordNameFromRecordType:(id)a3 identifier:(id)a4
+- (id)recordNameFromRecordType:(id)type identifier:(id)identifier
 {
-  v4 = @"-";
-  if (a3)
+  identifierCopy = @"-";
+  if (type)
   {
-    v5 = a3;
+    typeCopy = type;
   }
 
   else
   {
-    v5 = @"-";
+    typeCopy = @"-";
   }
 
-  if (a4)
+  if (identifier)
   {
-    v4 = a4;
+    identifierCopy = identifier;
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", v5, v4];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", typeCopy, identifierCopy];
 }
 
 @end

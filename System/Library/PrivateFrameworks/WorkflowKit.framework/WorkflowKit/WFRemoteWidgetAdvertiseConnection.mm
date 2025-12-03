@@ -1,12 +1,12 @@
 @interface WFRemoteWidgetAdvertiseConnection
-+ (id)startListeningForIncomingConfigurationsWithConnectionType:(int64_t)a3;
++ (id)startListeningForIncomingConfigurationsWithConnectionType:(int64_t)type;
 - (WFRemoteWidgetAdvertiseConnection)init;
-- (WFRemoteWidgetAdvertiseConnection)initWithConnectionType:(int64_t)a3;
+- (WFRemoteWidgetAdvertiseConnection)initWithConnectionType:(int64_t)type;
 - (WFRemoteWidgetAdvertiseConnectionDelegate)delegate;
-- (id)setupAdvertiseConnectionType:(int64_t)a3;
-- (void)_handleNewConnection:(id)a3;
-- (void)_receiveRequestOnConnection:(id)a3;
-- (void)_tearDownConnection:(id)a3;
+- (id)setupAdvertiseConnectionType:(int64_t)type;
+- (void)_handleNewConnection:(id)connection;
+- (void)_receiveRequestOnConnection:(id)connection;
+- (void)_tearDownConnection:(id)connection;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -20,16 +20,16 @@
   return WeakRetained;
 }
 
-- (void)_receiveRequestOnConnection:(id)a3
+- (void)_receiveRequestOnConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   completion[0] = MEMORY[0x1E69E9820];
   completion[1] = 3221225472;
   completion[2] = __65__WFRemoteWidgetAdvertiseConnection__receiveRequestOnConnection___block_invoke;
   completion[3] = &unk_1E837A818;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = connectionCopy;
   v7 = v5;
   nw_connection_receive_message(v5, completion);
 
@@ -212,17 +212,17 @@ void __65__WFRemoteWidgetAdvertiseConnection__receiveRequestOnConnection___block
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleNewConnection:(id)a3
+- (void)_handleNewConnection:(id)connection
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __58__WFRemoteWidgetAdvertiseConnection__handleNewConnection___block_invoke;
   handler[3] = &unk_1E837A728;
   objc_copyWeak(&v12, &location);
-  v5 = v4;
+  v5 = connectionCopy;
   v11 = v5;
   nw_connection_set_state_changed_handler(v5, handler);
   v6 = getWFWidgetConfigurationLogObject();
@@ -235,12 +235,12 @@ void __65__WFRemoteWidgetAdvertiseConnection__receiveRequestOnConnection___block
     _os_log_impl(&dword_1CA256000, v6, OS_LOG_TYPE_DEFAULT, "%s WFRemoteWidgetConnection incoming connection %@", buf, 0x16u);
   }
 
-  v7 = [(WFRemoteWidgetAdvertiseConnection *)self queue];
-  nw_connection_set_queue(v5, v7);
+  queue = [(WFRemoteWidgetAdvertiseConnection *)self queue];
+  nw_connection_set_queue(v5, queue);
 
   nw_connection_start(v5);
-  v8 = [(WFRemoteWidgetAdvertiseConnection *)self connections];
-  [v8 addObject:v5];
+  connections = [(WFRemoteWidgetAdvertiseConnection *)self connections];
+  [connections addObject:v5];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -367,12 +367,12 @@ LABEL_13:
 
   else
   {
-    v5 = [(WFRemoteWidgetAdvertiseConnection *)self nwListener];
+    nwListener = [(WFRemoteWidgetAdvertiseConnection *)self nwListener];
 
-    if (v5)
+    if (nwListener)
     {
-      v6 = [(WFRemoteWidgetAdvertiseConnection *)self nwListener];
-      nw_listener_cancel(v6);
+      nwListener2 = [(WFRemoteWidgetAdvertiseConnection *)self nwListener];
+      nw_listener_cancel(nwListener2);
 
       [(WFRemoteWidgetAdvertiseConnection *)self setNwListener:0];
     }
@@ -381,8 +381,8 @@ LABEL_13:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(WFRemoteWidgetAdvertiseConnection *)self connections];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    connections = [(WFRemoteWidgetAdvertiseConnection *)self connections];
+    v8 = [connections countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -394,21 +394,21 @@ LABEL_13:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(connections);
           }
 
           nw_connection_cancel(*(*(&v14 + 1) + 8 * v11++));
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [connections countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
     }
 
-    v12 = [(WFRemoteWidgetAdvertiseConnection *)self connections];
-    [v12 removeAllObjects];
+    connections2 = [(WFRemoteWidgetAdvertiseConnection *)self connections];
+    [connections2 removeAllObjects];
 
     [(WFRemoteWidgetAdvertiseConnection *)self setInvalidated:1];
   }
@@ -416,11 +416,11 @@ LABEL_13:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_tearDownConnection:(id)a3
+- (void)_tearDownConnection:(id)connection
 {
-  connection = a3;
-  v4 = [(WFRemoteWidgetAdvertiseConnection *)self connections];
-  [v4 removeObject:connection];
+  connection = connection;
+  connections = [(WFRemoteWidgetAdvertiseConnection *)self connections];
+  [connections removeObject:connection];
 
   nw_connection_cancel(connection);
 }
@@ -428,15 +428,15 @@ LABEL_13:
 - (void)dealloc
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(WFRemoteWidgetAdvertiseConnection *)self nwListener];
-  if (v3)
+  nwListener = [(WFRemoteWidgetAdvertiseConnection *)self nwListener];
+  if (nwListener)
   {
   }
 
   else
   {
-    v4 = [(WFRemoteWidgetAdvertiseConnection *)self connections];
-    v5 = [v4 count];
+    connections = [(WFRemoteWidgetAdvertiseConnection *)self connections];
+    v5 = [connections count];
 
     if (!v5)
     {
@@ -460,10 +460,10 @@ LABEL_7:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)setupAdvertiseConnectionType:(int64_t)a3
+- (id)setupAdvertiseConnectionType:(int64_t)type
 {
   v23 = *MEMORY[0x1E69E9840];
-  self->_connectionType = a3;
+  self->_connectionType = type;
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_attr_make_with_qos_class(v5, QOS_CLASS_USER_INITIATED, 0);
   v7 = dispatch_queue_create("com.apple.shortcuts.WFRemoteWidgetConnection", v6);
@@ -474,7 +474,7 @@ LABEL_7:
   connections = self->_connections;
   self->_connections = v9;
 
-  v11 = WFCreateAdvertiseParametersForConnectionType(a3);
+  v11 = WFCreateAdvertiseParametersForConnectionType(type);
   application_service = nw_advertise_descriptor_create_application_service("com.apple.workflow.remotewidgets");
   v13 = nw_listener_create(v11);
   nw_listener_set_advertise_descriptor(v13, application_service);
@@ -544,7 +544,7 @@ void __66__WFRemoteWidgetAdvertiseConnection_setupAdvertiseConnectionType___bloc
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (WFRemoteWidgetAdvertiseConnection)initWithConnectionType:(int64_t)a3
+- (WFRemoteWidgetAdvertiseConnection)initWithConnectionType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = WFRemoteWidgetAdvertiseConnection;
@@ -552,7 +552,7 @@ void __66__WFRemoteWidgetAdvertiseConnection_setupAdvertiseConnectionType___bloc
   v5 = v4;
   if (v4)
   {
-    v6 = [(WFRemoteWidgetAdvertiseConnection *)v4 setupAdvertiseConnectionType:a3];
+    v6 = [(WFRemoteWidgetAdvertiseConnection *)v4 setupAdvertiseConnectionType:type];
   }
 
   else
@@ -582,7 +582,7 @@ void __66__WFRemoteWidgetAdvertiseConnection_setupAdvertiseConnectionType___bloc
   return v4;
 }
 
-+ (id)startListeningForIncomingConfigurationsWithConnectionType:(int64_t)a3
++ (id)startListeningForIncomingConfigurationsWithConnectionType:(int64_t)type
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = getWFWidgetConfigurationLogObject();
@@ -593,7 +593,7 @@ void __66__WFRemoteWidgetAdvertiseConnection_setupAdvertiseConnectionType___bloc
     _os_log_impl(&dword_1CA256000, v4, OS_LOG_TYPE_DEFAULT, "%s Start listening for incoming connections...", &v8, 0xCu);
   }
 
-  v5 = [[WFRemoteWidgetAdvertiseConnection alloc] initWithConnectionType:a3];
+  v5 = [[WFRemoteWidgetAdvertiseConnection alloc] initWithConnectionType:type];
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;

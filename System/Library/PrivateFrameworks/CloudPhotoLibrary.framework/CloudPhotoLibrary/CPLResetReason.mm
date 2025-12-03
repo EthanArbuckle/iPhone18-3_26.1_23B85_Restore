@@ -1,29 +1,29 @@
 @interface CPLResetReason
-- (CPLResetReason)initWithCoder:(id)a3;
-- (CPLResetReason)initWithDate:(id)a3 reason:(id)a4;
-- (CPLResetReason)initWithPlist:(id)a3;
+- (CPLResetReason)initWithCoder:(id)coder;
+- (CPLResetReason)initWithDate:(id)date reason:(id)reason;
+- (CPLResetReason)initWithPlist:(id)plist;
 - (id)asPlist;
-- (id)reasonDescriptionWithNow:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)reasonDescriptionWithNow:(id)now;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLResetReason
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reason = self->_reason;
-  v5 = a3;
-  [v5 encodeObject:reason forKey:@"r"];
-  [v5 encodeObject:self->_date forKey:@"d"];
-  [v5 encodeObject:self->_uuid forKey:@"u"];
+  coderCopy = coder;
+  [coderCopy encodeObject:reason forKey:@"r"];
+  [coderCopy encodeObject:self->_date forKey:@"d"];
+  [coderCopy encodeObject:self->_uuid forKey:@"u"];
 }
 
-- (CPLResetReason)initWithCoder:(id)a3
+- (CPLResetReason)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"r"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"u"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"r"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"u"];
 
   if (v5)
   {
@@ -37,7 +37,7 @@
 
   if (v8 || v7 == 0)
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -54,17 +54,17 @@
     }
 
     self = p_isa;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)reasonDescriptionWithNow:(id)a3
+- (id)reasonDescriptionWithNow:(id)now
 {
   v3 = MEMORY[0x1E696AEC0];
   reason = self->_reason;
-  v5 = [CPLDateFormatter stringForTimeIntervalAgo:self->_date now:a3];
+  v5 = [CPLDateFormatter stringForTimeIntervalAgo:self->_date now:now];
   v6 = [v3 stringWithFormat:@"%@ - %@", reason, v5];
 
   return v6;
@@ -87,13 +87,13 @@
   return v4;
 }
 
-- (CPLResetReason)initWithPlist:(id)a3
+- (CPLResetReason)initWithPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = plistCopy;
     v6 = [v5 objectForKeyedSubscript:@"reason"];
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -115,56 +115,56 @@
           }
 
           self = p_isa;
-          v11 = self;
+          selfCopy = self;
         }
 
         else
         {
-          v11 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v11 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (CPLResetReason)initWithDate:(id)a3 reason:(id)a4
+- (CPLResetReason)initWithDate:(id)date reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  reasonCopy = reason;
   v17.receiver = self;
   v17.super_class = CPLResetReason;
   v8 = [(CPLResetReason *)&v17 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [reasonCopy copy];
     reason = v8->_reason;
     v8->_reason = v9;
 
-    v11 = [v6 copy];
+    v11 = [dateCopy copy];
     date = v8->_date;
     v8->_date = v11;
 
-    v13 = [MEMORY[0x1E696AFB0] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     uuid = v8->_uuid;
-    v8->_uuid = v14;
+    v8->_uuid = uUIDString;
   }
 
   return v8;

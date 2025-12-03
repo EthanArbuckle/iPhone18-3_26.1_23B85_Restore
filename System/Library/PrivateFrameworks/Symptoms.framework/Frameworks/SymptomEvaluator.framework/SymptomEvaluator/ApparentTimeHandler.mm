@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (ApparentTimeHandler)init;
 - (ApparentTimeHandlerDelegate)delegate;
-- (void)dispatchAfterDelay:(double)a3 queue:(id)a4 block:(id)a5;
-- (void)timerCallbackWithReference:(id)a3 at:(double)a4;
+- (void)dispatchAfterDelay:(double)delay queue:(id)queue block:(id)block;
+- (void)timerCallbackWithReference:(id)reference at:(double)at;
 @end
 
 @implementation ApparentTimeHandler
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __37__ApparentTimeHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_40 != -1)
   {
     dispatch_once(&sharedInstance_pred_40, block);
@@ -25,15 +25,15 @@
   return v2;
 }
 
-- (void)dispatchAfterDelay:(double)a3 queue:(id)a4 block:(id)a5
+- (void)dispatchAfterDelay:(double)delay queue:(id)queue block:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  blockCopy = block;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (activeTraceTargets)
   {
-    traceEntry(1, "[ApparentTimeHandler dispatchAfterDelay:queue:block:]", "%f", v10, v11, v12, v13, v14, *&a3);
+    traceEntry(1, "[ApparentTimeHandler dispatchAfterDelay:queue:block:]", "%f", v10, v11, v12, v13, v14, *&delay);
   }
 
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
@@ -43,7 +43,7 @@
     v17 = MEMORY[0x277CCABB0];
     ++self->_dispatchAfterSeqno;
     v18 = [v17 numberWithUnsignedInt:?];
-    v19 = _Block_copy(v9);
+    v19 = _Block_copy(blockCopy);
     [(NSMutableDictionary *)self->_pendingDispatchAfterBlocks setObject:v19 forKeyedSubscript:v18];
 
     objc_sync_exit(v16);
@@ -51,7 +51,7 @@
     if (os_log_type_enabled(apparentTimeLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v29 = a3;
+      delayCopy3 = delay;
       v30 = 2112;
       v31 = v18;
       _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_DEFAULT, "ApparentTimeHandler about to delegate dispatchAfterDelay %.3f to reference %@", buf, 0x16u);
@@ -59,15 +59,15 @@
 
     if (activeTraceTargets)
     {
-      traceCallout(1, "[ApparentTimeHandler dispatchAfterDelay:queue:block:]", "setTimerCallbackWithDelay:queue:reference:", "%f %@", v21, v22, v23, v24, *&a3);
+      traceCallout(1, "[ApparentTimeHandler dispatchAfterDelay:queue:block:]", "setTimerCallbackWithDelay:queue:reference:", "%f %@", v21, v22, v23, v24, *&delay);
     }
 
-    [WeakRetained setTimerCallbackWithDelay:v8 queue:v18 reference:a3];
+    [WeakRetained setTimerCallbackWithDelay:queueCopy queue:v18 reference:delay];
     v25 = apparentTimeLogHandle;
     if (os_log_type_enabled(apparentTimeLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v29 = a3;
+      delayCopy3 = delay;
       v30 = 2112;
       v31 = v18;
       _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_DEFAULT, "ApparentTimeHandler delegated dispatchAfterDelay %.3f to reference %@", buf, 0x16u);
@@ -80,7 +80,7 @@
     if (os_log_type_enabled(apparentTimeLogHandle, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v29 = a3;
+      delayCopy3 = delay;
       _os_log_impl(&dword_23255B000, v26, OS_LOG_TYPE_ERROR, "ApparentTimeHandler no delegate to handle dispatchAfterDelay %.3f", buf, 0xCu);
     }
   }
@@ -88,17 +88,17 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerCallbackWithReference:(id)a3 at:(double)a4
+- (void)timerCallbackWithReference:(id)reference at:(double)at
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  referenceCopy = reference;
   v7 = apparentTimeLogHandle;
   if (os_log_type_enabled(apparentTimeLogHandle, OS_LOG_TYPE_DEBUG))
   {
     v13 = v7;
-    v14 = dateStringMillisecondsFromTimeInterval(a4);
+    v14 = dateStringMillisecondsFromTimeInterval(at);
     *buf = 138412546;
-    v20 = v6;
+    v20 = referenceCopy;
     v21 = 2112;
     v22 = v14;
     _os_log_impl(&dword_23255B000, v13, OS_LOG_TYPE_DEBUG, "ApparentTimeHandler timerCallbackWithReference %@ at %@", buf, 0x16u);
@@ -106,14 +106,14 @@
 
   if (activeTraceTargets)
   {
-    traceEntry(1, "[ApparentTimeHandler timerCallbackWithReference:at:]", "%@ %t", v8, v9, v10, v11, v12, v6);
+    traceEntry(1, "[ApparentTimeHandler timerCallbackWithReference:at:]", "%@ %t", v8, v9, v10, v11, v12, referenceCopy);
   }
 
-  setApparentTime(a4);
+  setApparentTime(at);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = v6;
+    v15 = referenceCopy;
     v16 = self->_pendingDispatchAfterBlocks;
     objc_sync_enter(v16);
     v17 = [(NSMutableDictionary *)self->_pendingDispatchAfterBlocks objectForKeyedSubscript:v15];

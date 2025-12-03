@@ -1,19 +1,19 @@
 @interface SUUIShelfLayoutData
-- (CGSize)sizeForItemAtIndex:(int64_t)a3;
+- (CGSize)sizeForItemAtIndex:(int64_t)index;
 - (CGSize)totalContentSize;
-- (SUUIShelfLayoutData)initWithNumberOfRows:(int64_t)a3 columnSpacing:(double)a4;
+- (SUUIShelfLayoutData)initWithNumberOfRows:(int64_t)rows columnSpacing:(double)spacing;
 - (UIEdgeInsets)contentInset;
-- (double)columnWidthForIndex:(int64_t)a3;
-- (double)rowHeightForIndex:(int64_t)a3;
+- (double)columnWidthForIndex:(int64_t)index;
+- (double)rowHeightForIndex:(int64_t)index;
 - (void)dealloc;
-- (void)enumerateColumnsUsingBlock:(id)a3;
-- (void)enumerateRowsUsingBlock:(id)a3;
-- (void)reloadWithItemCount:(int64_t)a3 sizeBlock:(id)a4;
+- (void)enumerateColumnsUsingBlock:(id)block;
+- (void)enumerateRowsUsingBlock:(id)block;
+- (void)reloadWithItemCount:(int64_t)count sizeBlock:(id)block;
 @end
 
 @implementation SUUIShelfLayoutData
 
-- (SUUIShelfLayoutData)initWithNumberOfRows:(int64_t)a3 columnSpacing:(double)a4
+- (SUUIShelfLayoutData)initWithNumberOfRows:(int64_t)rows columnSpacing:(double)spacing
 {
   v11.receiver = self;
   v11.super_class = SUUIShelfLayoutData;
@@ -21,13 +21,13 @@
   v7 = v6;
   if (v6)
   {
-    v6->_columnSpacing = a4;
+    v6->_columnSpacing = spacing;
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     columnWidths = v7->_columnWidths;
     v7->_columnWidths = v8;
 
-    v7->_numberOfRows = a3;
-    v7->_rowHeights = malloc_type_malloc(8 * a3, 0x100004000313F17uLL);
+    v7->_numberOfRows = rows;
+    v7->_rowHeights = malloc_type_malloc(8 * rows, 0x100004000313F17uLL);
   }
 
   return v7;
@@ -46,25 +46,25 @@
   [(SUUIShelfLayoutData *)&v4 dealloc];
 }
 
-- (double)columnWidthForIndex:(int64_t)a3
+- (double)columnWidthForIndex:(int64_t)index
 {
-  v3 = [(NSMutableArray *)self->_columnWidths objectAtIndex:a3];
+  v3 = [(NSMutableArray *)self->_columnWidths objectAtIndex:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)enumerateColumnsUsingBlock:(id)a3
+- (void)enumerateColumnsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   columnWidths = self->_columnWidths;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__SUUIShelfLayoutData_enumerateColumnsUsingBlock___block_invoke;
   v7[3] = &unk_2798F6818;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(NSMutableArray *)columnWidths enumerateObjectsUsingBlock:v7];
 }
 
@@ -78,7 +78,7 @@ uint64_t __50__SUUIShelfLayoutData_enumerateColumnsUsingBlock___block_invoke(uin
   return v8(v6, a3, a4, v7);
 }
 
-- (void)enumerateRowsUsingBlock:(id)a3
+- (void)enumerateRowsUsingBlock:(id)block
 {
   if (self->_numberOfRows >= 1)
   {
@@ -88,7 +88,7 @@ uint64_t __50__SUUIShelfLayoutData_enumerateColumnsUsingBlock___block_invoke(uin
     do
     {
       v8 = 0;
-      (*(a3 + 2))(a3, v7, &v8, self->_rowHeights[v7]);
+      (*(block + 2))(block, v7, &v8, self->_rowHeights[v7]);
       if (v8 == 1)
       {
         break;
@@ -101,12 +101,12 @@ uint64_t __50__SUUIShelfLayoutData_enumerateColumnsUsingBlock___block_invoke(uin
   }
 }
 
-- (void)reloadWithItemCount:(int64_t)a3 sizeBlock:(id)a4
+- (void)reloadWithItemCount:(int64_t)count sizeBlock:(id)block
 {
-  v21 = a4;
+  blockCopy = block;
   [(NSMutableArray *)self->_columnWidths removeAllObjects];
   bzero(self->_rowHeights, 8 * self->_numberOfRows);
-  if (a3 >= 1)
+  if (count >= 1)
   {
     v6 = 0;
     do
@@ -120,26 +120,26 @@ uint64_t __50__SUUIShelfLayoutData_enumerateColumnsUsingBlock___block_invoke(uin
       else
       {
         v8 = 0;
-        if (v6 <= a3)
+        if (v6 <= count)
         {
-          v9 = a3;
+          countCopy = count;
         }
 
         else
         {
-          v9 = v6;
+          countCopy = v6;
         }
 
         v10 = 0.0;
         v11 = v6;
         do
         {
-          if (v9 == v11)
+          if (countCopy == v11)
           {
             break;
           }
 
-          v12 = v21[2](v21, v11);
+          v12 = blockCopy[2](blockCopy, v11);
           if (v10 < v12)
           {
             v10 = v12;
@@ -170,26 +170,26 @@ uint64_t __50__SUUIShelfLayoutData_enumerateColumnsUsingBlock___block_invoke(uin
       v6 += self->_numberOfRows;
     }
 
-    while (v6 < a3);
+    while (v6 < count);
   }
 }
 
-- (double)rowHeightForIndex:(int64_t)a3
+- (double)rowHeightForIndex:(int64_t)index
 {
-  if (self->_numberOfRows <= a3)
+  if (self->_numberOfRows <= index)
   {
-    [(SUUIShelfLayoutData *)a2 rowHeightForIndex:a3];
+    [(SUUIShelfLayoutData *)a2 rowHeightForIndex:index];
   }
 
-  return self->_rowHeights[a3];
+  return self->_rowHeights[index];
 }
 
-- (CGSize)sizeForItemAtIndex:(int64_t)a3
+- (CGSize)sizeForItemAtIndex:(int64_t)index
 {
   numberOfRows = self->_numberOfRows;
-  v5 = a3 % numberOfRows;
-  v6 = [(NSMutableArray *)self->_columnWidths objectAtIndex:a3 / numberOfRows];
-  [v6 floatValue];
+  v5 = index % numberOfRows;
+  numberOfRows = [(NSMutableArray *)self->_columnWidths objectAtIndex:index / numberOfRows];
+  [numberOfRows floatValue];
   v8 = v7;
   v9 = self->_rowHeights[v5];
 

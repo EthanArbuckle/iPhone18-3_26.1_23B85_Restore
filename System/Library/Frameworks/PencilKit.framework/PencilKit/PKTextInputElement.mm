@@ -1,71 +1,71 @@
 @interface PKTextInputElement
-+ (double)hitToleranceFrameFromElementFrame:(double)a3 insets:(double)a4;
++ (double)hitToleranceFrameFromElementFrame:(double)frame insets:(double)insets;
 - (BOOL)clearActivePreview;
-- (BOOL)containsPoint:(double)a3 inCoordinateSpace:(double)a4;
+- (BOOL)containsPoint:(double)point inCoordinateSpace:(double)space;
 - (BOOL)showSelectionCommands;
-- (CGRect)selectionClipRectInCoordinateSpace:(id)a3;
+- (CGRect)selectionClipRectInCoordinateSpace:(id)space;
 - (_NSRange)activeAffectedRange;
 - (_NSRange)activePreviewRange;
 - (__CFString)debugElementTypeDescription;
 - (double)_safeHitFrame;
-- (double)clampedReferencePoint:(uint64_t)a1;
+- (double)clampedReferencePoint:(uint64_t)point;
 - (double)frame;
-- (double)hitToleranceFrameFromElementFrame:(double)a3;
+- (double)hitToleranceFrameFromElementFrame:(double)frame;
 - (id)_containerInteractionView;
 - (id)_textInputResponder;
 - (id)coordinateSpace;
 - (id)description;
-- (id)initWithElementInteraction:(void *)a3 elementIdentifier:(void *)a4 orderInContainer:;
-- (id)initWithTextInput:(id *)a1;
+- (id)initWithElementInteraction:(void *)interaction elementIdentifier:(void *)identifier orderInContainer:;
+- (id)initWithTextInput:(id *)input;
 - (id)referenceView;
 - (id)selectionHighlightColor;
-- (uint64_t)_isFromSameContainerAsElement:(uint64_t)a1;
-- (uint64_t)containsView:(id *)a1;
+- (uint64_t)_isFromSameContainerAsElement:(uint64_t)element;
+- (uint64_t)containsView:(id *)view;
 - (uint64_t)isEditableElement;
-- (uint64_t)isElementView:(uint64_t)a1;
-- (uint64_t)isEquivalentToElement:(uint64_t)a1;
+- (uint64_t)isElementView:(uint64_t)view;
+- (uint64_t)isEquivalentToElement:(uint64_t)element;
 - (uint64_t)isFocused;
-- (uint64_t)isInFrontOfElement:(uint64_t)a1;
-- (uint64_t)shouldBeginAtLocation:(double)a3;
+- (uint64_t)isInFrontOfElement:(uint64_t)element;
+- (uint64_t)shouldBeginAtLocation:(double)location;
 - (uint64_t)shouldPostponeFocusing;
 - (void)_beginSuppressingFieldPlaceholder;
 - (void)_finishSuppressingFieldPlaceholderIfNeeded;
-- (void)_promoteKeyWindowIfNecessary:(void *)a1;
+- (void)_promoteKeyWindowIfNecessary:(void *)necessary;
 - (void)_scribbleInteraction;
 - (void)dealloc;
 - (void)didEndWriting;
 - (void)didInsertText;
-- (void)didMoveToWritingSession:(id)a3;
-- (void)didTargetElementForTouches:(void *)a3 event:;
-- (void)evaluateLineBreakForTapAtLocation:(char)a3 weakCursor:(void *)a4 allowTrailingWhitespace:(double)a5 completion:(CGFloat)a6;
-- (void)focusElementIfNeededWithReferencePoint:(void *)a3 alwaysSetSelectionFromReferencePoint:(double)a4 completion:(double)a5;
-- (void)loadContentFocusingIfNeededWithReferencePoint:(void *)a3 alwaysSetSelectionFromReferencePoint:(double)a4 rectOfInterest:(double)a5 completion:(CGFloat)a6;
+- (void)didMoveToWritingSession:(id)session;
+- (void)didTargetElementForTouches:(void *)touches event:;
+- (void)evaluateLineBreakForTapAtLocation:(char)location weakCursor:(void *)cursor allowTrailingWhitespace:(double)whitespace completion:(CGFloat)completion;
+- (void)focusElementIfNeededWithReferencePoint:(void *)point alwaysSetSelectionFromReferencePoint:(double)referencePoint completion:(double)completion;
+- (void)loadContentFocusingIfNeededWithReferencePoint:(void *)point alwaysSetSelectionFromReferencePoint:(double)referencePoint rectOfInterest:(double)interest completion:(CGFloat)completion;
 - (void)notifyTextInputTextDidChange;
 - (void)notifyTextInputTextWillChange;
-- (void)swapWritingStateWithElement:(id)a3;
-- (void)updateFromEquivalentElement:(uint64_t)a1;
-- (void)updateWithFocusedTextInput:(uint64_t)a1;
+- (void)swapWritingStateWithElement:(id)element;
+- (void)updateFromEquivalentElement:(uint64_t)element;
+- (void)updateWithFocusedTextInput:(uint64_t)input;
 - (void)willBeginWriting;
 @end
 
 @implementation PKTextInputElement
 
-- (id)initWithElementInteraction:(void *)a3 elementIdentifier:(void *)a4 orderInContainer:
+- (id)initWithElementInteraction:(void *)interaction elementIdentifier:(void *)identifier orderInContainer:
 {
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  interactionCopy = interaction;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = PKTextInputElement;
     v10 = objc_msgSendSuper2(&v15, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 10, a2);
-      objc_storeStrong(a1 + 15, a3);
-      a1[11] = a4;
-      v11 = [(PKTextInputElement *)a1 _containerInteractionView];
+      objc_storeStrong(self + 15, interaction);
+      self[11] = identifier;
+      _containerInteractionView = [(PKTextInputElement *)self _containerInteractionView];
       v12 = objc_opt_respondsToSelector();
       v13 = 1;
       if (v12)
@@ -73,71 +73,71 @@
         v13 = 2;
       }
 
-      a1[7] = v13;
+      self[7] = v13;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_containerInteractionView
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
+    selfCopy = self;
     if (objc_opt_respondsToSelector())
     {
-      a1 = [v2[10] interactionView];
+      self = [selfCopy[10] interactionView];
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      a1 = [v2[10] view];
+      self = [selfCopy[10] view];
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)initWithTextInput:(id *)a1
+- (id)initWithTextInput:(id *)input
 {
   v3 = a2;
-  if (a1)
+  if (input)
   {
-    v9.receiver = a1;
+    v9.receiver = input;
     v9.super_class = PKTextInputElement;
     v4 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v4;
+    input = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 13, v3);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        objc_storeWeak(a1 + 8, v3);
+        objc_storeWeak(input + 8, v3);
       }
 
       else if (objc_opt_respondsToSelector())
       {
-        v5 = [v3 textInputView];
-        objc_storeWeak(a1 + 8, v5);
+        textInputView = [v3 textInputView];
+        objc_storeWeak(input + 8, textInputView);
       }
 
-      a1[7] = 0;
+      input[7] = 0;
       v6 = PKScribbleInteractionInTextInput(v3);
-      v7 = a1[9];
-      a1[9] = v6;
+      v7 = input[9];
+      input[9] = v6;
     }
   }
 
-  return a1;
+  return input;
 }
 
 - (void)dealloc
@@ -149,7 +149,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v6 = self;
+      selfCopy = self;
       _os_log_fault_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_FAULT, "Element deallocated while waiting for matching didEndWriting. %@", buf, 0xCu);
     }
   }
@@ -188,20 +188,20 @@
 
 - (double)frame
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 56);
+    v2 = *(self + 56);
     if ((v2 - 1) >= 2)
     {
       if (v2)
       {
-        return *(a1 + 8);
+        return *(self + 8);
       }
 
-      WeakRetained = objc_loadWeakRetained((a1 + 64));
-      v9 = [(PKTextInputElement *)a1 coordinateSpace];
-      v10 = v9;
-      if (WeakRetained && v9)
+      WeakRetained = objc_loadWeakRetained((self + 64));
+      coordinateSpace = [(PKTextInputElement *)self coordinateSpace];
+      v10 = coordinateSpace;
+      if (WeakRetained && coordinateSpace)
       {
         [WeakRetained bounds];
         if (v10 != WeakRetained)
@@ -209,39 +209,39 @@
           v11 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(WeakRetained, v10, v11, v12, v13, v14);
         }
 
-        *(a1 + 8) = v11;
-        *(a1 + 16) = v12;
-        *(a1 + 24) = v13;
-        *(a1 + 32) = v14;
+        *(self + 8) = v11;
+        *(self + 16) = v12;
+        *(self + 24) = v13;
+        *(self + 32) = v14;
       }
     }
 
     else
     {
-      v3 = *(a1 + 120);
-      WeakRetained = *(a1 + 80);
+      v3 = *(self + 120);
+      WeakRetained = *(self + 80);
       [WeakRetained frameForElement:v3];
-      *(a1 + 8) = v5;
-      *(a1 + 16) = v6;
-      *(a1 + 24) = v7;
-      *(a1 + 32) = v8;
+      *(self + 8) = v5;
+      *(self + 16) = v6;
+      *(self + 24) = v7;
+      *(self + 32) = v8;
     }
 
-    return *(a1 + 8);
+    return *(self + 8);
   }
 
   return 0.0;
 }
 
-- (double)hitToleranceFrameFromElementFrame:(double)a3
+- (double)hitToleranceFrameFromElementFrame:(double)frame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   v10 = +[PKTextInputSettings sharedSettings];
-  if ([(PKTextInputElement *)a1 isFocused])
+  if ([(PKTextInputElement *)self isFocused])
   {
     [v10 firstResponderAttractionHorizontal];
     v12 = v11;
@@ -260,47 +260,47 @@
   v16 = -v15;
   v17 = -v12;
   v18 = v12 * -1.25;
-  v19 = [(PKTextInputElement *)a1 _scribbleInteraction];
-  v20 = v19;
-  if (v19)
+  _scribbleInteraction = [(PKTextInputElement *)self _scribbleInteraction];
+  v20 = _scribbleInteraction;
+  if (_scribbleInteraction)
   {
-    [v19 hitToleranceInsetsWithDefaultInsets:a1[15] element:{v16, v17, v16, v18}];
+    [_scribbleInteraction hitToleranceInsetsWithDefaultInsets:self[15] element:{v16, v17, v16, v18}];
     v16 = v21;
     v17 = v22;
   }
 
-  v23 = [(PKTextInputElement *)a2 hitToleranceFrameFromElementFrame:a3 insets:a4, a5, v16, v17];
+  v23 = [(PKTextInputElement *)a2 hitToleranceFrameFromElementFrame:frame insets:a4, a5, v16, v17];
 
   return v23;
 }
 
 - (uint64_t)isFocused
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 7);
+    v2 = *(self + 7);
     if ((v2 - 1) < 2)
     {
-      if ([*(a1 + 10) supportsIsElementFocused])
+      if ([*(self + 10) supportsIsElementFocused])
       {
-        v3 = *(a1 + 10);
-        v4 = *(a1 + 15);
+        v3 = *(self + 10);
+        v4 = *(self + 15);
         v5 = v3;
         v6 = [v5 isElementFocused:v4];
 
         return v6;
       }
 
-      v10 = *(a1 + 50);
+      v10 = *(self + 50);
       return v10 & 1;
     }
 
     if (!v2)
     {
-      v8 = [(PKTextInputElement *)a1 _textInputResponder];
-      v9 = [v8 isFirstResponder];
+      _textInputResponder = [(PKTextInputElement *)self _textInputResponder];
+      isFirstResponder = [_textInputResponder isFirstResponder];
 
-      return v9;
+      return isFirstResponder;
     }
   }
 
@@ -310,39 +310,39 @@
 
 - (void)_scribbleInteraction
 {
-  if (!a1)
+  if (!self)
   {
 LABEL_4:
 
-    return a1;
+    return self;
   }
 
-  v2 = a1[7];
+  v2 = self[7];
   if (v2 <= 2)
   {
-    a1 = *(a1 + qword_1C801C660[v2]);
+    self = *(self + qword_1C801C660[v2]);
     goto LABEL_4;
   }
 
-  a1 = 0;
+  self = 0;
 
-  return a1;
+  return self;
 }
 
-+ (double)hitToleranceFrameFromElementFrame:(double)a3 insets:(double)a4
++ (double)hitToleranceFrameFromElementFrame:(double)frame insets:(double)insets
 {
   objc_opt_self();
   v9 = +[PKTextInputSettings sharedSettings];
   [v9 minimumWritingSpaceWidth];
   v11 = v10;
 
-  if (a3 < v11)
+  if (frame < v11)
   {
     v12 = +[PKTextInputSettings sharedSettings];
     [v12 minimumWritingSpaceWidth];
   }
 
-  return a1 + a6;
+  return self + a6;
 }
 
 - (id)description
@@ -366,7 +366,7 @@ LABEL_4:
     v4 = @"UITextInputView";
   }
 
-  v5 = [(PKTextInputElement *)self coordinateSpace];
+  coordinateSpace = [(PKTextInputElement *)self coordinateSpace];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -374,10 +374,10 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  v6 = [(PKTextInputElement *)self coordinateSpace];
-  v7 = [v6 window];
+  coordinateSpace2 = [(PKTextInputElement *)self coordinateSpace];
+  window = [coordinateSpace2 window];
 
-  if (!v7)
+  if (!window)
   {
 LABEL_9:
     v27 = MEMORY[0x1E696AEC0];
@@ -387,14 +387,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v8 = [(PKTextInputElement *)self frame];
+  frame = [(PKTextInputElement *)self frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(PKTextInputElement *)self coordinateSpace];
-  v16 = [(PKTextInputElement *)self coordinateSpace];
-  v17 = [v16 window];
-  v18 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v15, v17, v8, v10, v12, v14);
+  coordinateSpace3 = [(PKTextInputElement *)self coordinateSpace];
+  coordinateSpace4 = [(PKTextInputElement *)self coordinateSpace];
+  window2 = [coordinateSpace4 window];
+  v18 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace3, window2, frame, v10, v12, v14);
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -420,11 +420,11 @@ LABEL_9:
     v31 = &stru_1F476BD20;
   }
 
-  v32 = [(PKTextInputElement *)&self->super.isa referenceView];
-  v33 = v32;
-  if (v32)
+  referenceView = [(PKTextInputElement *)&self->super.isa referenceView];
+  v33 = referenceView;
+  if (referenceView)
   {
-    v34 = PKDebugStringRepresentation(v32);
+    v34 = PKDebugStringRepresentation(referenceView);
   }
 
   else
@@ -497,40 +497,40 @@ LABEL_9:
 
 - (id)_textInputResponder
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 13);
+    WeakRetained = objc_loadWeakRetained(self + 13);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v1 = objc_loadWeakRetained(v1 + 13);
+      selfCopy = objc_loadWeakRetained(selfCopy + 13);
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)updateWithFocusedTextInput:(uint64_t)a1
+- (void)updateWithFocusedTextInput:(uint64_t)input
 {
   v3 = a2;
-  if (a1 && *(a1 + 56) == 1)
+  if (input && *(input + 56) == 1)
   {
     v4 = v3;
-    objc_storeWeak((a1 + 104), v3);
+    objc_storeWeak((input + 104), v3);
     v3 = v4;
   }
 }
 
-- (void)updateFromEquivalentElement:(uint64_t)a1
+- (void)updateFromEquivalentElement:(uint64_t)element
 {
   v3 = a2;
-  if (a1)
+  if (element)
   {
     if (v3)
     {
@@ -544,23 +544,23 @@ LABEL_9:
       v5 = 0;
     }
 
-    *(a1 + 50) = v4;
-    *(a1 + 88) = v5;
+    *(element + 50) = v4;
+    *(element + 88) = v5;
   }
 }
 
-- (uint64_t)shouldBeginAtLocation:(double)a3
+- (uint64_t)shouldBeginAtLocation:(double)location
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v5 = [(PKTextInputElement *)a1 _scribbleInteraction];
-  v6 = v5;
-  if (v5)
+  _scribbleInteraction = [(PKTextInputElement *)self _scribbleInteraction];
+  v6 = _scribbleInteraction;
+  if (_scribbleInteraction)
   {
-    v7 = [v5 shouldBeginAtLocation:{a2, a3}];
+    v7 = [_scribbleInteraction shouldBeginAtLocation:{a2, location}];
   }
 
   else
@@ -571,45 +571,45 @@ LABEL_9:
   return v7;
 }
 
-- (void)didTargetElementForTouches:(void *)a3 event:
+- (void)didTargetElementForTouches:(void *)touches event:
 {
   v7 = a2;
-  v5 = a3;
-  if (a1)
+  touchesCopy = touches;
+  if (self)
   {
-    v6 = [(PKTextInputElement *)a1 _scribbleInteraction];
-    if (v6 && (objc_opt_respondsToSelector() & 1) != 0)
+    _scribbleInteraction = [(PKTextInputElement *)self _scribbleInteraction];
+    if (_scribbleInteraction && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v6 didTargetElement:a1[15] forTouches:v7 event:v5];
+      [_scribbleInteraction didTargetElement:self[15] forTouches:v7 event:touchesCopy];
     }
   }
 }
 
-- (BOOL)containsPoint:(double)a3 inCoordinateSpace:(double)a4
+- (BOOL)containsPoint:(double)point inCoordinateSpace:(double)space
 {
   if (result)
   {
     v6 = result;
     v7 = a2;
-    v8 = [(PKTextInputElement *)v6 coordinateSpace];
-    v9 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v7, v8, a3, a4, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+    coordinateSpace = [(PKTextInputElement *)v6 coordinateSpace];
+    v9 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v7, coordinateSpace, point, space, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
     v11 = v10;
 
-    v12 = [(PKTextInputElement *)v6 frame];
+    frame = [(PKTextInputElement *)v6 frame];
     v16 = v9;
     v17 = v11;
 
-    return CGRectContainsPoint(*&v12, *&v16);
+    return CGRectContainsPoint(*&frame, *&v16);
   }
 
   return result;
 }
 
-- (uint64_t)isEquivalentToElement:(uint64_t)a1
+- (uint64_t)isEquivalentToElement:(uint64_t)element
 {
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!element)
   {
     goto LABEL_20;
   }
@@ -624,27 +624,27 @@ LABEL_9:
     v5 = 0;
   }
 
-  if (*(a1 + 56) != v5)
+  if (*(element + 56) != v5)
   {
     goto LABEL_19;
   }
 
-  if (*(a1 + 112))
+  if (*(element + 112))
   {
     if (v3)
     {
       v6 = v3[14];
       if (v6)
       {
-        a1 = [v6 isEqualToNumber:?];
+        element = [v6 isEqualToNumber:?];
         goto LABEL_20;
       }
     }
   }
 
-  if (!*(a1 + 80))
+  if (!*(element + 80))
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 104));
+    WeakRetained = objc_loadWeakRetained((element + 104));
 
     if (WeakRetained)
     {
@@ -658,24 +658,24 @@ LABEL_9:
         v11 = 0;
       }
 
-      v12 = objc_loadWeakRetained((a1 + 104));
-      a1 = [v11 isEqual:v12];
+      v12 = objc_loadWeakRetained((element + 104));
+      element = [v11 isEqual:v12];
 
       goto LABEL_20;
     }
 
 LABEL_19:
-    a1 = 0;
+    element = 0;
     goto LABEL_20;
   }
 
-  if (![(PKTextInputElement *)a1 _isFromSameContainerAsElement:v4])
+  if (![(PKTextInputElement *)element _isFromSameContainerAsElement:v4])
   {
     goto LABEL_19;
   }
 
-  a1 = *(a1 + 120);
-  if (a1)
+  element = *(element + 120);
+  if (element)
   {
     if (v4)
     {
@@ -688,28 +688,28 @@ LABEL_19:
     }
 
     v8 = v7;
-    v9 = a1;
-    a1 = [v8 isEqual:v9];
+    elementCopy = element;
+    element = [v8 isEqual:elementCopy];
   }
 
 LABEL_20:
 
-  return a1;
+  return element;
 }
 
-- (uint64_t)_isFromSameContainerAsElement:(uint64_t)a1
+- (uint64_t)_isFromSameContainerAsElement:(uint64_t)element
 {
   v3 = a2;
   v4 = v3;
   v5 = 0;
-  if (a1 && v3)
+  if (element && v3)
   {
     v6 = *(v3 + 10);
     if (v6)
     {
       v7 = v6;
       v8 = v4[10];
-      v9 = *(a1 + 80);
+      v9 = *(element + 80);
       v5 = [v9 isEqual:v8];
     }
 
@@ -722,19 +722,19 @@ LABEL_20:
   return v5;
 }
 
-- (uint64_t)isInFrontOfElement:(uint64_t)a1
+- (uint64_t)isInFrontOfElement:(uint64_t)element
 {
   v3 = a2;
-  if (a1)
+  if (element)
   {
-    v4 = [(PKTextInputElement *)a1 referenceView];
-    v5 = [(PKTextInputElement *)v3 referenceView];
-    v6 = [v4 isDescendantOfView:v5];
+    referenceView = [(PKTextInputElement *)element referenceView];
+    referenceView2 = [(PKTextInputElement *)v3 referenceView];
+    v6 = [referenceView isDescendantOfView:referenceView2];
 
-    v7 = *(a1 + 56);
+    v7 = *(element + 56);
     if (v7 == 2)
     {
-      if ([(PKTextInputElement *)a1 _isFromSameContainerAsElement:v3])
+      if ([(PKTextInputElement *)element _isFromSameContainerAsElement:v3])
       {
         if (v3)
         {
@@ -746,11 +746,11 @@ LABEL_20:
           v9 = 0;
         }
 
-        v6 = *(a1 + 88) < v9;
+        v6 = *(element + 88) < v9;
       }
     }
 
-    else if (v7 == 1 && [(PKTextInputElement *)a1 _isFromSameContainerAsElement:v3])
+    else if (v7 == 1 && [(PKTextInputElement *)element _isFromSameContainerAsElement:v3])
     {
       if (v3)
       {
@@ -762,7 +762,7 @@ LABEL_20:
         v8 = 0;
       }
 
-      v6 = *(a1 + 88) >= v8;
+      v6 = *(element + 88) >= v8;
     }
   }
 
@@ -776,37 +776,37 @@ LABEL_20:
 
 - (uint64_t)isEditableElement
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (*(a1 + 80))
+    if (*(self + 80))
     {
       if (objc_opt_respondsToSelector())
       {
-        v2 = *(v1 + 80);
-        v3 = *(v1 + 120);
+        v2 = *(selfCopy + 80);
+        v3 = *(selfCopy + 120);
         v4 = v2;
         v5 = [v4 isEditableElement:v3];
 LABEL_8:
-        v1 = v5;
+        selfCopy = v5;
 
-        return v1;
+        return selfCopy;
       }
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 104));
+      WeakRetained = objc_loadWeakRetained((self + 104));
       if (WeakRetained)
       {
         v7 = WeakRetained;
-        v8 = objc_loadWeakRetained((v1 + 104));
+        v8 = objc_loadWeakRetained((selfCopy + 104));
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v4 = objc_loadWeakRetained((v1 + 104));
+          v4 = objc_loadWeakRetained((selfCopy + 104));
           v5 = [PKTextInputElementsFinder isResponderEditableTextInput:v4];
           goto LABEL_8;
         }
@@ -816,19 +816,19 @@ LABEL_8:
     return 1;
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (uint64_t)isElementView:(uint64_t)a1
+- (uint64_t)isElementView:(uint64_t)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
-    v4 = *(a1 + 56);
+    v4 = *(view + 56);
     if ((v4 - 1) < 2)
     {
-      WeakRetained = [(PKTextInputElement *)a1 _containerInteractionView];
-      a1 = WeakRetained == v3;
+      WeakRetained = [(PKTextInputElement *)view _containerInteractionView];
+      view = WeakRetained == v3;
 LABEL_9:
 
       goto LABEL_10;
@@ -836,39 +836,39 @@ LABEL_9:
 
     if (!v4)
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 104));
+      WeakRetained = objc_loadWeakRetained((view + 104));
       if (WeakRetained == v3)
       {
-        a1 = 1;
+        view = 1;
       }
 
       else
       {
-        v6 = objc_loadWeakRetained((a1 + 104));
-        v7 = [v6 textInputView];
-        a1 = v7 == v3;
+        v6 = objc_loadWeakRetained((view + 104));
+        textInputView = [v6 textInputView];
+        view = textInputView == v3;
       }
 
       goto LABEL_9;
     }
 
-    a1 = 0;
+    view = 0;
   }
 
 LABEL_10:
 
-  return a1;
+  return view;
 }
 
-- (uint64_t)containsView:(id *)a1
+- (uint64_t)containsView:(id *)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
-    v4 = [(PKTextInputElement *)a1 referenceView];
-    if (v4)
+    referenceView = [(PKTextInputElement *)view referenceView];
+    if (referenceView)
     {
-      v5 = [v3 isDescendantOfView:v4];
+      v5 = [v3 isDescendantOfView:referenceView];
     }
 
     else
@@ -885,20 +885,20 @@ LABEL_10:
   return v5;
 }
 
-- (void)loadContentFocusingIfNeededWithReferencePoint:(void *)a3 alwaysSetSelectionFromReferencePoint:(double)a4 rectOfInterest:(double)a5 completion:(CGFloat)a6
+- (void)loadContentFocusingIfNeededWithReferencePoint:(void *)point alwaysSetSelectionFromReferencePoint:(double)referencePoint rectOfInterest:(double)interest completion:(CGFloat)completion
 {
   v46 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  if (a1)
+  pointCopy = point;
+  if (self)
   {
-    v18 = [[PKTextInputElementContent alloc] initWithElement:a1];
-    v19 = *(a1 + 56);
+    v18 = [[PKTextInputElementContent alloc] initWithElement:self];
+    v19 = *(self + 56);
     if (v19 >= 2)
     {
       if (v19 == 2)
       {
-        v47.origin.x = [(PKTextInputElement *)a1 _safeHitFrame];
-        v49.origin.x = a6;
+        v47.origin.x = [(PKTextInputElement *)self _safeHitFrame];
+        v49.origin.x = completion;
         v49.origin.y = a7;
         v49.size.width = a8;
         v49.size.height = a9;
@@ -907,22 +907,22 @@ LABEL_10:
         y = v48.origin.y;
         width = v48.size.width;
         height = v48.size.height;
-        v24 = [(PKTextInputElement *)a1 _containerInteractionView];
-        if (v24)
+        _containerInteractionView = [(PKTextInputElement *)self _containerInteractionView];
+        if (_containerInteractionView)
         {
           v30[0] = MEMORY[0x1E69E9820];
           v30[1] = 3221225472;
           v30[2] = __131__PKTextInputElement_loadContentFocusingIfNeededWithReferencePoint_alwaysSetSelectionFromReferencePoint_rectOfInterest_completion___block_invoke_2;
           v30[3] = &unk_1E82D7868;
           v31 = v18;
-          v32 = v24;
+          v32 = _containerInteractionView;
           v35 = x;
           v36 = y;
           v37 = width;
           v38 = height;
-          v33 = a1;
-          v34 = v17;
-          [(PKTextInputElement *)a1 focusElementIfNeededWithReferencePoint:a2 alwaysSetSelectionFromReferencePoint:v30 completion:a4, a5];
+          selfCopy = self;
+          v34 = pointCopy;
+          [(PKTextInputElement *)self focusElementIfNeededWithReferencePoint:a2 alwaysSetSelectionFromReferencePoint:v30 completion:referencePoint, interest];
         }
 
         else
@@ -930,54 +930,54 @@ LABEL_10:
           v28 = os_log_create("com.apple.pencilkit", "PencilTextInput");
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
-            v29 = *(a1 + 80);
+            v29 = *(self + 80);
             *buf = 138412546;
-            v43 = a1;
+            selfCopy2 = self;
             v44 = 2112;
             v45 = v29;
             _os_log_error_impl(&dword_1C7CCA000, v28, OS_LOG_TYPE_ERROR, "Failed to load content for web element because the interaction view is nil. element: %@, interaction: %@", buf, 0x16u);
           }
 
-          (*(v17 + 2))(v17, v18);
+          (*(pointCopy + 2))(pointCopy, v18);
         }
       }
 
       goto LABEL_25;
     }
 
-    if (([(PKTextInputElement *)a1 isEditableElement]& 1) == 0 && !*(a1 + 56))
+    if (([(PKTextInputElement *)self isEditableElement]& 1) == 0 && !*(self + 56))
     {
       goto LABEL_17;
     }
 
-    if (![(PKTextInputElement *)a1 shouldPostponeFocusing]|| [(PKTextInputElement *)a1 isFocused])
+    if (![(PKTextInputElement *)self shouldPostponeFocusing]|| [(PKTextInputElement *)self isFocused])
     {
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __131__PKTextInputElement_loadContentFocusingIfNeededWithReferencePoint_alwaysSetSelectionFromReferencePoint_rectOfInterest_completion___block_invoke;
       v39[3] = &unk_1E82D7818;
       v40 = v18;
-      v41 = v17;
-      [(PKTextInputElement *)a1 focusElementIfNeededWithReferencePoint:a2 alwaysSetSelectionFromReferencePoint:v39 completion:a4, a5];
+      v41 = pointCopy;
+      [(PKTextInputElement *)self focusElementIfNeededWithReferencePoint:a2 alwaysSetSelectionFromReferencePoint:v39 completion:referencePoint, interest];
 
 LABEL_25:
       goto LABEL_26;
     }
 
-    if (*(a1 + 56))
+    if (*(self + 56))
     {
-      v25 = [*(a1 + 80) interaction];
+      interaction = [*(self + 80) interaction];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
 LABEL_20:
-        (*(v17 + 2))(v17, v18);
+        (*(pointCopy + 2))(pointCopy, v18);
         goto LABEL_25;
       }
 
-      WeakRetained = *(a1 + 120);
+      WeakRetained = *(self + 120);
       if (!WeakRetained || (objc_opt_respondsToSelector() & 1) == 0 || ![WeakRetained conformsToProtocol:&unk_1F4840D28])
       {
 LABEL_19:
@@ -989,7 +989,7 @@ LABEL_19:
     else
     {
 LABEL_17:
-      WeakRetained = objc_loadWeakRetained((a1 + 104));
+      WeakRetained = objc_loadWeakRetained((self + 104));
     }
 
     [(PKTextInputElementContent *)v18 loadDataIfNeededWithTextInput:?];
@@ -1001,11 +1001,11 @@ LABEL_26:
 
 - (uint64_t)shouldPostponeFocusing
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [(PKTextInputElement *)a1 _scribbleInteraction];
-    v3 = [v2 focusWillTransformElement:*(v1 + 120)];
+    _scribbleInteraction = [(PKTextInputElement *)self _scribbleInteraction];
+    v3 = [_scribbleInteraction focusWillTransformElement:*(selfCopy + 120)];
 
     if (v3)
     {
@@ -1015,49 +1015,49 @@ LABEL_26:
     else
     {
       v4 = +[PKTextInputSettings sharedSettings];
-      v5 = [v4 UCBPaletteEnabled];
+      uCBPaletteEnabled = [v4 UCBPaletteEnabled];
 
-      if (v5)
+      if (uCBPaletteEnabled)
       {
         return 0;
       }
 
       else
       {
-        WeakRetained = objc_loadWeakRetained((v1 + 64));
-        v7 = [WeakRetained window];
+        WeakRetained = objc_loadWeakRetained((selfCopy + 64));
+        window = [WeakRetained window];
 
-        if ((v7 || (-[PKTextInputElement _containerInteractionView](v1), v8 = objc_claimAutoreleasedReturnValue(), [v8 window], v7 = objc_claimAutoreleasedReturnValue(), v8, v7)) && (-[PKTextInputElement coordinateSpace](v1), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+        if ((window || (-[PKTextInputElement _containerInteractionView](selfCopy), v8 = objc_claimAutoreleasedReturnValue(), [v8 window], window = objc_claimAutoreleasedReturnValue(), v8, window)) && (-[PKTextInputElement coordinateSpace](selfCopy), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
         {
-          v10 = [(PKTextInputElement *)v1 frame];
+          frame = [(PKTextInputElement *)selfCopy frame];
           v12 = v11;
           v14 = v13;
           v16 = v15;
-          v17 = [(PKTextInputElement *)v1 coordinateSpace];
-          v18 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v17, v7, v10, v12, v14, v16);
+          coordinateSpace = [(PKTextInputElement *)selfCopy coordinateSpace];
+          v18 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace, window, frame, v12, v14, v16);
           v20 = v19;
           v22 = v21;
           v24 = v23;
 
-          [v7 bounds];
+          [window bounds];
           MaxY = CGRectGetMaxY(v28);
           v29.origin.x = v18;
           v29.origin.y = v20;
           v29.size.width = v22;
           v29.size.height = v24;
           v26 = MaxY - CGRectGetMaxY(v29) < 120.0;
-          v1 = v24 <= 120.0 && v26;
+          selfCopy = v24 <= 120.0 && v26;
         }
 
         else
         {
-          v1 = 0;
+          selfCopy = 0;
         }
       }
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 uint64_t __131__PKTextInputElement_loadContentFocusingIfNeededWithReferencePoint_alwaysSetSelectionFromReferencePoint_rectOfInterest_completion___block_invoke(uint64_t a1, void *a2)
@@ -1072,16 +1072,16 @@ uint64_t __131__PKTextInputElement_loadContentFocusingIfNeededWithReferencePoint
   return v3();
 }
 
-- (void)focusElementIfNeededWithReferencePoint:(void *)a3 alwaysSetSelectionFromReferencePoint:(double)a4 completion:(double)a5
+- (void)focusElementIfNeededWithReferencePoint:(void *)point alwaysSetSelectionFromReferencePoint:(double)referencePoint completion:(double)completion
 {
-  v9 = a3;
-  v10 = v9;
-  if (!a1)
+  pointCopy = point;
+  v10 = pointCopy;
+  if (!self)
   {
     goto LABEL_39;
   }
 
-  v11 = *(a1 + 56);
+  v11 = *(self + 56);
   if ((v11 - 1) >= 2)
   {
     if (v11)
@@ -1089,25 +1089,25 @@ uint64_t __131__PKTextInputElement_loadContentFocusingIfNeededWithReferencePoint
       goto LABEL_39;
     }
 
-    v27 = [(PKTextInputElement *)a1 isFocused];
-    WeakRetained = objc_loadWeakRetained((a1 + 104));
-    if (WeakRetained && ([(PKTextInputElement *)a1 coordinateSpace], v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
+    isFocused = [(PKTextInputElement *)self isFocused];
+    WeakRetained = objc_loadWeakRetained((self + 104));
+    if (WeakRetained && ([(PKTextInputElement *)self coordinateSpace], v29 = objc_claimAutoreleasedReturnValue(), v29, v29))
     {
-      if (!v27 || a2)
+      if (!isFocused || a2)
       {
-        v30 = [(PKTextInputElement *)a1 coordinateSpace];
-        v31 = [WeakRetained textInputView];
-        v32 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v30, v31, a4, a5, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
+        coordinateSpace = [(PKTextInputElement *)self coordinateSpace];
+        textInputView = [WeakRetained textInputView];
+        v32 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace, textInputView, referencePoint, completion, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8));
         v34 = v33;
 
         [PKTextInputUITextInputInterface setSelectionWithReferencePoint:WeakRetained inTextInput:v32, v34];
       }
 
-      v35 = [MEMORY[0x1E69DCBE0] activeInstance];
-      v36 = [v35 textInputTraits];
-      v37 = [v36 keyboardType];
+      activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+      textInputTraits = [activeInstance textInputTraits];
+      keyboardType = [textInputTraits keyboardType];
 
-      if (v37 == 122)
+      if (keyboardType == 122)
       {
         v38 = 1;
         if (!v10)
@@ -1119,8 +1119,8 @@ uint64_t __131__PKTextInputElement_loadContentFocusingIfNeededWithReferencePoint
       else
       {
         [PKTextInputElement _promoteKeyWindowIfNecessary:?];
-        v43 = [(PKTextInputElement *)a1 _textInputResponder];
-        v38 = [PKTextInputUITextInputInterface makeTextInputFirstResponder:v43 forPencilInput:1];
+        _textInputResponder = [(PKTextInputElement *)self _textInputResponder];
+        v38 = [PKTextInputUITextInputInterface makeTextInputFirstResponder:_textInputResponder forPencilInput:1];
 
         if (!v10)
         {
@@ -1140,7 +1140,7 @@ LABEL_38:
       }
     }
 
-    if ((v27 & v38) == 1)
+    if ((isFocused & v38) == 1)
     {
       (v10)[2](v10, WeakRetained);
     }
@@ -1165,70 +1165,70 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  if (*(a1 + 80))
+  if (*(self + 80))
   {
-    v59.origin.x = [(PKTextInputElement *)a1 frame];
+    v59.origin.x = [(PKTextInputElement *)self frame];
     x = v59.origin.x;
     y = v59.origin.y;
     width = v59.size.width;
     height = v59.size.height;
-    v58.x = a4;
-    v58.y = a5;
+    v58.x = referencePoint;
+    v58.y = completion;
     v16 = CGRectContainsPoint(v59, v58);
-    v17 = x + width;
-    if (a4 <= x + width)
+    referencePointCopy = x + width;
+    if (referencePoint <= x + width)
     {
-      v17 = a4;
+      referencePointCopy = referencePoint;
     }
 
-    if (a4 < x)
+    if (referencePoint < x)
     {
-      v17 = x;
+      referencePointCopy = x;
     }
 
-    v18 = y + height;
-    if (a5 <= y + height)
+    completionCopy = y + height;
+    if (completion <= y + height)
     {
-      v18 = a5;
+      completionCopy = completion;
     }
 
-    if (a5 < y)
+    if (completion < y)
     {
-      v18 = y;
+      completionCopy = y;
     }
 
     if (!v16)
     {
-      a4 = v17;
-      a5 = v18;
+      referencePoint = referencePointCopy;
+      completion = completionCopy;
     }
 
-    v19 = [(PKTextInputElement *)a1 _containerInteractionView];
-    [PKTextInputElement _promoteKeyWindowIfNecessary:v19];
+    _containerInteractionView = [(PKTextInputElement *)self _containerInteractionView];
+    [PKTextInputElement _promoteKeyWindowIfNecessary:_containerInteractionView];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_alwaysSetSelectionFromReferencePoint_completion___block_invoke_2;
     aBlock[3] = &unk_1E82D7818;
-    aBlock[4] = a1;
+    aBlock[4] = self;
     v53 = v10;
     v20 = _Block_copy(aBlock);
-    v21 = objc_loadWeakRetained((a1 + 104));
+    v21 = objc_loadWeakRetained((self + 104));
     if (v21)
     {
       v22 = v21;
-      v23 = *(a1 + 80);
+      v23 = *(self + 80);
       if ([v23 supportsIsElementFocused])
       {
-        v24 = [(PKTextInputElement *)a1 isFocused];
+        isFocused2 = [(PKTextInputElement *)self isFocused];
 
-        if (v24)
+        if (isFocused2)
         {
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_alwaysSetSelectionFromReferencePoint_completion___block_invoke_4;
           block[3] = &unk_1E82D7908;
-          block[4] = a1;
+          block[4] = self;
           v51 = v20;
           v25 = v20;
           dispatch_async(MEMORY[0x1E69E96A0], block);
@@ -1244,25 +1244,25 @@ LABEL_33:
       }
     }
 
-    v39 = *(a1 + 80);
-    v40 = *(a1 + 120);
+    v39 = *(self + 80);
+    v40 = *(self + 120);
     v48[0] = MEMORY[0x1E69E9820];
     v48[1] = 3221225472;
     v48[2] = __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_alwaysSetSelectionFromReferencePoint_completion___block_invoke_5;
     v48[3] = &unk_1E82D7818;
-    v48[4] = a1;
+    v48[4] = self;
     v49 = v20;
     v41 = v20;
     v42 = v39;
-    [v42 focusElement:v40 initialFocusSelectionReferencePoint:v48 completion:{a4, a5}];
+    [v42 focusElement:v40 initialFocusSelectionReferencePoint:v48 completion:{referencePoint, completion}];
 
     v26 = v49;
     goto LABEL_33;
   }
 
-  if (v9)
+  if (pointCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(pointCopy + 2))(pointCopy, 0);
   }
 
 LABEL_39:
@@ -1270,15 +1270,15 @@ LABEL_39:
 
 - (double)_safeHitFrame
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  result = [(PKTextInputElement *)a1 frame];
-  if (*(a1 + 56) == 2)
+  result = [(PKTextInputElement *)self frame];
+  if (*(self + 56) == 2)
   {
-    [(PKTextInputElement *)a1 frame];
+    [(PKTextInputElement *)self frame];
     if (v3 * 0.5 <= 4.0)
     {
       v5 = v3 * 0.5;
@@ -1299,7 +1299,7 @@ LABEL_39:
       v6 = 4.0;
     }
 
-    v7.origin.x = [(PKTextInputElement *)a1 frame];
+    v7.origin.x = [(PKTextInputElement *)self frame];
     *&result = CGRectInset(v7, v5, v6);
   }
 
@@ -1349,20 +1349,20 @@ void __131__PKTextInputElement_loadContentFocusingIfNeededWithReferencePoint_alw
   }
 }
 
-- (void)evaluateLineBreakForTapAtLocation:(char)a3 weakCursor:(void *)a4 allowTrailingWhitespace:(double)a5 completion:(CGFloat)a6
+- (void)evaluateLineBreakForTapAtLocation:(char)location weakCursor:(void *)cursor allowTrailingWhitespace:(double)whitespace completion:(CGFloat)completion
 {
-  v11 = a4;
-  if (a1)
+  cursorCopy = cursor;
+  if (self)
   {
     v12 = +[PKTextInputSettings sharedSettings];
     [v12 tapToLineBreakVerticalDistance];
     v14 = v13;
 
-    v15 = [(PKTextInputElement *)a1 coordinateSpace];
-    [(PKTextInputElement *)a1 frame];
+    coordinateSpace = [(PKTextInputElement *)self coordinateSpace];
+    [(PKTextInputElement *)self frame];
     v29.origin.x = 0.0;
     v29.size.height = 1.0;
-    v29.origin.y = a6;
+    v29.origin.y = completion;
     v30 = CGRectInset(v29, 0.0, -v14);
     x = v30.origin.x;
     y = v30.origin.y;
@@ -1372,16 +1372,16 @@ void __131__PKTextInputElement_loadContentFocusingIfNeededWithReferencePoint_alw
     v21[1] = 3221225472;
     v21[2] = __102__PKTextInputElement_evaluateLineBreakForTapAtLocation_weakCursor_allowTrailingWhitespace_completion___block_invoke;
     v21[3] = &unk_1E82D7890;
-    v22 = v15;
-    v23 = v11;
-    v27 = a3;
-    v24 = a5;
-    v25 = a6;
-    v21[4] = a1;
+    v22 = coordinateSpace;
+    v23 = cursorCopy;
+    locationCopy = location;
+    whitespaceCopy = whitespace;
+    completionCopy = completion;
+    v21[4] = self;
     v26 = v14;
     v28 = a2;
-    v20 = v15;
-    [(PKTextInputElement *)a1 loadContentFocusingIfNeededWithReferencePoint:v21 alwaysSetSelectionFromReferencePoint:a5 rectOfInterest:a6 completion:x, y, width, height];
+    v20 = coordinateSpace;
+    [(PKTextInputElement *)self loadContentFocusingIfNeededWithReferencePoint:v21 alwaysSetSelectionFromReferencePoint:whitespace rectOfInterest:completion completion:x, y, width, height];
   }
 }
 
@@ -1432,17 +1432,17 @@ void __102__PKTextInputElement_evaluateLineBreakForTapAtLocation_weakCursor_allo
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)_promoteKeyWindowIfNecessary:(void *)a1
+- (void)_promoteKeyWindowIfNecessary:(void *)necessary
 {
-  v1 = a1;
+  necessaryCopy = necessary;
   v2 = objc_opt_class();
-  v3 = PKDynamicCast(v2, v1);
+  v3 = PKDynamicCast(v2, necessaryCopy);
 
-  v4 = [v3 _responderWindow];
+  _responderWindow = [v3 _responderWindow];
 
-  if (([v4 isKeyWindow] & 1) == 0)
+  if (([_responderWindow isKeyWindow] & 1) == 0)
   {
-    [v4 makeKeyWindow];
+    [_responderWindow makeKeyWindow];
   }
 }
 
@@ -1600,14 +1600,14 @@ uint64_t __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_always
   return v2();
 }
 
-- (double)clampedReferencePoint:(uint64_t)a1
+- (double)clampedReferencePoint:(uint64_t)point
 {
-  if (!a1)
+  if (!point)
   {
     return 0.0;
   }
 
-  result = [(PKTextInputElement *)a1 _safeHitFrame];
+  result = [(PKTextInputElement *)point _safeHitFrame];
   if (a2 >= result)
   {
     result = result + v4;
@@ -1633,8 +1633,8 @@ uint64_t __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_always
     WeakRetained = 0;
   }
 
-  v4 = [WeakRetained selectedTextRange];
-  v5 = [v4 start];
+  selectedTextRange = [WeakRetained selectedTextRange];
+  start = [selectedTextRange start];
 
   if (p_isa)
   {
@@ -1646,12 +1646,12 @@ uint64_t __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_always
     v6 = 0;
   }
 
-  v7 = [v6 selectedTextRange];
-  v8 = [v7 end];
+  selectedTextRange2 = [v6 selectedTextRange];
+  v8 = [selectedTextRange2 end];
 
-  v9 = 0;
+  beginningOfDocument = 0;
   v10 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v5 && v8)
+  if (start && v8)
   {
     if (p_isa)
     {
@@ -1663,9 +1663,9 @@ uint64_t __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_always
       v11 = 0;
     }
 
-    v9 = [v11 beginningOfDocument];
+    beginningOfDocument = [v11 beginningOfDocument];
 
-    if (v9)
+    if (beginningOfDocument)
     {
       if (p_isa)
       {
@@ -1677,15 +1677,15 @@ uint64_t __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_always
         v12 = 0;
       }
 
-      v13 = [v12 beginningOfDocument];
-      v10 = [v12 offsetFromPosition:v13 toPosition:v5];
+      beginningOfDocument2 = [v12 beginningOfDocument];
+      v10 = [v12 offsetFromPosition:beginningOfDocument2 toPosition:start];
 
       if (p_isa)
       {
         p_isa = objc_loadWeakRetained(p_isa + 13);
       }
 
-      v9 = [p_isa offsetFromPosition:v5 toPosition:v8];
+      beginningOfDocument = [p_isa offsetFromPosition:start toPosition:v8];
     }
 
     else
@@ -1695,7 +1695,7 @@ uint64_t __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_always
   }
 
   v14 = v10;
-  v15 = v9;
+  v15 = beginningOfDocument;
   result.length = v15;
   result.location = v14;
   return result;
@@ -1703,7 +1703,7 @@ uint64_t __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_always
 
 - (void)_beginSuppressingFieldPlaceholder
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     if (self->__requestingPlaceholderSuppression || self->__elementType > 1uLL)
@@ -1711,43 +1711,43 @@ uint64_t __109__PKTextInputElement_focusElementIfNeededWithReferencePoint_always
       return;
     }
 
-    v3 = [(PKTextInputElement *)self _scribbleInteraction];
-    self = objc_loadWeakRetained(&v2->_textInput);
+    _scribbleInteraction = [(PKTextInputElement *)self _scribbleInteraction];
+    self = objc_loadWeakRetained(&selfCopy->_textInput);
   }
 
   else
   {
-    v3 = 0;
+    _scribbleInteraction = 0;
   }
 
-  v8 = self;
+  selfCopy2 = self;
   if (objc_opt_respondsToSelector())
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(PKTextInputElement *)v8 textAlignment];
+      textAlignment = [(PKTextInputElement *)selfCopy2 textAlignment];
     }
 
     else
     {
-      v4 = 4;
+      textAlignment = 4;
     }
 
     v7 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:&stru_1F476BD20];
-    [(PKTextInputElement *)v8 _setOverridePlaceholder:v7 alignment:v4];
+    [(PKTextInputElement *)selfCopy2 _setOverridePlaceholder:v7 alignment:textAlignment];
 
-    if (v2)
+    if (selfCopy)
     {
 LABEL_16:
-      v2->__requestingPlaceholderSuppression = 1;
+      selfCopy->__requestingPlaceholderSuppression = 1;
     }
   }
 
-  else if (v3)
+  else if (_scribbleInteraction)
   {
-    if (v2)
+    if (selfCopy)
     {
-      containerElementIdentifier = v2->_containerElementIdentifier;
+      containerElementIdentifier = selfCopy->_containerElementIdentifier;
     }
 
     else
@@ -1755,9 +1755,9 @@ LABEL_16:
       containerElementIdentifier = 0;
     }
 
-    v6 = [v3 beginSuppressingPlaceholderForElement:containerElementIdentifier];
+    v6 = [_scribbleInteraction beginSuppressingPlaceholderForElement:containerElementIdentifier];
 
-    if (v2 && v6)
+    if (selfCopy && v6)
     {
       goto LABEL_16;
     }
@@ -1779,13 +1779,13 @@ LABEL_11:
       return;
     }
 
-    v3 = [(PKTextInputElement *)self _scribbleInteraction];
+    _scribbleInteraction = [(PKTextInputElement *)self _scribbleInteraction];
     WeakRetained = objc_loadWeakRetained(&self->_textInput);
   }
 
   else
   {
-    v3 = 0;
+    _scribbleInteraction = 0;
     WeakRetained = 0;
   }
 
@@ -1795,7 +1795,7 @@ LABEL_11:
     [WeakRetained _setOverridePlaceholder:0 alignment:{objc_msgSend(WeakRetained, "textAlignment")}];
   }
 
-  else if (v3)
+  else if (_scribbleInteraction)
   {
     if (self)
     {
@@ -1807,7 +1807,7 @@ LABEL_11:
       containerElementIdentifier = 0;
     }
 
-    [v3 endSuppressingPlaceholderForElement:containerElementIdentifier];
+    [_scribbleInteraction endSuppressingPlaceholderForElement:containerElementIdentifier];
   }
 
   if (self)
@@ -1900,17 +1900,17 @@ LABEL_11:
     {
       if (objc_opt_respondsToSelector())
       {
-        v3 = [WeakRetained selectionHighlightColor];
+        selectionHighlightColor = [WeakRetained selectionHighlightColor];
         goto LABEL_8;
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v4 = [WeakRetained tintColor];
-        v3 = [v4 colorWithAlphaComponent:0.2];
+        tintColor = [WeakRetained tintColor];
+        selectionHighlightColor = [tintColor colorWithAlphaComponent:0.2];
 
 LABEL_8:
-        if (v3)
+        if (selectionHighlightColor)
         {
           goto LABEL_15;
         }
@@ -1928,26 +1928,26 @@ LABEL_8:
 LABEL_12:
   if (objc_opt_respondsToSelector())
   {
-    v3 = [MEMORY[0x1E69DC888] performSelector:sel_selectionHighlightColor];
+    selectionHighlightColor = [MEMORY[0x1E69DC888] performSelector:sel_selectionHighlightColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v3 = [v5 colorWithAlphaComponent:0.2];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    selectionHighlightColor = [systemBlueColor colorWithAlphaComponent:0.2];
   }
 
 LABEL_15:
 
-  return v3;
+  return selectionHighlightColor;
 }
 
-- (CGRect)selectionClipRectInCoordinateSpace:(id)a3
+- (CGRect)selectionClipRectInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(PKTextInputElement *)self coordinateSpace];
+  spaceCopy = space;
+  coordinateSpace = [(PKTextInputElement *)self coordinateSpace];
 
-  if (v5)
+  if (coordinateSpace)
   {
     if (self)
     {
@@ -1971,8 +1971,8 @@ LABEL_15:
     v23.size.height = v14;
     if (!CGRectIsNull(v23))
     {
-      v15 = [(PKTextInputElement *)self coordinateSpace];
-      v8 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(v15, v4, v8, v10, v12, v14);
+      coordinateSpace2 = [(PKTextInputElement *)self coordinateSpace];
+      v8 = PK_convertRectFromCoordinateSpaceToCoordinateSpace(coordinateSpace2, spaceCopy, v8, v10, v12, v14);
       v10 = v16;
       v12 = v17;
       v14 = v18;
@@ -2030,13 +2030,13 @@ LABEL_15:
   }
 }
 
-- (void)swapWritingStateWithElement:(id)a3
+- (void)swapWritingStateWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   if (self)
   {
     waitingForMatchingDidFinishWriting = self->__waitingForMatchingDidFinishWriting;
-    if (v4)
+    if (elementCopy)
     {
       goto LABEL_3;
     }
@@ -2045,10 +2045,10 @@ LABEL_15:
   else
   {
     waitingForMatchingDidFinishWriting = 0;
-    if (v4)
+    if (elementCopy)
     {
 LABEL_3:
-      v6 = v4[49];
+      v6 = elementCopy[49];
       if (!self)
       {
         goto LABEL_5;
@@ -2066,17 +2066,17 @@ LABEL_4:
   }
 
 LABEL_5:
-  if (v4)
+  if (elementCopy)
   {
-    v4[49] = waitingForMatchingDidFinishWriting;
+    elementCopy[49] = waitingForMatchingDidFinishWriting;
   }
 }
 
-- (void)didMoveToWritingSession:(id)a3
+- (void)didMoveToWritingSession:(id)session
 {
   if (self)
   {
-    objc_storeWeak(&self->__writingSession, a3);
+    objc_storeWeak(&self->__writingSession, session);
   }
 }
 
@@ -2091,7 +2091,7 @@ LABEL_5:
       if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
       {
         v7 = 138412290;
-        v8 = self;
+        selfCopy = self;
         _os_log_fault_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_FAULT, "Element received willBeginWriting while waiting for matching didEndWriting. %@", &v7, 0xCu);
       }
     }
@@ -2100,18 +2100,18 @@ LABEL_5:
   }
 
   [(PKTextInputElement *)self _beginSuppressingFieldPlaceholder];
-  v4 = [(PKTextInputElement *)self _scribbleInteraction];
-  v5 = v4;
+  _scribbleInteraction = [(PKTextInputElement *)self _scribbleInteraction];
+  v5 = _scribbleInteraction;
   if (self)
   {
-    [v4 willBeginWritingInElement:self->_containerElementIdentifier];
+    [_scribbleInteraction willBeginWritingInElement:self->_containerElementIdentifier];
 
     WeakRetained = objc_loadWeakRetained(&self->__writingSession);
   }
 
   else
   {
-    [v4 willBeginWritingInElement:0];
+    [_scribbleInteraction willBeginWritingInElement:0];
 
     WeakRetained = 0;
   }
@@ -2131,7 +2131,7 @@ LABEL_5:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_fault_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_FAULT, "Element received didEndWriting without a matching willBeginWriting. %@", &v7, 0xCu);
   }
 
@@ -2142,18 +2142,18 @@ LABEL_6:
   }
 
   [(PKTextInputElement *)self _finishSuppressingFieldPlaceholderIfNeeded];
-  v4 = [(PKTextInputElement *)self _scribbleInteraction];
-  v5 = v4;
+  _scribbleInteraction = [(PKTextInputElement *)self _scribbleInteraction];
+  v5 = _scribbleInteraction;
   if (self)
   {
-    [v4 didFinishWritingInElement:self->_containerElementIdentifier];
+    [_scribbleInteraction didFinishWritingInElement:self->_containerElementIdentifier];
 
     WeakRetained = objc_loadWeakRetained(&self->__writingSession);
   }
 
   else
   {
-    [v4 didFinishWritingInElement:0];
+    [_scribbleInteraction didFinishWritingInElement:0];
 
     WeakRetained = 0;
   }
@@ -2163,14 +2163,14 @@ LABEL_6:
 
 - (void)didInsertText
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_loadWeakRetained(&self->__writingSession);
   }
 
-  v3 = self;
-  [(PKTextInputWritingSession *)self didInsertTextInElement:v2];
+  selfCopy2 = self;
+  [(PKTextInputWritingSession *)self didInsertTextInElement:selfCopy];
 }
 
 @end

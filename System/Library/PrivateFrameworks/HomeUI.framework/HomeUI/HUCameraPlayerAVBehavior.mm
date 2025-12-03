@@ -1,71 +1,71 @@
 @interface HUCameraPlayerAVBehavior
 - (HUCameraPlayerAVBehavior)init;
-- (HUCameraPlayerAVBehavior)initWithDelegate:(id)a3;
+- (HUCameraPlayerAVBehavior)initWithDelegate:(id)delegate;
 - (HUCameraPlayerAVBehaviorDelegate)delegate;
 - (void)beginScrubbing;
-- (void)endScrubbingWithTargetTime:(double)a3;
+- (void)endScrubbingWithTargetTime:(double)time;
 - (void)pictureInPictureActionButtonTapped;
-- (void)playbackControlsDidChangePlayerVolume:(float)a3;
-- (void)playbackControlsDidToggleMuted:(BOOL)a3;
-- (void)playbackControlsDidUpdateVisibilityOfLoadingIndicator:(BOOL)a3;
-- (void)scrubToTime:(double)a3;
+- (void)playbackControlsDidChangePlayerVolume:(float)volume;
+- (void)playbackControlsDidToggleMuted:(BOOL)muted;
+- (void)playbackControlsDidUpdateVisibilityOfLoadingIndicator:(BOOL)indicator;
+- (void)scrubToTime:(double)time;
 @end
 
 @implementation HUCameraPlayerAVBehavior
 
 - (HUCameraPlayerAVBehavior)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithDelegate_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HUCameraPlayerAVBehavior.m" lineNumber:15 description:{@"%s is unavailable; use %@ instead", "-[HUCameraPlayerAVBehavior init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraPlayerAVBehavior.m" lineNumber:15 description:{@"%s is unavailable; use %@ instead", "-[HUCameraPlayerAVBehavior init]", v5}];
 
   return 0;
 }
 
-- (HUCameraPlayerAVBehavior)initWithDelegate:(id)a3
+- (HUCameraPlayerAVBehavior)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = HUCameraPlayerAVBehavior;
   v5 = [(HUCameraPlayerAVBehavior *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
 }
 
-- (void)playbackControlsDidToggleMuted:(BOOL)a3
+- (void)playbackControlsDidToggleMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v8.receiver = self;
   v8.super_class = HUCameraPlayerAVBehavior;
   [(AVHomeIPCameraBehavior *)&v8 playbackControlsDidToggleMuted:?];
-  v5 = [(HUCameraPlayerAVBehavior *)self delegate];
+  delegate = [(HUCameraPlayerAVBehavior *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HUCameraPlayerAVBehavior *)self delegate];
-    [v7 playbackControlsDidToggleMuted:v3];
+    delegate2 = [(HUCameraPlayerAVBehavior *)self delegate];
+    [delegate2 playbackControlsDidToggleMuted:mutedCopy];
   }
 }
 
-- (void)playbackControlsDidUpdateVisibilityOfLoadingIndicator:(BOOL)a3
+- (void)playbackControlsDidUpdateVisibilityOfLoadingIndicator:(BOOL)indicator
 {
-  v3 = a3;
+  indicatorCopy = indicator;
   v8.receiver = self;
   v8.super_class = HUCameraPlayerAVBehavior;
   [(AVHomeIPCameraBehavior *)&v8 playbackControlsDidUpdateVisibilityOfLoadingIndicator:?];
-  v5 = [(HUCameraPlayerAVBehavior *)self delegate];
+  delegate = [(HUCameraPlayerAVBehavior *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(HUCameraPlayerAVBehavior *)self delegate];
-    [v7 playbackControlsDidUpdateVisibilityOfLoadingIndicator:v3];
+    delegate2 = [(HUCameraPlayerAVBehavior *)self delegate];
+    [delegate2 playbackControlsDidUpdateVisibilityOfLoadingIndicator:indicatorCopy];
   }
 }
 
@@ -76,41 +76,41 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%@ pictureInPictureActionButtonTapped.", buf, 0xCu);
   }
 
   v7.receiver = self;
   v7.super_class = HUCameraPlayerAVBehavior;
   [(AVHomeIPCameraBehavior *)&v7 pictureInPictureActionButtonTapped];
-  v4 = [(HUCameraPlayerAVBehavior *)self delegate];
+  delegate = [(HUCameraPlayerAVBehavior *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(HUCameraPlayerAVBehavior *)self delegate];
-    [v6 pictureInPictureDidToggleMicrophone];
+    delegate2 = [(HUCameraPlayerAVBehavior *)self delegate];
+    [delegate2 pictureInPictureDidToggleMicrophone];
   }
 }
 
-- (void)playbackControlsDidChangePlayerVolume:(float)a3
+- (void)playbackControlsDidChangePlayerVolume:(float)volume
 {
   v8.receiver = self;
   v8.super_class = HUCameraPlayerAVBehavior;
   [(AVHomeIPCameraBehavior *)&v8 playbackControlsDidChangePlayerVolume:?];
-  v5 = [(HUCameraPlayerAVBehavior *)self delegate];
+  delegate = [(HUCameraPlayerAVBehavior *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [MEMORY[0x277D14CE8] isAMac];
+    isAMac = [MEMORY[0x277D14CE8] isAMac];
 
-    if (!v6)
+    if (!isAMac)
     {
       return;
     }
 
-    v5 = [(HUCameraPlayerAVBehavior *)self delegate];
-    *&v7 = a3;
-    [v5 playbackControlsDidChangePlayerVolume:v7];
+    delegate = [(HUCameraPlayerAVBehavior *)self delegate];
+    *&v7 = volume;
+    [delegate playbackControlsDidChangePlayerVolume:v7];
   }
 }
 
@@ -121,55 +121,55 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEBUG, "%@ beginScrubbing", &v5, 0xCu);
   }
 
-  v4 = [(AVHomeIPCameraBehavior *)self behaviorContext];
-  [v4 beginScrubbing];
+  behaviorContext = [(AVHomeIPCameraBehavior *)self behaviorContext];
+  [behaviorContext beginScrubbing];
 }
 
-- (void)endScrubbingWithTargetTime:(double)a3
+- (void)endScrubbingWithTargetTime:(double)time
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2048;
-    v11 = a3;
+    timeCopy = time;
     _os_log_debug_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEBUG, "%@ endScrubbingWithTargetTime: %.3f", &v8, 0x16u);
   }
 
-  v6 = [(AVHomeIPCameraBehavior *)self behaviorContext];
-  [v6 scrubToTime:a3 resolution:0.0];
+  behaviorContext = [(AVHomeIPCameraBehavior *)self behaviorContext];
+  [behaviorContext scrubToTime:time resolution:0.0];
 
-  v7 = [(AVHomeIPCameraBehavior *)self behaviorContext];
-  [v7 endScrubbing];
+  behaviorContext2 = [(AVHomeIPCameraBehavior *)self behaviorContext];
+  [behaviorContext2 endScrubbing];
 }
 
-- (void)scrubToTime:(double)a3
+- (void)scrubToTime:(double)time
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = [(HUCameraPlayerAVBehavior *)self delegate];
-  [v5 currentScrubberResolutionForBehavior:self];
+  delegate = [(HUCameraPlayerAVBehavior *)self delegate];
+  [delegate currentScrubberResolutionForBehavior:self];
   v7 = v6;
 
   v8 = HFLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v10 = 138412802;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = a3;
+    timeCopy = time;
     v14 = 2048;
     v15 = v7;
     _os_log_debug_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEBUG, "%@ scrubToTime: %.3f (resolution: %f)", &v10, 0x20u);
   }
 
-  v9 = [(AVHomeIPCameraBehavior *)self behaviorContext];
-  [v9 scrubToTime:a3 resolution:v7];
+  behaviorContext = [(AVHomeIPCameraBehavior *)self behaviorContext];
+  [behaviorContext scrubToTime:time resolution:v7];
 }
 
 - (HUCameraPlayerAVBehaviorDelegate)delegate

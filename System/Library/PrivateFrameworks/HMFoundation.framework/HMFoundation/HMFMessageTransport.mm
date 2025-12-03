@@ -1,6 +1,6 @@
 @interface HMFMessageTransport
 - (HMFMessageTransportDelegate)delegate;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation HMFMessageTransport
@@ -12,10 +12,10 @@
   return WeakRetained;
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];

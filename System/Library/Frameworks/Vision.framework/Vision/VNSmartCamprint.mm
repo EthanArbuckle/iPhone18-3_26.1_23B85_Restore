@@ -1,53 +1,53 @@
 @interface VNSmartCamprint
 + (id)codingTypesToCodingKeys;
-+ (unint64_t)confidenceTypeForOriginatingRequestSpecifier:(id)a3;
-- (VNSmartCamprint)initWithCoder:(id)a3;
-- (VNSmartCamprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 labelsAndConfidence:(id)a7 originatingRequestSpecifier:(id)a8;
-- (VNSmartCamprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 labelsAndConfidence:(id)a7 requestRevision:(unint64_t)a8;
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5;
++ (unint64_t)confidenceTypeForOriginatingRequestSpecifier:(id)specifier;
+- (VNSmartCamprint)initWithCoder:(id)coder;
+- (VNSmartCamprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes labelsAndConfidence:(id)confidence originatingRequestSpecifier:(id)specifier;
+- (VNSmartCamprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes labelsAndConfidence:(id)confidence requestRevision:(unint64_t)revision;
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error;
 - (unint64_t)serializedLength;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNSmartCamprint
 
-- (unint64_t)serializeStateIntoData:(id)a3 startingAtByteOffset:(unint64_t)a4 error:(id *)a5
+- (unint64_t)serializeStateIntoData:(id)data startingAtByteOffset:(unint64_t)offset error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v19.receiver = self;
   v19.super_class = VNSmartCamprint;
-  v9 = [(VNEspressoModelImageprint *)&v19 serializeStateIntoData:v8 startingAtByteOffset:a4 error:a5];
+  v9 = [(VNEspressoModelImageprint *)&v19 serializeStateIntoData:dataCopy startingAtByteOffset:offset error:error];
   if (v9)
   {
-    v10 = [v8 mutableBytes];
-    v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self->_labelsAndConfidence requiringSecureCoding:1 error:a5];
+    mutableBytes = [dataCopy mutableBytes];
+    v11 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self->_labelsAndConfidence requiringSecureCoding:1 error:error];
     v12 = v11;
     if (v11)
     {
-      v13 = &v9[a4];
+      v13 = &v9[offset];
       if ([v11 length])
       {
-        *&v13[v10] = [v12 length];
-        v14 = [v12 bytes];
+        *&v13[mutableBytes] = [v12 length];
+        bytes = [v12 bytes];
         v15 = [v12 length];
         v16 = v13 + 4;
-        memcpy(&v16[v10], v14, v15);
+        memcpy(&v16[mutableBytes], bytes, v15);
         v13 = &v16[v15];
       }
 
-      v9 = &v13[-a4];
-      if (&v13[-a4] == [(VNSmartCamprint *)self serializedLength])
+      v9 = &v13[-offset];
+      if (&v13[-offset] == [(VNSmartCamprint *)self serializedLength])
       {
-        calculateChecksumMD5((v10 + a4 + 28), (v9 - 28), (v10 + a4 + 12));
+        calculateChecksumMD5((mutableBytes + offset + 28), (v9 - 28), (mutableBytes + offset + 12));
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      if (a5)
+      if (error)
       {
         v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unexpected size of serialized state of the object of type %@", objc_opt_class()];
-        *a5 = [VNError errorForInternalErrorWithLocalizedDescription:v17];
+        *error = [VNError errorForInternalErrorWithLocalizedDescription:v17];
       }
     }
 
@@ -68,19 +68,19 @@ LABEL_11:
   return v3 + 4;
 }
 
-- (VNSmartCamprint)initWithCoder:(id)a3
+- (VNSmartCamprint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = VNSmartCamprint;
-  v5 = [(VNEspressoModelImageprint *)&v14 initWithCoder:v4];
+  v5 = [(VNEspressoModelImageprint *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"labelsConfidences"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"labelsConfidences"];
     labelsAndConfidence = v5->_labelsAndConfidence;
     v5->_labelsAndConfidence = v10;
 
@@ -90,74 +90,74 @@ LABEL_11:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = VNSmartCamprint;
-  [(VNEspressoModelImageprint *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_labelsAndConfidence forKey:@"labelsConfidences"];
+  [(VNEspressoModelImageprint *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_labelsAndConfidence forKey:@"labelsConfidences"];
 }
 
-- (VNSmartCamprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 labelsAndConfidence:(id)a7 originatingRequestSpecifier:(id)a8
+- (VNSmartCamprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes labelsAndConfidence:(id)confidence originatingRequestSpecifier:(id)specifier
 {
-  v14 = a7;
-  v15 = a8;
-  v16 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3 length:a6];
+  confidenceCopy = confidence;
+  specifierCopy = specifier;
+  v16 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:data length:bytes];
   v34 = 0;
-  v17 = [objc_opt_class() validateDescriptorData:v16 elementType:a5 elementCount:a4 error:&v34];
+  v17 = [objc_opt_class() validateDescriptorData:v16 elementType:type elementCount:count error:&v34];
   v18 = v34;
   v19 = v18;
   if (v17)
   {
     v33.receiver = self;
     v33.super_class = VNSmartCamprint;
-    v20 = [(VNEspressoModelImageprint *)&v33 initWithDescriptorData:v16 elementType:a5 elementCount:a4 originatingRequestSpecifier:v15];
+    v20 = [(VNEspressoModelImageprint *)&v33 initWithDescriptorData:v16 elementType:type elementCount:count originatingRequestSpecifier:specifierCopy];
     if (v20)
     {
-      v21 = [v14 copy];
+      v21 = [confidenceCopy copy];
       labelsAndConfidence = v20->_labelsAndConfidence;
       v20->_labelsAndConfidence = v21;
     }
 
     self = v20;
-    v23 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = [v18 localizedDescription];
-    v25 = [v24 UTF8String];
-    VNValidatedLog(4, @"%s", v26, v27, v28, v29, v30, v31, v25);
+    localizedDescription = [v18 localizedDescription];
+    uTF8String = [localizedDescription UTF8String];
+    VNValidatedLog(4, @"%s", v26, v27, v28, v29, v30, v31, uTF8String);
 
-    v23 = 0;
+    selfCopy = 0;
   }
 
-  return v23;
+  return selfCopy;
 }
 
-- (VNSmartCamprint)initWithData:(const void *)a3 elementCount:(unint64_t)a4 elementType:(unint64_t)a5 lengthInBytes:(unint64_t)a6 labelsAndConfidence:(id)a7 requestRevision:(unint64_t)a8
+- (VNSmartCamprint)initWithData:(const void *)data elementCount:(unint64_t)count elementType:(unint64_t)type lengthInBytes:(unint64_t)bytes labelsAndConfidence:(id)confidence requestRevision:(unint64_t)revision
 {
-  v14 = a7;
-  v15 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:a8 error:0];
+  confidenceCopy = confidence;
+  v15 = [objc_opt_class() originatingRequestSpecifierForRequestRevision:revision error:0];
   if (v15)
   {
-    self = [(VNSmartCamprint *)self initWithData:a3 elementCount:a4 elementType:a5 lengthInBytes:a6 labelsAndConfidence:v14 originatingRequestSpecifier:v15];
-    v16 = self;
+    self = [(VNSmartCamprint *)self initWithData:data elementCount:count elementType:type lengthInBytes:bytes labelsAndConfidence:confidenceCopy originatingRequestSpecifier:v15];
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-+ (unint64_t)confidenceTypeForOriginatingRequestSpecifier:(id)a3
++ (unint64_t)confidenceTypeForOriginatingRequestSpecifier:(id)specifier
 {
-  v3 = a3;
-  v4 = [v3 specifiesRequestClass:objc_opt_class()] && objc_msgSend(v3, "requestRevision") == 1;
+  specifierCopy = specifier;
+  v4 = [specifierCopy specifiesRequestClass:objc_opt_class()] && objc_msgSend(specifierCopy, "requestRevision") == 1;
 
   return v4;
 }

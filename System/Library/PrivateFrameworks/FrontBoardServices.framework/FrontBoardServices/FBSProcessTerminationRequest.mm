@@ -1,9 +1,9 @@
 @interface FBSProcessTerminationRequest
-+ (id)requestForProcess:(id)a3 withLabel:(id)a4;
++ (id)requestForProcess:(id)process withLabel:(id)label;
 - (FBSProcess)process;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)execute;
@@ -11,12 +11,12 @@
 
 @implementation FBSProcessTerminationRequest
 
-+ (id)requestForProcess:(id)a3 withLabel:(id)a4
++ (id)requestForProcess:(id)process withLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
+  processCopy = process;
+  labelCopy = label;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v8)
+  if (!labelCopy)
   {
     [FBSProcessTerminationRequest requestForProcess:a2 withLabel:?];
   }
@@ -26,7 +26,7 @@
     [FBSProcessTerminationRequest requestForProcess:a2 withLabel:?];
   }
 
-  v9 = v7;
+  v9 = processCopy;
   v10 = v9;
   if (v9)
   {
@@ -35,8 +35,8 @@
       [FBSProcessTerminationRequest requestForProcess:a2 withLabel:?];
     }
 
-    v11 = objc_alloc_init(a1);
-    [v11 setLabel:v8];
+    v11 = objc_alloc_init(self);
+    [v11 setLabel:labelCopy];
     [v11 setProcess:v10];
   }
 
@@ -54,9 +54,9 @@
   [WeakRetained _terminateWithRequest:self forWatchdog:0];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setLabel:self->_label];
   WeakRetained = objc_loadWeakRetained(&self->_process);
   [v4 setProcess:WeakRetained];
@@ -70,10 +70,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSProcessTerminationRequest *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSProcessTerminationRequest *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -107,20 +107,20 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSProcessTerminationRequest *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSProcessTerminationRequest *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(FBSProcessTerminationRequest *)self succinctDescriptionBuilder];
-  [v4 appendString:self->_explanation withName:@"explanation"];
+  succinctDescriptionBuilder = [(FBSProcessTerminationRequest *)self succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendString:self->_explanation withName:@"explanation"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (FBSProcess)process

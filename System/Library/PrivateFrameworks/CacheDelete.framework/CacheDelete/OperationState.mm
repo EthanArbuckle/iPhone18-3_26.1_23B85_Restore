@@ -25,23 +25,23 @@
 
 - (BOOL)cancelled
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(OperationState *)self queue];
+  queue = [(OperationState *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __27__OperationState_cancelled__block_invoke;
   v5[3] = &unk_1E7F030F8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __27__OperationState_cancelled__block_invoke(uint64_t a1)
@@ -60,34 +60,34 @@ uint64_t __27__OperationState_cancelled__block_invoke(uint64_t a1)
 
 - (void)cancel
 {
-  v3 = [(OperationState *)self queue];
+  queue = [(OperationState *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __24__OperationState_cancel__block_invoke;
   block[3] = &unk_1E7F02D68;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (BOOL)begin
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 1;
-  v3 = [(OperationState *)self queue];
+  queue = [(OperationState *)self queue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __23__OperationState_begin__block_invoke;
   v5[3] = &unk_1E7F030F8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(queue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __23__OperationState_begin__block_invoke(uint64_t a1)
@@ -111,13 +111,13 @@ uint64_t __23__OperationState_begin__block_invoke(uint64_t a1)
 
 - (void)end
 {
-  v3 = [(OperationState *)self queue];
+  queue = [(OperationState *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __21__OperationState_end__block_invoke;
   block[3] = &unk_1E7F02D68;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 uint64_t __21__OperationState_end__block_invoke(uint64_t a1)

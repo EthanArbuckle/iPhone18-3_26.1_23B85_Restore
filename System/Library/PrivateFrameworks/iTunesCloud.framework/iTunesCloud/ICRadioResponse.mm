@@ -1,6 +1,6 @@
 @interface ICRadioResponse
-- (ICRadioResponse)initWithResponseDictionary:(id)a3 expirationDate:(id)a4;
-- (ICRadioResponse)initWithURLResponse:(id)a3;
+- (ICRadioResponse)initWithResponseDictionary:(id)dictionary expirationDate:(id)date;
+- (ICRadioResponse)initWithURLResponse:(id)response;
 - (ICStoreDialogResponse)dialog;
 - (NSDictionary)contentDictionary;
 - (NSError)serverError;
@@ -76,15 +76,15 @@ LABEL_9:
   v2 = [(NSDictionary *)self->_responseDictionary objectForKey:@"version"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 5;
+    integerValue = 5;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (NSDictionary)contentDictionary
@@ -103,20 +103,20 @@ LABEL_9:
   return v3;
 }
 
-- (ICRadioResponse)initWithResponseDictionary:(id)a3 expirationDate:(id)a4
+- (ICRadioResponse)initWithResponseDictionary:(id)dictionary expirationDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dateCopy = date;
   v14.receiver = self;
   v14.super_class = ICRadioResponse;
   v8 = [(ICRadioResponse *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dictionaryCopy copy];
     responseDictionary = v8->_responseDictionary;
     v8->_responseDictionary = v9;
 
-    v11 = [v7 copy];
+    v11 = [dateCopy copy];
     expirationDate = v8->_expirationDate;
     v8->_expirationDate = v11;
   }
@@ -124,14 +124,14 @@ LABEL_9:
   return v8;
 }
 
-- (ICRadioResponse)initWithURLResponse:(id)a3
+- (ICRadioResponse)initWithURLResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 parsedBodyDictionary];
-  v6 = v5;
-  if (v5)
+  responseCopy = response;
+  parsedBodyDictionary = [responseCopy parsedBodyDictionary];
+  v6 = parsedBodyDictionary;
+  if (parsedBodyDictionary)
   {
-    v7 = v5;
+    v7 = parsedBodyDictionary;
   }
 
   else
@@ -139,18 +139,18 @@ LABEL_9:
     v7 = MEMORY[0x1E695E0F8];
   }
 
-  v8 = [v4 expirationDate];
-  v9 = [(ICRadioResponse *)self initWithResponseDictionary:v7 expirationDate:v8];
+  expirationDate = [responseCopy expirationDate];
+  v9 = [(ICRadioResponse *)self initWithResponseDictionary:v7 expirationDate:expirationDate];
 
   if (v9)
   {
-    v10 = [v4 performanceMetrics];
+    performanceMetrics = [responseCopy performanceMetrics];
 
-    if (v10)
+    if (performanceMetrics)
     {
-      v11 = [v4 aggregatedPerformanceMetrics];
+      aggregatedPerformanceMetrics = [responseCopy aggregatedPerformanceMetrics];
       performanceMetrics = v9->_performanceMetrics;
-      v9->_performanceMetrics = v11;
+      v9->_performanceMetrics = aggregatedPerformanceMetrics;
     }
   }
 

@@ -1,25 +1,25 @@
 @interface CDPUICodeEntryPane
-- (CDPUICodeEntryPane)initWithFrame:(CGRect)a3;
+- (CDPUICodeEntryPane)initWithFrame:(CGRect)frame;
 - (CGSize)preferredContentSize;
 - (id)_createFooterButton;
 - (void)didFinishResizingHeaderView;
 - (void)didFinishResizingPinView;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation CDPUICodeEntryPane
 
-- (CDPUICodeEntryPane)initWithFrame:(CGRect)a3
+- (CDPUICodeEntryPane)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = CDPUICodeEntryPane;
-  v3 = [(CDPPassphraseEntryPane *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CDPPassphraseEntryPane *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     containerView = v3->super._containerView;
-    v6 = [(CDPUICodeEntryPane *)v3 _createFooterButton];
-    [(UIScrollView *)containerView addSubview:v6];
+    _createFooterButton = [(CDPUICodeEntryPane *)v3 _createFooterButton];
+    [(UIScrollView *)containerView addSubview:_createFooterButton];
   }
 
   return v4;
@@ -31,11 +31,11 @@
   footerButton = self->_footerButton;
   self->_footerButton = v3;
 
-  v5 = [(UIButton *)self->_footerButton titleLabel];
-  [v5 setNumberOfLines:0];
+  titleLabel = [(UIButton *)self->_footerButton titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  v6 = [(UIButton *)self->_footerButton titleLabel];
-  [v6 setTextAlignment:1];
+  titleLabel2 = [(UIButton *)self->_footerButton titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
   [(UIButton *)self->_footerButton setAutoresizingMask:12];
   v7 = self->_footerButton;
@@ -76,24 +76,24 @@
   v9 = v8;
 
   v10 = MEMORY[0x277D74300];
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  v12 = [v11 traitCollection];
-  v13 = [v10 preferredFontForTextStyle:v6 compatibleWithTraitCollection:v12];
-  v14 = [(UIButton *)self->_footerButton titleLabel];
-  [v14 setFont:v13];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v13 = [v10 preferredFontForTextStyle:v6 compatibleWithTraitCollection:traitCollection];
+  titleLabel = [(UIButton *)self->_footerButton titleLabel];
+  [titleLabel setFont:v13];
 
   [(UIButton *)self->_footerButton frame];
   v53 = v16;
   v54 = v15;
-  v17 = [(UIButton *)self->_footerButton titleLabel];
+  titleLabel2 = [(UIButton *)self->_footerButton titleLabel];
   [(CDPUICodeEntryPane *)self frame];
-  [v17 sizeThatFits:{CGRectGetWidth(v59), 1.79769313e308}];
+  [titleLabel2 sizeThatFits:{CGRectGetWidth(v59), 1.79769313e308}];
   v19 = v18;
   v21 = v20;
 
   v22 = *MEMORY[0x277D3FBD0];
-  v23 = [*(&self->super.super.super.super.super.super.isa + v22) superview];
-  [v23 frame];
+  superview = [*(&self->super.super.super.super.super.super.isa + v22) superview];
+  [superview frame];
   v25 = v24;
   v27 = v26;
   v51 = v28;
@@ -144,12 +144,12 @@
   }
 
   [(UIButton *)self->_footerButton setFrame:v40, MaxY, v19, v21];
-  v43 = [*(&self->super.super.super.super.super.super.isa + v22) superview];
-  [v43 setFrame:{v25, v52, v51, v39}];
+  superview2 = [*(&self->super.super.super.super.super.super.isa + v22) superview];
+  [superview2 setFrame:{v25, v52, v51, v39}];
 
   v44 = *(&self->super.super.super.super.super.super.isa + v22);
-  v45 = [v44 superview];
-  [v45 bounds];
+  superview3 = [v44 superview];
+  [superview3 bounds];
   [v44 setFrame:?];
 
   v64.origin.x = v40;
@@ -157,9 +157,9 @@
   v64.size.width = v19;
   v64.size.height = v21;
   [(UIScrollView *)self->super._containerView setContentSize:0.0, v55 + CGRectGetMaxY(v64) + self->super._keyboardOffset];
-  v46 = [(UIButton *)self->_footerButton superview];
+  superview4 = [(UIButton *)self->_footerButton superview];
 
-  if (v46)
+  if (superview4)
   {
     v47 = self->super._containerView;
     [(UIScrollView *)v47 frame];
@@ -169,67 +169,67 @@
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v35 = a3;
-  objc_storeStrong(&self->_viewModel, a3);
+  modelCopy = model;
+  objc_storeStrong(&self->_viewModel, model);
   headerView = self->super._headerView;
-  v6 = [(CDPUICodeEntryViewModel *)self->_viewModel promptTitle];
-  [(CDPPaneHeaderView *)headerView setTitleText:v6];
+  promptTitle = [(CDPUICodeEntryViewModel *)self->_viewModel promptTitle];
+  [(CDPPaneHeaderView *)headerView setTitleText:promptTitle];
 
-  v7 = [(CDPUICodeEntryViewModel *)self->_viewModel promptMessage];
-  v8 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
-  [v8 setText:v7];
+  promptMessage = [(CDPUICodeEntryViewModel *)self->_viewModel promptMessage];
+  subLabel = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+  [subLabel setText:promptMessage];
 
   v9 = MEMORY[0x277D74300];
   v10 = *MEMORY[0x277D76918];
-  v11 = [MEMORY[0x277D759A0] mainScreen];
-  v12 = [v11 traitCollection];
-  v13 = [v9 preferredFontForTextStyle:v10 compatibleWithTraitCollection:v12];
-  v14 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
-  [v14 setFont:v13];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  v13 = [v9 preferredFontForTextStyle:v10 compatibleWithTraitCollection:traitCollection];
+  subLabel2 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+  [subLabel2 setFont:v13];
 
   if ([MEMORY[0x277CFD560] isNaturalUIEnabled])
   {
-    v15 = [(CDPPaneHeaderView *)self->super._headerView textLabel];
-    [v15 setTextAlignment:4];
+    textLabel = [(CDPPaneHeaderView *)self->super._headerView textLabel];
+    [textLabel setTextAlignment:4];
 
-    v16 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
-    [v16 setTextAlignment:4];
+    subLabel3 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+    [subLabel3 setTextAlignment:4];
 
     v17 = MEMORY[0x277D74310];
     v18 = *MEMORY[0x277D76A20];
-    v19 = [(CDPUICodeEntryPane *)self traitCollection];
-    v20 = [v17 preferredFontDescriptorWithTextStyle:v18 compatibleWithTraitCollection:v19];
+    traitCollection2 = [(CDPUICodeEntryPane *)self traitCollection];
+    v20 = [v17 preferredFontDescriptorWithTextStyle:v18 compatibleWithTraitCollection:traitCollection2];
 
     v21 = MEMORY[0x277D74300];
     v22 = [v20 fontDescriptorWithSymbolicTraits:2];
     v23 = [v21 fontWithDescriptor:v22 size:0.0];
-    v24 = [(CDPPaneHeaderView *)self->super._headerView textLabel];
-    [v24 setFont:v23];
+    textLabel2 = [(CDPPaneHeaderView *)self->super._headerView textLabel];
+    [textLabel2 setFont:v23];
 
     v25 = [MEMORY[0x277D74300] fontWithDescriptor:v20 size:0.0];
-    v26 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
-    [v26 setFont:v25];
+    subLabel4 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+    [subLabel4 setFont:v25];
 
-    v27 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v28 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
-    [v28 setTextColor:v27];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    subLabel5 = [(CDPPaneHeaderView *)self->super._headerView subLabel];
+    [subLabel5 setTextColor:secondaryLabelColor];
   }
 
   [(CDPPaneHeaderView *)self->super._headerView makeAllTheTextFits];
-  v29 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
+  escapeOffer = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
 
   footerButton = self->_footerButton;
-  if (v29)
+  if (escapeOffer)
   {
-    v31 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
-    [(UIButton *)footerButton addTarget:v31 action:sel_handleEscapeAction_ forControlEvents:64];
+    escapeOffer2 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
+    [(UIButton *)footerButton addTarget:escapeOffer2 action:sel_handleEscapeAction_ forControlEvents:64];
 
     v32 = self->_footerButton;
-    v33 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
-    v34 = [v33 title];
-    [(UIButton *)v32 setTitle:v34 forState:0];
+    escapeOffer3 = [(CDPUICodeEntryViewModel *)self->_viewModel escapeOffer];
+    title = [escapeOffer3 title];
+    [(UIButton *)v32 setTitle:title forState:0];
   }
 
   else

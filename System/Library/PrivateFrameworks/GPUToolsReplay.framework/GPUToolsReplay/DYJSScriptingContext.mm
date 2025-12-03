@@ -1,25 +1,25 @@
 @interface DYJSScriptingContext
 + (id)sharedContext;
-- (BOOL)evaluteScript:(id)a3 scriptURL:(id)a4;
-- (BOOL)setGlobalJSONObject:(const char *)a3 value:(id)a4;
+- (BOOL)evaluteScript:(id)script scriptURL:(id)l;
+- (BOOL)setGlobalJSONObject:(const char *)object value:(id)value;
 - (DYJSScriptingContext)init;
-- (OpaqueJSString)_cachedStringFromString:(const char *)a3;
-- (OpaqueJSValue)createArrayRef:(id)a3;
+- (OpaqueJSString)_cachedStringFromString:(const char *)string;
+- (OpaqueJSValue)createArrayRef:(id)ref;
 - (basic_string<char,)_jsStringToString:(std::allocator<char>> *__return_ptr)retstr;
 - (basic_string<char,)_jsValueToString:(std::allocator<char>> *__return_ptr)retstr;
-- (double)callFunction:(id)a3 withArguments:(id)a4;
-- (double)callGlobalFunction:(const char *)a3;
-- (double)getGlobalDouble:(const char *)a3;
+- (double)callFunction:(id)function withArguments:(id)arguments;
+- (double)callGlobalFunction:(const char *)function;
+- (double)getGlobalDouble:(const char *)double;
 - (id).cxx_construct;
-- (id)getGlobalJSONObject:(const char *)a3;
-- (id)setValue:(id)a3 value:(id)a4;
+- (id)getGlobalJSONObject:(const char *)object;
+- (id)setValue:(id)value value:(id)a4;
 - (void)_clearCache;
 - (void)allocNewContext;
 - (void)dealloc;
-- (void)setGlobalDouble:(const char *)a3 value:(double)a4;
-- (void)setRawArrayValues:(id)a3 withUint32Values:(unsigned int *)a4 andNumCounters:(unint64_t)a5;
-- (void)setRawArrayValues:(id)a3 withUint64Values:(unint64_t *)a4 andNumCounters:(unint64_t)a5;
-- (void)setValues:(id)a3;
+- (void)setGlobalDouble:(const char *)double value:(double)value;
+- (void)setRawArrayValues:(id)values withUint32Values:(unsigned int *)uint32Values andNumCounters:(unint64_t)counters;
+- (void)setRawArrayValues:(id)values withUint64Values:(unint64_t *)uint64Values andNumCounters:(unint64_t)counters;
+- (void)setValues:(id)values;
 @end
 
 @implementation DYJSScriptingContext
@@ -35,21 +35,21 @@
   return self;
 }
 
-- (id)getGlobalJSONObject:(const char *)a3
+- (id)getGlobalJSONObject:(const char *)object
 {
-  if (!a3)
+  if (!object)
   {
     return 0;
   }
 
-  v5 = JSStringCreateWithUTF8CString(a3);
+  v5 = JSStringCreateWithUTF8CString(object);
   exception = 0;
   Property = JSObjectGetProperty([(JSContext *)self->_context JSGlobalContextRef], self->_globalObject, v5, &exception);
   if (exception)
   {
     v7 = *MEMORY[0x277D85DF8];
     [(DYJSScriptingContext *)self _jsValueToString:?];
-    v8 = [(NSString *)self->_filename UTF8String];
+    uTF8String = [(NSString *)self->_filename UTF8String];
     if (v19 >= 0)
     {
       v9 = __p;
@@ -60,7 +60,7 @@
       v9 = __p[0];
     }
 
-    fprintf(v7, "[DYJSScripting] %s when getting %s (%s)", v9, a3, v8);
+    fprintf(v7, "[DYJSScripting] %s when getting %s (%s)", v9, object, uTF8String);
     if (v19 < 0)
     {
       operator delete(__p[0]);
@@ -84,19 +84,19 @@
       result = [MEMORY[0x277CCAAA0] JSONObjectWithData:objc_msgSend(MEMORY[0x277CBEA90] options:"dataWithBytesNoCopy:length:" error:{v14, JSStringGetUTF8CString(v12, v14, v13 + 1)), 0, __p}];
       if (__p[0])
       {
-        v15 = [__p[0] localizedDescription];
+        localizedDescription = [__p[0] localizedDescription];
         v16 = *MEMORY[0x277D85DF8];
-        if (v15)
+        if (localizedDescription)
         {
-          v17 = [v15 UTF8String];
+          uTF8String2 = [localizedDescription UTF8String];
         }
 
         else
         {
-          v17 = "";
+          uTF8String2 = "";
         }
 
-        fprintf(v16, "[DYJSScripting] %s when getting %s (%s)", v17, a3, [(NSString *)self->_filename UTF8String]);
+        fprintf(v16, "[DYJSScripting] %s when getting %s (%s)", uTF8String2, object, [(NSString *)self->_filename UTF8String]);
         return 0;
       }
     }
@@ -105,31 +105,31 @@
   return result;
 }
 
-- (BOOL)setGlobalJSONObject:(const char *)a3 value:(id)a4
+- (BOOL)setGlobalJSONObject:(const char *)object value:(id)value
 {
-  if (!a3)
+  if (!object)
   {
     return 0;
   }
 
   v7 = [(DYJSScriptingContext *)self _cachedStringFromString:?];
   v23 = 0;
-  v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a4 options:1 error:&v23];
+  v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:value options:1 error:&v23];
   if (v23)
   {
-    v9 = [v23 localizedDescription];
+    localizedDescription = [v23 localizedDescription];
     v10 = *MEMORY[0x277D85DF8];
-    if (v9)
+    if (localizedDescription)
     {
-      v11 = [v9 UTF8String];
+      uTF8String = [localizedDescription UTF8String];
     }
 
     else
     {
-      v11 = "";
+      uTF8String = "";
     }
 
-    fprintf(v10, "[DYJSScripting] %s when setting %s (%s)", v11, a3, [(NSString *)self->_filename UTF8String]);
+    fprintf(v10, "[DYJSScripting] %s when setting %s (%s)", uTF8String, object, [(NSString *)self->_filename UTF8String]);
     return 0;
   }
 
@@ -150,9 +150,9 @@
   {
     v16 = *MEMORY[0x277D85DF8];
     [(DYJSScriptingContext *)self _jsValueToString:?];
-    v17 = [(NSString *)self->_filename UTF8String];
+    uTF8String2 = [(NSString *)self->_filename UTF8String];
     v18 = v21 >= 0 ? &__p : __p;
-    fprintf(v16, "[DYJSScripting] %s when setting %s (%s)", v18, a3, v17);
+    fprintf(v16, "[DYJSScripting] %s when setting %s (%s)", v18, object, uTF8String2);
     if (v21 < 0)
     {
       operator delete(__p);
@@ -162,14 +162,14 @@
   return v15;
 }
 
-- (double)getGlobalDouble:(const char *)a3
+- (double)getGlobalDouble:(const char *)double
 {
-  if (!a3)
+  if (!double)
   {
     return 0.0;
   }
 
-  v5 = JSStringCreateWithUTF8CString(a3);
+  v5 = JSStringCreateWithUTF8CString(double);
   Property = JSObjectGetProperty([(JSContext *)self->_context JSGlobalContextRef], self->_globalObject, v5, 0);
   JSStringRelease(v5);
   exception = 0;
@@ -178,7 +178,7 @@
   {
     v8 = *MEMORY[0x277D85DF8];
     [(DYJSScriptingContext *)self _jsValueToString:?];
-    v9 = [(NSString *)self->_filename UTF8String];
+    uTF8String = [(NSString *)self->_filename UTF8String];
     if (v13 >= 0)
     {
       p_p = &__p;
@@ -189,7 +189,7 @@
       p_p = __p;
     }
 
-    fprintf(v8, "[DYJSScripting] %s when setting %s (%s)", p_p, a3, v9);
+    fprintf(v8, "[DYJSScripting] %s when setting %s (%s)", p_p, double, uTF8String);
     if (v13 < 0)
     {
       operator delete(__p);
@@ -199,19 +199,19 @@
   return v7;
 }
 
-- (void)setGlobalDouble:(const char *)a3 value:(double)a4
+- (void)setGlobalDouble:(const char *)double value:(double)value
 {
-  if (a3)
+  if (double)
   {
     v7 = [(DYJSScriptingContext *)self _cachedStringFromString:?];
-    Number = JSValueMakeNumber([(JSContext *)self->_context JSGlobalContextRef], a4);
+    Number = JSValueMakeNumber([(JSContext *)self->_context JSGlobalContextRef], value);
     exception = 0;
     JSObjectSetProperty([(JSContext *)self->_context JSGlobalContextRef], self->_globalObject, v7, Number, 0, &exception);
     if (exception)
     {
       v9 = *MEMORY[0x277D85DF8];
       [(DYJSScriptingContext *)self _jsValueToString:?];
-      v10 = [(NSString *)self->_filename UTF8String];
+      uTF8String = [(NSString *)self->_filename UTF8String];
       if (v13 >= 0)
       {
         p_p = &__p;
@@ -222,7 +222,7 @@
         p_p = __p;
       }
 
-      fprintf(v9, "[DYJSScripting] %s when setting %s (%s)", p_p, a3, v10);
+      fprintf(v9, "[DYJSScripting] %s when setting %s (%s)", p_p, double, uTF8String);
       if (v13 < 0)
       {
         operator delete(__p);
@@ -231,16 +231,16 @@
   }
 }
 
-- (double)callGlobalFunction:(const char *)a3
+- (double)callGlobalFunction:(const char *)function
 {
   v3 = 0.0;
-  if (!a3)
+  if (!function)
   {
     return v3;
   }
 
-  v6 = 0x9DDFEA08EB382D69 * ((8 * (a3 & 0x1FFFFFFF) + 8) ^ (a3 >> 32));
-  v7 = 0x9DDFEA08EB382D69 * ((a3 >> 32) ^ (v6 >> 47) ^ v6);
+  v6 = 0x9DDFEA08EB382D69 * ((8 * (function & 0x1FFFFFFF) + 8) ^ (function >> 32));
+  v7 = 0x9DDFEA08EB382D69 * ((function >> 32) ^ (v6 >> 47) ^ v6);
   v8 = 0x9DDFEA08EB382D69 * (v7 ^ (v7 >> 47));
   size = self->_cache.__table_.__bucket_list_.__deleter_.__size_;
   if (size)
@@ -269,7 +269,7 @@
         v14 = i[1];
         if (v14 == v8)
         {
-          if (i[2] == a3)
+          if (i[2] == function)
           {
             exception = 0;
             v25 = i[3];
@@ -302,12 +302,12 @@
   }
 
   exception = 0;
-  v15 = JSValueToObject(-[JSContext JSGlobalContextRef](self->_context, "JSGlobalContextRef"), -[JSValue JSValueRef](-[JSContext objectForKeyedSubscript:](self->_context, "objectForKeyedSubscript:", [MEMORY[0x277CCACA8] stringWithUTF8String:a3]), "JSValueRef"), &exception);
+  v15 = JSValueToObject(-[JSContext JSGlobalContextRef](self->_context, "JSGlobalContextRef"), -[JSValue JSValueRef](-[JSContext objectForKeyedSubscript:](self->_context, "objectForKeyedSubscript:", [MEMORY[0x277CCACA8] stringWithUTF8String:function]), "JSValueRef"), &exception);
   if (exception)
   {
     v16 = *MEMORY[0x277D85DF8];
     [(DYJSScriptingContext *)self _jsValueToString:?];
-    v17 = [(NSString *)self->_filename UTF8String];
+    uTF8String = [(NSString *)self->_filename UTF8String];
     if (v32 >= 0)
     {
       v18 = __p;
@@ -318,7 +318,7 @@
       v18 = __p[0];
     }
 
-    fprintf(v16, "[DYJSScripting] %s when calling %s (%s)", v18, a3, v17);
+    fprintf(v16, "[DYJSScripting] %s when calling %s (%s)", v18, function, uTF8String);
     if (v32 < 0)
     {
       operator delete(__p[0]);
@@ -391,7 +391,7 @@ LABEL_40:
     }
   }
 
-  if (v23[2] != a3)
+  if (v23[2] != function)
   {
     goto LABEL_40;
   }
@@ -403,7 +403,7 @@ LABEL_42:
   {
     v27 = *MEMORY[0x277D85DF8];
     [(DYJSScriptingContext *)self _jsValueToString:?];
-    v28 = [(NSString *)self->_filename UTF8String];
+    uTF8String2 = [(NSString *)self->_filename UTF8String];
     if (v32 >= 0)
     {
       v29 = __p;
@@ -414,7 +414,7 @@ LABEL_42:
       v29 = __p[0];
     }
 
-    fprintf(v27, "[DYJSScripting] %s when calling %s (%s)", v29, a3, v28);
+    fprintf(v27, "[DYJSScripting] %s when calling %s (%s)", v29, function, uTF8String2);
     if (v32 < 0)
     {
       operator delete(__p[0]);
@@ -424,12 +424,12 @@ LABEL_42:
   return JSValueToNumber([(JSContext *)self->_context JSGlobalContextRef], v26, 0);
 }
 
-- (OpaqueJSString)_cachedStringFromString:(const char *)a3
+- (OpaqueJSString)_cachedStringFromString:(const char *)string
 {
-  if (a3)
+  if (string)
   {
-    v5 = 0x9DDFEA08EB382D69 * ((8 * (a3 & 0x1FFFFFFF) + 8) ^ (a3 >> 32));
-    v6 = 0x9DDFEA08EB382D69 * ((a3 >> 32) ^ (v5 >> 47) ^ v5);
+    v5 = 0x9DDFEA08EB382D69 * ((8 * (string & 0x1FFFFFFF) + 8) ^ (string >> 32));
+    v6 = 0x9DDFEA08EB382D69 * ((string >> 32) ^ (v5 >> 47) ^ v5);
     v7 = 0x9DDFEA08EB382D69 * (v6 ^ (v6 >> 47));
     size = self->_stringCache.__table_.__bucket_list_.__deleter_.__size_;
     if (!size)
@@ -457,7 +457,7 @@ LABEL_42:
     if (!v12 || (v13 = *v12) == 0)
     {
 LABEL_19:
-      v11 = JSStringCreateWithUTF8CString(a3);
+      v11 = JSStringCreateWithUTF8CString(string);
       JSStringRetain(v11);
       v15 = self->_stringCache.__table_.__bucket_list_.__deleter_.__size_;
       if (!v15)
@@ -493,7 +493,7 @@ LABEL_36:
         v20 = v19[1];
         if (v20 == v7)
         {
-          if (v19[2] == a3)
+          if (v19[2] == string)
           {
             v19[3] = v11;
             return v11;
@@ -534,7 +534,7 @@ LABEL_36:
       v14 = v13[1];
       if (v14 == v7)
       {
-        if (v13[2] == a3)
+        if (v13[2] == string)
         {
           return v13[3];
         }
@@ -572,20 +572,20 @@ LABEL_36:
   return 0;
 }
 
-- (double)callFunction:(id)a3 withArguments:(id)a4
+- (double)callFunction:(id)function withArguments:(id)arguments
 {
-  v4 = [(JSValue *)[(JSContext *)self->_context objectForKeyedSubscript:a3] callWithArguments:a4];
+  v4 = [(JSValue *)[(JSContext *)self->_context objectForKeyedSubscript:function] callWithArguments:arguments];
 
   [(JSValue *)v4 toDouble];
   return result;
 }
 
-- (BOOL)evaluteScript:(id)a3 scriptURL:(id)a4
+- (BOOL)evaluteScript:(id)script scriptURL:(id)l
 {
   [(DYJSScriptingContext *)self _clearCache];
-  if (a4)
+  if (l)
   {
-    self->_filename = [objc_msgSend(a4 "lastPathComponent")];
+    self->_filename = [objc_msgSend(l "lastPathComponent")];
   }
 
   v13 = 0;
@@ -602,14 +602,14 @@ LABEL_36:
   v12[5] = &v13;
   [(JSContext *)context setExceptionHandler:v12];
   v9 = self->_context;
-  if (a4)
+  if (l)
   {
-    [(JSContext *)v9 evaluateScript:a3 withSourceURL:a4];
+    [(JSContext *)v9 evaluateScript:script withSourceURL:l];
   }
 
   else
   {
-    [(JSContext *)v9 evaluateScript:a3];
+    [(JSContext *)v9 evaluateScript:script];
   }
 
   v10 = *(v14 + 24);
@@ -702,75 +702,75 @@ uint64_t __48__DYJSScriptingContext_evaluteScript_scriptURL___block_invoke(uint6
   }
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __34__DYJSScriptingContext_setValues___block_invoke;
   v3[3] = &unk_279658138;
   v3[4] = self;
-  [a3 enumerateKeysAndObjectsUsingBlock:v3];
+  [values enumerateKeysAndObjectsUsingBlock:v3];
 }
 
-- (void)setRawArrayValues:(id)a3 withUint64Values:(unint64_t *)a4 andNumCounters:(unint64_t)a5
+- (void)setRawArrayValues:(id)values withUint64Values:(unint64_t *)uint64Values andNumCounters:(unint64_t)counters
 {
-  v8 = -[DYJSScriptingContext _cachedStringFromString:](self, "_cachedStringFromString:", [a3 UTF8String]);
+  v8 = -[DYJSScriptingContext _cachedStringFromString:](self, "_cachedStringFromString:", [values UTF8String]);
   exception = 0;
   Array = JSObjectMakeArray([(JSContext *)self->_context JSGlobalContextRef], 0, 0, &exception);
-  if (a5)
+  if (counters)
   {
     v10 = 0;
     v11 = 1;
     do
     {
-      v12 = [(JSContext *)self->_context JSGlobalContextRef];
-      Number = JSValueMakeNumber([(JSContext *)self->_context JSGlobalContextRef], a4[v10]);
-      JSObjectSetPropertyAtIndex(v12, Array, v11 - 1, Number, &exception);
+      jSGlobalContextRef = [(JSContext *)self->_context JSGlobalContextRef];
+      Number = JSValueMakeNumber([(JSContext *)self->_context JSGlobalContextRef], uint64Values[v10]);
+      JSObjectSetPropertyAtIndex(jSGlobalContextRef, Array, v11 - 1, Number, &exception);
       v10 = v11++;
     }
 
-    while (v10 < a5);
+    while (v10 < counters);
   }
 
   JSObjectSetProperty([(JSContext *)self->_context JSGlobalContextRef], self->_globalObject, v8, Array, 0, &exception);
 }
 
-- (OpaqueJSValue)createArrayRef:(id)a3
+- (OpaqueJSValue)createArrayRef:(id)ref
 {
-  v4 = -[DYJSScriptingContext _cachedStringFromString:](self, "_cachedStringFromString:", [a3 UTF8String]);
+  v4 = -[DYJSScriptingContext _cachedStringFromString:](self, "_cachedStringFromString:", [ref UTF8String]);
   exception = 0;
   Array = JSObjectMakeArray([(JSContext *)self->_context JSGlobalContextRef], 0, 0, &exception);
   JSObjectSetProperty([(JSContext *)self->_context JSGlobalContextRef], self->_globalObject, v4, Array, 0, &exception);
   return Array;
 }
 
-- (void)setRawArrayValues:(id)a3 withUint32Values:(unsigned int *)a4 andNumCounters:(unint64_t)a5
+- (void)setRawArrayValues:(id)values withUint32Values:(unsigned int *)uint32Values andNumCounters:(unint64_t)counters
 {
-  v8 = -[DYJSScriptingContext _cachedStringFromString:](self, "_cachedStringFromString:", [a3 UTF8String]);
+  v8 = -[DYJSScriptingContext _cachedStringFromString:](self, "_cachedStringFromString:", [values UTF8String]);
   exception = 0;
   Array = JSObjectMakeArray([(JSContext *)self->_context JSGlobalContextRef], 0, 0, &exception);
-  if (a5)
+  if (counters)
   {
     v10 = 0;
     do
     {
-      v11 = [(JSContext *)self->_context JSGlobalContextRef];
-      v12 = [(JSContext *)self->_context JSGlobalContextRef];
-      LODWORD(v13) = a4[v10];
-      Number = JSValueMakeNumber(v12, v13);
-      JSObjectSetPropertyAtIndex(v11, Array, v10++, Number, &exception);
+      jSGlobalContextRef = [(JSContext *)self->_context JSGlobalContextRef];
+      jSGlobalContextRef2 = [(JSContext *)self->_context JSGlobalContextRef];
+      LODWORD(v13) = uint32Values[v10];
+      Number = JSValueMakeNumber(jSGlobalContextRef2, v13);
+      JSObjectSetPropertyAtIndex(jSGlobalContextRef, Array, v10++, Number, &exception);
     }
 
-    while (a5 != v10);
+    while (counters != v10);
   }
 
   JSObjectSetProperty([(JSContext *)self->_context JSGlobalContextRef], self->_globalObject, v8, Array, 0, &exception);
 }
 
-- (id)setValue:(id)a3 value:(id)a4
+- (id)setValue:(id)value value:(id)a4
 {
   v6 = [MEMORY[0x277CD4658] valueWithObject:a4 inContext:self->_context];
-  [(JSContext *)self->_context setObject:v6 forKeyedSubscript:a3];
+  [(JSContext *)self->_context setObject:v6 forKeyedSubscript:value];
   return v6;
 }
 

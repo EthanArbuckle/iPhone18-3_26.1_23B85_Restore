@@ -1,29 +1,29 @@
 @interface CRLTransformRenderable
 + (id)renderable;
-+ (id)renderableFromTransformLayer:(id)a3;
-- (CRLTransformRenderable)initWithTransformLayer:(id)a3;
++ (id)renderableFromTransformLayer:(id)layer;
+- (CRLTransformRenderable)initWithTransformLayer:(id)layer;
 @end
 
 @implementation CRLTransformRenderable
 
-- (CRLTransformRenderable)initWithTransformLayer:(id)a3
+- (CRLTransformRenderable)initWithTransformLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = CRLTransformRenderable;
-  return [(CRLCanvasRenderable *)&v4 initWithCALayer:a3];
+  return [(CRLCanvasRenderable *)&v4 initWithCALayer:layer];
 }
 
-+ (id)renderableFromTransformLayer:(id)a3
++ (id)renderableFromTransformLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithTransformLayer:v4];
+  layerCopy = layer;
+  v5 = [[self alloc] initWithTransformLayer:layerCopy];
 
   return v5;
 }
 
 + (id)renderable
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   v3 = +[CATransformLayer layer];
   v4 = [v2 initWithTransformLayer:v3];
 

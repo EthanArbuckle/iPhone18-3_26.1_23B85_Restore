@@ -1,8 +1,8 @@
 @interface TabGroupLibrarySectionController
-- (TabGroupLibrarySectionController)initWithConfiguration:(id)a3 forNamedGroups:(BOOL)a4;
+- (TabGroupLibrarySectionController)initWithConfiguration:(id)configuration forNamedGroups:(BOOL)groups;
 - (id)_allItemControllers;
 - (id)headerItemController;
-- (id)itemControllerToHandleDropItemsFromSession:(id)a3 withProposedDestinationItemController:(id)a4 atIndex:(int64_t)a5;
+- (id)itemControllerToHandleDropItemsFromSession:(id)session withProposedDestinationItemController:(id)controller atIndex:(int64_t)index;
 - (id)itemControllers;
 @end
 
@@ -12,10 +12,10 @@
 {
   if (self->_showNamedGroups)
   {
-    v4 = [(LibrarySectionController *)self configuration];
-    v5 = [v4 tabGroupProvider];
-    v6 = [v5 namedTabGroups];
-    v7 = [v6 count];
+    configuration = [(LibrarySectionController *)self configuration];
+    tabGroupProvider = [configuration tabGroupProvider];
+    namedTabGroups = [tabGroupProvider namedTabGroups];
+    v7 = [namedTabGroups count];
 
     if (v7)
     {
@@ -23,8 +23,8 @@
       if (!headerItemController)
       {
         v9 = [HeaderLibraryItemController alloc];
-        v10 = [(LibrarySectionController *)self configuration];
-        v11 = [(HeaderLibraryItemController *)v9 initWithConfiguration:v10 headerType:0];
+        configuration2 = [(LibrarySectionController *)self configuration];
+        v11 = [(HeaderLibraryItemController *)v9 initWithConfiguration:configuration2 headerType:0];
         v12 = self->_headerItemController;
         self->_headerItemController = v11;
 
@@ -51,19 +51,19 @@
 - (id)itemControllers
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(LibrarySectionController *)self configuration];
-  v4 = [v3 tabGroupProvider];
-  v5 = [v4 tabGroups];
+  configuration = [(LibrarySectionController *)self configuration];
+  tabGroupProvider = [configuration tabGroupProvider];
+  tabGroups = [tabGroupProvider tabGroups];
 
-  if ([v5 count])
+  if ([tabGroups count])
   {
-    v6 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = v5;
-    v7 = v5;
+    v19 = tabGroups;
+    v7 = tabGroups;
     v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
@@ -83,10 +83,10 @@
           if (showNamedGroups == [v12 isNamed])
           {
             v14 = [TabGroupLibraryItemController alloc];
-            v15 = [(LibrarySectionController *)self configuration];
-            v16 = [(TabGroupLibraryItemController *)v14 initWithConfiguration:v15 tabGroup:v12];
+            configuration2 = [(LibrarySectionController *)self configuration];
+            v16 = [(TabGroupLibraryItemController *)v14 initWithConfiguration:configuration2 tabGroup:v12];
 
-            [v6 addObject:v16];
+            [orderedSet addObject:v16];
           }
         }
 
@@ -96,60 +96,60 @@
       while (v9);
     }
 
-    v17 = [v6 array];
+    array = [orderedSet array];
 
-    v5 = v19;
+    tabGroups = v19;
   }
 
   else
   {
-    v17 = MEMORY[0x277CBEBF8];
+    array = MEMORY[0x277CBEBF8];
   }
 
-  return v17;
+  return array;
 }
 
-- (TabGroupLibrarySectionController)initWithConfiguration:(id)a3 forNamedGroups:(BOOL)a4
+- (TabGroupLibrarySectionController)initWithConfiguration:(id)configuration forNamedGroups:(BOOL)groups
 {
-  v5 = [(LibrarySectionController *)self initWithConfiguration:a3];
+  v5 = [(LibrarySectionController *)self initWithConfiguration:configuration];
   v6 = v5;
   if (v5)
   {
-    v5->_showNamedGroups = a4;
+    v5->_showNamedGroups = groups;
     v7 = v5;
   }
 
   return v6;
 }
 
-- (id)itemControllerToHandleDropItemsFromSession:(id)a3 withProposedDestinationItemController:(id)a4 atIndex:(int64_t)a5
+- (id)itemControllerToHandleDropItemsFromSession:(id)session withProposedDestinationItemController:(id)controller atIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 items];
-  v11 = [v10 count];
+  sessionCopy = session;
+  controllerCopy = controller;
+  items = [sessionCopy items];
+  v11 = [items count];
 
-  if (!a5 || v11 >= 2)
+  if (!index || v11 >= 2)
   {
-    v23 = v9;
+    v23 = controllerCopy;
     goto LABEL_20;
   }
 
-  v12 = [v8 items];
-  v13 = [v12 firstObject];
+  items2 = [sessionCopy items];
+  firstObject = [items2 firstObject];
 
-  v14 = [v13 safari_localWBTab];
-  if (v14)
+  safari_localWBTab = [firstObject safari_localWBTab];
+  if (safari_localWBTab)
   {
-    v15 = [(TabGroupLibrarySectionController *)self _allItemControllers];
+    _allItemControllers = [(TabGroupLibrarySectionController *)self _allItemControllers];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __125__TabGroupLibrarySectionController_itemControllerToHandleDropItemsFromSession_withProposedDestinationItemController_atIndex___block_invoke;
     v25[3] = &unk_2781D82B8;
-    v26 = v14;
-    v16 = [v15 indexOfObjectPassingTest:v25];
-    v18 = v16 != 0x7FFFFFFFFFFFFFFFLL && v16 <= a5;
-    v19 = [v15 objectAtIndexedSubscript:a5 - 1];
+    v26 = safari_localWBTab;
+    v16 = [_allItemControllers indexOfObjectPassingTest:v25];
+    v18 = v16 != 0x7FFFFFFFFFFFFFFFLL && v16 <= index;
+    v19 = [_allItemControllers objectAtIndexedSubscript:index - 1];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if (v18 || (isKindOfClass & 1) != 0)
@@ -175,11 +175,11 @@ LABEL_18:
       }
     }
 
-    v22 = v9;
+    v22 = controllerCopy;
     goto LABEL_18;
   }
 
-  v23 = v9;
+  v23 = controllerCopy;
 LABEL_19:
 
 LABEL_20:
@@ -207,11 +207,11 @@ uint64_t __125__TabGroupLibrarySectionController_itemControllerToHandleDropItems
 
 - (id)_allItemControllers
 {
-  v2 = [(TabGroupLibrarySectionController *)self itemControllers];
-  v3 = [v2 safari_mapObjectsUsingBlock:&__block_literal_global_23];
-  v4 = [v3 safari_flattenedArray];
+  itemControllers = [(TabGroupLibrarySectionController *)self itemControllers];
+  v3 = [itemControllers safari_mapObjectsUsingBlock:&__block_literal_global_23];
+  safari_flattenedArray = [v3 safari_flattenedArray];
 
-  return v4;
+  return safari_flattenedArray;
 }
 
 id __55__TabGroupLibrarySectionController__allItemControllers__block_invoke(uint64_t a1, void *a2)

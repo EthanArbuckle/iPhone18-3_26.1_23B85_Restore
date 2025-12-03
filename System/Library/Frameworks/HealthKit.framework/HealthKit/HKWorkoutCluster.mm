@@ -1,64 +1,64 @@
 @interface HKWorkoutCluster
-- (BOOL)isEqual:(id)a3;
-- (HKWorkoutCluster)initWithCoder:(id)a3;
-- (HKWorkoutCluster)initWithWorkoutUUIDs:(id)a3 lastWorkoutUUID:(id)a4 bestWorkoutUUID:(id)a5 relevanceValue:(double)a6 workoutRouteSnapshot:(id)a7 workoutRouteLabel:(id)a8;
-- (id)_initWithUUID:(id)a3 workoutUUIDs:(id)a4 lastWorkoutUUID:(id)a5 bestWorkoutUUID:(id)a6 relevanceValue:(double)a7 workoutRouteSnapshot:(id)a8 workoutRouteLabel:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (HKWorkoutCluster)initWithCoder:(id)coder;
+- (HKWorkoutCluster)initWithWorkoutUUIDs:(id)ds lastWorkoutUUID:(id)d bestWorkoutUUID:(id)iD relevanceValue:(double)value workoutRouteSnapshot:(id)snapshot workoutRouteLabel:(id)label;
+- (id)_initWithUUID:(id)d workoutUUIDs:(id)ds lastWorkoutUUID:(id)iD bestWorkoutUUID:(id)uID relevanceValue:(double)value workoutRouteSnapshot:(id)snapshot workoutRouteLabel:(id)label;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKWorkoutCluster
 
-- (HKWorkoutCluster)initWithWorkoutUUIDs:(id)a3 lastWorkoutUUID:(id)a4 bestWorkoutUUID:(id)a5 relevanceValue:(double)a6 workoutRouteSnapshot:(id)a7 workoutRouteLabel:(id)a8
+- (HKWorkoutCluster)initWithWorkoutUUIDs:(id)ds lastWorkoutUUID:(id)d bestWorkoutUUID:(id)iD relevanceValue:(double)value workoutRouteSnapshot:(id)snapshot workoutRouteLabel:(id)label
 {
   v14 = MEMORY[0x1E696AFB0];
-  v15 = a8;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [v14 UUID];
-  v21 = [(HKWorkoutCluster *)self _initWithUUID:v20 workoutUUIDs:v19 lastWorkoutUUID:v18 bestWorkoutUUID:v17 relevanceValue:v16 workoutRouteSnapshot:v15 workoutRouteLabel:a6];
+  labelCopy = label;
+  snapshotCopy = snapshot;
+  iDCopy = iD;
+  dCopy = d;
+  dsCopy = ds;
+  uUID = [v14 UUID];
+  v21 = [(HKWorkoutCluster *)self _initWithUUID:uUID workoutUUIDs:dsCopy lastWorkoutUUID:dCopy bestWorkoutUUID:iDCopy relevanceValue:snapshotCopy workoutRouteSnapshot:labelCopy workoutRouteLabel:value];
 
   return v21;
 }
 
-- (id)_initWithUUID:(id)a3 workoutUUIDs:(id)a4 lastWorkoutUUID:(id)a5 bestWorkoutUUID:(id)a6 relevanceValue:(double)a7 workoutRouteSnapshot:(id)a8 workoutRouteLabel:(id)a9
+- (id)_initWithUUID:(id)d workoutUUIDs:(id)ds lastWorkoutUUID:(id)iD bestWorkoutUUID:(id)uID relevanceValue:(double)value workoutRouteSnapshot:(id)snapshot workoutRouteLabel:(id)label
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
+  dCopy = d;
+  dsCopy = ds;
+  iDCopy = iD;
+  uIDCopy = uID;
+  snapshotCopy = snapshot;
+  labelCopy = label;
   v36.receiver = self;
   v36.super_class = HKWorkoutCluster;
   v22 = [(HKWorkoutCluster *)&v36 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [dCopy copy];
     clusterUUID = v22->_clusterUUID;
     v22->_clusterUUID = v23;
 
-    v25 = [v17 copy];
+    v25 = [dsCopy copy];
     workoutUUIDs = v22->_workoutUUIDs;
     v22->_workoutUUIDs = v25;
 
-    v27 = [v18 copy];
+    v27 = [iDCopy copy];
     lastWorkoutUUID = v22->_lastWorkoutUUID;
     v22->_lastWorkoutUUID = v27;
 
-    v29 = [v19 copy];
+    v29 = [uIDCopy copy];
     bestWorkoutUUID = v22->_bestWorkoutUUID;
     v22->_bestWorkoutUUID = v29;
 
-    v22->_relevanceValue = a7;
-    v31 = [v20 copy];
+    v22->_relevanceValue = value;
+    v31 = [snapshotCopy copy];
     workoutRouteSnapshot = v22->_workoutRouteSnapshot;
     v22->_workoutRouteSnapshot = v31;
 
-    v33 = [v21 copy];
+    v33 = [labelCopy copy];
     workoutRouteLabel = v22->_workoutRouteLabel;
     v22->_workoutRouteLabel = v33;
   }
@@ -66,13 +66,13 @@
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self->_workoutUUIDs)
     {
       v6 = [MEMORY[0x1E695DFD8] setWithArray:?];
@@ -161,37 +161,37 @@
   return v6;
 }
 
-- (HKWorkoutCluster)initWithCoder:(id)a3
+- (HKWorkoutCluster)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = HKWorkoutCluster;
   v5 = [(HKWorkoutCluster *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cluster_uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cluster_uuid"];
     clusterUUID = v5->_clusterUUID;
     v5->_clusterUUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"last_workout"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"last_workout"];
     lastWorkoutUUID = v5->_lastWorkoutUUID;
     v5->_lastWorkoutUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"best_workout"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"best_workout"];
     bestWorkoutUUID = v5->_bestWorkoutUUID;
     v5->_bestWorkoutUUID = v10;
 
-    [v4 decodeDoubleForKey:@"relevance"];
+    [coderCopy decodeDoubleForKey:@"relevance"];
     v5->_relevanceValue = v12;
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"route_snapshot"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"route_snapshot"];
     workoutRouteSnapshot = v5->_workoutRouteSnapshot;
     v5->_workoutRouteSnapshot = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"route_label"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"route_label"];
     workoutRouteLabel = v5->_workoutRouteLabel;
     v5->_workoutRouteLabel = v15;
 
-    v17 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"workout_uuids"];
+    v17 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"workout_uuids"];
     v18 = [v17 hk_map:&__block_literal_global_24];
     workoutUUIDs = v5->_workoutUUIDs;
     v5->_workoutUUIDs = v18;
@@ -209,18 +209,18 @@ id __34__HKWorkoutCluster_initWithCoder___block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   clusterUUID = self->_clusterUUID;
-  v5 = a3;
-  [v5 encodeObject:clusterUUID forKey:@"cluster_uuid"];
-  [v5 encodeObject:self->_lastWorkoutUUID forKey:@"last_workout"];
-  [v5 encodeObject:self->_bestWorkoutUUID forKey:@"best_workout"];
-  [v5 encodeDouble:@"relevance" forKey:self->_relevanceValue];
-  [v5 encodeObject:self->_workoutRouteSnapshot forKey:@"route_snapshot"];
-  [v5 encodeObject:self->_workoutRouteLabel forKey:@"route_label"];
+  coderCopy = coder;
+  [coderCopy encodeObject:clusterUUID forKey:@"cluster_uuid"];
+  [coderCopy encodeObject:self->_lastWorkoutUUID forKey:@"last_workout"];
+  [coderCopy encodeObject:self->_bestWorkoutUUID forKey:@"best_workout"];
+  [coderCopy encodeDouble:@"relevance" forKey:self->_relevanceValue];
+  [coderCopy encodeObject:self->_workoutRouteSnapshot forKey:@"route_snapshot"];
+  [coderCopy encodeObject:self->_workoutRouteLabel forKey:@"route_label"];
   v6 = [(NSArray *)self->_workoutUUIDs hk_map:&__block_literal_global_37];
-  [v5 encodeObject:v6 forKey:@"workout_uuids"];
+  [coderCopy encodeObject:v6 forKey:@"workout_uuids"];
 }
 
 @end

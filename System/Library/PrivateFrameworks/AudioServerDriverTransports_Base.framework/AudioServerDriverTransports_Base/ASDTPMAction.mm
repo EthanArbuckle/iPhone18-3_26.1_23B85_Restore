@@ -1,23 +1,23 @@
 @interface ASDTPMAction
-- (ASDTPMAction)initWithConfig:(id)a3 forSequencer:(id)a4;
-- (BOOL)asdtHandlesPowerTransition:(int)a3;
+- (ASDTPMAction)initWithConfig:(id)config forSequencer:(id)sequencer;
+- (BOOL)asdtHandlesPowerTransition:(int)transition;
 - (int)action;
-- (int)asdtPowerStateChange:(int)a3;
-- (int)executeAction:(unsigned int)a3;
-- (int)waitForCompletion:(unsigned int)a3;
+- (int)asdtPowerStateChange:(int)change;
+- (int)executeAction:(unsigned int)action;
+- (int)waitForCompletion:(unsigned int)completion;
 - (void)action;
 - (void)executeInBackground;
-- (void)setName:(id)a3;
+- (void)setName:(id)name;
 @end
 
 @implementation ASDTPMAction
 
-- (ASDTPMAction)initWithConfig:(id)a3 forSequencer:(id)a4
+- (ASDTPMAction)initWithConfig:(id)config forSequencer:(id)sequencer
 {
-  v6 = a3;
+  configCopy = config;
   v14.receiver = self;
   v14.super_class = ASDTPMAction;
-  v7 = [(ASDTPMDevice *)&v14 initWithConfig:v6 forSequencer:a4];
+  v7 = [(ASDTPMDevice *)&v14 initWithConfig:configCopy forSequencer:sequencer];
   v8 = v7;
   if (!v7)
   {
@@ -28,9 +28,9 @@
   v9 = objc_alloc_init(MEMORY[0x277CCA928]);
   [(ASDTPMAction *)v8 setCondition:v9];
 
-  v10 = [(ASDTPMAction *)v8 condition];
+  condition = [(ASDTPMAction *)v8 condition];
 
-  if (!v10)
+  if (!condition)
   {
     v12 = ASDTBaseLogType();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -42,7 +42,7 @@
   }
 
   [(ASDTPMDevice *)v8 setPmNoStateChangeOnFailure:1];
-  -[ASDTPMAction setExecuteTransition:](v8, "setExecuteTransition:", [v6 asdtPMActionExecuteTransition]);
+  -[ASDTPMAction setExecuteTransition:](v8, "setExecuteTransition:", [configCopy asdtPMActionExecuteTransition]);
   if (![(ASDTPMAction *)v8 executeTransition])
   {
     v12 = ASDTBaseLogType();
@@ -57,8 +57,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  -[ASDTPMAction setBackgroundTransition:](v8, "setBackgroundTransition:", [v6 asdtPMActionBackgroundTransition]);
-  -[ASDTPMAction setOnce:](v8, "setOnce:", [v6 asdtPMActionOnce]);
+  -[ASDTPMAction setBackgroundTransition:](v8, "setBackgroundTransition:", [configCopy asdtPMActionBackgroundTransition]);
+  -[ASDTPMAction setOnce:](v8, "setOnce:", [configCopy asdtPMActionOnce]);
 LABEL_5:
   v11 = v8;
 LABEL_11:
@@ -66,61 +66,61 @@ LABEL_11:
   return v11;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v7.receiver = self;
   v7.super_class = ASDTPMAction;
-  v4 = a3;
-  [(ASDTPMDevice *)&v7 setName:v4];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%@.cond", "com.apple.AudioServerDriverTransports", v4, v7.receiver, v7.super_class];
+  nameCopy = name;
+  [(ASDTPMDevice *)&v7 setName:nameCopy];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s.%@.cond", "com.apple.AudioServerDriverTransports", nameCopy, v7.receiver, v7.super_class];
 
-  v6 = [(ASDTPMAction *)self condition];
-  [v6 setName:v5];
+  condition = [(ASDTPMAction *)self condition];
+  [condition setName:v5];
 }
 
-- (int)executeAction:(unsigned int)a3
+- (int)executeAction:(unsigned int)action
 {
   v20 = *MEMORY[0x277D85DE8];
-  LODWORD(v5) = 2003329396;
-  if ([(ASDTPMAction *)self actionState]== 1920298606 && [(ASDTPMAction *)self actionIteration]== a3)
+  LODWORD(action) = 2003329396;
+  if ([(ASDTPMAction *)self actionState]== 1920298606 && [(ASDTPMAction *)self actionIteration]== action)
   {
-    v6 = [(ASDTPMAction *)self condition];
-    [v6 unlock];
+    condition = [(ASDTPMAction *)self condition];
+    [condition unlock];
 
     v7 = ASDTBaseLogType();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(ASDTPMAction *)self executeAction:a3, v7];
+      [(ASDTPMAction *)self executeAction:action, v7];
     }
 
-    v5 = [(ASDTPMAction *)self action];
+    action = [(ASDTPMAction *)self action];
     v8 = ASDTBaseLogType();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [(ASDTPMDevice *)self name];
+      name = [(ASDTPMDevice *)self name];
       v14 = 138412802;
-      v15 = v13;
+      v15 = name;
       v16 = 1024;
-      v17 = a3;
+      actionCopy = action;
       v18 = 1024;
-      v19 = v5;
+      v19 = action;
       _os_log_debug_impl(&dword_241659000, v8, OS_LOG_TYPE_DEBUG, "%@: Action iteration %u completed with result: %x", &v14, 0x18u);
     }
 
-    v9 = [(ASDTPMAction *)self condition];
-    [v9 lock];
+    condition2 = [(ASDTPMAction *)self condition];
+    [condition2 lock];
 
-    if ([(ASDTPMAction *)self actionState]== 1920298606 && [(ASDTPMAction *)self actionIteration]== a3)
+    if ([(ASDTPMAction *)self actionState]== 1920298606 && [(ASDTPMAction *)self actionIteration]== action)
     {
-      [(ASDTPMAction *)self setActionResult:v5];
+      [(ASDTPMAction *)self setActionResult:action];
       [(ASDTPMAction *)self setActionState:1685024357];
-      v10 = [(ASDTPMAction *)self condition];
-      [v10 broadcast];
+      condition3 = [(ASDTPMAction *)self condition];
+      [condition3 broadcast];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v5;
+  return action;
 }
 
 - (void)executeInBackground
@@ -128,14 +128,14 @@ LABEL_11:
   objc_initWeak(&location, self);
   [(ASDTPMAction *)self setActionState:1920298606];
   [(ASDTPMAction *)self setActionIteration:[(ASDTPMAction *)self actionIteration]+ 1];
-  v3 = [(ASDTPMAction *)self actionIteration];
-  v4 = [(ASDTPMDevice *)self parentSequencer];
-  v5 = [v4 parentDevice];
-  v6 = [v5 concurrentQueue];
+  actionIteration = [(ASDTPMAction *)self actionIteration];
+  parentSequencer = [(ASDTPMDevice *)self parentSequencer];
+  parentDevice = [parentSequencer parentDevice];
+  concurrentQueue = [parentDevice concurrentQueue];
 
-  if (!v6)
+  if (!concurrentQueue)
   {
-    v6 = +[ASDTDeviceManager concurrentQueue];
+    concurrentQueue = +[ASDTDeviceManager concurrentQueue];
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -143,8 +143,8 @@ LABEL_11:
   block[2] = __35__ASDTPMAction_executeInBackground__block_invoke;
   block[3] = &unk_278CE6460;
   objc_copyWeak(&v8, &location);
-  v9 = v3;
-  dispatch_async(v6, block);
+  v9 = actionIteration;
+  dispatch_async(concurrentQueue, block);
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -161,38 +161,38 @@ void __35__ASDTPMAction_executeInBackground__block_invoke(uint64_t a1)
   [v3 unlock];
 }
 
-- (BOOL)asdtHandlesPowerTransition:(int)a3
+- (BOOL)asdtHandlesPowerTransition:(int)transition
 {
-  if ([(ASDTPMAction *)self executeTransition]== a3)
+  if ([(ASDTPMAction *)self executeTransition]== transition)
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(backgroundTransition) = 1;
   }
 
   else
   {
-    v5 = [(ASDTPMAction *)self backgroundTransition];
-    if (v5)
+    backgroundTransition = [(ASDTPMAction *)self backgroundTransition];
+    if (backgroundTransition)
     {
-      LOBYTE(v5) = [(ASDTPMAction *)self backgroundTransition]== a3;
+      LOBYTE(backgroundTransition) = [(ASDTPMAction *)self backgroundTransition]== transition;
     }
   }
 
-  return v5;
+  return backgroundTransition;
 }
 
-- (int)asdtPowerStateChange:(int)a3
+- (int)asdtPowerStateChange:(int)change
 {
   if ([(ASDTPMAction *)self backgroundTransition])
   {
-    v5 = [(ASDTPMAction *)self condition];
-    [v5 lock];
+    condition = [(ASDTPMAction *)self condition];
+    [condition lock];
 
-    v6 = [(ASDTPMAction *)self actionState];
-    if (v6 != 1685024357)
+    actionState = [(ASDTPMAction *)self actionState];
+    if (actionState != 1685024357)
     {
-      if (v6 != 1920298606)
+      if (actionState != 1920298606)
       {
-        if (v6 != 1768189029 || [(ASDTPMAction *)self backgroundTransition]!= a3)
+        if (actionState != 1768189029 || [(ASDTPMAction *)self backgroundTransition]!= change)
         {
           goto LABEL_28;
         }
@@ -200,9 +200,9 @@ void __35__ASDTPMAction_executeInBackground__block_invoke(uint64_t a1)
         goto LABEL_27;
       }
 
-      if ([(ASDTPMAction *)self executeTransition]!= a3)
+      if ([(ASDTPMAction *)self executeTransition]!= change)
       {
-        if ((asdtPowerTransitionsInOrder(a3, [(ASDTPMAction *)self executeTransition]) & 1) == 0)
+        if ((asdtPowerTransitionsInOrder(change, [(ASDTPMAction *)self executeTransition]) & 1) == 0)
         {
           [(ASDTPMAction *)self setActionState:1768189029];
         }
@@ -212,8 +212,8 @@ void __35__ASDTPMAction_executeInBackground__block_invoke(uint64_t a1)
 
       while ([(ASDTPMAction *)self actionState]== 1920298606)
       {
-        v10 = [(ASDTPMAction *)self condition];
-        [v10 wait];
+        condition2 = [(ASDTPMAction *)self condition];
+        [condition2 wait];
       }
 
       if ([(ASDTPMAction *)self actionState]!= 1685024357)
@@ -223,9 +223,9 @@ void __35__ASDTPMAction_executeInBackground__block_invoke(uint64_t a1)
       }
     }
 
-    if ([(ASDTPMAction *)self executeTransition]!= a3)
+    if ([(ASDTPMAction *)self executeTransition]!= change)
     {
-      if ([(ASDTPMAction *)self backgroundTransition]!= a3 || [(ASDTPMAction *)self once]&& ![(ASDTPMAction *)self actionResult])
+      if ([(ASDTPMAction *)self backgroundTransition]!= change || [(ASDTPMAction *)self once]&& ![(ASDTPMAction *)self actionResult])
       {
         goto LABEL_28;
       }
@@ -240,39 +240,39 @@ LABEL_28:
     goto LABEL_22;
   }
 
-  if ([(ASDTPMAction *)self executeTransition]== a3)
+  if ([(ASDTPMAction *)self executeTransition]== change)
   {
-    v7 = [(ASDTPMAction *)self condition];
-    [v7 lock];
+    condition3 = [(ASDTPMAction *)self condition];
+    [condition3 lock];
 
     if ([(ASDTPMAction *)self actionState]== 1768189029 || [(ASDTPMAction *)self actionState]== 1685024357 && (![(ASDTPMAction *)self once]|| [(ASDTPMAction *)self actionResult]))
     {
       [(ASDTPMAction *)self setActionState:1920298606];
       [(ASDTPMAction *)self setActionIteration:[(ASDTPMAction *)self actionIteration]+ 1];
-      v8 = [(ASDTPMAction *)self executeAction:[(ASDTPMAction *)self actionIteration]];
+      actionResult = [(ASDTPMAction *)self executeAction:[(ASDTPMAction *)self actionIteration]];
 LABEL_23:
-      v9 = v8;
+      v9 = actionResult;
 LABEL_29:
-      v11 = [(ASDTPMAction *)self condition];
-      [v11 unlock];
+      condition4 = [(ASDTPMAction *)self condition];
+      [condition4 unlock];
 
       return v9;
     }
 
 LABEL_22:
-    v8 = [(ASDTPMAction *)self actionResult];
+    actionResult = [(ASDTPMAction *)self actionResult];
     goto LABEL_23;
   }
 
   return 0;
 }
 
-- (int)waitForCompletion:(unsigned int)a3
+- (int)waitForCompletion:(unsigned int)completion
 {
   *&v16[5] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (completion)
   {
-    v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:a3 / 1000000.0];
+    v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:completion / 1000000.0];
   }
 
   else
@@ -280,13 +280,13 @@ LABEL_22:
     v4 = 0;
   }
 
-  v5 = [(ASDTPMAction *)self condition];
-  [v5 lock];
+  condition = [(ASDTPMAction *)self condition];
+  [condition lock];
 
   if ([(ASDTPMAction *)self actionState]== 1685024357)
   {
 LABEL_5:
-    v6 = [(ASDTPMAction *)self actionResult];
+    actionResult = [(ASDTPMAction *)self actionResult];
     goto LABEL_6;
   }
 
@@ -298,16 +298,16 @@ LABEL_5:
       [(ASDTPMAction *)v15 waitForCompletion:v16, v11];
     }
 
-    v12 = [(ASDTPMAction *)self condition];
-    v13 = v12;
+    condition2 = [(ASDTPMAction *)self condition];
+    v13 = condition2;
     if (!v4)
     {
-      [v12 wait];
+      [condition2 wait];
 
       goto LABEL_15;
     }
 
-    v14 = [v12 waitUntilDate:v4];
+    v14 = [condition2 waitUntilDate:v4];
 
     if ((v14 & 1) == 0)
     {
@@ -321,19 +321,19 @@ LABEL_15:
     }
   }
 
-  v6 = 1852990585;
+  actionResult = 1852990585;
 LABEL_6:
-  v7 = [(ASDTPMAction *)self condition];
-  [v7 unlock];
+  condition3 = [(ASDTPMAction *)self condition];
+  [condition3 unlock];
 
   v8 = ASDTBaseLogType();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(ASDTPMAction *)self waitForCompletion:v6, v8];
+    [(ASDTPMAction *)self waitForCompletion:actionResult, v8];
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v6;
+  return actionResult;
 }
 
 - (int)action
@@ -428,7 +428,7 @@ LABEL_6:
 - (void)action
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 name];
+  name = [self name];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

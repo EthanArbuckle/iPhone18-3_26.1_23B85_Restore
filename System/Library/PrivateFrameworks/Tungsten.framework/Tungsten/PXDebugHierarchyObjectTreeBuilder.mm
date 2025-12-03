@@ -1,26 +1,26 @@
 @interface PXDebugHierarchyObjectTreeBuilder
-+ (id)buildObjectTreeForDebugHierarchyWithIdentifier:(id)a3 provider:(id)a4 options:(unint64_t)a5;
-+ (id)createObjectForElement:(id)a3 parentObject:(id)a4 options:(unint64_t)a5;
++ (id)buildObjectTreeForDebugHierarchyWithIdentifier:(id)identifier provider:(id)provider options:(unint64_t)options;
++ (id)createObjectForElement:(id)element parentObject:(id)object options:(unint64_t)options;
 @end
 
 @implementation PXDebugHierarchyObjectTreeBuilder
 
-+ (id)createObjectForElement:(id)a3 parentObject:(id)a4 options:(unint64_t)a5
++ (id)createObjectForElement:(id)element parentObject:(id)object options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CCA890] currentHandler];
+  elementCopy = element;
+  objectCopy = object;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  [v10 handleFailureInMethod:a2 object:a1 file:@"PXDebugHierarchyObjectTreeBuilder.m" lineNumber:39 description:{@"Method %s is a responsibility of subclass %@", "+[PXDebugHierarchyObjectTreeBuilder createObjectForElement:parentObject:options:]", v12}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDebugHierarchyObjectTreeBuilder.m" lineNumber:39 description:{@"Method %s is a responsibility of subclass %@", "+[PXDebugHierarchyObjectTreeBuilder createObjectForElement:parentObject:options:]", v12}];
 
   abort();
 }
 
-+ (id)buildObjectTreeForDebugHierarchyWithIdentifier:(id)a3 provider:(id)a4 options:(unint64_t)a5
++ (id)buildObjectTreeForDebugHierarchyWithIdentifier:(id)identifier provider:(id)provider options:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v21 = 0;
   v22 = &v21;
@@ -34,11 +34,11 @@
   v15[3] = &unk_2782A8E80;
   v12 = v11;
   v18 = a2;
-  v19 = a1;
-  v20 = a5;
+  selfCopy = self;
+  optionsCopy = options;
   v16 = v12;
   v17 = &v21;
-  [v10 enumerateDebugHierarchyWithIdentifier:v9 options:a5 usingBlock:v15];
+  [providerCopy enumerateDebugHierarchyWithIdentifier:identifierCopy options:options usingBlock:v15];
   v13 = v22[5];
 
   _Block_object_dispose(&v21, 8);

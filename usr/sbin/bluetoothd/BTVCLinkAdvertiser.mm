@@ -1,24 +1,24 @@
 @interface BTVCLinkAdvertiser
-- (BTVCLinkAdvertiser)initWithType:(int64_t)a3;
+- (BTVCLinkAdvertiser)initWithType:(int64_t)type;
 - (NSString)description;
-- (int)_preparePayload:(BOOL)a3;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_advertisingEnable:(BOOL)a3;
+- (int)_preparePayload:(BOOL)payload;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_advertisingEnable:(BOOL)enable;
 - (void)_invalidate;
-- (void)_restartIfNeeded:(BOOL)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)advertisingEnable:(BOOL)a3;
-- (void)btvcBonjourLink:(id)a3 didConnectToPeer:(id)a4 parameters:(id)a5 role:(int64_t)a6 error:(id)a7;
-- (void)btvcBonjourLink:(id)a3 didDeferAdvertisingType:(int64_t)a4;
-- (void)btvcBonjourLink:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5;
-- (void)btvcBonjourLink:(id)a3 didStartAdvertisingType:(int64_t)a4;
-- (void)btvcBonjourLink:(id)a3 didStopAdvertisingType:(int64_t)a4 withError:(id)a5;
-- (void)btvcBonjourLinkDidUpdateState:(id)a3;
+- (void)_restartIfNeeded:(BOOL)needed;
+- (void)activateWithCompletion:(id)completion;
+- (void)advertisingEnable:(BOOL)enable;
+- (void)btvcBonjourLink:(id)link didConnectToPeer:(id)peer parameters:(id)parameters role:(int64_t)role error:(id)error;
+- (void)btvcBonjourLink:(id)link didDeferAdvertisingType:(int64_t)type;
+- (void)btvcBonjourLink:(id)link didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error;
+- (void)btvcBonjourLink:(id)link didStartAdvertisingType:(int64_t)type;
+- (void)btvcBonjourLink:(id)link didStopAdvertisingType:(int64_t)type withError:(id)error;
+- (void)btvcBonjourLinkDidUpdateState:(id)state;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDispatchQueue:(id)a3;
-- (void)setPayloadData:(id)a3;
-- (void)setPayloadFields:(id)a3;
+- (void)setDispatchQueue:(id)queue;
+- (void)setPayloadData:(id)data;
+- (void)setPayloadFields:(id)fields;
 @end
 
 @implementation BTVCLinkAdvertiser
@@ -83,9 +83,9 @@
   return v4;
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   obj = self;
   objc_sync_enter(obj);
   if (obj->_activateCalled)
@@ -97,35 +97,35 @@
   else
   {
     dispatchQueue = obj->_dispatchQueue;
-    obj->_dispatchQueue = v4;
+    obj->_dispatchQueue = queueCopy;
 
     objc_sync_exit(obj);
   }
 }
 
-- (void)setPayloadData:(id)a3
+- (void)setPayloadData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
+  dataCopy = data;
+  v5 = [dataCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10039492C;
   v13[3] = &unk_100AE0B60;
-  v13[4] = v6;
+  v13[4] = selfCopy;
   v7 = v5;
   v14 = v7;
   v8 = objc_retainBlock(v13);
   v9 = v8;
-  if (v6->_activateCalled)
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v6->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100394984;
     v11[3] = &unk_100AE2500;
-    v11[4] = v6;
+    v11[4] = selfCopy;
     v12 = v8;
     dispatch_async(dispatchQueue, v11);
   }
@@ -135,32 +135,32 @@
     (v8[2])(v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setPayloadFields:(id)a3
+- (void)setPayloadFields:(id)fields
 {
-  v4 = a3;
-  v5 = [v4 copy];
-  v6 = self;
-  objc_sync_enter(v6);
+  fieldsCopy = fields;
+  v5 = [fieldsCopy copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100394B70;
   v13[3] = &unk_100AE0B60;
-  v13[4] = v6;
+  v13[4] = selfCopy;
   v7 = v5;
   v14 = v7;
   v8 = objc_retainBlock(v13);
   v9 = v8;
-  if (v6->_activateCalled)
+  if (selfCopy->_activateCalled)
   {
-    dispatchQueue = v6->_dispatchQueue;
+    dispatchQueue = selfCopy->_dispatchQueue;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100394BC8;
     v11[3] = &unk_100AE2500;
-    v11[4] = v6;
+    v11[4] = selfCopy;
     v12 = v8;
     dispatch_async(dispatchQueue, v11);
   }
@@ -170,31 +170,31 @@
     (v8[2])(v8);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v5->_activateCalled = 1;
-  dispatchQueue = v5->_dispatchQueue;
+  completionCopy = completion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_activateCalled = 1;
+  dispatchQueue = selfCopy->_dispatchQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100394CEC;
   v8[3] = &unk_100AE23F8;
-  v8[4] = v5;
-  v9 = v4;
-  v7 = v4;
+  v8[4] = selfCopy;
+  v9 = completionCopy;
+  v7 = completionCopy;
   dispatch_async(dispatchQueue, v8);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -223,17 +223,17 @@
   {
     v14 = -6724;
 LABEL_16:
-    if (sub_100822598(v14, v4))
+    if (sub_100822598(v14, completionCopy))
     {
       goto LABEL_22;
     }
 
-    v15 = [NSString stringWithUTF8String:DebugGetErrorString(), NSLocalizedDescriptionKey];
-    self = v15;
+    nSLocalizedDescriptionKey = [NSString stringWithUTF8String:DebugGetErrorString(), NSLocalizedDescriptionKey];
+    self = nSLocalizedDescriptionKey;
     v16 = @"?";
-    if (v15)
+    if (nSLocalizedDescriptionKey)
     {
-      v16 = v15;
+      v16 = nSLocalizedDescriptionKey;
     }
 
     v18 = v16;
@@ -278,7 +278,7 @@ LABEL_16:
     }
   }
 
-  if (!v4)
+  if (!completionCopy)
   {
     goto LABEL_22;
   }
@@ -286,7 +286,7 @@ LABEL_16:
   v12 = 0;
   v13 = 1;
 LABEL_20:
-  v4[2](v4, v12);
+  completionCopy[2](completionCopy, v12);
   if ((v13 & 1) == 0)
   {
   }
@@ -294,24 +294,24 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)advertisingEnable:(BOOL)a3
+- (void)advertisingEnable:(BOOL)enable
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  dispatchQueue = v4->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dispatchQueue = selfCopy->_dispatchQueue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10039507C;
   v6[3] = &unk_100AE1750;
-  v6[4] = v4;
-  v7 = a3;
+  v6[4] = selfCopy;
+  enableCopy = enable;
   dispatch_async(dispatchQueue, v6);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_advertisingEnable:(BOOL)a3
+- (void)_advertisingEnable:(BOOL)enable
 {
-  v3 = a3;
+  enableCopy = enable;
   objc_initWeak(&location, self);
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -320,15 +320,15 @@ LABEL_22:
     *buf = 67109376;
     v20 = advertisingEnabled;
     v21 = 1024;
-    v22 = v3;
+    v22 = enableCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[BTVCLinkAdvertiser] _advertisingEnabled:%d inEnable: %d\n", buf, 0xEu);
   }
 
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (self->_advertisingEnabled != v3)
+  if (self->_advertisingEnabled != enableCopy)
   {
-    self->_advertisingEnabled = v3;
-    if (v3)
+    self->_advertisingEnabled = enableCopy;
+    if (enableCopy)
     {
       if (self->_payloadFields)
       {
@@ -465,7 +465,7 @@ LABEL_13:
   self->_invalidationHandler = 0;
 }
 
-- (int)_preparePayload:(BOOL)a3
+- (int)_preparePayload:(BOOL)payload
 {
   p_payloadDataCurrent = &self->_payloadDataCurrent;
   if (!self->_payloadDataCurrent)
@@ -487,7 +487,7 @@ LABEL_13:
     }
   }
 
-  if (!a3 && self->_payloadDataPrevious && ([(NSArray *)*p_payloadDataCurrent isEqual:?]& 1) != 0)
+  if (!payload && self->_payloadDataPrevious && ([(NSArray *)*p_payloadDataCurrent isEqual:?]& 1) != 0)
   {
     v7 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEBUG))
@@ -505,14 +505,14 @@ LABEL_13:
   }
 }
 
-- (void)btvcBonjourLinkDidUpdateState:(id)a3
+- (void)btvcBonjourLinkDidUpdateState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    v6 = btvcBonjourLink == v4;
+    v6 = btvcBonjourLink == stateCopy;
   }
 
   else
@@ -522,18 +522,18 @@ LABEL_13:
 
   if (v6)
   {
-    v7 = [(BTVCBonjourLink *)v4 state];
+    state = [(BTVCBonjourLink *)stateCopy state];
     v8 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_INFO))
     {
-      if (v7 > 5)
+      if (state > 5)
       {
         v9 = "?";
       }
 
       else
       {
-        v9 = off_100AEF3C8[v7];
+        v9 = off_100AEF3C8[state];
       }
 
       v10 = 136315138;
@@ -541,21 +541,21 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[BTVCLinkAdvertiser] Bluetooth state updated: %s\n", &v10, 0xCu);
     }
 
-    if (v7 == 3)
+    if (state == 3)
     {
       [(BTVCLinkAdvertiser *)self _restartIfNeeded:1];
     }
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didStartAdvertisingType:(int64_t)a4
+- (void)btvcBonjourLink:(id)link didStartAdvertisingType:(int64_t)type
 {
-  v6 = a3;
+  linkCopy = link;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    v8 = btvcBonjourLink == v6;
+    v8 = btvcBonjourLink == linkCopy;
   }
 
   else
@@ -563,7 +563,7 @@ LABEL_13:
     v8 = 0;
   }
 
-  if (!v8 || self->_btvcBonjourLinkType != a4)
+  if (!v8 || self->_btvcBonjourLinkType != type)
   {
     goto LABEL_16;
   }
@@ -604,15 +604,15 @@ LABEL_12:
 LABEL_16:
 }
 
-- (void)btvcBonjourLink:(id)a3 didStopAdvertisingType:(int64_t)a4 withError:(id)a5
+- (void)btvcBonjourLink:(id)link didStopAdvertisingType:(int64_t)type withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  linkCopy = link;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    v11 = btvcBonjourLink == v8;
+    v11 = btvcBonjourLink == linkCopy;
   }
 
   else
@@ -620,13 +620,13 @@ LABEL_16:
     v11 = 0;
   }
 
-  if (v11 && self->_btvcBonjourLinkType == a4)
+  if (v11 && self->_btvcBonjourLinkType == type)
   {
     v12 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = errorCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[BTVCLinkAdvertiser] Bluetooth advertising stopped: %@\n", &v14, 0xCu);
     }
 
@@ -642,14 +642,14 @@ LABEL_16:
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didDeferAdvertisingType:(int64_t)a4
+- (void)btvcBonjourLink:(id)link didDeferAdvertisingType:(int64_t)type
 {
-  v6 = a3;
+  linkCopy = link;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    v8 = btvcBonjourLink == v6;
+    v8 = btvcBonjourLink == linkCopy;
   }
 
   else
@@ -657,7 +657,7 @@ LABEL_16:
     v8 = 0;
   }
 
-  if (v8 && self->_btvcBonjourLinkType == a4 && self->_advertiseState != 2)
+  if (v8 && self->_btvcBonjourLinkType == type && self->_advertiseState != 2)
   {
     v9 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -675,15 +675,15 @@ LABEL_16:
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didFailToStartAdvertisingOfType:(int64_t)a4 withError:(id)a5
+- (void)btvcBonjourLink:(id)link didFailToStartAdvertisingOfType:(int64_t)type withError:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  linkCopy = link;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   btvcBonjourLink = self->_btvcBonjourLink;
   if (btvcBonjourLink)
   {
-    v11 = btvcBonjourLink == v8;
+    v11 = btvcBonjourLink == linkCopy;
   }
 
   else
@@ -691,13 +691,13 @@ LABEL_16:
     v11 = 0;
   }
 
-  if (v11 && self->_btvcBonjourLinkType == a4)
+  if (v11 && self->_btvcBonjourLinkType == type)
   {
     v12 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = errorCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[BTVCLinkAdvertiser] ### Bluetooth advertise failed: %@\n", &v14, 0xCu);
     }
 
@@ -714,50 +714,50 @@ LABEL_16:
   }
 }
 
-- (void)btvcBonjourLink:(id)a3 didConnectToPeer:(id)a4 parameters:(id)a5 role:(int64_t)a6 error:(id)a7
+- (void)btvcBonjourLink:(id)link didConnectToPeer:(id)peer parameters:(id)parameters role:(int64_t)role error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  linkCopy = link;
+  peerCopy = peer;
+  parametersCopy = parameters;
+  errorCopy = error;
   v16 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412546;
-    v23 = v13;
+    v23 = peerCopy;
     v24 = 2112;
-    v25 = v15;
+    v25 = errorCopy;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[BTVCLinkAdvertiser] DidConnectToPeer: %@, %@\n", &v22, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  if (a6 == 1)
+  if (role == 1)
   {
     btvcBonjourLink = self->_btvcBonjourLink;
     if (btvcBonjourLink)
     {
-      if (btvcBonjourLink == v12 && self->_connectionHandler)
+      if (btvcBonjourLink == linkCopy && self->_connectionHandler)
       {
         v18 = qword_100BCEA70;
         if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
         {
           v22 = 138412546;
-          v23 = v13;
+          v23 = peerCopy;
           v24 = 2112;
-          v25 = v15;
+          v25 = errorCopy;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "[BTVCLinkAdvertiser] DidConnectToPeer: %@, %@\n", &v22, 0x16u);
         }
 
         v19 = qword_100BCEA70;
         v20 = os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT);
-        if (v15)
+        if (errorCopy)
         {
           if (v20)
           {
             v22 = 138412546;
-            v23 = v13;
+            v23 = peerCopy;
             v24 = 2112;
-            v25 = v15;
+            v25 = errorCopy;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[BTVCLinkAdvertiser] ### Accept connection from peer %@ failed: %@\n", &v22, 0x16u);
           }
         }
@@ -784,7 +784,7 @@ LABEL_16:
   }
 }
 
-- (BTVCLinkAdvertiser)initWithType:(int64_t)a3
+- (BTVCLinkAdvertiser)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = BTVCLinkAdvertiser;
@@ -793,22 +793,22 @@ LABEL_16:
   if (v4)
   {
     objc_storeStrong(&v4->_dispatchQueue, &_dispatch_main_q);
-    v5->_linktType = a3;
+    v5->_linktType = type;
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)_restartIfNeeded:(BOOL)a3
+- (void)_restartIfNeeded:(BOOL)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEBUG))
   {
     v18 = "";
-    if (v3)
+    if (neededCopy)
     {
       v18 = "(force)";
     }
@@ -836,7 +836,7 @@ LABEL_16:
       return;
     }
 
-    v7 = [(BTVCLinkAdvertiser *)self _preparePayload:v3];
+    v7 = [(BTVCLinkAdvertiser *)self _preparePayload:neededCopy];
     if (v7 == -6757)
     {
 LABEL_13:
@@ -851,7 +851,7 @@ LABEL_13:
       {
         v9 = "no";
         payloadDataCurrent = self->_payloadDataCurrent;
-        if (v3)
+        if (neededCopy)
         {
           v9 = "yes";
         }

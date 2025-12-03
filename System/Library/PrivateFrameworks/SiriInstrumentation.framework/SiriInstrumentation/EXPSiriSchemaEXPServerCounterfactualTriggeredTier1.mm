@@ -1,32 +1,32 @@
 @interface EXPSiriSchemaEXPServerCounterfactualTriggeredTier1
-- (BOOL)isEqual:(id)a3;
-- (EXPSiriSchemaEXPServerCounterfactualTriggeredTier1)initWithDictionary:(id)a3;
-- (EXPSiriSchemaEXPServerCounterfactualTriggeredTier1)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (EXPSiriSchemaEXPServerCounterfactualTriggeredTier1)initWithDictionary:(id)dictionary;
+- (EXPSiriSchemaEXPServerCounterfactualTriggeredTier1)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addAllocation:(id)a3;
-- (void)addCounterfactualAllocation:(id)a3;
-- (void)setHasCompareRankingAtK:(BOOL)a3;
-- (void)setHasDiffOutcome:(BOOL)a3;
-- (void)setHasKValue:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAllocation:(id)allocation;
+- (void)addCounterfactualAllocation:(id)allocation;
+- (void)setHasCompareRankingAtK:(BOOL)k;
+- (void)setHasDiffOutcome:(BOOL)outcome;
+- (void)setHasKValue:(BOOL)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSiriSchemaEXPServerCounterfactualTriggeredTier1
 
-- (EXPSiriSchemaEXPServerCounterfactualTriggeredTier1)initWithDictionary:(id)a3
+- (EXPSiriSchemaEXPServerCounterfactualTriggeredTier1)initWithDictionary:(id)dictionary
 {
   v53 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v50.receiver = self;
   v50.super_class = EXPSiriSchemaEXPServerCounterfactualTriggeredTier1;
   v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)&v50 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"allocation"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"allocation"];
     objc_opt_class();
     v41 = v6;
     if (objc_opt_isKindOfClass())
@@ -66,7 +66,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"codepathId"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"codepathId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -74,7 +74,7 @@
       [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)v5 setCodepathId:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"pegasusId"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"pegasusId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,7 +84,7 @@
 
     v39 = v16;
     v40 = v14;
-    v18 = [v4 objectForKeyedSubscript:@"counterfactualAllocation"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"counterfactualAllocation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -123,14 +123,14 @@
       }
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"isCounterfactualDifferent"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"isCounterfactualDifferent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 setIsCounterfactualDifferent:](v5, "setIsCounterfactualDifferent:", [v26 BOOLValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"compareRankingAtK"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"compareRankingAtK"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -138,21 +138,21 @@
       [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)v5 setCompareRankingAtK:?];
     }
 
-    v28 = [v4 objectForKeyedSubscript:{@"kValue", v18}];
+    v28 = [dictionaryCopy objectForKeyedSubscript:{@"kValue", v18}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 setKValue:](v5, "setKValue:", [v28 longLongValue]);
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"diffOutcome"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"diffOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 setDiffOutcome:](v5, "setDiffOutcome:", [v29 intValue]);
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"treatmentSummary"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"treatmentSummary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -160,7 +160,7 @@
       [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)v5 setTreatmentSummary:v31];
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"counterfactualSummary"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"counterfactualSummary"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -168,7 +168,7 @@
       [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)v5 setCounterfactualSummary:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"resultCandidateId"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"resultCandidateId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -182,30 +182,30 @@
   return v5;
 }
 
-- (EXPSiriSchemaEXPServerCounterfactualTriggeredTier1)initWithJSON:(id)a3
+- (EXPSiriSchemaEXPServerCounterfactualTriggeredTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -219,10 +219,10 @@
 - (id)dictionaryRepresentation
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_allocations count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
@@ -242,16 +242,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v46 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v46 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -261,22 +261,22 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"allocation"];
+    [dictionary setObject:array forKeyedSubscript:@"allocation"];
   }
 
   if (self->_codepathId)
   {
-    v12 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    codepathId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
+    dictionaryRepresentation2 = [codepathId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"codepathId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"codepathId"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"codepathId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"codepathId"];
     }
   }
 
@@ -285,12 +285,12 @@
     v15 = MEMORY[0x1E696AD98];
     [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self compareRankingAtK];
     v16 = [v15 numberWithFloat:?];
-    [v3 setObject:v16 forKeyedSubscript:@"compareRankingAtK"];
+    [dictionary setObject:v16 forKeyedSubscript:@"compareRankingAtK"];
   }
 
   if ([(NSArray *)self->_counterfactualAllocations count])
   {
-    v17 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
@@ -310,16 +310,16 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v42 + 1) + 8 * j) dictionaryRepresentation];
-          if (v23)
+          dictionaryRepresentation3 = [*(*(&v42 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v17 addObject:v23];
+            [array2 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v24 = [MEMORY[0x1E695DFB0] null];
-            [v17 addObject:v24];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null3];
           }
         }
 
@@ -329,22 +329,22 @@
       while (v20);
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"counterfactualAllocation"];
+    [dictionary setObject:array2 forKeyedSubscript:@"counterfactualAllocation"];
   }
 
   if (self->_counterfactualSummary)
   {
-    v25 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    counterfactualSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
+    dictionaryRepresentation4 = [counterfactualSummary dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"counterfactualSummary"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"counterfactualSummary"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"counterfactualSummary"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"counterfactualSummary"];
     }
   }
 
@@ -362,7 +362,7 @@
       v33 = off_1E78D49F0[v32];
     }
 
-    [v3 setObject:v33 forKeyedSubscript:@"diffOutcome"];
+    [dictionary setObject:v33 forKeyedSubscript:@"diffOutcome"];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -382,58 +382,58 @@ LABEL_39:
   }
 
   v34 = [MEMORY[0x1E696AD98] numberWithBool:{-[EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 isCounterfactualDifferent](self, "isCounterfactualDifferent")}];
-  [v3 setObject:v34 forKeyedSubscript:@"isCounterfactualDifferent"];
+  [dictionary setObject:v34 forKeyedSubscript:@"isCounterfactualDifferent"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_40:
     v29 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 kValue](self, "kValue")}];
-    [v3 setObject:v29 forKeyedSubscript:@"kValue"];
+    [dictionary setObject:v29 forKeyedSubscript:@"kValue"];
   }
 
 LABEL_41:
   if (self->_pegasusId)
   {
-    v30 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
-    v31 = [v30 dictionaryRepresentation];
-    if (v31)
+    pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
+    dictionaryRepresentation5 = [pegasusId dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v31 forKeyedSubscript:@"pegasusId"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"pegasusId"];
     }
 
     else
     {
-      v35 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v35 forKeyedSubscript:@"pegasusId"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"pegasusId"];
     }
   }
 
   if (self->_resultCandidateId)
   {
-    v36 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
-    v37 = [v36 copy];
-    [v3 setObject:v37 forKeyedSubscript:@"resultCandidateId"];
+    resultCandidateId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
+    v37 = [resultCandidateId copy];
+    [dictionary setObject:v37 forKeyedSubscript:@"resultCandidateId"];
   }
 
   if (self->_treatmentSummary)
   {
-    v38 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
-    v39 = [v38 dictionaryRepresentation];
-    if (v39)
+    treatmentSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
+    dictionaryRepresentation6 = [treatmentSummary dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v39 forKeyedSubscript:@"treatmentSummary"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"treatmentSummary"];
     }
 
     else
     {
-      v40 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v40 forKeyedSubscript:@"treatmentSummary"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"treatmentSummary"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -521,28 +521,28 @@ LABEL_15:
   return v19 ^ [(NSString *)self->_resultCandidateId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self allocations];
-  v6 = [v4 allocations];
-  if ((v5 != 0) == (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self allocations];
+  allocations2 = [equalCopy allocations];
+  if ((allocations != 0) == (allocations2 == 0))
   {
     goto LABEL_51;
   }
 
-  v7 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self allocations];
-  if (v7)
+  allocations3 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self allocations];
+  if (allocations3)
   {
-    v8 = v7;
-    v9 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self allocations];
-    v10 = [v4 allocations];
-    v11 = [v9 isEqual:v10];
+    v8 = allocations3;
+    allocations4 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self allocations];
+    allocations5 = [equalCopy allocations];
+    v11 = [allocations4 isEqual:allocations5];
 
     if (!v11)
     {
@@ -554,20 +554,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
-  v6 = [v4 codepathId];
-  if ((v5 != 0) == (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
+  allocations2 = [equalCopy codepathId];
+  if ((allocations != 0) == (allocations2 == 0))
   {
     goto LABEL_51;
   }
 
-  v12 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
-  if (v12)
+  codepathId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
+  if (codepathId)
   {
-    v13 = v12;
-    v14 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
-    v15 = [v4 codepathId];
-    v16 = [v14 isEqual:v15];
+    v13 = codepathId;
+    codepathId2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
+    codepathId3 = [equalCopy codepathId];
+    v16 = [codepathId2 isEqual:codepathId3];
 
     if (!v16)
     {
@@ -579,20 +579,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
-  v6 = [v4 pegasusId];
-  if ((v5 != 0) == (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
+  allocations2 = [equalCopy pegasusId];
+  if ((allocations != 0) == (allocations2 == 0))
   {
     goto LABEL_51;
   }
 
-  v17 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
-  if (v17)
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
+  if (pegasusId)
   {
-    v18 = v17;
-    v19 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
-    v20 = [v4 pegasusId];
-    v21 = [v19 isEqual:v20];
+    v18 = pegasusId;
+    pegasusId2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
+    pegasusId3 = [equalCopy pegasusId];
+    v21 = [pegasusId2 isEqual:pegasusId3];
 
     if (!v21)
     {
@@ -604,20 +604,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualAllocations];
-  v6 = [v4 counterfactualAllocations];
-  if ((v5 != 0) == (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualAllocations];
+  allocations2 = [equalCopy counterfactualAllocations];
+  if ((allocations != 0) == (allocations2 == 0))
   {
     goto LABEL_51;
   }
 
-  v22 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualAllocations];
-  if (v22)
+  counterfactualAllocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualAllocations];
+  if (counterfactualAllocations)
   {
-    v23 = v22;
-    v24 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualAllocations];
-    v25 = [v4 counterfactualAllocations];
-    v26 = [v24 isEqual:v25];
+    v23 = counterfactualAllocations;
+    counterfactualAllocations2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualAllocations];
+    counterfactualAllocations3 = [equalCopy counterfactualAllocations];
+    v26 = [counterfactualAllocations2 isEqual:counterfactualAllocations3];
 
     if (!v26)
     {
@@ -630,7 +630,7 @@ LABEL_15:
   }
 
   has = self->_has;
-  v28 = v4[88];
+  v28 = equalCopy[88];
   if ((*&has & 1) != (v28 & 1))
   {
     goto LABEL_52;
@@ -639,13 +639,13 @@ LABEL_15:
   if (*&has)
   {
     isCounterfactualDifferent = self->_isCounterfactualDifferent;
-    if (isCounterfactualDifferent != [v4 isCounterfactualDifferent])
+    if (isCounterfactualDifferent != [equalCopy isCounterfactualDifferent])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v28 = v4[88];
+    v28 = equalCopy[88];
   }
 
   v30 = (*&has >> 1) & 1;
@@ -657,14 +657,14 @@ LABEL_15:
   if (v30)
   {
     compareRankingAtK = self->_compareRankingAtK;
-    [v4 compareRankingAtK];
+    [equalCopy compareRankingAtK];
     if (compareRankingAtK != v32)
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v28 = v4[88];
+    v28 = equalCopy[88];
   }
 
   v33 = (*&has >> 2) & 1;
@@ -676,13 +676,13 @@ LABEL_15:
   if (v33)
   {
     kValue = self->_kValue;
-    if (kValue != [v4 kValue])
+    if (kValue != [equalCopy kValue])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v28 = v4[88];
+    v28 = equalCopy[88];
   }
 
   v35 = (*&has >> 3) & 1;
@@ -694,26 +694,26 @@ LABEL_15:
   if (v35)
   {
     diffOutcome = self->_diffOutcome;
-    if (diffOutcome != [v4 diffOutcome])
+    if (diffOutcome != [equalCopy diffOutcome])
     {
       goto LABEL_52;
     }
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
-  v6 = [v4 treatmentSummary];
-  if ((v5 != 0) == (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
+  allocations2 = [equalCopy treatmentSummary];
+  if ((allocations != 0) == (allocations2 == 0))
   {
     goto LABEL_51;
   }
 
-  v37 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
-  if (v37)
+  treatmentSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
+  if (treatmentSummary)
   {
-    v38 = v37;
-    v39 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
-    v40 = [v4 treatmentSummary];
-    v41 = [v39 isEqual:v40];
+    v38 = treatmentSummary;
+    treatmentSummary2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
+    treatmentSummary3 = [equalCopy treatmentSummary];
+    v41 = [treatmentSummary2 isEqual:treatmentSummary3];
 
     if (!v41)
     {
@@ -725,20 +725,20 @@ LABEL_15:
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
-  v6 = [v4 counterfactualSummary];
-  if ((v5 != 0) == (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
+  allocations2 = [equalCopy counterfactualSummary];
+  if ((allocations != 0) == (allocations2 == 0))
   {
     goto LABEL_51;
   }
 
-  v42 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
-  if (v42)
+  counterfactualSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
+  if (counterfactualSummary)
   {
-    v43 = v42;
-    v44 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
-    v45 = [v4 counterfactualSummary];
-    v46 = [v44 isEqual:v45];
+    v43 = counterfactualSummary;
+    counterfactualSummary2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
+    counterfactualSummary3 = [equalCopy counterfactualSummary];
+    v46 = [counterfactualSummary2 isEqual:counterfactualSummary3];
 
     if (!v46)
     {
@@ -750,17 +750,17 @@ LABEL_15:
   {
   }
 
-  v5 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
-  v6 = [v4 resultCandidateId];
-  if ((v5 != 0) == (v6 == 0))
+  allocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
+  allocations2 = [equalCopy resultCandidateId];
+  if ((allocations != 0) == (allocations2 == 0))
   {
 LABEL_51:
 
     goto LABEL_52;
   }
 
-  v47 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
-  if (!v47)
+  resultCandidateId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
+  if (!resultCandidateId)
   {
 
 LABEL_55:
@@ -768,10 +768,10 @@ LABEL_55:
     goto LABEL_53;
   }
 
-  v48 = v47;
-  v49 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
-  v50 = [v4 resultCandidateId];
-  v51 = [v49 isEqual:v50];
+  v48 = resultCandidateId;
+  resultCandidateId2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
+  resultCandidateId3 = [equalCopy resultCandidateId];
+  v51 = [resultCandidateId2 isEqual:resultCandidateId3];
 
   if (v51)
   {
@@ -785,10 +785,10 @@ LABEL_53:
   return v52;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -817,19 +817,19 @@ LABEL_53:
     while (v7);
   }
 
-  v10 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
+  codepathId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
 
-  if (v10)
+  if (codepathId)
   {
-    v11 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
+    codepathId2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
 
-  if (v12)
+  if (pegasusId)
   {
-    v13 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
+    pegasusId2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -905,33 +905,33 @@ LABEL_23:
   }
 
 LABEL_24:
-  v20 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
+  treatmentSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
 
-  if (v20)
+  if (treatmentSummary)
   {
-    v21 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
+    treatmentSummary2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
+  counterfactualSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
 
-  if (v22)
+  if (counterfactualSummary)
   {
-    v23 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
+    counterfactualSummary2 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
+  resultCandidateId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self resultCandidateId];
 
-  if (v24)
+  if (resultCandidateId)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setHasDiffOutcome:(BOOL)a3
+- (void)setHasDiffOutcome:(BOOL)outcome
 {
-  if (a3)
+  if (outcome)
   {
     v3 = 8;
   }
@@ -944,9 +944,9 @@ LABEL_24:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasKValue:(BOOL)a3
+- (void)setHasKValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -959,9 +959,9 @@ LABEL_24:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCompareRankingAtK:(BOOL)a3
+- (void)setHasCompareRankingAtK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 2;
   }
@@ -974,88 +974,88 @@ LABEL_24:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addCounterfactualAllocation:(id)a3
+- (void)addCounterfactualAllocation:(id)allocation
 {
-  v4 = a3;
+  allocationCopy = allocation;
   counterfactualAllocations = self->_counterfactualAllocations;
-  v8 = v4;
+  v8 = allocationCopy;
   if (!counterfactualAllocations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_counterfactualAllocations;
-    self->_counterfactualAllocations = v6;
+    self->_counterfactualAllocations = array;
 
-    v4 = v8;
+    allocationCopy = v8;
     counterfactualAllocations = self->_counterfactualAllocations;
   }
 
-  [(NSArray *)counterfactualAllocations addObject:v4];
+  [(NSArray *)counterfactualAllocations addObject:allocationCopy];
 }
 
-- (void)addAllocation:(id)a3
+- (void)addAllocation:(id)allocation
 {
-  v4 = a3;
+  allocationCopy = allocation;
   allocations = self->_allocations;
-  v8 = v4;
+  v8 = allocationCopy;
   if (!allocations)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_allocations;
-    self->_allocations = v6;
+    self->_allocations = array;
 
-    v4 = v8;
+    allocationCopy = v8;
     allocations = self->_allocations;
   }
 
-  [(NSArray *)allocations addObject:v4];
+  [(NSArray *)allocations addObject:allocationCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v23.receiver = self;
   v23.super_class = EXPSiriSchemaEXPServerCounterfactualTriggeredTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v23 applySensitiveConditionsPolicy:v4];
-  v6 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self allocations];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v5 = [(SISchemaInstrumentationMessage *)&v23 applySensitiveConditionsPolicy:policyCopy];
+  allocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self allocations];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:allocations underConditions:policyCopy];
   [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self setAllocations:v7];
 
-  v8 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
-  v10 = [v9 suppressMessage];
+  codepathId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self codepathId];
+  v9 = [codepathId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v9 suppressMessage];
 
-  if (v10)
+  if (suppressMessage)
   {
     [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self deleteCodepathId];
   }
 
-  v11 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
-  v12 = [v11 applySensitiveConditionsPolicy:v4];
-  v13 = [v12 suppressMessage];
+  pegasusId = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self pegasusId];
+  v12 = [pegasusId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v12 suppressMessage];
 
-  if (v13)
+  if (suppressMessage2)
   {
     [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self deletePegasusId];
   }
 
-  v14 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualAllocations];
-  v15 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v14 underConditions:v4];
+  counterfactualAllocations = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualAllocations];
+  v15 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:counterfactualAllocations underConditions:policyCopy];
   [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self setCounterfactualAllocations:v15];
 
-  v16 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
-  v17 = [v16 applySensitiveConditionsPolicy:v4];
-  v18 = [v17 suppressMessage];
+  treatmentSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self treatmentSummary];
+  v17 = [treatmentSummary applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v17 suppressMessage];
 
-  if (v18)
+  if (suppressMessage3)
   {
     [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self deleteTreatmentSummary];
   }
 
-  v19 = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
-  v20 = [v19 applySensitiveConditionsPolicy:v4];
-  v21 = [v20 suppressMessage];
+  counterfactualSummary = [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self counterfactualSummary];
+  v20 = [counterfactualSummary applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v20 suppressMessage];
 
-  if (v21)
+  if (suppressMessage4)
   {
     [(EXPSiriSchemaEXPServerCounterfactualTriggeredTier1 *)self deleteCounterfactualSummary];
   }

@@ -1,30 +1,30 @@
 @interface AAUIQuotaRequest
-- (AAUIQuotaRequest)initWithAccount:(id)a3;
-- (id)initDetailedRequestWithAccount:(id)a3;
+- (AAUIQuotaRequest)initWithAccount:(id)account;
+- (id)initDetailedRequestWithAccount:(id)account;
 - (id)urlRequest;
 - (id)urlString;
 @end
 
 @implementation AAUIQuotaRequest
 
-- (AAUIQuotaRequest)initWithAccount:(id)a3
+- (AAUIQuotaRequest)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AAUIQuotaRequest;
   v6 = [(AAUIQuotaRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (id)initDetailedRequestWithAccount:(id)a3
+- (id)initDetailedRequestWithAccount:(id)account
 {
-  result = [(AAUIQuotaRequest *)self initWithAccount:a3];
+  result = [(AAUIQuotaRequest *)self initWithAccount:account];
   if (result)
   {
     *(result + 72) = 1;
@@ -35,9 +35,9 @@
 
 - (id)urlString
 {
-  v3 = [(ACAccount *)self->_account aa_personID];
+  aa_personID = [(ACAccount *)self->_account aa_personID];
 
-  if (v3)
+  if (aa_personID)
   {
     if (self->_isDetailedRequest)
     {
@@ -53,12 +53,12 @@
     v6 = [v5 objectForKey:v4];
 
     v7 = *MEMORY[0x1E698BAE0];
-    v8 = [(ACAccount *)self->_account aa_personID];
-    v9 = [v6 stringByReplacingOccurrencesOfString:v7 withString:v8];
+    aa_personID2 = [(ACAccount *)self->_account aa_personID];
+    v9 = [v6 stringByReplacingOccurrencesOfString:v7 withString:aa_personID2];
 
     v10 = *MEMORY[0x1E698BAF0];
-    v11 = [MEMORY[0x1E698B890] udid];
-    v12 = [v9 stringByReplacingOccurrencesOfString:v10 withString:v11];
+    udid = [MEMORY[0x1E698B890] udid];
+    v12 = [v9 stringByReplacingOccurrencesOfString:v10 withString:udid];
 
     v13 = [v12 stringByAddingPercentEscapesUsingEncoding:4];
   }
@@ -75,14 +75,14 @@
 {
   v22.receiver = self;
   v22.super_class = AAUIQuotaRequest;
-  v3 = [(AARequest *)&v22 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v22 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"GET"];
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(ACAccount *)self->_account aa_personID];
-  v7 = [(ACAccount *)self->_account aa_authToken];
-  v21 = [v5 stringWithFormat:@"%@:%@", v6, v7];
+  aa_personID = [(ACAccount *)self->_account aa_personID];
+  aa_authToken = [(ACAccount *)self->_account aa_authToken];
+  v21 = [v5 stringWithFormat:@"%@:%@", aa_personID, aa_authToken];
 
   v8 = [v21 dataUsingEncoding:4];
   v20 = [v8 base64EncodedStringWithOptions:0];
@@ -90,18 +90,18 @@
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Basic %@", v20];
   [v4 setValue:v9 forHTTPHeaderField:@"Authorization"];
   v10 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfFile:@"/System/Library/CoreServices/SystemVersion.plist"];
-  v11 = [MEMORY[0x1E696AAE8] mainBundle];
-  v12 = [v11 infoDictionary];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
 
   v13 = [v10 objectForKey:@"ProductVersion"];
-  v14 = [v12 objectForKey:@"CFBundleName"];
-  v15 = [v12 objectForKey:@"CFBundleVersion"];
+  v14 = [infoDictionary objectForKey:@"CFBundleName"];
+  v15 = [infoDictionary objectForKey:@"CFBundleVersion"];
   v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@ iOS/%@", v14, v15, v13];
   [v4 setValue:v16 forHTTPHeaderField:@"User-agent"];
-  v17 = [MEMORY[0x1E698B890] clientInfoHeader];
-  [v4 setValue:v17 forHTTPHeaderField:@"X-MMe-Client-Info"];
-  v18 = [MEMORY[0x1E698B890] udid];
-  [v4 setValue:v18 forHTTPHeaderField:@"X-Client-UDID"];
+  clientInfoHeader = [MEMORY[0x1E698B890] clientInfoHeader];
+  [v4 setValue:clientInfoHeader forHTTPHeaderField:@"X-MMe-Client-Info"];
+  udid = [MEMORY[0x1E698B890] udid];
+  [v4 setValue:udid forHTTPHeaderField:@"X-Client-UDID"];
 
   return v4;
 }

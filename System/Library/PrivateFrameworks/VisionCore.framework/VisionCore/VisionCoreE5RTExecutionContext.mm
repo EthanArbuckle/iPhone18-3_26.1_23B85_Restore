@@ -1,35 +1,35 @@
 @interface VisionCoreE5RTExecutionContext
-+ (id)newContextForFunction:(id)a3 withConfiguration:(id)a4 error:(id *)a5;
-- (BOOL)executeAndReturnError:(id *)a3;
++ (id)newContextForFunction:(id)function withConfiguration:(id)configuration error:(id *)error;
+- (BOOL)executeAndReturnError:(id *)error;
 - (NSArray)inputs;
 - (NSArray)outputs;
 - (NSString)name;
-- (VisionCoreMutableNamedObjects)_executePreflightBindingsWithInputObjects:(void *)a3 recordingIOPortHandlesIn:(void *)a4 error:;
-- (id)_initWithOwnedOperationHandle:(e5rt_execution_stream_operation *)a3 function:(id)a4 inputs:(id)a5 outputs:(id)a6;
+- (VisionCoreMutableNamedObjects)_executePreflightBindingsWithInputObjects:(void *)objects recordingIOPortHandlesIn:(void *)in error:;
+- (id)_initWithOwnedOperationHandle:(e5rt_execution_stream_operation *)handle function:(id)function inputs:(id)inputs outputs:(id)outputs;
 - (id)_resolvedCompletionQueue;
-- (id)executeWithInputObjects:(id)a3 error:(id *)a4;
-- (uint64_t)_bindIOSurface:(uint64_t)a1 toBufferInputPort:(uint64_t)a2 error:(void *)a3;
-- (uint64_t)_bindIOSurface:(uint64_t)a1 toSurfaceInputPort:(uint64_t)a2 error:(void *)a3;
-- (uint64_t)_bindOutput:(void *)a3 ofOutputObjects:(void *)a4 recordingPortHandleIn:(void *)a5 error:;
+- (id)executeWithInputObjects:(id)objects error:(id *)error;
+- (uint64_t)_bindIOSurface:(uint64_t)surface toBufferInputPort:(uint64_t)port error:(void *)error;
+- (uint64_t)_bindIOSurface:(uint64_t)surface toSurfaceInputPort:(uint64_t)port error:(void *)error;
+- (uint64_t)_bindOutput:(void *)output ofOutputObjects:(void *)objects recordingPortHandleIn:(void *)in error:;
 - (uint64_t)_validateIsPreboundAndReturnError:(uint64_t)result;
-- (unint64_t)_bindData:(void *)a1 toBufferInputPort:(uint64_t)a2 error:(unint64_t)a3;
-- (unint64_t)_bindInput:(void *)a3 ofInputObjects:(void *)a4 recordingPortHandleIn:(void *)a5 error:;
-- (void)_reportError:(void *)a3 toCompletionHandler:;
-- (void)_reportOutput:(void *)a3 toCompletionHandler:;
+- (unint64_t)_bindData:(void *)data toBufferInputPort:(uint64_t)port error:(unint64_t)error;
+- (unint64_t)_bindInput:(void *)input ofInputObjects:(void *)objects recordingPortHandleIn:(void *)in error:;
+- (void)_reportError:(void *)error toCompletionHandler:;
+- (void)_reportOutput:(void *)output toCompletionHandler:;
 - (void)dealloc;
-- (void)executeWithCompletionHandler:(id)a3;
-- (void)executeWithInputObjects:(id)a3 completionHandler:(id)a4;
+- (void)executeWithCompletionHandler:(id)handler;
+- (void)executeWithInputObjects:(id)objects completionHandler:(id)handler;
 @end
 
 @implementation VisionCoreE5RTExecutionContext
 
-- (void)executeWithInputObjects:(id)a3 completionHandler:(id)a4
+- (void)executeWithInputObjects:(id)objects completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  objectsCopy = objects;
   v8 = objc_alloc_init(VisionCoreE5RTExecutionBoundPorts);
   v20 = 0;
-  v9 = [(VisionCoreE5RTExecutionContext *)self _executePreflightBindingsWithInputObjects:v7 recordingIOPortHandlesIn:v8 error:&v20];
+  v9 = [(VisionCoreE5RTExecutionContext *)self _executePreflightBindingsWithInputObjects:objectsCopy recordingIOPortHandlesIn:v8 error:&v20];
 
   v10 = v20;
   if (v9)
@@ -39,9 +39,9 @@
     v15[2] = __76__VisionCoreE5RTExecutionContext_executeWithInputObjects_completionHandler___block_invoke;
     v15[3] = &unk_1E8698928;
     v16 = v8;
-    v17 = self;
+    selfCopy = self;
     v18 = v9;
-    v11 = v6;
+    v11 = handlerCopy;
     v19 = v11;
     v12 = MEMORY[0x1E12C8870](v15);
     v13 = e5rt_execution_stream_submit_async();
@@ -56,51 +56,51 @@
 
   else
   {
-    [(VisionCoreE5RTExecutionContext *)self _reportError:v10 toCompletionHandler:v6];
+    [(VisionCoreE5RTExecutionContext *)self _reportError:v10 toCompletionHandler:handlerCopy];
   }
 }
 
-- (VisionCoreMutableNamedObjects)_executePreflightBindingsWithInputObjects:(void *)a3 recordingIOPortHandlesIn:(void *)a4 error:
+- (VisionCoreMutableNamedObjects)_executePreflightBindingsWithInputObjects:(void *)objects recordingIOPortHandlesIn:(void *)in error:
 {
   v41 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  objectsCopy = objects;
+  if (self)
   {
-    if (LOBYTE(a1[3].super.super.isa) == 1)
+    if (LOBYTE(self[3].super.super.isa) == 1)
     {
-      if (a4)
+      if (in)
       {
-        v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ has pre-bound inputs and outputs", a1];
-        *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:v9];
+        v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ has pre-bound inputs and outputs", self];
+        *in = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:v9];
       }
 
 LABEL_8:
-      a1 = 0;
+      self = 0;
       goto LABEL_35;
     }
 
     v10 = e5rt_execution_stream_reset();
     if (v10)
     {
-      if (a4)
+      if (in)
       {
         [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v10];
-        *a4 = a1 = 0;
+        *in = self = 0;
         goto LABEL_35;
       }
 
       goto LABEL_8;
     }
 
-    v30 = [(VisionCoreMutableNamedObjects *)a1 function];
-    v11 = [v30 outputs];
-    v12 = -[VisionCoreMutableNamedObjects initWithCapacity:]([VisionCoreMutableNamedObjects alloc], "initWithCapacity:", [v11 count]);
+    function = [(VisionCoreMutableNamedObjects *)self function];
+    outputs = [function outputs];
+    v12 = -[VisionCoreMutableNamedObjects initWithCapacity:]([VisionCoreMutableNamedObjects alloc], "initWithCapacity:", [outputs count]);
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v13 = v11;
+    v13 = outputs;
     v14 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v14)
     {
@@ -117,18 +117,18 @@ LABEL_8:
           }
 
           v18 = *(*(&v35 + 1) + 8 * i);
-          v19 = [v30 descriptorForOutput:v18 error:a4];
+          v19 = [function descriptorForOutput:v18 error:in];
           v20 = v19;
-          if (!v19 || ![v19 E5RTExecutionContextAssignNewTensorInstanceToNamedObjects:v12 error:a4])
+          if (!v19 || ![v19 E5RTExecutionContextAssignNewTensorInstanceToNamedObjects:v12 error:in])
           {
 
 LABEL_31:
-            a1 = 0;
+            self = 0;
             v7 = v29;
             goto LABEL_34;
           }
 
-          v21 = [(VisionCoreE5RTExecutionContext *)a1 _bindOutput:v18 ofOutputObjects:v12 recordingPortHandleIn:v8 error:a4];
+          v21 = [(VisionCoreE5RTExecutionContext *)self _bindOutput:v18 ofOutputObjects:v12 recordingPortHandleIn:objectsCopy error:in];
 
           if (!v21)
           {
@@ -166,7 +166,7 @@ LABEL_31:
             objc_enumerationMutation(v22);
           }
 
-          if (![(VisionCoreE5RTExecutionContext *)a1 _bindInput:v22 ofInputObjects:v8 recordingPortHandleIn:a4 error:?])
+          if (![(VisionCoreE5RTExecutionContext *)self _bindInput:v22 ofInputObjects:objectsCopy recordingPortHandleIn:in error:?])
           {
 
             goto LABEL_33;
@@ -186,22 +186,22 @@ LABEL_31:
     v27 = e5rt_execution_stream_encode_operation();
     if (v27)
     {
-      if (a4)
+      if (in)
       {
         [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v27];
-        *a4 = a1 = 0;
+        *in = self = 0;
       }
 
       else
       {
 LABEL_33:
-        a1 = 0;
+        self = 0;
       }
     }
 
     else
     {
-      a1 = v12;
+      self = v12;
     }
 
 LABEL_34:
@@ -209,24 +209,24 @@ LABEL_34:
 
 LABEL_35:
 
-  return a1;
+  return self;
 }
 
-- (void)_reportError:(void *)a3 toCompletionHandler:
+- (void)_reportError:(void *)error toCompletionHandler:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1 && v6)
+  errorCopy = error;
+  v7 = errorCopy;
+  if (self && errorCopy)
   {
-    v8 = [(VisionCoreE5RTExecutionContext *)a1 _resolvedCompletionQueue];
+    _resolvedCompletionQueue = [(VisionCoreE5RTExecutionContext *)self _resolvedCompletionQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67__VisionCoreE5RTExecutionContext__reportError_toCompletionHandler___block_invoke;
     v9[3] = &unk_1E86988D8;
     v11 = v7;
     v10 = v5;
-    dispatch_async(v8, v9);
+    dispatch_async(_resolvedCompletionQueue, v9);
   }
 }
 
@@ -256,27 +256,27 @@ void __76__VisionCoreE5RTExecutionContext_executeWithInputObjects_completionHand
   }
 }
 
-- (void)_reportOutput:(void *)a3 toCompletionHandler:
+- (void)_reportOutput:(void *)output toCompletionHandler:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1 && v6)
+  outputCopy = output;
+  v7 = outputCopy;
+  if (self && outputCopy)
   {
-    v8 = [(VisionCoreE5RTExecutionContext *)a1 _resolvedCompletionQueue];
+    _resolvedCompletionQueue = [(VisionCoreE5RTExecutionContext *)self _resolvedCompletionQueue];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __68__VisionCoreE5RTExecutionContext__reportOutput_toCompletionHandler___block_invoke;
     v9[3] = &unk_1E86988D8;
     v11 = v7;
     v10 = v5;
-    dispatch_async(v8, v9);
+    dispatch_async(_resolvedCompletionQueue, v9);
   }
 }
 
 - (id)_resolvedCompletionQueue
 {
-  v1 = *(a1 + 72);
+  v1 = *(self + 72);
   if (v1)
   {
     v2 = v1;
@@ -291,30 +291,30 @@ void __76__VisionCoreE5RTExecutionContext_executeWithInputObjects_completionHand
   return v2;
 }
 
-- (uint64_t)_bindOutput:(void *)a3 ofOutputObjects:(void *)a4 recordingPortHandleIn:(void *)a5 error:
+- (uint64_t)_bindOutput:(void *)output ofOutputObjects:(void *)objects recordingPortHandleIn:(void *)in error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  outputCopy = output;
+  objectsCopy = objects;
   v22 = 0;
   [v8 UTF8String];
   v11 = e5rt_execution_stream_operation_retain_output_port();
   if (!v11)
   {
-    if (([v10 recordPort:v22 named:v8 error:a5] & 1) == 0)
+    if (([objectsCopy recordPort:v22 named:v8 error:in] & 1) == 0)
     {
       e5rt_io_port_release();
       goto LABEL_16;
     }
 
     v21 = 0;
-    if ([VisionCoreE5RTUtils getType:&v21 ofIOPort:v22 error:a5])
+    if ([VisionCoreE5RTUtils getType:&v21 ofIOPort:v22 error:in])
     {
       if (v21 == 2)
       {
         v14 = v8;
-        v15 = v9;
-        if (![v15 surfaceAssociatedWithName:v14 error:a5])
+        v15 = outputCopy;
+        if (![v15 surfaceAssociatedWithName:v14 error:in])
         {
           goto LABEL_22;
         }
@@ -326,9 +326,9 @@ void __76__VisionCoreE5RTExecutionContext_executeWithInputObjects_completionHand
           v20 = e5rt_io_port_bind_surface_object();
           if (v20)
           {
-            if (a5)
+            if (in)
             {
-              *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v20];
+              *in = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v20];
             }
 
             v18 = 0;
@@ -350,8 +350,8 @@ void __76__VisionCoreE5RTExecutionContext_executeWithInputObjects_completionHand
       if (v21 == 1)
       {
         v14 = v8;
-        v15 = v9;
-        if (![v15 surfaceAssociatedWithName:v14 error:a5])
+        v15 = outputCopy;
+        if (![v15 surfaceAssociatedWithName:v14 error:in])
         {
           goto LABEL_22;
         }
@@ -363,9 +363,9 @@ void __76__VisionCoreE5RTExecutionContext_executeWithInputObjects_completionHand
           v17 = e5rt_io_port_bind_buffer_object();
           if (v17)
           {
-            if (a5)
+            if (in)
             {
-              *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v17];
+              *in = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v17];
             }
 
             v18 = 0;
@@ -384,10 +384,10 @@ LABEL_33:
         }
 
 LABEL_20:
-        if (a5)
+        if (in)
         {
           [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v16];
-          *a5 = v13 = 0;
+          *in = v13 = 0;
 LABEL_34:
 
           goto LABEL_17;
@@ -398,7 +398,7 @@ LABEL_22:
         goto LABEL_34;
       }
 
-      if (a5)
+      if (in)
       {
         v12 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnsupportedE5RTIOPortType:?];
         goto LABEL_4;
@@ -410,7 +410,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!a5)
+  if (!in)
   {
     goto LABEL_16;
   }
@@ -418,42 +418,42 @@ LABEL_16:
   v12 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v11];
 LABEL_4:
   v13 = 0;
-  *a5 = v12;
+  *in = v12;
 LABEL_17:
 
   return v13 & 1;
 }
 
-- (unint64_t)_bindInput:(void *)a3 ofInputObjects:(void *)a4 recordingPortHandleIn:(void *)a5 error:
+- (unint64_t)_bindInput:(void *)input ofInputObjects:(void *)objects recordingPortHandleIn:(void *)in error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  inputCopy = input;
+  objectsCopy = objects;
   v21 = 0;
   [v8 UTF8String];
   v11 = e5rt_execution_stream_operation_retain_input_port();
   if (v11)
   {
-    if (a5)
+    if (in)
     {
       v12 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v11];
 LABEL_4:
       v13 = 0;
-      *a5 = v12;
+      *in = v12;
       goto LABEL_13;
     }
 
     goto LABEL_12;
   }
 
-  if (([v10 recordPort:v21 named:v8 error:a5] & 1) == 0)
+  if (([objectsCopy recordPort:v21 named:v8 error:in] & 1) == 0)
   {
     e5rt_io_port_release();
     goto LABEL_12;
   }
 
   v20 = 0;
-  if (![VisionCoreE5RTUtils getType:&v20 ofIOPort:v21 error:a5])
+  if (![VisionCoreE5RTUtils getType:&v20 ofIOPort:v21 error:in])
   {
     goto LABEL_12;
   }
@@ -462,19 +462,19 @@ LABEL_4:
   {
     if (v20 == 2)
     {
-      v14 = [v9 surfaceAssociatedWithName:v8 error:a5];
+      v14 = [inputCopy surfaceAssociatedWithName:v8 error:in];
       if (!v14)
       {
         goto LABEL_12;
       }
 
-      v15 = [VisionCoreE5RTExecutionContext _bindIOSurface:v14 toSurfaceInputPort:v21 error:a5];
+      v15 = [VisionCoreE5RTExecutionContext _bindIOSurface:v14 toSurfaceInputPort:v21 error:in];
 LABEL_16:
       v13 = v15;
       goto LABEL_13;
     }
 
-    if (a5)
+    if (in)
     {
       v12 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnsupportedE5RTIOPortType:?];
       goto LABEL_4;
@@ -485,18 +485,18 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v17 = [v9 surfaceAssociatedWithName:v8 error:a5];
+  v17 = [inputCopy surfaceAssociatedWithName:v8 error:in];
   if (v17)
   {
-    v15 = [VisionCoreE5RTExecutionContext _bindIOSurface:v17 toBufferInputPort:v21 error:a5];
+    v15 = [VisionCoreE5RTExecutionContext _bindIOSurface:v17 toBufferInputPort:v21 error:in];
     goto LABEL_16;
   }
 
-  v18 = [v9 dataForName:v8 error:a5];
+  v18 = [inputCopy dataForName:v8 error:in];
   v19 = v18;
   if (v18)
   {
-    v13 = [VisionCoreE5RTExecutionContext _bindData:v18 toBufferInputPort:v21 error:a5];
+    v13 = [VisionCoreE5RTExecutionContext _bindData:v18 toBufferInputPort:v21 error:in];
   }
 
   else
@@ -508,16 +508,16 @@ LABEL_13:
   return v13;
 }
 
-- (uint64_t)_bindIOSurface:(uint64_t)a1 toSurfaceInputPort:(uint64_t)a2 error:(void *)a3
+- (uint64_t)_bindIOSurface:(uint64_t)surface toSurfaceInputPort:(uint64_t)port error:(void *)error
 {
   v4 = e5rt_surface_object_create_from_iosurface();
   if (v4)
   {
-    if (a3)
+    if (error)
     {
       v5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:{v4, 0}];
       v6 = 0;
-      *a3 = v5;
+      *error = v5;
     }
 
     else
@@ -531,9 +531,9 @@ LABEL_13:
     v7 = e5rt_io_port_bind_surface_object();
     if (v7)
     {
-      if (a3)
+      if (error)
       {
-        *a3 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:{v7, 0}];
+        *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:{v7, 0}];
       }
 
       v8 = 0;
@@ -552,16 +552,16 @@ LABEL_13:
   return v6 & 1;
 }
 
-- (uint64_t)_bindIOSurface:(uint64_t)a1 toBufferInputPort:(uint64_t)a2 error:(void *)a3
+- (uint64_t)_bindIOSurface:(uint64_t)surface toBufferInputPort:(uint64_t)port error:(void *)error
 {
   v4 = e5rt_buffer_object_create_from_iosurface();
   if (v4)
   {
-    if (a3)
+    if (error)
     {
       v5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:{v4, 0}];
       v6 = 0;
-      *a3 = v5;
+      *error = v5;
     }
 
     else
@@ -575,9 +575,9 @@ LABEL_13:
     v7 = e5rt_io_port_bind_buffer_object();
     if (v7)
     {
-      if (a3)
+      if (error)
       {
-        *a3 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:{v7, 0}];
+        *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:{v7, 0}];
       }
 
       v8 = 0;
@@ -596,11 +596,11 @@ LABEL_13:
   return v6 & 1;
 }
 
-- (unint64_t)_bindData:(void *)a1 toBufferInputPort:(uint64_t)a2 error:(unint64_t)a3
+- (unint64_t)_bindData:(void *)data toBufferInputPort:(uint64_t)port error:(unint64_t)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v5 = a1;
-  v6 = [v5 length];
+  dataCopy = data;
+  v6 = [dataCopy length];
   v18 = *MEMORY[0x1E696CE30];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v6];
   v19[0] = v7;
@@ -613,12 +613,12 @@ LABEL_13:
     v14[1] = 3221225472;
     v14[2] = __68__VisionCoreE5RTExecutionContext__bindData_toBufferInputPort_error___block_invoke;
     v14[3] = &unk_1E86988B0;
-    v15 = v5;
+    v15 = dataCopy;
     v16 = v6;
     v10 = MEMORY[0x1E12C8870](v14);
-    if (VisionCorePerformWithLockedIOSurface(v9, 0, v10, a3))
+    if (VisionCorePerformWithLockedIOSurface(v9, 0, v10, error))
     {
-      v11 = [VisionCoreE5RTExecutionContext _bindIOSurface:v9 toBufferInputPort:a2 error:a3];
+      v11 = [VisionCoreE5RTExecutionContext _bindIOSurface:v9 toBufferInputPort:port error:error];
     }
 
     else
@@ -629,18 +629,18 @@ LABEL_13:
     v17 = v11;
 
     CFRelease(v9);
-    a3 = v17;
+    error = v17;
   }
 
-  else if (a3)
+  else if (error)
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Could not create IOSurfaceRef with properties %@", v8];
-    *a3 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:v12];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:v12];
 
-    a3 = 0;
+    error = 0;
   }
 
-  return a3;
+  return error;
 }
 
 uint64_t __68__VisionCoreE5RTExecutionContext__bindData_toBufferInputPort_error___block_invoke(uint64_t a1, IOSurfaceRef buffer)
@@ -650,21 +650,21 @@ uint64_t __68__VisionCoreE5RTExecutionContext__bindData_toBufferInputPort_error_
   return 1;
 }
 
-- (id)executeWithInputObjects:(id)a3 error:(id *)a4
+- (id)executeWithInputObjects:(id)objects error:(id *)error
 {
-  v6 = a3;
+  objectsCopy = objects;
   v7 = objc_alloc_init(VisionCoreE5RTExecutionBoundPorts);
-  v8 = [(VisionCoreE5RTExecutionContext *)self _executePreflightBindingsWithInputObjects:v6 recordingIOPortHandlesIn:v7 error:a4];
+  v8 = [(VisionCoreE5RTExecutionContext *)self _executePreflightBindingsWithInputObjects:objectsCopy recordingIOPortHandlesIn:v7 error:error];
   if (!v8)
   {
     goto LABEL_6;
   }
 
   v9 = e5rt_execution_stream_execute_sync();
-  if (a4 && v9)
+  if (error && v9)
   {
     [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v9];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_7;
   }
 
@@ -684,9 +684,9 @@ LABEL_7:
   return v10;
 }
 
-- (void)executeWithCompletionHandler:(id)a3
+- (void)executeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v20 = 0;
   v5 = [(VisionCoreE5RTExecutionContext *)self _validateIsPreboundAndReturnError:?];
   v6 = v20;
@@ -697,16 +697,16 @@ LABEL_7:
     v14 = 3221225472;
     v15 = __63__VisionCoreE5RTExecutionContext_executeWithCompletionHandler___block_invoke;
     v16 = &unk_1E8698900;
-    v17 = self;
+    selfCopy = self;
     v8 = v7;
     v18 = v8;
-    v9 = v4;
+    v9 = handlerCopy;
     v19 = v9;
     v10 = MEMORY[0x1E12C8870](&v13);
     v11 = e5rt_execution_stream_submit_async();
     if (v11)
     {
-      v12 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:{v11, v13, v14, v15, v16, v17, v18}];
+      v12 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:{v11, v13, v14, v15, v16, selfCopy, v18}];
 
       [(VisionCoreE5RTExecutionContext *)self _reportError:v12 toCompletionHandler:v9];
       v6 = v12;
@@ -715,7 +715,7 @@ LABEL_7:
 
   else
   {
-    [(VisionCoreE5RTExecutionContext *)self _reportError:v6 toCompletionHandler:v4];
+    [(VisionCoreE5RTExecutionContext *)self _reportError:v6 toCompletionHandler:handlerCopy];
   }
 }
 
@@ -732,8 +732,8 @@ LABEL_7:
     {
       if (a2)
       {
-        v3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ does not have pre-bound inputs and outputs", result];
-        *a2 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:v3];
+        result = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ does not have pre-bound inputs and outputs", result];
+        *a2 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidOperationWithLocalizedDescription:result];
       }
 
       return 0;
@@ -765,21 +765,21 @@ void __63__VisionCoreE5RTExecutionContext_executeWithCompletionHandler___block_i
   }
 }
 
-- (BOOL)executeAndReturnError:(id *)a3
+- (BOOL)executeAndReturnError:(id *)error
 {
-  LODWORD(v4) = [(VisionCoreE5RTExecutionContext *)self _validateIsPreboundAndReturnError:a3];
+  LODWORD(v4) = [(VisionCoreE5RTExecutionContext *)self _validateIsPreboundAndReturnError:error];
   if (v4)
   {
     v5 = e5rt_execution_stream_execute_sync();
     LOBYTE(v4) = v5 == 0;
-    if (a3)
+    if (error)
     {
       if (v5)
       {
         v6 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:?];
         v4 = v6;
         LOBYTE(v4) = 0;
-        *a3 = v6;
+        *error = v6;
       }
     }
   }
@@ -789,29 +789,29 @@ void __63__VisionCoreE5RTExecutionContext_executeWithCompletionHandler___block_i
 
 - (NSArray)outputs
 {
-  v2 = [(VisionCoreE5RTExecutionContext *)self function];
-  v3 = [v2 outputs];
+  function = [(VisionCoreE5RTExecutionContext *)self function];
+  outputs = [function outputs];
 
-  return v3;
+  return outputs;
 }
 
 - (NSArray)inputs
 {
-  v2 = [(VisionCoreE5RTExecutionContext *)self function];
-  v3 = [v2 inputs];
+  function = [(VisionCoreE5RTExecutionContext *)self function];
+  inputs = [function inputs];
 
-  return v3;
+  return inputs;
 }
 
 - (NSString)name
 {
-  v2 = [(VisionCoreE5RTExecutionContext *)self function];
-  v3 = [v2 programLibrary];
+  function = [(VisionCoreE5RTExecutionContext *)self function];
+  programLibrary = [function programLibrary];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [v3 URL];
-  v6 = [v5 path];
-  v7 = [v2 name];
-  v8 = [v4 initWithFormat:@"%@.%@", v6, v7];
+  v5 = [programLibrary URL];
+  path = [v5 path];
+  name = [function name];
+  v8 = [v4 initWithFormat:@"%@.%@", path, name];
 
   return v8;
 }
@@ -834,21 +834,21 @@ void __63__VisionCoreE5RTExecutionContext_executeWithCompletionHandler___block_i
   [(VisionCoreE5RTExecutionContext *)&v3 dealloc];
 }
 
-- (id)_initWithOwnedOperationHandle:(e5rt_execution_stream_operation *)a3 function:(id)a4 inputs:(id)a5 outputs:(id)a6
+- (id)_initWithOwnedOperationHandle:(e5rt_execution_stream_operation *)handle function:(id)function inputs:(id)inputs outputs:(id)outputs
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  functionCopy = function;
+  inputsCopy = inputs;
+  outputsCopy = outputs;
   v21.receiver = self;
   v21.super_class = VisionCoreE5RTExecutionContext;
   v14 = [(VisionCoreE5RTExecutionContext *)&v21 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [inputsCopy copy];
     boundInputObjects = v14->_boundInputObjects;
     v14->_boundInputObjects = v15;
 
-    v17 = [v13 copy];
+    v17 = [outputsCopy copy];
     boundOutputObjects = v14->_boundOutputObjects;
     v14->_boundOutputObjects = v17;
 
@@ -859,19 +859,19 @@ void __63__VisionCoreE5RTExecutionContext_executeWithCompletionHandler___block_i
     }
 
     v14->_isPrebound = v19;
-    objc_storeStrong(&v14->_function, a4);
-    v14->_executionStreamOperationHandle = *a3;
-    *a3 = 0;
+    objc_storeStrong(&v14->_function, function);
+    v14->_executionStreamOperationHandle = *handle;
+    *handle = 0;
   }
 
   return v14;
 }
 
-+ (id)newContextForFunction:(id)a3 withConfiguration:(id)a4 error:(id *)a5
++ (id)newContextForFunction:(id)function withConfiguration:(id)configuration error:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  functionCopy = function;
+  configurationCopy = configuration;
   v10 = _VisionCoreSignpostLog();
   if (os_signpost_enabled(v10))
   {
@@ -879,15 +879,15 @@ void __63__VisionCoreE5RTExecutionContext_executeWithCompletionHandler___block_i
     _os_signpost_emit_with_name_impl(&dword_1DECDA000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "VisionCoreE5RTCreateFunctionExecutionContext", &unk_1DED1344A, buf, 2u);
   }
 
-  v11 = [v9 boundInputObjects];
-  v12 = [v9 boundOutputObjects];
-  v13 = v12;
-  if (!v11 && v12 || v11 && !v12)
+  boundInputObjects = [configurationCopy boundInputObjects];
+  boundOutputObjects = [configurationCopy boundOutputObjects];
+  v13 = boundOutputObjects;
+  if (!boundInputObjects && boundOutputObjects || boundInputObjects && !boundOutputObjects)
   {
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForInvalidArgumentWithLocalizedDescription:@"bound input and output objects must be both defined or both nil"];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_51;
     }
 
@@ -896,41 +896,41 @@ LABEL_35:
     goto LABEL_51;
   }
 
-  v39 = 0;
-  v15 = [v9 prewarmedState];
-  v16 = v15 == 0;
+  acquireExecutionStreamOperationHandle = 0;
+  prewarmedState = [configurationCopy prewarmedState];
+  v16 = prewarmedState == 0;
 
   if (!v16)
   {
-    v17 = [v9 prewarmedState];
-    v39 = [v17 acquireExecutionStreamOperationHandle];
+    prewarmedState2 = [configurationCopy prewarmedState];
+    acquireExecutionStreamOperationHandle = [prewarmedState2 acquireExecutionStreamOperationHandle];
   }
 
-  if (!v39)
+  if (!acquireExecutionStreamOperationHandle)
   {
-    v39 = [v8 createOperationExecutionStreamWithError:a5];
-    if (!v39)
+    acquireExecutionStreamOperationHandle = [functionCopy createOperationExecutionStreamWithError:error];
+    if (!acquireExecutionStreamOperationHandle)
     {
       goto LABEL_35;
     }
   }
 
-  v18 = [[a1 alloc] _initWithOwnedOperationHandle:&v39 function:v8 inputs:v11 outputs:v13];
+  v18 = [[self alloc] _initWithOwnedOperationHandle:&acquireExecutionStreamOperationHandle function:functionCopy inputs:boundInputObjects outputs:v13];
   if (!v18)
   {
-    if (a5)
+    if (error)
     {
-      v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to create execution context for %@", v8];
-      *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForMemoryAllocationFailureWithLocalizedDescription:v34];
+      functionCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to create execution context for %@", functionCopy];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForMemoryAllocationFailureWithLocalizedDescription:functionCopy];
     }
 
     goto LABEL_45;
   }
 
-  v19 = v9;
-  v20 = [v19 completionQueue];
+  v19 = configurationCopy;
+  completionQueue = [v19 completionQueue];
   v21 = *(v18 + 72);
-  *(v18 + 72) = v20;
+  *(v18 + 72) = completionQueue;
 
   if (*(v18 + 48) == 1)
   {
@@ -957,7 +957,7 @@ LABEL_17:
           objc_enumerationMutation(v24);
         }
 
-        if (([(VisionCoreE5RTExecutionContext *)v18 _bindInput:*(v18 + 32) ofInputObjects:*(v18 + 56) recordingPortHandleIn:a5 error:?]& 1) == 0)
+        if (([(VisionCoreE5RTExecutionContext *)v18 _bindInput:*(v18 + 32) ofInputObjects:*(v18 + 56) recordingPortHandleIn:error error:?]& 1) == 0)
         {
           goto LABEL_43;
         }
@@ -997,7 +997,7 @@ LABEL_25:
           objc_enumerationMutation(v24);
         }
 
-        if (([(VisionCoreE5RTExecutionContext *)v18 _bindOutput:*(v18 + 40) ofOutputObjects:*(v18 + 64) recordingPortHandleIn:a5 error:?]& 1) == 0)
+        if (([(VisionCoreE5RTExecutionContext *)v18 _bindOutput:*(v18 + 40) ofOutputObjects:*(v18 + 64) recordingPortHandleIn:error error:?]& 1) == 0)
         {
           break;
         }
@@ -1036,7 +1036,7 @@ LABEL_31:
     v33 = e5rt_execution_stream_encode_operation();
     if (v33)
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_44;
       }
@@ -1052,17 +1052,17 @@ LABEL_56:
       goto LABEL_46;
     }
 
-    if (!a5)
+    if (!error)
     {
       goto LABEL_44;
     }
 
 LABEL_34:
-    *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v33];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v33];
     goto LABEL_44;
   }
 
-  if (a5)
+  if (error)
   {
     goto LABEL_34;
   }
@@ -1073,7 +1073,7 @@ LABEL_45:
   v14 = 0;
 LABEL_46:
 
-  if (v39)
+  if (acquireExecutionStreamOperationHandle)
   {
     e5rt_execution_stream_operation_release();
   }

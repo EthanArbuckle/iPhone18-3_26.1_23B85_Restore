@@ -1,60 +1,60 @@
 @interface PXPeopleFaceCropManager
-+ (BOOL)_change:(id)a3 containsVisibleChangesToAssetWithOID:(id)a4;
-+ (BOOL)_shouldCacheResultForOptions:(id)a3 isDegraded:(BOOL)a4 isCropped:(BOOL)a5 isForCleanup:(BOOL)a6;
-+ (BOOL)_shouldTakeSquareCropForFace:(id)a3 cropFactor:(int64_t)a4 outNormalizedFaceCropRect:(CGRect *)a5;
++ (BOOL)_change:(id)_change containsVisibleChangesToAssetWithOID:(id)d;
++ (BOOL)_shouldCacheResultForOptions:(id)options isDegraded:(BOOL)degraded isCropped:(BOOL)cropped isForCleanup:(BOOL)cleanup;
++ (BOOL)_shouldTakeSquareCropForFace:(id)face cropFactor:(int64_t)factor outNormalizedFaceCropRect:(CGRect *)rect;
 + (CGSize)_constrainedSizeForDesiredSize:(CGSize)result;
 + (PXPeopleFaceCropManager)sharedManager;
-+ (double)_cornerRadiusForCornerStyle:(int64_t)a3 pixelTargetSize:(CGSize)a4 displayScale:(double)a5;
-+ (double)_cornerRadiusForRoundedCornerStyleWithDisplayScale:(double)a3;
-+ (double)_cropFactorValueForCropFactor:(int64_t)a3;
-+ (double)roundedCornerRadiusForTargetSize:(CGSize)a3 displayScale:(double)a4;
++ (double)_cornerRadiusForCornerStyle:(int64_t)style pixelTargetSize:(CGSize)size displayScale:(double)scale;
++ (double)_cornerRadiusForRoundedCornerStyleWithDisplayScale:(double)scale;
++ (double)_cropFactorValueForCropFactor:(int64_t)factor;
++ (double)roundedCornerRadiusForTargetSize:(CGSize)size displayScale:(double)scale;
 + (id)_compressionQueue;
 + (id)_cropQueue;
 + (id)_faceCropManagerLog;
 + (id)_fetchQueue;
-- (BOOL)isRequestActiveWithRequestID:(int)a3;
+- (BOOL)isRequestActiveWithRequestID:(int)d;
 - (PXPeopleFaceCropManager)init;
-- (id)_cachedResultForOptions:(id)a3;
-- (id)prepareForPhotoLibraryChange:(id)a3;
-- (int)_prepareFaceCropRequestWithOptions:(id)a3 resultHandler:(id)a4;
-- (int)requestFaceCropForOptions:(id)a3 resultHandler:(id)a4;
-- (int)requestFaceCropImageForPerson:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 completionHandler:(id)a6;
-- (void)_cacheResult:(id)a3;
-- (void)_cleanupForImage:(id)a3 request:(id)a4;
-- (void)_compressImage:(id)a3 request:(id)a4 resultHandler:(id)a5;
-- (void)_cropImage:(id)a3 request:(id)a4 resultHandler:(id)a5;
+- (id)_cachedResultForOptions:(id)options;
+- (id)prepareForPhotoLibraryChange:(id)change;
+- (int)_prepareFaceCropRequestWithOptions:(id)options resultHandler:(id)handler;
+- (int)requestFaceCropForOptions:(id)options resultHandler:(id)handler;
+- (int)requestFaceCropImageForPerson:(id)person targetSize:(CGSize)size displayScale:(double)scale completionHandler:(id)handler;
+- (void)_cacheResult:(id)result;
+- (void)_cleanupForImage:(id)image request:(id)request;
+- (void)_compressImage:(id)image request:(id)request resultHandler:(id)handler;
+- (void)_cropImage:(id)image request:(id)request resultHandler:(id)handler;
 - (void)_emptyFaceCropCache;
-- (void)_executeFaceCropRequest:(id)a3 resultHandler:(id)a4;
-- (void)_fetchFaceAndAssetIfNecessaryForOptions:(id)a3 completion:(id)a4;
-- (void)_handleImage:(id)a3 info:(id)a4 faceCropRequest:(id)a5 resultHandler:(id)a6;
-- (void)_invalidateCacheForLocalIdentifiers:(id)a3 wantsNotificationPosted:(BOOL)a4 userInfoKey:(id)a5;
-- (void)cancelRequestForRequestID:(int)a3;
-- (void)invalidateCacheForPerson:(id)a3;
+- (void)_executeFaceCropRequest:(id)request resultHandler:(id)handler;
+- (void)_fetchFaceAndAssetIfNecessaryForOptions:(id)options completion:(id)completion;
+- (void)_handleImage:(id)image info:(id)info faceCropRequest:(id)request resultHandler:(id)handler;
+- (void)_invalidateCacheForLocalIdentifiers:(id)identifiers wantsNotificationPosted:(BOOL)posted userInfoKey:(id)key;
+- (void)cancelRequestForRequestID:(int)d;
+- (void)invalidateCacheForPerson:(id)person;
 @end
 
 @implementation PXPeopleFaceCropManager
 
-- (id)prepareForPhotoLibraryChange:(id)a3
+- (id)prepareForPhotoLibraryChange:(id)change
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v43 = v5;
-  if (([v5 hasIncrementalChanges] & 1) == 0)
+  changeCopy = change;
+  v43 = changeCopy;
+  if (([changeCopy hasIncrementalChanges] & 1) == 0)
   {
     v28 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v29 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     os_unfair_lock_lock(&self->_faceCropCacheLock);
-    v30 = [(NSCache *)self->_faceCropCache allObjects];
+    allObjects = [(NSCache *)self->_faceCropCache allObjects];
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
     v52[2] = __56__PXPeopleFaceCropManager_prepareForPhotoLibraryChange___block_invoke;
     v52[3] = &unk_1E773FE48;
     v53 = v28;
     v31 = v29;
-    v55 = self;
+    selfCopy = self;
     v56 = a2;
     v54 = v31;
-    [v30 enumerateObjectsUsingBlock:v52];
+    [allObjects enumerateObjectsUsingBlock:v52];
 
     os_unfair_lock_unlock(&self->_faceCropCacheLock);
     [v31 copy];
@@ -62,12 +62,12 @@
     PXMap();
   }
 
-  v42 = [v5 updatedObjectIDs];
+  updatedObjectIDs = [changeCopy updatedObjectIDs];
   v41 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v39 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v38 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   os_unfair_lock_lock(&self->_faceCropCacheLock);
-  v33 = self;
+  selfCopy2 = self;
   [(NSCache *)self->_faceCropCache allObjects];
   v48 = 0u;
   v49 = 0u;
@@ -78,10 +78,10 @@
   {
 LABEL_35:
 
-    os_unfair_lock_unlock(&v33->_faceCropCacheLock);
+    os_unfair_lock_unlock(&selfCopy2->_faceCropCacheLock);
     v27 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    os_unfair_lock_lock(&v33->_peopleWithoutKeyFacesLock);
-    v5;
+    os_unfair_lock_lock(&selfCopy2->_peopleWithoutKeyFacesLock);
+    changeCopy;
     v27;
     PXMap();
   }
@@ -136,20 +136,20 @@ LABEL_9:
     }
 
     v12 = *(*(&v44 + 1) + 8 * v11);
-    v13 = [v12 options];
-    v14 = [v13 person];
-    v15 = [v13 face];
-    v16 = [v12 assetObjectID];
-    v17 = [v42 containsObject:v16];
-    v18 = [PXPeopleFaceCropManager _change:v5 containsVisibleChangesToAssetWithOID:v16];
+    options = [v12 options];
+    person = [options person];
+    face = [options face];
+    assetObjectID = [v12 assetObjectID];
+    v17 = [updatedObjectIDs containsObject:assetObjectID];
+    v18 = [PXPeopleFaceCropManager _change:changeCopy containsVisibleChangesToAssetWithOID:assetObjectID];
     v19 = v18;
     if ((v17 & 1) == 0 && !v18)
     {
       break;
     }
 
-    v22 = v15 != 0;
-    if (v14)
+    v22 = face != 0;
+    if (person)
     {
       goto LABEL_26;
     }
@@ -163,7 +163,7 @@ LABEL_29:
 LABEL_31:
 
     ++v11;
-    v5 = v43;
+    changeCopy = v43;
     if (v9 == v11)
     {
       v9 = [v40 countByEnumeratingWithState:&v44 objects:v57 count:16];
@@ -176,8 +176,8 @@ LABEL_31:
     }
   }
 
-  v20 = [v5 contentOrThumbnailChangedForPHAssetOID:v16];
-  if (v14)
+  v20 = [changeCopy contentOrThumbnailChangedForPHAssetOID:assetObjectID];
+  if (person)
   {
     v21 = v20 == 0;
   }
@@ -189,8 +189,8 @@ LABEL_31:
 
   if (v21)
   {
-    v23 = [v14 objectID];
-    v24 = [v5 keyFaceChangedForPersonOID:v23];
+    objectID = [person objectID];
+    v24 = [changeCopy keyFaceChangedForPersonOID:objectID];
 
     if (!v24)
     {
@@ -202,10 +202,10 @@ LABEL_31:
 
   else
   {
-    v22 = (v15 != 0) & v20;
-    if (!v14)
+    v22 = (face != 0) & v20;
+    if (!person)
     {
-      if (((v15 != 0) & v20) == 0)
+      if (((face != 0) & v20) == 0)
       {
         goto LABEL_31;
       }
@@ -216,20 +216,20 @@ LABEL_31:
 
   v19 = 0;
 LABEL_26:
-  v25 = [v14 localIdentifier];
-  [v41 addObject:v25];
+  localIdentifier = [person localIdentifier];
+  [v41 addObject:localIdentifier];
 
   if (v19)
   {
-    [v38 addObject:v14];
+    [v38 addObject:person];
     if ((v22 & 1) == 0)
     {
       goto LABEL_31;
     }
 
 LABEL_30:
-    v26 = [v15 localIdentifier];
-    [v39 addObject:v26];
+    localIdentifier2 = [face localIdentifier];
+    [v39 addObject:localIdentifier2];
 
     goto LABEL_31;
   }
@@ -290,32 +290,32 @@ id __56__PXPeopleFaceCropManager_prepareForPhotoLibraryChange___block_invoke_3(u
   return v6;
 }
 
-- (void)_invalidateCacheForLocalIdentifiers:(id)a3 wantsNotificationPosted:(BOOL)a4 userInfoKey:(id)a5
+- (void)_invalidateCacheForLocalIdentifiers:(id)identifiers wantsNotificationPosted:(BOOL)posted userInfoKey:(id)key
 {
-  v6 = a4;
+  postedCopy = posted;
   v41 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!v10 && v6)
+  identifiersCopy = identifiers;
+  keyCopy = key;
+  if (!keyCopy && postedCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropManager.m" lineNumber:875 description:{@"Invalid parameter not satisfying: %@", @"!wantsNotificationPosted || (wantsNotificationPosted && userInfoKey)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropManager.m" lineNumber:875 description:{@"Invalid parameter not satisfying: %@", @"!wantsNotificationPosted || (wantsNotificationPosted && userInfoKey)"}];
   }
 
-  if ([v9 count])
+  if ([identifiersCopy count])
   {
     v11 = PLUIGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = @"NO";
-      if (v6)
+      if (postedCopy)
       {
         v12 = @"YES";
       }
 
       v13 = v12;
       *buf = 138543618;
-      v38 = v9;
+      v38 = identifiersCopy;
       v39 = 2112;
       v40 = v13;
       _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_DEFAULT, "PXPeopleFaceCropManager: invalidating cache for local identifiers: %{public}@ wantsNotificationPosted: %@", buf, 0x16u);
@@ -328,7 +328,7 @@ id __56__PXPeopleFaceCropManager_prepareForPhotoLibraryChange___block_invoke_3(u
     v31[1] = 3221225472;
     v31[2] = __99__PXPeopleFaceCropManager__invalidateCacheForLocalIdentifiers_wantsNotificationPosted_userInfoKey___block_invoke;
     v31[3] = &unk_1E773FDF8;
-    v16 = v9;
+    v16 = identifiersCopy;
     v32 = v16;
     v17 = v14;
     v33 = v17;
@@ -372,13 +372,13 @@ id __56__PXPeopleFaceCropManager_prepareForPhotoLibraryChange___block_invoke_3(u
     v26[4] = self;
     [v16 enumerateObjectsUsingBlock:v26];
     os_unfair_lock_unlock(&self->_faceCropCacheLock);
-    if (v6)
+    if (postedCopy)
     {
-      v23 = [MEMORY[0x1E696AD88] defaultCenter];
-      v34 = v10;
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      v34 = keyCopy;
       v35 = v16;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-      [v23 postNotificationName:@"PXPeopleFaceCropManagerDidInvalidateCacheNotification" object:self userInfo:v24];
+      [defaultCenter postNotificationName:@"PXPeopleFaceCropManagerDidInvalidateCacheNotification" object:self userInfo:v24];
     }
   }
 }
@@ -410,16 +410,16 @@ void __99__PXPeopleFaceCropManager__invalidateCacheForLocalIdentifiers_wantsNoti
   }
 }
 
-- (void)_cacheResult:(id)a3
+- (void)_cacheResult:(id)result
 {
-  v14 = a3;
-  v4 = [v14 options];
-  v5 = [v4 cacheKey];
-  if ([v5 length])
+  resultCopy = result;
+  options = [resultCopy options];
+  cacheKey = [options cacheKey];
+  if ([cacheKey length])
   {
-    v6 = [(PXPeopleFaceCropManager *)self _cachedResultForOptions:v4];
+    v6 = [(PXPeopleFaceCropManager *)self _cachedResultForOptions:options];
     os_unfair_lock_lock(&self->_faceCropCacheLock);
-    v7 = [(NSCache *)self->_faceCropCache objectForKey:v5];
+    v7 = [(NSCache *)self->_faceCropCache objectForKey:cacheKey];
     if (v7)
     {
       if (!v6)
@@ -431,20 +431,20 @@ void __99__PXPeopleFaceCropManager__invalidateCacheForLocalIdentifiers_wantsNoti
     else
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [(NSCache *)self->_faceCropCache setObject:v7 forKey:v5];
+      [(NSCache *)self->_faceCropCache setObject:v7 forKey:cacheKey];
       if (!v6)
       {
         goto LABEL_9;
       }
     }
 
-    if (([v14 isCropped] & 1) == 0)
+    if (([resultCopy isCropped] & 1) == 0)
     {
-      v8 = [v6 image];
-      [v8 size];
+      image = [v6 image];
+      [image size];
       v10 = v9;
-      v11 = [v14 image];
-      [v11 size];
+      image2 = [resultCopy image];
+      [image2 size];
       v13 = v12;
 
       if (v10 >= v13)
@@ -455,22 +455,22 @@ void __99__PXPeopleFaceCropManager__invalidateCacheForLocalIdentifiers_wantsNoti
 
     [v7 removeLastObject];
 LABEL_9:
-    [v7 addObject:v14];
+    [v7 addObject:resultCopy];
 LABEL_10:
 
     os_unfair_lock_unlock(&self->_faceCropCacheLock);
   }
 }
 
-- (id)_cachedResultForOptions:(id)a3
+- (id)_cachedResultForOptions:(id)options
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 cacheKey];
-  if ([v5 length])
+  optionsCopy = options;
+  cacheKey = [optionsCopy cacheKey];
+  if ([cacheKey length])
   {
     os_unfair_lock_lock(&self->_faceCropCacheLock);
-    [(NSCache *)self->_faceCropCache objectForKey:v5];
+    [(NSCache *)self->_faceCropCache objectForKey:cacheKey];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -489,8 +489,8 @@ LABEL_10:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 options];
-          v12 = [v11 areFetchParametersEqualtoFetchParametersOfOptions:v4];
+          options = [v10 options];
+          v12 = [options areFetchParametersEqualtoFetchParametersOfOptions:optionsCopy];
 
           if (v12)
           {
@@ -522,17 +522,17 @@ LABEL_12:
   return v7;
 }
 
-- (void)_fetchFaceAndAssetIfNecessaryForOptions:(id)a3 completion:(id)a4
+- (void)_fetchFaceAndAssetIfNecessaryForOptions:(id)options completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __78__PXPeopleFaceCropManager__fetchFaceAndAssetIfNecessaryForOptions_completion___block_invoke;
   v14 = &unk_1E774C2F0;
-  v7 = v5;
+  v7 = optionsCopy;
   v15 = v7;
-  v8 = v6;
+  v8 = completionCopy;
   v16 = v8;
   v9 = _Block_copy(&v11);
   if ([v7 isSynchronous])
@@ -643,33 +643,33 @@ LABEL_18:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_cleanupForImage:(id)a3 request:(id)a4
+- (void)_cleanupForImage:(id)image request:(id)request
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v6 options];
-  if ([PXPeopleFaceCropManager _shouldCacheResultForOptions:v7 isDegraded:0 isCropped:1 isForCleanup:1])
+  imageCopy = image;
+  requestCopy = request;
+  options = [requestCopy options];
+  if ([PXPeopleFaceCropManager _shouldCacheResultForOptions:options isDegraded:0 isCropped:1 isForCleanup:1])
   {
-    v8 = [v6 asset];
+    asset = [requestCopy asset];
     v9 = [PXPeopleFaceCropFetchResult alloc];
-    v10 = [v8 objectID];
-    v11 = [v8 localIdentifier];
-    v12 = [(PXPeopleFaceCropFetchResult *)v9 initWithImage:v14 assetObjectID:v10 assetLocalIdentifier:v11 faceRect:1 isCropped:0 isDegraded:v7 options:*off_1E77221F8, *(off_1E77221F8 + 1), *(off_1E77221F8 + 2), *(off_1E77221F8 + 3)];
+    objectID = [asset objectID];
+    localIdentifier = [asset localIdentifier];
+    v12 = [(PXPeopleFaceCropFetchResult *)v9 initWithImage:imageCopy assetObjectID:objectID assetLocalIdentifier:localIdentifier faceRect:1 isCropped:0 isDegraded:options options:*off_1E77221F8, *(off_1E77221F8 + 1), *(off_1E77221F8 + 2), *(off_1E77221F8 + 3)];
 
     [(PXPeopleFaceCropManager *)self _cacheResult:v12];
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v6, "faceCropRequestID")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(requestCopy, "faceCropRequestID")}];
   os_unfair_lock_lock(&self->_faceCropRequestsByRequestIDsLock);
   [(NSMutableDictionary *)self->_faceCropRequestsByRequestIDs removeObjectForKey:v13];
   os_unfair_lock_unlock(&self->_faceCropRequestsByRequestIDsLock);
 }
 
-- (void)_compressImage:(id)a3 request:(id)a4 resultHandler:(id)a5
+- (void)_compressImage:(id)image request:(id)request resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  requestCopy = request;
+  handlerCopy = handler;
   v11 = +[PXPeopleFaceCropManager _faceCropManagerLog];
   v12 = os_signpost_id_generate(v11);
   v13 = v11;
@@ -680,22 +680,22 @@ LABEL_18:
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "compressImage", "", buf, 2u);
   }
 
-  v15 = [v9 options];
+  options = [requestCopy options];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __64__PXPeopleFaceCropManager__compressImage_request_resultHandler___block_invoke;
   aBlock[3] = &unk_1E7748800;
-  v16 = v9;
+  v16 = requestCopy;
   v24 = v16;
-  v17 = v8;
+  v17 = imageCopy;
   v25 = v17;
   v18 = v14;
   v26 = v18;
   v30 = v12;
-  v19 = v15;
+  v19 = options;
   v27 = v19;
-  v20 = v10;
-  v28 = self;
+  v20 = handlerCopy;
+  selfCopy = self;
   v29 = v20;
   v21 = _Block_copy(aBlock);
   if ([v19 isSynchronous])
@@ -758,11 +758,11 @@ void __64__PXPeopleFaceCropManager__compressImage_request_resultHandler___block_
   }
 }
 
-- (void)_cropImage:(id)a3 request:(id)a4 resultHandler:(id)a5
+- (void)_cropImage:(id)image request:(id)request resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imageCopy = image;
+  requestCopy = request;
+  handlerCopy = handler;
   v11 = +[PXPeopleFaceCropManager _faceCropManagerLog];
   v12 = os_signpost_id_generate(v11);
   v13 = v11;
@@ -773,29 +773,29 @@ void __64__PXPeopleFaceCropManager__compressImage_request_resultHandler___block_
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "imageCrop", "", buf, 2u);
   }
 
-  v15 = [v9 options];
-  v16 = [v8 CGImage];
-  Width = CGImageGetWidth(v16);
-  Height = CGImageGetHeight(v16);
+  options = [requestCopy options];
+  cGImage = [imageCopy CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__PXPeopleFaceCropManager__cropImage_request_resultHandler___block_invoke;
   aBlock[3] = &unk_1E773FDD0;
-  v19 = v9;
+  v19 = requestCopy;
   v33 = 0;
   v34 = 0;
   v27 = v19;
   v35 = Width;
   v36 = Height;
-  v20 = v15;
+  v20 = options;
   v28 = v20;
-  v21 = v8;
+  v21 = imageCopy;
   v29 = v21;
   v22 = v14;
   v30 = v22;
   v37 = v12;
-  v23 = v10;
-  v31 = self;
+  v23 = handlerCopy;
+  selfCopy = self;
   v32 = v23;
   v24 = _Block_copy(aBlock);
   if ([v20 isSynchronous])
@@ -822,12 +822,12 @@ uint64_t __60__PXPeopleFaceCropManager__cropImage_request_resultHandler___block_
   return result;
 }
 
-- (void)_handleImage:(id)a3 info:(id)a4 faceCropRequest:(id)a5 resultHandler:(id)a6
+- (void)_handleImage:(id)image info:(id)info faceCropRequest:(id)request resultHandler:(id)handler
 {
-  a3;
-  v9 = a4;
-  v10 = a5;
-  a6;
+  image;
+  infoCopy = info;
+  requestCopy = request;
+  handler;
   v11 = +[PXPeopleFaceCropManager _faceCropManagerLog];
   v12 = os_signpost_id_generate(v11);
   v13 = v11;
@@ -838,13 +838,13 @@ uint64_t __60__PXPeopleFaceCropManager__cropImage_request_resultHandler___block_
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "handleResponse", "", buf, 2u);
   }
 
-  [v10 options];
+  [requestCopy options];
   objc_claimAutoreleasedReturnValue();
-  [v10 targetSizeToUse];
-  v15 = [v10 asset];
-  [v15 pixelWidth];
-  [v15 pixelHeight];
-  [v10 normalizedCenterEyeLine];
+  [requestCopy targetSizeToUse];
+  asset = [requestCopy asset];
+  [asset pixelWidth];
+  [asset pixelHeight];
+  [requestCopy normalizedCenterEyeLine];
   PXPointDenormalize();
 }
 
@@ -860,10 +860,10 @@ void __75__PXPeopleFaceCropManager__handleImage_info_faceCropRequest_resultHandl
   }
 }
 
-- (void)_executeFaceCropRequest:(id)a3 resultHandler:(id)a4
+- (void)_executeFaceCropRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = +[PXPeopleFaceCropManager _faceCropManagerLog];
   v9 = os_signpost_id_generate(v8);
   v10 = v8;
@@ -874,23 +874,23 @@ void __75__PXPeopleFaceCropManager__handleImage_info_faceCropRequest_resultHandl
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "executeRequest", "", buf, 2u);
   }
 
-  v12 = [v6 options];
-  [v6 targetSizeToUse];
+  options = [requestCopy options];
+  [requestCopy targetSizeToUse];
   v14 = v13;
   v16 = v15;
-  [v6 normalizedFaceCropRect];
+  [requestCopy normalizedFaceCropRect];
   [PXPeopleFaceCropManager _constrainedSizeForDesiredSize:ceil(v14 / v17), ceil(v16 / v18)];
   v20 = v19;
   v22 = v21;
-  v23 = [v12 isSynchronous];
+  isSynchronous = [options isSynchronous];
   v24 = objc_alloc_init(MEMORY[0x1E6978868]);
-  [v24 setDeliveryMode:{objc_msgSend(v12, "deliveryMode")}];
-  [v24 setSynchronous:v23];
-  [v24 setUseLowMemoryMode:{objc_msgSend(v12, "useLowMemoryMode")}];
+  [v24 setDeliveryMode:{objc_msgSend(options, "deliveryMode")}];
+  [v24 setSynchronous:isSynchronous];
+  [v24 setUseLowMemoryMode:{objc_msgSend(options, "useLowMemoryMode")}];
   [v24 setNetworkAccessAllowed:1];
   [v24 setAllowSecondaryDegradedImage:1];
   [v24 setResizeMode:1];
-  if ([v12 useLowMemoryMode])
+  if ([options useLowMemoryMode])
   {
     v25 = 0;
   }
@@ -901,29 +901,29 @@ void __75__PXPeopleFaceCropManager__handleImage_info_faceCropRequest_resultHandl
   }
 
   [v24 setLoadingMode:v25];
-  if ((v23 & 1) == 0)
+  if ((isSynchronous & 1) == 0)
   {
     v26 = +[PXPeopleFaceCropManager _fetchQueue];
     [v24 setResultHandlerQueue:v26];
   }
 
-  v27 = [MEMORY[0x1E6978860] defaultManager];
-  v28 = [v6 asset];
+  defaultManager = [MEMORY[0x1E6978860] defaultManager];
+  asset = [requestCopy asset];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __65__PXPeopleFaceCropManager__executeFaceCropRequest_resultHandler___block_invoke;
   v33[3] = &unk_1E773FDA8;
-  v37 = v7;
+  v37 = handlerCopy;
   v38 = v9;
   v34 = v11;
-  v35 = v6;
-  v36 = self;
+  v35 = requestCopy;
+  selfCopy = self;
   v39 = v20;
   v40 = v22;
-  v29 = v7;
-  v30 = v6;
+  v29 = handlerCopy;
+  v30 = requestCopy;
   v31 = v11;
-  v32 = [v27 requestImageForAsset:v28 targetSize:1 contentMode:v24 options:v33 resultHandler:{v20, v22}];
+  v32 = [defaultManager requestImageForAsset:asset targetSize:1 contentMode:v24 options:v33 resultHandler:{v20, v22}];
 
   [v30 setImageManagerRequestID:v32];
 }
@@ -1006,10 +1006,10 @@ void __65__PXPeopleFaceCropManager__executeFaceCropRequest_resultHandler___block
   }
 }
 
-- (int)_prepareFaceCropRequestWithOptions:(id)a3 resultHandler:(id)a4
+- (int)_prepareFaceCropRequestWithOptions:(id)options resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   v8 = +[PXPeopleFaceCropManager _faceCropManagerLog];
   v9 = os_signpost_id_generate(v8);
   v10 = v8;
@@ -1020,12 +1020,12 @@ void __65__PXPeopleFaceCropManager__executeFaceCropRequest_resultHandler___block
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "prepareRequest", "", buf, 2u);
   }
 
-  v12 = [v6 photoLibrary];
-  [v12 px_registerChangeObserver:self];
+  photoLibrary = [optionsCopy photoLibrary];
+  [photoLibrary px_registerChangeObserver:self];
 
-  v13 = [[PXPeopleFaceCropRequest alloc] initWithFetchOptions:v6];
-  v14 = [(PXPeopleFaceCropRequest *)v13 faceCropRequestID];
-  v15 = [MEMORY[0x1E696AD98] numberWithInt:v14];
+  v13 = [[PXPeopleFaceCropRequest alloc] initWithFetchOptions:optionsCopy];
+  faceCropRequestID = [(PXPeopleFaceCropRequest *)v13 faceCropRequestID];
+  v15 = [MEMORY[0x1E696AD98] numberWithInt:faceCropRequestID];
   os_unfair_lock_lock(&self->_faceCropRequestsByRequestIDsLock);
   [(NSMutableDictionary *)self->_faceCropRequestsByRequestIDs setObject:v13 forKey:v15];
   os_unfair_lock_unlock(&self->_faceCropRequestsByRequestIDsLock);
@@ -1035,18 +1035,18 @@ void __65__PXPeopleFaceCropManager__executeFaceCropRequest_resultHandler___block
   v21[3] = &unk_1E773FD80;
   v22 = v11;
   v23 = v13;
-  v24 = v6;
-  v25 = self;
-  v28 = v14;
-  v26 = v7;
+  v24 = optionsCopy;
+  selfCopy = self;
+  v28 = faceCropRequestID;
+  v26 = handlerCopy;
   v27 = v9;
-  v16 = v7;
-  v17 = v6;
+  v16 = handlerCopy;
+  v17 = optionsCopy;
   v18 = v13;
   v19 = v11;
   [(PXPeopleFaceCropManager *)self _fetchFaceAndAssetIfNecessaryForOptions:v17 completion:v21];
 
-  return v14;
+  return faceCropRequestID;
 }
 
 void __76__PXPeopleFaceCropManager__prepareFaceCropRequestWithOptions_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1170,20 +1170,20 @@ void __76__PXPeopleFaceCropManager__prepareFaceCropRequestWithOptions_resultHand
   }
 }
 
-- (void)invalidateCacheForPerson:(id)a3
+- (void)invalidateCacheForPerson:(id)person
 {
-  if (a3)
+  if (person)
   {
     v4 = MEMORY[0x1E695DFD8];
-    v6 = [a3 localIdentifier];
-    v5 = [v4 setWithObject:v6];
+    localIdentifier = [person localIdentifier];
+    v5 = [v4 setWithObject:localIdentifier];
     [(PXPeopleFaceCropManager *)self _invalidateCacheForLocalIdentifiers:v5 wantsNotificationPosted:1 userInfoKey:@"PXPeopleFaceCropManagerInvalidatedPersonLocalIdentifiersKey"];
   }
 }
 
-- (BOOL)isRequestActiveWithRequestID:(int)a3
+- (BOOL)isRequestActiveWithRequestID:(int)d
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&d];
   os_unfair_lock_lock(&self->_faceCropRequestsByRequestIDsLock);
   v5 = [(NSMutableDictionary *)self->_faceCropRequestsByRequestIDs objectForKey:v4];
   os_unfair_lock_unlock(&self->_faceCropRequestsByRequestIDsLock);
@@ -1191,10 +1191,10 @@ void __76__PXPeopleFaceCropManager__prepareFaceCropRequestWithOptions_resultHand
   return v5 != 0;
 }
 
-- (void)cancelRequestForRequestID:(int)a3
+- (void)cancelRequestForRequestID:(int)d
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:*&d];
   os_unfair_lock_lock(&self->_faceCropRequestsByRequestIDsLock);
   v5 = [(NSMutableDictionary *)self->_faceCropRequestsByRequestIDs objectForKey:v4];
   [(NSMutableDictionary *)self->_faceCropRequestsByRequestIDs removeObjectForKey:v4];
@@ -1209,10 +1209,10 @@ void __76__PXPeopleFaceCropManager__prepareFaceCropRequestWithOptions_resultHand
   }
 }
 
-- (int)requestFaceCropForOptions:(id)a3 resultHandler:(id)a4
+- (int)requestFaceCropForOptions:(id)options resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  handlerCopy = handler;
+  v7 = [options copy];
   v8 = [(PXPeopleFaceCropManager *)self _cachedResultForOptions:v7];
   if (!v8)
   {
@@ -1220,12 +1220,12 @@ void __76__PXPeopleFaceCropManager__prepareFaceCropRequestWithOptions_resultHand
   }
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v10 = [v8 assetLocalIdentifier];
-  [v9 setObject:v10 forKey:@"PXPeopleAssetLocalIdentifierKey"];
+  assetLocalIdentifier = [v8 assetLocalIdentifier];
+  [v9 setObject:assetLocalIdentifier forKey:@"PXPeopleAssetLocalIdentifierKey"];
 
-  v11 = [v8 isCropped];
+  isCropped = [v8 isCropped];
   v12 = MEMORY[0x1E696B098];
-  if (v11)
+  if (isCropped)
   {
     v13 = *off_1E77221F8;
     v14 = *(off_1E77221F8 + 1);
@@ -1241,14 +1241,14 @@ void __76__PXPeopleFaceCropManager__prepareFaceCropRequestWithOptions_resultHand
   v17 = [v12 valueWithCGRect:{v13, v14, v15, v16}];
   [v9 setObject:v17 forKey:@"PXPeopleContentsRectKey"];
 
-  v18 = [v8 isDegraded];
-  v19 = [MEMORY[0x1E696AD98] numberWithBool:v18];
+  isDegraded = [v8 isDegraded];
+  v19 = [MEMORY[0x1E696AD98] numberWithBool:isDegraded];
   [v9 setObject:v19 forKeyedSubscript:*off_1E7722078];
 
-  v20 = [v8 image];
-  v6[2](v6, v20, v9);
+  image = [v8 image];
+  handlerCopy[2](handlerCopy, image, v9);
 
-  v21 = [PXPeopleFaceCropManager _isFinalForIsDegraded:v18 isCropped:v11];
+  v21 = [PXPeopleFaceCropManager _isFinalForIsDegraded:isDegraded isCropped:isCropped];
   if (v21)
   {
     v22 = 0;
@@ -1257,7 +1257,7 @@ void __76__PXPeopleFaceCropManager__prepareFaceCropRequestWithOptions_resultHand
   else
   {
 LABEL_7:
-    v22 = [(PXPeopleFaceCropManager *)self _prepareFaceCropRequestWithOptions:v7 resultHandler:v6];
+    v22 = [(PXPeopleFaceCropManager *)self _prepareFaceCropRequestWithOptions:v7 resultHandler:handlerCopy];
   }
 
   return v22;
@@ -1382,36 +1382,36 @@ void __38__PXPeopleFaceCropManager__fetchQueue__block_invoke()
   _fetchQueue_fetchQueue = v1;
 }
 
-+ (BOOL)_change:(id)a3 containsVisibleChangesToAssetWithOID:(id)a4
++ (BOOL)_change:(id)_change containsVisibleChangesToAssetWithOID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 trashedStateChangedForPHAssetOID:v6] & 1) != 0 || (objc_msgSend(v5, "hiddenStateChangedForPHAssetOID:", v6))
+  _changeCopy = _change;
+  dCopy = d;
+  if ([_changeCopy trashedStateChangedForPHAssetOID:dCopy] & 1) != 0 || (objc_msgSend(_changeCopy, "hiddenStateChangedForPHAssetOID:", dCopy))
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 deletedObjectIDs];
-    v7 = [v8 containsObject:v6];
+    deletedObjectIDs = [_changeCopy deletedObjectIDs];
+    v7 = [deletedObjectIDs containsObject:dCopy];
   }
 
   return v7;
 }
 
-+ (BOOL)_shouldCacheResultForOptions:(id)a3 isDegraded:(BOOL)a4 isCropped:(BOOL)a5 isForCleanup:(BOOL)a6
++ (BOOL)_shouldCacheResultForOptions:(id)options isDegraded:(BOOL)degraded isCropped:(BOOL)cropped isForCleanup:(BOOL)cleanup
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  if ([v9 shouldCacheResult])
+  cleanupCopy = cleanup;
+  croppedCopy = cropped;
+  degradedCopy = degraded;
+  optionsCopy = options;
+  if ([optionsCopy shouldCacheResult])
   {
-    v10 = [v9 deliveryMode] == 0;
-    if (v6)
+    v10 = [optionsCopy deliveryMode] == 0;
+    if (cleanupCopy)
     {
-      v10 |= [PXPeopleFaceCropManager _isFinalForIsDegraded:v8 isCropped:v7];
+      v10 |= [PXPeopleFaceCropManager _isFinalForIsDegraded:degradedCopy isCropped:croppedCopy];
     }
   }
 
@@ -1423,57 +1423,57 @@ void __38__PXPeopleFaceCropManager__fetchQueue__block_invoke()
   return v10 & 1;
 }
 
-+ (double)_cornerRadiusForRoundedCornerStyleWithDisplayScale:(double)a3
++ (double)_cornerRadiusForRoundedCornerStyleWithDisplayScale:(double)scale
 {
   v4 = +[PXPeopleFaceCropFetchOptions shouldUseLemonadeRoundedCorners];
   result = 10.0;
   if (v4)
   {
     +[PXLemonadePeopleCellSpecsConstants cornerRadius];
-    return v6 * a3;
+    return v6 * scale;
   }
 
   return result;
 }
 
-+ (double)_cornerRadiusForCornerStyle:(int64_t)a3 pixelTargetSize:(CGSize)a4 displayScale:(double)a5
++ (double)_cornerRadiusForCornerStyle:(int64_t)style pixelTargetSize:(CGSize)size displayScale:(double)scale
 {
-  v5 = fmin(a4.width, a4.height);
-  v6 = v5 < 10.0 && a3 == 1;
-  v7 = 2;
+  v5 = fmin(size.width, size.height);
+  v6 = v5 < 10.0 && style == 1;
+  styleCopy = 2;
   if (!v6)
   {
-    v7 = a3;
+    styleCopy = style;
   }
 
-  if (v7 == 2)
+  if (styleCopy == 2)
   {
     return v5 * 0.5;
   }
 
   v8 = 0.0;
-  if (v7 == 1)
+  if (styleCopy == 1)
   {
-    [PXPeopleFaceCropManager roundedCornerRadiusForTargetSize:a4.width displayScale:a4.height, a5, 0.0];
+    [PXPeopleFaceCropManager roundedCornerRadiusForTargetSize:size.width displayScale:size.height, scale, 0.0];
     return result;
   }
 
   return v8;
 }
 
-+ (double)_cropFactorValueForCropFactor:(int64_t)a3
++ (double)_cropFactorValueForCropFactor:(int64_t)factor
 {
-  if (a3 == 1)
+  if (factor == 1)
   {
     return 7.19999981;
   }
 
-  if ((a3 - 2) < 2)
+  if ((factor - 2) < 2)
   {
     v13 = v4;
     v14 = v3;
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:a1 file:@"PXPeopleFaceCropManager.m" lineNumber:719 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPeopleFaceCropManager.m" lineNumber:719 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -1495,46 +1495,46 @@ void __38__PXPeopleFaceCropManager__fetchQueue__block_invoke()
   return result;
 }
 
-+ (BOOL)_shouldTakeSquareCropForFace:(id)a3 cropFactor:(int64_t)a4 outNormalizedFaceCropRect:(CGRect *)a5
++ (BOOL)_shouldTakeSquareCropForFace:(id)face cropFactor:(int64_t)factor outNormalizedFaceCropRect:(CGRect *)rect
 {
-  v7 = a3;
-  v8 = v7;
-  if (a4 < 2)
+  faceCopy = face;
+  v8 = faceCopy;
+  if (factor < 2)
   {
-    [PXPeopleFaceCropManager _cropFactorValueForCropFactor:a4];
+    [PXPeopleFaceCropManager _cropFactorValueForCropFactor:factor];
     [v8 px_cropRectWithCropFactor:?];
-    a5->origin.x = v9;
-    a5->origin.y = v10;
-    a5->size.width = v11;
-    a5->size.height = v12;
+    rect->origin.x = v9;
+    rect->origin.y = v10;
+    rect->size.width = v11;
+    rect->size.height = v12;
 LABEL_6:
-    LOBYTE(a5) = 1;
+    LOBYTE(rect) = 1;
     goto LABEL_8;
   }
 
-  if (a4 == 2)
+  if (factor == 2)
   {
-    LODWORD(a5) = [v7 px_cropRectForPortraitImage:a5] ^ 1;
+    LODWORD(rect) = [faceCopy px_cropRectForPortraitImage:rect] ^ 1;
     goto LABEL_8;
   }
 
-  if (a4 != 3)
+  if (factor != 3)
   {
     goto LABEL_6;
   }
 
-  [v7 px_cropRectForPortraitImage:a5];
-  LOBYTE(a5) = 0;
+  [faceCopy px_cropRectForPortraitImage:rect];
+  LOBYTE(rect) = 0;
 LABEL_8:
 
-  return a5;
+  return rect;
 }
 
-+ (double)roundedCornerRadiusForTargetSize:(CGSize)a3 displayScale:(double)a4
++ (double)roundedCornerRadiusForTargetSize:(CGSize)size displayScale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  [PXPeopleFaceCropManager _cornerRadiusForRoundedCornerStyleWithDisplayScale:a4];
+  height = size.height;
+  width = size.width;
+  [PXPeopleFaceCropManager _cornerRadiusForRoundedCornerStyleWithDisplayScale:scale];
   if (height >= width)
   {
     v7 = width;
@@ -1561,7 +1561,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = __40__PXPeopleFaceCropManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken_173889 != -1)
   {
     dispatch_once(&sharedManager_onceToken_173889, block);
@@ -1581,21 +1581,21 @@ void __40__PXPeopleFaceCropManager_sharedManager__block_invoke(uint64_t a1)
   sharedManager_sharedManager_173890 = v1;
 }
 
-- (int)requestFaceCropImageForPerson:(id)a3 targetSize:(CGSize)a4 displayScale:(double)a5 completionHandler:(id)a6
+- (int)requestFaceCropImageForPerson:(id)person targetSize:(CGSize)size displayScale:(double)scale completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a6;
-  v12 = a3;
-  v13 = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:v12 targetSize:width displayScale:height, a5];
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  personCopy = person;
+  scale = [[PXPeopleFaceCropFetchOptions alloc] initWithPerson:personCopy targetSize:width displayScale:height, scale];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __112__PXPeopleFaceCropManager_Convenience__requestFaceCropImageForPerson_targetSize_displayScale_completionHandler___block_invoke;
   v16[3] = &unk_1E774B680;
-  v17 = v11;
-  v14 = v11;
-  LODWORD(self) = [(PXPeopleFaceCropManager *)self requestFaceCropForOptions:v13 resultHandler:v16];
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  LODWORD(self) = [(PXPeopleFaceCropManager *)self requestFaceCropForOptions:scale resultHandler:v16];
 
   return self;
 }

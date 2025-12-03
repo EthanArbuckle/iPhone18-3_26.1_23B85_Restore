@@ -1,9 +1,9 @@
 @interface VCVideoSourceTokenManager
 + (id)sharedManager;
 - (VCVideoSourceTokenManager)init;
-- (_VCVideoSourceToken)createtokenForDeviceName:(id)a3 sourceType:(int)a4;
-- (_VCVideoSourceToken)tokenForDeviceName:(id)a3 sourceType:(int)a4;
-- (id)deviceNameForToken:(_VCVideoSourceToken)a3;
+- (_VCVideoSourceToken)createtokenForDeviceName:(id)name sourceType:(int)type;
+- (_VCVideoSourceToken)tokenForDeviceName:(id)name sourceType:(int)type;
+- (id)deviceNameForToken:(_VCVideoSourceToken)token;
 - (void)dealloc;
 @end
 
@@ -71,10 +71,10 @@ void __42__VCVideoSourceTokenManager_sharedManager__block_invoke()
   [(VCVideoSourceTokenManager *)&v3 dealloc];
 }
 
-- (_VCVideoSourceToken)createtokenForDeviceName:(id)a3 sourceType:(int)a4
+- (_VCVideoSourceToken)createtokenForDeviceName:(id)name sourceType:(int)type
 {
   *&v34[5] = *MEMORY[0x1E69E9840];
-  if (!a3 || (a4 - 5) <= 0xFFFFFFFB)
+  if (!name || (type - 5) <= 0xFFFFFFFB)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -89,9 +89,9 @@ void __42__VCVideoSourceTokenManager_sharedManager__block_invoke()
         v29 = 1024;
         v30 = 75;
         v31 = 1024;
-        v32 = a4;
+        typeCopy2 = type;
         v33 = 2112;
-        *v34 = a3;
+        *v34 = name;
         _os_log_error_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_ERROR, " [%s] %s:%d kVCVideoSourceTokenInvalid. type=%d, deviceName=%@", &v25, 0x2Cu);
       }
     }
@@ -99,9 +99,9 @@ void __42__VCVideoSourceTokenManager_sharedManager__block_invoke()
     goto LABEL_22;
   }
 
-  if ([(NSMutableDictionary *)self->_videoSourceTokens objectForKeyedSubscript:a3])
+  if ([(NSMutableDictionary *)self->_videoSourceTokens objectForKeyedSubscript:name])
   {
-    LODWORD(v7) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_videoSourceTokens objectForKeyedSubscript:{a3), "unsignedIntegerValue"}];
+    LODWORD(v7) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_videoSourceTokens objectForKeyedSubscript:{name), "unsignedIntegerValue"}];
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
       v8 = VRTraceErrorLogLevelToCSTR();
@@ -115,9 +115,9 @@ void __42__VCVideoSourceTokenManager_sharedManager__block_invoke()
         v29 = 1024;
         v30 = 81;
         v31 = 1024;
-        v32 = a4;
+        typeCopy2 = type;
         v33 = 2112;
-        *v34 = a3;
+        *v34 = name;
         v10 = " [%s] %s:%d sourceToken was created before. type=%d, deviceName=%@";
         v11 = v9;
         v12 = 44;
@@ -130,8 +130,8 @@ LABEL_7:
     return v7;
   }
 
-  v15 = self->_identifierSeeds[a4];
-  v7 = v15 & 0xFFFFFF | (a4 << 24);
+  v15 = self->_identifierSeeds[type];
+  v7 = v15 & 0xFFFFFF | (type << 24);
   if (v15 > 0xFFFFFE)
   {
     if (VRTraceGetErrorLogLevelForModule() < 5)
@@ -153,9 +153,9 @@ LABEL_7:
         v29 = 1024;
         v30 = 92;
         v31 = 1024;
-        v32 = 0xFFFFFF;
+        typeCopy2 = 0xFFFFFF;
         v33 = 1024;
-        v34[0] = a4;
+        v34[0] = type;
         LOWORD(v34[1]) = 1024;
         *(&v34[1] + 2) = 1;
         _os_log_impl(&dword_1DB56E000, v18, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Reached VCVIDEOSOURCETOKEN_MAX_IDENTIFIER=0x%x, reset _identifierSeeds %d to %d", &v25, 0x2Eu);
@@ -168,9 +168,9 @@ LABEL_7:
     v16 = v15 + 1;
   }
 
-  self->_identifierSeeds[a4] = v16;
+  self->_identifierSeeds[type] = v16;
   v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v7];
-  if ([(NSMutableDictionary *)self->_sourceNames objectForKeyedSubscript:v19]|| [(NSMutableDictionary *)self->_videoSourceTokens objectForKeyedSubscript:a3])
+  if ([(NSMutableDictionary *)self->_sourceNames objectForKeyedSubscript:v19]|| [(NSMutableDictionary *)self->_videoSourceTokens objectForKeyedSubscript:name])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
     {
@@ -185,9 +185,9 @@ LABEL_7:
         v29 = 1024;
         v30 = 99;
         v31 = 1024;
-        v32 = v7;
+        typeCopy2 = v7;
         v33 = 2112;
-        *v34 = a3;
+        *v34 = name;
         _os_log_impl(&dword_1DB56E000, v21, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d sourceToken(0x%x) deviceName (%@) was in look up table _sourceNames. Either token is colliding ,or VCVideoSourceType is not correct", &v25, 0x2Cu);
       }
     }
@@ -197,8 +197,8 @@ LABEL_22:
     return v7;
   }
 
-  [(NSMutableDictionary *)self->_sourceNames setObject:a3 forKeyedSubscript:v19];
-  [(NSMutableDictionary *)self->_videoSourceTokens setObject:v19 forKeyedSubscript:a3];
+  [(NSMutableDictionary *)self->_sourceNames setObject:name forKeyedSubscript:v19];
+  [(NSMutableDictionary *)self->_videoSourceTokens setObject:v19 forKeyedSubscript:name];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v23 = VRTraceErrorLogLevelToCSTR();
@@ -212,11 +212,11 @@ LABEL_22:
       v29 = 1024;
       v30 = 106;
       v31 = 1024;
-      v32 = v7;
+      typeCopy2 = v7;
       v33 = 1024;
-      v34[0] = a4;
+      v34[0] = type;
       LOWORD(v34[1]) = 2112;
-      *(&v34[1] + 2) = a3;
+      *(&v34[1] + 2) = name;
       v10 = " [%s] %s:%d Created sourceToken=0x%x, type=%d, deviceName=%@";
       v11 = v24;
       v12 = 50;
@@ -227,7 +227,7 @@ LABEL_22:
   return v7;
 }
 
-- (_VCVideoSourceToken)tokenForDeviceName:(id)a3 sourceType:(int)a4
+- (_VCVideoSourceToken)tokenForDeviceName:(id)name sourceType:(int)type
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -241,9 +241,9 @@ LABEL_22:
   v7[2] = __59__VCVideoSourceTokenManager_tokenForDeviceName_sourceType___block_invoke;
   v7[3] = &unk_1E85F6180;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = name;
   v7[6] = &v9;
-  v8 = a4;
+  typeCopy = type;
   dispatch_sync(tokenManagerQueue, v7);
   v5.var0.var0 = *(v10 + 8);
   _Block_object_dispose(&v9, 8);
@@ -268,7 +268,7 @@ uint64_t __59__VCVideoSourceTokenManager_tokenForDeviceName_sourceType___block_i
   return result;
 }
 
-- (id)deviceNameForToken:(_VCVideoSourceToken)a3
+- (id)deviceNameForToken:(_VCVideoSourceToken)token
 {
   v14 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -282,7 +282,7 @@ uint64_t __59__VCVideoSourceTokenManager_tokenForDeviceName_sourceType___block_i
   v6[1] = 3221225472;
   v6[2] = __48__VCVideoSourceTokenManager_deviceNameForToken___block_invoke;
   v6[3] = &unk_1E85F61A8;
-  var0 = a3.var0.var0;
+  var0 = token.var0.var0;
   v6[4] = self;
   v6[5] = &v8;
   dispatch_sync(tokenManagerQueue, v6);

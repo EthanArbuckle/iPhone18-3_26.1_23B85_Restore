@@ -1,28 +1,28 @@
 @interface WiFiAnalyticsManager
 + (id)sharedWiFiAnalyticsManager;
-- (BOOL)isHighCongestionNetwork:(__WiFiNetwork *)a3;
-- (BOOL)isMovingNetwork:(__WiFiNetwork *)a3;
+- (BOOL)isHighCongestionNetwork:(__WiFiNetwork *)network;
+- (BOOL)isMovingNetwork:(__WiFiNetwork *)network;
 - (BOOL)isNetworkTraitsCacheValid;
-- (BOOL)isOmnipresentNetwork:(__WiFiNetwork *)a3;
-- (BOOL)isPoorCoverageNetwork:(__WiFiNetwork *)a3;
+- (BOOL)isOmnipresentNetwork:(__WiFiNetwork *)network;
+- (BOOL)isPoorCoverageNetwork:(__WiFiNetwork *)network;
 - (WADeviceAnalyticsClient)deviceAnalyticsClient;
 - (WiFiAnalyticsManager)init;
-- (__WiFiNetwork)_copyCreateEquivalentWiFiNetwork:(id)a3 authFlags:(int64_t)a4;
+- (__WiFiNetwork)_copyCreateEquivalentWiFiNetwork:(id)network authFlags:(int64_t)flags;
 - (id)copyAllStoredNetworkSsids;
-- (id)copyGeoTagsForNetworkAtLocation:(__WiFiNetwork *)a3 location:(id)a4;
-- (id)copyLanForNetwork:(__CFString *)a3 isBSSID:(BOOL)a4;
-- (id)copyNetworksInSameLanAs:(__WiFiNetwork *)a3;
-- (id)copyNetworksWithNetworkSignature:(__CFString *)a3 ipv6NetworkSignature:(__CFString *)a4;
-- (id)copyPreferenceScoreDictionaryForNetwork:(__WiFiNetwork *)a3;
-- (id)copyScoreSortedNetworksAvailableAtLocation:(id)a3;
-- (id)higherBandNetworksAvailableAtLocation:(id)a3;
-- (id)networksAvailableAtLocation:(id)a3;
-- (unint64_t)countNetworksAvailableAtLocation:(id)a3;
-- (unint64_t)countNetworksInSameLanAs:(__WiFiNetwork *)a3;
-- (unint64_t)isWithin:(double)a3 fromLocation:(id)a4 forNetwork:(__WiFiNetwork *)a5;
-- (unsigned)getColocatedStateFromPreferenceScoreDictionary:(id)a3;
-- (void)getAdaptiveRoamParams:(__CFString *)a3 ssid:(__CFString *)a4;
-- (void)setWiFiManager:(__WiFiManager *)a3;
+- (id)copyGeoTagsForNetworkAtLocation:(__WiFiNetwork *)location location:(id)a4;
+- (id)copyLanForNetwork:(__CFString *)network isBSSID:(BOOL)d;
+- (id)copyNetworksInSameLanAs:(__WiFiNetwork *)as;
+- (id)copyNetworksWithNetworkSignature:(__CFString *)signature ipv6NetworkSignature:(__CFString *)networkSignature;
+- (id)copyPreferenceScoreDictionaryForNetwork:(__WiFiNetwork *)network;
+- (id)copyScoreSortedNetworksAvailableAtLocation:(id)location;
+- (id)higherBandNetworksAvailableAtLocation:(id)location;
+- (id)networksAvailableAtLocation:(id)location;
+- (unint64_t)countNetworksAvailableAtLocation:(id)location;
+- (unint64_t)countNetworksInSameLanAs:(__WiFiNetwork *)as;
+- (unint64_t)isWithin:(double)within fromLocation:(id)location forNetwork:(__WiFiNetwork *)network;
+- (unsigned)getColocatedStateFromPreferenceScoreDictionary:(id)dictionary;
+- (void)getAdaptiveRoamParams:(__CFString *)params ssid:(__CFString *)ssid;
+- (void)setWiFiManager:(__WiFiManager *)manager;
 - (void)updateNetworkTraitsCache;
 @end
 
@@ -72,9 +72,9 @@
       {
         if (off_100298C40)
         {
-          v9 = [(WADeviceAnalyticsClient *)self->_deviceAnalyticsClient storeLoaded];
+          storeLoaded = [(WADeviceAnalyticsClient *)self->_deviceAnalyticsClient storeLoaded];
           v10 = @"NO";
-          if (v9)
+          if (storeLoaded)
           {
             v10 = @"YES";
           }
@@ -105,13 +105,13 @@
 
 - (BOOL)isNetworkTraitsCacheValid
 {
-  v3 = [(WiFiAnalyticsManager *)self dateTraitCachesUpdated];
+  dateTraitCachesUpdated = [(WiFiAnalyticsManager *)self dateTraitCachesUpdated];
 
-  if (v3)
+  if (dateTraitCachesUpdated)
   {
     v4 = +[NSDate date];
-    v5 = [(WiFiAnalyticsManager *)self dateTraitCachesUpdated];
-    [v4 timeIntervalSinceDate:v5];
+    dateTraitCachesUpdated2 = [(WiFiAnalyticsManager *)self dateTraitCachesUpdated];
+    [v4 timeIntervalSinceDate:dateTraitCachesUpdated2];
     v7 = v6;
 
     v8 = objc_autoreleasePoolPush();
@@ -150,11 +150,11 @@
   v6[2] = 0x3032000000;
   v6[3] = sub_100002B10;
   v6[4] = sub_10000673C;
-  v2 = self;
-  v7 = v2;
-  v3 = [(WiFiAnalyticsManager *)v2 deviceAnalyticsClient];
+  selfCopy = self;
+  v7 = selfCopy;
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)selfCopy deviceAnalyticsClient];
 
-  if (!v3)
+  if (!deviceAnalyticsClient)
   {
     v4 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -165,7 +165,7 @@
     goto LABEL_9;
   }
 
-  if ([(WiFiAnalyticsManager *)v2 traitsCacheUpdateBusy])
+  if ([(WiFiAnalyticsManager *)selfCopy traitsCacheUpdateBusy])
   {
     v4 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -178,12 +178,12 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  [(WiFiAnalyticsManager *)v2 setTraitsCacheUpdateBusy:1];
+  [(WiFiAnalyticsManager *)selfCopy setTraitsCacheUpdateBusy:1];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002A6EC;
   block[3] = &unk_10025EB70;
-  block[4] = v2;
+  block[4] = selfCopy;
   block[5] = v6;
   dispatch_async(qword_100298C50, block);
 LABEL_4:
@@ -234,9 +234,9 @@ LABEL_4:
   return v3;
 }
 
-- (void)setWiFiManager:(__WiFiManager *)a3
+- (void)setWiFiManager:(__WiFiManager *)manager
 {
-  if (a3)
+  if (manager)
   {
     [(WiFiAnalyticsManager *)self setWifiManager:?];
     Current = CFAbsoluteTimeGetCurrent();
@@ -250,11 +250,11 @@ LABEL_4:
   }
 }
 
-- (__WiFiNetwork)_copyCreateEquivalentWiFiNetwork:(id)a3 authFlags:(int64_t)a4
+- (__WiFiNetwork)_copyCreateEquivalentWiFiNetwork:(id)network authFlags:(int64_t)flags
 {
-  v4 = a4;
-  v5 = a3;
-  if (!v5)
+  flagsCopy = flags;
+  networkCopy = network;
+  if (!networkCopy)
   {
     sub_100138630();
 LABEL_15:
@@ -270,25 +270,25 @@ LABEL_15:
   }
 
   v7 = Mutable;
-  CFDictionarySetValue(Mutable, @"SSID_STR", v5);
+  CFDictionarySetValue(Mutable, @"SSID_STR", networkCopy);
   v8 = sub_10000AD2C(kCFAllocatorDefault, v7);
   v9 = v8;
-  if ((v4 & 8) != 0)
+  if ((flagsCopy & 8) != 0)
   {
     sub_10009F0A0(v8, 1);
   }
 
-  else if (v4)
+  else if (flagsCopy)
   {
     sub_10009EF54(v8, 1);
   }
 
-  else if ((v4 & 4) != 0)
+  else if ((flagsCopy & 4) != 0)
   {
-    sub_10009E158(v8, 1, v4 & 2);
+    sub_10009E158(v8, 1, flagsCopy & 2);
   }
 
-  else if ((v4 & 2) != 0)
+  else if ((flagsCopy & 2) != 0)
   {
     sub_10009E2E4(v8, 1);
   }
@@ -300,9 +300,9 @@ LABEL_12:
   return v9;
 }
 
-- (void)getAdaptiveRoamParams:(__CFString *)a3 ssid:(__CFString *)a4
+- (void)getAdaptiveRoamParams:(__CFString *)params ssid:(__CFString *)ssid
 {
-  v5 = a3;
+  paramsCopy = params;
   if ([(WiFiAnalyticsManager *)self roamParamsQueryPending])
   {
     sub_10013869C();
@@ -317,28 +317,28 @@ LABEL_12:
     v7[2] = sub_100039E08;
     v7[3] = &unk_10025EB00;
     v7[4] = self;
-    v8 = v5;
+    v8 = paramsCopy;
     dispatch_async(v6, v7);
   }
 }
 
-- (id)higherBandNetworksAvailableAtLocation:(id)a3
+- (id)higherBandNetworksAvailableAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  locationCopy = location;
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (v5)
+  if (deviceAnalyticsClient)
   {
-    if (v4)
+    if (locationCopy)
     {
-      v6 = [v4 timestamp];
-      v5 = v6;
-      if (v6)
+      timestamp = [locationCopy timestamp];
+      deviceAnalyticsClient = timestamp;
+      if (timestamp)
       {
-        [v6 timeIntervalSinceNow];
+        [timestamp timeIntervalSinceNow];
         if (v7 > -120.0)
         {
-          v8 = [(WiFiAnalyticsManager *)self networksAvailableAtLocation:v4 withinDistance:2 inBand:dbl_1001CE030[v7 > -60.0]];
+          v8 = [(WiFiAnalyticsManager *)self networksAvailableAtLocation:locationCopy withinDistance:2 inBand:dbl_1001CE030[v7 > -60.0]];
           goto LABEL_6;
         }
 
@@ -354,7 +354,7 @@ LABEL_12:
     else
     {
       sub_100138990();
-      v5 = 0;
+      deviceAnalyticsClient = 0;
     }
   }
 
@@ -369,12 +369,12 @@ LABEL_6:
   return v8;
 }
 
-- (unint64_t)isWithin:(double)a3 fromLocation:(id)a4 forNetwork:(__WiFiNetwork *)a5
+- (unint64_t)isWithin:(double)within fromLocation:(id)location forNetwork:(__WiFiNetwork *)network
 {
-  v8 = a4;
-  v9 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  locationCopy = location;
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v9)
+  if (!deviceAnalyticsClient)
   {
     sub_100138B40();
 LABEL_9:
@@ -382,13 +382,13 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!v8)
+  if (!locationCopy)
   {
     sub_100138AD4();
     goto LABEL_9;
   }
 
-  v10 = sub_10000A878(a5);
+  v10 = sub_10000A878(network);
   if (!v10)
   {
     sub_100138A68();
@@ -396,16 +396,16 @@ LABEL_9:
   }
 
   v11 = v10;
-  v12 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
-  v13 = [v12 isNetworkWithinRangeOfLocation:v11 range:v8 location:a3];
+  deviceAnalyticsClient2 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  v13 = [deviceAnalyticsClient2 isNetworkWithinRangeOfLocation:v11 range:locationCopy location:within];
 
 LABEL_5:
   return v13;
 }
 
-- (id)copyScoreSortedNetworksAvailableAtLocation:(id)a3
+- (id)copyScoreSortedNetworksAvailableAtLocation:(id)location
 {
-  v3 = a3;
+  locationCopy = location;
   v4 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -417,7 +417,7 @@ LABEL_5:
   return 0;
 }
 
-- (id)copyPreferenceScoreDictionaryForNetwork:(__WiFiNetwork *)a3
+- (id)copyPreferenceScoreDictionaryForNetwork:(__WiFiNetwork *)network
 {
   v3 = objc_autoreleasePoolPush();
   if (off_100298C40)
@@ -429,9 +429,9 @@ LABEL_5:
   return 0;
 }
 
-- (unsigned)getColocatedStateFromPreferenceScoreDictionary:(id)a3
+- (unsigned)getColocatedStateFromPreferenceScoreDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -443,12 +443,12 @@ LABEL_5:
   return 0;
 }
 
-- (unint64_t)countNetworksAvailableAtLocation:(id)a3
+- (unint64_t)countNetworksAvailableAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  locationCopy = location;
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v5)
+  if (!deviceAnalyticsClient)
   {
     sub_100138C18();
 LABEL_7:
@@ -456,28 +456,28 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  if (!v4)
+  if (!locationCopy)
   {
     sub_100138BAC();
     goto LABEL_7;
   }
 
-  v6 = [(WiFiAnalyticsManager *)self countNetworksAvailableAtLocation:v4 withinDistance:0 inBand:300.0];
+  v6 = [(WiFiAnalyticsManager *)self countNetworksAvailableAtLocation:locationCopy withinDistance:0 inBand:300.0];
 LABEL_4:
 
   return v6;
 }
 
-- (id)networksAvailableAtLocation:(id)a3
+- (id)networksAvailableAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  locationCopy = location;
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (v5)
+  if (deviceAnalyticsClient)
   {
-    if (v4)
+    if (locationCopy)
     {
-      v6 = [(WiFiAnalyticsManager *)self networksAvailableAtLocation:v4 withinDistance:0 inBand:300.0];
+      v6 = [(WiFiAnalyticsManager *)self networksAvailableAtLocation:locationCopy withinDistance:0 inBand:300.0];
       goto LABEL_4;
     }
 
@@ -495,21 +495,21 @@ LABEL_4:
   return v6;
 }
 
-- (id)copyGeoTagsForNetworkAtLocation:(__WiFiNetwork *)a3 location:(id)a4
+- (id)copyGeoTagsForNetworkAtLocation:(__WiFiNetwork *)location location:(id)a4
 {
   v6 = a4;
-  v7 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v7)
+  if (!deviceAnalyticsClient)
   {
     sub_100138EA0();
 LABEL_10:
     v9 = 0;
-    a3 = 0;
+    location = 0;
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!location)
   {
     sub_100138E34();
 LABEL_12:
@@ -523,39 +523,39 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  a3 = sub_10000A878(a3);
-  if (!a3)
+  location = sub_10000A878(location);
+  if (!location)
   {
     sub_100138D5C();
     goto LABEL_12;
   }
 
-  v8 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
-  v9 = [v8 copyGeoTagsForNetwork:a3 location:v6];
+  deviceAnalyticsClient2 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  v9 = [deviceAnalyticsClient2 copyGeoTagsForNetwork:location location:v6];
 
 LABEL_6:
   return v9;
 }
 
-- (BOOL)isMovingNetwork:(__WiFiNetwork *)a3
+- (BOOL)isMovingNetwork:(__WiFiNetwork *)network
 {
-  v5 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v5)
+  if (!deviceAnalyticsClient)
   {
     sub_100139048();
     v7 = 0;
-    a3 = 0;
+    network = 0;
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!network)
   {
     sub_100138FDC();
     goto LABEL_7;
   }
 
-  a3 = sub_10000A878(a3);
+  network = sub_10000A878(network);
   if (![(WiFiAnalyticsManager *)self isNetworkTraitsCacheValid])
   {
 LABEL_7:
@@ -563,32 +563,32 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(WiFiAnalyticsManager *)self movingNetworkSsidsCache];
-  v7 = [v6 containsObject:a3];
+  movingNetworkSsidsCache = [(WiFiAnalyticsManager *)self movingNetworkSsidsCache];
+  v7 = [movingNetworkSsidsCache containsObject:network];
 
 LABEL_8:
   return v7;
 }
 
-- (BOOL)isOmnipresentNetwork:(__WiFiNetwork *)a3
+- (BOOL)isOmnipresentNetwork:(__WiFiNetwork *)network
 {
-  v5 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v5)
+  if (!deviceAnalyticsClient)
   {
     sub_100139120();
     v7 = 0;
-    a3 = 0;
+    network = 0;
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!network)
   {
     sub_1001390B4();
     goto LABEL_7;
   }
 
-  a3 = sub_10000A878(a3);
+  network = sub_10000A878(network);
   if (![(WiFiAnalyticsManager *)self isNetworkTraitsCacheValid])
   {
 LABEL_7:
@@ -596,32 +596,32 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(WiFiAnalyticsManager *)self omnipresentNetworkSsidsCache];
-  v7 = [v6 containsObject:a3];
+  omnipresentNetworkSsidsCache = [(WiFiAnalyticsManager *)self omnipresentNetworkSsidsCache];
+  v7 = [omnipresentNetworkSsidsCache containsObject:network];
 
 LABEL_8:
   return v7;
 }
 
-- (BOOL)isPoorCoverageNetwork:(__WiFiNetwork *)a3
+- (BOOL)isPoorCoverageNetwork:(__WiFiNetwork *)network
 {
-  v5 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v5)
+  if (!deviceAnalyticsClient)
   {
     sub_1001391F8();
     v7 = 0;
-    a3 = 0;
+    network = 0;
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!network)
   {
     sub_10013918C();
     goto LABEL_7;
   }
 
-  a3 = sub_10000A878(a3);
+  network = sub_10000A878(network);
   if (![(WiFiAnalyticsManager *)self isNetworkTraitsCacheValid])
   {
 LABEL_7:
@@ -629,32 +629,32 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(WiFiAnalyticsManager *)self poorCoverageNetworkSsidsCache];
-  v7 = [v6 containsObject:a3];
+  poorCoverageNetworkSsidsCache = [(WiFiAnalyticsManager *)self poorCoverageNetworkSsidsCache];
+  v7 = [poorCoverageNetworkSsidsCache containsObject:network];
 
 LABEL_8:
   return v7;
 }
 
-- (BOOL)isHighCongestionNetwork:(__WiFiNetwork *)a3
+- (BOOL)isHighCongestionNetwork:(__WiFiNetwork *)network
 {
-  v5 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v5)
+  if (!deviceAnalyticsClient)
   {
     sub_1001392D0();
     v7 = 0;
-    a3 = 0;
+    network = 0;
     goto LABEL_8;
   }
 
-  if (!a3)
+  if (!network)
   {
     sub_100139264();
     goto LABEL_7;
   }
 
-  a3 = sub_10000A878(a3);
+  network = sub_10000A878(network);
   if (![(WiFiAnalyticsManager *)self isNetworkTraitsCacheValid])
   {
 LABEL_7:
@@ -662,8 +662,8 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(WiFiAnalyticsManager *)self highCongestionNetworkSsidsCache];
-  v7 = [v6 containsObject:a3];
+  highCongestionNetworkSsidsCache = [(WiFiAnalyticsManager *)self highCongestionNetworkSsidsCache];
+  v7 = [highCongestionNetworkSsidsCache containsObject:network];
 
 LABEL_8:
   return v7;
@@ -671,14 +671,14 @@ LABEL_8:
 
 - (id)copyAllStoredNetworkSsids
 {
-  v3 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (v3)
+  if (deviceAnalyticsClient)
   {
-    v4 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
-    v5 = [v4 copyAllStoredNetworkSsids];
+    deviceAnalyticsClient2 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+    copyAllStoredNetworkSsids = [deviceAnalyticsClient2 copyAllStoredNetworkSsids];
 
-    return v5;
+    return copyAllStoredNetworkSsids;
   }
 
   else
@@ -688,23 +688,23 @@ LABEL_8:
   }
 }
 
-- (unint64_t)countNetworksInSameLanAs:(__WiFiNetwork *)a3
+- (unint64_t)countNetworksInSameLanAs:(__WiFiNetwork *)as
 {
-  if (!a3)
+  if (!as)
   {
     sub_100139480();
     return 0;
   }
 
-  v5 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v5)
+  if (!deviceAnalyticsClient)
   {
     sub_100139414();
     return 0;
   }
 
-  v6 = sub_10000A878(a3);
+  v6 = sub_10000A878(as);
   if (!v6)
   {
     sub_1001393A8();
@@ -724,52 +724,52 @@ LABEL_8:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Calling deviceAnalyticsClient countNetworksInSameLanAs:%@", &v12, 0x1Cu);
   }
 
-  v9 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
-  v10 = [v9 countNetworksInSameLanAs:v7 withError:0];
+  deviceAnalyticsClient2 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  v10 = [deviceAnalyticsClient2 countNetworksInSameLanAs:v7 withError:0];
 
   return v10;
 }
 
-- (id)copyNetworksInSameLanAs:(__WiFiNetwork *)a3
+- (id)copyNetworksInSameLanAs:(__WiFiNetwork *)as
 {
-  v3 = a3;
-  if (!a3)
+  asCopy = as;
+  if (!as)
   {
     sub_1001395C4();
 LABEL_12:
     v7 = 0;
-    v5 = 0;
+    deviceAnalyticsClient = 0;
     goto LABEL_8;
   }
 
-  v5 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v5)
+  if (!deviceAnalyticsClient)
   {
     sub_100139558();
     v7 = 0;
-    v3 = 0;
+    asCopy = 0;
     goto LABEL_8;
   }
 
-  v3 = sub_10000A878(v3);
-  if (!v3)
+  asCopy = sub_10000A878(asCopy);
+  if (!asCopy)
   {
     sub_1001394EC();
     goto LABEL_12;
   }
 
-  v6 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient2 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
   v11 = 0;
-  v7 = [v6 networksInSameLanAs:v3 withError:&v11];
-  v5 = v11;
+  v7 = [deviceAnalyticsClient2 networksInSameLanAs:asCopy withError:&v11];
+  deviceAnalyticsClient = v11;
 
-  if (v5)
+  if (deviceAnalyticsClient)
   {
     v8 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:4 message:{"%s: deviceAnalyticsClient networksInSameLanAs failed with error: %@", "-[WiFiAnalyticsManager copyNetworksInSameLanAs:]", v5}];
+      [off_100298C40 WFLog:4 message:{"%s: deviceAnalyticsClient networksInSameLanAs failed with error: %@", "-[WiFiAnalyticsManager copyNetworksInSameLanAs:]", deviceAnalyticsClient}];
     }
 
     objc_autoreleasePoolPop(v8);
@@ -781,20 +781,20 @@ LABEL_8:
   return v9;
 }
 
-- (id)copyNetworksWithNetworkSignature:(__CFString *)a3 ipv6NetworkSignature:(__CFString *)a4
+- (id)copyNetworksWithNetworkSignature:(__CFString *)signature ipv6NetworkSignature:(__CFString *)networkSignature
 {
-  if (!(a3 | a4))
+  if (!(signature | networkSignature))
   {
     sub_10013971C();
     v9 = 0;
     v10 = 0;
-    v7 = 0;
+    deviceAnalyticsClient = 0;
     goto LABEL_8;
   }
 
-  v7 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v7)
+  if (!deviceAnalyticsClient)
   {
     sub_1001396B0();
 LABEL_12:
@@ -803,16 +803,16 @@ LABEL_12:
     goto LABEL_8;
   }
 
-  v7 = [WADeviceAnalytics_DHCPServerInfo dhcpServerInfoWithv4Signature:a3 v6Signature:a4];
-  if (!v7)
+  deviceAnalyticsClient = [WADeviceAnalytics_DHCPServerInfo dhcpServerInfoWithv4Signature:signature v6Signature:networkSignature];
+  if (!deviceAnalyticsClient)
   {
-    sub_100139630(a3, a4);
+    sub_100139630(signature, networkSignature);
     goto LABEL_12;
   }
 
-  v8 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  deviceAnalyticsClient2 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
   v14 = 0;
-  v9 = [v8 networksInLan:v7 withError:&v14];
+  v9 = [deviceAnalyticsClient2 networksInLan:deviceAnalyticsClient withError:&v14];
   v10 = v14;
 
   if (v10)
@@ -832,10 +832,10 @@ LABEL_8:
   return v12;
 }
 
-- (id)copyLanForNetwork:(__CFString *)a3 isBSSID:(BOOL)a4
+- (id)copyLanForNetwork:(__CFString *)network isBSSID:(BOOL)d
 {
-  v4 = a3;
-  if (!a3)
+  networkCopy = network;
+  if (!network)
   {
     sub_1001397F4();
 LABEL_13:
@@ -843,33 +843,33 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  v5 = a4;
-  v7 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  dCopy = d;
+  deviceAnalyticsClient = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
 
-  if (!v7)
+  if (!deviceAnalyticsClient)
   {
     sub_100139788();
-    v4 = 0;
+    networkCopy = 0;
     goto LABEL_13;
   }
 
-  v8 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
-  v9 = v8;
-  if (v5)
+  deviceAnalyticsClient2 = [(WiFiAnalyticsManager *)self deviceAnalyticsClient];
+  v9 = deviceAnalyticsClient2;
+  if (dCopy)
   {
     v16 = 0;
     v10 = &v16;
-    v11 = [v8 lanForBssid:v4 withError:&v16];
+    v11 = [deviceAnalyticsClient2 lanForBssid:networkCopy withError:&v16];
   }
 
   else
   {
     v15 = 0;
     v10 = &v15;
-    v11 = [v8 lanForSsid:v4 withError:&v15];
+    v11 = [deviceAnalyticsClient2 lanForSsid:networkCopy withError:&v15];
   }
 
-  v4 = v11;
+  networkCopy = v11;
   v12 = *v10;
 
   if (v12)
@@ -885,7 +885,7 @@ LABEL_13:
 
 LABEL_10:
 
-  return v4;
+  return networkCopy;
 }
 
 @end

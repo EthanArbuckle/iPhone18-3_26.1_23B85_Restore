@@ -81,10 +81,10 @@ LABEL_31:
               }
 
               v17 = *(*(&v28 + 1) + 8 * j);
-              v18 = [v17 intValue];
-              if (v18)
+              intValue = [v17 intValue];
+              if (intValue)
               {
-                v19 = [MEMORY[0x1E69DB550] namespaceNameFromId:v18];
+                v19 = [MEMORY[0x1E69DB550] namespaceNameFromId:intValue];
                 [v4 addObject:v19];
               }
 

@@ -1,16 +1,16 @@
 @interface GoalTimePickerCollectionViewCell
-- (_TtC13SleepHealthUI32GoalTimePickerCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI32GoalTimePickerCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI32GoalTimePickerCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI32GoalTimePickerCollectionViewCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GoalTimePickerCollectionViewCell
 
-- (_TtC13SleepHealthUI32GoalTimePickerCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI32GoalTimePickerCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_269D9A8E0();
   sub_269D9A8D0();
   sub_269D9A880();
@@ -24,7 +24,7 @@
   return v7;
 }
 
-- (_TtC13SleepHealthUI32GoalTimePickerCollectionViewCell)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI32GoalTimePickerCollectionViewCell)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -34,7 +34,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = sub_269CC14B4(a3);
+  v4 = sub_269CC14B4(coder);
 
   return v4;
 }

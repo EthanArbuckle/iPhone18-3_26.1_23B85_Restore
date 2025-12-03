@@ -1,8 +1,8 @@
 @interface JSCryptoObject
 - (_TtC9JetEngine14JSCryptoObject)init;
-- (id)base64Decode:(id)a3;
-- (id)base64Encode:(id)a3;
-- (id)hash:(id)a3 :(id)a4;
+- (id)base64Decode:(id)decode;
+- (id)base64Encode:(id)encode;
+- (id)hash:(id)hash :(id)a4;
 @end
 
 @implementation JSCryptoObject
@@ -14,30 +14,30 @@
   return [(JSCryptoObject *)&v3 init];
 }
 
-- (id)hash:(id)a3 :(id)a4
+- (id)hash:(id)hash :(id)a4
 {
-  v6 = a3;
+  hashCopy = hash;
   v7 = a4;
-  v8 = self;
-  v9 = sub_1AB3FE914(v6, v7);
+  selfCopy = self;
+  v9 = sub_1AB3FE914(hashCopy, v7);
 
   return v9;
 }
 
-- (id)base64Encode:(id)a3
+- (id)base64Encode:(id)encode
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB3FEA80(v4);
+  encodeCopy = encode;
+  selfCopy = self;
+  v6 = sub_1AB3FEA80(encodeCopy);
 
   return v6;
 }
 
-- (id)base64Decode:(id)a3
+- (id)base64Decode:(id)decode
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AB3FED00(v4);
+  decodeCopy = decode;
+  selfCopy = self;
+  v6 = sub_1AB3FED00(decodeCopy);
 
   return v6;
 }

@@ -1,6 +1,6 @@
 @interface REResourceRequestOptions
 - (REResourceRequestOptions)init;
-- (REResourceRequestOptions)initWithCoder:(id)a3;
+- (REResourceRequestOptions)initWithCoder:(id)coder;
 @end
 
 @implementation REResourceRequestOptions
@@ -12,7 +12,7 @@
   return [(REResourceRequestOptions *)&v3 init];
 }
 
-- (REResourceRequestOptions)initWithCoder:(id)a3
+- (REResourceRequestOptions)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = REResourceRequestOptions;

@@ -1,26 +1,26 @@
 @interface TransferNavigationController
 - (MailScene)scene;
-- (TransferNavigationController)initWithMessages:(id)a3 scene:(id)a4 options:(unint64_t)a5;
-- (void)purgeMemoryForReason:(int)a3;
+- (TransferNavigationController)initWithMessages:(id)messages scene:(id)scene options:(unint64_t)options;
+- (void)purgeMemoryForReason:(int)reason;
 - (void)updatePrompt;
 @end
 
 @implementation TransferNavigationController
 
-- (TransferNavigationController)initWithMessages:(id)a3 scene:(id)a4 options:(unint64_t)a5
+- (TransferNavigationController)initWithMessages:(id)messages scene:(id)scene options:(unint64_t)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [[TransferMailboxPickerController alloc] initWithItems:v7 scene:v8];
+  messagesCopy = messages;
+  sceneCopy = scene;
+  v9 = [[TransferMailboxPickerController alloc] initWithItems:messagesCopy scene:sceneCopy];
   v13.receiver = self;
   v13.super_class = TransferNavigationController;
   v10 = [(TransferNavigationController *)&v13 initWithRootViewController:v9];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_scene, v8);
+    objc_storeWeak(&v10->_scene, sceneCopy);
     objc_storeStrong(&v11->_mailboxPickerController, v9);
-    v11->_multipleMessages = [v7 count] > 1;
+    v11->_multipleMessages = [messagesCopy count] > 1;
     [(TransferNavigationController *)v11 updatePrompt];
   }
 
@@ -29,11 +29,11 @@
 
 - (void)updatePrompt
 {
-  v3 = [(TransferNavigationController *)self scene];
-  v4 = [v3 interfaceOrientation];
+  scene = [(TransferNavigationController *)self scene];
+  interfaceOrientation = [scene interfaceOrientation];
 
   v5 = 0;
-  if ((+[UIDevice mf_isPadIdiom]& 1) == 0 && (v4 - 3) >= 0xFFFFFFFFFFFFFFFELL)
+  if ((+[UIDevice mf_isPadIdiom]& 1) == 0 && (interfaceOrientation - 3) >= 0xFFFFFFFFFFFFFFFELL)
   {
     multipleMessages = self->_multipleMessages;
     v7 = +[NSBundle mainBundle];
@@ -56,10 +56,10 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = [(TransferNavigationController *)self navigationBar];
-  v11 = [v10 items];
+  navigationBar = [(TransferNavigationController *)self navigationBar];
+  items = [navigationBar items];
 
-  v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v12 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v12)
   {
     v13 = *v16;
@@ -70,7 +70,7 @@
       {
         if (*v16 != v13)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(items);
         }
 
         [*(*(&v15 + 1) + 8 * v14) setPrompt:v5];
@@ -78,7 +78,7 @@
       }
 
       while (v12 != v14);
-      v12 = [v11 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v12 = [items countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v12);
@@ -87,9 +87,9 @@
   [UIView setAnimationsEnabled:v9];
 }
 
-- (void)purgeMemoryForReason:(int)a3
+- (void)purgeMemoryForReason:(int)reason
 {
-  v3 = *&a3;
+  v3 = *&reason;
   v5 = +[UIDevice mf_isPadIdiom];
   if (v3 == 1 || (v5 & 1) == 0)
   {

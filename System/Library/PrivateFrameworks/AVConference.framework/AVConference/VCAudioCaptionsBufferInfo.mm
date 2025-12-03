@@ -1,14 +1,14 @@
 @interface VCAudioCaptionsBufferInfo
 - (AudioStreamBasicDescription)format;
-- (BOOL)isEqual:(id)a3;
-- (VCAudioCaptionsBufferInfo)initWithStreamConfig:(const tagVCAudioCaptionsStreamConfig *)a3 bufferLength:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (VCAudioCaptionsBufferInfo)initWithStreamConfig:(const tagVCAudioCaptionsStreamConfig *)config bufferLength:(double)length;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation VCAudioCaptionsBufferInfo
 
-- (VCAudioCaptionsBufferInfo)initWithStreamConfig:(const tagVCAudioCaptionsStreamConfig *)a3 bufferLength:(double)a4
+- (VCAudioCaptionsBufferInfo)initWithStreamConfig:(const tagVCAudioCaptionsStreamConfig *)config bufferLength:(double)length
 {
   v17 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -17,16 +17,16 @@
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (config)
     {
-      *(v6 + 8) = a3->var0;
+      *(v6 + 8) = config->var0;
       v6[56] = 0;
-      v8 = *&a3->var1.mBytesPerPacket;
-      v9 = *&a3->var1.mBitsPerChannel;
-      *(v6 + 8) = *&a3->var1.mSampleRate;
+      v8 = *&config->var1.mBytesPerPacket;
+      v9 = *&config->var1.mBitsPerChannel;
+      *(v6 + 8) = *&config->var1.mSampleRate;
       *(v6 + 5) = v9;
       *(v6 + 24) = v8;
-      v10 = (*(v6 + 1) * a4);
+      v10 = (*(v6 + 1) * length);
       v15 = 0xAAAAAAAAAAAAAAAALL;
       v11 = *(v6 + 8);
       v12 = *(v6 + 24);
@@ -76,9 +76,9 @@
   return [v3 stringWithFormat:@"%@<%p> streamToken=%ld priority=%d", NSStringFromClass(v4), self, self->_token, self->_priority];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
@@ -89,14 +89,14 @@
     return 0;
   }
 
-  v5 = [(VCAudioCaptionsBufferInfo *)self token];
-  if (v5 != [a3 token])
+  token = [(VCAudioCaptionsBufferInfo *)self token];
+  if (token != [equal token])
   {
     return 0;
   }
 
-  v6 = [(VCAudioCaptionsBufferInfo *)self priority];
-  return v6 == [a3 priority];
+  priority = [(VCAudioCaptionsBufferInfo *)self priority];
+  return priority == [equal priority];
 }
 
 - (AudioStreamBasicDescription)format

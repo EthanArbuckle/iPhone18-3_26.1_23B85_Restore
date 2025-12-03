@@ -1,23 +1,23 @@
 @interface ABPK2DDetection
-+ (CGSize)inputDimensionsForDeviceOrientation:(id)a3;
-- (ABPK2DDetection)initWithNetworkConfig:(id)a3;
++ (CGSize)inputDimensionsForDeviceOrientation:(id)orientation;
+- (ABPK2DDetection)initWithNetworkConfig:(id)config;
 - (BOOL)initMLNetwork;
 - (id).cxx_construct;
-- (id)_createResultDataFromImageDataForNeuralNetwork:(id)a3 originalImageData:(id)a4 outputPixelBuffer:(__CVBuffer *)a5 numberOfOutputTensors:(unint64_t)a6 rotationOfResultTensor:(int64_t)a7;
-- (id)createException:(void *)a3 forNetwork:(id)a4;
-- (id)runWithImage:(__CVBuffer *)a3 abpkOrientation:(int64_t)a4 atTimestamp:(double)a5 rotationOfResultTensor:(int64_t)a6;
-- (id)runWithImageDataForNeuralNetwork:(id)a3 originalImageData:(id)a4 abpkOrientation:(int64_t)a5 atTimestamp:(double)a6 rotationOfResultTensor:(int64_t)a7;
-- (id)runWithMLImage:(id)a3 originalImage:(id)a4 abpkOrientation:(int64_t)a5 atTimestamp:(double)a6 rotationOfResultTensor:(int64_t)a7;
+- (id)_createResultDataFromImageDataForNeuralNetwork:(id)network originalImageData:(id)data outputPixelBuffer:(__CVBuffer *)buffer numberOfOutputTensors:(unint64_t)tensors rotationOfResultTensor:(int64_t)tensor;
+- (id)createException:(void *)exception forNetwork:(id)network;
+- (id)runWithImage:(__CVBuffer *)image abpkOrientation:(int64_t)orientation atTimestamp:(double)timestamp rotationOfResultTensor:(int64_t)tensor;
+- (id)runWithImageDataForNeuralNetwork:(id)network originalImageData:(id)data abpkOrientation:(int64_t)orientation atTimestamp:(double)timestamp rotationOfResultTensor:(int64_t)tensor;
+- (id)runWithMLImage:(id)image originalImage:(id)originalImage abpkOrientation:(int64_t)orientation atTimestamp:(double)timestamp rotationOfResultTensor:(int64_t)tensor;
 - (void)_bindOutputTensor;
-- (void)changeEspressoConfig:(id)a3;
+- (void)changeEspressoConfig:(id)config;
 - (void)dealloc;
 @end
 
 @implementation ABPK2DDetection
 
-- (ABPK2DDetection)initWithNetworkConfig:(id)a3
+- (ABPK2DDetection)initWithNetworkConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v6 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -29,7 +29,7 @@
   v19.super_class = ABPK2DDetection;
   v7 = [(ABPK2DDetection *)&v19 init];
   v8 = v7;
-  if (v7 && (objc_storeStrong(&v7->_config2D, a3), [ABPK2DMLModelConfigSelector getModelWithNetworkConfig:v8->_config2D], v9 = objc_claimAutoreleasedReturnValue(), mlConfig = v8->_mlConfig, v8->_mlConfig = v9, mlConfig, [(ABPK2DDetection *)v8 setUseEspressoZeroCopyOutput:1], [(ABPK2DDetection *)v8 initMLNetwork]))
+  if (v7 && (objc_storeStrong(&v7->_config2D, config), [ABPK2DMLModelConfigSelector getModelWithNetworkConfig:v8->_config2D], v9 = objc_claimAutoreleasedReturnValue(), mlConfig = v8->_mlConfig, v8->_mlConfig = v9, mlConfig, [(ABPK2DDetection *)v8 setUseEspressoZeroCopyOutput:1], [(ABPK2DDetection *)v8 initMLNetwork]))
   {
     [(ABPKMLModelConfiguration2D *)v8->_mlConfig inputDimensions];
     v8->_parameters.input.resolution.width = v11;
@@ -54,23 +54,23 @@
   return v17;
 }
 
-+ (CGSize)inputDimensionsForDeviceOrientation:(id)a3
++ (CGSize)inputDimensionsForDeviceOrientation:(id)orientation
 {
-  [a3 inputDimensions];
+  [orientation inputDimensions];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (id)createException:(void *)a3 forNetwork:(id)a4
+- (id)createException:(void *)exception forNetwork:(id)network
 {
-  v4 = a4;
+  networkCopy = network;
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   espresso_plan_get_error_info();
   v7 = [v5 initWithUTF8String:v6];
   v8 = MEMORY[0x277CBEAD8];
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ in %@", v7, v4];
-  v10 = [v8 exceptionWithName:@"EspressoPlanFailure" reason:v9 userInfo:0];
+  networkCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ in %@", v7, networkCopy];
+  v10 = [v8 exceptionWithName:@"EspressoPlanFailure" reason:networkCopy userInfo:0];
 
   return v10;
 }
@@ -86,17 +86,17 @@
     _os_log_impl(&dword_23EDDC000, v3, OS_LOG_TYPE_DEBUG, " ABPK2DDetection: Initializing ML Network ", &buf, 2u);
   }
 
-  v4 = [(ABPKMLModelConfiguration *)self->_mlConfig inputTensorNames];
+  inputTensorNames = [(ABPKMLModelConfiguration *)self->_mlConfig inputTensorNames];
   inputTensorNames = self->_inputTensorNames;
-  self->_inputTensorNames = v4;
+  self->_inputTensorNames = inputTensorNames;
 
-  v6 = [(ABPKMLModelConfiguration *)self->_mlConfig outputTensorNames];
+  outputTensorNames = [(ABPKMLModelConfiguration *)self->_mlConfig outputTensorNames];
   outputTensorNames = self->_outputTensorNames;
-  self->_outputTensorNames = v6;
+  self->_outputTensorNames = outputTensorNames;
 
   self->_useEspressoV2 = 0;
-  v8 = [(ABPKMLModelConfiguration *)self->_mlConfig compiledMLModelPath];
-  if (!v8)
+  compiledMLModelPath = [(ABPKMLModelConfiguration *)self->_mlConfig compiledMLModelPath];
+  if (!compiledMLModelPath)
   {
     v9 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -118,7 +118,7 @@
     _os_log_impl(&dword_23EDDC000, v10, OS_LOG_TYPE_DEBUG, " \t Select network config: %@ ", &buf, 0xCu);
   }
 
-  if (![v8 hasSuffix:@".bundle"])
+  if (![compiledMLModelPath hasSuffix:@".bundle"])
   {
     context = espresso_create_context();
     self->_context = context;
@@ -156,7 +156,7 @@
 
     Espresso::get_internal_context(&buf, self->_context, v21);
     *(buf + 68) = 1;
-    v22 = [v8 stringByAppendingPathComponent:@"model.espresso.net"];
+    v22 = [compiledMLModelPath stringByAppendingPathComponent:@"model.espresso.net"];
     v23 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -202,7 +202,7 @@ LABEL_23:
             v62[2] = __32__ABPK2DDetection_initMLNetwork__block_invoke;
             v62[3] = &unk_278C71960;
             v62[4] = self;
-            v36 = v8;
+            v36 = compiledMLModelPath;
             v63 = v36;
             [(NSArray *)v35 enumerateObjectsUsingBlock:v62];
             std::vector<espresso_buffer_t>::resize(&self->_espressoOutputTensors.__begin_, [(NSArray *)self->_outputTensorNames count]);
@@ -246,7 +246,7 @@ LABEL_23:
             v53 = 3221225472;
             v54 = __32__ABPK2DDetection_initMLNetwork__block_invoke_19;
             v55 = &unk_278C71960;
-            v56 = self;
+            selfCopy = self;
             v57 = v41;
             [(NSArray *)v42 enumerateObjectsUsingBlock:&v52];
 
@@ -262,7 +262,7 @@ LABEL_23:
         }
       }
 
-      v51 = [(ABPK2DDetection *)self createException:self->_plan forNetwork:v8];
+      v51 = [(ABPK2DDetection *)self createException:self->_plan forNetwork:compiledMLModelPath];
       objc_exception_throw(v51);
     }
 
@@ -291,17 +291,17 @@ LABEL_35:
   }
 
   self->_useEspressoV2 = 1;
-  v11 = [[ABPKMLNetworkV2 alloc] initWithNetworkPath:v8 networkConfig:v9 inputNames:self->_inputTensorNames outputNames:self->_outputTensorNames useSurface:1];
+  v11 = [[ABPKMLNetworkV2 alloc] initWithNetworkPath:compiledMLModelPath networkConfig:v9 inputNames:self->_inputTensorNames outputNames:self->_outputTensorNames useSurface:1];
   networkV2 = self->_networkV2;
   self->_networkV2 = v11;
 
-  v13 = [(ABPKMLNetworkV2 *)self->_networkV2 inputBuffers];
+  inputBuffers = [(ABPKMLNetworkV2 *)self->_networkV2 inputBuffers];
   inputBufferDict = self->_inputBufferDict;
-  self->_inputBufferDict = v13;
+  self->_inputBufferDict = inputBuffers;
 
-  v15 = [(ABPKMLNetworkV2 *)self->_networkV2 outputBuffers];
+  outputBuffers = [(ABPKMLNetworkV2 *)self->_networkV2 outputBuffers];
   outputBufferDict = self->_outputBufferDict;
-  self->_outputBufferDict = v15;
+  self->_outputBufferDict = outputBuffers;
 
 LABEL_31:
   [(ABPK2DDetection *)self _endLoadingMLModelSignpost:v52];
@@ -549,15 +549,15 @@ void __36__ABPK2DDetection__bindOutputTensor__block_invoke(uint64_t a1, void *a2
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)runWithImageDataForNeuralNetwork:(id)a3 originalImageData:(id)a4 abpkOrientation:(int64_t)a5 atTimestamp:(double)a6 rotationOfResultTensor:(int64_t)a7
+- (id)runWithImageDataForNeuralNetwork:(id)network originalImageData:(id)data abpkOrientation:(int64_t)orientation atTimestamp:(double)timestamp rotationOfResultTensor:(int64_t)tensor
 {
-  v64 = a7;
+  tensorCopy = tensor;
   v71 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v65 = a4;
-  v11 = [v10 pixelBuffer];
-  v12 = v11;
-  if (!v11)
+  networkCopy = network;
+  dataCopy = data;
+  pixelBuffer = [networkCopy pixelBuffer];
+  v12 = pixelBuffer;
+  if (!pixelBuffer)
   {
     v15 = __ABPKLogSharedInstance();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -572,7 +572,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (CVPixelBufferGetPixelFormatType(v11) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(pixelBuffer) != 1111970369)
   {
     v15 = __ABPKLogSharedInstance();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -603,13 +603,13 @@ LABEL_24:
   v13 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = convertABPKDeviceOrientationEnumToString(a5);
+    v14 = convertABPKDeviceOrientationEnumToString(orientation);
     *buf = 138412290;
     *&buf[4] = v14;
     _os_log_impl(&dword_23EDDC000, v13, OS_LOG_TYPE_DEBUG, " \t Device Orientation: %@ ", buf, 0xCu);
   }
 
-  v15 = [(ABPKMLModelConfiguration2D *)self->_mlConfig configStringForABPKDeviceOrientation:a5];
+  v15 = [(ABPKMLModelConfiguration2D *)self->_mlConfig configStringForABPKDeviceOrientation:orientation];
   v16 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -678,7 +678,7 @@ LABEL_24:
       ++v26;
     }
 
-    v31 = [ABPK2DDetection _createResultDataFromImageDataForNeuralNetwork:"_createResultDataFromImageDataForNeuralNetwork:originalImageData:outputPixelBuffer:numberOfOutputTensors:rotationOfResultTensor:" originalImageData:v10 outputPixelBuffer:v65 numberOfOutputTensors:? rotationOfResultTensor:?];
+    v31 = [ABPK2DDetection _createResultDataFromImageDataForNeuralNetwork:"_createResultDataFromImageDataForNeuralNetwork:originalImageData:outputPixelBuffer:numberOfOutputTensors:rotationOfResultTensor:" originalImageData:networkCopy outputPixelBuffer:dataCopy numberOfOutputTensors:? rotationOfResultTensor:?];
     if (*buf)
     {
       *&buf[8] = *buf;
@@ -705,10 +705,10 @@ LABEL_24:
 
     v40 = *buf;
     v41 = *&buf[8];
-    v42 = [(ABPK2DDetection *)self useEspressoZeroCopyOutput];
+    useEspressoZeroCopyOutput = [(ABPK2DDetection *)self useEspressoZeroCopyOutput];
     v43 = (*(&v41 + 1) * v41);
     v44 = v40;
-    if (v42)
+    if (useEspressoZeroCopyOutput)
     {
       v66 = ABPKCreateCVPixelBufferFromPoolWithZeroCopyOption(&self->_espressoOutputBufferPools.__begin_[v34], 1278226536, self, @"Espresso Output", 1, v44, v43);
       std::vector<__CVBuffer *>::push_back[abi:ne200100](&__p, &v66);
@@ -777,7 +777,7 @@ LABEL_56:
     self->_outputBuffers.__begin_[i] = CVPixelBufferRetain(*(__p + i));
   }
 
-  v31 = [ABPK2DDetection _createResultDataFromImageDataForNeuralNetwork:"_createResultDataFromImageDataForNeuralNetwork:originalImageData:outputPixelBuffer:numberOfOutputTensors:rotationOfResultTensor:" originalImageData:v10 outputPixelBuffer:v65 numberOfOutputTensors:? rotationOfResultTensor:?];
+  v31 = [ABPK2DDetection _createResultDataFromImageDataForNeuralNetwork:"_createResultDataFromImageDataForNeuralNetwork:originalImageData:outputPixelBuffer:numberOfOutputTensors:rotationOfResultTensor:" originalImageData:networkCopy outputPixelBuffer:dataCopy numberOfOutputTensors:? rotationOfResultTensor:?];
   if ([(ABPK2DDetection *)self useEspressoZeroCopyOutput])
   {
     for (j = 0; j < [(NSArray *)self->_outputTensorNames count]; ++j)
@@ -799,31 +799,31 @@ LABEL_25:
   return v31;
 }
 
-- (id)runWithMLImage:(id)a3 originalImage:(id)a4 abpkOrientation:(int64_t)a5 atTimestamp:(double)a6 rotationOfResultTensor:(int64_t)a7
+- (id)runWithMLImage:(id)image originalImage:(id)originalImage abpkOrientation:(int64_t)orientation atTimestamp:(double)timestamp rotationOfResultTensor:(int64_t)tensor
 {
   v20 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  [(ABPK2DDetection *)self _startEvaluateBodyPoseForImageSignpostWithTimestamp:a6];
-  CVPixelBufferRetain([v12 pixelBuffer]);
+  imageCopy = image;
+  originalImageCopy = originalImage;
+  [(ABPK2DDetection *)self _startEvaluateBodyPoseForImageSignpostWithTimestamp:timestamp];
+  CVPixelBufferRetain([imageCopy pixelBuffer]);
   v14 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
     v18 = 134217984;
-    v19 = a6;
+    timestampCopy = timestamp;
     _os_log_impl(&dword_23EDDC000, v14, OS_LOG_TYPE_DEBUG, " %f ABPK2DDetection: runWithImage ", &v18, 0xCu);
   }
 
-  v15 = [(ABPK2DDetection *)self runWithImageDataForNeuralNetwork:v12 originalImageData:v13 abpkOrientation:a5 atTimestamp:a7 rotationOfResultTensor:a6];
-  [(ABPK2DDetection *)self _endEvaluateBodyPoseForImageSignpostWithTimestamp:a6];
-  CVPixelBufferRelease([v12 pixelBuffer]);
+  v15 = [(ABPK2DDetection *)self runWithImageDataForNeuralNetwork:imageCopy originalImageData:originalImageCopy abpkOrientation:orientation atTimestamp:tensor rotationOfResultTensor:timestamp];
+  [(ABPK2DDetection *)self _endEvaluateBodyPoseForImageSignpostWithTimestamp:timestamp];
+  CVPixelBufferRelease([imageCopy pixelBuffer]);
 
   v16 = *MEMORY[0x277D85DE8];
 
   return v15;
 }
 
-- (id)runWithImage:(__CVBuffer *)a3 abpkOrientation:(int64_t)a4 atTimestamp:(double)a5 rotationOfResultTensor:(int64_t)a6
+- (id)runWithImage:(__CVBuffer *)image abpkOrientation:(int64_t)orientation atTimestamp:(double)timestamp rotationOfResultTensor:(int64_t)tensor
 {
   [(ABPK2DDetection *)self _startEvaluateBodyPoseForImageSignpostWithTimestamp:?];
   v11 = __ABPKLogSharedInstance();
@@ -833,23 +833,23 @@ LABEL_25:
     _os_log_impl(&dword_23EDDC000, v11, OS_LOG_TYPE_DEBUG, " ABPK2DDetection: runWithImage ", v15, 2u);
   }
 
-  v12 = [[ABPKMLImageData alloc] initWithPixelBuffer:a3 timestamp:a4 abpkDeviceOrientation:0 preprocessingParameters:a5];
-  v13 = [(ABPK2DDetection *)self runWithImageDataForNeuralNetwork:v12 originalImageData:0 abpkOrientation:a4 atTimestamp:a6 rotationOfResultTensor:a5];
-  [(ABPK2DDetection *)self _endEvaluateBodyPoseForImageSignpostWithTimestamp:a5];
+  v12 = [[ABPKMLImageData alloc] initWithPixelBuffer:image timestamp:orientation abpkDeviceOrientation:0 preprocessingParameters:timestamp];
+  v13 = [(ABPK2DDetection *)self runWithImageDataForNeuralNetwork:v12 originalImageData:0 abpkOrientation:orientation atTimestamp:tensor rotationOfResultTensor:timestamp];
+  [(ABPK2DDetection *)self _endEvaluateBodyPoseForImageSignpostWithTimestamp:timestamp];
 
   return v13;
 }
 
-- (void)changeEspressoConfig:(id)a3
+- (void)changeEspressoConfig:(id)config
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configCopy = config;
   previous_network_configuration = self->_previous_network_configuration;
-  if (previous_network_configuration != v4 && ![(NSString *)previous_network_configuration isEqualToString:v4])
+  if (previous_network_configuration != configCopy && ![(NSString *)previous_network_configuration isEqualToString:configCopy])
   {
     if (self->_useEspressoV2)
     {
-      [(ABPKMLNetworkV2 *)self->_networkV2 changeNetWorkConfig:v4];
+      [(ABPKMLNetworkV2 *)self->_networkV2 changeNetWorkConfig:configCopy];
       goto LABEL_10;
     }
 
@@ -858,7 +858,7 @@ LABEL_25:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = configCopy;
       _os_log_impl(&dword_23EDDC000, v6, OS_LOG_TYPE_DEBUG, " \t Changing network config to: %@ ", buf, 0xCu);
     }
 
@@ -866,8 +866,8 @@ LABEL_25:
     espresso_plan_build_clean();
     v8 = self->_network.plan;
     v9 = *&self->_network.network_index;
-    v10 = v4;
-    [(NSString *)v4 UTF8String];
+    v10 = configCopy;
+    [(NSString *)configCopy UTF8String];
     if (espresso_network_select_configuration())
     {
       v16 = __ABPKLogSharedInstance();
@@ -877,7 +877,7 @@ LABEL_25:
       }
 
       *buf = 138412290;
-      v24 = v4;
+      v24 = configCopy;
       v17 = " Could not select network configuration: %@ ";
       v18 = v16;
       v19 = 12;
@@ -928,7 +928,7 @@ LABEL_16:
 
 LABEL_10:
   v14 = self->_previous_network_configuration;
-  self->_previous_network_configuration = v4;
+  self->_previous_network_configuration = configCopy;
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -1019,10 +1019,10 @@ void __40__ABPK2DDetection_changeEspressoConfig___block_invoke_26(uint64_t a1, v
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createResultDataFromImageDataForNeuralNetwork:(id)a3 originalImageData:(id)a4 outputPixelBuffer:(__CVBuffer *)a5 numberOfOutputTensors:(unint64_t)a6 rotationOfResultTensor:(int64_t)a7
+- (id)_createResultDataFromImageDataForNeuralNetwork:(id)network originalImageData:(id)data outputPixelBuffer:(__CVBuffer *)buffer numberOfOutputTensors:(unint64_t)tensors rotationOfResultTensor:(int64_t)tensor
 {
-  v11 = a3;
-  v12 = a4;
+  networkCopy = network;
+  dataCopy = data;
   v13 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -1030,18 +1030,18 @@ void __40__ABPK2DDetection_changeEspressoConfig___block_invoke_26(uint64_t a1, v
     _os_log_impl(&dword_23EDDC000, v13, OS_LOG_TYPE_DEBUG, " ABPK2DDetection: Create result data ", buf, 2u);
   }
 
-  v14 = [(ABPKMLModelConfiguration2D *)self->_mlConfig networkEstimatesAffinityMaps];
+  networkEstimatesAffinityMaps = [(ABPKMLModelConfiguration2D *)self->_mlConfig networkEstimatesAffinityMaps];
   mlConfig = self->_mlConfig;
-  if (v14)
+  if (networkEstimatesAffinityMaps)
   {
-    v38 = v11;
-    v16 = [(ABPKMLModelConfiguration2D *)mlConfig heatMapChannels];
-    v17 = [(ABPKMLModelConfiguration2D *)self->_mlConfig affinityMapChannels];
-    Width = CVPixelBufferGetWidth(*a5);
-    Height = CVPixelBufferGetHeight(*a5);
-    v20 = a7;
-    v21 = CVPixelBufferGetWidth(a5[1]);
-    v22 = CVPixelBufferGetHeight(a5[1]);
+    v38 = networkCopy;
+    heatMapChannels = [(ABPKMLModelConfiguration2D *)mlConfig heatMapChannels];
+    affinityMapChannels = [(ABPKMLModelConfiguration2D *)self->_mlConfig affinityMapChannels];
+    Width = CVPixelBufferGetWidth(*buffer);
+    Height = CVPixelBufferGetHeight(*buffer);
+    tensorCopy = tensor;
+    v21 = CVPixelBufferGetWidth(buffer[1]);
+    v22 = CVPixelBufferGetHeight(buffer[1]);
     v23 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
@@ -1053,20 +1053,20 @@ void __40__ABPK2DDetection_changeEspressoConfig___block_invoke_26(uint64_t a1, v
     LODWORD(v25) = Width;
     LODWORD(v26) = 1;
     LODWORD(v27) = v21;
-    HIDWORD(v25) = Height / v16;
+    HIDWORD(v25) = Height / heatMapChannels;
     LODWORD(v28) = 1;
     HIDWORD(v28) = Width;
-    HIDWORD(v27) = v22 / v17;
+    HIDWORD(v27) = v22 / affinityMapChannels;
     HIDWORD(v26) = v21;
-    v29 = [(ABPK2DSkeletonRawEspressoResult *)v24 initWithMLImage:v38 originalImageData:v12 heatMapBuffer:*a5 heatMapShape:a5[1] heatMapStrides:v20 affinityMapBuffer:v25 affinityMapShape:v28 affinityMapStrides:v27 rotationNeeded:v26];
-    v11 = v38;
+    v29 = [(ABPK2DSkeletonRawEspressoResult *)v24 initWithMLImage:v38 originalImageData:dataCopy heatMapBuffer:*buffer heatMapShape:buffer[1] heatMapStrides:tensorCopy affinityMapBuffer:v25 affinityMapShape:v28 affinityMapStrides:v27 rotationNeeded:v26];
+    networkCopy = v38;
   }
 
   else
   {
-    v30 = [(ABPKMLModelConfiguration2D *)mlConfig heatMapChannels];
-    v31 = CVPixelBufferGetWidth(*a5);
-    v32 = CVPixelBufferGetHeight(*a5);
+    heatMapChannels2 = [(ABPKMLModelConfiguration2D *)mlConfig heatMapChannels];
+    v31 = CVPixelBufferGetWidth(*buffer);
+    v32 = CVPixelBufferGetHeight(*buffer);
     v33 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
@@ -1077,9 +1077,9 @@ void __40__ABPK2DDetection_changeEspressoConfig___block_invoke_26(uint64_t a1, v
     v34 = [ABPK2DSkeletonRawEspressoResult alloc];
     LODWORD(v35) = v31;
     LODWORD(v36) = 1;
-    HIDWORD(v35) = v32 / v30;
+    HIDWORD(v35) = v32 / heatMapChannels2;
     HIDWORD(v36) = v31;
-    v29 = [(ABPK2DSkeletonRawEspressoResult *)v34 initWithMLImage:v11 originalImageData:v12 heatMapBuffer:*a5 heatMapShape:a7 heatMapStrides:v35 rotationNeeded:v36];
+    v29 = [(ABPK2DSkeletonRawEspressoResult *)v34 initWithMLImage:networkCopy originalImageData:dataCopy heatMapBuffer:*buffer heatMapShape:tensor heatMapStrides:v35 rotationNeeded:v36];
   }
 
   return v29;

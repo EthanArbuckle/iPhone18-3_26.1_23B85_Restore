@@ -1,34 +1,34 @@
 @interface _SFPageFormatMenuControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_readerTextSizeAlertItem;
-- (void)_didTapButtonInStepper:(id)a3;
+- (void)_didTapButtonInStepper:(id)stepper;
 @end
 
 @implementation _SFPageFormatMenuControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFPageFormatMenuController" hasInstanceMethod:@"_readerTextSizeAlertItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_SFPageFormatMenuController" hasInstanceMethod:@"_didTapButtonInStepper:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_SFPageFormatMenuController" hasInstanceVariable:@"_viewController" withType:"UIViewController"];
-  [v3 validateClass:@"SFBrowsingAssistant" hasProperty:@"stepperFocused" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFPageFormatMenuController" hasInstanceMethod:@"_readerTextSizeAlertItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_SFPageFormatMenuController" hasInstanceMethod:@"_didTapButtonInStepper:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_SFPageFormatMenuController" hasInstanceVariable:@"_viewController" withType:"UIViewController"];
+  [validationsCopy validateClass:@"SFBrowsingAssistant" hasProperty:@"stepperFocused" withType:"B"];
 }
 
 - (id)_readerTextSizeAlertItem
 {
   v5.receiver = self;
   v5.super_class = _SFPageFormatMenuControllerAccessibility;
-  v2 = [(_SFPageFormatMenuControllerAccessibility *)&v5 _readerTextSizeAlertItem];
+  _readerTextSizeAlertItem = [(_SFPageFormatMenuControllerAccessibility *)&v5 _readerTextSizeAlertItem];
   v3 = accessibilitySafariServicesLocalizedString(@"page.zoom");
-  [v2 setAccessibilityLabel:v3];
+  [_readerTextSizeAlertItem setAccessibilityLabel:v3];
 
-  return v2;
+  return _readerTextSizeAlertItem;
 }
 
-- (void)_didTapButtonInStepper:(id)a3
+- (void)_didTapButtonInStepper:(id)stepper
 {
-  v4 = a3;
+  stepperCopy = stepper;
   v5 = [(_SFPageFormatMenuControllerAccessibility *)self safeValueForKeyPath:@"_viewController"];
   v8 = MEMORY[0x29EDCA5F8];
   v9 = 3221225472;
@@ -41,7 +41,7 @@
   {
     v7.receiver = self;
     v7.super_class = _SFPageFormatMenuControllerAccessibility;
-    [(_SFPageFormatMenuControllerAccessibility *)&v7 _didTapButtonInStepper:v4];
+    [(_SFPageFormatMenuControllerAccessibility *)&v7 _didTapButtonInStepper:stepperCopy];
   }
 }
 

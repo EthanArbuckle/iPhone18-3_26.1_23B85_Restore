@@ -1,29 +1,29 @@
 @interface CalMigrationToolArgumentParser
-+ (id)_argumentParseErrorWithCode:(unint64_t)a3 argument:(id)a4;
-+ (id)commandLineArgumentsForToolOptions:(id)a3;
-+ (id)parseOptionsFromCommandLineArguments:(id)a3 printUsage:(BOOL *)a4 error:(id *)a5;
-+ (id)usageStringWithToolPath:(id)a3 parseError:(id)a4;
-+ (unint64_t)_argumentFromCommandLineArgument:(id)a3;
-+ (void)_appendToArguments:(id)a3 ifNeededForTriStateOption:(int64_t)a4 forceEnableArgument:(id)a5 forceDisableArgument:(id)a6;
++ (id)_argumentParseErrorWithCode:(unint64_t)code argument:(id)argument;
++ (id)commandLineArgumentsForToolOptions:(id)options;
++ (id)parseOptionsFromCommandLineArguments:(id)arguments printUsage:(BOOL *)usage error:(id *)error;
++ (id)usageStringWithToolPath:(id)path parseError:(id)error;
++ (unint64_t)_argumentFromCommandLineArgument:(id)argument;
++ (void)_appendToArguments:(id)arguments ifNeededForTriStateOption:(int64_t)option forceEnableArgument:(id)argument forceDisableArgument:(id)disableArgument;
 @end
 
 @implementation CalMigrationToolArgumentParser
 
-+ (id)parseOptionsFromCommandLineArguments:(id)a3 printUsage:(BOOL *)a4 error:(id *)a5
++ (id)parseOptionsFromCommandLineArguments:(id)arguments printUsage:(BOOL *)usage error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (![v8 count])
+  argumentsCopy = arguments;
+  if (![argumentsCopy count])
   {
-    if (a4)
+    if (usage)
     {
-      *a4 = 1;
+      *usage = 1;
     }
 
     v22 = 0;
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     goto LABEL_76;
@@ -37,7 +37,7 @@
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v9 = v8;
+  v9 = argumentsCopy;
   v10 = [v9 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (!v10)
   {
@@ -53,8 +53,8 @@
   }
 
   v11 = v10;
-  v43 = a4;
-  v44 = a5;
+  usageCopy = usage;
+  errorCopy = error;
   v12 = 0;
   v13 = 0;
   v14 = *v51;
@@ -75,17 +75,17 @@ LABEL_4:
     }
 
     v18 = *(*(&v50 + 1) + 8 * v16);
-    v19 = [a1 _argumentFromCommandLineArgument:v18];
+    v19 = [self _argumentFromCommandLineArgument:v18];
     if (v12 && v19 != 1)
     {
-      v23 = v44;
-      if (v44)
+      v23 = errorCopy;
+      if (errorCopy)
       {
-        v24 = a1;
+        selfCopy7 = self;
         v25 = 2;
         v26 = v17;
 LABEL_40:
-        [v24 _argumentParseErrorWithCode:v25 argument:v26];
+        [selfCopy7 _argumentParseErrorWithCode:v25 argument:v26];
         *v23 = v22 = 0;
         goto LABEL_74;
       }
@@ -102,33 +102,33 @@ LABEL_74:
       case -1:
         goto LABEL_54;
       case 0:
-        if (v43)
+        if (usageCopy)
         {
-          *v43 = 1;
+          *usageCopy = 1;
         }
 
-        if (!v44)
+        if (!errorCopy)
         {
           goto LABEL_73;
         }
 
         v22 = 0;
-        *v44 = 0;
+        *errorCopy = 0;
         goto LABEL_74;
       case 1:
         if (!v12)
         {
 LABEL_54:
-          v37 = v44;
-          if (!v44)
+          v37 = errorCopy;
+          if (!errorCopy)
           {
             goto LABEL_73;
           }
 
-          v38 = a1;
+          selfCopy3 = self;
           v39 = 0;
 LABEL_67:
-          [v38 _argumentParseErrorWithCode:v39 argument:v18];
+          [selfCopy3 _argumentParseErrorWithCode:v39 argument:v18];
           *v37 = v22 = 0;
           goto LABEL_74;
         }
@@ -139,13 +139,13 @@ LABEL_67:
 
         if (!*v12)
         {
-          v37 = v44;
-          if (!v44)
+          v37 = errorCopy;
+          if (!errorCopy)
           {
             goto LABEL_73;
           }
 
-          v38 = a1;
+          selfCopy3 = self;
           v39 = 3;
           goto LABEL_67;
         }
@@ -168,7 +168,7 @@ LABEL_29:
         if (!v12)
         {
           v17 = v13;
-          a5 = v44;
+          error = errorCopy;
           v27 = v45;
           v30 = v48;
           v31 = v49;
@@ -191,20 +191,20 @@ LABEL_42:
               goto LABEL_75;
             }
 
-            if (a5)
+            if (error)
             {
-              v34 = a1;
+              selfCopy5 = self;
               v35 = 6;
 LABEL_51:
-              [v34 _argumentParseErrorWithCode:v35 argument:0];
-              *a5 = v22 = 0;
+              [selfCopy5 _argumentParseErrorWithCode:v35 argument:0];
+              *error = v22 = 0;
               goto LABEL_75;
             }
           }
 
-          else if (a5)
+          else if (error)
           {
-            v34 = a1;
+            selfCopy5 = self;
             v35 = 1;
             goto LABEL_51;
           }
@@ -213,10 +213,10 @@ LABEL_51:
           goto LABEL_75;
         }
 
-        if (v44)
+        if (errorCopy)
         {
-          [a1 _argumentParseErrorWithCode:2 argument:v13];
-          *v44 = v22 = 0;
+          [self _argumentParseErrorWithCode:2 argument:v13];
+          *errorCopy = v22 = 0;
         }
 
         else
@@ -240,35 +240,35 @@ LABEL_76:
       case 4:
         if ([v9 count] == 1)
         {
-          v40 = [objc_alloc(MEMORY[0x277CF7528]) initUsingCalendarDaemon];
+          initUsingCalendarDaemon = [objc_alloc(MEMORY[0x277CF7528]) initUsingCalendarDaemon];
           goto LABEL_64;
         }
 
-        v23 = v44;
-        if (!v44)
+        v23 = errorCopy;
+        if (!errorCopy)
         {
           goto LABEL_73;
         }
 
-        v24 = a1;
+        selfCopy7 = self;
         v25 = 4;
         goto LABEL_72;
       case 5:
         if ([v9 count] == 1)
         {
-          v40 = [objc_alloc(MEMORY[0x277CF7528]) initUsingCalendarDaemonWaitingForRemindersOnly];
+          initUsingCalendarDaemon = [objc_alloc(MEMORY[0x277CF7528]) initUsingCalendarDaemonWaitingForRemindersOnly];
 LABEL_64:
-          v22 = v40;
+          v22 = initUsingCalendarDaemon;
           goto LABEL_74;
         }
 
-        v23 = v44;
-        if (!v44)
+        v23 = errorCopy;
+        if (!errorCopy)
         {
           goto LABEL_73;
         }
 
-        v24 = a1;
+        selfCopy7 = self;
         v25 = 5;
 LABEL_72:
         v26 = 0;
@@ -321,102 +321,102 @@ LABEL_72:
   }
 }
 
-+ (unint64_t)_argumentFromCommandLineArgument:(id)a3
++ (unint64_t)_argumentFromCommandLineArgument:(id)argument
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"--"])
+  argumentCopy = argument;
+  if ([argumentCopy hasPrefix:@"--"])
   {
-    if ([v3 isEqualToString:@"--help"])
+    if ([argumentCopy isEqualToString:@"--help"])
     {
       v4 = 0;
     }
 
-    else if ([v3 isEqualToString:@"--homeDirectory"])
+    else if ([argumentCopy isEqualToString:@"--homeDirectory"])
     {
       v4 = 2;
     }
 
-    else if ([v3 isEqualToString:@"--destinationDirectory"])
+    else if ([argumentCopy isEqualToString:@"--destinationDirectory"])
     {
       v4 = 3;
     }
 
-    else if ([v3 isEqualToString:@"--migrateUsingCalendarDaemon"])
+    else if ([argumentCopy isEqualToString:@"--migrateUsingCalendarDaemon"])
     {
       v4 = 4;
     }
 
-    else if ([v3 isEqualToString:@"--migrateUsingCalendarDaemonWaitingForRemindersOnly"])
+    else if ([argumentCopy isEqualToString:@"--migrateUsingCalendarDaemonWaitingForRemindersOnly"])
     {
       v4 = 5;
     }
 
-    else if ([v3 isEqualToString:@"--performCalendarMigration"])
+    else if ([argumentCopy isEqualToString:@"--performCalendarMigration"])
     {
       v4 = 6;
     }
 
-    else if ([v3 isEqualToString:@"--skipCalendarMigration"])
+    else if ([argumentCopy isEqualToString:@"--skipCalendarMigration"])
     {
       v4 = 7;
     }
 
-    else if ([v3 isEqualToString:@"--performReminderMigration"])
+    else if ([argumentCopy isEqualToString:@"--performReminderMigration"])
     {
       v4 = 8;
     }
 
-    else if ([v3 isEqualToString:@"--skipReminderMigration"])
+    else if ([argumentCopy isEqualToString:@"--skipReminderMigration"])
     {
       v4 = 9;
     }
 
-    else if ([v3 isEqualToString:@"--performCleanup"])
+    else if ([argumentCopy isEqualToString:@"--performCleanup"])
     {
       v4 = 10;
     }
 
-    else if ([v3 isEqualToString:@"--skipCleanup"])
+    else if ([argumentCopy isEqualToString:@"--skipCleanup"])
     {
       v4 = 11;
     }
 
-    else if ([v3 isEqualToString:@"--deleteMigratedData"])
+    else if ([argumentCopy isEqualToString:@"--deleteMigratedData"])
     {
       v4 = 12;
     }
 
-    else if ([v3 isEqualToString:@"--skipDeleteMigratedData"])
+    else if ([argumentCopy isEqualToString:@"--skipDeleteMigratedData"])
     {
       v4 = 13;
     }
 
-    else if ([v3 isEqualToString:@"--backupBeforeCalendarMigration"])
+    else if ([argumentCopy isEqualToString:@"--backupBeforeCalendarMigration"])
     {
       v4 = 14;
     }
 
-    else if ([v3 isEqualToString:@"--skipBackupBeforeCalendarMigration"])
+    else if ([argumentCopy isEqualToString:@"--skipBackupBeforeCalendarMigration"])
     {
       v4 = 15;
     }
 
-    else if ([v3 isEqualToString:@"--backupBeforeReminderMigration"])
+    else if ([argumentCopy isEqualToString:@"--backupBeforeReminderMigration"])
     {
       v4 = 16;
     }
 
-    else if ([v3 isEqualToString:@"--skipBackupBeforeReminderMigration"])
+    else if ([argumentCopy isEqualToString:@"--skipBackupBeforeReminderMigration"])
     {
       v4 = 17;
     }
 
-    else if ([v3 isEqualToString:@"--saveAccountChangesToFile"])
+    else if ([argumentCopy isEqualToString:@"--saveAccountChangesToFile"])
     {
       v4 = 18;
     }
 
-    else if ([v3 isEqualToString:@"--accountsDatabaseFile"])
+    else if ([argumentCopy isEqualToString:@"--accountsDatabaseFile"])
     {
       v4 = 19;
     }
@@ -435,58 +435,58 @@ LABEL_72:
   return v4;
 }
 
-+ (id)_argumentParseErrorWithCode:(unint64_t)a3 argument:(id)a4
++ (id)_argumentParseErrorWithCode:(unint64_t)code argument:(id)argument
 {
-  v5 = a4;
+  argumentCopy = argument;
   v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   [v6 setObject:@"kCalMigrationToolOptionsArgumentParseErrorUserInfoKey_Argument" forKeyedSubscript:@"kCalMigrationToolOptionsArgumentParseErrorUserInfoKey_Argument"];
-  if (a3 <= 2)
+  if (code <= 2)
   {
-    if (a3)
+    if (code)
     {
-      if (a3 == 1)
+      if (code == 1)
       {
         v7 = @"Missing required option: --homeDirectory";
         goto LABEL_19;
       }
 
-      if (a3 != 2)
+      if (code != 2)
       {
         v7 = 0;
         goto LABEL_19;
       }
 
-      [MEMORY[0x277CCACA8] stringWithFormat:@"Missing required argument for option %@", v5];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"Missing required argument for option %@", argumentCopy];
     }
 
     else
     {
-      [MEMORY[0x277CCACA8] stringWithFormat:@"Unrecognized option: %@", v5];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"Unrecognized option: %@", argumentCopy];
     }
 
     v7 = LABEL_16:;
     goto LABEL_19;
   }
 
-  if (a3 <= 4)
+  if (code <= 4)
   {
-    if (a3 != 3)
+    if (code != 3)
     {
       v7 = @"--migrateUsingCalendarDaemon cannot be used in combination with any other options";
       goto LABEL_19;
     }
 
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid path: %@", v5];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid path: %@", argumentCopy];
     goto LABEL_16;
   }
 
   v8 = @"--accountsDatabaseFile requires --saveAccountChangesToFile";
-  if (a3 != 6)
+  if (code != 6)
   {
     v8 = 0;
   }
 
-  if (a3 == 5)
+  if (code == 5)
   {
     v7 = @"--migrateUsingCalendarDaemonWaitingForRemindersOnly cannot be used in combination with any other options";
   }
@@ -498,18 +498,18 @@ LABEL_72:
 
 LABEL_19:
   [v6 setObject:v7 forKeyedSubscript:@"kCalMigrationToolOptionsArgumentParseErrorUserInfoKey_Message"];
-  v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kCalMigrationToolOptionsArgumentParseErrorDomain" code:a3 userInfo:v6];
+  v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"kCalMigrationToolOptionsArgumentParseErrorDomain" code:code userInfo:v6];
 
   return v9;
 }
 
-+ (id)usageStringWithToolPath:(id)a3 parseError:(id)a4
++ (id)usageStringWithToolPath:(id)path parseError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  pathCopy = path;
+  errorCopy = error;
+  if (pathCopy)
   {
-    v7 = v5;
+    v7 = pathCopy;
   }
 
   else
@@ -518,43 +518,43 @@ LABEL_19:
   }
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"Usage:\n  %@ --migrateUsingCalendarDaemon\n    Asks the calendar daemon to perform migration and blocks until migration is finished\n  %@ --migrateUsingCalendarDaemonWaitingForRemindersOnly\n    Asks the calendar daemon to perform migration and blocks only until reminder migration is finished\n\n  %@ --homeDirectory <path to user home directory> [options]\n    Performs migration with the given options in this tool's process\n\nOptions:\n--help                                               Print this usage message\n--migrateUsingCalendarDaemon                         Asks the calendar daemon to perform migration and blocks until migration is finished\n--migrateUsingCalendarDaemonWaitingForRemindersOnly  Asks the calendar daemon to perform migration and blocks only until reminder migration is finished\n--homeDirectory                                      The home directory of the user to migrate\n--destinationDirectory                               The directory to migrate into\n--performCalendarMigration                           Force migration of calendar data\n--skipCalendarMigration                              Skip migration of calendar data\n--performReminderMigration                           Force migration of reminder data\n--skipReminderMigration                              Skip migration of reminder data\n--performCleanup                                     Force cleanup\n--skipCleanup                                        Skip cleanup\n--deleteMigratedData                                 Force deletion of migrated data\n--skipDeleteMigratedData                             Skip deletion of migrated data\n--backupBeforeCalendarMigration                      Perform a backup of the Calendars directory before calendar migration\n--skipBackupBeforeCalendarMigration                  Skip backup of the Calendars directory before calendar migration\n--backupBeforeReminderMigration                      Perform a backup of the Calendars directory before reminder migration\n--skipBackupBeforeReminderMigration                  Skip backup of the Calendars directory before reminder migration\n--saveAccountChangesToFile                           Save any account changes to the given file instead of modifying the actual account store\n--accountsDatabaseFile                               Use the specified Accounts database instead of the current user's (requires --saveAccountChangesToFile).\n", v7, v7, v7];
-  if (v6)
+  if (errorCopy)
   {
-    v9 = [v6 domain];
-    v10 = [v9 isEqualToString:@"kCalMigrationToolOptionsArgumentParseErrorDomain"];
+    domain = [errorCopy domain];
+    v10 = [domain isEqualToString:@"kCalMigrationToolOptionsArgumentParseErrorDomain"];
 
     if (v10)
     {
-      v11 = [v6 userInfo];
-      v12 = [v11 objectForKeyedSubscript:@"kCalMigrationToolOptionsArgumentParseErrorUserInfoKey_Message"];
+      userInfo = [errorCopy userInfo];
+      v12 = [userInfo objectForKeyedSubscript:@"kCalMigrationToolOptionsArgumentParseErrorUserInfoKey_Message"];
 
       if (v12)
       {
         goto LABEL_16;
       }
 
-      v13 = [v6 userInfo];
-      v14 = [v13 objectForKeyedSubscript:@"kCalMigrationToolOptionsArgumentParseErrorUserInfoKey_Argument"];
+      userInfo2 = [errorCopy userInfo];
+      v14 = [userInfo2 objectForKeyedSubscript:@"kCalMigrationToolOptionsArgumentParseErrorUserInfoKey_Argument"];
 
       if (v14)
       {
-        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error parsing command line arguments here: %@", v14];
+        localizedDescription = [MEMORY[0x277CCACA8] stringWithFormat:@"Error parsing command line arguments here: %@", v14];
       }
 
       else
       {
-        v15 = 0;
+        localizedDescription = 0;
       }
     }
 
     else
     {
-      v15 = [v6 localizedDescription];
+      localizedDescription = [errorCopy localizedDescription];
     }
 
-    if (v15)
+    if (localizedDescription)
     {
-      v12 = v15;
+      v12 = localizedDescription;
     }
 
     else
@@ -574,13 +574,13 @@ LABEL_16:
   return v16;
 }
 
-+ (id)commandLineArgumentsForToolOptions:(id)a3
++ (id)commandLineArgumentsForToolOptions:(id)options
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([v4 migrateUsingCalendarDaemon])
+  optionsCopy = options;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([optionsCopy migrateUsingCalendarDaemon])
   {
-    if ([v4 waitForRemindersOnly])
+    if ([optionsCopy waitForRemindersOnly])
     {
       v6 = @"--migrateUsingCalendarDaemonWaitingForRemindersOnly";
     }
@@ -590,76 +590,76 @@ LABEL_16:
       v6 = @"--migrateUsingCalendarDaemon";
     }
 
-    [v5 addObject:v6];
+    [array addObject:v6];
   }
 
   else
   {
-    [v5 addObject:@"--homeDirectory"];
-    v7 = [v4 homeDirectory];
-    v8 = [v7 path];
-    [v5 addObject:v8];
+    [array addObject:@"--homeDirectory"];
+    homeDirectory = [optionsCopy homeDirectory];
+    path = [homeDirectory path];
+    [array addObject:path];
 
-    v9 = [v4 destinationDirectory];
+    destinationDirectory = [optionsCopy destinationDirectory];
 
-    if (v9)
+    if (destinationDirectory)
     {
-      [v5 addObject:@"--destinationDirectory"];
-      v10 = [v4 destinationDirectory];
-      v11 = [v10 path];
-      [v5 addObject:v11];
+      [array addObject:@"--destinationDirectory"];
+      destinationDirectory2 = [optionsCopy destinationDirectory];
+      path2 = [destinationDirectory2 path];
+      [array addObject:path2];
     }
 
-    [a1 _appendToArguments:v5 ifNeededForTriStateOption:objc_msgSend(v4 forceEnableArgument:"performCalendarMigration") forceDisableArgument:{@"--performCalendarMigration", @"--skipCalendarMigration"}];
-    [a1 _appendToArguments:v5 ifNeededForTriStateOption:objc_msgSend(v4 forceEnableArgument:"performReminderMigration") forceDisableArgument:{@"--performReminderMigration", @"--skipReminderMigration"}];
-    [a1 _appendToArguments:v5 ifNeededForTriStateOption:objc_msgSend(v4 forceEnableArgument:"performCleanup") forceDisableArgument:{@"--performCleanup", @"--skipCleanup"}];
-    [a1 _appendToArguments:v5 ifNeededForTriStateOption:objc_msgSend(v4 forceEnableArgument:"deleteMigratedData") forceDisableArgument:{@"--deleteMigratedData", @"--skipDeleteMigratedData"}];
-    [a1 _appendToArguments:v5 ifNeededForTriStateOption:objc_msgSend(v4 forceEnableArgument:"backupBeforeCalendarMigration") forceDisableArgument:{@"--backupBeforeCalendarMigration", @"--skipBackupBeforeCalendarMigration"}];
-    [a1 _appendToArguments:v5 ifNeededForTriStateOption:objc_msgSend(v4 forceEnableArgument:"backupBeforeReminderMigration") forceDisableArgument:{@"--backupBeforeReminderMigration", @"--skipBackupBeforeReminderMigration"}];
-    v12 = [v4 accountsChangesFile];
+    [self _appendToArguments:array ifNeededForTriStateOption:objc_msgSend(optionsCopy forceEnableArgument:"performCalendarMigration") forceDisableArgument:{@"--performCalendarMigration", @"--skipCalendarMigration"}];
+    [self _appendToArguments:array ifNeededForTriStateOption:objc_msgSend(optionsCopy forceEnableArgument:"performReminderMigration") forceDisableArgument:{@"--performReminderMigration", @"--skipReminderMigration"}];
+    [self _appendToArguments:array ifNeededForTriStateOption:objc_msgSend(optionsCopy forceEnableArgument:"performCleanup") forceDisableArgument:{@"--performCleanup", @"--skipCleanup"}];
+    [self _appendToArguments:array ifNeededForTriStateOption:objc_msgSend(optionsCopy forceEnableArgument:"deleteMigratedData") forceDisableArgument:{@"--deleteMigratedData", @"--skipDeleteMigratedData"}];
+    [self _appendToArguments:array ifNeededForTriStateOption:objc_msgSend(optionsCopy forceEnableArgument:"backupBeforeCalendarMigration") forceDisableArgument:{@"--backupBeforeCalendarMigration", @"--skipBackupBeforeCalendarMigration"}];
+    [self _appendToArguments:array ifNeededForTriStateOption:objc_msgSend(optionsCopy forceEnableArgument:"backupBeforeReminderMigration") forceDisableArgument:{@"--backupBeforeReminderMigration", @"--skipBackupBeforeReminderMigration"}];
+    accountsChangesFile = [optionsCopy accountsChangesFile];
 
-    if (v12)
+    if (accountsChangesFile)
     {
-      [v5 addObject:@"--saveAccountChangesToFile"];
-      v13 = [v4 accountsChangesFile];
-      v14 = [v13 path];
-      [v5 addObject:v14];
+      [array addObject:@"--saveAccountChangesToFile"];
+      accountsChangesFile2 = [optionsCopy accountsChangesFile];
+      path3 = [accountsChangesFile2 path];
+      [array addObject:path3];
     }
 
-    v15 = [v4 accountsDatabaseFile];
+    accountsDatabaseFile = [optionsCopy accountsDatabaseFile];
 
-    if (v15)
+    if (accountsDatabaseFile)
     {
-      [v5 addObject:@"--accountsDatabaseFile"];
-      v16 = [v4 accountsDatabaseFile];
-      v17 = [v16 path];
-      [v5 addObject:v17];
+      [array addObject:@"--accountsDatabaseFile"];
+      accountsDatabaseFile2 = [optionsCopy accountsDatabaseFile];
+      path4 = [accountsDatabaseFile2 path];
+      [array addObject:path4];
     }
   }
 
-  v18 = [v5 copy];
+  v18 = [array copy];
 
   return v18;
 }
 
-+ (void)_appendToArguments:(id)a3 ifNeededForTriStateOption:(int64_t)a4 forceEnableArgument:(id)a5 forceDisableArgument:(id)a6
++ (void)_appendToArguments:(id)arguments ifNeededForTriStateOption:(int64_t)option forceEnableArgument:(id)argument forceDisableArgument:(id)disableArgument
 {
-  v13 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = v10;
-  v12 = v9;
-  if (a4 != 1)
+  argumentsCopy = arguments;
+  argumentCopy = argument;
+  disableArgumentCopy = disableArgument;
+  v11 = disableArgumentCopy;
+  v12 = argumentCopy;
+  if (option != 1)
   {
-    if (a4)
+    if (option)
     {
       goto LABEL_5;
     }
 
-    v12 = v10;
+    v12 = disableArgumentCopy;
   }
 
-  [v13 addObject:v12];
+  [argumentsCopy addObject:v12];
 LABEL_5:
 }
 

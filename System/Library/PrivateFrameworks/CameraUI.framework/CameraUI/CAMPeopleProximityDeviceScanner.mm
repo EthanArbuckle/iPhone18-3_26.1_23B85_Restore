@@ -1,30 +1,30 @@
 @interface CAMPeopleProximityDeviceScanner
-- (CAMPeopleProximityDeviceScanner)initWithQueue:(id)a3 delegate:(id)a4;
+- (CAMPeopleProximityDeviceScanner)initWithQueue:(id)queue delegate:(id)delegate;
 - (CAMPeopleProximityScannerDelegate)delegate;
-- (void)_queue_discoveryActivatedWithError:(id)a3 sessionID:(unsigned int)a4;
-- (void)_queue_discoveryDeviceFound:(id)a3 sessionID:(unsigned int)a4;
-- (void)_queue_discoveryDeviceLost:(id)a3 sessionID:(unsigned int)a4;
-- (void)_queue_discoveryInterruptedWithPeopleDiscoverySessionID:(unsigned int)a3;
-- (void)_queue_discoveryTimeoutForSessionID:(unsigned int)a3;
+- (void)_queue_discoveryActivatedWithError:(id)error sessionID:(unsigned int)d;
+- (void)_queue_discoveryDeviceFound:(id)found sessionID:(unsigned int)d;
+- (void)_queue_discoveryDeviceLost:(id)lost sessionID:(unsigned int)d;
+- (void)_queue_discoveryInterruptedWithPeopleDiscoverySessionID:(unsigned int)d;
+- (void)_queue_discoveryTimeoutForSessionID:(unsigned int)d;
 - (void)dealloc;
-- (void)startDiscoveryWithScanRate:(unint64_t)a3 timeout:(double)a4;
+- (void)startDiscoveryWithScanRate:(unint64_t)rate timeout:(double)timeout;
 - (void)stopDiscovery;
 @end
 
 @implementation CAMPeopleProximityDeviceScanner
 
-- (CAMPeopleProximityDeviceScanner)initWithQueue:(id)a3 delegate:(id)a4
+- (CAMPeopleProximityDeviceScanner)initWithQueue:(id)queue delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CAMPeopleProximityDeviceScanner;
   v9 = [(CAMPeopleProximityDeviceScanner *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_queue, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_queue, queue);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v10->__queue_sessionID = 1;
   }
 
@@ -54,7 +54,7 @@
   [(CAMPeopleProximityDeviceScanner *)&v6 dealloc];
 }
 
-- (void)startDiscoveryWithScanRate:(unint64_t)a3 timeout:(double)a4
+- (void)startDiscoveryWithScanRate:(unint64_t)rate timeout:(double)timeout
 {
   dispatch_assert_queue_V2(self->_queue);
   if (!self->__queue_deviceDiscovery)
@@ -95,13 +95,13 @@
     [(SFDeviceDiscovery *)self->__queue_deviceDiscovery setChangeFlags:3];
     [(SFDeviceDiscovery *)self->__queue_deviceDiscovery setDiscoveryFlags:1];
     [(SFDeviceDiscovery *)self->__queue_deviceDiscovery setPurpose:@"CameraPeopleProximity"];
-    if (a3 > 0x32 || ((1 << a3) & 0x4010040100400) == 0)
+    if (rate > 0x32 || ((1 << rate) & 0x4010040100400) == 0)
     {
-      a3 = 30;
+      rate = 30;
     }
 
-    [(SFDeviceDiscovery *)self->__queue_deviceDiscovery setScanRate:a3];
-    [(SFDeviceDiscovery *)self->__queue_deviceDiscovery setTimeout:a4];
+    [(SFDeviceDiscovery *)self->__queue_deviceDiscovery setScanRate:rate];
+    [(SFDeviceDiscovery *)self->__queue_deviceDiscovery setTimeout:timeout];
     objc_initWeak(location, self);
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
@@ -222,26 +222,26 @@ void __70__CAMPeopleProximityDeviceScanner_startDiscoveryWithScanRate_timeout___
     self->__queue_discoveredIdentities = 0;
 
     ++self->__queue_sessionID;
-    v8 = [(CAMPeopleProximityDeviceScanner *)self delegate];
-    [v8 peopleProximityScannerDidStopDiscovery:self];
+    delegate = [(CAMPeopleProximityDeviceScanner *)self delegate];
+    [delegate peopleProximityScannerDidStopDiscovery:self];
   }
 }
 
-- (void)_queue_discoveryActivatedWithError:(id)a3 sessionID:(unsigned int)a4
+- (void)_queue_discoveryActivatedWithError:(id)error sessionID:(unsigned int)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_sessionID == a4)
+  if (self->__queue_sessionID == d)
   {
-    CAMSignpostWithIDAndArgs(79, 0xEEEEB0B5B2B2EEEELL, a4, [v6 code], 0, 0);
+    CAMSignpostWithIDAndArgs(79, 0xEEEEB0B5B2B2EEEELL, d, [errorCopy code], 0, 0);
     v7 = os_log_create("com.apple.camera", "SharedLibrary");
     v8 = v7;
-    if (v6)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        [CAMPeopleProximityDeviceScanner _queue_discoveryActivatedWithError:v6 sessionID:v8];
+        [CAMPeopleProximityDeviceScanner _queue_discoveryActivatedWithError:errorCopy sessionID:v8];
       }
 
       [(CAMPeopleProximityDeviceScanner *)self stopDiscovery];
@@ -251,31 +251,31 @@ void __70__CAMPeopleProximityDeviceScanner_startDiscoveryWithScanRate_timeout___
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [(SFDeviceDiscovery *)self->__queue_deviceDiscovery scanRate];
-        v10 = [(SFDeviceDiscovery *)self->__queue_deviceDiscovery rssiThreshold];
+        scanRate = [(SFDeviceDiscovery *)self->__queue_deviceDiscovery scanRate];
+        rssiThreshold = [(SFDeviceDiscovery *)self->__queue_deviceDiscovery rssiThreshold];
         v11[0] = 67109632;
-        v11[1] = a4;
+        v11[1] = d;
         v12 = 2048;
-        v13 = v9;
+        v13 = scanRate;
         v14 = 2048;
-        v15 = v10;
+        v15 = rssiThreshold;
         _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityDeviceScanner] Device discovery activated ID %u scanRate:%ld rssiThreshold:%ld", v11, 0x1Cu);
       }
     }
   }
 }
 
-- (void)_queue_discoveryTimeoutForSessionID:(unsigned int)a3
+- (void)_queue_discoveryTimeoutForSessionID:(unsigned int)d
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_sessionID == a3)
+  if (self->__queue_sessionID == d)
   {
     v5 = os_log_create("com.apple.camera", "SharedLibrary");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = d;
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityDeviceScanner] Device discovery timeout sessionID:%u", v6, 8u);
     }
 
@@ -283,17 +283,17 @@ void __70__CAMPeopleProximityDeviceScanner_startDiscoveryWithScanRate_timeout___
   }
 }
 
-- (void)_queue_discoveryInterruptedWithPeopleDiscoverySessionID:(unsigned int)a3
+- (void)_queue_discoveryInterruptedWithPeopleDiscoverySessionID:(unsigned int)d
 {
   v7 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_sessionID == a3)
+  if (self->__queue_sessionID == d)
   {
     v5 = os_log_create("com.apple.camera", "SharedLibrary");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = d;
       _os_log_impl(&dword_1A3640000, v5, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityDeviceScanner] discovery interrupted ID %u", v6, 8u);
     }
 
@@ -301,40 +301,40 @@ void __70__CAMPeopleProximityDeviceScanner_startDiscoveryWithScanRate_timeout___
   }
 }
 
-- (void)_queue_discoveryDeviceFound:(id)a3 sessionID:(unsigned int)a4
+- (void)_queue_discoveryDeviceFound:(id)found sessionID:(unsigned int)d
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  foundCopy = found;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_sessionID == a4)
+  if (self->__queue_sessionID == d)
   {
-    v7 = [v6 idsIdentifier];
+    idsIdentifier = [foundCopy idsIdentifier];
     v8 = +[CAMCaptureCapabilities capabilities];
-    v9 = [v8 librarySelectionMockAutomationModeEnabled];
+    librarySelectionMockAutomationModeEnabled = [v8 librarySelectionMockAutomationModeEnabled];
 
-    if (v9)
+    if (librarySelectionMockAutomationModeEnabled)
     {
       v10 = @"mockDeviceID";
-      if (v7)
+      if (idsIdentifier)
       {
-        v10 = v7;
+        v10 = idsIdentifier;
       }
 
       v11 = v10;
 
-      v7 = v11;
+      idsIdentifier = v11;
     }
 
-    else if (!v7)
+    else if (!idsIdentifier)
     {
       goto LABEL_27;
     }
 
-    if ([(__CFString *)v7 length])
+    if ([(__CFString *)idsIdentifier length])
     {
-      v12 = [CAMLibrarySelectionIdentity identityWithDevice:v6];
-      v13 = [(CAMPeopleProximityDeviceScanner *)self delegate];
-      v14 = [v13 peopleProximityScanner:self shouldDiscoverIdentity:v12];
+      v12 = [CAMLibrarySelectionIdentity identityWithDevice:foundCopy];
+      delegate = [(CAMPeopleProximityDeviceScanner *)self delegate];
+      v14 = [delegate peopleProximityScanner:self shouldDiscoverIdentity:v12];
 
       if (!v14)
       {
@@ -343,14 +343,14 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v15 = [v6 distance];
+      distance = [foundCopy distance];
       v16 = 10;
-      if (v15 != 10)
+      if (distance != 10)
       {
         v16 = 0;
       }
 
-      if (((1 << v15) & 0x1004000000000000) != 0)
+      if (((1 << distance) & 0x1004000000000000) != 0)
       {
         v17 = 30;
       }
@@ -360,7 +360,7 @@ LABEL_36:
         v17 = v16;
       }
 
-      if (((1 << v15) & 0x10040100000) != 0)
+      if (((1 << distance) & 0x10040100000) != 0)
       {
         v18 = 20;
       }
@@ -370,7 +370,7 @@ LABEL_36:
         v18 = v17;
       }
 
-      if (v15 <= 0x3C)
+      if (distance <= 0x3C)
       {
         v19 = v18;
       }
@@ -380,31 +380,31 @@ LABEL_36:
         v19 = 0;
       }
 
-      v20 = [(NSMutableDictionary *)self->__queue_discoveredDevices objectForKeyedSubscript:v7];
-      [(NSMutableDictionary *)self->__queue_discoveredDevices setObject:v6 forKeyedSubscript:v7];
+      v20 = [(NSMutableDictionary *)self->__queue_discoveredDevices objectForKeyedSubscript:idsIdentifier];
+      [(NSMutableDictionary *)self->__queue_discoveredDevices setObject:foundCopy forKeyedSubscript:idsIdentifier];
       if (v20)
       {
         v21 = os_log_create("com.apple.camera", "SharedLibrary");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
-          [CAMPeopleProximityDeviceScanner _queue_discoveryDeviceFound:v6 sessionID:v21];
+          [CAMPeopleProximityDeviceScanner _queue_discoveryDeviceFound:foundCopy sessionID:v21];
         }
 
-        v22 = [v20 distance];
+        distance2 = [v20 distance];
         v23 = 0;
-        if (v22 <= 0x3C)
+        if (distance2 <= 0x3C)
         {
-          if (((1 << v22) & 0x10040100000) != 0)
+          if (((1 << distance2) & 0x10040100000) != 0)
           {
             v23 = 20;
           }
 
-          else if (((1 << v22) & 0x1004000000000000) != 0)
+          else if (((1 << distance2) & 0x1004000000000000) != 0)
           {
             v23 = 30;
           }
 
-          else if (v22 == 10)
+          else if (distance2 == 10)
           {
             v23 = 10;
           }
@@ -418,14 +418,14 @@ LABEL_36:
 
       else
       {
-        [(NSMutableDictionary *)self->__queue_discoveredIdentities setObject:v12 forKeyedSubscript:v7];
+        [(NSMutableDictionary *)self->__queue_discoveredIdentities setObject:v12 forKeyedSubscript:idsIdentifier];
       }
 
-      v24 = [v6 bleDevice];
-      v25 = [v24 rssi];
+      bleDevice = [foundCopy bleDevice];
+      rssi = [bleDevice rssi];
 
-      v26 = [(CAMPeopleProximityDeviceScanner *)self delegate];
-      [v26 peopleProximityScanner:self didDiscoverIdentity:v12 distance:v19 rssi:v25];
+      delegate2 = [(CAMPeopleProximityDeviceScanner *)self delegate];
+      [delegate2 peopleProximityScanner:self didDiscoverIdentity:v12 distance:v19 rssi:rssi];
 
 LABEL_35:
       goto LABEL_36;
@@ -436,7 +436,7 @@ LABEL_27:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 138543362;
-      v28 = v6;
+      v28 = foundCopy;
       _os_log_impl(&dword_1A3640000, v12, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityDeviceScanner] Ignoring BLE device found with no IDS device ID: %{public}@", &v27, 0xCu);
     }
 
@@ -446,17 +446,17 @@ LABEL_27:
 LABEL_37:
 }
 
-- (void)_queue_discoveryDeviceLost:(id)a3 sessionID:(unsigned int)a4
+- (void)_queue_discoveryDeviceLost:(id)lost sessionID:(unsigned int)d
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  lostCopy = lost;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->__queue_sessionID == a4)
+  if (self->__queue_sessionID == d)
   {
-    v7 = [v6 idsIdentifier];
-    if (v7)
+    idsIdentifier = [lostCopy idsIdentifier];
+    if (idsIdentifier)
     {
-      v8 = [(NSMutableDictionary *)self->__queue_discoveredDevices objectForKeyedSubscript:v7];
+      v8 = [(NSMutableDictionary *)self->__queue_discoveredDevices objectForKeyedSubscript:idsIdentifier];
 
       if (!v8)
       {
@@ -469,19 +469,19 @@ LABEL_12:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138477827;
-        v13 = v6;
+        v13 = lostCopy;
         _os_log_impl(&dword_1A3640000, v9, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityDeviceScanner] Lost %{private}@", &v12, 0xCu);
       }
 
-      v10 = [(NSMutableDictionary *)self->__queue_discoveredIdentities objectForKeyedSubscript:v7];
+      v10 = [(NSMutableDictionary *)self->__queue_discoveredIdentities objectForKeyedSubscript:idsIdentifier];
       if (v10)
       {
-        v11 = [(CAMPeopleProximityDeviceScanner *)self delegate];
-        [v11 peopleProximityScanner:self didLoseIdentity:v10];
+        delegate = [(CAMPeopleProximityDeviceScanner *)self delegate];
+        [delegate peopleProximityScanner:self didLoseIdentity:v10];
       }
 
-      [(NSMutableDictionary *)self->__queue_discoveredDevices removeObjectForKey:v7];
-      [(NSMutableDictionary *)self->__queue_discoveredIdentities removeObjectForKey:v7];
+      [(NSMutableDictionary *)self->__queue_discoveredDevices removeObjectForKey:idsIdentifier];
+      [(NSMutableDictionary *)self->__queue_discoveredIdentities removeObjectForKey:idsIdentifier];
     }
 
     else
@@ -490,7 +490,7 @@ LABEL_12:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v6;
+        v13 = lostCopy;
         _os_log_impl(&dword_1A3640000, v10, OS_LOG_TYPE_DEFAULT, "[CAMPeopleProximityDeviceScanner] Ignoring BLE device lost with no IDS device ID: %{public}@", &v12, 0xCu);
       }
     }

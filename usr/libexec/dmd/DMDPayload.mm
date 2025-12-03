@@ -7,8 +7,8 @@
 
 - (id)identifier
 {
-  v2 = [(DMDPayload *)self payloadDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"Identifier"];
+  payloadDictionary = [(DMDPayload *)self payloadDictionary];
+  v3 = [payloadDictionary objectForKeyedSubscript:@"Identifier"];
 
   return v3;
 }

@@ -1,8 +1,8 @@
 @interface MTROperationalCredentialsClusterCSRRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTROperationalCredentialsClusterCSRRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -15,9 +15,9 @@
   v2 = [(MTROperationalCredentialsClusterCSRRequestParams *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     csrNonce = v2->_csrNonce;
-    v2->_csrNonce = v3;
+    v2->_csrNonce = data;
 
     isForUpdateNOC = v2->_isForUpdateNOC;
     v2->_isForUpdateNOC = 0;
@@ -32,20 +32,20 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterCSRRequestParams);
-  v5 = [(MTROperationalCredentialsClusterCSRRequestParams *)self csrNonce];
-  [(MTROperationalCredentialsClusterCSRRequestParams *)v4 setCsrNonce:v5];
+  csrNonce = [(MTROperationalCredentialsClusterCSRRequestParams *)self csrNonce];
+  [(MTROperationalCredentialsClusterCSRRequestParams *)v4 setCsrNonce:csrNonce];
 
-  v6 = [(MTROperationalCredentialsClusterCSRRequestParams *)self isForUpdateNOC];
-  [(MTROperationalCredentialsClusterCSRRequestParams *)v4 setIsForUpdateNOC:v6];
+  isForUpdateNOC = [(MTROperationalCredentialsClusterCSRRequestParams *)self isForUpdateNOC];
+  [(MTROperationalCredentialsClusterCSRRequestParams *)v4 setIsForUpdateNOC:isForUpdateNOC];
 
-  v7 = [(MTROperationalCredentialsClusterCSRRequestParams *)self timedInvokeTimeoutMs];
-  [(MTROperationalCredentialsClusterCSRRequestParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTROperationalCredentialsClusterCSRRequestParams *)self timedInvokeTimeoutMs];
+  [(MTROperationalCredentialsClusterCSRRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTROperationalCredentialsClusterCSRRequestParams *)self serverSideProcessingTimeout];
-  [(MTROperationalCredentialsClusterCSRRequestParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTROperationalCredentialsClusterCSRRequestParams *)self serverSideProcessingTimeout];
+  [(MTROperationalCredentialsClusterCSRRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -61,24 +61,24 @@
   return v7;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v24 = 0uLL;
   LOBYTE(v25) = 0;
   v23[0] = 0;
   v23[1] = 0;
   v22 = v23;
-  v5 = [(MTROperationalCredentialsClusterCSRRequestParams *)self csrNonce];
-  sub_238DB6950(v16, [v5 bytes], objc_msgSend(v5, "length"));
+  csrNonce = [(MTROperationalCredentialsClusterCSRRequestParams *)self csrNonce];
+  sub_238DB6950(v16, [csrNonce bytes], objc_msgSend(csrNonce, "length"));
 
   v24 = v16[0];
-  v6 = [(MTROperationalCredentialsClusterCSRRequestParams *)self isForUpdateNOC];
+  isForUpdateNOC = [(MTROperationalCredentialsClusterCSRRequestParams *)self isForUpdateNOC];
 
-  if (v6)
+  if (isForUpdateNOC)
   {
     v25 = 1;
-    v7 = [(MTROperationalCredentialsClusterCSRRequestParams *)self isForUpdateNOC];
-    HIBYTE(v25) = [v7 BOOLValue];
+    isForUpdateNOC2 = [(MTROperationalCredentialsClusterCSRRequestParams *)self isForUpdateNOC];
+    HIBYTE(v25) = [isForUpdateNOC2 BOOLValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v21);
@@ -100,8 +100,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v21);
-      v8 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v21);
+      v8 = sub_2393C7114(reader, 21, 256);
       v11 = v15;
       v10 = v8;
     }
@@ -129,19 +129,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTROperationalCredentialsClusterCSRRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -152,7 +152,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x232A00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

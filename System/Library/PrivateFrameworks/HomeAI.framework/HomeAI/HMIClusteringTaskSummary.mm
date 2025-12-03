@@ -65,8 +65,8 @@
   v19 = [v16 initWithName:@"Total Duration" value:v18];
   v32[6] = v19;
   v20 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMIClusteringTaskSummary *)self error];
-  v22 = [v20 initWithName:@"Error" value:v21];
+  error = [(HMIClusteringTaskSummary *)self error];
+  v22 = [v20 initWithName:@"Error" value:error];
   v32[7] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:8];
 

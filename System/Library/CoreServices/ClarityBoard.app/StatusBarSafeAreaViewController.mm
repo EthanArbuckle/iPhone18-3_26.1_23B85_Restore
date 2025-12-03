@@ -1,13 +1,13 @@
 @interface StatusBarSafeAreaViewController
-- (_TtC12ClarityBoard31StatusBarSafeAreaViewController)initWithCoder:(id)a3;
-- (_TtC12ClarityBoard31StatusBarSafeAreaViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4;
+- (_TtC12ClarityBoard31StatusBarSafeAreaViewController)initWithCoder:(id)coder;
+- (_TtC12ClarityBoard31StatusBarSafeAreaViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation StatusBarSafeAreaViewController
 
-- (_TtC12ClarityBoard31StatusBarSafeAreaViewController)initWithCoder:(id)a3
+- (_TtC12ClarityBoard31StatusBarSafeAreaViewController)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR____TtC12ClarityBoard31StatusBarSafeAreaViewController_safeRect);
   *v3 = 0u;
@@ -33,9 +33,9 @@
   {
     memset(v10, 0, sizeof(v10));
     v11 = 1;
-    v9 = self;
+    selfCopy = self;
     sub_10007E5F0(0, v10, 0);
-    v4 = (&v9->super.super.super.isa + OBJC_IVAR____TtC12ClarityBoard31StatusBarSafeAreaViewController_safeRect);
+    v4 = (&selfCopy->super.super.super.isa + OBJC_IVAR____TtC12ClarityBoard31StatusBarSafeAreaViewController_safeRect);
     *v4 = v5;
     v4[1] = v6;
     v4[2] = v7;
@@ -44,19 +44,19 @@
   }
 }
 
-- (_TtC12ClarityBoard31StatusBarSafeAreaViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC12ClarityBoard31StatusBarSafeAreaViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)_boundingPathMayHaveChangedForView:(id)a3 relativeToBoundsOriginOnly:(BOOL)a4
+- (void)_boundingPathMayHaveChangedForView:(id)view relativeToBoundsOriginOnly:(BOOL)only
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC12ClarityBoard31StatusBarSafeAreaViewController_boundingRectRequiresUpdate) = 1;
-  if (a3)
+  if (view)
   {
-    [a3 setNeedsLayout];
+    [view setNeedsLayout];
   }
 
   else

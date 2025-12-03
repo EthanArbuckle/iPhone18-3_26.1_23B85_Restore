@@ -1,65 +1,65 @@
 @interface _MapsApplicationTestSideEffectDelegate
-+ (void)failedTest:(id)a3 applicationTestingDelegate:(id)a4;
-+ (void)finishedTest:(id)a3 extraResults:(id)a4 applicationTestingDelegate:(id)a5;
++ (void)failedTest:(id)test applicationTestingDelegate:(id)delegate;
++ (void)finishedTest:(id)test extraResults:(id)results applicationTestingDelegate:(id)delegate;
 @end
 
 @implementation _MapsApplicationTestSideEffectDelegate
 
-+ (void)failedTest:(id)a3 applicationTestingDelegate:(id)a4
++ (void)failedTest:(id)test applicationTestingDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = a4;
+  testCopy = test;
+  delegateCopy = delegate;
   v7 = sub_100798744();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v12 = 138412290;
-    v13 = v5;
+    v13 = testCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "!!! PPT Test Failed: %@", &v12, 0xCu);
   }
 
-  v8 = [v6 currentTest];
-  v9 = [v8 testName];
-  v10 = [v5 isEqualToString:v9];
+  currentTest = [delegateCopy currentTest];
+  testName = [currentTest testName];
+  v10 = [testCopy isEqualToString:testName];
 
   if (v10)
   {
-    v11 = [v6 currentTest];
-    [v11 cleanup:0];
+    currentTest2 = [delegateCopy currentTest];
+    [currentTest2 cleanup:0];
   }
 
-  [v6 setCurrentTest:0];
+  [delegateCopy setCurrentTest:0];
 }
 
-+ (void)finishedTest:(id)a3 extraResults:(id)a4 applicationTestingDelegate:(id)a5
++ (void)finishedTest:(id)test extraResults:(id)results applicationTestingDelegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a5;
-  v8 = [v7 currentTest];
+  testCopy = test;
+  delegateCopy = delegate;
+  currentTest = [delegateCopy currentTest];
 
-  if (v8)
+  if (currentTest)
   {
     v9 = sub_100798744();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = testCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "!!! PPT Test Finished: %@", &v14, 0xCu);
     }
   }
 
-  v10 = [v7 currentTest];
-  v11 = [v10 testName];
-  v12 = [v6 isEqualToString:v11];
+  currentTest2 = [delegateCopy currentTest];
+  testName = [currentTest2 testName];
+  v12 = [testCopy isEqualToString:testName];
 
   if (v12)
   {
-    v13 = [v7 currentTest];
-    [v13 cleanup:1];
+    currentTest3 = [delegateCopy currentTest];
+    [currentTest3 cleanup:1];
   }
 
-  if (([v6 isEqualToString:@"launch"] & 1) == 0)
+  if (([testCopy isEqualToString:@"launch"] & 1) == 0)
   {
-    [v7 setCurrentTest:0];
+    [delegateCopy setCurrentTest:0];
   }
 }
 

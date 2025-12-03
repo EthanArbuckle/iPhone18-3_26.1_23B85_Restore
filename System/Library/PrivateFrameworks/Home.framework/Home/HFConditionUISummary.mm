@@ -1,23 +1,23 @@
 @interface HFConditionUISummary
-- (HFConditionUISummary)initWithCondition:(id)a3 title:(id)a4 description:(id)a5;
+- (HFConditionUISummary)initWithCondition:(id)condition title:(id)title description:(id)description;
 @end
 
 @implementation HFConditionUISummary
 
-- (HFConditionUISummary)initWithCondition:(id)a3 title:(id)a4 description:(id)a5
+- (HFConditionUISummary)initWithCondition:(id)condition title:(id)title description:(id)description
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  conditionCopy = condition;
+  titleCopy = title;
+  descriptionCopy = description;
   v15.receiver = self;
   v15.super_class = HFConditionUISummary;
   v12 = [(HFConditionUISummary *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_condition, a3);
-    objc_storeStrong(&v13->_conditionTitle, a4);
-    objc_storeStrong(&v13->_conditionDescription, a5);
+    objc_storeStrong(&v12->_condition, condition);
+    objc_storeStrong(&v13->_conditionTitle, title);
+    objc_storeStrong(&v13->_conditionDescription, description);
   }
 
   return v13;

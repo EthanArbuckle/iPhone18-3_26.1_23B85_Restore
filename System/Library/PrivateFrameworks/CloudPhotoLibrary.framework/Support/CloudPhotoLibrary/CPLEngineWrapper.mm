@@ -1,48 +1,48 @@
 @interface CPLEngineWrapper
 - (BOOL)isSystemLibrary;
-- (BOOL)startWithError:(id *)a3;
-- (CPLEngineWrapper)initWithParameters:(id)a3 engine:(id)a4 queue:(id)a5;
+- (BOOL)startWithError:(id *)error;
+- (CPLEngineWrapper)initWithParameters:(id)parameters engine:(id)engine queue:(id)queue;
 - (CPLEngineWrapperDelegate)delegate;
 - (NSString)description;
 - (id)_deactivateMarkerURL;
-- (id)ownerNameForEngineLibrary:(id)a3;
+- (id)ownerNameForEngineLibrary:(id)library;
 - (id)redactedDescription;
 - (void)_emergencyExit;
 - (void)_libraryHasBeenDeleted;
-- (void)_libraryMustBeWiped:(id)a3;
+- (void)_libraryMustBeWiped:(id)wiped;
 - (void)_startWatchingSystemState;
-- (void)_startWatchingURL:(id)a3 forPauseReason:(id)a4;
+- (void)_startWatchingURL:(id)l forPauseReason:(id)reason;
 - (void)_stopWatchingSystemState;
-- (void)batterySaverWatcherDidChangeState:(id)a3;
-- (void)cameraWatcherDidChangeState:(id)a3;
-- (void)deactivateWithCompletionHandler:(id)a3;
+- (void)batterySaverWatcherDidChangeState:(id)state;
+- (void)cameraWatcherDidChangeState:(id)state;
+- (void)deactivateWithCompletionHandler:(id)handler;
 - (void)emergencyClose;
-- (void)engineLibrary:(id)a3 getStatusDictionaryWithCompletionHandler:(id)a4;
-- (void)engineLibrary:(id)a3 getStatusWithCompletionHandler:(id)a4;
-- (void)engineLibraryDidCompleteInitialSyncOfMainScope:(id)a3;
-- (void)engineLibraryNeedsInitialDownloadOfMainScope:(id)a3;
-- (void)fileWatcherFileDidAppear:(id)a3;
-- (void)fileWatcherFileDidDisappear:(id)a3;
+- (void)engineLibrary:(id)library getStatusDictionaryWithCompletionHandler:(id)handler;
+- (void)engineLibrary:(id)library getStatusWithCompletionHandler:(id)handler;
+- (void)engineLibraryDidCompleteInitialSyncOfMainScope:(id)scope;
+- (void)engineLibraryNeedsInitialDownloadOfMainScope:(id)scope;
+- (void)fileWatcherFileDidAppear:(id)appear;
+- (void)fileWatcherFileDidDisappear:(id)disappear;
 - (void)pingSupervisor;
-- (void)resetStoredParametersWithCompletionHandler:(id)a3;
+- (void)resetStoredParametersWithCompletionHandler:(id)handler;
 - (void)stop;
-- (void)volumeWillUnmount:(id)a3;
-- (void)wipeWithReason:(id)a3 completionHandler:(id)a4;
+- (void)volumeWillUnmount:(id)unmount;
+- (void)wipeWithReason:(id)reason completionHandler:(id)handler;
 @end
 
 @implementation CPLEngineWrapper
 
-- (CPLEngineWrapper)initWithParameters:(id)a3 engine:(id)a4 queue:(id)a5
+- (CPLEngineWrapper)initWithParameters:(id)parameters engine:(id)engine queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v11)
+  parametersCopy = parameters;
+  engineCopy = engine;
+  queueCopy = queue;
+  if (!engineCopy)
   {
-    sub_100189544(v10, a2, self);
+    sub_100189544(parametersCopy, a2, self);
   }
 
-  v13 = v12;
+  v13 = queueCopy;
   v21.receiver = self;
   v21.super_class = CPLEngineWrapper;
   v14 = [(CPLEngineWrapper *)&v21 init];
@@ -58,8 +58,8 @@
     pausedWatchers = v14->_pausedWatchers;
     v14->_pausedWatchers = v18;
 
-    objc_storeStrong(&v14->_parameters, a3);
-    objc_storeStrong(&v14->_engine, a4);
+    objc_storeStrong(&v14->_parameters, parameters);
+    objc_storeStrong(&v14->_engine, engine);
     [(CPLEngineLibrary *)v14->_engine setOwner:v14];
   }
 
@@ -68,16 +68,16 @@
 
 - (BOOL)isSystemLibrary
 {
-  v2 = [(CPLEngineParameters *)self->_parameters libraryIdentifier];
-  v3 = [v2 isEqualToString:CPLLibraryIdentifierSystemLibrary];
+  libraryIdentifier = [(CPLEngineParameters *)self->_parameters libraryIdentifier];
+  v3 = [libraryIdentifier isEqualToString:CPLLibraryIdentifierSystemLibrary];
 
   return v3;
 }
 
-- (BOOL)startWithError:(id *)a3
+- (BOOL)startWithError:(id *)error
 {
-  v5 = [(CPLEngineWrapper *)self clientLibraryBaseURL];
-  v6 = open([v5 fileSystemRepresentation], 0x8000);
+  clientLibraryBaseURL = [(CPLEngineWrapper *)self clientLibraryBaseURL];
+  v6 = open([clientLibraryBaseURL fileSystemRepresentation], 0x8000);
 
   if ((v6 & 0x80000000) == 0)
   {
@@ -107,7 +107,7 @@
       {
         v18 = self->_watchCPLLibrarySource;
         *buf = 138412802;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 1024;
         *v27 = v6;
         *&v27[4] = 2112;
@@ -120,8 +120,8 @@
     goto LABEL_17;
   }
 
-  v7 = [(CPLEngineWrapper *)self clientLibraryBaseURL];
-  v8 = [CPLErrors posixErrorForURL:v7];
+  clientLibraryBaseURL2 = [(CPLEngineWrapper *)self clientLibraryBaseURL];
+  v8 = [CPLErrors posixErrorForURL:clientLibraryBaseURL2];
 
   v9 = +[NSFileManager defaultManager];
   v10 = [v9 cplIsFileDoesNotExistError:v8];
@@ -134,7 +134,7 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2112;
         *v27 = v8;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Unable to watch %@: %@", buf, 0x16u);
@@ -152,11 +152,11 @@ LABEL_17:
     sub_10018973C();
   }
 
-  if (a3)
+  if (error)
   {
     v11 = v8;
     v12 = 0;
-    *a3 = v8;
+    *error = v8;
   }
 
   else
@@ -187,18 +187,18 @@ LABEL_18:
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(CPLEngineWrapper *)self libraryIdentifier];
-  v6 = [(CPLEngineWrapper *)self clientLibraryBaseURL];
-  v7 = [v6 path];
-  v8 = [v7 stringByAbbreviatingWithTildeInPath];
-  v9 = [(CPLEngineWrapper *)self inEmergencyClosing];
+  libraryIdentifier = [(CPLEngineWrapper *)self libraryIdentifier];
+  clientLibraryBaseURL = [(CPLEngineWrapper *)self clientLibraryBaseURL];
+  path = [clientLibraryBaseURL path];
+  stringByAbbreviatingWithTildeInPath = [path stringByAbbreviatingWithTildeInPath];
+  inEmergencyClosing = [(CPLEngineWrapper *)self inEmergencyClosing];
   v10 = "";
-  if (v9)
+  if (inEmergencyClosing)
   {
     v10 = " (emergency closing)";
   }
 
-  v11 = [v3 initWithFormat:@"<%@ for %@ at %@%s>", v4, v5, v8, v10];
+  v11 = [v3 initWithFormat:@"<%@ for %@ at %@%s>", v4, libraryIdentifier, stringByAbbreviatingWithTildeInPath, v10];
 
   return v11;
 }
@@ -207,15 +207,15 @@ LABEL_18:
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(CPLEngineWrapper *)self libraryIdentifier];
-  v6 = [(CPLEngineWrapper *)self inEmergencyClosing];
+  libraryIdentifier = [(CPLEngineWrapper *)self libraryIdentifier];
+  inEmergencyClosing = [(CPLEngineWrapper *)self inEmergencyClosing];
   v7 = "";
-  if (v6)
+  if (inEmergencyClosing)
   {
     v7 = " (emergency closing)";
   }
 
-  v8 = [v3 initWithFormat:@"<%@ for %@ %s>", v4, v5, v7];
+  v8 = [v3 initWithFormat:@"<%@ for %@ %s>", v4, libraryIdentifier, v7];
 
   return v8;
 }
@@ -249,10 +249,10 @@ LABEL_18:
   }
 }
 
-- (void)deactivateWithCompletionHandler:(id)a3
+- (void)deactivateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   engine = self->_engine;
   if (engine)
   {
@@ -261,68 +261,68 @@ LABEL_18:
     v7[2] = sub_10001261C;
     v7[3] = &unk_1002727E8;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     [(CPLEngineLibrary *)engine closeAndDeactivate:1 completionHandler:v7];
   }
 }
 
-- (void)wipeWithReason:(id)a3 completionHandler:(id)a4
+- (void)wipeWithReason:(id)reason completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   engine = self->_engine;
-  v8 = a3;
-  v9 = [(CPLEngineLibrary *)engine store];
+  reasonCopy = reason;
+  store = [(CPLEngineLibrary *)engine store];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001284C;
   v11[3] = &unk_1002723C8;
   v11[4] = self;
-  v12 = v6;
-  v10 = v6;
-  [v9 wipeStoreAtNextOpeningWithReason:v8 completionBlock:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [store wipeStoreAtNextOpeningWithReason:reasonCopy completionBlock:v11];
 }
 
-- (void)resetStoredParametersWithCompletionHandler:(id)a3
+- (void)resetStoredParametersWithCompletionHandler:(id)handler
 {
   self->_deactivated = 1;
-  v5 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained wrapperShouldBeDropped:self];
 
-  v5[2]();
+  handlerCopy[2]();
 }
 
 - (void)pingSupervisor
 {
-  v2 = [(CPLEngineLibrary *)self->_engine supervisor];
-  [v2 ping];
+  supervisor = [(CPLEngineLibrary *)self->_engine supervisor];
+  [supervisor ping];
 }
 
 - (id)_deactivateMarkerURL
 {
-  v2 = [(CPLEngineLibrary *)self->_engine store];
-  v3 = [v2 platformObject];
+  store = [(CPLEngineLibrary *)self->_engine store];
+  platformObject = [store platformObject];
 
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if (platformObject && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 deactivateMarkerURL];
+    deactivateMarkerURL = [platformObject deactivateMarkerURL];
   }
 
   else
   {
-    v4 = 0;
+    deactivateMarkerURL = 0;
   }
 
-  return v4;
+  return deactivateMarkerURL;
 }
 
-- (void)_startWatchingURL:(id)a3 forPauseReason:(id)a4
+- (void)_startWatchingURL:(id)l forPauseReason:(id)reason
 {
-  v6 = a4;
-  v7 = a3;
+  reasonCopy = reason;
+  lCopy = l;
   v8 = [CPLFileWatcher alloc];
-  v9 = [(CPLEngineWrapper *)self libraryIdentifier];
-  v10 = [v8 initWithFileURL:v7 name:v6 ownerIdentifier:v9 delegate:self queue:self->_queue];
+  libraryIdentifier = [(CPLEngineWrapper *)self libraryIdentifier];
+  v10 = [v8 initWithFileURL:lCopy name:reasonCopy ownerIdentifier:libraryIdentifier delegate:self queue:self->_queue];
 
   [(NSMutableSet *)self->_unpausedWatchers addObject:v10];
   [v10 startWatching];
@@ -423,7 +423,7 @@ LABEL_18:
   self->_diskArb = 0;
 }
 
-- (void)_libraryMustBeWiped:(id)a3
+- (void)_libraryMustBeWiped:(id)wiped
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -442,16 +442,16 @@ LABEL_18:
   dispatch_async(v5, v6);
 }
 
-- (void)engineLibrary:(id)a3 getStatusDictionaryWithCompletionHandler:(id)a4
+- (void)engineLibrary:(id)library getStatusDictionaryWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100012FE4;
   v11[3] = &unk_1002723C8;
   v11[4] = self;
-  v12 = v5;
+  v12 = handlerCopy;
   v7 = v11;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -459,21 +459,21 @@ LABEL_18:
   block[3] = &unk_100271E98;
   v14 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
 
-- (void)engineLibrary:(id)a3 getStatusWithCompletionHandler:(id)a4
+- (void)engineLibrary:(id)library getStatusWithCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100013174;
   v11[3] = &unk_1002723C8;
   v11[4] = self;
-  v12 = v5;
+  v12 = handlerCopy;
   v7 = v11;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -481,20 +481,20 @@ LABEL_18:
   block[3] = &unk_100271E98;
   v14 = v7;
   v8 = queue;
-  v9 = v5;
+  v9 = handlerCopy;
   v10 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   dispatch_async(v8, v10);
 }
 
-- (id)ownerNameForEngineLibrary:(id)a3
+- (id)ownerNameForEngineLibrary:(id)library
 {
   v3 = +[NSProcessInfo processInfo];
-  v4 = [v3 processName];
+  processName = [v3 processName];
 
-  return v4;
+  return processName;
 }
 
-- (void)engineLibraryNeedsInitialDownloadOfMainScope:(id)a3
+- (void)engineLibraryNeedsInitialDownloadOfMainScope:(id)scope
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -513,7 +513,7 @@ LABEL_18:
   dispatch_async(v5, v6);
 }
 
-- (void)engineLibraryDidCompleteInitialSyncOfMainScope:(id)a3
+- (void)engineLibraryDidCompleteInitialSyncOfMainScope:(id)scope
 {
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
@@ -532,25 +532,25 @@ LABEL_18:
   dispatch_async(v5, v6);
 }
 
-- (void)volumeWillUnmount:(id)a3
+- (void)volumeWillUnmount:(id)unmount
 {
-  v4 = a3;
-  if (self->_diskArb == v4)
+  unmountCopy = unmount;
+  if (self->_diskArb == unmountCopy)
   {
     sub_100189A68(self);
   }
 }
 
-- (void)cameraWatcherDidChangeState:(id)a3
+- (void)cameraWatcherDidChangeState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (!self->_deactivated && !self->_stopping && !self->_stopped && self->_cameraWatcher == v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (!self->_deactivated && !self->_stopping && !self->_stopped && self->_cameraWatcher == stateCopy)
   {
-    v6 = [(PFCameraViewfinderSessionWatcher *)v4 isCameraRunning];
+    isCameraRunning = [(PFCameraViewfinderSessionWatcher *)stateCopy isCameraRunning];
     p_disabledEngineBecauseOfCamera = &self->_disabledEngineBecauseOfCamera;
     disabledEngineBecauseOfCamera = self->_disabledEngineBecauseOfCamera;
-    if (v6)
+    if (isCameraRunning)
     {
       if (!self->_disabledEngineBecauseOfCamera)
       {
@@ -567,21 +567,21 @@ LABEL_11:
   }
 }
 
-- (void)fileWatcherFileDidAppear:(id)a3
+- (void)fileWatcherFileDidAppear:(id)appear
 {
-  v4 = a3;
-  if (!self->_deactivated && !self->_stopping && !self->_stopped && [(NSMutableSet *)self->_unpausedWatchers containsObject:v4])
+  appearCopy = appear;
+  if (!self->_deactivated && !self->_stopping && !self->_stopped && [(NSMutableSet *)self->_unpausedWatchers containsObject:appearCopy])
   {
-    sub_100189CEC(v4, self, &self->_unpausedWatchers);
+    sub_100189CEC(appearCopy, self, &self->_unpausedWatchers);
   }
 }
 
-- (void)fileWatcherFileDidDisappear:(id)a3
+- (void)fileWatcherFileDidDisappear:(id)disappear
 {
-  v4 = a3;
-  if (!self->_deactivated && !self->_stopping && !self->_stopped && [(NSMutableSet *)self->_pausedWatchers containsObject:v4])
+  disappearCopy = disappear;
+  if (!self->_deactivated && !self->_stopping && !self->_stopped && [(NSMutableSet *)self->_pausedWatchers containsObject:disappearCopy])
   {
-    sub_100189E08(v4, self, &self->_pausedWatchers);
+    sub_100189E08(disappearCopy, self, &self->_pausedWatchers);
   }
 }
 
@@ -620,17 +620,17 @@ LABEL_11:
   unpausedWatchers = self->_unpausedWatchers;
   self->_unpausedWatchers = v6;
 
-  v8 = [(CPLEngineWrapper *)self clientLibraryBaseURL];
+  clientLibraryBaseURL = [(CPLEngineWrapper *)self clientLibraryBaseURL];
   if ((_CPLSilentLogging & 1) == 0)
   {
     v9 = sub_100011E54();
     if (sub_100003424(v9))
     {
-      v10 = [(CPLEngineWrapper *)self libraryIdentifier];
-      v11 = [v8 path];
-      v12 = [v11 stringByAbbreviatingWithTildeInPath];
+      libraryIdentifier = [(CPLEngineWrapper *)self libraryIdentifier];
+      path = [clientLibraryBaseURL path];
+      stringByAbbreviatingWithTildeInPath = [path stringByAbbreviatingWithTildeInPath];
       *v26 = 138543618;
-      *&v26[4] = v10;
+      *&v26[4] = libraryIdentifier;
       sub_1000033B4();
       *&v26[14] = v13;
       sub_100013990();
@@ -638,14 +638,14 @@ LABEL_11:
     }
   }
 
-  v19 = [v8 URLByAppendingPathComponent:@"pauseSyncMarker" isDirectory:{0, *v26, *&v26[16]}];
+  v19 = [clientLibraryBaseURL URLByAppendingPathComponent:@"pauseSyncMarker" isDirectory:{0, *v26, *&v26[16]}];
   [(CPLEngineWrapper *)self _startWatchingURL:v19 forPauseReason:@"test pause marker"];
-  v20 = [v8 URLByAppendingPathComponent:@"pauseICloudPhotos" isDirectory:0];
+  v20 = [clientLibraryBaseURL URLByAppendingPathComponent:@"pauseICloudPhotos" isDirectory:0];
   [(CPLEngineWrapper *)self _startWatchingURL:v20 forPauseReason:@"user pause marker"];
-  v21 = [(CPLEngineWrapper *)self _deactivateMarkerURL];
-  if (v21)
+  _deactivateMarkerURL = [(CPLEngineWrapper *)self _deactivateMarkerURL];
+  if (_deactivateMarkerURL)
   {
-    [(CPLEngineWrapper *)self _startWatchingURL:v21 forPauseReason:@"deactivation marker"];
+    [(CPLEngineWrapper *)self _startWatchingURL:_deactivateMarkerURL forPauseReason:@"deactivation marker"];
   }
 
   v22 = [[PFCameraViewfinderSessionWatcher alloc] initWithDispatchQueue:self->_queue delegate:self];
@@ -661,13 +661,13 @@ LABEL_11:
   [(CPLBatterySaverWatcher *)self->_batterySaverWatcher startWatching];
 }
 
-- (void)batterySaverWatcherDidChangeState:(id)a3
+- (void)batterySaverWatcherDidChangeState:(id)state
 {
-  v5 = a3;
-  v6 = v5;
-  if (!self->_deactivated && !self->_stopping && !self->_stopped && self->_batterySaverWatcher == v5)
+  stateCopy = state;
+  v6 = stateCopy;
+  if (!self->_deactivated && !self->_stopping && !self->_stopped && self->_batterySaverWatcher == stateCopy)
   {
-    if ([(CPLBatterySaverWatcher *)v5 inBatterySaverMode])
+    if ([(CPLBatterySaverWatcher *)stateCopy inBatterySaverMode])
     {
       if ((_CPLSilentLogging & 1) == 0)
       {
@@ -679,9 +679,9 @@ LABEL_11:
         }
       }
 
-      v8 = [(CPLEngineWrapper *)self engine];
-      v9 = [v8 systemMonitor];
-      [v9 stopOverridingSystemBudgetsForClient:18487];
+      engine = [(CPLEngineWrapper *)self engine];
+      systemMonitor = [engine systemMonitor];
+      [systemMonitor stopOverridingSystemBudgetsForClient:18487];
 
 LABEL_14:
       goto LABEL_15;
@@ -689,8 +689,8 @@ LABEL_14:
 
     if ((_CPLSilentLogging & 1) == 0)
     {
-      v8 = sub_100011E54();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      engine = sub_100011E54();
+      if (os_log_type_enabled(engine, OS_LOG_TYPE_DEFAULT))
       {
         sub_100013984();
         _os_log_impl(v10, v11, OS_LOG_TYPE_DEFAULT, v12, v13, 2u);

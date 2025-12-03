@@ -1,43 +1,43 @@
 @interface HDOnboardingCompletionSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)decodeSyncObjectWithData:(id)data;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDOnboardingCompletionSyncEntity
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  end = a4.end;
-  start = a4.start;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
+  end = range.end;
+  start = range.start;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
   v35 = -1;
-  v16 = [v13 database];
+  database = [profileCopy database];
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __111__HDOnboardingCompletionSyncEntity_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v25 = &unk_27861F578;
-  v17 = v13;
+  v17 = profileCopy;
   v26 = v17;
-  v18 = v12;
+  v18 = sessionCopy;
   v30 = start;
   v31 = end;
   v27 = v18;
   v29 = &v32;
   v19 = v15;
   v28 = v19;
-  LODWORD(start) = [(HDHealthEntity *)HDOnboardingCompletionEntity performReadTransactionWithHealthDatabase:v16 error:a7 block:&v22];
+  LODWORD(start) = [(HDHealthEntity *)HDOnboardingCompletionEntity performReadTransactionWithHealthDatabase:database error:error block:&v22];
 
   if (start)
   {
-    v20 = [v14 sendCodableChange:v19 resultAnchor:v33[3] sequence:0 done:1 error:{a7, v22, v23, v24, v25, v26, v27}];
+    v20 = [handlerCopy sendCodableChange:v19 resultAnchor:v33[3] sequence:0 done:1 error:{error, v22, v23, v24, v25, v26, v27}];
   }
 
   else
@@ -102,32 +102,32 @@ BOOL __111__HDOnboardingCompletionSyncEntity_generateSyncObjectsForSession_syncA
   return v14;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v9 = a3;
-  v10 = [a5 database];
-  v11 = [(HDHealthEntity *)HDOnboardingCompletionEntity nextSyncAnchorWithStartAnchor:a4 predicate:0 session:v9 healthDatabase:v10 error:a6];
+  sessionCopy = session;
+  database = [profile database];
+  v11 = [(HDHealthEntity *)HDOnboardingCompletionEntity nextSyncAnchorWithStartAnchor:anchor predicate:0 session:sessionCopy healthDatabase:database error:error];
 
   return v11;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableOnboardingCompletion alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableOnboardingCompletion alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [a6 onboardingCompletionManager];
-  v13 = [v11 syncProvenance];
+  objectsCopy = objects;
+  storeCopy = store;
+  onboardingCompletionManager = [profile onboardingCompletionManager];
+  syncProvenance = [storeCopy syncProvenance];
 
-  LODWORD(a7) = [v12 insertCodableOnboardingCompletions:v10 syncProvenance:v13 error:a7];
-  return a7 ^ 1;
+  LODWORD(error) = [onboardingCompletionManager insertCodableOnboardingCompletions:objectsCopy syncProvenance:syncProvenance error:error];
+  return error ^ 1;
 }
 
 @end

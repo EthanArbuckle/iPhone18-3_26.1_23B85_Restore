@@ -1,38 +1,38 @@
 @interface SleepScheduleClockAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axClockComponentsHeader;
 - (id)_axClockTimeLabelText;
-- (void)_axSpeakMessageIfNeeded:(id)a3;
-- (void)gestureRecognizerDidEnd:(id)a3;
-- (void)gestureRecognizerDidMove:(id)a3;
-- (void)gestureRecognizerDidStart:(id)a3;
+- (void)_axSpeakMessageIfNeeded:(id)needed;
+- (void)gestureRecognizerDidEnd:(id)end;
+- (void)gestureRecognizerDidMove:(id)move;
+- (void)gestureRecognizerDidStart:(id)start;
 @end
 
 @implementation SleepScheduleClockAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityBedtimeHand" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityComponentsHeader" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsHeader" hasInstanceMethod:@"accessibilityBedtimeTimeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsHeader" hasInstanceMethod:@"accessibilityWakeUpTimeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"gestureRecognizerDidStart:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"gestureRecognizerDidMove:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClockCaption" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SleepHealthUI.SleepScheduleClockCaption" hasInstanceMethod:@"accessibilityClockCaptionMessage" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"accessibilityBedtimeHand" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityComponentsHeader" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsHeader" hasInstanceMethod:@"accessibilityBedtimeTimeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsHeader" hasInstanceMethod:@"accessibilityWakeUpTimeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"gestureRecognizerDidStart:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClock" hasInstanceMethod:@"gestureRecognizerDidMove:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleComponentsEditView" hasInstanceMethod:@"accessibilityClockCaption" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SleepHealthUI.SleepScheduleClockCaption" hasInstanceMethod:@"accessibilityClockCaptionMessage" withFullSignature:{"@", 0}];
 }
 
-- (void)gestureRecognizerDidStart:(id)a3
+- (void)gestureRecognizerDidStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v11.receiver = self;
   v11.super_class = SleepScheduleClockAccessibility;
-  [(SleepScheduleClockAccessibility *)&v11 gestureRecognizerDidStart:v4];
+  [(SleepScheduleClockAccessibility *)&v11 gestureRecognizerDidStart:startCopy];
   v5 = [(SleepScheduleClockAccessibility *)self safeUIViewForKey:@"accessibilityBedtimeHand"];
   objc_opt_class();
   v6 = __UIAccessibilityCastAsClass();
-  [v4 locationInView:v6];
+  [startCopy locationInView:v6];
   v8 = v7;
   v10 = v9;
   [v5 bounds];
@@ -42,54 +42,54 @@
   [(SleepScheduleClockAccessibility *)self setAccessibilityDraggingBedtimeHand:CGRectContainsPoint(v13, v12)];
 }
 
-- (void)gestureRecognizerDidMove:(id)a3
+- (void)gestureRecognizerDidMove:(id)move
 {
   v7.receiver = self;
   v7.super_class = SleepScheduleClockAccessibility;
-  [(SleepScheduleClockAccessibility *)&v7 gestureRecognizerDidMove:a3];
+  [(SleepScheduleClockAccessibility *)&v7 gestureRecognizerDidMove:move];
   Current = CFAbsoluteTimeGetCurrent();
   [(SleepScheduleClockAccessibility *)self _axLastOutputTimeInterval];
   if (Current - v5 > 1.0)
   {
-    v6 = [(SleepScheduleClockAccessibility *)self _axClockTimeLabelText];
-    [(SleepScheduleClockAccessibility *)self _axSpeakMessageIfNeeded:v6];
+    _axClockTimeLabelText = [(SleepScheduleClockAccessibility *)self _axClockTimeLabelText];
+    [(SleepScheduleClockAccessibility *)self _axSpeakMessageIfNeeded:_axClockTimeLabelText];
 
     [(SleepScheduleClockAccessibility *)self _axSetLastOutputTimeInterval:Current];
   }
 }
 
-- (void)gestureRecognizerDidEnd:(id)a3
+- (void)gestureRecognizerDidEnd:(id)end
 {
   v9.receiver = self;
   v9.super_class = SleepScheduleClockAccessibility;
-  [(SleepScheduleClockAccessibility *)&v9 gestureRecognizerDidEnd:a3];
-  v4 = [(SleepScheduleClockAccessibility *)self accessibilityContainer];
-  v5 = [v4 safeValueForKey:@"accessibilityClockCaption"];
+  [(SleepScheduleClockAccessibility *)&v9 gestureRecognizerDidEnd:end];
+  accessibilityContainer = [(SleepScheduleClockAccessibility *)self accessibilityContainer];
+  v5 = [accessibilityContainer safeValueForKey:@"accessibilityClockCaption"];
   v6 = [v5 safeStringForKey:@"accessibilityClockCaptionMessage"];
 
-  LODWORD(v4) = *MEMORY[0x29EDC7EA8];
-  v7 = [(SleepScheduleClockAccessibility *)self _axClockTimeLabelText];
+  LODWORD(accessibilityContainer) = *MEMORY[0x29EDC7EA8];
+  _axClockTimeLabelText = [(SleepScheduleClockAccessibility *)self _axClockTimeLabelText];
   v8 = __UIAXStringForVariables();
-  UIAccessibilityPostNotification(v4, v8);
+  UIAccessibilityPostNotification(accessibilityContainer, v8);
 }
 
-- (void)_axSpeakMessageIfNeeded:(id)a3
+- (void)_axSpeakMessageIfNeeded:(id)needed
 {
-  v6 = a3;
-  v4 = [(SleepScheduleClockAccessibility *)self _axLastSpokenMessage];
-  v5 = [v6 isEqualToString:v4];
+  neededCopy = needed;
+  _axLastSpokenMessage = [(SleepScheduleClockAccessibility *)self _axLastSpokenMessage];
+  v5 = [neededCopy isEqualToString:_axLastSpokenMessage];
 
   if ((v5 & 1) == 0)
   {
     UIAccessibilitySpeakOrQueueIfNeeded();
-    [(SleepScheduleClockAccessibility *)self _axSetLastSpokenMessage:v6];
+    [(SleepScheduleClockAccessibility *)self _axSetLastSpokenMessage:neededCopy];
   }
 }
 
 - (id)_axClockComponentsHeader
 {
-  v2 = [(SleepScheduleClockAccessibility *)self accessibilityContainer];
-  v3 = [v2 safeValueForKey:@"accessibilityComponentsHeader"];
+  accessibilityContainer = [(SleepScheduleClockAccessibility *)self accessibilityContainer];
+  v3 = [accessibilityContainer safeValueForKey:@"accessibilityComponentsHeader"];
 
   return v3;
 }
@@ -97,7 +97,7 @@
 - (id)_axClockTimeLabelText
 {
   objc_opt_class();
-  v3 = [(SleepScheduleClockAccessibility *)self _axClockComponentsHeader];
+  _axClockComponentsHeader = [(SleepScheduleClockAccessibility *)self _axClockComponentsHeader];
   if ([(SleepScheduleClockAccessibility *)self accessibilityDraggingBedtimeHand])
   {
     v4 = @"accessibilityBedtimeTimeLabel";
@@ -108,12 +108,12 @@
     v4 = @"accessibilityWakeUpTimeLabel";
   }
 
-  v5 = [v3 safeValueForKey:v4];
+  v5 = [_axClockComponentsHeader safeValueForKey:v4];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = [v6 text];
+  text = [v6 text];
 
-  return v7;
+  return text;
 }
 
 @end

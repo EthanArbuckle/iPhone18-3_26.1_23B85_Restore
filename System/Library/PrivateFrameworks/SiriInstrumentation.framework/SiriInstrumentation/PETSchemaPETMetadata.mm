@@ -1,40 +1,40 @@
 @interface PETSchemaPETMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PETSchemaPETMetadata)initWithDictionary:(id)a3;
-- (PETSchemaPETMetadata)initWithJSON:(id)a3;
+- (PETSchemaPETMetadata)initWithDictionary:(id)dictionary;
+- (PETSchemaPETMetadata)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasConfig_version:(BOOL)a3;
-- (void)setHasIs_config_enabled:(BOOL)a3;
-- (void)setHasIs_gm:(BOOL)a3;
-- (void)setHasIs_internal:(BOOL)a3;
-- (void)setHasIs_internal_carry:(BOOL)a3;
-- (void)setHasIs_seed:(BOOL)a3;
-- (void)setHasIs_testing_data:(BOOL)a3;
-- (void)setHasIs_trial_upload:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasConfig_version:(BOOL)config_version;
+- (void)setHasIs_config_enabled:(BOOL)is_config_enabled;
+- (void)setHasIs_gm:(BOOL)is_gm;
+- (void)setHasIs_internal:(BOOL)is_internal;
+- (void)setHasIs_internal_carry:(BOOL)is_internal_carry;
+- (void)setHasIs_seed:(BOOL)is_seed;
+- (void)setHasIs_testing_data:(BOOL)is_testing_data;
+- (void)setHasIs_trial_upload:(BOOL)is_trial_upload;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PETSchemaPETMetadata
 
-- (PETSchemaPETMetadata)initWithDictionary:(id)a3
+- (PETSchemaPETMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = PETSchemaPETMetadata;
   v5 = [(PETSchemaPETMetadata *)&v42 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"uploadTime"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"uploadTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PETSchemaPETMetadata setUpload_time:](v5, "setUpload_time:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"platform"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"platform"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,7 +42,7 @@
       [(PETSchemaPETMetadata *)v5 setPlatform:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"device"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"device"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,7 +50,7 @@
       [(PETSchemaPETMetadata *)v5 setDevice:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"build"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"build"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,14 +58,14 @@
       [(PETSchemaPETMetadata *)v5 setBuild:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"isInternal"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"isInternal"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PETSchemaPETMetadata setIs_internal:](v5, "setIs_internal:", [v13 BOOLValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"isSeed"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"isSeed"];
     objc_opt_class();
     v41 = v14;
     if (objc_opt_isKindOfClass())
@@ -73,7 +73,7 @@
       -[PETSchemaPETMetadata setIs_seed:](v5, "setIs_seed:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isGm"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isGm"];
     objc_opt_class();
     v40 = v15;
     if (objc_opt_isKindOfClass())
@@ -81,7 +81,7 @@
       -[PETSchemaPETMetadata setIs_gm:](v5, "setIs_gm:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"country"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"country"];
     objc_opt_class();
     v39 = v16;
     if (objc_opt_isKindOfClass())
@@ -91,7 +91,7 @@
     }
 
     v38 = v6;
-    v18 = [v4 objectForKeyedSubscript:@"language"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"language"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
 
     v33 = v18;
     v37 = v7;
-    v20 = [v4 objectForKeyedSubscript:@"configVersion"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"configVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
     }
 
     v36 = v9;
-    v21 = [v4 objectForKeyedSubscript:@"pseudoDeviceId"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"pseudoDeviceId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,14 +118,14 @@
     }
 
     v35 = v11;
-    v23 = [v4 objectForKeyedSubscript:@"isInternalCarry"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"isInternalCarry"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PETSchemaPETMetadata setIs_internal_carry:](v5, "setIs_internal_carry:", [v23 BOOLValue]);
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"isConfigEnabled"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"isConfigEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -133,7 +133,7 @@
     }
 
     v34 = v13;
-    v25 = [v4 objectForKeyedSubscript:@"messageGroup"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"messageGroup"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,7 +141,7 @@
       [(PETSchemaPETMetadata *)v5 setMessage_group:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"msgType"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"msgType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,14 +149,14 @@
       [(PETSchemaPETMetadata *)v5 setMsg_type:v28];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"isTestingData"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"isTestingData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PETSchemaPETMetadata setIs_testing_data:](v5, "setIs_testing_data:", [v29 BOOLValue]);
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"isTrialUpload"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"isTrialUpload"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -169,30 +169,30 @@
   return v5;
 }
 
-- (PETSchemaPETMetadata)initWithJSON:(id)a3
+- (PETSchemaPETMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PETSchemaPETMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PETSchemaPETMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PETSchemaPETMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -205,39 +205,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_build)
   {
-    v4 = [(PETSchemaPETMetadata *)self build];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"build"];
+    build = [(PETSchemaPETMetadata *)self build];
+    v5 = [build copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"build"];
   }
 
   if ((*(&self->_is_trial_upload + 1) & 0x10) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[PETSchemaPETMetadata config_version](self, "config_version")}];
-    [v3 setObject:v6 forKeyedSubscript:@"configVersion"];
+    [dictionary setObject:v6 forKeyedSubscript:@"configVersion"];
   }
 
   if (self->_country)
   {
-    v7 = [(PETSchemaPETMetadata *)self country];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"country"];
+    country = [(PETSchemaPETMetadata *)self country];
+    v8 = [country copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"country"];
   }
 
   if (self->_device)
   {
-    v9 = [(PETSchemaPETMetadata *)self device];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"device"];
+    device = [(PETSchemaPETMetadata *)self device];
+    v10 = [device copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"device"];
   }
 
   v11 = *(&self->_is_trial_upload + 1);
   if ((v11 & 0x40) != 0)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithBool:{-[PETSchemaPETMetadata is_config_enabled](self, "is_config_enabled")}];
-    [v3 setObject:v25 forKeyedSubscript:@"isConfigEnabled"];
+    [dictionary setObject:v25 forKeyedSubscript:@"isConfigEnabled"];
 
     v11 = *(&self->_is_trial_upload + 1);
     if ((v11 & 8) == 0)
@@ -258,7 +258,7 @@ LABEL_11:
   }
 
   v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[PETSchemaPETMetadata is_gm](self, "is_gm")}];
-  [v3 setObject:v26 forKeyedSubscript:@"isGm"];
+  [dictionary setObject:v26 forKeyedSubscript:@"isGm"];
 
   v11 = *(&self->_is_trial_upload + 1);
   if ((v11 & 2) == 0)
@@ -274,7 +274,7 @@ LABEL_12:
 
 LABEL_34:
   v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[PETSchemaPETMetadata is_internal](self, "is_internal")}];
-  [v3 setObject:v27 forKeyedSubscript:@"isInternal"];
+  [dictionary setObject:v27 forKeyedSubscript:@"isInternal"];
 
   v11 = *(&self->_is_trial_upload + 1);
   if ((v11 & 0x20) == 0)
@@ -290,7 +290,7 @@ LABEL_13:
 
 LABEL_35:
   v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[PETSchemaPETMetadata is_internal_carry](self, "is_internal_carry")}];
-  [v3 setObject:v28 forKeyedSubscript:@"isInternalCarry"];
+  [dictionary setObject:v28 forKeyedSubscript:@"isInternalCarry"];
 
   v11 = *(&self->_is_trial_upload + 1);
   if ((v11 & 4) == 0)
@@ -306,7 +306,7 @@ LABEL_14:
 
 LABEL_36:
   v29 = [MEMORY[0x1E696AD98] numberWithBool:{-[PETSchemaPETMetadata is_seed](self, "is_seed")}];
-  [v3 setObject:v29 forKeyedSubscript:@"isSeed"];
+  [dictionary setObject:v29 forKeyedSubscript:@"isSeed"];
 
   v11 = *(&self->_is_trial_upload + 1);
   if ((v11 & 0x80) == 0)
@@ -322,60 +322,60 @@ LABEL_15:
 
 LABEL_37:
   v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[PETSchemaPETMetadata is_testing_data](self, "is_testing_data")}];
-  [v3 setObject:v30 forKeyedSubscript:@"isTestingData"];
+  [dictionary setObject:v30 forKeyedSubscript:@"isTestingData"];
 
   if ((*(&self->_is_trial_upload + 1) & 0x100) != 0)
   {
 LABEL_16:
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[PETSchemaPETMetadata is_trial_upload](self, "is_trial_upload")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isTrialUpload"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isTrialUpload"];
   }
 
 LABEL_17:
   if (self->_language)
   {
-    v13 = [(PETSchemaPETMetadata *)self language];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"language"];
+    language = [(PETSchemaPETMetadata *)self language];
+    v14 = [language copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"language"];
   }
 
   if (self->_message_group)
   {
-    v15 = [(PETSchemaPETMetadata *)self message_group];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"messageGroup"];
+    message_group = [(PETSchemaPETMetadata *)self message_group];
+    v16 = [message_group copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"messageGroup"];
   }
 
   if (self->_msg_type)
   {
-    v17 = [(PETSchemaPETMetadata *)self msg_type];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"msgType"];
+    msg_type = [(PETSchemaPETMetadata *)self msg_type];
+    v18 = [msg_type copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"msgType"];
   }
 
   if (self->_platform)
   {
-    v19 = [(PETSchemaPETMetadata *)self platform];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"platform"];
+    platform = [(PETSchemaPETMetadata *)self platform];
+    v20 = [platform copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"platform"];
   }
 
   if (self->_pseudo_device_id)
   {
-    v21 = [(PETSchemaPETMetadata *)self pseudo_device_id];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"pseudoDeviceId"];
+    pseudo_device_id = [(PETSchemaPETMetadata *)self pseudo_device_id];
+    v22 = [pseudo_device_id copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"pseudoDeviceId"];
   }
 
   if (*(&self->_is_trial_upload + 1))
   {
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[PETSchemaPETMetadata upload_time](self, "upload_time")}];
-    [v3 setObject:v23 forKeyedSubscript:@"uploadTime"];
+    [dictionary setObject:v23 forKeyedSubscript:@"uploadTime"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -492,15 +492,15 @@ LABEL_21:
   return v21 ^ v22 ^ v20 ^ v19 ^ v18 ^ v17 ^ v16 ^ v4 ^ v5 ^ v6 ^ v7 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_66;
   }
 
-  if ((*(&self->_is_trial_upload + 1) & 1) != (v4[53] & 1))
+  if ((*(&self->_is_trial_upload + 1) & 1) != (equalCopy[53] & 1))
   {
     goto LABEL_66;
   }
@@ -508,26 +508,26 @@ LABEL_21:
   if (*(&self->_is_trial_upload + 1))
   {
     upload_time = self->_upload_time;
-    if (upload_time != [v4 upload_time])
+    if (upload_time != [equalCopy upload_time])
     {
       goto LABEL_66;
     }
   }
 
-  v6 = [(PETSchemaPETMetadata *)self platform];
-  v7 = [v4 platform];
-  if ((v6 != 0) == (v7 == 0))
+  platform = [(PETSchemaPETMetadata *)self platform];
+  platform2 = [equalCopy platform];
+  if ((platform != 0) == (platform2 == 0))
   {
     goto LABEL_65;
   }
 
-  v8 = [(PETSchemaPETMetadata *)self platform];
-  if (v8)
+  platform3 = [(PETSchemaPETMetadata *)self platform];
+  if (platform3)
   {
-    v9 = v8;
-    v10 = [(PETSchemaPETMetadata *)self platform];
-    v11 = [v4 platform];
-    v12 = [v10 isEqual:v11];
+    v9 = platform3;
+    platform4 = [(PETSchemaPETMetadata *)self platform];
+    platform5 = [equalCopy platform];
+    v12 = [platform4 isEqual:platform5];
 
     if (!v12)
     {
@@ -539,20 +539,20 @@ LABEL_21:
   {
   }
 
-  v6 = [(PETSchemaPETMetadata *)self device];
-  v7 = [v4 device];
-  if ((v6 != 0) == (v7 == 0))
+  platform = [(PETSchemaPETMetadata *)self device];
+  platform2 = [equalCopy device];
+  if ((platform != 0) == (platform2 == 0))
   {
     goto LABEL_65;
   }
 
-  v13 = [(PETSchemaPETMetadata *)self device];
-  if (v13)
+  device = [(PETSchemaPETMetadata *)self device];
+  if (device)
   {
-    v14 = v13;
-    v15 = [(PETSchemaPETMetadata *)self device];
-    v16 = [v4 device];
-    v17 = [v15 isEqual:v16];
+    v14 = device;
+    device2 = [(PETSchemaPETMetadata *)self device];
+    device3 = [equalCopy device];
+    v17 = [device2 isEqual:device3];
 
     if (!v17)
     {
@@ -564,20 +564,20 @@ LABEL_21:
   {
   }
 
-  v6 = [(PETSchemaPETMetadata *)self build];
-  v7 = [v4 build];
-  if ((v6 != 0) == (v7 == 0))
+  platform = [(PETSchemaPETMetadata *)self build];
+  platform2 = [equalCopy build];
+  if ((platform != 0) == (platform2 == 0))
   {
     goto LABEL_65;
   }
 
-  v18 = [(PETSchemaPETMetadata *)self build];
-  if (v18)
+  build = [(PETSchemaPETMetadata *)self build];
+  if (build)
   {
-    v19 = v18;
-    v20 = [(PETSchemaPETMetadata *)self build];
-    v21 = [v4 build];
-    v22 = [v20 isEqual:v21];
+    v19 = build;
+    build2 = [(PETSchemaPETMetadata *)self build];
+    build3 = [equalCopy build];
+    v22 = [build2 isEqual:build3];
 
     if (!v22)
     {
@@ -591,7 +591,7 @@ LABEL_21:
 
   v23 = *(&self->_is_trial_upload + 1);
   v24 = (v23 >> 1) & 1;
-  v25 = v4[53];
+  v25 = equalCopy[53];
   if (v24 != ((v25 >> 1) & 1))
   {
     goto LABEL_66;
@@ -600,13 +600,13 @@ LABEL_21:
   if (v24)
   {
     is_internal = self->_is_internal;
-    if (is_internal != [v4 is_internal])
+    if (is_internal != [equalCopy is_internal])
     {
       goto LABEL_66;
     }
 
     v23 = *(&self->_is_trial_upload + 1);
-    v25 = v4[53];
+    v25 = equalCopy[53];
   }
 
   v27 = (v23 >> 2) & 1;
@@ -618,13 +618,13 @@ LABEL_21:
   if (v27)
   {
     is_seed = self->_is_seed;
-    if (is_seed != [v4 is_seed])
+    if (is_seed != [equalCopy is_seed])
     {
       goto LABEL_66;
     }
 
     v23 = *(&self->_is_trial_upload + 1);
-    v25 = v4[53];
+    v25 = equalCopy[53];
   }
 
   v29 = (v23 >> 3) & 1;
@@ -636,26 +636,26 @@ LABEL_21:
   if (v29)
   {
     is_gm = self->_is_gm;
-    if (is_gm != [v4 is_gm])
+    if (is_gm != [equalCopy is_gm])
     {
       goto LABEL_66;
     }
   }
 
-  v6 = [(PETSchemaPETMetadata *)self country];
-  v7 = [v4 country];
-  if ((v6 != 0) == (v7 == 0))
+  platform = [(PETSchemaPETMetadata *)self country];
+  platform2 = [equalCopy country];
+  if ((platform != 0) == (platform2 == 0))
   {
     goto LABEL_65;
   }
 
-  v31 = [(PETSchemaPETMetadata *)self country];
-  if (v31)
+  country = [(PETSchemaPETMetadata *)self country];
+  if (country)
   {
-    v32 = v31;
-    v33 = [(PETSchemaPETMetadata *)self country];
-    v34 = [v4 country];
-    v35 = [v33 isEqual:v34];
+    v32 = country;
+    country2 = [(PETSchemaPETMetadata *)self country];
+    country3 = [equalCopy country];
+    v35 = [country2 isEqual:country3];
 
     if (!v35)
     {
@@ -667,20 +667,20 @@ LABEL_21:
   {
   }
 
-  v6 = [(PETSchemaPETMetadata *)self language];
-  v7 = [v4 language];
-  if ((v6 != 0) == (v7 == 0))
+  platform = [(PETSchemaPETMetadata *)self language];
+  platform2 = [equalCopy language];
+  if ((platform != 0) == (platform2 == 0))
   {
     goto LABEL_65;
   }
 
-  v36 = [(PETSchemaPETMetadata *)self language];
-  if (v36)
+  language = [(PETSchemaPETMetadata *)self language];
+  if (language)
   {
-    v37 = v36;
-    v38 = [(PETSchemaPETMetadata *)self language];
-    v39 = [v4 language];
-    v40 = [v38 isEqual:v39];
+    v37 = language;
+    language2 = [(PETSchemaPETMetadata *)self language];
+    language3 = [equalCopy language];
+    v40 = [language2 isEqual:language3];
 
     if (!v40)
     {
@@ -693,7 +693,7 @@ LABEL_21:
   }
 
   v41 = (*(&self->_is_trial_upload + 1) >> 4) & 1;
-  if (v41 != ((v4[53] >> 4) & 1))
+  if (v41 != ((equalCopy[53] >> 4) & 1))
   {
     goto LABEL_66;
   }
@@ -701,26 +701,26 @@ LABEL_21:
   if (v41)
   {
     config_version = self->_config_version;
-    if (config_version != [v4 config_version])
+    if (config_version != [equalCopy config_version])
     {
       goto LABEL_66;
     }
   }
 
-  v6 = [(PETSchemaPETMetadata *)self pseudo_device_id];
-  v7 = [v4 pseudo_device_id];
-  if ((v6 != 0) == (v7 == 0))
+  platform = [(PETSchemaPETMetadata *)self pseudo_device_id];
+  platform2 = [equalCopy pseudo_device_id];
+  if ((platform != 0) == (platform2 == 0))
   {
     goto LABEL_65;
   }
 
-  v43 = [(PETSchemaPETMetadata *)self pseudo_device_id];
-  if (v43)
+  pseudo_device_id = [(PETSchemaPETMetadata *)self pseudo_device_id];
+  if (pseudo_device_id)
   {
-    v44 = v43;
-    v45 = [(PETSchemaPETMetadata *)self pseudo_device_id];
-    v46 = [v4 pseudo_device_id];
-    v47 = [v45 isEqual:v46];
+    v44 = pseudo_device_id;
+    pseudo_device_id2 = [(PETSchemaPETMetadata *)self pseudo_device_id];
+    pseudo_device_id3 = [equalCopy pseudo_device_id];
+    v47 = [pseudo_device_id2 isEqual:pseudo_device_id3];
 
     if (!v47)
     {
@@ -734,7 +734,7 @@ LABEL_21:
 
   v48 = *(&self->_is_trial_upload + 1);
   v49 = (v48 >> 5) & 1;
-  v50 = v4[53];
+  v50 = equalCopy[53];
   if (v49 != ((v50 >> 5) & 1))
   {
     goto LABEL_66;
@@ -743,13 +743,13 @@ LABEL_21:
   if (v49)
   {
     is_internal_carry = self->_is_internal_carry;
-    if (is_internal_carry != [v4 is_internal_carry])
+    if (is_internal_carry != [equalCopy is_internal_carry])
     {
       goto LABEL_66;
     }
 
     v48 = *(&self->_is_trial_upload + 1);
-    v50 = v4[53];
+    v50 = equalCopy[53];
   }
 
   v52 = (v48 >> 6) & 1;
@@ -761,26 +761,26 @@ LABEL_21:
   if (v52)
   {
     is_config_enabled = self->_is_config_enabled;
-    if (is_config_enabled != [v4 is_config_enabled])
+    if (is_config_enabled != [equalCopy is_config_enabled])
     {
       goto LABEL_66;
     }
   }
 
-  v6 = [(PETSchemaPETMetadata *)self message_group];
-  v7 = [v4 message_group];
-  if ((v6 != 0) == (v7 == 0))
+  platform = [(PETSchemaPETMetadata *)self message_group];
+  platform2 = [equalCopy message_group];
+  if ((platform != 0) == (platform2 == 0))
   {
     goto LABEL_65;
   }
 
-  v54 = [(PETSchemaPETMetadata *)self message_group];
-  if (v54)
+  message_group = [(PETSchemaPETMetadata *)self message_group];
+  if (message_group)
   {
-    v55 = v54;
-    v56 = [(PETSchemaPETMetadata *)self message_group];
-    v57 = [v4 message_group];
-    v58 = [v56 isEqual:v57];
+    v55 = message_group;
+    message_group2 = [(PETSchemaPETMetadata *)self message_group];
+    message_group3 = [equalCopy message_group];
+    v58 = [message_group2 isEqual:message_group3];
 
     if (!v58)
     {
@@ -792,22 +792,22 @@ LABEL_21:
   {
   }
 
-  v6 = [(PETSchemaPETMetadata *)self msg_type];
-  v7 = [v4 msg_type];
-  if ((v6 != 0) == (v7 == 0))
+  platform = [(PETSchemaPETMetadata *)self msg_type];
+  platform2 = [equalCopy msg_type];
+  if ((platform != 0) == (platform2 == 0))
   {
 LABEL_65:
 
     goto LABEL_66;
   }
 
-  v59 = [(PETSchemaPETMetadata *)self msg_type];
-  if (v59)
+  msg_type = [(PETSchemaPETMetadata *)self msg_type];
+  if (msg_type)
   {
-    v60 = v59;
-    v61 = [(PETSchemaPETMetadata *)self msg_type];
-    v62 = [v4 msg_type];
-    v63 = [v61 isEqual:v62];
+    v60 = msg_type;
+    msg_type2 = [(PETSchemaPETMetadata *)self msg_type];
+    msg_type3 = [equalCopy msg_type];
+    v63 = [msg_type2 isEqual:msg_type3];
 
     if (!v63)
     {
@@ -821,25 +821,25 @@ LABEL_65:
 
   v66 = *(&self->_is_trial_upload + 1);
   v67 = (v66 >> 7) & 1;
-  v68 = v4[53];
+  v68 = equalCopy[53];
   if (v67 == ((v68 >> 7) & 1))
   {
     if (v67)
     {
       is_testing_data = self->_is_testing_data;
-      if (is_testing_data != [v4 is_testing_data])
+      if (is_testing_data != [equalCopy is_testing_data])
       {
         goto LABEL_66;
       }
 
       v66 = *(&self->_is_trial_upload + 1);
-      v68 = v4[53];
+      v68 = equalCopy[53];
     }
 
     v70 = (v66 >> 8) & 1;
     if (v70 == ((v68 >> 8) & 1))
     {
-      if (!v70 || (is_trial_upload = self->_is_trial_upload, is_trial_upload == [v4 is_trial_upload]))
+      if (!v70 || (is_trial_upload = self->_is_trial_upload, is_trial_upload == [equalCopy is_trial_upload]))
       {
         v64 = 1;
         goto LABEL_67;
@@ -854,31 +854,31 @@ LABEL_67:
   return v64;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   if (*(&self->_is_trial_upload + 1))
   {
     PBDataWriterWriteUint64Field();
   }
 
-  v4 = [(PETSchemaPETMetadata *)self platform];
+  platform = [(PETSchemaPETMetadata *)self platform];
 
-  if (v4)
+  if (platform)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(PETSchemaPETMetadata *)self device];
+  device = [(PETSchemaPETMetadata *)self device];
 
-  if (v5)
+  if (device)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(PETSchemaPETMetadata *)self build];
+  build = [(PETSchemaPETMetadata *)self build];
 
-  if (v6)
+  if (build)
   {
     PBDataWriterWriteStringField();
   }
@@ -913,16 +913,16 @@ LABEL_12:
   }
 
 LABEL_13:
-  v8 = [(PETSchemaPETMetadata *)self country];
+  country = [(PETSchemaPETMetadata *)self country];
 
-  if (v8)
+  if (country)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(PETSchemaPETMetadata *)self language];
+  language = [(PETSchemaPETMetadata *)self language];
 
-  if (v9)
+  if (language)
   {
     PBDataWriterWriteStringField();
   }
@@ -932,9 +932,9 @@ LABEL_13:
     PBDataWriterWriteUint32Field();
   }
 
-  v10 = [(PETSchemaPETMetadata *)self pseudo_device_id];
+  pseudo_device_id = [(PETSchemaPETMetadata *)self pseudo_device_id];
 
-  if (v10)
+  if (pseudo_device_id)
   {
     PBDataWriterWriteStringField();
   }
@@ -951,16 +951,16 @@ LABEL_13:
     PBDataWriterWriteBOOLField();
   }
 
-  v12 = [(PETSchemaPETMetadata *)self message_group];
+  message_group = [(PETSchemaPETMetadata *)self message_group];
 
-  if (v12)
+  if (message_group)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(PETSchemaPETMetadata *)self msg_type];
+  msg_type = [(PETSchemaPETMetadata *)self msg_type];
 
-  if (v13)
+  if (msg_type)
   {
     PBDataWriterWriteStringField();
   }
@@ -978,9 +978,9 @@ LABEL_13:
   }
 }
 
-- (void)setHasIs_trial_upload:(BOOL)a3
+- (void)setHasIs_trial_upload:(BOOL)is_trial_upload
 {
-  if (a3)
+  if (is_trial_upload)
   {
     v3 = 256;
   }
@@ -993,9 +993,9 @@ LABEL_13:
   *(&self->_is_trial_upload + 1) = *(&self->_is_trial_upload + 1) & 0xFEFF | v3;
 }
 
-- (void)setHasIs_testing_data:(BOOL)a3
+- (void)setHasIs_testing_data:(BOOL)is_testing_data
 {
-  if (a3)
+  if (is_testing_data)
   {
     v3 = 128;
   }
@@ -1008,9 +1008,9 @@ LABEL_13:
   *(&self->_is_trial_upload + 1) = *(&self->_is_trial_upload + 1) & 0xFF7F | v3;
 }
 
-- (void)setHasIs_config_enabled:(BOOL)a3
+- (void)setHasIs_config_enabled:(BOOL)is_config_enabled
 {
-  if (a3)
+  if (is_config_enabled)
   {
     v3 = 64;
   }
@@ -1023,9 +1023,9 @@ LABEL_13:
   *(&self->_is_trial_upload + 1) = *(&self->_is_trial_upload + 1) & 0xFFBF | v3;
 }
 
-- (void)setHasIs_internal_carry:(BOOL)a3
+- (void)setHasIs_internal_carry:(BOOL)is_internal_carry
 {
-  if (a3)
+  if (is_internal_carry)
   {
     v3 = 32;
   }
@@ -1038,9 +1038,9 @@ LABEL_13:
   *(&self->_is_trial_upload + 1) = *(&self->_is_trial_upload + 1) & 0xFFDF | v3;
 }
 
-- (void)setHasConfig_version:(BOOL)a3
+- (void)setHasConfig_version:(BOOL)config_version
 {
-  if (a3)
+  if (config_version)
   {
     v3 = 16;
   }
@@ -1053,9 +1053,9 @@ LABEL_13:
   *(&self->_is_trial_upload + 1) = *(&self->_is_trial_upload + 1) & 0xFFEF | v3;
 }
 
-- (void)setHasIs_gm:(BOOL)a3
+- (void)setHasIs_gm:(BOOL)is_gm
 {
-  if (a3)
+  if (is_gm)
   {
     v3 = 8;
   }
@@ -1068,9 +1068,9 @@ LABEL_13:
   *(&self->_is_trial_upload + 1) = *(&self->_is_trial_upload + 1) & 0xFFF7 | v3;
 }
 
-- (void)setHasIs_seed:(BOOL)a3
+- (void)setHasIs_seed:(BOOL)is_seed
 {
-  if (a3)
+  if (is_seed)
   {
     v3 = 4;
   }
@@ -1083,9 +1083,9 @@ LABEL_13:
   *(&self->_is_trial_upload + 1) = *(&self->_is_trial_upload + 1) & 0xFFFB | v3;
 }
 
-- (void)setHasIs_internal:(BOOL)a3
+- (void)setHasIs_internal:(BOOL)is_internal
 {
-  if (a3)
+  if (is_internal)
   {
     v3 = 2;
   }

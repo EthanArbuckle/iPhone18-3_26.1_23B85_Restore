@@ -15,9 +15,9 @@
 
 - (id)navigationItem
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((self + 16));
   }
 
   else
@@ -40,9 +40,9 @@
 
 - (id)barButtonItem
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
+    WeakRetained = objc_loadWeakRetained((self + 24));
   }
 
   else
@@ -65,9 +65,9 @@
 
 - (id)navigationBar
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 32));
+    WeakRetained = objc_loadWeakRetained((self + 32));
   }
 
   else
@@ -90,9 +90,9 @@
 
 - (uint64_t)isCancelItem
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 8) & 1;
+    v2 = *(self + 8) & 1;
   }
 
   else
@@ -115,9 +115,9 @@
 
 - (uint64_t)isRightItem
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 9) & 1;
+    v2 = *(self + 9) & 1;
   }
 
   else

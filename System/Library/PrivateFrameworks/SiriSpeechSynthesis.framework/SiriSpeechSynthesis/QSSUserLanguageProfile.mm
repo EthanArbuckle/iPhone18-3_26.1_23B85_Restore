@@ -1,10 +1,10 @@
 @interface QSSUserLanguageProfile
 - (NSString)profile_blob_version;
 - (NSString)profile_checksum;
-- (Offset<siri::speech::schema_fb::UserLanguageProfile>)addObjectToBuffer:(void *)a3;
-- (QSSUserLanguageProfile)initWithFlatbuffData:(id)a3 root:(const UserLanguageProfile *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::UserLanguageProfile>)addObjectToBuffer:(void *)buffer;
+- (QSSUserLanguageProfile)initWithFlatbuffData:(id)data root:(const UserLanguageProfile *)root verify:(BOOL)verify;
 - (id)flatbuffData;
-- (void)profile_blob:(id)a3;
+- (void)profile_blob:(id)profile_blob;
 @end
 
 @implementation QSSUserLanguageProfile
@@ -38,7 +38,7 @@ flatbuffers::DetachedBuffer *__38__QSSUserLanguageProfile_flatbuffData__block_in
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::UserLanguageProfile>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::UserLanguageProfile>)addObjectToBuffer:(void *)buffer
 {
   v20 = 0;
   v21 = &v20;
@@ -52,39 +52,39 @@ flatbuffers::DetachedBuffer *__38__QSSUserLanguageProfile_flatbuffData__block_in
   v19[2] = __44__QSSUserLanguageProfile_addObjectToBuffer___block_invoke;
   v19[3] = &unk_279C4C2C8;
   v19[4] = &v20;
-  v19[5] = a3;
+  v19[5] = buffer;
   [(QSSUserLanguageProfile *)self profile_blob:v19];
-  v5 = [(QSSUserLanguageProfile *)self profile_blob_version];
-  v6 = v5;
-  if (!v5)
+  profile_blob_version = [(QSSUserLanguageProfile *)self profile_blob_version];
+  v6 = profile_blob_version;
+  if (!profile_blob_version)
   {
-    v5 = &stru_2879AE8E0;
+    profile_blob_version = &stru_2879AE8E0;
   }
 
-  v7 = [(__CFString *)v5 UTF8String];
-  v8 = strlen(v7);
-  String = flatbuffers::FlatBufferBuilder::CreateString(a3, v7, v8);
+  uTF8String = [(__CFString *)profile_blob_version UTF8String];
+  v8 = strlen(uTF8String);
+  String = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v8);
 
-  v10 = [(QSSUserLanguageProfile *)self profile_checksum];
-  v11 = v10;
-  if (!v10)
+  profile_checksum = [(QSSUserLanguageProfile *)self profile_checksum];
+  v11 = profile_checksum;
+  if (!profile_checksum)
   {
-    v10 = &stru_2879AE8E0;
+    profile_checksum = &stru_2879AE8E0;
   }
 
-  v12 = [(__CFString *)v10 UTF8String];
-  v13 = strlen(v12);
-  LODWORD(v12) = flatbuffers::FlatBufferBuilder::CreateString(a3, v12, v13);
+  uTF8String2 = [(__CFString *)profile_checksum UTF8String];
+  v13 = strlen(uTF8String2);
+  LODWORD(uTF8String2) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String2, v13);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v14 = *(a3 + 8);
-  v15 = *(a3 + 12);
-  v16 = *(a3 + 10);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 4, *(v21 + 12));
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 6, String);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v12);
-  v17.var0 = flatbuffers::FlatBufferBuilder::EndTable(a3, v14 - v15 + v16);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v14 = *(buffer + 8);
+  v15 = *(buffer + 12);
+  v16 = *(buffer + 10);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 4, *(v21 + 12));
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 6, String);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, uTF8String2);
+  v17.var0 = flatbuffers::FlatBufferBuilder::EndTable(buffer, v14 - v15 + v16);
   _Block_object_dispose(&v20, 8);
   return v17;
 }
@@ -142,52 +142,52 @@ uint64_t __44__QSSUserLanguageProfile_addObjectToBuffer___block_invoke(uint64_t 
   return v6;
 }
 
-- (void)profile_blob:(id)a3
+- (void)profile_blob:(id)profile_blob
 {
   root = self->_root;
   v5 = &root[-*root->var0];
-  v6 = a3;
+  profile_blobCopy = profile_blob;
   v7 = *root[*v5[4].var0 + *root[*v5[4].var0].var0].var0;
-  v8 = v6;
-  (*(a3 + 2))();
+  v8 = profile_blobCopy;
+  (*(profile_blob + 2))();
 }
 
-- (QSSUserLanguageProfile)initWithFlatbuffData:(id)a3 root:(const UserLanguageProfile *)a4 verify:(BOOL)a5
+- (QSSUserLanguageProfile)initWithFlatbuffData:(id)data root:(const UserLanguageProfile *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSUserLanguageProfile;
   v10 = [(QSSUserLanguageProfile *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -209,9 +209,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

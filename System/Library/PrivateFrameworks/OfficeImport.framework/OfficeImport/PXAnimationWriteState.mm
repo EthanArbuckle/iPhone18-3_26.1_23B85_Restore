@@ -1,22 +1,22 @@
 @interface PXAnimationWriteState
-- (PXAnimationWriteState)initWithWriteState:(id)a3 file:(id)a4;
+- (PXAnimationWriteState)initWithWriteState:(id)state file:(id)file;
 - (unint64_t)newCommonTimeNodeDataId;
 @end
 
 @implementation PXAnimationWriteState
 
-- (PXAnimationWriteState)initWithWriteState:(id)a3 file:(id)a4
+- (PXAnimationWriteState)initWithWriteState:(id)state file:(id)file
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  fileCopy = file;
   v12.receiver = self;
   v12.super_class = PXAnimationWriteState;
   v9 = [(PXAnimationWriteState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mWriteState, a3);
-    objc_storeStrong(&v10->mFile, a4);
+    objc_storeStrong(&v9->mWriteState, state);
+    objc_storeStrong(&v10->mFile, file);
     v10->mCommonTimeNodeDataId = 0;
   }
 

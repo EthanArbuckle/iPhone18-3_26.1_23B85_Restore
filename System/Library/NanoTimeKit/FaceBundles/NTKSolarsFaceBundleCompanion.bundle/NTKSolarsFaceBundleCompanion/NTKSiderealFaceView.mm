@@ -1,58 +1,58 @@
 @interface NTKSiderealFaceView
-- (CGImage)newImageRefFromSolarContainerView:(id)a3 withHeight:(double)a4;
-- (CGImage)newImageRefFromView:(id)a3;
+- (CGImage)newImageRefFromSolarContainerView:(id)view withHeight:(double)height;
+- (CGImage)newImageRefFromView:(id)view;
 - (CGPath)newTimeViewPathForDarkeningView;
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (CGRect)_timeViewKeylineFrameForEditing;
-- (NTKSiderealFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (double)_darkeningViewAlphaForEditMode:(int64_t)a3;
-- (double)_dialAlphaForEditMode:(int64_t)a3;
+- (NTKSiderealFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (double)_darkeningViewAlphaForEditMode:(int64_t)mode;
+- (double)_dialAlphaForEditMode:(int64_t)mode;
 - (double)_idealizedSolarDayProgress;
 - (double)_solarDayProgressForCurrentTime;
-- (double)_timeDarkeningViewAlphaForEditMode:(int64_t)a3;
-- (double)_timeViewAlphaForEditMode:(int64_t)a3;
-- (id)_dayDiscImageFromSolarContainerView:(id)a3;
-- (id)_dayDiskBloomImageFromSolarContainerView:(id)a3;
-- (id)_dayGnomonImageFromSolarContainerView:(id)a3;
+- (double)_timeDarkeningViewAlphaForEditMode:(int64_t)mode;
+- (double)_timeViewAlphaForEditMode:(int64_t)mode;
+- (id)_dayDiscImageFromSolarContainerView:(id)view;
+- (id)_dayDiskBloomImageFromSolarContainerView:(id)view;
+- (id)_dayGnomonImageFromSolarContainerView:(id)view;
 - (id)_dialViewImageRef;
 - (id)_faceDisplayTime;
 - (id)_gnomonImage;
 - (id)_innerComplicationColors;
-- (id)_keylineViewForComplicationSlot:(id)a3;
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_keylineViewForComplicationSlot:(id)slot;
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_newGnomonLayer;
-- (id)_nightDiscImageFromSolarContainerView:(id)a3;
-- (id)_nightGnomonImageFromSolarContainerView:(id)a3;
-- (id)_nightRingImageFromSolarContainerView:(id)a3;
+- (id)_nightDiscImageFromSolarContainerView:(id)view;
+- (id)_nightGnomonImageFromSolarContainerView:(id)view;
+- (id)_nightRingImageFromSolarContainerView:(id)view;
 - (id)_outerComplicationColors;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (id)_waypointViewImageRef;
-- (id)closestWaypointForSolarDayProgress:(double)a3 range:(double)a4;
-- (id)colorForView:(id)a3 accented:(BOOL)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4;
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5;
-- (id)waypointBetweenPreviousOffset:(double)a3 currentOffset:(double)a4;
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)closestWaypointForSolarDayProgress:(double)progress range:(double)range;
+- (id)colorForView:(id)view accented:(BOOL)accented;
+- (id)filterForView:(id)view style:(int64_t)style;
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction;
+- (id)waypointBetweenPreviousOffset:(double)offset currentOffset:(double)currentOffset;
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyScaleToTimeView;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_asyncUpdateLocale;
 - (void)_buttonPressTimerFired;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterSettingViewMode:(unint64_t)a3 previousViewMode:(unint64_t)a4;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_cleanupAfterSettingViewMode:(unint64_t)mode previousViewMode:(unint64_t)viewMode;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_disableCrown;
 - (void)_enableCrown;
 - (void)_forceSolarDayUpdate;
-- (void)_handleViewModeTapGesture:(id)a3;
-- (void)_interpolateFromViewMode:(unint64_t)a3 toViewMode:(unint64_t)a4 progress:(double)a5;
+- (void)_handleViewModeTapGesture:(id)gesture;
+- (void)_interpolateFromViewMode:(unint64_t)mode toViewMode:(unint64_t)viewMode progress:(double)progress;
 - (void)_loadAuxiliaryDialLabelsIfNeeded;
 - (void)_loadDial;
 - (void)_loadLayoutRules;
@@ -61,47 +61,47 @@
 - (void)_loadTimeView;
 - (void)_loadUI;
 - (void)_prepareForEditing;
-- (void)_prepareForSettingViewMode:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_prepareForSettingViewMode:(unint64_t)mode animated:(BOOL)animated;
 - (void)_refreshGlowPathState;
 - (void)_resetInteractionProgress;
-- (void)_setSolarDayProgress:(double)a3;
+- (void)_setSolarDayProgress:(double)progress;
 - (void)_startClockUpdates;
 - (void)_stopClockUpdates;
 - (void)_tearDownAuxiliaryDialLabels;
 - (void)_tearDownOffsetLabel;
-- (void)_timeDidUpdate:(id)a3;
+- (void)_timeDidUpdate:(id)update;
 - (void)_unloadDial;
 - (void)_unloadSnapshotContentViews;
 - (void)_unloadTimeView;
 - (void)_unloadUI;
 - (void)_updateFramerate;
 - (void)_updateLocale;
-- (void)_updateSolarOrbitGlowPath:(double)a3;
+- (void)_updateSolarOrbitGlowPath:(double)path;
 - (void)_updateStatusBarVisibility;
 - (void)_updateSunsetFilter;
-- (void)_updateTimeLabelsWithReferenceDate:(id)a3 overrideDate:(id)a4;
-- (void)_updateTimeScrubbingContent:(double)a3;
-- (void)_updateTimeViewOrbitWithSolarDayProgress:(double)a3;
+- (void)_updateTimeLabelsWithReferenceDate:(id)date overrideDate:(id)overrideDate;
+- (void)_updateTimeScrubbingContent:(double)content;
+- (void)_updateTimeViewOrbitWithSolarDayProgress:(double)progress;
 - (void)_updateWaypointLabel;
 - (void)_wheelDelayTimerFired;
-- (void)dataSourceDidUpdateSolarData:(id)a3;
+- (void)dataSourceDidUpdateSolarData:(id)data;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)performScrollTestNamed:(id)a3 completion:(id)a4;
-- (void)setDataMode:(int64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)performScrollTestNamed:(id)named completion:(id)completion;
+- (void)setDataMode:(int64_t)mode;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 - (void)setupDarkeningViewIfNeeded;
 - (void)tearDownDarkeningView;
 @end
 
 @implementation NTKSiderealFaceView
 
-- (NTKSiderealFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKSiderealFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v18.receiver = self;
   v18.super_class = NTKSiderealFaceView;
-  v9 = [(NTKSiderealFaceView *)&v18 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKSiderealFaceView *)&v18 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
@@ -110,14 +110,14 @@
     [(NTKSiderealFaceView *)v10 setBackgroundColor:v11];
 
     v10->_previousDataMode = 0;
-    v12 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initForDevice:v8];
+    v12 = [[NTKWhistlerAnalogFaceViewComplicationFactory alloc] initForDevice:deviceCopy];
     faceViewComplicationFactory = v10->_faceViewComplicationFactory;
     v10->_faceViewComplicationFactory = v12;
 
-    v14 = [(NTKSiderealFaceView *)v10 _accessPrewarmedData];
-    v15 = [v14 object];
+    _accessPrewarmedData = [(NTKSiderealFaceView *)v10 _accessPrewarmedData];
+    object = [_accessPrewarmedData object];
     dataSource = v10->_dataSource;
-    v10->_dataSource = v15;
+    v10->_dataSource = object;
 
     [(NTKSiderealDataSource *)v10->_dataSource addObserver:v10];
   }
@@ -155,36 +155,36 @@
 
 - (void)_loadDial
 {
-  v3 = [(NTKSiderealFaceView *)self device];
-  sub_14ADC(v3, v50);
+  device = [(NTKSiderealFaceView *)self device];
+  sub_14ADC(device, v50);
   v4 = v50[0];
 
   v5 = [NTKSiderealSolarContainerView alloc];
-  v6 = [(NTKSiderealFaceView *)self device];
-  [v6 screenBounds];
+  device2 = [(NTKSiderealFaceView *)self device];
+  [device2 screenBounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(NTKSiderealFaceView *)self device];
-  sub_14ADC(v15, &v48);
+  device3 = [(NTKSiderealFaceView *)self device];
+  sub_14ADC(device3, &v48);
   v16 = v49;
-  v17 = [(NTKSiderealFaceView *)self device];
-  v43 = [(NTKSiderealSolarContainerView *)v5 initWithFrame:v17 orbitDiameter:v8 device:v10, v12, v14, v16];
+  device4 = [(NTKSiderealFaceView *)self device];
+  v43 = [(NTKSiderealSolarContainerView *)v5 initWithFrame:device4 orbitDiameter:v8 device:v10, v12, v14, v16];
 
   v18 = [NTKSiderealDialBackgroundView alloc];
-  v42 = [(NTKSiderealFaceView *)self device];
-  sub_14ADC(v42, &v46);
+  device5 = [(NTKSiderealFaceView *)self device];
+  sub_14ADC(device5, &v46);
   v19 = v47;
-  v41 = [(NTKSiderealFaceView *)self device];
-  sub_14ADC(v41, &v44);
+  device6 = [(NTKSiderealFaceView *)self device];
+  sub_14ADC(device6, &v44);
   v20 = v45;
-  v40 = [(NTKSiderealFaceView *)self timeView];
-  [v40 bounds];
+  timeView = [(NTKSiderealFaceView *)self timeView];
+  [timeView bounds];
   v22 = v21 * 0.5;
-  v38 = [(NTKSiderealFaceView *)self _dialViewImageRef];
-  v23 = [(NTKSiderealFaceView *)self _waypointViewImageRef];
-  v24 = [(NTKSiderealFaceView *)self _gnomonImage];
+  _dialViewImageRef = [(NTKSiderealFaceView *)self _dialViewImageRef];
+  _waypointViewImageRef = [(NTKSiderealFaceView *)self _waypointViewImageRef];
+  _gnomonImage = [(NTKSiderealFaceView *)self _gnomonImage];
   v39 = [(NTKSiderealFaceView *)self _dayGnomonImageFromSolarContainerView:v43];
   v25 = [(NTKSiderealFaceView *)self _dayDiskBloomImageFromSolarContainerView:v43];
   v26 = [(NTKSiderealFaceView *)self _dayDiscImageFromSolarContainerView:v43];
@@ -192,22 +192,22 @@
   v28 = [(NTKSiderealFaceView *)self _nightDiscImageFromSolarContainerView:v43];
   v29 = [(NTKSiderealFaceView *)self _nightRingImageFromSolarContainerView:v43];
   LOBYTE(v37) = self->_useXR;
-  v30 = [(NTKSiderealDialBackgroundView *)v18 initWithFrame:v38 orbitDiameter:v23 timeOrbitRadius:v24 timeRadius:v39 dialImage:v25 waypointImage:v26 gnomonImage:0.0 dayGnomonImage:0.0 dayDiskBloomImage:v4 dayDiscImage:v4 nightGnomonImage:v19 nightDiscImage:v20 nightRingImage:v22 initialData:v27 useXR:v28, v29, self->_currentData, v37];
+  v30 = [(NTKSiderealDialBackgroundView *)v18 initWithFrame:_dialViewImageRef orbitDiameter:_waypointViewImageRef timeOrbitRadius:_gnomonImage timeRadius:v39 dialImage:v25 waypointImage:v26 gnomonImage:0.0 dayGnomonImage:0.0 dayDiskBloomImage:v4 dayDiscImage:v4 nightGnomonImage:v19 nightDiscImage:v20 nightRingImage:v22 initialData:v27 useXR:v28, v29, self->_currentData, v37];
   dialBackgroundView = self->_dialBackgroundView;
   self->_dialBackgroundView = v30;
 
   v32 = self->_dialBackgroundView;
-  v33 = [(NTKSiderealFaceView *)self device];
-  [v33 screenBounds];
+  device7 = [(NTKSiderealFaceView *)self device];
+  [device7 screenBounds];
   CLKRectGetCenter();
   [(NTKSiderealDialBackgroundView *)v32 setCenter:?];
 
   v34 = self->_dialBackgroundView;
-  v35 = [(NTKSiderealData *)self->_currentData sectors];
-  [(NTKSiderealDialBackgroundView *)v34 setSectors:v35];
+  sectors = [(NTKSiderealData *)self->_currentData sectors];
+  [(NTKSiderealDialBackgroundView *)v34 setSectors:sectors];
 
-  v36 = [(NTKSiderealFaceView *)self contentView];
-  [v36 insertSubview:self->_dialBackgroundView atIndex:0];
+  contentView = [(NTKSiderealFaceView *)self contentView];
+  [contentView insertSubview:self->_dialBackgroundView atIndex:0];
 }
 
 - (void)_unloadDial
@@ -219,13 +219,13 @@
 
 - (void)_loadTimeView
 {
-  v3 = [(NTKSiderealFaceView *)self device];
-  sub_14ADC(v3, &v10);
+  device = [(NTKSiderealFaceView *)self device];
+  sub_14ADC(device, &v10);
   v4 = *(&v10 + 1);
 
   v5 = [NTKSiderealTimeView alloc];
-  v6 = [(NTKSiderealFaceView *)self device];
-  v7 = [(NTKSiderealTimeView *)v5 initWithFrame:0 style:v6 andDevice:0.0, 0.0, v4, v4];
+  device2 = [(NTKSiderealFaceView *)self device];
+  v7 = [(NTKSiderealTimeView *)v5 initWithFrame:0 style:device2 andDevice:0.0, 0.0, v4, v4];
   siderealTimeView = self->_siderealTimeView;
   self->_siderealTimeView = v7;
 
@@ -266,10 +266,10 @@
     self->_viewModeTapButton = v6;
 
     [(NTKFaceViewTapControl *)self->_viewModeTapButton addTarget:self action:"_handleViewModeTapGesture:" forControlEvents:64];
-    v8 = [(NTKFaceViewTapControl *)self->_viewModeTapButton highlightImageView];
-    v9 = [(NTKSiderealFaceView *)self device];
+    highlightImageView = [(NTKFaceViewTapControl *)self->_viewModeTapButton highlightImageView];
+    device = [(NTKSiderealFaceView *)self device];
     v10 = NTKNoHighlightDialTapImage();
-    [v8 setImage:v10];
+    [highlightImageView setImage:v10];
 
     [(NTKSiderealFaceView *)self addSubview:self->_viewModeTapButton];
   }
@@ -300,13 +300,13 @@
   [(NTKFaceViewTapControl *)self->_viewModeTapButton sizeToFit];
 }
 
-- (void)setDataMode:(int64_t)a3
+- (void)setDataMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = NTKSiderealFaceView;
   [(NTKSiderealFaceView *)&v5 setDataMode:?];
   [(NTKFaceViewTapControl *)self->_viewModeTapButton setHighlighted:0];
-  [(NTKFaceViewTapControl *)self->_viewModeTapButton setUserInteractionEnabled:a3 == 1];
+  [(NTKFaceViewTapControl *)self->_viewModeTapButton setUserInteractionEnabled:mode == 1];
   [(NTKSiderealFaceView *)self _updateFramerate];
 }
 
@@ -319,13 +319,13 @@
   if (previousDataMode != [(NTKSiderealFaceView *)self dataMode])
   {
     currentSolarDayProgress = self->_currentSolarDayProgress;
-    v5 = [(NTKSiderealFaceView *)self dataMode];
+    dataMode = [(NTKSiderealFaceView *)self dataMode];
     v6 = -1.0;
-    if (v5 > 2)
+    if (dataMode > 2)
     {
-      if ((v5 - 4) >= 2)
+      if ((dataMode - 4) >= 2)
       {
-        if (v5 != &dword_0 + 3)
+        if (dataMode != &dword_0 + 3)
         {
           goto LABEL_15;
         }
@@ -348,16 +348,16 @@
       }
     }
 
-    else if (v5)
+    else if (dataMode)
     {
-      if (v5 == &dword_0 + 1)
+      if (dataMode == &dword_0 + 1)
       {
         v9 = self->_previousDataMode;
         v10 = v9 == 3;
         if (v9 == 3)
         {
-          v11 = [(NTKSiderealFaceView *)self timeView];
-          [v11 setOverrideDate:0 duration:0.5];
+          timeView = [(NTKSiderealFaceView *)self timeView];
+          [timeView setOverrideDate:0 duration:0.5];
         }
 
         [(NTKSiderealFaceView *)self _solarDayProgressForCurrentTime];
@@ -373,7 +373,7 @@
         goto LABEL_15;
       }
 
-      if (v5 != &dword_0 + 2)
+      if (dataMode != &dword_0 + 2)
       {
 LABEL_15:
         if (self->_previousDataMode)
@@ -405,8 +405,8 @@ LABEL_17:
     [(NTKSiderealFaceView *)self isFrozen];
   }
 
-  v3 = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quadView];
-  [v3 setPaused:1];
+  quadView = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quadView];
+  [quadView setPaused:1];
 }
 
 - (void)_enableCrown
@@ -444,24 +444,24 @@ LABEL_17:
   _objc_release_x1();
 }
 
-- (void)_updateTimeScrubbingContent:(double)a3
+- (void)_updateTimeScrubbingContent:(double)content
 {
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v10 = [(NTKSiderealData *)self->_currentData interpolateBetweenCalendricalMidnights:a3];
-  v5 = [(NTKSiderealFaceView *)self _faceDisplayTime];
+  v10 = [(NTKSiderealData *)self->_currentData interpolateBetweenCalendricalMidnights:content];
+  _faceDisplayTime = [(NTKSiderealFaceView *)self _faceDisplayTime];
   v6 = NTKRoundDateDownToNearestMinute();
 
   [(NTKSiderealFaceView *)self _updateTimeLabelsWithReferenceDate:v6 overrideDate:v10];
   if (self->_viewMode == 1 || self->_transitionState - 1 <= 1)
   {
-    v8 = [(NTKSiderealFaceView *)self timeView];
-    [v8 setOverrideDate:v10 duration:0.0];
+    timeView = [(NTKSiderealFaceView *)self timeView];
+    [timeView setOverrideDate:v10 duration:0.0];
   }
 
-  [(NTKSiderealFaceView *)self _setSolarDayProgress:a3];
-  v9 = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quadView];
-  [v9 renderSynchronouslyWithImageQueueDiscard:0 inGroup:0 completion:0];
+  [(NTKSiderealFaceView *)self _setSolarDayProgress:content];
+  quadView = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quadView];
+  [quadView renderSynchronouslyWithImageQueueDiscard:0 inGroup:0 completion:0];
 
   +[CATransaction commit];
 }
@@ -470,16 +470,16 @@ LABEL_17:
 {
   [(NTKSiderealFaceView *)self _solarDayProgressForCurrentTime];
   self->_interactionProgress = v3;
-  v4 = [(NTKSiderealFaceView *)self timeView];
-  [v4 setOverrideDate:0 duration:0.0];
+  timeView = [(NTKSiderealFaceView *)self timeView];
+  [timeView setOverrideDate:0 duration:0.0];
 }
 
 - (id)_faceDisplayTime
 {
   v2 = +[NTKTimeOffsetManager sharedManager];
-  v3 = [v2 faceDisplayTime];
+  faceDisplayTime = [v2 faceDisplayTime];
 
-  return v3;
+  return faceDisplayTime;
 }
 
 - (void)_startClockUpdates
@@ -514,20 +514,20 @@ LABEL_17:
   }
 }
 
-- (void)_timeDidUpdate:(id)a3
+- (void)_timeDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = updateCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "[NTKSiderealFaceView] _updateForChangedDate with date:%@", &v8, 0xCu);
   }
 
-  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:v4];
+  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:updateCopy];
   v7 = v6;
-  if (([(NTKSiderealData *)self->_currentData isDateInReferenceDate:v4]& 1) != 0)
+  if (([(NTKSiderealData *)self->_currentData isDateInReferenceDate:updateCopy]& 1) != 0)
   {
     if (self->_viewMode != 1 && ![(NTKSiderealFaceView *)self _isDayAnimationRunning])
     {
@@ -538,21 +538,21 @@ LABEL_17:
 
   else
   {
-    [(NTKSiderealDataSource *)self->_dataSource updateModelWithDate:v4];
+    [(NTKSiderealDataSource *)self->_dataSource updateModelWithDate:updateCopy];
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   v7.receiver = self;
   v7.super_class = NTKSiderealFaceView;
-  [(NTKSiderealFaceView *)&v7 setOverrideDate:v6 duration:a4];
+  [(NTKSiderealFaceView *)&v7 setOverrideDate:dateCopy duration:duration];
   if (![(NTKSiderealFaceView *)self _isDayAnimationRunning]&& !self->_viewMode)
   {
-    if (v6)
+    if (dateCopy)
     {
-      [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:v6];
+      [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:dateCopy];
     }
 
     else
@@ -599,15 +599,15 @@ LABEL_17:
 - (void)_updateSunsetFilter
 {
   v23 = self->_currentData;
-  v3 = [(NTKSiderealData *)v23 sunriseSunsetInfo];
-  v4 = [(NTKSiderealData *)v23 sunriseTime];
-  v5 = [(NTKSiderealData *)v23 sunsetTime];
-  v6 = [(NTKSiderealData *)v23 referenceDate];
+  sunriseSunsetInfo = [(NTKSiderealData *)v23 sunriseSunsetInfo];
+  sunriseTime = [(NTKSiderealData *)v23 sunriseTime];
+  sunsetTime = [(NTKSiderealData *)v23 sunsetTime];
+  referenceDate = [(NTKSiderealData *)v23 referenceDate];
   v7 = NTKEndOfDayForDate();
 
-  [v5 timeIntervalSinceDate:v4];
+  [sunsetTime timeIntervalSinceDate:sunriseTime];
   v9 = v8;
-  [v7 timeIntervalSinceDate:v5];
+  [v7 timeIntervalSinceDate:sunsetTime];
   v11 = v10;
   if (([(NTKSiderealData *)v23 sunsetFollowsSunrise]& 1) == 0)
   {
@@ -616,13 +616,13 @@ LABEL_17:
   }
 
   v12 = +[NSCalendar currentCalendar];
-  v13 = [(NTKSiderealData *)v23 referenceDate];
-  v14 = [v12 components:160 fromDate:v13];
+  referenceDate2 = [(NTKSiderealData *)v23 referenceDate];
+  v14 = [v12 components:160 fromDate:referenceDate2];
 
   [v14 setSecond:0];
   [v14 setHour:22];
-  v15 = [(NTKSiderealData *)v23 referenceDate];
-  v16 = [v12 nextDateAfterDate:v15 matchingComponents:v14 options:2];
+  referenceDate3 = [(NTKSiderealData *)v23 referenceDate];
+  v16 = [v12 nextDateAfterDate:referenceDate3 matchingComponents:v14 options:2];
 
   if (v9 < 14400.0)
   {
@@ -632,12 +632,12 @@ LABEL_17:
   if (v9 < 28800.0)
   {
     self->_sunsetFilterEnabled = 1;
-    v17 = [v3 solarNoon];
+    solarNoon = [sunriseSunsetInfo solarNoon];
 LABEL_9:
-    v18 = v17;
+    v18 = solarNoon;
     if (v11 >= 7200.0)
     {
-      v19 = v5;
+      v19 = sunsetTime;
     }
 
     else
@@ -659,7 +659,7 @@ LABEL_9:
   if (v9 < 72000.0)
   {
     self->_sunsetFilterEnabled = 1;
-    v17 = [v5 dateByAddingTimeInterval:-14400.0];
+    solarNoon = [sunsetTime dateByAddingTimeInterval:-14400.0];
     goto LABEL_9;
   }
 
@@ -670,10 +670,10 @@ LABEL_13:
 LABEL_14:
 }
 
-- (void)dataSourceDidUpdateSolarData:(id)a3
+- (void)dataSourceDidUpdateSolarData:(id)data
 {
-  v5 = a3;
-  if (self->_currentData != v5)
+  dataCopy = data;
+  if (self->_currentData != dataCopy)
   {
     v6 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -682,10 +682,10 @@ LABEL_14:
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_INFO, "[NTKSiderealFaceView] dataSourceDidUpdateSolarData", v15, 2u);
     }
 
-    objc_storeStrong(&self->_currentData, a3);
+    objc_storeStrong(&self->_currentData, data);
     dialBackgroundView = self->_dialBackgroundView;
-    v8 = [(NTKSiderealData *)self->_currentData sectors];
-    [(NTKSiderealDialBackgroundView *)dialBackgroundView setSectors:v8];
+    sectors = [(NTKSiderealData *)self->_currentData sectors];
+    [(NTKSiderealDialBackgroundView *)dialBackgroundView setSectors:sectors];
 
     v9 = +[NTKSiderealCache sharedCache];
     [v9 purgeCachedKey:NTKSiderealCacheWaypointViewKey];
@@ -696,30 +696,30 @@ LABEL_14:
     v11 = self->_dialBackgroundView;
     if (v11)
     {
-      v12 = [(NTKSiderealDialBackgroundView *)v11 quad];
-      v13 = [(NTKSiderealFaceView *)self _waypointViewImageRef];
-      [v12 updateWaypointImage:v13];
+      quad = [(NTKSiderealDialBackgroundView *)v11 quad];
+      _waypointViewImageRef = [(NTKSiderealFaceView *)self _waypointViewImageRef];
+      [quad updateWaypointImage:_waypointViewImageRef];
     }
 
     [(NTKSiderealFaceView *)self _updateSunsetFilter];
-    v14 = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
-    [v14 siderealDataChanged:v5];
+    quad2 = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
+    [quad2 siderealDataChanged:dataCopy];
   }
 }
 
-- (void)_setSolarDayProgress:(double)a3
+- (void)_setSolarDayProgress:(double)progress
 {
   currentSolarDayProgress = self->_currentSolarDayProgress;
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_currentSolarDayProgress = a3;
+    self->_currentSolarDayProgress = progress;
     v6 = 0.0;
     if (self->_sunsetFilterEnabled && self->_useXR)
     {
-      v7 = a3;
+      progressCopy = progress;
       sunsetFilterRampUpStartProgress = self->_sunsetFilterRampUpStartProgress;
       v9 = ((self->_sunsetFilterRampDownStartProgress - sunsetFilterRampUpStartProgress) + -0.083333) * 0.5;
-      v10 = ((v9 + 0.083333) / 0.083333) - fabsf((((v7 + -0.083333) - sunsetFilterRampUpStartProgress) - v9) / 0.083333);
+      v10 = ((v9 + 0.083333) / 0.083333) - fabsf((((progressCopy + -0.083333) - sunsetFilterRampUpStartProgress) - v9) / 0.083333);
       if (v10 < 0.0)
       {
         v10 = 0.0;
@@ -728,9 +728,9 @@ LABEL_14:
       v6 = fminf(v10, 1.0);
     }
 
-    v11 = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
+    quad = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
     *&v12 = v6;
-    [v11 setSunsetFilter:v12];
+    [quad setSunsetFilter:v12];
 
     [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView setSolarDayProgress:self->_currentSolarDayProgress];
     [(NTKSiderealFaceView *)self _updateTimeViewOrbitWithSolarDayProgress:self->_currentSolarDayProgress];
@@ -753,13 +753,13 @@ LABEL_14:
   [(NTKSiderealFaceView *)self _setViewMode:0 animated:0];
 }
 
-- (void)_updateTimeViewOrbitWithSolarDayProgress:(double)a3
+- (void)_updateTimeViewOrbitWithSolarDayProgress:(double)progress
 {
-  v4 = [(NTKSiderealFaceView *)self device];
-  sub_14ADC(v4, &v7);
+  device = [(NTKSiderealFaceView *)self device];
+  sub_14ADC(device, &v7);
 
-  v5 = [(NTKSiderealFaceView *)self device];
-  [v5 screenBounds];
+  device2 = [(NTKSiderealFaceView *)self device];
+  [device2 screenBounds];
   CLKRectGetCenter();
 
   CLKDegreesToRadians();
@@ -769,20 +769,20 @@ LABEL_14:
   [(NTKSiderealTimeView *)siderealTimeView setCenter:?];
 }
 
-- (void)_handleViewModeTapGesture:(id)a3
+- (void)_handleViewModeTapGesture:(id)gesture
 {
-  v4 = [(NTKSiderealFaceView *)self _isDayAnimationRunning];
+  _isDayAnimationRunning = [(NTKSiderealFaceView *)self _isDayAnimationRunning];
   viewMode = self->_viewMode;
-  if (!v4 || viewMode)
+  if (!_isDayAnimationRunning || viewMode)
   {
 
     [(NTKSiderealFaceView *)self _setViewMode:viewMode != 1 animated:1];
   }
 }
 
-- (void)_prepareForSettingViewMode:(unint64_t)a3 animated:(BOOL)a4
+- (void)_prepareForSettingViewMode:(unint64_t)mode animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   viewMode = self->_viewMode;
   if (viewMode != 1)
   {
@@ -790,7 +790,7 @@ LABEL_14:
     {
       [(NTKSiderealAuxiliaryDialLabels *)self->_auxiliaryDialLabels willStartTransition];
       [(NTKSiderealFaceView *)self enumerateComplicationDisplayWrappersWithBlock:&stru_2CBE0];
-      if (v4)
+      if (animatedCopy)
       {
         currentSolarDayProgress = self->_currentSolarDayProgress;
         [(NTKSiderealFaceView *)self _solarDayProgressForCurrentTime];
@@ -816,7 +816,7 @@ LABEL_14:
   [(NTKSiderealFaceView *)self _updateStatusBarVisibility];
   [(NTKSiderealFaceView *)self _loadAuxiliaryDialLabelsIfNeeded];
   [(NTKSiderealFaceView *)self _loadOffsetLabelIfNeeded];
-  if (v4)
+  if (animatedCopy)
   {
     [(NTKSiderealFaceView *)self enableCrownEventReception];
   }
@@ -824,10 +824,10 @@ LABEL_14:
   [(NTKSiderealTimeView *)self->_siderealTimeView setUseMonospacedDigitalNumbers:1];
   [(NTKSiderealTimeView *)self->_siderealTimeView setSecondsHidden:1 animated:1];
   [(NTKSiderealFaceView *)self _updateWaypointLabel];
-  v9 = [(NTKSiderealData *)self->_currentData sunriseSunsetInfo];
-  v10 = [v9 rise];
-  v11 = [v9 set];
-  if (v10)
+  sunriseSunsetInfo = [(NTKSiderealData *)self->_currentData sunriseSunsetInfo];
+  rise = [sunriseSunsetInfo rise];
+  v11 = [sunriseSunsetInfo set];
+  if (rise)
   {
     v12 = v11 == 0;
   }
@@ -844,7 +844,7 @@ LABEL_14:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v25 = *&v10;
+      v25 = *&rise;
       v26 = 2112;
       v27 = v13;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "sunrise exists (%@) but sunset doesn't (nil), setting to end of day (%@)", buf, 0x16u);
@@ -854,20 +854,20 @@ LABEL_14:
   }
 
   v13 = v11;
-  if (v10)
+  if (rise)
   {
 LABEL_18:
-    [v13 timeIntervalSinceDate:v10];
+    [v13 timeIntervalSinceDate:rise];
     v14 = v16;
     goto LABEL_19;
   }
 
   v14 = 0.0;
 LABEL_19:
-  v17 = [v9 constantSun];
+  constantSun = [sunriseSunsetInfo constantSun];
   v18 = v14;
-  v19 = v14 != 0.0 || v17 != &dword_0 + 2;
-  if (v14 == 0.0 && v17 == &dword_0 + 2)
+  v19 = v14 != 0.0 || constantSun != &dword_0 + 2;
+  if (v14 == 0.0 && constantSun == &dword_0 + 2)
   {
     v14 = 86400.0;
   }
@@ -880,7 +880,7 @@ LABEL_19:
       *buf = 134218498;
       v25 = v14;
       v26 = 2112;
-      v27 = v10;
+      v27 = rise;
       v28 = 2112;
       v29 = v13;
       _os_log_error_impl(&dword_0, v20, OS_LOG_TYPE_ERROR, "dayLength is not valid (%f). Derived from sunrise (%@) sunset (%@)", buf, 0x20u);
@@ -902,7 +902,7 @@ LABEL_27:
   [(NTKSiderealFaceView *)self _refreshGlowPathState];
 }
 
-- (void)_interpolateFromViewMode:(unint64_t)a3 toViewMode:(unint64_t)a4 progress:(double)a5
+- (void)_interpolateFromViewMode:(unint64_t)mode toViewMode:(unint64_t)viewMode progress:(double)progress
 {
   CLKCompressFraction();
   CLKCompressFraction();
@@ -917,13 +917,13 @@ LABEL_27:
   [(NTKSiderealAuxiliaryDialLabels *)auxiliaryDialLabels applyTransitionFraction:?];
 }
 
-- (void)_cleanupAfterSettingViewMode:(unint64_t)a3 previousViewMode:(unint64_t)a4
+- (void)_cleanupAfterSettingViewMode:(unint64_t)mode previousViewMode:(unint64_t)viewMode
 {
   self->_transitionState = 0;
   viewMode = self->_viewMode;
   if (viewMode == 1)
   {
-    [(NTKSiderealAuxiliaryDialLabels *)self->_auxiliaryDialLabels didFinishTransition:a3];
+    [(NTKSiderealAuxiliaryDialLabels *)self->_auxiliaryDialLabels didFinishTransition:mode];
     [(NTKSiderealFaceView *)self enumerateComplicationDisplayWrappersWithBlock:&stru_2CC28];
     if (NTKStarbearEnabled())
     {
@@ -937,7 +937,7 @@ LABEL_27:
     [(NTKSiderealFaceView *)self _tearDownOffsetLabel];
     [(NTKSiderealFaceView *)self _updateStatusBarVisibility];
     [(NTKSiderealTimeView *)self->_siderealTimeView setSecondsHidden:0 animated:1];
-    if (a4 != 2)
+    if (viewMode != 2)
     {
       [(NTKSiderealFaceView *)self _solarDayProgressForCurrentTime];
       [(NTKSiderealFaceView *)self _updateTimeScrubbingContent:?];
@@ -950,31 +950,31 @@ LABEL_27:
     }
   }
 
-  [(NTKSiderealFaceView *)self _refreshGlowPathState:a3];
+  [(NTKSiderealFaceView *)self _refreshGlowPathState:mode];
 }
 
 - (void)_updateStatusBarVisibility
 {
-  v3 = [(NTKSiderealFaceView *)self delegate];
-  [v3 faceViewWantsStatusBarHidden:self->_viewMode == 1 animated:1];
+  delegate = [(NTKSiderealFaceView *)self delegate];
+  [delegate faceViewWantsStatusBarHidden:self->_viewMode == 1 animated:1];
 }
 
 - (void)_refreshGlowPathState
 {
   v2 = self->_transitionState - 1;
   viewMode = self->_viewMode;
-  v4 = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
-  v7 = v4;
+  quad = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
+  v7 = quad;
   v6 = v2 < 2 || viewMode == 1;
-  [v4 setShouldDrawGlowPath:v6];
+  [quad setShouldDrawGlowPath:v6];
 }
 
-- (void)_updateSolarOrbitGlowPath:(double)a3
+- (void)_updateSolarOrbitGlowPath:(double)path
 {
   [(NTKSiderealFaceView *)self _solarDayProgressForCurrentTime];
   v6 = v5 * 6.28318531;
-  v7 = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
-  [v7 setGlowViewStartAngle:v6 endAngle:a3 * 6.28318531];
+  quad = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
+  [quad setGlowViewStartAngle:v6 endAngle:path * 6.28318531];
 }
 
 - (void)_updateWaypointLabel
@@ -983,8 +983,8 @@ LABEL_27:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(NTKSiderealData *)self->_currentData sectors];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  sectors = [(NTKSiderealData *)self->_currentData sectors];
+  v4 = [sectors countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v4)
   {
     v5 = v4;
@@ -995,17 +995,17 @@ LABEL_27:
       {
         if (*v20 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sectors);
         }
 
         v8 = *(*(&v19 + 1) + 8 * i);
-        v9 = [v8 startingEvent];
-        [v9 degree];
+        startingEvent = [v8 startingEvent];
+        [startingEvent degree];
         NTKSiderealDegreesToSolarDayProgress();
         v11 = v10;
 
-        v12 = [v8 endingEvent];
-        [v12 degree];
+        endingEvent = [v8 endingEvent];
+        [endingEvent degree];
         NTKSiderealDegreesToSolarDayProgress();
         v14 = v13;
 
@@ -1013,14 +1013,14 @@ LABEL_27:
         if (interactionProgress >= v11 && interactionProgress <= v14)
         {
           auxiliaryDialLabels = self->_auxiliaryDialLabels;
-          v18 = [v8 localizedName];
-          [(NTKSiderealAuxiliaryDialLabels *)auxiliaryDialLabels setTopText:v18];
+          localizedName = [v8 localizedName];
+          [(NTKSiderealAuxiliaryDialLabels *)auxiliaryDialLabels setTopText:localizedName];
 
           goto LABEL_13;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v5 = [sectors countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v5);
@@ -1029,24 +1029,24 @@ LABEL_27:
 LABEL_13:
 }
 
-- (void)_updateTimeLabelsWithReferenceDate:(id)a3 overrideDate:(id)a4
+- (void)_updateTimeLabelsWithReferenceDate:(id)date overrideDate:(id)overrideDate
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = v6;
+  dateCopy = date;
+  overrideDateCopy = overrideDate;
+  v7 = overrideDateCopy;
   if (self->_viewMode == 1 || self->_transitionState == 1)
   {
-    [v6 timeIntervalSinceDate:v17];
+    [overrideDateCopy timeIntervalSinceDate:dateCopy];
     v9 = sub_1113C(1, v8);
-    v10 = [(UILabel *)self->_offsetLabel text];
-    v11 = [v10 isEqualToString:v9];
+    text = [(UILabel *)self->_offsetLabel text];
+    v11 = [text isEqualToString:v9];
 
     if ((v11 & 1) == 0)
     {
       [(UILabel *)self->_offsetLabel setText:v9];
     }
 
-    v12 = [(NSDateFormatter *)self->_interactiveModeDateFormatter stringFromDate:v17];
+    v12 = [(NSDateFormatter *)self->_interactiveModeDateFormatter stringFromDate:dateCopy];
     v13 = +[NSLocale currentLocale];
     v14 = [v12 uppercaseStringWithLocale:v13];
 
@@ -1067,13 +1067,13 @@ LABEL_13:
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(NTKSiderealFaceView *)self device];
-    v13 = [(NTKSiderealAuxiliaryDialLabels *)v3 initWithFrame:v12 device:v5, v7, v9, v11];
+    device = [(NTKSiderealFaceView *)self device];
+    v13 = [(NTKSiderealAuxiliaryDialLabels *)v3 initWithFrame:device device:v5, v7, v9, v11];
     auxiliaryDialLabels = self->_auxiliaryDialLabels;
     self->_auxiliaryDialLabels = v13;
 
-    v15 = [(NTKSiderealFaceView *)self contentView];
-    [v15 addSubview:self->_auxiliaryDialLabels];
+    contentView = [(NTKSiderealFaceView *)self contentView];
+    [contentView addSubview:self->_auxiliaryDialLabels];
   }
 }
 
@@ -1088,15 +1088,15 @@ LABEL_13:
 {
   if (!self->_offsetLabel)
   {
-    v3 = [(NTKSiderealFaceView *)self device];
-    sub_14ADC(v3, v25);
+    device = [(NTKSiderealFaceView *)self device];
+    sub_14ADC(device, v25);
     v4 = [CLKFont systemFontOfSize:CLKRoundedFontDesignName weight:v26 design:UIFontWeightMedium];
-    v22 = [v4 CLKFontWithMonospacedNumbers];
+    cLKFontWithMonospacedNumbers = [v4 CLKFontWithMonospacedNumbers];
 
     NTKSingleLineHeight();
     v6 = v5;
-    v7 = [(NTKSiderealFaceView *)self device];
-    sub_14ADC(v7, v23);
+    device2 = [(NTKSiderealFaceView *)self device];
+    sub_14ADC(device2, v23);
     v8 = v24 - v6;
     [(NTKSiderealTimeView *)self->_siderealTimeView bounds];
     v10 = v9;
@@ -1105,28 +1105,28 @@ LABEL_13:
     offsetLabel = self->_offsetLabel;
     self->_offsetLabel = v11;
 
-    [(UILabel *)self->_offsetLabel setFont:v22];
+    [(UILabel *)self->_offsetLabel setFont:cLKFontWithMonospacedNumbers];
     v13 = self->_offsetLabel;
     v14 = [UIColor colorWithRed:1.0 green:0.941176471 blue:0.501960784 alpha:1.0];
     [(UILabel *)v13 setTextColor:v14];
 
     [(UILabel *)self->_offsetLabel setTextAlignment:1];
-    v15 = [(UILabel *)self->_offsetLabel layer];
-    [v15 setShadowRadius:5.0];
+    layer = [(UILabel *)self->_offsetLabel layer];
+    [layer setShadowRadius:5.0];
 
-    v16 = [(UILabel *)self->_offsetLabel layer];
+    layer2 = [(UILabel *)self->_offsetLabel layer];
     LODWORD(v17) = 1041865114;
-    [v16 setShadowOpacity:v17];
+    [layer2 setShadowOpacity:v17];
 
-    v18 = [(UILabel *)self->_offsetLabel layer];
-    [v18 setShadowOffset:{0.0, 0.0}];
+    layer3 = [(UILabel *)self->_offsetLabel layer];
+    [layer3 setShadowOffset:{0.0, 0.0}];
 
     v19 = self->_offsetLabel;
     v20 = [UIColor colorWithWhite:0.0 alpha:0.15];
     [(UILabel *)v19 setShadowColor:v20];
 
-    v21 = [(NTKSiderealTimeView *)self->_siderealTimeView dialBackgroundView];
-    [v21 addSubview:self->_offsetLabel];
+    dialBackgroundView = [(NTKSiderealTimeView *)self->_siderealTimeView dialBackgroundView];
+    [dialBackgroundView addSubview:self->_offsetLabel];
   }
 }
 
@@ -1144,8 +1144,8 @@ LABEL_13:
   [(NTKSiderealFaceView *)&v4 _prepareForEditing];
   self->_breathScaleModifier = 1.0;
   self->_rubberBandScaleModifier = 1.0;
-  v3 = [(NTKSiderealFaceView *)self timeView];
-  [v3 setEditing:1];
+  timeView = [(NTKSiderealFaceView *)self timeView];
+  [timeView setEditing:1];
 
   [(NTKSiderealFaceView *)self setupDarkeningViewIfNeeded];
   [(NTKSiderealFaceView *)self _updateFramerate];
@@ -1156,40 +1156,40 @@ LABEL_13:
   v4.receiver = self;
   v4.super_class = NTKSiderealFaceView;
   [(NTKSiderealFaceView *)&v4 _cleanupAfterEditing];
-  v3 = [(NTKSiderealFaceView *)self timeView];
-  [v3 setEditing:0];
+  timeView = [(NTKSiderealFaceView *)self timeView];
+  [timeView setEditing:0];
 
   [(NTKSiderealFaceView *)self tearDownDarkeningView];
   [(NTKSiderealFaceView *)self _updateFramerate];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 15)
+  if (mode == 15)
   {
     siderealTimeView = self->_siderealTimeView;
-    v7 = [a3 style];
+    style = [option style];
 
-    [(NTKSiderealTimeView *)siderealTimeView setStyle:v7];
+    [(NTKSiderealTimeView *)siderealTimeView setStyle:style];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 15)
+  if (mode == 15)
   {
     siderealTimeView = self->_siderealTimeView;
-    v11 = a5;
-    v12 = [a4 style];
-    v13 = [v11 style];
+    toOptionCopy = toOption;
+    style = [option style];
+    style2 = [toOptionCopy style];
 
-    [(NTKSiderealTimeView *)siderealTimeView applyTransitionFraction:v12 fromStyle:v13 toStyle:a3];
+    [(NTKSiderealTimeView *)siderealTimeView applyTransitionFraction:style fromStyle:style2 toStyle:fraction];
   }
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = [(NTKSiderealFaceView *)self device:a4];
+  v6 = [(NTKSiderealFaceView *)self device:mode];
   sub_14ADC(v6, &v9);
   NTKScaleForBreathingFraction();
   v8 = v7;
@@ -1199,7 +1199,7 @@ LABEL_13:
   [(NTKSiderealFaceView *)self _applyScaleToTimeView];
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
   NTKScaleForRubberBandingFraction();
   self->_rubberBandScaleModifier = v6;
@@ -1214,64 +1214,64 @@ LABEL_13:
   siderealTimeView = self->_siderealTimeView;
   [(NTKSiderealFaceView *)self _timeViewScaleTransform];
   [(NTKSiderealTimeView *)siderealTimeView setTransform:&v9];
-  v4 = [(NTKSiderealFaceView *)self newTimeViewPathForDarkeningView];
-  [(CAShapeLayer *)self->_dialDarkeningLayer setPath:v4];
-  CGPathRelease(v4);
+  newTimeViewPathForDarkeningView = [(NTKSiderealFaceView *)self newTimeViewPathForDarkeningView];
+  [(CAShapeLayer *)self->_dialDarkeningLayer setPath:newTimeViewPathForDarkeningView];
+  CGPathRelease(newTimeViewPathForDarkeningView);
   [(NTKSiderealTimeView *)self->_siderealTimeView frame];
   v6 = v5;
   [(CALayer *)self->_timeViewDarkeningLayer setFrame:?];
   [(CALayer *)self->_timeViewDarkeningLayer setCornerRadius:v6 * 0.5];
   *&v6 = self->_rubberBandScaleModifier;
-  v7 = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
+  quad = [(NTKSiderealDialBackgroundView *)self->_dialBackgroundView quad];
   LODWORD(v8) = LODWORD(v6);
-  [v7 setBlurScale:v8];
+  [quad setBlurScale:v8];
 
   +[CATransaction commit];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   [(NTKSiderealFaceView *)self _applyScaleToTimeView];
   dialDarkeningLayer = self->_dialDarkeningLayer;
-  [(NTKSiderealFaceView *)self _darkeningViewAlphaForEditMode:a3];
+  [(NTKSiderealFaceView *)self _darkeningViewAlphaForEditMode:mode];
   *&v6 = v6;
   [(CAShapeLayer *)dialDarkeningLayer setOpacity:v6];
   timeViewDarkeningLayer = self->_timeViewDarkeningLayer;
-  [(NTKSiderealFaceView *)self _timeDarkeningViewAlphaForEditMode:a3];
+  [(NTKSiderealFaceView *)self _timeDarkeningViewAlphaForEditMode:mode];
   *&v8 = v8;
   [(CALayer *)timeViewDarkeningLayer setOpacity:v8];
   faceViewComplicationFactory = self->_faceViewComplicationFactory;
-  [(NTKSiderealFaceView *)self _complicationAlphaForEditMode:a3];
+  [(NTKSiderealFaceView *)self _complicationAlphaForEditMode:mode];
 
   [(NTKWhistlerAnalogFaceViewComplicationFactory *)faceViewComplicationFactory setAlpha:self faceView:?];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [(NTKSiderealFaceView *)self _darkeningViewAlphaForEditMode:?];
-  [(NTKSiderealFaceView *)self _darkeningViewAlphaForEditMode:a5];
+  [(NTKSiderealFaceView *)self _darkeningViewAlphaForEditMode:editMode];
   dialDarkeningLayer = self->_dialDarkeningLayer;
   CLKInterpolateBetweenFloatsClipped();
   *&v9 = v9;
   [(CAShapeLayer *)dialDarkeningLayer setOpacity:v9];
-  [(NTKSiderealFaceView *)self _timeDarkeningViewAlphaForEditMode:a4];
-  [(NTKSiderealFaceView *)self _timeDarkeningViewAlphaForEditMode:a5];
+  [(NTKSiderealFaceView *)self _timeDarkeningViewAlphaForEditMode:mode];
+  [(NTKSiderealFaceView *)self _timeDarkeningViewAlphaForEditMode:editMode];
   timeViewDarkeningLayer = self->_timeViewDarkeningLayer;
   CLKInterpolateBetweenFloatsClipped();
   *&v11 = v11;
   [(CALayer *)timeViewDarkeningLayer setOpacity:v11];
-  [(NTKSiderealFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKSiderealFaceView *)self _complicationAlphaForEditMode:a5];
+  [(NTKSiderealFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKSiderealFaceView *)self _complicationAlphaForEditMode:editMode];
   faceViewComplicationFactory = self->_faceViewComplicationFactory;
   CLKInterpolateBetweenFloatsClipped();
 
   [(NTKWhistlerAnalogFaceViewComplicationFactory *)faceViewComplicationFactory setAlpha:self faceView:?];
 }
 
-- (double)_dialAlphaForEditMode:(int64_t)a3
+- (double)_dialAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -1279,10 +1279,10 @@ LABEL_13:
   return result;
 }
 
-- (double)_timeViewAlphaForEditMode:(int64_t)a3
+- (double)_timeViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -1290,10 +1290,10 @@ LABEL_13:
   return result;
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 15)
+  if (mode != 15)
   {
     return 1.0;
   }
@@ -1301,10 +1301,10 @@ LABEL_13:
   return result;
 }
 
-- (double)_darkeningViewAlphaForEditMode:(int64_t)a3
+- (double)_darkeningViewAlphaForEditMode:(int64_t)mode
 {
   result = 0.7;
-  if (!a3)
+  if (!mode)
   {
     return 0.0;
   }
@@ -1312,10 +1312,10 @@ LABEL_13:
   return result;
 }
 
-- (double)_timeDarkeningViewAlphaForEditMode:(int64_t)a3
+- (double)_timeDarkeningViewAlphaForEditMode:(int64_t)mode
 {
   result = 0.7;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 0.0;
   }
@@ -1333,12 +1333,12 @@ LABEL_13:
     darkeningContainerView = self->_darkeningContainerView;
     self->_darkeningContainerView = v4;
 
-    v6 = [(NTKSiderealFaceView *)self newTimeViewPathForDarkeningView];
+    newTimeViewPathForDarkeningView = [(NTKSiderealFaceView *)self newTimeViewPathForDarkeningView];
     v7 = objc_alloc_init(CAShapeLayer);
     dialDarkeningLayer = self->_dialDarkeningLayer;
     self->_dialDarkeningLayer = v7;
 
-    [(CAShapeLayer *)self->_dialDarkeningLayer setPath:v6];
+    [(CAShapeLayer *)self->_dialDarkeningLayer setPath:newTimeViewPathForDarkeningView];
     [(CAShapeLayer *)self->_dialDarkeningLayer setFillRule:kCAFillRuleEvenOdd];
     v9 = +[UIColor blackColor];
     -[CAShapeLayer setFillColor:](self->_dialDarkeningLayer, "setFillColor:", [v9 CGColor]);
@@ -1350,10 +1350,10 @@ LABEL_13:
     v12 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     [(CAShapeLayer *)v10 setActions:v12];
 
-    v13 = [(UIView *)self->_darkeningContainerView layer];
-    [v13 addSublayer:self->_dialDarkeningLayer];
+    layer = [(UIView *)self->_darkeningContainerView layer];
+    [layer addSublayer:self->_dialDarkeningLayer];
 
-    CGPathRelease(v6);
+    CGPathRelease(newTimeViewPathForDarkeningView);
     [(NTKSiderealTimeView *)self->_siderealTimeView frame];
     v15 = v14;
     v17 = v16;
@@ -1376,8 +1376,8 @@ LABEL_13:
     v28 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     [(CALayer *)v26 setActions:v28];
 
-    v29 = [(UIView *)self->_darkeningContainerView layer];
-    [v29 addSublayer:self->_timeViewDarkeningLayer];
+    layer2 = [(UIView *)self->_darkeningContainerView layer];
+    [layer2 addSublayer:self->_timeViewDarkeningLayer];
 
     [(NTKSiderealFaceView *)self insertSubview:self->_darkeningContainerView aboveSubview:self->_dialBackgroundView];
   }
@@ -1390,10 +1390,10 @@ LABEL_13:
   self->_darkeningContainerView = 0;
 }
 
-- (id)_keylineViewForComplicationSlot:(id)a3
+- (id)_keylineViewForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory keylineViewForComplicationSlot:v4];
+  slotCopy = slot;
+  v5 = [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory keylineViewForComplicationSlot:slotCopy];
   v6 = v5;
   if (v5)
   {
@@ -1404,7 +1404,7 @@ LABEL_13:
   {
     v10.receiver = self;
     v10.super_class = NTKSiderealFaceView;
-    v7 = [(NTKSiderealFaceView *)&v10 _keylineViewForComplicationSlot:v4];
+    v7 = [(NTKSiderealFaceView *)&v10 _keylineViewForComplicationSlot:slotCopy];
   }
 
   v8 = v7;
@@ -1412,11 +1412,11 @@ LABEL_13:
   return v8;
 }
 
-- (id)_keylineViewForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_keylineViewForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
-    [(NTKSiderealFaceView *)self _faceEditingScaleForEditMode:15 slot:a4];
+    [(NTKSiderealFaceView *)self _faceEditingScaleForEditMode:15 slot:slot];
     [(NTKSiderealTimeView *)self->_siderealTimeView bounds];
     v5 = NTKKeylineViewWithCircle();
   }
@@ -1425,15 +1425,15 @@ LABEL_13:
   {
     v7.receiver = self;
     v7.super_class = NTKSiderealFaceView;
-    v5 = [(NTKSiderealFaceView *)&v7 _keylineViewForCustomEditMode:a3 slot:a4];
+    v5 = [(NTKSiderealFaceView *)&v7 _keylineViewForCustomEditMode:mode slot:slot];
   }
 
   return v5;
 }
 
-- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_keylineLabelAlignmentForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
     return 148;
   }
@@ -1442,12 +1442,12 @@ LABEL_13:
   v9 = v5;
   v7.receiver = self;
   v7.super_class = NTKSiderealFaceView;
-  return [(NTKSiderealFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:a3 slot:a4];
+  return [(NTKSiderealFaceView *)&v7 _keylineLabelAlignmentForCustomEditMode:mode slot:slot];
 }
 
-- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (CGRect)_relativeKeylineFrameForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
     [(NTKSiderealFaceView *)self _timeViewKeylineFrameForEditing:15];
   }
@@ -1456,7 +1456,7 @@ LABEL_13:
   {
     v8.receiver = self;
     v8.super_class = NTKSiderealFaceView;
-    [(NTKSiderealFaceView *)&v8 _relativeKeylineFrameForCustomEditMode:a3 slot:a4];
+    [(NTKSiderealFaceView *)&v8 _relativeKeylineFrameForCustomEditMode:mode slot:slot];
   }
 
   result.size.height = v7;
@@ -1473,8 +1473,8 @@ LABEL_13:
   v14[2] = sub_12908;
   v14[3] = &unk_2CC50;
   v14[4] = self;
-  v2 = [(NTKSiderealFaceView *)self device];
-  v3 = sub_12908(v14, v2);
+  device = [(NTKSiderealFaceView *)self device];
+  v3 = sub_12908(v14, device);
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1493,19 +1493,19 @@ LABEL_13:
 - (void)_loadLayoutRules
 {
   faceViewComplicationFactory = self->_faceViewComplicationFactory;
-  v4 = [(NTKSiderealFaceView *)self device];
-  sub_14ADC(v4, v5);
+  device = [(NTKSiderealFaceView *)self device];
+  sub_14ADC(device, v5);
   [(NTKWhistlerAnalogFaceViewComplicationFactory *)faceViewComplicationFactory loadLayoutRulesForFaceView:self dialDiameter:v5[0]];
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v6 = a3;
-  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory configureComplicationView:v6 forSlot:a4 faceView:self];
+  viewCopy = view;
+  [(NTKWhistlerAnalogFaceViewComplicationFactory *)self->_faceViewComplicationFactory configureComplicationView:viewCopy forSlot:slot faceView:self];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v6 updateMonochromeColor];
+    [viewCopy updateMonochromeColor];
   }
 }
 
@@ -1573,165 +1573,165 @@ LABEL_13:
   return v4;
 }
 
-- (id)_dayGnomonImageFromSolarContainerView:(id)a3
+- (id)_dayGnomonImageFromSolarContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [NTKSiderealCachedMTLTexture alloc];
   v6 = NTKSiderealCacheDayGnomonImageViewKey;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_134B4;
   v10[3] = &unk_2CCA0;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = viewCopy;
+  selfCopy = self;
+  v7 = viewCopy;
   v8 = [(NTKSiderealCachedMTLTexture *)v5 initWithCachedImageKey:v6 isAlphaOnly:1 imageGenerationBlock:v10];
 
   return v8;
 }
 
-- (id)_dayDiskBloomImageFromSolarContainerView:(id)a3
+- (id)_dayDiskBloomImageFromSolarContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [NTKSiderealCachedMTLTexture alloc];
   v6 = NTKSiderealCacheDayDiskBloomImageViewKey;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1362C;
   v10[3] = &unk_2CCA0;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = viewCopy;
+  selfCopy = self;
+  v7 = viewCopy;
   v8 = [(NTKSiderealCachedMTLTexture *)v5 initWithCachedImageKey:v6 isAlphaOnly:1 imageGenerationBlock:v10];
 
   return v8;
 }
 
-- (id)_dayDiscImageFromSolarContainerView:(id)a3
+- (id)_dayDiscImageFromSolarContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [NTKSiderealCachedMTLTexture alloc];
   v6 = NTKSiderealCacheDayDiscImageViewKey;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_137A4;
   v10[3] = &unk_2CCA0;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = viewCopy;
+  selfCopy = self;
+  v7 = viewCopy;
   v8 = [(NTKSiderealCachedMTLTexture *)v5 initWithCachedImageKey:v6 isAlphaOnly:1 imageGenerationBlock:v10];
 
   return v8;
 }
 
-- (id)_nightGnomonImageFromSolarContainerView:(id)a3
+- (id)_nightGnomonImageFromSolarContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [NTKSiderealCachedMTLTexture alloc];
   v6 = NTKSiderealCacheNightGnomonImageViewKey;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1391C;
   v10[3] = &unk_2CCA0;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = viewCopy;
+  selfCopy = self;
+  v7 = viewCopy;
   v8 = [(NTKSiderealCachedMTLTexture *)v5 initWithCachedImageKey:v6 isAlphaOnly:1 imageGenerationBlock:v10];
 
   return v8;
 }
 
-- (id)_nightDiscImageFromSolarContainerView:(id)a3
+- (id)_nightDiscImageFromSolarContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [NTKSiderealCachedMTLTexture alloc];
   v6 = NTKSiderealCacheNightDiscImageViewKey;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_13A94;
   v10[3] = &unk_2CCA0;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = viewCopy;
+  selfCopy = self;
+  v7 = viewCopy;
   v8 = [(NTKSiderealCachedMTLTexture *)v5 initWithCachedImageKey:v6 isAlphaOnly:1 imageGenerationBlock:v10];
 
   return v8;
 }
 
-- (id)_nightRingImageFromSolarContainerView:(id)a3
+- (id)_nightRingImageFromSolarContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [NTKSiderealCachedMTLTexture alloc];
   v6 = NTKSiderealCacheNightRingImageViewKey;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_13C0C;
   v10[3] = &unk_2CCA0;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = viewCopy;
+  selfCopy = self;
+  v7 = viewCopy;
   v8 = [(NTKSiderealCachedMTLTexture *)v5 initWithCachedImageKey:v6 isAlphaOnly:1 imageGenerationBlock:v10];
 
   return v8;
 }
 
-- (CGImage)newImageRefFromSolarContainerView:(id)a3 withHeight:(double)a4
+- (CGImage)newImageRefFromSolarContainerView:(id)view withHeight:(double)height
 {
-  v6 = a3;
-  [v6 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   v8 = v7;
   v10 = v9;
-  v11 = [(NTKSiderealFaceView *)self device];
-  [v11 screenScale];
+  device = [(NTKSiderealFaceView *)self device];
+  [device screenScale];
   v13 = v12;
   v21.width = v8;
   v21.height = v10;
   UIGraphicsBeginImageContextWithOptions(v21, 0, v13);
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  v15 = [v6 layer];
+  layer = [viewCopy layer];
 
-  [v15 renderInContext:CurrentContext];
+  [layer renderInContext:CurrentContext];
   Image = CGBitmapContextCreateImage(CurrentContext);
   UIGraphicsEndImageContext();
   Width = CGImageGetWidth(Image);
   Height = CGImageGetHeight(Image);
   v22.origin.x = vcvtd_n_f64_u64(Width, 1uLL);
-  v22.origin.y = (Height + a4 * -2.0) * 0.5;
-  v22.size.height = a4 + a4;
+  v22.origin.y = (Height + height * -2.0) * 0.5;
+  v22.size.height = height + height;
   v22.size.width = v22.origin.x;
   v19 = CGImageCreateWithImageInRect(Image, v22);
   CGImageRelease(Image);
   return v19;
 }
 
-- (CGImage)newImageRefFromView:(id)a3
+- (CGImage)newImageRefFromView:(id)view
 {
-  v4 = a3;
-  v5 = [(NTKSiderealFaceView *)self device];
-  [v5 screenBounds];
+  viewCopy = view;
+  device = [(NTKSiderealFaceView *)self device];
+  [device screenBounds];
   v7 = v6;
   v9 = v8;
-  v10 = [(NTKSiderealFaceView *)self device];
-  [v10 screenScale];
+  device2 = [(NTKSiderealFaceView *)self device];
+  [device2 screenScale];
   v12 = v11;
   v26.width = v7;
   v26.height = v9;
   UIGraphicsBeginImageContextWithOptions(v26, 0, v12);
 
   CurrentContext = UIGraphicsGetCurrentContext();
-  v14 = [v4 layer];
+  layer = [viewCopy layer];
 
-  [v14 renderInContext:CurrentContext];
+  [layer renderInContext:CurrentContext];
   Image = CGBitmapContextCreateImage(CurrentContext);
   UIGraphicsEndImageContext();
   Width = CGImageGetWidth(Image);
   Height = CGImageGetHeight(Image);
-  v18 = [(NTKSiderealFaceView *)self device];
-  sub_14ADC(v18, v25);
+  device3 = [(NTKSiderealFaceView *)self device];
+  sub_14ADC(device3, v25);
   v19 = v25[0];
-  v20 = [(NTKSiderealFaceView *)self device];
-  [v20 screenScale];
+  device4 = [(NTKSiderealFaceView *)self device];
+  [device4 screenScale];
   v22 = v19 * v21;
 
   v27.origin.x = (Width - v22) * 0.5;
@@ -1743,16 +1743,16 @@ LABEL_13:
   return v23;
 }
 
-- (id)closestWaypointForSolarDayProgress:(double)a3 range:(double)a4
+- (id)closestWaypointForSolarDayProgress:(double)progress range:(double)range
 {
-  v6 = a3 * 360.0;
+  v6 = progress * 360.0;
   v7 = fmodf(v6, 360.0);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = [(NTKSiderealData *)self->_currentData waypoints];
-  v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  waypoints = [(NTKSiderealData *)self->_currentData waypoints];
+  v9 = [waypoints countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1766,13 +1766,13 @@ LABEL_13:
       {
         if (*v23 != v13)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(waypoints);
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
         [v16 degree];
         v18 = vabdd_f64(v17, v12);
-        if (v18 <= a4 && v18 < v14)
+        if (v18 <= range && v18 < v14)
         {
           v20 = v16;
 
@@ -1781,7 +1781,7 @@ LABEL_13:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v10 = [waypoints countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v10);
@@ -1795,14 +1795,14 @@ LABEL_13:
   return v11;
 }
 
-- (id)waypointBetweenPreviousOffset:(double)a3 currentOffset:(double)a4
+- (id)waypointBetweenPreviousOffset:(double)offset currentOffset:(double)currentOffset
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [(NTKSiderealData *)self->_currentData waypoints];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  waypoints = [(NTKSiderealData *)self->_currentData waypoints];
+  v7 = [waypoints countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1813,13 +1813,13 @@ LABEL_13:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(waypoints);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
         [v11 degree];
         NTKSiderealDegreesToSolarDayProgress();
-        if ((v12 <= a3 || v12 >= a4) && (v12 <= a4 || v12 >= a3))
+        if ((v12 <= offset || v12 >= currentOffset) && (v12 <= currentOffset || v12 >= offset))
         {
           continue;
         }
@@ -1828,7 +1828,7 @@ LABEL_13:
         goto LABEL_19;
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [waypoints countByEnumeratingWithState:&v17 objects:v21 count:16];
       v15 = 0;
       if (v8)
       {
@@ -1851,8 +1851,8 @@ LABEL_19:
 
 - (double)_solarDayProgressForCurrentTime
 {
-  v2 = [(NTKSiderealFaceView *)self _faceDisplayTime];
-  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:v2];
+  _faceDisplayTime = [(NTKSiderealFaceView *)self _faceDisplayTime];
+  [NTKSiderealDataSource reverseInterpolateBetweenCalendricalMidnights:_faceDisplayTime];
   v4 = v3;
 
   return v4;
@@ -1886,31 +1886,31 @@ LABEL_19:
   return MutableCopy;
 }
 
-- (id)filtersForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filtersForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v6 = [(NTKSiderealFaceView *)self _outerComplicationColors];
-  v7 = [(NTKSiderealFaceView *)self _innerComplicationColors];
+  _outerComplicationColors = [(NTKSiderealFaceView *)self _outerComplicationColors];
+  _innerComplicationColors = [(NTKSiderealFaceView *)self _innerComplicationColors];
   v8 = CLKUIMonochromeFiltersForStyleWithTintedBackground();
 
   return v8;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4 fraction:(double)a5
+- (id)filterForView:(id)view style:(int64_t)style fraction:(double)fraction
 {
-  v8 = [(NTKSiderealFaceView *)self _outerComplicationColors];
-  v9 = [(NTKSiderealFaceView *)self _innerComplicationColors];
-  if (a4 <= 2)
+  _outerComplicationColors = [(NTKSiderealFaceView *)self _outerComplicationColors];
+  _innerComplicationColors = [(NTKSiderealFaceView *)self _innerComplicationColors];
+  if (style <= 2)
   {
-    if (!a4)
+    if (!style)
     {
 LABEL_10:
       v10 = NTKFlatMonochromeFilter();
       goto LABEL_11;
     }
 
-    if (a4 != 1)
+    if (style != 1)
     {
-      if (a4 != 2)
+      if (style != 2)
       {
         goto LABEL_12;
       }
@@ -1925,7 +1925,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 == 3 || a4 == 4 || a4 == 5)
+  if (style == 3 || style == 4 || style == 5)
   {
     goto LABEL_9;
   }
@@ -1935,22 +1935,22 @@ LABEL_12:
   return v5;
 }
 
-- (id)filterForView:(id)a3 style:(int64_t)a4
+- (id)filterForView:(id)view style:(int64_t)style
 {
-  v7 = [(NTKSiderealFaceView *)self _outerComplicationColors];
-  v8 = [(NTKSiderealFaceView *)self _innerComplicationColors];
-  if (a4 <= 2)
+  _outerComplicationColors = [(NTKSiderealFaceView *)self _outerComplicationColors];
+  _innerComplicationColors = [(NTKSiderealFaceView *)self _innerComplicationColors];
+  if (style <= 2)
   {
-    if (!a4)
+    if (!style)
     {
 LABEL_10:
       v9 = NTKFlatMonochromeFilterOpaque();
       goto LABEL_11;
     }
 
-    if (a4 != 1)
+    if (style != 1)
     {
-      if (a4 != 2)
+      if (style != 2)
       {
         goto LABEL_12;
       }
@@ -1965,7 +1965,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 == 3 || a4 == 4 || a4 == 5)
+  if (style == 3 || style == 4 || style == 5)
   {
     goto LABEL_9;
   }
@@ -1975,9 +1975,9 @@ LABEL_12:
   return v4;
 }
 
-- (id)colorForView:(id)a3 accented:(BOOL)a4
+- (id)colorForView:(id)view accented:(BOOL)accented
 {
-  if (a4)
+  if (accented)
   {
     [(NTKSiderealFaceView *)self _innerComplicationColors];
   }
@@ -2017,20 +2017,20 @@ LABEL_12:
   return [v3 colorForAltitude:?];
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 == 15)
+  optionCopy = option;
+  v9 = optionCopy;
+  if (mode == 15)
   {
-    v10 = [v8 style];
+    style = [optionCopy style];
     v11 = @"Digital";
-    if (v10 != &dword_0 + 1)
+    if (style != &dword_0 + 1)
     {
       v11 = 0;
     }
 
-    if (!v10)
+    if (!style)
     {
       v11 = @"Analog";
     }
@@ -2043,15 +2043,15 @@ LABEL_12:
   {
     v15.receiver = self;
     v15.super_class = NTKSiderealFaceView;
-    v13 = [(NTKSiderealFaceView *)&v15 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:a5];
+    v13 = [(NTKSiderealFaceView *)&v15 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:options];
   }
 
   return v13;
 }
 
-- (void)performScrollTestNamed:(id)a3 completion:(id)a4
+- (void)performScrollTestNamed:(id)named completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   [(NTKSiderealFaceView *)self _setSolarDayProgress:0.0];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -2059,9 +2059,9 @@ LABEL_12:
   v6[3] = &unk_2CC08;
   v6[4] = self;
   [(NTKSiderealFaceView *)self _animateSolarDayFromProgress:v6 toProgress:0.0 minDuration:1.0 completion:1.0];
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5);
+    completionCopy[2](completionCopy);
   }
 }
 

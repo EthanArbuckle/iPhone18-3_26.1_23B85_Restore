@@ -44,7 +44,7 @@
     return 0;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = WebKit::WebFrameProxy::webFrame(*&self[57]._navigation.m_storage.data[40], 1);
   v4 = v3;
   if (v3)
@@ -52,7 +52,7 @@
     v3 = CFRetain(v3[1]);
   }
 
-  if ((v2[59]._navigation.m_storage.data[16] & 1) == 0)
+  if ((selfCopy[59]._navigation.m_storage.data[16] & 1) == 0)
   {
     __break(1u);
 LABEL_27:
@@ -78,10 +78,10 @@ LABEL_18:
       CFRelease(v4[1]);
     }
 
-    return v2;
+    return selfCopy;
   }
 
-  WebKit::FrameInfoData::FrameInfoData(&v16, &v2[54]);
+  WebKit::FrameInfoData::FrameInfoData(&v16, &selfCopy[54]);
   if (!v4)
   {
     goto LABEL_10;
@@ -109,8 +109,8 @@ LABEL_10:
 LABEL_11:
   v15 = v5;
   v7 = API::Object::newObject(0x180uLL, 59);
-  v2 = *(API::FrameInfo::FrameInfo(v7, &v16, &v15) + 8);
-  if (!v2)
+  selfCopy = *(API::FrameInfo::FrameInfo(v7, &v16, &v15) + 8);
+  if (!selfCopy)
   {
     v10 = 0;
 LABEL_15:
@@ -133,8 +133,8 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v2;
-    v9 = v2;
+    v8 = selfCopy;
+    v9 = selfCopy;
     v10 = *(v7 + 8);
     goto LABEL_15;
   }

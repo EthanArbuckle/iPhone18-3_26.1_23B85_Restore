@@ -1,11 +1,11 @@
 @interface CATHTTPMessageParser
-+ (id)encodeRequestData:(id)a3;
-+ (id)responseHeaderForContentWithLength:(unint64_t)a3;
-- (BOOL)appendBytes:(const char *)a3 length:(unint64_t)a4;
++ (id)encodeRequestData:(id)data;
++ (id)responseHeaderForContentWithLength:(unint64_t)length;
+- (BOOL)appendBytes:(const char *)bytes length:(unint64_t)length;
 - (CATHTTPMessageParserDelegate)delegate;
 - (void)dealloc;
-- (void)delegateDidReceiveRequestData:(id)a3;
-- (void)delegateDidReceiveRequestWithURL:(id)a3;
+- (void)delegateDidReceiveRequestData:(id)data;
+- (void)delegateDidReceiveRequestWithURL:(id)l;
 @end
 
 @implementation CATHTTPMessageParser
@@ -24,9 +24,9 @@
   [(CATHTTPMessageParser *)&v4 dealloc];
 }
 
-- (BOOL)appendBytes:(const char *)a3 length:(unint64_t)a4
+- (BOOL)appendBytes:(const char *)bytes length:(unint64_t)length
 {
-  if (!a4)
+  if (!length)
   {
     goto LABEL_16;
   }
@@ -34,7 +34,7 @@
   mCurrentMessage = self->mCurrentMessage;
   if (!mCurrentMessage)
   {
-    mCurrentMessage = CFHTTPMessageCreateEmpty(*MEMORY[0x277CBECE8], *a3 != 72);
+    mCurrentMessage = CFHTTPMessageCreateEmpty(*MEMORY[0x277CBECE8], *bytes != 72);
     self->mCurrentMessage = mCurrentMessage;
   }
 
@@ -45,7 +45,7 @@
 
   else
   {
-    if (!CFHTTPMessageAppendBytes(self->mCurrentMessage, a3, a4))
+    if (!CFHTTPMessageAppendBytes(self->mCurrentMessage, bytes, length))
     {
       goto LABEL_38;
     }
@@ -94,19 +94,19 @@ LABEL_38:
   {
 LABEL_13:
     v14 = [(NSDictionary *)mCurrentHeaderFields objectForKeyedSubscript:@"Content-Length"];
-    v15 = [v14 integerValue];
+    integerValue = [v14 integerValue];
 
     if (CFHTTPMessageIsRequest(self->mCurrentMessage))
     {
       v16 = CFHTTPMessageCopyBody(self->mCurrentMessage);
-      if ([(__CFData *)v16 length]< v15)
+      if ([(__CFData *)v16 length]< integerValue)
       {
         v17 = 0;
         goto LABEL_31;
       }
 
-      v19 = [(__CFData *)v16 subdataWithRange:0, v15];
-      v20 = [(__CFData *)v16 subdataWithRange:v15, [(__CFData *)v16 length]- v15];
+      v19 = [(__CFData *)v16 subdataWithRange:0, integerValue];
+      v20 = [(__CFData *)v16 subdataWithRange:integerValue, [(__CFData *)v16 length]- integerValue];
       CFRelease(self->mCurrentMessage);
       self->mCurrentMessage = 0;
       [(CATHTTPMessageParser *)self delegateDidReceiveRequestData:v19];
@@ -139,10 +139,10 @@ LABEL_34:
 
       else
       {
-        v17 = [MEMORY[0x277CBEA90] dataWithBytes:a3 length:a4];
+        v17 = [MEMORY[0x277CBEA90] dataWithBytes:bytes length:length];
       }
 
-      v22 = v15 - self->mCurrentBytesReceived;
+      v22 = integerValue - self->mCurrentBytesReceived;
       v23 = [v17 length];
       if (v22 >= v23)
       {
@@ -158,7 +158,7 @@ LABEL_34:
       v20 = [v17 subdataWithRange:{objc_msgSend(v19, "length"), objc_msgSend(v17, "length") - objc_msgSend(v19, "length")}];
       v25 = self->mCurrentBytesReceived + [v19 length];
       self->mCurrentBytesReceived = v25;
-      if (v25 >= v15)
+      if (v25 >= integerValue)
       {
         CFRelease(self->mCurrentMessage);
         self->mCurrentMessage = 0;
@@ -195,19 +195,19 @@ LABEL_16:
   return v18;
 }
 
-+ (id)encodeRequestData:(id)a3
++ (id)encodeRequestData:(id)data
 {
   v3 = encodeRequestData__onceToken;
-  v4 = a3;
+  dataCopy = data;
   if (v3 != -1)
   {
     +[CATHTTPMessageParser encodeRequestData:];
   }
 
   Request = CFHTTPMessageCreateRequest(*MEMORY[0x277CBECE8], @"POST", encodeRequestData__postURL, @"1.1");
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(v4, "length")];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", objc_msgSend(dataCopy, "length")];
   CFHTTPMessageSetHeaderFieldValue(Request, @"Content-Length", v6);
-  CFHTTPMessageSetBody(Request, v4);
+  CFHTTPMessageSetBody(Request, dataCopy);
 
   v7 = CFHTTPMessageCopySerializedMessage(Request);
   CFRelease(Request);
@@ -224,10 +224,10 @@ uint64_t __42__CATHTTPMessageParser_encodeRequestData___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-+ (id)responseHeaderForContentWithLength:(unint64_t)a3
++ (id)responseHeaderForContentWithLength:(unint64_t)length
 {
   Response = CFHTTPMessageCreateResponse(*MEMORY[0x277CBECE8], 200, 0, *MEMORY[0x277CBAD00]);
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a3];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", length];
   CFHTTPMessageSetHeaderFieldValue(Response, @"Content-Length", v5);
   v6 = CFHTTPMessageCopySerializedMessage(Response);
   CFRelease(Response);
@@ -235,29 +235,29 @@ uint64_t __42__CATHTTPMessageParser_encodeRequestData___block_invoke()
   return v6;
 }
 
-- (void)delegateDidReceiveRequestData:(id)a3
+- (void)delegateDidReceiveRequestData:(id)data
 {
-  v7 = a3;
-  v4 = [(CATHTTPMessageParser *)self delegate];
+  dataCopy = data;
+  delegate = [(CATHTTPMessageParser *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CATHTTPMessageParser *)self delegate];
-    [v6 messageParser:self didParseRequestData:v7];
+    delegate2 = [(CATHTTPMessageParser *)self delegate];
+    [delegate2 messageParser:self didParseRequestData:dataCopy];
   }
 }
 
-- (void)delegateDidReceiveRequestWithURL:(id)a3
+- (void)delegateDidReceiveRequestWithURL:(id)l
 {
-  v7 = a3;
-  v4 = [(CATHTTPMessageParser *)self delegate];
+  lCopy = l;
+  delegate = [(CATHTTPMessageParser *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CATHTTPMessageParser *)self delegate];
-    [v6 messageParser:self didParseRequestWithURL:v7];
+    delegate2 = [(CATHTTPMessageParser *)self delegate];
+    [delegate2 messageParser:self didParseRequestWithURL:lCopy];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface JavaUtilCollections_AsLIFOQueue
-- (BOOL)addWithId:(id)a3;
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3;
-- (BOOL)containsWithId:(id)a3;
+- (BOOL)addWithId:(id)id;
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection;
+- (BOOL)containsWithId:(id)id;
 - (BOOL)isEmpty;
-- (BOOL)offerWithId:(id)a3;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
-- (BOOL)removeWithId:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
-- (JavaUtilCollections_AsLIFOQueue)initWithJavaUtilDeque:(id)a3;
+- (BOOL)offerWithId:(id)id;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
+- (BOOL)removeWithId:(id)id;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
+- (JavaUtilCollections_AsLIFOQueue)initWithJavaUtilDeque:(id)deque;
 - (NSString)description;
 - (id)element;
 - (id)iterator;
@@ -15,7 +15,7 @@
 - (id)poll;
 - (id)remove;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
 - (void)clear;
 - (void)dealloc;
@@ -23,10 +23,10 @@
 
 @implementation JavaUtilCollections_AsLIFOQueue
 
-- (JavaUtilCollections_AsLIFOQueue)initWithJavaUtilDeque:(id)a3
+- (JavaUtilCollections_AsLIFOQueue)initWithJavaUtilDeque:(id)deque
 {
   JavaUtilAbstractQueue_init(self, a2);
-  JreStrongAssign(&self->q_, a3);
+  JreStrongAssign(&self->q_, deque);
   return self;
 }
 
@@ -52,7 +52,7 @@
   return [(JavaUtilDeque *)q size];
 }
 
-- (BOOL)offerWithId:(id)a3
+- (BOOL)offerWithId:(id)id
 {
   q = self->q_;
   if (!q)
@@ -60,7 +60,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilDeque *)q offerFirstWithId:a3];
+  return [(JavaUtilDeque *)q offerFirstWithId:id];
 }
 
 - (id)peek
@@ -85,7 +85,7 @@
   return [(JavaUtilDeque *)q pollFirst];
 }
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
   q = self->q_;
   if (!q)
@@ -93,7 +93,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilDeque *)q pushWithId:a3];
+  [(JavaUtilDeque *)q pushWithId:id];
   return 1;
 }
 
@@ -130,7 +130,7 @@
   return [(JavaUtilDeque *)q pop];
 }
 
-- (BOOL)containsWithId:(id)a3
+- (BOOL)containsWithId:(id)id
 {
   q = self->q_;
   if (!q)
@@ -138,10 +138,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilDeque *)q containsWithId:a3];
+  return [(JavaUtilDeque *)q containsWithId:id];
 }
 
-- (BOOL)containsAllWithJavaUtilCollection:(id)a3
+- (BOOL)containsAllWithJavaUtilCollection:(id)collection
 {
   q = self->q_;
   if (!q)
@@ -149,7 +149,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilDeque *)q containsAllWithJavaUtilCollection:a3];
+  return [(JavaUtilDeque *)q containsAllWithJavaUtilCollection:collection];
 }
 
 - (BOOL)isEmpty
@@ -163,7 +163,7 @@
   return [(JavaUtilDeque *)q isEmpty];
 }
 
-- (BOOL)removeWithId:(id)a3
+- (BOOL)removeWithId:(id)id
 {
   q = self->q_;
   if (!q)
@@ -171,10 +171,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilDeque *)q removeWithId:a3];
+  return [(JavaUtilDeque *)q removeWithId:id];
 }
 
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
   q = self->q_;
   if (!q)
@@ -182,10 +182,10 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilDeque *)q removeAllWithJavaUtilCollection:a3];
+  return [(JavaUtilDeque *)q removeAllWithJavaUtilCollection:collection];
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
 {
   q = self->q_;
   if (!q)
@@ -193,7 +193,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilDeque *)q retainAllWithJavaUtilCollection:a3];
+  return [(JavaUtilDeque *)q retainAllWithJavaUtilCollection:collection];
 }
 
 - (id)toArray
@@ -207,7 +207,7 @@
   return [(JavaUtilDeque *)q toArray];
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   q = self->q_;
   if (!q)
@@ -215,7 +215,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilDeque *)q toArrayWithNSObjectArray:a3];
+  return [(JavaUtilDeque *)q toArrayWithNSObjectArray:array];
 }
 
 - (NSString)description

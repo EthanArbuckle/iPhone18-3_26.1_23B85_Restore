@@ -1,58 +1,58 @@
 @interface SBDisplayPortalManager
-- (SBDisplayPortalManager)initWithWindowSceneManager:(id)a3;
-- (id)_createPortalForSourceView:(id)a3 sourceWindowScene:(id)a4 targetWindowScene:(id)a5 traitsRole:(id)a6;
-- (void)createPortalsForSourceView:(id)a3 usingTraitsRole:(id)a4 onWindowScenesPassingTest:(id)a5;
-- (void)destroyPortalsForSourceView:(id)a3;
+- (SBDisplayPortalManager)initWithWindowSceneManager:(id)manager;
+- (id)_createPortalForSourceView:(id)view sourceWindowScene:(id)scene targetWindowScene:(id)windowScene traitsRole:(id)role;
+- (void)createPortalsForSourceView:(id)view usingTraitsRole:(id)role onWindowScenesPassingTest:(id)test;
+- (void)destroyPortalsForSourceView:(id)view;
 @end
 
 @implementation SBDisplayPortalManager
 
-- (SBDisplayPortalManager)initWithWindowSceneManager:(id)a3
+- (SBDisplayPortalManager)initWithWindowSceneManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = SBDisplayPortalManager;
   v6 = [(SBDisplayPortalManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_windowSceneManager, a3);
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    objc_storeStrong(&v6->_windowSceneManager, manager);
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     sourceViewToPortalWindowsMap = v7->_sourceViewToPortalWindowsMap;
-    v7->_sourceViewToPortalWindowsMap = v8;
+    v7->_sourceViewToPortalWindowsMap = weakToStrongObjectsMapTable;
   }
 
   return v7;
 }
 
-- (void)createPortalsForSourceView:(id)a3 usingTraitsRole:(id)a4 onWindowScenesPassingTest:(id)a5
+- (void)createPortalsForSourceView:(id)view usingTraitsRole:(id)role onWindowScenesPassingTest:(id)test
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(NSMapTable *)self->_sourceViewToPortalWindowsMap objectForKey:v9];
+  viewCopy = view;
+  roleCopy = role;
+  testCopy = test;
+  v12 = [(NSMapTable *)self->_sourceViewToPortalWindowsMap objectForKey:viewCopy];
 
   if (!v12)
   {
-    v13 = [v9 _sbWindowScene];
-    if (!v13)
+    _sbWindowScene = [viewCopy _sbWindowScene];
+    if (!_sbWindowScene)
     {
       [SBDisplayPortalManager createPortalsForSourceView:a2 usingTraitsRole:self onWindowScenesPassingTest:?];
     }
 
-    v14 = [(SBWindowSceneManager *)self->_windowSceneManager connectedWindowScenes];
+    connectedWindowScenes = [(SBWindowSceneManager *)self->_windowSceneManager connectedWindowScenes];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __95__SBDisplayPortalManager_createPortalsForSourceView_usingTraitsRole_onWindowScenesPassingTest___block_invoke;
     v18[3] = &unk_2783B7650;
-    v19 = v13;
-    v23 = v11;
-    v20 = self;
-    v15 = v9;
+    v19 = _sbWindowScene;
+    v23 = testCopy;
+    selfCopy = self;
+    v15 = viewCopy;
     v21 = v15;
-    v22 = v10;
-    v16 = v13;
-    v17 = [v14 bs_compactMap:v18];
+    v22 = roleCopy;
+    v16 = _sbWindowScene;
+    v17 = [connectedWindowScenes bs_compactMap:v18];
 
     [(NSMapTable *)self->_sourceViewToPortalWindowsMap setObject:v17 forKey:v15];
   }
@@ -74,49 +74,49 @@ id __95__SBDisplayPortalManager_createPortalsForSourceView_usingTraitsRole_onWin
   return v4;
 }
 
-- (id)_createPortalForSourceView:(id)a3 sourceWindowScene:(id)a4 targetWindowScene:(id)a5 traitsRole:(id)a6
+- (id)_createPortalForSourceView:(id)view sourceWindowScene:(id)scene targetWindowScene:(id)windowScene traitsRole:(id)role
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  [v12 bounds];
-  [v11 convertRect:v10 toNeighboringDisplayWindowScene:?];
+  roleCopy = role;
+  windowSceneCopy = windowScene;
+  sceneCopy = scene;
+  viewCopy = view;
+  [viewCopy bounds];
+  [sceneCopy convertRect:windowSceneCopy toNeighboringDisplayWindowScene:?];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
-  v21 = [objc_alloc(MEMORY[0x277D76180]) initWithSourceView:v12];
-  v22 = [v21 portalLayer];
-  [v22 setCrossDisplay:1];
+  v21 = [objc_alloc(MEMORY[0x277D76180]) initWithSourceView:viewCopy];
+  portalLayer = [v21 portalLayer];
+  [portalLayer setCrossDisplay:1];
 
   [v21 setFrame:{v14, v16, v18, v20}];
   [v21 setUserInteractionEnabled:0];
   v23 = objc_alloc_init(MEMORY[0x277D75D28]);
-  v24 = [v23 view];
-  [v24 addSubview:v21];
+  view = [v23 view];
+  [view addSubview:v21];
 
-  v25 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:v10];
-  [v25 _setRoleHint:v9];
+  v25 = [objc_alloc(MEMORY[0x277D75DA0]) initWithWindowScene:windowSceneCopy];
+  [v25 _setRoleHint:roleCopy];
 
   [v25 setOpaque:0];
   [v25 setRootViewController:v23];
   [v25 setHidden:0];
-  v26 = [v12 window];
+  window = [viewCopy window];
 
-  [v26 windowLevel];
+  [window windowLevel];
   [v25 setWindowLevel:?];
 
   return v25;
 }
 
-- (void)destroyPortalsForSourceView:(id)a3
+- (void)destroyPortalsForSourceView:(id)view
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_sourceViewToPortalWindowsMap objectForKey:v4];
-  [(NSMapTable *)self->_sourceViewToPortalWindowsMap removeObjectForKey:v4];
+  viewCopy = view;
+  v5 = [(NSMapTable *)self->_sourceViewToPortalWindowsMap objectForKey:viewCopy];
+  [(NSMapTable *)self->_sourceViewToPortalWindowsMap removeObjectForKey:viewCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;

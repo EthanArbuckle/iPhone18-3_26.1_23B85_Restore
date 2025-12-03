@@ -1,21 +1,21 @@
 @interface UIFont
-+ (id)nt_preferredFontForCondensedTextStyle:(unint64_t)a3 contentSizeCategory:(id)a4;
-- (CGRect)nt_boundingBoxForString:(id)a3;
++ (id)nt_preferredFontForCondensedTextStyle:(unint64_t)style contentSizeCategory:(id)category;
+- (CGRect)nt_boundingBoxForString:(id)string;
 @end
 
 @implementation UIFont
 
-+ (id)nt_preferredFontForCondensedTextStyle:(unint64_t)a3 contentSizeCategory:(id)a4
++ (id)nt_preferredFontForCondensedTextStyle:(unint64_t)style contentSizeCategory:(id)category
 {
-  v5 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:a4];
-  if (a3 > 2)
+  v5 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:category];
+  if (style > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = **(&off_1000D7340 + a3);
+    v6 = **(&off_1000D7340 + style);
   }
 
   v7 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:v6 compatibleWithTraitCollection:v5];
@@ -36,13 +36,13 @@
   return v13;
 }
 
-- (CGRect)nt_boundingBoxForString:(id)a3
+- (CGRect)nt_boundingBoxForString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 length];
+  stringCopy = string;
+  v5 = [stringCopy length];
   __chkstk_darwin();
   v6 = (2 * v5 + 15) & 0xFFFFFFFFFFFFFFF0;
-  [v4 getCharacters:&v7 - v6 range:{0, v5}];
+  [stringCopy getCharacters:&v7 - v6 range:{0, v5}];
 
   __chkstk_darwin();
   if (CTFontGetGlyphsForCharacters(self, (&v7 - v6), (&v7 - v6), v5))

@@ -1,8 +1,8 @@
 @interface VCDurationHistogram
 - (BOOL)isPaused;
 - (unint64_t)totalDuration;
-- (void)switchBucket:(unsigned int)a3 currentTime:(double)a4;
-- (void)updateWithTime:(double)a3;
+- (void)switchBucket:(unsigned int)bucket currentTime:(double)time;
+- (void)updateWithTime:(double)time;
 @end
 
 @implementation VCDurationHistogram
@@ -22,18 +22,18 @@
   return v2 & 1;
 }
 
-- (void)switchBucket:(unsigned int)a3 currentTime:(double)a4
+- (void)switchBucket:(unsigned int)bucket currentTime:(double)time
 {
   [(VCDurationHistogram *)self updateWithTime:?];
-  *&self->_isFinalized = a3;
-  self->_previousSwitchTime = a4;
+  *&self->_isFinalized = bucket;
+  self->_previousSwitchTime = time;
 }
 
-- (void)updateWithTime:(double)a3
+- (void)updateWithTime:(double)time
 {
   if (![(VCDurationHistogram *)self isPaused])
   {
-    v5 = ((a3 - self->_previousSwitchTime) * 1000.0);
+    v5 = ((time - self->_previousSwitchTime) * 1000.0);
     v6 = *&self->_isFinalized;
 
     [(VCHistogram *)self addOnlyExactMatchingValue:v6 increment:v5];

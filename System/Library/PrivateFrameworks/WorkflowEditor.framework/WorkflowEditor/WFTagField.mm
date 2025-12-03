@@ -1,9 +1,9 @@
 @interface WFTagField
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)tokenizeFreeTextFromRange:(_NSRange)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)tokenizeFreeTextFromRange:(_NSRange)range;
 - (NSString)placeholder;
 - (UIButton)plusButton;
-- (WFTagField)initWithFrame:(CGRect)a3 showsAddButton:(BOOL)a4;
+- (WFTagField)initWithFrame:(CGRect)frame showsAddButton:(BOOL)button;
 - (WFTagFieldDelegate)delegate;
 - (WFTagTextView)textView;
 - (WFTextScrollView)scrollView;
@@ -12,19 +12,19 @@
 - (int64_t)keyboardAppearance;
 - (int64_t)keyboardType;
 - (int64_t)textAlignment;
-- (void)insertTag:(id)a3;
+- (void)insertTag:(id)tag;
 - (void)layoutSubviews;
 - (void)selectTag;
-- (void)setKeyboardAppearance:(int64_t)a3;
-- (void)setKeyboardType:(int64_t)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setTags:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)tagPicker:(id)a3 didSelectTags:(id)a4;
-- (void)tagPickerDidCancel:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)setKeyboardAppearance:(int64_t)appearance;
+- (void)setKeyboardType:(int64_t)type;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setTags:(id)tags;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)tagPicker:(id)picker didSelectTags:(id)tags;
+- (void)tagPickerDidCancel:(id)cancel;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)textViewDidEndEditing:(id)editing;
 - (void)updateEditableState;
 - (void)updateTags;
 @end
@@ -69,24 +69,24 @@
   return WeakRetained;
 }
 
-- (void)tagPickerDidCancel:(id)a3
+- (void)tagPickerDidCancel:(id)cancel
 {
-  v3 = [a3 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [cancel presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)tagPicker:(id)a3 didSelectTags:(id)a4
+- (void)tagPicker:(id)picker didSelectTags:(id)tags
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 presentingViewController];
-  [v7 dismissViewControllerAnimated:1 completion:0];
+  tagsCopy = tags;
+  presentingViewController = [picker presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v6;
+  v8 = tagsCopy;
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
@@ -115,96 +115,96 @@
 
 - (void)updateTags
 {
-  v3 = [(WFTagField *)self textView];
-  v4 = [v3 attributedText];
-  v5 = WFSerializedTagStringFromAttributedText(v4);
+  textView = [(WFTagField *)self textView];
+  attributedText = [textView attributedText];
+  v5 = WFSerializedTagStringFromAttributedText(attributedText);
   [(WFTagField *)self setTags:v5];
 
   [(WFTagField *)self updateEditableState];
   updateBlock = self->_updateBlock;
   if (updateBlock)
   {
-    v7 = [(WFTagField *)self tags];
-    updateBlock[2](updateBlock, v7);
+    tags = [(WFTagField *)self tags];
+    updateBlock[2](updateBlock, tags);
   }
 }
 
-- (void)insertTag:(id)a3
+- (void)insertTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v22 = [(WFValueTextAttachment *)[WFTagTextAttachment alloc] initWithData:0 ofType:0];
-  [(WFValueTextAttachment *)v22 setStringValue:v4];
+  [(WFValueTextAttachment *)v22 setStringValue:tagCopy];
 
-  v5 = [(WFTagField *)self textView];
-  v6 = [v5 textStorage];
+  textView = [(WFTagField *)self textView];
+  textStorage = [textView textStorage];
   v7 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v22];
-  [v6 insertAttributedString:v7 atIndex:{-[WFTagField selectedRange](self, "selectedRange")}];
+  [textStorage insertAttributedString:v7 atIndex:{-[WFTagField selectedRange](self, "selectedRange")}];
 
-  v8 = [(WFTagField *)self textView];
-  v9 = [v8 textStorage];
-  v10 = [(WFTagField *)self textView];
-  v11 = [v10 typingAttributes];
-  [v9 addAttributes:v11 range:{-[WFTagField selectedRange](self, "selectedRange"), 1}];
+  textView2 = [(WFTagField *)self textView];
+  textStorage2 = [textView2 textStorage];
+  textView3 = [(WFTagField *)self textView];
+  typingAttributes = [textView3 typingAttributes];
+  [textStorage2 addAttributes:typingAttributes range:{-[WFTagField selectedRange](self, "selectedRange"), 1}];
 
-  v12 = [(WFTagField *)self selectedRange];
-  v13 = [(WFTagField *)self textView];
-  [v13 setSelectedRange:{v12 + 1, 0}];
+  selectedRange = [(WFTagField *)self selectedRange];
+  textView4 = [(WFTagField *)self textView];
+  [textView4 setSelectedRange:{selectedRange + 1, 0}];
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v15 = *MEMORY[0x277D77218];
-  v16 = [(WFTagField *)self textView];
-  [v14 postNotificationName:v15 object:v16];
+  textView5 = [(WFTagField *)self textView];
+  [defaultCenter postNotificationName:v15 object:textView5];
 
-  v17 = [(WFTagField *)self scrollView];
-  v18 = [(WFTagField *)self textView];
-  v19 = [(WFTagField *)self textView];
-  v20 = [v19 selectedTextRange];
-  v21 = [v20 end];
-  [v18 caretRectForPosition:v21];
-  [v17 scrollRectToVisible:0 animated:?];
+  scrollView = [(WFTagField *)self scrollView];
+  textView6 = [(WFTagField *)self textView];
+  textView7 = [(WFTagField *)self textView];
+  selectedTextRange = [textView7 selectedTextRange];
+  v21 = [selectedTextRange end];
+  [textView6 caretRectForPosition:v21];
+  [scrollView scrollRectToVisible:0 animated:?];
 
   [(WFTagField *)self updateTags];
 }
 
 - (void)selectTag
 {
-  v3 = [(WFTagField *)self textView];
-  v4 = [v3 selectedRange];
-  [(WFTagField *)self tokenizeFreeTextFromRange:v4, v5];
+  textView = [(WFTagField *)self textView];
+  selectedRange = [textView selectedRange];
+  [(WFTagField *)self tokenizeFreeTextFromRange:selectedRange, v5];
 
-  v6 = [(WFTagField *)self textView];
-  [v6 resignFirstResponder];
+  textView2 = [(WFTagField *)self textView];
+  [textView2 resignFirstResponder];
 
   v7 = [WFTagPickerViewController alloc];
-  v8 = [(WFTagField *)self fieldTitle];
-  v9 = [(WFTagField *)self suggestedTags];
-  v15 = [(WFTagPickerViewController *)v7 initWithTitle:v8 tags:v9];
+  fieldTitle = [(WFTagField *)self fieldTitle];
+  suggestedTags = [(WFTagField *)self suggestedTags];
+  v15 = [(WFTagPickerViewController *)v7 initWithTitle:fieldTitle tags:suggestedTags];
 
   [(WFTagPickerViewController *)v15 setDelegate:self];
   v10 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v15];
   [v10 setModalPresentationStyle:7];
-  v11 = [(WFTagField *)self containingViewController];
-  [v11 presentViewController:v10 animated:1 completion:0];
+  containingViewController = [(WFTagField *)self containingViewController];
+  [containingViewController presentViewController:v10 animated:1 completion:0];
 
-  v12 = [v10 popoverPresentationController];
-  [v12 setPermittedArrowDirections:3];
-  v13 = [(WFTagField *)self plusButton];
-  [v12 setSourceView:v13];
+  popoverPresentationController = [v10 popoverPresentationController];
+  [popoverPresentationController setPermittedArrowDirections:3];
+  plusButton = [(WFTagField *)self plusButton];
+  [popoverPresentationController setSourceView:plusButton];
 
-  v14 = [(WFTagField *)self plusButton];
-  [v14 bounds];
-  [v12 setSourceRect:?];
+  plusButton2 = [(WFTagField *)self plusButton];
+  [plusButton2 bounds];
+  [popoverPresentationController setSourceRect:?];
 }
 
 - (id)containingViewController
 {
-  v3 = [(WFTagField *)self delegate];
+  delegate = [(WFTagField *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(WFTagField *)self delegate];
-    v6 = [v5 viewControllerContainingTagField:self];
+    delegate2 = [(WFTagField *)self delegate];
+    v6 = [delegate2 viewControllerContainingTagField:self];
   }
 
   else
@@ -215,11 +215,11 @@
   return v6;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 attributedText];
-  v6 = [v5 length];
+  changeCopy = change;
+  attributedText = [changeCopy attributedText];
+  v6 = [attributedText length];
 
   v10 = 0;
   v11 = &v10;
@@ -227,14 +227,14 @@
   v14 = 0;
   v15 = 0;
   v13 = "";
-  v7 = [v4 attributedText];
+  attributedText2 = [changeCopy attributedText];
   v8 = *MEMORY[0x277D74060];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __32__WFTagField_textViewDidChange___block_invoke;
   v9[3] = &unk_279EDBE58;
   v9[4] = &v10;
-  [v7 enumerateAttribute:v8 inRange:0 options:v6 usingBlock:{0, v9}];
+  [attributedText2 enumerateAttribute:v8 inRange:0 options:v6 usingBlock:{0, v9}];
 
   if (v6 == v11[5] + v11[4])
   {
@@ -259,45 +259,45 @@ uint64_t __32__WFTagField_textViewDidChange___block_invoke(uint64_t result, uint
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v12 = [v10 rangeOfCharacterFromSet:v11 options:0];
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  textCopy = text;
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v12 = [textCopy rangeOfCharacterFromSet:newlineCharacterSet options:0];
 
   if (v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (![(WFTagField *)self tokenizeFreeTextFromRange:location, length])
     {
-      [v9 resignFirstResponder];
+      [viewCopy resignFirstResponder];
     }
 
     goto LABEL_8;
   }
 
-  [v9 selectedRange];
+  [viewCopy selectedRange];
   v13 = MEMORY[0x277D74060];
-  if (!v14 && ![v10 length])
+  if (!v14 && ![textCopy length])
   {
     v26 = 0;
     v27 = &v26;
     v28 = 0x2020000000;
     LOBYTE(v29) = 0;
-    v15 = [v9 attributedText];
+    attributedText = [viewCopy attributedText];
     v16 = *v13;
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __63__WFTagField_textView_shouldChangeTextInRange_replacementText___block_invoke;
     v32[3] = &unk_279EDBE58;
     v32[4] = &v26;
-    [v15 enumerateAttribute:v16 inRange:location options:length usingBlock:{0, v32}];
+    [attributedText enumerateAttribute:v16 inRange:location options:length usingBlock:{0, v32}];
 
     if (*(v27 + 24) == 1)
     {
-      [v9 setSelectedRange:{location, length}];
+      [viewCopy setSelectedRange:{location, length}];
       _Block_object_dispose(&v26, 8);
 LABEL_8:
       v17 = 0;
@@ -307,9 +307,9 @@ LABEL_8:
     _Block_object_dispose(&v26, 8);
   }
 
-  v18 = [(WFTagField *)self textView];
-  v19 = [v18 attributedText];
-  v20 = [v19 length];
+  textView = [(WFTagField *)self textView];
+  attributedText2 = [textView attributedText];
+  v20 = [attributedText2 length];
 
   v26 = 0;
   v27 = &v26;
@@ -317,17 +317,17 @@ LABEL_8:
   v30 = 0;
   v31 = 0;
   v29 = "";
-  v21 = [(WFTagField *)self textView];
-  v22 = [v21 attributedText];
+  textView2 = [(WFTagField *)self textView];
+  attributedText3 = [textView2 attributedText];
   v23 = *v13;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __63__WFTagField_textView_shouldChangeTextInRange_replacementText___block_invoke_2;
   v25[3] = &unk_279EDBE58;
   v25[4] = &v26;
-  [v22 enumerateAttribute:v23 inRange:0 options:v20 usingBlock:{0, v25}];
+  [attributedText3 enumerateAttribute:v23 inRange:0 options:v20 usingBlock:{0, v25}];
 
-  v17 = ![v10 length] || -[WFTagField allowsTextEntry](self, "allowsTextEntry") && location >= v27[5] + v27[4];
+  v17 = ![textCopy length] || -[WFTagField allowsTextEntry](self, "allowsTextEntry") && location >= v27[5] + v27[4];
   _Block_object_dispose(&v26, 8);
 LABEL_16:
 
@@ -356,51 +356,51 @@ uint64_t __63__WFTagField_textView_shouldChangeTextInRange_replacementText___blo
   return result;
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v21 = a3;
-  v4 = [(WFTagField *)self textView];
-  [v4 updateTextAttachments];
+  selectionCopy = selection;
+  textView = [(WFTagField *)self textView];
+  [textView updateTextAttachments];
 
-  v5 = [(WFTagField *)self selectedRange];
-  v6 = [v21 selectedRange];
-  [(WFTagField *)self setSelectedRange:v6, v7];
-  v8 = [(WFTagField *)self selectedRange];
-  v9 = [v21 selectedTextRange];
-  v10 = v9;
-  if (v8 >= v5)
+  selectedRange = [(WFTagField *)self selectedRange];
+  selectedRange2 = [selectionCopy selectedRange];
+  [(WFTagField *)self setSelectedRange:selectedRange2, v7];
+  selectedRange3 = [(WFTagField *)self selectedRange];
+  selectedTextRange = [selectionCopy selectedTextRange];
+  v10 = selectedTextRange;
+  if (selectedRange3 >= selectedRange)
   {
-    [v9 end];
+    [selectedTextRange end];
   }
 
   else
   {
-    [v9 start];
+    [selectedTextRange start];
   }
   v11 = ;
 
-  [v21 caretRectForPosition:v11];
+  [selectionCopy caretRectForPosition:v11];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(WFTagField *)self scrollView];
-  [v20 scrollRectToVisible:0 animated:{v13, v15, v17, v19}];
+  scrollView = [(WFTagField *)self scrollView];
+  [scrollView scrollRectToVisible:0 animated:{v13, v15, v17, v19}];
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v6 = [(WFTagField *)self textView];
-  v4 = [v6 selectedRange];
-  [(WFTagField *)self tokenizeFreeTextFromRange:v4, v5];
+  textView = [(WFTagField *)self textView];
+  selectedRange = [textView selectedRange];
+  [(WFTagField *)self tokenizeFreeTextFromRange:selectedRange, v5];
 }
 
-- (BOOL)tokenizeFreeTextFromRange:(_NSRange)a3
+- (BOOL)tokenizeFreeTextFromRange:(_NSRange)range
 {
-  location = a3.location;
-  v5 = [(WFTagField *)self textView:a3.location];
-  v6 = [v5 attributedText];
-  v7 = [v6 length];
+  location = range.location;
+  v5 = [(WFTagField *)self textView:range.location];
+  attributedText = [v5 attributedText];
+  v7 = [attributedText length];
 
   v30 = 0;
   v31 = &v30;
@@ -408,15 +408,15 @@ uint64_t __63__WFTagField_textView_shouldChangeTextInRange_replacementText___blo
   v34 = 0;
   v35 = 0;
   v33 = "";
-  v8 = [(WFTagField *)self textView];
-  v9 = [v8 attributedText];
+  textView = [(WFTagField *)self textView];
+  attributedText2 = [textView attributedText];
   v10 = *MEMORY[0x277D74060];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __40__WFTagField_tokenizeFreeTextFromRange___block_invoke;
   v29[3] = &unk_279EDBE58;
   v29[4] = &v30;
-  [v9 enumerateAttribute:v10 inRange:0 options:v7 usingBlock:{0, v29}];
+  [attributedText2 enumerateAttribute:v10 inRange:0 options:v7 usingBlock:{0, v29}];
 
   if (location <= v31[5] + v31[4])
   {
@@ -425,9 +425,9 @@ uint64_t __63__WFTagField_textView_shouldChangeTextInRange_replacementText___blo
 
   else
   {
-    v11 = [(WFTagField *)self textView];
-    v12 = [v11 attributedText];
-    v13 = [v12 mutableCopy];
+    textView2 = [(WFTagField *)self textView];
+    attributedText3 = [textView2 attributedText];
+    v13 = [attributedText3 mutableCopy];
 
     v14 = v31[5] + v31[4];
     v16 = v7 - v14;
@@ -437,25 +437,25 @@ uint64_t __63__WFTagField_textView_shouldChangeTextInRange_replacementText___blo
     {
       v18 = [(WFValueTextAttachment *)[WFTagTextAttachment alloc] initWithData:0 ofType:0];
       v19 = [v13 attributedSubstringFromRange:{v14, v16}];
-      v20 = [v19 string];
-      [(WFValueTextAttachment *)v18 setStringValue:v20];
+      string = [v19 string];
+      [(WFValueTextAttachment *)v18 setStringValue:string];
 
       v21 = [MEMORY[0x277CCA898] attributedStringWithAttachment:v18];
       [v13 replaceCharactersInRange:v14 withAttributedString:{v16, v21}];
 
-      v22 = [(WFTagField *)self textView];
-      v23 = [v22 typingAttributes];
-      [v13 addAttributes:v23 range:{0, objc_msgSend(v13, "length")}];
+      textView3 = [(WFTagField *)self textView];
+      typingAttributes = [textView3 typingAttributes];
+      [v13 addAttributes:typingAttributes range:{0, objc_msgSend(v13, "length")}];
 
-      v24 = [(WFTagField *)self textView];
-      [v24 setAttributedText:v13];
+      textView4 = [(WFTagField *)self textView];
+      [textView4 setAttributedText:v13];
 
-      v25 = [MEMORY[0x277CCAB98] defaultCenter];
-      v26 = [(WFTagField *)self textView];
-      [v25 postNotificationName:*MEMORY[0x277D77218] object:v26];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      textView5 = [(WFTagField *)self textView];
+      [defaultCenter postNotificationName:*MEMORY[0x277D77218] object:textView5];
 
-      v27 = [(WFTagField *)self textView];
-      [v27 updateTextAttachments];
+      textView6 = [(WFTagField *)self textView];
+      [textView6 updateTextAttachments];
 
       [(WFTagField *)self updateTags];
     }
@@ -491,8 +491,8 @@ uint64_t __40__WFTagField_tokenizeFreeTextFromRange___block_invoke(uint64_t resu
 
     else
     {
-      v4 = [(WFTagField *)self tags];
-      v3 = [v4 length] != 0;
+      tags = [(WFTagField *)self tags];
+      v3 = [tags length] != 0;
     }
   }
 
@@ -501,98 +501,98 @@ uint64_t __40__WFTagField_tokenizeFreeTextFromRange___block_invoke(uint64_t resu
     v3 = 0;
   }
 
-  v5 = [(WFTagField *)self textView];
-  [v5 setEditable:v3];
+  textView = [(WFTagField *)self textView];
+  [textView setEditable:v3];
 
-  v6 = [(WFTagField *)self textView];
-  [v6 setSelectable:v3];
+  textView2 = [(WFTagField *)self textView];
+  [textView2 setSelectable:v3];
 
-  v7 = [(WFTagField *)self isEditable];
-  v8 = [(WFTagField *)self plusButton];
-  [v8 setEnabled:v7];
+  isEditable = [(WFTagField *)self isEditable];
+  plusButton = [(WFTagField *)self plusButton];
+  [plusButton setEnabled:isEditable];
 
-  v9 = [(WFTagField *)self scrollView];
-  [v9 setUserInteractionEnabled:v3];
+  scrollView = [(WFTagField *)self scrollView];
+  [scrollView setUserInteractionEnabled:v3];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  v4 = [(WFTagField *)self textView];
-  [v4 setTextAlignment:a3];
+  textView = [(WFTagField *)self textView];
+  [textView setTextAlignment:alignment];
 }
 
 - (int64_t)textAlignment
 {
-  v2 = [(WFTagField *)self textView];
-  v3 = [v2 textAlignment];
+  textView = [(WFTagField *)self textView];
+  textAlignment = [textView textAlignment];
 
-  return v3;
+  return textAlignment;
 }
 
-- (void)setKeyboardAppearance:(int64_t)a3
+- (void)setKeyboardAppearance:(int64_t)appearance
 {
-  v4 = [(WFTagField *)self textView];
-  [v4 setKeyboardAppearance:a3];
+  textView = [(WFTagField *)self textView];
+  [textView setKeyboardAppearance:appearance];
 }
 
 - (int64_t)keyboardAppearance
 {
-  v2 = [(WFTagField *)self textView];
-  v3 = [v2 keyboardAppearance];
+  textView = [(WFTagField *)self textView];
+  keyboardAppearance = [textView keyboardAppearance];
 
-  return v3;
+  return keyboardAppearance;
 }
 
-- (void)setKeyboardType:(int64_t)a3
+- (void)setKeyboardType:(int64_t)type
 {
-  v4 = [(WFTagField *)self textView];
-  [v4 setKeyboardType:a3];
+  textView = [(WFTagField *)self textView];
+  [textView setKeyboardType:type];
 }
 
 - (int64_t)keyboardType
 {
-  v2 = [(WFTagField *)self textView];
-  v3 = [v2 keyboardType];
+  textView = [(WFTagField *)self textView];
+  keyboardType = [textView keyboardType];
 
-  return v3;
+  return keyboardType;
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v4 = a3;
-  v5 = [(WFTagField *)self textView];
-  [v5 setPlaceholder:v4];
+  placeholderCopy = placeholder;
+  textView = [(WFTagField *)self textView];
+  [textView setPlaceholder:placeholderCopy];
 }
 
 - (NSString)placeholder
 {
-  v2 = [(WFTagField *)self textView];
-  v3 = [v2 placeholder];
+  textView = [(WFTagField *)self textView];
+  placeholder = [textView placeholder];
 
-  return v3;
+  return placeholder;
 }
 
-- (void)setTags:(id)a3
+- (void)setTags:(id)tags
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  tagsCopy = tags;
+  v5 = [tagsCopy copy];
   tags = self->_tags;
   self->_tags = v5;
 
-  v7 = [(WFTagField *)self textView];
-  v8 = [v7 typingAttributes];
-  v9 = WFAttributedTextFromSerializedTagString(v4, v8);
+  textView = [(WFTagField *)self textView];
+  typingAttributes = [textView typingAttributes];
+  v9 = WFAttributedTextFromSerializedTagString(tagsCopy, typingAttributes);
 
-  v10 = [(WFTagField *)self textView];
-  [v10 setAttributedText:v9];
+  textView2 = [(WFTagField *)self textView];
+  [textView2 setAttributedText:v9];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v12 = *MEMORY[0x277D77218];
-  v13 = [(WFTagField *)self textView];
-  [v11 postNotificationName:v12 object:v13];
+  textView3 = [(WFTagField *)self textView];
+  [defaultCenter postNotificationName:v12 object:textView3];
 
-  v14 = [(WFTagField *)self textView];
-  [v14 updateTextAttachments];
+  textView4 = [(WFTagField *)self textView];
+  [textView4 updateTextAttachments];
 }
 
 - (void)layoutSubviews
@@ -602,9 +602,9 @@ uint64_t __40__WFTagField_tokenizeFreeTextFromRange___block_invoke(uint64_t resu
   [(WFTagField *)&v17 layoutSubviews];
   [(WFTagField *)self bounds];
   v4 = v3;
-  v5 = [(WFTagField *)self plusButton];
+  plusButton = [(WFTagField *)self plusButton];
   v6 = 35.0;
-  if (!v5)
+  if (!plusButton)
   {
     v6 = 0.0;
   }
@@ -612,39 +612,39 @@ uint64_t __40__WFTagField_tokenizeFreeTextFromRange___block_invoke(uint64_t resu
   v7 = v4 - v6;
   [(WFTagField *)self bounds];
   v9 = v8;
-  v10 = [(WFTagField *)self scrollView];
-  [v10 setFrame:{0.0, 0.0, v7, v9}];
+  scrollView = [(WFTagField *)self scrollView];
+  [scrollView setFrame:{0.0, 0.0, v7, v9}];
 
-  v11 = [(WFTagField *)self scrollView];
-  [v11 bounds];
+  scrollView2 = [(WFTagField *)self scrollView];
+  [scrollView2 bounds];
   v13 = v12 + 5.0;
   [(WFTagField *)self bounds];
   v15 = v14;
-  v16 = [(WFTagField *)self plusButton];
-  [v16 setFrame:{v13, 0.0, 30.0, v15}];
+  plusButton2 = [(WFTagField *)self plusButton];
+  [plusButton2 setFrame:{v13, 0.0, 30.0, v15}];
 }
 
-- (WFTagField)initWithFrame:(CGRect)a3 showsAddButton:(BOOL)a4
+- (WFTagField)initWithFrame:(CGRect)frame showsAddButton:(BOOL)button
 {
-  v4 = a4;
+  buttonCopy = button;
   v15.receiver = self;
   v15.super_class = WFTagField;
-  v5 = [(WFTagField *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(WFTagField *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v5)
   {
     v6 = objc_alloc_init(WFTagTextView);
     v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
     [(WFTagTextView *)v6 setFont:v7];
 
-    v8 = [MEMORY[0x277D75348] clearColor];
-    [(WFTagTextView *)v6 setBackgroundColor:v8];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(WFTagTextView *)v6 setBackgroundColor:clearColor];
 
     [(WFTagField *)v5 setTextView:v6];
     v9 = [objc_alloc(MEMORY[0x277D7D538]) initWithTextView:v6];
     [v9 setTextViewDelegate:v5];
     [(WFTagField *)v5 addSubview:v9];
     [(WFTagField *)v5 setScrollView:v9];
-    if (v4)
+    if (buttonCopy)
     {
       v10 = [MEMORY[0x277D75220] buttonWithType:1];
       v11 = WFLocalizedString(@"Add Tag");

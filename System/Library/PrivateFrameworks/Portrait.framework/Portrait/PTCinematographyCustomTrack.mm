@@ -1,42 +1,42 @@
 @interface PTCinematographyCustomTrack
-- (PTCinematographyCustomTrack)initWithDetections:(id)a3;
+- (PTCinematographyCustomTrack)initWithDetections:(id)detections;
 - (id)_asCinematographyDictionary;
-- (id)_initWithCinematographyDictionary:(id)a3;
-- (id)_initWithCustomTrack:(id)a3;
-- (id)_trackByTrimmingToTimeRange:(id *)a3 subtracting:(id *)a4;
-- (id)detectionAtOrBeforeTime:(id *)a3;
-- (id)detectionInFrame:(id)a3;
-- (id)detectionNearestTime:(id *)a3;
-- (id)detectionsInTimeRange:(id *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithCinematographyDictionary:(id)dictionary;
+- (id)_initWithCustomTrack:(id)track;
+- (id)_trackByTrimmingToTimeRange:(id *)range subtracting:(id *)subtracting;
+- (id)detectionAtOrBeforeTime:(id *)time;
+- (id)detectionInFrame:(id)frame;
+- (id)detectionNearestTime:(id *)time;
+- (id)detectionsInTimeRange:(id *)range;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (void)applyDetectionSmoothing;
 @end
 
 @implementation PTCinematographyCustomTrack
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 _initWithCustomTrack:self];
 }
 
-- (id)_initWithCustomTrack:(id)a3
+- (id)_initWithCustomTrack:(id)track
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  trackCopy = track;
   v20.receiver = self;
   v20.super_class = PTCinematographyCustomTrack;
-  v5 = [(PTCinematographyTrack *)&v20 _initWithTrack:v4];
+  v5 = [(PTCinematographyTrack *)&v20 _initWithTrack:trackCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [v4 detections];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    detections = [trackCopy detections];
+    v8 = [detections countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -48,23 +48,23 @@
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(detections);
           }
 
           v12 = [*(*(&v16 + 1) + 8 * v11) copy];
-          [v6 addObject:v12];
+          [array addObject:v12];
 
           ++v11;
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v9 = [detections countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v9);
     }
 
-    v13 = [v6 copy];
+    v13 = [array copy];
     v14 = v5[8];
     v5[8] = v13;
   }
@@ -72,15 +72,15 @@
   return v5;
 }
 
-- (PTCinematographyCustomTrack)initWithDetections:(id)a3
+- (PTCinematographyCustomTrack)initWithDetections:(id)detections
 {
-  v4 = a3;
+  detectionsCopy = detections;
   v9.receiver = self;
   v9.super_class = PTCinematographyCustomTrack;
   v5 = [(PTCinematographyTrack *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [detectionsCopy copy];
     detections = v5->_detections;
     v5->_detections = v6;
   }
@@ -96,8 +96,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(PTCinematographyCustomTrack *)self allDetections];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  allDetections = [(PTCinematographyCustomTrack *)self allDetections];
+  v5 = [allDetections countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -109,7 +109,7 @@
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allDetections);
         }
 
         [*(*(&v19 + 1) + 8 * v8) focusDistance];
@@ -118,7 +118,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v6 = [allDetections countByEnumeratingWithState:&v19 objects:v24 count:16];
     }
 
     while (v6);
@@ -129,8 +129,8 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v9 = [(PTCinematographyCustomTrack *)self allDetections];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+  allDetections2 = [(PTCinematographyCustomTrack *)self allDetections];
+  v10 = [allDetections2 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -142,7 +142,7 @@
       {
         if (*v16 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allDetections2);
         }
 
         v14 = *(*(&v15 + 1) + 8 * v13);
@@ -152,28 +152,28 @@
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v23 count:16];
+      v11 = [allDetections2 countByEnumeratingWithState:&v15 objects:v23 count:16];
     }
 
     while (v11);
   }
 }
 
-- (id)detectionAtOrBeforeTime:(id *)a3
+- (id)detectionAtOrBeforeTime:(id *)time
 {
-  v5 = [(PTCinematographyCustomTrack *)self detections];
-  time2 = *a3;
-  v6 = [v5 _firstIndexAtOrAfterTime:&time2];
+  detections = [(PTCinematographyCustomTrack *)self detections];
+  time2 = *time;
+  v6 = [detections _firstIndexAtOrAfterTime:&time2];
 
-  v7 = [(PTCinematographyCustomTrack *)self detections];
-  if (v6 == [v7 count])
+  detections2 = [(PTCinematographyCustomTrack *)self detections];
+  if (v6 == [detections2 count])
   {
   }
 
   else
   {
-    v8 = [(PTCinematographyCustomTrack *)self detections];
-    v9 = [v8 objectAtIndexedSubscript:v6];
+    detections3 = [(PTCinematographyCustomTrack *)self detections];
+    v9 = [detections3 objectAtIndexedSubscript:v6];
     v10 = v9;
     if (v9)
     {
@@ -185,7 +185,7 @@
       memset(&time2, 0, sizeof(time2));
     }
 
-    v15 = *a3;
+    v15 = *time;
     v11 = CMTimeCompare(&v15, &time2);
 
     if ((v11 & 0x80000000) == 0)
@@ -198,8 +198,8 @@
   {
     --v6;
 LABEL_9:
-    v12 = [(PTCinematographyCustomTrack *)self detections];
-    v13 = [v12 objectAtIndexedSubscript:v6];
+    detections4 = [(PTCinematographyCustomTrack *)self detections];
+    v13 = [detections4 objectAtIndexedSubscript:v6];
 
     goto LABEL_11;
   }
@@ -210,14 +210,14 @@ LABEL_11:
   return v13;
 }
 
-- (id)detectionNearestTime:(id *)a3
+- (id)detectionNearestTime:(id *)time
 {
-  v5 = [(PTCinematographyCustomTrack *)self detections];
-  v12 = *a3;
-  v6 = [v5 _indexNearestTime:&v12];
+  detections = [(PTCinematographyCustomTrack *)self detections];
+  v12 = *time;
+  v6 = [detections _indexNearestTime:&v12];
 
-  v7 = [(PTCinematographyCustomTrack *)self detections];
-  v8 = [v7 count];
+  detections2 = [(PTCinematographyCustomTrack *)self detections];
+  v8 = [detections2 count];
 
   if (v6 >= v8)
   {
@@ -226,27 +226,27 @@ LABEL_11:
 
   else
   {
-    v9 = [(PTCinematographyCustomTrack *)self detections];
-    v10 = [v9 objectAtIndexedSubscript:v6];
+    detections3 = [(PTCinematographyCustomTrack *)self detections];
+    v10 = [detections3 objectAtIndexedSubscript:v6];
   }
 
   return v10;
 }
 
-- (id)detectionsInTimeRange:(id *)a3
+- (id)detectionsInTimeRange:(id *)range
 {
-  v5 = [(PTCinematographyCustomTrack *)self detections];
-  v6 = *&a3->var0.var3;
-  v13[0] = *&a3->var0.var0;
+  detections = [(PTCinematographyCustomTrack *)self detections];
+  v6 = *&range->var0.var3;
+  v13[0] = *&range->var0.var0;
   v13[1] = v6;
-  v13[2] = *&a3->var1.var1;
-  v7 = [v5 _indexRangeOfTimeRange:v13];
+  v13[2] = *&range->var1.var1;
+  v7 = [detections _indexRangeOfTimeRange:v13];
   v9 = v8;
 
   if (v9)
   {
-    v10 = [(PTCinematographyCustomTrack *)self detections];
-    v11 = [v10 subarrayWithRange:{v7, v9}];
+    detections2 = [(PTCinematographyCustomTrack *)self detections];
+    v11 = [detections2 subarrayWithRange:{v7, v9}];
   }
 
   else
@@ -257,13 +257,13 @@ LABEL_11:
   return v11;
 }
 
-- (id)detectionInFrame:(id)a3
+- (id)detectionInFrame:(id)frame
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  frameCopy = frame;
+  v5 = frameCopy;
+  if (frameCopy)
   {
-    [v4 time];
+    [frameCopy time];
   }
 
   else
@@ -296,19 +296,19 @@ LABEL_11:
   return v7;
 }
 
-- (id)_trackByTrimmingToTimeRange:(id *)a3 subtracting:(id *)a4
+- (id)_trackByTrimmingToTimeRange:(id *)range subtracting:(id *)subtracting
 {
-  v6 = *&a3->var0.var3;
-  *time1 = *&a3->var0.var0;
+  v6 = *&range->var0.var3;
+  *time1 = *&range->var0.var0;
   *&time1[16] = v6;
-  v19 = *&a3->var1.var1;
+  v19 = *&range->var1.var1;
   v7 = [(PTCinematographyCustomTrack *)self detectionsInTimeRange:time1];
   v8 = [v7 mutableCopy];
 
-  if ((a4->var2 & 0x1D) == 1)
+  if ((subtracting->var2 & 0x1D) == 1)
   {
-    *time1 = *&a4->var0;
-    *&time1[16] = a4->var3;
+    *time1 = *&subtracting->var0;
+    *&time1[16] = subtracting->var3;
     time2 = **&MEMORY[0x277CC08F0];
     if (CMTimeCompare(time1, &time2))
     {
@@ -330,7 +330,7 @@ LABEL_11:
             memset(&time2, 0, sizeof(time2));
           }
 
-          v16 = *a4;
+          v16 = *subtracting;
           CMTimeSubtract(time1, &time2, &v16);
 
           v12 = [v8 objectAtIndexedSubscript:v9];
@@ -357,25 +357,25 @@ LABEL_11:
 {
   v8.receiver = self;
   v8.super_class = PTCinematographyCustomTrack;
-  v3 = [(PTCinematographyTrack *)&v8 _asMutableCinematographyDictionary];
-  v4 = [(PTCinematographyCustomTrack *)self allDetections];
-  v5 = [PTCinematographyDetection _cinematographyArrayFromDetections:v4];
-  [v3 setObject:v5 forKeyedSubscript:@"detections"];
+  _asMutableCinematographyDictionary = [(PTCinematographyTrack *)&v8 _asMutableCinematographyDictionary];
+  allDetections = [(PTCinematographyCustomTrack *)self allDetections];
+  v5 = [PTCinematographyDetection _cinematographyArrayFromDetections:allDetections];
+  [_asMutableCinematographyDictionary setObject:v5 forKeyedSubscript:@"detections"];
 
-  v6 = [v3 copy];
+  v6 = [_asMutableCinematographyDictionary copy];
 
   return v6;
 }
 
-- (id)_initWithCinematographyDictionary:(id)a3
+- (id)_initWithCinematographyDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = PTCinematographyCustomTrack;
-  v5 = [(PTCinematographyTrack *)&v10 _initWithCinematographyDictionary:v4];
+  v5 = [(PTCinematographyTrack *)&v10 _initWithCinematographyDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"detections"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"detections"];
     v7 = [PTCinematographyDetection _detectionsFromCinematographyArray:v6];
     v8 = v5[8];
     v5[8] = v7;

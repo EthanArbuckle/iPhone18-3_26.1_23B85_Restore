@@ -1,7 +1,7 @@
 @interface _NSAttributeDescriptor
-+ (id)descriptorForAttributeKey:(id)a3;
++ (id)descriptorForAttributeKey:(id)key;
 + (void)initialize;
-- (_NSAttributeDescriptor)initWithName:(id)a3;
+- (_NSAttributeDescriptor)initWithName:(id)name;
 - (void)dealloc;
 @end
 
@@ -9,7 +9,7 @@
 
 + (void)initialize
 {
-  if (_NSAttributeDescriptor == a1)
+  if (_NSAttributeDescriptor == self)
   {
     objc_opt_class();
     objc_opt_class();
@@ -18,12 +18,12 @@
   }
 }
 
-- (_NSAttributeDescriptor)initWithName:(id)a3
+- (_NSAttributeDescriptor)initWithName:(id)name
 {
   v4 = [(_NSAttributeDescriptor *)self init];
   if (v4)
   {
-    v4->_name = [a3 copy];
+    v4->_name = [name copy];
   }
 
   return v4;
@@ -38,31 +38,31 @@
   [(_NSAttributeDescriptor *)&v3 dealloc];
 }
 
-+ (id)descriptorForAttributeKey:(id)a3
++ (id)descriptorForAttributeKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   __key[2] = *MEMORY[0x1E69E9840];
-  if (([a3 hasPrefix:@"NS"] & 1) == 0)
+  if (([key hasPrefix:@"NS"] & 1) == 0)
   {
-    if ([v3 length] && -[NSCharacterSet characterIsMember:](+[NSCharacterSet lowercaseLetterCharacterSet](NSCharacterSet, "lowercaseLetterCharacterSet"), "characterIsMember:", objc_msgSend(v3, "characterAtIndex:", 0)))
+    if ([keyCopy length] && -[NSCharacterSet characterIsMember:](+[NSCharacterSet lowercaseLetterCharacterSet](NSCharacterSet, "lowercaseLetterCharacterSet"), "characterIsMember:", objc_msgSend(keyCopy, "characterAtIndex:", 0)))
     {
-      v4 = [v3 mutableCopy];
-      [v4 replaceCharactersInRange:0 withString:{1, objc_msgSend(objc_msgSend(v3, "substringWithRange:", 0, 1), "capitalizedString")}];
+      v4 = [keyCopy mutableCopy];
+      [v4 replaceCharactersInRange:0 withString:{1, objc_msgSend(objc_msgSend(keyCopy, "substringWithRange:", 0, 1), "capitalizedString")}];
       [v4 insertString:@"NS" atIndex:0];
       [v4 appendString:@"AttributeName"];
-      v3 = v4;
+      keyCopy = v4;
     }
 
     else
     {
-      v3 = 0;
+      keyCopy = 0;
     }
   }
 
-  result = [v3 length];
+  result = [keyCopy length];
   if (result)
   {
-    __key[0] = v3;
+    __key[0] = keyCopy;
     __key[1] = 0;
     result = bsearch_b(__key, &attributeKeyToDescriptor, 0xCuLL, 0x10uLL, &__block_literal_global_27);
     if (result)

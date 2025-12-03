@@ -1,14 +1,14 @@
 @interface SKUIDefaultCardLayout
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5;
-- (id)attributedStringForButton:(id)a3;
-- (id)attributedStringForLabel:(id)a3;
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width;
+- (id)attributedStringForButton:(id)button;
+- (id)attributedStringForLabel:(id)label;
 @end
 
 @implementation SKUIDefaultCardLayout
 
-- (id)attributedStringForButton:(id)a3
+- (id)attributedStringForButton:(id)button
 {
-  v3 = a3;
+  buttonCopy = button;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -21,19 +21,19 @@
     }
   }
 
-  v12 = [v3 buttonTitleStyle];
-  v13 = v12;
-  if (v12)
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  v13 = buttonTitleStyle;
+  if (buttonTitleStyle)
   {
-    v14 = v12;
+    style = buttonTitleStyle;
   }
 
   else
   {
-    v14 = [v3 style];
+    style = [buttonCopy style];
   }
 
-  v15 = v14;
+  v15 = style;
 
   v16 = SKUIViewElementFontWithStyle(v15);
   if (!v16)
@@ -52,15 +52,15 @@
     v18 = 1;
   }
 
-  v19 = [v3 buttonText];
-  v20 = [v19 attributedStringWithDefaultFont:v16 foregroundColor:0 textAlignment:v18 style:v15];
+  buttonText = [buttonCopy buttonText];
+  v20 = [buttonText attributedStringWithDefaultFont:v16 foregroundColor:0 textAlignment:v18 style:v15];
 
   return v20;
 }
 
-- (id)attributedStringForLabel:(id)a3
+- (id)attributedStringForLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -73,13 +73,13 @@
     }
   }
 
-  v13 = [v4 style];
-  v14 = SKUIViewElementFontWithStyle(v13);
-  v15 = [(SKUICardLayout *)self layoutContext];
-  v16 = [v15 tintColor];
-  v17 = SKUIViewElementPlainColorWithStyle(v13, v16);
+  style = [labelCopy style];
+  v14 = SKUIViewElementFontWithStyle(style);
+  layoutContext = [(SKUICardLayout *)self layoutContext];
+  tintColor = [layoutContext tintColor];
+  v17 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  v18 = SKUIViewElementAlignmentForStyle(v13);
+  v18 = SKUIViewElementAlignmentForStyle(style);
   if (v18)
   {
     v19 = SKUIViewElementNSTextAlignmentForIKElementAlignment(v18);
@@ -90,10 +90,10 @@
     v19 = 1;
   }
 
-  v20 = [v4 labelViewStyle];
-  if (v20 <= 5)
+  labelViewStyle = [labelCopy labelViewStyle];
+  if (labelViewStyle <= 5)
   {
-    if (((1 << v20) & 0x1B) != 0)
+    if (((1 << labelViewStyle) & 0x1B) != 0)
     {
       if (v14)
       {
@@ -112,7 +112,7 @@
         }
       }
 
-      v21 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
+      blackColor = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.6];
     }
 
     else
@@ -134,23 +134,23 @@
         }
       }
 
-      v21 = [MEMORY[0x277D75348] blackColor];
+      blackColor = [MEMORY[0x277D75348] blackColor];
     }
 
-    v17 = v21;
+    v17 = blackColor;
   }
 
 LABEL_21:
-  v22 = [v4 text];
-  v23 = [v22 attributedStringWithDefaultFont:v14 foregroundColor:v17 textAlignment:v19];
+  text = [labelCopy text];
+  v23 = [text attributedStringWithDefaultFont:v14 foregroundColor:v17 textAlignment:v19];
 
   return v23;
 }
 
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width
 {
-  v8 = a3;
-  v9 = a4;
+  elementCopy = element;
+  viewElementCopy = viewElement;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -163,10 +163,10 @@ LABEL_21:
     }
   }
 
-  if ([v9 elementType] == 66)
+  if ([viewElementCopy elementType] == 66)
   {
-    v18 = [MEMORY[0x277D759A0] mainScreen];
-    [v18 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v20 = v19;
     v22 = v21;
 
@@ -176,14 +176,14 @@ LABEL_21:
     }
 
     v23 = 12.0;
-    if ([v8 elementType] != 131 && objc_msgSend(v9, "elementType") != 131)
+    if ([elementCopy elementType] != 131 && objc_msgSend(viewElementCopy, "elementType") != 131)
     {
       v23 = 20.0;
       if (v22 <= 736.0)
       {
-        v24 = [v8 parent];
+        parent = [elementCopy parent];
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v23 = 12.0, ([v24 isAdCard] & 1) == 0))
+        if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v23 = 12.0, ([parent isAdCard] & 1) == 0))
         {
           if (v22 <= 568.0)
           {
@@ -203,7 +203,7 @@ LABEL_21:
   {
     v27.receiver = self;
     v27.super_class = SKUIDefaultCardLayout;
-    [(SKUICardLayout *)&v27 topInsetForViewElement:v8 previousViewElement:v9 width:a5];
+    [(SKUICardLayout *)&v27 topInsetForViewElement:elementCopy previousViewElement:viewElementCopy width:width];
     v23 = v25;
   }
 

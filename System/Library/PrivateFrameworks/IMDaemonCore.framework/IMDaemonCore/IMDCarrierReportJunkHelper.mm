@@ -1,35 +1,35 @@
 @interface IMDCarrierReportJunkHelper
-+ (BOOL)validateReportJunkCarrierAddress:(id)a3;
-+ (id)createJunkReportMessageBodyTextForMessageItem:(id)a3 junkChatStyle:(unsigned __int8)a4 serviceName:(id)a5;
-+ (id)fetchMMSReportJunkCarrierAddressForPhoneNumber:(id)a3 simID:(id)a4;
-+ (id)fetchSMSReportJunkCarrierAddressForPhoneNumber:(id)a3 simID:(id)a4;
-+ (id)jsonSerializeDictionary:(id)a3;
-+ (id)jsonSerializeDictionaryStrippingOutMessageContent:(id)a3;
-+ (id)receiveDateForMessageItem:(id)a3;
++ (BOOL)validateReportJunkCarrierAddress:(id)address;
++ (id)createJunkReportMessageBodyTextForMessageItem:(id)item junkChatStyle:(unsigned __int8)style serviceName:(id)name;
++ (id)fetchMMSReportJunkCarrierAddressForPhoneNumber:(id)number simID:(id)d;
++ (id)fetchSMSReportJunkCarrierAddressForPhoneNumber:(id)number simID:(id)d;
++ (id)jsonSerializeDictionary:(id)dictionary;
++ (id)jsonSerializeDictionaryStrippingOutMessageContent:(id)content;
++ (id)receiveDateForMessageItem:(id)item;
 @end
 
 @implementation IMDCarrierReportJunkHelper
 
-+ (id)createJunkReportMessageBodyTextForMessageItem:(id)a3 junkChatStyle:(unsigned __int8)a4 serviceName:(id)a5
++ (id)createJunkReportMessageBodyTextForMessageItem:(id)item junkChatStyle:(unsigned __int8)style serviceName:(id)name
 {
-  v6 = a4;
+  styleCopy = style;
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [v8 subject];
+  itemCopy = item;
+  nameCopy = name;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  subject = [itemCopy subject];
   v12 = @"MMS";
-  if (![v11 length])
+  if (![subject length])
   {
-    v13 = [v8 fileTransferGUIDs];
-    if ([v13 count])
+    fileTransferGUIDs = [itemCopy fileTransferGUIDs];
+    if ([fileTransferGUIDs count])
     {
       v14 = 0;
     }
 
     else
     {
-      v14 = v6 == 45;
+      v14 = styleCopy == 45;
     }
 
     if (v14)
@@ -39,35 +39,35 @@
   }
 
   v15 = v12;
-  if ([v9 isEqualToString:*MEMORY[0x277D1A608]])
+  if ([nameCopy isEqualToString:*MEMORY[0x277D1A608]])
   {
-    v16 = v9;
+    v16 = nameCopy;
 
-    v17 = [v8 fallbackHash];
-    v18 = [v17 rangeOfString:@"__"];
+    fallbackHash = [itemCopy fallbackHash];
+    v18 = [fallbackHash rangeOfString:@"__"];
     if (v18 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v19 = v18;
-      if (v18 <= [v17 length])
+      if (v18 <= [fallbackHash length])
       {
-        v20 = [v17 substringToIndex:v19];
+        v20 = [fallbackHash substringToIndex:v19];
 
-        v17 = v20;
+        fallbackHash = v20;
       }
     }
 
-    if (v17)
+    if (fallbackHash)
     {
-      [v10 setValue:v17 forKey:@"e"];
+      [dictionary setValue:fallbackHash forKey:@"e"];
     }
 
     v21 = +[IMDFileTransferCenter sharedInstance];
-    v22 = [v8 fileTransferGUIDs];
-    v23 = [v22 firstObject];
-    v24 = [v21 transferForGUID:v23];
+    fileTransferGUIDs2 = [itemCopy fileTransferGUIDs];
+    firstObject = [fileTransferGUIDs2 firstObject];
+    v24 = [v21 transferForGUID:firstObject];
 
-    v25 = [v24 originalFilename];
-    [v10 setObject:v25 forKeyedSubscript:@"a"];
+    originalFilename = [v24 originalFilename];
+    [dictionary setObject:originalFilename forKeyedSubscript:@"a"];
 
     v26 = @"A03";
     v15 = v16;
@@ -78,35 +78,35 @@
     v26 = @"A01";
   }
 
-  [v10 setValue:v15 forKey:@"r"];
-  [v10 setValue:v26 forKey:@"v"];
-  v27 = [v8 handle];
-  v28 = [v27 im_stripCategoryLabel];
+  [dictionary setValue:v15 forKey:@"r"];
+  [dictionary setValue:v26 forKey:@"v"];
+  handle = [itemCopy handle];
+  im_stripCategoryLabel = [handle im_stripCategoryLabel];
 
-  if (v28)
+  if (im_stripCategoryLabel)
   {
-    [v10 setValue:v28 forKey:@"f"];
+    [dictionary setValue:im_stripCategoryLabel forKey:@"f"];
   }
 
-  v29 = [a1 receiveDateForMessageItem:v8];
+  v29 = [self receiveDateForMessageItem:itemCopy];
   if (v29)
   {
-    [v10 setValue:v29 forKey:@"t"];
+    [dictionary setValue:v29 forKey:@"t"];
   }
 
-  v30 = [v8 body];
-  v31 = [v30 string];
+  body = [itemCopy body];
+  string = [body string];
 
-  if (v31)
+  if (string)
   {
-    [v10 setValue:v31 forKey:@"m"];
+    [dictionary setValue:string forKey:@"m"];
   }
 
-  v32 = [a1 jsonSerializeDictionary:v10];
+  v32 = [self jsonSerializeDictionary:dictionary];
   v33 = IMLogHandleForCategory();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
-    v34 = [a1 jsonSerializeDictionaryStrippingOutMessageContent:v10];
+    v34 = [self jsonSerializeDictionaryStrippingOutMessageContent:dictionary];
     v38 = 138412290;
     v39 = v34;
     _os_log_impl(&dword_22B4CC000, v33, OS_LOG_TYPE_INFO, "Created serialize junk report: %@", &v38, 0xCu);
@@ -118,15 +118,15 @@
   return v35;
 }
 
-+ (id)receiveDateForMessageItem:(id)a3
++ (id)receiveDateForMessageItem:(id)item
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [a3 time];
+  time = [item time];
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v4 setLocale:v5];
   [v4 setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"];
-  v6 = [v4 stringFromDate:v3];
+  v6 = [v4 stringFromDate:time];
   v7 = IMLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -140,36 +140,36 @@
   return v6;
 }
 
-+ (id)jsonSerializeDictionary:(id)a3
++ (id)jsonSerializeDictionary:(id)dictionary
 {
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:0 error:0];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary options:0 error:0];
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
 
   return v4;
 }
 
-+ (id)jsonSerializeDictionaryStrippingOutMessageContent:(id)a3
++ (id)jsonSerializeDictionaryStrippingOutMessageContent:(id)content
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = [a3 copy];
+  v5 = [content copy];
   v6 = [v4 dictionaryWithDictionary:v5];
 
   [v6 setObject:@"(hidden)" forKey:@"m"];
-  v7 = [a1 jsonSerializeDictionary:v6];
+  v7 = [self jsonSerializeDictionary:v6];
 
   return v7;
 }
 
-+ (BOOL)validateReportJunkCarrierAddress:(id)a3
++ (BOOL)validateReportJunkCarrierAddress:(id)address
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  addressCopy = address;
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF MATCHES %@", @"^[+]?[0-9]+$"];
-  if ([v4 evaluateWithObject:v3])
+  if ([v4 evaluateWithObject:addressCopy])
   {
-    v5 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v3];
-    v6 = [v5 digitsRemovingDialingCode];
-    v7 = [v6 length];
+    v5 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:addressCopy];
+    digitsRemovingDialingCode = [v5 digitsRemovingDialingCode];
+    v7 = [digitsRemovingDialingCode length];
     v8 = v7 < 11;
     v9 = IMLogHandleForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -192,7 +192,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v3;
+      v14 = addressCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Not a valid report junk address from carrier. Carrier report junk address - %@", buf, 0xCu);
     }
 
@@ -203,10 +203,10 @@
   return v8;
 }
 
-+ (id)fetchSMSReportJunkCarrierAddressForPhoneNumber:(id)a3 simID:(id)a4
++ (id)fetchSMSReportJunkCarrierAddressForPhoneNumber:(id)number simID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D1A8F8] carrierBundleValueForKeyHierarchy:&unk_283F4EE88 phoneNumber:a3 simID:a4];
+  v4 = [MEMORY[0x277D1A8F8] carrierBundleValueForKeyHierarchy:&unk_283F4EE88 phoneNumber:number simID:d];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = [v4 valueForKey:@"SMSCarrierReportJunkAddress"];
@@ -238,10 +238,10 @@
   return v8;
 }
 
-+ (id)fetchMMSReportJunkCarrierAddressForPhoneNumber:(id)a3 simID:(id)a4
++ (id)fetchMMSReportJunkCarrierAddressForPhoneNumber:(id)number simID:(id)d
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D1A8F8] carrierBundleValueForKeyHierarchy:&unk_283F4EEA0 phoneNumber:a3 simID:a4];
+  v4 = [MEMORY[0x277D1A8F8] carrierBundleValueForKeyHierarchy:&unk_283F4EEA0 phoneNumber:number simID:d];
   if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5 = [v4 valueForKey:@"MMSCarrierReportJunkAddress"];

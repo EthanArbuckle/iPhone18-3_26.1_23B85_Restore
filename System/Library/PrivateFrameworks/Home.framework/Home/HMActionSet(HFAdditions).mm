@@ -25,8 +25,8 @@
 
 - (id)hf_characteristicWriteActions
 {
-  v1 = [a1 actions];
-  v2 = [v1 na_map:&__block_literal_global_122];
+  actions = [self actions];
+  v2 = [actions na_map:&__block_literal_global_122];
 
   return v2;
 }
@@ -39,8 +39,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a1 actions];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  actions = [self actions];
+  v4 = [actions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -51,7 +51,7 @@
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
@@ -59,20 +59,20 @@
         if (objc_opt_isKindOfClass())
         {
           v9 = v8;
-          v10 = [v9 characteristic];
-          if (v10)
+          characteristic = [v9 characteristic];
+          if (characteristic)
           {
-            v11 = [v9 targetValue];
+            targetValue = [v9 targetValue];
 
-            if (v11)
+            if (targetValue)
             {
-              [v2 addObject:v10];
+              [v2 addObject:characteristic];
             }
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [actions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -91,8 +91,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a1 actions];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  actions = [self actions];
+  v4 = [actions countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -103,7 +103,7 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
@@ -124,12 +124,12 @@
 
           v11 = v10;
 
-          v12 = [v11 mediaProfiles];
-          [v2 unionSet:v12];
+          mediaProfiles = [v11 mediaProfiles];
+          [v2 unionSet:mediaProfiles];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [actions countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -150,8 +150,8 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = [a1 actions];
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  actions = [self actions];
+  v4 = [actions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -162,7 +162,7 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
@@ -183,8 +183,8 @@
 
           v11 = v10;
 
-          v12 = [v11 mediaProfiles];
-          [v2 unionSet:v12];
+          mediaProfiles = [v11 mediaProfiles];
+          [v2 unionSet:mediaProfiles];
         }
 
         else
@@ -209,12 +209,12 @@
 
           v11 = v14;
 
-          v12 = [v11 lightProfile];
-          [v2 na_safeAddObject:v12];
+          mediaProfiles = [v11 lightProfile];
+          [v2 na_safeAddObject:mediaProfiles];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [actions countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);
@@ -233,8 +233,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [a1 actions];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+  actions = [self actions];
+  v4 = [actions countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -246,21 +246,21 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v16 + 1) + 8 * v7);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 characteristic];
-          v10 = [v9 service];
-          [v2 na_safeAddObject:v10];
+          characteristic = [v8 characteristic];
+          service = [characteristic service];
+          [v2 na_safeAddObject:service];
 
-          v11 = [v8 characteristic];
-          v12 = [v11 service];
+          characteristic2 = [v8 characteristic];
+          service2 = [characteristic2 service];
 
-          if (!v12)
+          if (!service2)
           {
             v13 = HFLogForCategory(0);
             if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -276,7 +276,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v22 count:16];
+      v5 = [actions countByEnumeratingWithState:&v16 objects:v22 count:16];
     }
 
     while (v5);
@@ -290,14 +290,14 @@
 - (BOOL)hf_affectsServiceWithIdentifier:()HFAdditions
 {
   v4 = a3;
-  v5 = [a1 hf_affectedServices];
+  hf_affectedServices = [self hf_affectedServices];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __60__HMActionSet_HFAdditions__hf_affectsServiceWithIdentifier___block_invoke;
   v10[3] = &unk_277DFC668;
   v11 = v4;
   v6 = v4;
-  v7 = [v5 objectsPassingTest:v10];
+  v7 = [hf_affectedServices objectsPassingTest:v10];
 
   v8 = [v7 count] != 0;
   return v8;
@@ -311,8 +311,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [a1 actions];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  actions = [self actions];
+  v4 = [actions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -323,16 +323,16 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 characteristic];
-          v10 = [v9 service];
-          [v2 na_safeAddObject:v10];
+          characteristic = [v8 characteristic];
+          service = [characteristic service];
+          [v2 na_safeAddObject:service];
         }
 
         else
@@ -340,8 +340,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = [v8 mediaProfiles];
-            [v2 unionSet:v9];
+            characteristic = [v8 mediaProfiles];
+            [v2 unionSet:characteristic];
           }
 
           else
@@ -352,13 +352,13 @@
               continue;
             }
 
-            v9 = [v8 lightProfile];
-            [v2 na_safeAddObject:v9];
+            characteristic = [v8 lightProfile];
+            [v2 na_safeAddObject:characteristic];
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [actions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -371,24 +371,24 @@
 
 - (uint64_t)hf_isAnonymous
 {
-  v2 = [a1 actionSetType];
-  if ([v2 isEqualToString:*MEMORY[0x277CCF1A0]])
+  actionSetType = [self actionSetType];
+  if ([actionSetType isEqualToString:*MEMORY[0x277CCF1A0]])
   {
     v3 = 1;
   }
 
   else
   {
-    v4 = [a1 name];
-    if ([v4 hasPrefix:@"HFAnonymous "])
+    name = [self name];
+    if ([name hasPrefix:@"HFAnonymous "])
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [a1 actionSetType];
-      v3 = [v5 isEqualToString:*MEMORY[0x277CCF190]];
+      actionSetType2 = [self actionSetType];
+      v3 = [actionSetType2 isEqualToString:*MEMORY[0x277CCF190]];
     }
   }
 
@@ -397,21 +397,21 @@
 
 - (uint64_t)hf_isVisible
 {
-  if ([a1 hf_isAnonymous])
+  if ([self hf_isAnonymous])
   {
     return 0;
   }
 
-  v3 = [a1 actions];
-  v2 = [v3 hmf_isEmpty] ^ 1;
+  actions = [self actions];
+  v2 = [actions hmf_isEmpty] ^ 1;
 
   return v2;
 }
 
 - (uint64_t)hf_requiresDeviceUnlock
 {
-  v1 = [a1 actions];
-  v2 = [v1 na_any:&__block_literal_global_21_4];
+  actions = [self actions];
+  v2 = [actions na_any:&__block_literal_global_21_4];
 
   return v2;
 }
@@ -419,7 +419,7 @@
 - (float)hf_percentOfAccessoryRepresentableObjectsAssociatedWithGroup:()HFAdditions
 {
   v4 = a3;
-  v5 = [a1 hf_affectedAccessoryRepresentableObjects];
+  hf_affectedAccessoryRepresentableObjects = [self hf_affectedAccessoryRepresentableObjects];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -431,11 +431,11 @@
   v6 = v4;
   v14 = v6;
   v15 = &v16;
-  [v5 na_each:&v10];
-  if ([v5 count])
+  [hf_affectedAccessoryRepresentableObjects na_each:&v10];
+  if ([hf_affectedAccessoryRepresentableObjects count])
   {
     v7 = v17[3];
-    v8 = v7 / [v5 count];
+    v8 = v7 / [hf_affectedAccessoryRepresentableObjects count];
   }
 
   else
@@ -449,11 +449,11 @@
 
 - (__CFString)_hf_iconIdentifier
 {
-  v2 = [a1 applicationData];
-  v3 = [v2 objectForKeyedSubscript:@"HFAppDataActionSetIconImageIdentifier_v2"];
+  applicationData = [self applicationData];
+  v3 = [applicationData objectForKeyedSubscript:@"HFAppDataActionSetIconImageIdentifier_v2"];
 
-  v4 = [a1 applicationData];
-  v5 = [v4 objectForKeyedSubscript:@"HFApplicationDataActionSetIconImageIdentifierKey"];
+  applicationData2 = [self applicationData];
+  v5 = [applicationData2 objectForKeyedSubscript:@"HFApplicationDataActionSetIconImageIdentifierKey"];
 
   if (!v3)
   {
@@ -471,7 +471,7 @@
     goto LABEL_9;
   }
 
-  v6 = [a1 hf_mapOldIconIdentifierToNewSystemIconIdentifier:v3];
+  v6 = [self hf_mapOldIconIdentifierToNewSystemIconIdentifier:v3];
 
   if ([(__CFString *)v6 hasPrefix:@"HFImageIconIdentifier"])
   {
@@ -482,8 +482,8 @@
   {
 LABEL_9:
     v7 = objc_opt_class();
-    v8 = [a1 actionSetType];
-    v6 = [v7 hf_standardSystemIconIdentifierForActionSetType:v8];
+    actionSetType = [self actionSetType];
+    v6 = [v7 hf_standardSystemIconIdentifierForActionSetType:actionSetType];
 
     if (!v6)
     {
@@ -498,19 +498,19 @@ LABEL_11:
 
 - (HFImageIconDescriptor)hf_iconDescriptor
 {
-  v2 = [a1 _hf_iconIdentifier];
-  if (v2)
+  _hf_iconIdentifier = [self _hf_iconIdentifier];
+  if (_hf_iconIdentifier)
   {
-    v3 = [a1 hf_iconTintColor];
-    if (v3)
+    hf_iconTintColor = [self hf_iconTintColor];
+    if (hf_iconTintColor)
     {
-      v4 = [MEMORY[0x277D755D0] configurationWithHierarchicalColor:v3];
-      v5 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v2 configuration:v4];
+      v4 = [MEMORY[0x277D755D0] configurationWithHierarchicalColor:hf_iconTintColor];
+      v5 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:_hf_iconIdentifier configuration:v4];
     }
 
     else
     {
-      v5 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:v2];
+      v5 = [[HFImageIconDescriptor alloc] initWithSystemImageNamed:_hf_iconIdentifier];
     }
   }
 
@@ -524,28 +524,28 @@ LABEL_11:
 
 - (id)hf_iconTintColor
 {
-  v2 = [a1 applicationData];
-  v3 = [v2 objectForKeyedSubscript:@"HFAppDataActionSetIconTintColor"];
+  applicationData = [self applicationData];
+  v3 = [applicationData objectForKeyedSubscript:@"HFAppDataActionSetIconTintColor"];
 
   if (v3)
   {
-    v4 = [[HFColorPaletteColor alloc] initWithDictionaryRepresentation:v3];
-    [(HFColorPaletteColor *)v4 UIColor];
+    _hf_iconIdentifier = [[HFColorPaletteColor alloc] initWithDictionaryRepresentation:v3];
+    [(HFColorPaletteColor *)_hf_iconIdentifier UIColor];
   }
 
   else
   {
-    v4 = [a1 _hf_iconIdentifier];
-    [a1 hf_standardIconTintColorForIconIdentifier:v4];
+    _hf_iconIdentifier = [self _hf_iconIdentifier];
+    [self hf_standardIconTintColorForIconIdentifier:_hf_iconIdentifier];
   }
-  v5 = ;
+  systemOrangeColor = ;
 
-  if (!v5)
+  if (!systemOrangeColor)
   {
-    v5 = [MEMORY[0x277D75348] systemOrangeColor];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
   }
 
-  return v5;
+  return systemOrangeColor;
 }
 
 - (id)hf_setIconIdentifier:()HFAdditions andTintColor:
@@ -553,31 +553,31 @@ LABEL_11:
   v6 = a3;
   v7 = a4;
   v8 = objc_opt_class();
-  v9 = [a1 actionSetType];
-  v10 = [v8 hf_standardSystemIconIdentifierForActionSetType:v9];
+  actionSetType = [self actionSetType];
+  v10 = [v8 hf_standardSystemIconIdentifierForActionSetType:actionSetType];
 
-  v11 = [a1 applicationData];
-  v12 = [v11 objectForKeyedSubscript:@"HFAppDataActionSetIconImageIdentifier_v2"];
+  applicationData = [self applicationData];
+  v12 = [applicationData objectForKeyedSubscript:@"HFAppDataActionSetIconImageIdentifier_v2"];
 
   if (v12 || ([v10 isEqualToString:v6] & 1) == 0)
   {
-    v13 = [a1 applicationData];
-    [v13 setObject:v6 forKeyedSubscript:@"HFAppDataActionSetIconImageIdentifier_v2"];
+    applicationData2 = [self applicationData];
+    [applicationData2 setObject:v6 forKeyedSubscript:@"HFAppDataActionSetIconImageIdentifier_v2"];
   }
 
   if (v7)
   {
     v14 = [[HFColorPaletteColor alloc] initWithUIColor:v7];
     v15 = [(HFColorPaletteColor *)v14 dictionaryRepresentationWithPreferredPaletteType:0];
-    v16 = [a1 applicationData];
-    [v16 setObject:v15 forKeyedSubscript:@"HFAppDataActionSetIconTintColor"];
+    applicationData3 = [self applicationData];
+    [applicationData3 setObject:v15 forKeyedSubscript:@"HFAppDataActionSetIconTintColor"];
   }
 
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __62__HMActionSet_HFAdditions__hf_setIconIdentifier_andTintColor___block_invoke;
   v19[3] = &unk_277DF2C68;
-  v19[4] = a1;
+  v19[4] = self;
   v17 = [MEMORY[0x277D2C900] futureWithErrorOnlyHandlerAdapterBlock:v19];
 
   return v17;
@@ -632,8 +632,8 @@ LABEL_11:
 
 - (void)hf_shortcutAction
 {
-  v1 = [a1 actions];
-  v2 = [v1 na_firstObjectPassingTest:&__block_literal_global_72_1];
+  actions = [self actions];
+  v2 = [actions na_firstObjectPassingTest:&__block_literal_global_72_1];
 
   objc_opt_class();
   v3 = v2;
@@ -654,8 +654,8 @@ LABEL_11:
 
 - (BOOL)hf_isShortcutOwned
 {
-  v1 = [a1 hf_shortcutAction];
-  v2 = v1 != 0;
+  hf_shortcutAction = [self hf_shortcutAction];
+  v2 = hf_shortcutAction != 0;
 
   return v2;
 }

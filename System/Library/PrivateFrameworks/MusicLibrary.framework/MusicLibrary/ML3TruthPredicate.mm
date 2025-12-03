@@ -1,22 +1,22 @@
 @interface ML3TruthPredicate
 + (id)falsePredicate;
 + (id)truePredicate;
-- (BOOL)isEqual:(id)a3;
-- (ML3TruthPredicate)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (ML3TruthPredicate)initWithCoder:(id)coder;
 - (id)_predicateString;
 - (id)description;
 - (unint64_t)hash;
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3TruthPredicate
 
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class
 {
-  v5 = a3;
-  v6 = [(ML3TruthPredicate *)self _predicateString];
-  [v5 appendString:v6];
+  stringCopy = string;
+  _predicateString = [(ML3TruthPredicate *)self _predicateString];
+  [stringCopy appendString:_predicateString];
 }
 
 - (unint64_t)hash
@@ -26,10 +26,10 @@
   return [(ML3Predicate *)&v3 hash]+ self->_truthValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -38,7 +38,7 @@
   {
     v7.receiver = self;
     v7.super_class = ML3TruthPredicate;
-    v5 = [(ML3Predicate *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_truthValue == v4->_truthValue;
+    v5 = [(ML3Predicate *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_truthValue == equalCopy->_truthValue;
   }
 
   return v5;
@@ -50,8 +50,8 @@
   v8.receiver = self;
   v8.super_class = ML3TruthPredicate;
   v4 = [(ML3TruthPredicate *)&v8 description];
-  v5 = [(ML3TruthPredicate *)self _predicateString];
-  v6 = [v3 stringWithFormat:@"%@(NOT %@)", v4, v5];
+  _predicateString = [(ML3TruthPredicate *)self _predicateString];
+  v6 = [v3 stringWithFormat:@"%@(NOT %@)", v4, _predicateString];
 
   return v6;
 }
@@ -69,25 +69,25 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ML3TruthPredicate;
-  v4 = a3;
-  [(ML3Predicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_truthValue forKey:{@"truthValue", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(ML3Predicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_truthValue forKey:{@"truthValue", v5.receiver, v5.super_class}];
 }
 
-- (ML3TruthPredicate)initWithCoder:(id)a3
+- (ML3TruthPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ML3TruthPredicate;
   v5 = [(ML3TruthPredicate *)&v11 init];
   if (v5)
   {
     v6 = v5;
-    v7 = [v4 decodeBoolForKey:@"truthValue"];
+    v7 = [coderCopy decodeBoolForKey:@"truthValue"];
     v6->_truthValue = v7;
     v8 = objc_opt_class();
     if (v7)

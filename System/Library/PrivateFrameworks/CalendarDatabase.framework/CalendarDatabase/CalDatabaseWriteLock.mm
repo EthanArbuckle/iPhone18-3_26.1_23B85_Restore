@@ -1,8 +1,8 @@
 @interface CalDatabaseWriteLock
-+ (id)canonicalizePath:(id)a3;
-+ (id)writeLockForDatabasePath:(id)a3;
++ (id)canonicalizePath:(id)path;
++ (id)writeLockForDatabasePath:(id)path;
 - (CalDatabaseWriteLock)init;
-- (void)performWithWriteLock:(id)a3;
+- (void)performWithWriteLock:(id)lock;
 @end
 
 @implementation CalDatabaseWriteLock
@@ -20,29 +20,29 @@
   return result;
 }
 
-+ (id)canonicalizePath:(id)a3
++ (id)canonicalizePath:(id)path
 {
-  v3 = a3;
-  if (([v3 hasSuffix:@"/"] & 1) == 0)
+  pathCopy = path;
+  if (([pathCopy hasSuffix:@"/"] & 1) == 0)
   {
-    v4 = [v3 stringByAppendingString:@"/"];
+    v4 = [pathCopy stringByAppendingString:@"/"];
 
-    v3 = v4;
+    pathCopy = v4;
   }
 
-  return v3;
+  return pathCopy;
 }
 
-+ (id)writeLockForDatabasePath:(id)a3
++ (id)writeLockForDatabasePath:(id)path
 {
-  v3 = [a1 canonicalizePath:a3];
+  v3 = [self canonicalizePath:path];
   os_unfair_lock_lock(&writeLockForDatabasePath___global_lock);
   v4 = writeLockForDatabasePath___writeLocks;
   if (!writeLockForDatabasePath___writeLocks)
   {
-    v5 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v6 = writeLockForDatabasePath___writeLocks;
-    writeLockForDatabasePath___writeLocks = v5;
+    writeLockForDatabasePath___writeLocks = strongToWeakObjectsMapTable;
 
     v4 = writeLockForDatabasePath___writeLocks;
   }
@@ -59,11 +59,11 @@
   return v7;
 }
 
-- (void)performWithWriteLock:(id)a3
+- (void)performWithWriteLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2]();
+  lockCopy[2]();
   os_unfair_lock_unlock(&self->_lock);
 }
 

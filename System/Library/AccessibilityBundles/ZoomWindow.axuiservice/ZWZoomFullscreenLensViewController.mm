@@ -1,5 +1,5 @@
 @interface ZWZoomFullscreenLensViewController
-- (CGPoint)maximumPanOffsetWithZoomFactor:(double)a3;
+- (CGPoint)maximumPanOffsetWithZoomFactor:(double)factor;
 - (void)_applyInitialLayoutConstraints;
 @end
 
@@ -10,26 +10,26 @@
   v9.receiver = self;
   v9.super_class = ZWZoomFullscreenLensViewController;
   [(ZWZoomLensViewController *)&v9 _applyInitialLayoutConstraints];
-  v3 = [(ZWZoomFullscreenLensViewController *)self view];
-  v4 = [(ZWZoomLensViewController *)self lensZoomView];
-  v5 = [NSLayoutConstraint constraintWithItem:v4 attribute:1 relatedBy:0 toItem:v3 attribute:1 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v5];
+  view = [(ZWZoomFullscreenLensViewController *)self view];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+  v5 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:0.0];
+  [view addConstraint:v5];
 
-  v6 = [NSLayoutConstraint constraintWithItem:v4 attribute:2 relatedBy:0 toItem:v3 attribute:2 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v6];
+  v6 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:0.0];
+  [view addConstraint:v6];
 
-  v7 = [NSLayoutConstraint constraintWithItem:v4 attribute:3 relatedBy:0 toItem:v3 attribute:3 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v7];
+  v7 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:3 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:0.0];
+  [view addConstraint:v7];
 
-  v8 = [NSLayoutConstraint constraintWithItem:v4 attribute:4 relatedBy:0 toItem:v3 attribute:4 multiplier:1.0 constant:0.0];
-  [v3 addConstraint:v8];
+  v8 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:4 relatedBy:0 toItem:view attribute:4 multiplier:1.0 constant:0.0];
+  [view addConstraint:v8];
 }
 
-- (CGPoint)maximumPanOffsetWithZoomFactor:(double)a3
+- (CGPoint)maximumPanOffsetWithZoomFactor:(double)factor
 {
-  v5 = [(ZWZoomFullscreenLensViewController *)self view];
-  v6 = [v5 window];
-  [v6 bounds];
+  view = [(ZWZoomFullscreenLensViewController *)self view];
+  window = [view window];
+  [window bounds];
   v8 = v7;
   v10 = v9;
 
@@ -41,8 +41,8 @@
     v10 = v14;
   }
 
-  v15 = [(ZWZoomLensViewController *)self lensZoomView];
-  [v15 sampledContentSizeWithZoomFactor:a3];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+  [lensZoomView sampledContentSizeWithZoomFactor:factor];
   v17 = v16;
   v19 = v18;
 

@@ -12,8 +12,8 @@
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKDashboardUtils.m", 497, "+[UIImage(GKDashboardUtils) _gkMessageGroupImageWithIdentifier:handler:]"];
   v9 = [v7 dispatchGroupWithName:v8];
 
-  v10 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v11 = [v10 groupImageSourceWithDimension:128];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  v11 = [mEMORY[0x277D0C8C8] groupImageSourceWithDimension:128];
 
   v12 = GKAvatarSubdirectoryNameForPlayerID();
   v20[0] = MEMORY[0x277D85DD0];

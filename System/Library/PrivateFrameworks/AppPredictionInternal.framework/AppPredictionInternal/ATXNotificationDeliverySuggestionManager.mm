@@ -1,16 +1,16 @@
 @interface ATXNotificationDeliverySuggestionManager
 - (ATXNotificationDeliverySuggestionManager)init;
-- (ATXNotificationDeliverySuggestionManager)initWithDataStore:(id)a3 suggestionBiomeStream:(id)a4;
+- (ATXNotificationDeliverySuggestionManager)initWithDataStore:(id)store suggestionBiomeStream:(id)stream;
 - (BOOL)digestHasBeenShownEnoughTimes;
-- (BOOL)shouldShowSuggestion:(id)a3 withFeedback:(id)a4;
-- (id)deduplicatedSuggestions:(id)a3;
-- (id)filteredSuggestionsBasedOnFeedback:(id)a3;
-- (id)maxOneSuggestionFromSuggestions:(id)a3;
+- (BOOL)shouldShowSuggestion:(id)suggestion withFeedback:(id)feedback;
+- (id)deduplicatedSuggestions:(id)suggestions;
+- (id)filteredSuggestionsBasedOnFeedback:(id)feedback;
+- (id)maxOneSuggestionFromSuggestions:(id)suggestions;
 - (unint64_t)currentMode;
-- (unint64_t)getScoreForSuggestion:(id)a3;
-- (void)_activeSuggestionsWithReply:(id)a3;
-- (void)activeSuggestionsWithReply:(id)a3;
-- (void)logSuggestionsToBiome:(id)a3;
+- (unint64_t)getScoreForSuggestion:(id)suggestion;
+- (void)_activeSuggestionsWithReply:(id)reply;
+- (void)activeSuggestionsWithReply:(id)reply;
+- (void)logSuggestionsToBiome:(id)biome;
 @end
 
 @implementation ATXNotificationDeliverySuggestionManager
@@ -24,18 +24,18 @@
   return v5;
 }
 
-- (ATXNotificationDeliverySuggestionManager)initWithDataStore:(id)a3 suggestionBiomeStream:(id)a4
+- (ATXNotificationDeliverySuggestionManager)initWithDataStore:(id)store suggestionBiomeStream:(id)stream
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  streamCopy = stream;
   v24.receiver = self;
   v24.super_class = ATXNotificationDeliverySuggestionManager;
   v9 = [(ATXNotificationDeliverySuggestionManager *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataStore, a3);
-    objc_storeStrong(&v10->_biomeStream, a4);
+    objc_storeStrong(&v9->_dataStore, store);
+    objc_storeStrong(&v10->_biomeStream, stream);
     v11 = [[ATXNotificationSmartPauseManager alloc] initWithNotificationAndSuggestionDataStore:v10->_dataStore];
     smartPauseManager = v10->_smartPauseManager;
     v10->_smartPauseManager = v11;
@@ -52,9 +52,9 @@
     turnOffNotificationsForAppManager = v10->_turnOffNotificationsForAppManager;
     v10->_turnOffNotificationsForAppManager = v17;
 
-    v19 = [MEMORY[0x277CEB710] sharedInstance];
+    mEMORY[0x277CEB710] = [MEMORY[0x277CEB710] sharedInstance];
     constants = v10->_constants;
-    v10->_constants = v19;
+    v10->_constants = mEMORY[0x277CEB710];
 
     v21 = objc_alloc_init(ATXChinSuggestionThrottlingManager);
     throttlingManager = v10->_throttlingManager;
@@ -67,11 +67,11 @@
 - (unint64_t)currentMode
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D41C60] currentModeSemanticType];
-  if (v2)
+  currentModeSemanticType = [MEMORY[0x277D41C60] currentModeSemanticType];
+  if (currentModeSemanticType)
   {
-    v3 = [MEMORY[0x277CEB440] sharedInstance];
-    v4 = [v3 atxModeForDNDSemanticType:{objc_msgSend(v2, "integerValue")}];
+    mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
+    v4 = [mEMORY[0x277CEB440] atxModeForDNDSemanticType:{objc_msgSend(currentModeSemanticType, "integerValue")}];
 
     v5 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -159,9 +159,9 @@ void __73__ATXNotificationDeliverySuggestionManager_digestHasBeenShownEnoughTime
   }
 }
 
-- (void)activeSuggestionsWithReply:(id)a3
+- (void)activeSuggestionsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   throttlingManager = self->_throttlingManager;
   v6 = [ATXChinSuggestionRequest alloc];
   v11[0] = MEMORY[0x277D85DD0];
@@ -169,7 +169,7 @@ void __73__ATXNotificationDeliverySuggestionManager_digestHasBeenShownEnoughTime
   v11[2] = __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply___block_invoke;
   v11[3] = &unk_2785968C8;
   v11[4] = self;
-  v12 = v4;
+  v12 = replyCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply___block_invoke_2;
@@ -187,15 +187,15 @@ void __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply__
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)_activeSuggestionsWithReply:(id)a3
+- (void)_activeSuggestionsWithReply:(id)reply
 {
   v55 = *MEMORY[0x277D85DE8];
   constants = self->_constants;
-  v5 = a3;
-  v6 = [(ATXNotificationManagementMAConstants *)constants chinSuggestionsAreDisabled];
+  replyCopy = reply;
+  chinSuggestionsAreDisabled = [(ATXNotificationManagementMAConstants *)constants chinSuggestionsAreDisabled];
   v7 = __atxlog_handle_notification_management();
   v8 = v7;
-  if (v6)
+  if (chinSuggestionsAreDisabled)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -204,8 +204,8 @@ void __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply__
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "%s: Chin suggestions are disabled. Returning empty array.", buf, 0xCu);
     }
 
-    (*(v5 + 2))(v5, MEMORY[0x277CBEBF8], 0);
-    v9 = v5;
+    (*(replyCopy + 2))(replyCopy, MEMORY[0x277CBEBF8], 0);
+    activeSuggestions = replyCopy;
   }
 
   else
@@ -239,11 +239,11 @@ void __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply__
       _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_INFO, "Querying sub-models...", buf, 2u);
     }
 
-    v9 = [(ATXNotificationSmartPauseManager *)self->_smartPauseManager activeSuggestions];
+    activeSuggestions = [(ATXNotificationSmartPauseManager *)self->_smartPauseManager activeSuggestions];
     v15 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v9 count];
+      v16 = [activeSuggestions count];
       *buf = 134217984;
       v52 = v16;
       _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_INFO, "Suggestion manager received %lu Smart Pause suggestions", buf, 0xCu);
@@ -269,42 +269,42 @@ void __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply__
       _os_log_impl(&dword_2263AA000, v21, OS_LOG_TYPE_DEFAULT, "Suggestion manager received Mode Configuration Tuning Suggestions:%@", buf, 0xCu);
     }
 
-    v22 = [(ATXSendMessagesToDigestManager *)self->_sendMessagesToDigestManager activeSuggestions];
+    activeSuggestions2 = [(ATXSendMessagesToDigestManager *)self->_sendMessagesToDigestManager activeSuggestions];
     v23 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [v22 count];
+      v24 = [activeSuggestions2 count];
       *buf = 134217984;
       v52 = v24;
       _os_log_impl(&dword_2263AA000, v23, OS_LOG_TYPE_INFO, "Suggestion manager received %lu Send Messages To Digest Suggestions", buf, 0xCu);
     }
 
-    v25 = [(ATXSendToDigestManager *)self->_sendToDigestManager activeSuggestions];
+    activeSuggestions3 = [(ATXSendToDigestManager *)self->_sendToDigestManager activeSuggestions];
     v26 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
-      v27 = [v25 count];
+      v27 = [activeSuggestions3 count];
       *buf = 134217984;
       v52 = v27;
       _os_log_impl(&dword_2263AA000, v26, OS_LOG_TYPE_INFO, "Suggestion manager received %lu Send To Digest Suggestions", buf, 0xCu);
     }
 
-    v28 = [(ATXTurnOffNotificationsForAppSuggestionManager *)self->_turnOffNotificationsForAppManager activeSuggestions];
+    activeSuggestions4 = [(ATXTurnOffNotificationsForAppSuggestionManager *)self->_turnOffNotificationsForAppManager activeSuggestions];
     v29 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
-      v30 = [v28 count];
+      v30 = [activeSuggestions4 count];
       *buf = 134217984;
       v52 = v30;
       _os_log_impl(&dword_2263AA000, v29, OS_LOG_TYPE_INFO, "Suggestion manager received %lu TurnOffNotificationsForApp suggestions", buf, 0xCu);
     }
 
-    v31 = [(ATXNotificationDeliverySuggestionManager *)self digestHasBeenShownEnoughTimes];
+    digestHasBeenShownEnoughTimes = [(ATXNotificationDeliverySuggestionManager *)self digestHasBeenShownEnoughTimes];
     v32 = objc_opt_new();
     v33 = v32;
-    if (v9)
+    if (activeSuggestions)
     {
-      [v32 addObjectsFromArray:v9];
+      [v32 addObjectsFromArray:activeSuggestions];
     }
 
     if (v18)
@@ -312,22 +312,22 @@ void __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply__
       [v33 addObjectsFromArray:v18];
     }
 
-    if (v22 != 0 && v31)
+    if (activeSuggestions2 != 0 && digestHasBeenShownEnoughTimes)
     {
-      [v33 addObjectsFromArray:v22];
+      [v33 addObjectsFromArray:activeSuggestions2];
     }
 
-    if (v25 != 0 && v31)
+    if (activeSuggestions3 != 0 && digestHasBeenShownEnoughTimes)
     {
-      [v33 addObjectsFromArray:v25];
+      [v33 addObjectsFromArray:activeSuggestions3];
     }
 
-    if (v28)
+    if (activeSuggestions4)
     {
-      [v33 addObjectsFromArray:v28];
+      [v33 addObjectsFromArray:activeSuggestions4];
     }
 
-    v48 = v25;
+    v48 = activeSuggestions3;
     v34 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
@@ -336,7 +336,7 @@ void __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply__
       _os_log_impl(&dword_2263AA000, v34, OS_LOG_TYPE_DEFAULT, "All suggestions: %@", buf, 0xCu);
     }
 
-    v49 = v22;
+    v49 = activeSuggestions2;
 
     v35 = [(ATXNotificationDeliverySuggestionManager *)self filteredSuggestionsBasedOnFeedback:v33];
     v36 = __atxlog_handle_notification_management();
@@ -379,7 +379,7 @@ void __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply__
       _os_log_impl(&dword_2263AA000, v42, OS_LOG_TYPE_DEFAULT, "%s returning %lu suggestions", buf, 0x16u);
     }
 
-    (*(v5 + 2))(v5, v40, 0);
+    (*(replyCopy + 2))(replyCopy, v40, 0);
     v44 = __atxlog_handle_notification_management();
     v45 = v44;
     if (v50 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v44))
@@ -392,25 +392,25 @@ void __71__ATXNotificationDeliverySuggestionManager_activeSuggestionsWithReply__
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (id)filteredSuggestionsBasedOnFeedback:(id)a3
+- (id)filteredSuggestionsBasedOnFeedback:(id)feedback
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
-  v6 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_140];
+  feedbackCopy = feedback;
+  v6 = [feedbackCopy _pas_mappedArrayWithTransform:&__block_literal_global_140];
   v7 = [v4 setWithArray:v6];
 
   dataStore = self->_dataStore;
-  v9 = [v7 allObjects];
-  v10 = [(ATXNotificationAndSuggestionDatastore *)dataStore feedbackHistoriesForKeys:v9];
+  allObjects = [v7 allObjects];
+  v10 = [(ATXNotificationAndSuggestionDatastore *)dataStore feedbackHistoriesForKeys:allObjects];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBasedOnFeedback___block_invoke_2;
   v14[3] = &unk_27859E558;
   v15 = v10;
-  v16 = self;
+  selfCopy = self;
   v11 = v10;
-  v12 = [v5 _pas_filteredArrayWithTest:v14];
+  v12 = [feedbackCopy _pas_filteredArrayWithTest:v14];
 
   return v12;
 }
@@ -443,24 +443,24 @@ uint64_t __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBased
   return v4;
 }
 
-- (BOOL)shouldShowSuggestion:(id)a3 withFeedback:(id)a4
+- (BOOL)shouldShowSuggestion:(id)suggestion withFeedback:(id)feedback
 {
   v62 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v6 = a4;
-  v48 = self;
+  suggestionCopy = suggestion;
+  feedbackCopy = feedback;
+  selfCopy = self;
   v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[ATXNotificationManagementMAConstants numIgnoresToReject](self->_constants, "numIgnoresToReject")}];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v8 = v6;
+  v8 = feedbackCopy;
   v9 = [v8 countByEnumeratingWithState:&v49 objects:v61 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = 0;
-    v12 = 0;
+    createdTimestamp = 0;
     v13 = 0;
     v14 = *v50;
     do
@@ -476,9 +476,9 @@ uint64_t __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBased
         if ([v16 latestOutcome] == 1 || objc_msgSend(v16, "latestOutcome") == 4)
         {
           ++v13;
-          if (!v12)
+          if (!createdTimestamp)
           {
-            v12 = [v16 createdTimestamp];
+            createdTimestamp = [v16 createdTimestamp];
           }
         }
 
@@ -486,10 +486,10 @@ uint64_t __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBased
         {
           ++v11;
           v17 = [v7 count];
-          if (v17 < [(ATXNotificationManagementMAConstants *)v48->_constants numIgnoresToReject])
+          if (v17 < [(ATXNotificationManagementMAConstants *)selfCopy->_constants numIgnoresToReject])
           {
-            v18 = [v16 createdTimestamp];
-            [v7 addObject:v18];
+            createdTimestamp2 = [v16 createdTimestamp];
+            [v7 addObject:createdTimestamp2];
           }
         }
       }
@@ -503,11 +503,11 @@ uint64_t __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBased
   else
   {
     v11 = 0;
-    v12 = 0;
+    createdTimestamp = 0;
     v13 = 0;
   }
 
-  v19 = v11 % [(ATXNotificationManagementMAConstants *)v48->_constants numIgnoresToReject];
+  v19 = v11 % [(ATXNotificationManagementMAConstants *)selfCopy->_constants numIgnoresToReject];
   if (v19 >= [v7 count])
   {
     v20 = 0;
@@ -518,11 +518,11 @@ uint64_t __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBased
     v20 = [v7 objectAtIndexedSubscript:v19];
   }
 
-  v21 = [MEMORY[0x277CBEAA8] distantPast];
-  v22 = v21;
-  if (v12)
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v22 = distantPast;
+  if (createdTimestamp)
   {
-    v23 = [v21 laterDate:v12];
+    v23 = [distantPast laterDate:createdTimestamp];
 
     v22 = v23;
   }
@@ -535,40 +535,40 @@ uint64_t __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBased
     v22 = v25;
   }
 
-  v26 = v11 / [(ATXNotificationManagementMAConstants *)v48->_constants numIgnoresToReject]+ v13;
+  v26 = v11 / [(ATXNotificationManagementMAConstants *)selfCopy->_constants numIgnoresToReject]+ v13;
   if (v26)
   {
     v27 = v26;
     if ([v47 subtype] == 4)
     {
-      [(ATXNotificationManagementMAConstants *)v48->_constants smartPauseTimeoutScaleFactor];
+      [(ATXNotificationManagementMAConstants *)selfCopy->_constants smartPauseTimeoutScaleFactor];
       v29 = v28;
-      [(ATXNotificationManagementMAConstants *)v48->_constants smartPauseStartTimeoutSeconds];
+      [(ATXNotificationManagementMAConstants *)selfCopy->_constants smartPauseStartTimeoutSeconds];
     }
 
     else if ([v47 subtype] == 5)
     {
-      [(ATXNotificationManagementMAConstants *)v48->_constants interruptionManagementTimeoutScaleFactor];
+      [(ATXNotificationManagementMAConstants *)selfCopy->_constants interruptionManagementTimeoutScaleFactor];
       v29 = v32;
-      [(ATXNotificationManagementMAConstants *)v48->_constants interruptionManagementStartTimeoutSeconds];
+      [(ATXNotificationManagementMAConstants *)selfCopy->_constants interruptionManagementStartTimeoutSeconds];
     }
 
     else
     {
-      v33 = [v47 subtype];
-      constants = v48->_constants;
-      if (v33 == 6)
+      subtype = [v47 subtype];
+      constants = selfCopy->_constants;
+      if (subtype == 6)
       {
         [(ATXNotificationManagementMAConstants *)constants sendToDigestTimeoutScaleFactor];
         v29 = v35;
-        [(ATXNotificationManagementMAConstants *)v48->_constants sendToDigestStartTimeoutSeconds];
+        [(ATXNotificationManagementMAConstants *)selfCopy->_constants sendToDigestStartTimeoutSeconds];
       }
 
       else
       {
         [(ATXNotificationManagementMAConstants *)constants backupTimeoutScaleFactor];
         v29 = v36;
-        [(ATXNotificationManagementMAConstants *)v48->_constants backupStartTimeoutSeconds];
+        [(ATXNotificationManagementMAConstants *)selfCopy->_constants backupStartTimeoutSeconds];
       }
     }
 
@@ -611,23 +611,23 @@ uint64_t __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBased
   return v31;
 }
 
-- (id)deduplicatedSuggestions:(id)a3
+- (id)deduplicatedSuggestions:(id)suggestions
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATXNotificationDeliverySuggestionManager *)self currentActiveSuggestions];
-  if ([v5 count])
+  suggestionsCopy = suggestions;
+  currentActiveSuggestions = [(ATXNotificationDeliverySuggestionManager *)self currentActiveSuggestions];
+  if ([currentActiveSuggestions count])
   {
-    v6 = [v5 allValues];
-    v7 = [v6 firstObject];
+    allValues = [currentActiveSuggestions allValues];
+    firstObject = [allValues firstObject];
 
-    v20 = v7;
-    v8 = [v7 entityIdentifier];
+    v20 = firstObject;
+    entityIdentifier = [firstObject entityIdentifier];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = v4;
+    v9 = suggestionsCopy;
     v10 = [v9 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v10)
     {
@@ -643,8 +643,8 @@ uint64_t __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBased
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v14 entityIdentifier];
-          v16 = [v15 isEqualToString:v8];
+          entityIdentifier2 = [v14 entityIdentifier];
+          v16 = [entityIdentifier2 isEqualToString:entityIdentifier];
 
           if (v16)
           {
@@ -666,7 +666,7 @@ uint64_t __79__ATXNotificationDeliverySuggestionManager_filteredSuggestionsBased
     }
   }
 
-  v17 = v4;
+  v17 = suggestionsCopy;
 LABEL_13:
 
   v18 = *MEMORY[0x277D85DE8];
@@ -674,29 +674,29 @@ LABEL_13:
   return v17;
 }
 
-- (unint64_t)getScoreForSuggestion:(id)a3
+- (unint64_t)getScoreForSuggestion:(id)suggestion
 {
-  v3 = [a3 subtype];
-  if (v3 > 0xA)
+  subtype = [suggestion subtype];
+  if (subtype > 0xA)
   {
     return 9;
   }
 
   else
   {
-    return qword_2268725C0[v3];
+    return qword_2268725C0[subtype];
   }
 }
 
-- (id)maxOneSuggestionFromSuggestions:(id)a3
+- (id)maxOneSuggestionFromSuggestions:(id)suggestions
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  v5 = [suggestionsCopy countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (!v5)
   {
     goto LABEL_12;
@@ -712,7 +712,7 @@ LABEL_13:
     {
       if (*v19 != v9)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(suggestionsCopy);
       }
 
       v11 = *(*(&v18 + 1) + 8 * i);
@@ -727,7 +727,7 @@ LABEL_13:
       }
     }
 
-    v6 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    v6 = [suggestionsCopy countByEnumeratingWithState:&v18 objects:v23 count:16];
   }
 
   while (v6);
@@ -748,15 +748,15 @@ LABEL_12:
   return v15;
 }
 
-- (void)logSuggestionsToBiome:(id)a3
+- (void)logSuggestionsToBiome:(id)biome
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  biomeCopy = biome;
   v5 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v22 = [v4 count];
+    v22 = [biomeCopy count];
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Replying with notification adjacent suggestions: %lu suggestions", buf, 0xCu);
   }
 
@@ -764,7 +764,7 @@ LABEL_12:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = biomeCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -789,8 +789,8 @@ LABEL_12:
           _os_log_impl(&dword_2263AA000, v13, OS_LOG_TYPE_DEFAULT, "notification adjacent suggestion: %@", buf, 0xCu);
         }
 
-        v14 = [(ATXNotificationSuggestionBiomeStream *)self->_biomeStream source];
-        [v14 sendEvent:v11];
+        source = [(ATXNotificationSuggestionBiomeStream *)self->_biomeStream source];
+        [source sendEvent:v11];
 
         objc_autoreleasePoolPop(v12);
       }

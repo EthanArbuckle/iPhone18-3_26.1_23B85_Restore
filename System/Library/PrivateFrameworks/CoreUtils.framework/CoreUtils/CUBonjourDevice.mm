@@ -1,20 +1,20 @@
 @interface CUBonjourDevice
-- (id)copyConnectionInfoWithFlags:(unint64_t)a3 interfaceName:(id)a4 error:(id *)a5;
-- (id)copyConnectionStringWithFlags:(unint64_t)a3 error:(id *)a4;
-- (id)descriptionWithLevel:(int)a3;
-- (unsigned)updateWithBonjourDeviceInfo:(id)a3;
-- (void)_updateTXTDictionary:(id)a3;
+- (id)copyConnectionInfoWithFlags:(unint64_t)flags interfaceName:(id)name error:(id *)error;
+- (id)copyConnectionStringWithFlags:(unint64_t)flags error:(id *)error;
+- (id)descriptionWithLevel:(int)level;
+- (unsigned)updateWithBonjourDeviceInfo:(id)info;
+- (void)_updateTXTDictionary:(id)dictionary;
 - (void)reconfirm;
 @end
 
 @implementation CUBonjourDevice
 
-- (unsigned)updateWithBonjourDeviceInfo:(id)a3
+- (unsigned)updateWithBonjourDeviceInfo:(id)info
 {
-  v5 = a3;
-  objc_storeStrong(&self->_deviceInfo, a3);
+  infoCopy = info;
+  objc_storeStrong(&self->_deviceInfo, info);
   TypeID = CFStringGetTypeID();
-  v7 = CFDictionaryGetTypedValue(v5, @"name", TypeID, 0);
+  v7 = CFDictionaryGetTypedValue(infoCopy, @"name", TypeID, 0);
   v8 = v7;
   if (!v7)
   {
@@ -50,7 +50,7 @@ LABEL_9:
   v14 = 2;
 LABEL_10:
   v15 = CFDataGetTypeID();
-  v16 = CFDictionaryGetTypedValue(v5, @"txt", v15, 0);
+  v16 = CFDictionaryGetTypedValue(infoCopy, @"txt", v15, 0);
   v17 = v16;
   if (v16)
   {
@@ -89,23 +89,23 @@ LABEL_18:
   return v14;
 }
 
-- (void)_updateTXTDictionary:(id)a3
+- (void)_updateTXTDictionary:(id)dictionary
 {
-  v16 = a3;
-  v4 = v16;
-  v5 = [v16 bytes];
-  v6 = &v5[[v16 length]];
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  bytes = [dictionaryCopy bytes];
+  v6 = &bytes[[dictionaryCopy length]];
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  while (v6 - v5 >= 1)
+  while (v6 - bytes >= 1)
   {
-    v9 = v5 + 1;
-    v8 = *v5;
-    if (v6 - (v5 + 1) < v8)
+    v9 = bytes + 1;
+    v8 = *bytes;
+    if (v6 - (bytes + 1) < v8)
     {
       break;
     }
 
-    v5 += v8 + 1;
+    bytes += v8 + 1;
     v10 = v9;
     if (v8)
     {
@@ -114,7 +114,7 @@ LABEL_18:
         ++v10;
         if (!--v8)
         {
-          v10 = v5;
+          v10 = bytes;
           break;
         }
       }
@@ -123,7 +123,7 @@ LABEL_18:
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v9 length:v10 - v9 encoding:4];
     if (v11)
     {
-      if (v10 >= v5)
+      if (v10 >= bytes)
       {
         v12 = v10;
       }
@@ -133,7 +133,7 @@ LABEL_18:
         v12 = v10 + 1;
       }
 
-      v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v12 length:v5 - v12 encoding:4];
+      v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:v12 length:bytes - v12 encoding:4];
       if (v13)
       {
         [v7 setObject:v13 forKeyedSubscript:v11];
@@ -155,18 +155,18 @@ LABEL_18:
   }
 }
 
-- (id)copyConnectionStringWithFlags:(unint64_t)a3 error:(id *)a4
+- (id)copyConnectionStringWithFlags:(unint64_t)flags error:(id *)error
 {
   deviceInfo = self->_deviceInfo;
   if (!deviceInfo)
   {
-    if (a4)
+    if (error)
     {
       v16 = "No Bonjour Device Info";
       v17 = 4294960551;
 LABEL_12:
-      NSErrorWithOSStatusF(v17, v16, a3, a4, v4, v5, v6, v7, v25);
-      *a4 = v14 = 0;
+      NSErrorWithOSStatusF(v17, v16, flags, error, v4, v5, v6, v7, v25);
+      *error = v14 = 0;
       return v14;
     }
 
@@ -174,10 +174,10 @@ LABEL_12:
   }
 
   v26 = 0;
-  v10 = BonjourDevice_CopyDNSNames(deviceInfo, a3, &v26);
+  v10 = BonjourDevice_CopyDNSNames(deviceInfo, flags, &v26);
   if (!v10)
   {
-    if (a4)
+    if (error)
     {
       if (v26)
       {
@@ -208,31 +208,31 @@ LABEL_12:
   else
   {
     free(v11);
-    if (a4)
+    if (error)
     {
-      *a4 = NSErrorWithOSStatusF(4294960596, "String init with UTF-8 failed (%zu bytes)", v18, v19, v20, v21, v22, v23, v12);
+      *error = NSErrorWithOSStatusF(4294960596, "String init with UTF-8 failed (%zu bytes)", v18, v19, v20, v21, v22, v23, v12);
     }
   }
 
   return v14;
 }
 
-- (id)copyConnectionInfoWithFlags:(unint64_t)a3 interfaceName:(id)a4 error:(id *)a5
+- (id)copyConnectionInfoWithFlags:(unint64_t)flags interfaceName:(id)name error:(id *)error
 {
-  v8 = a4;
+  nameCopy = name;
   v9 = self->_deviceInfo;
   v16 = v9;
   if (v9)
   {
     v29 = 0;
-    v17 = BonjourDevice_CopyConnectionInfo(v9, a3, v8, &v29);
+    v17 = BonjourDevice_CopyConnectionInfo(v9, flags, nameCopy, &v29);
     v24 = v17;
     if (v17)
     {
       v25 = v17;
     }
 
-    else if (a5)
+    else if (error)
     {
       if (v29)
       {
@@ -244,14 +244,14 @@ LABEL_12:
         v27 = 4294960596;
       }
 
-      *a5 = NSErrorWithOSStatusF(v27, "CopyConnectionInfo failed", v18, v19, v20, v21, v22, v23, v28);
+      *error = NSErrorWithOSStatusF(v27, "CopyConnectionInfo failed", v18, v19, v20, v21, v22, v23, v28);
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     NSErrorWithOSStatusF(4294960551, "No Bonjour Device Info", v10, v11, v12, v13, v14, v15, v28);
-    *a5 = v24 = 0;
+    *error = v24 = 0;
   }
 
   else
@@ -262,10 +262,10 @@ LABEL_12:
   return v24;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v52 = 0;
-  NSAppendPrintF(&v52, "CUBonjourDevice %.6a", *&a3, v3, v4, v5, v6, v7, self->_deviceIDBytes);
+  NSAppendPrintF(&v52, "CUBonjourDevice %.6a", *&level, v3, v4, v5, v6, v7, self->_deviceIDBytes);
   v10 = v52;
   v17 = v10;
   name = self->_name;
@@ -298,7 +298,7 @@ LABEL_12:
     v17 = v29;
   }
 
-  if (a3 <= 30)
+  if (level <= 30)
   {
     v30 = self->_txtDictionary;
     if ([(NSDictionary *)v30 count])
@@ -310,7 +310,7 @@ LABEL_12:
       v17 = v37;
     }
 
-    if (a3 <= 20)
+    if (level <= 20)
     {
       v47 = v17;
       NSAppendPrintF(&v47, "\n", v38, v39, v40, v41, v42, v43, v46);

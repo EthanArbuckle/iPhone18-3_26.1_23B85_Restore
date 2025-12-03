@@ -14,8 +14,8 @@
   spinner = self->_spinner;
   self->_spinner = v3;
 
-  v5 = [(NTKGreenfieldCompanionLoadingViewController *)self view];
-  [v5 addSubview:self->_spinner];
+  view = [(NTKGreenfieldCompanionLoadingViewController *)self view];
+  [view addSubview:self->_spinner];
 
   [(UIActivityIndicatorView *)self->_spinner startAnimating];
 }
@@ -25,8 +25,8 @@
   v4.receiver = self;
   v4.super_class = NTKGreenfieldCompanionLoadingViewController;
   [(NTKGreenfieldCompanionLoadingViewController *)&v4 viewDidLayoutSubviews];
-  v3 = [(NTKGreenfieldCompanionLoadingViewController *)self view];
-  [v3 center];
+  view = [(NTKGreenfieldCompanionLoadingViewController *)self view];
+  [view center];
   [(UIActivityIndicatorView *)self->_spinner setCenter:?];
 }
 

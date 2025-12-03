@@ -1,16 +1,16 @@
 @interface THWStageGeometry
 - (CGRect)frame;
-- (THWStageGeometry)initWithFrame:(CGRect)a3 cornerRadius:(double)a4;
+- (THWStageGeometry)initWithFrame:(CGRect)frame cornerRadius:(double)radius;
 @end
 
 @implementation THWStageGeometry
 
-- (THWStageGeometry)initWithFrame:(CGRect)a3 cornerRadius:(double)a4
+- (THWStageGeometry)initWithFrame:(CGRect)frame cornerRadius:(double)radius
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = THWStageGeometry;
   result = [(THWStageGeometry *)&v10 init];
@@ -19,7 +19,7 @@
     result->_frame.origin.y = y;
     result->_frame.size.width = width;
     result->_frame.size.height = height;
-    result->_cornerRadius = a4;
+    result->_cornerRadius = radius;
     result->_frame.origin.x = x;
   }
 

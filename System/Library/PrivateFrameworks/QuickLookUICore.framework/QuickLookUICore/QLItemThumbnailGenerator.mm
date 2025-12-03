@@ -1,27 +1,27 @@
 @interface QLItemThumbnailGenerator
-- (id)fetcherClassesForPreviewItem:(id)a3;
-- (void)_generateThumbnailForRequest:(id)a3 completionHandler:(id)a4;
-- (void)_generateThumbnailWithData:(id)a3 contentType:(id)a4 size:(CGSize)a5 minimumDimension:(double)a6 scale:(double)a7 badgeType:(unint64_t)a8 completionHandler:(id)a9;
-- (void)_generateThumbnailWithFPItem:(id)a3 size:(CGSize)a4 minimumDimension:(double)a5 scale:(double)a6 badgeType:(unint64_t)a7 completionHandler:(id)a8;
-- (void)_generateThumbnailWithURL:(id)a3 size:(CGSize)a4 minimumDimension:(double)a5 scale:(double)a6 badgeType:(unint64_t)a7 completionHandler:(id)a8;
-- (void)generateThumbnailForItem:(id)a3 ofSize:(CGSize)a4 minimumSize:(double)a5 scale:(double)a6 badgeType:(unint64_t)a7 completionBlock:(id)a8;
-- (void)generateThumbnailRepresentationForItem:(id)a3 ofSize:(CGSize)a4 minimumSize:(double)a5 scale:(double)a6 badgeType:(unint64_t)a7 completionBlock:(id)a8;
+- (id)fetcherClassesForPreviewItem:(id)item;
+- (void)_generateThumbnailForRequest:(id)request completionHandler:(id)handler;
+- (void)_generateThumbnailWithData:(id)data contentType:(id)type size:(CGSize)size minimumDimension:(double)dimension scale:(double)scale badgeType:(unint64_t)badgeType completionHandler:(id)handler;
+- (void)_generateThumbnailWithFPItem:(id)item size:(CGSize)size minimumDimension:(double)dimension scale:(double)scale badgeType:(unint64_t)type completionHandler:(id)handler;
+- (void)_generateThumbnailWithURL:(id)l size:(CGSize)size minimumDimension:(double)dimension scale:(double)scale badgeType:(unint64_t)type completionHandler:(id)handler;
+- (void)generateThumbnailForItem:(id)item ofSize:(CGSize)size minimumSize:(double)minimumSize scale:(double)scale badgeType:(unint64_t)type completionBlock:(id)block;
+- (void)generateThumbnailRepresentationForItem:(id)item ofSize:(CGSize)size minimumSize:(double)minimumSize scale:(double)scale badgeType:(unint64_t)type completionBlock:(id)block;
 @end
 
 @implementation QLItemThumbnailGenerator
 
-- (void)generateThumbnailForItem:(id)a3 ofSize:(CGSize)a4 minimumSize:(double)a5 scale:(double)a6 badgeType:(unint64_t)a7 completionBlock:(id)a8
+- (void)generateThumbnailForItem:(id)item ofSize:(CGSize)size minimumSize:(double)minimumSize scale:(double)scale badgeType:(unint64_t)type completionBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v15 = a8;
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __104__QLItemThumbnailGenerator_generateThumbnailForItem_ofSize_minimumSize_scale_badgeType_completionBlock___block_invoke;
   v17[3] = &unk_279AE1248;
-  v18 = v15;
-  v16 = v15;
-  [(QLItemThumbnailGenerator *)self generateThumbnailRepresentationForItem:a3 ofSize:a7 minimumSize:v17 scale:width badgeType:height completionBlock:a5, a6];
+  v18 = blockCopy;
+  v16 = blockCopy;
+  [(QLItemThumbnailGenerator *)self generateThumbnailRepresentationForItem:item ofSize:type minimumSize:v17 scale:width badgeType:height completionBlock:minimumSize, scale];
 }
 
 void __104__QLItemThumbnailGenerator_generateThumbnailForItem_ofSize_minimumSize_scale_badgeType_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -31,29 +31,29 @@ void __104__QLItemThumbnailGenerator_generateThumbnailForItem_ofSize_minimumSize
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)generateThumbnailRepresentationForItem:(id)a3 ofSize:(CGSize)a4 minimumSize:(double)a5 scale:(double)a6 badgeType:(unint64_t)a7 completionBlock:(id)a8
+- (void)generateThumbnailRepresentationForItem:(id)item ofSize:(CGSize)size minimumSize:(double)minimumSize scale:(double)scale badgeType:(unint64_t)type completionBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v15 = a3;
-  v16 = a8;
-  if (v16)
+  height = size.height;
+  width = size.width;
+  itemCopy = item;
+  blockCopy = block;
+  if (blockCopy)
   {
-    v17 = [v15 fpItem];
+    fpItem = [itemCopy fpItem];
 
-    if (v17)
+    if (fpItem)
     {
-      v18 = [v15 fpItem];
-      [(QLItemThumbnailGenerator *)self _generateThumbnailWithFPItem:v18 size:a7 minimumDimension:v16 scale:width badgeType:height completionHandler:a5, a6];
+      fpItem2 = [itemCopy fpItem];
+      [(QLItemThumbnailGenerator *)self _generateThumbnailWithFPItem:fpItem2 size:type minimumDimension:blockCopy scale:width badgeType:height completionHandler:minimumSize, scale];
 LABEL_18:
 
       goto LABEL_19;
     }
 
-    v18 = [v15 fetcher];
-    if ([v18 fetchingState] == 1)
+    fpItem2 = [itemCopy fetcher];
+    if ([fpItem2 fetchingState] == 1)
     {
-      if (!v18)
+      if (!fpItem2)
       {
         goto LABEL_14;
       }
@@ -61,42 +61,42 @@ LABEL_18:
 
     else
     {
-      v21 = [v18 isLongFetchOperation];
-      if (!v18 || (v21 & 1) != 0)
+      isLongFetchOperation = [fpItem2 isLongFetchOperation];
+      if (!fpItem2 || (isLongFetchOperation & 1) != 0)
       {
 LABEL_14:
-        v26 = [v18 urlForThumbnail];
-        if (v26)
+        urlForThumbnail = [fpItem2 urlForThumbnail];
+        if (urlForThumbnail)
         {
-          [(QLItemThumbnailGenerator *)self _generateThumbnailWithURL:v26 size:a7 minimumDimension:v16 scale:width badgeType:height completionHandler:0.0, a6];
+          [(QLItemThumbnailGenerator *)self _generateThumbnailWithURL:urlForThumbnail size:type minimumDimension:blockCopy scale:width badgeType:height completionHandler:0.0, scale];
         }
 
         else
         {
-          v16[2](v16, 0);
+          blockCopy[2](blockCopy, 0);
         }
 
         goto LABEL_18;
       }
     }
 
-    v22 = [v15 previewItemContentType];
-    v23 = [(QLItemThumbnailGenerator *)self fetcherClassesForPreviewItem:v15];
+    previewItemContentType = [itemCopy previewItemContentType];
+    v23 = [(QLItemThumbnailGenerator *)self fetcherClassesForPreviewItem:itemCopy];
     v24 = objc_opt_new();
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __118__QLItemThumbnailGenerator_generateThumbnailRepresentationForItem_ofSize_minimumSize_scale_badgeType_completionBlock___block_invoke;
     v27[3] = &unk_279AE1270;
-    v28 = v22;
-    v29 = v16;
+    v28 = previewItemContentType;
+    v29 = blockCopy;
     v30 = width;
     v31 = height;
-    v32 = a5;
-    v33 = a6;
-    v34 = a7;
+    minimumSizeCopy = minimumSize;
+    scaleCopy = scale;
+    typeCopy = type;
     v27[4] = self;
-    v25 = v22;
-    [v18 fetchContentWithAllowedOutputClasses:v23 inQueue:v24 updateBlock:0 completionBlock:v27];
+    v25 = previewItemContentType;
+    [fpItem2 fetchContentWithAllowedOutputClasses:v23 inQueue:v24 updateBlock:0 completionBlock:v27];
 
     goto LABEL_18;
   }
@@ -169,67 +169,67 @@ LABEL_12:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_generateThumbnailWithURL:(id)a3 size:(CGSize)a4 minimumDimension:(double)a5 scale:(double)a6 badgeType:(unint64_t)a7 completionHandler:(id)a8
+- (void)_generateThumbnailWithURL:(id)l size:(CGSize)size minimumDimension:(double)dimension scale:(double)scale badgeType:(unint64_t)type completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v15 = MEMORY[0x277CDAAD8];
-  v16 = a8;
-  v17 = a3;
-  v18 = [[v15 alloc] initWithFileAtURL:v17 size:-1 scale:width representationTypes:{height, a6}];
+  handlerCopy = handler;
+  lCopy = l;
+  v18 = [[v15 alloc] initWithFileAtURL:lCopy size:-1 scale:width representationTypes:{height, scale}];
 
-  [v18 setMinimumDimension:a5];
-  [v18 setBadgeType:a7];
-  [(QLItemThumbnailGenerator *)self _generateThumbnailForRequest:v18 completionHandler:v16];
+  [v18 setMinimumDimension:dimension];
+  [v18 setBadgeType:type];
+  [(QLItemThumbnailGenerator *)self _generateThumbnailForRequest:v18 completionHandler:handlerCopy];
 }
 
-- (void)_generateThumbnailWithFPItem:(id)a3 size:(CGSize)a4 minimumDimension:(double)a5 scale:(double)a6 badgeType:(unint64_t)a7 completionHandler:(id)a8
+- (void)_generateThumbnailWithFPItem:(id)item size:(CGSize)size minimumDimension:(double)dimension scale:(double)scale badgeType:(unint64_t)type completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v15 = MEMORY[0x277CDAAD8];
-  v16 = a8;
-  v17 = a3;
-  v18 = [[v15 alloc] initWithFPItem:v17 size:-1 scale:width representationTypes:{height, a6}];
+  handlerCopy = handler;
+  itemCopy = item;
+  v18 = [[v15 alloc] initWithFPItem:itemCopy size:-1 scale:width representationTypes:{height, scale}];
 
-  [v18 setMinimumDimension:a5];
-  [v18 setBadgeType:a7];
-  [(QLItemThumbnailGenerator *)self _generateThumbnailForRequest:v18 completionHandler:v16];
+  [v18 setMinimumDimension:dimension];
+  [v18 setBadgeType:type];
+  [(QLItemThumbnailGenerator *)self _generateThumbnailForRequest:v18 completionHandler:handlerCopy];
 }
 
-- (void)_generateThumbnailWithData:(id)a3 contentType:(id)a4 size:(CGSize)a5 minimumDimension:(double)a6 scale:(double)a7 badgeType:(unint64_t)a8 completionHandler:(id)a9
+- (void)_generateThumbnailWithData:(id)data contentType:(id)type size:(CGSize)size minimumDimension:(double)dimension scale:(double)scale badgeType:(unint64_t)badgeType completionHandler:(id)handler
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v17 = MEMORY[0x277CDAAD8];
-  v18 = a9;
-  v19 = a4;
-  v20 = a3;
-  v21 = [[v17 alloc] initWithData:v20 contentType:v19 size:-1 scale:width representationTypes:{height, a7}];
+  handlerCopy = handler;
+  typeCopy = type;
+  dataCopy = data;
+  v21 = [[v17 alloc] initWithData:dataCopy contentType:typeCopy size:-1 scale:width representationTypes:{height, scale}];
 
-  [v21 setMinimumDimension:a6];
-  [v21 setBadgeType:a8];
-  [(QLItemThumbnailGenerator *)self _generateThumbnailForRequest:v21 completionHandler:v18];
+  [v21 setMinimumDimension:dimension];
+  [v21 setBadgeType:badgeType];
+  [(QLItemThumbnailGenerator *)self _generateThumbnailForRequest:v21 completionHandler:handlerCopy];
 }
 
-- (void)_generateThumbnailForRequest:(id)a3 completionHandler:(id)a4
+- (void)_generateThumbnailForRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     [QLItemThumbnailGenerator _generateThumbnailForRequest:completionHandler:];
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x277CDAAE0] sharedGenerator];
+  v7 = handlerCopy;
+  mEMORY[0x277CDAAE0] = [MEMORY[0x277CDAAE0] sharedGenerator];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__QLItemThumbnailGenerator__generateThumbnailForRequest_completionHandler___block_invoke;
   v10[3] = &unk_279AE1298;
   v11 = v7;
   v9 = v7;
-  [v8 generateBestRepresentationForRequest:v5 completionHandler:v10];
+  [mEMORY[0x277CDAAE0] generateBestRepresentationForRequest:requestCopy completionHandler:v10];
 }
 
 void __75__QLItemThumbnailGenerator__generateThumbnailForRequest_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -260,20 +260,20 @@ void __75__QLItemThumbnailGenerator__generateThumbnailForRequest_completionHandl
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetcherClassesForPreviewItem:(id)a3
+- (id)fetcherClassesForPreviewItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   if (fetcherClassesForPreviewItem__onceToken != -1)
   {
     [QLItemThumbnailGenerator fetcherClassesForPreviewItem:];
   }
 
-  if ([v3 previewItemType] == 1)
+  if ([itemCopy previewItemType] == 1)
   {
-    v4 = [v3 UTIAnalyzer];
-    v5 = [v4 isAudioOnly];
+    uTIAnalyzer = [itemCopy UTIAnalyzer];
+    isAudioOnly = [uTIAnalyzer isAudioOnly];
     v6 = &fetcherClassesForPreviewItem__fetcherAllowedClasses;
-    if (!v5)
+    if (!isAudioOnly)
     {
       v6 = &fetcherClassesForPreviewItem__movieAllowedClasses;
     }

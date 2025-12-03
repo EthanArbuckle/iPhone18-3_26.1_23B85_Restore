@@ -1,16 +1,16 @@
 @interface CryptoKitWrapper
-+ (id)unwrapEncryptionKeyWithWrappedKey:(id)a3 encapsulatedKey:(id)a4 privateKey:(id)a5 error:(id *)a6;
-+ (id)wrappedDataDictionaryWithCertWithPlainText:(id)a3 certificate:(__SecCertificate *)a4 error:(id *)a5;
++ (id)unwrapEncryptionKeyWithWrappedKey:(id)key encapsulatedKey:(id)encapsulatedKey privateKey:(id)privateKey error:(id *)error;
++ (id)wrappedDataDictionaryWithCertWithPlainText:(id)text certificate:(__SecCertificate *)certificate error:(id *)error;
 - (_TtC16FetchRestoreKeys16CryptoKitWrapper)init;
 @end
 
 @implementation CryptoKitWrapper
 
-+ (id)unwrapEncryptionKeyWithWrappedKey:(id)a3 encapsulatedKey:(id)a4 privateKey:(id)a5 error:(id *)a6
++ (id)unwrapEncryptionKeyWithWrappedKey:(id)key encapsulatedKey:(id)encapsulatedKey privateKey:(id)privateKey error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  encapsulatedKeyCopy = encapsulatedKey;
+  privateKeyCopy = privateKey;
   v11 = sub_248F96D38();
   v13 = v12;
 
@@ -31,14 +31,14 @@
   return v23;
 }
 
-+ (id)wrappedDataDictionaryWithCertWithPlainText:(id)a3 certificate:(__SecCertificate *)a4 error:(id *)a5
++ (id)wrappedDataDictionaryWithCertWithPlainText:(id)text certificate:(__SecCertificate *)certificate error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  textCopy = text;
+  certificateCopy = certificate;
   v8 = sub_248F96D38();
   v10 = v9;
 
-  sub_248F952E0(v8, v10, v7);
+  sub_248F952E0(v8, v10, certificateCopy);
   sub_248F95B14(v8, v10);
   v11 = sub_248F96E48();
 

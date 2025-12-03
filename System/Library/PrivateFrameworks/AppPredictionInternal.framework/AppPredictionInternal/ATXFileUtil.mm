@@ -1,27 +1,27 @@
 @interface ATXFileUtil
-+ (BOOL)_shouldUpdateCache:(id)a3 withRefreshRate:(double)a4 currentTime:(double)a5;
-+ (BOOL)cachesAreValidForBasePath:(id)a3 consumerSubTypes:(id)a4;
-+ (BOOL)cachesAreValidForConsumerSubTypes:(id)a3;
-+ (BOOL)shouldUpdateCache:(id)a3 withRefreshRate:(double)a4;
-+ (double)cacheAgeForCache:(id)a3 withCurrentTime:(double)a4;
++ (BOOL)_shouldUpdateCache:(id)cache withRefreshRate:(double)rate currentTime:(double)time;
++ (BOOL)cachesAreValidForBasePath:(id)path consumerSubTypes:(id)types;
++ (BOOL)cachesAreValidForConsumerSubTypes:(id)types;
++ (BOOL)shouldUpdateCache:(id)cache withRefreshRate:(double)rate;
++ (double)cacheAgeForCache:(id)cache withCurrentTime:(double)time;
 @end
 
 @implementation ATXFileUtil
 
-+ (BOOL)shouldUpdateCache:(id)a3 withRefreshRate:(double)a4
++ (BOOL)shouldUpdateCache:(id)cache withRefreshRate:(double)rate
 {
-  v5 = a3;
-  v6 = [ATXFileUtil _shouldUpdateCache:v5 withRefreshRate:a4 currentTime:CFAbsoluteTimeGetCurrent()];
+  cacheCopy = cache;
+  v6 = [ATXFileUtil _shouldUpdateCache:cacheCopy withRefreshRate:rate currentTime:CFAbsoluteTimeGetCurrent()];
 
   return v6;
 }
 
-+ (BOOL)_shouldUpdateCache:(id)a3 withRefreshRate:(double)a4 currentTime:(double)a5
++ (BOOL)_shouldUpdateCache:(id)cache withRefreshRate:(double)rate currentTime:(double)time
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
-  v10 = [v9 fileExistsAtPath:v8];
+  cacheCopy = cache;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v10 = [defaultManager fileExistsAtPath:cacheCopy];
 
   if ((v10 & 1) == 0)
   {
@@ -34,8 +34,8 @@
     goto LABEL_7;
   }
 
-  [a1 cacheAgeForCache:v8 withCurrentTime:a5];
-  if (v11 > a4)
+  [self cacheAgeForCache:cacheCopy withCurrentTime:time];
+  if (v11 > rate)
   {
     v12 = __atxlog_handle_default();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -59,7 +59,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v15 = open([v8 UTF8String], 0);
+  v15 = open([cacheCopy UTF8String], 0);
   if (v15 < 0)
   {
     v12 = __atxlog_handle_default();
@@ -85,16 +85,16 @@ LABEL_8:
   return 1;
 }
 
-+ (double)cacheAgeForCache:(id)a3 withCurrentTime:(double)a4
++ (double)cacheAgeForCache:(id)cache withCurrentTime:(double)time
 {
-  v5 = a3;
+  cacheCopy = cache;
   memset(&v9, 0, sizeof(v9));
-  if (lstat([v5 fileSystemRepresentation], &v9))
+  if (lstat([cacheCopy fileSystemRepresentation], &v9))
   {
     v6 = __atxlog_handle_default();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      [ATXFileUtil cacheAgeForCache:v5 withCurrentTime:v6];
+      [ATXFileUtil cacheAgeForCache:cacheCopy withCurrentTime:v6];
     }
 
     v7 = 1.79769313e308;
@@ -102,34 +102,34 @@ LABEL_8:
 
   else
   {
-    v7 = a4 - (v9.st_mtimespec.tv_sec + v9.st_mtimespec.tv_nsec * 0.000000001 - *MEMORY[0x277CBECD0]);
+    v7 = time - (v9.st_mtimespec.tv_sec + v9.st_mtimespec.tv_nsec * 0.000000001 - *MEMORY[0x277CBECD0]);
   }
 
   return v7;
 }
 
-+ (BOOL)cachesAreValidForConsumerSubTypes:(id)a3
++ (BOOL)cachesAreValidForConsumerSubTypes:(id)types
 {
   v3 = MEMORY[0x277CEBCB0];
-  v4 = a3;
-  v5 = [v3 appPredictionDirectory];
-  v6 = [v5 stringByAppendingPathComponent:@"caches/ATXCacheFile"];
-  v7 = [ATXFileUtil cachesAreValidForBasePath:v6 consumerSubTypes:v4];
+  typesCopy = types;
+  appPredictionDirectory = [v3 appPredictionDirectory];
+  v6 = [appPredictionDirectory stringByAppendingPathComponent:@"caches/ATXCacheFile"];
+  v7 = [ATXFileUtil cachesAreValidForBasePath:v6 consumerSubTypes:typesCopy];
 
   return v7;
 }
 
-+ (BOOL)cachesAreValidForBasePath:(id)a3 consumerSubTypes:(id)a4
++ (BOOL)cachesAreValidForBasePath:(id)path consumerSubTypes:(id)types
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  typesCopy = types;
   v7 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v6;
+  v8 = typesCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
   {
@@ -145,8 +145,8 @@ LABEL_8:
         }
 
         v13 = *(*(&v30 + 1) + 8 * i);
-        v14 = [MEMORY[0x277CEB3A0] sharedInstanceWithMobileAssets];
-        v15 = [v14 getFullCachePathWithBaseCachePath:v5 consumerSubType:{objc_msgSend(v13, "unsignedCharValue")}];
+        mEMORY[0x277CEB3A0] = [MEMORY[0x277CEB3A0] sharedInstanceWithMobileAssets];
+        v15 = [mEMORY[0x277CEB3A0] getFullCachePathWithBaseCachePath:pathCopy consumerSubType:{objc_msgSend(v13, "unsignedCharValue")}];
 
         [v7 addObject:v15];
       }

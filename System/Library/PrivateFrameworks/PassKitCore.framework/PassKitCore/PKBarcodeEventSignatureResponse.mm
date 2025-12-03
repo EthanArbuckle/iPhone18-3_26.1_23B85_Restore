@@ -1,5 +1,5 @@
 @interface PKBarcodeEventSignatureResponse
-- (PKBarcodeEventSignatureResponse)initWithCoder:(id)a3;
+- (PKBarcodeEventSignatureResponse)initWithCoder:(id)coder;
 - (PKBarcodeEventSignatureResponse)initWithSignedData:(NSData *)signedData;
 @end
 
@@ -20,15 +20,15 @@
   return v7;
 }
 
-- (PKBarcodeEventSignatureResponse)initWithCoder:(id)a3
+- (PKBarcodeEventSignatureResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKBarcodeEventSignatureResponse;
   v5 = [(PKBarcodeEventSignatureResponse *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signedData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signedData"];
     signedData = v5->_signedData;
     v5->_signedData = v6;
 

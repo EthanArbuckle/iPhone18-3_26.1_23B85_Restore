@@ -1,14 +1,14 @@
 @interface PointerIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (_TtC7SwiftUIP33_E281E5F41850D012D9603104FBB83C5417PointerIdentifier)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
 @implementation PointerIdentifier
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC7SwiftUIP33_E281E5F41850D012D9603104FBB83C5417PointerIdentifier_base);
   v4 = type metadata accessor for PointerIdentifier();
@@ -20,11 +20,11 @@
   return [(PointerIdentifier *)&v7 init];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -33,7 +33,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = PointerIdentifier.isEqual(_:)(v8);
@@ -51,7 +51,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PointerIdentifier.description.getter();
   v5 = v4;
 

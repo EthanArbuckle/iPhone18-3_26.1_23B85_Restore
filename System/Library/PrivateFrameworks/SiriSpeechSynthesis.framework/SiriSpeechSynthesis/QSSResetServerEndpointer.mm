@@ -1,6 +1,6 @@
 @interface QSSResetServerEndpointer
-- (Offset<siri::speech::schema_fb::ResetServerEndpointer>)addObjectToBuffer:(void *)a3;
-- (QSSResetServerEndpointer)initWithFlatbuffData:(id)a3 root:(const ResetServerEndpointer *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::ResetServerEndpointer>)addObjectToBuffer:(void *)buffer;
+- (QSSResetServerEndpointer)initWithFlatbuffData:(id)data root:(const ResetServerEndpointer *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 - (int64_t)speech_packet_count;
 @end
@@ -36,16 +36,16 @@ flatbuffers::DetachedBuffer *__40__QSSResetServerEndpointer_flatbuffData__block_
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::ResetServerEndpointer>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::ResetServerEndpointer>)addObjectToBuffer:(void *)buffer
 {
-  v4 = [(QSSResetServerEndpointer *)self speech_packet_count];
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v5 = *(a3 + 10);
-  v6 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(a3, 4, v4);
+  speech_packet_count = [(QSSResetServerEndpointer *)self speech_packet_count];
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v5 = *(buffer + 10);
+  v6 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned long long>(buffer, 4, speech_packet_count);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v6 + v5);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v6 + v5);
 }
 
 - (int64_t)speech_packet_count
@@ -63,42 +63,42 @@ flatbuffers::DetachedBuffer *__40__QSSResetServerEndpointer_flatbuffData__block_
   }
 }
 
-- (QSSResetServerEndpointer)initWithFlatbuffData:(id)a3 root:(const ResetServerEndpointer *)a4 verify:(BOOL)a5
+- (QSSResetServerEndpointer)initWithFlatbuffData:(id)data root:(const ResetServerEndpointer *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSResetServerEndpointer;
   v10 = [(QSSResetServerEndpointer *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -120,9 +120,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

@@ -1,32 +1,32 @@
 @interface OABTextBodyProperties
-+ (void)readTextBodyProperties:(id)a3 textBox:(const EshTextBox *)a4 useDefaults:(BOOL)a5 state:(id)a6;
-+ (void)setAutoFit:(BOOL)a3 textBodyProperties:(id)a4;
-+ (void)setIsAnchorCenter:(int)a3 textBodyProperties:(id)a4;
-+ (void)setTextAnchor:(int)a3 textBodyProperties:(id)a4;
-+ (void)setTextDirection:(int)a3 textBodyProperties:(id)a4;
-+ (void)setTextFlow:(int)a3 textBodyProperties:(id)a4;
-+ (void)setTextRotation:(int)a3 textBodyProperties:(id)a4;
-+ (void)writeTextBodyProperties:(id)a3 toShapeBase:(void *)a4 state:(id)a5;
++ (void)readTextBodyProperties:(id)properties textBox:(const EshTextBox *)box useDefaults:(BOOL)defaults state:(id)state;
++ (void)setAutoFit:(BOOL)fit textBodyProperties:(id)properties;
++ (void)setIsAnchorCenter:(int)center textBodyProperties:(id)properties;
++ (void)setTextAnchor:(int)anchor textBodyProperties:(id)properties;
++ (void)setTextDirection:(int)direction textBodyProperties:(id)properties;
++ (void)setTextFlow:(int)flow textBodyProperties:(id)properties;
++ (void)setTextRotation:(int)rotation textBodyProperties:(id)properties;
++ (void)writeTextBodyProperties:(id)properties toShapeBase:(void *)base state:(id)state;
 @end
 
 @implementation OABTextBodyProperties
 
-+ (void)readTextBodyProperties:(id)a3 textBox:(const EshTextBox *)a4 useDefaults:(BOOL)a5 state:(id)a6
++ (void)readTextBodyProperties:(id)properties textBox:(const EshTextBox *)box useDefaults:(BOOL)defaults state:(id)state
 {
-  v7 = a5;
-  v45 = a3;
-  v10 = a6;
-  v11 = [objc_msgSend(v10 "client")];
-  [v45 setIsUpright:v11 ^ 1u];
-  isInsetLeftSet = EshTextBox::isInsetLeftSet(a4);
+  defaultsCopy = defaults;
+  propertiesCopy = properties;
+  stateCopy = state;
+  v11 = [objc_msgSend(stateCopy "client")];
+  [propertiesCopy setIsUpright:v11 ^ 1u];
+  isInsetLeftSet = EshTextBox::isInsetLeftSet(box);
   if (isInsetLeftSet)
   {
-    InsetLeft = EshTextBox::getInsetLeft(a4);
+    InsetLeft = EshTextBox::getInsetLeft(box);
   }
 
   else
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_6;
     }
@@ -36,17 +36,17 @@
 
   v14 = InsetLeft / 12700.0;
   *&v14 = v14;
-  [v45 setLeftInset:v14];
+  [propertiesCopy setLeftInset:v14];
 LABEL_6:
-  isInsetRightSet = EshTextBox::isInsetRightSet(a4);
+  isInsetRightSet = EshTextBox::isInsetRightSet(box);
   if (isInsetRightSet)
   {
-    InsetRight = EshTextBox::getInsetRight(a4);
+    InsetRight = EshTextBox::getInsetRight(box);
   }
 
   else
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_11;
     }
@@ -56,17 +56,17 @@ LABEL_6:
 
   v17 = InsetRight / 12700.0;
   *&v17 = v17;
-  [v45 setRightInset:v17];
+  [propertiesCopy setRightInset:v17];
 LABEL_11:
-  isInsetTopSet = EshTextBox::isInsetTopSet(a4);
+  isInsetTopSet = EshTextBox::isInsetTopSet(box);
   if (isInsetTopSet)
   {
-    InsetTop = EshTextBox::getInsetTop(a4);
+    InsetTop = EshTextBox::getInsetTop(box);
   }
 
   else
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_16;
     }
@@ -76,17 +76,17 @@ LABEL_11:
 
   v20 = InsetTop / 12700.0;
   *&v20 = v20;
-  [v45 setTopInset:v20];
+  [propertiesCopy setTopInset:v20];
 LABEL_16:
-  isInsetBottomSet = EshTextBox::isInsetBottomSet(a4);
+  isInsetBottomSet = EshTextBox::isInsetBottomSet(box);
   if (isInsetBottomSet)
   {
-    InsetBottom = EshTextBox::getInsetBottom(a4);
+    InsetBottom = EshTextBox::getInsetBottom(box);
   }
 
   else
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_21;
     }
@@ -96,17 +96,17 @@ LABEL_16:
 
   v23 = InsetBottom / 12700.0;
   *&v23 = v23;
-  [v45 setBottomInset:v23];
+  [propertiesCopy setBottomInset:v23];
 LABEL_21:
-  isColumnCountSet = EshTextBox::isColumnCountSet(a4);
+  isColumnCountSet = EshTextBox::isColumnCountSet(box);
   if (isColumnCountSet)
   {
-    ColumnCount = EshTextBox::getColumnCount(a4);
+    ColumnCount = EshTextBox::getColumnCount(box);
   }
 
   else
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_26;
     }
@@ -114,17 +114,17 @@ LABEL_21:
     ColumnCount = EshContentProperties::getDefaultAllowOverlap(isColumnCountSet);
   }
 
-  [v45 setColumnCount:ColumnCount];
+  [propertiesCopy setColumnCount:ColumnCount];
 LABEL_26:
-  isColumnMarginSet = EshTextBox::isColumnMarginSet(a4);
+  isColumnMarginSet = EshTextBox::isColumnMarginSet(box);
   if (isColumnMarginSet)
   {
-    ColumnMargin = EshTextBox::getColumnMargin(a4);
+    ColumnMargin = EshTextBox::getColumnMargin(box);
   }
 
   else
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_31;
     }
@@ -134,12 +134,12 @@ LABEL_26:
 
   v28 = ColumnMargin / 12700.0;
   *&v28 = v28;
-  [v45 setColumnSpacing:v28];
+  [propertiesCopy setColumnSpacing:v28];
 LABEL_31:
-  isRotateSet = EshTextBox::isRotateSet(a4);
+  isRotateSet = EshTextBox::isRotateSet(box);
   if (!isRotateSet)
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_40;
     }
@@ -160,16 +160,16 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  DefaultPositionHorizontal = EshTextBox::getRotate(a4);
+  DefaultPositionHorizontal = EshTextBox::getRotate(box);
 LABEL_37:
   v31 = DefaultPositionHorizontal;
 LABEL_39:
-  [a1 setTextRotation:v31 textBodyProperties:v45];
+  [self setTextRotation:v31 textBodyProperties:propertiesCopy];
 LABEL_40:
-  isFlowSet = EshTextBox::isFlowSet(a4);
+  isFlowSet = EshTextBox::isFlowSet(box);
   if (isFlowSet)
   {
-    Flow = EshTextBox::getFlow(a4);
+    Flow = EshTextBox::getFlow(box);
   }
 
   else
@@ -177,16 +177,16 @@ LABEL_40:
     Flow = EshContentProperties::getDefaultPositionHorizontal(isFlowSet);
   }
 
-  [a1 setTextFlow:Flow textBodyProperties:v45];
-  isDirectionSet = EshTextBox::isDirectionSet(a4);
+  [self setTextFlow:Flow textBodyProperties:propertiesCopy];
+  isDirectionSet = EshTextBox::isDirectionSet(box);
   if (isDirectionSet)
   {
-    Direction = EshTextBox::getDirection(a4);
+    Direction = EshTextBox::getDirection(box);
   }
 
   else
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_48;
     }
@@ -194,17 +194,17 @@ LABEL_40:
     Direction = EshContentProperties::getDefaultPositionHorizontal(isDirectionSet);
   }
 
-  [a1 setTextDirection:Direction textBodyProperties:v45];
+  [self setTextDirection:Direction textBodyProperties:propertiesCopy];
 LABEL_48:
-  isFitShapeToTextSet = EshTextBox::isFitShapeToTextSet(a4);
+  isFitShapeToTextSet = EshTextBox::isFitShapeToTextSet(box);
   if (isFitShapeToTextSet)
   {
-    FitShapeToText = EshTextBox::getFitShapeToText(a4);
+    FitShapeToText = EshTextBox::getFitShapeToText(box);
   }
 
   else
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_53;
     }
@@ -212,12 +212,12 @@ LABEL_48:
     FitShapeToText = EshContentProperties::getDefaultPositionHorizontal(isFitShapeToTextSet);
   }
 
-  [a1 setAutoFit:FitShapeToText textBodyProperties:v45];
+  [self setAutoFit:FitShapeToText textBodyProperties:propertiesCopy];
 LABEL_53:
-  isWrapStyleSet = EshTextBox::isWrapStyleSet(a4);
+  isWrapStyleSet = EshTextBox::isWrapStyleSet(box);
   if (!isWrapStyleSet)
   {
-    if (!v7)
+    if (!defaultsCopy)
     {
       goto LABEL_62;
     }
@@ -238,33 +238,33 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  WrapStyle = EshTextBox::getWrapStyle(a4);
+  WrapStyle = EshTextBox::getWrapStyle(box);
 LABEL_59:
   v40 = WrapStyle;
 LABEL_61:
-  [a1 setWrap:v40 textBodyProperties:v45];
+  [self setWrap:v40 textBodyProperties:propertiesCopy];
 LABEL_62:
   if (v11)
   {
-    [v45 setHorizontalOverflowType:0];
+    [propertiesCopy setHorizontalOverflowType:0];
     v41 = 0;
   }
 
   else
   {
-    [v45 setHorizontalOverflowType:1];
+    [propertiesCopy setHorizontalOverflowType:1];
     v41 = 2;
   }
 
-  [v45 setVerticalOverflowType:v41];
-  if ((EshTextBox::isAnchorSet(a4) | v7) == 1)
+  [propertiesCopy setVerticalOverflowType:v41];
+  if ((EshTextBox::isAnchorSet(box) | defaultsCopy) == 1)
   {
     if (v11)
     {
-      isAnchorSet = EshTextBox::isAnchorSet(a4);
+      isAnchorSet = EshTextBox::isAnchorSet(box);
       if (isAnchorSet)
       {
-        Anchor = EshTextBox::getAnchor(a4);
+        Anchor = EshTextBox::getAnchor(box);
       }
 
       else
@@ -280,43 +280,43 @@ LABEL_62:
       v44 = 0;
     }
 
-    [a1 setTextAnchor:v44 textBodyProperties:v45];
-    [a1 setIsAnchorCenter:v44 textBodyProperties:v45];
+    [self setTextAnchor:v44 textBodyProperties:propertiesCopy];
+    [self setIsAnchorCenter:v44 textBodyProperties:propertiesCopy];
   }
 }
 
-+ (void)setTextRotation:(int)a3 textBodyProperties:(id)a4
++ (void)setTextRotation:(int)rotation textBodyProperties:(id)properties
 {
-  v5 = a4;
+  propertiesCopy = properties;
   v6 = 0.0;
-  if ((a3 - 1) <= 2)
+  if ((rotation - 1) <= 2)
   {
-    LODWORD(v6) = dword_25D6FB9A4[a3 - 1];
+    LODWORD(v6) = dword_25D6FB9A4[rotation - 1];
   }
 
-  v7 = v5;
-  [v5 setRotation:v6];
+  v7 = propertiesCopy;
+  [propertiesCopy setRotation:v6];
 }
 
-+ (void)setTextFlow:(int)a3 textBodyProperties:(id)a4
++ (void)setTextFlow:(int)flow textBodyProperties:(id)properties
 {
-  v5 = a4;
-  v6 = 0x40102030600uLL >> (8 * a3);
-  if (a3 >= 6)
+  propertiesCopy = properties;
+  v6 = 0x40102030600uLL >> (8 * flow);
+  if (flow >= 6)
   {
     LOBYTE(v6) = 0;
   }
 
-  v7 = v5;
-  [v5 setFlowType:v6 & 7];
+  v7 = propertiesCopy;
+  [propertiesCopy setFlowType:v6 & 7];
 }
 
-+ (void)setTextDirection:(int)a3 textBodyProperties:(id)a4
++ (void)setTextDirection:(int)direction textBodyProperties:(id)properties
 {
-  v6 = a4;
-  if (a3)
+  propertiesCopy = properties;
+  if (direction)
   {
-    if (a3 != 1)
+    if (direction != 1)
     {
       goto LABEL_6;
     }
@@ -329,57 +329,57 @@ LABEL_62:
     v5 = 0;
   }
 
-  [v6 setIsLeftToRightColumns:v5];
+  [propertiesCopy setIsLeftToRightColumns:v5];
 LABEL_6:
 }
 
-+ (void)setAutoFit:(BOOL)a3 textBodyProperties:(id)a4
++ (void)setAutoFit:(BOOL)fit textBodyProperties:(id)properties
 {
-  v4 = a3;
-  v6 = a4;
-  v5 = [[OADTextBodyAutoFit alloc] initWithType:v4];
-  [v6 setAutoFit:v5];
+  fitCopy = fit;
+  propertiesCopy = properties;
+  v5 = [[OADTextBodyAutoFit alloc] initWithType:fitCopy];
+  [propertiesCopy setAutoFit:v5];
 }
 
-+ (void)setTextAnchor:(int)a3 textBodyProperties:(id)a4
++ (void)setTextAnchor:(int)anchor textBodyProperties:(id)properties
 {
-  v5 = a4;
-  if ((a3 - 1) > 8)
+  propertiesCopy = properties;
+  if ((anchor - 1) > 8)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = byte_25D6FB9B0[a3 - 1];
+    v6 = byte_25D6FB9B0[anchor - 1];
   }
 
-  v7 = v5;
-  [v5 setTextAnchorType:v6];
+  v7 = propertiesCopy;
+  [propertiesCopy setTextAnchorType:v6];
 }
 
-+ (void)setIsAnchorCenter:(int)a3 textBodyProperties:(id)a4
++ (void)setIsAnchorCenter:(int)center textBodyProperties:(id)properties
 {
-  v5 = a4;
-  [v5 setIsAnchorCenter:(a3 < 0xA) & (0x338u >> a3)];
+  propertiesCopy = properties;
+  [propertiesCopy setIsAnchorCenter:(center < 0xA) & (0x338u >> center)];
 }
 
-+ (void)writeTextBodyProperties:(id)a3 toShapeBase:(void *)a4 state:(id)a5
++ (void)writeTextBodyProperties:(id)properties toShapeBase:(void *)base state:(id)state
 {
-  v32 = a3;
-  [v32 leftInset];
-  [v32 topInset];
-  [v32 rightInset];
-  [v32 bottomInset];
-  v10 = [v32 columnCount];
-  [v32 columnSpacing];
-  v12 = [v32 isAnchorCenter];
-  v13 = [v32 textAnchorType];
-  if (v13)
+  propertiesCopy = properties;
+  [propertiesCopy leftInset];
+  [propertiesCopy topInset];
+  [propertiesCopy rightInset];
+  [propertiesCopy bottomInset];
+  columnCount = [propertiesCopy columnCount];
+  [propertiesCopy columnSpacing];
+  isAnchorCenter = [propertiesCopy isAnchorCenter];
+  textAnchorType = [propertiesCopy textAnchorType];
+  if (textAnchorType)
   {
-    if (v13 == 1)
+    if (textAnchorType == 1)
     {
-      if (v12)
+      if (isAnchorCenter)
       {
         v14 = 4;
       }
@@ -390,9 +390,9 @@ LABEL_6:
       }
     }
 
-    else if (v13 == 2)
+    else if (textAnchorType == 2)
     {
-      if (v12)
+      if (isAnchorCenter)
       {
         v14 = 5;
       }
@@ -409,7 +409,7 @@ LABEL_6:
     }
   }
 
-  else if (v12)
+  else if (isAnchorCenter)
   {
     v14 = 3;
   }
@@ -419,27 +419,27 @@ LABEL_6:
     v14 = 0;
   }
 
-  v15 = [v32 wrapType] != 1;
-  v16 = [v32 isLeftToRightColumns];
-  v17 = [v32 autoFit];
-  v18 = [v17 type];
+  v15 = [propertiesCopy wrapType] != 1;
+  isLeftToRightColumns = [propertiesCopy isLeftToRightColumns];
+  autoFit = [propertiesCopy autoFit];
+  type = [autoFit type];
 
-  if (v18 == 2)
+  if (type == 2)
   {
-    EshTextBox::setFitShapeToText((a4 + 272), 0);
+    EshTextBox::setFitShapeToText((base + 272), 0);
     v21 = 1;
   }
 
   else
   {
-    if (v18 == 1)
+    if (type == 1)
     {
       v20 = 1;
     }
 
     else
     {
-      if (v18)
+      if (type)
       {
         goto LABEL_22;
       }
@@ -447,13 +447,13 @@ LABEL_6:
       v20 = 0;
     }
 
-    EshTextBox::setFitShapeToText((a4 + 272), v20);
+    EshTextBox::setFitShapeToText((base + 272), v20);
     v21 = 0;
   }
 
-  v19 = EshTextBox::setFitTextToShape((a4 + 272), v21);
+  v19 = EshTextBox::setFitTextToShape((base + 272), v21);
 LABEL_22:
-  [v32 rotation];
+  [propertiesCopy rotation];
   v23 = llroundf(v22) / 360.0;
   v24 = llround((v23 - floor(v23)) * 4.0);
   v25 = v24 & 3;
@@ -470,7 +470,7 @@ LABEL_22:
     v29 = -v28;
   }
 
-  v30 = [v32 flowType] - 1;
+  v30 = [propertiesCopy flowType] - 1;
   if (v30 >= 7)
   {
     v31 = 0;
@@ -481,7 +481,7 @@ LABEL_22:
     v31 = dword_25D6FB9BC[v30];
   }
 
-  EshTextBox::setFlow(a4 + 272, v31);
+  EshTextBox::setFlow(base + 272, v31);
 }
 
 @end

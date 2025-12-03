@@ -1,40 +1,40 @@
 @interface WBSCloudTabCloseRequest
-+ (BOOL)isCloudTabCloseRequestDictionary:(id)a3;
-+ (id)_dictionaryWithURL:(id)a3 tabUUIDString:(id)a4 lastModified:(id)a5 sourceDeviceUUID:(id)a6 destinationDeviceUUID:(id)a7;
-+ (id)destinationDeviceUUIDInDictionary:(id)a3;
-- (BOOL)matchesCloudTab:(id)a3;
++ (BOOL)isCloudTabCloseRequestDictionary:(id)dictionary;
++ (id)_dictionaryWithURL:(id)l tabUUIDString:(id)string lastModified:(id)modified sourceDeviceUUID:(id)d destinationDeviceUUID:(id)iD;
++ (id)destinationDeviceUUIDInDictionary:(id)dictionary;
+- (BOOL)matchesCloudTab:(id)tab;
 - (NSDictionary)dictionaryRepresentation;
-- (WBSCloudTabCloseRequest)initWithDictionary:(id)a3 requestUUID:(id)a4;
-- (WBSCloudTabCloseRequest)initWithURL:(id)a3 tabUUIDString:(id)a4 lastModified:(id)a5 sourceDeviceUUID:(id)a6 destinationDeviceUUID:(id)a7 requestUUID:(id)a8;
+- (WBSCloudTabCloseRequest)initWithDictionary:(id)dictionary requestUUID:(id)d;
+- (WBSCloudTabCloseRequest)initWithURL:(id)l tabUUIDString:(id)string lastModified:(id)modified sourceDeviceUUID:(id)d destinationDeviceUUID:(id)iD requestUUID:(id)uID;
 - (id)description;
 @end
 
 @implementation WBSCloudTabCloseRequest
 
-- (WBSCloudTabCloseRequest)initWithDictionary:(id)a3 requestUUID:(id)a4
+- (WBSCloudTabCloseRequest)initWithDictionary:(id)dictionary requestUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v26.receiver = self, v26.super_class = WBSCloudTabCloseRequest, (self = [(WBSCloudTabCloseRequest *)&v26 init]) != 0))
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  if (dictionaryCopy && (v26.receiver = self, v26.super_class = WBSCloudTabCloseRequest, (self = [(WBSCloudTabCloseRequest *)&v26 init]) != 0))
   {
-    v8 = [v6 safari_stringForKey:@"TabURL"];
-    v9 = [v8 safari_bestURLStringForUserTypedString];
+    v8 = [dictionaryCopy safari_stringForKey:@"TabURL"];
+    safari_bestURLStringForUserTypedString = [v8 safari_bestURLStringForUserTypedString];
 
-    if (![v9 length])
+    if (![safari_bestURLStringForUserTypedString length])
     {
       goto LABEL_10;
     }
 
-    v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v9];
+    v10 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:safari_bestURLStringForUserTypedString];
     url = self->_url;
     self->_url = v10;
 
-    objc_storeStrong(&self->_requestUUID, a4);
-    v12 = [v6 safari_dateForKey:@"LastModified"];
+    objc_storeStrong(&self->_requestUUID, d);
+    v12 = [dictionaryCopy safari_dateForKey:@"LastModified"];
     lastModified = self->_lastModified;
     self->_lastModified = v12;
 
-    v14 = [v6 safari_stringForKey:@"TabUUID"];
+    v14 = [dictionaryCopy safari_stringForKey:@"TabUUID"];
     if (!v14)
     {
       goto LABEL_10;
@@ -45,7 +45,7 @@
     tabUUID = self->_tabUUID;
     self->_tabUUID = v16;
 
-    v18 = [v6 safari_stringForKey:@"SourceDeviceUUID"];
+    v18 = [dictionaryCopy safari_stringForKey:@"SourceDeviceUUID"];
 
     if ([v18 length])
     {
@@ -54,7 +54,7 @@
       self->_sourceDeviceUUID = v19;
     }
 
-    v21 = [v6 safari_stringForKey:@"DestinationDeviceUUID"];
+    v21 = [dictionaryCopy safari_stringForKey:@"DestinationDeviceUUID"];
 
     if (v21)
     {
@@ -62,35 +62,35 @@
       destinationDeviceUUID = self->_destinationDeviceUUID;
       self->_destinationDeviceUUID = v22;
 
-      v24 = self;
+      selfCopy = self;
     }
 
     else
     {
 LABEL_10:
-      v24 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (WBSCloudTabCloseRequest)initWithURL:(id)a3 tabUUIDString:(id)a4 lastModified:(id)a5 sourceDeviceUUID:(id)a6 destinationDeviceUUID:(id)a7 requestUUID:(id)a8
+- (WBSCloudTabCloseRequest)initWithURL:(id)l tabUUIDString:(id)string lastModified:(id)modified sourceDeviceUUID:(id)d destinationDeviceUUID:(id)iD requestUUID:(id)uID
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v20 = [objc_opt_class() _dictionaryWithURL:v19 tabUUIDString:v18 lastModified:v17 sourceDeviceUUID:v16 destinationDeviceUUID:v15];
+  uIDCopy = uID;
+  iDCopy = iD;
+  dCopy = d;
+  modifiedCopy = modified;
+  stringCopy = string;
+  lCopy = l;
+  v20 = [objc_opt_class() _dictionaryWithURL:lCopy tabUUIDString:stringCopy lastModified:modifiedCopy sourceDeviceUUID:dCopy destinationDeviceUUID:iDCopy];
 
-  v21 = [(WBSCloudTabCloseRequest *)self initWithDictionary:v20 requestUUID:v14];
+  v21 = [(WBSCloudTabCloseRequest *)self initWithDictionary:v20 requestUUID:uIDCopy];
   return v21;
 }
 
@@ -98,8 +98,8 @@ LABEL_10:
 {
   v3 = objc_opt_class();
   url = self->_url;
-  v5 = [(NSUUID *)self->_tabUUID UUIDString];
-  v6 = [v3 _dictionaryWithURL:url tabUUIDString:v5 lastModified:self->_lastModified sourceDeviceUUID:self->_sourceDeviceUUID destinationDeviceUUID:self->_destinationDeviceUUID];
+  uUIDString = [(NSUUID *)self->_tabUUID UUIDString];
+  v6 = [v3 _dictionaryWithURL:url tabUUIDString:uUIDString lastModified:self->_lastModified sourceDeviceUUID:self->_sourceDeviceUUID destinationDeviceUUID:self->_destinationDeviceUUID];
 
   return v6;
 }
@@ -110,45 +110,45 @@ LABEL_10:
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   url = self->_url;
-  v7 = [(NSUUID *)self->_tabUUID UUIDString];
-  v8 = [(NSUUID *)self->_sourceDeviceUUID UUIDString];
-  v9 = [(NSUUID *)self->_destinationDeviceUUID UUIDString];
-  v10 = [v3 stringWithFormat:@"<%@: %p url = %@; tab UUID = %@; source device UUID = %@; destination device UUID = %@; lastModified = %@>", v5, self, url, v7, v8, v9, self->_lastModified];;
+  uUIDString = [(NSUUID *)self->_tabUUID UUIDString];
+  uUIDString2 = [(NSUUID *)self->_sourceDeviceUUID UUIDString];
+  uUIDString3 = [(NSUUID *)self->_destinationDeviceUUID UUIDString];
+  v10 = [v3 stringWithFormat:@"<%@: %p url = %@; tab UUID = %@; source device UUID = %@; destination device UUID = %@; lastModified = %@>", v5, self, url, uUIDString, uUIDString2, uUIDString3, self->_lastModified];;
 
   return v10;
 }
 
-+ (id)_dictionaryWithURL:(id)a3 tabUUIDString:(id)a4 lastModified:(id)a5 sourceDeviceUUID:(id)a6 destinationDeviceUUID:(id)a7
++ (id)_dictionaryWithURL:(id)l tabUUIDString:(id)string lastModified:(id)modified sourceDeviceUUID:(id)d destinationDeviceUUID:(id)iD
 {
   v24[5] = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = v14;
+  stringCopy = string;
+  modifiedCopy = modified;
+  dCopy = d;
+  iDCopy = iD;
+  v15 = iDCopy;
   v16 = 0;
-  if (v11 && v14)
+  if (stringCopy && iDCopy)
   {
-    v17 = [a3 safari_userVisibleString];
-    v18 = v17;
-    if (v17)
+    safari_userVisibleString = [l safari_userVisibleString];
+    v18 = safari_userVisibleString;
+    if (safari_userVisibleString)
     {
       v23[0] = @"DictionaryType";
       v23[1] = @"TabURL";
       v24[0] = @"CloseTabRequest";
-      v24[1] = v17;
-      v24[2] = v11;
+      v24[1] = safari_userVisibleString;
+      v24[2] = stringCopy;
       v23[2] = @"TabUUID";
       v23[3] = @"DestinationDeviceUUID";
-      v19 = [v15 UUIDString];
+      uUIDString = [v15 UUIDString];
       v23[4] = @"LastModified";
-      v24[3] = v19;
-      v24[4] = v12;
+      v24[3] = uUIDString;
+      v24[4] = modifiedCopy;
       v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:5];
       v16 = [v20 mutableCopy];
 
-      v21 = [v13 UUIDString];
-      [v16 setObject:v21 forKeyedSubscript:@"SourceDeviceUUID"];
+      uUIDString2 = [dCopy UUIDString];
+      [v16 setObject:uUIDString2 forKeyedSubscript:@"SourceDeviceUUID"];
     }
 
     else
@@ -160,15 +160,15 @@ LABEL_10:
   return v16;
 }
 
-- (BOOL)matchesCloudTab:(id)a3
+- (BOOL)matchesCloudTab:(id)tab
 {
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [v5 isEqual:self->_tabUUID];
+  tabCopy = tab;
+  uuid = [tabCopy uuid];
+  v6 = [uuid isEqual:self->_tabUUID];
 
   if (v6)
   {
-    v7 = [v4 url];
+    v7 = [tabCopy url];
     v8 = [v7 isEqual:self->_url];
   }
 
@@ -180,13 +180,13 @@ LABEL_10:
   return v8;
 }
 
-+ (BOOL)isCloudTabCloseRequestDictionary:(id)a3
++ (BOOL)isCloudTabCloseRequestDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 safari_stringForKey:@"DictionaryType"];
+    v4 = [dictionaryCopy safari_stringForKey:@"DictionaryType"];
     v5 = [v4 isEqualToString:@"CloseTabRequest"];
   }
 
@@ -198,9 +198,9 @@ LABEL_10:
   return v5;
 }
 
-+ (id)destinationDeviceUUIDInDictionary:(id)a3
++ (id)destinationDeviceUUIDInDictionary:(id)dictionary
 {
-  v3 = [a3 safari_stringForKey:@"DestinationDeviceUUID"];
+  v3 = [dictionary safari_stringForKey:@"DestinationDeviceUUID"];
   if ([v3 length])
   {
     v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v3];

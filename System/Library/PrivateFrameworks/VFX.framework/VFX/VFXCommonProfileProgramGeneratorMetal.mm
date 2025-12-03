@@ -1,9 +1,9 @@
 @interface VFXCommonProfileProgramGeneratorMetal
-- (__CFXProgram)_newProgramWithHashCode:(__CFXProgramHashCode *)a3 engineContext:(__CFXEngineContext *)a4 introspectionDataPtr:(void *)a5;
-- (id)initAllowingHotReload:(BOOL)a3;
-- (id)splitInputOutputStructsIfNeededForSourceCode:(id)a3 generatedFromReplacementStrings:(id)a4 perPixelLighting:(BOOL)a5 clipDistanceCount:(unint64_t)a6 hasBezierCurveDeformer:(BOOL)a7;
+- (__CFXProgram)_newProgramWithHashCode:(__CFXProgramHashCode *)code engineContext:(__CFXEngineContext *)context introspectionDataPtr:(void *)ptr;
+- (id)initAllowingHotReload:(BOOL)reload;
+- (id)splitInputOutputStructsIfNeededForSourceCode:(id)code generatedFromReplacementStrings:(id)strings perPixelLighting:(BOOL)lighting clipDistanceCount:(unint64_t)count hasBezierCurveDeformer:(BOOL)deformer;
 - (void)_loadSourceCode;
-- (void)collectShaderForProgram:(__CFXProgram *)a3 hashCode:(id)a4 newVertexFunctionName:(id)a5 newFragmentFunctionName:(id)a6 sourceCodeBlock:(id)a7 additionalFileBlock:(id)a8;
+- (void)collectShaderForProgram:(__CFXProgram *)program hashCode:(id)code newVertexFunctionName:(id)name newFragmentFunctionName:(id)functionName sourceCodeBlock:(id)block additionalFileBlock:(id)fileBlock;
 - (void)dealloc;
 - (void)emptyShaderCache;
 @end
@@ -237,7 +237,7 @@
   [(VFXCommonProfileProgramGenerator *)&v6 emptyShaderCache];
 }
 
-- (id)initAllowingHotReload:(BOOL)a3
+- (id)initAllowingHotReload:(BOOL)reload
 {
   v10.receiver = self;
   v10.super_class = VFXCommonProfileProgramGeneratorMetal;
@@ -245,7 +245,7 @@
   v8 = v4;
   if (v4)
   {
-    v4->_allowHotReload = a3;
+    v4->_allowHotReload = reload;
     objc_msgSend__loadSourceCode(v4, v5, v6, v7);
   }
 
@@ -259,7 +259,7 @@
   [(VFXCommonProfileProgramGenerator *)&v3 dealloc];
 }
 
-- (__CFXProgram)_newProgramWithHashCode:(__CFXProgramHashCode *)a3 engineContext:(__CFXEngineContext *)a4 introspectionDataPtr:(void *)a5
+- (__CFXProgram)_newProgramWithHashCode:(__CFXProgramHashCode *)code engineContext:(__CFXEngineContext *)context introspectionDataPtr:(void *)ptr
 {
   v581 = *MEMORY[0x1E69E9840];
   v544 = 0;
@@ -275,10 +275,10 @@
   v533 = 0u;
   v534 = 0u;
   v532 = 0u;
-  v530 = a3;
-  v7 = objc_msgSend_dictionaryWithCapacity_(MEMORY[0x1E695DF90], a2, 0, a4, a5);
+  codeCopy = code;
+  v7 = objc_msgSend_dictionaryWithCapacity_(MEMORY[0x1E695DF90], a2, 0, context, ptr);
   v531 = v7;
-  sub_1AF12E2AC(a4);
+  sub_1AF12E2AC(context);
   v8 = 0;
   v517 = sub_1AF333168();
   if (v517)
@@ -292,12 +292,12 @@
   *&v533 = v15;
   for (i = 40; i != 72; i += 8)
   {
-    *(&v530 + i) = objc_msgSend_stringWithCapacity_(MEMORY[0x1E696AD60], v13, 0, v14);
+    *(&codeCopy + i) = objc_msgSend_stringWithCapacity_(MEMORY[0x1E696AD60], v13, 0, v14);
   }
 
-  if (sub_1AF13E438(a3))
+  if (sub_1AF13E438(code))
   {
-    v19 = sub_1AF12DDCC(a4);
+    v19 = sub_1AF12DDCC(context);
     if (v19)
     {
       v19 = sub_1AF1CF878(v19);
@@ -322,24 +322,24 @@
   *(&v541 + 1) = objc_msgSend_stringWithCapacity_(MEMORY[0x1E696AD60], v43, 0, v44);
   *&v542 = objc_msgSend_stringWithCapacity_(MEMORY[0x1E696AD60], v45, 0, v46);
   *(&v542 + 1) = objc_msgSend_stringWithCapacity_(MEMORY[0x1E696AD60], v47, 0, v48);
-  v520 = sub_1AF13E558(a3);
-  v49 = sub_1AF13E464(a3, 6u);
-  v508 = sub_1AF13E464(a3, 3u);
-  v510 = sub_1AF13E4EC(a3);
-  v511 = sub_1AF13E504(a3);
-  v50 = sub_1AF13E4A8(a3);
-  v51 = sub_1AF13E430(a3);
+  v520 = sub_1AF13E558(code);
+  v49 = sub_1AF13E464(code, 6u);
+  v508 = sub_1AF13E464(code, 3u);
+  v510 = sub_1AF13E4EC(code);
+  v511 = sub_1AF13E504(code);
+  v50 = sub_1AF13E4A8(code);
+  v51 = sub_1AF13E430(code);
   v52 = v51;
   v53 = v51;
-  v54 = sub_1AF13E414(a3);
+  v54 = sub_1AF13E414(code);
   v514 = v54;
-  v515 = (v54 & 4) != 0 && sub_1AF1305F8(a4, 16);
-  v507 = sub_1AF13E458(a3, 1u);
+  v515 = (v54 & 4) != 0 && sub_1AF1305F8(context, 16);
+  v507 = sub_1AF13E458(code, 1u);
   v525 = v53;
   v509 = v49;
   BYTE3(v543[0]) = v49 & 1 | ((v53 & 0x10) != 0);
-  v55 = sub_1AF13E568(a3);
-  v56 = sub_1AF13E560(a3);
+  v55 = sub_1AF13E568(code);
+  v56 = sub_1AF13E560(code);
   if (v55)
   {
     v59 = v56;
@@ -350,7 +350,7 @@
 
     v62 = objc_msgSend_numberWithUnsignedChar_(MEMORY[0x1E696AD98], v60, v59, v61);
     objc_msgSend_setObject_forKeyedSubscript_(v7, v63, v62, @"USE_MULTIPLE_RENDERING");
-    v64 = sub_1AF13E574(a3);
+    v64 = sub_1AF13E574(code);
     if (v64 == 2)
     {
       objc_msgSend_setObject_forKeyedSubscript_(v7, v57, &stru_1F2575650, @"USE_VERTEX_AMPLIFICATION");
@@ -381,13 +381,13 @@
     objc_msgSend_addObject_(v8, v71, @"USE_MULTIPLE_VIEWPORTS_RENDERING", v72);
   }
 
-  if (sub_1AF13E534(a3))
+  if (sub_1AF13E534(code))
   {
     objc_msgSend_setObject_forKeyedSubscript_(v7, v73, &stru_1F2575650, @"USE_IBL_TRANSFORM");
   }
 
   v74 = sub_1AF1F32F0();
-  v75 = sub_1AF13E848(a3);
+  v75 = sub_1AF13E848(code);
   if (v74 <= v75)
   {
     v76 = v75;
@@ -403,8 +403,8 @@
     v76 = 131073;
   }
 
-  v521 = a4;
-  v77 = sub_1AF12FAD8(a4);
+  contextCopy = context;
+  v77 = sub_1AF12FAD8(context);
   v78 = 131074;
   memset(&v580[14], 0, 32);
   if (v76 > 0x20002)
@@ -419,8 +419,8 @@
 
   v516 = v78;
   memset(v580, 0, 224);
-  v529 = a3;
-  v79 = sub_1AF13E7BC(a3, 0, v580, 32);
+  codeCopy2 = code;
+  v79 = sub_1AF13E7BC(code, 0, v580, 32);
   v579 = 0u;
   v578 = 0u;
   v577 = 0u;
@@ -437,11 +437,11 @@
   v566 = 0u;
   *buf = 0u;
   v565 = 0u;
-  v80 = sub_1AF13E7BC(v530, 1u, buf, 32);
+  v80 = sub_1AF13E7BC(codeCopy, 1u, buf, 32);
   memset(v563, 0, sizeof(v563));
-  v81 = sub_1AF13E7BC(v530, 2u, v563, 32);
+  v81 = sub_1AF13E7BC(codeCopy, 2u, v563, 32);
   *&v540 = 0;
-  v82 = sub_1AF13E7BC(v530, 3u, &v540, 1);
+  v82 = sub_1AF13E7BC(codeCopy, 3u, &v540, 1);
   if (v82 >= 2)
   {
     v83 = sub_1AF0D5194();
@@ -490,10 +490,10 @@
   sub_1AF1EBF70(v531, buf, v80);
   sub_1AF1EBF70(v531, v563, v81);
   sub_1AF1EBF70(v531, &v540, v82);
-  sub_1AF1ECF18(&v530, v580, v79);
-  sub_1AF1ECF18(&v530, buf, v80);
-  sub_1AF1ECF18(&v530, v563, v81);
-  sub_1AF1ECF18(&v530, &v540, v82);
+  sub_1AF1ECF18(&codeCopy, v580, v79);
+  sub_1AF1ECF18(&codeCopy, buf, v80);
+  sub_1AF1ECF18(&codeCopy, v563, v81);
+  sub_1AF1ECF18(&codeCopy, &v540, v82);
   if (v540)
   {
     if (v80)
@@ -511,7 +511,7 @@
       v87 = 2;
     }
 
-    sub_1AF1ECDD4(&v530, v540, v87);
+    sub_1AF1ECDD4(&codeCopy, v540, v87);
   }
 
 LABEL_61:
@@ -524,7 +524,7 @@ LABEL_61:
   v547[1] = 3221225472;
   v547[2] = sub_1AF1F0F40;
   v547[3] = &unk_1E7A7C500;
-  v547[4] = &v530;
+  v547[4] = &codeCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v88, v89, v547, v90);
 
   sub_1AF1EBFF0(v563, v81);
@@ -534,28 +534,28 @@ LABEL_61:
   if (v79)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v91, &stru_1F2575650, @"USE_GEOMETRY_MODIFIER");
-    sub_1AF1F0F74(&v530, 0, v580);
+    sub_1AF1F0F74(&codeCopy, 0, v580);
   }
 
   if (v80)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v91, &stru_1F2575650, @"USE_SURFACE_MODIFIER");
-    sub_1AF1F0F74(&v530, 1, buf);
+    sub_1AF1F0F74(&codeCopy, 1, buf);
   }
 
   if (v81)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v91, &stru_1F2575650, @"USE_FRAGMENT_MODIFIER");
-    sub_1AF1F0F74(&v530, 2, v563);
+    sub_1AF1F0F74(&codeCopy, 2, v563);
   }
 
   if (v82)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v91, &stru_1F2575650, @"USE_LIGHT_MODIFIER");
-    sub_1AF1F0F74(&v530, 3, &v540);
+    sub_1AF1F0F74(&codeCopy, 3, &v540);
   }
 
-  v93 = v529;
+  v93 = codeCopy2;
   if (v532)
   {
     objc_msgSend_addObject_(v532, v91, @"USE_GEOMETRY_MODIFIER", v92);
@@ -566,21 +566,21 @@ LABEL_61:
     v546[1] = 3221225472;
     v546[2] = sub_1AF1F10B4;
     v546[3] = &unk_1E7A7C520;
-    v546[4] = &v530;
+    v546[4] = &codeCopy;
     sub_1AF1489B4(v546);
     v100 = sub_1AF14A978();
     v545[0] = MEMORY[0x1E69E9820];
     v545[1] = 3221225472;
     v545[2] = sub_1AF1F10C4;
     v545[3] = &unk_1E7A79958;
-    v545[4] = &v530;
+    v545[4] = &codeCopy;
     sub_1AF28A67C(v100, v545);
   }
 
   v103 = v520;
   if (objc_msgSend_objectForKeyedSubscript_(v531, v91, @"USE_MODIFIER_FRAMEBUFFER_COLOR0", v92))
   {
-    if (sub_1AF1305F8(v521, 2048))
+    if (sub_1AF1305F8(contextCopy, 2048))
     {
       objc_msgSend_setObject_forKeyedSubscript_(v531, v104, &unk_1F25D4390, @"CFX_SUPPORTS_PROGRAMMABLE_BLENDING");
     }
@@ -660,7 +660,7 @@ LABEL_87:
 
     if (v108 == 1 && v121)
     {
-      v120 = sub_1AF13E474(v529, 2u);
+      v120 = sub_1AF13E474(codeCopy2, 2u);
       v121 = 1;
     }
   }
@@ -704,7 +704,7 @@ LABEL_87:
   LOWORD(v543[0]) = 0;
   DWORD1(v543[0]) = 0;
   LOBYTE(v544) = 1;
-  v126 = sub_1AF13E4B4(v529);
+  v126 = sub_1AF13E4B4(codeCopy2);
   v127 = @"USE_CONSTANT";
   if (!v108 || v108 == 2)
   {
@@ -739,8 +739,8 @@ LABEL_109:
     objc_msgSend_setObject_forKeyedSubscript_(v531, v130, &unk_1F25D4390, @"USE_VIEW");
   }
 
-  v131 = sub_1AF13E4E4(v529);
-  v132 = sub_1AF13E41C(v529);
+  v131 = sub_1AF13E4E4(codeCopy2);
+  v132 = sub_1AF13E41C(codeCopy2);
   if (!v132)
   {
     goto LABEL_208;
@@ -758,7 +758,7 @@ LABEL_109:
       goto LABEL_196;
     }
 
-    v136 = sub_1AF13E424(v530, v134);
+    v136 = sub_1AF13E424(codeCopy, v134);
     v139 = v136;
     v140 = v136 & 7;
     v141 = (v136 & 0x40000) != 0 ? "true" : "false";
@@ -781,8 +781,8 @@ LABEL_109:
         v145 = 168;
       }
 
-      objc_msgSend_appendFormat_(*(&v530 + v145), v143, @", texture2d<half> u_goboTexture%d\n", v144, v134);
-      objc_msgSend_appendFormat_(*(&v530 + v145), v146, @", sampler u_goboTexture%dSampler\n", v147, v134);
+      objc_msgSend_appendFormat_(*(&codeCopy + v145), v143, @", texture2d<half> u_goboTexture%d\n", v144, v134);
+      objc_msgSend_appendFormat_(*(&codeCopy + v145), v146, @", sampler u_goboTexture%dSampler\n", v147, v134);
     }
 
     v148 = (v139 >> 6) & 7;
@@ -819,13 +819,13 @@ LABEL_109:
     }
 
     DWORD1(v543[0]) = v151;
-    if (!sub_1AF13E568(v530))
+    if (!sub_1AF13E568(codeCopy))
     {
       v157 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v152, @"%d", v153, v134);
       goto LABEL_149;
     }
 
-    v154 = sub_1AF13E574(v530);
+    v154 = sub_1AF13E574(codeCopy);
     if (v154 == 1)
     {
       if (BYTE3(v543[0]) == 1)
@@ -1059,12 +1059,12 @@ LABEL_196:
 
   while (v135 != v134);
   v173 = 0;
-  v93 = v529;
+  v93 = codeCopy2;
   v103 = v520;
   v113 = 0x1E696A000uLL;
   v114 = v514;
   v126 = v506;
-  while ((sub_1AF13E424(v530, v173) & 0x10) == 0)
+  while ((sub_1AF13E424(codeCopy, v173) & 0x10) == 0)
   {
     if (v135 == ++v173)
     {
@@ -1080,7 +1080,7 @@ LABEL_208:
   v121 = v519;
   if (sub_1AF13E4CC(v93))
   {
-    if (sub_1AF1305F8(v521, 256))
+    if (sub_1AF1305F8(contextCopy, 256))
     {
       objc_msgSend_setObject_forKeyedSubscript_(v531, v178, &stru_1F2575650, @"CFX_SUPPORT_CUBE_ARRAY");
     }
@@ -1385,24 +1385,24 @@ LABEL_278:
 
   if (sub_1AF13E464(v93, 7u))
   {
-    sub_1AF1F00B0(&v530, 7u, 7, 1);
+    sub_1AF1F00B0(&codeCopy, 7u, 7, 1);
     objc_msgSend_setObject_forKeyedSubscript_(v531, v271, &stru_1F2575650, @"USE_AMBIENTOCCLUSION_MAP");
   }
 
-  sub_1AF1F00B0(&v530, 1u, 1, 1);
-  sub_1AF1F00B0(&v530, 2u, 2, (v512 | v508) & 1);
-  sub_1AF1F00B0(&v530, 8u, 8, 1);
-  sub_1AF1F00B0(&v530, 0, 0, 1);
-  sub_1AF1F00B0(&v530, 5u, 5, 1);
-  sub_1AF1F00B0(&v530, 6u, 6, v509);
+  sub_1AF1F00B0(&codeCopy, 1u, 1, 1);
+  sub_1AF1F00B0(&codeCopy, 2u, 2, (v512 | v508) & 1);
+  sub_1AF1F00B0(&codeCopy, 8u, 8, 1);
+  sub_1AF1F00B0(&codeCopy, 0, 0, 1);
+  sub_1AF1F00B0(&codeCopy, 5u, 5, 1);
+  sub_1AF1F00B0(&codeCopy, 6u, 6, v509);
   if (BYTE8(v532) == 1)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v272, &unk_1F25D4390, @"USE_TANGENT");
     objc_msgSend_setObject_forKeyedSubscript_(v531, v273, &unk_1F25D4390, @"USE_BITANGENT");
   }
 
-  sub_1AF1F00B0(&v530, 9u, 9, v108 == 3);
-  sub_1AF1F00B0(&v530, 0xAu, 10, v108 == 3);
+  sub_1AF1F00B0(&codeCopy, 9u, 9, v108 == 3);
+  sub_1AF1F00B0(&codeCopy, 0xAu, 10, v108 == 3);
   if (v108 == 3)
   {
     v274 = sub_1AF13E474(v93, 0xBu);
@@ -1413,9 +1413,9 @@ LABEL_278:
     v274 = 0;
   }
 
-  sub_1AF1F00B0(&v530, 0xBu, 11, v274);
-  sub_1AF1F00B0(&v530, 0xCu, 12, v274);
-  sub_1AF1F00B0(&v530, 0xDu, 13, v274);
+  sub_1AF1F00B0(&codeCopy, 0xBu, 11, v274);
+  sub_1AF1F00B0(&codeCopy, 0xCu, 12, v274);
+  sub_1AF1F00B0(&codeCopy, 0xDu, 13, v274);
   if (BYTE8(v532) == 1)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v277, &unk_1F25D4390, @"USE_TANGENT");
@@ -1448,8 +1448,8 @@ LABEL_302:
   }
 
 LABEL_303:
-  sub_1AF1F00B0(&v530, 0xEu, 14, v279);
-  sub_1AF1F00B0(&v530, 0xFu, 15, v279);
+  sub_1AF1F00B0(&codeCopy, 0xEu, 14, v279);
+  sub_1AF1F00B0(&codeCopy, 0xFu, 15, v279);
   if (v108 == 3)
   {
     v281 = sub_1AF13E474(v93, 0x10u);
@@ -1476,9 +1476,9 @@ LABEL_308:
   }
 
 LABEL_309:
-  sub_1AF1F00B0(&v530, 0x10u, 16, v281);
-  sub_1AF1F00B0(&v530, 0x11u, 17, v281);
-  sub_1AF1F00B0(&v530, 3u, 3, 1);
+  sub_1AF1F00B0(&codeCopy, 0x10u, 16, v281);
+  sub_1AF1F00B0(&codeCopy, 0x11u, 17, v281);
+  sub_1AF1F00B0(&codeCopy, 3u, 3, 1);
   if (BYTE8(v532) == 1)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v282, &unk_1F25D4390, @"USE_VIEW");
@@ -1487,7 +1487,7 @@ LABEL_309:
   }
 
   v285 = sub_1AF13E474(v93, 4u);
-  sub_1AF1F00B0(&v530, 4u, 4, v285);
+  sub_1AF1F00B0(&codeCopy, 4u, 4, v285);
   if (v108 == 3)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v286, &stru_1F2575650, @"USE_PBR_TRANSPARENCY");
@@ -1553,7 +1553,7 @@ LABEL_309:
     objc_msgSend_addObject_(v532, v305, @"USE_ALPHA_CUTOFF", v306);
   }
 
-  v314 = sub_1AF13E580(v530);
+  v314 = sub_1AF13E580(codeCopy);
   if (v314)
   {
     if (v314 >= 8)
@@ -1577,7 +1577,7 @@ LABEL_309:
       v319 = 0;
       do
       {
-        v320 = sub_1AF13E594(v530, v318);
+        v320 = sub_1AF13E594(codeCopy, v318);
         objc_msgSend_appendString_(v536, v321, off_1E7A7C560[v318], v322);
         if (HIBYTE(v320) == 255)
         {
@@ -1610,7 +1610,7 @@ LABEL_309:
     }
 
     objc_msgSend_setObject_forKeyedSubscript_(v531, v315, &stru_1F2575650, @"USE_TEXCOORD");
-    v93 = v529;
+    v93 = codeCopy2;
     v113 = 0x1E696A000uLL;
     v114 = v514;
   }
@@ -1639,7 +1639,7 @@ LABEL_309:
   }
 
   v338 = sub_1AF13E464(v93, 0x12u);
-  sub_1AF1F00B0(&v530, 0x12u, 18, v338);
+  sub_1AF1F00B0(&codeCopy, 0x12u, 18, v338);
   if (v338)
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v339, &unk_1F25D4390, @"USE_NORMAL");
@@ -1670,7 +1670,7 @@ LABEL_309:
     objc_msgSend_setObject_forKeyedSubscript_(v531, v356, &stru_1F2575650, @"USE_MODELVIEWTRANSFORM");
   }
 
-  if (sub_1AF13103C(v521))
+  if (sub_1AF13103C(contextCopy))
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v359, &stru_1F2575650, @"USE_LATE_LATCHING");
     objc_msgSend_setObject_forKeyedSubscript_(v531, v362, &stru_1F2575650, @"USE_RE_RADIANCE_IRRADIANCE_MAP_SAMPLING");
@@ -1757,7 +1757,7 @@ LABEL_309:
     v397 = &stru_1F2575650;
   }
 
-  sub_1AF1ED338(&v530, v515, v529);
+  sub_1AF1ED338(&codeCopy, v515, codeCopy2);
   if (objc_msgSend_objectForKeyedSubscript_(v531, v398, @"HAS_NORMAL", v399) || objc_msgSend_objectForKeyedSubscript_(v531, v400, @"USE_OPENSUBDIV", v401))
   {
     objc_msgSend_setObject_forKeyedSubscript_(v531, v400, @"1", @"HAS_OR_GENERATES_NORMAL");
@@ -1806,7 +1806,7 @@ LABEL_309:
   v548[0] = v394;
   v548[1] = v395;
   v548[2] = v397;
-  v416 = self;
+  selfCopy2 = self;
   v548[3] = v396;
   v548[4] = v404;
   v548[5] = v536;
@@ -1867,9 +1867,9 @@ LABEL_309:
       v436 = 0;
       while (1)
       {
-        v437 = objc_msgSend_objectAtIndexedSubscript_(v416->_injectionPointRanges, v433, v436, v434);
+        v437 = objc_msgSend_objectAtIndexedSubscript_(selfCopy2->_injectionPointRanges, v433, v436, v434);
         v441 = objc_msgSend_rangeValue(v437, v438, v439, v440);
-        v443 = objc_msgSend_substringWithRange_(v416->_originalSourceCode, v442, v441, v442);
+        v443 = objc_msgSend_substringWithRange_(selfCopy2->_originalSourceCode, v442, v441, v442);
         if (!objc_msgSend_hasPrefix_(v443, v444, @"#import", v445))
         {
           break;
@@ -1908,10 +1908,10 @@ LABEL_426:
 
         v458 = objc_msgSend_objectAtIndexedSubscript_(v419, v433, v436, v434);
         v459 = MEMORY[0x1E696AEC0];
-        v460 = sub_1AF13E588(v529);
+        v460 = sub_1AF13E588(codeCopy2);
         v503 = objc_msgSend_stringWithFormat_(v459, v461, @"#generate __OpenSubdivDeclShared__patchType%d.metal", v462, v460);
         v463 = v459;
-        v416 = self;
+        selfCopy2 = self;
         v456 = objc_msgSend_stringWithFormat_(v463, v464, @"%@%@\n%@%@\n%@", v465, @"#if 1 // SHADER_COLLECTION_PREFERS_MONOLITHIC_FILES\n", v458, @"#else // SHADER_COLLECTION_PREFERS_MONOLITHIC_FILES\n", v503, @"#endif // SHADER_COLLECTION_PREFERS_MONOLITHIC_FILES\n");
       }
 
@@ -1920,8 +1920,8 @@ LABEL_426:
     }
 
 LABEL_432:
-    v466 = objc_msgSend_vfx_stringByReplacingCharactersInRanges_withStrings_(v416->_originalSourceCode, v433, v416->_injectionPointRanges, v428);
-    v468 = objc_msgSend_splitInputOutputStructsIfNeededForSourceCode_generatedFromReplacementStrings_perPixelLighting_clipDistanceCount_hasBezierCurveDeformer_(v416, v467, v466, v428, BYTE3(v543[0]), v513, v524);
+    v466 = objc_msgSend_vfx_stringByReplacingCharactersInRanges_withStrings_(selfCopy2->_originalSourceCode, v433, selfCopy2->_injectionPointRanges, v428);
+    v468 = objc_msgSend_splitInputOutputStructsIfNeededForSourceCode_generatedFromReplacementStrings_perPixelLighting_clipDistanceCount_hasBezierCurveDeformer_(selfCopy2, v467, v466, v428, BYTE3(v543[0]), v513, v524);
 
     v113 = 0x1E696A000;
     v427 = v528;
@@ -1943,7 +1943,7 @@ LABEL_432:
   }
 
   objc_msgSend_setObject_forKeyedSubscript_(v531, v472, &unk_1F25D4378, @"METAL");
-  v473 = sub_1AF12F5E8(v521);
+  v473 = sub_1AF12F5E8(contextCopy);
   if ((v520 & 0x400) != 0)
   {
     v476 = objc_msgSend_numberWithUnsignedInt_(*(v113 + 3480), v474, v473, v475);
@@ -1969,17 +1969,17 @@ LABEL_432:
   }
 
   v496 = sub_1AF1D5628(@"commonprofile_vert", @"commonprofile_frag", v526, v495, v468, v531, v532, 0, v516, 0);
-  v497 = sub_1AF13E494(v529);
+  v497 = sub_1AF13E494(codeCopy2);
   sub_1AF1D52CC(v496, v497);
   return v496;
 }
 
-- (id)splitInputOutputStructsIfNeededForSourceCode:(id)a3 generatedFromReplacementStrings:(id)a4 perPixelLighting:(BOOL)a5 clipDistanceCount:(unint64_t)a6 hasBezierCurveDeformer:(BOOL)a7
+- (id)splitInputOutputStructsIfNeededForSourceCode:(id)code generatedFromReplacementStrings:(id)strings perPixelLighting:(BOOL)lighting clipDistanceCount:(unint64_t)count hasBezierCurveDeformer:(BOOL)deformer
 {
-  v7 = a7;
-  v9 = a5;
+  deformerCopy = deformer;
+  lightingCopy = lighting;
   v97[4] = *MEMORY[0x1E69E9840];
-  if (a6 || a7)
+  if (count || deformer)
   {
     v11 = self->_commonProfileIORange.length + self->_commonProfileIORange.location;
     v89 = 0;
@@ -1993,15 +1993,15 @@ LABEL_432:
     v88[2] = sub_1AF1F0898;
     v88[3] = &unk_1E7A7C4E0;
     v88[4] = self;
-    v88[5] = a4;
+    v88[5] = strings;
     v88[6] = &v89;
     v88[7] = v11;
-    objc_msgSend_enumerateObjectsUsingBlock_(injectionPointRanges, a2, v88, a4);
-    v14 = objc_msgSend_substringWithRange_(a3, v13, v90[4], v90[5]);
+    objc_msgSend_enumerateObjectsUsingBlock_(injectionPointRanges, a2, v88, strings);
+    v14 = objc_msgSend_substringWithRange_(code, v13, v90[4], v90[5]);
     v20 = objc_msgSend_length(v14, v15, v16, v17) - 19;
-    if (a6)
+    if (count)
     {
-      v21 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v18, @"    float clipDistance [[clip_distance]] [%d];\n} commonprofile_io_vert;\n\n", v19, a6);
+      v21 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v18, @"    float clipDistance [[clip_distance]] [%d];\n} commonprofile_io_vert;\n\n", v19, count);
       v23 = objc_msgSend_stringByReplacingCharactersInRange_withString_(v14, v22, v20, 19, v21);
     }
 
@@ -2011,26 +2011,26 @@ LABEL_432:
     }
 
     v27 = v23;
-    if (v7)
+    if (deformerCopy)
     {
       v27 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v23, v24, @"interpolant<float2, interpolation::perspective> bezierCurveUV;\n", @"float2 bezierCurveUV;\n");
     }
 
     v28 = v90[4];
     v29 = v90[5];
-    v30 = objc_msgSend_length(a3, v24, v25, v26);
+    v30 = objc_msgSend_length(code, v24, v25, v26);
     v31 = v29 + v28;
-    v33 = objc_msgSend_rangeOfString_options_range_(a3, v32, @"vertex commonprofile_io", 0, v29 + v28, v30 - (v29 + v28));
+    v33 = objc_msgSend_rangeOfString_options_range_(code, v32, @"vertex commonprofile_io", 0, v29 + v28, v30 - (v29 + v28));
     v35 = v34;
-    v38 = objc_msgSend_length(a3, v34, v36, v37);
-    v87 = objc_msgSend_rangeOfString_options_range_(a3, v39, @"commonprofile_io out;", 0, v33 + v35, v38 - (v33 + v35));
+    v38 = objc_msgSend_length(code, v34, v36, v37);
+    v87 = objc_msgSend_rangeOfString_options_range_(code, v39, @"commonprofile_io out;", 0, v33 + v35, v38 - (v33 + v35));
     v43 = v40;
-    if (v9)
+    if (lightingCopy)
     {
       v44 = v40;
       v45 = v27;
-      v46 = objc_msgSend_length(a3, v40, v41, v42);
-      v48 = objc_msgSend_rangeOfString_options_range_(a3, v47, @"commonprofile_io out;", 0, v31, v46 - v31);
+      v46 = objc_msgSend_length(code, v40, v41, v42);
+      v48 = objc_msgSend_rangeOfString_options_range_(code, v47, @"commonprofile_io out;", 0, v31, v46 - v31);
       v50 = v49;
       v97[0] = objc_msgSend_valueWithRange_(MEMORY[0x1E696B098], v49, v90[4], 0);
       v97[1] = objc_msgSend_valueWithRange_(MEMORY[0x1E696B098], v51, v48, v50);
@@ -2046,15 +2046,15 @@ LABEL_432:
 
     else
     {
-      v59 = objc_msgSend_length(a3, v40, v41, v42);
-      v61 = objc_msgSend_rangeOfString_options_range_(a3, v60, @"commonprofile_io out;", 0, v31, v59 - v31);
+      v59 = objc_msgSend_length(code, v40, v41, v42);
+      v61 = objc_msgSend_rangeOfString_options_range_(code, v60, @"commonprofile_io out;", 0, v31, v59 - v31);
       v63 = v62;
       v86 = v27;
-      v66 = objc_msgSend_length(a3, v62, v64, v65);
-      v68 = objc_msgSend_rangeOfString_options_range_(a3, v67, @"commonprofile_io in;", 0, v31, v66 - v31);
+      v66 = objc_msgSend_length(code, v62, v64, v65);
+      v68 = objc_msgSend_rangeOfString_options_range_(code, v67, @"commonprofile_io in;", 0, v31, v66 - v31);
       v70 = v69;
-      v73 = objc_msgSend_length(a3, v69, v71, v72);
-      v75 = objc_msgSend_rangeOfString_options_range_(a3, v74, @"commonprofile_io io", 0, v31, v73 - v31);
+      v73 = objc_msgSend_length(code, v69, v71, v72);
+      v75 = objc_msgSend_rangeOfString_options_range_(code, v74, @"commonprofile_io io", 0, v31, v73 - v31);
       v77 = v76;
       v95[0] = objc_msgSend_valueWithRange_(MEMORY[0x1E696B098], v76, v90[4], 0);
       v95[1] = objc_msgSend_valueWithRange_(MEMORY[0x1E696B098], v78, v61, v63);
@@ -2072,25 +2072,25 @@ LABEL_432:
       v57 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v84, v94, 6);
     }
 
-    a3 = objc_msgSend_vfx_stringByReplacingCharactersInRanges_withStrings_(a3, v58, v55, v57);
+    code = objc_msgSend_vfx_stringByReplacingCharactersInRanges_withStrings_(code, v58, v55, v57);
     _Block_object_dispose(&v89, 8);
   }
 
-  return a3;
+  return code;
 }
 
-- (void)collectShaderForProgram:(__CFXProgram *)a3 hashCode:(id)a4 newVertexFunctionName:(id)a5 newFragmentFunctionName:(id)a6 sourceCodeBlock:(id)a7 additionalFileBlock:(id)a8
+- (void)collectShaderForProgram:(__CFXProgram *)program hashCode:(id)code newVertexFunctionName:(id)name newFragmentFunctionName:(id)functionName sourceCodeBlock:(id)block additionalFileBlock:(id)fileBlock
 {
   v168 = *MEMORY[0x1E69E9840];
-  v11 = sub_1AF1D5B54(a3);
-  v152 = a3;
-  v12 = sub_1AF1D5B0C(a3);
+  v11 = sub_1AF1D5B54(program);
+  programCopy = program;
+  v12 = sub_1AF1D5B0C(program);
   v16 = objc_msgSend_length(v12, v13, v14, v15);
   v20 = objc_msgSend_mutableCopy(v12, v17, v18, v19);
-  v21 = a5;
+  nameCopy = name;
   v22 = v20;
-  objc_msgSend_replaceOccurrencesOfString_withString_options_range_(v20, v23, @"commonprofile_vert", v21, 0, 0, v16);
-  objc_msgSend_replaceOccurrencesOfString_withString_options_range_(v22, v24, @"commonprofile_frag", a6, 0, 0, v16);
+  objc_msgSend_replaceOccurrencesOfString_withString_options_range_(v20, v23, @"commonprofile_vert", nameCopy, 0, 0, v16);
+  objc_msgSend_replaceOccurrencesOfString_withString_options_range_(v22, v24, @"commonprofile_frag", functionName, 0, 0, v16);
   v28 = objc_msgSend_length(v22, v25, v26, v27);
   v30 = objc_msgSend_rangeOfString_options_range_(v22, v29, @"#if 1 // SHADER_COLLECTION_PREFERS_MONOLITHIC_FILES\n", 2, 0, v28);
   v157 = v22;
@@ -2159,7 +2159,7 @@ LABEL_12:
     v68 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v66, @"#import %@", v67, v65);
     v69 = sub_1AF28A7E4(v54);
 LABEL_11:
-    (*(a8 + 2))(a8, v69, v65);
+    (*(fileBlock + 2))(fileBlock, v69, v65);
     goto LABEL_12;
   }
 
@@ -2208,7 +2208,7 @@ LABEL_13:
     while (v116);
   }
 
-  v129 = sub_1AF1D5B9C(v152);
+  v129 = sub_1AF1D5B9C(programCopy);
   if (objc_msgSend_count(v129, v130, v131, v132))
   {
     v136 = objc_msgSend_allObjects(v129, v133, v134, v135);
@@ -2246,10 +2246,10 @@ LABEL_13:
     }
   }
 
-  v150 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v133, @"_unifdef/%@.h", v135, a4);
-  (*(a8 + 2))(a8, v99, v150);
+  v150 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], v133, @"_unifdef/%@.h", v135, code);
+  (*(fileBlock + 2))(fileBlock, v99, v150);
 
-  (*(a7 + 2))(a7, v157);
+  (*(block + 2))(block, v157);
 }
 
 @end

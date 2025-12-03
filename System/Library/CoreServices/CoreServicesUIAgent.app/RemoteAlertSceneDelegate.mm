@@ -1,9 +1,9 @@
 @interface RemoteAlertSceneDelegate
 - (RemoteAlertSceneDelegate)init;
 - (UIWindow)window;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)setWindow:(id)window;
 @end
 
 @implementation RemoteAlertSceneDelegate
@@ -23,7 +23,7 @@
   return v3;
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -34,11 +34,11 @@
   }
 
   v6 = *(&self->super.super.isa + OBJC_IVAR___RemoteAlertSceneDelegate_window);
-  *(&self->super.super.isa + OBJC_IVAR___RemoteAlertSceneDelegate_window) = a3;
-  v5 = a3;
+  *(&self->super.super.isa + OBJC_IVAR___RemoteAlertSceneDelegate_window) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -48,14 +48,14 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  sub_100005720(v9, v10, v11);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_100005720(sceneCopy, sessionCopy, optionsCopy);
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -65,9 +65,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
-  sub_100005E1C(v5);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100005E1C(activeCopy);
 }
 
 - (RemoteAlertSceneDelegate)init

@@ -1,50 +1,50 @@
 @interface HDCloudSyncStateSampleWindowUpdater
-+ (BOOL)_fetchPersistedDeletedSamples:(uint64_t)a1 withSampleUUIDs:(void *)a2 profile:(void *)a3 transaction:(void *)a4 timeWindow:(void *)a5 error:(uint64_t)a6;
-+ (BOOL)_generateSyncCodableContributors:(void *)a3 fromCollectionByProvenance:(void *)a4 profile:(void *)a5 transaction:(uint64_t)a6 error:;
-+ (BOOL)_generateSyncCodableDevices:(void *)a3 fromCollectionByProvenance:(void *)a4 profile:(void *)a5 transaction:(uint64_t)a6 error:;
-+ (BOOL)updateDataWithStateStorage:(id)a3 configuration:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7;
-+ (HDCodableSyncState)_codableSyncStateFromExistingSyncState:(void *)a3 forDomain:(void *)a4 key:;
-+ (id)_healthObjectUUIDsFromMergedStateSyncCollection:(void *)a3 configuration:;
-+ (uint64_t)_decodeCloudData:(objc_class *)a3 ofClass:(void *)a4 forKey:(void *)a5 dataVersion:(HDCodableSyncState *)a6 currentSyncVersion:(NSObject *)a7 configuration:(uint64_t *)a8 codableSyncState:codableCollection:error:;
++ (BOOL)_fetchPersistedDeletedSamples:(uint64_t)samples withSampleUUIDs:(void *)ds profile:(void *)profile transaction:(void *)transaction timeWindow:(void *)window error:(uint64_t)error;
++ (BOOL)_generateSyncCodableContributors:(void *)contributors fromCollectionByProvenance:(void *)provenance profile:(void *)profile transaction:(uint64_t)transaction error:;
++ (BOOL)_generateSyncCodableDevices:(void *)devices fromCollectionByProvenance:(void *)provenance profile:(void *)profile transaction:(uint64_t)transaction error:;
++ (BOOL)updateDataWithStateStorage:(id)storage configuration:(id)configuration profile:(id)profile transaction:(id)transaction error:(id *)error;
++ (HDCodableSyncState)_codableSyncStateFromExistingSyncState:(void *)state forDomain:(void *)domain key:;
++ (id)_healthObjectUUIDsFromMergedStateSyncCollection:(void *)collection configuration:;
++ (uint64_t)_decodeCloudData:(objc_class *)data ofClass:(void *)class forKey:(void *)key dataVersion:(HDCodableSyncState *)version currentSyncVersion:(NSObject *)syncVersion configuration:(uint64_t *)configuration codableSyncState:codableCollection:error:;
 @end
 
 @implementation HDCloudSyncStateSampleWindowUpdater
 
-+ (BOOL)updateDataWithStateStorage:(id)a3 configuration:(id)a4 profile:(id)a5 transaction:(id)a6 error:(id *)a7
++ (BOOL)updateDataWithStateStorage:(id)storage configuration:(id)configuration profile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v212 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v180 = a5;
-  v14 = a6;
+  storageCopy = storage;
+  configurationCopy = configuration;
+  profileCopy = profile;
+  transactionCopy = transaction;
   v205 = 0;
-  v15 = [v13 sampleOriginKey];
-  v16 = [v12 data:&v205 forKey:v15 error:a7];
+  sampleOriginKey = [configurationCopy sampleOriginKey];
+  v16 = [storageCopy data:&v205 forKey:sampleOriginKey error:error];
   v17 = v205;
 
   if (v16)
   {
-    v178 = v14;
+    v178 = transactionCopy;
     v204 = 0;
-    v18 = [v13 key];
-    v19 = [v12 data:&v204 forKey:v18 error:a7];
-    v20 = v204;
+    v18 = [configurationCopy key];
+    v19 = [storageCopy data:&v204 forKey:v18 error:error];
+    loggingCategory16 = v204;
 
     if ((v19 & 1) == 0)
     {
       _HKInitializeLogging();
-      v24 = [v13 loggingCategory];
-      if (os_log_type_enabled(&v24->super.super, OS_LOG_TYPE_ERROR))
+      loggingCategory = [configurationCopy loggingCategory];
+      if (os_log_type_enabled(&loggingCategory->super.super, OS_LOG_TYPE_ERROR))
       {
-        v43 = [v13 key];
-        v44 = *a7;
+        v43 = [configurationCopy key];
+        v44 = *error;
         *buf = 138543874;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 2114;
         *&buf[14] = v43;
         *&buf[22] = 2114;
         v211 = v44;
-        _os_log_error_impl(&dword_228986000, &v24->super.super, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to fetch cloud data for key: %{public}@, with error: %{public}@", buf, 0x20u);
+        _os_log_error_impl(&dword_228986000, &loggingCategory->super.super, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to fetch cloud data for key: %{public}@, with error: %{public}@", buf, 0x20u);
       }
 
       v36 = 0;
@@ -52,11 +52,11 @@
     }
 
     v21 = objc_opt_class();
-    v22 = [v13 sampleOriginKey];
+    sampleOriginKey2 = [configurationCopy sampleOriginKey];
     v202 = 0;
     v203 = 0;
-    v23 = [HDCloudSyncStateSampleWindowUpdater _decodeCloudData:a1 ofClass:v17 forKey:v21 dataVersion:v22 currentSyncVersion:v13 configuration:&v203 codableSyncState:&v202 codableCollection:a7 error:?];
-    v24 = v203;
+    v23 = [HDCloudSyncStateSampleWindowUpdater _decodeCloudData:self ofClass:v17 forKey:v21 dataVersion:sampleOriginKey2 currentSyncVersion:configurationCopy configuration:&v203 codableSyncState:&v202 codableCollection:error error:?];
+    loggingCategory = v203;
     v25 = v202;
 
     if (v23 != 2)
@@ -65,60 +65,60 @@
 LABEL_26:
 
 LABEL_27:
-      v14 = v178;
+      transactionCopy = v178;
       goto LABEL_28;
     }
 
     v26 = objc_opt_class();
-    v27 = [v13 key];
+    v27 = [configurationCopy key];
     v200 = 0;
     v201 = 0;
-    v177 = a1;
-    v28 = [HDCloudSyncStateSampleWindowUpdater _decodeCloudData:a1 ofClass:v20 forKey:v26 dataVersion:v27 currentSyncVersion:v13 configuration:&v201 codableSyncState:&v200 codableCollection:a7 error:?];
+    selfCopy = self;
+    v28 = [HDCloudSyncStateSampleWindowUpdater _decodeCloudData:self ofClass:loggingCategory16 forKey:v26 dataVersion:v27 currentSyncVersion:configurationCopy configuration:&v201 codableSyncState:&v200 codableCollection:error error:?];
     v174 = v201;
     v175 = v200;
 
     if (v28 != 2)
     {
       _HKInitializeLogging();
-      v37 = [v13 loggingCategory];
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
+      loggingCategory2 = [configurationCopy loggingCategory];
+      if (os_log_type_enabled(loggingCategory2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         *&buf[12] = 1026;
         *&buf[14] = v28;
-        _os_log_impl(&dword_228986000, v37, OS_LOG_TYPE_DEFAULT, "[%{public}@] Decode finished with error?: %{public}i", buf, 0x12u);
+        _os_log_impl(&dword_228986000, loggingCategory2, OS_LOG_TYPE_DEFAULT, "[%{public}@] Decode finished with error?: %{public}i", buf, 0x12u);
       }
 
       v36 = v28 == 1;
       goto LABEL_24;
     }
 
-    v179 = v13;
+    v179 = configurationCopy;
     v172 = v25;
-    v173 = v24;
+    v173 = loggingCategory;
     if (v25)
     {
       v29 = v25;
-      v30 = v180;
+      v30 = profileCopy;
       v31 = objc_opt_self();
-      v32 = [v29 devices];
-      if (![HDDeviceEntity insertCodableDevices:v32 syncProvenance:0 profile:v30 error:a7])
+      devices = [v29 devices];
+      if (![HDDeviceEntity insertCodableDevices:devices syncProvenance:0 profile:v30 error:error])
       {
 LABEL_11:
 
         _HKInitializeLogging();
-        v13 = v179;
-        v35 = [v179 loggingCategory];
-        if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+        configurationCopy = v179;
+        loggingCategory3 = [v179 loggingCategory];
+        if (os_log_type_enabled(loggingCategory3, OS_LOG_TYPE_ERROR))
         {
-          v135 = *a7;
+          v135 = *error;
           *buf = 138543618;
-          *&buf[4] = v177;
+          *&buf[4] = selfCopy;
           *&buf[12] = 2114;
           *&buf[14] = v135;
-          _os_log_error_impl(&dword_228986000, v35, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to save sample origins with error: %{public}@", buf, 0x16u);
+          _os_log_error_impl(&dword_228986000, loggingCategory3, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to save sample origins with error: %{public}@", buf, 0x16u);
         }
 
         v36 = 0;
@@ -130,15 +130,15 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v170 = v20;
-      v33 = [v29 contributors];
-      if ([HDSyncSampleOriginUtilities ingestContributorSyncObjects:v33 syncStore:0 profile:v30 error:a7]== 1)
+      v170 = loggingCategory16;
+      contributors = [v29 contributors];
+      if ([HDSyncSampleOriginUtilities ingestContributorSyncObjects:contributors syncStore:0 profile:v30 error:error]== 1)
       {
         _HKInitializeLogging();
         v34 = *MEMORY[0x277CCC328];
         if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
         {
-          v143 = *a7;
+          v143 = *error;
           *buf = 138543618;
           *&buf[4] = v31;
           *&buf[12] = 2114;
@@ -146,25 +146,25 @@ LABEL_25:
           _os_log_error_impl(&dword_228986000, v34, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to ingest contributor sync object with error: %{public}@", buf, 0x16u);
         }
 
-        v20 = v170;
+        loggingCategory16 = v170;
         goto LABEL_11;
       }
 
-      v13 = v179;
-      v20 = v170;
+      configurationCopy = v179;
+      loggingCategory16 = v170;
     }
 
-    v168 = v12;
+    v168 = storageCopy;
     v169 = v17;
-    v171 = v20;
+    v171 = loggingCategory16;
     if (v175)
     {
       v198 = 0u;
       v199 = 0u;
       v196 = 0u;
       v197 = 0u;
-      v45 = [v175 deletedSampleCollections];
-      v46 = [v45 countByEnumeratingWithState:&v196 objects:v209 count:16];
+      deletedSampleCollections = [v175 deletedSampleCollections];
+      v46 = [deletedSampleCollections countByEnumeratingWithState:&v196 objects:v209 count:16];
       if (v46)
       {
         v47 = v46;
@@ -177,22 +177,22 @@ LABEL_25:
           {
             if (*v197 != v50)
             {
-              objc_enumerationMutation(v45);
+              objc_enumerationMutation(deletedSampleCollections);
             }
 
             v52 = *(*(&v196 + 1) + 8 * i);
-            if (!+[HDDataSyncUtilities insertDeletedObjectsFromCodableObjectCollection:syncEntityClass:syncStore:profile:error:](HDDataSyncUtilities, "insertDeletedObjectsFromCodableObjectCollection:syncEntityClass:syncStore:profile:error:", v52, +[HDDataSyncUtilities deletedSampleSyncEntityClass], 0, v180, a7))
+            if (!+[HDDataSyncUtilities insertDeletedObjectsFromCodableObjectCollection:syncEntityClass:syncStore:profile:error:](HDDataSyncUtilities, "insertDeletedObjectsFromCodableObjectCollection:syncEntityClass:syncStore:profile:error:", v52, +[HDDataSyncUtilities deletedSampleSyncEntityClass], 0, profileCopy, error))
             {
               _HKInitializeLogging();
-              v53 = [v179 loggingCategory];
-              if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
+              loggingCategory4 = [v179 loggingCategory];
+              if (os_log_type_enabled(loggingCategory4, OS_LOG_TYPE_ERROR))
               {
-                v54 = *a7;
+                v54 = *error;
                 *buf = 138543618;
-                *&buf[4] = v177;
+                *&buf[4] = selfCopy;
                 *&buf[12] = 2114;
                 *&buf[14] = v54;
-                _os_log_error_impl(&dword_228986000, v53, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to save deleted samples with error: %{public}@", buf, 0x16u);
+                _os_log_error_impl(&dword_228986000, loggingCategory4, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to save deleted samples with error: %{public}@", buf, 0x16u);
               }
 
               v49 = 1;
@@ -201,28 +201,28 @@ LABEL_25:
             v48 += [v52 deletedSamplesCount];
           }
 
-          v47 = [v45 countByEnumeratingWithState:&v196 objects:v209 count:16];
+          v47 = [deletedSampleCollections countByEnumeratingWithState:&v196 objects:v209 count:16];
         }
 
         while (v47);
 
-        v13 = v179;
+        configurationCopy = v179;
         v17 = v169;
-        v20 = v171;
+        loggingCategory16 = v171;
         if (v49)
         {
           _HKInitializeLogging();
-          v55 = [v179 loggingCategory];
+          loggingCategory5 = [v179 loggingCategory];
           v25 = v172;
-          v24 = v173;
-          if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+          loggingCategory = v173;
+          if (os_log_type_enabled(loggingCategory5, OS_LOG_TYPE_ERROR))
           {
-            v146 = *a7;
+            v146 = *error;
             *buf = 138543618;
-            *&buf[4] = v177;
+            *&buf[4] = selfCopy;
             *&buf[12] = 2114;
             *&buf[14] = v146;
-            _os_log_error_impl(&dword_228986000, v55, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to insert a deleted sample with error: %{public}@", buf, 0x16u);
+            _os_log_error_impl(&dword_228986000, loggingCategory5, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to insert a deleted sample with error: %{public}@", buf, 0x16u);
           }
 
           v36 = 0;
@@ -237,15 +237,15 @@ LABEL_25:
       }
 
       _HKInitializeLogging();
-      v56 = [v13 loggingCategory];
-      v57 = v177;
-      if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
+      loggingCategory6 = [configurationCopy loggingCategory];
+      v57 = selfCopy;
+      if (os_log_type_enabled(loggingCategory6, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        *&buf[4] = v177;
+        *&buf[4] = selfCopy;
         *&buf[12] = 1024;
         *&buf[14] = v48;
-        _os_log_impl(&dword_228986000, v56, OS_LOG_TYPE_DEFAULT, "[%{public}@] Persist %i deleted samples for state sync", buf, 0x12u);
+        _os_log_impl(&dword_228986000, loggingCategory6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Persist %i deleted samples for state sync", buf, 0x12u);
       }
 
       v194 = 0u;
@@ -253,8 +253,8 @@ LABEL_25:
       v192 = 0u;
       v193 = 0u;
       v38 = v175;
-      v58 = [v175 sampleCollections];
-      v59 = [v58 countByEnumeratingWithState:&v192 objects:v208 count:16];
+      sampleCollections = [v175 sampleCollections];
+      v59 = [sampleCollections countByEnumeratingWithState:&v192 objects:v208 count:16];
       if (v59)
       {
         v60 = v59;
@@ -267,22 +267,22 @@ LABEL_25:
           {
             if (*v193 != v63)
             {
-              objc_enumerationMutation(v58);
+              objc_enumerationMutation(sampleCollections);
             }
 
             v65 = *(*(&v192 + 1) + 8 * j);
-            if (!+[HDDataSyncUtilities insertObjectsFromCodableObjectCollection:syncEntityClass:syncStore:profile:error:](HDDataSyncUtilities, "insertObjectsFromCodableObjectCollection:syncEntityClass:syncStore:profile:error:", v65, [v179 syncEntityClass], 0, v180, a7))
+            if (!+[HDDataSyncUtilities insertObjectsFromCodableObjectCollection:syncEntityClass:syncStore:profile:error:](HDDataSyncUtilities, "insertObjectsFromCodableObjectCollection:syncEntityClass:syncStore:profile:error:", v65, [v179 syncEntityClass], 0, profileCopy, error))
             {
               _HKInitializeLogging();
-              v66 = [v179 loggingCategory];
-              if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
+              loggingCategory7 = [v179 loggingCategory];
+              if (os_log_type_enabled(loggingCategory7, OS_LOG_TYPE_ERROR))
               {
-                v68 = *a7;
+                v68 = *error;
                 *buf = 138543618;
-                *&buf[4] = v177;
+                *&buf[4] = selfCopy;
                 *&buf[12] = 2114;
                 *&buf[14] = v68;
-                _os_log_error_impl(&dword_228986000, v66, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to save samples with error: %{public}@", buf, 0x16u);
+                _os_log_error_impl(&dword_228986000, loggingCategory7, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to save samples with error: %{public}@", buf, 0x16u);
               }
 
               v62 = 1;
@@ -292,30 +292,30 @@ LABEL_25:
             v61 += v67 - [v65 deletedSamplesCount];
           }
 
-          v60 = [v58 countByEnumeratingWithState:&v192 objects:v208 count:16];
+          v60 = [sampleCollections countByEnumeratingWithState:&v192 objects:v208 count:16];
         }
 
         while (v60);
 
         v17 = v169;
-        v20 = v171;
+        loggingCategory16 = v171;
         v38 = v175;
-        v57 = v177;
+        v57 = selfCopy;
         if (v62)
         {
           _HKInitializeLogging();
-          v13 = v179;
-          v69 = [v179 loggingCategory];
+          configurationCopy = v179;
+          loggingCategory8 = [v179 loggingCategory];
           v25 = v172;
-          v24 = v173;
-          if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+          loggingCategory = v173;
+          if (os_log_type_enabled(loggingCategory8, OS_LOG_TYPE_ERROR))
           {
-            v148 = *a7;
+            v148 = *error;
             *buf = 138543618;
-            *&buf[4] = v177;
+            *&buf[4] = selfCopy;
             *&buf[12] = 2114;
             *&buf[14] = v148;
-            _os_log_error_impl(&dword_228986000, v69, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to insert a sample with error: %{public}@", buf, 0x16u);
+            _os_log_error_impl(&dword_228986000, loggingCategory8, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to insert a sample with error: %{public}@", buf, 0x16u);
           }
 
           v36 = 0;
@@ -330,14 +330,14 @@ LABEL_25:
       }
 
       _HKInitializeLogging();
-      v70 = [v179 loggingCategory];
-      if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
+      loggingCategory9 = [v179 loggingCategory];
+      if (os_log_type_enabled(loggingCategory9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
         *&buf[4] = v57;
         *&buf[12] = 1024;
         *&buf[14] = v61;
-        _os_log_impl(&dword_228986000, v70, OS_LOG_TYPE_DEFAULT, "[%{public}@] Persist %i sample events for state sync", buf, 0x12u);
+        _os_log_impl(&dword_228986000, loggingCategory9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Persist %i sample events for state sync", buf, 0x12u);
       }
 
       v71 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -345,9 +345,9 @@ LABEL_25:
       v189 = 0u;
       v190 = 0u;
       v191 = 0u;
-      v72 = [v38 sampleCollections];
-      v73 = [v72 countByEnumeratingWithState:&v188 objects:v207 count:16];
-      v13 = v179;
+      sampleCollections2 = [v38 sampleCollections];
+      v73 = [sampleCollections2 countByEnumeratingWithState:&v188 objects:v207 count:16];
+      configurationCopy = v179;
       if (v73)
       {
         v74 = v73;
@@ -358,36 +358,36 @@ LABEL_25:
           {
             if (*v189 != v75)
             {
-              objc_enumerationMutation(v72);
+              objc_enumerationMutation(sampleCollections2);
             }
 
             v77 = [v179 sampleUUIDsFromCodableObjectCollection:*(*(&v188 + 1) + 8 * k)];
             [v71 addObjectsFromArray:v77];
           }
 
-          v74 = [v72 countByEnumeratingWithState:&v188 objects:v207 count:16];
+          v74 = [sampleCollections2 countByEnumeratingWithState:&v188 objects:v207 count:16];
         }
 
         while (v74);
       }
 
       v187 = 0;
-      v78 = [v179 timeWindow];
-      v79 = [HDCloudSyncStateSampleWindowUpdater _fetchPersistedDeletedSamples:&v187 withSampleUUIDs:v71 profile:v180 transaction:v78 timeWindow:a7 error:?];
+      timeWindow = [v179 timeWindow];
+      v79 = [HDCloudSyncStateSampleWindowUpdater _fetchPersistedDeletedSamples:&v187 withSampleUUIDs:v71 profile:profileCopy transaction:timeWindow timeWindow:error error:?];
       v176 = v187;
 
       if (!v79)
       {
         _HKInitializeLogging();
-        v100 = [v179 loggingCategory];
-        if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
+        loggingCategory10 = [v179 loggingCategory];
+        if (os_log_type_enabled(loggingCategory10, OS_LOG_TYPE_ERROR))
         {
-          v147 = *a7;
+          v147 = *error;
           *buf = 138543618;
-          *&buf[4] = v177;
+          *&buf[4] = selfCopy;
           *&buf[12] = 2114;
           *&buf[14] = v147;
-          _os_log_error_impl(&dword_228986000, v100, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to fetch deleted samples with error: %{public}@", buf, 0x16u);
+          _os_log_error_impl(&dword_228986000, loggingCategory10, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to fetch deleted samples with error: %{public}@", buf, 0x16u);
         }
 
         v36 = 0;
@@ -402,17 +402,17 @@ LABEL_25:
       v176 = 0;
     }
 
-    v80 = v13;
-    v81 = v180;
+    v80 = configurationCopy;
+    v81 = profileCopy;
     objc_opt_self();
-    v82 = [v80 sampleType];
-    v83 = HDSampleEntityPredicateForDataType(v82);
+    sampleType = [v80 sampleType];
+    v83 = HDSampleEntityPredicateForDataType(sampleType);
     v84 = MEMORY[0x277D10B20];
     v85 = HDDataEntityPredicateForType(2);
     v86 = [v84 negatedPredicate:v85];
 
-    v87 = [v80 timeWindow];
-    v88 = HDSampleEntityPredicateForDateInterval(v87, v82);
+    timeWindow2 = [v80 timeWindow];
+    v88 = HDSampleEntityPredicateForDateInterval(timeWindow2, sampleType);
 
     v89 = MEMORY[0x277D10B20];
     v163 = v86;
@@ -423,11 +423,11 @@ LABEL_25:
     v90 = [MEMORY[0x277CBEA60] arrayWithObjects:buf count:3];
     v91 = [v89 predicateMatchingAllPredicates:v90];
 
-    v92 = [v80 sampleType];
+    sampleType2 = [v80 sampleType];
     v167 = v80;
 
-    v93 = [objc_msgSend(v92 "dataObjectClass")];
-    v94 = [HDDataSyncUtilities generateCodableObjectCollectionsForEntityClass:v93 predicate:v91 profile:v81 error:a7];
+    v93 = [objc_msgSend(sampleType2 "dataObjectClass")];
+    v94 = [HDDataSyncUtilities generateCodableObjectCollectionsForEntityClass:v93 predicate:v91 profile:v81 error:error];
     log = v81;
 
     if (v94 && [v94 count])
@@ -442,39 +442,39 @@ LABEL_25:
     }
 
     v17 = v169;
-    v97 = v177;
+    v97 = selfCopy;
 
     v98 = v96;
     v71 = v98;
     if (!v94)
     {
       _HKInitializeLogging();
-      v100 = [v80 loggingCategory];
-      v12 = v168;
+      loggingCategory10 = [v80 loggingCategory];
+      storageCopy = v168;
       v38 = v175;
-      if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingCategory10, OS_LOG_TYPE_ERROR))
       {
-        v145 = *a7;
+        v145 = *error;
         *buf = 138543618;
-        *&buf[4] = v177;
+        *&buf[4] = selfCopy;
         *&buf[12] = 2114;
         *&buf[14] = v145;
-        _os_log_error_impl(&dword_228986000, v100, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to fetch samples with error: %{public}@", buf, 0x16u);
+        _os_log_error_impl(&dword_228986000, loggingCategory10, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to fetch samples with error: %{public}@", buf, 0x16u);
       }
 
       v36 = 0;
-      v13 = v179;
+      configurationCopy = v179;
       goto LABEL_144;
     }
 
-    v99 = [v98 allValues];
-    v166 = [v176 allValues];
+    allValues = [v98 allValues];
+    allValues2 = [v176 allValues];
     v183 = 0u;
     v184 = 0u;
     v185 = 0u;
     v186 = 0u;
-    v100 = v99;
-    v101 = [v100 countByEnumeratingWithState:&v183 objects:v206 count:16];
+    loggingCategory10 = allValues;
+    v101 = [loggingCategory10 countByEnumeratingWithState:&v183 objects:v206 count:16];
     if (v101)
     {
       v102 = v101;
@@ -487,20 +487,20 @@ LABEL_25:
         {
           if (*v184 != v105)
           {
-            objc_enumerationMutation(v100);
+            objc_enumerationMutation(loggingCategory10);
           }
 
           v107 = *(*(&v183 + 1) + 8 * m);
-          v108 = [v107 deletedSamplesCount];
-          v104 += [v107 count] - v108;
-          v103 += v108;
+          deletedSamplesCount = [v107 deletedSamplesCount];
+          v104 += [v107 count] - deletedSamplesCount;
+          v103 += deletedSamplesCount;
         }
 
-        v102 = [v100 countByEnumeratingWithState:&v183 objects:v206 count:16];
+        v102 = [loggingCategory10 countByEnumeratingWithState:&v183 objects:v206 count:16];
       }
 
       while (v102);
-      v97 = v177;
+      v97 = selfCopy;
     }
 
     else
@@ -510,9 +510,9 @@ LABEL_25:
     }
 
     _HKInitializeLogging();
-    v109 = [v167 loggingCategory];
+    loggingCategory11 = [v167 loggingCategory];
     v38 = v175;
-    if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(loggingCategory11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
       *&buf[4] = v97;
@@ -520,16 +520,16 @@ LABEL_25:
       *&buf[14] = v104;
       *&buf[18] = 1024;
       *&buf[20] = v103;
-      _os_log_impl(&dword_228986000, v109, OS_LOG_TYPE_DEFAULT, "[%{public}@] Fetch %i local samples and %i deleted samples for state sync", buf, 0x18u);
+      _os_log_impl(&dword_228986000, loggingCategory11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Fetch %i local samples and %i deleted samples for state sync", buf, 0x18u);
     }
 
-    if (v100)
+    if (loggingCategory10)
     {
       v110 = objc_alloc_init(HDCodableStateSyncCollection);
-      v111 = [v100 mutableCopy];
+      v111 = [loggingCategory10 mutableCopy];
       [v110 setSampleCollections:v111];
 
-      if (!v166)
+      if (!allValues2)
       {
 LABEL_106:
         v113 = [(HDCloudSyncStateSampleWindowUpdater *)v97 _healthObjectUUIDsFromMergedStateSyncCollection:v175 configuration:v167];
@@ -541,22 +541,22 @@ LABEL_106:
         v116 = [v115 isEqualToSet:v159];
         v117 = (v175 | v110) == 0;
         _HKInitializeLogging();
-        v118 = [v167 loggingCategory];
-        v119 = os_log_type_enabled(v118, OS_LOG_TYPE_DEFAULT);
+        loggingCategory12 = [v167 loggingCategory];
+        v119 = os_log_type_enabled(loggingCategory12, OS_LOG_TYPE_DEFAULT);
         if ((v116 & 1) != 0 || v117)
         {
-          v158 = v118;
+          v158 = loggingCategory12;
           if (v119)
           {
             *buf = 138543362;
-            *&buf[4] = v177;
-            _os_log_impl(&dword_228986000, v118, OS_LOG_TYPE_DEFAULT, "[%{public}@] Steady state reached for samples.", buf, 0xCu);
+            *&buf[4] = selfCopy;
+            _os_log_impl(&dword_228986000, loggingCategory12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Steady state reached for samples.", buf, 0xCu);
           }
 
           v36 = 1;
-          v12 = v168;
+          storageCopy = v168;
           v17 = v169;
-          v13 = v179;
+          configurationCopy = v179;
           v123 = v164;
           v133 = v159;
           goto LABEL_143;
@@ -565,45 +565,45 @@ LABEL_106:
         if (v119)
         {
           *buf = 138543874;
-          *&buf[4] = v177;
+          *&buf[4] = selfCopy;
           *&buf[12] = 1024;
           *&buf[14] = v104;
           *&buf[18] = 1024;
           *&buf[20] = v103;
-          _os_log_impl(&dword_228986000, v118, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set %i samples and %i deleted samples in cloud state for state sync", buf, 0x18u);
+          _os_log_impl(&dword_228986000, loggingCategory12, OS_LOG_TYPE_DEFAULT, "[%{public}@] Set %i samples and %i deleted samples in cloud state for state sync", buf, 0x18u);
         }
 
-        v120 = [v167 domain];
+        domain = [v167 domain];
         v121 = [v167 key];
-        v122 = [(HDCloudSyncStateSampleWindowUpdater *)v177 _codableSyncStateFromExistingSyncState:v174 forDomain:v120 key:v121];
+        v122 = [(HDCloudSyncStateSampleWindowUpdater *)selfCopy _codableSyncStateFromExistingSyncState:v174 forDomain:domain key:v121];
 
         [v122 setVersionRange:0x100000001];
         v123 = v164;
         [v122 setCodableObject:v164 version:1 profile:log];
         v158 = v122;
-        v124 = [v122 data];
+        data = [v122 data];
         v125 = [v167 key];
-        v12 = v168;
-        v126 = [v168 setData:v124 forKey:v125 error:a7];
+        storageCopy = v168;
+        v126 = [v168 setData:data forKey:v125 error:error];
 
         if ((v126 & 1) == 0)
         {
           _HKInitializeLogging();
-          v134 = [v167 loggingCategory];
-          v13 = v179;
+          loggingCategory13 = [v167 loggingCategory];
+          configurationCopy = v179;
           v17 = v169;
-          v157 = v134;
-          if (os_log_type_enabled(v134, OS_LOG_TYPE_ERROR))
+          v157 = loggingCategory13;
+          if (os_log_type_enabled(loggingCategory13, OS_LOG_TYPE_ERROR))
           {
             v150 = [v167 key];
-            v151 = *a7;
+            v151 = *error;
             *buf = 138543874;
-            *&buf[4] = v177;
+            *&buf[4] = selfCopy;
             *&buf[12] = 2114;
             *&buf[14] = v150;
             *&buf[22] = 2114;
             v211 = v151;
-            _os_log_error_impl(&dword_228986000, v134, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to set merged data for key: %{public}@, with error: %{public}@", buf, 0x20u);
+            _os_log_error_impl(&dword_228986000, loggingCategory13, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to set merged data for key: %{public}@, with error: %{public}@", buf, 0x20u);
           }
 
           v36 = 0;
@@ -613,12 +613,12 @@ LABEL_106:
           goto LABEL_142;
         }
 
-        v13 = v179;
+        configurationCopy = v179;
         v17 = v169;
         if (v71)
         {
           v182 = 0;
-          v127 = [HDCloudSyncStateSampleWindowUpdater _generateSyncCodableDevices:v71 fromCollectionByProvenance:log profile:v178 transaction:a7 error:?];
+          v127 = [HDCloudSyncStateSampleWindowUpdater _generateSyncCodableDevices:v71 fromCollectionByProvenance:log profile:v178 transaction:error error:?];
           v157 = v182;
           if (!v127)
           {
@@ -628,9 +628,9 @@ LABEL_106:
             v115 = v160;
             if (os_log_type_enabled(loga, OS_LOG_TYPE_ERROR))
             {
-              v152 = *a7;
+              v152 = *error;
               *buf = 138543618;
-              *&buf[4] = v177;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2114;
               *&buf[14] = v152;
               _os_log_error_impl(&dword_228986000, loga, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to generate merged devices with error: %{public}@", buf, 0x16u);
@@ -641,7 +641,7 @@ LABEL_106:
           }
 
           v181 = 0;
-          v36 = [HDCloudSyncStateSampleWindowUpdater _generateSyncCodableContributors:v71 fromCollectionByProvenance:log profile:v178 transaction:a7 error:?];
+          v36 = [HDCloudSyncStateSampleWindowUpdater _generateSyncCodableContributors:v71 fromCollectionByProvenance:log profile:v178 transaction:error error:?];
           v128 = v181;
           v129 = v128;
           if (v36)
@@ -655,22 +655,22 @@ LABEL_106:
             {
 
               v132 = v130;
-              v12 = v168;
+              storageCopy = v168;
               goto LABEL_125;
             }
 
             loga = v129;
             _HKInitializeLogging();
-            v149 = [v167 loggingCategory];
-            if (os_log_type_enabled(v149, OS_LOG_TYPE_DEFAULT))
+            loggingCategory14 = [v167 loggingCategory];
+            if (os_log_type_enabled(loggingCategory14, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543362;
-              *&buf[4] = v177;
-              _os_log_impl(&dword_228986000, v149, OS_LOG_TYPE_DEFAULT, "[%{public}@] Steady state reached for sample origin.", buf, 0xCu);
+              *&buf[4] = selfCopy;
+              _os_log_impl(&dword_228986000, loggingCategory14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Steady state reached for sample origin.", buf, 0xCu);
             }
 
-            v12 = v168;
-            v13 = v179;
+            storageCopy = v168;
+            configurationCopy = v179;
             v133 = v159;
             v115 = v160;
             p_super = &v156->super.super;
@@ -684,9 +684,9 @@ LABEL_106:
             v115 = v160;
             if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
             {
-              v155 = *a7;
+              v155 = *error;
               *buf = 138543618;
-              *&buf[4] = v177;
+              *&buf[4] = selfCopy;
               *&buf[12] = 2114;
               *&buf[14] = v155;
               _os_log_error_impl(&dword_228986000, p_super, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to generate merged contributors with error: %{public}@", buf, 0x16u);
@@ -701,22 +701,22 @@ LABEL_106:
 
         v132 = 0;
 LABEL_125:
-        v136 = [v167 domain];
-        v137 = [v167 sampleOriginKey];
-        v138 = [(HDCloudSyncStateSampleWindowUpdater *)v177 _codableSyncStateFromExistingSyncState:v173 forDomain:v136 key:v137];
+        domain2 = [v167 domain];
+        sampleOriginKey3 = [v167 sampleOriginKey];
+        v138 = [(HDCloudSyncStateSampleWindowUpdater *)selfCopy _codableSyncStateFromExistingSyncState:v173 forDomain:domain2 key:sampleOriginKey3];
 
         [v138 setVersionRange:0x100000001];
         v36 = 1;
         v157 = &v132->super.super;
         [v138 setCodableObject:v132 version:1 profile:log];
         loga = v138;
-        v139 = [v138 data];
-        v140 = [v167 sampleOriginKey];
-        v141 = [v12 setData:v139 forKey:v140 error:a7];
+        data2 = [v138 data];
+        sampleOriginKey4 = [v167 sampleOriginKey];
+        v141 = [storageCopy setData:data2 forKey:sampleOriginKey4 error:error];
 
         if (v141)
         {
-          v13 = v179;
+          configurationCopy = v179;
           v38 = v175;
           v123 = v164;
           v115 = v160;
@@ -725,26 +725,26 @@ LABEL_125:
         else
         {
           _HKInitializeLogging();
-          v142 = [v167 loggingCategory];
+          loggingCategory15 = [v167 loggingCategory];
           v38 = v175;
           v115 = v160;
-          if (os_log_type_enabled(v142, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingCategory15, OS_LOG_TYPE_ERROR))
           {
-            v153 = [v167 sampleOriginKey];
-            v154 = *a7;
+            sampleOriginKey5 = [v167 sampleOriginKey];
+            v154 = *error;
             *buf = 138543874;
-            *&buf[4] = v177;
+            *&buf[4] = selfCopy;
             *&buf[12] = 2114;
-            *&buf[14] = v153;
+            *&buf[14] = sampleOriginKey5;
             *&buf[22] = 2114;
             v211 = v154;
-            _os_log_error_impl(&dword_228986000, v142, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to set merged data for key: %{public}@, with error: %{public}@", buf, 0x20u);
+            _os_log_error_impl(&dword_228986000, loggingCategory15, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to set merged data for key: %{public}@, with error: %{public}@", buf, 0x20u);
 
             v38 = v175;
           }
 
           v36 = 0;
-          v13 = v179;
+          configurationCopy = v179;
           v123 = v164;
         }
 
@@ -756,23 +756,23 @@ LABEL_142:
 LABEL_143:
 
 LABEL_144:
-        v20 = v171;
+        loggingCategory16 = v171;
         v25 = v172;
-        v24 = v173;
+        loggingCategory = v173;
         goto LABEL_25;
       }
 
       if (v110)
       {
 LABEL_105:
-        v112 = [v166 mutableCopy];
+        v112 = [allValues2 mutableCopy];
         [v110 setDeletedSampleCollections:v112];
 
         goto LABEL_106;
       }
     }
 
-    else if (!v166)
+    else if (!allValues2)
     {
       v110 = 0;
       goto LABEL_106;
@@ -783,18 +783,18 @@ LABEL_105:
   }
 
   _HKInitializeLogging();
-  v20 = [v13 loggingCategory];
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+  loggingCategory16 = [configurationCopy loggingCategory];
+  if (os_log_type_enabled(loggingCategory16, OS_LOG_TYPE_ERROR))
   {
-    v41 = [v13 sampleOriginKey];
-    v42 = *a7;
+    sampleOriginKey6 = [configurationCopy sampleOriginKey];
+    v42 = *error;
     *buf = 138543874;
-    *&buf[4] = a1;
+    *&buf[4] = self;
     *&buf[12] = 2114;
-    *&buf[14] = v41;
+    *&buf[14] = sampleOriginKey6;
     *&buf[22] = 2114;
     v211 = v42;
-    _os_log_error_impl(&dword_228986000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to fetch cloud data for key: %{public}@, with error: %{public}@", buf, 0x20u);
+    _os_log_error_impl(&dword_228986000, loggingCategory16, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to fetch cloud data for key: %{public}@, with error: %{public}@", buf, 0x20u);
   }
 
   v36 = 0;
@@ -804,16 +804,16 @@ LABEL_28:
   return v36;
 }
 
-+ (uint64_t)_decodeCloudData:(objc_class *)a3 ofClass:(void *)a4 forKey:(void *)a5 dataVersion:(HDCodableSyncState *)a6 currentSyncVersion:(NSObject *)a7 configuration:(uint64_t *)a8 codableSyncState:codableCollection:error:
++ (uint64_t)_decodeCloudData:(objc_class *)data ofClass:(void *)class forKey:(void *)key dataVersion:(HDCodableSyncState *)version currentSyncVersion:(NSObject *)syncVersion configuration:(uint64_t *)configuration codableSyncState:codableCollection:error:
 {
   v76 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a4;
+  keyCopy = key;
+  classCopy = class;
   v13 = a2;
   v14 = objc_opt_self();
   v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  v16 = classCopy;
+  v17 = keyCopy;
   v18 = objc_opt_self();
   if (!v15)
   {
@@ -827,39 +827,39 @@ LABEL_28:
   v21 = v20;
   if (v20)
   {
-    v22 = [(HDCodableSyncState *)v20 domain];
-    v23 = [v17 domain];
-    v24 = v23;
-    v64 = a3;
+    domain = [(HDCodableSyncState *)v20 domain];
+    domain2 = [v17 domain];
+    v24 = domain2;
+    dataCopy = data;
     v65 = v14;
-    if (v22 == v23)
+    if (domain == domain2)
     {
     }
 
     else
     {
       v63 = v19;
-      v25 = [v17 domain];
-      if (!v25)
+      domain3 = [v17 domain];
+      if (!domain3)
       {
 
 LABEL_15:
         v38 = MEMORY[0x277CCA9B8];
         v39 = [(HDCodableSyncState *)v21 key];
-        v40 = [v17 domain];
-        [v38 hk_assignError:a8 code:129 format:{@"Deserialized domain %@ does not match expected value %@", v39, v40}];
+        domain4 = [v17 domain];
+        [v38 hk_assignError:configuration code:129 format:{@"Deserialized domain %@ does not match expected value %@", v39, domain4}];
 
         v30 = 0;
         v31 = 0;
-        a3 = v64;
+        data = dataCopy;
         v14 = v65;
         goto LABEL_25;
       }
 
-      v26 = v25;
-      v27 = [(HDCodableSyncState *)v21 domain];
-      v28 = [v17 domain];
-      v29 = [v27 isEqualToString:v28];
+      v26 = domain3;
+      domain5 = [(HDCodableSyncState *)v21 domain];
+      domain6 = [v17 domain];
+      v29 = [domain5 isEqualToString:domain6];
 
       v19 = v63;
       if ((v29 & 1) == 0)
@@ -873,7 +873,7 @@ LABEL_15:
     if (v34 == v16)
     {
 
-      a3 = v64;
+      data = dataCopy;
     }
 
     else
@@ -881,12 +881,12 @@ LABEL_15:
       if (!v16)
       {
 
-        a3 = v64;
+        data = dataCopy;
 LABEL_23:
         v45 = MEMORY[0x277CCA9B8];
         v46 = [(HDCodableSyncState *)v21 key];
-        v47 = [v17 domain];
-        [v45 hk_assignError:a8 code:129 format:{@"Deserialized key %@ does not match %@ for domain %@", v46, v16, v47}];
+        domain7 = [v17 domain];
+        [v45 hk_assignError:configuration code:129 format:{@"Deserialized key %@ does not match %@ for domain %@", v46, v16, domain7}];
 
         v30 = 0;
         v31 = 0;
@@ -898,7 +898,7 @@ LABEL_24:
       v36 = [(HDCodableSyncState *)v21 key];
       v37 = [v36 isEqualToString:v16];
 
-      a3 = v64;
+      data = dataCopy;
       if ((v37 & 1) == 0)
       {
         goto LABEL_23;
@@ -915,22 +915,22 @@ LABEL_24:
     else
     {
       _HKInitializeLogging();
-      v41 = [v17 loggingCategory];
-      if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+      loggingCategory = [v17 loggingCategory];
+      if (os_log_type_enabled(loggingCategory, OS_LOG_TYPE_DEFAULT))
       {
-        v42 = [(HDCodableSyncState *)v21 versionRange];
-        v43 = [v17 domain];
+        versionRange = [(HDCodableSyncState *)v21 versionRange];
+        domain8 = [v17 domain];
         *buf = 138544386;
         v71 = v19;
         v72 = 1024;
-        *v73 = v42;
+        *v73 = versionRange;
         *&v73[4] = 2048;
         *&v73[6] = 1;
         *&v73[14] = 2114;
-        *&v73[16] = v43;
+        *&v73[16] = domain8;
         v74 = 2114;
         v75 = v16;
-        _os_log_impl(&dword_228986000, v41, OS_LOG_TYPE_DEFAULT, "[%{public}@] Codable state has minimum version %d but current version for OS is %ld for (%{public}@, %{public}@) ", buf, 0x30u);
+        _os_log_impl(&dword_228986000, loggingCategory, OS_LOG_TYPE_DEFAULT, "[%{public}@] Codable state has minimum version %d but current version for OS is %ld for (%{public}@, %{public}@) ", buf, 0x30u);
       }
 
       v30 = 0;
@@ -941,8 +941,8 @@ LABEL_24:
   }
 
   v32 = MEMORY[0x277CCA9B8];
-  v33 = [v17 domain];
-  [v32 hk_assignError:a8 code:129 format:{@"Unable to decode state sync data for domain %@ key %@", v33, v16}];
+  domain9 = [v17 domain];
+  [v32 hk_assignError:configuration code:129 format:{@"Unable to decode state sync data for domain %@ key %@", domain9, v16}];
 
   v30 = 0;
   v31 = 0;
@@ -954,15 +954,15 @@ LABEL_26:
   if (v31 == 2)
   {
     _HKInitializeLogging();
-    v50 = [v17 loggingCategory];
-    if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
+    loggingCategory2 = [v17 loggingCategory];
+    if (os_log_type_enabled(loggingCategory2, OS_LOG_TYPE_DEFAULT))
     {
-      v53 = NSStringFromClass(a3);
+      v53 = NSStringFromClass(data);
       *buf = 138543618;
       v71 = v14;
       v72 = 2114;
       *v73 = v53;
-      _os_log_impl(&dword_228986000, v50, OS_LOG_TYPE_DEFAULT, "[%{public}@] Decode finished without error but could not decode sync state codable of class: %{public}@.", buf, 0x16u);
+      _os_log_impl(&dword_228986000, loggingCategory2, OS_LOG_TYPE_DEFAULT, "[%{public}@] Decode finished without error but could not decode sync state codable of class: %{public}@.", buf, 0x16u);
     }
 
     v54 = 1;
@@ -973,18 +973,18 @@ LABEL_26:
     if (!v31)
     {
       _HKInitializeLogging();
-      v50 = [v17 loggingCategory];
-      if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+      loggingCategory2 = [v17 loggingCategory];
+      if (os_log_type_enabled(loggingCategory2, OS_LOG_TYPE_ERROR))
       {
-        v51 = NSStringFromClass(a3);
-        v52 = *a8;
+        v51 = NSStringFromClass(data);
+        v52 = *configuration;
         *buf = 138543874;
         v71 = v14;
         v72 = 2114;
         *v73 = v51;
         *&v73[8] = 2114;
         *&v73[10] = v52;
-        _os_log_error_impl(&dword_228986000, v50, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to decode cloud sync state codable of class: %{public}@, with error: %{public}@", buf, 0x20u);
+        _os_log_error_impl(&dword_228986000, loggingCategory2, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to decode cloud sync state codable of class: %{public}@, with error: %{public}@", buf, 0x20u);
       }
 
 LABEL_38:
@@ -995,23 +995,23 @@ LABEL_38:
     if (v48)
     {
       v69 = 0;
-      v55 = [(HDCodableSyncState *)v48 decodedObjectOfClass:a3 version:1 decodedObject:&v69 error:a8];
-      v50 = v69;
+      v55 = [(HDCodableSyncState *)v48 decodedObjectOfClass:data version:1 decodedObject:&v69 error:configuration];
+      loggingCategory2 = v69;
       if (!v55)
       {
         _HKInitializeLogging();
-        v56 = [v17 loggingCategory];
-        if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
+        loggingCategory3 = [v17 loggingCategory];
+        if (os_log_type_enabled(loggingCategory3, OS_LOG_TYPE_ERROR))
         {
-          v61 = NSStringFromClass(a3);
-          v62 = *a8;
+          v61 = NSStringFromClass(data);
+          v62 = *configuration;
           *buf = 138543874;
           v71 = v14;
           v72 = 2114;
           *v73 = v61;
           *&v73[8] = 2114;
           *&v73[10] = v62;
-          _os_log_error_impl(&dword_228986000, v56, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to decode codable cloud collection of class: %{public}@, with error: %{public}@", buf, 0x20u);
+          _os_log_error_impl(&dword_228986000, loggingCategory3, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to decode codable cloud collection of class: %{public}@, with error: %{public}@", buf, 0x20u);
         }
 
         goto LABEL_38;
@@ -1020,19 +1020,19 @@ LABEL_38:
 
     else
     {
-      v50 = 0;
+      loggingCategory2 = 0;
     }
 
-    if (a6)
+    if (version)
     {
       v57 = v49;
-      *a6 = v49;
+      *version = v49;
     }
 
-    if (a7)
+    if (syncVersion)
     {
-      v58 = v50;
-      *a7 = v50;
+      v58 = loggingCategory2;
+      *syncVersion = loggingCategory2;
     }
 
     v54 = 2;
@@ -1044,21 +1044,21 @@ LABEL_45:
   return v54;
 }
 
-+ (BOOL)_fetchPersistedDeletedSamples:(uint64_t)a1 withSampleUUIDs:(void *)a2 profile:(void *)a3 transaction:(void *)a4 timeWindow:(void *)a5 error:(uint64_t)a6
++ (BOOL)_fetchPersistedDeletedSamples:(uint64_t)samples withSampleUUIDs:(void *)ds profile:(void *)profile transaction:(void *)transaction timeWindow:(void *)window error:(uint64_t)error
 {
   v29[4] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  profileCopy = profile;
+  transactionCopy = transaction;
+  windowCopy = window;
   objc_opt_self();
-  if ([v9 count])
+  if ([profileCopy count])
   {
     v12 = HDDataEntityPredicateForType(2);
-    v13 = HDDataEntityPredicateForDataUUIDs(v9);
-    v14 = [v11 endDate];
+    v13 = HDDataEntityPredicateForDataUUIDs(profileCopy);
+    endDate = [windowCopy endDate];
     v15 = HDSampleEntityPredicateForStartDate(3);
 
-    v16 = [v11 startDate];
+    startDate = [windowCopy startDate];
     v17 = HDSampleEntityPredicateForEndDate(6);
 
     v27 = v12;
@@ -1068,18 +1068,18 @@ LABEL_45:
     v29[3] = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
     v19 = [MEMORY[0x277D10B20] predicateMatchingAllPredicates:v18];
-    v20 = +[HDDataSyncUtilities generateCodableObjectCollectionsForEntityClass:predicate:profile:error:](HDDataSyncUtilities, "generateCodableObjectCollectionsForEntityClass:predicate:profile:error:", +[HDDataSyncUtilities deletedSampleEntityClass], v19, v10, a6);
+    v20 = +[HDDataSyncUtilities generateCodableObjectCollectionsForEntityClass:predicate:profile:error:](HDDataSyncUtilities, "generateCodableObjectCollectionsForEntityClass:predicate:profile:error:", +[HDDataSyncUtilities deletedSampleEntityClass], v19, transactionCopy, error);
     v21 = v20;
     v22 = v20 != 0;
     if (v20)
     {
       v23 = [v20 count];
-      if (a2)
+      if (ds)
       {
         if (v23)
         {
           v24 = v21;
-          *a2 = v21;
+          *ds = v21;
         }
       }
     }
@@ -1094,19 +1094,19 @@ LABEL_45:
   return v22;
 }
 
-+ (id)_healthObjectUUIDsFromMergedStateSyncCollection:(void *)a3 configuration:
++ (id)_healthObjectUUIDsFromMergedStateSyncCollection:(void *)collection configuration:
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v5 = a3;
+  collectionCopy = collection;
   objc_opt_self();
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v7 = [v4 sampleCollections];
+  sampleCollections = [v4 sampleCollections];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [sampleCollections countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1117,14 +1117,14 @@ LABEL_45:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(sampleCollections);
         }
 
-        v12 = [v5 sampleUUIDsFromCodableObjectCollection:*(*(&v15 + 1) + 8 * i)];
+        v12 = [collectionCopy sampleUUIDsFromCodableObjectCollection:*(*(&v15 + 1) + 8 * i)];
         [v6 addObjectsFromArray:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [sampleCollections countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -1135,11 +1135,11 @@ LABEL_45:
   return v6;
 }
 
-+ (HDCodableSyncState)_codableSyncStateFromExistingSyncState:(void *)a3 forDomain:(void *)a4 key:
++ (HDCodableSyncState)_codableSyncStateFromExistingSyncState:(void *)state forDomain:(void *)domain key:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  domainCopy = domain;
   objc_opt_self();
   if (v6)
   {
@@ -1149,26 +1149,26 @@ LABEL_45:
   else
   {
     v9 = objc_alloc_init(HDCodableSyncState);
-    [(HDCodableSyncState *)v9 setDomain:v7];
-    [(HDCodableSyncState *)v9 setKey:v8];
+    [(HDCodableSyncState *)v9 setDomain:stateCopy];
+    [(HDCodableSyncState *)v9 setKey:domainCopy];
   }
 
   return v9;
 }
 
-+ (BOOL)_generateSyncCodableDevices:(void *)a3 fromCollectionByProvenance:(void *)a4 profile:(void *)a5 transaction:(uint64_t)a6 error:
++ (BOOL)_generateSyncCodableDevices:(void *)devices fromCollectionByProvenance:(void *)provenance profile:(void *)profile transaction:(uint64_t)transaction error:
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  devicesCopy = devices;
+  provenanceCopy = provenance;
+  profileCopy = profile;
   objc_opt_self();
-  v13 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  v13 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(devicesCopy, "count")}];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v14 = v10;
+  v14 = devicesCopy;
   v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v15)
   {
@@ -1184,17 +1184,17 @@ LABEL_45:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v29 + 1) + 8 * v18) deviceID];
-        if (!v19)
+        deviceID = [*(*(&v29 + 1) + 8 * v18) deviceID];
+        if (!deviceID)
         {
-          [MEMORY[0x277CCA9B8] hk_assignError:a6 code:3 format:@"DataOriginProvenance's deviceID is unexpectedly nil."];
+          [MEMORY[0x277CCA9B8] hk_assignError:transaction code:3 format:@"DataOriginProvenance's deviceID is unexpectedly nil."];
           v22 = 0;
           v24 = v14;
           goto LABEL_14;
         }
 
-        v20 = v19;
-        [v13 addObject:v19];
+        v20 = deviceID;
+        [v13 addObject:deviceID];
 
         ++v18;
       }
@@ -1212,7 +1212,7 @@ LABEL_45:
 
   v21 = [MEMORY[0x277D10B28] containsPredicateWithProperty:*MEMORY[0x277D10A40] values:v13];
   v28 = 0;
-  v22 = [HDSyncSampleOriginUtilities generateStateSyncCodableDevices:&v28 predicate:v21 profile:v11 transaction:v12 error:a6];
+  v22 = [HDSyncSampleOriginUtilities generateStateSyncCodableDevices:&v28 predicate:v21 profile:provenanceCopy transaction:profileCopy error:transaction];
   v23 = v28;
   v24 = v23;
   if (a2 && v22)
@@ -1226,20 +1226,20 @@ LABEL_14:
   return v22;
 }
 
-+ (BOOL)_generateSyncCodableContributors:(void *)a3 fromCollectionByProvenance:(void *)a4 profile:(void *)a5 transaction:(uint64_t)a6 error:
++ (BOOL)_generateSyncCodableContributors:(void *)contributors fromCollectionByProvenance:(void *)provenance profile:(void *)profile transaction:(uint64_t)transaction error:
 {
-  v26 = a6;
+  transactionCopy = transaction;
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v29 = a4;
-  v27 = a5;
+  contributorsCopy = contributors;
+  provenanceCopy = provenance;
+  profileCopy = profile;
   v9 = objc_opt_self();
-  v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v10 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(contributorsCopy, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v8;
+  v11 = contributorsCopy;
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v12)
   {
@@ -1255,10 +1255,10 @@ LABEL_14:
           objc_enumerationMutation(v11);
         }
 
-        v17 = [*(*(&v31 + 1) + 8 * i) contributorID];
-        if (v17)
+        contributorID = [*(*(&v31 + 1) + 8 * i) contributorID];
+        if (contributorID)
         {
-          [v10 addObject:v17];
+          [v10 addObject:contributorID];
         }
 
         else
@@ -1282,7 +1282,7 @@ LABEL_14:
 
   v19 = [MEMORY[0x277D10B28] containsPredicateWithProperty:*MEMORY[0x277D10A40] values:v10];
   v30 = 0;
-  v20 = [HDSyncSampleOriginUtilities generateStateSyncCodableContributors:&v30 predicate:v19 profile:v29 transaction:v27 error:v26];
+  v20 = [HDSyncSampleOriginUtilities generateStateSyncCodableContributors:&v30 predicate:v19 profile:provenanceCopy transaction:profileCopy error:transactionCopy];
   v21 = v30;
   v22 = v21;
   if (a2 && v20)

@@ -21,49 +21,49 @@
 
 - (CIImage)lightMapImage
 {
-  v3 = [(PIParallaxStyleEvaluationContext *)self guideImage];
+  guideImage = [(PIParallaxStyleEvaluationContext *)self guideImage];
 
-  if (v3)
+  if (guideImage)
   {
-    v4 = [(PIParallaxStyleEvaluationContext *)self localLightData];
-    if (v4)
+    localLightData = [(PIParallaxStyleEvaluationContext *)self localLightData];
+    if (localLightData)
     {
       v5 = [PICoreImageUtilities loadFilterWithName:@"_PIDynamicLocalLightMapPrepare"];
-      v6 = [(PIParallaxStyleEvaluationContext *)self guideImage];
-      [v5 setValue:v6 forKey:@"inputGuideImage"];
+      guideImage2 = [(PIParallaxStyleEvaluationContext *)self guideImage];
+      [v5 setValue:guideImage2 forKey:@"inputGuideImage"];
 
-      v7 = [v4 objectForKeyedSubscript:@"lightMap"];
+      v7 = [localLightData objectForKeyedSubscript:@"lightMap"];
       [v5 setValue:v7 forKey:@"inputLightMap"];
 
-      v8 = [v4 objectForKeyedSubscript:@"lightMapWidth"];
+      v8 = [localLightData objectForKeyedSubscript:@"lightMapWidth"];
       [v5 setValue:v8 forKey:@"inputLightMapWidth"];
 
-      v9 = [v4 objectForKeyedSubscript:@"lightMapHeight"];
+      v9 = [localLightData objectForKeyedSubscript:@"lightMapHeight"];
       [v5 setValue:v9 forKey:@"inputLightMapHeight"];
 
-      v10 = [v5 outputImage];
+      outputImage = [v5 outputImage];
     }
 
     else
     {
-      v10 = 0;
+      outputImage = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    outputImage = 0;
   }
 
-  return v10;
+  return outputImage;
 }
 
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PIParallaxStyleEvaluationContext *)self parameters];
-  v6 = [v3 stringWithFormat:@"<%@: %p parameters = %@>", v4, self, v5];;
+  parameters = [(PIParallaxStyleEvaluationContext *)self parameters];
+  v6 = [v3 stringWithFormat:@"<%@: %p parameters = %@>", v4, self, parameters];;
 
   return v6;
 }

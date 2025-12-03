@@ -1,11 +1,11 @@
 @interface _UIDynamicButtonNotifyingGestureRecognizer
-- (BOOL)_shouldReceiveDynamicButton:(id)a3;
-- (id)initWithPhysicalButtonConfigurations:(void *)a3 dynamicButtonObserver:;
+- (BOOL)_shouldReceiveDynamicButton:(id)button;
+- (id)initWithPhysicalButtonConfigurations:(void *)configurations dynamicButtonObserver:;
 - (uint64_t)_evaluateAllowedPhysicalButtons;
-- (void)_dynamicButtonsBegan:(id)a3 withEvent:(id)a4;
-- (void)_dynamicButtonsCancelled:(id)a3 withEvent:(id)a4;
-- (void)_dynamicButtonsChanged:(id)a3 withEvent:(id)a4;
-- (void)_dynamicButtonsEnded:(id)a3 withEvent:(id)a4;
+- (void)_dynamicButtonsBegan:(id)began withEvent:(id)event;
+- (void)_dynamicButtonsCancelled:(id)cancelled withEvent:(id)event;
+- (void)_dynamicButtonsChanged:(id)changed withEvent:(id)event;
+- (void)_dynamicButtonsEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIDynamicButtonNotifyingGestureRecognizer
@@ -36,9 +36,9 @@
             objc_enumerationMutation(v2);
           }
 
-          v8 = [*(*(&v10 + 1) + 8 * i) _button];
-          v9 = 1 << v8;
-          if (v8 >= 8)
+          _button = [*(*(&v10 + 1) + 8 * i) _button];
+          v9 = 1 << _button;
+          if (_button >= 8)
           {
             v9 = 0;
           }
@@ -63,21 +63,21 @@
   return result;
 }
 
-- (id)initWithPhysicalButtonConfigurations:(void *)a3 dynamicButtonObserver:
+- (id)initWithPhysicalButtonConfigurations:(void *)configurations dynamicButtonObserver:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = _UIDynamicButtonNotifyingGestureRecognizer;
   v5 = objc_msgSendSuper2(&v8, sel_initWithTarget_action_, 0, 0);
   v6 = v5;
   if (v5)
   {
     objc_storeStrong(v5 + 38, a2);
-    objc_storeWeak(v6 + 36, a3);
+    objc_storeWeak(v6 + 36, configurations);
     [(_UIDynamicButtonNotifyingGestureRecognizer *)v6 _evaluateAllowedPhysicalButtons];
     [v6 _setRequiresSystemGesturesToFail:0];
   }
@@ -85,23 +85,23 @@
   return v6;
 }
 
-- (BOOL)_shouldReceiveDynamicButton:(id)a3
+- (BOOL)_shouldReceiveDynamicButton:(id)button
 {
-  v4 = [a3 _physicalButton];
-  if (v4 >= 8)
+  _physicalButton = [button _physicalButton];
+  if (_physicalButton >= 8)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = 1 << v4;
+    v5 = 1 << _physicalButton;
   }
 
   return (v5 & ~[(_UIAbstractDynamicButtonGestureRecognizer *)self _allowedPhysicalButtons]) == 0;
 }
 
-- (void)_dynamicButtonsBegan:(id)a3 withEvent:(id)a4
+- (void)_dynamicButtonsBegan:(id)began withEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -111,8 +111,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = a3;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  beganCopy = began;
+  v8 = [beganCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -121,13 +121,13 @@
     {
       if (*v14 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(beganCopy);
       }
 
       ++self->_activeDynamicButtons;
       if (!--v9)
       {
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v9 = [beganCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
         if (!v9)
         {
           break;
@@ -152,21 +152,21 @@
 
 LABEL_11:
   WeakRetained = objc_loadWeakRetained(&self->_dynamicButtonObserver);
-  v12 = [a4 _allDynamicButtons];
-  [WeakRetained _dynamicButtonGestureRecognizer:self dynamicButtonsDidUpdate:v7 allDynamicButtons:v12];
+  _allDynamicButtons = [event _allDynamicButtons];
+  [WeakRetained _dynamicButtonGestureRecognizer:self dynamicButtonsDidUpdate:beganCopy allDynamicButtons:_allDynamicButtons];
 }
 
-- (void)_dynamicButtonsChanged:(id)a3 withEvent:(id)a4
+- (void)_dynamicButtonsChanged:(id)changed withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = _UIDynamicButtonNotifyingGestureRecognizer;
   [_UIAbstractDynamicButtonGestureRecognizer _dynamicButtonsChanged:sel__dynamicButtonsChanged_withEvent_ withEvent:?];
   WeakRetained = objc_loadWeakRetained(&self->_dynamicButtonObserver);
-  v8 = [a4 _allDynamicButtons];
-  [WeakRetained _dynamicButtonGestureRecognizer:self dynamicButtonsDidUpdate:a3 allDynamicButtons:v8];
+  _allDynamicButtons = [event _allDynamicButtons];
+  [WeakRetained _dynamicButtonGestureRecognizer:self dynamicButtonsDidUpdate:changed allDynamicButtons:_allDynamicButtons];
 }
 
-- (void)_dynamicButtonsEnded:(id)a3 withEvent:(id)a4
+- (void)_dynamicButtonsEnded:(id)ended withEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -176,8 +176,8 @@ LABEL_11:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = a3;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  endedCopy = ended;
+  v8 = [endedCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -186,13 +186,13 @@ LABEL_11:
     {
       if (*v14 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(endedCopy);
       }
 
       --self->_activeDynamicButtons;
       if (!--v9)
       {
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v9 = [endedCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
         if (!v9)
         {
           break;
@@ -217,11 +217,11 @@ LABEL_11:
 
 LABEL_11:
   WeakRetained = objc_loadWeakRetained(&self->_dynamicButtonObserver);
-  v12 = [a4 _allDynamicButtons];
-  [WeakRetained _dynamicButtonGestureRecognizer:self dynamicButtonsDidUpdate:v7 allDynamicButtons:v12];
+  _allDynamicButtons = [event _allDynamicButtons];
+  [WeakRetained _dynamicButtonGestureRecognizer:self dynamicButtonsDidUpdate:endedCopy allDynamicButtons:_allDynamicButtons];
 }
 
-- (void)_dynamicButtonsCancelled:(id)a3 withEvent:(id)a4
+- (void)_dynamicButtonsCancelled:(id)cancelled withEvent:(id)event
 {
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -231,8 +231,8 @@ LABEL_11:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = a3;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  cancelledCopy = cancelled;
+  v8 = [cancelledCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -241,13 +241,13 @@ LABEL_11:
     {
       if (*v14 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(cancelledCopy);
       }
 
       --self->_activeDynamicButtons;
       if (!--v9)
       {
-        v9 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v9 = [cancelledCopy countByEnumeratingWithState:&v13 objects:v18 count:16];
         if (!v9)
         {
           break;
@@ -272,8 +272,8 @@ LABEL_11:
 
 LABEL_11:
   WeakRetained = objc_loadWeakRetained(&self->_dynamicButtonObserver);
-  v12 = [a4 _allDynamicButtons];
-  [WeakRetained _dynamicButtonGestureRecognizer:self dynamicButtonsDidUpdate:v7 allDynamicButtons:v12];
+  _allDynamicButtons = [event _allDynamicButtons];
+  [WeakRetained _dynamicButtonGestureRecognizer:self dynamicButtonsDidUpdate:cancelledCopy allDynamicButtons:_allDynamicButtons];
 }
 
 @end

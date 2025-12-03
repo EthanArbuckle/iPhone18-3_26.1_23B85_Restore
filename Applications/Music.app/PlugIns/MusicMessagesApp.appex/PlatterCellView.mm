@@ -2,14 +2,14 @@
 - (BOOL)isHighlighted;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation PlatterCellView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100011D3C();
 }
 
@@ -20,15 +20,15 @@
   return [(PlatterCellView *)&v3 isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_100011F38(a3);
+  selfCopy = self;
+  sub_100011F38(highlighted);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100012070();
 }
 

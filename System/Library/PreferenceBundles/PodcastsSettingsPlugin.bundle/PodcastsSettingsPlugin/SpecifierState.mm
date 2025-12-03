@@ -6,7 +6,7 @@
 
 - (void)reloadSpecifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_15468();
   swift_getKeyPath();
   swift_getKeyPath();

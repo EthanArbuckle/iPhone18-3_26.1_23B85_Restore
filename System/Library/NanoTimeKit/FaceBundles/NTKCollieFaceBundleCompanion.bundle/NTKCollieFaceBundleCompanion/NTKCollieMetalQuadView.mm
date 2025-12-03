@@ -1,15 +1,15 @@
 @interface NTKCollieMetalQuadView
-- (void)_renderQuads:(id)a3 toScreenWithCommandBuffer:(id)a4 passDescriptor:(id)a5;
+- (void)_renderQuads:(id)quads toScreenWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor;
 @end
 
 @implementation NTKCollieMetalQuadView
 
-- (void)_renderQuads:(id)a3 toScreenWithCommandBuffer:(id)a4 passDescriptor:(id)a5
+- (void)_renderQuads:(id)quads toScreenWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 firstObject];
-  [v9 renderWithCommandBuffer:v8 passDescriptor:v7];
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
+  firstObject = [quads firstObject];
+  [firstObject renderWithCommandBuffer:bufferCopy passDescriptor:descriptorCopy];
 }
 
 @end

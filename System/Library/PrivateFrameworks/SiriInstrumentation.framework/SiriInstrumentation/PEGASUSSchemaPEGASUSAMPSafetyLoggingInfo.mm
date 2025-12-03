@@ -1,51 +1,51 @@
 @interface PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addPegasusSafetyScores:(id)a3;
-- (void)setHasHasSafetyMessage:(BOOL)a3;
-- (void)setHasPegasusSafetyStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPegasusSafetyScores:(id)scores;
+- (void)setHasHasSafetyMessage:(BOOL)message;
+- (void)setHasPegasusSafetyStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo
 
-- (PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo;
   v5 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isSearchNoResults"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isSearchNoResults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo setIsSearchNoResults:](v5, "setIsSearchNoResults:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"hasSafetyMessage"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"hasSafetyMessage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo setHasSafetyMessage:](v5, "setHasSafetyMessage:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"pegasusSafetyStatus"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pegasusSafetyStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo setPegasusSafetyStatus:](v5, "setPegasusSafetyStatus:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"pegasusSafetyScores"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"pegasusSafetyScores"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,7 +89,7 @@
       v8 = v21;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"modelVersion"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"modelVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,30 +103,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -140,12 +140,12 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo hasSafetyMessage](self, "hasSafetyMessage")}];
-    [v3 setObject:v5 forKeyedSubscript:@"hasSafetyMessage"];
+    [dictionary setObject:v5 forKeyedSubscript:@"hasSafetyMessage"];
 
     has = self->_has;
   }
@@ -153,19 +153,19 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo isSearchNoResults](self, "isSearchNoResults")}];
-    [v3 setObject:v6 forKeyedSubscript:@"isSearchNoResults"];
+    [dictionary setObject:v6 forKeyedSubscript:@"isSearchNoResults"];
   }
 
   if (self->_modelVersion)
   {
-    v7 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"modelVersion"];
+    modelVersion = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
+    v8 = [modelVersion copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"modelVersion"];
   }
 
   if ([(NSArray *)self->_pegasusSafetyScores count])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -185,16 +185,16 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          if (v15)
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v9 addObject:v15];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v16 = [MEMORY[0x1E695DFB0] null];
-            [v9 addObject:v16];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -204,7 +204,7 @@
       while (v12);
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"pegasusSafetyScores"];
+    [dictionary setObject:array forKeyedSubscript:@"pegasusSafetyScores"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -220,12 +220,12 @@
       v18 = off_1E78DF668[v17];
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"pegasusSafetyStatus"];
+    [dictionary setObject:v18 forKeyedSubscript:@"pegasusSafetyStatus"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -270,16 +270,16 @@ LABEL_8:
   return v6 ^ [(NSString *)self->_modelVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_23;
@@ -288,13 +288,13 @@ LABEL_8:
   if (*&has)
   {
     isSearchNoResults = self->_isSearchNoResults;
-    if (isSearchNoResults != [v4 isSearchNoResults])
+    if (isSearchNoResults != [equalCopy isSearchNoResults])
     {
       goto LABEL_23;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -303,13 +303,13 @@ LABEL_8:
     if (v8)
     {
       hasSafetyMessage = self->_hasSafetyMessage;
-      if (hasSafetyMessage != [v4 hasSafetyMessage])
+      if (hasSafetyMessage != [equalCopy hasSafetyMessage])
       {
         goto LABEL_23;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -321,26 +321,26 @@ LABEL_8:
     if (v10)
     {
       pegasusSafetyStatus = self->_pegasusSafetyStatus;
-      if (pegasusSafetyStatus != [v4 pegasusSafetyStatus])
+      if (pegasusSafetyStatus != [equalCopy pegasusSafetyStatus])
       {
         goto LABEL_23;
       }
     }
 
-    v12 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self pegasusSafetyScores];
-    v13 = [v4 pegasusSafetyScores];
-    if ((v12 != 0) == (v13 == 0))
+    pegasusSafetyScores = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self pegasusSafetyScores];
+    pegasusSafetyScores2 = [equalCopy pegasusSafetyScores];
+    if ((pegasusSafetyScores != 0) == (pegasusSafetyScores2 == 0))
     {
       goto LABEL_22;
     }
 
-    v14 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self pegasusSafetyScores];
-    if (v14)
+    pegasusSafetyScores3 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self pegasusSafetyScores];
+    if (pegasusSafetyScores3)
     {
-      v15 = v14;
-      v16 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self pegasusSafetyScores];
-      v17 = [v4 pegasusSafetyScores];
-      v18 = [v16 isEqual:v17];
+      v15 = pegasusSafetyScores3;
+      pegasusSafetyScores4 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self pegasusSafetyScores];
+      pegasusSafetyScores5 = [equalCopy pegasusSafetyScores];
+      v18 = [pegasusSafetyScores4 isEqual:pegasusSafetyScores5];
 
       if (!v18)
       {
@@ -352,12 +352,12 @@ LABEL_8:
     {
     }
 
-    v12 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
-    v13 = [v4 modelVersion];
-    if ((v12 != 0) != (v13 == 0))
+    pegasusSafetyScores = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
+    pegasusSafetyScores2 = [equalCopy modelVersion];
+    if ((pegasusSafetyScores != 0) != (pegasusSafetyScores2 == 0))
     {
-      v19 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
-      if (!v19)
+      modelVersion = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
+      if (!modelVersion)
       {
 
 LABEL_26:
@@ -365,10 +365,10 @@ LABEL_26:
         goto LABEL_24;
       }
 
-      v20 = v19;
-      v21 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
-      v22 = [v4 modelVersion];
-      v23 = [v21 isEqual:v22];
+      v20 = modelVersion;
+      modelVersion2 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
+      modelVersion3 = [equalCopy modelVersion];
+      v23 = [modelVersion2 isEqual:modelVersion3];
 
       if (v23)
       {
@@ -389,10 +389,10 @@ LABEL_24:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -451,35 +451,35 @@ LABEL_5:
     while (v8);
   }
 
-  v11 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
+  modelVersion = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self modelVersion];
 
-  if (v11)
+  if (modelVersion)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)addPegasusSafetyScores:(id)a3
+- (void)addPegasusSafetyScores:(id)scores
 {
-  v4 = a3;
+  scoresCopy = scores;
   pegasusSafetyScores = self->_pegasusSafetyScores;
-  v8 = v4;
+  v8 = scoresCopy;
   if (!pegasusSafetyScores)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pegasusSafetyScores;
-    self->_pegasusSafetyScores = v6;
+    self->_pegasusSafetyScores = array;
 
-    v4 = v8;
+    scoresCopy = v8;
     pegasusSafetyScores = self->_pegasusSafetyScores;
   }
 
-  [(NSArray *)pegasusSafetyScores addObject:v4];
+  [(NSArray *)pegasusSafetyScores addObject:scoresCopy];
 }
 
-- (void)setHasPegasusSafetyStatus:(BOOL)a3
+- (void)setHasPegasusSafetyStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 4;
   }
@@ -492,9 +492,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHasSafetyMessage:(BOOL)a3
+- (void)setHasHasSafetyMessage:(BOOL)message
 {
-  if (a3)
+  if (message)
   {
     v3 = 2;
   }
@@ -507,14 +507,14 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self pegasusSafetyScores:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(PEGASUSSchemaPEGASUSAMPSafetyLoggingInfo *)self setPegasusSafetyScores:v7];
 

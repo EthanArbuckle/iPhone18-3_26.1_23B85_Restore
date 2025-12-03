@@ -1,18 +1,18 @@
 @interface AddressBookDataMigrator
 - (AddressBookDataMigrator)init;
-- (BOOL)migrateMainDatabase:(id)a3 index:(unint64_t)a4;
+- (BOOL)migrateMainDatabase:(id)database index:(unint64_t)index;
 - (BOOL)performMigration;
 - (float)estimatedDuration;
-- (id)_ciImageForPersonIfNeedsBackgroundColors:(void *)a3;
-- (id)_matchUUIDsToPersons:(id)a3 addressBook:(void *)a4;
-- (id)_recordIDsOfContactsMissingBackgroundColors:(void *)a3;
+- (id)_ciImageForPersonIfNeedsBackgroundColors:(void *)colors;
+- (id)_matchUUIDsToPersons:(id)persons addressBook:(void *)book;
+- (id)_recordIDsOfContactsMissingBackgroundColors:(void *)colors;
 - (id)getDatabasePaths;
 - (unint64_t)_optimalBatchSizeForImageProcessing;
 - (void)copyPosterDataToMetadataStore;
 - (void)dealloc;
 - (void)generateAvatarBackgroundColorsIfNeeded;
 - (void)migrateContactMetadataDatabase;
-- (void)migrateImagesDatabase:(id)a3 index:(unint64_t)a4;
+- (void)migrateImagesDatabase:(id)database index:(unint64_t)index;
 - (void)migrateUserDefaultsToNSPersonNameComponentsFormatter;
 - (void)resetContactProviderFeature;
 @end
@@ -52,14 +52,14 @@
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v3 = [(AddressBookDataMigrator *)self getDatabasePaths];
+  getDatabasePaths = [(AddressBookDataMigrator *)self getDatabasePaths];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1018;
   v10[3] = &unk_82B0;
   v10[4] = self;
   v10[5] = &v11;
-  [v3 enumerateObjectsUsingBlock:v10];
+  [getDatabasePaths enumerateObjectsUsingBlock:v10];
   [(AddressBookDataMigrator *)self migrateUserDefaultsToNSPersonNameComponentsFormatter];
   [(AddressBookDataMigrator *)self migrateContactMetadataDatabase];
   [(AddressBookDataMigrator *)self resetContactProviderFeature];
@@ -115,12 +115,12 @@
   return v5;
 }
 
-- (void)migrateImagesDatabase:(id)a3 index:(unint64_t)a4
+- (void)migrateImagesDatabase:(id)database index:(unint64_t)index
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = ABOSLogGeneral();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (a4)
+  if (index)
   {
     if (!v8)
     {
@@ -157,7 +157,7 @@ LABEL_7:
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
     if (v13)
     {
-      if (a4)
+      if (index)
       {
         if (v15)
         {
@@ -187,7 +187,7 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    if (a4)
+    if (index)
     {
       if (v15)
       {
@@ -213,10 +213,10 @@ LABEL_21:
 LABEL_24:
 }
 
-- (BOOL)migrateMainDatabase:(id)a3 index:(unint64_t)a4
+- (BOOL)migrateMainDatabase:(id)database index:(unint64_t)index
 {
-  v6 = a3;
-  if (a4)
+  databaseCopy = database;
+  if (index)
   {
     v7 = ABOSLogGeneral();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -420,15 +420,15 @@ LABEL_24:
     v13 = ABOSLogGeneral();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v10 contactsWithPostersCount];
-      v15 = [v10 postersMigratedCount];
-      v16 = [v10 postersNotFetchedCount];
+      contactsWithPostersCount = [v10 contactsWithPostersCount];
+      postersMigratedCount = [v10 postersMigratedCount];
+      postersNotFetchedCount = [v10 postersNotFetchedCount];
       *buf = 134218496;
-      *&buf[4] = v14;
+      *&buf[4] = contactsWithPostersCount;
       *&buf[12] = 2048;
-      *&buf[14] = v15;
+      *&buf[14] = postersMigratedCount;
       *&buf[22] = 2048;
-      v22 = v16;
+      v22 = postersNotFetchedCount;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "AB Migration - Contact poster data stats: posterCount: %li, migrated: %li, not fetched: %li", buf, 0x20u);
     }
 
@@ -496,13 +496,13 @@ LABEL_24:
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "AB Migration - Found %lu contacts needing background color generation", buf, 0xCu);
     }
 
-    v39 = [(AddressBookDataMigrator *)self _optimalBatchSizeForImageProcessing];
+    _optimalBatchSizeForImageProcessing = [(AddressBookDataMigrator *)self _optimalBatchSizeForImageProcessing];
     v38 = [v40 count];
     v12 = ABOSLogGeneral();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      *&buf[4] = v39;
+      *&buf[4] = _optimalBatchSizeForImageProcessing;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "AB Migration - Starting background color generation in batches of %lu", buf, 0xCu);
     }
 
@@ -583,9 +583,9 @@ LABEL_24:
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134219008;
-            *&buf[4] = v42 / v39 + 1;
+            *&buf[4] = v42 / _optimalBatchSizeForImageProcessing + 1;
             *&buf[12] = 2048;
-            *&buf[14] = (v38 + v39 - 1) / v39;
+            *&buf[14] = (v38 + _optimalBatchSizeForImageProcessing - 1) / _optimalBatchSizeForImageProcessing;
             *&buf[22] = 2048;
             v56 = *&v44;
             *v57 = 2048;
@@ -628,10 +628,10 @@ LABEL_24:
         }
       }
 
-      v13 = v42 + v39;
+      v13 = v42 + _optimalBatchSizeForImageProcessing;
     }
 
-    while (v42 + v39 < v38);
+    while (v42 + _optimalBatchSizeForImageProcessing < v38);
     if (v37 > 0)
     {
       v30 = ABOSLogGeneral();
@@ -684,7 +684,7 @@ LABEL_57:
   }
 }
 
-- (id)_recordIDsOfContactsMissingBackgroundColors:(void *)a3
+- (id)_recordIDsOfContactsMissingBackgroundColors:(void *)colors
 {
   v3 = +[ABSQLPredicate predicateForContactsMissingBackgroundColors];
   v4 = ABAddressBookCopyAllPeopleForBufferPredicate();
@@ -692,9 +692,9 @@ LABEL_57:
   return v4;
 }
 
-- (id)_matchUUIDsToPersons:(id)a3 addressBook:(void *)a4
+- (id)_matchUUIDsToPersons:(id)persons addressBook:(void *)book
 {
-  v4 = [ABSQLPredicate predicateForContactsWithUUIDs:a3 ignoreUnifiedIdentifiers:1];
+  v4 = [ABSQLPredicate predicateForContactsWithUUIDs:persons ignoreUnifiedIdentifiers:1];
   v5 = ABAddressBookCopyAllPeopleForBufferPredicate();
 
   return v5;
@@ -703,17 +703,17 @@ LABEL_57:
 - (unint64_t)_optimalBatchSizeForImageProcessing
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 physicalMemory];
+  physicalMemory = [v2 physicalMemory];
 
-  v4 = v3 / 0x28uLL;
-  if (v3 >> 30 >= 3)
+  v4 = physicalMemory / 0x28uLL;
+  if (physicalMemory >> 30 >= 3)
   {
-    v4 = v3 / 0x1E;
+    v4 = physicalMemory / 0x1E;
   }
 
-  if (v3 >> 31 >= 3)
+  if (physicalMemory >> 31 >= 3)
   {
-    v5 = v3 / 0x14;
+    v5 = physicalMemory / 0x14;
   }
 
   else
@@ -743,21 +743,21 @@ LABEL_57:
     v10 = 134218240;
     v11 = v7;
     v12 = 2048;
-    v13 = v3 >> 20;
+    v13 = physicalMemory >> 20;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "AB Migration - Using batch size: %lu (memory: %llu MB)", &v10, 0x16u);
   }
 
   return v7;
 }
 
-- (id)_ciImageForPersonIfNeedsBackgroundColors:(void *)a3
+- (id)_ciImageForPersonIfNeedsBackgroundColors:(void *)colors
 {
-  if (ABPersonHasImageData(a3))
+  if (ABPersonHasImageData(colors))
   {
-    v4 = ABRecordCopyValue(a3, kABPersonImageBackgroundColorsDataProperty);
+    v4 = ABRecordCopyValue(colors, kABPersonImageBackgroundColorsDataProperty);
     if (!v4)
     {
-      v7 = ABPersonCopyImageData(a3);
+      v7 = ABPersonCopyImageData(colors);
       if (v7)
       {
         v5 = [CIImage imageWithData:v7];

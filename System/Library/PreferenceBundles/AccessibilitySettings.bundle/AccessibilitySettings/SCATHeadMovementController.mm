@@ -1,7 +1,7 @@
 @interface SCATHeadMovementController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATHeadMovementController
@@ -37,38 +37,38 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = SCATHeadMovementController;
-  v4 = [(SCATHeadMovementController *)&v10 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
-  v6 = [v5 propertyForKey:@"SensitivityKey"];
-  v7 = [v6 integerValue];
+  v4 = [(SCATHeadMovementController *)&v10 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
+  v6 = [specifier propertyForKey:@"SensitivityKey"];
+  integerValue = [v6 integerValue];
 
   v8 = +[AXSettings sharedInstance];
-  [v4 setChecked:{objc_msgSend(v8, "assistiveTouchHeadMovementSensitivity") == v7}];
+  [v4 setChecked:{objc_msgSend(v8, "assistiveTouchHeadMovementSensitivity") == integerValue}];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = SCATHeadMovementController;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SCATHeadMovementController *)&v14 tableView:v7 cellForRowAtIndexPath:v6];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"SensitivityKey"];
-  v11 = [v10 integerValue];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(SCATHeadMovementController *)&v14 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"SensitivityKey"];
+  integerValue = [v10 integerValue];
 
   v12 = +[AXSettings sharedInstance];
-  [v12 setAssistiveTouchHeadMovementSensitivity:v11];
-  [(SCATHeadMovementController *)self updateTableCheckedSelection:v6];
+  [v12 setAssistiveTouchHeadMovementSensitivity:integerValue];
+  [(SCATHeadMovementController *)self updateTableCheckedSelection:pathCopy];
   v13.receiver = self;
   v13.super_class = SCATHeadMovementController;
-  [(SCATHeadMovementController *)&v13 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(SCATHeadMovementController *)&v13 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
 @end

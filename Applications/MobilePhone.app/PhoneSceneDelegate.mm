@@ -1,51 +1,51 @@
 @interface PhoneSceneDelegate
-- (BOOL)handleShortcutItem:(id)a3;
-- (BOOL)openShortcutOnIPad:(id)a3 featureFlags:(id)a4;
-- (BOOL)openShortcutOnPhone:(id)a3 featureFlags:(id)a4;
-- (id)_createWindowFromScene:(id)a3;
+- (BOOL)handleShortcutItem:(id)item;
+- (BOOL)openShortcutOnIPad:(id)pad featureFlags:(id)flags;
+- (BOOL)openShortcutOnPhone:(id)phone featureFlags:(id)flags;
+- (id)_createWindowFromScene:(id)scene;
 - (void)_initializeUI;
-- (void)scene:(id)a3 continueUserActivity:(id)a4;
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5;
-- (void)scene:(id)a3 didUpdateUserActivity:(id)a4;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)scene:(id)scene continueUserActivity:(id)activity;
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error;
+- (void)scene:(id)scene didUpdateUserActivity:(id)activity;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation PhoneSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a3;
-  v8 = a5;
+  sceneCopy = scene;
+  optionsCopy = options;
   v9 = PHDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v33 = v8;
+    v33 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PhoneSceneDelegate: scene:willConnectToSession:options: %@", buf, 0xCu);
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v7;
+    v10 = sceneCopy;
     v11 = +[UIDevice currentDevice];
-    v12 = [v11 userInterfaceIdiom];
+    userInterfaceIdiom = [v11 userInterfaceIdiom];
 
-    if (v12 == 1)
+    if (userInterfaceIdiom == 1)
     {
       +[_TtC11MobilePhone26PhoneRecentsViewController preferredWindowMinSize];
       v14 = v13;
       v16 = v15;
-      v17 = [v10 sizeRestrictions];
-      [v17 setMinimumSize:{v14, v16}];
+      sizeRestrictions = [v10 sizeRestrictions];
+      [sizeRestrictions setMinimumSize:{v14, v16}];
     }
 
     if (![(PhoneSceneDelegate *)self isUIInitialized])
@@ -77,47 +77,47 @@
 
   if (+[UIApplication shouldMakeUIForDefaultPNG])
   {
-    v20 = [(PhoneSceneDelegate *)self window];
-    [v20 orderFront:0];
+    window = [(PhoneSceneDelegate *)self window];
+    [window orderFront:0];
   }
 
-  v21 = [v8 shortcutItem];
-  [(PhoneSceneDelegate *)self setShortcutItem:v21];
+  shortcutItem = [optionsCopy shortcutItem];
+  [(PhoneSceneDelegate *)self setShortcutItem:shortcutItem];
 
-  v22 = [UIApp rootViewController];
-  [v22 displayUIAnimated:0];
+  rootViewController = [UIApp rootViewController];
+  [rootViewController displayUIAnimated:0];
 
-  v23 = [v8 URLContexts];
-  v24 = [v23 count];
+  uRLContexts = [optionsCopy URLContexts];
+  v24 = [uRLContexts count];
 
   if (v24)
   {
-    v25 = [v8 URLContexts];
-    [(PhoneSceneDelegate *)self scene:v7 openURLContexts:v25];
+    uRLContexts2 = [optionsCopy URLContexts];
+    [(PhoneSceneDelegate *)self scene:sceneCopy openURLContexts:uRLContexts2];
   }
 
   else
   {
-    v25 = objc_alloc_init(TUFeatureFlags);
-    if ([v25 callHistorySearchEnabled])
+    uRLContexts2 = objc_alloc_init(TUFeatureFlags);
+    if ([uRLContexts2 callHistorySearchEnabled])
     {
-      v26 = [v8 userActivities];
-      v27 = [v26 count];
+      userActivities = [optionsCopy userActivities];
+      v27 = [userActivities count];
 
       if (v27)
       {
-        v28 = [v8 userActivities];
-        v29 = [v28 anyObject];
+        userActivities2 = [optionsCopy userActivities];
+        anyObject = [userActivities2 anyObject];
 
         v30 = PHDefaultLog();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v33 = v29;
+          v33 = anyObject;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "PhoneSceneDelegate: connectionOptions has userActivity: %@", buf, 0xCu);
         }
 
-        [(PhoneSceneDelegate *)self scene:v7 continueUserActivity:v29];
+        [(PhoneSceneDelegate *)self scene:sceneCopy continueUserActivity:anyObject];
       }
     }
   }
@@ -142,7 +142,7 @@ void __57__PhoneSceneDelegate_scene_willConnectToSession_options___block_invoke(
   [*(*(a1 + 32) + 16) makeKeyAndVisible];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v3 = PHDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -155,7 +155,7 @@ void __57__PhoneSceneDelegate_scene_willConnectToSession_options___block_invoke(
   [v4 postNotificationName:@"PhoneApplicationActivatedNotification" object:0];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v3 = PHDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -168,7 +168,7 @@ void __57__PhoneSceneDelegate_scene_willConnectToSession_options___block_invoke(
   [v4 postNotificationName:@"PhoneApplicationDeactivatedNotification" object:0];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
   v4 = PHDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -185,12 +185,12 @@ void __57__PhoneSceneDelegate_scene_willConnectToSession_options___block_invoke(
     [UIApp warmInCallServiceIfNecessary];
   }
 
-  v7 = [(PhoneSceneDelegate *)self shortcutItem];
+  shortcutItem = [(PhoneSceneDelegate *)self shortcutItem];
 
-  if (v7)
+  if (shortcutItem)
   {
-    v8 = [(PhoneSceneDelegate *)self shortcutItem];
-    v9 = [(PhoneSceneDelegate *)self handleShortcutItem:v8];
+    shortcutItem2 = [(PhoneSceneDelegate *)self shortcutItem];
+    v9 = [(PhoneSceneDelegate *)self handleShortcutItem:shortcutItem2];
 
     v10 = PHDefaultLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -210,38 +210,38 @@ void __57__PhoneSceneDelegate_scene_willConnectToSession_options___block_invoke(
   }
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  itemCopy = item;
+  handlerCopy = handler;
   v9 = PHDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138412290;
-    v13 = v7;
+    v13 = itemCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PhoneSceneDelegate: windowScene:performActionForShortcutItem: %@", &v12, 0xCu);
   }
 
-  [(PhoneSceneDelegate *)self setShortcutItem:v7];
-  v10 = [(PhoneSceneDelegate *)self shortcutItem];
-  v11 = [(PhoneSceneDelegate *)self handleShortcutItem:v10];
+  [(PhoneSceneDelegate *)self setShortcutItem:itemCopy];
+  shortcutItem = [(PhoneSceneDelegate *)self shortcutItem];
+  v11 = [(PhoneSceneDelegate *)self handleShortcutItem:shortcutItem];
 
   [(PhoneSceneDelegate *)self setShortcutItem:0];
-  v8[2](v8, v11);
+  handlerCopy[2](handlerCopy, v11);
 }
 
-- (BOOL)handleShortcutItem:(id)a3
+- (BOOL)handleShortcutItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(TUFeatureFlags);
   if ([v5 phoneLargeFormatUIEnabled] && (+[UIDevice currentDevice](UIDevice, "currentDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceIdiom"), v6, (v7 & 0xFFFFFFFFFFFFFFFBLL) == 1))
   {
-    v8 = [(PhoneSceneDelegate *)self openShortcutOnIPad:v4 featureFlags:v5];
+    v8 = [(PhoneSceneDelegate *)self openShortcutOnIPad:itemCopy featureFlags:v5];
   }
 
   else
   {
-    v8 = [(PhoneSceneDelegate *)self openShortcutOnPhone:v4 featureFlags:v5];
+    v8 = [(PhoneSceneDelegate *)self openShortcutOnPhone:itemCopy featureFlags:v5];
   }
 
   v9 = v8;
@@ -249,36 +249,36 @@ void __57__PhoneSceneDelegate_scene_willConnectToSession_options___block_invoke(
   return v9;
 }
 
-- (BOOL)openShortcutOnIPad:(id)a3 featureFlags:(id)a4
+- (BOOL)openShortcutOnIPad:(id)pad featureFlags:(id)flags
 {
-  v5 = a3;
-  if (![a4 phoneLargeFormatUIEnabled] || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceIdiom"), v6, (v7 & 0xFFFFFFFFFFFFFFFBLL) == 1))
+  padCopy = pad;
+  if (![flags phoneLargeFormatUIEnabled] || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceIdiom"), v6, (v7 & 0xFFFFFFFFFFFFFFFBLL) == 1))
   {
     v8 = PHDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v5;
+      v16 = padCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PhoneSceneDelegate: handling shortcut item on iPad %@", &v15, 0xCu);
     }
 
-    v9 = [UIApp rootViewController];
-    v10 = [v9 baseViewController];
+    rootViewController = [UIApp rootViewController];
+    baseViewController = [rootViewController baseViewController];
 
-    v11 = [v5 type];
-    if ([v11 isEqualToString:@"com.apple.mobilephone.search"])
+    type = [padCopy type];
+    if ([type isEqualToString:@"com.apple.mobilephone.search"])
     {
-      [v10 makeSearchBarActive];
+      [baseViewController makeSearchBarActive];
     }
 
-    else if ([v11 isEqualToString:@"com.apple.mobilephone.recents"])
+    else if ([type isEqualToString:@"com.apple.mobilephone.recents"])
     {
-      [v10 showRecents];
+      [baseViewController showRecents];
     }
 
     else
     {
-      if (![v11 isEqualToString:@"com.apple.mobilephone.voicemail"])
+      if (![type isEqualToString:@"com.apple.mobilephone.voicemail"])
       {
         v14 = PHDefaultLog();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -290,7 +290,7 @@ void __57__PhoneSceneDelegate_scene_willConnectToSession_options___block_invoke(
         goto LABEL_15;
       }
 
-      [v10 showVoicemails];
+      [baseViewController showVoicemails];
     }
 
     v12 = 1;
@@ -299,8 +299,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v10 = PHDefaultLog();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  baseViewController = PHDefaultLog();
+  if (os_log_type_enabled(baseViewController, OS_LOG_TYPE_ERROR))
   {
     [PhoneSceneDelegate openShortcutOnIPad:featureFlags:];
   }
@@ -311,38 +311,38 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)openShortcutOnPhone:(id)a3 featureFlags:(id)a4
+- (BOOL)openShortcutOnPhone:(id)phone featureFlags:(id)flags
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v6 phoneLargeFormatUIEnabled] || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "userInterfaceIdiom"), v7, (v8 & 0xFFFFFFFFFFFFFFFBLL) != 1))
+  phoneCopy = phone;
+  flagsCopy = flags;
+  if (![flagsCopy phoneLargeFormatUIEnabled] || (+[UIDevice currentDevice](UIDevice, "currentDevice"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "userInterfaceIdiom"), v7, (v8 & 0xFFFFFFFFFFFFFFFBLL) != 1))
   {
     v11 = PHDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v38 = 138412290;
-      v39 = v5;
+      v39 = phoneCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "PhoneSceneDelegate: handling shortcut item on iPhone %@", &v38, 0xCu);
     }
 
-    v12 = [UIApp rootViewController];
-    v9 = [v12 baseViewController];
+    rootViewController = [UIApp rootViewController];
+    baseViewController = [rootViewController baseViewController];
 
-    v13 = [v9 selectedViewController];
-    v14 = [v13 presentedViewController];
-    if (v14)
+    selectedViewController = [baseViewController selectedViewController];
+    presentedViewController = [selectedViewController presentedViewController];
+    if (presentedViewController)
     {
-      [v13 dismissViewControllerAnimated:0 completion:0];
+      [selectedViewController dismissViewControllerAnimated:0 completion:0];
     }
 
-    v15 = [v5 type];
-    if ([v15 isEqualToString:@"com.apple.mobilephone.contacts.create"])
+    type = [phoneCopy type];
+    if ([type isEqualToString:@"com.apple.mobilephone.contacts.create"])
     {
       +[CATransaction begin];
       +[CATransaction disableActions];
-      [v9 switchToTab:3];
-      v16 = [v9 contactsViewController];
-      [v16 addContact:0 animated:0];
+      [baseViewController switchToTab:3];
+      contactsViewController = [baseViewController contactsViewController];
+      [contactsViewController addContact:0 animated:0];
       +[CATransaction commit];
 
 LABEL_40:
@@ -350,88 +350,88 @@ LABEL_40:
       goto LABEL_41;
     }
 
-    if ([v15 isEqualToString:@"com.apple.mobilephone.search"])
+    if ([type isEqualToString:@"com.apple.mobilephone.search"])
     {
       +[CATransaction begin];
       +[CATransaction disableActions];
       v17 = +[CAUILayoutManager shared];
-      v18 = [v17 current];
+      current = [v17 current];
 
-      if (v18 == 1)
+      if (current == 1)
       {
-        [v9 switchToTab:6];
-        v19 = [v9 searchNavigationController];
-        v20 = [v19 popToRootViewControllerAnimated:0];
+        [baseViewController switchToTab:6];
+        searchNavigationController = [baseViewController searchNavigationController];
+        v20 = [searchNavigationController popToRootViewControllerAnimated:0];
 
-        v21 = [v9 searchNavigationController];
-        v22 = [v21 topViewController];
+        searchNavigationController2 = [baseViewController searchNavigationController];
+        topViewController = [searchNavigationController2 topViewController];
 
-        if (v22 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (topViewController && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v22 startSearchingForText:0];
+          [topViewController startSearchingForText:0];
         }
 
         goto LABEL_38;
       }
 
-      if ([v6 callHistorySearchEnabled])
+      if ([flagsCopy callHistorySearchEnabled])
       {
-        [v9 switchToTab:2];
-        v27 = [v9 recentsNavigationController];
-        v28 = [v27 popToRootViewControllerAnimated:0];
+        [baseViewController switchToTab:2];
+        recentsNavigationController = [baseViewController recentsNavigationController];
+        v28 = [recentsNavigationController popToRootViewControllerAnimated:0];
 
-        v22 = [v9 phoneRecentsController];
-        if (v22 && (objc_opt_respondsToSelector() & 1) != 0)
+        topViewController = [baseViewController phoneRecentsController];
+        if (topViewController && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v22 startSearchingForText:0 completion:0];
+          [topViewController startSearchingForText:0 completion:0];
         }
 
         goto LABEL_38;
       }
 
-      [v9 switchToTab:3];
-      v22 = [v9 contactsViewController];
-      v31 = [v22 viewControllers];
-      v32 = [v22 contactListViewController];
-      v33 = [v31 containsObject:v32];
+      [baseViewController switchToTab:3];
+      topViewController = [baseViewController contactsViewController];
+      viewControllers = [topViewController viewControllers];
+      contactListViewController = [topViewController contactListViewController];
+      v33 = [viewControllers containsObject:contactListViewController];
 
-      v34 = [v22 contactListViewController];
+      contactListViewController2 = [topViewController contactListViewController];
       if (v33)
       {
-        v35 = [v22 popToViewController:v34 animated:0];
+        v35 = [topViewController popToViewController:contactListViewController2 animated:0];
       }
 
       else
       {
-        [v22 pushViewController:v34 animated:0];
+        [topViewController pushViewController:contactListViewController2 animated:0];
       }
 
-      v26 = [v22 contactListViewController];
-      [v26 startSearching];
+      contactListViewController3 = [topViewController contactListViewController];
+      [contactListViewController3 startSearching];
     }
 
     else
     {
-      if (![v15 isEqualToString:@"com.apple.mobilephone.recents"])
+      if (![type isEqualToString:@"com.apple.mobilephone.recents"])
       {
-        if ([v15 isEqualToString:@"com.apple.mobilephone.voicemail"])
+        if ([type isEqualToString:@"com.apple.mobilephone.voicemail"])
         {
           if ([UIApp hasEnhancedVoicemail])
           {
             +[CATransaction begin];
             +[CATransaction disableActions];
             v29 = +[CAUILayoutManager shared];
-            v30 = [v29 current];
+            current2 = [v29 current];
 
-            if (v30 == 1)
+            if (current2 == 1)
             {
-              [v9 switchToTab:2];
-              [v9 openVoicemails];
+              [baseViewController switchToTab:2];
+              [baseViewController openVoicemails];
             }
 
             else
             {
-              [v9 switchToTab:5];
+              [baseViewController switchToTab:5];
             }
 
             goto LABEL_39;
@@ -453,36 +453,36 @@ LABEL_41:
 
       +[CATransaction begin];
       +[CATransaction disableActions];
-      [v9 switchToTab:2];
+      [baseViewController switchToTab:2];
       v23 = +[MPPreferences sharedPreferences];
-      v24 = [v23 useSwiftUIRecents];
+      useSwiftUIRecents = [v23 useSwiftUIRecents];
 
-      if (v24)
+      if (useSwiftUIRecents)
       {
 LABEL_39:
         +[CATransaction commit];
         goto LABEL_40;
       }
 
-      v25 = [v9 recentsTableViewController];
-      v22 = [v25 tableView];
+      recentsTableViewController = [baseViewController recentsTableViewController];
+      topViewController = [recentsTableViewController tableView];
 
-      if ([v22 numberOfRowsInSection:0] < 1)
+      if ([topViewController numberOfRowsInSection:0] < 1)
       {
 LABEL_38:
 
         goto LABEL_39;
       }
 
-      v26 = [NSIndexPath indexPathForRow:0 inSection:0];
-      [v22 scrollToRowAtIndexPath:v26 atScrollPosition:1 animated:0];
+      contactListViewController3 = [NSIndexPath indexPathForRow:0 inSection:0];
+      [topViewController scrollToRowAtIndexPath:contactListViewController3 atScrollPosition:1 animated:0];
     }
 
     goto LABEL_38;
   }
 
-  v9 = PHDefaultLog();
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  baseViewController = PHDefaultLog();
+  if (os_log_type_enabled(baseViewController, OS_LOG_TYPE_ERROR))
   {
     [PhoneSceneDelegate openShortcutOnPhone:featureFlags:];
   }
@@ -493,9 +493,9 @@ LABEL_42:
   return v10;
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -506,12 +506,12 @@ LABEL_42:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [UIApp rootViewController];
-    v8 = [v6 keyWindow];
-    v9 = [v8 rootViewController];
+    v6 = disconnectCopy;
+    rootViewController = [UIApp rootViewController];
+    keyWindow = [v6 keyWindow];
+    rootViewController2 = [keyWindow rootViewController];
 
-    if (v7 == v9)
+    if (rootViewController == rootViewController2)
     {
       [UIApp setRootViewController:0];
     }
@@ -520,7 +520,7 @@ LABEL_42:
   }
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
   v3 = PHDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -530,14 +530,14 @@ LABEL_42:
   }
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
-  v4 = a4;
+  contextsCopy = contexts;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = contextsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PhoneSceneDelegate openURLContexts: %@", buf, 0xCu);
   }
 
@@ -545,7 +545,7 @@ LABEL_42:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = v4;
+  v6 = contextsCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -576,13 +576,13 @@ LABEL_42:
   }
 }
 
-- (id)_createWindowFromScene:(id)a3
+- (id)_createWindowFromScene:(id)scene
 {
-  v3 = a3;
-  v4 = [[UIWindow alloc] initWithWindowScene:v3];
+  sceneCopy = scene;
+  v4 = [[UIWindow alloc] initWithWindowScene:sceneCopy];
 
-  v5 = [UIApp applicationTintColor];
-  [v4 setTintColor:v5];
+  applicationTintColor = [UIApp applicationTintColor];
+  [v4 setTintColor:applicationTintColor];
 
   v6 = +[UIColor clearColor];
   [v4 setBackgroundColor:v6];
@@ -600,112 +600,112 @@ LABEL_42:
   }
 }
 
-- (void)scene:(id)a3 willContinueUserActivityWithType:(id)a4
+- (void)scene:(id)scene willContinueUserActivityWithType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  typeCopy = type;
   v7 = PHDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
-    v11 = v5;
+    v11 = sceneCopy;
     v12 = 2112;
-    v13 = v6;
+    v13 = typeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Phone scene %@ will continue user activity with type %@", &v10, 0x16u);
   }
 
   v8 = objc_alloc_init(TUFeatureFlags);
-  if ([v8 conversationHandoffEnabled] && objc_msgSend(v6, "isEqualToString:", TUUserActivityTypeConversationHandoff))
+  if ([v8 conversationHandoffEnabled] && objc_msgSend(typeCopy, "isEqualToString:", TUUserActivityTypeConversationHandoff))
   {
     v9 = +[TUCallCenter sharedInstance];
     [v9 continueHandoffEligibleConversation];
   }
 }
 
-- (void)scene:(id)a3 continueUserActivity:(id)a4
+- (void)scene:(id)scene continueUserActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  activityCopy = activity;
   v7 = PHDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412546;
-    v19 = v5;
+    v19 = sceneCopy;
     v20 = 2112;
-    v21 = v6;
+    v21 = activityCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Phone scene %@ is continuing user activity: %@", &v18, 0x16u);
   }
 
-  v8 = [v6 activityType];
+  activityType = [activityCopy activityType];
   v9 = TUCallPhoneAppHistoryActivityType();
-  v10 = [v8 isEqualToString:v9];
+  v10 = [activityType isEqualToString:v9];
 
   if (v10)
   {
     v11 = +[(PHApplicationServices *)MPApplicationServices];
-    v12 = [v11 callProviderManager];
+    callProviderManager = [v11 callProviderManager];
 
-    v13 = [TUDialRequest dialRequestForUserActivity:v6 callProviderManager:v12];
-    if (v13)
+    baseViewController = [TUDialRequest dialRequestForUserActivity:activityCopy callProviderManager:callProviderManager];
+    if (baseViewController)
     {
       v14 = +[TUCallCenter sharedInstance];
-      v15 = [v14 dialWithRequest:v13];
+      v15 = [v14 dialWithRequest:baseViewController];
     }
 
     goto LABEL_10;
   }
 
-  v16 = [v6 activityType];
-  v17 = [v16 isEqualToString:TUUserActivityTypeConversationHandoff];
+  activityType2 = [activityCopy activityType];
+  v17 = [activityType2 isEqualToString:TUUserActivityTypeConversationHandoff];
 
   if (!v17)
   {
-    v12 = [UIApp rootViewController];
-    v13 = [v12 baseViewController];
-    [v13 handleUserActivityContinuation:v6];
+    callProviderManager = [UIApp rootViewController];
+    baseViewController = [callProviderManager baseViewController];
+    [baseViewController handleUserActivityContinuation:activityCopy];
     goto LABEL_10;
   }
 
-  v12 = PHDefaultLog();
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  callProviderManager = PHDefaultLog();
+  if (os_log_type_enabled(callProviderManager, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v6 tu_dynamicIdentifier];
+    baseViewController = [activityCopy tu_dynamicIdentifier];
     v18 = 138412290;
-    v19 = v13;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "FaceTime call handoff dynamic identifier was: %@", &v18, 0xCu);
+    v19 = baseViewController;
+    _os_log_impl(&_mh_execute_header, callProviderManager, OS_LOG_TYPE_DEFAULT, "FaceTime call handoff dynamic identifier was: %@", &v18, 0xCu);
 LABEL_10:
   }
 }
 
-- (void)scene:(id)a3 didFailToContinueUserActivityWithType:(id)a4 error:(id)a5
+- (void)scene:(id)scene didFailToContinueUserActivityWithType:(id)type error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sceneCopy = scene;
+  typeCopy = type;
+  errorCopy = error;
   v10 = PHDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412802;
-    v12 = v7;
+    v12 = sceneCopy;
     v13 = 2112;
-    v14 = v8;
+    v14 = typeCopy;
     v15 = 2112;
-    v16 = v9;
+    v16 = errorCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Phone scene %@ did fail to continue user activity with type %@ due to error %@", &v11, 0x20u);
   }
 }
 
-- (void)scene:(id)a3 didUpdateUserActivity:(id)a4
+- (void)scene:(id)scene didUpdateUserActivity:(id)activity
 {
-  v5 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  activityCopy = activity;
   v7 = PHDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = sceneCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = activityCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Phone scene %@ did update user activity %@", &v8, 0x16u);
   }
 }

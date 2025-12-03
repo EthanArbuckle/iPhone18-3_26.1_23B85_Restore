@@ -1,21 +1,21 @@
 @interface CPSStoreAuthenticationResponse
-- (CPSStoreAuthenticationResponse)initWithAuthenticationResult:(id)a3;
-- (CPSStoreAuthenticationResponse)initWithCoder:(id)a3;
+- (CPSStoreAuthenticationResponse)initWithAuthenticationResult:(id)result;
+- (CPSStoreAuthenticationResponse)initWithCoder:(id)coder;
 - (id)description;
 @end
 
 @implementation CPSStoreAuthenticationResponse
 
-- (CPSStoreAuthenticationResponse)initWithAuthenticationResult:(id)a3
+- (CPSStoreAuthenticationResponse)initWithAuthenticationResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = CPSStoreAuthenticationResponse;
   v6 = [(CPSStoreAuthenticationResponse *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authenticationResult, a3);
+    objc_storeStrong(&v6->_authenticationResult, result);
   }
 
   return v7;
@@ -25,20 +25,20 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_authenticationResult withName:@"authenticationResult"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (CPSStoreAuthenticationResponse)initWithCoder:(id)a3
+- (CPSStoreAuthenticationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CPSStoreAuthenticationResponse;
   v5 = [(CPSStoreAuthenticationResponse *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:getAMSDelegateAuthenticateResultClass() forKey:@"authenticationResult"];
+    v6 = [coderCopy decodeObjectOfClass:getAMSDelegateAuthenticateResultClass() forKey:@"authenticationResult"];
     authenticationResult = v5->_authenticationResult;
     v5->_authenticationResult = v6;
   }

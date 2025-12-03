@@ -1,13 +1,13 @@
 @interface PurchaseHistoryHideShowRequestEncoder
-- (id)dataForRequestWithError:(id *)a3;
+- (id)dataForRequestWithError:(id *)error;
 @end
 
 @implementation PurchaseHistoryHideShowRequestEncoder
 
-- (id)dataForRequestWithError:(id *)a3
+- (id)dataForRequestWithError:(id *)error
 {
-  v22 = [[NSOutputStream alloc] initToMemory];
-  v4 = [[DKDAAPWriter alloc] initWithStream:v22];
+  initToMemory = [[NSOutputStream alloc] initToMemory];
+  v4 = [[DKDAAPWriter alloc] initWithStream:initToMemory];
   [v4 startContainerWithCode:1835360883];
   [v4 writeUInt8:2 withCode:1835625316];
   [v4 startContainerWithCode:1835819884];
@@ -15,7 +15,7 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v21 = self;
+  selfCopy = self;
   v5 = self->_items;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v6)
@@ -33,13 +33,13 @@
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
-        [v4 startContainerWithCode:{1835821428, v21}];
+        [v4 startContainerWithCode:{1835821428, selfCopy}];
         if (v10)
         {
           v11 = *(v10 + 16);
-          v12 = [v11 lockerItemID];
+          lockerItemID = [v11 lockerItemID];
 
-          [v4 writeUInt64:v12 withCode:1835625572];
+          [v4 writeUInt64:lockerItemID withCode:1835625572];
           v13 = *(v10 + 8) ^ 1;
         }
 
@@ -65,7 +65,7 @@
   [v4 endContainerWithCode:1835819884];
   [v4 endContainerWithCode:1835360883];
   [v4 close];
-  v15 = [v22 propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
+  v15 = [initToMemory propertyForKey:NSStreamDataWrittenToMemoryStreamKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

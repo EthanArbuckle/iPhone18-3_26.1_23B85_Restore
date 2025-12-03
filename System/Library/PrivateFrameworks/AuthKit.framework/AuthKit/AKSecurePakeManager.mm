@@ -1,52 +1,52 @@
 @interface AKSecurePakeManager
 + (AKSecurePakeManager)sharedManager;
-- (AKSecurePakeManager)initWithAccountManager:(id)a3 pushHelperService:(id)a4 keychainManager:(id)a5;
-- (BOOL)clearSharedKeyWithError:(id *)a3;
-- (BOOL)updateSharedKey:(id)a3 error:(id *)a4;
-- (id)_newSecurePakeControllerForMessage:(id)a3 error:(id *)a4;
-- (id)_primaryAccountAltDSIDWithError:(id *)a3;
-- (id)_securePakeControllerForMessage:(id)a3 error:(id *)a4;
-- (id)_sharedKeyKeychainDescriptorWithAltDSID:(id)a3;
+- (AKSecurePakeManager)initWithAccountManager:(id)manager pushHelperService:(id)service keychainManager:(id)keychainManager;
+- (BOOL)clearSharedKeyWithError:(id *)error;
+- (BOOL)updateSharedKey:(id)key error:(id *)error;
+- (id)_newSecurePakeControllerForMessage:(id)message error:(id *)error;
+- (id)_primaryAccountAltDSIDWithError:(id *)error;
+- (id)_securePakeControllerForMessage:(id)message error:(id *)error;
+- (id)_sharedKeyKeychainDescriptorWithAltDSID:(id)d;
 - (id)createRandomSharedKey;
-- (id)fetchSharedKeyWithError:(id *)a3;
+- (id)fetchSharedKeyWithError:(id *)error;
 - (void)_postSharedKeyChangeNotification;
-- (void)_processSecurePakeMessage:(id)a3;
-- (void)_requestUserPermissionWithContext:(id)a3 completionHandler:(id)a4;
-- (void)_showCodeWithContext:(id)a3 completionHandler:(id)a4;
-- (void)didReceiveNewPublicToken:(id)a3;
-- (void)processPushMessage:(id)a3;
+- (void)_processSecurePakeMessage:(id)message;
+- (void)_requestUserPermissionWithContext:(id)context completionHandler:(id)handler;
+- (void)_showCodeWithContext:(id)context completionHandler:(id)handler;
+- (void)didReceiveNewPublicToken:(id)token;
+- (void)processPushMessage:(id)message;
 @end
 
 @implementation AKSecurePakeManager
 
-- (AKSecurePakeManager)initWithAccountManager:(id)a3 pushHelperService:(id)a4 keychainManager:(id)a5
+- (AKSecurePakeManager)initWithAccountManager:(id)manager pushHelperService:(id)service keychainManager:(id)keychainManager
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, manager);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, service);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v5 = v14;
-  v14 = 0;
+  objc_storeStrong(&v11, keychainManager);
+  v5 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v5;
   v10.super_class = AKSecurePakeManager;
-  v14 = [(AKSecurePakeManager *)&v10 init];
-  objc_storeStrong(&v14, v14);
-  if (v14)
+  selfCopy = [(AKSecurePakeManager *)&v10 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    objc_storeStrong(&v14->_accountManager, location[0]);
-    objc_storeStrong(&v14->_pushHelperService, v12);
-    objc_storeStrong(&v14->_keychainManager, v11);
+    objc_storeStrong(&selfCopy->_accountManager, location[0]);
+    objc_storeStrong(&selfCopy->_pushHelperService, v12);
+    objc_storeStrong(&selfCopy->_keychainManager, v11);
   }
 
-  v7 = _objc_retain(v14);
+  v7 = _objc_retain(selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
@@ -66,12 +66,12 @@
   return v2;
 }
 
-- (void)processPushMessage:(id)a3
+- (void)processPushMessage:(id)message
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   if ([location[0] command] == 2300)
   {
     v7 = 0;
@@ -81,7 +81,7 @@
     v6 = v3;
     if (v3)
     {
-      [(AKSecurePakeManager *)v12 _processSecurePakeMessage:v6];
+      [(AKSecurePakeManager *)selfCopy _processSecurePakeMessage:v6];
     }
 
     else
@@ -118,15 +118,15 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_processSecurePakeMessage:(id)a3
+- (void)_processSecurePakeMessage:(id)message
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, message);
   v13 = 0;
   v11 = 0;
-  v3 = [(AKSecurePakeManager *)v15 _securePakeControllerForMessage:location[0] error:&v11];
+  v3 = [(AKSecurePakeManager *)selfCopy _securePakeControllerForMessage:location[0] error:&v11];
   objc_storeStrong(&v13, v11);
   v12 = v3;
   v4 = location[0];
@@ -143,22 +143,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (id)_securePakeControllerForMessage:(id)a3 error:(id *)a4
+- (id)_securePakeControllerForMessage:(id)message error:(id *)error
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v15 = a4;
+  objc_storeStrong(location, message);
+  errorCopy = error;
   v14 = [location[0] messageStep] == 0;
-  if (!v17->_securePakeController || v14)
+  if (!selfCopy->_securePakeController || v14)
   {
     v13 = 0;
     obj = 0;
-    v9 = [(AKSecurePakeManager *)v17 _newSecurePakeControllerForMessage:location[0] error:&obj];
+    v9 = [(AKSecurePakeManager *)selfCopy _newSecurePakeControllerForMessage:location[0] error:&obj];
     objc_storeStrong(&v13, obj);
-    securePakeController = v17->_securePakeController;
-    v17->_securePakeController = v9;
+    securePakeController = selfCopy->_securePakeController;
+    selfCopy->_securePakeController = v9;
     _objc_release(securePakeController);
     if (v13)
     {
@@ -170,39 +170,39 @@
       }
 
       objc_storeStrong(&oslog, 0);
-      if (v15)
+      if (errorCopy)
       {
         v8 = v13;
         v5 = v13;
-        *v15 = v8;
+        *errorCopy = v8;
       }
     }
 
     objc_storeStrong(&v13, 0);
   }
 
-  v7 = _objc_retain(v17->_securePakeController);
+  v7 = _objc_retain(selfCopy->_securePakeController);
   objc_storeStrong(location, 0);
 
   return v7;
 }
 
-- (id)_newSecurePakeControllerForMessage:(id)a3 error:(id *)a4
+- (id)_newSecurePakeControllerForMessage:(id)message error:(id *)error
 {
-  v61 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v59 = a4;
-  v22 = [(AKSecurePakeManager *)v61 accountManager];
-  v20 = [location[0] altDSID];
-  v21 = [(AKAccountManager *)v22 hasPrimaryiCloudAccountForAltDSID:?];
-  _objc_release(v20);
-  _objc_release(v22);
+  objc_storeStrong(location, message);
+  errorCopy = error;
+  accountManager = [(AKSecurePakeManager *)selfCopy accountManager];
+  altDSID = [location[0] altDSID];
+  v21 = [(AKAccountManager *)accountManager hasPrimaryiCloudAccountForAltDSID:?];
+  _objc_release(altDSID);
+  _objc_release(accountManager);
   v58 = v21;
   if (v21)
   {
-    devicePushToken = v61->_devicePushToken;
+    devicePushToken = selfCopy->_devicePushToken;
     v52 = 0;
     v50 = 0;
     if (devicePushToken)
@@ -212,27 +212,27 @@
 
     else
     {
-      v53 = [(AKSecurePakeManager *)v61 pushHelperService];
+      pushHelperService = [(AKSecurePakeManager *)selfCopy pushHelperService];
       v52 = 1;
-      v51 = [(AKAppleIDPushHelperService *)v53 publicAPSTokenString];
+      publicAPSTokenString = [(AKAppleIDPushHelperService *)pushHelperService publicAPSTokenString];
       v50 = 1;
-      v5 = _objc_retain(v51);
+      v5 = _objc_retain(publicAPSTokenString);
     }
 
     v54 = v5;
     if (v50)
     {
-      _objc_release(v51);
+      _objc_release(publicAPSTokenString);
     }
 
     if (v52)
     {
-      _objc_release(v53);
+      _objc_release(pushHelperService);
     }
 
     if (v54)
     {
-      objc_initWeak(&from, v61);
+      objc_initWeak(&from, selfCopy);
       v40 = _NSConcreteStackBlock;
       v41 = -1073741824;
       v42 = 0;
@@ -248,13 +248,13 @@
       objc_copyWeak(&v38, &from);
       v39 = objc_retainBlock(&v33);
       v15 = [AKSecurePakeContext alloc];
-      v14 = [location[0] altDSID];
-      v12 = [location[0] sessionID];
+      altDSID2 = [location[0] altDSID];
+      sessionID = [location[0] sessionID];
       v13 = v54;
       sub_100069A2C(v31, qword_10029BE88);
       if (v15)
       {
-        v11 = [(AKSecurePakeContext *)v15 initWithAltDSID:v14 sessionID:v12 devicePushToken:v13 sessionEntropy:v31[0], v31[1]];
+        v11 = [(AKSecurePakeContext *)v15 initWithAltDSID:altDSID2 sessionID:sessionID devicePushToken:v13 sessionEntropy:v31[0], v31[1]];
       }
 
       else
@@ -264,8 +264,8 @@
       }
 
       v32 = v11;
-      _objc_release(v12);
-      _objc_release(v14);
+      _objc_release(sessionID);
+      _objc_release(altDSID2);
       v10 = [AKSecurePakeAcceptingEngine alloc];
       v30 = [(AKSecurePakeAcceptingEngine *)v10 initWithContext:v32 userPermissionBlock:v46 showCodeBlock:v39];
       v9 = [AKSecurePakeController alloc];
@@ -275,7 +275,7 @@
       v26 = 0;
       v27 = sub_100082F58;
       v28 = &unk_100321360;
-      v29 = _objc_retain(v61);
+      v29 = _objc_retain(selfCopy);
       v62 = [(AKSecurePakeController *)v9 initWithEngine:v8 completionHandler:&v24];
       objc_storeStrong(&v29, 0);
       v55 = 1;
@@ -294,18 +294,18 @@
       v48 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
       {
-        v17 = [(AKSecurePakeManager *)v61 pushHelperService];
-        sub_1000194D4(v63, v17);
+        pushHelperService2 = [(AKSecurePakeManager *)selfCopy pushHelperService];
+        sub_1000194D4(v63, pushHelperService2);
         _os_log_error_impl(&_mh_execute_header, v49, v48, "Failed to get device push token from %@", v63, 0xCu);
-        _objc_release(v17);
+        _objc_release(pushHelperService2);
       }
 
       objc_storeStrong(&v49, 0);
-      if (v59)
+      if (errorCopy)
       {
         v16 = [NSError ak_errorWithCode:-7041];
         v6 = v16;
-        *v59 = v16;
+        *errorCopy = v16;
       }
 
       v62 = 0;
@@ -326,11 +326,11 @@
     }
 
     objc_storeStrong(&v57, 0);
-    if (v59)
+    if (errorCopy)
     {
       v19 = [NSError ak_errorWithCode:-7055];
       v4 = v19;
-      *v59 = v19;
+      *errorCopy = v19;
     }
 
     v62 = 0;
@@ -341,32 +341,32 @@
   return v62;
 }
 
-- (void)didReceiveNewPublicToken:(id)a3
+- (void)didReceiveNewPublicToken:(id)token
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, token);
   oslog = _AKLogSystem();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_10001B098(v6, v5, location[0]);
+    sub_10001B098(v6, selfCopy, location[0]);
     _os_log_debug_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEBUG, "%@: Received new device push token: %@", v6, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
-  objc_storeStrong(&v5->_devicePushToken, location[0]);
+  objc_storeStrong(&selfCopy->_devicePushToken, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (void)_requestUserPermissionWithContext:(id)a3 completionHandler:(id)a4
+- (void)_requestUserPermissionWithContext:(id)context completionHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, handler);
   if (v5)
   {
     (*(v5 + 2))(v5, 1, 0);
@@ -376,17 +376,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_showCodeWithContext:(id)a3 completionHandler:(id)a4
+- (void)_showCodeWithContext:(id)context completionHandler:(id)handler
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
-  v14 = [location[0] currentPushMessage];
-  _objc_release(v14);
-  if (v14)
+  objc_storeStrong(&v26, handler);
+  currentPushMessage = [location[0] currentPushMessage];
+  _objc_release(currentPushMessage);
+  if (currentPushMessage)
   {
     v22[0] = [location[0] sessionEntropy];
     v22[1] = v4;
@@ -407,12 +407,12 @@
       v16[1] = v5;
       v17 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v5 longLongValue]);
       sub_100069A94(v16);
-      v7 = [(AKSecurePakeManager *)v28 pushHelperService];
+      pushHelperService = [(AKSecurePakeManager *)selfCopy pushHelperService];
       v8 = v17;
-      v6 = [location[0] currentPushMessage];
-      [(AKAppleIDPushHelperService *)v7 showPigCode:v8 withIncomingMessage:?];
-      _objc_release(v6);
-      _objc_release(v7);
+      currentPushMessage2 = [location[0] currentPushMessage];
+      [(AKAppleIDPushHelperService *)pushHelperService showPigCode:v8 withIncomingMessage:?];
+      _objc_release(currentPushMessage2);
+      _objc_release(pushHelperService);
       if (v26)
       {
         (*(v26 + 2))(v26, 1, 0);
@@ -486,26 +486,26 @@
   notify_post([AKSharedKeyChangeNotification UTF8String]);
 }
 
-- (id)fetchSharedKeyWithError:(id *)a3
+- (id)fetchSharedKeyWithError:(id *)error
 {
-  v29 = self;
+  selfCopy = self;
   v28 = a2;
-  v27 = a3;
+  errorCopy = error;
   if (self->_sharedKey)
   {
-    v30 = _objc_retain(v29->_sharedKey);
+    v30 = _objc_retain(selfCopy->_sharedKey);
   }
 
   else
   {
-    v26 = [(AKSecurePakeManager *)v29 _primaryAccountAltDSIDWithError:v27];
-    if (*v27)
+    v26 = [(AKSecurePakeManager *)selfCopy _primaryAccountAltDSIDWithError:errorCopy];
+    if (*errorCopy)
     {
       location = _AKLogSystem();
       v24 = OS_LOG_TYPE_DEBUG;
       if (os_log_type_enabled(location, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000831E0(v32, *v27);
+        sub_1000831E0(v32, *errorCopy);
         _os_log_debug_impl(&_mh_execute_header, location, v24, "AKSecurePakeManager - Fetching shared key failed with error - %{private}@", v32, 0xCu);
       }
 
@@ -516,26 +516,26 @@
 
     else
     {
-      v22 = [(AKSecurePakeManager *)v29 _sharedKeyKeychainDescriptorWithAltDSID:v26];
+      v22 = [(AKSecurePakeManager *)selfCopy _sharedKeyKeychainDescriptorWithAltDSID:v26];
       v21 = 0;
-      keychainManager = v29->_keychainManager;
+      keychainManager = selfCopy->_keychainManager;
       v19 = 0;
       v10 = [(AAFKeychainManager *)keychainManager keychainItemForDescriptor:v22 error:&v19];
       objc_storeStrong(&v21, v19);
       v20 = v10;
-      v18 = [v10 value];
+      value = [v10 value];
       v16 = 0;
       v11 = 0;
       if ([v21 code] == -25300)
       {
-        v17 = [v21 domain];
+        domain = [v21 domain];
         v16 = 1;
-        v11 = [v17 isEqualToString:NSOSStatusErrorDomain];
+        v11 = [domain isEqualToString:NSOSStatusErrorDomain];
       }
 
       if (v16)
       {
-        _objc_release(v17);
+        _objc_release(domain);
       }
 
       if (v11)
@@ -549,7 +549,7 @@
         v15 = 0;
         v4 = objc_opt_class();
         obj = v15;
-        v9 = [NSKeyedUnarchiver unarchivedObjectOfClass:v4 fromData:v18 error:&obj];
+        v9 = [NSKeyedUnarchiver unarchivedObjectOfClass:v4 fromData:value error:&obj];
         objc_storeStrong(&v15, obj);
         v14 = v9;
         if (v9)
@@ -568,11 +568,11 @@
           }
 
           objc_storeStrong(&oslog, 0);
-          if (v27)
+          if (errorCopy)
           {
             v8 = v15;
             v5 = v15;
-            *v27 = v8;
+            *errorCopy = v8;
           }
 
           v30 = 0;
@@ -583,7 +583,7 @@
         objc_storeStrong(&v15, 0);
       }
 
-      objc_storeStrong(&v18, 0);
+      objc_storeStrong(&value, 0);
       objc_storeStrong(&v20, 0);
       objc_storeStrong(&v21, 0);
       objc_storeStrong(&v22, 0);
@@ -597,21 +597,21 @@
   return v6;
 }
 
-- (BOOL)updateSharedKey:(id)a3 error:(id *)a4
+- (BOOL)updateSharedKey:(id)key error:(id *)error
 {
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v27 = a4;
-  v26 = [(AKSecurePakeManager *)v29 _primaryAccountAltDSIDWithError:a4];
-  if (*a4)
+  objc_storeStrong(location, key);
+  errorCopy = error;
+  v26 = [(AKSecurePakeManager *)selfCopy _primaryAccountAltDSIDWithError:error];
+  if (*error)
   {
     v25 = _AKLogSystem();
     v24 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000831E0(v33, *v27);
+      sub_1000831E0(v33, *errorCopy);
       _os_log_debug_impl(&_mh_execute_header, v25, v24, "AKSecurePakeManager - Updating shared key failed with error - %{private}@", v33, 0xCu);
     }
 
@@ -629,11 +629,11 @@
     v21 = v11;
     if (v11)
     {
-      v17 = [(AKSecurePakeManager *)v29 _sharedKeyKeychainDescriptorWithAltDSID:v26];
+      v17 = [(AKSecurePakeManager *)selfCopy _sharedKeyKeychainDescriptorWithAltDSID:v26];
       v5 = [AAFKeychainItem alloc];
       v16 = [v5 initWithDescriptor:v17 value:v21];
       v15 = 0;
-      keychainManager = v29->_keychainManager;
+      keychainManager = selfCopy->_keychainManager;
       obj = 0;
       [(AAFKeychainManager *)keychainManager addOrUpdateKeychainItem:v16 error:&obj];
       objc_storeStrong(&v15, obj);
@@ -647,11 +647,11 @@
         }
 
         objc_storeStrong(&oslog, 0);
-        if (v27)
+        if (errorCopy)
         {
           v9 = v15;
           v7 = v15;
-          *v27 = v9;
+          *errorCopy = v9;
         }
 
         v30 = 0;
@@ -660,8 +660,8 @@
 
       else
       {
-        objc_storeStrong(&v29->_sharedKey, location[0]);
-        [(AKSecurePakeManager *)v29 _postSharedKeyChangeNotification];
+        objc_storeStrong(&selfCopy->_sharedKey, location[0]);
+        [(AKSecurePakeManager *)selfCopy _postSharedKeyChangeNotification];
         v30 = 1;
         v23 = 1;
       }
@@ -682,11 +682,11 @@
       }
 
       objc_storeStrong(&v19, 0);
-      if (v27)
+      if (errorCopy)
       {
         v10 = v22;
         v4 = v22;
-        *v27 = v10;
+        *errorCopy = v10;
       }
 
       v30 = 0;
@@ -702,19 +702,19 @@
   return v30 & 1;
 }
 
-- (BOOL)clearSharedKeyWithError:(id *)a3
+- (BOOL)clearSharedKeyWithError:(id *)error
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
-  v9 = [(AKSecurePakeManager *)self _primaryAccountAltDSIDWithError:a3];
-  if (*v10)
+  errorCopy = error;
+  v9 = [(AKSecurePakeManager *)self _primaryAccountAltDSIDWithError:error];
+  if (*errorCopy)
   {
     oslog = _AKLogSystem();
     type = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
     {
-      sub_1000831E0(v15, *v10);
+      sub_1000831E0(v15, *errorCopy);
       _os_log_debug_impl(&_mh_execute_header, oslog, type, "AKSecurePakeManager - Clearing shared key failed with error - %{private}@", v15, 0xCu);
     }
 
@@ -725,14 +725,14 @@
 
   else
   {
-    location = [(AKSecurePakeManager *)v12 _sharedKeyKeychainDescriptorWithAltDSID:v9];
-    [(AAFKeychainManager *)v12->_keychainManager deleteKeychainItemsForDescriptor:location error:v10];
-    if (*v10)
+    location = [(AKSecurePakeManager *)selfCopy _sharedKeyKeychainDescriptorWithAltDSID:v9];
+    [(AAFKeychainManager *)selfCopy->_keychainManager deleteKeychainItemsForDescriptor:location error:errorCopy];
+    if (*errorCopy)
     {
       v4 = _AKLogSystem();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
-        sub_1000194D4(v14, *v10);
+        sub_1000194D4(v14, *errorCopy);
         _os_log_debug_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "AKSecurePakeManager - Shared key keychain delete failed with error: %@", v14, 0xCu);
       }
 
@@ -743,7 +743,7 @@
 
     else
     {
-      objc_storeStrong(&v12->_sharedKey, 0);
+      objc_storeStrong(&selfCopy->_sharedKey, 0);
       v13 = 1;
       v6 = 1;
     }
@@ -757,7 +757,7 @@
 
 - (id)createRandomSharedKey
 {
-  v35 = self;
+  selfCopy = self;
   v34 = a2;
   v33 = v5;
   v19 = v5 - ((qword_100370BD8 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -802,7 +802,7 @@
     v2 = [AKSymmetricKey alloc];
     v23 = [v2 initWithKeyData:v27 keySpecifier:v11 keyDomain:?];
     v22 = v24;
-    [(AKSecurePakeManager *)v35 updateSharedKey:v23 error:&v22];
+    [(AKSecurePakeManager *)selfCopy updateSharedKey:v23 error:&v22];
     objc_storeStrong(&v24, v22);
     if (v24)
     {
@@ -841,12 +841,12 @@
   return v3;
 }
 
-- (id)_sharedKeyKeychainDescriptorWithAltDSID:(id)a3
+- (id)_sharedKeyKeychainDescriptorWithAltDSID:(id)d
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v7 = objc_alloc_init(AAFKeychainItemDescriptor);
   [v7 setItemClass:?];
   [v7 setItemAccessible:?];
@@ -873,19 +873,19 @@
   return v4;
 }
 
-- (id)_primaryAccountAltDSIDWithError:(id *)a3
+- (id)_primaryAccountAltDSIDWithError:(id *)error
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  v12 = [(AKAccountManager *)self->_accountManager altDSIDforPrimaryiCloudAccount];
-  if (!v12)
+  errorCopy = error;
+  altDSIDforPrimaryiCloudAccount = [(AKAccountManager *)self->_accountManager altDSIDforPrimaryiCloudAccount];
+  if (!altDSIDforPrimaryiCloudAccount)
   {
     v11 = [NSError ak_errorWithCode:-7025];
-    if (v13)
+    if (errorCopy)
     {
       v3 = v11;
-      *v13 = v11;
+      *errorCopy = v11;
     }
 
     location = _AKLogSystem();
@@ -902,8 +902,8 @@
     objc_storeStrong(&v11, 0);
   }
 
-  v5 = _objc_retain(v12);
-  objc_storeStrong(&v12, 0);
+  v5 = _objc_retain(altDSIDforPrimaryiCloudAccount);
+  objc_storeStrong(&altDSIDforPrimaryiCloudAccount, 0);
 
   return v5;
 }

@@ -8,18 +8,18 @@
 
 - (id)hourHandConfiguration
 {
-  v2 = [(NTKGlobetrotterAnalogHandsView *)self device];
-  v3 = [CLKUIAnalogHandConfiguration defaultHourConfigurationForDevice:v2];
-  [v3 setHandLength:{sub_3AC0(v3, v2)}];
+  device = [(NTKGlobetrotterAnalogHandsView *)self device];
+  v3 = [CLKUIAnalogHandConfiguration defaultHourConfigurationForDevice:device];
+  [v3 setHandLength:{sub_3AC0(v3, device)}];
 
   return v3;
 }
 
 - (id)minuteHandConfiguration
 {
-  v2 = [(NTKGlobetrotterAnalogHandsView *)self device];
-  v3 = [CLKUIAnalogHandConfiguration defaultMinuteConfigurationForDevice:v2];
-  sub_3AC0(v3, v2);
+  device = [(NTKGlobetrotterAnalogHandsView *)self device];
+  v3 = [CLKUIAnalogHandConfiguration defaultMinuteConfigurationForDevice:device];
+  sub_3AC0(v3, device);
   [v3 setHandLength:v4];
 
   return v3;
@@ -27,9 +27,9 @@
 
 - (id)secondHandConfiguration
 {
-  v2 = [(NTKGlobetrotterAnalogHandsView *)self device];
-  v3 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:v2];
-  sub_3AC0(v3, v2);
+  device = [(NTKGlobetrotterAnalogHandsView *)self device];
+  v3 = [CLKUIAnalogHandConfiguration defaultSecondConfigurationForDevice:device];
+  sub_3AC0(v3, device);
   [v3 setHandLength:v4];
 
   return v3;

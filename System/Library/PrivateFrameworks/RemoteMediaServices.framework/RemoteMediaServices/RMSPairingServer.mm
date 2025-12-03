@@ -1,30 +1,30 @@
 @interface RMSPairingServer
-- (BOOL)startServerWithExpectedPasscodeHash:(id)a3 advertisedDeviceName:(id)a4 advertisedDeviceModel:(id)a5;
+- (BOOL)startServerWithExpectedPasscodeHash:(id)hash advertisedDeviceName:(id)name advertisedDeviceModel:(id)model;
 - (RMSPairingServerDelegate)delegate;
-- (id)_parsedQueryParametersWithQueryString:(id)a3;
-- (void)handleHTTPServerConnectionDidFailToReplyToRequest:(_CFHTTPServerRequest *)a3 withResponse:(_CFHTTPServerResponse *)a4;
-- (void)handleHTTPServerConnectionDidReceiveError:(__CFError *)a3;
-- (void)handleHTTPServerConnectionDidReceiveRequest:(_CFHTTPServerRequest *)a3;
-- (void)handleHTTPServerConnectionDidReplyToRequest:(_CFHTTPServerRequest *)a3 withResponse:(_CFHTTPServerResponse *)a4;
+- (id)_parsedQueryParametersWithQueryString:(id)string;
+- (void)handleHTTPServerConnectionDidFailToReplyToRequest:(_CFHTTPServerRequest *)request withResponse:(_CFHTTPServerResponse *)response;
+- (void)handleHTTPServerConnectionDidReceiveError:(__CFError *)error;
+- (void)handleHTTPServerConnectionDidReceiveRequest:(_CFHTTPServerRequest *)request;
+- (void)handleHTTPServerConnectionDidReplyToRequest:(_CFHTTPServerRequest *)request withResponse:(_CFHTTPServerResponse *)response;
 - (void)handleHTTPServerConnectionInvalidated;
-- (void)handleHTTPServerDidCloseConnection:(_CFHTTPServerConnection *)a3;
-- (void)handleHTTPServerDidOpenConnection:(_CFHTTPServerConnection *)a3;
-- (void)handleHTTPServerDidReceiveError:(__CFError *)a3;
+- (void)handleHTTPServerDidCloseConnection:(_CFHTTPServerConnection *)connection;
+- (void)handleHTTPServerDidOpenConnection:(_CFHTTPServerConnection *)connection;
+- (void)handleHTTPServerDidReceiveError:(__CFError *)error;
 - (void)handleHTTPServerInvalidated;
 - (void)stopServer;
 @end
 
 @implementation RMSPairingServer
 
-- (BOOL)startServerWithExpectedPasscodeHash:(id)a3 advertisedDeviceName:(id)a4 advertisedDeviceModel:(id)a5
+- (BOOL)startServerWithExpectedPasscodeHash:(id)hash advertisedDeviceName:(id)name advertisedDeviceModel:(id)model
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  objc_storeStrong(&self->_expectedPasscodeHash, a3);
-  objc_storeStrong(&self->_advertisedDeviceName, a4);
-  objc_storeStrong(&self->_advertisedDeviceModel, a5);
+  hashCopy = hash;
+  nameCopy = name;
+  modelCopy = model;
+  objc_storeStrong(&self->_expectedPasscodeHash, hash);
+  objc_storeStrong(&self->_advertisedDeviceName, name);
+  objc_storeStrong(&self->_advertisedDeviceModel, model);
   v23 = MEMORY[0x277CBE558];
   v24 = MEMORY[0x277CBE550];
   v20 = xmmword_2874775B0;
@@ -103,12 +103,12 @@
   }
 }
 
-- (void)handleHTTPServerDidReceiveError:(__CFError *)a3
+- (void)handleHTTPServerDidReceiveError:(__CFError *)error
 {
   v5 = RMSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(RMSPairingServer *)a3 handleHTTPServerDidReceiveError:v5];
+    [(RMSPairingServer *)error handleHTTPServerDidReceiveError:v5];
   }
 
   [(RMSPairingServer *)self stopServer];
@@ -116,7 +116,7 @@
   [WeakRetained pairingServerDidFail:self];
 }
 
-- (void)handleHTTPServerDidOpenConnection:(_CFHTTPServerConnection *)a3
+- (void)handleHTTPServerDidOpenConnection:(_CFHTTPServerConnection *)connection
 {
   v5 = RMSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -125,9 +125,9 @@
     _os_log_impl(&dword_261E98000, v5, OS_LOG_TYPE_DEFAULT, "HTTP server opened connection", v6, 2u);
   }
 
-  CFDictionarySetValue(self->_HTTPServerConnections, a3, a3);
+  CFDictionarySetValue(self->_HTTPServerConnections, connection, connection);
   v7 = 0;
-  v8 = self;
+  selfCopy = self;
   v9 = MEMORY[0x277CBE558];
   v10 = MEMORY[0x277CBE550];
   v11 = 0;
@@ -138,12 +138,12 @@
   _CFHTTPServerConnectionSetDispatchQueue();
 }
 
-- (void)handleHTTPServerDidCloseConnection:(_CFHTTPServerConnection *)a3
+- (void)handleHTTPServerDidCloseConnection:(_CFHTTPServerConnection *)connection
 {
   HTTPServerConnections = self->_HTTPServerConnections;
   if (HTTPServerConnections)
   {
-    CFDictionaryRemoveValue(HTTPServerConnections, a3);
+    CFDictionaryRemoveValue(HTTPServerConnections, connection);
   }
 }
 
@@ -157,25 +157,25 @@
   }
 }
 
-- (void)handleHTTPServerConnectionDidReceiveError:(__CFError *)a3
+- (void)handleHTTPServerConnectionDidReceiveError:(__CFError *)error
 {
   v7 = *MEMORY[0x277D85DE8];
   v4 = RMSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = a3;
+    errorCopy = error;
     _os_log_impl(&dword_261E98000, v4, OS_LOG_TYPE_DEFAULT, "HTTP connection error: %@", &v5, 0xCu);
   }
 }
 
-- (id)_parsedQueryParametersWithQueryString:(id)a3
+- (id)_parsedQueryParametersWithQueryString:(id)string
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   [MEMORY[0x277CBEB38] dictionary];
-  v17 = v16 = v3;
-  v4 = [v3 componentsSeparatedByString:@"&"];
+  v17 = v16 = stringCopy;
+  v4 = [stringCopy componentsSeparatedByString:@"&"];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -197,12 +197,12 @@
         v9 = [*(*(&v18 + 1) + 8 * i) componentsSeparatedByString:@"="];
         if ([v9 count] == 2)
         {
-          v10 = [v9 firstObject];
-          v11 = [v9 lastObject];
-          v12 = [v11 componentsSeparatedByString:{@", "}];
+          firstObject = [v9 firstObject];
+          lastObject = [v9 lastObject];
+          v12 = [lastObject componentsSeparatedByString:{@", "}];
           if ([v12 count] <= 1)
           {
-            v13 = v11;
+            v13 = lastObject;
           }
 
           else
@@ -211,7 +211,7 @@
           }
 
           v14 = v13;
-          [v17 setValue:v14 forKey:v10];
+          [v17 setValue:v14 forKey:firstObject];
         }
       }
 
@@ -224,7 +224,7 @@
   return v17;
 }
 
-- (void)handleHTTPServerConnectionDidReceiveRequest:(_CFHTTPServerRequest *)a3
+- (void)handleHTTPServerConnectionDidReceiveRequest:(_CFHTTPServerRequest *)request
 {
   v45 = *MEMORY[0x277D85DE8];
   v5 = _CFHTTPServerRequestCopyProperty();
@@ -239,7 +239,7 @@
   v36[1] = 3221225472;
   v36[2] = __64__RMSPairingServer_handleHTTPServerConnectionDidReceiveRequest___block_invoke;
   v36[3] = &unk_279B08D60;
-  v38 = a3;
+  requestCopy = request;
   v7 = v5;
   v37 = v7;
   v8 = MEMORY[0x266721590](v36);
@@ -254,15 +254,15 @@
 
     v10 = _CFHTTPServerRequestCopyProperty();
     v11 = [MEMORY[0x277CCACE0] componentsWithURL:v10 resolvingAgainstBaseURL:1];
-    v12 = [v11 path];
-    if ([v12 isEqualToString:@"/pair"])
+    path = [v11 path];
+    if ([path isEqualToString:@"/pair"])
     {
       v13 = [v7 isEqualToString:@"GET"];
 
       if (v13)
       {
-        v14 = [v11 query];
-        v15 = [(RMSPairingServer *)self _parsedQueryParametersWithQueryString:v14];
+        query = [v11 query];
+        v15 = [(RMSPairingServer *)self _parsedQueryParametersWithQueryString:query];
 
         v16 = [v15 valueForKey:@"pairingcode"];
         v17 = [v15 valueForKey:@"servicename"];
@@ -283,11 +283,11 @@
           [v23 encodeInt64:v20 forCode:1668116583];
           [v23 encodeString:self->_advertisedDeviceName forCode:1668116077];
           [v23 encodeString:self->_advertisedDeviceModel forCode:1668117625];
-          v24 = [v23 data];
+          data = [v23 data];
           v25 = objc_opt_new();
 
-          [v25 encodeData:v24 forCode:1668116577];
-          v33 = [v25 data];
+          [v25 encodeData:data forCode:1668116577];
+          data2 = [v25 data];
           v26 = RMSLogger();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
@@ -300,9 +300,9 @@
           }
 
           v15 = v34;
-          if (v33)
+          if (data2)
           {
-            (v8)[2](v8, 200, v33);
+            (v8)[2](v8, 200, data2);
 
 LABEL_23:
             goto LABEL_24;
@@ -370,7 +370,7 @@ void __64__RMSPairingServer_handleHTTPServerConnectionDidReceiveRequest___block_
   CFRelease(ResponseMessage);
 }
 
-- (void)handleHTTPServerConnectionDidReplyToRequest:(_CFHTTPServerRequest *)a3 withResponse:(_CFHTTPServerResponse *)a4
+- (void)handleHTTPServerConnectionDidReplyToRequest:(_CFHTTPServerRequest *)request withResponse:(_CFHTTPServerResponse *)response
 {
   v5 = RMSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -394,7 +394,7 @@ void __64__RMSPairingServer_handleHTTPServerConnectionDidReceiveRequest___block_
   }
 }
 
-- (void)handleHTTPServerConnectionDidFailToReplyToRequest:(_CFHTTPServerRequest *)a3 withResponse:(_CFHTTPServerResponse *)a4
+- (void)handleHTTPServerConnectionDidFailToReplyToRequest:(_CFHTTPServerRequest *)request withResponse:(_CFHTTPServerResponse *)response
 {
   v4 = RMSLogger();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

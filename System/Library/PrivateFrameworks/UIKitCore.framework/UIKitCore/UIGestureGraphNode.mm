@@ -1,23 +1,23 @@
 @interface UIGestureGraphNode
-- (BOOL)hasEdgeBetweenNode:(id)a3;
-- (BOOL)hasEdgeFromNode:(id)a3;
-- (BOOL)hasEdgeTowardNode:(id)a3;
-- (BOOL)isInEdge:(id)a3;
-- (BOOL)isInOutEdge:(id)a3;
-- (BOOL)isOutEdge:(id)a3;
+- (BOOL)hasEdgeBetweenNode:(id)node;
+- (BOOL)hasEdgeFromNode:(id)node;
+- (BOOL)hasEdgeTowardNode:(id)node;
+- (BOOL)isInEdge:(id)edge;
+- (BOOL)isInOutEdge:(id)edge;
+- (BOOL)isOutEdge:(id)edge;
 - (NSSet)allEdges;
-- (id)_edgesForType:(unint64_t)a3 createIfNeeded:(BOOL)a4;
+- (id)_edgesForType:(unint64_t)type createIfNeeded:(BOOL)needed;
 - (id)description;
-- (id)edgesForLabel:(id)a3;
+- (id)edgesForLabel:(id)label;
 - (unint64_t)edgeCount;
-- (unint64_t)edgeCountForLabel:(id)a3;
-- (unint64_t)typeOfEdge:(id)a3;
-- (void)_addEdge:(id)a3;
-- (void)_removeEdge:(id)a3;
-- (void)enumerateEdgesBetweenNode:(id)a3 usingBlock:(id)a4;
-- (void)enumerateEdgesFromNode:(id)a3 usingBlock:(id)a4;
-- (void)enumerateEdgesTowardNode:(id)a3 usingBlock:(id)a4;
-- (void)enumerateNeighborNodesUsingBlock:(id)a3;
+- (unint64_t)edgeCountForLabel:(id)label;
+- (unint64_t)typeOfEdge:(id)edge;
+- (void)_addEdge:(id)edge;
+- (void)_removeEdge:(id)edge;
+- (void)enumerateEdgesBetweenNode:(id)node usingBlock:(id)block;
+- (void)enumerateEdgesFromNode:(id)node usingBlock:(id)block;
+- (void)enumerateEdgesTowardNode:(id)node usingBlock:(id)block;
+- (void)enumerateNeighborNodesUsingBlock:(id)block;
 @end
 
 @implementation UIGestureGraphNode
@@ -29,9 +29,9 @@
   return v4 + [(NSMutableSet *)self->_outEdges count];
 }
 
-- (unint64_t)edgeCountForLabel:(id)a3
+- (unint64_t)edgeCountForLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = [(NSMapTable *)self->_edgesByLabel objectForKey:?];
     v5 = [v4 count];
@@ -46,7 +46,7 @@
   }
 }
 
-- (BOOL)hasEdgeTowardNode:(id)a3
+- (BOOL)hasEdgeTowardNode:(id)node
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -68,9 +68,9 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) targetNode];
+        targetNode = [*(*(&v12 + 1) + 8 * i) targetNode];
 
-        if (v9 == a3)
+        if (targetNode == node)
         {
           v10 = 1;
           goto LABEL_11;
@@ -93,7 +93,7 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)hasEdgeFromNode:(id)a3
+- (BOOL)hasEdgeFromNode:(id)node
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -115,9 +115,9 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) sourceNode];
+        sourceNode = [*(*(&v12 + 1) + 8 * i) sourceNode];
 
-        if (v9 == a3)
+        if (sourceNode == node)
         {
           v10 = 1;
           goto LABEL_11;
@@ -140,7 +140,7 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)hasEdgeBetweenNode:(id)a3
+- (BOOL)hasEdgeBetweenNode:(id)node
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -164,7 +164,7 @@ LABEL_11:
 
         v10 = [*(*(&v13 + 1) + 8 * i) oppositeNode:{self, v13}];
 
-        if (v10 == a3)
+        if (v10 == node)
         {
           v11 = 1;
           goto LABEL_11;
@@ -187,14 +187,14 @@ LABEL_11:
   return v11;
 }
 
-- (unint64_t)typeOfEdge:(id)a3
+- (unint64_t)typeOfEdge:(id)edge
 {
   if ([(UIGestureGraphNode *)self isInEdge:?])
   {
     return 0;
   }
 
-  if ([(UIGestureGraphNode *)self isOutEdge:a3])
+  if ([(UIGestureGraphNode *)self isOutEdge:edge])
   {
     return 2;
   }
@@ -202,51 +202,51 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)isInEdge:(id)a3
+- (BOOL)isInEdge:(id)edge
 {
-  v5 = [a3 targetNode];
-  if (v5 == self)
+  targetNode = [edge targetNode];
+  if (targetNode == self)
   {
-    v6 = [a3 isDirected];
+    isDirected = [edge isDirected];
   }
 
   else
   {
-    v6 = 0;
+    isDirected = 0;
   }
 
-  return v6;
+  return isDirected;
 }
 
-- (BOOL)isOutEdge:(id)a3
+- (BOOL)isOutEdge:(id)edge
 {
-  v5 = [a3 sourceNode];
-  if (v5 == self)
+  sourceNode = [edge sourceNode];
+  if (sourceNode == self)
   {
-    v6 = [a3 isDirected];
+    isDirected = [edge isDirected];
   }
 
   else
   {
-    v6 = 0;
+    isDirected = 0;
   }
 
-  return v6;
+  return isDirected;
 }
 
-- (BOOL)isInOutEdge:(id)a3
+- (BOOL)isInOutEdge:(id)edge
 {
-  if (![a3 isDirected])
+  if (![edge isDirected])
   {
     return 1;
   }
 
-  v5 = [a3 sourceNode];
-  v6 = [a3 targetNode];
-  if (v5 == v6)
+  sourceNode = [edge sourceNode];
+  targetNode = [edge targetNode];
+  if (sourceNode == targetNode)
   {
-    v8 = [a3 sourceNode];
-    v7 = v8 == self;
+    sourceNode2 = [edge sourceNode];
+    v7 = sourceNode2 == self;
   }
 
   else
@@ -257,7 +257,7 @@ LABEL_11:
   return v7;
 }
 
-- (void)enumerateEdgesTowardNode:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesTowardNode:(id)node usingBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
   if ([(NSMutableSet *)self->_outEdges count])
@@ -267,8 +267,8 @@ LABEL_11:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(NSMutableSet *)self->_outEdges allObjects];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    allObjects = [(NSMutableSet *)self->_outEdges allObjects];
+    v8 = [allObjects countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -279,15 +279,15 @@ LABEL_4:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
-        v13 = [v12 targetNode];
+        targetNode = [v12 targetNode];
 
-        if (v13 == a3)
+        if (targetNode == node)
         {
-          (*(a4 + 2))(a4, v12, &v18);
+          (*(block + 2))(block, v12, &v18);
           if (v18)
           {
             break;
@@ -296,7 +296,7 @@ LABEL_4:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+          v9 = [allObjects countByEnumeratingWithState:&v14 objects:v19 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -309,7 +309,7 @@ LABEL_4:
   }
 }
 
-- (void)enumerateEdgesFromNode:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesFromNode:(id)node usingBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
   if ([(NSMutableSet *)self->_inEdges count])
@@ -319,8 +319,8 @@ LABEL_4:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(NSMutableSet *)self->_inEdges allObjects];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    allObjects = [(NSMutableSet *)self->_inEdges allObjects];
+    v8 = [allObjects countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -331,15 +331,15 @@ LABEL_4:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
-        v13 = [v12 sourceNode];
+        sourceNode = [v12 sourceNode];
 
-        if (v13 == a3)
+        if (sourceNode == node)
         {
-          (*(a4 + 2))(a4, v12, &v18);
+          (*(block + 2))(block, v12, &v18);
           if (v18)
           {
             break;
@@ -348,7 +348,7 @@ LABEL_4:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+          v9 = [allObjects countByEnumeratingWithState:&v14 objects:v19 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -361,7 +361,7 @@ LABEL_4:
   }
 }
 
-- (void)enumerateEdgesBetweenNode:(id)a3 usingBlock:(id)a4
+- (void)enumerateEdgesBetweenNode:(id)node usingBlock:(id)block
 {
   v20 = *MEMORY[0x1E69E9840];
   if ([(NSMutableSet *)self->_inOutEdges count])
@@ -371,8 +371,8 @@ LABEL_4:
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(NSMutableSet *)self->_inOutEdges allObjects];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    allObjects = [(NSMutableSet *)self->_inOutEdges allObjects];
+    v8 = [allObjects countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -383,15 +383,15 @@ LABEL_4:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
         v13 = [v12 oppositeNode:self];
 
-        if (v13 == a3)
+        if (v13 == node)
         {
-          (*(a4 + 2))(a4, v12, &v18);
+          (*(block + 2))(block, v12, &v18);
           if (v18)
           {
             break;
@@ -400,7 +400,7 @@ LABEL_4:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v14 objects:v19 count:16];
+          v9 = [allObjects countByEnumeratingWithState:&v14 objects:v19 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -413,21 +413,21 @@ LABEL_4:
   }
 }
 
-- (id)edgesForLabel:(id)a3
+- (id)edgesForLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v3 = MEMORY[0x1E695DFD8];
     v4 = [(NSMapTable *)self->_edgesByLabel objectForKey:?];
-    v5 = [v3 setWithSet:v4];
+    allEdges = [v3 setWithSet:v4];
   }
 
   else
   {
-    v5 = [(UIGestureGraphNode *)self allEdges];
+    allEdges = [(UIGestureGraphNode *)self allEdges];
   }
 
-  return v5;
+  return allEdges;
 }
 
 - (NSSet)allEdges
@@ -439,7 +439,7 @@ LABEL_4:
   return v3;
 }
 
-- (void)enumerateNeighborNodesUsingBlock:(id)a3
+- (void)enumerateNeighborNodesUsingBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
   v17 = 0;
@@ -447,8 +447,8 @@ LABEL_4:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(UIGestureGraphNode *)self allEdges];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  allEdges = [(UIGestureGraphNode *)self allEdges];
+  v6 = [allEdges countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -459,7 +459,7 @@ LABEL_4:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allEdges);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -469,7 +469,7 @@ LABEL_4:
         {
           if (([v11 isEqual:self] & 1) == 0)
           {
-            (*(a3 + 2))(a3, v10, v12, &v17);
+            (*(block + 2))(block, v10, v12, &v17);
             if (v17)
             {
 
@@ -479,7 +479,7 @@ LABEL_4:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v7 = [allEdges countByEnumeratingWithState:&v13 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -497,64 +497,64 @@ LABEL_13:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UIGestureGraphNode *)self edgeCount];
+  edgeCount = [(UIGestureGraphNode *)self edgeCount];
   v7 = [(NSMutableSet *)self->_inEdges count];
   v8 = [(NSMutableSet *)self->_outEdges count];
   v9 = [(NSMutableSet *)self->_inOutEdges count];
   v13.receiver = self;
   v13.super_class = UIGestureGraphNode;
   v10 = [(UIGestureGraphElement *)&v13 description];
-  v11 = [v3 stringWithFormat:@"[<%@ %p>] edgesCount:[%ld] inEdgesCount:[%ld] outEdgesCount:[%ld] inOutEdgesCount:[%ld] %@", v5, self, v6, v7, v8, v9, v10];
+  v11 = [v3 stringWithFormat:@"[<%@ %p>] edgesCount:[%ld] inEdgesCount:[%ld] outEdgesCount:[%ld] inOutEdgesCount:[%ld] %@", v5, self, edgeCount, v7, v8, v9, v10];
 
   return v11;
 }
 
-- (void)_addEdge:(id)a3
+- (void)_addEdge:(id)edge
 {
   v12 = [(UIGestureGraphNode *)self _edgesForType:[(UIGestureGraphNode *)self typeOfEdge:?] createIfNeeded:1];
   edgesByLabel = self->_edgesByLabel;
   if (!edgesByLabel)
   {
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     v7 = self->_edgesByLabel;
-    self->_edgesByLabel = v6;
+    self->_edgesByLabel = strongToStrongObjectsMapTable;
 
     edgesByLabel = self->_edgesByLabel;
   }
 
-  v8 = [a3 label];
-  v9 = [(NSMapTable *)edgesByLabel objectForKey:v8];
+  label = [edge label];
+  v9 = [(NSMapTable *)edgesByLabel objectForKey:label];
 
   if (!v9)
   {
     v9 = [MEMORY[0x1E695DFA8] set];
     v10 = self->_edgesByLabel;
-    v11 = [a3 label];
-    [(NSMapTable *)v10 setObject:v9 forKey:v11];
+    label2 = [edge label];
+    [(NSMapTable *)v10 setObject:v9 forKey:label2];
   }
 
-  [v9 addObject:a3];
-  [v12 addObject:a3];
+  [v9 addObject:edge];
+  [v12 addObject:edge];
 }
 
-- (void)_removeEdge:(id)a3
+- (void)_removeEdge:(id)edge
 {
   v8 = [(UIGestureGraphNode *)self _edgesForType:[(UIGestureGraphNode *)self typeOfEdge:?] createIfNeeded:0];
   edgesByLabel = self->_edgesByLabel;
-  v6 = [a3 label];
-  v7 = [(NSMapTable *)edgesByLabel objectForKey:v6];
+  label = [edge label];
+  v7 = [(NSMapTable *)edgesByLabel objectForKey:label];
 
   if (v7)
   {
-    [v7 removeObject:a3];
+    [v7 removeObject:edge];
   }
 
-  [v8 removeObject:a3];
+  [v8 removeObject:edge];
 }
 
-- (id)_edgesForType:(unint64_t)a3 createIfNeeded:(BOOL)a4
+- (id)_edgesForType:(unint64_t)type createIfNeeded:(BOOL)needed
 {
-  switch(a3)
+  switch(type)
   {
     case 2uLL:
       p_outEdges = &self->_outEdges;
@@ -566,7 +566,7 @@ LABEL_13:
 
       else
       {
-        v10 = !a4;
+        v10 = !needed;
       }
 
       if (v10)
@@ -591,7 +591,7 @@ LABEL_9:
 LABEL_6:
       p_outEdges = (self + v4);
       outEdges = *(&self->super.super.isa + v4);
-      if (outEdges || !a4)
+      if (outEdges || !needed)
       {
         goto LABEL_9;
       }

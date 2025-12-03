@@ -1,33 +1,33 @@
 @interface _UIDatePickerCalendarTimeFormat
-+ (_UIDatePickerCalendarTimeFormat)formatWithCalendar:(id)a3 locale:(id)a4 followsSystemHourCycle:(BOOL)a5;
-- (_UIDatePickerCalendarTimeFormat)initWithCalendar:(id)a3 locale:(id)a4 followsSystemHourCycle:(BOOL)a5 forceDoubleDigitHours:(BOOL)a6 displaysTimeZone:(BOOL)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)localizedTimeStringWithHours:(unint64_t)a3 minutes:(unint64_t)a4 isPM:(BOOL)a5 ranges:(id *)a6;
-- (id)withDisplaysTimeZone:(BOOL)a3;
-- (id)withForceDoubleDigitHours:(BOOL)a3;
-- (id)withTimeZone:(id)a3;
++ (_UIDatePickerCalendarTimeFormat)formatWithCalendar:(id)calendar locale:(id)locale followsSystemHourCycle:(BOOL)cycle;
+- (_UIDatePickerCalendarTimeFormat)initWithCalendar:(id)calendar locale:(id)locale followsSystemHourCycle:(BOOL)cycle forceDoubleDigitHours:(BOOL)hours displaysTimeZone:(BOOL)zone;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)localizedTimeStringWithHours:(unint64_t)hours minutes:(unint64_t)minutes isPM:(BOOL)m ranges:(id *)ranges;
+- (id)withDisplaysTimeZone:(BOOL)zone;
+- (id)withForceDoubleDigitHours:(BOOL)hours;
+- (id)withTimeZone:(id)zone;
 @end
 
 @implementation _UIDatePickerCalendarTimeFormat
 
-+ (_UIDatePickerCalendarTimeFormat)formatWithCalendar:(id)a3 locale:(id)a4 followsSystemHourCycle:(BOOL)a5
++ (_UIDatePickerCalendarTimeFormat)formatWithCalendar:(id)calendar locale:(id)locale followsSystemHourCycle:(BOOL)cycle
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = [objc_alloc(objc_opt_class()) initWithCalendar:v8 locale:v7 followsSystemHourCycle:v5 forceDoubleDigitHours:0 displaysTimeZone:0];
+  cycleCopy = cycle;
+  localeCopy = locale;
+  calendarCopy = calendar;
+  v9 = [objc_alloc(objc_opt_class()) initWithCalendar:calendarCopy locale:localeCopy followsSystemHourCycle:cycleCopy forceDoubleDigitHours:0 displaysTimeZone:0];
 
   return v9;
 }
 
-- (_UIDatePickerCalendarTimeFormat)initWithCalendar:(id)a3 locale:(id)a4 followsSystemHourCycle:(BOOL)a5 forceDoubleDigitHours:(BOOL)a6 displaysTimeZone:(BOOL)a7
+- (_UIDatePickerCalendarTimeFormat)initWithCalendar:(id)calendar locale:(id)locale followsSystemHourCycle:(BOOL)cycle forceDoubleDigitHours:(BOOL)hours displaysTimeZone:(BOOL)zone
 {
-  v7 = a7;
-  v96 = a6;
-  v8 = a5;
+  zoneCopy = zone;
+  hoursCopy = hours;
+  cycleCopy = cycle;
   v127 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
+  calendarCopy = calendar;
+  localeCopy = locale;
   v117.receiver = self;
   v117.super_class = _UIDatePickerCalendarTimeFormat;
   v14 = [(_UIDatePickerCalendarTimeFormat *)&v117 init];
@@ -37,20 +37,20 @@
   }
 
   v15 = objc_opt_new();
-  [v15 setCalendar:v12];
-  [v15 setLocale:v13];
-  v16 = [v12 timeZone];
+  [v15 setCalendar:calendarCopy];
+  [v15 setLocale:localeCopy];
+  timeZone = [calendarCopy timeZone];
   v97 = v15;
-  [v15 setTimeZone:v16];
+  [v15 setTimeZone:timeZone];
 
   v92 = a2;
-  if (v7)
+  if (zoneCopy)
   {
-    v17 = [v12 timeZone];
+    timeZone2 = [calendarCopy timeZone];
     timeZone = v14->_timeZone;
-    v14->_timeZone = v17;
+    v14->_timeZone = timeZone2;
 
-    objc_storeStrong(&v14->_locale, a4);
+    objc_storeStrong(&v14->_locale, locale);
     v14->_timeZoneReferenceDate = [MEMORY[0x1E695DF00] now];
     v19 = @"jm zzz";
   }
@@ -60,24 +60,24 @@
     v19 = @"jm";
   }
 
-  v94 = v8;
-  v20 = _UIDatePickerDateFormatFromTemplate(v19, v13, v8);
+  v94 = cycleCopy;
+  v20 = _UIDatePickerDateFormatFromTemplate(v19, localeCopy, cycleCopy);
   [v15 setDateFormat:v20];
 
-  v14->_displaysTimeZone = v7;
-  v21 = [v12 copy];
-  [v21 setLocale:v13];
-  v22 = [v21 AMSymbol];
+  v14->_displaysTimeZone = zoneCopy;
+  v21 = [calendarCopy copy];
+  [v21 setLocale:localeCopy];
+  aMSymbol = [v21 AMSymbol];
   AMSymbol = v14->_AMSymbol;
-  v14->_AMSymbol = v22;
+  v14->_AMSymbol = aMSymbol;
 
   v95 = v21;
-  v24 = [v21 PMSymbol];
+  pMSymbol = [v21 PMSymbol];
   PMSymbol = v14->_PMSymbol;
   v98 = v14;
-  v14->_PMSymbol = v24;
+  v14->_PMSymbol = pMSymbol;
 
-  v101 = [v15 dateFormat];
+  dateFormat = [v15 dateFormat];
   v26 = [MEMORY[0x1E696AB78] _componentsFromFormatString:?];
   v27 = objc_opt_new();
   v113 = 0u;
@@ -91,8 +91,8 @@
   if (v29)
   {
     v31 = v29;
-    v99 = v13;
-    v100 = v12;
+    v99 = localeCopy;
+    v100 = calendarCopy;
     obj = 0;
     v104 = 0;
     v108 = 0;
@@ -116,9 +116,9 @@
 
         v34 = *(*(&v113 + 1) + 8 * v33);
         v35 = [v34 objectForKeyedSubscript:{v30, v92}];
-        v36 = [v35 BOOLValue];
+        bOOLValue = [v35 BOOLValue];
 
-        if (v36)
+        if (bOOLValue)
         {
           [v27 addObject:v34];
           goto LABEL_35;
@@ -128,7 +128,7 @@
         v38 = v27;
         v39 = [v34 objectForKeyedSubscript:v110];
         v40 = [v34 objectForKeyedSubscript:v109];
-        v41 = [v40 rangeValue];
+        rangeValue = [v40 rangeValue];
         v43 = v42;
 
         v44 = [v39 characterAtIndex:0];
@@ -144,7 +144,7 @@
               obj = v48;
               v27 = v38;
               v108 = v43;
-              v106 = v41;
+              v106 = rangeValue;
               v47 = 2;
 LABEL_30:
               v107 = v47;
@@ -157,12 +157,12 @@ LABEL_30:
               v108 = v43;
               obj = v51;
               v27 = v38;
-              v106 = v41;
+              v106 = rangeValue;
               break;
             case 'a':
               v27 = v38;
               [v38 addObject:v34];
-              v103 = v41;
+              v103 = rangeValue;
               break;
             default:
               goto LABEL_25;
@@ -182,7 +182,7 @@ LABEL_30:
               v28 = v105;
               v27 = v38;
               v108 = v43;
-              v106 = v41;
+              v106 = rangeValue;
               v47 = 1;
             }
 
@@ -199,7 +199,7 @@ LABEL_30:
               obj = v46;
               v27 = v38;
               v108 = v43;
-              v106 = v41;
+              v106 = rangeValue;
               v47 = 3;
             }
 
@@ -211,7 +211,7 @@ LABEL_30:
             v27 = v38;
             [v38 addObject:v34];
             v104 = v43;
-            v102 = v41;
+            v102 = rangeValue;
           }
 
           else
@@ -228,7 +228,7 @@ LABEL_25:
                   *buf = 67109890;
                   v119 = v45;
                   v120 = 2112;
-                  v121 = v101;
+                  v121 = dateFormat;
                   v122 = 2112;
                   v123 = v100;
                   v124 = 2112;
@@ -246,7 +246,7 @@ LABEL_25:
                   *buf = 67109890;
                   v119 = v45;
                   v120 = 2112;
-                  v121 = v101;
+                  v121 = dateFormat;
                   v122 = 2112;
                   v123 = v100;
                   v124 = 2112;
@@ -278,8 +278,8 @@ LABEL_35:
       if (!v53)
       {
         v54 = v102 == 0x7FFFFFFFFFFFFFFFLL;
-        v13 = v99;
-        v12 = v100;
+        localeCopy = v99;
+        calendarCopy = v100;
         goto LABEL_43;
       }
     }
@@ -294,14 +294,14 @@ LABEL_35:
   v104 = 0;
 LABEL_43:
 
-  v55 = [v27 firstObject];
-  v56 = [v55 objectForKeyedSubscript:v30];
-  v57 = [v56 BOOLValue];
+  firstObject = [v27 firstObject];
+  v56 = [firstObject objectForKeyedSubscript:v30];
+  bOOLValue2 = [v56 BOOLValue];
 
-  if (v57)
+  if (bOOLValue2)
   {
-    v58 = [v27 firstObject];
-    v59 = __121___UIDatePickerCalendarTimeFormat_initWithCalendar_locale_followsSystemHourCycle_forceDoubleDigitHours_displaysTimeZone___block_invoke(v58, 1);
+    firstObject2 = [v27 firstObject];
+    v59 = __121___UIDatePickerCalendarTimeFormat_initWithCalendar_locale_followsSystemHourCycle_forceDoubleDigitHours_displaysTimeZone___block_invoke(firstObject2, 1);
 
     if (v59)
     {
@@ -321,15 +321,15 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  v61 = [v27 lastObject];
-  v62 = [v61 objectForKeyedSubscript:v30];
-  v63 = [v62 BOOLValue];
+  lastObject = [v27 lastObject];
+  v62 = [lastObject objectForKeyedSubscript:v30];
+  bOOLValue3 = [v62 BOOLValue];
 
   v60 = v98;
-  if (v63)
+  if (bOOLValue3)
   {
-    v64 = [v27 lastObject];
-    v59 = __121___UIDatePickerCalendarTimeFormat_initWithCalendar_locale_followsSystemHourCycle_forceDoubleDigitHours_displaysTimeZone___block_invoke(v64, 0);
+    lastObject2 = [v27 lastObject];
+    v59 = __121___UIDatePickerCalendarTimeFormat_initWithCalendar_locale_followsSystemHourCycle_forceDoubleDigitHours_displaysTimeZone___block_invoke(lastObject2, 0);
 
     if (v59)
     {
@@ -351,7 +351,7 @@ LABEL_52:
   v60->_timeFormat = v65;
 
   objc_storeStrong(&v60->_hourFormat, obj);
-  v67 = _UIDatePickerDateFormatFromTemplate(obj, v13, v94);
+  v67 = _UIDatePickerDateFormatFromTemplate(obj, localeCopy, v94);
   v68 = _UIDateFormatStripOtherFormatCharacters(v67, [obj characterAtIndex:0]);
 
   v69 = [v68 length];
@@ -374,18 +374,18 @@ LABEL_52:
   v75 = v107;
   if (v107 == -1)
   {
-    v86 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v86 handleFailureInMethod:v93 object:v60 file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:245 description:@"Internal UIKit inconsistency: unable to find the clock format."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:v93 object:v60 file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:245 description:@"Internal UIKit inconsistency: unable to find the clock format."];
 
     v75 = -1;
   }
 
   v76 = v106;
-  v77 = v96;
+  v77 = hoursCopy;
   if (v106 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v87 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v87 handleFailureInMethod:v93 object:v60 file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:246 description:@"Internal UIKit inconsistency: unable to find an hour format."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:v93 object:v60 file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:246 description:@"Internal UIKit inconsistency: unable to find an hour format."];
 
     v76 = 0x7FFFFFFFFFFFFFFFLL;
     v75 = v107;
@@ -395,8 +395,8 @@ LABEL_52:
     }
 
 LABEL_74:
-    v88 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v88 handleFailureInMethod:v93 object:v60 file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:247 description:@"Internal UIKit inconsistency: unable to find a minute format."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:v93 object:v60 file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:247 description:@"Internal UIKit inconsistency: unable to find a minute format."];
 
     v76 = v106;
     v75 = v107;
@@ -430,7 +430,7 @@ LABEL_59:
   }
 
   v60->_wantsDoubleDigitHours = v108 > 1;
-  v60->_forceDoubleDigitHours = v96;
+  v60->_forceDoubleDigitHours = hoursCopy;
   v60->_clock = v75;
   if (os_variant_has_internal_diagnostics())
   {
@@ -442,15 +442,15 @@ LABEL_59:
         *buf = 67109890;
         v119 = v108;
         v120 = 2112;
-        v121 = v101;
+        v121 = dateFormat;
         v122 = 2112;
-        v123 = v12;
+        v123 = calendarCopy;
         v124 = 2112;
-        v125 = v13;
+        v125 = localeCopy;
         _os_log_fault_impl(&dword_188A29000, v89, OS_LOG_TYPE_FAULT, "Date format is reported with %d digits for the hour. We can't handle this. dateFormat: %@; calendar: %@; locale: %@", buf, 0x26u);
       }
 
-      v77 = v96;
+      v77 = hoursCopy;
     }
   }
 
@@ -462,17 +462,17 @@ LABEL_59:
       *buf = 67109890;
       v119 = v108;
       v120 = 2112;
-      v121 = v101;
+      v121 = dateFormat;
       v122 = 2112;
-      v123 = v12;
+      v123 = calendarCopy;
       v124 = 2112;
-      v125 = v13;
+      v125 = localeCopy;
       _os_log_impl(&dword_188A29000, v90, OS_LOG_TYPE_ERROR, "Date format is reported with %d digits for the hour. We can't handle this. dateFormat: %@; calendar: %@; locale: %@", buf, 0x26u);
     }
   }
 
   v79 = objc_opt_new();
-  [(NSNumberFormatter *)v79 setLocale:v13];
+  [(NSNumberFormatter *)v79 setLocale:localeCopy];
   [(NSNumberFormatter *)v79 setMaximumFractionDigits:0];
   [(NSNumberFormatter *)v79 setMinimumIntegerDigits:v108];
   objc_storeStrong(&v98->_strictHourFormatter, v79);
@@ -490,7 +490,7 @@ LABEL_59:
 
   v14 = v98;
   v83 = objc_opt_new();
-  [(NSNumberFormatter *)v83 setLocale:v13];
+  [(NSNumberFormatter *)v83 setLocale:localeCopy];
   [(NSNumberFormatter *)v83 setMinimumIntegerDigits:v104];
   [(NSNumberFormatter *)v83 setMaximumFractionDigits:0];
   minuteFormatter = v98->_minuteFormatter;
@@ -500,7 +500,7 @@ LABEL_72:
   return v14;
 }
 
-- (id)localizedTimeStringWithHours:(unint64_t)a3 minutes:(unint64_t)a4 isPM:(BOOL)a5 ranges:(id *)a6
+- (id)localizedTimeStringWithHours:(unint64_t)hours minutes:(unint64_t)minutes isPM:(BOOL)m ranges:(id *)ranges
 {
   v88 = *MEMORY[0x1E69E9840];
   v7 = 0x1E696A000uLL;
@@ -511,7 +511,7 @@ LABEL_72:
   v85 = 0u;
   obj = v86 = 0u;
   v9 = [obj countByEnumeratingWithState:&v83 objects:v87 count:16];
-  v80 = self;
+  selfCopy = self;
   if (!v9)
   {
     v72 = 0;
@@ -544,11 +544,11 @@ LABEL_72:
 
       v15 = *(*(&v83 + 1) + 8 * v14);
       v16 = [v15 objectForKeyedSubscript:v12];
-      v17 = [v16 BOOLValue];
+      bOOLValue = [v16 BOOLValue];
 
       v18 = [v15 objectForKeyedSubscript:v13];
       v19 = v18;
-      if (v17)
+      if (bOOLValue)
       {
         [v8 appendString:v18];
         goto LABEL_21;
@@ -568,7 +568,7 @@ LABEL_72:
           goto LABEL_30;
         }
 
-        if (a5)
+        if (m)
         {
           [(_UIDatePickerCalendarTimeFormat *)self PMSymbol];
         }
@@ -593,34 +593,34 @@ LABEL_72:
           if (v20 == 104 || v20 == 107)
           {
 LABEL_18:
-            v22 = [(_UIDatePickerCalendarTimeFormat *)self hourFormatter];
-            v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-            v24 = [v22 stringFromNumber:v23];
+            hourFormatter = [(_UIDatePickerCalendarTimeFormat *)self hourFormatter];
+            v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:hours];
+            currentHandler = [hourFormatter stringFromNumber:v23];
 
             v76 = [v8 length];
-            v78 = [v24 length];
-            [v8 appendString:v24];
+            v78 = [currentHandler length];
+            [v8 appendString:currentHandler];
           }
 
           else
           {
 LABEL_30:
-            v24 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v24 handleFailureInMethod:a2 object:v80 file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:336 description:{@"Internal UIKit inconsistency: unknown character in format string: %C; dateFormat: %@", v21, v80->_timeFormat}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:336 description:{@"Internal UIKit inconsistency: unknown character in format string: %C; dateFormat: %@", v21, selfCopy->_timeFormat}];
           }
 
 LABEL_20:
-          self = v80;
+          self = selfCopy;
           goto LABEL_21;
         }
 
         if (v20 == 109)
         {
-          v34 = [(_UIDatePickerCalendarTimeFormat *)self minuteFormatter];
-          v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-          v36 = [v34 stringFromNumber:v35];
+          minuteFormatter = [(_UIDatePickerCalendarTimeFormat *)self minuteFormatter];
+          v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:minutes];
+          v36 = [minuteFormatter stringFromNumber:v35];
 
-          self = v80;
+          self = selfCopy;
           v73 = [v8 length];
           v72 = [v36 length];
           [v8 appendString:v36];
@@ -640,9 +640,9 @@ LABEL_20:
 
             if (v26)
             {
-              v27 = [(_UIDatePickerCalendarTimeFormat *)v25 timeZone];
-              v28 = [(_UIDatePickerCalendarTimeFormat *)v25 timeZoneReferenceDate];
-              v29 = [v27 isDaylightSavingTimeForDate:v28];
+              timeZone = [(_UIDatePickerCalendarTimeFormat *)v25 timeZone];
+              timeZoneReferenceDate = [(_UIDatePickerCalendarTimeFormat *)v25 timeZoneReferenceDate];
+              v29 = [timeZone isDaylightSavingTimeForDate:timeZoneReferenceDate];
               v30 = 3;
               if (!v29)
               {
@@ -651,9 +651,9 @@ LABEL_20:
 
               v66 = v30;
 
-              v31 = [(_UIDatePickerCalendarTimeFormat *)v25 timeZone];
-              v32 = [(_UIDatePickerCalendarTimeFormat *)v25 locale];
-              v33 = [v31 localizedName:v66 locale:v32];
+              timeZone2 = [(_UIDatePickerCalendarTimeFormat *)v25 timeZone];
+              locale = [(_UIDatePickerCalendarTimeFormat *)v25 locale];
+              v33 = [timeZone2 localizedName:v66 locale:locale];
 
               [v8 appendString:v33];
               goto LABEL_20;
@@ -682,28 +682,28 @@ LABEL_21:
   if (v76 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_41:
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v42 handleFailureInMethod:a2 object:v80 file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:341 description:@"Internal UIKit inconsistency: unable to replace hour."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:selfCopy file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:341 description:@"Internal UIKit inconsistency: unable to replace hour."];
 
     v40 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   if (v41 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v64 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v64 handleFailureInMethod:a2 object:v80 file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:342 description:@"Internal UIKit inconsistency: unable to replace minutes."];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:selfCopy file:@"_UIDatePickerCalendarTimeFormat.m" lineNumber:342 description:@"Internal UIKit inconsistency: unable to replace minutes."];
   }
 
   v43 = v40;
   v44 = v39;
-  if (v80->_extendedHoursFormat)
+  if (selfCopy->_extendedHoursFormat)
   {
     v74 = v41;
     v77 = v40;
     v79 = v39;
     v45 = [v8 substringWithRange:{v40, v39}];
-    hourFormat = v80->_hourFormat;
-    v47 = v80->_extendedHoursFormat;
+    hourFormat = selfCopy->_hourFormat;
+    v47 = selfCopy->_extendedHoursFormat;
     v48 = hourFormat;
     v49 = v45;
     v50 = [(NSString *)v47 length];
@@ -767,116 +767,116 @@ LABEL_41:
     v41 = v74;
   }
 
-  if (a6)
+  if (ranges)
   {
-    a6->var0.location = v40;
-    a6->var0.length = v39;
-    a6->var1.location = v41;
-    a6->var1.length = v72;
-    a6->var2.location = v67;
-    a6->var2.length = v68;
-    a6->var3.location = v40 + v39;
-    a6->var3.length = v41 - (v40 + v39);
-    a6->var4.location = v43;
-    a6->var4.length = v44;
+    ranges->var0.location = v40;
+    ranges->var0.length = v39;
+    ranges->var1.location = v41;
+    ranges->var1.length = v72;
+    ranges->var2.location = v67;
+    ranges->var2.length = v68;
+    ranges->var3.location = v40 + v39;
+    ranges->var3.length = v41 - (v40 + v39);
+    ranges->var4.location = v43;
+    ranges->var4.length = v44;
   }
 
   return v8;
 }
 
-- (id)withForceDoubleDigitHours:(BOOL)a3
+- (id)withForceDoubleDigitHours:(BOOL)hours
 {
-  v3 = a3;
-  if ([(_UIDatePickerCalendarTimeFormat *)self forceDoubleDigitHours]== a3)
+  hoursCopy = hours;
+  if ([(_UIDatePickerCalendarTimeFormat *)self forceDoubleDigitHours]== hours)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [(_UIDatePickerCalendarTimeFormat *)self copy];
-    v5->_forceDoubleDigitHours = v3;
-    v6 = [(_UIDatePickerCalendarTimeFormat *)v5 strictHourFormatter];
-    v7 = [v6 minimumIntegerDigits];
-    if (v3)
+    selfCopy = [(_UIDatePickerCalendarTimeFormat *)self copy];
+    selfCopy->_forceDoubleDigitHours = hoursCopy;
+    strictHourFormatter = [(_UIDatePickerCalendarTimeFormat *)selfCopy strictHourFormatter];
+    minimumIntegerDigits = [strictHourFormatter minimumIntegerDigits];
+    if (hoursCopy)
     {
 
-      if (v7 > 1)
+      if (minimumIntegerDigits > 1)
       {
         goto LABEL_8;
       }
 
-      v6 = [(_UIDatePickerCalendarTimeFormat *)v5 hourFormatter];
-      [v6 setMinimumIntegerDigits:2];
+      strictHourFormatter = [(_UIDatePickerCalendarTimeFormat *)selfCopy hourFormatter];
+      [strictHourFormatter setMinimumIntegerDigits:2];
     }
 
     else
     {
-      v8 = [(_UIDatePickerCalendarTimeFormat *)v5 hourFormatter];
-      [v8 setMinimumIntegerDigits:v7];
+      hourFormatter = [(_UIDatePickerCalendarTimeFormat *)selfCopy hourFormatter];
+      [hourFormatter setMinimumIntegerDigits:minimumIntegerDigits];
     }
   }
 
 LABEL_8:
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)withDisplaysTimeZone:(BOOL)a3
+- (id)withDisplaysTimeZone:(BOOL)zone
 {
-  if ([(_UIDatePickerCalendarTimeFormat *)self displaysTimeZone]== a3)
+  if ([(_UIDatePickerCalendarTimeFormat *)self displaysTimeZone]== zone)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = [(_UIDatePickerCalendarTimeFormat *)self copy];
-    v5->_displaysTimeZone = a3;
+    selfCopy = [(_UIDatePickerCalendarTimeFormat *)self copy];
+    selfCopy->_displaysTimeZone = zone;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)withTimeZone:(id)a3
+- (id)withTimeZone:(id)zone
 {
-  v5 = a3;
-  v6 = [(_UIDatePickerCalendarTimeFormat *)self timeZone];
-  v7 = [v6 isEqual:v5];
+  zoneCopy = zone;
+  timeZone = [(_UIDatePickerCalendarTimeFormat *)self timeZone];
+  v7 = [timeZone isEqual:zoneCopy];
 
   if (v7)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [(_UIDatePickerCalendarTimeFormat *)self copy];
-    objc_storeStrong(&v8->_timeZone, a3);
+    selfCopy = [(_UIDatePickerCalendarTimeFormat *)self copy];
+    objc_storeStrong(&selfCopy->_timeZone, zone);
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   v4 = objc_opt_new();
-  v5 = [(_UIDatePickerCalendarTimeFormat *)self timeFormat];
+  timeFormat = [(_UIDatePickerCalendarTimeFormat *)self timeFormat];
   v6 = *(v4 + 16);
-  *(v4 + 16) = v5;
+  *(v4 + 16) = timeFormat;
 
-  v7 = [(_UIDatePickerCalendarTimeFormat *)self hourFormat];
+  hourFormat = [(_UIDatePickerCalendarTimeFormat *)self hourFormat];
   v8 = *(v4 + 24);
-  *(v4 + 24) = v7;
+  *(v4 + 24) = hourFormat;
 
-  v9 = [(_UIDatePickerCalendarTimeFormat *)self AMSymbol];
+  aMSymbol = [(_UIDatePickerCalendarTimeFormat *)self AMSymbol];
   v10 = *(v4 + 32);
-  *(v4 + 32) = v9;
+  *(v4 + 32) = aMSymbol;
 
-  v11 = [(_UIDatePickerCalendarTimeFormat *)self PMSymbol];
+  pMSymbol = [(_UIDatePickerCalendarTimeFormat *)self PMSymbol];
   v12 = *(v4 + 40);
-  *(v4 + 40) = v11;
+  *(v4 + 40) = pMSymbol;
 
   *(v4 + 8) = [(_UIDatePickerCalendarTimeFormat *)self wantsDoubleDigitHours];
   *(v4 + 9) = [(_UIDatePickerCalendarTimeFormat *)self forceDoubleDigitHours];
@@ -884,34 +884,34 @@ LABEL_8:
   *(v4 + 56) = [(_UIDatePickerCalendarTimeFormat *)self clockLayout];
   *(v4 + 10) = [(_UIDatePickerCalendarTimeFormat *)self hasLeadingLiteral];
   *(v4 + 11) = [(_UIDatePickerCalendarTimeFormat *)self hasTrailingLiteral];
-  v13 = [(_UIDatePickerCalendarTimeFormat *)self hourFormatter];
-  v14 = [v13 copy];
+  hourFormatter = [(_UIDatePickerCalendarTimeFormat *)self hourFormatter];
+  v14 = [hourFormatter copy];
   v15 = *(v4 + 64);
   *(v4 + 64) = v14;
 
-  v16 = [(_UIDatePickerCalendarTimeFormat *)self minuteFormatter];
-  v17 = [v16 copy];
+  minuteFormatter = [(_UIDatePickerCalendarTimeFormat *)self minuteFormatter];
+  v17 = [minuteFormatter copy];
   v18 = *(v4 + 72);
   *(v4 + 72) = v17;
 
-  v19 = [(_UIDatePickerCalendarTimeFormat *)self strictHourFormatter];
-  v20 = [v19 copy];
+  strictHourFormatter = [(_UIDatePickerCalendarTimeFormat *)self strictHourFormatter];
+  v20 = [strictHourFormatter copy];
   v21 = *(v4 + 88);
   *(v4 + 88) = v20;
 
-  v22 = [(_UIDatePickerCalendarTimeFormat *)self timeZone];
+  timeZone = [(_UIDatePickerCalendarTimeFormat *)self timeZone];
   v23 = *(v4 + 104);
-  *(v4 + 104) = v22;
+  *(v4 + 104) = timeZone;
 
-  v24 = [(_UIDatePickerCalendarTimeFormat *)self locale];
+  locale = [(_UIDatePickerCalendarTimeFormat *)self locale];
   v25 = *(v4 + 112);
-  *(v4 + 112) = v24;
+  *(v4 + 112) = locale;
 
   *(v4 + 12) = [(_UIDatePickerCalendarTimeFormat *)self displaysTimeZone];
   *(v4 + 96) = [(_UIDatePickerCalendarTimeFormat *)self timeZoneReferenceDate];
-  v26 = [(_UIDatePickerCalendarTimeFormat *)self extendedHoursFormat];
+  extendedHoursFormat = [(_UIDatePickerCalendarTimeFormat *)self extendedHoursFormat];
   v27 = *(v4 + 80);
-  *(v4 + 80) = v26;
+  *(v4 + 80) = extendedHoursFormat;
 
   return v4;
 }

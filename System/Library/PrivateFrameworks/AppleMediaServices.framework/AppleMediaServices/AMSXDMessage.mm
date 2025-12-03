@@ -1,16 +1,16 @@
 @interface AMSXDMessage
 + (id)_allowedClassNamesForDecoding;
 + (id)_allowedClassesForDecoding;
-+ (id)messageFromProtoMessage:(id)a3;
-- (AMSXDMessage)initWithCoder:(id)a3;
-- (AMSXDMessage)initWithIdentifier:(id)a3 destination:(id)a4 purpose:(int64_t)a5 object:(id)a6;
-- (AMSXDMessage)initWithJSONDictionary:(id)a3;
++ (id)messageFromProtoMessage:(id)message;
+- (AMSXDMessage)initWithCoder:(id)coder;
+- (AMSXDMessage)initWithIdentifier:(id)identifier destination:(id)destination purpose:(int64_t)purpose object:(id)object;
+- (AMSXDMessage)initWithJSONDictionary:(id)dictionary;
 - (BOOL)isExpired;
 - (NSDictionary)JSONDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createProtoMessage;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSXDMessage
@@ -40,7 +40,7 @@ uint64_t __42__AMSXDMessage__allowedClassesForDecoding__block_invoke()
   block[1] = 3221225472;
   block[2] = __45__AMSXDMessage__allowedClassNamesForDecoding__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED6E32A0 != -1)
   {
     dispatch_once(&qword_1ED6E32A0, block);
@@ -59,51 +59,51 @@ void __45__AMSXDMessage__allowedClassNamesForDecoding__block_invoke(uint64_t a1)
   qword_1ED6E32A8 = v1;
 }
 
-- (AMSXDMessage)initWithIdentifier:(id)a3 destination:(id)a4 purpose:(int64_t)a5 object:(id)a6
+- (AMSXDMessage)initWithIdentifier:(id)identifier destination:(id)destination purpose:(int64_t)purpose object:(id)object
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  identifierCopy = identifier;
+  destinationCopy = destination;
+  objectCopy = object;
   v22.receiver = self;
   v22.super_class = AMSXDMessage;
   v14 = [(AMSXDMessage *)&v22 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_destination, a4);
+    objc_storeStrong(&v14->_destination, destination);
     v15->_expirationInterval = 2678400.0;
-    objc_storeStrong(&v15->_identifier, a3);
+    objc_storeStrong(&v15->_identifier, identifier);
     v15->_isReply = 0;
     v16 = AMSSetLogKeyIfNeeded();
     logKey = v15->_logKey;
     v15->_logKey = v16;
 
-    objc_storeStrong(&v15->_object, a6);
+    objc_storeStrong(&v15->_object, object);
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     objectClassName = v15->_objectClassName;
     v15->_objectClassName = v19;
 
-    v15->_purpose = a5;
+    v15->_purpose = purpose;
   }
 
   return v15;
 }
 
-+ (id)messageFromProtoMessage:(id)a3
++ (id)messageFromProtoMessage:(id)message
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 messageData];
-  v5 = [v4 length];
+  messageCopy = message;
+  messageData = [messageCopy messageData];
+  v5 = [messageData length];
 
   if (v5)
   {
     v6 = MEMORY[0x1E696ACD0];
     v7 = objc_opt_class();
-    v8 = [v3 messageData];
+    messageData2 = [messageCopy messageData];
     v18 = 0;
-    v9 = [v6 unarchivedObjectOfClass:v7 fromData:v8 error:&v18];
+    v9 = [v6 unarchivedObjectOfClass:v7 fromData:messageData2 error:&v18];
     v10 = v18;
 
     if (!v10)
@@ -111,24 +111,24 @@ void __45__AMSXDMessage__allowedClassNamesForDecoding__block_invoke(uint64_t a1)
       goto LABEL_14;
     }
 
-    v11 = +[AMSLogConfig sharedConfig];
-    if (!v11)
+    oSLogObject2 = +[AMSLogConfig sharedConfig];
+    if (!oSLogObject2)
     {
-      v11 = +[AMSLogConfig sharedConfig];
+      oSLogObject2 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [oSLogObject2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
-      v14 = [v3 logKey];
+      logKey = [messageCopy logKey];
       *buf = 138543874;
       v20 = v13;
       v21 = 2114;
-      v22 = v14;
+      v22 = logKey;
       v23 = 2114;
       v24 = v10;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decode message with error: %{public}@", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decode message with error: %{public}@", buf, 0x20u);
     }
   }
 
@@ -140,16 +140,16 @@ void __45__AMSXDMessage__allowedClassNamesForDecoding__block_invoke(uint64_t a1)
       v10 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v10 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v15 = objc_opt_class();
-      v16 = [v3 logKey];
+      logKey2 = [messageCopy logKey];
       *buf = 138543618;
       v20 = v15;
       v21 = 2114;
-      v22 = v16;
-      _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decode nil protoMessage data", buf, 0x16u);
+      v22 = logKey2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decode nil protoMessage data", buf, 0x16u);
     }
 
     v9 = 0;
@@ -160,11 +160,11 @@ LABEL_14:
   return v9;
 }
 
-- (AMSXDMessage)initWithJSONDictionary:(id)a3
+- (AMSXDMessage)initWithJSONDictionary:(id)dictionary
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kJSONKeyIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -176,20 +176,20 @@ LABEL_14:
     v6 = 0;
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"kJSONKeyLogKey"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyLogKey"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
     v8 = 0;
 LABEL_12:
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_63;
   }
 
   v8 = v7;
 
-  v9 = 0;
+  selfCopy = 0;
   if (v6 && v8)
   {
     v55.receiver = self;
@@ -200,7 +200,7 @@ LABEL_12:
       goto LABEL_62;
     }
 
-    destination = [v4 objectForKeyedSubscript:@"kJSONKeyDestination"];
+    destination = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyDestination"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -210,7 +210,7 @@ LABEL_12:
       {
         v53 = 0;
 LABEL_15:
-        v13 = [v4 objectForKeyedSubscript:@"kJSONKeyExpirationInterval"];
+        v13 = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyExpirationInterval"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -224,7 +224,7 @@ LABEL_15:
 
         self->_expirationInterval = [v14 integerValue];
         objc_storeStrong(&self->_identifier, v6);
-        v15 = [v4 objectForKeyedSubscript:@"kJSONKeyIsReply"];
+        v15 = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyIsReply"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -238,7 +238,7 @@ LABEL_15:
 
         self->_isReply = [v16 BOOLValue];
         objc_storeStrong(&self->_logKey, v7);
-        v17 = [v4 objectForKeyedSubscript:@"kJSONKeyMessageID"];
+        v17 = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyMessageID"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -253,7 +253,7 @@ LABEL_15:
         messageID = self->_messageID;
         self->_messageID = v18;
 
-        v20 = [v4 objectForKeyedSubscript:@"kJSONKeyObject"];
+        v20 = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyObject"];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -271,7 +271,7 @@ LABEL_15:
         }
 
         v20 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v21 options:0];
-        v22 = [v4 objectForKeyedSubscript:@"kJSONKeyObjectClassName"];
+        v22 = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyObjectClassName"];
         objc_opt_class();
         v23 = 0;
         if (objc_opt_isKindOfClass())
@@ -290,22 +290,22 @@ LABEL_15:
             goto LABEL_37;
           }
 
-          v31 = [objc_opt_class() _allowedClassNamesForDecoding];
-          v32 = [v31 containsObject:self->_objectClassName];
+          _allowedClassNamesForDecoding = [objc_opt_class() _allowedClassNamesForDecoding];
+          v32 = [_allowedClassNamesForDecoding containsObject:self->_objectClassName];
 
           if (v32)
           {
             v33 = MEMORY[0x1E696ACD0];
-            v34 = [objc_opt_class() _allowedClassesForDecoding];
+            _allowedClassesForDecoding = [objc_opt_class() _allowedClassesForDecoding];
             v54 = 0;
-            v35 = [v33 unarchivedObjectOfClasses:v34 fromData:v20 error:&v54];
+            v35 = [v33 unarchivedObjectOfClasses:_allowedClassesForDecoding fromData:v20 error:&v54];
             v36 = v54;
             object = self->_object;
             self->_object = v35;
 
 LABEL_40:
 LABEL_41:
-            origin = [v4 objectForKeyedSubscript:@"kJSONKeyOrigin"];
+            origin = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyOrigin"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -327,7 +327,7 @@ LABEL_41:
             }
 
 LABEL_46:
-            v43 = [v4 objectForKeyedSubscript:@"kJSONKeyObjectPurpose"];
+            v43 = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyObjectPurpose"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -340,7 +340,7 @@ LABEL_46:
             }
 
             self->_purpose = [v44 integerValue];
-            receiptDate = [v4 objectForKeyedSubscript:@"kJSONKeyReceiptDate"];
+            receiptDate = [dictionaryCopy objectForKeyedSubscript:@"kJSONKeyReceiptDate"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -370,8 +370,8 @@ LABEL_55:
                 v48 = +[AMSLogConfig sharedConfig];
               }
 
-              v49 = [v48 OSLogObject];
-              if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
+              oSLogObject = [v48 OSLogObject];
+              if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
               {
                 v50 = objc_opt_class();
                 logKey = self->_logKey;
@@ -381,7 +381,7 @@ LABEL_55:
                 v59 = logKey;
                 v60 = 2114;
                 v61 = v36;
-                _os_log_impl(&dword_192869000, v49, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decode JSON with error: %{public}@", buf, 0x20u);
+                _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to decode JSON with error: %{public}@", buf, 0x20u);
               }
 
               goto LABEL_12;
@@ -389,7 +389,7 @@ LABEL_55:
 
 LABEL_62:
             self = self;
-            v9 = self;
+            selfCopy = self;
             goto LABEL_63;
           }
         }
@@ -397,8 +397,8 @@ LABEL_62:
         v30 = self->_objectClassName;
         if (v30)
         {
-          v38 = [objc_opt_class() _allowedClassNamesForDecoding];
-          v39 = [v38 containsObject:self->_objectClassName];
+          _allowedClassNamesForDecoding2 = [objc_opt_class() _allowedClassNamesForDecoding];
+          v39 = [_allowedClassNamesForDecoding2 containsObject:self->_objectClassName];
 
           v30 = self->_objectClassName;
           if ((v39 & 1) == 0)
@@ -430,65 +430,65 @@ LABEL_37:
 
 LABEL_63:
 
-  return v9;
+  return selfCopy;
 }
 
 - (NSDictionary)JSONDictionary
 {
   v38 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AMSXDMessage *)self object];
+  object = [(AMSXDMessage *)self object];
 
-  if (!v4)
+  if (!object)
   {
     goto LABEL_4;
   }
 
   v5 = MEMORY[0x1E696ACC8];
-  v6 = [(AMSXDMessage *)self object];
+  object2 = [(AMSXDMessage *)self object];
   v31 = 0;
-  v7 = [v5 archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v31];
+  v7 = [v5 archivedDataWithRootObject:object2 requiringSecureCoding:1 error:&v31];
   v8 = v31;
 
   if (v7)
   {
     v9 = [v7 base64EncodedStringWithOptions:0];
     [v3 setObject:v9 forKeyedSubscript:@"kJSONKeyObject"];
-    v10 = [(AMSXDMessage *)self objectClassName];
-    [v3 setObject:v10 forKeyedSubscript:@"kJSONKeyObjectClassName"];
+    objectClassName = [(AMSXDMessage *)self objectClassName];
+    [v3 setObject:objectClassName forKeyedSubscript:@"kJSONKeyObjectClassName"];
 
 LABEL_4:
-    v11 = [(AMSXDMessage *)self destination];
-    v12 = [v11 JSONDictionary];
-    [v3 setObject:v12 forKeyedSubscript:@"kJSONKeyDestination"];
+    destination = [(AMSXDMessage *)self destination];
+    jSONDictionary = [destination JSONDictionary];
+    [v3 setObject:jSONDictionary forKeyedSubscript:@"kJSONKeyDestination"];
 
     v13 = MEMORY[0x1E696AD98];
     [(AMSXDMessage *)self expirationInterval];
     v14 = [v13 numberWithDouble:?];
     [v3 setObject:v14 forKeyedSubscript:@"kJSONKeyExpirationInterval"];
 
-    v15 = [(AMSXDMessage *)self identifier];
-    [v3 setObject:v15 forKeyedSubscript:@"kJSONKeyIdentifier"];
+    identifier = [(AMSXDMessage *)self identifier];
+    [v3 setObject:identifier forKeyedSubscript:@"kJSONKeyIdentifier"];
 
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSXDMessage isReply](self, "isReply")}];
     [v3 setObject:v16 forKeyedSubscript:@"kJSONKeyIsReply"];
 
-    v17 = [(AMSXDMessage *)self logKey];
-    [v3 setObject:v17 forKeyedSubscript:@"kJSONKeyLogKey"];
+    logKey = [(AMSXDMessage *)self logKey];
+    [v3 setObject:logKey forKeyedSubscript:@"kJSONKeyLogKey"];
 
-    v18 = [(AMSXDMessage *)self messageID];
-    [v3 setObject:v18 forKeyedSubscript:@"kJSONKeyMessageID"];
+    messageID = [(AMSXDMessage *)self messageID];
+    [v3 setObject:messageID forKeyedSubscript:@"kJSONKeyMessageID"];
 
-    v19 = [(AMSXDMessage *)self origin];
-    v20 = [v19 JSONDictionary];
-    [v3 setObject:v20 forKeyedSubscript:@"kJSONKeyOrigin"];
+    origin = [(AMSXDMessage *)self origin];
+    jSONDictionary2 = [origin JSONDictionary];
+    [v3 setObject:jSONDictionary2 forKeyedSubscript:@"kJSONKeyOrigin"];
 
     v21 = [MEMORY[0x1E696AD98] numberWithInteger:{-[AMSXDMessage purpose](self, "purpose")}];
     [v3 setObject:v21 forKeyedSubscript:@"kJSONKeyObjectPurpose"];
 
     v22 = MEMORY[0x1E696AD98];
-    v23 = [(AMSXDMessage *)self receiptDate];
-    [v23 timeIntervalSinceReferenceDate];
+    receiptDate = [(AMSXDMessage *)self receiptDate];
+    [receiptDate timeIntervalSinceReferenceDate];
     v24 = [v22 numberWithDouble:?];
     [v3 setObject:v24 forKeyedSubscript:@"kJSONKeyReceiptDate"];
 
@@ -502,18 +502,18 @@ LABEL_4:
     v26 = +[AMSLogConfig sharedConfig];
   }
 
-  v27 = [v26 OSLogObject];
-  if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v26 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v28 = objc_opt_class();
-    v29 = [(AMSXDMessage *)self logKey];
+    logKey2 = [(AMSXDMessage *)self logKey];
     *buf = 138543874;
     v33 = v28;
     v34 = 2114;
-    v35 = v29;
+    v35 = logKey2;
     v36 = 2114;
-    v37 = self;
-    _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode message: %{public}@", buf, 0x20u);
+    selfCopy = self;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode message: %{public}@", buf, 0x20u);
   }
 
   v25 = 0;
@@ -536,20 +536,20 @@ LABEL_10:
       v5 = +[AMSLogConfig sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v7 = objc_opt_class();
-      v8 = [(AMSXDMessage *)self logKey];
+      logKey = [(AMSXDMessage *)self logKey];
       *buf = 138544130;
       v14 = v7;
       v15 = 2114;
-      v16 = v8;
+      v16 = logKey;
       v17 = 2114;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = v4;
-      _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode proto message: %{public}@ error: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode proto message: %{public}@ error: %{public}@", buf, 0x2Au);
     }
 
     v9 = 0;
@@ -558,8 +558,8 @@ LABEL_10:
   else
   {
     v9 = objc_alloc_init(AMSXDProtoMessage);
-    v10 = [(AMSXDMessage *)self logKey];
-    [(AMSXDProtoMessage *)v9 setLogKey:v10];
+    logKey2 = [(AMSXDMessage *)self logKey];
+    [(AMSXDProtoMessage *)v9 setLogKey:logKey2];
 
     [(AMSXDProtoMessage *)v9 setMessageData:v3];
   }
@@ -570,28 +570,28 @@ LABEL_10:
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AMSXDMessage *)self purpose];
-  v5 = [(AMSXDMessage *)self identifier];
-  v6 = [(AMSXDMessage *)self logKey];
-  v7 = [(AMSXDMessage *)self isReply];
-  v8 = [(AMSXDMessage *)self messageID];
+  purpose = [(AMSXDMessage *)self purpose];
+  identifier = [(AMSXDMessage *)self identifier];
+  logKey = [(AMSXDMessage *)self logKey];
+  isReply = [(AMSXDMessage *)self isReply];
+  messageID = [(AMSXDMessage *)self messageID];
   [(AMSXDMessage *)self expirationInterval];
   v10 = v9;
-  v11 = [(AMSXDMessage *)self receiptDate];
-  v12 = [v3 stringWithFormat:@"[AMSXDMessage purpose:%ld id:%@; logKey:%@; reply:%d; msgID:%@; expInt: %lf; received:%@]", v4, v5, v6, v7, v8, v10, v11];;
+  receiptDate = [(AMSXDMessage *)self receiptDate];
+  v12 = [v3 stringWithFormat:@"[AMSXDMessage purpose:%ld id:%@; logKey:%@; reply:%d; msgID:%@; expInt: %lf; received:%@]", purpose, identifier, logKey, isReply, messageID, v10, receiptDate];;
 
   return v12;
 }
 
 - (BOOL)isExpired
 {
-  v3 = [(AMSXDMessage *)self receiptDate];
-  if (!v3)
+  receiptDate = [(AMSXDMessage *)self receiptDate];
+  if (!receiptDate)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = receiptDate;
   [(AMSXDMessage *)self expirationInterval];
   v6 = v5;
 
@@ -600,9 +600,9 @@ LABEL_10:
     return 0;
   }
 
-  v8 = [(AMSXDMessage *)self receiptDate];
+  receiptDate2 = [(AMSXDMessage *)self receiptDate];
   [(AMSXDMessage *)self expirationInterval];
-  v9 = [v8 dateByAddingTimeInterval:?];
+  v9 = [receiptDate2 dateByAddingTimeInterval:?];
 
   [v9 timeIntervalSinceNow];
   v7 = v10 <= 0.0;
@@ -610,12 +610,12 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(AMSXDMessage *)self JSONDictionary];
-  if (v4)
+  jSONDictionary = [(AMSXDMessage *)self JSONDictionary];
+  if (jSONDictionary)
   {
-    v5 = [[AMSXDMessage allocWithZone:?], "initWithJSONDictionary:", v4];
+    v5 = [[AMSXDMessage allocWithZone:?], "initWithJSONDictionary:", jSONDictionary];
   }
 
   else
@@ -626,17 +626,17 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v10 = [(AMSXDMessage *)self JSONDictionary];
-  if (v10 && [MEMORY[0x1E696ACB0] isValidJSONObject:v10])
+  coderCopy = coder;
+  jSONDictionary = [(AMSXDMessage *)self JSONDictionary];
+  if (jSONDictionary && [MEMORY[0x1E696ACB0] isValidJSONObject:jSONDictionary])
   {
     v17 = 0;
-    v11 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v10 options:0 error:&v17];
+    v11 = [MEMORY[0x1E696ACB0] dataWithJSONObject:jSONDictionary options:0 error:&v17];
     v12 = v17;
-    [v4 encodeObject:v11 forKey:@"kCodingKeyData"];
+    [coderCopy encodeObject:v11 forKey:@"kCodingKeyData"];
 
     if (!v12)
     {
@@ -659,28 +659,28 @@ LABEL_10:
     v13 = +[AMSLogConfig sharedConfig];
   }
 
-  v14 = [v13 OSLogObject];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v13 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v15 = objc_opt_class();
-    v16 = [(AMSXDMessage *)self logKey];
+    logKey = [(AMSXDMessage *)self logKey];
     *buf = 138543874;
     v19 = v15;
     v20 = 2114;
-    v21 = v16;
+    v21 = logKey;
     v22 = 2114;
     v23 = v12;
-    _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode message. Error: %{public}@", buf, 0x20u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to encode message. Error: %{public}@", buf, 0x20u);
   }
 
 LABEL_11:
 }
 
-- (AMSXDMessage)initWithCoder:(id)a3
+- (AMSXDMessage)initWithCoder:(id)coder
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyData"];
 
   if (v5)
   {
@@ -690,7 +690,7 @@ LABEL_11:
     if (v6)
     {
       self = [(AMSXDMessage *)self initWithJSONDictionary:v6];
-      v8 = self;
+      selfCopy = self;
       goto LABEL_10;
     }
   }
@@ -706,21 +706,21 @@ LABEL_11:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v9 = [v6 OSLogObject];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v10 = objc_opt_class();
     *buf = 138543618;
     v14 = v10;
     v15 = 2114;
     v16 = v7;
-    _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Failed to decode JSON. Error: %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to decode JSON. Error: %{public}@", buf, 0x16u);
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v8;
+  return selfCopy;
 }
 
 @end

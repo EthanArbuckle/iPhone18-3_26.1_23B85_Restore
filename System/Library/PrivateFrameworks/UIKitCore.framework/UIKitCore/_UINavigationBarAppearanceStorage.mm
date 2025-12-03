@@ -1,20 +1,20 @@
 @interface _UINavigationBarAppearanceStorage
 - (_UIBarButtonItemAppearanceStorage)barButtonAppearanceStorage;
-- (double)titleVerticalAdjustmentForBarMetrics:(int64_t)a3;
-- (id)representativeImageForIdiom:(int64_t)a3;
-- (void)setTitleVerticalAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
+- (double)titleVerticalAdjustmentForBarMetrics:(int64_t)metrics;
+- (id)representativeImageForIdiom:(int64_t)idiom;
+- (void)setTitleVerticalAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
 @end
 
 @implementation _UINavigationBarAppearanceStorage
 
-- (void)setTitleVerticalAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)setTitleVerticalAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
-  v14 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v14 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
   v6 = [(NSMutableDictionary *)self->titleVerticalAdjustmentsForBarMetrics objectForKey:?];
   [v6 floatValue];
   v8 = v7;
 
-  if (v8 != a3)
+  if (v8 != adjustment)
   {
     titleVerticalAdjustmentsForBarMetrics = self->titleVerticalAdjustmentsForBarMetrics;
     if (!titleVerticalAdjustmentsForBarMetrics)
@@ -26,13 +26,13 @@
       titleVerticalAdjustmentsForBarMetrics = self->titleVerticalAdjustmentsForBarMetrics;
     }
 
-    *&v9 = a3;
+    *&v9 = adjustment;
     v13 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
     [(NSMutableDictionary *)titleVerticalAdjustmentsForBarMetrics setObject:v13 forKey:v14];
   }
 }
 
-- (double)titleVerticalAdjustmentForBarMetrics:(int64_t)a3
+- (double)titleVerticalAdjustmentForBarMetrics:(int64_t)metrics
 {
   titleVerticalAdjustmentsForBarMetrics = self->titleVerticalAdjustmentsForBarMetrics;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -40,14 +40,14 @@
 
   if (!v7)
   {
-    if (a3 == 101)
+    if (metrics == 101)
     {
       v8 = &unk_1EFE2FBC0;
     }
 
     else
     {
-      if (a3 != 102)
+      if (metrics != 102)
       {
         v7 = 0;
         goto LABEL_8;
@@ -81,7 +81,7 @@ LABEL_8:
   return buttonAppearanceStorage;
 }
 
-- (id)representativeImageForIdiom:(int64_t)a3
+- (id)representativeImageForIdiom:(int64_t)idiom
 {
   v4 = [(_UIBarAppearanceStorage *)self backgroundImageForBarPosition:0 barMetrics:0];
   v5 = v4;

@@ -1,28 +1,28 @@
 @interface _BCCustomAnimationCurveFactory
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
 - (id)_timingFunctionForAnimation;
 @end
 
 @implementation _BCCustomAnimationCurveFactory
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v5 = a4;
-  v6 = [(_BCCustomAnimationCurveFactory *)self springAnimation];
-  v7 = [CASpringAnimation animationWithKeyPath:v5];
+  pathCopy = path;
+  springAnimation = [(_BCCustomAnimationCurveFactory *)self springAnimation];
+  v7 = [CASpringAnimation animationWithKeyPath:pathCopy];
 
-  [v6 mass];
+  [springAnimation mass];
   [v7 setMass:?];
-  [v6 stiffness];
+  [springAnimation stiffness];
   [v7 setStiffness:?];
-  [v6 damping];
+  [springAnimation damping];
   [v7 setDamping:?];
-  [v6 initialVelocity];
+  [springAnimation initialVelocity];
   [v7 setInitialVelocity:?];
-  v8 = [v6 timingFunction];
-  [v7 setTimingFunction:v8];
+  timingFunction = [springAnimation timingFunction];
+  [v7 setTimingFunction:timingFunction];
 
-  [v6 duration];
+  [springAnimation duration];
   [v7 setDuration:?];
 
   return v7;
@@ -30,10 +30,10 @@
 
 - (id)_timingFunctionForAnimation
 {
-  v2 = [(_BCCustomAnimationCurveFactory *)self springAnimation];
-  v3 = [v2 timingFunction];
+  springAnimation = [(_BCCustomAnimationCurveFactory *)self springAnimation];
+  timingFunction = [springAnimation timingFunction];
 
-  return v3;
+  return timingFunction;
 }
 
 @end

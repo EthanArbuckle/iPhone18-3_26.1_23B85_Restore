@@ -1,9 +1,9 @@
 @interface RAPAddressLocation
 - (CLLocationCoordinate2D)coordinate;
-- (RAPAddressLocation)initWithCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_invokeCompletionBlocksWithFinishedFlag:(BOOL)a3;
+- (RAPAddressLocation)initWithCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_invokeCompletionBlocksWithFinishedFlag:(BOOL)flag;
 - (void)cancelProcessing;
-- (void)processWithGeocoderIfNeededWithCompletion:(id)a3;
+- (void)processWithGeocoderIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation RAPAddressLocation
@@ -17,7 +17,7 @@
   return result;
 }
 
-- (void)_invokeCompletionBlocksWithFinishedFlag:(BOOL)a3
+- (void)_invokeCompletionBlocksWithFinishedFlag:(BOOL)flag
 {
   v4 = [(NSMutableArray *)self->_completionBlocks copy];
   completionBlocks = self->_completionBlocks;
@@ -64,16 +64,16 @@
   [(RAPAddressLocation *)self _invokeCompletionBlocksWithFinishedFlag:0];
 }
 
-- (void)processWithGeocoderIfNeededWithCompletion:(id)a3
+- (void)processWithGeocoderIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RAPAddressLocation *)self placemark];
+  completionCopy = completion;
+  placemark = [(RAPAddressLocation *)self placemark];
 
-  if (v5)
+  if (placemark)
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, self, 1);
+      completionCopy[2](completionCopy, self, 1);
     }
   }
 
@@ -86,10 +86,10 @@
       self->_completionBlocks = v6;
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v8 = self->_completionBlocks;
-      v9 = [v4 copy];
+      v9 = [completionCopy copy];
       [(NSMutableArray *)v8 addObject:v9];
     }
 
@@ -113,10 +113,10 @@
   }
 }
 
-- (RAPAddressLocation)initWithCoordinate:(CLLocationCoordinate2D)a3
+- (RAPAddressLocation)initWithCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v6.receiver = self;
   v6.super_class = RAPAddressLocation;
   result = [(RAPAddressLocation *)&v6 init];

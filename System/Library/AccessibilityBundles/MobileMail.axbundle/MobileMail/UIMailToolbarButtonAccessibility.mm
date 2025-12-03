@@ -6,11 +6,11 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(UIMailToolbarButtonAccessibility *)self accessibilityIdentification];
+  accessibilityIdentification = [(UIMailToolbarButtonAccessibility *)self accessibilityIdentification];
   v9.receiver = self;
   v9.super_class = UIMailToolbarButtonAccessibility;
-  v4 = [(UIMailToolbarButtonAccessibility *)&v9 accessibilityLabel];
-  if ([v3 isEqualToString:@"transferButton"])
+  accessibilityLabel = [(UIMailToolbarButtonAccessibility *)&v9 accessibilityLabel];
+  if ([accessibilityIdentification isEqualToString:@"transferButton"])
   {
     v5 = @"transfer.mail.button";
 LABEL_3:
@@ -18,38 +18,38 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:@"wildcat_trash"] || objc_msgSend(v4, "isEqualToString:", @"wildcat_reply") || objc_msgSend(v4, "isEqualToString:", @"wildcat_compose"))
+  if ([accessibilityLabel isEqualToString:@"wildcat_trash"] || objc_msgSend(accessibilityLabel, "isEqualToString:", @"wildcat_reply") || objc_msgSend(accessibilityLabel, "isEqualToString:", @"wildcat_compose"))
   {
     v6 = UIKitAccessibilityLocalizedString();
   }
 
   else
   {
-    if ([v4 isEqualToString:@"wildcat_getnewmail"])
+    if ([accessibilityLabel isEqualToString:@"wildcat_getnewmail"])
     {
       v5 = @"new.mail.button";
       goto LABEL_3;
     }
 
-    if ([v4 isEqualToString:@"archive"])
+    if ([accessibilityLabel isEqualToString:@"archive"])
     {
       v5 = @"archive.button";
       goto LABEL_3;
     }
 
-    if ([v4 hasPrefix:@"FilterIcon"])
+    if ([accessibilityLabel hasPrefix:@"FilterIcon"])
     {
       v5 = @"filter.button";
       goto LABEL_3;
     }
 
-    if ([v4 hasPrefix:@"FlagIcon"])
+    if ([accessibilityLabel hasPrefix:@"FlagIcon"])
     {
       v5 = @"mark.message.button";
       goto LABEL_3;
     }
 
-    v6 = v4;
+    v6 = accessibilityLabel;
   }
 
 LABEL_8:

@@ -10,22 +10,22 @@
 
 - (SCRCComposedCharacter)scrc_composedCharacterAtIndex:()SCRCComposedCharacterStringExtras
 {
-  if (CFStringGetLength(a1) <= a3)
+  if (CFStringGetLength(self) <= a3)
   {
     v6 = 0;
   }
 
   else
   {
-    RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(a1, a3);
+    RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(self, a3);
     if (RangeOfComposedCharactersAtIndex.length == 1)
     {
-      v6 = [[SCRCComposedCharacter alloc] initWithCharacter:CFStringGetCharacterAtIndex(a1, a3)];
+      v6 = [[SCRCComposedCharacter alloc] initWithCharacter:CFStringGetCharacterAtIndex(self, a3)];
     }
 
     else
     {
-      v7 = CFStringCreateWithSubstring(0, a1, RangeOfComposedCharactersAtIndex);
+      v7 = CFStringCreateWithSubstring(0, self, RangeOfComposedCharactersAtIndex);
       v6 = [[SCRCComposedCharacter alloc] _initWithComposedCharacter:v7];
       if (v7)
       {
@@ -39,7 +39,7 @@
 
 - (uint64_t)_countNumberOfGlyphs:()SCRCComposedCharacterStringExtras
 {
-  Length = CFStringGetLength(a1);
+  Length = CFStringGetLength(self);
   v6 = 0;
   v7 = 0;
   do
@@ -55,7 +55,7 @@
       break;
     }
 
-    RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(a1, v6);
+    RangeOfComposedCharactersAtIndex = CFStringGetRangeOfComposedCharactersAtIndex(self, v6);
     v7 = v8 + 1;
     v6 = RangeOfComposedCharactersAtIndex.location + RangeOfComposedCharactersAtIndex.length;
   }
@@ -104,7 +104,7 @@
 - (CFMutableStringRef)scrc_decodeUnicodeForKVO
 {
   v11 = *MEMORY[0x277D85DE8];
-  Length = CFStringGetLength(a1);
+  Length = CFStringGetLength(self);
   Mutable = CFStringCreateMutable(0, 0);
   if ((Length & 3) != 0)
   {
@@ -122,7 +122,7 @@ LABEL_2:
     {
       v13.location = i;
       v13.length = 4;
-      CFStringGetCharacters(a1, v13, buffer);
+      CFStringGetCharacters(self, v13, buffer);
       v5 = 0;
       v6 = 0;
       do
@@ -153,7 +153,7 @@ LABEL_2:
 
 - (SCRCComposedCharEnumerator)scrc_composedCharacterEnumerator
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   CFStringNormalize(v1, kCFStringNormalizationFormD);
   v2 = [[SCRCComposedCharEnumerator alloc] initWithString:v1];
 

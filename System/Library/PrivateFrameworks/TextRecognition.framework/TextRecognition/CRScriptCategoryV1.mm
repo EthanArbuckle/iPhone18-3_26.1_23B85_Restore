@@ -5,12 +5,12 @@
 + (id)japanese;
 + (id)korean;
 + (id)latinCyrillic;
-+ (id)sequenceScriptForCategory:(id)a3;
++ (id)sequenceScriptForCategory:(id)category;
 + (id)supportedCategories;
 + (id)thai;
 + (id)unknown;
 + (id)verticalLayoutSupportedCategories;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)categoryName;
 - (NSString)description;
 - (unint64_t)hash;
@@ -54,21 +54,21 @@
   v8.receiver = self;
   v8.super_class = CRScriptCategoryV1;
   v4 = [(CRScriptCategoryV1 *)&v8 description];
-  v5 = [(CRScriptCategoryV1 *)self categoryName];
-  v6 = [v3 stringWithFormat:@"%@ - %@", v4, v5];
+  categoryName = [(CRScriptCategoryV1 *)self categoryName];
+  v6 = [v3 stringWithFormat:@"%@ - %@", v4, categoryName];
 
   return v6;
 }
 
-+ (id)sequenceScriptForCategory:(id)a3
++ (id)sequenceScriptForCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (v3 && (isKindOfClass & 1) != 0)
+  if (categoryCopy && (isKindOfClass & 1) != 0)
   {
-    v6 = v3[1] - 1;
+    v6 = categoryCopy[1] - 1;
     if (v6 > 6)
     {
       v5 = 0;
@@ -89,7 +89,7 @@
   block[1] = 3221225472;
   block[2] = __41__CRScriptCategoryV1_supportedCategories__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_19 != -1)
   {
     dispatch_once(&_MergedGlobals_19, block);
@@ -130,7 +130,7 @@ void __41__CRScriptCategoryV1_supportedCategories__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __55__CRScriptCategoryV1_verticalLayoutSupportedCategories__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED95FFF8 != -1)
   {
     dispatch_once(&qword_1ED95FFF8, block);
@@ -221,7 +221,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __29__CRScriptCategoryV1_unknown__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960018 != -1)
   {
     dispatch_once(&qword_1ED960018, block);
@@ -256,7 +256,7 @@ void __29__CRScriptCategoryV1_unknown__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __28__CRScriptCategoryV1_common__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960028 != -1)
   {
     dispatch_once(&qword_1ED960028, block);
@@ -291,7 +291,7 @@ void __28__CRScriptCategoryV1_common__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __35__CRScriptCategoryV1_latinCyrillic__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960038 != -1)
   {
     dispatch_once(&qword_1ED960038, block);
@@ -326,7 +326,7 @@ void __35__CRScriptCategoryV1_latinCyrillic__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __29__CRScriptCategoryV1_chinese__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960048 != -1)
   {
     dispatch_once(&qword_1ED960048, block);
@@ -361,7 +361,7 @@ void __29__CRScriptCategoryV1_chinese__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __28__CRScriptCategoryV1_korean__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960058 != -1)
   {
     dispatch_once(&qword_1ED960058, block);
@@ -396,7 +396,7 @@ void __28__CRScriptCategoryV1_korean__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __30__CRScriptCategoryV1_japanese__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960068 != -1)
   {
     dispatch_once(&qword_1ED960068, block);
@@ -431,7 +431,7 @@ void __30__CRScriptCategoryV1_japanese__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __26__CRScriptCategoryV1_thai__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960078 != -1)
   {
     dispatch_once(&qword_1ED960078, block);
@@ -466,7 +466,7 @@ void __26__CRScriptCategoryV1_thai__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __28__CRScriptCategoryV1_arabic__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED960088 != -1)
   {
     dispatch_once(&qword_1ED960088, block);
@@ -495,9 +495,9 @@ void __28__CRScriptCategoryV1_arabic__block_invoke(uint64_t a1)
   qword_1ED960090 = v1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -508,7 +508,7 @@ void __28__CRScriptCategoryV1_arabic__block_invoke(uint64_t a1)
   if (!self)
   {
     categoryValue = 0;
-    if (v4)
+    if (equalCopy)
     {
       goto LABEL_4;
     }
@@ -519,13 +519,13 @@ LABEL_9:
   }
 
   categoryValue = self->_categoryValue;
-  if (!v4)
+  if (!equalCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  v6 = v4[1];
+  v6 = equalCopy[1];
 LABEL_5:
   v7 = categoryValue == v6;
 LABEL_7:

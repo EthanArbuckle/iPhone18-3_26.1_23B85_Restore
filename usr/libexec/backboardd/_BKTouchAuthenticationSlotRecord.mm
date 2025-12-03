@@ -1,11 +1,11 @@
 @interface _BKTouchAuthenticationSlotRecord
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
 @implementation _BKTouchAuthenticationSlotRecord
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -13,9 +13,9 @@
     return 0;
   }
 
-  if (a3)
+  if (equal)
   {
-    v5 = *(a3 + 2);
+    v5 = *(equal + 2);
   }
 
   else
@@ -24,8 +24,8 @@
   }
 
   v6 = v5;
-  v7 = [v6 slotID];
-  v8 = v7 == [(BKSTouchAuthenticationSpecification *)self->_authenticationSpecification slotID];
+  slotID = [v6 slotID];
+  v8 = slotID == [(BKSTouchAuthenticationSpecification *)self->_authenticationSpecification slotID];
 
   return v8;
 }

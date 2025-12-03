@@ -1,54 +1,54 @@
 @interface EFSQLBinaryExpression
-- (EFSQLBinaryExpression)initWithLeft:(id)a3 operator:(unint64_t)a4 right:(id)a5;
+- (EFSQLBinaryExpression)initWithLeft:(id)left operator:(unint64_t)operator right:(id)right;
 - (NSString)ef_SQLExpression;
 - (__CFString)_binaryStringForOperator:(__CFString *)result;
-- (void)ef_renderSQLExpressionInto:(id)a3;
-- (void)setColumnExpression:(id)a3;
+- (void)ef_renderSQLExpressionInto:(id)into;
+- (void)setColumnExpression:(id)expression;
 @end
 
 @implementation EFSQLBinaryExpression
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFSQLBinaryExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFSQLBinaryExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (EFSQLBinaryExpression)initWithLeft:(id)a3 operator:(unint64_t)a4 right:(id)a5
+- (EFSQLBinaryExpression)initWithLeft:(id)left operator:(unint64_t)operator right:(id)right
 {
-  v9 = a3;
-  v10 = a5;
+  leftCopy = left;
+  rightCopy = right;
   v14.receiver = self;
   v14.super_class = EFSQLBinaryExpression;
   v11 = [(EFSQLBinaryExpression *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_left, a3);
-    objc_storeStrong(&v12->_right, a5);
-    v12->_binaryOperator = a4;
+    objc_storeStrong(&v11->_left, left);
+    objc_storeStrong(&v12->_right, right);
+    v12->_binaryOperator = operator;
   }
 
   return v12;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v5 = a3;
+  intoCopy = into;
   [(EFSQLExpressable *)self->_left ef_renderSQLExpressionInto:?];
   v4 = [(EFSQLBinaryExpression *)self _binaryStringForOperator:?];
-  [v5 appendString:v4];
+  [intoCopy appendString:v4];
 
-  [(EFSQLExpressable *)self->_right ef_renderSQLExpressionInto:v5];
+  [(EFSQLExpressable *)self->_right ef_renderSQLExpressionInto:intoCopy];
 }
 
-- (void)setColumnExpression:(id)a3
+- (void)setColumnExpression:(id)expression
 {
-  v5 = a3;
-  v4 = [(EFSQLBinaryExpression *)self left];
-  [v4 setColumnExpression:v5];
+  expressionCopy = expression;
+  left = [(EFSQLBinaryExpression *)self left];
+  [left setColumnExpression:expressionCopy];
 }
 
 - (__CFString)_binaryStringForOperator:(__CFString *)result

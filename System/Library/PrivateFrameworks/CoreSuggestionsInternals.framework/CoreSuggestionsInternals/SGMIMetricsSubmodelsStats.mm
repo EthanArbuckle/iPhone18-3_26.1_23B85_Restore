@@ -1,22 +1,22 @@
 @interface SGMIMetricsSubmodelsStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SGMIMetricsSubmodelsStats
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   personFromSenderStats = self->_personFromSenderStats;
-  v31 = v4;
-  v6 = v4[9];
+  v31 = fromCopy;
+  v6 = fromCopy[9];
   if (personFromSenderStats)
   {
     if (v6)
@@ -228,16 +228,16 @@
   return v13 ^ v14 ^ [(SGMIMetricsSubmodelStats *)self->_mailboxTypeStats hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_28;
   }
 
   personFromSenderStats = self->_personFromSenderStats;
-  if (personFromSenderStats | v4[9])
+  if (personFromSenderStats | equalCopy[9])
   {
     if (![(SGMIMetricsSubmodelStats *)personFromSenderStats isEqual:?])
     {
@@ -246,33 +246,33 @@
   }
 
   personFromSenderInDyadicConversationStats = self->_personFromSenderInDyadicConversationStats;
-  if (personFromSenderInDyadicConversationStats | v4[8] && ![(SGMIMetricsSubmodelStats *)personFromSenderInDyadicConversationStats isEqual:?])
+  if (personFromSenderInDyadicConversationStats | equalCopy[8] && ![(SGMIMetricsSubmodelStats *)personFromSenderInDyadicConversationStats isEqual:?])
   {
     goto LABEL_28;
   }
 
   subjectContentStats = self->_subjectContentStats;
-  if (subjectContentStats | v4[12] && ![(SGMIMetricsSubmodelStats *)subjectContentStats isEqual:?])
+  if (subjectContentStats | equalCopy[12] && ![(SGMIMetricsSubmodelStats *)subjectContentStats isEqual:?])
   {
     goto LABEL_28;
   }
 
   personToRecipientsStats = self->_personToRecipientsStats;
-  if (personToRecipientsStats | v4[10] && ![(SGMIMetricsSubmodelStats *)personToRecipientsStats isEqual:?])
+  if (personToRecipientsStats | equalCopy[10] && ![(SGMIMetricsSubmodelStats *)personToRecipientsStats isEqual:?])
   {
     goto LABEL_28;
   }
 
   personCCRecipientsStats = self->_personCCRecipientsStats;
-  if (personCCRecipientsStats | v4[7] && ![(SGMIMetricsSubmodelStats *)personCCRecipientsStats isEqual:?])
+  if (personCCRecipientsStats | equalCopy[7] && ![(SGMIMetricsSubmodelStats *)personCCRecipientsStats isEqual:?])
   {
     goto LABEL_28;
   }
 
-  if (((domainFromSenderStats = self->_domainFromSenderStats, !(domainFromSenderStats | v4[3])) || [(SGMIMetricsSubmodelStats *)domainFromSenderStats isEqual:?]) && ((conversationStats = self->_conversationStats, !(conversationStats | v4[2])) || [(SGMIMetricsSubmodelStats *)conversationStats isEqual:?]) && ((listIdStats = self->_listIdStats, !(listIdStats | v4[4])) || [(SGMIMetricsSubmodelStats *)listIdStats isEqual:?]) && ((attachmentsStats = self->_attachmentsStats, !(attachmentsStats | v4[1])) || [(SGMIMetricsSubmodelStats *)attachmentsStats isEqual:?]) && ((subjectCountStatsStats = self->_subjectCountStatsStats, !(subjectCountStatsStats | v4[13])) || [(SGMIMetricsSubmodelStats *)subjectCountStatsStats isEqual:?]) && ((standardMailRulesStats = self->_standardMailRulesStats, !(standardMailRulesStats | v4[11])) || [(SGMIMetricsSubmodelStats *)standardMailRulesStats isEqual:?]) && ((mailboxStats = self->_mailboxStats, !(mailboxStats | v4[5])) || [(SGMIMetricsSubmodelStats *)mailboxStats isEqual:?]))
+  if (((domainFromSenderStats = self->_domainFromSenderStats, !(domainFromSenderStats | equalCopy[3])) || [(SGMIMetricsSubmodelStats *)domainFromSenderStats isEqual:?]) && ((conversationStats = self->_conversationStats, !(conversationStats | equalCopy[2])) || [(SGMIMetricsSubmodelStats *)conversationStats isEqual:?]) && ((listIdStats = self->_listIdStats, !(listIdStats | equalCopy[4])) || [(SGMIMetricsSubmodelStats *)listIdStats isEqual:?]) && ((attachmentsStats = self->_attachmentsStats, !(attachmentsStats | equalCopy[1])) || [(SGMIMetricsSubmodelStats *)attachmentsStats isEqual:?]) && ((subjectCountStatsStats = self->_subjectCountStatsStats, !(subjectCountStatsStats | equalCopy[13])) || [(SGMIMetricsSubmodelStats *)subjectCountStatsStats isEqual:?]) && ((standardMailRulesStats = self->_standardMailRulesStats, !(standardMailRulesStats | equalCopy[11])) || [(SGMIMetricsSubmodelStats *)standardMailRulesStats isEqual:?]) && ((mailboxStats = self->_mailboxStats, !(mailboxStats | equalCopy[5])) || [(SGMIMetricsSubmodelStats *)mailboxStats isEqual:?]))
   {
     mailboxTypeStats = self->_mailboxTypeStats;
-    if (mailboxTypeStats | v4[6])
+    if (mailboxTypeStats | equalCopy[6])
     {
       v18 = [(SGMIMetricsSubmodelStats *)mailboxTypeStats isEqual:?];
     }
@@ -292,325 +292,325 @@ LABEL_28:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SGMIMetricsSubmodelStats *)self->_personFromSenderStats copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SGMIMetricsSubmodelStats *)self->_personFromSenderStats copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 
-  v8 = [(SGMIMetricsSubmodelStats *)self->_personFromSenderInDyadicConversationStats copyWithZone:a3];
+  v8 = [(SGMIMetricsSubmodelStats *)self->_personFromSenderInDyadicConversationStats copyWithZone:zone];
   v9 = v5[8];
   v5[8] = v8;
 
-  v10 = [(SGMIMetricsSubmodelStats *)self->_subjectContentStats copyWithZone:a3];
+  v10 = [(SGMIMetricsSubmodelStats *)self->_subjectContentStats copyWithZone:zone];
   v11 = v5[12];
   v5[12] = v10;
 
-  v12 = [(SGMIMetricsSubmodelStats *)self->_personToRecipientsStats copyWithZone:a3];
+  v12 = [(SGMIMetricsSubmodelStats *)self->_personToRecipientsStats copyWithZone:zone];
   v13 = v5[10];
   v5[10] = v12;
 
-  v14 = [(SGMIMetricsSubmodelStats *)self->_personCCRecipientsStats copyWithZone:a3];
+  v14 = [(SGMIMetricsSubmodelStats *)self->_personCCRecipientsStats copyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 
-  v16 = [(SGMIMetricsSubmodelStats *)self->_domainFromSenderStats copyWithZone:a3];
+  v16 = [(SGMIMetricsSubmodelStats *)self->_domainFromSenderStats copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
-  v18 = [(SGMIMetricsSubmodelStats *)self->_conversationStats copyWithZone:a3];
+  v18 = [(SGMIMetricsSubmodelStats *)self->_conversationStats copyWithZone:zone];
   v19 = v5[2];
   v5[2] = v18;
 
-  v20 = [(SGMIMetricsSubmodelStats *)self->_listIdStats copyWithZone:a3];
+  v20 = [(SGMIMetricsSubmodelStats *)self->_listIdStats copyWithZone:zone];
   v21 = v5[4];
   v5[4] = v20;
 
-  v22 = [(SGMIMetricsSubmodelStats *)self->_attachmentsStats copyWithZone:a3];
+  v22 = [(SGMIMetricsSubmodelStats *)self->_attachmentsStats copyWithZone:zone];
   v23 = v5[1];
   v5[1] = v22;
 
-  v24 = [(SGMIMetricsSubmodelStats *)self->_subjectCountStatsStats copyWithZone:a3];
+  v24 = [(SGMIMetricsSubmodelStats *)self->_subjectCountStatsStats copyWithZone:zone];
   v25 = v5[13];
   v5[13] = v24;
 
-  v26 = [(SGMIMetricsSubmodelStats *)self->_standardMailRulesStats copyWithZone:a3];
+  v26 = [(SGMIMetricsSubmodelStats *)self->_standardMailRulesStats copyWithZone:zone];
   v27 = v5[11];
   v5[11] = v26;
 
-  v28 = [(SGMIMetricsSubmodelStats *)self->_mailboxStats copyWithZone:a3];
+  v28 = [(SGMIMetricsSubmodelStats *)self->_mailboxStats copyWithZone:zone];
   v29 = v5[5];
   v5[5] = v28;
 
-  v30 = [(SGMIMetricsSubmodelStats *)self->_mailboxTypeStats copyWithZone:a3];
+  v30 = [(SGMIMetricsSubmodelStats *)self->_mailboxTypeStats copyWithZone:zone];
   v31 = v5[6];
   v5[6] = v30;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_personFromSenderStats)
   {
-    [v4 setPersonFromSenderStats:?];
-    v4 = v5;
+    [toCopy setPersonFromSenderStats:?];
+    toCopy = v5;
   }
 
   if (self->_personFromSenderInDyadicConversationStats)
   {
     [v5 setPersonFromSenderInDyadicConversationStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subjectContentStats)
   {
     [v5 setSubjectContentStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personToRecipientsStats)
   {
     [v5 setPersonToRecipientsStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personCCRecipientsStats)
   {
     [v5 setPersonCCRecipientsStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_domainFromSenderStats)
   {
     [v5 setDomainFromSenderStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_conversationStats)
   {
     [v5 setConversationStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_listIdStats)
   {
     [v5 setListIdStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_attachmentsStats)
   {
     [v5 setAttachmentsStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subjectCountStatsStats)
   {
     [v5 setSubjectCountStatsStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_standardMailRulesStats)
   {
     [v5 setStandardMailRulesStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mailboxStats)
   {
     [v5 setMailboxStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mailboxTypeStats)
   {
     [v5 setMailboxTypeStats:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_personFromSenderStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personFromSenderInDyadicConversationStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subjectContentStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personToRecipientsStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_personCCRecipientsStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_domainFromSenderStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_conversationStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_listIdStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_attachmentsStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_subjectCountStatsStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_standardMailRulesStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mailboxStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mailboxTypeStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   personFromSenderStats = self->_personFromSenderStats;
   if (personFromSenderStats)
   {
-    v5 = [(SGMIMetricsSubmodelStats *)personFromSenderStats dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"personFromSenderStats"];
+    dictionaryRepresentation = [(SGMIMetricsSubmodelStats *)personFromSenderStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"personFromSenderStats"];
   }
 
   personFromSenderInDyadicConversationStats = self->_personFromSenderInDyadicConversationStats;
   if (personFromSenderInDyadicConversationStats)
   {
-    v7 = [(SGMIMetricsSubmodelStats *)personFromSenderInDyadicConversationStats dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"personFromSenderInDyadicConversationStats"];
+    dictionaryRepresentation2 = [(SGMIMetricsSubmodelStats *)personFromSenderInDyadicConversationStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"personFromSenderInDyadicConversationStats"];
   }
 
   subjectContentStats = self->_subjectContentStats;
   if (subjectContentStats)
   {
-    v9 = [(SGMIMetricsSubmodelStats *)subjectContentStats dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"subjectContentStats"];
+    dictionaryRepresentation3 = [(SGMIMetricsSubmodelStats *)subjectContentStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"subjectContentStats"];
   }
 
   personToRecipientsStats = self->_personToRecipientsStats;
   if (personToRecipientsStats)
   {
-    v11 = [(SGMIMetricsSubmodelStats *)personToRecipientsStats dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"personToRecipientsStats"];
+    dictionaryRepresentation4 = [(SGMIMetricsSubmodelStats *)personToRecipientsStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"personToRecipientsStats"];
   }
 
   personCCRecipientsStats = self->_personCCRecipientsStats;
   if (personCCRecipientsStats)
   {
-    v13 = [(SGMIMetricsSubmodelStats *)personCCRecipientsStats dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"personCCRecipientsStats"];
+    dictionaryRepresentation5 = [(SGMIMetricsSubmodelStats *)personCCRecipientsStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"personCCRecipientsStats"];
   }
 
   domainFromSenderStats = self->_domainFromSenderStats;
   if (domainFromSenderStats)
   {
-    v15 = [(SGMIMetricsSubmodelStats *)domainFromSenderStats dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"domainFromSenderStats"];
+    dictionaryRepresentation6 = [(SGMIMetricsSubmodelStats *)domainFromSenderStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"domainFromSenderStats"];
   }
 
   conversationStats = self->_conversationStats;
   if (conversationStats)
   {
-    v17 = [(SGMIMetricsSubmodelStats *)conversationStats dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"conversationStats"];
+    dictionaryRepresentation7 = [(SGMIMetricsSubmodelStats *)conversationStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"conversationStats"];
   }
 
   listIdStats = self->_listIdStats;
   if (listIdStats)
   {
-    v19 = [(SGMIMetricsSubmodelStats *)listIdStats dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"listIdStats"];
+    dictionaryRepresentation8 = [(SGMIMetricsSubmodelStats *)listIdStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"listIdStats"];
   }
 
   attachmentsStats = self->_attachmentsStats;
   if (attachmentsStats)
   {
-    v21 = [(SGMIMetricsSubmodelStats *)attachmentsStats dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"attachmentsStats"];
+    dictionaryRepresentation9 = [(SGMIMetricsSubmodelStats *)attachmentsStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation9 forKey:@"attachmentsStats"];
   }
 
   subjectCountStatsStats = self->_subjectCountStatsStats;
   if (subjectCountStatsStats)
   {
-    v23 = [(SGMIMetricsSubmodelStats *)subjectCountStatsStats dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"subjectCountStatsStats"];
+    dictionaryRepresentation10 = [(SGMIMetricsSubmodelStats *)subjectCountStatsStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation10 forKey:@"subjectCountStatsStats"];
   }
 
   standardMailRulesStats = self->_standardMailRulesStats;
   if (standardMailRulesStats)
   {
-    v25 = [(SGMIMetricsSubmodelStats *)standardMailRulesStats dictionaryRepresentation];
-    [v3 setObject:v25 forKey:@"standardMailRulesStats"];
+    dictionaryRepresentation11 = [(SGMIMetricsSubmodelStats *)standardMailRulesStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation11 forKey:@"standardMailRulesStats"];
   }
 
   mailboxStats = self->_mailboxStats;
   if (mailboxStats)
   {
-    v27 = [(SGMIMetricsSubmodelStats *)mailboxStats dictionaryRepresentation];
-    [v3 setObject:v27 forKey:@"mailboxStats"];
+    dictionaryRepresentation12 = [(SGMIMetricsSubmodelStats *)mailboxStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation12 forKey:@"mailboxStats"];
   }
 
   mailboxTypeStats = self->_mailboxTypeStats;
   if (mailboxTypeStats)
   {
-    v29 = [(SGMIMetricsSubmodelStats *)mailboxTypeStats dictionaryRepresentation];
-    [v3 setObject:v29 forKey:@"mailboxTypeStats"];
+    dictionaryRepresentation13 = [(SGMIMetricsSubmodelStats *)mailboxTypeStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation13 forKey:@"mailboxTypeStats"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -619,8 +619,8 @@ LABEL_28:
   v8.receiver = self;
   v8.super_class = SGMIMetricsSubmodelsStats;
   v4 = [(SGMIMetricsSubmodelsStats *)&v8 description];
-  v5 = [(SGMIMetricsSubmodelsStats *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SGMIMetricsSubmodelsStats *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

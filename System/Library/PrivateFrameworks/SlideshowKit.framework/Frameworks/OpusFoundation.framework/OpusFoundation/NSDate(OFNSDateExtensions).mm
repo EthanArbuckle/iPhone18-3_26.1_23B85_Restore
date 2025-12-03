@@ -94,7 +94,7 @@
     [v6 scanDouble:&v15];
     if ([v6 scanString:@"Z" intoString:0])
     {
-      v7 = [MEMORY[0x277CBEBB0] localTimeZone];
+      localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
     }
 
     else
@@ -112,10 +112,10 @@
         v13 = -v13;
       }
 
-      v7 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:{3600 * v14 + 60 * v8, v13}];
+      localTimeZone = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:{3600 * v14 + 60 * v8, v13}];
     }
 
-    v9 = v7;
+    v9 = localTimeZone;
     v10 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v10 setSecond:v15];
     [v10 setMinute:v16];
@@ -123,15 +123,15 @@
     [v10 setDay:v18];
     [v10 setMonth:v19];
     [v10 setYear:v20];
-    v11 = [MEMORY[0x277CBEA80] currentCalendar];
-    objc_sync_enter(v11);
-    [v11 setTimeZone:v9];
-    v5 = [v11 dateFromComponents:v10];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    objc_sync_enter(currentCalendar);
+    [currentCalendar setTimeZone:v9];
+    v5 = [currentCalendar dateFromComponents:v10];
     if (v10)
     {
     }
 
-    objc_sync_exit(v11);
+    objc_sync_exit(currentCalendar);
   }
 
   return v5;
@@ -139,18 +139,18 @@
 
 - (uint64_t)shortDescription
 {
-  v2 = [MEMORY[0x277CBEAA8] date];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  objc_sync_enter(v3);
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  objc_sync_enter(currentCalendar);
   v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0];
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-518400.0];
-  v6 = [v3 components:28 fromDate:v2];
-  v7 = [v3 components:28 fromDate:v4];
-  v8 = [v3 components:28 fromDate:v5];
-  v9 = [v3 components:28 fromDate:a1];
-  v10 = [v3 dateFromComponents:v8];
-  v11 = [v6 year];
-  if (v11 == [v9 year] && (v12 = objc_msgSend(v6, "month"), v12 == objc_msgSend(v9, "month")) && (v13 = objc_msgSend(v6, "day"), v13 == objc_msgSend(v9, "day")))
+  v6 = [currentCalendar components:28 fromDate:date];
+  v7 = [currentCalendar components:28 fromDate:v4];
+  v8 = [currentCalendar components:28 fromDate:v5];
+  v9 = [currentCalendar components:28 fromDate:self];
+  v10 = [currentCalendar dateFromComponents:v8];
+  year = [v6 year];
+  if (year == [v9 year] && (v12 = objc_msgSend(v6, "month"), v12 == objc_msgSend(v9, "month")) && (v13 = objc_msgSend(v6, "day"), v13 == objc_msgSend(v9, "day")))
   {
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = @"Today";
@@ -158,14 +158,14 @@
 
   else
   {
-    v16 = [v7 year];
-    if (v16 != [v9 year] || (v17 = objc_msgSend(v7, "month"), v17 != objc_msgSend(v9, "month")) || (v18 = objc_msgSend(v7, "day"), v18 != objc_msgSend(v9, "day")))
+    year2 = [v7 year];
+    if (year2 != [v9 year] || (v17 = objc_msgSend(v7, "month"), v17 != objc_msgSend(v9, "month")) || (v18 = objc_msgSend(v7, "day"), v18 != objc_msgSend(v9, "day")))
     {
-      if ([a1 compare:v10] == 1)
+      if ([self compare:v10] == 1)
       {
         v20 = objc_alloc_init(MEMORY[0x277CCA968]);
         [v20 setDateFormat:@"EEEE"];
-        v19 = [v20 stringFromDate:a1];
+        v19 = [v20 stringFromDate:self];
         if (!v20)
         {
           goto LABEL_15;
@@ -176,7 +176,7 @@
       {
         v20 = objc_alloc_init(MEMORY[0x277CCA968]);
         [v20 setDateFormat:@"MMMM d, yyyy"];
-        v19 = [v20 stringFromDate:a1];
+        v19 = [v20 stringFromDate:self];
         if (!v20)
         {
           goto LABEL_15;
@@ -192,34 +192,34 @@
 
   v19 = [v14 localizedStringForKey:v15 value:v15 table:@"Localizable"];
 LABEL_15:
-  objc_sync_exit(v3);
+  objc_sync_exit(currentCalendar);
   return v19;
 }
 
 - (uint64_t)shortDescriptionWithTime
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 shortDescription];
-  return [v2 stringWithFormat:@"%@, %@", v3, objc_msgSend(MEMORY[0x277CCA968], "localizedStringFromDate:dateStyle:timeStyle:", a1, 0, 1)];
+  shortDescription = [self shortDescription];
+  return [v2 stringWithFormat:@"%@, %@", shortDescription, objc_msgSend(MEMORY[0x277CCA968], "localizedStringFromDate:dateStyle:timeStyle:", self, 0, 1)];
 }
 
 - (uint64_t)shortWeekDescription
 {
-  v2 = [MEMORY[0x277CBEA80] currentCalendar];
-  objc_sync_enter(v2);
-  v3 = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  objc_sync_enter(currentCalendar);
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0];
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-518400.0];
   v6 = [objc_msgSend(MEMORY[0x277CBEA80] "currentCalendar")];
-  v7 = [v2 components:28 fromDate:v4];
-  v8 = [v2 components:28 fromDate:v5];
-  v9 = [v2 components:28 fromDate:a1];
-  v10 = [v2 dateFromComponents:v8];
-  v11 = [v6 year];
-  if (v11 == [v9 year])
+  v7 = [currentCalendar components:28 fromDate:v4];
+  v8 = [currentCalendar components:28 fromDate:v5];
+  v9 = [currentCalendar components:28 fromDate:self];
+  v10 = [currentCalendar dateFromComponents:v8];
+  year = [v6 year];
+  if (year == [v9 year])
   {
-    v12 = [v6 month];
-    if (v12 == [v9 month])
+    month = [v6 month];
+    if (month == [v9 month])
     {
       v13 = [v6 day];
       if (v13 == [v9 day])
@@ -233,11 +233,11 @@ LABEL_9:
     }
   }
 
-  v16 = [v7 year];
-  if (v16 == [v9 year])
+  year2 = [v7 year];
+  if (year2 == [v9 year])
   {
-    v17 = [v7 month];
-    if (v17 == [v9 month])
+    month2 = [v7 month];
+    if (month2 == [v9 month])
     {
       v18 = [v7 day];
       if (v18 == [v9 day])
@@ -249,11 +249,11 @@ LABEL_9:
     }
   }
 
-  if ([a1 compare:v10] == 1)
+  if ([self compare:v10] == 1)
   {
     v20 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v20 setDateFormat:@"EEEE"];
-    v19 = [v20 stringFromDate:a1];
+    v19 = [v20 stringFromDate:self];
     if (v20)
     {
     }
@@ -265,13 +265,13 @@ LABEL_9:
   }
 
 LABEL_14:
-  objc_sync_exit(v2);
+  objc_sync_exit(currentCalendar);
   return v19;
 }
 
 - (uint64_t)shortDescriptionSinceNow
 {
-  [a1 timeIntervalSinceNow];
+  [self timeIntervalSinceNow];
   v2 = v1;
   v3 = -v1;
   if (v1 < -59)

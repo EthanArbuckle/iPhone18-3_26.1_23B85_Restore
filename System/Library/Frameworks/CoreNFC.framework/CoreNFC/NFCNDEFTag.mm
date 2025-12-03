@@ -1,49 +1,49 @@
 @interface NFCNDEFTag
-- (BOOL)_connectWithError:(id *)a3;
-- (BOOL)_disconnectWithError:(id *)a3;
+- (BOOL)_connectWithError:(id *)error;
+- (BOOL)_disconnectWithError:(id *)error;
 - (BOOL)isAvailable;
-- (BOOL)isMatchingSession:(id)a3 outError:(id *)a4;
-- (NFCNDEFTag)initWithCoder:(id)a3;
-- (NFCNDEFTag)initWithSession:(id)a3 tag:(id)a4 startupConfig:(int64_t)a5;
+- (BOOL)isMatchingSession:(id)session outError:(id *)error;
+- (NFCNDEFTag)initWithCoder:(id)coder;
+- (NFCNDEFTag)initWithSession:(id)session tag:(id)tag startupConfig:(int64_t)config;
 - (id)_getInternalReaderSession;
-- (id)_updateNdefStatusWithSession:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_connectWithCompletionHandler:(id)a3;
-- (void)_setSession:(id)a3;
-- (void)dispatchBlockOnDelegateQueueAsync:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)queryNDEFStatusWithCompletionHandler:(id)a3;
-- (void)readNDEFWithCompletionHandler:(id)a3;
-- (void)writeLockWithCompletionHandler:(id)a3;
-- (void)writeNDEF:(id)a3 completionHandler:(id)a4;
+- (id)_updateNdefStatusWithSession:(id)session;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_connectWithCompletionHandler:(id)handler;
+- (void)_setSession:(id)session;
+- (void)dispatchBlockOnDelegateQueueAsync:(id)async;
+- (void)encodeWithCoder:(id)coder;
+- (void)queryNDEFStatusWithCompletionHandler:(id)handler;
+- (void)readNDEFWithCompletionHandler:(id)handler;
+- (void)writeLockWithCompletionHandler:(id)handler;
+- (void)writeNDEF:(id)f completionHandler:(id)handler;
 @end
 
 @implementation NFCNDEFTag
 
-- (NFCNDEFTag)initWithSession:(id)a3 tag:(id)a4 startupConfig:(int64_t)a5
+- (NFCNDEFTag)initWithSession:(id)session tag:(id)tag startupConfig:(int64_t)config
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  sessionCopy = session;
+  tagCopy = tag;
+  if (!sessionCopy)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:28 description:@"Nil session"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:28 description:@"Nil session"];
   }
 
-  v10 = [v8 sessionQueue];
+  sessionQueue = [sessionCopy sessionQueue];
 
-  if (!v10)
+  if (!sessionQueue)
   {
-    v21 = [MEMORY[0x277CCA890] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:29 description:@"Nil session queue"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:29 description:@"Nil session queue"];
   }
 
-  v11 = [v8 hardwareManager];
+  hardwareManager = [sessionCopy hardwareManager];
 
-  if (!v11)
+  if (!hardwareManager)
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:30 description:@"Nil hardwareManager"];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:30 description:@"Nil hardwareManager"];
   }
 
   v23.receiver = self;
@@ -51,44 +51,44 @@
   v12 = [(NFCNDEFTag *)&v23 init];
   if (v12)
   {
-    v13 = [v8 sessionId];
+    sessionId = [sessionCopy sessionId];
     sessionKey = v12->_sessionKey;
-    v12->_sessionKey = v13;
+    v12->_sessionKey = sessionId;
 
-    objc_storeStrong(&v12->_tag, a4);
-    v15 = [v8 sessionQueue];
+    objc_storeStrong(&v12->_tag, tag);
+    sessionQueue2 = [sessionCopy sessionQueue];
     delegateQueue = v12->_delegateQueue;
-    v12->_delegateQueue = v15;
+    v12->_delegateQueue = sessionQueue2;
 
-    v17 = [v8 hardwareManager];
+    hardwareManager2 = [sessionCopy hardwareManager];
     hardwareManager = v12->_hardwareManager;
-    v12->_hardwareManager = v17;
+    v12->_hardwareManager = hardwareManager2;
   }
 
   return v12;
 }
 
-- (NFCNDEFTag)initWithCoder:(id)a3
+- (NFCNDEFTag)initWithCoder:(id)coder
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = NFCNDEFTag;
   v6 = [(NFCNDEFTag *)&v31 init];
   if (v6)
   {
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
     tag = v6->_tag;
     v6->_tag = v7;
 
-    v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"sessionKey"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionKey"];
     sessionKey = v6->_sessionKey;
     v6->_sessionKey = v9;
 
     if (!v6->_sessionKey)
     {
-      v29 = [MEMORY[0x277CCA890] currentHandler];
-      [v29 handleFailureInMethod:a2 object:v6 file:@"NFCNDEFTag.m" lineNumber:64 description:@"Missing session key"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v6 file:@"NFCNDEFTag.m" lineNumber:64 description:@"Missing session key"];
     }
 
     v11 = +[NFCHardwareManager sharedHardwareManager];
@@ -99,9 +99,9 @@
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 sessionQueue];
+      sessionQueue = [v13 sessionQueue];
       delegateQueue = v6->_delegateQueue;
-      v6->_delegateQueue = v15;
+      v6->_delegateQueue = sessionQueue;
     }
 
     else
@@ -156,32 +156,32 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   tag = self->_tag;
-  v5 = a3;
-  [v5 encodeObject:tag forKey:@"tag"];
-  [v5 encodeObject:self->_sessionKey forKey:@"sessionKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:tag forKey:@"tag"];
+  [coderCopy encodeObject:self->_sessionKey forKey:@"sessionKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (!self->_delegateQueue)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:86 description:@"Nil delegateQueue"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:86 description:@"Nil delegateQueue"];
   }
 
   if (!self->_hardwareManager)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:87 description:@"Nil hardwareManager"];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NFCNDEFTag.m" lineNumber:87 description:@"Nil hardwareManager"];
   }
 
   v5 = objc_alloc_init(objc_opt_class());
   [v5 _setTag:self->_tag];
-  v6 = [(NFCNDEFTag *)self _getInternalReaderSession];
-  [v5 _setSession:v6];
+  _getInternalReaderSession = [(NFCNDEFTag *)self _getInternalReaderSession];
+  [v5 _setSession:_getInternalReaderSession];
 
   [v5 _setDelegateQueue:self->_delegateQueue];
   return v5;
@@ -189,11 +189,11 @@
 
 - (BOOL)isAvailable
 {
-  v3 = [(NFCNDEFTag *)self _getInternalReaderSession];
-  v4 = [v3 currentTag];
-  if ([v4 isEqualToNFTag:self->_tag])
+  _getInternalReaderSession = [(NFCNDEFTag *)self _getInternalReaderSession];
+  currentTag = [_getInternalReaderSession currentTag];
+  if ([currentTag isEqualToNFTag:self->_tag])
   {
-    v5 = [v3 checkPresenceWithError:0];
+    v5 = [_getInternalReaderSession checkPresenceWithError:0];
   }
 
   else
@@ -204,50 +204,50 @@
   return v5;
 }
 
-- (void)queryNDEFStatusWithCompletionHandler:(id)a3
+- (void)queryNDEFStatusWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_23728C000, "NFCNDEFTag queryNDEFStatusWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
   os_activity_scope_leave(&state);
 
-  v6 = [(NFCNDEFTag *)self _getInternalReaderSession];
+  _getInternalReaderSession = [(NFCNDEFTag *)self _getInternalReaderSession];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_2372B87E8;
   v9[3] = &unk_278A29F28;
-  v11 = self;
-  v12 = v4;
-  v10 = v6;
-  v7 = v4;
-  v8 = v6;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v10 = _getInternalReaderSession;
+  v7 = handlerCopy;
+  v8 = _getInternalReaderSession;
   [(NFCNDEFTag *)self dispatchBlockOnDelegateQueueAsync:v9];
 }
 
-- (void)readNDEFWithCompletionHandler:(id)a3
+- (void)readNDEFWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_23728C000, "NFCNDEFTag readNDEFWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
   os_activity_scope_leave(&state);
 
-  v6 = [(NFCNDEFTag *)self _getInternalReaderSession];
-  v7 = v6;
-  if (v6)
+  _getInternalReaderSession = [(NFCNDEFTag *)self _getInternalReaderSession];
+  v7 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2372B8AC0;
     v12[3] = &unk_278A29DC0;
     v8 = &v13;
-    v9 = v6;
+    v9 = _getInternalReaderSession;
     v13 = v9;
-    v14 = v4;
-    v10 = v4;
+    v14 = handlerCopy;
+    v10 = handlerCopy;
     [v9 submitBlockOnSessionQueue:v12];
   }
 
@@ -258,35 +258,35 @@
     v15[2] = sub_2372B8A54;
     v15[3] = &unk_278A29C38;
     v8 = &v16;
-    v16 = v4;
-    v11 = v4;
+    v16 = handlerCopy;
+    v11 = handlerCopy;
     [(NFCNDEFTag *)self dispatchBlockOnDelegateQueueAsync:v15];
   }
 }
 
-- (void)writeLockWithCompletionHandler:(id)a3
+- (void)writeLockWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _os_activity_create(&dword_23728C000, "NFCNDEFTag writeLockWithCompletionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v5, &state);
   os_activity_scope_leave(&state);
 
-  v6 = [(NFCNDEFTag *)self _getInternalReaderSession];
-  v7 = v6;
-  if (v6)
+  _getInternalReaderSession = [(NFCNDEFTag *)self _getInternalReaderSession];
+  v7 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = sub_2372B8D94;
     v12[3] = &unk_278A29DE8;
     v8 = v13;
-    v9 = v6;
+    v9 = _getInternalReaderSession;
     v13[0] = v9;
     v13[1] = self;
-    v14 = v4;
-    v10 = v4;
+    v14 = handlerCopy;
+    v10 = handlerCopy;
     [v9 submitBlockOnSessionQueue:v12];
   }
 
@@ -297,36 +297,36 @@
     v15[2] = sub_2372B8D2C;
     v15[3] = &unk_278A29C38;
     v8 = &v16;
-    v16 = v4;
-    v11 = v4;
+    v16 = handlerCopy;
+    v11 = handlerCopy;
     [(NFCNDEFTag *)self dispatchBlockOnDelegateQueueAsync:v15];
   }
 }
 
-- (void)writeNDEF:(id)a3 completionHandler:(id)a4
+- (void)writeNDEF:(id)f completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  fCopy = f;
+  handlerCopy = handler;
   v8 = _os_activity_create(&dword_23728C000, "NFCNDEFTag writeNDEF:completionHandler:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_IF_NONE_PRESENT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v8, &state);
   os_activity_scope_leave(&state);
 
-  v9 = [(NFCNDEFTag *)self _getInternalReaderSession];
-  v10 = v9;
-  if (v9)
+  _getInternalReaderSession = [(NFCNDEFTag *)self _getInternalReaderSession];
+  v10 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = sub_2372B9068;
     v15[3] = &unk_278A29DE8;
     v11 = &v16;
-    v12 = v9;
+    v12 = _getInternalReaderSession;
     v16 = v12;
-    v17 = v6;
-    v18 = v7;
-    v13 = v7;
+    v17 = fCopy;
+    v18 = handlerCopy;
+    v13 = handlerCopy;
     [v12 submitBlockOnSessionQueue:v15];
   }
 
@@ -337,26 +337,26 @@
     v19[2] = sub_2372B9000;
     v19[3] = &unk_278A29C38;
     v11 = &v20;
-    v20 = v7;
-    v14 = v7;
+    v20 = handlerCopy;
+    v14 = handlerCopy;
     [(NFCNDEFTag *)self dispatchBlockOnDelegateQueueAsync:v19];
   }
 }
 
-- (void)_setSession:(id)a3
+- (void)_setSession:(id)session
 {
-  v4 = [a3 sessionId];
+  sessionId = [session sessionId];
   sessionKey = self->_sessionKey;
-  self->_sessionKey = v4;
+  self->_sessionKey = sessionId;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (id)_updateNdefStatusWithSession:(id)a3
+- (id)_updateNdefStatusWithSession:(id)session
 {
   v8 = 0;
   v9 = 0;
-  v4 = [a3 ndefStatus:&v8 maxMessageLength:&v9];
+  v4 = [session ndefStatus:&v8 maxMessageLength:&v9];
   v5 = v4;
   if (v4)
   {
@@ -378,8 +378,8 @@
 
 - (id)_getInternalReaderSession
 {
-  v3 = [(NFCNDEFTag *)self hardwareManager];
-  v4 = [v3 getReaderSessionWithKey:self->_sessionKey];
+  hardwareManager = [(NFCNDEFTag *)self hardwareManager];
+  v4 = [hardwareManager getReaderSessionWithKey:self->_sessionKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -395,32 +395,32 @@
   return v5;
 }
 
-- (BOOL)_connectWithError:(id *)a3
+- (BOOL)_connectWithError:(id *)error
 {
-  v5 = [(NFCNDEFTag *)self _getInternalReaderSession];
-  v6 = v5;
-  if (v5)
+  _getInternalReaderSession = [(NFCNDEFTag *)self _getInternalReaderSession];
+  v6 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
-    v7 = [v5 currentTag];
-    v8 = [v7 isEqualToNFTag:self->_tag];
+    currentTag = [_getInternalReaderSession currentTag];
+    v8 = [currentTag isEqualToNFTag:self->_tag];
 
-    v9 = [v6 connectTag:self->_tag error:a3];
+    v9 = [v6 connectTag:self->_tag error:error];
     v10 = v9;
     if ((v8 & 1) == 0 && v9)
     {
       v11 = [(NFCNDEFTag *)self _updateNdefStatusWithSession:v6];
-      if (a3)
+      if (error)
       {
         v11 = v11;
-        *a3 = v11;
+        *error = v11;
       }
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     [NFCError errorWithCode:103];
-    *a3 = v10 = 0;
+    *error = v10 = 0;
   }
 
   else
@@ -431,15 +431,15 @@
   return v10;
 }
 
-- (void)_connectWithCompletionHandler:(id)a3
+- (void)_connectWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NFCNDEFTag *)self _getInternalReaderSession];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  _getInternalReaderSession = [(NFCNDEFTag *)self _getInternalReaderSession];
+  v6 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
-    v7 = [v5 currentTag];
-    v8 = [v7 isEqualToNFTag:self->_tag] ^ 1;
+    currentTag = [_getInternalReaderSession currentTag];
+    v8 = [currentTag isEqualToNFTag:self->_tag] ^ 1;
 
     tag = self->_tag;
     v13[0] = MEMORY[0x277D85DD0];
@@ -449,8 +449,8 @@
     v16 = v8;
     v13[4] = self;
     v14 = v6;
-    v15 = v4;
-    v10 = v4;
+    v15 = handlerCopy;
+    v10 = handlerCopy;
     [v14 connectTag:tag completionHandler:v13];
 
     v11 = v14;
@@ -462,26 +462,26 @@
     v17[1] = 3221225472;
     v17[2] = sub_2372B94E8;
     v17[3] = &unk_278A29C38;
-    v18 = v4;
-    v12 = v4;
+    v18 = handlerCopy;
+    v12 = handlerCopy;
     [(NFCNDEFTag *)self dispatchBlockOnDelegateQueueAsync:v17];
     v11 = v18;
   }
 }
 
-- (BOOL)_disconnectWithError:(id *)a3
+- (BOOL)_disconnectWithError:(id *)error
 {
-  v4 = [(NFCNDEFTag *)self _getInternalReaderSession];
-  v5 = v4;
-  if (v4)
+  _getInternalReaderSession = [(NFCNDEFTag *)self _getInternalReaderSession];
+  v5 = _getInternalReaderSession;
+  if (_getInternalReaderSession)
   {
-    v6 = [v4 disconnectTagWithError:a3];
+    v6 = [_getInternalReaderSession disconnectTagWithError:error];
   }
 
-  else if (a3)
+  else if (error)
   {
     [NFCError errorWithCode:103];
-    *a3 = v6 = 0;
+    *error = v6 = 0;
   }
 
   else
@@ -492,14 +492,14 @@
   return v6;
 }
 
-- (BOOL)isMatchingSession:(id)a3 outError:(id *)a4
+- (BOOL)isMatchingSession:(id)session outError:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 sessionId];
+  sessionCopy = session;
+  sessionId = [sessionCopy sessionId];
 
-  if (!v7)
+  if (!sessionId)
   {
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_8;
@@ -509,14 +509,14 @@
   }
 
   sessionKey = self->_sessionKey;
-  v9 = [v6 sessionId];
-  v10 = [(NSNumber *)sessionKey isEqualToNumber:v9];
+  sessionId2 = [sessionCopy sessionId];
+  v10 = [(NSNumber *)sessionKey isEqualToNumber:sessionId2];
 
-  if (a4 && !v10)
+  if (error && !v10)
   {
 LABEL_6:
     [NFCError errorWithCode:103];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_8:
@@ -524,11 +524,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)dispatchBlockOnDelegateQueueAsync:(id)a3
+- (void)dispatchBlockOnDelegateQueueAsync:(id)async
 {
   v27 = *MEMORY[0x277D85DE8];
   delegateQueue = self->_delegateQueue;
-  v6 = a3;
+  asyncCopy = async;
   if (delegateQueue)
   {
     v7 = delegateQueue;
@@ -581,7 +581,7 @@ LABEL_8:
     v7 = MEMORY[0x277D85CD0];
   }
 
-  dispatch_async(v7, v6);
+  dispatch_async(v7, asyncCopy);
 
   v17 = *MEMORY[0x277D85DE8];
 }

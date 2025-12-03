@@ -1,11 +1,11 @@
 @interface DOCBarButtonItem
 - (_TtC26DocumentManagerExecutables16DOCBarButtonItem)init;
-- (_TtC26DocumentManagerExecutables16DOCBarButtonItem)initWithCoder:(id)a3;
+- (_TtC26DocumentManagerExecutables16DOCBarButtonItem)initWithCoder:(id)coder;
 @end
 
 @implementation DOCBarButtonItem
 
-- (_TtC26DocumentManagerExecutables16DOCBarButtonItem)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables16DOCBarButtonItem)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

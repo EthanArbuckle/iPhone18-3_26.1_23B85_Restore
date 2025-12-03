@@ -1,32 +1,32 @@
 @interface THGlossaryPopoverViewController
 - (CGRect)glossaryEntryLayoutViewFrame;
 - (CGSize)glossaryEntryLayoutContentSize;
-- (THGlossaryPopoverViewController)initWithTerm:(id)a3 glossaryController:(id)a4;
+- (THGlossaryPopoverViewController)initWithTerm:(id)term glossaryController:(id)controller;
 - (TSKDocumentRoot)documentRoot;
-- (double)glossaryEntryLayoutValueForDistance:(int)a3;
+- (double)glossaryEntryLayoutValueForDistance:(int)distance;
 - (id)glossaryEntryLayoutBackgroundColor;
 - (id)glossaryEntryLayoutForegroundColor;
-- (id)p_glossaryEntryForTerm:(id)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (id)p_glossaryEntryForTerm:(id)term;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)dealloc;
 - (void)loadView;
 - (void)p_cleanup;
 - (void)p_insetScrollerContentEdges;
 - (void)p_updateColors;
-- (void)p_updateGlossaryDefinitionSynchronous:(BOOL)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setTheme:(id)a3;
+- (void)p_updateGlossaryDefinitionSynchronous:(BOOL)synchronous;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setTheme:(id)theme;
 - (void)showDictionaryEntry;
 - (void)showGlossaryIndex;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation THGlossaryPopoverViewController
 
-- (THGlossaryPopoverViewController)initWithTerm:(id)a3 glossaryController:(id)a4
+- (THGlossaryPopoverViewController)initWithTerm:(id)term glossaryController:(id)controller
 {
   v11.receiver = self;
   v11.super_class = THGlossaryPopoverViewController;
@@ -34,8 +34,8 @@
   v7 = v6;
   if (v6)
   {
-    [(THGlossaryPopoverViewController *)v6 setTerm:a3];
-    [(THGlossaryPopoverViewController *)v7 setGlossaryController:a4];
+    [(THGlossaryPopoverViewController *)v6 setTerm:term];
+    [(THGlossaryPopoverViewController *)v7 setGlossaryController:controller];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     THCanvasCreateWithClass(v7, &v7->_icc, &v7->_cvc, v8, v9);
@@ -48,10 +48,10 @@
   return v7;
 }
 
-- (id)p_glossaryEntryForTerm:(id)a3
+- (id)p_glossaryEntryForTerm:(id)term
 {
-  v4 = [(THDocumentRoot *)[(THGlossaryController *)[(THGlossaryPopoverViewController *)self glossaryController] documentRoot] glossary];
-  if ([(THModelGlossary *)v4 entryCount]< 1)
+  glossary = [(THDocumentRoot *)[(THGlossaryController *)[(THGlossaryPopoverViewController *)self glossaryController] documentRoot] glossary];
+  if ([(THModelGlossary *)glossary entryCount]< 1)
   {
     return 0;
   }
@@ -59,13 +59,13 @@
   v5 = 0;
   while (1)
   {
-    v6 = [(THModelGlossary *)v4 entryAtIndex:v5];
-    if (![a3 compare:objc_msgSend(v6 options:{"term"), 1}])
+    v6 = [(THModelGlossary *)glossary entryAtIndex:v5];
+    if (![term compare:objc_msgSend(v6 options:{"term"), 1}])
     {
       break;
     }
 
-    if (++v5 >= [(THModelGlossary *)v4 entryCount])
+    if (++v5 >= [(THModelGlossary *)glossary entryCount])
     {
       return 0;
     }
@@ -80,16 +80,16 @@
   v2[1] = 3221225472;
   v2[2] = sub_BF1DC;
   v2[3] = &unk_45AE58;
-  v3 = self;
-  v4 = [(THGlossaryPopoverViewController *)self bookViewController];
-  [(THGlossaryPopoverViewController *)v3 dismissViewControllerAnimated:0 completion:v2];
+  selfCopy = self;
+  bookViewController = [(THGlossaryPopoverViewController *)self bookViewController];
+  [(THGlossaryPopoverViewController *)selfCopy dismissViewControllerAnimated:0 completion:v2];
 }
 
 - (TSKDocumentRoot)documentRoot
 {
-  v2 = [(THGlossaryPopoverViewController *)self glossaryController];
+  glossaryController = [(THGlossaryPopoverViewController *)self glossaryController];
 
-  return [(THGlossaryController *)v2 documentRoot];
+  return [(THGlossaryController *)glossaryController documentRoot];
 }
 
 - (void)loadView
@@ -118,10 +118,10 @@
   v12 = [v11 initWithFrame:?];
   [(THGlossaryPopoverViewController *)self setContainer:v12];
   [v10 addSubview:v12];
-  v13 = [(THGlossaryInteractiveCanvasController *)[(THGlossaryPopoverViewController *)self icc] canvasView];
-  [v12 addSubview:v13];
-  [v13 setFrame:{0.0, 22.0, v6, v8}];
-  [v13 setAutoresizingMask:0];
+  canvasView = [(THGlossaryInteractiveCanvasController *)[(THGlossaryPopoverViewController *)self icc] canvasView];
+  [v12 addSubview:canvasView];
+  [canvasView setFrame:{0.0, 22.0, v6, v8}];
+  [canvasView setAutoresizingMask:0];
   [(THGlossaryPopoverViewController *)self setView:v3];
 
   [(THGlossaryPopoverViewController *)self setPreferredContentSize:320.0, 366.0];
@@ -129,40 +129,40 @@
   [(THGlossaryPopoverViewController *)self p_updateColors];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = THGlossaryPopoverViewController;
   [(THGlossaryPopoverViewController *)&v5 viewWillAppear:?];
-  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] viewWillAppear:v3];
+  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = THGlossaryPopoverViewController;
   [(THGlossaryPopoverViewController *)&v5 viewDidAppear:?];
-  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] viewDidAppear:v3];
+  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = THGlossaryPopoverViewController;
   [(THGlossaryPopoverViewController *)&v5 viewWillDisappear:?];
-  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] viewWillDisappear:v3];
+  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = THGlossaryPopoverViewController;
   [(THGlossaryPopoverViewController *)&v5 viewDidDisappear:?];
-  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] viewDidDisappear:v3];
+  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] viewDidDisappear:disappearCopy];
 }
 
 - (void)dealloc
@@ -173,25 +173,25 @@
   [(THGlossaryPopoverViewController *)&v3 dealloc];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  [(THGlossaryPopoverViewController *)self p_updateColors:a3];
+  [(THGlossaryPopoverViewController *)self p_updateColors:change];
 
   [(THGlossaryPopoverViewController *)self p_updateGlossaryDefinitionSynchronous:1];
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
   v5.receiver = self;
   v5.super_class = THGlossaryPopoverViewController;
   [(THGlossaryPopoverViewController *)&v5 setTheme:?];
-  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] setTheme:a3];
+  [(THGlossaryiOSCanvasViewController *)[(THGlossaryPopoverViewController *)self cvc] setTheme:theme];
   [(THGlossaryPopoverViewController *)self p_updateColors];
 }
 
 - (void)p_insetScrollerContentEdges
 {
-  v3 = [(THGlossaryPopoverViewController *)self navigationController];
+  navigationController = [(THGlossaryPopoverViewController *)self navigationController];
   v4 = [objc_msgSend(objc_msgSend(-[THGlossaryPopoverViewController view](self "view")];
   v5 = 0.0;
   v6 = 0.0;
@@ -201,16 +201,16 @@
     v6 = v7;
   }
 
-  [objc_msgSend(v3 "navigationBar")];
+  [objc_msgSend(navigationController "navigationBar")];
   v9 = v8;
-  v10 = [v3 isNavigationBarHidden];
-  if (([v3 isToolbarHidden] & 1) == 0)
+  isNavigationBarHidden = [navigationController isNavigationBarHidden];
+  if (([navigationController isToolbarHidden] & 1) == 0)
   {
-    [objc_msgSend(v3 "toolbar")];
+    [objc_msgSend(navigationController "toolbar")];
     v5 = v11 + 0.0;
   }
 
-  if (!v10)
+  if (!isNavigationBarHidden)
   {
     v6 = v6 + v9;
   }
@@ -230,23 +230,23 @@
     v16 = -v6;
   }
 
-  v17 = [(THGlossaryPopoverViewController *)self definition];
+  definition = [(THGlossaryPopoverViewController *)self definition];
 
-  [(UIScrollView *)v17 setContentOffset:v13, v16];
+  [(UIScrollView *)definition setContentOffset:v13, v16];
 }
 
-- (void)p_updateGlossaryDefinitionSynchronous:(BOOL)a3
+- (void)p_updateGlossaryDefinitionSynchronous:(BOOL)synchronous
 {
-  v3 = a3;
-  v5 = [(THGlossaryPopoverViewController *)self term];
-  if ([(NSString *)v5 length]&& (v6 = [(THGlossaryPopoverViewController *)self p_glossaryEntryForTerm:v5]) != 0)
+  synchronousCopy = synchronous;
+  term = [(THGlossaryPopoverViewController *)self term];
+  if ([(NSString *)term length]&& (v6 = [(THGlossaryPopoverViewController *)self p_glossaryEntryForTerm:term]) != 0)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_BF998;
     v8[3] = &unk_45D020;
     v8[4] = self;
-    if (v3)
+    if (synchronousCopy)
     {
       [v6 synchronouslyLoadInfoOnComplete:v8];
     }
@@ -260,21 +260,21 @@
   else
   {
     [(UILabel *)[(THGlossaryPopoverViewController *)self notFoundLabel] setHidden:0];
-    v7 = [(THGlossaryPopoverViewController *)self definition];
+    definition = [(THGlossaryPopoverViewController *)self definition];
 
-    [(UIScrollView *)v7 setHidden:1];
+    [(UIScrollView *)definition setHidden:1];
   }
 }
 
 - (void)showDictionaryEntry
 {
-  v2 = [(THGlossaryPopoverViewController *)self glossaryPresenting];
-  if (v2)
+  glossaryPresenting = [(THGlossaryPopoverViewController *)self glossaryPresenting];
+  if (glossaryPresenting)
   {
-    v3 = v2;
+    v3 = glossaryPresenting;
     if (objc_opt_respondsToSelector())
     {
-      v4 = self;
+      selfCopy = self;
       [(THGlossaryPresenting *)v3 replaceGlossaryPopoverWithDictionaryForTerm:[(THGlossaryPopoverViewController *)self term]];
     }
   }
@@ -304,45 +304,45 @@
 
 - (void)p_updateColors
 {
-  v3 = [(THGlossaryPopoverViewController *)self themePage];
-  if (v3)
+  themePage = [(THGlossaryPopoverViewController *)self themePage];
+  if (themePage)
   {
-    v4 = v3;
-    v5 = [v3 contentTextColor];
+    v4 = themePage;
+    contentTextColor = [themePage contentTextColor];
     v6 = [v4 backgroundColorForTraitEnvironment:self];
   }
 
   else
   {
-    v5 = [UIColor colorWithRed:0.129411765 green:0.22745098 blue:0.411764706 alpha:1.0];
+    contentTextColor = [UIColor colorWithRed:0.129411765 green:0.22745098 blue:0.411764706 alpha:1.0];
     v6 = [-[THGlossaryPopoverViewController glossaryEntryLayoutBackgroundColor](self "glossaryEntryLayoutBackgroundColor")];
   }
 
   v7 = v6;
   [(UIView *)[(THGlossaryPopoverViewController *)self glossaryRootView] setBackgroundColor:v6];
-  v8 = [(THGlossaryPopoverViewController *)self notFoundLabel];
-  [(UILabel *)v8 setBackgroundColor:v7];
-  [(UILabel *)v8 setTextColor:v5];
+  notFoundLabel = [(THGlossaryPopoverViewController *)self notFoundLabel];
+  [(UILabel *)notFoundLabel setBackgroundColor:v7];
+  [(UILabel *)notFoundLabel setTextColor:contentTextColor];
   [(UIView *)[(THGlossaryPopoverViewController *)self container] setBackgroundColor:v7];
-  v9 = [(THGlossaryInteractiveCanvasController *)[(THGlossaryPopoverViewController *)self icc] canvasView];
-  v10 = [v7 CGColor];
-  v11 = [v9 layer];
+  canvasView = [(THGlossaryInteractiveCanvasController *)[(THGlossaryPopoverViewController *)self icc] canvasView];
+  cGColor = [v7 CGColor];
+  layer = [canvasView layer];
 
-  [v11 setBackgroundColor:v10];
+  [layer setBackgroundColor:cGColor];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4 = [(THGlossaryPopoverViewController *)self icc];
 
-  [(THInteractiveCanvasController *)v4 scrollViewDidScroll:a3];
+  [(THInteractiveCanvasController *)v4 scrollViewDidScroll:scroll];
 }
 
 - (CGRect)glossaryEntryLayoutViewFrame
 {
-  v2 = [(THGlossaryPopoverViewController *)self view];
+  view = [(THGlossaryPopoverViewController *)self view];
 
-  [v2 frame];
+  [view frame];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -360,12 +360,12 @@
   return result;
 }
 
-- (double)glossaryEntryLayoutValueForDistance:(int)a3
+- (double)glossaryEntryLayoutValueForDistance:(int)distance
 {
   result = 0.0;
-  if (a3 <= 2)
+  if (distance <= 2)
   {
-    return dbl_34A4F0[a3];
+    return dbl_34A4F0[distance];
   }
 
   return result;

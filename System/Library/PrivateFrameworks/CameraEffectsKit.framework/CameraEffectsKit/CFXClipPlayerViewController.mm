@@ -1,27 +1,27 @@
 @interface CFXClipPlayerViewController
 - (JFXAVPlayerViewer)avPlayerView;
-- (void)displayCompositionUpdateLoadingView:(id)a3;
-- (void)prepareForSegue:(id)a3 sender:(id)a4;
-- (void)reloadClipAndSeekToStart:(BOOL)a3;
-- (void)setClip:(id)a3;
+- (void)displayCompositionUpdateLoadingView:(id)view;
+- (void)prepareForSegue:(id)segue sender:(id)sender;
+- (void)reloadClipAndSeekToStart:(BOOL)start;
+- (void)setClip:(id)clip;
 - (void)updateCompositionForEffectChange;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CFXClipPlayerViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(CFXClipPlayerViewController *)self clip];
-  if (v5)
+  appearCopy = appear;
+  clip = [(CFXClipPlayerViewController *)self clip];
+  if (clip)
   {
-    v6 = v5;
-    v7 = [(CFXClipPlayerViewController *)self clipDataSource];
-    v8 = [v7 clip];
-    v9 = [(CFXClipPlayerViewController *)self clip];
+    v6 = clip;
+    clipDataSource = [(CFXClipPlayerViewController *)self clipDataSource];
+    clip2 = [clipDataSource clip];
+    clip3 = [(CFXClipPlayerViewController *)self clip];
 
-    if (v8 != v9)
+    if (clip2 != clip3)
     {
       [(CFXClipPlayerViewController *)self reloadClip];
     }
@@ -29,23 +29,23 @@
 
   v10.receiver = self;
   v10.super_class = CFXClipPlayerViewController;
-  [(CFXClipPlayerViewController *)&v10 viewWillAppear:v3];
+  [(CFXClipPlayerViewController *)&v10 viewWillAppear:appearCopy];
 }
 
-- (void)reloadClipAndSeekToStart:(BOOL)a3
+- (void)reloadClipAndSeekToStart:(BOOL)start
 {
-  v3 = a3;
-  v5 = [(CFXClipPlayerViewController *)self clipDataSource];
+  startCopy = start;
+  clipDataSource = [(CFXClipPlayerViewController *)self clipDataSource];
 
-  v6 = [(CFXClipPlayerViewController *)self clip];
-  v7 = v6;
-  if (v5)
+  clip = [(CFXClipPlayerViewController *)self clip];
+  v7 = clip;
+  if (clipDataSource)
   {
-    v8 = [(CFXClipPlayerViewController *)self clipDataSource];
-    [v8 setClip:v7];
+    clipDataSource2 = [(CFXClipPlayerViewController *)self clipDataSource];
+    [clipDataSource2 setClip:v7];
 
     [(JFXCompositionPlayerViewController *)self setNeedsCompositionUpdate];
-    if (v3)
+    if (startCopy)
     {
 
       [(JFXCompositionPlayerViewController *)self seekToTime:0];
@@ -58,20 +58,20 @@
     if (v7)
     {
       v9 = [CFXClipCompositionDataSource alloc];
-      v10 = [(CFXClipPlayerViewController *)self clip];
-      v11 = [(CFXClipCompositionDataSource *)v9 initWithClip:v10];
+      clip2 = [(CFXClipPlayerViewController *)self clip];
+      v11 = [(CFXClipCompositionDataSource *)v9 initWithClip:clip2];
       [(CFXClipPlayerViewController *)self setClipDataSource:v11];
 
-      v12 = [(CFXClipPlayerViewController *)self clipDataSource];
-      [(JFXCompositionPlayerViewController *)self setClipsDataSource:v12];
+      clipDataSource3 = [(CFXClipPlayerViewController *)self clipDataSource];
+      [(JFXCompositionPlayerViewController *)self setClipsDataSource:clipDataSource3];
     }
   }
 }
 
-- (void)setClip:(id)a3
+- (void)setClip:(id)clip
 {
-  objc_storeStrong(&self->_clip, a3);
-  if (a3)
+  objc_storeStrong(&self->_clip, clip);
+  if (clip)
   {
 
     [(CFXClipPlayerViewController *)self reloadClip];
@@ -79,8 +79,8 @@
 
   else
   {
-    v5 = [(CFXClipPlayerViewController *)self clipDataSource];
-    [v5 setClip:0];
+    clipDataSource = [(CFXClipPlayerViewController *)self clipDataSource];
+    [clipDataSource setClip:0];
 
     [(CFXClipPlayerViewController *)self setClipDataSource:0];
 
@@ -90,53 +90,53 @@
 
 - (void)updateCompositionForEffectChange
 {
-  v3 = [(CFXClipPlayerViewController *)self clip];
-  [(JFXCompositionPlayerViewController *)self setNeedsCompositionUpdateForClip:v3];
+  clip = [(CFXClipPlayerViewController *)self clip];
+  [(JFXCompositionPlayerViewController *)self setNeedsCompositionUpdateForClip:clip];
 }
 
-- (void)displayCompositionUpdateLoadingView:(id)a3
+- (void)displayCompositionUpdateLoadingView:(id)view
 {
-  v20 = a3;
-  v4 = [(JFXCompositionPlayerViewController *)self placeHolderView];
-  if (!v4 || (v5 = v4, -[JFXCompositionPlayerViewController placeHolderView](self, "placeHolderView"), v6 = objc_claimAutoreleasedReturnValue(), [v6 superview], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, !v7))
+  viewCopy = view;
+  placeHolderView = [(JFXCompositionPlayerViewController *)self placeHolderView];
+  if (!placeHolderView || (v5 = placeHolderView, -[JFXCompositionPlayerViewController placeHolderView](self, "placeHolderView"), v6 = objc_claimAutoreleasedReturnValue(), [v6 superview], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v5, !v7))
   {
-    v8 = [(CFXClipPlayerViewController *)self placeholderContainerView];
+    placeholderContainerView = [(CFXClipPlayerViewController *)self placeholderContainerView];
 
-    if (v8)
+    if (placeholderContainerView)
     {
-      [v20 removeFromSuperview];
-      [v20 setTranslatesAutoresizingMaskIntoConstraints:1];
-      [(JFXCompositionPlayerViewController *)self setPlaceHolderView:v20];
-      v9 = [(CFXClipPlayerViewController *)self playerContainerView];
-      [v9 bounds];
+      [viewCopy removeFromSuperview];
+      [viewCopy setTranslatesAutoresizingMaskIntoConstraints:1];
+      [(JFXCompositionPlayerViewController *)self setPlaceHolderView:viewCopy];
+      playerContainerView = [(CFXClipPlayerViewController *)self playerContainerView];
+      [playerContainerView bounds];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(JFXCompositionPlayerViewController *)self placeHolderView];
-      [v18 setFrame:{v11, v13, v15, v17}];
+      placeHolderView2 = [(JFXCompositionPlayerViewController *)self placeHolderView];
+      [placeHolderView2 setFrame:{v11, v13, v15, v17}];
 
-      v19 = [(JFXCompositionPlayerViewController *)self placeHolderView];
-      [v19 setAutoresizingMask:18];
+      placeHolderView3 = [(JFXCompositionPlayerViewController *)self placeHolderView];
+      [placeHolderView3 setAutoresizingMask:18];
     }
   }
 }
 
-- (void)prepareForSegue:(id)a3 sender:(id)a4
+- (void)prepareForSegue:(id)segue sender:(id)sender
 {
-  v10 = a3;
-  v5 = [v10 identifier];
-  v6 = [v5 isEqualToString:@"clipPlayer_embedAVPlayerViewer"];
+  segueCopy = segue;
+  identifier = [segueCopy identifier];
+  v6 = [identifier isEqualToString:@"clipPlayer_embedAVPlayerViewer"];
 
   if (v6)
   {
-    v7 = [v10 destinationViewController];
-    v8 = [v7 conformsToProtocol:&unk_285596B10];
+    destinationViewController = [segueCopy destinationViewController];
+    v8 = [destinationViewController conformsToProtocol:&unk_285596B10];
 
     if (v8)
     {
-      v9 = [v10 destinationViewController];
-      [(CFXClipPlayerViewController *)self setAvPlayerView:v9];
+      destinationViewController2 = [segueCopy destinationViewController];
+      [(CFXClipPlayerViewController *)self setAvPlayerView:destinationViewController2];
     }
   }
 }

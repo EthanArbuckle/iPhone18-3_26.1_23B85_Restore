@@ -1,26 +1,26 @@
 @interface UISystemShellApplicationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter;
 @end
 
 @implementation UISystemShellApplicationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   objc_storeStrong(location, 0);
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3
+- (id)_iosAccessibilityAttributeValue:(int64_t)value
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
-  switch(a3)
+  valueCopy = value;
+  switch(value)
   {
     case 1100:
       v16 = AXFrontBoardRunningAppPIDs();
@@ -82,9 +82,9 @@
       v16 = AXFrontBoardFocusedAppPidsForContinuity();
       break;
     default:
-      v6.receiver = v15;
+      v6.receiver = selfCopy;
       v6.super_class = UISystemShellApplicationAccessibility;
-      v16 = [(UISystemShellApplicationAccessibility *)&v6 _iosAccessibilityAttributeValue:v13];
+      v16 = [(UISystemShellApplicationAccessibility *)&v6 _iosAccessibilityAttributeValue:valueCopy];
       break;
   }
 
@@ -127,14 +127,14 @@ uint64_t __73__UISystemShellApplicationAccessibility__iosAccessibilityAttributeV
   return v4;
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3 forParameter:(id)a4
+- (id)_iosAccessibilityAttributeValue:(int64_t)value forParameter:(id)parameter
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
+  valueCopy = value;
   location = 0;
-  objc_storeStrong(&location, a4);
-  if (v9 == 91510)
+  objc_storeStrong(&location, parameter);
+  if (valueCopy == 91510)
   {
     v12 = [MEMORY[0x29EDBA070] numberWithInt:AXFrontBoardPIDForApplicationWithBundleID()];
     v7 = 1;
@@ -142,16 +142,16 @@ uint64_t __73__UISystemShellApplicationAccessibility__iosAccessibilityAttributeV
 
   else
   {
-    if (v9 == 91700)
+    if (valueCopy == 91700)
     {
       v12 = AXFrontBoardSpeakThisAppPIDForPoint();
     }
 
     else
     {
-      v6.receiver = v11;
+      v6.receiver = selfCopy;
       v6.super_class = UISystemShellApplicationAccessibility;
-      v12 = [(UISystemShellApplicationAccessibility *)&v6 _iosAccessibilityAttributeValue:v9 forParameter:location];
+      v12 = [(UISystemShellApplicationAccessibility *)&v6 _iosAccessibilityAttributeValue:valueCopy forParameter:location];
     }
 
     v7 = 1;

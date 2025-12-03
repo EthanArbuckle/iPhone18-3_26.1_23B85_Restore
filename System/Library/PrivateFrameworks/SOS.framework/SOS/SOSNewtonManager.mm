@@ -1,24 +1,24 @@
 @interface SOSNewtonManager
-+ (void)checkEligibilityForAutoEnableWithHealthStore:(id)a3 completion:(id)a4;
-+ (void)newtonEligibilityWithHealthStore:(id)a3 completion:(id)a4;
-+ (void)newtonEligibilityWithHealthStore:(id)a3 deviceSupportsWorkoutsOnly:(BOOL)a4 completion:(id)a5;
++ (void)checkEligibilityForAutoEnableWithHealthStore:(id)store completion:(id)completion;
++ (void)newtonEligibilityWithHealthStore:(id)store completion:(id)completion;
++ (void)newtonEligibilityWithHealthStore:(id)store deviceSupportsWorkoutsOnly:(BOOL)only completion:(id)completion;
 @end
 
 @implementation SOSNewtonManager
 
-+ (void)newtonEligibilityWithHealthStore:(id)a3 completion:(id)a4
++ (void)newtonEligibilityWithHealthStore:(id)store completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [a1 newtonEligibilityWithHealthStore:v7 deviceSupportsWorkoutsOnly:+[SOSUtilities activeDeviceSupportsNewtonWorkoutsOnly](SOSUtilities completion:{"activeDeviceSupportsNewtonWorkoutsOnly"), v6}];
+  completionCopy = completion;
+  storeCopy = store;
+  [self newtonEligibilityWithHealthStore:storeCopy deviceSupportsWorkoutsOnly:+[SOSUtilities activeDeviceSupportsNewtonWorkoutsOnly](SOSUtilities completion:{"activeDeviceSupportsNewtonWorkoutsOnly"), completionCopy}];
 }
 
-+ (void)newtonEligibilityWithHealthStore:(id)a3 deviceSupportsWorkoutsOnly:(BOOL)a4 completion:(id)a5
++ (void)newtonEligibilityWithHealthStore:(id)store deviceSupportsWorkoutsOnly:(BOOL)only completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = v7;
+  storeCopy = store;
+  completionCopy = completion;
+  v9 = storeCopy;
   v10 = v9;
   if (!v9)
   {
@@ -31,8 +31,8 @@
   v24[1] = 3221225472;
   v24[2] = __91__SOSNewtonManager_newtonEligibilityWithHealthStore_deviceSupportsWorkoutsOnly_completion___block_invoke;
   v24[3] = &unk_279B53F68;
-  v26 = a4;
-  v11 = v8;
+  onlyCopy = only;
+  v11 = completionCopy;
   v25 = v11;
   v12 = MEMORY[0x266735F90](v24);
   v23 = 0;
@@ -139,16 +139,16 @@ void __91__SOSNewtonManager_newtonEligibilityWithHealthStore_deviceSupportsWorko
   (*(v2 + 16))(v2, v3);
 }
 
-+ (void)checkEligibilityForAutoEnableWithHealthStore:(id)a3 completion:(id)a4
++ (void)checkEligibilityForAutoEnableWithHealthStore:(id)store completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__SOSNewtonManager_checkEligibilityForAutoEnableWithHealthStore_completion___block_invoke;
   v8[3] = &unk_279B53FB8;
-  v9 = v6;
-  v7 = v6;
-  [a1 newtonEligibilityWithHealthStore:a3 completion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [self newtonEligibilityWithHealthStore:store completion:v8];
 }
 
 @end

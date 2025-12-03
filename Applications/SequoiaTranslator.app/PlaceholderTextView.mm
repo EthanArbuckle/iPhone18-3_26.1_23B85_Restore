@@ -1,11 +1,11 @@
 @interface PlaceholderTextView
-- (CGRect)alignmentRectForFrame:(CGRect)a3;
-- (CGRect)frameForAlignmentRect:(CGRect)a3;
-- (CGSize)_systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGRect)alignmentRectForFrame:(CGRect)frame;
+- (CGRect)frameForAlignmentRect:(CGRect)rect;
+- (CGSize)_systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (NSLayoutYAxisAnchor)firstBaselineAnchor;
 - (NSLayoutYAxisAnchor)lastBaselineAnchor;
 - (NSString)text;
@@ -13,17 +13,17 @@
 - (UIEdgeInsets)textContainerInset;
 - (UIView)viewForFirstBaselineLayout;
 - (UIView)viewForLastBaselineLayout;
-- (_TtC17SequoiaTranslator19PlaceholderTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4;
+- (_TtC17SequoiaTranslator19PlaceholderTextView)initWithFrame:(CGRect)frame textContainer:(id)container;
 - (int64_t)textAlignment;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)scribbleInteractionDidFinishWriting:(id)a3;
-- (void)scribbleInteractionWillBeginWriting:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTextContainerInset:(UIEdgeInsets)a3;
-- (void)textChangedWithNotification:(id)a3;
+- (void)scribbleInteractionDidFinishWriting:(id)writing;
+- (void)scribbleInteractionWillBeginWriting:(id)writing;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTextContainerInset:(UIEdgeInsets)inset;
+- (void)textChangedWithNotification:(id)notification;
 @end
 
 @implementation PlaceholderTextView
@@ -33,10 +33,10 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for PlaceholderTextView();
   v2 = v7.receiver;
-  v3 = [(PlaceholderTextView *)&v7 text];
-  if (v3)
+  text = [(PlaceholderTextView *)&v7 text];
+  if (text)
   {
-    v4 = v3;
+    v4 = text;
     static String._unconditionallyBridgeFromObjectiveC(_:)();
 
     v5 = String._bridgeToObjectiveC()();
@@ -51,18 +51,18 @@
   return v5;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = self;
+    selfCopy = self;
     v5 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -80,12 +80,12 @@
   return [(PlaceholderTextView *)&v3 textAlignment];
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for PlaceholderTextView();
   v4 = v5.receiver;
-  [(PlaceholderTextView *)&v5 setTextAlignment:a3];
+  [(PlaceholderTextView *)&v5 setTextAlignment:alignment];
   PlaceholderTextView.updatePlaceholderProperties()();
 }
 
@@ -101,12 +101,12 @@
   return result;
 }
 
-- (void)setTextContainerInset:(UIEdgeInsets)a3
+- (void)setTextContainerInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PlaceholderTextView();
   v7 = v8.receiver;
@@ -116,7 +116,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   PlaceholderTextView.intrinsicContentSize.getter();
   v4 = v3;
   v6 = v5;
@@ -130,7 +130,7 @@
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v2 = self;
+  selfCopy = self;
   PlaceholderTextView.alignmentRectInsets.getter();
   v4 = v3;
   v6 = v5;
@@ -150,7 +150,7 @@
 
 - (UIView)viewForFirstBaselineLayout
 {
-  v2 = self;
+  selfCopy = self;
   Baseline = PlaceholderTextView.forFirstBaselineLayout.getter();
 
   return Baseline;
@@ -158,7 +158,7 @@
 
 - (UIView)viewForLastBaselineLayout
 {
-  v2 = self;
+  selfCopy = self;
   Baseline = PlaceholderTextView.forLastBaselineLayout.getter();
 
   return Baseline;
@@ -166,7 +166,7 @@
 
 - (NSLayoutYAxisAnchor)firstBaselineAnchor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlaceholderTextView.firstBaselineAnchor.getter();
 
   return v3;
@@ -174,30 +174,30 @@
 
 - (NSLayoutYAxisAnchor)lastBaselineAnchor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PlaceholderTextView.lastBaselineAnchor.getter();
 
   return v3;
 }
 
-- (_TtC17SequoiaTranslator19PlaceholderTextView)initWithFrame:(CGRect)a3 textContainer:(id)a4
+- (_TtC17SequoiaTranslator19PlaceholderTextView)initWithFrame:(CGRect)frame textContainer:(id)container
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  return PlaceholderTextView.init(frame:textContainer:)(a4, x, y, width, height);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  containerCopy = container;
+  return PlaceholderTextView.init(frame:textContainer:)(container, x, y, width, height);
 }
 
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4 name:UITextViewTextDidChangeNotification object:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy name:UITextViewTextDidChangeNotification object:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for PlaceholderTextView();
   [(PlaceholderTextView *)&v6 dealloc];
 }
@@ -213,11 +213,11 @@
   [v3 setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   PlaceholderTextView.sizeThatFits(_:)(width, height);
   v7 = v6;
   v9 = v8;
@@ -229,11 +229,11 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   PlaceholderTextView.systemLayoutSizeFitting(_:)(width, height);
   v7 = v6;
   v9 = v8;
@@ -245,12 +245,12 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  PlaceholderTextView.systemLayoutSizeFitting(_:withHorizontalFittingPriority:verticalFittingPriority:)(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  PlaceholderTextView.systemLayoutSizeFitting(_:withHorizontalFittingPriority:verticalFittingPriority:)(width, height, priority, fittingPriority);
   v11 = v10;
   v13 = v12;
 
@@ -261,12 +261,12 @@
   return result;
 }
 
-- (CGSize)_systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)_systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = self;
-  PlaceholderTextView._systemLayoutSizeFitting(_:withHorizontalFittingPriority:verticalFittingPriority:)(width, height, a4, a5);
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  PlaceholderTextView._systemLayoutSizeFitting(_:withHorizontalFittingPriority:verticalFittingPriority:)(width, height, priority, fittingPriority);
   v11 = v10;
   v13 = v12;
 
@@ -277,9 +277,9 @@
   return result;
 }
 
-- (CGRect)alignmentRectForFrame:(CGRect)a3
+- (CGRect)alignmentRectForFrame:(CGRect)frame
 {
-  v3 = sub_1001FBC54(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, PlaceholderTextView.alignmentRect(forFrame:));
+  v3 = sub_1001FBC54(self, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height, a2, PlaceholderTextView.alignmentRect(forFrame:));
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -287,9 +287,9 @@
   return result;
 }
 
-- (CGRect)frameForAlignmentRect:(CGRect)a3
+- (CGRect)frameForAlignmentRect:(CGRect)rect
 {
-  v3 = sub_1001FBC54(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, PlaceholderTextView.frame(forAlignmentRect:));
+  v3 = sub_1001FBC54(self, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, a2, PlaceholderTextView.frame(forAlignmentRect:));
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -297,20 +297,20 @@
   return result;
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a3)
+  length = range.length;
+  location = range.location;
+  if (text)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v7 = self;
+    selfCopy = self;
     v8 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
@@ -321,30 +321,30 @@
   PlaceholderTextView.updatePlaceholderVisible()();
 }
 
-- (void)textChangedWithNotification:(id)a3
+- (void)textChangedWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   PlaceholderTextView.updatePlaceholderVisible()();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)scribbleInteractionWillBeginWriting:(id)a3
+- (void)scribbleInteractionWillBeginWriting:(id)writing
 {
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator19PlaceholderTextView_suppressPlaceholder) = 1;
-  v3 = self;
+  selfCopy = self;
   PlaceholderTextView.updatePlaceholderVisible()();
 }
 
-- (void)scribbleInteractionDidFinishWriting:(id)a3
+- (void)scribbleInteractionDidFinishWriting:(id)writing
 {
   *(&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC17SequoiaTranslator19PlaceholderTextView_suppressPlaceholder) = 0;
-  v3 = self;
+  selfCopy = self;
   PlaceholderTextView.updatePlaceholderVisible()();
 }
 

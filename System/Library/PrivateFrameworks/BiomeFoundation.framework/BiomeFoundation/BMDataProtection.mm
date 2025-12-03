@@ -1,15 +1,15 @@
 @interface BMDataProtection
-+ (BOOL)canOpenFilesForProtectionClass:(unint64_t)a3 createNewFile:(BOOL)a4;
++ (BOOL)canOpenFilesForProtectionClass:(unint64_t)class createNewFile:(BOOL)file;
 + (BOOL)isClassCXUnlocked;
-+ (id)registerForLockStateChanges:(id)a3;
++ (id)registerForLockStateChanges:(id)changes;
 + (id)sharedInstance;
-+ (int)biomeProtectionClassToOSProtectionClass:(unint64_t)a3;
++ (int)biomeProtectionClassToOSProtectionClass:(unint64_t)class;
 + (void)isClassCXUnlocked;
-+ (void)unregister:(id)a3;
++ (void)unregister:(id)unregister;
 - (BMDataProtection)init;
-- (id)_registerForLockStateChanges:(id)a3;
-- (void)_unregister:(id)a3;
-- (void)handleState:(int)a3;
+- (id)_registerForLockStateChanges:(id)changes;
+- (void)_unregister:(id)_unregister;
+- (void)handleState:(int)state;
 @end
 
 @implementation BMDataProtection
@@ -70,20 +70,20 @@ uint64_t __34__BMDataProtection_sharedInstance__block_invoke()
   return v3;
 }
 
-+ (id)registerForLockStateChanges:(id)a3
++ (id)registerForLockStateChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  v6 = [v5 _registerForLockStateChanges:v4];
+  changesCopy = changes;
+  sharedInstance = [self sharedInstance];
+  v6 = [sharedInstance _registerForLockStateChanges:changesCopy];
 
   return v6;
 }
 
-- (id)_registerForLockStateChanges:(id)a3
+- (id)_registerForLockStateChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 copy];
+  v5 = [changesCopy copy];
 
   callbacks = self->_callbacks;
   if (!callbacks)
@@ -115,7 +115,7 @@ void __49__BMDataProtection__registerForLockStateChanges___block_invoke(uint64_t
   [v3 handleState:a2];
 }
 
-- (void)handleState:(int)a3
+- (void)handleState:(int)state
 {
   v15 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -154,19 +154,19 @@ void __49__BMDataProtection__registerForLockStateChanges___block_invoke(uint64_t
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)unregister:(id)a3
++ (void)unregister:(id)unregister
 {
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  [v5 _unregister:v4];
+  unregisterCopy = unregister;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance _unregister:unregisterCopy];
 }
 
-- (void)_unregister:(id)a3
+- (void)_unregister:(id)_unregister
 {
-  v6 = a3;
+  _unregisterCopy = _unregister;
   os_unfair_lock_lock(&self->_lock);
   callbacks = self->_callbacks;
-  v5 = MEMORY[0x1AC5AD7D0](v6);
+  v5 = MEMORY[0x1AC5AD7D0](_unregisterCopy);
   [(NSMutableOrderedSet *)callbacks removeObject:v5];
 
   if (![(NSMutableOrderedSet *)self->_callbacks count]&& self->_aks)
@@ -178,34 +178,34 @@ void __49__BMDataProtection__registerForLockStateChanges___block_invoke(uint64_t
   os_unfair_lock_unlock(&self->_lock);
 }
 
-+ (int)biomeProtectionClassToOSProtectionClass:(unint64_t)a3
++ (int)biomeProtectionClassToOSProtectionClass:(unint64_t)class
 {
-  if (a3 > 6)
+  if (class > 6)
   {
     return 3;
   }
 
   else
   {
-    return dword_1AC1975B8[a3];
+    return dword_1AC1975B8[class];
   }
 }
 
-+ (BOOL)canOpenFilesForProtectionClass:(unint64_t)a3 createNewFile:(BOOL)a4
++ (BOOL)canOpenFilesForProtectionClass:(unint64_t)class createNewFile:(BOOL)file
 {
-  v8 = [MEMORY[0x1E69C5D08] isClassCLocked];
+  isClassCLocked = [MEMORY[0x1E69C5D08] isClassCLocked];
   result = [MEMORY[0x1E69C5D08] isDeviceUnlocked];
-  if (a3 > 3)
+  if (class > 3)
   {
     result = 1;
-    if (a3 == 4)
+    if (class == 4)
     {
       return result;
     }
 
-    if (a3 != 5)
+    if (class != 5)
     {
-      if (a3 == 6)
+      if (class == 6)
       {
         return result;
       }
@@ -213,33 +213,33 @@ void __49__BMDataProtection__registerForLockStateChanges___block_invoke(uint64_t
       goto LABEL_9;
     }
 
-    if (v8)
+    if (isClassCLocked)
     {
       return 0;
     }
 
-    return [a1 isClassCXUnlocked];
+    return [self isClassCXUnlocked];
   }
 
   else
   {
-    if (a3 - 1 < 2)
+    if (class - 1 < 2)
     {
-      return result || a4;
+      return result || file;
     }
 
-    if (a3)
+    if (class)
     {
-      if (a3 == 3)
+      if (class == 3)
       {
-        return v8 ^ 1;
+        return isClassCLocked ^ 1;
       }
 
 LABEL_9:
       v10 = __biome_log_for_category(2);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(BMDataProtection *)a2 canOpenFilesForProtectionClass:a3 createNewFile:v10];
+        [(BMDataProtection *)a2 canOpenFilesForProtectionClass:class createNewFile:v10];
       }
 
       return 0;
@@ -253,7 +253,7 @@ LABEL_9:
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1AC15D000, a2, OS_LOG_TYPE_ERROR, "aks_get_extended_device_state failed with error: %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

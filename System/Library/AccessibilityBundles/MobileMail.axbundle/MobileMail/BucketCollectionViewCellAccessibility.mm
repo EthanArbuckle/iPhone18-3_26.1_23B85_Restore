@@ -1,16 +1,16 @@
 @interface BucketCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation BucketCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BucketCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"BucketCollectionViewCell" hasInstanceMethod:@"accessibilityBucketCollectConfiguration" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BucketCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"BucketCollectionViewCell" hasInstanceMethod:@"accessibilityBucketCollectConfiguration" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -26,8 +26,8 @@
     v5 = [v2 axSafeObjectAtIndex:1];
     v6 = __UIAccessibilityCastAsClass();
 
-    v7 = [v6 lowercaseString];
-    v8 = [v7 isEqualToString:@"clock"];
+    lowercaseString = [v6 lowercaseString];
+    v8 = [lowercaseString isEqualToString:@"clock"];
 
     if (v8)
     {

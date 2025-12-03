@@ -1,17 +1,17 @@
 @interface AAAccount
 + (id)accountTypeString;
 - (AAAccount)init;
-- (AAAccount)initWithAccount:(id)a3;
-- (AAAccount)initWithAccountIdentifier:(id)a3;
-- (BOOL)isProvisionedForDataclass:(id)a3;
+- (AAAccount)initWithAccount:(id)account;
+- (AAAccount)initWithAccountIdentifier:(id)identifier;
+- (BOOL)isProvisionedForDataclass:(id)dataclass;
 - (BOOL)needsEmailConfiguration;
 - (BOOL)needsRegistration;
 - (BOOL)needsToVerifyTerms;
-- (BOOL)presentQuotaDepletionAlertForDataclassIfNecessary:(id)a3 withHandler:(id)a4;
+- (BOOL)presentQuotaDepletionAlertForDataclassIfNecessary:(id)necessary withHandler:(id)handler;
 - (BOOL)primaryAccount;
 - (BOOL)primaryEmailVerified;
 - (BOOL)serviceUnavailable;
-- (BOOL)useCellularForDataclass:(id)a3;
+- (BOOL)useCellularForDataclass:(id)dataclass;
 - (NSArray)supportedDataclasses;
 - (NSDictionary)accountFirstDisplayAlert;
 - (NSDictionary)accountFooterButton;
@@ -20,16 +20,16 @@
 - (NSString)authToken;
 - (NSString)password;
 - (id)_mailChildAccount;
-- (id)propertiesForDataclass:(id)a3;
-- (void)authenticateWithHandler:(id)a3;
+- (id)propertiesForDataclass:(id)dataclass;
+- (void)authenticateWithHandler:(id)handler;
 - (void)notifyUserOfQuotaDepletion;
-- (void)presentQuotaDepletionAlertForDataclass:(id)a3 withHandler:(id)a4;
-- (void)renewCredentialsForAppleIDWithHandler:(id)a3;
-- (void)setAuthToken:(id)a3;
-- (void)setPassword:(id)a3;
-- (void)setUseCellular:(BOOL)a3 forDataclass:(id)a4;
-- (void)updateAccountPropertiesWithHandler:(id)a3;
-- (void)updateAccountWithProvisioningResponse:(id)a3;
+- (void)presentQuotaDepletionAlertForDataclass:(id)dataclass withHandler:(id)handler;
+- (void)renewCredentialsForAppleIDWithHandler:(id)handler;
+- (void)setAuthToken:(id)token;
+- (void)setPassword:(id)password;
+- (void)setUseCellular:(BOOL)cellular forDataclass:(id)dataclass;
+- (void)updateAccountPropertiesWithHandler:(id)handler;
+- (void)updateAccountWithProvisioningResponse:(id)response;
 @end
 
 @implementation AAAccount
@@ -41,8 +41,8 @@
   v2 = [(AAAccount *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6959A48] defaultStore];
-    v4 = [v3 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69597F8]];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    v4 = [defaultStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69597F8]];
     v5 = [objc_alloc(MEMORY[0x1E6959A28]) initWithAccountType:v4];
     account = v2->_account;
     v2->_account = v5;
@@ -51,12 +51,12 @@
   return v2;
 }
 
-- (AAAccount)initWithAccountIdentifier:(id)a3
+- (AAAccount)initWithAccountIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E6959A48];
-  v5 = a3;
-  v6 = [v4 defaultStore];
-  v7 = [v6 accountWithIdentifier:v5];
+  identifierCopy = identifier;
+  defaultStore = [v4 defaultStore];
+  v7 = [defaultStore accountWithIdentifier:identifierCopy];
 
   if (v7)
   {
@@ -79,16 +79,16 @@
   return v9;
 }
 
-- (AAAccount)initWithAccount:(id)a3
+- (AAAccount)initWithAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AAAccount;
   v6 = [(AAAccount *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
@@ -96,59 +96,59 @@
 
 + (id)accountTypeString
 {
-  v2 = [MEMORY[0x1E6959A48] defaultStore];
-  v3 = [v2 accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69597F8]];
-  v4 = [v3 accountTypeDescription];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  v3 = [defaultStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E69597F8]];
+  accountTypeDescription = [v3 accountTypeDescription];
 
-  return v4;
+  return accountTypeDescription;
 }
 
 - (BOOL)primaryAccount
 {
   v2 = [(ACAccount *)self->_account accountPropertyForKey:@"primaryAccount"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)primaryEmailVerified
 {
   v2 = [(ACAccount *)self->_account accountPropertyForKey:@"primaryEmailVerified"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)authToken
 {
-  v2 = [(ACAccount *)self->_account credential];
-  v3 = [v2 token];
+  credential = [(ACAccount *)self->_account credential];
+  token = [credential token];
 
-  return v3;
+  return token;
 }
 
-- (void)setAuthToken:(id)a3
+- (void)setAuthToken:(id)token
 {
-  v9 = a3;
-  v4 = [(ACAccount *)self->_account credential];
-  v5 = [v4 token];
-  v6 = [v9 isEqualToString:v5];
+  tokenCopy = token;
+  credential = [(ACAccount *)self->_account credential];
+  token = [credential token];
+  v6 = [tokenCopy isEqualToString:token];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(ACAccount *)self->_account credential];
+    credential2 = [(ACAccount *)self->_account credential];
 
-    if (v7)
+    if (credential2)
     {
-      v8 = [(ACAccount *)self->_account credential];
-      [v8 setToken:v9];
+      credential3 = [(ACAccount *)self->_account credential];
+      [credential3 setToken:tokenCopy];
     }
 
     else
     {
-      v8 = objc_alloc_init(MEMORY[0x1E6959A30]);
-      [v8 setToken:v9];
-      [(ACAccount *)self->_account setCredential:v8];
+      credential3 = objc_alloc_init(MEMORY[0x1E6959A30]);
+      [credential3 setToken:tokenCopy];
+      [(ACAccount *)self->_account setCredential:credential3];
     }
 
     [(ACAccount *)self->_account setAuthenticated:1];
@@ -157,33 +157,33 @@
 
 - (NSString)password
 {
-  v2 = [(ACAccount *)self->_account credential];
-  v3 = [v2 password];
+  credential = [(ACAccount *)self->_account credential];
+  password = [credential password];
 
-  return v3;
+  return password;
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v9 = a3;
-  v4 = [(ACAccount *)self->_account credential];
-  v5 = [v4 password];
-  v6 = [v9 isEqualToString:v5];
+  passwordCopy = password;
+  credential = [(ACAccount *)self->_account credential];
+  password = [credential password];
+  v6 = [passwordCopy isEqualToString:password];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(ACAccount *)self->_account credential];
+    credential2 = [(ACAccount *)self->_account credential];
 
-    if (v7)
+    if (credential2)
     {
-      v8 = [(ACAccount *)self->_account credential];
-      [v8 setPassword:v9];
+      credential3 = [(ACAccount *)self->_account credential];
+      [credential3 setPassword:passwordCopy];
     }
 
     else
     {
-      v8 = [objc_alloc(MEMORY[0x1E6959A30]) initWithPassword:v9];
-      [(ACAccount *)self->_account setCredential:v8];
+      credential3 = [objc_alloc(MEMORY[0x1E6959A30]) initWithPassword:passwordCopy];
+      [(ACAccount *)self->_account setCredential:credential3];
     }
 
     [(ACAccount *)self->_account setAuthenticated:1];
@@ -241,31 +241,31 @@
   return v4;
 }
 
-- (BOOL)isProvisionedForDataclass:(id)a3
+- (BOOL)isProvisionedForDataclass:(id)dataclass
 {
   account = self->_account;
-  v4 = a3;
-  v5 = [(ACAccount *)account provisionedDataclasses];
-  v6 = [v5 containsObject:v4];
+  dataclassCopy = dataclass;
+  provisionedDataclasses = [(ACAccount *)account provisionedDataclasses];
+  v6 = [provisionedDataclasses containsObject:dataclassCopy];
 
   return v6;
 }
 
-- (id)propertiesForDataclass:(id)a3
+- (id)propertiesForDataclass:(id)dataclass
 {
   account = self->_account;
-  v4 = a3;
-  v5 = [(ACAccount *)account dataclassProperties];
-  v6 = [v5 objectForKey:v4];
+  dataclassCopy = dataclass;
+  dataclassProperties = [(ACAccount *)account dataclassProperties];
+  v6 = [dataclassProperties objectForKey:dataclassCopy];
 
   return v6;
 }
 
-- (void)updateAccountWithProvisioningResponse:(id)a3
+- (void)updateAccountWithProvisioningResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(AAAccount *)self account];
-  [v5 aa_updateWithProvisioningResponse:v4];
+  responseCopy = response;
+  account = [(AAAccount *)self account];
+  [account aa_updateWithProvisioningResponse:responseCopy];
 }
 
 - (BOOL)serviceUnavailable
@@ -305,11 +305,11 @@
 
 - (BOOL)needsRegistration
 {
-  v3 = [(AAAccount *)self dataclassProperties];
-  if (v3)
+  dataclassProperties = [(AAAccount *)self dataclassProperties];
+  if (dataclassProperties)
   {
-    v4 = [(AAAccount *)self personID];
-    v5 = v4 == 0;
+    personID = [(AAAccount *)self personID];
+    v5 = personID == 0;
   }
 
   else
@@ -320,19 +320,19 @@
   return v5;
 }
 
-- (BOOL)useCellularForDataclass:(id)a3
+- (BOOL)useCellularForDataclass:(id)dataclass
 {
   account = self->_account;
-  v4 = a3;
+  dataclassCopy = dataclass;
   v5 = [(ACAccount *)account accountPropertyForKey:@"dataclassesDisabledForCellular"];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:dataclassCopy];
 
   return v6 ^ 1;
 }
 
-- (void)setUseCellular:(BOOL)a3 forDataclass:(id)a4
+- (void)setUseCellular:(BOOL)cellular forDataclass:(id)dataclass
 {
-  v8 = a4;
+  dataclassCopy = dataclass;
   v6 = [(ACAccount *)self->_account accountPropertyForKey:@"dataclassesDisabledForCellular"];
   v7 = [v6 mutableCopy];
 
@@ -341,14 +341,14 @@
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
-  if (a3)
+  if (cellular)
   {
-    [v7 removeObject:v8];
+    [v7 removeObject:dataclassCopy];
   }
 
   else
   {
-    [v7 addObject:v8];
+    [v7 addObject:dataclassCopy];
   }
 
   [(AAAccount *)self setAccountProperty:v7 forKey:@"dataclassesDisabledForCellular"];
@@ -380,10 +380,10 @@
           }
 
           v9 = *(*(&v15 + 1) + 8 * i);
-          v10 = [v9 accountType];
-          v11 = [v10 identifier];
+          accountType = [v9 accountType];
+          identifier = [accountType identifier];
 
-          if ([v11 isEqualToString:v7])
+          if ([identifier isEqualToString:v7])
           {
             v12 = v9;
 
@@ -423,9 +423,9 @@ LABEL_13:
     return 0;
   }
 
-  v4 = [(AAAccount *)self _mailChildAccount];
+  _mailChildAccount = [(AAAccount *)self _mailChildAccount];
 
-  if (v4)
+  if (_mailChildAccount)
   {
     return 0;
   }
@@ -434,8 +434,8 @@ LABEL_13:
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 allKeys];
-    v5 = [v9 count] == 0;
+    allKeys = [v7 allKeys];
+    v5 = [allKeys count] == 0;
   }
 
   else
@@ -448,12 +448,12 @@ LABEL_13:
 
 - (NSArray)supportedDataclasses
 {
-  v2 = [(AAAccount *)self account];
-  v3 = [v2 accountType];
-  v4 = [v3 supportedDataclasses];
-  v5 = [v4 allObjects];
+  account = [(AAAccount *)self account];
+  accountType = [account accountType];
+  supportedDataclasses = [accountType supportedDataclasses];
+  allObjects = [supportedDataclasses allObjects];
 
-  return v5;
+  return allObjects;
 }
 
 - (void)notifyUserOfQuotaDepletion
@@ -462,36 +462,36 @@ LABEL_13:
   [(AAQuotaDepletionAlert *)v2 showWithHandler:0];
 }
 
-- (void)presentQuotaDepletionAlertForDataclass:(id)a3 withHandler:(id)a4
+- (void)presentQuotaDepletionAlertForDataclass:(id)dataclass withHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AAQuotaDepletionAlert alloc] initForDataclass:v6];
+  handlerCopy = handler;
+  dataclassCopy = dataclass;
+  v7 = [[AAQuotaDepletionAlert alloc] initForDataclass:dataclassCopy];
 
-  [v7 showWithHandler:v5];
+  [v7 showWithHandler:handlerCopy];
 }
 
-- (BOOL)presentQuotaDepletionAlertForDataclassIfNecessary:(id)a3 withHandler:(id)a4
+- (BOOL)presentQuotaDepletionAlertForDataclassIfNecessary:(id)necessary withHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AAQuotaDepletionAlert alloc] initForDataclass:v6];
+  handlerCopy = handler;
+  necessaryCopy = necessary;
+  v7 = [[AAQuotaDepletionAlert alloc] initForDataclass:necessaryCopy];
 
-  LOBYTE(v6) = [v7 showIfNecessaryWithHandler:v5];
-  return v6;
+  LOBYTE(necessaryCopy) = [v7 showIfNecessaryWithHandler:handlerCopy];
+  return necessaryCopy;
 }
 
-- (void)updateAccountPropertiesWithHandler:(id)a3
+- (void)updateAccountPropertiesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__AAAccount_updateAccountPropertiesWithHandler___block_invoke;
   v7[3] = &unk_1E7C9BC78;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -503,36 +503,36 @@ void __48__AAAccount_updateAccountPropertiesWithHandler___block_invoke(uint64_t 
   [v2 aa_updatePropertiesForAppleAccount:v3 completion:*(a1 + 40)];
 }
 
-- (void)authenticateWithHandler:(id)a3
+- (void)authenticateWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(AAAccount *)self account];
-  v6 = [v5 accountStore];
-  v7 = [(AAAccount *)self account];
+  handlerCopy = handler;
+  account = [(AAAccount *)self account];
+  accountStore = [account accountStore];
+  account2 = [(AAAccount *)self account];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __37__AAAccount_authenticateWithHandler___block_invoke;
   v9[3] = &unk_1E7C9C880;
-  v10 = v4;
-  v8 = v4;
-  [v6 verifyCredentialsForAccount:v7 saveWhenAuthorized:0 withHandler:v9];
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  [accountStore verifyCredentialsForAccount:account2 saveWhenAuthorized:0 withHandler:v9];
 }
 
-- (void)renewCredentialsForAppleIDWithHandler:(id)a3
+- (void)renewCredentialsForAppleIDWithHandler:(id)handler
 {
-  v4 = a3;
-  v7 = [(AAAccount *)self account];
-  v5 = [v7 accountStore];
-  v6 = [(AAAccount *)self account];
-  [v5 renewCredentialsForAccount:v6 force:0 reason:0 completion:v4];
+  handlerCopy = handler;
+  account = [(AAAccount *)self account];
+  accountStore = [account accountStore];
+  account2 = [(AAAccount *)self account];
+  [accountStore renewCredentialsForAccount:account2 force:0 reason:0 completion:handlerCopy];
 }
 
 - (BOOL)needsToVerifyTerms
 {
   v2 = [(AAAccount *)self accountPropertyForKey:@"needsToVerifyTerms"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

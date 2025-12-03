@@ -7,21 +7,21 @@
 
 - (uint64_t)getProcessID
 {
-  if (!a1)
+  if (!self)
   {
     return 0xFFFFFFFFLL;
   }
 
-  [a1 auditToken];
+  [self auditToken];
   return audit_token_to_pid(&v2);
 }
 
 + (uint64_t)getPIDFromCurrentConnection
 {
-  v0 = [MEMORY[0x277CCAE80] currentConnection];
-  v1 = [v0 getProcessID];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  getProcessID = [currentConnection getProcessID];
 
-  return v1;
+  return getProcessID;
 }
 
 @end

@@ -7,8 +7,8 @@
 
 - (uint64_t)sr_localMidnightPriorToDate
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 componentsInTimeZone:objc_msgSend(MEMORY[0x1E695DFE8] fromDate:{"localTimeZone"), a1}];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar componentsInTimeZone:objc_msgSend(MEMORY[0x1E695DFE8] fromDate:{"localTimeZone"), self}];
   [v3 setHour:0];
   [v3 setMinute:0];
   [v3 setSecond:0];
@@ -19,8 +19,8 @@
 
 - (uint64_t)sr_localMidnightFollowingDate
 {
-  v2 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v3 = [v2 componentsInTimeZone:objc_msgSend(MEMORY[0x1E695DFE8] fromDate:{"localTimeZone"), a1}];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v3 = [currentCalendar componentsInTimeZone:objc_msgSend(MEMORY[0x1E695DFE8] fromDate:{"localTimeZone"), self}];
   [v3 setDay:{objc_msgSend(v3, "day") + 1}];
   [v3 setHour:0];
   [v3 setMinute:0];

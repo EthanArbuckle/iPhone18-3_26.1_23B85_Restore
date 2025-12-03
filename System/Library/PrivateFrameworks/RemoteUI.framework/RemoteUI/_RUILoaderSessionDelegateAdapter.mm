@@ -1,34 +1,34 @@
 @interface _RUILoaderSessionDelegateAdapter
 - (NSURLSessionTaskDelegate)delegate;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation _RUILoaderSessionDelegateAdapter
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v17 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(_RUILoaderSessionDelegateAdapter *)self delegate];
+  sessionCopy = session;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
+  delegate = [(_RUILoaderSessionDelegateAdapter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v16 URLSession:v17 task:v12 willPerformHTTPRedirection:v13 newRequest:v14 completionHandler:v15];
+    [delegate URLSession:sessionCopy task:taskCopy willPerformHTTPRedirection:redirectionCopy newRequest:requestCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_RUILoaderSessionDelegateAdapter *)self delegate];
+  sessionCopy = session;
+  challengeCopy = challenge;
+  handlerCopy = handler;
+  delegate = [(_RUILoaderSessionDelegateAdapter *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 URLSession:v11 didReceiveChallenge:v8 completionHandler:v9];
+    [delegate URLSession:sessionCopy didReceiveChallenge:challengeCopy completionHandler:handlerCopy];
   }
 }
 

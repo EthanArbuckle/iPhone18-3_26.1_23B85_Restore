@@ -1,22 +1,22 @@
 @interface TSDLinePreset
-+ (id)lineWithStroke:(id)a3 headLineEnd:(id)a4 tailLineEnd:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (TSDLinePreset)initWithStroke:(id)a3 headLineEnd:(id)a4 tailLineEnd:(id)a5;
++ (id)lineWithStroke:(id)stroke headLineEnd:(id)end tailLineEnd:(id)lineEnd;
+- (BOOL)isEqual:(id)equal;
+- (TSDLinePreset)initWithStroke:(id)stroke headLineEnd:(id)end tailLineEnd:(id)lineEnd;
 - (void)dealloc;
 @end
 
 @implementation TSDLinePreset
 
-- (TSDLinePreset)initWithStroke:(id)a3 headLineEnd:(id)a4 tailLineEnd:(id)a5
+- (TSDLinePreset)initWithStroke:(id)stroke headLineEnd:(id)end tailLineEnd:(id)lineEnd
 {
   v10.receiver = self;
   v10.super_class = TSDLinePreset;
   v8 = [(TSDLinePreset *)&v10 init];
   if (v8)
   {
-    v8->mStroke = a3;
-    v8->mHeadLineEnd = a4;
-    v8->mTailLineEnd = a5;
+    v8->mStroke = stroke;
+    v8->mHeadLineEnd = end;
+    v8->mTailLineEnd = lineEnd;
   }
 
   return v8;
@@ -29,14 +29,14 @@
   [(TSDLinePreset *)&v3 dealloc];
 }
 
-+ (id)lineWithStroke:(id)a3 headLineEnd:(id)a4 tailLineEnd:(id)a5
++ (id)lineWithStroke:(id)stroke headLineEnd:(id)end tailLineEnd:(id)lineEnd
 {
-  v5 = [[a1 alloc] initWithStroke:a3 headLineEnd:a4 tailLineEnd:a5];
+  v5 = [[self alloc] initWithStroke:stroke headLineEnd:end tailLineEnd:lineEnd];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -51,10 +51,10 @@
     return 0;
   }
 
-  v6 = [(TSDLinePreset *)self tailLineEnd];
-  v7 = [v5 tailLineEnd];
+  tailLineEnd = [(TSDLinePreset *)self tailLineEnd];
+  tailLineEnd2 = [v5 tailLineEnd];
 
-  return [(TSDLineEnd *)v6 isEqual:v7];
+  return [(TSDLineEnd *)tailLineEnd isEqual:tailLineEnd2];
 }
 
 @end

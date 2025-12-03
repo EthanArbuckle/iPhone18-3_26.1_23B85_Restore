@@ -1,6 +1,6 @@
 @interface EndWorkoutIntentHandler
 - (_TtC12SeymourMedia23EndWorkoutIntentHandler)init;
-- (void)handleEndWorkout:(id)a3 completion:(id)a4;
+- (void)handleEndWorkout:(id)workout completion:(id)completion;
 @end
 
 @implementation EndWorkoutIntentHandler
@@ -12,13 +12,13 @@
   return result;
 }
 
-- (void)handleEndWorkout:(id)a3 completion:(id)a4
+- (void)handleEndWorkout:(id)workout completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
+  workoutCopy = workout;
+  selfCopy = self;
   sub_20C4FE130(sub_20C4FE11C, v7);
 }
 

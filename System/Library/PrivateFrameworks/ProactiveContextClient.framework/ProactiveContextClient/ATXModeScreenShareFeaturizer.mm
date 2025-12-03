@@ -1,8 +1,8 @@
 @interface ATXModeScreenShareFeaturizer
 - (ATXModeFeaturizerDelegate)delegate;
-- (id)_provideFeaturesWithScreenShareEvent:(id)a3;
+- (id)_provideFeaturesWithScreenShareEvent:(id)event;
 - (id)provideFeatures;
-- (void)_processNewScreenShareEvent:(id)a3;
+- (void)_processNewScreenShareEvent:(id)event;
 - (void)beginListening;
 - (void)stopListening;
 @end
@@ -18,9 +18,9 @@
   v15 = __Block_byref_object_dispose__0;
   v16 = 0;
   v3 = BiomeLibrary();
-  v4 = [v3 Screen];
-  v5 = [v4 Sharing];
-  v6 = [v5 atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C6A0 lastN:&unk_28733C6A0 reversed:0];
+  screen = [v3 Screen];
+  sharing = [screen Sharing];
+  v6 = [sharing atx_publisherWithStartDate:0 endDate:0 maxEvents:&unk_28733C6A0 lastN:&unk_28733C6A0 reversed:0];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -66,14 +66,14 @@ uint64_t __47__ATXModeScreenShareFeaturizer_provideFeatures__block_invoke_12(uin
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)_provideFeaturesWithScreenShareEvent:(id)a3
+- (id)_provideFeaturesWithScreenShareEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 isStart];
-  if (v4)
+  eventCopy = event;
+  isStart = [eventCopy isStart];
+  if (isStart)
   {
-    v5 = [v3 type] == 2;
+    v5 = [eventCopy type] == 2;
   }
 
   else
@@ -82,13 +82,13 @@ uint64_t __47__ATXModeScreenShareFeaturizer_provideFeatures__block_invoke_12(uin
   }
 
   v6 = objc_alloc_init(ATXModeFeatureSet);
-  [(ATXModeFeatureSet *)v6 setValue:v4 forBinaryFeatureOfType:17];
+  [(ATXModeFeatureSet *)v6 setValue:isStart forBinaryFeatureOfType:17];
   [(ATXModeFeatureSet *)v6 setValue:v5 forBinaryFeatureOfType:20];
   v7 = __atxlog_handle_modes();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10[0] = 67109376;
-    v10[1] = v4;
+    v10[1] = isStart;
     v11 = 1024;
     v12 = v5;
     _os_log_impl(&dword_260C9F000, v7, OS_LOG_TYPE_DEFAULT, "ATXModeScreenShareFeaturizer: updating screen share feature: isScreenSharing: %d, isAirPlayMirroring: %d", v10, 0xEu);
@@ -99,11 +99,11 @@ uint64_t __47__ATXModeScreenShareFeaturizer_provideFeatures__block_invoke_12(uin
   return v6;
 }
 
-- (void)_processNewScreenShareEvent:(id)a3
+- (void)_processNewScreenShareEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [(ATXModeScreenShareFeaturizer *)self _provideFeaturesWithScreenShareEvent:v4];
+  v5 = [(ATXModeScreenShareFeaturizer *)self _provideFeaturesWithScreenShareEvent:eventCopy];
 
   [WeakRetained featurizer:self didUpdateFeatures:v5];
 }
@@ -131,10 +131,10 @@ uint64_t __47__ATXModeScreenShareFeaturizer_provideFeatures__block_invoke_12(uin
   self->_scheduler = v7;
 
   v9 = BiomeLibrary();
-  v10 = [v9 Screen];
-  v11 = [v10 Sharing];
-  v12 = [v11 atx_DSLPublisher];
-  v13 = [v12 subscribeOn:self->_scheduler];
+  screen = [v9 Screen];
+  sharing = [screen Sharing];
+  atx_DSLPublisher = [sharing atx_DSLPublisher];
+  v13 = [atx_DSLPublisher subscribeOn:self->_scheduler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __46__ATXModeScreenShareFeaturizer_beginListening__block_invoke_21;

@@ -1,15 +1,15 @@
 @interface THGuidedPanColumnTarget
 - (CGRect)guidedPanTargetUnscaledPageRect;
 - (CGRect)guidedPanTargetUnscaledRect;
-- (THGuidedPanColumnTarget)initWithLayout:(id)a3 column:(id)a4;
-- (double)viewScaleWithController:(id)a3;
+- (THGuidedPanColumnTarget)initWithLayout:(id)layout column:(id)column;
+- (double)viewScaleWithController:(id)controller;
 - (void)dealloc;
-- (void)guidedPanTargetAddWellsToArray:(id)a3 withController:(id)a4;
+- (void)guidedPanTargetAddWellsToArray:(id)array withController:(id)controller;
 @end
 
 @implementation THGuidedPanColumnTarget
 
-- (THGuidedPanColumnTarget)initWithLayout:(id)a3 column:(id)a4
+- (THGuidedPanColumnTarget)initWithLayout:(id)layout column:(id)column
 {
   v9.receiver = self;
   v9.super_class = THGuidedPanColumnTarget;
@@ -17,10 +17,10 @@
   v7 = v6;
   if (v6)
   {
-    if (a3 && a4)
+    if (layout && column)
     {
-      [(THGuidedPanColumnTarget *)v6 setLayout:a3];
-      [(THGuidedPanColumnTarget *)v7 setColumn:a4];
+      [(THGuidedPanColumnTarget *)v6 setLayout:layout];
+      [(THGuidedPanColumnTarget *)v7 setColumn:column];
     }
 
     else
@@ -53,9 +53,9 @@
 
 - (CGRect)guidedPanTargetUnscaledPageRect
 {
-  v2 = [(TSWPLayoutTarget *)self->_layout pageLayout];
+  pageLayout = [(TSWPLayoutTarget *)self->_layout pageLayout];
 
-  [v2 frameInRoot];
+  [pageLayout frameInRoot];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -63,15 +63,15 @@
   return result;
 }
 
-- (double)viewScaleWithController:(id)a3
+- (double)viewScaleWithController:(id)controller
 {
   [(THGuidedPanColumnTarget *)self guidedPanTargetUnscaledRect];
 
-  [a3 viewScaleForUnscaledRect:0 forPage:?];
+  [controller viewScaleForUnscaledRect:0 forPage:?];
   return result;
 }
 
-- (void)guidedPanTargetAddWellsToArray:(id)a3 withController:(id)a4
+- (void)guidedPanTargetAddWellsToArray:(id)array withController:(id)controller
 {
   [(THGuidedPanColumnTarget *)self guidedPanTargetUnscaledRect];
   x = v45.origin.x;
@@ -84,7 +84,7 @@
   v46.size.width = width;
   v46.size.height = height;
   MinY = CGRectGetMinY(v46);
-  [a4 viewScaleForUnscaledRect:0 forPage:{x, y, width, height}];
+  [controller viewScaleForUnscaledRect:0 forPage:{x, y, width, height}];
   v14 = v13;
   v15 = -10.0 / v13;
   v47.size.width = 0.0;
@@ -102,7 +102,7 @@
   v44[2] = sub_17A028;
   v44[3] = &unk_45E318;
   v44[4] = v16;
-  v44[5] = a4;
+  v44[5] = controller;
   *&v44[6] = 240.0 / v14;
   [(THGuidedPanRectWell *)v16 setWeightBlock:v44];
   v43[0] = _NSConcreteStackBlock;
@@ -111,7 +111,7 @@
   v43[3] = &unk_45E340;
   v43[4] = v16;
   [(THGuidedPanRectWell *)v16 setRatingBlock:v43];
-  [a3 addObject:v16];
+  [array addObject:v16];
 
   v17 = [(TSWPLayoutTarget *)self->_layout previousTargetFromLayout:self->_layout column:self->_column];
   if (v17)
@@ -147,7 +147,7 @@
     v53.size.height = v22;
     v29 = [(THGuidedPanColumnTarget *)self p_wellForTarget:v18 wellRect:1 blendDistance:v25 prev:v26, v27, v28, fmax(CGRectGetWidth(v53), 300.0)];
     [v29 setIdentifier:@"prev"];
-    [a3 addObject:v29];
+    [array addObject:v29];
   }
 
   v30 = [(TSWPLayoutTarget *)self->_layout nextTargetFromLayout:self->_layout column:self->_column];
@@ -184,7 +184,7 @@
     v58.size.height = v35;
     v42 = [(THGuidedPanColumnTarget *)self p_wellForTarget:v31 wellRect:0 blendDistance:v38 prev:v39, v40, v41, fmax(CGRectGetWidth(v58), 300.0)];
     [v42 setIdentifier:@"next"];
-    [a3 addObject:v42];
+    [array addObject:v42];
   }
 }
 

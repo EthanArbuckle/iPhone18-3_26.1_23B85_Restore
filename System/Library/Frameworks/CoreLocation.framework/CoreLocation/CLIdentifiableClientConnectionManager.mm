@@ -1,22 +1,22 @@
 @interface CLIdentifiableClientConnectionManager
-- (CLIdentifiableClientConnectionManager)initWithSilo:(id)a3 locationManager:(id)a4 startMessageName:(id)a5 startMessagePayload:(id)a6 responseHandler:(id)a7;
+- (CLIdentifiableClientConnectionManager)initWithSilo:(id)silo locationManager:(id)manager startMessageName:(id)name startMessagePayload:(id)payload responseHandler:(id)handler;
 - (void)_pauseLocationUpdater;
 - (void)_resumeLocationUpdater;
 - (void)_start;
 - (void)createConnection;
 - (void)dealloc;
 - (void)destroyConnection;
-- (void)handleResponseMessage:(shared_ptr<CLConnectionMessage>)a3;
+- (void)handleResponseMessage:(shared_ptr<CLConnectionMessage>)message;
 - (void)manageConnection;
 - (void)pause;
 - (void)resume;
 - (void)tearDown;
-- (void)updateIdentityToken:(id)a3 withStorageToken:(id)a4;
+- (void)updateIdentityToken:(id)token withStorageToken:(id)storageToken;
 @end
 
 @implementation CLIdentifiableClientConnectionManager
 
-- (CLIdentifiableClientConnectionManager)initWithSilo:(id)a3 locationManager:(id)a4 startMessageName:(id)a5 startMessagePayload:(id)a6 responseHandler:(id)a7
+- (CLIdentifiableClientConnectionManager)initWithSilo:(id)silo locationManager:(id)manager startMessageName:(id)name startMessagePayload:(id)payload responseHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
@@ -27,9 +27,9 @@
     goto LABEL_19;
   }
 
-  if (a3)
+  if (silo)
   {
-    v13 = a3;
+    siloCopy = silo;
   }
 
   else
@@ -52,20 +52,20 @@
     }
 
     v15 = +[CLLocationManager sharedQueue];
-    v13 = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:v15 bePermissive:0];
+    siloCopy = [objc_alloc(MEMORY[0x1E69AD360]) initWithUnderlyingQueue:v15 bePermissive:0];
   }
 
-  v12->_silo = v13;
-  if (!a4)
+  v12->_silo = siloCopy;
+  if (!manager)
   {
-    a4 = +[CLLocationManager weakSharedInstance];
+    manager = +[CLLocationManager weakSharedInstance];
   }
 
-  [(CLIdentifiableClientConnectionManager *)v12 setManager:a4];
-  v12->_startMessageName = a5;
-  if (a6)
+  [(CLIdentifiableClientConnectionManager *)v12 setManager:manager];
+  v12->_startMessageName = name;
+  if (payload)
   {
-    v16 = [a6 mutableCopy];
+    v16 = [payload mutableCopy];
   }
 
   else
@@ -74,9 +74,9 @@
   }
 
   v12->_startMessagePayload = v16;
-  if (a7)
+  if (handler)
   {
-    v17 = _Block_copy(a7);
+    v17 = _Block_copy(handler);
     v12->_responseHandler = v17;
     if (v17)
     {
@@ -179,9 +179,9 @@ LABEL_19:
   if (![(CLIdentifiableClientConnectionManager *)self started])
   {
     [(CLIdentifiableClientConnectionManager *)self setStarted:1];
-    v3 = [(CLIdentifiableClientConnectionManager *)self manager];
+    manager = [(CLIdentifiableClientConnectionManager *)self manager];
 
-    [(CLLocationManager *)v3 addIdentifiableClient:self];
+    [(CLLocationManager *)manager addIdentifiableClient:self];
   }
 }
 
@@ -201,7 +201,7 @@ LABEL_19:
     v9 = 2082;
     v10 = "";
     v11 = 2050;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#ficConnectionManager pause, self:%{public}p}", buf, 0x1Cu);
   }
 
@@ -232,7 +232,7 @@ LABEL_19:
     v9 = 2082;
     v10 = "";
     v11 = 2050;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#ficConnectionManager resume, self:%{public}p}", buf, 0x1Cu);
   }
 
@@ -264,7 +264,7 @@ LABEL_19:
     v6 = 2082;
     v7 = "";
     v8 = 2050;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#ficConnectionManager _pauseLocationUpdater, self:%{public}p}", v5, 0x1Cu);
   }
 
@@ -290,7 +290,7 @@ LABEL_19:
     v6 = 2082;
     v7 = "";
     v8 = 2050;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#ficConnectionManager _resumeLocationUpdater, self:%{public}p}", v5, 0x1Cu);
   }
 
@@ -301,7 +301,7 @@ LABEL_19:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateIdentityToken:(id)a3 withStorageToken:(id)a4
+- (void)updateIdentityToken:(id)token withStorageToken:(id)storageToken
 {
   v19 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -317,9 +317,9 @@ LABEL_19:
     v13 = 2082;
     v14 = "";
     v15 = 2050;
-    v16 = self;
+    selfCopy = self;
     v17 = 2082;
-    v18 = [a3 UTF8String];
+    uTF8String = [token UTF8String];
     _os_log_impl(&dword_19B873000, v7, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#ficConnectionManager updateIdentityToken, self:%{public}p, identityToken:%{public, location:escape_only}s}", buf, 0x26u);
   }
 
@@ -329,8 +329,8 @@ LABEL_19:
   v10[2] = sub_19B9DAD28;
   v10[3] = &unk_1E753D098;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
+  v10[5] = token;
+  v10[6] = storageToken;
   [(CLDispatchSilo *)silo async:v10];
   v9 = *MEMORY[0x1E69E9840];
 }
@@ -351,9 +351,9 @@ LABEL_19:
     v6 = 2082;
     v7 = "";
     v8 = 2050;
-    v9 = self;
+    selfCopy = self;
     v10 = 2082;
-    v11 = [(NSString *)[(CLIdentifiableClientConnectionManager *)self identityToken] UTF8String];
+    uTF8String = [(NSString *)[(CLIdentifiableClientConnectionManager *)self identityToken] UTF8String];
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#ficConnectionManager manageConnection, self:%{public}p, identityToken:%{public, location:escape_only}s}", v5, 0x26u);
   }
 
@@ -402,15 +402,15 @@ LABEL_19:
     v3 = qword_1ED519090;
     if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEBUG))
     {
-      v4 = [(NSString *)[(CLIdentifiableClientConnectionManager *)self identityToken] UTF8String];
+      uTF8String = [(NSString *)[(CLIdentifiableClientConnectionManager *)self identityToken] UTF8String];
       *buf = 68289538;
       v8 = 0;
       v9 = 2082;
       v10 = "";
       v11 = 2082;
-      v12 = v4;
+      v12 = uTF8String;
       v13 = 2050;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#ficConnectionManager destroying connection, identityToken:%{public, location:escape_only}s, self:%{public}p}", buf, 0x26u);
     }
 
@@ -422,10 +422,10 @@ LABEL_19:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleResponseMessage:(shared_ptr<CLConnectionMessage>)a3
+- (void)handleResponseMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  var0 = a3.var0;
-  [(CLDispatchSilo *)self->_silo assertInside:a3.var0];
+  var0 = message.var0;
+  [(CLDispatchSilo *)self->_silo assertInside:message.var0];
   v5 = *var0;
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
@@ -475,7 +475,7 @@ LABEL_19:
     v7 = 2082;
     v8 = "";
     v9 = 2050;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_19B873000, v3, OS_LOG_TYPE_DEBUG, "{msg%{public}.0s:#ficConnectionManager tearDown, self:%{public}p}", v6, 0x1Cu);
   }
 

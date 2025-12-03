@@ -1,6 +1,6 @@
 @interface PGTitleSpecPool
-+ (id)poolWithSpecs:(id)a3;
-- (PGTitleSpecPool)initWithSpecs:(id)a3;
++ (id)poolWithSpecs:(id)specs;
+- (PGTitleSpecPool)initWithSpecs:(id)specs;
 - (id)description;
 @end
 
@@ -17,25 +17,25 @@
   return v5;
 }
 
-- (PGTitleSpecPool)initWithSpecs:(id)a3
+- (PGTitleSpecPool)initWithSpecs:(id)specs
 {
-  v5 = a3;
+  specsCopy = specs;
   v9.receiver = self;
   v9.super_class = PGTitleSpecPool;
   v6 = [(PGTitleSpecPool *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_specs, a3);
+    objc_storeStrong(&v6->_specs, specs);
   }
 
   return v7;
 }
 
-+ (id)poolWithSpecs:(id)a3
++ (id)poolWithSpecs:(id)specs
 {
-  v3 = a3;
-  v4 = [[PGTitleSpecPool alloc] initWithSpecs:v3];
+  specsCopy = specs;
+  v4 = [[PGTitleSpecPool alloc] initWithSpecs:specsCopy];
 
   return v4;
 }

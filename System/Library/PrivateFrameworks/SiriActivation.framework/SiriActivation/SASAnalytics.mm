@@ -1,8 +1,8 @@
 @interface SASAnalytics
 + (id)analytics;
 - (id)_init;
-- (void)_enqueueAnalyticsEvent:(id)a3;
-- (void)enqueueCurrentAnalyticsEventWithType:(int64_t)a3 context:(id)a4;
+- (void)_enqueueAnalyticsEvent:(id)event;
+- (void)enqueueCurrentAnalyticsEventWithType:(int64_t)type context:(id)context;
 - (void)flushPendingAnalyticsEventQueue;
 @end
 
@@ -81,9 +81,9 @@ uint64_t __25__SASAnalytics_analytics__block_invoke()
   return v2;
 }
 
-- (void)enqueueCurrentAnalyticsEventWithType:(int64_t)a3 context:(id)a4
+- (void)enqueueCurrentAnalyticsEventWithType:(int64_t)type context:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   objc_initWeak(&location, self);
   analyticsEventQueue = self->_analyticsEventQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -91,9 +91,9 @@ uint64_t __25__SASAnalytics_analytics__block_invoke()
   v9[2] = __61__SASAnalytics_enqueueCurrentAnalyticsEventWithType_context___block_invoke;
   v9[3] = &unk_1E82F37A8;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
-  v10 = v6;
-  v8 = v6;
+  v11[1] = type;
+  v10 = contextCopy;
+  v8 = contextCopy;
   dispatch_async(analyticsEventQueue, v9);
 
   objc_destroyWeak(v11);
@@ -122,40 +122,40 @@ void __61__SASAnalytics_enqueueCurrentAnalyticsEventWithType_context___block_inv
   }
 }
 
-- (void)_enqueueAnalyticsEvent:(id)a3
+- (void)_enqueueAnalyticsEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if ([(SASAnalytics *)self shouldLogAnalyticsEvents])
   {
     [(SASAnalytics *)self flushPendingAnalyticsEventQueue];
-    v10 = [MEMORY[0x1E698D0C8] sharedAnalytics];
-    [v10 logEvent:v4];
+    mEMORY[0x1E698D0C8] = [MEMORY[0x1E698D0C8] sharedAnalytics];
+    [mEMORY[0x1E698D0C8] logEvent:eventCopy];
     goto LABEL_9;
   }
 
-  v5 = [(SASAnalytics *)self pendingAnalyticsEventQueue];
+  pendingAnalyticsEventQueue = [(SASAnalytics *)self pendingAnalyticsEventQueue];
 
-  if (!v5)
+  if (!pendingAnalyticsEventQueue)
   {
-    v8 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:16];
-    [(SASAnalytics *)self setPendingAnalyticsEventQueue:v8];
+    pendingAnalyticsEventQueue3 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:16];
+    [(SASAnalytics *)self setPendingAnalyticsEventQueue:pendingAnalyticsEventQueue3];
     goto LABEL_7;
   }
 
-  v6 = [(SASAnalytics *)self pendingAnalyticsEventQueue];
-  v7 = [v6 count];
+  pendingAnalyticsEventQueue2 = [(SASAnalytics *)self pendingAnalyticsEventQueue];
+  v7 = [pendingAnalyticsEventQueue2 count];
 
   if (v7 >= 0x10)
   {
-    v8 = [(SASAnalytics *)self pendingAnalyticsEventQueue];
-    v9 = [(SASAnalytics *)self pendingAnalyticsEventQueue];
-    [v8 removeObjectsInRange:{0, objc_msgSend(v9, "count") - 15}];
+    pendingAnalyticsEventQueue3 = [(SASAnalytics *)self pendingAnalyticsEventQueue];
+    pendingAnalyticsEventQueue4 = [(SASAnalytics *)self pendingAnalyticsEventQueue];
+    [pendingAnalyticsEventQueue3 removeObjectsInRange:{0, objc_msgSend(pendingAnalyticsEventQueue4, "count") - 15}];
 
 LABEL_7:
   }
 
-  v10 = [(SASAnalytics *)self pendingAnalyticsEventQueue];
-  [v10 addObject:v4];
+  mEMORY[0x1E698D0C8] = [(SASAnalytics *)self pendingAnalyticsEventQueue];
+  [mEMORY[0x1E698D0C8] addObject:eventCopy];
 LABEL_9:
 }
 

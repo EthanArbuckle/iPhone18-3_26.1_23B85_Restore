@@ -1,10 +1,10 @@
 @interface AMSDCloudKitDataSource
 - (AMSDCloudDataManagerDataSourceDelegate)delegate;
 - (AMSDCloudKitDataSource)init;
-- (id)containerWithContainerIdentifier:(id)a3 options:(id)a4;
-- (void)_accountChanged:(id)a3;
+- (id)containerWithContainerIdentifier:(id)identifier options:(id)options;
+- (void)_accountChanged:(id)changed;
 - (void)dealloc;
-- (void)handlePushNotification:(id)a3;
+- (void)handlePushNotification:(id)notification;
 @end
 
 @implementation AMSDCloudKitDataSource
@@ -33,22 +33,22 @@
   [(AMSDCloudKitDataSource *)&v4 dealloc];
 }
 
-- (id)containerWithContainerIdentifier:(id)a3 options:(id)a4
+- (id)containerWithContainerIdentifier:(id)identifier options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  if (v5)
+  optionsCopy = options;
+  identifierCopy = identifier;
+  if (optionsCopy)
   {
     v7 = objc_alloc_init(CKContainerOptions);
-    [v7 setUseZoneWidePCS:{objc_msgSend(v5, "recordZoneEncryption")}];
-    v8 = [[CKContainerID alloc] initWithContainerIdentifier:v6 environment:1];
+    [v7 setUseZoneWidePCS:{objc_msgSend(optionsCopy, "recordZoneEncryption")}];
+    v8 = [[CKContainerID alloc] initWithContainerIdentifier:identifierCopy environment:1];
 
     v9 = [[CKContainer alloc] initWithContainerID:v8 options:v7];
   }
 
   else
   {
-    v7 = [[CKContainerID alloc] initWithContainerIdentifier:v6 environment:1];
+    v7 = [[CKContainerID alloc] initWithContainerIdentifier:identifierCopy environment:1];
 
     v9 = [[CKContainer alloc] initWithContainerID:v7];
   }
@@ -56,17 +56,17 @@
   return v9;
 }
 
-- (void)handlePushNotification:(id)a3
+- (void)handlePushNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = +[AMSLogConfig sharedAccountsMultiUserConfig];
   if (!v5)
   {
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -74,11 +74,11 @@
     v29 = v7;
     v30 = 2114;
     v31 = v8;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling a CloudKit push notification.", &v28, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Handling a CloudKit push notification.", &v28, 0x16u);
   }
 
-  v9 = [v4 userInfo];
-  v10 = [CKNotification notificationFromRemoteNotificationDictionary:v9];
+  userInfo = [notificationCopy userInfo];
+  v10 = [CKNotification notificationFromRemoteNotificationDictionary:userInfo];
 
   if (v10)
   {
@@ -95,42 +95,42 @@
     }
 
     v18 = +[AMSLogConfig sharedAccountsMultiUserConfig];
-    v13 = v18;
+    delegate = v18;
     if (v12)
     {
       if (!v18)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        delegate = +[AMSLogConfig sharedConfig];
       }
 
-      v19 = [v13 OSLogObject];
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [delegate OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v20 = objc_opt_class();
         v21 = AMSLogKey();
-        v22 = [v12 databaseScope];
+        databaseScope = [v12 databaseScope];
         v28 = 138543874;
         v29 = v20;
         v30 = 2114;
         v31 = v21;
         v32 = 2048;
-        v33 = v22;
-        _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] A CloudKit database changed. databaseScope = %ld", &v28, 0x20u);
+        v33 = databaseScope;
+        _os_log_impl(&_mh_execute_header, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] A CloudKit database changed. databaseScope = %ld", &v28, 0x20u);
       }
 
-      v13 = [(AMSDCloudKitDataSource *)self delegate];
-      [v13 cloudDataManagerDataSource:self didChangeWithType:1];
+      delegate = [(AMSDCloudKitDataSource *)self delegate];
+      [delegate cloudDataManagerDataSource:self didChangeWithType:1];
     }
 
     else
     {
       if (!v18)
       {
-        v13 = +[AMSLogConfig sharedConfig];
+        delegate = +[AMSLogConfig sharedConfig];
       }
 
-      v23 = [v13 OSLogObject];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [delegate OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         v24 = objc_opt_class();
         v25 = AMSLogKey();
@@ -142,7 +142,7 @@
         v31 = v25;
         v32 = 2114;
         v33 = v27;
-        _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] We don't know how to handle the notification. notification.class = %{public}@", &v28, 0x20u);
+        _os_log_impl(&_mh_execute_header, oSLogObject3, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] We don't know how to handle the notification. notification.class = %{public}@", &v28, 0x20u);
       }
     }
   }
@@ -155,12 +155,12 @@
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    delegate = [v12 OSLogObject];
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
-      v16 = [v4 userInfo];
+      userInfo2 = [notificationCopy userInfo];
       v17 = AMSHashIfNeeded();
       v28 = 138543874;
       v29 = v14;
@@ -168,12 +168,12 @@
       v31 = v15;
       v32 = 2114;
       v33 = v17;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create a CKNotification from the message's userInfo. userInfo = %{public}@", &v28, 0x20u);
+      _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to create a CKNotification from the message's userInfo. userInfo = %{public}@", &v28, 0x20u);
     }
   }
 }
 
-- (void)_accountChanged:(id)a3
+- (void)_accountChanged:(id)changed
 {
   v4 = AMSSetLogKey();
   v5 = +[AMSLogConfig sharedAccountsMultiUserConfig];
@@ -182,8 +182,8 @@
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 = objc_opt_class();
     v8 = AMSLogKey();
@@ -191,11 +191,11 @@
     v11 = v7;
     v12 = 2114;
     v13 = v8;
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The CloudKit account changed.", &v10, 0x16u);
+    _os_log_impl(&_mh_execute_header, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] The CloudKit account changed.", &v10, 0x16u);
   }
 
-  v9 = [(AMSDCloudKitDataSource *)self delegate];
-  [v9 cloudDataManagerDataSource:self didChangeWithType:0];
+  delegate = [(AMSDCloudKitDataSource *)self delegate];
+  [delegate cloudDataManagerDataSource:self didChangeWithType:0];
 }
 
 - (AMSDCloudDataManagerDataSourceDelegate)delegate

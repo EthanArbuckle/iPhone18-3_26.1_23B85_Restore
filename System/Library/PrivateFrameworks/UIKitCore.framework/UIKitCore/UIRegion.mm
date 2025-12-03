@@ -2,26 +2,26 @@
 + (UIRegion)infiniteRegion;
 - (BOOL)containsPoint:(CGPoint)point;
 - (UIBezierPath)path;
-- (UIRegion)initWithCoder:(id)a3;
-- (UIRegion)initWithPath:(id)a3;
+- (UIRegion)initWithCoder:(id)coder;
+- (UIRegion)initWithPath:(id)path;
 - (UIRegion)initWithRadius:(CGFloat)radius;
 - (UIRegion)initWithSize:(CGSize)size;
 - (UIRegion)inverseRegion;
 - (UIRegion)regionByDifferenceFromRegion:(UIRegion *)region;
 - (UIRegion)regionByIntersectionWithRegion:(UIRegion *)region;
 - (UIRegion)regionByUnionWithRegion:(UIRegion *)region;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)containsPoints:(const float *)a3 locationStride:(int64_t)a4 results:(char *)a5 resultsStride:(int64_t)a6 count:(int)a7;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)containsPoints:(const float *)points locationStride:(int64_t)stride results:(char *)results resultsStride:(int64_t)resultsStride count:(int)count;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIRegion
 
 - (UIBezierPath)path
 {
-  v2 = [(PKRegion *)self->_region path];
+  path = [(PKRegion *)self->_region path];
 
-  return [UIBezierPath bezierPathWithCGPath:v2];
+  return [UIBezierPath bezierPathWithCGPath:path];
 }
 
 + (UIRegion)infiniteRegion
@@ -47,15 +47,15 @@ void __26__UIRegion_infiniteRegion__block_invoke()
   *(_MergedGlobals_1077 + 8) = v2;
 }
 
-- (UIRegion)initWithCoder:(id)a3
+- (UIRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UIRegion;
   v5 = [(UIRegion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"_region"];
+    v6 = [coderCopy decodeObjectForKey:@"_region"];
     region = v5->_region;
     v5->_region = v6;
   }
@@ -63,19 +63,19 @@ void __26__UIRegion_infiniteRegion__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   region = self->_region;
   if (region)
   {
-    [v5 encodeObject:region forKey:@"_region"];
+    [coderCopy encodeObject:region forKey:@"_region"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_region);
   return v4;
 }
@@ -126,15 +126,15 @@ void __26__UIRegion_infiniteRegion__block_invoke()
   return v5;
 }
 
-- (UIRegion)initWithPath:(id)a3
+- (UIRegion)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = UIRegion;
   v5 = [(UIRegion *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E69C4A60]) initWithPath:{objc_msgSend(v4, "CGPath")}];
+    v6 = [objc_alloc(MEMORY[0x1E69C4A60]) initWithPath:{objc_msgSend(pathCopy, "CGPath")}];
     region = v5->_region;
     v5->_region = v6;
   }
@@ -145,9 +145,9 @@ void __26__UIRegion_infiniteRegion__block_invoke()
 - (UIRegion)inverseRegion
 {
   v2 = [(UIRegion *)self copy];
-  v3 = [v2[1] inverseRegion];
+  inverseRegion = [v2[1] inverseRegion];
   v4 = v2[1];
-  v2[1] = v3;
+  v2[1] = inverseRegion;
 
   return v2;
 }
@@ -196,9 +196,9 @@ void __26__UIRegion_infiniteRegion__block_invoke()
   return region;
 }
 
-- (void)containsPoints:(const float *)a3 locationStride:(int64_t)a4 results:(char *)a5 resultsStride:(int64_t)a6 count:(int)a7
+- (void)containsPoints:(const float *)points locationStride:(int64_t)stride results:(char *)results resultsStride:(int64_t)resultsStride count:(int)count
 {
-  if (a7 >= 1)
+  if (count >= 1)
   {
     v21 = v12;
     v22 = v11;
@@ -208,17 +208,17 @@ void __26__UIRegion_infiniteRegion__block_invoke()
     v26 = v7;
     v27 = v13;
     v28 = v14;
-    v15 = a7;
-    v20 = (a3 + 1);
+    countCopy = count;
+    v20 = (points + 1);
     do
     {
-      *a5 = [(UIRegion *)self containsPoint:*(v20 - 1), *v20, v21, v22, v23, v24, v25, v26, v27, v28];
-      a5 += a6;
-      v20 = (v20 + a4);
-      --v15;
+      *results = [(UIRegion *)self containsPoint:*(v20 - 1), *v20, v21, v22, v23, v24, v25, v26, v27, v28];
+      results += resultsStride;
+      v20 = (v20 + stride);
+      --countCopy;
     }
 
-    while (v15);
+    while (countCopy);
   }
 }
 

@@ -1,16 +1,16 @@
 @interface PosterCollectionViewCell
-- (_TtC11PosterBoard24PosterCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC11PosterBoard24PosterCollectionViewCell)initWithFrame:(CGRect)frame;
 - (int64_t)pbf_layoutOrientation;
 @end
 
 @implementation PosterCollectionViewCell
 
-- (_TtC11PosterBoard24PosterCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC11PosterBoard24PosterCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard24PosterCollectionViewCell_posterCornerRadius) = 0;
   v8 = self + OBJC_IVAR____TtC11PosterBoard24PosterCollectionViewCell_layoutMode;
@@ -19,9 +19,9 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11PosterBoard24PosterCollectionViewCell_scaleInAlongsideLayoutMode) = 0x3FF0000000000000;
   v13.receiver = self;
   v13.super_class = type metadata accessor for PosterCollectionViewCell();
-  v9 = [(PosterCollectionViewCell *)&v13 initWithFrame:x, y, width, height];
-  v10 = *((*MEMORY[0x277D85000] & v9->super.super.super.super.super.isa) + 0xE8);
-  v11 = v9;
+  height = [(PosterCollectionViewCell *)&v13 initWithFrame:x, y, width, height];
+  v10 = *((*MEMORY[0x277D85000] & height->super.super.super.super.super.isa) + 0xE8);
+  v11 = height;
   v10();
 
   return v11;
@@ -32,9 +32,9 @@
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    v4 = [Strong layoutOrientationProviderForView_];
+    layoutOrientationProviderForView_ = [Strong layoutOrientationProviderForView_];
     swift_unknownObjectRelease();
-    return v4;
+    return layoutOrientationProviderForView_;
   }
 
   else

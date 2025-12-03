@@ -1,21 +1,21 @@
 @interface PKFlightShareMessageBubbleView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKFlightShareMessageBubbleView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKFlightShareMessageBubbleView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInsets;
 - (void)followTapped;
 - (void)layoutSubviews;
-- (void)setContentInsets:(UIEdgeInsets)a3;
-- (void)setIsFromMe:(BOOL)a3;
-- (void)updateViewWithProperties:(id)a3;
+- (void)setContentInsets:(UIEdgeInsets)insets;
+- (void)setIsFromMe:(BOOL)me;
+- (void)updateViewWithProperties:(id)properties;
 @end
 
 @implementation PKFlightShareMessageBubbleView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = [objc_opt_self() defaultMetrics];
-  [v4 scaledValueForValue_];
+  width = fits.width;
+  defaultMetrics = [objc_opt_self() defaultMetrics];
+  [defaultMetrics scaledValueForValue_];
   v6 = v5;
 
   v7 = width;
@@ -25,16 +25,16 @@
   return result;
 }
 
-- (void)updateViewWithProperties:(id)a3
+- (void)updateViewWithProperties:(id)properties
 {
-  v4 = a3;
-  v5 = self;
-  FlightShareMessageBubbleView.updateView(properties:)(v4);
+  propertiesCopy = properties;
+  selfCopy = self;
+  FlightShareMessageBubbleView.updateView(properties:)(propertiesCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   FlightShareMessageBubbleView.layoutSubviews()();
 }
 
@@ -53,12 +53,12 @@
   return result;
 }
 
-- (void)setContentInsets:(UIEdgeInsets)a3
+- (void)setContentInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   v8 = (self + OBJC_IVAR___PKFlightShareMessageBubbleView_contentInsets);
   swift_beginAccess();
   *v8 = top;
@@ -68,22 +68,22 @@
   [(PKFlightShareMessageBubbleView *)self setNeedsLayout];
 }
 
-- (void)setIsFromMe:(BOOL)a3
+- (void)setIsFromMe:(BOOL)me
 {
-  v3 = a3;
+  meCopy = me;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___PKFlightShareMessageBubbleView_followButton);
-  v5 = self;
+  selfCopy = self;
   [v4 setHidden_];
-  [(PKFlightShareMessageBubbleView *)v5 setNeedsLayout];
+  [(PKFlightShareMessageBubbleView *)selfCopy setNeedsLayout];
 }
 
 - (void)followTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD1ED670();
 }
 
-- (PKFlightShareMessageBubbleView)initWithFrame:(CGRect)a3
+- (PKFlightShareMessageBubbleView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

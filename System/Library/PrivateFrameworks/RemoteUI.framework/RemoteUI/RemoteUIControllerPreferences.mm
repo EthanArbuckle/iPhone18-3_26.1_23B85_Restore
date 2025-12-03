@@ -1,24 +1,24 @@
 @interface RemoteUIControllerPreferences
-- (RemoteUIControllerPreferences)initWithSpinner:(BOOL)a3 spinnerLabel:(id)a4 navBarImage:(id)a5 navBarImageLabel:(id)a6;
+- (RemoteUIControllerPreferences)initWithSpinner:(BOOL)spinner spinnerLabel:(id)label navBarImage:(id)image navBarImageLabel:(id)imageLabel;
 @end
 
 @implementation RemoteUIControllerPreferences
 
-- (RemoteUIControllerPreferences)initWithSpinner:(BOOL)a3 spinnerLabel:(id)a4 navBarImage:(id)a5 navBarImageLabel:(id)a6
+- (RemoteUIControllerPreferences)initWithSpinner:(BOOL)spinner spinnerLabel:(id)label navBarImage:(id)image navBarImageLabel:(id)imageLabel
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  labelCopy = label;
+  imageCopy = image;
+  imageLabelCopy = imageLabel;
   v17.receiver = self;
   v17.super_class = RemoteUIControllerPreferences;
   v14 = [(RemoteUIControllerPreferences *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_showSpinner = a3;
-    objc_storeStrong(&v14->_spinnerLabel, a4);
-    objc_storeStrong(&v15->_navBarImage, a5);
-    objc_storeStrong(&v15->_navBarImageLabel, a6);
+    v14->_showSpinner = spinner;
+    objc_storeStrong(&v14->_spinnerLabel, label);
+    objc_storeStrong(&v15->_navBarImage, image);
+    objc_storeStrong(&v15->_navBarImageLabel, imageLabel);
   }
 
   return v15;

@@ -2,29 +2,29 @@
 + (id)_frameworkVersion;
 + (id)currentSoftwareVersion;
 + (id)frameworkVersion;
-+ (id)softwareVersionFromArchivalRepresentation:(id)a3;
++ (id)softwareVersionFromArchivalRepresentation:(id)representation;
 + (id)systemBuildVersion;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSoftwareVersion:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSoftwareVersion:(id)version;
 - (id)archivalRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation NUSoftwareVersion
 
-- (BOOL)isEqualToSoftwareVersion:(id)a3
+- (BOOL)isEqualToSoftwareVersion:(id)version
 {
-  v5 = a3;
-  v6 = [(NUSoftwareVersion *)self platform];
-  if (v6 || ([v5 platform], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  versionCopy = version;
+  platform = [(NUSoftwareVersion *)self platform];
+  if (platform || ([versionCopy platform], (appVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v7 = [v5 platform];
-    v8 = [(NUSoftwareVersion *)self platform];
-    v9 = [v7 isEqualToString:v8];
+    platform2 = [versionCopy platform];
+    platform3 = [(NUSoftwareVersion *)self platform];
+    v9 = [platform2 isEqualToString:platform3];
 
-    if (v6)
+    if (platform)
     {
 
       if (!v9)
@@ -43,14 +43,14 @@
     }
   }
 
-  v10 = [(NUSoftwareVersion *)self buildNumber];
-  if (v10 || ([v5 buildNumber], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  buildNumber = [(NUSoftwareVersion *)self buildNumber];
+  if (buildNumber || ([versionCopy buildNumber], (appVersion2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v11 = [v5 buildNumber];
-    v12 = [(NUSoftwareVersion *)self buildNumber];
-    v13 = [v11 isEqualToString:v12];
+    buildNumber2 = [versionCopy buildNumber];
+    buildNumber3 = [(NUSoftwareVersion *)self buildNumber];
+    v13 = [buildNumber2 isEqualToString:buildNumber3];
 
-    if (v10)
+    if (buildNumber)
     {
 
       if (!v13)
@@ -69,21 +69,21 @@
     }
   }
 
-  v14 = [(NUSoftwareVersion *)self appVersion];
-  if (!v14)
+  appVersion = [(NUSoftwareVersion *)self appVersion];
+  if (!appVersion)
   {
-    v3 = [v5 appVersion];
-    if (!v3)
+    appVersion2 = [versionCopy appVersion];
+    if (!appVersion2)
     {
       goto LABEL_17;
     }
   }
 
-  v15 = [v5 appVersion];
-  v16 = [(NUSoftwareVersion *)self appVersion];
-  v17 = [v15 isEqualToString:v16];
+  appVersion3 = [versionCopy appVersion];
+  appVersion4 = [(NUSoftwareVersion *)self appVersion];
+  v17 = [appVersion3 isEqualToString:appVersion4];
 
-  if (!v14)
+  if (!appVersion)
   {
 
     if (v17)
@@ -102,39 +102,39 @@ LABEL_19:
   }
 
 LABEL_17:
-  v18 = [v5 schemaRevision];
-  v19 = v18 == [(NUSoftwareVersion *)self schemaRevision];
+  schemaRevision = [versionCopy schemaRevision];
+  v19 = schemaRevision == [(NUSoftwareVersion *)self schemaRevision];
 LABEL_20:
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUSoftwareVersion *)self isEqualToSoftwareVersion:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUSoftwareVersion *)self isEqualToSoftwareVersion:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(NUSoftwareVersion *)self platform];
-  v4 = 0x191F1574B62ABFLL * [v3 hash];
+  platform = [(NUSoftwareVersion *)self platform];
+  v4 = 0x191F1574B62ABFLL * [platform hash];
 
-  v5 = [(NUSoftwareVersion *)self buildNumber];
-  v6 = 0x1C0BFE615F565DLL * [v5 hash];
+  buildNumber = [(NUSoftwareVersion *)self buildNumber];
+  v6 = 0x1C0BFE615F565DLL * [buildNumber hash];
 
-  v7 = [(NUSoftwareVersion *)self appVersion];
-  v8 = 0x3BB41398110FFLL * [v7 hash];
+  appVersion = [(NUSoftwareVersion *)self appVersion];
+  v8 = 0x3BB41398110FFLL * [appVersion hash];
 
   return v6 ^ v4 ^ v8 ^ (0x23338B35E717C9 * [(NUSoftwareVersion *)self schemaRevision]);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NUSoftwareVersion allocWithZone:a3];
+  v4 = [NUSoftwareVersion allocWithZone:zone];
   objc_storeStrong(&v4->_platform, self->_platform);
   objc_storeStrong(&v4->_buildNumber, self->_buildNumber);
   objc_storeStrong(&v4->_appVersion, self->_appVersion);
@@ -146,10 +146,10 @@ LABEL_20:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(NUSoftwareVersion *)self platform];
-  v6 = [(NUSoftwareVersion *)self buildNumber];
-  v7 = [(NUSoftwareVersion *)self appVersion];
-  v8 = [v3 stringWithFormat:@"<%@:%p platform=%@ buildNumber=%@ appVersion=%@ schemaRevision=%ld>", v4, self, v5, v6, v7, -[NUSoftwareVersion schemaRevision](self, "schemaRevision")];
+  platform = [(NUSoftwareVersion *)self platform];
+  buildNumber = [(NUSoftwareVersion *)self buildNumber];
+  appVersion = [(NUSoftwareVersion *)self appVersion];
+  v8 = [v3 stringWithFormat:@"<%@:%p platform=%@ buildNumber=%@ appVersion=%@ schemaRevision=%ld>", v4, self, platform, buildNumber, appVersion, -[NUSoftwareVersion schemaRevision](self, "schemaRevision")];
 
   return v8;
 }
@@ -157,13 +157,13 @@ LABEL_20:
 + (id)_frameworkVersion
 {
   v68 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AAE8] bundleForClass:a1];
+  v3 = [MEMORY[0x1E696AAE8] bundleForClass:self];
   if (!v3)
   {
     v10 = NUAssertLogger_5637();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bundle not found for class: %@", a1];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bundle not found for class: %@", self];
       *buf = 138543362;
       v65 = v11;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -179,8 +179,8 @@ LABEL_20:
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v65 = v35;
         v66 = 2114;
@@ -191,26 +191,26 @@ LABEL_20:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v65 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    _NUAssertFailHandler("+[NUSoftwareVersion _frameworkVersion]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSoftwareVersion.m", 87, @"Bundle not found for class: %@", v40, v41, v42, v43, a1);
+    _NUAssertFailHandler("+[NUSoftwareVersion _frameworkVersion]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSoftwareVersion.m", 87, @"Bundle not found for class: %@", v40, v41, v42, v43, self);
   }
 
   v4 = v3;
-  v5 = [v3 infoDictionary];
-  if (!v5)
+  infoDictionary = [v3 infoDictionary];
+  if (!infoDictionary)
   {
     v17 = NUAssertLogger_5637();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = MEMORY[0x1E696AEC0];
-      v19 = [v4 bundlePath];
-      v20 = [v18 stringWithFormat:@"Failed to load Info.plist for bundle at path: %@", v19];
+      bundlePath = [v4 bundlePath];
+      v20 = [v18 stringWithFormat:@"Failed to load Info.plist for bundle at path: %@", bundlePath];
       *buf = 138543362;
       v65 = v20;
       _os_log_error_impl(&dword_1C0184000, v17, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -226,8 +226,8 @@ LABEL_20:
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v47 = [v45 callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v45 callStackSymbols];
+        v48 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v65 = v44;
         v66 = 2114;
@@ -238,27 +238,27 @@ LABEL_20:
 
     else if (v23)
     {
-      v24 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v25 = [v24 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v25 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v65 = v25;
       _os_log_error_impl(&dword_1C0184000, v22, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    v49 = [v4 bundlePath];
-    _NUAssertFailHandler("+[NUSoftwareVersion _frameworkVersion]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSoftwareVersion.m", 90, @"Failed to load Info.plist for bundle at path: %@", v50, v51, v52, v53, v49);
+    bundlePath2 = [v4 bundlePath];
+    _NUAssertFailHandler("+[NUSoftwareVersion _frameworkVersion]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSoftwareVersion.m", 90, @"Failed to load Info.plist for bundle at path: %@", v50, v51, v52, v53, bundlePath2);
   }
 
-  v6 = v5;
-  v7 = [v5 objectForKey:*MEMORY[0x1E695E500]];
+  v6 = infoDictionary;
+  v7 = [infoDictionary objectForKey:*MEMORY[0x1E695E500]];
   if (!v7)
   {
     v26 = NUAssertLogger_5637();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       v27 = MEMORY[0x1E696AEC0];
-      v28 = [v4 bundlePath];
-      v29 = [v27 stringWithFormat:@"Failed to get version for bundle at path: %@", v28];
+      bundlePath3 = [v4 bundlePath];
+      v29 = [v27 stringWithFormat:@"Failed to get version for bundle at path: %@", bundlePath3];
       *buf = 138543362;
       v65 = v29;
       _os_log_error_impl(&dword_1C0184000, v26, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -274,8 +274,8 @@ LABEL_20:
         v54 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v55 = MEMORY[0x1E696AF00];
         v56 = v54;
-        v57 = [v55 callStackSymbols];
-        v58 = [v57 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v55 callStackSymbols];
+        v58 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v65 = v54;
         v66 = 2114;
@@ -286,15 +286,15 @@ LABEL_20:
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v65 = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
-    v59 = [v4 bundlePath];
-    _NUAssertFailHandler("+[NUSoftwareVersion _frameworkVersion]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSoftwareVersion.m", 93, @"Failed to get version for bundle at path: %@", v60, v61, v62, v63, v59);
+    bundlePath4 = [v4 bundlePath];
+    _NUAssertFailHandler("+[NUSoftwareVersion _frameworkVersion]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Schema/NUSoftwareVersion.m", 93, @"Failed to get version for bundle at path: %@", v60, v61, v62, v63, bundlePath4);
   }
 
   v8 = v7;
@@ -308,7 +308,7 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __37__NUSoftwareVersion_frameworkVersion__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (frameworkVersion_onceToken != -1)
   {
     dispatch_once(&frameworkVersion_onceToken, block);
@@ -349,11 +349,11 @@ uint64_t __39__NUSoftwareVersion_systemBuildVersion__block_invoke()
 {
   v3 = objc_opt_new();
   [v3 setPlatform:@"iOS"];
-  v4 = [a1 systemBuildVersion];
-  [v3 setBuildNumber:v4];
+  systemBuildVersion = [self systemBuildVersion];
+  [v3 setBuildNumber:systemBuildVersion];
 
-  v5 = [a1 frameworkVersion];
-  [v3 setAppVersion:v5];
+  frameworkVersion = [self frameworkVersion];
+  [v3 setAppVersion:frameworkVersion];
 
   [v3 setSchemaRevision:1];
 
@@ -363,28 +363,28 @@ uint64_t __39__NUSoftwareVersion_systemBuildVersion__block_invoke()
 - (id)archivalRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(NUSoftwareVersion *)self platform];
+  platform = [(NUSoftwareVersion *)self platform];
 
-  if (v4)
+  if (platform)
   {
-    v5 = [(NUSoftwareVersion *)self platform];
-    [v3 setObject:v5 forKeyedSubscript:@"platform"];
+    platform2 = [(NUSoftwareVersion *)self platform];
+    [v3 setObject:platform2 forKeyedSubscript:@"platform"];
   }
 
-  v6 = [(NUSoftwareVersion *)self buildNumber];
+  buildNumber = [(NUSoftwareVersion *)self buildNumber];
 
-  if (v6)
+  if (buildNumber)
   {
-    v7 = [(NUSoftwareVersion *)self buildNumber];
-    [v3 setObject:v7 forKeyedSubscript:@"buildNumber"];
+    buildNumber2 = [(NUSoftwareVersion *)self buildNumber];
+    [v3 setObject:buildNumber2 forKeyedSubscript:@"buildNumber"];
   }
 
-  v8 = [(NUSoftwareVersion *)self appVersion];
+  appVersion = [(NUSoftwareVersion *)self appVersion];
 
-  if (v8)
+  if (appVersion)
   {
-    v9 = [(NUSoftwareVersion *)self appVersion];
-    [v3 setObject:v9 forKeyedSubscript:@"appVersion"];
+    appVersion2 = [(NUSoftwareVersion *)self appVersion];
+    [v3 setObject:appVersion2 forKeyedSubscript:@"appVersion"];
   }
 
   if ([(NUSoftwareVersion *)self schemaRevision])
@@ -396,35 +396,35 @@ uint64_t __39__NUSoftwareVersion_systemBuildVersion__block_invoke()
   return v3;
 }
 
-+ (id)softwareVersionFromArchivalRepresentation:(id)a3
++ (id)softwareVersionFromArchivalRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = objc_opt_new();
-    v5 = [v3 objectForKeyedSubscript:@"platform"];
+    v5 = [representationCopy objectForKeyedSubscript:@"platform"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v4 setPlatform:v5];
     }
 
-    v6 = [v3 objectForKeyedSubscript:@"buildNumber"];
+    v6 = [representationCopy objectForKeyedSubscript:@"buildNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v4 setBuildNumber:v6];
     }
 
-    v7 = [v3 objectForKeyedSubscript:@"appVersion"];
+    v7 = [representationCopy objectForKeyedSubscript:@"appVersion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       [v4 setAppVersion:v7];
     }
 
-    v8 = [v3 objectForKeyedSubscript:@"schemaRevision"];
+    v8 = [representationCopy objectForKeyedSubscript:@"schemaRevision"];
     if (objc_opt_respondsToSelector())
     {
       [v4 setSchemaRevision:{objc_msgSend(v8, "integerValue")}];

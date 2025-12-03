@@ -1,13 +1,13 @@
 @interface CustomSplitViewController
 - (_TtC11MobilePhone25CustomSplitViewController)init;
-- (_TtC11MobilePhone25CustomSplitViewController)initWithCoder:(id)a3;
-- (_TtC11MobilePhone25CustomSplitViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC11MobilePhone25CustomSplitViewController)initWithStyle:(int64_t)a3;
-- (void)setViewController:(id)a3 forColumn:(int64_t)a4;
-- (void)showDetailViewController:(id)a3 sender:(id)a4;
-- (void)splitViewControllerDidCollapse:(id)a3;
-- (void)splitViewControllerDidExpand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (_TtC11MobilePhone25CustomSplitViewController)initWithCoder:(id)coder;
+- (_TtC11MobilePhone25CustomSplitViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC11MobilePhone25CustomSplitViewController)initWithStyle:(int64_t)style;
+- (void)setViewController:(id)controller forColumn:(int64_t)column;
+- (void)showDetailViewController:(id)controller sender:(id)sender;
+- (void)splitViewControllerDidCollapse:(id)collapse;
+- (void)splitViewControllerDidExpand:(id)expand;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
@@ -24,7 +24,7 @@
   return [(CustomSplitViewController *)&v3 initWithStyle:2];
 }
 
-- (_TtC11MobilePhone25CustomSplitViewController)initWithCoder:(id)a3
+- (_TtC11MobilePhone25CustomSplitViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11MobilePhone25CustomSplitViewController____lazy_storage___detailsContainer) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC11MobilePhone25CustomSplitViewController____lazy_storage___detailsNavigationController) = 0;
@@ -36,38 +36,38 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CustomSplitViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  CustomSplitViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  CustomSplitViewController.viewDidAppear(_:)(appear);
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CustomSplitViewController.viewWillLayoutSubviews()();
 }
 
-- (void)setViewController:(id)a3 forColumn:(int64_t)a4
+- (void)setViewController:(id)controller forColumn:(int64_t)column
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = self;
-  v10.value.super.super.isa = a3;
-  v10.is_nil = v4;
-  CustomSplitViewController.setViewController(_:for:)(v10, v8);
+  columnCopy = column;
+  controllerCopy = controller;
+  selfCopy = self;
+  v10.value.super.super.isa = controller;
+  v10.is_nil = columnCopy;
+  CustomSplitViewController.setViewController(_:for:)(v10, selfCopy);
 }
 
-- (void)showDetailViewController:(id)a3 sender:(id)a4
+- (void)showDetailViewController:(id)controller sender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = a3;
-    v7 = self;
+    controllerCopy = controller;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -76,39 +76,39 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v8 = a3;
-    v9 = self;
+    controllerCopy2 = controller;
+    selfCopy2 = self;
   }
 
-  CustomSplitViewController.showDetailViewController(_:sender:)(a3, v10);
+  CustomSplitViewController.showDetailViewController(_:sender:)(controller, v10);
 
   outlined destroy of Any?(v10);
 }
 
-- (_TtC11MobilePhone25CustomSplitViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11MobilePhone25CustomSplitViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11MobilePhone25CustomSplitViewController)initWithStyle:(int64_t)a3
+- (_TtC11MobilePhone25CustomSplitViewController)initWithStyle:(int64_t)style
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)splitViewControllerDidExpand:(id)a3
+- (void)splitViewControllerDidExpand:(id)expand
 {
-  v4 = a3;
-  v5 = self;
+  expandCopy = expand;
+  selfCopy = self;
   specialized CustomSplitViewController.splitViewControllerDidExpand(_:)();
 }
 
-- (void)splitViewControllerDidCollapse:(id)a3
+- (void)splitViewControllerDidCollapse:(id)collapse
 {
-  v4 = self;
+  selfCopy = self;
   v3 = CustomSplitViewController.trailingBarButtonMigrator.getter();
   (*(*v3 + 128))(1);
 }

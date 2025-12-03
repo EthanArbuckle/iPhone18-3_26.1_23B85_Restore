@@ -1,33 +1,33 @@
 @interface MPMediaKitEntityTranslator
 + (id)createGenericObjectTranslator;
-+ (id)createTranslatorForMPModelClass:(Class)a3;
-+ (id)translatorForType:(id)a3;
++ (id)createTranslatorForMPModelClass:(Class)class;
++ (id)translatorForType:(id)type;
 + (void)buildSchemaIfNeeded;
-- (void)mapIdentifierCreationKeyPaths:(id)a3 transformBlock:(id)a4;
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPath:(id)a4;
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPaths:(id)a4 valueTransformer:(id)a5;
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPaths:(id)a4 valueTransformerFunction:(void *)a5;
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 mediaKitType:(id)a5;
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 mediaKitType:(id)a5 attributePayloadTransform:(id)a6;
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 mediaKitType:(id)a5 payloadTransform:(id)a6;
+- (void)mapIdentifierCreationKeyPaths:(id)paths transformBlock:(id)block;
+- (void)mapPropertyKey:(id)key toPayloadKeyPath:(id)path;
+- (void)mapPropertyKey:(id)key toPayloadKeyPaths:(id)paths valueTransformer:(id)transformer;
+- (void)mapPropertyKey:(id)key toPayloadKeyPaths:(id)paths valueTransformerFunction:(void *)function;
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class mediaKitType:(id)type;
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class mediaKitType:(id)type attributePayloadTransform:(id)transform;
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class mediaKitType:(id)type payloadTransform:(id)transform;
 @end
 
 @implementation MPMediaKitEntityTranslator
 
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 mediaKitType:(id)a5
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class mediaKitType:(id)type
 {
-  v9 = a5;
-  v10 = a3;
-  v11 = [(MPBaseEntityTranslator *)self MPModelClass];
-  if (v11 != objc_opt_class())
+  typeCopy = type;
+  keyCopy = key;
+  mPModelClass = [(MPBaseEntityTranslator *)self MPModelClass];
+  if (mPModelClass != objc_opt_class())
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MPMediaKitEntityTranslator.m" lineNumber:259 description:{@"Can only call %s on generic object translators.", "-[MPMediaKitEntityTranslator mapRelationshipKey:toModelClass:mediaKitType:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaKitEntityTranslator.m" lineNumber:259 description:{@"Can only call %s on generic object translators.", "-[MPMediaKitEntityTranslator mapRelationshipKey:toModelClass:mediaKitType:]"}];
   }
 
-  v13 = [[_MPMediaKitEntityRelationshipTranslator alloc] initWithRelatedMPModelClass:a4 mediaKitType:v9 payloadTransformBlock:&__block_literal_global_225];
+  v13 = [[_MPMediaKitEntityRelationshipTranslator alloc] initWithRelatedMPModelClass:class mediaKitType:typeCopy payloadTransformBlock:&__block_literal_global_225];
 
-  [MPBaseEntityTranslator mapRelationshipKey:v10 ofModelClass:v13 toRelationshipTranslator:?];
+  [MPBaseEntityTranslator mapRelationshipKey:keyCopy ofModelClass:v13 toRelationshipTranslator:?];
 }
 
 void __75__MPMediaKitEntityTranslator_mapRelationshipKey_toModelClass_mediaKitType___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -85,16 +85,16 @@ void __75__MPMediaKitEntityTranslator_mapRelationshipKey_toModelClass_mediaKitTy
   [v19 addEntriesFromDictionary:v18];
 }
 
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 mediaKitType:(id)a5 attributePayloadTransform:(id)a6
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class mediaKitType:(id)type attributePayloadTransform:(id)transform
 {
-  v10 = a6;
+  transformCopy = transform;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __101__MPMediaKitEntityTranslator_mapRelationshipKey_toModelClass_mediaKitType_attributePayloadTransform___block_invoke;
   v12[3] = &unk_1E767DA10;
-  v13 = v10;
-  v11 = v10;
-  [(MPMediaKitEntityTranslator *)self mapRelationshipKey:a3 toModelClass:a4 mediaKitType:a5 payloadTransform:v12];
+  v13 = transformCopy;
+  v11 = transformCopy;
+  [(MPMediaKitEntityTranslator *)self mapRelationshipKey:key toModelClass:class mediaKitType:type payloadTransform:v12];
 }
 
 void __101__MPMediaKitEntityTranslator_mapRelationshipKey_toModelClass_mediaKitType_attributePayloadTransform___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -118,54 +118,54 @@ void __101__MPMediaKitEntityTranslator_mapRelationshipKey_toModelClass_mediaKitT
   (*(v13 + 16))(v13, v14, v8, v15);
 }
 
-- (void)mapRelationshipKey:(id)a3 toModelClass:(Class)a4 mediaKitType:(id)a5 payloadTransform:(id)a6
+- (void)mapRelationshipKey:(id)key toModelClass:(Class)class mediaKitType:(id)type payloadTransform:(id)transform
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [[_MPMediaKitEntityRelationshipTranslator alloc] initWithRelatedMPModelClass:a4 mediaKitType:v11 payloadTransformBlock:v10];
+  transformCopy = transform;
+  typeCopy = type;
+  keyCopy = key;
+  v13 = [[_MPMediaKitEntityRelationshipTranslator alloc] initWithRelatedMPModelClass:class mediaKitType:typeCopy payloadTransformBlock:transformCopy];
 
-  [MPBaseEntityTranslator mapRelationshipKey:v12 ofModelClass:v13 toRelationshipTranslator:?];
+  [MPBaseEntityTranslator mapRelationshipKey:keyCopy ofModelClass:v13 toRelationshipTranslator:?];
 }
 
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPaths:(id)a4 valueTransformerFunction:(void *)a5
+- (void)mapPropertyKey:(id)key toPayloadKeyPaths:(id)paths valueTransformerFunction:(void *)function
 {
-  v8 = a3;
-  v9 = [(_MPKeyPathEntityPropertyTranslator *)_MPMediaKitEntityPropertyTranslator translatorForKeyPaths:a4 valueTransformFunction:a5];
-  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:v8 toPropertyTranslator:v9];
+  keyCopy = key;
+  v9 = [(_MPKeyPathEntityPropertyTranslator *)_MPMediaKitEntityPropertyTranslator translatorForKeyPaths:paths valueTransformFunction:function];
+  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:keyCopy toPropertyTranslator:v9];
 }
 
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPaths:(id)a4 valueTransformer:(id)a5
+- (void)mapPropertyKey:(id)key toPayloadKeyPaths:(id)paths valueTransformer:(id)transformer
 {
-  v8 = a3;
-  v9 = [(_MPKeyPathEntityPropertyTranslator *)_MPMediaKitEntityPropertyTranslator translatorForKeyPaths:a4 valueTransformBlock:a5];
-  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:v8 toPropertyTranslator:v9];
+  keyCopy = key;
+  v9 = [(_MPKeyPathEntityPropertyTranslator *)_MPMediaKitEntityPropertyTranslator translatorForKeyPaths:paths valueTransformBlock:transformer];
+  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:keyCopy toPropertyTranslator:v9];
 }
 
-- (void)mapPropertyKey:(id)a3 toPayloadKeyPath:(id)a4
+- (void)mapPropertyKey:(id)key toPayloadKeyPath:(id)path
 {
   v12 = *MEMORY[0x1E69E9840];
-  v11 = a4;
+  pathCopy = path;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
-  v10 = [(_MPKeyPathEntityPropertyTranslator *)_MPMediaKitEntityPropertyTranslator translatorForKeyPaths:v9 valueTransformFunction:_MPKeyPathValueTransformFirstKeyPath, v11, v12];
+  pathCopy2 = path;
+  keyCopy = key;
+  v9 = [v6 arrayWithObjects:&pathCopy count:1];
+  v10 = [(_MPKeyPathEntityPropertyTranslator *)_MPMediaKitEntityPropertyTranslator translatorForKeyPaths:v9 valueTransformFunction:_MPKeyPathValueTransformFirstKeyPath, pathCopy, v12];
 
-  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:v8 toPropertyTranslator:v10];
+  [(MPBaseEntityTranslator *)&self->super.super.isa mapPropertyKey:keyCopy toPropertyTranslator:v10];
 }
 
-- (void)mapIdentifierCreationKeyPaths:(id)a3 transformBlock:(id)a4
+- (void)mapIdentifierCreationKeyPaths:(id)paths transformBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __75__MPMediaKitEntityTranslator_mapIdentifierCreationKeyPaths_transformBlock___block_invoke;
   v9[3] = &unk_1E767D9E8;
   v9[4] = self;
-  v10 = v6;
-  v7 = v6;
-  v8 = [(_MPKeyPathEntityPropertyTranslator *)_MPMediaKitEntityPropertyTranslator translatorForKeyPaths:a3 valueTransformBlock:v9];
+  v10 = blockCopy;
+  v7 = blockCopy;
+  v8 = [(_MPKeyPathEntityPropertyTranslator *)_MPMediaKitEntityPropertyTranslator translatorForKeyPaths:paths valueTransformBlock:v9];
   [(MPBaseEntityTranslator *)&self->super.super.isa mapIdentifiersToPropertyTranslator:v8];
 }
 
@@ -190,20 +190,20 @@ MPIdentifierSet *__75__MPMediaKitEntityTranslator_mapIdentifierCreationKeyPaths_
   return v12;
 }
 
-+ (id)translatorForType:(id)a3
++ (id)translatorForType:(id)type
 {
   v18[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v18[0] = @"songs";
   v18[1] = @"music-videos";
   v18[2] = @"uploaded-audios";
   v18[3] = @"uploaded-videos";
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:4];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:typeCopy];
 
-  if (v6 & 1) != 0 || (v17[0] = @"playlists", v17[1] = @"library-playlists", [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", v4), v7, (v8) || (objc_msgSend(v4, "isEqualToString:", @"artists") & 1) != 0 || (v16[0] = @"albums", v16[1] = @"library-albums", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v16, 2), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsObject:", v4), v9, (v10) || (objc_msgSend(v4, "isEqualToString:", @"stations") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"station-events") & 1) != 0 || (v15[0] = @"curators", v15[1] = @"activities", v15[2] = @"apple-curators", v15[3] = @"editorial-items", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v15, 4), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsObject:", v4), v11, (v12) || (objc_msgSend(v4, "isEqualToString:", @"tv-shows") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"tv-episodes") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"music-movies") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"social-profiles") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"personal-social-profiles") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"record-labels") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"credit-artists"))
+  if (v6 & 1) != 0 || (v17[0] = @"playlists", v17[1] = @"library-playlists", [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "containsObject:", typeCopy), v7, (v8) || (objc_msgSend(typeCopy, "isEqualToString:", @"artists") & 1) != 0 || (v16[0] = @"albums", v16[1] = @"library-albums", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v16, 2), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsObject:", typeCopy), v9, (v10) || (objc_msgSend(typeCopy, "isEqualToString:", @"stations") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"station-events") & 1) != 0 || (v15[0] = @"curators", v15[1] = @"activities", v15[2] = @"apple-curators", v15[3] = @"editorial-items", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v15, 4), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "containsObject:", typeCopy), v11, (v12) || (objc_msgSend(typeCopy, "isEqualToString:", @"tv-shows") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"tv-episodes") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"music-movies") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"social-profiles") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"personal-social-profiles") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"record-labels") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"credit-artists"))
   {
-    v13 = [a1 translatorForMPModelClass:objc_opt_class()];
+    v13 = [self translatorForMPModelClass:objc_opt_class()];
   }
 
   else
@@ -214,17 +214,17 @@ MPIdentifierSet *__75__MPMediaKitEntityTranslator_mapIdentifierCreationKeyPaths_
   return v13;
 }
 
-+ (id)createTranslatorForMPModelClass:(Class)a3
++ (id)createTranslatorForMPModelClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"MPMediaKitEntityTranslator.m" lineNumber:159 description:@"Use +createGenericObjectTranslator instead."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaKitEntityTranslator.m" lineNumber:159 description:@"Use +createGenericObjectTranslator instead."];
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___MPMediaKitEntityTranslator;
-  v6 = objc_msgSendSuper2(&v9, sel_createTranslatorForMPModelClass_, a3);
+  v6 = objc_msgSendSuper2(&v9, sel_createTranslatorForMPModelClass_, class);
 
   return v6;
 }
@@ -232,7 +232,7 @@ MPIdentifierSet *__75__MPMediaKitEntityTranslator_mapIdentifierCreationKeyPaths_
 + (id)createGenericObjectTranslator
 {
   v3 = objc_opt_class();
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MPMediaKitEntityTranslator;
   v4 = objc_msgSendSuper2(&v6, sel_createTranslatorForMPModelClass_, v3);
   [v4 mapIdentifierCreationKeyPaths:MEMORY[0x1E695E0F0] transformBlock:&__block_literal_global_193];

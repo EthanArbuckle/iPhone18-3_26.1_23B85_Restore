@@ -1,14 +1,14 @@
 @interface InAppPurchaseLockupView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
 @end
 
 @implementation InAppPurchaseLockupView
 
-- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC22SubscribePageExtension23InAppPurchaseLockupView_theme;
   v5 = enum case for InAppPurchaseTheme.infer(_:);
@@ -22,20 +22,20 @@
 
 - (void)tintColorDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005AC3A4();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1005AC70C();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = qword_100921958;
-  v4 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -56,7 +56,7 @@
   return result;
 }
 
-- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension23InAppPurchaseLockupView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

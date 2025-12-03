@@ -1,28 +1,28 @@
 @interface TRIPurgeableNamespacesProvider
-- (TRIPurgeableNamespacesProvider)initWithPaths:(id)a3 clientNamespaceMetadataStorage:(id)a4;
-- (void)partitionPurgeableNamespacesForPurgeabilityLevel:(int)a3 namespaceNamesPurgeableAtNamespaceLevel:(id *)a4 eagerPurgeableFactorsByNamespaceName:(id *)a5 cacheDeleteableFactorsByNamespaceName:(id *)a6;
+- (TRIPurgeableNamespacesProvider)initWithPaths:(id)paths clientNamespaceMetadataStorage:(id)storage;
+- (void)partitionPurgeableNamespacesForPurgeabilityLevel:(int)level namespaceNamesPurgeableAtNamespaceLevel:(id *)namespaceLevel eagerPurgeableFactorsByNamespaceName:(id *)name cacheDeleteableFactorsByNamespaceName:(id *)namespaceName;
 @end
 
 @implementation TRIPurgeableNamespacesProvider
 
-- (TRIPurgeableNamespacesProvider)initWithPaths:(id)a3 clientNamespaceMetadataStorage:(id)a4
+- (TRIPurgeableNamespacesProvider)initWithPaths:(id)paths clientNamespaceMetadataStorage:(id)storage
 {
-  v7 = a3;
-  v8 = a4;
+  pathsCopy = paths;
+  storageCopy = storage;
   v12.receiver = self;
   v12.super_class = TRIPurgeableNamespacesProvider;
   v9 = [(TRIPurgeableNamespacesProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_paths, a3);
-    objc_storeStrong(&v10->_clientNamespaceMetadataStorage, a4);
+    objc_storeStrong(&v9->_paths, paths);
+    objc_storeStrong(&v10->_clientNamespaceMetadataStorage, storage);
   }
 
   return v10;
 }
 
-- (void)partitionPurgeableNamespacesForPurgeabilityLevel:(int)a3 namespaceNamesPurgeableAtNamespaceLevel:(id *)a4 eagerPurgeableFactorsByNamespaceName:(id *)a5 cacheDeleteableFactorsByNamespaceName:(id *)a6
+- (void)partitionPurgeableNamespacesForPurgeabilityLevel:(int)level namespaceNamesPurgeableAtNamespaceLevel:(id *)namespaceLevel eagerPurgeableFactorsByNamespaceName:(id *)name cacheDeleteableFactorsByNamespaceName:(id *)namespaceName
 {
   v52 = *MEMORY[0x277D85DE8];
   v37 = objc_opt_new();
@@ -30,8 +30,8 @@
   v36 = objc_opt_new();
   context = objc_autoreleasePoolPush();
   v8 = MEMORY[0x277D73750];
-  v9 = [(TRIPaths *)self->_paths namespaceDescriptorsDefaultDir];
-  v10 = [v8 descriptorsForDirectory:v9 filterBlock:0];
+  namespaceDescriptorsDefaultDir = [(TRIPaths *)self->_paths namespaceDescriptorsDefaultDir];
+  v10 = [v8 descriptorsForDirectory:namespaceDescriptorsDefaultDir filterBlock:0];
 
   v47 = 0u;
   v48 = 0u;
@@ -53,15 +53,15 @@
         }
 
         v15 = *(*(&v45 + 1) + 8 * i);
-        v16 = [v15 namespaceName];
-        if ([v15 purgeabilityLevel] <= a3)
+        namespaceName = [v15 namespaceName];
+        if ([v15 purgeabilityLevel] <= level)
         {
-          [v37 addObject:v16];
+          [v37 addObject:namespaceName];
         }
 
         clientNamespaceMetadataStorage = self->_clientNamespaceMetadataStorage;
         v44 = 0;
-        v18 = [(TRIClientNamespaceMetadataStoring *)clientNamespaceMetadataStorage loadNamespaceMetadataForNamespaceName:v16 error:&v44];
+        v18 = [(TRIClientNamespaceMetadataStoring *)clientNamespaceMetadataStorage loadNamespaceMetadataForNamespaceName:namespaceName error:&v44];
         v19 = v44;
         v20 = v19;
         if (v19 || !v18)
@@ -74,31 +74,31 @@
           v23 = TRILogCategory_Server();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
-            v24 = [v15 namespaceName];
+            namespaceName2 = [v15 namespaceName];
             *buf = 138543362;
-            v50 = v24;
+            v50 = namespaceName2;
             _os_log_error_impl(&dword_26F567000, v23, OS_LOG_TYPE_ERROR, "Unable to load metadata for namespace %{public}@", buf, 0xCu);
           }
         }
 
         else
         {
-          v21 = [v18 compatibilityVersion];
-          if (v21 != [v15 downloadNCV])
+          compatibilityVersion = [v18 compatibilityVersion];
+          if (compatibilityVersion != [v15 downloadNCV])
           {
             goto LABEL_16;
           }
 
-          v22 = [v18 factorNamePurgeabilityLevels];
+          factorNamePurgeabilityLevels = [v18 factorNamePurgeabilityLevels];
           v39[0] = MEMORY[0x277D85DD0];
           v39[1] = 3221225472;
           v39[2] = __198__TRIPurgeableNamespacesProvider_partitionPurgeableNamespacesForPurgeabilityLevel_namespaceNamesPurgeableAtNamespaceLevel_eagerPurgeableFactorsByNamespaceName_cacheDeleteableFactorsByNamespaceName___block_invoke;
           v39[3] = &unk_279DDFF90;
           v40 = v36;
-          v41 = v16;
-          v43 = a3;
+          v41 = namespaceName;
+          levelCopy = level;
           v42 = v35;
-          [v22 enumerateKeysAndEnumsUsingBlock:v39];
+          [factorNamePurgeabilityLevels enumerateKeysAndEnumsUsingBlock:v39];
 
           v23 = v40;
         }
@@ -113,16 +113,16 @@ LABEL_16:
   }
 
   objc_autoreleasePoolPop(context);
-  v25 = *a4;
-  *a4 = v37;
+  v25 = *namespaceLevel;
+  *namespaceLevel = v37;
   v26 = v37;
 
-  v27 = *a5;
-  *a5 = v35;
+  v27 = *name;
+  *name = v35;
   v28 = v35;
 
-  v29 = *a6;
-  *a6 = v36;
+  v29 = *namespaceName;
+  *namespaceName = v36;
 
   v30 = *MEMORY[0x277D85DE8];
 }

@@ -1,7 +1,7 @@
 @interface FTMutableQssMessage
-+ (Class)container_message_mutableClassForType:(int64_t)a3;
-+ (int64_t)container_message_typeForMutableObject:(id)a3;
-+ (int64_t)container_message_typeForObject:(id)a3;
++ (Class)container_message_mutableClassForType:(int64_t)type;
++ (int64_t)container_message_typeForMutableObject:(id)object;
++ (int64_t)container_message_typeForObject:(id)object;
 - (FTApgPronGuessMessage)container_messageAsFTApgPronGuessMessage;
 - (FTAsrCorrectionsValidatorMessage)container_messageAsFTAsrCorrectionsValidatorMessage;
 - (FTAsrErrorBlamerMessage)container_messageAsFTAsrErrorBlamerMessage;
@@ -27,36 +27,36 @@
 - (FTTtsTextToSpeechMessage)container_messageAsFTTtsTextToSpeechMessage;
 - (FTTtsTextToSpeechSpeechFeatureMessage)container_messageAsFTTtsTextToSpeechSpeechFeatureMessage;
 - (FTTtsTextToSpeechStreamingMessage)container_messageAsFTTtsTextToSpeechStreamingMessage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)container_message_type;
-- (void)setContainer_message:(id)a3;
-- (void)setContainer_messageAsFTApgPronGuessMessage:(id)a3;
-- (void)setContainer_messageAsFTAsrCorrectionsValidatorMessage:(id)a3;
-- (void)setContainer_messageAsFTAsrErrorBlamerMessage:(id)a3;
-- (void)setContainer_messageAsFTAsrGraphemeToPhonemeMessage:(id)a3;
-- (void)setContainer_messageAsFTAsrItnMessage:(id)a3;
-- (void)setContainer_messageAsFTAsrKeywordFinderMessage:(id)a3;
-- (void)setContainer_messageAsFTAsrPostItnHammerMessage:(id)a3;
-- (void)setContainer_messageAsFTAsrRecognitionMessage:(id)a3;
-- (void)setContainer_messageAsFTAsrTextNormalizationMessage:(id)a3;
-- (void)setContainer_messageAsFTBlazarBatchTranslationMessage:(id)a3;
-- (void)setContainer_messageAsFTBlazarMultiUserMessage:(id)a3;
-- (void)setContainer_messageAsFTBlazarMultilingualMessage:(id)a3;
-- (void)setContainer_messageAsFTBlazarServiceDiscoveryMessage:(id)a3;
-- (void)setContainer_messageAsFTBlazarSpeechTranslationMessage:(id)a3;
-- (void)setContainer_messageAsFTBlazarTextToSpeechRouterMessage:(id)a3;
-- (void)setContainer_messageAsFTBlazarTextToSpeechRouterStreamingMessage:(id)a3;
-- (void)setContainer_messageAsFTLmtLmScorerMessage:(id)a3;
-- (void)setContainer_messageAsFTMtTranslationMessage:(id)a3;
-- (void)setContainer_messageAsFTNapgCreateLanguageProfileMessage:(id)a3;
-- (void)setContainer_messageAsFTNlShortcutFuzzyMatchMessage:(id)a3;
-- (void)setContainer_messageAsFTSlsLanguageDetectionMessage:(id)a3;
-- (void)setContainer_messageAsFTTtsTextToSpeechMessage:(id)a3;
-- (void)setContainer_messageAsFTTtsTextToSpeechSpeechFeatureMessage:(id)a3;
-- (void)setContainer_messageAsFTTtsTextToSpeechStreamingMessage:(id)a3;
-- (void)setContainer_message_type:(int64_t)a3;
-- (void)setDisable_session_log:(id)a3;
-- (void)setError_message:(id)a3;
+- (void)setContainer_message:(id)container_message;
+- (void)setContainer_messageAsFTApgPronGuessMessage:(id)message;
+- (void)setContainer_messageAsFTAsrCorrectionsValidatorMessage:(id)message;
+- (void)setContainer_messageAsFTAsrErrorBlamerMessage:(id)message;
+- (void)setContainer_messageAsFTAsrGraphemeToPhonemeMessage:(id)message;
+- (void)setContainer_messageAsFTAsrItnMessage:(id)message;
+- (void)setContainer_messageAsFTAsrKeywordFinderMessage:(id)message;
+- (void)setContainer_messageAsFTAsrPostItnHammerMessage:(id)message;
+- (void)setContainer_messageAsFTAsrRecognitionMessage:(id)message;
+- (void)setContainer_messageAsFTAsrTextNormalizationMessage:(id)message;
+- (void)setContainer_messageAsFTBlazarBatchTranslationMessage:(id)message;
+- (void)setContainer_messageAsFTBlazarMultiUserMessage:(id)message;
+- (void)setContainer_messageAsFTBlazarMultilingualMessage:(id)message;
+- (void)setContainer_messageAsFTBlazarServiceDiscoveryMessage:(id)message;
+- (void)setContainer_messageAsFTBlazarSpeechTranslationMessage:(id)message;
+- (void)setContainer_messageAsFTBlazarTextToSpeechRouterMessage:(id)message;
+- (void)setContainer_messageAsFTBlazarTextToSpeechRouterStreamingMessage:(id)message;
+- (void)setContainer_messageAsFTLmtLmScorerMessage:(id)message;
+- (void)setContainer_messageAsFTMtTranslationMessage:(id)message;
+- (void)setContainer_messageAsFTNapgCreateLanguageProfileMessage:(id)message;
+- (void)setContainer_messageAsFTNlShortcutFuzzyMatchMessage:(id)message;
+- (void)setContainer_messageAsFTSlsLanguageDetectionMessage:(id)message;
+- (void)setContainer_messageAsFTTtsTextToSpeechMessage:(id)message;
+- (void)setContainer_messageAsFTTtsTextToSpeechSpeechFeatureMessage:(id)message;
+- (void)setContainer_messageAsFTTtsTextToSpeechStreamingMessage:(id)message;
+- (void)setContainer_message_type:(int64_t)container_message_type;
+- (void)setDisable_session_log:(id)disable_session_log;
+- (void)setError_message:(id)error_message;
 @end
 
 @implementation FTMutableQssMessage
@@ -68,17 +68,17 @@
   v2 = [(FTMutableQssMessage *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -86,29 +86,29 @@
   return v4;
 }
 
-- (void)setError_message:(id)a3
+- (void)setError_message:(id)error_message
 {
-  v4 = [a3 copy];
+  v4 = [error_message copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setDisable_session_log:(id)a3
+- (void)setDisable_session_log:(id)disable_session_log
 {
-  v4 = [a3 copy];
+  v4 = [disable_session_log copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int64_t)container_message_type
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"container_message_type"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setContainer_message_type:(int64_t)a3
+- (void)setContainer_message_type:(int64_t)container_message_type
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:container_message_type];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
@@ -127,11 +127,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTApgPronGuessMessage:(id)a3
+- (void)setContainer_messageAsFTApgPronGuessMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:1];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -150,11 +150,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTAsrRecognitionMessage:(id)a3
+- (void)setContainer_messageAsFTAsrRecognitionMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:2];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -173,11 +173,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTAsrErrorBlamerMessage:(id)a3
+- (void)setContainer_messageAsFTAsrErrorBlamerMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:3];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -196,11 +196,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTAsrItnMessage:(id)a3
+- (void)setContainer_messageAsFTAsrItnMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:4];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -219,11 +219,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTAsrTextNormalizationMessage:(id)a3
+- (void)setContainer_messageAsFTAsrTextNormalizationMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:5];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -242,11 +242,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTAsrPostItnHammerMessage:(id)a3
+- (void)setContainer_messageAsFTAsrPostItnHammerMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:6];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -265,11 +265,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTAsrKeywordFinderMessage:(id)a3
+- (void)setContainer_messageAsFTAsrKeywordFinderMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:7];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -288,11 +288,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTAsrCorrectionsValidatorMessage:(id)a3
+- (void)setContainer_messageAsFTAsrCorrectionsValidatorMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:8];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -311,11 +311,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTAsrGraphemeToPhonemeMessage:(id)a3
+- (void)setContainer_messageAsFTAsrGraphemeToPhonemeMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:9];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -334,11 +334,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTBlazarMultiUserMessage:(id)a3
+- (void)setContainer_messageAsFTBlazarMultiUserMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:10];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -357,11 +357,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTBlazarMultilingualMessage:(id)a3
+- (void)setContainer_messageAsFTBlazarMultilingualMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:11];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -380,11 +380,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTBlazarSpeechTranslationMessage:(id)a3
+- (void)setContainer_messageAsFTBlazarSpeechTranslationMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:12];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -403,11 +403,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTBlazarBatchTranslationMessage:(id)a3
+- (void)setContainer_messageAsFTBlazarBatchTranslationMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:13];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -426,11 +426,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTBlazarTextToSpeechRouterMessage:(id)a3
+- (void)setContainer_messageAsFTBlazarTextToSpeechRouterMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:14];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -449,11 +449,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTBlazarTextToSpeechRouterStreamingMessage:(id)a3
+- (void)setContainer_messageAsFTBlazarTextToSpeechRouterStreamingMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:15];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -472,11 +472,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTBlazarServiceDiscoveryMessage:(id)a3
+- (void)setContainer_messageAsFTBlazarServiceDiscoveryMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:16];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -495,11 +495,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTLmtLmScorerMessage:(id)a3
+- (void)setContainer_messageAsFTLmtLmScorerMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:17];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -518,11 +518,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTNapgCreateLanguageProfileMessage:(id)a3
+- (void)setContainer_messageAsFTNapgCreateLanguageProfileMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:18];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -541,11 +541,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTMtTranslationMessage:(id)a3
+- (void)setContainer_messageAsFTMtTranslationMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:19];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -564,11 +564,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTTtsTextToSpeechMessage:(id)a3
+- (void)setContainer_messageAsFTTtsTextToSpeechMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:20];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -587,11 +587,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTTtsTextToSpeechStreamingMessage:(id)a3
+- (void)setContainer_messageAsFTTtsTextToSpeechStreamingMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:21];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -610,11 +610,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTTtsTextToSpeechSpeechFeatureMessage:(id)a3
+- (void)setContainer_messageAsFTTtsTextToSpeechSpeechFeatureMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:22];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -633,11 +633,11 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTNlShortcutFuzzyMatchMessage:(id)a3
+- (void)setContainer_messageAsFTNlShortcutFuzzyMatchMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:23];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
@@ -656,157 +656,157 @@
   return v3;
 }
 
-- (void)setContainer_messageAsFTSlsLanguageDetectionMessage:(id)a3
+- (void)setContainer_messageAsFTSlsLanguageDetectionMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   [(FTMutableQssMessage *)self setContainer_message_type:24];
-  v4 = [v5 copy];
+  v4 = [messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
-- (void)setContainer_message:(id)a3
+- (void)setContainer_message:(id)container_message
 {
-  v5 = a3;
-  -[FTMutableQssMessage setContainer_message_type:](self, "setContainer_message_type:", [objc_opt_class() container_message_typeForObject:v5]);
-  v4 = [v5 copy];
+  container_messageCopy = container_message;
+  -[FTMutableQssMessage setContainer_message_type:](self, "setContainer_message_type:", [objc_opt_class() container_message_typeForObject:container_messageCopy]);
+  v4 = [container_messageCopy copy];
   [(NSMutableDictionary *)self->super._storage setObject:v4 forKeyedSubscript:@"container_message"];
 }
 
-+ (Class)container_message_mutableClassForType:(int64_t)a3
++ (Class)container_message_mutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 0x17)
+  if ((type - 1) > 0x17)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B89E8[a3 - 1];
+    v4 = *off_2789B89E8[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)container_message_typeForMutableObject:(id)a3
++ (int64_t)container_message_typeForMutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 11;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 12;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 13;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 14;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 15;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 16;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 17;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 18;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 19;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 20;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 21;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 22;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 23;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 24;
   }
@@ -819,130 +819,130 @@
   return v4;
 }
 
-+ (int64_t)container_message_typeForObject:(id)a3
++ (int64_t)container_message_typeForObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 5;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 6;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 7;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 8;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 9;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 10;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 11;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 12;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 13;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 14;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 15;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 16;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 17;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 18;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 19;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 20;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 21;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 22;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(v3, "isMemberOfClass:", objc_opt_class()))
+  else if ([objectCopy isMemberOfClass:objc_opt_class()] & 1) != 0 || (objc_msgSend(objectCopy, "isMemberOfClass:", objc_opt_class()))
   {
     v4 = 23;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 24;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 24;
   }

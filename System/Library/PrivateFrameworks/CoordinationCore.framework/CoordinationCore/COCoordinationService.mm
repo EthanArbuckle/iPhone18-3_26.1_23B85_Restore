@@ -1,30 +1,30 @@
 @interface COCoordinationService
-+ (void)startWithConstituentType:(unint64_t)a3;
-- (id)_initWithConstituentType:(unint64_t)a3;
-- (id)_servicesForClusters:(id)a3;
-- (id)aliasManagerRequestsNewMesh:(id)a3;
-- (id)takeAssertionForCluster:(id)a3;
++ (void)startWithConstituentType:(unint64_t)type;
+- (id)_initWithConstituentType:(unint64_t)type;
+- (id)_servicesForClusters:(id)clusters;
+- (id)aliasManagerRequestsNewMesh:(id)mesh;
+- (id)takeAssertionForCluster:(id)cluster;
 - (void)_completeMigration;
 - (void)_continueInitialization;
 - (void)_continueMigration;
 - (void)_initializeServices;
-- (void)_initiateMigrationFrom:(int64_t)a3;
-- (void)_linkServicesToMeshController:(id)a3 withClusterIdentifier:(id)a4 forClusters:(id)a5;
+- (void)_initiateMigrationFrom:(int64_t)from;
+- (void)_linkServicesToMeshController:(id)controller withClusterIdentifier:(id)identifier forClusters:(id)clusters;
 - (void)_setupIDSServerBag;
-- (void)_significantHomeChange:(id)a3;
-- (void)_unlinkServicesFromMeshController:(id)a3 withClusterIdentifier:(id)a4 forClusters:(id)a5;
-- (void)_withLock:(id)a3;
-- (void)_withServicesLock:(id)a3;
-- (void)aliasManager:(id)a3 activatingMesh:(id)a4 withClusterIdentifier:(id)a5 forClusters:(id)a6 completion:(id)a7;
-- (void)aliasManager:(id)a3 deactivatingMesh:(id)a4 withClusterIdentifier:(id)a5 forClusters:(id)a6 completion:(id)a7;
-- (void)didInvalidateAssertionForCluster:(id)a3;
-- (void)idsServerBagDidUpdate:(id)a3;
-- (void)waitForClusterBootstrap:(id)a3 completion:(id)a4;
+- (void)_significantHomeChange:(id)change;
+- (void)_unlinkServicesFromMeshController:(id)controller withClusterIdentifier:(id)identifier forClusters:(id)clusters;
+- (void)_withLock:(id)lock;
+- (void)_withServicesLock:(id)lock;
+- (void)aliasManager:(id)manager activatingMesh:(id)mesh withClusterIdentifier:(id)identifier forClusters:(id)clusters completion:(id)completion;
+- (void)aliasManager:(id)manager deactivatingMesh:(id)mesh withClusterIdentifier:(id)identifier forClusters:(id)clusters completion:(id)completion;
+- (void)didInvalidateAssertionForCluster:(id)cluster;
+- (void)idsServerBagDidUpdate:(id)update;
+- (void)waitForClusterBootstrap:(id)bootstrap completion:(id)completion;
 @end
 
 @implementation COCoordinationService
 
-- (id)_initWithConstituentType:(unint64_t)a3
+- (id)_initWithConstituentType:(unint64_t)type
 {
   v30 = *MEMORY[0x277D85DE8];
   v27.receiver = self;
@@ -41,17 +41,17 @@
     dispatchQueue = v5->_dispatchQueue;
     v5->_dispatchQueue = v8;
 
-    v10 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     assertions = v5->_assertions;
-    v5->_assertions = v10;
+    v5->_assertions = strongToWeakObjectsMapTable;
 
     v12 = [COClusterAliasManager aliasManagerWithProvider:v5 delegate:v5 delegateDispatchQueue:v5->_dispatchQueue];
     aliasManager = v5->_aliasManager;
     v5->_aliasManager = v12;
 
     v14 = MEMORY[0x277CFD0B0];
-    v15 = [MEMORY[0x277CFD0B0] coordinationBundleID];
-    v16 = [v14 userDefaultsForIdentifer:v15];
+    coordinationBundleID = [MEMORY[0x277CFD0B0] coordinationBundleID];
+    v16 = [v14 userDefaultsForIdentifer:coordinationBundleID];
 
     v17 = [v16 objectForKey:@"SingleShotType"];
     if (v17)
@@ -59,12 +59,12 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        a3 = [v17 unsignedIntegerValue];
+        type = [v17 unsignedIntegerValue];
         v18 = COCoreLogForCategory(1);
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v29 = a3;
+          typeCopy = type;
           _os_log_impl(&dword_244378000, v18, OS_LOG_TYPE_DEFAULT, "Service type overridden with %016llX", buf, 0xCu);
         }
       }
@@ -72,7 +72,7 @@
       [v16 removeObjectForKey:@"SingleShotType"];
     }
 
-    v5->_type = a3;
+    v5->_type = type;
     [v16 doubleForKey:@"MinimumPing"];
     v20 = v19;
     [v16 doubleForKey:@"MaximumPing"];
@@ -86,8 +86,8 @@
     hkAdapter = v5->_hkAdapter;
     v5->_hkAdapter = v22;
 
-    v24 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v24 addObserver:v5 selector:sel__significantHomeChange_ name:@"COHomeKitAdapterSignificantHomeChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel__significantHomeChange_ name:@"COHomeKitAdapterSignificantHomeChangeNotification" object:0];
 
     v5->_isMigrating = 1;
     -[COCoordinationService _initiateMigrationFrom:](v5, "_initiateMigrationFrom:", [v16 integerForKey:@"LastMigration"]);
@@ -98,14 +98,14 @@
   return v5;
 }
 
-+ (void)startWithConstituentType:(unint64_t)a3
++ (void)startWithConstituentType:(unint64_t)type
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __50__COCoordinationService_startWithConstituentType___block_invoke;
   v3[3] = &__block_descriptor_48_e5_v8__0l;
-  v3[4] = a1;
-  v3[5] = a3;
+  v3[4] = self;
+  v3[5] = type;
   if (startWithConstituentType__onceToken != -1)
   {
     dispatch_once(&startWithConstituentType__onceToken, v3);
@@ -119,17 +119,17 @@ void __50__COCoordinationService_startWithConstituentType___block_invoke(uint64_
   [v1 setSingleton:v2];
 }
 
-- (void)_initiateMigrationFrom:(int64_t)a3
+- (void)_initiateMigrationFrom:(int64_t)from
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = COCoreLogForCategory(1);
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (a3 < 1)
+  if (from < 1)
   {
     if (v6)
     {
       *buf = 134218240;
-      v10 = a3;
+      fromCopy2 = from;
       v11 = 2048;
       v12 = 1;
       _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "Migration starting from %ld to %ld...", buf, 0x16u);
@@ -143,7 +143,7 @@ void __50__COCoordinationService_startWithConstituentType___block_invoke(uint64_
     if (v6)
     {
       *buf = 134218240;
-      v10 = a3;
+      fromCopy2 = from;
       v11 = 2048;
       v12 = 1;
       _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "No migration required (%ld >= %ld)", buf, 0x16u);
@@ -164,30 +164,30 @@ void __50__COCoordinationService_startWithConstituentType___block_invoke(uint64_
 - (void)_continueMigration
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v3 = [(COCoordinationService *)self hkAdapter];
-  v4 = [v3 currentAccessory];
+  hkAdapter = [(COCoordinationService *)self hkAdapter];
+  currentAccessory = [hkAdapter currentAccessory];
 
-  if (v4)
+  if (currentAccessory)
   {
     v5 = objc_alloc_init(MEMORY[0x277D296D8]);
     v6 = objc_alloc_init(MEMORY[0x277D29740]);
     v7 = MEMORY[0x277D2C900];
-    v8 = [v5 alarms];
-    v22[0] = v8;
-    v9 = [v6 timers];
-    v22[1] = v9;
+    alarms = [v5 alarms];
+    v22[0] = alarms;
+    timers = [v6 timers];
+    v22[1] = timers;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:2];
-    v11 = [MEMORY[0x277D2C938] immediateScheduler];
-    v12 = [v7 combineAllFutures:v10 ignoringErrors:1 scheduler:v11];
+    immediateScheduler = [MEMORY[0x277D2C938] immediateScheduler];
+    v12 = [v7 combineAllFutures:v10 ignoringErrors:1 scheduler:immediateScheduler];
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __43__COCoordinationService__continueMigration__block_invoke;
     v17[3] = &unk_278E16E60;
-    v18 = v4;
+    v18 = currentAccessory;
     v19 = v5;
     v20 = v6;
-    v21 = self;
+    selfCopy = self;
     v13 = v6;
     v14 = v5;
     v15 = [v12 addSuccessBlock:v17];
@@ -397,8 +397,8 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
   }
 
   v4 = MEMORY[0x277CFD0B0];
-  v5 = [MEMORY[0x277CFD0B0] coordinationBundleID];
-  v6 = [v4 userDefaultsForIdentifer:v5];
+  coordinationBundleID = [MEMORY[0x277CFD0B0] coordinationBundleID];
+  v6 = [v4 userDefaultsForIdentifer:coordinationBundleID];
 
   [v6 setInteger:1 forKey:@"LastMigration"];
   v7[0] = MEMORY[0x277D85DD0];
@@ -433,7 +433,7 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_244378000, v8, OS_LOG_TYPE_DEFAULT, "%p Alarms & Timers are handled by DistributedTimers (HH1 ok)", &v13, 0xCu);
     }
   }
@@ -466,9 +466,9 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
   self->_alwaysAssert = 0;
 }
 
-- (void)_significantHomeChange:(id)a3
+- (void)_significantHomeChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -488,12 +488,12 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
   _Block_object_dispose(&v6, 8);
 }
 
-- (void)_linkServicesToMeshController:(id)a3 withClusterIdentifier:(id)a4 forClusters:(id)a5
+- (void)_linkServicesToMeshController:(id)controller withClusterIdentifier:(id)identifier forClusters:(id)clusters
 {
   v77 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v39 = a4;
-  v8 = a5;
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  clustersCopy = clusters;
   v63 = 0;
   v64[0] = &v63;
   v64[1] = 0x3032000000;
@@ -506,18 +506,18 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
   v60[3] = &unk_278E15A18;
   v62 = &v63;
   v60[4] = self;
-  v37 = v8;
+  v37 = clustersCopy;
   v61 = v37;
   [(COCoordinationService *)self _withServicesLock:v60];
-  v9 = [MEMORY[0x277CFD0B8] isDistributedTimersEnabled];
-  v10 = [(COCoordinationService *)self hkAdapter];
-  v11 = [v10 hasOptedToHH2];
+  isDistributedTimersEnabled = [MEMORY[0x277CFD0B8] isDistributedTimersEnabled];
+  hkAdapter = [(COCoordinationService *)self hkAdapter];
+  hasOptedToHH2 = [hkAdapter hasOptedToHH2];
 
   v12 = COCoreLogForCategory(1);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     v35 = "no";
-    if (v9)
+    if (isDistributedTimersEnabled)
     {
       v36 = "yes";
     }
@@ -528,10 +528,10 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
     }
 
     *buf = 134218498;
-    v67 = self;
+    selfCopy4 = self;
     v69 = v36;
     v68 = 2080;
-    if (v11)
+    if (hasOptedToHH2)
     {
       v35 = "yes";
     }
@@ -541,13 +541,13 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
     _os_log_debug_impl(&dword_244378000, v12, OS_LOG_TYPE_DEBUG, "%p DistributedTimers: %s, HomeHub2: %s", buf, 0x20u);
   }
 
-  if (!([MEMORY[0x277CFD0B8] isDistributedTimersForHH1Enabled] & 1 | ((v9 & 1) == 0)) && ((v11 ^ 1) & 1) == 0)
+  if (!([MEMORY[0x277CFD0B8] isDistributedTimersForHH1Enabled] & 1 | ((isDistributedTimersEnabled & 1) == 0)) && ((hasOptedToHH2 ^ 1) & 1) == 0)
   {
     v13 = COCoreLogForCategory(1);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v67 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%p Alarms & Timers are handled by DistributedTimers, removing services.", buf, 0xCu);
     }
 
@@ -585,7 +585,7 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218242;
-            v67 = self;
+            selfCopy4 = self;
             v68 = 2112;
             v69 = v19;
             _os_log_impl(&dword_244378000, v22, OS_LOG_TYPE_DEFAULT, "%p removing %@", buf, 0x16u);
@@ -625,9 +625,9 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
   v46 = &v63;
   v26 = v37;
   v41 = v26;
-  v27 = v38;
+  v27 = controllerCopy;
   v42 = v27;
-  v28 = v39;
+  v28 = identifierCopy;
   v43 = v28;
   v47 = &v49;
   v29 = v25;
@@ -639,7 +639,7 @@ void __43__COCoordinationService__continueMigration__block_invoke(uint64_t a1, v
   {
     v32 = [*(v64[0] + 40) count];
     *buf = 134219010;
-    v67 = self;
+    selfCopy4 = self;
     v68 = 2048;
     v69 = v32;
     v70 = 2048;
@@ -711,12 +711,12 @@ void __89__COCoordinationService__linkServicesToMeshController_withClusterIdenti
   WeakRetained[2]();
 }
 
-- (void)_unlinkServicesFromMeshController:(id)a3 withClusterIdentifier:(id)a4 forClusters:(id)a5
+- (void)_unlinkServicesFromMeshController:(id)controller withClusterIdentifier:(id)identifier forClusters:(id)clusters
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  clustersCopy = clusters;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -729,7 +729,7 @@ void __89__COCoordinationService__linkServicesToMeshController_withClusterIdenti
   v39[3] = &unk_278E15A18;
   v41 = &v42;
   v39[4] = self;
-  v11 = v10;
+  v11 = clustersCopy;
   v40 = v11;
   [(COCoordinationService *)self _withServicesLock:v39];
   v12 = [v43[5] count];
@@ -753,7 +753,7 @@ void __89__COCoordinationService__linkServicesToMeshController_withClusterIdenti
   v29 = &v42;
   v14 = v11;
   v25 = v14;
-  v15 = v9;
+  v15 = identifierCopy;
   v26 = v15;
   v30 = &v32;
   v16 = v13;
@@ -765,11 +765,11 @@ void __89__COCoordinationService__linkServicesToMeshController_withClusterIdenti
   {
     v19 = [v43[5] count];
     *buf = 134219010;
-    v49 = self;
+    selfCopy = self;
     v50 = 2048;
     v51 = v19;
     v52 = 2048;
-    v53 = v8;
+    v53 = controllerCopy;
     v54 = 2112;
     v55 = v15;
     v56 = 2112;
@@ -830,9 +830,9 @@ void __93__COCoordinationService__unlinkServicesFromMeshController_withClusterId
   WeakRetained[2]();
 }
 
-- (id)takeAssertionForCluster:(id)a3
+- (id)takeAssertionForCluster:(id)cluster
 {
-  v4 = a3;
+  clusterCopy = cluster;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -847,8 +847,8 @@ void __93__COCoordinationService__unlinkServicesFromMeshController_withClusterId
   v10 = 3221225472;
   v11 = __49__COCoordinationService_takeAssertionForCluster___block_invoke;
   v12 = &unk_278E192F8;
-  v13 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = clusterCopy;
   v14 = v5;
   v15 = &v21;
   v16 = &v17;
@@ -933,10 +933,10 @@ void __49__COCoordinationService_takeAssertionForCluster___block_invoke(uint64_t
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)waitForClusterBootstrap:(id)a3 completion:(id)a4
+- (void)waitForClusterBootstrap:(id)bootstrap completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  bootstrapCopy = bootstrap;
+  completionCopy = completion;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -946,7 +946,7 @@ void __49__COCoordinationService_takeAssertionForCluster___block_invoke(uint64_t
   v11[2] = __60__COCoordinationService_waitForClusterBootstrap_completion___block_invoke;
   v11[3] = &unk_278E15700;
   v11[4] = self;
-  v8 = v6;
+  v8 = bootstrapCopy;
   v12 = v8;
   v13 = &v14;
   [(COCoordinationService *)self _withLock:v11];
@@ -958,13 +958,13 @@ void __49__COCoordinationService_takeAssertionForCluster___block_invoke(uint64_t
       [COCoordinationService waitForClusterBootstrap:completion:];
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v10 = [(COCoordinationService *)self aliasManager];
-    [v10 waitForBootstrapOfCluster:v8 withBlock:v7];
+    aliasManager = [(COCoordinationService *)self aliasManager];
+    [aliasManager waitForBootstrapOfCluster:v8 withBlock:completionCopy];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -982,16 +982,16 @@ void __60__COCoordinationService_waitForClusterBootstrap_completion___block_invo
   objc_destroyWeak(&location);
 }
 
-- (void)didInvalidateAssertionForCluster:(id)a3
+- (void)didInvalidateAssertionForCluster:(id)cluster
 {
-  v4 = a3;
+  clusterCopy = cluster;
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __58__COCoordinationService_didInvalidateAssertionForCluster___block_invoke;
   v10 = &unk_278E156B0;
-  v11 = self;
-  v12 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v12 = clusterCopy;
+  v5 = clusterCopy;
   [(COCoordinationService *)self _withLock:&v7];
   v6 = [(COCoordinationService *)self aliasManager:v7];
   [v6 stopTrackingCluster:v5];
@@ -1021,11 +1021,11 @@ void __58__COCoordinationService_didInvalidateAssertionForCluster___block_invoke
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)aliasManagerRequestsNewMesh:(id)a3
+- (id)aliasManagerRequestsNewMesh:(id)mesh
 {
   v4 = [[COMeshController alloc] initWithConstituentType:[(COCoordinationService *)self type]];
-  v5 = [(COCoordinationService *)self dispatchQueue];
-  [(COMeshController *)v4 setDispatchQueue:v5];
+  dispatchQueue = [(COCoordinationService *)self dispatchQueue];
+  [(COMeshController *)v4 setDispatchQueue:dispatchQueue];
 
   [(COCoordinationService *)self pingMinimum];
   v7 = v6;
@@ -1043,50 +1043,50 @@ void __58__COCoordinationService_didInvalidateAssertionForCluster___block_invoke
   return v4;
 }
 
-- (void)aliasManager:(id)a3 activatingMesh:(id)a4 withClusterIdentifier:(id)a5 forClusters:(id)a6 completion:(id)a7
+- (void)aliasManager:(id)manager activatingMesh:(id)mesh withClusterIdentifier:(id)identifier forClusters:(id)clusters completion:(id)completion
 {
-  v11 = a7;
-  [(COCoordinationService *)self _linkServicesToMeshController:a4 withClusterIdentifier:a5 forClusters:a6];
-  v11[2]();
+  completionCopy = completion;
+  [(COCoordinationService *)self _linkServicesToMeshController:mesh withClusterIdentifier:identifier forClusters:clusters];
+  completionCopy[2]();
 }
 
-- (void)aliasManager:(id)a3 deactivatingMesh:(id)a4 withClusterIdentifier:(id)a5 forClusters:(id)a6 completion:(id)a7
+- (void)aliasManager:(id)manager deactivatingMesh:(id)mesh withClusterIdentifier:(id)identifier forClusters:(id)clusters completion:(id)completion
 {
-  v11 = a7;
-  [(COCoordinationService *)self _unlinkServicesFromMeshController:a4 withClusterIdentifier:a5 forClusters:a6];
-  v11[2]();
+  completionCopy = completion;
+  [(COCoordinationService *)self _unlinkServicesFromMeshController:mesh withClusterIdentifier:identifier forClusters:clusters];
+  completionCopy[2]();
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_withServicesLock:(id)a3
+- (void)_withServicesLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_servicesLock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_servicesLock);
 }
 
-- (id)_servicesForClusters:(id)a3
+- (id)_servicesForClusters:(id)clusters
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clustersCopy = clusters;
   os_unfair_lock_assert_owner(&self->_servicesLock);
   v18 = objc_alloc_init(MEMORY[0x277CBEB40]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [(COCoordinationService *)self services];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  services = [(COCoordinationService *)self services];
+  v6 = [services countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1097,7 +1097,7 @@ void __58__COCoordinationService_didInvalidateAssertionForCluster___block_invoke
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(services);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
@@ -1105,7 +1105,7 @@ void __58__COCoordinationService_didInvalidateAssertionForCluster___block_invoke
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v11 = v4;
+        v11 = clustersCopy;
         v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v12)
         {
@@ -1140,7 +1140,7 @@ void __58__COCoordinationService_didInvalidateAssertionForCluster___block_invoke
 LABEL_16:
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v7 = [services countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v7);
@@ -1158,7 +1158,7 @@ LABEL_16:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134217984;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244378000, v3, OS_LOG_TYPE_DEFAULT, "%p setting up IDSServer Bag", &v9, 0xCu);
   }
 
@@ -1166,68 +1166,68 @@ LABEL_16:
   idsServerBag = self->_idsServerBag;
   self->_idsServerBag = v4;
 
-  v6 = [(COCoordinationService *)self idsServerBag];
-  [v6 setDelegate:self];
+  idsServerBag = [(COCoordinationService *)self idsServerBag];
+  [idsServerBag setDelegate:self];
 
-  v7 = [(COCoordinationService *)self idsServerBag];
-  [v7 configure];
+  idsServerBag2 = [(COCoordinationService *)self idsServerBag];
+  [idsServerBag2 configure];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)idsServerBagDidUpdate:(id)a3
+- (void)idsServerBagDidUpdate:(id)update
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = COCoreLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 134217984;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%p IDS server bag updated", &v20, 0xCu);
   }
 
   v6 = MEMORY[0x277CFD0B0];
-  v7 = [MEMORY[0x277CFD0B0] coordinationBundleID];
-  v8 = [v6 userDefaultsForIdentifer:v7];
+  coordinationBundleID = [MEMORY[0x277CFD0B0] coordinationBundleID];
+  v8 = [v6 userDefaultsForIdentifer:coordinationBundleID];
 
-  v9 = [v4 isFastFoldEnabled];
-  if (v9)
+  isFastFoldEnabled = [updateCopy isFastFoldEnabled];
+  if (isFastFoldEnabled)
   {
     v10 = *MEMORY[0x277CFCF00];
     v11 = [v8 objectForKey:*MEMORY[0x277CFCF00]];
     v12 = v11;
-    if (!v11 || ([v11 isEqual:v9] & 1) == 0)
+    if (!v11 || ([v11 isEqual:isFastFoldEnabled] & 1) == 0)
     {
       v13 = COCoreLogForCategory(1);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138412290;
-        v21 = v9;
+        selfCopy = isFastFoldEnabled;
         _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "Received an updated bag value for fast fold %@. Writing to prefs", &v20, 0xCu);
       }
 
-      [v8 setObject:v9 forKey:v10];
+      [v8 setObject:isFastFoldEnabled forKey:v10];
     }
   }
 
-  v14 = [v4 isIPDiffingEnabled];
-  if (v14)
+  isIPDiffingEnabled = [updateCopy isIPDiffingEnabled];
+  if (isIPDiffingEnabled)
   {
     v15 = *MEMORY[0x277CFCF08];
     v16 = [v8 objectForKey:*MEMORY[0x277CFCF08]];
     v17 = v16;
-    if (!v16 || ([v16 isEqual:v14] & 1) == 0)
+    if (!v16 || ([v16 isEqual:isIPDiffingEnabled] & 1) == 0)
     {
       v18 = COCoreLogForCategory(1);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138412290;
-        v21 = v14;
+        selfCopy = isIPDiffingEnabled;
         _os_log_impl(&dword_244378000, v18, OS_LOG_TYPE_DEFAULT, "Received an updated bag value for ip diffing %@. Writing to prefs", &v20, 0xCu);
       }
 
-      [v8 setObject:v14 forKey:v15];
+      [v8 setObject:isIPDiffingEnabled forKey:v15];
     }
   }
 

@@ -1,57 +1,57 @@
 @interface MIDataProtectionChangeOperation
-+ (id)dataProtectionChangeOperationForURL:(id)a3 settingClass:(int)a4 changeType:(unint64_t)a5;
-+ (id)dataProtectionChangeOperationForURLs:(id)a3 settingClass:(int)a4 changeType:(unint64_t)a5;
-- (BOOL)_runChangeOperationWasLocked:(BOOL *)a3 withError:(id *)a4;
-- (MIDataProtectionChangeOperation)initWithURLs:(id)a3 newClass:(int)a4 changeType:(unint64_t)a5;
++ (id)dataProtectionChangeOperationForURL:(id)l settingClass:(int)class changeType:(unint64_t)type;
++ (id)dataProtectionChangeOperationForURLs:(id)ls settingClass:(int)class changeType:(unint64_t)type;
+- (BOOL)_runChangeOperationWasLocked:(BOOL *)locked withError:(id *)error;
+- (MIDataProtectionChangeOperation)initWithURLs:(id)ls newClass:(int)class changeType:(unint64_t)type;
 - (void)performChangeOperation;
 @end
 
 @implementation MIDataProtectionChangeOperation
 
-- (MIDataProtectionChangeOperation)initWithURLs:(id)a3 newClass:(int)a4 changeType:(unint64_t)a5
+- (MIDataProtectionChangeOperation)initWithURLs:(id)ls newClass:(int)class changeType:(unint64_t)type
 {
-  v9 = a3;
+  lsCopy = ls;
   v13.receiver = self;
   v13.super_class = MIDataProtectionChangeOperation;
   v10 = [(MIDataProtectionChangeOperation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_urls, a3);
-    v11->_newClass = a4;
-    v11->_operationType = a5;
+    objc_storeStrong(&v10->_urls, ls);
+    v11->_newClass = class;
+    v11->_operationType = type;
   }
 
   return v11;
 }
 
-+ (id)dataProtectionChangeOperationForURLs:(id)a3 settingClass:(int)a4 changeType:(unint64_t)a5
++ (id)dataProtectionChangeOperationForURLs:(id)ls settingClass:(int)class changeType:(unint64_t)type
 {
-  v6 = *&a4;
-  v7 = a3;
-  v8 = [objc_alloc(objc_opt_class()) initWithURLs:v7 newClass:v6 changeType:a5];
+  v6 = *&class;
+  lsCopy = ls;
+  v8 = [objc_alloc(objc_opt_class()) initWithURLs:lsCopy newClass:v6 changeType:type];
 
   return v8;
 }
 
-+ (id)dataProtectionChangeOperationForURL:(id)a3 settingClass:(int)a4 changeType:(unint64_t)a5
++ (id)dataProtectionChangeOperationForURL:(id)l settingClass:(int)class changeType:(unint64_t)type
 {
-  v6 = *&a4;
+  v6 = *&class;
   v12[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lCopy = l;
   v8 = objc_alloc(objc_opt_class());
-  v12[0] = v7;
+  v12[0] = lCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
 
-  v10 = [v8 initWithURLs:v9 newClass:v6 changeType:a5];
+  v10 = [v8 initWithURLs:v9 newClass:v6 changeType:type];
 
   return v10;
 }
 
-- (BOOL)_runChangeOperationWasLocked:(BOOL *)a3 withError:(id *)a4
+- (BOOL)_runChangeOperationWasLocked:(BOOL *)locked withError:(id *)error
 {
-  v5 = [(MIDataProtectionChangeOperation *)self urls];
-  v6 = [v5 count];
+  urls = [(MIDataProtectionChangeOperation *)self urls];
+  v6 = [urls count];
 
   v7 = malloc_type_malloc(8 * v6 + 8, 0x10040436913F5uLL);
   if (!v6)
@@ -64,14 +64,14 @@
   do
   {
     v10 = +[MIFileManager defaultManager];
-    v11 = [(MIDataProtectionChangeOperation *)self urls];
-    v12 = [v11 objectAtIndexedSubscript:v8];
+    urls2 = [(MIDataProtectionChangeOperation *)self urls];
+    v12 = [urls2 objectAtIndexedSubscript:v8];
     v13 = [v10 itemExistsAtURL:v12];
 
     if (v13)
     {
-      v14 = [(MIDataProtectionChangeOperation *)self urls];
-      v15 = [v14 objectAtIndexedSubscript:v8];
+      urls3 = [(MIDataProtectionChangeOperation *)self urls];
+      v15 = [urls3 objectAtIndexedSubscript:v8];
       v7[v9] = [v15 fileSystemRepresentation];
 
       ++v9;
@@ -85,7 +85,7 @@
   {
 LABEL_56:
     v29 = 0;
-    *a3 = 0;
+    *locked = 0;
     v19 = 1;
     goto LABEL_69;
   }
@@ -97,10 +97,10 @@ LABEL_56:
   {
     v45 = *MEMORY[0x1E696A798];
     v46 = *__error();
-    v47 = [(MIDataProtectionChangeOperation *)self urls];
+    urls4 = [(MIDataProtectionChangeOperation *)self urls];
     v48 = __error();
     v56 = strerror(*v48);
-    v29 = _CreateError("[MIDataProtectionChangeOperation _runChangeOperationWasLocked:withError:]", 78, v45, v46, 0, 0, @"fts_open failed for %@ : %s", v49, v47);
+    v29 = _CreateError("[MIDataProtectionChangeOperation _runChangeOperationWasLocked:withError:]", 78, v45, v46, 0, 0, @"fts_open failed for %@ : %s", v49, urls4);
 
     goto LABEL_58;
   }
@@ -167,10 +167,10 @@ LABEL_54:
     if (([(MIDataProtectionChangeOperation *)self operationType]& 2) != 0)
     {
       context = v23;
-      v24 = [(MIDataProtectionChangeOperation *)self newClass];
-      if (v24)
+      newClass = [(MIDataProtectionChangeOperation *)self newClass];
+      if (newClass)
       {
-        v25 = v24;
+        v25 = newClass;
       }
 
       else
@@ -205,14 +205,14 @@ LABEL_54:
 
       else
       {
-        v40 = [v29 domain];
-        v31 = [v40 isEqualToString:v60];
+        domain = [v29 domain];
+        v31 = [domain isEqualToString:v60];
         if (v31)
         {
-          v41 = [v29 code];
+          code = [v29 code];
 
           v33 = v61;
-          if (v41 != 9)
+          if (code != 9)
           {
             v31 = 0;
             v30 = 5;
@@ -228,11 +228,11 @@ LABEL_54:
             goto LABEL_43;
           }
 
-          v40 = [v61 path];
+          domain = [v61 path];
           st_mode = v20->fts_statp->st_mode;
           v58 = v29;
           fts_path = v59;
-          v56 = v40;
+          v56 = domain;
           MOLogWrite();
           v30 = 0;
         }
@@ -284,11 +284,11 @@ LABEL_51:
   v74[5] = v20;
   v35 = MEMORY[0x1B2733890](v74);
   v36 = +[MIFileManager defaultManager];
-  v37 = [(MIDataProtectionChangeOperation *)self newClass];
+  newClass2 = [(MIDataProtectionChangeOperation *)self newClass];
   v73 = v21;
   v64 = v35;
   contexta = v34;
-  LOBYTE(v34) = [v36 setDataProtectionClassOfItemAtURL:v34 toClass:v37 ifPredicate:v35 error:&v73];
+  LOBYTE(v34) = [v36 setDataProtectionClassOfItemAtURL:v34 toClass:newClass2 ifPredicate:v35 error:&v73];
   v29 = v73;
 
   if (v34)
@@ -299,26 +299,26 @@ LABEL_51:
     goto LABEL_49;
   }
 
-  v42 = [v29 domain];
-  v62 = [v42 isEqualToString:v60];
+  domain2 = [v29 domain];
+  v62 = [domain2 isEqualToString:v60];
   if (!v62)
   {
     v38 = 5;
     goto LABEL_39;
   }
 
-  v43 = [v29 code];
+  code2 = [v29 code];
 
-  if (v43 == 9)
+  if (code2 == 9)
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
       v44 = [(MIDataProtectionChangeOperation *)self newClass:fts_path];
-      v42 = [contexta path];
+      domain2 = [contexta path];
       st_mode = v20->fts_statp->st_mode;
       v58 = v29;
       fts_path = v44;
-      v56 = v42;
+      v56 = domain2;
       MOLogWrite();
       v38 = 0;
 LABEL_39:
@@ -361,15 +361,15 @@ LABEL_73:
   if (v54)
   {
 LABEL_58:
-    v50 = [v29 domain];
-    if ([v50 isEqualToString:v45])
+    domain3 = [v29 domain];
+    if ([domain3 isEqualToString:v45])
     {
-      v51 = [v29 code];
+      code3 = [v29 code];
 
-      if (v51 == 1)
+      if (code3 == 1)
       {
         v19 = 1;
-        *a3 = 1;
+        *locked = 1;
 
         v21 = 0;
         goto LABEL_67;
@@ -380,11 +380,11 @@ LABEL_58:
     {
     }
 
-    if (a4)
+    if (error)
     {
       v52 = v29;
       v19 = 0;
-      *a4 = v29;
+      *error = v29;
     }
 
     else
@@ -454,10 +454,10 @@ uint64_t __74__MIDataProtectionChangeOperation__runChangeOperationWasLocked_with
   v4 = v11;
   if (!v3 && (!gLogHandle || *(gLogHandle + 44) >= 5))
   {
-    v5 = [(MIDataProtectionChangeOperation *)self urls];
-    v9 = [(MIDataProtectionChangeOperation *)self newClass];
+    urls = [(MIDataProtectionChangeOperation *)self urls];
+    newClass = [(MIDataProtectionChangeOperation *)self newClass];
     v10 = v4;
-    v8 = v5;
+    v8 = urls;
     MOLogWrite();
   }
 
@@ -465,8 +465,8 @@ uint64_t __74__MIDataProtectionChangeOperation__runChangeOperationWasLocked_with
 
   if (v6)
   {
-    v7 = [(MIDataProtectionChangeOperation *)self completionBlock];
-    (v7)[2](v7, v12, v4);
+    completionBlock = [(MIDataProtectionChangeOperation *)self completionBlock];
+    (completionBlock)[2](completionBlock, v12, v4);
   }
 }
 

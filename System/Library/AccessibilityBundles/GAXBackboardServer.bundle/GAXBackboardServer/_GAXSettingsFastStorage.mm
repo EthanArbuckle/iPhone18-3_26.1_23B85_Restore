@@ -5,7 +5,7 @@
 - (NSString)savedASAMAppIdForLostMode;
 - (_GAXSettingsFastStorage)init;
 - (id)_loadSettings;
-- (void)_updateSetting:(id)a3 withKey:(id)a4;
+- (void)_updateSetting:(id)setting withKey:(id)key;
 @end
 
 @implementation _GAXSettingsFastStorage
@@ -18,12 +18,12 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(_GAXSettingsFastStorage *)v2 _loadSettings];
-    [(_GAXSettingsFastStorage *)v3 setSettingsStorage:v4];
+    _loadSettings = [(_GAXSettingsFastStorage *)v2 _loadSettings];
+    [(_GAXSettingsFastStorage *)v3 setSettingsStorage:_loadSettings];
 
-    v5 = [(_GAXSettingsFastStorage *)v3 settingsStorage];
+    settingsStorage = [(_GAXSettingsFastStorage *)v3 settingsStorage];
 
-    if (!v5)
+    if (!settingsStorage)
     {
       v6 = +[NSMutableDictionary dictionary];
       [(_GAXSettingsFastStorage *)v3 setSettingsStorage:v6];
@@ -35,36 +35,36 @@
 
 - (NSString)activeAppID
 {
-  v2 = [(_GAXSettingsFastStorage *)self settingsStorage];
-  v3 = [v2 objectForKey:@"ActiveAppID"];
+  settingsStorage = [(_GAXSettingsFastStorage *)self settingsStorage];
+  v3 = [settingsStorage objectForKey:@"ActiveAppID"];
 
   return v3;
 }
 
 - (NSString)savedASAMAppIdForLostMode
 {
-  v2 = [(_GAXSettingsFastStorage *)self settingsStorage];
-  v3 = [v2 objectForKey:@"GAXSettingsKeySavedASAMAppIdForLostMode"];
+  settingsStorage = [(_GAXSettingsFastStorage *)self settingsStorage];
+  v3 = [settingsStorage objectForKey:@"GAXSettingsKeySavedASAMAppIdForLostMode"];
 
   return v3;
 }
 
 - (BOOL)isActiveAppSelfLocked
 {
-  v2 = [(_GAXSettingsFastStorage *)self settingsStorage];
-  v3 = [v2 objectForKey:@"ActiveAppSelfLocked"];
-  v4 = [v3 BOOLValue];
+  settingsStorage = [(_GAXSettingsFastStorage *)self settingsStorage];
+  v3 = [settingsStorage objectForKey:@"ActiveAppSelfLocked"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)selfLockUnmanaged
 {
-  v2 = [(_GAXSettingsFastStorage *)self settingsStorage];
-  v3 = [v2 objectForKey:@"SelfLockUnmanaged"];
-  v4 = [v3 BOOLValue];
+  settingsStorage = [(_GAXSettingsFastStorage *)self settingsStorage];
+  v3 = [settingsStorage objectForKey:@"SelfLockUnmanaged"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)_loadSettings
@@ -129,30 +129,30 @@
   return v8;
 }
 
-- (void)_updateSetting:(id)a3 withKey:(id)a4
+- (void)_updateSetting:(id)setting withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_GAXSettingsFastStorage *)self settingsStorage];
-  v9 = v8;
-  if (v6)
+  settingCopy = setting;
+  keyCopy = key;
+  settingsStorage = [(_GAXSettingsFastStorage *)self settingsStorage];
+  v9 = settingsStorage;
+  if (settingCopy)
   {
-    [v8 setObject:v6 forKey:v7];
+    [settingsStorage setObject:settingCopy forKey:keyCopy];
   }
 
   else
   {
-    [v8 removeObjectForKey:v7];
+    [settingsStorage removeObjectForKey:keyCopy];
   }
 
-  v10 = [(_GAXSettingsFastStorage *)self settingsStorage];
-  v11 = [NSJSONSerialization isValidJSONObject:v10];
+  settingsStorage2 = [(_GAXSettingsFastStorage *)self settingsStorage];
+  v11 = [NSJSONSerialization isValidJSONObject:settingsStorage2];
 
   if (v11)
   {
-    v12 = [(_GAXSettingsFastStorage *)self settingsStorage];
+    settingsStorage3 = [(_GAXSettingsFastStorage *)self settingsStorage];
     v28 = 0;
-    v13 = [NSJSONSerialization dataWithJSONObject:v12 options:1 error:&v28];
+    v13 = [NSJSONSerialization dataWithJSONObject:settingsStorage3 options:1 error:&v28];
     v14 = v28;
 
     if (!v13)

@@ -1,13 +1,13 @@
 @interface MacPlaceNoteEditViewController
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (_TtC4Maps30MacPlaceNoteEditViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC4Maps30MacPlaceNoteEditViewController)initWithNote:(id)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (_TtC4Maps30MacPlaceNoteEditViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC4Maps30MacPlaceNoteEditViewController)initWithNote:(id)note;
 - (id)dismissHandler;
 - (void)doneTapped;
-- (void)macFooterViewLeftButtonTapped:(id)a3;
-- (void)macFooterViewRightButtonTapped:(id)a3;
-- (void)setDismissHandler:(id)a3;
-- (void)textViewDidChange:(id)a3;
+- (void)macFooterViewLeftButtonTapped:(id)tapped;
+- (void)macFooterViewRightButtonTapped:(id)tapped;
+- (void)setDismissHandler:(id)handler;
+- (void)textViewDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -37,9 +37,9 @@
   return v4;
 }
 
-- (void)setDismissHandler:(id)a3
+- (void)setDismissHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -58,13 +58,13 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_1000D3B90(v7, v8);
 }
 
-- (_TtC4Maps30MacPlaceNoteEditViewController)initWithNote:(id)a3
+- (_TtC4Maps30MacPlaceNoteEditViewController)initWithNote:(id)note
 {
-  if (a3)
+  if (note)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -80,37 +80,37 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MacPlaceNoteEditViewController.viewDidLoad()();
 }
 
 - (void)doneTapped
 {
-  v2 = self;
+  selfCopy = self;
   _s4Maps30MacPlaceNoteEditViewControllerC09macFooterF17RightButtonTappedyySo0biF0CF_0();
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  LOBYTE(length) = _s4Maps30MacPlaceNoteEditViewControllerC04textF0_18shouldChangeTextIn011replacementK0SbSo06UITextF0C_So8_NSRangeVSStF_0(v12, location, length, v9, v11);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(length) = _s4Maps30MacPlaceNoteEditViewControllerC04textF0_18shouldChangeTextIn011replacementK0SbSo06UITextF0C_So8_NSRangeVSStF_0(viewCopy, location, length, v9, v11);
 
   return length & 1;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v11 = self;
-  v5 = [v4 text];
-  if (v5)
+  changeCopy = change;
+  selfCopy = self;
+  text = [changeCopy text];
+  if (text)
   {
-    v6 = v5;
+    v6 = text;
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
   }
@@ -121,21 +121,21 @@
     v9 = 0;
   }
 
-  v10 = (v11 + OBJC_IVAR____TtC4Maps30MacPlaceNoteEditViewController_note);
+  v10 = (selfCopy + OBJC_IVAR____TtC4Maps30MacPlaceNoteEditViewController_note);
   *v10 = v7;
   v10[1] = v9;
 
   sub_100345DC0();
 }
 
-- (_TtC4Maps30MacPlaceNoteEditViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps30MacPlaceNoteEditViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)macFooterViewLeftButtonTapped:(id)a3
+- (void)macFooterViewLeftButtonTapped:(id)tapped
 {
   v4 = self + OBJC_IVAR____TtC4Maps30MacPlaceNoteEditViewController_dismissHandler;
   swift_beginAccess();
@@ -143,7 +143,7 @@
   if (*v4)
   {
     v6 = *(v4 + 1);
-    v7 = self;
+    selfCopy = self;
     sub_1000CD9D4(v5);
     v5(0, 0, 0);
 
@@ -151,10 +151,10 @@
   }
 }
 
-- (void)macFooterViewRightButtonTapped:(id)a3
+- (void)macFooterViewRightButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   _s4Maps30MacPlaceNoteEditViewControllerC09macFooterF17RightButtonTappedyySo0biF0CF_0();
 }
 

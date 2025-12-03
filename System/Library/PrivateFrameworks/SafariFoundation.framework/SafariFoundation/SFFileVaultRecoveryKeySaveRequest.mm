@@ -1,11 +1,11 @@
 @interface SFFileVaultRecoveryKeySaveRequest
 - (SFFileVaultRecoveryKeySaveRequest)init;
-- (SFFileVaultRecoveryKeySaveRequest)initWithVolumeID:(id)a3 serialNumber:(id)a4 recoveryKey:(id)a5 displayName:(id)a6;
+- (SFFileVaultRecoveryKeySaveRequest)initWithVolumeID:(id)d serialNumber:(id)number recoveryKey:(id)key displayName:(id)name;
 @end
 
 @implementation SFFileVaultRecoveryKeySaveRequest
 
-- (SFFileVaultRecoveryKeySaveRequest)initWithVolumeID:(id)a3 serialNumber:(id)a4 recoveryKey:(id)a5 displayName:(id)a6
+- (SFFileVaultRecoveryKeySaveRequest)initWithVolumeID:(id)d serialNumber:(id)number recoveryKey:(id)key displayName:(id)name
 {
   sub_2645392BC();
   sub_2645392BC();

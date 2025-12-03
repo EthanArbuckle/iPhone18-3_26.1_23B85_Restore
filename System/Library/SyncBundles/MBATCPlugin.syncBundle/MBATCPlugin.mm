@@ -1,7 +1,7 @@
 @interface MBATCPlugin
 - (id)outstandingAssetTransfers;
-- (void)assetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5;
-- (void)assetTransferEndedWithSuccess:(BOOL)a3;
+- (void)assetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error;
+- (void)assetTransferEndedWithSuccess:(BOOL)success;
 @end
 
 @implementation MBATCPlugin
@@ -37,9 +37,9 @@
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 path];
-          v13 = [ATAsset downloadAssetWithIdentifier:v12 dataclass:@"File" prettyName:v12];
-          [v13 setPath:v12];
+          path = [v11 path];
+          v13 = [ATAsset downloadAssetWithIdentifier:path dataclass:@"File" prettyName:path];
+          [v13 setPath:path];
           [v13 setIsRestore:1];
           [v13 setPriority:{objc_msgSend(v11, "priority")}];
           [v5 addObject:v13];
@@ -70,12 +70,12 @@
   return v5;
 }
 
-- (void)assetTransferEndedWithSuccess:(BOOL)a3
+- (void)assetTransferEndedWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v4 = MBGetDefaultLog();
   v5 = v4;
-  if (v3)
+  if (successCopy)
   {
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
@@ -94,19 +94,19 @@ LABEL_6:
   }
 }
 
-- (void)assetTransfer:(id)a3 succeeded:(BOOL)a4 withError:(id)a5
+- (void)assetTransfer:(id)transfer succeeded:(BOOL)succeeded withError:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  succeededCopy = succeeded;
+  transferCopy = transfer;
+  errorCopy = error;
   v9 = MBGetDefaultLog();
   v10 = v9;
-  if (v6)
+  if (succeededCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v7;
+      v14 = transferCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "=atc-plugin= Successfully restored LocalStorage asset %@", buf, 0xCu);
 LABEL_26:
       _MBLog();
@@ -118,23 +118,23 @@ LABEL_26:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v14 = v7;
+      v14 = transferCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = errorCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "=atc-plugin= Failed to restore LocalStorage asset %@: %@", buf, 0x16u);
       _MBLog();
     }
 
-    v11 = [v8 domain];
-    if (![v11 isEqualToString:@"ATError"] || objc_msgSend(v8, "code") == &dword_4 + 3 || objc_msgSend(v8, "code") == &dword_8 || objc_msgSend(v8, "code") == &dword_C + 2 || objc_msgSend(v8, "code") == &dword_10 || objc_msgSend(v8, "code") == &dword_8 + 1 || objc_msgSend(v8, "code") == &dword_10 + 2 || objc_msgSend(v8, "code") == &dword_4 || objc_msgSend(v8, "code") == &dword_10 + 3 || objc_msgSend(v8, "code") == &dword_14 || objc_msgSend(v8, "code") == &dword_18 + 1 || objc_msgSend(v8, "code") == &dword_18 + 3 || objc_msgSend(v8, "code") == &dword_18 || objc_msgSend(v8, "code") == &dword_1C + 3 || objc_msgSend(v8, "code") == &stru_20 || objc_msgSend(v8, "code") == &stru_20.cmd + 1 || objc_msgSend(v8, "code") == &stru_20.cmd + 2)
+    domain = [errorCopy domain];
+    if (![domain isEqualToString:@"ATError"] || objc_msgSend(errorCopy, "code") == &dword_4 + 3 || objc_msgSend(errorCopy, "code") == &dword_8 || objc_msgSend(errorCopy, "code") == &dword_C + 2 || objc_msgSend(errorCopy, "code") == &dword_10 || objc_msgSend(errorCopy, "code") == &dword_8 + 1 || objc_msgSend(errorCopy, "code") == &dword_10 + 2 || objc_msgSend(errorCopy, "code") == &dword_4 || objc_msgSend(errorCopy, "code") == &dword_10 + 3 || objc_msgSend(errorCopy, "code") == &dword_14 || objc_msgSend(errorCopy, "code") == &dword_18 + 1 || objc_msgSend(errorCopy, "code") == &dword_18 + 3 || objc_msgSend(errorCopy, "code") == &dword_18 || objc_msgSend(errorCopy, "code") == &dword_1C + 3 || objc_msgSend(errorCopy, "code") == &stru_20 || objc_msgSend(errorCopy, "code") == &stru_20.cmd + 1 || objc_msgSend(errorCopy, "code") == &stru_20.cmd + 2)
     {
     }
 
     else
     {
-      v12 = [v8 code];
+      code = [errorCopy code];
 
-      if (v12 != &stru_20.cmd + 3)
+      if (code != &stru_20.cmd + 3)
       {
         v10 = MBGetDefaultLog();
         if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -143,7 +143,7 @@ LABEL_26:
         }
 
         *buf = 138412290;
-        v14 = v7;
+        v14 = transferCopy;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "=atc-plugin= Unrecoverable error. Will not attempt to restore LocalStorage asset %@", buf, 0xCu);
         goto LABEL_26;
       }
@@ -153,7 +153,7 @@ LABEL_26:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v7;
+      v14 = transferCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "=atc-plugin= Potentially recoverable error. Will attempt to restore LocalStorage asset %@", buf, 0xCu);
       goto LABEL_26;
     }

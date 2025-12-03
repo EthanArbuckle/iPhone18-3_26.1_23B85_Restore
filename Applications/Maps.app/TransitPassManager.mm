@@ -1,25 +1,25 @@
 @interface TransitPassManager
-- (BOOL)_balanceIsLessThanRouteCost:(id)a3 forPass:(id)a4;
-- (TransitPassManager)initWithIsTourist:(BOOL)a3;
+- (BOOL)_balanceIsLessThanRouteCost:(id)cost forPass:(id)pass;
+- (TransitPassManager)initWithIsTourist:(BOOL)tourist;
 - (TransitPassManagerDelegate)delegate;
-- (id)_defaultPaymentCardExpressStatuses:(id)a3;
-- (id)_defaultPaymentCardsFromLibrary:(id)a3;
+- (id)_defaultPaymentCardExpressStatuses:(id)statuses;
+- (id)_defaultPaymentCardsFromLibrary:(id)library;
 - (id)_exclamationMarkImage;
-- (id)_identifiersForSecurePasses:(id)a3;
-- (id)_messageFromBalance:(id)a3 passName:(id)a4;
-- (id)_passForTopUpWithTransitPasses:(id)a3 forRouteTNIs:(id)a4 routeCost:(id)a5;
-- (id)_userTransitPassesFromLibrary:(id)a3;
-- (id)currencyAmountForRoute:(id)a3;
-- (id)transitSystemsForRoute:(id)a3 withSupportedPaymentMethods:(id)a4;
+- (id)_identifiersForSecurePasses:(id)passes;
+- (id)_messageFromBalance:(id)balance passName:(id)name;
+- (id)_passForTopUpWithTransitPasses:(id)passes forRouteTNIs:(id)is routeCost:(id)cost;
+- (id)_userTransitPassesFromLibrary:(id)library;
+- (id)currencyAmountForRoute:(id)route;
+- (id)transitSystemsForRoute:(id)route withSupportedPaymentMethods:(id)methods;
 - (void)_fetchAllAvailablePassesFromWallet;
-- (void)_fetchLibrary:(id)a3;
-- (void)_passKitLibraryDidChange:(id)a3;
+- (void)_fetchLibrary:(id)library;
+- (void)_passKitLibraryDidChange:(id)change;
 - (void)_passKitLibraryMayHaveChanged;
-- (void)_transitTopUpMessageForPass:(id)a3 paymentMethods:(id)a4 completion:(id)a5;
+- (void)_transitTopUpMessageForPass:(id)pass paymentMethods:(id)methods completion:(id)completion;
 - (void)dealloc;
-- (void)fetchTransitMessageForRoute:(id)a3 paymentMethods:(id)a4 suggestions:(id)a5 completion:(id)a6;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4;
-- (void)userHasPaymentCardWithHandler:(id)a3;
+- (void)fetchTransitMessageForRoute:(id)route paymentMethods:(id)methods suggestions:(id)suggestions completion:(id)completion;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties;
+- (void)userHasPaymentCardWithHandler:(id)handler;
 @end
 
 @implementation TransitPassManager
@@ -31,32 +31,32 @@
   return WeakRetained;
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties
 {
-  v5 = [(TransitPassManager *)self delegate:a3];
+  v5 = [(TransitPassManager *)self delegate:identifier];
   [v5 transitPassManagerDidChange:self];
 }
 
-- (id)currencyAmountForRoute:(id)a3
+- (id)currencyAmountForRoute:(id)route
 {
-  v3 = a3;
-  v4 = [v3 baseTransitFares];
-  v5 = v4;
-  if (!v4 || ![v4 count])
+  routeCopy = route;
+  baseTransitFares = [routeCopy baseTransitFares];
+  v5 = baseTransitFares;
+  if (!baseTransitFares || ![baseTransitFares count])
   {
-    v7 = sub_10003D020();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+    currencyCode = sub_10003D020();
+    if (os_log_type_enabled(currencyCode, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Route rejected because we found no base fares on route.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, currencyCode, OS_LOG_TYPE_INFO, "Route rejected because we found no base fares on route.", buf, 2u);
     }
 
     v22 = 0;
     goto LABEL_35;
   }
 
-  v6 = [v5 firstObject];
-  v7 = [v6 currencyCode];
+  firstObject = [v5 firstObject];
+  currencyCode = [firstObject currencyCode];
 
   v29 = 0u;
   v30 = 0u;
@@ -71,7 +71,7 @@
   }
 
   v10 = v9;
-  v26 = v3;
+  v26 = routeCopy;
   v11 = 0;
   v12 = *v28;
   while (2)
@@ -86,27 +86,27 @@
       v14 = *(*(&v27 + 1) + 8 * i);
       if (([v14 cashOnly] & 1) == 0)
       {
-        v15 = [v14 value];
+        value = [v14 value];
 
-        if (v15)
+        if (value)
         {
-          v16 = [v14 currencyCode];
-          v17 = [v7 isEqualToString:v16];
+          currencyCode2 = [v14 currencyCode];
+          v17 = [currencyCode isEqualToString:currencyCode2];
 
           if (v17)
           {
-            v18 = [v14 value];
-            v19 = v18;
+            value2 = [v14 value];
+            v19 = value2;
             if (v11)
             {
-              v20 = [v11 decimalNumberByAdding:v18];
+              v20 = [v11 decimalNumberByAdding:value2];
 
               v11 = v20;
             }
 
             else
             {
-              v11 = v18;
+              v11 = value2;
             }
 
             continue;
@@ -133,7 +133,7 @@ LABEL_31:
           }
         }
 
-        v3 = v26;
+        routeCopy = v26;
 
         goto LABEL_33;
       }
@@ -148,7 +148,7 @@ LABEL_31:
     break;
   }
 
-  v3 = v26;
+  routeCopy = v26;
   if (v11)
   {
     v21 = sub_10003D020();
@@ -157,11 +157,11 @@ LABEL_31:
       *buf = 138412546;
       v32 = v11;
       v33 = 2112;
-      v34 = v7;
+      v34 = currencyCode;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "totalFareValue = %@, currencyCode = %@", buf, 0x16u);
     }
 
-    v22 = [[PKCurrencyAmount alloc] initWithAmount:v11 currency:v7 exponent:0];
+    v22 = [[PKCurrencyAmount alloc] initWithAmount:v11 currency:currencyCode exponent:0];
     goto LABEL_34;
   }
 
@@ -182,17 +182,17 @@ LABEL_35:
   return v22;
 }
 
-- (id)transitSystemsForRoute:(id)a3 withSupportedPaymentMethods:(id)a4
+- (id)transitSystemsForRoute:(id)route withSupportedPaymentMethods:(id)methods
 {
-  v5 = a3;
-  v6 = a4;
+  routeCopy = route;
+  methodsCopy = methods;
   v7 = objc_alloc_init(NSMutableSet);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v25 = v5;
-  obj = [v5 baseTransitFares];
+  v25 = routeCopy;
+  obj = [routeCopy baseTransitFares];
   v8 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v8)
   {
@@ -213,9 +213,9 @@ LABEL_35:
           v13 = sub_10003D020();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
           {
-            v14 = [v12 value];
+            value = [v12 value];
             *buf = 138412290;
-            v32 = v14;
+            v32 = value;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Checking the next fare because the fare with value %@ is cashOnly", buf, 0xCu);
           }
         }
@@ -229,11 +229,11 @@ LABEL_35:
             do
             {
               v16 = *([v12 supportedPaymentMethodIndexs] + v15);
-              if ([v6 count] > v16)
+              if ([methodsCopy count] > v16)
               {
-                v17 = [v6 objectAtIndexedSubscript:v16];
-                v18 = [v17 identifier];
-                [v13 addObject:v18];
+                v17 = [methodsCopy objectAtIndexedSubscript:v16];
+                identifier = [v17 identifier];
+                [v13 addObject:identifier];
               }
 
               ++v15;
@@ -315,11 +315,11 @@ LABEL_31:
 
 - (void)_passKitLibraryMayHaveChanged
 {
-  v3 = [(TransitPassManager *)self delegate];
-  [v3 transitPassManagerDidChange:self];
+  delegate = [(TransitPassManager *)self delegate];
+  [delegate transitPassManagerDidChange:self];
 }
 
-- (void)_passKitLibraryDidChange:(id)a3
+- (void)_passKitLibraryDidChange:(id)change
 {
   v4 = sub_10003D020();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -331,18 +331,18 @@ LABEL_31:
   [(MapsSuggestionsCanKicker *)self->_passKitLibraryDidChangeCanKicker kickCanBySameTime];
 }
 
-- (id)_passForTopUpWithTransitPasses:(id)a3 forRouteTNIs:(id)a4 routeCost:(id)a5
+- (id)_passForTopUpWithTransitPasses:(id)passes forRouteTNIs:(id)is routeCost:(id)cost
 {
-  v9 = a3;
-  v10 = a4;
-  v54 = a5;
-  v52 = v9;
-  v11 = [[NSSet alloc] initWithArray:v9];
+  passesCopy = passes;
+  isCopy = is;
+  costCopy = cost;
+  v52 = passesCopy;
+  v11 = [[NSSet alloc] initWithArray:passesCopy];
   v82[0] = _NSConcreteStackBlock;
   v82[1] = 3221225472;
   v82[2] = sub_100B3BAB8;
   v82[3] = &unk_101638DB0;
-  v53 = v10;
+  v53 = isCopy;
   v83 = v53;
   v56 = [v11 objectsPassingTest:v82];
 
@@ -370,7 +370,7 @@ LABEL_31:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "User has an express card which does not support top up, suppressing tip", buf, 2u);
       }
 
-      v59 = 0;
+      anyObject = 0;
       goto LABEL_65;
     }
 
@@ -400,13 +400,13 @@ LABEL_31:
     v68[2] = sub_100B3BC8C;
     v68[3] = &unk_101638E00;
     v68[4] = self;
-    v69 = v54;
+    v69 = costCopy;
     v70 = buf;
     v56 = [v16 objectsPassingTest:v68];
 
     if (v72[24])
     {
-      v59 = 0;
+      anyObject = 0;
 LABEL_64:
 
       _Block_object_dispose(buf, 8);
@@ -427,7 +427,7 @@ LABEL_65:
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "User only has one remaining pass compatible with this route, using that.", v84, 2u);
         }
 
-        v59 = [v56 anyObject];
+        anyObject = [v56 anyObject];
         goto LABEL_64;
       }
 
@@ -440,7 +440,7 @@ LABEL_65:
       if (v19)
       {
         obj = v18;
-        v59 = 0;
+        anyObject = 0;
         v57 = *v65;
         v20 = -1.79769313e308;
         while (1)
@@ -459,10 +459,10 @@ LABEL_65:
             v63 = 0u;
             v60 = 0u;
             v61 = 0u;
-            v24 = [v22 transitProperties];
-            v25 = [v24 balances];
+            transitProperties = [v22 transitProperties];
+            balances = [transitProperties balances];
 
-            v26 = [v25 countByEnumeratingWithState:&v60 objects:v86 count:16];
+            v26 = [balances countByEnumeratingWithState:&v60 objects:v86 count:16];
             if (v26)
             {
               v27 = *v61;
@@ -474,18 +474,18 @@ LABEL_65:
                 {
                   if (*v61 != v27)
                   {
-                    objc_enumerationMutation(v25);
+                    objc_enumerationMutation(balances);
                   }
 
-                  v30 = [*(*(&v60 + 1) + 8 * v28) amount];
-                  v23 = [v29 decimalNumberByAdding:v30];
+                  amount = [*(*(&v60 + 1) + 8 * v28) amount];
+                  v23 = [v29 decimalNumberByAdding:amount];
 
                   v28 = v28 + 1;
                   v29 = v23;
                 }
 
                 while (v26 != v28);
-                v26 = [v25 countByEnumeratingWithState:&v60 objects:v86 count:16];
+                v26 = [balances countByEnumeratingWithState:&v60 objects:v86 count:16];
               }
 
               while (v26);
@@ -520,32 +520,32 @@ LABEL_65:
               {
                 v35 = v22;
                 v36 = [NSString alloc];
-                v37 = [v35 localizedDescription];
-                v38 = v37;
-                if (v37)
+                localizedDescription = [v35 localizedDescription];
+                v38 = localizedDescription;
+                if (localizedDescription)
                 {
                   v39 = 0;
-                  v40 = v37;
+                  v40 = localizedDescription;
                 }
 
                 else
                 {
-                  v41 = [v35 organizationName];
-                  v5 = v41;
-                  if (v41)
+                  organizationName = [v35 organizationName];
+                  v5 = organizationName;
+                  if (organizationName)
                   {
                     v39 = 0;
-                    v40 = v41;
+                    v40 = organizationName;
                   }
 
                   else
                   {
-                    v42 = [v35 localizedName];
-                    v49 = v42;
+                    localizedName = [v35 localizedName];
+                    v49 = localizedName;
                     v5 = 0;
-                    if (v42)
+                    if (localizedName)
                     {
-                      v40 = v42;
+                      v40 = localizedName;
                     }
 
                     else
@@ -557,9 +557,9 @@ LABEL_65:
                   }
                 }
 
-                v43 = [v35 isRemotePass];
+                isRemotePass = [v35 isRemotePass];
                 v44 = @"NO";
-                if (v43)
+                if (isRemotePass)
                 {
                   v44 = @"YES";
                 }
@@ -584,7 +584,7 @@ LABEL_65:
 
             v47 = v22;
 
-            v59 = v47;
+            anyObject = v47;
 LABEL_59:
           }
 
@@ -608,7 +608,7 @@ LABEL_59:
       }
     }
 
-    v59 = 0;
+    anyObject = 0;
 LABEL_63:
 
     goto LABEL_64;
@@ -621,25 +621,25 @@ LABEL_63:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "User has no passes supported on the route", v78, 2u);
   }
 
-  v59 = 0;
+  anyObject = 0;
 LABEL_66:
 
-  return v59;
+  return anyObject;
 }
 
-- (void)fetchTransitMessageForRoute:(id)a3 paymentMethods:(id)a4 suggestions:(id)a5 completion:(id)a6
+- (void)fetchTransitMessageForRoute:(id)route paymentMethods:(id)methods suggestions:(id)suggestions completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  routeCopy = route;
+  methodsCopy = methods;
+  suggestionsCopy = suggestions;
+  completionCopy = completion;
   v14 = +[UIDevice currentDevice];
-  v15 = [v14 userInterfaceIdiom];
+  userInterfaceIdiom = [v14 userInterfaceIdiom];
 
-  if (v15)
+  if (userInterfaceIdiom)
   {
 LABEL_7:
-    v13[2](v13, v10, 0);
+    completionCopy[2](completionCopy, routeCopy, 0);
     goto LABEL_8;
   }
 
@@ -661,10 +661,10 @@ LABEL_7:
   v17[2] = sub_100B3C144;
   v17[3] = &unk_101638D88;
   objc_copyWeak(&v22, location);
-  v21 = v13;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
+  v21 = completionCopy;
+  v18 = routeCopy;
+  v19 = methodsCopy;
+  v20 = suggestionsCopy;
   [(TransitPassManager *)self _fetchLibrary:v17];
 
   objc_destroyWeak(&v22);
@@ -721,18 +721,18 @@ LABEL_8:
   }
 }
 
-- (id)_identifiersForSecurePasses:(id)a3
+- (id)_identifiersForSecurePasses:(id)passes
 {
-  v4 = a3;
+  passesCopy = passes;
   v5 = objc_alloc_init(NSMutableDictionary);
-  if (v4)
+  if (passesCopy)
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v29 = v4;
-    v6 = v4;
+    v29 = passesCopy;
+    v6 = passesCopy;
     v32 = [v6 countByEnumeratingWithState:&v41 objects:v50 count:16];
     if (!v32)
     {
@@ -751,17 +751,17 @@ LABEL_8:
         }
 
         v8 = *(*(&v41 + 1) + 8 * i);
-        v9 = [v8 devicePrimaryPaymentApplication];
-        v10 = [v9 supportedTransitNetworkIdentifiers];
+        devicePrimaryPaymentApplication = [v8 devicePrimaryPaymentApplication];
+        supportedTransitNetworkIdentifiers = [devicePrimaryPaymentApplication supportedTransitNetworkIdentifiers];
 
-        if ([v10 count])
+        if ([supportedTransitNetworkIdentifiers count])
         {
           v39 = 0u;
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v33 = v10;
-          v11 = v10;
+          v33 = supportedTransitNetworkIdentifiers;
+          v11 = supportedTransitNetworkIdentifiers;
           v12 = [v11 countByEnumeratingWithState:&v37 objects:v49 count:16];
           if (!v12)
           {
@@ -780,11 +780,11 @@ LABEL_8:
               }
 
               v16 = *(*(&v37 + 1) + 8 * j);
-              v17 = [v8 localizedDescription];
+              localizedDescription = [v8 localizedDescription];
 
-              if (v17)
+              if (localizedDescription)
               {
-                v18 = [v8 localizedDescription];
+                localizedDescription2 = [v8 localizedDescription];
               }
 
               else
@@ -796,11 +796,11 @@ LABEL_8:
                   continue;
                 }
 
-                v18 = [(NSMutableDictionary *)self->_allAvailablePasses objectForKeyedSubscript:v16];
+                localizedDescription2 = [(NSMutableDictionary *)self->_allAvailablePasses objectForKeyedSubscript:v16];
               }
 
-              v20 = v18;
-              [v5 setObject:v18 forKeyedSubscript:v16];
+              v20 = localizedDescription2;
+              [v5 setObject:localizedDescription2 forKeyedSubscript:v16];
             }
 
             v13 = [v11 countByEnumeratingWithState:&v37 objects:v49 count:16];
@@ -809,7 +809,7 @@ LABEL_8:
 LABEL_20:
 
               v6 = v30;
-              v10 = v33;
+              supportedTransitNetworkIdentifiers = v33;
               break;
             }
           }
@@ -845,7 +845,7 @@ LABEL_23:
           v34[3] = &unk_101638D10;
           v25 = v5;
           v35 = v25;
-          v36 = self;
+          selfCopy = self;
           [v6 enumerateObjectsUsingBlock:v34];
           v26 = sub_10003D020();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -861,7 +861,7 @@ LABEL_23:
           v23 = [v25 copy];
         }
 
-        v4 = v29;
+        passesCopy = v29;
         goto LABEL_34;
       }
     }
@@ -880,17 +880,17 @@ LABEL_34:
   return v23;
 }
 
-- (id)_userTransitPassesFromLibrary:(id)a3
+- (id)_userTransitPassesFromLibrary:(id)library
 {
-  v3 = a3;
-  if (v3)
+  libraryCopy = library;
+  if (libraryCopy)
   {
     v4 = objc_alloc_init(NSArray);
-    v5 = [v3 passesOfType:1];
+    v5 = [libraryCopy passesOfType:1];
     v6 = [v4 arrayByAddingObjectsFromArray:v5];
 
-    v7 = [v3 remoteSecureElementPasses];
-    v8 = [v6 arrayByAddingObjectsFromArray:v7];
+    remoteSecureElementPasses = [libraryCopy remoteSecureElementPasses];
+    v8 = [v6 arrayByAddingObjectsFromArray:remoteSecureElementPasses];
 
     v9 = sub_10003D020();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -952,16 +952,16 @@ LABEL_34:
   return v11;
 }
 
-- (id)_defaultPaymentCardExpressStatuses:(id)a3
+- (id)_defaultPaymentCardExpressStatuses:(id)statuses
 {
-  v3 = a3;
+  statusesCopy = statuses;
   v30 = objc_alloc_init(PKPaymentService);
   v4 = objc_alloc_init(NSMutableDictionary);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = v3;
+  v5 = statusesCopy;
   v6 = [v5 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v6)
   {
@@ -979,20 +979,20 @@ LABEL_34:
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        v12 = [v11 devicePrimaryPaymentApplication];
-        [v12 paymentNetworkIdentifier];
+        devicePrimaryPaymentApplication = [v11 devicePrimaryPaymentApplication];
+        [devicePrimaryPaymentApplication paymentNetworkIdentifier];
         v13 = PKLegacyTransitNetworkIdentifierForCredentialType();
 
         if (!v13)
         {
-          v18 = sub_10003D020();
-          if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+          uniqueID = sub_10003D020();
+          if (!os_log_type_enabled(uniqueID, OS_LOG_TYPE_INFO))
           {
             goto LABEL_18;
           }
 
           *buf = 0;
-          v19 = v18;
+          v19 = uniqueID;
           v20 = "Default payment card has no TNI";
           v21 = 2;
           goto LABEL_15;
@@ -1003,19 +1003,19 @@ LABEL_34:
         {
           v15 = v14;
           v16 = [v4 objectForKeyedSubscript:v13];
-          v17 = [v16 BOOLValue];
+          bOOLValue = [v16 BOOLValue];
 
-          if (v17)
+          if (bOOLValue)
           {
-            v18 = sub_10003D020();
-            if (!os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+            uniqueID = sub_10003D020();
+            if (!os_log_type_enabled(uniqueID, OS_LOG_TYPE_INFO))
             {
               goto LABEL_18;
             }
 
             *buf = v29;
             v36 = v13;
-            v19 = v18;
+            v19 = uniqueID;
             v20 = "We've already found this default payment card (%@) and it has express enabled";
             v21 = 12;
 LABEL_15:
@@ -1024,17 +1024,17 @@ LABEL_15:
           }
         }
 
-        v22 = [v11 isRemotePass];
+        isRemotePass = [v11 isRemotePass];
         v23 = [NSNumber alloc];
-        v18 = [v11 uniqueID];
-        if (v22)
+        uniqueID = [v11 uniqueID];
+        if (isRemotePass)
         {
-          v24 = [v30 isExpressModeEnabledForRemotePassUniqueIdentifier:v18];
+          v24 = [v30 isExpressModeEnabledForRemotePassUniqueIdentifier:uniqueID];
         }
 
         else
         {
-          v24 = [v30 isExpressModeEnabledForPassUniqueIdentifier:v18];
+          v24 = [v30 isExpressModeEnabledForPassUniqueIdentifier:uniqueID];
         }
 
         v25 = [v23 initWithBool:v24];
@@ -1062,30 +1062,30 @@ LABEL_18:
   return v27;
 }
 
-- (id)_defaultPaymentCardsFromLibrary:(id)a3
+- (id)_defaultPaymentCardsFromLibrary:(id)library
 {
-  v3 = [a3 defaultPaymentPassesWithRemotePasses:1];
+  v3 = [library defaultPaymentPassesWithRemotePasses:1];
   v4 = sub_1000282CC(v3, &stru_101638CC8);
 
   return v4;
 }
 
-- (void)_transitTopUpMessageForPass:(id)a3 paymentMethods:(id)a4 completion:(id)a5
+- (void)_transitTopUpMessageForPass:(id)pass paymentMethods:(id)methods completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passCopy = pass;
+  methodsCopy = methods;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100B3DA90;
   v14[3] = &unk_101638C88;
   objc_copyWeak(&v18, &location);
-  v11 = v8;
+  v11 = passCopy;
   v15 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = methodsCopy;
   v16 = v13;
   [(TransitPassManager *)self _fetchLibrary:v14];
 
@@ -1093,19 +1093,19 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_balanceIsLessThanRouteCost:(id)a3 forPass:(id)a4
+- (BOOL)_balanceIsLessThanRouteCost:(id)cost forPass:(id)pass
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 transitProperties];
-  v8 = [v7 balances];
-  v9 = [v8 firstObject];
-  v10 = [v9 currencyCode];
+  costCopy = cost;
+  passCopy = pass;
+  transitProperties = [passCopy transitProperties];
+  balances = [transitProperties balances];
+  firstObject = [balances firstObject];
+  currencyCode = [firstObject currencyCode];
 
-  if (v10)
+  if (currencyCode)
   {
-    v11 = [v5 currency];
-    v12 = [v10 isEqualToString:v11];
+    currency = [costCopy currency];
+    v12 = [currencyCode isEqualToString:currency];
 
     if (v12)
     {
@@ -1114,10 +1114,10 @@ LABEL_18:
       v31 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v14 = [v6 transitProperties];
-      v15 = [v14 balances];
+      transitProperties2 = [passCopy transitProperties];
+      balances2 = [transitProperties2 balances];
 
-      v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      v16 = [balances2 countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v16)
       {
         v17 = v16;
@@ -1130,25 +1130,25 @@ LABEL_18:
           {
             if (*v31 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(balances2);
             }
 
-            v21 = [*(*(&v30 + 1) + 8 * v19) amount];
-            v13 = [v20 decimalNumberByAdding:v21];
+            amount = [*(*(&v30 + 1) + 8 * v19) amount];
+            v13 = [v20 decimalNumberByAdding:amount];
 
             v19 = v19 + 1;
             v20 = v13;
           }
 
           while (v17 != v19);
-          v17 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v17 = [balances2 countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v17);
       }
 
-      v22 = [v5 amount];
-      v23 = [v13 compare:v22];
+      amount2 = [costCopy amount];
+      v23 = [v13 compare:amount2];
 
       if (v23 == -1)
       {
@@ -1156,17 +1156,17 @@ LABEL_18:
         goto LABEL_17;
       }
 
-      v24 = sub_10003D020();
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
+      currency2 = sub_10003D020();
+      if (os_log_type_enabled(currency2, OS_LOG_TYPE_INFO))
       {
-        v25 = [v6 transitProperties];
-        v26 = [v25 balance];
-        v27 = [v5 amount];
+        transitProperties3 = [passCopy transitProperties];
+        balance = [transitProperties3 balance];
+        amount3 = [costCopy amount];
         *buf = 138412546;
-        v36 = v26;
+        v36 = balance;
         v37 = 2112;
-        v38 = v27;
-        _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "Comparison result of passProperties.balance:%@ and routeCost.amount:%@ is not as expected", buf, 0x16u);
+        v38 = amount3;
+        _os_log_impl(&_mh_execute_header, currency2, OS_LOG_TYPE_INFO, "Comparison result of passProperties.balance:%@ and routeCost.amount:%@ is not as expected", buf, 0x16u);
       }
 
       goto LABEL_15;
@@ -1176,11 +1176,11 @@ LABEL_18:
   v13 = sub_10003D020();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v24 = [v5 currency];
+    currency2 = [costCopy currency];
     *buf = 138412546;
-    v36 = v10;
+    v36 = currencyCode;
     v37 = 2112;
-    v38 = v24;
+    v38 = currency2;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "passBalanceCurrency!=routeCost.currency passBalanceCurrency: %@, routeCost.currency: %@", buf, 0x16u);
 LABEL_15:
   }
@@ -1203,35 +1203,35 @@ LABEL_17:
   return v6;
 }
 
-- (id)_messageFromBalance:(id)a3 passName:(id)a4
+- (id)_messageFromBalance:(id)balance passName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
+  balanceCopy = balance;
+  nameCopy = name;
   v7 = +[NSBundle mainBundle];
   v8 = v7;
-  if (v5)
+  if (balanceCopy)
   {
-    if (!v6)
+    if (!nameCopy)
     {
       v9 = [v7 localizedStringForKey:@"MAPS_TRANSIT_PAY_LOW_BALANCE_AMOUNT_ONLY" value:@"localized string not found" table:0];
 
-      v11 = [[NSString alloc] initWithFormat:v9, v5, v14];
+      v11 = [[NSString alloc] initWithFormat:v9, balanceCopy, v14];
       goto LABEL_8;
     }
 
     v9 = [v7 localizedStringForKey:@"MAPS_TRANSIT_PAY_LOW_BALANCE_FULL" value:@"localized string not found" table:0];
 
     v10 = [NSString alloc];
-    v14 = v5;
+    v14 = balanceCopy;
 LABEL_6:
-    v11 = [v10 initWithFormat:v9, v6, v14];
+    v11 = [v10 initWithFormat:v9, nameCopy, v14];
 LABEL_8:
     v12 = v11;
     v8 = v9;
     goto LABEL_9;
   }
 
-  if (v6)
+  if (nameCopy)
   {
     v9 = [v7 localizedStringForKey:@"MAPS_TRANSIT_PAY_LOW_BALANCE_NAME_ONLY" value:@"localized string not found" table:0];
 
@@ -1245,9 +1245,9 @@ LABEL_9:
   return v12;
 }
 
-- (void)_fetchLibrary:(id)a3
+- (void)_fetchLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   objc_initWeak(&location, self);
   libraryQueue = self->_libraryQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1255,17 +1255,17 @@ LABEL_9:
   block[2] = sub_100B3EA14;
   block[3] = &unk_101660648;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = libraryCopy;
+  v6 = libraryCopy;
   dispatch_async(libraryQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)userHasPaymentCardWithHandler:(id)a3
+- (void)userHasPaymentCardWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_10003D020();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1279,7 +1279,7 @@ LABEL_9:
   v7[2] = sub_100B3EBF4;
   v7[3] = &unk_101638C60;
   objc_copyWeak(&v9, buf);
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [(TransitPassManager *)self _fetchLibrary:v7];
 
@@ -1298,7 +1298,7 @@ LABEL_9:
   [(TransitPassManager *)&v4 dealloc];
 }
 
-- (TransitPassManager)initWithIsTourist:(BOOL)a3
+- (TransitPassManager)initWithIsTourist:(BOOL)tourist
 {
   v24.receiver = self;
   v24.super_class = TransitPassManager;
@@ -1306,7 +1306,7 @@ LABEL_9:
   v5 = v4;
   if (v4)
   {
-    v4->_isTourist = a3;
+    v4->_isTourist = tourist;
     objc_initWeak(&location, v4);
     GEOConfigGetDouble();
     v7 = v6;

@@ -1,44 +1,44 @@
 @interface CategorizationOptionView
 - (CategorizationOptionDelegate)delegate;
-- (CategorizationOptionView)initWithDelegate:(id)a3;
+- (CategorizationOptionView)initWithDelegate:(id)delegate;
 - (void)_setupView;
-- (void)handleCategoriesTapped:(id)a3;
-- (void)handleListViewTapped:(id)a3;
+- (void)handleCategoriesTapped:(id)tapped;
+- (void)handleListViewTapped:(id)tapped;
 @end
 
 @implementation CategorizationOptionView
 
-- (CategorizationOptionView)initWithDelegate:(id)a3
+- (CategorizationOptionView)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = CategorizationOptionView;
   v5 = [(CategorizationOptionView *)&v8 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     [(CategorizationOptionView *)v6 _setupView];
   }
 
   return v6;
 }
 
-- (void)handleListViewTapped:(id)a3
+- (void)handleListViewTapped:(id)tapped
 {
-  v4 = [(CategorizationOptionView *)self delegate];
-  [v4 handleListViewTappedForOptionView:self];
+  delegate = [(CategorizationOptionView *)self delegate];
+  [delegate handleListViewTappedForOptionView:self];
 }
 
-- (void)handleCategoriesTapped:(id)a3
+- (void)handleCategoriesTapped:(id)tapped
 {
-  v4 = [(CategorizationOptionView *)self delegate];
-  [v4 handleCategoriesTappedForOptionView:self];
+  delegate = [(CategorizationOptionView *)self delegate];
+  [delegate handleCategoriesTappedForOptionView:self];
 }
 
 - (void)_setupView
 {
-  v36 = [(CategorizationOptionView *)self delegate];
+  delegate = [(CategorizationOptionView *)self delegate];
   v35 = objc_alloc_init(NSMutableArray);
   v30 = [UIImage imageNamed:@"PhoneWithBuckets"];
   v31 = [UIImage imageNamed:@"PhoneWithNoBuckets"];
@@ -51,7 +51,7 @@
   v34 = v4;
   [v4 setContentMode:1];
   [v4 setImage:v30];
-  if ([v36 isCategorizationEnabledForOptionsView:self])
+  if ([delegate isCategorizationEnabledForOptionsView:self])
   {
     +[UIColor mailMessageListPrimarySelectionColor];
   }
@@ -72,13 +72,13 @@
 
   [v6 setTextAlignment:1];
   [v6 setNumberOfLines:0];
-  v9 = [v6 widthAnchor];
-  v10 = [v9 constraintGreaterThanOrEqualToConstant:80.0];
+  widthAnchor = [v6 widthAnchor];
+  v10 = [widthAnchor constraintGreaterThanOrEqualToConstant:80.0];
   [v35 addObject:v10];
 
   v11 = objc_alloc_init(UIImageView);
   [v11 setContentMode:1];
-  if ([v36 isCategorizationEnabledForOptionsView:self])
+  if ([delegate isCategorizationEnabledForOptionsView:self])
   {
     v12 = v33;
   }
@@ -89,7 +89,7 @@
   }
 
   [v11 setImage:v12];
-  if ([v36 isCategorizationEnabledForOptionsView:self])
+  if ([delegate isCategorizationEnabledForOptionsView:self])
   {
     +[UIColor mailMessageListPrimarySelectionColor];
   }
@@ -118,7 +118,7 @@
   v16 = objc_alloc_init(UIImageView);
   [v16 setContentMode:1];
   [v16 setImage:v31];
-  if ([v36 isCategorizationEnabledForOptionsView:self])
+  if ([delegate isCategorizationEnabledForOptionsView:self])
   {
     +[UIColor secondaryLabelColor];
   }
@@ -139,13 +139,13 @@
 
   [v18 setTextAlignment:1];
   [v18 setNumberOfLines:0];
-  v21 = [v18 widthAnchor];
-  v22 = [v21 constraintGreaterThanOrEqualToConstant:80.0];
+  widthAnchor2 = [v18 widthAnchor];
+  v22 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:80.0];
   [v35 addObject:v22];
 
   v23 = objc_alloc_init(UIImageView);
   [v23 setContentMode:1];
-  if ([v36 isCategorizationEnabledForOptionsView:self])
+  if ([delegate isCategorizationEnabledForOptionsView:self])
   {
     +[UIColor secondaryLabelColor];
   }
@@ -157,7 +157,7 @@
   v24 = ;
   [v23 setTintColor:v24];
 
-  if ([v36 isCategorizationEnabledForOptionsView:self])
+  if ([delegate isCategorizationEnabledForOptionsView:self])
   {
     v25 = v32;
   }

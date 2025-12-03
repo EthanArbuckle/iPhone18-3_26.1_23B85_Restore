@@ -1,26 +1,26 @@
 @interface SISchemaServerEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaServerEventMetadata)initWithDictionary:(id)a3;
-- (SISchemaServerEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaServerEventMetadata)initWithDictionary:(id)dictionary;
+- (SISchemaServerEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaServerEventMetadata
 
-- (SISchemaServerEventMetadata)initWithDictionary:(id)a3
+- (SISchemaServerEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = SISchemaServerEventMetadata;
   v5 = [(SISchemaServerEventMetadata *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"turnID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"turnID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,14 +28,14 @@
       [(SISchemaServerEventMetadata *)v5 setTurnID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"timestampNs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"timestampNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaServerEventMetadata setTimestampNs:](v5, "setTimestampNs:", [v8 longLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"siriDeviceID"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"siriDeviceID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(SISchemaServerEventMetadata *)v5 setSiriDeviceID:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"serverPod"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"serverPod"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (SISchemaServerEventMetadata)initWithJSON:(id)a3
+- (SISchemaServerEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaServerEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaServerEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaServerEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,55 +93,55 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_serverPod)
   {
-    v4 = [(SISchemaServerEventMetadata *)self serverPod];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"serverPod"];
+    serverPod = [(SISchemaServerEventMetadata *)self serverPod];
+    v5 = [serverPod copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"serverPod"];
   }
 
   if (self->_siriDeviceID)
   {
-    v6 = [(SISchemaServerEventMetadata *)self siriDeviceID];
-    v7 = [v6 base64EncodedStringWithOptions:0];
+    siriDeviceID = [(SISchemaServerEventMetadata *)self siriDeviceID];
+    v7 = [siriDeviceID base64EncodedStringWithOptions:0];
     if (v7)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"siriDeviceID"];
+      [dictionary setObject:v7 forKeyedSubscript:@"siriDeviceID"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"siriDeviceID"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"siriDeviceID"];
     }
   }
 
   if (*&self->_has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithLongLong:{-[SISchemaServerEventMetadata timestampNs](self, "timestampNs")}];
-    [v3 setObject:v9 forKeyedSubscript:@"timestampNs"];
+    [dictionary setObject:v9 forKeyedSubscript:@"timestampNs"];
   }
 
   if (self->_turnID)
   {
-    v10 = [(SISchemaServerEventMetadata *)self turnID];
-    v11 = [v10 base64EncodedStringWithOptions:0];
+    turnID = [(SISchemaServerEventMetadata *)self turnID];
+    v11 = [turnID base64EncodedStringWithOptions:0];
     if (v11)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"turnID"];
+      [dictionary setObject:v11 forKeyedSubscript:@"turnID"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"turnID"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"turnID"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -162,28 +162,28 @@
   return v5 ^ v6 ^ [(NSString *)self->_serverPod hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(SISchemaServerEventMetadata *)self turnID];
-  v6 = [v4 turnID];
-  if ((v5 != 0) == (v6 == 0))
+  turnID = [(SISchemaServerEventMetadata *)self turnID];
+  turnID2 = [equalCopy turnID];
+  if ((turnID != 0) == (turnID2 == 0))
   {
     goto LABEL_19;
   }
 
-  v7 = [(SISchemaServerEventMetadata *)self turnID];
-  if (v7)
+  turnID3 = [(SISchemaServerEventMetadata *)self turnID];
+  if (turnID3)
   {
-    v8 = v7;
-    v9 = [(SISchemaServerEventMetadata *)self turnID];
-    v10 = [v4 turnID];
-    v11 = [v9 isEqual:v10];
+    v8 = turnID3;
+    turnID4 = [(SISchemaServerEventMetadata *)self turnID];
+    turnID5 = [equalCopy turnID];
+    v11 = [turnID4 isEqual:turnID5];
 
     if (!v11)
     {
@@ -195,7 +195,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[40] & 1))
+  if ((*&self->_has & 1) != (equalCopy[40] & 1))
   {
     goto LABEL_20;
   }
@@ -203,26 +203,26 @@
   if (*&self->_has)
   {
     timestampNs = self->_timestampNs;
-    if (timestampNs != [v4 timestampNs])
+    if (timestampNs != [equalCopy timestampNs])
     {
       goto LABEL_20;
     }
   }
 
-  v5 = [(SISchemaServerEventMetadata *)self siriDeviceID];
-  v6 = [v4 siriDeviceID];
-  if ((v5 != 0) == (v6 == 0))
+  turnID = [(SISchemaServerEventMetadata *)self siriDeviceID];
+  turnID2 = [equalCopy siriDeviceID];
+  if ((turnID != 0) == (turnID2 == 0))
   {
     goto LABEL_19;
   }
 
-  v13 = [(SISchemaServerEventMetadata *)self siriDeviceID];
-  if (v13)
+  siriDeviceID = [(SISchemaServerEventMetadata *)self siriDeviceID];
+  if (siriDeviceID)
   {
-    v14 = v13;
-    v15 = [(SISchemaServerEventMetadata *)self siriDeviceID];
-    v16 = [v4 siriDeviceID];
-    v17 = [v15 isEqual:v16];
+    v14 = siriDeviceID;
+    siriDeviceID2 = [(SISchemaServerEventMetadata *)self siriDeviceID];
+    siriDeviceID3 = [equalCopy siriDeviceID];
+    v17 = [siriDeviceID2 isEqual:siriDeviceID3];
 
     if (!v17)
     {
@@ -234,12 +234,12 @@
   {
   }
 
-  v5 = [(SISchemaServerEventMetadata *)self serverPod];
-  v6 = [v4 serverPod];
-  if ((v5 != 0) != (v6 == 0))
+  turnID = [(SISchemaServerEventMetadata *)self serverPod];
+  turnID2 = [equalCopy serverPod];
+  if ((turnID != 0) != (turnID2 == 0))
   {
-    v18 = [(SISchemaServerEventMetadata *)self serverPod];
-    if (!v18)
+    serverPod = [(SISchemaServerEventMetadata *)self serverPod];
+    if (!serverPod)
     {
 
 LABEL_23:
@@ -247,10 +247,10 @@ LABEL_23:
       goto LABEL_21;
     }
 
-    v19 = v18;
-    v20 = [(SISchemaServerEventMetadata *)self serverPod];
-    v21 = [v4 serverPod];
-    v22 = [v20 isEqual:v21];
+    v19 = serverPod;
+    serverPod2 = [(SISchemaServerEventMetadata *)self serverPod];
+    serverPod3 = [equalCopy serverPod];
+    v22 = [serverPod2 isEqual:serverPod3];
 
     if (v22)
     {
@@ -270,12 +270,12 @@ LABEL_21:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(SISchemaServerEventMetadata *)self turnID];
+  toCopy = to;
+  turnID = [(SISchemaServerEventMetadata *)self turnID];
 
-  if (v4)
+  if (turnID)
   {
     PBDataWriterWriteDataField();
   }
@@ -285,30 +285,30 @@ LABEL_21:
     PBDataWriterWriteInt64Field();
   }
 
-  v5 = [(SISchemaServerEventMetadata *)self siriDeviceID];
+  siriDeviceID = [(SISchemaServerEventMetadata *)self siriDeviceID];
 
-  if (v5)
+  if (siriDeviceID)
   {
     PBDataWriterWriteDataField();
   }
 
-  v6 = [(SISchemaServerEventMetadata *)self serverPod];
+  serverPod = [(SISchemaServerEventMetadata *)self serverPod];
 
-  v7 = v8;
-  if (v6)
+  v7 = toCopy;
+  if (serverPod)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = SISchemaServerEventMetadata;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{8, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{8, v8.receiver, v8.super_class}];
 
   if (v6)
   {

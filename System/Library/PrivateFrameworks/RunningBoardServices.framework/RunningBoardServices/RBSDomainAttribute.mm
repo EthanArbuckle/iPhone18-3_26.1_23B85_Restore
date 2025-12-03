@@ -1,12 +1,12 @@
 @interface RBSDomainAttribute
-+ (id)attributeWithDomain:(id)a3 name:(id)a4;
-+ (id)attributeWithDomain:(id)a3 name:(id)a4 sourceEnvironment:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (RBSDomainAttribute)initWithRBSXPCCoder:(id)a3;
++ (id)attributeWithDomain:(id)domain name:(id)name;
++ (id)attributeWithDomain:(id)domain name:(id)name sourceEnvironment:(id)environment;
+- (BOOL)isEqual:(id)equal;
+- (RBSDomainAttribute)initWithRBSXPCCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)_initWithDomain:(void *)a3 name:(void *)a4 sourceEnvironment:;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)_initWithDomain:(void *)domain name:(void *)name sourceEnvironment:;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSDomainAttribute
@@ -28,31 +28,31 @@
   return v4 ^ [(NSString *)self->_sourceEnvironment hash];
 }
 
-+ (id)attributeWithDomain:(id)a3 name:(id)a4
++ (id)attributeWithDomain:(id)domain name:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RBSDomainAttribute *)[a1 alloc] _initWithDomain:v7 name:v6 sourceEnvironment:0];
+  nameCopy = name;
+  domainCopy = domain;
+  v8 = [(RBSDomainAttribute *)[self alloc] _initWithDomain:domainCopy name:nameCopy sourceEnvironment:0];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = RBSDomainAttribute;
   v8 = 0;
-  if ([(RBSAttribute *)&v10 isEqual:v4])
+  if ([(RBSAttribute *)&v10 isEqual:equalCopy])
   {
     domain = self->_domain;
-    if (domain == v4[1] || [(NSString *)domain isEqualToString:?])
+    if (domain == equalCopy[1] || [(NSString *)domain isEqualToString:?])
     {
       name = self->_name;
-      if (name == v4[2] || [(NSString *)name isEqualToString:?])
+      if (name == equalCopy[2] || [(NSString *)name isEqualToString:?])
       {
         sourceEnvironment = self->_sourceEnvironment;
-        if (sourceEnvironment == v4[3] || [(NSString *)sourceEnvironment isEqualToString:?])
+        if (sourceEnvironment == equalCopy[3] || [(NSString *)sourceEnvironment isEqualToString:?])
         {
           v8 = 1;
         }
@@ -63,78 +63,78 @@
   return v8;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = RBSDomainAttribute;
-  v4 = a3;
-  [(RBSAttribute *)&v8 encodeWithRBSXPCCoder:v4];
+  coderCopy = coder;
+  [(RBSAttribute *)&v8 encodeWithRBSXPCCoder:coderCopy];
   v5 = [(RBSDomainAttribute *)self domain:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"domain"];
+  [coderCopy encodeObject:v5 forKey:@"domain"];
 
-  v6 = [(RBSDomainAttribute *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(RBSDomainAttribute *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v7 = [(RBSDomainAttribute *)self sourceEnvironment];
-  [v4 encodeObject:v7 forKey:@"sourceEnvironment"];
+  sourceEnvironment = [(RBSDomainAttribute *)self sourceEnvironment];
+  [coderCopy encodeObject:sourceEnvironment forKey:@"sourceEnvironment"];
 }
 
-- (RBSDomainAttribute)initWithRBSXPCCoder:(id)a3
+- (RBSDomainAttribute)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = RBSDomainAttribute;
-  v5 = [(RBSAttribute *)&v10 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v10 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
     [(RBSDomainAttribute *)v5 setDomain:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     [(RBSDomainAttribute *)v5 setName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceEnvironment"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceEnvironment"];
     [(RBSDomainAttribute *)v5 setSourceEnvironment:v8];
   }
 
   return v5;
 }
 
-- (void)_initWithDomain:(void *)a3 name:(void *)a4 sourceEnvironment:
+- (void)_initWithDomain:(void *)domain name:(void *)name sourceEnvironment:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  domainCopy = domain;
+  nameCopy = name;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = RBSDomainAttribute;
-    a1 = objc_msgSendSuper2(&v17, sel__init);
-    if (a1)
+    self = objc_msgSendSuper2(&v17, sel__init);
+    if (self)
     {
       v10 = [v7 copy];
-      v11 = a1[1];
-      a1[1] = v10;
+      v11 = self[1];
+      self[1] = v10;
 
-      v12 = [v8 copy];
-      v13 = a1[2];
-      a1[2] = v12;
+      v12 = [domainCopy copy];
+      v13 = self[2];
+      self[2] = v12;
 
-      v14 = [v9 copy];
-      v15 = a1[3];
-      a1[3] = v14;
+      v14 = [nameCopy copy];
+      v15 = self[3];
+      self[3] = v14;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)attributeWithDomain:(id)a3 name:(id)a4 sourceEnvironment:(id)a5
++ (id)attributeWithDomain:(id)domain name:(id)name sourceEnvironment:(id)environment
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(RBSDomainAttribute *)[a1 alloc] _initWithDomain:v10 name:v9 sourceEnvironment:v8];
+  environmentCopy = environment;
+  nameCopy = name;
+  domainCopy = domain;
+  v11 = [(RBSDomainAttribute *)[self alloc] _initWithDomain:domainCopy name:nameCopy sourceEnvironment:environmentCopy];
 
   return v11;
 }

@@ -1,15 +1,15 @@
 @interface FBSynchronizedTransactionGroup
-- (BOOL)_shouldFailForChildTransaction:(id)a3;
+- (BOOL)_shouldFailForChildTransaction:(id)transaction;
 - (FBSynchronizedTransactionDelegate)synchronizationDelegate;
 - (FBSynchronizedTransactionGroup)init;
 - (void)_checkPreconditionsAndCommitIfReady;
-- (void)_childTransactionDidComplete:(id)a3;
+- (void)_childTransactionDidComplete:(id)complete;
 - (void)_didComplete;
-- (void)_performSynchronizedCommit:(id)a3;
+- (void)_performSynchronizedCommit:(id)commit;
 - (void)_performSynchronizedCommitIfReady;
-- (void)addSynchronizedTransaction:(id)a3;
+- (void)addSynchronizedTransaction:(id)transaction;
 - (void)performSynchronizedCommit;
-- (void)synchronizedTransactionReadyToCommit:(id)a3;
+- (void)synchronizedTransactionReadyToCommit:(id)commit;
 @end
 
 @implementation FBSynchronizedTransactionGroup
@@ -54,16 +54,16 @@
     }
 
     [(FBSynchronizedTransactionGroup *)self addMilestone:@"synchronizedCommit"];
-    v4 = [(FBSynchronizedTransactionGroup *)self synchronizationDelegate];
-    if (v4 && !self->_commitAllowed)
+    synchronizationDelegate = [(FBSynchronizedTransactionGroup *)self synchronizationDelegate];
+    if (synchronizationDelegate && !self->_commitAllowed)
     {
       if ([(FBSynchronizedTransactionGroup *)self isAuditHistoryEnabled])
       {
-        v3 = [MEMORY[0x1E698E680] descriptionForObject:v4];
+        v3 = [MEMORY[0x1E698E680] descriptionForObject:synchronizationDelegate];
         [(FBSynchronizedTransactionGroup *)self _addAuditHistoryItem:@"Using synchronization delegate: %@", v3];
       }
 
-      [v4 synchronizedTransactionReadyToCommit:self];
+      [synchronizationDelegate synchronizedTransactionReadyToCommit:self];
     }
 
     else
@@ -84,9 +84,9 @@
 - (void)performSynchronizedCommit
 {
   self->_commitAllowed = 1;
-  v3 = [(FBSynchronizedTransactionGroup *)self synchronizationDelegate];
+  synchronizationDelegate = [(FBSynchronizedTransactionGroup *)self synchronizationDelegate];
 
-  if (v3 && [(FBSynchronizedTransactionGroup *)self isAuditHistoryEnabled])
+  if (synchronizationDelegate && [(FBSynchronizedTransactionGroup *)self isAuditHistoryEnabled])
   {
     [(FBSynchronizedTransactionGroup *)self _addAuditHistoryItem:@"Delegate says we're good to commit."];
   }
@@ -104,9 +104,9 @@
       [(FBSynchronizedTransactionGroup *)self _addAuditHistoryItem:@"Committing now!"];
     }
 
-    v3 = [(NSMutableSet *)self->_synchronizedTransactionsReadyToCommit allObjects];
+    allObjects = [(NSMutableSet *)self->_synchronizedTransactionsReadyToCommit allObjects];
     [(NSMutableSet *)self->_synchronizedTransactionsReadyToCommit removeAllObjects];
-    [(FBSynchronizedTransactionGroup *)self _performSynchronizedCommit:v3];
+    [(FBSynchronizedTransactionGroup *)self _performSynchronizedCommit:allObjects];
     [(FBSynchronizedTransactionGroup *)self satisfyMilestone:@"synchronizedCommit"];
   }
 }
@@ -120,28 +120,28 @@
   [(FBSynchronizedTransactionGroup *)&v3 _didComplete];
 }
 
-- (void)addSynchronizedTransaction:(id)a3
+- (void)addSynchronizedTransaction:(id)transaction
 {
-  if (a3)
+  if (transaction)
   {
     synchronizedTransactions = self->_synchronizedTransactions;
-    v5 = a3;
-    [(NSMutableSet *)synchronizedTransactions addObject:v5];
-    [(NSMutableSet *)self->_synchronizedTransactionsAwaitingCommitReadiness addObject:v5];
-    [v5 setSynchronizationDelegate:self];
-    [(FBSynchronizedTransactionGroup *)self addChildTransaction:v5];
+    transactionCopy = transaction;
+    [(NSMutableSet *)synchronizedTransactions addObject:transactionCopy];
+    [(NSMutableSet *)self->_synchronizedTransactionsAwaitingCommitReadiness addObject:transactionCopy];
+    [transactionCopy setSynchronizationDelegate:self];
+    [(FBSynchronizedTransactionGroup *)self addChildTransaction:transactionCopy];
   }
 }
 
-- (BOOL)_shouldFailForChildTransaction:(id)a3
+- (BOOL)_shouldFailForChildTransaction:(id)transaction
 {
-  v4 = a3;
-  if ([(NSMutableSet *)self->_synchronizedTransactions containsObject:v4])
+  transactionCopy = transaction;
+  if ([(NSMutableSet *)self->_synchronizedTransactions containsObject:transactionCopy])
   {
-    v5 = [(FBSynchronizedTransactionGroup *)self synchronizationDelegate];
-    if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+    synchronizationDelegate = [(FBSynchronizedTransactionGroup *)self synchronizationDelegate];
+    if (synchronizationDelegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v6 = [v5 synchronizedTransactionGroup:self shouldFailForSynchronizedTransaction:v4];
+      v6 = [synchronizationDelegate synchronizedTransactionGroup:self shouldFailForSynchronizedTransaction:transactionCopy];
     }
 
     else
@@ -158,29 +158,29 @@
   return v6;
 }
 
-- (void)_childTransactionDidComplete:(id)a3
+- (void)_childTransactionDidComplete:(id)complete
 {
   synchronizedTransactionsAwaitingCommitReadiness = self->_synchronizedTransactionsAwaitingCommitReadiness;
-  v5 = a3;
-  [(NSMutableSet *)synchronizedTransactionsAwaitingCommitReadiness removeObject:v5];
-  [(NSMutableSet *)self->_synchronizedTransactionsReadyToCommit removeObject:v5];
+  completeCopy = complete;
+  [(NSMutableSet *)synchronizedTransactionsAwaitingCommitReadiness removeObject:completeCopy];
+  [(NSMutableSet *)self->_synchronizedTransactionsReadyToCommit removeObject:completeCopy];
   [(FBSynchronizedTransactionGroup *)self _checkPreconditionsAndCommitIfReady];
   v6.receiver = self;
   v6.super_class = FBSynchronizedTransactionGroup;
-  [(FBSynchronizedTransactionGroup *)&v6 _childTransactionDidComplete:v5];
+  [(FBSynchronizedTransactionGroup *)&v6 _childTransactionDidComplete:completeCopy];
 }
 
-- (void)_performSynchronizedCommit:(id)a3
+- (void)_performSynchronizedCommit:(id)commit
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FBSynchronizedTransactionGroup *)self synchronizationDelegate];
-  [v5 synchronizedTransaction:self willCommitSynchronizedTransactions:v4];
+  commitCopy = commit;
+  synchronizationDelegate = [(FBSynchronizedTransactionGroup *)self synchronizationDelegate];
+  [synchronizationDelegate synchronizedTransaction:self willCommitSynchronizedTransactions:commitCopy];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = commitCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -206,17 +206,17 @@
     while (v8);
   }
 
-  [v5 synchronizedTransaction:self didCommitSynchronizedTransactions:v6];
+  [synchronizationDelegate synchronizedTransaction:self didCommitSynchronizedTransactions:v6];
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)synchronizedTransactionReadyToCommit:(id)a3
+- (void)synchronizedTransactionReadyToCommit:(id)commit
 {
-  v4 = a3;
+  commitCopy = commit;
   if ([(NSMutableSet *)self->_synchronizedTransactionsAwaitingCommitReadiness containsObject:?])
   {
-    [(NSMutableSet *)self->_synchronizedTransactionsAwaitingCommitReadiness removeObject:v4];
-    [(NSMutableSet *)self->_synchronizedTransactionsReadyToCommit addObject:v4];
+    [(NSMutableSet *)self->_synchronizedTransactionsAwaitingCommitReadiness removeObject:commitCopy];
+    [(NSMutableSet *)self->_synchronizedTransactionsReadyToCommit addObject:commitCopy];
     [(FBSynchronizedTransactionGroup *)self _checkPreconditionsAndCommitIfReady];
   }
 }

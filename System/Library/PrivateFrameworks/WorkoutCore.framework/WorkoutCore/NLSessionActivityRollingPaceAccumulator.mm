@@ -1,83 +1,83 @@
 @interface NLSessionActivityRollingPaceAccumulator
-- (NLSessionActivityRollingPaceAccumulator)initWithBuilder:(id)a3 activityType:(id)a4 distanceUnit:(id)a5 healthStore:(id)a6;
+- (NLSessionActivityRollingPaceAccumulator)initWithBuilder:(id)builder activityType:(id)type distanceUnit:(id)unit healthStore:(id)store;
 - (double)rollingPaceInMetersPerSecond;
 - (id)_determineNewPauseResumeEvents;
-- (void)_addPauseResumeEvents:(id)a3;
+- (void)_addPauseResumeEvents:(id)events;
 - (void)_determineAndAddNewPauseResumeEvents;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
-- (void)processBuilderQuantities:(id)a3;
-- (void)setRollingPaceInMetersPerSecond:(double)a3;
-- (void)updateDistanceUnit:(id)a3;
-- (void)updateRollingPaceWithElapsedTime:(double)a3;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
+- (void)processBuilderQuantities:(id)quantities;
+- (void)setRollingPaceInMetersPerSecond:(double)second;
+- (void)updateDistanceUnit:(id)unit;
+- (void)updateRollingPaceWithElapsedTime:(double)time;
 - (void)workoutBuilderDidCollectEvent;
 @end
 
 @implementation NLSessionActivityRollingPaceAccumulator
 
-- (NLSessionActivityRollingPaceAccumulator)initWithBuilder:(id)a3 activityType:(id)a4 distanceUnit:(id)a5 healthStore:(id)a6
+- (NLSessionActivityRollingPaceAccumulator)initWithBuilder:(id)builder activityType:(id)type distanceUnit:(id)unit healthStore:(id)store
 {
-  v21 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, builder);
   v19 = 0;
-  objc_storeStrong(&v19, a4);
+  objc_storeStrong(&v19, type);
   v18 = 0;
-  objc_storeStrong(&v18, a5);
+  objc_storeStrong(&v18, unit);
   v17 = 0;
-  objc_storeStrong(&v17, a6);
-  v6 = v21;
-  v21 = 0;
+  objc_storeStrong(&v17, store);
+  v6 = selfCopy;
+  selfCopy = 0;
   v16.receiver = v6;
   v16.super_class = NLSessionActivityRollingPaceAccumulator;
   v12 = [(NLSessionActivityBuilderAccumulator *)&v16 initWithBuilder:location[0]];
-  v21 = v12;
-  objc_storeStrong(&v21, v12);
+  selfCopy = v12;
+  objc_storeStrong(&selfCopy, v12);
   if (v12)
   {
-    objc_storeStrong(&v21->_activityType, v19);
-    objc_storeStrong(&v21->_distanceUnit, v18);
-    objc_storeStrong(&v21->_healthStore, v17);
+    objc_storeStrong(&selfCopy->_activityType, v19);
+    objc_storeStrong(&selfCopy->_distanceUnit, v18);
+    objc_storeStrong(&selfCopy->_healthStore, v17);
     v7 = HKDispatchQueueName();
     v8 = dispatch_queue_create(v7, 0);
-    queue = v21->_queue;
-    v21->_queue = v8;
+    queue = selfCopy->_queue;
+    selfCopy->_queue = v8;
     MEMORY[0x277D82BD8](queue);
   }
 
-  v11 = MEMORY[0x277D82BE0](v21);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
-  [(FIUIWorkoutActivityType *)v33->_activityType effectiveTypeIdentifier];
+  objc_storeStrong(&v31, handler);
+  [(FIUIWorkoutActivityType *)selfCopy->_activityType effectiveTypeIdentifier];
   v30 = _HKWorkoutDistanceTypeForActivityType();
   if (!v30)
   {
     __assert_rtn("[NLSessionActivityRollingPaceAccumulator accumulatorDidStartWithStartDate:handler:]", "NLSessionActivityRollingPaceAccumulator.m", 66, "quantityType != nil && Should always get a distance type in the rolling pace accumulator.");
   }
 
-  distanceUnit = v33->_distanceUnit;
+  distanceUnit = selfCopy->_distanceUnit;
   v29 = FIStandardDistanceQuantity();
   v5 = objc_alloc(MEMORY[0x277D095C8]);
   v6 = [v5 initWithQuantityType:v30 threshold:v29 startDate:location[0]];
-  trailingIntervalController = v33->_trailingIntervalController;
-  v33->_trailingIntervalController = v6;
+  trailingIntervalController = selfCopy->_trailingIntervalController;
+  selfCopy->_trailingIntervalController = v6;
   MEMORY[0x277D82BD8](trailingIntervalController);
-  objc_initWeak(&v28, v33);
-  queue = v33->_queue;
+  objc_initWeak(&v28, selfCopy);
+  queue = selfCopy->_queue;
   v22 = MEMORY[0x277D85DD0];
   v23 = -1073741824;
   v24 = 0;
@@ -87,19 +87,19 @@
   dispatch_async(queue, &v22);
   v14 = objc_alloc(MEMORY[0x277CCDC10]);
   v12 = v30;
-  v10 = [(NLSessionActivityBuilderAccumulator *)v33 builder];
+  builder = [(NLSessionActivityBuilderAccumulator *)selfCopy builder];
   v16 = MEMORY[0x277D85DD0];
   v17 = -1073741824;
   v18 = 0;
   v19 = __84__NLSessionActivityRollingPaceAccumulator_accumulatorDidStartWithStartDate_handler___block_invoke_2;
   v20 = &unk_277D89248;
   objc_copyWeak(v21, &v28);
-  v11 = [v14 initWithQuantityType:v12 workoutBuilder:v10 quantitiesAddedHandler:&v16];
-  query = v33->_query;
-  v33->_query = v11;
+  v11 = [v14 initWithQuantityType:v12 workoutBuilder:builder quantitiesAddedHandler:&v16];
+  query = selfCopy->_query;
+  selfCopy->_query = v11;
   MEMORY[0x277D82BD8](query);
-  *&v9 = MEMORY[0x277D82BD8](v10).n128_u64[0];
-  [(HKHealthStore *)v33->_healthStore executeQuery:v33->_query, v9];
+  *&v9 = MEMORY[0x277D82BD8](builder).n128_u64[0];
+  [(HKHealthStore *)selfCopy->_healthStore executeQuery:selfCopy->_query, v9];
   objc_destroyWeak(v21);
   objc_destroyWeak(&v27);
   objc_destroyWeak(&v28);
@@ -155,14 +155,14 @@ void __84__NLSessionActivityRollingPaceAccumulator_accumulatorDidStartWithStartD
   *MEMORY[0x277D85DE8];
 }
 
-- (void)processBuilderQuantities:(id)a3
+- (void)processBuilderQuantities:(id)quantities
 {
   v34 = *MEMORY[0x277D85DE8];
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(FIUIWorkoutActivityType *)v32->_activityType effectiveTypeIdentifier];
+  objc_storeStrong(location, quantities);
+  [(FIUIWorkoutActivityType *)selfCopy->_activityType effectiveTypeIdentifier];
   v30 = _HKWorkoutDistanceTypeForActivityType();
   v29 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(location[0], "count")}];
   memset(__b, 0, sizeof(__b));
@@ -184,17 +184,17 @@ void __84__NLSessionActivityRollingPaceAccumulator_accumulatorDidStartWithStartD
       v28 = *(__b[1] + 8 * v14);
       v6 = MEMORY[0x277CCD800];
       v5 = v30;
-      v11 = [v28 quantity];
-      v10 = [v28 dateInterval];
-      v9 = [v10 startDate];
-      v8 = [v28 dateInterval];
-      v7 = [v8 endDate];
-      v26 = [v6 quantitySampleWithType:v5 quantity:v11 startDate:v9 endDate:?];
-      MEMORY[0x277D82BD8](v7);
-      MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v10);
-      *&v3 = MEMORY[0x277D82BD8](v11).n128_u64[0];
+      quantity = [v28 quantity];
+      dateInterval = [v28 dateInterval];
+      startDate = [dateInterval startDate];
+      dateInterval2 = [v28 dateInterval];
+      endDate = [dateInterval2 endDate];
+      v26 = [v6 quantitySampleWithType:v5 quantity:quantity startDate:startDate endDate:?];
+      MEMORY[0x277D82BD8](endDate);
+      MEMORY[0x277D82BD8](dateInterval2);
+      MEMORY[0x277D82BD8](startDate);
+      MEMORY[0x277D82BD8](dateInterval);
+      *&v3 = MEMORY[0x277D82BD8](quantity).n128_u64[0];
       [v29 addObject:{v26, v3}];
       objc_storeStrong(&v26, 0);
       ++v14;
@@ -211,8 +211,8 @@ void __84__NLSessionActivityRollingPaceAccumulator_accumulatorDidStartWithStartD
   }
 
   MEMORY[0x277D82BD8](obj);
-  objc_initWeak(&v25, v32);
-  queue = v32->_queue;
+  objc_initWeak(&v25, selfCopy);
+  queue = selfCopy->_queue;
   v18 = MEMORY[0x277D85DD0];
   v19 = -1073741824;
   v20 = 0;
@@ -279,13 +279,13 @@ void __68__NLSessionActivityRollingPaceAccumulator_processBuilderQuantities___bl
   objc_storeStrong(v2, 0);
 }
 
-- (void)setRollingPaceInMetersPerSecond:(double)a3
+- (void)setRollingPaceInMetersPerSecond:(double)second
 {
-  self->_rollingPaceInMetersPerSecond = a3;
-  v4 = [(NLSessionActivityRollingPaceAccumulator *)self trailingIntervalController];
-  v5 = [(FITrailingIntervalController *)v4 thresholdReached];
-  *&v3 = MEMORY[0x277D82BD8](v4).n128_u64[0];
-  if (v5)
+  self->_rollingPaceInMetersPerSecond = second;
+  trailingIntervalController = [(NLSessionActivityRollingPaceAccumulator *)self trailingIntervalController];
+  thresholdReached = [(FITrailingIntervalController *)trailingIntervalController thresholdReached];
+  *&v3 = MEMORY[0x277D82BD8](trailingIntervalController).n128_u64[0];
+  if (thresholdReached)
   {
     [(NLSessionActivityBuilderAccumulator *)self update];
   }
@@ -301,10 +301,10 @@ void __68__NLSessionActivityRollingPaceAccumulator_processBuilderQuantities___bl
 
   else
   {
-    v4 = [(NLSessionActivityRollingPaceAccumulator *)self trailingIntervalController];
-    v5 = [(FITrailingIntervalController *)v4 thresholdReached];
-    MEMORY[0x277D82BD8](v4);
-    if (v5)
+    trailingIntervalController = [(NLSessionActivityRollingPaceAccumulator *)self trailingIntervalController];
+    thresholdReached = [(FITrailingIntervalController *)trailingIntervalController thresholdReached];
+    MEMORY[0x277D82BD8](trailingIntervalController);
+    if (thresholdReached)
     {
       return self->_rollingPaceInMetersPerSecond;
     }
@@ -318,10 +318,10 @@ void __68__NLSessionActivityRollingPaceAccumulator_processBuilderQuantities___bl
 
 - (void)workoutBuilderDidCollectEvent
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
-  queue = v10->_queue;
+  queue = selfCopy->_queue;
   v3 = MEMORY[0x277D85DD0];
   v4 = -1073741824;
   v5 = 0;
@@ -370,35 +370,35 @@ void __72__NLSessionActivityRollingPaceAccumulator_workoutBuilderDidCollectEvent
 
 - (void)_determineAndAddNewPauseResumeEvents
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   v2[0] = [(NLSessionActivityRollingPaceAccumulator *)self _determineNewPauseResumeEvents];
-  [(NLSessionActivityRollingPaceAccumulator *)v3 _addPauseResumeEvents:v2[0]];
+  [(NLSessionActivityRollingPaceAccumulator *)selfCopy _addPauseResumeEvents:v2[0]];
   objc_storeStrong(v2, 0);
 }
 
 - (id)_determineNewPauseResumeEvents
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v19[0] = MEMORY[0x277D82BE0](MEMORY[0x277CBEBF8]);
-  v13 = [(NLSessionActivityBuilderAccumulator *)v20 builder];
-  v12 = [(HKLiveWorkoutBuilder *)v13 workoutEvents];
+  builder = [(NLSessionActivityBuilderAccumulator *)selfCopy builder];
+  workoutEvents = [(HKLiveWorkoutBuilder *)builder workoutEvents];
   location = FIFilterPauseResumeEvents();
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](workoutEvents);
   v17 = [location count];
-  v15 = [(NLSessionActivityRollingPaceAccumulator *)v20 trailingIntervalController];
-  v14 = [(FITrailingIntervalController *)v15 pauseResumeEvents];
-  v16 = [v14 count];
-  MEMORY[0x277D82BD8](v14);
-  *&v2 = MEMORY[0x277D82BD8](v15).n128_u64[0];
+  trailingIntervalController = [(NLSessionActivityRollingPaceAccumulator *)selfCopy trailingIntervalController];
+  pauseResumeEvents = [(FITrailingIntervalController *)trailingIntervalController pauseResumeEvents];
+  v16 = [pauseResumeEvents count];
+  MEMORY[0x277D82BD8](pauseResumeEvents);
+  *&v2 = MEMORY[0x277D82BD8](trailingIntervalController).n128_u64[0];
   if (v17 > v16)
   {
     v8 = [location count];
-    v10 = [(NLSessionActivityRollingPaceAccumulator *)v20 trailingIntervalController];
-    v9 = [(FITrailingIntervalController *)v10 pauseResumeEvents];
-    v11 = v8 - [v9 count];
-    MEMORY[0x277D82BD8](v9);
+    trailingIntervalController2 = [(NLSessionActivityRollingPaceAccumulator *)selfCopy trailingIntervalController];
+    pauseResumeEvents2 = [(FITrailingIntervalController *)trailingIntervalController2 pauseResumeEvents];
+    v11 = v8 - [pauseResumeEvents2 count];
+    MEMORY[0x277D82BD8](pauseResumeEvents2);
     v3 = [location count];
     v22 = v3 - v11;
     v21 = v11;
@@ -417,13 +417,13 @@ void __72__NLSessionActivityRollingPaceAccumulator_workoutBuilderDidCollectEvent
   return v7;
 }
 
-- (void)_addPauseResumeEvents:(id)a3
+- (void)_addPauseResumeEvents:(id)events
 {
   v32 = *MEMORY[0x277D85DE8];
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, events);
   v26 = 0;
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
@@ -442,8 +442,8 @@ void __72__NLSessionActivityRollingPaceAccumulator_workoutBuilderDidCollectEvent
       }
 
       v25 = *(__b[1] + 8 * v15);
-      v12 = [v25 type];
-      if (v12 == 1)
+      type = [v25 type];
+      if (type == 1)
       {
         _HKInitializeLogging();
         oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -452,24 +452,24 @@ void __72__NLSessionActivityRollingPaceAccumulator_workoutBuilderDidCollectEvent
         {
           log = oslog;
           v9 = type;
-          v11 = [v25 dateInterval];
-          v10 = [v11 startDate];
-          __os_log_helper_16_2_2_8_64_8_64(v30, v10, v26);
+          dateInterval = [v25 dateInterval];
+          startDate = [dateInterval startDate];
+          __os_log_helper_16_2_2_8_64_8_64(v30, startDate, v26);
           _os_log_impl(&dword_20AEA4000, log, v9, "[RollingPace] Added pause event to trailing interval controller with date: %@ error:%@", v30, 0x16u);
-          MEMORY[0x277D82BD8](v10);
-          MEMORY[0x277D82BD8](v11);
+          MEMORY[0x277D82BD8](startDate);
+          MEMORY[0x277D82BD8](dateInterval);
         }
 
         objc_storeStrong(&oslog, 0);
-        trailingIntervalController = v28->_trailingIntervalController;
+        trailingIntervalController = selfCopy->_trailingIntervalController;
         v21 = v26;
         [(FITrailingIntervalController *)trailingIntervalController addEvent:v25 withError:&v21];
         objc_storeStrong(&v26, v21);
       }
 
-      else if (v12 == 2)
+      else if (type == 2)
       {
-        v4 = v28->_trailingIntervalController;
+        v4 = selfCopy->_trailingIntervalController;
         v20 = v26;
         [(FITrailingIntervalController *)v4 addEvent:v25 withError:&v20];
         objc_storeStrong(&v26, v20);
@@ -478,12 +478,12 @@ void __72__NLSessionActivityRollingPaceAccumulator_workoutBuilderDidCollectEvent
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v5 = v19;
-          v7 = [v25 dateInterval];
-          v6 = [v7 startDate];
-          __os_log_helper_16_2_2_8_64_8_64(v29, v6, v26);
+          dateInterval2 = [v25 dateInterval];
+          startDate2 = [dateInterval2 startDate];
+          __os_log_helper_16_2_2_8_64_8_64(v29, startDate2, v26);
           _os_log_impl(&dword_20AEA4000, v5, OS_LOG_TYPE_DEFAULT, "[RollingPace] Added resume event to trailing interval controller with date: %@ error:%@", v29, 0x16u);
-          MEMORY[0x277D82BD8](v6);
-          MEMORY[0x277D82BD8](v7);
+          MEMORY[0x277D82BD8](startDate2);
+          MEMORY[0x277D82BD8](dateInterval2);
         }
 
         objc_storeStrong(&v19, 0);
@@ -508,16 +508,16 @@ void __72__NLSessionActivityRollingPaceAccumulator_workoutBuilderDidCollectEvent
   *MEMORY[0x277D85DE8];
 }
 
-- (void)updateDistanceUnit:(id)a3
+- (void)updateDistanceUnit:(id)unit
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v14->_distanceUnit, location[0]);
+  objc_storeStrong(location, unit);
+  objc_storeStrong(&selfCopy->_distanceUnit, location[0]);
   v12 = FIStandardDistanceQuantity();
-  objc_initWeak(&v11, v14);
-  queue = v14->_queue;
+  objc_initWeak(&v11, selfCopy);
+  queue = selfCopy->_queue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
@@ -571,14 +571,14 @@ double __62__NLSessionActivityRollingPaceAccumulator_updateDistanceUnit___block_
   return result;
 }
 
-- (void)updateRollingPaceWithElapsedTime:(double)a3
+- (void)updateRollingPaceWithElapsedTime:(double)time
 {
-  v13 = self;
+  selfCopy = self;
   v12[2] = a2;
-  v12[1] = *&a3;
+  v12[1] = *&time;
   v12[0] = [MEMORY[0x277CBEAA8] date];
-  objc_initWeak(&location, v13);
-  queue = v13->_queue;
+  objc_initWeak(&location, selfCopy);
+  queue = selfCopy->_queue;
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;

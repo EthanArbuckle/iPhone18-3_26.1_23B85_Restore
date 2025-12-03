@@ -1,21 +1,21 @@
 @interface _ANEStrings
-+ (BOOL)trimmedModelPath:(id)a3 trimmedPath:(id *)a4;
++ (BOOL)trimmedModelPath:(id)path trimmedPath:(id *)trimmedPath;
 + (id)buildSpecificModelDataVaultDirectory;
 + (id)buildSpecificUserModelDataVaultDirectory;
 + (id)cloneDirectory;
 + (id)pps_defaultSystemPathDir;
 + (id)tempDirectory;
 + (id)testing_ThreeSixtyModelName;
-+ (id)testing_cacheDirectoryWithSuffix:(id)a3;
-+ (id)testing_cacheDirectoryWithSuffix:(id)a3 buildVersion:(id)a4;
++ (id)testing_cacheDirectoryWithSuffix:(id)suffix;
++ (id)testing_cacheDirectoryWithSuffix:(id)suffix buildVersion:(id)version;
 + (id)testing_defaultMLIRModelName;
 + (id)testing_encryptedModelNames;
 + (id)testing_external_precompiledModelPath;
 + (id)testing_modelDirectory;
-+ (id)testing_modelDirectory:(id)a3;
++ (id)testing_modelDirectory:(id)directory;
 + (id)testing_modelNames;
-+ (id)testing_userCacheDirectoryWithSuffix:(id)a3;
-+ (id)testing_userCacheDirectoryWithSuffix:(id)a3 buildVersion:(id)a4;
++ (id)testing_userCacheDirectoryWithSuffix:(id)suffix;
++ (id)testing_userCacheDirectoryWithSuffix:(id)suffix buildVersion:(id)version;
 + (id)testing_zeroModelName;
 + (id)userCloneDirectory;
 + (id)userTempDirectory;
@@ -26,29 +26,29 @@
 + (id)pps_defaultSystemPathDir
 {
   v18[10] = *MEMORY[0x1E69E9840];
-  v3 = [a1 testing_inputDirectory];
-  v4 = [a1 testing_modelDirectory];
-  v17 = [v3 stringByAppendingPathComponent:v4];
+  testing_inputDirectory = [self testing_inputDirectory];
+  testing_modelDirectory = [self testing_modelDirectory];
+  v17 = [testing_inputDirectory stringByAppendingPathComponent:testing_modelDirectory];
 
   v18[0] = v17;
-  v5 = [a1 systemLibraryPath];
-  v18[1] = v5;
-  v6 = [a1 internalLibraryPath];
-  v18[2] = v6;
-  v7 = [a1 pps_frameworkDir];
-  v18[3] = v7;
-  v8 = [a1 pps_privateFrameworkDir];
-  v18[4] = v8;
-  v9 = [a1 pps_varDir];
-  v18[5] = v9;
-  v10 = [a1 pps_tmpDir];
-  v18[6] = v10;
-  v11 = [a1 pps_internalDir];
-  v18[7] = v11;
-  v12 = [a1 pps_applicationDir];
-  v18[8] = v12;
-  v13 = [a1 pps_catalogDir];
-  v18[9] = v13;
+  systemLibraryPath = [self systemLibraryPath];
+  v18[1] = systemLibraryPath;
+  internalLibraryPath = [self internalLibraryPath];
+  v18[2] = internalLibraryPath;
+  pps_frameworkDir = [self pps_frameworkDir];
+  v18[3] = pps_frameworkDir;
+  pps_privateFrameworkDir = [self pps_privateFrameworkDir];
+  v18[4] = pps_privateFrameworkDir;
+  pps_varDir = [self pps_varDir];
+  v18[5] = pps_varDir;
+  pps_tmpDir = [self pps_tmpDir];
+  v18[6] = pps_tmpDir;
+  pps_internalDir = [self pps_internalDir];
+  v18[7] = pps_internalDir;
+  pps_applicationDir = [self pps_applicationDir];
+  v18[8] = pps_applicationDir;
+  pps_catalogDir = [self pps_catalogDir];
+  v18[9] = pps_catalogDir;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:10];
 
   v15 = *MEMORY[0x1E69E9840];
@@ -58,12 +58,12 @@
 
 + (id)testing_modelDirectory
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v8 = 0;
-  v4 = [a1 testing_inputDirectory];
-  v5 = [v4 stringByAppendingPathComponent:@"Contents/Resources"];
+  testing_inputDirectory = [self testing_inputDirectory];
+  v5 = [testing_inputDirectory stringByAppendingPathComponent:@"Contents/Resources"];
 
-  if ([v3 fileExistsAtPath:v5 isDirectory:&v8] && v8 == 1)
+  if ([defaultManager fileExistsAtPath:v5 isDirectory:&v8] && v8 == 1)
   {
     v6 = [@"Contents/Resources" stringByAppendingPathComponent:@"TestModels"];
   }
@@ -82,7 +82,7 @@
   block[1] = 3221225472;
   block[2] = __51___ANEStrings_buildSpecificModelDataVaultDirectory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (buildSpecificModelDataVaultDirectory_onceToken != -1)
   {
     dispatch_once(&buildSpecificModelDataVaultDirectory_onceToken, block);
@@ -99,7 +99,7 @@
   block[1] = 3221225472;
   block[2] = __55___ANEStrings_buildSpecificUserModelDataVaultDirectory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (buildSpecificUserModelDataVaultDirectory_onceToken != -1)
   {
     dispatch_once(&buildSpecificUserModelDataVaultDirectory_onceToken, block);
@@ -116,7 +116,7 @@
   block[1] = 3221225472;
   block[2] = __28___ANEStrings_tempDirectory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (tempDirectory_onceToken != -1)
   {
     dispatch_once(&tempDirectory_onceToken, block);
@@ -133,7 +133,7 @@
   block[1] = 3221225472;
   block[2] = __29___ANEStrings_cloneDirectory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (cloneDirectory_onceToken != -1)
   {
     dispatch_once(&cloneDirectory_onceToken, block);
@@ -150,7 +150,7 @@
   block[1] = 3221225472;
   block[2] = __32___ANEStrings_userTempDirectory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (userTempDirectory_onceToken != -1)
   {
     dispatch_once(&userTempDirectory_onceToken, block);
@@ -167,7 +167,7 @@
   block[1] = 3221225472;
   block[2] = __33___ANEStrings_userCloneDirectory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (userCloneDirectory_onceToken != -1)
   {
     dispatch_once(&userCloneDirectory_onceToken, block);
@@ -178,49 +178,49 @@
   return v2;
 }
 
-+ (id)testing_cacheDirectoryWithSuffix:(id)a3
++ (id)testing_cacheDirectoryWithSuffix:(id)suffix
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 testing_cacheDirectory];
-  v7 = [v4 stringWithFormat:@"%@%@/", v6, v5];
+  suffixCopy = suffix;
+  testing_cacheDirectory = [self testing_cacheDirectory];
+  suffixCopy = [v4 stringWithFormat:@"%@%@/", testing_cacheDirectory, suffixCopy];
 
-  return v7;
+  return suffixCopy;
 }
 
-+ (id)testing_cacheDirectoryWithSuffix:(id)a3 buildVersion:(id)a4
++ (id)testing_cacheDirectoryWithSuffix:(id)suffix buildVersion:(id)version
 {
-  v6 = a4;
-  v7 = [a1 testing_cacheDirectoryWithSuffix:a3];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  versionCopy = version;
+  v7 = [self testing_cacheDirectoryWithSuffix:suffix];
+  v8 = [v7 stringByAppendingPathComponent:versionCopy];
 
   return v8;
 }
 
-+ (id)testing_userCacheDirectoryWithSuffix:(id)a3
++ (id)testing_userCacheDirectoryWithSuffix:(id)suffix
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [a1 testing_userCacheDirectory];
-  v7 = [v4 stringWithFormat:@"%@%@/", v6, v5];
+  suffixCopy = suffix;
+  testing_userCacheDirectory = [self testing_userCacheDirectory];
+  suffixCopy = [v4 stringWithFormat:@"%@%@/", testing_userCacheDirectory, suffixCopy];
 
-  return v7;
+  return suffixCopy;
 }
 
-+ (id)testing_userCacheDirectoryWithSuffix:(id)a3 buildVersion:(id)a4
++ (id)testing_userCacheDirectoryWithSuffix:(id)suffix buildVersion:(id)version
 {
-  v6 = a4;
-  v7 = [a1 testing_userCacheDirectoryWithSuffix:a3];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  versionCopy = version;
+  v7 = [self testing_userCacheDirectoryWithSuffix:suffix];
+  v8 = [v7 stringByAppendingPathComponent:versionCopy];
 
   return v8;
 }
 
-+ (id)testing_modelDirectory:(id)a3
++ (id)testing_modelDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [a1 testing_modelDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  directoryCopy = directory;
+  testing_modelDirectory = [self testing_modelDirectory];
+  v6 = [testing_modelDirectory stringByAppendingPathComponent:directoryCopy];
 
   return v6;
 }
@@ -297,39 +297,39 @@
   return v3;
 }
 
-+ (BOOL)trimmedModelPath:(id)a3 trimmedPath:(id *)a4
++ (BOOL)trimmedModelPath:(id)path trimmedPath:(id *)trimmedPath
 {
-  v6 = a3;
-  v7 = v6;
-  v8 = v6 == 0;
-  if (v6 && ([v6 path], v9 = objc_claimAutoreleasedReturnValue(), *a4 = v9, objc_msgSend(a1, "pps_defaultUserPathPrefix"), v10 = objc_claimAutoreleasedReturnValue(), LOBYTE(v9) = objc_msgSend(v9, "hasPrefix:", v10), v10, (v9 & 1) == 0))
+  pathCopy = path;
+  v7 = pathCopy;
+  v8 = pathCopy == 0;
+  if (pathCopy && ([pathCopy path], v9 = objc_claimAutoreleasedReturnValue(), *trimmedPath = v9, objc_msgSend(self, "pps_defaultUserPathPrefix"), v10 = objc_claimAutoreleasedReturnValue(), LOBYTE(v9) = objc_msgSend(v9, "hasPrefix:", v10), v10, (v9 & 1) == 0))
   {
-    v11 = *a4;
-    v12 = [a1 pps_applicationDir];
-    LOBYTE(v11) = [v11 hasPrefix:v12];
+    v11 = *trimmedPath;
+    pps_applicationDir = [self pps_applicationDir];
+    LOBYTE(v11) = [v11 hasPrefix:pps_applicationDir];
 
     v8 = v11 ^ 1;
     if (+[_ANEDeviceInfo isInternalBuild])
     {
-      v13 = *a4;
-      v14 = [a1 pps_defaultSystemPathDir];
-      v15 = [v14 objectAtIndexedSubscript:0];
-      *a4 = [v13 stringByReplacingOccurrencesOfString:v15 withString:@"0_"];
+      v13 = *trimmedPath;
+      pps_defaultSystemPathDir = [self pps_defaultSystemPathDir];
+      v15 = [pps_defaultSystemPathDir objectAtIndexedSubscript:0];
+      *trimmedPath = [v13 stringByReplacingOccurrencesOfString:v15 withString:@"0_"];
     }
 
-    v16 = [a1 pps_defaultSystemPathDir];
-    v17 = [v16 count];
+    pps_defaultSystemPathDir2 = [self pps_defaultSystemPathDir];
+    v17 = [pps_defaultSystemPathDir2 count];
 
     v18 = v17 - 1;
     if (v17 != 1)
     {
       do
       {
-        v19 = *a4;
-        v20 = [a1 pps_defaultSystemPathDir];
-        v21 = [v20 objectAtIndexedSubscript:v18];
+        v19 = *trimmedPath;
+        pps_defaultSystemPathDir3 = [self pps_defaultSystemPathDir];
+        v21 = [pps_defaultSystemPathDir3 objectAtIndexedSubscript:v18];
         v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld_", v18];
-        *a4 = [v19 stringByReplacingOccurrencesOfString:v21 withString:v22];
+        *trimmedPath = [v19 stringByReplacingOccurrencesOfString:v21 withString:v22];
 
         --v18;
       }
@@ -340,7 +340,7 @@
 
   else
   {
-    *a4 = &stru_1F224D6A0;
+    *trimmedPath = &stru_1F224D6A0;
   }
 
   return v8;

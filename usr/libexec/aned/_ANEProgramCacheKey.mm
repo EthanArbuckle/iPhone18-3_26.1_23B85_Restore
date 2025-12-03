@@ -1,10 +1,10 @@
 @interface _ANEProgramCacheKey
-+ (_ANEProgramCacheKey)programCacheKeyWithModel:(id)a3 bundleID:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCacheKey:(id)a3;
-- (_ANEProgramCacheKey)initWithModelIdentifier:(id)a3 modelPerfStatsMask:(unsigned int)a4 bundleID:(id)a5;
-- (_ANEProgramCacheKey)initWithModelPath:(id)a3 modelKey:(id)a4 modelPerfStatsMask:(unsigned int)a5 bundleID:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (_ANEProgramCacheKey)programCacheKeyWithModel:(id)model bundleID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCacheKey:(id)key;
+- (_ANEProgramCacheKey)initWithModelIdentifier:(id)identifier modelPerfStatsMask:(unsigned int)mask bundleID:(id)d;
+- (_ANEProgramCacheKey)initWithModelPath:(id)path modelKey:(id)key modelPerfStatsMask:(unsigned int)mask bundleID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -13,15 +13,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_ANEProgramCacheKey *)self modelPath];
-  v4 = [v3 hash];
-  v5 = [(_ANEProgramCacheKey *)self modelKey];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(_ANEProgramCacheKey *)self bundleID];
-  v8 = v6 ^ [v7 hash];
-  v9 = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
-  v10 = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
-  v11 = v9 ^ [v10 hash];
+  modelPath = [(_ANEProgramCacheKey *)self modelPath];
+  v4 = [modelPath hash];
+  modelKey = [(_ANEProgramCacheKey *)self modelKey];
+  v6 = [modelKey hash] ^ v4;
+  bundleID = [(_ANEProgramCacheKey *)self bundleID];
+  v8 = v6 ^ [bundleID hash];
+  modelPerfStatsMask = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
+  cacheURLIdentifier = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
+  v11 = modelPerfStatsMask ^ [cacheURLIdentifier hash];
 
   return v8 ^ v11;
 }
@@ -30,36 +30,36 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(_ANEProgramCacheKey *)self modelPath];
-  v6 = [(_ANEProgramCacheKey *)self modelKey];
-  v7 = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
-  v8 = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
-  v9 = [(_ANEProgramCacheKey *)self bundleID];
-  v10 = [NSString stringWithFormat:@"%@: { modelPath=%@ : modelKey=%@ : cacheURLIdentifier=%@ : modelPerfStatsMask=%u : bundleID=%@ }", v4, v5, v6, v7, v8, v9];
+  modelPath = [(_ANEProgramCacheKey *)self modelPath];
+  modelKey = [(_ANEProgramCacheKey *)self modelKey];
+  cacheURLIdentifier = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
+  modelPerfStatsMask = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
+  bundleID = [(_ANEProgramCacheKey *)self bundleID];
+  v10 = [NSString stringWithFormat:@"%@: { modelPath=%@ : modelKey=%@ : cacheURLIdentifier=%@ : modelPerfStatsMask=%u : bundleID=%@ }", v4, modelPath, modelKey, cacheURLIdentifier, modelPerfStatsMask, bundleID];
 
   return v10;
 }
 
-- (_ANEProgramCacheKey)initWithModelPath:(id)a3 modelKey:(id)a4 modelPerfStatsMask:(unsigned int)a5 bundleID:(id)a6
+- (_ANEProgramCacheKey)initWithModelPath:(id)path modelKey:(id)key modelPerfStatsMask:(unsigned int)mask bundleID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  pathCopy = path;
+  keyCopy = key;
+  dCopy = d;
   v22.receiver = self;
   v22.super_class = _ANEProgramCacheKey;
   v13 = [(_ANEProgramCacheKey *)&v22 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [pathCopy copy];
     modelPath = v13->_modelPath;
     v13->_modelPath = v14;
 
-    v16 = [v11 copy];
+    v16 = [keyCopy copy];
     modelKey = v13->_modelKey;
     v13->_modelKey = v16;
 
-    v13->_modelPerfStatsMask = a5;
-    v18 = [v12 copy];
+    v13->_modelPerfStatsMask = mask;
+    v18 = [dCopy copy];
     bundleID = v13->_bundleID;
     v13->_bundleID = v18;
 
@@ -70,21 +70,21 @@
   return v13;
 }
 
-- (_ANEProgramCacheKey)initWithModelIdentifier:(id)a3 modelPerfStatsMask:(unsigned int)a4 bundleID:(id)a5
+- (_ANEProgramCacheKey)initWithModelIdentifier:(id)identifier modelPerfStatsMask:(unsigned int)mask bundleID:(id)d
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = _ANEProgramCacheKey;
   v10 = [(_ANEProgramCacheKey *)&v18 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [identifierCopy copy];
     cacheURLIdentifier = v10->_cacheURLIdentifier;
     v10->_cacheURLIdentifier = v11;
 
-    v10->_modelPerfStatsMask = a4;
-    v13 = [v9 copy];
+    v10->_modelPerfStatsMask = mask;
+    v13 = [dCopy copy];
     bundleID = v10->_bundleID;
     v10->_bundleID = v13;
 
@@ -98,94 +98,94 @@
   return v10;
 }
 
-+ (_ANEProgramCacheKey)programCacheKeyWithModel:(id)a3 bundleID:(id)a4
++ (_ANEProgramCacheKey)programCacheKeyWithModel:(id)model bundleID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 getCacheURLIdentifier];
+  dCopy = d;
+  modelCopy = model;
+  getCacheURLIdentifier = [modelCopy getCacheURLIdentifier];
 
-  v9 = [a1 alloc];
-  if (v8)
+  v9 = [self alloc];
+  if (getCacheURLIdentifier)
   {
-    v10 = [v7 getCacheURLIdentifier];
-    v11 = [v7 perfStatsMask];
+    getCacheURLIdentifier2 = [modelCopy getCacheURLIdentifier];
+    perfStatsMask = [modelCopy perfStatsMask];
 
-    v12 = [v9 initWithModelIdentifier:v10 modelPerfStatsMask:v11 bundleID:v6];
+    v12 = [v9 initWithModelIdentifier:getCacheURLIdentifier2 modelPerfStatsMask:perfStatsMask bundleID:dCopy];
   }
 
   else
   {
-    v10 = [v7 modelURL];
-    v13 = [v10 path];
-    v14 = [v7 key];
-    v15 = [v7 perfStatsMask];
+    getCacheURLIdentifier2 = [modelCopy modelURL];
+    path = [getCacheURLIdentifier2 path];
+    v14 = [modelCopy key];
+    perfStatsMask2 = [modelCopy perfStatsMask];
 
-    v12 = [v9 initWithModelPath:v13 modelKey:v14 modelPerfStatsMask:v15 bundleID:v6];
-    v6 = v13;
+    v12 = [v9 initWithModelPath:path modelKey:v14 modelPerfStatsMask:perfStatsMask2 bundleID:dCopy];
+    dCopy = path;
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
+  cacheURLIdentifier = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
 
   v5 = objc_alloc(objc_opt_class());
-  if (v4)
+  if (cacheURLIdentifier)
   {
-    v6 = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
-    v7 = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
-    v8 = [(_ANEProgramCacheKey *)self bundleID];
-    v9 = [v5 initWithModelIdentifier:v6 modelPerfStatsMask:v7 bundleID:v8];
+    cacheURLIdentifier2 = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
+    modelPerfStatsMask = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
+    bundleID = [(_ANEProgramCacheKey *)self bundleID];
+    v9 = [v5 initWithModelIdentifier:cacheURLIdentifier2 modelPerfStatsMask:modelPerfStatsMask bundleID:bundleID];
   }
 
   else
   {
-    v6 = [(_ANEProgramCacheKey *)self modelPath];
-    v8 = [(_ANEProgramCacheKey *)self modelKey];
-    v10 = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
-    v11 = [(_ANEProgramCacheKey *)self bundleID];
-    v9 = [v5 initWithModelPath:v6 modelKey:v8 modelPerfStatsMask:v10 bundleID:v11];
+    cacheURLIdentifier2 = [(_ANEProgramCacheKey *)self modelPath];
+    bundleID = [(_ANEProgramCacheKey *)self modelKey];
+    modelPerfStatsMask2 = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
+    bundleID2 = [(_ANEProgramCacheKey *)self bundleID];
+    v9 = [v5 initWithModelPath:cacheURLIdentifier2 modelKey:bundleID modelPerfStatsMask:modelPerfStatsMask2 bundleID:bundleID2];
   }
 
   return v9;
 }
 
-- (BOOL)isEqualToCacheKey:(id)a3
+- (BOOL)isEqualToCacheKey:(id)key
 {
-  v4 = a3;
-  if (v4)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v5 = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
+    cacheURLIdentifier = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
 
-    if (v5)
+    if (cacheURLIdentifier)
     {
-      v6 = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
-      v7 = [v4 cacheURLIdentifier];
-      v8 = [v6 isEqualToString:v7];
+      cacheURLIdentifier2 = [(_ANEProgramCacheKey *)self cacheURLIdentifier];
+      cacheURLIdentifier3 = [keyCopy cacheURLIdentifier];
+      v8 = [cacheURLIdentifier2 isEqualToString:cacheURLIdentifier3];
     }
 
     else
     {
-      v10 = [(_ANEProgramCacheKey *)self modelPath];
-      v11 = [v4 modelPath];
-      v12 = [v10 isEqualToString:v11];
+      modelPath = [(_ANEProgramCacheKey *)self modelPath];
+      modelPath2 = [keyCopy modelPath];
+      v12 = [modelPath isEqualToString:modelPath2];
 
-      v13 = [(_ANEProgramCacheKey *)self modelKey];
-      v14 = [v4 modelKey];
-      v15 = [v13 isEqualToString:v14];
+      modelKey = [(_ANEProgramCacheKey *)self modelKey];
+      modelKey2 = [keyCopy modelKey];
+      v15 = [modelKey isEqualToString:modelKey2];
 
       v8 = v12 & v15;
     }
 
-    v16 = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
-    v17 = [v4 modelPerfStatsMask];
-    v18 = [(_ANEProgramCacheKey *)self bundleID];
-    v19 = [v4 bundleID];
-    v20 = [v18 isEqualToString:v19];
+    modelPerfStatsMask = [(_ANEProgramCacheKey *)self modelPerfStatsMask];
+    modelPerfStatsMask2 = [keyCopy modelPerfStatsMask];
+    bundleID = [(_ANEProgramCacheKey *)self bundleID];
+    bundleID2 = [keyCopy bundleID];
+    v20 = [bundleID isEqualToString:bundleID2];
 
-    if (v16 == v17)
+    if (modelPerfStatsMask == modelPerfStatsMask2)
     {
       v21 = v8;
     }
@@ -206,16 +206,16 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(_ANEProgramCacheKey *)self isEqualToCacheKey:v5];
   }

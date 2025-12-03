@@ -1,17 +1,17 @@
 @interface POCredentialUtil
-+ (BOOL)encryptPendingSSOTokens:(id)a3 usingPublicKey:(__SecKey *)a4 sharedData:(id)a5 encryptedTokens:(id *)a6;
-+ (id)decryptPendingSSOTokens:(id)a3 UsingPrivateKey:(__SecKey *)a4 sharedData:(id)a5;
-+ (id)maskName:(id)a3;
-+ (id)passwordDataFromContext:(id)a3 error:(id *)a4;
-+ (id)passwordStringFromData:(id)a3;
++ (BOOL)encryptPendingSSOTokens:(id)tokens usingPublicKey:(__SecKey *)key sharedData:(id)data encryptedTokens:(id *)encryptedTokens;
++ (id)decryptPendingSSOTokens:(id)tokens UsingPrivateKey:(__SecKey *)key sharedData:(id)data;
++ (id)maskName:(id)name;
++ (id)passwordDataFromContext:(id)context error:(id *)error;
++ (id)passwordStringFromData:(id)data;
 @end
 
 @implementation POCredentialUtil
 
-+ (id)passwordDataFromContext:(id)a3 error:(id *)a4
++ (id)passwordDataFromContext:(id)context error:(id *)error
 {
-  v5 = a3;
-  if (v5)
+  contextCopy = context;
+  if (contextCopy)
   {
     v24 = 0;
     v25 = &v24;
@@ -34,13 +34,13 @@
     v17 = &v24;
     v7 = v6;
     v15 = v7;
-    [v5 credentialOfType:-9 reply:v14];
+    [contextCopy credentialOfType:-9 reply:v14];
     v8 = dispatch_time(0, 5000000000);
     dispatch_semaphore_wait(v7, v8);
     v9 = v19[5];
-    if (a4)
+    if (error)
     {
-      *a4 = v9;
+      *error = v9;
     }
 
     else if (v9)
@@ -96,17 +96,17 @@ id __50__POCredentialUtil_passwordDataFromContext_error___block_invoke_2(uint64_
   return v1;
 }
 
-+ (id)passwordStringFromData:(id)a3
++ (id)passwordStringFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = a3;
+    dataCopy = data;
     v6 = [v4 alloc];
-    v7 = [v5 bytes];
-    v8 = [v5 length];
+    bytes = [dataCopy bytes];
+    v8 = [dataCopy length];
 
-    v9 = [v6 initWithBytesNoCopy:v7 length:v8 encoding:4 freeWhenDone:0];
+    v9 = [v6 initWithBytesNoCopy:bytes length:v8 encoding:4 freeWhenDone:0];
   }
 
   else
@@ -117,10 +117,10 @@ id __50__POCredentialUtil_passwordDataFromContext_error___block_invoke_2(uint64_
   return v9;
 }
 
-+ (id)maskName:(id)a3
++ (id)maskName:(id)name
 {
-  v3 = [a3 componentsSeparatedByString:@"@"];
-  v4 = [v3 firstObject];
+  v3 = [name componentsSeparatedByString:@"@"];
+  firstObject = [v3 firstObject];
   if ([v3 count] == 2)
   {
     v5 = MEMORY[0x277CCACA8];
@@ -133,11 +133,11 @@ id __50__POCredentialUtil_passwordDataFromContext_error___block_invoke_2(uint64_
     v7 = &stru_28708EE58;
   }
 
-  if ([v4 length] > 3)
+  if ([firstObject length] > 3)
   {
-    v9 = [v4 length];
+    v9 = [firstObject length];
     v10 = MEMORY[0x277CCACA8];
-    v11 = [v4 length];
+    v11 = [firstObject length];
     if (v9 < 7)
     {
       v12 = v11 - 1;
@@ -148,7 +148,7 @@ id __50__POCredentialUtil_passwordDataFromContext_error___block_invoke_2(uint64_
       v12 = v11 - 2;
     }
 
-    v13 = [v4 stringByReplacingCharactersInRange:1 withString:{v12, @"***"}];
+    v13 = [firstObject stringByReplacingCharactersInRange:1 withString:{v12, @"***"}];
     v8 = [v10 stringWithFormat:@"%@%@", v13, v7];
   }
 
@@ -160,11 +160,11 @@ id __50__POCredentialUtil_passwordDataFromContext_error___block_invoke_2(uint64_
   return v8;
 }
 
-+ (BOOL)encryptPendingSSOTokens:(id)a3 usingPublicKey:(__SecKey *)a4 sharedData:(id)a5 encryptedTokens:(id *)a6
++ (BOOL)encryptPendingSSOTokens:(id)tokens usingPublicKey:(__SecKey *)key sharedData:(id)data encryptedTokens:(id *)encryptedTokens
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  tokensCopy = tokens;
+  dataCopy = data;
   v11 = PO_LOG_POCredentialUtil();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -172,12 +172,12 @@ id __50__POCredentialUtil_passwordDataFromContext_error___block_invoke_2(uint64_
   }
 
   v12 = 0;
-  if (v9 && a4)
+  if (tokensCopy && key)
   {
-    if (SecKeyIsAlgorithmSupported(a4, kSecKeyOperationTypeEncrypt, *MEMORY[0x277CDC328]))
+    if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeEncrypt, *MEMORY[0x277CDC328]))
     {
       v24 = *MEMORY[0x277CDC400];
-      v25[0] = v10;
+      v25[0] = dataCopy;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
       v23 = 0;
       v14 = *MEMORY[0x277CDC338];
@@ -187,7 +187,7 @@ id __50__POCredentialUtil_passwordDataFromContext_error___block_invoke_2(uint64_
       if (EncryptedDataWithParameters)
       {
         v17 = EncryptedDataWithParameters;
-        *a6 = v16;
+        *encryptedTokens = v16;
       }
 
       else
@@ -238,11 +238,11 @@ id __86__POCredentialUtil_encryptPendingSSOTokens_usingPublicKey_sharedData_encr
   return v2;
 }
 
-+ (id)decryptPendingSSOTokens:(id)a3 UsingPrivateKey:(__SecKey *)a4 sharedData:(id)a5
++ (id)decryptPendingSSOTokens:(id)tokens UsingPrivateKey:(__SecKey *)key sharedData:(id)data
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  tokensCopy = tokens;
+  dataCopy = data;
   v9 = PO_LOG_POCredentialUtil();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -250,12 +250,12 @@ id __86__POCredentialUtil_encryptPendingSSOTokens_usingPublicKey_sharedData_encr
   }
 
   v10 = 0;
-  if (v7 && a4 && v8)
+  if (tokensCopy && key && dataCopy)
   {
-    if (SecKeyIsAlgorithmSupported(a4, kSecKeyOperationTypeDecrypt, *MEMORY[0x277CDC328]))
+    if (SecKeyIsAlgorithmSupported(key, kSecKeyOperationTypeDecrypt, *MEMORY[0x277CDC328]))
     {
       v21 = *MEMORY[0x277CDC400];
-      v22[0] = v8;
+      v22[0] = dataCopy;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       v20 = 0;
       v12 = *MEMORY[0x277CDC338];

@@ -3,55 +3,55 @@
 - (UIView)opacityPairSourceView;
 - (id)_currentDestinationView;
 - (void)_updateMorphProgress;
-- (void)addContentView:(id)a3;
-- (void)setProgress:(double)a3;
+- (void)addContentView:(id)view;
+- (void)setProgress:(double)progress;
 @end
 
 @implementation _UIMorphingView
 
-- (void)addContentView:(id)a3
+- (void)addContentView:(id)view
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIMorphingView *)self contentViews];
+  viewCopy = view;
+  contentViews = [(_UIMorphingView *)self contentViews];
 
-  if (!v5)
+  if (!contentViews)
   {
     v6 = objc_opt_new();
     [(_UIMorphingView *)self setContentViews:v6];
   }
 
-  v7 = [(_UIMorphingView *)self contentViews];
-  v8 = [v7 indexOfObject:v4];
+  contentViews2 = [(_UIMorphingView *)self contentViews];
+  v8 = [contentViews2 indexOfObject:viewCopy];
 
-  v9 = [(_UIMorphingView *)self contentViews];
-  v10 = v9;
+  contentViews3 = [(_UIMorphingView *)self contentViews];
+  v10 = contentViews3;
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [v9 count];
+    v11 = [contentViews3 count];
 
     if (v11)
     {
-      [v4 setAlpha:0.0];
+      [viewCopy setAlpha:0.0];
     }
 
     else
     {
-      [v4 bounds];
+      [viewCopy bounds];
       [(UIView *)self setBounds:?];
     }
 
-    v14 = [(_UIMorphingView *)self contentViews];
-    [v14 addObject:v4];
+    contentViews4 = [(_UIMorphingView *)self contentViews];
+    [contentViews4 addObject:viewCopy];
 
-    [(UIView *)self addSubview:v4];
+    [(UIView *)self addSubview:viewCopy];
   }
 
   else
   {
     v12 = [MEMORY[0x1E696AC90] indexSetWithIndex:v8];
-    v13 = [(_UIMorphingView *)self contentViews];
-    [v10 moveObjectsAtIndexes:v12 toIndex:{objc_msgSend(v13, "count") - 1}];
+    contentViews5 = [(_UIMorphingView *)self contentViews];
+    [v10 moveObjectsAtIndexes:v12 toIndex:{objc_msgSend(contentViews5, "count") - 1}];
   }
 
   [(UIView *)self bounds];
@@ -60,8 +60,8 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v15 = [(_UIMorphingView *)self contentViews];
-  v16 = [v15 countByEnumeratingWithState:&v35 objects:v40 count:16];
+  contentViews6 = [(_UIMorphingView *)self contentViews];
+  v16 = [contentViews6 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v16)
   {
     v17 = v16;
@@ -72,7 +72,7 @@
       {
         if (*v36 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(contentViews6);
         }
 
         v20 = *(*(&v35 + 1) + 8 * i);
@@ -80,7 +80,7 @@
         [v20 _uimorphingView_setInitialAlpha:?];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      v17 = [contentViews6 countByEnumeratingWithState:&v35 objects:v40 count:16];
     }
 
     while (v17);
@@ -88,30 +88,30 @@
 
   if ([(_UIMorphingView *)self useOpacityPairFilter])
   {
-    v21 = [(_UIMorphingView *)self contentViews];
-    v22 = [v21 count];
+    contentViews7 = [(_UIMorphingView *)self contentViews];
+    v22 = [contentViews7 count];
 
     if (v22 >= 2)
     {
-      v23 = [(_UIMorphingView *)self opacityPairSourceView];
-      v24 = [v23 layer];
-      [v24 setFilters:0];
+      opacityPairSourceView = [(_UIMorphingView *)self opacityPairSourceView];
+      layer = [opacityPairSourceView layer];
+      [layer setFilters:0];
 
-      v25 = [(_UIMorphingView *)self opacityPairSourceView];
-      v26 = [v25 layer];
-      [v26 removeAllAnimations];
+      opacityPairSourceView2 = [(_UIMorphingView *)self opacityPairSourceView];
+      layer2 = [opacityPairSourceView2 layer];
+      [layer2 removeAllAnimations];
 
-      v27 = [(_UIMorphingView *)self contentViews];
-      v28 = [(_UIMorphingView *)self contentViews];
-      v29 = [v27 objectAtIndexedSubscript:{objc_msgSend(v28, "count") - 2}];
+      contentViews8 = [(_UIMorphingView *)self contentViews];
+      contentViews9 = [(_UIMorphingView *)self contentViews];
+      v29 = [contentViews8 objectAtIndexedSubscript:{objc_msgSend(contentViews9, "count") - 2}];
       [(_UIMorphingView *)self setOpacityPairSourceView:v29];
 
       v30 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CC8]];
       v39 = v30;
       v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v39 count:1];
-      v32 = [(_UIMorphingView *)self opacityPairSourceView];
-      v33 = [v32 layer];
-      [v33 setFilters:v31];
+      opacityPairSourceView3 = [(_UIMorphingView *)self opacityPairSourceView];
+      layer3 = [opacityPairSourceView3 layer];
+      [layer3 setFilters:v31];
     }
   }
 
@@ -123,33 +123,33 @@
   [UIView performWithoutAnimation:v34];
 }
 
-- (void)setProgress:(double)a3
+- (void)setProgress:(double)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     [(_UIMorphingView *)self _updateMorphProgress];
   }
 }
 
 - (id)_currentDestinationView
 {
-  v2 = [(_UIMorphingView *)self contentViews];
-  v3 = [v2 lastObject];
+  contentViews = [(_UIMorphingView *)self contentViews];
+  lastObject = [contentViews lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (void)_updateMorphProgress
 {
   v78 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIMorphingView *)self _currentDestinationView];
-  v4 = [(_UIMorphingView *)self contentViews];
-  v5 = [v4 count];
+  _currentDestinationView = [(_UIMorphingView *)self _currentDestinationView];
+  contentViews = [(_UIMorphingView *)self contentViews];
+  v5 = [contentViews count];
 
   if (v5 < 2)
   {
-    [v3 setAlpha:1.0];
+    [_currentDestinationView setAlpha:1.0];
   }
 
   else
@@ -165,7 +165,7 @@
     v12 = v9;
     v14 = v13;
     v55 = v13;
-    [v3 bounds];
+    [_currentDestinationView bounds];
     v16 = v15;
     v70 = v15;
     v18 = v17;
@@ -223,8 +223,8 @@
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v30 = [(_UIMorphingView *)self contentViews];
-    v31 = [v30 countByEnumeratingWithState:&v73 objects:v77 count:16];
+    contentViews2 = [(_UIMorphingView *)self contentViews];
+    v31 = [contentViews2 countByEnumeratingWithState:&v73 objects:v77 count:16];
     if (v31)
     {
       v32 = v31;
@@ -235,7 +235,7 @@
         {
           if (*v74 != v33)
           {
-            objc_enumerationMutation(v30);
+            objc_enumerationMutation(contentViews2);
           }
 
           v35 = *(*(&v73 + 1) + 8 * i);
@@ -268,21 +268,21 @@
           v71 = v72;
           [v35 setTransform:&v71];
           [v35 setCenter:{rect + v64 * 0.5, v66 + v61 * 0.5}];
-          v46 = [(_UIMorphingView *)self opacityPairSourceView];
+          opacityPairSourceView = [(_UIMorphingView *)self opacityPairSourceView];
 
-          if (v35 == v46)
+          if (v35 == opacityPairSourceView)
           {
-            [v3 _uimorphingView_getInitialAlpha];
+            [_currentDestinationView _uimorphingView_getInitialAlpha];
             v50 = v69 + v59 * v49;
-            v51 = [(_UIMorphingView *)self opacityPairSourceView];
-            v52 = [v51 layer];
+            opacityPairSourceView2 = [(_UIMorphingView *)self opacityPairSourceView];
+            layer = [opacityPairSourceView2 layer];
             v53 = [MEMORY[0x1E696AD98] numberWithDouble:v50];
-            [v52 setValue:v53 forKey:@"filters.opacityPair.inputAmount"];
+            [layer setValue:v53 forKey:@"filters.opacityPair.inputAmount"];
           }
 
           else
           {
-            if (v35 == v3)
+            if (v35 == _currentDestinationView)
             {
               v47 = 1.0;
             }
@@ -297,7 +297,7 @@
           }
         }
 
-        v32 = [v30 countByEnumeratingWithState:&v73 objects:v77 count:16];
+        v32 = [contentViews2 countByEnumeratingWithState:&v73 objects:v77 count:16];
       }
 
       while (v32);

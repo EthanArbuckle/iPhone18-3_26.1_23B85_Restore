@@ -1,42 +1,42 @@
 @interface iCloudHomeViewModel
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5;
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion;
 - (_TtC14iCloudSettings19iCloudHomeViewModel)init;
-- (id)expandedSubTitleForDataclass:(id)a3;
-- (id)expandedSubTitleForService:(id)a3;
-- (void)didStartLoadingWithView:(int64_t)a3;
-- (void)didStopLoadingWithView:(int64_t)a3;
-- (void)showBackupViewWithResourceDictionary:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
-- (void)upgradeFlowManagerDidFail:(id)a3 error:(id)a4;
-- (void)webViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5;
+- (id)expandedSubTitleForDataclass:(id)dataclass;
+- (id)expandedSubTitleForService:(id)service;
+- (void)didStartLoadingWithView:(int64_t)view;
+- (void)didStopLoadingWithView:(int64_t)view;
+- (void)showBackupViewWithResourceDictionary:(id)dictionary;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
+- (void)upgradeFlowManagerDidFail:(id)fail error:(id)error;
+- (void)webViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error;
 @end
 
 @implementation iCloudHomeViewModel
 
-- (BOOL)webViewController:(id)a3 handleDelegateAction:(id)a4 completion:(id)a5
+- (BOOL)webViewController:(id)controller handleDelegateAction:(id)action completion:(id)completion
 {
-  v7 = _Block_copy(a5);
-  v8 = a3;
-  v9 = self;
+  v7 = _Block_copy(completion);
+  controllerCopy = controller;
+  selfCopy = self;
   v10 = _s14iCloudSettings01iA13HomeViewModelC03webD10Controller_20handleDelegateAction10completionSbSo08AMSUIWebdG0C_SDys11AnyHashableVypGyypSg_s5Error_pSgtctF_0();
   _Block_release(v7);
 
   return v10 & 1;
 }
 
-- (void)webViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5
+- (void)webViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_27586BB10(a5);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_27586BB10(error);
 }
 
-- (id)expandedSubTitleForDataclass:(id)a3
+- (id)expandedSubTitleForDataclass:(id)dataclass
 {
-  v4 = a3;
-  v5 = self;
+  dataclassCopy = dataclass;
+  selfCopy = self;
   sub_275888920();
   v7 = v6;
 
@@ -53,7 +53,7 @@
   return v8;
 }
 
-- (id)expandedSubTitleForService:(id)a3
+- (id)expandedSubTitleForService:(id)service
 {
   v3 = sub_2759BA258();
 
@@ -67,21 +67,21 @@
   return result;
 }
 
-- (void)didStartLoadingWithView:(int64_t)a3
+- (void)didStartLoadingWithView:(int64_t)view
 {
-  v4 = self;
-  iCloudHomeViewModel.didStartLoading(view:)(a3);
+  selfCopy = self;
+  iCloudHomeViewModel.didStartLoading(view:)(view);
 }
 
-- (void)didStopLoadingWithView:(int64_t)a3
+- (void)didStopLoadingWithView:(int64_t)view
 {
-  v4 = self;
-  iCloudHomeViewModel.didStopLoading(view:)(a3);
+  selfCopy = self;
+  iCloudHomeViewModel.didStopLoading(view:)(view);
 }
 
-- (void)showBackupViewWithResourceDictionary:(id)a3
+- (void)showBackupViewWithResourceDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v4 = sub_2759BA1D8();
   }
@@ -91,23 +91,23 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_275914114(v4);
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
-  v4 = a3;
-  v5 = self;
+  completeCopy = complete;
+  selfCopy = self;
   _s14iCloudSettings01iA13HomeViewModelC29upgradeFlowManagerDidCompleteyySo010ICQUpgradegH0CSgF_0();
 }
 
-- (void)upgradeFlowManagerDidFail:(id)a3 error:(id)a4
+- (void)upgradeFlowManagerDidFail:(id)fail error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_27591DDF4(a4);
+  failCopy = fail;
+  selfCopy = self;
+  errorCopy = error;
+  sub_27591DDF4(error);
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface CHNumberFieldResultReorderingStep
 - (id)initForDigitFields;
 - (id)initForPhoneNumberFields;
-- (id)process:(id)a3 options:(id)a4;
+- (id)process:(id)process options:(id)options;
 @end
 
 @implementation CHNumberFieldResultReorderingStep
@@ -53,10 +53,10 @@
   return v7;
 }
 
-- (id)process:(id)a3 options:(id)a4
+- (id)process:(id)process options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
+  processCopy = process;
+  optionsCopy = options;
   if (qword_1EA84DC48 != -1)
   {
     dispatch_once(&qword_1EA84DC48, &unk_1EF1BC930);
@@ -69,7 +69,7 @@
     _os_log_impl(&dword_18366B000, v7, OS_LOG_TYPE_DEBUG, "CHNumberFieldResultReorderingStep is running", buf, 2u);
   }
 
-  v246 = v6;
+  v246 = optionsCopy;
 
   v254[0] = MEMORY[0x1E69E9820];
   v254[1] = 3221225472;
@@ -77,8 +77,8 @@
   v254[3] = &unk_1E6DE0B00;
   v254[4] = self;
   v8 = MEMORY[0x1865E6810](v254);
-  v250 = v5;
-  v14 = objc_msgSend_result(v5, v9, v10, v11, v12, v13);
+  v250 = processCopy;
+  v14 = objc_msgSend_result(processCopy, v9, v10, v11, v12, v13);
   v15 = v8;
   v245 = v14;
   v249 = v14;

@@ -16,11 +16,11 @@
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:{ceil(-[HMMLogEvent durationMilliseconds](self, "durationMilliseconds") / 1000.0)}];
   [v3 setObject:v6 forKeyedSubscript:@"duration"];
 
-  v7 = [(HMDWiFiReconfigurationLogEvent *)self accessory];
-  [v7 populateVendorDetailsForCoreAnalytics:v3 keyPrefix:@"accessory"];
+  accessory = [(HMDWiFiReconfigurationLogEvent *)self accessory];
+  [accessory populateVendorDetailsForCoreAnalytics:v3 keyPrefix:@"accessory"];
 
-  v8 = [(HMDWiFiReconfigurationLogEvent *)self routerAccessory];
-  [v8 populateVendorDetailsForCoreAnalytics:v3 keyPrefix:@"router"];
+  routerAccessory = [(HMDWiFiReconfigurationLogEvent *)self routerAccessory];
+  [routerAccessory populateVendorDetailsForCoreAnalytics:v3 keyPrefix:@"router"];
 
   v9 = [v3 copy];
 

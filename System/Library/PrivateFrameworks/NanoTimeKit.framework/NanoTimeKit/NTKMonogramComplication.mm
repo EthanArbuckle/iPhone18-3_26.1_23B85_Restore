@@ -1,23 +1,23 @@
 @interface NTKMonogramComplication
-- (BOOL)snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4;
+- (BOOL)snapshotContext:(id)context isStaleRelativeToContext:(id)toContext;
 @end
 
 @implementation NTKMonogramComplication
 
-- (BOOL)snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4
+- (BOOL)snapshotContext:(id)context isStaleRelativeToContext:(id)toContext
 {
-  v5 = a4;
-  v6 = [a3 monogram];
-  v7 = [v5 monogram];
+  toContextCopy = toContext;
+  monogram = [context monogram];
+  monogram2 = [toContextCopy monogram];
 
-  if (v6 == v7)
+  if (monogram == monogram2)
   {
     LOBYTE(v8) = 0;
   }
 
   else
   {
-    v8 = [v6 isEqualToString:v7] ^ 1;
+    v8 = [monogram isEqualToString:monogram2] ^ 1;
   }
 
   return v8;

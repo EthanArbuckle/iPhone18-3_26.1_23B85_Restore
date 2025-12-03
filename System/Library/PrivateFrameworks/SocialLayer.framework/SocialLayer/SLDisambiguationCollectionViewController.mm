@@ -1,19 +1,19 @@
 @interface SLDisambiguationCollectionViewController
 - (CGRect)attributionViewFrame;
-- (SLDisambiguationCollectionViewController)initWithHighlight:(id)a3;
-- (id)cellForIndexPath:(id)a3 inCollectionView:(id)a4 withItemIdentifier:(id)a5;
-- (id)createAttributionMapWithHighlight:(id)a3;
-- (id)dataSourceWithCollectionView:(id)a3;
+- (SLDisambiguationCollectionViewController)initWithHighlight:(id)highlight;
+- (id)cellForIndexPath:(id)path inCollectionView:(id)view withItemIdentifier:(id)identifier;
+- (id)createAttributionMapWithHighlight:(id)highlight;
+- (id)dataSourceWithCollectionView:(id)view;
 - (id)finalCompositionalLayout;
-- (id)finalLayoutGroup:(id)a3 itemsCount:(unint64_t)a4 collectionWidth:(double)a5 targetItemHeight:(double)a6;
-- (id)finalLayoutSectionForEnvironment:(id)a3;
+- (id)finalLayoutGroup:(id)group itemsCount:(unint64_t)count collectionWidth:(double)width targetItemHeight:(double)height;
+- (id)finalLayoutSectionForEnvironment:(id)environment;
 - (id)initialCompositionalLayout;
-- (id)initialLayoutGroup:(id)a3 itemsCount:(unint64_t)a4 collectionWidth:(double)a5 targetItemHeight:(double)a6;
-- (id)initialLayoutSectionForEnvironment:(id)a3;
+- (id)initialLayoutGroup:(id)group itemsCount:(unint64_t)count collectionWidth:(double)width targetItemHeight:(double)height;
+- (id)initialLayoutSectionForEnvironment:(id)environment;
 - (unint64_t)cellPillViewVariant;
-- (void)collectionViewBackgroundTapped:(id)a3;
+- (void)collectionViewBackgroundTapped:(id)tapped;
 - (void)loadView;
-- (void)setHighlight:(id)a3;
+- (void)setHighlight:(id)highlight;
 - (void)startAnimation;
 - (void)updateDataSourceSnapshot;
 - (void)viewDidLayoutSubviews;
@@ -21,9 +21,9 @@
 
 @implementation SLDisambiguationCollectionViewController
 
-- (SLDisambiguationCollectionViewController)initWithHighlight:(id)a3
+- (SLDisambiguationCollectionViewController)initWithHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   objc_initWeak(&location, self);
   v5 = [SLDisambiguationCompositionalLayout alloc];
   v11[0] = MEMORY[0x277D85DD0];
@@ -35,14 +35,14 @@
   [(SLDisambiguationCollectionViewController *)self setLayout:v6];
 
   [(SLDisambiguationCollectionViewController *)self setIsInitialLoad:1];
-  v7 = [(SLDisambiguationCollectionViewController *)self layout];
+  layout = [(SLDisambiguationCollectionViewController *)self layout];
   v10.receiver = self;
   v10.super_class = SLDisambiguationCollectionViewController;
-  v8 = [(SLDisambiguationCollectionViewController *)&v10 initWithCollectionViewLayout:v7];
+  v8 = [(SLDisambiguationCollectionViewController *)&v10 initWithCollectionViewLayout:layout];
 
   if (v8)
   {
-    [(SLDisambiguationCollectionViewController *)v8 setHighlight:v4];
+    [(SLDisambiguationCollectionViewController *)v8 setHighlight:highlightCopy];
   }
 
   objc_destroyWeak(&v12);
@@ -66,46 +66,46 @@ id __62__SLDisambiguationCollectionViewController_initWithHighlight___block_invo
   v30.super_class = SLDisambiguationCollectionViewController;
   [(SLDisambiguationCollectionViewController *)&v30 loadView];
   v3 = objc_alloc(MEMORY[0x277D752A0]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(SLDisambiguationCollectionViewController *)self layout];
-  v14 = [v3 initWithFrame:v13 collectionViewLayout:{v6, v8, v10, v12}];
+  layout = [(SLDisambiguationCollectionViewController *)self layout];
+  v14 = [v3 initWithFrame:layout collectionViewLayout:{v6, v8, v10, v12}];
   [(SLDisambiguationCollectionViewController *)self setCollectionView:v14];
 
-  v15 = [(SLDisambiguationCollectionViewController *)self collectionView];
-  [v15 setPrefetchingEnabled:0];
+  collectionView = [(SLDisambiguationCollectionViewController *)self collectionView];
+  [collectionView setPrefetchingEnabled:0];
 
-  v16 = [(SLDisambiguationCollectionViewController *)self collectionView];
+  collectionView2 = [(SLDisambiguationCollectionViewController *)self collectionView];
   v17 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_collectionViewBackgroundTapped_];
-  [v16 addGestureRecognizer:v17];
+  [collectionView2 addGestureRecognizer:v17];
 
-  v18 = [(SLDisambiguationCollectionViewController *)self collectionView];
-  v19 = [(SLDisambiguationCollectionViewController *)self dataSourceWithCollectionView:v18];
+  collectionView3 = [(SLDisambiguationCollectionViewController *)self collectionView];
+  v19 = [(SLDisambiguationCollectionViewController *)self dataSourceWithCollectionView:collectionView3];
   [(SLDisambiguationCollectionViewController *)self setDataSource:v19];
 
-  v20 = [(SLDisambiguationCollectionViewController *)self dataSource];
-  v21 = [(SLDisambiguationCollectionViewController *)self collectionView];
-  [v21 setDataSource:v20];
+  dataSource = [(SLDisambiguationCollectionViewController *)self dataSource];
+  collectionView4 = [(SLDisambiguationCollectionViewController *)self collectionView];
+  [collectionView4 setDataSource:dataSource];
 
-  v22 = [(SLDisambiguationCollectionViewController *)self collectionView];
-  [v22 setDelegate:self];
+  collectionView5 = [(SLDisambiguationCollectionViewController *)self collectionView];
+  [collectionView5 setDelegate:self];
 
-  v23 = [(SLDisambiguationCollectionViewController *)self collectionView];
+  collectionView6 = [(SLDisambiguationCollectionViewController *)self collectionView];
   v24 = objc_opt_class();
   v25 = +[SLHighlightDisambiguationCell reuseIdentifier];
-  [v23 registerClass:v24 forCellWithReuseIdentifier:v25];
+  [collectionView6 registerClass:v24 forCellWithReuseIdentifier:v25];
 
-  v26 = [MEMORY[0x277D75348] clearColor];
-  v27 = [v26 colorWithAlphaComponent:0.7];
-  v28 = [(SLDisambiguationCollectionViewController *)self collectionView];
-  [v28 setBackgroundColor:v27];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  v27 = [clearColor colorWithAlphaComponent:0.7];
+  collectionView7 = [(SLDisambiguationCollectionViewController *)self collectionView];
+  [collectionView7 setBackgroundColor:v27];
 
-  v29 = [(SLDisambiguationCollectionViewController *)self collectionView];
-  [v29 setAlpha:1.0];
+  collectionView8 = [(SLDisambiguationCollectionViewController *)self collectionView];
+  [collectionView8 setAlpha:1.0];
 
   [(SLDisambiguationCollectionViewController *)self updateDataSourceSnapshot];
 }
@@ -118,23 +118,23 @@ id __62__SLDisambiguationCollectionViewController_initWithHighlight___block_invo
   [(SLDisambiguationCollectionViewController *)&v37 viewDidLayoutSubviews];
   if ([(SLDisambiguationCollectionViewController *)self isInitialLoad])
   {
-    v3 = [(SLDisambiguationCollectionViewController *)self view];
-    v4 = [v3 window];
+    view = [(SLDisambiguationCollectionViewController *)self view];
+    window = [view window];
     [(SLDisambiguationCollectionViewController *)self attributionViewFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(SLDisambiguationCollectionViewController *)self collectionView];
-    [v4 convertRect:v13 toView:{v6, v8, v10, v12}];
+    collectionView = [(SLDisambiguationCollectionViewController *)self collectionView];
+    [window convertRect:collectionView toView:{v6, v8, v10, v12}];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
 
-    v22 = [(SLDisambiguationCollectionViewController *)self collectionView];
-    v23 = [v22 visibleCells];
-    v24 = [v23 count];
+    collectionView2 = [(SLDisambiguationCollectionViewController *)self collectionView];
+    visibleCells = [collectionView2 visibleCells];
+    v24 = [visibleCells count];
 
     if (v24)
     {
@@ -144,10 +144,10 @@ id __62__SLDisambiguationCollectionViewController_initWithHighlight___block_invo
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v25 = [(SLDisambiguationCollectionViewController *)self collectionView];
-        v26 = [v25 visibleCells];
+        collectionView3 = [(SLDisambiguationCollectionViewController *)self collectionView];
+        visibleCells2 = [collectionView3 visibleCells];
 
-        v27 = [v26 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v27 = [visibleCells2 countByEnumeratingWithState:&v33 objects:v38 count:16];
         if (v27)
         {
           v28 = v27;
@@ -159,7 +159,7 @@ id __62__SLDisambiguationCollectionViewController_initWithHighlight___block_invo
             {
               if (*v34 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(visibleCells2);
               }
 
               v31 = *(*(&v33 + 1) + 8 * v30);
@@ -170,7 +170,7 @@ id __62__SLDisambiguationCollectionViewController_initWithHighlight___block_invo
             }
 
             while (v28 != v30);
-            v28 = [v26 countByEnumeratingWithState:&v33 objects:v38 count:16];
+            v28 = [visibleCells2 countByEnumeratingWithState:&v33 objects:v38 count:16];
           }
 
           while (v28);
@@ -212,17 +212,17 @@ id __58__SLDisambiguationCollectionViewController_startAnimation__block_invoke(u
   return v6;
 }
 
-- (void)setHighlight:(id)a3
+- (void)setHighlight:(id)highlight
 {
-  v5 = a3;
-  if (self->_highlight != v5)
+  highlightCopy = highlight;
+  if (self->_highlight != highlightCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_highlight, a3);
+    v7 = highlightCopy;
+    objc_storeStrong(&self->_highlight, highlight);
     v6 = [(SLDisambiguationCollectionViewController *)self createAttributionMapWithHighlight:v7];
     [(SLDisambiguationCollectionViewController *)self setAttributionMap:v6];
 
-    v5 = v7;
+    highlightCopy = v7;
   }
 }
 
@@ -307,18 +307,18 @@ void __68__SLDisambiguationCollectionViewController_updateDataSourceSnapshot__bl
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createAttributionMapWithHighlight:(id)a3
+- (id)createAttributionMapWithHighlight:(id)highlight
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  highlightCopy = highlight;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = v4;
-  v6 = [v4 attributions];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v17 = highlightCopy;
+  attributions = [highlightCopy attributions];
+  v7 = [attributions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -329,17 +329,17 @@ void __68__SLDisambiguationCollectionViewController_updateDataSourceSnapshot__bl
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attributions);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 uniqueIdentifier];
-        v13 = [v12 length];
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        v13 = [uniqueIdentifier length];
 
         if (v13)
         {
-          v14 = [v11 uniqueIdentifier];
-          [v5 setObject:v11 forKey:v14];
+          uniqueIdentifier2 = [v11 uniqueIdentifier];
+          [dictionary setObject:v11 forKey:uniqueIdentifier2];
         }
 
         else
@@ -348,7 +348,7 @@ void __68__SLDisambiguationCollectionViewController_updateDataSourceSnapshot__bl
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [attributions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -356,24 +356,24 @@ void __68__SLDisambiguationCollectionViewController_updateDataSourceSnapshot__bl
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
-- (void)collectionViewBackgroundTapped:(id)a3
+- (void)collectionViewBackgroundTapped:(id)tapped
 {
-  v4 = [a3 view];
-  v5 = [(SLDisambiguationCollectionViewController *)self collectionView];
+  view = [tapped view];
+  collectionView = [(SLDisambiguationCollectionViewController *)self collectionView];
 
-  if (v4 == v5)
+  if (view == collectionView)
   {
 
     [(SLDisambiguationCollectionViewController *)self dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (id)dataSourceWithCollectionView:(id)a3
+- (id)dataSourceWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D752D0]);
   v8[0] = MEMORY[0x277D85DD0];
@@ -381,7 +381,7 @@ void __68__SLDisambiguationCollectionViewController_updateDataSourceSnapshot__bl
   v8[2] = __73__SLDisambiguationCollectionViewController_dataSourceWithCollectionView___block_invoke;
   v8[3] = &unk_278927880;
   objc_copyWeak(&v9, &location);
-  v6 = [v5 initWithCollectionView:v4 cellProvider:v8];
+  v6 = [v5 initWithCollectionView:viewCopy cellProvider:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 
@@ -399,16 +399,16 @@ id __73__SLDisambiguationCollectionViewController_dataSourceWithCollectionView__
   return v11;
 }
 
-- (id)cellForIndexPath:(id)a3 inCollectionView:(id)a4 withItemIdentifier:(id)a5
+- (id)cellForIndexPath:(id)path inCollectionView:(id)view withItemIdentifier:(id)identifier
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  identifierCopy = identifier;
+  viewCopy = view;
+  pathCopy = path;
   v11 = +[SLHighlightDisambiguationCell reuseIdentifier];
-  v12 = [v9 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v10];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
-  v13 = [(SLDisambiguationCollectionViewController *)self attributionMap];
-  v14 = [v13 objectForKey:v8];
+  attributionMap = [(SLDisambiguationCollectionViewController *)self attributionMap];
+  v14 = [attributionMap objectForKey:identifierCopy];
 
   if (v14)
   {
@@ -468,10 +468,10 @@ id __70__SLDisambiguationCollectionViewController_initialCompositionalLayout__bl
   return v6;
 }
 
-- (id)finalLayoutSectionForEnvironment:(id)a3
+- (id)finalLayoutSectionForEnvironment:(id)environment
 {
   v4 = MEMORY[0x277CFB840];
-  v5 = a3;
+  environmentCopy = environment;
   v22 = [v4 absoluteDimension:335.0];
   v6 = [MEMORY[0x277CFB840] absoluteDimension:64.0];
   v7 = [MEMORY[0x277CFB870] sizeWithWidthDimension:v22 heightDimension:v6];
@@ -484,11 +484,11 @@ id __70__SLDisambiguationCollectionViewController_initialCompositionalLayout__bl
   v13 = [MEMORY[0x277CFB878] fixedSpacing:10.0];
   [v12 setInterItemSpacing:v13];
 
-  v14 = [v5 container];
-  [v14 contentSize];
-  v15 = [v5 traitCollection];
+  container = [environmentCopy container];
+  [container contentSize];
+  traitCollection = [environmentCopy traitCollection];
 
-  [v15 displayScale];
+  [traitCollection displayScale];
   UIRoundToScale();
   v17 = v16;
 
@@ -501,10 +501,10 @@ id __70__SLDisambiguationCollectionViewController_initialCompositionalLayout__bl
   return v20;
 }
 
-- (id)initialLayoutSectionForEnvironment:(id)a3
+- (id)initialLayoutSectionForEnvironment:(id)environment
 {
   v4 = MEMORY[0x277CFB840];
-  v5 = a3;
+  environmentCopy = environment;
   v22 = [v4 absoluteDimension:335.0];
   v6 = [MEMORY[0x277CFB840] absoluteDimension:64.0];
   v7 = [MEMORY[0x277CFB870] sizeWithWidthDimension:v22 heightDimension:v6];
@@ -517,11 +517,11 @@ id __70__SLDisambiguationCollectionViewController_initialCompositionalLayout__bl
   v13 = [MEMORY[0x277CFB878] fixedSpacing:10.0];
   [v12 setInterItemSpacing:v13];
 
-  v14 = [v5 container];
-  [v14 contentSize];
-  v15 = [v5 traitCollection];
+  container = [environmentCopy container];
+  [container contentSize];
+  traitCollection = [environmentCopy traitCollection];
 
-  [v15 displayScale];
+  [traitCollection displayScale];
   UIRoundToScale();
   v17 = v16;
 
@@ -534,18 +534,18 @@ id __70__SLDisambiguationCollectionViewController_initialCompositionalLayout__bl
   return v20;
 }
 
-- (id)initialLayoutGroup:(id)a3 itemsCount:(unint64_t)a4 collectionWidth:(double)a5 targetItemHeight:(double)a6
+- (id)initialLayoutGroup:(id)group itemsCount:(unint64_t)count collectionWidth:(double)width targetItemHeight:(double)height
 {
-  v8 = a3;
+  groupCopy = group;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x277CFB850];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __107__SLDisambiguationCollectionViewController_initialLayoutGroup_itemsCount_collectionWidth_targetItemHeight___block_invoke;
   v12[3] = &unk_2789278A8;
-  v13[1] = a4;
+  v13[1] = count;
   objc_copyWeak(v13, &location);
-  v10 = [v9 customGroupWithLayoutSize:v8 itemProvider:v12];
+  v10 = [v9 customGroupWithLayoutSize:groupCopy itemProvider:v12];
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
 
@@ -588,20 +588,20 @@ id __107__SLDisambiguationCollectionViewController_initialLayoutGroup_itemsCount
   return v2;
 }
 
-- (id)finalLayoutGroup:(id)a3 itemsCount:(unint64_t)a4 collectionWidth:(double)a5 targetItemHeight:(double)a6
+- (id)finalLayoutGroup:(id)group itemsCount:(unint64_t)count collectionWidth:(double)width targetItemHeight:(double)height
 {
-  v10 = a3;
+  groupCopy = group;
   objc_initWeak(&location, self);
   v11 = MEMORY[0x277CFB850];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __105__SLDisambiguationCollectionViewController_finalLayoutGroup_itemsCount_collectionWidth_targetItemHeight___block_invoke;
   v14[3] = &unk_2789278D0;
-  v15[1] = a4;
+  v15[1] = count;
   objc_copyWeak(v15, &location);
-  v15[2] = *&a5;
-  v15[3] = *&a6;
-  v12 = [v11 customGroupWithLayoutSize:v10 itemProvider:v14];
+  v15[2] = *&width;
+  v15[3] = *&height;
+  v12 = [v11 customGroupWithLayoutSize:groupCopy itemProvider:v14];
   objc_destroyWeak(v15);
   objc_destroyWeak(&location);
 
@@ -660,22 +660,22 @@ id __105__SLDisambiguationCollectionViewController_finalLayoutGroup_itemsCount_c
 
 - (unint64_t)cellPillViewVariant
 {
-  v3 = [(SLDisambiguationCollectionViewController *)self collectionView];
-  v4 = [v3 visibleCells];
+  collectionView = [(SLDisambiguationCollectionViewController *)self collectionView];
+  visibleCells = [collectionView visibleCells];
 
-  if (!v4)
+  if (!visibleCells)
   {
     return 0;
   }
 
-  v5 = [(SLDisambiguationCollectionViewController *)self collectionView];
-  v6 = [v5 visibleCells];
-  v7 = [v6 firstObject];
+  collectionView2 = [(SLDisambiguationCollectionViewController *)self collectionView];
+  visibleCells2 = [collectionView2 visibleCells];
+  firstObject = [visibleCells2 firstObject];
 
-  v8 = [v7 expandedAttributionView];
-  v9 = [v8 pillVariant];
+  expandedAttributionView = [firstObject expandedAttributionView];
+  pillVariant = [expandedAttributionView pillVariant];
 
-  return v9;
+  return pillVariant;
 }
 
 - (CGRect)attributionViewFrame

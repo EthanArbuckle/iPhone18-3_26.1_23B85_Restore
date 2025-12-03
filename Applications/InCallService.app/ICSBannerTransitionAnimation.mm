@@ -1,13 +1,13 @@
 @interface ICSBannerTransitionAnimation
-+ (void)performBannerToFullScreenCrossFadeAnimationWithView:(id)a3;
++ (void)performBannerToFullScreenCrossFadeAnimationWithView:(id)view;
 @end
 
 @implementation ICSBannerTransitionAnimation
 
-+ (void)performBannerToFullScreenCrossFadeAnimationWithView:(id)a3
++ (void)performBannerToFullScreenCrossFadeAnimationWithView:(id)view
 {
-  v3 = a3;
-  sub_100205874(v3);
+  viewCopy = view;
+  sub_100205874(viewCopy);
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface UISegmentAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityHasNativeFocus;
 - (BOOL)isAccessibilityElement;
 - (_NSRange)accessibilityRowRange;
-- (id)_axLabelFromInfoObject:(void *)a1;
+- (id)_axLabelFromInfoObject:(void *)object;
 - (id)accessibilityHint;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
@@ -14,14 +14,14 @@
 
 @implementation UISegmentAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UISegment";
   v4 = "@";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
@@ -31,33 +31,33 @@
 
 - (id)accessibilityLanguage
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v10.receiver = self;
   v10.super_class = UISegmentAccessibility;
   v11[0] = [(UISegmentAccessibility *)&v10 accessibilityLanguage];
   if (v11[0])
   {
-    v13 = MEMORY[0x29EDC9748](v11[0]);
+    accessibilityLanguage2 = MEMORY[0x29EDC9748](v11[0]);
     v9 = 1;
   }
 
   else
   {
-    location = [(UISegmentAccessibility *)v12 safeValueForKey:@"info"];
-    v2 = [location accessibilityLanguage];
+    location = [(UISegmentAccessibility *)selfCopy safeValueForKey:@"info"];
+    accessibilityLanguage = [location accessibilityLanguage];
     v3 = v11[0];
-    v11[0] = v2;
+    v11[0] = accessibilityLanguage;
     *&v4 = MEMORY[0x29EDC9740](v3).n128_u64[0];
     if (v11[0])
     {
-      v13 = MEMORY[0x29EDC9748](v11[0]);
+      accessibilityLanguage2 = MEMORY[0x29EDC9748](v11[0]);
     }
 
     else
     {
-      v7 = [(UISegmentAccessibility *)v12 safeValueForKey:@"superview", v4];
-      v13 = [v7 accessibilityLanguage];
+      v7 = [(UISegmentAccessibility *)selfCopy safeValueForKey:@"superview", v4];
+      accessibilityLanguage2 = [v7 accessibilityLanguage];
       MEMORY[0x29EDC9740](v7);
     }
 
@@ -66,14 +66,14 @@
   }
 
   objc_storeStrong(v11, 0);
-  v5 = v13;
+  v5 = accessibilityLanguage2;
 
   return v5;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v7 = self;
+  selfCopy = self;
   v6[1] = a2;
   v6[0] = [(UISegmentAccessibility *)self isAccessibilityUserDefinedElement];
   if (v6[0])
@@ -84,7 +84,7 @@
 
   else
   {
-    location = [(UISegmentAccessibility *)v7 safeValueForKey:@"info"];
+    location = [(UISegmentAccessibility *)selfCopy safeValueForKey:@"info"];
     v6[0] = [location isAccessibilityUserDefinedElement];
     *&v2 = MEMORY[0x29EDC9740](0).n128_u64[0];
     if (v6[0])
@@ -105,52 +105,52 @@
   return v8 & 1;
 }
 
-- (id)_axLabelFromInfoObject:(void *)a1
+- (id)_axLabelFromInfoObject:(void *)object
 {
-  v37 = a1;
+  objectCopy = object;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v37)
+  if (objectCopy)
   {
     v34 = 0;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v30 = [location text];
-      v31 = [v30 _accessibilityAXAttributedLabel];
-      MEMORY[0x29EDC9740](v31);
-      *&v2 = MEMORY[0x29EDC9740](v30).n128_u64[0];
-      if (v31)
+      text = [location text];
+      _accessibilityAXAttributedLabel = [text _accessibilityAXAttributedLabel];
+      MEMORY[0x29EDC9740](_accessibilityAXAttributedLabel);
+      *&v2 = MEMORY[0x29EDC9740](text).n128_u64[0];
+      if (_accessibilityAXAttributedLabel)
       {
-        v29 = [location text];
-        v3 = [v29 _accessibilityAXAttributedLabel];
+        text2 = [location text];
+        _accessibilityAXAttributedLabel2 = [text2 _accessibilityAXAttributedLabel];
         v4 = v34;
-        v34 = v3;
+        v34 = _accessibilityAXAttributedLabel2;
         MEMORY[0x29EDC9740](v4);
-        MEMORY[0x29EDC9740](v29);
+        MEMORY[0x29EDC9740](text2);
       }
 
       else
       {
-        v27 = [location attributedText];
-        v28 = [v27 _accessibilityAXAttributedLabel];
-        MEMORY[0x29EDC9740](v28);
-        *&v5 = MEMORY[0x29EDC9740](v27).n128_u64[0];
-        if (v28)
+        attributedText = [location attributedText];
+        _accessibilityAXAttributedLabel3 = [attributedText _accessibilityAXAttributedLabel];
+        MEMORY[0x29EDC9740](_accessibilityAXAttributedLabel3);
+        *&v5 = MEMORY[0x29EDC9740](attributedText).n128_u64[0];
+        if (_accessibilityAXAttributedLabel3)
         {
-          v26 = [location attributedText];
-          v6 = [v26 _accessibilityAXAttributedLabel];
+          attributedText2 = [location attributedText];
+          _accessibilityAXAttributedLabel4 = [attributedText2 _accessibilityAXAttributedLabel];
           v7 = v34;
-          v34 = v6;
+          v34 = _accessibilityAXAttributedLabel4;
           MEMORY[0x29EDC9740](v7);
-          MEMORY[0x29EDC9740](v26);
+          MEMORY[0x29EDC9740](attributedText2);
         }
 
         else
         {
-          v8 = [location _accessibilityAXAttributedLabel];
+          _accessibilityAXAttributedLabel5 = [location _accessibilityAXAttributedLabel];
           v9 = v34;
-          v34 = v8;
+          v34 = _accessibilityAXAttributedLabel5;
           MEMORY[0x29EDC9740](v9);
         }
       }
@@ -161,13 +161,13 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v25 = [location _accessibilityAXAttributedLabel];
-        *&v10 = MEMORY[0x29EDC9740](v25).n128_u64[0];
-        if (v25)
+        _accessibilityAXAttributedLabel6 = [location _accessibilityAXAttributedLabel];
+        *&v10 = MEMORY[0x29EDC9740](_accessibilityAXAttributedLabel6).n128_u64[0];
+        if (_accessibilityAXAttributedLabel6)
         {
-          v11 = [location _accessibilityAXAttributedLabel];
+          _accessibilityAXAttributedLabel7 = [location _accessibilityAXAttributedLabel];
           v12 = v34;
-          v34 = v11;
+          v34 = _accessibilityAXAttributedLabel7;
           MEMORY[0x29EDC9740](v12);
         }
 
@@ -183,11 +183,11 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v24 = [location _accessibilityAXAttributedLabel];
-        *&v13 = MEMORY[0x29EDC9740](v24).n128_u64[0];
-        v14 = [location _accessibilityAXAttributedLabel];
+        _accessibilityAXAttributedLabel8 = [location _accessibilityAXAttributedLabel];
+        *&v13 = MEMORY[0x29EDC9740](_accessibilityAXAttributedLabel8).n128_u64[0];
+        _accessibilityAXAttributedLabel9 = [location _accessibilityAXAttributedLabel];
         v15 = v34;
-        v34 = v14;
+        v34 = _accessibilityAXAttributedLabel9;
         MEMORY[0x29EDC9740](v15);
       }
     }
@@ -197,43 +197,43 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v33 = [location accessibilityLabel];
-        if ([v33 length])
+        accessibilityLabel = [location accessibilityLabel];
+        if ([accessibilityLabel length])
         {
-          objc_storeStrong(&v34, v33);
+          objc_storeStrong(&v34, accessibilityLabel);
         }
 
         else
         {
-          v32 = [location accessibilityIdentification];
-          if (![v32 length])
+          accessibilityIdentification = [location accessibilityIdentification];
+          if (![accessibilityIdentification length])
           {
-            v16 = [location accessibilityIdentifier];
-            v17 = v32;
-            v32 = v16;
+            accessibilityIdentifier = [location accessibilityIdentifier];
+            v17 = accessibilityIdentification;
+            accessibilityIdentification = accessibilityIdentifier;
             MEMORY[0x29EDC9740](v17);
           }
 
-          if ([v32 length])
+          if ([accessibilityIdentification length])
           {
-            v18 = [v37 _accessibilityRetrieveImagePathLabel:v32];
+            v18 = [objectCopy _accessibilityRetrieveImagePathLabel:accessibilityIdentification];
             v19 = v34;
             v34 = v18;
             MEMORY[0x29EDC9740](v19);
           }
 
-          objc_storeStrong(&v32, 0);
+          objc_storeStrong(&accessibilityIdentification, 0);
         }
 
-        objc_storeStrong(&v33, 0);
+        objc_storeStrong(&accessibilityLabel, 0);
       }
     }
 
     if (![v34 length])
     {
-      v20 = [location _accessibilityAXAttributedLabel];
+      _accessibilityAXAttributedLabel10 = [location _accessibilityAXAttributedLabel];
       v21 = v34;
-      v34 = v20;
+      v34 = _accessibilityAXAttributedLabel10;
       MEMORY[0x29EDC9740](v21);
     }
 
@@ -256,7 +256,7 @@
 
 - (id)accessibilityLabel
 {
-  v10 = self;
+  selfCopy = self;
   v9[1] = a2;
   v9[0] = [(UISegmentAccessibility *)self accessibilityUserDefinedLabel];
   if (v9[0])
@@ -267,13 +267,13 @@
 
   else
   {
-    v6 = [(UISegmentAccessibility *)v10 safeValueForKey:@"_objectValue"];
-    v9[0] = [(UISegmentAccessibility *)v10 _axLabelFromInfoObject:v6];
+    v6 = [(UISegmentAccessibility *)selfCopy safeValueForKey:@"_objectValue"];
+    v9[0] = [(UISegmentAccessibility *)selfCopy _axLabelFromInfoObject:v6];
     MEMORY[0x29EDC9740](0);
     if (![v9[0] length])
     {
-      v7 = [(UISegmentAccessibility *)v10 safeValueForKey:@"info"];
-      v2 = [(UISegmentAccessibility *)v10 _axLabelFromInfoObject:v7];
+      v7 = [(UISegmentAccessibility *)selfCopy safeValueForKey:@"info"];
+      v2 = [(UISegmentAccessibility *)selfCopy _axLabelFromInfoObject:v7];
       v3 = v9[0];
       v9[0] = v2;
       MEMORY[0x29EDC9740](v3);
@@ -292,27 +292,27 @@
 
 - (id)accessibilityValue
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = [(UISegmentAccessibility *)self accessibilityUserDefinedValue];
   if (!v14[0])
   {
-    v13.receiver = v15;
+    v13.receiver = selfCopy;
     v13.super_class = UISegmentAccessibility;
-    v2 = [(UISegmentAccessibility *)&v13 accessibilityValue];
+    accessibilityValue = [(UISegmentAccessibility *)&v13 accessibilityValue];
     v3 = v14[0];
-    v14[0] = v2;
+    v14[0] = accessibilityValue;
     MEMORY[0x29EDC9740](v3);
   }
 
-  v10 = [(UISegmentAccessibility *)v15 safeValueForKey:@"_badgeView"];
-  v12 = [v10 accessibilityLabel];
+  v10 = [(UISegmentAccessibility *)selfCopy safeValueForKey:@"_badgeView"];
+  accessibilityLabel = [v10 accessibilityLabel];
   v11 = 0;
-  if ([v12 length] && (objc_msgSend(v12, "intValue") & 0x80000000) == 0)
+  if ([accessibilityLabel length] && (objc_msgSend(accessibilityLabel, "intValue") & 0x80000000) == 0)
   {
     v8 = MEMORY[0x29EDBA0F8];
     v9 = accessibilityLocalizedString(@"badge.count");
-    v4 = [v8 localizedStringWithFormat:v9, objc_msgSend(v12, "integerValue")];
+    v4 = [v8 localizedStringWithFormat:v9, objc_msgSend(accessibilityLabel, "integerValue")];
     v5 = v11;
     v11 = v4;
     MEMORY[0x29EDC9740](v5);
@@ -321,7 +321,7 @@
 
   v7 = __UIAXStringForVariables();
   objc_storeStrong(&v11, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&accessibilityLabel, 0);
   objc_storeStrong(v14, 0);
 
   return v7;
@@ -329,13 +329,13 @@
 
 - (_NSRange)accessibilityRowRange
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [(UISegmentAccessibility *)self _accessibilitySegmentedControlParent];
   if (v7[0])
   {
     v6 = [v7[0] safeValueForKey:@"_segments"];
-    v5 = [v6 indexOfObject:v8];
+    v5 = [v6 indexOfObject:selfCopy];
     v2 = [v6 count];
     v16 = v5;
     v15 = v2;
@@ -366,42 +366,42 @@
 
 - (id)accessibilityIdentifier
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [(UISegmentAccessibility *)self accessibilityUserDefinedIdentifier];
   if (v13[0])
   {
-    v15 = MEMORY[0x29EDC9748](v13[0]);
+    accessibilityIdentifier2 = MEMORY[0x29EDC9748](v13[0]);
     v12 = 1;
   }
 
   else
   {
-    location = [(UISegmentAccessibility *)v14 safeValueForKey:@"action"];
-    v8 = [location accessibilityIdentifier];
-    v9 = [v8 length];
-    *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
+    location = [(UISegmentAccessibility *)selfCopy safeValueForKey:@"action"];
+    accessibilityIdentifier = [location accessibilityIdentifier];
+    v9 = [accessibilityIdentifier length];
+    *&v2 = MEMORY[0x29EDC9740](accessibilityIdentifier).n128_u64[0];
     if (v9)
     {
-      v15 = [location accessibilityIdentifier];
+      accessibilityIdentifier2 = [location accessibilityIdentifier];
       v12 = 1;
     }
 
     else
     {
-      v6 = [(UISegmentAccessibility *)v14 accessibilityLabel];
-      v7 = [v6 length];
-      *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
+      accessibilityLabel = [(UISegmentAccessibility *)selfCopy accessibilityLabel];
+      v7 = [accessibilityLabel length];
+      *&v3 = MEMORY[0x29EDC9740](accessibilityLabel).n128_u64[0];
       if (v7)
       {
-        v15 = 0;
+        accessibilityIdentifier2 = 0;
       }
 
       else
       {
-        v10.receiver = v14;
+        v10.receiver = selfCopy;
         v10.super_class = UISegmentAccessibility;
-        v15 = [(UISegmentAccessibility *)&v10 accessibilityIdentifier];
+        accessibilityIdentifier2 = [(UISegmentAccessibility *)&v10 accessibilityIdentifier];
       }
 
       v12 = 1;
@@ -411,77 +411,77 @@
   }
 
   objc_storeStrong(v13, 0);
-  v4 = v15;
+  v4 = accessibilityIdentifier2;
 
   return v4;
 }
 
 - (id)accessibilityHint
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [(UISegmentAccessibility *)self safeValueForKey:@"info"];
   location = [v7[0] _accessibilityAXAttributedHint];
   if (location)
   {
-    v9 = MEMORY[0x29EDC9748](location);
+    accessibilityHint = MEMORY[0x29EDC9748](location);
   }
 
   else
   {
-    v4.receiver = v8;
+    v4.receiver = selfCopy;
     v4.super_class = UISegmentAccessibility;
-    v9 = [(UISegmentAccessibility *)&v4 accessibilityHint];
+    accessibilityHint = [(UISegmentAccessibility *)&v4 accessibilityHint];
   }
 
   v5 = 1;
   objc_storeStrong(&location, 0);
   objc_storeStrong(v7, 0);
-  v2 = v9;
+  v2 = accessibilityHint;
 
   return v2;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v15[0] = [(UISegmentAccessibility *)self safeValueForKey:@"info"];
-  v14 = [v15[0] accessibilityUserDefinedTraits];
-  if (v14)
+  accessibilityUserDefinedTraits = [v15[0] accessibilityUserDefinedTraits];
+  if (accessibilityUserDefinedTraits)
   {
-    v17 = [v14 unsignedLongLongValue];
+    unsignedLongLongValue = [accessibilityUserDefinedTraits unsignedLongLongValue];
     v13 = 1;
   }
 
   else
   {
-    v14 = [(UISegmentAccessibility *)v16 accessibilityUserDefinedTraits];
+    accessibilityUserDefinedTraits = [(UISegmentAccessibility *)selfCopy accessibilityUserDefinedTraits];
     *&v2 = MEMORY[0x29EDC9740](0).n128_u64[0];
-    if (v14)
+    if (accessibilityUserDefinedTraits)
     {
-      v17 = [v14 unsignedLongLongValue];
+      unsignedLongLongValue = [accessibilityUserDefinedTraits unsignedLongLongValue];
       v13 = 1;
     }
 
     else
     {
       v12 = *MEMORY[0x29EDC7F70];
-      v11 = [(UISegmentAccessibility *)v16 _accessibilitySegmentedControlParent];
-      if (v11)
+      _accessibilitySegmentedControlParent = [(UISegmentAccessibility *)selfCopy _accessibilitySegmentedControlParent];
+      if (_accessibilitySegmentedControlParent)
       {
-        v10 = [v11 selectedSegmentIndex];
-        location = [v11 safeValueForKey:@"segments"];
+        selectedSegmentIndex = [_accessibilitySegmentedControlParent selectedSegmentIndex];
+        location = [_accessibilitySegmentedControlParent safeValueForKey:@"segments"];
         v7 = 0;
         v6 = 0;
-        if ((v10 & 0x8000000000000000) == 0)
+        if ((selectedSegmentIndex & 0x8000000000000000) == 0)
         {
           v6 = 0;
-          if (v10 < [location count])
+          if (selectedSegmentIndex < [location count])
           {
-            v8 = [location objectAtIndex:v10];
+            v8 = [location objectAtIndex:selectedSegmentIndex];
             v7 = 1;
-            v6 = v16 == v8;
+            v6 = selfCopy == v8;
           }
         }
 
@@ -495,42 +495,42 @@
           v12 |= *MEMORY[0x29EDC7FC0];
         }
 
-        else if (([v11 isEnabled] & 1) == 0)
+        else if (([_accessibilitySegmentedControlParent isEnabled] & 1) == 0)
         {
           v12 |= *MEMORY[0x29EDC7FA8];
         }
 
-        v4 = [(UISegmentAccessibility *)v16 safeValueForKey:@"isEnabled"];
-        v5 = [v4 BOOLValue];
+        v4 = [(UISegmentAccessibility *)selfCopy safeValueForKey:@"isEnabled"];
+        bOOLValue = [v4 BOOLValue];
         MEMORY[0x29EDC9740](v4);
-        if ((v5 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           v12 |= *MEMORY[0x29EDC7FA8];
         }
 
-        v17 = v12;
+        unsignedLongLongValue = v12;
         v13 = 1;
         objc_storeStrong(&location, 0);
       }
 
       else
       {
-        v17 = v12;
+        unsignedLongLongValue = v12;
         v13 = 1;
       }
 
-      objc_storeStrong(&v11, 0);
+      objc_storeStrong(&_accessibilitySegmentedControlParent, 0);
     }
   }
 
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&accessibilityUserDefinedTraits, 0);
   objc_storeStrong(v15, 0);
-  return v17;
+  return unsignedLongLongValue;
 }
 
 - (BOOL)_accessibilityHasNativeFocus
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v10[0] = [(UISegmentAccessibility *)self _accessibilitySegmentedControlParent];
   if (([v10[0] _accessibilityUIKitHasNativeFocus] & 1) == 0)
@@ -538,18 +538,18 @@
     goto LABEL_11;
   }
 
-  v9 = [v10[0] selectedSegmentIndex];
+  selectedSegmentIndex = [v10[0] selectedSegmentIndex];
   location = [v10[0] safeValueForKey:@"segments"];
   v6 = 0;
   v3 = 0;
-  if ((v9 & 0x8000000000000000) == 0)
+  if ((selectedSegmentIndex & 0x8000000000000000) == 0)
   {
     v3 = 0;
-    if (v9 < [location count])
+    if (selectedSegmentIndex < [location count])
     {
-      v7 = [location objectAtIndex:v9];
+      v7 = [location objectAtIndex:selectedSegmentIndex];
       v6 = 1;
-      v3 = v11 == v7;
+      v3 = selfCopy == v7;
     }
   }
 
@@ -560,7 +560,7 @@
 
   if (v3)
   {
-    v12 = 1;
+    _accessibilityHasNativeFocus = 1;
     v5 = 1;
   }
 
@@ -573,14 +573,14 @@
   if (!v5)
   {
 LABEL_11:
-    v4.receiver = v11;
+    v4.receiver = selfCopy;
     v4.super_class = UISegmentAccessibility;
-    v12 = [(UISegmentAccessibility *)&v4 _accessibilityHasNativeFocus];
+    _accessibilityHasNativeFocus = [(UISegmentAccessibility *)&v4 _accessibilityHasNativeFocus];
     v5 = 1;
   }
 
   objc_storeStrong(v10, 0);
-  return v12 & 1;
+  return _accessibilityHasNativeFocus & 1;
 }
 
 @end

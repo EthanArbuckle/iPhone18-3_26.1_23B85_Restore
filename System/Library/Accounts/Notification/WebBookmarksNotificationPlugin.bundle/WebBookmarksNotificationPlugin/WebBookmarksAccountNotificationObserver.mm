@@ -1,28 +1,28 @@
 @interface WebBookmarksAccountNotificationObserver
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation WebBookmarksAccountNotificationObserver
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v19 = a3;
-  v8 = a6;
-  if (v19)
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
+  if (accountCopy)
   {
-    v9 = v19;
+    v9 = accountCopy;
   }
 
   else
   {
-    v9 = v8;
+    v9 = oldAccountCopy;
   }
 
   v10 = v9;
   v11 = [v10 aa_isAccountClass:*MEMORY[0x29EDBE2C0]];
-  v12 = [v10 accountType];
-  v13 = [v12 identifier];
-  v14 = [v13 isEqualToString:*MEMORY[0x29EDB81C8]];
+  accountType = [v10 accountType];
+  identifier = [accountType identifier];
+  v14 = [identifier isEqualToString:*MEMORY[0x29EDB81C8]];
 
   if (v14)
   {
@@ -37,16 +37,16 @@
   if (!v15)
   {
     v16 = *MEMORY[0x29EDB8470];
-    v17 = [v19 isEnabledForDataclass:*MEMORY[0x29EDB8470]];
-    v18 = [v8 isEnabledForDataclass:v16];
-    if (a4 == 1 && (v17 & 1) != 0)
+    v17 = [accountCopy isEnabledForDataclass:*MEMORY[0x29EDB8470]];
+    v18 = [oldAccountCopy isEnabledForDataclass:v16];
+    if (type == 1 && (v17 & 1) != 0)
     {
       v17 = 1;
     }
 
-    else if (a4 != 2 || ((v17 ^ v18) & 1) == 0)
+    else if (type != 2 || ((v17 ^ v18) & 1) == 0)
     {
-      if (((a4 == 3) & v18) != 1)
+      if (((type == 3) & v18) != 1)
       {
         goto LABEL_16;
       }

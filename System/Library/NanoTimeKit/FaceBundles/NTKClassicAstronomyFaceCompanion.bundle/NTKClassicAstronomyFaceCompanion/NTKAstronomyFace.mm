@@ -1,37 +1,37 @@
 @interface NTKAstronomyFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)_complicationSlotDescriptors;
-+ (id)_defaultSelectedComplicationSlotForDevice:(id)a3;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_defaultSelectedComplicationSlotForDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_complicationSlotDescriptors;
 - (id)_customEditModes;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescriptionForLibrary;
-- (id)_localizedNameForComplicationSlot:(id)a3;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_localizedNameForComplicationSlot:(id)slot;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_orderedComplicationSlots;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKAstronomyFace
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = [[NSUUID alloc] initWithUUIDString:@"157666B2-886F-4DBB-BFEE-669DE191D8BB"];
-  if (([v3 supportsCapability:v4] & 1) == 0)
+  if (([deviceCopy supportsCapability:v4] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v5 = [v3 deviceCategory];
+  deviceCategory = [deviceCopy deviceCategory];
 
-  if (v5 == &dword_0 + 1)
+  if (deviceCategory == &dword_0 + 1)
   {
 LABEL_5:
     v6 = 0;
@@ -63,27 +63,27 @@ LABEL_6:
 
 - (id)_complicationSlotDescriptors
 {
-  v3 = [(NTKAstronomyFace *)self device];
-  v4 = [v3 nrDeviceVersion];
+  device = [(NTKAstronomyFace *)self device];
+  nrDeviceVersion = [device nrDeviceVersion];
 
-  if (v4 >= 0x50000)
+  if (nrDeviceVersion >= 0x50000)
   {
     v7.receiver = self;
     v7.super_class = NTKAstronomyFace;
-    v5 = [(NTKAstronomyFace *)&v7 _complicationSlotDescriptors];
+    _complicationSlotDescriptors = [(NTKAstronomyFace *)&v7 _complicationSlotDescriptors];
   }
 
   else
   {
-    v5 = &__NSDictionary0__struct;
+    _complicationSlotDescriptors = &__NSDictionary0__struct;
   }
 
-  return v5;
+  return _complicationSlotDescriptors;
 }
 
-+ (id)_defaultSelectedComplicationSlotForDevice:(id)a3
++ (id)_defaultSelectedComplicationSlotForDevice:(id)device
 {
-  if ([a3 nrDeviceVersion] >= 0x50000)
+  if ([device nrDeviceVersion] >= 0x50000)
   {
     v3 = NTKComplicationSlotTopRight;
   }
@@ -107,40 +107,40 @@ LABEL_6:
 
 - (id)_orderedComplicationSlots
 {
-  v3 = [(NTKAstronomyFace *)self device];
-  v4 = [v3 nrDeviceVersion];
+  device = [(NTKAstronomyFace *)self device];
+  nrDeviceVersion = [device nrDeviceVersion];
 
-  if (v4 >= 0x50000)
+  if (nrDeviceVersion >= 0x50000)
   {
     v7.receiver = self;
     v7.super_class = NTKAstronomyFace;
-    v5 = [(NTKAstronomyFace *)&v7 _orderedComplicationSlots];
+    _orderedComplicationSlots = [(NTKAstronomyFace *)&v7 _orderedComplicationSlots];
   }
 
   else
   {
-    v5 = 0;
+    _orderedComplicationSlots = 0;
   }
 
-  return v5;
+  return _orderedComplicationSlots;
 }
 
-- (id)_localizedNameForComplicationSlot:(id)a3
+- (id)_localizedNameForComplicationSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKAstronomyFace *)self device];
-  v6 = [v5 nrDeviceVersion];
+  slotCopy = slot;
+  device = [(NTKAstronomyFace *)self device];
+  nrDeviceVersion = [device nrDeviceVersion];
 
-  if (v6 >= 0x50000)
+  if (nrDeviceVersion >= 0x50000)
   {
-    if ([v4 isEqualToString:NTKComplicationSlotTopRight])
+    if ([slotCopy isEqualToString:NTKComplicationSlotTopRight])
     {
       v8 = @"TOP";
     }
 
     else
     {
-      v9 = [v4 isEqualToString:NTKComplicationSlotBottom];
+      v9 = [slotCopy isEqualToString:NTKComplicationSlotBottom];
       v8 = @"BOTTOM";
       if (!v9)
       {
@@ -162,10 +162,10 @@ LABEL_6:
 
 - (id)_customEditModes
 {
-  v2 = [(NTKAstronomyFace *)self device];
-  v3 = [v2 nrDeviceVersion];
+  device = [(NTKAstronomyFace *)self device];
+  nrDeviceVersion = [device nrDeviceVersion];
 
-  if (v3 >= 0x50000)
+  if (nrDeviceVersion >= 0x50000)
   {
     return &off_10D20;
   }
@@ -176,15 +176,15 @@ LABEL_6:
   }
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKAstronomyFace *)self device:a3];
-  v6 = [v5 nrDeviceVersion];
+  v5 = [(NTKAstronomyFace *)self device:mode];
+  nrDeviceVersion = [v5 nrDeviceVersion];
 
-  if (v6 >= 0x50000)
+  if (nrDeviceVersion >= 0x50000)
   {
-    v8 = [(NTKAstronomyFace *)self device];
-    v7 = [NTKAstronomyVistaEditOption optionWithAstronomyVista:0 forDevice:v8];
+    device = [(NTKAstronomyFace *)self device];
+    v7 = [NTKAstronomyVistaEditOption optionWithAstronomyVista:0 forDevice:device];
   }
 
   else
@@ -195,11 +195,11 @@ LABEL_6:
   return v7;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
-    if ([a4 nrDeviceVersion] >= 0x50000)
+    if ([device nrDeviceVersion] >= 0x50000)
     {
       v5 = [@"EDIT_MODE_LABEL_ASTRONOMY_CONTENT" stringByAppendingString:@"_COMPANION"];
       v4 = NTKCompanionClockFaceLocalizedString();
@@ -219,40 +219,40 @@ LABEL_6:
   return v4;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v4 = [(NTKAstronomyFace *)self device:a3];
+  v4 = [(NTKAstronomyFace *)self device:mode];
   v5 = [NTKAstronomyVistaEditOption numberOfOptionsForDevice:v4];
 
   return v5;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = [(NTKAstronomyFace *)self device:a3];
-  v7 = [NTKAstronomyVistaEditOption optionAtIndex:a3 forDevice:v6];
+  v6 = [(NTKAstronomyFace *)self device:index];
+  v7 = [NTKAstronomyVistaEditOption optionAtIndex:index forDevice:v6];
 
   return v7;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v6 = a3;
-  v7 = [(NTKAstronomyFace *)self device];
-  v8 = [NTKAstronomyVistaEditOption indexOfOption:v6 forDevice:v7];
+  optionCopy = option;
+  device = [(NTKAstronomyFace *)self device];
+  v8 = [NTKAstronomyVistaEditOption indexOfOption:optionCopy forDevice:device];
 
   return v8;
 }
 
-- (BOOL)_snapshotContext:(id)a3 isStaleRelativeToContext:(id)a4
+- (BOOL)_snapshotContext:(id)context isStaleRelativeToContext:(id)toContext
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  toContextCopy = toContext;
   v11.receiver = self;
   v11.super_class = NTKAstronomyFace;
-  if (!-[NTKAstronomyFace _snapshotContext:isStaleRelativeToContext:](&v11, "_snapshotContext:isStaleRelativeToContext:", v6, v7) && [v6 calendarDateMatchesContext:v7] && objc_msgSend(v6, "localeMatchesContext:", v7))
+  if (!-[NTKAstronomyFace _snapshotContext:isStaleRelativeToContext:](&v11, "_snapshotContext:isStaleRelativeToContext:", contextCopy, toContextCopy) && [contextCopy calendarDateMatchesContext:toContextCopy] && objc_msgSend(contextCopy, "localeMatchesContext:", toContextCopy))
   {
-    [v6 distanceInKilometersFromContext:v7];
+    [contextCopy distanceInKilometersFromContext:toContextCopy];
     v9 = v8 > 500.0;
   }
 
@@ -264,9 +264,9 @@ LABEL_6:
   return v9;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 12)
+  if (mode == 12)
   {
     v4 = objc_opt_class();
   }
@@ -281,22 +281,22 @@ LABEL_6:
 
 - (id)_faceDescriptionForLibrary
 {
-  v3 = [(NTKAstronomyFace *)self device];
-  v4 = [v3 nrDeviceVersion];
+  device = [(NTKAstronomyFace *)self device];
+  nrDeviceVersion = [device nrDeviceVersion];
 
-  if (HIWORD(v4) > 4u)
+  if (HIWORD(nrDeviceVersion) > 4u)
   {
-    v5 = 0;
+    _faceDescriptionForLibrary = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = NTKAstronomyFace;
-    v5 = [(NTKAstronomyFace *)&v7 _faceDescriptionForLibrary];
+    _faceDescriptionForLibrary = [(NTKAstronomyFace *)&v7 _faceDescriptionForLibrary];
   }
 
-  return v5;
+  return _faceDescriptionForLibrary;
 }
 
 @end

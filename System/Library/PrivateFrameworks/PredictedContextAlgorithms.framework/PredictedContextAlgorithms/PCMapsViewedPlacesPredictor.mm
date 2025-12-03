@@ -1,15 +1,15 @@
 @interface PCMapsViewedPlacesPredictor
-+ (id)findFirstVisitWithin24HoursAfterPlaceViewed:(id)a3 fromHistory:(id)a4;
-+ (int64_t)getTimeBlock:(double)a3;
-+ (void)collectStatistics:(id)a3 history:(id)a4 searchesWithVisits:(int64_t *)a5 totalGap:(double *)a6 totalDuration:(double *)a7 timeBlockVisits:(id *)a8 timeBlockDurations:(id *)a9 timeBlockGaps:(id *)a10 timeBlockGapVariances:(id *)a11 timeBlockDurationVariances:(id *)a12;
-+ (void)predictWithViewedPlaces:(id)a3 history:(id)a4 atTime:(double)a5 results:(id *)a6;
++ (id)findFirstVisitWithin24HoursAfterPlaceViewed:(id)viewed fromHistory:(id)history;
++ (int64_t)getTimeBlock:(double)block;
++ (void)collectStatistics:(id)statistics history:(id)history searchesWithVisits:(int64_t *)visits totalGap:(double *)gap totalDuration:(double *)duration timeBlockVisits:(id *)blockVisits timeBlockDurations:(id *)durations timeBlockGaps:(id *)self0 timeBlockGapVariances:(id *)self1 timeBlockDurationVariances:(id *)self2;
++ (void)predictWithViewedPlaces:(id)places history:(id)history atTime:(double)time results:(id *)results;
 @end
 
 @implementation PCMapsViewedPlacesPredictor
 
-+ (int64_t)getTimeBlock:(double)a3
++ (int64_t)getTimeBlock:(double)block
 {
-  v3 = (fmod(a3, 86400.0) / 3600.0);
+  v3 = (fmod(block, 86400.0) / 3600.0);
   if (v3 < 0)
   {
     v3 = (v3 + 24.0);
@@ -33,16 +33,16 @@
   return 3;
 }
 
-+ (id)findFirstVisitWithin24HoursAfterPlaceViewed:(id)a3 fromHistory:(id)a4
++ (id)findFirstVisitWithin24HoursAfterPlaceViewed:(id)viewed fromHistory:(id)history
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  viewedCopy = viewed;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  historyCopy = history;
+  v7 = [historyCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = *v23;
@@ -52,17 +52,17 @@
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(historyCopy);
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 location];
-        v12 = [v5 destinationLocation];
-        if (+[PCLocationUtils isLocation:withinThreshold:](PCLocationUtils, "isLocation:withinThreshold:", v11, v12) && [v10 hasEntryTimeCFAbsolute] && objc_msgSend(v5, "hasUsageTimeCFAbsolute") && (objc_msgSend(v10, "entryTimeCFAbsolute"), v14 = v13, objc_msgSend(v5, "usageTimeCFAbsolute"), v14 > v15))
+        location = [v10 location];
+        destinationLocation = [viewedCopy destinationLocation];
+        if (+[PCLocationUtils isLocation:withinThreshold:](PCLocationUtils, "isLocation:withinThreshold:", location, destinationLocation) && [v10 hasEntryTimeCFAbsolute] && objc_msgSend(viewedCopy, "hasUsageTimeCFAbsolute") && (objc_msgSend(v10, "entryTimeCFAbsolute"), v14 = v13, objc_msgSend(viewedCopy, "usageTimeCFAbsolute"), v14 > v15))
         {
           [v10 entryTimeCFAbsolute];
           v17 = v16;
-          [v5 usageTimeCFAbsolute];
+          [viewedCopy usageTimeCFAbsolute];
           v19 = v17 - v18;
 
           if (v19 <= 86400.0)
@@ -77,7 +77,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v7 = [historyCopy countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v7);
@@ -90,27 +90,27 @@ LABEL_15:
   return v7;
 }
 
-+ (void)collectStatistics:(id)a3 history:(id)a4 searchesWithVisits:(int64_t *)a5 totalGap:(double *)a6 totalDuration:(double *)a7 timeBlockVisits:(id *)a8 timeBlockDurations:(id *)a9 timeBlockGaps:(id *)a10 timeBlockGapVariances:(id *)a11 timeBlockDurationVariances:(id *)a12
++ (void)collectStatistics:(id)statistics history:(id)history searchesWithVisits:(int64_t *)visits totalGap:(double *)gap totalDuration:(double *)duration timeBlockVisits:(id *)blockVisits timeBlockDurations:(id *)durations timeBlockGaps:(id *)self0 timeBlockGapVariances:(id *)self1 timeBlockDurationVariances:(id *)self2
 {
   v112 = *MEMORY[0x1E69E9840];
-  v105 = a3;
-  v17 = a4;
+  statisticsCopy = statistics;
+  historyCopy = history;
   [MEMORY[0x1E695DF90] dictionary];
-  *a8 = v99 = a8;
-  *a9 = [MEMORY[0x1E695DF90] dictionary];
-  *a10 = [MEMORY[0x1E695DF90] dictionary];
-  *a11 = [MEMORY[0x1E695DF90] dictionary];
-  *a12 = [MEMORY[0x1E695DF90] dictionary];
-  v97 = a6;
-  *a5 = 0;
-  *a6 = 0.0;
-  v98 = a7;
-  *a7 = 0.0;
+  *blockVisits = v99 = blockVisits;
+  *durations = [MEMORY[0x1E695DF90] dictionary];
+  *gaps = [MEMORY[0x1E695DF90] dictionary];
+  *variances = [MEMORY[0x1E695DF90] dictionary];
+  *durationVariances = [MEMORY[0x1E695DF90] dictionary];
+  gapCopy = gap;
+  *visits = 0;
+  *gap = 0.0;
+  durationCopy = duration;
+  *duration = 0.0;
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v18 = v105;
+  v18 = statisticsCopy;
   v19 = [v18 countByEnumeratingWithState:&v107 objects:v111 count:16];
   if (v19)
   {
@@ -118,7 +118,7 @@ LABEL_15:
     v21 = *v108;
     v22 = 0x1E83B7000uLL;
     v95 = v18;
-    v96 = v17;
+    v96 = historyCopy;
     v94 = *v108;
     do
     {
@@ -132,11 +132,11 @@ LABEL_15:
         }
 
         v24 = *(*(&v107 + 1) + 8 * v23);
-        v25 = [*(v22 + 2200) findFirstVisitWithin24HoursAfterPlaceViewed:v24 fromHistory:v17];
+        v25 = [*(v22 + 2200) findFirstVisitWithin24HoursAfterPlaceViewed:v24 fromHistory:historyCopy];
         v26 = v25;
         if (v25 && [v25 hasEntryTimeCFAbsolute] && objc_msgSend(v26, "hasExitTimeCFAbsolute") && objc_msgSend(v24, "hasUsageTimeCFAbsolute"))
         {
-          ++*a5;
+          ++*visits;
           v27 = *(v22 + 2200);
           [v24 usageTimeCFAbsolute];
           v28 = [v27 getTimeBlock:?];
@@ -157,8 +157,8 @@ LABEL_15:
           v34 = v33;
 
           v106 = v34;
-          v102 = [v34 integerValue];
-          v101 = v102 + 1;
+          integerValue = [v34 integerValue];
+          v101 = integerValue + 1;
           v35 = [MEMORY[0x1E696AD98] numberWithInteger:?];
           v36 = *v99;
           v37 = [MEMORY[0x1E696AD98] numberWithInteger:v28];
@@ -168,7 +168,7 @@ LABEL_15:
           v39 = v38;
           [v26 entryTimeCFAbsolute];
           v41 = v39 - v40;
-          v42 = *a9;
+          v42 = *durations;
           v43 = [MEMORY[0x1E696AD98] numberWithInteger:v28];
           v44 = [v42 objectForKeyedSubscript:v43];
           v45 = v44;
@@ -188,16 +188,16 @@ LABEL_15:
           [v47 doubleValue];
           v49 = v41 + v48;
           v50 = [MEMORY[0x1E696AD98] numberWithDouble:v41 + v48];
-          v51 = *a9;
+          v51 = *durations;
           v52 = [MEMORY[0x1E696AD98] numberWithInteger:v28];
           [v51 setObject:v50 forKeyedSubscript:v52];
 
-          *v98 = v41 + *v98;
+          *durationCopy = v41 + *durationCopy;
           [v26 entryTimeCFAbsolute];
           v54 = v53;
           [v24 usageTimeCFAbsolute];
           v56 = v54 - v55;
-          v57 = *a10;
+          v57 = *gaps;
           v58 = [MEMORY[0x1E696AD98] numberWithInteger:v28];
           v59 = [v57 objectForKeyedSubscript:v58];
           v60 = v59;
@@ -216,17 +216,17 @@ LABEL_15:
           [v62 doubleValue];
           v64 = v56 + v63;
           v65 = [MEMORY[0x1E696AD98] numberWithDouble:v56 + v63];
-          v66 = *a10;
+          v66 = *gaps;
           v67 = [MEMORY[0x1E696AD98] numberWithInteger:v28];
           [v66 setObject:v65 forKeyedSubscript:v67];
 
-          *v97 = v56 + *v97;
-          if ((v102 & 0x8000000000000000) == 0)
+          *gapCopy = v56 + *gapCopy;
+          if ((integerValue & 0x8000000000000000) == 0)
           {
             v68 = v49 / v101;
             v69 = (v56 - v64 / v101) * (v56 - v64 / v101);
             v70 = (v41 - v68) * (v41 - v68);
-            v71 = *a11;
+            v71 = *variances;
             v72 = [MEMORY[0x1E696AD98] numberWithInteger:v28];
             v73 = [v71 objectForKeyedSubscript:v72];
             v74 = v73;
@@ -245,11 +245,11 @@ LABEL_15:
             v76 = MEMORY[0x1E696AD98];
             [v103 doubleValue];
             v78 = [v76 numberWithDouble:v69 + v77];
-            v79 = *a11;
+            v79 = *variances;
             v80 = [MEMORY[0x1E696AD98] numberWithInteger:v28];
             [v79 setObject:v78 forKeyedSubscript:v80];
 
-            v81 = *a12;
+            v81 = *durationVariances;
             v82 = [MEMORY[0x1E696AD98] numberWithInteger:v28];
             v83 = [v81 objectForKeyedSubscript:v82];
             v84 = v83;
@@ -270,13 +270,13 @@ LABEL_15:
             v89 = v88;
 
             v90 = [v87 numberWithDouble:v70 + v89];
-            v91 = *a12;
+            v91 = *durationVariances;
             v92 = [MEMORY[0x1E696AD98] numberWithInteger:v28];
             [v91 setObject:v90 forKeyedSubscript:v92];
           }
 
           v18 = v95;
-          v17 = v96;
+          historyCopy = v96;
           v22 = 0x1E83B7000;
           v21 = v94;
           v20 = v100;
@@ -295,23 +295,23 @@ LABEL_15:
   v93 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)predictWithViewedPlaces:(id)a3 history:(id)a4 atTime:(double)a5 results:(id *)a6
++ (void)predictWithViewedPlaces:(id)places history:(id)history atTime:(double)time results:(id *)results
 {
   v126 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v98 = a6;
-  *a6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([v9 count])
+  placesCopy = places;
+  historyCopy = history;
+  resultsCopy = results;
+  *results = objc_alloc_init(MEMORY[0x1E695DF70]);
+  if ([placesCopy count])
   {
     v11 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_9];
-    [v9 filterUsingPredicate:v11];
+    [placesCopy filterUsingPredicate:v11];
 
-    [v9 sortUsingComparator:&__block_literal_global_9];
+    [placesCopy sortUsingComparator:&__block_literal_global_9];
     v12 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_12];
-    [v10 filterUsingPredicate:v12];
+    [historyCopy filterUsingPredicate:v12];
 
-    [v10 sortUsingComparator:&__block_literal_global_15];
+    [historyCopy sortUsingComparator:&__block_literal_global_15];
     v117 = 0.0;
     v118 = 0;
     v115 = 0;
@@ -320,16 +320,16 @@ LABEL_15:
     v114 = 0;
     v111 = 0;
     v112 = 0;
-    [PCMapsViewedPlacesPredictor collectStatistics:v9 history:v10 searchesWithVisits:&v118 totalGap:&v117 totalDuration:&v116 timeBlockVisits:&v115 timeBlockDurations:&v114 timeBlockGaps:&v113 timeBlockGapVariances:&v112 timeBlockDurationVariances:&v111];
+    [PCMapsViewedPlacesPredictor collectStatistics:placesCopy history:historyCopy searchesWithVisits:&v118 totalGap:&v117 totalDuration:&v116 timeBlockVisits:&v115 timeBlockDurations:&v114 timeBlockGaps:&v113 timeBlockGapVariances:&v112 timeBlockDurationVariances:&v111];
     v13 = v115;
     v95 = v114;
     v99 = v113;
     v94 = v112;
     v93 = v111;
-    if ([v9 count])
+    if ([placesCopy count])
     {
       v14 = v118;
-      v15 = v14 / [v9 count];
+      v15 = v14 / [placesCopy count];
     }
 
     else
@@ -341,10 +341,10 @@ LABEL_15:
     v110 = 0u;
     v107 = 0u;
     v108 = 0u;
-    v92 = v9;
-    v17 = v9;
+    v92 = placesCopy;
+    v17 = placesCopy;
     v18 = [v17 countByEnumeratingWithState:&v107 objects:v121 count:16];
-    v96 = v10;
+    v96 = historyCopy;
     v97 = v13;
     v19 = 0x1E83B7000uLL;
     if (v18)
@@ -366,7 +366,7 @@ LABEL_15:
           }
 
           v24 = *(*(&v107 + 1) + 8 * v23);
-          v25 = [*(v19 + 2200) findFirstVisitWithin24HoursAfterPlaceViewed:v24 fromHistory:v10];
+          v25 = [*(v19 + 2200) findFirstVisitWithin24HoursAfterPlaceViewed:v24 fromHistory:historyCopy];
 
           if (!v25)
           {
@@ -414,7 +414,7 @@ LABEL_15:
 
             [v24 usageTimeCFAbsolute];
             v42 = v40 + v41;
-            if (v42 >= a5)
+            if (v42 >= time)
             {
               if ([v34 integerValue] < 1)
               {
@@ -439,23 +439,23 @@ LABEL_15:
               v50 = objc_alloc_init(PCPLocationOfInterest);
               [(PCPPredictedContextLocation *)v49 setLocationOfInterest:v50];
 
-              v51 = [MEMORY[0x1E696AFB0] UUID];
-              v52 = [PCAlgorithmsCommonUtils dataFromUUID:v51];
-              v53 = [(PCPPredictedContextLocation *)v49 locationOfInterest];
-              [v53 setLoiIdentifier:v52];
+              uUID = [MEMORY[0x1E696AFB0] UUID];
+              v52 = [PCAlgorithmsCommonUtils dataFromUUID:uUID];
+              locationOfInterest = [(PCPPredictedContextLocation *)v49 locationOfInterest];
+              [locationOfInterest setLoiIdentifier:v52];
 
-              v54 = [v24 destinationLocation];
-              v55 = [(PCPPredictedContextLocation *)v49 locationOfInterest];
-              [v55 setLocation:v54];
+              destinationLocation = [v24 destinationLocation];
+              locationOfInterest2 = [(PCPPredictedContextLocation *)v49 locationOfInterest];
+              [locationOfInterest2 setLocation:destinationLocation];
 
               v56 = objc_alloc_init(PCPPredictedContext);
               [(PCPPredictedContextLocation *)v49 setPredictedContext:v56];
 
-              v57 = [(PCPPredictedContextLocation *)v49 predictedContext];
-              [v57 setProbability:v15 * v32];
+              predictedContext = [(PCPPredictedContextLocation *)v49 predictedContext];
+              [predictedContext setProbability:v15 * v32];
 
-              v58 = [(PCPPredictedContextLocation *)v49 predictedContext];
-              [v58 setContextType:1];
+              predictedContext2 = [(PCPPredictedContextLocation *)v49 predictedContext];
+              [predictedContext2 setContextType:1];
 
               v59 = objc_alloc_init(PCPSource);
               v60 = objc_opt_class();
@@ -468,8 +468,8 @@ LABEL_15:
               v120 = v59;
               v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v120 count:1];
               v64 = [v63 mutableCopy];
-              v65 = [(PCPPredictedContextLocation *)v49 predictedContext];
-              [v65 setSources:v64];
+              predictedContext3 = [(PCPPredictedContextLocation *)v49 predictedContext];
+              [predictedContext3 setSources:v64];
 
               v66 = objc_alloc_init(PCPPredictedContextDateInterval);
               v67 = objc_alloc_init(PCPPredictedContextDate);
@@ -478,11 +478,11 @@ LABEL_15:
               v68 = objc_alloc_init(PCPPredictedContextDate);
               [(PCPPredictedContextDateInterval *)v66 setEndDate:v68];
 
-              v69 = [(PCPPredictedContextDateInterval *)v66 startDate];
-              [v69 setDate:v42];
+              startDate = [(PCPPredictedContextDateInterval *)v66 startDate];
+              [startDate setDate:v42];
 
-              v70 = [(PCPPredictedContextDateInterval *)v66 endDate];
-              [v70 setDate:v42 + v48];
+              endDate = [(PCPPredictedContextDateInterval *)v66 endDate];
+              [endDate setDate:v42 + v48];
 
               if ([v34 integerValue] > 1)
               {
@@ -496,18 +496,18 @@ LABEL_15:
                 [v76 doubleValue];
                 v78 = sqrt(v77 / ([v34 integerValue] - 1));
 
-                v79 = [(PCPPredictedContextDateInterval *)v66 startDate];
-                [v79 setConfidenceInterval:v74];
+                startDate2 = [(PCPPredictedContextDateInterval *)v66 startDate];
+                [startDate2 setConfidenceInterval:v74];
 
-                v80 = [(PCPPredictedContextDateInterval *)v66 endDate];
-                [v80 setConfidenceInterval:sqrt(v74 * v74 + v78 * v78)];
+                endDate2 = [(PCPPredictedContextDateInterval *)v66 endDate];
+                [endDate2 setConfidenceInterval:sqrt(v74 * v74 + v78 * v78)];
               }
 
-              v81 = [(PCPPredictedContextLocation *)v49 predictedContext];
-              [v81 setDateInterval:v66];
+              predictedContext4 = [(PCPPredictedContextLocation *)v49 predictedContext];
+              [predictedContext4 setDateInterval:v66];
 
-              [*v98 addObject:v49];
-              v10 = v96;
+              [*resultsCopy addObject:v49];
+              historyCopy = v96;
               v13 = v97;
               v19 = 0x1E83B7000;
               v17 = v102;
@@ -528,12 +528,12 @@ LABEL_15:
       while (v20);
     }
 
-    if (*v98 && [*v98 count])
+    if (*resultsCopy && [*resultsCopy count])
     {
       v82 = _plc_log_get_normal_handle(PCLogCategoryMapsViewedPlacesPredictor);
       if (os_log_type_enabled(v82, OS_LOG_TYPE_INFO))
       {
-        v83 = [*v98 count];
+        v83 = [*resultsCopy count];
         *buf = 134217984;
         v123 = v83;
         _os_log_impl(&dword_1CEE74000, v82, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -543,7 +543,7 @@ LABEL_15:
       v106 = 0u;
       v103 = 0u;
       v104 = 0u;
-      v84 = *v98;
+      v84 = *resultsCopy;
       v85 = [v84 countByEnumeratingWithState:&v103 objects:v119 count:16];
       if (v85)
       {
@@ -572,14 +572,14 @@ LABEL_15:
         }
 
         while (v86);
-        v9 = v92;
-        v10 = v96;
+        placesCopy = v92;
+        historyCopy = v96;
         v13 = v97;
       }
 
       else
       {
-        v9 = v92;
+        placesCopy = v92;
         v13 = v97;
       }
     }
@@ -593,7 +593,7 @@ LABEL_15:
         _os_log_impl(&dword_1CEE74000, v84, OS_LOG_TYPE_INFO, "No Location Predictions to log", buf, 2u);
       }
 
-      v9 = v92;
+      placesCopy = v92;
     }
   }
 
@@ -605,7 +605,7 @@ LABEL_15:
       *buf = 136315395;
       v123 = "+[PCMapsViewedPlacesPredictor predictWithViewedPlaces:history:atTime:results:]";
       v124 = 2117;
-      v125 = v9;
+      v125 = placesCopy;
       _os_log_impl(&dword_1CEE74000, v16, OS_LOG_TYPE_DEFAULT, "%s, no viewed places, %{sensitive}@", buf, 0x16u);
     }
   }

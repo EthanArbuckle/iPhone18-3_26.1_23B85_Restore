@@ -1,12 +1,12 @@
 @interface WFRepeatAction
-- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)a3 inWorkflow:(id)a4;
+- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)action inWorkflow:(id)workflow;
 - (BOOL)outputsMultipleItems;
 - (NSString)indexVariableName;
 - (id)createAccompanyingActions;
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
-- (void)resetEvaluationCriteriaWithVariableSource:(id)a3;
-- (void)runWithInput:(id)a3 error:(id *)a4;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
+- (void)resetEvaluationCriteriaWithVariableSource:(id)source;
+- (void)runWithInput:(id)input error:(id *)error;
 @end
 
 @implementation WFRepeatAction
@@ -18,16 +18,16 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(WFAction *)self workflow];
-  v4 = [v3 actionTree];
-  v5 = [v4 outputsForAction:self];
+  workflow = [(WFAction *)self workflow];
+  actionTree = [workflow actionTree];
+  v5 = [actionTree outputsForAction:self];
 
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v15;
-    v9 = @"Repeat Index";
+    variableName = @"Repeat Index";
     while (2)
     {
       for (i = 0; i != v7; ++i)
@@ -40,7 +40,7 @@
         v11 = *(*(&v14 + 1) + 8 * i);
         if ([v11 outputType] == 2)
         {
-          v9 = [v11 variableName];
+          variableName = [v11 variableName];
           goto LABEL_12;
         }
       }
@@ -57,76 +57,76 @@
 
   else
   {
-    v9 = @"Repeat Index";
+    variableName = @"Repeat Index";
   }
 
 LABEL_12:
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return variableName;
 }
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Repeat Results", @"Repeat Results");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)a3 inWorkflow:(id)a4
+- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)action inWorkflow:(id)workflow
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  workflowCopy = workflow;
   if ([(WFControlFlowAction *)self mode])
   {
-    v8 = v6 == 0;
+    v8 = actionCopy == 0;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = WFRepeatAction;
-    v8 = [(WFAction *)&v10 legacyBehaviorIgnoresOutputFromAction:v6 inWorkflow:v7];
+    v8 = [(WFAction *)&v10 legacyBehaviorIgnoresOutputFromAction:actionCopy inWorkflow:workflowCopy];
   }
 
   return v8;
 }
 
-- (void)runWithInput:(id)a3 error:(id *)a4
+- (void)runWithInput:(id)input error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = [(WFRepeatAction *)self indexVariableName:a3];
+  v5 = [(WFRepeatAction *)self indexVariableName:input];
   if (v5 && ![(WFControlFlowAction *)self mode])
   {
-    v6 = [(WFAction *)self variableSource];
-    v7 = [v6 contentForVariableWithName:v5];
-    v8 = [v7 items];
-    v9 = [v8 firstObject];
-    v10 = [v9 number];
-    v11 = [v10 integerValue];
+    variableSource = [(WFAction *)self variableSource];
+    v7 = [variableSource contentForVariableWithName:v5];
+    items = [v7 items];
+    firstObject = [items firstObject];
+    number = [firstObject number];
+    integerValue = [number integerValue];
 
-    v12 = [(WFAction *)self variableSource];
+    variableSource2 = [(WFAction *)self variableSource];
     v13 = MEMORY[0x1E6996D40];
     v14 = MEMORY[0x1E6996D58];
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:v11 + 1];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue + 1];
     v16 = [v14 itemWithObject:v15];
     v20[0] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:1];
     v18 = [v13 collectionWithItems:v17];
-    [v12 setContent:v18 forVariableWithName:v5];
+    [variableSource2 setContent:v18 forVariableWithName:v5];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetEvaluationCriteriaWithVariableSource:(id)a3
+- (void)resetEvaluationCriteriaWithVariableSource:(id)source
 {
-  v4 = a3;
-  v5 = [(WFRepeatAction *)self indexVariableName];
-  [v4 setContent:0 forVariableWithName:v5];
+  sourceCopy = source;
+  indexVariableName = [(WFRepeatAction *)self indexVariableName];
+  [sourceCopy setContent:0 forVariableWithName:indexVariableName];
 }
 
 - (BOOL)outputsMultipleItems
@@ -148,35 +148,35 @@ LABEL_12:
   {
     v7.receiver = self;
     v7.super_class = WFRepeatAction;
-    v3 = [(WFAction *)&v7 createAccompanyingActions];
+    createAccompanyingActions = [(WFAction *)&v7 createAccompanyingActions];
   }
 
   else
   {
     v4 = [(WFControlFlowAction *)self createAccompanyingActionWithMode:2];
     v8[0] = v4;
-    v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
+    createAccompanyingActions = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   }
 
   v5 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return createAccompanyingActions;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(WFControlFlowAction *)self mode]== 2)
   {
     v5 = WFLocalizedStringResourceWithKey(@"WFRepeatAction - End Repeat", @"End Repeat");
-    v6 = [v4 localize:v5];
+    v6 = [contextCopy localize:v5];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WFRepeatAction;
-    v6 = [(WFAction *)&v8 localizedNameWithContext:v4];
+    v6 = [(WFAction *)&v8 localizedNameWithContext:contextCopy];
   }
 
   return v6;

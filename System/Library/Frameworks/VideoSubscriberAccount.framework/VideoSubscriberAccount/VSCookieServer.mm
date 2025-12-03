@@ -3,9 +3,9 @@
 - (VSCookieServer)init;
 - (id)cookieGetter;
 - (id)cookieSetter;
-- (void)webServer:(id)a3 didOpenConnection:(id)a4;
-- (void)webServer:(id)a3 didReceiveError:(id)a4;
-- (void)webServerConnection:(id)a3 didReceiveRequest:(id)a4;
+- (void)webServer:(id)server didOpenConnection:(id)connection;
+- (void)webServer:(id)server didReceiveError:(id)error;
+- (void)webServerConnection:(id)connection didReceiveRequest:(id)request;
 @end
 
 @implementation VSCookieServer
@@ -17,15 +17,15 @@
   v2 = [(VSCookieServer *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
-    v4 = [v3 UUIDString];
-    v5 = [v4 copy];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v5 = [uUIDString copy];
     cookieName = v2->_cookieName;
     v2->_cookieName = v5;
 
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
-    v9 = [v8 copy];
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUIDString2 = [uUID2 UUIDString];
+    v9 = [uUIDString2 copy];
     cookieValue = v2->_cookieValue;
     v2->_cookieValue = v9;
 
@@ -43,61 +43,61 @@
 - (id)cookieGetter
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(VSCookieServer *)self cookieName];
-  v5 = [(VSCookieServer *)self cookieValue];
-  v6 = [v3 stringWithFormat:@"%@=%@", v4, v5];
+  cookieName = [(VSCookieServer *)self cookieName];
+  cookieValue = [(VSCookieServer *)self cookieValue];
+  v6 = [v3 stringWithFormat:@"%@=%@", cookieName, cookieValue];
 
   return v6;
 }
 
 - (id)cookieSetter
 {
-  v3 = [(VSCookieServer *)self cookieGetter];
-  v4 = [(VSCookieServer *)self cookieMaxAge];
-  v5 = v4;
-  if (v4)
+  cookieGetter = [(VSCookieServer *)self cookieGetter];
+  cookieMaxAge = [(VSCookieServer *)self cookieMaxAge];
+  v5 = cookieMaxAge;
+  if (cookieMaxAge)
   {
-    v6 = [v3 stringByAppendingFormat:@" max-age=%d", objc_msgSend(v4, "intValue")];;
+    v6 = [cookieGetter stringByAppendingFormat:@" max-age=%d", objc_msgSend(cookieMaxAge, "intValue")];;
 
-    v3 = v6;
+    cookieGetter = v6;
   }
 
-  return v3;
+  return cookieGetter;
 }
 
-- (void)webServer:(id)a3 didOpenConnection:(id)a4
+- (void)webServer:(id)server didOpenConnection:(id)connection
 {
-  v5 = a4;
-  [v5 setDelegate:self];
-  [v5 resume];
+  connectionCopy = connection;
+  [connectionCopy setDelegate:self];
+  [connectionCopy resume];
 }
 
-- (void)webServer:(id)a3 didReceiveError:(id)a4
+- (void)webServer:(id)server didReceiveError:(id)error
 {
-  v5 = a3;
-  v6 = -[VSWebServer initWithPort:]([VSWebServer alloc], "initWithPort:", [v5 port]);
-  [v5 invalidate];
+  serverCopy = server;
+  v6 = -[VSWebServer initWithPort:]([VSWebServer alloc], "initWithPort:", [serverCopy port]);
+  [serverCopy invalidate];
 
   [(VSWebServer *)v6 setDelegate:self];
   [(VSCookieServer *)self setServer:v6];
   [(VSWebServer *)v6 resume];
 }
 
-- (void)webServerConnection:(id)a3 didReceiveRequest:(id)a4
+- (void)webServerConnection:(id)connection didReceiveRequest:(id)request
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  requestCopy = request;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v5 method];
-  if ([v7 isEqual:@"GET"])
+  method = [requestCopy method];
+  if ([method isEqual:@"GET"])
   {
-    v8 = [v5 headerFields];
-    v9 = [v8 objectForKey:@"Cookie"];
+    headerFields = [requestCopy headerFields];
+    cookieSetter = [headerFields objectForKey:@"Cookie"];
 
-    if ([v9 length])
+    if ([cookieSetter length])
     {
-      v10 = [(VSCookieServer *)self cookieGetter];
-      if ([v9 isEqual:v10])
+      cookieGetter = [(VSCookieServer *)self cookieGetter];
+      if ([cookieSetter isEqual:cookieGetter])
       {
         v11 = VSDefaultLogObject();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -114,7 +114,7 @@
         v11 = VSErrorLogObject();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          [(VSCookieServer *)v10 webServerConnection:v9 didReceiveRequest:v11];
+          [(VSCookieServer *)cookieGetter webServerConnection:cookieSetter didReceiveRequest:v11];
         }
 
         v12 = 403;
@@ -123,10 +123,10 @@
 
     else
     {
-      v10 = VSErrorLogObject();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      cookieGetter = VSErrorLogObject();
+      if (os_log_type_enabled(cookieGetter, OS_LOG_TYPE_ERROR))
       {
-        [VSCookieServer webServerConnection:v10 didReceiveRequest:?];
+        [VSCookieServer webServerConnection:cookieGetter didReceiveRequest:?];
       }
 
       v12 = 401;
@@ -136,18 +136,18 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([v7 isEqual:@"POST"])
+  if ([method isEqual:@"POST"])
   {
-    v9 = [(VSCookieServer *)self cookieSetter];
+    cookieSetter = [(VSCookieServer *)self cookieSetter];
     v13 = VSDefaultLogObject();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v9;
+      v17 = cookieSetter;
       _os_log_impl(&dword_23AB8E000, v13, OS_LOG_TYPE_DEFAULT, "Setting cookie %@.", &v16, 0xCu);
     }
 
-    [v6 setObject:v9 forKey:@"Set-Cookie"];
+    [v6 setObject:cookieSetter forKey:@"Set-Cookie"];
     [v6 setObject:@"*" forKey:@"Access-Control-Allow-Origin"];
     v12 = 201;
     goto LABEL_20;
@@ -156,7 +156,7 @@ LABEL_20:
   v12 = 405;
 LABEL_21:
   v14 = objc_alloc_init(MEMORY[0x277CBEA90]);
-  v15 = [VSWebServerResponse responseToRequest:v5 withCode:v12 headers:v6 bodyData:v14];
+  v15 = [VSWebServerResponse responseToRequest:requestCopy withCode:v12 headers:v6 bodyData:v14];
   [v15 enqueue];
 }
 
@@ -166,8 +166,8 @@ LABEL_21:
   [v3 setScheme:@"http"];
   [v3 setHost:@"localhost"];
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(VSCookieServer *)self server];
-  v6 = [v4 numberWithUnsignedShort:{objc_msgSend(v5, "port")}];
+  server = [(VSCookieServer *)self server];
+  v6 = [v4 numberWithUnsignedShort:{objc_msgSend(server, "port")}];
   [v3 setPort:v6];
 
   [v3 setPath:@"/"];

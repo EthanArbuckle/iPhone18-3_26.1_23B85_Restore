@@ -12,7 +12,7 @@
     a3 = MEMORY[0x1E695E0F0];
   }
 
-  return [a1 _initWithActivityItemSources:a3];
+  return [self _initWithActivityItemSources:a3];
 }
 
 - (void)ts_setExcludedActivityTypes:()Bridge
@@ -20,7 +20,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 _setExcludedActivityTypes:v4];
+    [self _setExcludedActivityTypes:v4];
   }
 }
 

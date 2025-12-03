@@ -1,9 +1,9 @@
 @interface VKBarcodeFrameProcessorConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToBarcodeFrameProcessorConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToBarcodeFrameProcessorConfiguration:(id)configuration;
 - (CGPoint)comparisonPoint;
 - (VKBarcodeFrameProcessorConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation VKBarcodeFrameProcessorConfiguration
@@ -27,22 +27,22 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(VKBarcodeFrameProcessorConfiguration);
   [(VKBarcodeFrameProcessorConfiguration *)v4 setIsForSingleItem:[(VKBarcodeFrameProcessorConfiguration *)self isForSingleItem]];
   [(VKBarcodeFrameProcessorConfiguration *)self comparisonPoint];
   [(VKBarcodeFrameProcessorConfiguration *)v4 setComparisonPoint:?];
-  v5 = [(VKBarcodeFrameProcessorConfiguration *)self symbologies];
-  [(VKBarcodeFrameProcessorConfiguration *)v4 setSymbologies:v5];
+  symbologies = [(VKBarcodeFrameProcessorConfiguration *)self symbologies];
+  [(VKBarcodeFrameProcessorConfiguration *)v4 setSymbologies:symbologies];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -53,7 +53,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = objc_opt_class();
-      v6 = VKDynamicCast(v5, v4);
+      v6 = VKDynamicCast(v5, equalCopy);
       v7 = [(VKBarcodeFrameProcessorConfiguration *)self isEqualToBarcodeFrameProcessorConfiguration:v6];
     }
 
@@ -66,23 +66,23 @@
   return v7;
 }
 
-- (BOOL)isEqualToBarcodeFrameProcessorConfiguration:(id)a3
+- (BOOL)isEqualToBarcodeFrameProcessorConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [v4 isForSingleItem];
-  v6 = [(VKBarcodeFrameProcessorConfiguration *)self isForSingleItem];
-  [v4 comparisonPoint];
+  configurationCopy = configuration;
+  isForSingleItem = [configurationCopy isForSingleItem];
+  isForSingleItem2 = [(VKBarcodeFrameProcessorConfiguration *)self isForSingleItem];
+  [configurationCopy comparisonPoint];
   v8 = v7;
   v10 = v9;
   [(VKBarcodeFrameProcessorConfiguration *)self comparisonPoint];
   v12 = v11;
   v14 = v13;
-  v15 = [v4 symbologies];
+  symbologies = [configurationCopy symbologies];
 
-  v16 = [(VKBarcodeFrameProcessorConfiguration *)self symbologies];
-  v17 = [v15 isEqualToArray:v16];
+  symbologies2 = [(VKBarcodeFrameProcessorConfiguration *)self symbologies];
+  v17 = [symbologies isEqualToArray:symbologies2];
 
-  if (v5 == v6)
+  if (isForSingleItem == isForSingleItem2)
   {
     return VKMNearlyEqualPointsWithThreshold(v8, v10, v12, v14, 0.00001) & v17;
   }

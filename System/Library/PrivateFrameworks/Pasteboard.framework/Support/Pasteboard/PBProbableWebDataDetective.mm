@@ -1,12 +1,12 @@
 @interface PBProbableWebDataDetective
-- (id)detectedPatternValuesInValue:(id)a3;
+- (id)detectedPatternValuesInValue:(id)value;
 @end
 
 @implementation PBProbableWebDataDetective
 
-- (id)detectedPatternValuesInValue:(id)a3
+- (id)detectedPatternValuesInValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -18,7 +18,7 @@
   v16 = 0u;
   v17 = 0u;
   v4 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v5 = [v3 componentsSeparatedByCharactersInSet:v4];
+  v5 = [valueCopy componentsSeparatedByCharactersInSet:v4];
 
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v26 count:16];
   if (v6)
@@ -55,11 +55,11 @@
     }
   }
 
-  v11 = sub_1000189A8(v3);
+  v11 = sub_1000189A8(valueCopy);
   if ((v11 - 1) < 2)
   {
     v22 = @"com.apple.uikit.pasteboard-detection-pattern.probable-web-url";
-    v23 = v3;
+    v23 = valueCopy;
     v12 = &v23;
     v13 = &v22;
     goto LABEL_17;
@@ -73,7 +73,7 @@ LABEL_14:
   }
 
   v20 = @"com.apple.uikit.pasteboard-detection-pattern.probable-web-search";
-  v21 = v3;
+  v21 = valueCopy;
   v12 = &v21;
   v13 = &v20;
 LABEL_17:

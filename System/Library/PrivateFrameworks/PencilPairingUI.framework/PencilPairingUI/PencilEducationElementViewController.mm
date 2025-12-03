@@ -1,65 +1,65 @@
 @interface PencilEducationElementViewController
-- (BOOL)_scribbleInteraction:(id)a3 focusWillTransformElement:(id)a4;
+- (BOOL)_scribbleInteraction:(id)interaction focusWillTransformElement:(id)element;
 - (BOOL)hasRemainingAnimation;
 - (BOOL)isUIRTL;
-- (CGAffineTransform)applyLocalizationScaleOffsetsIfNecesssaryForDrawing:(SEL)a3 animationType:(id)a4 transform:(int64_t)a5;
-- (CGAffineTransform)transformDrawing:(SEL)a3 toFitBounds:(id)a4 dimension:(CGRect)a5 offset:(int64_t)a6 animationType:(CGPoint)a7;
-- (CGAffineTransform)transformForAnimationType:(SEL)a3 drawing:(int64_t)a4 bounds:(id)a5;
-- (CGPoint)offsetForAnimationType:(int64_t)a3;
-- (CGRect)textFieldBoundsForRange:(_NSRange)a3;
-- (PKPencilEducationOffset)localizationOffsetsForAnimationType:(int64_t)a3;
+- (CGAffineTransform)applyLocalizationScaleOffsetsIfNecesssaryForDrawing:(SEL)drawing animationType:(id)type transform:(int64_t)transform;
+- (CGAffineTransform)transformDrawing:(SEL)drawing toFitBounds:(id)bounds dimension:(CGRect)dimension offset:(int64_t)offset animationType:(CGPoint)type;
+- (CGAffineTransform)transformForAnimationType:(SEL)type drawing:(int64_t)drawing bounds:(id)bounds;
+- (CGPoint)offsetForAnimationType:(int64_t)type;
+- (CGRect)textFieldBoundsForRange:(_NSRange)range;
+- (PKPencilEducationOffset)localizationOffsetsForAnimationType:(int64_t)type;
 - (PencilEducationElementTextField)textField;
-- (PencilEducationElementViewController)initWithElementData:(id)a3;
+- (PencilEducationElementViewController)initWithElementData:(id)data;
 - (PencilEducationElementViewControllerDelegate)delegate;
 - (UIButton)replayButton;
 - (UILabel)titleLabel;
-- (_NSRange)textRangeForAnimationType:(int64_t)a3;
-- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)a3;
-- (double)customHeightRatioForAnimationType:(int64_t)a3;
-- (double)customWidthRatioForAnimationType:(int64_t)a3;
-- (double)nextAnimationDelayForAnimationType:(int64_t)a3;
-- (double)scaleRatioForAnimationType:(int64_t)a3;
-- (double)speedRatioForAnimationType:(int64_t)a3;
-- (id)allowedCalloutActionsForType:(int64_t)a3;
-- (id)drawingForAnimationType:(int64_t)a3;
-- (id)localizationOffsetKeyForAnimationType:(int64_t)a3;
-- (id)replacePlaceholdersInString:(id)a3;
-- (int64_t)transformDimensionAnimationType:(int64_t)a3;
+- (_NSRange)textRangeForAnimationType:(int64_t)type;
+- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)width;
+- (double)customHeightRatioForAnimationType:(int64_t)type;
+- (double)customWidthRatioForAnimationType:(int64_t)type;
+- (double)nextAnimationDelayForAnimationType:(int64_t)type;
+- (double)scaleRatioForAnimationType:(int64_t)type;
+- (double)speedRatioForAnimationType:(int64_t)type;
+- (id)allowedCalloutActionsForType:(int64_t)type;
+- (id)drawingForAnimationType:(int64_t)type;
+- (id)localizationOffsetKeyForAnimationType:(int64_t)type;
+- (id)replacePlaceholdersInString:(id)string;
+- (int64_t)transformDimensionAnimationType:(int64_t)type;
 - (int64_t)type;
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4;
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element;
 - (void)beginAnimationIfNecessary;
 - (void)cancelAnimation;
 - (void)cancelPendingReplayHiddenCommands;
 - (void)handleEndAnimation;
 - (void)reloadAnimationQueue;
 - (void)reloadStrings;
-- (void)replayButtonPressed:(id)a3;
-- (void)setDelayDrawingReplayController:(id)a3;
-- (void)setIsAnimating:(BOOL)a3;
-- (void)setIsRunningAnimationSequence:(BOOL)a3;
+- (void)replayButtonPressed:(id)pressed;
+- (void)setDelayDrawingReplayController:(id)controller;
+- (void)setIsAnimating:(BOOL)animating;
+- (void)setIsRunningAnimationSequence:(BOOL)sequence;
 - (void)updateIsAnimatingUI;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PencilEducationElementViewController
 
-- (PencilEducationElementViewController)initWithElementData:(id)a3
+- (PencilEducationElementViewController)initWithElementData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = PencilEducationElementViewController;
   v6 = [(PencilEducationElementViewController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_elementData, a3);
-    v8 = [v5 textContent];
-    v9 = [(PencilEducationElementViewController *)v7 replacePlaceholdersInString:v8];
+    objc_storeStrong(&v6->_elementData, data);
+    textContent = [dataCopy textContent];
+    v9 = [(PencilEducationElementViewController *)v7 replacePlaceholdersInString:textContent];
     processedString = v7->_processedString;
     v7->_processedString = v9;
   }
@@ -79,8 +79,8 @@
   v4 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   v103 = v4;
-  v5 = [v4 heightAnchor];
-  v6 = [v5 constraintEqualToConstant:42.0];
+  heightAnchor = [v4 heightAnchor];
+  v6 = [heightAnchor constraintEqualToConstant:42.0];
   [v6 setActive:1];
 
   v7 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -88,41 +88,41 @@
   [v7 setTextAlignment:1];
   v8 = MEMORY[0x277D74300];
   v9 = *MEMORY[0x277D76918];
-  v10 = [(PencilEducationElementViewController *)self traitCollection];
+  traitCollection = [(PencilEducationElementViewController *)self traitCollection];
   v97 = v9;
-  v11 = [v8 preferredFontForTextStyle:v9 compatibleWithTraitCollection:v10];
+  v11 = [v8 preferredFontForTextStyle:v9 compatibleWithTraitCollection:traitCollection];
 
   v101 = v11;
   [v7 setFont:v11];
   v12 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
   v102 = v12;
-  v13 = [v12 heightAnchor];
-  v14 = [v13 constraintEqualToConstant:27.0];
+  heightAnchor2 = [v12 heightAnchor];
+  v14 = [heightAnchor2 constraintEqualToConstant:27.0];
   [v14 setActive:1];
 
   v15 = objc_alloc_init(PencilEducationElementTextField);
   [(PencilEducationElementTextField *)v15 setBorderStyle:3];
   [(PencilEducationElementTextField *)v15 _setRoundedRectBackgroundCornerRadius:10.0];
   v16 = MEMORY[0x277CBEAF8];
-  v17 = [(PencilEducationElementViewController *)self elementData];
-  v18 = [v17 languageID];
-  v19 = [v16 localeWithLocaleIdentifier:v18];
+  elementData = [(PencilEducationElementViewController *)self elementData];
+  languageID = [elementData languageID];
+  v19 = [v16 localeWithLocaleIdentifier:languageID];
 
   v20 = MEMORY[0x277D74248];
   v100 = v19;
   v21 = [v19 objectForKey:*MEMORY[0x277CBE6C8]];
   v22 = [v20 defaultWritingDirectionForLanguage:v21];
 
-  v23 = [(PencilEducationElementViewController *)self elementData];
-  v24 = [v23 languageID];
+  elementData2 = [(PencilEducationElementViewController *)self elementData];
+  languageID2 = [elementData2 languageID];
   v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v26 = PKLocalizedDrawingBundleForLanguage(v24, v25);
+  v26 = PKLocalizedDrawingBundleForLanguage(languageID2, v25);
 
-  v27 = [(PencilEducationElementViewController *)self elementData];
-  v28 = [v27 languageID];
+  elementData3 = [(PencilEducationElementViewController *)self elementData];
+  languageID3 = [elementData3 languageID];
   v99 = v26;
-  v29 = [v26 URLForResource:@"localizationOffsets" withExtension:@"plist" subdirectory:0 localization:v28];
+  v29 = [v26 URLForResource:@"localizationOffsets" withExtension:@"plist" subdirectory:0 localization:languageID3];
 
   if (v29 || ([MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()], v30 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v30, "URLForResource:withExtension:", @"localizationOffsets", @"plist"), v29 = objc_claimAutoreleasedReturnValue(), v30, v29))
   {
@@ -148,8 +148,8 @@
   v35 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v35 setTranslatesAutoresizingMaskIntoConstraints:0];
   v94 = v35;
-  v36 = [v35 heightAnchor];
-  v37 = [v36 constraintEqualToConstant:6.0];
+  heightAnchor3 = [v35 heightAnchor];
+  v37 = [heightAnchor3 constraintEqualToConstant:6.0];
   [v37 setActive:1];
 
   v38 = objc_alloc_init(MEMORY[0x277D75220]);
@@ -160,19 +160,19 @@
   v41 = [v40 localizedStringForKey:@"REPLAY_BUTTON_TITLE" value:&stru_286FDFDB8 table:@"PencilSettings"];
   [v38 setTitle:v41 forState:0];
 
-  v42 = [(PencilEducationElementViewController *)self view];
-  v43 = [v42 tintColor];
-  [v38 setTitleColor:v43 forState:0];
+  view = [(PencilEducationElementViewController *)self view];
+  tintColor = [view tintColor];
+  [v38 setTitleColor:tintColor forState:0];
 
   v98 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v97 variant:1024];
-  v44 = [v38 titleLabel];
-  [v44 setFont:v98];
+  titleLabel = [v38 titleLabel];
+  [titleLabel setFont:v98];
 
   v45 = [MEMORY[0x277D755D0] configurationWithFont:v98 scale:-1];
   v96 = v45;
-  v46 = [(PencilEducationElementViewController *)self isUIRTL];
+  isUIRTL = [(PencilEducationElementViewController *)self isUIRTL];
   v47 = 7.0;
-  if (!v46)
+  if (!isUIRTL)
   {
     v47 = -7.0;
   }
@@ -183,8 +183,8 @@
   [v38 setHidden:1];
   v48 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v48 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v49 = [v48 heightAnchor];
-  v50 = [v49 constraintGreaterThanOrEqualToConstant:5.0];
+  heightAnchor4 = [v48 heightAnchor];
+  v50 = [heightAnchor4 constraintGreaterThanOrEqualToConstant:5.0];
   [v50 setActive:1];
 
   v95 = objc_alloc_init(MEMORY[0x277CD9660]);
@@ -197,65 +197,65 @@
   [v3 addArrangedSubview:v35];
   [v3 addArrangedSubview:v38];
   [v3 addArrangedSubview:v48];
-  v51 = [(PencilEducationElementViewController *)self view];
-  [v51 addSubview:v3];
+  view2 = [(PencilEducationElementViewController *)self view];
+  [view2 addSubview:v3];
 
-  v52 = [v103 widthAnchor];
-  v53 = [v3 widthAnchor];
-  v54 = [v52 constraintEqualToAnchor:v53 multiplier:1.0];
+  widthAnchor = [v103 widthAnchor];
+  widthAnchor2 = [v3 widthAnchor];
+  v54 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
   [v54 setActive:1];
 
-  v55 = [v102 widthAnchor];
-  v56 = [v3 widthAnchor];
-  v57 = [v55 constraintEqualToAnchor:v56 multiplier:1.0];
+  widthAnchor3 = [v102 widthAnchor];
+  widthAnchor4 = [v3 widthAnchor];
+  v57 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:1.0];
   [v57 setActive:1];
 
-  v58 = [v48 widthAnchor];
-  v59 = [v3 widthAnchor];
-  v60 = [v58 constraintEqualToAnchor:v59 multiplier:1.0];
+  widthAnchor5 = [v48 widthAnchor];
+  widthAnchor6 = [v3 widthAnchor];
+  v60 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:1.0];
   [v60 setActive:1];
 
-  v61 = [v38 widthAnchor];
-  v62 = [v3 widthAnchor];
-  v63 = [v61 constraintEqualToAnchor:v62 multiplier:1.0];
+  widthAnchor7 = [v38 widthAnchor];
+  widthAnchor8 = [v3 widthAnchor];
+  v63 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8 multiplier:1.0];
   [v63 setActive:1];
 
   LODWORD(v64) = 1148846080;
   [v7 setContentHuggingPriority:1 forAxis:v64];
   LODWORD(v65) = 1148846080;
   [(PencilEducationElementTextField *)v15 setContentHuggingPriority:1 forAxis:v65];
-  v66 = [(PencilEducationElementTextField *)v15 heightAnchor];
-  v67 = [v66 constraintEqualToConstant:44.0];
+  heightAnchor5 = [(PencilEducationElementTextField *)v15 heightAnchor];
+  v67 = [heightAnchor5 constraintEqualToConstant:44.0];
   [v67 setActive:1];
 
-  v68 = [(PencilEducationElementTextField *)v15 widthAnchor];
-  v69 = [v3 widthAnchor];
-  v70 = [v68 constraintEqualToAnchor:v69];
+  widthAnchor9 = [(PencilEducationElementTextField *)v15 widthAnchor];
+  widthAnchor10 = [v3 widthAnchor];
+  v70 = [widthAnchor9 constraintEqualToAnchor:widthAnchor10];
   [v70 setActive:1];
 
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v71 = [v3 leadingAnchor];
-  v72 = [(PencilEducationElementViewController *)self view];
-  v73 = [v72 leadingAnchor];
-  v74 = [v71 constraintEqualToAnchor:v73];
+  leadingAnchor = [v3 leadingAnchor];
+  view3 = [(PencilEducationElementViewController *)self view];
+  leadingAnchor2 = [view3 leadingAnchor];
+  v74 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v74 setActive:1];
 
-  v75 = [v3 trailingAnchor];
-  v76 = [(PencilEducationElementViewController *)self view];
-  v77 = [v76 trailingAnchor];
-  v78 = [v75 constraintEqualToAnchor:v77];
+  trailingAnchor = [v3 trailingAnchor];
+  view4 = [(PencilEducationElementViewController *)self view];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v78 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v78 setActive:1];
 
-  v79 = [v3 topAnchor];
-  v80 = [(PencilEducationElementViewController *)self view];
-  v81 = [v80 topAnchor];
-  v82 = [v79 constraintEqualToAnchor:v81];
+  topAnchor = [v3 topAnchor];
+  view5 = [(PencilEducationElementViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v82 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v82 setActive:1];
 
-  v83 = [v3 bottomAnchor];
-  v84 = [(PencilEducationElementViewController *)self view];
-  v85 = [v84 bottomAnchor];
-  v86 = [v83 constraintEqualToAnchor:v85];
+  bottomAnchor = [v3 bottomAnchor];
+  view6 = [(PencilEducationElementViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v86 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v86 setActive:1];
 
   LODWORD(v87) = 1148846080;
@@ -278,15 +278,15 @@
   v92 = objc_alloc_init(MEMORY[0x277CD9698]);
   [(PencilEducationElementViewController *)self setTextInputSettings:v92];
 
-  v93 = [(PencilEducationElementViewController *)self textInputSettings];
-  [v93 loadSettingsFromUserDefaults];
+  textInputSettings = [(PencilEducationElementViewController *)self textInputSettings];
+  [textInputSettings loadSettingsFromUserDefaults];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PencilEducationElementViewController;
-  [(PencilEducationElementViewController *)&v6 viewWillAppear:a3];
+  [(PencilEducationElementViewController *)&v6 viewWillAppear:appear];
   if (![(PencilEducationElementViewController *)self didRunInitialAppearActions]|| [(PencilEducationElementViewController *)self didDisappear])
   {
     [(PencilEducationElementViewController *)self setDidRunInitialAppearActions:1];
@@ -294,126 +294,126 @@
     [(PencilEducationElementViewController *)self reloadStrings];
     [(PencilEducationElementViewController *)self reloadAnimationQueue];
     [(PencilEducationElementViewController *)self cancelPendingReplayHiddenCommands];
-    v4 = [(PencilEducationElementViewController *)self replayButton];
-    [v4 setHidden:1];
+    replayButton = [(PencilEducationElementViewController *)self replayButton];
+    [replayButton setHidden:1];
 
-    v5 = [(PencilEducationElementViewController *)self textField];
-    [v5 setEnabled:1];
+    textField = [(PencilEducationElementViewController *)self textField];
+    [textField setEnabled:1];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PencilEducationElementViewController;
-  [(PencilEducationElementViewController *)&v4 viewWillDisappear:a3];
+  [(PencilEducationElementViewController *)&v4 viewWillDisappear:disappear];
   [(PencilEducationElementViewController *)self cancelAnimation];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PencilEducationElementViewController;
-  [(PencilEducationElementViewController *)&v6 viewDidDisappear:a3];
+  [(PencilEducationElementViewController *)&v6 viewDidDisappear:disappear];
   [(PencilEducationElementViewController *)self cancelPendingReplayHiddenCommands];
-  v4 = [(PencilEducationElementViewController *)self replayButton];
-  [v4 setHidden:1];
+  replayButton = [(PencilEducationElementViewController *)self replayButton];
+  [replayButton setHidden:1];
 
-  v5 = [(PencilEducationElementViewController *)self textField];
-  [v5 setEnabled:0];
+  textField = [(PencilEducationElementViewController *)self textField];
+  [textField setEnabled:0];
 
   [(PencilEducationElementViewController *)self setDidDisappear:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PencilEducationElementViewController;
-  [(PencilEducationElementViewController *)&v5 viewDidAppear:a3];
-  v4 = [(PencilEducationElementViewController *)self delegate];
-  [v4 elementControllerDidAppear:self];
+  [(PencilEducationElementViewController *)&v5 viewDidAppear:appear];
+  delegate = [(PencilEducationElementViewController *)self delegate];
+  [delegate elementControllerDidAppear:self];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   [(PencilEducationElementViewController *)self cancelAnimation];
   v8.receiver = self;
   v8.super_class = PencilEducationElementViewController;
-  [(PencilEducationElementViewController *)&v8 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(PencilEducationElementViewController *)&v8 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
 }
 
-- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)a3
+- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)width
 {
-  v5 = [(PencilEducationElementViewController *)self view];
-  [v5 frame];
+  view = [(PencilEducationElementViewController *)self view];
+  [view frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(PencilEducationElementViewController *)self replayButton];
-  v15 = [v14 isHidden];
+  replayButton = [(PencilEducationElementViewController *)self replayButton];
+  isHidden = [replayButton isHidden];
 
   [(PencilEducationElementViewController *)self cancelPendingReplayHiddenCommands];
-  v16 = [(PencilEducationElementViewController *)self replayButton];
-  [v16 setHidden:0];
+  replayButton2 = [(PencilEducationElementViewController *)self replayButton];
+  [replayButton2 setHidden:0];
 
-  v17 = [(PencilEducationElementViewController *)self view];
-  [v17 setFrame:{v7, v9, a3, v13}];
+  view2 = [(PencilEducationElementViewController *)self view];
+  [view2 setFrame:{v7, v9, width, v13}];
 
-  v18 = [(PencilEducationElementViewController *)self view];
-  [v18 layoutIfNeeded];
+  view3 = [(PencilEducationElementViewController *)self view];
+  [view3 layoutIfNeeded];
 
-  v19 = [(PencilEducationElementViewController *)self stackView];
-  [v19 systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
+  stackView = [(PencilEducationElementViewController *)self stackView];
+  [stackView systemLayoutSizeFittingSize:{*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)}];
   v21 = v20;
 
   [(PencilEducationElementViewController *)self cancelPendingReplayHiddenCommands];
-  v22 = [(PencilEducationElementViewController *)self replayButton];
-  [v22 setHidden:v15];
+  replayButton3 = [(PencilEducationElementViewController *)self replayButton];
+  [replayButton3 setHidden:isHidden];
 
-  v23 = [(PencilEducationElementViewController *)self view];
-  [v23 setFrame:{v7, v9, v11, v13}];
+  view4 = [(PencilEducationElementViewController *)self view];
+  [view4 setFrame:{v7, v9, v11, v13}];
 
   return v21;
 }
 
 - (void)reloadStrings
 {
-  v3 = [(PencilEducationElementViewController *)self elementData];
-  v4 = [v3 title];
-  v5 = [(PencilEducationElementViewController *)self titleLabel];
-  [v5 setText:v4];
+  elementData = [(PencilEducationElementViewController *)self elementData];
+  title = [elementData title];
+  titleLabel = [(PencilEducationElementViewController *)self titleLabel];
+  [titleLabel setText:title];
 
-  v6 = [(PencilEducationElementViewController *)self processedString];
-  v7 = [(PencilEducationElementViewController *)self textField];
-  [v7 setText:v6];
+  processedString = [(PencilEducationElementViewController *)self processedString];
+  textField = [(PencilEducationElementViewController *)self textField];
+  [textField setText:processedString];
 
-  v8 = [(PencilEducationElementViewController *)self textField];
-  [v8 setSelectionRange:{0, 0}];
+  textField2 = [(PencilEducationElementViewController *)self textField];
+  [textField2 setSelectionRange:{0, 0}];
 
-  v11 = [(PencilEducationElementViewController *)self elementData];
-  v9 = [v11 placeholderTextContent];
-  v10 = [(PencilEducationElementViewController *)self textField];
-  [v10 setPlaceholder:v9];
+  elementData2 = [(PencilEducationElementViewController *)self elementData];
+  placeholderTextContent = [elementData2 placeholderTextContent];
+  textField3 = [(PencilEducationElementViewController *)self textField];
+  [textField3 setPlaceholder:placeholderTextContent];
 }
 
 - (void)reloadAnimationQueue
 {
-  v9 = [(PencilEducationElementViewController *)self animationQueue];
-  [v9 removeAllObjects];
-  v3 = [(PencilEducationElementViewController *)self elementData];
-  v4 = [v3 type];
+  animationQueue = [(PencilEducationElementViewController *)self animationQueue];
+  [animationQueue removeAllObjects];
+  elementData = [(PencilEducationElementViewController *)self elementData];
+  type = [elementData type];
 
-  if (v4 <= 1)
+  if (type <= 1)
   {
-    if (v4)
+    if (type)
     {
-      v5 = v9;
-      if (v4 != 1)
+      v5 = animationQueue;
+      if (type != 1)
       {
         goto LABEL_13;
       }
@@ -427,55 +427,55 @@
     }
   }
 
-  else if (v4 == 2)
+  else if (type == 2)
   {
-    [v9 addObject:&unk_286FED0C8];
-    [v9 addObject:&unk_286FED0E0];
+    [animationQueue addObject:&unk_286FED0C8];
+    [animationQueue addObject:&unk_286FED0E0];
     v6 = &unk_286FED0F8;
   }
 
   else
   {
-    v5 = v9;
-    if (v4 == 3)
+    v5 = animationQueue;
+    if (type == 3)
     {
-      [v9 addObject:&unk_286FED140];
+      [animationQueue addObject:&unk_286FED140];
       v6 = &unk_286FED158;
     }
 
     else
     {
-      if (v4 != 4)
+      if (type != 4)
       {
         goto LABEL_13;
       }
 
-      [v9 addObject:&unk_286FED110];
+      [animationQueue addObject:&unk_286FED110];
       v6 = &unk_286FED128;
     }
   }
 
-  [v9 addObject:v6];
-  v5 = v9;
+  [animationQueue addObject:v6];
+  v5 = animationQueue;
 LABEL_13:
-  v7 = [v5 reverseObjectEnumerator];
-  v8 = [v7 allObjects];
+  reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  [v9 removeAllObjects];
-  [v9 addObjectsFromArray:v8];
+  [animationQueue removeAllObjects];
+  [animationQueue addObjectsFromArray:allObjects];
 }
 
 - (void)beginAnimationIfNecessary
 {
-  v3 = [(PencilEducationElementViewController *)self animationQueue];
-  v4 = [v3 lastObject];
-  v5 = [v4 unsignedIntegerValue];
+  animationQueue = [(PencilEducationElementViewController *)self animationQueue];
+  lastObject = [animationQueue lastObject];
+  unsignedIntegerValue = [lastObject unsignedIntegerValue];
 
-  v6 = [(PencilEducationElementViewController *)self isSecondaryAnimationForType:v5];
+  v6 = [(PencilEducationElementViewController *)self isSecondaryAnimationForType:unsignedIntegerValue];
   v7 = MEMORY[0x277CD9608];
-  v8 = [(PencilEducationElementViewController *)self view];
-  v9 = [v8 window];
-  LODWORD(v7) = [v7 isDrawingInProgressForWindow:v9];
+  view = [(PencilEducationElementViewController *)self view];
+  window = [view window];
+  LODWORD(v7) = [v7 isDrawingInProgressForWindow:window];
 
   if (!v7 || v6)
   {
@@ -483,24 +483,24 @@ LABEL_13:
     {
       [(PencilEducationElementViewController *)self setIsAnimating:1];
       [(PencilEducationElementViewController *)self setIsRunningAnimationSequence:1];
-      [(PencilEducationElementViewController *)self setInProgressAnimationType:v5];
-      v10 = [(PencilEducationElementViewController *)self animationQueue];
-      [v10 removeLastObject];
+      [(PencilEducationElementViewController *)self setInProgressAnimationType:unsignedIntegerValue];
+      animationQueue2 = [(PencilEducationElementViewController *)self animationQueue];
+      [animationQueue2 removeLastObject];
 
-      v11 = [(PencilEducationElementViewController *)self drawingForAnimationType:v5];
+      v11 = [(PencilEducationElementViewController *)self drawingForAnimationType:unsignedIntegerValue];
       objc_initWeak(location, self);
       v54[0] = MEMORY[0x277D85DD0];
       v54[1] = 3221225472;
       v54[2] = __65__PencilEducationElementViewController_beginAnimationIfNecessary__block_invoke;
       v54[3] = &unk_279A0A328;
       objc_copyWeak(v55, location);
-      v55[1] = v5;
+      v55[1] = unsignedIntegerValue;
       [(PencilEducationElementViewController *)self setEndWritingCompletionBlock:v54];
       if (v11)
       {
-        v12 = [(PencilEducationElementViewController *)self textRangeForAnimationType:v5];
+        v12 = [(PencilEducationElementViewController *)self textRangeForAnimationType:unsignedIntegerValue];
         v14 = v13;
-        [(PencilEducationElementViewController *)self offsetForAnimationType:v5];
+        [(PencilEducationElementViewController *)self offsetForAnimationType:unsignedIntegerValue];
         v16 = v15;
         v18 = v17;
         [(PencilEducationElementViewController *)self textFieldBoundsForRange:v12, v14];
@@ -508,62 +508,62 @@ LABEL_13:
         v22 = v21;
         v24 = v23;
         v26 = v25;
-        [(PencilEducationElementViewController *)self speedRatioForAnimationType:v5];
+        [(PencilEducationElementViewController *)self speedRatioForAnimationType:unsignedIntegerValue];
         v28 = v27;
         v52 = 0u;
         v53 = 0u;
         v51 = 0u;
-        [(PencilEducationElementViewController *)self transformForAnimationType:v5 drawing:v11 bounds:v20, v22, v24, v26];
+        [(PencilEducationElementViewController *)self transformForAnimationType:unsignedIntegerValue drawing:v11 bounds:v20, v22, v24, v26];
         v29 = objc_alloc(MEMORY[0x277CD9608]);
-        v30 = [(PencilEducationElementViewController *)self textField];
+        textField = [(PencilEducationElementViewController *)self textField];
         v50[0] = v51;
         v50[1] = v52;
         v50[2] = v53;
-        v31 = [v29 initWithDrawing:v11 transform:v50 sourceTextField:v30];
+        v31 = [v29 initWithDrawing:v11 transform:v50 sourceTextField:textField];
 
         [v31 setSpeedRatio:v28];
         [(PencilEducationElementViewController *)self setDrawingReplayController:v31];
-        if (!v5)
+        if (!unsignedIntegerValue)
         {
-          v32 = [(PencilEducationElementViewController *)self textField];
-          [v32 setIgnoreScribbleInsertText:1];
+          textField2 = [(PencilEducationElementViewController *)self textField];
+          [textField2 setIgnoreScribbleInsertText:1];
 
-          v33 = [(PencilEducationElementViewController *)self textField];
-          v34 = [v33 _textInteraction];
-          v35 = [v34 _assertionController];
-          v36 = [v35 nonBlinkingAssertionWithReason:@"add_text_replay"];
+          textField3 = [(PencilEducationElementViewController *)self textField];
+          _textInteraction = [textField3 _textInteraction];
+          _assertionController = [_textInteraction _assertionController];
+          v36 = [_assertionController nonBlinkingAssertionWithReason:@"add_text_replay"];
           [(PencilEducationElementViewController *)self setCursorAssertion:v36];
         }
 
-        v37 = [(PencilEducationElementViewController *)self allowedCalloutActionsForType:v5];
-        v38 = [(PencilEducationElementViewController *)self textField];
-        [v38 setAllowedCalloutActions:v37];
+        v37 = [(PencilEducationElementViewController *)self allowedCalloutActionsForType:unsignedIntegerValue];
+        textField4 = [(PencilEducationElementViewController *)self textField];
+        [textField4 setAllowedCalloutActions:v37];
 
-        v39 = [(PencilEducationElementViewController *)self drawingReplayController];
-        [v39 beginDrawingAnimationAtRange:v12 offset:v14 completion:{0, v16, v18}];
+        drawingReplayController = [(PencilEducationElementViewController *)self drawingReplayController];
+        [drawingReplayController beginDrawingAnimationAtRange:v12 offset:v14 completion:{0, v16, v18}];
       }
 
-      else if (v5 == 8)
+      else if (unsignedIntegerValue == 8)
       {
-        v46 = [(PencilEducationElementViewController *)self textField];
-        [v46 setSelectionRange:{0, 0}];
+        textField5 = [(PencilEducationElementViewController *)self textField];
+        [textField5 setSelectionRange:{0, 0}];
 
         WeakRetained = objc_loadWeakRetained(location);
         [WeakRetained handleEndAnimation];
       }
 
-      else if (v5 == 4)
+      else if (unsignedIntegerValue == 4)
       {
-        v40 = [(PencilEducationElementViewController *)self drawingReplayController];
-        [v40 cancel];
+        drawingReplayController2 = [(PencilEducationElementViewController *)self drawingReplayController];
+        [drawingReplayController2 cancel];
 
         v41 = [(PencilEducationElementViewController *)self textRangeForAnimationType:4];
-        v42 = [(PencilEducationElementViewController *)self textField];
-        [v42 setSelectionRange:{v41, 0}];
+        textField6 = [(PencilEducationElementViewController *)self textField];
+        [textField6 setSelectionRange:{v41, 0}];
 
         v43 = objc_alloc(MEMORY[0x277CD9608]);
-        v44 = [(PencilEducationElementViewController *)self textField];
-        v45 = [v43 initWithSourceTextField:v44];
+        textField7 = [(PencilEducationElementViewController *)self textField];
+        v45 = [v43 initWithSourceTextField:textField7];
 
         [(PencilEducationElementViewController *)self setDrawingReplayController:v45];
         v48[0] = MEMORY[0x277D85DD0];
@@ -660,13 +660,13 @@ void __65__PencilEducationElementViewController_beginAnimationIfNecessary__block
 
 - (void)handleEndAnimation
 {
-  v3 = [(PencilEducationElementViewController *)self endWritingCompletionBlock];
+  endWritingCompletionBlock = [(PencilEducationElementViewController *)self endWritingCompletionBlock];
 
-  if (v3)
+  if (endWritingCompletionBlock)
   {
     objc_initWeak(&location, self);
-    v4 = [(PencilEducationElementViewController *)self textInputSettings];
-    [v4 textInputStrokeFadeOutDelay];
+    textInputSettings = [(PencilEducationElementViewController *)self textInputSettings];
+    [textInputSettings textInputStrokeFadeOutDelay];
     v6 = v5;
 
     v7 = ([(PencilEducationElementViewController *)self performAnimationAsyncIndex]+ 1);
@@ -685,9 +685,9 @@ void __65__PencilEducationElementViewController_beginAnimationIfNecessary__block
 
   else
   {
-    v9 = [(PencilEducationElementViewController *)self hasRemainingAnimation];
+    hasRemainingAnimation = [(PencilEducationElementViewController *)self hasRemainingAnimation];
 
-    [(PencilEducationElementViewController *)self setIsRunningAnimationSequence:v9];
+    [(PencilEducationElementViewController *)self setIsRunningAnimationSequence:hasRemainingAnimation];
   }
 }
 
@@ -706,30 +706,30 @@ void __58__PencilEducationElementViewController_handleEndAnimation__block_invoke
 
 - (BOOL)hasRemainingAnimation
 {
-  v2 = [(PencilEducationElementViewController *)self animationQueue];
-  v3 = [v2 count] != 0;
+  animationQueue = [(PencilEducationElementViewController *)self animationQueue];
+  v3 = [animationQueue count] != 0;
 
   return v3;
 }
 
 - (int64_t)type
 {
-  v2 = [(PencilEducationElementViewController *)self elementData];
-  v3 = [v2 type];
+  elementData = [(PencilEducationElementViewController *)self elementData];
+  type = [elementData type];
 
-  return v3;
+  return type;
 }
 
-- (void)replayButtonPressed:(id)a3
+- (void)replayButtonPressed:(id)pressed
 {
-  v4 = [(PencilEducationElementViewController *)self delegate];
-  [v4 elementControllerWillReplay:self];
+  delegate = [(PencilEducationElementViewController *)self delegate];
+  [delegate elementControllerWillReplay:self];
 
-  v5 = [(PencilEducationElementViewController *)self replayButton];
-  [v5 setHidden:1];
+  replayButton = [(PencilEducationElementViewController *)self replayButton];
+  [replayButton setHidden:1];
 
-  v6 = [(PencilEducationElementViewController *)self textField];
-  [v6 resignFirstResponder];
+  textField = [(PencilEducationElementViewController *)self textField];
+  [textField resignFirstResponder];
 
   [(PencilEducationElementViewController *)self cancelAnimation];
   [(PencilEducationElementViewController *)self reloadStrings];
@@ -765,27 +765,27 @@ void __60__PencilEducationElementViewController_replayButtonPressed___block_invo
   [(PencilEducationElementViewController *)self setReplayButtonHiddenIndex:v3];
 }
 
-- (void)setIsAnimating:(BOOL)a3
+- (void)setIsAnimating:(BOOL)animating
 {
-  if (self->_isAnimating != a3)
+  if (self->_isAnimating != animating)
   {
-    self->_isAnimating = a3;
+    self->_isAnimating = animating;
     [(PencilEducationElementViewController *)self setHasPencilInteraction:0];
 
     [(PencilEducationElementViewController *)self updateIsAnimatingUI];
   }
 }
 
-- (void)setIsRunningAnimationSequence:(BOOL)a3
+- (void)setIsRunningAnimationSequence:(BOOL)sequence
 {
-  if (self->_isRunningAnimationSequence != a3)
+  if (self->_isRunningAnimationSequence != sequence)
   {
-    self->_isRunningAnimationSequence = a3;
-    if (a3)
+    self->_isRunningAnimationSequence = sequence;
+    if (sequence)
     {
       v4 = objc_alloc(MEMORY[0x277CD9608]);
-      v6 = [(PencilEducationElementViewController *)self textField];
-      v5 = [v4 initWithSourceTextField:v6];
+      textField = [(PencilEducationElementViewController *)self textField];
+      v5 = [v4 initWithSourceTextField:textField];
       [(PencilEducationElementViewController *)self setDelayDrawingReplayController:v5];
     }
 
@@ -797,20 +797,20 @@ void __60__PencilEducationElementViewController_replayButtonPressed___block_invo
   }
 }
 
-- (void)setDelayDrawingReplayController:(id)a3
+- (void)setDelayDrawingReplayController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   delayDrawingReplayController = self->_delayDrawingReplayController;
-  if (delayDrawingReplayController != v5)
+  if (delayDrawingReplayController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PKDrawingReplayController *)delayDrawingReplayController setDisablePencilInput:0];
-    objc_storeStrong(&self->_delayDrawingReplayController, a3);
+    objc_storeStrong(&self->_delayDrawingReplayController, controller);
     delayDrawingReplayController = [(PKDrawingReplayController *)self->_delayDrawingReplayController setDisablePencilInput:1];
-    v5 = v7;
+    controllerCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](delayDrawingReplayController, v5);
+  MEMORY[0x2821F96F8](delayDrawingReplayController, controllerCopy);
 }
 
 - (void)updateIsAnimatingUI
@@ -818,46 +818,46 @@ void __60__PencilEducationElementViewController_replayButtonPressed___block_invo
   if ([(PencilEducationElementViewController *)self isAnimating]|| [(PencilEducationElementViewController *)self hasRemainingAnimation])
   {
     [(PencilEducationElementViewController *)self cancelPendingReplayHiddenCommands];
-    v8 = [(PencilEducationElementViewController *)self replayButton];
-    [v8 setHidden:1];
+    replayButton = [(PencilEducationElementViewController *)self replayButton];
+    [replayButton setHidden:1];
   }
 
   else
   {
     v3 = [(PencilEducationElementViewController *)self replayButtonHiddenIndex]+ 1;
     [(PencilEducationElementViewController *)self setReplayButtonHiddenIndex:v3];
-    v4 = [(PencilEducationElementViewController *)self replayButton];
+    replayButton2 = [(PencilEducationElementViewController *)self replayButton];
     if ([(PencilEducationElementViewController *)self replayButtonHiddenIndex]== v3)
     {
-      if ([v4 isHidden])
+      if ([replayButton2 isHidden])
       {
-        [v4 setAlpha:0.0];
-        [v4 setHidden:0];
+        [replayButton2 setAlpha:0.0];
+        [replayButton2 setHidden:0];
         v5 = MEMORY[0x277D75D18];
         v9[0] = MEMORY[0x277D85DD0];
         v9[1] = 3221225472;
         v9[2] = __59__PencilEducationElementViewController_updateIsAnimatingUI__block_invoke;
         v9[3] = &unk_279A0A060;
-        v10 = v4;
+        v10 = replayButton2;
         [v5 animateWithDuration:v9 animations:0.25];
       }
 
-      v6 = [(PencilEducationElementViewController *)self defaultAllowedCalloutActions];
-      v7 = [(PencilEducationElementViewController *)self textField];
-      [v7 setAllowedCalloutActions:v6];
+      defaultAllowedCalloutActions = [(PencilEducationElementViewController *)self defaultAllowedCalloutActions];
+      textField = [(PencilEducationElementViewController *)self textField];
+      [textField setAllowedCalloutActions:defaultAllowedCalloutActions];
     }
   }
 }
 
 - (void)cancelAnimation
 {
-  v3 = [(PencilEducationElementViewController *)self drawingReplayController];
-  [v3 cancel];
+  drawingReplayController = [(PencilEducationElementViewController *)self drawingReplayController];
+  [drawingReplayController cancel];
 
   [(PencilEducationElementViewController *)self setDrawingReplayController:0];
   [(PencilEducationElementViewController *)self setEndWritingCompletionBlock:0];
-  v4 = [(PencilEducationElementViewController *)self animationQueue];
-  [v4 removeAllObjects];
+  animationQueue = [(PencilEducationElementViewController *)self animationQueue];
+  [animationQueue removeAllObjects];
 
   [(PencilEducationElementViewController *)self setIsAnimating:0];
   [(PencilEducationElementViewController *)self setIsRunningAnimationSequence:0];
@@ -867,19 +867,19 @@ void __60__PencilEducationElementViewController_replayButtonPressed___block_invo
   [(PencilEducationElementViewController *)self setPerformAnimationAsyncIndex:v5];
 }
 
-- (id)drawingForAnimationType:(int64_t)a3
+- (id)drawingForAnimationType:(int64_t)type
 {
-  if (a3 <= 7 && ((0xEFu >> a3) & 1) != 0)
+  if (type <= 7 && ((0xEFu >> type) & 1) != 0)
   {
-    v4 = off_279A0A3C0[a3];
+    v4 = off_279A0A3C0[type];
     v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v6 = [(PencilEducationElementViewController *)self elementData];
-    v7 = [v6 languageID];
-    v8 = PKLocalizedDrawingBundleForLanguage(v7, v5);
+    elementData = [(PencilEducationElementViewController *)self elementData];
+    languageID = [elementData languageID];
+    v8 = PKLocalizedDrawingBundleForLanguage(languageID, v5);
 
-    v9 = [(PencilEducationElementViewController *)self elementData];
-    v10 = [v9 languageID];
-    v11 = [v8 URLForResource:v4 withExtension:@"pkdrawingdata" subdirectory:0 localization:v10];
+    elementData2 = [(PencilEducationElementViewController *)self elementData];
+    languageID2 = [elementData2 languageID];
+    v11 = [v8 URLForResource:v4 withExtension:@"pkdrawingdata" subdirectory:0 localization:languageID2];
 
     if (!v11)
     {
@@ -899,11 +899,11 @@ void __60__PencilEducationElementViewController_replayButtonPressed___block_invo
   return v13;
 }
 
-- (id)replacePlaceholdersInString:(id)a3
+- (id)replacePlaceholdersInString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 length];
+  stringCopy = string;
+  v4 = [stringCopy mutableCopy];
+  v5 = [stringCopy length];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 17];
   [v4 replaceOccurrencesOfString:@"{" withString:v6 options:0 range:{0, v5}];
@@ -922,30 +922,30 @@ void __60__PencilEducationElementViewController_replayButtonPressed___block_invo
   return v10;
 }
 
-- (_NSRange)textRangeForAnimationType:(int64_t)a3
+- (_NSRange)textRangeForAnimationType:(int64_t)type
 {
-  v4 = [(PencilEducationElementViewController *)self textField];
-  v5 = [v4 text];
+  textField = [(PencilEducationElementViewController *)self textField];
+  text = [textField text];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 17];
-  v7 = [v5 rangeOfString:v6];
+  v7 = [text rangeOfString:v6];
 
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 18];
-  v9 = [v5 rangeOfString:v8];
+  v9 = [text rangeOfString:v8];
 
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 19];
-  v11 = [v5 rangeOfString:v10];
+  v11 = [text rangeOfString:v10];
 
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", 20];
-  v13 = [v5 rangeOfString:v12];
+  v13 = [text rangeOfString:v12];
 
   v14 = 0;
   v15 = 0x7FFFFFFFFFFFFFFFLL;
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 > 1)
+    if (type > 1)
     {
-      if (a3 != 2)
+      if (type != 2)
       {
 LABEL_12:
         v16 = v11 != 0x7FFFFFFFFFFFFFFFLL;
@@ -976,14 +976,14 @@ LABEL_12:
 
     else
     {
-      if (!a3)
+      if (!type)
       {
         v14 = 0;
         v22 = v9 == 0x7FFFFFFFFFFFFFFFLL || v7 == 0x7FFFFFFFFFFFFFFFLL;
         goto LABEL_30;
       }
 
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_33;
       }
@@ -992,13 +992,13 @@ LABEL_12:
     goto LABEL_27;
   }
 
-  if (a3 > 5)
+  if (type > 5)
   {
-    if (a3 != 6)
+    if (type != 6)
     {
-      if (a3 != 7)
+      if (type != 7)
       {
-        if (a3 == 8)
+        if (type == 8)
         {
           v14 = 0;
           v15 = 0;
@@ -1013,7 +1013,7 @@ LABEL_12:
     goto LABEL_27;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
 LABEL_27:
     v20 = v7 != 0x7FFFFFFFFFFFFFFFLL;
@@ -1080,10 +1080,10 @@ LABEL_33:
   return result;
 }
 
-- (CGPoint)offsetForAnimationType:(int64_t)a3
+- (CGPoint)offsetForAnimationType:(int64_t)type
 {
   v5 = 0.0;
-  switch(a3)
+  switch(type)
   {
     case 5:
       goto LABEL_4;
@@ -1099,7 +1099,7 @@ LABEL_4:
       break;
   }
 
-  [(PencilEducationElementViewController *)self localizationOffsetsForAnimationType:a3];
+  [(PencilEducationElementViewController *)self localizationOffsetsForAnimationType:type];
   v10 = v9 + 0.0;
   v12 = v5 + v11;
   result.y = v12;
@@ -1107,15 +1107,15 @@ LABEL_4:
   return result;
 }
 
-- (double)speedRatioForAnimationType:(int64_t)a3
+- (double)speedRatioForAnimationType:(int64_t)type
 {
   result = 2.2;
-  if (a3 == 5)
+  if (type == 5)
   {
     result = 2.0;
   }
 
-  if (!a3)
+  if (!type)
   {
     return 5.0;
   }
@@ -1123,32 +1123,32 @@ LABEL_4:
   return result;
 }
 
-- (double)nextAnimationDelayForAnimationType:(int64_t)a3
+- (double)nextAnimationDelayForAnimationType:(int64_t)type
 {
   result = 0.75;
-  if ((a3 - 2) <= 2)
+  if ((type - 2) <= 2)
   {
-    return dbl_25E1EA850[a3 - 2];
+    return dbl_25E1EA850[type - 2];
   }
 
   return result;
 }
 
-- (double)scaleRatioForAnimationType:(int64_t)a3
+- (double)scaleRatioForAnimationType:(int64_t)type
 {
   result = 1.0;
-  if (a3 <= 7)
+  if (type <= 7)
   {
-    return dbl_25E1EA868[a3];
+    return dbl_25E1EA868[type];
   }
 
   return result;
 }
 
-- (double)customHeightRatioForAnimationType:(int64_t)a3
+- (double)customHeightRatioForAnimationType:(int64_t)type
 {
   result = 0.1;
-  if (a3 != 2)
+  if (type != 2)
   {
     return 1.0;
   }
@@ -1156,25 +1156,25 @@ LABEL_4:
   return result;
 }
 
-- (id)allowedCalloutActionsForType:(int64_t)a3
+- (id)allowedCalloutActionsForType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
-    v5 = [(PencilEducationElementViewController *)self defaultAllowedCalloutActions];
+    defaultAllowedCalloutActions = [(PencilEducationElementViewController *)self defaultAllowedCalloutActions];
   }
 
   else
   {
-    v5 = 0;
+    defaultAllowedCalloutActions = 0;
   }
 
-  return v5;
+  return defaultAllowedCalloutActions;
 }
 
-- (double)customWidthRatioForAnimationType:(int64_t)a3
+- (double)customWidthRatioForAnimationType:(int64_t)type
 {
   result = 0.1;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 6)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) != 6)
   {
     return 1.0;
   }
@@ -1182,25 +1182,25 @@ LABEL_4:
   return result;
 }
 
-- (CGAffineTransform)transformForAnimationType:(SEL)a3 drawing:(int64_t)a4 bounds:(id)a5
+- (CGAffineTransform)transformForAnimationType:(SEL)type drawing:(int64_t)drawing bounds:(id)bounds
 {
   height = a6.size.height;
   width = a6.size.width;
   y = a6.origin.y;
   x = a6.origin.x;
-  v13 = a5;
-  v14 = [(PencilEducationElementViewController *)self transformDimensionAnimationType:a4];
-  if ([(PencilEducationElementViewController *)self isTextFieldRTL]&& [(PencilEducationElementViewController *)self isTextAddedForAnimationType:a4])
+  boundsCopy = bounds;
+  v14 = [(PencilEducationElementViewController *)self transformDimensionAnimationType:drawing];
+  if ([(PencilEducationElementViewController *)self isTextFieldRTL]&& [(PencilEducationElementViewController *)self isTextAddedForAnimationType:drawing])
   {
-    [v13 bounds];
+    [boundsCopy bounds];
   }
 
-  [(PencilEducationElementViewController *)self scaleRatioForAnimationType:a4];
+  [(PencilEducationElementViewController *)self scaleRatioForAnimationType:drawing];
   v16 = height * v15 - height;
   *&retstr->a = 0u;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  [(PencilEducationElementViewController *)self transformDrawing:v13 toFitBounds:v14 dimension:a4 offset:x animationType:y, width];
+  [(PencilEducationElementViewController *)self transformDrawing:boundsCopy toFitBounds:v14 dimension:drawing offset:x animationType:y, width];
   v17 = *&retstr->c;
   *&v22.a = *&retstr->a;
   *&v22.c = v17;
@@ -1214,7 +1214,7 @@ LABEL_4:
   *&v22.a = *&retstr->a;
   *&v22.c = v19;
   *&v22.tx = *&retstr->tx;
-  [(PencilEducationElementViewController *)self applyLocalizationScaleOffsetsIfNecesssaryForDrawing:v13 animationType:a4 transform:&v22];
+  [(PencilEducationElementViewController *)self applyLocalizationScaleOffsetsIfNecesssaryForDrawing:boundsCopy animationType:drawing transform:&v22];
   v20 = *&v23.c;
   *&retstr->a = *&v23.a;
   *&retstr->c = v20;
@@ -1223,26 +1223,26 @@ LABEL_4:
   return result;
 }
 
-- (int64_t)transformDimensionAnimationType:(int64_t)a3
+- (int64_t)transformDimensionAnimationType:(int64_t)type
 {
-  if (a3 > 7)
+  if (type > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_25E1EA8A8[a3];
+    return qword_25E1EA8A8[type];
   }
 }
 
-- (CGAffineTransform)transformDrawing:(SEL)a3 toFitBounds:(id)a4 dimension:(CGRect)a5 offset:(int64_t)a6 animationType:(CGPoint)a7
+- (CGAffineTransform)transformDrawing:(SEL)drawing toFitBounds:(id)bounds dimension:(CGRect)dimension offset:(int64_t)offset animationType:(CGPoint)type
 {
-  y = a7.y;
-  x = a7.x;
-  height = a5.size.height;
-  width = a5.size.width;
-  [a4 bounds];
+  y = type.y;
+  x = type.x;
+  height = dimension.size.height;
+  width = dimension.size.width;
+  [bounds bounds];
   v17 = v16;
   v19 = v18;
   v20 = [(PencilEducationElementViewController *)self hasCustomWidthRatioForAnimationType:a8];
@@ -1256,7 +1256,7 @@ LABEL_4:
   else
   {
     v23 = 1.0;
-    if ((a6 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    if ((offset & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       v23 = width / v17;
     }
@@ -1271,7 +1271,7 @@ LABEL_4:
   else
   {
     v25 = 1.0;
-    if ((a6 - 2) <= 2)
+    if ((offset - 2) <= 2)
     {
       v25 = height / v19;
     }
@@ -1279,7 +1279,7 @@ LABEL_4:
 
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
-  if (a6 == 4)
+  if (offset == 4)
   {
     v26 = v25;
   }
@@ -1303,13 +1303,13 @@ LABEL_4:
   return result;
 }
 
-- (CGAffineTransform)applyLocalizationScaleOffsetsIfNecesssaryForDrawing:(SEL)a3 animationType:(id)a4 transform:(int64_t)a5
+- (CGAffineTransform)applyLocalizationScaleOffsetsIfNecesssaryForDrawing:(SEL)drawing animationType:(id)type transform:(int64_t)transform
 {
   v7 = *&a6->c;
   *&retstr->a = *&a6->a;
   *&retstr->c = v7;
   *&retstr->tx = *&a6->tx;
-  result = [(PencilEducationElementViewController *)self localizationOffsetsForAnimationType:a5];
+  result = [(PencilEducationElementViewController *)self localizationOffsetsForAnimationType:transform];
   v11 = 1.0;
   if (v9 != 1.0 || v10 != 1.0)
   {
@@ -1342,19 +1342,19 @@ LABEL_4:
   return result;
 }
 
-- (CGRect)textFieldBoundsForRange:(_NSRange)a3
+- (CGRect)textFieldBoundsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(PencilEducationElementViewController *)self textField];
-  v7 = [v6 beginningOfDocument];
-  v8 = [v6 positionFromPosition:v7 offset:location];
+  length = range.length;
+  location = range.location;
+  textField = [(PencilEducationElementViewController *)self textField];
+  beginningOfDocument = [textField beginningOfDocument];
+  v8 = [textField positionFromPosition:beginningOfDocument offset:location];
 
-  v9 = [v6 beginningOfDocument];
-  v10 = [v6 positionFromPosition:v9 offset:location + length];
+  beginningOfDocument2 = [textField beginningOfDocument];
+  v10 = [textField positionFromPosition:beginningOfDocument2 offset:location + length];
 
-  v11 = [v6 textRangeFromPosition:v8 toPosition:v10];
-  [v6 firstRectForRange:v11];
+  v11 = [textField textRangeFromPosition:v8 toPosition:v10];
+  [textField firstRectForRange:v11];
   x = v22.origin.x;
   y = v22.origin.y;
   width = v22.size.width;
@@ -1364,8 +1364,8 @@ LABEL_4:
     x = *MEMORY[0x277CBF3A0];
     y = *(MEMORY[0x277CBF3A0] + 8);
     width = *(MEMORY[0x277CBF3A0] + 16);
-    v16 = [(PencilEducationElementViewController *)self textField];
-    [v16 bounds];
+    textField2 = [(PencilEducationElementViewController *)self textField];
+    [textField2 bounds];
     height = v17;
   }
 
@@ -1380,11 +1380,11 @@ LABEL_4:
   return result;
 }
 
-- (PKPencilEducationOffset)localizationOffsetsForAnimationType:(int64_t)a3
+- (PKPencilEducationOffset)localizationOffsetsForAnimationType:(int64_t)type
 {
-  v5 = [(PencilEducationElementViewController *)self localizationOffsetDictionary];
-  v6 = [(PencilEducationElementViewController *)self localizationOffsetKeyForAnimationType:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  localizationOffsetDictionary = [(PencilEducationElementViewController *)self localizationOffsetDictionary];
+  v6 = [(PencilEducationElementViewController *)self localizationOffsetKeyForAnimationType:type];
+  v7 = [localizationOffsetDictionary objectForKeyedSubscript:v6];
   v8 = v7;
   if (v7)
   {
@@ -1424,42 +1424,42 @@ LABEL_4:
   return result;
 }
 
-- (id)localizationOffsetKeyForAnimationType:(int64_t)a3
+- (id)localizationOffsetKeyForAnimationType:(int64_t)type
 {
-  if (a3 > 7)
+  if (type > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_279A0A400[a3];
+    return off_279A0A400[type];
   }
 }
 
 - (BOOL)isUIRTL
 {
-  v2 = [(PencilEducationElementViewController *)self traitCollection];
-  v3 = [v2 layoutDirection] == 1;
+  traitCollection = [(PencilEducationElementViewController *)self traitCollection];
+  v3 = [traitCollection layoutDirection] == 1;
 
   return v3;
 }
 
-- (void)_scribbleInteraction:(id)a3 willBeginWritingInElement:(id)a4
+- (void)_scribbleInteraction:(id)interaction willBeginWritingInElement:(id)element
 {
-  if (![(PencilEducationElementViewController *)self isAnimating:a3]&& [(PencilEducationElementViewController *)self hasPencilInteraction])
+  if (![(PencilEducationElementViewController *)self isAnimating:interaction]&& [(PencilEducationElementViewController *)self hasPencilInteraction])
   {
     v5 = +[PencilSettingsStatisticsManager sharedInstance];
-    v6 = [(PencilEducationElementViewController *)self elementData];
-    [v5 recordEducationPencilInputInteraction:{objc_msgSend(v6, "type")}];
+    elementData = [(PencilEducationElementViewController *)self elementData];
+    [v5 recordEducationPencilInputInteraction:{objc_msgSend(elementData, "type")}];
 
     [(PencilEducationElementViewController *)self setHasPencilInteraction:0];
   }
 }
 
-- (BOOL)_scribbleInteraction:(id)a3 focusWillTransformElement:(id)a4
+- (BOOL)_scribbleInteraction:(id)interaction focusWillTransformElement:(id)element
 {
-  v5 = [(PencilEducationElementViewController *)self isAnimating:a3];
+  v5 = [(PencilEducationElementViewController *)self isAnimating:interaction];
   if (v5)
   {
     LOBYTE(v5) = [(PencilEducationElementViewController *)self inProgressAnimationType]== 0;

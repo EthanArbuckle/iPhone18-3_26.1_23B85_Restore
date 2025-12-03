@@ -12,10 +12,10 @@
 
 + (NSNotificationQueue)defaultQueue
 {
-  v3 = [+[NSThread currentThread](NSThread threadDictionary];
-  v4 = [(NSMutableDictionary *)v3 objectForKey:@"NSDefaultNotificationQueue"];
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
+  v4 = [(NSMutableDictionary *)threadDictionary objectForKey:@"NSDefaultNotificationQueue"];
   v5 = v4;
-  if (v3)
+  if (threadDictionary)
   {
     v6 = v4 == 0;
   }
@@ -27,8 +27,8 @@
 
   if (v6)
   {
-    v5 = [objc_allocWithZone(a1) init];
-    [(NSMutableDictionary *)v3 setObject:v5 forKey:@"NSDefaultNotificationQueue"];
+    v5 = [objc_allocWithZone(self) init];
+    [(NSMutableDictionary *)threadDictionary setObject:v5 forKey:@"NSDefaultNotificationQueue"];
   }
 
   return v5;
@@ -84,7 +84,7 @@
       return;
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = notification;
     v13 = modes;
     v14 = 0;
@@ -112,13 +112,13 @@
       return;
     }
 
-    v11 = self;
+    selfCopy2 = self;
     v12 = notification;
     v13 = modes;
     v14 = 1;
   }
 
-  addNotificationToQueue(v11, v12, v13, v14);
+  addNotificationToQueue(selfCopy2, v12, v13, v14);
 }
 
 - (void)dequeueNotificationsMatching:(NSNotification *)notification coalesceMask:(NSUInteger)coalesceMask

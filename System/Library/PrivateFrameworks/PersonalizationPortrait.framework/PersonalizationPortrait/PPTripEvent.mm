@@ -1,10 +1,10 @@
 @interface PPTripEvent
-- (PPTripEvent)initWithCoder:(id)a3;
-- (PPTripEvent)initWithStartDate:(id)a3 endDate:(id)a4 tripParts:(id)a5;
+- (PPTripEvent)initWithCoder:(id)coder;
+- (PPTripEvent)initWithStartDate:(id)date endDate:(id)endDate tripParts:(id)parts;
 - (id)description;
 - (id)destinations;
 - (id)destinationsBasedTitle;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPTripEvent
@@ -12,8 +12,8 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(PPScoredEvent *)self title];
-  v5 = [v3 initWithFormat:@"<PPTripEvent t:'%@'>", v4];
+  title = [(PPScoredEvent *)self title];
+  v5 = [v3 initWithFormat:@"<PPTripEvent t:'%@'>", title];
 
   return v5;
 }
@@ -22,15 +22,15 @@
 {
   v3 = objc_opt_new();
   [v3 setDateFormat:@"MMM d, yyyy"];
-  v4 = [(PPScoredEvent *)self startDate];
-  v5 = [v3 stringFromDate:v4];
+  startDate = [(PPScoredEvent *)self startDate];
+  v5 = [v3 stringFromDate:startDate];
 
-  v6 = [(PPScoredEvent *)self endDate];
-  v7 = [v3 stringFromDate:v6];
+  endDate = [(PPScoredEvent *)self endDate];
+  v7 = [v3 stringFromDate:endDate];
 
   v8 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v9 = [(PPTripEvent *)self destinations];
-  v10 = [v9 _pas_componentsJoinedByString:@" "];;
+  destinations = [(PPTripEvent *)self destinations];
+  v10 = [destinations _pas_componentsJoinedByString:@" "];;
   v11 = [v8 initWithFormat:@"Trip to %@ - %@ to %@", v10, v5, v7];
 
   return v11;
@@ -59,8 +59,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) destinationString];
-        [v3 addObject:v9];
+        destinationString = [*(*(&v12 + 1) + 8 * i) destinationString];
+        [v3 addObject:destinationString];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -74,21 +74,21 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PPTripEvent;
-  v4 = a3;
-  [(PPScoredEvent *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_tripParts forKey:{@"tps", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(PPScoredEvent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_tripParts forKey:{@"tps", v5.receiver, v5.super_class}];
 }
 
-- (PPTripEvent)initWithCoder:(id)a3
+- (PPTripEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PPTripEvent;
-  v5 = [(PPScoredEvent *)&v13 initWithCoder:v4];
+  v5 = [(PPScoredEvent *)&v13 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_4;
@@ -99,7 +99,7 @@
   v8 = objc_opt_class();
   v9 = [v7 initWithObjects:{v8, objc_opt_class(), 0}];
   objc_autoreleasePoolPop(v6);
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"tps"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"tps"];
 
   if (v10)
   {
@@ -113,18 +113,18 @@ LABEL_4:
   return v10;
 }
 
-- (PPTripEvent)initWithStartDate:(id)a3 endDate:(id)a4 tripParts:(id)a5
+- (PPTripEvent)initWithStartDate:(id)date endDate:(id)endDate tripParts:(id)parts
 {
-  v9 = a5;
+  partsCopy = parts;
   v14.receiver = self;
   v14.super_class = PPTripEvent;
-  v10 = [(PPScoredEvent *)&v14 initWithStartDate:a3 endDate:a4 title:0 score:1.0];
+  v10 = [(PPScoredEvent *)&v14 initWithStartDate:date endDate:endDate title:0 score:1.0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_tripParts, a5);
-    v12 = [(PPTripEvent *)v11 destinationsBasedTitle];
-    [(PPScoredEvent *)v11 setTitle:v12];
+    objc_storeStrong(&v10->_tripParts, parts);
+    destinationsBasedTitle = [(PPTripEvent *)v11 destinationsBasedTitle];
+    [(PPScoredEvent *)v11 setTitle:destinationsBasedTitle];
   }
 
   return v11;

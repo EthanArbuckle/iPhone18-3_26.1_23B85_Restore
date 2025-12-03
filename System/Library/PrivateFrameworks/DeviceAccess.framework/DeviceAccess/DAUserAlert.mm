@@ -1,12 +1,12 @@
 @interface DAUserAlert
-+ (id)accessoryRemovalAlert:(id)a3 appName:(id)a4;
-+ (id)accessoryUnpairAlert:(id)a3 appName:(id)a4;
++ (id)accessoryRemovalAlert:(id)alert appName:(id)name;
++ (id)accessoryUnpairAlert:(id)alert appName:(id)name;
 - (DAUserAlert)init;
-- (void)_activateWithCompletionHandler:(id)a3;
+- (void)_activateWithCompletionHandler:(id)handler;
 - (void)_autoInvalidate;
 - (void)_invalidated;
-- (void)_responseCallback:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4;
-- (void)activateWithCompletionHandler:(id)a3;
+- (void)_responseCallback:(__CFUserNotification *)callback responseFlags:(unint64_t)flags;
+- (void)activateWithCompletionHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -44,17 +44,17 @@
   }
 }
 
-- (void)activateWithCompletionHandler:(id)a3
+- (void)activateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__DAUserAlert_activateWithCompletionHandler___block_invoke;
   v7[3] = &unk_278F57DA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -105,9 +105,9 @@ LABEL_11:
   [v11 _activateWithCompletionHandler:v12];
 }
 
-- (void)_activateWithCompletionHandler:(id)a3
+- (void)_activateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
@@ -119,7 +119,7 @@ LABEL_11:
   aBlock[2] = __46__DAUserAlert__activateWithCompletionHandler___block_invoke;
   aBlock[3] = &unk_278F57DD0;
   v61 = &v62;
-  v5 = v4;
+  v5 = handlerCopy;
   aBlock[4] = self;
   v60 = v5;
   v6 = _Block_copy(aBlock);
@@ -134,7 +134,7 @@ LABEL_11:
     v12 = self->_titleParameter;
     if (v12)
     {
-      v57 = v12;
+      unsignedIntValue = v12;
       v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v11];
 
       v11 = v13;
@@ -165,13 +165,13 @@ LABEL_11:
       if (objc_opt_isKindOfClass())
       {
         v21 = objc_alloc(MEMORY[0x277CCACA8]);
-        v57 = [v20 unsignedIntValue];
+        unsignedIntValue = [v20 unsignedIntValue];
         v22 = [v21 initWithFormat:v19];
       }
 
       else
       {
-        v57 = v20;
+        unsignedIntValue = v20;
         v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v19];
       }
 
@@ -252,7 +252,7 @@ LABEL_30:
   v53 = RunLoopSource;
   if (!RunLoopSource)
   {
-    v55 = DAErrorF(350004, "Create alert RLS failed", v47, v48, v49, v50, v51, v52, v57);
+    v55 = DAErrorF(350004, "Create alert RLS failed", v47, v48, v49, v50, v51, v52, unsignedIntValue);
     goto LABEL_30;
   }
 
@@ -406,7 +406,7 @@ uint64_t __25__DAUserAlert_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)_responseCallback:(__CFUserNotification *)a3 responseFlags:(unint64_t)a4
+- (void)_responseCallback:(__CFUserNotification *)callback responseFlags:(unint64_t)flags
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -414,8 +414,8 @@ uint64_t __25__DAUserAlert_invalidate__block_invoke(uint64_t result)
   block[2] = __47__DAUserAlert__responseCallback_responseFlags___block_invoke;
   block[3] = &unk_278F57DF8;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = flags;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -444,11 +444,11 @@ void __47__DAUserAlert__responseCallback_responseFlags___block_invoke(uint64_t a
   }
 }
 
-+ (id)accessoryRemovalAlert:(id)a3 appName:(id)a4
++ (id)accessoryRemovalAlert:(id)alert appName:(id)name
 {
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  alertCopy = alert;
   v8 = [v5 bundleForClass:objc_opt_class()];
   v9 = CULocalizedStringEx();
 
@@ -457,20 +457,20 @@ void __47__DAUserAlert__responseCallback_responseFlags___block_invoke(uint64_t a
 
   v12 = objc_alloc_init(DAUserAlert);
   [(DAUserAlert *)v12 setLocalizedTitle:v9];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:v11, v6, v7];
+  alertCopy = [MEMORY[0x277CCACA8] stringWithFormat:v11, nameCopy, alertCopy];
 
-  [(DAUserAlert *)v12 setLocalizedMessage:v13];
+  [(DAUserAlert *)v12 setLocalizedMessage:alertCopy];
   [(DAUserAlert *)v12 setDefaultButtonTitleKey:@"DeviceRemoveAlertPrimaryKey"];
   [(DAUserAlert *)v12 setAlternativeButtonTitleKey:@"DeviceRemoveAlertSecondaryKey"];
 
   return v12;
 }
 
-+ (id)accessoryUnpairAlert:(id)a3 appName:(id)a4
++ (id)accessoryUnpairAlert:(id)alert appName:(id)name
 {
   v5 = MEMORY[0x277CCA8D8];
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  alertCopy = alert;
   v8 = [v5 bundleForClass:objc_opt_class()];
   v9 = CULocalizedStringEx();
 
@@ -479,12 +479,12 @@ void __47__DAUserAlert__responseCallback_responseFlags___block_invoke(uint64_t a
   v11 = CULocalizedStringEx();
 
   v12 = objc_alloc_init(DAUserAlert);
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:v9, v7];
+  alertCopy = [MEMORY[0x277CCACA8] stringWithFormat:v9, alertCopy];
 
-  [(DAUserAlert *)v12 setLocalizedTitle:v13];
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:v11, v6];
+  [(DAUserAlert *)v12 setLocalizedTitle:alertCopy];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:v11, nameCopy];
 
-  [(DAUserAlert *)v12 setLocalizedMessage:v14];
+  [(DAUserAlert *)v12 setLocalizedMessage:nameCopy];
   [(DAUserAlert *)v12 setDefaultButtonTitleKey:@"DeviceUnpairAlertPrimaryKey"];
   [(DAUserAlert *)v12 setAlternativeButtonTitleKey:@"DeviceUnpairAlertSecondaryKey"];
 

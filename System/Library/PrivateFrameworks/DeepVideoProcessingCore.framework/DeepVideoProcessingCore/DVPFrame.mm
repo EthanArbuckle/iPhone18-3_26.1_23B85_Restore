@@ -1,5 +1,5 @@
 @interface DVPFrame
-- (DVPFrame)initWithBuffer:(__CVBuffer *)a3 presentationTimeStamp:(id *)a4;
+- (DVPFrame)initWithBuffer:(__CVBuffer *)buffer presentationTimeStamp:(id *)stamp;
 - (void)dealloc;
 @end
 
@@ -13,16 +13,16 @@
   [(DVPFrame *)&v3 dealloc];
 }
 
-- (DVPFrame)initWithBuffer:(__CVBuffer *)a3 presentationTimeStamp:(id *)a4
+- (DVPFrame)initWithBuffer:(__CVBuffer *)buffer presentationTimeStamp:(id *)stamp
 {
   v12.receiver = self;
   v12.super_class = DVPFrame;
   v6 = [(DVPFrame *)&v12 init];
   v7 = v6;
   v8 = 0;
-  if (a3 && v6)
+  if (buffer && v6)
   {
-    if (CVPixelBufferGetIOSurface(a3) && (v9 = CVPixelBufferRetain(a3), v7->_buffer = v9, var3 = a4->var3, *&v7->_presentationTimeStamp.value = *&a4->var0, v7->_presentationTimeStamp.epoch = var3, v9))
+    if (CVPixelBufferGetIOSurface(buffer) && (v9 = CVPixelBufferRetain(buffer), v7->_buffer = v9, var3 = stamp->var3, *&v7->_presentationTimeStamp.value = *&stamp->var0, v7->_presentationTimeStamp.epoch = var3, v9))
     {
       v8 = v7;
     }

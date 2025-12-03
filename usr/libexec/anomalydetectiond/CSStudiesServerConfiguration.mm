@@ -8,27 +8,27 @@
 + (id)kappaStagingConfiguration;
 + (id)persistentConfiguration;
 + (id)persistentConfigurationIgneous;
-- (CSStudiesServerConfiguration)initWithServer:(id)a3 certificate:(id)a4 study:(id)a5 andAuthorizationID:(id)a6;
+- (CSStudiesServerConfiguration)initWithServer:(id)server certificate:(id)certificate study:(id)study andAuthorizationID:(id)d;
 @end
 
 @implementation CSStudiesServerConfiguration
 
-- (CSStudiesServerConfiguration)initWithServer:(id)a3 certificate:(id)a4 study:(id)a5 andAuthorizationID:(id)a6
+- (CSStudiesServerConfiguration)initWithServer:(id)server certificate:(id)certificate study:(id)study andAuthorizationID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  serverCopy = server;
+  certificateCopy = certificate;
+  studyCopy = study;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = CSStudiesServerConfiguration;
   v15 = [(CSStudiesServerConfiguration *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_server, a3);
-    objc_storeStrong(&v16->_certificate, a4);
-    objc_storeStrong(&v16->_studyUUID, a5);
-    objc_storeStrong(&v16->_auth, a6);
+    objc_storeStrong(&v15->_server, server);
+    objc_storeStrong(&v16->_certificate, certificate);
+    objc_storeStrong(&v16->_studyUUID, study);
+    objc_storeStrong(&v16->_auth, d);
   }
 
   return v16;

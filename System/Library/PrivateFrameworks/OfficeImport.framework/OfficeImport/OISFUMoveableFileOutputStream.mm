@@ -1,20 +1,20 @@
 @interface OISFUMoveableFileOutputStream
-- (BOOL)moveToPath:(id)a3;
-- (OISFUMoveableFileOutputStream)initWithPath:(id)a3;
-- (OISFUMoveableFileOutputStream)initWithTemporaryFile:(id)a3;
+- (BOOL)moveToPath:(id)path;
+- (OISFUMoveableFileOutputStream)initWithPath:(id)path;
+- (OISFUMoveableFileOutputStream)initWithTemporaryFile:(id)file;
 - (id)inputStream;
 - (int64_t)offset;
 - (void)close;
 - (void)dealloc;
 - (void)flush;
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4;
-- (void)truncateToLength:(int64_t)a3;
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4;
+- (void)seekToOffset:(int64_t)offset whence:(int)whence;
+- (void)truncateToLength:(int64_t)length;
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size;
 @end
 
 @implementation OISFUMoveableFileOutputStream
 
-- (OISFUMoveableFileOutputStream)initWithTemporaryFile:(id)a3
+- (OISFUMoveableFileOutputStream)initWithTemporaryFile:(id)file
 {
   v11.receiver = self;
   v11.super_class = OISFUMoveableFileOutputStream;
@@ -23,9 +23,9 @@
   if (v4)
   {
     v4->mFd = -1;
-    v6 = [a3 stringByAppendingString:@"XXXXXXXX"];
-    v7 = [[(NSString *)NSTemporaryDirectory() stringByAppendingPathComponent:v6] UTF8String];
-    v8 = strdup(v7);
+    v6 = [file stringByAppendingString:@"XXXXXXXX"];
+    uTF8String = [[(NSString *)NSTemporaryDirectory() stringByAppendingPathComponent:v6] UTF8String];
+    v8 = strdup(uTF8String);
     v9 = mkstemp(v8);
     v5->mFd = v9;
     if (v9 == -1)
@@ -40,16 +40,16 @@
   return v5;
 }
 
-- (OISFUMoveableFileOutputStream)initWithPath:(id)a3
+- (OISFUMoveableFileOutputStream)initWithPath:(id)path
 {
   v4 = [(OISFUMoveableFileOutputStream *)self init];
   v5 = v4;
   if (v4)
   {
     v4->mFd = -1;
-    unlink([a3 fileSystemRepresentation]);
-    v5->mFd = SFUOpen(a3, 1537, 438);
-    v5->mPath = [a3 copy];
+    unlink([path fileSystemRepresentation]);
+    v5->mFd = SFUOpen(path, 1537, 438);
+    v5->mPath = [path copy];
   }
 
   return v5;
@@ -68,22 +68,22 @@
   [(OISFUMoveableFileOutputStream *)&v4 dealloc];
 }
 
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size
 {
   mFd = self->mFd;
   do
   {
-    v7 = write(mFd, a3, a4);
+    v7 = write(mFd, buffer, size);
     if (v7 < 0)
     {
       [MEMORY[0x277CBEAD8] sfu_errnoRaise:@"SFUWriteError" format:@"Could not write"];
     }
 
-    a3 += v7;
-    a4 -= v7;
+    buffer += v7;
+    size -= v7;
   }
 
-  while (a4);
+  while (size);
 }
 
 - (int64_t)offset
@@ -97,9 +97,9 @@
   return v2;
 }
 
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4
+- (void)seekToOffset:(int64_t)offset whence:(int)whence
 {
-  if (lseek(self->mFd, a3, a4) == -1)
+  if (lseek(self->mFd, offset, whence) == -1)
   {
     v4 = MEMORY[0x277CBEAD8];
 
@@ -107,7 +107,7 @@
   }
 }
 
-- (BOOL)moveToPath:(id)a3
+- (BOOL)moveToPath:(id)path
 {
   mFd = self->mFd;
   if ((mFd & 0x80000000) == 0)
@@ -119,7 +119,7 @@
   v6 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
   if (v6)
   {
-    v7 = [a3 copy];
+    v7 = [path copy];
 
     self->mPath = v7;
     v8 = SFUOpen(v7, 1, 0);
@@ -133,16 +133,16 @@
   return v6;
 }
 
-- (void)truncateToLength:(int64_t)a3
+- (void)truncateToLength:(int64_t)length
 {
   [(OISFUMoveableFileOutputStream *)self seekToOffset:0 whence:2];
-  if ([(OISFUMoveableFileOutputStream *)self offset]< a3)
+  if ([(OISFUMoveableFileOutputStream *)self offset]< length)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE648] format:@"-[SFUMoveableFileOutputStream truncateToOffset:] does not allow expanding the file"];
   }
 
-  [(OISFUMoveableFileOutputStream *)self seekToOffset:a3 whence:0];
-  if (ftruncate(self->mFd, a3))
+  [(OISFUMoveableFileOutputStream *)self seekToOffset:length whence:0];
+  if (ftruncate(self->mFd, length))
   {
     v5 = MEMORY[0x277CBEAD8];
 
@@ -163,11 +163,11 @@
 - (id)inputStream
 {
   [(OISFUMoveableFileOutputStream *)self flush];
-  v3 = [(OISFUMoveableFileOutputStream *)self offset];
+  offset = [(OISFUMoveableFileOutputStream *)self offset];
   [(OISFUMoveableFileOutputStream *)self seekToOffset:0 whence:2];
-  v4 = [(OISFUMoveableFileOutputStream *)self offset];
-  [(OISFUMoveableFileOutputStream *)self seekToOffset:v3 whence:0];
-  v5 = [[OISFUFileInputStream alloc] initWithPath:self->mPath offset:0 length:v4];
+  offset2 = [(OISFUMoveableFileOutputStream *)self offset];
+  [(OISFUMoveableFileOutputStream *)self seekToOffset:offset whence:0];
+  v5 = [[OISFUFileInputStream alloc] initWithPath:self->mPath offset:0 length:offset2];
 
   return v5;
 }

@@ -1,6 +1,6 @@
 @interface TVSettingsAppAppearanceListItemsController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -32,10 +32,10 @@
 {
   v18.receiver = self;
   v18.super_class = TVSettingsAppAppearanceListItemsController;
-  v3 = [(TVSettingsAppAppearanceListItemsController *)&v18 specifiers];
+  specifiers = [(TVSettingsAppAppearanceListItemsController *)&v18 specifiers];
   v4 = OBJC_IVAR___PSListController__specifiers;
   v5 = *&self->super.PSListItemsController_opaque[OBJC_IVAR___PSListController__specifiers];
-  *&self->super.PSListItemsController_opaque[OBJC_IVAR___PSListController__specifiers] = v3;
+  *&self->super.PSListItemsController_opaque[OBJC_IVAR___PSListController__specifiers] = specifiers;
 
   v16 = 0u;
   v17 = 0u;
@@ -74,11 +74,11 @@
   return v12;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v5.receiver = self;
   v5.super_class = TVSettingsAppAppearanceListItemsController;
-  [(TVSettingsAppAppearanceListItemsController *)&v5 tableView:a3 didSelectRowAtIndexPath:a4];
+  [(TVSettingsAppAppearanceListItemsController *)&v5 tableView:view didSelectRowAtIndexPath:path];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"TVSettingsAppAppearanceSettingDidChangeNotification" object:0];
 }

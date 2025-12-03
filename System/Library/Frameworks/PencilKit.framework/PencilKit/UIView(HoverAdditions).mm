@@ -10,11 +10,11 @@
 - (id)pk_hoverLabelAttributedString
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v2 = objc_getAssociatedObject(a1, &hoverLabelAttributedStringKey);
+  v2 = objc_getAssociatedObject(self, &hoverLabelAttributedStringKey);
   if (!v2)
   {
-    v3 = [a1 pk_hoverLabelString];
-    if (v3)
+    pk_hoverLabelString = [self pk_hoverLabelString];
+    if (pk_hoverLabelString)
     {
       v4 = MEMORY[0x1E69DB878];
       [MEMORY[0x1E69DB878] systemFontSize];
@@ -24,10 +24,10 @@
       v11[0] = *MEMORY[0x1E69DB648];
       v11[1] = v7;
       v12[0] = v5;
-      v8 = [MEMORY[0x1E69DC888] labelColor];
-      v12[1] = v8;
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      v12[1] = labelColor;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
-      v2 = [v6 initWithString:v3 attributes:v9];
+      v2 = [v6 initWithString:pk_hoverLabelString attributes:v9];
     }
 
     else
@@ -43,8 +43,8 @@
 {
   v0 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v1 = MEMORY[0x1E69DB878];
-  v2 = [v0 fontDescriptor];
-  v3 = [v2 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v0 fontDescriptor];
+  v3 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
   [v0 pointSize];
   v4 = [v1 fontWithDescriptor:v3 size:?];
 
@@ -59,11 +59,11 @@
   {
     v5 = objc_alloc(MEMORY[0x1E696AAB0]);
     v11[0] = *MEMORY[0x1E69DB648];
-    v6 = [a1 pk_hoverLabelFont];
-    v12[0] = v6;
+    pk_hoverLabelFont = [self pk_hoverLabelFont];
+    v12[0] = pk_hoverLabelFont;
     v11[1] = *MEMORY[0x1E69DB650];
-    v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v12[1] = v7;
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    v12[1] = secondaryLabelColor;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
     v9 = [v5 initWithString:v4 attributes:v8];
   }
@@ -89,19 +89,19 @@
   v6 = MEMORY[0x1E69DB878];
   [MEMORY[0x1E69DB878] systemFontSize];
   v7 = [v6 boldSystemFontOfSize:?];
-  v30 = [MEMORY[0x1E69DC888] labelColor];
-  v28 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
   v9 = *MEMORY[0x1E69DB650];
   v33[0] = *MEMORY[0x1E69DB648];
   v8 = v33[0];
   v33[1] = v9;
   v34[0] = v7;
-  v34[1] = v30;
+  v34[1] = labelColor;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
   v31[0] = v8;
   v31[1] = v9;
   v32[0] = v7;
-  v32[1] = v28;
+  v32[1] = secondaryLabelColor;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:2];
   v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" " attributes:v10];
   v13 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"R" attributes:v10];

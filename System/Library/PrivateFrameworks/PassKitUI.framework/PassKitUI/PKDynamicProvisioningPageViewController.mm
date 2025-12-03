@@ -1,26 +1,26 @@
 @interface PKDynamicProvisioningPageViewController
-- (PKDynamicProvisioningPageViewController)initWithPage:(id)a3 context:(int64_t)a4;
-- (void)explanationViewControllerDidSelectCancel:(id)a3;
-- (void)explanationViewControllerDidSelectDone:(id)a3;
-- (void)explanationViewDidSelectBodyButton:(id)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
+- (PKDynamicProvisioningPageViewController)initWithPage:(id)page context:(int64_t)context;
+- (void)explanationViewControllerDidSelectCancel:(id)cancel;
+- (void)explanationViewControllerDidSelectDone:(id)done;
+- (void)explanationViewDidSelectBodyButton:(id)button;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
+- (void)preflightWithCompletion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation PKDynamicProvisioningPageViewController
 
-- (PKDynamicProvisioningPageViewController)initWithPage:(id)a3 context:(int64_t)a4
+- (PKDynamicProvisioningPageViewController)initWithPage:(id)page context:(int64_t)context
 {
-  v7 = a3;
+  pageCopy = page;
   v11.receiver = self;
   v11.super_class = PKDynamicProvisioningPageViewController;
-  v8 = [(PKExplanationViewController *)&v11 initWithContext:a4];
+  v8 = [(PKExplanationViewController *)&v11 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_page, a3);
+    objc_storeStrong(&v8->_page, page);
     [(PKExplanationViewController *)v9 setShowCancelButton:0];
     [(PKExplanationViewController *)v9 setShowDoneButton:0];
     [(PKExplanationViewController *)v9 setExplanationViewControllerDelegate:v9];
@@ -35,84 +35,84 @@
   v47.receiver = self;
   v47.super_class = PKDynamicProvisioningPageViewController;
   [(PKExplanationViewController *)&v47 viewDidLoad];
-  v30 = [(PKDynamicProvisioningPageViewController *)self navigationItem];
-  [v30 setHidesBackButton:1];
-  v39 = [(PKExplanationViewController *)self explanationView];
-  v3 = [v39 dockView];
-  v27 = [v3 footerView];
+  navigationItem = [(PKDynamicProvisioningPageViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
 
-  v37 = [v39 dockView];
-  [v39 setShowPrivacyView:0];
+  dockView2 = [explanationView dockView];
+  [explanationView setShowPrivacyView:0];
   if (self->_heroImage)
   {
-    [v39 setImage:?];
+    [explanationView setImage:?];
   }
 
   else
   {
-    v4 = [(PKDynamicProvisioningPageContent *)self->_page identifier];
-    v5 = [v4 isEqualToString:@"physicalCardQuote"];
+    identifier = [(PKDynamicProvisioningPageContent *)self->_page identifier];
+    v5 = [identifier isEqualToString:@"physicalCardQuote"];
 
     if (v5)
     {
       v6 = PKFeatureApplicationHeaderImageWithImage(2, 0);
-      [v39 setImage:v6];
+      [explanationView setImage:v6];
     }
   }
 
-  v7 = [(PKDynamicProvisioningPageContent *)self->_page title];
-  [v39 setTitleText:v7];
+  title = [(PKDynamicProvisioningPageContent *)self->_page title];
+  [explanationView setTitleText:title];
 
-  v29 = [(PKDynamicProvisioningPageContent *)self->_page subtitle];
-  v36 = PKAttributedStringCreateProvisioningBulletedParagraph(v29, *MEMORY[0x1E69DDC90]);
+  subtitle = [(PKDynamicProvisioningPageContent *)self->_page subtitle];
+  v36 = PKAttributedStringCreateProvisioningBulletedParagraph(subtitle, *MEMORY[0x1E69DDC90]);
   if (v36)
   {
-    [v39 setAttributedBodyText:v36];
-    v8 = [v39 bodyTextView];
-    [v8 setDataDetectorTypes:0];
+    [explanationView setAttributedBodyText:v36];
+    bodyTextView = [explanationView bodyTextView];
+    [bodyTextView setDataDetectorTypes:0];
   }
 
-  v35 = [(PKDynamicProvisioningPageContent *)self->_page disclosureTitle];
-  if (v35)
+  disclosureTitle = [(PKDynamicProvisioningPageContent *)self->_page disclosureTitle];
+  if (disclosureTitle)
   {
-    [v37 setButtonExplanationText:v35];
+    [dockView2 setButtonExplanationText:disclosureTitle];
   }
 
-  v9 = [(PKDynamicProvisioningPageContent *)self->_page learnMore];
-  v34 = [v9 buttonTitle];
+  learnMore = [(PKDynamicProvisioningPageContent *)self->_page learnMore];
+  buttonTitle = [learnMore buttonTitle];
 
-  if (v34)
+  if (buttonTitle)
   {
-    [v39 setBodyButtonText:v34];
+    [explanationView setBodyButtonText:buttonTitle];
   }
 
-  v33 = [(PKDynamicProvisioningPageContent *)self->_page primaryActionTitle];
-  if (v33)
+  primaryActionTitle = [(PKDynamicProvisioningPageContent *)self->_page primaryActionTitle];
+  if (primaryActionTitle)
   {
-    v10 = [v37 primaryButton];
-    [v10 setTitle:v33 forState:0];
-  }
-
-  else
-  {
-    [v37 setPrimaryButton:0];
-  }
-
-  v32 = [(PKDynamicProvisioningPageContent *)self->_page secondaryActionTitle];
-  if (v32)
-  {
-    [v39 setForceShowSetupLaterButton:1];
-    v11 = [v27 setUpLaterButton];
-    [v11 setTitle:v32 forState:0];
+    primaryButton = [dockView2 primaryButton];
+    [primaryButton setTitle:primaryActionTitle forState:0];
   }
 
   else
   {
-    [v39 setForceShowSetupLaterButton:0];
+    [dockView2 setPrimaryButton:0];
+  }
+
+  secondaryActionTitle = [(PKDynamicProvisioningPageContent *)self->_page secondaryActionTitle];
+  if (secondaryActionTitle)
+  {
+    [explanationView setForceShowSetupLaterButton:1];
+    setUpLaterButton = [footerView setUpLaterButton];
+    [setUpLaterButton setTitle:secondaryActionTitle forState:0];
+  }
+
+  else
+  {
+    [explanationView setForceShowSetupLaterButton:0];
   }
 
   v12 = PKOBKTextAlignment();
-  v13 = [(PKDynamicProvisioningPageContent *)self->_page contentAlignment];
+  contentAlignment = [(PKDynamicProvisioningPageContent *)self->_page contentAlignment];
   if (v12 == 4)
   {
     v14 = 2;
@@ -123,7 +123,7 @@
     v14 = 4;
   }
 
-  if (v14 == v13)
+  if (v14 == contentAlignment)
   {
     if (v12 == 4)
     {
@@ -135,16 +135,16 @@
       v15 = 4;
     }
 
-    [v39 setTitleAlignment:v15];
-    [v39 setBodyTextAlignment:v15];
+    [explanationView setTitleAlignment:v15];
+    [explanationView setBodyTextAlignment:v15];
   }
 
-  v38 = [(PKDynamicProvisioningPageContent *)self->_page footerContent];
-  v31 = [v38 footerText];
-  if (v38 && v31)
+  footerContent = [(PKDynamicProvisioningPageContent *)self->_page footerContent];
+  footerText = [footerContent footerText];
+  if (footerContent && footerText)
   {
     v28 = objc_alloc_init(PKMultiHyperlinkView);
-    [(PKMultiHyperlinkView *)v28 setText:v31];
+    [(PKMultiHyperlinkView *)v28 setText:footerText];
     [(PKMultiHyperlinkView *)v28 setTextAlignment:1];
     objc_initWeak(&location, self);
     v16 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -152,8 +152,8 @@
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v17 = [v38 links];
-    v18 = [v17 countByEnumeratingWithState:&v42 objects:v48 count:16];
+    links = [footerContent links];
+    v18 = [links countByEnumeratingWithState:&v42 objects:v48 count:16];
     if (v18)
     {
       v19 = *v43;
@@ -163,25 +163,25 @@
         {
           if (*v43 != v19)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(links);
           }
 
           v21 = *(*(&v42 + 1) + 8 * i);
           v22 = [PKTextRangeHyperlink alloc];
-          v23 = [v21 linkText];
+          linkText = [v21 linkText];
           v40[0] = MEMORY[0x1E69E9820];
           v40[1] = 3221225472;
           v40[2] = __54__PKDynamicProvisioningPageViewController_viewDidLoad__block_invoke;
           v40[3] = &unk_1E80110E0;
           objc_copyWeak(&v41, &location);
           v40[4] = v21;
-          v24 = [(PKTextRangeHyperlink *)v22 initWithLinkText:v23 action:v40];
+          v24 = [(PKTextRangeHyperlink *)v22 initWithLinkText:linkText action:v40];
 
           [v16 safelyAddObject:v24];
           objc_destroyWeak(&v41);
         }
 
-        v18 = [v17 countByEnumeratingWithState:&v42 objects:v48 count:16];
+        v18 = [links countByEnumeratingWithState:&v42 objects:v48 count:16];
       }
 
       while (v18);
@@ -203,7 +203,7 @@
     {
     }
 
-    [v37 setAdditionalView:v28];
+    [dockView2 setAdditionalView:v28];
 
     objc_destroyWeak(&location);
   }
@@ -225,12 +225,12 @@ void __54__PKDynamicProvisioningPageViewController_viewDidLoad__block_invoke(uin
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x1E695DFF8];
-  v6 = [(PKDynamicProvisioningPageContent *)self->_page heroImageURL];
-  v7 = [v5 URLWithString:v6];
+  heroImageURL = [(PKDynamicProvisioningPageContent *)self->_page heroImageURL];
+  v7 = [v5 URLWithString:heroImageURL];
 
   if (v7)
   {
@@ -239,10 +239,10 @@ void __54__PKDynamicProvisioningPageViewController_viewDidLoad__block_invoke(uin
     aBlock[2] = __67__PKDynamicProvisioningPageViewController_preflightWithCompletion___block_invoke;
     aBlock[3] = &unk_1E8020520;
     aBlock[4] = self;
-    v15 = v4;
+    v15 = completionCopy;
     v8 = _Block_copy(aBlock);
-    v9 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
-    v10 = [v9 cachedDataForURL:v7];
+    mEMORY[0x1E69B8A08] = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+    v10 = [mEMORY[0x1E69B8A08] cachedDataForURL:v7];
 
     if (v10)
     {
@@ -251,19 +251,19 @@ void __54__PKDynamicProvisioningPageViewController_viewDidLoad__block_invoke(uin
 
     else
     {
-      v11 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
+      mEMORY[0x1E69B8A08]2 = [MEMORY[0x1E69B8A08] sharedImageAssetDownloader];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __67__PKDynamicProvisioningPageViewController_preflightWithCompletion___block_invoke_3;
       v12[3] = &unk_1E8013E70;
       v13 = v8;
-      [v11 downloadFromUrl:v7 completionHandler:v12];
+      [mEMORY[0x1E69B8A08]2 downloadFromUrl:v7 completionHandler:v12];
     }
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -290,7 +290,7 @@ void __67__PKDynamicProvisioningPageViewController_preflightWithCompletion___blo
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v3 = _Block_copy(self->_primaryButtonAction);
   if (v3)
@@ -301,7 +301,7 @@ void __67__PKDynamicProvisioningPageViewController_preflightWithCompletion___blo
   }
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   v3 = _Block_copy(self->_secondaryButtonAction);
   if (v3)
@@ -312,7 +312,7 @@ void __67__PKDynamicProvisioningPageViewController_preflightWithCompletion___blo
   }
 }
 
-- (void)explanationViewControllerDidSelectCancel:(id)a3
+- (void)explanationViewControllerDidSelectCancel:(id)cancel
 {
   v4 = _Block_copy(self->_cancelButtonAction);
   v6 = v4;
@@ -323,12 +323,12 @@ void __67__PKDynamicProvisioningPageViewController_preflightWithCompletion___blo
 
   else
   {
-    v5 = [(PKDynamicProvisioningPageViewController *)self presentingViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKDynamicProvisioningPageViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)explanationViewControllerDidSelectDone:(id)a3
+- (void)explanationViewControllerDidSelectDone:(id)done
 {
   v4 = _Block_copy(self->_doneButtonAction);
   v6 = v4;
@@ -339,12 +339,12 @@ void __67__PKDynamicProvisioningPageViewController_preflightWithCompletion___blo
 
   else
   {
-    v5 = [(PKDynamicProvisioningPageViewController *)self presentingViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKDynamicProvisioningPageViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)explanationViewDidSelectBodyButton:(id)a3
+- (void)explanationViewDidSelectBodyButton:(id)button
 {
   v3 = _Block_copy(self->_bodyButtonAction);
   if (v3)

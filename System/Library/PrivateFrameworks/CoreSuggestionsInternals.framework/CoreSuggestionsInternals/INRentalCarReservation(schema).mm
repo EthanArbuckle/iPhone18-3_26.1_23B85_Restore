@@ -14,31 +14,31 @@
   [v5 setObject:@"http://schema.org/RentalCarReservation" forKeyedSubscript:@"@type"];
   v6 = objc_opt_new();
   [v6 setObject:@"http://schema.org/RentalCar" forKeyedSubscript:@"@type"];
-  v7 = [v3 rentalCar];
-  v8 = [v7 type];
+  rentalCar = [v3 rentalCar];
+  type = [rentalCar type];
 
-  if (v8)
+  if (type)
   {
-    v9 = [v3 rentalCar];
-    v10 = [v9 type];
-    [v6 setObject:v10 forKeyedSubscript:@"name"];
+    rentalCar2 = [v3 rentalCar];
+    type2 = [rentalCar2 type];
+    [v6 setObject:type2 forKeyedSubscript:@"name"];
   }
 
-  v11 = [v3 rentalCar];
-  v12 = [v11 model];
+  rentalCar3 = [v3 rentalCar];
+  model = [rentalCar3 model];
 
-  if (v12)
+  if (model)
   {
-    v13 = [v3 rentalCar];
-    v14 = [v13 model];
-    [v6 setObject:v14 forKeyedSubscript:@"model"];
+    rentalCar4 = [v3 rentalCar];
+    model2 = [rentalCar4 model];
+    [v6 setObject:model2 forKeyedSubscript:@"model"];
   }
 
   v15 = objc_opt_new();
   [v15 setObject:@"http://schema.org/Brand" forKeyedSubscript:@"@type"];
-  v16 = [v3 rentalCar];
-  v17 = [v16 make];
-  [v15 setObject:v17 forKeyedSubscript:@"name"];
+  rentalCar5 = [v3 rentalCar];
+  make = [rentalCar5 make];
+  [v15 setObject:make forKeyedSubscript:@"name"];
 
   if ([v15 count] >= 2)
   {
@@ -47,9 +47,9 @@
 
   v18 = objc_opt_new();
   [v18 setObject:@"http://schema.org/Organization" forKeyedSubscript:@"@type"];
-  v19 = [v3 rentalCar];
-  v20 = [v19 rentalCompanyName];
-  [v18 setObject:v20 forKeyedSubscript:@"name"];
+  rentalCar6 = [v3 rentalCar];
+  rentalCompanyName = [rentalCar6 rentalCompanyName];
+  [v18 setObject:rentalCompanyName forKeyedSubscript:@"name"];
 
   if ([v18 count] >= 2)
   {
@@ -61,44 +61,44 @@
     [v5 setObject:v6 forKeyedSubscript:@"reservationFor"];
   }
 
-  v21 = [v3 rentalDuration];
-  v22 = [v21 startDateComponents];
+  rentalDuration = [v3 rentalDuration];
+  startDateComponents = [rentalDuration startDateComponents];
 
-  if (v22)
+  if (startDateComponents)
   {
-    v23 = [v3 rentalDuration];
-    v24 = [v23 startDateComponents];
-    v25 = [v24 schema];
-    [v5 setObject:v25 forKeyedSubscript:@"pickupTime"];
+    rentalDuration2 = [v3 rentalDuration];
+    startDateComponents2 = [rentalDuration2 startDateComponents];
+    schema = [startDateComponents2 schema];
+    [v5 setObject:schema forKeyedSubscript:@"pickupTime"];
   }
 
-  v26 = [v3 rentalDuration];
-  v27 = [v26 endDateComponents];
+  rentalDuration3 = [v3 rentalDuration];
+  endDateComponents = [rentalDuration3 endDateComponents];
 
-  if (v27)
+  if (endDateComponents)
   {
-    v28 = [v3 rentalDuration];
-    v29 = [v28 endDateComponents];
-    v30 = [v29 schema];
-    [v5 setObject:v30 forKeyedSubscript:@"dropoffTime"];
+    rentalDuration4 = [v3 rentalDuration];
+    endDateComponents2 = [rentalDuration4 endDateComponents];
+    schema2 = [endDateComponents2 schema];
+    [v5 setObject:schema2 forKeyedSubscript:@"dropoffTime"];
   }
 
-  v31 = [v3 dropOffLocation];
+  dropOffLocation = [v3 dropOffLocation];
 
-  if (v31)
+  if (dropOffLocation)
   {
-    v32 = [v3 dropOffLocation];
-    v33 = [v32 schema];
-    [v5 setObject:v33 forKeyedSubscript:@"dropoffLocation"];
+    dropOffLocation2 = [v3 dropOffLocation];
+    schema3 = [dropOffLocation2 schema];
+    [v5 setObject:schema3 forKeyedSubscript:@"dropoffLocation"];
   }
 
-  v34 = [v3 pickupLocation];
+  pickupLocation = [v3 pickupLocation];
 
-  if (v34)
+  if (pickupLocation)
   {
-    v35 = [v3 pickupLocation];
-    v36 = [v35 schema];
-    [v5 setObject:v36 forKeyedSubscript:@"pickupLocation"];
+    pickupLocation2 = [v3 pickupLocation];
+    schema4 = [pickupLocation2 schema];
+    [v5 setObject:schema4 forKeyedSubscript:@"pickupLocation"];
   }
 
   return v5;
@@ -137,8 +137,8 @@
   v14 = [objc_alloc(MEMORY[0x277CD3F50]) initWithRentalCompanyName:v13 type:v22 make:v20 model:v21 rentalCarDescription:0];
   v15 = objc_alloc(MEMORY[0x277CD4188]);
   v16 = objc_opt_new();
-  v17 = [v16 UUIDString];
-  v18 = [v15 initWithVocabularyIdentifier:v17 spokenPhrase:@"Car Rental" pronunciationHint:0];
+  uUIDString = [v16 UUIDString];
+  v18 = [v15 initWithVocabularyIdentifier:uUIDString spokenPhrase:@"Car Rental" pronunciationHint:0];
 
   v28 = [objc_alloc(MEMORY[0x277CD3F58]) initWithItemReference:v18 reservationNumber:v32 bookingTime:v30 reservationStatus:v27 reservationHolderName:v26 actions:0 URL:v25 rentalCar:v14 rentalDuration:v24 pickupLocation:v23 dropOffLocation:v10];
 

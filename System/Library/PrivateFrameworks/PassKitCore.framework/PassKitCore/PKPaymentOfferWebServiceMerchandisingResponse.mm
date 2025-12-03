@@ -1,26 +1,26 @@
 @interface PKPaymentOfferWebServiceMerchandisingResponse
-- (PKPaymentOfferWebServiceMerchandisingResponse)initWithData:(id)a3;
+- (PKPaymentOfferWebServiceMerchandisingResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentOfferWebServiceMerchandisingResponse
 
-- (PKPaymentOfferWebServiceMerchandisingResponse)initWithData:(id)a3
+- (PKPaymentOfferWebServiceMerchandisingResponse)initWithData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = PKPaymentOfferWebServiceMerchandisingResponse;
-  v3 = [(PKWebServiceResponse *)&v15 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v15 initWithData:data];
   v4 = v3;
   if (!v3)
   {
     goto LABEL_4;
   }
 
-  v5 = [(PKWebServiceResponse *)v3 JSONObject];
+  jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [[PKPaymentOfferMerchandisingOfferDetails alloc] initWithDictionary:v5];
+    v6 = [[PKPaymentOfferMerchandisingOfferDetails alloc] initWithDictionary:jSONObject];
     merchandisingOfferDetails = v4->_merchandisingOfferDetails;
     v4->_merchandisingOfferDetails = v6;
 

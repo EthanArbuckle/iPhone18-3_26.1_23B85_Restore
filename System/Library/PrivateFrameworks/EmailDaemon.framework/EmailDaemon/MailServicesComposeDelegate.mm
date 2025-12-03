@@ -4,7 +4,7 @@
 - (id)composeWebView;
 - (id)sendingAccountProxy;
 - (id)shouldCreateRichTextRepresentation;
-- (void)setSendingEmailAddress:(id)a3;
+- (void)setSendingEmailAddress:(id)address;
 @end
 
 @implementation MailServicesComposeDelegate
@@ -32,30 +32,30 @@
 
   if (v5)
   {
-    v6 = [(MailServicesComposeDelegate *)self sendingEmailAddress];
-    v7 = [MailAccount accountContainingEmailAddress:v6 includingInactive:1];
+    sendingEmailAddress = [(MailServicesComposeDelegate *)self sendingEmailAddress];
+    v7 = [MailAccount accountContainingEmailAddress:sendingEmailAddress includingInactive:1];
 
     if (v7 || (+[MailAccount defaultMailAccountForDelivery], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [v7 emailAddressStrings];
-      v9 = [v8 firstObject];
+      emailAddressStrings = [v7 emailAddressStrings];
+      firstObject = [emailAddressStrings firstObject];
 
-      v10 = [ECEmailAddressComponents componentsWithString:v9];
-      v11 = [v7 fullUserName];
-      [v10 setDisplayName:v11];
+      v10 = [ECEmailAddressComponents componentsWithString:firstObject];
+      fullUserName = [v7 fullUserName];
+      [v10 setDisplayName:fullUserName];
 
       v12 = objc_alloc_init(ECEmailAddressFormatter);
       [v12 setShouldIncludeDisplayName:1];
-      v13 = [v10 emailAddressValue];
-      v14 = v13;
-      if (v13)
+      emailAddressValue = [v10 emailAddressValue];
+      v14 = emailAddressValue;
+      if (emailAddressValue)
       {
-        v15 = v13;
+        v15 = emailAddressValue;
       }
 
       else
       {
-        v15 = v9;
+        v15 = firstObject;
       }
 
       v16 = [v12 stringFromEmailAddressConvertible:v15];
@@ -83,26 +83,26 @@
   return v3;
 }
 
-- (void)setSendingEmailAddress:(id)a3
+- (void)setSendingEmailAddress:(id)address
 {
-  v4 = a3;
-  if (self->_sendingEmailAddress != v4)
+  addressCopy = address;
+  if (self->_sendingEmailAddress != addressCopy)
   {
-    v7 = v4;
-    v5 = [(NSString *)v4 copy];
+    v7 = addressCopy;
+    v5 = [(NSString *)addressCopy copy];
     sendingEmailAddress = self->_sendingEmailAddress;
     self->_sendingEmailAddress = v5;
 
-    v4 = v7;
+    addressCopy = v7;
   }
 }
 
 - (id)shouldCreateRichTextRepresentation
 {
-  v2 = [(MailServicesComposeDelegate *)self composeWebView];
-  v3 = [v2 containsRichText];
+  composeWebView = [(MailServicesComposeDelegate *)self composeWebView];
+  containsRichText = [composeWebView containsRichText];
 
-  return v3;
+  return containsRichText;
 }
 
 - (id)accountProxyGenerator
@@ -122,8 +122,8 @@
 
 - (id)sendingAccountProxy
 {
-  v3 = [(MailServicesComposeDelegate *)self accountProxyGenerator];
-  v4 = [v3 accountProxyContainingEmailAddress:self->_sendingEmailAddress includingInactive:0 originatingBundleID:0 sourceAccountManagement:0];
+  accountProxyGenerator = [(MailServicesComposeDelegate *)self accountProxyGenerator];
+  v4 = [accountProxyGenerator accountProxyContainingEmailAddress:self->_sendingEmailAddress includingInactive:0 originatingBundleID:0 sourceAccountManagement:0];
 
   return v4;
 }

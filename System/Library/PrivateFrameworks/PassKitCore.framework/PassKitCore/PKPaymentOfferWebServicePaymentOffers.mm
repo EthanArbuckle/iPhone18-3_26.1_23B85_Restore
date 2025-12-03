@@ -1,14 +1,14 @@
 @interface PKPaymentOfferWebServicePaymentOffers
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKPaymentOfferWebServicePaymentOffers
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   if (!self->_baseURL)
   {
     v6 = PKLogFacilityTypeGetObject(7uLL);
@@ -63,7 +63,7 @@ LABEL_56:
     goto LABEL_56;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v6 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -123,8 +123,8 @@ LABEL_57:
   amount = self->_amount;
   if (amount)
   {
-    v18 = [(NSDecimalNumber *)amount stringValue];
-    [v12 setObject:v18 forKeyedSubscript:@"amount"];
+    stringValue = [(NSDecimalNumber *)amount stringValue];
+    [v12 setObject:stringValue forKeyedSubscript:@"amount"];
   }
 
   currencyCode = self->_currencyCode;
@@ -193,8 +193,8 @@ LABEL_57:
   merchandisingOfferIdentifiers = self->_merchandisingOfferIdentifiers;
   if (merchandisingOfferIdentifiers)
   {
-    v31 = [(NSSet *)merchandisingOfferIdentifiers allObjects];
-    [v12 setObject:v31 forKeyedSubscript:@"merchandisingOfferIdentifiers"];
+    allObjects = [(NSSet *)merchandisingOfferIdentifiers allObjects];
+    [v12 setObject:allObjects forKeyedSubscript:@"merchandisingOfferIdentifiers"];
   }
 
   challenge = self->_challenge;
@@ -203,8 +203,8 @@ LABEL_57:
     [v12 setObject:challenge forKeyedSubscript:@"challenge"];
   }
 
-  v33 = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
-  [v12 safelySetObject:v33 forKey:@"deviceMetadata"];
+  dictionaryRepresentation = [(PKPaymentDeviceMetadata *)self->_deviceMetadata dictionaryRepresentation];
+  [v12 safelySetObject:dictionaryRepresentation forKey:@"deviceMetadata"];
 
   if (self->_handoff)
   {
@@ -222,15 +222,15 @@ LABEL_57:
   transactionDetails = self->_transactionDetails;
   if (transactionDetails)
   {
-    v38 = [(PKPaymentOffersSessionTransactionDetails *)transactionDetails dictionaryRepresentation];
-    [v12 setObject:v38 forKeyedSubscript:@"transactionDetails"];
+    dictionaryRepresentation2 = [(PKPaymentOffersSessionTransactionDetails *)transactionDetails dictionaryRepresentation];
+    [v12 setObject:dictionaryRepresentation2 forKeyedSubscript:@"transactionDetails"];
   }
 
   userEnteredAmount = self->_userEnteredAmount;
   if (userEnteredAmount)
   {
-    v40 = [(PKCurrencyAmount *)userEnteredAmount dictionaryRepresentation];
-    [v12 setObject:v40 forKeyedSubscript:@"userEnteredAmount"];
+    dictionaryRepresentation3 = [(PKCurrencyAmount *)userEnteredAmount dictionaryRepresentation];
+    [v12 setObject:dictionaryRepresentation3 forKeyedSubscript:@"userEnteredAmount"];
   }
 
   v41 = PKPaymentOffersControllerUpdateReasonToString(self->_updateReason);

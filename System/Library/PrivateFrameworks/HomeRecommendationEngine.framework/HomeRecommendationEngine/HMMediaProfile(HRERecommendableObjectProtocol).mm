@@ -11,10 +11,10 @@
 
 - (id)hre_parentRoom
 {
-  v1 = [a1 accessory];
-  v2 = [v1 room];
+  accessory = [self accessory];
+  room = [accessory room];
 
-  return v2;
+  return room;
 }
 
 - (id)hre_primaryType
@@ -35,7 +35,7 @@
   v3[1] = 3221225472;
   v3[2] = __67__HMMediaProfile_HRERecommendableObjectProtocol__hre_matchingTypes__block_invoke;
   v3[3] = &unk_279776290;
-  v3[4] = a1;
+  v3[4] = self;
   v1 = __67__HMMediaProfile_HRERecommendableObjectProtocol__hre_matchingTypes__block_invoke(v3);
 
   return v1;
@@ -56,18 +56,18 @@
 - (uint64_t)hre_isActionable
 {
   v2 = objc_alloc_init(MEMORY[0x277D148D0]);
-  v3 = [objc_alloc(MEMORY[0x277D147E8]) initWithValueSource:v2 mediaProfileContainer:a1];
-  v4 = [v3 containsActions];
+  v3 = [objc_alloc(MEMORY[0x277D147E8]) initWithValueSource:v2 mediaProfileContainer:self];
+  containsActions = [v3 containsActions];
 
-  return v4;
+  return containsActions;
 }
 
 - (uint64_t)hre_isVisible
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hre_isVisible];
+  accessory = [self accessory];
+  hre_isVisible = [accessory hre_isVisible];
 
-  return v2;
+  return hre_isVisible;
 }
 
 @end

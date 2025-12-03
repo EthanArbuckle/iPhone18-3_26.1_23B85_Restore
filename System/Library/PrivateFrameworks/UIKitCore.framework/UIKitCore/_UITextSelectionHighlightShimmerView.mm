@@ -1,26 +1,26 @@
 @interface _UITextSelectionHighlightShimmerView
-- (_UITextSelectionHighlightShimmerView)initWithFrame:(CGRect)a3 effect:(id)a4;
+- (_UITextSelectionHighlightShimmerView)initWithFrame:(CGRect)frame effect:(id)effect;
 - (void)layoutSubviews;
-- (void)setSelectionRects:(id)a3;
+- (void)setSelectionRects:(id)rects;
 @end
 
 @implementation _UITextSelectionHighlightShimmerView
 
-- (_UITextSelectionHighlightShimmerView)initWithFrame:(CGRect)a3 effect:(id)a4
+- (_UITextSelectionHighlightShimmerView)initWithFrame:(CGRect)frame effect:(id)effect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  effectCopy = effect;
   v24.receiver = self;
   v24.super_class = _UITextSelectionHighlightShimmerView;
-  v10 = [(UIView *)&v24 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(UIView *)&v24 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(UIView *)v10 setUserInteractionEnabled:0];
-    if (!v9)
+    [(UIView *)height setUserInteractionEnabled:0];
+    if (!effectCopy)
     {
       v12 = [_UIDirectionalLightConfiguration alloc];
       v13 = +[_UIColorPalette textAssistantPonderingFillPalette];
@@ -29,15 +29,15 @@
       [(_UIDirectionalLightConfiguration *)v14 setDirection:2];
       [(_UIDirectionalLightConfiguration *)v14 setDuration:3.0];
       v15 = [_UIIntelligenceLightSourceDescriptor directionalLightWithConfiguration:v14];
-      v9 = [[_UIIntelligenceContentLightEffect alloc] initWithLightSource:v15];
+      effectCopy = [[_UIIntelligenceContentLightEffect alloc] initWithLightSource:v15];
     }
 
-    v16 = [[UIVisualEffectView alloc] initWithEffect:v9];
+    v16 = [[UIVisualEffectView alloc] initWithEffect:effectCopy];
     shimmerView = v11->_shimmerView;
     v11->_shimmerView = v16;
 
-    v18 = [(UIView *)v11->_shimmerView layer];
-    [v18 setAllowsGroupOpacity:1];
+    layer = [(UIView *)v11->_shimmerView layer];
+    [layer setAllowsGroupOpacity:1];
 
     [(UIView *)v11 insertSubview:v11->_shimmerView atIndex:0];
     v19 = [_UITextSelectionRangeView alloc];
@@ -45,19 +45,19 @@
     rangeView = v11->_rangeView;
     v11->_rangeView = v20;
 
-    v22 = [(UIVisualEffectView *)v11->_shimmerView contentView];
-    [v22 addSubview:v11->_rangeView];
+    contentView = [(UIVisualEffectView *)v11->_shimmerView contentView];
+    [contentView addSubview:v11->_rangeView];
   }
 
   return v11;
 }
 
-- (void)setSelectionRects:(id)a3
+- (void)setSelectionRects:(id)rects
 {
-  v5 = a3;
+  rectsCopy = rects;
   if (![(NSArray *)self->_selectionRects isEqualToArray:?])
   {
-    objc_storeStrong(&self->_selectionRects, a3);
+    objc_storeStrong(&self->_selectionRects, rects);
     [(UIView *)self setNeedsLayout];
   }
 }
@@ -99,8 +99,8 @@
     while (v6);
   }
 
-  v9 = [(UIView *)self tintColor];
-  [(_UITextSelectionRangeView *)self->_rangeView setSelectionColor:v9];
+  tintColor = [(UIView *)self tintColor];
+  [(_UITextSelectionRangeView *)self->_rangeView setSelectionColor:tintColor];
 
   [(UIView *)self bounds];
   [(UIView *)self->_shimmerView setFrame:?];

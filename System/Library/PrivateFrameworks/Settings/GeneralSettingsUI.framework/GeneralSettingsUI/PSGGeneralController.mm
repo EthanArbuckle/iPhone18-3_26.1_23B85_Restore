@@ -1,36 +1,36 @@
 @interface PSGGeneralController
 + (id)BOOLeanCapabilitiesToTest;
 - (BOOL)_hasCarPlayContent;
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3;
+- (BOOL)shouldDeferPushForSpecifierID:(id)d;
 - (PSGGeneralController)init;
-- (id)EDGEEnabled:(id)a3;
+- (id)EDGEEnabled:(id)enabled;
 - (id)_createTVProviderSpecifiersIfNeeded;
-- (id)atlasSpecifierForDialog:(id)a3;
-- (id)sortDateTimeGroupIdentifiers:(id)a3;
-- (id)sortDateTimeGroupWithSpecifiers:(id)a3;
+- (id)atlasSpecifierForDialog:(id)dialog;
+- (id)sortDateTimeGroupIdentifiers:(id)identifiers;
+- (id)sortDateTimeGroupWithSpecifiers:(id)specifiers;
 - (id)specifiers;
 - (void)_updateInteractivityForTVProviderIfNeeded;
 - (void)dealloc;
 - (void)delayedAsyncLoadSpecifiers;
-- (void)enableEdge:(id)a3;
+- (void)enableEdge:(id)edge;
 - (void)handleScrollPPTTestName;
-- (void)homeButtonCustomizeControllerDidFinish:(id)a3;
-- (void)launchHasCompleted:(id)a3;
-- (void)loadAtlas:(id)a3;
-- (void)loadHomeButtonSettings:(id)a3;
+- (void)homeButtonCustomizeControllerDidFinish:(id)finish;
+- (void)launchHasCompleted:(id)completed;
+- (void)loadAtlas:(id)atlas;
+- (void)loadHomeButtonSettings:(id)settings;
 - (void)pairedVehiclesDidChange;
 - (void)pointerDevicesDidChange;
-- (void)profileNotification:(id)a3;
-- (void)reloadAsyncSpecifiersWithCompletion:(id)a3;
+- (void)profileNotification:(id)notification;
+- (void)reloadAsyncSpecifiersWithCompletion:(id)completion;
 - (void)reloadSpecifiers;
-- (void)setPptRelay:(id)a3;
-- (void)setSpecifier:(id)a3;
-- (void)updateAtlasFromCache:(id)a3;
-- (void)updateAtlasWithCompletion:(id)a3;
-- (void)updateMatterWithCompletion:(id)a3;
+- (void)setPptRelay:(id)relay;
+- (void)setSpecifier:(id)specifier;
+- (void)updateAtlasFromCache:(id)cache;
+- (void)updateAtlasWithCompletion:(id)completion;
+- (void)updateMatterWithCompletion:(id)completion;
 - (void)updateSoftwareUpdateBadge;
-- (void)updateTVProviderWithCompletion:(id)a3;
-- (void)updateTrackpadWithCompletion:(id)a3;
+- (void)updateTVProviderWithCompletion:(id)completion;
+- (void)updateTrackpadWithCompletion:(id)completion;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -116,10 +116,10 @@ void __62__PSGGeneralController_insertOrderedSpecifiers_atID_animated___block_in
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3
+- (BOOL)shouldDeferPushForSpecifierID:(id)d
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v20[0] = @"POINTERS";
   v20[1] = @"MATTER_ACCESSORIES";
   v20[2] = @"TV_PROVIDER";
@@ -143,7 +143,7 @@ void __62__PSGGeneralController_insertOrderedSpecifiers_atID_animated___block_in
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        if ([v4 isEqualToString:{v10, v15}])
+        if ([dCopy isEqualToString:{v10, v15}])
         {
           v11 = [(PSGGeneralController *)self specifierForID:v10];
 
@@ -172,10 +172,10 @@ LABEL_12:
   return v12;
 }
 
-- (void)reloadAsyncSpecifiersWithCompletion:(id)a3
+- (void)reloadAsyncSpecifiersWithCompletion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   [(PSGGeneralController *)self setSpecifiersHaveLoaded:1];
   v5 = _PSGSignpostLoggingFacility();
   v6 = os_signpost_id_make_with_pointer(v5, "PSGGeneralController.reloadAsyncSpecifiersWithCompletion");
@@ -185,7 +185,7 @@ LABEL_12:
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     *buf = 138543618;
-    v39 = self;
+    selfCopy = self;
     v40 = 2082;
     v41 = "[PSGGeneralController reloadAsyncSpecifiersWithCompletion:]";
     _os_signpost_emit_with_name_impl(&dword_21CF20000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "PSGGeneralController.reloadAsyncSpecifiersWithCompletion", "%{public}@: %{public}s", buf, 0x16u);
@@ -195,7 +195,7 @@ LABEL_12:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
-    v39 = "[PSGGeneralController reloadAsyncSpecifiersWithCompletion:]";
+    selfCopy = "[PSGGeneralController reloadAsyncSpecifiersWithCompletion:]";
     _os_log_impl(&dword_21CF20000, v9, OS_LOG_TYPE_DEFAULT, "%{public}s: async reload started.", buf, 0xCu);
   }
 
@@ -250,28 +250,28 @@ LABEL_12:
   block[2] = __60__PSGGeneralController_reloadAsyncSpecifiersWithCompletion___block_invoke_261;
   block[3] = &unk_278325708;
   v25 = v6;
-  v12 = v4;
+  v12 = completionCopy;
   v24 = v12;
   dispatch_group_notify(v11, MEMORY[0x277D85CD0], block);
-  v13 = [(PSGGeneralController *)self followUpModel];
-  v14 = v13 == 0;
+  followUpModel = [(PSGGeneralController *)self followUpModel];
+  v14 = followUpModel == 0;
 
   if (v14)
   {
     v15 = objc_alloc(MEMORY[0x277CFE538]);
-    v16 = [(PSGGeneralController *)self bundle];
-    v17 = [v16 bundleIdentifier];
-    v18 = [v15 initWithBundleIdentifier:v17 clientIdentifier:0];
+    bundle = [(PSGGeneralController *)self bundle];
+    bundleIdentifier = [bundle bundleIdentifier];
+    v18 = [v15 initWithBundleIdentifier:bundleIdentifier clientIdentifier:0];
     [(PSGGeneralController *)self setFollowUpModel:v18];
 
     objc_initWeak(buf, self);
-    v19 = [(PSGGeneralController *)self followUpModel];
+    followUpModel2 = [(PSGGeneralController *)self followUpModel];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __60__PSGGeneralController_reloadAsyncSpecifiersWithCompletion___block_invoke_263;
     v21[3] = &unk_278325730;
     objc_copyWeak(&v22, buf);
-    [v19 setItemChangeHandler:v21];
+    [followUpModel2 setItemChangeHandler:v21];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(buf);
@@ -416,19 +416,19 @@ void __60__PSGGeneralController_reloadAsyncSpecifiersWithCompletion___block_invo
   [WeakRetained updateSoftwareUpdateBadge];
 }
 
-- (void)updateTVProviderWithCompletion:(id)a3
+- (void)updateTVProviderWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(PSGGeneralController *)self loadingQueue];
+  loadingQueue = [(PSGGeneralController *)self loadingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__PSGGeneralController_updateTVProviderWithCompletion___block_invoke;
   block[3] = &unk_2783257D0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(loadingQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -548,11 +548,11 @@ void __55__PSGGeneralController_updateTVProviderWithCompletion___block_invoke_5(
   if (v3)
   {
     v17 = [(PSGGeneralController *)self specifierForID:@"TV_PROVIDER"];
-    v4 = [MEMORY[0x277D262A0] sharedConnection];
-    v5 = [v4 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    v5 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]];
 
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    v7 = [v6 effectiveBoolValueForSetting:*MEMORY[0x277D26078]];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    v7 = [mEMORY[0x277D262A0]2 effectiveBoolValueForSetting:*MEMORY[0x277D26078]];
 
     v9 = v5 == 1 && v7 == 1;
     objc_opt_class();
@@ -575,9 +575,9 @@ void __55__PSGGeneralController_updateTVProviderWithCompletion___block_invoke_5(
       v13 = MEMORY[0x277CBEC38];
     }
 
-    v15 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
-    if (v9 != v15)
+    if (v9 != bOOLValue)
     {
       v16 = [MEMORY[0x277CCABB0] numberWithBool:v9];
       [v17 setObject:v16 forKeyedSubscript:v10];
@@ -587,19 +587,19 @@ void __55__PSGGeneralController_updateTVProviderWithCompletion___block_invoke_5(
   }
 }
 
-- (void)updateAtlasWithCompletion:(id)a3
+- (void)updateAtlasWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(PSGGeneralController *)self loadingQueue];
+  loadingQueue = [(PSGGeneralController *)self loadingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__PSGGeneralController_updateAtlasWithCompletion___block_invoke;
   block[3] = &unk_278325848;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   objc_copyWeak(&v9, &location);
-  dispatch_async(v5, block);
+  dispatch_async(loadingQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -696,19 +696,19 @@ void __50__PSGGeneralController_updateAtlasWithCompletion___block_invoke_3(uint6
   }
 }
 
-- (void)updateMatterWithCompletion:(id)a3
+- (void)updateMatterWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(PSGGeneralController *)self loadingQueue];
+  loadingQueue = [(PSGGeneralController *)self loadingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__PSGGeneralController_updateMatterWithCompletion___block_invoke;
   block[3] = &unk_2783257D0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(loadingQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -834,19 +834,19 @@ LABEL_19:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateTrackpadWithCompletion:(id)a3
+- (void)updateTrackpadWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v5 = [(PSGGeneralController *)self loadingQueue];
+  loadingQueue = [(PSGGeneralController *)self loadingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__PSGGeneralController_updateTrackpadWithCompletion___block_invoke;
   block[3] = &unk_2783257D0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(loadingQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -934,21 +934,21 @@ uint64_t __53__PSGGeneralController_updateTrackpadWithCompletion___block_invoke_
   return result;
 }
 
-- (id)sortDateTimeGroupIdentifiers:(id)a3
+- (id)sortDateTimeGroupIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 indexOfObject:@"DATE_AND_TIME_GROUP"];
-  v6 = [v3 indexOfObject:@"TV_PROVIDER_GROUP"];
+  identifiersCopy = identifiers;
+  v4 = [identifiersCopy mutableCopy];
+  v5 = [identifiersCopy indexOfObject:@"DATE_AND_TIME_GROUP"];
+  v6 = [identifiersCopy indexOfObject:@"TV_PROVIDER_GROUP"];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL || v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = v3;
+    v12 = identifiersCopy;
   }
 
   else
   {
     v8 = v5 + 1;
-    v9 = [v3 subarrayWithRange:{v5 + 1, v6 - (v5 + 1)}];
+    v9 = [identifiersCopy subarrayWithRange:{v5 + 1, v6 - (v5 + 1)}];
     v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_8];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -974,16 +974,16 @@ uint64_t __53__PSGGeneralController_sortDateTimeGroupIdentifiers___block_invoke(
   return v7;
 }
 
-- (id)sortDateTimeGroupWithSpecifiers:(id)a3
+- (id)sortDateTimeGroupWithSpecifiers:(id)specifiers
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 indexOfSpecifierWithID:@"DATE_AND_TIME_GROUP"];
-  v6 = [v3 indexOfNextGroupStartingAtIndex:v5];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy mutableCopy];
+  v5 = [specifiersCopy indexOfSpecifierWithID:@"DATE_AND_TIME_GROUP"];
+  v6 = [specifiersCopy indexOfNextGroupStartingAtIndex:v5];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL && v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v5 + 1;
-    v9 = [v3 subarrayWithRange:{v8, v6 - v8}];
+    v9 = [specifiersCopy subarrayWithRange:{v8, v6 - v8}];
     v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_299];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
@@ -1015,7 +1015,7 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
 - (void)reloadSpecifiers
 {
   v8 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   OUTLINED_FUNCTION_0_0();
   OUTLINED_FUNCTION_1_0(&dword_21CF20000, v1, v2, "%{public}s: called before -specifiers has completed. Don't call -reloadSpecifiers while controller is loading: %{public}@", v3, v4, v5, v6, 2u);
 
@@ -1047,12 +1047,12 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
     goto LABEL_77;
   }
 
-  v119 = [(PSGGeneralController *)self bundle];
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  [v5 sf_isInternalInstall];
+  bundle = [(PSGGeneralController *)self bundle];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  [currentDevice sf_isInternalInstall];
 
   v6 = objc_alloc(MEMORY[0x277CBEB38]);
-  v7 = [v119 pathForResource:@"General" ofType:@"plist"];
+  v7 = [bundle pathForResource:@"General" ofType:@"plist"];
   v8 = [v6 initWithContentsOfFile:v7];
 
   v128 = 0;
@@ -1078,10 +1078,10 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
     [v14 removeObject:v17];
   }
 
-  v18 = [(PSGGeneralController *)self traitCollection];
-  v19 = [v18 pe_isSettingsFeatureDescriptionCellSupported];
+  traitCollection = [(PSGGeneralController *)self traitCollection];
+  pe_isSettingsFeatureDescriptionCellSupported = [traitCollection pe_isSettingsFeatureDescriptionCellSupported];
 
-  if ((v19 & 1) == 0)
+  if ((pe_isSettingsFeatureDescriptionCellSupported & 1) == 0)
   {
     v20 = [v14 specifierForID:@"PLACARD_GROUP"];
     [v14 removeObject:v20];
@@ -1089,8 +1089,8 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
     [v14 removeObject:v21];
   }
 
-  v22 = [(PSGGeneralController *)self gameControllersSpecifier];
-  v23 = v22 == 0;
+  gameControllersSpecifier = [(PSGGeneralController *)self gameControllersSpecifier];
+  v23 = gameControllersSpecifier == 0;
 
   if (v23)
   {
@@ -1098,9 +1098,9 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
     [(PSGGeneralController *)self setGameControllersSpecifier:v24];
 
     v25 = PSBundlePathForPreferenceBundle();
-    v26 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v28 = v27 = v25;
-    LOBYTE(v24) = [v26 fileExistsAtPath:v28];
+    LOBYTE(v24) = [defaultManager fileExistsAtPath:v28];
 
     if ((v24 & 1) == 0)
     {
@@ -1110,22 +1110,22 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
     }
 
     v31 = v30 = v25;
-    v32 = [(PSGGeneralController *)self gameControllersSpecifier];
-    [v32 setObject:v31 forKeyedSubscript:*MEMORY[0x277D40000]];
+    gameControllersSpecifier2 = [(PSGGeneralController *)self gameControllersSpecifier];
+    [gameControllersSpecifier2 setObject:v31 forKeyedSubscript:*MEMORY[0x277D40000]];
   }
 
-  v33 = [(PSGGeneralController *)self _gameControllerDefaults];
-  v34 = [v33 BOOLForKey:@"showGCPrefsPane"];
+  _gameControllerDefaults = [(PSGGeneralController *)self _gameControllerDefaults];
+  v34 = [_gameControllerDefaults BOOLForKey:@"showGCPrefsPane"];
 
   if ((v34 & 1) == 0)
   {
-    v35 = [(PSGGeneralController *)self gameControllersSpecifier];
-    v36 = v35 == 0;
+    gameControllersSpecifier3 = [(PSGGeneralController *)self gameControllersSpecifier];
+    v36 = gameControllersSpecifier3 == 0;
 
     if (!v36)
     {
-      v37 = [(PSGGeneralController *)self gameControllersSpecifier];
-      [v14 removeObject:v37];
+      gameControllersSpecifier4 = [(PSGGeneralController *)self gameControllersSpecifier];
+      [v14 removeObject:gameControllersSpecifier4];
     }
   }
 
@@ -1139,16 +1139,16 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
   airDropSpecifier = self->_airDropSpecifier;
   self->_airDropSpecifier = v39;
 
-  v41 = [MEMORY[0x277D262A0] sharedConnection];
-  v42 = [v41 isAirDropAllowed];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isAirDropAllowed = [mEMORY[0x277D262A0] isAirDropAllowed];
 
-  if ((v42 & 1) == 0)
+  if ((isAirDropAllowed & 1) == 0)
   {
     [v14 removeObject:self->_airDropSpecifier];
   }
 
-  v43 = [(PSGGeneralController *)self carPreferences];
-  v44 = v43 == 0;
+  carPreferences = [(PSGGeneralController *)self carPreferences];
+  v44 = carPreferences == 0;
 
   if (v44)
   {
@@ -1173,8 +1173,8 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
     v47 = objc_alloc_init(v45);
     [v47 setPreferencesDelegate:self];
     [(PSGGeneralController *)self setCarPreferences:v47];
-    v48 = [MEMORY[0x277CCA9A0] defaultCenter];
-    [v48 addObserver:self selector:sel_pairedVehiclesDidChange name:@"CRPairedVehiclesDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_pairedVehiclesDidChange name:@"CRPairedVehiclesDidChangeNotification" object:0];
   }
 
   if (![(PSGGeneralController *)self _hasCarPlayContent])
@@ -1184,15 +1184,15 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
   }
 
   v50 = [v14 specifierForID:@"SOFTWARE_UPDATE_LINK"];
-  v51 = [(PSGGeneralController *)self loadingQueue];
+  loadingQueue = [(PSGGeneralController *)self loadingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__PSGGeneralController_specifiers__block_invoke;
   block[3] = &unk_278324FE8;
   v116 = v50;
   v125 = v116;
-  v126 = self;
-  dispatch_async(v51, block);
+  selfCopy = self;
+  dispatch_async(loadingQueue, block);
 
   [(PSGGeneralController *)self updateSoftwareUpdateBadge];
   if (_os_feature_enabled_impl() && (PSIsInEDUMode() & 1) == 0)
@@ -1296,8 +1296,8 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
   v79 = PSG_LocalizedStringForGeneral(@"TRANSFER_OR_RESET_TITLE");
   [v78 setName:v79];
 
-  v80 = [MEMORY[0x277D75418] currentDevice];
-  if ([v80 userInterfaceIdiom])
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  if ([currentDevice2 userInterfaceIdiom])
   {
     v81 = @"com.apple.graphic-icon.transfer-or-reset-ipad";
   }
@@ -1312,13 +1312,13 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
   v82 = [v14 specifierForID:@"MATTER_ACCESSORIES"];
   [(PSGGeneralController *)self setMatterSpecifier:v82];
 
-  v83 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v84 = [v83 BOOLForKey:@"PSGShouldShowMatter"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v84 = [standardUserDefaults BOOLForKey:@"PSGShouldShowMatter"];
 
   if ((v84 & 1) == 0)
   {
-    v85 = [(PSGGeneralController *)self matterSpecifier];
-    [v14 removeObject:v85];
+    matterSpecifier = [(PSGGeneralController *)self matterSpecifier];
+    [v14 removeObject:matterSpecifier];
   }
 
   if (objc_opt_class() && ([MEMORY[0x277D493B0] isDefaultContactlessAppConfigurationEligible] & 1) == 0)
@@ -1364,25 +1364,25 @@ uint64_t __56__PSGGeneralController_sortDateTimeGroupWithSpecifiers___block_invo
     [v14 removeObject:v93];
   }
 
-  v94 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  if ([v94 applicationIsInstalled:@"com.apple.Health"])
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  if ([defaultWorkspace applicationIsInstalled:@"com.apple.Health"])
   {
-    v95 = [MEMORY[0x277D262A0] sharedConnection];
-    v96 = [v95 restrictedAppBundleIDs];
-    v97 = [v96 containsObject:@"com.apple.Health"];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    restrictedAppBundleIDs = [mEMORY[0x277D262A0]2 restrictedAppBundleIDs];
+    v97 = [restrictedAppBundleIDs containsObject:@"com.apple.Health"];
 
     if (v97)
     {
       goto LABEL_58;
     }
 
-    v94 = [v14 specifierForID:@"HEALTH_DATA"];
-    [v14 removeObject:v94];
+    defaultWorkspace = [v14 specifierForID:@"HEALTH_DATA"];
+    [v14 removeObject:defaultWorkspace];
   }
 
 LABEL_58:
-  v98 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v99 = [v98 applicationIsInstalled:@"com.apple.mobileslideshow"];
+  defaultWorkspace2 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v99 = [defaultWorkspace2 applicationIsInstalled:@"com.apple.mobileslideshow"];
 
   if (v99)
   {
@@ -1390,8 +1390,8 @@ LABEL_58:
     [v14 removeObject:v100];
   }
 
-  v101 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  v102 = [v101 applicationIsInstalled:@"com.apple.mobilesafari"];
+  defaultWorkspace3 = [MEMORY[0x277CC1E80] defaultWorkspace];
+  v102 = [defaultWorkspace3 applicationIsInstalled:@"com.apple.mobilesafari"];
 
   if (v102)
   {
@@ -1525,11 +1525,11 @@ uint64_t __34__PSGGeneralController_specifiers__block_invoke_2_403()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)updateAtlasFromCache:(id)a3
+- (void)updateAtlasFromCache:(id)cache
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v6 = [v5 dataForKey:@"AMSPreloadedAtlasDialog"];
+  cacheCopy = cache;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v6 = [standardUserDefaults dataForKey:@"AMSPreloadedAtlasDialog"];
 
   if (v6)
   {
@@ -1538,20 +1538,20 @@ uint64_t __34__PSGGeneralController_specifiers__block_invoke_2_403()
     if (v7)
     {
       v8 = [(PSGGeneralController *)self atlasSpecifierForDialog:v7];
-      [v4 insertObject:v8 atIndex:{objc_msgSend(v4, "indexOfSpecifierWithID:", @"STORAGE_MGMT"}];
+      [cacheCopy insertObject:v8 atIndex:{objc_msgSend(cacheCopy, "indexOfSpecifierWithID:", @"STORAGE_MGMT"}];
     }
   }
 }
 
-- (id)atlasSpecifierForDialog:(id)a3
+- (id)atlasSpecifierForDialog:(id)dialog
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 title], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
+  dialogCopy = dialog;
+  v5 = dialogCopy;
+  if (dialogCopy && ([dialogCopy title], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
   {
     v8 = MEMORY[0x277D3FAD8];
-    v9 = [v5 title];
-    v10 = [v8 preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:0 cell:1 edit:0];
+    title = [v5 title];
+    v10 = [v8 preferenceSpecifierNamed:title target:self set:0 get:0 detail:0 cell:1 edit:0];
 
     [v10 setButtonAction:sel_loadAtlas_];
     [v10 setUserInfo:v5];
@@ -1560,22 +1560,22 @@ uint64_t __34__PSGGeneralController_specifiers__block_invoke_2_403()
     [v10 setProperty:*MEMORY[0x277CBED28] forKey:*MEMORY[0x277D3FF38]];
     [v10 setProperty:v11 forKey:*MEMORY[0x277D40020]];
     [v10 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
-    v12 = [v5 appearanceInfo];
-    v13 = [v12 objectForKeyedSubscript:@"IconUTTypeIdentifier"];
+    appearanceInfo = [v5 appearanceInfo];
+    v13 = [appearanceInfo objectForKeyedSubscript:@"IconUTTypeIdentifier"];
 
     if (v13 && [v13 length])
     {
       [v10 setProperty:v13 forKey:*MEMORY[0x277D3FFD8]];
     }
 
-    v14 = [v5 iconURL];
-    v15 = [v14 absoluteString];
+    iconURL = [v5 iconURL];
+    absoluteString = [iconURL absoluteString];
 
-    if (v15 && [v15 length])
+    if (absoluteString && [absoluteString length])
     {
-      v16 = [v5 iconURL];
-      v17 = [v16 absoluteString];
-      [v10 setProperty:v17 forKey:*MEMORY[0x277D40030]];
+      iconURL2 = [v5 iconURL];
+      absoluteString2 = [iconURL2 absoluteString];
+      [v10 setProperty:absoluteString2 forKey:*MEMORY[0x277D40030]];
     }
   }
 
@@ -1587,24 +1587,24 @@ uint64_t __34__PSGGeneralController_specifiers__block_invoke_2_403()
   return v10;
 }
 
-- (void)loadAtlas:(id)a3
+- (void)loadAtlas:(id)atlas
 {
   v21[6] = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
+  userInfo = [atlas userInfo];
   v5 = [MEMORY[0x277CEE3F8] bagForProfile:@"Settings" profileVersion:@"1"];
-  v6 = [v4 defaultAction];
-  v7 = [v6 deepLink];
+  defaultAction = [userInfo defaultAction];
+  deepLink = [defaultAction deepLink];
 
-  if (v7)
+  if (deepLink)
   {
     v8 = [objc_alloc(MEMORY[0x277CEE940]) initWithBag:v5 account:0 clientInfo:0];
-    v9 = [v8 loadURL:v7];
+    v9 = [v8 loadURL:deepLink];
     [(PSGGeneralController *)self showController:v8 animate:1];
     v10 = [objc_alloc(MEMORY[0x277CEE498]) initWithBag:v5];
     v20[0] = @"app";
-    v11 = [(PSGGeneralController *)self bundle];
-    v12 = [v11 bundleIdentifier];
-    v21[0] = v12;
+    bundle = [(PSGGeneralController *)self bundle];
+    bundleIdentifier = [bundle bundleIdentifier];
+    v21[0] = bundleIdentifier;
     v21[1] = @"MessageResult";
     v20[1] = @"eventType";
     v20[2] = @"serviceType";
@@ -1615,8 +1615,8 @@ uint64_t __34__PSGGeneralController_specifiers__block_invoke_2_403()
     v21[4] = MEMORY[0x277CBEC38];
     v20[5] = @"result";
     v18 = @"url";
-    v13 = [v7 absoluteString];
-    v19 = v13;
+    absoluteString = [deepLink absoluteString];
+    v19 = absoluteString;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v21[5] = v14;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:6];
@@ -1626,9 +1626,9 @@ uint64_t __34__PSGGeneralController_specifiers__block_invoke_2_403()
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)loadHomeButtonSettings:(id)a3
+- (void)loadHomeButtonSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   v5 = objc_opt_new();
   [v5 setDelegate:self];
   v6 = [objc_alloc(MEMORY[0x277D3FAB8]) initWithRootViewController:v5];
@@ -1652,32 +1652,32 @@ uint64_t __34__PSGGeneralController_specifiers__block_invoke_2_403()
 
   v8 = v7;
   _Block_object_dispose(&v11, 8);
-  v9 = [v7 sharedStyle];
-  [v9 applyThemeToNavigationController:v6];
+  sharedStyle = [v7 sharedStyle];
+  [sharedStyle applyThemeToNavigationController:v6];
 
   [v5 setUsesDoneButton:1];
   [(PSGGeneralController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)homeButtonCustomizeControllerDidFinish:(id)a3
+- (void)homeButtonCustomizeControllerDidFinish:(id)finish
 {
-  v11 = a3;
-  v4 = [(PSGGeneralController *)self presentedViewController];
+  finishCopy = finish;
+  presentedViewController = [(PSGGeneralController *)self presentedViewController];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (-[PSGGeneralController presentedViewController](self, "presentedViewController"), v5 = objc_claimAutoreleasedReturnValue(), [v5 topViewController], v6 = objc_claimAutoreleasedReturnValue(), v6 != v11))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (-[PSGGeneralController presentedViewController](self, "presentedViewController"), v5 = objc_claimAutoreleasedReturnValue(), [v5 topViewController], v6 = objc_claimAutoreleasedReturnValue(), v6 != finishCopy))
   {
     [PSGGeneralController homeButtonCustomizeControllerDidFinish:];
   }
 
-  v7 = [(PSGGeneralController *)self presentedViewController];
+  presentedViewController2 = [(PSGGeneralController *)self presentedViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(PSGGeneralController *)self presentedViewController];
-    v9 = [v8 topViewController];
+    presentedViewController3 = [(PSGGeneralController *)self presentedViewController];
+    topViewController = [presentedViewController3 topViewController];
 
-    v10 = v11;
-    if (v9 != v11)
+    v10 = finishCopy;
+    if (topViewController != finishCopy)
     {
       goto LABEL_8;
     }
@@ -1689,24 +1689,24 @@ uint64_t __34__PSGGeneralController_specifiers__block_invoke_2_403()
   {
   }
 
-  v10 = v11;
+  v10 = finishCopy;
 LABEL_8:
 }
 
 - (BOOL)_hasCarPlayContent
 {
-  v3 = [(PSGGeneralController *)self carPreferences];
-  v4 = [v3 isCarPlayAllowed];
+  carPreferences = [(PSGGeneralController *)self carPreferences];
+  isCarPlayAllowed = [carPreferences isCarPlayAllowed];
 
-  if (!v4)
+  if (!isCarPlayAllowed)
   {
     return 0;
   }
 
-  v5 = [(PSGGeneralController *)self carPreferences];
-  v6 = [v5 isWirelessCarPlayEnabled];
+  carPreferences2 = [(PSGGeneralController *)self carPreferences];
+  isWirelessCarPlayEnabled = [carPreferences2 isWirelessCarPlayEnabled];
 
-  if (v6)
+  if (isWirelessCarPlayEnabled)
   {
     return 1;
   }
@@ -1730,30 +1730,30 @@ LABEL_8:
   v9 = v8;
   _Block_object_dispose(&v14, 8);
   v10 = objc_alloc_init(v8);
-  v11 = [v10 allVehicles];
-  v7 = [v11 count] != 0;
+  allVehicles = [v10 allVehicles];
+  v7 = [allVehicles count] != 0;
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [(PSGGeneralController *)self _gameControllerDefaultsObservationToken];
-  [(PSGGeneralController *)self na_removeNotificationBlockObserver:v3];
+  _gameControllerDefaultsObservationToken = [(PSGGeneralController *)self _gameControllerDefaultsObservationToken];
+  [(PSGGeneralController *)self na_removeNotificationBlockObserver:_gameControllerDefaultsObservationToken];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"com.apple.iapd.videoout.SettingsChanged", 0);
-  v6 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v6 removeObserver:self];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 removeObserver:self];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x277D25CA0] object:0];
 
-  v8 = [(PSGGeneralController *)self carPreferences];
-  [v8 setPreferencesDelegate:0];
+  carPreferences = [(PSGGeneralController *)self carPreferences];
+  [carPreferences setPreferencesDelegate:0];
 
   [(PSGGeneralController *)self setCarPreferences:0];
   v9.receiver = self;
@@ -1761,16 +1761,16 @@ LABEL_8:
   [(PSGGeneralController *)&v9 dealloc];
 }
 
-- (void)profileNotification:(id)a3
+- (void)profileNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__PSGGeneralController_profileNotification___block_invoke;
   v6[3] = &unk_278324FE8;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = notificationCopy;
+  selfCopy = self;
+  v5 = notificationCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1802,18 +1802,18 @@ void __44__PSGGeneralController_profileNotification___block_invoke(uint64_t a1)
     gameControllerDefaults = v2->__gameControllerDefaults;
     v2->__gameControllerDefaults = v5;
 
-    v7 = [(PSGGeneralController *)v2 _gameControllerDefaults];
-    v8 = [(PSGGeneralController *)v2 na_addNotificationBlockObserverForObject:v7 keyPath:@"showGCPrefsPane" options:1 usingBlock:&__block_literal_global_458];
+    _gameControllerDefaults = [(PSGGeneralController *)v2 _gameControllerDefaults];
+    v8 = [(PSGGeneralController *)v2 na_addNotificationBlockObserverForObject:_gameControllerDefaults keyPath:@"showGCPrefsPane" options:1 usingBlock:&__block_literal_global_458];
     gameControllerDefaultsObservationToken = v2->__gameControllerDefaultsObservationToken;
     v2->__gameControllerDefaultsObservationToken = v8;
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionRestrictionChangedNotification" object:0];
-    [v10 addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
-    [v10 addObserver:v2 selector:sel_handleTVProviderStateDidChangeNotifications_ name:*MEMORY[0x277CE2478] object:0];
-    [v10 addObserver:v2 selector:sel_handleTVProviderStateDidChangeNotifications_ name:*MEMORY[0x277CE2440] object:0];
-    [v10 addObserver:v2 selector:sel_launchHasCompleted_ name:*MEMORY[0x277D3FFF8] object:0];
-    [v10 addObserver:v2 selector:sel_pointerDevicesDidChange name:PSGPointerDevicesDidChangeNotification object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionRestrictionChangedNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel_handleTVProviderStateDidChangeNotifications_ name:*MEMORY[0x277CE2478] object:0];
+    [defaultCenter addObserver:v2 selector:sel_handleTVProviderStateDidChangeNotifications_ name:*MEMORY[0x277CE2440] object:0];
+    [defaultCenter addObserver:v2 selector:sel_launchHasCompleted_ name:*MEMORY[0x277D3FFF8] object:0];
+    [defaultCenter addObserver:v2 selector:sel_pointerDevicesDidChange name:PSGPointerDevicesDidChangeNotification object:0];
   }
 
   return v2;
@@ -1854,10 +1854,10 @@ void __28__PSGGeneralController_init__block_invoke(uint64_t a1, void *a2)
 
 - (void)handleScrollPPTTestName
 {
-  v3 = [(PSGGeneralController *)self viewIfLoaded];
-  v4 = [v3 window];
+  viewIfLoaded = [(PSGGeneralController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v4)
+  if (window)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -1881,24 +1881,24 @@ void __47__PSGGeneralController_handleScrollPPTTestName__block_invoke(uint64_t a
 
 - (void)pointerDevicesDidChange
 {
-  v3 = [MEMORY[0x277D3FA40] sharedInstance];
-  v4 = [v3 launchHasCompleted];
+  mEMORY[0x277D3FA40] = [MEMORY[0x277D3FA40] sharedInstance];
+  launchHasCompleted = [mEMORY[0x277D3FA40] launchHasCompleted];
 
-  if (v4)
+  if (launchHasCompleted)
   {
 
     [(PSGGeneralController *)self updateTrackpadWithCompletion:0];
   }
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = PSGGeneralController;
-  v4 = a3;
-  [(PSGGeneralController *)&v8 setSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSGGeneralController *)&v8 setSpecifier:specifierCopy];
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:{@"PSGPPTRelayKey", v8.receiver, v8.super_class}];
+  v5 = [specifierCopy objectForKeyedSubscript:{@"PSGPPTRelayKey", v8.receiver, v8.super_class}];
 
   if (objc_opt_isKindOfClass())
   {
@@ -1915,27 +1915,27 @@ void __47__PSGGeneralController_handleScrollPPTTestName__block_invoke(uint64_t a
   [(PSGGeneralController *)self setPptRelay:v7];
 }
 
-- (void)setPptRelay:(id)a3
+- (void)setPptRelay:(id)relay
 {
-  v9 = a3;
-  v5 = [(PSGGeneralController *)self performScrollGeneralSettingsTestObservationToken];
+  relayCopy = relay;
+  performScrollGeneralSettingsTestObservationToken = [(PSGGeneralController *)self performScrollGeneralSettingsTestObservationToken];
 
-  if (v5)
+  if (performScrollGeneralSettingsTestObservationToken)
   {
-    v6 = [(PSGGeneralController *)self performScrollGeneralSettingsTestObservationToken];
-    [(PSGGeneralController *)self na_removeNotificationBlockObserver:v6];
+    performScrollGeneralSettingsTestObservationToken2 = [(PSGGeneralController *)self performScrollGeneralSettingsTestObservationToken];
+    [(PSGGeneralController *)self na_removeNotificationBlockObserver:performScrollGeneralSettingsTestObservationToken2];
 
     [(PSGGeneralController *)self setPerformScrollGeneralSettingsTestObservationToken:0];
   }
 
-  objc_storeStrong(&self->_pptRelay, a3);
-  v7 = v9;
-  if (v9)
+  objc_storeStrong(&self->_pptRelay, relay);
+  v7 = relayCopy;
+  if (relayCopy)
   {
-    v8 = [(PSGGeneralController *)self na_addNotificationBlockObserverForObject:v9 keyPath:@"performScrollGeneralSettingsTest" options:7 usingBlock:&__block_literal_global_485];
+    v8 = [(PSGGeneralController *)self na_addNotificationBlockObserverForObject:relayCopy keyPath:@"performScrollGeneralSettingsTest" options:7 usingBlock:&__block_literal_global_485];
     [(PSGGeneralController *)self setPerformScrollGeneralSettingsTestObservationToken:v8];
 
-    v7 = v9;
+    v7 = relayCopy;
   }
 }
 
@@ -1973,7 +1973,7 @@ void __36__PSGGeneralController_setPptRelay___block_invoke(uint64_t a1, void *a2
   [(PSGGeneralController *)self setTitle:v3];
 }
 
-- (void)launchHasCompleted:(id)a3
+- (void)launchHasCompleted:(id)completed
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = _PSGLoggingFacility();
@@ -2002,36 +2002,36 @@ void __36__PSGGeneralController_setPptRelay___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (id)EDGEEnabled:(id)a3
+- (id)EDGEEnabled:(id)enabled
 {
-  v3 = [MEMORY[0x277D3FB18] sharedInstance];
-  v4 = [v3 dataServiceID];
+  mEMORY[0x277D3FB18] = [MEMORY[0x277D3FB18] sharedInstance];
+  dataServiceID = [mEMORY[0x277D3FB18] dataServiceID];
 
-  v5 = [MEMORY[0x277D3FB18] sharedInstance];
-  v6 = [v5 interfaceConfigurationValueForKey:@"Available" serviceID:v4];
+  mEMORY[0x277D3FB18]2 = [MEMORY[0x277D3FB18] sharedInstance];
+  v6 = [mEMORY[0x277D3FB18]2 interfaceConfigurationValueForKey:@"Available" serviceID:dataServiceID];
 
   return v6;
 }
 
-- (void)enableEdge:(id)a3
+- (void)enableEdge:(id)edge
 {
-  v3 = [MEMORY[0x277D3FB18] sharedInstance];
-  v4 = [v3 dataServiceID];
+  mEMORY[0x277D3FB18] = [MEMORY[0x277D3FB18] sharedInstance];
+  dataServiceID = [mEMORY[0x277D3FB18] dataServiceID];
 
-  v6 = [MEMORY[0x277D3FB18] sharedInstance];
+  mEMORY[0x277D3FB18]2 = [MEMORY[0x277D3FB18] sharedInstance];
   v5 = [MEMORY[0x277CCABB0] numberWithInt:1];
-  [v6 setInterfaceConfigurationValue:v5 forKey:@"Available" serviceID:v4];
+  [mEMORY[0x277D3FB18]2 setInterfaceConfigurationValue:v5 forKey:@"Available" serviceID:dataServiceID];
 }
 
 - (void)updateSoftwareUpdateBadge
 {
-  v3 = [(PSGGeneralController *)self loadingQueue];
+  loadingQueue = [(PSGGeneralController *)self loadingQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__PSGGeneralController_updateSoftwareUpdateBadge__block_invoke;
   block[3] = &unk_278324EE0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(loadingQueue, block);
 }
 
 void __49__PSGGeneralController_updateSoftwareUpdateBadge__block_invoke(uint64_t a1)
@@ -2081,7 +2081,7 @@ uint64_t __49__PSGGeneralController_updateSoftwareUpdateBadge__block_invoke_2(ui
 
   else
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = *MEMORY[0x277D3FC48];
     v6 = [*(&self->super.super.super.super.super.isa + v5) specifierForID:@"TV_PROVIDER_GROUP"];
     if (!v6)
@@ -2089,7 +2089,7 @@ uint64_t __49__PSGGeneralController_updateSoftwareUpdateBadge__block_invoke_2(ui
       v6 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"TV_PROVIDER_GROUP"];
     }
 
-    [v4 addObject:v6];
+    [array addObject:v6];
     v7 = [*(&self->super.super.super.super.super.isa + v5) specifierForID:@"TV_PROVIDER"];
     if (!v7)
     {
@@ -2107,19 +2107,19 @@ uint64_t __49__PSGGeneralController_updateSoftwareUpdateBadge__block_invoke_2(ui
       v13 = v12 = v11;
       [v7 setObject:v13 forKeyedSubscript:*MEMORY[0x277D40000]];
 
-      v14 = [MEMORY[0x277D262A0] sharedConnection];
-      LODWORD(v13) = [v14 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]];
+      mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+      LODWORD(v13) = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]];
 
-      v15 = [MEMORY[0x277D262A0] sharedConnection];
-      v16 = [v15 effectiveBoolValueForSetting:*MEMORY[0x277D26078]];
+      mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+      v16 = [mEMORY[0x277D262A0]2 effectiveBoolValueForSetting:*MEMORY[0x277D26078]];
 
       v18 = v13 == 1 && v16 == 1;
       v19 = [MEMORY[0x277CCABB0] numberWithBool:v18];
       [v7 setObject:v19 forKeyedSubscript:*MEMORY[0x277D3FF38]];
     }
 
-    [v4 addObject:v7];
-    v3 = [v4 copy];
+    [array addObject:v7];
+    v3 = [array copy];
   }
 
   return v3;

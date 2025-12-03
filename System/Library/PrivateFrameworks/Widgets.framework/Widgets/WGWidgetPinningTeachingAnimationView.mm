@@ -1,9 +1,9 @@
 @interface WGWidgetPinningTeachingAnimationView
 - (WGWidgetPinningTeachingAnimationView)init;
-- (double)_durationForState:(unint64_t)a3;
-- (unint64_t)_stateFollowingState:(unint64_t)a3;
-- (void)_setState:(unint64_t)a3;
-- (void)_setTimerToNextState:(id)a3;
+- (double)_durationForState:(unint64_t)state;
+- (unint64_t)_stateFollowingState:(unint64_t)state;
+- (void)_setState:(unint64_t)state;
+- (void)_setTimerToNextState:(id)state;
 - (void)_updateMaterials;
 @end
 
@@ -51,10 +51,10 @@
   return v4;
 }
 
-- (void)_setState:(unint64_t)a3
+- (void)_setState:(unint64_t)state
 {
   v27 = *MEMORY[0x277D85DE8];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
@@ -68,10 +68,10 @@
     }
 
     v9 = self->_state;
-    self->_state = a3;
-    if (a3 <= 2)
+    self->_state = state;
+    if (state <= 2)
     {
-      if (a3 < 2)
+      if (state < 2)
       {
         v10 = 0;
         v11 = @"page 1";
@@ -79,7 +79,7 @@
         goto LABEL_15;
       }
 
-      if (a3 == 2)
+      if (state == 2)
       {
         v13 = v9 != 0;
         v12 = @"squished";
@@ -107,16 +107,16 @@ LABEL_23:
       return;
     }
 
-    if (a3 != 5)
+    if (state != 5)
     {
-      if (a3 == 4)
+      if (state == 4)
       {
         v12 = 0;
         v11 = @"page 1";
         goto LABEL_14;
       }
 
-      if (a3 != 3)
+      if (state != 3)
       {
         goto LABEL_23;
       }
@@ -127,7 +127,7 @@ LABEL_23:
 LABEL_14:
     v10 = 1;
 LABEL_15:
-    v13 = a3 != 1 && v9 != 0;
+    v13 = state != 1 && v9 != 0;
     [(BSUICAPackageView *)self setState:v11 onLayer:self->_pagesLayer animated:v13 transitionSpeed:0 completion:1.0];
     if (v10)
     {
@@ -144,18 +144,18 @@ void __50__WGWidgetPinningTeachingAnimationView__setState___block_invoke(uint64_
   [WeakRetained _setState:*(a1 + 40)];
 }
 
-- (void)_setTimerToNextState:(id)a3
+- (void)_setTimerToNextState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   timerToNextState = self->_timerToNextState;
-  if (timerToNextState != v5)
+  if (timerToNextState != stateCopy)
   {
     if (timerToNextState)
     {
       [(NSTimer *)timerToNextState invalidate];
     }
 
-    objc_storeStrong(&self->_timerToNextState, a3);
+    objc_storeStrong(&self->_timerToNextState, state);
   }
 
   MEMORY[0x2821F96F8]();
@@ -163,10 +163,10 @@ void __50__WGWidgetPinningTeachingAnimationView__setState___block_invoke(uint64_
 
 - (void)_updateMaterials
 {
-  v3 = [(WGWidgetPinningTeachingAnimationView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(WGWidgetPinningTeachingAnimationView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = @"dark";
   }
@@ -181,18 +181,18 @@ void __50__WGWidgetPinningTeachingAnimationView__setState___block_invoke(uint64_
   [(BSUICAPackageView *)self setState:v5 onLayer:materialsLayer animated:1 transitionSpeed:0 completion:1.0];
 }
 
-- (double)_durationForState:(unint64_t)a3
+- (double)_durationForState:(unint64_t)state
 {
   result = 0.0;
-  if (a3 - 1 <= 4)
+  if (state - 1 <= 4)
   {
-    return dbl_2742AE818[a3 - 1];
+    return dbl_2742AE818[state - 1];
   }
 
   return result;
 }
 
-- (unint64_t)_stateFollowingState:(unint64_t)a3
+- (unint64_t)_stateFollowingState:(unint64_t)state
 {
   if ((self->_state + 1) % 6 <= 1)
   {

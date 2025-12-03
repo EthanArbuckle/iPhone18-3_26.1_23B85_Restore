@@ -7,35 +7,35 @@
 
 - (id)_scui_iconImageWithAssetProvider:()ShortcutUIKit
 {
-  v2 = [a1 imageData];
-  if (!v2)
+  imageData = [self imageData];
+  if (!imageData)
   {
     goto LABEL_5;
   }
 
-  v3 = [a1 dataType];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 scale];
+  dataType = [self dataType];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v6 = v5;
 
-  if (v3 == 1)
+  if (dataType == 1)
   {
-    v7 = [a1 _scui_iconImageForCachedBitmapData:v2 scale:v6];
+    v7 = [self _scui_iconImageForCachedBitmapData:imageData scale:v6];
     goto LABEL_7;
   }
 
-  if (v3)
+  if (dataType)
   {
 LABEL_5:
     v8 = 0;
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x277D755B8] imageWithData:v2 scale:v6];
+  v7 = [MEMORY[0x277D755B8] imageWithData:imageData scale:v6];
 LABEL_7:
   v8 = v7;
 LABEL_8:
-  if ([a1 isTemplate])
+  if ([self isTemplate])
   {
     v9 = 2;
   }
@@ -56,7 +56,7 @@ LABEL_8:
   if (v2)
   {
     v3 = v2;
-    v4 = [MEMORY[0x277D755B8] imageWithCGImage:v2 scale:0 orientation:a1];
+    v4 = [MEMORY[0x277D755B8] imageWithCGImage:v2 scale:0 orientation:self];
     CGImageRelease(v3);
   }
 

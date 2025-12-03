@@ -6,8 +6,8 @@
 
 - (void)start
 {
-  v3 = [(CellularDataDiagnosticsSuiteController *)self result];
-  [v3 setStatusCode:&off_1000042D8];
+  result = [(CellularDataDiagnosticsSuiteController *)self result];
+  [result setStatusCode:&off_1000042D8];
 
   v4 = objc_alloc_init(SpeedTestConfig);
   cellularTestStartRef = self->cellularTestStartRef;

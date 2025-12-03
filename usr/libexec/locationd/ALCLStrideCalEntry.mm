@@ -1,22 +1,22 @@
 @interface ALCLStrideCalEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPacebin:(BOOL)a3;
-- (void)setHasRecordId:(BOOL)a3;
-- (void)setHasRegularEntry:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPacebin:(BOOL)pacebin;
+- (void)setHasRecordId:(BOOL)id;
+- (void)setHasRegularEntry:(BOOL)entry;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCLStrideCalEntry
 
-- (void)setHasRecordId:(BOOL)a3
+- (void)setHasRecordId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPacebin:(BOOL)a3
+- (void)setHasPacebin:(BOOL)pacebin
 {
-  if (a3)
+  if (pacebin)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRegularEntry:(BOOL)a3
+- (void)setHasRegularEntry:(BOOL)entry
 {
-  if (a3)
+  if (entry)
   {
     v3 = 8;
   }
@@ -108,7 +108,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
@@ -143,29 +143,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 4) != 0)
   {
-    *(a3 + 12) = self->_recordId;
-    *(a3 + 72) |= 4u;
+    *(to + 12) = self->_recordId;
+    *(to + 72) |= 4u;
   }
 
-  *(a3 + 2) = *&self->_startTime;
+  *(to + 2) = *&self->_startTime;
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 11) = self->_pacebin;
-    *(a3 + 72) |= 2u;
+    *(to + 11) = self->_pacebin;
+    *(to + 72) |= 2u;
   }
 
-  *(a3 + 9) = LODWORD(self->_kvalue);
-  *(a3 + 10) = LODWORD(self->_kvalueTrack);
-  *(a3 + 13) = LODWORD(self->_score);
-  *(a3 + 1) = *&self->_endTime;
-  *(a3 + 8) = LODWORD(self->_distance);
-  *(a3 + 16) = self->_steps;
-  *(a3 + 14) = self->_session;
-  *(a3 + 15) = LODWORD(self->_speed);
+  *(to + 9) = LODWORD(self->_kvalue);
+  *(to + 10) = LODWORD(self->_kvalueTrack);
+  *(to + 13) = LODWORD(self->_score);
+  *(to + 1) = *&self->_endTime;
+  *(to + 8) = LODWORD(self->_distance);
+  *(to + 16) = self->_steps;
+  *(to + 14) = self->_session;
+  *(to + 15) = LODWORD(self->_speed);
   if ((*&self->_has & 1) == 0)
   {
     if ((*&self->_has & 8) == 0)
@@ -174,22 +174,22 @@
     }
 
 LABEL_9:
-    *(a3 + 68) = self->_regularEntry;
-    *(a3 + 72) |= 8u;
+    *(to + 68) = self->_regularEntry;
+    *(to + 72) |= 8u;
     return;
   }
 
-  *(a3 + 3) = *&self->_timestamp;
-  *(a3 + 72) |= 1u;
+  *(to + 3) = *&self->_timestamp;
+  *(to + 72) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
     goto LABEL_9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ((*&self->_has & 4) != 0)
   {
     *(result + 12) = self->_recordId;
@@ -228,25 +228,25 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 72) & 4) == 0 || self->_recordId != *(a3 + 12))
+      if ((*(equal + 72) & 4) == 0 || self->_recordId != *(equal + 12))
       {
         goto LABEL_28;
       }
     }
 
-    else if ((*(a3 + 72) & 4) != 0)
+    else if ((*(equal + 72) & 4) != 0)
     {
       goto LABEL_28;
     }
 
-    if (self->_startTime != *(a3 + 2))
+    if (self->_startTime != *(equal + 2))
     {
 LABEL_28:
       LOBYTE(v5) = 0;
@@ -255,52 +255,52 @@ LABEL_28:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 72) & 2) == 0 || self->_pacebin != *(a3 + 11))
+      if ((*(equal + 72) & 2) == 0 || self->_pacebin != *(equal + 11))
       {
         goto LABEL_28;
       }
     }
 
-    else if ((*(a3 + 72) & 2) != 0)
+    else if ((*(equal + 72) & 2) != 0)
     {
       goto LABEL_28;
     }
 
-    if (self->_kvalue != *(a3 + 9) || self->_kvalueTrack != *(a3 + 10) || self->_score != *(a3 + 13) || self->_endTime != *(a3 + 1) || self->_distance != *(a3 + 8) || self->_steps != *(a3 + 16) || self->_session != *(a3 + 14) || self->_speed != *(a3 + 15))
+    if (self->_kvalue != *(equal + 9) || self->_kvalueTrack != *(equal + 10) || self->_score != *(equal + 13) || self->_endTime != *(equal + 1) || self->_distance != *(equal + 8) || self->_steps != *(equal + 16) || self->_session != *(equal + 14) || self->_speed != *(equal + 15))
     {
       goto LABEL_28;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 72) & 1) == 0 || self->_timestamp != *(a3 + 3))
+      if ((*(equal + 72) & 1) == 0 || self->_timestamp != *(equal + 3))
       {
         goto LABEL_28;
       }
     }
 
-    else if (*(a3 + 72))
+    else if (*(equal + 72))
     {
       goto LABEL_28;
     }
 
-    LOBYTE(v5) = (*(a3 + 72) & 8) == 0;
+    LOBYTE(v5) = (*(equal + 72) & 8) == 0;
     if ((*&self->_has & 8) != 0)
     {
-      if ((*(a3 + 72) & 8) == 0)
+      if ((*(equal + 72) & 8) == 0)
       {
         goto LABEL_28;
       }
 
       if (self->_regularEntry)
       {
-        if ((*(a3 + 68) & 1) == 0)
+        if ((*(equal + 68) & 1) == 0)
         {
           goto LABEL_28;
         }
       }
 
-      else if (*(a3 + 68))
+      else if (*(equal + 68))
       {
         goto LABEL_28;
       }
@@ -547,45 +547,45 @@ LABEL_28:
   return v14 ^ v8 ^ v15 ^ v23 ^ v29 ^ v35 ^ v40 ^ v46 ^ (2654435761 * self->_steps) ^ (2654435761 * self->_session) ^ v51 ^ v52 ^ v56;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 72) & 4) != 0)
+  if ((*(from + 72) & 4) != 0)
   {
-    self->_recordId = *(a3 + 12);
+    self->_recordId = *(from + 12);
     *&self->_has |= 4u;
   }
 
-  self->_startTime = *(a3 + 2);
-  if ((*(a3 + 72) & 2) != 0)
+  self->_startTime = *(from + 2);
+  if ((*(from + 72) & 2) != 0)
   {
-    self->_pacebin = *(a3 + 11);
+    self->_pacebin = *(from + 11);
     *&self->_has |= 2u;
   }
 
-  self->_kvalue = *(a3 + 9);
-  self->_kvalueTrack = *(a3 + 10);
-  self->_score = *(a3 + 13);
-  self->_endTime = *(a3 + 1);
-  self->_distance = *(a3 + 8);
-  self->_steps = *(a3 + 16);
-  self->_session = *(a3 + 14);
-  self->_speed = *(a3 + 15);
-  if ((*(a3 + 72) & 1) == 0)
+  self->_kvalue = *(from + 9);
+  self->_kvalueTrack = *(from + 10);
+  self->_score = *(from + 13);
+  self->_endTime = *(from + 1);
+  self->_distance = *(from + 8);
+  self->_steps = *(from + 16);
+  self->_session = *(from + 14);
+  self->_speed = *(from + 15);
+  if ((*(from + 72) & 1) == 0)
   {
-    if ((*(a3 + 72) & 8) == 0)
+    if ((*(from + 72) & 8) == 0)
     {
       return;
     }
 
 LABEL_9:
-    self->_regularEntry = *(a3 + 68);
+    self->_regularEntry = *(from + 68);
     *&self->_has |= 8u;
     return;
   }
 
-  self->_timestamp = *(a3 + 3);
+  self->_timestamp = *(from + 3);
   *&self->_has |= 1u;
-  if ((*(a3 + 72) & 8) != 0)
+  if ((*(from + 72) & 8) != 0)
   {
     goto LABEL_9;
   }

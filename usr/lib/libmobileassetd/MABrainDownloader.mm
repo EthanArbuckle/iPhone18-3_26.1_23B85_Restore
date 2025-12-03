@@ -1,13 +1,13 @@
 @interface MABrainDownloader
-- (MABrainDownloader)initWithMAAsset:(id)a3;
-- (void)download:(id)a3 options:(id)a4 completion:(id)a5;
+- (MABrainDownloader)initWithMAAsset:(id)asset;
+- (void)download:(id)download options:(id)options completion:(id)completion;
 @end
 
 @implementation MABrainDownloader
 
-- (MABrainDownloader)initWithMAAsset:(id)a3
+- (MABrainDownloader)initWithMAAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v11.receiver = self;
   v11.super_class = MABrainDownloader;
   v6 = [(MABrainDownloader *)&v11 init];
@@ -18,25 +18,25 @@
     callbackQueue = v6->_callbackQueue;
     v6->_callbackQueue = v8;
 
-    objc_storeStrong(&v6->_asset, a3);
+    objc_storeStrong(&v6->_asset, asset);
   }
 
   return v6;
 }
 
-- (void)download:(id)a3 options:(id)a4 completion:(id)a5
+- (void)download:(id)download options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v9 objectForKeyedSubscript:@"nonDiscetionary"];
-  v12 = [v11 BOOLValue];
+  completionCopy = completion;
+  optionsCopy = options;
+  downloadCopy = download;
+  v11 = [optionsCopy objectForKeyedSubscript:@"nonDiscetionary"];
+  bOOLValue = [v11 BOOLValue];
 
   [(MAAsset *)self->_asset cancelDownloadSync];
   v13 = objc_alloc_init(MAMsuDownloadOptions);
-  [v13 setSessionId:v10];
+  [v13 setSessionId:downloadCopy];
 
-  [v13 setDiscretionary:v12 ^ 1];
+  [v13 setDiscretionary:bOOLValue ^ 1];
   if ((objc_opt_respondsToSelector() & 1) != 0 && __isPlatformVersionAtLeast(2, 17, 0, 0))
   {
     [v13 setDisableUI:1];
@@ -49,7 +49,7 @@
   [v13 setPrefersInfraWiFi:1];
   [v13 setLiveServerCatalogOnly:0];
   [v13 setTimeoutIntervalForResource:900];
-  v14 = [v9 objectForKeyedSubscript:@"dawHeader"];
+  v14 = [optionsCopy objectForKeyedSubscript:@"dawHeader"];
 
   [v13 setDownloadAuthorizationHeader:v14];
   asset = self->_asset;
@@ -58,7 +58,7 @@
   v20[2] = __49__MABrainDownloader_download_options_completion___block_invoke;
   v20[3] = &unk_4B3C20;
   v20[4] = self;
-  v16 = v8;
+  v16 = completionCopy;
   v21 = v16;
   [(MAAsset *)asset startDownload:v13 completionWithError:v20];
   v17 = _MADLog(@"Brain");
@@ -66,7 +66,7 @@
   {
     v18 = "discretionary";
     v19 = self->_asset;
-    if (v12)
+    if (bOOLValue)
     {
       v18 = "non-discretionary";
     }

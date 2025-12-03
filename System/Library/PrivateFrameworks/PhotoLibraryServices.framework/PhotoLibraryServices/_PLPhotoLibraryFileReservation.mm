@@ -1,5 +1,5 @@
 @interface _PLPhotoLibraryFileReservation
-- (_PLPhotoLibraryFileReservation)initWithFileDescriptor:(int)a3;
+- (_PLPhotoLibraryFileReservation)initWithFileDescriptor:(int)descriptor;
 - (void)dealloc;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)dealloc
 {
-  v3 = [(_PLPhotoLibraryFileReservation *)self fileDescriptor];
-  if ((v3 & 0x80000000) == 0)
+  fileDescriptor = [(_PLPhotoLibraryFileReservation *)self fileDescriptor];
+  if ((fileDescriptor & 0x80000000) == 0)
   {
-    v4 = v3;
-    flock(v3, 8);
+    v4 = fileDescriptor;
+    flock(fileDescriptor, 8);
     close(v4);
     [(_PLPhotoLibraryFileReservation *)self setFileDescriptor:0xFFFFFFFFLL];
   }
@@ -21,9 +21,9 @@
   [(_PLPhotoLibraryFileReservation *)&v5 dealloc];
 }
 
-- (_PLPhotoLibraryFileReservation)initWithFileDescriptor:(int)a3
+- (_PLPhotoLibraryFileReservation)initWithFileDescriptor:(int)descriptor
 {
-  v3 = *&a3;
+  v3 = *&descriptor;
   v7.receiver = self;
   v7.super_class = _PLPhotoLibraryFileReservation;
   v4 = [(_PLPhotoLibraryFileReservation *)&v7 init];

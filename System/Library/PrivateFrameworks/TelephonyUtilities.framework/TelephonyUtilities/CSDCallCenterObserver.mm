@@ -1,29 +1,29 @@
 @interface CSDCallCenterObserver
 - (CSDCallCenterObserverDelegate)delegate;
 - (CSDCallContainer)callContainer;
-- (id)activeConversationForCall:(id)a3;
+- (id)activeConversationForCall:(id)call;
 - (id)callChanged;
-- (void)handleSharePlayTrigger:(id)a3;
-- (void)setCallChanged:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setTriggers:(unint64_t)a3;
+- (void)handleSharePlayTrigger:(id)trigger;
+- (void)setCallChanged:(id)changed;
+- (void)setDelegate:(id)delegate;
+- (void)setTriggers:(unint64_t)triggers;
 @end
 
 @implementation CSDCallCenterObserver
 
 - (CSDCallContainer)callContainer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000131E8();
 
   return v3;
 }
 
-- (id)activeConversationForCall:(id)a3
+- (id)activeConversationForCall:(id)call
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100044B4C(v4);
+  callCopy = call;
+  selfCopy = self;
+  v6 = sub_100044B4C(callCopy);
 
   return v6;
 }
@@ -35,17 +35,17 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1002C8F04();
 }
 
-- (void)setTriggers:(unint64_t)a3
+- (void)setTriggers:(unint64_t)triggers
 {
-  v4 = self;
-  sub_1002C8FD4(a3);
+  selfCopy = self;
+  sub_1002C8FD4(triggers);
 }
 
 - (id)callChanged
@@ -70,9 +70,9 @@
   return v4;
 }
 
-- (void)setCallChanged:(id)a3
+- (void)setCallChanged:(id)changed
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(changed);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -85,11 +85,11 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1002C94C4(v4, v5);
 }
 
-- (void)handleSharePlayTrigger:(id)a3
+- (void)handleSharePlayTrigger:(id)trigger
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -97,7 +97,7 @@
   __chkstk_darwin(v4, v7);
   v9 = &v11 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = self;
+  selfCopy = self;
   sub_1002C9D80(v9);
 
   (*(v5 + 8))(v9, v4);

@@ -1,14 +1,14 @@
 @interface APRKMetadata
-- (APRKMetadata)initWithDictionary:(id)a3;
-- (void)updateMedatataWithDictionary:(id)a3;
+- (APRKMetadata)initWithDictionary:(id)dictionary;
+- (void)updateMedatataWithDictionary:(id)dictionary;
 @end
 
 @implementation APRKMetadata
 
-- (APRKMetadata)initWithDictionary:(id)a3
+- (APRKMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v9.receiver = self;
     v9.super_class = APRKMetadata;
@@ -16,28 +16,28 @@
     v6 = v5;
     if (v5)
     {
-      [(APRKMetadata *)v5 updateMedatataWithDictionary:v4];
+      [(APRKMetadata *)v5 updateMedatataWithDictionary:dictionaryCopy];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)updateMedatataWithDictionary:(id)a3
+- (void)updateMedatataWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v12 = v4;
-    v5 = [v4 objectForKey:@"Album"];
+    v12 = dictionaryCopy;
+    v5 = [dictionaryCopy objectForKey:@"Album"];
     if (v5)
     {
       objc_storeStrong(&self->_album, v5);
@@ -85,7 +85,7 @@
       self->_trackNumber = [v11 integerValue];
     }
 
-    v4 = v12;
+    dictionaryCopy = v12;
   }
 }
 

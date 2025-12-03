@@ -1,28 +1,28 @@
 @interface ScrollContactTest
-- (BOOL)prepareForTestWithOptions:(id)a3;
-- (void)didShow:(id)a3;
+- (BOOL)prepareForTestWithOptions:(id)options;
+- (void)didShow:(id)show;
 - (void)prepareForNextTest;
 - (void)resetDelegate;
-- (void)scrollContactViewController:(id)a3;
+- (void)scrollContactViewController:(id)controller;
 @end
 
 @implementation ScrollContactTest
 
-- (BOOL)prepareForTestWithOptions:(id)a3
+- (BOOL)prepareForTestWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v32.receiver = self;
   v32.super_class = ScrollContactTest;
-  v5 = [(ContactsTest *)&v32 prepareForTestWithOptions:v4];
+  v5 = [(ContactsTest *)&v32 prepareForTestWithOptions:optionsCopy];
   if (v5)
   {
     if (![(ContactsTest *)self isIPad])
     {
-      v6 = [(ContactsTest *)self contactSplitViewController];
-      v7 = [v6 navigationControllerForPPT];
+      contactSplitViewController = [(ContactsTest *)self contactSplitViewController];
+      navigationControllerForPPT = [contactSplitViewController navigationControllerForPPT];
 
       objc_opt_class();
-      v8 = v7;
+      v8 = navigationControllerForPPT;
       if (objc_opt_isKindOfClass())
       {
         v9 = v8;
@@ -38,17 +38,17 @@
       if (v10)
       {
         objc_initWeak(&location, self);
-        v11 = [v10 delegate];
+        delegate = [v10 delegate];
         v29[0] = _NSConcreteStackBlock;
         v29[1] = 3221225472;
         v29[2] = sub_10000585C;
         v29[3] = &unk_100020558;
         objc_copyWeak(&v30, &location);
-        v12 = [CNTestNavigationControllerDelegate delegateWithDelegate:v11 willShowViewControllerHandler:0 didShowViewControllerHandler:v29];
+        v12 = [CNTestNavigationControllerDelegate delegateWithDelegate:delegate willShowViewControllerHandler:0 didShowViewControllerHandler:v29];
         [(ScrollContactTest *)self setNavControllerDelegate:v12];
 
-        v13 = [(ScrollContactTest *)self navControllerDelegate];
-        [v10 setDelegate:v13];
+        navControllerDelegate = [(ScrollContactTest *)self navControllerDelegate];
+        [v10 setDelegate:navControllerDelegate];
 
         objc_destroyWeak(&v30);
         objc_destroyWeak(&location);
@@ -60,23 +60,23 @@
       }
     }
 
-    v14 = [v4 objectForKey:@"scrollMemberAtIndex"];
-    v15 = [v14 intValue];
+    v14 = [optionsCopy objectForKey:@"scrollMemberAtIndex"];
+    intValue = [v14 intValue];
 
-    v16 = [(ContactsTest *)self contactNavigationController];
-    v17 = [v16 dataSource];
-    v18 = [v17 contacts];
-    v19 = [v18 objectAtIndexedSubscript:v15];
+    contactNavigationController = [(ContactsTest *)self contactNavigationController];
+    dataSource = [contactNavigationController dataSource];
+    contacts = [dataSource contacts];
+    v19 = [contacts objectAtIndexedSubscript:intValue];
 
     v23 = _NSConcreteStackBlock;
     v24 = 3221225472;
     v25 = sub_1000058B8;
     v26 = &unk_100020580;
-    v27 = self;
+    selfCopy = self;
     v28 = v19;
     v20 = v19;
     v21 = objc_retainBlock(&v23);
-    [(ContactsTest *)self showContactListWithCompletionBlock:v21, v23, v24, v25, v26, v27];
+    [(ContactsTest *)self showContactListWithCompletionBlock:v21, v23, v24, v25, v26, selfCopy];
   }
 
   return v5;
@@ -92,28 +92,28 @@
 
 - (void)resetDelegate
 {
-  v3 = [(ContactsTest *)self contactSplitViewController];
-  v9 = [v3 navigationControllerForPPT];
+  contactSplitViewController = [(ContactsTest *)self contactSplitViewController];
+  navigationControllerForPPT = [contactSplitViewController navigationControllerForPPT];
 
-  v4 = [(ContactsTest *)self contactNavigationController];
+  contactNavigationController = [(ContactsTest *)self contactNavigationController];
 
-  v5 = v9;
-  if (v9 == v4)
+  v5 = navigationControllerForPPT;
+  if (navigationControllerForPPT == contactNavigationController)
   {
-    v6 = [(ScrollContactTest *)self navControllerDelegate];
-    v7 = [v6 delegate];
-    v8 = [(ContactsTest *)self contactNavigationController];
-    [v8 setDelegate:v7];
+    navControllerDelegate = [(ScrollContactTest *)self navControllerDelegate];
+    delegate = [navControllerDelegate delegate];
+    contactNavigationController2 = [(ContactsTest *)self contactNavigationController];
+    [contactNavigationController2 setDelegate:delegate];
 
-    v5 = v9;
+    v5 = navigationControllerForPPT;
   }
 }
 
-- (void)didShow:(id)a3
+- (void)didShow:(id)show
 {
-  v4 = a3;
+  showCopy = show;
   objc_opt_class();
-  v10 = v4;
+  v10 = showCopy;
   if (objc_opt_isKindOfClass())
   {
     v5 = v10;
@@ -133,33 +133,33 @@
   }
 }
 
-- (void)scrollContactViewController:(id)a3
+- (void)scrollContactViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[CNEnvironment currentEnvironment];
-  v6 = [v5 featureFlags];
-  v7 = [v6 isFeatureEnabled:29];
+  featureFlags = [v5 featureFlags];
+  v7 = [featureFlags isFeatureEnabled:29];
 
-  v15 = [v4 contentViewController];
+  contentViewController = [controllerCopy contentViewController];
 
   if (v7)
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v15 performSelector:"displayContactCardViewController"];
+      v8 = [contentViewController performSelector:"displayContactCardViewController"];
       if (objc_opt_respondsToSelector())
       {
-        v9 = [(ContactsTest *)self testOptions];
-        v10 = [v9 objectForKeyedSubscript:@"testName"];
-        v11 = [(ContactsTest *)self testOptions];
-        [v8 performSelector:"runPPTTestWithTestName:options:" withObject:v10 withObject:v11];
+        testOptions = [(ContactsTest *)self testOptions];
+        v10 = [testOptions objectForKeyedSubscript:@"testName"];
+        testOptions2 = [(ContactsTest *)self testOptions];
+        [v8 performSelector:"runPPTTestWithTestName:options:" withObject:v10 withObject:testOptions2];
       }
     }
   }
 
   else
   {
-    v12 = [v15 contactView];
+    contactView = [contentViewController contactView];
 
     v13 = dispatch_time(0, 500000000);
     block[0] = _NSConcreteStackBlock;
@@ -167,8 +167,8 @@
     block[2] = sub_100005D58;
     block[3] = &unk_100020580;
     block[4] = self;
-    v17 = v12;
-    v14 = v12;
+    v17 = contactView;
+    v14 = contactView;
     dispatch_after(v13, &_dispatch_main_q, block);
   }
 }

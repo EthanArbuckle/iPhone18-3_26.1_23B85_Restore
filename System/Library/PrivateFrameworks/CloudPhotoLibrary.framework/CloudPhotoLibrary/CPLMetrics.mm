@@ -1,11 +1,11 @@
 @interface CPLMetrics
-- (CPLMetrics)initWithClientLibraryBaseURL:(id)a3;
+- (CPLMetrics)initWithClientLibraryBaseURL:(id)l;
 - (id)metricsDescription;
-- (int64_t)countForKey:(id)a3;
+- (int64_t)countForKey:(id)key;
 - (void)_loadIfNecessary;
 - (void)_save;
 - (void)forceLoad;
-- (void)incrementCountForKey:(id)a3;
+- (void)incrementCountForKey:(id)key;
 - (void)resetMetrics;
 @end
 
@@ -23,7 +23,7 @@
   v6[1] = 3221225472;
   v7 = __32__CPLMetrics_metricsDescription__block_invoke;
   v8 = &unk_1E861F818;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   v3 = v6;
   os_unfair_lock_lock(&self->_lock);
@@ -88,15 +88,15 @@ void __32__CPLMetrics_metricsDescription__block_invoke(uint64_t a1)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)incrementCountForKey:(id)a3
+- (void)incrementCountForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v8 = __35__CPLMetrics_incrementCountForKey___block_invoke;
   v9 = &unk_1E861B290;
-  v10 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = keyCopy;
   v11 = v5;
   v6 = v7;
   os_unfair_lock_lock(&self->_lock);
@@ -119,9 +119,9 @@ uint64_t __35__CPLMetrics_incrementCountForKey___block_invoke(uint64_t a1)
   return [v6 _save];
 }
 
-- (int64_t)countForKey:(id)a3
+- (int64_t)countForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -130,9 +130,9 @@ uint64_t __35__CPLMetrics_incrementCountForKey___block_invoke(uint64_t a1)
   v9[1] = 3221225472;
   v10 = __26__CPLMetrics_countForKey___block_invoke;
   v11 = &unk_1E861F868;
-  v12 = self;
+  selfCopy = self;
   v14 = &v15;
-  v5 = v4;
+  v5 = keyCopy;
   v13 = v5;
   v6 = v9;
   os_unfair_lock_lock(&self->_lock);
@@ -158,14 +158,14 @@ void __26__CPLMetrics_countForKey___block_invoke(uint64_t a1)
   v5[1] = 3221225472;
   v6 = __26__CPLMetrics_resetMetrics__block_invoke;
   v7 = &unk_1E861A940;
-  v8 = self;
+  selfCopy = self;
   v3 = v5;
   os_unfair_lock_lock(&self->_lock);
   v6(v3);
   os_unfair_lock_unlock(&self->_lock);
 
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v4 postNotificationName:@"CPLMetricsDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:@"CPLMetricsDidChangeNotification" object:0];
 }
 
 uint64_t __26__CPLMetrics_resetMetrics__block_invoke(uint64_t a1)
@@ -217,7 +217,7 @@ uint64_t __26__CPLMetrics_resetMetrics__block_invoke(uint64_t a1)
   v4[1] = 3221225472;
   v5 = __23__CPLMetrics_forceLoad__block_invoke;
   v6 = &unk_1E861A940;
-  v7 = self;
+  selfCopy = self;
   v3 = v4;
   os_unfair_lock_lock(&self->_lock);
   v5(v3);
@@ -231,15 +231,15 @@ void __23__CPLMetrics_forceLoad__block_invoke(uint64_t a1)
   *(v1 + 16) = 0;
 }
 
-- (CPLMetrics)initWithClientLibraryBaseURL:(id)a3
+- (CPLMetrics)initWithClientLibraryBaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = CPLMetrics;
   v5 = [(CPLMetrics *)&v9 init];
   if (v5)
   {
-    v6 = [v4 URLByAppendingPathComponent:@"metrics.plist"];
+    v6 = [lCopy URLByAppendingPathComponent:@"metrics.plist"];
     metricsFileURL = v5->_metricsFileURL;
     v5->_metricsFileURL = v6;
 

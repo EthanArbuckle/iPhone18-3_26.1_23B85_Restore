@@ -1,17 +1,17 @@
 @interface SearchUIBackgroundColorSupplementaryView
-- (SearchUIBackgroundColorSupplementaryView)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMaskedCorners:(unint64_t)a3;
-- (void)tlks_setCornerRadius:(double)a3 withStyle:(id)a4;
+- (SearchUIBackgroundColorSupplementaryView)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMaskedCorners:(unint64_t)corners;
+- (void)tlks_setCornerRadius:(double)radius withStyle:(id)style;
 @end
 
 @implementation SearchUIBackgroundColorSupplementaryView
 
-- (SearchUIBackgroundColorSupplementaryView)initWithFrame:(CGRect)a3
+- (SearchUIBackgroundColorSupplementaryView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = SearchUIBackgroundColorSupplementaryView;
-  v3 = [(SearchUIBackgroundColorSupplementaryView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SearchUIBackgroundColorSupplementaryView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69D91C8] viewWithProminence:{+[SearchUIFocusStyleUtilities secondaryHaloProminence](SearchUIFocusStyleUtilities, "secondaryHaloProminence")}];
@@ -19,38 +19,38 @@
 
     +[SearchUIAutoLayout selectionBorderWidth];
     v6 = v5;
-    v7 = [(SearchUIBackgroundColorSupplementaryView *)v3 highlightView];
-    [v7 setBorderWidth:v6];
+    highlightView = [(SearchUIBackgroundColorSupplementaryView *)v3 highlightView];
+    [highlightView setBorderWidth:v6];
 
-    LODWORD(v7) = [(SearchUIBackgroundColorSupplementaryView *)v3 highlighted];
-    v8 = [(SearchUIBackgroundColorSupplementaryView *)v3 highlightView];
-    [v8 setHidden:v7 ^ 1];
+    LODWORD(highlightView) = [(SearchUIBackgroundColorSupplementaryView *)v3 highlighted];
+    highlightView2 = [(SearchUIBackgroundColorSupplementaryView *)v3 highlightView];
+    [highlightView2 setHidden:highlightView ^ 1];
 
-    v9 = [(SearchUIBackgroundColorSupplementaryView *)v3 highlightView];
-    [(SearchUIBackgroundColorSupplementaryView *)v3 addSubview:v9];
+    highlightView3 = [(SearchUIBackgroundColorSupplementaryView *)v3 highlightView];
+    [(SearchUIBackgroundColorSupplementaryView *)v3 addSubview:highlightView3];
 
-    v10 = [(SearchUIBackgroundColorSupplementaryView *)v3 highlightView];
-    [SearchUIAutoLayout fillContainerWithView:v10];
+    highlightView4 = [(SearchUIBackgroundColorSupplementaryView *)v3 highlightView];
+    [SearchUIAutoLayout fillContainerWithView:highlightView4];
 
     v11 = objc_opt_new();
     [(SearchUIBackgroundColorSupplementaryView *)v3 setColorView:v11];
 
-    v12 = [(SearchUIBackgroundColorSupplementaryView *)v3 colorView];
-    [(SearchUIBackgroundColorSupplementaryView *)v3 addSubview:v12];
+    colorView = [(SearchUIBackgroundColorSupplementaryView *)v3 colorView];
+    [(SearchUIBackgroundColorSupplementaryView *)v3 addSubview:colorView];
 
-    v13 = [(SearchUIBackgroundColorSupplementaryView *)v3 colorView];
-    [SearchUIAutoLayout fillContainerWithView:v13];
+    colorView2 = [(SearchUIBackgroundColorSupplementaryView *)v3 colorView];
+    [SearchUIAutoLayout fillContainerWithView:colorView2];
   }
 
   return v3;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  self->_highlighted = a3;
-  v4 = [(SearchUIBackgroundColorSupplementaryView *)self highlighted];
-  v5 = [(SearchUIBackgroundColorSupplementaryView *)self highlightView];
-  [v5 setHidden:!v4];
+  self->_highlighted = highlighted;
+  highlighted = [(SearchUIBackgroundColorSupplementaryView *)self highlighted];
+  highlightView = [(SearchUIBackgroundColorSupplementaryView *)self highlightView];
+  [highlightView setHidden:!highlighted];
 
   +[SearchUIAutoLayout selectionBorderWidth];
   v7 = -v6;
@@ -60,33 +60,33 @@
   y = v15.origin.y;
   width = v15.size.width;
   height = v15.size.height;
-  v12 = [(SearchUIBackgroundColorSupplementaryView *)self highlightView];
-  [v12 setFrame:{x, y, width, height}];
+  highlightView2 = [(SearchUIBackgroundColorSupplementaryView *)self highlightView];
+  [highlightView2 setFrame:{x, y, width, height}];
 }
 
-- (void)tlks_setCornerRadius:(double)a3 withStyle:(id)a4
+- (void)tlks_setCornerRadius:(double)radius withStyle:(id)style
 {
   v10.receiver = self;
   v10.super_class = SearchUIBackgroundColorSupplementaryView;
-  v6 = a4;
-  [(SearchUIBackgroundColorSupplementaryView *)&v10 tlks_setCornerRadius:v6 withStyle:a3];
+  styleCopy = style;
+  [(SearchUIBackgroundColorSupplementaryView *)&v10 tlks_setCornerRadius:styleCopy withStyle:radius];
   v7 = [(SearchUIBackgroundColorSupplementaryView *)self colorView:v10.receiver];
-  [v7 tlks_setCornerRadius:v6 withStyle:a3];
+  [v7 tlks_setCornerRadius:styleCopy withStyle:radius];
 
-  v8 = [(SearchUIBackgroundColorSupplementaryView *)self highlightView];
+  highlightView = [(SearchUIBackgroundColorSupplementaryView *)self highlightView];
   +[SearchUIAutoLayout selectionBorderWidth];
-  [v8 tlks_setCornerRadius:v6 withStyle:v9 + a3];
+  [highlightView tlks_setCornerRadius:styleCopy withStyle:v9 + radius];
 }
 
-- (void)setMaskedCorners:(unint64_t)a3
+- (void)setMaskedCorners:(unint64_t)corners
 {
-  self->_maskedCorners = a3;
-  v5 = [(SearchUIBackgroundColorSupplementaryView *)self colorView];
-  [v5 setMaskedCorners:a3];
+  self->_maskedCorners = corners;
+  colorView = [(SearchUIBackgroundColorSupplementaryView *)self colorView];
+  [colorView setMaskedCorners:corners];
 
-  v7 = [(SearchUIBackgroundColorSupplementaryView *)self highlightView];
-  v6 = [v7 layer];
-  [v6 setMaskedCorners:a3];
+  highlightView = [(SearchUIBackgroundColorSupplementaryView *)self highlightView];
+  layer = [highlightView layer];
+  [layer setMaskedCorners:corners];
 }
 
 @end

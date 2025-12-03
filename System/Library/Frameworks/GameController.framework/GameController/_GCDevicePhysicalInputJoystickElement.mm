@@ -1,10 +1,10 @@
 @interface _GCDevicePhysicalInputJoystickElement
 + (unsigned)updateContextSize;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)isEqualToElement:(id)a3;
-- (BOOL)update:(void *)a3 forCollectionEvent:(id)a4 withTimestamp:(double)a5;
-- (BOOL)update:(void *)a3 forGamepadEvent:(id)a4 withTimestamp:(double)a5;
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)isEqualToElement:(id)element;
+- (BOOL)update:(void *)update forCollectionEvent:(id)event withTimestamp:(double)timestamp;
+- (BOOL)update:(void *)update forGamepadEvent:(id)event withTimestamp:(double)timestamp;
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with;
 - (GCAxis2DInput)xyAxes;
 - (GCAxisInput)xAxis;
 - (GCAxisInput)yAxis;
@@ -15,8 +15,8 @@
 - (GCPressedStateInput)pressedInput;
 - (GCTouchedStateInput)touchedInput;
 - (NSString)description;
-- (_GCDevicePhysicalInputJoystickElement)initWithParameters:(id)a3;
-- (_GCDevicePhysicalInputJoystickElement)initWithTemplate:(id)a3 context:(id)a4;
+- (_GCDevicePhysicalInputJoystickElement)initWithParameters:(id)parameters;
+- (_GCDevicePhysicalInputJoystickElement)initWithTemplate:(id)template context:(id)context;
 - (uint64_t)_down;
 - (uint64_t)_left;
 - (uint64_t)_press;
@@ -34,57 +34,57 @@
 - (uint64_t)_xy;
 - (uint64_t)_y;
 - (uint64_t)_yValueField;
-- (void)postCommit:(const void *)a3 sender:(id)a4;
-- (void)preCommit:(const void *)a3 sender:(id)a4;
+- (void)postCommit:(const void *)commit sender:(id)sender;
+- (void)preCommit:(const void *)commit sender:(id)sender;
 @end
 
 @implementation _GCDevicePhysicalInputJoystickElement
 
-- (_GCDevicePhysicalInputJoystickElement)initWithTemplate:(id)a3 context:(id)a4
+- (_GCDevicePhysicalInputJoystickElement)initWithTemplate:(id)template context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  templateCopy = template;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = _GCDevicePhysicalInputJoystickElement;
-  v8 = [(_GCDevicePhysicalInputElement *)&v21 initWithTemplate:v6 context:v7];
-  v8->_xValueFieldSlot = [v7 view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[7]];
-  v8->_yValueFieldSlot = [v7 view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[8]];
-  v8->_pressValueFieldSlot = [v7 view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[9]];
-  v8->_touchValueFieldSlot = [v7 view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:v6 slot:v6[10]];
-  v9 = [v6 xyAxes];
-  v8->_xyAxesSlot = [v7 view:v8 makeReferenceToView:v9];
+  v8 = [(_GCDevicePhysicalInputElement *)&v21 initWithTemplate:templateCopy context:contextCopy];
+  v8->_xValueFieldSlot = [contextCopy view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[7]];
+  v8->_yValueFieldSlot = [contextCopy view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[8]];
+  v8->_pressValueFieldSlot = [contextCopy view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[9]];
+  v8->_touchValueFieldSlot = [contextCopy view:v8 allocatePrimitiveSlot:1 withCopyOfValueFromView:templateCopy slot:templateCopy[10]];
+  xyAxes = [templateCopy xyAxes];
+  v8->_xyAxesSlot = [contextCopy view:v8 makeReferenceToView:xyAxes];
 
-  v10 = [v6 xAxis];
-  v8->_xAxisSlot = [v7 view:v8 makeReferenceToView:v10];
+  xAxis = [templateCopy xAxis];
+  v8->_xAxisSlot = [contextCopy view:v8 makeReferenceToView:xAxis];
 
-  v11 = [v6 yAxis];
-  v8->_yAxisSlot = [v7 view:v8 makeReferenceToView:v11];
+  yAxis = [templateCopy yAxis];
+  v8->_yAxisSlot = [contextCopy view:v8 makeReferenceToView:yAxis];
 
-  v12 = [v6 up];
-  v8->_upInputSlot = [v7 view:v8 makeReferenceToView:v12];
+  v12 = [templateCopy up];
+  v8->_upInputSlot = [contextCopy view:v8 makeReferenceToView:v12];
 
-  v13 = [v6 down];
-  v8->_downInputSlot = [v7 view:v8 makeReferenceToView:v13];
+  down = [templateCopy down];
+  v8->_downInputSlot = [contextCopy view:v8 makeReferenceToView:down];
 
-  v14 = [v6 left];
-  v8->_leftInputSlot = [v7 view:v8 makeReferenceToView:v14];
+  left = [templateCopy left];
+  v8->_leftInputSlot = [contextCopy view:v8 makeReferenceToView:left];
 
-  v15 = [v6 right];
-  v8->_rightInputSlot = [v7 view:v8 makeReferenceToView:v15];
+  right = [templateCopy right];
+  v8->_rightInputSlot = [contextCopy view:v8 makeReferenceToView:right];
 
-  v16 = [(_GCDevicePhysicalInputJoystickElement *)v6 _press];
-  if (v16)
+  _press = [(_GCDevicePhysicalInputJoystickElement *)templateCopy _press];
+  if (_press)
   {
-    v17 = [(_GCDevicePhysicalInputJoystickElement *)v6 _press];
-    v8->_pressInputSlot = [v7 view:v8 makeReferenceToView:v17];
+    _press2 = [(_GCDevicePhysicalInputJoystickElement *)templateCopy _press];
+    v8->_pressInputSlot = [contextCopy view:v8 makeReferenceToView:_press2];
   }
 
-  v18 = [(_GCDevicePhysicalInputJoystickElement *)v6 _touch];
+  _touch = [(_GCDevicePhysicalInputJoystickElement *)templateCopy _touch];
 
-  if (v18)
+  if (_touch)
   {
-    v20 = [(_GCDevicePhysicalInputJoystickElement *)v6 _touch];
-    v8->_touchInputSlot = [v7 view:v8 makeReferenceToView:v20];
+    _touch2 = [(_GCDevicePhysicalInputJoystickElement *)templateCopy _touch];
+    v8->_touchInputSlot = [contextCopy view:v8 makeReferenceToView:_touch2];
   }
 
   return v8;
@@ -92,7 +92,7 @@
 
 + (unsigned)updateContextSize
 {
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &OBJC_METACLASS____GCDevicePhysicalInputJoystickElement;
   v2 = objc_msgSendSuper2(&v12, sel_updateContextSize);
   v3 = v2 + +[_GCDevicePhysicalInputAxis2DInput updateContextSize];
@@ -106,11 +106,11 @@
   return v8 + v10 + +[_GCDevicePhysicalInputTouchInput updateContextSize]+ 2;
 }
 
-- (void)preCommit:(const void *)a3 sender:(id)a4
+- (void)preCommit:(const void *)commit sender:(id)sender
 {
   v16.receiver = self;
   v16.super_class = _GCDevicePhysicalInputJoystickElement;
-  [(_GCDevicePhysicalInputElement *)&v16 preCommit:a3 sender:a4];
+  [(_GCDevicePhysicalInputElement *)&v16 preCommit:commit sender:sender];
   v6 = MyUpdateContext_Offset_2;
   if (MyUpdateContext_Offset_2 == -1)
   {
@@ -118,7 +118,7 @@
     MyUpdateContext_Offset_2 = v6;
   }
 
-  v7 = (a3 + v6);
+  v7 = (commit + v6);
   v8 = *v7;
   if ((*v7 & 0x10) != 0)
   {
@@ -142,7 +142,7 @@ LABEL_5:
   }
 
   v9 = [(_GCDevicePhysicalInputJoystickElement *)self _x];
-  [v9 preCommit:xAxisUpdateContext(a3) sender:self];
+  [v9 preCommit:xAxisUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x40) == 0)
@@ -158,7 +158,7 @@ LABEL_6:
 
 LABEL_15:
   v10 = [(_GCDevicePhysicalInputJoystickElement *)self _y];
-  [v10 preCommit:yAxisUpdateContext(a3) sender:self];
+  [v10 preCommit:yAxisUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x80) == 0)
@@ -174,7 +174,7 @@ LABEL_7:
 
 LABEL_16:
   v11 = [(_GCDevicePhysicalInputJoystickElement *)self _up];
-  [v11 preCommit:upButtonUpdateContext(a3) sender:self];
+  [v11 preCommit:upButtonUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x100) == 0)
@@ -189,8 +189,8 @@ LABEL_8:
   }
 
 LABEL_17:
-  v12 = [(_GCDevicePhysicalInputJoystickElement *)self _down];
-  [v12 preCommit:downButtonUpdateContext(a3) sender:self];
+  _down = [(_GCDevicePhysicalInputJoystickElement *)self _down];
+  [_down preCommit:downButtonUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x200) == 0)
@@ -205,8 +205,8 @@ LABEL_9:
   }
 
 LABEL_18:
-  v13 = [(_GCDevicePhysicalInputJoystickElement *)self _left];
-  [v13 preCommit:leftButtonUpdateContext(a3) sender:self];
+  _left = [(_GCDevicePhysicalInputJoystickElement *)self _left];
+  [_left preCommit:leftButtonUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x400) == 0)
@@ -221,8 +221,8 @@ LABEL_10:
   }
 
 LABEL_19:
-  v14 = [(_GCDevicePhysicalInputJoystickElement *)self _right];
-  [v14 preCommit:rightButtonUpdateContext(a3) sender:self];
+  _right = [(_GCDevicePhysicalInputJoystickElement *)self _right];
+  [_right preCommit:rightButtonUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x800) == 0)
@@ -239,8 +239,8 @@ LABEL_21:
   }
 
 LABEL_20:
-  v15 = [(_GCDevicePhysicalInputJoystickElement *)self _press];
-  [v15 preCommit:pressUpdateContext(a3) sender:self];
+  _press = [(_GCDevicePhysicalInputJoystickElement *)self _press];
+  [_press preCommit:pressUpdateContext(commit) sender:self];
 
   if ((*v7 & 0x1000) != 0)
   {
@@ -248,11 +248,11 @@ LABEL_20:
   }
 }
 
-- (void)postCommit:(const void *)a3 sender:(id)a4
+- (void)postCommit:(const void *)commit sender:(id)sender
 {
   v16.receiver = self;
   v16.super_class = _GCDevicePhysicalInputJoystickElement;
-  [(_GCDevicePhysicalInputElement *)&v16 postCommit:a3 sender:a4];
+  [(_GCDevicePhysicalInputElement *)&v16 postCommit:commit sender:sender];
   v6 = MyUpdateContext_Offset_2;
   if (MyUpdateContext_Offset_2 == -1)
   {
@@ -260,7 +260,7 @@ LABEL_20:
     MyUpdateContext_Offset_2 = v6;
   }
 
-  v7 = (a3 + v6);
+  v7 = (commit + v6);
   v8 = *v7;
   if ((*v7 & 0x10) != 0)
   {
@@ -284,7 +284,7 @@ LABEL_5:
   }
 
   v9 = [(_GCDevicePhysicalInputJoystickElement *)self _x];
-  [v9 postCommit:xAxisUpdateContext(a3) sender:self];
+  [v9 postCommit:xAxisUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x40) == 0)
@@ -300,7 +300,7 @@ LABEL_6:
 
 LABEL_15:
   v10 = [(_GCDevicePhysicalInputJoystickElement *)self _y];
-  [v10 postCommit:yAxisUpdateContext(a3) sender:self];
+  [v10 postCommit:yAxisUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x80) == 0)
@@ -316,7 +316,7 @@ LABEL_7:
 
 LABEL_16:
   v11 = [(_GCDevicePhysicalInputJoystickElement *)self _up];
-  [v11 postCommit:upButtonUpdateContext(a3) sender:self];
+  [v11 postCommit:upButtonUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x100) == 0)
@@ -331,8 +331,8 @@ LABEL_8:
   }
 
 LABEL_17:
-  v12 = [(_GCDevicePhysicalInputJoystickElement *)self _down];
-  [v12 postCommit:downButtonUpdateContext(a3) sender:self];
+  _down = [(_GCDevicePhysicalInputJoystickElement *)self _down];
+  [_down postCommit:downButtonUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x200) == 0)
@@ -347,8 +347,8 @@ LABEL_9:
   }
 
 LABEL_18:
-  v13 = [(_GCDevicePhysicalInputJoystickElement *)self _left];
-  [v13 postCommit:leftButtonUpdateContext(a3) sender:self];
+  _left = [(_GCDevicePhysicalInputJoystickElement *)self _left];
+  [_left postCommit:leftButtonUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x400) == 0)
@@ -363,8 +363,8 @@ LABEL_10:
   }
 
 LABEL_19:
-  v14 = [(_GCDevicePhysicalInputJoystickElement *)self _right];
-  [v14 postCommit:rightButtonUpdateContext(a3) sender:self];
+  _right = [(_GCDevicePhysicalInputJoystickElement *)self _right];
+  [_right postCommit:rightButtonUpdateContext(commit) sender:self];
 
   v8 = *v7;
   if ((*v7 & 0x800) == 0)
@@ -381,8 +381,8 @@ LABEL_21:
   }
 
 LABEL_20:
-  v15 = [(_GCDevicePhysicalInputJoystickElement *)self _press];
-  [v15 postCommit:pressUpdateContext(a3) sender:self];
+  _press = [(_GCDevicePhysicalInputJoystickElement *)self _press];
+  [_press postCommit:pressUpdateContext(commit) sender:self];
 
   if ((*v7 & 0x1000) != 0)
   {
@@ -390,26 +390,26 @@ LABEL_20:
   }
 }
 
-- (BOOL)isEqualToElement:(id)a3
+- (BOOL)isEqualToElement:(id)element
 {
   v7.receiver = self;
   v7.super_class = _GCDevicePhysicalInputJoystickElement;
   v5 = [(_GCDevicePhysicalInputElement *)&v7 isEqualToElement:?];
   if (v5)
   {
-    [(_GCDevicePhysicalInputJoystickElement *)self isEqualToElement:a3, &v8];
+    [(_GCDevicePhysicalInputJoystickElement *)self isEqualToElement:element, &v8];
     LOBYTE(v5) = v8;
   }
 
   return v5;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  if (&unk_1F4E96F80 == a3)
+  if (&unk_1F4E96F80 == protocol)
   {
-    v5 = [(_GCDevicePhysicalInputJoystickElement *)self _press];
-    v3 = v5 != 0;
+    _press = [(_GCDevicePhysicalInputJoystickElement *)self _press];
+    v3 = _press != 0;
   }
 
   else
@@ -425,33 +425,33 @@ LABEL_20:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(_GCDevicePhysicalInputElement *)self identifier];
+  identifier = [(_GCDevicePhysicalInputElement *)self identifier];
   v5 = [(_GCDevicePhysicalInputJoystickElement *)self up];
   [v5 value];
   v7 = v6;
-  v8 = [(_GCDevicePhysicalInputJoystickElement *)self down];
-  [v8 value];
+  down = [(_GCDevicePhysicalInputJoystickElement *)self down];
+  [down value];
   v10 = v9;
-  v11 = [(_GCDevicePhysicalInputJoystickElement *)self left];
-  [v11 value];
+  left = [(_GCDevicePhysicalInputJoystickElement *)self left];
+  [left value];
   v13 = v12;
-  v14 = [(_GCDevicePhysicalInputJoystickElement *)self right];
-  [v14 value];
-  v16 = [v3 stringWithFormat:@"<Joystick '%@' up = %f, down = %f, left = %f, right = %f>", v4, *&v7, *&v10, *&v13, v15];;
+  right = [(_GCDevicePhysicalInputJoystickElement *)self right];
+  [right value];
+  v16 = [v3 stringWithFormat:@"<Joystick '%@' up = %f, down = %f, left = %f, right = %f>", identifier, *&v7, *&v10, *&v13, v15];;
 
   return v16;
 }
 
-- (_GCDevicePhysicalInputJoystickElement)initWithParameters:(id)a3
+- (_GCDevicePhysicalInputJoystickElement)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v53.receiver = self;
   v53.super_class = _GCDevicePhysicalInputJoystickElement;
-  v5 = [(_GCDevicePhysicalInputElement *)&v53 initWithParameters:v4];
+  v5 = [(_GCDevicePhysicalInputElement *)&v53 initWithParameters:parametersCopy];
   v6 = v5;
-  if (v4)
+  if (parametersCopy)
   {
-    v7 = v4[15];
+    v7 = parametersCopy[15];
     if (!v5)
     {
       goto LABEL_4;
@@ -468,9 +468,9 @@ LABEL_3:
   }
 
 LABEL_4:
-  if (v4)
+  if (parametersCopy)
   {
-    v8 = v4[16];
+    v8 = parametersCopy[16];
     if (!v6)
     {
       goto LABEL_7;
@@ -487,9 +487,9 @@ LABEL_6:
   }
 
 LABEL_7:
-  if (v4)
+  if (parametersCopy)
   {
-    v9 = v4[17];
+    v9 = parametersCopy[17];
     if (!v6)
     {
       goto LABEL_10;
@@ -506,9 +506,9 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (v4)
+  if (parametersCopy)
   {
-    v10 = v4[18];
+    v10 = parametersCopy[18];
     if (!v6)
     {
       goto LABEL_13;
@@ -527,9 +527,9 @@ LABEL_12:
 LABEL_13:
   v11 = objc_opt_new();
   v12 = v11;
-  if (v4)
+  if (parametersCopy)
   {
-    v13 = *(v4 + 40);
+    v13 = *(parametersCopy + 40);
   }
 
   else
@@ -541,9 +541,9 @@ LABEL_13:
   [(_GCDevicePhysicalInputAxis2DInputParameters *)v12 setCanWrap:?];
   v14 = objc_opt_new();
   v15 = v14;
-  if (v4)
+  if (parametersCopy)
   {
-    v16 = *(v4 + 40);
+    v16 = *(parametersCopy + 40);
   }
 
   else
@@ -555,10 +555,10 @@ LABEL_13:
   [(_GCDevicePhysicalInputAxisInputParameters *)v15 setCanWrap:?];
   v17 = objc_opt_new();
   v18 = v17;
-  if (v4)
+  if (parametersCopy)
   {
     [(_GCDevicePhysicalInputPressInputParameters *)v17 setAnalog:?];
-    v19 = *(v4 + 11);
+    v19 = *(parametersCopy + 11);
   }
 
   else
@@ -568,22 +568,22 @@ LABEL_13:
   }
 
   [(_GCDevicePhysicalInputPressInputParameters *)v18 setPressedThreshold:v19];
-  v20 = [(_GCDevicePhysicalInputJoystickElementParameters *)v4 xySources];
-  [(_GCDevicePhysicalInputAxis2DInputParameters *)v12 setSources:v20];
+  xySources = [(_GCDevicePhysicalInputJoystickElementParameters *)parametersCopy xySources];
+  [(_GCDevicePhysicalInputAxis2DInputParameters *)v12 setSources:xySources];
 
   [[_GCDevicePhysicalInputAxis2DInput alloc] initWithParameters:v12];
   v21 = OUTLINED_FUNCTION_21();
   v52 = v22;
   v23 = OUTLINED_FUNCTION_29([v21 view:? makeReferenceToView:?], 88);
-  v24 = [(_GCDevicePhysicalInputJoystickElementParameters *)v23 xSources];
-  [(_GCDevicePhysicalInputAxisInputParameters *)v15 setSources:v24];
+  xSources = [(_GCDevicePhysicalInputJoystickElementParameters *)v23 xSources];
+  [(_GCDevicePhysicalInputAxisInputParameters *)v15 setSources:xSources];
 
   [[_GCDevicePhysicalInputAxisInput alloc] initWithParameters:v15];
   v25 = OUTLINED_FUNCTION_21();
   v51 = v26;
   v27 = OUTLINED_FUNCTION_29([v25 view:? makeReferenceToView:?], 96);
-  v28 = [(_GCDevicePhysicalInputJoystickElementParameters *)v27 ySources];
-  [(_GCDevicePhysicalInputAxisInputParameters *)v15 setSources:v28];
+  ySources = [(_GCDevicePhysicalInputJoystickElementParameters *)v27 ySources];
+  [(_GCDevicePhysicalInputAxisInputParameters *)v15 setSources:ySources];
 
   [[_GCDevicePhysicalInputAxisInput alloc] initWithParameters:v15];
   v29 = OUTLINED_FUNCTION_21();
@@ -592,7 +592,7 @@ LABEL_13:
   [(_GCDevicePhysicalInputJoystickElementParameters *)v31 upSources];
   objc_claimAutoreleasedReturnValue();
   v32 = OUTLINED_FUNCTION_33();
-  [(_GCDevicePhysicalInputPressInputParameters *)v32 setSources:v28];
+  [(_GCDevicePhysicalInputPressInputParameters *)v32 setSources:ySources];
 
   [[_GCDevicePhysicalInputPressInput alloc] initWithParameters:v18];
   v33 = OUTLINED_FUNCTION_21();
@@ -601,7 +601,7 @@ LABEL_13:
   [(_GCDevicePhysicalInputJoystickElementParameters *)v35 downSources];
   objc_claimAutoreleasedReturnValue();
   v36 = OUTLINED_FUNCTION_33();
-  [(_GCDevicePhysicalInputPressInputParameters *)v36 setSources:v28];
+  [(_GCDevicePhysicalInputPressInputParameters *)v36 setSources:ySources];
 
   v37 = [[_GCDevicePhysicalInputPressInput alloc] initWithParameters:v18];
   v38 = [OUTLINED_FUNCTION_21() view:? makeReferenceToView:?];
@@ -609,25 +609,25 @@ LABEL_13:
   [(_GCDevicePhysicalInputJoystickElementParameters *)v39 leftSources];
   objc_claimAutoreleasedReturnValue();
   v40 = OUTLINED_FUNCTION_33();
-  [(_GCDevicePhysicalInputPressInputParameters *)v40 setSources:v28];
+  [(_GCDevicePhysicalInputPressInputParameters *)v40 setSources:ySources];
 
   v41 = [[_GCDevicePhysicalInputPressInput alloc] initWithParameters:v18];
   v42 = [OUTLINED_FUNCTION_21() view:? makeReferenceToView:?];
   v43 = OUTLINED_FUNCTION_29(v42, 128);
-  v44 = [(_GCDevicePhysicalInputJoystickElementParameters *)v43 rightSources];
-  [(_GCDevicePhysicalInputPressInputParameters *)v18 setSources:v44];
+  rightSources = [(_GCDevicePhysicalInputJoystickElementParameters *)v43 rightSources];
+  [(_GCDevicePhysicalInputPressInputParameters *)v18 setSources:rightSources];
 
   v45 = [[_GCDevicePhysicalInputPressInput alloc] initWithParameters:v18];
   v6->_rightInputSlot = [OUTLINED_FUNCTION_21() view:? makeReferenceToView:?];
-  if (v4 && v4[13])
+  if (parametersCopy && parametersCopy[13])
   {
-    v46 = [[_GCDevicePhysicalInputPressInput alloc] initWithParameters:v4[13]];
+    v46 = [[_GCDevicePhysicalInputPressInput alloc] initWithParameters:parametersCopy[13]];
     v6->_pressInputSlot = [OUTLINED_FUNCTION_21() view:? makeReferenceToView:?];
   }
 
-  if (v4 && v4[14])
+  if (parametersCopy && parametersCopy[14])
   {
-    v47 = [[_GCDevicePhysicalInputTouchInput alloc] initWithParameters:v4[14]];
+    v47 = [[_GCDevicePhysicalInputTouchInput alloc] initWithParameters:parametersCopy[14]];
     v6->_touchInputSlot = [OUTLINED_FUNCTION_21() view:? makeReferenceToView:?];
   }
 
@@ -679,7 +679,7 @@ LABEL_13:
   if (result)
   {
     v1 = result;
-    v2 = [(_GCDevicePhysicalInputView *)result dataSource];
+    dataSource = [(_GCDevicePhysicalInputView *)result dataSource];
     if (*(v1 + 144))
     {
       OUTLINED_FUNCTION_19();
@@ -701,7 +701,7 @@ LABEL_13:
   if (result)
   {
     v1 = result;
-    v2 = [(_GCDevicePhysicalInputView *)result dataSource];
+    dataSource = [(_GCDevicePhysicalInputView *)result dataSource];
     if (*(v1 + 152))
     {
       OUTLINED_FUNCTION_19();
@@ -718,7 +718,7 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)update:(void *)a3 forUsages:(unint64_t)a4 with:(id)a5
+- (BOOL)update:(void *)update forUsages:(unint64_t)usages with:(id)with
 {
   v73.receiver = self;
   v73.super_class = _GCDevicePhysicalInputJoystickElement;
@@ -728,18 +728,18 @@ LABEL_13:
   {
     v10 = +[_GCDevicePhysicalInputElement updateContextSize];
     MyUpdateContext_Offset_2 = v10;
-    if ((a4 & 2) == 0)
+    if ((usages & 2) == 0)
     {
       goto LABEL_24;
     }
   }
 
-  else if ((a4 & 2) == 0)
+  else if ((usages & 2) == 0)
   {
     goto LABEL_24;
   }
 
-  if (a5)
+  if (with)
   {
     v11 = OUTLINED_FUNCTION_49(56);
     if (self)
@@ -762,8 +762,8 @@ LABEL_5:
   v12 = 0;
 LABEL_6:
   v70 = v12;
-  *(a3 + v10) = *(a3 + v10) & 0xFFFE | v12;
-  if (a5)
+  *(update + v10) = *(update + v10) & 0xFFFE | v12;
+  if (with)
   {
     v13 = OUTLINED_FUNCTION_49(64);
     if (self)
@@ -796,8 +796,8 @@ LABEL_8:
   }
 
 LABEL_11:
-  *(a3 + v10) = *(a3 + v10) & 0xFFFD | v15;
-  if (a5)
+  *(update + v10) = *(update + v10) & 0xFFFD | v15;
+  if (with)
   {
     v16 = OUTLINED_FUNCTION_49(72);
   }
@@ -827,8 +827,8 @@ LABEL_11:
     v18 = 0;
   }
 
-  *(a3 + v10) = *(a3 + v10) & 0xFFFB | v18;
-  if (a5)
+  *(update + v10) = *(update + v10) & 0xFFFB | v18;
+  if (with)
   {
     v19 = OUTLINED_FUNCTION_49(80);
   }
@@ -859,7 +859,7 @@ LABEL_11:
     v22 = 0;
   }
 
-  *(a3 + v10) = *(a3 + v10) & 0xFFF7 | v22;
+  *(update + v10) = *(update + v10) & 0xFFF7 | v22;
   v9 = v9 | v70 | v21 | v20;
 LABEL_24:
   v23 = [(_GCDevicePhysicalInputJoystickElement *)self _xy];
@@ -889,17 +889,17 @@ LABEL_24:
     v25 = 2;
   }
 
-  v26 = a3 + v24;
-  v27 = [(_GCDevicePhysicalInputJoystickElement *)a5 _xy];
-  v71 = [v23 update:&v26[v25] forUsages:a4 with:v27];
+  v26 = update + v24;
+  v27 = [(_GCDevicePhysicalInputJoystickElement *)with _xy];
+  v71 = [v23 update:&v26[v25] forUsages:usages with:v27];
   OUTLINED_FUNCTION_24();
   OUTLINED_FUNCTION_16(v28 & 0xFFEF);
 
   [(_GCDevicePhysicalInputJoystickElement *)self _x];
   v29 = OUTLINED_FUNCTION_35();
   updated = xAxisUpdateContext(v29);
-  v31 = [(_GCDevicePhysicalInputJoystickElement *)a5 _x];
-  [v23 update:updated forUsages:a4 with:v31];
+  v31 = [(_GCDevicePhysicalInputJoystickElement *)with _x];
+  [v23 update:updated forUsages:usages with:v31];
   OUTLINED_FUNCTION_24();
   OUTLINED_FUNCTION_16(v32 & 0xFFDF);
   v34 = v9 | v33;
@@ -907,8 +907,8 @@ LABEL_24:
   [(_GCDevicePhysicalInputJoystickElement *)self _y];
   v35 = OUTLINED_FUNCTION_13_0();
   yAxisUpdateContext(v35);
-  [(_GCDevicePhysicalInputJoystickElement *)a5 _y];
-  v36 = a4;
+  [(_GCDevicePhysicalInputJoystickElement *)with _y];
+  usagesCopy = usages;
   [OUTLINED_FUNCTION_30() update:? forUsages:? with:?];
   OUTLINED_FUNCTION_24();
   OUTLINED_FUNCTION_16(v37 & 0xFFBF);
@@ -917,7 +917,7 @@ LABEL_24:
   [(_GCDevicePhysicalInputJoystickElement *)self _up];
   v40 = OUTLINED_FUNCTION_13_0();
   v41 = upButtonUpdateContext(v40);
-  [(_GCDevicePhysicalInputJoystickElement *)a5 _up];
+  [(_GCDevicePhysicalInputJoystickElement *)with _up];
   [OUTLINED_FUNCTION_30() update:? forUsages:? with:?];
   OUTLINED_FUNCTION_24();
   OUTLINED_FUNCTION_16(v42 & 0xFF7F);
@@ -926,15 +926,15 @@ LABEL_24:
   [(_GCDevicePhysicalInputJoystickElement *)self _down];
   v44 = OUTLINED_FUNCTION_13_0();
   downButtonUpdateContext(v44);
-  v45 = [(_GCDevicePhysicalInputJoystickElement *)a5 _down];
-  v46 = OUTLINED_FUNCTION_20(v45);
+  _down = [(_GCDevicePhysicalInputJoystickElement *)with _down];
+  v46 = OUTLINED_FUNCTION_20(_down);
   OUTLINED_FUNCTION_24();
   OUTLINED_FUNCTION_16(v47 & 0xFEFF);
 
   [(_GCDevicePhysicalInputJoystickElement *)self _left];
   v48 = OUTLINED_FUNCTION_13_0();
   v49 = leftButtonUpdateContext(v48);
-  [(_GCDevicePhysicalInputJoystickElement *)a5 _left];
+  [(_GCDevicePhysicalInputJoystickElement *)with _left];
   [OUTLINED_FUNCTION_30() update:? forUsages:? with:?];
   OUTLINED_FUNCTION_24();
   OUTLINED_FUNCTION_16(v50 & 0xFDFF);
@@ -943,8 +943,8 @@ LABEL_24:
   [(_GCDevicePhysicalInputJoystickElement *)self _right];
   v53 = OUTLINED_FUNCTION_13_0();
   rightButtonUpdateContext(v53);
-  v54 = [(_GCDevicePhysicalInputJoystickElement *)a5 _right];
-  OUTLINED_FUNCTION_20(v54);
+  _right = [(_GCDevicePhysicalInputJoystickElement *)with _right];
+  OUTLINED_FUNCTION_20(_right);
   OUTLINED_FUNCTION_24();
   OUTLINED_FUNCTION_16(v55 & 0xFBFF);
   v57 = v52 | v56;
@@ -952,8 +952,8 @@ LABEL_24:
   [(_GCDevicePhysicalInputJoystickElement *)self _press];
   v58 = OUTLINED_FUNCTION_13_0();
   pressUpdateContext(v58);
-  v59 = [(_GCDevicePhysicalInputJoystickElement *)a5 _press];
-  OUTLINED_FUNCTION_20(v59);
+  _press = [(_GCDevicePhysicalInputJoystickElement *)with _press];
+  OUTLINED_FUNCTION_20(_press);
   OUTLINED_FUNCTION_24();
   OUTLINED_FUNCTION_16(v60 & 0xF7FF);
   v62 = v57 | v61;
@@ -961,8 +961,8 @@ LABEL_24:
   [(_GCDevicePhysicalInputJoystickElement *)self _touch];
   v63 = OUTLINED_FUNCTION_14_0();
   v64 = touchUpdateContext(v63);
-  v65 = [(_GCDevicePhysicalInputJoystickElement *)a5 _touch];
-  [(_GCDevicePhysicalInputJoystickElement *)self update:v64 forUsages:v36 with:v65];
+  _touch = [(_GCDevicePhysicalInputJoystickElement *)with _touch];
+  [(_GCDevicePhysicalInputJoystickElement *)self update:v64 forUsages:usagesCopy with:_touch];
   OUTLINED_FUNCTION_24();
   OUTLINED_FUNCTION_16(v66 & 0xEFFF);
   v68 = v72 | v62 | v67;
@@ -1014,7 +1014,7 @@ LABEL_24:
 {
   if (result)
   {
-    v1 = [(_GCDevicePhysicalInputView *)result dataSource];
+    dataSource = [(_GCDevicePhysicalInputView *)result dataSource];
     OUTLINED_FUNCTION_19();
     [v2 view:? viewForSlot:?];
     return objc_claimAutoreleasedReturnValue();
@@ -1027,7 +1027,7 @@ LABEL_24:
 {
   if (result)
   {
-    v1 = [(_GCDevicePhysicalInputView *)result dataSource];
+    dataSource = [(_GCDevicePhysicalInputView *)result dataSource];
     OUTLINED_FUNCTION_19();
     [v2 view:? viewForSlot:?];
     return objc_claimAutoreleasedReturnValue();
@@ -1040,7 +1040,7 @@ LABEL_24:
 {
   if (result)
   {
-    v1 = [(_GCDevicePhysicalInputView *)result dataSource];
+    dataSource = [(_GCDevicePhysicalInputView *)result dataSource];
     OUTLINED_FUNCTION_19();
     [v2 view:? viewForSlot:?];
     return objc_claimAutoreleasedReturnValue();
@@ -1053,7 +1053,7 @@ LABEL_24:
 {
   if (result)
   {
-    v1 = [(_GCDevicePhysicalInputView *)result dataSource];
+    dataSource = [(_GCDevicePhysicalInputView *)result dataSource];
     OUTLINED_FUNCTION_19();
     [v2 view:? viewForSlot:?];
     return objc_claimAutoreleasedReturnValue();
@@ -1066,7 +1066,7 @@ LABEL_24:
 {
   if (result)
   {
-    v1 = [(_GCDevicePhysicalInputView *)result dataSource];
+    dataSource = [(_GCDevicePhysicalInputView *)result dataSource];
     OUTLINED_FUNCTION_19();
     [v2 view:? viewForSlot:?];
     return objc_claimAutoreleasedReturnValue();
@@ -1079,7 +1079,7 @@ LABEL_24:
 {
   if (result)
   {
-    v1 = [(_GCDevicePhysicalInputView *)result dataSource];
+    dataSource = [(_GCDevicePhysicalInputView *)result dataSource];
     OUTLINED_FUNCTION_19();
     [v2 view:? viewForSlot:?];
     return objc_claimAutoreleasedReturnValue();
@@ -1092,7 +1092,7 @@ LABEL_24:
 {
   if (result)
   {
-    v1 = [(_GCDevicePhysicalInputView *)result dataSource];
+    dataSource = [(_GCDevicePhysicalInputView *)result dataSource];
     OUTLINED_FUNCTION_19();
     [v2 view:? viewForSlot:?];
     return objc_claimAutoreleasedReturnValue();
@@ -1131,40 +1131,40 @@ LABEL_24:
 
 - (GCLinearInput)down
 {
-  v2 = [(_GCDevicePhysicalInputJoystickElement *)self _down];
+  _down = [(_GCDevicePhysicalInputJoystickElement *)self _down];
 
-  return v2;
+  return _down;
 }
 
 - (GCLinearInput)left
 {
-  v2 = [(_GCDevicePhysicalInputJoystickElement *)self _left];
+  _left = [(_GCDevicePhysicalInputJoystickElement *)self _left];
 
-  return v2;
+  return _left;
 }
 
 - (GCLinearInput)right
 {
-  v2 = [(_GCDevicePhysicalInputJoystickElement *)self _right];
+  _right = [(_GCDevicePhysicalInputJoystickElement *)self _right];
 
-  return v2;
+  return _right;
 }
 
 - (GCPressedStateInput)pressedInput
 {
-  v2 = [(_GCDevicePhysicalInputJoystickElement *)self _press];
+  _press = [(_GCDevicePhysicalInputJoystickElement *)self _press];
 
-  return v2;
+  return _press;
 }
 
 - (GCTouchedStateInput)touchedInput
 {
-  v2 = [(_GCDevicePhysicalInputJoystickElement *)self _touch];
+  _touch = [(_GCDevicePhysicalInputJoystickElement *)self _touch];
 
-  return v2;
+  return _touch;
 }
 
-- (BOOL)update:(void *)a3 forGamepadEvent:(id)a4 withTimestamp:(double)a5
+- (BOOL)update:(void *)update forGamepadEvent:(id)event withTimestamp:(double)timestamp
 {
   OUTLINED_FUNCTION_56();
   v67 = v14;
@@ -1297,7 +1297,7 @@ LABEL_10:
   {
     [v7 floatValueForElement:v10];
     v54 = OUTLINED_FUNCTION_39();
-    v55 = [(_GCDevicePhysicalInputJoystickElement *)v54 _press];
+    _press = [(_GCDevicePhysicalInputJoystickElement *)v54 _press];
     pressUpdateContext(v5);
     v56 = OUTLINED_FUNCTION_25();
     [_GCDevicePhysicalInputPressInput update:v57 withValue:v58 timestamp:v56];
@@ -1309,7 +1309,7 @@ LABEL_10:
   {
     [v7 floatValueForElement:v8];
     v60 = OUTLINED_FUNCTION_39();
-    v61 = [(_GCDevicePhysicalInputJoystickElement *)v60 _touch];
+    _touch = [(_GCDevicePhysicalInputJoystickElement *)v60 _touch];
     touchUpdateContext(v5);
     v62 = OUTLINED_FUNCTION_25();
     [_GCDevicePhysicalInputTouchInput update:v63 withValue:v64 timestamp:v62];
@@ -1321,7 +1321,7 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)update:(void *)a3 forCollectionEvent:(id)a4 withTimestamp:(double)a5
+- (BOOL)update:(void *)update forCollectionEvent:(id)event withTimestamp:(double)timestamp
 {
   OUTLINED_FUNCTION_56();
   v67 = v14;
@@ -1454,7 +1454,7 @@ LABEL_10:
   {
     [v7 floatValueForKey:v10];
     v54 = OUTLINED_FUNCTION_39();
-    v55 = [(_GCDevicePhysicalInputJoystickElement *)v54 _press];
+    _press = [(_GCDevicePhysicalInputJoystickElement *)v54 _press];
     pressUpdateContext(v5);
     v56 = OUTLINED_FUNCTION_25();
     [_GCDevicePhysicalInputPressInput update:v57 withValue:v58 timestamp:v56];
@@ -1466,7 +1466,7 @@ LABEL_10:
   {
     [v7 floatValueForKey:v8];
     v60 = OUTLINED_FUNCTION_39();
-    v61 = [(_GCDevicePhysicalInputJoystickElement *)v60 _touch];
+    _touch = [(_GCDevicePhysicalInputJoystickElement *)v60 _touch];
     touchUpdateContext(v5);
     v62 = OUTLINED_FUNCTION_25();
     [_GCDevicePhysicalInputTouchInput update:v63 withValue:v64 timestamp:v62];

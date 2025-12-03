@@ -94,8 +94,8 @@
   v3 = [(CUIKSingleDayTimelineLayoutPartition *)&v9 description];
   v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:self->_topBoundaryTime];
   v5 = [(NSMutableArray *)self->_stackOfOccurrences count];
-  v6 = [(CUIKSingleDayTimelineLayoutPartition *)self peekOccurrence];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ topBoundary: [%@], initialStartBoundary: [%f], endBoundary: [%f], number of stacked occurrences: [%lu], top occurrence on stack: [%@]", v3, v4, *&self->_initialStartBoundary, *&self->_endBoundary, v5, v6];
+  peekOccurrence = [(CUIKSingleDayTimelineLayoutPartition *)self peekOccurrence];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ topBoundary: [%@], initialStartBoundary: [%f], endBoundary: [%f], number of stacked occurrences: [%lu], top occurrence on stack: [%@]", v3, v4, *&self->_initialStartBoundary, *&self->_endBoundary, v5, peekOccurrence];
 
   return v7;
 }

@@ -1,12 +1,12 @@
 @interface _UITextFieldImageBackgroundView
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 @end
 
 @implementation _UITextFieldImageBackgroundView
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if (sel_setCornerRadius_ == a3)
+  if (sel_setCornerRadius_ == selector)
   {
 
     return dyld_program_sdk_at_least();

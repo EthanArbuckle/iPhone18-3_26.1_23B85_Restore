@@ -1,17 +1,17 @@
 @interface PXAutoScroller
-- (BOOL)autoscrollWithOffset:(CGPoint)a3;
+- (BOOL)autoscrollWithOffset:(CGPoint)offset;
 - (CGPoint)_autoscrollDirection;
-- (CGRect)visibleRectForScrollView:(id)a3;
+- (CGRect)visibleRectForScrollView:(id)view;
 - (PXAutoScroller)init;
-- (PXAutoScroller)initWithTargetScrollView:(id)a3;
+- (PXAutoScroller)initWithTargetScrollView:(id)view;
 - (PXAutoScrollerDelegate)delegate;
-- (void)_setAutoscrollDirection:(CGPoint)a3;
-- (void)_setRepeating:(BOOL)a3;
-- (void)setDelegate:(id)a3;
+- (void)_setAutoscrollDirection:(CGPoint)direction;
+- (void)_setRepeating:(BOOL)repeating;
+- (void)setDelegate:(id)delegate;
 - (void)startRepeating;
 - (void)stopRepeating;
-- (void)updateWithTimestamp:(double)a3;
-- (void)updateWithUserInteractionLocation:(CGPoint)a3 inCoordinateSpace:(id)a4;
+- (void)updateWithTimestamp:(double)timestamp;
+- (void)updateWithUserInteractionLocation:(CGPoint)location inCoordinateSpace:(id)space;
 @end
 
 @implementation PXAutoScroller
@@ -32,12 +32,12 @@
   return WeakRetained;
 }
 
-- (void)_setRepeating:(BOOL)a3
+- (void)_setRepeating:(BOOL)repeating
 {
-  if (self->__repeating != a3)
+  if (self->__repeating != repeating)
   {
-    self->__repeating = a3;
-    if (a3)
+    self->__repeating = repeating;
+    if (repeating)
     {
       [(PXAutoScroller *)self _setLastUpdateTimestamp:0.0];
 
@@ -52,68 +52,68 @@
   }
 }
 
-- (void)_setAutoscrollDirection:(CGPoint)a3
+- (void)_setAutoscrollDirection:(CGPoint)direction
 {
-  if (a3.x != self->__autoscrollDirection.x || a3.y != self->__autoscrollDirection.y)
+  if (direction.x != self->__autoscrollDirection.x || direction.y != self->__autoscrollDirection.y)
   {
-    self->__autoscrollDirection = a3;
-    v4 = a3.y != *(MEMORY[0x1E695EFF8] + 8) || a3.x != *MEMORY[0x1E695EFF8];
+    self->__autoscrollDirection = direction;
+    v4 = direction.y != *(MEMORY[0x1E695EFF8] + 8) || direction.x != *MEMORY[0x1E695EFF8];
     [(PXAutoScroller *)self _setRepeating:v4];
   }
 }
 
-- (BOOL)autoscrollWithOffset:(CGPoint)a3
+- (BOOL)autoscrollWithOffset:(CGPoint)offset
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v5 handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:104 description:{@"Method %s is a responsibility of subclass %@", "-[PXAutoScroller autoscrollWithOffset:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:104 description:{@"Method %s is a responsibility of subclass %@", "-[PXAutoScroller autoscrollWithOffset:]", v7}];
 
   abort();
 }
 
 - (void)stopRepeating
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:100 description:{@"Method %s is a responsibility of subclass %@", "-[PXAutoScroller stopRepeating]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:100 description:{@"Method %s is a responsibility of subclass %@", "-[PXAutoScroller stopRepeating]", v6}];
 
   abort();
 }
 
 - (void)startRepeating
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:96 description:{@"Method %s is a responsibility of subclass %@", "-[PXAutoScroller startRepeating]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:96 description:{@"Method %s is a responsibility of subclass %@", "-[PXAutoScroller startRepeating]", v6}];
 
   abort();
 }
 
-- (CGRect)visibleRectForScrollView:(id)a3
+- (CGRect)visibleRectForScrollView:(id)view
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
+  viewCopy = view;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
-  [v6 handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:92 description:{@"Method %s is a responsibility of subclass %@", "-[PXAutoScroller visibleRectForScrollView:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:92 description:{@"Method %s is a responsibility of subclass %@", "-[PXAutoScroller visibleRectForScrollView:]", v8}];
 
   abort();
 }
 
-- (void)updateWithTimestamp:(double)a3
+- (void)updateWithTimestamp:(double)timestamp
 {
   if ([(PXAutoScroller *)self _isRepeating])
   {
     [(PXAutoScroller *)self _lastUpdateTimestamp];
     v6 = v5;
-    [(PXAutoScroller *)self _setLastUpdateTimestamp:a3];
+    [(PXAutoScroller *)self _setLastUpdateTimestamp:timestamp];
     if (v6 > 0.0)
     {
-      v7 = a3 - v6;
-      if (a3 - v6 < 0.0)
+      v7 = timestamp - v6;
+      if (timestamp - v6 < 0.0)
       {
         v7 = 0.0;
       }
@@ -135,28 +135,28 @@
 
       if ([(PXAutoScroller *)self autoscrollWithOffset:vmulq_n_f64(vmulq_n_f64(vminnmq_f64(v18, _Q2), v20), v24)]&& self->_delegateRespondsTo.didAutoscrollWithTimestamp)
       {
-        v25 = [(PXAutoScroller *)self delegate];
-        [v25 autoScroller:self didAutoscrollWithTimestamp:a3];
+        delegate = [(PXAutoScroller *)self delegate];
+        [delegate autoScroller:self didAutoscrollWithTimestamp:timestamp];
       }
     }
   }
 }
 
-- (void)updateWithUserInteractionLocation:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (void)updateWithUserInteractionLocation:(CGPoint)location inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(PXAutoScroller *)self scrollView];
-  [(PXAutoScroller *)self visibleRectForScrollView:v8];
+  y = location.y;
+  x = location.x;
+  spaceCopy = space;
+  scrollView = [(PXAutoScroller *)self scrollView];
+  [(PXAutoScroller *)self visibleRectForScrollView:scrollView];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
   [(PXAutoScroller *)self _margin];
   v18 = v17;
-  v25 = v8;
-  [v7 convertPoint:v25 toCoordinateSpace:{x, y}];
+  v25 = scrollView;
+  [spaceCopy convertPoint:v25 toCoordinateSpace:{x, y}];
   v20 = v19;
   v22 = v21;
 
@@ -190,9 +190,9 @@
   [(PXAutoScroller *)self _setAutoscrollDirection:v20 - v28.origin.x, v22 - v28.origin.y];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -202,16 +202,16 @@
   }
 }
 
-- (PXAutoScroller)initWithTargetScrollView:(id)a3
+- (PXAutoScroller)initWithTargetScrollView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = PXAutoScroller;
   v6 = [(PXAutoScroller *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_scrollView, a3);
+    objc_storeStrong(&v6->_scrollView, view);
     *&v7->__margin = xmmword_1B4074EE0;
   }
 
@@ -220,8 +220,8 @@
 
 - (PXAutoScroller)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXAutoScroller init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAutoScroller.m" lineNumber:29 description:{@"%s is not available as initializer", "-[PXAutoScroller init]"}];
 
   abort();
 }

@@ -8,8 +8,8 @@
 {
   [(ACCPlatformProcessAssertion *)self setStartTime:0];
   [(ACCPlatformProcessAssertion *)self invalidate];
-  v3 = [(ACCPlatformProcessAssertion *)self processAssertionTimer];
-  dispatch_source_cancel(v3);
+  processAssertionTimer = [(ACCPlatformProcessAssertion *)self processAssertionTimer];
+  dispatch_source_cancel(processAssertionTimer);
 
   [(ACCPlatformProcessAssertion *)self setProcessAssertionTimer:0];
   v4.receiver = self;

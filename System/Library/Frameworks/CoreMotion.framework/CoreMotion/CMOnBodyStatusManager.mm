@@ -5,9 +5,9 @@
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
-- (void)setPropertiesWithDictionary:(id)a3;
-- (void)startOnBodyStatusDetectionPrivateToQueue:(id)a3 withParameters:(id)a4 handler:(id)a5;
-- (void)startOnBodyStatusDetectionToQueue:(id)a3 withParameters:(id)a4 handler:(id)a5;
+- (void)setPropertiesWithDictionary:(id)dictionary;
+- (void)startOnBodyStatusDetectionPrivateToQueue:(id)queue withParameters:(id)parameters handler:(id)handler;
+- (void)startOnBodyStatusDetectionToQueue:(id)queue withParameters:(id)parameters handler:(id)handler;
 - (void)stopOnBodyStatusDetection;
 - (void)stopOnBodyStatusDetectionPrivate;
 @end
@@ -68,7 +68,7 @@
   return qword_1ED71CB20;
 }
 
-- (void)startOnBodyStatusDetectionToQueue:(id)a3 withParameters:(id)a4 handler:(id)a5
+- (void)startOnBodyStatusDetectionToQueue:(id)queue withParameters:(id)parameters handler:(id)handler
 {
   fPrivateQueue = self->fPrivateQueue;
   v6[0] = MEMORY[0x1E69E9820];
@@ -76,9 +76,9 @@
   v6[2] = sub_19B6249BC;
   v6[3] = &unk_1E7533678;
   v6[4] = self;
-  v6[5] = a3;
-  v6[6] = a4;
-  v6[7] = a5;
+  v6[5] = queue;
+  v6[6] = parameters;
+  v6[7] = handler;
   dispatch_async(fPrivateQueue, v6);
 }
 
@@ -93,9 +93,9 @@
   dispatch_sync(fPrivateQueue, block);
 }
 
-- (void)setPropertiesWithDictionary:(id)a3
+- (void)setPropertiesWithDictionary:(id)dictionary
 {
-  if (sub_19B6E9540(a3))
+  if (sub_19B6E9540(dictionary))
   {
     fPrivateQueue = self->fPrivateQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -103,7 +103,7 @@
     v6[2] = sub_19B624AD4;
     v6[3] = &unk_1E7532A00;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = dictionary;
     dispatch_sync(fPrivateQueue, v6);
   }
 }
@@ -127,27 +127,27 @@
   }
 }
 
-- (void)startOnBodyStatusDetectionPrivateToQueue:(id)a3 withParameters:(id)a4 handler:(id)a5
+- (void)startOnBodyStatusDetectionPrivateToQueue:(id)queue withParameters:(id)parameters handler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a3 && a5)
+  if (queue && handler)
   {
     fOnBodyStatusQueue = self->fOnBodyStatusQueue;
-    if (fOnBodyStatusQueue != a3)
+    if (fOnBodyStatusQueue != queue)
     {
 
-      self->fOnBodyStatusQueue = a3;
+      self->fOnBodyStatusQueue = queue;
     }
 
     fOnBodyStatusHandler = self->fOnBodyStatusHandler;
-    if (fOnBodyStatusHandler != a5)
+    if (fOnBodyStatusHandler != handler)
     {
 
-      self->fOnBodyStatusHandler = objc_msgSend_copy(a5, v11, v12);
+      self->fOnBodyStatusHandler = objc_msgSend_copy(handler, v11, v12);
     }
 
-    objc_msgSend_connect(self, a2, a3);
-    if (sub_19B6E9540(a4))
+    objc_msgSend_connect(self, a2, queue);
+    if (sub_19B6E9540(parameters))
     {
       sub_19B44BE58();
     }

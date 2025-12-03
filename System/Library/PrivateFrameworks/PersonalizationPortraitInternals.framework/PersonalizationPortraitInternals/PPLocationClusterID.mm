@@ -1,13 +1,13 @@
 @interface PPLocationClusterID
-+ (BOOL)asClusterIDPlacemark:(id)a3 isEqualToPlacemark:(id)a4;
-+ (id)broadenClusterId:(id)a3;
-+ (id)clustersWithRecords:(id)a3;
-+ (id)latLongTableWithClusters:(id)a3;
-+ (id)lookupTableWithRecords:(id)a3;
-+ (void)aggregateRecords:(void *)a3 toClusters:(void *)a4 withLookupTable:;
-- (BOOL)isEqual:(id)a3;
-- (PPLocationClusterID)initWithName:(id)a3 subThoroughfare:(id)a4 thoroughfare:(id)a5 subLocality:(id)a6 locality:(id)a7 administrativeArea:(id)a8;
-- (PPLocationClusterID)initWithPlacemark:(id)a3;
++ (BOOL)asClusterIDPlacemark:(id)placemark isEqualToPlacemark:(id)toPlacemark;
++ (id)broadenClusterId:(id)id;
++ (id)clustersWithRecords:(id)records;
++ (id)latLongTableWithClusters:(id)clusters;
++ (id)lookupTableWithRecords:(id)records;
++ (void)aggregateRecords:(void *)records toClusters:(void *)clusters withLookupTable:;
+- (BOOL)isEqual:(id)equal;
+- (PPLocationClusterID)initWithName:(id)name subThoroughfare:(id)thoroughfare thoroughfare:(id)a5 subLocality:(id)locality locality:(id)a7 administrativeArea:(id)area;
+- (PPLocationClusterID)initWithPlacemark:(id)placemark;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -26,23 +26,23 @@
 - (unint64_t)hash
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(NSString *)self->_name lowercaseString];
-  v5 = [v4 hash];
+  lowercaseString = [(NSString *)self->_name lowercaseString];
+  v5 = [lowercaseString hash];
 
-  v6 = [(NSString *)self->_thoroughfare lowercaseString];
-  v7 = [v6 hash] - v5 + 32 * v5;
+  lowercaseString2 = [(NSString *)self->_thoroughfare lowercaseString];
+  v7 = [lowercaseString2 hash] - v5 + 32 * v5;
 
   objc_autoreleasePoolPop(v3);
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -58,106 +58,106 @@ LABEL_38:
       if (v7 == [(PPLocationClusterID *)v6 hash])
       {
         v8 = self->_name;
-        v9 = [(PPLocationClusterID *)v6 name];
-        if (!(v8 | v9))
+        name = [(PPLocationClusterID *)v6 name];
+        if (!(v8 | name))
         {
           goto LABEL_6;
         }
 
-        v15 = v9;
+        v15 = name;
         v16 = 0;
-        if (!v8 || !v9)
+        if (!v8 || !name)
         {
           goto LABEL_37;
         }
 
-        v17 = CFStringCompare(v8, v9, 1uLL);
+        v17 = CFStringCompare(v8, name, 1uLL);
 
         if (v17 == kCFCompareEqualTo)
         {
 LABEL_6:
           v8 = self->_subThoroughfare;
-          v10 = [(PPLocationClusterID *)v6 subThoroughfare];
-          if (!(v8 | v10))
+          subThoroughfare = [(PPLocationClusterID *)v6 subThoroughfare];
+          if (!(v8 | subThoroughfare))
           {
             goto LABEL_7;
           }
 
-          v15 = v10;
+          v15 = subThoroughfare;
           v16 = 0;
-          if (!v8 || !v10)
+          if (!v8 || !subThoroughfare)
           {
             goto LABEL_37;
           }
 
-          v18 = CFStringCompare(v8, v10, 1uLL);
+          v18 = CFStringCompare(v8, subThoroughfare, 1uLL);
 
           if (v18 == kCFCompareEqualTo)
           {
 LABEL_7:
             v8 = self->_thoroughfare;
-            v11 = [(PPLocationClusterID *)v6 thoroughfare];
-            if (!(v8 | v11))
+            thoroughfare = [(PPLocationClusterID *)v6 thoroughfare];
+            if (!(v8 | thoroughfare))
             {
               goto LABEL_8;
             }
 
-            v15 = v11;
+            v15 = thoroughfare;
             v16 = 0;
-            if (!v8 || !v11)
+            if (!v8 || !thoroughfare)
             {
               goto LABEL_37;
             }
 
-            v19 = CFStringCompare(v8, v11, 1uLL);
+            v19 = CFStringCompare(v8, thoroughfare, 1uLL);
 
             if (v19 == kCFCompareEqualTo)
             {
 LABEL_8:
               v8 = self->_subLocality;
-              v12 = [(PPLocationClusterID *)v6 subLocality];
-              if (!(v8 | v12))
+              subLocality = [(PPLocationClusterID *)v6 subLocality];
+              if (!(v8 | subLocality))
               {
                 goto LABEL_9;
               }
 
-              v15 = v12;
+              v15 = subLocality;
               v16 = 0;
-              if (!v8 || !v12)
+              if (!v8 || !subLocality)
               {
                 goto LABEL_37;
               }
 
-              v20 = CFStringCompare(v8, v12, 1uLL);
+              v20 = CFStringCompare(v8, subLocality, 1uLL);
 
               if (v20 == kCFCompareEqualTo)
               {
 LABEL_9:
                 v8 = self->_locality;
-                v13 = [(PPLocationClusterID *)v6 locality];
-                if (!(v8 | v13))
+                locality = [(PPLocationClusterID *)v6 locality];
+                if (!(v8 | locality))
                 {
                   goto LABEL_10;
                 }
 
-                v15 = v13;
+                v15 = locality;
                 v16 = 0;
-                if (v8 && v13)
+                if (v8 && locality)
                 {
-                  v21 = CFStringCompare(v8, v13, 1uLL);
+                  v21 = CFStringCompare(v8, locality, 1uLL);
 
                   if (v21 == kCFCompareEqualTo)
                   {
 LABEL_10:
                     v8 = self->_administrativeArea;
-                    v14 = [(PPLocationClusterID *)v6 administrativeArea];
-                    if (v8 | v14)
+                    administrativeArea = [(PPLocationClusterID *)v6 administrativeArea];
+                    if (v8 | administrativeArea)
                     {
-                      v15 = v14;
+                      v15 = administrativeArea;
                       v16 = 0;
-                      if (v8 && v14)
+                      if (v8 && administrativeArea)
                       {
-                        v16 = CFStringCompare(v8, v14, 1uLL) == kCFCompareEqualTo;
+                        v16 = CFStringCompare(v8, administrativeArea, 1uLL) == kCFCompareEqualTo;
                       }
                     }
 
@@ -195,128 +195,128 @@ LABEL_39:
   return v16;
 }
 
-- (PPLocationClusterID)initWithPlacemark:(id)a3
+- (PPLocationClusterID)initWithPlacemark:(id)placemark
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 subThoroughfare];
-  v7 = v6;
-  if (v5)
+  placemarkCopy = placemark;
+  name = [placemarkCopy name];
+  subThoroughfare = [placemarkCopy subThoroughfare];
+  v7 = subThoroughfare;
+  if (name)
   {
-    if (v6)
+    if (subThoroughfare)
     {
-      v8 = [v4 subThoroughfare];
+      subThoroughfare2 = [placemarkCopy subThoroughfare];
     }
 
     else
     {
-      v8 = &stru_284759D38;
+      subThoroughfare2 = &stru_284759D38;
     }
 
-    v7 = v8;
+    v7 = subThoroughfare2;
   }
 
-  v9 = [v4 thoroughfare];
-  v10 = v9;
+  thoroughfare = [placemarkCopy thoroughfare];
+  v10 = thoroughfare;
   if (v7)
   {
-    if (v9)
+    if (thoroughfare)
     {
-      v11 = [v4 thoroughfare];
+      thoroughfare2 = [placemarkCopy thoroughfare];
     }
 
     else
     {
-      v11 = &stru_284759D38;
+      thoroughfare2 = &stru_284759D38;
     }
 
-    v10 = v11;
+    v10 = thoroughfare2;
   }
 
-  v12 = [v4 subLocality];
-  v13 = v12;
+  subLocality = [placemarkCopy subLocality];
+  v13 = subLocality;
   if (v10)
   {
-    if (v12)
+    if (subLocality)
     {
-      v14 = [v4 subLocality];
+      subLocality2 = [placemarkCopy subLocality];
     }
 
     else
     {
-      v14 = &stru_284759D38;
+      subLocality2 = &stru_284759D38;
     }
 
-    v13 = v14;
+    v13 = subLocality2;
   }
 
-  v15 = [v4 locality];
-  v16 = v15;
+  locality = [placemarkCopy locality];
+  v16 = locality;
   if (v13)
   {
-    if (v15)
+    if (locality)
     {
-      v17 = [v4 locality];
+      locality2 = [placemarkCopy locality];
     }
 
     else
     {
-      v17 = &stru_284759D38;
+      locality2 = &stru_284759D38;
     }
 
-    v16 = v17;
+    v16 = locality2;
   }
 
-  v18 = [v4 administrativeArea];
-  v19 = v18;
+  administrativeArea = [placemarkCopy administrativeArea];
+  v19 = administrativeArea;
   if (v16)
   {
-    if (v18)
+    if (administrativeArea)
     {
-      v20 = [v4 administrativeArea];
+      administrativeArea2 = [placemarkCopy administrativeArea];
     }
 
     else
     {
-      v20 = &stru_284759D38;
+      administrativeArea2 = &stru_284759D38;
     }
 
-    v19 = v20;
+    v19 = administrativeArea2;
   }
 
-  v21 = [(PPLocationClusterID *)self initWithName:v5 subThoroughfare:v7 thoroughfare:v10 subLocality:v13 locality:v16 administrativeArea:v19];
+  v21 = [(PPLocationClusterID *)self initWithName:name subThoroughfare:v7 thoroughfare:v10 subLocality:v13 locality:v16 administrativeArea:v19];
 
   return v21;
 }
 
-- (PPLocationClusterID)initWithName:(id)a3 subThoroughfare:(id)a4 thoroughfare:(id)a5 subLocality:(id)a6 locality:(id)a7 administrativeArea:(id)a8
+- (PPLocationClusterID)initWithName:(id)name subThoroughfare:(id)thoroughfare thoroughfare:(id)a5 subLocality:(id)locality locality:(id)a7 administrativeArea:(id)area
 {
-  v23 = a3;
-  v22 = a4;
+  nameCopy = name;
+  thoroughfareCopy = thoroughfare;
   v21 = a5;
-  v15 = a6;
+  localityCopy = locality;
   v16 = a7;
-  v17 = a8;
+  areaCopy = area;
   v24.receiver = self;
   v24.super_class = PPLocationClusterID;
   v18 = [(PPLocationClusterID *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_name, a3);
-    objc_storeStrong(&v19->_subThoroughfare, a4);
+    objc_storeStrong(&v18->_name, name);
+    objc_storeStrong(&v19->_subThoroughfare, thoroughfare);
     objc_storeStrong(&v19->_thoroughfare, a5);
-    objc_storeStrong(&v19->_subLocality, a6);
+    objc_storeStrong(&v19->_subLocality, locality);
     objc_storeStrong(&v19->_locality, a7);
-    objc_storeStrong(&v19->_administrativeArea, a8);
+    objc_storeStrong(&v19->_administrativeArea, area);
   }
 
   return v19;
 }
 
-+ (id)latLongTableWithClusters:(id)a3
++ (id)latLongTableWithClusters:(id)clusters
 {
-  v3 = a3;
+  clustersCopy = clusters;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -324,7 +324,7 @@ LABEL_39:
   v7[3] = &unk_278976310;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [clustersCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -427,25 +427,25 @@ LABEL_19:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)lookupTableWithRecords:(id)a3
++ (id)lookupTableWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v5 = objc_opt_new();
-  [(PPLocationClusterID *)a1 aggregateRecords:v4 toClusters:0 withLookupTable:v5];
+  [(PPLocationClusterID *)self aggregateRecords:recordsCopy toClusters:0 withLookupTable:v5];
 
   return v5;
 }
 
-+ (void)aggregateRecords:(void *)a3 toClusters:(void *)a4 withLookupTable:
++ (void)aggregateRecords:(void *)records toClusters:(void *)clusters withLookupTable:
 {
   v72 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v52 = a3;
-  v7 = a4;
+  recordsCopy = records;
+  clustersCopy = clusters;
   objc_opt_self();
-  if (!v7)
+  if (!clustersCopy)
   {
-    v7 = objc_opt_new();
+    clustersCopy = objc_opt_new();
   }
 
   v68 = 0u;
@@ -472,41 +472,41 @@ LABEL_19:
         v10 = *(*(&v66 + 1) + 8 * v9);
         context = objc_autoreleasePoolPush();
         v11 = [PPLocationClusterID alloc];
-        v12 = [v10 location];
-        v13 = [v12 placemark];
-        v14 = [(PPLocationClusterID *)v11 initWithPlacemark:v13];
+        location = [v10 location];
+        placemark = [location placemark];
+        v14 = [(PPLocationClusterID *)v11 initWithPlacemark:placemark];
 
         do
         {
-          v15 = [v7 objectForKeyedSubscript:{v14, v52}];
+          v15 = [clustersCopy objectForKeyedSubscript:{v14, recordsCopy}];
           if (([v15 isAmbiguous] & 1) == 0)
           {
-            v16 = [v10 location];
-            v17 = [v16 placemark];
-            v18 = [v15 location];
-            v19 = [v18 placemark];
-            v20 = [PPLocationClusterID asClusterIDPlacemark:v17 isEqualToPlacemark:v19];
+            location2 = [v10 location];
+            placemark2 = [location2 placemark];
+            location3 = [v15 location];
+            placemark3 = [location3 placemark];
+            v20 = [PPLocationClusterID asClusterIDPlacemark:placemark2 isEqualToPlacemark:placemark3];
 
             if (!v20)
             {
-              v21 = [v10 location];
-              v22 = [v21 placemark];
-              v23 = [v15 location];
-              v24 = [v23 placemark];
-              v25 = [v22 pp_specificityCompare:v24];
+              location4 = [v10 location];
+              placemark4 = [location4 placemark];
+              location5 = [v15 location];
+              placemark5 = [location5 placemark];
+              v25 = [placemark4 pp_specificityCompare:placemark5];
 
               if (v25)
               {
                 if (v25 == 1)
                 {
-                  [v7 setObject:v10 forKeyedSubscript:v14];
+                  [clustersCopy setObject:v10 forKeyedSubscript:v14];
                 }
               }
 
               else
               {
-                v26 = [MEMORY[0x277D3A3F0] sharedAmbiguousRecord];
-                [v7 setObject:v26 forKeyedSubscript:v14];
+                mEMORY[0x277D3A3F0] = [MEMORY[0x277D3A3F0] sharedAmbiguousRecord];
+                [clustersCopy setObject:mEMORY[0x277D3A3F0] forKeyedSubscript:v14];
               }
             }
           }
@@ -529,8 +529,8 @@ LABEL_19:
     while (v56);
   }
 
-  v28 = v52;
-  if (v52)
+  v28 = recordsCopy;
+  if (recordsCopy)
   {
     v64 = 0u;
     v65 = 0u;
@@ -555,11 +555,11 @@ LABEL_19:
           v34 = objc_autoreleasePoolPush();
           v35 = [PPLocationClusterID alloc];
           v61 = v33;
-          v36 = [v33 location];
-          v37 = [v36 placemark];
-          v38 = [(PPLocationClusterID *)v35 initWithPlacemark:v37];
+          location6 = [v33 location];
+          placemark6 = [location6 placemark];
+          v38 = [(PPLocationClusterID *)v35 initWithPlacemark:placemark6];
 
-          v39 = [v7 objectForKeyedSubscript:v38];
+          v39 = [clustersCopy objectForKeyedSubscript:v38];
           v57 = v39;
           contexta = v38;
           if ([v39 isAmbiguous])
@@ -570,8 +570,8 @@ LABEL_19:
           else
           {
             v41 = [PPLocationClusterID alloc];
-            v42 = [v39 location];
-            [v42 placemark];
+            location7 = [v39 location];
+            [location7 placemark];
             v43 = v34;
             v44 = v30;
             v46 = v45 = v31;
@@ -582,8 +582,8 @@ LABEL_19:
             v34 = v43;
           }
 
-          v47 = v52;
-          v48 = [v52 objectForKeyedSubscript:{v40, v52}];
+          v47 = recordsCopy;
+          v48 = [recordsCopy objectForKeyedSubscript:{v40, recordsCopy}];
 
           if (!v48)
           {
@@ -603,122 +603,122 @@ LABEL_19:
       while (v30);
     }
 
-    v28 = v52;
+    v28 = recordsCopy;
     v8 = v55;
   }
 
   v51 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)clustersWithRecords:(id)a3
++ (id)clustersWithRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v5 = objc_opt_new();
-  [(PPLocationClusterID *)a1 aggregateRecords:v4 toClusters:v5 withLookupTable:0];
+  [(PPLocationClusterID *)self aggregateRecords:recordsCopy toClusters:v5 withLookupTable:0];
 
   return v5;
 }
 
-+ (BOOL)asClusterIDPlacemark:(id)a3 isEqualToPlacemark:(id)a4
++ (BOOL)asClusterIDPlacemark:(id)placemark isEqualToPlacemark:(id)toPlacemark
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPlacemark:v7];
+  toPlacemarkCopy = toPlacemark;
+  placemarkCopy = placemark;
+  v8 = [[self alloc] initWithPlacemark:placemarkCopy];
 
-  v9 = [[a1 alloc] initWithPlacemark:v6];
-  LOBYTE(a1) = [v8 isEqual:v9];
+  v9 = [[self alloc] initWithPlacemark:toPlacemarkCopy];
+  LOBYTE(self) = [v8 isEqual:v9];
 
-  return a1;
+  return self;
 }
 
-+ (id)broadenClusterId:(id)a3
++ (id)broadenClusterId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   objc_opt_self();
-  v4 = [v3 locality];
+  locality = [idCopy locality];
 
-  if (v4)
+  if (locality)
   {
-    v4 = objc_opt_new();
-    v5 = [v3 administrativeArea];
-    [v4 setAdministrativeArea:v5];
+    locality = objc_opt_new();
+    administrativeArea = [idCopy administrativeArea];
+    [locality setAdministrativeArea:administrativeArea];
 
-    v6 = [v3 subLocality];
+    subLocality = [idCopy subLocality];
 
-    if (v6)
+    if (subLocality)
     {
-      v7 = [v3 locality];
-      [v4 setLocality:v7];
+      locality2 = [idCopy locality];
+      [locality setLocality:locality2];
 
-      v8 = [v3 thoroughfare];
+      thoroughfare = [idCopy thoroughfare];
 
-      if (v8)
+      if (thoroughfare)
       {
-        v9 = [v3 subLocality];
-        [v4 setSubLocality:v9];
+        subLocality2 = [idCopy subLocality];
+        [locality setSubLocality:subLocality2];
 
-        v10 = [v3 subThoroughfare];
+        subThoroughfare = [idCopy subThoroughfare];
 
-        if (v10)
+        if (subThoroughfare)
         {
-          v11 = [v3 thoroughfare];
-          [v4 setThoroughfare:v11];
+          thoroughfare2 = [idCopy thoroughfare];
+          [locality setThoroughfare:thoroughfare2];
 
-          v12 = [v3 name];
+          name = [idCopy name];
 
-          if (v12)
+          if (name)
           {
-            v13 = [v3 subThoroughfare];
-            [v4 setSubThoroughfare:v13];
+            subThoroughfare2 = [idCopy subThoroughfare];
+            [locality setSubThoroughfare:subThoroughfare2];
           }
         }
       }
     }
   }
 
-  v14 = [v4 name];
-  v15 = [v14 length];
+  name2 = [locality name];
+  v15 = [name2 length];
 
   if (v15)
   {
     goto LABEL_13;
   }
 
-  [v4 setName:0];
-  v16 = [v4 subThoroughfare];
-  v17 = [v16 length];
+  [locality setName:0];
+  subThoroughfare3 = [locality subThoroughfare];
+  v17 = [subThoroughfare3 length];
 
   if (v17)
   {
     goto LABEL_13;
   }
 
-  [v4 setSubThoroughfare:0];
-  v18 = [v4 thoroughfare];
-  v19 = [v18 length];
+  [locality setSubThoroughfare:0];
+  thoroughfare3 = [locality thoroughfare];
+  v19 = [thoroughfare3 length];
 
   if (v19)
   {
     goto LABEL_13;
   }
 
-  [v4 setThoroughfare:0];
-  v20 = [v4 subLocality];
-  v21 = [v20 length];
+  [locality setThoroughfare:0];
+  subLocality3 = [locality subLocality];
+  v21 = [subLocality3 length];
 
   if (v21)
   {
     goto LABEL_13;
   }
 
-  [v4 setSubLocality:0];
-  v22 = [v4 locality];
-  v23 = [v22 length];
+  [locality setSubLocality:0];
+  v4Locality = [locality locality];
+  v23 = [v4Locality length];
 
-  if (v23 || ([v4 setLocality:0], objc_msgSend(v4, "administrativeArea"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "length"), v24, v25))
+  if (v23 || ([locality setLocality:0], objc_msgSend(locality, "administrativeArea"), v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "length"), v24, v25))
   {
 LABEL_13:
-    v26 = v4;
+    v26 = locality;
   }
 
   else

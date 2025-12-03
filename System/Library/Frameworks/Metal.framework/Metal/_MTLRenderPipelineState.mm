@@ -1,26 +1,26 @@
 @interface _MTLRenderPipelineState
-- (_MTLRenderPipelineState)initWithDevice:(id)a3 meshRenderPipelineStateDescriptor:(id)a4 objectThreadExecutionWidth:(unint64_t)a5 meshThreadExecutionWidth:(unint64_t)a6;
-- (_MTLRenderPipelineState)initWithDevice:(id)a3 meshRenderPipelineStateDescriptor:(id)a4 objectThreadExecutionWidth:(unint64_t)a5 meshThreadExecutionWidth:(unint64_t)a6 maxTotalThreadgroupsPerMeshGrid:(unint64_t)a7;
-- (_MTLRenderPipelineState)initWithDevice:(id)a3 pipelineStateDescriptor:(id)a4;
-- (_MTLRenderPipelineState)initWithDeviceAndTileDesc:(id)a3 tilePipelineStateDescriptor:(id)a4;
-- (_MTLRenderPipelineState)initWithParent:(id)a3;
-- (_MTLRenderPipelineState)initWithTileParent:(id)a3;
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4;
-- (id)newFragmentIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4;
-- (id)newMeshIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newObjectIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newTileIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newVertexIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromMeshStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromObjectStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4;
+- (_MTLRenderPipelineState)initWithDevice:(id)device meshRenderPipelineStateDescriptor:(id)descriptor objectThreadExecutionWidth:(unint64_t)width meshThreadExecutionWidth:(unint64_t)executionWidth;
+- (_MTLRenderPipelineState)initWithDevice:(id)device meshRenderPipelineStateDescriptor:(id)descriptor objectThreadExecutionWidth:(unint64_t)width meshThreadExecutionWidth:(unint64_t)executionWidth maxTotalThreadgroupsPerMeshGrid:(unint64_t)grid;
+- (_MTLRenderPipelineState)initWithDevice:(id)device pipelineStateDescriptor:(id)descriptor;
+- (_MTLRenderPipelineState)initWithDeviceAndTileDesc:(id)desc tilePipelineStateDescriptor:(id)descriptor;
+- (_MTLRenderPipelineState)initWithParent:(id)parent;
+- (_MTLRenderPipelineState)initWithTileParent:(id)parent;
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage;
+- (id)newFragmentIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage;
+- (id)newMeshIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newObjectIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newTileIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newVertexIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromMeshStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromObjectStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage;
 - (void)dealloc;
-- (void)setDebugInstrumentationDataForstage:(id)a3 stage:(unint64_t)a4;
+- (void)setDebugInstrumentationDataForstage:(id)forstage stage:(unint64_t)stage;
 @end
 
 @implementation _MTLRenderPipelineState
@@ -40,17 +40,17 @@
   [(_MTLObjectWithLabel *)&v3 dealloc];
 }
 
-- (_MTLRenderPipelineState)initWithDevice:(id)a3 pipelineStateDescriptor:(id)a4
+- (_MTLRenderPipelineState)initWithDevice:(id)device pipelineStateDescriptor:(id)descriptor
 {
   v29 = 0;
   memset(v28, 0, sizeof(v28));
-  _MTLMessageContextBegin_(v28, "[_MTLRenderPipelineState initWithDevice:pipelineStateDescriptor:]", 5875, a3, 3, "Render Pipeline Descriptor Validation");
-  if (a3)
+  _MTLMessageContextBegin_(v28, "[_MTLRenderPipelineState initWithDevice:pipelineStateDescriptor:]", 5875, device, 3, "Render Pipeline Descriptor Validation");
+  if (device)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (a4)
+      if (descriptor)
       {
         goto LABEL_4;
       }
@@ -73,7 +73,7 @@ LABEL_26:
   }
 
   _MTLMessageContextPush_(v28, v22, v21, v7, v8, v9, v10, v11, v24);
-  if (!a4)
+  if (!descriptor)
   {
     goto LABEL_24;
   }
@@ -87,7 +87,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  if ([a4 isTessellationFactorScaleEnabled] && objc_msgSend(a4, "supportIndirectCommandBuffers"))
+  if ([descriptor isTessellationFactorScaleEnabled] && objc_msgSend(descriptor, "supportIndirectCommandBuffers"))
   {
     _MTLMessageContextPush_(v28, 4, @"pipelines with tessellationFactorScaleEnabled = YES are not compatible with indirect command buffers", v12, v13, v14, v15, v16, v24);
   }
@@ -98,39 +98,39 @@ LABEL_5:
   v17 = [(_MTLAllocation *)&v27 initWithAllocationType:3];
   if (v17)
   {
-    if ([a4 label])
+    if ([descriptor label])
     {
-      [v17 setLabel:{objc_msgSend(a4, "label")}];
+      [v17 setLabel:{objc_msgSend(descriptor, "label")}];
     }
 
-    *(v17 + 4) = a3;
-    v17[109] = [a4 supportIndirectCommandBuffers];
-    *(v17 + 12) = [a4 textureWriteRoundingMode];
-    if ([a4 meshFunction])
+    *(v17 + 4) = device;
+    v17[109] = [descriptor supportIndirectCommandBuffers];
+    *(v17 + 12) = [descriptor textureWriteRoundingMode];
+    if ([descriptor meshFunction])
     {
-      v18 = [a4 maxTotalThreadsPerObjectThreadgroup];
-      if (!v18)
+      maxTotalThreadsPerObjectThreadgroup = [descriptor maxTotalThreadsPerObjectThreadgroup];
+      if (!maxTotalThreadsPerObjectThreadgroup)
       {
-        v18 = [a3 maxTotalComputeThreadsPerThreadgroup];
+        maxTotalThreadsPerObjectThreadgroup = [device maxTotalComputeThreadsPerThreadgroup];
       }
 
-      *(v17 + 16) = v18;
-      v19 = [a4 maxTotalThreadsPerMeshThreadgroup];
-      if (!v19)
+      *(v17 + 16) = maxTotalThreadsPerObjectThreadgroup;
+      maxTotalThreadsPerMeshThreadgroup = [descriptor maxTotalThreadsPerMeshThreadgroup];
+      if (!maxTotalThreadsPerMeshThreadgroup)
       {
-        v19 = [a3 maxTotalComputeThreadsPerThreadgroup];
+        maxTotalThreadsPerMeshThreadgroup = [device maxTotalComputeThreadsPerThreadgroup];
       }
 
-      *(v17 + 17) = v19;
+      *(v17 + 17) = maxTotalThreadsPerMeshThreadgroup;
       *(v17 + 18) = -1;
       *(v17 + 15) = -1;
       *(v17 + 14) = -1;
-      if (a4)
+      if (descriptor)
       {
-        [a4 requiredThreadsPerObjectThreadgroup];
+        [descriptor requiredThreadsPerObjectThreadgroup];
         *(v17 + 12) = v25;
         *(v17 + 26) = v26;
-        [a4 requiredThreadsPerMeshThreadgroup];
+        [descriptor requiredThreadsPerMeshThreadgroup];
       }
 
       else
@@ -150,12 +150,12 @@ LABEL_5:
   return v17;
 }
 
-- (_MTLRenderPipelineState)initWithDevice:(id)a3 meshRenderPipelineStateDescriptor:(id)a4 objectThreadExecutionWidth:(unint64_t)a5 meshThreadExecutionWidth:(unint64_t)a6
+- (_MTLRenderPipelineState)initWithDevice:(id)device meshRenderPipelineStateDescriptor:(id)descriptor objectThreadExecutionWidth:(unint64_t)width meshThreadExecutionWidth:(unint64_t)executionWidth
 {
-  v11 = [a4 maxTotalThreadgroupsPerMeshGrid];
-  if (v11)
+  maxTotalThreadgroupsPerMeshGrid = [descriptor maxTotalThreadgroupsPerMeshGrid];
+  if (maxTotalThreadgroupsPerMeshGrid)
   {
-    v12 = v11;
+    v12 = maxTotalThreadgroupsPerMeshGrid;
   }
 
   else
@@ -163,28 +163,28 @@ LABEL_5:
     v12 = -1;
   }
 
-  return [(_MTLRenderPipelineState *)self initWithDevice:a3 meshRenderPipelineStateDescriptor:a4 objectThreadExecutionWidth:a5 meshThreadExecutionWidth:a6 maxTotalThreadgroupsPerMeshGrid:v12];
+  return [(_MTLRenderPipelineState *)self initWithDevice:device meshRenderPipelineStateDescriptor:descriptor objectThreadExecutionWidth:width meshThreadExecutionWidth:executionWidth maxTotalThreadgroupsPerMeshGrid:v12];
 }
 
-- (_MTLRenderPipelineState)initWithDevice:(id)a3 meshRenderPipelineStateDescriptor:(id)a4 objectThreadExecutionWidth:(unint64_t)a5 meshThreadExecutionWidth:(unint64_t)a6 maxTotalThreadgroupsPerMeshGrid:(unint64_t)a7
+- (_MTLRenderPipelineState)initWithDevice:(id)device meshRenderPipelineStateDescriptor:(id)descriptor objectThreadExecutionWidth:(unint64_t)width meshThreadExecutionWidth:(unint64_t)executionWidth maxTotalThreadgroupsPerMeshGrid:(unint64_t)grid
 {
   v30 = 0;
   memset(v29, 0, sizeof(v29));
-  _MTLMessageContextBegin_(v29, "[_MTLRenderPipelineState initWithDevice:meshRenderPipelineStateDescriptor:objectThreadExecutionWidth:meshThreadExecutionWidth:maxTotalThreadgroupsPerMeshGrid:]", 5950, a3, 3, "Render Pipeline Descriptor Validation");
-  if (!a3)
+  _MTLMessageContextBegin_(v29, "[_MTLRenderPipelineState initWithDevice:meshRenderPipelineStateDescriptor:objectThreadExecutionWidth:meshThreadExecutionWidth:maxTotalThreadgroupsPerMeshGrid:]", 5950, device, 3, "Render Pipeline Descriptor Validation");
+  if (!device)
   {
     v22 = @"device must not be nil.";
     v23 = 4;
     goto LABEL_19;
   }
 
-  if (([a3 conformsToProtocol:&unk_1EF502428] & 1) == 0)
+  if (([device conformsToProtocol:&unk_1EF502428] & 1) == 0)
   {
     v22 = @"device is not a MTLDevice.";
     v23 = 8;
 LABEL_19:
     _MTLMessageContextPush_(v29, v23, v22, v13, v14, v15, v16, v17, v25);
-    if (a4)
+    if (descriptor)
     {
       goto LABEL_4;
     }
@@ -194,7 +194,7 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  if (!a4)
+  if (!descriptor)
   {
     goto LABEL_20;
   }
@@ -216,37 +216,37 @@ LABEL_5:
   v18 = [(_MTLAllocation *)&v28 initWithAllocationType:3];
   if (v18)
   {
-    if ([a4 label])
+    if ([descriptor label])
     {
-      [v18 setLabel:{objc_msgSend(a4, "label")}];
+      [v18 setLabel:{objc_msgSend(descriptor, "label")}];
     }
 
-    *(v18 + 4) = a3;
-    v18[109] = [a4 supportIndirectCommandBuffers];
-    *(v18 + 12) = [a4 textureWriteRoundingMode];
-    v19 = [a4 maxTotalThreadsPerObjectThreadgroup];
-    if (!v19)
+    *(v18 + 4) = device;
+    v18[109] = [descriptor supportIndirectCommandBuffers];
+    *(v18 + 12) = [descriptor textureWriteRoundingMode];
+    maxTotalThreadsPerObjectThreadgroup = [descriptor maxTotalThreadsPerObjectThreadgroup];
+    if (!maxTotalThreadsPerObjectThreadgroup)
     {
-      v19 = [a3 maxTotalComputeThreadsPerThreadgroup];
+      maxTotalThreadsPerObjectThreadgroup = [device maxTotalComputeThreadsPerThreadgroup];
     }
 
-    *(v18 + 16) = v19;
-    v20 = [a4 maxTotalThreadsPerMeshThreadgroup];
-    if (!v20)
+    *(v18 + 16) = maxTotalThreadsPerObjectThreadgroup;
+    maxTotalThreadsPerMeshThreadgroup = [descriptor maxTotalThreadsPerMeshThreadgroup];
+    if (!maxTotalThreadsPerMeshThreadgroup)
     {
-      v20 = [a3 maxTotalComputeThreadsPerThreadgroup];
+      maxTotalThreadsPerMeshThreadgroup = [device maxTotalComputeThreadsPerThreadgroup];
     }
 
-    *(v18 + 17) = v20;
-    *(v18 + 14) = a5;
-    *(v18 + 15) = a6;
-    *(v18 + 18) = a7;
-    if (a4)
+    *(v18 + 17) = maxTotalThreadsPerMeshThreadgroup;
+    *(v18 + 14) = width;
+    *(v18 + 15) = executionWidth;
+    *(v18 + 18) = grid;
+    if (descriptor)
     {
-      [a4 requiredThreadsPerObjectThreadgroup];
+      [descriptor requiredThreadsPerObjectThreadgroup];
       *(v18 + 12) = v26;
       *(v18 + 26) = v27;
-      [a4 requiredThreadsPerMeshThreadgroup];
+      [descriptor requiredThreadsPerMeshThreadgroup];
     }
 
     else
@@ -265,12 +265,12 @@ LABEL_5:
   return v18;
 }
 
-- (_MTLRenderPipelineState)initWithDeviceAndTileDesc:(id)a3 tilePipelineStateDescriptor:(id)a4
+- (_MTLRenderPipelineState)initWithDeviceAndTileDesc:(id)desc tilePipelineStateDescriptor:(id)descriptor
 {
   v23 = 0;
   memset(v22, 0, sizeof(v22));
-  _MTLMessageContextBegin_(v22, "[_MTLRenderPipelineState initWithDeviceAndTileDesc:tilePipelineStateDescriptor:]", 6007, a3, 3, "Render Pipeline Descriptor Validation");
-  if (!a3)
+  _MTLMessageContextBegin_(v22, "[_MTLRenderPipelineState initWithDeviceAndTileDesc:tilePipelineStateDescriptor:]", 6007, desc, 3, "Render Pipeline Descriptor Validation");
+  if (!desc)
   {
     v14 = @"device must not be nil.";
     v15 = 4;
@@ -284,7 +284,7 @@ LABEL_5:
     v15 = 8;
 LABEL_15:
     _MTLMessageContextPush_(v22, v15, v14, v7, v8, v9, v10, v11, v18);
-    if (a4)
+    if (descriptor)
     {
       goto LABEL_4;
     }
@@ -295,7 +295,7 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (!a4)
+  if (!descriptor)
   {
     goto LABEL_16;
   }
@@ -318,16 +318,16 @@ LABEL_5:
   v12 = [(_MTLAllocation *)&v21 initWithAllocationType:3];
   if (v12)
   {
-    if ([a4 label])
+    if ([descriptor label])
     {
-      [v12 setLabel:{objc_msgSend(a4, "label")}];
+      [v12 setLabel:{objc_msgSend(descriptor, "label")}];
     }
 
-    *(v12 + 4) = a3;
-    v12[108] = [a4 threadgroupSizeMatchesTileSize];
-    if (a4)
+    *(v12 + 4) = desc;
+    v12[108] = [descriptor threadgroupSizeMatchesTileSize];
+    if (descriptor)
     {
-      [a4 requiredThreadsPerThreadgroup];
+      [descriptor requiredThreadsPerThreadgroup];
     }
 
     else
@@ -343,12 +343,12 @@ LABEL_5:
   return v12;
 }
 
-- (_MTLRenderPipelineState)initWithParent:(id)a3
+- (_MTLRenderPipelineState)initWithParent:(id)parent
 {
   v19 = 0;
   memset(v18, 0, sizeof(v18));
   _MTLMessageContextBegin_(v18, "[_MTLRenderPipelineState initWithParent:]", 6056, 0, 3, "Render Pipeline State Validation");
-  if (a3)
+  if (parent)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -374,24 +374,24 @@ LABEL_3:
   v10 = [(_MTLAllocation *)&v17 initWithAllocationType:3];
   if (v10)
   {
-    if ([a3 label])
+    if ([parent label])
     {
-      [v10 setLabel:{objc_msgSend(a3, "label")}];
+      [v10 setLabel:{objc_msgSend(parent, "label")}];
     }
 
-    *(v10 + 4) = [a3 device];
-    v10[109] = [a3 supportIndirectCommandBuffers];
-    *(v10 + 12) = [a3 textureWriteRoundingMode];
-    *(v10 + 14) = [a3 objectThreadExecutionWidth];
-    *(v10 + 15) = [a3 meshThreadExecutionWidth];
-    *(v10 + 16) = [a3 maxTotalThreadsPerObjectThreadgroup];
-    *(v10 + 17) = [a3 maxTotalThreadsPerMeshThreadgroup];
-    if (a3)
+    *(v10 + 4) = [parent device];
+    v10[109] = [parent supportIndirectCommandBuffers];
+    *(v10 + 12) = [parent textureWriteRoundingMode];
+    *(v10 + 14) = [parent objectThreadExecutionWidth];
+    *(v10 + 15) = [parent meshThreadExecutionWidth];
+    *(v10 + 16) = [parent maxTotalThreadsPerObjectThreadgroup];
+    *(v10 + 17) = [parent maxTotalThreadsPerMeshThreadgroup];
+    if (parent)
     {
-      [a3 requiredThreadsPerObjectThreadgroup];
+      [parent requiredThreadsPerObjectThreadgroup];
       *(v10 + 12) = v15;
       *(v10 + 26) = v16;
-      [a3 requiredThreadsPerMeshThreadgroup];
+      [parent requiredThreadsPerMeshThreadgroup];
     }
 
     else
@@ -410,12 +410,12 @@ LABEL_3:
   return v10;
 }
 
-- (_MTLRenderPipelineState)initWithTileParent:(id)a3
+- (_MTLRenderPipelineState)initWithTileParent:(id)parent
 {
   v19 = 0;
   memset(v18, 0, sizeof(v18));
   _MTLMessageContextBegin_(v18, "[_MTLRenderPipelineState initWithTileParent:]", 6107, 0, 3, "Render Pipeline State Validation");
-  if (a3)
+  if (parent)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -441,18 +441,18 @@ LABEL_3:
   v10 = [(_MTLAllocation *)&v17 initWithAllocationType:3];
   if (v10)
   {
-    if ([a3 label])
+    if ([parent label])
     {
-      [v10 setLabel:{objc_msgSend(a3, "label")}];
+      [v10 setLabel:{objc_msgSend(parent, "label")}];
     }
 
-    *(v10 + 4) = [a3 device];
-    v10[108] = [a3 threadgroupSizeMatchesTileSize];
-    v10[109] = [a3 supportIndirectCommandBuffers];
-    *(v10 + 12) = [a3 textureWriteRoundingMode];
-    if (a3)
+    *(v10 + 4) = [parent device];
+    v10[108] = [parent threadgroupSizeMatchesTileSize];
+    v10[109] = [parent supportIndirectCommandBuffers];
+    *(v10 + 12) = [parent textureWriteRoundingMode];
+    if (parent)
     {
-      [a3 requiredThreadsPerTileThreadgroup];
+      [parent requiredThreadsPerTileThreadgroup];
     }
 
     else
@@ -468,18 +468,18 @@ LABEL_3:
   return v10;
 }
 
-- (void)setDebugInstrumentationDataForstage:(id)a3 stage:(unint64_t)a4
+- (void)setDebugInstrumentationDataForstage:(id)forstage stage:(unint64_t)stage
 {
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4 == 1)
+    if (stage == 1)
     {
       v4 = &OBJC_IVAR____MTLRenderPipelineState__vertexDebugInstrumentationData;
     }
 
     else
     {
-      if (a4 != 2)
+      if (stage != 2)
       {
         return;
       }
@@ -490,7 +490,7 @@ LABEL_3:
 
   else
   {
-    switch(a4)
+    switch(stage)
     {
       case 4uLL:
         v4 = &OBJC_IVAR____MTLRenderPipelineState__tileDebugInstrumentationData;
@@ -506,184 +506,184 @@ LABEL_3:
     }
   }
 
-  *(&self->super.super.super.isa + *v4) = a3;
+  *(&self->super.super.super.isa + *v4) = forstage;
 }
 
-- (id)functionHandleWithFunction:(id)a3 stage:(unint64_t)a4
+- (id)functionHandleWithFunction:(id)function stage:(unint64_t)stage
 {
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4 == 1)
+    if (stage == 1)
     {
-      return [(_MTLRenderPipelineState *)self vertexFunctionHandleWithFunction:a3];
+      return [(_MTLRenderPipelineState *)self vertexFunctionHandleWithFunction:function];
     }
 
-    if (a4 == 2)
+    if (stage == 2)
     {
-      return [(_MTLRenderPipelineState *)self fragmentFunctionHandleWithFunction:a3];
+      return [(_MTLRenderPipelineState *)self fragmentFunctionHandleWithFunction:function];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(stage)
     {
       case 4uLL:
-        return [(_MTLRenderPipelineState *)self tileFunctionHandleWithFunction:a3];
+        return [(_MTLRenderPipelineState *)self tileFunctionHandleWithFunction:function];
       case 8uLL:
-        return [(_MTLRenderPipelineState *)self objectFunctionHandleWithFunction:a3];
+        return [(_MTLRenderPipelineState *)self objectFunctionHandleWithFunction:function];
       case 0x10uLL:
-        return [(_MTLRenderPipelineState *)self meshFunctionHandleWithFunction:a3];
+        return [(_MTLRenderPipelineState *)self meshFunctionHandleWithFunction:function];
     }
   }
 
   return 0;
 }
 
-- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromVertexStageWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newVisibleFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newVisibleFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromFragmentStageWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newVisibleFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newVisibleFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromTileStageWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newVisibleFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newVisibleFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newVisibleFunctionTableFromObjectStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromObjectStageWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newVisibleFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newVisibleFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newVisibleFunctionTableFromMeshStageWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableFromMeshStageWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newVisibleFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newVisibleFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage
 {
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4 == 1)
+    if (stage == 1)
     {
-      return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromVertexStageWithDescriptor:a3];
+      return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromVertexStageWithDescriptor:descriptor];
     }
 
-    if (a4 == 2)
+    if (stage == 2)
     {
-      return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromFragmentStageWithDescriptor:a3];
+      return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromFragmentStageWithDescriptor:descriptor];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(stage)
     {
       case 4uLL:
-        return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromTileStageWithDescriptor:a3];
+        return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromTileStageWithDescriptor:descriptor];
       case 8uLL:
-        return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromObjectStageWithDescriptor:a3];
+        return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromObjectStageWithDescriptor:descriptor];
       case 0x10uLL:
-        return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromMeshStageWithDescriptor:a3];
+        return [(_MTLRenderPipelineState *)self newVisibleFunctionTableFromMeshStageWithDescriptor:descriptor];
     }
   }
 
   return 0;
 }
 
-- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newRenderPipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
-  if ([objc_msgSend(a3 "tileAdditionalBinaryFunctions")])
+  if ([objc_msgSend(functions "tileAdditionalBinaryFunctions")])
   {
-    v7 = [a3 tileAdditionalBinaryFunctions];
+    tileAdditionalBinaryFunctions = [functions tileAdditionalBinaryFunctions];
 
-    return [(_MTLRenderPipelineState *)self newTileRenderPipelineStateWithAdditionalBinaryFunctions:v7 error:a4];
+    return [(_MTLRenderPipelineState *)self newTileRenderPipelineStateWithAdditionalBinaryFunctions:tileAdditionalBinaryFunctions error:error];
   }
 
   else
   {
-    v9 = [a3 vertexAdditionalBinaryFunctions];
-    v10 = [a3 fragmentAdditionalBinaryFunctions];
+    vertexAdditionalBinaryFunctions = [functions vertexAdditionalBinaryFunctions];
+    fragmentAdditionalBinaryFunctions = [functions fragmentAdditionalBinaryFunctions];
 
-    return [(_MTLRenderPipelineState *)self newRenderPipelineStateWithAdditionalBinaryFunctions:v9 fragmentAdditionalBinaryFunctions:v10 error:a4];
+    return [(_MTLRenderPipelineState *)self newRenderPipelineStateWithAdditionalBinaryFunctions:vertexAdditionalBinaryFunctions fragmentAdditionalBinaryFunctions:fragmentAdditionalBinaryFunctions error:error];
   }
 }
 
-- (id)newVertexIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newVertexIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newIntersectionFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newIntersectionFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newFragmentIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newFragmentIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newIntersectionFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newIntersectionFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newTileIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newTileIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newIntersectionFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newIntersectionFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newObjectIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newObjectIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newIntersectionFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newIntersectionFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newMeshIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newMeshIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
-  v4 = [(_MTLRenderPipelineState *)self device];
+  device = [(_MTLRenderPipelineState *)self device];
 
-  return [(MTLDevice *)v4 newIntersectionFunctionTableWithDescriptor:a3];
+  return [(MTLDevice *)device newIntersectionFunctionTableWithDescriptor:descriptor];
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3 stage:(unint64_t)a4
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor stage:(unint64_t)stage
 {
-  if (a4 <= 3)
+  if (stage <= 3)
   {
-    if (a4 == 1)
+    if (stage == 1)
     {
-      return [(_MTLRenderPipelineState *)self newVertexIntersectionFunctionTableWithDescriptor:a3];
+      return [(_MTLRenderPipelineState *)self newVertexIntersectionFunctionTableWithDescriptor:descriptor];
     }
 
-    if (a4 == 2)
+    if (stage == 2)
     {
-      return [(_MTLRenderPipelineState *)self newFragmentIntersectionFunctionTableWithDescriptor:a3];
+      return [(_MTLRenderPipelineState *)self newFragmentIntersectionFunctionTableWithDescriptor:descriptor];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(stage)
     {
       case 4uLL:
-        return [(_MTLRenderPipelineState *)self newTileIntersectionFunctionTableWithDescriptor:a3];
+        return [(_MTLRenderPipelineState *)self newTileIntersectionFunctionTableWithDescriptor:descriptor];
       case 8uLL:
-        return [(_MTLRenderPipelineState *)self newObjectIntersectionFunctionTableWithDescriptor:a3];
+        return [(_MTLRenderPipelineState *)self newObjectIntersectionFunctionTableWithDescriptor:descriptor];
       case 0x10uLL:
-        return [(_MTLRenderPipelineState *)self newMeshIntersectionFunctionTableWithDescriptor:a3];
+        return [(_MTLRenderPipelineState *)self newMeshIntersectionFunctionTableWithDescriptor:descriptor];
     }
   }
 

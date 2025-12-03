@@ -1,18 +1,18 @@
 @interface PAEWidescreen
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEWidescreen)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEWidescreen)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEWidescreen
 
-- (PAEWidescreen)initWithAPIManager:(id)a3
+- (PAEWidescreen)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEWidescreen;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -44,7 +44,7 @@
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
   if (v9)
@@ -77,7 +77,7 @@
   v46 = 0u;
   if (v10)
   {
-    [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
+    [(PAESharedDefaultBase *)self getPixelTransformForImage:output];
     for (i = 0; i != 16; i += 4)
     {
       v12 = &v41[i * 8];
@@ -86,7 +86,7 @@
       v12[1] = v13;
     }
 
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
     for (j = 0; j != 16; j += 4)
     {
       v15 = &v48[j * 8];
@@ -99,12 +99,12 @@
 
   else
   {
-    v18 = [a4 width];
-    v19 = [a4 height];
-    v20.f64[0] = v18 * -0.5;
-    PCMatrix44Tmpl<double>::leftTranslate(v48, v20, v19 * -0.5, 0.0);
-    var3 = a5->var3;
-    var4 = a5->var4;
+    width = [input width];
+    height = [input height];
+    v20.f64[0] = width * -0.5;
+    PCMatrix44Tmpl<double>::leftTranslate(v48, v20, height * -0.5, 0.0);
+    var3 = info->var3;
+    var4 = info->var4;
     if (var3 != 1.0)
     {
       *v48 = vmulq_n_f64(*v48, var3);
@@ -131,14 +131,14 @@
       v42 = vmulq_n_f64(v42, v24);
     }
 
-    v25 = [a4 width];
-    v26 = [a4 height];
-    v27.f64[0] = vcvtd_n_f64_u64(v25, 1uLL);
-    *&v16 = *&PCMatrix44Tmpl<double>::leftTranslate(v41, v27, vcvtd_n_f64_u64(v26, 1uLL), 0.0);
+    width2 = [input width];
+    height2 = [input height];
+    v27.f64[0] = vcvtd_n_f64_u64(width2, 1uLL);
+    *&v16 = *&PCMatrix44Tmpl<double>::leftTranslate(v41, v27, vcvtd_n_f64_u64(height2, 1uLL), 0.0);
   }
 
-  [a3 bounds];
-  [a4 bounds];
+  [output bounds];
+  [input bounds];
   v28 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (v28)
   {
@@ -150,10 +150,10 @@
     v35 = 0.0;
     v36 = 0.0;
     v34 = 0.0;
-    [v28 getIntValue:&v39 fromParm:1 atFxTime:a5->var0.var1];
-    [v29 getFloatValue:v40 fromParm:2 atFxTime:a5->var0.var1];
-    [v29 getFloatValue:&v38 fromParm:3 atFxTime:a5->var0.var1];
-    [v29 getRedValue:&v37 greenValue:&v36 blueValue:&v35 alphaValue:&v34 fromParm:4 atFxTime:a5->var0.var1];
+    [v28 getIntValue:&v39 fromParm:1 atFxTime:info->var0.var1];
+    [v29 getFloatValue:v40 fromParm:2 atFxTime:info->var0.var1];
+    [v29 getFloatValue:&v38 fromParm:3 atFxTime:info->var0.var1];
+    [v29 getRedValue:&v37 greenValue:&v36 blueValue:&v35 alphaValue:&v34 fromParm:4 atFxTime:info->var0.var1];
     v36 = v34 * v36;
     v37 = v34 * v37;
     v35 = v34 * v35;
@@ -164,14 +164,14 @@
       v30 = (v31 / 100.0);
     }
 
-    LODWORD(v28) = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1, v30];
+    LODWORD(v28) = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1, v30];
     if (v28)
     {
-      if ([a4 imageType] == 3)
+      if ([input imageType] == 3)
       {
-        if (a4)
+        if (input)
         {
-          [a4 heliumRef];
+          [input heliumRef];
         }
 
         v32 = HGObject::operator new(0x1A0uLL);
@@ -185,15 +185,15 @@
   return v28;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 1;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 1;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

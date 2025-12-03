@@ -1,12 +1,12 @@
 @interface _UIOPrototypeMenuBarSummonButtonViewController
-- (CGPoint)locationForCorner:(int64_t)a3;
+- (CGPoint)locationForCorner:(int64_t)corner;
 - (_UIOPrototypeMenuBarSummonButtonViewController)init;
 - (id)_imageForButton;
-- (int64_t)closestCornerForPoint:(CGPoint)a3;
-- (void)handlePan:(id)a3;
-- (void)setCorner:(int64_t)a3;
-- (void)setMenuBarPresented:(BOOL)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (int64_t)closestCornerForPoint:(CGPoint)point;
+- (void)handlePan:(id)pan;
+- (void)setCorner:(int64_t)corner;
+- (void)setMenuBarPresented:(BOOL)presented;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -26,23 +26,23 @@
   return result;
 }
 
-- (void)setCorner:(int64_t)a3
+- (void)setCorner:(int64_t)corner
 {
-  if (self->_corner != a3)
+  if (self->_corner != corner)
   {
-    self->_corner = a3;
-    v4 = [(UIViewController *)self view];
-    [v4 setNeedsLayout];
+    self->_corner = corner;
+    view = [(UIViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (int64_t)closestCornerForPoint:(CGPoint)a3
+- (int64_t)closestCornerForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(UIViewController *)self view];
-  v6 = [v5 safeAreaLayoutGuide];
-  [v6 layoutFrame];
+  y = point.y;
+  x = point.x;
+  view = [(UIViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -75,11 +75,11 @@
   }
 }
 
-- (CGPoint)locationForCorner:(int64_t)a3
+- (CGPoint)locationForCorner:(int64_t)corner
 {
-  v5 = [(UIViewController *)self view];
-  v6 = [v5 safeAreaLayoutGuide];
-  [v6 layoutFrame];
+  view = [(UIViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -175,19 +175,19 @@ LABEL_12:
   [(UIView *)self->_button setCenter:?];
 }
 
-- (void)setMenuBarPresented:(BOOL)a3
+- (void)setMenuBarPresented:(BOOL)presented
 {
-  if (self->_menuBarPresented != a3)
+  if (self->_menuBarPresented != presented)
   {
-    self->_menuBarPresented = a3;
+    self->_menuBarPresented = presented;
     button = self->_button;
     if (button)
     {
-      v6 = [(UIButton *)button configuration];
-      v5 = [(_UIOPrototypeMenuBarSummonButtonViewController *)self _imageForButton];
-      [v6 setImage:v5];
+      configuration = [(UIButton *)button configuration];
+      _imageForButton = [(_UIOPrototypeMenuBarSummonButtonViewController *)self _imageForButton];
+      [configuration setImage:_imageForButton];
 
-      [(UIButton *)self->_button setConfiguration:v6];
+      [(UIButton *)self->_button setConfiguration:configuration];
     }
   }
 }
@@ -215,8 +215,8 @@ LABEL_12:
   v32.super_class = _UIOPrototypeMenuBarSummonButtonViewController;
   [(UIViewController *)&v32 viewDidLoad];
   v3 = +[UIButtonConfiguration grayButtonConfiguration];
-  v4 = [(_UIOPrototypeMenuBarSummonButtonViewController *)self _imageForButton];
-  [v3 setImage:v4];
+  _imageForButton = [(_UIOPrototypeMenuBarSummonButtonViewController *)self _imageForButton];
+  [v3 setImage:_imageForButton];
 
   v5 = [UIImageSymbolConfiguration configurationWithPointSize:30.0];
   v6 = [UIImageSymbolConfiguration configurationWithWeight:6];
@@ -224,30 +224,30 @@ LABEL_12:
 
   [v3 setPreferredSymbolConfigurationForImage:v7];
   v8 = [UIBlurEffect effectWithStyle:10];
-  v9 = [v3 background];
-  [v9 setVisualEffect:v8];
+  background = [v3 background];
+  [background setVisualEffect:v8];
 
   [v3 setCornerStyle:4];
   [v3 setContentInsets:{20.0, 18.0, 20.0, 18.0}];
   v10 = +[UIColor systemFillColor];
-  v11 = [v3 background];
-  [v11 setStrokeColor:v10];
+  background2 = [v3 background];
+  [background2 setStrokeColor:v10];
 
-  v12 = [v3 background];
-  [v12 setStrokeWidth:0.5];
+  background3 = [v3 background];
+  [background3 setStrokeWidth:0.5];
 
-  v13 = [v3 background];
-  v14 = [v13 shadowProperties];
-  [v14 setRadius:5.0];
+  background4 = [v3 background];
+  shadowProperties = [background4 shadowProperties];
+  [shadowProperties setRadius:5.0];
 
   v15 = +[UIColor blackColor];
-  v16 = [v3 background];
-  v17 = [v16 shadowProperties];
-  [v17 setColor:v15];
+  background5 = [v3 background];
+  shadowProperties2 = [background5 shadowProperties];
+  [shadowProperties2 setColor:v15];
 
-  v18 = [v3 background];
-  v19 = [v18 shadowProperties];
-  [v19 setOpacity:0.15];
+  background6 = [v3 background];
+  shadowProperties3 = [background6 shadowProperties];
+  [shadowProperties3 setOpacity:0.15];
 
   objc_initWeak(&location, self);
   v26 = MEMORY[0x1E69E9820];
@@ -268,18 +268,18 @@ LABEL_12:
   [(UIView *)self->_button sizeToFit];
   v24 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:sel_handlePan_];
   [(UIView *)self->_button addGestureRecognizer:v24];
-  v25 = [(UIViewController *)self view];
-  [v25 addSubview:self->_button];
+  view = [(UIViewController *)self view];
+  [view addSubview:self->_button];
 
   objc_destroyWeak(&v30);
   objc_destroyWeak(&location);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = _UIOPrototypeMenuBarSummonButtonViewController;
-  [(UIViewController *)&v5 viewDidAppear:a3];
+  [(UIViewController *)&v5 viewDidAppear:appear];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __64___UIOPrototypeMenuBarSummonButtonViewController_viewDidAppear___block_invoke;
@@ -288,11 +288,11 @@ LABEL_12:
   [UIView _animateUsingDefaultTimingWithOptions:0 animations:v4 completion:0];
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self view];
-  [v4 locationInView:v5];
+  panCopy = pan;
+  view = [(UIViewController *)self view];
+  [panCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -300,11 +300,11 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = __60___UIOPrototypeMenuBarSummonButtonViewController_handlePan___block_invoke;
   v11[3] = &unk_1E70F9780;
-  v12 = v4;
-  v13 = self;
+  v12 = panCopy;
+  selfCopy = self;
   v14 = v7;
   v15 = v9;
-  v10 = v4;
+  v10 = panCopy;
   [UIView _animateUsingDefaultTimingWithOptions:0 animations:v11 completion:0];
 }
 

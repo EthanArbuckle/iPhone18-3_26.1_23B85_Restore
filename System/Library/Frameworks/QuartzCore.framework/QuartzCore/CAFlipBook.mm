@@ -1,18 +1,18 @@
 @interface CAFlipBook
 - (id).cxx_construct;
-- (id)_frameById:(unint64_t)a3;
-- (id)_initWithDisplayId:(unsigned int)a3 options:(id)a4;
+- (id)_frameById:(unint64_t)id;
+- (id)_initWithDisplayId:(unsigned int)id options:(id)options;
 - (id)activeFrames;
-- (id)cancelWithError:(id *)a3;
+- (id)cancelWithError:(id *)error;
 - (id)copyCurrentFrame;
-- (id)frameAtTime:(unint64_t)a3;
-- (id)renderForTime:(unint64_t)a3 options:(id)a4 userInfo:(id)a5 error:(id *)a6;
+- (id)frameAtTime:(unint64_t)time;
+- (id)renderForTime:(unint64_t)time options:(id)options userInfo:(id)info error:(id *)error;
 - (unint64_t)memoryUsage;
 - (void)_collectFlipBookFrames;
 - (void)_notifyRenderBegin;
-- (void)_notifyRenderCompletedForTime:(unint64_t)a3 status:(unsigned int)a4 frameId:(unint64_t)a5 oldestFrameId:(unint64_t)a6 apl:(float)a7 aplDimming:(float)a8 memoryUsage:(unint64_t)a9 rawSurfacePort:(unsigned int)a10 rawSurfaceDestRect:(CGRect)a11;
+- (void)_notifyRenderCompletedForTime:(unint64_t)time status:(unsigned int)status frameId:(unint64_t)id oldestFrameId:(unint64_t)frameId apl:(float)apl aplDimming:(float)dimming memoryUsage:(unint64_t)usage rawSurfacePort:(unsigned int)self0 rawSurfaceDestRect:(CGRect)self1;
 - (void)dealloc;
-- (void)renderForTime:(unint64_t)a3 options:(id)a4 userInfo:(id)a5 onRenderBegin:(id)a6 onRenderComplete:(id)a7;
+- (void)renderForTime:(unint64_t)time options:(id)options userInfo:(id)info onRenderBegin:(id)begin onRenderComplete:(id)complete;
 @end
 
 @implementation CAFlipBook
@@ -58,7 +58,7 @@
   [(CAFlipBook *)&v4 dealloc];
 }
 
-- (id)cancelWithError:(id *)a3
+- (id)cancelWithError:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
   v5 = atomic_load(&self->_renderInProgress);
@@ -69,7 +69,7 @@
     os_unfair_lock_unlock(&self->_framesLock);
   }
 
-  v6 = [(CAFlipBook *)self maximumMemoryUsageForDiagnostics];
+  maximumMemoryUsageForDiagnostics = [(CAFlipBook *)self maximumMemoryUsageForDiagnostics];
   serverPort = self->_serverPort;
   displayId = self->_displayId;
   *&msg[0].msgh_id = 0u;
@@ -77,7 +77,7 @@
   *&msg[0].msgh_size = 0u;
   *&msg[1].msgh_bits = *MEMORY[0x1E69E99E0];
   msg[1].msgh_remote_port = displayId;
-  LOBYTE(msg[1].msgh_local_port) = v6 != 0;
+  LOBYTE(msg[1].msgh_local_port) = maximumMemoryUsageForDiagnostics != 0;
   *(&msg[1].msgh_local_port + 1) = 0;
   HIBYTE(msg[1].msgh_local_port) = 0;
   reply_port = mig_get_reply_port();
@@ -101,7 +101,7 @@
   if ((v11 - 268435458) <= 0xE && ((1 << (v11 - 2)) & 0x4003) != 0)
   {
     mig_put_reply_port(msg[0].msgh_local_port);
-    if (!a3)
+    if (!error)
     {
       goto LABEL_32;
     }
@@ -112,7 +112,7 @@
   if (v11)
   {
     mig_dealloc_reply_port(msg[0].msgh_local_port);
-    if (!a3)
+    if (!error)
     {
       goto LABEL_32;
     }
@@ -152,7 +152,7 @@
 
 LABEL_30:
       mach_msg_destroy(msg);
-      if (!a3)
+      if (!error)
       {
 LABEL_32:
         if (x_log_get_windowserver(void)::once != -1)
@@ -175,10 +175,10 @@ LABEL_32:
       }
 
 LABEL_31:
-      v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"IPC Error %s [0x%x]", mach_error_string(msgh_remote_port), msgh_remote_port];
+      msgh_remote_port = [MEMORY[0x1E696AEC0] stringWithFormat:@"IPC Error %s [0x%x]", mach_error_string(msgh_remote_port), msgh_remote_port];
       v21 = *MEMORY[0x1E696A578];
-      v22 = v16;
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreanimation.flipbook" code:6 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v22, &v21, 1)}];
+      v22 = msgh_remote_port;
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.coreanimation.flipbook" code:6 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v22, &v21, 1)}];
       goto LABEL_32;
     }
 
@@ -366,19 +366,19 @@ LABEL_29:
   if (v11)
   {
     v12 = [CAFlipBookFrame alloc];
-    v13 = [v11 presentationTime];
-    v14 = [v11 frameId];
-    v15 = [v11 generation];
+    presentationTime = [v11 presentationTime];
+    frameId = [v11 frameId];
+    generation = [v11 generation];
     [v11 apl];
     v17 = v16;
     [v11 aplDimming];
     v19 = v18;
-    v20 = [v11 memoryUsage];
-    v21 = [v11 isInverted];
-    v22 = [v11 userInfo];
+    memoryUsage = [v11 memoryUsage];
+    isInverted = [v11 isInverted];
+    userInfo = [v11 userInfo];
     LODWORD(v23) = v17;
     LODWORD(v24) = v19;
-    v25 = [(CAFlipBookFrame *)v12 _initWithPresentationTime:v13 frameId:v14 generation:v15 apl:v20 aplDimming:v21 memoryUsage:v22 inverted:v23 userInfo:v24];
+    v25 = [(CAFlipBookFrame *)v12 _initWithPresentationTime:presentationTime frameId:frameId generation:generation apl:memoryUsage aplDimming:isInverted memoryUsage:userInfo inverted:v23 userInfo:v24];
     [v25 setRawSurface:{objc_msgSend(v11, "rawSurface")}];
     [v11 rawSurfaceFrame];
     [v25 setRawSurfaceFrame:?];
@@ -395,7 +395,7 @@ LABEL_29:
   return v25;
 }
 
-- (id)frameAtTime:(unint64_t)a3
+- (id)frameAtTime:(unint64_t)time
 {
   v20 = *MEMORY[0x1E69E9840];
   serverPort = self->_serverPort;
@@ -406,7 +406,7 @@ LABEL_29:
   *reply_port = 0u;
   *&reply_port[20] = *MEMORY[0x1E69E99E0];
   *&reply_port[28] = displayId;
-  *&v18 = a3;
+  *&v18 = time;
   v6 = mig_get_reply_port();
   *&reply_port[4] = serverPort;
   *&reply_port[8] = v6;
@@ -533,10 +533,10 @@ LABEL_20:
   return 0;
 }
 
-- (void)renderForTime:(unint64_t)a3 options:(id)a4 userInfo:(id)a5 onRenderBegin:(id)a6 onRenderComplete:(id)a7
+- (void)renderForTime:(unint64_t)time options:(id)options userInfo:(id)info onRenderBegin:(id)begin onRenderComplete:(id)complete
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  if (!a7)
+  if (!complete)
   {
     [MEMORY[0x1E695DF30] raise:@"CAFlipBook" format:@"renderForTime called without render completed callback."];
   }
@@ -546,23 +546,23 @@ LABEL_20:
   {
     v13 = MEMORY[0x1E696ABC0];
     v35 = *MEMORY[0x1E696A578];
-    v36[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"renderForTime called before render completed.", a4];
-    (*(a7 + 2))(a7, 0, [v13 errorWithDomain:@"com.apple.coreanimation.flipbook" code:5 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v36, &v35, 1)}]);
+    v36[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"renderForTime called before render completed.", options];
+    (*(complete + 2))(complete, 0, [v13 errorWithDomain:@"com.apple.coreanimation.flipbook" code:5 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v36, &v35, 1)}]);
   }
 
   else
   {
     atomic_store(1u, &self->_renderInProgress);
     os_unfair_lock_lock(&self->_onRenderCBLock);
-    if (a5)
+    if (info)
     {
-      self->_onRenderInfo = a5;
+      self->_onRenderInfo = info;
     }
 
     _Block_release(self->_onRenderBegunCB);
-    self->_onRenderBegunCB = _Block_copy(a6);
+    self->_onRenderBegunCB = _Block_copy(begin);
     _Block_release(self->_onRenderCompletedCB);
-    self->_onRenderCompletedCB = _Block_copy(a7);
+    self->_onRenderCompletedCB = _Block_copy(complete);
     os_unfair_lock_unlock(&self->_onRenderCBLock);
     if ([(CAFlipBook *)self wantsTransform])
     {
@@ -574,9 +574,9 @@ LABEL_20:
       v14 = 0;
     }
 
-    v15 = [(CAFlipBook *)self isInverted];
+    isInverted = [(CAFlipBook *)self isInverted];
     v16 = v14 | 2;
-    if (!v15)
+    if (!isInverted)
     {
       v16 = v14;
     }
@@ -592,20 +592,20 @@ LABEL_20:
     }
 
     os_unfair_lock_lock(&self->_framesLock);
-    self->_renderTimestamp = a3;
+    self->_renderTimestamp = time;
     os_unfair_lock_unlock(&self->_framesLock);
     port = self->_onRenderBeginClientIpc._port;
     serverPort = self->_serverPort;
     displayId = self->_displayId;
-    v21 = [(CAFlipBook *)self contextId];
+    contextId = [(CAFlipBook *)self contextId];
     *&msg[20] = 0u;
     *&msg[4] = 0u;
     *&msg[28] = port;
     v27 = 1245184;
     v28 = *MEMORY[0x1E69E99E0];
     v29 = displayId;
-    v30 = v21;
-    v31 = a3;
+    v30 = contextId;
+    timeCopy = time;
     v32 = v17;
     *msg = -2147483629;
     *&msg[8] = serverPort;
@@ -643,7 +643,7 @@ LABEL_20:
   }
 }
 
-- (id)renderForTime:(unint64_t)a3 options:(id)a4 userInfo:(id)a5 error:(id *)a6
+- (id)renderForTime:(unint64_t)time options:(id)options userInfo:(id)info error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -666,12 +666,12 @@ LABEL_20:
   v14[5] = &v21;
   v14[6] = &v15;
   v14[4] = v11;
-  [(CAFlipBook *)self renderForTime:a3 options:a4 userInfo:a5 onRenderBegin:0 onRenderComplete:v14];
+  [(CAFlipBook *)self renderForTime:time options:options userInfo:info onRenderBegin:0 onRenderComplete:v14];
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_release(v11);
-  if (a6)
+  if (error)
   {
-    *a6 = v16[5];
+    *error = v16[5];
   }
 
   v12 = v22[5];
@@ -689,26 +689,26 @@ intptr_t __51__CAFlipBook_renderForTime_options_userInfo_error___block_invoke(vo
   return dispatch_semaphore_signal(v4);
 }
 
-- (void)_notifyRenderCompletedForTime:(unint64_t)a3 status:(unsigned int)a4 frameId:(unint64_t)a5 oldestFrameId:(unint64_t)a6 apl:(float)a7 aplDimming:(float)a8 memoryUsage:(unint64_t)a9 rawSurfacePort:(unsigned int)a10 rawSurfaceDestRect:(CGRect)a11
+- (void)_notifyRenderCompletedForTime:(unint64_t)time status:(unsigned int)status frameId:(unint64_t)id oldestFrameId:(unint64_t)frameId apl:(float)apl aplDimming:(float)dimming memoryUsage:(unint64_t)usage rawSurfacePort:(unsigned int)self0 rawSurfaceDestRect:(CGRect)self1
 {
-  height = a11.size.height;
-  width = a11.size.width;
-  y = a11.origin.y;
-  x = a11.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v47[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_framesLock);
   cancelTimestamp = self->_cancelTimestamp;
   generation = self->_generation;
   os_unfair_lock_unlock(&self->_framesLock);
-  self->_lastFrameId = a6;
-  if (a10)
+  self->_lastFrameId = frameId;
+  if (port)
   {
-    v26 = IOSurfaceLookupFromMachPort(a10);
-    mach_port_deallocate(*MEMORY[0x1E69E9A60], a10);
-    if (a4)
+    v26 = IOSurfaceLookupFromMachPort(port);
+    mach_port_deallocate(*MEMORY[0x1E69E9A60], port);
+    if (status)
     {
 LABEL_8:
-      if (a4)
+      if (status)
       {
         os_unfair_lock_lock(&self->_onRenderCBLock);
         v29 = _Block_copy(self->_onRenderCompletedCB);
@@ -717,33 +717,33 @@ LABEL_8:
         {
           v30 = MEMORY[0x1E696ABC0];
           v42 = *MEMORY[0x1E696A578];
-          if (a4 > 7)
+          if (status > 7)
           {
             v31 = 0;
           }
 
           else
           {
-            v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:status_to_string::status_codes[a4]];
+            v31 = [MEMORY[0x1E696AEC0] stringWithUTF8String:status_to_string::status_codes[status]];
           }
 
           v43 = v31;
-          v29[2](v29, 0, [v30 errorWithDomain:@"com.apple.coreanimation.flipbook" code:a4 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v43, &v42, 1)}]);
+          v29[2](v29, 0, [v30 errorWithDomain:@"com.apple.coreanimation.flipbook" code:status userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v43, &v42, 1)}]);
           _Block_release(v29);
         }
       }
 
       else
       {
-        if (!a5)
+        if (!id)
         {
           __assert_rtn("[CAFlipBook(Private) _notifyRenderCompletedForTime:status:frameId:oldestFrameId:apl:aplDimming:memoryUsage:rawSurfacePort:rawSurfaceDestRect:]", "CAFlipBook.mm", 773, "frameId != 0");
         }
 
         v32 = [CAFlipBookFrame alloc];
-        *&v33 = a7;
-        *&v34 = a8;
-        v35 = [(CAFlipBookFrame *)v32 _initWithPresentationTime:a3 frameId:a5 generation:generation apl:a9 aplDimming:self->_inverted memoryUsage:self->_onRenderInfo inverted:v33 userInfo:v34];
+        *&v33 = apl;
+        *&v34 = dimming;
+        v35 = [(CAFlipBookFrame *)v32 _initWithPresentationTime:time frameId:id generation:generation apl:usage aplDimming:self->_inverted memoryUsage:self->_onRenderInfo inverted:v33 userInfo:v34];
         os_unfair_lock_lock(&self->_framesLock);
         v36 = self->_generation;
         if (v36 == generation)
@@ -792,13 +792,13 @@ LABEL_8:
   else
   {
     v26 = 0;
-    if (a4)
+    if (status)
     {
       goto LABEL_8;
     }
   }
 
-  if (cancelTimestamp != a3)
+  if (cancelTimestamp != time)
   {
     goto LABEL_8;
   }
@@ -871,7 +871,7 @@ LABEL_23:
   }
 }
 
-- (id)_frameById:(unint64_t)a3
+- (id)_frameById:(unint64_t)id
 {
   v30 = *MEMORY[0x1E69E9840];
   v26 = 0u;
@@ -894,7 +894,7 @@ LABEL_23:
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
-        if ([v10 frameId] == a3)
+        if ([v10 frameId] == id)
         {
           return v10;
         }
@@ -936,7 +936,7 @@ LABEL_23:
   return 0;
 }
 
-- (id)_initWithDisplayId:(unsigned int)a3 options:(id)a4
+- (id)_initWithDisplayId:(unsigned int)id options:(id)options
 {
   v26 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -955,7 +955,7 @@ LABEL_23:
       if (os_log_type_enabled(x_log_get_windowserver(void)::log, OS_LOG_TYPE_ERROR))
       {
         *__str = 67109120;
-        *&__str[4] = a3;
+        *&__str[4] = id;
         _os_log_error_impl(&dword_183AA6000, v7, OS_LOG_TYPE_ERROR, "CAFlipBook initWithDisplayId=%u called but a global flipbook already exist.", __str, 8u);
       }
     }
@@ -966,7 +966,7 @@ LABEL_23:
     *(v6 + 6) = 0;
     *(v6 + 14) = 1065353216;
     *(v6 + 6) = 0;
-    *(v6 + 7) = a3;
+    *(v6 + 7) = id;
     *(v6 + 4) = 0;
     *(v6 + 10) = 0;
     *(v6 + 161) = 0;
@@ -986,7 +986,7 @@ LABEL_23:
       dispatch_activate(v9);
     }
 
-    v10 = [objc_msgSend(a4 objectForKey:{@"maximumSize", "intValue"}];
+    v10 = [objc_msgSend(options objectForKey:{@"maximumSize", "intValue"}];
     if (v10 - 2 > 0x1FE)
     {
       if (x_log_get_windowserver(void)::once != -1)
@@ -1011,7 +1011,7 @@ LABEL_23:
       *(v6 + 2) = v10;
     }
 
-    v12 = [objc_msgSend(a4 objectForKey:{@"maximumPoolMemory", "intValue"}];
+    v12 = [objc_msgSend(options objectForKey:{@"maximumPoolMemory", "intValue"}];
     v13 = v12;
     if (v12 > 0x20000000)
     {
@@ -1036,7 +1036,7 @@ LABEL_23:
       [v6 setMaximumPoolMemory:v12];
     }
 
-    [objc_msgSend(a4 objectForKey:{@"overAllocationFactor", "floatValue"}];
+    [objc_msgSend(options objectForKey:{@"overAllocationFactor", "floatValue"}];
     v16 = *&v15;
     if (*&v15 <= 1.0 || *&v15 > 2.0)
     {

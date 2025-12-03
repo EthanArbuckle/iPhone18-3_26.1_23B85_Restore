@@ -1,28 +1,28 @@
 @interface PKPassTileValue
-+ (id)_createForDictionary:(id)a3;
-+ (id)_createForType:(int64_t)a3 resolved:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (PKPassTileValue)initWithCoder:(id)a3;
++ (id)_createForDictionary:(id)dictionary;
++ (id)_createForType:(int64_t)type resolved:(BOOL)resolved;
+- (BOOL)isEqual:(id)equal;
+- (PKPassTileValue)initWithCoder:(id)coder;
 - (PKPassTileValueDate)valueTypeDate;
 - (PKPassTileValueForeignReference)valueTypeForeignReference;
 - (PKPassTileValueNumber)valueTypeNumber;
 - (PKPassTileValueText)valueTypeText;
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4;
-- (id)displayableStringWithPassState:(id)a3 inContext:(int64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle;
+- (id)displayableStringWithPassState:(id)state inContext:(int64_t)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassTileValue
 
-+ (id)_createForType:(int64_t)a3 resolved:(BOOL)a4
++ (id)_createForType:(int64_t)type resolved:(BOOL)resolved
 {
-  if (a3 >= 4)
+  if (type >= 4)
   {
     v7 = 0;
     goto LABEL_6;
   }
 
-  v6 = objc_alloc(*off_1E79E18F0[a3]);
+  v6 = objc_alloc(*off_1E79E18F0[type]);
   v7 = v6;
   if (!v6)
   {
@@ -37,8 +37,8 @@ LABEL_6:
   v9 = v8;
   if (v8)
   {
-    *(v8 + 2) = a3;
-    *(v8 + 8) = a4;
+    *(v8 + 2) = type;
+    *(v8 + 8) = resolved;
   }
 
 LABEL_7:
@@ -46,16 +46,16 @@ LABEL_7:
   return v9;
 }
 
-+ (id)_createForDictionary:(id)a3
++ (id)_createForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictionaryCopy PKStringForKey:@"type"];
     v7 = PKPassTileValueTypeFromString(v6);
 
-    v8 = [a1 _createForType:v7 resolved:0];
+    v8 = [self _createForType:v7 resolved:0];
     v9 = v8;
     if (v8 && [v8 _setUpWithDictionary:v5])
     {
@@ -76,7 +76,7 @@ LABEL_7:
   return v10;
 }
 
-- (id)createResolvedValueWithBundle:(id)a3 privateBundle:(id)a4
+- (id)createResolvedValueWithBundle:(id)bundle privateBundle:(id)privateBundle
 {
   if (self->_resolved)
   {
@@ -88,10 +88,10 @@ LABEL_7:
   return [PKPassTileValue _createForType:type resolved:1];
 }
 
-- (PKPassTileValue)initWithCoder:(id)a3
+- (PKPassTileValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   v6 = PKPassTileValueTypeFromString(v5);
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
@@ -114,23 +114,23 @@ LABEL_7:
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
     v9 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PKPassTileValue" code:0 userInfo:0];
-    [v4 failWithError:v9];
+    [coderCopy failWithError:v9];
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   if (!self->_resolved)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"PKPassTileValue %@ attempting unresolved XPC transfer.", objc_opt_class()}];
@@ -147,26 +147,26 @@ LABEL_7:
     v5 = off_1E79E1910[v4];
   }
 
-  [v6 encodeObject:v5 forKey:@"type"];
+  [coderCopy encodeObject:v5 forKey:@"type"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = 0;
-  if (v4 && (isKindOfClass & 1) != 0)
+  if (equalCopy && (isKindOfClass & 1) != 0)
   {
-    v6 = [(PKPassTileValue *)self _isEqual:v4];
+    v6 = [(PKPassTileValue *)self _isEqual:equalCopy];
   }
 
   return v6;
 }
 
-- (id)displayableStringWithPassState:(id)a3 inContext:(int64_t)a4
+- (id)displayableStringWithPassState:(id)state inContext:(int64_t)context
 {
-  result = a3;
+  result = state;
   __break(1u);
   return result;
 }

@@ -11,7 +11,7 @@
 
 + (id)ec_partiallyRedactedStringForSubjectOrSummary:()EmailCore
 {
-  v3 = [a1 partiallyRedactedStringForString:a3 maximumUnredactedLength:3];
+  v3 = [self partiallyRedactedStringForString:a3 maximumUnredactedLength:3];
 
   return v3;
 }
@@ -19,21 +19,21 @@
 + (__CFString)ec_partiallyRedactedStringForAddress:()EmailCore
 {
   v4 = a3;
-  v5 = [v4 emailAddressValue];
-  if (v5)
+  emailAddressValue = [v4 emailAddressValue];
+  if (emailAddressValue)
   {
-    v6 = [v4 stringValue];
-    v7 = [v5 localPart];
-    v8 = [v5 domain];
-    v9 = [a1 ec_partiallyRedactedStringForAddress:v6 localPart:v7 domain:v8];
+    stringValue = [v4 stringValue];
+    localPart = [emailAddressValue localPart];
+    domain = [emailAddressValue domain];
+    v9 = [self ec_partiallyRedactedStringForAddress:stringValue localPart:localPart domain:domain];
   }
 
   else
   {
-    v6 = [v4 stringValue];
-    if (v6)
+    stringValue = [v4 stringValue];
+    if (stringValue)
     {
-      v9 = [a1 partiallyRedactedStringForString:v6];
+      v9 = [self partiallyRedactedStringForString:stringValue];
     }
 
     else
@@ -68,8 +68,8 @@
     v16 = MEMORY[0x277CCACA8];
     v17 = [v9 rangeOfComposedCharacterSequenceAtIndex:0];
     v19 = [v9 substringToIndex:v17 + v18];
-    v20 = [v11 redactedStringValue];
-    v15 = [v16 stringWithFormat:@"%@...@%@...<%lu chars, hash=%@>", v14, v19, v10, v20];
+    redactedStringValue = [v11 redactedStringValue];
+    v15 = [v16 stringWithFormat:@"%@...@%@...<%lu chars, hash=%@>", v14, v19, v10, redactedStringValue];
   }
 
   else
@@ -83,23 +83,23 @@
 + (id)ec_redactedStringForMailboxURL:()EmailCore
 {
   v4 = a3;
-  v5 = [v4 scheme];
-  v6 = [v4 host];
-  v7 = [v4 path];
-  v8 = [a1 _redactedMailboxPathForMailboxPath:v7];
+  scheme = [v4 scheme];
+  host = [v4 host];
+  path = [v4 path];
+  v8 = [self _redactedMailboxPathForMailboxPath:path];
 
   v9 = objc_alloc_init(MEMORY[0x277CCACE0]);
-  [v9 setScheme:v5];
-  [v9 setHost:v6];
+  [v9 setScheme:scheme];
+  [v9 setHost:host];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"/%@", v8];
   [v9 setPath:v10];
 
-  v11 = [v4 absoluteString];
-  v12 = [a1 partiallyRedactedStringForString:v11 maximumUnredactedLength:0];
+  absoluteString = [v4 absoluteString];
+  v12 = [self partiallyRedactedStringForString:absoluteString maximumUnredactedLength:0];
 
   v13 = objc_alloc(MEMORY[0x277CCACA8]);
-  v14 = [v9 string];
-  v15 = [v13 initWithFormat:@"%@%@", v14, v12];
+  string = [v9 string];
+  v15 = [v13 initWithFormat:@"%@%@", string, v12];
 
   return v15;
 }
@@ -107,7 +107,7 @@
 + (id)_redactedMailboxPathForMailboxPath:()EmailCore
 {
   v4 = a3;
-  if ([a1 _isWellKnownMailboxName:v4])
+  if ([self _isWellKnownMailboxName:v4])
   {
     v5 = v4;
   }

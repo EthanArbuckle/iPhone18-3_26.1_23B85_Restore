@@ -1,28 +1,28 @@
 @interface MPIntentViewController
 - (CGSize)desiredSize;
-- (double)calculatedHeightForCallRecordCellsWithWidth:(double)a3;
+- (double)calculatedHeightForCallRecordCellsWithWidth:(double)width;
 - (id)callHistoryCache;
 - (id)callHistoryManager;
 - (id)callRecords;
 - (id)intent;
-- (id)recentCallForCallRecord:(id)a3;
+- (id)recentCallForCallRecord:(id)record;
 - (id)recentsItemCache;
-- (id)recentsItemForCall:(id)a3 numberOfOccurences:(unint64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)voicemailForCallRecord:(id)a3;
-- (id)voicemailMessageViewModelForVoicemail:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)recentsItemForCall:(id)call numberOfOccurences:(unint64_t)occurences;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)voicemailForCallRecord:(id)record;
+- (id)voicemailMessageViewModelForVoicemail:(id)voicemail;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)configureForCallHistory;
-- (void)configureRecentCallTableViewCell:(id)a3 forRecentCall:(id)a4 numberOfOccurences:(unint64_t)a5;
+- (void)configureRecentCallTableViewCell:(id)cell forRecentCall:(id)call numberOfOccurences:(unint64_t)occurences;
 - (void)configureViewForEmergencyCountdown;
-- (void)configureViewForParameters:(id)a3 ofInteraction:(id)a4 interactiveBehavior:(unint64_t)a5 context:(unint64_t)a6 completion:(id)a7;
-- (void)configureVoicemailTableViewCell:(id)a3 forVoicemail:(id)a4;
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)configureViewForParameters:(id)parameters ofInteraction:(id)interaction interactiveBehavior:(unint64_t)behavior context:(unint64_t)context completion:(id)completion;
+- (void)configureVoicemailTableViewCell:(id)cell forVoicemail:(id)voicemail;
+- (void)recentsController:(id)controller didChangeCalls:(id)calls;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 - (void)viewWasCancelled;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MPIntentViewController
@@ -33,21 +33,21 @@
   v6.super_class = MPIntentViewController;
   [(MPIntentViewController *)&v6 viewDidLoad];
   v3 = +[UIColor clearColor];
-  v4 = [(MPIntentViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(MPIntentViewController *)self view];
+  [view setBackgroundColor:v3];
 
-  v5 = [(MPIntentViewController *)self view];
-  [v5 setOpaque:0];
+  view2 = [(MPIntentViewController *)self view];
+  [view2 setOpaque:0];
 
   [(MPIntentViewController *)self setCountdownCancelled:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v12.receiver = self;
   v12.super_class = MPIntentViewController;
-  [(MPIntentViewController *)&v12 viewDidAppear:a3];
-  v4 = [(MPIntentViewController *)self intent];
+  [(MPIntentViewController *)&v12 viewDidAppear:appear];
+  intent = [(MPIntentViewController *)self intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -55,7 +55,7 @@
 
   else
   {
-    v5 = [(MPIntentViewController *)self intent];
+    intent2 = [(MPIntentViewController *)self intent];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -77,21 +77,21 @@
     v8 = +[UIApplication sharedApplication];
     [v8 _setIdleTimerDisabled:1 forReason:@"CallIntentCountdown"];
 
-    v9 = [(MPIntentViewController *)self countdownView];
+    countdownView = [(MPIntentViewController *)self countdownView];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100007498;
     v10[3] = &unk_1000B1B80;
     v10[4] = self;
-    [v9 startCountdownFromNumber:3 withTimeInterval:v10 completion:COERCE_DOUBLE(COERCE_UNSIGNED_INT(2.0))];
+    [countdownView startCountdownFromNumber:3 withTimeInterval:v10 completion:COERCE_DOUBLE(COERCE_UNSIGNED_INT(2.0))];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = MPIntentViewController;
-  [(MPIntentViewController *)&v6 viewWillDisappear:a3];
+  [(MPIntentViewController *)&v6 viewWillDisappear:disappear];
   v3 = PHDefaultLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
@@ -103,31 +103,31 @@
   [v4 _setIdleTimerDisabled:0 forReason:@"CallIntentCountdown"];
 }
 
-- (void)configureViewForParameters:(id)a3 ofInteraction:(id)a4 interactiveBehavior:(unint64_t)a5 context:(unint64_t)a6 completion:(id)a7
+- (void)configureViewForParameters:(id)parameters ofInteraction:(id)interaction interactiveBehavior:(unint64_t)behavior context:(unint64_t)context completion:(id)completion
 {
-  v10 = a4;
-  v11 = a7;
-  v12 = a3;
-  [(MPIntentViewController *)self setInteraction:v10];
+  interactionCopy = interaction;
+  completionCopy = completion;
+  parametersCopy = parameters;
+  [(MPIntentViewController *)self setInteraction:interactionCopy];
   v13 = PHDefaultLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 intent];
+    intent = [interactionCopy intent];
     v24 = 138412290;
-    v25 = v14;
+    v25 = intent;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Intent: %@", &v24, 0xCu);
   }
 
   v15 = PHDefaultLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v10 intentResponse];
+    intentResponse = [interactionCopy intentResponse];
     v24 = 138412290;
-    v25 = v16;
+    v25 = intentResponse;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "IntentResponse: %@", &v24, 0xCu);
   }
 
-  v17 = [(MPIntentViewController *)self intent];
+  intent2 = [(MPIntentViewController *)self intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -137,7 +137,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v18 = [(MPIntentViewController *)self intent];
+  intent3 = [(MPIntentViewController *)self intent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -146,7 +146,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v20 = [(MPIntentViewController *)self intent];
+  intent4 = [(MPIntentViewController *)self intent];
   objc_opt_class();
   v21 = objc_opt_isKindOfClass();
 
@@ -164,12 +164,12 @@ LABEL_8:
     }
 
     v23 = +[NSSet set];
-    v11[2](v11, 0, v23, CGSizeZero.width, CGSizeZero.height);
+    completionCopy[2](completionCopy, 0, v23, CGSizeZero.width, CGSizeZero.height);
   }
 
 LABEL_9:
   [(MPIntentViewController *)self desiredSize];
-  (v11[2])(v11, 1, v12);
+  (completionCopy[2])(completionCopy, 1, parametersCopy);
 }
 
 - (void)viewWasCancelled
@@ -181,8 +181,8 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "our view was cancelled, stopping countdown", buf, 2u);
   }
 
-  v4 = [(MPIntentViewController *)self countdownView];
-  [v4 cancel];
+  countdownView = [(MPIntentViewController *)self countdownView];
+  [countdownView cancel];
 
   [(MPIntentViewController *)self setCountdownCancelled:1];
   v5 = PHDefaultLog();
@@ -198,22 +198,22 @@ LABEL_9:
 
 - (id)intent
 {
-  v2 = [(MPIntentViewController *)self interaction];
-  v3 = [v2 intent];
+  interaction = [(MPIntentViewController *)self interaction];
+  intent = [interaction intent];
 
-  return v3;
+  return intent;
 }
 
 - (id)callRecords
 {
-  v2 = [(MPIntentViewController *)self interaction];
-  v3 = [v2 intentResponse];
+  interaction = [(MPIntentViewController *)self interaction];
+  intentResponse = [interaction intentResponse];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 callRecords];
-    if ([v4 count])
+    callRecords = [intentResponse callRecords];
+    if ([callRecords count])
     {
       goto LABEL_9;
     }
@@ -233,12 +233,12 @@ LABEL_9:
       sub_10007A388();
     }
 
-    v4 = 0;
+    callRecords = 0;
   }
 
 LABEL_9:
 
-  return v4;
+  return callRecords;
 }
 
 - (id)callHistoryManager
@@ -265,12 +265,12 @@ LABEL_9:
   return v3;
 }
 
-- (id)recentCallForCallRecord:(id)a3
+- (id)recentCallForCallRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(MPIntentViewController *)self callHistoryCache];
-  v7 = [v6 objectForKey:v5];
+  recordCopy = record;
+  identifier = [recordCopy identifier];
+  callHistoryCache = [(MPIntentViewController *)self callHistoryCache];
+  v7 = [callHistoryCache objectForKey:identifier];
 
   if (!v7)
   {
@@ -278,16 +278,16 @@ LABEL_9:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v5;
+      v19 = identifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Searching for calls with identifier: %@", buf, 0xCu);
     }
 
-    v9 = [NSPredicate predicateWithFormat:@"unique_id == %@", v5];
-    v10 = [(MPIntentViewController *)self callHistoryManager];
-    v7 = [v10 callsWithPredicate:v9 limit:1 offset:0 batchSize:1];
+    v9 = [NSPredicate predicateWithFormat:@"unique_id == %@", identifier];
+    callHistoryManager = [(MPIntentViewController *)self callHistoryManager];
+    v7 = [callHistoryManager callsWithPredicate:v9 limit:1 offset:0 batchSize:1];
 
-    v11 = [(MPIntentViewController *)self callHistoryCache];
-    v12 = v11;
+    callHistoryCache2 = [(MPIntentViewController *)self callHistoryCache];
+    v12 = callHistoryCache2;
     if (v7)
     {
       v13 = v7;
@@ -298,7 +298,7 @@ LABEL_9:
       v13 = &__NSArray0__struct;
     }
 
-    [v11 setObject:v13 forKey:v5];
+    [callHistoryCache2 setObject:v13 forKey:identifier];
   }
 
   if ([v7 count] != 1)
@@ -310,8 +310,8 @@ LABEL_9:
     }
   }
 
-  v15 = [v7 firstObject];
-  if (!v15)
+  firstObject = [v7 firstObject];
+  if (!firstObject)
   {
     v16 = PHDefaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -320,15 +320,15 @@ LABEL_9:
     }
   }
 
-  return v15;
+  return firstObject;
 }
 
-- (id)voicemailForCallRecord:(id)a3
+- (id)voicemailForCallRecord:(id)record
 {
-  v4 = [a3 identifier];
-  v5 = [v4 longLongValue];
-  v6 = [(MPIntentViewController *)self voicemailManager];
-  v7 = [v6 voicemailWithIdentifier:v5];
+  identifier = [record identifier];
+  longLongValue = [identifier longLongValue];
+  voicemailManager = [(MPIntentViewController *)self voicemailManager];
+  v7 = [voicemailManager voicemailWithIdentifier:longLongValue];
 
   if (!v7)
   {
@@ -342,10 +342,10 @@ LABEL_9:
   return v7;
 }
 
-- (double)calculatedHeightForCallRecordCellsWithWidth:(double)a3
+- (double)calculatedHeightForCallRecordCellsWithWidth:(double)width
 {
-  v5 = [(MPIntentViewController *)self callRecords];
-  v6 = [v5 count];
+  callRecords = [(MPIntentViewController *)self callRecords];
+  v6 = [callRecords count];
 
   if (!v6)
   {
@@ -356,8 +356,8 @@ LABEL_9:
   v8 = 0.0;
   do
   {
-    v9 = [(MPIntentViewController *)self callRecords];
-    v10 = [v9 objectAtIndexedSubscript:v7];
+    callRecords2 = [(MPIntentViewController *)self callRecords];
+    v10 = [callRecords2 objectAtIndexedSubscript:v7];
 
     if ([v10 callRecordType] == 5)
     {
@@ -365,13 +365,13 @@ LABEL_9:
       if (v11)
       {
         v12 = [[MPVisualMessage alloc] initWithVMVoicemail:v11];
-        v13 = [(MPIntentViewController *)self prototypeVoicemailCell];
-        [(MPIntentViewController *)self configureVoicemailTableViewCell:v13 forVoicemail:v12];
+        prototypeVoicemailCell = [(MPIntentViewController *)self prototypeVoicemailCell];
+        [(MPIntentViewController *)self configureVoicemailTableViewCell:prototypeVoicemailCell forVoicemail:v12];
 
-        v14 = [(MPIntentViewController *)self prototypeVoicemailCell];
+        prototypeVoicemailCell2 = [(MPIntentViewController *)self prototypeVoicemailCell];
         LODWORD(v15) = 1148846080;
         LODWORD(v16) = 1112014848;
-        [v14 systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v15, v16}];
+        [prototypeVoicemailCell2 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v15, v16}];
         v18 = v17;
 
         v8 = v8 + fmin(v18, 100.0);
@@ -383,14 +383,14 @@ LABEL_9:
       v11 = [(MPIntentViewController *)self recentCallForCallRecord:v10];
       if (v11)
       {
-        v19 = [(MPIntentViewController *)self prototypeRecentCallCell];
-        v20 = [v10 numberOfCalls];
-        -[MPIntentViewController configureRecentCallTableViewCell:forRecentCall:numberOfOccurences:](self, "configureRecentCallTableViewCell:forRecentCall:numberOfOccurences:", v19, v11, [v20 unsignedIntegerValue]);
+        prototypeRecentCallCell = [(MPIntentViewController *)self prototypeRecentCallCell];
+        numberOfCalls = [v10 numberOfCalls];
+        -[MPIntentViewController configureRecentCallTableViewCell:forRecentCall:numberOfOccurences:](self, "configureRecentCallTableViewCell:forRecentCall:numberOfOccurences:", prototypeRecentCallCell, v11, [numberOfCalls unsignedIntegerValue]);
 
-        v21 = [(MPIntentViewController *)self prototypeRecentCallCell];
+        prototypeRecentCallCell2 = [(MPIntentViewController *)self prototypeRecentCallCell];
         LODWORD(v22) = 1148846080;
         LODWORD(v23) = 1112014848;
-        [v21 systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v22, v23}];
+        [prototypeRecentCallCell2 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v22, v23}];
         v25 = v24;
 
         v8 = v8 + v25;
@@ -398,8 +398,8 @@ LABEL_9:
     }
 
     ++v7;
-    v26 = [(MPIntentViewController *)self callRecords];
-    v27 = [v26 count];
+    callRecords3 = [(MPIntentViewController *)self callRecords];
+    v27 = [callRecords3 count];
   }
 
   while (v7 < v27);
@@ -408,7 +408,7 @@ LABEL_9:
 
 - (CGSize)desiredSize
 {
-  v3 = [(MPIntentViewController *)self intent];
+  intent = [(MPIntentViewController *)self intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -416,19 +416,19 @@ LABEL_9:
     goto LABEL_4;
   }
 
-  v4 = [(MPIntentViewController *)self intent];
+  intent2 = [(MPIntentViewController *)self intent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
 LABEL_4:
-    v6 = [(MPIntentViewController *)self extensionContext];
-    [v6 hostedViewMaximumAllowedSize];
+    extensionContext = [(MPIntentViewController *)self extensionContext];
+    [extensionContext hostedViewMaximumAllowedSize];
     v8 = v7;
 
-    v9 = [(MPIntentViewController *)self extensionContext];
-    [v9 hostedViewMaximumAllowedSize];
+    extensionContext2 = [(MPIntentViewController *)self extensionContext];
+    [extensionContext2 hostedViewMaximumAllowedSize];
     v11 = v10;
 
     if (v11 <= 200.0)
@@ -444,7 +444,7 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v14 = [(MPIntentViewController *)self intent];
+  intent3 = [(MPIntentViewController *)self intent];
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
 
@@ -452,8 +452,8 @@ LABEL_4:
   v8 = 0.0;
   if (v15)
   {
-    v16 = [(MPIntentViewController *)self extensionContext];
-    [v16 hostedViewMaximumAllowedSize];
+    extensionContext3 = [(MPIntentViewController *)self extensionContext];
+    [extensionContext3 hostedViewMaximumAllowedSize];
     v8 = v17;
 
     [(MPIntentViewController *)self calculatedHeightForCallRecordCellsWithWidth:v8];
@@ -481,25 +481,25 @@ LABEL_7:
   v6 = [(MPEmergencyCountdownView *)v4 initWithDiameter:v5];
   [(MPIntentViewController *)self setCountdownView:v6];
 
-  v7 = [(MPIntentViewController *)self view];
-  v8 = [(MPIntentViewController *)self countdownView];
-  [v7 addSubview:v8];
+  view = [(MPIntentViewController *)self view];
+  countdownView = [(MPIntentViewController *)self countdownView];
+  [view addSubview:countdownView];
 
-  v9 = [(MPIntentViewController *)self countdownView];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  countdownView2 = [(MPIntentViewController *)self countdownView];
+  [countdownView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(MPIntentViewController *)self countdownView];
-  v11 = [v10 centerXAnchor];
-  v12 = [(MPIntentViewController *)self view];
-  v13 = [v12 centerXAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  countdownView3 = [(MPIntentViewController *)self countdownView];
+  centerXAnchor = [countdownView3 centerXAnchor];
+  view2 = [(MPIntentViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v14 setActive:1];
 
-  v15 = [(MPIntentViewController *)self countdownView];
-  v16 = [v15 centerYAnchor];
-  v17 = [(MPIntentViewController *)self view];
-  v18 = [v17 centerYAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18];
+  countdownView4 = [(MPIntentViewController *)self countdownView];
+  centerYAnchor = [countdownView4 centerYAnchor];
+  view3 = [(MPIntentViewController *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v19 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v19 setActive:1];
 }
 
@@ -515,164 +515,164 @@ LABEL_7:
   v4 = +[PHApplicationServices sharedInstance];
   v65 = [TUCallHistoryController callHistoryControllerWithCoalescingStrategy:1 options:15];
   v5 = [PHRecentsController alloc];
-  v6 = [v4 callProviderManager];
-  v7 = [v4 contactStore];
-  v8 = [v4 suggestedContactStore];
-  v9 = [v4 metadataCache];
-  v10 = [(PHRecentsController *)v5 initWithCallHistoryController:v65 callProviderManager:v6 contactStore:v7 suggestedContactStore:v8 metadataCache:v9];
+  callProviderManager = [v4 callProviderManager];
+  contactStore = [v4 contactStore];
+  suggestedContactStore = [v4 suggestedContactStore];
+  metadataCache = [v4 metadataCache];
+  v10 = [(PHRecentsController *)v5 initWithCallHistoryController:v65 callProviderManager:callProviderManager contactStore:contactStore suggestedContactStore:suggestedContactStore metadataCache:metadataCache];
   [(MPIntentViewController *)self setRecentsController:v10];
 
-  v11 = [(MPIntentViewController *)self recentsController];
-  [v11 addDelegate:self queue:&_dispatch_main_q];
+  recentsController = [(MPIntentViewController *)self recentsController];
+  [recentsController addDelegate:self queue:&_dispatch_main_q];
 
   v12 = objc_alloc_init(VMVoicemailManager);
   [(MPIntentViewController *)self setVoicemailManager:v12];
 
-  v13 = [(MPIntentViewController *)self voicemailManager];
-  v14 = [PHVisualVoicemailManagerFactory getVisualVoiceMailWithVisualVoicemailManager:v13 onVoicemailsChanged:&stru_1000B1D00];
+  voicemailManager = [(MPIntentViewController *)self voicemailManager];
+  v14 = [PHVisualVoicemailManagerFactory getVisualVoiceMailWithVisualVoicemailManager:voicemailManager onVoicemailsChanged:&stru_1000B1D00];
 
   v15 = [MPVoicemailController alloc];
   v16 = [MPVoicemailAccountManagerDecorator alloc];
-  v17 = [(MPIntentViewController *)self voicemailManager];
-  v18 = [(MPVoicemailAccountManagerDecorator *)v16 initWithVMD:v17];
-  v19 = [v4 callProviderManager];
-  v20 = [v4 contactStore];
-  v21 = [v4 suggestedContactStore];
-  v22 = [v4 metadataCache];
-  v23 = [(MPVoicemailController *)v15 initWithVoicemailManager:v14 accountManager:v18 callProviderManager:v19 contactStore:v20 suggestedContactStore:v21 metadataCache:v22];
+  voicemailManager2 = [(MPIntentViewController *)self voicemailManager];
+  v18 = [(MPVoicemailAccountManagerDecorator *)v16 initWithVMD:voicemailManager2];
+  callProviderManager2 = [v4 callProviderManager];
+  contactStore2 = [v4 contactStore];
+  suggestedContactStore2 = [v4 suggestedContactStore];
+  metadataCache2 = [v4 metadataCache];
+  v23 = [(MPVoicemailController *)v15 initWithVoicemailManager:v14 accountManager:v18 callProviderManager:callProviderManager2 contactStore:contactStore2 suggestedContactStore:suggestedContactStore2 metadataCache:metadataCache2];
   [(MPIntentViewController *)self setVoicemailController:v23];
 
   v24 = objc_alloc_init(MPLegacyRecentsTableViewCell);
   [(MPIntentViewController *)self setPrototypeRecentCallCell:v24];
 
-  v25 = [(MPIntentViewController *)self prototypeRecentCallCell];
-  [v25 updateFontsLayoutMetricsAndSeparatorInset];
+  prototypeRecentCallCell = [(MPIntentViewController *)self prototypeRecentCallCell];
+  [prototypeRecentCallCell updateFontsLayoutMetricsAndSeparatorInset];
 
   v26 = objc_alloc_init(PHVoicemailMessageTableViewCell);
   [(MPIntentViewController *)self setPrototypeVoicemailCell:v26];
 
   v27 = +[UIColor systemBlueColor];
-  v28 = [(MPIntentViewController *)self view];
-  [v28 setTintColor:v27];
+  view = [(MPIntentViewController *)self view];
+  [view setTintColor:v27];
 
   v29 = [[UITableView alloc] initWithFrame:0 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(MPIntentViewController *)self setTableView:v29];
 
-  v30 = [(MPIntentViewController *)self tableView];
-  [v30 setDataSource:self];
+  tableView = [(MPIntentViewController *)self tableView];
+  [tableView setDataSource:self];
 
-  v31 = [(MPIntentViewController *)self tableView];
-  [v31 setDelegate:self];
+  tableView2 = [(MPIntentViewController *)self tableView];
+  [tableView2 setDelegate:self];
 
-  v32 = [(MPIntentViewController *)self tableView];
-  [v32 setScrollEnabled:0];
+  tableView3 = [(MPIntentViewController *)self tableView];
+  [tableView3 setScrollEnabled:0];
 
   v33 = +[UIColor clearColor];
-  v34 = [(MPIntentViewController *)self tableView];
-  [v34 setBackgroundColor:v33];
+  tableView4 = [(MPIntentViewController *)self tableView];
+  [tableView4 setBackgroundColor:v33];
 
-  v35 = [(MPIntentViewController *)self tableView];
-  v36 = [v35 layer];
-  [v36 setHitTestsAsOpaque:1];
+  tableView5 = [(MPIntentViewController *)self tableView];
+  layer = [tableView5 layer];
+  [layer setHitTestsAsOpaque:1];
 
-  v37 = [(MPIntentViewController *)self tableView];
-  [v37 registerClass:objc_opt_class() forCellReuseIdentifier:@"MPLegacyRecentsTableViewCell"];
+  tableView6 = [(MPIntentViewController *)self tableView];
+  [tableView6 registerClass:objc_opt_class() forCellReuseIdentifier:@"MPLegacyRecentsTableViewCell"];
 
-  v38 = [(MPIntentViewController *)self tableView];
+  tableView7 = [(MPIntentViewController *)self tableView];
   v39 = objc_opt_class();
   v40 = +[PHVoicemailMessageTableViewCell reuseIdentifier];
-  [v38 registerClass:v39 forCellReuseIdentifier:v40];
+  [tableView7 registerClass:v39 forCellReuseIdentifier:v40];
 
-  v41 = [(MPIntentViewController *)self tableView];
-  [v41 setRowHeight:UITableViewAutomaticDimension];
+  tableView8 = [(MPIntentViewController *)self tableView];
+  [tableView8 setRowHeight:UITableViewAutomaticDimension];
 
-  v42 = [(MPIntentViewController *)self view];
-  v43 = [(MPIntentViewController *)self tableView];
-  [v42 addSubview:v43];
+  view2 = [(MPIntentViewController *)self view];
+  tableView9 = [(MPIntentViewController *)self tableView];
+  [view2 addSubview:tableView9];
 
-  v44 = [(MPIntentViewController *)self tableView];
-  [v44 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView10 = [(MPIntentViewController *)self tableView];
+  [tableView10 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v45 = [(MPIntentViewController *)self tableView];
-  v46 = [v45 topAnchor];
-  v47 = [(MPIntentViewController *)self view];
-  v48 = [v47 topAnchor];
-  v49 = [v46 constraintEqualToAnchor:v48];
+  tableView11 = [(MPIntentViewController *)self tableView];
+  topAnchor = [tableView11 topAnchor];
+  view3 = [(MPIntentViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v49 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v49 setActive:1];
 
-  v50 = [(MPIntentViewController *)self tableView];
-  v51 = [v50 bottomAnchor];
-  v52 = [(MPIntentViewController *)self view];
-  v53 = [v52 bottomAnchor];
-  v54 = [v51 constraintEqualToAnchor:v53];
+  tableView12 = [(MPIntentViewController *)self tableView];
+  bottomAnchor = [tableView12 bottomAnchor];
+  view4 = [(MPIntentViewController *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v54 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v54 setActive:1];
 
-  v55 = [(MPIntentViewController *)self tableView];
-  v56 = [v55 leftAnchor];
-  v57 = [(MPIntentViewController *)self view];
-  v58 = [v57 leftAnchor];
-  v59 = [v56 constraintEqualToAnchor:v58];
+  tableView13 = [(MPIntentViewController *)self tableView];
+  leftAnchor = [tableView13 leftAnchor];
+  view5 = [(MPIntentViewController *)self view];
+  leftAnchor2 = [view5 leftAnchor];
+  v59 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v59 setActive:1];
 
-  v60 = [(MPIntentViewController *)self tableView];
-  v61 = [v60 rightAnchor];
-  v62 = [(MPIntentViewController *)self view];
-  v63 = [v62 rightAnchor];
-  v64 = [v61 constraintEqualToAnchor:v63];
+  tableView14 = [(MPIntentViewController *)self tableView];
+  rightAnchor = [tableView14 rightAnchor];
+  view6 = [(MPIntentViewController *)self view];
+  rightAnchor2 = [view6 rightAnchor];
+  v64 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v64 setActive:1];
 }
 
-- (id)voicemailMessageViewModelForVoicemail:(id)a3
+- (id)voicemailMessageViewModelForVoicemail:(id)voicemail
 {
-  v4 = a3;
+  voicemailCopy = voicemail;
   v5 = objc_alloc_init(MPVoicemailMessageViewModel);
-  v6 = [v4 date];
-  [(MPVoicemailMessageViewModel *)v5 setDate:v6];
+  date = [voicemailCopy date];
+  [(MPVoicemailMessageViewModel *)v5 setDate:date];
 
   v7 = PHVoicemailCellDateFormatter();
-  v8 = [v4 date];
-  v9 = [v7 stringFromDate:v8];
+  date2 = [voicemailCopy date];
+  v9 = [v7 stringFromDate:date2];
   [(MPVoicemailMessageViewModel *)v5 setLocalizedDate:v9];
 
-  v10 = [(MPIntentViewController *)self voicemailController];
-  v11 = [v10 localizedTitleForMessage:v4];
+  voicemailController = [(MPIntentViewController *)self voicemailController];
+  v11 = [voicemailController localizedTitleForMessage:voicemailCopy];
   [(MPVoicemailMessageViewModel *)v5 setLocalizedTitle:v11];
 
-  [v4 duration];
+  [voicemailCopy duration];
   v13 = PHVoicemailFormatTime(v12);
   [(MPVoicemailMessageViewModel *)v5 setLocalizedDuration:v13];
 
-  v14 = [(MPIntentViewController *)self voicemailController];
-  v15 = [v14 localizedSubtitleForMessage:v4];
+  voicemailController2 = [(MPIntentViewController *)self voicemailController];
+  v15 = [voicemailController2 localizedSubtitleForMessage:voicemailCopy];
   [(MPVoicemailMessageViewModel *)v5 setLocalizedSubtitle:v15];
 
-  -[MPVoicemailMessageViewModel setIsRead:](v5, "setIsRead:", [v4 isRead]);
-  -[MPVoicemailMessageViewModel setIsDeleted:](v5, "setIsDeleted:", [v4 folder] == 2);
-  v16 = [v4 isTranscriptionAvailable];
+  -[MPVoicemailMessageViewModel setIsRead:](v5, "setIsRead:", [voicemailCopy isRead]);
+  -[MPVoicemailMessageViewModel setIsDeleted:](v5, "setIsDeleted:", [voicemailCopy folder] == 2);
+  isTranscriptionAvailable = [voicemailCopy isTranscriptionAvailable];
   v17 = PHDefaultLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    sub_10007A5A0(v16, v4, v17);
+    sub_10007A5A0(isTranscriptionAvailable, voicemailCopy, v17);
   }
 
-  [(MPVoicemailMessageViewModel *)v5 setShowsTranscriptionView:v16];
+  [(MPVoicemailMessageViewModel *)v5 setShowsTranscriptionView:isTranscriptionAvailable];
   [(MPVoicemailMessageViewModel *)v5 setShowsPlayerControls:1];
-  [v4 duration];
+  [voicemailCopy duration];
   [(MPVoicemailMessageViewModel *)v5 setDuration:?];
   if (PHDeviceSupportsDualSim())
   {
-    v18 = [(MPIntentViewController *)self voicemailController];
-    v19 = [v18 callProviderManager];
-    v20 = [v19 telephonyProvider];
-    v21 = [v20 prioritizedSenderIdentities];
-    if ([v21 count] < 2)
+    voicemailController3 = [(MPIntentViewController *)self voicemailController];
+    callProviderManager = [voicemailController3 callProviderManager];
+    telephonyProvider = [callProviderManager telephonyProvider];
+    prioritizedSenderIdentities = [telephonyProvider prioritizedSenderIdentities];
+    if ([prioritizedSenderIdentities count] < 2)
     {
     }
 
     else
     {
-      v22 = [v4 receiverDestinationID];
-      v23 = [v22 length];
+      receiverDestinationID = [voicemailCopy receiverDestinationID];
+      v23 = [receiverDestinationID length];
 
       if (!v23)
       {
@@ -680,30 +680,30 @@ LABEL_7:
       }
 
       v24 = [TUHandle alloc];
-      v25 = [v4 receiverDestinationID];
-      v18 = [v24 initWithType:2 value:v25];
+      receiverDestinationID2 = [voicemailCopy receiverDestinationID];
+      voicemailController3 = [v24 initWithType:2 value:receiverDestinationID2];
 
-      v26 = [v4 receiverISOCountryCode];
-      v19 = [v18 canonicalHandleForISOCountryCode:v26];
+      receiverISOCountryCode = [voicemailCopy receiverISOCountryCode];
+      callProviderManager = [voicemailController3 canonicalHandleForISOCountryCode:receiverISOCountryCode];
 
-      v27 = [(MPIntentViewController *)self voicemailController];
-      v28 = [v27 callProviderManager];
-      v29 = [v28 telephonyProvider];
-      v30 = [v29 senderIdentityForHandle:v19];
-      v20 = [v30 localizedShortName];
+      voicemailController4 = [(MPIntentViewController *)self voicemailController];
+      callProviderManager2 = [voicemailController4 callProviderManager];
+      telephonyProvider2 = [callProviderManager2 telephonyProvider];
+      v30 = [telephonyProvider2 senderIdentityForHandle:callProviderManager];
+      telephonyProvider = [v30 localizedShortName];
 
-      [(MPVoicemailMessageViewModel *)v5 setLocalizedSenderIdentityTitle:v20];
+      [(MPVoicemailMessageViewModel *)v5 setLocalizedSenderIdentityTitle:telephonyProvider];
     }
   }
 
 LABEL_9:
-  v31 = [[VMMessageTranscriptViewModel alloc] initWithMPMessage:v4];
+  v31 = [[VMMessageTranscriptViewModel alloc] initWithMPMessage:voicemailCopy];
   [(MPVoicemailMessageViewModel *)v5 setTranscriptViewModel:v31];
 
   return v5;
 }
 
-- (void)recentsController:(id)a3 didChangeCalls:(id)a4
+- (void)recentsController:(id)controller didChangeCalls:(id)calls
 {
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -714,24 +714,24 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling recent calls change", &v9, 0xCu);
   }
 
-  v7 = [(MPIntentViewController *)self recentsItemCache];
-  [v7 removeAllObjects];
+  recentsItemCache = [(MPIntentViewController *)self recentsItemCache];
+  [recentsItemCache removeAllObjects];
 
-  v8 = [(MPIntentViewController *)self tableView];
-  [v8 reloadData];
+  tableView = [(MPIntentViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MPIntentViewController *)self callRecords];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+  viewCopy = view;
+  pathCopy = path;
+  callRecords = [(MPIntentViewController *)self callRecords];
+  v9 = [callRecords objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   if ([v9 callRecordType] == 5)
   {
     v10 = +[PHVoicemailMessageTableViewCell reuseIdentifier];
-    v11 = [v6 dequeueReusableCellWithIdentifier:v10 forIndexPath:v7];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:v10 forIndexPath:pathCopy];
 
     v12 = [(MPIntentViewController *)self voicemailForCallRecord:v9];
     if (!v12)
@@ -739,13 +739,13 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v13 = [[MPVisualMessage alloc] initWithVMVoicemail:v12];
-    [(MPIntentViewController *)self configureVoicemailTableViewCell:v11 forVoicemail:v13];
+    numberOfCalls = [[MPVisualMessage alloc] initWithVMVoicemail:v12];
+    [(MPIntentViewController *)self configureVoicemailTableViewCell:v11 forVoicemail:numberOfCalls];
   }
 
   else
   {
-    v11 = [v6 dequeueReusableCellWithIdentifier:@"MPLegacyRecentsTableViewCell" forIndexPath:v7];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"MPLegacyRecentsTableViewCell" forIndexPath:pathCopy];
     [v11 updateFontsLayoutMetricsAndSeparatorInset];
     v12 = [(MPIntentViewController *)self recentCallForCallRecord:v9];
     if (!v12)
@@ -753,8 +753,8 @@ LABEL_9:
       goto LABEL_7;
     }
 
-    v13 = [v9 numberOfCalls];
-    [(MPIntentViewController *)self configureRecentCallTableViewCell:v11 forRecentCall:v12 numberOfOccurences:[(MPVisualMessage *)v13 unsignedIntegerValue]];
+    numberOfCalls = [v9 numberOfCalls];
+    [(MPIntentViewController *)self configureRecentCallTableViewCell:v11 forRecentCall:v12 numberOfOccurences:[(MPVisualMessage *)numberOfCalls unsignedIntegerValue]];
   }
 
 LABEL_7:
@@ -774,38 +774,38 @@ LABEL_7:
   return v3;
 }
 
-- (id)recentsItemForCall:(id)a3 numberOfOccurences:(unint64_t)a4
+- (id)recentsItemForCall:(id)call numberOfOccurences:(unint64_t)occurences
 {
-  v6 = a3;
-  v7 = [v6 uniqueId];
-  v8 = [(MPIntentViewController *)self recentsItemCache];
-  v9 = [v8 objectForKey:v7];
+  callCopy = call;
+  uniqueId = [callCopy uniqueId];
+  recentsItemCache = [(MPIntentViewController *)self recentsItemCache];
+  v9 = [recentsItemCache objectForKey:uniqueId];
 
   if (!v9)
   {
-    v10 = [(MPIntentViewController *)self recentsController];
-    v9 = [v10 itemForRecentCall:v6 numberOfOccurences:a4];
+    recentsController = [(MPIntentViewController *)self recentsController];
+    v9 = [recentsController itemForRecentCall:callCopy numberOfOccurences:occurences];
 
     if (v9)
     {
-      v11 = [(MPIntentViewController *)self recentsItemCache];
-      [v11 setObject:v9 forKey:v7];
+      recentsItemCache2 = [(MPIntentViewController *)self recentsItemCache];
+      [recentsItemCache2 setObject:v9 forKey:uniqueId];
     }
   }
 
   return v9;
 }
 
-- (void)configureRecentCallTableViewCell:(id)a3 forRecentCall:(id)a4 numberOfOccurences:(unint64_t)a5
+- (void)configureRecentCallTableViewCell:(id)cell forRecentCall:(id)call numberOfOccurences:(unint64_t)occurences
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(MPIntentViewController *)self recentsItemForCall:v8 numberOfOccurences:a5];
+  callCopy = call;
+  cellCopy = cell;
+  v10 = [(MPIntentViewController *)self recentsItemForCall:callCopy numberOfOccurences:occurences];
   v11 = PHDefaultLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v8;
+    v17 = callCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Recent Call: %@", &v16, 0xCu);
   }
 
@@ -817,48 +817,48 @@ LABEL_7:
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Recents Item: %@", &v16, 0xCu);
   }
 
-  [v9 configureWithRecentsItem:v10 recentCall:v8];
-  [v9 setAccessoryType:0];
+  [cellCopy configureWithRecentsItem:v10 recentCall:callCopy];
+  [cellCopy setAccessoryType:0];
   v13 = +[UIColor clearColor];
-  [v9 setBackgroundColor:v13];
+  [cellCopy setBackgroundColor:v13];
 
   v14 = +[UIColor clearColor];
-  v15 = [v9 contentView];
+  contentView = [cellCopy contentView];
 
-  [v15 setBackgroundColor:v14];
+  [contentView setBackgroundColor:v14];
 }
 
-- (void)configureVoicemailTableViewCell:(id)a3 forVoicemail:(id)a4
+- (void)configureVoicemailTableViewCell:(id)cell forVoicemail:(id)voicemail
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setDelegate:self];
+  voicemailCopy = voicemail;
+  cellCopy = cell;
+  [cellCopy setDelegate:self];
   v8 = +[UIColor clearColor];
-  [v7 setBackgroundColor:v8];
+  [cellCopy setBackgroundColor:v8];
 
   v9 = +[UIColor clearColor];
-  v10 = [v7 contentView];
-  [v10 setBackgroundColor:v9];
+  contentView = [cellCopy contentView];
+  [contentView setBackgroundColor:v9];
 
-  v11 = [(MPIntentViewController *)self voicemailMessageViewModelForVoicemail:v6];
+  v11 = [(MPIntentViewController *)self voicemailMessageViewModelForVoicemail:voicemailCopy];
 
-  [v7 configureWithVoicemailMessageViewModel:v11 expanded:0 shouldGrayForeground:0];
+  [cellCopy configureWithVoicemailMessageViewModel:v11 expanded:0 shouldGrayForeground:0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MPIntentViewController *)self callRecords:a3];
+  v4 = [(MPIntentViewController *)self callRecords:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v6 = a3;
-  v7 = [(MPIntentViewController *)self callRecords];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v14, "row")}];
+  pathCopy = path;
+  viewCopy = view;
+  callRecords = [(MPIntentViewController *)self callRecords];
+  v8 = [callRecords objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
   if ([v8 callRecordType] == 5)
   {
@@ -870,23 +870,23 @@ LABEL_7:
   else
   {
     v9 = [(MPIntentViewController *)self recentCallForCallRecord:v8];
-    v11 = [v9 validRemoteParticipantHandles];
-    v12 = [v11 count];
+    validRemoteParticipantHandles = [v9 validRemoteParticipantHandles];
+    v12 = [validRemoteParticipantHandles count];
 
-    v13 = [(MPIntentViewController *)self recentsController];
-    v10 = v13;
+    recentsController = [(MPIntentViewController *)self recentsController];
+    v10 = recentsController;
     if (v12 < 2)
     {
-      [v13 performDialRequestForRecentCall:v9];
+      [recentsController performDialRequestForRecentCall:v9];
     }
 
     else
     {
-      [v13 performJoinRequestForRecentCall:v9];
+      [recentsController performJoinRequestForRecentCall:v9];
     }
   }
 
-  [v6 deselectRowAtIndexPath:v14 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

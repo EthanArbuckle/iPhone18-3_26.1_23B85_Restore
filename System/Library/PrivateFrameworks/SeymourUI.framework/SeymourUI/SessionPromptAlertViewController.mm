@@ -1,6 +1,6 @@
 @interface SessionPromptAlertViewController
-- (_TtC9SeymourUI32SessionPromptAlertViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC9SeymourUI32SessionPromptAlertViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -8,18 +8,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B84C0F0();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_20B84C4C4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_20B84C4C4(change);
 }
 
-- (_TtC9SeymourUI32SessionPromptAlertViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI32SessionPromptAlertViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

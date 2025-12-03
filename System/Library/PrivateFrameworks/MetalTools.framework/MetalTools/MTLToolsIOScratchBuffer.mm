@@ -1,18 +1,18 @@
 @interface MTLToolsIOScratchBuffer
 - (MTLBuffer)buffer;
-- (MTLToolsIOScratchBuffer)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTLToolsIOScratchBuffer)initWithBaseObject:(id)object parent:(id)parent;
 - (void)dealloc;
 @end
 
 @implementation MTLToolsIOScratchBuffer
 
-- (MTLToolsIOScratchBuffer)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTLToolsIOScratchBuffer)initWithBaseObject:(id)object parent:(id)parent
 {
-  if (a3)
+  if (object)
   {
     v5.receiver = self;
     v5.super_class = MTLToolsIOScratchBuffer;
-    return [(MTLToolsObject *)&v5 initWithBaseObject:a3 parent:a4];
+    return [(MTLToolsObject *)&v5 initWithBaseObject:object parent:parent];
   }
 
   else

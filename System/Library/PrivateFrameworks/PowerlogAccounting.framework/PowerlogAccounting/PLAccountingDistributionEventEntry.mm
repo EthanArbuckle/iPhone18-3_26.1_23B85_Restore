@@ -1,14 +1,14 @@
 @interface PLAccountingDistributionEventEntry
 + (id)mergingDenyList;
 + (void)load;
-- (BOOL)canMergeWithEvent:(id)a3;
+- (BOOL)canMergeWithEvent:(id)event;
 - (BOOL)distributeRangeWeightedTotal;
 - (BOOL)isEmptyEvent;
-- (BOOL)isEqualContentsWithEvent:(id)a3;
+- (BOOL)isEqualContentsWithEvent:(id)event;
 - (NSDictionary)childNodeIDToWeight;
 - (NSDictionary)childNodeNameToWeight;
-- (PLAccountingDistributionEventEntry)initWithDistributionID:(id)a3 withChildNodeIDToWeight:(id)a4 withRange:(id)a5;
-- (PLAccountingDistributionEventEntry)initWithDistributionID:(id)a3 withChildNodeNameToWeight:(id)a4 withRange:(id)a5;
+- (PLAccountingDistributionEventEntry)initWithDistributionID:(id)d withChildNodeIDToWeight:(id)weight withRange:(id)range;
+- (PLAccountingDistributionEventEntry)initWithDistributionID:(id)d withChildNodeNameToWeight:(id)weight withRange:(id)range;
 - (int)instanceDirectionality;
 @end
 
@@ -16,11 +16,11 @@
 
 - (int)instanceDirectionality
 {
-  v2 = [(PLAccountingDistributionEventEntry *)self distributionID];
-  v3 = [&unk_2870F8738 objectAtIndexedSubscript:{objc_msgSend(v2, "intValue")}];
-  v4 = [v3 intValue];
+  distributionID = [(PLAccountingDistributionEventEntry *)self distributionID];
+  v3 = [&unk_2870F8738 objectAtIndexedSubscript:{objc_msgSend(distributionID, "intValue")}];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
 + (id)mergingDenyList
@@ -41,20 +41,20 @@
   if (!self->_childNodeIDToWeight && [(PLEntry *)self existsInDB])
   {
     [(PLEntry *)self loadDynamicKeys];
-    v27 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v3 = MEMORY[0x277CBEB98];
     v4 = MEMORY[0x277D3F198];
-    v5 = [(PLEntry *)self entryKey];
-    v6 = [v4 keyConfigsForEntryKey:v5];
-    v7 = [v6 allKeys];
-    v8 = [v3 setWithArray:v7];
+    entryKey = [(PLEntry *)self entryKey];
+    v6 = [v4 keyConfigsForEntryKey:entryKey];
+    allKeys = [v6 allKeys];
+    v8 = [v3 setWithArray:allKeys];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v9 = [(PLEntry *)self keys];
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    keys = [(PLEntry *)self keys];
+    v10 = [keys countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v10)
     {
       v11 = v10;
@@ -66,7 +66,7 @@
         {
           if (*v29 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(keys);
           }
 
           v14 = *(*(&v28 + 1) + 8 * i);
@@ -92,19 +92,19 @@
               v19 = [(PLEntry *)self objectForKeyedSubscript:v14];
               [v19 doubleValue];
               v21 = [v18 numberWithDouble:v20 / 100.0];
-              [(NSDictionary *)v27 setObject:v21 forKeyedSubscript:v16];
+              [(NSDictionary *)dictionary setObject:v21 forKeyedSubscript:v16];
             }
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v11 = [keys countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v11);
     }
 
     childNodeIDToWeight = self->_childNodeIDToWeight;
-    self->_childNodeIDToWeight = v27;
+    self->_childNodeIDToWeight = dictionary;
   }
 
   v23 = self->_childNodeIDToWeight;
@@ -144,8 +144,8 @@
           }
 
           v8 = *(*(&v12 + 1) + 8 * v7);
-          v9 = [(PLAccountingDistributionEventEntry *)self distributionID];
-          LODWORD(v8) = [v9 isEqualToNumber:v8];
+          distributionID = [(PLAccountingDistributionEventEntry *)self distributionID];
+          LODWORD(v8) = [distributionID isEqualToNumber:v8];
 
           if (v8)
           {
@@ -171,83 +171,83 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLAccountingDistributionEventEntry;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (PLAccountingDistributionEventEntry)initWithDistributionID:(id)a3 withChildNodeNameToWeight:(id)a4 withRange:(id)a5
+- (PLAccountingDistributionEventEntry)initWithDistributionID:(id)d withChildNodeNameToWeight:(id)weight withRange:(id)range
 {
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v10 allValues];
+  rangeCopy = range;
+  weightCopy = weight;
+  dCopy = d;
+  allValues = [weightCopy allValues];
   v13 = +[PLAccountingNodeManager sharedInstance];
-  v14 = [v10 allKeys];
+  allKeys = [weightCopy allKeys];
 
-  v15 = [v13 childNodeIDsFromChildNodeNames:v14];
-  v16 = [v8 dictionaryWithObjects:v12 forKeys:v15];
+  v15 = [v13 childNodeIDsFromChildNodeNames:allKeys];
+  v16 = [v8 dictionaryWithObjects:allValues forKeys:v15];
 
-  v17 = [(PLAccountingDistributionEventEntry *)self initWithDistributionID:v11 withChildNodeIDToWeight:v16 withRange:v9];
+  v17 = [(PLAccountingDistributionEventEntry *)self initWithDistributionID:dCopy withChildNodeIDToWeight:v16 withRange:rangeCopy];
   return v17;
 }
 
-- (PLAccountingDistributionEventEntry)initWithDistributionID:(id)a3 withChildNodeIDToWeight:(id)a4 withRange:(id)a5
+- (PLAccountingDistributionEventEntry)initWithDistributionID:(id)d withChildNodeIDToWeight:(id)weight withRange:(id)range
 {
   v51 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 intValue] < 1)
+  dCopy = d;
+  weightCopy = weight;
+  rangeCopy = range;
+  if ([dCopy intValue] < 1)
   {
-    v13 = 0;
+    selfCopy2 = 0;
     goto LABEL_23;
   }
 
   v11 = +[PLAccountingEngine allDistributionIDs];
-  v12 = [v11 containsObject:v8];
+  v12 = [v11 containsObject:dCopy];
 
-  v13 = 0;
-  if (v9 && v12)
+  selfCopy2 = 0;
+  if (weightCopy && v12)
   {
     v47.receiver = self;
     v47.super_class = PLAccountingDistributionEventEntry;
-    v14 = [(PLAccountingEventEntry *)&v47 initWithRange:v10];
+    v14 = [(PLAccountingEventEntry *)&v47 initWithRange:rangeCopy];
     self = v14;
     if (v14)
     {
-      [(PLEntry *)v14 setObject:v8 forKeyedSubscript:*MEMORY[0x277D3F410]];
-      v15 = [(PLAccountingDistributionEventEntry *)self instanceDirectionality];
-      v42 = self;
-      v16 = [objc_opt_class() classDirectionality];
-      if (v15 != v16 && v16 != 3)
+      [(PLEntry *)v14 setObject:dCopy forKeyedSubscript:*MEMORY[0x277D3F410]];
+      instanceDirectionality = [(PLAccountingDistributionEventEntry *)self instanceDirectionality];
+      selfCopy = self;
+      classDirectionality = [objc_opt_class() classDirectionality];
+      if (instanceDirectionality != classDirectionality && classDirectionality != 3)
       {
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Directionality mismatch for distributionID=%@", v8];
+        dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Directionality mismatch for distributionID=%@", dCopy];
         v18 = MEMORY[0x277D3F178];
         v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/PowerlogAccounting/Entries/Distribution/PLAccountingDistributionEventEntry.m"];
-        v20 = [v19 lastPathComponent];
+        lastPathComponent = [v19 lastPathComponent];
         v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLAccountingDistributionEventEntry initWithDistributionID:withChildNodeIDToWeight:withRange:]"];
-        [v18 logMessage:v17 fromFile:v20 fromFunction:v21 fromLineNumber:54];
+        [v18 logMessage:dCopy fromFile:lastPathComponent fromFunction:v21 fromLineNumber:54];
 
         v22 = PLLogCommon();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
         {
-          [PLAccountingDistributionEventEntry initWithDistributionID:v17 withChildNodeIDToWeight:v22 withRange:?];
+          [PLAccountingDistributionEventEntry initWithDistributionID:dCopy withChildNodeIDToWeight:v22 withRange:?];
         }
 
-        v13 = 0;
+        selfCopy2 = 0;
         goto LABEL_23;
       }
 
-      v40 = v10;
-      v23 = [v9 mutableCopy];
+      v40 = rangeCopy;
+      v23 = [weightCopy mutableCopy];
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v41 = v9;
-      v24 = v9;
+      v41 = weightCopy;
+      v24 = weightCopy;
       v25 = [v24 countByEnumeratingWithState:&v43 objects:v50 count:16];
       if (v25)
       {
@@ -274,7 +274,7 @@
               v48 = v28;
               v49 = v30;
               v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-              [(PLEntry *)v42 setObject:v35 forKeyedSubscript:v36];
+              [(PLEntry *)selfCopy setObject:v35 forKeyedSubscript:v36];
             }
 
             else
@@ -289,34 +289,34 @@
         while (v26);
       }
 
-      self = v42;
-      childNodeIDToWeight = v42->_childNodeIDToWeight;
-      v42->_childNodeIDToWeight = v23;
+      self = selfCopy;
+      childNodeIDToWeight = selfCopy->_childNodeIDToWeight;
+      selfCopy->_childNodeIDToWeight = v23;
 
-      v9 = v41;
-      v10 = v40;
+      weightCopy = v41;
+      rangeCopy = v40;
     }
 
     self = self;
-    v13 = self;
+    selfCopy2 = self;
   }
 
 LABEL_23:
 
   v38 = *MEMORY[0x277D85DE8];
-  return v13;
+  return selfCopy2;
 }
 
 - (NSDictionary)childNodeNameToWeight
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(PLAccountingDistributionEventEntry *)self childNodeIDToWeight];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  childNodeIDToWeight = [(PLAccountingDistributionEventEntry *)self childNodeIDToWeight];
+  v5 = [childNodeIDToWeight countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -327,7 +327,7 @@ LABEL_23:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(childNodeIDToWeight);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -336,13 +336,13 @@ LABEL_23:
 
         if (v11)
         {
-          v12 = [(PLAccountingDistributionEventEntry *)self childNodeIDToWeight];
-          v13 = [v12 objectForKeyedSubscript:v9];
-          [v3 setObject:v13 forKeyedSubscript:v11];
+          childNodeIDToWeight2 = [(PLAccountingDistributionEventEntry *)self childNodeIDToWeight];
+          v13 = [childNodeIDToWeight2 objectForKeyedSubscript:v9];
+          [dictionary setObject:v13 forKeyedSubscript:v11];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [childNodeIDToWeight countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -350,7 +350,7 @@ LABEL_23:
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 void __53__PLAccountingDistributionEventEntry_mergingDenyList__block_invoke()
@@ -359,30 +359,30 @@ void __53__PLAccountingDistributionEventEntry_mergingDenyList__block_invoke()
   mergingDenyList__mergingDenyList = &unk_2870F8768;
 }
 
-- (BOOL)isEqualContentsWithEvent:(id)a3
+- (BOOL)isEqualContentsWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PLAccountingDistributionEventEntry *)self childNodeIDToWeight];
-  v6 = [v4 childNodeIDToWeight];
+  eventCopy = event;
+  childNodeIDToWeight = [(PLAccountingDistributionEventEntry *)self childNodeIDToWeight];
+  childNodeIDToWeight2 = [eventCopy childNodeIDToWeight];
 
-  LOBYTE(v4) = [v5 isEqualToDictionary:v6];
-  return v4;
+  LOBYTE(eventCopy) = [childNodeIDToWeight isEqualToDictionary:childNodeIDToWeight2];
+  return eventCopy;
 }
 
-- (BOOL)canMergeWithEvent:(id)a3
+- (BOOL)canMergeWithEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = +[PLAccountingDistributionEventEntry mergingDenyList];
-  v5 = [v3 distributionID];
+  distributionID = [eventCopy distributionID];
 
-  LOBYTE(v3) = [v4 containsObject:v5];
-  return v3 ^ 1;
+  LOBYTE(eventCopy) = [v4 containsObject:distributionID];
+  return eventCopy ^ 1;
 }
 
 - (BOOL)isEmptyEvent
 {
-  v2 = [(PLAccountingDistributionEventEntry *)self childNodeIDToWeight];
-  v3 = [v2 count] == 0;
+  childNodeIDToWeight = [(PLAccountingDistributionEventEntry *)self childNodeIDToWeight];
+  v3 = [childNodeIDToWeight count] == 0;
 
   return v3;
 }

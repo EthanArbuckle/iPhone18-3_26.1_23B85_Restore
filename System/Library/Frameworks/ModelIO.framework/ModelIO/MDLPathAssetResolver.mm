@@ -1,7 +1,7 @@
 @interface MDLPathAssetResolver
-- (BOOL)canResolveAssetNamed:(id)a3;
+- (BOOL)canResolveAssetNamed:(id)named;
 - (MDLPathAssetResolver)initWithPath:(NSString *)path;
-- (id)resolveAssetNamed:(id)a3;
+- (id)resolveAssetNamed:(id)named;
 - (void)setPath:(NSString *)path;
 @end
 
@@ -40,12 +40,12 @@
   return v7;
 }
 
-- (BOOL)canResolveAssetNamed:(id)a3
+- (BOOL)canResolveAssetNamed:(id)named
 {
-  v5 = a3;
-  if (v5 && self->_path)
+  namedCopy = named;
+  if (namedCopy && self->_path)
   {
-    v6 = objc_msgSend_resolveAssetNamed_(self, v4, v5);
+    v6 = objc_msgSend_resolveAssetNamed_(self, v4, namedCopy);
     v7 = v6 != 0;
   }
 
@@ -57,11 +57,11 @@
   return v7;
 }
 
-- (id)resolveAssetNamed:(id)a3
+- (id)resolveAssetNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   v6 = objc_msgSend_fileURLWithPath_isDirectory_(MEMORY[0x277CBEBC0], v5, self->_path, 1);
-  v8 = objc_msgSend_URLByAppendingPathComponent_(v6, v7, v4);
+  v8 = objc_msgSend_URLByAppendingPathComponent_(v6, v7, namedCopy);
 
   return v8;
 }

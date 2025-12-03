@@ -1,8 +1,8 @@
 @interface KGErrorMarker
 - (BOOL)markerExists;
-- (KGErrorMarker)initWithDatabaseURL:(id)a3;
+- (KGErrorMarker)initWithDatabaseURL:(id)l;
 - (id)readComment;
-- (void)createWithComment:(id)a3;
+- (void)createWithComment:(id)comment;
 - (void)removeMarker;
 @end
 
@@ -10,20 +10,20 @@
 
 - (void)removeMarker
 {
-  v2 = [(NSURL *)self->_fileURL fileSystemRepresentation];
+  fileSystemRepresentation = [(NSURL *)self->_fileURL fileSystemRepresentation];
 
-  unlink(v2);
+  unlink(fileSystemRepresentation);
 }
 
-- (void)createWithComment:(id)a3
+- (void)createWithComment:(id)comment
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commentCopy = comment;
   v5 = open([(NSURL *)self->_fileURL fileSystemRepresentation], 514, 384);
   if ((v5 & 0x80000000) == 0)
   {
     v6 = v5;
-    [v4 getCString:__s maxLength:128 encoding:4];
+    [commentCopy getCString:__s maxLength:128 encoding:4];
     v7 = strlen(__s);
     write(v6, __s, v7 + 1);
     close(v6);
@@ -87,15 +87,15 @@
   return v3 >= 0;
 }
 
-- (KGErrorMarker)initWithDatabaseURL:(id)a3
+- (KGErrorMarker)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = KGErrorMarker;
   v5 = [(KGErrorMarker *)&v9 init];
   if (v5)
   {
-    v6 = [v4 URLByAppendingPathExtension:@"errormarker"];
+    v6 = [lCopy URLByAppendingPathExtension:@"errormarker"];
     fileURL = v5->_fileURL;
     v5->_fileURL = v6;
   }

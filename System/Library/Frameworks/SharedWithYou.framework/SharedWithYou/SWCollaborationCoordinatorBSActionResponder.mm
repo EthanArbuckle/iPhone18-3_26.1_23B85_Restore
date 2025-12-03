@@ -1,8 +1,8 @@
 @interface SWCollaborationCoordinatorBSActionResponder
 + (SWCollaborationCoordinatorBSActionResponder)sharedActionResponder;
 - (SWCollaborationCoordinatorBSActionResponder)init;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
-- (void)_appDidFinishLaunching:(id)a3;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
+- (void)_appDidFinishLaunching:(id)launching;
 @end
 
 @implementation SWCollaborationCoordinatorBSActionResponder
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __68__SWCollaborationCoordinatorBSActionResponder_sharedActionResponder__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedActionResponder_onceToken != -1)
   {
     dispatch_once(&sharedActionResponder_onceToken, block);
@@ -38,37 +38,37 @@ uint64_t __68__SWCollaborationCoordinatorBSActionResponder_sharedActionResponder
   v2 = [(SWCollaborationCoordinatorBSActionResponder *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC668] sharedApplication];
-    v4 = [v3 _hasApplicationCalledLaunchDelegate];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    _hasApplicationCalledLaunchDelegate = [mEMORY[0x1E69DC668] _hasApplicationCalledLaunchDelegate];
 
-    if (v4)
+    if (_hasApplicationCalledLaunchDelegate)
     {
-      v5 = [MEMORY[0x1E697B6F8] sharedManager];
-      [v5 applicationHasFinishedLaunching];
+      mEMORY[0x1E697B6F8] = [MEMORY[0x1E697B6F8] sharedManager];
+      [mEMORY[0x1E697B6F8] applicationHasFinishedLaunching];
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v5 addObserver:v2 selector:sel__appDidFinishLaunching_ name:*MEMORY[0x1E69DDAD0] object:0];
+      mEMORY[0x1E697B6F8] = [MEMORY[0x1E696AD88] defaultCenter];
+      [mEMORY[0x1E697B6F8] addObserver:v2 selector:sel__appDidFinishLaunching_ name:*MEMORY[0x1E69DDAD0] object:0];
     }
   }
 
   return v2;
 }
 
-- (void)_appDidFinishLaunching:(id)a3
+- (void)_appDidFinishLaunching:(id)launching
 {
-  v3 = [MEMORY[0x1E697B6F8] sharedManager];
-  [v3 applicationHasFinishedLaunching];
+  mEMORY[0x1E697B6F8] = [MEMORY[0x1E697B6F8] sharedManager];
+  [mEMORY[0x1E697B6F8] applicationHasFinishedLaunching];
 }
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v6, "count")}];
-  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v6, "count")}];
+  actionsCopy = actions;
+  v7 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(actionsCopy, "count")}];
+  v8 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(actionsCopy, "count")}];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __109__SWCollaborationCoordinatorBSActionResponder__respondToActions_forFBSScene_inUIScene_fromTransitionContext___block_invoke;
@@ -77,7 +77,7 @@ uint64_t __68__SWCollaborationCoordinatorBSActionResponder_sharedActionResponder
   v21 = v9;
   v10 = v8;
   v22 = v10;
-  [v6 enumerateObjectsUsingBlock:&v17];
+  [actionsCopy enumerateObjectsUsingBlock:&v17];
   if ([v9 count])
   {
     v11 = SWFrameworkLogHandle();
@@ -88,12 +88,12 @@ uint64_t __68__SWCollaborationCoordinatorBSActionResponder_sharedActionResponder
       _os_log_impl(&dword_1BBC06000, v11, OS_LOG_TYPE_DEFAULT, "%s we have incoming actions to deliver to the collaboration coordinator.", buf, 0xCu);
     }
 
-    v12 = [MEMORY[0x1E697B6F8] sharedManager];
-    v13 = [v9 allObjects];
-    [v12 processIncomingActions:v13];
+    mEMORY[0x1E697B6F8] = [MEMORY[0x1E697B6F8] sharedManager];
+    allObjects = [v9 allObjects];
+    [mEMORY[0x1E697B6F8] processIncomingActions:allObjects];
   }
 
-  v14 = [v6 mutableCopy];
+  v14 = [actionsCopy mutableCopy];
   [v14 minusSet:v10];
 
   v15 = *MEMORY[0x1E69E9840];

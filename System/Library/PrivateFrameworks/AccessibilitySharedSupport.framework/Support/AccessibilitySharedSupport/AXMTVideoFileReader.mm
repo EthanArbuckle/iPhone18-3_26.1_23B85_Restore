@@ -1,37 +1,37 @@
 @interface AXMTVideoFileReader
-+ (BOOL)fileURLContainsSuitablePlayableVideo:(id)a3 error:(id *)a4;
-- (AXMTVideoFileReader)initWithInput:(id)a3;
++ (BOOL)fileURLContainsSuitablePlayableVideo:(id)video error:(id *)error;
+- (AXMTVideoFileReader)initWithInput:(id)input;
 - (AXMTVideoFileReaderDelegate)delegate;
 - (BOOL)isStarted;
 - (CGSize)resolution;
 - (void)_bringUp;
 - (void)_cancelDispatchSource;
-- (void)_pauseNotificationReceived:(id)a3;
+- (void)_pauseNotificationReceived:(id)received;
 - (void)_pausePlayback;
-- (void)_playNotificationReceived:(id)a3;
+- (void)_playNotificationReceived:(id)received;
 - (void)_playVideoFile;
 - (void)_readTimerFired;
 - (void)_resumePlayback;
 - (void)_setupDispatchSource;
 - (void)_tearDown;
-- (void)setInput:(id)a3;
+- (void)setInput:(id)input;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation AXMTVideoFileReader
 
-- (AXMTVideoFileReader)initWithInput:(id)a3
+- (AXMTVideoFileReader)initWithInput:(id)input
 {
-  v4 = a3;
-  if (v4)
+  inputCopy = input;
+  if (inputCopy)
   {
     v12.receiver = self;
     v12.super_class = AXMTVideoFileReader;
     v5 = [(AXMTVideoFileReader *)&v12 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [inputCopy copy];
       input = v5->_input;
       v5->_input = v6;
 
@@ -42,28 +42,28 @@
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)setInput:(id)a3
+- (void)setInput:(id)input
 {
-  v4 = a3;
-  if (v4)
+  inputCopy = input;
+  if (inputCopy)
   {
-    v10 = v4;
-    if (([(AXSSMotionTrackingVideoFileInput *)self->_input isEqual:v4]& 1) == 0)
+    v10 = inputCopy;
+    if (([(AXSSMotionTrackingVideoFileInput *)self->_input isEqual:inputCopy]& 1) == 0)
     {
-      v5 = [(AXMTVideoFileReader *)self _fileURL];
+      _fileURL = [(AXMTVideoFileReader *)self _fileURL];
 
-      if (v5)
+      if (_fileURL)
       {
         [(AXMTVideoFileReader *)self _tearDown];
       }
@@ -119,9 +119,9 @@
     v4 = +[NSNotificationCenter defaultCenter];
     [v4 removeObserver:self name:@"AXMTVideoFilePlayManagerPauseNotification" object:0];
 
-    v5 = [(AXMTVideoFileReader *)self _fileURL];
+    _fileURL = [(AXMTVideoFileReader *)self _fileURL];
 
-    if (v5)
+    if (_fileURL)
     {
 
       [(AXMTVideoFileReader *)self _tearDown];
@@ -131,27 +131,27 @@
 
 - (BOOL)isStarted
 {
-  v3 = [(AXMTVideoFileReader *)self status];
-  if (v3 != 1)
+  status = [(AXMTVideoFileReader *)self status];
+  if (status != 1)
   {
-    LOBYTE(v3) = [(AXMTVideoFileReader *)self status]== 2 || [(AXMTVideoFileReader *)self status]== 3;
+    LOBYTE(status) = [(AXMTVideoFileReader *)self status]== 2 || [(AXMTVideoFileReader *)self status]== 3;
   }
 
-  return v3;
+  return status;
 }
 
-- (void)_playNotificationReceived:(id)a3
+- (void)_playNotificationReceived:(id)received
 {
-  v6 = [a3 object];
+  object = [received object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(AXMTVideoFileReader *)self input];
-    if ([v6 isEqual:v4])
+    input = [(AXMTVideoFileReader *)self input];
+    if ([object isEqual:input])
     {
-      v5 = [(AXMTVideoFileReader *)self input];
+      input2 = [(AXMTVideoFileReader *)self input];
 
-      if (v5)
+      if (input2)
       {
         if ([(AXMTVideoFileReader *)self status]== 3)
         {
@@ -174,7 +174,7 @@
   _objc_release_x1();
 }
 
-- (void)_pauseNotificationReceived:(id)a3
+- (void)_pauseNotificationReceived:(id)received
 {
   if ([(AXMTVideoFileReader *)self status]== 2 && [(AXMTVideoFileReader *)self status]!= 3)
   {
@@ -184,13 +184,13 @@
   }
 }
 
-+ (BOOL)fileURLContainsSuitablePlayableVideo:(id)a3 error:(id *)a4
++ (BOOL)fileURLContainsSuitablePlayableVideo:(id)video error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  videoCopy = video;
+  v6 = videoCopy;
+  if (videoCopy)
   {
-    if ([v5 checkResourceIsReachableAndReturnError:a4])
+    if ([videoCopy checkResourceIsReachableAndReturnError:error])
     {
       v7 = [AVAsset assetWithURL:v6];
       v8 = v7;
@@ -199,21 +199,21 @@
         v9 = [v7 tracksWithMediaType:AVMediaTypeVideo];
         v10 = [v9 count];
         v11 = v10 != 0;
-        if (!a4 || v10)
+        if (!error || v10)
         {
           goto LABEL_13;
         }
 
         v12 = AXSSMotionTrackingErrorDomain;
-        v13 = [NSString stringWithFormat:@"Invalid video tracks in fileURL %@!", v6, NSLocalizedDescriptionKey];
-        v19 = v13;
+        nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Invalid video tracks in fileURL %@!", v6, NSLocalizedDescriptionKey];
+        v19 = nSLocalizedDescriptionKey;
         v14 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
-        *a4 = [NSError errorWithDomain:v12 code:0 userInfo:v14];
+        *error = [NSError errorWithDomain:v12 code:0 userInfo:v14];
       }
 
       else
       {
-        if (!a4)
+        if (!error)
         {
           v11 = 0;
           goto LABEL_14;
@@ -223,8 +223,8 @@
         v20 = NSLocalizedDescriptionKey;
         v9 = [NSString stringWithFormat:@"Can't create asset with fileURL %@!", v6];
         v21 = v9;
-        v13 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-        *a4 = [NSError errorWithDomain:v16 code:0 userInfo:v13];
+        nSLocalizedDescriptionKey = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
+        *error = [NSError errorWithDomain:v16 code:0 userInfo:nSLocalizedDescriptionKey];
       }
 
       v11 = 0;
@@ -234,14 +234,14 @@ LABEL_13:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v15 = AXSSMotionTrackingErrorDomain;
     v22 = NSLocalizedDescriptionKey;
     v23 = @"Cannot play a nil fileURL!";
     v8 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
     [NSError errorWithDomain:v15 code:0 userInfo:v8];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
 LABEL_14:
 
     goto LABEL_15;
@@ -256,14 +256,14 @@ LABEL_15:
 - (void)_playVideoFile
 {
   v3 = +[AXMTVideoFilePlayManager shared];
-  v4 = [(AXMTVideoFileReader *)self input];
-  v6 = [v3 fileURLForMotionTrackingVideoFileInput:v4];
+  input = [(AXMTVideoFileReader *)self input];
+  v6 = [v3 fileURLForMotionTrackingVideoFileInput:input];
 
   if (v6)
   {
-    v5 = [(AXMTVideoFileReader *)self _fileURL];
+    _fileURL = [(AXMTVideoFileReader *)self _fileURL];
 
-    if (v5)
+    if (_fileURL)
     {
       [(AXMTVideoFileReader *)self _tearDown];
     }
@@ -294,12 +294,12 @@ LABEL_15:
   os_unfair_lock_lock(&self->__lock);
   [(AXMTVideoFileReader *)self _cancelDispatchSource];
   [(AXMTVideoFileReader *)self set_timerSource:0];
-  v3 = [(AXMTVideoFileReader *)self _assetReader];
+  _assetReader = [(AXMTVideoFileReader *)self _assetReader];
 
-  if (v3)
+  if (_assetReader)
   {
-    v4 = [(AXMTVideoFileReader *)self _assetReader];
-    [v4 cancelReading];
+    _assetReader2 = [(AXMTVideoFileReader *)self _assetReader];
+    [_assetReader2 cancelReading];
   }
 
   [(AXMTVideoFileReader *)self set_trackOutput:0];
@@ -315,22 +315,22 @@ LABEL_15:
 {
   os_unfair_lock_lock(&self->__lock);
   [(AXMTVideoFileReader *)self set_fileURL:0];
-  v3 = [(AXMTVideoFileReader *)self input];
+  input = [(AXMTVideoFileReader *)self input];
 
-  if (v3)
+  if (input)
   {
     v4 = +[AXMTVideoFilePlayManager shared];
-    v5 = [(AXMTVideoFileReader *)self input];
-    v6 = [v4 fileURLForMotionTrackingVideoFileInput:v5];
+    input2 = [(AXMTVideoFileReader *)self input];
+    v6 = [v4 fileURLForMotionTrackingVideoFileInput:input2];
     [(AXMTVideoFileReader *)self set_fileURL:v6];
   }
 
-  v7 = [(AXMTVideoFileReader *)self _fileURL];
+  _fileURL = [(AXMTVideoFileReader *)self _fileURL];
 
-  if (v7)
+  if (_fileURL)
   {
-    v8 = [(AXMTVideoFileReader *)self _fileURL];
-    v9 = [AVAsset assetWithURL:v8];
+    _fileURL2 = [(AXMTVideoFileReader *)self _fileURL];
+    v9 = [AVAsset assetWithURL:_fileURL2];
 
     if (v9)
     {
@@ -339,12 +339,12 @@ LABEL_15:
       v11 = v84;
       [(AXMTVideoFileReader *)self set_assetReader:v10];
 
-      v12 = [(AXMTVideoFileReader *)self _assetReader];
+      _assetReader = [(AXMTVideoFileReader *)self _assetReader];
 
-      if (!v12)
+      if (!_assetReader)
       {
-        v39 = [(AXMTVideoFileReader *)self _fileURL];
-        v13 = [NSString stringWithFormat:@"Error creating assetReader for %@ %@ %@!", v39, v9, v11];
+        _fileURL3 = [(AXMTVideoFileReader *)self _fileURL];
+        v13 = [NSString stringWithFormat:@"Error creating assetReader for %@ %@ %@!", _fileURL3, v9, v11];
 
         os_unfair_lock_unlock(&self->__lock);
         v40 = AXSSLogForCategory();
@@ -353,14 +353,14 @@ LABEL_15:
           sub_10001271C();
         }
 
-        v16 = +[AXMTVideoFilePlayManager shared];
-        v20 = [(AXMTVideoFileReader *)self input];
+        input8 = +[AXMTVideoFilePlayManager shared];
+        input3 = [(AXMTVideoFileReader *)self input];
         v41 = AXSSMotionTrackingErrorDomain;
         v98 = NSLocalizedDescriptionKey;
         v99 = v13;
         v42 = [NSDictionary dictionaryWithObjects:&v99 forKeys:&v98 count:1];
         v43 = [NSError errorWithDomain:v41 code:0 userInfo:v42];
-        [v16 videoPlayedWithInput:v20 success:0 error:v43];
+        [input8 videoPlayedWithInput:input3 success:0 error:v43];
 
         goto LABEL_41;
       }
@@ -368,24 +368,24 @@ LABEL_15:
       v13 = [v9 tracksWithMediaType:AVMediaTypeVideo];
       if ([v13 count])
       {
-        v14 = [v13 lastObject];
+        lastObject = [v13 lastObject];
         v94 = kCVPixelBufferPixelFormatTypeKey;
         v95 = &off_100049E10;
         v15 = [NSDictionary dictionaryWithObjects:&v95 forKeys:&v94 count:1];
-        v16 = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:v14 outputSettings:v15];
+        input8 = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:lastObject outputSettings:v15];
 
-        if (v16)
+        if (input8)
         {
-          v17 = [(AXMTVideoFileReader *)self _assetReader];
-          v18 = [v17 canAddOutput:v16];
+          _assetReader2 = [(AXMTVideoFileReader *)self _assetReader];
+          v18 = [_assetReader2 canAddOutput:input8];
 
           if (v18)
           {
             v19 = +[NSMutableArray array];
             [(AXMTVideoFileReader *)self set_metadataOutputAdaptors:v19];
 
-            v20 = [v9 tracksWithMediaType:AVMediaTypeMetadata];
-            if ([v20 count])
+            input3 = [v9 tracksWithMediaType:AVMediaTypeMetadata];
+            if ([input3 count])
             {
               v77 = v13;
               v78 = v11;
@@ -393,8 +393,8 @@ LABEL_15:
               v83 = 0u;
               v80 = 0u;
               v81 = 0u;
-              v20 = v20;
-              v21 = [v20 countByEnumeratingWithState:&v80 objects:v87 count:16];
+              input3 = input3;
+              v21 = [input3 countByEnumeratingWithState:&v80 objects:v87 count:16];
               if (v21)
               {
                 v22 = v21;
@@ -405,18 +405,18 @@ LABEL_15:
                   {
                     if (*v81 != v23)
                     {
-                      objc_enumerationMutation(v20);
+                      objc_enumerationMutation(input3);
                     }
 
                     v25 = [[AVAssetReaderTrackOutput alloc] initWithTrack:*(*(&v80 + 1) + 8 * i) outputSettings:0];
                     [v25 setAlwaysCopiesSampleData:0];
-                    v26 = [(AXMTVideoFileReader *)self _assetReader];
-                    v27 = [v26 canAddOutput:v25];
+                    _assetReader3 = [(AXMTVideoFileReader *)self _assetReader];
+                    v27 = [_assetReader3 canAddOutput:v25];
 
                     if ((v27 & 1) == 0)
                     {
-                      v61 = [(AXMTVideoFileReader *)self _fileURL];
-                      v62 = [NSString stringWithFormat:@"Error reading asset: %@. Error adding metadata track output! %@", v61, v25];
+                      _fileURL4 = [(AXMTVideoFileReader *)self _fileURL];
+                      v62 = [NSString stringWithFormat:@"Error reading asset: %@. Error adding metadata track output! %@", _fileURL4, v25];
 
                       os_unfair_lock_unlock(&self->__lock);
                       v63 = AXSSLogForCategory();
@@ -426,13 +426,13 @@ LABEL_15:
                       }
 
                       v64 = +[AXMTVideoFilePlayManager shared];
-                      v65 = [(AXMTVideoFileReader *)self input];
+                      input4 = [(AXMTVideoFileReader *)self input];
                       v66 = AXSSMotionTrackingErrorDomain;
                       v85 = NSLocalizedDescriptionKey;
                       v86 = v62;
                       v67 = [NSDictionary dictionaryWithObjects:&v86 forKeys:&v85 count:1];
                       v68 = [NSError errorWithDomain:v66 code:0 userInfo:v67];
-                      [v64 videoPlayedWithInput:v65 success:0 error:v68];
+                      [v64 videoPlayedWithInput:input4 success:0 error:v68];
 
                       v13 = v77;
                       v11 = v78;
@@ -440,14 +440,14 @@ LABEL_15:
                     }
 
                     v28 = [[AVAssetReaderOutputMetadataAdaptor alloc] initWithAssetReaderTrackOutput:v25];
-                    v29 = [(AXMTVideoFileReader *)self _metadataOutputAdaptors];
-                    [v29 addObject:v28];
+                    _metadataOutputAdaptors = [(AXMTVideoFileReader *)self _metadataOutputAdaptors];
+                    [_metadataOutputAdaptors addObject:v28];
 
-                    v30 = [(AXMTVideoFileReader *)self _assetReader];
-                    [v30 addOutput:v25];
+                    _assetReader4 = [(AXMTVideoFileReader *)self _assetReader];
+                    [_assetReader4 addOutput:v25];
                   }
 
-                  v22 = [v20 countByEnumeratingWithState:&v80 objects:v87 count:16];
+                  v22 = [input3 countByEnumeratingWithState:&v80 objects:v87 count:16];
                   if (v22)
                   {
                     continue;
@@ -463,17 +463,17 @@ LABEL_15:
                 sub_100012790(self);
               }
 
-              [(AXMTVideoFileReader *)self set_trackOutput:v16];
-              v32 = [(AXMTVideoFileReader *)self _assetReader];
-              [v32 addOutput:v16];
+              [(AXMTVideoFileReader *)self set_trackOutput:input8];
+              _assetReader5 = [(AXMTVideoFileReader *)self _assetReader];
+              [_assetReader5 addOutput:input8];
 
-              [v16 markConfigurationAsFinal];
-              v33 = [(AXMTVideoFileReader *)self _assetReader];
-              [v33 startReading];
+              [input8 markConfigurationAsFinal];
+              _assetReader6 = [(AXMTVideoFileReader *)self _assetReader];
+              [_assetReader6 startReading];
 
               v13 = v77;
-              v34 = [v77 firstObject];
-              [v34 nominalFrameRate];
+              firstObject = [v77 firstObject];
+              [firstObject nominalFrameRate];
               [(AXMTVideoFileReader *)self set_framerate:?];
 
               [(AXMTVideoFileReader *)self _setupDispatchSource];
@@ -483,8 +483,8 @@ LABEL_15:
 
             else
             {
-              v69 = [(AXMTVideoFileReader *)self _fileURL];
-              v70 = [NSString stringWithFormat:@"Error finding metadata track in asset: %@", v69];
+              _fileURL5 = [(AXMTVideoFileReader *)self _fileURL];
+              v70 = [NSString stringWithFormat:@"Error finding metadata track in asset: %@", _fileURL5];
 
               os_unfair_lock_unlock(&self->__lock);
               v71 = AXSSLogForCategory();
@@ -494,21 +494,21 @@ LABEL_15:
               }
 
               v72 = +[AXMTVideoFilePlayManager shared];
-              v73 = [(AXMTVideoFileReader *)self input];
+              input5 = [(AXMTVideoFileReader *)self input];
               v74 = AXSSMotionTrackingErrorDomain;
               v88 = NSLocalizedDescriptionKey;
               v89 = v70;
               [NSDictionary dictionaryWithObjects:&v89 forKeys:&v88 count:1];
               v75 = v79 = v70;
               v76 = [NSError errorWithDomain:v74 code:0 userInfo:v75];
-              [v72 videoPlayedWithInput:v73 success:0 error:v76];
+              [v72 videoPlayedWithInput:input5 success:0 error:v76];
             }
 
             goto LABEL_41;
           }
 
-          v57 = [(AXMTVideoFileReader *)self _fileURL];
-          v20 = [NSString stringWithFormat:@"Error reading asset: %@. Error adding track output! %@", v57, v16];
+          _fileURL6 = [(AXMTVideoFileReader *)self _fileURL];
+          input3 = [NSString stringWithFormat:@"Error reading asset: %@. Error adding track output! %@", _fileURL6, input8];
 
           os_unfair_lock_unlock(&self->__lock);
           v58 = AXSSLogForCategory();
@@ -518,19 +518,19 @@ LABEL_15:
           }
 
           v52 = +[AXMTVideoFilePlayManager shared];
-          v53 = [(AXMTVideoFileReader *)self input];
+          input6 = [(AXMTVideoFileReader *)self input];
           v54 = AXSSMotionTrackingErrorDomain;
           v90 = NSLocalizedDescriptionKey;
-          v91 = v20;
+          v91 = input3;
           v55 = &v91;
           v56 = &v90;
         }
 
         else
         {
-          v49 = [(AXMTVideoFileReader *)self _fileURL];
-          v50 = [v13 firstObject];
-          v20 = [NSString stringWithFormat:@"Error creating track output %@ %@ %@", v49, v50, v9];
+          _fileURL7 = [(AXMTVideoFileReader *)self _fileURL];
+          firstObject2 = [v13 firstObject];
+          input3 = [NSString stringWithFormat:@"Error creating track output %@ %@ %@", _fileURL7, firstObject2, v9];
 
           os_unfair_lock_unlock(&self->__lock);
           v51 = AXSSLogForCategory();
@@ -540,24 +540,24 @@ LABEL_15:
           }
 
           v52 = +[AXMTVideoFilePlayManager shared];
-          v53 = [(AXMTVideoFileReader *)self input];
+          input6 = [(AXMTVideoFileReader *)self input];
           v54 = AXSSMotionTrackingErrorDomain;
           v92 = NSLocalizedDescriptionKey;
-          v93 = v20;
+          v93 = input3;
           v55 = &v93;
           v56 = &v92;
         }
 
         v59 = [NSDictionary dictionaryWithObjects:v55 forKeys:v56 count:1];
         v60 = [NSError errorWithDomain:v54 code:0 userInfo:v59];
-        [v52 videoPlayedWithInput:v53 success:0 error:v60];
+        [v52 videoPlayedWithInput:input6 success:0 error:v60];
 
 LABEL_41:
         return;
       }
 
-      v44 = [(AXMTVideoFileReader *)self _fileURL];
-      v16 = [NSString stringWithFormat:@"Error reading asset %@ %@. No video tracks found!", v44, v9];
+      _fileURL8 = [(AXMTVideoFileReader *)self _fileURL];
+      input8 = [NSString stringWithFormat:@"Error reading asset %@ %@. No video tracks found!", _fileURL8, v9];
 
       os_unfair_lock_unlock(&self->__lock);
       v45 = AXSSLogForCategory();
@@ -566,20 +566,20 @@ LABEL_41:
         sub_10001271C();
       }
 
-      v20 = +[AXMTVideoFilePlayManager shared];
-      v38 = [(AXMTVideoFileReader *)self input];
+      input3 = +[AXMTVideoFilePlayManager shared];
+      input7 = [(AXMTVideoFileReader *)self input];
       v46 = AXSSMotionTrackingErrorDomain;
       v96 = NSLocalizedDescriptionKey;
-      v97 = v16;
+      v97 = input8;
       v47 = [NSDictionary dictionaryWithObjects:&v97 forKeys:&v96 count:1];
       v48 = [NSError errorWithDomain:v46 code:0 userInfo:v47];
-      [v20 videoPlayedWithInput:v38 success:0 error:v48];
+      [input3 videoPlayedWithInput:input7 success:0 error:v48];
     }
 
     else
     {
-      v35 = [(AXMTVideoFileReader *)self _fileURL];
-      v11 = [NSString stringWithFormat:@"Error creating asset %@!", v35];
+      _fileURL9 = [(AXMTVideoFileReader *)self _fileURL];
+      v11 = [NSString stringWithFormat:@"Error creating asset %@!", _fileURL9];
 
       os_unfair_lock_unlock(&self->__lock);
       v36 = AXSSLogForCategory();
@@ -589,13 +589,13 @@ LABEL_41:
       }
 
       v13 = +[AXMTVideoFilePlayManager shared];
-      v16 = [(AXMTVideoFileReader *)self input];
+      input8 = [(AXMTVideoFileReader *)self input];
       v37 = AXSSMotionTrackingErrorDomain;
       v100 = NSLocalizedDescriptionKey;
       v101 = v11;
-      v20 = [NSDictionary dictionaryWithObjects:&v101 forKeys:&v100 count:1];
-      v38 = [NSError errorWithDomain:v37 code:0 userInfo:v20];
-      [v13 videoPlayedWithInput:v16 success:0 error:v38];
+      input3 = [NSDictionary dictionaryWithObjects:&v101 forKeys:&v100 count:1];
+      input7 = [NSError errorWithDomain:v37 code:0 userInfo:input3];
+      [v13 videoPlayedWithInput:input8 success:0 error:input7];
     }
 
     goto LABEL_41;
@@ -607,24 +607,24 @@ LABEL_41:
 - (void)_setupDispatchSource
 {
   os_unfair_lock_assert_owner(&self->__lock);
-  v3 = [(AXMTVideoFileReader *)self _readingQueue];
-  v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v3);
+  _readingQueue = [(AXMTVideoFileReader *)self _readingQueue];
+  v4 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, _readingQueue);
   [(AXMTVideoFileReader *)self set_timerSource:v4];
 
-  v5 = [(AXMTVideoFileReader *)self _timerSource];
+  _timerSource = [(AXMTVideoFileReader *)self _timerSource];
   [(AXMTVideoFileReader *)self _framerate];
-  dispatch_source_set_timer(v5, 0, ((1.0 / v6) * 1000000000.0), 0);
+  dispatch_source_set_timer(_timerSource, 0, ((1.0 / v6) * 1000000000.0), 0);
 
-  v7 = [(AXMTVideoFileReader *)self _timerSource];
+  _timerSource2 = [(AXMTVideoFileReader *)self _timerSource];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_100012000;
   handler[3] = &unk_1000488F8;
   handler[4] = self;
-  dispatch_source_set_event_handler(v7, handler);
+  dispatch_source_set_event_handler(_timerSource2, handler);
 
-  v8 = [(AXMTVideoFileReader *)self _timerSource];
-  dispatch_activate(v8);
+  _timerSource3 = [(AXMTVideoFileReader *)self _timerSource];
+  dispatch_activate(_timerSource3);
 
   v9 = AXSSLogForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -636,36 +636,36 @@ LABEL_41:
 - (void)_cancelDispatchSource
 {
   os_unfair_lock_assert_owner(&self->__lock);
-  v3 = [(AXMTVideoFileReader *)self _timerSource];
+  _timerSource = [(AXMTVideoFileReader *)self _timerSource];
 
-  if (v3)
+  if (_timerSource)
   {
-    v4 = [(AXMTVideoFileReader *)self _timerSource];
-    dispatch_source_cancel(v4);
+    _timerSource2 = [(AXMTVideoFileReader *)self _timerSource];
+    dispatch_source_cancel(_timerSource2);
   }
 }
 
 - (void)_readTimerFired
 {
   os_unfair_lock_lock(&self->__lock);
-  v3 = [(AXMTVideoFileReader *)self _trackOutput];
-  v4 = [v3 copyNextSampleBuffer];
+  _trackOutput = [(AXMTVideoFileReader *)self _trackOutput];
+  copyNextSampleBuffer = [_trackOutput copyNextSampleBuffer];
 
   v5 = +[NSMutableArray array];
-  v6 = [(AXMTVideoFileReader *)self _metadataOutputAdaptors];
+  _metadataOutputAdaptors = [(AXMTVideoFileReader *)self _metadataOutputAdaptors];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100012458;
   v39[3] = &unk_100048E88;
   v7 = v5;
   v40 = v7;
-  [v6 enumerateObjectsUsingBlock:v39];
+  [_metadataOutputAdaptors enumerateObjectsUsingBlock:v39];
 
   os_unfair_lock_unlock(&self->__lock);
-  if (v4 && [v7 count])
+  if (copyNextSampleBuffer && [v7 count])
   {
-    cf = v4;
-    v26 = self;
+    cf = copyNextSampleBuffer;
+    selfCopy = self;
     v8 = +[NSMutableArray array];
     v35 = 0u;
     v36 = 0u;
@@ -691,8 +691,8 @@ LABEL_41:
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v11 = [v10 items];
-          v12 = [v11 countByEnumeratingWithState:&v31 objects:v41 count:16];
+          items = [v10 items];
+          v12 = [items countByEnumeratingWithState:&v31 objects:v41 count:16];
           if (v12)
           {
             v13 = v12;
@@ -703,22 +703,22 @@ LABEL_41:
               {
                 if (*v32 != v14)
                 {
-                  objc_enumerationMutation(v11);
+                  objc_enumerationMutation(items);
                 }
 
                 v16 = *(*(&v31 + 1) + 8 * j);
-                v17 = [v16 value];
+                value = [v16 value];
                 objc_opt_class();
                 isKindOfClass = objc_opt_isKindOfClass();
 
                 if (isKindOfClass)
                 {
-                  v19 = [v16 value];
-                  [v8 addObject:v19];
+                  value2 = [v16 value];
+                  [v8 addObject:value2];
                 }
               }
 
-              v13 = [v11 countByEnumeratingWithState:&v31 objects:v41 count:16];
+              v13 = [items countByEnumeratingWithState:&v31 objects:v41 count:16];
             }
 
             while (v13);
@@ -731,13 +731,13 @@ LABEL_41:
       while (v29);
     }
 
-    v20 = [(AXMTVideoFileReader *)v26 delegate];
+    delegate = [(AXMTVideoFileReader *)selfCopy delegate];
     v21 = objc_opt_respondsToSelector();
 
     if (v21)
     {
-      v22 = [(AXMTVideoFileReader *)v26 delegate];
-      [v22 videoFileReader:v26 didReadSampleBuffer:cf withMetadata:v8];
+      delegate2 = [(AXMTVideoFileReader *)selfCopy delegate];
+      [delegate2 videoFileReader:selfCopy didReadSampleBuffer:cf withMetadata:v8];
     }
 
     CFRelease(cf);
@@ -753,9 +753,9 @@ LABEL_41:
       sub_1000128F4();
     }
 
-    if (v4)
+    if (copyNextSampleBuffer)
     {
-      CFRelease(v4);
+      CFRelease(copyNextSampleBuffer);
     }
 
     block[0] = _NSConcreteStackBlock;

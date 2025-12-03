@@ -1,23 +1,23 @@
 @interface THWAdornmentCloseButton
 - (CGSize)buttonSize;
-- (THWAdornmentCloseButton)initWithCoder:(id)a3;
-- (THWAdornmentCloseButton)initWithFrame:(CGRect)a3 theme:(int)a4;
+- (THWAdornmentCloseButton)initWithCoder:(id)coder;
+- (THWAdornmentCloseButton)initWithFrame:(CGRect)frame theme:(int)theme;
 - (void)dealloc;
-- (void)p_initWithFrame:(CGRect)a3 theme:(int)a4;
-- (void)p_initializeTheme:(int)a3;
-- (void)setTheme:(int)a3;
+- (void)p_initWithFrame:(CGRect)frame theme:(int)theme;
+- (void)p_initializeTheme:(int)theme;
+- (void)setTheme:(int)theme;
 - (void)updateImage;
 @end
 
 @implementation THWAdornmentCloseButton
 
-- (THWAdornmentCloseButton)initWithFrame:(CGRect)a3 theme:(int)a4
+- (THWAdornmentCloseButton)initWithFrame:(CGRect)frame theme:(int)theme
 {
-  v4 = *&a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  v4 = *&theme;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = THWAdornmentCloseButton;
   v9 = [(THWAdornmentCloseButton *)&v12 initWithFrame:?];
@@ -30,11 +30,11 @@
   return v10;
 }
 
-- (THWAdornmentCloseButton)initWithCoder:(id)a3
+- (THWAdornmentCloseButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = THWAdornmentCloseButton;
-  v3 = [(THWAdornmentCloseButton *)&v6 initWithCoder:a3];
+  v3 = [(THWAdornmentCloseButton *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -45,11 +45,11 @@
   return v4;
 }
 
-- (void)p_initWithFrame:(CGRect)a3 theme:(int)a4
+- (void)p_initWithFrame:(CGRect)frame theme:(int)theme
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(THWAdornmentCloseButton *)self p_initializeTheme:*&a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(THWAdornmentCloseButton *)self p_initializeTheme:*&theme, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(THWAdornmentCloseButton *)self buttonSize];
   v8 = v7;
   [(THWAdornmentCloseButton *)self buttonSize];
@@ -65,11 +65,11 @@
   [(THWAdornmentCloseButton *)&v3 dealloc];
 }
 
-- (void)setTheme:(int)a3
+- (void)setTheme:(int)theme
 {
-  if (self->_theme != a3)
+  if (self->_theme != theme)
   {
-    self->_theme = a3;
+    self->_theme = theme;
     [(THWAdornmentCloseButton *)self p_initializeTheme:?];
 
     [(THWAdornmentCloseButton *)self updateImage];
@@ -82,15 +82,15 @@
   [(THWAdornmentCloseButton *)self setImage:[(THWAdornmentCloseButton *)self closeButtonImage] forState:2];
   if ([(THWAdornmentCloseButton *)self closeButtonAlternateImage])
   {
-    v3 = [(THWAdornmentCloseButton *)self closeButtonAlternateImage];
+    closeButtonAlternateImage = [(THWAdornmentCloseButton *)self closeButtonAlternateImage];
 
-    [(THWAdornmentCloseButton *)self setImage:v3 forState:1];
+    [(THWAdornmentCloseButton *)self setImage:closeButtonAlternateImage forState:1];
   }
 }
 
-- (void)p_initializeTheme:(int)a3
+- (void)p_initializeTheme:(int)theme
 {
-  if (a3)
+  if (theme)
   {
     v4 = @"ib_media_close-N";
   }

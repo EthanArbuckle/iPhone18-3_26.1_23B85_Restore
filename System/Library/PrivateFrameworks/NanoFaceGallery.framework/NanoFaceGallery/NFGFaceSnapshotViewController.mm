@@ -1,14 +1,14 @@
 @interface NFGFaceSnapshotViewController
-- (NFGFaceSnapshotViewController)initWithCoder:(id)a3;
-- (NFGFaceSnapshotViewController)initWithFace:(id)a3 galleryIdentifier:(id)a4;
-- (NFGFaceSnapshotViewController)initWithFace:(id)a3 libraryIdentifier:(id)a4;
-- (NFGFaceSnapshotViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (NFGFaceSnapshotViewController)initWithCoder:(id)coder;
+- (NFGFaceSnapshotViewController)initWithFace:(id)face galleryIdentifier:(id)identifier;
+- (NFGFaceSnapshotViewController)initWithFace:(id)face libraryIdentifier:(id)identifier;
+- (NFGFaceSnapshotViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation NFGFaceSnapshotViewController
 
-- (NFGFaceSnapshotViewController)initWithFace:(id)a3 libraryIdentifier:(id)a4
+- (NFGFaceSnapshotViewController)initWithFace:(id)face libraryIdentifier:(id)identifier
 {
   v5 = sub_25B0E24A0();
   v6 = *(*(v5 - 8) + 64);
@@ -23,13 +23,13 @@
   }
 
   sub_25B0E2480();
-  v9 = a3;
-  v10 = sub_25B0DF6B8(v9, v8);
+  faceCopy = face;
+  v10 = sub_25B0DF6B8(faceCopy, v8);
 
   return v10;
 }
 
-- (NFGFaceSnapshotViewController)initWithFace:(id)a3 galleryIdentifier:(id)a4
+- (NFGFaceSnapshotViewController)initWithFace:(id)face galleryIdentifier:(id)identifier
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -40,13 +40,13 @@
   }
 
   sub_25B0E3740();
-  v5 = a3;
-  v6 = sub_25B0DF8F8(v5);
+  faceCopy = face;
+  v6 = sub_25B0DF8F8(faceCopy);
 
   return v6;
 }
 
-- (NFGFaceSnapshotViewController)initWithCoder:(id)a3
+- (NFGFaceSnapshotViewController)initWithCoder:(id)coder
 {
   sub_25B0E3900();
   sub_25B0E38F0();
@@ -71,11 +71,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   NFGFaceSnapshotViewController.viewDidLoad()();
 }
 
-- (NFGFaceSnapshotViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NFGFaceSnapshotViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_25B0E3900();
   sub_25B0E38F0();

@@ -1,7 +1,7 @@
 @interface VTCoreSpeechKeepAliveHandler
 - (BOOL)_coreSpeechDaemonKeepAlived;
 - (VTCoreSpeechKeepAliveHandler)init;
-- (void)VTSiriEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
+- (void)VTSiriEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
 - (void)_disableCoreSpeechDaemonKeepAlive;
 - (void)_enableCoreSpeechDaemonKeepAlive;
 - (void)_handleSpeakerActivated;
@@ -10,7 +10,7 @@
 - (void)_voiceTriggerPolicyEnabled;
 - (void)dealloc;
 - (void)start;
-- (void)voiceTriggerPolicyDidChange:(BOOL)a3;
+- (void)voiceTriggerPolicyDidChange:(BOOL)change;
 @end
 
 @implementation VTCoreSpeechKeepAliveHandler
@@ -39,9 +39,9 @@ void __37__VTCoreSpeechKeepAliveHandler_start__block_invoke_3(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
   if ([(VTCoreSpeechKeepAliveHandler *)self _coreSpeechDaemonKeepAlived])
   {
-    v2 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v6 = 0;
-    v3 = [v2 removeItemAtPath:@"/var/mobile/Library/VoiceTrigger/KeepAlive" error:&v6];
+    v3 = [defaultManager removeItemAtPath:@"/var/mobile/Library/VoiceTrigger/KeepAlive" error:&v6];
     v4 = v6;
 
     v5 = VTLogContextFacilityVoiceTrigger;
@@ -65,8 +65,8 @@ void __37__VTCoreSpeechKeepAliveHandler_start__block_invoke_3(uint64_t a1)
 
 - (BOOL)_coreSpeechDaemonKeepAlived
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 fileExistsAtPath:@"/var/mobile/Library/VoiceTrigger/KeepAlive"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/VoiceTrigger/KeepAlive"];
 
   return v3;
 }
@@ -111,25 +111,25 @@ void __37__VTCoreSpeechKeepAliveHandler_start__block_invoke_2(uint64_t a1)
     return;
   }
 
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 fileExistsAtPath:@"/var/mobile/Library/VoiceTrigger"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager fileExistsAtPath:@"/var/mobile/Library/VoiceTrigger"];
 
   if (v3)
   {
     goto LABEL_5;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v13 = 0;
-  v5 = [v4 createDirectoryAtPath:@"/var/mobile/Library/VoiceTrigger" withIntermediateDirectories:1 attributes:0 error:&v13];
+  v5 = [defaultManager2 createDirectoryAtPath:@"/var/mobile/Library/VoiceTrigger" withIntermediateDirectories:1 attributes:0 error:&v13];
   v6 = v13;
 
   if (v5)
   {
 
 LABEL_5:
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v7 createFileAtPath:@"/var/mobile/Library/VoiceTrigger/KeepAlive" contents:0 attributes:0];
+    defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [defaultManager3 createFileAtPath:@"/var/mobile/Library/VoiceTrigger/KeepAlive" contents:0 attributes:0];
 
     v9 = VTLogContextFacilityVoiceTrigger;
     if (v8)
@@ -155,23 +155,23 @@ LABEL_5:
   if (os_log_type_enabled(VTLogContextFacilityVoiceTrigger, OS_LOG_TYPE_ERROR))
   {
     v11 = v10;
-    v12 = [v6 localizedDescription];
+    localizedDescription = [v6 localizedDescription];
     *buf = 138543618;
     v15 = @"/var/mobile/Library/VoiceTrigger";
     v16 = 2114;
-    v17 = v12;
+    v17 = localizedDescription;
     _os_log_error_impl(&dword_223A31000, v11, OS_LOG_TYPE_ERROR, "Cannot create directory at : %{public}@ : %{public}@", buf, 0x16u);
   }
 }
 
-- (void)VTSiriEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)VTSiriEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
   queue = self->_queue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __71__VTCoreSpeechKeepAliveHandler_VTSiriEnabledMonitor_didReceiveEnabled___block_invoke;
   v5[3] = &unk_2784ED0F0;
-  v6 = a4;
+  enabledCopy = enabled;
   v5[4] = self;
   dispatch_async(queue, v5);
 }
@@ -208,14 +208,14 @@ uint64_t __71__VTCoreSpeechKeepAliveHandler_VTSiriEnabledMonitor_didReceiveEnabl
   }
 }
 
-- (void)voiceTriggerPolicyDidChange:(BOOL)a3
+- (void)voiceTriggerPolicyDidChange:(BOOL)change
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__VTCoreSpeechKeepAliveHandler_voiceTriggerPolicyDidChange___block_invoke;
   v4[3] = &unk_2784ED0F0;
-  v5 = a3;
+  changeCopy = change;
   v4[4] = self;
   dispatch_async(queue, v4);
 }
@@ -331,7 +331,7 @@ LABEL_6:
 {
   if (+[VTUtilities isExclaveHardware])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -350,10 +350,10 @@ LABEL_6:
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

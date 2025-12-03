@@ -1,16 +1,16 @@
 @interface ODRAppReviewClient
-- (void)registerManifest:(id)a3 forBundleID:(id)a4 replyBlock:(id)a5;
+- (void)registerManifest:(id)manifest forBundleID:(id)d replyBlock:(id)block;
 @end
 
 @implementation ODRAppReviewClient
 
-- (void)registerManifest:(id)a3 forBundleID:(id)a4 replyBlock:(id)a5
+- (void)registerManifest:(id)manifest forBundleID:(id)d replyBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = sub_100280A90([ODRManifest alloc], v7, v9, 0);
-  v11 = sub_10039A094(ODRApplication, v9);
+  manifestCopy = manifest;
+  blockCopy = block;
+  dCopy = d;
+  v10 = sub_100280A90([ODRManifest alloc], manifestCopy, dCopy, 0);
+  v11 = sub_10039A094(ODRApplication, dCopy);
 
   if (!sub_10039B3C8(v11) || (sub_10039AAE4(v11), (v12 = objc_claimAutoreleasedReturnValue()) == 0) || (v13 = v12, sub_10039B05C(v11), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, !v14))
   {
@@ -19,8 +19,8 @@
     sub_10039C490(v15, v16);
 
     v17 = sub_100280B6C(v10);
-    v18 = [v17 stringValue];
-    sub_10039C634(v15, v18);
+    stringValue = [v17 stringValue];
+    sub_10039C634(v15, stringValue);
 
     v19 = [v15 copy];
     v11 = v19;
@@ -30,7 +30,7 @@
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v33 = [v7 length];
+    v33 = [manifestCopy length];
     v34 = 2114;
     v35 = v11;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "[App Review] Importing %{iec-bytes}lu manifest for %{public}@", buf, 0x16u);
@@ -62,7 +62,7 @@
   v26 = v21;
   [v23 modifyUsingTransaction:v28];
 
-  v8[2](v8, 0);
+  blockCopy[2](blockCopy, 0);
 }
 
 @end

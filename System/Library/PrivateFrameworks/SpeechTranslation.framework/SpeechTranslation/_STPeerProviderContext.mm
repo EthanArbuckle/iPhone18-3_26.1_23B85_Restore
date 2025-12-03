@@ -1,21 +1,21 @@
 @interface _STPeerProviderContext
-+ (const)_stringForType:(unint64_t)a3;
-- (_STPeerProviderContext)initWithConfiguration:(id)a3;
-- (_STPeerProviderContext)initWithIdentifier:(id)a3;
++ (const)_stringForType:(unint64_t)type;
+- (_STPeerProviderContext)initWithConfiguration:(id)configuration;
+- (_STPeerProviderContext)initWithIdentifier:(id)identifier;
 - (id)description;
 @end
 
 @implementation _STPeerProviderContext
 
-+ (const)_stringForType:(unint64_t)a3
++ (const)_stringForType:(unint64_t)type
 {
   v3 = "Invalid";
-  if (a3 == 2)
+  if (type == 2)
   {
     v3 = "_STPeerProviderContextTypeSpeechTranslatorClientSecondary";
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     return "_STPeerProviderContextTypeSpeechTranslatorClientPrimary";
   }
@@ -26,9 +26,9 @@
   }
 }
 
-- (_STPeerProviderContext)initWithConfiguration:(id)a3
+- (_STPeerProviderContext)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = _STPeerProviderContext;
   v5 = [(_STPeerProviderContext *)&v10 init];
@@ -36,7 +36,7 @@
   if (v5)
   {
     [(_STPeerProviderContext *)v5 setType:1];
-    [(_STPeerProviderContext *)v6 setConfiguration:v4];
+    [(_STPeerProviderContext *)v6 setConfiguration:configurationCopy];
     v7 = v6;
   }
 
@@ -45,16 +45,16 @@
     v8 = _LTOSLogSTMultiprocess();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(_STPeerProviderContext *)v4 initWithConfiguration:v8];
+      [(_STPeerProviderContext *)configurationCopy initWithConfiguration:v8];
     }
   }
 
   return v6;
 }
 
-- (_STPeerProviderContext)initWithIdentifier:(id)a3
+- (_STPeerProviderContext)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = _STPeerProviderContext;
   v5 = [(_STPeerProviderContext *)&v10 init];
@@ -62,7 +62,7 @@
   if (v5)
   {
     [(_STPeerProviderContext *)v5 setType:2];
-    [(_STPeerProviderContext *)v6 setIdentifier:v4];
+    [(_STPeerProviderContext *)v6 setIdentifier:identifierCopy];
     v7 = v6;
   }
 
@@ -71,7 +71,7 @@
     v8 = _LTOSLogSTMultiprocess();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(_STPeerProviderContext *)v4 initWithIdentifier:v8];
+      [(_STPeerProviderContext *)identifierCopy initWithIdentifier:v8];
     }
   }
 
@@ -80,19 +80,19 @@
 
 - (id)description
 {
-  v3 = [(_STPeerProviderContext *)self type];
-  if (v3 == 2)
+  type = [(_STPeerProviderContext *)self type];
+  if (type == 2)
   {
-    v4 = [(_STPeerProviderContext *)self identifier];
+    identifier = [(_STPeerProviderContext *)self identifier];
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (type == 1)
   {
-    v4 = [(_STPeerProviderContext *)self configuration];
+    identifier = [(_STPeerProviderContext *)self configuration];
 LABEL_5:
-    v5 = v4;
-    v6 = [v4 description];
+    v5 = identifier;
+    v6 = [identifier description];
 
     goto LABEL_7;
   }

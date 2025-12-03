@@ -1,43 +1,43 @@
 @interface BRCReadWriteServerDatabaseFacade
-- (BOOL)doesParticipantExistForItemID:(id)a3 zoneRowID:(id)a4 userName:(id)a5;
-- (BOOL)insertOrReplaceParticipantForSharedItemID:(id)a3 zoneRowID:(id)a4 participantUserName:(id)a5 shareParticipantsOptions:(unint64_t)a6;
-- (BOOL)saveServerZone:(id)a3;
-- (BOOL)updateParticipantsForSharedItemID:(id)a3 zoneRowID:(id)a4 paticipantFlagsCallblock:(id)a5;
-- (BOOL)updateServerItemWithSideCarInfo:(id)a3 sideCarInfo:(id)a4 zoneRowID:(id)a5;
-- (BRCReadWriteServerDatabaseFacade)initWithDB:(id)a3 workloop:(id)a4;
-- (id)createDeviceKeyForName:(id)a3;
-- (id)getOrCreateUserKeyForOwnerName:(id)a3;
-- (void)insertSideCarLookAheadInfo:(id)a3 shareRecordName:(id)a4 sideCarInfo:(id)a5;
-- (void)setUserIdentityForUserName:(id)a3 userIdentity:(id)a4;
+- (BOOL)doesParticipantExistForItemID:(id)d zoneRowID:(id)iD userName:(id)name;
+- (BOOL)insertOrReplaceParticipantForSharedItemID:(id)d zoneRowID:(id)iD participantUserName:(id)name shareParticipantsOptions:(unint64_t)options;
+- (BOOL)saveServerZone:(id)zone;
+- (BOOL)updateParticipantsForSharedItemID:(id)d zoneRowID:(id)iD paticipantFlagsCallblock:(id)callblock;
+- (BOOL)updateServerItemWithSideCarInfo:(id)info sideCarInfo:(id)carInfo zoneRowID:(id)d;
+- (BRCReadWriteServerDatabaseFacade)initWithDB:(id)b workloop:(id)workloop;
+- (id)createDeviceKeyForName:(id)name;
+- (id)getOrCreateUserKeyForOwnerName:(id)name;
+- (void)insertSideCarLookAheadInfo:(id)info shareRecordName:(id)name sideCarInfo:(id)carInfo;
+- (void)setUserIdentityForUserName:(id)name userIdentity:(id)identity;
 @end
 
 @implementation BRCReadWriteServerDatabaseFacade
 
-- (BRCReadWriteServerDatabaseFacade)initWithDB:(id)a3 workloop:(id)a4
+- (BRCReadWriteServerDatabaseFacade)initWithDB:(id)b workloop:(id)workloop
 {
   v5.receiver = self;
   v5.super_class = BRCReadWriteServerDatabaseFacade;
-  return [(BRCDatabaseFacade *)&v5 _initWithDB:a3 workloop:a4];
+  return [(BRCDatabaseFacade *)&v5 _initWithDB:b workloop:workloop];
 }
 
-- (BOOL)saveServerZone:(id)a3
+- (BOOL)saveServerZone:(id)zone
 {
-  v4 = a3;
-  v5 = [v4 dbRowID];
+  zoneCopy = zone;
+  dbRowID = [zoneCopy dbRowID];
 
-  if (!v5)
+  if (!dbRowID)
   {
     [BRCReadWriteServerDatabaseFacade saveServerZone:];
   }
 
   db = self->super._db;
-  v7 = [v4 plist];
-  v8 = [v4 dbRowID];
-  v9 = [(BRCPQLConnection *)db execute:@"UPDATE server_zones SET zone_plist = %@ WHERE rowid = %@", v7, v8];
+  plist = [zoneCopy plist];
+  dbRowID2 = [zoneCopy dbRowID];
+  v9 = [(BRCPQLConnection *)db execute:@"UPDATE server_zones SET zone_plist = %@ WHERE rowid = %@", plist, dbRowID2];
 
   if (v9)
   {
-    [v4 setNeedsSave:0];
+    [zoneCopy setNeedsSave:0];
   }
 
   else
@@ -53,13 +53,13 @@
   return v9;
 }
 
-- (id)getOrCreateUserKeyForOwnerName:(id)a3
+- (id)getOrCreateUserKeyForOwnerName:(id)name
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = [(BRCDatabaseFacade *)self userKeyForOwnerName:v4];
+    v5 = [(BRCDatabaseFacade *)self userKeyForOwnerName:nameCopy];
     v6 = v5;
     if (v5)
     {
@@ -70,7 +70,7 @@ LABEL_11:
       goto LABEL_16;
     }
 
-    if ([(BRCPQLConnection *)self->super._db execute:@"INSERT INTO users (user_name) VALUES (%@)", v4])
+    if ([(BRCPQLConnection *)self->super._db execute:@"INSERT INTO users (user_name) VALUES (%@)", nameCopy])
     {
       v15 = brc_bread_crumbs();
       v16 = brc_default_log();
@@ -87,11 +87,11 @@ LABEL_11:
     v19 = brc_default_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
     {
-      v22 = [(BRCPQLConnection *)self->super._db lastError];
+      lastError = [(BRCPQLConnection *)self->super._db lastError];
       *buf = 138412802;
-      v24 = v4;
+      v24 = nameCopy;
       v25 = 2112;
-      v26 = v22;
+      v26 = lastError;
       v27 = 2112;
       v28 = v18;
       _os_log_fault_impl(&dword_223E7A000, v19, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: can't insert user name: '%@': %@%@", buf, 0x20u);
@@ -116,16 +116,16 @@ LABEL_16:
   return v17;
 }
 
-- (id)createDeviceKeyForName:(id)a3
+- (id)createDeviceKeyForName:(id)name
 {
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v8 = 0;
     goto LABEL_11;
   }
 
-  v5 = [(BRCDatabaseFacade *)self deviceKeyForName:v4];
+  v5 = [(BRCDatabaseFacade *)self deviceKeyForName:nameCopy];
   v6 = v5;
   if (v5)
   {
@@ -135,13 +135,13 @@ LABEL_16:
 
   else
   {
-    if (![(BRCPQLConnection *)self->super._db execute:@"INSERT INTO devices (name) VALUES (%@)", v4])
+    if (![(BRCPQLConnection *)self->super._db execute:@"INSERT INTO devices (name) VALUES (%@)", nameCopy])
     {
       v6 = brc_bread_crumbs();
       v12 = brc_default_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        [(BRCReadWriteServerDatabaseFacade *)v4 createDeviceKeyForName:v6, v12];
+        [(BRCReadWriteServerDatabaseFacade *)nameCopy createDeviceKeyForName:v6, v12];
       }
 
       v8 = 0;
@@ -166,25 +166,25 @@ LABEL_11:
   return v8;
 }
 
-- (void)setUserIdentityForUserName:(id)a3 userIdentity:(id)a4
+- (void)setUserIdentityForUserName:(id)name userIdentity:(id)identity
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCReadWriteServerDatabaseFacade *)self getOrCreateUserKeyForOwnerName:v6];
-  v9 = [(BRCPQLConnection *)self->super._db execute:@"UPDATE users SET user_plist = %@ WHERE user_name = %@", v7, v6];
+  nameCopy = name;
+  identityCopy = identity;
+  v8 = [(BRCReadWriteServerDatabaseFacade *)self getOrCreateUserKeyForOwnerName:nameCopy];
+  nameCopy = [(BRCPQLConnection *)self->super._db execute:@"UPDATE users SET user_plist = %@ WHERE user_name = %@", identityCopy, nameCopy];
 
-  if (!v9)
+  if (!nameCopy)
   {
     v10 = brc_bread_crumbs();
     v11 = brc_default_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
-      v21 = [(BRCPQLConnection *)self->super._db lastError];
+      lastError = [(BRCPQLConnection *)self->super._db lastError];
       *buf = 138412802;
-      v23 = v6;
+      v23 = nameCopy;
       v24 = 2112;
-      v25 = v21;
+      v25 = lastError;
       v26 = 2112;
       v27 = v10;
       _os_log_fault_impl(&dword_223E7A000, v11, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: can't insert user identity for name '%@': %@%@", buf, 0x20u);
@@ -204,14 +204,14 @@ LABEL_11:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)insertSideCarLookAheadInfo:(id)a3 shareRecordName:(id)a4 sideCarInfo:(id)a5
+- (void)insertSideCarLookAheadInfo:(id)info shareRecordName:(id)name sideCarInfo:(id)carInfo
 {
-  v15 = a5;
-  v8 = a4;
-  v9 = a3;
-  if ([v15 favoriteRank])
+  carInfoCopy = carInfo;
+  nameCopy = name;
+  infoCopy = info;
+  if ([carInfoCopy favoriteRank])
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v15, "favoriteRank")}];
+    v10 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(carInfoCopy, "favoriteRank")}];
   }
 
   else
@@ -219,9 +219,9 @@ LABEL_11:
     v10 = 0;
   }
 
-  if ([v15 lastUsedTime])
+  if ([carInfoCopy lastUsedTime])
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v15, "lastUsedTime")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(carInfoCopy, "lastUsedTime")}];
   }
 
   else
@@ -229,20 +229,20 @@ LABEL_11:
     v11 = 0;
   }
 
-  v12 = [v15 finderTags];
+  finderTags = [carInfoCopy finderTags];
   db = self->super._db;
-  v14 = [v15 ckInfo];
-  [(BRCPQLConnection *)db execute:@"INSERT OR REPLACE INTO side_car_lookahead (record_name, root_alias_record_name, item_favoriterank, item_lastusedtime, item_side_car_ckinfo, item_finder_tags) VALUES (%@, %@, %@, %@, %@, %@)", v9, v8, v10, v11, v14, v12];
+  ckInfo = [carInfoCopy ckInfo];
+  [(BRCPQLConnection *)db execute:@"INSERT OR REPLACE INTO side_car_lookahead (record_name, root_alias_record_name, item_favoriterank, item_lastusedtime, item_side_car_ckinfo, item_finder_tags) VALUES (%@, %@, %@, %@, %@, %@)", infoCopy, nameCopy, v10, v11, ckInfo, finderTags];
 }
 
-- (BOOL)updateServerItemWithSideCarInfo:(id)a3 sideCarInfo:(id)a4 zoneRowID:(id)a5
+- (BOOL)updateServerItemWithSideCarInfo:(id)info sideCarInfo:(id)carInfo zoneRowID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  if ([v8 favoriteRank])
+  carInfoCopy = carInfo;
+  dCopy = d;
+  infoCopy = info;
+  if ([carInfoCopy favoriteRank])
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "favoriteRank")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(carInfoCopy, "favoriteRank")}];
   }
 
   else
@@ -250,9 +250,9 @@ LABEL_11:
     v11 = 0;
   }
 
-  if ([v8 lastUsedTime])
+  if ([carInfoCopy lastUsedTime])
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v8, "lastUsedTime")}];
+    v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(carInfoCopy, "lastUsedTime")}];
   }
 
   else
@@ -260,55 +260,55 @@ LABEL_11:
     v12 = 0;
   }
 
-  v13 = [v8 finderTags];
+  finderTags = [carInfoCopy finderTags];
   db = self->super._db;
-  v15 = [v8 ckInfo];
-  [(BRCPQLConnection *)db execute:@"UPDATE server_items SET item_favoriterank = %@, item_lastusedtime = %@, item_finder_tags = %@, item_side_car_ckinfo = %@, item_rank = NULL WHERE zone_rowid = %@ AND item_id = %@", v11, v12, v13, v15, v9, v10];
+  ckInfo = [carInfoCopy ckInfo];
+  [(BRCPQLConnection *)db execute:@"UPDATE server_items SET item_favoriterank = %@, item_lastusedtime = %@, item_finder_tags = %@, item_side_car_ckinfo = %@, item_rank = NULL WHERE zone_rowid = %@ AND item_id = %@", v11, v12, finderTags, ckInfo, dCopy, infoCopy];
 
   v16 = [(BRCPQLConnection *)self->super._db changes]!= 0;
   return v16;
 }
 
-- (BOOL)insertOrReplaceParticipantForSharedItemID:(id)a3 zoneRowID:(id)a4 participantUserName:(id)a5 shareParticipantsOptions:(unint64_t)a6
+- (BOOL)insertOrReplaceParticipantForSharedItemID:(id)d zoneRowID:(id)iD participantUserName:(id)name shareParticipantsOptions:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(BRCReadWriteServerDatabaseFacade *)self getOrCreateUserKeyForOwnerName:a5];
+  dCopy = d;
+  iDCopy = iD;
+  v12 = [(BRCReadWriteServerDatabaseFacade *)self getOrCreateUserKeyForOwnerName:name];
   if (v12)
   {
-    v13 = [(BRCPQLConnection *)self->super._db execute:@"INSERT OR REPLACE INTO server_share_items_participants (user_key, item_id, zone_rowid, participant_flags) VALUES(%@, %@, %@, %lu)", v12, v10, v11, a6];
+    options = [(BRCPQLConnection *)self->super._db execute:@"INSERT OR REPLACE INTO server_share_items_participants (user_key, item_id, zone_rowid, participant_flags) VALUES(%@, %@, %@, %lu)", v12, dCopy, iDCopy, options];
   }
 
   else
   {
-    v13 = 0;
+    options = 0;
   }
 
-  return v13;
+  return options;
 }
 
-- (BOOL)doesParticipantExistForItemID:(id)a3 zoneRowID:(id)a4 userName:(id)a5
+- (BOOL)doesParticipantExistForItemID:(id)d zoneRowID:(id)iD userName:(id)name
 {
-  v5 = [(BRCPQLConnection *)self->super._db fetch:@"SELECT 1  FROM server_share_items_participants AS p   INNER JOIN users AS u  WHERE p.item_id = %@ AND p.zone_rowid = %@ AND u.user_name = %@ AND u.user_key = p.user_key", a3, a4, a5];
-  v6 = [v5 next];
+  name = [(BRCPQLConnection *)self->super._db fetch:@"SELECT 1  FROM server_share_items_participants AS p   INNER JOIN users AS u  WHERE p.item_id = %@ AND p.zone_rowid = %@ AND u.user_name = %@ AND u.user_key = p.user_key", d, iD, name];
+  next = [name next];
 
-  return v6;
+  return next;
 }
 
-- (BOOL)updateParticipantsForSharedItemID:(id)a3 zoneRowID:(id)a4 paticipantFlagsCallblock:(id)a5
+- (BOOL)updateParticipantsForSharedItemID:(id)d zoneRowID:(id)iD paticipantFlagsCallblock:(id)callblock
 {
-  v8 = a5;
+  callblockCopy = callblock;
   db = self->super._db;
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __105__BRCReadWriteServerDatabaseFacade_updateParticipantsForSharedItemID_zoneRowID_paticipantFlagsCallblock___block_invoke;
   v18 = &unk_278506588;
-  v19 = v8;
-  v10 = v8;
-  v11 = a4;
-  v12 = a3;
+  v19 = callblockCopy;
+  v10 = callblockCopy;
+  iDCopy = iD;
+  dCopy = d;
   v13 = MEMORY[0x22AA4A310](&v15);
-  LOBYTE(db) = [(BRCPQLConnection *)db execute:@"UPDATE server_share_items_participants AS p SET participant_flags = call_block(%p, (SELECT u.user_name FROM users AS u WHERE u.user_key = p.user_key)) WHERE item_id = %@ AND zone_rowID = %@ ", v13, v12, v11, v15, v16, v17, v18];
+  LOBYTE(db) = [(BRCPQLConnection *)db execute:@"UPDATE server_share_items_participants AS p SET participant_flags = call_block(%p, (SELECT u.user_name FROM users AS u WHERE u.user_key = p.user_key)) WHERE item_id = %@ AND zone_rowID = %@ ", v13, dCopy, iDCopy, v15, v16, v17, v18];
 
   return db;
 }

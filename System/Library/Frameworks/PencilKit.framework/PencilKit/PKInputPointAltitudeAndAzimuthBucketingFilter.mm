@@ -1,10 +1,10 @@
 @interface PKInputPointAltitudeAndAzimuthBucketingFilter
-- (void)addInputPoint:(id *)a3;
+- (void)addInputPoint:(id *)point;
 @end
 
 @implementation PKInputPointAltitudeAndAzimuthBucketingFilter
 
-- (void)addInputPoint:(id *)a3
+- (void)addInputPoint:(id *)point
 {
   if (self)
   {
@@ -14,7 +14,7 @@
     {
       v6 = 6.28318531 / numAzimuthBuckets;
       v7 = v6 * 0.5;
-      var2 = a3->var2;
+      var2 = point->var2;
       v9 = 0.0;
       do
       {
@@ -43,7 +43,7 @@
       }
 
       while (numAzimuthBuckets);
-      a3->var2 = v9;
+      point->var2 = v9;
     }
 
     numAltitudeBuckets = self->_numAltitudeBuckets;
@@ -55,7 +55,7 @@
       {
         v15 = v14;
         v14 = v13 + v14;
-        if (a3->var3 <= v14)
+        if (point->var3 <= v14)
         {
           break;
         }
@@ -65,10 +65,10 @@
       }
 
       while (numAltitudeBuckets);
-      a3->var3 = v13 * 0.5 + v15;
+      point->var3 = v13 * 0.5 + v15;
     }
 
-    memmove(&self->super._filteredPoint, a3, 0x88uLL);
+    memmove(&self->super._filteredPoint, point, 0x88uLL);
   }
 }
 

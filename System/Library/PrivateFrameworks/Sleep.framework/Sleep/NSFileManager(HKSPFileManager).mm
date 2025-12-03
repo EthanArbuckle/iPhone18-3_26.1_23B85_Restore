@@ -24,8 +24,8 @@
 + (id)_bundleCachePathForFile:()HKSPFileManager
 {
   v4 = a3;
-  v5 = [a1 _bundleCacheDirectory];
-  v6 = [v5 stringByAppendingPathComponent:v4];
+  _bundleCacheDirectory = [self _bundleCacheDirectory];
+  v6 = [_bundleCacheDirectory stringByAppendingPathComponent:v4];
 
   return v6;
 }
@@ -35,7 +35,7 @@
   v4 = a3;
   v5 = [objc_opt_class() _bundleCachePathForFile:v4];
 
-  v6 = [a1 fileExistsAtPath:v5 isDirectory:0];
+  v6 = [self fileExistsAtPath:v5 isDirectory:0];
   return v6;
 }
 
@@ -56,14 +56,14 @@
   v37[1] = *MEMORY[0x277D85DE8];
   v8 = a3;
   v9 = a4;
-  if (([a1 hkspFileWithNameExistsInCache:v9] & 1) == 0)
+  if (([self hkspFileWithNameExistsInCache:v9] & 1) == 0)
   {
-    v10 = [objc_opt_class() _bundleCacheDirectory];
+    _bundleCacheDirectory = [objc_opt_class() _bundleCacheDirectory];
     v36 = *MEMORY[0x277CCA1B0];
     v37[0] = *MEMORY[0x277CCA198];
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:&v36 count:1];
     v29 = 0;
-    [a1 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:v11 error:&v29];
+    [self createDirectoryAtPath:_bundleCacheDirectory withIntermediateDirectories:1 attributes:v11 error:&v29];
     v12 = v29;
 
     if (v12)
@@ -73,11 +73,11 @@
       {
         v25 = objc_opt_class();
         v26 = v25;
-        v27 = [objc_opt_class() _bundleCacheDirectory];
+        _bundleCacheDirectory2 = [objc_opt_class() _bundleCacheDirectory];
         *buf = 138543874;
         v31 = v25;
         v32 = 2114;
-        v33 = v27;
+        v33 = _bundleCacheDirectory2;
         v34 = 2114;
         v35 = v12;
         _os_log_error_impl(&dword_269A84000, v13, OS_LOG_TYPE_ERROR, "[%{public}@] failed to create directory at %{public}@ with error %{public}@", buf, 0x20u);
@@ -153,7 +153,7 @@ LABEL_16:
   v6 = a3;
   v7 = [objc_opt_class() _bundleCachePathForFile:v6];
 
-  v8 = [a1 removeItemAtPath:v7 error:a4];
+  v8 = [self removeItemAtPath:v7 error:a4];
   return v8;
 }
 

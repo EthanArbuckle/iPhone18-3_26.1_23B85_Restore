@@ -2,13 +2,13 @@
 + (CPLEngineStoreTransaction)currentTransaction;
 - (BOOL)canRead;
 - (BOOL)canWrite;
-- (BOOL)do:(id)a3;
+- (BOOL)do:(id)do;
 - (BOOL)isLibraryClosed;
 - (id)description;
 - (void)_releaseDirty;
 - (void)_transactionDidFinish;
-- (void)_transactionWillBeginOnThread:(id)a3;
-- (void)addCleanupBlock:(id)a3;
+- (void)_transactionWillBeginOnThread:(id)thread;
+- (void)addCleanupBlock:(id)block;
 - (void)dealloc;
 @end
 
@@ -24,8 +24,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSMutableArray *)self->_cleanupBlocks reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  reverseObjectEnumerator = [(NSMutableArray *)self->_cleanupBlocks reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -37,7 +37,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         error = self->_error;
@@ -45,7 +45,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -64,8 +64,8 @@
     return 0;
   }
 
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = v3 == self->_currentThread;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  v4 = currentThread == self->_currentThread;
 
   return v4;
 }
@@ -109,43 +109,43 @@
     v3 = "";
   }
 
-  v4 = [(CPLTransaction *)self->_dirty identifier];
-  v5 = [v2 stringWithFormat:@"[TRANSACTION%s %@]", v3, v4];
+  identifier = [(CPLTransaction *)self->_dirty identifier];
+  v5 = [v2 stringWithFormat:@"[TRANSACTION%s %@]", v3, identifier];
 
   return v5;
 }
 
 - (BOOL)canRead
 {
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  LOBYTE(self) = v3 == self->_currentThread;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  LOBYTE(self) = currentThread == self->_currentThread;
 
   return self;
 }
 
-- (void)addCleanupBlock:(id)a3
+- (void)addCleanupBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   cleanupBlocks = self->_cleanupBlocks;
-  v10 = v4;
+  v10 = blockCopy;
   if (!cleanupBlocks)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_cleanupBlocks;
     self->_cleanupBlocks = v6;
 
-    v4 = v10;
+    blockCopy = v10;
     cleanupBlocks = self->_cleanupBlocks;
   }
 
-  v8 = [v4 copy];
+  v8 = [blockCopy copy];
   v9 = MEMORY[0x1E128EBA0]();
   [(NSMutableArray *)cleanupBlocks addObject:v9];
 }
 
-- (void)_transactionWillBeginOnThread:(id)a3
+- (void)_transactionWillBeginOnThread:(id)thread
 {
-  v5 = a3;
+  threadCopy = thread;
   if (self->_currentThread)
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -158,19 +158,19 @@
       }
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:2649 description:@"Trying to set transaction thread twice"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:2649 description:@"Trying to set transaction thread twice"];
 
     abort();
   }
 
-  self->_currentThread = v5;
+  self->_currentThread = threadCopy;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)do:(id)a3
+- (BOOL)do:(id)do
 {
   p_error = &self->_error;
   if (self->_error)
@@ -179,7 +179,7 @@
   }
 
   v8 = 0;
-  v4 = (*(a3 + 2))(a3, &v8);
+  v4 = (*(do + 2))(do, &v8);
   v5 = v8;
   v6 = v8;
   if ((v4 & 1) == 0 && !*p_error)
@@ -192,9 +192,9 @@
 
 + (CPLEngineStoreTransaction)currentTransaction
 {
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v5 = [v4 threadDictionary];
-  v6 = [v5 objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v6 = [threadDictionary objectForKey:@"com.apple.cloudphotolibrary.currenttransaction"];
 
   if (!v6)
   {
@@ -208,9 +208,9 @@
       }
     }
 
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStore.m"];
-    [v9 handleFailureInMethod:a2 object:a1 file:v10 lineNumber:2608 description:@"Trying to get the current transaction outside of any transaction"];
+    [currentHandler handleFailureInMethod:a2 object:self file:v10 lineNumber:2608 description:@"Trying to get the current transaction outside of any transaction"];
 
     abort();
   }

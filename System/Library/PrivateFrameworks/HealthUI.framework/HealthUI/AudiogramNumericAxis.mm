@@ -1,15 +1,15 @@
 @interface AudiogramNumericAxis
-- (_TtC8HealthUI20AudiogramNumericAxis)initWithConfiguration:(id)a3;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
+- (_TtC8HealthUI20AudiogramNumericAxis)initWithConfiguration:(id)configuration;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
 @end
 
 @implementation AudiogramNumericAxis
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
-  v5 = self;
-  v6 = a3;
-  v7 = sub_1C3CD7DB0(a3);
+  selfCopy = self;
+  rangeCopy = range;
+  v7 = sub_1C3CD7DB0(range);
 
   if (v7)
   {
@@ -25,11 +25,11 @@
   return v8;
 }
 
-- (_TtC8HealthUI20AudiogramNumericAxis)initWithConfiguration:(id)a3
+- (_TtC8HealthUI20AudiogramNumericAxis)initWithConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for AudiogramNumericAxis();
-  return [(HKNumericAxis *)&v5 initWithConfiguration:a3];
+  return [(HKNumericAxis *)&v5 initWithConfiguration:configuration];
 }
 
 @end

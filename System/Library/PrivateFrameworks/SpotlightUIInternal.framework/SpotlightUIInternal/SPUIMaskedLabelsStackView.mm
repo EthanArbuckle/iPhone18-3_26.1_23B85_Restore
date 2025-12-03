@@ -1,12 +1,12 @@
 @interface SPUIMaskedLabelsStackView
 - (BOOL)isRTL;
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5;
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame;
 - (NSDirectionalEdgeInsets)additionalPadding;
 - (SPUIMaskedLabelsStackView)init;
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3;
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews;
 - (void)resetStringOffset;
-- (void)setFont:(id)a3;
-- (void)setTypedString:(id)a3;
+- (void)setFont:(id)font;
+- (void)setTypedString:(id)string;
 @end
 
 @implementation SPUIMaskedLabelsStackView
@@ -27,39 +27,39 @@
     v3->_completionLabel = v4;
 
     [(UILabel *)v3->_completionLabel setLineBreakMode:2];
-    v6 = [MEMORY[0x277D6F1B0] tertiaryLabel];
+    tertiaryLabel = [MEMORY[0x277D6F1B0] tertiaryLabel];
     bridgeLabel = v3->_bridgeLabel;
-    v3->_bridgeLabel = v6;
+    v3->_bridgeLabel = tertiaryLabel;
 
     [(UILabel *)v3->_completionLabel setLineBreakMode:2];
-    v8 = [MEMORY[0x277D6F1B0] tertiaryLabel];
-    [v8 setSupportsColorGlyphs:1];
-    [v8 setLineBreakMode:2];
-    objc_storeStrong(&v3->_extensionLabel, v8);
-    v9 = [(SPUIMaskedLabelsStackView *)v3 bridgeLabel];
+    tertiaryLabel2 = [MEMORY[0x277D6F1B0] tertiaryLabel];
+    [tertiaryLabel2 setSupportsColorGlyphs:1];
+    [tertiaryLabel2 setLineBreakMode:2];
+    objc_storeStrong(&v3->_extensionLabel, tertiaryLabel2);
+    bridgeLabel = [(SPUIMaskedLabelsStackView *)v3 bridgeLabel];
     LODWORD(v10) = 1148846080;
-    [v9 setContentHuggingPriority:0 forAxis:v10];
+    [bridgeLabel setContentHuggingPriority:0 forAxis:v10];
 
-    v11 = [(SPUIMaskedLabelsStackView *)v3 completionLabel];
+    completionLabel = [(SPUIMaskedLabelsStackView *)v3 completionLabel];
     LODWORD(v12) = 1148829696;
-    [v11 setContentHuggingPriority:0 forAxis:v12];
+    [completionLabel setContentHuggingPriority:0 forAxis:v12];
 
-    v13 = [(SPUIMaskedLabelsStackView *)v3 completionLabel];
+    completionLabel2 = [(SPUIMaskedLabelsStackView *)v3 completionLabel];
     LODWORD(v14) = 1148846080;
-    [v13 setContentCompressionResistancePriority:0 forAxis:v14];
+    [completionLabel2 setContentCompressionResistancePriority:0 forAxis:v14];
 
-    v15 = [(SPUIMaskedLabelsStackView *)v3 extensionLabel];
+    extensionLabel = [(SPUIMaskedLabelsStackView *)v3 extensionLabel];
     LODWORD(v16) = 1148829696;
-    [v15 setContentHuggingPriority:0 forAxis:v16];
+    [extensionLabel setContentHuggingPriority:0 forAxis:v16];
 
-    v17 = [(SPUIMaskedLabelsStackView *)v3 extensionLabel];
+    extensionLabel2 = [(SPUIMaskedLabelsStackView *)v3 extensionLabel];
     LODWORD(v18) = 1132068864;
-    [v17 setContentCompressionResistancePriority:0 forAxis:v18];
+    [extensionLabel2 setContentCompressionResistancePriority:0 forAxis:v18];
 
     v19 = [objc_alloc(MEMORY[0x277D6F1C0]) initWithProminence:3];
-    v20 = [MEMORY[0x277D65D28] enableFloatingWindow];
+    enableFloatingWindow = [MEMORY[0x277D65D28] enableFloatingWindow];
     v21 = 8.0;
-    if (v20)
+    if (enableFloatingWindow)
     {
       v22 = _UISolariumEnabled();
       v21 = 4.0;
@@ -71,8 +71,8 @@
 
     [v19 _setContinuousCornerRadius:v21];
     [(SPUIMaskedLabelsStackView *)v3 setExtensionLabelProminenceView:v19];
-    v23 = [(SPUIMaskedLabelsStackView *)v3 extensionLabelProminenceView];
-    [(SPUIMaskedLabelsStackView *)v3 addSubview:v23];
+    extensionLabelProminenceView = [(SPUIMaskedLabelsStackView *)v3 extensionLabelProminenceView];
+    [(SPUIMaskedLabelsStackView *)v3 addSubview:extensionLabelProminenceView];
 
     [(NUIContainerStackView *)v3 setSpacing:0.0];
     v24 = objc_opt_new();
@@ -81,24 +81,24 @@
     v25 = objc_opt_new();
     [(SPUIMaskedLabelsStackView *)v3 setFillerView:v25];
 
-    v26 = [(SPUIMaskedLabelsStackView *)v3 fillerView];
-    [v26 setContentCompressionResistancePriority:0 forAxis:0.0];
+    fillerView = [(SPUIMaskedLabelsStackView *)v3 fillerView];
+    [fillerView setContentCompressionResistancePriority:0 forAxis:0.0];
 
-    v27 = [(SPUIMaskedLabelsStackView *)v3 completionLabel];
-    v36[0] = v27;
-    v28 = [(SPUIMaskedLabelsStackView *)v3 bridgeLabel];
-    v36[1] = v28;
-    v29 = [(SPUIMaskedLabelsStackView *)v3 extensionLabel];
-    v36[2] = v29;
-    v30 = [(SPUIMaskedLabelsStackView *)v3 fillerView];
-    v36[3] = v30;
+    completionLabel3 = [(SPUIMaskedLabelsStackView *)v3 completionLabel];
+    v36[0] = completionLabel3;
+    bridgeLabel2 = [(SPUIMaskedLabelsStackView *)v3 bridgeLabel];
+    v36[1] = bridgeLabel2;
+    extensionLabel3 = [(SPUIMaskedLabelsStackView *)v3 extensionLabel];
+    v36[2] = extensionLabel3;
+    fillerView2 = [(SPUIMaskedLabelsStackView *)v3 fillerView];
+    v36[3] = fillerView2;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:4];
     [(SPUIMaskedLabelsStackView *)v3 setArrangedSubviews:v31];
 
     if ([MEMORY[0x277D65D28] enableFloatingWindow])
     {
-      v32 = [(SPUIMaskedLabelsStackView *)v3 completionLabel];
-      [(NUIContainerStackView *)v3 setCustomSpacing:v32 afterView:2.0];
+      completionLabel4 = [(SPUIMaskedLabelsStackView *)v3 completionLabel];
+      [(NUIContainerStackView *)v3 setCustomSpacing:completionLabel4 afterView:2.0];
     }
   }
 
@@ -109,17 +109,17 @@
 - (void)resetStringOffset
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUIMaskedLabelsStackView *)self typedString];
+  typedString = [(SPUIMaskedLabelsStackView *)self typedString];
 
-  if (v3)
+  if (typedString)
   {
-    v4 = [(SPUIMaskedLabelsStackView *)self typedString];
+    typedString2 = [(SPUIMaskedLabelsStackView *)self typedString];
     v9 = *MEMORY[0x277D740A8];
-    v5 = [(SPUIMaskedLabelsStackView *)self completionLabel];
-    v6 = [v5 font];
-    v10[0] = v6;
+    completionLabel = [(SPUIMaskedLabelsStackView *)self completionLabel];
+    font = [completionLabel font];
+    v10[0] = font;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    [v4 sizeWithAttributes:v7];
+    [typedString2 sizeWithAttributes:v7];
     [(SPUIMaskedLabelsStackView *)self setCompletionStringOffset:?];
 
     [(SPUIMaskedLabelsStackView *)self setNeedsLayout];
@@ -130,8 +130,8 @@
 
 - (BOOL)isRTL
 {
-  v2 = [MEMORY[0x277D75128] sharedApplication];
-  v3 = [v2 userInterfaceLayoutDirection] == 1;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  v3 = [mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1;
 
   return v3;
 }
@@ -161,35 +161,35 @@
   return result;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
-  if (v5)
+  fontCopy = font;
+  if (fontCopy)
   {
-    v16 = v5;
+    v16 = fontCopy;
     if (([(UIFont *)self->_font isEqual:?]& 1) == 0)
     {
-      objc_storeStrong(&self->_font, a3);
-      v6 = [(SPUIMaskedLabelsStackView *)self completionLabel];
-      [v6 setFont:v16];
+      objc_storeStrong(&self->_font, font);
+      completionLabel = [(SPUIMaskedLabelsStackView *)self completionLabel];
+      [completionLabel setFont:v16];
 
       v7 = MEMORY[0x277D74300];
-      v8 = [MEMORY[0x277D65D28] enableFloatingWindow];
+      enableFloatingWindow = [MEMORY[0x277D65D28] enableFloatingWindow];
       v9 = 20.0;
-      if ((v8 & 1) == 0)
+      if ((enableFloatingWindow & 1) == 0)
       {
         [v16 pointSize];
         v9 = v10 + -2.0;
       }
 
       v11 = [v7 systemFontOfSize:v9];
-      v12 = [(SPUIMaskedLabelsStackView *)self extensionLabel];
-      [v12 setFont:v11];
+      extensionLabel = [(SPUIMaskedLabelsStackView *)self extensionLabel];
+      [extensionLabel setFont:v11];
 
-      v13 = [(SPUIMaskedLabelsStackView *)self extensionLabel];
-      v14 = [v13 font];
-      v15 = [(SPUIMaskedLabelsStackView *)self bridgeLabel];
-      [v15 setFont:v14];
+      extensionLabel2 = [(SPUIMaskedLabelsStackView *)self extensionLabel];
+      font = [extensionLabel2 font];
+      bridgeLabel = [(SPUIMaskedLabelsStackView *)self bridgeLabel];
+      [bridgeLabel setFont:font];
 
       [(SPUIMaskedLabelsStackView *)self resetStringOffset];
     }
@@ -198,28 +198,28 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setTypedString:(id)a3
+- (void)setTypedString:(id)string
 {
-  v5 = a3;
-  if (v5 && ([v5 isEqualToString:self->_typedString] & 1) == 0)
+  stringCopy = string;
+  if (stringCopy && ([stringCopy isEqualToString:self->_typedString] & 1) == 0)
   {
-    objc_storeStrong(&self->_typedString, a3);
+    objc_storeStrong(&self->_typedString, string);
     [(SPUIMaskedLabelsStackView *)self resetStringOffset];
   }
 
   MEMORY[0x2821F96F8]();
 }
 
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  v11 = [(SPUIMaskedLabelsStackView *)self completionLabel];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  subviewCopy = subview;
+  completionLabel = [(SPUIMaskedLabelsStackView *)self completionLabel];
 
-  if (v11 != v10 && [MEMORY[0x277D4C898] isIpad])
+  if (completionLabel != subviewCopy && [MEMORY[0x277D4C898] isIpad])
   {
     y = y + 2.0;
   }
@@ -241,7 +241,7 @@
   return result;
 }
 
-- (void)containerViewDidLayoutArrangedSubviews:(id)a3
+- (void)containerViewDidLayoutArrangedSubviews:(id)subviews
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;

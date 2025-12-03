@@ -1,30 +1,30 @@
 @interface AVCAudioSessionDelegate
-- (AVCAudioSessionDelegate)initWithOwner:(shared_ptr<AVCAudioSession>)a3 andStackController:(shared_ptr<AVCRTPStackController>)a4;
+- (AVCAudioSessionDelegate)initWithOwner:(shared_ptr<AVCAudioSession>)owner andStackController:(shared_ptr<AVCRTPStackController>)controller;
 - (id).cxx_construct;
 - (shared_ptr<AVCRTPStackController>)stackController;
-- (void)handleRTCPPacketWithBlock:(id)a3;
-- (void)setOwner:(weak_ptr<AVCAudioSession>)a3;
-- (void)setStackController:(shared_ptr<AVCRTPStackController>)a3;
-- (void)stream:(id)a3 didPause:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didReceiveDTMFEventWithDigit:(char)a4;
-- (void)stream:(id)a3 didReceiveRTCPPackets:(id)a4;
-- (void)stream:(id)a3 didResume:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5;
-- (void)stream:(id)a3 updateInputFrequencyLevel:(id)a4;
-- (void)stream:(id)a3 updateOutputFrequencyLevel:(id)a4;
-- (void)streamDidRTCPTimeOut:(id)a3;
-- (void)streamDidRTPTimeOut:(id)a3;
-- (void)streamDidServerDie:(id)a3;
-- (void)streamDidStop:(id)a3;
+- (void)handleRTCPPacketWithBlock:(id)block;
+- (void)setOwner:(weak_ptr<AVCAudioSession>)owner;
+- (void)setStackController:(shared_ptr<AVCRTPStackController>)controller;
+- (void)stream:(id)stream didPause:(BOOL)pause error:(id)error;
+- (void)stream:(id)stream didReceiveDTMFEventWithDigit:(char)digit;
+- (void)stream:(id)stream didReceiveRTCPPackets:(id)packets;
+- (void)stream:(id)stream didResume:(BOOL)resume error:(id)error;
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error;
+- (void)stream:(id)stream updateInputFrequencyLevel:(id)level;
+- (void)stream:(id)stream updateOutputFrequencyLevel:(id)level;
+- (void)streamDidRTCPTimeOut:(id)out;
+- (void)streamDidRTPTimeOut:(id)out;
+- (void)streamDidServerDie:(id)die;
+- (void)streamDidStop:(id)stop;
 - (weak_ptr<AVCAudioSession>)owner;
 @end
 
 @implementation AVCAudioSessionDelegate
 
-- (void)stream:(id)a3 didStart:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didStart:(BOOL)start error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  errorCopy = error;
   v10 = std::string::basic_string[abi:ne200100]<0>(&v23, "avc.audio.delegate");
   v19[0] = 0;
   v22 = 0;
@@ -47,12 +47,12 @@
   v14[1] = 3221225472;
   v14[2] = __49__AVCAudioSessionDelegate_stream_didStart_error___block_invoke;
   v14[3] = &unk_1E8769840;
-  v12 = v9;
+  v12 = errorCopy;
   v15 = v12;
-  v13 = v8;
+  v13 = streamCopy;
   v16 = v13;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  startCopy = start;
   ims::performBlock(v14);
 }
 
@@ -285,10 +285,10 @@ LABEL_45:
   }
 }
 
-- (void)stream:(id)a3 didPause:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didPause:(BOOL)pause error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  errorCopy = error;
   v10 = std::string::basic_string[abi:ne200100]<0>(&v23, "avc.audio.delegate");
   v19[0] = 0;
   v22 = 0;
@@ -311,12 +311,12 @@ LABEL_45:
   v14[1] = 3221225472;
   v14[2] = __49__AVCAudioSessionDelegate_stream_didPause_error___block_invoke;
   v14[3] = &unk_1E8769840;
-  v12 = v9;
+  v12 = errorCopy;
   v15 = v12;
-  v13 = v8;
+  v13 = streamCopy;
   v16 = v13;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  pauseCopy = pause;
   ims::performBlock(v14);
 }
 
@@ -507,10 +507,10 @@ LABEL_44:
   }
 }
 
-- (void)stream:(id)a3 didResume:(BOOL)a4 error:(id)a5
+- (void)stream:(id)stream didResume:(BOOL)resume error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
+  streamCopy = stream;
+  errorCopy = error;
   v10 = std::string::basic_string[abi:ne200100]<0>(&v23, "avc.audio.delegate");
   v19[0] = 0;
   v22 = 0;
@@ -533,12 +533,12 @@ LABEL_44:
   v14[1] = 3221225472;
   v14[2] = __50__AVCAudioSessionDelegate_stream_didResume_error___block_invoke;
   v14[3] = &unk_1E8769840;
-  v12 = v9;
+  v12 = errorCopy;
   v15 = v12;
-  v13 = v8;
+  v13 = streamCopy;
   v16 = v13;
-  v17 = self;
-  v18 = a4;
+  selfCopy = self;
+  resumeCopy = resume;
   ims::performBlock(v14);
 }
 
@@ -700,9 +700,9 @@ LABEL_38:
   }
 }
 
-- (void)streamDidStop:(id)a3
+- (void)streamDidStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   v5 = std::string::basic_string[abi:ne200100]<0>(&v12, "avc.audio.delegate");
   v8[0] = 0;
   v11 = 0;
@@ -857,9 +857,9 @@ LABEL_32:
   }
 }
 
-- (void)streamDidRTPTimeOut:(id)a3
+- (void)streamDidRTPTimeOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v5 = std::string::basic_string[abi:ne200100]<0>(&v12, "avc.audio.delegate");
   v8[0] = 0;
   v11 = 0;
@@ -1004,9 +1004,9 @@ LABEL_29:
   }
 }
 
-- (void)streamDidRTCPTimeOut:(id)a3
+- (void)streamDidRTCPTimeOut:(id)out
 {
-  v4 = a3;
+  outCopy = out;
   v5 = std::string::basic_string[abi:ne200100]<0>(&v12, "avc.audio.delegate");
   v8[0] = 0;
   v11 = 0;
@@ -1151,9 +1151,9 @@ LABEL_29:
   }
 }
 
-- (void)stream:(id)a3 didReceiveDTMFEventWithDigit:(char)a4
+- (void)stream:(id)stream didReceiveDTMFEventWithDigit:(char)digit
 {
-  v6 = a3;
+  streamCopy = stream;
   v7 = std::string::basic_string[abi:ne200100]<0>(&v15, "avc.audio.delegate");
   v11[0] = 0;
   v14 = 0;
@@ -1176,7 +1176,7 @@ LABEL_29:
   v9[1] = 3221225472;
   v9[2] = __63__AVCAudioSessionDelegate_stream_didReceiveDTMFEventWithDigit___block_invoke;
   v9[3] = &unk_1E876C540;
-  v10 = a4;
+  digitCopy = digit;
   v9[4] = self;
   ims::performBlock(v9);
 }
@@ -1194,10 +1194,10 @@ void __63__AVCAudioSessionDelegate_stream_didReceiveDTMFEventWithDigit___block_i
   ImsStringOutStream::ImsStringOutStream(v4);
 }
 
-- (void)stream:(id)a3 didReceiveRTCPPackets:(id)a4
+- (void)stream:(id)stream didReceiveRTCPPackets:(id)packets
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  packetsCopy = packets;
   v8 = std::string::basic_string[abi:ne200100]<0>(&v19, "avc.audio.delegate");
   v15[0] = 0;
   v18 = 0;
@@ -1221,9 +1221,9 @@ void __63__AVCAudioSessionDelegate_stream_didReceiveDTMFEventWithDigit___block_i
   v12[1] = 3221225472;
   v12[2] = __56__AVCAudioSessionDelegate_stream_didReceiveRTCPPackets___block_invoke;
   v12[3] = &unk_1E876C590;
-  v11 = v7;
+  v11 = packetsCopy;
   v13 = v11;
-  v14 = self;
+  selfCopy = self;
   ims::performBlock(v12);
 
   objc_autoreleasePoolPop(v10);
@@ -1749,7 +1749,7 @@ void __56__AVCAudioSessionDelegate_stream_didReceiveRTCPPackets___block_invoke_3
   }
 }
 
-- (void)streamDidServerDie:(id)a3
+- (void)streamDidServerDie:(id)die
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
@@ -1858,16 +1858,16 @@ LABEL_24:
   }
 }
 
-- (void)stream:(id)a3 updateInputFrequencyLevel:(id)a4
+- (void)stream:(id)stream updateInputFrequencyLevel:(id)level
 {
-  v5 = a4;
+  levelCopy = level;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__AVCAudioSessionDelegate_stream_updateInputFrequencyLevel___block_invoke;
   v7[3] = &unk_1E876C590;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = levelCopy;
+  v6 = levelCopy;
   ims::performBlock(v7);
 }
 
@@ -1968,16 +1968,16 @@ LABEL_24:
   }
 }
 
-- (void)stream:(id)a3 updateOutputFrequencyLevel:(id)a4
+- (void)stream:(id)stream updateOutputFrequencyLevel:(id)level
 {
-  v5 = a4;
+  levelCopy = level;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__AVCAudioSessionDelegate_stream_updateOutputFrequencyLevel___block_invoke;
   v7[3] = &unk_1E876C590;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = levelCopy;
+  v6 = levelCopy;
   ims::performBlock(v7);
 }
 
@@ -2078,13 +2078,13 @@ LABEL_24:
   }
 }
 
-- (AVCAudioSessionDelegate)initWithOwner:(shared_ptr<AVCAudioSession>)a3 andStackController:(shared_ptr<AVCRTPStackController>)a4
+- (AVCAudioSessionDelegate)initWithOwner:(shared_ptr<AVCAudioSession>)owner andStackController:(shared_ptr<AVCRTPStackController>)controller
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = owner.var1;
+  var0 = owner.var0;
   v15.receiver = self;
   v15.super_class = AVCAudioSessionDelegate;
-  v6 = [(AVCAudioSessionDelegate *)&v15 init:a3.var0];
+  v6 = [(AVCAudioSessionDelegate *)&v15 init:owner.var0];
   v7 = v6;
   if (v6)
   {
@@ -2122,9 +2122,9 @@ LABEL_24:
   return v7;
 }
 
-- (void)handleRTCPPacketWithBlock:(id)a3
+- (void)handleRTCPPacketWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = std::string::basic_string[abi:ne200100]<0>(v28, "avc.audio.delegate");
   v24[0] = 0;
   v27 = 0;
@@ -2161,7 +2161,7 @@ LABEL_24:
 
         if (v10)
         {
-          v4[2](v4);
+          blockCopy[2](blockCopy);
         }
 
         else
@@ -2245,10 +2245,10 @@ LABEL_29:
   return result;
 }
 
-- (void)setOwner:(weak_ptr<AVCAudioSession>)a3
+- (void)setOwner:(weak_ptr<AVCAudioSession>)owner
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *owner.__ptr_;
+  v3 = *(owner.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 16), 1uLL, memory_order_relaxed);
@@ -2278,10 +2278,10 @@ LABEL_29:
   return result;
 }
 
-- (void)setStackController:(shared_ptr<AVCRTPStackController>)a3
+- (void)setStackController:(shared_ptr<AVCRTPStackController>)controller
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *controller.__ptr_;
+  v3 = *(controller.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

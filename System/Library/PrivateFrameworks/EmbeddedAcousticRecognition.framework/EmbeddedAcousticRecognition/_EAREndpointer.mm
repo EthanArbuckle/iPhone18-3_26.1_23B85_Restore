@@ -1,9 +1,9 @@
 @interface _EAREndpointer
 + (void)initialize;
-- (BOOL)acceptEagerResultWithFeatures:(id)a3 featuresToLog:(id *)a4;
-- (BOOL)didEndpointWithFeatures:(id)a3 audioTimestamp:(double)a4 featuresToLog:(id *)a5 endpointPosterior:(float *)a6 extraDelayMs:(int *)a7;
-- (_EAREndpointer)initWithConfiguration:(id)a3 delaysTrigger:(BOOL)a4 modelVersion:(id *)a5;
-- (_EAREndpointer)initWithConfiguration:(id)a3 modelVersion:(id *)a4;
+- (BOOL)acceptEagerResultWithFeatures:(id)features featuresToLog:(id *)log;
+- (BOOL)didEndpointWithFeatures:(id)features audioTimestamp:(double)timestamp featuresToLog:(id *)log endpointPosterior:(float *)posterior extraDelayMs:(int *)ms;
+- (_EAREndpointer)initWithConfiguration:(id)configuration delaysTrigger:(BOOL)trigger modelVersion:(id *)version;
+- (_EAREndpointer)initWithConfiguration:(id)configuration modelVersion:(id *)version;
 - (id)defaultServerEndpointFeatures;
 @end
 
@@ -12,29 +12,29 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EAREndpointer)initWithConfiguration:(id)a3 modelVersion:(id *)a4
+- (_EAREndpointer)initWithConfiguration:(id)configuration modelVersion:(id *)version
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v13.receiver = self;
   v13.super_class = _EAREndpointer;
   v6 = [(_EAREndpointer *)&v13 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager fileExistsAtPath:configurationCopy];
 
     if (v8)
     {
-      if (v5)
+      if (configurationCopy)
       {
-        [v5 ear_toString];
+        [configurationCopy ear_toString];
       }
 
       operator new();
@@ -43,7 +43,7 @@
     v10 = EARLogger::QuasarOSLogger(v9);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(_EAROnDeviceEndpointerInfo *)v5 initWithConfig:v10];
+      [(_EAROnDeviceEndpointerInfo *)configurationCopy initWithConfig:v10];
     }
 
     v11 = 0;
@@ -57,22 +57,22 @@
   return v11;
 }
 
-- (_EAREndpointer)initWithConfiguration:(id)a3 delaysTrigger:(BOOL)a4 modelVersion:(id *)a5
+- (_EAREndpointer)initWithConfiguration:(id)configuration delaysTrigger:(BOOL)trigger modelVersion:(id *)version
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = _EAREndpointer;
   v7 = [(_EAREndpointer *)&v14 init];
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AC08] defaultManager];
-    v9 = [v8 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v9 = [defaultManager fileExistsAtPath:configurationCopy];
 
     if (v9)
     {
-      if (v6)
+      if (configurationCopy)
       {
-        [v6 ear_toString];
+        [configurationCopy ear_toString];
       }
 
       operator new();
@@ -81,7 +81,7 @@
     v11 = EARLogger::QuasarOSLogger(v10);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(_EAROnDeviceEndpointerInfo *)v6 initWithConfig:v11];
+      [(_EAROnDeviceEndpointerInfo *)configurationCopy initWithConfig:v11];
     }
 
     v12 = 0;
@@ -95,12 +95,12 @@
   return v12;
 }
 
-- (BOOL)didEndpointWithFeatures:(id)a3 audioTimestamp:(double)a4 featuresToLog:(id *)a5 endpointPosterior:(float *)a6 extraDelayMs:(int *)a7
+- (BOOL)didEndpointWithFeatures:(id)features audioTimestamp:(double)timestamp featuresToLog:(id *)log endpointPosterior:(float *)posterior extraDelayMs:(int *)ms
 {
   v55 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  featuresCopy = features;
   v46 = 0;
-  [v12 pauseCounts];
+  [featuresCopy pauseCounts];
   v44 = 0;
   v45 = 0;
   v43 = 0;
@@ -122,8 +122,8 @@
         }
 
         v17 = *(*(&v48 + 1) + 8 * i);
-        v47 = [v17 unsignedIntValue];
-        std::vector<int>::push_back[abi:ne200100](&v43, &v47);
+        unsignedIntValue = [v17 unsignedIntValue];
+        std::vector<int>::push_back[abi:ne200100](&v43, &unsignedIntValue);
       }
 
       v14 = [v13 countByEnumeratingWithState:&v48 objects:&__p count:16];
@@ -137,42 +137,42 @@
   v54 = 0;
   LODWORD(v48) = 0;
   ptr = self->_endpointer.__ptr_;
-  v19 = [v12 wordCount];
-  v20 = [v12 trailingSilenceDuration];
-  [v12 endOfSentenceLikelihood];
+  wordCount = [featuresCopy wordCount];
+  trailingSilenceDuration = [featuresCopy trailingSilenceDuration];
+  [featuresCopy endOfSentenceLikelihood];
   v22 = v21;
-  [v12 acousticEndpointerScore];
+  [featuresCopy acousticEndpointerScore];
   v24 = v23;
-  [v12 silencePosterior];
+  [featuresCopy silencePosterior];
   v26 = v25;
-  [v12 clientSilenceFramesCountMs];
+  [featuresCopy clientSilenceFramesCountMs];
   v28 = v27;
-  [v12 clientSilenceProbability];
+  [featuresCopy clientSilenceProbability];
   v30 = v29;
-  [v12 silencePosteriorNF];
+  [featuresCopy silencePosteriorNF];
   v32 = v31;
-  [v12 serverFeaturesLatency];
+  [featuresCopy serverFeaturesLatency];
   v34 = v33;
-  v35 = [v12 eagerResultEndTime];
+  eagerResultEndTime = [featuresCopy eagerResultEndTime];
   v36 = v22;
   v37 = v24;
   v38 = v26;
   v39 = v28;
   v40 = v30;
-  v41 = quasar::HybridEndpointer::evalEndPoint(ptr, &v46, v19, v20, &v43, v35, &__p, &v48, a4, v36, v37, v38, v39, v40, v32, v34);
-  if (a7)
+  v41 = quasar::HybridEndpointer::evalEndPoint(ptr, &v46, wordCount, trailingSilenceDuration, &v43, eagerResultEndTime, &__p, &v48, timestamp, v36, v37, v38, v39, v40, v32, v34);
+  if (ms)
   {
-    *a7 = v48;
+    *ms = v48;
   }
 
-  if (a5 && __p != v53)
+  if (log && __p != v53)
   {
-    *a5 = EARHelpers::VectorToArray<double>(&__p);
+    *log = EARHelpers::VectorToArray<double>(&__p);
   }
 
-  if (a6)
+  if (posterior)
   {
-    *a6 = v46;
+    *posterior = v46;
   }
 
   if (__p)
@@ -242,11 +242,11 @@
   return v10;
 }
 
-- (BOOL)acceptEagerResultWithFeatures:(id)a3 featuresToLog:(id *)a4
+- (BOOL)acceptEagerResultWithFeatures:(id)features featuresToLog:(id *)log
 {
   v46 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [v6 pauseCounts];
+  featuresCopy = features;
+  [featuresCopy pauseCounts];
   v36 = 0;
   v37 = 0;
   v35 = 0;
@@ -268,8 +268,8 @@
         }
 
         v11 = *(*(&v39 + 1) + 8 * i);
-        v38 = [v11 unsignedIntValue];
-        std::vector<int>::push_back[abi:ne200100](&v35, &v38);
+        unsignedIntValue = [v11 unsignedIntValue];
+        std::vector<int>::push_back[abi:ne200100](&v35, &unsignedIntValue);
       }
 
       v8 = [v7 countByEnumeratingWithState:&v39 objects:&__p count:16];
@@ -282,30 +282,30 @@
   v44 = 0;
   v45 = 0;
   ptr = self->_endpointer.__ptr_;
-  v13 = [v6 wordCount];
-  v14 = [v6 trailingSilenceDuration];
-  [v6 endOfSentenceLikelihood];
+  wordCount = [featuresCopy wordCount];
+  trailingSilenceDuration = [featuresCopy trailingSilenceDuration];
+  [featuresCopy endOfSentenceLikelihood];
   v16 = v15;
-  [v6 silencePosterior];
+  [featuresCopy silencePosterior];
   v18 = v17;
-  [v6 clientSilenceFramesCountMs];
+  [featuresCopy clientSilenceFramesCountMs];
   v20 = v19;
-  [v6 clientSilenceProbability];
+  [featuresCopy clientSilenceProbability];
   v22 = v21;
-  [v6 silencePosteriorNF];
+  [featuresCopy silencePosteriorNF];
   v24 = v23;
-  [v6 serverFeaturesLatency];
+  [featuresCopy serverFeaturesLatency];
   v26 = v25;
-  v27 = [v6 eagerResultEndTime];
+  eagerResultEndTime = [featuresCopy eagerResultEndTime];
   v28 = v16;
   v29 = v18;
   v30 = v20;
   v31 = v22;
-  v32 = quasar::HybridEndpointer::acceptEagerResult(ptr, v13, v14, &v35, v27, &__p, v28, v29, v30, v31, v24, v26);
+  v32 = quasar::HybridEndpointer::acceptEagerResult(ptr, wordCount, trailingSilenceDuration, &v35, eagerResultEndTime, &__p, v28, v29, v30, v31, v24, v26);
   v33 = __p;
-  if (a4 && __p != v44)
+  if (log && __p != v44)
   {
-    *a4 = EARHelpers::VectorToArray<double>(&__p);
+    *log = EARHelpers::VectorToArray<double>(&__p);
     v33 = __p;
   }
 

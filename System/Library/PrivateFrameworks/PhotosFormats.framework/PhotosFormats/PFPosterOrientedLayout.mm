@@ -1,5 +1,5 @@
 @interface PFPosterOrientedLayout
-+ (id)layoutWithDictionaryRepresentation:(id)a3;
++ (id)layoutWithDictionaryRepresentation:(id)representation;
 - (BOOL)canApplyParallax;
 - (BOOL)isUsingHeadroom;
 - (CGRect)adaptiveInactiveTopFrame;
@@ -26,27 +26,27 @@
 - (CGSize)imageSize;
 - (CGSize)parallaxPadding;
 - (PFParallaxLayoutConfiguration)configuration;
-- (char)initWithImageSize:(double)a3 deviceResolution:(double)a4 parallaxPadding:(double)a5 visibleFrame:(double)a6 adaptiveVisibleFrame:(double)a7 inactiveFrame:(uint64_t)a8 adaptiveInactiveTopFrame:(void *)a9 spatialVisibleFrame:(uint64_t)a10 spatialAdaptiveFrame:(uint64_t)a11 timeFrame:(char)a12 adaptiveTimeFrame:(void *)a13 salientContentFrame:(uint64_t)a14 clockLayerOrder:(__int128)a15 clockIntersection:(uint64_t)a16 layoutVariant:(uint64_t)a17 hasTopEdgeContact:(__int128)a18 maxClockShift:(uint64_t)a19 debugLayouts:(uint64_t)a20;
+- (char)initWithImageSize:(double)size deviceResolution:(double)resolution parallaxPadding:(double)padding visibleFrame:(double)frame adaptiveVisibleFrame:(double)visibleFrame inactiveFrame:(uint64_t)inactiveFrame adaptiveInactiveTopFrame:(void *)topFrame spatialVisibleFrame:(uint64_t)self0 spatialAdaptiveFrame:(uint64_t)self1 timeFrame:(char)self2 adaptiveTimeFrame:(void *)self3 salientContentFrame:(uint64_t)self4 clockLayerOrder:(__int128)self5 clockIntersection:(uint64_t)self6 layoutVariant:(uint64_t)self7 hasTopEdgeContact:(__int128)self8 maxClockShift:(uint64_t)self9 debugLayouts:(uint64_t)layouts;
 - (id)debugDescription;
 - (id)debugSwiftCode;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)layoutByUpdatingAdaptiveInactiveFrame:(CGRect)a3;
-- (id)layoutByUpdatingAdaptiveTimeFrame:(CGRect)a3;
-- (id)layoutByUpdatingAdaptiveVisibleFrame:(CGRect)a3;
-- (id)layoutByUpdatingClockIntersection:(unint64_t)a3;
-- (id)layoutByUpdatingClockLayerOrder:(id)a3;
-- (id)layoutByUpdatingConfiguration:(id)a3;
-- (id)layoutByUpdatingConfigurationWithSaliency:(id)a3 normalizedTopEdgeInset:(double)a4;
-- (id)layoutByUpdatingImageSize:(CGSize)a3;
-- (id)layoutByUpdatingInactiveFrame:(CGRect)a3;
-- (id)layoutByUpdatingLayoutVariant:(unint64_t)a3;
-- (id)layoutByUpdatingMaxClockShift:(double)a3;
-- (id)layoutByUpdatingNormalizedAdaptiveTimeFrame:(CGRect)a3;
-- (id)layoutByUpdatingNormalizedAdaptiveVisibleFrame:(CGRect)a3;
-- (id)layoutByUpdatingNormalizedVisibleFrame:(CGRect)a3 remapAdaptiveVisibleFrame:(BOOL)a4;
-- (id)layoutByUpdatingVisibleFrame:(CGRect)a3;
-- (id)layoutByUpgradingToConfiguration:(id)a3;
+- (id)layoutByUpdatingAdaptiveInactiveFrame:(CGRect)frame;
+- (id)layoutByUpdatingAdaptiveTimeFrame:(CGRect)frame;
+- (id)layoutByUpdatingAdaptiveVisibleFrame:(CGRect)frame;
+- (id)layoutByUpdatingClockIntersection:(unint64_t)intersection;
+- (id)layoutByUpdatingClockLayerOrder:(id)order;
+- (id)layoutByUpdatingConfiguration:(id)configuration;
+- (id)layoutByUpdatingConfigurationWithSaliency:(id)saliency normalizedTopEdgeInset:(double)inset;
+- (id)layoutByUpdatingImageSize:(CGSize)size;
+- (id)layoutByUpdatingInactiveFrame:(CGRect)frame;
+- (id)layoutByUpdatingLayoutVariant:(unint64_t)variant;
+- (id)layoutByUpdatingMaxClockShift:(double)shift;
+- (id)layoutByUpdatingNormalizedAdaptiveTimeFrame:(CGRect)frame;
+- (id)layoutByUpdatingNormalizedAdaptiveVisibleFrame:(CGRect)frame;
+- (id)layoutByUpdatingNormalizedVisibleFrame:(CGRect)frame remapAdaptiveVisibleFrame:(BOOL)visibleFrame;
+- (id)layoutByUpdatingVisibleFrame:(CGRect)frame;
+- (id)layoutByUpgradingToConfiguration:(id)configuration;
 - (int64_t)orientation;
 @end
 
@@ -235,19 +235,19 @@
   v32 = v31;
   [(PFPosterOrientedLayout *)self timeFrame];
   [v3 appendFormat:@"XCTAssertEqual(item.originalLayout.timeFrame, CGRect(x: %.0f, y: %.0f, width: %.0f, height: %.0f), accuracy: 1.0, Bad original layout timeFrame)\n", v28, v30, v32, v33];
-  v34 = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
 
-  if (v34 == @"ClockAboveForeground")
+  if (clockLayerOrder == @"ClockAboveForeground")
   {
     v36 = @".aboveForeground";
   }
 
   else
   {
-    v35 = [(PFPosterOrientedLayout *)self clockLayerOrder];
+    clockLayerOrder2 = [(PFPosterOrientedLayout *)self clockLayerOrder];
 
     v36 = @".aboveBackground";
-    if (v35 != @"ClockAboveBackground")
+    if (clockLayerOrder2 != @"ClockAboveBackground")
     {
       v36 = 0;
     }
@@ -282,8 +282,8 @@
   v8 = CGSizeCreateDictionaryRepresentation(v26);
   [v3 setObject:v8 forKeyedSubscript:@"parallaxPadding"];
 
-  v9 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  [v3 setObject:v9 forKeyedSubscript:@"clockLayerOrder"];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  [v3 setObject:clockLayerOrder forKeyedSubscript:@"clockLayerOrder"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PFPosterOrientedLayout clockIntersection](self, "clockIntersection")}];
   [v3 setObject:v10 forKeyedSubscript:@"clockIntersection"];
@@ -490,8 +490,8 @@
   v40 = v39;
   [(PFPosterOrientedLayout *)self adaptiveTimeFrame];
   v42 = v41;
-  v43 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  v44 = [v3 stringWithFormat:@"<%@:%p> img:%.0fx%.0f res:%.0fx%.0f pad:%.0fx%.0fx vis:%.0f, %.0f %.0fx%.0f advis:%.0f, %.0f %.0fx%.0f spadvis:%.0f, %.0f %.0fx%.0f inact:%.0f, %.0f %.0fx%.0f time:%.0f, %.0f %.0fx%.0f adtime:%.0f, %.0f %.0fx%.0f clock:%@", v4, self, v67, v66, v65, v64, v63, v62, v61, v60, v59, v58, v57, v56, v55, v54, v53, v52, v51, v50, v49, v48, v47, v46, v28, v30, v32, v34, v36, v38, v40, v42, v43];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  v44 = [v3 stringWithFormat:@"<%@:%p> img:%.0fx%.0f res:%.0fx%.0f pad:%.0fx%.0fx vis:%.0f, %.0f %.0fx%.0f advis:%.0f, %.0f %.0fx%.0f spadvis:%.0f, %.0f %.0fx%.0f inact:%.0f, %.0f %.0fx%.0f time:%.0f, %.0f %.0fx%.0f adtime:%.0f, %.0f %.0fx%.0f clock:%@", v4, self, v67, v66, v65, v64, v63, v62, v61, v60, v59, v58, v57, v56, v55, v54, v53, v52, v51, v50, v49, v48, v47, v46, v28, v30, v32, v34, v36, v38, v40, v42, clockLayerOrder];
 
   return v44;
 }
@@ -516,29 +516,29 @@
   v18 = v17;
   [(PFPosterOrientedLayout *)self visibleFrame];
   v20 = v19;
-  v21 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  v22 = [v3 stringWithFormat:@"<%@:%p img:%.0fx%.0f res:%.0fx%.0f vis:%.0f, %.0f %.0fx%.0f clock:%@>", v4, self, v6, v8, v10, v12, v14, v16, v18, v20, v21];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  v22 = [v3 stringWithFormat:@"<%@:%p img:%.0fx%.0f res:%.0fx%.0f vis:%.0f, %.0f %.0fx%.0f clock:%@>", v4, self, v6, v8, v10, v12, v14, v16, v18, v20, clockLayerOrder];
 
   return v22;
 }
 
-- (id)layoutByUpgradingToConfiguration:(id)a3
+- (id)layoutByUpgradingToConfiguration:(id)configuration
 {
   v184 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PFPosterOrientedLayout *)self configuration];
-  v6 = [v4 isEqualToLayoutConfiguration:v5];
+  configurationCopy = configuration;
+  configuration = [(PFPosterOrientedLayout *)self configuration];
+  v6 = [configurationCopy isEqualToLayoutConfiguration:configuration];
 
   if (v6)
   {
-    v7 = self;
+    selfCopy = self;
     goto LABEL_60;
   }
 
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
   {
     v8 = [(PFPosterOrientedLayout *)self debugDescription];
-    v9 = [v4 debugDescription];
+    v9 = [configurationCopy debugDescription];
     *buf = 138412546;
     v179 = *&v8;
     v180 = 2112;
@@ -605,7 +605,7 @@
     v176 = v31 + v164 * 0.5 + v36 * -0.5;
   }
 
-  [v4 screenSize];
+  [configurationCopy screenSize];
   v40 = v39 / v38;
   v41 = v20;
   v42 = v20 * v18;
@@ -656,7 +656,7 @@
     v187.size.height = v41;
     if (MinY >= CGRectGetMidY(v187))
     {
-      [v4 timeRect];
+      [configurationCopy timeRect];
       v55 = v176 + (v18 - v173) * 0.5;
       v54 = v154 - (v59 * v47 + 0.0) + (v158 - v47 * v60) * 0.25;
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -783,7 +783,7 @@ LABEL_52:
   }
 
 LABEL_53:
-  [v4 timeRect];
+  [configurationCopy timeRect];
   v165 = v54 + v79 * v47;
   v167 = v55 + v78 * v173;
   v163 = v173 * v80;
@@ -825,7 +825,7 @@ LABEL_53:
   [(PFPosterOrientedLayout *)self imageSize];
   v175 = v92;
   v161 = v93;
-  [v4 screenSize];
+  [configurationCopy screenSize];
   v153 = v95;
   v155 = v94;
   [(PFPosterOrientedLayout *)self parallaxPadding];
@@ -858,22 +858,22 @@ LABEL_53:
   v133 = v47;
   v123 = v122;
   v125 = v124;
-  v126 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  v127 = [(PFPosterOrientedLayout *)self clockIntersection];
-  v128 = [(PFPosterOrientedLayout *)self layoutVariant];
-  v129 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+  layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+  hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
   [(PFPosterOrientedLayout *)self maxClockShift];
-  v7 = [(PFPosterOrientedLayout *)v91 initWithImageSize:v126 deviceResolution:v127 parallaxPadding:v128 visibleFrame:v129 adaptiveVisibleFrame:0 inactiveFrame:v175 adaptiveInactiveTopFrame:v161 spatialVisibleFrame:v155 spatialAdaptiveFrame:v153 timeFrame:v151 adaptiveTimeFrame:v150 salientContentFrame:*&v138 clockLayerOrder:*&v157 clockIntersection:*&v173 layoutVariant:*&v133 hasTopEdgeContact:v145 maxClockShift:v144 debugLayouts:v143, v142, *&v172, *&v171, *&v177, *&v169, v141, v140, v139, v137, v136, v135, v134, v132, v111, v113, v115, v117, *&v167, *&v165, *&v163, *&v159, *&v149, *&v148, *&v147, *&v146, v119, v121, v123, v125, v130];
+  selfCopy = [(PFPosterOrientedLayout *)v91 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:0 inactiveFrame:v175 adaptiveInactiveTopFrame:v161 spatialVisibleFrame:v155 spatialAdaptiveFrame:v153 timeFrame:v151 adaptiveTimeFrame:v150 salientContentFrame:*&v138 clockLayerOrder:*&v157 clockIntersection:*&v173 layoutVariant:*&v133 hasTopEdgeContact:v145 maxClockShift:v144 debugLayouts:v143, v142, *&v172, *&v171, *&v177, *&v169, v141, v140, v139, v137, v136, v135, v134, v132, v111, v113, v115, v117, *&v167, *&v165, *&v163, *&v159, *&v149, *&v148, *&v147, *&v146, v119, v121, v123, v125, v130];
 
 LABEL_60:
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)layoutByUpdatingConfigurationWithSaliency:(id)a3 normalizedTopEdgeInset:(double)a4
+- (id)layoutByUpdatingConfigurationWithSaliency:(id)saliency normalizedTopEdgeInset:(double)inset
 {
   v162 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  saliencyCopy = saliency;
   [(PFPosterOrientedLayout *)self visibleFrame];
   v7 = v6;
   v9 = v8;
@@ -884,7 +884,7 @@ LABEL_60:
   v148 = v14;
   v152 = v16;
   v153 = v15;
-  [v5 screenSize];
+  [saliencyCopy screenSize];
   v18 = v17;
   v20 = v19;
   [(PFPosterOrientedLayout *)self salientContentFrame];
@@ -910,7 +910,7 @@ LABEL_60:
   PFSizeWithAspectRatioFittingSize();
   v28 = v27;
   v164.size.height = v30;
-  v126 = v24 + a4 * v30;
+  v126 = v24 + inset * v30;
   v164.origin.x = v7 + v11 * 0.5 + v27 * -0.5;
   x = v164.origin.x;
   v164.origin.y = v9 + v144 * 0.5 + v30 * -0.5;
@@ -1063,7 +1063,7 @@ LABEL_60:
   v176.size.height = v152;
   v176.size.width = v153;
   IsNull = CGRectIsNull(v176);
-  [v5 timeRect];
+  [saliencyCopy timeRect];
   v47 = v46;
   v49 = v48;
   v51 = v50;
@@ -1126,7 +1126,7 @@ LABEL_60:
   [(PFPosterOrientedLayout *)self imageSize];
   v147 = v67;
   v149 = v66;
-  [v5 screenSize];
+  [saliencyCopy screenSize];
   v141 = v68;
   v137 = v69;
   [(PFPosterOrientedLayout *)self parallaxPadding];
@@ -1158,26 +1158,26 @@ LABEL_60:
   v109 = v28;
   v94 = v93;
   v96 = v95;
-  v97 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  v98 = [(PFPosterOrientedLayout *)self clockIntersection];
-  v99 = [(PFPosterOrientedLayout *)self layoutVariant];
-  v100 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+  layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+  hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
   [(PFPosterOrientedLayout *)self maxClockShift];
-  v102 = [(PFPosterOrientedLayout *)v65 initWithImageSize:v97 deviceResolution:v98 parallaxPadding:v99 visibleFrame:v100 adaptiveVisibleFrame:0 inactiveFrame:v149 adaptiveInactiveTopFrame:v147 spatialVisibleFrame:v141 spatialAdaptiveFrame:v137 timeFrame:v131 adaptiveTimeFrame:v129 salientContentFrame:*&v62 clockLayerOrder:*&MinX clockIntersection:*&v109 layoutVariant:*&height hasTopEdgeContact:v119 maxClockShift:v118 debugLayouts:v117, v116, *&v155, *&v151, *&v153, *&v152, v115, v114, v113, v112, v111, v110, v108, v107, v106, v105, v104, v88, *&v139, *&v135, *&v133, *&v145, *&v127, *&v125, *&v123, *&v121, v90, v92, v94, v96, v101];
+  v101 = [(PFPosterOrientedLayout *)v65 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:0 inactiveFrame:v149 adaptiveInactiveTopFrame:v147 spatialVisibleFrame:v141 spatialAdaptiveFrame:v137 timeFrame:v131 adaptiveTimeFrame:v129 salientContentFrame:*&v62 clockLayerOrder:*&MinX clockIntersection:*&v109 layoutVariant:*&height hasTopEdgeContact:v119 maxClockShift:v118 debugLayouts:v117, v116, *&v155, *&v151, *&v153, *&v152, v115, v114, v113, v112, v111, v110, v108, v107, v106, v105, v104, v88, *&v139, *&v135, *&v133, *&v145, *&v127, *&v125, *&v123, *&v121, v90, v92, v94, v96, v101];
 
-  return v102;
+  return v101;
 }
 
-- (id)layoutByUpdatingConfiguration:(id)a3
+- (id)layoutByUpdatingConfiguration:(id)configuration
 {
   v173 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PFPosterOrientedLayout *)self configuration];
-  v6 = [v4 isEqualToLayoutConfiguration:v5];
+  configurationCopy = configuration;
+  configuration = [(PFPosterOrientedLayout *)self configuration];
+  v6 = [configurationCopy isEqualToLayoutConfiguration:configuration];
 
   if (v6)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -1240,7 +1240,7 @@ LABEL_60:
     [(PFPosterOrientedLayout *)self deviceResolution];
     v38 = v37;
     v40 = v39;
-    [v4 screenSize];
+    [configurationCopy screenSize];
     v43 = v40 / v38;
     v44 = v42 / v41;
     v149 = v15;
@@ -1249,7 +1249,7 @@ LABEL_60:
       if (v42 / v41 < v43)
       {
         v54 = v13 * v44;
-        [v4 timeRect];
+        [configurationCopy timeRect];
         v57 = v23 - (v55 * v54 + 0.0) + (v165 - v54 * v56) * 0.25;
         v58 = v159;
         if (v57 >= v159)
@@ -1347,7 +1347,7 @@ LABEL_60:
     }
 
     v148 = v65;
-    [v4 timeRect];
+    [configurationCopy timeRect];
     v68 = v67;
     v70 = v69;
     v72 = v71;
@@ -1381,7 +1381,7 @@ LABEL_60:
     [(PFPosterOrientedLayout *)self imageSize];
     v150 = v84;
     v144 = v85;
-    [v4 screenSize];
+    [configurationCopy screenSize];
     v142 = v87;
     v143 = v86;
     [(PFPosterOrientedLayout *)self parallaxPadding];
@@ -1412,23 +1412,23 @@ LABEL_60:
     v112 = v111;
     v114 = v113;
     v116 = v115;
-    v117 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-    v118 = [(PFPosterOrientedLayout *)self clockIntersection];
-    v119 = [(PFPosterOrientedLayout *)self layoutVariant];
-    v120 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+    clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+    clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+    layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+    hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
     [(PFPosterOrientedLayout *)self maxClockShift];
-    v7 = [(PFPosterOrientedLayout *)v83 initWithImageSize:v117 deviceResolution:v118 parallaxPadding:v119 visibleFrame:v120 adaptiveVisibleFrame:0 inactiveFrame:v150 adaptiveInactiveTopFrame:v144 spatialVisibleFrame:v143 spatialAdaptiveFrame:v142 timeFrame:v141 adaptiveTimeFrame:v140 salientContentFrame:*&v156 clockLayerOrder:*&v164 clockIntersection:*&v157 layoutVariant:*&v166 hasTopEdgeContact:v135 maxClockShift:v134 debugLayouts:v133, v132, *&v148, *&v154, *&v151, *&v152, v131, v130, v129, v128, v127, v126, v125, v124, v123, v104, v106, v108, *&v147, *&v146, *&v160, *&v145, *&v139, *&v138, *&v137, *&v136, v110, v112, v114, v116, v121];
+    selfCopy = [(PFPosterOrientedLayout *)v83 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:0 inactiveFrame:v150 adaptiveInactiveTopFrame:v144 spatialVisibleFrame:v143 spatialAdaptiveFrame:v142 timeFrame:v141 adaptiveTimeFrame:v140 salientContentFrame:*&v156 clockLayerOrder:*&v164 clockIntersection:*&v157 layoutVariant:*&v166 hasTopEdgeContact:v135 maxClockShift:v134 debugLayouts:v133, v132, *&v148, *&v154, *&v151, *&v152, v131, v130, v129, v128, v127, v126, v125, v124, v123, v104, v106, v108, *&v147, *&v146, *&v160, *&v145, *&v139, *&v138, *&v137, *&v136, v110, v112, v114, v116, v121];
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)layoutByUpdatingAdaptiveTimeFrame:(CGRect)a3
+- (id)layoutByUpdatingAdaptiveTimeFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v4 = [PFPosterOrientedLayout alloc];
   [(PFPosterOrientedLayout *)self imageSize];
   v92 = v6;
@@ -1479,23 +1479,23 @@ LABEL_60:
   v45 = v44;
   v47 = v46;
   v49 = v48;
-  v50 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  v51 = [(PFPosterOrientedLayout *)self clockIntersection];
-  v52 = [(PFPosterOrientedLayout *)self layoutVariant];
-  v53 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+  layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+  hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
   [(PFPosterOrientedLayout *)self maxClockShift];
   v55 = v54;
-  v56 = [(PFPosterOrientedLayout *)self debugLayouts];
-  v57 = [(PFPosterOrientedLayout *)v4 initWithImageSize:v50 deviceResolution:v51 parallaxPadding:v52 visibleFrame:v53 adaptiveVisibleFrame:v56 inactiveFrame:v93 adaptiveInactiveTopFrame:v92 spatialVisibleFrame:v91 spatialAdaptiveFrame:v90 timeFrame:v89 adaptiveTimeFrame:v88 salientContentFrame:v83 clockLayerOrder:v82 clockIntersection:v81 layoutVariant:v80 hasTopEdgeContact:v79 maxClockShift:v78 debugLayouts:v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v62, v61, v60, v59, v37, v39, v41, *&x, *&y, *&width, *&height, v43, v45, v47, v49, v55];
+  debugLayouts = [(PFPosterOrientedLayout *)self debugLayouts];
+  v57 = [(PFPosterOrientedLayout *)v4 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:debugLayouts inactiveFrame:v93 adaptiveInactiveTopFrame:v92 spatialVisibleFrame:v91 spatialAdaptiveFrame:v90 timeFrame:v89 adaptiveTimeFrame:v88 salientContentFrame:v83 clockLayerOrder:v82 clockIntersection:v81 layoutVariant:v80 hasTopEdgeContact:v79 maxClockShift:v78 debugLayouts:v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v62, v61, v60, v59, v37, v39, v41, *&x, *&y, *&width, *&height, v43, v45, v47, v49, v55];
 
   return v57;
 }
 
-- (id)layoutByUpdatingLayoutVariant:(unint64_t)a3
+- (id)layoutByUpdatingLayoutVariant:(unint64_t)variant
 {
-  if ([(PFPosterOrientedLayout *)self layoutVariant]== a3)
+  if ([(PFPosterOrientedLayout *)self layoutVariant]== variant)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -1555,24 +1555,24 @@ LABEL_60:
     v51 = v50;
     v53 = v52;
     v55 = v54;
-    v56 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-    v57 = [(PFPosterOrientedLayout *)self clockIntersection];
-    v58 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+    clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+    clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+    hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
     [(PFPosterOrientedLayout *)self maxClockShift];
     v60 = v59;
-    v61 = [(PFPosterOrientedLayout *)self debugLayouts];
-    v5 = [(PFPosterOrientedLayout *)v6 initWithImageSize:v56 deviceResolution:v57 parallaxPadding:a3 visibleFrame:v58 adaptiveVisibleFrame:v61 inactiveFrame:v97 adaptiveInactiveTopFrame:v96 spatialVisibleFrame:v95 spatialAdaptiveFrame:v94 timeFrame:v93 adaptiveTimeFrame:v92 salientContentFrame:v91 clockLayerOrder:v90 clockIntersection:v89 layoutVariant:v88 hasTopEdgeContact:v87 maxClockShift:v86 debugLayouts:v85, v84, v83, v82, v81, v80, v79, v78, v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v43, v45, v47, v49, v51, v53, v55, v60];
+    debugLayouts = [(PFPosterOrientedLayout *)self debugLayouts];
+    selfCopy = [(PFPosterOrientedLayout *)v6 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:variant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:debugLayouts inactiveFrame:v97 adaptiveInactiveTopFrame:v96 spatialVisibleFrame:v95 spatialAdaptiveFrame:v94 timeFrame:v93 adaptiveTimeFrame:v92 salientContentFrame:v91 clockLayerOrder:v90 clockIntersection:v89 layoutVariant:v88 hasTopEdgeContact:v87 maxClockShift:v86 debugLayouts:v85, v84, v83, v82, v81, v80, v79, v78, v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v43, v45, v47, v49, v51, v53, v55, v60];
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)layoutByUpdatingMaxClockShift:(double)a3
+- (id)layoutByUpdatingMaxClockShift:(double)shift
 {
   [(PFPosterOrientedLayout *)self maxClockShift];
-  if (v5 == a3)
+  if (v5 == shift)
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
@@ -1632,23 +1632,23 @@ LABEL_60:
     v52 = v51;
     v54 = v53;
     v56 = v55;
-    v57 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-    v58 = [(PFPosterOrientedLayout *)self clockIntersection];
-    v59 = [(PFPosterOrientedLayout *)self layoutVariant];
-    v60 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
-    v61 = [(PFPosterOrientedLayout *)self debugLayouts];
-    v6 = [(PFPosterOrientedLayout *)v7 initWithImageSize:v57 deviceResolution:v58 parallaxPadding:v59 visibleFrame:v60 adaptiveVisibleFrame:v61 inactiveFrame:v97 adaptiveInactiveTopFrame:v96 spatialVisibleFrame:v95 spatialAdaptiveFrame:v94 timeFrame:v93 adaptiveTimeFrame:v92 salientContentFrame:v91 clockLayerOrder:v90 clockIntersection:v89 layoutVariant:v88 hasTopEdgeContact:v87 maxClockShift:v86 debugLayouts:v85, v84, v83, v82, v81, v80, v79, v78, v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v44, v46, v48, v50, v52, v54, v56, *&a3];
+    clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+    clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+    layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+    hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+    debugLayouts = [(PFPosterOrientedLayout *)self debugLayouts];
+    selfCopy = [(PFPosterOrientedLayout *)v7 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:debugLayouts inactiveFrame:v97 adaptiveInactiveTopFrame:v96 spatialVisibleFrame:v95 spatialAdaptiveFrame:v94 timeFrame:v93 adaptiveTimeFrame:v92 salientContentFrame:v91 clockLayerOrder:v90 clockIntersection:v89 layoutVariant:v88 hasTopEdgeContact:v87 maxClockShift:v86 debugLayouts:v85, v84, v83, v82, v81, v80, v79, v78, v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v44, v46, v48, v50, v52, v54, v56, *&shift];
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (id)layoutByUpdatingNormalizedAdaptiveTimeFrame:(CGRect)a3
+- (id)layoutByUpdatingNormalizedAdaptiveTimeFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PFPosterOrientedLayout *)self imageExtent];
   v10 = v8 + x * v9;
   v13 = v11 + y * v12;
@@ -1658,12 +1658,12 @@ LABEL_60:
   return [(PFPosterOrientedLayout *)self layoutByUpdatingAdaptiveTimeFrame:v10, v13, v14, v15];
 }
 
-- (id)layoutByUpdatingNormalizedAdaptiveVisibleFrame:(CGRect)a3
+- (id)layoutByUpdatingNormalizedAdaptiveVisibleFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PFPosterOrientedLayout *)self imageExtent];
   v10 = v8 + x * v9;
   v13 = v11 + y * v12;
@@ -1673,16 +1673,16 @@ LABEL_60:
   return [(PFPosterOrientedLayout *)self layoutByUpdatingAdaptiveVisibleFrame:v10, v13, v14, v15];
 }
 
-- (id)layoutByUpdatingNormalizedVisibleFrame:(CGRect)a3 remapAdaptiveVisibleFrame:(BOOL)a4
+- (id)layoutByUpdatingNormalizedVisibleFrame:(CGRect)frame remapAdaptiveVisibleFrame:(BOOL)visibleFrame
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  visibleFrameCopy = visibleFrame;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(PFPosterOrientedLayout *)self imageExtent];
   v14 = [(PFPosterOrientedLayout *)self layoutByUpdatingVisibleFrame:v10 + x * v11, v12 + y * v13, width * v11, height * v13];
-  if (v4)
+  if (visibleFrameCopy)
   {
     [(PFPosterOrientedLayout *)self adaptiveVisibleFrame];
     if (!CGRectIsEmpty(v38))
@@ -1719,15 +1719,15 @@ LABEL_60:
   return v14;
 }
 
-- (id)layoutByUpdatingImageSize:(CGSize)a3
+- (id)layoutByUpdatingImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PFPosterOrientedLayout *)self imageSize];
   v174 = width;
   if (width == v7 && height == v6)
   {
-    v115 = self;
+    selfCopy = self;
   }
 
   else
@@ -1963,24 +1963,24 @@ LABEL_60:
     [(PFPosterOrientedLayout *)self deviceResolution];
     v129 = v107;
     v131 = v106;
-    v108 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-    v109 = [(PFPosterOrientedLayout *)self clockIntersection];
-    v110 = [(PFPosterOrientedLayout *)self layoutVariant];
-    v111 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+    clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+    clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+    layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+    hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
     [(PFPosterOrientedLayout *)self maxClockShift];
     v113 = v112;
-    v114 = [(PFPosterOrientedLayout *)self debugLayouts];
-    v115 = [(PFPosterOrientedLayout *)v105 initWithImageSize:v108 deviceResolution:v109 parallaxPadding:v110 visibleFrame:v111 adaptiveVisibleFrame:v114 inactiveFrame:v174 adaptiveInactiveTopFrame:v173 spatialVisibleFrame:v131 spatialAdaptiveFrame:v129 timeFrame:v171 adaptiveTimeFrame:v168 salientContentFrame:*&v135 clockLayerOrder:*&v90 clockIntersection:*&v91 layoutVariant:*&v92 hasTopEdgeContact:v135 + v139 * v91 maxClockShift:v90 + v136 * v92 debugLayouts:v91 * v137, v92 * v138, *&v164, *&v166, v174 * v159, v173 * v160, *&v154, *&v152, *&v146, v92 * v132, *&v143, v90 + v123 * v92, v91 * v124, v92 * v125, v135 + v119 * v91, *&v134, v91 * v118, v92 * v122, *&v156, *&v148, *&v150, *&v121, *&v120, *&v141, *&v117, v92 * v144, *&v127, *&v102, *&v103, *&v104, v113];
+    debugLayouts = [(PFPosterOrientedLayout *)self debugLayouts];
+    selfCopy = [(PFPosterOrientedLayout *)v105 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:debugLayouts inactiveFrame:v174 adaptiveInactiveTopFrame:v173 spatialVisibleFrame:v131 spatialAdaptiveFrame:v129 timeFrame:v171 adaptiveTimeFrame:v168 salientContentFrame:*&v135 clockLayerOrder:*&v90 clockIntersection:*&v91 layoutVariant:*&v92 hasTopEdgeContact:v135 + v139 * v91 maxClockShift:v90 + v136 * v92 debugLayouts:v91 * v137, v92 * v138, *&v164, *&v166, v174 * v159, v173 * v160, *&v154, *&v152, *&v146, v92 * v132, *&v143, v90 + v123 * v92, v91 * v124, v92 * v125, v135 + v119 * v91, *&v134, v91 * v118, v92 * v122, *&v156, *&v148, *&v150, *&v121, *&v120, *&v141, *&v117, v92 * v144, *&v127, *&v102, *&v103, *&v104, v113];
   }
 
-  return v115;
+  return selfCopy;
 }
 
-- (id)layoutByUpdatingClockIntersection:(unint64_t)a3
+- (id)layoutByUpdatingClockIntersection:(unint64_t)intersection
 {
-  if ([(PFPosterOrientedLayout *)self clockIntersection]== a3)
+  if ([(PFPosterOrientedLayout *)self clockIntersection]== intersection)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -2040,27 +2040,27 @@ LABEL_60:
     v51 = v50;
     v53 = v52;
     v55 = v54;
-    v56 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-    v57 = [(PFPosterOrientedLayout *)self layoutVariant];
-    v58 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+    clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+    layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+    hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
     [(PFPosterOrientedLayout *)self maxClockShift];
     v60 = v59;
-    v61 = [(PFPosterOrientedLayout *)self debugLayouts];
-    v5 = [(PFPosterOrientedLayout *)v6 initWithImageSize:v56 deviceResolution:a3 parallaxPadding:v57 visibleFrame:v58 adaptiveVisibleFrame:v61 inactiveFrame:v97 adaptiveInactiveTopFrame:v96 spatialVisibleFrame:v95 spatialAdaptiveFrame:v94 timeFrame:v93 adaptiveTimeFrame:v92 salientContentFrame:v91 clockLayerOrder:v90 clockIntersection:v89 layoutVariant:v88 hasTopEdgeContact:v87 maxClockShift:v86 debugLayouts:v85, v84, v83, v82, v81, v80, v79, v78, v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v43, v45, v47, v49, v51, v53, v55, v60];
+    debugLayouts = [(PFPosterOrientedLayout *)self debugLayouts];
+    selfCopy = [(PFPosterOrientedLayout *)v6 initWithImageSize:clockLayerOrder deviceResolution:intersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:debugLayouts inactiveFrame:v97 adaptiveInactiveTopFrame:v96 spatialVisibleFrame:v95 spatialAdaptiveFrame:v94 timeFrame:v93 adaptiveTimeFrame:v92 salientContentFrame:v91 clockLayerOrder:v90 clockIntersection:v89 layoutVariant:v88 hasTopEdgeContact:v87 maxClockShift:v86 debugLayouts:v85, v84, v83, v82, v81, v80, v79, v78, v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v43, v45, v47, v49, v51, v53, v55, v60];
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)layoutByUpdatingClockLayerOrder:(id)a3
+- (id)layoutByUpdatingClockLayerOrder:(id)order
 {
-  v4 = a3;
-  v5 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  v6 = [v5 isEqualToString:v4];
+  orderCopy = order;
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  v6 = [clockLayerOrder isEqualToString:orderCopy];
 
   if (v6)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -2120,24 +2120,24 @@ LABEL_60:
     v53 = v52;
     v55 = v54;
     v57 = v56;
-    v58 = [(PFPosterOrientedLayout *)self clockIntersection];
-    v59 = [(PFPosterOrientedLayout *)self layoutVariant];
-    v60 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+    clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+    layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+    hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
     [(PFPosterOrientedLayout *)self maxClockShift];
     v62 = v61;
-    v63 = [(PFPosterOrientedLayout *)self debugLayouts];
-    v7 = [(PFPosterOrientedLayout *)v8 initWithImageSize:v4 deviceResolution:v58 parallaxPadding:v59 visibleFrame:v60 adaptiveVisibleFrame:v63 inactiveFrame:v99 adaptiveInactiveTopFrame:v98 spatialVisibleFrame:v97 spatialAdaptiveFrame:v96 timeFrame:v95 adaptiveTimeFrame:v94 salientContentFrame:v93 clockLayerOrder:v92 clockIntersection:v91 layoutVariant:v90 hasTopEdgeContact:v89 maxClockShift:v88 debugLayouts:v87, v86, v85, v84, v83, v82, v81, v80, v79, v78, v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v45, v47, v49, v51, v53, v55, v57, v62];
+    debugLayouts = [(PFPosterOrientedLayout *)self debugLayouts];
+    selfCopy = [(PFPosterOrientedLayout *)v8 initWithImageSize:orderCopy deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:debugLayouts inactiveFrame:v99 adaptiveInactiveTopFrame:v98 spatialVisibleFrame:v97 spatialAdaptiveFrame:v96 timeFrame:v95 adaptiveTimeFrame:v94 salientContentFrame:v93 clockLayerOrder:v92 clockIntersection:v91 layoutVariant:v90 hasTopEdgeContact:v89 maxClockShift:v88 debugLayouts:v87, v86, v85, v84, v83, v82, v81, v80, v79, v78, v77, v76, v75, v74, v73, v72, v71, v70, v69, v68, v67, v66, v65, v45, v47, v49, v51, v53, v55, v57, v62];
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)layoutByUpdatingAdaptiveInactiveFrame:(CGRect)a3
+- (id)layoutByUpdatingAdaptiveInactiveFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v4 = [PFPosterOrientedLayout alloc];
   [(PFPosterOrientedLayout *)self imageSize];
   v90 = v6;
@@ -2188,22 +2188,22 @@ LABEL_60:
   v46 = v45;
   v48 = v47;
   v50 = v49;
-  v51 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  v52 = [(PFPosterOrientedLayout *)self clockIntersection];
-  v53 = [(PFPosterOrientedLayout *)self layoutVariant];
-  v54 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+  layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+  hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
   [(PFPosterOrientedLayout *)self maxClockShift];
-  v56 = [(PFPosterOrientedLayout *)v4 initWithImageSize:v51 deviceResolution:v52 parallaxPadding:v53 visibleFrame:v54 adaptiveVisibleFrame:0 inactiveFrame:v91 adaptiveInactiveTopFrame:v90 spatialVisibleFrame:v85 spatialAdaptiveFrame:v84 timeFrame:v83 adaptiveTimeFrame:v82 salientContentFrame:v81 clockLayerOrder:v80 clockIntersection:v79 layoutVariant:v78 hasTopEdgeContact:v77 maxClockShift:v76 debugLayouts:v75, v74, v73, v72, v71, v70, *&x, *&y, *&width, *&height, v69, v68, v67, v66, v65, v64, v63, v62, v61, v60, v59, v58, v36, v38, v40, v42, v44, v46, v48, v50, v55];
+  v56 = [(PFPosterOrientedLayout *)v4 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:0 inactiveFrame:v91 adaptiveInactiveTopFrame:v90 spatialVisibleFrame:v85 spatialAdaptiveFrame:v84 timeFrame:v83 adaptiveTimeFrame:v82 salientContentFrame:v81 clockLayerOrder:v80 clockIntersection:v79 layoutVariant:v78 hasTopEdgeContact:v77 maxClockShift:v76 debugLayouts:v75, v74, v73, v72, v71, v70, *&x, *&y, *&width, *&height, v69, v68, v67, v66, v65, v64, v63, v62, v61, v60, v59, v58, v36, v38, v40, v42, v44, v46, v48, v50, v55];
 
   return v56;
 }
 
-- (id)layoutByUpdatingAdaptiveVisibleFrame:(CGRect)a3
+- (id)layoutByUpdatingAdaptiveVisibleFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v121 = *MEMORY[0x1E69E9840];
   [(PFPosterOrientedLayout *)self adaptiveVisibleFrame];
   v5 = v4;
@@ -2391,22 +2391,22 @@ LABEL_60:
   v75 = v74;
   v77 = v76;
   v79 = v78;
-  v80 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  v81 = [(PFPosterOrientedLayout *)self clockIntersection];
-  v82 = [(PFPosterOrientedLayout *)self layoutVariant];
-  v83 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+  layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+  hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
   [(PFPosterOrientedLayout *)self maxClockShift];
-  v85 = [(PFPosterOrientedLayout *)v45 initWithImageSize:v80 deviceResolution:v81 parallaxPadding:v82 visibleFrame:v83 adaptiveVisibleFrame:0 inactiveFrame:v105 adaptiveInactiveTopFrame:v104 spatialVisibleFrame:v103 spatialAdaptiveFrame:v102 timeFrame:v101 adaptiveTimeFrame:v100 salientContentFrame:v98 clockLayerOrder:v97 clockIntersection:v96 layoutVariant:v95 hasTopEdgeContact:*&x maxClockShift:*&y debugLayouts:*&width, *&height, v94, v93, v92, v91, v90, v89, v88, v87, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), v65, v67, v69, v71, *&v99, *&v107, *&v106, *&v108, v73, v75, v77, v79, v84];
+  v85 = [(PFPosterOrientedLayout *)v45 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:0 inactiveFrame:v105 adaptiveInactiveTopFrame:v104 spatialVisibleFrame:v103 spatialAdaptiveFrame:v102 timeFrame:v101 adaptiveTimeFrame:v100 salientContentFrame:v98 clockLayerOrder:v97 clockIntersection:v96 layoutVariant:v95 hasTopEdgeContact:*&x maxClockShift:*&y debugLayouts:*&width, *&height, v94, v93, v92, v91, v90, v89, v88, v87, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), v65, v67, v69, v71, *&v99, *&v107, *&v106, *&v108, v73, v75, v77, v79, v84];
 
   return v85;
 }
 
-- (id)layoutByUpdatingInactiveFrame:(CGRect)a3
+- (id)layoutByUpdatingInactiveFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v4 = [PFPosterOrientedLayout alloc];
   [(PFPosterOrientedLayout *)self imageSize];
   v86 = v6;
@@ -2457,24 +2457,24 @@ LABEL_60:
   v46 = v45;
   v48 = v47;
   v50 = v49;
-  v51 = [(PFPosterOrientedLayout *)self clockLayerOrder];
-  v52 = [(PFPosterOrientedLayout *)self clockIntersection];
-  v53 = [(PFPosterOrientedLayout *)self layoutVariant];
-  v54 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+  clockLayerOrder = [(PFPosterOrientedLayout *)self clockLayerOrder];
+  clockIntersection = [(PFPosterOrientedLayout *)self clockIntersection];
+  layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+  hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
   [(PFPosterOrientedLayout *)self maxClockShift];
-  v56 = [(PFPosterOrientedLayout *)v4 initWithImageSize:v51 deviceResolution:v52 parallaxPadding:v53 visibleFrame:v54 adaptiveVisibleFrame:0 inactiveFrame:v87 adaptiveInactiveTopFrame:v86 spatialVisibleFrame:v85 spatialAdaptiveFrame:v84 timeFrame:v83 adaptiveTimeFrame:v82 salientContentFrame:v81 clockLayerOrder:v80 clockIntersection:v79 layoutVariant:v78 hasTopEdgeContact:v77 maxClockShift:v76 debugLayouts:v75, v74, *&x, *&y, *&width, *&height, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v62, v61, v60, v59, v58, v36, v38, v40, v42, v44, v46, v48, v50, v55];
+  v56 = [(PFPosterOrientedLayout *)v4 initWithImageSize:clockLayerOrder deviceResolution:clockIntersection parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:0 inactiveFrame:v87 adaptiveInactiveTopFrame:v86 spatialVisibleFrame:v85 spatialAdaptiveFrame:v84 timeFrame:v83 adaptiveTimeFrame:v82 salientContentFrame:v81 clockLayerOrder:v80 clockIntersection:v79 layoutVariant:v78 hasTopEdgeContact:v77 maxClockShift:v76 debugLayouts:v75, v74, *&x, *&y, *&width, *&height, v73, v72, v71, v70, v69, v68, v67, v66, v65, v64, v63, v62, v61, v60, v59, v58, v36, v38, v40, v42, v44, v46, v48, v50, v55];
 
   return v56;
 }
 
-- (id)layoutByUpdatingVisibleFrame:(CGRect)a3
+- (id)layoutByUpdatingVisibleFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v153 = *MEMORY[0x1E69E9840];
-  if (CGRectIsEmpty(a3) || (v155.origin.x = x, v155.origin.y = y, v155.size.width = width, v155.size.height = height, CGRectIsInfinite(v155)))
+  if (CGRectIsEmpty(frame) || (v155.origin.x = x, v155.origin.y = y, v155.size.width = width, v155.size.height = height, CGRectIsInfinite(v155)))
   {
     _PFAssertFailHandler();
   }
@@ -2609,7 +2609,7 @@ LABEL_60:
   v159.size.height = v43;
   if (CGRectEqualToRect(v159, v160))
   {
-    v56 = self;
+    selfCopy = self;
   }
 
   else
@@ -2782,13 +2782,13 @@ LABEL_60:
     v118 = v117;
     v120 = v119;
     v122 = v121;
-    v123 = [(PFPosterOrientedLayout *)self layoutVariant];
-    v124 = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
+    layoutVariant = [(PFPosterOrientedLayout *)self layoutVariant];
+    hasTopEdgeContact = [(PFPosterOrientedLayout *)self hasTopEdgeContact];
     [(PFPosterOrientedLayout *)self maxClockShift];
-    v56 = [(PFPosterOrientedLayout *)v98 initWithImageSize:0 deviceResolution:0 parallaxPadding:v123 visibleFrame:v124 adaptiveVisibleFrame:0 inactiveFrame:v134 adaptiveInactiveTopFrame:v133 spatialVisibleFrame:v132 spatialAdaptiveFrame:v131 timeFrame:v135 adaptiveTimeFrame:v136 salientContentFrame:*&v143 clockLayerOrder:*&v142 clockIntersection:*&v144 layoutVariant:*&v141 hasTopEdgeContact:v130 maxClockShift:v129 debugLayouts:v128, v127, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *&v140, *&v139, *&v138, *&v137, v108, v110, v112, v114, v116, v118, v120, v122, v125];
+    selfCopy = [(PFPosterOrientedLayout *)v98 initWithImageSize:0 deviceResolution:0 parallaxPadding:layoutVariant visibleFrame:hasTopEdgeContact adaptiveVisibleFrame:0 inactiveFrame:v134 adaptiveInactiveTopFrame:v133 spatialVisibleFrame:v132 spatialAdaptiveFrame:v131 timeFrame:v135 adaptiveTimeFrame:v136 salientContentFrame:*&v143 clockLayerOrder:*&v142 clockIntersection:*&v144 layoutVariant:*&v141 hasTopEdgeContact:v130 maxClockShift:v129 debugLayouts:v128, v127, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *&v140, *&v139, *&v138, *&v137, v108, v110, v112, v114, v116, v118, v120, v122, v125];
   }
 
-  return v56;
+  return selfCopy;
 }
 
 - (PFParallaxLayoutConfiguration)configuration
@@ -3081,11 +3081,11 @@ LABEL_60:
 
 - (CGSize)extendedImageSize
 {
-  v3 = [(PFPosterOrientedLayout *)self canApplyHeadroom];
+  canApplyHeadroom = [(PFPosterOrientedLayout *)self canApplyHeadroom];
   [(PFPosterOrientedLayout *)self imageExtent];
   v5 = v4;
   [(PFPosterOrientedLayout *)self imageExtent];
-  if (v3)
+  if (canApplyHeadroom)
   {
     v7 = v6 * 1.35;
   }
@@ -3146,25 +3146,25 @@ LABEL_60:
   }
 }
 
-- (char)initWithImageSize:(double)a3 deviceResolution:(double)a4 parallaxPadding:(double)a5 visibleFrame:(double)a6 adaptiveVisibleFrame:(double)a7 inactiveFrame:(uint64_t)a8 adaptiveInactiveTopFrame:(void *)a9 spatialVisibleFrame:(uint64_t)a10 spatialAdaptiveFrame:(uint64_t)a11 timeFrame:(char)a12 adaptiveTimeFrame:(void *)a13 salientContentFrame:(uint64_t)a14 clockLayerOrder:(__int128)a15 clockIntersection:(uint64_t)a16 layoutVariant:(uint64_t)a17 hasTopEdgeContact:(__int128)a18 maxClockShift:(uint64_t)a19 debugLayouts:(uint64_t)a20
+- (char)initWithImageSize:(double)size deviceResolution:(double)resolution parallaxPadding:(double)padding visibleFrame:(double)frame adaptiveVisibleFrame:(double)visibleFrame inactiveFrame:(uint64_t)inactiveFrame adaptiveInactiveTopFrame:(void *)topFrame spatialVisibleFrame:(uint64_t)self0 spatialAdaptiveFrame:(uint64_t)self1 timeFrame:(char)self2 adaptiveTimeFrame:(void *)self3 salientContentFrame:(uint64_t)self4 clockLayerOrder:(__int128)self5 clockIntersection:(uint64_t)self6 layoutVariant:(uint64_t)self7 hasTopEdgeContact:(__int128)self8 maxClockShift:(uint64_t)self9 debugLayouts:(uint64_t)layouts
 {
-  v49 = a9;
-  v50 = a13;
-  v60.receiver = a1;
+  topFrameCopy = topFrame;
+  adaptiveTimeFrameCopy = adaptiveTimeFrame;
+  v60.receiver = self;
   v60.super_class = PFPosterOrientedLayout;
   v51 = objc_msgSendSuper2(&v60, sel_init);
   *(v51 + 7) = a2;
-  *(v51 + 8) = a3;
-  *(v51 + 9) = a4;
-  *(v51 + 10) = a5;
-  *(v51 + 11) = a6;
-  *(v51 + 12) = a7;
-  *(v51 + 104) = a15;
-  *(v51 + 15) = a16;
-  *(v51 + 16) = a17;
-  *(v51 + 136) = a18;
-  *(v51 + 19) = a19;
-  *(v51 + 20) = a20;
+  *(v51 + 8) = size;
+  *(v51 + 9) = resolution;
+  *(v51 + 10) = padding;
+  *(v51 + 11) = frame;
+  *(v51 + 12) = visibleFrame;
+  *(v51 + 104) = order;
+  *(v51 + 15) = intersection;
+  *(v51 + 16) = variant;
+  *(v51 + 136) = contact;
+  *(v51 + 19) = shift;
+  *(v51 + 20) = layouts;
   *(v51 + 232) = a21;
   *(v51 + 31) = a22;
   *(v51 + 32) = a23;
@@ -3186,14 +3186,14 @@ LABEL_60:
   *(v51 + 360) = a39;
   *(v51 + 47) = a40;
   *(v51 + 48) = a41;
-  objc_storeStrong(v51 + 2, a9);
-  *(v51 + 3) = a10;
-  v51[8] = a12;
+  objc_storeStrong(v51 + 2, topFrame);
+  *(v51 + 3) = spatialVisibleFrame;
+  v51[8] = timeFrame;
   *(v51 + 4) = a42;
-  *(v51 + 5) = a11;
-  if (v50)
+  *(v51 + 5) = adaptiveFrame;
+  if (adaptiveTimeFrameCopy)
   {
-    v52 = [v50 copy];
+    v52 = [adaptiveTimeFrameCopy copy];
   }
 
   else
@@ -3207,9 +3207,9 @@ LABEL_60:
   return v51;
 }
 
-+ (id)layoutWithDictionaryRepresentation:(id)a3
++ (id)layoutWithDictionaryRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v57 = *MEMORY[0x1E695F060];
   size = v57;
   v40 = v57;
@@ -3234,31 +3234,31 @@ LABEL_60:
   origin = rect.origin;
   v48.origin = rect.origin;
   v48.size = v4;
-  v5 = [v3 objectForKeyedSubscript:@"imageSize"];
+  v5 = [representationCopy objectForKeyedSubscript:@"imageSize"];
   v43 = v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CGSizeMakeWithDictionaryRepresentation(v5, &size);
 
-  v6 = [v3 objectForKeyedSubscript:@"deviceResolution"];
+  v6 = [representationCopy objectForKeyedSubscript:@"deviceResolution"];
   v42 = v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CGSizeMakeWithDictionaryRepresentation(v6, &v57);
 
-  v7 = [v3 objectForKeyedSubscript:@"visibleFrame"];
+  v7 = [representationCopy objectForKeyedSubscript:@"visibleFrame"];
   v41 = v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CGRectMakeWithDictionaryRepresentation(v7, &rect);
 
-  v8 = [v3 objectForKeyedSubscript:@"inactiveFrame"];
+  v8 = [representationCopy objectForKeyedSubscript:@"inactiveFrame"];
   v39 = v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CGRectMakeWithDictionaryRepresentation(v8, &v52);
 
-  v9 = [v3 objectForKeyedSubscript:@"adaptiveVisibleFrame"];
+  v9 = [representationCopy objectForKeyedSubscript:@"adaptiveVisibleFrame"];
   v38 = v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CGRectMakeWithDictionaryRepresentation(v9, &v55);
 
-  v10 = [v3 objectForKeyedSubscript:@"spatialVisibleFrame"];
+  v10 = [representationCopy objectForKeyedSubscript:@"spatialVisibleFrame"];
   v37 = v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CGRectMakeWithDictionaryRepresentation(v10, &v54);
 
-  v11 = [v3 objectForKeyedSubscript:@"spatialAdaptiveFrame"];
+  v11 = [representationCopy objectForKeyedSubscript:@"spatialAdaptiveFrame"];
   v12 = v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CGRectMakeWithDictionaryRepresentation(v11, &v53);
 
-  v13 = [v3 objectForKeyedSubscript:@"adaptiveTimeFrame"];
+  v13 = [representationCopy objectForKeyedSubscript:@"adaptiveTimeFrame"];
   v14 = v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CGRectMakeWithDictionaryRepresentation(v13, &v50);
 
-  v15 = [v3 objectForKeyedSubscript:@"salientContentFrame"];
+  v15 = [representationCopy objectForKeyedSubscript:@"salientContentFrame"];
   if (v15)
   {
     objc_opt_class();
@@ -3268,22 +3268,22 @@ LABEL_60:
     }
   }
 
-  v16 = [v3 objectForKeyedSubscript:@"timeFrame"];
+  v16 = [representationCopy objectForKeyedSubscript:@"timeFrame"];
   v17 = v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && CGRectMakeWithDictionaryRepresentation(v16, &v51);
 
-  v18 = [v3 objectForKeyedSubscript:@"clockLayerOrder"];
+  v18 = [representationCopy objectForKeyedSubscript:@"clockLayerOrder"];
   v19 = PFParallaxLayoutClockLayerOrderNamed(v18);
 
-  v20 = [v3 objectForKeyedSubscript:@"clockIntersection"];
-  v36 = [v20 integerValue];
+  v20 = [representationCopy objectForKeyedSubscript:@"clockIntersection"];
+  integerValue = [v20 integerValue];
 
   v47 = v40;
-  v21 = [v3 objectForKeyedSubscript:@"parallaxPadding"];
-  v22 = [v3 objectForKeyedSubscript:@"hasTopEdgeContact"];
-  v23 = [v22 BOOLValue];
+  v21 = [representationCopy objectForKeyedSubscript:@"parallaxPadding"];
+  v22 = [representationCopy objectForKeyedSubscript:@"hasTopEdgeContact"];
+  bOOLValue = [v22 BOOLValue];
 
-  v24 = [v3 objectForKeyedSubscript:@"layoutVariant"];
-  v25 = [v24 integerValue];
+  v24 = [representationCopy objectForKeyedSubscript:@"layoutVariant"];
+  integerValue2 = [v24 integerValue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -3350,7 +3350,7 @@ LABEL_52:
   }
 
 LABEL_53:
-  v28 = [v3 objectForKeyedSubscript:@"maxClockShift"];
+  v28 = [representationCopy objectForKeyedSubscript:@"maxClockShift"];
   [v28 floatValue];
   if (v29 == 0.0)
   {
@@ -3362,7 +3362,7 @@ LABEL_53:
     v30 = v29;
   }
 
-  v31 = [v3 objectForKeyedSubscript:@"inactiveAdaptive"];
+  v31 = [representationCopy objectForKeyedSubscript:@"inactiveAdaptive"];
   if (!v31 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -3381,7 +3381,7 @@ LABEL_61:
   if (v43 && v42 && v41 && v17 && v26)
   {
     v33 = [PFPosterOrientedLayout alloc];
-    v34 = [(PFPosterOrientedLayout *)v33 initWithImageSize:v19 deviceResolution:v36 parallaxPadding:v25 visibleFrame:v23 adaptiveVisibleFrame:0 inactiveFrame:size.width adaptiveInactiveTopFrame:size.height spatialVisibleFrame:v57.width spatialAdaptiveFrame:v57.height timeFrame:v47.width adaptiveTimeFrame:v47.height salientContentFrame:*&rect.origin.x clockLayerOrder:*&rect.origin.y clockIntersection:*&rect.size.width layoutVariant:*&rect.size.height hasTopEdgeContact:*&v55.origin.x maxClockShift:*&v55.origin.y debugLayouts:*&v55.size.width, *&v55.size.height, *&v52.origin.x, *&v52.origin.y, *&v52.size.width, *&v52.size.height, *&v49.origin.x, *&v49.origin.y, *&v49.size.width, *&v49.size.height, *&v54.origin.x, *&v54.origin.y, *&v54.size.width, *&v54.size.height, *&v53.origin.x, *&v53.origin.y, *&v53.size.width, *&v53.size.height, *&v51.origin.x, *&v51.origin.y, *&v51.size.width, *&v51.size.height, *&v50.origin.x, *&v50.origin.y, *&v50.size.width, *&v50.size.height, *&v48.origin.x, *&v48.origin.y, *&v48.size.width, *&v48.size.height, *&v30];
+    v34 = [(PFPosterOrientedLayout *)v33 initWithImageSize:v19 deviceResolution:integerValue parallaxPadding:integerValue2 visibleFrame:bOOLValue adaptiveVisibleFrame:0 inactiveFrame:size.width adaptiveInactiveTopFrame:size.height spatialVisibleFrame:v57.width spatialAdaptiveFrame:v57.height timeFrame:v47.width adaptiveTimeFrame:v47.height salientContentFrame:*&rect.origin.x clockLayerOrder:*&rect.origin.y clockIntersection:*&rect.size.width layoutVariant:*&rect.size.height hasTopEdgeContact:*&v55.origin.x maxClockShift:*&v55.origin.y debugLayouts:*&v55.size.width, *&v55.size.height, *&v52.origin.x, *&v52.origin.y, *&v52.size.width, *&v52.size.height, *&v49.origin.x, *&v49.origin.y, *&v49.size.width, *&v49.size.height, *&v54.origin.x, *&v54.origin.y, *&v54.size.width, *&v54.size.height, *&v53.origin.x, *&v53.origin.y, *&v53.size.width, *&v53.size.height, *&v51.origin.x, *&v51.origin.y, *&v51.size.width, *&v51.size.height, *&v50.origin.x, *&v50.origin.y, *&v50.size.width, *&v50.size.height, *&v48.origin.x, *&v48.origin.y, *&v48.size.width, *&v48.size.height, *&v30];
   }
 
   else

@@ -1,5 +1,5 @@
 @interface FCModifyHistoryCommand
-- (BOOL)mergeLocalRecord:(id)a3 withRemoteRecord:(id)a4;
+- (BOOL)mergeLocalRecord:(id)record withRemoteRecord:(id)remoteRecord;
 @end
 
 @implementation FCModifyHistoryCommand
@@ -12,202 +12,202 @@ id __53__FCModifyHistoryCommand_initWithHistoryItems_merge___block_invoke(uint64
   return v2;
 }
 
-- (BOOL)mergeLocalRecord:(id)a3 withRemoteRecord:(id)a4
+- (BOOL)mergeLocalRecord:(id)record withRemoteRecord:(id)remoteRecord
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"lastVisited"];
-  v65 = [v6 objectForKeyedSubscript:@"lastVisited"];
+  recordCopy = record;
+  remoteRecordCopy = remoteRecord;
+  v7 = [recordCopy objectForKeyedSubscript:@"lastVisited"];
+  v65 = [remoteRecordCopy objectForKeyedSubscript:@"lastVisited"];
   v66 = v7;
   v8 = [v7 compare:v65];
   v9 = v8 == 1;
   if (v8 == 1)
   {
-    v10 = [v5 objectForKeyedSubscript:@"lastVisited"];
-    [v6 setObject:v10 forKeyedSubscript:@"lastVisited"];
+    v10 = [recordCopy objectForKeyedSubscript:@"lastVisited"];
+    [remoteRecordCopy setObject:v10 forKeyedSubscript:@"lastVisited"];
   }
 
-  v11 = [v5 objectForKeyedSubscript:@"lastListened"];
-  v63 = [v6 objectForKeyedSubscript:@"lastListened"];
+  v11 = [recordCopy objectForKeyedSubscript:@"lastListened"];
+  v63 = [remoteRecordCopy objectForKeyedSubscript:@"lastListened"];
   v64 = v11;
   if ([v11 compare:v63] == 1)
   {
-    v12 = [v5 objectForKeyedSubscript:@"lastListened"];
-    [v6 setObject:v12 forKeyedSubscript:@"lastListened"];
+    v12 = [recordCopy objectForKeyedSubscript:@"lastListened"];
+    [remoteRecordCopy setObject:v12 forKeyedSubscript:@"lastListened"];
 
     v9 = 1;
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"readingPositionLastSaved"];
-  v14 = [v6 objectForKeyedSubscript:@"readingPositionLastSaved"];
+  v13 = [recordCopy objectForKeyedSubscript:@"readingPositionLastSaved"];
+  v14 = [remoteRecordCopy objectForKeyedSubscript:@"readingPositionLastSaved"];
   if ([v13 compare:v14] == 1)
   {
-    v15 = [v5 objectForKeyedSubscript:@"readingPositionLastSaved"];
-    [v6 setObject:v15 forKeyedSubscript:@"readingPositionLastSaved"];
+    v15 = [recordCopy objectForKeyedSubscript:@"readingPositionLastSaved"];
+    [remoteRecordCopy setObject:v15 forKeyedSubscript:@"readingPositionLastSaved"];
 
-    v16 = [v5 objectForKeyedSubscript:@"readingPosition"];
-    [v6 setObject:v16 forKeyedSubscript:@"readingPosition"];
+    v16 = [recordCopy objectForKeyedSubscript:@"readingPosition"];
+    [remoteRecordCopy setObject:v16 forKeyedSubscript:@"readingPosition"];
 
     v9 = 1;
   }
 
-  v17 = [v5 objectForKeyedSubscript:@"listeningProgressLastSaved"];
-  v18 = [v6 objectForKeyedSubscript:@"listeningProgressLastSaved"];
+  v17 = [recordCopy objectForKeyedSubscript:@"listeningProgressLastSaved"];
+  v18 = [remoteRecordCopy objectForKeyedSubscript:@"listeningProgressLastSaved"];
   if ([v17 compare:v18] == 1)
   {
-    v19 = [v5 objectForKeyedSubscript:@"listeningProgressLastSaved"];
-    [v6 setObject:v19 forKeyedSubscript:@"listeningProgressLastSaved"];
+    v19 = [recordCopy objectForKeyedSubscript:@"listeningProgressLastSaved"];
+    [remoteRecordCopy setObject:v19 forKeyedSubscript:@"listeningProgressLastSaved"];
 
-    v20 = [v5 objectForKeyedSubscript:@"listeningProgress"];
-    [v6 setObject:v20 forKeyedSubscript:@"listeningProgress"];
-
-    v9 = 1;
-  }
-
-  v21 = [v5 objectForKeyedSubscript:@"articleRead"];
-  v22 = [v21 BOOLValue];
-
-  if (v22 && [v5 fc_isDifferentFromRecord:v6 forKey:@"articleRead"])
-  {
-    v23 = [v5 objectForKeyedSubscript:@"articleRead"];
-    [v6 setObject:v23 forKeyedSubscript:@"articleRead"];
+    v20 = [recordCopy objectForKeyedSubscript:@"listeningProgress"];
+    [remoteRecordCopy setObject:v20 forKeyedSubscript:@"listeningProgress"];
 
     v9 = 1;
   }
 
-  v24 = [v5 objectForKeyedSubscript:@"articleSeen"];
-  v25 = [v24 BOOLValue];
+  v21 = [recordCopy objectForKeyedSubscript:@"articleRead"];
+  bOOLValue = [v21 BOOLValue];
 
-  if (v25 && [v5 fc_isDifferentFromRecord:v6 forKey:@"articleSeen"])
+  if (bOOLValue && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"articleRead"])
   {
-    v26 = [v5 objectForKeyedSubscript:@"articleSeen"];
-    [v6 setObject:v26 forKeyedSubscript:@"articleSeen"];
+    v23 = [recordCopy objectForKeyedSubscript:@"articleRead"];
+    [remoteRecordCopy setObject:v23 forKeyedSubscript:@"articleRead"];
 
     v9 = 1;
   }
 
-  v27 = [v5 objectForKeyedSubscript:@"completedListening"];
-  v28 = [v27 BOOLValue];
+  v24 = [recordCopy objectForKeyedSubscript:@"articleSeen"];
+  bOOLValue2 = [v24 BOOLValue];
 
-  if (v28 && [v5 fc_isDifferentFromRecord:v6 forKey:@"completedListening"])
+  if (bOOLValue2 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"articleSeen"])
   {
-    v29 = [v5 objectForKeyedSubscript:@"completedListening"];
-    [v6 setObject:v29 forKeyedSubscript:@"completedListening"];
+    v26 = [recordCopy objectForKeyedSubscript:@"articleSeen"];
+    [remoteRecordCopy setObject:v26 forKeyedSubscript:@"articleSeen"];
 
     v9 = 1;
   }
 
-  v30 = [v5 objectForKeyedSubscript:@"completedReading"];
-  v31 = [v30 BOOLValue];
+  v27 = [recordCopy objectForKeyedSubscript:@"completedListening"];
+  bOOLValue3 = [v27 BOOLValue];
 
-  if (v31 && [v5 fc_isDifferentFromRecord:v6 forKey:@"completedReading"])
+  if (bOOLValue3 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"completedListening"])
   {
-    v32 = [v5 objectForKeyedSubscript:@"completedReading"];
-    [v6 setObject:v32 forKeyedSubscript:@"completedReading"];
+    v29 = [recordCopy objectForKeyedSubscript:@"completedListening"];
+    [remoteRecordCopy setObject:v29 forKeyedSubscript:@"completedListening"];
 
     v9 = 1;
   }
 
-  v33 = [v5 objectForKeyedSubscript:@"articleConsumed"];
-  v34 = [v33 BOOLValue];
+  v30 = [recordCopy objectForKeyedSubscript:@"completedReading"];
+  bOOLValue4 = [v30 BOOLValue];
 
-  if (v34 && [v5 fc_isDifferentFromRecord:v6 forKey:@"articleConsumed"])
+  if (bOOLValue4 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"completedReading"])
   {
-    v35 = [v5 objectForKeyedSubscript:@"articleConsumed"];
-    [v6 setObject:v35 forKeyedSubscript:@"articleConsumed"];
+    v32 = [recordCopy objectForKeyedSubscript:@"completedReading"];
+    [remoteRecordCopy setObject:v32 forKeyedSubscript:@"completedReading"];
 
-    v36 = [v5 objectForKeyedSubscript:@"sourceChannelTagID"];
+    v9 = 1;
+  }
+
+  v33 = [recordCopy objectForKeyedSubscript:@"articleConsumed"];
+  bOOLValue5 = [v33 BOOLValue];
+
+  if (bOOLValue5 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"articleConsumed"])
+  {
+    v35 = [recordCopy objectForKeyedSubscript:@"articleConsumed"];
+    [remoteRecordCopy setObject:v35 forKeyedSubscript:@"articleConsumed"];
+
+    v36 = [recordCopy objectForKeyedSubscript:@"sourceChannelTagID"];
     if (v36)
     {
       v37 = v36;
-      v38 = [v6 objectForKeyedSubscript:@"sourceChannelTagID"];
+      v38 = [remoteRecordCopy objectForKeyedSubscript:@"sourceChannelTagID"];
 
       if (!v38)
       {
-        v39 = [v5 objectForKeyedSubscript:@"sourceChannelTagID"];
-        [v6 setObject:v39 forKeyedSubscript:@"sourceChannelTagID"];
+        v39 = [recordCopy objectForKeyedSubscript:@"sourceChannelTagID"];
+        [remoteRecordCopy setObject:v39 forKeyedSubscript:@"sourceChannelTagID"];
 
-        v40 = [v5 objectForKeyedSubscript:@"deviceID"];
-        [v6 setObject:v40 forKeyedSubscript:@"deviceID"];
+        v40 = [recordCopy objectForKeyedSubscript:@"deviceID"];
+        [remoteRecordCopy setObject:v40 forKeyedSubscript:@"deviceID"];
       }
     }
 
     v9 = 1;
   }
 
-  v41 = [v5 objectForKeyedSubscript:@"offensive"];
-  v42 = [v41 BOOLValue];
+  v41 = [recordCopy objectForKeyedSubscript:@"offensive"];
+  bOOLValue6 = [v41 BOOLValue];
 
-  if (v42 && [v5 fc_isDifferentFromRecord:v6 forKey:@"offensive"])
+  if (bOOLValue6 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"offensive"])
   {
-    v43 = [v5 objectForKeyedSubscript:@"offensive"];
-    [v6 setObject:v43 forKeyedSubscript:@"offensive"];
+    v43 = [recordCopy objectForKeyedSubscript:@"offensive"];
+    [remoteRecordCopy setObject:v43 forKeyedSubscript:@"offensive"];
 
     v9 = 1;
   }
 
-  v44 = [v5 objectForKeyedSubscript:@"liked"];
-  v45 = [v44 BOOLValue];
+  v44 = [recordCopy objectForKeyedSubscript:@"liked"];
+  bOOLValue7 = [v44 BOOLValue];
 
-  if (v45 && [v5 fc_isDifferentFromRecord:v6 forKey:@"liked"])
+  if (bOOLValue7 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"liked"])
   {
-    v46 = [v5 objectForKeyedSubscript:@"liked"];
-    [v6 setObject:v46 forKeyedSubscript:@"liked"];
+    v46 = [recordCopy objectForKeyedSubscript:@"liked"];
+    [remoteRecordCopy setObject:v46 forKeyedSubscript:@"liked"];
 
     v9 = 1;
   }
 
-  v47 = [v5 objectForKeyedSubscript:@"disliked"];
-  v48 = [v47 BOOLValue];
+  v47 = [recordCopy objectForKeyedSubscript:@"disliked"];
+  bOOLValue8 = [v47 BOOLValue];
 
-  if (v48 && [v5 fc_isDifferentFromRecord:v6 forKey:@"disliked"])
+  if (bOOLValue8 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"disliked"])
   {
-    v49 = [v5 objectForKeyedSubscript:@"disliked"];
-    [v6 setObject:v49 forKeyedSubscript:@"disliked"];
+    v49 = [recordCopy objectForKeyedSubscript:@"disliked"];
+    [remoteRecordCopy setObject:v49 forKeyedSubscript:@"disliked"];
 
     v9 = 1;
   }
 
-  v50 = [v5 objectForKeyedSubscript:@"listenedCount"];
-  v51 = [v50 intValue];
+  v50 = [recordCopy objectForKeyedSubscript:@"listenedCount"];
+  intValue = [v50 intValue];
 
-  if (v51 && [v5 fc_isDifferentFromRecord:v6 forKey:@"listenedCount"])
+  if (intValue && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"listenedCount"])
   {
-    v52 = [v5 objectForKeyedSubscript:@"listenedCount"];
-    [v6 setObject:v52 forKeyedSubscript:@"listenedCount"];
+    v52 = [recordCopy objectForKeyedSubscript:@"listenedCount"];
+    [remoteRecordCopy setObject:v52 forKeyedSubscript:@"listenedCount"];
 
     v9 = 1;
   }
 
-  v53 = [v5 objectForKeyedSubscript:@"readCount"];
-  v54 = [v53 intValue];
+  v53 = [recordCopy objectForKeyedSubscript:@"readCount"];
+  intValue2 = [v53 intValue];
 
-  if (v54 && [v5 fc_isDifferentFromRecord:v6 forKey:@"readCount"])
+  if (intValue2 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"readCount"])
   {
-    v55 = [v5 objectForKeyedSubscript:@"readCount"];
-    [v6 setObject:v55 forKeyedSubscript:@"readCount"];
+    v55 = [recordCopy objectForKeyedSubscript:@"readCount"];
+    [remoteRecordCopy setObject:v55 forKeyedSubscript:@"readCount"];
 
     v9 = 1;
   }
 
-  v56 = [v5 objectForKeyedSubscript:@"removedFromAudio"];
-  v57 = [v56 BOOLValue];
+  v56 = [recordCopy objectForKeyedSubscript:@"removedFromAudio"];
+  bOOLValue9 = [v56 BOOLValue];
 
-  if (v57 && [v5 fc_isDifferentFromRecord:v6 forKey:@"removedFromAudio"])
+  if (bOOLValue9 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"removedFromAudio"])
   {
-    v58 = [v5 objectForKeyedSubscript:@"removedFromAudio"];
-    [v6 setObject:v58 forKeyedSubscript:@"removedFromAudio"];
+    v58 = [recordCopy objectForKeyedSubscript:@"removedFromAudio"];
+    [remoteRecordCopy setObject:v58 forKeyedSubscript:@"removedFromAudio"];
 
     v9 = 1;
   }
 
-  v59 = [v5 objectForKeyedSubscript:@"pruningDisabled"];
-  v60 = [v59 BOOLValue];
+  v59 = [recordCopy objectForKeyedSubscript:@"pruningDisabled"];
+  bOOLValue10 = [v59 BOOLValue];
 
-  if (v60 && [v5 fc_isDifferentFromRecord:v6 forKey:@"pruningDisabled"])
+  if (bOOLValue10 && [recordCopy fc_isDifferentFromRecord:remoteRecordCopy forKey:@"pruningDisabled"])
   {
-    v61 = [v5 objectForKeyedSubscript:@"pruningDisabled"];
-    [v6 setObject:v61 forKeyedSubscript:@"pruningDisabled"];
+    v61 = [recordCopy objectForKeyedSubscript:@"pruningDisabled"];
+    [remoteRecordCopy setObject:v61 forKeyedSubscript:@"pruningDisabled"];
 
     v9 = 1;
   }

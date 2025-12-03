@@ -1,12 +1,12 @@
 @interface ConnectedAppFooterViewCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation ConnectedAppFooterViewCell
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v5 = self;
+  selfCopy = self;
   v6 = OUTLINED_FUNCTION_25_1();
   sub_1E37910F0(v6);
   OUTLINED_FUNCTION_18_3();

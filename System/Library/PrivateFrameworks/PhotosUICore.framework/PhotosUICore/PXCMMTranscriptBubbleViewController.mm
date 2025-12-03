@@ -1,34 +1,34 @@
 @interface PXCMMTranscriptBubbleViewController
-+ (void)_registerPermanentFailureURL:(id)a3;
++ (void)_registerPermanentFailureURL:(id)l;
 - (BOOL)_shouldOpenCloudSettings;
 - (BOOL)_shouldOpenInSafari;
 - (BOOL)_shouldRetryOnTap;
 - (BOOL)_shouldShowContent;
-- (CGSize)contentSizeThatFits:(CGSize)a3;
-- (CGSize)workaroundSizeForSize:(CGSize)a3;
+- (CGSize)contentSizeThatFits:(CGSize)fits;
+- (CGSize)workaroundSizeForSize:(CGSize)size;
 - (NSString)description;
 - (PXCMMTranscriptBubbleTouchDelegate)touchDelegate;
 - (PXCMMTranscriptBubbleViewController)init;
-- (PXCMMTranscriptBubbleViewController)initWithCoder:(id)a3;
-- (PXCMMTranscriptBubbleViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PXCMMTranscriptBubbleViewController)initWithURL:(id)a3 isSender:(BOOL)a4;
-- (void)_acceptMomentShareIfNeeded:(id)a3;
-- (void)_autoAcceptMomentShareIfNeeded:(id)a3;
+- (PXCMMTranscriptBubbleViewController)initWithCoder:(id)coder;
+- (PXCMMTranscriptBubbleViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PXCMMTranscriptBubbleViewController)initWithURL:(id)l isSender:(BOOL)sender;
+- (void)_acceptMomentShareIfNeeded:(id)needed;
+- (void)_autoAcceptMomentShareIfNeeded:(id)needed;
 - (void)_ensureBubbleStateTransition;
-- (void)_fetchMomentShareFromNetworkURL:(id)a3;
-- (void)_momentShareURL:(id)a3 fetchDidFailWithError:(id)a4;
+- (void)_fetchMomentShareFromNetworkURL:(id)l;
+- (void)_momentShareURL:(id)l fetchDidFailWithError:(id)error;
 - (void)_retryMomentShareFetch;
-- (void)_tapGesture:(id)a3;
+- (void)_tapGesture:(id)gesture;
 - (void)_triggerForcedSyncIfNeeded;
 - (void)_updateBubbleState;
 - (void)_updateBubbleView;
 - (void)_updateContent;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
-- (void)setBubbleState:(int64_t)a3;
-- (void)setError:(id)a3;
-- (void)setTargetState:(int64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
+- (void)setBubbleState:(int64_t)state;
+- (void)setError:(id)error;
+- (void)setTargetState:(int64_t)state;
 - (void)viewDidLoad;
 @end
 
@@ -41,92 +41,92 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (CMMSpecObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (CMMSpecObservationContext != context)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:629 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:629 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v11 = v9;
+    v11 = observableCopy;
     [(PXCMMTranscriptBubbleViewController *)self _updateBubbleView];
-    v9 = v11;
+    observableCopy = v11;
   }
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  queueCopy = queue;
   v6 = PLSharingGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "Photo library did change for bubble: %@.", buf, 0xCu);
   }
 
   if (!self->_backingFetchResult)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:570 description:{@"Invalid parameter not satisfying: %@", @"_backingFetchResult"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:570 description:{@"Invalid parameter not satisfying: %@", @"_backingFetchResult"}];
   }
 
-  v7 = [v5 changeDetailsForFetchResult:?];
+  v7 = [queueCopy changeDetailsForFetchResult:?];
   if (v7)
   {
     v8 = PLSharingGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v28 = v7;
+      selfCopy = v7;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEBUG, "Change details: %@.", buf, 0xCu);
     }
 
-    v9 = [(PXCMMTranscriptBubbleViewController *)v7 fetchResultAfterChanges];
+    fetchResultAfterChanges = [(PXCMMTranscriptBubbleViewController *)v7 fetchResultAfterChanges];
     backingFetchResult = self->_backingFetchResult;
-    self->_backingFetchResult = v9;
+    self->_backingFetchResult = fetchResultAfterChanges;
 
-    v11 = [(PXCMMTranscriptBubbleViewController *)v7 changedIndexes];
-    v12 = [v11 count];
+    changedIndexes = [(PXCMMTranscriptBubbleViewController *)v7 changedIndexes];
+    v12 = [changedIndexes count];
 
-    v13 = [(PXCMMTranscriptBubbleViewController *)self error];
+    error = [(PXCMMTranscriptBubbleViewController *)self error];
 
-    if (v13)
+    if (error)
     {
       goto LABEL_25;
     }
 
-    v14 = [(PXCMMTranscriptBubbleViewController *)v7 fetchResultBeforeChanges];
-    v26 = [v14 firstObject];
-    v15 = [(PHFetchResult *)self->_backingFetchResult firstObject];
+    fetchResultBeforeChanges = [(PXCMMTranscriptBubbleViewController *)v7 fetchResultBeforeChanges];
+    firstObject = [fetchResultBeforeChanges firstObject];
+    firstObject2 = [(PHFetchResult *)self->_backingFetchResult firstObject];
     v16 = [(PXCMMTranscriptBubbleViewController *)self url];
-    v17 = [v16 pl_redactedShareURL];
+    pl_redactedShareURL = [v16 pl_redactedShareURL];
 
-    if (v15 && [v15 trashedState] == 1 && !objc_msgSend(v26, "trashedState"))
+    if (firstObject2 && [firstObject2 trashedState] == 1 && !objc_msgSend(firstObject, "trashedState"))
     {
       v21 = PLSharingGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v28 = v17;
+        selfCopy = pl_redactedShareURL;
         _os_log_impl(&dword_1A3C1C000, v21, OS_LOG_TYPE_ERROR, "Moment share was trashed for URL: %{public}@", buf, 0xCu);
       }
 
-      [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1100 debugDescription:{@"Moment share was trashed for URL: %@", v17}];
+      [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1100 debugDescription:{@"Moment share was trashed for URL: %@", pl_redactedShareURL}];
     }
 
     else
     {
-      v18 = [(PXCMMTranscriptBubbleViewController *)v7 removedIndexes];
-      if (![v18 count] || -[PHFetchResult count](self->_backingFetchResult, "count") || !objc_msgSend(v14, "count"))
+      removedIndexes = [(PXCMMTranscriptBubbleViewController *)v7 removedIndexes];
+      if (![removedIndexes count] || -[PHFetchResult count](self->_backingFetchResult, "count") || !objc_msgSend(fetchResultBeforeChanges, "count"))
       {
         goto LABEL_23;
       }
@@ -140,11 +140,11 @@ LABEL_24:
 LABEL_25:
         if (self->_isExpungingAndRefetching)
         {
-          v22 = [(PXCMMTranscriptBubbleViewController *)v7 insertedIndexes];
-          if ([v22 count])
+          insertedIndexes = [(PXCMMTranscriptBubbleViewController *)v7 insertedIndexes];
+          if ([insertedIndexes count])
           {
-            v23 = [(PXCMMTranscriptBubbleViewController *)v7 fetchResultBeforeChanges];
-            v24 = [v23 count];
+            fetchResultBeforeChanges2 = [(PXCMMTranscriptBubbleViewController *)v7 fetchResultBeforeChanges];
+            v24 = [fetchResultBeforeChanges2 count];
 
             if (!v24)
             {
@@ -171,14 +171,14 @@ LABEL_25:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v28 = v17;
+        selfCopy = pl_redactedShareURL;
         _os_log_impl(&dword_1A3C1C000, v20, OS_LOG_TYPE_ERROR, "Moment share object went away for URL: %{public}@", buf, 0xCu);
       }
 
-      [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1101 debugDescription:{@"Moment share object went away for URL: %@", v17}];
+      [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1101 debugDescription:{@"Moment share object went away for URL: %@", pl_redactedShareURL}];
     }
-    v18 = ;
-    [(PXCMMTranscriptBubbleViewController *)self setError:v18];
+    removedIndexes = ;
+    [(PXCMMTranscriptBubbleViewController *)self setError:removedIndexes];
 LABEL_23:
 
     goto LABEL_24;
@@ -189,8 +189,8 @@ LABEL_33:
 
 - (void)_ensureBubbleStateTransition
 {
-  v3 = [(PXCMMTranscriptBubbleViewController *)self targetState];
-  if (v3 != [(PXCMMTranscriptBubbleViewController *)self bubbleState]&& self->_readyForBubbleStateTransitions)
+  targetState = [(PXCMMTranscriptBubbleViewController *)self targetState];
+  if (targetState != [(PXCMMTranscriptBubbleViewController *)self bubbleState]&& self->_readyForBubbleStateTransitions)
   {
     [(PXCMMTranscriptBubbleViewController *)self setBubbleState:[(PXCMMTranscriptBubbleViewController *)self targetState]];
     self->_readyForBubbleStateTransitions = 0;
@@ -216,33 +216,33 @@ void __67__PXCMMTranscriptBubbleViewController__ensureBubbleStateTransition__blo
 - (void)_updateBubbleState
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCMMTranscriptBubbleViewController *)self bubbleState];
+  bubbleState = [(PXCMMTranscriptBubbleViewController *)self bubbleState];
   v4 = +[PXCompleteMyMomentSettings sharedInstance];
-  v5 = [v4 simulateMomentShareBubbleError];
+  simulateMomentShareBubbleError = [v4 simulateMomentShareBubbleError];
 
-  v6 = [(PXCMMTranscriptBubbleViewController *)self error];
+  error = [(PXCMMTranscriptBubbleViewController *)self error];
 
-  if (v6 || v5)
+  if (error || simulateMomentShareBubbleError)
   {
     v8 = PLSharingGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      if (v5)
+      if (simulateMomentShareBubbleError)
       {
-        v9 = @"Simulated";
+        error2 = @"Simulated";
       }
 
       else
       {
-        v9 = [(PXCMMTranscriptBubbleViewController *)self error];
+        error2 = [(PXCMMTranscriptBubbleViewController *)self error];
       }
 
       v10 = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v9;
+      v13 = error2;
       _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_ERROR, "Will enter error state for bubble: %@ - Error: %@", &v10, 0x16u);
-      if ((v5 & 1) == 0)
+      if ((simulateMomentShareBubbleError & 1) == 0)
       {
       }
     }
@@ -257,7 +257,7 @@ void __67__PXCMMTranscriptBubbleViewController__ensureBubbleStateTransition__blo
 
   else
   {
-    v7 = v3 != 0;
+    v7 = bubbleState != 0;
   }
 
   [(PXCMMTranscriptBubbleViewController *)self setTargetState:v7];
@@ -267,20 +267,20 @@ void __67__PXCMMTranscriptBubbleViewController__ensureBubbleStateTransition__blo
 {
   if ([(PXCMMTranscriptBubbleViewController *)self _shouldShowContent])
   {
-    v3 = [(PXCMMTranscriptBubbleViewController *)self momentShare];
-    [(PXCMMStackBubbleView *)self->_stackBubbleView setMomentShare:v3];
+    momentShare = [(PXCMMTranscriptBubbleViewController *)self momentShare];
+    [(PXCMMStackBubbleView *)self->_stackBubbleView setMomentShare:momentShare];
   }
 }
 
 - (void)_updateBubbleView
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCMMTranscriptBubbleViewController *)self bubbleState];
-  if (v3 != 1)
+  bubbleState = [(PXCMMTranscriptBubbleViewController *)self bubbleState];
+  if (bubbleState != 1)
   {
-    if (v3 != 3)
+    if (bubbleState != 3)
     {
-      if (v3 != 2)
+      if (bubbleState != 2)
       {
         return;
       }
@@ -297,8 +297,8 @@ void __67__PXCMMTranscriptBubbleViewController__ensureBubbleStateTransition__blo
         stackBubbleView = self->_stackBubbleView;
         self->_stackBubbleView = v27;
 
-        v29 = [(PXCMMTranscriptBubbleViewController *)self px_screen];
-        [v29 bounds];
+        px_screen = [(PXCMMTranscriptBubbleViewController *)self px_screen];
+        [px_screen bounds];
         v31 = v30;
 
         [(PXCMMStackBubbleView *)self->_stackBubbleView setMaximumHeight:ceil(v31 * 0.2)];
@@ -347,26 +347,26 @@ LABEL_28:
     v10 = PXLocalizedStringFromTable(@"PXMessagesBubbleLinkUnavailableTitle", @"PhotosUICore");
     [(PXCMMTranscriptBubbleStatusView *)self->_errorStatusView setStatusTitle:v10];
 
-    v11 = [(PXCMMTranscriptBubbleViewController *)self error];
+    error = [(PXCMMTranscriptBubbleViewController *)self error];
     v12 = +[PXCompleteMyMomentSettings sharedInstance];
-    v13 = [v12 simulateMomentShareBubbleError];
+    simulateMomentShareBubbleError = [v12 simulateMomentShareBubbleError];
 
-    if (v13)
+    if (simulateMomentShareBubbleError)
     {
       v14 = +[PXCompleteMyMomentSettings sharedInstance];
-      v15 = [v14 simulatedMomentShareBubbleErrorType];
+      simulatedMomentShareBubbleErrorType = [v14 simulatedMomentShareBubbleErrorType];
 
       v16 = PLSharingGetLog();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        if (v15 > 0xB)
+        if (simulatedMomentShareBubbleErrorType > 0xB)
         {
           v17 = 0;
         }
 
         else
         {
-          v17 = *(&off_1E7739160 + v15);
+          v17 = *(&off_1E7739160 + simulatedMomentShareBubbleErrorType);
         }
 
         v34 = v17;
@@ -375,17 +375,17 @@ LABEL_28:
         _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEFAULT, "Simulating moment share bubble error (PXCompleteMyMomentSettings.sharedInstance.simulatedMomentShareBubbleErrorType):  %{public}@", &v38, 0xCu);
       }
 
-      if (v15 > 0xB)
+      if (simulatedMomentShareBubbleErrorType > 0xB)
       {
         v35 = 0;
 LABEL_27:
         [(PXCMMTranscriptBubbleStatusView *)self->_errorStatusView setStatusDescription:v35];
-        v36 = [(PXTranscriptBubbleViewController *)self delegate];
-        [v36 safeAreaInsetsForBubble:self];
+        delegate = [(PXTranscriptBubbleViewController *)self delegate];
+        [delegate safeAreaInsetsForBubble:self];
         [(PXCMMTranscriptBubbleStatusView *)self->_errorStatusView setBubbleSafeAreaInsets:?];
 
-        v37 = [(PXFeatureSpecManager *)self->_specManager spec];
-        [(PXCMMTranscriptBubbleStatusView *)self->_errorStatusView setSpec:v37];
+        spec = [(PXFeatureSpecManager *)self->_specManager spec];
+        [(PXCMMTranscriptBubbleStatusView *)self->_errorStatusView setSpec:spec];
 
         if (!v4)
         {
@@ -398,10 +398,10 @@ LABEL_27:
 
     else
     {
-      v15 = PXMomentShareTypeForError(v11);
+      simulatedMomentShareBubbleErrorType = PXMomentShareTypeForError(error);
     }
 
-    v35 = PXLocalizedStringFromTable(off_1E774B750[v15], @"PhotosUICore");
+    v35 = PXLocalizedStringFromTable(off_1E774B750[simulatedMomentShareBubbleErrorType], @"PhotosUICore");
     goto LABEL_27;
   }
 
@@ -430,12 +430,12 @@ LABEL_27:
   [(PXCMMTranscriptBubbleStatusView *)self->_loadingStatusView setStatusTitle:v23];
 
   [(PXCMMTranscriptBubbleStatusView *)self->_loadingStatusView setShowsActivityIndicator:1];
-  v24 = [(PXTranscriptBubbleViewController *)self delegate];
-  [v24 safeAreaInsetsForBubble:self];
+  delegate2 = [(PXTranscriptBubbleViewController *)self delegate];
+  [delegate2 safeAreaInsetsForBubble:self];
   [(PXCMMTranscriptBubbleStatusView *)self->_loadingStatusView setBubbleSafeAreaInsets:?];
 
-  v25 = [(PXFeatureSpecManager *)self->_specManager spec];
-  [(PXCMMTranscriptBubbleStatusView *)self->_loadingStatusView setSpec:v25];
+  spec2 = [(PXFeatureSpecManager *)self->_specManager spec];
+  [(PXCMMTranscriptBubbleStatusView *)self->_loadingStatusView setSpec:spec2];
 
   if (v4)
   {
@@ -445,11 +445,11 @@ LABEL_27:
 
 - (BOOL)_shouldShowContent
 {
-  v2 = [(PXCMMTranscriptBubbleViewController *)self momentShare];
-  v3 = v2;
-  if (v2)
+  momentShare = [(PXCMMTranscriptBubbleViewController *)self momentShare];
+  v3 = momentShare;
+  if (momentShare)
   {
-    v4 = [v2 trashedState] != 1;
+    v4 = [momentShare trashedState] != 1;
   }
 
   else
@@ -465,11 +465,11 @@ LABEL_27:
   v13.receiver = self;
   v13.super_class = PXCMMTranscriptBubbleViewController;
   [(PXTranscriptBubbleViewController *)&v13 viewDidLoad];
-  v4 = [(PXCMMTranscriptBubbleViewController *)self px_extendedTraitCollection];
-  if (!v4)
+  px_extendedTraitCollection = [(PXCMMTranscriptBubbleViewController *)self px_extendedTraitCollection];
+  if (!px_extendedTraitCollection)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:380 description:@"Spec cannot be set up if there's no trait collection"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:380 description:@"Spec cannot be set up if there's no trait collection"];
   }
 
   if ([(PXCMMTranscriptBubbleViewController *)self isSender])
@@ -482,38 +482,38 @@ LABEL_27:
     v5 = 2;
   }
 
-  v6 = [[PXCMMSpecManager alloc] initWithExtendedTraitCollection:v4 activityType:v5];
+  v6 = [[PXCMMSpecManager alloc] initWithExtendedTraitCollection:px_extendedTraitCollection activityType:v5];
   specManager = self->_specManager;
   self->_specManager = v6;
 
   [(PXCMMSpecManager *)self->_specManager registerChangeObserver:self context:CMMSpecObservationContext];
   v8 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__tapGesture_];
-  v9 = [(PXCMMTranscriptBubbleViewController *)self view];
-  [v9 addGestureRecognizer:v8];
+  view = [(PXCMMTranscriptBubbleViewController *)self view];
+  [view addGestureRecognizer:v8];
 
-  v10 = [MEMORY[0x1E69DC888] clearColor];
-  v11 = [(PXCMMTranscriptBubbleViewController *)self view];
-  [v11 setBackgroundColor:v10];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view2 = [(PXCMMTranscriptBubbleViewController *)self view];
+  [view2 setBackgroundColor:clearColor];
 }
 
-- (void)_tapGesture:(id)a3
+- (void)_tapGesture:(id)gesture
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ([a3 state] != 3)
+  if ([gesture state] != 3)
   {
     return;
   }
 
   if ([(PXCMMTranscriptBubbleViewController *)self _shouldNavigateToContent])
   {
-    v4 = [(PXTranscriptBubbleViewController *)self delegate];
+    delegate = [(PXTranscriptBubbleViewController *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v10 = [(PXCMMTranscriptBubbleViewController *)self momentShare];
-      v6 = [(PXCMMTranscriptBubbleViewController *)self touchDelegate];
-      [v6 transcriptBubbleViewController:self didSelectMomentShare:v10];
+      momentShare = [(PXCMMTranscriptBubbleViewController *)self momentShare];
+      touchDelegate = [(PXCMMTranscriptBubbleViewController *)self touchDelegate];
+      [touchDelegate transcriptBubbleViewController:self didSelectMomentShare:momentShare];
     }
 
     return;
@@ -532,13 +532,13 @@ LABEL_27:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "Attempting to open URL in Safari for bubble: %@", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v9 = [(PXCMMTranscriptBubbleViewController *)self url];
-    [v8 openURL:v9 configuration:0 completionHandler:0];
+    [defaultWorkspace openURL:v9 configuration:0 completionHandler:0];
 
 LABEL_15:
     return;
@@ -546,12 +546,12 @@ LABEL_15:
 
   if (![(PXCMMTranscriptBubbleViewController *)self _shouldOpenCloudSettings])
   {
-    v8 = PLSharingGetLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    defaultWorkspace = PLSharingGetLog();
+    if (os_log_type_enabled(defaultWorkspace, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = self;
-      _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "No action required for tap on bubble: %@", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1A3C1C000, defaultWorkspace, OS_LOG_TYPE_DEFAULT, "No action required for tap on bubble: %@", buf, 0xCu);
     }
 
     goto LABEL_15;
@@ -562,11 +562,11 @@ LABEL_15:
 
 - (BOOL)_shouldOpenCloudSettings
 {
-  v2 = [(PXCMMTranscriptBubbleViewController *)self error];
-  v3 = v2;
-  if (v2)
+  error = [(PXCMMTranscriptBubbleViewController *)self error];
+  v3 = error;
+  if (error)
   {
-    v4 = PXMomentShareTypeForError(v2) == 10;
+    v4 = PXMomentShareTypeForError(error) == 10;
   }
 
   else
@@ -579,11 +579,11 @@ LABEL_15:
 
 - (BOOL)_shouldOpenInSafari
 {
-  v2 = [(PXCMMTranscriptBubbleViewController *)self error];
-  v3 = v2;
-  if (v2)
+  error = [(PXCMMTranscriptBubbleViewController *)self error];
+  v3 = error;
+  if (error)
   {
-    v4 = PXMomentShareTypeForError(v2) == 6;
+    v4 = PXMomentShareTypeForError(error) == 6;
   }
 
   else
@@ -596,12 +596,12 @@ LABEL_15:
 
 - (BOOL)_shouldRetryOnTap
 {
-  v3 = [(PXCMMTranscriptBubbleViewController *)self error];
+  error = [(PXCMMTranscriptBubbleViewController *)self error];
 
-  if (v3)
+  if (error)
   {
-    v4 = [(PXCMMTranscriptBubbleViewController *)self error];
-    v5 = PXMomentShareTypeForError(v4);
+    error2 = [(PXCMMTranscriptBubbleViewController *)self error];
+    v5 = PXMomentShareTypeForError(error2);
 
     if (v5 == 1)
     {
@@ -610,8 +610,8 @@ LABEL_15:
 
     else if (v5 == 3)
     {
-      v6 = [(PXCMMTranscriptBubbleViewController *)self momentShare];
-      v7 = [v6 status] != 1;
+      momentShare = [(PXCMMTranscriptBubbleViewController *)self momentShare];
+      v7 = [momentShare status] != 1;
     }
 
     else
@@ -622,8 +622,8 @@ LABEL_15:
     v8 = +[PXCompleteMyMomentSettings sharedInstance];
     if ([v8 alwaysTapToRetry])
     {
-      v9 = [(PXCMMTranscriptBubbleViewController *)self momentShare];
-      v10 = v9 == 0;
+      momentShare2 = [(PXCMMTranscriptBubbleViewController *)self momentShare];
+      v10 = momentShare2 == 0;
 
       v7 |= v10;
     }
@@ -640,11 +640,11 @@ LABEL_15:
 - (void)_retryMomentShareFetch
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCMMTranscriptBubbleViewController *)self momentShare];
-  v4 = v3;
-  if (v3)
+  momentShare = [(PXCMMTranscriptBubbleViewController *)self momentShare];
+  v4 = momentShare;
+  if (momentShare)
   {
-    if (!self->_isExpungingAndRefetching && [v3 trashedState] == 1 && objc_msgSend(v4, "status") != 1)
+    if (!self->_isExpungingAndRefetching && [momentShare trashedState] == 1 && objc_msgSend(v4, "status") != 1)
     {
       [(PXCMMTranscriptBubbleViewController *)self setError:0];
       self->_isExpungingAndRefetching = 1;
@@ -652,12 +652,12 @@ LABEL_15:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v11 = [(PXCMMTranscriptBubbleViewController *)self url];
-        v12 = [v11 pl_redactedShareURL];
-        v13 = [v4 uuid];
+        pl_redactedShareURL = [v11 pl_redactedShareURL];
+        uuid = [v4 uuid];
         *buf = 138543618;
-        v17 = v12;
+        selfCopy = pl_redactedShareURL;
         v18 = 2112;
-        v19 = v13;
+        v19 = uuid;
         _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_DEFAULT, "Retrying moment share fetch for URL: %{public}@ - Trashed Moment Shared with UUID: %@", buf, 0x16u);
       }
 
@@ -674,7 +674,7 @@ LABEL_15:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Skipping moment share retry. There's already a moment share for bubble: %@", buf, 0xCu);
     }
   }
@@ -685,12 +685,12 @@ LABEL_15:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = [(PXCMMTranscriptBubbleViewController *)self url];
-      v8 = [v7 pl_redactedShareURL];
-      v9 = [(PXCMMTranscriptBubbleViewController *)self error];
+      pl_redactedShareURL2 = [v7 pl_redactedShareURL];
+      error = [(PXCMMTranscriptBubbleViewController *)self error];
       *buf = 138543618;
-      v17 = v8;
+      selfCopy = pl_redactedShareURL2;
       v18 = 2112;
-      v19 = v9;
+      v19 = error;
       _os_log_impl(&dword_1A3C1C000, v6, OS_LOG_TYPE_DEFAULT, "Retrying moment share fetch for URL: %{public}@ - Previous error: %@", buf, 0x16u);
     }
 
@@ -748,8 +748,8 @@ void __61__PXCMMTranscriptBubbleViewController__retryMomentShareFetch__block_inv
 {
   if (!self->_triggeredForcedSync)
   {
-    v3 = [(PXCMMTranscriptBubbleViewController *)self momentShare];
-    if (-[PXCMMTranscriptBubbleViewController bubbleState](self, "bubbleState") == 2 && v3 && ([v3 status] == 1 || objc_msgSend(v3, "status") == 3))
+    momentShare = [(PXCMMTranscriptBubbleViewController *)self momentShare];
+    if (-[PXCMMTranscriptBubbleViewController bubbleState](self, "bubbleState") == 2 && momentShare && ([momentShare status] == 1 || objc_msgSend(momentShare, "status") == 3))
     {
       self->_triggeredForcedSync = 1;
       v4[0] = MEMORY[0x1E69E9820];
@@ -757,7 +757,7 @@ void __61__PXCMMTranscriptBubbleViewController__retryMomentShareFetch__block_inv
       v4[2] = __65__PXCMMTranscriptBubbleViewController__triggerForcedSyncIfNeeded__block_invoke;
       v4[3] = &unk_1E774BE98;
       v4[4] = self;
-      [v3 forceSyncMomentShareWithCompletion:v4];
+      [momentShare forceSyncMomentShareWithCompletion:v4];
     }
   }
 }
@@ -781,20 +781,20 @@ void __65__PXCMMTranscriptBubbleViewController__triggerForcedSyncIfNeeded__block
   }
 }
 
-- (void)_acceptMomentShareIfNeeded:(id)a3
+- (void)_acceptMomentShareIfNeeded:(id)needed
 {
-  v3 = a3;
+  neededCopy = needed;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__PXCMMTranscriptBubbleViewController__acceptMomentShareIfNeeded___block_invoke;
   block[3] = &unk_1E774C648;
-  v4 = v3;
+  v4 = neededCopy;
   v10 = v4;
   v5 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, block);
   v6 = +[PXCompleteMyMomentSettings sharedInstance];
-  v7 = [v6 simulateDelays];
+  simulateDelays = [v6 simulateDelays];
 
-  if (v7)
+  if (simulateDelays)
   {
     v8 = dispatch_time(0, 3000000000);
     dispatch_after(v8, MEMORY[0x1E69E96A0], v5);
@@ -806,48 +806,48 @@ void __65__PXCMMTranscriptBubbleViewController__triggerForcedSyncIfNeeded__block
   }
 }
 
-- (void)_autoAcceptMomentShareIfNeeded:(id)a3
+- (void)_autoAcceptMomentShareIfNeeded:(id)needed
 {
-  v6 = a3;
+  neededCopy = needed;
   v4 = +[PXCompleteMyMomentSettings sharedInstance];
-  v5 = [v4 autoAcceptBubbles];
+  autoAcceptBubbles = [v4 autoAcceptBubbles];
 
-  if (v5)
+  if (autoAcceptBubbles)
   {
-    [(PXCMMTranscriptBubbleViewController *)self _acceptMomentShareIfNeeded:v6];
+    [(PXCMMTranscriptBubbleViewController *)self _acceptMomentShareIfNeeded:neededCopy];
   }
 }
 
-- (void)_momentShareURL:(id)a3 fetchDidFailWithError:(id)a4
+- (void)_momentShareURL:(id)l fetchDidFailWithError:(id)error
 {
-  v8 = a3;
-  v6 = a4;
-  [(PXCMMTranscriptBubbleViewController *)self setError:v6];
-  v7 = PXMomentShareTypeForError(v6);
+  lCopy = l;
+  errorCopy = error;
+  [(PXCMMTranscriptBubbleViewController *)self setError:errorCopy];
+  v7 = PXMomentShareTypeForError(errorCopy);
 
   if (v7 == 4 || (v7 & 0xE) == 2)
   {
-    [objc_opt_class() _registerPermanentFailureURL:v8];
+    [objc_opt_class() _registerPermanentFailureURL:lCopy];
   }
 }
 
-- (void)_fetchMomentShareFromNetworkURL:(id)a3
+- (void)_fetchMomentShareFromNetworkURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   objc_initWeak(&location, self);
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL___block_invoke;
   v13 = &unk_1E774B708;
-  v5 = v4;
+  v5 = lCopy;
   v14 = v5;
-  v15 = self;
+  selfCopy = self;
   objc_copyWeak(&v16, &location);
   v6 = dispatch_block_create(DISPATCH_BLOCK_DETACHED, &v10);
   v7 = [PXCompleteMyMomentSettings sharedInstance:v10];
-  v8 = [v7 simulateDelays];
+  simulateDelays = [v7 simulateDelays];
 
-  if (v8)
+  if (simulateDelays)
   {
     v9 = dispatch_time(0, 3000000000);
     dispatch_after(v9, MEMORY[0x1E69E96A0], v6);
@@ -910,62 +910,62 @@ void __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL__
   [WeakRetained _momentShareURL:*(a1 + 32) fetchDidFailWithError:*(a1 + 40)];
 }
 
-- (void)setTargetState:(int64_t)a3
+- (void)setTargetState:(int64_t)state
 {
-  if (self->_targetState != a3)
+  if (self->_targetState != state)
   {
-    self->_targetState = a3;
+    self->_targetState = state;
     [(PXCMMTranscriptBubbleViewController *)self _ensureBubbleStateTransition];
   }
 }
 
-- (void)setBubbleState:(int64_t)a3
+- (void)setBubbleState:(int64_t)state
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_bubbleState != a3)
+  if (self->_bubbleState != state)
   {
     v5 = PLSharingGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       bubbleState = self->_bubbleState;
       v7 = 138412802;
-      v8 = self;
+      selfCopy = self;
       v9 = 2048;
       v10 = bubbleState;
       v11 = 2048;
-      v12 = a3;
+      stateCopy = state;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "Transitioning bubble %@ state from %ld to %ld", &v7, 0x20u);
     }
 
-    self->_bubbleState = a3;
+    self->_bubbleState = state;
     [(PXCMMTranscriptBubbleViewController *)self _updateBubbleView];
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
-  if (self->_error != v5)
+  errorCopy = error;
+  if (self->_error != errorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_error, a3);
+    v6 = errorCopy;
+    objc_storeStrong(&self->_error, error);
     [(PXCMMTranscriptBubbleViewController *)self _updateBubbleState];
-    v5 = v6;
+    errorCopy = v6;
   }
 }
 
-- (CGSize)workaroundSizeForSize:(CGSize)a3
+- (CGSize)workaroundSizeForSize:(CGSize)size
 {
-  [PXCMMStackBubbleView sizeThatFits:a3.width, a3.height];
+  [PXCMMStackBubbleView sizeThatFits:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)contentSizeThatFits:(CGSize)a3
+- (CGSize)contentSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PXCMMTranscriptBubbleViewController *)self _updateBubbleView];
   v8.receiver = self;
   v8.super_class = PXCMMTranscriptBubbleViewController;
@@ -980,9 +980,9 @@ void __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL__
   v17.receiver = self;
   v17.super_class = PXCMMTranscriptBubbleViewController;
   v3 = [(PXCMMTranscriptBubbleViewController *)&v17 description];
-  v4 = [(PXCMMTranscriptBubbleViewController *)self momentShare];
+  momentShare = [(PXCMMTranscriptBubbleViewController *)self momentShare];
   v5 = [(PXCMMTranscriptBubbleViewController *)self url];
-  v6 = [v5 pl_redactedShareURL];
+  pl_redactedShareURL = [v5 pl_redactedShareURL];
   if ([(PXCMMTranscriptBubbleViewController *)self isSender])
   {
     v7 = @"YES";
@@ -994,7 +994,7 @@ void __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL__
   }
 
   v8 = v7;
-  if (v4)
+  if (momentShare)
   {
     v9 = @"YES";
   }
@@ -1005,11 +1005,11 @@ void __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL__
   }
 
   v10 = v9;
-  v11 = [v4 assetCount];
-  v12 = [v4 cloudPhotoCount];
-  v13 = [v4 cloudVideoCount] + v12;
-  v14 = [(PXCMMTranscriptBubbleViewController *)self error];
-  v15 = [v3 stringByAppendingFormat:@" URL: %@ isSender: %@ hasMomentShare: %@ expectedAssetCount: %lu cloudCount: %lu error: %@", v6, v8, v10, v11, v13, v14];
+  assetCount = [momentShare assetCount];
+  cloudPhotoCount = [momentShare cloudPhotoCount];
+  v13 = [momentShare cloudVideoCount] + cloudPhotoCount;
+  error = [(PXCMMTranscriptBubbleViewController *)self error];
+  v15 = [v3 stringByAppendingFormat:@" URL: %@ isSender: %@ hasMomentShare: %@ expectedAssetCount: %lu cloudCount: %lu error: %@", pl_redactedShareURL, v8, v10, assetCount, v13, error];
 
   return v15;
 }
@@ -1022,37 +1022,37 @@ void __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL__
   [(PXCMMTranscriptBubbleViewController *)&v3 dealloc];
 }
 
-- (PXCMMTranscriptBubbleViewController)initWithCoder:(id)a3
+- (PXCMMTranscriptBubbleViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:144 description:{@"%s is not available as initializer", "-[PXCMMTranscriptBubbleViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:144 description:{@"%s is not available as initializer", "-[PXCMMTranscriptBubbleViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXCMMTranscriptBubbleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXCMMTranscriptBubbleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:140 description:{@"%s is not available as initializer", "-[PXCMMTranscriptBubbleViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:140 description:{@"%s is not available as initializer", "-[PXCMMTranscriptBubbleViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
 - (PXCMMTranscriptBubbleViewController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:136 description:{@"%s is not available as initializer", "-[PXCMMTranscriptBubbleViewController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMTranscriptBubbleViewController.m" lineNumber:136 description:{@"%s is not available as initializer", "-[PXCMMTranscriptBubbleViewController init]"}];
 
   abort();
 }
 
-- (PXCMMTranscriptBubbleViewController)initWithURL:(id)a3 isSender:(BOOL)a4
+- (PXCMMTranscriptBubbleViewController)initWithURL:(id)l isSender:(BOOL)sender
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lCopy = l;
   v39.receiver = self;
   v39.super_class = PXCMMTranscriptBubbleViewController;
   v8 = [(PXCMMTranscriptBubbleViewController *)&v39 initWithNibName:0 bundle:0];
@@ -1062,7 +1062,7 @@ void __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL__
     goto LABEL_30;
   }
 
-  if (!v7)
+  if (!lCopy)
   {
     v10 = PLSharingGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -1071,15 +1071,15 @@ void __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL__
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, "A URL must be provided to a transcript bubble", buf, 2u);
     }
 
-    objc_storeStrong(&v9->_url, a3);
-    v9->_isSender = a4;
+    objc_storeStrong(&v9->_url, l);
+    v9->_isSender = sender;
     goto LABEL_27;
   }
 
-  objc_storeStrong(&v8->_url, a3);
-  v9->_isSender = a4;
+  objc_storeStrong(&v8->_url, l);
+  v9->_isSender = sender;
   v38 = 0;
-  v11 = PXFetchAssetCollectionForCMMShareURL(v7, 1, &v38);
+  v11 = PXFetchAssetCollectionForCMMShareURL(lCopy, 1, &v38);
   backingFetchResult = v9->_backingFetchResult;
   v9->_backingFetchResult = v11;
 
@@ -1088,29 +1088,29 @@ void __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL__
     v13 = PLSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v7 pl_redactedShareURL];
+      pl_redactedShareURL = [lCopy pl_redactedShareURL];
       *buf = 138543362;
-      v41 = v14;
+      v41 = pl_redactedShareURL;
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_ERROR, "Unsupported debug URL: %{public}@", buf, 0xCu);
     }
 
     v15 = MEMORY[0x1E696ABC0];
-    v16 = [v7 pl_redactedShareURL];
-    v17 = [v15 px_errorWithDomain:@"PXCMMErrorDomain" code:-1102 debugDescription:{@"Debug URLs are unsupported: %@", v16}];
+    pl_redactedShareURL2 = [lCopy pl_redactedShareURL];
+    v17 = [v15 px_errorWithDomain:@"PXCMMErrorDomain" code:-1102 debugDescription:{@"Debug URLs are unsupported: %@", pl_redactedShareURL2}];
     error = v9->_error;
     v9->_error = v17;
 
     goto LABEL_26;
   }
 
-  v19 = [(PHFetchResult *)v9->_backingFetchResult firstObject];
-  v20 = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
+  firstObject = [(PHFetchResult *)v9->_backingFetchResult firstObject];
+  mEMORY[0x1E69789A8] = [MEMORY[0x1E69789A8] sharedMomentSharePhotoLibrary];
   photoLibrary = v9->_photoLibrary;
-  v9->_photoLibrary = v20;
+  v9->_photoLibrary = mEMORY[0x1E69789A8];
 
-  if (v19)
+  if (firstObject)
   {
-    if ([v19 trashedState] != 1)
+    if ([firstObject trashedState] != 1)
     {
       [(PXCMMTranscriptBubbleViewController *)v9 _triggerForcedSyncIfNeeded];
       goto LABEL_25;
@@ -1119,47 +1119,47 @@ void __71__PXCMMTranscriptBubbleViewController__fetchMomentShareFromNetworkURL__
     v22 = PLSharingGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v7 pl_redactedShareURL];
+      pl_redactedShareURL3 = [lCopy pl_redactedShareURL];
       *buf = 138543362;
-      v41 = v23;
+      v41 = pl_redactedShareURL3;
       _os_log_impl(&dword_1A3C1C000, v22, OS_LOG_TYPE_DEFAULT, "Bubble will display error for trashed moment share URL: %{public}@", buf, 0xCu);
     }
 
     v24 = MEMORY[0x1E696ABC0];
-    v25 = [v7 pl_redactedShareURL];
-    v26 = [v24 px_errorWithDomain:@"PXCMMErrorDomain" code:-1100 debugDescription:{@"Moment share is trashed for URL: %@", v25}];
+    pl_redactedShareURL4 = [lCopy pl_redactedShareURL];
+    v26 = [v24 px_errorWithDomain:@"PXCMMErrorDomain" code:-1100 debugDescription:{@"Moment share is trashed for URL: %@", pl_redactedShareURL4}];
   }
 
   else
   {
-    v27 = [objc_opt_class() _isPermanentFailureURL:v7];
+    v27 = [objc_opt_class() _isPermanentFailureURL:lCopy];
     v28 = PLSharingGetLog();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
     if ((v27 & 1) == 0)
     {
       if (v29)
       {
-        v33 = [v7 pl_redactedShareURL];
+        pl_redactedShareURL5 = [lCopy pl_redactedShareURL];
         *buf = 138543362;
-        v41 = v33;
+        v41 = pl_redactedShareURL5;
         _os_log_impl(&dword_1A3C1C000, v28, OS_LOG_TYPE_DEFAULT, "Unable to find MomentShare for URL %{public}@. Triggering network request", buf, 0xCu);
       }
 
-      [(PXCMMTranscriptBubbleViewController *)v9 _fetchMomentShareFromNetworkURL:v7];
+      [(PXCMMTranscriptBubbleViewController *)v9 _fetchMomentShareFromNetworkURL:lCopy];
       goto LABEL_25;
     }
 
     if (v29)
     {
-      v30 = [v7 pl_redactedShareURL];
+      pl_redactedShareURL6 = [lCopy pl_redactedShareURL];
       *buf = 138543362;
-      v41 = v30;
+      v41 = pl_redactedShareURL6;
       _os_log_impl(&dword_1A3C1C000, v28, OS_LOG_TYPE_DEFAULT, "Dropping to error state for known permanent failure URL: %{public}@", buf, 0xCu);
     }
 
     v31 = MEMORY[0x1E696ABC0];
-    v25 = [v7 pl_redactedShareURL];
-    v26 = [v31 px_genericErrorWithDebugDescription:{@"Known permanent failure for URL: %@", v25}];
+    pl_redactedShareURL4 = [lCopy pl_redactedShareURL];
+    v26 = [v31 px_genericErrorWithDebugDescription:{@"Known permanent failure for URL: %@", pl_redactedShareURL4}];
   }
 
   v32 = v9->_error;
@@ -1175,14 +1175,14 @@ LABEL_27:
   v34 = PLSharingGetLog();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [(PXCMMTranscriptBubbleViewController *)v9 bubbleState];
-    v36 = [(PXCMMTranscriptBubbleViewController *)v9 targetState];
+    bubbleState = [(PXCMMTranscriptBubbleViewController *)v9 bubbleState];
+    targetState = [(PXCMMTranscriptBubbleViewController *)v9 targetState];
     *buf = 138412802;
     v41 = v9;
     v42 = 2048;
-    v43 = v35;
+    v43 = bubbleState;
     v44 = 2048;
-    v45 = v36;
+    v45 = targetState;
     _os_log_impl(&dword_1A3C1C000, v34, OS_LOG_TYPE_DEFAULT, "Initialized transcript bubble: %@ -  Initial state %lu (%lu)", buf, 0x20u);
   }
 
@@ -1190,22 +1190,22 @@ LABEL_30:
   return v9;
 }
 
-+ (void)_registerPermanentFailureURL:(id)a3
++ (void)_registerPermanentFailureURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = knownPermanentFailures;
-  v7 = v3;
+  v7 = lCopy;
   if (!knownPermanentFailures)
   {
     v5 = [MEMORY[0x1E695DFA8] set];
     v6 = knownPermanentFailures;
     knownPermanentFailures = v5;
 
-    v3 = v7;
+    lCopy = v7;
     v4 = knownPermanentFailures;
   }
 
-  [v4 addObject:v3];
+  [v4 addObject:lCopy];
 }
 
 @end

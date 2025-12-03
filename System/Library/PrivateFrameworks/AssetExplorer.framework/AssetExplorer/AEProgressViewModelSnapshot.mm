@@ -1,53 +1,53 @@
 @interface AEProgressViewModelSnapshot
-- (AEProgressViewModelSnapshot)initWithProgressByIndexPath:(id)a3 dataSourceIdenfitier:(int64_t)a4;
-- (BOOL)hasProgressForIndexPath:(PXSimpleIndexPath *)a3;
-- (id)progressForIndexPath:(PXSimpleIndexPath *)a3;
+- (AEProgressViewModelSnapshot)initWithProgressByIndexPath:(id)path dataSourceIdenfitier:(int64_t)idenfitier;
+- (BOOL)hasProgressForIndexPath:(PXSimpleIndexPath *)path;
+- (id)progressForIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation AEProgressViewModelSnapshot
 
-- (id)progressForIndexPath:(PXSimpleIndexPath *)a3
+- (id)progressForIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = [(AEProgressViewModelSnapshot *)self _progressByIndexPath];
-  v8 = *a3;
+  _progressByIndexPath = [(AEProgressViewModelSnapshot *)self _progressByIndexPath];
+  v8 = *path;
   v5 = PXIndexPathFromSimpleIndexPath();
-  v6 = [v4 objectForKey:{v5, *&v8.dataSourceIdentifier, *&v8.item}];
+  v6 = [_progressByIndexPath objectForKey:{v5, *&v8.dataSourceIdentifier, *&v8.item}];
 
   return v6;
 }
 
-- (BOOL)hasProgressForIndexPath:(PXSimpleIndexPath *)a3
+- (BOOL)hasProgressForIndexPath:(PXSimpleIndexPath *)path
 {
-  v4 = [(AEProgressViewModelSnapshot *)self _pathsWithProgress];
-  v5 = *&a3->item;
-  v7[0] = *&a3->dataSourceIdentifier;
+  _pathsWithProgress = [(AEProgressViewModelSnapshot *)self _pathsWithProgress];
+  v5 = *&path->item;
+  v7[0] = *&path->dataSourceIdentifier;
   v7[1] = v5;
-  LOBYTE(a3) = [v4 containsIndexPath:v7];
+  LOBYTE(path) = [_pathsWithProgress containsIndexPath:v7];
 
-  return a3;
+  return path;
 }
 
-- (AEProgressViewModelSnapshot)initWithProgressByIndexPath:(id)a3 dataSourceIdenfitier:(int64_t)a4
+- (AEProgressViewModelSnapshot)initWithProgressByIndexPath:(id)path dataSourceIdenfitier:(int64_t)idenfitier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  pathCopy = path;
   v27.receiver = self;
   v27.super_class = AEProgressViewModelSnapshot;
   v8 = [(AEProgressViewModelSnapshot *)&v27 init];
   v9 = v8;
   if (v8)
   {
-    v8->_correspondingDataSourceIdentifier = a4;
-    if (v7)
+    v8->_correspondingDataSourceIdentifier = idenfitier;
+    if (pathCopy)
     {
-      objc_storeStrong(&v8->__progressByIndexPath, a3);
+      objc_storeStrong(&v8->__progressByIndexPath, path);
       v10 = objc_alloc_init(MEMORY[0x277D3CD78]);
       v25 = 0u;
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v11 = [(NSDictionary *)v9->__progressByIndexPath keyEnumerator];
-      v12 = [v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      keyEnumerator = [(NSDictionary *)v9->__progressByIndexPath keyEnumerator];
+      v12 = [keyEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v12)
       {
         v13 = v12;
@@ -59,7 +59,7 @@
           {
             if (*v24 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v16 = *(*(&v23 + 1) + 8 * v15);
@@ -73,7 +73,7 @@
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v13 = [keyEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
         }
 
         while (v13);

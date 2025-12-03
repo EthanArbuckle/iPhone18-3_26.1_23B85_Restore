@@ -1,13 +1,13 @@
 @interface WPPairing
-- (WPPairing)initWithDelegate:(id)a3 queue:(id)a4 machName:(id)a5;
+- (WPPairing)initWithDelegate:(id)delegate queue:(id)queue machName:(id)name;
 - (WPPairingDelegate)delegate;
 - (void)clearProximityPairingServiceDuplicates;
-- (void)deviceDiscovered:(id)a3;
-- (void)ignoreDeviceUntilNextUnlock:(id)a3 ignoreDevice:(BOOL)a4;
+- (void)deviceDiscovered:(id)discovered;
+- (void)ignoreDeviceUntilNextUnlock:(id)unlock ignoreDevice:(BOOL)device;
 - (void)invalidate;
-- (void)scanningFailedToStart:(id)a3 ofType:(unsigned __int8)a4;
-- (void)startProximityPairingServiceScanningWithRSSI:(id)a3 duplicates:(BOOL)a4 scanMode:(int64_t)a5;
-- (void)stateDidChange:(int64_t)a3;
+- (void)scanningFailedToStart:(id)start ofType:(unsigned __int8)type;
+- (void)startProximityPairingServiceScanningWithRSSI:(id)i duplicates:(BOOL)duplicates scanMode:(int64_t)mode;
+- (void)stateDidChange:(int64_t)change;
 - (void)stopProximityPairingServiceScanning;
 @end
 
@@ -41,11 +41,11 @@
   [(WPClient *)&v5 clearDuplicateFilterCache:v3];
 }
 
-- (WPPairing)initWithDelegate:(id)a3 queue:(id)a4 machName:(id)a5
+- (WPPairing)initWithDelegate:(id)delegate queue:(id)queue machName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  queueCopy = queue;
+  nameCopy = name;
   if (+[WPClient isHomePod])
   {
     if (WPLogInitOnce != -1)
@@ -59,25 +59,25 @@
       [WPPairing initWithDelegate:v11 queue:? machName:?];
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = WPPairing;
-    v13 = [(WPClient *)&v24 initWithQueue:v9 machName:v10];
+    v13 = [(WPClient *)&v24 initWithQueue:queueCopy machName:nameCopy];
     v14 = v13;
     if (v13)
     {
-      objc_storeWeak(&v13->_delegate, v8);
+      objc_storeWeak(&v13->_delegate, delegateCopy);
       v15 = [MEMORY[0x277CBEB58] set];
       ignoredDevices = v14->_ignoredDevices;
       v14->_ignoredDevices = v15;
 
       v14->_allowScreenOffScanning = 0;
-      v17 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      v18 = [v17 persistentDomainForName:@"com.apple.MobileBluetooth.debug"];
+      standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      v18 = [standardUserDefaults persistentDomainForName:@"com.apple.MobileBluetooth.debug"];
       v19 = [v18 objectForKeyedSubscript:@"WIPROX"];
 
       v20 = [v19 objectForKeyedSubscript:@"ScreenOffProxPairing"];
@@ -99,10 +99,10 @@
     }
 
     self = v14;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)invalidate
@@ -113,18 +113,18 @@
   [(WPClient *)&v3 invalidate];
 }
 
-- (void)startProximityPairingServiceScanningWithRSSI:(id)a3 duplicates:(BOOL)a4 scanMode:(int64_t)a5
+- (void)startProximityPairingServiceScanningWithRSSI:(id)i duplicates:(BOOL)duplicates scanMode:(int64_t)mode
 {
-  v6 = a4;
+  duplicatesCopy = duplicates;
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  iCopy = i;
   v9 = 300;
-  if ((a5 - 1) < 2)
+  if ((mode - 1) < 2)
   {
     v9 = 60;
   }
 
-  if (a5 == 3)
+  if (mode == 3)
   {
     v10 = 40;
   }
@@ -134,8 +134,8 @@
     v10 = v9;
   }
 
-  v11 = [(WPClient *)self isBubbleTestClient];
-  if (v11)
+  isBubbleTestClient = [(WPClient *)self isBubbleTestClient];
+  if (isBubbleTestClient)
   {
     v12 = 30;
   }
@@ -150,11 +150,11 @@
   *(&buf + 1) = v12;
   v18 = 30;
   [v13 setScanningRates:&buf];
-  [v13 setAllowDuplicates:v11 | v6];
+  [v13 setAllowDuplicates:isBubbleTestClient | duplicatesCopy];
   [v13 setClientType:7];
-  if (v8)
+  if (iCopy)
   {
-    [v13 setRssiThreshold:v8];
+    [v13 setRssiThreshold:iCopy];
   }
 
   if (WPLogInitOnce != -1)
@@ -177,25 +177,25 @@
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
   v29[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"kDeviceAdvertisingData"];
-  v6 = [v4 objectForKeyedSubscript:@"kDevicePeripheralUUID"];
-  v7 = [v4 objectForKeyedSubscript:@"kDeviceRSSI"];
-  v8 = [v4 objectForKeyedSubscript:@"kDeviceName"];
-  v27 = [v4 objectForKeyedSubscript:@"kDevicePaired"];
-  v26 = [v4 objectForKeyedSubscript:@"kDeviceChannel"];
-  v25 = [v4 objectForKeyedSubscript:@"kDeviceTime"];
-  v9 = [v4 objectForKeyedSubscript:@"kDeviceAddress"];
-  v10 = [v4 objectForKeyedSubscript:@"kDeviceProxPairingStatusDecrypted"];
-  v11 = [v4 objectForKeyedSubscript:@"kDeviceAccessoryStatusDecrypted"];
+  discoveredCopy = discovered;
+  v5 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAdvertisingData"];
+  v6 = [discoveredCopy objectForKeyedSubscript:@"kDevicePeripheralUUID"];
+  v7 = [discoveredCopy objectForKeyedSubscript:@"kDeviceRSSI"];
+  v8 = [discoveredCopy objectForKeyedSubscript:@"kDeviceName"];
+  v27 = [discoveredCopy objectForKeyedSubscript:@"kDevicePaired"];
+  v26 = [discoveredCopy objectForKeyedSubscript:@"kDeviceChannel"];
+  v25 = [discoveredCopy objectForKeyedSubscript:@"kDeviceTime"];
+  v9 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAddress"];
+  v10 = [discoveredCopy objectForKeyedSubscript:@"kDeviceProxPairingStatusDecrypted"];
+  v11 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAccessoryStatusDecrypted"];
 
   if ([v5 length] > 6)
   {
     v24 = v6;
-    v14 = [(WPPairing *)self delegate];
+    delegate = [(WPPairing *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
@@ -211,16 +211,16 @@
       v29[3] = v7;
       v28[4] = @"WPPairingKeyDeviceTime";
       v28[5] = @"WPPairingKeyDeviceAddress";
-      v16 = v9;
+      data = v9;
       v29[4] = v25;
       if (!v9)
       {
-        v16 = [MEMORY[0x277CBEA90] data];
+        data = [MEMORY[0x277CBEA90] data];
       }
 
-      v29[5] = v16;
+      v29[5] = data;
       v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:6];
-      v18 = [v17 mutableCopy];
+      delegate4 = [v17 mutableCopy];
 
       if (!v9)
       {
@@ -228,17 +228,17 @@
 
       if (v10)
       {
-        [v18 setObject:v10 forKeyedSubscript:@"WPPairingKeyStatusDecrypted"];
+        [delegate4 setObject:v10 forKeyedSubscript:@"WPPairingKeyStatusDecrypted"];
       }
 
       if (v11)
       {
-        [v18 setObject:v11 forKeyedSubscript:@"WPPairingKeyAccessoryStatusDecrypted"];
+        [delegate4 setObject:v11 forKeyedSubscript:@"WPPairingKeyAccessoryStatusDecrypted"];
       }
 
-      v19 = [(WPPairing *)self delegate];
-      v20 = [v18 copy];
-      [v19 pairing:self foundDevice:v24 payload:v5 rssi:v7 peerInfo:v20];
+      delegate2 = [(WPPairing *)self delegate];
+      v20 = [delegate4 copy];
+      [delegate2 pairing:self foundDevice:v24 payload:v5 rssi:v7 peerInfo:v20];
 
       v6 = v24;
     }
@@ -246,7 +246,7 @@
     else
     {
       v12 = v8;
-      v21 = [(WPPairing *)self delegate];
+      delegate3 = [(WPPairing *)self delegate];
       v22 = objc_opt_respondsToSelector();
 
       v6 = v24;
@@ -255,9 +255,9 @@
         goto LABEL_19;
       }
 
-      v18 = [(WPPairing *)self delegate];
-      v19 = [v24 UUIDString];
-      [v18 pairing:self foundDevice:v19 payload:v5 rssi:v7];
+      delegate4 = [(WPPairing *)self delegate];
+      delegate2 = [v24 UUIDString];
+      [delegate4 pairing:self foundDevice:delegate2 payload:v5 rssi:v7];
     }
 
     goto LABEL_19;
@@ -280,16 +280,16 @@ LABEL_19:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scanningFailedToStart:(id)a3 ofType:(unsigned __int8)a4
+- (void)scanningFailedToStart:(id)start ofType:(unsigned __int8)type
 {
-  v8 = a3;
-  v5 = [(WPPairing *)self delegate];
+  startCopy = start;
+  delegate = [(WPPairing *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(WPPairing *)self delegate];
-    [v7 pairing:self failedToStartScanningWithError:v8];
+    delegate2 = [(WPPairing *)self delegate];
+    [delegate2 pairing:self failedToStartScanningWithError:startCopy];
   }
 }
 
@@ -314,9 +314,9 @@ LABEL_19:
   [(WPClient *)&v5 stopScanning:v3];
 }
 
-- (void)ignoreDeviceUntilNextUnlock:(id)a3 ignoreDevice:(BOOL)a4
+- (void)ignoreDeviceUntilNextUnlock:(id)unlock ignoreDevice:(BOOL)device
 {
-  v4 = a3;
+  unlockCopy = unlock;
   if (WPLogInitOnce != -1)
   {
     [WPPairing ignoreDeviceUntilNextUnlock:ignoreDevice:];
@@ -329,21 +329,21 @@ LABEL_19:
   }
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
-  v5 = [(WPClient *)self state];
+  state = [(WPClient *)self state];
   v9.receiver = self;
   v9.super_class = WPPairing;
-  [(WPClient *)&v9 stateDidChange:a3];
-  if ([(WPClient *)self state]!= v5)
+  [(WPClient *)&v9 stateDidChange:change];
+  if ([(WPClient *)self state]!= state)
   {
-    v6 = [(WPPairing *)self delegate];
+    delegate = [(WPPairing *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(WPPairing *)self delegate];
-      [v8 pairingDidUpdateState:self];
+      delegate2 = [(WPPairing *)self delegate];
+      [delegate2 pairingDidUpdateState:self];
     }
   }
 }

@@ -1,69 +1,69 @@
 @interface CAMOverlayClientConnection
-- (CAMOverlayClientConnection)initWithBoardServiceConnection:(id)a3 queue:(id)a4;
+- (CAMOverlayClientConnection)initWithBoardServiceConnection:(id)connection queue:(id)queue;
 - (NSString)description;
-- (void)_enumerateObserversWithBlock:(id)a3;
-- (void)_handleConnectionDidActivate:(id)a3;
-- (void)_handleConnectionDidInterrupt:(id)a3;
-- (void)_handleConnectionDidInvalidate:(id)a3;
-- (void)_updateStatusWithReason:(unint64_t)a3;
-- (void)addObserver:(id)a3;
-- (void)applyControlUpdate:(id)a3;
-- (void)clientDidConfigureControls:(id)a3 initialUpdates:(id)a4 reply:(id)a5;
-- (void)clientDidUpdateControl:(id)a3 reply:(id)a4;
+- (void)_enumerateObserversWithBlock:(id)block;
+- (void)_handleConnectionDidActivate:(id)activate;
+- (void)_handleConnectionDidInterrupt:(id)interrupt;
+- (void)_handleConnectionDidInvalidate:(id)invalidate;
+- (void)_updateStatusWithReason:(unint64_t)reason;
+- (void)addObserver:(id)observer;
+- (void)applyControlUpdate:(id)update;
+- (void)clientDidConfigureControls:(id)controls initialUpdates:(id)updates reply:(id)reply;
+- (void)clientDidUpdateControl:(id)control reply:(id)reply;
 - (void)dealloc;
 - (void)invalidate;
-- (void)removeObserver:(id)a3;
-- (void)sendActiveControlIdentifier:(id)a3;
-- (void)setFocusLockGestureEnabled:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)sendActiveControlIdentifier:(id)identifier;
+- (void)setFocusLockGestureEnabled:(id)enabled;
 @end
 
 @implementation CAMOverlayClientConnection
 
-- (CAMOverlayClientConnection)initWithBoardServiceConnection:(id)a3 queue:(id)a4
+- (CAMOverlayClientConnection)initWithBoardServiceConnection:(id)connection queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  queueCopy = queue;
   v27.receiver = self;
   v27.super_class = CAMOverlayClientConnection;
   v9 = [(CAMOverlayClientConnection *)&v27 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->__connectionQueue, a4);
+    objc_storeStrong(&v9->__connectionQueue, queue);
     v11 = [NSHashTable hashTableWithOptions:517];
     registeredObservers = v10->__registeredObservers;
     v10->__registeredObservers = v11;
 
-    v13 = [v7 remoteToken];
+    remoteToken = [connectionCopy remoteToken];
     auditToken = v10->_auditToken;
-    v10->_auditToken = v13;
+    v10->_auditToken = remoteToken;
 
     v10->__debugID = ++qword_100060600;
     v21 = _NSConcreteStackBlock;
     v22 = 3221225472;
     v23 = sub_100012324;
     v24 = &unk_1000558B8;
-    v25 = v8;
+    v25 = queueCopy;
     v15 = v10;
     v26 = v15;
-    [v7 configureConnection:&v21];
+    [connectionCopy configureConnection:&v21];
     v16 = os_log_create("com.apple.camera.overlay", "Angel");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v15 _loggingHeader];
-      v18 = [v7 userInfo];
+      _loggingHeader = [v15 _loggingHeader];
+      userInfo = [connectionCopy userInfo];
       v19 = [(BSAuditToken *)v10->_auditToken pid];
       *buf = 138543874;
-      v29 = v17;
+      v29 = _loggingHeader;
       v30 = 2114;
-      v31 = v18;
+      v31 = userInfo;
       v32 = 1024;
       v33 = v19;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Activating connection from %{public}@:%d", buf, 0x1Cu);
     }
 
-    [v7 activate];
-    objc_storeStrong(v15 + 8, a3);
+    [connectionCopy activate];
+    objc_storeStrong(v15 + 8, connection);
   }
 
   return v10;
@@ -83,34 +83,34 @@
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(CAMOverlayClientConnection *)self _debugID];
-  v5 = [(CAMOverlayClientConnection *)self auditToken];
-  v6 = [v5 pid];
-  v7 = [(CAMOverlayClientConnection *)self status];
-  if (v7 > 2)
+  _debugID = [(CAMOverlayClientConnection *)self _debugID];
+  auditToken = [(CAMOverlayClientConnection *)self auditToken];
+  v6 = [auditToken pid];
+  status = [(CAMOverlayClientConnection *)self status];
+  if (status > 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_100055A40[v7];
+    v8 = off_100055A40[status];
   }
 
-  v9 = [NSString stringWithFormat:@"<%@ ID: [%lu] pid: %d; status: %@>", v3, v4, v6, v8];;
+  v9 = [NSString stringWithFormat:@"<%@ ID: [%lu] pid: %d; status: %@>", v3, _debugID, v6, v8];;
 
   return v9;
 }
 
-- (void)_updateStatusWithReason:(unint64_t)a3
+- (void)_updateStatusWithReason:(unint64_t)reason
 {
-  v5 = [(CAMOverlayClientConnection *)self _connection];
+  _connection = [(CAMOverlayClientConnection *)self _connection];
 
-  if (v5)
+  if (_connection)
   {
-    v6 = [(CAMOverlayClientConnection *)self _clientProxy];
+    _clientProxy = [(CAMOverlayClientConnection *)self _clientProxy];
 
-    v7 = v6 != 0;
+    v7 = _clientProxy != 0;
   }
 
   else
@@ -123,21 +123,21 @@
     v8 = os_log_create("com.apple.camera.overlay", "Angel");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(CAMOverlayClientConnection *)self _loggingHeader];
-      v10 = v9;
+      _loggingHeader = [(CAMOverlayClientConnection *)self _loggingHeader];
+      v10 = _loggingHeader;
       v11 = off_100055A40[v7];
-      if (a3 > 2)
+      if (reason > 2)
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = off_100055A58[a3];
+        v12 = off_100055A58[reason];
       }
 
       *buf = 138543874;
-      v15 = v9;
+      v15 = _loggingHeader;
       v16 = 2114;
       v17 = v11;
       v18 = 2114;
@@ -158,8 +158,8 @@
 
 - (void)invalidate
 {
-  v3 = [(CAMOverlayClientConnection *)self _connection];
-  [v3 invalidate];
+  _connection = [(CAMOverlayClientConnection *)self _connection];
+  [_connection invalidate];
 
   [(CAMOverlayClientConnection *)self set_connection:0];
   [(CAMOverlayClientConnection *)self _setClientProxy:0];
@@ -167,25 +167,25 @@
   [(CAMOverlayClientConnection *)self _updateStatusWithReason:1];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAMOverlayClientConnection *)self _registeredObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  _registeredObservers = [(CAMOverlayClientConnection *)self _registeredObservers];
+  [_registeredObservers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(CAMOverlayClientConnection *)self _registeredObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  _registeredObservers = [(CAMOverlayClientConnection *)self _registeredObservers];
+  [_registeredObservers removeObject:observerCopy];
 }
 
-- (void)_enumerateObserversWithBlock:(id)a3
+- (void)_enumerateObserversWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CAMOverlayClientConnection *)self _registeredObservers];
-  v6 = [v5 copy];
+  blockCopy = block;
+  _registeredObservers = [(CAMOverlayClientConnection *)self _registeredObservers];
+  v6 = [_registeredObservers copy];
 
   v14 = 0u;
   v15 = 0u;
@@ -207,7 +207,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v4[2](v4, *(*(&v12 + 1) + 8 * v11));
+        blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v11));
         v11 = v11 + 1;
       }
 
@@ -219,19 +219,19 @@
   }
 }
 
-- (void)_handleConnectionDidActivate:(id)a3
+- (void)_handleConnectionDidActivate:(id)activate
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100012C5C;
   v4[3] = &unk_100055908;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  activateCopy = activate;
+  v3 = activateCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)_handleConnectionDidInterrupt:(id)a3
+- (void)_handleConnectionDidInterrupt:(id)interrupt
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -241,7 +241,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_handleConnectionDidInvalidate:(id)a3
+- (void)_handleConnectionDidInvalidate:(id)invalidate
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -251,64 +251,64 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)applyControlUpdate:(id)a3
+- (void)applyControlUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [v4 controlIdentifier];
-  v6 = [(CAMOverlayClientConnection *)self controlsByID];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  updateCopy = update;
+  controlIdentifier = [updateCopy controlIdentifier];
+  controlsByID = [(CAMOverlayClientConnection *)self controlsByID];
+  v7 = [controlsByID objectForKeyedSubscript:controlIdentifier];
 
   v8 = os_log_create("com.apple.camera.overlay", "Angel");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CAMOverlayClientConnection *)self _loggingHeader];
-    v10 = [v4 debugDescription];
+    _loggingHeader = [(CAMOverlayClientConnection *)self _loggingHeader];
+    v10 = [updateCopy debugDescription];
     v13 = 138543874;
-    v14 = v9;
+    v14 = _loggingHeader;
     v15 = 2114;
     v16 = v10;
     v17 = 2114;
-    v18 = v5;
+    v18 = controlIdentifier;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Sending value %{public}@ for ID %{public}@", &v13, 0x20u);
   }
 
-  v11 = [(CAMOverlayClientConnection *)self _updatesByID];
-  [v11 setObject:v4 forKeyedSubscript:v5];
+  _updatesByID = [(CAMOverlayClientConnection *)self _updatesByID];
+  [_updatesByID setObject:updateCopy forKeyedSubscript:controlIdentifier];
 
-  v12 = [(CAMOverlayClientConnection *)self _clientProxy];
-  [v12 serverDidUpdateControl:v4];
+  _clientProxy = [(CAMOverlayClientConnection *)self _clientProxy];
+  [_clientProxy serverDidUpdateControl:updateCopy];
 }
 
-- (void)sendActiveControlIdentifier:(id)a3
+- (void)sendActiveControlIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = os_log_create("com.apple.camera.overlay", "Angel");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CAMOverlayClientConnection *)self _loggingHeader];
+    _loggingHeader = [(CAMOverlayClientConnection *)self _loggingHeader];
     v8 = 138543618;
-    v9 = v6;
+    v9 = _loggingHeader;
     v10 = 2112;
-    v11 = v4;
+    v11 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Sending active control ID %@", &v8, 0x16u);
   }
 
-  v7 = [(CAMOverlayClientConnection *)self _clientProxy];
-  [v7 serverDidChangeActiveControlIdentifier:v4];
+  _clientProxy = [(CAMOverlayClientConnection *)self _clientProxy];
+  [_clientProxy serverDidChangeActiveControlIdentifier:identifierCopy];
 }
 
-- (void)clientDidConfigureControls:(id)a3 initialUpdates:(id)a4 reply:(id)a5
+- (void)clientDidConfigureControls:(id)controls initialUpdates:(id)updates reply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v83 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v8 count]);
+  controlsCopy = controls;
+  updatesCopy = updates;
+  replyCopy = reply;
+  v83 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [updatesCopy count]);
   v82 = +[NSMutableSet set];
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v10 = v8;
+  v10 = updatesCopy;
   v11 = [v10 countByEnumeratingWithState:&v96 objects:v105 count:16];
   if (v11)
   {
@@ -327,8 +327,8 @@
         v15 = *(*(&v96 + 1) + 8 * v14);
         if ([v15 isValueUpdate])
         {
-          v16 = [v15 controlIdentifier];
-          [v83 setObject:v15 forKeyedSubscript:v16];
+          controlIdentifier = [v15 controlIdentifier];
+          [v83 setObject:v15 forKeyedSubscript:controlIdentifier];
 LABEL_8:
 
           goto LABEL_11;
@@ -336,8 +336,8 @@ LABEL_8:
 
         if ([v15 valueType] == 5 && (objc_msgSend(v15, "isEnabled") & 1) == 0)
         {
-          v16 = [v15 controlIdentifier];
-          [v82 addObject:v16];
+          controlIdentifier = [v15 controlIdentifier];
+          [v82 addObject:controlIdentifier];
           goto LABEL_8;
         }
 
@@ -353,15 +353,15 @@ LABEL_11:
     while (v17);
   }
 
-  v71 = v9;
+  v71 = replyCopy;
   v73 = v10;
 
-  v81 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
+  v81 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [controlsCopy count]);
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  obj = v7;
+  obj = controlsCopy;
   v18 = [obj countByEnumeratingWithState:&v92 objects:v104 count:16];
   if (v18)
   {
@@ -377,9 +377,9 @@ LABEL_11:
         }
 
         v22 = *(*(&v92 + 1) + 8 * i);
-        v23 = [v22 identifier];
-        v24 = [v82 containsObject:v23];
-        v25 = [v83 objectForKeyedSubscript:v23];
+        identifier = [v22 identifier];
+        v24 = [v82 containsObject:identifier];
+        v25 = [v83 objectForKeyedSubscript:identifier];
         v26 = [v25 debugDescription];
         v27 = v26;
         v28 = &stru_1000572E8;
@@ -401,10 +401,10 @@ LABEL_11:
   v30 = os_log_create("com.apple.camera.overlay", "Angel");
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [(CAMOverlayClientConnection *)self _loggingHeader];
+    _loggingHeader = [(CAMOverlayClientConnection *)self _loggingHeader];
     v32 = [v81 componentsJoinedByString:{@", "}];
     *buf = 138543618;
-    *&buf[4] = v31;
+    *&buf[4] = _loggingHeader;
     v102 = 2114;
     v103 = v32;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}@: Received controls: (%{public}@\n)", buf, 0x16u);
@@ -440,8 +440,8 @@ LABEL_11:
 
       v37 = *(*(&v88 + 1) + 8 * j);
       v38 = [CAMOverlayServiceControlHelpers interpretControl:v37];
-      v39 = [v38 identifier];
-      v40 = [v83 objectForKeyedSubscript:v39];
+      identifier2 = [v38 identifier];
+      v40 = [v83 objectForKeyedSubscript:identifier2];
       if (!v40)
       {
         v106 = NSDebugDescriptionErrorKey;
@@ -491,9 +491,9 @@ LABEL_58:
             goto LABEL_59;
           }
 
-          v51 = [v37 controlType];
+          controlType = [v37 controlType];
 
-          if (v51)
+          if (controlType)
           {
             goto LABEL_53;
           }
@@ -547,9 +547,9 @@ LABEL_47:
         goto LABEL_58;
       }
 
-      v43 = [v37 controlType];
+      controlType2 = [v37 controlType];
 
-      if (v43)
+      if (controlType2)
       {
         goto LABEL_47;
       }
@@ -567,10 +567,10 @@ LABEL_47:
 
 LABEL_38:
       [v76 addObject:v38];
-      [v75 setObject:v38 forKeyedSubscript:v39];
-      [v74 setObject:v40 forKeyedSubscript:v39];
-      v45 = [v38 identifier];
-      v46 = [v82 containsObject:v45];
+      [v75 setObject:v38 forKeyedSubscript:identifier2];
+      [v74 setObject:v40 forKeyedSubscript:identifier2];
+      identifier3 = [v38 identifier];
+      v46 = [v82 containsObject:identifier3];
 
       if (v46)
       {
@@ -601,7 +601,7 @@ LABEL_63:
   v66 = v35;
   if ([v66 count] == 1)
   {
-    v67 = [v66 firstObject];
+    firstObject = [v66 firstObject];
   }
 
   else
@@ -610,7 +610,7 @@ LABEL_63:
 
     if (v68 < 2)
     {
-      v67 = 0;
+      firstObject = 0;
     }
 
     else
@@ -619,29 +619,29 @@ LABEL_63:
       v106 = NSDebugDescriptionErrorKey;
       *buf = @"MultipleErrors";
       v70 = [NSDictionary dictionaryWithObjects:buf forKeys:&v106 count:1];
-      v67 = [NSError errorWithDomain:v69 code:-1000 userInfo:v70];
+      firstObject = [NSError errorWithDomain:v69 code:-1000 userInfo:v70];
     }
   }
 
-  (v71)[2](v71, v67);
+  (v71)[2](v71, firstObject);
 }
 
-- (void)clientDidUpdateControl:(id)a3 reply:(id)a4
+- (void)clientDidUpdateControl:(id)control reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 controlIdentifier];
+  controlCopy = control;
+  replyCopy = reply;
+  controlIdentifier = [controlCopy controlIdentifier];
   v9 = os_log_create("com.apple.camera.overlay", "Angel");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(CAMOverlayClientConnection *)self _loggingHeader];
-    v11 = [v6 debugDescription];
+    _loggingHeader = [(CAMOverlayClientConnection *)self _loggingHeader];
+    v11 = [controlCopy debugDescription];
     *buf = 138543874;
-    v20 = v10;
+    v20 = _loggingHeader;
     v21 = 2114;
     v22 = v11;
     v23 = 2114;
-    v24 = v8;
+    v24 = controlIdentifier;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Received value %{public}@ for ID %{public}@", buf, 0x20u);
   }
 
@@ -650,31 +650,31 @@ LABEL_63:
   v15[2] = sub_100014350;
   v15[3] = &unk_1000559D0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v6;
-  v18 = v7;
-  v12 = v7;
-  v13 = v6;
-  v14 = v8;
+  v16 = controlIdentifier;
+  v17 = controlCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = controlCopy;
+  v14 = controlIdentifier;
   dispatch_async(&_dispatch_main_q, v15);
 }
 
-- (void)setFocusLockGestureEnabled:(id)a3
+- (void)setFocusLockGestureEnabled:(id)enabled
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = os_log_create("com.apple.camera.overlay", "Angel");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CAMOverlayClientConnection *)self _loggingHeader];
-    v7 = v6;
+    _loggingHeader = [(CAMOverlayClientConnection *)self _loggingHeader];
+    v7 = _loggingHeader;
     v8 = @"DISABLED";
-    if (v4)
+    if (bOOLValue)
     {
       v8 = @"ENABLED";
     }
 
     *buf = 138543618;
-    v12 = v6;
+    v12 = _loggingHeader;
     v13 = 2114;
     v14 = v8;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Received focus lock gesture %{public}@", buf, 0x16u);
@@ -684,7 +684,7 @@ LABEL_63:
   v9[1] = 3221225472;
   v9[2] = sub_100014748;
   v9[3] = &unk_100055A20;
-  v10 = v4;
+  v10 = bOOLValue;
   v9[4] = self;
   dispatch_async(&_dispatch_main_q, v9);
 }

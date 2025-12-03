@@ -6,14 +6,14 @@
 
 - (BOOL)isPresent
 {
-  v3 = [(ComponentCameraBase *)self IORegClassName];
+  iORegClassName = [(ComponentCameraBase *)self IORegClassName];
 
-  v4 = [(ComponentCameraBase *)self serialNumber];
-  v5 = v4;
+  serialNumber = [(ComponentCameraBase *)self serialNumber];
+  v5 = serialNumber;
   LOBYTE(v6) = 0;
-  if (v3 && v4)
+  if (iORegClassName && serialNumber)
   {
-    v6 = [v4 isEqualToString:&stru_1000B2A68] ^ 1;
+    v6 = [serialNumber isEqualToString:&stru_1000B2A68] ^ 1;
   }
 
   return v6;

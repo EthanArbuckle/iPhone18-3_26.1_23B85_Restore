@@ -1,24 +1,24 @@
 @interface PKSoftwareUpdateTableView
-- (PKSoftwareUpdateTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4;
-- (id)_messageAttributedStringWithTextColor:(id)a3;
+- (PKSoftwareUpdateTableView)initWithFrame:(CGRect)frame style:(int64_t)style;
+- (id)_messageAttributedStringWithTextColor:(id)color;
 - (void)layoutSubviews;
-- (void)setContext:(int64_t)a3;
-- (void)setLinkColor:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setContext:(int64_t)context;
+- (void)setLinkColor:(id)color;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation PKSoftwareUpdateTableView
 
-- (PKSoftwareUpdateTableView)initWithFrame:(CGRect)a3 style:(int64_t)a4
+- (PKSoftwareUpdateTableView)initWithFrame:(CGRect)frame style:(int64_t)style
 {
   v26.receiver = self;
   v26.super_class = PKSoftwareUpdateTableView;
-  v4 = [(PKSoftwareUpdateTableView *)&v26 initWithFrame:a4 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PKSoftwareUpdateTableView *)&v26 initWithFrame:style style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v4)
   {
-    v5 = [MEMORY[0x1E69DC888] grayColor];
+    grayColor = [MEMORY[0x1E69DC888] grayColor];
     textColor = v4->_textColor;
-    v4->_textColor = v5;
+    v4->_textColor = grayColor;
 
     linkColor = v4->_linkColor;
     v4->_linkColor = 0;
@@ -38,8 +38,8 @@
     [(UILabel *)v12 setFont:v13];
 
     v14 = v4->_titleLabel;
-    v15 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v14 setBackgroundColor:v15];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v14 setBackgroundColor:clearColor];
 
     [(UILabel *)v4->_titleLabel setTextColor:v4->_textColor];
     [(UILabel *)v4->_titleLabel setNumberOfLines:0];
@@ -56,8 +56,8 @@
     v4->_messageView = v19;
 
     v21 = v4->_messageView;
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [(UITextView *)v21 setBackgroundColor:v22];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UITextView *)v21 setBackgroundColor:clearColor2];
 
     [(UITextView *)v4->_messageView setEditable:0];
     [(UITextView *)v4->_messageView _setInteractiveTextSelectionDisabled:1];
@@ -75,9 +75,9 @@
   return v4;
 }
 
-- (void)setContext:(int64_t)a3
+- (void)setContext:(int64_t)context
 {
-  self->_context = a3;
+  self->_context = context;
   IsBridge = PKPaymentSetupContextIsBridge();
   v7 = PKDeviceSpecificLocalizedStringKeyForKey(@"FAIL_FORWARD_UPDATE_TITLE", IsBridge);
   titleLabel = self->_titleLabel;
@@ -87,34 +87,34 @@
   [(PKSoftwareUpdateTableView *)self setNeedsLayout];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v8 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(UILabel *)self->_titleLabel setTextColor:v8];
     messageView = self->_messageView;
     v7 = [(PKSoftwareUpdateTableView *)self _messageAttributedStringWithTextColor:v8];
     [(UITextView *)messageView setAttributedText:v7];
 
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)setLinkColor:(id)a3
+- (void)setLinkColor:(id)color
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_linkColor != v5)
+  colorCopy = color;
+  if (self->_linkColor != colorCopy)
   {
-    objc_storeStrong(&self->_linkColor, a3);
+    objc_storeStrong(&self->_linkColor, color);
     messageView = self->_messageView;
-    if (v5)
+    if (colorCopy)
     {
       v8 = *MEMORY[0x1E69DB650];
-      v9[0] = v5;
+      v9[0] = colorCopy;
       v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
       [(UITextView *)messageView setLinkTextAttributes:v7];
     }
@@ -131,14 +131,14 @@
   v39.receiver = self;
   v39.super_class = PKSoftwareUpdateTableView;
   [(PKSoftwareUpdateTableView *)&v39 layoutSubviews];
-  v3 = [(PKSoftwareUpdateTableView *)self safeAreaLayoutGuide];
-  [v3 layoutFrame];
+  safeAreaLayoutGuide = [(PKSoftwareUpdateTableView *)self safeAreaLayoutGuide];
+  [safeAreaLayoutGuide layoutFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(UILabel *)self->_titleLabel font];
+  font = [(UILabel *)self->_titleLabel font];
   [(PKSoftwareUpdateTableView *)self directionalLayoutMargins];
   v14 = v13;
   [(PKSoftwareUpdateTableView *)self directionalLayoutMargins];
@@ -150,7 +150,7 @@
   [(UILabel *)titleLabel pkui_sizeThatFits:1 forceWordWrap:?];
   v19 = v18;
   v21 = v20;
-  [v12 _bodyLeading];
+  [font _bodyLeading];
   v23 = v9 - v16;
   if (v21 > v22 + v22)
   {
@@ -162,7 +162,7 @@
   v26 = self->_titleLabel;
   PKFloatRoundToPixel();
   v28 = v27;
-  [v12 ascender];
+  [font ascender];
   PKFloatRoundToPixel();
   [(UILabel *)v26 setFrame:v28, v29, v19, v21];
   [(UITextView *)self->_messageView sizeThatFits:v23, 1.79769313e308];
@@ -173,9 +173,9 @@
   v36 = v35;
   [(UILabel *)self->_titleLabel frame];
   CGRectGetMaxY(v40);
-  [v12 descender];
-  [v12 _bodyLeading];
-  [v12 ascender];
+  [font descender];
+  [font _bodyLeading];
+  [font ascender];
   PKFloatRoundToPixel();
   [(UITextView *)messageView setFrame:v36, v37, v31, v33];
   scrollView = self->_scrollView;
@@ -183,20 +183,20 @@
   [(UIScrollView *)scrollView setContentSize:v9, CGRectGetMaxY(v41)];
 }
 
-- (id)_messageAttributedStringWithTextColor:(id)a3
+- (id)_messageAttributedStringWithTextColor:(id)color
 {
   v15[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69DB7D0];
-  v4 = a3;
-  v5 = [v3 defaultParagraphStyle];
-  v6 = [v5 mutableCopy];
+  colorCopy = color;
+  defaultParagraphStyle = [v3 defaultParagraphStyle];
+  v6 = [defaultParagraphStyle mutableCopy];
 
   [v6 setAlignment:1];
   v14[0] = *MEMORY[0x1E69DB648];
   v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   v8 = *MEMORY[0x1E69DB650];
   v15[0] = v7;
-  v15[1] = v4;
+  v15[1] = colorCopy;
   v9 = *MEMORY[0x1E69DB688];
   v14[1] = v8;
   v14[2] = v9;

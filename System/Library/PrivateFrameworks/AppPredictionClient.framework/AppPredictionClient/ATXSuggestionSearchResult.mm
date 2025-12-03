@@ -1,56 +1,56 @@
 @interface ATXSuggestionSearchResult
-- (ATXSuggestionSearchResult)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setProactiveSuggestion:(id)a3;
+- (ATXSuggestionSearchResult)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setProactiveSuggestion:(id)suggestion;
 @end
 
 @implementation ATXSuggestionSearchResult
 
-- (void)setProactiveSuggestion:(id)a3
+- (void)setProactiveSuggestion:(id)suggestion
 {
-  v5 = a3;
-  if (self->_proactiveSuggestion != v5)
+  suggestionCopy = suggestion;
+  if (self->_proactiveSuggestion != suggestionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_proactiveSuggestion, a3);
-    v5 = v6;
+    v6 = suggestionCopy;
+    objc_storeStrong(&self->_proactiveSuggestion, suggestion);
+    suggestionCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = ATXSuggestionSearchResult;
-  v4 = [(ATXSuggestionSearchResult *)&v10 copyWithZone:a3];
-  v5 = [(ATXSuggestionSearchResult *)self proactiveSuggestion];
-  v6 = [v5 copy];
+  v4 = [(ATXSuggestionSearchResult *)&v10 copyWithZone:zone];
+  proactiveSuggestion = [(ATXSuggestionSearchResult *)self proactiveSuggestion];
+  v6 = [proactiveSuggestion copy];
   [v4 setProactiveSuggestion:v6];
 
-  v7 = [(ATXSuggestionSearchResult *)self blendingModelUICacheUpdateUUID];
-  v8 = [v7 copy];
+  blendingModelUICacheUpdateUUID = [(ATXSuggestionSearchResult *)self blendingModelUICacheUpdateUUID];
+  v8 = [blendingModelUICacheUpdateUUID copy];
   [v4 setBlendingModelUICacheUpdateUUID:v8];
 
   return v4;
 }
 
-- (ATXSuggestionSearchResult)initWithCoder:(id)a3
+- (ATXSuggestionSearchResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ATXSuggestionSearchResult;
-  v5 = [(ATXSuggestionSearchResult *)&v13 initWithCoder:v4];
+  v5 = [(ATXSuggestionSearchResult *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proactiveSuggestion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proactiveSuggestion"];
     proactiveSuggestion = v5->_proactiveSuggestion;
     v5->_proactiveSuggestion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"blendingCacheUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"blendingCacheUUID"];
     blendingModelUICacheUpdateUUID = v5->_blendingModelUICacheUpdateUUID;
     v5->_blendingModelUICacheUpdateUUID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contextActionIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contextActionIdentifier"];
     contextActionIdentifier = v5->_contextActionIdentifier;
     v5->_contextActionIdentifier = v10;
   }
@@ -58,16 +58,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   proactiveSuggestion = self->_proactiveSuggestion;
-  v5 = a3;
-  [v5 encodeObject:proactiveSuggestion forKey:@"proactiveSuggestion"];
-  [v5 encodeObject:self->_blendingModelUICacheUpdateUUID forKey:@"blendingCacheUUID"];
-  [v5 encodeObject:self->_contextActionIdentifier forKey:@"contextActionIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:proactiveSuggestion forKey:@"proactiveSuggestion"];
+  [coderCopy encodeObject:self->_blendingModelUICacheUpdateUUID forKey:@"blendingCacheUUID"];
+  [coderCopy encodeObject:self->_contextActionIdentifier forKey:@"contextActionIdentifier"];
   v6.receiver = self;
   v6.super_class = ATXSuggestionSearchResult;
-  [(ATXSuggestionSearchResult *)&v6 encodeWithCoder:v5];
+  [(ATXSuggestionSearchResult *)&v6 encodeWithCoder:coderCopy];
 }
 
 @end

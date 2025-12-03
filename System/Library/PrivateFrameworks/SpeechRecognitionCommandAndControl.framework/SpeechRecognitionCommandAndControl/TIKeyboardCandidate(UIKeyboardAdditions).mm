@@ -6,7 +6,7 @@
 
 - (uint64_t)isSlottedCandidate
 {
-  if ([a1 isSecureContentCandidate])
+  if ([self isSecureContentCandidate])
   {
     isKindOfClass = 1;
   }

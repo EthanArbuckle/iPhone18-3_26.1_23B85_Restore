@@ -1,7 +1,7 @@
 @interface MSPStorageTipsManager
 - (MSPStorageTipsManager)init;
 - (void)dealloc;
-- (void)fetchProposedTipWithCompletionHandler:(id)a3;
+- (void)fetchProposedTipWithCompletionHandler:(id)handler;
 @end
 
 @implementation MSPStorageTipsManager
@@ -39,9 +39,9 @@
   [(MSPStorageTipsManager *)&v4 dealloc];
 }
 
-- (void)fetchProposedTipWithCompletionHandler:(id)a3
+- (void)fetchProposedTipWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = *MEMORY[0x277D0EA80];
   v5 = *(MEMORY[0x277D0EA80] + 8);
   if (GEOConfigGetBOOL())
@@ -50,8 +50,8 @@
     block[1] = 3221225472;
     block[2] = __63__MSPStorageTipsManager_fetchProposedTipWithCompletionHandler___block_invoke;
     block[3] = &unk_2798676D0;
-    v15 = v3;
-    v6 = v3;
+    v15 = handlerCopy;
+    v6 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v7 = v15;
   }
@@ -65,9 +65,9 @@
     v11[2] = __63__MSPStorageTipsManager_fetchProposedTipWithCompletionHandler___block_invoke_2;
     v11[3] = &unk_279867FE8;
     v12 = v8;
-    v13 = v3;
+    v13 = handlerCopy;
     v7 = v8;
-    v10 = v3;
+    v10 = handlerCopy;
     [v7 fetchAllSubscriptionsWithCallbackQueue:global_queue completionHandler:v11];
   }
 }

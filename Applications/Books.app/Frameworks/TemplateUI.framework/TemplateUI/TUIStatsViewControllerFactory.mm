@@ -1,22 +1,22 @@
 @interface TUIStatsViewControllerFactory
-+ (id)newViewControllerWithFeed:(id)a3;
-+ (id)newViewControllerWithFeedEntry:(id)a3;
++ (id)newViewControllerWithFeed:(id)feed;
++ (id)newViewControllerWithFeedEntry:(id)entry;
 @end
 
 @implementation TUIStatsViewControllerFactory
 
-+ (id)newViewControllerWithFeedEntry:(id)a3
++ (id)newViewControllerWithFeedEntry:(id)entry
 {
-  v3 = a3;
-  v4 = [[TUIStatsFeedEntryViewController alloc] initWithFeedEntry:v3];
+  entryCopy = entry;
+  v4 = [[TUIStatsFeedEntryViewController alloc] initWithFeedEntry:entryCopy];
 
   return v4;
 }
 
-+ (id)newViewControllerWithFeed:(id)a3
++ (id)newViewControllerWithFeed:(id)feed
 {
-  v3 = a3;
-  v4 = [[TUIStatsFeedViewController alloc] initWithFeed:v3];
+  feedCopy = feed;
+  v4 = [[TUIStatsFeedViewController alloc] initWithFeed:feedCopy];
 
   return v4;
 }

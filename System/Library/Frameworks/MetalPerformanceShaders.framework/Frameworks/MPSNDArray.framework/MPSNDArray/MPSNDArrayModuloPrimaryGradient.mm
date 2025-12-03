@@ -1,14 +1,14 @@
 @interface MPSNDArrayModuloPrimaryGradient
-- (MPSNDArrayModuloPrimaryGradient)initWithDevice:(id)a3;
+- (MPSNDArrayModuloPrimaryGradient)initWithDevice:(id)device;
 @end
 
 @implementation MPSNDArrayModuloPrimaryGradient
 
-- (MPSNDArrayModuloPrimaryGradient)initWithDevice:(id)a3
+- (MPSNDArrayModuloPrimaryGradient)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayModuloPrimaryGradient;
-  result = [(MPSNDArrayMathBinaryPrimaryGradient *)&v4 initWithDevice:a3];
+  result = [(MPSNDArrayMathBinaryPrimaryGradient *)&v4 initWithDevice:device];
   result->super.super.super.super._encodeGradient = EncodeArrayMathBinaryGradient;
   result->super.super.super.super._encodeData = result;
   result->super._opType = 5;

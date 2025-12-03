@@ -1,40 +1,40 @@
 @interface VideosExtrasNavigationController
 - (VideosExtrasContext)context;
 - (VideosExtrasMainTemplateViewController)mainTemplateViewController;
-- (VideosExtrasNavigationController)initWithContext:(id)a3;
-- (id)_viewControllerForDocument:(id)a3 index:(int64_t *)a4;
+- (VideosExtrasNavigationController)initWithContext:(id)context;
+- (id)_viewControllerForDocument:(id)document index:(int64_t *)index;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
 - (id)documents;
-- (void)_dismissViewController:(id)a3;
-- (void)_installBackButtonOnNavigationItem:(id)a3 withTitle:(id)a4;
-- (void)_installDoneButtonOnNavigationItem:(id)a3;
-- (void)_presentDialogTemplate:(id)a3;
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5;
-- (void)loadingView:(id)a3 documentDidUpdate:(id)a4 options:(id)a5;
-- (void)popToDocument:(id)a3;
+- (void)_dismissViewController:(id)controller;
+- (void)_installBackButtonOnNavigationItem:(id)item withTitle:(id)title;
+- (void)_installDoneButtonOnNavigationItem:(id)item;
+- (void)_presentDialogTemplate:(id)template;
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options;
+- (void)loadingView:(id)view documentDidUpdate:(id)update options:(id)options;
+- (void)popToDocument:(id)document;
 - (void)popToRootDocument;
-- (void)pushDocument:(id)a3 options:(id)a4;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)pushDocument:(id)document options:(id)options;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 - (void)viewDidLoad;
-- (void)willShowViewController:(id)a3 animated:(BOOL)a4;
+- (void)willShowViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation VideosExtrasNavigationController
 
-- (VideosExtrasNavigationController)initWithContext:(id)a3
+- (VideosExtrasNavigationController)initWithContext:(id)context
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DD258];
-  v5 = a3;
+  contextCopy = context;
   v6 = [[v4 alloc] initWithNibName:0 bundle:0];
   v7 = objc_opt_class();
   v13.receiver = self;
   v13.super_class = VideosExtrasNavigationController;
   v8 = [(VideosExtrasNavigationController *)&v13 initWithNavigationBarClass:v7 toolbarClass:0];
-  v9 = [(UIViewController *)v6 navigationItem];
-  [(VideosExtrasNavigationController *)v8 _installDoneButtonOnNavigationItem:v9];
+  navigationItem = [(UIViewController *)v6 navigationItem];
+  [(VideosExtrasNavigationController *)v8 _installDoneButtonOnNavigationItem:navigationItem];
 
   v14[0] = v6;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
@@ -43,7 +43,7 @@
   emptyViewController = v8->_emptyViewController;
   v8->_emptyViewController = v6;
 
-  objc_storeWeak(&v8->_context, v5);
+  objc_storeWeak(&v8->_context, contextCopy);
   v8->_showsBuiltInNavControls = 1;
   return v8;
 }
@@ -54,31 +54,31 @@
   v4.super_class = VideosExtrasNavigationController;
   [(VideosExtrasNavigationController *)&v4 viewDidLoad];
   [(VideosExtrasNavigationController *)self setNavigationBarHidden:1 animated:0];
-  v3 = [(VideosExtrasNavigationController *)self navigationBar];
-  [v3 setUserInteractionEnabled:0];
+  navigationBar = [(VideosExtrasNavigationController *)self navigationBar];
+  [navigationBar setUserInteractionEnabled:0];
 }
 
 - (id)childViewControllerForHomeIndicatorAutoHidden
 {
-  v2 = [(VideosExtrasNavigationController *)self childViewControllers];
-  v3 = [v2 lastObject];
+  childViewControllers = [(VideosExtrasNavigationController *)self childViewControllers];
+  lastObject = [childViewControllers lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (VideosExtrasMainTemplateViewController)mainTemplateViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v3 = [WeakRetained extrasRootViewController];
-  v4 = [v3 mainTemplateViewController];
+  extrasRootViewController = [WeakRetained extrasRootViewController];
+  mainTemplateViewController = [extrasRootViewController mainTemplateViewController];
 
-  return v4;
+  return mainTemplateViewController;
 }
 
-- (void)pushDocument:(id)a3 options:(id)a4
+- (void)pushDocument:(id)document options:(id)options
 {
-  v21 = a3;
-  v6 = a4;
+  documentCopy = document;
+  optionsCopy = options;
   loadingView = self->_loadingView;
   if (loadingView)
   {
@@ -88,32 +88,32 @@
     self->_loadingView = 0;
   }
 
-  v9 = [v21 templateElement];
+  templateElement = [documentCopy templateElement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [[VideosExtrasLoadingView alloc] initWithDocument:v21 options:v6 delegate:self];
+    v10 = [[VideosExtrasLoadingView alloc] initWithDocument:documentCopy options:optionsCopy delegate:self];
     v11 = self->_loadingView;
     self->_loadingView = v10;
 
     v12 = self->_loadingView;
-    v13 = [(VideosExtrasNavigationController *)self topViewController];
-    v14 = [v13 view];
-    [v14 bounds];
+    topViewController = [(VideosExtrasNavigationController *)self topViewController];
+    view = [topViewController view];
+    [view bounds];
     [(VideosExtrasLoadingView *)v12 setFrame:?];
 
-    v15 = [(VideosExtrasNavigationController *)self topViewController];
-    v16 = [v15 view];
+    topViewController2 = [(VideosExtrasNavigationController *)self topViewController];
+    view2 = [topViewController2 view];
 
     if (self->_loadingView)
     {
-      if (v16)
+      if (view2)
       {
-        v17 = [(VideosExtrasNavigationController *)self mainTemplateViewController];
+        mainTemplateViewController = [(VideosExtrasNavigationController *)self mainTemplateViewController];
 
-        if (v17)
+        if (mainTemplateViewController)
         {
-          [v16 addSubview:self->_loadingView];
+          [view2 addSubview:self->_loadingView];
           [(VideosExtrasLoadingView *)self->_loadingView startCountdownToVisibilityWithInterval:0.33];
         }
       }
@@ -127,28 +127,28 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(VideosExtrasNavigationController *)self _presentDialogTemplate:v9];
+    [(VideosExtrasNavigationController *)self _presentDialogTemplate:templateElement];
     goto LABEL_16;
   }
 
-  if (v9)
+  if (templateElement)
   {
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    v16 = [VideosExtrasTemplateViewController templateViewControllerWithDocument:v21 options:v6 context:WeakRetained];
+    view2 = [VideosExtrasTemplateViewController templateViewControllerWithDocument:documentCopy options:optionsCopy context:WeakRetained];
 
-    if (v16)
+    if (view2)
     {
       emptyViewController = self->_emptyViewController;
-      v20 = [(VideosExtrasNavigationController *)self topViewController];
+      topViewController3 = [(VideosExtrasNavigationController *)self topViewController];
 
-      if (emptyViewController == v20)
+      if (emptyViewController == topViewController3)
       {
-        [(UINavigationController *)self _VideosExtras_replaceViewController:self->_emptyViewController withViewController:v16 animated:0];
+        [(UINavigationController *)self _VideosExtras_replaceViewController:self->_emptyViewController withViewController:view2 animated:0];
       }
 
       else
       {
-        [(VideosExtrasNavigationController *)self pushViewController:v16 animated:1];
+        [(VideosExtrasNavigationController *)self pushViewController:view2 animated:1];
       }
     }
 
@@ -158,16 +158,16 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)popToDocument:(id)a3
+- (void)popToDocument:(id)document
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  documentCopy = document;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(VideosExtrasNavigationController *)self viewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  viewControllers = [(VideosExtrasNavigationController *)self viewControllers];
+  v6 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -178,15 +178,15 @@ LABEL_16:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v10 document];
+          document = [v10 document];
 
-          if (v11 == v4)
+          if (document == documentCopy)
           {
             v12 = [(VideosExtrasNavigationController *)self popToViewController:v10 animated:1];
             goto LABEL_12;
@@ -194,7 +194,7 @@ LABEL_16:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -209,53 +209,53 @@ LABEL_12:
 
 - (void)popToRootDocument
 {
-  v4 = [(VideosExtrasNavigationController *)self documents];
-  v3 = [v4 firstObject];
-  [(VideosExtrasNavigationController *)self popToDocument:v3];
+  documents = [(VideosExtrasNavigationController *)self documents];
+  firstObject = [documents firstObject];
+  [(VideosExtrasNavigationController *)self popToDocument:firstObject];
 }
 
-- (void)insertDocument:(id)a3 beforeDocument:(id)a4 options:(id)a5
+- (void)insertDocument:(id)document beforeDocument:(id)beforeDocument options:(id)options
 {
-  v7 = a3;
-  v8 = a5;
+  documentCopy = document;
+  optionsCopy = options;
   v14 = 0;
-  v9 = [(VideosExtrasNavigationController *)self _viewControllerForDocument:v7 index:&v14];
+  v9 = [(VideosExtrasNavigationController *)self _viewControllerForDocument:documentCopy index:&v14];
   if (v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    v11 = [VideosExtrasTemplateViewController templateViewControllerWithDocument:v7 options:v8 context:WeakRetained];
+    v11 = [VideosExtrasTemplateViewController templateViewControllerWithDocument:documentCopy options:optionsCopy context:WeakRetained];
 
-    v12 = [(VideosExtrasNavigationController *)self viewControllers];
-    v13 = [v12 mutableCopy];
+    viewControllers = [(VideosExtrasNavigationController *)self viewControllers];
+    v13 = [viewControllers mutableCopy];
 
     [v13 insertObject:v11 atIndex:v14];
     [(VideosExtrasNavigationController *)self setViewControllers:v13];
   }
 }
 
-- (void)replaceDocument:(id)a3 withDocument:(id)a4 options:(id)a5
+- (void)replaceDocument:(id)document withDocument:(id)withDocument options:(id)options
 {
-  v7 = a4;
-  v8 = a5;
+  withDocumentCopy = withDocument;
+  optionsCopy = options;
   v14 = 0;
-  v9 = [(VideosExtrasNavigationController *)self _viewControllerForDocument:v7 index:&v14];
+  v9 = [(VideosExtrasNavigationController *)self _viewControllerForDocument:withDocumentCopy index:&v14];
   if (v14 != 0x7FFFFFFFFFFFFFFFLL)
   {
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    v11 = [VideosExtrasTemplateViewController templateViewControllerWithDocument:v7 options:v8 context:WeakRetained];
+    v11 = [VideosExtrasTemplateViewController templateViewControllerWithDocument:withDocumentCopy options:optionsCopy context:WeakRetained];
 
-    v12 = [(VideosExtrasNavigationController *)self viewControllers];
-    v13 = [v12 mutableCopy];
+    viewControllers = [(VideosExtrasNavigationController *)self viewControllers];
+    v13 = [viewControllers mutableCopy];
 
     [v13 replaceObjectAtIndex:v14 withObject:v11];
     [(VideosExtrasNavigationController *)self setViewControllers:v13];
   }
 }
 
-- (id)_viewControllerForDocument:(id)a3 index:(int64_t *)a4
+- (id)_viewControllerForDocument:(id)document index:(int64_t *)index
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  documentCopy = document;
   [(VideosExtrasNavigationController *)self viewControllers];
   v15 = 0u;
   v16 = 0u;
@@ -277,9 +277,9 @@ LABEL_12:
         v11 = *(*(&v15 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v12 = [v11 document];
+          document = [v11 document];
 
-          if (v12 == v6)
+          if (document == documentCopy)
           {
             v8 = v11;
             v13 = [v7 indexOfObject:v8];
@@ -301,9 +301,9 @@ LABEL_12:
   v13 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_12:
 
-  if (a4)
+  if (index)
   {
-    *a4 = v13;
+    *index = v13;
   }
 
   return v8;
@@ -317,8 +317,8 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(VideosExtrasNavigationController *)self viewControllers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  viewControllers = [(VideosExtrasNavigationController *)self viewControllers];
+  v5 = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -329,18 +329,18 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(viewControllers);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v10 = [v9 document];
-          [v3 addObject:v10];
+          document = [v9 document];
+          [v3 addObject:document];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [viewControllers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -349,7 +349,7 @@ LABEL_12:
   return v3;
 }
 
-- (void)_dismissViewController:(id)a3
+- (void)_dismissViewController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_context);
   if (objc_opt_respondsToSelector())
@@ -361,40 +361,40 @@ LABEL_12:
   {
     [WeakRetained extrasRequestsPlaybackStop];
     v4 = objc_loadWeakRetained(&self->_context);
-    v5 = [v4 extrasRootViewController];
-    v6 = [v5 presentingViewController];
-    [v6 dismissViewControllerAnimated:1 completion:0];
+    extrasRootViewController = [v4 extrasRootViewController];
+    presentingViewController = [extrasRootViewController presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)_presentDialogTemplate:(id)a3
+- (void)_presentDialogTemplate:(id)template
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v5 text];
-  v7 = [v6 string];
+  templateCopy = template;
+  title = [templateCopy title];
+  text = [title text];
+  string = [text string];
 
-  v8 = [v4 descriptionText];
-  v9 = [v8 text];
-  v10 = [v9 string];
+  descriptionText = [templateCopy descriptionText];
+  text2 = [descriptionText text];
+  string2 = [text2 string];
 
-  v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v7 message:v10 preferredStyle:0];
+  v11 = [MEMORY[0x1E69DC650] alertControllerWithTitle:string message:string2 preferredStyle:0];
   [v11 setPreferredStyle:1];
   [v11 _setIgnoreAppSupportedOrientations:1];
-  v12 = [v4 buttons];
-  v13 = [v12 count];
+  buttons = [templateCopy buttons];
+  v13 = [buttons count];
 
   if (v13)
   {
-    v28 = v10;
-    v29 = self;
+    v28 = string2;
+    selfCopy = self;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = [v4 buttons];
-    v15 = [v14 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    buttons2 = [templateCopy buttons];
+    v15 = [buttons2 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v15)
     {
       v16 = v15;
@@ -405,25 +405,25 @@ LABEL_12:
         {
           if (*v33 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(buttons2);
           }
 
-          v19 = [*(*(&v32 + 1) + 8 * i) text];
-          v20 = [v19 text];
-          v21 = [v20 string];
+          text3 = [*(*(&v32 + 1) + 8 * i) text];
+          v19Text = [text3 text];
+          string3 = [v19Text string];
 
-          v22 = [MEMORY[0x1E69DC648] actionWithTitle:v21 style:0 handler:0];
+          v22 = [MEMORY[0x1E69DC648] actionWithTitle:string3 style:0 handler:0];
           [v11 addAction:v22];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v16 = [buttons2 countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v16);
     }
 
-    self = v29;
-    v10 = v28;
+    self = selfCopy;
+    string2 = v28;
   }
 
   else
@@ -445,36 +445,36 @@ LABEL_12:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)loadingView:(id)a3 documentDidUpdate:(id)a4 options:(id)a5
+- (void)loadingView:(id)view documentDidUpdate:(id)update options:(id)options
 {
   loadingView = self->_loadingView;
-  v8 = a5;
-  v9 = a4;
+  optionsCopy = options;
+  updateCopy = update;
   [(VideosExtrasLoadingView *)loadingView cancelCountdownToVisibility];
   [(VideosExtrasLoadingView *)self->_loadingView removeFromSuperview];
-  [(VideosExtrasNavigationController *)self pushDocument:v9 options:v8];
+  [(VideosExtrasNavigationController *)self pushDocument:updateCopy options:optionsCopy];
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllersCopy = controllers;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v8 = [WeakRetained extrasRootViewController];
-  v9 = [v8 detectMainDocument:v6];
+  extrasRootViewController = [WeakRetained extrasRootViewController];
+  v9 = [extrasRootViewController detectMainDocument:controllersCopy];
 
   v10.receiver = self;
   v10.super_class = VideosExtrasNavigationController;
-  [(VideosExtrasNavigationController *)&v10 setViewControllers:v9 animated:v4];
+  [(VideosExtrasNavigationController *)&v10 setViewControllers:v9 animated:animatedCopy];
 }
 
-- (void)willShowViewController:(id)a3 animated:(BOOL)a4
+- (void)willShowViewController:(id)controller animated:(BOOL)animated
 {
-  v14 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v6 = [WeakRetained extrasRootViewController];
-  v7 = [v6 mainTemplateViewController];
-  if (v7 == v14)
+  extrasRootViewController = [WeakRetained extrasRootViewController];
+  mainTemplateViewController = [extrasRootViewController mainTemplateViewController];
+  if (mainTemplateViewController == controllerCopy)
   {
 
 LABEL_6:
@@ -486,11 +486,11 @@ LABEL_6:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v14 videoPlaybackViewController];
+    videoPlaybackViewController = [controllerCopy videoPlaybackViewController];
     v9 = objc_loadWeakRetained(&self->_context);
-    v10 = [v9 featurePlaybackViewController];
+    featurePlaybackViewController = [v9 featurePlaybackViewController];
 
-    if (v8 == v10)
+    if (videoPlaybackViewController == featurePlaybackViewController)
     {
       goto LABEL_6;
     }
@@ -504,83 +504,83 @@ LABEL_6:
   v11 = 1;
 LABEL_9:
   [(VideosExtrasNavigationController *)self setNavigationBarHidden:v12 animated:0];
-  v13 = [(VideosExtrasNavigationController *)self navigationBar];
-  [v13 setUserInteractionEnabled:v11];
+  navigationBar = [(VideosExtrasNavigationController *)self navigationBar];
+  [navigationBar setUserInteractionEnabled:v11];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(VideosExtrasNavigationController *)self viewControllers];
-  v8 = [v7 arrayByAddingObject:v6];
+  controllerCopy = controller;
+  viewControllers = [(VideosExtrasNavigationController *)self viewControllers];
+  v8 = [viewControllers arrayByAddingObject:controllerCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_context);
-  v10 = [WeakRetained extrasRootViewController];
-  v11 = [v10 detectMainDocument:v8];
+  extrasRootViewController = [WeakRetained extrasRootViewController];
+  v11 = [extrasRootViewController detectMainDocument:v8];
 
-  if ([v11 containsObject:v6])
+  if ([v11 containsObject:controllerCopy])
   {
     if (self->_clearStackOnPush)
     {
       self->_clearStackOnPush = 0;
-      v12 = [v6 navigationItem];
-      [(VideosExtrasNavigationController *)self _installDoneButtonOnNavigationItem:v12];
-      v18[0] = v6;
-      v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-      [(VideosExtrasNavigationController *)self setViewControllers:v13 animated:0];
+      navigationItem = [controllerCopy navigationItem];
+      [(VideosExtrasNavigationController *)self _installDoneButtonOnNavigationItem:navigationItem];
+      v18[0] = controllerCopy;
+      title = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
+      [(VideosExtrasNavigationController *)self setViewControllers:title animated:0];
     }
 
     else
     {
-      v12 = [v6 navigationItem];
-      v14 = [(VideosExtrasNavigationController *)self topViewController];
-      v13 = [v14 title];
+      navigationItem = [controllerCopy navigationItem];
+      topViewController = [(VideosExtrasNavigationController *)self topViewController];
+      title = [topViewController title];
 
-      if (![v13 length])
+      if (![title length])
       {
-        v15 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-        v16 = [v15 localizedStringForKey:@"BACK" value:0 table:@"VideosExtras"];
+        vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+        v16 = [vui_videosUIBundle localizedStringForKey:@"BACK" value:0 table:@"VideosExtras"];
 
-        v13 = v16;
+        title = v16;
       }
 
-      [(VideosExtrasNavigationController *)self _installBackButtonOnNavigationItem:v12 withTitle:v13];
+      [(VideosExtrasNavigationController *)self _installBackButtonOnNavigationItem:navigationItem withTitle:title];
       v17.receiver = self;
       v17.super_class = VideosExtrasNavigationController;
-      [(VideosExtrasNavigationController *)&v17 pushViewController:v6 animated:v4];
+      [(VideosExtrasNavigationController *)&v17 pushViewController:controllerCopy animated:animatedCopy];
     }
   }
 }
 
-- (void)_installDoneButtonOnNavigationItem:(id)a3
+- (void)_installDoneButtonOnNavigationItem:(id)item
 {
   if (self->_showsBuiltInNavControls)
   {
-    v5 = a3;
-    v6 = [(VideosExtrasNavigationController *)self navigationBar];
-    v10 = +[VideosExtrasNavigationBarButton extrasNavigationButton:](VideosExtrasNavigationBarButton, "extrasNavigationButton:", [v6 _activeBarMetrics]);
+    itemCopy = item;
+    navigationBar = [(VideosExtrasNavigationController *)self navigationBar];
+    v10 = +[VideosExtrasNavigationBarButton extrasNavigationButton:](VideosExtrasNavigationBarButton, "extrasNavigationButton:", [navigationBar _activeBarMetrics]);
 
-    v7 = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
-    v8 = [v7 localizedStringForKey:@"DONE" value:0 table:@"VideosExtras"];
+    vui_videosUIBundle = [MEMORY[0x1E696AAE8] vui_videosUIBundle];
+    v8 = [vui_videosUIBundle localizedStringForKey:@"DONE" value:0 table:@"VideosExtras"];
     [v10 setTitle:v8 forState:0];
 
     [v10 addTarget:self action:sel__dismissViewController_ forControlEvents:64];
     [v10 sizeToFit];
     v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v10];
-    [v5 setLeftBarButtonItem:v9];
+    [itemCopy setLeftBarButtonItem:v9];
   }
 }
 
-- (void)_installBackButtonOnNavigationItem:(id)a3 withTitle:(id)a4
+- (void)_installBackButtonOnNavigationItem:(id)item withTitle:(id)title
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VideosExtrasNavigationController *)self navigationBar];
-  v10 = +[VideosExtrasNavigationBarButton extrasBackButton:](VideosExtrasNavigationBarButton, "extrasBackButton:", [v8 _activeBarMetrics]);
+  titleCopy = title;
+  itemCopy = item;
+  navigationBar = [(VideosExtrasNavigationController *)self navigationBar];
+  v10 = +[VideosExtrasNavigationBarButton extrasBackButton:](VideosExtrasNavigationBarButton, "extrasBackButton:", [navigationBar _activeBarMetrics]);
 
-  [v10 setTitle:v6 forState:0];
+  [v10 setTitle:titleCopy forState:0];
   [v10 addTarget:self action:sel__popViewControllerFromBackButton forControlEvents:64];
   [v10 sizeToFit];
   if ([MEMORY[0x1E69DD250] userInterfaceLayoutDirectionForSemanticContentAttribute:{objc_msgSend(v10, "semanticContentAttribute")}] == 1)
@@ -590,7 +590,7 @@ LABEL_9:
   }
 
   v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v10];
-  [v7 setLeftBarButtonItem:v9];
+  [itemCopy setLeftBarButtonItem:v9];
 }
 
 - (VideosExtrasContext)context

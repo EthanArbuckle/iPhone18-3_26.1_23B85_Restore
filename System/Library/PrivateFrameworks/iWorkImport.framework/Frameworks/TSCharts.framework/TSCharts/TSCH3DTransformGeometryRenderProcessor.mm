@@ -1,12 +1,12 @@
 @interface TSCH3DTransformGeometryRenderProcessor
 - (TSCH3DTransformGeometryRenderProcessor)init;
-- (TSCH3DTransformGeometryRenderProcessor)initWithOriginal:(id)a3;
-- (void)geometry:(id)a3;
+- (TSCH3DTransformGeometryRenderProcessor)initWithOriginal:(id)original;
+- (void)geometry:(id)geometry;
 @end
 
 @implementation TSCH3DTransformGeometryRenderProcessor
 
-- (TSCH3DTransformGeometryRenderProcessor)initWithOriginal:(id)a3
+- (TSCH3DTransformGeometryRenderProcessor)initWithOriginal:(id)original
 {
   objc_msgSend_doesNotRecognizeSelector_(self, a2, v3, v4, v5, a2);
 
@@ -23,14 +23,14 @@
   return v7;
 }
 
-- (void)geometry:(id)a3
+- (void)geometry:(id)geometry
 {
-  v4 = a3;
-  v9 = objc_msgSend_buffer(v4, v5, v6, v7, v8);
+  geometryCopy = geometry;
+  v9 = objc_msgSend_buffer(geometryCopy, v5, v6, v7, v8);
   buffer = self->_buffer;
   self->_buffer = v9;
 
-  if (!v4 || !self->_buffer)
+  if (!geometryCopy || !self->_buffer)
   {
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v12, v13, v14, "[TSCH3DTransformGeometryRenderProcessor geometry:]");
@@ -42,7 +42,7 @@
 
   v30.receiver = self;
   v30.super_class = TSCH3DTransformGeometryRenderProcessor;
-  [(TSCH3DRenderProcessor *)&v30 geometry:v4];
+  [(TSCH3DRenderProcessor *)&v30 geometry:geometryCopy];
 }
 
 @end

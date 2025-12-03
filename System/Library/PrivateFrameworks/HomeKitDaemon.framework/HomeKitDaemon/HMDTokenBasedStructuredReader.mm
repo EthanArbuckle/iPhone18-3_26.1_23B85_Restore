@@ -1,20 +1,20 @@
 @interface HMDTokenBasedStructuredReader
 - (BOOL)readBoolean;
-- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)a3;
+- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)token;
 - (_HMDStructuredDataToken)readToken;
-- (id)_consumeTokenOfType:(uint64_t)a1;
+- (id)_consumeTokenOfType:(uint64_t)type;
 - (id)error;
 - (uint64_t)_bufferInitialTokenIfNecessary;
 - (uint64_t)_consumeToken;
 - (unint64_t)beginArray;
 - (unint64_t)beginDictionary;
-- (void)failWithError:(id)a3;
+- (void)failWithError:(id)error;
 - (void)skipToken;
 @end
 
 @implementation HMDTokenBasedStructuredReader
 
-- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)a3
+- (_HMDStructuredDataToken)nextTokenAfterToken:(const _HMDStructuredDataToken *)token
 {
   v3 = MEMORY[0x277CBEAD8];
   v4 = *MEMORY[0x277CBE658];
@@ -85,24 +85,24 @@
   return result;
 }
 
-- (id)_consumeTokenOfType:(uint64_t)a1
+- (id)_consumeTokenOfType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    [(HMDTokenBasedStructuredReader *)a1 _bufferInitialTokenIfNecessary];
-    v4 = *(a1 + 8);
+    [(HMDTokenBasedStructuredReader *)type _bufferInitialTokenIfNecessary];
+    v4 = *(type + 8);
     if (v4 == a2)
     {
-      v5 = *(a1 + 16);
-      [(HMDTokenBasedStructuredReader *)a1 _consumeToken];
+      v5 = *(type + 16);
+      [(HMDTokenBasedStructuredReader *)type _consumeToken];
       goto LABEL_4;
     }
 
     if (v4 != -2)
     {
       v7 = HMDStructuredDataTokenTypeAsString(a2);
-      v8 = HMDStructuredDataTokenTypeAsString(*(a1 + 8));
-      [a1 failWithReason:{@"Expected <%@> but found <%@>", v7, v8}];
+      v8 = HMDStructuredDataTokenTypeAsString(*(type + 8));
+      [type failWithReason:{@"Expected <%@> but found <%@>", v7, v8}];
     }
   }
 
@@ -115,9 +115,9 @@ LABEL_4:
 - (BOOL)readBoolean
 {
   v2 = [(HMDTokenBasedStructuredReader *)self _consumeTokenOfType:?];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (unint64_t)beginDictionary
@@ -126,15 +126,15 @@ LABEL_4:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)beginArray
@@ -143,37 +143,37 @@ LABEL_4:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = -1;
+    unsignedIntegerValue = -1;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)failWithError:(id)a3
+- (void)failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   p_token = &self->_token;
   if (p_token->type != -2)
   {
-    v6 = v4;
-    v7 = v4;
-    if (!v4)
+    hmfUnspecifiedError = errorCopy;
+    v7 = errorCopy;
+    if (!errorCopy)
     {
-      v6 = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
+      hmfUnspecifiedError = [MEMORY[0x277CCA9B8] hmfUnspecifiedError];
     }
 
     p_token->type = -2;
-    objc_storeStrong(&p_token->value, v6);
-    v4 = v7;
+    objc_storeStrong(&p_token->value, hmfUnspecifiedError);
+    errorCopy = v7;
     if (!v7)
     {
 
-      v4 = 0;
+      errorCopy = 0;
     }
   }
 }

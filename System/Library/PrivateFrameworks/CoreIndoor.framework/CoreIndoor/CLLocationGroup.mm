@@ -1,11 +1,11 @@
 @interface CLLocationGroup
-+ (vector<std::string,)stringVectorFromNSArray:(id)a2;
-+ (void)storeAverage:(id)a3 ofVertices:(id)a4;
-- (BOOL)allowCellularDownload:(unint64_t)a3;
++ (vector<std::string,)stringVectorFromNSArray:(id)array;
++ (void)storeAverage:(id)average ofVertices:(id)vertices;
+- (BOOL)allowCellularDownload:(unint64_t)download;
 - (CLLocationGroup)init;
-- (CLLocationGroup)initWithGroupId:(id)a3 locationIds:(id)a4 center:(id)a5 wifiOnlyDownloadLocIdxs:(const void *)a6 locationContext:(int64_t)a7 andTolerance:(double)a8;
+- (CLLocationGroup)initWithGroupId:(id)id locationIds:(id)ids center:(id)center wifiOnlyDownloadLocIdxs:(const void *)idxs locationContext:(int64_t)context andTolerance:(double)tolerance;
 - (basic_string<char,)getGroupId;
-- (double)distance:(id)a3;
+- (double)distance:(id)distance;
 - (id).cxx_construct;
 @end
 
@@ -23,7 +23,7 @@
   return self;
 }
 
-+ (vector<std::string,)stringVectorFromNSArray:(id)a2
++ (vector<std::string,)stringVectorFromNSArray:(id)array
 {
   v47 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -147,19 +147,19 @@
   return result;
 }
 
-+ (void)storeAverage:(id)a3 ofVertices:(id)a4
++ (void)storeAverage:(id)average ofVertices:(id)vertices
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v11 = objc_msgSend_count(v6, v7, v8, v9, v10);
+  averageCopy = average;
+  verticesCopy = vertices;
+  v11 = objc_msgSend_count(verticesCopy, v7, v8, v9, v10);
   if (v11)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v12 = v6;
+    v12 = verticesCopy;
     v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, v14, v15, v16, &v40, v44, 16);
     if (v18)
     {
@@ -200,17 +200,17 @@
       v25 = 0.0;
     }
 
-    objc_msgSend_setFromX_y_z_(v5, v38, v23 / v11, v24 / v11, v25 / v11);
+    objc_msgSend_setFromX_y_z_(averageCopy, v38, v23 / v11, v24 / v11, v25 / v11);
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (CLLocationGroup)initWithGroupId:(id)a3 locationIds:(id)a4 center:(id)a5 wifiOnlyDownloadLocIdxs:(const void *)a6 locationContext:(int64_t)a7 andTolerance:(double)a8
+- (CLLocationGroup)initWithGroupId:(id)id locationIds:(id)ids center:(id)center wifiOnlyDownloadLocIdxs:(const void *)idxs locationContext:(int64_t)context andTolerance:(double)tolerance
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  idCopy = id;
+  idsCopy = ids;
+  centerCopy = center;
   v59.receiver = self;
   v59.super_class = CLLocationGroup;
   v18 = [(CLLocationGroup *)&v59 init];
@@ -218,8 +218,8 @@
   v20 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_groupId, a3);
-    objc_msgSend_stringVectorFromNSArray_(CLLocationGroup, v21, v22, v23, v24, v16);
+    objc_storeStrong(&v18->_groupId, id);
+    objc_msgSend_stringVectorFromNSArray_(CLLocationGroup, v21, v22, v23, v24, idsCopy);
     p_begin = &v20->_locationIds.__begin_;
     begin = v20->_locationIds.__begin_;
     if (begin)
@@ -252,11 +252,11 @@
     *&v20->_locationIds.__begin_ = v57;
     v20->_locationIds.__cap_ = v58;
     v30 = [ECEFCoordinate alloc];
-    objc_msgSend_x(v17, v31, v32, v33, v34);
+    objc_msgSend_x(centerCopy, v31, v32, v33, v34);
     v36 = v35;
-    objc_msgSend_y(v17, v37, v35, v38, v39);
+    objc_msgSend_y(centerCopy, v37, v35, v38, v39);
     v41 = v40;
-    objc_msgSend_z(v17, v42, v40, v43, v44);
+    objc_msgSend_z(centerCopy, v42, v40, v43, v44);
     v47 = objc_msgSend_initWithX_y_z_(v30, v45, v36, v41, v46);
     centerECEF = v20->_centerECEF;
     v20->_centerECEF = v47;
@@ -266,13 +266,13 @@
     centerLatLon = v20->_centerLatLon;
     v20->_centerLatLon = v54;
 
-    v20->_tolerance = a8;
-    if (&v19->_wifiOnlyDownloadLocIdxs != a6)
+    v20->_tolerance = tolerance;
+    if (&v19->_wifiOnlyDownloadLocIdxs != idxs)
     {
-      sub_245A32258(&v19->_wifiOnlyDownloadLocIdxs.__tree_.__begin_node_, *a6, a6 + 1);
+      sub_245A32258(&v19->_wifiOnlyDownloadLocIdxs.__tree_.__begin_node_, *idxs, idxs + 1);
     }
 
-    v20->_locationContext = a7;
+    v20->_locationContext = context;
     operator new();
   }
 
@@ -292,10 +292,10 @@
   return v8;
 }
 
-- (double)distance:(id)a3
+- (double)distance:(id)distance
 {
-  v4 = a3;
-  v9 = objc_msgSend_fromLatLonOrigin_andEcefOrigin_andEcefPoint_(ENUCoordinate, v5, v6, v7, v8, self->_centerLatLon, self->_centerECEF, v4);
+  distanceCopy = distance;
+  v9 = objc_msgSend_fromLatLonOrigin_andEcefOrigin_andEcefPoint_(ENUCoordinate, v5, v6, v7, v8, self->_centerLatLon, self->_centerECEF, distanceCopy);
   objc_msgSend_east(v9, v10, v11, v12, v13);
   v15 = v14;
   objc_msgSend_north(v9, v16, v14, v17, v18);
@@ -331,7 +331,7 @@ LABEL_6:
   return v21;
 }
 
-- (BOOL)allowCellularDownload:(unint64_t)a3
+- (BOOL)allowCellularDownload:(unint64_t)download
 {
   left = self->_wifiOnlyDownloadLocIdxs.__tree_.__end_node_.__left_;
   p_end_node = &self->_wifiOnlyDownloadLocIdxs.__tree_.__end_node_;
@@ -345,8 +345,8 @@ LABEL_6:
   do
   {
     v7 = *(v4 + 4);
-    v8 = v7 >= a3;
-    v9 = v7 < a3;
+    v8 = v7 >= download;
+    v9 = v7 < download;
     if (v8)
     {
       v6 = v4;
@@ -356,7 +356,7 @@ LABEL_6:
   }
 
   while (v4);
-  if (v6 == p_end_node || v6[4].__left_ > a3)
+  if (v6 == p_end_node || v6[4].__left_ > download)
   {
 LABEL_9:
     v6 = p_end_node;

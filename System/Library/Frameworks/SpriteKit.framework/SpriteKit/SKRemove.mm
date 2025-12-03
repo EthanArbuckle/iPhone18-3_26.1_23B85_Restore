@@ -1,11 +1,11 @@
 @interface SKRemove
 + (id)removeFromParent;
 - (SKRemove)init;
-- (SKRemove)initWithCoder:(id)a3;
+- (SKRemove)initWithCoder:(id)coder;
 - (id)reversedAction;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithTarget:(id)a3 forTime:(double)a4;
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithTarget:(id)target forTime:(double)time;
+- (void)willStartWithTarget:(id)target atTime:(double)time;
 @end
 
 @implementation SKRemove
@@ -23,29 +23,29 @@
   return result;
 }
 
-- (SKRemove)initWithCoder:(id)a3
+- (SKRemove)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SKRemove;
-  v5 = [(SKAction *)&v8 initWithCoder:v4];
+  v5 = [(SKAction *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_hasFired"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_hasFired"];
     v5->_hasFired = [v6 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = SKRemove;
-  [(SKAction *)&v6 encodeWithCoder:v4];
+  [(SKAction *)&v6 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasFired];
-  [v4 encodeObject:v5 forKey:@"_hasFired"];
+  [coderCopy encodeObject:v5 forKey:@"_hasFired"];
 }
 
 + (id)removeFromParent
@@ -55,21 +55,21 @@
   return v2;
 }
 
-- (void)willStartWithTarget:(id)a3 atTime:(double)a4
+- (void)willStartWithTarget:(id)target atTime:(double)time
 {
   v5.receiver = self;
   v5.super_class = SKRemove;
-  [(SKAction *)&v5 willStartWithTarget:a3 atTime:a4];
+  [(SKAction *)&v5 willStartWithTarget:target atTime:time];
   self->_hasFired = 0;
 }
 
-- (void)updateWithTarget:(id)a3 forTime:(double)a4
+- (void)updateWithTarget:(id)target forTime:(double)time
 {
-  v5 = a3;
+  targetCopy = target;
   if (!self->_hasFired)
   {
     [(SKAction *)self setFinished:1];
-    [v5 removeFromParent];
+    [targetCopy removeFromParent];
   }
 }
 

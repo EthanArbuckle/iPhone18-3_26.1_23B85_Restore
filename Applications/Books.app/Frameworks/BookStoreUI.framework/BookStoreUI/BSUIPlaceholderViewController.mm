@@ -12,8 +12,8 @@
   v6.super_class = BSUIPlaceholderViewController;
   [(BSUIPlaceholderViewController *)&v6 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(BSUIPlaceholderViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(BSUIPlaceholderViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = +[UIContentUnavailableConfiguration loadingConfiguration];
   [(BSUIPlaceholderViewController *)self setContentUnavailableConfiguration:v5];
@@ -23,12 +23,12 @@
 
 - (CGSize)expectedContentSize
 {
-  v3 = [(BSUIPlaceholderViewController *)self view];
-  [v3 frame];
+  view = [(BSUIPlaceholderViewController *)self view];
+  [view frame];
   v5 = v4;
 
-  v6 = [(BSUIPlaceholderViewController *)self view];
-  [v6 sizeThatFits:{v5, 3.40282347e38}];
+  view2 = [(BSUIPlaceholderViewController *)self view];
+  [view2 sizeThatFits:{v5, 3.40282347e38}];
   v8 = v7;
 
   v9 = v8 + 32.0;

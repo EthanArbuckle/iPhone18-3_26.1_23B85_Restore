@@ -2,8 +2,8 @@
 - (SBSPhysicalButtonTargetMonitorServer)init;
 - (unint64_t)physicalButtonTargets;
 - (void)dealloc;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)setPhysicalButtonTargets:(unint64_t)a3;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)setPhysicalButtonTargets:(unint64_t)targets;
 - (void)startServer;
 @end
 
@@ -18,9 +18,9 @@
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     lock_connections = v3->_lock_connections;
-    v3->_lock_connections = v4;
+    v3->_lock_connections = array;
 
     [(SBSPhysicalButtonTargetMonitorServer *)v3 startServer];
   }
@@ -69,18 +69,18 @@ void __51__SBSPhysicalButtonTargetMonitorServer_startServer__block_invoke(uint64
   return lock_physicalButtonTargets;
 }
 
-- (void)setPhysicalButtonTargets:(unint64_t)a3
+- (void)setPhysicalButtonTargets:(unint64_t)targets
 {
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_physicalButtonTargets == a3)
+  if (self->_lock_physicalButtonTargets == targets)
   {
     v5 = 0;
   }
 
   else
   {
-    self->_lock_physicalButtonTargets = a3;
+    self->_lock_physicalButtonTargets = targets;
     v5 = self->_lock_connections;
   }
 
@@ -105,9 +105,9 @@ void __51__SBSPhysicalButtonTargetMonitorServer_startServer__block_invoke(uint64
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) remoteTarget];
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-        [v11 setPhysicalButtonTargets:v12];
+        remoteTarget = [*(*(&v13 + 1) + 8 * v10) remoteTarget];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:targets];
+        [remoteTarget setPhysicalButtonTargets:v12];
 
         ++v10;
       }
@@ -120,16 +120,16 @@ void __51__SBSPhysicalButtonTargetMonitorServer_startServer__block_invoke(uint64
   }
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   objc_initWeak(&location, self);
-  v11 = [v9 remoteProcess];
-  v12 = [v11 auditToken];
-  v13 = [v12 hasEntitlement:@"com.apple.springboard.private.physicalButtonTargetMonitor"];
+  remoteProcess = [connectionCopy remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  v13 = [auditToken hasEntitlement:@"com.apple.springboard.private.physicalButtonTargetMonitor"];
 
   if (v13)
   {
@@ -139,11 +139,11 @@ void __51__SBSPhysicalButtonTargetMonitorServer_startServer__block_invoke(uint64
     v15[3] = &unk_1E735F0A8;
     v15[4] = self;
     objc_copyWeak(&v16, &location);
-    [v9 configureConnection:v15];
+    [connectionCopy configureConnection:v15];
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableArray *)self->_lock_connections addObject:v9];
+    [(NSMutableArray *)self->_lock_connections addObject:connectionCopy];
     os_unfair_lock_unlock(&self->_lock);
-    [v9 activate];
+    [connectionCopy activate];
     objc_destroyWeak(&v16);
   }
 
@@ -153,11 +153,11 @@ void __51__SBSPhysicalButtonTargetMonitorServer_startServer__block_invoke(uint64
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v9;
+      v19 = connectionCopy;
       _os_log_impl(&dword_19169D000, v14, OS_LOG_TYPE_DEFAULT, "SBSCaptureButtonAppConfigurationServer invalidating connection because client process is missing required entitlement %@.", buf, 0xCu);
     }
 
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 
   objc_destroyWeak(&location);

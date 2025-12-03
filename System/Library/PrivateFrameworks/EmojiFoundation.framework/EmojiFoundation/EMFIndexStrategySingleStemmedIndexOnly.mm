@@ -1,61 +1,61 @@
 @interface EMFIndexStrategySingleStemmedIndexOnly
-- (id)_calculateDocumentWeightsForQueryTokenCounts:(id)a3;
-- (id)_commonDocumentsForTerms:(id)a3;
-- (id)_postingsForTerm:(id)a3;
-- (id)_postingsForTerms:(id)a3;
-- (id)_termWeightForTerm:(id)a3 inDocument:(id)a4;
-- (id)_termsForDocument:(id)a3;
-- (id)postingsForTerm:(id)a3;
-- (id)termWeightForTerm:(id)a3 inDocument:(id)a4;
-- (id)termsForDocument:(id)a3;
+- (id)_calculateDocumentWeightsForQueryTokenCounts:(id)counts;
+- (id)_commonDocumentsForTerms:(id)terms;
+- (id)_postingsForTerm:(id)term;
+- (id)_postingsForTerms:(id)terms;
+- (id)_termWeightForTerm:(id)term inDocument:(id)document;
+- (id)_termsForDocument:(id)document;
+- (id)postingsForTerm:(id)term;
+- (id)termWeightForTerm:(id)term inDocument:(id)document;
+- (id)termsForDocument:(id)document;
 @end
 
 @implementation EMFIndexStrategySingleStemmedIndexOnly
 
-- (id)postingsForTerm:(id)a3
+- (id)postingsForTerm:(id)term
 {
-  v3 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _postingsForTerm:a3];
+  v3 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _postingsForTerm:term];
   v4 = [v3 objectForKeyedSubscript:@"postings"];
 
   return v4;
 }
 
-- (id)termsForDocument:(id)a3
+- (id)termsForDocument:(id)document
 {
-  v4 = [a3 stringValue];
-  v5 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _termsForDocument:v4];
+  stringValue = [document stringValue];
+  v5 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _termsForDocument:stringValue];
 
   return v5;
 }
 
-- (id)termWeightForTerm:(id)a3 inDocument:(id)a4
+- (id)termWeightForTerm:(id)term inDocument:(id)document
 {
-  v6 = a3;
-  v7 = [a4 stringValue];
-  v8 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _termWeightForTerm:v6 inDocument:v7];
+  termCopy = term;
+  stringValue = [document stringValue];
+  v8 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _termWeightForTerm:termCopy inDocument:stringValue];
 
   return v8;
 }
 
-- (id)_postingsForTerm:(id)a3
+- (id)_postingsForTerm:(id)term
 {
-  v4 = a3;
-  v5 = [(EMFAbstractIndexStrategy *)self termIndex];
-  v6 = [v5 objectForKey:v4];
+  termCopy = term;
+  termIndex = [(EMFAbstractIndexStrategy *)self termIndex];
+  v6 = [termIndex objectForKey:termCopy];
 
   return v6;
 }
 
-- (id)_postingsForTerms:(id)a3
+- (id)_postingsForTerms:(id)terms
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  termsCopy = terms;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = termsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -89,23 +89,23 @@
   return v13;
 }
 
-- (id)_termsForDocument:(id)a3
+- (id)_termsForDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(EMFAbstractIndexStrategy *)self documentIndex];
-  v6 = [v5 objectForKey:v4];
+  documentCopy = document;
+  documentIndex = [(EMFAbstractIndexStrategy *)self documentIndex];
+  v6 = [documentIndex objectForKey:documentCopy];
 
   return v6;
 }
 
-- (id)_termWeightForTerm:(id)a3 inDocument:(id)a4
+- (id)_termWeightForTerm:(id)term inDocument:(id)document
 {
-  v6 = a3;
-  v7 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _termsForDocument:a4];
+  termCopy = term;
+  v7 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _termsForDocument:document];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKey:v6];
+    v9 = [v7 objectForKey:termCopy];
     v10 = v9;
     if (v9)
     {
@@ -126,17 +126,17 @@
   return v11;
 }
 
-- (id)_commonDocumentsForTerms:(id)a3
+- (id)_commonDocumentsForTerms:(id)terms
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _postingsForTerms:v4];
+  termsCopy = terms;
+  v5 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _postingsForTerms:termsCopy];
   v6 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v4;
+  obj = termsCopy;
   v7 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -154,17 +154,17 @@
 
         v12 = [v5 objectForKeyedSubscript:*(*(&v19 + 1) + 8 * i)];
         v13 = [v12 objectForKeyedSubscript:@"postings"];
-        v14 = [v13 allKeys];
+        allKeys = [v13 allKeys];
 
         if (v9)
         {
-          v15 = [MEMORY[0x1E695DFD8] setWithArray:v14];
+          v15 = [MEMORY[0x1E695DFD8] setWithArray:allKeys];
           [v6 intersectSet:v15];
         }
 
         else
         {
-          [v6 addObjectsFromArray:v14];
+          [v6 addObjectsFromArray:allKeys];
         }
 
         v9 = 1;
@@ -181,12 +181,12 @@
   return v16;
 }
 
-- (id)_calculateDocumentWeightsForQueryTokenCounts:(id)a3
+- (id)_calculateDocumentWeightsForQueryTokenCounts:(id)counts
 {
   v41 = *MEMORY[0x1E69E9840];
-  v30 = a3;
-  v4 = [v30 allKeys];
-  v5 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _commonDocumentsForTerms:v4];
+  countsCopy = counts;
+  allKeys = [countsCopy allKeys];
+  v5 = [(EMFIndexStrategySingleStemmedIndexOnly *)self _commonDocumentsForTerms:allKeys];
 
   v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v35 = 0u;
@@ -213,7 +213,7 @@
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v10 = v30;
+        v10 = countsCopy;
         v11 = [v10 countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v11)
         {

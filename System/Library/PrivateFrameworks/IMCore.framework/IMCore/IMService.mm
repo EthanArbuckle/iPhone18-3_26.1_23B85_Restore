@@ -1,5 +1,5 @@
 @interface IMService
-+ (BOOL)isEmailAddress:(id)a3 inDomains:(id)a4;
++ (BOOL)isEmailAddress:(id)address inDomains:(id)domains;
 + (NSDate)myIdleTime;
 - (id)_displayName;
 @end
@@ -17,11 +17,11 @@
   return v13;
 }
 
-+ (BOOL)isEmailAddress:(id)a3 inDomains:(id)a4
++ (BOOL)isEmailAddress:(id)address inDomains:(id)domains
 {
-  v5 = a3;
-  v6 = a4;
-  v10 = objc_msgSend_count(v6, v7, v8);
+  addressCopy = address;
+  domainsCopy = domains;
+  v10 = objc_msgSend_count(domainsCopy, v7, v8);
   if (!v10)
   {
     goto LABEL_16;
@@ -30,7 +30,7 @@
   v11 = 0;
   while (1)
   {
-    v12 = objc_msgSend_objectAtIndex_(v6, v9, v11);
+    v12 = objc_msgSend_objectAtIndex_(domainsCopy, v9, v11);
     if (objc_msgSend_isEqualToString_(v12, v13, @"*"))
     {
 LABEL_11:
@@ -38,7 +38,7 @@ LABEL_11:
       goto LABEL_15;
     }
 
-    if (objc_msgSend_hasSuffix_(v5, v14, v12))
+    if (objc_msgSend_hasSuffix_(addressCopy, v14, v12))
     {
       break;
     }
@@ -52,11 +52,11 @@ LABEL_9:
     }
   }
 
-  v17 = objc_msgSend_length(v5, v15, v16);
+  v17 = objc_msgSend_length(addressCopy, v15, v16);
   v20 = v17 + ~objc_msgSend_length(v12, v18, v19);
-  if (v20 < objc_msgSend_length(v5, v21, v22))
+  if (v20 < objc_msgSend_length(addressCopy, v21, v22))
   {
-    if (v20 && v20 < objc_msgSend_length(v5, v23, v24) && objc_msgSend_characterAtIndex_(v5, v25, v20) == 64)
+    if (v20 && v20 < objc_msgSend_length(addressCopy, v23, v24) && objc_msgSend_characterAtIndex_(addressCopy, v25, v20) == 64)
     {
       goto LABEL_11;
     }
@@ -67,7 +67,7 @@ LABEL_9:
   v10 = IMLogHandleForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    sub_1A84DEF40(v5, v12, v10);
+    sub_1A84DEF40(addressCopy, v12, v10);
   }
 
   LOBYTE(v10) = 0;

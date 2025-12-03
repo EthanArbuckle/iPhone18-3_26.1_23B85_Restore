@@ -1,24 +1,24 @@
 @interface SBLockScreenPluginContext
-+ (id)contextWithName:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)contextWithName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBLockScreenPluginContext
 
-+ (id)contextWithName:(id)a3
++ (id)contextWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(SBLockScreenPluginContext);
-  [(SBLockScreenPluginContext *)v4 setName:v3];
+  [(SBLockScreenPluginContext *)v4 setName:nameCopy];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(SBLockScreenPluginContext);
   [(SBLockScreenPluginContext *)v4 setName:self->_name];
@@ -30,10 +30,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBLockScreenPluginContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBLockScreenPluginContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -47,28 +47,28 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBLockScreenPluginContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBLockScreenPluginContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(SBLockScreenPluginContext *)self succinctDescriptionBuilder];
-  v6 = v5;
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(SBLockScreenPluginContext *)self succinctDescriptionBuilder];
+  v6 = succinctDescriptionBuilder;
   if (self->_userInfo)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __67__SBLockScreenPluginContext_descriptionBuilderWithMultilinePrefix___block_invoke;
     v8[3] = &unk_27836AE50;
-    v9 = v5;
-    v10 = self;
-    [v9 appendBodySectionWithName:0 multilinePrefix:v4 block:v8];
+    v9 = succinctDescriptionBuilder;
+    selfCopy = self;
+    [v9 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v8];
   }
 
   return v6;

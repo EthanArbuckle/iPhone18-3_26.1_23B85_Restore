@@ -1,7 +1,7 @@
 @interface MKTransitIcon
 - (GEOStyleAttributes)styleAttributes;
-- (MKTransitIcon)initWithCartoId:(unsigned int)a3 defaultTransitType:(unsigned int)a4;
-- (MKTransitIcon)initWithKey:(unsigned int)a3 value:(unsigned int)a4;
+- (MKTransitIcon)initWithCartoId:(unsigned int)id defaultTransitType:(unsigned int)type;
+- (MKTransitIcon)initWithKey:(unsigned int)key value:(unsigned int)value;
 @end
 
 @implementation MKTransitIcon
@@ -33,7 +33,7 @@
   return styleAttributes;
 }
 
-- (MKTransitIcon)initWithKey:(unsigned int)a3 value:(unsigned int)a4
+- (MKTransitIcon)initWithKey:(unsigned int)key value:(unsigned int)value
 {
   v10.receiver = self;
   v10.super_class = MKTransitIcon;
@@ -41,15 +41,15 @@
   v7 = v6;
   if (v6)
   {
-    v6->_iconAttributeKey = a3;
-    v6->_iconAttributeValue = a4;
+    v6->_iconAttributeKey = key;
+    v6->_iconAttributeValue = value;
     v8 = v6;
   }
 
   return v7;
 }
 
-- (MKTransitIcon)initWithCartoId:(unsigned int)a3 defaultTransitType:(unsigned int)a4
+- (MKTransitIcon)initWithCartoId:(unsigned int)id defaultTransitType:(unsigned int)type
 {
   v10.receiver = self;
   v10.super_class = MKTransitIcon;
@@ -57,8 +57,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_cartoID = a3;
-    v6->_defaultTransitType = a4;
+    v6->_cartoID = id;
+    v6->_defaultTransitType = type;
     v8 = v6;
   }
 

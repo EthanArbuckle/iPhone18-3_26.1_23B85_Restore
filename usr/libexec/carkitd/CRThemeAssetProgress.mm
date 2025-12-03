@@ -1,7 +1,7 @@
 @interface CRThemeAssetProgress
 - (CRThemeAssetProgress)init;
-- (void)setDownloadProgress:(id)a3;
-- (void)setTransferProgress:(id)a3;
+- (void)setDownloadProgress:(id)progress;
+- (void)setTransferProgress:(id)progress;
 @end
 
 @implementation CRThemeAssetProgress
@@ -23,45 +23,45 @@
   return v2;
 }
 
-- (void)setDownloadProgress:(id)a3
+- (void)setDownloadProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   if (self->_downloadProgress)
   {
-    v6 = CarThemeAssetsLogging();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    overallProgress = CarThemeAssetsLogging();
+    if (os_log_type_enabled(overallProgress, OS_LOG_TYPE_DEFAULT))
     {
       *v7 = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "already have download progress", v7, 2u);
+      _os_log_impl(&_mh_execute_header, overallProgress, OS_LOG_TYPE_DEFAULT, "already have download progress", v7, 2u);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_downloadProgress, a3);
-    v6 = [(CRThemeAssetProgress *)self overallProgress];
-    [v6 addChild:v5 withPendingUnitCount:1];
+    objc_storeStrong(&self->_downloadProgress, progress);
+    overallProgress = [(CRThemeAssetProgress *)self overallProgress];
+    [overallProgress addChild:progressCopy withPendingUnitCount:1];
   }
 }
 
-- (void)setTransferProgress:(id)a3
+- (void)setTransferProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   if (self->_transferProgress)
   {
-    v6 = CarThemeAssetsLogging();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    overallProgress = CarThemeAssetsLogging();
+    if (os_log_type_enabled(overallProgress, OS_LOG_TYPE_DEFAULT))
     {
       *v7 = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "already have transfer progress", v7, 2u);
+      _os_log_impl(&_mh_execute_header, overallProgress, OS_LOG_TYPE_DEFAULT, "already have transfer progress", v7, 2u);
     }
   }
 
   else
   {
-    objc_storeStrong(&self->_transferProgress, a3);
-    v6 = [(CRThemeAssetProgress *)self overallProgress];
-    [v6 addChild:v5 withPendingUnitCount:1];
+    objc_storeStrong(&self->_transferProgress, progress);
+    overallProgress = [(CRThemeAssetProgress *)self overallProgress];
+    [overallProgress addChild:progressCopy withPendingUnitCount:1];
   }
 }
 

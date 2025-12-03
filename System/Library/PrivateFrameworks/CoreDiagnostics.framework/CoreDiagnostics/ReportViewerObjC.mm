@@ -1,15 +1,15 @@
 @interface ReportViewerObjC
-+ (id)rollSchemaForward:(id)a3;
-+ (id)transformURL:(id)a3 template:(id)a4 options:(id)a5;
-- (BOOL)prepareTemplate:(id)a3 forLogType:(id)a4 error:(id *)a5;
-- (BOOL)transformJSON:(id)a3 header:(id)a4 error:(id *)a5 streamingBlock:(id)a6;
-- (BOOL)transformLines:(id)a3 withDefinitions:(id)a4 body:(id)a5 header:(id)a6 error:(id *)a7 streamingBlock:(id)a8;
++ (id)rollSchemaForward:(id)forward;
++ (id)transformURL:(id)l template:(id)template options:(id)options;
+- (BOOL)prepareTemplate:(id)template forLogType:(id)type error:(id *)error;
+- (BOOL)transformJSON:(id)n header:(id)header error:(id *)error streamingBlock:(id)block;
+- (BOOL)transformLines:(id)lines withDefinitions:(id)definitions body:(id)body header:(id)header error:(id *)error streamingBlock:(id)block;
 - (ReportViewerObjC)init;
-- (id)_getValueForKey:(id)a3 fromBody:(id)a4 orHeader:(id)a5;
-- (id)_hexDump:(id)a3 offset:(int)a4 indicator:(BOOL)a5;
-- (id)formatFrame:(id)a3 withImages:(id)a4 macosStyle:(BOOL)a5 showBinaryImage:(BOOL)a6;
-- (id)formatImages:(id)a3 macosStyle:(BOOL)a4;
-- (id)formatLastException:(id)a3 withImages:(id)a4;
+- (id)_getValueForKey:(id)key fromBody:(id)body orHeader:(id)header;
+- (id)_hexDump:(id)dump offset:(int)offset indicator:(BOOL)indicator;
+- (id)formatFrame:(id)frame withImages:(id)images macosStyle:(BOOL)style showBinaryImage:(BOOL)image;
+- (id)formatImages:(id)images macosStyle:(BOOL)style;
+- (id)formatLastException:(id)exception withImages:(id)images;
 @end
 
 @implementation ReportViewerObjC
@@ -29,26 +29,26 @@
   return v2;
 }
 
-- (BOOL)prepareTemplate:(id)a3 forLogType:(id)a4 error:(id *)a5
+- (BOOL)prepareTemplate:(id)template forLogType:(id)type error:(id *)error
 {
-  v7 = a4;
-  v8 = [a3 componentsSeparatedByString:@"\n"];
-  [(NSMutableDictionary *)self->_templates setValue:v8 forKey:v7];
+  typeCopy = type;
+  v8 = [template componentsSeparatedByString:@"\n"];
+  [(NSMutableDictionary *)self->_templates setValue:v8 forKey:typeCopy];
 
   return 0;
 }
 
-- (id)formatFrame:(id)a3 withImages:(id)a4 macosStyle:(BOOL)a5 showBinaryImage:(BOOL)a6
+- (id)formatFrame:(id)frame withImages:(id)images macosStyle:(BOOL)style showBinaryImage:(BOOL)image
 {
-  v6 = a6;
+  imageCopy = image;
   v57 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [v9 objectForKeyedSubscript:@"imageIndex"];
+  frameCopy = frame;
+  imagesCopy = images;
+  v11 = [frameCopy objectForKeyedSubscript:@"imageIndex"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v10 objectAtIndexedSubscript:{objc_msgSend(v11, "intValue")}];
+    v13 = [imagesCopy objectAtIndexedSubscript:{objc_msgSend(v11, "intValue")}];
   }
 
   else
@@ -74,7 +74,7 @@
 
   else
   {
-    if (a5)
+    if (style)
     {
       goto LABEL_12;
     }
@@ -89,24 +89,24 @@
   v15 = v18;
 LABEL_12:
   v19 = [v13 objectForKeyedSubscript:@"base"];
-  v20 = [v19 unsignedLongLongValue];
+  unsignedLongLongValue = [v19 unsignedLongLongValue];
 
-  v21 = [v9 objectForKeyedSubscript:@"imageOffset"];
-  v22 = [v21 unsignedLongLongValue];
+  v21 = [frameCopy objectForKeyedSubscript:@"imageOffset"];
+  unsignedLongLongValue2 = [v21 unsignedLongLongValue];
 
-  v23 = v20 + v22;
-  if ([v9 count] < 3)
+  v23 = unsignedLongLongValue + unsignedLongLongValue2;
+  if ([frameCopy count] < 3)
   {
-    if (v20 && v22)
+    if (unsignedLongLongValue && unsignedLongLongValue2)
     {
-      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p + %llu", v20, v22];
+      v26 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p + %llu", unsignedLongLongValue, unsignedLongLongValue2];
     }
 
     else
     {
-      if (!v20)
+      if (!unsignedLongLongValue)
       {
-        v23 = v22;
+        v23 = unsignedLongLongValue2;
       }
 
       v26 = @"???";
@@ -116,19 +116,19 @@ LABEL_12:
   else
   {
     v50 = v12;
-    v53 = [v9 objectForKeyedSubscript:@"symbol"];
-    v24 = [v9 objectForKeyedSubscript:@"symbolLocation"];
-    v51 = v10;
+    v53 = [frameCopy objectForKeyedSubscript:@"symbol"];
+    v24 = [frameCopy objectForKeyedSubscript:@"symbolLocation"];
+    v51 = imagesCopy;
     v52 = v24;
-    v49 = v6;
-    v54 = v20 + v22;
+    v49 = imageCopy;
+    v54 = unsignedLongLongValue + unsignedLongLongValue2;
     if (v24)
     {
       v25 = v24;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v22 = [v25 unsignedLongLongValue];
+        unsignedLongLongValue2 = [v25 unsignedLongLongValue];
       }
 
       else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -139,8 +139,8 @@ LABEL_12:
       }
     }
 
-    v27 = [v9 objectForKeyedSubscript:@"sourceFile"];
-    v28 = [v9 objectForKeyedSubscript:@"sourceLine"];
+    v27 = [frameCopy objectForKeyedSubscript:@"sourceFile"];
+    v28 = [frameCopy objectForKeyedSubscript:@"sourceLine"];
     v29 = v28;
     v48 = v13;
     v30 = &stru_1F550D880;
@@ -149,52 +149,52 @@ LABEL_12:
       v30 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (%@:%@)", v27, v28];
     }
 
-    v31 = [v9 objectForKeyedSubscript:@"inline"];
+    v31 = [frameCopy objectForKeyedSubscript:@"inline"];
     v32 = v31;
     v33 = v53;
     if (v53)
     {
       v34 = MEMORY[0x1E696AEC0];
-      v35 = [v31 BOOLValue];
+      bOOLValue = [v31 BOOLValue];
       v36 = @" [inlined]";
-      if (!v35)
+      if (!bOOLValue)
       {
         v36 = &stru_1F550D880;
       }
 
-      v26 = [v34 stringWithFormat:@"%@ + %llu%@%@", v53, v22, v30, v36];
-      v6 = v49;
+      v26 = [v34 stringWithFormat:@"%@ + %llu%@%@", v53, unsignedLongLongValue2, v30, v36];
+      imageCopy = v49;
     }
 
     else
     {
-      if (v20 && v22)
+      if (unsignedLongLongValue && unsignedLongLongValue2)
       {
         v37 = MEMORY[0x1E696AEC0];
-        v38 = [v31 BOOLValue];
+        bOOLValue2 = [v31 BOOLValue];
         v39 = @" [inlined]";
-        if (!v38)
+        if (!bOOLValue2)
         {
           v39 = &stru_1F550D880;
         }
 
-        v26 = [v37 stringWithFormat:@"%p + %llu%@%@", v54 - v22, v22, v30, v39];
+        v26 = [v37 stringWithFormat:@"%p + %llu%@%@", v54 - unsignedLongLongValue2, unsignedLongLongValue2, v30, v39];
       }
 
       else
       {
         v40 = v54;
-        if (!v20)
+        if (!unsignedLongLongValue)
         {
-          v40 = v22;
+          v40 = unsignedLongLongValue2;
         }
 
         v54 = v40;
         v26 = @"???";
       }
 
-      v6 = v49;
-      v41 = [v9 objectForKeyedSubscript:@"region"];
+      imageCopy = v49;
+      v41 = [frameCopy objectForKeyedSubscript:@"region"];
       v42 = v41;
       if (v41)
       {
@@ -207,12 +207,12 @@ LABEL_12:
     }
 
     v12 = v50;
-    v10 = v51;
+    imagesCopy = v51;
     v13 = v48;
     v23 = v54;
   }
 
-  if (v6)
+  if (imageCopy)
   {
     [MEMORY[0x1E696AEC0] stringWithFormat:@"%@\t%18p %@", v15, v23, v26];
   }
@@ -228,22 +228,22 @@ LABEL_12:
   return v44;
 }
 
-- (id)formatImages:(id)a3 macosStyle:(BOOL)a4
+- (id)formatImages:(id)images macosStyle:(BOOL)style
 {
-  v4 = a4;
+  styleCopy = style;
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  imagesCopy = images;
   v39 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = imagesCopy;
   v40 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
   if (v40)
   {
     v38 = *v44;
-    v35 = v4;
+    v35 = styleCopy;
     do
     {
       for (i = 0; i != v40; ++i)
@@ -256,7 +256,7 @@ LABEL_12:
         v7 = *(*(&v43 + 1) + 8 * i);
         v8 = [v7 objectForKeyedSubscript:@"uuid"];
         v9 = v8;
-        if (!v4)
+        if (!styleCopy)
         {
           v10 = [v8 stringByReplacingOccurrencesOfString:@"-" withString:&stru_1F550D880];
 
@@ -264,15 +264,15 @@ LABEL_12:
         }
 
         v42 = [v7 objectForKeyedSubscript:@"base"];
-        v11 = [v42 unsignedLongLongValue];
+        unsignedLongLongValue = [v42 unsignedLongLongValue];
         v12 = [v7 objectForKeyedSubscript:@"size"];
-        v41 = v11 + [v12 unsignedLongLongValue] - 1;
+        v41 = unsignedLongLongValue + [v12 unsignedLongLongValue] - 1;
 
         v13 = [v7 objectForKeyedSubscript:@"name"];
         v14 = [v7 objectForKeyedSubscript:@"arch"];
         v15 = [v7 objectForKeyedSubscript:@"path"];
         v16 = v15;
-        if (v4)
+        if (styleCopy)
         {
           v17 = [v7 objectForKeyedSubscript:@"CFBundleIdentifier"];
           if ([v17 length])
@@ -315,14 +315,14 @@ LABEL_12:
             v26 = v16;
           }
 
-          v27 = [v20 stringWithFormat:@"%18p - %18p %@ (%@) <%@> %@", v11, v41, v22, v19, v9, v26];
+          v27 = [v20 stringWithFormat:@"%18p - %18p %@ (%@) <%@> %@", unsignedLongLongValue, v41, v22, v19, v9, v26];
           [v39 addObject:v27];
 
           if (v21)
           {
           }
 
-          v4 = v35;
+          styleCopy = v35;
 LABEL_33:
 
           goto LABEL_34;
@@ -360,7 +360,7 @@ LABEL_33:
           v29 = v16;
         }
 
-        v30 = [v23 stringWithFormat:@"%18p - %18p %@ %@  <%@> %@", v11, v41, v25, v28, v9, v29];
+        v30 = [v23 stringWithFormat:@"%18p - %18p %@ %@  <%@> %@", unsignedLongLongValue, v41, v25, v28, v9, v29];
         [v39 addObject:v30];
 
         v17 = v37;
@@ -385,17 +385,17 @@ LABEL_34:
   return v31;
 }
 
-- (id)formatLastException:(id)a3 withImages:(id)a4
+- (id)formatLastException:(id)exception withImages:(id)images
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  exceptionCopy = exception;
+  imagesCopy = images;
   v8 = objc_opt_new();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = exceptionCopy;
   v9 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
@@ -413,7 +413,7 @@ LABEL_34:
 
         v12 = (v12 + 1);
         v14 = MEMORY[0x1E696AEC0];
-        v15 = [(ReportViewerObjC *)self formatFrame:*(*(&v21 + 1) + 8 * i) withImages:v7 macosStyle:0];
+        v15 = [(ReportViewerObjC *)self formatFrame:*(*(&v21 + 1) + 8 * i) withImages:imagesCopy macosStyle:0];
         v16 = [v14 stringWithFormat:@"%-3d %@", v12, v15];
         [v8 addObject:v16];
       }
@@ -431,24 +431,24 @@ LABEL_34:
   return v17;
 }
 
-- (id)_hexDump:(id)a3 offset:(int)a4 indicator:(BOOL)a5
+- (id)_hexDump:(id)dump offset:(int)offset indicator:(BOOL)indicator
 {
-  v5 = a5;
+  indicatorCopy = indicator;
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dumpCopy = dump;
   v8 = objc_opt_new();
   v24 = 0u;
   memset(v25, 0, 28);
   v22 = 0u;
   v23 = 0u;
   *__str = 0;
-  if ([v7 count])
+  if ([dumpCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v7 objectAtIndexedSubscript:v9];
-      v11 = [v10 intValue];
+      v10 = [dumpCopy objectAtIndexedSubscript:v9];
+      intValue = [v10 intValue];
 
       v12 = v9 & 0xF;
       if (v12 == 9)
@@ -467,19 +467,19 @@ LABEL_34:
         v23 = v13;
       }
 
-      if (v11 > 0x7F)
+      if (intValue > 0x7F)
       {
-        v14 = __maskrune(v11, 0x40000uLL);
+        v14 = __maskrune(intValue, 0x40000uLL);
       }
 
       else
       {
-        v14 = *(MEMORY[0x1E69E9830] + 4 * v11 + 60) & 0x40000;
+        v14 = *(MEMORY[0x1E69E9830] + 4 * intValue + 60) & 0x40000;
       }
 
       if (v14)
       {
-        v15 = v11;
+        v15 = intValue;
       }
 
       else
@@ -487,22 +487,22 @@ LABEL_34:
         v15 = 46;
       }
 
-      snprintf(__str, 4uLL, "%02x%c", v11, v15);
+      snprintf(__str, 4uLL, "%02x%c", intValue, v15);
       v16 = (3 * v12);
       *(&v22 + v16 + 2) = *__str;
       *((v12 | &v22) + 0x33) = __str[2];
-      if (a4 == v9)
+      if (offset == v9)
       {
         v17 = &v22 + v16;
         v17[1] = 91;
         v17[4] = 93;
-        if (v5)
+        if (indicatorCopy)
         {
           __sprintf_chk(&v25[1] + 3, 0, 9uLL, "\t<==");
         }
       }
 
-      if (v12 == 15 || v9 == [v7 count] - 1)
+      if (v12 == 15 || v9 == [dumpCopy count] - 1)
       {
         v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&v22];
         [v8 addObject:v18];
@@ -511,7 +511,7 @@ LABEL_34:
       ++v9;
     }
 
-    while ([v7 count] > v9);
+    while ([dumpCopy count] > v9);
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -519,41 +519,41 @@ LABEL_34:
   return v8;
 }
 
-- (id)_getValueForKey:(id)a3 fromBody:(id)a4 orHeader:(id)a5
+- (id)_getValueForKey:(id)key fromBody:(id)body orHeader:(id)header
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([&unk_1F5514378 containsObject:v8])
+  keyCopy = key;
+  bodyCopy = body;
+  headerCopy = header;
+  if ([&unk_1F5514378 containsObject:keyCopy])
   {
-    v11 = [(ReportViewerObjC *)self _getValueForKey:@"faultingThread" fromBody:v9 orHeader:0];
+    v11 = [(ReportViewerObjC *)self _getValueForKey:@"faultingThread" fromBody:bodyCopy orHeader:0];
     if (!v11)
     {
       v26 = 0;
       goto LABEL_21;
     }
 
-    v12 = [v9 objectForKeyedSubscript:@"threads"];
+    v12 = [bodyCopy objectForKeyedSubscript:@"threads"];
     v13 = [v12 objectAtIndexedSubscript:{objc_msgSend(v11, "intValue")}];
-    v14 = v13;
-    v15 = v8;
+    lastObject = v13;
+    v15 = keyCopy;
   }
 
   else
   {
-    v11 = v9;
-    if ([v8 hasPrefix:@"metadata:"])
+    v11 = bodyCopy;
+    if ([keyCopy hasPrefix:@"metadata:"])
     {
-      v16 = v10;
+      v16 = headerCopy;
 
-      v17 = [v8 stringByReplacingOccurrencesOfString:@"metadata:" withString:&stru_1F550D880];
+      v17 = [keyCopy stringByReplacingOccurrencesOfString:@"metadata:" withString:&stru_1F550D880];
 
       v11 = v16;
-      v8 = v17;
+      keyCopy = v17;
     }
 
-    v18 = [v8 componentsSeparatedByString:@"."];
+    v18 = [keyCopy componentsSeparatedByString:@"."];
     v19 = [v18 count];
     v31 = 0u;
     v32 = 0u;
@@ -565,8 +565,8 @@ LABEL_34:
     {
       v21 = v20;
       v22 = *v32;
-      v29 = v10;
-      v30 = v9;
+      v29 = headerCopy;
+      v30 = bodyCopy;
       while (2)
       {
         v23 = 0;
@@ -592,8 +592,8 @@ LABEL_34:
 
 LABEL_18:
             v11 = v25;
-            v10 = v29;
-            v9 = v30;
+            headerCopy = v29;
+            bodyCopy = v30;
             goto LABEL_19;
           }
 
@@ -603,8 +603,8 @@ LABEL_18:
 
         while (v21 != v23);
         v21 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
-        v10 = v29;
-        v9 = v30;
+        headerCopy = v29;
+        bodyCopy = v30;
         if (v21)
         {
           continue;
@@ -616,9 +616,9 @@ LABEL_18:
 
 LABEL_19:
 
-    v14 = [v12 lastObject];
+    lastObject = [v12 lastObject];
     v13 = v11;
-    v15 = v14;
+    v15 = lastObject;
   }
 
   v26 = [v13 objectForKeyedSubscript:{v15, v29, v30, v31}];
@@ -629,29 +629,29 @@ LABEL_21:
   return v26;
 }
 
-- (BOOL)transformJSON:(id)a3 header:(id)a4 error:(id *)a5 streamingBlock:(id)a6
+- (BOOL)transformJSON:(id)n header:(id)header error:(id *)error streamingBlock:(id)block
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v11 objectForKeyedSubscript:@"bug_type"];
+  nCopy = n;
+  headerCopy = header;
+  blockCopy = block;
+  v13 = [headerCopy objectForKeyedSubscript:@"bug_type"];
   v14 = [(NSMutableDictionary *)self->_templates objectForKeyedSubscript:v13];
   v15 = objc_opt_new();
   if (v14)
   {
-    v16 = [(ReportViewerObjC *)self transformLines:v14 withDefinitions:v15 body:v10 header:v11 error:a5 streamingBlock:v12];
+    v16 = [(ReportViewerObjC *)self transformLines:v14 withDefinitions:v15 body:nCopy header:headerCopy error:error streamingBlock:blockCopy];
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v17 = MEMORY[0x1E696ABC0];
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"'%@' template not found", v13, *MEMORY[0x1E696A578]];
       v23[0] = v18;
       v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      *a5 = [v17 errorWithDomain:@"ReportViewer" code:1 userInfo:v19];
+      *error = [v17 errorWithDomain:@"ReportViewer" code:1 userInfo:v19];
     }
 
     v16 = 0;
@@ -661,27 +661,27 @@ LABEL_21:
   return v16;
 }
 
-- (BOOL)transformLines:(id)a3 withDefinitions:(id)a4 body:(id)a5 header:(id)a6 error:(id *)a7 streamingBlock:(id)a8
+- (BOOL)transformLines:(id)lines withDefinitions:(id)definitions body:(id)body header:(id)header error:(id *)error streamingBlock:(id)block
 {
-  v46 = a7;
+  errorCopy = error;
   v89 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v54 = a4;
-  v61 = a5;
-  v59 = a6;
-  v52 = a8;
+  linesCopy = lines;
+  definitionsCopy = definitions;
+  bodyCopy = body;
+  headerCopy = header;
+  blockCopy = block;
   v84 = 0;
   v51 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"\\$\\((([^\\)\"]+|\"[^\"]+\"" options:? error:?], 0, &v84);
   v47 = v84;
-  v13 = [(ReportViewerObjC *)self _getValueForKey:@"osVersion.train" fromBody:v61 orHeader:v59];
+  v13 = [(ReportViewerObjC *)self _getValueForKey:@"osVersion.train" fromBody:bodyCopy orHeader:headerCopy];
   v49 = [v13 hasPrefix:@"macOS"];
 
-  v50 = [(ReportViewerObjC *)self _getValueForKey:@"faultingThread" fromBody:v61 orHeader:0];
+  v50 = [(ReportViewerObjC *)self _getValueForKey:@"faultingThread" fromBody:bodyCopy orHeader:0];
   v82 = 0u;
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  obj = v12;
+  obj = linesCopy;
   v57 = [obj countByEnumeratingWithState:&v80 objects:v88 count:16];
   v48 = v57 == 0;
   if (!v57)
@@ -697,7 +697,7 @@ LABEL_47:
   v58 = 0;
   v14 = 0;
   v56 = *v81;
-  v53 = v52 + 2;
+  v53 = blockCopy + 2;
   do
   {
     for (i = 0; i != v57; ++i)
@@ -716,7 +716,7 @@ LABEL_47:
           continue;
         }
 
-        [v54 setObject:v58 forKeyedSubscript:v14];
+        [definitionsCopy setObject:v58 forKeyedSubscript:v14];
 
         v58 = 0;
       }
@@ -777,7 +777,7 @@ LABEL_47:
                   v30 = 0;
                 }
 
-                v31 = [v28 hasPrefix:{@"*", v46}];
+                v31 = [v28 hasPrefix:{@"*", errorCopy}];
                 if (v31)
                 {
                   v32 = [v28 substringFromIndex:1];
@@ -785,8 +785,8 @@ LABEL_47:
                   v28 = v32;
                 }
 
-                v33 = [(ReportViewerObjC *)self _getValueForKey:v28 fromBody:v61 orHeader:v59];
-                v34 = v33 != 0;
+                v33 = [(ReportViewerObjC *)self _getValueForKey:v28 fromBody:bodyCopy orHeader:headerCopy];
+                bOOLValue = v33 != 0;
                 if (v33)
                 {
                   v35 = v31;
@@ -802,16 +802,16 @@ LABEL_47:
                   objc_opt_class();
                   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
                   {
-                    v34 = [v33 count] != 0;
+                    bOOLValue = [v33 count] != 0;
                   }
 
                   else
                   {
-                    v34 = [v33 BOOLValue];
+                    bOOLValue = [v33 BOOLValue];
                   }
                 }
 
-                v36 = v30 == v34;
+                v36 = v30 == bOOLValue;
 
                 if (v36)
                 {
@@ -831,22 +831,22 @@ LABEL_47:
           }
         }
 
-        v37 = [v16 substringFromIndex:{v77[3], v46}];
+        v37 = [v16 substringFromIndex:{v77[3], errorCopy}];
         v77[3] = 0;
         v38 = [v37 length];
         v62[0] = MEMORY[0x1E69E9820];
         v62[1] = 3221225472;
         v62[2] = __84__ReportViewerObjC_transformLines_withDefinitions_body_header_error_streamingBlock___block_invoke;
         v62[3] = &unk_1E8585600;
-        v39 = v52;
+        v39 = blockCopy;
         v69 = v39;
         v40 = v37;
         v63 = v40;
         v70 = &v76;
-        v64 = v54;
-        v65 = self;
-        v66 = v61;
-        v67 = v59;
+        v64 = definitionsCopy;
+        selfCopy = self;
+        v66 = bodyCopy;
+        v67 = headerCopy;
         v71 = v49;
         v68 = v50;
         [v51 enumerateMatchesInString:v40 options:0 range:0 usingBlock:{v38, v62}];
@@ -875,13 +875,13 @@ LABEL_39:
 
   if (v14)
   {
-    if (v46)
+    if (errorCopy)
     {
       v42 = MEMORY[0x1E696ABC0];
       v85 = *MEMORY[0x1E696A578];
       v86 = @"template has illformed definition";
       v43 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
-      *v46 = [v42 errorWithDomain:@"ReportViewer" code:2 userInfo:v43];
+      *errorCopy = [v42 errorWithDomain:@"ReportViewer" code:2 userInfo:v43];
       goto LABEL_47;
     }
 
@@ -1281,17 +1281,17 @@ LABEL_81:
   v69 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)rollSchemaForward:(id)a3
++ (id)rollSchemaForward:(id)forward
 {
   v134 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  forwardCopy = forward;
   v62 = [MEMORY[0x1E696AE70] regularExpressionWithPattern:@"^([A-Z_]+) options:(\\[0x[0-9a-zA-Z]\\])?(.*)$" error:{0, 0}];
   v65 = objc_opt_new();
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  obj = v3;
+  obj = forwardCopy;
   v68 = [obj countByEnumeratingWithState:&v116 objects:v133 count:16];
   if (v68)
   {
@@ -1559,9 +1559,9 @@ LABEL_29:
             }
 
             v30 = [v79 objectForKeyedSubscript:@"triggered"];
-            v31 = [v30 BOOLValue];
+            bOOLValue = [v30 BOOLValue];
 
-            if (v31)
+            if (bOOLValue)
             {
               v32 = [obj objectForKeyedSubscript:@"threadState"];
               if (v32)
@@ -1739,30 +1739,30 @@ uint64_t __38__ReportViewerObjC_rollSchemaForward___block_invoke(uint64_t a1, vo
   return result;
 }
 
-+ (id)transformURL:(id)a3 template:(id)a4 options:(id)a5
++ (id)transformURL:(id)l template:(id)template options:(id)options
 {
   v92[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v77 = a5;
+  lCopy = l;
+  templateCopy = template;
+  optionsCopy = options;
   v9 = objc_opt_new();
   v10 = objc_alloc(MEMORY[0x1E69B7C00]);
-  v11 = [v7 path];
+  path = [lCopy path];
   v84 = 0;
-  v12 = [v10 initWithPath:v11 forRouting:&stru_1F550D880 options:&unk_1F55146D8 error:&v84];
+  v12 = [v10 initWithPath:path forRouting:&stru_1F550D880 options:&unk_1F55146D8 error:&v84];
   v13 = v84;
 
   if (!v12)
   {
-    v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load log '%@'", v7];
-    v26 = [v13 augmentWithPrefix:v14];
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unable to load log '%@'", lCopy];
+    v26 = [v13 augmentWithPrefix:lCopy];
     goto LABEL_44;
   }
 
-  v14 = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:{fileno(objc_msgSend(v12, "stream"))}];
+  lCopy = [objc_alloc(MEMORY[0x1E696AC00]) initWithFileDescriptor:{fileno(objc_msgSend(v12, "stream"))}];
   v15 = MEMORY[0x1DA738670]([v12 stream]);
-  v16 = [v12 metaData];
-  v17 = [v16 count];
+  metaData = [v12 metaData];
+  v17 = [metaData count];
 
   v76 = v9;
   if (!v17)
@@ -1777,24 +1777,24 @@ uint64_t __38__ReportViewerObjC_rollSchemaForward___block_invoke(uint64_t a1, vo
     v15 = 0;
   }
 
-  [v14 seekToFileOffset:v15];
-  v18 = [v14 availableData];
+  [lCopy seekToFileOffset:v15];
+  availableData = [lCopy availableData];
   v83 = v13;
-  v19 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v18 options:0 error:&v83];
+  v19 = [MEMORY[0x1E696ACB0] JSONObjectWithData:availableData options:0 error:&v83];
   v20 = v83;
 
   if (v19)
   {
-    v74 = v8;
-    v75 = v18;
-    v21 = [v12 bugType];
-    v22 = [v12 metaData];
-    v23 = [v12 metaData];
-    v24 = [v23 count];
+    v74 = templateCopy;
+    v75 = availableData;
+    bugType = [v12 bugType];
+    metaData2 = [v12 metaData];
+    metaData3 = [v12 metaData];
+    v24 = [metaData3 count];
 
     if (v24)
     {
-      v25 = v22;
+      v25 = metaData2;
     }
 
     else
@@ -1842,21 +1842,21 @@ uint64_t __38__ReportViewerObjC_rollSchemaForward___block_invoke(uint64_t a1, vo
         v19 = v36;
       }
 
-      v21 = v71;
+      bugType = v71;
     }
 
-    v18 = v75;
-    if (![&unk_1F5514390 containsObject:v21])
+    availableData = v75;
+    if (![&unk_1F5514390 containsObject:bugType])
     {
-      v73 = v7;
+      v73 = lCopy;
       v44 = v25;
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [v12 bugType];
+        bugType2 = [v12 bugType];
         *buf = 138412546;
-        v88 = v45;
+        v88 = bugType2;
         v89 = 2112;
-        v90 = v21;
+        v90 = bugType;
         _os_log_impl(&dword_1D97FA000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "unsupported log type '%@' effective (%@)", buf, 0x16u);
       }
 
@@ -1867,7 +1867,7 @@ uint64_t __38__ReportViewerObjC_rollSchemaForward___block_invoke(uint64_t a1, vo
       v26 = [v46 errorWithDomain:@"ReportViewer" code:6 userInfo:v42];
 
       v43 = v44;
-      v7 = v73;
+      lCopy = v73;
       goto LABEL_42;
     }
 
@@ -1880,11 +1880,11 @@ uint64_t __38__ReportViewerObjC_rollSchemaForward___block_invoke(uint64_t a1, vo
     else
     {
       v38 = [v19 objectForKeyedSubscript:@"variantVersion"];
-      v39 = [v38 intValue];
+      intValue = [v38 intValue];
 
-      if (v39 > 1)
+      if (intValue > 1)
       {
-        v18 = v75;
+        availableData = v75;
       }
 
       else
@@ -1892,7 +1892,7 @@ uint64_t __38__ReportViewerObjC_rollSchemaForward___block_invoke(uint64_t a1, vo
         v40 = [ReportViewerObjC rollSchemaForward:v19];
 
         v19 = v40;
-        v18 = v75;
+        availableData = v75;
         if (!v40)
         {
           v41 = MEMORY[0x1E696ABC0];
@@ -1904,7 +1904,7 @@ uint64_t __38__ReportViewerObjC_rollSchemaForward___block_invoke(uint64_t a1, vo
           v43 = v72;
 LABEL_42:
 
-          v8 = v74;
+          templateCopy = v74;
           goto LABEL_43;
         }
       }
@@ -1915,7 +1915,7 @@ LABEL_42:
     if (v74)
     {
       v82 = v20;
-      [(ReportViewerObjC *)v47 prepareTemplate:v74 forLogType:v21 error:&v82];
+      [(ReportViewerObjC *)v47 prepareTemplate:v74 forLogType:bugType error:&v82];
       v48 = v82;
 
       v49 = objc_opt_new();
@@ -1932,17 +1932,17 @@ LABEL_42:
       if (v51)
       {
         v70 = v50;
-        v52 = [v77 objectForKeyedSubscript:OSATransformOptionFullReport[0]];
-        v53 = [v52 BOOLValue];
+        v52 = [optionsCopy objectForKeyedSubscript:OSATransformOptionFullReport[0]];
+        bOOLValue = [v52 BOOLValue];
 
-        if (v53)
+        if (bOOLValue)
         {
           v78 = 0;
-          v54 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:v7 encoding:4 error:&v78];
+          v54 = [MEMORY[0x1E696AEC0] stringWithContentsOfURL:lCopy encoding:4 error:&v78];
           v55 = v78;
           v56 = v54;
           v57 = v55;
-          v18 = v75;
+          availableData = v75;
           if (!v56)
           {
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -1955,7 +1955,7 @@ LABEL_42:
 
           v67 = v56;
           v69 = v57;
-          v58 = v7;
+          v58 = lCopy;
           v59 = v50;
           v68 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@\n%@\n", @"-------------------------------------\nTranslated Report (Full Report Below)\n-------------------------------------\n", v70, @"-----------\nFull Report\n-----------\n", v56];
 
@@ -1964,9 +1964,9 @@ LABEL_42:
 
         else
         {
-          v58 = v7;
+          v58 = lCopy;
           v59 = v50;
-          v18 = v75;
+          availableData = v75;
           v60 = v70;
         }
 
@@ -1976,12 +1976,12 @@ LABEL_42:
 
       else
       {
-        v58 = v7;
+        v58 = lCopy;
         v59 = v50;
         v61 = [v26 augmentWithPrefix:@"Unable to transform log"];
         v62 = v26;
         v26 = v61;
-        v18 = v75;
+        availableData = v75;
       }
 
       v43 = v72;
@@ -1989,32 +1989,32 @@ LABEL_42:
 
     else
     {
-      v58 = v7;
+      v58 = lCopy;
       v26 = [v20 augmentWithPrefix:@"Unable to locate template"];
       v59 = v20;
       v43 = v72;
     }
 
-    v7 = v58;
+    lCopy = v58;
     goto LABEL_42;
   }
 
   v26 = [v20 augmentWithPrefix:@"Unable to read JSON"];
-  v21 = v20;
+  bugType = v20;
 LABEL_43:
   v9 = v76;
 
-  v13 = v18;
+  v13 = availableData;
 LABEL_44:
 
   if (v26)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
     {
-      v63 = [v26 localizedDescription];
-      v64 = [v63 UTF8String];
+      localizedDescription = [v26 localizedDescription];
+      uTF8String = [localizedDescription UTF8String];
       *buf = 136315138;
-      v88 = v64;
+      v88 = uTF8String;
       _os_log_impl(&dword_1D97FA000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
     }
 

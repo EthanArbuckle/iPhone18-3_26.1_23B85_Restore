@@ -30,10 +30,10 @@ uint64_t __35__NPSPairedDeviceRegistry_registry__block_invoke()
 
 + (id)activeDevice
 {
-  v2 = [a1 registry];
-  v3 = [v2 getActiveDevice];
+  registry = [self registry];
+  getActiveDevice = [registry getActiveDevice];
 
-  return v3;
+  return getActiveDevice;
 }
 
 @end

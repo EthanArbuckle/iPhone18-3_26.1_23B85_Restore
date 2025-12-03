@@ -1,25 +1,25 @@
 @interface TSTUidCoordsForLevelAndType
-- (TSKUIDStructCoord)uuidCoordAtRunningLevel:(SEL)a3;
+- (TSKUIDStructCoord)uuidCoordAtRunningLevel:(SEL)level;
 - (id).cxx_construct;
-- (void)addUidCoord:(const TSKUIDStructCoord *)a3 atRunningLevel:(unsigned __int8)a4;
+- (void)addUidCoord:(const TSKUIDStructCoord *)coord atRunningLevel:(unsigned __int8)level;
 @end
 
 @implementation TSTUidCoordsForLevelAndType
 
-- (void)addUidCoord:(const TSKUIDStructCoord *)a3 atRunningLevel:(unsigned __int8)a4
+- (void)addUidCoord:(const TSKUIDStructCoord *)coord atRunningLevel:(unsigned __int8)level
 {
-  v7 = a4;
-  if (a4 != 255)
+  levelCopy = level;
+  if (level != 255)
   {
-    v8 = &v7;
-    v5 = sub_2213008C8(&self->_uidCoordsPerRunLevel.__table_.__bucket_list_.__ptr_, &v7);
-    column = a3->_column;
-    *(v5 + 5) = a3->_row;
+    v8 = &levelCopy;
+    v5 = sub_2213008C8(&self->_uidCoordsPerRunLevel.__table_.__bucket_list_.__ptr_, &levelCopy);
+    column = coord->_column;
+    *(v5 + 5) = coord->_row;
     *(v5 + 3) = column;
   }
 }
 
-- (TSKUIDStructCoord)uuidCoordAtRunningLevel:(SEL)a3
+- (TSKUIDStructCoord)uuidCoordAtRunningLevel:(SEL)level
 {
   v8 = a4;
   retstr->_column = 0u;

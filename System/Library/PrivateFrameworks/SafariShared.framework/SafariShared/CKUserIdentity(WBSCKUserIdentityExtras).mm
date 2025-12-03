@@ -7,49 +7,49 @@
 
 - (id)safari_handle
 {
-  v1 = [a1 lookupInfo];
-  v2 = [v1 emailAddress];
-  v3 = v2;
-  if (v2)
+  lookupInfo = [self lookupInfo];
+  emailAddress = [lookupInfo emailAddress];
+  v3 = emailAddress;
+  if (emailAddress)
   {
-    v4 = v2;
+    phoneNumber = emailAddress;
   }
 
   else
   {
-    v4 = [v1 phoneNumber];
+    phoneNumber = [lookupInfo phoneNumber];
   }
 
-  v5 = v4;
+  v5 = phoneNumber;
 
   return v5;
 }
 
 - (id)safari_contactIdentifier
 {
-  v2 = 0;
+  identifier = 0;
   if ([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] == 3)
   {
-    v3 = [a1 contactIdentifiers];
-    v4 = [v3 firstObject];
+    contactIdentifiers = [self contactIdentifiers];
+    firstObject = [contactIdentifiers firstObject];
 
-    if ([v4 length])
+    if ([firstObject length])
     {
-      v2 = v4;
+      identifier = firstObject;
     }
 
     else
     {
       v5 = +[WBSContactStoreManager sharedContactStoreManager];
-      v6 = [a1 lookupInfo];
-      v7 = [v6 emailAddress];
+      lookupInfo = [self lookupInfo];
+      emailAddress = [lookupInfo emailAddress];
 
-      v8 = [a1 lookupInfo];
-      v9 = [v8 phoneNumber];
+      lookupInfo2 = [self lookupInfo];
+      phoneNumber = [lookupInfo2 phoneNumber];
 
-      if (v7 | v9)
+      if (emailAddress | phoneNumber)
       {
-        v10 = [v5 contactForHandle:v7 error:0];
+        v10 = [v5 contactForHandle:emailAddress error:0];
         v11 = v10;
         if (v10)
         {
@@ -58,22 +58,22 @@
 
         else
         {
-          v12 = [v5 contactForHandle:v9 error:0];
+          v12 = [v5 contactForHandle:phoneNumber error:0];
         }
 
         v13 = v12;
 
-        v2 = [v13 identifier];
+        identifier = [v13 identifier];
       }
 
       else
       {
-        v2 = 0;
+        identifier = 0;
       }
     }
   }
 
-  return v2;
+  return identifier;
 }
 
 @end

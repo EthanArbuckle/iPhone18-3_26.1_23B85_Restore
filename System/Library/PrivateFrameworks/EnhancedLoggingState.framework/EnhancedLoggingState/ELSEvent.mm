@@ -1,34 +1,34 @@
 @interface ELSEvent
 + (id)sessionData;
-+ (void)createLoggingEventWith:(id)a3 postfix:(id)a4;
++ (void)createLoggingEventWith:(id)with postfix:(id)postfix;
 @end
 
 @implementation ELSEvent
 
-+ (void)createLoggingEventWith:(id)a3 postfix:(id)a4
++ (void)createLoggingEventWith:(id)with postfix:(id)postfix
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  postfixCopy = postfix;
   if (createLoggingEventWith_postfix__onceToken != -1)
   {
     +[ELSEvent createLoggingEventWith:postfix:];
   }
 
   v8 = +[ELSManager sharedManager];
-  v9 = [v8 snapshot];
-  v10 = [v9 metadata];
+  snapshot = [v8 snapshot];
+  metadata = [snapshot metadata];
 
-  if (v10)
+  if (metadata)
   {
     v11 = +[ELSEnvironment sharedInstance];
-    v12 = [v11 cloudKitContainerIdentifier];
+    cloudKitContainerIdentifier = [v11 cloudKitContainerIdentifier];
 
-    v13 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:v12];
-    v14 = [v13 publicCloudDatabase];
-    if (v7)
+    v13 = [objc_alloc(MEMORY[0x277CBC218]) initWithContainerID:cloudKitContainerIdentifier];
+    publicCloudDatabase = [v13 publicCloudDatabase];
+    if (postfixCopy)
     {
-      v15 = [@":" stringByAppendingString:v7];
+      v15 = [@":" stringByAppendingString:postfixCopy];
     }
 
     else
@@ -37,14 +37,14 @@
     }
 
     v16 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"EnhancedLoggingEvent"];
-    v17 = [a1 sessionData];
-    [v16 setObject:v17 forKeyedSubscript:@"session"];
+    sessionData = [self sessionData];
+    [v16 setObject:sessionData forKeyedSubscript:@"session"];
 
-    v18 = [v6 stringByAppendingString:v15];
+    v18 = [withCopy stringByAppendingString:v15];
     [v16 setObject:v18 forKeyedSubscript:@"event"];
 
-    v19 = [MEMORY[0x277CBEAA8] date];
-    [v16 setObject:v19 forKeyedSubscript:@"capturedAt"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v16 setObject:date forKeyedSubscript:@"capturedAt"];
 
     v20 = objc_alloc(MEMORY[0x277CBC4A0]);
     v24[0] = v16;
@@ -52,15 +52,15 @@
     v22 = [v20 initWithRecordsToSave:v21 recordIDsToDelete:0];
 
     [v22 setPerRecordSaveBlock:&__block_literal_global_16];
-    [v14 addOperation:v22];
+    [publicCloudDatabase addOperation:v22];
   }
 
   else
   {
-    v12 = ELSLogHandleForCategory(11);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    cloudKitContainerIdentifier = ELSLogHandleForCategory(11);
+    if (os_log_type_enabled(cloudKitContainerIdentifier, OS_LOG_TYPE_ERROR))
     {
-      [ELSEvent createLoggingEventWith:v12 postfix:?];
+      [ELSEvent createLoggingEventWith:cloudKitContainerIdentifier postfix:?];
     }
   }
 
@@ -90,21 +90,21 @@ void __43__ELSEvent_createLoggingEventWith_postfix___block_invoke_13(uint64_t a1
 + (id)sessionData
 {
   v2 = +[ELSManager sharedManager];
-  v3 = [v2 snapshot];
-  v4 = [v3 metadata];
+  snapshot = [v2 snapshot];
+  metadata = [snapshot metadata];
 
   v5 = @"sessionKey";
-  v6 = [v4 objectForKeyedSubscript:@"sessionKey"];
+  v6 = [metadata objectForKeyedSubscript:@"sessionKey"];
 
   if (!v6)
   {
     v5 = @"enrollmentTicketNumber";
-    v7 = [v4 objectForKeyedSubscript:@"enrollmentTicketNumber"];
+    v7 = [metadata objectForKeyedSubscript:@"enrollmentTicketNumber"];
 
     if (!v7)
     {
       v5 = @"gigafilesToken";
-      v8 = [v4 objectForKeyedSubscript:@"gigafilesToken"];
+      v8 = [metadata objectForKeyedSubscript:@"gigafilesToken"];
 
       if (!v8)
       {
@@ -115,11 +115,11 @@ void __43__ELSEvent_createLoggingEventWith_postfix___block_invoke_13(uint64_t a1
 
   v9 = v5;
   v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@:", v9];
-  v11 = [v4 objectForKeyedSubscript:v9];
+  v11 = [metadata objectForKeyedSubscript:v9];
 
   if (v11)
   {
-    v12 = [v4 objectForKeyedSubscript:v9];
+    v12 = [metadata objectForKeyedSubscript:v9];
     v13 = [v10 stringByAppendingString:v12];
 
     v10 = v12;

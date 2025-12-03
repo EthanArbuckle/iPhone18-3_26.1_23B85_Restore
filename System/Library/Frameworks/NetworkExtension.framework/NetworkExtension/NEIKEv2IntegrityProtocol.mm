@@ -1,7 +1,7 @@
 @interface NEIKEv2IntegrityProtocol
-- (BOOL)isEqual:(id)a3;
-- (NEIKEv2IntegrityProtocol)initWithType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NEIKEv2IntegrityProtocol)initWithType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)keyLength;
 - (void)macLength;
@@ -9,24 +9,24 @@
 
 @implementation NEIKEv2IntegrityProtocol
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NEIKEv2IntegrityProtocol allocWithZone:a3];
-  v5 = [(NEIKEv2IntegrityProtocol *)self type];
+  v4 = [NEIKEv2IntegrityProtocol allocWithZone:zone];
+  type = [(NEIKEv2IntegrityProtocol *)self type];
 
-  return [(NEIKEv2IntegrityProtocol *)v4 initWithType:v5];
+  return [(NEIKEv2IntegrityProtocol *)v4 initWithType:type];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (equalCopy && [equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(NEIKEv2IntegrityProtocol *)self type];
-    v7 = [v5 type];
+    v5 = equalCopy;
+    type = [(NEIKEv2IntegrityProtocol *)self type];
+    type2 = [v5 type];
 
-    v8 = v6 == v7;
+    v8 = type == type2;
   }
 
   else
@@ -39,21 +39,21 @@
 
 - (id)description
 {
-  v3 = [(NEIKEv2IntegrityProtocol *)self type];
-  if (v3 >= 0xF)
+  type = [(NEIKEv2IntegrityProtocol *)self type];
+  if (type >= 0xF)
   {
     v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unknown[%llu]", -[NEIKEv2IntegrityProtocol type](self, "type")];
   }
 
   else
   {
-    v4 = off_1E7F07EE0[v3];
+    v4 = off_1E7F07EE0[type];
   }
 
   return v4;
 }
 
-- (NEIKEv2IntegrityProtocol)initWithType:(unint64_t)a3
+- (NEIKEv2IntegrityProtocol)initWithType:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = NEIKEv2IntegrityProtocol;
@@ -61,7 +61,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v6 = v4;
   }
 

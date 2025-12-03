@@ -1,22 +1,22 @@
 @interface _CDHashUtilities
-+ (id)hexStringFromData:(id)a3;
-+ (id)md5ForData:(id)a3;
-+ (id)md5ForObjectDescription:(id)a3;
-+ (id)md5ForString:(id)a3;
-+ (id)md5forDictionary:(id)a3 error:(id *)a4;
-+ (id)sha1ForData:(id)a3;
-+ (id)sha1ForString:(id)a3;
-+ (id)sha256Hash:(id)a3 withSalt:(id)a4;
++ (id)hexStringFromData:(id)data;
++ (id)md5ForData:(id)data;
++ (id)md5ForObjectDescription:(id)description;
++ (id)md5ForString:(id)string;
++ (id)md5forDictionary:(id)dictionary error:(id *)error;
++ (id)sha1ForData:(id)data;
++ (id)sha1ForString:(id)string;
++ (id)sha256Hash:(id)hash withSalt:(id)salt;
 @end
 
 @implementation _CDHashUtilities
 
-+ (id)sha1ForString:(id)a3
++ (id)sha1ForString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v5 = v4;
+    v5 = stringCopy;
   }
 
   else
@@ -25,21 +25,21 @@
   }
 
   v6 = [(__CFString *)v5 dataUsingEncoding:4];
-  v7 = [a1 sha1ForData:v6];
+  v7 = [self sha1ForData:v6];
 
   return v7;
 }
 
-+ (id)sha1ForData:(id)a3
++ (id)sha1ForData:(id)data
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  dataCopy = data;
+  if (!dataCopy)
   {
-    v3 = [MEMORY[0x1E695DEF0] dataWithBytes:"" length:0];
+    dataCopy = [MEMORY[0x1E695DEF0] dataWithBytes:"" length:0];
   }
 
-  CC_SHA1([v3 bytes], objc_msgSend(v3, "length"), md);
+  CC_SHA1([dataCopy bytes], objc_msgSend(dataCopy, "length"), md);
   v4 = [MEMORY[0x1E696AD60] stringWithCapacity:40];
   for (i = 0; i != 20; ++i)
   {
@@ -51,14 +51,14 @@
   return v4;
 }
 
-+ (id)md5ForData:(id)a3
++ (id)md5ForData:(id)data
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dataCopy = data;
+  v4 = dataCopy;
+  if (dataCopy)
   {
-    CC_MD5([v3 bytes], objc_msgSend(v3, "length"), md);
+    CC_MD5([dataCopy bytes], objc_msgSend(dataCopy, "length"), md);
     v5 = [MEMORY[0x1E696AD60] stringWithCapacity:32];
     for (i = 0; i != 16; ++i)
     {
@@ -76,12 +76,12 @@
   return v5;
 }
 
-+ (id)md5ForString:(id)a3
++ (id)md5ForString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 dataUsingEncoding:4];
-    v5 = [a1 md5ForData:v4];
+    v4 = [string dataUsingEncoding:4];
+    v5 = [self md5ForData:v4];
   }
 
   else
@@ -92,20 +92,20 @@
   return v5;
 }
 
-+ (id)md5ForObjectDescription:(id)a3
++ (id)md5ForObjectDescription:(id)description
 {
-  v4 = [a3 description];
-  v5 = [a1 md5ForString:v4];
+  v4 = [description description];
+  v5 = [self md5ForString:v4];
 
   return v5;
 }
 
-+ (id)md5forDictionary:(id)a3 error:(id *)a4
++ (id)md5forDictionary:(id)dictionary error:(id *)error
 {
-  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:a3 requiringSecureCoding:0 error:a4];
+  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:dictionary requiringSecureCoding:0 error:error];
   if (v5)
   {
-    v6 = [a1 md5ForData:v5];
+    v6 = [self md5ForData:v5];
   }
 
   else
@@ -116,42 +116,42 @@
   return v6;
 }
 
-+ (id)hexStringFromData:(id)a3
++ (id)hexStringFromData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [MEMORY[0x1E696AD60] string];
-  if ([v3 length])
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  string = [MEMORY[0x1E696AD60] string];
+  if ([dataCopy length])
   {
     v6 = 0;
     do
     {
-      [v5 appendFormat:@"%hhx", *(v4 + v6++)];
+      [string appendFormat:@"%hhx", *(bytes + v6++)];
     }
 
-    while ([v3 length] > v6);
+    while ([dataCopy length] > v6);
   }
 
-  v7 = [v5 copy];
+  v7 = [string copy];
 
   return v7;
 }
 
-+ (id)sha256Hash:(id)a3 withSalt:(id)a4
++ (id)sha256Hash:(id)hash withSalt:(id)salt
 {
   v4 = 0;
   v14 = *MEMORY[0x1E69E9840];
-  if (a3 && a4)
+  if (hash && salt)
   {
-    v7 = a4;
-    v8 = [a3 dataUsingEncoding:4];
+    saltCopy = salt;
+    v8 = [hash dataUsingEncoding:4];
     v9 = [v8 mutableCopy];
 
-    [v9 appendData:v7];
+    [v9 appendData:saltCopy];
     md[0] = 0;
     CC_SHA256([v9 bytes], objc_msgSend(v9, "length"), md);
     v10 = [MEMORY[0x1E695DEF0] dataWithBytes:md length:32];
-    v4 = [a1 hexStringFromData:v10];
+    v4 = [self hexStringFromData:v10];
   }
 
   v11 = *MEMORY[0x1E69E9840];

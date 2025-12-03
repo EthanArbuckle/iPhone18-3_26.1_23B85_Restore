@@ -1,34 +1,34 @@
 @interface ICSearchIndexer
 + (id)sharedIndexer;
 - (ICSearchIndex)searchableIndex;
-- (ICSearchIndexer)initWithSearchIndex:(id)a3;
+- (ICSearchIndexer)initWithSearchIndex:(id)index;
 - (NSArray)_dataSources;
 - (NSArray)dataSources;
-- (id)dataSourceWithIdentifier:(id)a3;
+- (id)dataSourceWithIdentifier:(id)identifier;
 - (id)newContextsForAllDataSources;
-- (id)objectForManagedObjectIDURI:(id)a3 inContexts:(id)a4;
-- (id)objectForSearchableItem:(id)a3 context:(id)a4;
-- (id)objectsDictionaryForSearchableItems:(id)a3 inContexts:(id)a4;
-- (id)objectsForSearchableItems:(id)a3 inContexts:(id)a4;
+- (id)objectForManagedObjectIDURI:(id)i inContexts:(id)contexts;
+- (id)objectForSearchableItem:(id)item context:(id)context;
+- (id)objectsDictionaryForSearchableItems:(id)items inContexts:(id)contexts;
+- (id)objectsForSearchableItems:(id)items inContexts:(id)contexts;
 - (id)pendingReindexingOperation;
-- (void)addDataSource:(id)a3;
-- (void)cancelIndexingOperationsWithCompletionHandler:(id)a3;
+- (void)addDataSource:(id)source;
+- (void)cancelIndexingOperationsWithCompletionHandler:(id)handler;
 - (void)clearObjectIDsToProcess;
-- (void)clearRetryForSelector:(SEL)a3;
-- (void)dataSourceDidChange:(id)a3;
+- (void)clearRetryForSelector:(SEL)selector;
+- (void)dataSourceDidChange:(id)change;
 - (void)dealloc;
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)finishRemainingOperationsWithCompletionHandler:(id)a3;
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)finishRemainingOperationsWithCompletionHandler:(id)handler;
 - (void)pendingReindexingOperation;
 - (void)processChanges;
-- (void)processReindexRequest:(id)a3;
+- (void)processReindexRequest:(id)request;
 - (void)reindexAllSearchableItemsInIndex;
-- (void)reindexAllSearchableItemsInIndex:(id)a3 completionHandler:(id)a4;
-- (void)reindexAllSearchableItemsWithCompletionHandler:(id)a3;
-- (void)reindexSearchableItemsWithObjectIDURIs:(id)a3 completionHandler:(id)a4;
-- (void)reindexSearchableItemsWithObjectIDURIs:(id)a3 inIndex:(id)a4 completionHandler:(id)a5;
-- (void)removeDataSource:(id)a3;
-- (void)retrySelector:(SEL)a3;
+- (void)reindexAllSearchableItemsInIndex:(id)index completionHandler:(id)handler;
+- (void)reindexAllSearchableItemsWithCompletionHandler:(id)handler;
+- (void)reindexSearchableItemsWithObjectIDURIs:(id)is completionHandler:(id)handler;
+- (void)reindexSearchableItemsWithObjectIDURIs:(id)is inIndex:(id)index completionHandler:(id)handler;
+- (void)removeDataSource:(id)source;
+- (void)retrySelector:(SEL)selector;
 - (void)startObservingChanges;
 - (void)stopObservingChanges;
 @end
@@ -49,13 +49,13 @@
 
 - (void)startObservingChanges
 {
-  v3 = [(ICSearchIndexer *)self indexingQueue];
+  indexingQueue = [(ICSearchIndexer *)self indexingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __40__ICSearchIndexer_startObservingChanges__block_invoke;
   block[3] = &unk_1E84848B8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(indexingQueue, block);
 }
 
 void __40__ICSearchIndexer_startObservingChanges__block_invoke(uint64_t a1)
@@ -127,10 +127,10 @@ void __40__ICSearchIndexer_startObservingChanges__block_invoke_cold_1()
 
 - (NSArray)_dataSources
 {
-  v2 = [(ICSearchIndexer *)self dataSourcesByIdentifier];
-  v3 = [v2 allValues];
+  dataSourcesByIdentifier = [(ICSearchIndexer *)self dataSourcesByIdentifier];
+  allValues = [dataSourcesByIdentifier allValues];
 
-  return v3;
+  return allValues;
 }
 
 void __32__ICSearchIndexer_sharedIndexer__block_invoke()
@@ -143,13 +143,13 @@ void __32__ICSearchIndexer_sharedIndexer__block_invoke()
 
 - (void)stopObservingChanges
 {
-  v3 = [(ICSearchIndexer *)self indexingQueue];
+  indexingQueue = [(ICSearchIndexer *)self indexingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __39__ICSearchIndexer_stopObservingChanges__block_invoke;
   block[3] = &unk_1E84848B8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(indexingQueue, block);
 }
 
 void __39__ICSearchIndexer_stopObservingChanges__block_invoke(uint64_t a1)
@@ -214,22 +214,22 @@ void __39__ICSearchIndexer_stopObservingChanges__block_invoke_cold_1()
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (ICSearchIndexer)initWithSearchIndex:(id)a3
+- (ICSearchIndexer)initWithSearchIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   v19.receiver = self;
   v19.super_class = ICSearchIndexer;
   v5 = [(ICSearchIndexer *)&v19 init];
   v6 = v5;
   if (v5)
   {
-    [(ICSearchIndexer *)v5 setSearchableIndex:v4];
+    [(ICSearchIndexer *)v5 setSearchableIndex:indexCopy];
     v7 = dispatch_queue_create("com.apple.notes.indexer", 0);
     [(ICSearchIndexer *)v6 setIndexingQueue:v7];
 
-    v8 = [(ICSearchIndexer *)v6 indexingQueue];
+    indexingQueue = [(ICSearchIndexer *)v6 indexingQueue];
     v9 = dispatch_get_global_queue(-32768, 0);
-    dispatch_set_target_queue(v8, v9);
+    dispatch_set_target_queue(indexingQueue, v9);
 
     v10 = objc_alloc_init(MEMORY[0x1E696ADC8]);
     [(ICSearchIndexer *)v6 setOperationQueue:v10];
@@ -243,14 +243,14 @@ void __39__ICSearchIndexer_stopObservingChanges__block_invoke_cold_1()
       }
     }
 
-    v12 = [(ICSearchIndexer *)v6 operationQueue];
-    [v12 setQualityOfService:9];
+    operationQueue = [(ICSearchIndexer *)v6 operationQueue];
+    [operationQueue setQualityOfService:9];
 
-    v13 = [(ICSearchIndexer *)v6 operationQueue];
-    [v13 setMaxConcurrentOperationCount:1];
+    operationQueue2 = [(ICSearchIndexer *)v6 operationQueue];
+    [operationQueue2 setMaxConcurrentOperationCount:1];
 
-    v14 = [MEMORY[0x1E695DF20] dictionary];
-    [(ICSearchIndexer *)v6 setDataSourcesByIdentifier:v14];
+    dictionary = [MEMORY[0x1E695DF20] dictionary];
+    [(ICSearchIndexer *)v6 setDataSourcesByIdentifier:dictionary];
 
     if ((ICUseCoreDataCoreSpotlightIntegration() & 1) == 0)
     {
@@ -259,15 +259,15 @@ void __39__ICSearchIndexer_stopObservingChanges__block_invoke_cold_1()
     }
 
     [(ICSearchIndexer *)v6 setObservingChanges:0];
-    v16 = [MEMORY[0x1E695DF90] dictionary];
-    [(ICSearchIndexer *)v6 setRetryTimers:v16];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+    [(ICSearchIndexer *)v6 setRetryTimers:dictionary2];
 
     [(ICSearchIndexer *)v6 setRetryOnErrors:1];
     [(ICSearchIndexer *)v6 setDisabled:1];
     if (+[ICDeviceSupport isRunningInApp])
     {
-      v17 = [MEMORY[0x1E696ABB0] defaultCenter];
-      [v17 addObserver:v6 selector:sel_processReindexRequest_ name:@"ICReindexRequestedNotification" object:0 suspensionBehavior:4];
+      defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+      [defaultCenter addObserver:v6 selector:sel_processReindexRequest_ name:@"ICReindexRequestedNotification" object:0 suspensionBehavior:4];
     }
   }
 
@@ -278,8 +278,8 @@ void __39__ICSearchIndexer_stopObservingChanges__block_invoke_cold_1()
 {
   if (+[ICDeviceSupport isRunningInApp])
   {
-    v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v3 removeObserver:self name:@"ICReindexRequestedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter removeObserver:self name:@"ICReindexRequestedNotification" object:0];
   }
 
   v4.receiver = self;
@@ -287,14 +287,14 @@ void __39__ICSearchIndexer_stopObservingChanges__block_invoke_cold_1()
   [(ICSearchIndexer *)&v4 dealloc];
 }
 
-- (void)processReindexRequest:(id)a3
+- (void)processReindexRequest:(id)request
 {
   if (![(ICSearchIndexer *)self isActivelyReindexing])
   {
     v4 = [ICSettingsUtilities objectForKey:@"ReindexOnLaunch"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
 
-    if (v5)
+    if (bOOLValue)
     {
       [(ICSearchIndexer *)self setActivelyReindexing:1];
       v6[0] = MEMORY[0x1E69E9820];
@@ -350,22 +350,22 @@ void __41__ICSearchIndexer_processReindexRequest___block_invoke(uint64_t a1, voi
   return searchableIndex;
 }
 
-- (void)dataSourceDidChange:(id)a3
+- (void)dataSourceDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   if ((ICUseCoreDataCoreSpotlightIntegration() & 1) == 0 && [(ICSearchIndexer *)self isObservingChanges])
   {
-    v5 = [v4 object];
-    objc_initWeak(&location, v5);
+    object = [changeCopy object];
+    objc_initWeak(&location, object);
 
-    v6 = [(ICSearchIndexer *)self indexingQueue];
+    indexingQueue = [(ICSearchIndexer *)self indexingQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __39__ICSearchIndexer_dataSourceDidChange___block_invoke;
     block[3] = &unk_1E8485100;
     objc_copyWeak(&v8, &location);
     block[4] = self;
-    dispatch_async(v6, block);
+    dispatch_async(indexingQueue, block);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -530,14 +530,14 @@ void __33__ICSearchIndexer_processChanges__block_invoke_25(uint64_t a1)
   v11 = __Block_byref_object_copy__5;
   v12 = __Block_byref_object_dispose__5;
   v13 = 0;
-  v3 = [(ICSearchIndexer *)self indexingQueue];
+  indexingQueue = [(ICSearchIndexer *)self indexingQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __30__ICSearchIndexer_dataSources__block_invoke;
   v7[3] = &unk_1E8484848;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v3, v7);
+  dispatch_sync(indexingQueue, v7);
 
   v4 = v9[5];
   if (!v4)
@@ -560,18 +560,18 @@ void __30__ICSearchIndexer_dataSources__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)addDataSource:(id)a3
+- (void)addDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(ICSearchIndexer *)self indexingQueue];
+  sourceCopy = source;
+  indexingQueue = [(ICSearchIndexer *)self indexingQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__ICSearchIndexer_addDataSource___block_invoke;
   v7[3] = &unk_1E8484980;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sourceCopy;
+  v6 = sourceCopy;
+  dispatch_async(indexingQueue, v7);
 }
 
 void __33__ICSearchIndexer_addDataSource___block_invoke(uint64_t a1)
@@ -618,18 +618,18 @@ LABEL_9:
   }
 }
 
-- (void)removeDataSource:(id)a3
+- (void)removeDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(ICSearchIndexer *)self indexingQueue];
+  sourceCopy = source;
+  indexingQueue = [(ICSearchIndexer *)self indexingQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__ICSearchIndexer_removeDataSource___block_invoke;
   v7[3] = &unk_1E8484980;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = sourceCopy;
+  v6 = sourceCopy;
+  dispatch_sync(indexingQueue, v7);
 }
 
 void __36__ICSearchIndexer_removeDataSource___block_invoke(uint64_t a1)
@@ -661,25 +661,25 @@ void __36__ICSearchIndexer_removeDataSource___block_invoke(uint64_t a1)
   }
 }
 
-- (id)dataSourceWithIdentifier:(id)a3
+- (id)dataSourceWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__5;
   v16 = __Block_byref_object_dispose__5;
   v17 = 0;
-  v5 = [(ICSearchIndexer *)self indexingQueue];
+  indexingQueue = [(ICSearchIndexer *)self indexingQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__ICSearchIndexer_dataSourceWithIdentifier___block_invoke;
   block[3] = &unk_1E84848E0;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(indexingQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -699,13 +699,13 @@ void __44__ICSearchIndexer_dataSourceWithIdentifier___block_invoke(uint64_t a1)
 - (id)newContextsForAllDataSources
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(ICSearchIndexer *)self dataSources];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  dataSources = [(ICSearchIndexer *)self dataSources];
+  v5 = [dataSources countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -716,46 +716,46 @@ void __44__ICSearchIndexer_dataSourceWithIdentifier___block_invoke(uint64_t a1)
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataSources);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        v10 = [v9 newManagedObjectContext];
-        if (!v10)
+        newManagedObjectContext = [v9 newManagedObjectContext];
+        if (!newManagedObjectContext)
         {
           [ICAssert handleFailedAssertWithCondition:"context" functionName:"[ICSearchIndexer newContextsForAllDataSources]" simulateCrash:1 showAlert:0 format:@"Expected non-nil context for dataSource %@", v9];
         }
 
-        [v3 ic_addNonNilObject:v10];
+        [array ic_addNonNilObject:newManagedObjectContext];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [dataSources countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)reindexAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)reindexAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICSearchIndexer *)self searchableIndex];
-  [(ICSearchIndexer *)self reindexAllSearchableItemsInIndex:v5 completionHandler:v4];
+  handlerCopy = handler;
+  searchableIndex = [(ICSearchIndexer *)self searchableIndex];
+  [(ICSearchIndexer *)self reindexAllSearchableItemsInIndex:searchableIndex completionHandler:handlerCopy];
 }
 
-- (void)cancelIndexingOperationsWithCompletionHandler:(id)a3
+- (void)cancelIndexingOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__ICSearchIndexer_cancelIndexingOperationsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8484B48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -805,17 +805,17 @@ uint64_t __65__ICSearchIndexer_cancelIndexingOperationsWithCompletionHandler___b
   return result;
 }
 
-- (void)finishRemainingOperationsWithCompletionHandler:(id)a3
+- (void)finishRemainingOperationsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = dispatch_get_global_queue(0, 0);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__ICSearchIndexer_finishRemainingOperationsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E8484B48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(v5, v7);
 }
 
@@ -904,9 +904,9 @@ void __66__ICSearchIndexer_finishRemainingOperationsWithCompletionHandler___bloc
   }
 }
 
-- (void)deleteAllSearchableItemsWithCompletionHandler:(id)a3
+- (void)deleteAllSearchableItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -919,15 +919,15 @@ void __66__ICSearchIndexer_finishRemainingOperationsWithCompletionHandler___bloc
   }
 
   [ICIndexerStateHandler logMethodCall:0];
-  v6 = [(ICSearchIndexer *)self searchableIndex];
+  searchableIndex = [(ICSearchIndexer *)self searchableIndex];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__ICSearchIndexer_deleteAllSearchableItemsWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E8485170;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 deleteAllSearchableItemsWithCompletionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [searchableIndex deleteAllSearchableItemsWithCompletionHandler:v8];
 }
 
 void __65__ICSearchIndexer_deleteAllSearchableItemsWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -958,9 +958,9 @@ void __65__ICSearchIndexer_deleteAllSearchableItemsWithCompletionHandler___block
 
 - (id)pendingReindexingOperation
 {
-  v2 = [(ICSearchIndexer *)self operationQueue];
-  v3 = [v2 operations];
-  v4 = [v3 ic_objectPassingTest:&__block_literal_global_50];
+  operationQueue = [(ICSearchIndexer *)self operationQueue];
+  operations = [operationQueue operations];
+  v4 = [operations ic_objectPassingTest:&__block_literal_global_50];
 
   if (!v4 && ICVerboseSearchLogging())
   {
@@ -1004,15 +1004,15 @@ uint64_t __45__ICSearchIndexer_pendingReindexingOperation__block_invoke(uint64_t
 
 - (void)reindexAllSearchableItemsInIndex
 {
-  v3 = [(ICSearchIndexer *)self searchableIndex];
-  [(ICSearchIndexer *)self reindexAllSearchableItemsInIndex:v3 completionHandler:0];
+  searchableIndex = [(ICSearchIndexer *)self searchableIndex];
+  [(ICSearchIndexer *)self reindexAllSearchableItemsInIndex:searchableIndex completionHandler:0];
 }
 
-- (void)reindexAllSearchableItemsInIndex:(id)a3 completionHandler:(id)a4
+- (void)reindexAllSearchableItemsInIndex:(id)index completionHandler:(id)handler
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  handlerCopy = handler;
   if ((ICUseCoreDataCoreSpotlightIntegration() & 1) == 0)
   {
     if ([(ICSearchIndexer *)self isDisabled])
@@ -1023,24 +1023,24 @@ uint64_t __45__ICSearchIndexer_pendingReindexingOperation__block_invoke(uint64_t
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
       v10 = [v8 errorWithDomain:@"NotesErrorDomain" code:300 userInfo:v9];
 
-      if (v7)
+      if (handlerCopy)
       {
-        v7[2](v7, v10);
+        handlerCopy[2](handlerCopy, v10);
       }
     }
 
     else
     {
       [ICIndexerStateHandler logMethodCall:1];
-      v11 = [(ICSearchIndexer *)self indexingQueue];
+      indexingQueue = [(ICSearchIndexer *)self indexingQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __70__ICSearchIndexer_reindexAllSearchableItemsInIndex_completionHandler___block_invoke;
       v12[3] = &unk_1E84851E0;
       v12[4] = self;
-      v14 = v7;
-      v13 = v6;
-      dispatch_async(v11, v12);
+      v14 = handlerCopy;
+      v13 = indexCopy;
+      dispatch_async(indexingQueue, v12);
     }
   }
 }
@@ -1176,20 +1176,20 @@ void __70__ICSearchIndexer_reindexAllSearchableItemsInIndex_completionHandler___
   }
 }
 
-- (void)reindexSearchableItemsWithObjectIDURIs:(id)a3 completionHandler:(id)a4
+- (void)reindexSearchableItemsWithObjectIDURIs:(id)is completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICSearchIndexer *)self searchableIndex];
-  [(ICSearchIndexer *)self reindexSearchableItemsWithObjectIDURIs:v7 inIndex:v8 completionHandler:v6];
+  handlerCopy = handler;
+  isCopy = is;
+  searchableIndex = [(ICSearchIndexer *)self searchableIndex];
+  [(ICSearchIndexer *)self reindexSearchableItemsWithObjectIDURIs:isCopy inIndex:searchableIndex completionHandler:handlerCopy];
 }
 
-- (void)reindexSearchableItemsWithObjectIDURIs:(id)a3 inIndex:(id)a4 completionHandler:(id)a5
+- (void)reindexSearchableItemsWithObjectIDURIs:(id)is inIndex:(id)index completionHandler:(id)handler
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  isCopy = is;
+  indexCopy = index;
+  handlerCopy = handler;
   if ((ICUseCoreDataCoreSpotlightIntegration() & 1) == 0)
   {
     if ([(ICSearchIndexer *)self isDisabled])
@@ -1200,25 +1200,25 @@ void __70__ICSearchIndexer_reindexAllSearchableItemsInIndex_completionHandler___
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
       v13 = [v11 errorWithDomain:@"NotesErrorDomain" code:300 userInfo:v12];
 
-      if (v10)
+      if (handlerCopy)
       {
-        v10[2](v10, v13);
+        handlerCopy[2](handlerCopy, v13);
       }
     }
 
     else
     {
       [ICIndexerStateHandler logMethodCall:2];
-      v14 = [(ICSearchIndexer *)self indexingQueue];
+      indexingQueue = [(ICSearchIndexer *)self indexingQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __84__ICSearchIndexer_reindexSearchableItemsWithObjectIDURIs_inIndex_completionHandler___block_invoke;
       block[3] = &unk_1E8485230;
-      v16 = v9;
-      v17 = self;
-      v18 = v8;
-      v19 = v10;
-      dispatch_async(v14, block);
+      v16 = indexCopy;
+      selfCopy = self;
+      v18 = isCopy;
+      v19 = handlerCopy;
+      dispatch_async(indexingQueue, block);
 
       v13 = v16;
     }
@@ -1289,65 +1289,65 @@ void __84__ICSearchIndexer_reindexSearchableItemsWithObjectIDURIs_inIndex_comple
   }
 }
 
-- (id)objectsForSearchableItems:(id)a3 inContexts:(id)a4
+- (id)objectsForSearchableItems:(id)items inContexts:(id)contexts
 {
-  v6 = a3;
-  v7 = [(ICSearchIndexer *)self objectsDictionaryForSearchableItems:v6 inContexts:a4];
-  v8 = [MEMORY[0x1E695DF70] array];
-  if ([v6 count])
+  itemsCopy = items;
+  v7 = [(ICSearchIndexer *)self objectsDictionaryForSearchableItems:itemsCopy inContexts:contexts];
+  array = [MEMORY[0x1E695DF70] array];
+  if ([itemsCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v6 objectAtIndexedSubscript:v9];
-      v11 = [v10 uniqueIdentifier];
-      v12 = [v7 objectForKeyedSubscript:v11];
+      v10 = [itemsCopy objectAtIndexedSubscript:v9];
+      uniqueIdentifier = [v10 uniqueIdentifier];
+      v12 = [v7 objectForKeyedSubscript:uniqueIdentifier];
 
       if (v12)
       {
-        [v8 addObject:v12];
+        [array addObject:v12];
       }
 
       ++v9;
     }
 
-    while ([v6 count] > v9);
+    while ([itemsCopy count] > v9);
   }
 
-  v13 = [v8 copy];
+  v13 = [array copy];
 
   return v13;
 }
 
-- (id)objectForSearchableItem:(id)a3 context:(id)a4
+- (id)objectForSearchableItem:(id)item context:(id)context
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v15[0] = a3;
+  v15[0] = item;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
+  contextCopy = context;
+  itemCopy = item;
   v9 = [v6 arrayWithObjects:v15 count:1];
-  v14 = v7;
+  v14 = contextCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v14 count:1];
 
   v11 = [(ICSearchIndexer *)self objectsForSearchableItems:v9 inContexts:v10];
 
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)objectsDictionaryForSearchableItems:(id)a3 inContexts:(id)a4
+- (id)objectsDictionaryForSearchableItems:(id)items inContexts:(id)contexts
 {
   v42 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v29 = a4;
+  itemsCopy = items;
+  contextsCopy = contexts;
   v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v5;
+  obj = itemsCopy;
   v31 = [obj countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v31)
   {
@@ -1362,15 +1362,15 @@ void __84__ICSearchIndexer_reindexSearchableItemsWithObjectIDURIs_inIndex_comple
         }
 
         v7 = *(*(&v36 + 1) + 8 * i);
-        v8 = [v7 attributeSet];
-        v9 = [v8 ic_dataSourceIdentifier];
-        v10 = [(ICSearchIndexer *)self dataSourceWithIdentifier:v9];
+        attributeSet = [v7 attributeSet];
+        ic_dataSourceIdentifier = [attributeSet ic_dataSourceIdentifier];
+        v10 = [(ICSearchIndexer *)self dataSourceWithIdentifier:ic_dataSourceIdentifier];
 
         v34 = 0u;
         v35 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v11 = v29;
+        v11 = contextsCopy;
         v12 = [v11 countByEnumeratingWithState:&v32 objects:v40 count:16];
         if (v12)
         {
@@ -1387,9 +1387,9 @@ LABEL_8:
             }
 
             v16 = *(*(&v32 + 1) + 8 * v15);
-            v17 = [v16 persistentStoreCoordinator];
-            v18 = [v10 persistentStoreCoordinator];
-            v19 = [v17 isEqual:v18];
+            persistentStoreCoordinator = [v16 persistentStoreCoordinator];
+            persistentStoreCoordinator2 = [v10 persistentStoreCoordinator];
+            v19 = [persistentStoreCoordinator isEqual:persistentStoreCoordinator2];
 
             if (v19)
             {
@@ -1418,8 +1418,8 @@ LABEL_8:
           v21 = [v10 objectForSearchableItem:v30 context:v20];
           if (v21)
           {
-            v22 = [v30 uniqueIdentifier];
-            [v25 setObject:v21 forKey:v22];
+            uniqueIdentifier = [v30 uniqueIdentifier];
+            [v25 setObject:v21 forKey:uniqueIdentifier];
           }
         }
 
@@ -1443,11 +1443,11 @@ LABEL_20:
   return v23;
 }
 
-- (id)objectForManagedObjectIDURI:(id)a3 inContexts:(id)a4
+- (id)objectForManagedObjectIDURI:(id)i inContexts:(id)contexts
 {
   v56 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v30 = a4;
+  iCopy = i;
+  contextsCopy = contexts;
   v6 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -1484,11 +1484,11 @@ LABEL_5:
       v10 = os_log_create("com.apple.notes", "SearchIndexer");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v21 = [v9 dataSourceIdentifier];
+        dataSourceIdentifier = [v9 dataSourceIdentifier];
         *buf = v26;
-        v52 = v21;
+        v52 = dataSourceIdentifier;
         v53 = 2112;
-        v54 = v31;
+        v54 = iCopy;
         _os_log_debug_impl(&dword_1D4576000, v10, OS_LOG_TYPE_DEBUG, "Checking data source (%@) for item %@", buf, 0x16u);
       }
 
@@ -1496,7 +1496,7 @@ LABEL_5:
       v39 = 0u;
       v36 = 0u;
       v37 = 0u;
-      v11 = v30;
+      v11 = contextsCopy;
       v12 = [v11 countByEnumeratingWithState:&v36 objects:v50 count:16];
       if (v12)
       {
@@ -1511,9 +1511,9 @@ LABEL_5:
             }
 
             v15 = *(*(&v36 + 1) + 8 * i);
-            v16 = [v15 persistentStoreCoordinator];
-            v17 = [v9 persistentStoreCoordinator];
-            v18 = [v16 isEqual:v17];
+            persistentStoreCoordinator = [v15 persistentStoreCoordinator];
+            persistentStoreCoordinator2 = [v9 persistentStoreCoordinator];
+            v18 = [persistentStoreCoordinator isEqual:persistentStoreCoordinator2];
 
             if (v18)
             {
@@ -1540,7 +1540,7 @@ LABEL_20:
       v32[3] = &unk_1E8485258;
       v35 = &v44;
       v32[4] = v9;
-      v33 = v31;
+      v33 = iCopy;
       v19 = v12;
       v34 = v19;
       [v19 performBlockAndWait:v32];
@@ -1596,14 +1596,14 @@ void __58__ICSearchIndexer_objectForManagedObjectIDURI_inContexts___block_invoke
   }
 }
 
-- (void)retrySelector:(SEL)a3
+- (void)retrySelector:(SEL)selector
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v5 = [(ICSearchIndexer *)self retryTimers];
-  objc_sync_enter(v5);
-  v6 = NSStringFromSelector(a3);
-  v7 = [(ICSearchIndexer *)self retryTimers];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  retryTimers = [(ICSearchIndexer *)self retryTimers];
+  objc_sync_enter(retryTimers);
+  v6 = NSStringFromSelector(selector);
+  retryTimers2 = [(ICSearchIndexer *)self retryTimers];
+  v8 = [retryTimers2 objectForKeyedSubscript:v6];
 
   if (v8)
   {
@@ -1621,9 +1621,9 @@ void __58__ICSearchIndexer_objectForManagedObjectIDURI_inContexts___block_invoke
 
   else
   {
-    v8 = [[ICBackoffTimer alloc] initWithInitialInterval:self maxInterval:a3 target:v6 selector:1.0 userInfo:300.0];
-    v10 = [(ICSearchIndexer *)self retryTimers];
-    [v10 setObject:v8 forKeyedSubscript:v6];
+    v8 = [[ICBackoffTimer alloc] initWithInitialInterval:self maxInterval:selector target:v6 selector:1.0 userInfo:300.0];
+    retryTimers3 = [(ICSearchIndexer *)self retryTimers];
+    [retryTimers3 setObject:v8 forKeyedSubscript:v6];
   }
 
   v11 = os_log_create("com.apple.notes", "SearchIndexer");
@@ -1636,16 +1636,16 @@ void __58__ICSearchIndexer_objectForManagedObjectIDURI_inContexts___block_invoke
   [(ICBackoffTimer *)v8 scheduleToFire];
 LABEL_10:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(retryTimers);
 }
 
-- (void)clearRetryForSelector:(SEL)a3
+- (void)clearRetryForSelector:(SEL)selector
 {
-  v5 = [(ICSearchIndexer *)self retryTimers];
-  objc_sync_enter(v5);
-  v6 = NSStringFromSelector(a3);
-  v7 = [(ICSearchIndexer *)self retryTimers];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  retryTimers = [(ICSearchIndexer *)self retryTimers];
+  objc_sync_enter(retryTimers);
+  v6 = NSStringFromSelector(selector);
+  retryTimers2 = [(ICSearchIndexer *)self retryTimers];
+  v8 = [retryTimers2 objectForKeyedSubscript:v6];
 
   if (v8)
   {
@@ -1656,11 +1656,11 @@ LABEL_10:
     }
 
     [v8 invalidate];
-    v10 = [(ICSearchIndexer *)self retryTimers];
-    [v10 removeObjectForKey:v6];
+    retryTimers3 = [(ICSearchIndexer *)self retryTimers];
+    [retryTimers3 removeObjectForKey:v6];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(retryTimers);
 }
 
 - (void)clearObjectIDsToProcess
@@ -1670,8 +1670,8 @@ LABEL_10:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(ICSearchIndexer *)self dataSources];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  dataSources = [(ICSearchIndexer *)self dataSources];
+  v3 = [dataSources countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1683,14 +1683,14 @@ LABEL_10:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(dataSources);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) clearObjectIDsToProcess];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [dataSources countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);

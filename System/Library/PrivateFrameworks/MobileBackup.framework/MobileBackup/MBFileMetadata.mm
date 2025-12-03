@@ -1,38 +1,38 @@
 @interface MBFileMetadata
-+ (id)fileMetadataExcludingAssetForPath:(id)a3 error:(id *)a4;
-+ (id)fileMetadataExcludingAssetForPath:(id)a3 modifiedDate:(int64_t *)a4 error:(id *)a5;
-+ (id)fileMetadataExcludingXattrsAndAssetFromNode:(id *)a3 error:(id *)a4;
-+ (id)fileMetadataFromNode:(id *)a3 xattrs:(id)a4 linkTarget:(id)a5 assetMetadata:(id)a6 error:(id *)a7;
-+ (unint64_t)modificationTypeForMetadata:(id)a3 oldMetadata:(id)a4;
++ (id)fileMetadataExcludingAssetForPath:(id)path error:(id *)error;
++ (id)fileMetadataExcludingAssetForPath:(id)path modifiedDate:(int64_t *)date error:(id *)error;
++ (id)fileMetadataExcludingXattrsAndAssetFromNode:(id *)node error:(id *)error;
++ (id)fileMetadataFromNode:(id *)node xattrs:(id)xattrs linkTarget:(id)target assetMetadata:(id)metadata error:(id *)error;
++ (unint64_t)modificationTypeForMetadata:(id)metadata oldMetadata:(id)oldMetadata;
 - ($A74A704DF38FE0153EF2DEEF31040CF8)mbNode;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)stringRepresentationWithAssetMetadata:(BOOL)a3;
-- (void)getNode:(id *)a3;
-- (void)setXattrs:(id)a3;
+- (id)stringRepresentationWithAssetMetadata:(BOOL)metadata;
+- (void)getNode:(id *)node;
+- (void)setXattrs:(id)xattrs;
 @end
 
 @implementation MBFileMetadata
 
-- (void)getNode:(id *)a3
+- (void)getNode:(id *)node
 {
-  *&a3->var0 = *&self->_mbNode.direntCount;
+  *&node->var0 = *&self->_mbNode.direntCount;
   v3 = *&self->_mbNode.birth;
   v4 = *&self->_mbNode.statusChanged;
   v5 = *&self->_mbNode.inode;
-  a3->var10 = self->_mbNode.cloneID;
-  *&a3->var6 = v4;
-  *&a3->var8 = v5;
-  *&a3->var4 = v3;
+  node->var10 = self->_mbNode.cloneID;
+  *&node->var6 = v4;
+  *&node->var8 = v5;
+  *&node->var4 = v3;
 }
 
-- (void)setXattrs:(id)a3
+- (void)setXattrs:(id)xattrs
 {
-  v5 = a3;
-  if (v5 && [v5 count])
+  xattrsCopy = xattrs;
+  if (xattrsCopy && [xattrsCopy count])
   {
-    objc_storeStrong(&self->_xattrs, a3);
+    objc_storeStrong(&self->_xattrs, xattrs);
     v6 = HIBYTE(self->_mbNode.cloneID) | 4;
   }
 
@@ -46,13 +46,13 @@
   _objc_release_x1();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     memset(v15, 0, 56);
     if (v5)
@@ -62,15 +62,15 @@
 
     if (!WORD2(self->_mbNode.cloneID) && self->_mbNode.userID == DWORD1(v15[0]) && *&self->_mbNode.groupID == *(v15 + 8) && *&self->_mbNode.modified == *(&v15[1] + 8) && *&self->_mbNode.fileSize == *(&v15[2] + 8) && !BYTE6(self->_mbNode.cloneID) && (self->_mbNode.cloneID & 0x400000000000000) == 0)
     {
-      v8 = [(MBFileMetadata *)self xattrs];
-      if ([v8 count])
+      xattrs = [(MBFileMetadata *)self xattrs];
+      if ([xattrs count])
       {
       }
 
       else
       {
-        v9 = [v6 xattrs];
-        v10 = [v9 count];
+        xattrs2 = [v6 xattrs];
+        v10 = [xattrs2 count];
 
         if (!v10)
         {
@@ -82,9 +82,9 @@ LABEL_18:
         }
       }
 
-      v11 = [(MBFileMetadata *)self xattrs];
-      v12 = [v6 xattrs];
-      v13 = [v11 isEqualToDictionary:v12];
+      xattrs3 = [(MBFileMetadata *)self xattrs];
+      xattrs4 = [v6 xattrs];
+      v13 = [xattrs3 isEqualToDictionary:xattrs4];
 
       if (v13)
       {
@@ -108,8 +108,8 @@ LABEL_19:
   v4 = [NSNumber numberWithUnsignedShort:WORD2(self->_mbNode.cloneID)];
   [v3 setObject:v4 forKeyedSubscript:@"mode"];
 
-  v5 = [NSNumber numberWithInt:WORD2(self->_mbNode.cloneID) & 0xF000];
-  [v3 setObject:v5 forKeyedSubscript:@"type"];
+  0xF000 = [NSNumber numberWithInt:WORD2(self->_mbNode.cloneID) & 0xF000];
+  [v3 setObject:0xF000 forKeyedSubscript:@"type"];
 
   v6 = [NSNumber numberWithUnsignedInt:self->_mbNode.userID];
   [v3 setObject:v6 forKeyedSubscript:@"userID"];
@@ -157,8 +157,8 @@ LABEL_19:
   v20 = [NSNumber numberWithUnsignedInt:self->_mbNode.genCount];
   [v3 setObject:v20 forKeyedSubscript:@"genCount"];
 
-  v21 = [(MBAssetMetadata *)self->_assetMetadata dictionaryRepresentation];
-  [v3 setObject:v21 forKeyedSubscript:@"assetMetadata"];
+  dictionaryRepresentation = [(MBAssetMetadata *)self->_assetMetadata dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"assetMetadata"];
 
   v22 = [NSNumber numberWithBool:(self->_mbNode.flags >> 30) & 1];
   [v3 setObject:v22 forKeyedSubscript:@"isDataless"];
@@ -170,8 +170,8 @@ LABEL_19:
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v24 = [(MBFileMetadata *)self xattrs];
-    v25 = [v24 countByEnumeratingWithState:&v34 objects:v38 count:16];
+    xattrs = [(MBFileMetadata *)self xattrs];
+    v25 = [xattrs countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v25)
     {
       v26 = v25;
@@ -182,18 +182,18 @@ LABEL_19:
         {
           if (*v35 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(xattrs);
           }
 
           v29 = *(*(&v34 + 1) + 8 * i);
-          v30 = [(MBFileMetadata *)self xattrs];
-          v31 = [v30 objectForKeyedSubscript:v29];
+          xattrs2 = [(MBFileMetadata *)self xattrs];
+          v31 = [xattrs2 objectForKeyedSubscript:v29];
 
           v32 = [v31 base64EncodedStringWithOptions:0];
           [v23 setObject:v32 forKeyedSubscript:v29];
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v26 = [xattrs countByEnumeratingWithState:&v34 objects:v38 count:16];
       }
 
       while (v26);
@@ -205,9 +205,9 @@ LABEL_19:
   return v3;
 }
 
-- (id)stringRepresentationWithAssetMetadata:(BOOL)a3
+- (id)stringRepresentationWithAssetMetadata:(BOOL)metadata
 {
-  v56 = a3;
+  metadataCopy = metadata;
   v4 = WORD2(self->_mbNode.cloneID);
   v5 = v4 & 0xF000;
   if (v5 == 0x4000)
@@ -220,9 +220,9 @@ LABEL_19:
     userID = self->_mbNode.userID;
     groupID = self->_mbNode.groupID;
     flags = self->_mbNode.flags;
-    v12 = [(MBFileMetadata *)self xattrs];
+    xattrs = [(MBFileMetadata *)self xattrs];
     v44 = v24;
-    v45 = [v12 count];
+    v45 = [xattrs count];
     v41 = inode;
     v43 = v23;
     v39 = v53;
@@ -247,8 +247,8 @@ LABEL_19:
       genCount = self->_mbNode.genCount;
       v19 = (HIBYTE(self->_mbNode.cloneID) >> 2) & 1;
       v20 = BYTE6(self->_mbNode.cloneID);
-      v12 = [(MBFileMetadata *)self xattrs];
-      v47 = [v12 count];
+      xattrs = [(MBFileMetadata *)self xattrs];
+      v47 = [xattrs count];
       if (fileSize)
       {
         *(&v40 + 1) = fileSize;
@@ -286,8 +286,8 @@ LABEL_19:
     v11 = self->_mbNode.flags;
     if (v5 == 40960)
     {
-      v12 = [(MBFileMetadata *)self xattrs];
-      v45 = [v12 count];
+      xattrs = [(MBFileMetadata *)self xattrs];
+      v45 = [xattrs count];
       linkTarget = self->_linkTarget;
       v43 = v7;
       v44 = v8;
@@ -301,9 +301,9 @@ LABEL_19:
 
     else
     {
-      v12 = [(MBFileMetadata *)self xattrs];
+      xattrs = [(MBFileMetadata *)self xattrs];
       v44 = v8;
-      v45 = [v12 count];
+      v45 = [xattrs count];
       v41 = v6;
       v43 = v7;
       v39 = v51;
@@ -317,10 +317,10 @@ LABEL_19:
   [NSString stringWithFormat:v13, v4, userID, v32, v34, v36, v39, v41, v43, v44, v45, linkTarget];
   v27 = LABEL_12:;
 
-  if (v56 && (assetMetadata = self->_assetMetadata) != 0)
+  if (metadataCopy && (assetMetadata = self->_assetMetadata) != 0)
   {
-    v29 = [(MBAssetMetadata *)assetMetadata stringRepresentation];
-    v30 = [NSString stringWithFormat:@"%@, %@", v27, v29];
+    stringRepresentation = [(MBAssetMetadata *)assetMetadata stringRepresentation];
+    v30 = [NSString stringWithFormat:@"%@, %@", v27, stringRepresentation];
   }
 
   else
@@ -340,73 +340,73 @@ LABEL_19:
   return v5;
 }
 
-+ (id)fileMetadataFromNode:(id *)a3 xattrs:(id)a4 linkTarget:(id)a5 assetMetadata:(id)a6 error:(id *)a7
++ (id)fileMetadataFromNode:(id *)node xattrs:(id)xattrs linkTarget:(id)target assetMetadata:(id)metadata error:(id *)error
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  metadataCopy = metadata;
+  targetCopy = target;
+  xattrsCopy = xattrs;
   v13 = objc_opt_new();
-  *(v13 + 32) = *&a3->var0;
-  v15 = *&a3->var6;
-  v14 = *&a3->var8;
-  v16 = *&a3->var4;
-  *(v13 + 96) = a3->var10;
+  *(v13 + 32) = *&node->var0;
+  v15 = *&node->var6;
+  v14 = *&node->var8;
+  v16 = *&node->var4;
+  *(v13 + 96) = node->var10;
   *(v13 + 64) = v15;
   *(v13 + 80) = v14;
   *(v13 + 48) = v16;
-  [v13 setLinkTarget:v11];
+  [v13 setLinkTarget:targetCopy];
 
-  [v13 setXattrs:v12];
-  [v13 setAssetMetadata:v10];
+  [v13 setXattrs:xattrsCopy];
+  [v13 setAssetMetadata:metadataCopy];
 
   return v13;
 }
 
-+ (id)fileMetadataExcludingXattrsAndAssetFromNode:(id *)a3 error:(id *)a4
++ (id)fileMetadataExcludingXattrsAndAssetFromNode:(id *)node error:(id *)error
 {
   v6 = objc_opt_class();
 
-  return [v6 fileMetadataFromNode:a3 xattrs:0 linkTarget:0 assetMetadata:0 error:a4];
+  return [v6 fileMetadataFromNode:node xattrs:0 linkTarget:0 assetMetadata:0 error:error];
 }
 
-+ (id)fileMetadataExcludingAssetForPath:(id)a3 error:(id *)a4
++ (id)fileMetadataExcludingAssetForPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_opt_class() fileMetadataExcludingAssetForPath:v5 modifiedDate:0 error:a4];
+  pathCopy = path;
+  v6 = [objc_opt_class() fileMetadataExcludingAssetForPath:pathCopy modifiedDate:0 error:error];
 
   return v6;
 }
 
-+ (id)fileMetadataExcludingAssetForPath:(id)a3 modifiedDate:(int64_t *)a4 error:(id *)a5
++ (id)fileMetadataExcludingAssetForPath:(id)path modifiedDate:(int64_t *)date error:(id *)error
 {
-  v7 = a3;
+  pathCopy = path;
   v20 = 0;
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
   v8 = 0;
-  if (MBNodeForPath(v7, &v16, a5))
+  if (MBNodeForPath(pathCopy, &v16, error))
   {
-    if (a4)
+    if (date)
     {
-      *(&v17 + 1) = *a4;
+      *(&v17 + 1) = *date;
     }
 
-    v9 = [v7 fileSystemRepresentation];
+    fileSystemRepresentation = [pathCopy fileSystemRepresentation];
     if ((v20 & 0x400000000000000) != 0)
     {
       v15 = 0;
-      v10 = [MBExtendedAttributes attributesForPathFSR:v9 error:&v15];
+      v10 = [MBExtendedAttributes attributesForPathFSR:fileSystemRepresentation error:&v15];
       v11 = v15;
       if (v11)
       {
         v12 = v11;
-        if (a5)
+        if (error)
         {
           v13 = v11;
           v8 = 0;
-          *a5 = v12;
+          *error = v12;
         }
 
         else
@@ -425,7 +425,7 @@ LABEL_19:
 
     if ((WORD2(v20) & 0xF000) == 0xA000)
     {
-      v12 = [MBFileOperation symbolicLinkTargetWithPathFSR:v9 error:a5];
+      v12 = [MBFileOperation symbolicLinkTargetWithPathFSR:fileSystemRepresentation error:error];
       if (!v12)
       {
         v8 = 0;
@@ -440,7 +440,7 @@ LABEL_15:
       v12 = 0;
     }
 
-    v8 = [MBFileMetadata fileMetadataFromNode:&v16 xattrs:v10 linkTarget:v12 assetMetadata:0 error:a5];
+    v8 = [MBFileMetadata fileMetadataFromNode:&v16 xattrs:v10 linkTarget:v12 assetMetadata:0 error:error];
 LABEL_14:
 
     goto LABEL_15;
@@ -451,16 +451,16 @@ LABEL_16:
   return v8;
 }
 
-+ (unint64_t)modificationTypeForMetadata:(id)a3 oldMetadata:(id)a4
++ (unint64_t)modificationTypeForMetadata:(id)metadata oldMetadata:(id)oldMetadata
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  metadataCopy = metadata;
+  oldMetadataCopy = oldMetadata;
+  if (oldMetadataCopy)
   {
-    [v6 mbNode];
-    if (v5)
+    [oldMetadataCopy mbNode];
+    if (metadataCopy)
     {
-      [v5 mbNode];
+      [metadataCopy mbNode];
     }
 
     __assert_rtn("+[MBFileMetadata modificationTypeForMetadata:oldMetadata:]", "MBFileMetadata.m", 384, "0");

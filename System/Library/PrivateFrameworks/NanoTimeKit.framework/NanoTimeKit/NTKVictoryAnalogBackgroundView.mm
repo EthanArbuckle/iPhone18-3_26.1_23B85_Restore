@@ -1,60 +1,60 @@
 @interface NTKVictoryAnalogBackgroundView
 + (id)_disabledLayerActions;
-- (CGColor)_layerTransitionColorFromColor:(id)a3 toColor:(id)a4 amount:(double)a5;
-- (CGPoint)_ringDigitOffsetAtIndex:(unint64_t)a3;
-- (CGPoint)centerPointForSmallHourMarkerAtIndex:(unint64_t)a3;
-- (CGPoint)logoPositionForStyle:(unint64_t)a3;
-- (CGSize)logoSizeForStyle:(unint64_t)a3;
-- (NTKVictoryAnalogBackgroundView)initWithFrame:(CGRect)a3 forDevice:(id)a4;
+- (CGColor)_layerTransitionColorFromColor:(id)color toColor:(id)toColor amount:(double)amount;
+- (CGPoint)_ringDigitOffsetAtIndex:(unint64_t)index;
+- (CGPoint)centerPointForSmallHourMarkerAtIndex:(unint64_t)index;
+- (CGPoint)logoPositionForStyle:(unint64_t)style;
+- (CGSize)logoSizeForStyle:(unint64_t)style;
+- (NTKVictoryAnalogBackgroundView)initWithFrame:(CGRect)frame forDevice:(id)device;
 - (NTKVictoryAnalogBackgroundViewDelegate)delegate;
 - (UIImage)logoImage;
-- (double)_elementScaleForTransitionProgress:(double)a3 initialScale:(double)a4 middleScale:(double)a5 finalScale:(double)a6;
-- (double)_transitionProgressForDigitAtIndex:(unint64_t)a3 overallProgress:(double)a4 delayPerDigit:(double)a5 digitTransitionLength:(double)a6;
+- (double)_elementScaleForTransitionProgress:(double)progress initialScale:(double)scale middleScale:(double)middleScale finalScale:(double)finalScale;
+- (double)_transitionProgressForDigitAtIndex:(unint64_t)index overallProgress:(double)progress delayPerDigit:(double)digit digitTransitionLength:(double)length;
 - (id)_activeRingLayers;
 - (id)_activeRingObjects;
-- (id)_createAndAddLayersWithCount:(unint64_t)a3;
-- (id)_createHourMarkerLabelsWithFontSize:(double)a3;
-- (id)_createSmallHourMarkerLabelForIndex:(id)a3;
+- (id)_createAndAddLayersWithCount:(unint64_t)count;
+- (id)_createHourMarkerLabelsWithFontSize:(double)size;
+- (id)_createSmallHourMarkerLabelForIndex:(id)index;
 - (id)_dotImage;
-- (id)digitForLargeNumberAtIndex:(int64_t)a3;
-- (unint64_t)_digitForIndex:(unint64_t)a3;
-- (void)_applyPalette:(id)a3 forStyle:(unint64_t)a4;
-- (void)_clearTransitionStateForStyle:(unint64_t)a3 palette:(id)a4;
+- (id)digitForLargeNumberAtIndex:(int64_t)index;
+- (unint64_t)_digitForIndex:(unint64_t)index;
+- (void)_applyPalette:(id)palette forStyle:(unint64_t)style;
+- (void)_clearTransitionStateForStyle:(unint64_t)style palette:(id)palette;
 - (void)_createLargeHourMarkerLabelsAndAttachToViewIfNeeded;
 - (void)_createMediumNumberLayersIfNeededAndAttachToViewIfNeeded;
 - (void)_createRingLayersIfNeeded;
-- (void)_logoTapped:(id)a3;
-- (void)_setRingLayerAtIndex:(unint64_t)a3 isDigit:(BOOL)a4;
+- (void)_logoTapped:(id)tapped;
+- (void)_setRingLayerAtIndex:(unint64_t)index isDigit:(BOOL)digit;
 - (void)addLogoButtonIfNeeded;
 - (void)addSmallLogoButtonIfNeeded;
-- (void)applyTransitionFraction:(double)a3 fromDialShape:(unint64_t)a4 toDialShape:(unint64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromOlympusStyle:(unint64_t)a4 toOlympusStyle:(unint64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5 style:(unint64_t)a6 animateElements:(BOOL)a7;
+- (void)applyTransitionFraction:(double)fraction fromDialShape:(unint64_t)shape toDialShape:(unint64_t)dialShape;
+- (void)applyTransitionFraction:(double)fraction fromOlympusStyle:(unint64_t)style toOlympusStyle:(unint64_t)olympusStyle;
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette style:(unint64_t)style animateElements:(BOOL)elements;
 - (void)layoutNumbers;
 - (void)layoutSubviews;
-- (void)setDialShape:(unint64_t)a3;
-- (void)setInTimeTravel:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPalette:(id)a3;
-- (void)setStyle:(unint64_t)a3;
+- (void)setDialShape:(unint64_t)shape;
+- (void)setInTimeTravel:(BOOL)travel animated:(BOOL)animated;
+- (void)setPalette:(id)palette;
+- (void)setStyle:(unint64_t)style;
 - (void)willBeginEditing;
 @end
 
 @implementation NTKVictoryAnalogBackgroundView
 
-- (NTKVictoryAnalogBackgroundView)initWithFrame:(CGRect)a3 forDevice:(id)a4
+- (NTKVictoryAnalogBackgroundView)initWithFrame:(CGRect)frame forDevice:(id)device
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
   v55.receiver = self;
   v55.super_class = NTKVictoryAnalogBackgroundView;
-  v9 = [(NTKVictoryAnalogBackgroundView *)&v55 initWithFrame:x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(NTKVictoryAnalogBackgroundView *)&v55 initWithFrame:x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    objc_storeStrong(&v9->_device, a4);
+    objc_storeStrong(&height->_device, device);
     v53 = 0u;
     v54 = 0u;
     v51 = 0u;
@@ -84,8 +84,8 @@
     v10->_contentView = v11;
 
     [(NTKVictoryAnalogBackgroundView *)v10 addSubview:v10->_contentView];
-    v13 = [MEMORY[0x277D75348] blackColor];
-    [(NTKVictoryAnalogBackgroundView *)v10 setBackgroundColor:v13];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(NTKVictoryAnalogBackgroundView *)v10 setBackgroundColor:blackColor];
 
     [(NTKVictoryAnalogBackgroundView *)v10 setOpaque:1];
     v10->_dialShape = 1;
@@ -107,9 +107,9 @@
           do
           {
             v18 = [v16 objectAtIndex:v17];
-            v19 = [v18 unsignedIntegerValue];
+            unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-            v10->_canonicalDigitStatesByStyle[v15][v19] = 1;
+            v10->_canonicalDigitStatesByStyle[v15][unsignedIntegerValue] = 1;
             ++v17;
           }
 
@@ -148,8 +148,8 @@
     self->_logoButton = v3;
 
     v5 = self->_logoButton;
-    v6 = [(NTKVictoryAnalogBackgroundView *)self logoImage];
-    [(NTKVictoryLogoButton *)v5 setBackgroundImage:v6 forState:0];
+    logoImage = [(NTKVictoryAnalogBackgroundView *)self logoImage];
+    [(NTKVictoryLogoButton *)v5 setBackgroundImage:logoImage forState:0];
 
     v7 = self->_logoButton;
     v8 = *MEMORY[0x277CBF348];
@@ -174,8 +174,8 @@
     self->_smallLogoButton = v3;
 
     v5 = self->_smallLogoButton;
-    v6 = [(NTKVictoryAnalogBackgroundView *)self _circularDialLogoImage];
-    [(NTKVictoryLogoButton *)v5 setBackgroundImage:v6 forState:0];
+    _circularDialLogoImage = [(NTKVictoryAnalogBackgroundView *)self _circularDialLogoImage];
+    [(NTKVictoryLogoButton *)v5 setBackgroundImage:_circularDialLogoImage forState:0];
 
     v7 = self->_smallLogoButton;
     v8 = *MEMORY[0x277CBF348];
@@ -192,18 +192,18 @@
   }
 }
 
-- (void)_logoTapped:(id)a3
+- (void)_logoTapped:(id)tapped
 {
-  v4 = a3;
-  [v4 bounds];
-  [v4 convertRect:self toView:?];
+  tappedCopy = tapped;
+  [tappedCopy bounds];
+  [tappedCopy convertRect:self toView:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
 
-  v13 = [(NTKVictoryAnalogBackgroundView *)self delegate];
-  [v13 logoTappedFromRect:{v6, v8, v10, v12}];
+  delegate = [(NTKVictoryAnalogBackgroundView *)self delegate];
+  [delegate logoTappedFromRect:{v6, v8, v10, v12}];
 }
 
 - (void)layoutSubviews
@@ -253,9 +253,9 @@ void __48__NTKVictoryAnalogBackgroundView_layoutSubviews__block_invoke(uint64_t 
   [v5 setCenter:?];
 }
 
-- (CGPoint)centerPointForSmallHourMarkerAtIndex:(unint64_t)a3
+- (CGPoint)centerPointForSmallHourMarkerAtIndex:(unint64_t)index
 {
-  [(NTKVictoryAnalogBackgroundView *)self _ringDigitOffsetAtIndex:a3];
+  [(NTKVictoryAnalogBackgroundView *)self _ringDigitOffsetAtIndex:index];
   v5 = v4;
   v7 = v6;
   [(NTKVictoryAnalogBackgroundView *)self bounds];
@@ -361,23 +361,23 @@ void __48__NTKVictoryAnalogBackgroundView_layoutSubviews__block_invoke(uint64_t 
   }
 }
 
-- (CGPoint)_ringDigitOffsetAtIndex:(unint64_t)a3
+- (CGPoint)_ringDigitOffsetAtIndex:(unint64_t)index
 {
   v3 = MEMORY[0x277CBF348];
-  if (a3 <= 0xB)
+  if (index <= 0xB)
   {
-    if (((1 << a3) & 0x700) != 0)
+    if (((1 << index) & 0x700) != 0)
     {
-      v4 = a3 - 3;
+      v4 = index - 3;
       goto LABEL_11;
     }
 
-    if (((1 << a3) & 0x8A0) != 0)
+    if (((1 << index) & 0x8A0) != 0)
     {
       goto LABEL_12;
     }
 
-    if (a3 == 6)
+    if (index == 6)
     {
       v4 = 4;
 LABEL_11:
@@ -387,13 +387,13 @@ LABEL_11:
     }
   }
 
-  if (a3 - 2 < 3)
+  if (index - 2 < 3)
   {
-    v4 = a3 - 1;
+    v4 = index - 1;
     goto LABEL_11;
   }
 
-  if (a3 != 1)
+  if (index != 1)
   {
     v4 = 0;
     goto LABEL_11;
@@ -407,16 +407,16 @@ LABEL_12:
   return result;
 }
 
-- (void)setInTimeTravel:(BOOL)a3 animated:(BOOL)a4
+- (void)setInTimeTravel:(BOOL)travel animated:(BOOL)animated
 {
   v33 = *MEMORY[0x277D85DE8];
   if (self->_style >= 3)
   {
-    v4 = a4;
-    v5 = a3;
+    animatedCopy = animated;
+    travelCopy = travel;
     v6 = [(NSArray *)self->_largeHourMarkerLabels subarrayWithRange:1, 3];
     v7 = v6;
-    if (v5)
+    if (travelCopy)
     {
       v8 = 0.2;
     }
@@ -426,9 +426,9 @@ LABEL_12:
       v8 = 1.0;
     }
 
-    if (v4)
+    if (animatedCopy)
     {
-      if (v5)
+      if (travelCopy)
       {
         v9 = 1.0;
       }
@@ -464,8 +464,8 @@ LABEL_12:
 
             v17 = *(*(&v27 + 1) + 8 * i);
             [v17 setAlpha:v8];
-            v18 = [v17 layer];
-            [v18 addAnimation:v10 forKey:@"timeTravelFade"];
+            layer = [v17 layer];
+            [layer addAnimation:v10 forKey:@"timeTravelFade"];
           }
 
           v14 = [v12 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -507,11 +507,11 @@ LABEL_12:
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  self->_style = a3;
+  self->_style = style;
   [(NTKVictoryAnalogBackgroundView *)self addLogoButtonIfNeeded];
-  if (a3 > 2)
+  if (style > 2)
   {
     [(NTKVictoryAnalogBackgroundView *)self _createLargeHourMarkerLabelsAndAttachToViewIfNeeded];
   }
@@ -521,17 +521,17 @@ LABEL_12:
     [(NTKVictoryAnalogBackgroundView *)self _createRingLayersIfNeeded];
   }
 
-  [(NTKVictoryAnalogBackgroundView *)self _clearTransitionStateForStyle:a3 palette:self->_palette];
+  [(NTKVictoryAnalogBackgroundView *)self _clearTransitionStateForStyle:style palette:self->_palette];
 
   [(NTKVictoryAnalogBackgroundView *)self setNeedsLayout];
 }
 
-- (void)setDialShape:(unint64_t)a3
+- (void)setDialShape:(unint64_t)shape
 {
-  self->_dialShape = a3;
-  v4 = [(NTKVictoryAnalogBackgroundView *)self isCircularDial];
+  self->_dialShape = shape;
+  isCircularDial = [(NTKVictoryAnalogBackgroundView *)self isCircularDial];
   v5 = 0.0;
-  if (v4)
+  if (isCircularDial)
   {
     v5 = 1.0;
   }
@@ -599,12 +599,12 @@ LABEL_12:
   [(NTKVictoryAnalogBackgroundView *)self layoutNumbers];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromDialShape:(unint64_t)a4 toDialShape:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromDialShape:(unint64_t)shape toDialShape:(unint64_t)dialShape
 {
-  if (a4 == a5)
+  if (shape == dialShape)
   {
 
-    [(NTKVictoryAnalogBackgroundView *)self setDialShape:a3];
+    [(NTKVictoryAnalogBackgroundView *)self setDialShape:fraction];
   }
 
   else
@@ -613,7 +613,7 @@ LABEL_12:
     [(NTKVictoryAnalogBackgroundView *)self addSmallLogoButtonIfNeeded];
     [(NTKVictoryLogoButton *)self->_logoButton setHidden:0];
     [(NTKVictoryLogoButton *)self->_smallLogoButton setHidden:0];
-    self->_dialShapeFraction = a3;
+    self->_dialShapeFraction = fraction;
     CLKInterpolateBetweenFloatsClipped();
     [(NTKVictoryLogoButton *)self->_logoButton setAlpha:?];
     CLKInterpolateBetweenFloatsClipped();
@@ -682,7 +682,7 @@ LABEL_12:
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromOlympusStyle:(unint64_t)a4 toOlympusStyle:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromOlympusStyle:(unint64_t)style toOlympusStyle:(unint64_t)olympusStyle
 {
   CLKCompressFraction();
   v7 = v6;
@@ -819,15 +819,15 @@ void __52__NTKVictoryAnalogBackgroundView__activeRingObjects__block_invoke(uint6
   }
 }
 
-- (void)_clearTransitionStateForStyle:(unint64_t)a3 palette:(id)a4
+- (void)_clearTransitionStateForStyle:(unint64_t)style palette:(id)palette
 {
-  v6 = a4;
+  paletteCopy = palette;
   [(NTKVictoryAnalogBackgroundView *)self addLogoButtonIfNeeded];
   [(NSMutableDictionary *)self->_smallHourMarkerLabelsByIndex enumerateKeysAndObjectsUsingBlock:&__block_literal_global_42_1];
   [(NSMutableArray *)self->_ringLayers enumerateObjectsUsingBlock:&__block_literal_global_44_0];
-  if (a3 <= 2)
+  if (style <= 2)
   {
-    v7 = [(NSArray *)self->_activeDigitIndices objectAtIndexedSubscript:a3];
+    v7 = [(NSArray *)self->_activeDigitIndices objectAtIndexedSubscript:style];
     v39[0] = MEMORY[0x277D85DD0];
     v39[1] = 3221225472;
     v39[2] = __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette___block_invoke_3;
@@ -837,13 +837,13 @@ void __52__NTKVictoryAnalogBackgroundView__activeRingObjects__block_invoke(uint6
   }
 
   v8 = 0;
-  v9 = 2;
-  if (a3 < 2)
+  styleCopy = 2;
+  if (style < 2)
   {
-    v9 = a3;
+    styleCopy = style;
   }
 
-  v10 = self->_canonicalDigitStatesByStyle[v9];
+  v10 = self->_canonicalDigitStatesByStyle[styleCopy];
   v29 = *(MEMORY[0x277CD9DE8] + 80);
   v30 = *(MEMORY[0x277CD9DE8] + 64);
   v27 = *(MEMORY[0x277CD9DE8] + 112);
@@ -873,7 +873,7 @@ void __52__NTKVictoryAnalogBackgroundView__activeRingObjects__block_invoke(uint6
 
   while (v8 != 12);
   v13 = 0;
-  if (a3 <= 2)
+  if (style <= 2)
   {
     v14 = 0.0;
   }
@@ -908,7 +908,7 @@ void __52__NTKVictoryAnalogBackgroundView__activeRingObjects__block_invoke(uint6
   }
 
   while (v13 != 4);
-  [(NTKVictoryAnalogBackgroundView *)self logoPositionForStyle:a3];
+  [(NTKVictoryAnalogBackgroundView *)self logoPositionForStyle:style];
   [(NTKVictoryLogoButton *)self->_logoButton setCenter:?];
   logoButton = self->_logoButton;
   v35 = v30;
@@ -926,7 +926,7 @@ void __52__NTKVictoryAnalogBackgroundView__activeRingObjects__block_invoke(uint6
   v22 = v21;
   [(NTKVictoryLogoButton *)self->_logoButton center];
   [(NTKVictoryLogoButton *)v20 setCenter:v22];
-  [(NTKVictoryAnalogBackgroundView *)self _applyPalette:v6 forStyle:a3];
+  [(NTKVictoryAnalogBackgroundView *)self _applyPalette:paletteCopy forStyle:style];
 }
 
 void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette___block_invoke_3(uint64_t a1, void *a2)
@@ -956,21 +956,21 @@ void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette_
   [v7 setHidden:1];
 }
 
-- (CGPoint)logoPositionForStyle:(unint64_t)a3
+- (CGPoint)logoPositionForStyle:(unint64_t)style
 {
   v3 = &OBJC_IVAR___NTKVictoryAnalogBackgroundView__logoPositionRing;
-  if (!a3)
+  if (!style)
   {
     v3 = &OBJC_IVAR___NTKVictoryAnalogBackgroundView__logoPositionNoDigits;
   }
 
   v4 = &OBJC_IVAR___NTKVictoryAnalogBackgroundView__logoPositionSmallFont;
-  if (a3 < 5)
+  if (style < 5)
   {
     v4 = &OBJC_IVAR___NTKVictoryAnalogBackgroundView__logoPositionBig;
   }
 
-  if (a3 >= 3)
+  if (style >= 3)
   {
     v3 = v4;
   }
@@ -983,10 +983,10 @@ void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette_
   return result;
 }
 
-- (CGSize)logoSizeForStyle:(unint64_t)a3
+- (CGSize)logoSizeForStyle:(unint64_t)style
 {
   device = self->_device;
-  if (a3 > 4)
+  if (style > 4)
   {
     ___LayoutConstants_block_invoke_53(device, v7);
     v4 = *&v7[60];
@@ -1006,24 +1006,24 @@ void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette_
   return result;
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
-  v5 = a3;
-  [(NTKVictoryAnalogBackgroundView *)self _applyPalette:v5 forStyle:self->_style];
+  objc_storeStrong(&self->_palette, palette);
+  paletteCopy = palette;
+  [(NTKVictoryAnalogBackgroundView *)self _applyPalette:paletteCopy forStyle:self->_style];
 }
 
-- (void)_applyPalette:(id)a3 forStyle:(unint64_t)a4
+- (void)_applyPalette:(id)palette forStyle:(unint64_t)style
 {
-  v6 = a3;
-  v36 = [v6 backgroundColor];
+  paletteCopy = palette;
+  backgroundColor = [paletteCopy backgroundColor];
   [(NTKVictoryAnalogBackgroundView *)self setBackgroundColor:?];
-  v7 = [v6 dotMarkerAlpha];
-  [v7 floatValue];
+  dotMarkerAlpha = [paletteCopy dotMarkerAlpha];
+  [dotMarkerAlpha floatValue];
   v9 = v8;
 
   v10 = 0;
-  if (a4 <= 2)
+  if (style <= 2)
   {
     v11 = 1.0;
   }
@@ -1033,7 +1033,7 @@ void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette_
     v11 = 0.0;
   }
 
-  if (a4 <= 2)
+  if (style <= 2)
   {
     v12 = v9;
   }
@@ -1050,19 +1050,19 @@ void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette_
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
     if (v14)
     {
-      v16 = [v6 numberColorAtIndex:v15];
+      v16 = [paletteCopy numberColorAtIndex:v15];
       v17 = v11;
     }
 
     else
     {
-      v16 = [v6 dotMarkerColorAtIndex:v15];
+      v16 = [paletteCopy dotMarkerColorAtIndex:v15];
       v17 = v12;
     }
 
-    v18 = [v16 CGColor];
+    cGColor = [v16 CGColor];
 
-    [v13 setContentsMultiplyColor:v18];
+    [v13 setContentsMultiplyColor:cGColor];
     *&v19 = v17;
     [v13 setOpacity:v19];
 
@@ -1079,7 +1079,7 @@ void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette_
       if (v20)
       {
         v22 = [(NTKVictoryAnalogBackgroundView *)self digitForLargeNumberAtIndex:v20];
-        v23 = [v6 numberColorAtIndex:v22];
+        v23 = [paletteCopy numberColorAtIndex:v22];
 
         [v21 setFillColor:v23];
       }
@@ -1087,12 +1087,12 @@ void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette_
       else
       {
         v24 = [(NTKVictoryAnalogBackgroundView *)self digitForLargeNumberAtIndex:0];
-        v23 = [v6 numberColorAtIndex:v24];
+        v23 = [paletteCopy numberColorAtIndex:v24];
 
         v25 = MEMORY[0x277CCABB0];
         v26 = [(NTKVictoryAnalogBackgroundView *)self digitForLargeNumberAtIndex:0];
         v27 = [v25 numberWithInteger:{objc_msgSend(v26, "integerValue") + 1}];
-        v28 = [v6 numberColorAtIndex:v27];
+        v28 = [paletteCopy numberColorAtIndex:v27];
 
         [v21 setFillColor:v23 inRange:{0, 1}];
         [v21 setFillColor:v28 inRange:{1, 1}];
@@ -1111,7 +1111,7 @@ void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette_
     {
       v30 = [(NSArray *)self->_mediumNumberLayers objectAtIndex:v29];
       v31 = [(NTKVictoryAnalogBackgroundView *)self digitForLargeNumberAtIndex:v29];
-      v32 = [v6 numberColorAtIndex:v31];
+      v32 = [paletteCopy numberColorAtIndex:v31];
 
       [v30 setFillColor:v32];
       ++v29;
@@ -1125,12 +1125,12 @@ void __72__NTKVictoryAnalogBackgroundView__clearTransitionStateForStyle_palette_
   v37[1] = 3221225472;
   v37[2] = __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke;
   v37[3] = &unk_278784DC0;
-  v38 = v6;
-  v34 = v6;
+  v38 = paletteCopy;
+  v34 = paletteCopy;
   [(NSMutableDictionary *)smallHourMarkerLabelsByIndex enumerateKeysAndObjectsUsingBlock:v37];
-  v35 = [v34 logo];
-  [(NTKVictoryLogoButton *)self->_logoButton setTintColor:v35];
-  [(NTKVictoryLogoButton *)self->_smallLogoButton setTintColor:v35];
+  logo = [v34 logo];
+  [(NTKVictoryLogoButton *)self->_logoButton setTintColor:logo];
+  [(NTKVictoryLogoButton *)self->_smallLogoButton setTintColor:logo];
 }
 
 void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1147,53 +1147,53 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
   [v8 setContentsMultiplyColor:0];
 }
 
-- (id)digitForLargeNumberAtIndex:(int64_t)a3
+- (id)digitForLargeNumberAtIndex:(int64_t)index
 {
-  if (a3 > 3)
+  if (index > 3)
   {
     return 0;
   }
 
   else
   {
-    return qword_278784EF8[a3];
+    return qword_278784EF8[index];
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5 style:(unint64_t)a6 animateElements:(BOOL)a7
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette style:(unint64_t)style animateElements:(BOOL)elements
 {
-  v80 = a7;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 dotMarkerAlpha];
-  [v13 floatValue];
+  elementsCopy = elements;
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  dotMarkerAlpha = [paletteCopy dotMarkerAlpha];
+  [dotMarkerAlpha floatValue];
 
-  v14 = [v12 dotMarkerAlpha];
-  [v14 floatValue];
+  dotMarkerAlpha2 = [toPaletteCopy dotMarkerAlpha];
+  [dotMarkerAlpha2 floatValue];
 
-  v84 = v11;
-  v15 = [v11 backgroundColor];
-  v85 = v12;
-  v16 = [v12 backgroundColor];
+  v84 = paletteCopy;
+  backgroundColor = [paletteCopy backgroundColor];
+  v85 = toPaletteCopy;
+  backgroundColor2 = [toPaletteCopy backgroundColor];
   v17 = NTKInterpolateBetweenColors();
-  v18 = self;
+  selfCopy = self;
   [(NTKVictoryAnalogBackgroundView *)self setBackgroundColor:v17];
 
-  v83 = a6;
-  v74 = v16;
-  v75 = v15;
-  if (a6 > 2)
+  styleCopy = style;
+  v74 = backgroundColor2;
+  v75 = backgroundColor;
+  if (style > 2)
   {
-    v21 = [(NTKVictoryAnalogBackgroundView *)self isCircularDial];
+    isCircularDial = [(NTKVictoryAnalogBackgroundView *)self isCircularDial];
     v22 = &OBJC_IVAR___NTKVictoryAnalogBackgroundView__largeHourMarkerLabels;
-    if (v21)
+    if (isCircularDial)
     {
       v22 = &OBJC_IVAR___NTKVictoryAnalogBackgroundView__mediumNumberLayers;
     }
 
     v19 = &__block_literal_global_49;
     v81 = &__block_literal_global_51;
-    v82 = *(&self->super.super.super.isa + *v22);
+    _activeRingObjects = *(&self->super.super.super.isa + *v22);
     v20 = 0.174999997;
     v73 = 0.150000006;
     v72 = 0.1;
@@ -1201,7 +1201,7 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
 
   else
   {
-    v82 = [(NTKVictoryAnalogBackgroundView *)self _activeRingObjects];
+    _activeRingObjects = [(NTKVictoryAnalogBackgroundView *)self _activeRingObjects];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __102__NTKVictoryAnalogBackgroundView_applyTransitionFraction_fromPalette_toPalette_style_animateElements___block_invoke;
@@ -1219,14 +1219,14 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
     v20 = 0.0579999983;
   }
 
-  v23 = [v82 count];
+  v23 = [_activeRingObjects count];
   v77 = v19;
   if (v23)
   {
     v24 = 0;
     v25 = 0x277CCA000uLL;
     v79 = v23;
-    v78 = v18;
+    v78 = selfCopy;
     do
     {
       if (v24)
@@ -1239,7 +1239,7 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
         v26 = v23;
       }
 
-      [(NTKVictoryAnalogBackgroundView *)v18 _transitionProgressForDigitAtIndex:v26 - 1 overallProgress:a3 delayPerDigit:v20 digitTransitionLength:0.300000012];
+      [(NTKVictoryAnalogBackgroundView *)selfCopy _transitionProgressForDigitAtIndex:v26 - 1 overallProgress:fraction delayPerDigit:v20 digitTransitionLength:0.300000012];
       v28 = v27;
       if (((v28 * 2.0) + -0.5) <= 1.0)
       {
@@ -1251,18 +1251,18 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
         v29 = 1.0;
       }
 
-      [(NTKVictoryAnalogBackgroundView *)v18 _elementScaleForTransitionProgress:v28 initialScale:1.0 middleScale:(*(v19 + 2))(v19 finalScale:v24).n128_f32[0], 1.0];
+      [(NTKVictoryAnalogBackgroundView *)selfCopy _elementScaleForTransitionProgress:v28 initialScale:1.0 middleScale:(*(v19 + 2))(v19 finalScale:v24).n128_f32[0], 1.0];
       v31 = v30;
-      v32 = [v82 objectAtIndex:v24];
+      v32 = [_activeRingObjects objectAtIndex:v24];
       v33 = [*(v25 + 2992) numberWithUnsignedInteger:v24];
       v87 = [v84 dotMarkerColorAtIndex:v33];
 
       v34 = [*(v25 + 2992) numberWithUnsignedInteger:v24];
       v86 = [v85 dotMarkerColorAtIndex:v34];
 
-      if (v83 == 3)
+      if (styleCopy == 3)
       {
-        [(NTKVictoryAnalogBackgroundView *)v18 digitForLargeNumberAtIndex:v24];
+        [(NTKVictoryAnalogBackgroundView *)selfCopy digitForLargeNumberAtIndex:v24];
       }
 
       else
@@ -1278,7 +1278,7 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
       v40 = v32;
       if (isKindOfClass)
       {
-        if (v80)
+        if (elementsCopy)
         {
           CATransform3DMakeScale(&v91, v31, v31, v31);
           [v40 setTransform:&v91];
@@ -1305,8 +1305,8 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
           v43 = v38;
         }
 
-        [v40 setContentsMultiplyColor:{-[NTKVictoryAnalogBackgroundView _layerTransitionColorFromColor:toColor:amount:](v18, "_layerTransitionColorFromColor:toColor:amount:", v42, v43, v36)}];
-        if (v83 <= 2)
+        [v40 setContentsMultiplyColor:{-[NTKVictoryAnalogBackgroundView _layerTransitionColorFromColor:toColor:amount:](selfCopy, "_layerTransitionColorFromColor:toColor:amount:", v42, v43, v36)}];
+        if (styleCopy <= 2)
         {
           CLKInterpolateBetweenFloatsClipped();
           *&v44 = v44;
@@ -1316,7 +1316,7 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
 
       else
       {
-        if (v80)
+        if (elementsCopy)
         {
           CGAffineTransformMakeScale(&v90, v31, v31);
           *&v91.m11 = *&v90.a;
@@ -1326,7 +1326,7 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
         }
 
         v45 = v81[2](v81, v24);
-        if (v83 != 3 || v24)
+        if (styleCopy != 3 || v24)
         {
           if (v45)
           {
@@ -1348,11 +1348,11 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
             v60 = v38;
           }
 
-          v61 = [MEMORY[0x277D75348] colorWithCGColor:{-[NTKVictoryAnalogBackgroundView _layerTransitionColorFromColor:toColor:amount:](v18, "_layerTransitionColorFromColor:toColor:amount:", v59, v60, v36)}];
+          v61 = [MEMORY[0x277D75348] colorWithCGColor:{-[NTKVictoryAnalogBackgroundView _layerTransitionColorFromColor:toColor:amount:](selfCopy, "_layerTransitionColorFromColor:toColor:amount:", v59, v60, v36)}];
           [v40 setFillColor:v61];
 
           v19 = v77;
-          if (v83 <= 2)
+          if (styleCopy <= 2)
           {
             CLKInterpolateBetweenFloatsClipped();
             [v40 setAlpha:?];
@@ -1361,11 +1361,11 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
 
         else
         {
-          v46 = [(NTKVictoryAnalogBackgroundView *)v18 digitForLargeNumberAtIndex:0];
+          v46 = [(NTKVictoryAnalogBackgroundView *)selfCopy digitForLargeNumberAtIndex:0];
           v47 = [v84 numberColorAtIndex:v46];
 
           v48 = MEMORY[0x277CCABB0];
-          v49 = [(NTKVictoryAnalogBackgroundView *)v18 digitForLargeNumberAtIndex:0];
+          v49 = [(NTKVictoryAnalogBackgroundView *)selfCopy digitForLargeNumberAtIndex:0];
           v50 = [v48 numberWithInteger:{objc_msgSend(v49, "integerValue") + 1}];
           v76 = [v84 numberColorAtIndex:v50];
 
@@ -1382,7 +1382,7 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
           [v40 setFillColor:v57 inRange:{0, 1}];
           [v40 setFillColor:v58 inRange:{1, 1}];
 
-          v18 = v78;
+          selfCopy = v78;
           v19 = v77;
         }
       }
@@ -1395,14 +1395,14 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
     while (v79 != v24);
   }
 
-  v62 = (a3 - v73) / 0.150000006;
+  v62 = (fraction - v73) / 0.150000006;
   if (v62 > 1.0)
   {
     v62 = 1.0;
   }
 
   v63 = fmax(v62, 0.0);
-  if (v80)
+  if (elementsCopy)
   {
     v64 = v63 + v63;
     if (v63 >= 0.5)
@@ -1412,22 +1412,22 @@ void __57__NTKVictoryAnalogBackgroundView__applyPalette_forStyle___block_invoke(
 
     v65 = (v72 * v64) + 1.0;
     CATransform3DMakeScale(&v89, v65, v65, v65);
-    logoButton = v18->_logoButton;
+    logoButton = selfCopy->_logoButton;
     v91 = v89;
     [(NTKVictoryLogoButton *)logoButton setTransform3D:&v91];
     CATransform3DMakeScale(&v88, v65, v65, v65);
-    smallLogoButton = v18->_smallLogoButton;
+    smallLogoButton = selfCopy->_smallLogoButton;
     v91 = v88;
     [(NTKVictoryLogoButton *)smallLogoButton setTransform3D:&v91];
   }
 
-  v68 = [v84 logo];
-  v69 = [v85 logo];
+  logo = [v84 logo];
+  logo2 = [v85 logo];
   v70 = NTKInterpolateBetweenColors();
-  [(NTKVictoryLogoButton *)v18->_logoButton setTintColor:v70];
+  [(NTKVictoryLogoButton *)selfCopy->_logoButton setTintColor:v70];
 
   v71 = NTKInterpolateBetweenColors();
-  [(NTKVictoryLogoButton *)v18->_smallLogoButton setTintColor:v71];
+  [(NTKVictoryLogoButton *)selfCopy->_smallLogoButton setTintColor:v71];
 }
 
 float __102__NTKVictoryAnalogBackgroundView_applyTransitionFraction_fromPalette_toPalette_style_animateElements___block_invoke(uint64_t a1, uint64_t a2)
@@ -1441,13 +1441,13 @@ float __102__NTKVictoryAnalogBackgroundView_applyTransitionFraction_fromPalette_
   return result;
 }
 
-- (CGColor)_layerTransitionColorFromColor:(id)a3 toColor:(id)a4 amount:(double)a5
+- (CGColor)_layerTransitionColorFromColor:(id)color toColor:(id)toColor amount:(double)amount
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  toColorCopy = toColor;
   if (CLKFloatEqualsFloat())
   {
-    v8 = v6;
+    v8 = colorCopy;
   }
 
   else
@@ -1455,23 +1455,23 @@ float __102__NTKVictoryAnalogBackgroundView_applyTransitionFraction_fromPalette_
     if (!CLKFloatEqualsFloat())
     {
       v10 = NTKInterpolateBetweenColors();
-      v9 = [v10 CGColor];
+      cGColor = [v10 CGColor];
 
       goto LABEL_7;
     }
 
-    v8 = v7;
+    v8 = toColorCopy;
   }
 
-  v9 = [v8 CGColor];
+  cGColor = [v8 CGColor];
 LABEL_7:
 
-  return v9;
+  return cGColor;
 }
 
-- (double)_transitionProgressForDigitAtIndex:(unint64_t)a3 overallProgress:(double)a4 delayPerDigit:(double)a5 digitTransitionLength:(double)a6
+- (double)_transitionProgressForDigitAtIndex:(unint64_t)index overallProgress:(double)progress delayPerDigit:(double)digit digitTransitionLength:(double)length
 {
-  v6 = (a4 - a5 * a3) / a6;
+  v6 = (progress - digit * index) / length;
   if (v6 > 1.0)
   {
     v6 = 1.0;
@@ -1480,16 +1480,16 @@ LABEL_7:
   return fmax(v6, 0.0);
 }
 
-- (double)_elementScaleForTransitionProgress:(double)a3 initialScale:(double)a4 middleScale:(double)a5 finalScale:(double)a6
+- (double)_elementScaleForTransitionProgress:(double)progress initialScale:(double)scale middleScale:(double)middleScale finalScale:(double)finalScale
 {
-  if (a3 >= 0.5)
+  if (progress >= 0.5)
   {
-    v6 = 1.0 - (a3 + -0.5 + a3 + -0.5);
+    v6 = 1.0 - (progress + -0.5 + progress + -0.5);
   }
 
   else
   {
-    v6 = a3 + a3;
+    v6 = progress + progress;
   }
 
   *&v6 = v6;
@@ -1522,18 +1522,18 @@ LABEL_7:
   [(NTKVictoryAnalogBackgroundView *)self setNeedsLayout];
 }
 
-- (void)_setRingLayerAtIndex:(unint64_t)a3 isDigit:(BOOL)a4
+- (void)_setRingLayerAtIndex:(unint64_t)index isDigit:(BOOL)digit
 {
-  v4 = a4;
-  self->_ringLayerIsDigit[a3] = a4;
+  digitCopy = digit;
+  self->_ringLayerIsDigit[index] = digit;
   v11 = [(NSMutableArray *)self->_ringLayers objectAtIndex:?];
-  v6 = [(NTKVictoryAnalogBackgroundView *)self _dotImage];
-  [v11 setContents:{objc_msgSend(v6, "CGImage")}];
+  _dotImage = [(NTKVictoryAnalogBackgroundView *)self _dotImage];
+  [v11 setContents:{objc_msgSend(_dotImage, "CGImage")}];
   v7 = *MEMORY[0x277CBF348];
   v8 = *(MEMORY[0x277CBF348] + 8);
-  [v6 size];
+  [_dotImage size];
   [v11 setBounds:{v7, v8, v9, v10}];
-  [v11 setHidden:v4];
+  [v11 setHidden:digitCopy];
 }
 
 - (void)_createRingLayersIfNeeded
@@ -1602,8 +1602,8 @@ LABEL_7:
 
           v16 = *(*(&v19 + 1) + 8 * j);
           v17 = [(NTKVictoryAnalogBackgroundView *)self _createSmallHourMarkerLabelForIndex:v16];
-          v18 = [v16 stringValue];
-          [v17 setText:v18];
+          stringValue = [v16 stringValue];
+          [v17 setText:stringValue];
 
           [v17 sizeToFit];
           [(NSMutableDictionary *)self->_smallHourMarkerLabelsByIndex setObject:v17 forKeyedSubscript:v16];
@@ -1617,15 +1617,15 @@ LABEL_7:
   }
 }
 
-- (unint64_t)_digitForIndex:(unint64_t)a3
+- (unint64_t)_digitForIndex:(unint64_t)index
 {
   v3 = 12;
-  if (a3)
+  if (index)
   {
     v3 = 0;
   }
 
-  return v3 + 3 * a3;
+  return v3 + 3 * index;
 }
 
 - (void)_createMediumNumberLayersIfNeededAndAttachToViewIfNeeded
@@ -1648,9 +1648,9 @@ LABEL_7:
     do
     {
       v7 = [(NSArray *)self->_mediumNumberLayers objectAtIndex:v6];
-      v8 = [v7 superview];
+      superview = [v7 superview];
 
-      if (v8)
+      if (superview)
       {
         [v7 removeFromSuperview];
       }
@@ -1696,9 +1696,9 @@ LABEL_7:
     do
     {
       v8 = [(NSArray *)self->_largeHourMarkerLabels objectAtIndex:v7];
-      v9 = [v8 superview];
+      superview = [v8 superview];
 
-      if (v9)
+      if (superview)
       {
         [v8 removeFromSuperview];
       }
@@ -1712,7 +1712,7 @@ LABEL_7:
   }
 }
 
-- (id)_createHourMarkerLabelsWithFontSize:(double)a3
+- (id)_createHourMarkerLabelsWithFontSize:(double)size
 {
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:4];
   for (i = 0; i != 4; ++i)
@@ -1720,12 +1720,12 @@ LABEL_7:
     v7 = objc_alloc_init(NTKVictoryLabel);
     [(NTKVictoryLabel *)v7 setAdditionalPaddingInsets:5.0];
     [(NTKVictoryLabel *)v7 setTextAlignment:1];
-    v8 = [NTKVictoryLabel victoryFontWithSize:0 style:a3];
+    v8 = [NTKVictoryLabel victoryFontWithSize:0 style:size];
     [(CLKUIColoringLabel *)v7 setFont:v8];
 
     v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NTKVictoryAnalogBackgroundView _digitForIndex:](self, "_digitForIndex:", i)}];
-    v10 = [v9 stringValue];
-    [(NTKVictoryLabel *)v7 setText:v10];
+    stringValue = [v9 stringValue];
+    [(NTKVictoryLabel *)v7 setText:stringValue];
 
     [(NTKVictoryLabel *)v7 sizeToFit];
     [v5 addObject:v7];
@@ -1734,9 +1734,9 @@ LABEL_7:
   return v5;
 }
 
-- (id)_createSmallHourMarkerLabelForIndex:(id)a3
+- (id)_createSmallHourMarkerLabelForIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   v5 = objc_alloc_init(NTKVictoryLabel);
   [(NTKVictoryLabel *)v5 setAdditionalPaddingInsets:10.0];
   [(NTKVictoryLabel *)v5 setTextAlignment:1];
@@ -1744,19 +1744,19 @@ LABEL_7:
   v6 = [NTKVictoryLabel victoryFontWithSize:0 style:v9[27]];
   [(CLKUIColoringLabel *)v5 setFont:v6];
 
-  v7 = [v4 stringValue];
+  stringValue = [indexCopy stringValue];
 
-  [(NTKVictoryLabel *)v5 setText:v7];
+  [(NTKVictoryLabel *)v5 setText:stringValue];
   [(NTKVictoryLabel *)v5 sizeToFit];
 
   return v5;
 }
 
-- (id)_createAndAddLayersWithCount:(unint64_t)a3
+- (id)_createAndAddLayersWithCount:(unint64_t)count
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [objc_opt_class() _disabledLayerActions];
-  if (a3)
+  array = [MEMORY[0x277CBEB18] array];
+  _disabledLayerActions = [objc_opt_class() _disabledLayerActions];
+  if (count)
   {
     v7 = *MEMORY[0x277CBF3A0];
     v8 = *(MEMORY[0x277CBF3A0] + 8);
@@ -1764,20 +1764,20 @@ LABEL_7:
     v10 = *(MEMORY[0x277CBF3A0] + 24);
     do
     {
-      v11 = [MEMORY[0x277CD9ED0] layer];
-      [v11 setActions:v6];
-      [v11 setBounds:{v7, v8, v9, v10}];
-      v12 = [(UIView *)self->_contentView layer];
-      [v12 addSublayer:v11];
+      layer = [MEMORY[0x277CD9ED0] layer];
+      [layer setActions:_disabledLayerActions];
+      [layer setBounds:{v7, v8, v9, v10}];
+      layer2 = [(UIView *)self->_contentView layer];
+      [layer2 addSublayer:layer];
 
-      [v5 addObject:v11];
-      --a3;
+      [array addObject:layer];
+      --count;
     }
 
-    while (a3);
+    while (count);
   }
 
-  return v5;
+  return array;
 }
 
 - (UIImage)logoImage
@@ -1805,8 +1805,8 @@ LABEL_7:
     v14.width = v4;
     v14.height = v4;
     UIGraphicsBeginImageContextWithOptions(v14, 0, v6);
-    v7 = [MEMORY[0x277D75348] whiteColor];
-    [v7 setFill];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [whiteColor setFill];
 
     v8 = [MEMORY[0x277D75208] bezierPathWithOvalInRect:{0.0, 0.0, v4, v4}];
     [v8 fill];
@@ -1825,21 +1825,21 @@ LABEL_7:
 + (id)_disabledLayerActions
 {
   v6[7] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB68] null];
+  null = [MEMORY[0x277CBEB68] null];
   v5[0] = @"contents";
   v5[1] = @"contentsMultiplyColor";
-  v6[0] = v2;
-  v6[1] = v2;
+  v6[0] = null;
+  v6[1] = null;
   v5[2] = @"transform";
   v5[3] = @"bounds";
-  v6[2] = v2;
-  v6[3] = v2;
+  v6[2] = null;
+  v6[3] = null;
   v5[4] = @"position";
   v5[5] = @"opacity";
-  v6[4] = v2;
-  v6[5] = v2;
+  v6[4] = null;
+  v6[5] = null;
   v5[6] = @"hidden";
-  v6[6] = v2;
+  v6[6] = null;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v6 forKeys:v5 count:7];
 
   return v3;

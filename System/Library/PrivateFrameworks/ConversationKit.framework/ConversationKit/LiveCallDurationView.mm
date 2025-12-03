@@ -1,20 +1,20 @@
 @interface LiveCallDurationView
 - (BOOL)isHidden;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (double)alpha;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAlpha:(double)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAlpha:(double)alpha;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation LiveCallDurationView
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveCallDurationView.accessibilityLabel.getter();
   v5 = v4;
 
@@ -31,9 +31,9 @@
   return v6;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -45,56 +45,56 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   LiveCallDurationView.accessibilityLabel.setter(v4, v6);
 }
 
 - (double)alpha
 {
-  v2 = self;
+  selfCopy = self;
   LiveCallDurationView.alpha.getter();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  v4 = self;
-  LiveCallDurationView.alpha.setter(a3);
+  selfCopy = self;
+  LiveCallDurationView.alpha.setter(alpha);
 }
 
 - (BOOL)isHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LiveCallDurationView.isHidden.getter();
 
   return v3 & 1;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v4 = self;
-  LiveCallDurationView.isHidden.setter(a3);
+  selfCopy = self;
+  LiveCallDurationView.isHidden.setter(hidden);
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   LiveCallDurationView.didMoveToWindow()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   LiveCallDurationView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = LiveCallDurationView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;

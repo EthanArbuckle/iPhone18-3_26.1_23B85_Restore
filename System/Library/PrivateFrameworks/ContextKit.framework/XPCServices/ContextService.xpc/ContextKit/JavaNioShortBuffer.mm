@@ -1,33 +1,33 @@
 @interface JavaNioShortBuffer
-+ (id)wrapWithShortArray:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)getWithShortArray:(id)a3;
-- (id)getWithShortArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (id)putWithJavaNioShortBuffer:(id)a3;
-- (id)putWithShortArray:(id)a3;
-- (id)putWithShortArray:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (int)compareToWithId:(id)a3;
++ (id)wrapWithShortArray:(id)array;
+- (BOOL)isEqual:(id)equal;
+- (id)getWithShortArray:(id)array;
+- (id)getWithShortArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (id)putWithJavaNioShortBuffer:(id)buffer;
+- (id)putWithShortArray:(id)array;
+- (id)putWithShortArray:(id)array withInt:(int)int withInt:(int)withInt;
+- (int)compareToWithId:(id)id;
 - (unint64_t)hash;
 @end
 
 @implementation JavaNioShortBuffer
 
-+ (id)wrapWithShortArray:(id)a3
++ (id)wrapWithShortArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = *(a3 + 2);
+  v5 = *(array + 2);
 
-  return JavaNioShortBuffer_wrapWithShortArray_withInt_withInt_(a3, 0, v5);
+  return JavaNioShortBuffer_wrapWithShortArray_withInt_withInt_(array, 0, v5);
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     [(JavaNioBuffer *)self remaining];
     JreThrowNullPointerException();
@@ -38,34 +38,34 @@
     JreThrowClassCastException();
   }
 
-  v5 = [(JavaNioBuffer *)self remaining];
-  if (v5 >= [a3 remaining])
+  remaining = [(JavaNioBuffer *)self remaining];
+  if (remaining >= [id remaining])
   {
-    v6 = a3;
+    selfCopy = id;
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  v7 = [v6 remaining];
-  if (v7 < 1)
+  remaining2 = [selfCopy remaining];
+  if (remaining2 < 1)
   {
 LABEL_10:
-    v13 = [(JavaNioBuffer *)self remaining];
-    return v13 - [a3 remaining];
+    remaining3 = [(JavaNioBuffer *)self remaining];
+    return remaining3 - [id remaining];
   }
 
   else
   {
-    v8 = *(a3 + 5);
+    v8 = *(id + 5);
     position = self->super.position_;
-    v10 = v7 + 1;
+    v10 = remaining2 + 1;
     while (1)
     {
       v11 = [(JavaNioShortBuffer *)self getWithInt:position];
-      v12 = [a3 getWithInt:v8];
+      v12 = [id getWithInt:v8];
       if (v11 != v12)
       {
         break;
@@ -91,7 +91,7 @@ LABEL_10:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -100,7 +100,7 @@ LABEL_10:
   }
 
   objc_opt_class();
-  if (!a3)
+  if (!equal)
   {
     [(JavaNioBuffer *)self remaining];
     JreThrowNullPointerException();
@@ -111,14 +111,14 @@ LABEL_10:
     JreThrowClassCastException();
   }
 
-  v5 = [(JavaNioBuffer *)self remaining];
-  if (v5 != [a3 remaining])
+  remaining = [(JavaNioBuffer *)self remaining];
+  if (remaining != [equal remaining])
   {
     return 0;
   }
 
   position = self->super.position_;
-  v7 = *(a3 + 5);
+  v7 = *(equal + 5);
   do
   {
     limit = self->super.limit_;
@@ -130,7 +130,7 @@ LABEL_10:
 
     v10 = position + 1;
     v11 = [(JavaNioShortBuffer *)self getWithInt:?];
-    v12 = [a3 getWithInt:v7];
+    v12 = [equal getWithInt:v7];
     v7 = (v7 + 1);
     position = v10;
   }
@@ -139,53 +139,53 @@ LABEL_10:
   return v9;
 }
 
-- (id)getWithShortArray:(id)a3
+- (id)getWithShortArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  return [(JavaNioShortBuffer *)self getWithShortArray:a3 withInt:0 withInt:v4];
+  return [(JavaNioShortBuffer *)self getWithShortArray:array withInt:0 withInt:v4];
 }
 
-- (id)getWithShortArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (id)getWithShortArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = a5;
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
-  if ([(JavaNioBuffer *)self remaining]< v5)
+  withIntCopy = withInt;
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
+  if ([(JavaNioBuffer *)self remaining]< withIntCopy)
   {
     v14 = new_JavaNioBufferUnderflowException_init();
     objc_exception_throw(v14);
   }
 
-  if (v5 + a4 > a4)
+  if (withIntCopy + int > int)
   {
-    v9 = a4;
-    v10 = a3 + 2 * a4;
+    intCopy = int;
+    v10 = array + 2 * int;
     do
     {
       v11 = [(JavaNioShortBuffer *)self get];
-      v12 = *(a3 + 2);
-      if (v9 < 0 || v9 >= v12)
+      v12 = *(array + 2);
+      if (intCopy < 0 || intCopy >= v12)
       {
-        IOSArray_throwOutOfBoundsWithMsg(v12, v9);
+        IOSArray_throwOutOfBoundsWithMsg(v12, intCopy);
       }
 
       *(v10 + 6) = v11;
-      ++v9;
+      ++intCopy;
       v10 += 2;
-      --v5;
+      --withIntCopy;
     }
 
-    while (v5);
+    while (withIntCopy);
   }
 
   return self;
@@ -211,58 +211,58 @@ LABEL_10:
   return v4;
 }
 
-- (id)putWithShortArray:(id)a3
+- (id)putWithShortArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
 
-  return [(JavaNioShortBuffer *)self putWithShortArray:a3 withInt:0 withInt:v4];
+  return [(JavaNioShortBuffer *)self putWithShortArray:array withInt:0 withInt:v4];
 }
 
-- (id)putWithShortArray:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (id)putWithShortArray:(id)array withInt:(int)int withInt:(int)withInt
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = a5;
-  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(a3 + 2), a4, a5);
-  if ([(JavaNioBuffer *)self remaining]< v5)
+  withIntCopy = withInt;
+  JavaUtilArrays_checkOffsetAndCountWithInt_withInt_withInt_(*(array + 2), int, withInt);
+  if ([(JavaNioBuffer *)self remaining]< withIntCopy)
   {
     v13 = new_JavaNioBufferOverflowException_init();
     objc_exception_throw(v13);
   }
 
-  if (v5 + a4 > a4)
+  if (withIntCopy + int > int)
   {
-    v9 = a4;
-    v10 = a3 + 2 * a4;
+    intCopy = int;
+    v10 = array + 2 * int;
     do
     {
-      v11 = *(a3 + 2);
-      if (v9 < 0 || v9 >= v11)
+      v11 = *(array + 2);
+      if (intCopy < 0 || intCopy >= v11)
       {
-        IOSArray_throwOutOfBoundsWithMsg(v11, v9);
+        IOSArray_throwOutOfBoundsWithMsg(v11, intCopy);
       }
 
       [(JavaNioShortBuffer *)self putWithShort:*(v10 + 6)];
-      ++v9;
+      ++intCopy;
       v10 += 2;
-      --v5;
+      --withIntCopy;
     }
 
-    while (v5);
+    while (withIntCopy);
   }
 
   return self;
 }
 
-- (id)putWithJavaNioShortBuffer:(id)a3
+- (id)putWithJavaNioShortBuffer:(id)buffer
 {
   if ([(JavaNioBuffer *)self isReadOnly])
   {
@@ -270,27 +270,27 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 == self)
+  if (buffer == self)
   {
     OnlyBufferException_init = new_JavaLangIllegalArgumentException_initWithNSString_(@"src == this");
     goto LABEL_11;
   }
 
-  if (!a3)
+  if (!buffer)
   {
     goto LABEL_7;
   }
 
-  v5 = [a3 remaining];
-  if (v5 > [(JavaNioBuffer *)self remaining])
+  remaining = [buffer remaining];
+  if (remaining > [(JavaNioBuffer *)self remaining])
   {
     OnlyBufferException_init = new_JavaNioBufferOverflowException_init();
 LABEL_11:
     objc_exception_throw(OnlyBufferException_init);
   }
 
-  v6 = +[IOSShortArray arrayWithLength:](IOSShortArray, "arrayWithLength:", [a3 remaining]);
-  [a3 getWithShortArray:v6];
+  v6 = +[IOSShortArray arrayWithLength:](IOSShortArray, "arrayWithLength:", [buffer remaining]);
+  [buffer getWithShortArray:v6];
   if (!v6)
   {
 LABEL_7:

@@ -1,82 +1,82 @@
 @interface TSTConcurrentCellMap
-+ (id)concurrentCellMapWithContext:(id)a3 cellUIDRange:(TSKUIDStructTract *)a4 repeatCellVectorPattern:(const void *)a5 patternDirection:(int64_t)a6 uidBased:(BOOL)a7 affectsCellBorders:(BOOL)a8;
++ (id)concurrentCellMapWithContext:(id)context cellUIDRange:(TSKUIDStructTract *)range repeatCellVectorPattern:(const void *)pattern patternDirection:(int64_t)direction uidBased:(BOOL)based affectsCellBorders:(BOOL)borders;
 - (BOOL)hasCells;
 - (BOOL)hasMultipleCells;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)cachedColumnUIDs;
 - (TSKUIDStructVectorTemplate<TSKUIDStruct>)cachedRowUIDs;
-- (TSTConcurrentCellMap)initWithContext:(id)a3 uidBased:(BOOL)a4 affectsCellBorders:(BOOL)a5;
+- (TSTConcurrentCellMap)initWithContext:(id)context uidBased:(BOOL)based affectsCellBorders:(BOOL)borders;
 - (id).cxx_construct;
 - (id)affectedBaseColumnAndRowIndexes;
-- (id)cellRegionWithTableInfo:(id)a3;
-- (id)cellRegionWithTableInfo:(id)a3 passingTest:(id)a4;
-- (id)changeDescriptorsForTable:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)cellRegionWithTableInfo:(id)info;
+- (id)cellRegionWithTableInfo:(id)info passingTest:(id)test;
+- (id)changeDescriptorsForTable:(id)table;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)cellCount;
 - (vector<TSKUIDStructTract,)cellUIDRanges;
 - (vector<TSUViewCellRect,)viewCellRects;
-- (void)accumulateBordersConcurrentlyUsingBlock:(id)a3 accumulateCellsConcurrentlyUsingBlock:(id)a4;
-- (void)addHeadMergeAction:(id)a3;
-- (void)addMergeAction:(id)a3;
-- (void)addMergeActions:(id)a3;
-- (void)appendCellList:(id)a3;
-- (void)appendCellLists:(id)a3;
+- (void)accumulateBordersConcurrentlyUsingBlock:(id)block accumulateCellsConcurrentlyUsingBlock:(id)usingBlock;
+- (void)addHeadMergeAction:(id)action;
+- (void)addMergeAction:(id)action;
+- (void)addMergeActions:(id)actions;
+- (void)appendCellList:(id)list;
+- (void)appendCellLists:(id)lists;
 - (void)clearDataListIDs;
 - (void)clearMerges;
 - (void)convertToInverseCellMap;
-- (void)convertToUuidBasedCellMapUsingTableInfo:(id)a3 pruneCategorizedCells:(BOOL)a4;
-- (void)enumerateCellsAddedAndRemovedOfType:(unint64_t)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateCellsAddedOfType:(unint64_t)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5;
-- (void)enumerateColumnCellCountDiffUsingBlock:(id)a3;
-- (void)enumerateCustomFormatsBeingAddedUsingReplacementBlock:(id)a3;
-- (void)enumerateRowCellCountDiffUsingBlock:(id)a3;
-- (void)enumerateRowsOfCellsConcurrentlyUsingBlock:(id)a3;
-- (void)enumerateSeriallyUsingBlock:(id)a3;
-- (void)gatherRowState:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)convertToUuidBasedCellMapUsingTableInfo:(id)info pruneCategorizedCells:(BOOL)cells;
+- (void)enumerateCellsAddedAndRemovedOfType:(unint64_t)type withOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateCellsAddedOfType:(unint64_t)type withOptions:(unint64_t)options usingBlock:(id)block;
+- (void)enumerateColumnCellCountDiffUsingBlock:(id)block;
+- (void)enumerateCustomFormatsBeingAddedUsingReplacementBlock:(id)block;
+- (void)enumerateRowCellCountDiffUsingBlock:(id)block;
+- (void)enumerateRowsOfCellsConcurrentlyUsingBlock:(id)block;
+- (void)enumerateSeriallyUsingBlock:(id)block;
+- (void)gatherRowState:(id)state;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)p_cacheRowColumnUIDs;
-- (void)p_enumerateCellsAddedAndRemovedForFormatsWithOptions:(unint64_t)a3 usingBlock:(id)a4;
-- (void)p_enumerateNewAndOldCellsSeriallyUsingBlock:(id)a3;
-- (void)pushInverseMergeAction:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)setCachedColumnUIDs:(TSKUIDStructVectorTemplate<TSKUIDStruct> *)a3;
-- (void)setCachedRowUIDs:(TSKUIDStructVectorTemplate<TSKUIDStruct> *)a3;
-- (void)updateDataListsConcurrentlyUsingCommentStorageBlock:(id)a3 conditionalStyleSetBlock:(id)a4 controlCellSpecBlock:(id)a5 formulaBlock:(id)a6 formulaErrorBlock:(id)a7 importWarningSetBlock:(id)a8 richTextBlock:(id)a9 stringBlock:(id)a10 styleBlock:(id)a11 customFormatBlock:(id)a12 formatBlock:(id)a13;
-- (void)willApplyToTable:(id)a3;
-- (void)willApplyToTableModel:(id)a3;
+- (void)p_enumerateCellsAddedAndRemovedForFormatsWithOptions:(unint64_t)options usingBlock:(id)block;
+- (void)p_enumerateNewAndOldCellsSeriallyUsingBlock:(id)block;
+- (void)pushInverseMergeAction:(id)action;
+- (void)saveToArchiver:(id)archiver;
+- (void)setCachedColumnUIDs:(TSKUIDStructVectorTemplate<TSKUIDStruct> *)ds;
+- (void)setCachedRowUIDs:(TSKUIDStructVectorTemplate<TSKUIDStruct> *)ds;
+- (void)updateDataListsConcurrentlyUsingCommentStorageBlock:(id)block conditionalStyleSetBlock:(id)setBlock controlCellSpecBlock:(id)specBlock formulaBlock:(id)formulaBlock formulaErrorBlock:(id)errorBlock importWarningSetBlock:(id)warningSetBlock richTextBlock:(id)textBlock stringBlock:(id)self0 styleBlock:(id)self1 customFormatBlock:(id)self2 formatBlock:(id)self3;
+- (void)willApplyToTable:(id)table;
+- (void)willApplyToTableModel:(id)model;
 @end
 
 @implementation TSTConcurrentCellMap
 
-- (TSTConcurrentCellMap)initWithContext:(id)a3 uidBased:(BOOL)a4 affectsCellBorders:(BOOL)a5
+- (TSTConcurrentCellMap)initWithContext:(id)context uidBased:(BOOL)based affectsCellBorders:(BOOL)borders
 {
-  v8 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = TSTConcurrentCellMap;
-  v13 = [(TSTConcurrentCellMap *)&v17 initWithContext:v8];
+  v13 = [(TSTConcurrentCellMap *)&v17 initWithContext:contextCopy];
   if (v13)
   {
     v14 = objc_msgSend_array(MEMORY[0x277CBEB18], v9, v10, v11, v12);
     cellLists = v13->_cellLists;
     v13->_cellLists = v14;
 
-    v13->_uidBased = a4;
+    v13->_uidBased = based;
     v13->_mayModifyFormulasInCells = 1;
     v13->_mayModifyValuesReferencedByFormulas = 1;
     v13->_skipDirtyingRanges = 0;
-    v13->_affectsCellBorders = a5;
+    v13->_affectsCellBorders = borders;
     v13->_shouldResetSpillFormulas = 1;
   }
 
   return v13;
 }
 
-+ (id)concurrentCellMapWithContext:(id)a3 cellUIDRange:(TSKUIDStructTract *)a4 repeatCellVectorPattern:(const void *)a5 patternDirection:(int64_t)a6 uidBased:(BOOL)a7 affectsCellBorders:(BOOL)a8
++ (id)concurrentCellMapWithContext:(id)context cellUIDRange:(TSKUIDStructTract *)range repeatCellVectorPattern:(const void *)pattern patternDirection:(int64_t)direction uidBased:(BOOL)based affectsCellBorders:(BOOL)borders
 {
-  v8 = a8;
-  v9 = a7;
-  v13 = a3;
+  bordersCopy = borders;
+  basedCopy = based;
+  contextCopy = context;
   v14 = [TSTCellUIDRegion alloc];
-  v18 = objc_msgSend_initWithCellUIDRange_(v14, v15, a4, v16, v17);
+  v18 = objc_msgSend_initWithCellUIDRange_(v14, v15, range, v16, v17);
   v48 = v18;
   v23 = objc_msgSend_cellCount(v18, v19, v20, v21, v22);
   if (v18)
@@ -92,17 +92,17 @@
   }
 
   v27 = [TSTConcurrentCellMap alloc];
-  v29 = objc_msgSend_initWithContext_uidBased_affectsCellBorders_(v27, v28, v13, v9, v8);
+  v29 = objc_msgSend_initWithContext_uidBased_affectsCellBorders_(v27, v28, contextCopy, basedCopy, bordersCopy);
   v30 = v62;
   v31 = v63;
-  if (a6)
+  if (direction)
   {
     if (v62 != v63)
     {
       v32 = 0;
       do
       {
-        v33 = *a5 + 8 * v32;
+        v33 = *pattern + 8 * v32;
         v34 = v30[4] - v30[3];
         memset(v55, 0, sizeof(v55));
         sub_22116C7FC(v55, v33, v33 + (v34 >> 1), v34 >> 4);
@@ -116,7 +116,7 @@
         v53 = 0;
         v54 = 0;
         sub_221086EBC(&__p, v30[3], v30[4], (v30[4] - v30[3]) >> 4);
-        v41 = objc_msgSend_cellListWithContext_cellUIDRange_repeatCellVectorPattern_patternDirection_(TSTConcurrentCellList, v37, v13, &v49, v55, 1);
+        v41 = objc_msgSend_cellListWithContext_cellUIDRange_repeatCellVectorPattern_patternDirection_(TSTConcurrentCellList, v37, contextCopy, &v49, v55, 1);
         if (__p)
         {
           v53 = __p;
@@ -153,7 +153,7 @@
       v60 = 0;
       v61 = 0;
       sub_221086EBC(&v59, v30[3], v30[4], (v30[4] - v30[3]) >> 4);
-      v46 = objc_msgSend_cellListWithContext_cellUIDRange_repeatCellVectorPattern_patternDirection_(TSTConcurrentCellList, v42, v13, &v56, a5, 0);
+      v46 = objc_msgSend_cellListWithContext_cellUIDRange_repeatCellVectorPattern_patternDirection_(TSTConcurrentCellList, v42, contextCopy, &v56, pattern, 0);
       if (v59)
       {
         v60 = v59;
@@ -180,9 +180,9 @@
   return v29;
 }
 
-- (void)convertToUuidBasedCellMapUsingTableInfo:(id)a3 pruneCategorizedCells:(BOOL)a4
+- (void)convertToUuidBasedCellMapUsingTableInfo:(id)info pruneCategorizedCells:(BOOL)cells
 {
-  v10 = a3;
+  infoCopy = info;
   if (!self->_uidBased)
   {
     v11 = objc_msgSend_count(self->_cellLists, v6, v7, v8, v9);
@@ -191,8 +191,8 @@
     block[2] = sub_22115E36C;
     block[3] = &unk_27845FC00;
     block[4] = self;
-    v13 = v10;
-    v14 = a4;
+    v13 = infoCopy;
+    cellsCopy = cells;
     dispatch_apply(v11, 0, block);
   }
 
@@ -527,7 +527,7 @@ LABEL_11:
 
 - (void)p_cacheRowColumnUIDs
 {
-  v4 = self;
+  selfCopy2 = self;
   v61 = *MEMORY[0x277D85DE8];
   if (!self->_uidBased)
   {
@@ -537,19 +537,19 @@ LABEL_11:
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v12, v7, v11, 283, 0, "can't use celluid interface with cellid map");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14, v15, v16);
-    v4 = self;
+    selfCopy2 = self;
   }
 
-  p_cachedRowUIDs = &v4->_cachedRowUIDs;
-  if (v4->_cachedRowUIDs.__begin_ == v4->_cachedRowUIDs.__end_ || v4->_cachedColumnUIDs.__begin_ == v4->_cachedColumnUIDs.__end_)
+  p_cachedRowUIDs = &selfCopy2->_cachedRowUIDs;
+  if (selfCopy2->_cachedRowUIDs.__begin_ == selfCopy2->_cachedRowUIDs.__end_ || selfCopy2->_cachedColumnUIDs.__begin_ == selfCopy2->_cachedColumnUIDs.__end_)
   {
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v17 = v4->_cellLists;
+    v17 = selfCopy2->_cellLists;
     v23 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v56, v60, 16);
-    v51 = v4;
+    v51 = selfCopy2;
     if (v23)
     {
       v24 = 0;
@@ -742,24 +742,24 @@ LABEL_46:
   }
 }
 
-- (void)accumulateBordersConcurrentlyUsingBlock:(id)a3 accumulateCellsConcurrentlyUsingBlock:(id)a4
+- (void)accumulateBordersConcurrentlyUsingBlock:(id)block accumulateCellsConcurrentlyUsingBlock:(id)usingBlock
 {
   cellLists = self->_cellLists;
-  v8 = objc_msgSend_count(cellLists, a2, a3, a4, v4);
+  v8 = objc_msgSend_count(cellLists, a2, block, usingBlock, v4);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22115F32C;
   block[3] = &unk_27845FC28;
-  block[5] = a4;
+  block[5] = usingBlock;
   block[6] = cellLists;
-  block[4] = a3;
+  block[4] = block;
   dispatch_apply(v8, 0, block);
 }
 
-- (void)appendCellList:(id)a3
+- (void)appendCellList:(id)list
 {
-  v30 = a3;
-  isUIDBased = objc_msgSend_isUIDBased(v30, v4, v5, v6, v7);
+  listCopy = list;
+  isUIDBased = objc_msgSend_isUIDBased(listCopy, v4, v5, v6, v7);
   if (isUIDBased != objc_msgSend_isUIDBased(self, v9, v10, v11, v12))
   {
     v16 = MEMORY[0x277D81150];
@@ -773,23 +773,23 @@ LABEL_46:
   cellLists = self->_cellLists;
   if (cellLists)
   {
-    objc_msgSend_addObject_(cellLists, v13, v30, v14, v15);
+    objc_msgSend_addObject_(cellLists, v13, listCopy, v14, v15);
   }
 
   else
   {
-    v28 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEB18], v13, v30, v14, v15);
+    v28 = objc_msgSend_arrayWithObject_(MEMORY[0x277CBEB18], v13, listCopy, v14, v15);
     v29 = self->_cellLists;
     self->_cellLists = v28;
   }
 }
 
-- (void)appendCellLists:(id)a3
+- (void)appendCellLists:(id)lists
 {
-  v37 = a3;
-  if (objc_msgSend_count(v37, v4, v5, v6, v7))
+  listsCopy = lists;
+  if (objc_msgSend_count(listsCopy, v4, v5, v6, v7))
   {
-    v12 = objc_msgSend_firstObject(v37, v8, v9, v10, v11);
+    v12 = objc_msgSend_firstObject(listsCopy, v8, v9, v10, v11);
     isUIDBased = objc_msgSend_isUIDBased(v12, v13, v14, v15, v16);
     v22 = objc_msgSend_isUIDBased(self, v18, v19, v20, v21);
 
@@ -807,23 +807,23 @@ LABEL_46:
   cellLists = self->_cellLists;
   if (cellLists)
   {
-    objc_msgSend_addObjectsFromArray_(cellLists, v8, v37, v10, v11);
+    objc_msgSend_addObjectsFromArray_(cellLists, v8, listsCopy, v10, v11);
   }
 
   else
   {
-    v35 = objc_msgSend_mutableCopy(v37, v8, v9, v10, v11);
+    v35 = objc_msgSend_mutableCopy(listsCopy, v8, v9, v10, v11);
     v36 = self->_cellLists;
     self->_cellLists = v35;
   }
 }
 
-- (id)changeDescriptorsForTable:(id)a3
+- (id)changeDescriptorsForTable:(id)table
 {
   v89 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tableCopy = table;
   v79 = objc_msgSend_array(MEMORY[0x277CBEB18], v5, v6, v7, v8);
-  v77 = objc_msgSend_cellRegionWithTableInfo_(self, v9, v4, v10, v11);
+  v77 = objc_msgSend_cellRegionWithTableInfo_(self, v9, tableCopy, v10, v11);
   v14 = objc_msgSend_changeDescriptorWithType_cellRegion_(TSTChangeDescriptor, v12, 37, v77, v13);
   objc_msgSend_addObject_(v79, v15, v14, v16, v17);
 
@@ -890,7 +890,7 @@ LABEL_46:
           objc_enumerationMutation(v52);
         }
 
-        v62 = objc_msgSend_cellRegionForTable_(*(*(&v80 + 1) + 8 * v60), v55, v4, v56, v57);
+        v62 = objc_msgSend_cellRegionForTable_(*(*(&v80 + 1) + 8 * v60), v55, tableCopy, v56, v57);
         v54 = objc_msgSend_region_addingRegion_(TSTCellRegion, v63, v61, v62, v64);
 
         ++v60;
@@ -969,9 +969,9 @@ LABEL_46:
   return v36;
 }
 
-- (id)cellRegionWithTableInfo:(id)a3
+- (id)cellRegionWithTableInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (objc_msgSend_isUIDBased(self, v5, v6, v7, v8))
   {
     v13 = [TSTCellUIDRegion alloc];
@@ -979,7 +979,7 @@ LABEL_46:
     v21 = objc_msgSend_initWithCellUIDRangeVector_(v13, v18, __p, v19, v20);
     v31 = __p;
     sub_2210BC30C(&v31);
-    v25 = objc_msgSend_cellRegionFromCellUIDRegion_(v4, v22, v21, v23, v24);
+    v25 = objc_msgSend_cellRegionFromCellUIDRegion_(infoCopy, v22, v21, v23, v24);
   }
 
   else
@@ -996,11 +996,11 @@ LABEL_46:
   return v25;
 }
 
-- (id)cellRegionWithTableInfo:(id)a3 passingTest:(id)a4
+- (id)cellRegionWithTableInfo:(id)info passingTest:(id)test
 {
-  v6 = a3;
-  v11 = a4;
-  if (v11)
+  infoCopy = info;
+  testCopy = test;
+  if (testCopy)
   {
     v43 = 0;
     v44 = &v43;
@@ -1016,12 +1016,12 @@ LABEL_46:
     v36 = 3221225472;
     v37 = sub_22116019C;
     v38 = &unk_27845FC98;
-    v39 = self;
-    v41 = v11;
-    v40 = v6;
+    selfCopy = self;
+    v41 = testCopy;
+    v40 = infoCopy;
     v42 = &v43;
     dispatch_apply(v17, 0, &v35);
-    v26 = objc_msgSend_gatherer(TSTCellRegionGatherer, v18, v19, v20, v21, v35, v36, v37, v38, v39);
+    v26 = objc_msgSend_gatherer(TSTCellRegionGatherer, v18, v19, v20, v21, v35, v36, v37, v38, selfCopy);
     v27 = v44[6];
     v28 = v44[7];
     while (v27 != v28)
@@ -1041,16 +1041,16 @@ LABEL_46:
 
   else
   {
-    v33 = objc_msgSend_cellRegionWithTableInfo_(self, v7, v6, v9, v10);
+    v33 = objc_msgSend_cellRegionWithTableInfo_(self, v7, infoCopy, v9, v10);
   }
 
   return v33;
 }
 
-- (void)enumerateSeriallyUsingBlock:(id)a3
+- (void)enumerateSeriallyUsingBlock:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  blockCopy = block;
   if (!self->_uidBased)
   {
     v8 = MEMORY[0x277D81150];
@@ -1095,7 +1095,7 @@ LABEL_46:
         v40[1] = 3221225472;
         v40[2] = sub_2211607F4;
         v40[3] = &unk_27845FCC0;
-        v41 = v7;
+        v41 = blockCopy;
         objc_msgSend_p_invokeBlock_(v35, v36, v40, v37, v38);
 
         ++v34;
@@ -1109,10 +1109,10 @@ LABEL_46:
   }
 }
 
-- (void)p_enumerateNewAndOldCellsSeriallyUsingBlock:(id)a3
+- (void)p_enumerateNewAndOldCellsSeriallyUsingBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  blockCopy = block;
   if (!self->_applyingToTable)
   {
     v8 = MEMORY[0x277D81150];
@@ -1142,7 +1142,7 @@ LABEL_46:
           objc_enumerationMutation(v19);
         }
 
-        objc_msgSend_p_enumerateNewAndOldCellsSeriallyUsingBlock_(*(*(&v27 + 1) + 8 * v26++), v21, v7, v22, v23, v27);
+        objc_msgSend_p_enumerateNewAndOldCellsSeriallyUsingBlock_(*(*(&v27 + 1) + 8 * v26++), v21, blockCopy, v22, v23, v27);
       }
 
       while (v24 != v26);
@@ -1153,12 +1153,12 @@ LABEL_46:
   }
 }
 
-- (void)enumerateCellsAddedAndRemovedOfType:(unint64_t)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateCellsAddedAndRemovedOfType:(unint64_t)type withOptions:(unint64_t)options usingBlock:(id)block
 {
-  v5 = a4;
+  optionsCopy = options;
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  if (v5)
+  blockCopy = block;
+  if (optionsCopy)
   {
     v20 = objc_msgSend_count(self->_cellLists, v8, v9, v10, v11);
     block[0] = MEMORY[0x277D85DD0];
@@ -1166,8 +1166,8 @@ LABEL_46:
     block[2] = sub_221160BA4;
     block[3] = &unk_27845FCE8;
     block[4] = self;
-    v27 = a3;
-    v26 = v12;
+    typeCopy = type;
+    v26 = blockCopy;
     dispatch_apply(v20, 0, block);
   }
 
@@ -1192,7 +1192,7 @@ LABEL_46:
             objc_enumerationMutation(v13);
           }
 
-          objc_msgSend_p_enumerateCellsAddedAndRemovedOfType_usingBlock_(*(*(&v21 + 1) + 8 * v19++), v15, a3, v12, v16, v21);
+          objc_msgSend_p_enumerateCellsAddedAndRemovedOfType_usingBlock_(*(*(&v21 + 1) + 8 * v19++), v15, type, blockCopy, v16, v21);
         }
 
         while (v17 != v19);
@@ -1204,12 +1204,12 @@ LABEL_46:
   }
 }
 
-- (void)enumerateCellsAddedOfType:(unint64_t)a3 withOptions:(unint64_t)a4 usingBlock:(id)a5
+- (void)enumerateCellsAddedOfType:(unint64_t)type withOptions:(unint64_t)options usingBlock:(id)block
 {
-  v5 = a4;
+  optionsCopy = options;
   v29 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  if (v5)
+  blockCopy = block;
+  if (optionsCopy)
   {
     v20 = objc_msgSend_count(self->_cellLists, v8, v9, v10, v11);
     block[0] = MEMORY[0x277D85DD0];
@@ -1217,8 +1217,8 @@ LABEL_46:
     block[2] = sub_221160DEC;
     block[3] = &unk_27845FCE8;
     block[4] = self;
-    v27 = a3;
-    v26 = v12;
+    typeCopy = type;
+    v26 = blockCopy;
     dispatch_apply(v20, 0, block);
   }
 
@@ -1243,7 +1243,7 @@ LABEL_46:
             objc_enumerationMutation(v13);
           }
 
-          objc_msgSend_p_enumerateCellsAddedOfType_usingBlock_(*(*(&v21 + 1) + 8 * v19++), v15, a3, v12, v16, v21);
+          objc_msgSend_p_enumerateCellsAddedOfType_usingBlock_(*(*(&v21 + 1) + 8 * v19++), v15, type, blockCopy, v16, v21);
         }
 
         while (v17 != v19);
@@ -1255,12 +1255,12 @@ LABEL_46:
   }
 }
 
-- (void)p_enumerateCellsAddedAndRemovedForFormatsWithOptions:(unint64_t)a3 usingBlock:(id)a4
+- (void)p_enumerateCellsAddedAndRemovedForFormatsWithOptions:(unint64_t)options usingBlock:(id)block
 {
-  v4 = a3;
+  optionsCopy = options;
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  if (v4)
+  blockCopy = block;
+  if (optionsCopy)
   {
     v19 = objc_msgSend_count(self->_cellLists, v6, v7, v8, v9);
     block[0] = MEMORY[0x277D85DD0];
@@ -1268,7 +1268,7 @@ LABEL_46:
     block[2] = sub_221161020;
     block[3] = &unk_27845FD10;
     block[4] = self;
-    v25 = v10;
+    v25 = blockCopy;
     dispatch_apply(v19, 0, block);
   }
 
@@ -1293,7 +1293,7 @@ LABEL_46:
             objc_enumerationMutation(v11);
           }
 
-          objc_msgSend_p_enumerateCellsAddedAndRemovedForFormatsUsingBlock_(*(*(&v20 + 1) + 8 * v18++), v13, v10, v14, v15, v20);
+          objc_msgSend_p_enumerateCellsAddedAndRemovedForFormatsUsingBlock_(*(*(&v20 + 1) + 8 * v18++), v13, blockCopy, v14, v15, v20);
         }
 
         while (v16 != v18);
@@ -1305,10 +1305,10 @@ LABEL_46:
   }
 }
 
-- (void)gatherRowState:(id)a3
+- (void)gatherRowState:(id)state
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1328,7 +1328,7 @@ LABEL_46:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_p_gatherRowState_(*(*(&v13 + 1) + 8 * v12++), v7, v4, v8, v9, v13);
+        objc_msgSend_p_gatherRowState_(*(*(&v13 + 1) + 8 * v12++), v7, stateCopy, v8, v9, v13);
       }
 
       while (v10 != v12);
@@ -1339,9 +1339,9 @@ LABEL_46:
   }
 }
 
-- (void)enumerateRowsOfCellsConcurrentlyUsingBlock:(id)a3
+- (void)enumerateRowsOfCellsConcurrentlyUsingBlock:(id)block
 {
-  v8 = a3;
+  blockCopy = block;
   if (!self->_applyingToTable)
   {
     v9 = MEMORY[0x277D81150];
@@ -1358,24 +1358,24 @@ LABEL_46:
   v23[1] = 3221225472;
   v23[2] = sub_221161330;
   v23[3] = &unk_27845FD38;
-  v24 = v8;
+  v24 = blockCopy;
   v25 = cellLists;
-  v22 = v8;
+  v22 = blockCopy;
   dispatch_apply(v21, 0, v23);
 }
 
-- (void)updateDataListsConcurrentlyUsingCommentStorageBlock:(id)a3 conditionalStyleSetBlock:(id)a4 controlCellSpecBlock:(id)a5 formulaBlock:(id)a6 formulaErrorBlock:(id)a7 importWarningSetBlock:(id)a8 richTextBlock:(id)a9 stringBlock:(id)a10 styleBlock:(id)a11 customFormatBlock:(id)a12 formatBlock:(id)a13
+- (void)updateDataListsConcurrentlyUsingCommentStorageBlock:(id)block conditionalStyleSetBlock:(id)setBlock controlCellSpecBlock:(id)specBlock formulaBlock:(id)formulaBlock formulaErrorBlock:(id)errorBlock importWarningSetBlock:(id)warningSetBlock richTextBlock:(id)textBlock stringBlock:(id)self0 styleBlock:(id)self1 customFormatBlock:(id)self2 formatBlock:(id)self3
 {
-  v57 = a3;
-  v56 = a4;
-  v52 = a5;
-  v55 = a6;
-  v54 = a7;
-  v50 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v48 = a12;
+  blockCopy = block;
+  setBlockCopy = setBlock;
+  specBlockCopy = specBlock;
+  formulaBlockCopy = formulaBlock;
+  errorBlockCopy = errorBlock;
+  warningSetBlockCopy = warningSetBlock;
+  textBlockCopy = textBlock;
+  stringBlockCopy = stringBlock;
+  styleBlockCopy = styleBlock;
+  formatBlockCopy = formatBlock;
   v25 = a13;
   if (!self->_applyingToTable)
   {
@@ -1392,38 +1392,38 @@ LABEL_46:
   block[2] = sub_2211616C0;
   block[3] = &unk_27845FD88;
   block[4] = self;
-  v59 = v20;
+  v59 = stringBlockCopy;
   v60 = v25;
-  v61 = v55;
-  v62 = v21;
-  v63 = v54;
-  v37 = v21;
-  v38 = v19;
-  v64 = v19;
-  v65 = v56;
-  v66 = v57;
-  v67 = v50;
-  v68 = v52;
-  v69 = v48;
-  v49 = v48;
-  v53 = v52;
-  v51 = v50;
-  v39 = v20;
-  v40 = v57;
-  v41 = v56;
+  v61 = formulaBlockCopy;
+  v62 = styleBlockCopy;
+  v63 = errorBlockCopy;
+  v37 = styleBlockCopy;
+  v38 = textBlockCopy;
+  v64 = textBlockCopy;
+  v65 = setBlockCopy;
+  v66 = blockCopy;
+  v67 = warningSetBlockCopy;
+  v68 = specBlockCopy;
+  v69 = formatBlockCopy;
+  v49 = formatBlockCopy;
+  v53 = specBlockCopy;
+  v51 = warningSetBlockCopy;
+  v39 = stringBlockCopy;
+  v40 = blockCopy;
+  v41 = setBlockCopy;
   v42 = v38;
-  v43 = v54;
+  v43 = errorBlockCopy;
   v44 = v37;
-  v45 = v55;
+  v45 = formulaBlockCopy;
   v46 = v25;
   v47 = v39;
   dispatch_apply(0xCuLL, 0, block);
 }
 
-- (void)enumerateColumnCellCountDiffUsingBlock:(id)a3
+- (void)enumerateColumnCellCountDiffUsingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1443,7 +1443,7 @@ LABEL_46:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_p_enumerateColumnCellCountDiffUsingBlock_(*(*(&v13 + 1) + 8 * v12++), v7, v4, v8, v9, v13);
+        objc_msgSend_p_enumerateColumnCellCountDiffUsingBlock_(*(*(&v13 + 1) + 8 * v12++), v7, blockCopy, v8, v9, v13);
       }
 
       while (v10 != v12);
@@ -1454,10 +1454,10 @@ LABEL_46:
   }
 }
 
-- (void)enumerateRowCellCountDiffUsingBlock:(id)a3
+- (void)enumerateRowCellCountDiffUsingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1477,7 +1477,7 @@ LABEL_46:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_p_enumerateRowCellCountDiffUsingBlock_(*(*(&v13 + 1) + 8 * v12++), v7, v4, v8, v9, v13);
+        objc_msgSend_p_enumerateRowCellCountDiffUsingBlock_(*(*(&v13 + 1) + 8 * v12++), v7, blockCopy, v8, v9, v13);
       }
 
       while (v10 != v12);
@@ -1488,10 +1488,10 @@ LABEL_46:
   }
 }
 
-- (void)enumerateCustomFormatsBeingAddedUsingReplacementBlock:(id)a3
+- (void)enumerateCustomFormatsBeingAddedUsingReplacementBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1511,7 +1511,7 @@ LABEL_46:
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_p_enumerateCustomFormatsBeingAddedUsingReplacementBlock_(*(*(&v13 + 1) + 8 * v12++), v7, v4, v8, v9, v13);
+        objc_msgSend_p_enumerateCustomFormatsBeingAddedUsingReplacementBlock_(*(*(&v13 + 1) + 8 * v12++), v7, blockCopy, v8, v9, v13);
       }
 
       while (v10 != v12);
@@ -1522,9 +1522,9 @@ LABEL_46:
   }
 }
 
-- (void)willApplyToTable:(id)a3
+- (void)willApplyToTable:(id)table
 {
-  v8 = a3;
+  tableCopy = table;
   if (self->_applyingToTable)
   {
     v9 = MEMORY[0x277D81150];
@@ -1547,15 +1547,15 @@ LABEL_46:
   }
 
   cellLists = self->_cellLists;
-  v32 = objc_msgSend_translator(v8, v4, v5, v6, v7);
-  if (objc_msgSend_isCategorized(v8, v33, v34, v35, v36))
+  v32 = objc_msgSend_translator(tableCopy, v4, v5, v6, v7);
+  if (objc_msgSend_isCategorized(tableCopy, v33, v34, v35, v36))
   {
     isAPivotTable = 1;
   }
 
   else
   {
-    isAPivotTable = objc_msgSend_isAPivotTable(v8, v37, v38, v39, v40);
+    isAPivotTable = objc_msgSend_isAPivotTable(tableCopy, v37, v38, v39, v40);
   }
 
   v46 = objc_msgSend_baseMap(v32, v37, v38, v39, v40);
@@ -1580,9 +1580,9 @@ LABEL_46:
   dispatch_apply(v48, 0, block);
 }
 
-- (void)willApplyToTableModel:(id)a3
+- (void)willApplyToTableModel:(id)model
 {
-  v8 = a3;
+  modelCopy = model;
   if (self->_applyingToTable)
   {
     v9 = MEMORY[0x277D81150];
@@ -1605,7 +1605,7 @@ LABEL_46:
   }
 
   cellLists = self->_cellLists;
-  v32 = objc_msgSend_columnRowUIDMap(v8, v4, v5, v6, v7);
+  v32 = objc_msgSend_columnRowUIDMap(modelCopy, v4, v5, v6, v7);
   v37 = objc_msgSend_count(self->_cellLists, v33, v34, v35, v36);
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
@@ -1643,10 +1643,10 @@ LABEL_46:
   self->_applyingToTable = 0;
 }
 
-- (void)addMergeAction:(id)a3
+- (void)addMergeAction:(id)action
 {
-  v13 = a3;
-  if (v13)
+  actionCopy = action;
+  if (actionCopy)
   {
     if (!self->_mergeActions)
     {
@@ -1655,15 +1655,15 @@ LABEL_46:
       self->_mergeActions = v8;
     }
 
-    objc_msgSend_verify(v13, v4, v5, v6, v7);
-    objc_msgSend_addObject_(self->_mergeActions, v10, v13, v11, v12);
+    objc_msgSend_verify(actionCopy, v4, v5, v6, v7);
+    objc_msgSend_addObject_(self->_mergeActions, v10, actionCopy, v11, v12);
   }
 }
 
-- (void)addHeadMergeAction:(id)a3
+- (void)addHeadMergeAction:(id)action
 {
-  v12 = a3;
-  if (v12)
+  actionCopy = action;
+  if (actionCopy)
   {
     if (!self->_mergeActions)
     {
@@ -1672,34 +1672,34 @@ LABEL_46:
       self->_mergeActions = v8;
     }
 
-    objc_msgSend_verify(v12, v4, v5, v6, v7);
-    objc_msgSend_insertObject_atIndex_(self->_mergeActions, v10, v12, 0, v11);
+    objc_msgSend_verify(actionCopy, v4, v5, v6, v7);
+    objc_msgSend_insertObject_atIndex_(self->_mergeActions, v10, actionCopy, 0, v11);
   }
 }
 
-- (void)addMergeActions:(id)a3
+- (void)addMergeActions:(id)actions
 {
-  v15 = a3;
-  if (objc_msgSend_count(v15, v4, v5, v6, v7))
+  actionsCopy = actions;
+  if (objc_msgSend_count(actionsCopy, v4, v5, v6, v7))
   {
     mergeActions = self->_mergeActions;
     if (mergeActions)
     {
-      objc_msgSend_addObjectsFromArray_(mergeActions, v8, v15, v10, v11);
+      objc_msgSend_addObjectsFromArray_(mergeActions, v8, actionsCopy, v10, v11);
     }
 
     else
     {
-      v13 = objc_msgSend_mutableCopy(v15, v8, v9, v10, v11);
+      v13 = objc_msgSend_mutableCopy(actionsCopy, v8, v9, v10, v11);
       v14 = self->_mergeActions;
       self->_mergeActions = v13;
     }
   }
 }
 
-- (void)pushInverseMergeAction:(id)a3
+- (void)pushInverseMergeAction:(id)action
 {
-  v23 = a3;
+  actionCopy = action;
   if (!self->_applyingToTable)
   {
     v8 = MEMORY[0x277D81150];
@@ -1710,7 +1710,7 @@ LABEL_46:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16, v17, v18);
   }
 
-  if (v23)
+  if (actionCopy)
   {
     if (!self->_inverseMergeActions)
     {
@@ -1719,8 +1719,8 @@ LABEL_46:
       self->_inverseMergeActions = v19;
     }
 
-    objc_msgSend_verify(v23, v4, v5, v6, v7);
-    objc_msgSend_insertObject_atIndex_(self->_inverseMergeActions, v21, v23, 0, v22);
+    objc_msgSend_verify(actionCopy, v4, v5, v6, v7);
+    objc_msgSend_insertObject_atIndex_(self->_inverseMergeActions, v21, actionCopy, 0, v22);
   }
 }
 
@@ -1730,18 +1730,18 @@ LABEL_46:
   self->_mergeActions = 0;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[110], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[110], v6, v7);
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = sub_2211636A8;
   v28[3] = &unk_27845D8D8;
   v28[4] = self;
-  v9 = v4;
+  v9 = unarchiverCopy;
   v10 = objc_opt_class();
   objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v9, v11, v8 + 24, v10, 0, v28);
 
@@ -1789,15 +1789,15 @@ LABEL_46:
   objc_msgSend_addFinalizeHandler_(v9, v12, v26, v13, v14);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_22116CB58, off_2812E4498[110], v6);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_22116CB58, off_2812E4498[110], v6);
 
   v12 = objc_msgSend_cellLists(self, v8, v9, v10, v11);
-  objc_msgSend_setStrongReferenceArray_message_(v4, v13, v12, v7 + 24, v14);
+  objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v13, v12, v7 + 24, v14);
 
   uidBased = self->_uidBased;
   *(v7 + 16) |= 1u;
@@ -1833,7 +1833,7 @@ LABEL_46:
         if (v25 < *v24)
         {
           *(v7 + 56) = v25 + 1;
-          objc_msgSend_saveToArchive_archiver_(v23, v18, *&v24[2 * v25 + 2], v4, v19, v34);
+          objc_msgSend_saveToArchive_archiver_(v23, v18, *&v24[2 * v25 + 2], archiverCopy, v19, v34);
           goto LABEL_13;
         }
 
@@ -1851,7 +1851,7 @@ LABEL_11:
         v29 = *(v7 + 64) + 8 * v28;
         *(v7 + 56) = v28 + 1;
         *(v29 + 8) = v27;
-        objc_msgSend_saveToArchive_archiver_(v23, v30, v27, v4, v31, v34);
+        objc_msgSend_saveToArchive_archiver_(v23, v30, v27, archiverCopy, v31, v34);
 LABEL_13:
         ++v22;
       }
@@ -1873,10 +1873,10 @@ LABEL_13:
   *(v7 + 77) = shouldResetSpillFormulas;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v9 = objc_msgSend_allocWithZone_(v5, v6, a3, v7, v8);
+  v9 = objc_msgSend_allocWithZone_(v5, v6, zone, v7, v8);
   v14 = objc_msgSend_context(self, v10, v11, v12, v13);
   v19 = objc_msgSend_affectsCellBorders(self, v15, v16, v17, v18);
   v22 = objc_msgSend_initWithContext_affectsCellBorders_(v9, v20, v14, v19, v21);
@@ -1900,7 +1900,7 @@ LABEL_13:
     block[3] = &unk_27845FDD8;
     block[4] = &v70;
     block[5] = cellLists;
-    block[6] = a3;
+    block[6] = zone;
     dispatch_apply(v37, 0, block);
     v38 = MEMORY[0x277CBEB18];
     v39 = v71[6];
@@ -1934,12 +1934,12 @@ LABEL_13:
   return sub_221086EBC(retstr, self->_cachedRowUIDs.__begin_, self->_cachedRowUIDs.__end_, self->_cachedRowUIDs.__end_ - self->_cachedRowUIDs.__begin_);
 }
 
-- (void)setCachedRowUIDs:(TSKUIDStructVectorTemplate<TSKUIDStruct> *)a3
+- (void)setCachedRowUIDs:(TSKUIDStructVectorTemplate<TSKUIDStruct> *)ds
 {
   p_cachedRowUIDs = &self->_cachedRowUIDs;
-  if (p_cachedRowUIDs != a3)
+  if (p_cachedRowUIDs != ds)
   {
-    sub_2210BD068(p_cachedRowUIDs, a3->__begin_, a3->__end_, a3->__end_ - a3->__begin_);
+    sub_2210BD068(p_cachedRowUIDs, ds->__begin_, ds->__end_, ds->__end_ - ds->__begin_);
   }
 }
 
@@ -1951,12 +1951,12 @@ LABEL_13:
   return sub_221086EBC(retstr, self->_cachedColumnUIDs.__begin_, self->_cachedColumnUIDs.__end_, self->_cachedColumnUIDs.__end_ - self->_cachedColumnUIDs.__begin_);
 }
 
-- (void)setCachedColumnUIDs:(TSKUIDStructVectorTemplate<TSKUIDStruct> *)a3
+- (void)setCachedColumnUIDs:(TSKUIDStructVectorTemplate<TSKUIDStruct> *)ds
 {
   p_cachedColumnUIDs = &self->_cachedColumnUIDs;
-  if (p_cachedColumnUIDs != a3)
+  if (p_cachedColumnUIDs != ds)
   {
-    sub_2210BD068(p_cachedColumnUIDs, a3->__begin_, a3->__end_, a3->__end_ - a3->__begin_);
+    sub_2210BD068(p_cachedColumnUIDs, ds->__begin_, ds->__end_, ds->__end_ - ds->__begin_);
   }
 }
 

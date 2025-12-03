@@ -1,14 +1,14 @@
 @interface XMLNode
-+ (id)getJavascriptFromNode:(_xmlNode *)a3;
-+ (id)stringValueForAttribute:(id)a3 inNode:(_xmlNode *)a4;
-- (XMLNode)initWithNode:(_xmlNode *)a3;
-- (int64_t)_intValueFromAttribute:(id)a3;
++ (id)getJavascriptFromNode:(_xmlNode *)node;
++ (id)stringValueForAttribute:(id)attribute inNode:(_xmlNode *)node;
+- (XMLNode)initWithNode:(_xmlNode *)node;
+- (int64_t)_intValueFromAttribute:(id)attribute;
 - (void)dealloc;
 @end
 
 @implementation XMLNode
 
-- (XMLNode)initWithNode:(_xmlNode *)a3
+- (XMLNode)initWithNode:(_xmlNode *)node
 {
   v7.receiver = self;
   v7.super_class = XMLNode;
@@ -16,21 +16,21 @@
   v5 = v4;
   if (v4)
   {
-    [(XMLNode *)v4 setXmlNode:a3];
+    [(XMLNode *)v4 setXmlNode:node];
   }
 
   return v5;
 }
 
-- (int64_t)_intValueFromAttribute:(id)a3
+- (int64_t)_intValueFromAttribute:(id)attribute
 {
-  v4 = [a3 UTF8String];
+  uTF8String = [attribute UTF8String];
   v5 = kWFImgDimensionUnknown;
   if ([(XMLNode *)self xmlNode][88])
   {
     for (i = [(XMLNode *)self xmlNode][88]; i; i = *(i + 48))
     {
-      if (!strcmp(*(i + 16), v4))
+      if (!strcmp(*(i + 16), uTF8String))
       {
         for (j = *(i + 24); j; j = *(j + 48))
         {
@@ -53,13 +53,13 @@
   [(XMLNode *)&v2 dealloc];
 }
 
-+ (id)stringValueForAttribute:(id)a3 inNode:(_xmlNode *)a4
++ (id)stringValueForAttribute:(id)attribute inNode:(_xmlNode *)node
 {
-  v5 = [a3 UTF8String];
-  properties = a4->properties;
+  uTF8String = [attribute UTF8String];
+  properties = node->properties;
   if (properties)
   {
-    v7 = v5;
+    v7 = uTF8String;
     do
     {
       if (!strcmp(properties->name, v7))
@@ -90,9 +90,9 @@ LABEL_4:
   return 0;
 }
 
-+ (id)getJavascriptFromNode:(_xmlNode *)a3
++ (id)getJavascriptFromNode:(_xmlNode *)node
 {
-  children = a3->children;
+  children = node->children;
   if (children)
   {
     return [MEMORY[0x277CCACA8] stringWithCString:children->content encoding:4];

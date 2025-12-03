@@ -1,13 +1,13 @@
 @interface VLFSessionStateManager
 - (PlatformController)platformController;
-- (VLFSessionStateManager)initWithPlatformController:(id)a3;
+- (VLFSessionStateManager)initWithPlatformController:(id)controller;
 - (id)allMonitors;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)buildMonitors;
 - (void)calculateCurrentState;
-- (void)monitor:(id)a3 didChangeState:(int64_t)a4;
-- (void)removeObserver:(id)a3;
-- (void)setCurrentState:(int64_t)a3;
+- (void)monitor:(id)monitor didChangeState:(int64_t)state;
+- (void)removeObserver:(id)observer;
+- (void)setCurrentState:(int64_t)state;
 @end
 
 @implementation VLFSessionStateManager
@@ -21,15 +21,15 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Re-calculating the current state", buf, 2u);
   }
 
-  v4 = [(VLFSessionStateManager *)self lowThresholdMonitors];
-  v5 = [v4 count] != 0;
+  lowThresholdMonitors = [(VLFSessionStateManager *)self lowThresholdMonitors];
+  v5 = [lowThresholdMonitors count] != 0;
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [(VLFSessionStateManager *)self lowThresholdMonitors];
-  v7 = [v6 countByEnumeratingWithState:&v39 objects:v48 count:16];
+  lowThresholdMonitors2 = [(VLFSessionStateManager *)self lowThresholdMonitors];
+  v7 = [lowThresholdMonitors2 countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v7)
   {
     v8 = v7;
@@ -40,7 +40,7 @@
       {
         if (*v40 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(lowThresholdMonitors2);
         }
 
         if (![*(*(&v39 + 1) + 8 * i) state])
@@ -60,7 +60,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v39 objects:v48 count:16];
+      v8 = [lowThresholdMonitors2 countByEnumeratingWithState:&v39 objects:v48 count:16];
       if (v8)
       {
         continue;
@@ -72,16 +72,16 @@
 
 LABEL_15:
 
-  v14 = [(VLFSessionStateManager *)self highThresholdMonitors];
-  v15 = [v14 count];
+  highThresholdMonitors = [(VLFSessionStateManager *)self highThresholdMonitors];
+  v15 = [highThresholdMonitors count];
   v16 = v15 != 0;
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v17 = [(VLFSessionStateManager *)self highThresholdMonitors];
-  v18 = [v17 countByEnumeratingWithState:&v35 objects:v47 count:16];
+  highThresholdMonitors2 = [(VLFSessionStateManager *)self highThresholdMonitors];
+  v18 = [highThresholdMonitors2 countByEnumeratingWithState:&v35 objects:v47 count:16];
   if (v18)
   {
     v19 = v18;
@@ -92,7 +92,7 @@ LABEL_17:
     {
       if (*v36 != v20)
       {
-        objc_enumerationMutation(v17);
+        objc_enumerationMutation(highThresholdMonitors2);
       }
 
       if ([*(*(&v35 + 1) + 8 * v21) state] != 2)
@@ -102,7 +102,7 @@ LABEL_17:
 
       if (v19 == ++v21)
       {
-        v19 = [v17 countByEnumeratingWithState:&v35 objects:v47 count:16];
+        v19 = [highThresholdMonitors2 countByEnumeratingWithState:&v35 objects:v47 count:16];
         if (v19)
         {
           goto LABEL_17;
@@ -142,8 +142,8 @@ LABEL_29:
       v26 = 1;
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
-        v27 = [(VLFSessionStateManager *)self lowThresholdMonitors];
-        v28 = [v27 count];
+        lowThresholdMonitors3 = [(VLFSessionStateManager *)self lowThresholdMonitors];
+        v28 = [lowThresholdMonitors3 count];
         *buf = 134217984;
         v44 = v28;
         v26 = 1;
@@ -157,8 +157,8 @@ LABEL_29:
   }
 
 LABEL_32:
-  v29 = [(VLFSessionStateManager *)self lowThresholdMonitors];
-  v30 = [v29 count];
+  lowThresholdMonitors4 = [(VLFSessionStateManager *)self lowThresholdMonitors];
+  v30 = [lowThresholdMonitors4 count];
 
   if (!v30 && v16)
   {
@@ -166,10 +166,10 @@ LABEL_34:
     v25 = sub_1000764DC();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
-      v31 = [(VLFSessionStateManager *)self lowThresholdMonitors];
-      v32 = [v31 count];
-      v33 = [(VLFSessionStateManager *)self highThresholdMonitors];
-      v34 = [v33 count];
+      lowThresholdMonitors5 = [(VLFSessionStateManager *)self lowThresholdMonitors];
+      v32 = [lowThresholdMonitors5 count];
+      highThresholdMonitors3 = [(VLFSessionStateManager *)self highThresholdMonitors];
+      v34 = [highThresholdMonitors3 count];
       *buf = 134218240;
       v44 = v32;
       v45 = 2048;
@@ -201,9 +201,9 @@ LABEL_40:
   return WeakRetained;
 }
 
-- (void)monitor:(id)a3 didChangeState:(int64_t)a4
+- (void)monitor:(id)monitor didChangeState:(int64_t)state
 {
-  v6 = a3;
+  monitorCopy = monitor;
   didBuildMonitors = self->_didBuildMonitors;
   v8 = sub_1000764DC();
   v9 = v8;
@@ -215,12 +215,12 @@ LABEL_40:
       v11 = NSStringFromClass(v10);
       v12 = v11;
       v13 = @"Hide";
-      if (a4 == 1)
+      if (state == 1)
       {
         v13 = @"EnablePuck";
       }
 
-      if (a4 == 2)
+      if (state == 2)
       {
         v13 = @"EnablePuckAndBanner";
       }
@@ -243,12 +243,12 @@ LABEL_40:
       v15 = NSStringFromClass(v14);
       v16 = v15;
       v17 = @"Hide";
-      if (a4 == 1)
+      if (state == 1)
       {
         v17 = @"EnablePuck";
       }
 
-      if (a4 == 2)
+      if (state == 2)
       {
         v17 = @"EnablePuckAndBanner";
       }
@@ -264,9 +264,9 @@ LABEL_40:
 
 - (id)allMonitors
 {
-  v3 = [(VLFSessionStateManager *)self lowThresholdMonitors];
-  v4 = [(VLFSessionStateManager *)self highThresholdMonitors];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  lowThresholdMonitors = [(VLFSessionStateManager *)self lowThresholdMonitors];
+  highThresholdMonitors = [(VLFSessionStateManager *)self highThresholdMonitors];
+  v5 = [lowThresholdMonitors setByAddingObjectsFromSet:highThresholdMonitors];
 
   return v5;
 }
@@ -439,8 +439,8 @@ LABEL_40:
     }
 
     v35 = [VLFSessionChromeStackMonitor alloc];
-    v36 = [(VLFSessionStateManager *)self platformController];
-    v31 = [(VLFSessionChromeStackMonitor *)v35 initWithObserver:self platformController:v36];
+    platformController = [(VLFSessionStateManager *)self platformController];
+    v31 = [(VLFSessionChromeStackMonitor *)v35 initWithObserver:self platformController:platformController];
 
     if (+[VLFSessionChromeStackMonitor affectsPuckVisibility])
     {
@@ -849,8 +849,8 @@ LABEL_40:
     }
 
     v141 = [VLFSessionMapsHomeMonitor alloc];
-    v142 = [(VLFSessionStateManager *)self platformController];
-    v137 = [(VLFSessionMapsHomeMonitor *)v141 initWithObserver:self platformController:v142];
+    platformController2 = [(VLFSessionStateManager *)self platformController];
+    v137 = [(VLFSessionMapsHomeMonitor *)v141 initWithObserver:self platformController:platformController2];
 
     if (+[VLFSessionMapsHomeMonitor affectsPuckVisibility])
     {
@@ -1304,8 +1304,8 @@ LABEL_196:
     v254 = [VLFSessionSunsetSunriseMonitor alloc];
     v255 = +[MKLocationManager sharedLocationManager];
     v256 = +[SunsetSunriseCalculator sharedCalculator];
-    v257 = [(VLFSessionStateManager *)self platformController];
-    v250 = [(VLFSessionSunsetSunriseMonitor *)v254 initWithObserver:self locationManager:v255 sunsetSunriseCalculator:v256 platformController:v257 transportTypeSupportProvider:objc_opt_class()];
+    platformController3 = [(VLFSessionStateManager *)self platformController];
+    v250 = [(VLFSessionSunsetSunriseMonitor *)v254 initWithObserver:self locationManager:v255 sunsetSunriseCalculator:v256 platformController:platformController3 transportTypeSupportProvider:objc_opt_class()];
 
     if (+[VLFSessionSunsetSunriseMonitor affectsPuckVisibility])
     {
@@ -1350,11 +1350,11 @@ LABEL_196:
   self->_didBuildMonitors = 1;
 }
 
-- (void)setCurrentState:(int64_t)a3
+- (void)setCurrentState:(int64_t)state
 {
-  if (self->_currentState != a3)
+  if (self->_currentState != state)
   {
-    self->_currentState = a3;
+    self->_currentState = state;
     v4 = sub_1000764DC();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -1380,35 +1380,35 @@ LABEL_196:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "State changed to %@", &v9, 0xCu);
     }
 
-    v8 = [(VLFSessionStateManager *)self observers];
-    [v8 stateManager:self didChangeState:self->_currentState];
+    observers = [(VLFSessionStateManager *)self observers];
+    [observers stateManager:self didChangeState:self->_currentState];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(VLFSessionStateManager *)self observers];
-    [v5 unregisterObserver:v4];
+    observerCopy = observer;
+    observers = [(VLFSessionStateManager *)self observers];
+    [observers unregisterObserver:observerCopy];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
-    v5 = [(VLFSessionStateManager *)self observers];
-    [v5 registerObserver:v4];
+    observerCopy = observer;
+    observers = [(VLFSessionStateManager *)self observers];
+    [observers registerObserver:observerCopy];
   }
 }
 
-- (VLFSessionStateManager)initWithPlatformController:(id)a3
+- (VLFSessionStateManager)initWithPlatformController:(id)controller
 {
-  v4 = a3;
-  if (!v4)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v14 = sub_10006D178();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1443,7 +1443,7 @@ LABEL_196:
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_platformController, v4);
+    objc_storeWeak(&v5->_platformController, controllerCopy);
     v7 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___VLFSessionStateManagerDelegate queue:0];
     observers = v6->_observers;
     v6->_observers = v7;

@@ -1,28 +1,28 @@
 @interface NDOAppleSupportManager
-- (void)appSupportAvailability:(id)a3 withReply:(id)a4;
-- (void)checkIsAvailableInStore:(id)a3 withReply:(id)a4;
+- (void)appSupportAvailability:(id)availability withReply:(id)reply;
+- (void)checkIsAvailableInStore:(id)store withReply:(id)reply;
 @end
 
 @implementation NDOAppleSupportManager
 
-- (void)checkIsAvailableInStore:(id)a3 withReply:(id)a4
+- (void)checkIsAvailableInStore:(id)store withReply:(id)reply
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  replyCopy = reply;
   v7 = _NDOLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v5;
+    v26 = storeCopy;
     _os_log_impl(&dword_25BD52000, v7, OS_LOG_TYPE_DEFAULT, "Checking for %@ in the App Store", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v9 = [v8 objectForKey:@"AppSupportAvailability"];
-  v10 = [v9 BOOLValue];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v9 = [standardUserDefaults objectForKey:@"AppSupportAvailability"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v23[0] = @"AppTitleKey";
     v23[1] = @"AppVendorName";
@@ -33,29 +33,29 @@
     v24[2] = @"OVERRIDE";
     v24[3] = &unk_286D6E468;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:4];
-    v6[2](v6, v11);
+    replyCopy[2](replyCopy, v11);
   }
 
   else
   {
     v12 = MEMORY[0x277CEE3F8];
-    v13 = [MEMORY[0x277CEE570] bagSubProfile];
-    v14 = [MEMORY[0x277CEE570] bagSubProfileVersion];
-    v11 = [v12 bagForProfile:v13 profileVersion:v14];
+    bagSubProfile = [MEMORY[0x277CEE570] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x277CEE570] bagSubProfileVersion];
+    v11 = [v12 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
     v15 = [objc_alloc(MEMORY[0x277CEE570]) initWithType:0 clientIdentifier:@"com.apple.preferences.applesupport" clientVersion:@"1" bag:v11];
-    v22 = v5;
+    v22 = storeCopy;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
     [v15 setBundleIdentifiers:v16];
 
-    v17 = [v15 perform];
+    perform = [v15 perform];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __60__NDOAppleSupportManager_checkIsAvailableInStore_withReply___block_invoke;
     v19[3] = &unk_279976350;
-    v20 = v5;
-    v21 = v6;
-    [v17 addFinishBlock:v19];
+    v20 = storeCopy;
+    v21 = replyCopy;
+    [perform addFinishBlock:v19];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -200,36 +200,36 @@ void __60__NDOAppleSupportManager_checkIsAvailableInStore_withReply___block_invo
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appSupportAvailability:(id)a3 withReply:(id)a4
+- (void)appSupportAvailability:(id)availability withReply:(id)reply
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  availabilityCopy = availability;
+  replyCopy = reply;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__1;
   v31 = __Block_byref_object_dispose__1;
   v39 = @"AppBundleID";
-  v40[0] = v6;
+  v40[0] = availabilityCopy;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
   v32 = [v8 mutableCopy];
 
-  v9 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:v6];
-  v10 = [v9 appState];
-  v11 = [v10 isInstalled];
+  v9 = [MEMORY[0x277CC1E60] applicationProxyForIdentifier:availabilityCopy];
+  appState = [v9 appState];
+  isInstalled = [appState isInstalled];
 
-  if (v11)
+  if (isInstalled)
   {
-    v12 = [v9 vendorName];
-    v13 = [v9 localizedName];
+    vendorName = [v9 vendorName];
+    localizedName = [v9 localizedName];
     v14 = _NDOLogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v36 = v6;
+      v36 = availabilityCopy;
       v37 = 2112;
-      v38 = v13;
+      v38 = localizedName;
       _os_log_impl(&dword_25BD52000, v14, OS_LOG_TYPE_DEFAULT, "appSupportAvailability %@ %@ is installed.", buf, 0x16u);
     }
 
@@ -237,9 +237,9 @@ void __60__NDOAppleSupportManager_checkIsAvailableInStore_withReply___block_invo
     v16 = &stru_286D686B8;
     v33[0] = @"AppTitleKey";
     v33[1] = @"AppVendorName";
-    if (v13)
+    if (localizedName)
     {
-      v17 = v13;
+      v17 = localizedName;
     }
 
     else
@@ -247,9 +247,9 @@ void __60__NDOAppleSupportManager_checkIsAvailableInStore_withReply___block_invo
       v17 = &stru_286D686B8;
     }
 
-    if (v12)
+    if (vendorName)
     {
-      v16 = v12;
+      v16 = vendorName;
     }
 
     v34[0] = v17;
@@ -263,26 +263,26 @@ void __60__NDOAppleSupportManager_checkIsAvailableInStore_withReply___block_invo
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:4];
     [v15 addEntriesFromDictionary:v20];
 
-    v7[2](v7, v28[5]);
+    replyCopy[2](replyCopy, v28[5]);
   }
 
   else
   {
-    v12 = [(NDOAppleSupportManager *)self checkAppIsPurchased:v6];
-    v21 = [(__CFString *)v12 objectForKey:@"AppAvailabilityType"];
-    v13 = v21;
-    if (v12 && [(__CFString *)v21 intValue])
+    vendorName = [(NDOAppleSupportManager *)self checkAppIsPurchased:availabilityCopy];
+    v21 = [(__CFString *)vendorName objectForKey:@"AppAvailabilityType"];
+    localizedName = v21;
+    if (vendorName && [(__CFString *)v21 intValue])
     {
       v22 = _NDOLogSystem();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = v6;
+        v36 = availabilityCopy;
         _os_log_impl(&dword_25BD52000, v22, OS_LOG_TYPE_DEFAULT, "appSupportAvailability %@ is purchased.", buf, 0xCu);
       }
 
-      [v28[5] addEntriesFromDictionary:v12];
-      v7[2](v7, v28[5]);
+      [v28[5] addEntriesFromDictionary:vendorName];
+      replyCopy[2](replyCopy, v28[5]);
     }
 
     else
@@ -292,8 +292,8 @@ void __60__NDOAppleSupportManager_checkIsAvailableInStore_withReply___block_invo
       v24[2] = __59__NDOAppleSupportManager_appSupportAvailability_withReply___block_invoke;
       v24[3] = &unk_279976378;
       v26 = &v27;
-      v25 = v7;
-      [(NDOAppleSupportManager *)self checkIsAvailableInStore:v6 withReply:v24];
+      v25 = replyCopy;
+      [(NDOAppleSupportManager *)self checkIsAvailableInStore:availabilityCopy withReply:v24];
     }
   }
 

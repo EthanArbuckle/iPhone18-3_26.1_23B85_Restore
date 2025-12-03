@@ -1,23 +1,23 @@
 @interface SKGArchiver
-- (BOOL)enumerateArchivePathsUsingBlock:(id)a3;
-- (BOOL)removeArchivePath:(id)a3 error:(id *)a4;
-- (BOOL)writeArchive:(id)a3 name:(id)a4 error:(id *)a5;
-- (SKGArchiver)initWithResourceDirectoryPath:(id)a3;
+- (BOOL)enumerateArchivePathsUsingBlock:(id)block;
+- (BOOL)removeArchivePath:(id)path error:(id *)error;
+- (BOOL)writeArchive:(id)archive name:(id)name error:(id *)error;
+- (SKGArchiver)initWithResourceDirectoryPath:(id)path;
 - (id)archivePaths;
 @end
 
 @implementation SKGArchiver
 
-- (SKGArchiver)initWithResourceDirectoryPath:(id)a3
+- (SKGArchiver)initWithResourceDirectoryPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = SKGArchiver;
   v6 = [(SKGArchiver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourcePath, a3);
+    objc_storeStrong(&v6->_resourcePath, path);
   }
 
   return v7;
@@ -31,10 +31,10 @@
   v28 = 0x2020000000;
   v29 = 1;
   v2 = MEMORY[0x277CBEBC0];
-  v3 = [(SKGArchiver *)self archiverResourcePath];
-  v19 = [v2 fileURLWithPath:v3 isDirectory:1];
+  archiverResourcePath = [(SKGArchiver *)self archiverResourcePath];
+  v19 = [v2 fileURLWithPath:archiverResourcePath isDirectory:1];
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v5 = *MEMORY[0x277CBE7C0];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:{*MEMORY[0x277CBE8E8], *MEMORY[0x277CBE7C0], 0}];
   v25[0] = MEMORY[0x277D85DD0];
@@ -42,7 +42,7 @@
   v25[2] = __27__SKGArchiver_archivePaths__block_invoke;
   v25[3] = &unk_27893D8D8;
   v25[4] = &v26;
-  v18 = [v4 enumeratorAtURL:v19 includingPropertiesForKeys:v6 options:4 errorHandler:v25];
+  v18 = [defaultManager enumeratorAtURL:v19 includingPropertiesForKeys:v6 options:4 errorHandler:v25];
 
   if (*(v27 + 24) == 1)
   {
@@ -66,8 +66,8 @@
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [v12 lastPathComponent];
-          v14 = [v13 hasPrefix:@"skg_archive"];
+          lastPathComponent = [v12 lastPathComponent];
+          v14 = [lastPathComponent hasPrefix:@"skg_archive"];
 
           if (v14)
           {
@@ -106,26 +106,26 @@ BOOL __27__SKGArchiver_archivePaths__block_invoke(uint64_t a1, uint64_t a2, uint
   return a3 != 0;
 }
 
-- (BOOL)enumerateArchivePathsUsingBlock:(id)a3
+- (BOOL)enumerateArchivePathsUsingBlock:(id)block
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
   v30 = 1;
   v5 = MEMORY[0x277CBEBC0];
-  v6 = [(SKGArchiver *)self archiverResourcePath];
-  v20 = [v5 fileURLWithPath:v6 isDirectory:1];
+  archiverResourcePath = [(SKGArchiver *)self archiverResourcePath];
+  v20 = [v5 fileURLWithPath:archiverResourcePath isDirectory:1];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:{*MEMORY[0x277CBE8E8], 0}];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __47__SKGArchiver_enumerateArchivePathsUsingBlock___block_invoke;
   v26[3] = &unk_27893D8D8;
   v26[4] = &v27;
-  v19 = [v7 enumeratorAtURL:v20 includingPropertiesForKeys:v8 options:4 errorHandler:v26];
+  v19 = [defaultManager enumeratorAtURL:v20 includingPropertiesForKeys:v8 options:4 errorHandler:v26];
 
   if (*(v28 + 24) == 1)
   {
@@ -149,12 +149,12 @@ LABEL_4:
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
-        v14 = [v13 lastPathComponent];
-        v15 = [v14 hasPrefix:@"skg_archive"];
+        lastPathComponent = [v13 lastPathComponent];
+        v15 = [lastPathComponent hasPrefix:@"skg_archive"];
 
         if (v15)
         {
-          v4[2](v4, v13, &v25);
+          blockCopy[2](blockCopy, v13, &v25);
           if (v25)
           {
             break;
@@ -197,44 +197,44 @@ BOOL __47__SKGArchiver_enumerateArchivePathsUsingBlock___block_invoke(uint64_t a
   return a3 != 0;
 }
 
-- (BOOL)writeArchive:(id)a3 name:(id)a4 error:(id *)a5
+- (BOOL)writeArchive:(id)archive name:(id)name error:(id *)error
 {
   v8 = MEMORY[0x277CBEBC0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [(SKGArchiver *)self archiverResourcePath];
-  v12 = [v8 fileURLWithPath:v11 isDirectory:1];
+  nameCopy = name;
+  archiveCopy = archive;
+  archiverResourcePath = [(SKGArchiver *)self archiverResourcePath];
+  v12 = [v8 fileURLWithPath:archiverResourcePath isDirectory:1];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v12 path];
-  v15 = [v13 stringWithFormat:@"%@/skg_%@", v14, v9];
+  path = [v12 path];
+  nameCopy = [v13 stringWithFormat:@"%@/skg_%@", path, nameCopy];
 
   v20 = 0;
-  v16 = [v10 writeToFile:v15 options:1 error:&v20];
+  v16 = [archiveCopy writeToFile:nameCopy options:1 error:&v20];
 
   v17 = v20;
-  if (a5)
+  if (error)
   {
     v18 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   return v16;
 }
 
-- (BOOL)removeArchivePath:(id)a3 error:(id *)a4
+- (BOOL)removeArchivePath:(id)path error:(id *)error
 {
   v5 = MEMORY[0x277CCAA00];
-  v6 = a3;
-  v7 = [v5 defaultManager];
+  pathCopy = path;
+  defaultManager = [v5 defaultManager];
   v11 = 0;
-  [v7 removeItemAtURL:v6 error:&v11];
+  [defaultManager removeItemAtURL:pathCopy error:&v11];
 
   v8 = v11;
-  if (a4 && v8)
+  if (error && v8)
   {
     v9 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v8 == 0;

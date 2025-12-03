@@ -1,22 +1,22 @@
 @interface SiriAnalyticsWhiteRose
-- (SiriAnalyticsWhiteRose)initWithQueue:(id)a3 delegate:(id)a4 metastore:(id)a5 logicalClocks:(id)a6;
-- (id)markTimeForAnnotatedMessage:(id)a3 withRootClock:(id)a4;
+- (SiriAnalyticsWhiteRose)initWithQueue:(id)queue delegate:(id)delegate metastore:(id)metastore logicalClocks:(id)clocks;
+- (id)markTimeForAnnotatedMessage:(id)message withRootClock:(id)clock;
 - (void)_cancelInactivityTimer;
 - (void)_cancelMaximumClockLifeTimer;
-- (void)_destroyActiveClockWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)_ensureActiveClockStartingAt:(unint64_t)a3 completion:(id)a4;
+- (void)_destroyActiveClockWithReason:(unint64_t)reason completion:(id)completion;
+- (void)_ensureActiveClockStartingAt:(unint64_t)at completion:(id)completion;
 - (void)_inactivityTimerElapsed;
 - (void)_maximumClockLifeExpired;
 - (void)_pulseActiveClock;
 - (void)_startInactivityTimer;
 - (void)_startMaximumClockLifeTimer;
-- (void)bootstrapWithCompletion:(id)a3;
-- (void)createTag:(id)a3 completion:(id)a4;
-- (void)debounceFired:(id)a3 maximumReached:(BOOL)a4;
-- (void)destroyActiveClockWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)markTimeForAnnotatedMessages:(id)a3 completion:(id)a4;
-- (void)sensitiveCondition:(int)a3 endedAt:(unint64_t)a4 ensureClockExists:(BOOL)a5 completion:(id)a6;
-- (void)sensitiveCondition:(int)a3 startedAt:(unint64_t)a4 ensureClockExists:(BOOL)a5 completion:(id)a6;
+- (void)bootstrapWithCompletion:(id)completion;
+- (void)createTag:(id)tag completion:(id)completion;
+- (void)debounceFired:(id)fired maximumReached:(BOOL)reached;
+- (void)destroyActiveClockWithReason:(unint64_t)reason completion:(id)completion;
+- (void)markTimeForAnnotatedMessages:(id)messages completion:(id)completion;
+- (void)sensitiveCondition:(int)condition endedAt:(unint64_t)at ensureClockExists:(BOOL)exists completion:(id)completion;
+- (void)sensitiveCondition:(int)condition startedAt:(unint64_t)at ensureClockExists:(BOOL)exists completion:(id)completion;
 @end
 
 @implementation SiriAnalyticsWhiteRose
@@ -37,24 +37,24 @@
   activeClock = self->_activeClock;
   if (activeClock)
   {
-    v9 = [(SiriAnalyticsLogicalClock *)activeClock clockStatistics];
-    if ([v9 messagesEmitted])
+    clockStatistics = [(SiriAnalyticsLogicalClock *)activeClock clockStatistics];
+    if ([clockStatistics messagesEmitted])
     {
-      v4 = [(SiriAnalyticsLogicalClock *)self->_activeClock clockStatistics];
-      v5 = [v4 bookkeepingDirtied];
+      clockStatistics2 = [(SiriAnalyticsLogicalClock *)self->_activeClock clockStatistics];
+      bookkeepingDirtied = [clockStatistics2 bookkeepingDirtied];
 
-      if (!v5)
+      if (!bookkeepingDirtied)
       {
         return;
       }
 
       logicalClocks = self->_logicalClocks;
-      v7 = [(SiriAnalyticsLogicalClock *)self->_activeClock clockIdentifier];
-      v8 = [(SiriAnalyticsLogicalClock *)self->_activeClock clockStatistics];
-      -[SiriAnalyticsLogicalClocksProvider pulseClock:lastEventOn:](logicalClocks, "pulseClock:lastEventOn:", v7, [v8 lastMessageEmittedOn]);
+      clockIdentifier = [(SiriAnalyticsLogicalClock *)self->_activeClock clockIdentifier];
+      clockStatistics3 = [(SiriAnalyticsLogicalClock *)self->_activeClock clockStatistics];
+      -[SiriAnalyticsLogicalClocksProvider pulseClock:lastEventOn:](logicalClocks, "pulseClock:lastEventOn:", clockIdentifier, [clockStatistics3 lastMessageEmittedOn]);
 
-      v9 = [(SiriAnalyticsLogicalClock *)self->_activeClock clockStatistics];
-      [v9 setBookkeepingDirtied:0];
+      clockStatistics = [(SiriAnalyticsLogicalClock *)self->_activeClock clockStatistics];
+      [clockStatistics setBookkeepingDirtied:0];
     }
   }
 }
@@ -81,24 +81,24 @@
   objc_destroyWeak(&location);
 }
 
-- (void)debounceFired:(id)a3 maximumReached:(BOOL)a4
+- (void)debounceFired:(id)fired maximumReached:(BOOL)reached
 {
-  if (self->_clockPulse == a3)
+  if (self->_clockPulse == fired)
   {
     [(SiriAnalyticsWhiteRose *)self _pulseActiveClock];
   }
 }
 
-- (void)createTag:(id)a3 completion:(id)a4
+- (void)createTag:(id)tag completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  tagCopy = tag;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__SiriAnalyticsWhiteRose_createTag_completion___block_invoke;
   aBlock[3] = &unk_1E8587148;
-  v17 = v7;
-  v8 = v7;
+  v17 = completionCopy;
+  v8 = completionCopy;
   v9 = _Block_copy(aBlock);
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
@@ -106,10 +106,10 @@
   v13[2] = __47__SiriAnalyticsWhiteRose_createTag_completion___block_invoke_2;
   v13[3] = &unk_1E8587CE0;
   v13[4] = self;
-  v14 = v6;
+  v14 = tagCopy;
   v15 = v9;
   v11 = v9;
-  v12 = v6;
+  v12 = tagCopy;
   dispatch_async(queue, v13);
 }
 
@@ -161,26 +161,26 @@ void __47__SiriAnalyticsWhiteRose_createTag_completion___block_invoke_3(void *a1
   }
 }
 
-- (void)sensitiveCondition:(int)a3 endedAt:(unint64_t)a4 ensureClockExists:(BOOL)a5 completion:(id)a6
+- (void)sensitiveCondition:(int)condition endedAt:(unint64_t)at ensureClockExists:(BOOL)exists completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __82__SiriAnalyticsWhiteRose_sensitiveCondition_endedAt_ensureClockExists_completion___block_invoke;
   aBlock[3] = &unk_1E8587350;
-  v21 = v10;
-  v11 = v10;
+  v21 = completionCopy;
+  v11 = completionCopy;
   v12 = _Block_copy(aBlock);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__SiriAnalyticsWhiteRose_sensitiveCondition_endedAt_ensureClockExists_completion___block_invoke_2;
   block[3] = &unk_1E8587120;
-  v19 = a5;
+  existsCopy = exists;
   block[4] = self;
   v16 = v12;
-  v17 = a4;
-  v18 = a3;
+  atCopy = at;
+  conditionCopy = condition;
   v14 = v12;
   dispatch_async(queue, block);
 }
@@ -242,26 +242,26 @@ uint64_t __82__SiriAnalyticsWhiteRose_sensitiveCondition_endedAt_ensureClockExis
   return v3();
 }
 
-- (void)sensitiveCondition:(int)a3 startedAt:(unint64_t)a4 ensureClockExists:(BOOL)a5 completion:(id)a6
+- (void)sensitiveCondition:(int)condition startedAt:(unint64_t)at ensureClockExists:(BOOL)exists completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __84__SiriAnalyticsWhiteRose_sensitiveCondition_startedAt_ensureClockExists_completion___block_invoke;
   aBlock[3] = &unk_1E8587350;
-  v21 = v10;
-  v11 = v10;
+  v21 = completionCopy;
+  v11 = completionCopy;
   v12 = _Block_copy(aBlock);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __84__SiriAnalyticsWhiteRose_sensitiveCondition_startedAt_ensureClockExists_completion___block_invoke_2;
   block[3] = &unk_1E8587120;
-  v19 = a5;
+  existsCopy = exists;
   block[4] = self;
   v16 = v12;
-  v17 = a4;
-  v18 = a3;
+  atCopy = at;
+  conditionCopy = condition;
   v14 = v12;
   dispatch_async(queue, block);
 }
@@ -336,11 +336,11 @@ uint64_t __84__SiriAnalyticsWhiteRose_sensitiveCondition_startedAt_ensureClockEx
   {
     activeClock = self->_activeClock;
     v5 = v3;
-    v6 = [(SiriAnalyticsLogicalClock *)activeClock clockIdentifier];
+    clockIdentifier = [(SiriAnalyticsLogicalClock *)activeClock clockIdentifier];
     v8 = 136315394;
     v9 = "[SiriAnalyticsWhiteRose _maximumClockLifeExpired]";
     v10 = 2112;
-    v11 = v6;
+    v11 = clockIdentifier;
     _os_log_impl(&dword_1D9863000, v5, OS_LOG_TYPE_INFO, "%s %@", &v8, 0x16u);
   }
 
@@ -361,11 +361,11 @@ uint64_t __84__SiriAnalyticsWhiteRose_sensitiveCondition_startedAt_ensureClockEx
   {
     activeClock = self->_activeClock;
     v8 = v3;
-    v9 = [(SiriAnalyticsLogicalClock *)activeClock clockIdentifier];
+    clockIdentifier = [(SiriAnalyticsLogicalClock *)activeClock clockIdentifier];
     v10 = 136315394;
     v11 = "[SiriAnalyticsWhiteRose _cancelMaximumClockLifeTimer]";
     v12 = 2112;
-    v13 = v9;
+    v13 = clockIdentifier;
     _os_log_debug_impl(&dword_1D9863000, v8, OS_LOG_TYPE_DEBUG, "%s %@", &v10, 0x16u);
   }
 
@@ -393,11 +393,11 @@ uint64_t __84__SiriAnalyticsWhiteRose_sensitiveCondition_startedAt_ensureClockEx
   {
     activeClock = self->_activeClock;
     v5 = v3;
-    v6 = [(SiriAnalyticsLogicalClock *)activeClock clockIdentifier];
+    clockIdentifier = [(SiriAnalyticsLogicalClock *)activeClock clockIdentifier];
     *buf = 136315394;
     v16 = "[SiriAnalyticsWhiteRose _startMaximumClockLifeTimer]";
     v17 = 2112;
-    v18 = v6;
+    v18 = clockIdentifier;
     _os_log_impl(&dword_1D9863000, v5, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -444,11 +444,11 @@ void __53__SiriAnalyticsWhiteRose__startMaximumClockLifeTimer__block_invoke(uint
   {
     activeClock = self->_activeClock;
     v5 = v3;
-    v6 = [(SiriAnalyticsLogicalClock *)activeClock clockIdentifier];
+    clockIdentifier = [(SiriAnalyticsLogicalClock *)activeClock clockIdentifier];
     v8 = 136315394;
     v9 = "[SiriAnalyticsWhiteRose _inactivityTimerElapsed]";
     v10 = 2112;
-    v11 = v6;
+    v11 = clockIdentifier;
     _os_log_impl(&dword_1D9863000, v5, OS_LOG_TYPE_INFO, "%s %@", &v8, 0x16u);
   }
 
@@ -465,11 +465,11 @@ void __47__SiriAnalyticsWhiteRose__startInactivityTimer__block_invoke(uint64_t a
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_destroyActiveClockWithReason:(unint64_t)a3 completion:(id)a4
+- (void)_destroyActiveClockWithReason:(unint64_t)reason completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [(SiriAnalyticsLogicalClock *)self->_activeClock clockIdentifier];
+  completionCopy = completion;
+  clockIdentifier = [(SiriAnalyticsLogicalClock *)self->_activeClock clockIdentifier];
   if (SiriAnalyticsLoggingInit_once != -1)
   {
     dispatch_once(&SiriAnalyticsLoggingInit_once, &__block_literal_global_701);
@@ -481,7 +481,7 @@ void __47__SiriAnalyticsWhiteRose__startInactivityTimer__block_invoke(uint64_t a
     *buf = 136315394;
     v18 = "[SiriAnalyticsWhiteRose _destroyActiveClockWithReason:completion:]";
     v19 = 2112;
-    v20 = v7;
+    v20 = clockIdentifier;
     _os_log_impl(&dword_1D9863000, v8, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
@@ -510,14 +510,14 @@ void __47__SiriAnalyticsWhiteRose__startInactivityTimer__block_invoke(uint64_t a
     v14[1] = 3221225472;
     v14[2] = __67__SiriAnalyticsWhiteRose__destroyActiveClockWithReason_completion___block_invoke;
     v14[3] = &unk_1E8587C90;
-    v16 = v6;
-    v15 = v7;
-    [WeakRetained whiteRose:self rootClockDestroyed:v10 reason:a3 completion:v14];
+    v16 = completionCopy;
+    v15 = clockIdentifier;
+    [WeakRetained whiteRose:self rootClockDestroyed:v10 reason:reason completion:v14];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    (*(v6 + 2))(v6, v7);
+    (*(completionCopy + 2))(completionCopy, clockIdentifier);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -534,33 +534,33 @@ uint64_t __67__SiriAnalyticsWhiteRose__destroyActiveClockWithReason_completion__
   return result;
 }
 
-- (void)destroyActiveClockWithReason:(unint64_t)a3 completion:(id)a4
+- (void)destroyActiveClockWithReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__SiriAnalyticsWhiteRose_destroyActiveClockWithReason_completion___block_invoke;
   block[3] = &unk_1E85870D0;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  reasonCopy = reason;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_ensureActiveClockStartingAt:(unint64_t)a3 completion:(id)a4
+- (void)_ensureActiveClockStartingAt:(unint64_t)at completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   p_activeClock = &self->_activeClock;
   activeClock = self->_activeClock;
   if (activeClock)
   {
-    v9 = [(SiriAnalyticsLogicalClock *)activeClock clockStatistics];
-    v10 = [v9 startedOn];
+    clockStatistics = [(SiriAnalyticsLogicalClock *)activeClock clockStatistics];
+    startedOn = [clockStatistics startedOn];
 
-    if (v10 > a3)
+    if (startedOn > at)
     {
       if (SiriAnalyticsLoggingInit_once != -1)
       {
@@ -572,31 +572,31 @@ uint64_t __67__SiriAnalyticsWhiteRose__destroyActiveClockWithReason_completion__
       {
         v23 = *p_activeClock;
         v24 = v11;
-        v25 = [v23 clockIdentifier];
-        v26 = [*p_activeClock clockStatistics];
+        clockIdentifier = [v23 clockIdentifier];
+        clockStatistics2 = [*p_activeClock clockStatistics];
         *buf = 136315906;
         v31 = "[SiriAnalyticsWhiteRose _ensureActiveClockStartingAt:completion:]";
         v32 = 2112;
-        v33 = v25;
+        v33 = clockIdentifier;
         v34 = 2048;
-        v35 = [v26 startedOn];
+        atCopy2 = [clockStatistics2 startedOn];
         v36 = 2048;
-        v37 = a3;
+        atCopy = at;
         _os_log_debug_impl(&dword_1D9863000, v24, OS_LOG_TYPE_DEBUG, "%s Backdating root clock: %@ start from: %lu to: %lu", buf, 0x2Au);
       }
 
-      v12 = [*p_activeClock clockStatistics];
-      [v12 setStartedOn:a3];
+      clockStatistics3 = [*p_activeClock clockStatistics];
+      [clockStatistics3 setStartedOn:at];
     }
 
-    (v6)[2](v6, *p_activeClock);
+    (completionCopy)[2](completionCopy, *p_activeClock);
   }
 
   else
   {
     v13 = [SiriAnalyticsRootClock alloc];
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [(SiriAnalyticsRootClock *)v13 initWithClockIdentifier:v14 timestampOffset:0 startedOn:a3 metastore:self->_metastore];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v15 = [(SiriAnalyticsRootClock *)v13 initWithClockIdentifier:uUID timestampOffset:0 startedOn:at metastore:self->_metastore];
 
     objc_storeStrong(&self->_activeClock, v15);
     if (SiriAnalyticsLoggingInit_once != -1)
@@ -609,13 +609,13 @@ uint64_t __67__SiriAnalyticsWhiteRose__destroyActiveClockWithReason_completion__
     {
       v17 = *p_activeClock;
       v18 = v16;
-      v19 = [v17 clockIdentifier];
+      clockIdentifier2 = [v17 clockIdentifier];
       *buf = 136315650;
       v31 = "[SiriAnalyticsWhiteRose _ensureActiveClockStartingAt:completion:]";
       v32 = 2112;
-      v33 = v19;
+      v33 = clockIdentifier2;
       v34 = 2048;
-      v35 = a3;
+      atCopy2 = at;
       _os_log_impl(&dword_1D9863000, v18, OS_LOG_TYPE_INFO, "%s Created primary clock: %@, starting on: %lu", buf, 0x20u);
     }
 
@@ -627,7 +627,7 @@ uint64_t __67__SiriAnalyticsWhiteRose__destroyActiveClockWithReason_completion__
     v27[3] = &unk_1E8587CE0;
     v27[4] = self;
     v28 = v15;
-    v29 = v6;
+    v29 = completionCopy;
     v21 = v15;
     [WeakRetained whiteRose:self willCreateRootClock:v21 completion:v27];
   }
@@ -661,20 +661,20 @@ uint64_t __66__SiriAnalyticsWhiteRose__ensureActiveClockStartingAt_completion___
   return v4();
 }
 
-- (void)markTimeForAnnotatedMessages:(id)a3 completion:(id)a4
+- (void)markTimeForAnnotatedMessages:(id)messages completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messagesCopy = messages;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__SiriAnalyticsWhiteRose_markTimeForAnnotatedMessages_completion___block_invoke;
   block[3] = &unk_1E8587CE0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messagesCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = messagesCopy;
   dispatch_async(queue, block);
 }
 
@@ -745,16 +745,16 @@ void __66__SiriAnalyticsWhiteRose_markTimeForAnnotatedMessages_completion___bloc
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)markTimeForAnnotatedMessage:(id)a3 withRootClock:(id)a4
+- (id)markTimeForAnnotatedMessage:(id)message withRootClock:(id)clock
 {
   v38 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 timestamp];
-  v9 = [v7 clockStatistics];
-  v10 = [v9 startedOn];
+  messageCopy = message;
+  clockCopy = clock;
+  timestamp = [messageCopy timestamp];
+  clockStatistics = [clockCopy clockStatistics];
+  startedOn = [clockStatistics startedOn];
 
-  if (v8 < v10)
+  if (timestamp < startedOn)
   {
     if (SiriAnalyticsLoggingInit_once != -1)
     {
@@ -765,49 +765,49 @@ void __66__SiriAnalyticsWhiteRose_markTimeForAnnotatedMessages_completion___bloc
     if (os_log_type_enabled(SiriAnalyticsLogContextTime, OS_LOG_TYPE_DEBUG))
     {
       v27 = v11;
-      v28 = [v7 clockIdentifier];
-      v29 = [v7 clockStatistics];
+      clockIdentifier = [clockCopy clockIdentifier];
+      clockStatistics2 = [clockCopy clockStatistics];
       v30 = 136315906;
       v31 = "[SiriAnalyticsWhiteRose markTimeForAnnotatedMessage:withRootClock:]";
       v32 = 2112;
-      v33 = v28;
+      v33 = clockIdentifier;
       v34 = 2048;
-      v35 = [v29 startedOn];
+      startedOn2 = [clockStatistics2 startedOn];
       v36 = 2048;
-      v37 = [v6 timestamp];
+      timestamp2 = [messageCopy timestamp];
       _os_log_debug_impl(&dword_1D9863000, v27, OS_LOG_TYPE_DEBUG, "%s Backdating root clock: %@ start from: %lu to: %lu", &v30, 0x2Au);
     }
 
-    v12 = [v7 clockStatistics];
-    [v12 setStartedOn:{objc_msgSend(v6, "timestamp")}];
+    clockStatistics3 = [clockCopy clockStatistics];
+    [clockStatistics3 setStartedOn:{objc_msgSend(messageCopy, "timestamp")}];
   }
 
-  v13 = [v6 streamUUID];
+  streamUUID = [messageCopy streamUUID];
 
-  v14 = v7;
-  if (v13)
+  v14 = clockCopy;
+  if (streamUUID)
   {
-    v15 = [v6 streamUUID];
-    v16 = [v7 isTrackingDerivativeClockByStreamUUID:v15];
+    streamUUID2 = [messageCopy streamUUID];
+    v16 = [clockCopy isTrackingDerivativeClockByStreamUUID:streamUUID2];
 
-    v17 = [v6 streamUUID];
-    v14 = [v7 derivativeClockForStreamUUID:v17];
+    streamUUID3 = [messageCopy streamUUID];
+    v14 = [clockCopy derivativeClockForStreamUUID:streamUUID3];
 
     if ((v16 & 1) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained whiteRose:self derivativeClockCreated:v14 rootClock:v7];
+      [WeakRetained whiteRose:self derivativeClockCreated:v14 rootClock:clockCopy];
     }
   }
 
-  v19 = [v14 logicalTimestampForMachAbsoluteTime:{objc_msgSend(v6, "timestamp")}];
+  v19 = [v14 logicalTimestampForMachAbsoluteTime:{objc_msgSend(messageCopy, "timestamp")}];
   v20 = [SiriAnalyticsMessage alloc];
-  v21 = [v6 messageUUID];
-  v22 = [v6 message];
-  v23 = [(SiriAnalyticsMessage *)v20 initWithMessageUUID:v21 logicalTimestamp:v19 underlying:v22];
+  messageUUID = [messageCopy messageUUID];
+  message = [messageCopy message];
+  v23 = [(SiriAnalyticsMessage *)v20 initWithMessageUUID:messageUUID logicalTimestamp:v19 underlying:message];
 
-  v24 = [v14 clockStatistics];
-  [v24 noteMessageEmitted];
+  clockStatistics4 = [v14 clockStatistics];
+  [clockStatistics4 noteMessageEmitted];
 
   [(SiriAnalyticsDebounce *)self->_clockPulse pulse];
   v25 = *MEMORY[0x1E69E9840];
@@ -815,17 +815,17 @@ void __66__SiriAnalyticsWhiteRose_markTimeForAnnotatedMessages_completion___bloc
   return v23;
 }
 
-- (void)bootstrapWithCompletion:(id)a3
+- (void)bootstrapWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__SiriAnalyticsWhiteRose_bootstrapWithCompletion___block_invoke;
   v7[3] = &unk_1E8587C90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -868,22 +868,22 @@ uint64_t __50__SiriAnalyticsWhiteRose_bootstrapWithCompletion___block_invoke_1(u
   return result;
 }
 
-- (SiriAnalyticsWhiteRose)initWithQueue:(id)a3 delegate:(id)a4 metastore:(id)a5 logicalClocks:(id)a6
+- (SiriAnalyticsWhiteRose)initWithQueue:(id)queue delegate:(id)delegate metastore:(id)metastore logicalClocks:(id)clocks
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  metastoreCopy = metastore;
+  clocksCopy = clocks;
   v20.receiver = self;
   v20.super_class = SiriAnalyticsWhiteRose;
   v15 = [(SiriAnalyticsWhiteRose *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_queue, a3);
-    objc_storeWeak(&v16->_delegate, v12);
-    objc_storeStrong(&v16->_metastore, a5);
-    objc_storeStrong(&v16->_logicalClocks, a6);
+    objc_storeStrong(&v15->_queue, queue);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_metastore, metastore);
+    objc_storeStrong(&v16->_logicalClocks, clocks);
     v16->_maximumInactivityInterval = 300.0;
     v16->_maximumClockLifeInterval = 900.0;
     v17 = [[SiriAnalyticsDebounce alloc] initWithDebounceInterval:v16->_queue maximumInterval:v16 queue:20.0 delegate:30.0];

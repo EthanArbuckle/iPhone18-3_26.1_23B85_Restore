@@ -1,12 +1,12 @@
 @interface PXSwiftUITungstenView.Coordinator
-- (void)handleTapGestureWithGesture:(id)a3;
+- (void)handleTapGestureWithGesture:(id)gesture;
 @end
 
 @implementation PXSwiftUITungstenView.Coordinator
 
-- (void)handleTapGestureWithGesture:(id)a3
+- (void)handleTapGestureWithGesture:(id)gesture
 {
-  v3 = a3;
+  gestureCopy = gesture;
 
   sub_1A4830F94();
 }

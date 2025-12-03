@@ -1,16 +1,16 @@
 @interface UGCGlyphButtonView
-+ (id)dislikeButtonViewForInlineMode:(BOOL)a3;
-+ (id)likeButtonViewForInlineMode:(BOOL)a3;
++ (id)dislikeButtonViewForInlineMode:(BOOL)mode;
++ (id)likeButtonViewForInlineMode:(BOOL)mode;
 - (CGSize)intrinsicContentSize;
-- (UGCGlyphButtonView)initWithAppearance:(id)a3 isInlineMode:(BOOL)a4;
+- (UGCGlyphButtonView)initWithAppearance:(id)appearance isInlineMode:(BOOL)mode;
 - (UGCGlyphButtonViewDelegate)delegate;
 - (void)_handleGlyphTap;
 - (void)_setupButton;
-- (void)_updateAppearanceAnimated:(BOOL)a3;
+- (void)_updateAppearanceAnimated:(BOOL)animated;
 - (void)_updateGlyphAppearance;
-- (void)setEnabled:(BOOL)a3;
-- (void)setMuted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setMuted:(BOOL)muted;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation UGCGlyphButtonView
@@ -42,12 +42,12 @@
 {
   if (self->_selected)
   {
-    v3 = [(UGCGlyphButtonAppearance *)self->_glyphAppearance selectedGlyphName];
-    v17 = [UIImage systemImageNamed:v3];
+    selectedGlyphName = [(UGCGlyphButtonAppearance *)self->_glyphAppearance selectedGlyphName];
+    v17 = [UIImage systemImageNamed:selectedGlyphName];
 
-    v4 = [(UGCGlyphButtonAppearance *)self->_glyphAppearance selectedBackgroundColor];
-    v5 = [(UGCGlyphButtonAppearance *)self->_glyphAppearance selectedGlyphColor];
-    v6 = [(UGCGlyphButtonAppearance *)self->_glyphAppearance selectedGlyphFontSize];
+    selectedBackgroundColor = [(UGCGlyphButtonAppearance *)self->_glyphAppearance selectedBackgroundColor];
+    selectedGlyphColor = [(UGCGlyphButtonAppearance *)self->_glyphAppearance selectedGlyphColor];
+    selectedGlyphFontSize = [(UGCGlyphButtonAppearance *)self->_glyphAppearance selectedGlyphFontSize];
   }
 
   else
@@ -56,57 +56,57 @@
     glyphAppearance = self->_glyphAppearance;
     if (muted)
     {
-      v9 = [(UGCGlyphButtonAppearance *)glyphAppearance mutedGlyphName];
-      v17 = [UIImage systemImageNamed:v9];
+      mutedGlyphName = [(UGCGlyphButtonAppearance *)glyphAppearance mutedGlyphName];
+      v17 = [UIImage systemImageNamed:mutedGlyphName];
 
-      v4 = [(UGCGlyphButtonAppearance *)self->_glyphAppearance mutedBackgroundColor];
-      v5 = [(UGCGlyphButtonAppearance *)self->_glyphAppearance mutedGlyphColor];
+      selectedBackgroundColor = [(UGCGlyphButtonAppearance *)self->_glyphAppearance mutedBackgroundColor];
+      selectedGlyphColor = [(UGCGlyphButtonAppearance *)self->_glyphAppearance mutedGlyphColor];
       [(UGCGlyphButtonAppearance *)self->_glyphAppearance mutedGlyphFontSize];
     }
 
     else
     {
-      v10 = [(UGCGlyphButtonAppearance *)glyphAppearance unselectedGlyphName];
-      v17 = [UIImage systemImageNamed:v10];
+      unselectedGlyphName = [(UGCGlyphButtonAppearance *)glyphAppearance unselectedGlyphName];
+      v17 = [UIImage systemImageNamed:unselectedGlyphName];
 
-      v4 = [(UGCGlyphButtonAppearance *)self->_glyphAppearance unselectedBackgroundColor];
-      v5 = [(UGCGlyphButtonAppearance *)self->_glyphAppearance unselectedGlyphColor];
+      selectedBackgroundColor = [(UGCGlyphButtonAppearance *)self->_glyphAppearance unselectedBackgroundColor];
+      selectedGlyphColor = [(UGCGlyphButtonAppearance *)self->_glyphAppearance unselectedGlyphColor];
       [(UGCGlyphButtonAppearance *)self->_glyphAppearance unselectedGlyphFontSize];
     }
-    v6 = ;
+    selectedGlyphFontSize = ;
   }
 
-  v11 = v6;
+  v11 = selectedGlyphFontSize;
   if (!self->_enabled)
   {
-    v12 = [v5 colorWithAlphaComponent:0.3];
+    v12 = [selectedGlyphColor colorWithAlphaComponent:0.3];
 
-    v5 = v12;
+    selectedGlyphColor = v12;
   }
 
-  [(UGCGlyphButtonView *)self setBackgroundColor:v4];
-  v13 = [(UGCGlyphButtonView *)self glyph];
-  [v13 setImage:v17];
+  [(UGCGlyphButtonView *)self setBackgroundColor:selectedBackgroundColor];
+  glyph = [(UGCGlyphButtonView *)self glyph];
+  [glyph setImage:v17];
 
-  v14 = [(UGCGlyphButtonView *)self glyph];
-  [v14 setTintColor:v5];
+  glyph2 = [(UGCGlyphButtonView *)self glyph];
+  [glyph2 setTintColor:selectedGlyphColor];
 
-  v15 = [(UGCGlyphButtonView *)self glyph];
+  glyph3 = [(UGCGlyphButtonView *)self glyph];
   v16 = [UIImageSymbolConfiguration configurationWithFont:v11];
-  [v15 setPreferredSymbolConfiguration:v16];
+  [glyph3 setPreferredSymbolConfiguration:v16];
 }
 
-- (void)_updateAppearanceAnimated:(BOOL)a3
+- (void)_updateAppearanceAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(UGCGlyphButtonView *)self layer];
-  [v5 removeAllAnimations];
+  animatedCopy = animated;
+  layer = [(UGCGlyphButtonView *)self layer];
+  [layer removeAllAnimations];
 
   [(UGCGlyphButtonView *)self _updateGlyphAppearance];
-  if (v3)
+  if (animatedCopy)
   {
-    v6 = [(UGCGlyphButtonView *)self layer];
-    [v6 convertTime:0 fromLayer:CACurrentMediaTime()];
+    layer2 = [(UGCGlyphButtonView *)self layer];
+    [layer2 convertTime:0 fromLayer:CACurrentMediaTime()];
     v8 = v7;
 
     [(UGCGlyphButtonView *)self animationDuration];
@@ -119,35 +119,35 @@
   }
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
-  if (!self->_isInlineMode && self->_muted != a3)
+  if (!self->_isInlineMode && self->_muted != muted)
   {
-    self->_muted = a3;
+    self->_muted = muted;
     [(UGCGlyphButtonView *)self _updateAppearanceAnimated:0];
   }
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  if (!self->_isInlineMode && self->_selected != a3)
+  if (!self->_isInlineMode && self->_selected != selected)
   {
-    v5 = a4;
-    self->_selected = a3;
-    if (a4)
+    animatedCopy = animated;
+    self->_selected = selected;
+    if (animated)
     {
       [(UIImpactFeedbackGenerator *)self->_feedbackGenerator impactOccurred];
     }
 
-    [(UGCGlyphButtonView *)self _updateAppearanceAnimated:v5];
+    [(UGCGlyphButtonView *)self _updateAppearanceAnimated:animatedCopy];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (!self->_isInlineMode && self->_enabled != a3)
+  if (!self->_isInlineMode && self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(UITapGestureRecognizer *)self->_tapGestureRecognizer setEnabled:?];
 
     [(UGCGlyphButtonView *)self _updateAppearanceAnimated:0];
@@ -183,8 +183,8 @@
   v7 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleGlyphTap"];
   [(UGCGlyphButtonView *)self setTapGestureRecognizer:v7];
 
-  v8 = [(UGCGlyphButtonView *)self tapGestureRecognizer];
-  [(UGCGlyphButtonView *)self addGestureRecognizer:v8];
+  tapGestureRecognizer = [(UGCGlyphButtonView *)self tapGestureRecognizer];
+  [(UGCGlyphButtonView *)self addGestureRecognizer:tapGestureRecognizer];
 
   [(UGCGlyphButtonView *)self _updateAppearanceAnimated:0];
   v9 = [[MUEdgeLayout alloc] initWithItem:self->_glyph container:self];
@@ -195,45 +195,45 @@
   [NSLayoutConstraint _mapsui_activateLayouts:v11];
 }
 
-- (UGCGlyphButtonView)initWithAppearance:(id)a3 isInlineMode:(BOOL)a4
+- (UGCGlyphButtonView)initWithAppearance:(id)appearance isInlineMode:(BOOL)mode
 {
-  v4 = a4;
-  v7 = a3;
+  modeCopy = mode;
+  appearanceCopy = appearance;
   v13.receiver = self;
   v13.super_class = UGCGlyphButtonView;
   v8 = [(UGCGlyphButtonView *)&v13 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_glyphAppearance, a3);
+    objc_storeStrong(&v8->_glyphAppearance, appearance);
     v10 = [[UIImpactFeedbackGenerator alloc] initWithStyle:1 view:v9];
     feedbackGenerator = v9->_feedbackGenerator;
     v9->_feedbackGenerator = v10;
 
-    v9->_isInlineMode = v4;
-    [(UGCGlyphButtonView *)v9 setUserInteractionEnabled:!v4];
+    v9->_isInlineMode = modeCopy;
+    [(UGCGlyphButtonView *)v9 setUserInteractionEnabled:!modeCopy];
     [(UGCGlyphButtonView *)v9 _setupButton];
   }
 
   return v9;
 }
 
-+ (id)dislikeButtonViewForInlineMode:(BOOL)a3
++ (id)dislikeButtonViewForInlineMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = [UGCDislikeGlyphButtonView alloc];
-  v5 = [UGCGlyphButtonAppearance thumbsDownButtonAppearanceForInlineMode:v3];
-  v6 = [(UGCGlyphButtonView *)v4 initWithAppearance:v5 isInlineMode:v3];
+  v5 = [UGCGlyphButtonAppearance thumbsDownButtonAppearanceForInlineMode:modeCopy];
+  v6 = [(UGCGlyphButtonView *)v4 initWithAppearance:v5 isInlineMode:modeCopy];
 
   return v6;
 }
 
-+ (id)likeButtonViewForInlineMode:(BOOL)a3
++ (id)likeButtonViewForInlineMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = [UGCLikeGlyphButtonView alloc];
-  v5 = [UGCGlyphButtonAppearance thumbsUpButtonAppearanceForInlineMode:v3];
-  v6 = [(UGCGlyphButtonView *)v4 initWithAppearance:v5 isInlineMode:v3];
+  v5 = [UGCGlyphButtonAppearance thumbsUpButtonAppearanceForInlineMode:modeCopy];
+  v6 = [(UGCGlyphButtonView *)v4 initWithAppearance:v5 isInlineMode:modeCopy];
 
   return v6;
 }

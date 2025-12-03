@@ -1,16 +1,16 @@
 @interface HKCVGaussianBlur
 - ($0EE4DB4080C7F8AC2CA5DE15946CA571)planInfo;
 - ($F1BC40A862ED60063F4F8EDA86EB086B)clipRect;
-- (HKCVGaussianBlur)initWithSigma:(float)a3 clipRect:(id *)a4 kernelCache:(id)a5 archive:(id)a6 library:(id)a7;
-- (id)cachedTextureForDevice:(id)a3 pixelInfo:(WMPSPixelInfo)a4 identifier:(unint64_t)a5 textureSize:(id *)a6 protectionOptions:(unint64_t)a7;
-- (uint64_t)encodeCommandBuffer:(void *)a3 inPlaceTexture:;
+- (HKCVGaussianBlur)initWithSigma:(float)sigma clipRect:(id *)rect kernelCache:(id)cache archive:(id)archive library:(id)library;
+- (id)cachedTextureForDevice:(id)device pixelInfo:(WMPSPixelInfo)info identifier:(unint64_t)identifier textureSize:(id *)size protectionOptions:(unint64_t)options;
+- (uint64_t)encodeCommandBuffer:(void *)buffer inPlaceTexture:;
 - (void)dealloc;
 - (void)prepareRAndPlanStepsROIs;
 @end
 
 @implementation HKCVGaussianBlur
 
-- (HKCVGaussianBlur)initWithSigma:(float)a3 clipRect:(id *)a4 kernelCache:(id)a5 archive:(id)a6 library:(id)a7
+- (HKCVGaussianBlur)initWithSigma:(float)sigma clipRect:(id *)rect kernelCache:(id)cache archive:(id)archive library:(id)library
 {
   v17.receiver = self;
   v17.super_class = HKCVGaussianBlur;
@@ -18,16 +18,16 @@
   v13 = v12;
   if (v12)
   {
-    *(v12 + 140) = a3;
-    v14 = *&a4->var0.var0;
-    v15 = *&a4->var1.var1;
-    *(v12 + 616) = *&a4->var0.var2;
+    *(v12 + 140) = sigma;
+    v14 = *&rect->var0.var0;
+    v15 = *&rect->var1.var1;
+    *(v12 + 616) = *&rect->var0.var2;
     *(v12 + 632) = v15;
     *(v12 + 600) = v14;
-    *(v12 + 71) = a5;
+    *(v12 + 71) = cache;
     v13->_cache = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v13->_library = a7;
-    v13->_archive = a6;
+    v13->_library = library;
+    v13->_archive = archive;
     initFilterInfo(&v13->_planInfo, v13->_sigma);
     [(HKCVGaussianBlur *)v13 prepareRAndPlanStepsROIs];
   }
@@ -42,18 +42,18 @@
   [(HKCVGaussianBlur *)&v3 dealloc];
 }
 
-- (id)cachedTextureForDevice:(id)a3 pixelInfo:(WMPSPixelInfo)a4 identifier:(unint64_t)a5 textureSize:(id *)a6 protectionOptions:(unint64_t)a7
+- (id)cachedTextureForDevice:(id)device pixelInfo:(WMPSPixelInfo)info identifier:(unint64_t)identifier textureSize:(id *)size protectionOptions:(unint64_t)options
 {
-  v19 = a4;
-  if (a7)
+  infoCopy = info;
+  if (options)
   {
-    return WMPSConvolutionGetIntermediateTexture(a3, &v19, a6, a7);
+    return WMPSConvolutionGetIntermediateTexture(device, &infoCopy, size, options);
   }
 
   v12 = [HKCVGaussianBlurKey alloc];
-  v17 = *&a6->var0;
-  var2 = a6->var2;
-  v13 = [(HKCVGaussianBlurKey *)v12 initWithIdentifier:a5 textureSize:&v17];
+  v17 = *&size->var0;
+  var2 = size->var2;
+  v13 = [(HKCVGaussianBlurKey *)v12 initWithIdentifier:identifier textureSize:&v17];
   v14 = [(NSMutableDictionary *)self->_cache objectForKey:v13];
   if (v14)
   {
@@ -63,7 +63,7 @@
 
   else
   {
-    IntermediateTexture = WMPSConvolutionGetIntermediateTexture(a3, &v19, a6, 0);
+    IntermediateTexture = WMPSConvolutionGetIntermediateTexture(device, &infoCopy, size, 0);
     [(NSMutableDictionary *)self->_cache setObject:IntermediateTexture forKey:v13];
   }
 
@@ -456,25 +456,25 @@
   return self;
 }
 
-- (uint64_t)encodeCommandBuffer:(void *)a3 inPlaceTexture:
+- (uint64_t)encodeCommandBuffer:(void *)buffer inPlaceTexture:
 {
   if (result)
   {
     v3 = result;
     if (*(result + 560) >= 1.0)
     {
-      v4 = *a3;
+      v4 = *buffer;
       v5 = *(result + 608);
       v93 = v5;
       v94 = *(result + 600);
       v6 = a2;
       v104 = [objc_msgSend(a2 "commandQueue")];
-      v105 = [v6 computeCommandEncoder];
+      computeCommandEncoder = [v6 computeCommandEncoder];
       v7 = *(v3 + 648);
       v8 = *(v3 + 656);
       v9 = *(v3 + 664);
       PixelInfo = GetPixelInfo();
-      v100 = [v4 protectionOptions];
+      protectionOptions = [v4 protectionOptions];
       if (v8)
       {
         v10 = 0;
@@ -626,7 +626,7 @@
           *&v41 = OUTLINED_FUNCTION_0(v25);
           v109 = v41;
           *&v110 = 1;
-          v42 = [v3 cachedTextureForDevice:v104 pixelInfo:PixelInfo identifier:v102 textureSize:&v109 protectionOptions:v100];
+          v42 = [v3 cachedTextureForDevice:v104 pixelInfo:PixelInfo identifier:v102 textureSize:&v109 protectionOptions:protectionOptions];
           if (v102)
           {
             v43 = v14 < 16;
@@ -672,24 +672,24 @@
             v55 = v51;
           }
 
-          [v105 setComputePipelineState:v22];
+          [computeCommandEncoder setComputePipelineState:v22];
           v85 = v42;
-          [v105 setTexture:v42 atIndex:0];
-          [v105 setTexture:v97 atIndex:1];
-          [v105 setSamplerState:Sampler atIndex:0];
-          [v105 setBytes:v121 length:128 atIndex:0];
+          [computeCommandEncoder setTexture:v42 atIndex:0];
+          [computeCommandEncoder setTexture:v97 atIndex:1];
+          [computeCommandEncoder setSamplerState:Sampler atIndex:0];
+          [computeCommandEncoder setBytes:v121 length:128 atIndex:0];
           *&v109 = (v54 + v47 - 1) / v54;
           *(&v109 + 1) = (v55 + v48 - 1) / v55;
           *&v110 = 1;
           *&v119 = v54;
           *(&v119 + 1) = v55;
           v120 = 1;
-          [v105 dispatchThreadgroups:&v109 threadsPerThreadgroup:&v119];
-          v56 = [v99 retainedReferences];
+          [computeCommandEncoder dispatchThreadgroups:&v109 threadsPerThreadgroup:&v119];
+          retainedReferences = [v99 retainedReferences];
           if (v97 == v4)
           {
             v58 = v102;
-            if ((v56 & 1) == 0)
+            if ((retainedReferences & 1) == 0)
             {
               v59 = v4;
               v117[0] = MEMORY[0x277D85DD0];
@@ -703,7 +703,7 @@
 
           else
           {
-            if ((v56 & 1) == 0)
+            if ((retainedReferences & 1) == 0)
             {
               v57 = v97;
               v118[0] = MEMORY[0x277D85DD0];
@@ -764,7 +764,7 @@
             *&v69 = OUTLINED_FUNCTION_0(v61);
             v119 = v69;
             v120 = 1;
-            v66 = [v3 cachedTextureForDevice:v104 pixelInfo:PixelInfo identifier:v58 + v92 textureSize:&v119 protectionOptions:v100];
+            v66 = [v3 cachedTextureForDevice:v104 pixelInfo:PixelInfo identifier:v58 + v92 textureSize:&v119 protectionOptions:protectionOptions];
           }
 
           v70 = GetSampler(v104, 0, v14 < 16, 0);
@@ -799,19 +799,19 @@
             v78 = v75;
           }
 
-          [v105 setComputePipelineState:v87];
+          [computeCommandEncoder setComputePipelineState:v87];
           v97 = v66;
-          [v105 setTexture:v66 atIndex:0];
-          [v105 setTexture:v85 atIndex:1];
-          [v105 setSamplerState:v70 atIndex:0];
-          [v105 setBytes:&v109 length:128 atIndex:0];
+          [computeCommandEncoder setTexture:v66 atIndex:0];
+          [computeCommandEncoder setTexture:v85 atIndex:1];
+          [computeCommandEncoder setSamplerState:v70 atIndex:0];
+          [computeCommandEncoder setBytes:&v109 length:128 atIndex:0];
           *&v119 = (v77 + v71 - 1) / v77;
           *(&v119 + 1) = (v78 + v72 - 1) / v78;
           v120 = 1;
           v108[0] = v77;
           v108[1] = v78;
           v108[2] = 1;
-          [v105 dispatchThreadgroups:&v119 threadsPerThreadgroup:v108];
+          [computeCommandEncoder dispatchThreadgroups:&v119 threadsPerThreadgroup:v108];
           v6 = v99;
           if (([v99 retainedReferences] & 1) == 0)
           {
@@ -850,7 +850,7 @@ LABEL_75:
           [v6 addCompletedHandler:v106];
         }
 
-        [v105 endEncoding];
+        [computeCommandEncoder endEncoding];
         return 1;
       }
     }

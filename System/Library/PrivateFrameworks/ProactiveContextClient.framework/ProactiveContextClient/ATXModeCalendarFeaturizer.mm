@@ -1,17 +1,17 @@
 @interface ATXModeCalendarFeaturizer
-+ (BOOL)isCalendarLikelyWork:(id)a3;
-- (ATXModeCalendarFeaturizer)initWithLocationManager:(id)a3;
-- (ATXModeCalendarFeaturizer)initWithLocationManager:(id)a3 andMiloProvider:(id)a4;
++ (BOOL)isCalendarLikelyWork:(id)work;
+- (ATXModeCalendarFeaturizer)initWithLocationManager:(id)manager;
+- (ATXModeCalendarFeaturizer)initWithLocationManager:(id)manager andMiloProvider:(id)provider;
 - (ATXModeFeaturizerDelegate)delegate;
-- (BOOL)_isDate:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5;
-- (BOOL)_shouldConsiderEventBasedOnParticipantStatus:(int64_t)a3;
-- (BOOL)_shouldInitiateMicrolocationLocalizationWithMostRecentWorkEvent:(id)a3 upcomingWorkEvent:(id)a4 now:(id)a5;
-- (BOOL)_shouldStayInWorkModeInBetweenMostRecentWorkEvent:(id)a3 andUpcomingWorkEvent:(id)a4;
+- (BOOL)_isDate:(id)date betweenStartDate:(id)startDate andEndDate:(id)endDate;
+- (BOOL)_shouldConsiderEventBasedOnParticipantStatus:(int64_t)status;
+- (BOOL)_shouldInitiateMicrolocationLocalizationWithMostRecentWorkEvent:(id)event upcomingWorkEvent:(id)workEvent now:(id)now;
+- (BOOL)_shouldStayInWorkModeInBetweenMostRecentWorkEvent:(id)event andUpcomingWorkEvent:(id)workEvent;
 - (id)_fetchEligibleEventsForDay;
 - (id)provideFeatures;
-- (void)_addTimerForDate:(id)a3;
-- (void)_eventsDidChange:(id)a3;
-- (void)_setFeaturesForEventsCurrentlyIn:(id)a3 now:(id)a4 featureSet:(id)a5;
+- (void)_addTimerForDate:(id)date;
+- (void)_eventsDidChange:(id)change;
+- (void)_setFeaturesForEventsCurrentlyIn:(id)in now:(id)now featureSet:(id)set;
 - (void)_updateFeatures;
 - (void)beginListening;
 - (void)dealloc;
@@ -19,9 +19,9 @@
 
 @implementation ATXModeCalendarFeaturizer
 
-- (ATXModeCalendarFeaturizer)initWithLocationManager:(id)a3
+- (ATXModeCalendarFeaturizer)initWithLocationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = ATXModeCalendarFeaturizer;
   v5 = [(ATXModeCalendarFeaturizer *)&v19 init];
@@ -71,14 +71,14 @@ void __53__ATXModeCalendarFeaturizer_initWithLocationManager___block_invoke(uint
   [WeakRetained _updateFeatures];
 }
 
-- (ATXModeCalendarFeaturizer)initWithLocationManager:(id)a3 andMiloProvider:(id)a4
+- (ATXModeCalendarFeaturizer)initWithLocationManager:(id)manager andMiloProvider:(id)provider
 {
-  v7 = a4;
-  v8 = [(ATXModeCalendarFeaturizer *)self initWithLocationManager:a3];
+  providerCopy = provider;
+  v8 = [(ATXModeCalendarFeaturizer *)self initWithLocationManager:manager];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_miloProvider, a4);
+    objc_storeStrong(&v8->_miloProvider, provider);
   }
 
   return v9;
@@ -86,15 +86,15 @@ void __53__ATXModeCalendarFeaturizer_initWithLocationManager___block_invoke(uint
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ATXModeCalendarFeaturizer;
   [(ATXModeCalendarFeaturizer *)&v4 dealloc];
 }
 
-- (void)_eventsDidChange:(id)a3
+- (void)_eventsDidChange:(id)change
 {
   featureUpdateTimer = self->_featureUpdateTimer;
   v4 = 120.0;
@@ -115,46 +115,46 @@ void __53__ATXModeCalendarFeaturizer_initWithLocationManager___block_invoke(uint
     _os_log_impl(&dword_260C9F000, v3, OS_LOG_TYPE_DEFAULT, "ATXModeCalendarClassifier: Refreshing due to event change", v6, 2u);
   }
 
-  v4 = [(ATXModeCalendarFeaturizer *)self provideFeatures];
-  v5 = [(ATXModeCalendarFeaturizer *)self delegate];
-  [v5 featurizer:self didUpdateFeatures:v4];
+  provideFeatures = [(ATXModeCalendarFeaturizer *)self provideFeatures];
+  delegate = [(ATXModeCalendarFeaturizer *)self delegate];
+  [delegate featurizer:self didUpdateFeatures:provideFeatures];
 }
 
-+ (BOOL)isCalendarLikelyWork:(id)a3
++ (BOOL)isCalendarLikelyWork:(id)work
 {
-  v3 = a3;
-  v4 = [v3 title];
-  v5 = [v4 localizedCaseInsensitiveContainsString:@"work"];
+  workCopy = work;
+  title = [workCopy title];
+  v5 = [title localizedCaseInsensitiveContainsString:@"work"];
 
   if (v5)
   {
-    v6 = 1;
+    isAffectingAvailability = 1;
   }
 
   else
   {
-    v7 = [v3 source];
-    v8 = v7;
-    if (v7 && [v7 supportsLocationDirectorySearches])
+    source = [workCopy source];
+    v8 = source;
+    if (source && [source supportsLocationDirectorySearches])
     {
-      v6 = [v3 isAffectingAvailability];
+      isAffectingAvailability = [workCopy isAffectingAvailability];
     }
 
     else
     {
-      v6 = 0;
+      isAffectingAvailability = 0;
     }
   }
 
-  return v6;
+  return isAffectingAvailability;
 }
 
-- (void)_setFeaturesForEventsCurrentlyIn:(id)a3 now:(id)a4 featureSet:(id)a5
+- (void)_setFeaturesForEventsCurrentlyIn:(id)in now:(id)now featureSet:(id)set
 {
   v67 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  inCopy = in;
+  nowCopy = now;
+  setCopy = set;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -191,12 +191,12 @@ void __53__ATXModeCalendarFeaturizer_initWithLocationManager___block_invoke(uint
   v26 = &v53;
   v27 = &v47;
   v28 = &v43;
-  v12 = v10;
+  v12 = nowCopy;
   v23 = v12;
-  v13 = v11;
+  v13 = setCopy;
   v24 = v13;
   v29 = &v37;
-  v14 = v9;
+  v14 = inCopy;
   v25 = v14;
   v30 = &v31;
   [v14 enumerateObjectsUsingBlock:v22];
@@ -208,16 +208,16 @@ void __53__ATXModeCalendarFeaturizer_initWithLocationManager___block_invoke(uint
     {
       v16 = objc_opt_class();
       v17 = NSStringFromSelector(a2);
-      v18 = [v38[5] startDate];
-      v19 = [v32[5] startDate];
+      startDate = [v38[5] startDate];
+      startDate2 = [v32[5] startDate];
       *buf = 138413058;
       v60 = v16;
       v61 = 2112;
       v62 = v17;
       v63 = 2112;
-      v64 = v18;
+      v64 = startDate;
       v65 = 2112;
-      v66 = v19;
+      v66 = startDate2;
       _os_log_impl(&dword_260C9F000, v15, OS_LOG_TYPE_DEFAULT, "[%@][%@] Last work event just ended at %@, and the next one doesn't start until %@, initiating microlocation localization", buf, 0x2Au);
     }
 
@@ -374,18 +374,18 @@ LABEL_28:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldStayInWorkModeInBetweenMostRecentWorkEvent:(id)a3 andUpcomingWorkEvent:(id)a4
+- (BOOL)_shouldStayInWorkModeInBetweenMostRecentWorkEvent:(id)event andUpcomingWorkEvent:(id)workEvent
 {
   result = 0;
-  if (a3 && a4)
+  if (event && workEvent)
   {
-    v6 = a3;
-    v7 = [a4 startDate];
-    [v7 timeIntervalSince1970];
+    eventCopy = event;
+    startDate = [workEvent startDate];
+    [startDate timeIntervalSince1970];
     v9 = v8;
-    v10 = [v6 endDate];
+    endDate = [eventCopy endDate];
 
-    [v10 timeIntervalSince1970];
+    [endDate timeIntervalSince1970];
     v12 = v9 - v11;
 
     return v12 <= 4500.0 && v12 > 0.0;
@@ -394,26 +394,26 @@ LABEL_28:
   return result;
 }
 
-- (BOOL)_shouldInitiateMicrolocationLocalizationWithMostRecentWorkEvent:(id)a3 upcomingWorkEvent:(id)a4 now:(id)a5
+- (BOOL)_shouldInitiateMicrolocationLocalizationWithMostRecentWorkEvent:(id)event upcomingWorkEvent:(id)workEvent now:(id)now
 {
-  v8 = a4;
-  v9 = a5;
+  workEventCopy = workEvent;
+  nowCopy = now;
   v10 = 0;
-  if (a3 && v8)
+  if (event && workEventCopy)
   {
-    v11 = a3;
-    v12 = [v11 endDate];
+    eventCopy = event;
+    endDate = [eventCopy endDate];
     v13 = MEMORY[0x277CBEAA8];
-    v14 = [v11 endDate];
+    endDate2 = [eventCopy endDate];
 
-    [v14 timeIntervalSinceReferenceDate];
+    [endDate2 timeIntervalSinceReferenceDate];
     v16 = [v13 dateWithTimeIntervalSinceReferenceDate:v15 + 120.0];
-    if ([(ATXModeCalendarFeaturizer *)self _isDate:v9 betweenStartDate:v12 andEndDate:v16])
+    if ([(ATXModeCalendarFeaturizer *)self _isDate:nowCopy betweenStartDate:endDate andEndDate:v16])
     {
-      v17 = [v8 startDate];
-      [v17 timeIntervalSinceReferenceDate];
+      startDate = [workEventCopy startDate];
+      [startDate timeIntervalSinceReferenceDate];
       v19 = v18;
-      [v9 timeIntervalSinceReferenceDate];
+      [nowCopy timeIntervalSinceReferenceDate];
       v10 = v19 - v20 > 1800.0;
     }
 
@@ -426,18 +426,18 @@ LABEL_28:
   return v10;
 }
 
-- (BOOL)_isDate:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5
+- (BOOL)_isDate:(id)date betweenStartDate:(id)startDate andEndDate:(id)endDate
 {
-  v7 = a5;
-  v8 = a4;
-  [a3 timeIntervalSinceReferenceDate];
+  endDateCopy = endDate;
+  startDateCopy = startDate;
+  [date timeIntervalSinceReferenceDate];
   v10 = v9;
-  [v8 timeIntervalSinceReferenceDate];
+  [startDateCopy timeIntervalSinceReferenceDate];
   v12 = v11;
 
   if (v10 >= v12)
   {
-    [v7 timeIntervalSinceReferenceDate];
+    [endDateCopy timeIntervalSinceReferenceDate];
     v13 = v10 < v14;
   }
 
@@ -449,14 +449,14 @@ LABEL_28:
   return v13;
 }
 
-- (BOOL)_shouldConsiderEventBasedOnParticipantStatus:(int64_t)a3
+- (BOOL)_shouldConsiderEventBasedOnParticipantStatus:(int64_t)status
 {
-  if (a3 >= 8)
+  if (status >= 8)
   {
     v5 = __atxlog_handle_modes();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
     {
-      [(ATXModeCalendarFeaturizer *)a3 _shouldConsiderEventBasedOnParticipantStatus:v5];
+      [(ATXModeCalendarFeaturizer *)status _shouldConsiderEventBasedOnParticipantStatus:v5];
     }
 
     LOBYTE(v4) = 0;
@@ -464,7 +464,7 @@ LABEL_28:
 
   else
   {
-    v4 = 0xC4u >> a3;
+    v4 = 0xC4u >> status;
   }
 
   return v4 & 1;
@@ -473,9 +473,9 @@ LABEL_28:
 - (id)_fetchEligibleEventsForDay
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
-  v5 = [v4 startOfDayForDate:v3];
-  v6 = [v4 dateByAddingUnit:16 value:1 toDate:v5 options:0];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v5 = [currentCalendar startOfDayForDate:v3];
+  v6 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v5 options:0];
   v7 = [(EKEventStore *)self->_eventStore predicateForEventsWithStartDate:v5 endDate:v6 calendars:0];
   v8 = [(EKEventStore *)self->_eventStore eventsMatchingPredicate:v7];
   v9 = [v8 _pas_filteredArrayWithTest:&__block_literal_global_7];
@@ -520,20 +520,20 @@ LABEL_7:
   return v7 & 1;
 }
 
-- (void)_addTimerForDate:(id)a3
+- (void)_addTimerForDate:(id)date
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_opt_new();
-  v6 = [v4 earlierDate:v5];
+  v6 = [dateCopy earlierDate:v5];
 
-  if (v6 != v4)
+  if (v6 != dateCopy)
   {
     v7 = __atxlog_handle_modes();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = dateCopy;
       _os_log_impl(&dword_260C9F000, v7, OS_LOG_TYPE_DEFAULT, "ATXModeCalendarClassifier: Scheduling calendar refresh timer for: %@", buf, 0xCu);
     }
 
@@ -544,7 +544,7 @@ LABEL_7:
     v12[2] = __46__ATXModeCalendarFeaturizer__addTimerForDate___block_invoke;
     v12[3] = &unk_279AB7B90;
     objc_copyWeak(&v13, buf);
-    v9 = [v8 fireAtDate:v4 block:v12];
+    v9 = [v8 fireAtDate:dateCopy block:v12];
     v10 = self->_timers;
     objc_sync_enter(v10);
     [(NSHashTable *)self->_timers addObject:v9];
@@ -577,8 +577,8 @@ void __46__ATXModeCalendarFeaturizer__addTimerForDate___block_invoke(uint64_t a1
 
 - (void)beginListening
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__eventsDidChange_ name:*MEMORY[0x277CC5948] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__eventsDidChange_ name:*MEMORY[0x277CC5948] object:0];
 }
 
 - (id)provideFeatures
@@ -590,15 +590,15 @@ void __46__ATXModeCalendarFeaturizer__addTimerForDate___block_invoke(uint64_t a1
   objc_sync_exit(v3);
 
   v4 = objc_opt_new();
-  v5 = [(ATXModeCalendarFeaturizer *)self _fetchEligibleEventsForDay];
+  _fetchEligibleEventsForDay = [(ATXModeCalendarFeaturizer *)self _fetchEligibleEventsForDay];
   v6 = objc_alloc_init(ATXModeFeatureSet);
-  -[ATXModeFeatureSet setValue:forBinaryFeatureOfType:](v6, "setValue:forBinaryFeatureOfType:", [v5 count] != 0, 12);
-  [(ATXModeCalendarFeaturizer *)self _setFeaturesForEventsCurrentlyIn:v5 now:v4 featureSet:v6];
+  -[ATXModeFeatureSet setValue:forBinaryFeatureOfType:](v6, "setValue:forBinaryFeatureOfType:", [_fetchEligibleEventsForDay count] != 0, 12);
+  [(ATXModeCalendarFeaturizer *)self _setFeaturesForEventsCurrentlyIn:_fetchEligibleEventsForDay now:v4 featureSet:v6];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = _fetchEligibleEventsForDay;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -613,16 +613,16 @@ void __46__ATXModeCalendarFeaturizer__addTimerForDate___block_invoke(uint64_t a1
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 startDate];
-        if (v12)
+        startDate = [v11 startDate];
+        if (startDate)
         {
-          [(ATXModeCalendarFeaturizer *)self _addTimerForDate:v12];
+          [(ATXModeCalendarFeaturizer *)self _addTimerForDate:startDate];
         }
 
-        v13 = [v11 endDate];
-        if (v13)
+        endDate = [v11 endDate];
+        if (endDate)
         {
-          [(ATXModeCalendarFeaturizer *)self _addTimerForDate:v13];
+          [(ATXModeCalendarFeaturizer *)self _addTimerForDate:endDate];
         }
       }
 

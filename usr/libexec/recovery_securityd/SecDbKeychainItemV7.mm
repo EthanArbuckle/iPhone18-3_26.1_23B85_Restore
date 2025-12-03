@@ -2,57 +2,57 @@
 + (id)decryptionOperation;
 + (id)encryptionOperation;
 + (id)keySpecifier;
-- (SecDbKeychainItemV7)initWithData:(id)a3 decryptionKeybag:(int)a4 error:(id *)a5;
-- (SecDbKeychainItemV7)initWithSecretAttributes:(id)a3 metadataAttributes:(id)a4 tamperCheck:(id)a5 keyclass:(int)a6;
-- (id)metadataAttributesWithError:(id *)a3;
-- (id)unwrapFromAKS:(id)a3 accessControl:(__SecAccessControl *)a4 acmContext:(id)a5 callerAccessGroups:(id)a6 delete:(BOOL)a7 keyDiversify:(BOOL)a8 error:(id *)a9;
+- (SecDbKeychainItemV7)initWithData:(id)data decryptionKeybag:(int)keybag error:(id *)error;
+- (SecDbKeychainItemV7)initWithSecretAttributes:(id)attributes metadataAttributes:(id)metadataAttributes tamperCheck:(id)check keyclass:(int)keyclass;
+- (id)metadataAttributesWithError:(id *)error;
+- (id)unwrapFromAKS:(id)s accessControl:(__SecAccessControl *)control acmContext:(id)context callerAccessGroups:(id)groups delete:(BOOL)delete keyDiversify:(BOOL)diversify error:(id *)error;
 @end
 
 @implementation SecDbKeychainItemV7
 
-- (SecDbKeychainItemV7)initWithData:(id)a3 decryptionKeybag:(int)a4 error:(id *)a5
+- (SecDbKeychainItemV7)initWithData:(id)data decryptionKeybag:(int)keybag error:(id *)error
 {
-  v8 = a3;
+  dataCopy = data;
   v26.receiver = self;
   v26.super_class = SecDbKeychainItemV7;
   v9 = [(SecDbKeychainItemV7 *)&v26 init];
   if (v9)
   {
-    v10 = [[SecDbKeychainSerializedItemV7 alloc] initWithData:v8];
+    v10 = [[SecDbKeychainSerializedItemV7 alloc] initWithData:dataCopy];
     if (!v10)
     {
       goto LABEL_8;
     }
 
-    if ([v8 length] >= 0x959A)
+    if ([dataCopy length] >= 0x959A)
     {
       v11 = secLogObjForScope("SecWarning");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [v8 length];
+        v12 = [dataCopy length];
         *buf = 134217984;
         v30 = v12;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "SecDbKeychainItemV7: serialized item exceeds reasonable size (%lu bytes)", buf, 0xCu);
       }
     }
 
-    v9->_keybag = a4;
+    v9->_keybag = keybag;
     v13 = [SecDbKeychainSecretData alloc];
-    v14 = [(SecDbKeychainSerializedItemV7 *)v10 encryptedSecretData];
-    v15 = [(SecDbKeychainSecretData *)v13 initWithData:v14];
+    encryptedSecretData = [(SecDbKeychainSerializedItemV7 *)v10 encryptedSecretData];
+    v15 = [(SecDbKeychainSecretData *)v13 initWithData:encryptedSecretData];
     encryptedSecretData = v9->_encryptedSecretData;
     v9->_encryptedSecretData = v15;
 
     v17 = [SecDbKeychainMetadata alloc];
-    v18 = [(SecDbKeychainSerializedItemV7 *)v10 encryptedMetadata];
-    v19 = [(SecDbKeychainMetadata *)v17 initWithData:v18];
+    encryptedMetadata = [(SecDbKeychainSerializedItemV7 *)v10 encryptedMetadata];
+    v19 = [(SecDbKeychainMetadata *)v17 initWithData:encryptedMetadata];
     encryptedMetadata = v9->_encryptedMetadata;
     v9->_encryptedMetadata = v19;
 
     v9->_keyclass = [(SecDbKeychainSerializedItemV7 *)v10 keyclass];
-    v21 = [(SecDbKeychainSecretData *)v9->_encryptedSecretData tamperCheck];
-    v22 = [(SecDbKeychainMetadata *)v9->_encryptedMetadata tamperCheck];
-    v23 = [v21 isEqualToString:v22];
+    tamperCheck = [(SecDbKeychainSecretData *)v9->_encryptedSecretData tamperCheck];
+    tamperCheck2 = [(SecDbKeychainMetadata *)v9->_encryptedMetadata tamperCheck];
+    v23 = [tamperCheck isEqualToString:tamperCheck2];
 
     if ((v23 & 1) == 0)
     {
@@ -62,23 +62,23 @@ LABEL_8:
     }
   }
 
-  if (a5 && !v9)
+  if (error && !v9)
   {
     v27 = NSLocalizedDescriptionKey;
     v28 = @"failed to deserialize keychain item blob";
     v24 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-    *a5 = [NSError errorWithDomain:kCFErrorDomainOSStatus code:-26275 userInfo:v24];
+    *error = [NSError errorWithDomain:kCFErrorDomainOSStatus code:-26275 userInfo:v24];
   }
 
   return v9;
 }
 
-- (SecDbKeychainItemV7)initWithSecretAttributes:(id)a3 metadataAttributes:(id)a4 tamperCheck:(id)a5 keyclass:(int)a6
+- (SecDbKeychainItemV7)initWithSecretAttributes:(id)attributes metadataAttributes:(id)metadataAttributes tamperCheck:(id)check keyclass:(int)keyclass
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (!v13)
+  attributesCopy = attributes;
+  metadataAttributesCopy = metadataAttributes;
+  checkCopy = check;
+  if (!checkCopy)
   {
     sub_100040CD0(a2, self);
   }
@@ -88,9 +88,9 @@ LABEL_8:
   v14 = [(SecDbKeychainItemV7 *)&v22 init];
   if (v14)
   {
-    if (v11)
+    if (attributesCopy)
     {
-      v15 = [v11 copy];
+      v15 = [attributesCopy copy];
     }
 
     else
@@ -101,9 +101,9 @@ LABEL_8:
     secretAttributes = v14->_secretAttributes;
     v14->_secretAttributes = v15;
 
-    if (v12)
+    if (metadataAttributesCopy)
     {
-      v17 = [v12 copy];
+      v17 = [metadataAttributesCopy copy];
     }
 
     else
@@ -114,11 +114,11 @@ LABEL_8:
     metadataAttributes = v14->_metadataAttributes;
     v14->_metadataAttributes = v17;
 
-    v19 = [v13 copy];
+    v19 = [checkCopy copy];
     tamperCheck = v14->_tamperCheck;
     v14->_tamperCheck = v19;
 
-    v14->_keyclass = a6;
+    v14->_keyclass = keyclass;
   }
 
   return v14;
@@ -142,7 +142,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_10002D74C;
   block[3] = &unk_10005A068;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100073898 != -1)
   {
     dispatch_once(&qword_100073898, block);
@@ -159,7 +159,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_10002D864;
   block[3] = &unk_10005A068;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000738A8 != -1)
   {
     dispatch_once(&qword_1000738A8, block);
@@ -170,7 +170,7 @@ LABEL_8:
   return v2;
 }
 
-- (id)metadataAttributesWithError:(id *)a3
+- (id)metadataAttributesWithError:(id *)error
 {
   p_metadataAttributes = &self->_metadataAttributes;
   metadataAttributes = self->_metadataAttributes;
@@ -179,27 +179,27 @@ LABEL_8:
     goto LABEL_26;
   }
 
-  v7 = [(SecDbKeychainItemV7 *)self metadataClassKeyWithKeybag:self->_keybag allowWrites:0 error:a3];
+  v7 = [(SecDbKeychainItemV7 *)self metadataClassKeyWithKeybag:self->_keybag allowWrites:0 error:error];
   if (v7)
   {
-    v8 = [objc_opt_class() decryptionOperation];
-    v9 = [(SecDbKeychainMetadata *)self->_encryptedMetadata wrappedKey];
+    decryptionOperation = [objc_opt_class() decryptionOperation];
+    wrappedKey = [(SecDbKeychainMetadata *)self->_encryptedMetadata wrappedKey];
     v35 = 0;
-    v10 = [v8 decrypt:v9 withKey:v7 error:&v35];
+    v10 = [decryptionOperation decrypt:wrappedKey withKey:v7 error:&v35];
     v11 = v35;
 
     if (v10)
     {
       v12 = [_SFAESKey alloc];
-      v13 = [objc_opt_class() keySpecifier];
-      v14 = [v12 initWithData:v10 specifier:v13 error:a3];
+      keySpecifier = [objc_opt_class() keySpecifier];
+      v14 = [v12 initWithData:v10 specifier:keySpecifier error:error];
 
       if (v14)
       {
-        v15 = [objc_opt_class() decryptionOperation];
-        v16 = [(SecDbKeychainMetadata *)self->_encryptedMetadata ciphertext];
+        decryptionOperation2 = [objc_opt_class() decryptionOperation];
+        ciphertext = [(SecDbKeychainMetadata *)self->_encryptedMetadata ciphertext];
         v34 = v11;
-        v17 = [v15 decrypt:v16 withKey:v14 error:&v34];
+        v17 = [decryptionOperation2 decrypt:ciphertext withKey:v14 error:&v34];
         v33 = v34;
 
         if (v17)
@@ -209,9 +209,9 @@ LABEL_8:
           v19 = [v18 mutableCopy];
 
           v20 = [v19 objectForKeyedSubscript:@"TamperCheck"];
-          v21 = [(SecDbKeychainMetadata *)self->_encryptedMetadata tamperCheck];
+          tamperCheck = [(SecDbKeychainMetadata *)self->_encryptedMetadata tamperCheck];
           v22 = v20;
-          LODWORD(v20) = [v20 isEqualToString:v21];
+          LODWORD(v20) = [v20 isEqualToString:tamperCheck];
 
           if (v20)
           {
@@ -224,19 +224,19 @@ LABEL_8:
             v29 = secLogObjForScope("SecError");
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
             {
-              v30 = [(SecDbKeychainMetadata *)self->_encryptedMetadata tamperCheck];
+              tamperCheck2 = [(SecDbKeychainMetadata *)self->_encryptedMetadata tamperCheck];
               *buf = 138412546;
               *&buf[4] = v22;
               *&buf[12] = 2112;
-              *v37 = v30;
+              *v37 = tamperCheck2;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "SecDbKeychainItemV7: tamper check failed for metadata decryption, expected %@ found %@", buf, 0x16u);
             }
 
-            if (a3)
+            if (error)
             {
               *buf = 0;
               SecError(-26275, buf, @"tamper check failed for metadata decryption");
-              *a3 = *buf;
+              *error = *buf;
             }
           }
 
@@ -255,11 +255,11 @@ LABEL_8:
             _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "SecDbKeychainItemV7: error decrypting metadata content: %@", buf, 0xCu);
           }
 
-          if (a3)
+          if (error)
           {
             *buf = v33;
             SecError(-26275, buf, @"failed to decrypt item metadata contents");
-            *a3 = *buf;
+            *error = *buf;
           }
         }
 
@@ -280,10 +280,10 @@ LABEL_14:
       v23 = secLogObjForScope("SecError");
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [(SecDbKeychainItemV7 *)self keyclass];
+        keyclass = [(SecDbKeychainItemV7 *)self keyclass];
         keybag = self->_keybag;
         *buf = 67109634;
-        *&buf[4] = v24;
+        *&buf[4] = keyclass;
         *&buf[8] = 1024;
         *&buf[10] = keybag;
         *v37 = 2112;
@@ -291,11 +291,11 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "SecDbKeychainItemV7: error unwrapping item metadata key (class %d, bag %d): %@", buf, 0x18u);
       }
 
-      if (a3)
+      if (error)
       {
         *buf = v11;
         SecError(-26275, buf, @"failed to unwrap item metadata key");
-        *a3 = *buf;
+        *error = *buf;
       }
     }
 
@@ -312,20 +312,20 @@ LABEL_27:
   return v26;
 }
 
-- (id)unwrapFromAKS:(id)a3 accessControl:(__SecAccessControl *)a4 acmContext:(id)a5 callerAccessGroups:(id)a6 delete:(BOOL)a7 keyDiversify:(BOOL)a8 error:(id *)a9
+- (id)unwrapFromAKS:(id)s accessControl:(__SecAccessControl *)control acmContext:(id)context callerAccessGroups:(id)groups delete:(BOOL)delete keyDiversify:(BOOL)diversify error:(id *)error
 {
-  v9 = a8;
-  v13 = a9;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = [v14 wrappedKey];
-  if (v9)
+  diversifyCopy = diversify;
+  errorCopy2 = error;
+  sCopy = s;
+  contextCopy = context;
+  groupsCopy = groups;
+  wrappedKey = [sCopy wrappedKey];
+  if (diversifyCopy)
   {
     v18 = [(NSDictionary *)self->_metadataAttributes objectForKeyedSubscript:kSecAttrMultiUser];
     if (sub_1000295F0(v18))
     {
-      v19 = [v18 bytes];
+      bytes = [v18 bytes];
       v20 = [v18 length];
       v21 = secLogObjForScope("KeyDiversify");
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -337,26 +337,26 @@ LABEL_27:
     else
     {
       v20 = 0;
-      v19 = 0;
+      bytes = 0;
     }
 
-    v13 = a9;
+    errorCopy2 = error;
   }
 
   else
   {
     v20 = 0;
-    v19 = 0;
+    bytes = 0;
   }
 
-  if (![v14 type])
+  if (![sCopy type])
   {
     v47 = [NSMutableData dataWithLength:32];
-    if ([SecAKSObjCWrappers aksDecryptWithKeybag:self->_keybag keyclass:self->_keyclass ciphertext:v17 outKeyclass:&self->_keyclass plaintext:v47 personaId:v19 personaIdLength:v20 error:v13])
+    if ([SecAKSObjCWrappers aksDecryptWithKeybag:self->_keybag keyclass:self->_keyclass ciphertext:wrappedKey outKeyclass:&self->_keyclass plaintext:v47 personaId:bytes personaIdLength:v20 error:errorCopy2])
     {
       v48 = [_SFAESKey alloc];
-      v49 = [objc_opt_class() keySpecifier];
-      v26 = [v48 initWithData:v47 specifier:v49 error:v13];
+      keySpecifier = [objc_opt_class() keySpecifier];
+      v26 = [v48 initWithData:v47 specifier:keySpecifier error:errorCopy2];
     }
 
     else
@@ -367,21 +367,21 @@ LABEL_27:
     goto LABEL_23;
   }
 
-  if ([v14 type] != 1)
+  if ([sCopy type] != 1)
   {
     goto LABEL_22;
   }
 
-  v75 = v13;
+  v75 = errorCopy2;
   v87 = 0;
   keybag = self->_keybag;
-  v23 = [v14 refKeyBlob];
-  v24 = [v23 bytes];
-  [v14 refKeyBlob];
-  v25 = v76 = v15;
-  LODWORD(keybag) = aks_ref_key_create_with_blob(keybag, v24, [v25 length], &v87);
+  refKeyBlob = [sCopy refKeyBlob];
+  bytes2 = [refKeyBlob bytes];
+  [sCopy refKeyBlob];
+  v25 = v76 = contextCopy;
+  LODWORD(keybag) = aks_ref_key_create_with_blob(keybag, bytes2, [v25 length], &v87);
 
-  v15 = v76;
+  contextCopy = v76;
   v26 = 0;
   if (keybag)
   {
@@ -410,15 +410,15 @@ LABEL_22:
 
   CFDictionaryGetValue(v31, @"acl");
   SecAccessControlSetConstraints();
-  if (v16)
+  if (groupsCopy)
   {
-    v38 = der_sizeof_plist(v16, &v86, v32, v33, v34, v35, v36, v37);
+    v38 = der_sizeof_plist(groupsCopy, &v86, v32, v33, v34, v35, v36, v37);
     v39 = [[NSMutableData alloc] initWithLength:v38];
-    v40 = [v39 mutableBytes];
-    v41 = [v39 mutableBytes];
-    v42 = v40;
-    v15 = v76;
-    der_encode_plist(v16, &v86, v42, v41 + v38, v43, v44, v45, v46);
+    mutableBytes = [v39 mutableBytes];
+    mutableBytes2 = [v39 mutableBytes];
+    v42 = mutableBytes;
+    contextCopy = v76;
+    der_encode_plist(groupsCopy, &v86, v42, mutableBytes2 + v38, v43, v44, v45, v46);
   }
 
   else
@@ -434,9 +434,9 @@ LABEL_22:
   v81 = v51;
   if (v51)
   {
-    if (v19)
+    if (bytes)
     {
-      aks_params_set_data(v51, 15, v19, v20);
+      aks_params_set_data(v51, 15, bytes, v20);
       v26 = v81;
     }
 
@@ -446,11 +446,11 @@ LABEL_22:
     aks_params_get_der(v81, &v83, &v82);
     v79 = 0;
     v80 = 0;
-    v53 = aks_ref_key_decrypt(v87, v83, v82, [v17 bytes], objc_msgSend(v17, "length"), &v80, &v79);
+    v53 = aks_ref_key_decrypt(v87, v83, v82, [wrappedKey bytes], objc_msgSend(wrappedKey, "length"), &v80, &v79);
     if (v53)
     {
       v57 = v53;
-      v15 = v76;
+      contextCopy = v76;
       if (v76 || v53 != -536363000)
       {
         v69 = SecAccessControlCopyData();
@@ -505,12 +505,12 @@ LABEL_22:
         v26 = 0;
         *v75 = v86;
         v86 = 0;
-        v15 = v76;
+        contextCopy = v76;
       }
 
       else
       {
-        v15 = v76;
+        contextCopy = v76;
         if (v86)
         {
           v86 = 0;
@@ -530,8 +530,8 @@ LABEL_22:
     {
       v58 = [_SFAESKey alloc];
       v59 = cf;
-      v60 = [objc_opt_class() keySpecifier];
-      v61 = [v58 initWithData:v59 specifier:v60 error:v75];
+      keySpecifier2 = [objc_opt_class() keySpecifier];
+      v61 = [v58 initWithData:v59 specifier:keySpecifier2 error:v75];
 
       v62 = cf;
       if (cf)
@@ -540,8 +540,8 @@ LABEL_22:
         CFRelease(v62);
       }
 
-      v15 = v76;
-      if (!a7 || (v63 = aks_ref_key_delete(), !v63))
+      contextCopy = v76;
+      if (!delete || (v63 = aks_ref_key_delete(), !v63))
       {
         v74 = v86;
         if (v75)
@@ -627,7 +627,7 @@ LABEL_72:
       v80 = 0;
       aks_params_free(&v81);
       v73 = v86;
-      v15 = v76;
+      contextCopy = v76;
       if (v75)
       {
         v68 = v86;

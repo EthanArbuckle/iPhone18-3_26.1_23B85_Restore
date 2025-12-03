@@ -1,15 +1,15 @@
 @interface SKUIReviewCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SKUIReviewCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKUIReviewCollectionViewCell" isKindOfClass:@"SKUIViewReuseCollectionViewCell"];
-  [v3 validateClass:@"SKUIViewReuseCollectionViewCell" hasInstanceMethod:@"allExistingViews" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKUIReviewCollectionViewCell" isKindOfClass:@"SKUIViewReuseCollectionViewCell"];
+  [validationsCopy validateClass:@"SKUIViewReuseCollectionViewCell" hasInstanceMethod:@"allExistingViews" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

@@ -8,15 +8,15 @@
 - (void)setAfui_KeyboardInitiated:()KeyboardInitiated
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 setProperty:v2 forKey:@"SiriUserUtteranceKeyboardInitiated"];
+  [self setProperty:v2 forKey:@"SiriUserUtteranceKeyboardInitiated"];
 }
 
 - (uint64_t)afui_isKeyboardInitiated
 {
-  v1 = [a1 propertyForKey:@"SiriUserUtteranceKeyboardInitiated"];
-  v2 = [v1 BOOLValue];
+  v1 = [self propertyForKey:@"SiriUserUtteranceKeyboardInitiated"];
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

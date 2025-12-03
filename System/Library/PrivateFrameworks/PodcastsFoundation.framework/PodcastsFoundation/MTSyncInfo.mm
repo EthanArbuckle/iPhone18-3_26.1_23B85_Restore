@@ -1,12 +1,12 @@
 @interface MTSyncInfo
-+ (id)predicateForIsCurrentlySyncable:(BOOL)a3;
++ (id)predicateForIsCurrentlySyncable:(BOOL)syncable;
 @end
 
 @implementation MTSyncInfo
 
-+ (id)predicateForIsCurrentlySyncable:(BOOL)a3
++ (id)predicateForIsCurrentlySyncable:(BOOL)syncable
 {
-  if (a3)
+  if (syncable)
   {
     v3 = @"%K == %@";
   }

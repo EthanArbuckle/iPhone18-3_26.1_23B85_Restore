@@ -1,10 +1,10 @@
 @interface CPAlertTemplate
 + (NSUInteger)maximumActionCount;
-- (CPAlertTemplate)initWithCoder:(id)a3;
+- (CPAlertTemplate)initWithCoder:(id)coder;
 - (CPAlertTemplate)initWithTitleVariants:(NSArray *)titleVariants actions:(NSArray *)actions;
-- (void)_addAction:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleAlertActionForIdentifier:(id)a3;
+- (void)_addAction:(id)action;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleAlertActionForIdentifier:(id)identifier;
 @end
 
 @implementation CPAlertTemplate
@@ -66,25 +66,25 @@ void __49__CPAlertTemplate_initWithTitleVariants_actions___block_invoke(uint64_t
   [*(a1 + 32) _addAction:v11];
 }
 
-- (CPAlertTemplate)initWithCoder:(id)a3
+- (CPAlertTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = CPAlertTemplate;
-  v5 = [(CPTemplate *)&v17 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kCPAlertTemplateTitlesKey"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kCPAlertTemplateTitlesKey"];
     titleVariants = v5->_titleVariants;
     v5->_titleVariants = v9;
 
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"kCPAlertTemplateActionsKey"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"kCPAlertTemplateActionsKey"];
     actions = v5->_actions;
     v5->_actions = v14;
   }
@@ -92,77 +92,77 @@ void __49__CPAlertTemplate_initWithTitleVariants_actions___block_invoke(uint64_t
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPAlertTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CPAlertTemplate *)self titleVariants:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPAlertTemplateTitlesKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPAlertTemplateTitlesKey"];
 
-  v6 = [(CPAlertTemplate *)self actions];
-  [v4 encodeObject:v6 forKey:@"kCPAlertTemplateActionsKey"];
+  actions = [(CPAlertTemplate *)self actions];
+  [coderCopy encodeObject:actions forKey:@"kCPAlertTemplateActionsKey"];
 }
 
-- (void)_addAction:(id)a3
+- (void)_addAction:(id)action
 {
-  v18 = a3;
-  v4 = [(CPAlertTemplate *)self actions];
+  actionCopy = action;
+  actions = [(CPAlertTemplate *)self actions];
 
-  if (v4)
+  if (actions)
   {
-    v5 = [(CPAlertTemplate *)self actions];
-    v6 = [v5 arrayByAddingObject:v18];
+    actions2 = [(CPAlertTemplate *)self actions];
+    v6 = [actions2 arrayByAddingObject:actionCopy];
     actions = self->_actions;
     self->_actions = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEA60] arrayWithObject:v18];
-    v5 = self->_actions;
+    v8 = [MEMORY[0x277CBEA60] arrayWithObject:actionCopy];
+    actions2 = self->_actions;
     self->_actions = v8;
   }
 
-  v9 = [objc_opt_class() maximumActionCount];
-  v10 = [(CPAlertTemplate *)self actions];
-  v11 = [v10 count];
+  maximumActionCount = [objc_opt_class() maximumActionCount];
+  actions3 = [(CPAlertTemplate *)self actions];
+  v11 = [actions3 count];
 
-  if (v11 > v9)
+  if (v11 > maximumActionCount)
   {
-    v12 = [(CPAlertTemplate *)self actions];
+    actions4 = [(CPAlertTemplate *)self actions];
     v13 = MEMORY[0x277CCAA78];
-    v14 = [(CPAlertTemplate *)self actions];
-    v15 = [v13 indexSetWithIndexesInRange:{objc_msgSend(v14, "count") - v9, v9}];
-    v16 = [v12 objectsAtIndexes:v15];
+    actions5 = [(CPAlertTemplate *)self actions];
+    v15 = [v13 indexSetWithIndexesInRange:{objc_msgSend(actions5, "count") - maximumActionCount, maximumActionCount}];
+    v16 = [actions4 objectsAtIndexes:v15];
     v17 = self->_actions;
     self->_actions = v16;
   }
 }
 
-- (void)handleAlertActionForIdentifier:(id)a3
+- (void)handleAlertActionForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__1;
   v16 = __Block_byref_object_dispose__1;
   v17 = 0;
-  v5 = [(CPAlertTemplate *)self actions];
+  actions = [(CPAlertTemplate *)self actions];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__CPAlertTemplate_handleAlertActionForIdentifier___block_invoke;
   v9[3] = &unk_278A104B8;
-  v6 = v4;
+  v6 = identifierCopy;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [actions enumerateObjectsUsingBlock:v9];
 
-  v7 = [v13[5] handler];
+  handler = [v13[5] handler];
 
-  if (v7)
+  if (handler)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;

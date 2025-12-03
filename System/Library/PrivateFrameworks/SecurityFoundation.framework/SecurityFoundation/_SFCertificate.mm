@@ -1,13 +1,13 @@
 @interface _SFCertificate
 - (NSString)issuerName;
 - (NSString)subject;
-- (_SFCertificate)initWithSecCertificate:(__SecCertificate *)a3;
+- (_SFCertificate)initWithSecCertificate:(__SecCertificate *)certificate;
 - (void)dealloc;
 @end
 
 @implementation _SFCertificate
 
-- (_SFCertificate)initWithSecCertificate:(__SecCertificate *)a3
+- (_SFCertificate)initWithSecCertificate:(__SecCertificate *)certificate
 {
   v8.receiver = self;
   v8.super_class = _SFCertificate;
@@ -18,7 +18,7 @@
     certificateInternal = v4->_certificateInternal;
     v4->_certificateInternal = v5;
 
-    *(v4->_certificateInternal + 5) = a3;
+    *(v4->_certificateInternal + 5) = certificate;
     CFRetain(*(v4->_certificateInternal + 5));
   }
 

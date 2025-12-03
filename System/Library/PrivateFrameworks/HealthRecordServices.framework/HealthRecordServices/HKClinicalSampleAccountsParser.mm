@@ -1,22 +1,22 @@
 @interface HKClinicalSampleAccountsParser
-+ (id)_jsonDictionaryFromJSONObject:(id)a3 subElement:(id)a4 error:(id *)a5;
-+ (id)_stringOnlyDictionaryFromJSONDictionary:(id)a3;
-- (id)_parseAccountsFromJSONData:(id)a3 error:(id *)a4;
-- (id)_parseBatchesFromSampleAccountJSONDict:(id)a3 error:(id *)a4;
-- (id)_parseGatewayFromProviderJSONDict:(id)a3 error:(id *)a4;
-- (id)_parseProviderFromSampleAccountJSONDict:(id)a3 error:(id *)a4;
-- (id)parseAccountsFromFile:(id)a3 error:(id *)a4;
++ (id)_jsonDictionaryFromJSONObject:(id)object subElement:(id)element error:(id *)error;
++ (id)_stringOnlyDictionaryFromJSONDictionary:(id)dictionary;
+- (id)_parseAccountsFromJSONData:(id)data error:(id *)error;
+- (id)_parseBatchesFromSampleAccountJSONDict:(id)dict error:(id *)error;
+- (id)_parseGatewayFromProviderJSONDict:(id)dict error:(id *)error;
+- (id)_parseProviderFromSampleAccountJSONDict:(id)dict error:(id *)error;
+- (id)parseAccountsFromFile:(id)file error:(id *)error;
 @end
 
 @implementation HKClinicalSampleAccountsParser
 
-- (id)parseAccountsFromFile:(id)a3 error:(id *)a4
+- (id)parseAccountsFromFile:(id)file error:(id *)error
 {
-  v6 = a3;
-  if (v6 && ([MEMORY[0x277CBEA90] dataWithContentsOfURL:v6], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  fileCopy = file;
+  if (fileCopy && ([MEMORY[0x277CBEA90] dataWithContentsOfURL:fileCopy], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v8 = v7;
-    v9 = [(HKClinicalSampleAccountsParser *)self _parseAccountsFromJSONData:v7 error:a4];
+    absoluteString = v7;
+    v9 = [(HKClinicalSampleAccountsParser *)self _parseAccountsFromJSONData:v7 error:error];
     v10 = v9;
     if (v9)
     {
@@ -27,27 +27,27 @@
   else
   {
     v12 = MEMORY[0x277CCA9B8];
-    v8 = [v6 absoluteString];
-    [v12 hk_assignError:a4 code:3 format:{@"Unable to read sample account from «%@»", v8}];
+    absoluteString = [fileCopy absoluteString];
+    [v12 hk_assignError:error code:3 format:{@"Unable to read sample account from «%@»", absoluteString}];
     v10 = 0;
   }
 
   return v10;
 }
 
-- (id)_parseAccountsFromJSONData:(id)a3 error:(id *)a4
+- (id)_parseAccountsFromJSONData:(id)data error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  dataCopy = data;
+  if (!dataCopy)
   {
     [HKClinicalSampleAccountsParser _parseAccountsFromJSONData:a2 error:self];
   }
 
-  v8 = [MEMORY[0x277CCAAA0] hk_JSONObjectFromFHIRData:v7 options:0 error:a4];
+  v8 = [MEMORY[0x277CCAAA0] hk_JSONObjectFromFHIRData:dataCopy options:0 error:error];
   if (v8)
   {
-    v9 = [objc_opt_class() _jsonDictionaryFromJSONObject:v8 subElement:0 error:a4];
+    v9 = [objc_opt_class() _jsonDictionaryFromJSONObject:v8 subElement:0 error:error];
     v10 = v9;
     if (v9)
     {
@@ -81,14 +81,14 @@
               }
 
               v18 = *(*(&v31 + 1) + 8 * i);
-              v19 = [(HKClinicalSampleAccountsParser *)self _parseProviderFromSampleAccountJSONDict:v18 error:a4, v27, v28, v29];
+              v19 = [(HKClinicalSampleAccountsParser *)self _parseProviderFromSampleAccountJSONDict:v18 error:error, v27, v28, v29];
               if (!v19)
               {
                 goto LABEL_20;
               }
 
               v20 = v19;
-              v21 = [(HKClinicalSampleAccountsParser *)self _parseBatchesFromSampleAccountJSONDict:v18 error:a4];
+              v21 = [(HKClinicalSampleAccountsParser *)self _parseBatchesFromSampleAccountJSONDict:v18 error:error];
               if (!v21)
               {
 
@@ -146,13 +146,13 @@ LABEL_21:
   return v24;
 }
 
-- (id)_parseProviderFromSampleAccountJSONDict:(id)a3 error:(id *)a4
+- (id)_parseProviderFromSampleAccountJSONDict:(id)dict error:(id *)error
 {
-  v7 = [a3 objectForKeyedSubscript:@"provider"];
+  v7 = [dict objectForKeyedSubscript:@"provider"];
   objc_opt_class();
   v8 = HKSafeObject();
 
-  if (a3)
+  if (dict)
   {
     v9 = [objc_opt_class() _stringOnlyDictionaryFromJSONDictionary:v8];
     v10 = [v9 objectForKeyedSubscript:@"identifier"];
@@ -169,7 +169,7 @@ LABEL_21:
         [(HKClinicalSampleAccountProvider *)v13 setTitle:v11];
         [(HKClinicalSampleAccountProvider *)v13 setProperties:v9];
         -[HKClinicalSampleAccountProvider setMinCompatibleAPIVersion:](v13, "setMinCompatibleAPIVersion:", [v12 integerValue]);
-        v15 = [(HKClinicalSampleAccountsParser *)self _parseGatewayFromProviderJSONDict:v8 error:a4];
+        v15 = [(HKClinicalSampleAccountsParser *)self _parseGatewayFromProviderJSONDict:v8 error:error];
         if (v15)
         {
           [(HKClinicalSampleAccountProvider *)v13 setGateway:v15];
@@ -202,10 +202,10 @@ LABEL_21:
   return v16;
 }
 
-- (id)_parseGatewayFromProviderJSONDict:(id)a3 error:(id *)a4
+- (id)_parseGatewayFromProviderJSONDict:(id)dict error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_opt_class() _jsonDictionaryFromJSONObject:v5 subElement:@"gateway" error:a4];
+  dictCopy = dict;
+  v6 = [objc_opt_class() _jsonDictionaryFromJSONObject:dictCopy subElement:@"gateway" error:error];
 
   if (v6)
   {
@@ -219,7 +219,7 @@ LABEL_21:
         v10 = [v7 objectForKeyedSubscript:@"fhirVersion"];
         if ([v10 length])
         {
-          v11 = [MEMORY[0x277CCD3D0] versionFromVersionString:v10 error:a4];
+          v11 = [MEMORY[0x277CCD3D0] versionFromVersionString:v10 error:error];
           if (v11)
           {
             v12 = objc_alloc_init(HKClinicalSampleAccountProviderGateway);
@@ -263,10 +263,10 @@ LABEL_21:
   return v12;
 }
 
-- (id)_parseBatchesFromSampleAccountJSONDict:(id)a3 error:(id *)a4
+- (id)_parseBatchesFromSampleAccountJSONDict:(id)dict error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [a3 objectForKeyedSubscript:@"batches"];
+  v5 = [dict objectForKeyedSubscript:@"batches"];
   objc_opt_class();
   v6 = HKSafeObject();
 
@@ -293,7 +293,7 @@ LABEL_21:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [objc_opt_class() _jsonDictionaryFromJSONObject:*(*(&v20 + 1) + 8 * i) subElement:@"resources" error:a4];
+          v13 = [objc_opt_class() _jsonDictionaryFromJSONObject:*(*(&v20 + 1) + 8 * i) subElement:@"resources" error:error];
           if (!v13)
           {
 
@@ -333,16 +333,16 @@ LABEL_12:
   return v16;
 }
 
-+ (id)_jsonDictionaryFromJSONObject:(id)a3 subElement:(id)a4 error:(id *)a5
++ (id)_jsonDictionaryFromJSONObject:(id)object subElement:(id)element error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  elementCopy = element;
+  objectCopy = object;
   objc_opt_class();
   v8 = HKSafeObject();
 
-  if (v8 && v6)
+  if (v8 && elementCopy)
   {
-    v9 = [v8 objectForKeyedSubscript:v6];
+    v9 = [v8 objectForKeyedSubscript:elementCopy];
     objc_opt_class();
     v10 = HKSafeObject();
 
@@ -352,12 +352,12 @@ LABEL_12:
   return v8;
 }
 
-+ (id)_stringOnlyDictionaryFromJSONDictionary:(id)a3
++ (id)_stringOnlyDictionaryFromJSONDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 hk_filterKeysWithBlock:&__block_literal_global];
-  v5 = [v4 allObjects];
-  v6 = [v3 dictionaryWithValuesForKeys:v5];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy hk_filterKeysWithBlock:&__block_literal_global];
+  allObjects = [v4 allObjects];
+  v6 = [dictionaryCopy dictionaryWithValuesForKeys:allObjects];
 
   return v6;
 }

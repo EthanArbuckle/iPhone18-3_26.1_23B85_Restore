@@ -1,50 +1,50 @@
 @interface WeaLocationModule
-+ (id)sharedManagerWithDelegate:(shared_ptr<LocationDelegateInterface>)a3 withQueue:(queue)a4;
-+ (void)createModuleAndAddToDelegate:(shared_ptr<LocationDelegateInterface>)a3 withQueue:(queue)a4;
++ (id)sharedManagerWithDelegate:(shared_ptr<LocationDelegateInterface>)delegate withQueue:(queue)queue;
++ (void)createModuleAndAddToDelegate:(shared_ptr<LocationDelegateInterface>)delegate withQueue:(queue)queue;
 - (BOOL)isCircularGeofenceSupported;
 - (BOOL)isPolygonalGeofenceSupported;
 - (WeaLocationModule)init;
-- (WeaLocationModule)initWithDelegate:(shared_ptr<LocationDelegateInterface>)a3 withQueue:(queue)a4;
+- (WeaLocationModule)initWithDelegate:(shared_ptr<LocationDelegateInterface>)delegate withQueue:(queue)queue;
 - (id).cxx_construct;
-- (id)setupCircularGeoFence:()pair<WacGeoCoordinateType withName:(double>)a3;
-- (id)setupPolygonalGeoFence:()vector<WacGeoCoordinateType withName:(std:(id)a4 :allocator<WacGeoCoordinateType>> *)a3;
+- (id)setupCircularGeoFence:()pair<WacGeoCoordinateType withName:(double>)name;
+- (id)setupPolygonalGeoFence:()vector<WacGeoCoordinateType withName:(std:(id)name :allocator<WacGeoCoordinateType>> *)a3;
 - (queue)fQueue;
 - (shared_ptr<LocationDelegateInterface>)fDelegate;
 - (shared_ptr<WacGeoCoordinateType>)getCurrentLocation;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5;
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4;
-- (void)locationManager:(id)a3 didExitRegion:(id)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4;
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region;
+- (void)locationManager:(id)manager didEnterRegion:(id)region;
+- (void)locationManager:(id)manager didExitRegion:(id)region;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region;
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error;
 - (void)resetMonitoredRegions;
-- (void)setFDelegate:(shared_ptr<LocationDelegateInterface>)a3;
-- (void)setFQueue:(queue)a3;
-- (void)stopGeofence:(id)a3;
+- (void)setFDelegate:(shared_ptr<LocationDelegateInterface>)delegate;
+- (void)setFQueue:(queue)queue;
+- (void)stopGeofence:(id)geofence;
 @end
 
 @implementation WeaLocationModule
 
-+ (void)createModuleAndAddToDelegate:(shared_ptr<LocationDelegateInterface>)a3 withQueue:(queue)a4
++ (void)createModuleAndAddToDelegate:(shared_ptr<LocationDelegateInterface>)delegate withQueue:(queue)queue
 {
-  v4 = *(a3.__ptr_ + 1);
-  v11 = *a3.__ptr_;
+  v4 = *(delegate.__ptr_ + 1);
+  v11 = *delegate.__ptr_;
   v12 = v4;
   if (v4)
   {
     atomic_fetch_add_explicit(&v4->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v5 = *a3.__cntrl_;
+  v5 = *delegate.__cntrl_;
   object = v5;
   if (v5)
   {
     dispatch_retain(v5);
   }
 
-  v6 = [WeaLocationModule sharedManagerWithDelegate:&v11 withQueue:&object, a4.fObj.fObj];
+  v6 = [WeaLocationModule sharedManagerWithDelegate:&v11 withQueue:&object, queue.fObj.fObj];
   if (object)
   {
     dispatch_release(object);
@@ -74,9 +74,9 @@
   }
 }
 
-+ (id)sharedManagerWithDelegate:(shared_ptr<LocationDelegateInterface>)a3 withQueue:(queue)a4
++ (id)sharedManagerWithDelegate:(shared_ptr<LocationDelegateInterface>)delegate withQueue:(queue)queue
 {
-  cntrl = a3.__cntrl_;
+  cntrl = delegate.__cntrl_;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -87,8 +87,8 @@
   v10[1] = 3321888768;
   v10[2] = sub_1015A0378;
   v10[3] = &unk_101F50C30;
-  v6 = *a3.__ptr_;
-  v5 = *(a3.__ptr_ + 1);
+  v6 = *delegate.__ptr_;
+  v5 = *(delegate.__ptr_ + 1);
   v10[4] = &v13;
   v10[5] = v6;
   v11 = v5;
@@ -97,7 +97,7 @@
     atomic_fetch_add_explicit(&v5->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v7 = *a3.__cntrl_;
+  v7 = *delegate.__cntrl_;
   object = v7;
   if (v7)
   {
@@ -122,13 +122,13 @@
   return v8;
 }
 
-- (WeaLocationModule)initWithDelegate:(shared_ptr<LocationDelegateInterface>)a3 withQueue:(queue)a4
+- (WeaLocationModule)initWithDelegate:(shared_ptr<LocationDelegateInterface>)delegate withQueue:(queue)queue
 {
-  cntrl = a3.__cntrl_;
-  ptr = a3.__ptr_;
+  cntrl = delegate.__cntrl_;
+  ptr = delegate.__ptr_;
   v15.receiver = self;
   v15.super_class = WeaLocationModule;
-  v6 = [(WeaLocationModule *)&v15 init:a3.__ptr_];
+  v6 = [(WeaLocationModule *)&v15 init:delegate.__ptr_];
   if (v6)
   {
     v7 = *cntrl;
@@ -222,11 +222,11 @@
   return v2;
 }
 
-- (id)setupCircularGeoFence:()pair<WacGeoCoordinateType withName:(double>)a3
+- (id)setupCircularGeoFence:()pair<WacGeoCoordinateType withName:(double>)name
 {
-  var1 = a3.var1;
-  v5 = a3.var0.var1;
-  var0 = a3.var0.var0;
+  var1 = name.var1;
+  v5 = name.var0.var1;
+  var0 = name.var0.var0;
   v8 = a4;
   v9 = [CLCircularRegion alloc];
   v10 = CLLocationCoordinate2DMake(var0, v5);
@@ -260,9 +260,9 @@
   return v12;
 }
 
-- (id)setupPolygonalGeoFence:()vector<WacGeoCoordinateType withName:(std:(id)a4 :allocator<WacGeoCoordinateType>> *)a3
+- (id)setupPolygonalGeoFence:()vector<WacGeoCoordinateType withName:(std:(id)name :allocator<WacGeoCoordinateType>> *)a3
 {
-  v6 = a4;
+  nameCopy = name;
   v7 = objc_alloc_init(NSMutableArray);
   var1 = a3->var1;
   var0 = a3->var0;
@@ -293,7 +293,7 @@
     }
 
     while (var0 != var1);
-    v15 = [[_CLPolygonalRegion alloc] initWithVertices:v7 identifier:v6];
+    v15 = [[_CLPolygonalRegion alloc] initWithVertices:v7 identifier:nameCopy];
     v16 = v15;
     if (v15)
     {
@@ -312,7 +312,7 @@
       }
 
       ptr = self->_fDelegate.__ptr_;
-      sub_10000501C(__p, [v6 UTF8String]);
+      sub_10000501C(__p, [nameCopy UTF8String]);
       (*(*ptr + 64))(ptr, __p);
       if (v23 < 0)
       {
@@ -324,25 +324,25 @@
   return v16;
 }
 
-- (void)locationManager:(id)a3 didStartMonitoringForRegion:(id)a4
+- (void)locationManager:(id)manager didStartMonitoringForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  regionCopy = region;
   v8 = *qword_101FCADB0;
-  if (v7)
+  if (regionCopy)
   {
     if (os_log_type_enabled(*qword_101FCADB0, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v7;
+      *&buf[4] = regionCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#I Monitoring did start for: %@", buf, 0xCu);
     }
 
     memset(buf, 0, sizeof(buf));
     v15 = 0;
-    v9 = [v7 identifier];
-    v10 = v9;
-    sub_10000501C(buf, [v9 UTF8String]);
+    identifier = [regionCopy identifier];
+    v10 = identifier;
+    sub_10000501C(buf, [identifier UTF8String]);
 
     ptr = self->_fDelegate.__ptr_;
     if (SHIBYTE(v15) < 0)
@@ -375,23 +375,23 @@
   }
 }
 
-- (void)locationManager:(id)a3 monitoringDidFailForRegion:(id)a4 withError:(id)a5
+- (void)locationManager:(id)manager monitoringDidFailForRegion:(id)region withError:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9)
+  managerCopy = manager;
+  regionCopy = region;
+  errorCopy = error;
+  if (regionCopy)
   {
     memset(buf, 0, sizeof(buf));
     v18 = 0;
-    v11 = [v9 identifier];
-    sub_10000501C(buf, [v11 UTF8String]);
+    identifier = [regionCopy identifier];
+    sub_10000501C(buf, [identifier UTF8String]);
 
     v12 = *qword_101FCADB0;
     if (os_log_type_enabled(*qword_101FCADB0, OS_LOG_TYPE_ERROR))
     {
       *v19 = 138412290;
-      v20 = v10;
+      v20 = errorCopy;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Monitoring failure reason: %@", v19, 0xCu);
     }
 
@@ -430,17 +430,17 @@
   }
 }
 
-- (void)locationManager:(id)a3 didDetermineState:(int64_t)a4 forRegion:(id)a5
+- (void)locationManager:(id)manager didDetermineState:(int64_t)state forRegion:(id)region
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  managerCopy = manager;
+  regionCopy = region;
+  v10 = regionCopy;
+  if (regionCopy)
   {
     memset(v19, 0, sizeof(v19));
     v20 = 0;
-    v11 = [v9 identifier];
-    sub_10000501C(v19, [v11 UTF8String]);
+    identifier = [regionCopy identifier];
+    sub_10000501C(v19, [identifier UTF8String]);
 
     v12 = *qword_101FCADB0;
     if (os_log_type_enabled(*qword_101FCADB0, OS_LOG_TYPE_DEFAULT))
@@ -448,7 +448,7 @@
       *buf = 138412546;
       v22 = v10;
       v23 = 2048;
-      v24 = a4;
+      stateCopy = state;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "#I Monitoring state determined for %@ : %ld", buf, 0x16u);
     }
 
@@ -464,7 +464,7 @@
       v18 = v20;
     }
 
-    if (a4 == 1)
+    if (state == 1)
     {
       v15 = 2;
     }
@@ -474,7 +474,7 @@
       v15 = 1;
     }
 
-    if (a4 == 2)
+    if (state == 2)
     {
       v16 = 3;
     }
@@ -507,17 +507,17 @@
   }
 }
 
-- (void)locationManager:(id)a3 didEnterRegion:(id)a4
+- (void)locationManager:(id)manager didEnterRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  managerCopy = manager;
+  regionCopy = region;
+  v8 = regionCopy;
+  if (regionCopy)
   {
     memset(buf, 0, sizeof(buf));
     v16 = 0;
-    v9 = [v7 identifier];
-    sub_10000501C(buf, [v9 UTF8String]);
+    identifier = [regionCopy identifier];
+    sub_10000501C(buf, [identifier UTF8String]);
 
     v10 = *qword_101FCADB0;
     if (os_log_type_enabled(*qword_101FCADB0, OS_LOG_TYPE_ERROR))
@@ -562,17 +562,17 @@
   }
 }
 
-- (void)locationManager:(id)a3 didExitRegion:(id)a4
+- (void)locationManager:(id)manager didExitRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  managerCopy = manager;
+  regionCopy = region;
+  v8 = regionCopy;
+  if (regionCopy)
   {
     memset(buf, 0, sizeof(buf));
     v16 = 0;
-    v9 = [v7 identifier];
-    sub_10000501C(buf, [v9 UTF8String]);
+    identifier = [regionCopy identifier];
+    sub_10000501C(buf, [identifier UTF8String]);
 
     v10 = *qword_101FCADB0;
     if (os_log_type_enabled(*qword_101FCADB0, OS_LOG_TYPE_ERROR))
@@ -617,10 +617,10 @@
   }
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v6 = a3;
-  if (a4 <= 2)
+  managerCopy = manager;
+  if (status <= 2)
   {
     v7 = *qword_101FCADB0;
     if (os_log_type_enabled(*qword_101FCADB0, OS_LOG_TYPE_ERROR))
@@ -633,26 +633,26 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v5 = *qword_101FCADB0;
   if (os_log_type_enabled(*qword_101FCADB0, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = a4;
+    errorCopy = error;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "Monitoring failure reason: %@", &v6, 0xCu);
   }
 }
 
-- (void)stopGeofence:(id)a3
+- (void)stopGeofence:(id)geofence
 {
-  v4 = a3;
+  geofenceCopy = geofence;
   fLocationManager = self->_fLocationManager;
   if (fLocationManager)
   {
-    if (v4)
+    if (geofenceCopy)
     {
-      [(CLLocationManager *)fLocationManager stopMonitoringForRegion:v4];
+      [(CLLocationManager *)fLocationManager stopMonitoringForRegion:geofenceCopy];
     }
   }
 
@@ -670,15 +670,15 @@
 - (void)resetMonitoredRegions
 {
   memset(v18, 0, sizeof(v18));
-  v3 = [(CLLocationManager *)self->_fLocationManager monitoredRegions];
-  v4 = v3;
-  if (v3)
+  monitoredRegions = [(CLLocationManager *)self->_fLocationManager monitoredRegions];
+  v4 = monitoredRegions;
+  if (monitoredRegions)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = monitoredRegions;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v6)
     {
@@ -733,10 +733,10 @@
 - (shared_ptr<WacGeoCoordinateType>)getCurrentLocation
 {
   v3 = v2;
-  v4 = [(CLLocationManager *)self->_fLocationManager location];
+  location = [(CLLocationManager *)self->_fLocationManager location];
   *v3 = 0;
   v3[1] = 0;
-  if (v4)
+  if (location)
   {
     operator new();
   }
@@ -761,10 +761,10 @@
   return result;
 }
 
-- (void)setFDelegate:(shared_ptr<LocationDelegateInterface>)a3
+- (void)setFDelegate:(shared_ptr<LocationDelegateInterface>)delegate
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *delegate.__ptr_;
+  v3 = *(delegate.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);
@@ -791,12 +791,12 @@
   return fObj;
 }
 
-- (void)setFQueue:(queue)a3
+- (void)setFQueue:(queue)queue
 {
-  v4 = *a3.fObj.fObj;
-  if (*a3.fObj.fObj)
+  v4 = *queue.fObj.fObj;
+  if (*queue.fObj.fObj)
   {
-    dispatch_retain(*a3.fObj.fObj);
+    dispatch_retain(*queue.fObj.fObj);
   }
 
   fObj = self->_fQueue.fObj.fObj;

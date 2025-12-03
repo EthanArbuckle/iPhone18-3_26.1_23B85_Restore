@@ -9,13 +9,13 @@
 {
   v10.receiver = self;
   v10.super_class = BCSTorchButtonViewAccessibility;
-  v3 = [(BCSTorchButtonViewAccessibility *)&v10 accessibilityTraits];
+  accessibilityTraits = [(BCSTorchButtonViewAccessibility *)&v10 accessibilityTraits];
   v4 = *MEMORY[0x29EDC75A8];
   objc_opt_class();
   v5 = [(BCSTorchButtonViewAccessibility *)self safeValueForKey:@"_torchButton"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = (v4 | v3 | *MEMORY[0x29EDC7F70]) & ~*MEMORY[0x29EDC7FC0];
+  v7 = (v4 | accessibilityTraits | *MEMORY[0x29EDC7F70]) & ~*MEMORY[0x29EDC7FC0];
   if ([v6 isEnabled])
   {
     v8 = 0;

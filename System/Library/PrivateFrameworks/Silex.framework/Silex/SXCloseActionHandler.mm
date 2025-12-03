@@ -1,13 +1,13 @@
 @interface SXCloseActionHandler
-- (void)handleCloseActionOnPresenter:(id)a3;
+- (void)handleCloseActionOnPresenter:(id)presenter;
 @end
 
 @implementation SXCloseActionHandler
 
-- (void)handleCloseActionOnPresenter:(id)a3
+- (void)handleCloseActionOnPresenter:(id)presenter
 {
-  v3 = [a3 controller];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  controller = [presenter controller];
+  [controller dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

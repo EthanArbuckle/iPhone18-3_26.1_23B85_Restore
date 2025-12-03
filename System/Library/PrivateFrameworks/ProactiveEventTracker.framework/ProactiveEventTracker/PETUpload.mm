@@ -1,24 +1,24 @@
 @interface PETUpload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAggregatedMessages:(id)a3;
-- (void)addUnaggregatedMessages:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAggregatedMessages:(id)messages;
+- (void)addUnaggregatedMessages:(id)messages;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PETUpload
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   metadata = self->_metadata;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (metadata)
   {
     if (v6)
@@ -36,7 +36,7 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -64,7 +64,7 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 5);
+  v12 = *(fromCopy + 5);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
@@ -88,18 +88,18 @@
     while (v14);
   }
 
-  if (*(v4 + 52))
+  if (*(fromCopy + 52))
   {
-    self->_isCompressed = *(v4 + 48);
+    self->_isCompressed = *(fromCopy + 48);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PETUpload *)self setCompressedData:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PETUpload *)self setCompressedMessages:?];
   }
@@ -127,16 +127,16 @@
   return v7 ^ v8 ^ [(NSData *)self->_compressedMessages hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
   metadata = self->_metadata;
-  if (metadata | *(v4 + 4))
+  if (metadata | *(equalCopy + 4))
   {
     if (![(PETMetadata *)metadata isEqual:?])
     {
@@ -145,7 +145,7 @@
   }
 
   aggregatedMessages = self->_aggregatedMessages;
-  if (aggregatedMessages | *(v4 + 1))
+  if (aggregatedMessages | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)aggregatedMessages isEqual:?])
     {
@@ -154,7 +154,7 @@
   }
 
   unaggregatedMessages = self->_unaggregatedMessages;
-  if (unaggregatedMessages | *(v4 + 5))
+  if (unaggregatedMessages | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)unaggregatedMessages isEqual:?])
     {
@@ -162,18 +162,18 @@
     }
   }
 
-  v8 = *(v4 + 52);
+  v8 = *(equalCopy + 52);
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0)
+    if ((*(equalCopy + 52) & 1) == 0)
     {
       goto LABEL_15;
     }
 
-    v8 = *(v4 + 48);
+    v8 = *(equalCopy + 48);
     if (self->_isCompressed)
     {
-      if (*(v4 + 48))
+      if (*(equalCopy + 48))
       {
         goto LABEL_10;
       }
@@ -191,13 +191,13 @@ LABEL_15:
 
 LABEL_10:
   compressedData = self->_compressedData;
-  if (compressedData | *(v4 + 2) && ![(NSData *)compressedData isEqual:?])
+  if (compressedData | *(equalCopy + 2) && ![(NSData *)compressedData isEqual:?])
   {
     goto LABEL_15;
   }
 
   compressedMessages = self->_compressedMessages;
-  if (compressedMessages | *(v4 + 3))
+  if (compressedMessages | *(equalCopy + 3))
   {
     v11 = [(NSData *)compressedMessages isEqual:?];
   }
@@ -212,11 +212,11 @@ LABEL_16:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PETMetadata *)self->_metadata copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PETMetadata *)self->_metadata copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -240,7 +240,7 @@ LABEL_16:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v30 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v30 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addAggregatedMessages:v13];
 
         ++v12;
@@ -273,7 +273,7 @@ LABEL_16:
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v26 + 1) + 8 * v18) copyWithZone:{a3, v26}];
+        v19 = [*(*(&v26 + 1) + 8 * v18) copyWithZone:{zone, v26}];
         [v5 addUnaggregatedMessages:v19];
 
         ++v18;
@@ -292,11 +292,11 @@ LABEL_16:
     *(v5 + 52) |= 1u;
   }
 
-  v20 = [(NSData *)self->_compressedData copyWithZone:a3, v26];
+  v20 = [(NSData *)self->_compressedData copyWithZone:zone, v26];
   v21 = *(v5 + 16);
   *(v5 + 16) = v20;
 
-  v22 = [(NSData *)self->_compressedMessages copyWithZone:a3];
+  v22 = [(NSData *)self->_compressedMessages copyWithZone:zone];
   v23 = *(v5 + 24);
   *(v5 + 24) = v22;
 
@@ -304,68 +304,68 @@ LABEL_16:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v13 = a3;
+  toCopy = to;
   if (self->_metadata)
   {
-    [v13 setMetadata:?];
+    [toCopy setMetadata:?];
   }
 
   if ([(PETUpload *)self aggregatedMessagesCount])
   {
-    [v13 clearAggregatedMessages];
-    v4 = [(PETUpload *)self aggregatedMessagesCount];
-    if (v4)
+    [toCopy clearAggregatedMessages];
+    aggregatedMessagesCount = [(PETUpload *)self aggregatedMessagesCount];
+    if (aggregatedMessagesCount)
     {
-      v5 = v4;
+      v5 = aggregatedMessagesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PETUpload *)self aggregatedMessagesAtIndex:i];
-        [v13 addAggregatedMessages:v7];
+        [toCopy addAggregatedMessages:v7];
       }
     }
   }
 
   if ([(PETUpload *)self unaggregatedMessagesCount])
   {
-    [v13 clearUnaggregatedMessages];
-    v8 = [(PETUpload *)self unaggregatedMessagesCount];
-    if (v8)
+    [toCopy clearUnaggregatedMessages];
+    unaggregatedMessagesCount = [(PETUpload *)self unaggregatedMessagesCount];
+    if (unaggregatedMessagesCount)
     {
-      v9 = v8;
+      v9 = unaggregatedMessagesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PETUpload *)self unaggregatedMessagesAtIndex:j];
-        [v13 addUnaggregatedMessages:v11];
+        [toCopy addUnaggregatedMessages:v11];
       }
     }
   }
 
-  v12 = v13;
+  v12 = toCopy;
   if (*&self->_has)
   {
-    v13[48] = self->_isCompressed;
-    v13[52] |= 1u;
+    toCopy[48] = self->_isCompressed;
+    toCopy[52] |= 1u;
   }
 
   if (self->_compressedData)
   {
-    [v13 setCompressedData:?];
-    v12 = v13;
+    [toCopy setCompressedData:?];
+    v12 = toCopy;
   }
 
   if (self->_compressedMessages)
   {
-    [v13 setCompressedMessages:?];
-    v12 = v13;
+    [toCopy setCompressedMessages:?];
+    v12 = toCopy;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_metadata)
   {
     PBDataWriterWriteSubmessage();
@@ -457,12 +457,12 @@ LABEL_16:
 - (id)dictionaryRepresentation
 {
   v35 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   metadata = self->_metadata;
   if (metadata)
   {
-    v5 = [(PETMetadata *)metadata dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"metadata"];
+    dictionaryRepresentation = [(PETMetadata *)metadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"metadata"];
   }
 
   if ([(NSMutableArray *)self->_aggregatedMessages count])
@@ -487,8 +487,8 @@ LABEL_16:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v29 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -497,7 +497,7 @@ LABEL_16:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"aggregated_messages"];
+    [dictionary setObject:v6 forKey:@"aggregated_messages"];
   }
 
   if ([(NSMutableArray *)self->_unaggregatedMessages count])
@@ -522,8 +522,8 @@ LABEL_16:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v25 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
@@ -532,30 +532,30 @@ LABEL_16:
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"unaggregated_messages"];
+    [dictionary setObject:v13 forKey:@"unaggregated_messages"];
   }
 
   if (*&self->_has)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:self->_isCompressed];
-    [v3 setObject:v20 forKey:@"is_compressed"];
+    [dictionary setObject:v20 forKey:@"is_compressed"];
   }
 
   compressedData = self->_compressedData;
   if (compressedData)
   {
-    [v3 setObject:compressedData forKey:@"compressed_data"];
+    [dictionary setObject:compressedData forKey:@"compressed_data"];
   }
 
   compressedMessages = self->_compressedMessages;
   if (compressedMessages)
   {
-    [v3 setObject:compressedMessages forKey:@"compressed_messages"];
+    [dictionary setObject:compressedMessages forKey:@"compressed_messages"];
   }
 
   v23 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -564,46 +564,46 @@ LABEL_16:
   v8.receiver = self;
   v8.super_class = PETUpload;
   v4 = [(PETUpload *)&v8 description];
-  v5 = [(PETUpload *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PETUpload *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addUnaggregatedMessages:(id)a3
+- (void)addUnaggregatedMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   unaggregatedMessages = self->_unaggregatedMessages;
-  v8 = v4;
+  v8 = messagesCopy;
   if (!unaggregatedMessages)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_unaggregatedMessages;
     self->_unaggregatedMessages = v6;
 
-    v4 = v8;
+    messagesCopy = v8;
     unaggregatedMessages = self->_unaggregatedMessages;
   }
 
-  [(NSMutableArray *)unaggregatedMessages addObject:v4];
+  [(NSMutableArray *)unaggregatedMessages addObject:messagesCopy];
 }
 
-- (void)addAggregatedMessages:(id)a3
+- (void)addAggregatedMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   aggregatedMessages = self->_aggregatedMessages;
-  v8 = v4;
+  v8 = messagesCopy;
   if (!aggregatedMessages)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_aggregatedMessages;
     self->_aggregatedMessages = v6;
 
-    v4 = v8;
+    messagesCopy = v8;
     aggregatedMessages = self->_aggregatedMessages;
   }
 
-  [(NSMutableArray *)aggregatedMessages addObject:v4];
+  [(NSMutableArray *)aggregatedMessages addObject:messagesCopy];
 }
 
 @end

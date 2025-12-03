@@ -1,25 +1,25 @@
 @interface HVSpotlightDeletionRequest
-+ (id)_hashArrayForBundleIdentifier:(void *)a3 xIdentifier:(int)a4 typeOfX:(void *)a5 inBloomFilter:(void *)a6 hashArrayForReuse:;
-+ (void)addDeletableContentWithBundleIdentifier:(id)a3 domainIdentifier:(id)a4 uniqueIdentifier:(id)a5 toBloomFilter:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)matchesBloomFilter:(id)a3;
-- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)a3;
-- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)a3 domainSelection:(id)a4;
-- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)a3 purgedUniqueIdentifiers:(id)a4;
-- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4;
-- (HVSpotlightDeletionRequest)initWithCoder:(id)a3;
-- (id)copyWithBundleIdentifier:(id)a3;
++ (id)_hashArrayForBundleIdentifier:(void *)identifier xIdentifier:(int)xIdentifier typeOfX:(void *)x inBloomFilter:(void *)filter hashArrayForReuse:;
++ (void)addDeletableContentWithBundleIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier uniqueIdentifier:(id)uniqueIdentifier toBloomFilter:(id)filter;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)matchesBloomFilter:(id)filter;
+- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)identifier;
+- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)identifier domainSelection:(id)selection;
+- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)identifier purgedUniqueIdentifiers:(id)identifiers;
+- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers;
+- (HVSpotlightDeletionRequest)initWithCoder:(id)coder;
+- (id)copyWithBundleIdentifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)accessCriteriaUsingBundleIdentifierBlock:(id)a3 domainSelectionBlock:(id)a4 incontrovertiblyDeletedUniqueIdentifiersBlock:(id)a5 purgedUniqueIdentifiersBlock:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (void)accessCriteriaUsingBundleIdentifierBlock:(id)block domainSelectionBlock:(id)selectionBlock incontrovertiblyDeletedUniqueIdentifiersBlock:(id)identifiersBlock purgedUniqueIdentifiersBlock:(id)uniqueIdentifiersBlock;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HVSpotlightDeletionRequest
 
-- (id)copyWithBundleIdentifier:(id)a3
+- (id)copyWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -31,7 +31,7 @@
   v17[2] = __55__HVSpotlightDeletionRequest_copyWithBundleIdentifier___block_invoke;
   v17[3] = &unk_2789692E8;
   v19 = &v20;
-  v18 = v4;
+  v18 = identifierCopy;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__HVSpotlightDeletionRequest_copyWithBundleIdentifier___block_invoke_2;
@@ -98,17 +98,17 @@ void __55__HVSpotlightDeletionRequest_copyWithBundleIdentifier___block_invoke_4(
   *(v6 + 40) = v5;
 }
 
-- (HVSpotlightDeletionRequest)initWithCoder:(id)a3
+- (HVSpotlightDeletionRequest)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"b"];
+  coderCopy = coder;
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"b"];
   if (!v6)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HVSpotlightDeletionRequest.m" lineNumber:273 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HVSpotlightDeletionRequest.m" lineNumber:273 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
   }
 
-  v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
   if (v7)
   {
     v8 = [(HVSpotlightDeletionRequest *)self initWithBundleIdentifier:v6 domainSelection:v7];
@@ -116,11 +116,11 @@ void __55__HVSpotlightDeletionRequest_copyWithBundleIdentifier___block_invoke_4(
 
   else
   {
-    v9 = [v5 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"u"];
+    v9 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"u"];
     if (v9)
     {
       v10 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v9];
-      if ([v5 decodeBoolForKey:@"p"])
+      if ([coderCopy decodeBoolForKey:@"p"])
       {
         v11 = [(HVSpotlightDeletionRequest *)self initWithBundleIdentifier:v6 purgedUniqueIdentifiers:v10];
       }
@@ -142,16 +142,16 @@ void __55__HVSpotlightDeletionRequest_copyWithBundleIdentifier___block_invoke_4(
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v6 = a3;
-  [v6 encodeObject:bundleIdentifier forKey:@"b"];
-  [v6 encodeObject:self->_domainSelection forKey:@"d"];
-  v5 = [(NSSet *)self->_uniqueIdentifiers allObjects];
-  [v6 encodeObject:v5 forKey:@"u"];
+  coderCopy = coder;
+  [coderCopy encodeObject:bundleIdentifier forKey:@"b"];
+  [coderCopy encodeObject:self->_domainSelection forKey:@"d"];
+  allObjects = [(NSSet *)self->_uniqueIdentifiers allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"u"];
 
-  [v6 encodeBool:self->_isPurge forKey:@"p"];
+  [coderCopy encodeBool:self->_isPurge forKey:@"p"];
 }
 
 - (id)description
@@ -248,18 +248,18 @@ void __41__HVSpotlightDeletionRequest_description__block_invoke_4(uint64_t a1, v
   return self->_isPurge - (v5 - v4 + 32 * v4) + 32 * (v5 - v4 + 32 * v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -335,14 +335,14 @@ LABEL_21:
   return self;
 }
 
-- (BOOL)matchesBloomFilter:(id)a3
+- (BOOL)matchesBloomFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(HVSpotlightDeletionRequest *)self bundleIdentifier];
-  v7 = [HVSpotlightDeletionRequest _hashArrayForBundleIdentifier:v6 xIdentifier:&stru_28474C1D0 typeOfX:98 inBloomFilter:v4 hashArrayForReuse:0];
+  bundleIdentifier = [(HVSpotlightDeletionRequest *)self bundleIdentifier];
+  v7 = [HVSpotlightDeletionRequest _hashArrayForBundleIdentifier:bundleIdentifier xIdentifier:&stru_28474C1D0 typeOfX:98 inBloomFilter:filterCopy hashArrayForReuse:0];
 
-  if ([v4 getWithHashes:v7])
+  if ([filterCopy getWithHashes:v7])
   {
     v19 = 0;
     v20 = &v19;
@@ -358,7 +358,7 @@ LABEL_21:
     v14[2] = __49__HVSpotlightDeletionRequest_matchesBloomFilter___block_invoke_2;
     v14[3] = &unk_278968A40;
     v17 = &v19;
-    v15 = v4;
+    v15 = filterCopy;
     v16 = v7;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
@@ -382,11 +382,11 @@ LABEL_21:
   return v8 & 1;
 }
 
-+ (id)_hashArrayForBundleIdentifier:(void *)a3 xIdentifier:(int)a4 typeOfX:(void *)a5 inBloomFilter:(void *)a6 hashArrayForReuse:
++ (id)_hashArrayForBundleIdentifier:(void *)identifier xIdentifier:(int)xIdentifier typeOfX:(void *)x inBloomFilter:(void *)filter hashArrayForReuse:
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
+  xCopy = x;
+  filterCopy = filter;
+  identifierCopy = identifier;
   v13 = a2;
   objc_opt_self();
   v14 = objc_autoreleasePoolPush();
@@ -394,10 +394,10 @@ LABEL_21:
 
   v16 = _PASRepairString();
 
-  v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@\n%c\n%@", v15, a4, v16];
+  v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%@\n%c\n%@", v15, xIdentifier, v16];
   v18 = _PASRepairString();
 
-  v19 = [v10 computeHashesForString:v18 reuse:v11];
+  v19 = [xCopy computeHashesForString:v18 reuse:filterCopy];
 
   objc_autoreleasePoolPop(v14);
 
@@ -504,15 +504,15 @@ LABEL_11:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accessCriteriaUsingBundleIdentifierBlock:(id)a3 domainSelectionBlock:(id)a4 incontrovertiblyDeletedUniqueIdentifiersBlock:(id)a5 purgedUniqueIdentifiersBlock:(id)a6
+- (void)accessCriteriaUsingBundleIdentifierBlock:(id)block domainSelectionBlock:(id)selectionBlock incontrovertiblyDeletedUniqueIdentifiersBlock:(id)identifiersBlock purgedUniqueIdentifiersBlock:(id)uniqueIdentifiersBlock
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  blockCopy = block;
+  selectionBlockCopy = selectionBlock;
+  identifiersBlockCopy = identifiersBlock;
+  uniqueIdentifiersBlockCopy = uniqueIdentifiersBlock;
   if (self->_domainSelection)
   {
-    v10[2](v10, self->_bundleIdentifier);
+    selectionBlockCopy[2](selectionBlockCopy, self->_bundleIdentifier);
   }
 
   else if (self->_uniqueIdentifiers)
@@ -524,13 +524,13 @@ LABEL_11:
 
   else
   {
-    v14[2](v14, self->_bundleIdentifier);
+    blockCopy[2](blockCopy, self->_bundleIdentifier);
   }
 }
 
-- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)a3 purgedUniqueIdentifiers:(id)a4
+- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)identifier purgedUniqueIdentifiers:(id)identifiers
 {
-  result = [(HVSpotlightDeletionRequest *)self initWithBundleIdentifier:a3 uniqueIdentifiers:a4];
+  result = [(HVSpotlightDeletionRequest *)self initWithBundleIdentifier:identifier uniqueIdentifiers:identifiers];
   if (result)
   {
     result->_isPurge = 1;
@@ -539,19 +539,19 @@ LABEL_11:
   return result;
 }
 
-- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)a3 uniqueIdentifiers:(id)a4
+- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)identifier uniqueIdentifiers:(id)identifiers
 {
-  v7 = a4;
-  v8 = [(HVSpotlightDeletionRequest *)self initWithBundleIdentifier:a3];
+  identifiersCopy = identifiers;
+  v8 = [(HVSpotlightDeletionRequest *)self initWithBundleIdentifier:identifier];
   if (v8)
   {
-    if (!v7)
+    if (!identifiersCopy)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v8 file:@"HVSpotlightDeletionRequest.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"uniqueIdentifiers"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"HVSpotlightDeletionRequest.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"uniqueIdentifiers"}];
     }
 
-    v9 = [v7 copy];
+    v9 = [identifiersCopy copy];
     uniqueIdentifiers = v8->_uniqueIdentifiers;
     v8->_uniqueIdentifiers = v9;
   }
@@ -559,19 +559,19 @@ LABEL_11:
   return v8;
 }
 
-- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)a3 domainSelection:(id)a4
+- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)identifier domainSelection:(id)selection
 {
-  v7 = a4;
-  v8 = [(HVSpotlightDeletionRequest *)self initWithBundleIdentifier:a3];
+  selectionCopy = selection;
+  v8 = [(HVSpotlightDeletionRequest *)self initWithBundleIdentifier:identifier];
   if (v8)
   {
-    if (!v7)
+    if (!selectionCopy)
     {
-      v12 = [MEMORY[0x277CCA890] currentHandler];
-      [v12 handleFailureInMethod:a2 object:v8 file:@"HVSpotlightDeletionRequest.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"domainSelection"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v8 file:@"HVSpotlightDeletionRequest.m" lineNumber:45 description:{@"Invalid parameter not satisfying: %@", @"domainSelection"}];
     }
 
-    v9 = [v7 copy];
+    v9 = [selectionCopy copy];
     domainSelection = v8->_domainSelection;
     v8->_domainSelection = v9;
   }
@@ -579,20 +579,20 @@ LABEL_11:
   return v8;
 }
 
-- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)a3
+- (HVSpotlightDeletionRequest)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (self && (v12.receiver = self, v12.super_class = HVSpotlightDeletionRequest, (v6 = [(HVSpotlightDeletionRequest *)&v12 init]) != 0))
   {
     v7 = v6;
     v6->_isPurge = 0;
-    if (!v5)
+    if (!identifierCopy)
     {
-      v11 = [MEMORY[0x277CCA890] currentHandler];
-      [v11 handleFailureInMethod:a2 object:v7 file:@"HVSpotlightDeletionRequest.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"HVSpotlightDeletionRequest.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
     }
 
-    v8 = [v5 copy];
+    v8 = [identifierCopy copy];
     bundleIdentifier = v7->_bundleIdentifier;
     v7->_bundleIdentifier = v8;
   }
@@ -605,37 +605,37 @@ LABEL_11:
   return v7;
 }
 
-+ (void)addDeletableContentWithBundleIdentifier:(id)a3 domainIdentifier:(id)a4 uniqueIdentifier:(id)a5 toBloomFilter:(id)a6
++ (void)addDeletableContentWithBundleIdentifier:(id)identifier domainIdentifier:(id)domainIdentifier uniqueIdentifier:(id)uniqueIdentifier toBloomFilter:(id)filter
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  domainIdentifierCopy = domainIdentifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  filterCopy = filter;
   v13 = objc_autoreleasePoolPush();
-  v14 = [(HVSpotlightDeletionRequest *)a1 _hashArrayForBundleIdentifier:v20 xIdentifier:&stru_28474C1D0 typeOfX:98 inBloomFilter:v12 hashArrayForReuse:0];
-  [v12 setWithHashes:v14];
-  v15 = [(HVSpotlightDeletionRequest *)a1 _hashArrayForBundleIdentifier:v20 xIdentifier:v11 typeOfX:117 inBloomFilter:v12 hashArrayForReuse:v14];
+  v14 = [(HVSpotlightDeletionRequest *)self _hashArrayForBundleIdentifier:identifierCopy xIdentifier:&stru_28474C1D0 typeOfX:98 inBloomFilter:filterCopy hashArrayForReuse:0];
+  [filterCopy setWithHashes:v14];
+  v15 = [(HVSpotlightDeletionRequest *)self _hashArrayForBundleIdentifier:identifierCopy xIdentifier:uniqueIdentifierCopy typeOfX:117 inBloomFilter:filterCopy hashArrayForReuse:v14];
 
-  [v12 setWithHashes:v15];
-  if (v10)
+  [filterCopy setWithHashes:v15];
+  if (domainIdentifierCopy)
   {
     while (1)
     {
       v16 = v15;
       v17 = objc_autoreleasePoolPush();
-      v15 = [(HVSpotlightDeletionRequest *)a1 _hashArrayForBundleIdentifier:v20 xIdentifier:v10 typeOfX:100 inBloomFilter:v12 hashArrayForReuse:v15];
+      v15 = [(HVSpotlightDeletionRequest *)self _hashArrayForBundleIdentifier:identifierCopy xIdentifier:domainIdentifierCopy typeOfX:100 inBloomFilter:filterCopy hashArrayForReuse:v15];
 
-      [v12 setWithHashes:v15];
-      v18 = [v10 rangeOfString:@"." options:6];
+      [filterCopy setWithHashes:v15];
+      v18 = [domainIdentifierCopy rangeOfString:@"." options:6];
       if (v18 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
       }
 
-      v19 = [v10 substringToIndex:v18];
+      v19 = [domainIdentifierCopy substringToIndex:v18];
 
       objc_autoreleasePoolPop(v17);
-      v10 = v19;
+      domainIdentifierCopy = v19;
       if (!v19)
       {
         goto LABEL_6;

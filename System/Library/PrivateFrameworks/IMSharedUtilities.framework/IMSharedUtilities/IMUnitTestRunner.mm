@@ -1,52 +1,52 @@
 @interface IMUnitTestRunner
-- (BOOL)_loadFrameworksIfNeeded:(id *)a3;
+- (BOOL)_loadFrameworksIfNeeded:(id *)needed;
 - (IMUnitTestRunner)init;
-- (IMUnitTestRunner)initWithLogger:(id)a3 bundleLoader:(id)a4;
-- (IMUnitTestRunner)initWithLogger:(id)a3 bundleLoader:(id)a4 frameworkLoader:(id)a5;
+- (IMUnitTestRunner)initWithLogger:(id)logger bundleLoader:(id)loader;
+- (IMUnitTestRunner)initWithLogger:(id)logger bundleLoader:(id)loader frameworkLoader:(id)frameworkLoader;
 - (IMUnitTestRunnerDelegate)delegate;
 - (id)dateFormatter;
-- (id)descriptionFromResult:(id)a3;
-- (id)pathToPluginBundle:(id)a3;
-- (id)runTestsInBundleAtPath:(id)a3 error:(id *)a4;
-- (id)runTestsInBundleNamed:(id)a3 error:(id *)a4;
-- (int64_t)runTestsInBundleAtPath:(id)a3;
-- (void)log:(id)a3;
-- (void)testCase:(id)a3 didFailWithDescription:(id)a4 inFile:(id)a5 atLine:(unint64_t)a6;
-- (void)testCaseDidFinish:(id)a3;
-- (void)testCaseWillStart:(id)a3;
-- (void)testLogWithFormat:(id)a3;
-- (void)testSuite:(id)a3 didFailWithDescription:(id)a4 inFile:(id)a5 atLine:(unint64_t)a6;
-- (void)testSuiteDidFinish:(id)a3;
-- (void)testSuiteWillStart:(id)a3;
+- (id)descriptionFromResult:(id)result;
+- (id)pathToPluginBundle:(id)bundle;
+- (id)runTestsInBundleAtPath:(id)path error:(id *)error;
+- (id)runTestsInBundleNamed:(id)named error:(id *)error;
+- (int64_t)runTestsInBundleAtPath:(id)path;
+- (void)log:(id)log;
+- (void)testCase:(id)case didFailWithDescription:(id)description inFile:(id)file atLine:(unint64_t)line;
+- (void)testCaseDidFinish:(id)finish;
+- (void)testCaseWillStart:(id)start;
+- (void)testLogWithFormat:(id)format;
+- (void)testSuite:(id)suite didFailWithDescription:(id)description inFile:(id)file atLine:(unint64_t)line;
+- (void)testSuiteDidFinish:(id)finish;
+- (void)testSuiteWillStart:(id)start;
 @end
 
 @implementation IMUnitTestRunner
 
-- (IMUnitTestRunner)initWithLogger:(id)a3 bundleLoader:(id)a4
+- (IMUnitTestRunner)initWithLogger:(id)logger bundleLoader:(id)loader
 {
-  v7 = a3;
-  v8 = a4;
+  loggerCopy = logger;
+  loaderCopy = loader;
   v12.receiver = self;
   v12.super_class = IMUnitTestRunner;
   v9 = [(IMUnitTestRunner *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_logger, a3);
-    objc_storeStrong(&v10->_bundleLoader, a4);
+    objc_storeStrong(&v9->_logger, logger);
+    objc_storeStrong(&v10->_bundleLoader, loader);
   }
 
   return v10;
 }
 
-- (IMUnitTestRunner)initWithLogger:(id)a3 bundleLoader:(id)a4 frameworkLoader:(id)a5
+- (IMUnitTestRunner)initWithLogger:(id)logger bundleLoader:(id)loader frameworkLoader:(id)frameworkLoader
 {
-  v9 = a5;
-  v10 = [(IMUnitTestRunner *)self initWithLogger:a3 bundleLoader:a4];
+  frameworkLoaderCopy = frameworkLoader;
+  v10 = [(IMUnitTestRunner *)self initWithLogger:logger bundleLoader:loader];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_frameworkLoader, a5);
+    objc_storeStrong(&v10->_frameworkLoader, frameworkLoader);
   }
 
   return v11;
@@ -62,29 +62,29 @@
   return v6;
 }
 
-- (void)testLogWithFormat:(id)a3
+- (void)testLogWithFormat:(id)format
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v10];
+  formatCopy = format;
+  v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v10];
 
-  v7 = [(IMUnitTestRunner *)self delegate];
+  delegate = [(IMUnitTestRunner *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(IMUnitTestRunner *)self delegate];
-    [v9 unitTestRunner:self didReceiveOutput:v6];
+    delegate2 = [(IMUnitTestRunner *)self delegate];
+    [delegate2 unitTestRunner:self didReceiveOutput:v6];
   }
 
   else
   {
-    v9 = [(IMUnitTestRunner *)self logger];
-    [v9 writeOutputToStdout:v6];
+    delegate2 = [(IMUnitTestRunner *)self logger];
+    [delegate2 writeOutputToStdout:v6];
   }
 }
 
-- (BOOL)_loadFrameworksIfNeeded:(id *)a3
+- (BOOL)_loadFrameworksIfNeeded:(id *)needed
 {
   if (MEMORY[0x1AC570AA0](@"XCTestSuite", @"/Developer/Library/Frameworks/XCTest.framework"))
   {
@@ -94,14 +94,14 @@
 
   else
   {
-    v6 = [(IMUnitTestRunner *)self frameworkLoader];
+    frameworkLoader = [(IMUnitTestRunner *)self frameworkLoader];
 
-    if (v6)
+    if (frameworkLoader)
     {
       [(IMUnitTestRunner *)self testLogWithFormat:@"Attempting to load XCTest frameworks..."];
-      v7 = [(IMUnitTestRunner *)self frameworkLoader];
+      frameworkLoader2 = [(IMUnitTestRunner *)self frameworkLoader];
       v11 = 0;
-      v5 = [v7 loadTestFrameworks:&v11];
+      v5 = [frameworkLoader2 loadTestFrameworks:&v11];
       v8 = v11;
 
       if (v5)
@@ -117,10 +117,10 @@
         }
 
         [(IMUnitTestRunner *)self testLogWithFormat:@"Failed to load test frameworks with error: %@", v8];
-        if (a3)
+        if (needed)
         {
           v9 = v8;
-          *a3 = v8;
+          *needed = v8;
         }
       }
     }
@@ -128,10 +128,10 @@
     else
     {
       [(IMUnitTestRunner *)self testLogWithFormat:@"Framework loader is nil, unable to proceed"];
-      if (a3)
+      if (needed)
       {
         [MEMORY[0x1E696ABC0] errorWithDomain:@"IMUnitTestRunnerErrorDomain" code:1 userInfo:0];
-        *a3 = v5 = 0;
+        *needed = v5 = 0;
       }
 
       else
@@ -144,55 +144,55 @@
   return v5;
 }
 
-- (id)runTestsInBundleAtPath:(id)a3 error:(id *)a4
+- (id)runTestsInBundleAtPath:(id)path error:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(IMUnitTestRunner *)self testLogWithFormat:@"Starting tests for bundle at path: %@", v6];
+  pathCopy = path;
+  [(IMUnitTestRunner *)self testLogWithFormat:@"Starting tests for bundle at path: %@", pathCopy];
   v52[0] = 0;
   v7 = [(IMUnitTestRunner *)self _loadFrameworksIfNeeded:v52];
   v8 = v52[0];
   if (v7)
   {
-    v9 = MEMORY[0x1AC570AA0](@"XCTestSuite", @"/Developer/Library/Frameworks/XCTest.framework");
+    testRun = MEMORY[0x1AC570AA0](@"XCTestSuite", @"/Developer/Library/Frameworks/XCTest.framework");
     v10 = MEMORY[0x1AC570AA0](@"XCTestObservationCenter", @"/Developer/Library/Frameworks/XCTest.framework");
-    if (v9)
+    if (testRun)
     {
       v11 = v10;
-      v12 = [(IMUnitTestRunner *)self bundleLoader];
+      bundleLoader = [(IMUnitTestRunner *)self bundleLoader];
       v51 = v8;
-      v13 = [v12 loadTestBundle:v6 bundle:0 error:&v51];
+      v13 = [bundleLoader loadTestBundle:pathCopy bundle:0 error:&v51];
       v14 = v51;
 
       if (v13)
       {
-        v15 = [(IMUnitTestRunner *)self delegate];
+        delegate = [(IMUnitTestRunner *)self delegate];
         v16 = objc_opt_respondsToSelector();
 
         if (v16)
         {
-          v17 = [(IMUnitTestRunner *)self delegate];
-          [v17 unitTestRunner:self willRunTestsInBundleAtPath:v6];
+          delegate2 = [(IMUnitTestRunner *)self delegate];
+          [delegate2 unitTestRunner:self willRunTestsInBundleAtPath:pathCopy];
         }
 
-        v46 = [v9 testSuiteForBundlePath:v6];
+        v46 = [testRun testSuiteForBundlePath:pathCopy];
         if (v46)
         {
           if (v11)
           {
-            v18 = [v11 sharedTestObservationCenter];
-            [v18 addTestObserver:self];
+            sharedTestObservationCenter = [v11 sharedTestObservationCenter];
+            [sharedTestObservationCenter addTestObserver:self];
 
-            v19 = [v46 name];
-            [(IMUnitTestRunner *)self testLogWithFormat:@"Starting test suite %@:", v19];
+            name = [v46 name];
+            [(IMUnitTestRunner *)self testLogWithFormat:@"Starting test suite %@:", name];
 
-            v20 = [v46 tests];
-            -[IMUnitTestRunner testLogWithFormat:](self, "testLogWithFormat:", @"Found %ld tests", [v20 count]);
+            tests = [v46 tests];
+            -[IMUnitTestRunner testLogWithFormat:](self, "testLogWithFormat:", @"Found %ld tests", [tests count]);
             v49 = 0u;
             v50 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v21 = v20;
+            v21 = tests;
             v22 = [v21 countByEnumeratingWithState:&v47 objects:v53 count:16];
             if (v22)
             {
@@ -206,8 +206,8 @@
                     objc_enumerationMutation(v21);
                   }
 
-                  v25 = [*(*(&v47 + 1) + 8 * i) name];
-                  [(IMUnitTestRunner *)self testLogWithFormat:@"Test: %@", v25];
+                  name2 = [*(*(&v47 + 1) + 8 * i) name];
+                  [(IMUnitTestRunner *)self testLogWithFormat:@"Test: %@", name2];
                 }
 
                 v22 = [v21 countByEnumeratingWithState:&v47 objects:v53 count:16];
@@ -220,22 +220,22 @@
             [(IMUnitTestRunner *)self testLogWithFormat:@"XCTestSuite testRun class: %@", v26];
 
             [v46 runTest];
-            v9 = [v46 testRun];
-            if (v9)
+            testRun = [v46 testRun];
+            if (testRun)
             {
-              v27 = [(IMUnitTestRunner *)self descriptionFromResult:v9];
-              [(IMUnitTestRunner *)self testLogWithFormat:@"Finished tests for bundle at path: %@, with result: %@", v6, v27];
+              v27 = [(IMUnitTestRunner *)self descriptionFromResult:testRun];
+              [(IMUnitTestRunner *)self testLogWithFormat:@"Finished tests for bundle at path: %@, with result: %@", pathCopy, v27];
 
-              v28 = [(IMUnitTestRunner *)self delegate];
+              delegate3 = [(IMUnitTestRunner *)self delegate];
               v29 = objc_opt_respondsToSelector();
 
               if (v29)
               {
-                v30 = [(IMUnitTestRunner *)self delegate];
-                [v30 unitTestRunner:self didRunTestsInBundleAtPath:v6 results:v9];
+                delegate4 = [(IMUnitTestRunner *)self delegate];
+                [delegate4 unitTestRunner:self didRunTestsInBundleAtPath:pathCopy results:testRun];
               }
 
-              v31 = v9;
+              v31 = testRun;
             }
 
             else
@@ -251,7 +251,7 @@
           {
             [(IMUnitTestRunner *)self testLogWithFormat:@"XCTestObservationCenter is unavailable, all tests failed."];
             [MEMORY[0x1E696ABC0] errorWithDomain:@"IMUnitTestRunnerErrorDomain" code:2 userInfo:0];
-            v9 = 0;
+            testRun = 0;
             v14 = v21 = v14;
           }
 
@@ -265,7 +265,7 @@
 
 LABEL_34:
         v8 = v14;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_36;
         }
@@ -273,13 +273,13 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      v39 = [(IMUnitTestRunner *)self delegate];
+      delegate5 = [(IMUnitTestRunner *)self delegate];
       v40 = objc_opt_respondsToSelector();
 
       if (v40)
       {
-        v41 = [(IMUnitTestRunner *)self delegate];
-        [v41 unitTestRunner:self runningTestsInBundleAtPath:v6 failedWithError:v14];
+        delegate6 = [(IMUnitTestRunner *)self delegate];
+        [delegate6 unitTestRunner:self runningTestsInBundleAtPath:pathCopy failedWithError:v14];
       }
     }
 
@@ -288,38 +288,38 @@ LABEL_34:
       [(IMUnitTestRunner *)self testLogWithFormat:@"XCTest classes not found, tests will not be run"];
       v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"IMUnitTestRunnerErrorDomain" code:2 userInfo:0];
 
-      v36 = [(IMUnitTestRunner *)self delegate];
+      delegate7 = [(IMUnitTestRunner *)self delegate];
       v37 = objc_opt_respondsToSelector();
 
       if (v37)
       {
-        v38 = [(IMUnitTestRunner *)self delegate];
-        [v38 unitTestRunner:self runningTestsInBundleAtPath:v6 failedWithError:v14];
+        delegate8 = [(IMUnitTestRunner *)self delegate];
+        [delegate8 unitTestRunner:self runningTestsInBundleAtPath:pathCopy failedWithError:v14];
       }
     }
 
-    v9 = 0;
+    testRun = 0;
     v35 = 1;
     goto LABEL_34;
   }
 
-  [(IMUnitTestRunner *)self testLogWithFormat:@"Unable to run tests at path: %@", v6];
-  v32 = [(IMUnitTestRunner *)self delegate];
+  [(IMUnitTestRunner *)self testLogWithFormat:@"Unable to run tests at path: %@", pathCopy];
+  delegate9 = [(IMUnitTestRunner *)self delegate];
   v33 = objc_opt_respondsToSelector();
 
   if (v33)
   {
-    v34 = [(IMUnitTestRunner *)self delegate];
-    [v34 unitTestRunner:self runningTestsInBundleAtPath:v6 failedWithError:v8];
+    delegate10 = [(IMUnitTestRunner *)self delegate];
+    [delegate10 unitTestRunner:self runningTestsInBundleAtPath:pathCopy failedWithError:v8];
   }
 
-  v9 = 0;
+  testRun = 0;
   v35 = 1;
-  if (a4)
+  if (error)
   {
 LABEL_35:
     v43 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_36:
@@ -330,17 +330,17 @@ LABEL_36:
 
   else
   {
-    v44 = v9;
+    v44 = testRun;
   }
 
   return v44;
 }
 
-- (int64_t)runTestsInBundleAtPath:(id)a3
+- (int64_t)runTestsInBundleAtPath:(id)path
 {
   v24 = *MEMORY[0x1E69E9840];
   v22 = 0;
-  v4 = [(IMUnitTestRunner *)self runTestsInBundleAtPath:a3 error:&v22];
+  v4 = [(IMUnitTestRunner *)self runTestsInBundleAtPath:path error:&v22];
   v15 = v22;
   [(IMUnitTestRunner *)self testLogWithFormat:&stru_1F1BB91F0];
   [(IMUnitTestRunner *)self logBanner:@"Messages Test Results"];
@@ -384,29 +384,29 @@ LABEL_36:
     while (v7);
   }
 
-  v13 = [v16 totalFailureCount];
-  return v13;
+  totalFailureCount = [v16 totalFailureCount];
+  return totalFailureCount;
 }
 
-- (id)pathToPluginBundle:(id)a3
+- (id)pathToPluginBundle:(id)bundle
 {
   v3 = MEMORY[0x1E696AAE8];
-  v4 = a3;
-  v5 = [v3 mainBundle];
-  v6 = [v5 bundleURL];
-  v7 = [v6 path];
+  bundleCopy = bundle;
+  mainBundle = [v3 mainBundle];
+  bundleURL = [mainBundle bundleURL];
+  path = [bundleURL path];
 
-  v8 = [v7 stringByAppendingPathComponent:@"/Contents/Plugins/"];
+  v8 = [path stringByAppendingPathComponent:@"/Contents/Plugins/"];
 
-  v9 = [v8 stringByAppendingPathComponent:v4];
+  v9 = [v8 stringByAppendingPathComponent:bundleCopy];
 
   return v9;
 }
 
-- (id)runTestsInBundleNamed:(id)a3 error:(id *)a4
+- (id)runTestsInBundleNamed:(id)named error:(id *)error
 {
-  v6 = [(IMUnitTestRunner *)self pathToPluginBundle:a3];
-  v7 = [(IMUnitTestRunner *)self runTestsInBundleAtPath:v6 error:a4];
+  v6 = [(IMUnitTestRunner *)self pathToPluginBundle:named];
+  v7 = [(IMUnitTestRunner *)self runTestsInBundleAtPath:v6 error:error];
 
   return v7;
 }
@@ -423,13 +423,13 @@ LABEL_36:
   return v3;
 }
 
-- (id)descriptionFromResult:(id)a3
+- (id)descriptionFromResult:(id)result
 {
-  if (a3)
+  if (result)
   {
     v20 = MEMORY[0x1E696AEC0];
-    v4 = a3;
-    if ([v4 hasSucceeded])
+    resultCopy = result;
+    if ([resultCopy hasSucceeded])
     {
       v5 = "passed";
     }
@@ -439,12 +439,12 @@ LABEL_36:
       v5 = "failed";
     }
 
-    v6 = [(IMUnitTestRunner *)self dateFormatter];
-    v7 = [v4 stopDate];
-    v8 = [v6 stringFromDate:v7];
-    v9 = [v4 executionCount];
+    dateFormatter = [(IMUnitTestRunner *)self dateFormatter];
+    stopDate = [resultCopy stopDate];
+    v8 = [dateFormatter stringFromDate:stopDate];
+    executionCount = [resultCopy executionCount];
     v10 = "";
-    if ([v4 executionCount] == 1)
+    if ([resultCopy executionCount] == 1)
     {
       v11 = "";
     }
@@ -454,19 +454,19 @@ LABEL_36:
       v11 = "s";
     }
 
-    v12 = [v4 totalFailureCount];
-    if ([v4 totalFailureCount] != 1)
+    totalFailureCount = [resultCopy totalFailureCount];
+    if ([resultCopy totalFailureCount] != 1)
     {
       v10 = "s";
     }
 
-    v13 = [v4 unexpectedExceptionCount];
-    [v4 testDuration];
+    unexpectedExceptionCount = [resultCopy unexpectedExceptionCount];
+    [resultCopy testDuration];
     v15 = v14;
-    [v4 totalDuration];
+    [resultCopy totalDuration];
     v17 = v16;
 
-    v18 = [v20 stringWithFormat:@"Tests %s at %@.\n\t Executed %lu test%s, with %lu failure%s (%lu unexpected) in %.3f (%.3f) seconds\n", v5, v8, v9, v11, v12, v10, v13, v15, v17];
+    v18 = [v20 stringWithFormat:@"Tests %s at %@.\n\t Executed %lu test%s, with %lu failure%s (%lu unexpected) in %.3f (%.3f) seconds\n", v5, v8, executionCount, v11, totalFailureCount, v10, unexpectedExceptionCount, v15, v17];
   }
 
   else
@@ -477,36 +477,36 @@ LABEL_36:
   return v18;
 }
 
-- (void)testSuiteWillStart:(id)a3
+- (void)testSuiteWillStart:(id)start
 {
-  v11 = a3;
-  v4 = [v11 name];
-  v5 = [(IMUnitTestRunner *)self dateFormatter];
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v5 stringFromDate:v6];
-  [(IMUnitTestRunner *)self testLogWithFormat:@"Test Suite '%@' started at %@\n", v4, v7];
+  startCopy = start;
+  name = [startCopy name];
+  dateFormatter = [(IMUnitTestRunner *)self dateFormatter];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [dateFormatter stringFromDate:date];
+  [(IMUnitTestRunner *)self testLogWithFormat:@"Test Suite '%@' started at %@\n", name, v7];
 
-  v8 = [(IMUnitTestRunner *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(IMUnitTestRunner *)self delegate];
+  LOBYTE(dateFormatter) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (dateFormatter)
   {
-    v9 = [(IMUnitTestRunner *)self delegate];
-    v10 = [v11 name];
-    [v9 unitTestRunner:self testSuiteWillStart:v10];
+    delegate2 = [(IMUnitTestRunner *)self delegate];
+    name2 = [startCopy name];
+    [delegate2 unitTestRunner:self testSuiteWillStart:name2];
   }
 }
 
-- (void)testSuite:(id)a3 didFailWithDescription:(id)a4 inFile:(id)a5 atLine:(unint64_t)a6
+- (void)testSuite:(id)suite didFailWithDescription:(id)description inFile:(id)file atLine:(unint64_t)line
 {
-  v25 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
+  suiteCopy = suite;
+  descriptionCopy = description;
+  fileCopy = file;
+  v12 = fileCopy;
   v13 = MEMORY[0x1E696AEC0];
-  if (v11)
+  if (fileCopy)
   {
-    v14 = v11;
+    v14 = fileCopy;
   }
 
   else
@@ -514,61 +514,61 @@ LABEL_36:
     v14 = @"<unknown>";
   }
 
-  if (v11)
+  if (fileCopy)
   {
-    v15 = a6;
+    lineCopy = line;
   }
 
   else
   {
-    v15 = 0;
+    lineCopy = 0;
   }
 
-  v16 = [v25 name];
-  v17 = [v13 stringWithFormat:@"%@:%lu: error: %@ : %@\n", v14, v15, v16, v10];
+  name = [suiteCopy name];
+  descriptionCopy = [v13 stringWithFormat:@"%@:%lu: error: %@ : %@\n", v14, lineCopy, name, descriptionCopy];
 
   failedTests = self->_failedTests;
   if (!failedTests)
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v20 = self->_failedTests;
-    self->_failedTests = v19;
+    self->_failedTests = array;
 
     failedTests = self->_failedTests;
   }
 
-  [(NSMutableArray *)failedTests addObject:v17];
-  [(IMUnitTestRunner *)self testLogWithFormat:@"%@", v17];
-  v21 = [(IMUnitTestRunner *)self delegate];
+  [(NSMutableArray *)failedTests addObject:descriptionCopy];
+  [(IMUnitTestRunner *)self testLogWithFormat:@"%@", descriptionCopy];
+  delegate = [(IMUnitTestRunner *)self delegate];
   v22 = objc_opt_respondsToSelector();
 
   if (v22)
   {
-    v23 = [(IMUnitTestRunner *)self delegate];
-    v24 = [v25 name];
-    [v23 unitTestRunner:self testSuite:v24 didFailWithDescription:v10 inFile:v12 atLine:a6];
+    delegate2 = [(IMUnitTestRunner *)self delegate];
+    name2 = [suiteCopy name];
+    [delegate2 unitTestRunner:self testSuite:name2 didFailWithDescription:descriptionCopy inFile:v12 atLine:line];
   }
 }
 
-- (void)testSuiteDidFinish:(id)a3
+- (void)testSuiteDidFinish:(id)finish
 {
-  v24 = a3;
-  v4 = [v24 testRun];
-  v23 = [v24 name];
-  v5 = [v4 hasSucceeded];
+  finishCopy = finish;
+  testRun = [finishCopy testRun];
+  name = [finishCopy name];
+  hasSucceeded = [testRun hasSucceeded];
   v6 = "failed";
-  if (v5)
+  if (hasSucceeded)
   {
     v6 = "passed";
   }
 
   v22 = v6;
-  v7 = [(IMUnitTestRunner *)self dateFormatter];
-  v8 = [v4 stopDate];
-  v9 = [v7 stringFromDate:v8];
-  v10 = [v4 executionCount];
+  dateFormatter = [(IMUnitTestRunner *)self dateFormatter];
+  stopDate = [testRun stopDate];
+  v9 = [dateFormatter stringFromDate:stopDate];
+  executionCount = [testRun executionCount];
   v11 = "";
-  if ([v4 executionCount] == 1)
+  if ([testRun executionCount] == 1)
   {
     v12 = "";
   }
@@ -578,55 +578,55 @@ LABEL_36:
     v12 = "s";
   }
 
-  v13 = [v4 totalFailureCount];
-  if ([v4 totalFailureCount] != 1)
+  totalFailureCount = [testRun totalFailureCount];
+  if ([testRun totalFailureCount] != 1)
   {
     v11 = "s";
   }
 
-  v14 = [v4 unexpectedExceptionCount];
-  [v4 testDuration];
+  unexpectedExceptionCount = [testRun unexpectedExceptionCount];
+  [testRun testDuration];
   v16 = v15;
-  [v4 totalDuration];
-  [(IMUnitTestRunner *)self testLogWithFormat:@"Test Suite '%@' %s at %@.\n\t Executed %lu test%s, with %lu failure%s (%lu unexpected) in %.3f (%.3f) seconds\n", v23, v22, v9, v10, v12, v13, v11, v14, v16, v17];
+  [testRun totalDuration];
+  [(IMUnitTestRunner *)self testLogWithFormat:@"Test Suite '%@' %s at %@.\n\t Executed %lu test%s, with %lu failure%s (%lu unexpected) in %.3f (%.3f) seconds\n", name, v22, v9, executionCount, v12, totalFailureCount, v11, unexpectedExceptionCount, v16, v17];
 
-  v18 = [(IMUnitTestRunner *)self delegate];
+  delegate = [(IMUnitTestRunner *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    v20 = [(IMUnitTestRunner *)self delegate];
-    v21 = [v24 name];
-    [v20 unitTestRunner:self testSuiteDidFinish:v21 withResult:v4];
+    delegate2 = [(IMUnitTestRunner *)self delegate];
+    name2 = [finishCopy name];
+    [delegate2 unitTestRunner:self testSuiteDidFinish:name2 withResult:testRun];
   }
 }
 
-- (void)testCaseWillStart:(id)a3
+- (void)testCaseWillStart:(id)start
 {
-  v9 = a3;
-  v4 = [v9 name];
-  [(IMUnitTestRunner *)self testLogWithFormat:@"Test Case '%@' started.\n", v4];
+  startCopy = start;
+  name = [startCopy name];
+  [(IMUnitTestRunner *)self testLogWithFormat:@"Test Case '%@' started.\n", name];
 
-  v5 = [(IMUnitTestRunner *)self delegate];
+  delegate = [(IMUnitTestRunner *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IMUnitTestRunner *)self delegate];
-    v8 = [v9 name];
-    [v7 unitTestRunner:self testCaseWillStart:v8];
+    delegate2 = [(IMUnitTestRunner *)self delegate];
+    name2 = [startCopy name];
+    [delegate2 unitTestRunner:self testCaseWillStart:name2];
   }
 }
 
-- (void)testCase:(id)a3 didFailWithDescription:(id)a4 inFile:(id)a5 atLine:(unint64_t)a6
+- (void)testCase:(id)case didFailWithDescription:(id)description inFile:(id)file atLine:(unint64_t)line
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v11)
+  caseCopy = case;
+  descriptionCopy = description;
+  fileCopy = file;
+  v12 = fileCopy;
+  if (fileCopy)
   {
-    v13 = v11;
+    v13 = fileCopy;
   }
 
   else
@@ -634,36 +634,36 @@ LABEL_36:
     v13 = @"<unknown>";
   }
 
-  if (v11)
+  if (fileCopy)
   {
-    v14 = a6;
+    lineCopy = line;
   }
 
   else
   {
-    v14 = 0;
+    lineCopy = 0;
   }
 
-  v15 = [v20 name];
-  [(IMUnitTestRunner *)self testLogWithFormat:@"%@:%lu: error: %@ : %@\n", v13, v14, v15, v10];
+  name = [caseCopy name];
+  [(IMUnitTestRunner *)self testLogWithFormat:@"%@:%lu: error: %@ : %@\n", v13, lineCopy, name, descriptionCopy];
 
-  v16 = [(IMUnitTestRunner *)self delegate];
+  delegate = [(IMUnitTestRunner *)self delegate];
   v17 = objc_opt_respondsToSelector();
 
   if (v17)
   {
-    v18 = [(IMUnitTestRunner *)self delegate];
-    v19 = [v20 name];
-    [v18 unitTestRunner:self testCase:v19 didFailWithDescription:v10 inFile:v12 atLine:a6];
+    delegate2 = [(IMUnitTestRunner *)self delegate];
+    name2 = [caseCopy name];
+    [delegate2 unitTestRunner:self testCase:name2 didFailWithDescription:descriptionCopy inFile:v12 atLine:line];
   }
 }
 
-- (void)testCaseDidFinish:(id)a3
+- (void)testCaseDidFinish:(id)finish
 {
-  v12 = a3;
-  v4 = [v12 testRun];
-  v5 = [v12 name];
-  if ([v4 hasSucceeded])
+  finishCopy = finish;
+  testRun = [finishCopy testRun];
+  name = [finishCopy name];
+  if ([testRun hasSucceeded])
   {
     v6 = "passed";
   }
@@ -673,28 +673,28 @@ LABEL_36:
     v6 = "failed";
   }
 
-  [v4 totalDuration];
-  [(IMUnitTestRunner *)self testLogWithFormat:@"Test Case '%@' %s (%.3f seconds).\n", v5, v6, v7];
+  [testRun totalDuration];
+  [(IMUnitTestRunner *)self testLogWithFormat:@"Test Case '%@' %s (%.3f seconds).\n", name, v6, v7];
 
-  v8 = [(IMUnitTestRunner *)self delegate];
+  delegate = [(IMUnitTestRunner *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(IMUnitTestRunner *)self delegate];
-    v11 = [v12 name];
-    [v10 unitTestRunner:self testCaseDidFinish:v11 withResult:v4];
+    delegate2 = [(IMUnitTestRunner *)self delegate];
+    name2 = [finishCopy name];
+    [delegate2 unitTestRunner:self testCaseDidFinish:name2 withResult:testRun];
   }
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:v5 arguments:&v8];
+  logCopy = log;
+  v6 = [[v4 alloc] initWithFormat:logCopy arguments:&v8];
 
-  v7 = [(IMUnitTestRunner *)self logger];
-  [v7 writeOutputToStdout:v6];
+  logger = [(IMUnitTestRunner *)self logger];
+  [logger writeOutputToStdout:v6];
 }
 
 - (IMUnitTestRunnerDelegate)delegate

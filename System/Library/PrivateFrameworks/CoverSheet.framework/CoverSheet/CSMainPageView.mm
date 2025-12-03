@@ -5,37 +5,37 @@
 - (void)_layoutWallpaperEffectView;
 - (void)_updateLogoutButtonForLegibilitySettings;
 - (void)layoutSubviews;
-- (void)setFakeWallpaperVisible:(BOOL)a3;
-- (void)setLogoutButtonView:(id)a3;
-- (void)setWallpaperEffectView:(id)a3;
-- (void)updateForLegibilitySettings:(id)a3;
-- (void)updateForPresentation:(id)a3;
+- (void)setFakeWallpaperVisible:(BOOL)visible;
+- (void)setLogoutButtonView:(id)view;
+- (void)setWallpaperEffectView:(id)view;
+- (void)updateForLegibilitySettings:(id)settings;
+- (void)updateForPresentation:(id)presentation;
 @end
 
 @implementation CSMainPageView
 
 - (id)presentationRegions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (self->_logoutButtonView)
   {
     v4 = [CSRegion regionForCoordinateSpace:?];
     v5 = [v4 role:1];
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setLogoutButtonView:(id)a3
+- (void)setLogoutButtonView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   logoutButtonView = self->_logoutButtonView;
-  if (logoutButtonView != v5)
+  if (logoutButtonView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(CSVibrantWallpaperButton *)logoutButtonView removeFromSuperview];
-    objc_storeStrong(&self->_logoutButtonView, a3);
+    objc_storeStrong(&self->_logoutButtonView, view);
     if (self->_logoutButtonView)
     {
       [(CSMainPageView *)self addSubview:?];
@@ -44,20 +44,20 @@
     }
 
     logoutButtonView = [(CSMainPageView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](logoutButtonView, v5);
+  MEMORY[0x2821F96F8](logoutButtonView, viewCopy);
 }
 
-- (void)setWallpaperEffectView:(id)a3
+- (void)setWallpaperEffectView:(id)view
 {
-  v5 = a3;
-  if (self->_wallpaperEffectView != v5)
+  viewCopy = view;
+  if (self->_wallpaperEffectView != viewCopy)
   {
-    v7 = v5;
-    [(SBWallpaperEffectView *)v5 removeFromSuperview];
-    objc_storeStrong(&self->_wallpaperEffectView, a3);
+    v7 = viewCopy;
+    [(SBWallpaperEffectView *)viewCopy removeFromSuperview];
+    objc_storeStrong(&self->_wallpaperEffectView, view);
     wallpaperEffectView = self->_wallpaperEffectView;
     if (wallpaperEffectView)
     {
@@ -66,34 +66,34 @@
     }
 
     [(CSMainPageView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setFakeWallpaperVisible:(BOOL)a3
+- (void)setFakeWallpaperVisible:(BOOL)visible
 {
-  if (self->_fakeWallpaperVisible != a3)
+  if (self->_fakeWallpaperVisible != visible)
   {
-    v4 = a3;
-    self->_fakeWallpaperVisible = a3;
-    v5 = [(CSVibrantWallpaperButton *)self->_logoutButtonView effectView];
-    [v5 setFullscreen:v4];
+    visibleCopy = visible;
+    self->_fakeWallpaperVisible = visible;
+    effectView = [(CSVibrantWallpaperButton *)self->_logoutButtonView effectView];
+    [effectView setFullscreen:visibleCopy];
   }
 }
 
-- (void)updateForLegibilitySettings:(id)a3
+- (void)updateForLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(CSMainPageView *)self _updateLogoutButtonForLegibilitySettings];
   }
 }
 
-- (void)updateForPresentation:(id)a3
+- (void)updateForPresentation:(id)presentation
 {
-  v5 = [a3 regionsIntersectingCoordinateSpace:self->_logoutButtonView];
+  v5 = [presentation regionsIntersectingCoordinateSpace:self->_logoutButtonView];
   v4 = [v5 count] != 0;
   if (self->_logoutHugCorner != v4)
   {
@@ -158,15 +158,15 @@
 
 - (void)_updateLogoutButtonForLegibilitySettings
 {
-  v3 = [(_UILegibilitySettings *)self->_legibilitySettings style];
-  v4 = [MEMORY[0x277D65E90] rootSettings];
-  [v4 logoutButtonTextStrengthForStyle:v3];
+  style = [(_UILegibilitySettings *)self->_legibilitySettings style];
+  rootSettings = [MEMORY[0x277D65E90] rootSettings];
+  [rootSettings logoutButtonTextStrengthForStyle:style];
   v6 = v5;
 
   if (![(SBUIVibrantButton *)self->_logoutButtonView isVibrancyAllowed])
   {
-    v7 = [MEMORY[0x277D65E90] rootSettings];
-    [v7 logoutButtonGlyphStrengthForStyle:v3];
+    rootSettings2 = [MEMORY[0x277D65E90] rootSettings];
+    [rootSettings2 logoutButtonGlyphStrengthForStyle:style];
     v6 = v8;
   }
 

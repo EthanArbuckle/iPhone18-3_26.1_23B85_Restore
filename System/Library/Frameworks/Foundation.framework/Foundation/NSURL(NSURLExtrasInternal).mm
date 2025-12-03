@@ -12,18 +12,18 @@
 
 - (const)_web_URLByRemovingLastPathComponent_nowarn
 {
-  v1 = a1;
+  selfCopy = self;
   v21 = *MEMORY[0x1E69E9840];
   v2 = buffer;
-  if (CFURLGetBytes(a1, buffer, 2048) == -1)
+  if (CFURLGetBytes(self, buffer, 2048) == -1)
   {
-    v3 = CFURLGetBytes(v1, 0, 0);
+    v3 = CFURLGetBytes(selfCopy, 0, 0);
     v2 = malloc_type_malloc(v3, 0x100004077774924uLL);
-    CFURLGetBytes(v1, v2, v3);
+    CFURLGetBytes(selfCopy, v2, v3);
   }
 
-  v4 = CFURLGetByteRangeForComponent(v1, kCFURLComponentParameterString, 0);
-  v5 = CFURLGetByteRangeForComponent(v1, kCFURLComponentPath, 0);
+  v4 = CFURLGetByteRangeForComponent(selfCopy, kCFURLComponentParameterString, 0);
+  v5 = CFURLGetByteRangeForComponent(selfCopy, kCFURLComponentPath, 0);
   length = v4.location + v4.length - v5.location;
   if (v4.location == -1)
   {
@@ -105,14 +105,14 @@
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_web_URLByRemovingUserAndPath_nowarn
 {
-  cf = CFURLCopyScheme(a1);
-  v5 = CFURLCopyHostName(a1);
-  CFURLGetPortNumber(a1);
+  cf = CFURLCopyScheme(self);
+  v5 = CFURLCopyHostName(self);
+  CFURLGetPortNumber(self);
   v6 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{&stru_1EEEFDF90, 0}];
   v2 = _CFURLCreateFromComponents();
   if (cf)
@@ -130,21 +130,21 @@
 
 - (const)_web_URLByRemovingUserAndQueryAndFragment_nowarn
 {
-  v1 = a1;
+  selfCopy = self;
   v15 = *MEMORY[0x1E69E9840];
-  v2 = CFURLGetByteRangeForComponent(a1, kCFURLComponentUserInfo, 0);
-  location = CFURLGetByteRangeForComponent(v1, kCFURLComponentQuery, 0).location;
-  v4 = CFURLGetByteRangeForComponent(v1, kCFURLComponentFragment, 0).location;
+  v2 = CFURLGetByteRangeForComponent(self, kCFURLComponentUserInfo, 0);
+  location = CFURLGetByteRangeForComponent(selfCopy, kCFURLComponentQuery, 0).location;
+  v4 = CFURLGetByteRangeForComponent(selfCopy, kCFURLComponentFragment, 0).location;
   v5 = v4;
   if (v2.location != -1 || location != -1 || v4 != -1)
   {
     v6 = buffer;
-    v7 = CFURLGetBytes(v1, buffer, 2048);
+    v7 = CFURLGetBytes(selfCopy, buffer, 2048);
     if (v7 == -1)
     {
-      v8 = CFURLGetBytes(v1, 0, 0);
+      v8 = CFURLGetBytes(selfCopy, 0, 0);
       v6 = malloc_type_malloc(v8, 0x100004077774924uLL);
-      CFURLGetBytes(v1, v6, v8);
+      CFURLGetBytes(selfCopy, v6, v8);
     }
 
     else
@@ -187,29 +187,29 @@
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (const)_URLByEscapingSpacesAndControlChars
 {
-  v1 = a1;
+  selfCopy = self;
   v13 = *MEMORY[0x1E69E9840];
-  v2 = CFURLGetBytes(a1, 0, 0);
+  v2 = CFURLGetBytes(self, 0, 0);
   v3 = v2;
   if (v2 < 2049)
   {
     v4 = buffer;
-    CFURLGetBytes(v1, buffer, v2);
+    CFURLGetBytes(selfCopy, buffer, v2);
     if (v3 < 1)
     {
-      return v1;
+      return selfCopy;
     }
   }
 
   else
   {
     v4 = malloc_type_malloc(3 * v2, 0x100004077774924uLL);
-    CFURLGetBytes(v1, v4, v3);
+    CFURLGetBytes(selfCopy, v4, v3);
   }
 
   v5 = &v4[v3];
@@ -235,15 +235,15 @@
 
   v8 = v7 - v4;
   v9 = escapeChars(v7, v5 - v7);
-  v1 = CFURLCreateAbsoluteURLWithBytes(0, v4, v8 + v9, 0x600u, 0, 1u);
-  v10 = v1;
+  selfCopy = CFURLCreateAbsoluteURLWithBytes(0, v4, v8 + v9, 0x600u, 0, 1u);
+  v10 = selfCopy;
 LABEL_12:
   if (buffer != v4)
   {
     free(v4);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 + (uint64_t)_URLWithDataAsString:()NSURLExtrasInternal relativeToURL:
@@ -255,7 +255,7 @@ LABEL_12:
 
   v6 = [objc_msgSend(a3 "_web_stringByTrimmingWhitespace")];
 
-  return [a1 _URLWithData:v6 relativeToURL:a4];
+  return [self _URLWithData:v6 relativeToURL:a4];
 }
 
 + (uint64_t)_URLWithData:()NSURLExtrasInternal relativeToURL:
@@ -269,9 +269,9 @@ LABEL_12:
   if (v6 >= 1)
   {
     v7 = v6;
-    v8 = [a3 bytes];
-    v9 = v8;
-    if (a4 && *v8 == 59)
+    bytes = [a3 bytes];
+    v9 = bytes;
+    if (a4 && *bytes == 59)
     {
       a4 = [a4 _web_URLByRemovingLastPathComponent_nowarn];
     }
@@ -294,7 +294,7 @@ LABEL_12:
 - (__CFString)_hostString
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = CFURLGetByteRangeForComponent(a1, kCFURLComponentHost, 0);
+  v2 = CFURLGetByteRangeForComponent(self, kCFURLComponentHost, 0);
   if (v2.location == -1)
   {
     return &stru_1EEEFDF90;
@@ -305,11 +305,11 @@ LABEL_12:
   v5 = 2048;
   MEMORY[0x1EEE9AC00](v2.location);
   v6 = v11;
-  if (CFURLGetBytes(a1, v11, 2048) == -1)
+  if (CFURLGetBytes(self, v11, 2048) == -1)
   {
-    v5 = CFURLGetBytes(a1, 0, 0);
+    v5 = CFURLGetBytes(self, 0, 0);
     v6 = malloc_type_malloc(v5, 0x100004077774924uLL);
-    CFURLGetBytes(a1, v6, v5);
+    CFURLGetBytes(self, v6, v5);
     if (!v2.length)
     {
       goto LABEL_10;
@@ -323,7 +323,7 @@ LABEL_12:
 
   if (v2.length == 9)
   {
-    if ([-[__CFURL scheme](a1 "scheme")] && !strncasecmp_l("localhost", &v6[v2.location], 9uLL, 0))
+    if ([-[__CFURL scheme](self "scheme")] && !strncasecmp_l("localhost", &v6[v2.location], 9uLL, 0))
     {
 LABEL_10:
       if (v6 != v11)

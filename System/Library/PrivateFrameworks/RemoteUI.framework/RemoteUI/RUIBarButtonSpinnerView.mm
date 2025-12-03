@@ -1,18 +1,18 @@
 @interface RUIBarButtonSpinnerView
-- (RUIBarButtonSpinnerView)initWithActivityIndicatorStyle:(int64_t)a3;
-- (void)setTintColor:(id)a3;
+- (RUIBarButtonSpinnerView)initWithActivityIndicatorStyle:(int64_t)style;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation RUIBarButtonSpinnerView
 
-- (RUIBarButtonSpinnerView)initWithActivityIndicatorStyle:(int64_t)a3
+- (RUIBarButtonSpinnerView)initWithActivityIndicatorStyle:(int64_t)style
 {
   v19.receiver = self;
   v19.super_class = RUIBarButtonSpinnerView;
   v4 = [(RUIBarButtonSpinnerView *)&v19 init];
   if (v4)
   {
-    v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:a3];
+    v5 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:style];
     spinner = v4->_spinner;
     v4->_spinner = v5;
 
@@ -33,13 +33,13 @@
   return v4;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = RUIBarButtonSpinnerView;
-  v4 = a3;
-  [(RUIBarButtonSpinnerView *)&v5 setTintColor:v4];
-  [(UIActivityIndicatorView *)self->_spinner setColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(RUIBarButtonSpinnerView *)&v5 setTintColor:colorCopy];
+  [(UIActivityIndicatorView *)self->_spinner setColor:colorCopy, v5.receiver, v5.super_class];
 }
 
 @end

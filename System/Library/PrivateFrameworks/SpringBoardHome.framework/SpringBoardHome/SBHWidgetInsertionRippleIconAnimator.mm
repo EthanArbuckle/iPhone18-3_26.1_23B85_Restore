@@ -1,95 +1,95 @@
 @interface SBHWidgetInsertionRippleIconAnimator
-- (CGPoint)_centerOfIconViewAssumingCenteredAnchorPoint:(id)a3;
-- (SBHWidgetInsertionRippleIconAnimator)initWithIconListView:(id)a3 widgetIcon:(id)a4 referenceLayout:(id)a5 referenceIconView:(id)a6 additionalIconListView:(id)a7 preludeBlock:(id)a8;
+- (CGPoint)_centerOfIconViewAssumingCenteredAnchorPoint:(id)point;
+- (SBHWidgetInsertionRippleIconAnimator)initWithIconListView:(id)view widgetIcon:(id)icon referenceLayout:(id)layout referenceIconView:(id)iconView additionalIconListView:(id)listView preludeBlock:(id)block;
 - (void)_createPortalViewsForIconViews;
-- (void)_createPortalViewsForIconViewsInIconListView:(id)a3 dropIconListView:(id)a4 withPortalContainerView:(id)a5 widgetIconCenter:(CGPoint)a6;
-- (void)_displayLinkFired:(id)a3;
+- (void)_createPortalViewsForIconViewsInIconListView:(id)view dropIconListView:(id)listView withPortalContainerView:(id)containerView widgetIconCenter:(CGPoint)center;
+- (void)_displayLinkFired:(id)fired;
 - (void)_finishRippleAnimation;
-- (void)_finishRippleAnimationEarlyForIconView:(id)a3;
+- (void)_finishRippleAnimationEarlyForIconView:(id)view;
 - (void)_layoutRippleIconViews;
-- (void)_performJumpAnimationWithCompletion:(id)a3;
+- (void)_performJumpAnimationWithCompletion:(id)completion;
 - (void)_performWidgetIconScaleOvershootAnimation;
-- (void)_playImpactHapticAfterDelay:(double)a3;
-- (void)_reparentPortalViewIntoIconListViewAfterDelay:(double)a3;
+- (void)_playImpactHapticAfterDelay:(double)delay;
+- (void)_reparentPortalViewIntoIconListViewAfterDelay:(double)delay;
 - (void)_reparentPortalViewIntoIconListViewNow;
 - (void)_startRippleAnimationNow;
-- (void)_startRippleAnimationWithDelay:(double)a3;
-- (void)animateWithCompletion:(id)a3;
+- (void)_startRippleAnimationWithDelay:(double)delay;
+- (void)animateWithCompletion:(id)completion;
 @end
 
 @implementation SBHWidgetInsertionRippleIconAnimator
 
-- (SBHWidgetInsertionRippleIconAnimator)initWithIconListView:(id)a3 widgetIcon:(id)a4 referenceLayout:(id)a5 referenceIconView:(id)a6 additionalIconListView:(id)a7 preludeBlock:(id)a8
+- (SBHWidgetInsertionRippleIconAnimator)initWithIconListView:(id)view widgetIcon:(id)icon referenceLayout:(id)layout referenceIconView:(id)iconView additionalIconListView:(id)listView preludeBlock:(id)block
 {
-  v15 = a3;
-  obj = a4;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  viewCopy = view;
+  obj = icon;
+  iconCopy = icon;
+  layoutCopy = layout;
+  iconViewCopy = iconView;
+  listViewCopy = listView;
+  blockCopy = block;
   v62.receiver = self;
   v62.super_class = SBHWidgetInsertionRippleIconAnimator;
   v21 = [(SBHWidgetInsertionRippleIconAnimator *)&v62 init];
   if (v21)
   {
-    v55 = a6;
-    v57 = v20;
-    v58 = v18;
-    v22 = [v15 gridCellInfo];
-    v23 = [v22 numberOfUsedColumns];
-    v56 = v22;
-    v24 = [v22 numberOfUsedRows];
-    v60 = v17;
-    if (v19)
+    iconViewCopy2 = iconView;
+    v57 = blockCopy;
+    v58 = iconViewCopy;
+    gridCellInfo = [viewCopy gridCellInfo];
+    numberOfUsedColumns = [gridCellInfo numberOfUsedColumns];
+    v56 = gridCellInfo;
+    numberOfUsedRows = [gridCellInfo numberOfUsedRows];
+    v60 = layoutCopy;
+    if (listViewCopy)
     {
-      v25 = [v19 model];
-      if ([v25 numberOfIcons])
+      model = [listViewCopy model];
+      if ([model numberOfIcons])
       {
-        v26 = [v25 gridSize];
-        if (v23 <= v26)
+        gridSize = [model gridSize];
+        if (numberOfUsedColumns <= gridSize)
         {
-          v23 = v26;
+          numberOfUsedColumns = gridSize;
         }
 
-        v27 = [v25 gridSize] >> 16;
-        v24 += v27;
+        v27 = [model gridSize] >> 16;
+        numberOfUsedRows += v27;
         v28 = SBIconCoordinateMake(0, v27);
-        [v19 centerForIconCoordinate:{v28, v29}];
-        [v15 convertPoint:v19 fromView:?];
-        [v15 fractionalCoordinateAtPoint:?];
+        [listViewCopy centerForIconCoordinate:{v28, v29}];
+        [viewCopy convertPoint:listViewCopy fromView:?];
+        [viewCopy fractionalCoordinateAtPoint:?];
         v31 = vcvtpd_u64_f64(v30);
-        if (v24 <= v31)
+        if (numberOfUsedRows <= v31)
         {
-          v24 = v31;
+          numberOfUsedRows = v31;
         }
 
-        [v19 frame];
+        [listViewCopy frame];
         v33 = v32;
-        [v15 frame];
+        [viewCopy frame];
         if (v33 < v34)
         {
           v21->_rowOffset = v27;
         }
 
-        v17 = v60;
+        layoutCopy = v60;
       }
 
       else
       {
 
-        v25 = 0;
+        model = 0;
       }
     }
 
-    v35 = SBHIconListLayoutIconGridSizeClassSizes(v17, [v15 orientation]);
-    v59 = v16;
-    v36 = [v16 gridSizeClass];
-    v37 = [v35 gridSizeForGridSizeClass:v36] >> 16;
+    v35 = SBHIconListLayoutIconGridSizeClassSizes(layoutCopy, [viewCopy orientation]);
+    v59 = iconCopy;
+    gridSizeClass = [iconCopy gridSizeClass];
+    v37 = [v35 gridSizeForGridSizeClass:gridSizeClass] >> 16;
 
     v21->_widgetIconSizeIsLarge = v37 >= [v35 gridSizeForGridSizeClass:@"SBHIconGridSizeClassLarge"] >> 16;
-    v38 = [v15 iconLocation];
-    v39 = [v38 isEqualToString:@"SBIconLocationStackConfiguration"];
+    iconLocation = [viewCopy iconLocation];
+    v39 = [iconLocation isEqualToString:@"SBIconLocationStackConfiguration"];
 
     if (v39)
     {
@@ -107,11 +107,11 @@
 
     else
     {
-      v42 = [MEMORY[0x1E69DC938] currentDevice];
-      v43 = [v42 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      v40 = (v43 & 0xFFFFFFFFFFFFFFFBLL) == 1;
-      if ((v43 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+      v40 = (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
+      if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
       {
         v41 = 4;
       }
@@ -122,48 +122,48 @@
       }
     }
 
-    v44 = [[SBHRippleSimulation alloc] initWithRows:v24 columns:v23 resolution:v41 style:v40];
+    v44 = [[SBHRippleSimulation alloc] initWithRows:numberOfUsedRows columns:numberOfUsedColumns resolution:v41 style:v40];
     rippleSimulation = v21->_rippleSimulation;
     v21->_rippleSimulation = v44;
 
-    objc_storeStrong(&v21->_iconListView, a3);
+    objc_storeStrong(&v21->_iconListView, view);
     objc_storeStrong(&v21->_widgetIcon, obj);
-    objc_storeStrong(&v21->_additionalIconListView, a7);
+    objc_storeStrong(&v21->_additionalIconListView, listView);
     v21->_startedAnimation = 0;
-    objc_storeStrong(&v21->_referenceIconView, v55);
-    v46 = [v15 window];
-    v18 = v58;
-    [v58 convertPoint:v46 toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    objc_storeStrong(&v21->_referenceIconView, iconViewCopy2);
+    window = [viewCopy window];
+    iconViewCopy = v58;
+    [v58 convertPoint:window toView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
     v21->_referenceIconViewOriginInWindow.x = v47;
     v21->_referenceIconViewOriginInWindow.y = v48;
 
     v49 = +[SBHHomeScreenDomain rootSettings];
-    v50 = [v49 widgetSettings];
+    widgetSettings = [v49 widgetSettings];
     settings = v21->_settings;
-    v21->_settings = v50;
+    v21->_settings = widgetSettings;
 
-    v20 = v57;
+    blockCopy = v57;
     v52 = [v57 copy];
     preludeBlock = v21->_preludeBlock;
     v21->_preludeBlock = v52;
 
-    v16 = v59;
-    v17 = v60;
+    iconCopy = v59;
+    layoutCopy = v60;
   }
 
   return v21;
 }
 
-- (void)animateWithCompletion:(id)a3
+- (void)animateWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   if (self->_startedAnimation)
   {
     [SBHWidgetInsertionRippleIconAnimator animateWithCompletion:a2];
   }
 
-  v6 = v5;
+  v6 = completionCopy;
   preludeBlock = self->_preludeBlock;
   if (preludeBlock)
   {
@@ -183,9 +183,9 @@
 
   if (!self->_disableGlassGroupingAssertionsForIconViews)
   {
-    v13 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     disableGlassGroupingAssertionsForIconViews = self->_disableGlassGroupingAssertionsForIconViews;
-    self->_disableGlassGroupingAssertionsForIconViews = v13;
+    self->_disableGlassGroupingAssertionsForIconViews = weakToStrongObjectsMapTable;
   }
 
   v20[0] = MEMORY[0x1E69E9820];
@@ -197,9 +197,9 @@
   v15 = SBLogWidgets();
   if (os_signpost_enabled(v15))
   {
-    v16 = [(SBWidgetIcon *)self->_widgetIcon activeWidget];
+    activeWidget = [(SBWidgetIcon *)self->_widgetIcon activeWidget];
     *buf = 138543362;
-    v22 = v16;
+    v22 = activeWidget;
     _os_signpost_emit_with_name_impl(&dword_1BEB18000, v15, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "SBH_HOME_WIDGET_RIPPLE_ANIMATION", "activeWidget=%{public, name=activeWidget}@", buf, 0xCu);
   }
 
@@ -308,18 +308,18 @@ uint64_t __81__SBHWidgetInsertionRippleIconAnimator__performWidgetIconScaleOvers
   return [v1 setTransform:v4];
 }
 
-- (CGPoint)_centerOfIconViewAssumingCenteredAnchorPoint:(id)a3
+- (CGPoint)_centerOfIconViewAssumingCenteredAnchorPoint:(id)point
 {
-  v3 = a3;
-  v4 = [v3 layer];
-  [v4 anchorPoint];
+  pointCopy = point;
+  layer = [pointCopy layer];
+  [layer anchorPoint];
   v6 = v5;
   v8 = v7;
 
-  [v3 bounds];
+  [pointCopy bounds];
   v10 = v9;
   v12 = v11;
-  [v3 center];
+  [pointCopy center];
   v14 = v13;
   v16 = v15;
 
@@ -351,26 +351,26 @@ uint64_t __81__SBHWidgetInsertionRippleIconAnimator__performWidgetIconScaleOvers
   return result;
 }
 
-- (void)_createPortalViewsForIconViewsInIconListView:(id)a3 dropIconListView:(id)a4 withPortalContainerView:(id)a5 widgetIconCenter:(CGPoint)a6
+- (void)_createPortalViewsForIconViewsInIconListView:(id)view dropIconListView:(id)listView withPortalContainerView:(id)containerView widgetIconCenter:(CGPoint)center
 {
-  y = a6.y;
-  x = a6.x;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  y = center.y;
+  x = center.x;
+  viewCopy = view;
+  listViewCopy = listView;
+  containerViewCopy = containerView;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __143__SBHWidgetInsertionRippleIconAnimator__createPortalViewsForIconViewsInIconListView_dropIconListView_withPortalContainerView_widgetIconCenter___block_invoke;
   v17[3] = &unk_1E808C0B0;
   v17[4] = self;
-  v18 = v11;
+  v18 = viewCopy;
   v21 = x;
   v22 = y;
-  v19 = v12;
-  v20 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
+  v19 = listViewCopy;
+  v20 = containerViewCopy;
+  v14 = containerViewCopy;
+  v15 = listViewCopy;
+  v16 = viewCopy;
   [v16 enumerateIconViewsUsingBlock:v17];
 }
 
@@ -415,13 +415,13 @@ void __143__SBHWidgetInsertionRippleIconAnimator__createPortalViewsForIconViewsI
 
 - (void)_createPortalViewsForIconViews
 {
-  v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   portalViewsForIconViews = self->_portalViewsForIconViews;
-  self->_portalViewsForIconViews = v3;
+  self->_portalViewsForIconViews = strongToStrongObjectsMapTable;
 
-  v5 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   gridCoordinateForIcons = self->_gridCoordinateForIcons;
-  self->_gridCoordinateForIcons = v5;
+  self->_gridCoordinateForIcons = strongToStrongObjectsMapTable2;
 
   v7 = self->_iconListView;
   [(SBHWidgetInsertionRippleIconAnimator *)self _centerOfIconViewAssumingCenteredAnchorPoint:self->_widgetIconView];
@@ -438,7 +438,7 @@ void __143__SBHWidgetInsertionRippleIconAnimator__createPortalViewsForIconViewsI
 
   [(UIView *)self->_rippleIconsPortalContainerView setCenter:v9, v11];
   [(SBIconListView *)v7 addSubview:self->_rippleIconsPortalContainerView];
-  v19 = [(UIView *)self->_rippleIconsPortalContainerView layer];
+  layer = [(UIView *)self->_rippleIconsPortalContainerView layer];
   v35 = *(MEMORY[0x1E69792E8] + 48);
   v36 = *(MEMORY[0x1E69792E8] + 32);
   v39 = v36;
@@ -456,7 +456,7 @@ void __143__SBHWidgetInsertionRippleIconAnimator__createPortalViewsForIconViewsI
   v31 = *(MEMORY[0x1E69792E8] + 96);
   v44 = v31;
   v45 = v30;
-  [v19 setSublayerTransform:&v37];
+  [layer setSublayerTransform:&v37];
 
   [(SBHWidgetInsertionRippleIconAnimator *)self _createPortalViewsForIconViewsInIconListView:v7 dropIconListView:v7 withPortalContainerView:self->_rippleIconsPortalContainerView widgetIconCenter:v9, v11];
   additionalIconListView = self->_additionalIconListView;
@@ -472,7 +472,7 @@ void __143__SBHWidgetInsertionRippleIconAnimator__createPortalViewsForIconViewsI
 
     [(UIView *)self->_rippleIconsPortalContainerViewForAdditionalIconListView setCenter:v24, v26];
     [(SBIconListView *)v22 addSubview:self->_rippleIconsPortalContainerViewForAdditionalIconListView];
-    v29 = [(UIView *)self->_rippleIconsPortalContainerViewForAdditionalIconListView layer];
+    layer2 = [(UIView *)self->_rippleIconsPortalContainerViewForAdditionalIconListView layer];
     v39 = v36;
     v40 = v35;
     v41 = v34;
@@ -482,16 +482,16 @@ void __143__SBHWidgetInsertionRippleIconAnimator__createPortalViewsForIconViewsI
     v43 = 0xBF58904FD503744BLL;
     v44 = v31;
     v45 = v30;
-    [v29 setSublayerTransform:&v37];
+    [layer2 setSublayerTransform:&v37];
 
     [(SBHWidgetInsertionRippleIconAnimator *)self _createPortalViewsForIconViewsInIconListView:v22 dropIconListView:v7 withPortalContainerView:self->_rippleIconsPortalContainerViewForAdditionalIconListView widgetIconCenter:v9, v11];
   }
 }
 
-- (void)_startRippleAnimationWithDelay:(double)a3
+- (void)_startRippleAnimationWithDelay:(double)delay
 {
   UIAnimationDragCoefficient();
-  v6 = dispatch_time(0, (v5 * a3 * 1000000000.0));
+  v6 = dispatch_time(0, (v5 * delay * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__SBHWidgetInsertionRippleIconAnimator__startRippleAnimationWithDelay___block_invoke;
@@ -512,8 +512,8 @@ void __143__SBHWidgetInsertionRippleIconAnimator__createPortalViewsForIconViewsI
   [(CADisplayLink *)v5 setPreferredFrameRateRange:*&v10.minimum, *&v10.maximum, *&v10.preferred];
   [(CADisplayLink *)self->_displayLink setHighFrameRateReason:1114119];
   v6 = self->_displayLink;
-  v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [(CADisplayLink *)v6 addToRunLoop:v7 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [(CADisplayLink *)v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
   [(SBHWidgetInsertionRippleIconAnimator *)self _createPortalViewsForIconViews];
   [(SBIconView *)self->_widgetIconView center];
@@ -523,13 +523,13 @@ void __143__SBHWidgetInsertionRippleIconAnimator__createPortalViewsForIconViewsI
   [SBHRippleSimulation createRippleAtGridCoordinate:"createRippleAtGridCoordinate:strength:" strength:?];
 }
 
-- (void)_finishRippleAnimationEarlyForIconView:(id)a3
+- (void)_finishRippleAnimationEarlyForIconView:(id)view
 {
-  v4 = a3;
-  if (self->_widgetIconView != v4)
+  viewCopy = view;
+  if (self->_widgetIconView != viewCopy)
   {
-    v5 = [(NSMapTable *)self->_portalViewsForIconViews objectForKey:v4];
-    [(NSMapTable *)self->_portalViewsForIconViews removeObjectForKey:v4];
+    v5 = [(NSMapTable *)self->_portalViewsForIconViews objectForKey:viewCopy];
+    [(NSMapTable *)self->_portalViewsForIconViews removeObjectForKey:viewCopy];
     if (!v5)
     {
       goto LABEL_4;
@@ -550,9 +550,9 @@ LABEL_3:
   }
 
 LABEL_4:
-  v6 = [(NSMapTable *)self->_disableGlassGroupingAssertionsForIconViews objectForKey:v4];
+  v6 = [(NSMapTable *)self->_disableGlassGroupingAssertionsForIconViews objectForKey:viewCopy];
   [v6 invalidate];
-  [(NSMapTable *)self->_disableGlassGroupingAssertionsForIconViews removeObjectForKey:v4];
+  [(NSMapTable *)self->_disableGlassGroupingAssertionsForIconViews removeObjectForKey:viewCopy];
   v7 = SBLogWidgets();
   if (os_signpost_enabled(v7))
   {
@@ -573,8 +573,8 @@ LABEL_4:
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v4 = [(NSMapTable *)self->_disableGlassGroupingAssertionsForIconViews objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v37 objects:v43 count:16];
+  objectEnumerator = [(NSMapTable *)self->_disableGlassGroupingAssertionsForIconViews objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -585,13 +585,13 @@ LABEL_4:
       {
         if (*v38 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v37 + 1) + 8 * i) invalidate];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v37 objects:v43 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v37 objects:v43 count:16];
     }
 
     while (v6);
@@ -604,8 +604,8 @@ LABEL_4:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v10 = [(NSMapTable *)self->_portalViewsForIconViews objectEnumerator];
-  v11 = [v10 countByEnumeratingWithState:&v33 objects:v42 count:16];
+  objectEnumerator2 = [(NSMapTable *)self->_portalViewsForIconViews objectEnumerator];
+  v11 = [objectEnumerator2 countByEnumeratingWithState:&v33 objects:v42 count:16];
   if (v11)
   {
     v12 = v11;
@@ -616,7 +616,7 @@ LABEL_4:
       {
         if (*v34 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v15 = *(*(&v33 + 1) + 8 * j);
@@ -624,7 +624,7 @@ LABEL_4:
         [v15 removeFromSuperview];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v33 objects:v42 count:16];
+      v12 = [objectEnumerator2 countByEnumeratingWithState:&v33 objects:v42 count:16];
     }
 
     while (v12);
@@ -634,8 +634,8 @@ LABEL_4:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = [(NSMapTable *)self->_portalViewsForIconViews keyEnumerator];
-  v17 = [v16 countByEnumeratingWithState:&v29 objects:v41 count:16];
+  keyEnumerator = [(NSMapTable *)self->_portalViewsForIconViews keyEnumerator];
+  v17 = [keyEnumerator countByEnumeratingWithState:&v29 objects:v41 count:16];
   if (v17)
   {
     v18 = v17;
@@ -646,13 +646,13 @@ LABEL_4:
       {
         if (*v30 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         [*(*(&v29 + 1) + 8 * k) removeObserver:self];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v29 objects:v41 count:16];
+      v18 = [keyEnumerator countByEnumeratingWithState:&v29 objects:v41 count:16];
     }
 
     while (v18);
@@ -781,10 +781,10 @@ void __62__SBHWidgetInsertionRippleIconAnimator__layoutRippleIconViews__block_in
   }
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   rippleSimulation = self->_rippleSimulation;
-  [a3 duration];
+  [fired duration];
   [(SBHRippleSimulation *)rippleSimulation step:?];
   [(SBHWidgetInsertionRippleIconAnimator *)self _layoutRippleIconViews];
   if ([(SBHRippleSimulation *)self->_rippleSimulation isSettled])
@@ -794,10 +794,10 @@ void __62__SBHWidgetInsertionRippleIconAnimator__layoutRippleIconViews__block_in
   }
 }
 
-- (void)_performJumpAnimationWithCompletion:(id)a3
+- (void)_performJumpAnimationWithCompletion:(id)completion
 {
   v77[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   if (!self->_referenceIconView)
   {
     [SBHWidgetInsertionRippleIconAnimator _performJumpAnimationWithCompletion:a2];
@@ -808,27 +808,27 @@ void __62__SBHWidgetInsertionRippleIconAnimator__layoutRippleIconViews__block_in
     [SBHWidgetInsertionRippleIconAnimator _performJumpAnimationWithCompletion:a2];
   }
 
-  v57 = v5;
+  v57 = completionCopy;
   v6 = dispatch_group_create();
   [(SBIconView *)self->_referenceIconView setHidden:1];
-  v7 = [(SBIconView *)self->_referenceIconView allowsLabelArea];
+  allowsLabelArea = [(SBIconView *)self->_referenceIconView allowsLabelArea];
   v8 = 0.0;
-  if (v7)
+  if (allowsLabelArea)
   {
     [(SBIconView *)self->_referenceIconView iconLabelAlpha];
   }
 
   [(SBIconView *)self->_widgetIconView setIconLabelAlpha:v8, v57];
   v9 = objc_alloc(MEMORY[0x1E69DD250]);
-  v10 = [(SBIconListView *)self->_iconListView window];
-  [v10 bounds];
+  window = [(SBIconListView *)self->_iconListView window];
+  [window bounds];
   v11 = [v9 initWithFrame:?];
   portalContainerView = self->_portalContainerView;
   self->_portalContainerView = v11;
 
   [(UIView *)self->_portalContainerView bs_setHitTestingDisabled:1];
-  v13 = [(SBIconListView *)self->_iconListView window];
-  [v13 addSubview:self->_portalContainerView];
+  window2 = [(SBIconListView *)self->_iconListView window];
+  [window2 addSubview:self->_portalContainerView];
 
   v14 = [objc_alloc(MEMORY[0x1E69DD648]) initWithSourceView:self->_widgetIconView];
   widgetIconPortalView = self->_widgetIconPortalView;
@@ -841,15 +841,15 @@ void __62__SBHWidgetInsertionRippleIconAnimator__layoutRippleIconViews__block_in
   [(SBIconView *)self->_widgetIconView bounds];
   [(_UIPortalView *)self->_widgetIconPortalView setCenter:self->_referenceIconViewOriginInWindow.x + v16 * 0.5, self->_referenceIconViewOriginInWindow.y + v17 * 0.5];
   [(UIView *)self->_portalContainerView addSubview:self->_widgetIconPortalView];
-  v18 = [MEMORY[0x1E69793B8] animation];
-  v19 = [(SBIconListView *)self->_iconListView layer];
-  [v18 setSourceLayer:v19];
+  animation = [MEMORY[0x1E69793B8] animation];
+  layer = [(SBIconListView *)self->_iconListView layer];
+  [animation setSourceLayer:layer];
 
-  [v18 setDuration:INFINITY];
-  [v18 setFillMode:*MEMORY[0x1E69797E0]];
-  [v18 setRemovedOnCompletion:0];
-  [v18 setAppliesY:1];
-  [v18 setAppliesX:1];
+  [animation setDuration:INFINITY];
+  [animation setFillMode:*MEMORY[0x1E69797E0]];
+  [animation setRemovedOnCompletion:0];
+  [animation setAppliesY:1];
+  [animation setAppliesX:1];
   v20 = self->_portalContainerView;
   [(UIView *)v20 bounds];
   UIRectGetCenter();
@@ -857,12 +857,12 @@ void __62__SBHWidgetInsertionRippleIconAnimator__layoutRippleIconViews__block_in
   v21 = [MEMORY[0x1E696B098] valueWithCGPoint:?];
   v77[0] = v21;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v77 count:1];
-  [v18 setSourcePoints:v22];
+  [animation setSourcePoints:v22];
 
-  [(UIView *)self->_portalContainerView addAnimation:v18 forKey:@"SBHWidgetInsertionRippleIconAnimatorMatchMove"];
+  [(UIView *)self->_portalContainerView addAnimation:animation forKey:@"SBHWidgetInsertionRippleIconAnimatorMatchMove"];
   LODWORD(v21) = [(SBHWidgetInsertionRippleIconAnimator *)self keepsJumpingIconAboveListViewAsLongAsPossible];
-  v23 = [MEMORY[0x1E69DC938] currentDevice];
-  v24 = [v23 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v25 = 0.2;
   if (v21)
@@ -870,7 +870,7 @@ void __62__SBHWidgetInsertionRippleIconAnimator__layoutRippleIconViews__block_in
     v25 = 0.4;
   }
 
-  if ((v24 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v25 = 0.5;
   }
@@ -1081,10 +1081,10 @@ uint64_t __76__SBHWidgetInsertionRippleIconAnimator__performJumpAnimationWithCom
   return result;
 }
 
-- (void)_reparentPortalViewIntoIconListViewAfterDelay:(double)a3
+- (void)_reparentPortalViewIntoIconListViewAfterDelay:(double)delay
 {
   UIAnimationDragCoefficient();
-  v6 = dispatch_time(0, (v5 * a3 * 1000000000.0));
+  v6 = dispatch_time(0, (v5 * delay * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__SBHWidgetInsertionRippleIconAnimator__reparentPortalViewIntoIconListViewAfterDelay___block_invoke;
@@ -1105,15 +1105,15 @@ uint64_t __76__SBHWidgetInsertionRippleIconAnimator__performJumpAnimationWithCom
   [(SBIconListView *)iconListView addSubview:v5];
 }
 
-- (void)_playImpactHapticAfterDelay:(double)a3
+- (void)_playImpactHapticAfterDelay:(double)delay
 {
   v4 = objc_alloc(MEMORY[0x1E69DCAE8]);
-  v5 = [MEMORY[0x1E69DD560] softConfiguration];
-  v6 = [v4 initWithConfiguration:v5];
+  softConfiguration = [MEMORY[0x1E69DD560] softConfiguration];
+  v6 = [v4 initWithConfiguration:softConfiguration];
 
   [v6 prepare];
   UIAnimationDragCoefficient();
-  v8 = dispatch_time(0, (v7 * a3 * 1000000000.0));
+  v8 = dispatch_time(0, (v7 * delay * 1000000000.0));
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __68__SBHWidgetInsertionRippleIconAnimator__playImpactHapticAfterDelay___block_invoke;

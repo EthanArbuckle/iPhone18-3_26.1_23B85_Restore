@@ -1,23 +1,23 @@
 @interface WFSuggestionsWorkflowRunnerClient
-- (WFSuggestionsWorkflowRunnerClient)initWithINShortcut:(id)a3 executionContext:(int64_t)a4 remoteDialogPresenterEndpoint:(id)a5;
-- (WFSuggestionsWorkflowRunnerClient)initWithLinkAction:(id)a3 bundleIdentifier:(id)a4 resultSurface:(unint64_t)a5;
+- (WFSuggestionsWorkflowRunnerClient)initWithINShortcut:(id)shortcut executionContext:(int64_t)context remoteDialogPresenterEndpoint:(id)endpoint;
+- (WFSuggestionsWorkflowRunnerClient)initWithLinkAction:(id)action bundleIdentifier:(id)identifier resultSurface:(unint64_t)surface;
 @end
 
 @implementation WFSuggestionsWorkflowRunnerClient
 
-- (WFSuggestionsWorkflowRunnerClient)initWithINShortcut:(id)a3 executionContext:(int64_t)a4 remoteDialogPresenterEndpoint:(id)a5
+- (WFSuggestionsWorkflowRunnerClient)initWithINShortcut:(id)shortcut executionContext:(int64_t)context remoteDialogPresenterEndpoint:(id)endpoint
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 intent];
-  if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  shortcutCopy = shortcut;
+  endpointCopy = endpoint;
+  intent = [shortcutCopy intent];
+  if (intent && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v11 = [WFWorkflowDatabaseRunDescriptor alloc];
-    v12 = [v10 workflow];
-    v13 = [v12 vocabularyIdentifier];
-    v14 = [v10 workflow];
-    v15 = [v14 spokenPhrase];
-    v16 = [(WFWorkflowDatabaseRunDescriptor *)v11 initWithIdentifier:v13 name:v15];
+    workflow = [intent workflow];
+    vocabularyIdentifier = [workflow vocabularyIdentifier];
+    workflow2 = [intent workflow];
+    spokenPhrase = [workflow2 spokenPhrase];
+    v16 = [(WFWorkflowDatabaseRunDescriptor *)v11 initWithIdentifier:vocabularyIdentifier name:spokenPhrase];
 
     v17 = 1;
   }
@@ -25,25 +25,25 @@
   else
   {
 
-    v16 = [[WFINShortcutRunDescriptor alloc] initWithShortcut:v8];
+    v16 = [[WFINShortcutRunDescriptor alloc] initWithShortcut:shortcutCopy];
     v17 = 0;
   }
 
   v18 = [[WFWorkflowRunRequest alloc] initWithInput:0 presentationMode:v17];
-  if (a4 > 0xA)
+  if (context > 0xA)
   {
     v19 = @"unknown";
   }
 
   else
   {
-    v19 = off_1E7AFFFD8[a4];
+    v19 = off_1E7AFFFD8[context];
   }
 
   v20 = v19;
   [(WFWorkflowRunRequest *)v18 setRunSource:v20];
 
-  [(WFWorkflowRunRequest *)v18 setRemoteDialogPresenterEndpoint:v9];
+  [(WFWorkflowRunRequest *)v18 setRemoteDialogPresenterEndpoint:endpointCopy];
   v23.receiver = self;
   v23.super_class = WFSuggestionsWorkflowRunnerClient;
   v21 = [(WFWorkflowRunnerClient *)&v23 initWithDescriptor:v16 runRequest:v18];
@@ -51,14 +51,14 @@
   return v21;
 }
 
-- (WFSuggestionsWorkflowRunnerClient)initWithLinkAction:(id)a3 bundleIdentifier:(id)a4 resultSurface:(unint64_t)a5
+- (WFSuggestionsWorkflowRunnerClient)initWithLinkAction:(id)action bundleIdentifier:(id)identifier resultSurface:(unint64_t)surface
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  actionCopy = action;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (actionCopy)
   {
-    if (v10)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -66,8 +66,8 @@
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"WFSuggestionsWorkflowRunnerClient.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSuggestionsWorkflowRunnerClient.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
     if (v11)
     {
@@ -75,23 +75,23 @@
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"WFSuggestionsWorkflowRunnerClient.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSuggestionsWorkflowRunnerClient.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"bundleIdentifier"}];
 
 LABEL_3:
-  v12 = [[WFLinkContextualAction alloc] initWithAction:v9 appBundleIdentifier:v11 extensionBundleIdentifier:0 authenticationPolicy:0];
+  v12 = [[WFLinkContextualAction alloc] initWithAction:actionCopy appBundleIdentifier:v11 extensionBundleIdentifier:0 authenticationPolicy:0];
   v13 = [[WFContextualActionContext alloc] initWithSurface:8];
   v14 = [[WFContextualActionRunDescriptor alloc] initWithAction:v12 context:v13];
   v15 = [[WFContextualActionRunRequest alloc] initWithAction:v12 actionContext:v13];
   [(WFWorkflowRunRequest *)v15 setPresentationMode:1];
-  if (a5 - 1 > 2)
+  if (surface - 1 > 2)
   {
     v16 = WFWorkflowRunSourceUnknown;
   }
 
   else
   {
-    v16 = off_1E7AFF9E0[a5 - 1];
+    v16 = off_1E7AFF9E0[surface - 1];
   }
 
   [(WFWorkflowRunRequest *)v15 setRunSource:*v16];

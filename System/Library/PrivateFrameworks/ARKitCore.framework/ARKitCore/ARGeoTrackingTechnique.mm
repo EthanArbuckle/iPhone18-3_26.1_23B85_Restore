@@ -1,25 +1,25 @@
 @interface ARGeoTrackingTechnique
-+ (BOOL)isCameraUp:(float)a3;
-+ (BOOL)isSupportedWithOptions:(unint64_t)a3;
-+ (int64_t)getFailureReasonFromVLError:(int64_t)a3;
++ (BOOL)isCameraUp:(float)up;
++ (BOOL)isSupportedWithOptions:(unint64_t)options;
++ (int64_t)getFailureReasonFromVLError:(int64_t)error;
 - (ARGeoTrackingTechnique)init;
-- (ARGeoTrackingTechnique)initWithAuditToken:(id)a3;
-- (BOOL)reconfigurableFrom:(id)a3;
-- (__n128)getLocationFromWorldPosition:(int8x16_t *)a3@<X8> error:(__n128)a4@<Q0>;
-- (id)processData:(id)a3;
+- (ARGeoTrackingTechnique)initWithAuditToken:(id)token;
+- (BOOL)reconfigurableFrom:(id)from;
+- (__n128)getLocationFromWorldPosition:(int8x16_t *)position@<X8> error:(__n128)error@<Q0>;
+- (id)processData:(id)data;
 - (id)resultDataClasses;
-- (int64_t)_getHighestPriorityFailureWithTechniqueStateObject:(id)a3;
-- (void)_callVLWithHandle:(double)a3 pixelBuffer:(__n128)a4 deviceLocation:(__n128)a5 heading:(__n128)a6 inputGravity:(__n128)a7 vioTransform:(uint64_t)a8 cameraIntrinsics:(void *)a9 radialDistortion:(uint64_t)a10 exposureTargetOffset:(void *)a11 timestamp:(__int128 *)a12 vlDeterminismSemaphore:(void *)a13 completionHandler:(void *)a14;
-- (void)_estimateEnuFromVioFromCLCM:(id)a3;
-- (void)_estimatePose:(id)a3 pose:(id)a4;
-- (void)_logVioTransform:(float32x4_t)a3 withTimestamp:(float32x4_t)a4 withSuffix:(float32x4_t)a5;
-- (void)_setTrackingState:(int64_t)a3 techniqueStateObject:(id)a4;
-- (void)_simulateReplayLocationUpdates:(id)a3;
-- (void)_updateVLStateData:(double)a3;
+- (int64_t)_getHighestPriorityFailureWithTechniqueStateObject:(id)object;
+- (void)_callVLWithHandle:(double)handle pixelBuffer:(__n128)buffer deviceLocation:(__n128)location heading:(__n128)heading inputGravity:(__n128)gravity vioTransform:(uint64_t)transform cameraIntrinsics:(void *)intrinsics radialDistortion:(uint64_t)self0 exposureTargetOffset:(void *)self1 timestamp:(__int128 *)self2 vlDeterminismSemaphore:(void *)self3 completionHandler:(void *)self4;
+- (void)_estimateEnuFromVioFromCLCM:(id)m;
+- (void)_estimatePose:(id)pose pose:(id)a4;
+- (void)_logVioTransform:(float32x4_t)transform withTimestamp:(float32x4_t)timestamp withSuffix:(float32x4_t)suffix;
+- (void)_setTrackingState:(int64_t)state techniqueStateObject:(id)object;
+- (void)_simulateReplayLocationUpdates:(id)updates;
+- (void)_updateVLStateData:(double)data;
 - (void)dealloc;
-- (void)prepare:(BOOL)a3;
-- (void)reconfigureFrom:(id)a3;
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4;
+- (void)prepare:(BOOL)prepare;
+- (void)reconfigureFrom:(id)from;
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context;
 @end
 
 @implementation ARGeoTrackingTechnique
@@ -96,14 +96,14 @@
   return v3;
 }
 
-- (ARGeoTrackingTechnique)initWithAuditToken:(id)a3
+- (ARGeoTrackingTechnique)initWithAuditToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   v6 = [(ARGeoTrackingTechnique *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_auditToken, a3);
+    objc_storeStrong(&v6->_auditToken, token);
   }
 
   return v7;
@@ -120,14 +120,14 @@
     *buf = 138543618;
     v14 = v5;
     v15 = 2048;
-    v16 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: dealloc", buf, 0x16u);
   }
 
   if (self->_VLTraceRecorder)
   {
-    v6 = [(ARGeoTrackingTechnique *)self VLTraceRecorder];
-    [v6 finish];
+    vLTraceRecorder = [(ARGeoTrackingTechnique *)self VLTraceRecorder];
+    [vLTraceRecorder finish];
   }
 
   v7 = _ARLogTechnique_1();
@@ -138,28 +138,28 @@
     *buf = 138543618;
     v14 = v9;
     v15 = 2048;
-    v16 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Stopping location simulation", buf, 0x16u);
   }
 
-  v10 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
-  [v10 clearSimulatedLocations];
+  locationSimulationManager = [(ARGeoTrackingTechnique *)self locationSimulationManager];
+  [locationSimulationManager clearSimulatedLocations];
 
-  v11 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
-  [v11 stopLocationSimulation];
+  locationSimulationManager2 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
+  [locationSimulationManager2 stopLocationSimulation];
 
   v12.receiver = self;
   v12.super_class = ARGeoTrackingTechnique;
   [(ARGeoTrackingTechnique *)&v12 dealloc];
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
   v26 = *MEMORY[0x1E69E9840];
-  self->_deterministic = a3;
-  v4 = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
+  self->_deterministic = prepare;
+  vLHandle = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
 
-  if (!v4)
+  if (!vLHandle)
   {
     if (self->_auditToken)
     {
@@ -179,21 +179,21 @@
     {
       v8 = objc_opt_class();
       v9 = NSStringFromClass(v8);
-      v10 = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
+      vLHandle2 = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
       v20 = 138543874;
       v21 = v9;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2048;
-      v25 = v10;
+      v25 = vLHandle2;
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: VLHandle created,%p", &v20, 0x20u);
     }
   }
 
   if (!self->_VLTraceRecorder && self->_useVLTraceRecorder)
   {
-    v11 = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
-    [v11 _setDebugInfoShouldPreserveImageData:1];
+    vLHandle3 = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
+    [vLHandle3 _setDebugInfoShouldPreserveImageData:1];
 
     v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/var/mobile/Library/Caches/VisualLocalization/Traces"];
     v13 = _ARLogTechnique_1();
@@ -201,22 +201,22 @@
     {
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      v16 = [v12 absoluteString];
-      v17 = [v16 UTF8String];
+      absoluteString = [v12 absoluteString];
+      uTF8String = [absoluteString UTF8String];
       v20 = 138543874;
       v21 = v15;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       v24 = 2080;
-      v25 = v17;
+      v25 = uTF8String;
       _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Capturing traces at %s", &v20, 0x20u);
     }
 
     v18 = [objc_alloc(MEMORY[0x1E69E0308]) initWithDirectory:v12];
     [(ARGeoTrackingTechnique *)self setVLTraceRecorder:v18];
 
-    v19 = [(ARGeoTrackingTechnique *)self VLTraceRecorder];
-    [v19 start];
+    vLTraceRecorder = [(ARGeoTrackingTechnique *)self VLTraceRecorder];
+    [vLTraceRecorder start];
   }
 }
 
@@ -228,18 +228,18 @@
   return [v2 setWithObject:v3];
 }
 
-- (BOOL)reconfigurableFrom:(id)a3
+- (BOOL)reconfigurableFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 isMemberOfClass:objc_opt_class()];
+  fromCopy = from;
+  v4 = [fromCopy isMemberOfClass:objc_opt_class()];
 
   return v4;
 }
 
-- (void)reconfigureFrom:(id)a3
+- (void)reconfigureFrom:(id)from
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   v5 = _ARLogTechnique_1();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -248,30 +248,30 @@
     v10 = 138543618;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Reconfiguring existing geo tracking technique.", &v10, 0x16u);
   }
 
-  v8 = v4;
+  v8 = fromCopy;
   [v8 visualLocalizationCallInterval];
   [(ARGeoTrackingTechnique *)self setVisualLocalizationCallInterval:?];
   [v8 posteriorVisualLocalizationCallInterval];
   [(ARGeoTrackingTechnique *)self setPosteriorVisualLocalizationCallInterval:?];
   [v8 visualLocalizationCallIntervalTimeThreshold];
   [(ARGeoTrackingTechnique *)self setVisualLocalizationCallIntervalTimeThreshold:?];
-  v9 = [v8 visualLocalizationUpdatesRequested];
+  visualLocalizationUpdatesRequested = [v8 visualLocalizationUpdatesRequested];
 
-  [(ARGeoTrackingTechnique *)self setVisualLocalizationUpdatesRequested:v9];
+  [(ARGeoTrackingTechnique *)self setVisualLocalizationUpdatesRequested:visualLocalizationUpdatesRequested];
 }
 
-- (void)_simulateReplayLocationUpdates:(id)a3
+- (void)_simulateReplayLocationUpdates:(id)updates
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isSecure] & 1) == 0)
+  updatesCopy = updates;
+  if (([updatesCopy isSecure] & 1) == 0)
   {
-    v5 = [v4 location];
-    v6 = [v5 copy];
+    location = [updatesCopy location];
+    v6 = [location copy];
 
     v7 = _ARLogTechnique_1();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -281,15 +281,15 @@
       v21 = 138543874;
       v22 = v9;
       v23 = 2048;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2112;
       v26 = v6;
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Simulating Location to CL: %@", &v21, 0x20u);
     }
 
-    v10 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
+    locationSimulationManager = [(ARGeoTrackingTechnique *)self locationSimulationManager];
 
-    if (!v10)
+    if (!locationSimulationManager)
     {
       v11 = _ARLogTechnique_1();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -299,38 +299,38 @@
         v21 = 138543618;
         v22 = v13;
         v23 = 2048;
-        v24 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Creating location simulation manager.", &v21, 0x16u);
       }
 
       v14 = objc_alloc_init(MEMORY[0x1E695FC40]);
       [(ARGeoTrackingTechnique *)self setLocationSimulationManager:v14];
 
-      v15 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
-      [v15 stopLocationSimulation];
+      locationSimulationManager2 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
+      [locationSimulationManager2 stopLocationSimulation];
 
-      v16 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
-      [v16 clearSimulatedLocations];
+      locationSimulationManager3 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
+      [locationSimulationManager3 clearSimulatedLocations];
     }
 
-    v17 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
-    [v17 setLocationDistance:1.0];
+    locationSimulationManager4 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
+    [locationSimulationManager4 setLocationDistance:1.0];
 
-    v18 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
-    [v18 setLocationRepeatBehavior:1];
+    locationSimulationManager5 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
+    [locationSimulationManager5 setLocationRepeatBehavior:1];
 
-    v19 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
-    [v19 appendSimulatedLocation:v6];
+    locationSimulationManager6 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
+    [locationSimulationManager6 appendSimulatedLocation:v6];
 
-    v20 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
-    [v20 startLocationSimulation];
+    locationSimulationManager7 = [(ARGeoTrackingTechnique *)self locationSimulationManager];
+    [locationSimulationManager7 startLocationSimulation];
   }
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
   v138 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_resetLock);
   v5 = self->_state;
   os_unfair_lock_unlock(&self->_resetLock);
@@ -343,75 +343,75 @@
       goto LABEL_52;
     }
 
-    v35 = v4;
-    v36 = [v35 deviceMotion];
-    if ([v36 magneticFieldCalibrationLevel] != -1)
+    v35 = dataCopy;
+    deviceMotion = [v35 deviceMotion];
+    if ([deviceMotion magneticFieldCalibrationLevel] != -1)
     {
-      v37 = [v35 deviceMotion];
-      v38 = [v37 magneticFieldCalibrationLevel];
+      deviceMotion2 = [v35 deviceMotion];
+      magneticFieldCalibrationLevel = [deviceMotion2 magneticFieldCalibrationLevel];
 
-      if (!v38)
+      if (!magneticFieldCalibrationLevel)
       {
 LABEL_13:
 
         goto LABEL_52;
       }
 
-      v36 = [v35 copy];
-      [(ARGeoTrackingTechniqueState *)v5 setLastCMDeviceMotion:v36];
+      deviceMotion = [v35 copy];
+      [(ARGeoTrackingTechniqueState *)v5 setLastCMDeviceMotion:deviceMotion];
       if (self->_useCoreMotionFusion)
       {
-        [(ARGeoTrackingTechniqueState *)v5 addDeviceMotionData:v36];
+        [(ARGeoTrackingTechniqueState *)v5 addDeviceMotionData:deviceMotion];
       }
     }
 
     goto LABEL_13;
   }
 
-  v6 = v4;
+  v6 = dataCopy;
   v7 = _ARLogTechnique_1();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v101 = [v6 location];
-    [v101 coordinate];
+    location = [v6 location];
+    [location coordinate];
     v11 = v10;
-    v100 = [v6 location];
-    [v100 coordinate];
+    location2 = [v6 location];
+    [location2 coordinate];
     v13 = v12;
-    v99 = [v6 location];
-    [v99 altitude];
+    location3 = [v6 location];
+    [location3 altitude];
     v15 = v14;
-    v98 = [v6 location];
-    [v98 altitudeWgs84];
+    location4 = [v6 location];
+    [location4 altitudeWgs84];
     v17 = v16;
-    v97 = [v6 location];
-    v94 = [v97 isAltitudeWgs84Available];
-    v96 = [v6 location];
-    v93 = [v96 isCoordinateFused];
-    v95 = [v6 location];
-    [v95 rawCoordinate];
+    location5 = [v6 location];
+    isAltitudeWgs84Available = [location5 isAltitudeWgs84Available];
+    location6 = [v6 location];
+    isCoordinateFused = [location6 isCoordinateFused];
+    location7 = [v6 location];
+    [location7 rawCoordinate];
     v19 = v18;
     [v6 location];
-    v20 = v103 = v4;
+    v20 = v103 = dataCopy;
     [v20 rawCoordinate];
     v22 = v21;
     [v6 location];
     v23 = v102 = v5;
     [v23 horizontalAccuracy];
     v25 = v24;
-    v26 = [v6 location];
-    [v26 rawHorizontalAccuracy];
+    location8 = [v6 location];
+    [location8 rawHorizontalAccuracy];
     v28 = v27;
-    v29 = [v6 location];
-    v30 = [v29 isCoordinateFusedWithVL];
-    v31 = [v6 location];
-    [v31 ellipsoidalAltitude];
+    location9 = [v6 location];
+    isCoordinateFusedWithVL = [location9 isCoordinateFusedWithVL];
+    location10 = [v6 location];
+    [location10 ellipsoidalAltitude];
     *buf = 138546691;
     v111 = v9;
     v112 = 2048;
-    v113 = self;
+    selfCopy11 = self;
     v114 = 2049;
     v115 = v11;
     v116 = 2049;
@@ -421,9 +421,9 @@ LABEL_13:
     v120 = 2049;
     v121 = v17;
     v122 = 1024;
-    v123 = v94;
+    v123 = isAltitudeWgs84Available;
     v124 = 1024;
-    v125 = v93;
+    v125 = isCoordinateFused;
     v126 = 2049;
     v127 = v19;
     v128 = 2049;
@@ -433,33 +433,33 @@ LABEL_13:
     v132 = 2049;
     v133 = v28;
     v134 = 1024;
-    v135 = v30;
+    v135 = isCoordinateFusedWithVL;
     v136 = 2049;
     v137 = v32;
     _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Received new location point: lat=%{private}.8f, lon=%{private}.8f, alt=%{private}.3f, alt_wgs84=%{private}.3f, wgs84_available=%d, fused=%d, rawLat=%{private}.8f, rawLon=%{private}.8f, acc=%{private}.3f, rawAcc=%{private}.3f, fusedWithVL=%d, ellipsoidalAltitude=%{private}.3f.", buf, 0x82u);
 
     v5 = v102;
-    v4 = v103;
+    dataCopy = v103;
   }
 
   [(ARGeoTrackingTechnique *)self _simulateReplayLocationUpdates:v6];
-  v33 = [v6 location];
-  if ([v33 type] == 6)
+  location11 = [v6 location];
+  if ([location11 type] == 6)
   {
     goto LABEL_5;
   }
 
-  v39 = [v6 location];
-  v40 = [v39 type];
+  location12 = [v6 location];
+  type = [location12 type];
 
-  if (v40 == 10)
+  if (type == 10)
   {
     v34 = 0;
     goto LABEL_16;
   }
 
-  v33 = [v6 location];
-  [v33 horizontalAccuracy];
+  location11 = [v6 location];
+  [location11 horizontalAccuracy];
   if ((v49 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
   {
 LABEL_5:
@@ -468,12 +468,12 @@ LABEL_5:
 
   else
   {
-    v50 = [v6 location];
-    [v50 horizontalAccuracy];
+    location13 = [v6 location];
+    [location13 horizontalAccuracy];
     if (v51 >= 0.0)
     {
-      v74 = [v6 location];
-      [v74 horizontalAccuracy];
+      location14 = [v6 location];
+      [location14 horizontalAccuracy];
       v34 = v75 < self->_maxHorizontalAccuracy;
     }
 
@@ -503,7 +503,7 @@ LABEL_16:
         *buf = 138543618;
         v111 = v45;
         v112 = 2048;
-        v113 = self;
+        selfCopy11 = self;
         v46 = "%{public}@ <%p>: Location to set ENU origin must have undulation.";
         v47 = v43;
         v48 = OS_LOG_TYPE_ERROR;
@@ -519,7 +519,7 @@ LABEL_28:
       *buf = 138543618;
       v111 = v45;
       v112 = 2048;
-      v113 = self;
+      selfCopy11 = self;
       v46 = "Error: %{public}@ <%p>: Location to set ENU origin must have undulation.";
       v47 = v43;
       v48 = OS_LOG_TYPE_INFO;
@@ -548,7 +548,7 @@ LABEL_28:
         *buf = 138543618;
         v111 = v65;
         v112 = 2048;
-        v113 = self;
+        selfCopy11 = self;
         v66 = "%{public}@ <%p>: Received location must have valid altitude.";
         v67 = v63;
         v68 = OS_LOG_TYPE_ERROR;
@@ -564,7 +564,7 @@ LABEL_46:
       *buf = 138543618;
       v111 = v65;
       v112 = 2048;
-      v113 = self;
+      selfCopy11 = self;
       v66 = "Error: %{public}@ <%p>: Received location must have valid altitude.";
       v67 = v63;
       v68 = OS_LOG_TYPE_INFO;
@@ -584,7 +584,7 @@ LABEL_46:
       *buf = 138543618;
       v111 = v55;
       v112 = 2048;
-      v113 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_1C241C000, v53, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Received location valid for geo tracking.", buf, 0x16u);
     }
 
@@ -601,7 +601,7 @@ LABEL_46:
         *buf = 138543618;
         v111 = v59;
         v112 = 2048;
-        v113 = self;
+        selfCopy11 = self;
         _os_log_impl(&dword_1C241C000, v57, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Received candidate location for ENU origin. Checking geo tracking availability.", buf, 0x16u);
       }
 
@@ -617,21 +617,21 @@ LABEL_46:
         v60 = 0;
       }
 
-      v76 = [v56 location];
-      [v76 coordinate];
+      location15 = [v56 location];
+      [location15 coordinate];
       v78 = v77;
       v80 = v79;
-      v81 = [(ARGeoTrackingTechnique *)self supportEnablementOptions];
+      supportEnablementOptions = [(ARGeoTrackingTechnique *)self supportEnablementOptions];
       v105[0] = MEMORY[0x1E69E9820];
       v105[1] = 3221225472;
       v105[2] = __38__ARGeoTrackingTechnique_processData___block_invoke;
       v105[3] = &unk_1E817C3A0;
       v82 = v60;
       v106 = v82;
-      v107 = self;
+      selfCopy8 = self;
       v108 = v5;
       v109 = v56;
-      [ARGeoTrackingConfiguration checkAvailabilityAtCoordinate:v81 withOptions:v105 completionHandler:v78, v80];
+      [ARGeoTrackingConfiguration checkAvailabilityAtCoordinate:supportEnablementOptions withOptions:v105 completionHandler:v78, v80];
 
       if (v82)
       {
@@ -643,7 +643,7 @@ LABEL_46:
           *buf = 138543618;
           v111 = v85;
           v112 = 2048;
-          v113 = self;
+          selfCopy11 = self;
           _os_log_impl(&dword_1C241C000, v83, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Waiting for availability check to finish", buf, 0x16u);
         }
 
@@ -651,16 +651,16 @@ LABEL_46:
       }
     }
 
-    v86 = [(ARGeoTrackingTechniqueState *)v5 VLHandle];
-    if (!v86)
+    vLHandle = [(ARGeoTrackingTechniqueState *)v5 VLHandle];
+    if (!vLHandle)
     {
       goto LABEL_51;
     }
 
-    v87 = v86;
-    v88 = [(ARGeoTrackingTechnique *)self visualLocalizationUpdatesRequested];
+    v87 = vLHandle;
+    visualLocalizationUpdatesRequested = [(ARGeoTrackingTechnique *)self visualLocalizationUpdatesRequested];
 
-    if (!v88)
+    if (!visualLocalizationUpdatesRequested)
     {
       goto LABEL_51;
     }
@@ -673,13 +673,13 @@ LABEL_46:
       *buf = 138543618;
       v111 = v91;
       v112 = 2048;
-      v113 = self;
+      selfCopy11 = self;
       _os_log_impl(&dword_1C241C000, v89, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Pre-warming VL with this location.", buf, 0x16u);
     }
 
-    v71 = [(ARGeoTrackingTechniqueState *)v5 VLHandle];
-    v92 = [v6 location];
-    [v71 prepareWithDeviceLocation:v92];
+    vLHandle2 = [(ARGeoTrackingTechniqueState *)v5 VLHandle];
+    location16 = [v6 location];
+    [vLHandle2 prepareWithDeviceLocation:location16];
 
     goto LABEL_50;
   }
@@ -689,11 +689,11 @@ LABEL_48:
   if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
   {
     v70 = objc_opt_class();
-    v71 = NSStringFromClass(v70);
+    vLHandle2 = NSStringFromClass(v70);
     *buf = 138543618;
-    v111 = v71;
+    v111 = vLHandle2;
     v112 = 2048;
-    v113 = self;
+    selfCopy11 = self;
     _os_log_impl(&dword_1C241C000, v56, OS_LOG_TYPE_INFO, "%{public}@ <%p>: New location is not valid for geo tracking.", buf, 0x16u);
 LABEL_50:
   }
@@ -703,7 +703,7 @@ LABEL_51:
 LABEL_52:
   v104.receiver = self;
   v104.super_class = ARGeoTrackingTechnique;
-  v72 = [(ARTechnique *)&v104 processData:v4];
+  v72 = [(ARTechnique *)&v104 processData:dataCopy];
 
   return v72;
 }
@@ -935,29 +935,29 @@ NSObject *__38__ARGeoTrackingTechnique_processData___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)requestResultDataAtTimestamp:(double)a3 context:(id)a4
+- (void)requestResultDataAtTimestamp:(double)timestamp context:(id)context
 {
   STACK[0x6C8] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contextCopy = context;
   ++self->_requestResultDataAtTimestampCallCount;
   [(ARGeoTrackingTechniqueState *)self->_state firstRequestResultTimestamp];
   if (v7 <= 0.0)
   {
-    [(ARGeoTrackingTechniqueState *)self->_state setFirstRequestResultTimestamp:a3];
+    [(ARGeoTrackingTechniqueState *)self->_state setFirstRequestResultTimestamp:timestamp];
   }
 
-  v8 = [v6 imageData];
-  v9 = [v8 cameraType];
-  v10 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(v9);
+  imageData = [contextCopy imageData];
+  cameraType = [imageData cameraType];
+  v10 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(cameraType);
 
   if (v10)
   {
-    v11 = [v6 resultDataOfClass:objc_opt_class()];
+    v11 = [contextCopy resultDataOfClass:objc_opt_class()];
     v12 = &OBJC_IVAR___ARReplaySensorPublic__sequenceURL;
     if (![v11 count])
     {
       [(ARGeoTrackingTechniqueState *)self->_state firstRequestResultTimestamp];
-      if (a3 - v25 > 1.5)
+      if (timestamp - v25 > 1.5)
       {
         [(ARGeoTrackingTechniqueState *)self->_state addFailureReason:64];
       }
@@ -969,13 +969,13 @@ NSObject *__38__ARGeoTrackingTechnique_processData___block_invoke_2(uint64_t a1)
     [(ARGeoTrackingTechniqueState *)self->_state lastPoseOriginTimestamp];
     if (v14 == 0.0)
     {
-      v15 = [v13 worldTrackingState];
-      [v15 originTimestamp];
+      worldTrackingState = [v13 worldTrackingState];
+      [worldTrackingState originTimestamp];
       [(ARGeoTrackingTechniqueState *)self->_state setLastPoseOriginTimestamp:?];
     }
 
-    v16 = [v13 worldTrackingState];
-    [v16 originTimestamp];
+    worldTrackingState2 = [v13 worldTrackingState];
+    [worldTrackingState2 originTimestamp];
     v18 = v17;
     [(ARGeoTrackingTechniqueState *)self->_state lastPoseOriginTimestamp];
     v20 = v19;
@@ -987,8 +987,8 @@ NSObject *__38__ARGeoTrackingTechnique_processData___block_invoke_2(uint64_t a1)
       state = self->_state;
       self->_state = v21;
 
-      v23 = [v13 worldTrackingState];
-      [v23 originTimestamp];
+      worldTrackingState3 = [v13 worldTrackingState];
+      [worldTrackingState3 originTimestamp];
       [(ARGeoTrackingTechniqueState *)self->_state setLastPoseOriginTimestamp:?];
 
       if (self->_auditToken)
@@ -1005,8 +1005,8 @@ NSObject *__38__ARGeoTrackingTechnique_processData___block_invoke_2(uint64_t a1)
       [(ARGeoTrackingTechniqueState *)self->_state setVLHandle:v24];
 
       useVLTraceRecorder = self->_useVLTraceRecorder;
-      v28 = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
-      [v28 _setDebugInfoShouldPreserveImageData:useVLTraceRecorder];
+      vLHandle = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
+      [vLHandle _setDebugInfoShouldPreserveImageData:useVLTraceRecorder];
 
       os_unfair_lock_unlock(&self->_resetLock);
       v29 = _ARLogTechnique_1();
@@ -1014,13 +1014,13 @@ NSObject *__38__ARGeoTrackingTechnique_processData___block_invoke_2(uint64_t a1)
       {
         v30 = objc_opt_class();
         v31 = NSStringFromClass(v30);
-        v32 = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
+        vLHandle2 = [(ARGeoTrackingTechniqueState *)self->_state VLHandle];
         LODWORD(STACK[0x610]) = 138543874;
         STACK[0x614] = v31;
         LOWORD(STACK[0x61C]) = 2048;
         STACK[0x61E] = self;
         LOWORD(STACK[0x626]) = 2048;
-        STACK[0x628] = v32;
+        STACK[0x628] = vLHandle2;
         _os_log_impl(&dword_1C241C000, v29, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Reset detected. VLHandle created,%p", &STACK[0x610], 0x20u);
       }
     }
@@ -1063,11 +1063,11 @@ NSObject *__38__ARGeoTrackingTechnique_processData___block_invoke_2(uint64_t a1)
       [(ARGeoTrackingTechniqueState *)v44 addFailureReason:128];
     }
 
-    v45 = [v13 worldTrackingState];
-    v46 = [v45 vioTrackingState];
+    worldTrackingState4 = [v13 worldTrackingState];
+    vioTrackingState = [worldTrackingState4 vioTrackingState];
 
     v47 = self->_state;
-    if (v46)
+    if (vioTrackingState)
     {
       [(ARGeoTrackingTechniqueState *)v47 addFailureReason:64];
     }
@@ -1083,25 +1083,25 @@ LABEL_90:
 
       v12 = &OBJC_IVAR___ARReplaySensorPublic__sequenceURL;
 LABEL_91:
-      [v8 timestamp];
+      [imageData timestamp];
       [(ARGeoTrackingTechnique *)self _updateVLStateData:?];
       v186 = v12[145];
       os_unfair_lock_lock((self + v186));
       v187 = objc_alloc(MEMORY[0x1E695DEC8]);
-      v188 = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
-      v189 = [v187 initWithArray:v188];
+      resultDatas = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
+      v189 = [v187 initWithArray:resultDatas];
 
-      v190 = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
-      [v190 removeAllObjects];
+      resultDatas2 = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
+      [resultDatas2 removeAllObjects];
 
       os_unfair_lock_unlock((self + v186));
-      v191 = [(ARTechnique *)self delegate];
+      delegate = [(ARTechnique *)self delegate];
       LOBYTE(v186) = objc_opt_respondsToSelector();
 
       if (v186)
       {
-        v192 = [(ARTechnique *)self delegate];
-        [v192 technique:self didOutputResultData:v189 timestamp:v6 context:a3];
+        delegate2 = [(ARTechnique *)self delegate];
+        [delegate2 technique:self didOutputResultData:v189 timestamp:contextCopy context:timestamp];
       }
 
       goto LABEL_94;
@@ -1111,10 +1111,10 @@ LABEL_91:
     [(ARGeoTrackingTechniqueState *)self->_state addVioPoseData:v13];
     if ([(ARGeoTrackingTechniqueState *)self->_state VLHasExecuted])
     {
-      v48 = [(ARGeoTrackingTechniqueState *)self->_state lastCLLocation];
+      lastCLLocation = [(ARGeoTrackingTechniqueState *)self->_state lastCLLocation];
       if (self->_useCoreLocationFusion || self->_useCoreMotionFusion)
       {
-        [(ARGeoTrackingTechnique *)self _estimateEnuFromVioFromCLCM:v48];
+        [(ARGeoTrackingTechnique *)self _estimateEnuFromVioFromCLCM:lastCLLocation];
       }
 
       if (self->_useGradualCorrection)
@@ -1152,8 +1152,8 @@ LABEL_91:
         v216 = 0u;
         v213 = 0u;
         v214 = 0u;
-        v58 = [(ARGeoTrackingTechniqueState *)self->_state gradualCorrectionFilter];
-        v59 = [v58 getCurrentENUFromVIO:&v213];
+        gradualCorrectionFilter = [(ARGeoTrackingTechniqueState *)self->_state gradualCorrectionFilter];
+        v59 = [gradualCorrectionFilter getCurrentENUFromVIO:&v213];
 
         if (v59)
         {
@@ -1189,12 +1189,12 @@ LABEL_91:
           v193 = v71;
           v194 = v70;
           v72 = [ARGeoTrackingData alloc];
-          v73 = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
-          v74 = [(ARGeoTrackingData *)v72 initWithENUOrigin:v73 vioFromENU:latitudea, v195, v194, v193];
+          enuOrigin = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
+          v193 = [(ARGeoTrackingData *)v72 initWithENUOrigin:enuOrigin vioFromENU:latitudea, v195, v194, v193];
 
           os_unfair_lock_lock(&self->_resultLock);
-          v75 = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
-          [v75 addObject:v74];
+          resultDatas3 = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
+          [resultDatas3 addObject:v193];
 
           os_unfair_lock_unlock(&self->_resultLock);
         }
@@ -1208,11 +1208,11 @@ LABEL_91:
       *&STACK[0x640] = 0u;
       *&STACK[0x610] = 0u;
       *&STACK[0x620] = 0u;
-      v76 = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
-      v77 = v76;
-      if (v76)
+      enuOrigin2 = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
+      v77 = enuOrigin2;
+      if (enuOrigin2)
       {
-        [v76 ecefFromlocation];
+        [enuOrigin2 ecefFromlocation];
       }
 
       else
@@ -1335,16 +1335,16 @@ LABEL_91:
       v208 = v224;
       [v105 getHeadingForEnuFromCam:&v205];
       v107 = v106 * 0.318309886 * 180.0;
-      v108 = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
-      [v108 undulation];
+      enuOrigin3 = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
+      [enuOrigin3 undulation];
       v110 = ARWGS84ToMSLAltitude(v204, v109);
 
       v111 = [ARLocationEstimationData alloc];
       v112 = CLLocationCoordinate2DMake(latitudeb[0], latitudeb[1]);
-      v113 = [(ARLocationEstimationData *)v111 initWithCoordinates:v112.latitude altitude:v112.longitude heading:v110, v107];
+      v107 = [(ARLocationEstimationData *)v111 initWithCoordinates:v112.latitude altitude:v112.longitude heading:v110, v107];
       os_unfair_lock_lock(&self->_resultLock);
-      v114 = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
-      [v114 addObject:v113];
+      resultDatas4 = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
+      [resultDatas4 addObject:v107];
 
       os_unfair_lock_unlock(&self->_resultLock);
     }
@@ -1352,26 +1352,26 @@ LABEL_91:
     if (0xEEEEEEEEEEEEEEEFLL * self->_requestResultDataAtTimestampCallCount + 0x888888888888888 > 0x1111111111111110)
     {
 LABEL_75:
-      v166 = [(ARGeoTrackingTechniqueState *)self->_state lastCMDeviceMotion];
-      if (v166)
+      lastCMDeviceMotion = [(ARGeoTrackingTechniqueState *)self->_state lastCMDeviceMotion];
+      if (lastCMDeviceMotion)
       {
-        v167 = v166;
-        v168 = [(ARGeoTrackingTechniqueState *)self->_state lastCLLocation];
-        if (v168)
+        v167 = lastCMDeviceMotion;
+        lastCLLocation2 = [(ARGeoTrackingTechniqueState *)self->_state lastCLLocation];
+        if (lastCLLocation2)
         {
-          v169 = v168;
-          v170 = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
+          v169 = lastCLLocation2;
+          enuOrigin4 = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
 
-          if (v170)
+          if (enuOrigin4)
           {
             [(ARGeoTrackingTechniqueState *)self->_state firstVLExecutionAttemptTimestamp];
             if (v171 < 0.0)
             {
-              [v8 timestamp];
+              [imageData timestamp];
               [(ARGeoTrackingTechniqueState *)self->_state setFirstVLExecutionAttemptTimestamp:?];
             }
 
-            [v8 timestamp];
+            [imageData timestamp];
             v173 = v172;
             [(ARGeoTrackingTechniqueState *)self->_state firstVLExecutionAttemptTimestamp];
             v175 = v173 - v174;
@@ -1391,12 +1391,12 @@ LABEL_75:
             {
               if ([(ARGeoTrackingTechnique *)self visualLocalizationUpdatesRequested])
               {
-                [v8 timestamp];
+                [imageData timestamp];
                 v180 = v179;
                 [(ARGeoTrackingTechniqueState *)self->_state lastVLExecutionAttemptTimestamp];
                 if (v180 - v181 > v178)
                 {
-                  [v8 timestamp];
+                  [imageData timestamp];
                   [(ARGeoTrackingTechniqueState *)self->_state setLastVLExecutionAttemptTimestamp:?];
                   [(ARGeoTrackingTechniqueState *)self->_state setFailureReasons:0];
                   v182 = _ARLogTechnique_1();
@@ -1416,7 +1416,7 @@ LABEL_75:
                     _os_log_impl(&dword_1C241C000, v182, OS_LOG_TYPE_INFO, "%{public}@ <%p>: pitchDegs<- %f minimumTiltAngle<- %f", &STACK[0x610], 0x2Au);
                   }
 
-                  [(ARGeoTrackingTechnique *)self _estimatePose:v8 pose:v13];
+                  [(ARGeoTrackingTechnique *)self _estimatePose:imageData pose:v13];
                 }
               }
             }
@@ -1535,8 +1535,8 @@ LABEL_75:
     if (v132 >= 0.0)
     {
       [(ARGeoTrackingTechniqueState *)self->_state lastLoggedVioTimestamp];
-      v135 = a3 - v134;
-      if (a3 - v134 > 0.0)
+      v135 = timestamp - v134;
+      if (timestamp - v134 > 0.0)
       {
         v136 = vextq_s8(v200, v200, 8uLL).u64[0];
         v137 = self->_state;
@@ -1566,12 +1566,12 @@ LABEL_75:
       }
     }
 
-    v143 = [v13 worldTrackingState];
-    v144 = [v143 vioTrackingState];
+    worldTrackingState5 = [v13 worldTrackingState];
+    vioTrackingState2 = [worldTrackingState5 vioTrackingState];
 
     v145 = _ARLogTechnique_1();
     v146 = os_log_type_enabled(v145, OS_LOG_TYPE_INFO);
-    if (v144)
+    if (vioTrackingState2)
     {
       if (!v146)
       {
@@ -1580,13 +1580,13 @@ LABEL_75:
 
       v147 = objc_opt_class();
       v148 = NSStringFromClass(v147);
-      v149 = [(ARGeoTrackingTechniqueState *)self->_state resetCount];
+      resetCount = [(ARGeoTrackingTechniqueState *)self->_state resetCount];
       LODWORD(STACK[0x610]) = 138543874;
       STACK[0x614] = v148;
       LOWORD(STACK[0x61C]) = 2048;
       STACK[0x61E] = self;
       LOWORD(STACK[0x626]) = 2048;
-      STACK[0x628] = v149;
+      STACK[0x628] = resetCount;
       v150 = "%{public}@ <%p>: _VIO<state: limited resets= %ld";
     }
 
@@ -1599,20 +1599,20 @@ LABEL_75:
 
       v151 = objc_opt_class();
       v148 = NSStringFromClass(v151);
-      v152 = [(ARGeoTrackingTechniqueState *)self->_state resetCount];
+      resetCount2 = [(ARGeoTrackingTechniqueState *)self->_state resetCount];
       LODWORD(STACK[0x610]) = 138543874;
       STACK[0x614] = v148;
       LOWORD(STACK[0x61C]) = 2048;
       STACK[0x61E] = self;
       LOWORD(STACK[0x626]) = 2048;
-      STACK[0x628] = v152;
+      STACK[0x628] = resetCount2;
       v150 = "%{public}@ <%p>: _VIO<state: nominal resets= %ld";
     }
 
     _os_log_impl(&dword_1C241C000, v145, OS_LOG_TYPE_INFO, v150, &STACK[0x610], 0x20u);
 
 LABEL_62:
-    [(ARGeoTrackingTechniqueState *)self->_state setLastLoggedVioTimestamp:a3];
+    [(ARGeoTrackingTechniqueState *)self->_state setLastLoggedVioTimestamp:timestamp];
     v153 = self->_state;
     *&STACK[0x610] = v200;
     *&STACK[0x620] = latitude;
@@ -1701,18 +1701,18 @@ LABEL_74:
 LABEL_94:
 }
 
-+ (BOOL)isSupportedWithOptions:(unint64_t)a3
++ (BOOL)isSupportedWithOptions:(unint64_t)options
 {
-  v3 = a3;
+  optionsCopy = options;
   HasGPSCapability = +[ARWorldTrackingTechnique isSupported];
   if (HasGPSCapability)
   {
     HasGPSCapability = [MEMORY[0x1E69E0300] isVisualLocalizationSupported];
     if (HasGPSCapability)
     {
-      if ((v3 & 2) != 0 || (HasGPSCapability = ARDeviceHasGPSCapability()) != 0)
+      if ((optionsCopy & 2) != 0 || (HasGPSCapability = ARDeviceHasGPSCapability()) != 0)
       {
-        if ((v3 & 4) != 0)
+        if ((optionsCopy & 4) != 0)
         {
           LOBYTE(HasGPSCapability) = 1;
         }
@@ -1729,19 +1729,19 @@ LABEL_94:
   return HasGPSCapability;
 }
 
-+ (int64_t)getFailureReasonFromVLError:(int64_t)a3
++ (int64_t)getFailureReasonFromVLError:(int64_t)error
 {
-  result = a3;
-  if (a3 <= 200)
+  result = error;
+  if (error <= 200)
   {
-    if (a3 <= 99)
+    if (error <= 99)
     {
-      if (a3 == 1)
+      if (error == 1)
       {
         return result;
       }
 
-      if (a3 == 2)
+      if (error == 2)
       {
         return 256;
       }
@@ -1749,7 +1749,7 @@ LABEL_94:
 
     else
     {
-      switch(a3)
+      switch(error)
       {
         case 100:
           return 2;
@@ -1761,9 +1761,9 @@ LABEL_94:
     }
   }
 
-  else if (a3 > 299)
+  else if (error > 299)
   {
-    switch(a3)
+    switch(error)
     {
       case 300:
         return 32;
@@ -1774,7 +1774,7 @@ LABEL_94:
     }
   }
 
-  else if ((a3 - 201) < 7)
+  else if ((error - 201) < 7)
   {
     return 16;
   }
@@ -1782,51 +1782,51 @@ LABEL_94:
   return 2048;
 }
 
-+ (BOOL)isCameraUp:(float)a3
++ (BOOL)isCameraUp:(float)up
 {
-  v3 = a3;
+  upCopy = up;
   [MEMORY[0x1E69E0300] minimumTiltAngle];
-  return 180.0 - v4 >= v3;
+  return 180.0 - v4 >= upCopy;
 }
 
-- (void)_setTrackingState:(int64_t)a3 techniqueStateObject:(id)a4
+- (void)_setTrackingState:(int64_t)state techniqueStateObject:(id)object
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  objectCopy = object;
   v7 = _ARLogTechnique_1();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = NSStringFromARGeoTrackingState(a3);
+    v10 = NSStringFromARGeoTrackingState(state);
     v11 = 138543874;
     v12 = v9;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     v16 = v10;
     _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Setting new tracking state: %@", &v11, 0x20u);
   }
 
-  [v6 setTrackingState:a3];
+  [objectCopy setTrackingState:state];
 }
 
-- (int64_t)_getHighestPriorityFailureWithTechniqueStateObject:(id)a3
+- (int64_t)_getHighestPriorityFailureWithTechniqueStateObject:(id)object
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 failureReasons];
-  if ([v4 lastLoggedFailureReasons] != v5)
+  objectCopy = object;
+  failureReasons = [objectCopy failureReasons];
+  if ([objectCopy lastLoggedFailureReasons] != failureReasons)
   {
     v7 = 1;
     *&v6 = 138543874;
     v22 = v6;
     while (1)
     {
-      v8 = [v4 lastLoggedFailureReasons] & v7;
-      if ((v7 & v5) == 0 || v8)
+      v8 = [objectCopy lastLoggedFailureReasons] & v7;
+      if ((v7 & failureReasons) == 0 || v8)
       {
-        if ((v7 & v5) != 0 || !v8)
+        if ((v7 & failureReasons) != 0 || !v8)
         {
           goto LABEL_12;
         }
@@ -1840,7 +1840,7 @@ LABEL_94:
           *buf = v22;
           v24 = v15;
           v25 = 2048;
-          v26 = self;
+          selfCopy2 = self;
           v27 = 2112;
           v28 = v16;
           _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_INFO, "%{public}@ <%p>: ARGeoTrackingTechnique failure reason: ended %@", buf, 0x20u);
@@ -1849,20 +1849,20 @@ LABEL_94:
 
       else
       {
-        [v4 setFailureLogCount:{objc_msgSend(v4, "failureLogCount") + 1}];
+        [objectCopy setFailureLogCount:{objc_msgSend(objectCopy, "failureLogCount") + 1}];
         v9 = _ARLogTechnique_1();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v10 = objc_opt_class();
           v11 = NSStringFromClass(v10);
-          v12 = [v4 failureLogCount];
+          failureLogCount = [objectCopy failureLogCount];
           v13 = NSStringFromARGeoTrackingInternalFailureReason(v7);
           *buf = 138544130;
           v24 = v11;
           v25 = 2048;
-          v26 = self;
+          selfCopy2 = self;
           v27 = 2048;
-          v28 = v12;
+          v28 = failureLogCount;
           v29 = 2112;
           v30 = v13;
           _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_INFO, "%{public}@ <%p>: ARGeoTrackingTechnique failure reason: %ld started %@", buf, 0x2Au);
@@ -1873,60 +1873,60 @@ LABEL_12:
       v7 *= 2;
       if (v7 == 0x2000)
       {
-        [v4 setLastLoggedFailureReasons:v5];
+        [objectCopy setLastLoggedFailureReasons:failureReasons];
         break;
       }
     }
   }
 
-  if ([v4 trackingState] == 3)
+  if ([objectCopy trackingState] == 3)
   {
     v17 = 0;
     goto LABEL_35;
   }
 
-  if (v5)
+  if (failureReasons)
   {
 LABEL_28:
     v18 = 8;
     goto LABEL_29;
   }
 
-  if ((v5 & 0x400) != 0)
+  if ((failureReasons & 0x400) != 0)
   {
     v18 = 4;
     goto LABEL_29;
   }
 
-  if ((v5 & 0x1000) != 0)
+  if ((failureReasons & 0x1000) != 0)
   {
     v18 = 5;
     goto LABEL_29;
   }
 
-  if ((v5 & 0x200) != 0)
+  if ((failureReasons & 0x200) != 0)
   {
     v18 = 1;
     goto LABEL_29;
   }
 
-  if ((v5 & 6) == 0)
+  if ((failureReasons & 6) == 0)
   {
-    if ((v5 & 0x80) != 0)
+    if ((failureReasons & 0x80) != 0)
     {
       v18 = 7;
       goto LABEL_29;
     }
 
-    if ((v5 & 0x40) != 0)
+    if ((failureReasons & 0x40) != 0)
     {
       v18 = 3;
       goto LABEL_29;
     }
 
-    if ((v5 & 0x138) == 0)
+    if ((failureReasons & 0x138) == 0)
     {
-      v18 = (v5 >> 8) & 8;
+      v18 = (failureReasons >> 8) & 8;
       goto LABEL_29;
     }
 
@@ -1935,15 +1935,15 @@ LABEL_28:
 
   v18 = 6;
 LABEL_29:
-  v19 = [v4 trackingState];
-  if (v5)
+  trackingState = [objectCopy trackingState];
+  if (failureReasons)
   {
     v20 = 0;
   }
 
   else
   {
-    v20 = v19 == 2;
+    v20 = trackingState == 2;
   }
 
   if (v20)
@@ -1961,7 +1961,7 @@ LABEL_35:
   return v17;
 }
 
-- (void)_logVioTransform:(float32x4_t)a3 withTimestamp:(float32x4_t)a4 withSuffix:(float32x4_t)a5
+- (void)_logVioTransform:(float32x4_t)transform withTimestamp:(float32x4_t)timestamp withSuffix:(float32x4_t)suffix
 {
   v30 = *MEMORY[0x1E69E9840];
   v23 = 0u;
@@ -1969,7 +1969,7 @@ LABEL_35:
   v21 = 0u;
   v22 = 0u;
   memset(&v20[8], 0, 64);
-  ARMatrix4x4FloatToDouble(v20, a2, a3, a4, a5);
+  ARMatrix4x4FloatToDouble(v20, a2, transform, timestamp, suffix);
   *v27 = v20[4];
   *&v27[16] = v20[5];
   v28 = v20[6];
@@ -1980,22 +1980,22 @@ LABEL_35:
   *&v26[16] = v20[3];
   __invert_d4();
   v11 = atan2(*&v21, *(&v21 + 1)) * 0.318309886 * 180.0;
-  os_unfair_lock_lock((a1 + 104));
-  v12 = *(a1 + 112);
-  v13 = [v12 poseOkCount];
-  v14 = [v12 poseOkCount];
-  v15 = [v12 failureLogCount];
-  os_unfair_lock_unlock((a1 + 104));
+  os_unfair_lock_lock((self + 104));
+  v12 = *(self + 112);
+  poseOkCount = [v12 poseOkCount];
+  poseOkCount2 = [v12 poseOkCount];
+  failureLogCount = [v12 failureLogCount];
+  os_unfair_lock_unlock((self + 104));
   v16 = _ARLogTechnique_1();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = v14 + v15;
+    v17 = poseOkCount2 + failureLogCount;
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
     *buf = 138545666;
     *&buf[4] = v19;
     *&buf[12] = 2048;
-    *&buf[14] = a1;
+    *&buf[14] = self;
     *&buf[22] = 2048;
     *&buf[24] = v23;
     *v26 = 2048;
@@ -2007,7 +2007,7 @@ LABEL_35:
     *&v26[30] = 1024;
     *v27 = v17;
     *&v27[4] = 1024;
-    *&v27[6] = v13;
+    *&v27[6] = poseOkCount;
     *&v27[10] = 2048;
     *&v27[12] = a6;
     *&v27[20] = 2080;
@@ -2016,15 +2016,15 @@ LABEL_35:
   }
 }
 
-- (void)_estimatePose:(id)a3 pose:(id)a4
+- (void)_estimatePose:(id)pose pose:(id)a4
 {
   v103 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  poseCopy = pose;
   v7 = a4;
-  [v6 timestamp];
+  [poseCopy timestamp];
   kdebug_trace();
-  v8 = [v6 pixelBuffer];
-  if (!v8)
+  pixelBuffer = [poseCopy pixelBuffer];
+  if (!pixelBuffer)
   {
     if (ARShouldUseLogTypeError_onceToken_7 != -1)
     {
@@ -2070,8 +2070,8 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v9 = v8;
-  CVPixelBufferRetain(v8);
+  v9 = pixelBuffer;
+  CVPixelBufferRetain(pixelBuffer);
   os_unfair_lock_lock(&self->_resetLock);
   v10 = self->_state;
   os_unfair_lock_unlock(&self->_resetLock);
@@ -2088,40 +2088,40 @@ LABEL_18:
   [(ARWorldTrackingPoseData *)v12 setVisionCameraTransform:v88, v85, v82];
   [v7 cameraTransform];
   [(ARWorldTrackingPoseData *)v12 setCameraTransform:?];
-  v16 = [v7 worldTrackingState];
-  [(ARWorldTrackingPoseData *)v12 setWorldTrackingState:v16];
+  worldTrackingState = [v7 worldTrackingState];
+  [(ARWorldTrackingPoseData *)v12 setWorldTrackingState:worldTrackingState];
 
-  v17 = [(ARGeoTrackingTechniqueState *)v10 lastCMDeviceMotion];
-  v18 = [v17 deviceMotion];
-  [v18 gravity];
+  lastCMDeviceMotion = [(ARGeoTrackingTechniqueState *)v10 lastCMDeviceMotion];
+  deviceMotion = [lastCMDeviceMotion deviceMotion];
+  [deviceMotion gravity];
   v89 = v19;
   v70 = v20;
   v72 = v21;
 
-  v22 = [v17 deviceMotion];
-  v23 = [v22 attitude];
-  v24 = ARCameraDirectionFromCMAttitude(v23);
-  v73 = v17;
-  v25 = [v17 deviceMotion];
-  [v25 headingAccuracy];
+  deviceMotion2 = [lastCMDeviceMotion deviceMotion];
+  attitude = [deviceMotion2 attitude];
+  v24 = ARCameraDirectionFromCMAttitude(attitude);
+  v73 = lastCMDeviceMotion;
+  deviceMotion3 = [lastCMDeviceMotion deviceMotion];
+  [deviceMotion3 headingAccuracy];
   v27 = v26;
 
-  v28 = [(ARGeoTrackingTechniqueState *)v10 lastCLLocation];
+  lastCLLocation = [(ARGeoTrackingTechniqueState *)v10 lastCLLocation];
   [(ARWorldTrackingPoseData *)v12 visionCameraTransform];
   v76 = v30;
   v77 = v29;
   v74 = v32;
   v75 = v31;
-  [v6 cameraIntrinsics];
+  [poseCopy cameraIntrinsics];
   v83 = v34;
   v86 = v33;
   v80 = v35;
-  if (v6)
+  if (poseCopy)
   {
-    [v6 radialDistortion];
+    [poseCopy radialDistortion];
     v36 = v101;
     v78 = v36;
-    [v6 radialDistortion];
+    [poseCopy radialDistortion];
     *&v37 = v78;
     v38 = *(&v100 + 1);
   }
@@ -2160,17 +2160,17 @@ LABEL_18:
   v53 = v80;
   HIDWORD(v53) = 0;
   v81 = v53;
-  [v6 timestamp];
+  [poseCopy timestamp];
   [(ARGeoTrackingTechnique *)self _logVioTransform:"estimatePose" withTimestamp:v77 withSuffix:v76, v75, v74, v54];
   [(ARGeoTrackingTechniqueState *)self->_state setHasStartedLocalization:1];
-  [v6 timestamp];
+  [poseCopy timestamp];
   kdebug_trace();
   v55 = _ARLogTechnique_1();
   if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
   {
     v56 = objc_opt_class();
     v57 = NSStringFromClass(v56);
-    [v6 timestamp];
+    [poseCopy timestamp];
     *buf = 138543874;
     *&buf[4] = v57;
     *&buf[12] = 2048;
@@ -2180,33 +2180,33 @@ LABEL_18:
     _os_log_impl(&dword_1C241C000, v55, OS_LOG_TYPE_INFO, "%{public}@ <%p>: VL pose is estimating (%f)", buf, 0x20u);
   }
 
-  [v6 timestamp];
+  [poseCopy timestamp];
   kdebug_trace();
-  v59 = [(ARGeoTrackingTechniqueState *)v10 VLHandle];
-  v60 = [v28 location];
-  [v6 exposureTargetOffset];
+  vLHandle = [(ARGeoTrackingTechniqueState *)v10 VLHandle];
+  location = [lastCLLocation location];
+  [poseCopy exposureTargetOffset];
   v62 = v61;
-  [v6 timestamp];
+  [poseCopy timestamp];
   v64 = v63;
   v91[0] = MEMORY[0x1E69E9820];
   v91[1] = 3221225472;
   v91[2] = __45__ARGeoTrackingTechnique__estimatePose_pose___block_invoke;
   v91[3] = &unk_1E817C3C8;
   v92 = v10;
-  v93 = self;
+  selfCopy = self;
   v94 = v48;
-  v95 = v28;
+  v95 = lastCLLocation;
   v98 = v9;
   v99 = requestResultDataAtTimestampCallCount;
-  v96 = v6;
+  v96 = poseCopy;
   v97 = v12;
   *buf = v90;
   *&buf[16] = v72;
   v65 = v12;
-  v66 = v28;
+  v66 = lastCLLocation;
   v67 = v48;
   v68 = v10;
-  [(ARGeoTrackingTechnique *)self _callVLWithHandle:v59 pixelBuffer:v9 deviceLocation:v60 heading:buf inputGravity:v67 vioTransform:v91 cameraIntrinsics:v50 radialDistortion:v27 exposureTargetOffset:v77 timestamp:v76 vlDeterminismSemaphore:v75 completionHandler:v74, v87, v84, v81, v79, *&v62, v64];
+  [(ARGeoTrackingTechnique *)self _callVLWithHandle:vLHandle pixelBuffer:v9 deviceLocation:location heading:buf inputGravity:v67 vioTransform:v91 cameraIntrinsics:v50 radialDistortion:v27 exposureTargetOffset:v77 timestamp:v76 vlDeterminismSemaphore:v75 completionHandler:v74, v87, v84, v81, v79, *&v62, v64];
 
   kdebug_trace();
   kdebug_trace();
@@ -3248,21 +3248,21 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)_callVLWithHandle:(double)a3 pixelBuffer:(__n128)a4 deviceLocation:(__n128)a5 heading:(__n128)a6 inputGravity:(__n128)a7 vioTransform:(uint64_t)a8 cameraIntrinsics:(void *)a9 radialDistortion:(uint64_t)a10 exposureTargetOffset:(void *)a11 timestamp:(__int128 *)a12 vlDeterminismSemaphore:(void *)a13 completionHandler:(void *)a14
+- (void)_callVLWithHandle:(double)handle pixelBuffer:(__n128)buffer deviceLocation:(__n128)location heading:(__n128)heading inputGravity:(__n128)gravity vioTransform:(uint64_t)transform cameraIntrinsics:(void *)intrinsics radialDistortion:(uint64_t)self0 exposureTargetOffset:(void *)self1 timestamp:(__int128 *)self2 vlDeterminismSemaphore:(void *)self3 completionHandler:(void *)self4
 {
   v61 = *MEMORY[0x1E69E9840];
-  v35 = *a12;
-  v36 = a12[1];
-  v27 = a9;
-  v28 = a11;
-  v29 = a13;
-  v30 = a14;
-  if (*(a1 + 72) == 1)
+  v35 = *timestamp;
+  v36 = timestamp[1];
+  intrinsicsCopy = intrinsics;
+  offsetCopy = offset;
+  semaphoreCopy = semaphore;
+  handlerCopy = handler;
+  if (*(self + 72) == 1)
   {
     *buf = v35;
     *&buf[16] = v36;
-    [v27 _deterministicLocateWithPixelBuffer:a10 deviceLocation:v28 heading:buf gravity:v30 transform:a2 cameraIntrinsics:a3 radialDistortion:a4.n128_f64[0] exposureTargetOffset:a5.n128_f64[0] timestamp:a6.n128_f64[0] completionHandler:{a7.n128_f64[0], a15, a16, a17, a18, a19, a20}];
-    dispatch_semaphore_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
+    [intrinsicsCopy _deterministicLocateWithPixelBuffer:distortion deviceLocation:offsetCopy heading:buf gravity:handlerCopy transform:a2 cameraIntrinsics:handle radialDistortion:buffer.n128_f64[0] exposureTargetOffset:location.n128_f64[0] timestamp:heading.n128_f64[0] completionHandler:{gravity.n128_f64[0], a15, a16, a17, a18, a19, a20}];
+    dispatch_semaphore_wait(semaphoreCopy, 0xFFFFFFFFFFFFFFFFLL);
     v31 = _ARLogTechnique_1();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
@@ -3271,7 +3271,7 @@ LABEL_27:
       *buf = 138543874;
       *&buf[4] = v33;
       *&buf[12] = 2048;
-      *&buf[14] = a1;
+      *&buf[14] = self;
       *&buf[22] = 2048;
       *&buf[24] = a20;
       _os_log_impl(&dword_1C241C000, v31, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Deterministic VL call completed at timestamp=%f", buf, 0x20u);
@@ -3280,29 +3280,29 @@ LABEL_27:
 
   else
   {
-    v34 = *(a1 + 64);
+    v34 = *(self + 64);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __211__ARGeoTrackingTechnique__callVLWithHandle_pixelBuffer_deviceLocation_heading_inputGravity_vioTransform_cameraIntrinsics_radialDistortion_exposureTargetOffset_timestamp_vlDeterminismSemaphore_completionHandler___block_invoke;
     block[3] = &unk_1E817C3F0;
-    v51 = v27;
-    v54 = a10;
-    v52 = v28;
+    v51 = intrinsicsCopy;
+    distortionCopy = distortion;
+    v52 = offsetCopy;
     v55 = a2;
-    v56 = a3;
+    handleCopy = handle;
     v42 = v35;
     v43 = v36;
-    v44 = a4;
-    v45 = a5;
-    v46 = a6;
-    v47 = a7;
+    bufferCopy = buffer;
+    locationCopy = location;
+    headingCopy = heading;
+    gravityCopy = gravity;
     v48 = a15;
     v49 = a16;
     v50 = a17;
     v57 = a18;
     v58 = a19;
     v59 = a20;
-    v53 = v30;
+    v53 = handlerCopy;
     dispatch_async(v34, block);
 
     v31 = v51;
@@ -3329,20 +3329,20 @@ void __211__ARGeoTrackingTechnique__callVLWithHandle_pixelBuffer_deviceLocation_
   (*(*(a1 + 192) + 16))();
 }
 
-- (void)_estimateEnuFromVioFromCLCM:(id)a3
+- (void)_estimateEnuFromVioFromCLCM:(id)m
 {
   STACK[0x978] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
-  v6 = v5;
-  if (v4 && v5)
+  mCopy = m;
+  enuOrigin = [(ARGeoTrackingTechniqueState *)self->_state enuOrigin];
+  v6 = enuOrigin;
+  if (mCopy && enuOrigin)
   {
-    [v4 timestamp];
+    [mCopy timestamp];
     v8 = v7;
     v9 = [(ARGeoTrackingTechniqueState *)self->_state findClosestVioPoseToTimestamp:?];
     if (v9)
     {
-      [v4 timestamp];
+      [mCopy timestamp];
       v11 = v10;
       [v9 timestamp];
       v13 = v12;
@@ -3352,9 +3352,9 @@ LABEL_32:
         v15 = 0;
         v17 = 1.79769313e308;
 LABEL_33:
-        v43 = [(ARGeoTrackingTechniqueState *)self->_state lastLocationProcessedForFusion];
+        lastLocationProcessedForFusion = [(ARGeoTrackingTechniqueState *)self->_state lastLocationProcessedForFusion];
 
-        [(ARGeoTrackingTechniqueState *)self->_state setLastLocationProcessedForFusion:v4];
+        [(ARGeoTrackingTechniqueState *)self->_state setLastLocationProcessedForFusion:mCopy];
         *&STACK[0x7C0] = 0u;
         *&STACK[0x7D0] = 0u;
         *&STACK[0x7A0] = 0u;
@@ -3367,11 +3367,11 @@ LABEL_33:
         [v9 transform];
         if (self->_useGradualCorrection)
         {
-          v44 = [(ARGeoTrackingTechniqueState *)self->_state gradualCorrectionFilter];
-          v45 = v44;
-          if (v44)
+          gradualCorrectionFilter = [(ARGeoTrackingTechniqueState *)self->_state gradualCorrectionFilter];
+          v45 = gradualCorrectionFilter;
+          if (gradualCorrectionFilter)
           {
-            [v44 ENUFromVIOTarget];
+            [gradualCorrectionFilter ENUFromVIOTarget];
             v229 = *&STACK[0x8F0];
             v230 = *&STACK[0x8E0];
             v231 = *&STACK[0x910];
@@ -3432,7 +3432,7 @@ LABEL_33:
         }
 
         v54 = 0;
-        if (v43 == v4)
+        if (lastLocationProcessedForFusion == mCopy)
         {
           v56 = 0;
           goto LABEL_115;
@@ -3477,10 +3477,10 @@ LABEL_115:
             *&STACK[0x910] = v211;
             __invert_d4();
             v212 = ARMatrix4x4DoubleToFloat(&STACK[0x860]);
-            v216 = [[ARGeoTrackingData alloc] initWithENUOrigin:v6 vioFromENU:v212, v213, v214, v215];
+            v215 = [[ARGeoTrackingData alloc] initWithENUOrigin:v6 vioFromENU:v212, v213, v214, v215];
             os_unfair_lock_lock(&self->_resultLock);
-            v217 = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
-            [v217 addObject:v216];
+            resultDatas = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
+            [resultDatas addObject:v215];
 
             os_unfair_lock_unlock(&self->_resultLock);
           }
@@ -3495,21 +3495,21 @@ LABEL_115:
         {
           v58 = objc_opt_class();
           v59 = NSStringFromClass(v58);
-          v60 = [v4 location];
-          v61 = [v60 isCoordinateFused];
-          v62 = [v4 location];
-          v63 = [v62 isCoordinateFusedWithVL];
-          v64 = [v235 fused];
+          location = [mCopy location];
+          isCoordinateFused = [location isCoordinateFused];
+          location2 = [mCopy location];
+          isCoordinateFusedWithVL = [location2 isCoordinateFusedWithVL];
+          fused = [v235 fused];
           LODWORD(STACK[0x8E0]) = 138544386;
           STACK[0x8E4] = v59;
           LOWORD(STACK[0x8EC]) = 2048;
           STACK[0x8EE] = self;
           LOWORD(STACK[0x8F6]) = 1024;
-          LODWORD(STACK[0x8F8]) = v61;
+          LODWORD(STACK[0x8F8]) = isCoordinateFused;
           LOWORD(STACK[0x8FC]) = 1024;
-          LODWORD(STACK[0x8FE]) = v63;
+          LODWORD(STACK[0x8FE]) = isCoordinateFusedWithVL;
           LOWORD(STACK[0x902]) = 1024;
-          LODWORD(STACK[0x904]) = v64;
+          LODWORD(STACK[0x904]) = fused;
           _os_log_impl(&dword_1C241C000, v57, OS_LOG_TYPE_INFO, "%{public}@ <%p>: CLCM Performing fusion update, fusedLocation=%d, VLFusedLocation=%d, fusedMotion=%d.", &STACK[0x8E0], 0x28u);
         }
 
@@ -3550,10 +3550,10 @@ LABEL_115:
         while (v69 != 128);
         if (self->_useCoreLocationFusion)
         {
-          v75 = [v4 location];
-          v76 = [v75 isCoordinateFusedWithVL];
+          location3 = [mCopy location];
+          isCoordinateFusedWithVL2 = [location3 isCoordinateFusedWithVL];
 
-          if (v76)
+          if (isCoordinateFusedWithVL2)
           {
             v77 = _ARLogTechnique_1();
             if (os_log_type_enabled(v77, OS_LOG_TYPE_INFO))
@@ -3572,7 +3572,7 @@ LABEL_115:
             [v228 locationECEF];
             vars0a = v251;
             v225 = v250;
-            [v4 locationECEF];
+            [mCopy locationECEF];
             v80 = v248;
             v81 = v249;
             *&STACK[0x8F0] = vars0a;
@@ -3888,10 +3888,10 @@ LABEL_69:
             v182 = self->_state;
             if (self->_useGradualCorrection)
             {
-              v183 = [(ARGeoTrackingTechniqueState *)v182 gradualCorrectionFilter];
+              gradualCorrectionFilter2 = [(ARGeoTrackingTechniqueState *)v182 gradualCorrectionFilter];
               *&STACK[0x8F0] = v227;
               *&STACK[0x8E0] = v226;
-              [v183 setTargetTranslation:&STACK[0x8E0]];
+              [gradualCorrectionFilter2 setTargetTranslation:&STACK[0x8E0]];
             }
 
             else
@@ -4027,7 +4027,7 @@ LABEL_87:
                 goto LABEL_114;
               }
 
-              v204 = [(ARGeoTrackingTechniqueState *)v203 gradualCorrectionFilter];
+              gradualCorrectionFilter3 = [(ARGeoTrackingTechniqueState *)v203 gradualCorrectionFilter];
               *&STACK[0x860] = v218;
               *&STACK[0x870] = v219;
               *&STACK[0x880] = v220;
@@ -4036,7 +4036,7 @@ LABEL_87:
               *&STACK[0x8B0] = vars0;
               *&STACK[0x8D0] = v227;
               *&STACK[0x8C0] = v226;
-              [v204 setTargetRotation:&STACK[0x860]];
+              [gradualCorrectionFilter3 setTargetRotation:&STACK[0x860]];
             }
 
             v6 = v228;
@@ -4213,39 +4213,39 @@ LABEL_14:
 LABEL_122:
 }
 
-- (void)_updateVLStateData:(double)a3
+- (void)_updateVLStateData:(double)data
 {
   v57 = *MEMORY[0x1E69E9840];
   [(ARGeoTrackingTechniqueState *)self->_state lastVLExecutionTimestamp];
   v6 = v5;
   [(ARGeoTrackingTechniqueState *)self->_state firstVLExecutionAttemptTimestamp];
   v8 = v7;
-  v9 = [(ARGeoTrackingTechniqueState *)self->_state lastCLLocation];
-  v10 = [v9 location];
-  [v10 horizontalAccuracy];
+  lastCLLocation = [(ARGeoTrackingTechniqueState *)self->_state lastCLLocation];
+  location = [lastCLLocation location];
+  [location horizontalAccuracy];
   v12 = v11;
-  v13 = [v9 location];
-  [v13 horizontalAccuracy];
+  location2 = [lastCLLocation location];
+  [location2 horizontalAccuracy];
   v15 = v14;
-  v16 = [v9 location];
-  [v16 verticalAccuracy];
+  location3 = [lastCLLocation location];
+  [location3 verticalAccuracy];
   v18 = v17;
-  v50 = v9;
-  v19 = [v9 location];
-  [v19 verticalAccuracy];
+  v50 = lastCLLocation;
+  location4 = [lastCLLocation location];
+  [location4 verticalAccuracy];
   v21 = v20;
 
   os_unfair_lock_lock(&self->_statusLock);
-  v22 = [(ARGeoTrackingTechniqueState *)self->_state trackingState];
-  v23 = [(ARGeoTrackingTechniqueState *)self->_state trackingAccuracy];
+  trackingState = [(ARGeoTrackingTechniqueState *)self->_state trackingState];
+  trackingAccuracy = [(ARGeoTrackingTechniqueState *)self->_state trackingAccuracy];
   v24 = [(ARGeoTrackingTechnique *)self _getHighestPriorityFailureWithTechniqueStateObject:self->_state];
-  v25 = [(ARGeoTrackingTechniqueState *)self->_state failureReasons];
-  v49 = [(ARGeoTrackingTechniqueState *)self->_state hasStartedAvailabilityCheck];
-  v48 = [(ARGeoTrackingTechniqueState *)self->_state hasReturnedAvailabilityCheck];
-  v47 = [(ARGeoTrackingTechniqueState *)self->_state hasStartedLocalization];
-  v46 = [(ARGeoTrackingTechniqueState *)self->_state hasReturnedLocalization];
+  failureReasons = [(ARGeoTrackingTechniqueState *)self->_state failureReasons];
+  hasStartedAvailabilityCheck = [(ARGeoTrackingTechniqueState *)self->_state hasStartedAvailabilityCheck];
+  hasReturnedAvailabilityCheck = [(ARGeoTrackingTechniqueState *)self->_state hasReturnedAvailabilityCheck];
+  hasStartedLocalization = [(ARGeoTrackingTechniqueState *)self->_state hasStartedLocalization];
+  hasReturnedLocalization = [(ARGeoTrackingTechniqueState *)self->_state hasReturnedLocalization];
   os_unfair_lock_unlock(&self->_statusLock);
-  if (v22 == 3)
+  if (trackingState == 3)
   {
     v26 = sqrt(v18 * v21 + v12 * v15);
     if (v26 >= 1.88)
@@ -4272,7 +4272,7 @@ LABEL_122:
     v27 = 0;
   }
 
-  if (v27 != v23)
+  if (v27 != trackingAccuracy)
   {
     v28 = _ARLogTechnique_1();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
@@ -4283,7 +4283,7 @@ LABEL_122:
       *buf = 138543874;
       v52 = v30;
       v53 = 2048;
-      v54 = self;
+      selfCopy = self;
       v55 = 2112;
       v56 = v31;
       _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Geo tracking (base level) accuracy changed to: %@", buf, 0x20u);
@@ -4296,7 +4296,7 @@ LABEL_122:
 
   if (v8 > 0.0)
   {
-    v8 = a3 - v8;
+    v8 = data - v8;
   }
 
   if (v6 <= 0.0)
@@ -4306,35 +4306,35 @@ LABEL_122:
 
   else
   {
-    v32 = a3 - v6;
+    v32 = data - v6;
   }
 
-  v33 = [[ARGeoTrackingStatus alloc] initWithGeoTrackingState:v22 accuracy:v27 stateReason:v24 failureReasons:v25];
-  v34 = [(ARGeoTrackingTechniqueState *)self->_state lastCMDeviceMotion];
+  v33 = [[ARGeoTrackingStatus alloc] initWithGeoTrackingState:trackingState accuracy:v27 stateReason:v24 failureReasons:failureReasons];
+  lastCMDeviceMotion = [(ARGeoTrackingTechniqueState *)self->_state lastCMDeviceMotion];
   v35 = [ARVLStateData alloc];
-  v36 = [v50 location];
-  v37 = [v36 copy];
+  location5 = [v50 location];
+  v37 = [location5 copy];
   [v50 timestamp];
   v39 = v38;
-  v40 = [v34 deviceMotion];
-  [v40 heading];
+  deviceMotion = [lastCMDeviceMotion deviceMotion];
+  [deviceMotion heading];
   v42 = v41;
-  [v34 timestamp];
-  v44 = [(ARVLStateData *)v35 init:v33 timeSinceInitialization:v37 trackingStatus:v49 fusedReplayLocation:v48 fusedReplayLocationTimestamp:v47 fusedReplayHeading:v46 fusedReplayHeadingTimestamp:v32 hasStartedAvailabilityCheck:v8 hasReturnedAvailabilityCheck:v39 hasStartedLocalization:v42 hasReturnedLocalization:v43];
+  [lastCMDeviceMotion timestamp];
+  v44 = [(ARVLStateData *)v35 init:v33 timeSinceInitialization:v37 trackingStatus:hasStartedAvailabilityCheck fusedReplayLocation:hasReturnedAvailabilityCheck fusedReplayLocationTimestamp:hasStartedLocalization fusedReplayHeading:hasReturnedLocalization fusedReplayHeadingTimestamp:v32 hasStartedAvailabilityCheck:v8 hasReturnedAvailabilityCheck:v39 hasStartedLocalization:v42 hasReturnedLocalization:v43];
 
   os_unfair_lock_lock(&self->_resultLock);
-  v45 = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
-  [v45 addObject:v44];
+  resultDatas = [(ARGeoTrackingTechniqueState *)self->_state resultDatas];
+  [resultDatas addObject:v44];
 
   os_unfair_lock_unlock(&self->_resultLock);
 }
 
-- (__n128)getLocationFromWorldPosition:(int8x16_t *)a3@<X8> error:(__n128)a4@<Q0>
+- (__n128)getLocationFromWorldPosition:(int8x16_t *)position@<X8> error:(__n128)error@<Q0>
 {
   v44[1] = *MEMORY[0x1E69E9840];
-  os_unfair_lock_lock((a1 + 104));
-  v7 = *(a1 + 112);
-  os_unfair_lock_unlock((a1 + 104));
+  os_unfair_lock_lock((self + 104));
+  v7 = *(self + 112);
+  os_unfair_lock_unlock((self + 104));
   if ([v7 trackingState] == 3)
   {
     v8 = 0uLL;
@@ -4359,11 +4359,11 @@ LABEL_122:
     v31 = v8;
     v28 = v8;
     v29 = v8;
-    v9 = [v7 enuOrigin];
-    v10 = v9;
-    if (v9)
+    enuOrigin = [v7 enuOrigin];
+    v10 = enuOrigin;
+    if (enuOrigin)
     {
-      [v9 ecefFromlocation];
+      [enuOrigin ecefFromlocation];
     }
 
     else
@@ -4378,14 +4378,14 @@ LABEL_122:
       v29 = 0u;
     }
 
-    v17 = a4;
-    v17.n128_u32[3] = 1.0;
-    ARVisionTransformFromARTransform(*MEMORY[0x1E69E9B18], *(MEMORY[0x1E69E9B18] + 16), *(MEMORY[0x1E69E9B18] + 32), v17);
+    errorCopy = error;
+    errorCopy.n128_u32[3] = 1.0;
+    ARVisionTransformFromARTransform(*MEMORY[0x1E69E9B18], *(MEMORY[0x1E69E9B18] + 16), *(MEMORY[0x1E69E9B18] + 32), errorCopy);
     ARECEFToLLA(v27);
     v23 = v27[0];
     v26 = v27[1];
-    v18 = [v7 enuOrigin];
-    [v18 undulation];
+    enuOrigin2 = [v7 enuOrigin];
+    [enuOrigin2 undulation];
     v20 = ARWGS84ToMSLAltitude(*v26.i64, v19);
     v21.i64[1] = v26.i64[1];
     *v21.i64 = v20;
@@ -4402,7 +4402,7 @@ LABEL_122:
       *buf = 138543618;
       *&buf[4] = v13;
       *&buf[12] = 2048;
-      *&buf[14] = a1;
+      *&buf[14] = self;
       _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: getGeoLocationForPoint requires geo tracking to be localized.", buf, 0x16u);
     }
 
@@ -4421,8 +4421,8 @@ LABEL_122:
   }
 
   result = v23;
-  *a3 = v23;
-  a3[1] = v25;
+  *position = v23;
+  position[1] = v25;
   return result;
 }
 

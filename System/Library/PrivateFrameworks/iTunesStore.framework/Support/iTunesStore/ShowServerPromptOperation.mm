@@ -2,22 +2,22 @@
 - (BOOL)_automaticDownloadsPromptNeedsDisplay;
 - (BOOL)_promptNeedsDisplay;
 - (NSString)promptIdentifier;
-- (ShowServerPromptOperation)initWithPromptIdentifier:(id)a3;
-- (id)_newStoreURLOperation:(id *)a3;
+- (ShowServerPromptOperation)initWithPromptIdentifier:(id)identifier;
+- (id)_newStoreURLOperation:(id *)operation;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation ShowServerPromptOperation
 
-- (ShowServerPromptOperation)initWithPromptIdentifier:(id)a3
+- (ShowServerPromptOperation)initWithPromptIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = ShowServerPromptOperation;
   v4 = [(ShowServerPromptOperation *)&v6 init];
   if (v4)
   {
-    v4->_promptIdentifier = [a3 copy];
+    v4->_promptIdentifier = [identifier copy];
   }
 
   return v4;
@@ -52,15 +52,15 @@
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v6 = [v5 shouldLog];
+      shouldLog = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v7 = v6 | 2;
+        v7 = shouldLog | 2;
       }
 
       else
       {
-        v7 = v6;
+        v7 = shouldLog;
       }
 
       if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -110,15 +110,15 @@
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v22 = [v5 shouldLog];
+      shouldLog2 = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v23 = v22 | 2;
+        v23 = shouldLog2 | 2;
       }
 
       else
       {
-        v23 = v22;
+        v23 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -162,15 +162,15 @@
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog3 = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog3 | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_INFO))
@@ -220,7 +220,7 @@
   }
 }
 
-- (id)_newStoreURLOperation:(id *)a3
+- (id)_newStoreURLOperation:(id *)operation
 {
   if (![(NSString *)self->_promptIdentifier isEqualToString:SSDevicePromptIdentifierAutomaticDownloadsAvailable])
   {

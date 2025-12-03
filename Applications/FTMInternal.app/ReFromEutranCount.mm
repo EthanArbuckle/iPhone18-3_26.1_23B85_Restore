@@ -1,19 +1,19 @@
 @interface ReFromEutranCount
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDestRat:(id)a3;
+- (int)StringAsDestRat:(id)rat;
 - (int)destRat;
 - (unint64_t)hash;
-- (unsigned)causeCountApAtIndex:(unint64_t)a3;
-- (unsigned)causeCountAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)causeCountApAtIndex:(unint64_t)index;
+- (unsigned)causeCountAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTotal:(BOOL)a3;
-- (void)setHasTotalAp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasTotal:(BOOL)total;
+- (void)setHasTotalAp:(BOOL)ap;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ReFromEutranCount
@@ -40,35 +40,35 @@
   }
 }
 
-- (int)StringAsDestRat:(id)a3
+- (int)StringAsDestRat:(id)rat
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LTE_LOG_RAT_CDMA_HRPD"])
+  ratCopy = rat;
+  if ([ratCopy isEqualToString:@"LTE_LOG_RAT_CDMA_HRPD"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LTE_LOG_RAT_CDMA_1X"])
+  else if ([ratCopy isEqualToString:@"LTE_LOG_RAT_CDMA_1X"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LTE_LOG_RAT_GSM"])
+  else if ([ratCopy isEqualToString:@"LTE_LOG_RAT_GSM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LTE_LOG_RAT_WCDMA"])
+  else if ([ratCopy isEqualToString:@"LTE_LOG_RAT_WCDMA"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LTE_LOG_RAT_LTE"])
+  else if ([ratCopy isEqualToString:@"LTE_LOG_RAT_LTE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LTE_LOG_RAT_TDS"])
+  else if ([ratCopy isEqualToString:@"LTE_LOG_RAT_TDS"])
   {
     v4 = 5;
   }
@@ -81,9 +81,9 @@
   return v4;
 }
 
-- (void)setHasTotal:(BOOL)a3
+- (void)setHasTotal:(BOOL)total
 {
-  if (a3)
+  if (total)
   {
     v3 = 2;
   }
@@ -96,23 +96,23 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (unsigned)causeCountAtIndex:(unint64_t)a3
+- (unsigned)causeCountAtIndex:(unint64_t)index
 {
   p_causeCounts = &self->_causeCounts;
   count = self->_causeCounts.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_causeCounts->list[a3];
+  return p_causeCounts->list[index];
 }
 
-- (void)setHasTotalAp:(BOOL)a3
+- (void)setHasTotalAp:(BOOL)ap
 {
-  if (a3)
+  if (ap)
   {
     v3 = 4;
   }
@@ -125,18 +125,18 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (unsigned)causeCountApAtIndex:(unint64_t)a3
+- (unsigned)causeCountApAtIndex:(unint64_t)index
 {
   p_causeCountAps = &self->_causeCountAps;
   count = self->_causeCountAps.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%tu) is out of range (%tu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_causeCountAps->list[a3];
+  return p_causeCountAps->list[index];
 }
 
 - (id)description
@@ -144,8 +144,8 @@
   v7.receiver = self;
   v7.super_class = ReFromEutranCount;
   v3 = [(ReFromEutranCount *)&v7 description];
-  v4 = [(ReFromEutranCount *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ReFromEutranCount *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -193,9 +193,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -256,31 +256,31 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[14] = self->_destRat;
-    *(v4 + 68) |= 1u;
+    toCopy[14] = self->_destRat;
+    *(toCopy + 68) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[15] = self->_total;
-    *(v4 + 68) |= 2u;
+    toCopy[15] = self->_total;
+    *(toCopy + 68) |= 2u;
   }
 
-  v12 = v4;
+  v12 = toCopy;
   if ([(ReFromEutranCount *)self causeCountsCount])
   {
     [v12 clearCauseCounts];
-    v6 = [(ReFromEutranCount *)self causeCountsCount];
-    if (v6)
+    causeCountsCount = [(ReFromEutranCount *)self causeCountsCount];
+    if (causeCountsCount)
     {
-      v7 = v6;
+      v7 = causeCountsCount;
       for (i = 0; i != v7; ++i)
       {
         [v12 addCauseCount:{-[ReFromEutranCount causeCountAtIndex:](self, "causeCountAtIndex:", i)}];
@@ -297,10 +297,10 @@
   if ([(ReFromEutranCount *)self causeCountApsCount])
   {
     [v12 clearCauseCountAps];
-    v9 = [(ReFromEutranCount *)self causeCountApsCount];
-    if (v9)
+    causeCountApsCount = [(ReFromEutranCount *)self causeCountApsCount];
+    if (causeCountApsCount)
     {
-      v10 = v9;
+      v10 = causeCountApsCount;
       for (j = 0; j != v10; ++j)
       {
         [v12 addCauseCountAp:{-[ReFromEutranCount causeCountApAtIndex:](self, "causeCountApAtIndex:", j)}];
@@ -309,9 +309,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if (has)
@@ -338,37 +338,37 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = *(v4 + 68);
+  v5 = *(equalCopy + 68);
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_destRat != *(v4 + 14))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_destRat != *(equalCopy + 14))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_total != *(v4 + 15))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_total != *(equalCopy + 15))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
     goto LABEL_19;
   }
@@ -380,16 +380,16 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  v6 = *(v4 + 68);
+  v6 = *(equalCopy + 68);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_totalAp != *(v4 + 16))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_totalAp != *(equalCopy + 16))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_19;
   }
@@ -438,28 +438,28 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5 ^ PBRepeatedUInt32Hash();
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 68);
+  fromCopy = from;
+  v5 = *(fromCopy + 68);
   if (v5)
   {
-    self->_destRat = *(v4 + 14);
+    self->_destRat = *(fromCopy + 14);
     *&self->_has |= 1u;
-    v5 = *(v4 + 68);
+    v5 = *(fromCopy + 68);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_total = *(v4 + 15);
+    self->_total = *(fromCopy + 15);
     *&self->_has |= 2u;
   }
 
-  v12 = v4;
-  v6 = [v4 causeCountsCount];
-  if (v6)
+  v12 = fromCopy;
+  causeCountsCount = [fromCopy causeCountsCount];
+  if (causeCountsCount)
   {
-    v7 = v6;
+    v7 = causeCountsCount;
     for (i = 0; i != v7; ++i)
     {
       -[ReFromEutranCount addCauseCount:](self, "addCauseCount:", [v12 causeCountAtIndex:i]);
@@ -472,10 +472,10 @@ LABEL_6:
     *&self->_has |= 4u;
   }
 
-  v9 = [v12 causeCountApsCount];
-  if (v9)
+  causeCountApsCount = [v12 causeCountApsCount];
+  if (causeCountApsCount)
   {
-    v10 = v9;
+    v10 = causeCountApsCount;
     for (j = 0; j != v10; ++j)
     {
       -[ReFromEutranCount addCauseCountAp:](self, "addCauseCountAp:", [v12 causeCountApAtIndex:j]);

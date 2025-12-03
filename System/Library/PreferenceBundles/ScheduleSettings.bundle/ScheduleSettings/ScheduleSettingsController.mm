@@ -1,41 +1,41 @@
 @interface ScheduleSettingsController
-- (BOOL)isExcludedAccountType:(id)a3;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (BOOL)isExcludedAccountType:(id)type;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_makeMCCSpecifiers;
-- (id)_mccSchedule:(id)a3;
-- (id)_specifierForMCCAccount:(id)a3 dataclasses:(id)a4 canPush:(BOOL)a5 canFetch:(BOOL)a6 canManual:(BOOL)a7;
-- (id)_specifiersForMCCAccount:(id)a3;
-- (id)initForContentSize:(CGSize)a3;
-- (id)pushEnabled:(id)a3;
+- (id)_mccSchedule:(id)schedule;
+- (id)_specifierForMCCAccount:(id)account dataclasses:(id)dataclasses canPush:(BOOL)push canFetch:(BOOL)fetch canManual:(BOOL)manual;
+- (id)_specifiersForMCCAccount:(id)account;
+- (id)initForContentSize:(CGSize)size;
+- (id)pushEnabled:(id)enabled;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int)styleForAccount:(id)a3 uniqueIdentifier:(id)a4;
-- (void)_lowPowerModeChangedNotification:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int)styleForAccount:(id)account uniqueIdentifier:(id)identifier;
+- (void)_lowPowerModeChangedNotification:(id)notification;
 - (void)_readScheduleSettings;
-- (void)_setMCCSchedule:(id)a3 specifier:(id)a4;
-- (void)configureFetchDividerCell:(id)a3 atIndexPath:(id)a4;
+- (void)_setMCCSchedule:(id)schedule specifier:(id)specifier;
+- (void)configureFetchDividerCell:(id)cell atIndexPath:(id)path;
 - (void)dealloc;
-- (void)listItemSelected:(id)a3;
-- (void)setPollInterval:(id)a3 specifier:(id)a4;
-- (void)setPushEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)listItemSelected:(id)selected;
+- (void)setPollInterval:(id)interval specifier:(id)specifier;
+- (void)setPushEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateRadioGroupText;
 @end
 
 @implementation ScheduleSettingsController
 
-- (id)initForContentSize:(CGSize)a3
+- (id)initForContentSize:(CGSize)size
 {
   v6.receiver = self;
   v6.super_class = ScheduleSettingsController;
-  v3 = [(ScheduleSettingsController *)&v6 init:a3.width];
+  v3 = [(ScheduleSettingsController *)&v6 init:size.width];
   if (v3)
   {
     v3->_accountStore = objc_alloc_init(MEMORY[0x277CB8F48]);
     v3->_isLowPowerMode = [objc_msgSend(MEMORY[0x277CCAC38] "processInfo")];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__lowPowerModeChangedNotification_ name:*MEMORY[0x277CCA5E8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__lowPowerModeChangedNotification_ name:*MEMORY[0x277CCA5E8] object:0];
   }
 
   return v3;
@@ -50,7 +50,7 @@
   [(ScheduleSettingsController *)&v3 dealloc];
 }
 
-- (void)_lowPowerModeChangedNotification:(id)a3
+- (void)_lowPowerModeChangedNotification:(id)notification
 {
   self->_isLowPowerMode = [objc_msgSend(MEMORY[0x277CCAC38] processInfo];
   block[0] = MEMORY[0x277D85DD0];
@@ -172,15 +172,15 @@
 - (id)_makeMCCSpecifiers
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(ACAccountStore *)self->_accountStore allAccountTypes];
+  allAccountTypes = [(ACAccountStore *)self->_accountStore allAccountTypes];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v5;
-  v19 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  obj = allAccountTypes;
+  v19 = [allAccountTypes countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
     v18 = *v25;
@@ -219,7 +219,7 @@
                 v14 = [(ScheduleSettingsController *)self _specifiersForMCCAccount:v13];
                 if ([v14 count])
                 {
-                  [v3 addObjectsFromArray:v14];
+                  [array addObjectsFromArray:v14];
                   [v4 addObject:{objc_msgSend(v13, "identifier")}];
                 }
               }
@@ -242,26 +242,26 @@
   PCSettingsPurgeDictionariesExceptForCurrent();
 
   v15 = *MEMORY[0x277D85DE8];
-  return v3;
+  return array;
 }
 
-- (BOOL)isExcludedAccountType:(id)a3
+- (BOOL)isExcludedAccountType:(id)type
 {
   if (isExcludedAccountType__onceToken != -1)
   {
     [ScheduleSettingsController isExcludedAccountType:];
   }
 
-  v4 = [a3 identifier];
-  if (v4)
+  identifier = [type identifier];
+  if (identifier)
   {
     v5 = isExcludedAccountType__excludedAccountTypeIdentifiers;
-    v6 = [a3 identifier];
+    identifier2 = [type identifier];
 
-    LOBYTE(v4) = [v5 containsObject:v6];
+    LOBYTE(identifier) = [v5 containsObject:identifier2];
   }
 
-  return v4;
+  return identifier;
 }
 
 uint64_t __52__ScheduleSettingsController_isExcludedAccountType___block_invoke()
@@ -272,11 +272,11 @@ uint64_t __52__ScheduleSettingsController_isExcludedAccountType___block_invoke()
   return result;
 }
 
-- (id)_specifiersForMCCAccount:(id)a3
+- (id)_specifiersForMCCAccount:(id)account
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([a3 parentAccount])
+  array = [MEMORY[0x277CBEB18] array];
+  if ([account parentAccount])
   {
     goto LABEL_2;
   }
@@ -285,8 +285,8 @@ uint64_t __52__ScheduleSettingsController_isExcludedAccountType___block_invoke()
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [a3 enabledDataclasses];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  enabledDataclasses = [account enabledDataclasses];
+  v9 = [enabledDataclasses countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (!v9)
   {
     goto LABEL_2;
@@ -301,7 +301,7 @@ uint64_t __52__ScheduleSettingsController_isExcludedAccountType___block_invoke()
     {
       if (*v18 != v11)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(enabledDataclasses);
       }
 
       v13 = *(*(&v17 + 1) + 8 * v12);
@@ -324,11 +324,11 @@ uint64_t __52__ScheduleSettingsController_isExcludedAccountType___block_invoke()
 
       if ([ScheduleSettingsDataclassIsFetchy_fetchyDataclassSet containsObject:v13])
       {
-        v15 = [a3 enabledDataclasses];
-        v16 = [a3 supportsPush];
-        if ([v15 count])
+        enabledDataclasses2 = [account enabledDataclasses];
+        supportsPush = [account supportsPush];
+        if ([enabledDataclasses2 count])
         {
-          [v5 addObject:{-[ScheduleSettingsController _specifierForMCCAccount:dataclasses:canPush:canFetch:canManual:](self, "_specifierForMCCAccount:dataclasses:canPush:canFetch:canManual:", a3, objc_msgSend(v15, "allObjects"), v16, 1, 1)}];
+          [array addObject:{-[ScheduleSettingsController _specifierForMCCAccount:dataclasses:canPush:canFetch:canManual:](self, "_specifierForMCCAccount:dataclasses:canPush:canFetch:canManual:", account, objc_msgSend(enabledDataclasses2, "allObjects"), supportsPush, 1, 1)}];
         }
 
         goto LABEL_2;
@@ -339,7 +339,7 @@ LABEL_11:
     }
 
     while (v10 != v12);
-    v14 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v14 = [enabledDataclasses countByEnumeratingWithState:&v17 objects:v21 count:16];
     v10 = v14;
     if (v14)
     {
@@ -351,41 +351,41 @@ LABEL_11:
 
 LABEL_2:
   v6 = *MEMORY[0x277D85DE8];
-  return v5;
+  return array;
 }
 
-- (id)_specifierForMCCAccount:(id)a3 dataclasses:(id)a4 canPush:(BOOL)a5 canFetch:(BOOL)a6 canManual:(BOOL)a7
+- (id)_specifierForMCCAccount:(id)account dataclasses:(id)dataclasses canPush:(BOOL)push canFetch:(BOOL)fetch canManual:(BOOL)manual
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  manualCopy = manual;
+  fetchCopy = fetch;
+  pushCopy = push;
   v20[3] = *MEMORY[0x277D85DE8];
-  v13 = [MEMORY[0x277CE8568] specifierWithStyle:3 account:a3 detailControllerClass:objc_opt_class() presentationStyle:1];
-  v20[0] = a4;
+  v13 = [MEMORY[0x277CE8568] specifierWithStyle:3 account:account detailControllerClass:objc_opt_class() presentationStyle:1];
+  v20[0] = dataclasses;
   v19[0] = @"ScheduleSettingsDataclassesKey";
   v19[1] = @"ScheduleSettingsAccountUniqueIdentifierKey";
   v19[2] = @"ScheduleSettingsAccountKey";
-  v20[1] = [a3 identifier];
-  v20[2] = a3;
+  v20[1] = [account identifier];
+  v20[2] = account;
   [v13 setUserInfo:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v20, v19, 3)}];
   [v13 setTarget:self];
   *&v13[*MEMORY[0x277D3FCA8]] = sel__mccSchedule_;
   *&v13[*MEMORY[0x277D3FCB0]] = sel__setMCCSchedule_specifier_;
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (v9 && !self->_isLowPowerMode)
+  if (pushCopy && !self->_isLowPowerMode)
   {
     [v14 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithLong:", 0)}];
     [v15 addObject:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"PUSH", &stru_284EEC2E8, @"ScheduleSettings"}];
   }
 
-  if (v8 && !self->_isLowPowerMode)
+  if (fetchCopy && !self->_isLowPowerMode)
   {
     [v14 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithLong:", 1)}];
     [v15 addObject:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"FETCH", &stru_284EEC2E8, @"ScheduleSettings"}];
   }
 
-  if (v7 && !self->_isLowPowerMode)
+  if (manualCopy && !self->_isLowPowerMode)
   {
     [v14 addObject:{objc_msgSend(MEMORY[0x277CCABB0], "numberWithLong:", 2)}];
     [v15 addObject:{objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8], "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", @"MANUAL", &stru_284EEC2E8, @"ScheduleSettings"}];
@@ -414,27 +414,27 @@ LABEL_2:
   return v13;
 }
 
-- (int)styleForAccount:(id)a3 uniqueIdentifier:(id)a4
+- (int)styleForAccount:(id)account uniqueIdentifier:(id)identifier
 {
-  if (!a4)
+  if (!identifier)
   {
-    return [a3 supportsPush] ^ 1;
+    return [account supportsPush] ^ 1;
   }
 
   result = _PCSettingsGetStyle();
   if (!result)
   {
-    return [a3 supportsPush] ^ 1;
+    return [account supportsPush] ^ 1;
   }
 
   return result;
 }
 
-- (id)_mccSchedule:(id)a3
+- (id)_mccSchedule:(id)schedule
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"ScheduleSettingsAccountKey"];
-  v6 = [v4 objectForKey:@"ScheduleSettingsAccountUniqueIdentifierKey"];
+  userInfo = [schedule userInfo];
+  v5 = [userInfo objectForKey:@"ScheduleSettingsAccountKey"];
+  v6 = [userInfo objectForKey:@"ScheduleSettingsAccountUniqueIdentifierKey"];
   v7 = MEMORY[0x277CCABB0];
   if (self->_isLowPowerMode)
   {
@@ -449,18 +449,18 @@ LABEL_2:
   return [v7 numberWithLong:v8];
 }
 
-- (void)_setMCCSchedule:(id)a3 specifier:(id)a4
+- (void)_setMCCSchedule:(id)schedule specifier:(id)specifier
 {
-  v7 = [objc_msgSend(a4 "userInfo")];
-  v8 = [a3 intValue];
-  if (v7 && [-[ScheduleSettingsController _mccSchedule:](self _mccSchedule:{a4), "longValue"}] != v8)
+  v7 = [objc_msgSend(specifier "userInfo")];
+  intValue = [schedule intValue];
+  if (v7 && [-[ScheduleSettingsController _mccSchedule:](self _mccSchedule:{specifier), "longValue"}] != intValue)
   {
     PCSettingsSetStyle();
   }
 
-  v9 = [(ScheduleSettingsController *)self table];
+  table = [(ScheduleSettingsController *)self table];
 
-  [v9 reloadData];
+  [table reloadData];
 }
 
 - (void)_readScheduleSettings
@@ -545,7 +545,7 @@ LABEL_16:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)pushEnabled:(id)a3
+- (id)pushEnabled:(id)enabled
 {
   if (self->_isLowPowerMode)
   {
@@ -558,9 +558,9 @@ LABEL_16:
   return [v5 numberWithBool:v6];
 }
 
-- (void)setPushEnabled:(id)a3 specifier:(id)a4
+- (void)setPushEnabled:(id)enabled specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
   PCSettingsSetClassPushEnabled();
   v5 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD08]);
   v6 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]);
@@ -568,18 +568,18 @@ LABEL_16:
   [v5 reloadSpecifier:v6];
 }
 
-- (void)setPollInterval:(id)a3 specifier:(id)a4
+- (void)setPollInterval:(id)interval specifier:(id)specifier
 {
   checkedSpecifier = self->_checkedSpecifier;
-  if (checkedSpecifier != a4)
+  if (checkedSpecifier != specifier)
   {
     v7 = [(PSSpecifier *)checkedSpecifier propertyForKey:*MEMORY[0x277D40148]];
     [v7 setChecked:0];
     [v7 setValue:0];
 
-    v8 = a4;
-    self->_checkedSpecifier = v8;
-    self->_rowToSelect = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) indexOfObject:v8];
+    specifierCopy = specifier;
+    self->_checkedSpecifier = specifierCopy;
+    self->_rowToSelect = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) indexOfObject:specifierCopy];
     [-[PSSpecifier propertyForKey:](self->_checkedSpecifier propertyForKey:{@"interval", "intValue"}];
     PCSettingsSetClassPollInterval();
     [(ScheduleSettingsController *)self updateRadioGroupText];
@@ -601,9 +601,9 @@ LABEL_16:
     {
       v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v7 = [v6 localizedStringForKey:SFLocalizableWAPIStringKeyForKey() value:&stru_284EEC2E8 table:@"ScheduleSettings"];
-      v8 = [v7 _isNaturallyRTL];
+      _isNaturallyRTL = [v7 _isNaturallyRTL];
       [v4 setProperty:v7 forKey:*MEMORY[0x277D3FF88]];
-      if (v8)
+      if (_isNaturallyRTL)
       {
         v9 = 2;
       }
@@ -628,11 +628,11 @@ LABEL_16:
   }
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
   v5 = [(ScheduleSettingsController *)self indexForIndexPath:?];
   v6 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FC48]) objectAtIndex:v5];
-  if ([(ScheduleSettingsController *)self indexForIndexPath:a3]!= 0x7FFFFFFFFFFFFFFFLL)
+  if ([(ScheduleSettingsController *)self indexForIndexPath:selected]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = *MEMORY[0x277D3FC60];
     if (self->_rowToSelect != 0x7FFFFFFFFFFFFFFFLL)
@@ -640,7 +640,7 @@ LABEL_16:
       [objc_msgSend(*(&self->super.super.super.super.super.isa + v7) cellForRowAtIndexPath:{-[ScheduleSettingsController indexPathForIndex:](self, "indexPathForIndex:")), "setChecked:", 0}];
     }
 
-    [objc_msgSend(*(&self->super.super.super.super.super.isa + v7) cellForRowAtIndexPath:{a3), "setChecked:", 1}];
+    [objc_msgSend(*(&self->super.super.super.super.super.isa + v7) cellForRowAtIndexPath:{selected), "setChecked:", 1}];
   }
 
   v8 = MEMORY[0x277D3FCB0];
@@ -650,13 +650,13 @@ LABEL_16:
     v10 = *&v6[*MEMORY[0x277D3FCB8]];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [v6 values];
-      v12 = [v11 count];
+      values = [v6 values];
+      v12 = [values count];
       v13 = *&v6[*v9];
       v14 = *&v6[*v8];
       if (v12)
       {
-        v15 = [v11 objectAtIndex:0];
+        v15 = [values objectAtIndex:0];
       }
 
       else
@@ -669,15 +669,15 @@ LABEL_16:
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = ScheduleSettingsController;
-  v6 = [(ScheduleSettingsController *)&v9 tableView:a3 cellForRowAtIndexPath:?];
-  v7 = [(ScheduleSettingsController *)self indexForIndexPath:a4];
+  v6 = [(ScheduleSettingsController *)&v9 tableView:view cellForRowAtIndexPath:?];
+  v7 = [(ScheduleSettingsController *)self indexForIndexPath:path];
   if (v7 == self->_fetchDividerRow)
   {
-    [(ScheduleSettingsController *)self configureFetchDividerCell:v6 atIndexPath:a4];
+    [(ScheduleSettingsController *)self configureFetchDividerCell:v6 atIndexPath:path];
   }
 
   if (([v6 tag] & 0xFFFFFFFFFFFFFFFELL) == 2)
@@ -690,55 +690,55 @@ LABEL_16:
   return v6;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = [(ScheduleSettingsController *)self indexForIndexPath:a5];
+  v7 = [(ScheduleSettingsController *)self indexForIndexPath:path];
   fetchDividerRow = self->_fetchDividerRow;
   if (v7 == fetchDividerRow || v7 + 1 == fetchDividerRow)
   {
 
-    [a4 _setShouldHaveFullLengthBottomSeparator:1];
+    [cell _setShouldHaveFullLengthBottomSeparator:1];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v7 = [(ScheduleSettingsController *)self specifierAtIndex:[(ScheduleSettingsController *)self indexForIndexPath:a4]];
+  v7 = [(ScheduleSettingsController *)self specifierAtIndex:[(ScheduleSettingsController *)self indexForIndexPath:path]];
   if (*(v7 + *MEMORY[0x277D3FC90]) == 3)
   {
-    [(ScheduleSettingsController *)self listItemSelected:a4];
+    [(ScheduleSettingsController *)self listItemSelected:path];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ScheduleSettingsController;
-    [(ScheduleSettingsController *)&v8 tableView:a3 didSelectRowAtIndexPath:a4];
+    [(ScheduleSettingsController *)&v8 tableView:view didSelectRowAtIndexPath:path];
   }
 
-  [a3 deselectRowAtIndexPath:a4 animated:1];
+  [view deselectRowAtIndexPath:path animated:1];
 }
 
-- (void)configureFetchDividerCell:(id)a3 atIndexPath:(id)a4
+- (void)configureFetchDividerCell:(id)cell atIndexPath:(id)path
 {
   v5 = objc_alloc(MEMORY[0x277D75D18]);
-  [objc_msgSend(a3 "contentView")];
+  [objc_msgSend(cell "contentView")];
   v6 = [v5 initWithFrame:?];
   [v6 setAutoresizingMask:18];
   [v6 setContentMode:4];
   [v6 setBackgroundColor:{objc_msgSend(MEMORY[0x277D75348], "tableSeparatorLightColor")}];
-  v7 = [a3 contentView];
+  contentView = [cell contentView];
 
-  [v7 addSubview:v6];
+  [contentView addSubview:v6];
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = ScheduleSettingsController;
-  [(ScheduleSettingsController *)&v10 tableView:a3 heightForRowAtIndexPath:?];
+  [(ScheduleSettingsController *)&v10 tableView:view heightForRowAtIndexPath:?];
   v7 = v6;
-  v8 = [(ScheduleSettingsController *)self indexForIndexPath:a4];
+  v8 = [(ScheduleSettingsController *)self indexForIndexPath:path];
   result = 1.0;
   if (v8 != self->_fetchDividerRow)
   {

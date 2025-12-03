@@ -1,10 +1,10 @@
 @interface PKCatalogGroup
-- (BOOL)isEqualToGroup:(id)a3;
+- (BOOL)isEqualToGroup:(id)group;
 - (NSMutableArray)uniqueIDs;
 - (PKCatalogGroup)init;
-- (PKCatalogGroup)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (PKCatalogGroup)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKCatalogGroup
@@ -37,11 +37,11 @@
   return result;
 }
 
-- (BOOL)isEqualToGroup:(id)a3
+- (BOOL)isEqualToGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   groupID = self->_groupID;
-  v6 = *(v4 + 2);
+  v6 = *(groupCopy + 2);
   if (groupID)
   {
     v7 = v6 == 0;
@@ -65,13 +65,13 @@
     goto LABEL_16;
   }
 
-  if (!-[NSMutableArray count](self->_uniqueIDs, "count") && ![*(v4 + 3) count])
+  if (!-[NSMutableArray count](self->_uniqueIDs, "count") && ![*(groupCopy + 3) count])
   {
     goto LABEL_14;
   }
 
   uniqueIDs = self->_uniqueIDs;
-  v9 = *(v4 + 3);
+  v9 = *(groupCopy + 3);
   if (!uniqueIDs || !v9)
   {
     if (uniqueIDs == v9)
@@ -96,14 +96,14 @@ LABEL_17:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKCatalogGroup allocWithZone:](PKCatalogGroup init];
-  v6 = [(NSNumber *)self->_groupID copyWithZone:a3];
+  v6 = [(NSNumber *)self->_groupID copyWithZone:zone];
   groupID = v5->_groupID;
   v5->_groupID = v6;
 
-  v8 = [(NSMutableArray *)self->_uniqueIDs mutableCopyWithZone:a3];
+  v8 = [(NSMutableArray *)self->_uniqueIDs mutableCopyWithZone:zone];
   uniqueIDs = v5->_uniqueIDs;
   v5->_uniqueIDs = v8;
 
@@ -111,27 +111,27 @@ LABEL_17:
   return v5;
 }
 
-- (PKCatalogGroup)initWithCoder:(id)a3
+- (PKCatalogGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKCatalogGroup;
   v5 = [(PKCatalogGroup *)&v16 init];
   if (v5)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
     groupID = v5->_groupID;
     v5->_groupID = v7;
 
     v9 = objc_alloc(MEMORY[0x1E695DFD8]);
     v10 = objc_opt_class();
     v11 = [v9 initWithObjects:{v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"uniqueIDs"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"uniqueIDs"];
     uniqueIDs = v5->_uniqueIDs;
     v5->_uniqueIDs = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"isUbiquitous"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isUbiquitous"];
     v5->_isUbiquitous = [v14 BOOLValue];
 
     objc_autoreleasePoolPop(v6);
@@ -140,14 +140,14 @@ LABEL_17:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   groupID = self->_groupID;
-  v5 = a3;
-  [v5 encodeObject:groupID forKey:@"groupID"];
-  [v5 encodeObject:self->_uniqueIDs forKey:@"uniqueIDs"];
+  coderCopy = coder;
+  [coderCopy encodeObject:groupID forKey:@"groupID"];
+  [coderCopy encodeObject:self->_uniqueIDs forKey:@"uniqueIDs"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[PKCatalogGroup isUbiquitous](self, "isUbiquitous")}];
-  [v5 encodeObject:v6 forKey:@"isUbiquitous"];
+  [coderCopy encodeObject:v6 forKey:@"isUbiquitous"];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface TransactionChangesObserver
-- (void)contextDidMergeChangesObjectIDsNotificationWithNotification:(id)a3;
+- (void)contextDidMergeChangesObjectIDsNotificationWithNotification:(id)notification;
 @end
 
 @implementation TransactionChangesObserver
 
-- (void)contextDidMergeChangesObjectIDsNotificationWithNotification:(id)a3
+- (void)contextDidMergeChangesObjectIDsNotificationWithNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
 
-  if (sub_1B75628D8(v4))
+  if (sub_1B75628D8(notificationCopy))
   {
     swift_beginAccess();
     if (swift_unknownObjectWeakLoadStrong())

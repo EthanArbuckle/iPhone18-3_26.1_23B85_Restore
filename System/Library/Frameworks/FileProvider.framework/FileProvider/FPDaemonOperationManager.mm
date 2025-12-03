@@ -2,8 +2,8 @@
 + (id)sharedInstance;
 - (FPDaemonOperationManager)init;
 - (id)generateLocalOperationID;
-- (void)_enumerateNewDaemonOperationsWithHandler:(id)a3;
-- (void)_receiveLongLivedOperation:(id)a3 info:(id)a4;
+- (void)_enumerateNewDaemonOperationsWithHandler:(id)handler;
+- (void)_receiveLongLivedOperation:(id)operation info:(id)info;
 - (void)_updateDaemonOperations;
 - (void)dealloc;
 - (void)wakeUp;
@@ -58,16 +58,16 @@ uint64_t __34__FPDaemonOperationManager_wakeUp__block_invoke(uint64_t result)
     queue = v2->_queue;
     v2->_queue = v6;
 
-    v8 = [@"com.apple.fileprovider.daemon-op-created" fp_libnotifyPerUserNotificationName];
+    fp_libnotifyPerUserNotificationName = [@"com.apple.fileprovider.daemon-op-created" fp_libnotifyPerUserNotificationName];
     objc_initWeak(&location, v2);
-    v9 = [v8 UTF8String];
+    uTF8String = [fp_libnotifyPerUserNotificationName UTF8String];
     v10 = v2->_queue;
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __32__FPDaemonOperationManager_init__block_invoke;
     v12[3] = &unk_1E7938FE8;
     objc_copyWeak(&v13, &location);
-    notify_register_dispatch(v9, &v2->_notifToken, v10, v12);
+    notify_register_dispatch(uTF8String, &v2->_notifToken, v10, v12);
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
@@ -153,27 +153,27 @@ uint64_t __52__FPDaemonOperationManager_generateLocalOperationID__block_invoke(u
   return [v6 addObject:v7];
 }
 
-- (void)_receiveLongLivedOperation:(id)a3 info:(id)a4
+- (void)_receiveLongLivedOperation:(id)operation info:(id)info
 {
-  v13 = a3;
-  v6 = a4;
+  operationCopy = operation;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_queue);
-  v7 = [v6 operationID];
-  if (([(NSMutableSet *)self->_localOperationIDs containsObject:v7]& 1) == 0)
+  operationID = [infoCopy operationID];
+  if (([(NSMutableSet *)self->_localOperationIDs containsObject:operationID]& 1) == 0)
   {
-    [(NSMutableSet *)self->_localOperationIDs addObject:v7];
+    [(NSMutableSet *)self->_localOperationIDs addObject:operationID];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = v6;
-      v9 = [v8 byCopy];
+      v8 = infoCopy;
+      byCopy = [v8 byCopy];
       v10 = off_1E7938550;
-      if (!v9)
+      if (!byCopy)
       {
         v10 = off_1E7938678;
       }
 
-      v11 = [objc_alloc(*v10) initWithRemoteOperation:v13 info:v8];
+      v11 = [objc_alloc(*v10) initWithRemoteOperation:operationCopy info:v8];
 
       if (v11)
       {
@@ -184,9 +184,9 @@ uint64_t __52__FPDaemonOperationManager_generateLocalOperationID__block_invoke(u
   }
 }
 
-- (void)_enumerateNewDaemonOperationsWithHandler:(id)a3
+- (void)_enumerateNewDaemonOperationsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[FPDaemonConnection synchronousSharedConnectionProxy];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -194,8 +194,8 @@ uint64_t __52__FPDaemonOperationManager_generateLocalOperationID__block_invoke(u
   v8[3] = &unk_1E793D628;
   v8[4] = self;
   v9 = v5;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = v5;
   [v7 fetchDaemonOperationIDsWithCompletionHandler:v8];
 }

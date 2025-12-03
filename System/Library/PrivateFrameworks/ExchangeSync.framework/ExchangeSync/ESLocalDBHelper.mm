@@ -1,29 +1,29 @@
 @interface ESLocalDBHelper
 + (OS_os_log)os_log;
-+ (id)sharedInstanceForAccountType:(id)a3 creatingClass:(Class)a4;
-+ (void)abSetTestABDBDir:(id)a3;
-+ (void)calSetTestCalDBDir:(id)a3;
-- (BOOL)_abOpenDBWithClientIdentifier:(id)a3;
-- (BOOL)abCloseDBAndSave:(BOOL)a3;
++ (id)sharedInstanceForAccountType:(id)type creatingClass:(Class)class;
++ (void)abSetTestABDBDir:(id)dir;
++ (void)calSetTestCalDBDir:(id)dir;
+- (BOOL)_abOpenDBWithClientIdentifier:(id)identifier;
+- (BOOL)abCloseDBAndSave:(BOOL)save;
 - (BOOL)abSaveDB;
-- (BOOL)noteCloseDBAndSave:(BOOL)a3;
+- (BOOL)noteCloseDBAndSave:(BOOL)save;
 - (BOOL)noteSaveDB;
-- (CalDatabase)calDatabaseForAccountID:(id)a3;
+- (CalDatabase)calDatabaseForAccountID:(id)d;
 - (ESLocalDBHelper)init;
 - (NoteContext)noteDB;
 - (id)changeTrackingID;
 - (void)_registerForAddressBookYieldNotifications;
 - (void)abDB;
-- (void)abDBThrowOnNil:(BOOL)a3;
+- (void)abDBThrowOnNil:(BOOL)nil;
 - (void)abOpenDBAsGenericClient;
-- (void)abOpenDBWithClientIdentifier:(id)a3;
+- (void)abOpenDBWithClientIdentifier:(id)identifier;
 - (void)abProcessAddedImages;
 - (void)abProcessAddedRecords;
 - (void)abSaveDB;
-- (void)addSaveRequest:(id)a3;
-- (void)calOpenDatabaseForAccountID:(id)a3 clientID:(id)a4;
-- (void)calOpenDatabaseForAuxDatabaseRef:(void *)a3 clientID:(id)a4;
-- (void)calUnitTestsSetCallbackBlockForSave:(id)a3;
+- (void)addSaveRequest:(id)request;
+- (void)calOpenDatabaseForAccountID:(id)d clientID:(id)iD;
+- (void)calOpenDatabaseForAuxDatabaseRef:(void *)ref clientID:(id)d;
+- (void)calUnitTestsSetCallbackBlockForSave:(id)save;
 - (void)dealloc;
 - (void)executeAllSaveRequests;
 - (void)noteDB;
@@ -51,9 +51,9 @@ uint64_t __25__ESLocalDBHelper_os_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)sharedInstanceForAccountType:(id)a3 creatingClass:(Class)a4
++ (id)sharedInstanceForAccountType:(id)type creatingClass:(Class)class
 {
-  v4 = a3;
+  typeCopy = type;
   v5 = sharedInstanceForAccountType_creatingClass____sharedInstances;
   if (!sharedInstanceForAccountType_creatingClass____sharedInstances)
   {
@@ -64,11 +64,11 @@ uint64_t __25__ESLocalDBHelper_os_log__block_invoke()
     v5 = sharedInstanceForAccountType_creatingClass____sharedInstances;
   }
 
-  v8 = [v5 objectForKeyedSubscript:v4];
+  v8 = [v5 objectForKeyedSubscript:typeCopy];
   if (!v8)
   {
     v8 = objc_opt_new();
-    [sharedInstanceForAccountType_creatingClass____sharedInstances setObject:v8 forKeyedSubscript:v4];
+    [sharedInstanceForAccountType_creatingClass____sharedInstances setObject:v8 forKeyedSubscript:typeCopy];
   }
 
   return v8;
@@ -97,9 +97,9 @@ uint64_t __25__ESLocalDBHelper_os_log__block_invoke()
     noteDBQueue = v2->_noteDBQueue;
     v2->_noteDBQueue = v9;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     saveRequests = v2->_saveRequests;
-    v2->_saveRequests = v11;
+    v2->_saveRequests = array;
 
     v13 = objc_alloc_init(MEMORY[0x277CBDAB8]);
     contactStore = v2->_contactStore;
@@ -116,12 +116,12 @@ uint64_t __25__ESLocalDBHelper_os_log__block_invoke()
   if (v3)
   {
     v4 = v3;
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
       v9 = v4;
-      _os_log_impl(&dword_24A097000, v5, OS_LOG_TYPE_DEFAULT, "Unexpected unsaved contact changes: %lu", buf, 0xCu);
+      _os_log_impl(&dword_24A097000, os_log, OS_LOG_TYPE_DEFAULT, "Unexpected unsaved contact changes: %lu", buf, 0xCu);
     }
   }
 
@@ -133,9 +133,9 @@ uint64_t __25__ESLocalDBHelper_os_log__block_invoke()
 
 - (id)changeTrackingID
 {
-  v3 = [(ESCalDBHelper *)self->_calDBHelper clientIdentifier];
-  clientIdentifier = v3;
-  if (!v3)
+  clientIdentifier = [(ESCalDBHelper *)self->_calDBHelper clientIdentifier];
+  clientIdentifier = clientIdentifier;
+  if (!clientIdentifier)
   {
     clientIdentifier = self->_clientIdentifier;
   }
@@ -151,9 +151,9 @@ uint64_t __25__ESLocalDBHelper_os_log__block_invoke()
   return v5;
 }
 
-- (void)abDBThrowOnNil:(BOOL)a3
+- (void)abDBThrowOnNil:(BOOL)nil
 {
-  if (a3 && !self->_abDB)
+  if (nil && !self->_abDB)
   {
     [ESLocalDBHelper abDBThrowOnNil:];
   }
@@ -164,39 +164,39 @@ uint64_t __25__ESLocalDBHelper_os_log__block_invoke()
 - (void)abDB
 {
   v9 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0(&dword_24A097000, v1, v2, "abDB is unsupported under modern Contacts framework :%@", v3, v4, v5, v6, v8);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSaveRequest:(id)a3
+- (void)addSaveRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   abDBQueue = self->_abDBQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__ESLocalDBHelper_addSaveRequest___block_invoke;
   v7[3] = &unk_278FC6120;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_sync(abDBQueue, v7);
 }
 
 - (void)executeAllSaveRequests
 {
-  v6 = [MEMORY[0x277CCACC8] callStackSymbols];
-  *a1 = 138412290;
-  *a2 = v6;
-  _os_log_error_impl(&dword_24A097000, a3, OS_LOG_TYPE_ERROR, "Unexpected error committing save request :%@", a1, 0xCu);
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+  *self = 138412290;
+  *a2 = callStackSymbols;
+  _os_log_error_impl(&dword_24A097000, a3, OS_LOG_TYPE_ERROR, "Unexpected error committing save request :%@", self, 0xCu);
 }
 
 - (void)_registerForAddressBookYieldNotifications
 {
   v9 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0(&dword_24A097000, v1, v2, "_registerForAddressBookYieldNotifications is unsupported under modern Contacts framework :%@", v3, v4, v5, v6, v8);
 
@@ -236,13 +236,13 @@ uint64_t __60__ESLocalDBHelper__registerForAddressBookYieldNotifications__block_
   return result;
 }
 
-- (BOOL)_abOpenDBWithClientIdentifier:(id)a3
+- (BOOL)_abOpenDBWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(ESLocalDBHelper *)self useContacts])
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [ESLocalDBHelper _abOpenDBWithClientIdentifier:];
     }
@@ -262,7 +262,7 @@ uint64_t __60__ESLocalDBHelper__registerForAddressBookYieldNotifications__block_
     block[2] = __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke;
     block[3] = &unk_278FC6358;
     block[4] = self;
-    v10 = v4;
+    v10 = identifierCopy;
     v11 = &v12;
     dispatch_sync(abDBQueue, block);
     v6 = *(v13 + 24);
@@ -383,13 +383,13 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)abOpenDBWithClientIdentifier:(id)a3
+- (void)abOpenDBWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(ESLocalDBHelper *)self useContacts])
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [ESLocalDBHelper abOpenDBWithClientIdentifier:];
     }
@@ -397,12 +397,12 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
 
   else
   {
-    if (!v4)
+    if (!identifierCopy)
     {
       [ESLocalDBHelper abOpenDBWithClientIdentifier:];
     }
 
-    [(ESLocalDBHelper *)self _abOpenDBWithClientIdentifier:v4];
+    [(ESLocalDBHelper *)self _abOpenDBWithClientIdentifier:identifierCopy];
   }
 }
 
@@ -419,7 +419,7 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
 - (void)abProcessAddedRecords
 {
   v9 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0(&dword_24A097000, v1, v2, "abOpenDBAsGenericClient is unsupported under modern Contacts framework :%@", v3, v4, v5, v6, v8);
 
@@ -430,8 +430,8 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
 {
   if ([(ESLocalDBHelper *)self useContacts])
   {
-    v3 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [ESLocalDBHelper abProcessAddedRecords];
     }
@@ -443,8 +443,8 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
     ABProcessAddedImages();
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterPostNotification(DarwinNotifyCenter, *MEMORY[0x277CE9AD8], 0, 0, 1u);
-    v6 = [MEMORY[0x277D03790] sharedGateKeeper];
-    [v6 claimedOwnershipOfDataclasses:2];
+    mEMORY[0x277D03790] = [MEMORY[0x277D03790] sharedGateKeeper];
+    [mEMORY[0x277D03790] claimedOwnershipOfDataclasses:2];
   }
 }
 
@@ -453,8 +453,8 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
   v19 = *MEMORY[0x277D85DE8];
   if ([(ESLocalDBHelper *)self useContacts])
   {
-    v3 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [ESLocalDBHelper abSaveDB];
     }
@@ -464,10 +464,10 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
 
   else
   {
-    v3 = +[ESLocalDBWatcher sharedDBWatcher];
-    v5 = [v3 lastSavedABSequenceNumber];
+    os_log = +[ESLocalDBWatcher sharedDBWatcher];
+    lastSavedABSequenceNumber = [os_log lastSavedABSequenceNumber];
     abDB = self->_abDB;
-    [v3 setLastSavedABSequenceNumber:ABAddressBookGetSequenceNumber()];
+    [os_log setLastSavedABSequenceNumber:ABAddressBookGetSequenceNumber()];
     v7 = DALoggingwithCategory();
     v8 = *(MEMORY[0x277D03988] + 7);
     if (os_log_type_enabled(v7, v8))
@@ -477,7 +477,7 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
       v13 = 134218496;
       v14 = v9;
       v15 = 1024;
-      v16 = v5;
+      v16 = lastSavedABSequenceNumber;
       v17 = 1024;
       v18 = abConnectionCount;
       _os_log_impl(&dword_24A097000, v7, v8, "Saving ab database %p old sequence %d. Connection count is %d", &v13, 0x18u);
@@ -486,7 +486,7 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
     v4 = ABAddressBookSave(self->_abDB, 0);
     if (!v4)
     {
-      [v3 setLastSavedABSequenceNumber:v5];
+      [os_log setLastSavedABSequenceNumber:lastSavedABSequenceNumber];
     }
 
     [(ESLocalDBHelper *)self _registerForAddressBookYieldNotifications];
@@ -496,13 +496,13 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
   return v4;
 }
 
-- (BOOL)abCloseDBAndSave:(BOOL)a3
+- (BOOL)abCloseDBAndSave:(BOOL)save
 {
-  v3 = a3;
+  saveCopy = save;
   if ([(ESLocalDBHelper *)self useContacts])
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_ERROR))
     {
       [ESLocalDBHelper abSaveDB];
     }
@@ -512,7 +512,7 @@ void __49__ESLocalDBHelper__abOpenDBWithClientIdentifier___block_invoke(uint64_t
 
   else
   {
-    v6 = !v3 || [(ESLocalDBHelper *)self abSaveDB];
+    v6 = !saveCopy || [(ESLocalDBHelper *)self abSaveDB];
     abDBQueue = self->_abDBQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -587,9 +587,9 @@ void __36__ESLocalDBHelper_abCloseDBAndSave___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (CalDatabase)calDatabaseForAccountID:(id)a3
+- (CalDatabase)calDatabaseForAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
@@ -598,33 +598,33 @@ void __36__ESLocalDBHelper_abCloseDBAndSave___block_invoke(uint64_t a1)
     _os_log_impl(&dword_24A097000, v5, v6, "Data_Separation: Invoking calDatabaseForAccountID", v9, 2u);
   }
 
-  v7 = [(ESCalDBHelper *)self->_calDBHelper databaseForAccountID:v4];
+  v7 = [(ESCalDBHelper *)self->_calDBHelper databaseForAccountID:dCopy];
   return v7;
 }
 
-- (void)calOpenDatabaseForAccountID:(id)a3 clientID:(id)a4
+- (void)calOpenDatabaseForAccountID:(id)d clientID:(id)iD
 {
-  v7 = a3;
-  v6 = a4;
-  if (!v6)
+  dCopy = d;
+  iDCopy = iD;
+  if (!iDCopy)
   {
     [ESLocalDBHelper calOpenDatabaseForAccountID:clientID:];
   }
 
-  [(ESCalDBHelper *)self->_calDBHelper openDatabaseForAccountID:v7 clientID:v6];
+  [(ESCalDBHelper *)self->_calDBHelper openDatabaseForAccountID:dCopy clientID:iDCopy];
 }
 
-- (void)calOpenDatabaseForAuxDatabaseRef:(void *)a3 clientID:(id)a4
+- (void)calOpenDatabaseForAuxDatabaseRef:(void *)ref clientID:(id)d
 {
-  v6 = a4;
-  v7 = v6;
-  if (!v6)
+  dCopy = d;
+  v7 = dCopy;
+  if (!dCopy)
   {
     [ESLocalDBHelper calOpenDatabaseForAuxDatabaseRef:clientID:];
-    v6 = 0;
+    dCopy = 0;
   }
 
-  [(ESCalDBHelper *)self->_calDBHelper openDatabaseForAuxDatabaseRef:a3 clientID:v6];
+  [(ESCalDBHelper *)self->_calDBHelper openDatabaseForAuxDatabaseRef:ref clientID:dCopy];
 }
 
 - (NoteContext)noteDB
@@ -764,9 +764,9 @@ void __29__ESLocalDBHelper_noteOpenDB__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (BOOL)noteCloseDBAndSave:(BOOL)a3
+- (BOOL)noteCloseDBAndSave:(BOOL)save
 {
-  v4 = !a3 || [(ESLocalDBHelper *)self noteSaveDB];
+  v4 = !save || [(ESLocalDBHelper *)self noteSaveDB];
   noteDBQueue = self->_noteDBQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -839,23 +839,23 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)abSetTestABDBDir:(id)a3
++ (void)abSetTestABDBDir:(id)dir
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dirCopy = dir;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v5, v6))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = dirCopy;
     _os_log_impl(&dword_24A097000, v5, v6, "Setting unit test Address Book Database directory to: %@", &v9, 0xCu);
   }
 
-  if (_fakedOutABDBDir != v4)
+  if (_fakedOutABDBDir != dirCopy)
   {
-    objc_storeStrong(&_fakedOutABDBDir, a3);
-    if ([v4 length])
+    objc_storeStrong(&_fakedOutABDBDir, dir);
+    if ([dirCopy length])
     {
       v7 = +[ESLocalDBWatcher sharedDBWatcher];
       [v7 noteABDBDirChanged];
@@ -865,23 +865,23 @@ LABEL_12:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)calSetTestCalDBDir:(id)a3
++ (void)calSetTestCalDBDir:(id)dir
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dirCopy = dir;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 6);
   if (os_log_type_enabled(v5, v6))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = dirCopy;
     _os_log_impl(&dword_24A097000, v5, v6, "Setting unit test Calendar Database directory to: %@", &v9, 0xCu);
   }
 
-  if (_fakedOutCalDBDir != v4)
+  if (_fakedOutCalDBDir != dirCopy)
   {
-    objc_storeStrong(&_fakedOutCalDBDir, a3);
-    if ([v4 length])
+    objc_storeStrong(&_fakedOutCalDBDir, dir);
+    if ([dirCopy length])
     {
       v7 = +[ESLocalDBWatcher sharedDBWatcher];
       [v7 noteCalDBDirChanged];
@@ -891,17 +891,17 @@ LABEL_12:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)calUnitTestsSetCallbackBlockForSave:(id)a3
+- (void)calUnitTestsSetCallbackBlockForSave:(id)save
 {
-  v7 = a3;
-  v4 = [(ESLocalDBHelper *)self calUnitTestCallbackBlock];
+  saveCopy = save;
+  calUnitTestCallbackBlock = [(ESLocalDBHelper *)self calUnitTestCallbackBlock];
 
-  v5 = v7;
-  if (v4 != v7)
+  v5 = saveCopy;
+  if (calUnitTestCallbackBlock != saveCopy)
   {
-    if (v7)
+    if (saveCopy)
     {
-      v6 = [v7 copy];
+      v6 = [saveCopy copy];
       [(ESLocalDBHelper *)self setCalUnitTestCallbackBlock:v6];
     }
 
@@ -910,7 +910,7 @@ LABEL_12:
       [(ESLocalDBHelper *)self setCalUnitTestCallbackBlock:0];
     }
 
-    v5 = v7;
+    v5 = saveCopy;
   }
 }
 
@@ -951,7 +951,7 @@ LABEL_12:
 - (void)abSaveDB
 {
   v9 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CCACC8] callStackSymbols];
+  callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0(&dword_24A097000, v1, v2, "abSaveDB is unsupported under modern Contacts framework :%@", v3, v4, v5, v6, v8);
 
@@ -974,8 +974,8 @@ LABEL_12:
 
 - (void)noteDB
 {
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a2 object:a1 file:@"ESLocalDBHelper.m" lineNumber:390 description:{@"You can't ask for a note db if you didn't open it.  Geez! %@", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ESLocalDBHelper.m" lineNumber:390 description:{@"You can't ask for a note db if you didn't open it.  Geez! %@", objc_opt_class()}];
 
   *a4 = *a3;
 }

@@ -1,43 +1,43 @@
 @interface IDSAccountRepair
-+ (double)_phoneNumberRepairIntervalForCount:(int64_t)a3;
-- (BOOL)_checkForOtherRegisteredTopLevelPhoneAccountMatchingThisAccount:(id)a3;
-- (BOOL)_hasActiveAppleIDBasedAccountOnService:(id)a3;
-- (BOOL)_isPhoneAccount:(id)a3 registeredAndMatchingThisAccount:(id)a4;
++ (double)_phoneNumberRepairIntervalForCount:(int64_t)count;
+- (BOOL)_checkForOtherRegisteredTopLevelPhoneAccountMatchingThisAccount:(id)account;
+- (BOOL)_hasActiveAppleIDBasedAccountOnService:(id)service;
+- (BOOL)_isPhoneAccount:(id)account registeredAndMatchingThisAccount:(id)thisAccount;
 - (BOOL)_repairPhoneNumberAccounts;
 - (BOOL)_shouldBypassRepairLogic;
 - (BOOL)_shouldNotSetupPhoneNumberRepairTimer;
-- (IDSAccountRepair)initWithAccountController:(id)a3 systemAccountAdapter:(id)a4 userDefaults:(id)a5 keyTransparencyVerifier:(id)a6;
+- (IDSAccountRepair)initWithAccountController:(id)controller systemAccountAdapter:(id)adapter userDefaults:(id)defaults keyTransparencyVerifier:(id)verifier;
 - (id)_activeAppleIDAccount;
 - (id)_createiTunesAccountFromSystemIfNeeded;
 - (id)_lastRepairIntervalFromPrefs;
 - (id)_totalRepairCountFromPrefs;
 - (void)_createAndEnableExistingSystemAccounts;
-- (void)_phoneNumberRepairTimerHit:(id)a3;
+- (void)_phoneNumberRepairTimerHit:(id)hit;
 - (void)_registerForAccountRepairActivity;
 - (void)_repairAccountsWithSuccessfulPhoneNumberRegistration;
-- (void)_repairAccountsWithSuccessfullAppleIDRegistrationForDSID:(id)a3 service:(id)a4;
-- (void)_repairKTAccount:(id)a3;
+- (void)_repairAccountsWithSuccessfullAppleIDRegistrationForDSID:(id)d service:(id)service;
+- (void)_repairKTAccount:(id)account;
 - (void)_repairKVSEntriesForKT;
-- (void)_repairTimerHit:(id)a3;
+- (void)_repairTimerHit:(id)hit;
 - (void)_repairiTunesBasedAccounts;
 - (void)_resetPhoneNumberRepairCounter;
-- (void)forceRepairAccounts:(id)a3;
-- (void)kickRepairForAllRegistrationsSucceeded:(id)a3;
+- (void)forceRepairAccounts:(id)accounts;
+- (void)kickRepairForAllRegistrationsSucceeded:(id)succeeded;
 - (void)recalculatePhoneRepairTimer;
 - (void)repairAccounts;
-- (void)repairService:(id)a3 withPrimaryUserName:(id)a4;
+- (void)repairService:(id)service withPrimaryUserName:(id)name;
 - (void)repairiCloudBasedAccounts;
 - (void)setupPhoneNumberRepairTimer;
 @end
 
 @implementation IDSAccountRepair
 
-- (IDSAccountRepair)initWithAccountController:(id)a3 systemAccountAdapter:(id)a4 userDefaults:(id)a5 keyTransparencyVerifier:(id)a6
+- (IDSAccountRepair)initWithAccountController:(id)controller systemAccountAdapter:(id)adapter userDefaults:(id)defaults keyTransparencyVerifier:(id)verifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  controllerCopy = controller;
+  adapterCopy = adapter;
+  defaultsCopy = defaults;
+  verifierCopy = verifier;
   v29.receiver = self;
   v29.super_class = IDSAccountRepair;
   v15 = [(IDSAccountRepair *)&v29 init];
@@ -45,10 +45,10 @@
   if (v15)
   {
     v15->_waitingForMigration = 1;
-    objc_storeStrong(&v15->_systemAccountAdapter, a4);
-    objc_storeStrong(&v16->_accountController, a3);
-    objc_storeStrong(&v16->_userDefaults, a5);
-    objc_storeStrong(&v16->_keyTransparencyVerifier, a6);
+    objc_storeStrong(&v15->_systemAccountAdapter, adapter);
+    objc_storeStrong(&v16->_accountController, controller);
+    objc_storeStrong(&v16->_userDefaults, defaults);
+    objc_storeStrong(&v16->_keyTransparencyVerifier, verifier);
     v17 = [IMDispatchTimer alloc];
     v18 = im_primary_queue();
     v27[0] = _NSConcreteStackBlock;
@@ -68,25 +68,25 @@
     }
 
     v22 = +[IDSDataMigrationTracker sharedInstance];
-    v23 = [v22 performMigrationIfNeeded];
+    performMigrationIfNeeded = [v22 performMigrationIfNeeded];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10040418C;
     v25[3] = &unk_100BD8870;
     v26 = v19;
-    [v23 registerResultBlock:v25];
+    [performMigrationIfNeeded registerResultBlock:v25];
   }
 
   return v16;
 }
 
-- (void)forceRepairAccounts:(id)a3
+- (void)forceRepairAccounts:(id)accounts
 {
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = a3;
+  obj = accounts;
   v3 = [obj countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (v3)
   {
@@ -104,16 +104,16 @@
         }
 
         v8 = *(*(&v22 + 1) + 8 * i);
-        v9 = [v8 isUserDisabled];
-        v10 = [v8 isRegistered];
+        isUserDisabled = [v8 isUserDisabled];
+        isRegistered = [v8 isRegistered];
         v11 = +[IDSRestrictions sharedInstance];
-        v12 = [v8 service];
-        v13 = [v11 shouldDisableService:v12];
+        service = [v8 service];
+        v13 = [v11 shouldDisableService:service];
 
         v14 = +[IMRGLog registration];
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          if (v9)
+          if (isUserDisabled)
           {
             v15 = @"YES";
           }
@@ -125,7 +125,7 @@
 
           *buf = v19;
           v27 = v15;
-          if (v10)
+          if (isRegistered)
           {
             v16 = @"YES";
           }
@@ -142,11 +142,11 @@
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Checking if account is candidate for force repair {isUserDisabled: %@, isRegistered: %@, account: %@}", buf, 0x20u);
         }
 
-        if (((v9 | v10 | v13) & 1) == 0)
+        if (((isUserDisabled | isRegistered | v13) & 1) == 0)
         {
-          v17 = [(IDSAccountRepair *)self accountController];
-          v18 = [v8 uniqueID];
-          [v17 enableAccountWithUniqueID:v18];
+          accountController = [(IDSAccountRepair *)self accountController];
+          uniqueID = [v8 uniqueID];
+          [accountController enableAccountWithUniqueID:uniqueID];
 
           [v8 registerAccount];
         }
@@ -159,9 +159,9 @@
   }
 }
 
-- (void)_repairTimerHit:(id)a3
+- (void)_repairTimerHit:(id)hit
 {
-  v4 = a3;
+  hitCopy = hit;
   if (self->_waitingForMigration)
   {
     v5 = +[IMRGLog registration];
@@ -174,11 +174,11 @@
   else
   {
     v6 = +[IMSystemMonitor sharedInstance];
-    v7 = [v6 isUnderFirstDataProtectionLock];
+    isUnderFirstDataProtectionLock = [v6 isUnderFirstDataProtectionLock];
 
     v8 = +[IMRGLog registration];
     v9 = v8;
-    if (v7)
+    if (isUnderFirstDataProtectionLock)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
@@ -191,7 +191,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v10 = 138412290;
-        v11 = v4;
+        v11 = hitCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Repair timer fired: %@", &v10, 0xCu);
       }
 
@@ -218,10 +218,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [(IDSAccountRepair *)self accountController];
-  v7 = [v6 hasHardDeregistered];
+  accountController = [(IDSAccountRepair *)self accountController];
+  hasHardDeregistered = [accountController hasHardDeregistered];
 
-  if (v7)
+  if (hasHardDeregistered)
   {
     v3 = +[IMRGLog registration];
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -240,13 +240,13 @@ LABEL_8:
   return 0;
 }
 
-- (void)kickRepairForAllRegistrationsSucceeded:(id)a3
+- (void)kickRepairForAllRegistrationsSucceeded:(id)succeeded
 {
-  v4 = a3;
-  v5 = [(IDSAccountRepair *)self accountController];
-  v6 = [v5 isLoading];
+  succeededCopy = succeeded;
+  accountController = [(IDSAccountRepair *)self accountController];
+  isLoading = [accountController isLoading];
 
-  if (v6)
+  if (isLoading)
   {
     v7 = +[IMRGLog registration];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -263,8 +263,8 @@ LABEL_8:
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v33 = v4;
-    obj = v4;
+    v33 = succeededCopy;
+    obj = succeededCopy;
     v38 = [obj countByEnumeratingWithState:&v45 objects:v56 count:16];
     if (v38)
     {
@@ -283,23 +283,23 @@ LABEL_8:
 
           v11 = *(*(&v45 + 1) + 8 * i);
           v12 = +[IDSDServiceController sharedInstance];
-          v13 = [v11 serviceIdentifier];
-          v14 = [v12 serviceWithIdentifier:v13];
+          serviceIdentifier = [v11 serviceIdentifier];
+          v14 = [v12 serviceWithIdentifier:serviceIdentifier];
 
           v43 = 0u;
           v44 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v15 = [(IDSAccountRepair *)self accountController];
-          v16 = [v15 accounts];
+          accountController2 = [(IDSAccountRepair *)self accountController];
+          accounts = [accountController2 accounts];
 
-          v17 = [v16 countByEnumeratingWithState:&v41 objects:v55 count:16];
+          v17 = [accounts countByEnumeratingWithState:&v41 objects:v55 count:16];
           if (v17)
           {
             v39 = v14;
             v40 = v8;
             v18 = v9;
-            v19 = self;
+            selfCopy = self;
             v20 = *v42;
             while (2)
             {
@@ -307,20 +307,20 @@ LABEL_8:
               {
                 if (*v42 != v20)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(accounts);
                 }
 
                 v22 = *(*(&v41 + 1) + 8 * j);
-                v23 = [v22 registration];
+                registration = [v22 registration];
 
-                if (v23 == v11)
+                if (registration == v11)
                 {
                   v17 = v22;
                   goto LABEL_19;
                 }
               }
 
-              v17 = [v16 countByEnumeratingWithState:&v41 objects:v55 count:16];
+              v17 = [accounts countByEnumeratingWithState:&v41 objects:v55 count:16];
               if (v17)
               {
                 continue;
@@ -330,14 +330,14 @@ LABEL_8:
             }
 
 LABEL_19:
-            self = v19;
+            self = selfCopy;
             v9 = v18;
             v8 = v40;
             v14 = v39;
           }
 
-          v24 = [v9[504] registration];
-          if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+          registration2 = [v9[504] registration];
+          if (os_log_type_enabled(registration2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412802;
             v50 = v14;
@@ -345,47 +345,47 @@ LABEL_19:
             v52 = v11;
             v53 = 2112;
             v54 = v17;
-            _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Notified of registration success for service: %@   registration: %@   account: %@", buf, 0x20u);
+            _os_log_impl(&_mh_execute_header, registration2, OS_LOG_TYPE_DEFAULT, "Notified of registration success for service: %@   registration: %@   account: %@", buf, 0x20u);
           }
 
-          v25 = [v17 accountType];
-          if (v8 & 1 | (v25 != 0))
+          accountType = [v17 accountType];
+          if (v8 & 1 | (accountType != 0))
           {
-            if (v25 == 1)
+            if (accountType == 1)
             {
-              v26 = [v17 service];
-              v27 = [v26 iCloudBasedService];
+              service = [v17 service];
+              iCloudBasedService = [service iCloudBasedService];
 
-              if (!(v35 & 1 | ((v27 & 1) == 0)))
+              if (!(v35 & 1 | ((iCloudBasedService & 1) == 0)))
               {
-                v28 = [v9[504] registration];
-                if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+                registration3 = [v9[504] registration];
+                if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 0;
-                  _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Kicking Apple ID iCloud based accounts repair", buf, 2u);
+                  _os_log_impl(&_mh_execute_header, registration3, OS_LOG_TYPE_DEFAULT, "Kicking Apple ID iCloud based accounts repair", buf, 2u);
                 }
 
                 [(IDSAccountRepair *)self repairiCloudBasedAccounts];
                 v35 = 1;
               }
 
-              if ((v27 & 1) == 0)
+              if ((iCloudBasedService & 1) == 0)
               {
-                v29 = [v17 dsID];
-                if (([v34 containsObject:v29]& 1) == 0)
+                dsID = [v17 dsID];
+                if (([v34 containsObject:dsID]& 1) == 0)
                 {
-                  v30 = [v9[504] registration];
-                  if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+                  registration4 = [v9[504] registration];
+                  if (os_log_type_enabled(registration4, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = 138412290;
-                    v50 = v29;
-                    _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "Kicking Apple ID non-iCloud based accounts matching dsID: %@ repair", buf, 0xCu);
+                    v50 = dsID;
+                    _os_log_impl(&_mh_execute_header, registration4, OS_LOG_TYPE_DEFAULT, "Kicking Apple ID non-iCloud based accounts matching dsID: %@ repair", buf, 0xCu);
                   }
 
-                  v31 = [v17 service];
-                  [(IDSAccountRepair *)self _repairAccountsWithSuccessfullAppleIDRegistrationForDSID:v29 service:v31];
+                  service2 = [v17 service];
+                  [(IDSAccountRepair *)self _repairAccountsWithSuccessfullAppleIDRegistrationForDSID:dsID service:service2];
 
-                  [v34 addObject:v29];
+                  [v34 addObject:dsID];
                 }
               }
             }
@@ -393,11 +393,11 @@ LABEL_19:
 
           else
           {
-            v32 = [v9[504] registration];
-            if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+            registration5 = [v9[504] registration];
+            if (os_log_type_enabled(registration5, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Kicking phone number accounts repair", buf, 2u);
+              _os_log_impl(&_mh_execute_header, registration5, OS_LOG_TYPE_DEFAULT, "Kicking phone number accounts repair", buf, 2u);
             }
 
             [(IDSAccountRepair *)self _repairAccountsWithSuccessfulPhoneNumberRegistration];
@@ -411,19 +411,19 @@ LABEL_19:
       while (v38);
     }
 
-    v4 = v33;
+    succeededCopy = v33;
     v7 = v34;
   }
 }
 
 - (void)_repairAccountsWithSuccessfulPhoneNumberRegistration
 {
-  v2 = [(IDSAccountRepair *)self accountController];
-  v3 = [v2 isLoading];
+  accountController = [(IDSAccountRepair *)self accountController];
+  isLoading = [accountController isLoading];
 
   v4 = +[IMRGLog registration];
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isLoading)
   {
     if (v5)
     {
@@ -448,11 +448,11 @@ LABEL_19:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v7 = [(IDSAccountRepair *)self accountController];
-    v8 = [v7 accounts];
+    accountController2 = [(IDSAccountRepair *)self accountController];
+    accounts = [accountController2 accounts];
 
-    v9 = self;
-    v10 = [v8 countByEnumeratingWithState:&v72 objects:v79 count:16];
+    selfCopy2 = self;
+    v10 = [accounts countByEnumeratingWithState:&v72 objects:v79 count:16];
     if (!v10)
     {
       goto LABEL_69;
@@ -460,7 +460,7 @@ LABEL_19:
 
     v11 = v10;
     v60 = *v73;
-    v58 = v8;
+    v58 = accounts;
     while (1)
     {
       v12 = 0;
@@ -469,7 +469,7 @@ LABEL_19:
       {
         if (*v73 != v60)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(accounts);
         }
 
         v13 = *(*(&v72 + 1) + 8 * v12);
@@ -478,10 +478,10 @@ LABEL_19:
           goto LABEL_65;
         }
 
-        v14 = [v13 service];
-        v15 = [v14 wantsPhoneNumberAccount];
+        service = [v13 service];
+        wantsPhoneNumberAccount = [service wantsPhoneNumberAccount];
 
-        if (!v15 || ([v13 isAdHocAccount] & 1) != 0)
+        if (!wantsPhoneNumberAccount || ([v13 isAdHocAccount] & 1) != 0)
         {
           goto LABEL_65;
         }
@@ -495,35 +495,35 @@ LABEL_19:
         v16 = +[IMRGLog registration];
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v13 registrationError];
+          registrationError = [v13 registrationError];
           *buf = 67109120;
-          LODWORD(v77) = v17;
+          LODWORD(v77) = registrationError;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, " => Failed account, let's see if we should kick it (Registration Error: %d)", buf, 8u);
         }
 
-        v18 = [v13 registrationError];
-        if (v18 > 0x31)
+        registrationError2 = [v13 registrationError];
+        if (registrationError2 > 0x31)
         {
           goto LABEL_35;
         }
 
-        if (((1 << v18) & 0x3824088600000) != 0)
+        if (((1 << registrationError2) & 0x3824088600000) != 0)
         {
           goto LABEL_20;
         }
 
-        if (v18 != 2)
+        if (registrationError2 != 2)
         {
-          if (v18 == 39)
+          if (registrationError2 == 39)
           {
-            v29 = [(IDSAccountRepair *)v9 accountController];
+            accountController3 = [(IDSAccountRepair *)selfCopy2 accountController];
             [v13 service];
             v31 = v30 = v13;
-            v32 = [v29 appleIDAccountOnService:v31];
+            v32 = [accountController3 appleIDAccountOnService:v31];
 
             if (![v32 isEnabled])
             {
-              v53 = [(IDSAccountRepair *)v9 _checkForOtherRegisteredTopLevelPhoneAccountMatchingThisAccount:v30];
+              v53 = [(IDSAccountRepair *)selfCopy2 _checkForOtherRegisteredTopLevelPhoneAccountMatchingThisAccount:v30];
 
               v13 = v30;
               if (v53)
@@ -548,7 +548,7 @@ LABEL_19:
           else
           {
 LABEL_35:
-            if (v18 + 1 < 2 || v18 == 1 && ![(IDSAccountRepair *)v9 _checkForOtherRegisteredTopLevelPhoneAccountMatchingThisAccount:v13])
+            if (registrationError2 + 1 < 2 || registrationError2 == 1 && ![(IDSAccountRepair *)selfCopy2 _checkForOtherRegisteredTopLevelPhoneAccountMatchingThisAccount:v13])
             {
               goto LABEL_20;
             }
@@ -563,28 +563,28 @@ LABEL_58:
             _os_log_impl(&_mh_execute_header, v54, OS_LOG_TYPE_DEFAULT, " => Kicking SMS based account: %@", buf, 0xCu);
           }
 
-          v55 = [(IDSAccountRepair *)v9 accountController];
-          v56 = [v13 uniqueID];
-          [v55 enableAccountWithUniqueID:v56];
+          accountController4 = [(IDSAccountRepair *)selfCopy2 accountController];
+          uniqueID = [v13 uniqueID];
+          [accountController4 enableAccountWithUniqueID:uniqueID];
 
           v27 = v64;
           [v64 registerAccount];
-          v28 = [v64 linkedAccounts];
+          linkedAccounts = [v64 linkedAccounts];
           v66[0] = _NSConcreteStackBlock;
           v66[1] = 3221225472;
           v66[2] = sub_100405620;
           v66[3] = &unk_100BDB090;
-          v66[4] = v9;
-          [v28 __imForEach:v66];
+          v66[4] = selfCopy2;
+          [linkedAccounts __imForEach:v66];
           v11 = v59;
 LABEL_61:
 
-          v19 = +[IMRGLog registration];
-          if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+          service2 = +[IMRGLog registration];
+          if (os_log_type_enabled(service2, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
             v77 = v27;
-            v23 = v19;
+            v23 = service2;
             v24 = " ** Tried to repair account: %@";
 LABEL_63:
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, v24, buf, 0xCu);
@@ -593,8 +593,8 @@ LABEL_63:
           goto LABEL_64;
         }
 
-        v34 = [(IDSAccountRepair *)v9 accountController];
-        v35 = [v34 accountsWithType:0];
+        accountController5 = [(IDSAccountRepair *)selfCopy2 accountController];
+        v35 = [accountController5 accountsWithType:0];
 
         v70 = 0u;
         v71 = 0u;
@@ -605,7 +605,7 @@ LABEL_63:
         if (!v37)
         {
 
-          v8 = v58;
+          accounts = v58;
           goto LABEL_20;
         }
 
@@ -623,17 +623,17 @@ LABEL_63:
             }
 
             v41 = *(*(&v68 + 1) + 8 * i);
-            v42 = [v41 userUniqueIdentifier];
-            v43 = [v13 userUniqueIdentifier];
-            if ([v42 isEqual:v43])
+            userUniqueIdentifier = [v41 userUniqueIdentifier];
+            userUniqueIdentifier2 = [v13 userUniqueIdentifier];
+            if ([userUniqueIdentifier isEqual:userUniqueIdentifier2])
             {
-              v44 = [v41 uniqueID];
+              uniqueID2 = [v41 uniqueID];
               v45 = v13;
-              v46 = v44;
-              v47 = [v45 uniqueID];
-              v48 = [v46 isEqual:v47];
+              v46 = uniqueID2;
+              uniqueID3 = [v45 uniqueID];
+              v48 = [v46 isEqual:uniqueID3];
 
-              v9 = self;
+              selfCopy2 = self;
               if ((v48 & 1) == 0)
               {
                 v49 = +[IMRGLog registration];
@@ -644,18 +644,18 @@ LABEL_63:
                   _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_DEFAULT, " => Kicking alternate SMS based account: %@", buf, 0xCu);
                 }
 
-                v50 = [(IDSAccountRepair *)self accountController];
-                v51 = [v41 uniqueID];
-                [v50 enableAccountWithUniqueID:v51];
+                accountController6 = [(IDSAccountRepair *)self accountController];
+                uniqueID4 = [v41 uniqueID];
+                [accountController6 enableAccountWithUniqueID:uniqueID4];
 
                 [v41 registerAccount];
-                v52 = [v41 linkedAccounts];
+                linkedAccounts2 = [v41 linkedAccounts];
                 v67[0] = _NSConcreteStackBlock;
                 v67[1] = 3221225472;
                 v67[2] = sub_100405524;
                 v67[3] = &unk_100BDB090;
                 v67[4] = self;
-                [v52 __imForEach:v67];
+                [linkedAccounts2 __imForEach:v67];
               }
 
               if (v39)
@@ -677,7 +677,7 @@ LABEL_50:
             }
 
             v13 = v64;
-            v39 = [(IDSAccountRepair *)v9 _isPhoneAccount:v41 registeredAndMatchingThisAccount:v64];
+            v39 = [(IDSAccountRepair *)selfCopy2 _isPhoneAccount:v41 registeredAndMatchingThisAccount:v64];
           }
 
           v38 = [obj countByEnumeratingWithState:&v68 objects:v78 count:16];
@@ -685,53 +685,53 @@ LABEL_50:
 
         while (v38);
 
-        v8 = v58;
+        accounts = v58;
         if (v39)
         {
           goto LABEL_58;
         }
 
 LABEL_20:
-        v19 = [v13 service];
-        if (![v19 iCloudBasedService])
+        service2 = [v13 service];
+        if (![service2 iCloudBasedService])
         {
           v11 = v59;
           goto LABEL_64;
         }
 
-        v20 = [v13 isEnabled];
+        isEnabled = [v13 isEnabled];
 
         v11 = v59;
-        if (v20)
+        if (isEnabled)
         {
           goto LABEL_65;
         }
 
-        v21 = [v13 registrationError];
-        v19 = +[IMRGLog registration];
-        v22 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
-        if (v21 != 38)
+        registrationError3 = [v13 registrationError];
+        service2 = +[IMRGLog registration];
+        v22 = os_log_type_enabled(service2, OS_LOG_TYPE_DEFAULT);
+        if (registrationError3 != 38)
         {
           if (v22)
           {
             *buf = 138412290;
             v77 = v13;
-            _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, " => Kicking iCloud SMS based account: %@", buf, 0xCu);
+            _os_log_impl(&_mh_execute_header, service2, OS_LOG_TYPE_DEFAULT, " => Kicking iCloud SMS based account: %@", buf, 0xCu);
           }
 
-          v25 = [(IDSAccountRepair *)v9 accountController];
-          v26 = [v13 uniqueID];
-          [v25 enableAccountWithUniqueID:v26];
+          accountController7 = [(IDSAccountRepair *)selfCopy2 accountController];
+          uniqueID5 = [v13 uniqueID];
+          [accountController7 enableAccountWithUniqueID:uniqueID5];
 
           v27 = v64;
           [v64 registerAccount];
-          v28 = [v64 linkedAccounts];
+          linkedAccounts = [v64 linkedAccounts];
           v65[0] = _NSConcreteStackBlock;
           v65[1] = 3221225472;
           v65[2] = sub_10040571C;
           v65[3] = &unk_100BDB090;
-          v65[4] = v9;
-          [v28 __imForEach:v65];
+          v65[4] = selfCopy2;
+          [linkedAccounts __imForEach:v65];
           goto LABEL_61;
         }
 
@@ -739,7 +739,7 @@ LABEL_20:
         {
           *buf = 138412290;
           v77 = v13;
-          v23 = v19;
+          v23 = service2;
           v24 = " => Not kicking iCloud SMS based account: %@";
           goto LABEL_63;
         }
@@ -751,7 +751,7 @@ LABEL_65:
       }
 
       while (v12 != v11);
-      v57 = [v8 countByEnumeratingWithState:&v72 objects:v79 count:16];
+      v57 = [accounts countByEnumeratingWithState:&v72 objects:v79 count:16];
       v11 = v57;
       if (!v57)
       {
@@ -774,38 +774,38 @@ LABEL_72:
   }
 }
 
-- (BOOL)_isPhoneAccount:(id)a3 registeredAndMatchingThisAccount:(id)a4
+- (BOOL)_isPhoneAccount:(id)account registeredAndMatchingThisAccount:(id)thisAccount
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isAdHocAccount])
+  accountCopy = account;
+  thisAccountCopy = thisAccount;
+  if ([accountCopy isAdHocAccount])
   {
-    v7 = 0;
+    isRegistered = 0;
   }
 
   else
   {
-    v8 = [v5 userUniqueIdentifier];
-    v9 = [v6 userUniqueIdentifier];
-    if ([v8 isEqual:v9])
+    userUniqueIdentifier = [accountCopy userUniqueIdentifier];
+    userUniqueIdentifier2 = [thisAccountCopy userUniqueIdentifier];
+    if ([userUniqueIdentifier isEqual:userUniqueIdentifier2])
     {
-      v7 = [v5 isRegistered];
+      isRegistered = [accountCopy isRegistered];
     }
 
     else
     {
-      v7 = 0;
+      isRegistered = 0;
     }
   }
 
-  return v7;
+  return isRegistered;
 }
 
-- (BOOL)_checkForOtherRegisteredTopLevelPhoneAccountMatchingThisAccount:(id)a3
+- (BOOL)_checkForOtherRegisteredTopLevelPhoneAccountMatchingThisAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(IDSAccountRepair *)self accountController];
-  v6 = [v5 accountsWithType:0];
+  accountCopy = account;
+  accountController = [(IDSAccountRepair *)self accountController];
+  v6 = [accountController accountsWithType:0];
 
   v16 = 0u;
   v17 = 0u;
@@ -826,7 +826,7 @@ LABEL_72:
           objc_enumerationMutation(v7);
         }
 
-        if ([(IDSAccountRepair *)self _isPhoneAccount:*(*(&v14 + 1) + 8 * i) registeredAndMatchingThisAccount:v4, v14])
+        if ([(IDSAccountRepair *)self _isPhoneAccount:*(*(&v14 + 1) + 8 * i) registeredAndMatchingThisAccount:accountCopy, v14])
         {
           v12 = 1;
           goto LABEL_11;
@@ -849,16 +849,16 @@ LABEL_11:
   return v12;
 }
 
-- (void)_repairAccountsWithSuccessfullAppleIDRegistrationForDSID:(id)a3 service:(id)a4
+- (void)_repairAccountsWithSuccessfullAppleIDRegistrationForDSID:(id)d service:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IDSAccountRepair *)self accountController];
-  v9 = [v8 isLoading];
+  dCopy = d;
+  serviceCopy = service;
+  accountController = [(IDSAccountRepair *)self accountController];
+  isLoading = [accountController isLoading];
 
   v10 = +[IMRGLog registration];
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v9)
+  if (isLoading)
   {
     if (v11)
     {
@@ -882,11 +882,11 @@ LABEL_11:
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v34 = self;
-    v13 = [(IDSAccountRepair *)self accountController];
-    v14 = [v13 accounts];
+    selfCopy = self;
+    accountController2 = [(IDSAccountRepair *)self accountController];
+    accounts = [accountController2 accounts];
 
-    v15 = [v14 countByEnumeratingWithState:&v37 objects:v45 count:16];
+    v15 = [accounts countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (!v15)
     {
       goto LABEL_33;
@@ -903,27 +903,27 @@ LABEL_11:
       {
         if (*v38 != v18)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(accounts);
         }
 
         v20 = *(*(&v37 + 1) + 8 * i);
         if ([v20 accountType] == 1 && (objc_msgSend(v20, "isAdHocAccount") & 1) == 0)
         {
-          v21 = [v20 dsID];
-          if (([v21 isEqualToIgnoringCase:v6]& 1) == 0)
+          dsID = [v20 dsID];
+          if (([dsID isEqualToIgnoringCase:dCopy]& 1) == 0)
           {
             goto LABEL_30;
           }
 
-          v22 = [v20 service];
+          service = [v20 service];
 
-          if (v22 != v7)
+          if (service != serviceCopy)
           {
             v23 = +[IMRGLog registration];
             if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v42 = v6;
+              v42 = dCopy;
               v43 = 2112;
               v44 = v20;
               _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, " => DSIDs match to %@, kicking for repair %@", buf, 0x16u);
@@ -934,9 +934,9 @@ LABEL_11:
               v24 = +[IMRGLog registration];
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
-                v25 = [v20 registrationError];
+                registrationError = [v20 registrationError];
                 *buf = 67109120;
-                LODWORD(v42) = v25;
+                LODWORD(v42) = registrationError;
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, " => Failed account, let's see if we should kick it (Registration Error: %d)", buf, 8u);
               }
 
@@ -956,10 +956,10 @@ LABEL_11:
                 goto LABEL_26;
               }
 
-              v21 = [v20 service];
-              if (([v21 iCloudBasedService]& 1) != 0)
+              dsID = [v20 service];
+              if (([dsID iCloudBasedService]& 1) != 0)
               {
-                v27 = [(IDSSystemAccountAdapter *)v34->_systemAccountAdapter iCloudSystemAccountWithError:0];
+                v27 = [(IDSSystemAccountAdapter *)selfCopy->_systemAccountAdapter iCloudSystemAccountWithError:0];
 
                 if (!v27)
                 {
@@ -975,25 +975,25 @@ LABEL_26:
                   _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, " => Kicking Apple ID based account: %@", buf, 0xCu);
                 }
 
-                v29 = [(IDSAccountRepair *)v34 accountController];
-                v30 = [v20 uniqueID];
-                [v29 enableAccountWithUniqueID:v30];
+                accountController3 = [(IDSAccountRepair *)selfCopy accountController];
+                uniqueID = [v20 uniqueID];
+                [accountController3 enableAccountWithUniqueID:uniqueID];
 
                 [v20 registerAccount];
-                v31 = [v20 linkedAccounts];
+                linkedAccounts = [v20 linkedAccounts];
                 v35[0] = _NSConcreteStackBlock;
                 v35[1] = 3221225472;
                 v36[0] = sub_100405F38;
                 v36[1] = &unk_100BDB090;
-                v36[2] = v34;
-                [v31 __imForEach:v35];
+                v36[2] = selfCopy;
+                [linkedAccounts __imForEach:v35];
 
-                v21 = +[IMRGLog registration];
-                if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+                dsID = +[IMRGLog registration];
+                if (os_log_type_enabled(dsID, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = v32;
                   v42 = v20;
-                  _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, " ** Tried to repair account: %@", buf, 0xCu);
+                  _os_log_impl(&_mh_execute_header, dsID, OS_LOG_TYPE_DEFAULT, " ** Tried to repair account: %@", buf, 0xCu);
                 }
               }
 
@@ -1005,7 +1005,7 @@ LABEL_30:
         }
       }
 
-      v17 = [v14 countByEnumeratingWithState:&v37 objects:v45 count:16];
+      v17 = [accounts countByEnumeratingWithState:&v37 objects:v45 count:16];
       if (!v17)
       {
 LABEL_33:
@@ -1049,15 +1049,15 @@ LABEL_36:
 
 - (void)repairAccounts
 {
-  v3 = [(IDSAccountRepair *)self accountController];
-  v4 = [v3 isLoading];
+  accountController = [(IDSAccountRepair *)self accountController];
+  isLoading = [accountController isLoading];
 
-  if (!v4)
+  if (!isLoading)
   {
     v7 = +[IMSystemMonitor sharedInstance];
-    v8 = [v7 isUnderFirstDataProtectionLock];
+    isUnderFirstDataProtectionLock = [v7 isUnderFirstDataProtectionLock];
 
-    if (v8)
+    if (isUnderFirstDataProtectionLock)
     {
       v5 = +[IMRGLog registration];
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1089,7 +1089,7 @@ LABEL_36:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Account repair timer fired", buf, 2u);
     }
 
-    v88 = self;
+    selfCopy = self;
     [(IDSAccountRepair *)self _createAndEnableExistingSystemAccounts];
     v11 = [NSArray arrayWithObjects:@"iMessage", @"com.apple.private.alloy.maps", @"FaceTime", @"FaceTime_temporary", @"iMessage_temporary", @"IDS_temporary", 0];
     v12 = +[IMRGLog registration];
@@ -1155,16 +1155,16 @@ LABEL_36:
     v24 = +[FTPasswordManager sharedInstance];
     [v24 performCleanUpWithCompletion:0];
 
-    v25 = v88;
-    v26 = [(IDSAccountRepair *)v88 accountController];
-    v27 = [v26 accounts];
-    v28 = [v27 _copyForEnumerating];
+    v25 = selfCopy;
+    accountController2 = [(IDSAccountRepair *)selfCopy accountController];
+    accounts = [accountController2 accounts];
+    _copyForEnumerating = [accounts _copyForEnumerating];
 
     v98 = 0u;
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v29 = v28;
+    v29 = _copyForEnumerating;
     v30 = [v29 countByEnumeratingWithState:&v96 objects:v112 count:16];
     if (!v30)
     {
@@ -1204,25 +1204,25 @@ LABEL_28:
       }
 
       v35 = *(*(&v96 + 1) + 8 * v34);
-      v36 = [v35 service];
-      v37 = [v35 uniqueID];
-      if (([(__CFString *)v36 iCloudBasedService]& 1) != 0)
+      service = [v35 service];
+      uniqueID = [v35 uniqueID];
+      if (([(__CFString *)service iCloudBasedService]& 1) != 0)
       {
         goto LABEL_126;
       }
 
-      v38 = [v35 service];
-      v39 = [v38 identifier];
+      service2 = [v35 service];
+      identifier = [service2 identifier];
 
-      if (([v39 isEqualToString:v33] & 1) != 0 || (objc_msgSend(v39, "isEqualToString:", v92) & 1) != 0 || objc_msgSend(v39, "isEqualToString:", v91))
+      if (([identifier isEqualToString:v33] & 1) != 0 || (objc_msgSend(identifier, "isEqualToString:", v92) & 1) != 0 || objc_msgSend(identifier, "isEqualToString:", v91))
       {
-        v40 = [v39 isEqualToString:v33];
+        v40 = [identifier isEqualToString:v33];
       }
 
       else
       {
-        v52 = [v39 isEqualToString:v90];
-        v40 = [v39 isEqualToString:v33];
+        v52 = [identifier isEqualToString:v90];
+        v40 = [identifier isEqualToString:v33];
         if (!v52)
         {
           goto LABEL_55;
@@ -1232,13 +1232,13 @@ LABEL_28:
       if (([v35 isUserDisabled] & 1) == 0 && (objc_msgSend(v35, "isRegistered") & 1) == 0)
       {
         v41 = +[IDSRestrictions sharedInstance];
-        v42 = [v41 shouldDisableService:v36];
+        v42 = [v41 shouldDisableService:service];
 
         if ((v42 & 1) == 0)
         {
-          v43 = [v35 registrationError];
-          v44 = (v43 > 0x31) | (0x7320779FFFF9uLL >> v43);
-          v45 = (v43 < 0x32) & (0x3800000000000uLL >> v43);
+          registrationError = [v35 registrationError];
+          v44 = (registrationError > 0x31) | (0x7320779FFFF9uLL >> registrationError);
+          v45 = (registrationError < 0x32) & (0x3800000000000uLL >> registrationError);
           v46 = +[IMRGLog registration];
           if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
           {
@@ -1252,7 +1252,7 @@ LABEL_28:
               v47 = @"NO";
             }
 
-            v48 = [v35 registrationError];
+            registrationError2 = [v35 registrationError];
             *buf = 138413058;
             v49 = @"YES";
             if (!v45)
@@ -1260,12 +1260,12 @@ LABEL_28:
               v49 = @"NO";
             }
 
-            v105 = v39;
+            v105 = identifier;
             v106 = 2112;
             v107 = v47;
-            v25 = v88;
+            v25 = selfCopy;
             v108 = 2048;
-            v109 = v48;
+            v109 = registrationError2;
             v110 = 2112;
             v111 = v49;
             _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "Checking disabled account {serviceIdentifier: %@, shouldRepair: %@, registrationError: %lld, shouldCheckKTStates: %@ }", buf, 0x2Au);
@@ -1273,8 +1273,8 @@ LABEL_28:
 
           if (v44)
           {
-            v50 = [(IDSAccountRepair *)v25 accountController];
-            [v50 enableAccountWithUniqueID:v37];
+            accountController3 = [(IDSAccountRepair *)v25 accountController];
+            [accountController3 enableAccountWithUniqueID:uniqueID];
 
             [v35 registerAccount];
           }
@@ -1303,16 +1303,16 @@ LABEL_55:
       if (([v35 isUserDisabled] & 1) == 0)
       {
         v53 = +[IDSRestrictions sharedInstance];
-        v54 = ([v53 shouldDisableService:v36] ^ 1) & v40;
+        v54 = ([v53 shouldDisableService:service] ^ 1) & v40;
 
         if (v54 == 1)
         {
           v55 = +[IDSRegistrationKeyManager sharedInstance];
-          v56 = [v55 registrationNeedsKTDataUpdated];
+          registrationNeedsKTDataUpdated = [v55 registrationNeedsKTDataUpdated];
 
           v57 = +[IDSFoundationLog KeyTransparency];
           v58 = os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT);
-          if (v56)
+          if (registrationNeedsKTDataUpdated)
           {
             if (v58)
             {
@@ -1320,8 +1320,8 @@ LABEL_55:
               _os_log_impl(&_mh_execute_header, v57, OS_LOG_TYPE_DEFAULT, "Registering to update KT Data.", buf, 2u);
             }
 
-            v59 = [(IDSAccountRepair *)v25 accountController];
-            [v59 enableAccountWithUniqueID:v37];
+            accountController4 = [(IDSAccountRepair *)v25 accountController];
+            [accountController4 enableAccountWithUniqueID:uniqueID];
 
             [v35 registerAccount];
           }
@@ -1337,18 +1337,18 @@ LABEL_55:
         }
       }
 
-      v60 = [v35 isEnabled];
-      v61 = +[IMRGLog registration];
-      v62 = os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT);
-      if (!v60)
+      isEnabled = [v35 isEnabled];
+      accountController5 = +[IMRGLog registration];
+      v62 = os_log_type_enabled(accountController5, OS_LOG_TYPE_DEFAULT);
+      if (!isEnabled)
       {
         if (v62)
         {
           *buf = 138412546;
-          v105 = v37;
+          v105 = uniqueID;
           v106 = 2112;
-          v107 = v36;
-          _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, " => Disabled, skipping: %@, service name: %@", buf, 0x16u);
+          v107 = service;
+          _os_log_impl(&_mh_execute_header, accountController5, OS_LOG_TYPE_DEFAULT, " => Disabled, skipping: %@, service name: %@", buf, 0x16u);
         }
 
         goto LABEL_125;
@@ -1357,49 +1357,49 @@ LABEL_55:
       if (v62)
       {
         *buf = 138412546;
-        v105 = v37;
+        v105 = uniqueID;
         v106 = 2112;
-        v107 = v36;
-        _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEFAULT, " => Enabled, account uniqueID: %@, service name: %@", buf, 0x16u);
+        v107 = service;
+        _os_log_impl(&_mh_execute_header, accountController5, OS_LOG_TYPE_DEFAULT, " => Enabled, account uniqueID: %@, service name: %@", buf, 0x16u);
       }
 
-      v61 = [(IDSAccountRepair *)v25 accountController];
+      accountController5 = [(IDSAccountRepair *)v25 accountController];
       v63 = v35;
       if ([v63 accountType] != 2)
       {
-        v64 = [v63 registrationStatus];
-        v65 = v64;
-        if (v64 > 1)
+        registrationStatus = [v63 registrationStatus];
+        v65 = registrationStatus;
+        if (registrationStatus > 1)
         {
-          if (v64 == 2)
+          if (registrationStatus == 2)
           {
             goto LABEL_83;
           }
 
-          if (v64 != 3)
+          if (registrationStatus != 3)
           {
-            if (v64 == 5)
+            if (registrationStatus == 5)
             {
 LABEL_83:
-              v69 = +[IMRGLog registration];
-              if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
+              uniqueID2 = +[IMRGLog registration];
+              if (os_log_type_enabled(uniqueID2, OS_LOG_TYPE_DEFAULT))
               {
                 v73 = _IDSStringFromIDSRegistrationStatus();
                 *buf = 138412290;
                 v105 = v73;
-                _os_log_impl(&_mh_execute_header, v69, OS_LOG_TYPE_DEFAULT, " => %@", buf, 0xCu);
+                _os_log_impl(&_mh_execute_header, uniqueID2, OS_LOG_TYPE_DEFAULT, " => %@", buf, 0xCu);
               }
 
               goto LABEL_123;
             }
 
 LABEL_90:
-            v69 = +[IMRGLog registration];
-            if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
+            uniqueID2 = +[IMRGLog registration];
+            if (os_log_type_enabled(uniqueID2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109120;
               LODWORD(v105) = v65;
-              v70 = v69;
+              v70 = uniqueID2;
               v71 = " => *** Other status: %d";
               v72 = 8;
 LABEL_92:
@@ -1411,11 +1411,11 @@ LABEL_123:
             goto LABEL_124;
           }
 
-          v67 = +[IMRGLog registration];
-          if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
+          vettedAliases = +[IMRGLog registration];
+          if (os_log_type_enabled(vettedAliases, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
-            v80 = v67;
+            v80 = vettedAliases;
             v81 = " => Authenticated, kicking a register";
 LABEL_98:
             _os_log_impl(&_mh_execute_header, v80, OS_LOG_TYPE_DEFAULT, v81, buf, 2u);
@@ -1424,14 +1424,14 @@ LABEL_98:
 
         else
         {
-          if (v64 == -1)
+          if (registrationStatus == -1)
           {
             v74 = +[IMRGLog registration];
             if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
             {
-              v75 = [v63 registrationError];
+              registrationError3 = [v63 registrationError];
               *buf = 67109120;
-              LODWORD(v105) = v75;
+              LODWORD(v105) = registrationError3;
               _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, " => Failed account, let's see if we should kick it (Registration Error: %d)", buf, 8u);
             }
 
@@ -1475,8 +1475,8 @@ LABEL_98:
                   _os_log_impl(&_mh_execute_header, v84, OS_LOG_TYPE_DEFAULT, " => Garbage SMS signature, disabling", buf, 2u);
                 }
 
-                v69 = [v63 uniqueID];
-                [v61 disablePrimaryAccountWithUniqueID:v69];
+                uniqueID2 = [v63 uniqueID];
+                [accountController5 disablePrimaryAccountWithUniqueID:uniqueID2];
                 goto LABEL_123;
               case 7uLL:
               case 8uLL:
@@ -1484,36 +1484,36 @@ LABEL_98:
               case 0x2CuLL:
               case 0x2DuLL:
               case 0x2EuLL:
-                v67 = +[IMRGLog registration];
-                if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
+                vettedAliases = +[IMRGLog registration];
+                if (!os_log_type_enabled(vettedAliases, OS_LOG_TYPE_DEFAULT))
                 {
                   goto LABEL_99;
                 }
 
                 *buf = 0;
-                v80 = v67;
+                v80 = vettedAliases;
                 v81 = " => This appeared to be a server or connectivity error, re-registering";
                 goto LABEL_98;
               case 0xAuLL:
-                v67 = +[IMRGLog registration];
-                if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
+                vettedAliases = +[IMRGLog registration];
+                if (!os_log_type_enabled(vettedAliases, OS_LOG_TYPE_DEFAULT))
                 {
                   goto LABEL_99;
                 }
 
                 *buf = 0;
-                v80 = v67;
+                v80 = vettedAliases;
                 v81 = " => We need a new signature (server authentication failed), re-registering";
                 goto LABEL_98;
               case 0xBuLL:
-                v67 = +[IMRGLog registration];
-                if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
+                vettedAliases = +[IMRGLog registration];
+                if (!os_log_type_enabled(vettedAliases, OS_LOG_TYPE_DEFAULT))
                 {
                   goto LABEL_99;
                 }
 
                 *buf = 0;
-                v80 = v67;
+                v80 = vettedAliases;
                 v81 = " => We were missing auth credentials, re-registering";
                 goto LABEL_98;
               case 0xCuLL:
@@ -1542,14 +1542,14 @@ LABEL_98:
 
                 goto LABEL_106;
               case 0x1EuLL:
-                v67 = +[IMRGLog registration];
-                if (!os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
+                vettedAliases = +[IMRGLog registration];
+                if (!os_log_type_enabled(vettedAliases, OS_LOG_TYPE_DEFAULT))
                 {
                   goto LABEL_99;
                 }
 
                 *buf = 0;
-                v80 = v67;
+                v80 = vettedAliases;
                 v81 = " => This appeared to be a rate limit error, re-registering";
                 goto LABEL_98;
               case 0x2FuLL:
@@ -1562,9 +1562,9 @@ LABEL_98:
                 }
 
 LABEL_106:
-                v83 = [v63 registrationError];
+                registrationError4 = [v63 registrationError];
                 *buf = 67109120;
-                LODWORD(v105) = v83;
+                LODWORD(v105) = registrationError4;
                 v77 = v76;
                 v78 = " => Not retrying for error: %d, disabling account";
                 break;
@@ -1575,9 +1575,9 @@ LABEL_106:
                   goto LABEL_122;
                 }
 
-                v85 = [v63 registrationError];
+                registrationError5 = [v63 registrationError];
                 *buf = 67109120;
-                LODWORD(v105) = v85;
+                LODWORD(v105) = registrationError5;
                 v77 = v76;
                 v78 = " => Default error: %d   disabling";
                 break;
@@ -1588,12 +1588,12 @@ LABEL_121:
             _os_log_impl(&_mh_execute_header, v77, OS_LOG_TYPE_DEFAULT, v78, buf, v79);
 LABEL_122:
 
-            v69 = [v63 uniqueID];
-            [v61 disableAccountWithUniqueID:v69];
+            uniqueID2 = [v63 uniqueID];
+            [accountController5 disableAccountWithUniqueID:uniqueID2];
             goto LABEL_123;
           }
 
-          if (!v64)
+          if (!registrationStatus)
           {
             v76 = +[IMRGLog registration];
             if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
@@ -1609,7 +1609,7 @@ LABEL_95:
             goto LABEL_122;
           }
 
-          if (v64 != 1)
+          if (registrationStatus != 1)
           {
             goto LABEL_90;
           }
@@ -1621,18 +1621,18 @@ LABEL_95:
             _os_log_impl(&_mh_execute_header, v66, OS_LOG_TYPE_DEFAULT, " => Unregistered account, let's see if we can register it", buf, 2u);
           }
 
-          v67 = [v63 vettedAliases];
-          if (![v67 count])
+          vettedAliases = [v63 vettedAliases];
+          if (![vettedAliases count])
           {
-            v68 = [v63 hasEverRegistered];
+            hasEverRegistered = [v63 hasEverRegistered];
 
-            if ((v68 & 1) == 0)
+            if ((hasEverRegistered & 1) == 0)
             {
-              v69 = +[IMRGLog registration];
-              if (os_log_type_enabled(v69, OS_LOG_TYPE_DEFAULT))
+              uniqueID2 = +[IMRGLog registration];
+              if (os_log_type_enabled(uniqueID2, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 0;
-                v70 = v69;
+                v70 = uniqueID2;
                 v71 = " => account has no vetted aliases, and it's never registered, let's ignore it";
                 v72 = 2;
                 goto LABEL_92;
@@ -1648,8 +1648,8 @@ LABEL_95:
 LABEL_99:
 
 LABEL_100:
-        v82 = [v63 uniqueID];
-        [v61 enableAccountWithUniqueID:v82];
+        uniqueID3 = [v63 uniqueID];
+        [accountController5 enableAccountWithUniqueID:uniqueID3];
 
         [v63 registerAccount];
       }
@@ -1687,24 +1687,24 @@ LABEL_4:
 LABEL_131:
 }
 
-- (void)repairService:(id)a3 withPrimaryUserName:(id)a4
+- (void)repairService:(id)service withPrimaryUserName:(id)name
 {
-  v6 = a3;
-  v59 = a4;
-  if ([v6 adHocServiceType] != 2 && objc_msgSend(v6, "adHocServiceType") != 5)
+  serviceCopy = service;
+  nameCopy = name;
+  if ([serviceCopy adHocServiceType] != 2 && objc_msgSend(serviceCopy, "adHocServiceType") != 5)
   {
-    if (![v6 disabledOnTinkerWatch] || (+[IDSPairingManager sharedInstance](IDSPairingManager, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isCurrentDeviceTinkerConfiguredWatch"), v7, (v8 & 1) == 0))
+    if (![serviceCopy disabledOnTinkerWatch] || (+[IDSPairingManager sharedInstance](IDSPairingManager, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isCurrentDeviceTinkerConfiguredWatch"), v7, (v8 & 1) == 0))
     {
-      if (![v6 enabledOnlyWhenPaired] || (-[IDSAccountRepair accountController](self, "accountController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isTraditionalLocalSetupEnabled"), v9, v10))
+      if (![serviceCopy enabledOnlyWhenPaired] || (-[IDSAccountRepair accountController](self, "accountController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isTraditionalLocalSetupEnabled"), v9, v10))
       {
         context = objc_autoreleasePoolPush();
         v67 = 0u;
         v68 = 0u;
         v69 = 0u;
         v70 = 0u;
-        v11 = [(IDSAccountRepair *)self accountController];
-        v56 = v6;
-        v12 = [v11 accountsOnService:v6 withType:1];
+        accountController = [(IDSAccountRepair *)self accountController];
+        v56 = serviceCopy;
+        v12 = [accountController accountsOnService:serviceCopy withType:1];
 
         v13 = [v12 countByEnumeratingWithState:&v67 objects:v75 count:16];
         if (v13)
@@ -1731,17 +1731,17 @@ LABEL_131:
                   _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "   Checking account for deletion: %@", buf, 0xCu);
                 }
 
-                v19 = [v17 loginID];
+                loginID = [v17 loginID];
                 v20 = IMAreEmailsLogicallyTheSame();
 
-                v21 = +[IMRGLog registration];
-                v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
+                accountController2 = +[IMRGLog registration];
+                v22 = os_log_type_enabled(accountController2, OS_LOG_TYPE_DEFAULT);
                 if (v20)
                 {
                   if (v22)
                   {
                     *buf = 0;
-                    _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "   Account is primary, it should not be deleted", buf, 2u);
+                    _os_log_impl(&_mh_execute_header, accountController2, OS_LOG_TYPE_DEFAULT, "   Account is primary, it should not be deleted", buf, 2u);
                   }
                 }
 
@@ -1749,16 +1749,16 @@ LABEL_131:
                 {
                   if (v22)
                   {
-                    v23 = [v17 loginID];
+                    loginID2 = [v17 loginID];
                     *buf = 138412546;
-                    v72 = v59;
+                    v72 = nameCopy;
                     v73 = 2112;
-                    v74 = v23;
-                    _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "  => Account does not appear to be primary, disabling it, and deleting it  (%@ <> %@)", buf, 0x16u);
+                    v74 = loginID2;
+                    _os_log_impl(&_mh_execute_header, accountController2, OS_LOG_TYPE_DEFAULT, "  => Account does not appear to be primary, disabling it, and deleting it  (%@ <> %@)", buf, 0x16u);
                   }
 
-                  v21 = [(IDSAccountRepair *)self accountController];
-                  [v21 removeAccount:v17];
+                  accountController2 = [(IDSAccountRepair *)self accountController];
+                  [accountController2 removeAccount:v17];
                 }
               }
             }
@@ -1770,10 +1770,10 @@ LABEL_131:
         }
 
         objc_autoreleasePoolPop(context);
-        v6 = v56;
+        serviceCopy = v56;
         v24 = [(IDSAccountRepair *)self _hasActiveAppleIDBasedAccountOnService:v56];
-        v25 = [(IDSAccountRepair *)self accountController];
-        v26 = [v25 accountsOnService:v56];
+        accountController3 = [(IDSAccountRepair *)self accountController];
+        v26 = [accountController3 accountsOnService:v56];
         v27 = [v26 __imArrayByFilteringWithBlock:&stru_100BDB428];
 
         v29 = sub_100407BDC(v28, 1, v27);
@@ -1784,9 +1784,9 @@ LABEL_131:
         v63[2] = sub_100407CB4;
         v63[3] = &unk_100BDB450;
         v66 = v24;
-        v58 = v59;
+        v58 = nameCopy;
         v64 = v58;
-        v65 = self;
+        selfCopy = self;
         [v29 __imForEach:v63];
         v62[0] = _NSConcreteStackBlock;
         v62[1] = 3221225472;
@@ -1800,8 +1800,8 @@ LABEL_131:
         v61[3] = &unk_100BDB478;
         v61[4] = self;
         [v31 __imForEach:v61];
-        v32 = [(IDSAccountRepair *)self accountController];
-        v33 = [v32 accountsOnService:v56 withType:1];
+        accountController4 = [(IDSAccountRepair *)self accountController];
+        v33 = [accountController4 accountsOnService:v56 withType:1];
         v34 = [v33 count];
 
         if (!v34)
@@ -1818,11 +1818,11 @@ LABEL_131:
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, " => We have no active apple ID based accounts for service: %@", buf, 0xCu);
           }
 
-          v37 = [(IDSAccountRepair *)self _activeAppleIDAccount];
-          if (v37)
+          _activeAppleIDAccount = [(IDSAccountRepair *)self _activeAppleIDAccount];
+          if (_activeAppleIDAccount)
           {
             v38 = v58;
-            v39 = [v37 loginID];
+            loginID3 = [_activeAppleIDAccount loginID];
             v40 = IMAreEmailsLogicallyTheSame();
 
             if (v40)
@@ -1830,47 +1830,47 @@ LABEL_131:
               v41 = +[IMRGLog registration];
               if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
               {
-                v42 = [v37 loginID];
+                loginID4 = [_activeAppleIDAccount loginID];
                 *buf = 138412546;
                 v72 = v56;
                 v73 = 2112;
-                v74 = v42;
+                v74 = loginID4;
                 _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Creating new account based on existing account with service %@ login ID %@", buf, 0x16u);
               }
 
               v43 = v35;
 
-              v44 = [v37 loginID];
+              loginID5 = [_activeAppleIDAccount loginID];
 
-              v45 = [v37 accountInfo];
-              v38 = v44;
+              accountInfo = [_activeAppleIDAccount accountInfo];
+              v38 = loginID5;
             }
 
             else
             {
               v43 = v35;
-              v45 = 0;
+              accountInfo = 0;
             }
 
             v47 = [IDSDAccount alloc];
             v48 = +[NSString stringGUID];
-            v46 = [(IDSDAccount *)v47 initWithLoginID:v38 service:v56 uniqueID:v48 accountType:1 accountConfig:v45];
+            v46 = [(IDSDAccount *)v47 initWithLoginID:v38 service:v56 uniqueID:v48 accountType:1 accountConfig:accountInfo];
 
-            v49 = [(IDSAccountRepair *)self accountController];
-            [v49 addPrimaryAccount:v46];
+            accountController5 = [(IDSAccountRepair *)self accountController];
+            [accountController5 addPrimaryAccount:v46];
 
-            v50 = [(IDSAccountRepair *)self accountController];
-            v51 = [v46 uniqueID];
-            [v50 enablePrimaryAccountWithUniqueID:v51];
+            accountController6 = [(IDSAccountRepair *)self accountController];
+            uniqueID = [v46 uniqueID];
+            [accountController6 enablePrimaryAccountWithUniqueID:uniqueID];
 
-            v6 = v56;
-            v52 = [v46 linkedAccounts];
+            serviceCopy = v56;
+            linkedAccounts = [v46 linkedAccounts];
             v60[0] = _NSConcreteStackBlock;
             v60[1] = 3221225472;
             v60[2] = sub_100408378;
             v60[3] = &unk_100BDB090;
             v60[4] = self;
-            [v52 __imForEach:v60];
+            [linkedAccounts __imForEach:v60];
 
             [v46 setupAccountWithCompletionBlock:0];
             v35 = v43;
@@ -1902,10 +1902,10 @@ LABEL_131:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(IDSAccountRepair *)self accountController];
-  v3 = [v2 accounts];
+  accountController = [(IDSAccountRepair *)self accountController];
+  accounts = [accountController accounts];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [accounts countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -1915,7 +1915,7 @@ LABEL_131:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -1926,7 +1926,7 @@ LABEL_131:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [accounts countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -1941,15 +1941,15 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)_hasActiveAppleIDBasedAccountOnService:(id)a3
+- (BOOL)_hasActiveAppleIDBasedAccountOnService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(IDSAccountRepair *)self accountController];
-  v6 = [v5 accountsOnService:v4];
+  accountController = [(IDSAccountRepair *)self accountController];
+  v6 = [accountController accountsOnService:serviceCopy];
 
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
@@ -1993,11 +1993,11 @@ LABEL_14:
   if (v3)
   {
     v4 = +[IDSDServiceController sharedInstance];
-    v5 = [v4 iTunesService];
+    iTunesService = [v4 iTunesService];
 
-    v6 = [(IDSAccountRepair *)self accountController];
-    v7 = [v3 username];
-    v8 = [v6 existingAccountOnService:v5 withType:1 loginID:v7];
+    accountController = [(IDSAccountRepair *)self accountController];
+    username = [v3 username];
+    v8 = [accountController existingAccountOnService:iTunesService withType:1 loginID:username];
 
     if (v8)
     {
@@ -2006,7 +2006,7 @@ LABEL_14:
 
     else
     {
-      v9 = v5 == 0;
+      v9 = iTunesService == 0;
     }
 
     if (v9)
@@ -2016,19 +2016,19 @@ LABEL_14:
 
     else
     {
-      v10 = [v3 username];
-      v11 = [v10 length];
+      username2 = [v3 username];
+      v11 = [username2 length];
 
       if (v11)
       {
-        v12 = [v3 DSID];
-        v13 = [v12 length];
+        dSID = [v3 DSID];
+        v13 = [dSID length];
 
         if (v13)
         {
           v26 = kIDSServiceDefaultsAuthorizationIDKey;
-          v14 = [v3 DSID];
-          v27 = v14;
+          dSID2 = [v3 DSID];
+          v27 = dSID2;
           v15 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
         }
 
@@ -2038,18 +2038,18 @@ LABEL_14:
         }
 
         v16 = [IDSDAccount alloc];
-        v17 = [v3 username];
+        username3 = [v3 username];
         v18 = +[NSString stringGUID];
-        v11 = [(IDSDAccount *)v16 initWithLoginID:v17 service:v5 uniqueID:v18 accountType:1 accountConfig:v15];
+        v11 = [(IDSDAccount *)v16 initWithLoginID:username3 service:iTunesService uniqueID:v18 accountType:1 accountConfig:v15];
 
         v19 = +[IMRGLog iCloud];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [(IDSDAccount *)v11 smallDescription];
+          smallDescription = [(IDSDAccount *)v11 smallDescription];
           v22 = 138412546;
-          v23 = v5;
+          v23 = iTunesService;
           v24 = 2112;
-          v25 = v20;
+          v25 = smallDescription;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Created new iTunes account based on system account { service: %@, account: %@ }", &v22, 0x16u);
         }
       }
@@ -2067,10 +2067,10 @@ LABEL_14:
 - (void)_createAndEnableExistingSystemAccounts
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(IDSAccountRepair *)self _createiTunesAccountFromSystemIfNeeded];
-  if (v4)
+  _createiTunesAccountFromSystemIfNeeded = [(IDSAccountRepair *)self _createiTunesAccountFromSystemIfNeeded];
+  if (_createiTunesAccountFromSystemIfNeeded)
   {
-    [v3 addObject:v4];
+    [v3 addObject:_createiTunesAccountFromSystemIfNeeded];
   }
 
   v26 = 0u;
@@ -2094,8 +2094,8 @@ LABEL_14:
         }
 
         v10 = *(*(&v24 + 1) + 8 * v9);
-        v11 = [(IDSAccountRepair *)self accountController];
-        [v11 addAccount:v10];
+        accountController = [(IDSAccountRepair *)self accountController];
+        [accountController addAccount:v10];
 
         v9 = v9 + 1;
       }
@@ -2128,9 +2128,9 @@ LABEL_14:
         }
 
         v17 = *(*(&v20 + 1) + 8 * v16);
-        v18 = [(IDSAccountRepair *)self accountController];
-        v19 = [v17 uniqueID];
-        [v18 enablePrimaryAccountWithUniqueID:v19];
+        accountController2 = [(IDSAccountRepair *)self accountController];
+        uniqueID = [v17 uniqueID];
+        [accountController2 enablePrimaryAccountWithUniqueID:uniqueID];
 
         v16 = v16 + 1;
       }
@@ -2145,10 +2145,10 @@ LABEL_14:
 
 - (void)_repairiTunesBasedAccounts
 {
-  v3 = [(IDSAccountRepair *)self accountController];
-  v4 = [v3 isLoading];
+  accountController = [(IDSAccountRepair *)self accountController];
+  isLoading = [accountController isLoading];
 
-  if (v4)
+  if (isLoading)
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2168,10 +2168,10 @@ LABEL_14:
     v6 = +[IMRGLog registration];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IDSAccountRepair *)self accountController];
-      v8 = [v7 hasActiveSMSAccount];
+      accountController2 = [(IDSAccountRepair *)self accountController];
+      hasActiveSMSAccount = [accountController2 hasActiveSMSAccount];
       v9 = @"NO";
-      if (v8)
+      if (hasActiveSMSAccount)
       {
         v9 = @"YES";
       }
@@ -2185,19 +2185,19 @@ LABEL_14:
     v5 = v10;
     if (v10)
     {
-      v11 = [v10 username];
+      username = [v10 username];
       v12 = +[IMRGLog registration];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v18 = v11;
+        v18 = username;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Repairing iTunes based accounts if needed (Primary account: %@)", buf, 0xCu);
       }
 
       v13 = +[IDSDServiceController sharedInstance];
-      v14 = [v13 iTunesService];
+      iTunesService = [v13 iTunesService];
 
-      [(IDSAccountRepair *)self repairService:v14 withPrimaryUserName:v11];
+      [(IDSAccountRepair *)self repairService:iTunesService withPrimaryUserName:username];
       v15 = +[IMRGLog registration];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -2222,10 +2222,10 @@ LABEL_14:
 
 - (void)repairiCloudBasedAccounts
 {
-  v3 = [(IDSAccountRepair *)self accountController];
-  v4 = [v3 isLoading];
+  accountController = [(IDSAccountRepair *)self accountController];
+  isLoading = [accountController isLoading];
 
-  if (v4)
+  if (isLoading)
   {
     v5 = +[IMRGLog registration];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2245,10 +2245,10 @@ LABEL_14:
     v6 = +[IMRGLog registration];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(IDSAccountRepair *)self accountController];
-      v8 = [v7 hasActiveSMSAccount];
+      accountController2 = [(IDSAccountRepair *)self accountController];
+      hasActiveSMSAccount = [accountController2 hasActiveSMSAccount];
       v9 = @"NO";
-      if (v8)
+      if (hasActiveSMSAccount)
       {
         v9 = @"YES";
       }
@@ -2262,12 +2262,12 @@ LABEL_14:
     v5 = v10;
     if (v10)
     {
-      v11 = [v10 username];
+      username = [v10 username];
       v12 = +[IMRGLog registration];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v29 = v11;
+        v29 = username;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Repairing iCloud based accounts if needed (Primary account: %@)", buf, 0xCu);
       }
 
@@ -2276,9 +2276,9 @@ LABEL_14:
       v23 = 0u;
       v24 = 0u;
       v13 = +[IDSDServiceController sharedInstance];
-      v14 = [v13 allServices];
+      allServices = [v13 allServices];
 
-      v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v15 = [allServices countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v15)
       {
         v16 = v15;
@@ -2289,17 +2289,17 @@ LABEL_14:
           {
             if (*v24 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(allServices);
             }
 
             v19 = *(*(&v23 + 1) + 8 * i);
             if ([v19 iCloudBasedService])
             {
-              [(IDSAccountRepair *)self repairService:v19 withPrimaryUserName:v11];
+              [(IDSAccountRepair *)self repairService:v19 withPrimaryUserName:username];
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v16 = [allServices countByEnumeratingWithState:&v23 objects:v27 count:16];
         }
 
         while (v16);
@@ -2323,15 +2323,15 @@ LABEL_14:
       }
 
       im_dispatch_after_primary_queue();
-      v22 = [(IDSAccountRepair *)self accountController];
-      [v22 updateDevicePropertiesWithDevices:0];
+      accountController3 = [(IDSAccountRepair *)self accountController];
+      [accountController3 updateDevicePropertiesWithDevices:0];
     }
   }
 }
 
-- (void)_repairKTAccount:(id)a3
+- (void)_repairKTAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v5 = +[IDSFoundationLog KeyTransparency];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2345,8 +2345,8 @@ LABEL_14:
   v8[2] = sub_100409508;
   v8[3] = &unk_100BDB4A0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = accountCopy;
+  v7 = accountCopy;
   [(IDSKeyTransparencyVerifier *)keyTransparencyVerifier fetchKTCDPStatus:v8];
 }
 
@@ -2375,11 +2375,11 @@ LABEL_14:
   }
 }
 
-+ (double)_phoneNumberRepairIntervalForCount:(int64_t)a3
++ (double)_phoneNumberRepairIntervalForCount:(int64_t)count
 {
   v4 = sub_10040973C();
   v5 = sub_1004097C8();
-  v6 = exp2(a3);
+  v6 = exp2(count);
   if (v4 * v6 >= v5)
   {
     v7 = v5;
@@ -2398,7 +2398,7 @@ LABEL_14:
     v12 = 2048;
     v13 = v6;
     v14 = 2048;
-    v15 = a3;
+    countCopy = count;
     v16 = 2048;
     v17 = v5;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Current repair interval: %f multiplier: %ld index: %ld max: %f", &v10, 0x2Au);
@@ -2425,16 +2425,16 @@ LABEL_14:
 
 - (id)_lastRepairIntervalFromPrefs
 {
-  v2 = [(IDSAccountRepair *)self userDefaults];
-  v3 = [v2 appValueForKey:@"LastRepairInterval"];
+  userDefaults = [(IDSAccountRepair *)self userDefaults];
+  v3 = [userDefaults appValueForKey:@"LastRepairInterval"];
 
   return v3;
 }
 
 - (id)_totalRepairCountFromPrefs
 {
-  v2 = [(IDSAccountRepair *)self userDefaults];
-  v3 = [v2 appValueForKey:@"TotalRepairCount"];
+  userDefaults = [(IDSAccountRepair *)self userDefaults];
+  v3 = [userDefaults appValueForKey:@"TotalRepairCount"];
 
   return v3;
 }
@@ -2442,9 +2442,9 @@ LABEL_14:
 - (void)setupPhoneNumberRepairTimer
 {
   v3 = +[IMSystemMonitor sharedInstance];
-  v4 = [v3 isUnderFirstDataProtectionLock];
+  isUnderFirstDataProtectionLock = [v3 isUnderFirstDataProtectionLock];
 
-  if ((v4 & 1) == 0)
+  if ((isUnderFirstDataProtectionLock & 1) == 0)
   {
     if ([(IDSAccountRepair *)self _shouldNotSetupPhoneNumberRepairTimer])
     {
@@ -2490,11 +2490,11 @@ LABEL_35:
 
     +[NSDate timeIntervalSinceReferenceDate];
     v11 = v10;
-    v12 = [(IDSAccountRepair *)self _lastRepairIntervalFromPrefs];
-    v5 = v12;
-    if (v12)
+    _lastRepairIntervalFromPrefs = [(IDSAccountRepair *)self _lastRepairIntervalFromPrefs];
+    v5 = _lastRepairIntervalFromPrefs;
+    if (_lastRepairIntervalFromPrefs)
     {
-      [v12 doubleValue];
+      [_lastRepairIntervalFromPrefs doubleValue];
       v14 = v13;
       v15 = +[IMRGLog phoneRepair];
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2506,11 +2506,11 @@ LABEL_35:
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Loaded last repair date %@", buf, 0xCu);
       }
 
-      v17 = [(IDSAccountRepair *)self _totalRepairCountFromPrefs];
-      v18 = v17;
-      if (v17)
+      _totalRepairCountFromPrefs = [(IDSAccountRepair *)self _totalRepairCountFromPrefs];
+      v18 = _totalRepairCountFromPrefs;
+      if (_totalRepairCountFromPrefs)
       {
-        v19 = [v17 integerValue] - 1;
+        v19 = [_totalRepairCountFromPrefs integerValue] - 1;
       }
 
       else
@@ -2563,15 +2563,15 @@ LABEL_32:
       goto LABEL_35;
     }
 
-    v20 = [(IDSAccountRepair *)self userDefaults];
-    v18 = [v20 appValueForKey:@"InitialRepairInterval"];
+    userDefaults = [(IDSAccountRepair *)self userDefaults];
+    v18 = [userDefaults appValueForKey:@"InitialRepairInterval"];
 
     if (v18)
     {
       [v18 doubleValue];
       v22 = v21;
-      v23 = +[IMRGLog phoneRepair];
-      if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      userDefaults2 = +[IMRGLog phoneRepair];
+      if (!os_log_type_enabled(userDefaults2, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_31:
 
@@ -2581,7 +2581,7 @@ LABEL_31:
       v24 = [NSDate dateWithTimeIntervalSinceReferenceDate:v22];
       *buf = 138412290;
       v42 = v24;
-      _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Loaded initial repair date %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, userDefaults2, OS_LOG_TYPE_DEFAULT, "Loaded initial repair date %@", buf, 0xCu);
     }
 
     else
@@ -2607,9 +2607,9 @@ LABEL_31:
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Generated inital repair date %@", buf, 0xCu);
       }
 
-      v23 = [(IDSAccountRepair *)self userDefaults];
+      userDefaults2 = [(IDSAccountRepair *)self userDefaults];
       v24 = [NSNumber numberWithDouble:v22];
-      [v23 setAppValue:v24 forKey:@"InitialRepairInterval"];
+      [userDefaults2 setAppValue:v24 forKey:@"InitialRepairInterval"];
     }
 
     goto LABEL_31;
@@ -2648,11 +2648,11 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Resetting phone number repair counter", v5, 2u);
   }
 
-  v4 = [(IDSAccountRepair *)self userDefaults];
-  [v4 removeAppValueForKey:@"TotalRepairCount"];
+  userDefaults = [(IDSAccountRepair *)self userDefaults];
+  [userDefaults removeAppValueForKey:@"TotalRepairCount"];
 }
 
-- (void)_phoneNumberRepairTimerHit:(id)a3
+- (void)_phoneNumberRepairTimerHit:(id)hit
 {
   v4 = +[IMRGLog phoneRepair];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2669,29 +2669,29 @@ LABEL_31:
 
   +[NSDate timeIntervalSinceReferenceDate];
   v5 = [NSNumber numberWithDouble:?];
-  v6 = [(IDSAccountRepair *)self _totalRepairCountFromPrefs];
-  v7 = v6;
-  if (v6)
+  _totalRepairCountFromPrefs = [(IDSAccountRepair *)self _totalRepairCountFromPrefs];
+  v7 = _totalRepairCountFromPrefs;
+  if (_totalRepairCountFromPrefs)
   {
-    v8 = [v6 integerValue];
+    integerValue = [_totalRepairCountFromPrefs integerValue];
   }
 
   else
   {
-    v8 = 0;
+    integerValue = 0;
   }
 
-  v9 = [NSNumber numberWithInteger:v8 + 1];
-  v10 = [(IDSAccountRepair *)self userDefaults];
-  [v10 removeAppValueForKey:@"InitialRepairInterval"];
+  v9 = [NSNumber numberWithInteger:integerValue + 1];
+  userDefaults = [(IDSAccountRepair *)self userDefaults];
+  [userDefaults removeAppValueForKey:@"InitialRepairInterval"];
 
-  v11 = [(IDSAccountRepair *)self userDefaults];
-  [v11 setAppValue:v5 forKey:@"LastRepairInterval"];
+  userDefaults2 = [(IDSAccountRepair *)self userDefaults];
+  [userDefaults2 setAppValue:v5 forKey:@"LastRepairInterval"];
 
-  v12 = [(IDSAccountRepair *)self userDefaults];
-  [v12 setAppValue:v9 forKey:@"TotalRepairCount"];
+  userDefaults3 = [(IDSAccountRepair *)self userDefaults];
+  [userDefaults3 setAppValue:v9 forKey:@"TotalRepairCount"];
 
-  [IDSAccountRepair _phoneNumberRepairIntervalForCount:v8];
+  [IDSAccountRepair _phoneNumberRepairIntervalForCount:integerValue];
   v14 = v13;
   v15 = +[IMRGLog phoneRepair];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -2723,8 +2723,8 @@ LABEL_31:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Repairing phone number accounts", buf, 2u);
   }
 
-  v4 = +[FTDeviceSupport sharedInstance];
-  if (![v4 registrationSupported])
+  allServices = +[FTDeviceSupport sharedInstance];
+  if (![allServices registrationSupported])
   {
     goto LABEL_82;
   }
@@ -2744,17 +2744,17 @@ LABEL_31:
     v69 = 0u;
     v70 = 0u;
     v6 = +[IDSDServiceController sharedInstance];
-    v4 = [v6 allServices];
+    allServices = [v6 allServices];
 
-    v7 = [v4 countByEnumeratingWithState:&v69 objects:v90 count:16];
+    v7 = [allServices countByEnumeratingWithState:&v69 objects:v90 count:16];
     if (v7)
     {
       v8 = v7;
       v59 = 0;
       v9 = *v70;
-      v60 = self;
+      selfCopy = self;
       v55 = *v70;
-      v56 = v4;
+      v56 = allServices;
       do
       {
         v10 = 0;
@@ -2763,7 +2763,7 @@ LABEL_31:
         {
           if (*v70 != v9)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allServices);
           }
 
           v11 = *(*(&v69 + 1) + 8 * v10);
@@ -2774,8 +2774,8 @@ LABEL_31:
               if (![v11 enabledOnlyWhenPaired] || (-[IDSAccountRepair accountController](self, "accountController"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isTraditionalLocalSetupEnabled"), v14, v15))
               {
                 v58 = v10;
-                v16 = [(IDSAccountRepair *)self accountController];
-                v17 = [v16 accountsOnService:v11];
+                accountController = [(IDSAccountRepair *)self accountController];
+                v17 = [accountController accountsOnService:v11];
 
                 v67 = 0u;
                 v68 = 0u;
@@ -2800,38 +2800,38 @@ LABEL_31:
                       v23 = *(*(&v65 + 1) + 8 * i);
                       if (![v23 accountType] && (objc_msgSend(v23, "isAdHocAccount") & 1) == 0)
                       {
-                        v63 = [v23 isRegistered];
-                        v24 = [(IDSAccountRepair *)self accountController];
-                        v25 = [v23 uniqueID];
-                        v62 = [v24 isEnabledAccount:v25];
+                        isRegistered = [v23 isRegistered];
+                        accountController2 = [(IDSAccountRepair *)self accountController];
+                        uniqueID = [v23 uniqueID];
+                        v62 = [accountController2 isEnabledAccount:uniqueID];
 
-                        v26 = [v23 service];
-                        v27 = [v26 shouldAutoRegisterAllHandles];
+                        service = [v23 service];
+                        shouldAutoRegisterAllHandles = [service shouldAutoRegisterAllHandles];
 
-                        v64 = [v23 isUserDisabled];
-                        LODWORD(v26) = [v23 registrationStatus];
-                        v28 = [v23 registrationError];
-                        v29 = v28;
+                        isUserDisabled = [v23 isUserDisabled];
+                        LODWORD(service) = [v23 registrationStatus];
+                        registrationError = [v23 registrationError];
+                        v29 = registrationError;
                         LOBYTE(v30) = 0;
-                        if (v26 == -1 && v28 <= 0x2E)
+                        if (service == -1 && registrationError <= 0x2E)
                         {
-                          v30 = 0x700040000FE0uLL >> v28;
+                          v30 = 0x700040000FE0uLL >> registrationError;
                         }
 
-                        v31 = [(IDSAccountRepair *)self accountController];
-                        v32 = [v23 service];
-                        v33 = [v31 appleIDAccountOnService:v32];
+                        accountController3 = [(IDSAccountRepair *)self accountController];
+                        service2 = [v23 service];
+                        v33 = [accountController3 appleIDAccountOnService:service2];
 
-                        v34 = [v33 isRegistered];
-                        v35 = v34;
-                        if (((v30 & 1) != 0 || ((v27 | v34) & 1) != 0 || v64 != 1) && (v63 & v62 & 1) == 0 && v29 != 38)
+                        isRegistered2 = [v33 isRegistered];
+                        v35 = isRegistered2;
+                        if (((v30 & 1) != 0 || ((shouldAutoRegisterAllHandles | isRegistered2) & 1) != 0 || isUserDisabled != 1) && (isRegistered & v62 & 1) == 0 && v29 != 38)
                         {
                           v45 = +[IMRGLog phoneRepair];
                           if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
                           {
-                            v46 = [v23 smallDescription];
+                            smallDescription = [v23 smallDescription];
                             *buf = 138414082;
-                            if (v27)
+                            if (shouldAutoRegisterAllHandles)
                             {
                               v47 = @"YES";
                             }
@@ -2841,8 +2841,8 @@ LABEL_31:
                               v47 = @"NO";
                             }
 
-                            v74 = v46;
-                            v48 = v46;
+                            v74 = smallDescription;
+                            v48 = smallDescription;
                             if (v35)
                             {
                               v49 = @"YES";
@@ -2854,7 +2854,7 @@ LABEL_31:
                             }
 
                             v75 = 2112;
-                            if (v64)
+                            if (isUserDisabled)
                             {
                               v50 = @"YES";
                             }
@@ -2876,7 +2876,7 @@ LABEL_31:
                             }
 
                             v77 = 2112;
-                            if (v63)
+                            if (isRegistered)
                             {
                               v52 = @"YES";
                             }
@@ -2910,7 +2910,7 @@ LABEL_31:
                             _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "REPAIR %@ (shouldAutoRegister: %@) (companionAccountRegistered: %@) (isUserDisabled: %@) (registrationError: %d  -  shouldRepairFailedAccount: %@) (registered: %@) (enabled: %@)", buf, 0x4Eu);
                           }
 
-                          self = v60;
+                          self = selfCopy;
                           im_dispatch_after_primary_queue();
                           v59 = 1;
                         }
@@ -2920,10 +2920,10 @@ LABEL_31:
                           v36 = +[IMRGLog phoneRepair];
                           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
                           {
-                            v37 = [v23 smallDescription];
-                            v38 = v37;
+                            smallDescription2 = [v23 smallDescription];
+                            v38 = smallDescription2;
                             *buf = 138414082;
-                            if (v27)
+                            if (shouldAutoRegisterAllHandles)
                             {
                               v39 = @"YES";
                             }
@@ -2933,7 +2933,7 @@ LABEL_31:
                               v39 = @"NO";
                             }
 
-                            v74 = v37;
+                            v74 = smallDescription2;
                             if (v35)
                             {
                               v40 = @"YES";
@@ -2945,7 +2945,7 @@ LABEL_31:
                             }
 
                             v75 = 2112;
-                            if (v64)
+                            if (isUserDisabled)
                             {
                               v41 = @"YES";
                             }
@@ -2967,7 +2967,7 @@ LABEL_31:
                             }
 
                             v77 = 2112;
-                            if (v63)
+                            if (isRegistered)
                             {
                               v43 = @"YES";
                             }
@@ -3001,7 +3001,7 @@ LABEL_31:
                             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "GOOD   %@ (shouldAutoRegister: %@) (companionAccountRegistered: %@) (isUserDisabled: %@) (registrationError: %d  -  shouldRepairFailedAccount: %@) (registered: %@) (enabled: %@)", buf, 0x4Eu);
                           }
 
-                          self = v60;
+                          self = selfCopy;
                         }
 
                         v18 = v61;
@@ -3015,7 +3015,7 @@ LABEL_31:
                 }
 
                 v9 = v55;
-                v4 = v56;
+                allServices = v56;
                 v8 = v57;
                 v10 = v58;
               }
@@ -3026,7 +3026,7 @@ LABEL_31:
         }
 
         while (v10 != v8);
-        v8 = [v4 countByEnumeratingWithState:&v69 objects:v90 count:16];
+        v8 = [allServices countByEnumeratingWithState:&v69 objects:v90 count:16];
       }
 
       while (v8);

@@ -1,70 +1,70 @@
 @interface HDCloudSyncAttachmentRecord
-+ (BOOL)hasFutureSchema:(id)a3;
-+ (BOOL)isAttachmentRecord:(id)a3;
-+ (BOOL)isAttachmentRecordID:(id)a3;
-+ (id)attachmentIdentifierForRecordID:(id)a3;
-+ (id)recordIDForAttachmentIdentifier:(id)a3 zoneID:(id)a4;
-+ (id)recordWithAttachment:(id)a3 fileHandle:(id)a4 zoneID:(id)a5 error:(id *)a6;
++ (BOOL)hasFutureSchema:(id)schema;
++ (BOOL)isAttachmentRecord:(id)record;
++ (BOOL)isAttachmentRecordID:(id)d;
++ (id)attachmentIdentifierForRecordID:(id)d;
++ (id)recordIDForAttachmentIdentifier:(id)identifier zoneID:(id)d;
++ (id)recordWithAttachment:(id)attachment fileHandle:(id)handle zoneID:(id)d error:(id *)error;
 - (HDAttachment)attachment;
-- (HDCloudSyncAttachmentRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4;
+- (HDCloudSyncAttachmentRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version;
 - (NSString)attachmentIdentifier;
 - (NSURL)assetURL;
-- (void)unitTest_setFileURL:(id)a3;
+- (void)unitTest_setFileURL:(id)l;
 @end
 
 @implementation HDCloudSyncAttachmentRecord
 
-+ (id)recordWithAttachment:(id)a3 fileHandle:(id)a4 zoneID:(id)a5 error:(id *)a6
++ (id)recordWithAttachment:(id)attachment fileHandle:(id)handle zoneID:(id)d error:(id *)error
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  dCopy = d;
+  handleCopy = handle;
+  attachmentCopy = attachment;
   v12 = [HDCloudSyncAttachmentRecord alloc];
-  v13 = v11;
-  v14 = v10;
+  v13 = attachmentCopy;
+  v14 = handleCopy;
   if (v12)
   {
-    v15 = v9;
+    v15 = dCopy;
     v16 = objc_opt_class();
-    v17 = [v13 identifier];
-    v18 = [v17 UUIDString];
-    v19 = [v16 recordIDForAttachmentIdentifier:v18 zoneID:v15];
+    identifier = [v13 identifier];
+    uUIDString = [identifier UUIDString];
+    v19 = [v16 recordIDForAttachmentIdentifier:uUIDString zoneID:v15];
 
     v20 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"CloudSyncAttachmentRecord" recordID:v19];
-    v21 = [v13 encryptionKey];
+    encryptionKey = [v13 encryptionKey];
 
-    if (v21)
+    if (encryptionKey)
     {
       v22 = MEMORY[0x277CCAAB0];
-      v23 = [v13 encryptionKey];
-      v21 = [v22 archivedDataWithRootObject:v23 requiringSecureCoding:1 error:a6];
+      encryptionKey2 = [v13 encryptionKey];
+      encryptionKey = [v22 archivedDataWithRootObject:encryptionKey2 requiringSecureCoding:1 error:error];
     }
 
     v24 = [(HDCloudSyncAttachmentRecord *)v12 initWithCKRecord:v20 schemaVersion:1];
     if (v24)
     {
-      v41 = a6;
-      v25 = [v13 name];
-      [v24[3] setFileName:v25];
+      errorCopy = error;
+      name = [v13 name];
+      [v24[3] setFileName:name];
 
       [v24[3] setFileSize:{objc_msgSend(v13, "size")}];
-      v26 = [v13 type];
-      [v24[3] setMimeType:v26];
+      type = [v13 type];
+      [v24[3] setMimeType:type];
 
-      v27 = [v13 fileHash];
-      [v24[3] setFileHash:v27];
+      fileHash = [v13 fileHash];
+      [v24[3] setFileHash:fileHash];
 
-      v28 = [v13 creationDate];
-      [v28 timeIntervalSinceReferenceDate];
+      creationDate = [v13 creationDate];
+      [creationDate timeIntervalSinceReferenceDate];
       [v24[3] setCreationDate:?];
 
-      v29 = [v13 metadata];
-      v30 = [v29 hk_codableMetadata];
-      v31 = [v30 data];
-      [v24[3] setMetadata:v31];
+      metadata = [v13 metadata];
+      hk_codableMetadata = [metadata hk_codableMetadata];
+      data = [hk_codableMetadata data];
+      [v24[3] setMetadata:data];
 
-      [v24[3] setEncryptionKey:v21];
+      [v24[3] setEncryptionKey:encryptionKey];
       if ([v13 size] > 0x61A8)
       {
         v37 = [objc_alloc(MEMORY[0x277CBC190]) initWithFileDescriptor:{objc_msgSend(v14, "fileDescriptor")}];
@@ -90,10 +90,10 @@
             _os_log_error_impl(&dword_228986000, v35, OS_LOG_TYPE_ERROR, "%{public}@ Failed to read data from file handle to set asset data, %{public}@", buf, 0x16u);
           }
 
-          if (v41)
+          if (errorCopy)
           {
             v36 = v34;
-            *v41 = v34;
+            *errorCopy = v34;
           }
 
           else
@@ -123,19 +123,19 @@ LABEL_16:
   return v38;
 }
 
-- (HDCloudSyncAttachmentRecord)initWithCKRecord:(id)a3 schemaVersion:(int64_t)a4
+- (HDCloudSyncAttachmentRecord)initWithCKRecord:(id)record schemaVersion:(int64_t)version
 {
   v15.receiver = self;
   v15.super_class = HDCloudSyncAttachmentRecord;
-  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:a3 schemaVersion:a4];
+  v4 = [(HDCloudSyncRecord *)&v15 initWithCKRecord:record schemaVersion:version];
   v5 = v4;
   if (!v4)
   {
     goto LABEL_9;
   }
 
-  v6 = [(HDCloudSyncRecord *)v4 underlyingMessage];
-  if (!v6)
+  underlyingMessage = [(HDCloudSyncRecord *)v4 underlyingMessage];
+  if (!underlyingMessage)
   {
     v11 = objc_alloc_init(HDCloudSyncCodableAttachment);
     underlyingAttachment = v5->_underlyingAttachment;
@@ -144,7 +144,7 @@ LABEL_16:
     goto LABEL_8;
   }
 
-  v7 = [[HDCloudSyncCodableAttachment alloc] initWithData:v6];
+  v7 = [[HDCloudSyncCodableAttachment alloc] initWithData:underlyingMessage];
   v8 = v5->_underlyingAttachment;
   v5->_underlyingAttachment = v7;
 
@@ -171,20 +171,20 @@ LABEL_10:
   return v10;
 }
 
-+ (id)recordIDForAttachmentIdentifier:(id)a3 zoneID:(id)a4
++ (id)recordIDForAttachmentIdentifier:(id)identifier zoneID:(id)d
 {
   v5 = MEMORY[0x277CCACA8];
-  v6 = a4;
-  v7 = [v5 stringWithFormat:@"%@%@%@", @"CloudSyncAttachment", @"/", a3];
-  v8 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v7 zoneID:v6];
+  dCopy = d;
+  identifier = [v5 stringWithFormat:@"%@%@%@", @"CloudSyncAttachment", @"/", identifier];
+  v8 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:identifier zoneID:dCopy];
 
   return v8;
 }
 
-+ (BOOL)isAttachmentRecordID:(id)a3
++ (BOOL)isAttachmentRecordID:(id)d
 {
-  v3 = [a3 recordName];
-  v4 = [v3 componentsSeparatedByString:@"/"];
+  recordName = [d recordName];
+  v4 = [recordName componentsSeparatedByString:@"/"];
 
   if ([v4 count] == 2)
   {
@@ -200,21 +200,21 @@ LABEL_10:
   return v6;
 }
 
-+ (BOOL)isAttachmentRecord:(id)a3
++ (BOOL)isAttachmentRecord:(id)record
 {
-  v3 = [a3 recordType];
-  v4 = [v3 isEqualToString:@"CloudSyncAttachmentRecord"];
+  recordType = [record recordType];
+  v4 = [recordType isEqualToString:@"CloudSyncAttachmentRecord"];
 
   return v4;
 }
 
-+ (id)attachmentIdentifierForRecordID:(id)a3
++ (id)attachmentIdentifierForRecordID:(id)d
 {
-  v4 = a3;
-  if ([a1 isAttachmentRecordID:v4])
+  dCopy = d;
+  if ([self isAttachmentRecordID:dCopy])
   {
-    v5 = [v4 recordName];
-    v6 = [v5 componentsSeparatedByString:@"/"];
+    recordName = [dCopy recordName];
+    v6 = [recordName componentsSeparatedByString:@"/"];
 
     v7 = [v6 objectAtIndexedSubscript:1];
   }
@@ -229,10 +229,10 @@ LABEL_10:
 
 - (NSString)attachmentIdentifier
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 recordID];
-  v4 = [v3 recordName];
-  v5 = [v4 componentsSeparatedByString:@"/"];
+  record = [(HDCloudSyncRecord *)self record];
+  recordID = [record recordID];
+  recordName = [recordID recordName];
+  v5 = [recordName componentsSeparatedByString:@"/"];
 
   v6 = [v5 objectAtIndexedSubscript:1];
 
@@ -242,15 +242,15 @@ LABEL_10:
 - (HDAttachment)attachment
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment encryptionKey];
+  encryptionKey = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment encryptionKey];
 
-  if (v3)
+  if (encryptionKey)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = objc_opt_class();
-    v6 = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment encryptionKey];
+    encryptionKey2 = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment encryptionKey];
     v25 = 0;
-    v7 = [v4 unarchivedObjectOfClass:v5 fromData:v6 error:&v25];
+    v7 = [v4 unarchivedObjectOfClass:v5 fromData:encryptionKey2 error:&v25];
     v8 = v25;
 
     if (!v7)
@@ -260,7 +260,7 @@ LABEL_10:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v27 = self;
+        selfCopy = self;
         v28 = 2114;
         v29 = v8;
         _os_log_error_impl(&dword_228986000, v9, OS_LOG_TYPE_ERROR, "%{public}@: Unable to decode encryption key: %{public}@", buf, 0x16u);
@@ -277,17 +277,17 @@ LABEL_10:
 
   v22 = [HDAttachment alloc];
   v10 = objc_alloc(MEMORY[0x277CCAD78]);
-  v23 = [(HDCloudSyncAttachmentRecord *)self attachmentIdentifier];
-  v11 = [v10 initWithUUIDString:v23];
-  v12 = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment fileName];
-  v13 = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment mimeType];
-  v14 = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment fileHash];
-  v15 = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment fileSize];
+  attachmentIdentifier = [(HDCloudSyncAttachmentRecord *)self attachmentIdentifier];
+  v11 = [v10 initWithUUIDString:attachmentIdentifier];
+  fileName = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment fileName];
+  mimeType = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment mimeType];
+  fileHash = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment fileHash];
+  fileSize = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment fileSize];
   [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment creationDate];
   v16 = HDDecodeDateForValue();
-  v17 = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment metadata];
-  v18 = [HDCodableMetadataDictionary decodeMetadataFromData:v17];
-  v19 = [(HDAttachment *)v22 initWithIdentifier:v11 name:v12 type:v13 hash:v14 size:v15 creationDate:v16 metadata:v18 encryptionKey:v24];
+  metadata = [(HDCloudSyncCodableAttachment *)self->_underlyingAttachment metadata];
+  v18 = [HDCodableMetadataDictionary decodeMetadataFromData:metadata];
+  v19 = [(HDAttachment *)v22 initWithIdentifier:v11 name:fileName type:mimeType hash:fileHash size:fileSize creationDate:v16 metadata:v18 encryptionKey:v24];
 
   v20 = *MEMORY[0x277D85DE8];
 
@@ -296,31 +296,31 @@ LABEL_10:
 
 - (NSURL)assetURL
 {
-  v2 = [(HDCloudSyncRecord *)self record];
-  v3 = [v2 objectForKeyedSubscript:@"CloudSyncAttachmentAsset"];
+  record = [(HDCloudSyncRecord *)self record];
+  v3 = [record objectForKeyedSubscript:@"CloudSyncAttachmentAsset"];
 
-  v4 = [v3 fileURL];
+  fileURL = [v3 fileURL];
 
-  return v4;
+  return fileURL;
 }
 
-+ (BOOL)hasFutureSchema:(id)a3
++ (BOOL)hasFutureSchema:(id)schema
 {
-  v3 = [a3 objectForKeyedSubscript:@"Version"];
+  v3 = [schema objectForKeyedSubscript:@"Version"];
   v4 = v3;
   v5 = v3 && [v3 integerValue] > 1;
 
   return v5;
 }
 
-- (void)unitTest_setFileURL:(id)a3
+- (void)unitTest_setFileURL:(id)l
 {
   v4 = MEMORY[0x277CBC190];
-  v5 = a3;
-  v7 = [[v4 alloc] initWithFileURL:v5];
+  lCopy = l;
+  v7 = [[v4 alloc] initWithFileURL:lCopy];
 
-  v6 = [(HDCloudSyncRecord *)self record];
-  [v6 setObject:v7 forKeyedSubscript:@"CloudSyncAttachmentAsset"];
+  record = [(HDCloudSyncRecord *)self record];
+  [record setObject:v7 forKeyedSubscript:@"CloudSyncAttachmentAsset"];
 }
 
 @end

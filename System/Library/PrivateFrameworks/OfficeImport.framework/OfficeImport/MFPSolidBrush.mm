@@ -1,30 +1,30 @@
 @interface MFPSolidBrush
-- (MFPSolidBrush)initWithColor:(id)a3;
-- (void)fillPath:(id)a3;
+- (MFPSolidBrush)initWithColor:(id)color;
+- (void)fillPath:(id)path;
 @end
 
 @implementation MFPSolidBrush
 
-- (MFPSolidBrush)initWithColor:(id)a3
+- (MFPSolidBrush)initWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v9.receiver = self;
   v9.super_class = MFPSolidBrush;
   v6 = [(MFPSolidBrush *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mColor, a3);
+    objc_storeStrong(&v6->mColor, color);
   }
 
   return v7;
 }
 
-- (void)fillPath:(id)a3
+- (void)fillPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(OITSUColor *)self->mColor set];
-  [v4 fill];
+  [pathCopy fill];
 }
 
 @end

@@ -1,46 +1,46 @@
 @interface HKMedicalCodingCollection
-+ (HKMedicalCodingCollection)collectionWithCoding:(id)a3;
-+ (HKMedicalCodingCollection)collectionWithCodings:(id)a3;
-+ (id)stripCodingsMatchingSystem:(id)a3 fromCodings:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (HKMedicalCodingCollection)collectionWithCoding:(id)coding;
++ (HKMedicalCodingCollection)collectionWithCodings:(id)codings;
++ (id)stripCodingsMatchingSystem:(id)system fromCodings:(id)codings;
+- (BOOL)isEqual:(id)equal;
 - (HKMedicalCodingCollection)init;
-- (HKMedicalCodingCollection)initWithCoder:(id)a3;
-- (HKMedicalCodingCollection)initWithCodings:(id)a3;
+- (HKMedicalCodingCollection)initWithCoder:(id)coder;
+- (HKMedicalCodingCollection)initWithCodings:(id)codings;
 - (NSDictionary)codingsBySystem;
-- (id)codingsExcludingCodingSystem:(id)a3;
-- (id)codingsForCodingSystem:(id)a3;
-- (id)collectionByAddingCodings:(id)a3;
+- (id)codingsExcludingCodingSystem:(id)system;
+- (id)codingsForCodingSystem:(id)system;
+- (id)collectionByAddingCodings:(id)codings;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMedicalCodingCollection
 
-+ (HKMedicalCodingCollection)collectionWithCodings:(id)a3
++ (HKMedicalCodingCollection)collectionWithCodings:(id)codings
 {
-  v5 = a3;
-  if (!v5)
+  codingsCopy = codings;
+  if (!codingsCopy)
   {
-    [(HKMedicalCodingCollection *)a2 collectionWithCodings:a1];
+    [(HKMedicalCodingCollection *)a2 collectionWithCodings:self];
   }
 
-  v6 = [[a1 alloc] initWithCodings:v5];
+  v6 = [[self alloc] initWithCodings:codingsCopy];
 
   return v6;
 }
 
-+ (HKMedicalCodingCollection)collectionWithCoding:(id)a3
++ (HKMedicalCodingCollection)collectionWithCoding:(id)coding
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  codingCopy = coding;
+  if (!codingCopy)
   {
-    [(HKMedicalCodingCollection *)a2 collectionWithCoding:a1];
+    [(HKMedicalCodingCollection *)a2 collectionWithCoding:self];
   }
 
-  v6 = [a1 alloc];
-  v11[0] = v5;
+  v6 = [self alloc];
+  v11[0] = codingCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
   v8 = [v6 initWithCodings:v7];
 
@@ -59,10 +59,10 @@
   return 0;
 }
 
-- (HKMedicalCodingCollection)initWithCodings:(id)a3
+- (HKMedicalCodingCollection)initWithCodings:(id)codings
 {
-  v5 = a3;
-  if (!v5)
+  codingsCopy = codings;
+  if (!codingsCopy)
   {
     [(HKMedicalCodingCollection *)a2 initWithCodings:?];
   }
@@ -72,7 +72,7 @@
   v6 = [(HKMedicalCodingCollection *)&v10 init];
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:v5];
+    v7 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithArray:codingsCopy];
     codingsOrderedSet = v6->_codingsOrderedSet;
     v6->_codingsOrderedSet = v7;
   }
@@ -80,15 +80,15 @@
   return v6;
 }
 
-- (id)collectionByAddingCodings:(id)a3
+- (id)collectionByAddingCodings:(id)codings
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  codingsCopy = codings;
   v6 = [v4 alloc];
-  v7 = [(HKMedicalCodingCollection *)self codings];
-  v8 = [v6 initWithArray:v7];
+  codings = [(HKMedicalCodingCollection *)self codings];
+  v8 = [v6 initWithArray:codings];
 
-  [v8 addObjectsFromArray:v5];
+  [v8 addObjectsFromArray:codingsCopy];
   v9 = [[HKMedicalCodingCollection alloc] initWithCodings:v8];
 
   return v9;
@@ -96,8 +96,8 @@
 
 - (id)description
 {
-  v3 = [(HKMedicalCodingCollection *)self codings];
-  v4 = [v3 hk_map:&__block_literal_global_21];
+  codings = [(HKMedicalCodingCollection *)self codings];
+  v4 = [codings hk_map:&__block_literal_global_21];
   v5 = [v4 componentsJoinedByString:{@", "}];
 
   v6 = MEMORY[0x1E696AEC0];
@@ -108,18 +108,18 @@
   return v9;
 }
 
-- (id)codingsForCodingSystem:(id)a3
+- (id)codingsForCodingSystem:(id)system
 {
-  v4 = a3;
+  systemCopy = system;
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(HKMedicalCodingCollection *)self codings];
+  codings = [(HKMedicalCodingCollection *)self codings];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __52__HKMedicalCodingCollection_codingsForCodingSystem___block_invoke;
   v11[3] = &unk_1E737AA60;
-  v12 = v4;
-  v7 = v4;
-  v8 = [v6 hk_filter:v11];
+  v12 = systemCopy;
+  v7 = systemCopy;
+  v8 = [codings hk_filter:v11];
   v9 = [v5 setWithArray:v8];
 
   return v9;
@@ -133,26 +133,26 @@ uint64_t __52__HKMedicalCodingCollection_codingsForCodingSystem___block_invoke(u
   return v4;
 }
 
-- (id)codingsExcludingCodingSystem:(id)a3
+- (id)codingsExcludingCodingSystem:(id)system
 {
-  v4 = a3;
+  systemCopy = system;
   v5 = objc_opt_class();
-  v6 = [(HKMedicalCodingCollection *)self codings];
-  v7 = [v5 stripCodingsMatchingSystem:v4 fromCodings:v6];
+  codings = [(HKMedicalCodingCollection *)self codings];
+  v7 = [v5 stripCodingsMatchingSystem:systemCopy fromCodings:codings];
 
   return v7;
 }
 
-+ (id)stripCodingsMatchingSystem:(id)a3 fromCodings:(id)a4
++ (id)stripCodingsMatchingSystem:(id)system fromCodings:(id)codings
 {
-  v5 = a3;
+  systemCopy = system;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__HKMedicalCodingCollection_stripCodingsMatchingSystem_fromCodings___block_invoke;
   v9[3] = &unk_1E737AA60;
-  v10 = v5;
-  v6 = v5;
-  v7 = [a4 hk_filter:v9];
+  v10 = systemCopy;
+  v6 = systemCopy;
+  v7 = [codings hk_filter:v9];
 
   return v7;
 }
@@ -205,11 +205,11 @@ uint64_t __68__HKMedicalCodingCollection_stripCodingsMatchingSystem_fromCodings_
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 codingSystem];
-        v11 = v10;
-        if (v10)
+        codingSystem = [v9 codingSystem];
+        v11 = codingSystem;
+        if (codingSystem)
         {
-          v12 = v10;
+          v12 = codingSystem;
         }
 
         else
@@ -237,14 +237,14 @@ uint64_t __68__HKMedicalCodingCollection_stripCodingsMatchingSystem_fromCodings_
     while (v6);
   }
 
-  v17 = [v3 allKeys];
+  allKeys = [v3 allKeys];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __44__HKMedicalCodingCollection_codingsBySystem__block_invoke;
   v22[3] = &unk_1E737AA88;
   v23 = v3;
   v18 = v3;
-  v19 = [v17 hk_mapToDictionary:v22];
+  v19 = [allKeys hk_mapToDictionary:v22];
 
   v20 = *MEMORY[0x1E69E9840];
 
@@ -263,16 +263,16 @@ void __44__HKMedicalCodingCollection_codingsBySystem__block_invoke(uint64_t a1, 
 
 - (unint64_t)hash
 {
-  v2 = [(HKMedicalCodingCollection *)self codings];
-  v3 = [v2 hash];
+  codings = [(HKMedicalCodingCollection *)self codings];
+  v3 = [codings hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -282,22 +282,22 @@ void __44__HKMedicalCodingCollection_codingsBySystem__block_invoke(uint64_t a1, 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKMedicalCodingCollection *)self codings];
-      v7 = [(HKMedicalCodingCollection *)v5 codings];
-      if (v6 == v7)
+      v5 = equalCopy;
+      codings = [(HKMedicalCodingCollection *)self codings];
+      codings2 = [(HKMedicalCodingCollection *)v5 codings];
+      if (codings == codings2)
       {
         v11 = 1;
       }
 
       else
       {
-        v8 = [(HKMedicalCodingCollection *)v5 codings];
-        if (v8)
+        codings3 = [(HKMedicalCodingCollection *)v5 codings];
+        if (codings3)
         {
-          v9 = [(HKMedicalCodingCollection *)self codings];
-          v10 = [(HKMedicalCodingCollection *)v5 codings];
-          v11 = [v9 isEqual:v10];
+          codings4 = [(HKMedicalCodingCollection *)self codings];
+          codings5 = [(HKMedicalCodingCollection *)v5 codings];
+          v11 = [codings4 isEqual:codings5];
         }
 
         else
@@ -316,13 +316,13 @@ void __44__HKMedicalCodingCollection_codingsBySystem__block_invoke(uint64_t a1, 
   return v11;
 }
 
-- (HKMedicalCodingCollection)initWithCoder:(id)a3
+- (HKMedicalCodingCollection)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"Codings"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"Codings"];
 
   if (v8)
   {
@@ -337,22 +337,22 @@ void __44__HKMedicalCodingCollection_codingsBySystem__block_invoke(uint64_t a1, 
     }
 
     self = v9;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKMedicalCodingCollection *)self codings];
-  [v4 encodeObject:v5 forKey:@"Codings"];
+  coderCopy = coder;
+  codings = [(HKMedicalCodingCollection *)self codings];
+  [coderCopy encodeObject:codings forKey:@"Codings"];
 }
 
 + (void)collectionWithCodings:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

@@ -1,13 +1,13 @@
 @interface PKDPersonaCache
-- (BOOL)_lock_resyncFromUserPersonaAttributes:(id)a3;
+- (BOOL)_lock_resyncFromUserPersonaAttributes:(id)attributes;
 - (NSDictionary)lock_bundleToPersonasMap;
 - (NSNumber)personalPersonaID;
 - (NSNumber)systemPersonaID;
 - (PKDPersona)lock_personalPersona;
 - (PKDPersona)lock_systemPersona;
-- (PKDPersonaCache)initWithExternalProviders:(id)a3;
-- (id)_lock_personasForBundleIdentifier:(id)a3;
-- (id)personasForBundleIdentifier:(id)a3 error:(id *)a4;
+- (PKDPersonaCache)initWithExternalProviders:(id)providers;
+- (id)_lock_personasForBundleIdentifier:(id)identifier;
+- (id)personasForBundleIdentifier:(id)identifier error:(id *)error;
 - (void)_lock_flush;
 - (void)_lock_refreshFromUserManagementIfNecessary;
 - (void)_lock_resync;
@@ -20,8 +20,8 @@
   os_unfair_lock_assert_owner(&self->_lock);
   if (+[PKDPersona personasAreSupported])
   {
-    v3 = [(PKDPersonaCache *)self external];
-    v4 = [v3 um];
+    external = [(PKDPersonaCache *)self external];
+    v4 = [external um];
     v11 = 0;
     v5 = [v4 personaGenerationIdentifierWithError:&v11];
     v6 = v11;
@@ -93,16 +93,16 @@ LABEL_14:
   return lock_personalPersona;
 }
 
-- (PKDPersonaCache)initWithExternalProviders:(id)a3
+- (PKDPersonaCache)initWithExternalProviders:(id)providers
 {
-  v5 = a3;
+  providersCopy = providers;
   v12.receiver = self;
   v12.super_class = PKDPersonaCache;
   v6 = [(PKDPersonaCache *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_external, a3);
+    objc_storeStrong(&v6->_external, providers);
     lock_bundleToPersonasMap = v7->_lock_bundleToPersonasMap;
     v7->_lock_bundleToPersonasMap = 0;
 
@@ -123,32 +123,32 @@ LABEL_14:
 {
   os_unfair_lock_lock(&self->_lock);
   [(PKDPersonaCache *)self _lock_refreshFromUserManagementIfNecessary];
-  v3 = [(PKDPersonaCache *)self lock_personalPersona];
-  v4 = [v3 personaID];
+  lock_personalPersona = [(PKDPersonaCache *)self lock_personalPersona];
+  personaID = [lock_personalPersona personaID];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return personaID;
 }
 
 - (NSNumber)systemPersonaID
 {
   os_unfair_lock_lock(&self->_lock);
   [(PKDPersonaCache *)self _lock_refreshFromUserManagementIfNecessary];
-  v3 = [(PKDPersonaCache *)self lock_systemPersona];
-  v4 = [v3 personaID];
+  lock_systemPersona = [(PKDPersonaCache *)self lock_systemPersona];
+  personaID = [lock_systemPersona personaID];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return personaID;
 }
 
-- (id)personasForBundleIdentifier:(id)a3 error:(id *)a4
+- (id)personasForBundleIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   [(PKDPersonaCache *)self _lock_refreshFromUserManagementIfNecessary];
-  v7 = [(PKDPersonaCache *)self _lock_personasForBundleIdentifier:v6];
+  v7 = [(PKDPersonaCache *)self _lock_personasForBundleIdentifier:identifierCopy];
 
-  if (a4)
+  if (error)
   {
     lock_isSyncedSuccessfully = self->_lock_isSyncedSuccessfully;
     if (lock_isSyncedSuccessfully)
@@ -161,7 +161,7 @@ LABEL_14:
       v9 = pkError();
     }
 
-    objc_storeStrong(a4, v9);
+    objc_storeStrong(error, v9);
     if (!lock_isSyncedSuccessfully)
     {
     }
@@ -200,12 +200,12 @@ LABEL_14:
   return lock_systemPersona;
 }
 
-- (id)_lock_personasForBundleIdentifier:(id)a3
+- (id)_lock_personasForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(PKDPersonaCache *)self lock_bundleToPersonasMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  lock_bundleToPersonasMap = [(PKDPersonaCache *)self lock_bundleToPersonasMap];
+  v6 = [lock_bundleToPersonasMap objectForKeyedSubscript:identifierCopy];
   if (v6)
   {
     v7 = v6;
@@ -213,7 +213,7 @@ LABEL_14:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543618;
-      v15 = v4;
+      v15 = identifierCopy;
       v16 = 2114;
       v17 = v7;
       _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "Mapped bundleID %{public}@ to personas: %{public}@", &v14, 0x16u);
@@ -222,12 +222,12 @@ LABEL_14:
 
   else
   {
-    v9 = [(PKDPersonaCache *)self lock_personalPersona];
-    v8 = v9;
-    if (v9)
+    lock_personalPersona = [(PKDPersonaCache *)self lock_personalPersona];
+    v8 = lock_personalPersona;
+    if (lock_personalPersona)
     {
-      v10 = [v9 personaID];
-      v11 = v10 != 0;
+      personaID = [lock_personalPersona personaID];
+      v11 = personaID != 0;
     }
 
     else
@@ -242,7 +242,7 @@ LABEL_14:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543618;
-        v15 = v4;
+        v15 = identifierCopy;
         v16 = 2114;
         v17 = v8;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Mapped bundleID %{public}@ to personal: %{public}@", &v14, 0x16u);
@@ -255,7 +255,7 @@ LABEL_14:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543362;
-        v15 = v4;
+        v15 = identifierCopy;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Mapped bundleID %{public}@ to nothing", &v14, 0xCu);
       }
 
@@ -269,21 +269,21 @@ LABEL_14:
 - (void)_lock_resync
 {
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_0, a2, OS_LOG_TYPE_ERROR, "Unexpected error from listAllPersonaAttributesWithError: %{public}@", &v2, 0xCu);
 }
 
-- (BOOL)_lock_resyncFromUserPersonaAttributes:(id)a3
+- (BOOL)_lock_resyncFromUserPersonaAttributes:(id)attributes
 {
-  v4 = a3;
-  v40 = self;
+  attributesCopy = attributes;
+  selfCopy = self;
   os_unfair_lock_assert_owner(&self->_lock);
   v5 = +[NSMutableDictionary dictionary];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v4;
+  obj = attributesCopy;
   v6 = [obj countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (v6)
   {
@@ -449,26 +449,26 @@ LABEL_66:
 
         if (v23)
         {
-          v21 = [v22 userPersonaBundleIDList];
+          userPersonaBundleIDList = [v22 userPersonaBundleIDList];
           v26 = pklog_handle_for_category();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
           {
-            v27 = [v22 userPersonaUniqueString];
+            userPersonaUniqueString = [v22 userPersonaUniqueString];
             *buf = 138543618;
-            v61 = v27;
+            v61 = userPersonaUniqueString;
             v62 = 2114;
-            v63 = v21;
+            v63 = userPersonaBundleIDList;
             _os_log_impl(&dword_0, v26, OS_LOG_TYPE_DEFAULT, "Fetched bundle ID list for <%{public}@>: %{public}@", buf, 0x16u);
           }
 
-          if (v21 && [v21 count])
+          if (userPersonaBundleIDList && [userPersonaBundleIDList count])
           {
             v49 = 0u;
             v50 = 0u;
             v47 = 0u;
             v48 = 0u;
-            v44 = v21;
-            v28 = v21;
+            v44 = userPersonaBundleIDList;
+            v28 = userPersonaBundleIDList;
             v29 = [v28 countByEnumeratingWithState:&v47 objects:v59 count:16];
             if (v29)
             {
@@ -515,7 +515,7 @@ LABEL_66:
 
             v17 = v42;
             v16 = v43;
-            v21 = v44;
+            userPersonaBundleIDList = v44;
           }
         }
 
@@ -530,11 +530,11 @@ LABEL_66:
   }
 
   v7 = v39;
-  objc_storeStrong(&v40->_lock_personalPersona, v39);
-  objc_storeStrong(&v40->_lock_systemPersona, v16);
+  objc_storeStrong(&selfCopy->_lock_personalPersona, v39);
+  objc_storeStrong(&selfCopy->_lock_systemPersona, v16);
   v35 = [v5 copy];
-  p_super = &v40->_lock_bundleToPersonasMap->super;
-  v40->_lock_bundleToPersonasMap = v35;
+  p_super = &selfCopy->_lock_bundleToPersonasMap->super;
+  selfCopy->_lock_bundleToPersonasMap = v35;
   v37 = 1;
 LABEL_67:
 

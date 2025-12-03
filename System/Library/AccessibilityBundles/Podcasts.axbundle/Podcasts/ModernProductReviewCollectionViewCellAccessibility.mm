@@ -1,20 +1,20 @@
 @interface ModernProductReviewCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)automationElements;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation ModernProductReviewCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityRatingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityDateLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityUsernameLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityTextLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityReviewMoreButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityRatingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityDateLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityUsernameLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityTextLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ModernProductReviewCollectionViewCell" hasInstanceMethod:@"accessibilityReviewMoreButton" withFullSignature:{"@", 0}];
 }
 
 - (unint64_t)accessibilityTraits
@@ -26,19 +26,19 @@
 
 - (id)automationElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v7.receiver = self;
   v7.super_class = ModernProductReviewCollectionViewCellAccessibility;
-  v4 = [(ModernProductReviewCollectionViewCellAccessibility *)&v7 automationElements];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  automationElements = [(ModernProductReviewCollectionViewCellAccessibility *)&v7 automationElements];
+  [array axSafelyAddObjectsFromArray:automationElements];
 
   v5 = [(ModernProductReviewCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityReviewMoreButton"];
   if ([v5 _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v5];
+    [array axSafelyAddObject:v5];
   }
 
-  return v3;
+  return array;
 }
 
 @end

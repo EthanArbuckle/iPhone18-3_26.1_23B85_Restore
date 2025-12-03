@@ -1,51 +1,51 @@
 @interface SBBlurItemContainerSwitcherEventResponse
-- (SBBlurItemContainerSwitcherEventResponse)initWithAppLayout:(id)a3 shouldBlur:(BOOL)a4 animationUpdateMode:(int64_t)a5;
-- (SBBlurItemContainerSwitcherEventResponse)initWithAppLayout:(id)a3 shouldBlur:(BOOL)a4 blurParameters:(id)a5 animationUpdateMode:(int64_t)a6;
+- (SBBlurItemContainerSwitcherEventResponse)initWithAppLayout:(id)layout shouldBlur:(BOOL)blur animationUpdateMode:(int64_t)mode;
+- (SBBlurItemContainerSwitcherEventResponse)initWithAppLayout:(id)layout shouldBlur:(BOOL)blur blurParameters:(id)parameters animationUpdateMode:(int64_t)mode;
 - (id)description;
 @end
 
 @implementation SBBlurItemContainerSwitcherEventResponse
 
-- (SBBlurItemContainerSwitcherEventResponse)initWithAppLayout:(id)a3 shouldBlur:(BOOL)a4 blurParameters:(id)a5 animationUpdateMode:(int64_t)a6
+- (SBBlurItemContainerSwitcherEventResponse)initWithAppLayout:(id)layout shouldBlur:(BOOL)blur blurParameters:(id)parameters animationUpdateMode:(int64_t)mode
 {
-  v11 = a3;
-  v12 = a5;
+  layoutCopy = layout;
+  parametersCopy = parameters;
   v16.receiver = self;
   v16.super_class = SBBlurItemContainerSwitcherEventResponse;
   v13 = [(SBChainableModifierEventResponse *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_shouldBlur = a4;
-    objc_storeStrong(&v13->_appLayout, a3);
-    objc_storeStrong(&v14->_blurParameters, a5);
-    v14->_animationUpdateMode = a6;
+    v13->_shouldBlur = blur;
+    objc_storeStrong(&v13->_appLayout, layout);
+    objc_storeStrong(&v14->_blurParameters, parameters);
+    v14->_animationUpdateMode = mode;
   }
 
   return v14;
 }
 
-- (SBBlurItemContainerSwitcherEventResponse)initWithAppLayout:(id)a3 shouldBlur:(BOOL)a4 animationUpdateMode:(int64_t)a5
+- (SBBlurItemContainerSwitcherEventResponse)initWithAppLayout:(id)layout shouldBlur:(BOOL)blur animationUpdateMode:(int64_t)mode
 {
-  v6 = a4;
-  v8 = a3;
+  blurCopy = blur;
+  layoutCopy = layout;
   v9 = +[SBBlurItemContainerParameters defaultCrossblurBlurParameters];
-  v10 = [(SBBlurItemContainerSwitcherEventResponse *)self initWithAppLayout:v8 shouldBlur:v6 blurParameters:v9 animationUpdateMode:a5];
+  v10 = [(SBBlurItemContainerSwitcherEventResponse *)self initWithAppLayout:layoutCopy shouldBlur:blurCopy blurParameters:v9 animationUpdateMode:mode];
 
   return v10;
 }
 
 - (id)description
 {
-  v3 = [(SBChainableModifierEventResponse *)self succinctDescriptionBuilder];
-  v4 = [v3 appendSuper];
+  succinctDescriptionBuilder = [(SBChainableModifierEventResponse *)self succinctDescriptionBuilder];
+  appendSuper = [succinctDescriptionBuilder appendSuper];
   [(SBBlurItemContainerSwitcherEventResponse *)self shouldBlur];
   v5 = NSStringFromBOOL();
-  [v3 appendString:v5 withName:@"blur"];
+  [succinctDescriptionBuilder appendString:v5 withName:@"blur"];
 
-  v6 = [v3 build];
+  build = [succinctDescriptionBuilder build];
 
-  return v6;
+  return build;
 }
 
 @end

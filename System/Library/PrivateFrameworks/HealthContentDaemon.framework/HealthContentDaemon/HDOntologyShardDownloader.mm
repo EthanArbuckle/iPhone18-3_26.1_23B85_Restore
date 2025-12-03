@@ -1,15 +1,15 @@
 @interface HDOntologyShardDownloader
 - (HDOntologyShardDownloader)init;
-- (HDOntologyShardDownloader)initWithOntologyUpdateCoordinator:(id)a3;
+- (HDOntologyShardDownloader)initWithOntologyUpdateCoordinator:(id)coordinator;
 - (HDOntologyUpdateCoordinator)updateCoordinator;
-- (id)_entriesToDownloadForRequiredEntries:(void *)a3 existingStagedEntries:(uint64_t)a4 error:;
-- (id)_entriesToDownloadWithError:(uint64_t)a1;
-- (id)_entriesToDownloadWithRequiredEntries:(uint64_t)a3 error:;
-- (id)_requiredEntriesWithError:(uint64_t)a1;
-- (uint64_t)_persistStagedEntries:(uint64_t)a3 error:;
-- (void)_downloadFilesForEntries:(void *)a3 session:(void *)a4 completion:;
-- (void)_downloadRequiredShardFilesWithSession:(void *)a3 requiredEntries:(void *)a4 completion:;
-- (void)_notifyDownloadObserversAboutStagedEntries:(uint64_t)a1;
+- (id)_entriesToDownloadForRequiredEntries:(void *)entries existingStagedEntries:(uint64_t)stagedEntries error:;
+- (id)_entriesToDownloadWithError:(uint64_t)error;
+- (id)_entriesToDownloadWithRequiredEntries:(uint64_t)entries error:;
+- (id)_requiredEntriesWithError:(uint64_t)error;
+- (uint64_t)_persistStagedEntries:(uint64_t)entries error:;
+- (void)_downloadFilesForEntries:(void *)entries session:(void *)session completion:;
+- (void)_downloadRequiredShardFilesWithSession:(void *)session requiredEntries:(void *)entries completion:;
+- (void)_notifyDownloadObserversAboutStagedEntries:(uint64_t)entries;
 @end
 
 @implementation HDOntologyShardDownloader
@@ -24,16 +24,16 @@
   return 0;
 }
 
-- (HDOntologyShardDownloader)initWithOntologyUpdateCoordinator:(id)a3
+- (HDOntologyShardDownloader)initWithOntologyUpdateCoordinator:(id)coordinator
 {
-  v4 = a3;
+  coordinatorCopy = coordinator;
   v15.receiver = self;
   v15.super_class = HDOntologyShardDownloader;
   v5 = [(HDOntologyShardDownloader *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_updateCoordinator, v4);
+    objc_storeWeak(&v5->_updateCoordinator, coordinatorCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
@@ -182,53 +182,53 @@ void __72__HDOntologyShardDownloader__notifyDownloadObserversAboutStagedEntries_
   return WeakRetained;
 }
 
-- (void)_downloadRequiredShardFilesWithSession:(void *)a3 requiredEntries:(void *)a4 completion:
+- (void)_downloadRequiredShardFilesWithSession:(void *)session requiredEntries:(void *)entries completion:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  if (a1)
+  sessionCopy = session;
+  entriesCopy = entries;
+  if (self)
   {
-    if (v8)
+    if (sessionCopy)
     {
       v15 = 0;
       v10 = &v15;
-      v11 = [(HDOntologyShardDownloader *)a1 _entriesToDownloadWithRequiredEntries:v8 error:&v15];
+      v11 = [(HDOntologyShardDownloader *)self _entriesToDownloadWithRequiredEntries:sessionCopy error:&v15];
     }
 
     else
     {
       v14 = 0;
       v10 = &v14;
-      v11 = [(HDOntologyShardDownloader *)a1 _entriesToDownloadWithError:?];
+      v11 = [(HDOntologyShardDownloader *)self _entriesToDownloadWithError:?];
     }
 
     v12 = v11;
     v13 = *v10;
     if (v12)
     {
-      [(HDOntologyShardDownloader *)a1 _downloadFilesForEntries:v12 session:v7 completion:v9];
+      [(HDOntologyShardDownloader *)self _downloadFilesForEntries:v12 session:v7 completion:entriesCopy];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0, v13);
+      (*(entriesCopy + 2))(entriesCopy, 0, v13);
     }
   }
 }
 
-- (id)_entriesToDownloadWithRequiredEntries:(uint64_t)a3 error:
+- (id)_entriesToDownloadWithRequiredEntries:(uint64_t)entries error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    v7 = [WeakRetained shardRegistry];
-    v8 = [v7 stagedShardFileEntriesWithError:a3];
+    WeakRetained = objc_loadWeakRetained((self + 24));
+    shardRegistry = [WeakRetained shardRegistry];
+    v8 = [shardRegistry stagedShardFileEntriesWithError:entries];
 
     if (v8)
     {
-      v9 = [(HDOntologyShardDownloader *)a1 _entriesToDownloadForRequiredEntries:v5 existingStagedEntries:v8 error:a3];
+      v9 = [(HDOntologyShardDownloader *)self _entriesToDownloadForRequiredEntries:v5 existingStagedEntries:v8 error:entries];
     }
 
     else
@@ -245,14 +245,14 @@ void __72__HDOntologyShardDownloader__notifyDownloadObserversAboutStagedEntries_
   return v9;
 }
 
-- (id)_entriesToDownloadWithError:(uint64_t)a1
+- (id)_entriesToDownloadWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    v4 = [(HDOntologyShardDownloader *)a1 _requiredEntriesWithError:a2];
+    v4 = [(HDOntologyShardDownloader *)error _requiredEntriesWithError:a2];
     if (v4)
     {
-      v5 = [(HDOntologyShardDownloader *)a1 _entriesToDownloadWithRequiredEntries:v4 error:a2];
+      v5 = [(HDOntologyShardDownloader *)error _entriesToDownloadWithRequiredEntries:v4 error:a2];
     }
 
     else
@@ -269,23 +269,23 @@ void __72__HDOntologyShardDownloader__notifyDownloadObserversAboutStagedEntries_
   return v5;
 }
 
-- (void)_downloadFilesForEntries:(void *)a3 session:(void *)a4 completion:
+- (void)_downloadFilesForEntries:(void *)entries session:(void *)session completion:
 {
-  if (a1)
+  if (self)
   {
-    v7 = a4;
-    v8 = a3;
+    sessionCopy = session;
+    entriesCopy = entries;
     v9 = a2;
-    v10 = [[_HDOntologyDownloadTask alloc] initForDownloader:a1 session:v8 queue:*(a1 + 8)];
+    v10 = [[_HDOntologyDownloadTask alloc] initForDownloader:self session:entriesCopy queue:*(self + 8)];
 
-    [v10 downloadShardsForEntries:v9 completion:v7];
+    [v10 downloadShardsForEntries:v9 completion:sessionCopy];
   }
 }
 
-- (id)_requiredEntriesWithError:(uint64_t)a1
+- (id)_requiredEntriesWithError:(uint64_t)error
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
     v2 = MEMORY[0x277D10B20];
     v3 = [MEMORY[0x277D10B18] predicateWithProperty:@"desired_state" equalToValue:&unk_286374670];
@@ -311,9 +311,9 @@ void __72__HDOntologyShardDownloader__notifyDownloadObserversAboutStagedEntries_
     v23[1] = v14;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
 
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    v17 = [WeakRetained shardRegistry];
-    v18 = [v17 entriesWithPredicate:v12 orderingTerms:v15 error:a2];
+    WeakRetained = objc_loadWeakRetained((error + 24));
+    shardRegistry = [WeakRetained shardRegistry];
+    v18 = [shardRegistry entriesWithPredicate:v12 orderingTerms:v15 error:a2];
   }
 
   else
@@ -326,13 +326,13 @@ void __72__HDOntologyShardDownloader__notifyDownloadObserversAboutStagedEntries_
   return v18;
 }
 
-- (id)_entriesToDownloadForRequiredEntries:(void *)a3 existingStagedEntries:(uint64_t)a4 error:
+- (id)_entriesToDownloadForRequiredEntries:(void *)entries existingStagedEntries:(uint64_t)stagedEntries error:
 {
   v32 = *MEMORY[0x277D85DE8];
   v6 = a2;
-  v7 = a3;
-  v23 = a1;
-  if (a1)
+  entriesCopy = entries;
+  selfCopy = self;
+  if (self)
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -364,7 +364,7 @@ void __72__HDOntologyShardDownloader__notifyDownloadObserversAboutStagedEntries_
         v26[2] = __94__HDOntologyShardDownloader__entriesToDownloadForRequiredEntries_existingStagedEntries_error___block_invoke;
         v26[3] = &unk_2796B9118;
         v26[4] = v14;
-        if ([v7 hk_containsObjectPassingTest:v26])
+        if ([entriesCopy hk_containsObjectPassingTest:v26])
         {
           if ([v14 availableState] == 2)
           {
@@ -401,7 +401,7 @@ void __72__HDOntologyShardDownloader__notifyDownloadObserversAboutStagedEntries_
       {
 LABEL_16:
 
-        if ([(HDOntologyShardDownloader *)v23 _persistStagedEntries:v25 error:a4])
+        if ([(HDOntologyShardDownloader *)selfCopy _persistStagedEntries:v25 error:stagedEntries])
         {
           v20 = v8;
         }
@@ -424,43 +424,43 @@ LABEL_20:
   return v20;
 }
 
-- (uint64_t)_persistStagedEntries:(uint64_t)a3 error:
+- (uint64_t)_persistStagedEntries:(uint64_t)entries error:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 24));
-    v7 = [WeakRetained shardRegistry];
-    v8 = [v7 insertEntries:v5 error:a3];
+    WeakRetained = objc_loadWeakRetained((self + 24));
+    shardRegistry = [WeakRetained shardRegistry];
+    v8 = [shardRegistry insertEntries:v5 error:entries];
 
     if (v8)
     {
-      [(HDOntologyShardDownloader *)a1 _notifyDownloadObserversAboutStagedEntries:v5];
-      a1 = 1;
+      [(HDOntologyShardDownloader *)self _notifyDownloadObserversAboutStagedEntries:v5];
+      self = 1;
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (void)_notifyDownloadObserversAboutStagedEntries:(uint64_t)a1
+- (void)_notifyDownloadObserversAboutStagedEntries:(uint64_t)entries
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (entries)
   {
-    v5 = *(a1 + 16);
+    v5 = *(entries + 16);
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __72__HDOntologyShardDownloader__notifyDownloadObserversAboutStagedEntries___block_invoke;
     v6[3] = &unk_2796B96F0;
     v7 = v3;
-    v8 = a1;
+    entriesCopy = entries;
     [v5 notifyObservers:v6];
   }
 }

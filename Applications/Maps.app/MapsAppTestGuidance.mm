@@ -1,16 +1,16 @@
 @interface MapsAppTestGuidance
 - (BOOL)_testIsStepping;
 - (BOOL)runTest;
-- (MapsAppTestGuidance)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
-- (id)_subTestNameForGoingToGuidanceStep:(int64_t)a3 forSwipeCount:(int64_t)a4;
+- (MapsAppTestGuidance)initWithApplication:(id)application testName:(id)name options:(id)options;
+- (id)_subTestNameForGoingToGuidanceStep:(int64_t)step forSwipeCount:(int64_t)count;
 - (void)_doAfterSubTestForShowingSign;
 - (void)_endGuidanceNavOrSteppingMode;
 - (void)_enterGuidanceNavOrSteppingMode;
-- (void)_gotoNextStepAfterDelay:(double)a3;
+- (void)_gotoNextStepAfterDelay:(double)delay;
 - (void)_guidanceOrSteppingDidShowFirstSign;
 - (void)_runPlayWithTraySubtest;
 - (void)_steppingSignDidChange;
-- (void)cleanup:(BOOL)a3;
+- (void)cleanup:(BOOL)cleanup;
 - (void)willUpdateNavigationSign;
 @end
 
@@ -18,16 +18,16 @@
 
 - (BOOL)_testIsStepping
 {
-  v3 = [(MapsAppTest *)self testName];
-  if ([v3 hasPrefix:@"guidanceStepping"])
+  testName = [(MapsAppTest *)self testName];
+  if ([testName hasPrefix:@"guidanceStepping"])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MapsAppTest *)self testName];
-    v4 = [v5 hasSuffix:@"transit"];
+    testName2 = [(MapsAppTest *)self testName];
+    v4 = [testName2 hasSuffix:@"transit"];
   }
 
   return v4;
@@ -69,8 +69,8 @@
 
   [(MapsAppTest *)self finishedSubTest:@"guidanceAfterFirstStepShown"];
   [(MapsAppTest *)self startedSubTest:@"guidanceEnd"];
-  v4 = [(MapsAppTest *)self testCoordinator];
-  [v4 pptTestEndNavigation];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestEndNavigation];
 }
 
 - (void)_doAfterSubTestForShowingSign
@@ -93,11 +93,11 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "MapsAppTestGuidance - _steppingSignDidChange", buf, 2u);
   }
 
-  v4 = [(MapsAppTest *)self testCoordinator];
-  v5 = [v4 pptTestCurrentStepIndex];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestCurrentStepIndex = [testCoordinator pptTestCurrentStepIndex];
 
-  v6 = [(MapsAppTestGuidance *)self swipeCount];
-  v7 = [(MapsAppTestGuidance *)self _subTestNameForGoingToGuidanceStep:v5 forSwipeCount:v6];
+  swipeCount = [(MapsAppTestGuidance *)self swipeCount];
+  v7 = [(MapsAppTestGuidance *)self _subTestNameForGoingToGuidanceStep:pptTestCurrentStepIndex forSwipeCount:swipeCount];
   objc_initWeak(buf, self);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -106,15 +106,15 @@
   objc_copyWeak(v11, buf);
   v8 = v7;
   v10 = v8;
-  v11[1] = v6;
-  v11[2] = v5;
+  v11[1] = swipeCount;
+  v11[2] = pptTestCurrentStepIndex;
   [(MapsAppTest *)self addFullyDrawnCallback:v9];
 
   objc_destroyWeak(v11);
   objc_destroyWeak(buf);
 }
 
-- (void)_gotoNextStepAfterDelay:(double)a3
+- (void)_gotoNextStepAfterDelay:(double)delay
 {
   v5 = sub_100798744();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -123,11 +123,11 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MapsAppTestGuidance - _gotoNextStep", buf, 2u);
   }
 
-  v6 = [(MapsAppTest *)self testCoordinator];
-  v7 = [v6 pptTestCurrentStepIndex];
-  if ([v6 pptTestHasNextStep])
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestCurrentStepIndex = [testCoordinator pptTestCurrentStepIndex];
+  if ([testCoordinator pptTestHasNextStep])
   {
-    if (v7 >= [(MapsAppTestGuidance *)self swipeCount])
+    if (pptTestCurrentStepIndex >= [(MapsAppTestGuidance *)self swipeCount])
     {
       [(MapsAppTest *)self failedTest];
     }
@@ -140,14 +140,14 @@
       v12[3] = &unk_101650D20;
       v12[4] = self;
       [PPTNotificationCenter addOnceObserverForName:@"MapsTestingSteppingSignDidChange" object:0 usingBlock:v12];
-      v8 = dispatch_time(0, (a3 * 1000000000.0));
+      v8 = dispatch_time(0, (delay * 1000000000.0));
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100B21694;
       v9[3] = &unk_10165E668;
-      v11 = v7;
+      v11 = pptTestCurrentStepIndex;
       v9[4] = self;
-      v10 = v6;
+      v10 = testCoordinator;
       dispatch_after(v8, &_dispatch_main_q, v9);
     }
   }
@@ -187,8 +187,8 @@
 
   if ([(MapsAppTestGuidance *)self _testIsStepping])
   {
-    v4 = [(MapsAppTest *)self testCoordinator];
-    if ([v4 pptTestSupportStepping] && objc_msgSend(v4, "pptTestHasNextStep"))
+    testCoordinator = [(MapsAppTest *)self testCoordinator];
+    if ([testCoordinator pptTestSupportStepping] && objc_msgSend(testCoordinator, "pptTestHasNextStep"))
     {
       [(MapsAppTestGuidance *)self _gotoNextStepAfterDelay:2.0];
     }
@@ -218,16 +218,16 @@
   }
 }
 
-- (id)_subTestNameForGoingToGuidanceStep:(int64_t)a3 forSwipeCount:(int64_t)a4
+- (id)_subTestNameForGoingToGuidanceStep:(int64_t)step forSwipeCount:(int64_t)count
 {
-  if (a4 == a3)
+  if (count == step)
   {
     v6 = @"gotoStep_Last";
   }
 
   else
   {
-    v6 = [NSString stringWithFormat:@"%@%ld", @"gotoStep_", a3, v4];
+    v6 = [NSString stringWithFormat:@"%@%ld", @"gotoStep_", step, v4];
   }
 
   return v6;
@@ -242,8 +242,8 @@
   v4[4] = self;
   [PPTNotificationCenter addOnceObserverForName:@"MapsTestingMapsRegionUpdatedWithGuidanceStep" object:0 usingBlock:v4];
   [(MapsAppTest *)self startedSubTest:@"guidanceStartToFirstStepShown"];
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestStartNavigation];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestStartNavigation];
 }
 
 - (BOOL)runTest
@@ -282,7 +282,7 @@
   }
 }
 
-- (void)cleanup:(BOOL)a3
+- (void)cleanup:(BOOL)cleanup
 {
   if ([(NSTimer *)self->_guidanceTimer isValid])
   {
@@ -292,15 +292,15 @@
   }
 }
 
-- (MapsAppTestGuidance)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestGuidance)initWithApplication:(id)application testName:(id)name options:(id)options
 {
-  v8 = a5;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = MapsAppTestGuidance;
-  v9 = [(MapsAppTest *)&v11 initWithApplication:a3 testName:a4 options:v8];
+  v9 = [(MapsAppTest *)&v11 initWithApplication:application testName:name options:optionsCopy];
   if (v9)
   {
-    v9->_swipeCount = [v8 _mapstest_guidanceStepSwipeCount];
+    v9->_swipeCount = [optionsCopy _mapstest_guidanceStepSwipeCount];
   }
 
   return v9;

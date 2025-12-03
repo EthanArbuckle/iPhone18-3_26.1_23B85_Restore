@@ -1,18 +1,18 @@
 @interface _AKScheduledRequest
-+ (id)scheduledRequestForRequest:(id)a3 info:(id)a4;
++ (id)scheduledRequestForRequest:(id)request info:(id)info;
 @end
 
 @implementation _AKScheduledRequest
 
-+ (id)scheduledRequestForRequest:(id)a3 info:(id)a4
++ (id)scheduledRequestForRequest:(id)request info:(id)info
 {
-  v10 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v7 = objc_alloc_init(v10);
+  objc_storeStrong(&v8, info);
+  v7 = objc_alloc_init(selfCopy);
   if (v7)
   {
     objc_storeStrong(v7 + 1, location[0]);

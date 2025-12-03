@@ -41,33 +41,33 @@
 
 - (id)cmsCoded
 {
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &off_2856B9CE0;
   v2 = objc_msgSendSuper2(&v12, sel_cmsCoded);
   [v2 setObject:@"PlayMediaIntent" forKey:@"class"];
-  v3 = [a1 mediaItems];
-  [v2 cmsSetOptionalCodedObject:v3 forKey:@"mediaItems"];
+  mediaItems = [self mediaItems];
+  [v2 cmsSetOptionalCodedObject:mediaItems forKey:@"mediaItems"];
 
-  v4 = [a1 mediaContainer];
-  [v2 cmsSetOptionalCodedObject:v4 forKey:@"mediaContainer"];
+  mediaContainer = [self mediaContainer];
+  [v2 cmsSetOptionalCodedObject:mediaContainer forKey:@"mediaContainer"];
 
-  v5 = [a1 playShuffled];
-  [v2 cmsSetOptionalObject:v5 forKey:@"playShuffled"];
+  playShuffled = [self playShuffled];
+  [v2 cmsSetOptionalObject:playShuffled forKey:@"playShuffled"];
 
-  v6 = INPlaybackRepeatModeToString([a1 playbackRepeatMode]);
+  v6 = INPlaybackRepeatModeToString([self playbackRepeatMode]);
   [v2 setObject:v6 forKey:@"playbackRepeatMode"];
 
-  v7 = [a1 resumePlayback];
-  [v2 cmsSetOptionalObject:v7 forKey:@"resumePlayback"];
+  resumePlayback = [self resumePlayback];
+  [v2 cmsSetOptionalObject:resumePlayback forKey:@"resumePlayback"];
 
-  v8 = INPlaybackQueueLocationToString([a1 playbackQueueLocation]);
+  v8 = INPlaybackQueueLocationToString([self playbackQueueLocation]);
   [v2 setObject:v8 forKey:@"playbackQueueLocation"];
 
-  v9 = [a1 playbackSpeed];
-  [v2 cmsSetOptionalObject:v9 forKey:@"playbackSpeed"];
+  playbackSpeed = [self playbackSpeed];
+  [v2 cmsSetOptionalObject:playbackSpeed forKey:@"playbackSpeed"];
 
-  v10 = [a1 mediaSearch];
-  [v2 cmsSetOptionalCodedObject:v10 forKey:@"mediaSearch"];
+  mediaSearch = [self mediaSearch];
+  [v2 cmsSetOptionalCodedObject:mediaSearch forKey:@"mediaSearch"];
 
   return v2;
 }

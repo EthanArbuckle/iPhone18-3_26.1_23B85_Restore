@@ -1,66 +1,66 @@
 @interface _UIQueuingScrollView
 - (BOOL)_dataSourceProvidesViews;
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)_isDeceleratingInOppositionToNavigationDirection:(int64_t)a3;
-- (BOOL)_isScrollInProgress:(BOOL)a3;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)_isDeceleratingInOppositionToNavigationDirection:(int64_t)direction;
+- (BOOL)_isScrollInProgress:(BOOL)progress;
 - (BOOL)isManualScrollInProgress;
-- (BOOL)isPreviousScrollCompatibleWithScrollInDirection:(int64_t)a3;
+- (BOOL)isPreviousScrollCompatibleWithScrollInDirection:(int64_t)direction;
 - (CGRect)disabledScrollingRegion;
-- (_UIQueuingScrollView)initWithFrame:(CGRect)a3 navigationOrientation:(int64_t)a4;
+- (_UIQueuingScrollView)initWithFrame:(CGRect)frame navigationOrientation:(int64_t)orientation;
 - (_UIQueuingScrollViewDataSource)qDataSource;
 - (_UIQueuingScrollViewDelegate)qDelegate;
-- (id)_dequeueViewForIndex:(int64_t)a3;
-- (id)_requestViewForIndex:(int64_t)a3;
-- (id)_viewAtIndex:(int64_t)a3 loadingIfNecessary:(BOOL)a4 updatingContents:(BOOL)a5 animated:(BOOL)a6;
-- (id)_viewBefore:(BOOL)a3 view:(id)a4;
+- (id)_dequeueViewForIndex:(int64_t)index;
+- (id)_requestViewForIndex:(int64_t)index;
+- (id)_viewAtIndex:(int64_t)index loadingIfNecessary:(BOOL)necessary updatingContents:(BOOL)contents animated:(BOOL)animated;
+- (id)_viewBefore:(BOOL)before view:(id)view;
 - (id)_visibleView;
-- (int64_t)_navigationDirectionForActiveScroll:(BOOL)a3;
+- (int64_t)_navigationDirectionForActiveScroll:(BOOL)scroll;
 - (int64_t)_navigationDirectionFromCurrentOffset;
 - (unint64_t)_abuttedPagingEdges;
 - (void)_adjustContentInsets;
-- (void)_boundsDidChangeToSize:(CGSize)a3;
-- (void)_cleanUpCompletionState:(id)a3 didFinish:(BOOL)a4 didComplete:(BOOL)a5;
-- (void)_commitGestureDrivenScrollRevealingView:(id)a3 concealingView:(id)a4 inDirection:(int64_t)a5 canComplete:(BOOL)a6;
+- (void)_boundsDidChangeToSize:(CGSize)size;
+- (void)_cleanUpCompletionState:(id)state didFinish:(BOOL)finish didComplete:(BOOL)complete;
+- (void)_commitGestureDrivenScrollRevealingView:(id)view concealingView:(id)concealingView inDirection:(int64_t)direction canComplete:(BOOL)complete;
 - (void)_didEndDraggingManualScroll;
 - (void)_didEndManualScroll;
-- (void)_didEndScroll:(BOOL)a3;
-- (void)_didScrollWithAnimation:(BOOL)a3 force:(BOOL)a4;
-- (void)_enqueueAnimatedScrollInDirection:(int64_t)a3 withView:(id)a4 completion:(id)a5;
-- (void)_enqueueCompletionState:(id)a3;
-- (void)_flushView:(id)a3 animated:(BOOL)a4;
-- (void)_handleDirectionalPageWithHorizontalVelocity:(double)a3 verticalVelocity:(double)a4;
+- (void)_didEndScroll:(BOOL)scroll;
+- (void)_didScrollWithAnimation:(BOOL)animation force:(BOOL)force;
+- (void)_enqueueAnimatedScrollInDirection:(int64_t)direction withView:(id)view completion:(id)completion;
+- (void)_enqueueCompletionState:(id)state;
+- (void)_flushView:(id)view animated:(BOOL)animated;
+- (void)_handleDirectionalPageWithHorizontalVelocity:(double)velocity verticalVelocity:(double)verticalVelocity;
 - (void)_invalidateOffscreenViews;
-- (void)_notifyDelegateDidBailoutOfScrollAndRevealedView:(id)a3;
-- (void)_notifyDelegateDidCommitManualScroll:(BOOL)a3 toRevealView:(id)a4 concealView:(id)a5 direction:(int64_t)a6 animated:(BOOL)a7 canComplete:(BOOL)a8;
-- (void)_notifyDelegateDidEndManualScroll:(BOOL)a3 toRevealView:(id)a4 direction:(int64_t)a5 animated:(BOOL)a6 didFinish:(BOOL)a7 didComplete:(BOOL)a8;
+- (void)_notifyDelegateDidBailoutOfScrollAndRevealedView:(id)view;
+- (void)_notifyDelegateDidCommitManualScroll:(BOOL)scroll toRevealView:(id)view concealView:(id)concealView direction:(int64_t)direction animated:(BOOL)animated canComplete:(BOOL)complete;
+- (void)_notifyDelegateDidEndManualScroll:(BOOL)scroll toRevealView:(id)view direction:(int64_t)direction animated:(BOOL)animated didFinish:(BOOL)finish didComplete:(BOOL)complete;
 - (void)_notifyDelegateDidFinishScrolling;
-- (void)_notifyDelegateWillManuallyScroll:(BOOL)a3 toRevealView:(id)a4 concealingView:(id)a5 animated:(BOOL)a6;
-- (void)_replaceViews:(id)a3 updatingContents:(BOOL)a4 adjustContentInsets:(BOOL)a5 animated:(BOOL)a6;
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4;
+- (void)_notifyDelegateWillManuallyScroll:(BOOL)scroll toRevealView:(id)view concealingView:(id)concealingView animated:(BOOL)animated;
+- (void)_replaceViews:(id)views updatingContents:(BOOL)contents adjustContentInsets:(BOOL)insets animated:(BOOL)animated;
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished;
 - (void)_scrollViewDidEndDecelerating;
-- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)a3;
-- (void)_setFrameAndApplyPageSpacing:(CGRect)a3;
-- (void)_setWrappedViewAtIndex:(int64_t)a3 withView:(id)a4;
+- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)deceleration;
+- (void)_setFrameAndApplyPageSpacing:(CGRect)spacing;
+- (void)_setWrappedViewAtIndex:(int64_t)index withView:(id)view;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPageSpacing:(double)a3;
-- (void)setQDataSource:(id)a3;
-- (void)setQDelegate:(id)a3;
-- (void)setView:(id)a3 direction:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setPageSpacing:(double)spacing;
+- (void)setQDataSource:(id)source;
+- (void)setQDelegate:(id)delegate;
+- (void)setView:(id)view direction:(int64_t)direction animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation _UIQueuingScrollView
 
-- (_UIQueuingScrollView)initWithFrame:(CGRect)a3 navigationOrientation:(int64_t)a4
+- (_UIQueuingScrollView)initWithFrame:(CGRect)frame navigationOrientation:(int64_t)orientation
 {
   v24.receiver = self;
   v24.super_class = _UIQueuingScrollView;
-  v5 = [(UIScrollView *)&v24 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(UIScrollView *)&v24 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_navigationOrientation = a4;
+    v5->_navigationOrientation = orientation;
     [(UIScrollView *)v5 setPagingEnabled:1];
     [(UIScrollView *)v6 setShowsHorizontalScrollIndicator:0];
     [(UIScrollView *)v6 setShowsVerticalScrollIndicator:0];
@@ -118,9 +118,9 @@
   return v6;
 }
 
-- (void)setQDelegate:(id)a3
+- (void)setQDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_qDelegate);
 
   if (WeakRetained != obj)
@@ -185,9 +185,9 @@
   }
 }
 
-- (void)setQDataSource:(id)a3
+- (void)setQDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_qDataSource);
 
   if (WeakRetained != obj)
@@ -229,41 +229,41 @@
   }
 }
 
-- (void)_setFrameAndApplyPageSpacing:(CGRect)a3
+- (void)_setFrameAndApplyPageSpacing:(CGRect)spacing
 {
   pageSpacing = self->_pageSpacing;
   navigationOrientation = self->_navigationOrientation;
   v5 = pageSpacing + pageSpacing;
-  v6 = a3.origin.y - pageSpacing;
-  v7 = a3.size.height + pageSpacing + pageSpacing;
-  v8 = a3.origin.x - pageSpacing;
-  v9 = a3.size.width + v5;
+  v6 = spacing.origin.y - pageSpacing;
+  v7 = spacing.size.height + pageSpacing + pageSpacing;
+  v8 = spacing.origin.x - pageSpacing;
+  v9 = spacing.size.width + v5;
   if (navigationOrientation)
   {
-    a3.origin.y = v6;
+    spacing.origin.y = v6;
   }
 
   else
   {
-    a3.origin.x = v8;
+    spacing.origin.x = v8;
   }
 
   if (navigationOrientation)
   {
-    a3.size.height = v7;
+    spacing.size.height = v7;
   }
 
   else
   {
-    a3.size.width = v9;
+    spacing.size.width = v9;
   }
 
-  [(_UIQueuingScrollView *)self setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, v8, v9];
+  [(_UIQueuingScrollView *)self setFrame:spacing.origin.x, spacing.origin.y, spacing.size.width, spacing.size.height, v8, v9];
 }
 
-- (void)setPageSpacing:(double)a3
+- (void)setPageSpacing:(double)spacing
 {
-  if (self->_pageSpacing != a3)
+  if (self->_pageSpacing != spacing)
   {
     [(UIView *)self frame];
     pageSpacing = self->_pageSpacing;
@@ -288,7 +288,7 @@
       v7 = v15;
     }
 
-    self->_pageSpacing = a3;
+    self->_pageSpacing = spacing;
     if (navigationOrientation)
     {
       v8 = v13;
@@ -298,12 +298,12 @@
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -317,12 +317,12 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -340,10 +340,10 @@
 {
   if ((*&self->_delegateFlags & 0x20) == 0 || (WeakRetained = objc_loadWeakRetained(&self->_qDelegate), v4 = [WeakRetained queuingScrollViewShouldLayoutSubviews:self], WeakRetained, v4))
   {
-    v5 = [(UIScrollView *)self isScrollAnimating];
-    if (![(_UIQueuingScrollView *)self _isScrollInProgress:v5]|| [(_UIQueuingScrollView *)self _navigationDirectionForActiveScroll:v5]!= -1)
+    isScrollAnimating = [(UIScrollView *)self isScrollAnimating];
+    if (![(_UIQueuingScrollView *)self _isScrollInProgress:isScrollAnimating]|| [(_UIQueuingScrollView *)self _navigationDirectionForActiveScroll:isScrollAnimating]!= -1)
     {
-      [(_UIQueuingScrollView *)self _didScrollWithAnimation:v5 force:0];
+      [(_UIQueuingScrollView *)self _didScrollWithAnimation:isScrollAnimating force:0];
     }
 
     v6.receiver = self;
@@ -352,10 +352,10 @@
   }
 }
 
-- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)a3
+- (void)_scrollViewDidEndDraggingWithDeceleration:(BOOL)deceleration
 {
-  v3 = a3;
-  if (a3)
+  decelerationCopy = deceleration;
+  if (deceleration)
   {
     [(_UIQueuingScrollView *)self _didEndDraggingManualScroll];
   }
@@ -368,7 +368,7 @@
 
   v5.receiver = self;
   v5.super_class = _UIQueuingScrollView;
-  [(UIScrollView *)&v5 _scrollViewDidEndDraggingWithDeceleration:v3];
+  [(UIScrollView *)&v5 _scrollViewDidEndDraggingWithDeceleration:decelerationCopy];
 }
 
 - (void)_scrollViewDidEndDecelerating
@@ -380,25 +380,25 @@
   [(UIScrollView *)&v3 _scrollViewDidEndDecelerating];
 }
 
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v6.receiver = self;
   v6.super_class = _UIQueuingScrollView;
-  [(UIScrollView *)&v6 _scrollViewAnimationEnded:a3 finished:?];
-  if (v4)
+  [(UIScrollView *)&v6 _scrollViewAnimationEnded:ended finished:?];
+  if (finishedCopy)
   {
     [(_UIQueuingScrollView *)self _didScrollWithAnimation:[(UIScrollView *)self isScrollAnimating] force:1];
     [(_UIQueuingScrollView *)self _didEndProgrammaticScroll];
   }
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIView *)self gestureRecognizers];
-  v9 = [v8 indexOfObject:v6];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  gestureRecognizers = [(UIView *)self gestureRecognizers];
+  v9 = [gestureRecognizers indexOfObject:recognizerCopy];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL || CGRectIsEmpty(self->_disabledScrollingRegion))
   {
@@ -406,8 +406,8 @@
     goto LABEL_4;
   }
 
-  v8 = [(UIView *)self superview];
-  [v7 locationInView:v8];
+  gestureRecognizers = [(UIView *)self superview];
+  [touchCopy locationInView:gestureRecognizers];
   v16.x = v12;
   v16.y = v13;
   if (!CGRectContainsPoint(self->_disabledScrollingRegion, v16))
@@ -416,7 +416,7 @@
 LABEL_4:
     v15.receiver = self;
     v15.super_class = _UIQueuingScrollView;
-    v11 = [(UIScrollView *)&v15 _gestureRecognizer:v6 shouldReceiveTouch:v7];
+    v11 = [(UIScrollView *)&v15 _gestureRecognizer:recognizerCopy shouldReceiveTouch:touchCopy];
     if (!v10)
     {
       goto LABEL_9;
@@ -437,10 +437,10 @@ LABEL_9:
   [(_UIQueuingScrollView *)self _adjustContentInsets];
   v34.receiver = self;
   v34.super_class = _UIQueuingScrollView;
-  v3 = [(UIScrollView *)&v34 _abuttedPagingEdges];
+  _abuttedPagingEdges = [(UIScrollView *)&v34 _abuttedPagingEdges];
   if ([(UIScrollView *)self _isHorizontalBouncing]|| [(UIScrollView *)self _isVerticalBouncing]|| ![(_UIQueuingScrollView *)self _dataSourceProvidesViews])
   {
-    return v3;
+    return _abuttedPagingEdges;
   }
 
   navigationOrientation = self->_navigationOrientation;
@@ -453,7 +453,7 @@ LABEL_9:
   v13 = navigationOrientation ? v12 : v10;
   if (![(UIScrollView *)self isDecelerating]|| fabs(v13) < 2.22044605e-16)
   {
-    return v3;
+    return _abuttedPagingEdges;
   }
 
   v14 = self->_navigationOrientation;
@@ -470,7 +470,7 @@ LABEL_14:
 
       if (!v20)
       {
-        return v3;
+        return _abuttedPagingEdges;
       }
 
       v21 = 0;
@@ -507,7 +507,7 @@ LABEL_14:
 LABEL_20:
     if (v14 != 1)
     {
-      return v3;
+      return _abuttedPagingEdges;
     }
 
     [(UIScrollView *)self _pageDecelerationTarget];
@@ -515,7 +515,7 @@ LABEL_20:
     [(UIView *)self bounds];
     if (v25 <= CGRectGetHeight(v38))
     {
-      return v3;
+      return _abuttedPagingEdges;
     }
   }
 
@@ -524,7 +524,7 @@ LABEL_20:
 
   if (!v26)
   {
-    return v3;
+    return _abuttedPagingEdges;
   }
 
   v19 = 0;
@@ -534,7 +534,7 @@ LABEL_24:
   {
     if (v27 != 1)
     {
-      return v3;
+      return _abuttedPagingEdges;
     }
 
     v28 = 4;
@@ -546,8 +546,8 @@ LABEL_24:
     v28 = 8;
   }
 
-  v29 = v28 | v3;
-  v30 = v3 & ~v28;
+  v29 = v28 | _abuttedPagingEdges;
+  v30 = _abuttedPagingEdges & ~v28;
   if (v21)
   {
     v30 = v29;
@@ -566,54 +566,54 @@ LABEL_24:
   }
 }
 
-- (void)_handleDirectionalPageWithHorizontalVelocity:(double)a3 verticalVelocity:(double)a4
+- (void)_handleDirectionalPageWithHorizontalVelocity:(double)velocity verticalVelocity:(double)verticalVelocity
 {
-  v5 = fabs(a4);
-  if (fabs(a3) >= 2.22044605e-16 || v5 >= 2.22044605e-16)
+  v5 = fabs(verticalVelocity);
+  if (fabs(velocity) >= 2.22044605e-16 || v5 >= 2.22044605e-16)
   {
     if (self->_navigationOrientation)
     {
-      a3 = a4;
+      velocity = verticalVelocity;
     }
 
-    v8 = a3 <= 0.0;
+    v8 = velocity <= 0.0;
     WeakRetained = objc_loadWeakRetained(&self->_qDelegate);
     [WeakRetained queuingScrollView:self attemptToPageInDirection:v8];
   }
 }
 
-- (void)_setWrappedViewAtIndex:(int64_t)a3 withView:(id)a4
+- (void)_setWrappedViewAtIndex:(int64_t)index withView:(id)view
 {
-  v7 = a4;
-  if (!v7)
+  viewCopy = view;
+  if (!viewCopy)
   {
     goto LABEL_9;
   }
 
-  v14 = v7;
-  v8 = [(NSArray *)self->_wrapperViews objectAtIndex:a3];
-  v9 = [v8 subviews];
-  if (![v9 count])
+  v14 = viewCopy;
+  v8 = [(NSArray *)self->_wrapperViews objectAtIndex:index];
+  subviews = [v8 subviews];
+  if (![subviews count])
   {
     goto LABEL_5;
   }
 
-  v10 = [v8 subviews];
-  v11 = [v10 _ui_onlyObject];
+  subviews2 = [v8 subviews];
+  _ui_onlyObject = [subviews2 _ui_onlyObject];
 
   v12 = v14;
-  if (v11 != v14)
+  if (_ui_onlyObject != v14)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:354 description:@"Unexpected subviews"];
+    subviews = [MEMORY[0x1E696AAA8] currentHandler];
+    [subviews handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:354 description:@"Unexpected subviews"];
 LABEL_5:
 
     v12 = v14;
   }
 
-  v13 = [v12 superview];
+  superview = [v12 superview];
 
-  if (v8 != v13)
+  if (v8 != superview)
   {
     [v8 bounds];
     [v14 setFrame:?];
@@ -621,7 +621,7 @@ LABEL_5:
     [v8 addSubview:v14];
   }
 
-  v7 = v14;
+  viewCopy = v14;
 LABEL_9:
 }
 
@@ -650,21 +650,21 @@ LABEL_9:
   return v5;
 }
 
-- (id)_viewBefore:(BOOL)a3 view:(id)a4
+- (id)_viewBefore:(BOOL)before view:(id)view
 {
-  v6 = a4;
+  viewCopy = view;
   if ([(_UIQueuingScrollView *)self _dataSourceProvidesViews])
   {
     WeakRetained = objc_loadWeakRetained(&self->_qDataSource);
     v8 = WeakRetained;
-    if (a3)
+    if (before)
     {
-      [WeakRetained queuingScrollView:self viewBeforeView:v6];
+      [WeakRetained queuingScrollView:self viewBeforeView:viewCopy];
     }
 
     else
     {
-      [WeakRetained queuingScrollView:self viewAfterView:v6];
+      [WeakRetained queuingScrollView:self viewAfterView:viewCopy];
     }
     v9 = ;
   }
@@ -680,12 +680,12 @@ LABEL_9:
 - (id)_visibleView
 {
   v4 = [(NSArray *)self->_views objectAtIndex:1];
-  v5 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v4 == v5)
+  if (v4 == null)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:385 description:@"Visible view can't be 'NULL'"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:385 description:@"Visible view can't be 'NULL'"];
   }
 
   if (v4 == @"kUIFaultingViewSentinel")
@@ -703,13 +703,13 @@ LABEL_9:
   return v6;
 }
 
-- (void)_flushView:(id)a3 animated:(BOOL)a4
+- (void)_flushView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   pendingVisibleView = self->_pendingVisibleView;
-  v9 = v6;
-  if (pendingVisibleView == v6)
+  v9 = viewCopy;
+  if (pendingVisibleView == viewCopy)
   {
     self->_pendingVisibleView = 0;
   }
@@ -717,19 +717,19 @@ LABEL_9:
   if ((*&self->_delegateFlags & 0x100) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_qDataSource);
-    [WeakRetained queuingScrollView:self didFlushView:v9 animated:v4];
+    [WeakRetained queuingScrollView:self didFlushView:v9 animated:animatedCopy];
   }
 }
 
-- (void)_replaceViews:(id)a3 updatingContents:(BOOL)a4 adjustContentInsets:(BOOL)a5 animated:(BOOL)a6
+- (void)_replaceViews:(id)views updatingContents:(BOOL)contents adjustContentInsets:(BOOL)insets animated:(BOOL)animated
 {
-  v6 = a6;
+  animatedCopy = animated;
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if ([(NSArray *)v10 count]!= 3)
+  viewsCopy = views;
+  if ([(NSArray *)viewsCopy count]!= 3)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:399 description:{@"Invalid parameter not satisfying: %@", @"[views count] == 3"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:399 description:{@"Invalid parameter not satisfying: %@", @"[views count] == 3"}];
   }
 
   v24 = 0u;
@@ -756,9 +756,9 @@ LABEL_9:
         if (objc_opt_isKindOfClass())
         {
           [v16 removeFromSuperview];
-          if (![(NSArray *)v10 containsObject:v16])
+          if (![(NSArray *)viewsCopy containsObject:v16])
           {
-            [(_UIQueuingScrollView *)self _flushView:v16 animated:v6];
+            [(_UIQueuingScrollView *)self _flushView:v16 animated:animatedCopy];
           }
         }
       }
@@ -771,41 +771,41 @@ LABEL_9:
 
   for (j = 0; j != 3; ++j)
   {
-    v18 = [(NSArray *)v10 objectAtIndex:j];
+    v18 = [(NSArray *)viewsCopy objectAtIndex:j];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (a4 || [(NSArray *)self->_views containsObject:v18]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (contents || [(NSArray *)self->_views containsObject:v18]))
     {
       [(_UIQueuingScrollView *)self _setWrappedViewAtIndex:j withView:v18];
     }
   }
 
   views = self->_views;
-  self->_views = v10;
+  self->_views = viewsCopy;
 
-  if (a5)
+  if (insets)
   {
     [(_UIQueuingScrollView *)self _adjustContentInsets];
   }
 }
 
-- (id)_requestViewForIndex:(int64_t)a3
+- (id)_requestViewForIndex:(int64_t)index
 {
-  if (a3)
+  if (index)
   {
-    if (a3 != 2)
+    if (index != 2)
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"LEFT_VIEW_INDEX == index || index == RIGHT_VIEW_INDEX"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"LEFT_VIEW_INDEX == index || index == RIGHT_VIEW_INDEX"}];
     }
 
-    v6 = [(_UIQueuingScrollView *)self _visibleView];
-    v7 = [(_UIQueuingScrollView *)self _viewAfterView:v6];
+    _visibleView = [(_UIQueuingScrollView *)self _visibleView];
+    v7 = [(_UIQueuingScrollView *)self _viewAfterView:_visibleView];
   }
 
   else
   {
-    v6 = [(_UIQueuingScrollView *)self _visibleView];
-    v7 = [(_UIQueuingScrollView *)self _viewBeforeView:v6];
+    _visibleView = [(_UIQueuingScrollView *)self _visibleView];
+    v7 = [(_UIQueuingScrollView *)self _viewBeforeView:_visibleView];
   }
 
   v8 = v7;
@@ -813,62 +813,62 @@ LABEL_9:
   return v8;
 }
 
-- (id)_dequeueViewForIndex:(int64_t)a3
+- (id)_dequeueViewForIndex:(int64_t)index
 {
-  if ((a3 | 2) != 2)
+  if ((index | 2) != 2)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:428 description:{@"Invalid parameter not satisfying: %@", @"LEFT_VIEW_INDEX == index || index == RIGHT_VIEW_INDEX"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:428 description:{@"Invalid parameter not satisfying: %@", @"LEFT_VIEW_INDEX == index || index == RIGHT_VIEW_INDEX"}];
   }
 
   if (![(NSMutableArray *)self->_viewStateQueue count])
   {
-    v9 = 0;
+    view = 0;
     goto LABEL_11;
   }
 
-  v7 = [(NSMutableArray *)self->_viewStateQueue _ui_peek];
-  v8 = [v7 transitionDirection];
-  if (a3 == 2 && !v8)
+  _ui_peek = [(NSMutableArray *)self->_viewStateQueue _ui_peek];
+  transitionDirection = [_ui_peek transitionDirection];
+  if (index == 2 && !transitionDirection)
   {
 
 LABEL_10:
-    v12 = [(NSMutableArray *)self->_viewStateQueue _ui_dequeue];
-    v9 = [v12 view];
+    _ui_dequeue = [(NSMutableArray *)self->_viewStateQueue _ui_dequeue];
+    view = [_ui_dequeue view];
 
     goto LABEL_11;
   }
 
-  v10 = [(NSMutableArray *)self->_viewStateQueue _ui_peek];
-  v11 = [v10 transitionDirection];
+  _ui_peek2 = [(NSMutableArray *)self->_viewStateQueue _ui_peek];
+  transitionDirection2 = [_ui_peek2 transitionDirection];
 
-  v9 = 0;
-  if (!a3 && v11 == 1)
+  view = 0;
+  if (!index && transitionDirection2 == 1)
   {
     goto LABEL_10;
   }
 
 LABEL_11:
 
-  return v9;
+  return view;
 }
 
-- (id)_viewAtIndex:(int64_t)a3 loadingIfNecessary:(BOOL)a4 updatingContents:(BOOL)a5 animated:(BOOL)a6
+- (id)_viewAtIndex:(int64_t)index loadingIfNecessary:(BOOL)necessary updatingContents:(BOOL)contents animated:(BOOL)animated
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  if (a3 >= 3)
+  animatedCopy = animated;
+  contentsCopy = contents;
+  necessaryCopy = necessary;
+  if (index >= 3)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:439 description:{@"Invalid parameter not satisfying: %@", @"LEFT_VIEW_INDEX <= index && index <= RIGHT_VIEW_INDEX"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:439 description:{@"Invalid parameter not satisfying: %@", @"LEFT_VIEW_INDEX <= index && index <= RIGHT_VIEW_INDEX"}];
   }
 
-  v11 = [(NSArray *)self->_views objectAtIndex:a3];
+  v11 = [(NSArray *)self->_views objectAtIndex:index];
   v12 = v11;
-  if (v8 && v11 == @"kUIFaultingViewSentinel")
+  if (necessaryCopy && v11 == @"kUIFaultingViewSentinel")
   {
-    v13 = [(_UIQueuingScrollView *)self _dequeueViewForIndex:a3];
+    v13 = [(_UIQueuingScrollView *)self _dequeueViewForIndex:index];
     v14 = v13;
     if (v13)
     {
@@ -877,36 +877,36 @@ LABEL_11:
 
     else
     {
-      v15 = [(_UIQueuingScrollView *)self _requestViewForIndex:a3];
+      v15 = [(_UIQueuingScrollView *)self _requestViewForIndex:index];
       v16 = v15;
       if (v15)
       {
-        v17 = v15;
+        null = v15;
       }
 
       else
       {
-        v17 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v12 = v17;
+      v12 = null;
     }
 
     if (v12 != @"kUIFaultingViewSentinel")
     {
       v18 = v12;
       v19 = [(NSArray *)self->_views mutableCopy];
-      [v19 replaceObjectAtIndex:a3 withObject:v18];
-      [(_UIQueuingScrollView *)self _replaceViews:v19 updatingContents:v7 adjustContentInsets:1 animated:v6];
+      [v19 replaceObjectAtIndex:index withObject:v18];
+      [(_UIQueuingScrollView *)self _replaceViews:v19 updatingContents:contentsCopy adjustContentInsets:1 animated:animatedCopy];
     }
   }
 
-  if (v7)
+  if (contentsCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(_UIQueuingScrollView *)self _setWrappedViewAtIndex:a3 withView:v12];
+      [(_UIQueuingScrollView *)self _setWrappedViewAtIndex:index withView:v12];
     }
   }
 
@@ -929,11 +929,11 @@ LABEL_11:
 - (void)_invalidateOffscreenViews
 {
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(_UIQueuingScrollView *)self _visibleView];
-  v7 = v4;
-  if (v4)
+  _visibleView = [(_UIQueuingScrollView *)self _visibleView];
+  v7 = _visibleView;
+  if (_visibleView)
   {
-    v5 = v4;
+    v5 = _visibleView;
   }
 
   else
@@ -945,13 +945,13 @@ LABEL_11:
   [(_UIQueuingScrollView *)self _replaceViews:v6 updatingContents:1 adjustContentInsets:1 animated:0];
 }
 
-- (BOOL)isPreviousScrollCompatibleWithScrollInDirection:(int64_t)a3
+- (BOOL)isPreviousScrollCompatibleWithScrollInDirection:(int64_t)direction
 {
-  v4 = [(NSMutableArray *)self->_viewStateQueue lastObject];
-  v5 = v4;
-  if (v4)
+  lastObject = [(NSMutableArray *)self->_viewStateQueue lastObject];
+  v5 = lastObject;
+  if (lastObject)
   {
-    v6 = [v4 isCompatibleWithTransitionInDirection:a3];
+    v6 = [lastObject isCompatibleWithTransitionInDirection:direction];
   }
 
   else
@@ -969,15 +969,15 @@ LABEL_11:
     return 1;
   }
 
-  v3 = [(NSMutableArray *)self->_completionStateQueue lastObject];
-  v4 = [v3 isManual];
+  lastObject = [(NSMutableArray *)self->_completionStateQueue lastObject];
+  isManual = [lastObject isManual];
 
-  return v4;
+  return isManual;
 }
 
-- (int64_t)_navigationDirectionForActiveScroll:(BOOL)a3
+- (int64_t)_navigationDirectionForActiveScroll:(BOOL)scroll
 {
-  v3 = a3;
+  scrollCopy = scroll;
   if ([(UIScrollView *)self _pagingRight]|| [(UIScrollView *)self _pagingDown])
   {
     return 0;
@@ -989,7 +989,7 @@ LABEL_11:
   }
 
   navigationOrientation = self->_navigationOrientation;
-  if (v3)
+  if (scrollCopy)
   {
     if (!navigationOrientation)
     {
@@ -1207,34 +1207,34 @@ LABEL_7:
   }
 }
 
-- (void)_enqueueCompletionState:(id)a3
+- (void)_enqueueCompletionState:(id)state
 {
-  v13 = a3;
-  if (!v13)
+  stateCopy = state;
+  if (!stateCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:511 description:{@"Invalid parameter not satisfying: %@", @"state"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:511 description:{@"Invalid parameter not satisfying: %@", @"state"}];
   }
 
   if ([(NSMutableArray *)self->_completionStateQueue count])
   {
-    v5 = [(NSMutableArray *)self->_completionStateQueue lastObject];
-    v6 = [v5 view];
-    v7 = [v13 view];
-    v8 = v7;
-    if (v6 == v7)
+    lastObject = [(NSMutableArray *)self->_completionStateQueue lastObject];
+    view = [lastObject view];
+    view2 = [stateCopy view];
+    v8 = view2;
+    if (view == view2)
     {
-      v9 = [(NSMutableArray *)self->_completionStateQueue lastObject];
-      v10 = [v9 transitionDirection];
-      v11 = [v13 transitionDirection];
+      lastObject2 = [(NSMutableArray *)self->_completionStateQueue lastObject];
+      transitionDirection = [lastObject2 transitionDirection];
+      transitionDirection2 = [stateCopy transitionDirection];
 
-      if (v10 != v11)
+      if (transitionDirection != transitionDirection2)
       {
         goto LABEL_9;
       }
 
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:513 description:@"Duplicate states in queue"];
+      lastObject = [MEMORY[0x1E696AAA8] currentHandler];
+      [lastObject handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:513 description:@"Duplicate states in queue"];
     }
 
     else
@@ -1243,30 +1243,30 @@ LABEL_7:
   }
 
 LABEL_9:
-  [(NSMutableArray *)self->_completionStateQueue _ui_enqueue:v13];
+  [(NSMutableArray *)self->_completionStateQueue _ui_enqueue:stateCopy];
 }
 
-- (void)_cleanUpCompletionState:(id)a3 didFinish:(BOOL)a4 didComplete:(BOOL)a5
+- (void)_cleanUpCompletionState:(id)state didFinish:(BOOL)finish didComplete:(BOOL)complete
 {
-  if (a3)
+  if (state)
   {
-    v5 = a5;
-    v6 = a4;
+    completeCopy = complete;
+    finishCopy = finish;
     viewStateQueue = self->_viewStateQueue;
-    v8 = a3;
-    [(NSMutableArray *)viewStateQueue removeObject:v8];
-    [v8 cleanupWithFinishedState:v6 completedState:v5];
+    stateCopy = state;
+    [(NSMutableArray *)viewStateQueue removeObject:stateCopy];
+    [stateCopy cleanupWithFinishedState:finishCopy completedState:completeCopy];
   }
 }
 
-- (void)_enqueueAnimatedScrollInDirection:(int64_t)a3 withView:(id)a4 completion:(id)a5
+- (void)_enqueueAnimatedScrollInDirection:(int64_t)direction withView:(id)view completion:(id)completion
 {
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  viewCopy = view;
+  completionCopy = completion;
+  if (!viewCopy)
   {
-    v70 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v70 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:529 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:529 description:{@"Invalid parameter not satisfying: %@", @"view"}];
   }
 
   [(UIScrollView *)self contentOffset];
@@ -1293,7 +1293,7 @@ LABEL_9:
   if (navigationOrientation)
   {
     Height = CGRectGetHeight(*&v18);
-    if (a3)
+    if (direction)
     {
       Height = -Height;
     }
@@ -1304,7 +1304,7 @@ LABEL_9:
   else
   {
     Width = CGRectGetWidth(*&v18);
-    if (a3)
+    if (direction)
     {
       Width = -Width;
     }
@@ -1320,33 +1320,33 @@ LABEL_9:
     v72[2] = __78___UIQueuingScrollView__enqueueAnimatedScrollInDirection_withView_completion___block_invoke_4;
     v72[3] = &unk_1E7103130;
     v72[4] = self;
-    v73 = v9;
-    v75 = a3;
-    v74 = v10;
-    v27 = [(_UIQueuingScrollViewState *)v29 initWithTransitionDirection:a3 view:v73 manual:0 completion:v72];
+    v73 = viewCopy;
+    directionCopy = direction;
+    v74 = completionCopy;
+    v27 = [(_UIQueuingScrollViewState *)v29 initWithTransitionDirection:direction view:v73 manual:0 completion:v72];
     [(NSMutableArray *)self->_viewStateQueue _ui_enqueue:v27];
     v30 = MEMORY[0x1E695DEC8];
-    if (a3 == 1)
+    if (direction == 1)
     {
-      v31 = [(_UIQueuingScrollView *)self _visibleView];
+      _visibleView = [(_UIQueuingScrollView *)self _visibleView];
       v32 = @"kUIFaultingViewSentinel";
     }
 
     else
     {
       v32 = [(NSArray *)self->_views objectAtIndex:0];
-      v31 = [(_UIQueuingScrollView *)self _visibleView];
-      if (!a3)
+      _visibleView = [(_UIQueuingScrollView *)self _visibleView];
+      if (!direction)
       {
         v62 = @"kUIFaultingViewSentinel";
 LABEL_37:
-        v63 = [v30 arrayWithObjects:{v32, v31, v62, 0}];
+        v63 = [v30 arrayWithObjects:{v32, _visibleView, v62, 0}];
         [(_UIQueuingScrollView *)self _replaceViews:v63 updatingContents:1 adjustContentInsets:1 animated:1];
 
-        if (a3)
+        if (direction)
         {
 
-          if (a3 == 1)
+          if (direction == 1)
           {
             goto LABEL_43;
           }
@@ -1369,10 +1369,10 @@ LABEL_43:
     goto LABEL_37;
   }
 
-  v24 = [(NSMutableArray *)self->_completionStateQueue lastObject];
-  v25 = [v24 transitionDirection];
+  lastObject = [(NSMutableArray *)self->_completionStateQueue lastObject];
+  transitionDirection = [lastObject transitionDirection];
 
-  if (v25 == a3)
+  if (transitionDirection == direction)
   {
     v26 = [_UIQueuingScrollViewState alloc];
     v76[0] = MEMORY[0x1E69E9820];
@@ -1380,10 +1380,10 @@ LABEL_43:
     v76[2] = __78___UIQueuingScrollView__enqueueAnimatedScrollInDirection_withView_completion___block_invoke_3;
     v76[3] = &unk_1E7103130;
     v76[4] = self;
-    v77 = v9;
-    v79 = a3;
-    v78 = v10;
-    v27 = [(_UIQueuingScrollViewState *)v26 initWithTransitionDirection:a3 view:v77 manual:0 completion:v76];
+    v77 = viewCopy;
+    directionCopy2 = direction;
+    v78 = completionCopy;
+    v27 = [(_UIQueuingScrollViewState *)v26 initWithTransitionDirection:direction view:v77 manual:0 completion:v76];
     [(NSMutableArray *)self->_viewStateQueue _ui_enqueue:v27];
     [(_UIQueuingScrollView *)self _enqueueCompletionState:v27];
     [(UIScrollView *)self setContentOffset:1 animated:v12, v14];
@@ -1398,8 +1398,8 @@ LABEL_44:
   completionStateQueue = self->_completionStateQueue;
   if (v33 == 1)
   {
-    v35 = [(NSMutableArray *)completionStateQueue _ui_dequeue];
-    [(_UIQueuingScrollView *)self _cleanUpCompletionState:v35 didFinish:0 didComplete:0];
+    _ui_dequeue = [(NSMutableArray *)completionStateQueue _ui_dequeue];
+    [(_UIQueuingScrollView *)self _cleanUpCompletionState:_ui_dequeue didFinish:0 didComplete:0];
 
     v36 = [_UIQueuingScrollViewState alloc];
     v87[0] = MEMORY[0x1E69E9820];
@@ -1407,19 +1407,19 @@ LABEL_44:
     v87[2] = __78___UIQueuingScrollView__enqueueAnimatedScrollInDirection_withView_completion___block_invoke;
     v87[3] = &unk_1E7103130;
     v87[4] = self;
-    v37 = v9;
+    v37 = viewCopy;
     v88 = v37;
-    v90 = a3;
-    v71 = v10;
-    v89 = v10;
-    v27 = [(_UIQueuingScrollViewState *)v36 initWithTransitionDirection:a3 view:v37 manual:0 completion:v87];
+    directionCopy3 = direction;
+    v71 = completionCopy;
+    v89 = completionCopy;
+    v27 = [(_UIQueuingScrollViewState *)v36 initWithTransitionDirection:direction view:v37 manual:0 completion:v87];
     [(UIScrollView *)self _stopScrollingAndZoomingAnimationsPinningToContentViewport:0];
     [(_UIQueuingScrollView *)self _enqueueCompletionState:v27];
-    v38 = [(_UIQueuingScrollView *)self _visibleView];
-    [(_UIQueuingScrollView *)self _notifyDelegateWillManuallyScroll:0 toRevealView:v37 concealingView:v38 animated:1];
+    _visibleView2 = [(_UIQueuingScrollView *)self _visibleView];
+    [(_UIQueuingScrollView *)self _notifyDelegateWillManuallyScroll:0 toRevealView:v37 concealingView:_visibleView2 animated:1];
 
-    v39 = [(_UIQueuingScrollView *)self _visibleView];
-    [(_UIQueuingScrollView *)self _notifyDelegateDidCommitManualScroll:0 toRevealView:v37 concealView:v39 direction:a3 animated:1 canComplete:1];
+    _visibleView3 = [(_UIQueuingScrollView *)self _visibleView];
+    [(_UIQueuingScrollView *)self _notifyDelegateDidCommitManualScroll:0 toRevealView:v37 concealView:_visibleView3 direction:direction animated:1 canComplete:1];
 
     v40 = MEMORY[0x1E695DEC8];
     v41 = [(_UIQueuingScrollView *)self _viewAtIndex:0 loadingIfNecessary:0 updatingContents:0 animated:1];
@@ -1486,32 +1486,32 @@ LABEL_44:
     [(UIScrollView *)self setContentOffset:1 animated:v12, v14];
     [(UIScrollView *)self _setContentOffsetAnimationDuration:v49];
 
-    v10 = v71;
+    completionCopy = v71;
   }
 
   else
   {
-    v64 = [(NSMutableArray *)completionStateQueue lastObject];
+    lastObject2 = [(NSMutableArray *)completionStateQueue lastObject];
     [(NSMutableArray *)self->_completionStateQueue removeLastObject];
-    [(NSMutableArray *)self->_viewStateQueue removeObject:v64];
-    v65 = [(NSMutableArray *)self->_completionStateQueue lastObject];
+    [(NSMutableArray *)self->_viewStateQueue removeObject:lastObject2];
+    lastObject3 = [(NSMutableArray *)self->_completionStateQueue lastObject];
     [(NSMutableArray *)self->_completionStateQueue removeLastObject];
     v66 = [_UIQueuingScrollViewState alloc];
-    v67 = [v65 transitionDirection];
+    transitionDirection2 = [lastObject3 transitionDirection];
     v80[0] = MEMORY[0x1E69E9820];
     v80[1] = 3221225472;
     v80[2] = __78___UIQueuingScrollView__enqueueAnimatedScrollInDirection_withView_completion___block_invoke_2;
     v80[3] = &unk_1E7103158;
     v80[4] = self;
-    v81 = v65;
-    v82 = v64;
-    v83 = v9;
-    v85 = a3;
-    v84 = v10;
+    v81 = lastObject3;
+    v82 = lastObject2;
+    v83 = viewCopy;
+    directionCopy4 = direction;
+    v84 = completionCopy;
     v86 = a2;
-    v68 = v64;
-    v69 = v65;
-    v27 = [(_UIQueuingScrollViewState *)v66 initWithTransitionDirection:v67 view:v83 manual:0 completion:v80];
+    v68 = lastObject2;
+    v69 = lastObject3;
+    v27 = [(_UIQueuingScrollViewState *)v66 initWithTransitionDirection:transitionDirection2 view:v83 manual:0 completion:v80];
     [(_UIQueuingScrollView *)self _enqueueCompletionState:v27];
     [(UIScrollView *)self setContentOffset:1 animated:v12, v14];
   }
@@ -1519,57 +1519,57 @@ LABEL_44:
 LABEL_45:
 }
 
-- (void)_notifyDelegateWillManuallyScroll:(BOOL)a3 toRevealView:(id)a4 concealingView:(id)a5 animated:(BOOL)a6
+- (void)_notifyDelegateWillManuallyScroll:(BOOL)scroll toRevealView:(id)view concealingView:(id)concealingView animated:(BOOL)animated
 {
-  v6 = a6;
-  v8 = a3;
-  v12 = a4;
-  v10 = a5;
-  if (v12 && (*&self->_delegateFlags & 1) != 0)
+  animatedCopy = animated;
+  scrollCopy = scroll;
+  viewCopy = view;
+  concealingViewCopy = concealingView;
+  if (viewCopy && (*&self->_delegateFlags & 1) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_qDelegate);
-    [WeakRetained queuingScrollView:self willManuallyScroll:v8 toRevealView:v12 concealView:v10 animated:v6];
+    [WeakRetained queuingScrollView:self willManuallyScroll:scrollCopy toRevealView:viewCopy concealView:concealingViewCopy animated:animatedCopy];
   }
 }
 
-- (void)_notifyDelegateDidCommitManualScroll:(BOOL)a3 toRevealView:(id)a4 concealView:(id)a5 direction:(int64_t)a6 animated:(BOOL)a7 canComplete:(BOOL)a8
+- (void)_notifyDelegateDidCommitManualScroll:(BOOL)scroll toRevealView:(id)view concealView:(id)concealView direction:(int64_t)direction animated:(BOOL)animated canComplete:(BOOL)complete
 {
-  v9 = a7;
-  v12 = a3;
-  v17 = a4;
-  v14 = a5;
-  if (v17 && (*&self->_delegateFlags & 2) != 0)
+  animatedCopy = animated;
+  scrollCopy = scroll;
+  viewCopy = view;
+  concealViewCopy = concealView;
+  if (viewCopy && (*&self->_delegateFlags & 2) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_qDelegate);
-    LOBYTE(v16) = a8;
-    [WeakRetained queuingScrollView:self didCommitManualScroll:v12 toRevealView:v17 concealView:v14 direction:a6 animated:v9 canComplete:v16];
+    LOBYTE(v16) = complete;
+    [WeakRetained queuingScrollView:self didCommitManualScroll:scrollCopy toRevealView:viewCopy concealView:concealViewCopy direction:direction animated:animatedCopy canComplete:v16];
   }
 }
 
-- (void)_notifyDelegateDidEndManualScroll:(BOOL)a3 toRevealView:(id)a4 direction:(int64_t)a5 animated:(BOOL)a6 didFinish:(BOOL)a7 didComplete:(BOOL)a8
+- (void)_notifyDelegateDidEndManualScroll:(BOOL)scroll toRevealView:(id)view direction:(int64_t)direction animated:(BOOL)animated didFinish:(BOOL)finish didComplete:(BOOL)complete
 {
-  v9 = a7;
-  v10 = a6;
-  v12 = a3;
-  v14 = a4;
-  if (v14 && (*&self->_delegateFlags & 4) != 0)
+  finishCopy = finish;
+  animatedCopy = animated;
+  scrollCopy = scroll;
+  viewCopy = view;
+  if (viewCopy && (*&self->_delegateFlags & 4) != 0)
   {
-    v17 = v14;
+    v17 = viewCopy;
     WeakRetained = objc_loadWeakRetained(&self->_qDelegate);
-    LOBYTE(v16) = a8;
-    [WeakRetained queuingScrollView:self didEndManualScroll:v12 toRevealView:v17 direction:a5 animated:v10 didFinish:v9 didComplete:v16];
+    LOBYTE(v16) = complete;
+    [WeakRetained queuingScrollView:self didEndManualScroll:scrollCopy toRevealView:v17 direction:direction animated:animatedCopy didFinish:finishCopy didComplete:v16];
 
-    v14 = v17;
+    viewCopy = v17;
   }
 }
 
-- (void)_notifyDelegateDidBailoutOfScrollAndRevealedView:(id)a3
+- (void)_notifyDelegateDidBailoutOfScrollAndRevealedView:(id)view
 {
   if ((*&self->_delegateFlags & 8) != 0)
   {
-    v5 = a3;
+    viewCopy = view;
     WeakRetained = objc_loadWeakRetained(&self->_qDelegate);
-    [WeakRetained queuingScrollView:self didBailoutOfScrollAndRevealedView:v5];
+    [WeakRetained queuingScrollView:self didBailoutOfScrollAndRevealedView:viewCopy];
   }
 }
 
@@ -1582,45 +1582,45 @@ LABEL_45:
   }
 }
 
-- (void)setView:(id)a3 direction:(int64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)setView:(id)view direction:(int64_t)direction animated:(BOOL)animated completion:(id)completion
 {
-  v17 = a3;
-  v11 = a6;
-  if (!v17)
+  viewCopy = view;
+  completionCopy = completion;
+  if (!viewCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:681 description:{@"Invalid parameter not satisfying: %@", @"view"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:681 description:{@"Invalid parameter not satisfying: %@", @"view"}];
   }
 
   if (![(UIScrollView *)self isTracking]|| ![(UIScrollView *)self isDragging])
   {
-    if (a5)
+    if (animated)
     {
-      [(_UIQueuingScrollView *)self _enqueueAnimatedScrollInDirection:a4 withView:v17 completion:v11];
+      [(_UIQueuingScrollView *)self _enqueueAnimatedScrollInDirection:direction withView:viewCopy completion:completionCopy];
     }
 
     else
     {
       while ([(NSMutableArray *)self->_completionStateQueue count])
       {
-        v12 = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
-        [(_UIQueuingScrollView *)self _cleanUpCompletionState:v12 didFinish:0 didComplete:0];
+        _ui_dequeue = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
+        [(_UIQueuingScrollView *)self _cleanUpCompletionState:_ui_dequeue didFinish:0 didComplete:0];
       }
 
       [(NSMutableArray *)self->_viewStateQueue removeAllObjects];
-      v13 = [(_UIQueuingScrollView *)self _visibleView];
-      [(_UIQueuingScrollView *)self _notifyDelegateWillManuallyScroll:0 toRevealView:v17 concealingView:v13 animated:0];
+      _visibleView = [(_UIQueuingScrollView *)self _visibleView];
+      [(_UIQueuingScrollView *)self _notifyDelegateWillManuallyScroll:0 toRevealView:viewCopy concealingView:_visibleView animated:0];
 
-      v14 = [(_UIQueuingScrollView *)self _visibleView];
-      [(_UIQueuingScrollView *)self _notifyDelegateDidCommitManualScroll:0 toRevealView:v17 concealView:v14 direction:a4 animated:0 canComplete:1];
+      _visibleView2 = [(_UIQueuingScrollView *)self _visibleView];
+      [(_UIQueuingScrollView *)self _notifyDelegateDidCommitManualScroll:0 toRevealView:viewCopy concealView:_visibleView2 direction:direction animated:0 canComplete:1];
 
-      v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v17, @"kUIFaultingViewSentinel", 0}];
+      v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:{viewCopy, @"kUIFaultingViewSentinel", 0}];
       [(_UIQueuingScrollView *)self _replaceViews:v15 updatingContents:1 adjustContentInsets:1 animated:0];
 
-      [(_UIQueuingScrollView *)self _notifyDelegateDidEndManualScroll:0 toRevealView:v17 direction:a4 animated:0 didFinish:1 didComplete:1];
-      if (v11)
+      [(_UIQueuingScrollView *)self _notifyDelegateDidEndManualScroll:0 toRevealView:viewCopy direction:direction animated:0 didFinish:1 didComplete:1];
+      if (completionCopy)
       {
-        v11[2](v11, 1, 1);
+        completionCopy[2](completionCopy, 1, 1);
       }
     }
   }
@@ -1628,9 +1628,9 @@ LABEL_45:
 
 - (void)_adjustContentInsets
 {
-  v3 = [(_UIQueuingScrollView *)self _visibleView];
+  _visibleView = [(_UIQueuingScrollView *)self _visibleView];
 
-  if (v3)
+  if (_visibleView)
   {
     [(UIView *)self bounds];
     v6 = v4;
@@ -1711,22 +1711,22 @@ LABEL_45:
   [(UIScrollView *)self setContentInset:v13, v12, v9, v10];
 }
 
-- (void)_boundsDidChangeToSize:(CGSize)a3
+- (void)_boundsDidChangeToSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a3.height * 3.0;
+  height = size.height;
+  width = size.width;
+  v6 = size.height * 3.0;
   if (self->_navigationOrientation)
   {
-    a3.height = a3.height * 3.0;
+    size.height = size.height * 3.0;
   }
 
   else
   {
-    a3.width = a3.width * 3.0;
+    size.width = size.width * 3.0;
   }
 
-  [(UIScrollView *)self setContentSize:a3.width, a3.height, v6];
+  [(UIScrollView *)self setContentSize:size.width, size.height, v6];
   navigationOrientation = self->_navigationOrientation;
   if (navigationOrientation)
   {
@@ -1855,24 +1855,24 @@ LABEL_45:
   [(_UIQueuingScrollView *)self _adjustContentInsets];
 }
 
-- (void)_commitGestureDrivenScrollRevealingView:(id)a3 concealingView:(id)a4 inDirection:(int64_t)a5 canComplete:(BOOL)a6
+- (void)_commitGestureDrivenScrollRevealingView:(id)view concealingView:(id)concealingView inDirection:(int64_t)direction canComplete:(BOOL)complete
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10 && v11)
+  completeCopy = complete;
+  viewCopy = view;
+  concealingViewCopy = concealingView;
+  v12 = concealingViewCopy;
+  if (viewCopy && concealingViewCopy)
   {
-    v13 = [(NSMutableArray *)self->_completionStateQueue lastObject];
-    if ([v13 isManual])
+    lastObject = [(NSMutableArray *)self->_completionStateQueue lastObject];
+    if ([lastObject isManual])
     {
-      v14 = [v13 view];
-      v15 = v14;
-      if (v14 == v10)
+      view = [lastObject view];
+      v15 = view;
+      if (view == viewCopy)
       {
-        v16 = [v13 transitionDirection];
+        transitionDirection = [lastObject transitionDirection];
 
-        if (v16 == a5)
+        if (transitionDirection == direction)
         {
           v17 = 0;
           goto LABEL_9;
@@ -1890,24 +1890,24 @@ LABEL_45:
     v25[2] = __103___UIQueuingScrollView__commitGestureDrivenScrollRevealingView_concealingView_inDirection_canComplete___block_invoke;
     v25[3] = &unk_1E7103180;
     v25[4] = self;
-    v26 = v10;
-    v27 = a5;
-    v17 = [(_UIQueuingScrollViewState *)v18 initWithTransitionDirection:a5 view:v26 manual:1 completion:v25];
+    v26 = viewCopy;
+    directionCopy = direction;
+    v17 = [(_UIQueuingScrollViewState *)v18 initWithTransitionDirection:direction view:v26 manual:1 completion:v25];
 
 LABEL_9:
-    if ([v13 isManual])
+    if ([lastObject isManual])
     {
-      v19 = [v13 view];
+      view2 = [lastObject view];
 
-      if (v19 == v12)
+      if (view2 == v12)
       {
-        v23 = [v13 view];
-        v24 = [(_UIQueuingScrollView *)self _visibleView];
-        v21 = v23 == v24;
+        view3 = [lastObject view];
+        _visibleView = [(_UIQueuingScrollView *)self _visibleView];
+        v21 = view3 == _visibleView;
 
 LABEL_21:
         [(NSMutableArray *)self->_completionStateQueue removeLastObject];
-        [(_UIQueuingScrollView *)self _cleanUpCompletionState:v13 didFinish:v21 didComplete:v21];
+        [(_UIQueuingScrollView *)self _cleanUpCompletionState:lastObject didFinish:v21 didComplete:v21];
         if (!v17)
         {
           goto LABEL_18;
@@ -1916,8 +1916,8 @@ LABEL_21:
         goto LABEL_17;
       }
 
-      v20 = [v13 transitionDirection];
-      if (v20 != [(_UITransitionState *)v17 transitionDirection])
+      transitionDirection2 = [lastObject transitionDirection];
+      if (transitionDirection2 != [(_UITransitionState *)v17 transitionDirection])
       {
         v21 = 0;
         goto LABEL_21;
@@ -1928,8 +1928,8 @@ LABEL_21:
     {
       while ([(NSMutableArray *)self->_completionStateQueue count])
       {
-        v22 = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
-        [(_UIQueuingScrollView *)self _cleanUpCompletionState:v22 didFinish:0 didComplete:0];
+        _ui_dequeue = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
+        [(_UIQueuingScrollView *)self _cleanUpCompletionState:_ui_dequeue didFinish:0 didComplete:0];
       }
 
       [(NSMutableArray *)self->_viewStateQueue removeAllObjects];
@@ -1944,23 +1944,23 @@ LABEL_18:
 
 LABEL_17:
     [(_UIQueuingScrollView *)self _enqueueCompletionState:v17];
-    [(_UIQueuingScrollView *)self _notifyDelegateDidCommitManualScroll:1 toRevealView:v10 concealView:v12 direction:a5 animated:1 canComplete:v6];
+    [(_UIQueuingScrollView *)self _notifyDelegateDidCommitManualScroll:1 toRevealView:viewCopy concealView:v12 direction:direction animated:1 canComplete:completeCopy];
     goto LABEL_18;
   }
 
 LABEL_19:
 }
 
-- (BOOL)_isDeceleratingInOppositionToNavigationDirection:(int64_t)a3
+- (BOOL)_isDeceleratingInOppositionToNavigationDirection:(int64_t)direction
 {
-  if (a3 == -1)
+  if (direction == -1)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:779 description:@"'Undetermined' is not a valid navigation direction for this method"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIQueuingScrollView.m" lineNumber:779 description:@"'Undetermined' is not a valid navigation direction for this method"];
   }
 
-  v5 = [(UIScrollView *)self isDecelerating];
-  if (v5)
+  isDecelerating = [(UIScrollView *)self isDecelerating];
+  if (isDecelerating)
   {
     navigationOrientation = self->_navigationOrientation;
     [(UIScrollView *)self contentOffset];
@@ -1981,21 +1981,21 @@ LABEL_19:
       v11 = v12;
     }
 
-    if (a3)
+    if (direction)
     {
-      LOBYTE(v5) = v9 < v11;
+      LOBYTE(isDecelerating) = v9 < v11;
     }
 
     else
     {
-      LOBYTE(v5) = v11 < v9;
+      LOBYTE(isDecelerating) = v11 < v9;
     }
   }
 
-  return v5;
+  return isDecelerating;
 }
 
-- (BOOL)_isScrollInProgress:(BOOL)a3
+- (BOOL)_isScrollInProgress:(BOOL)progress
 {
   if ([(UIScrollView *)self isTracking])
   {
@@ -2004,17 +2004,17 @@ LABEL_19:
 
   else
   {
-    return [(UIScrollView *)self isDecelerating]|| a3;
+    return [(UIScrollView *)self isDecelerating]|| progress;
   }
 }
 
-- (void)_didScrollWithAnimation:(BOOL)a3 force:(BOOL)a4
+- (void)_didScrollWithAnimation:(BOOL)animation force:(BOOL)force
 {
-  v5 = a3;
+  animationCopy = animation;
   v45[3] = *MEMORY[0x1E69E9840];
   v8 = [(_UIQueuingScrollView *)self _isScrollInProgress:?];
   v9 = v8;
-  if (a4 || v8 && ![(UIScrollView *)self _isHorizontalBouncing]&& ![(UIScrollView *)self _isVerticalBouncing])
+  if (force || v8 && ![(UIScrollView *)self _isHorizontalBouncing]&& ![(UIScrollView *)self _isVerticalBouncing])
   {
     if ([(UIScrollView *)self isTracking])
     {
@@ -2023,7 +2023,7 @@ LABEL_19:
 
     else
     {
-      v10 = [(UIScrollView *)self isDecelerating]&& !v5;
+      v10 = [(UIScrollView *)self isDecelerating]&& !animationCopy;
     }
 
     self->_manualScrollInProgress = v10;
@@ -2034,12 +2034,12 @@ LABEL_19:
     v18 = v17;
     if (v9)
     {
-      v19 = [(_UIQueuingScrollView *)self _navigationDirectionForActiveScroll:v5];
+      _navigationDirectionFromCurrentOffset = [(_UIQueuingScrollView *)self _navigationDirectionForActiveScroll:animationCopy];
     }
 
     else
     {
-      v19 = [(_UIQueuingScrollView *)self _navigationDirectionFromCurrentOffset];
+      _navigationDirectionFromCurrentOffset = [(_UIQueuingScrollView *)self _navigationDirectionFromCurrentOffset];
     }
 
     v40 = 0;
@@ -2052,9 +2052,9 @@ LABEL_19:
     v37[3] = &unk_1E71031A8;
     v37[4] = self;
     v37[5] = &v40;
-    v38 = v5;
+    v38 = animationCopy;
     v39 = v9;
-    v37[6] = v19;
+    v37[6] = _navigationDirectionFromCurrentOffset;
     v37[7] = a2;
     *&v37[8] = v12;
     *&v37[9] = v14;
@@ -2089,27 +2089,27 @@ LABEL_57:
       return;
     }
 
-    v24 = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
-    [(_UIQueuingScrollView *)self _cleanUpCompletionState:v24 didFinish:1 didComplete:1];
+    _ui_dequeue = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
+    [(_UIQueuingScrollView *)self _cleanUpCompletionState:_ui_dequeue didFinish:1 didComplete:1];
 
     v25 = v41[3];
     if (v25 == -1)
     {
-      v31 = [(_UIQueuingScrollView *)self _viewAtIndex:0 loadingIfNecessary:0 updatingContents:0 animated:v5];
+      v31 = [(_UIQueuingScrollView *)self _viewAtIndex:0 loadingIfNecessary:0 updatingContents:0 animated:animationCopy];
       v26 = v31;
       if (v31)
       {
-        v32 = @"kUIFaultingViewSentinel";
+        _visibleView = @"kUIFaultingViewSentinel";
         v44[0] = @"kUIFaultingViewSentinel";
         v44[1] = v31;
-        if (!v5)
+        if (!animationCopy)
         {
-          v32 = [(_UIQueuingScrollView *)self _visibleView];
+          _visibleView = [(_UIQueuingScrollView *)self _visibleView];
         }
 
-        v44[2] = v32;
+        v44[2] = _visibleView;
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:3];
-        if (!v5)
+        if (!animationCopy)
         {
         }
       }
@@ -2136,24 +2136,24 @@ LABEL_56:
         goto LABEL_57;
       }
 
-      v26 = [(_UIQueuingScrollView *)self _viewAtIndex:2 loadingIfNecessary:0 updatingContents:0 animated:v5];
+      v26 = [(_UIQueuingScrollView *)self _viewAtIndex:2 loadingIfNecessary:0 updatingContents:0 animated:animationCopy];
       if (v26)
       {
-        if (v5)
+        if (animationCopy)
         {
-          v27 = @"kUIFaultingViewSentinel";
+          _visibleView2 = @"kUIFaultingViewSentinel";
         }
 
         else
         {
-          v27 = [(_UIQueuingScrollView *)self _visibleView];
+          _visibleView2 = [(_UIQueuingScrollView *)self _visibleView];
         }
 
-        v45[0] = v27;
+        v45[0] = _visibleView2;
         v45[1] = v26;
         v45[2] = @"kUIFaultingViewSentinel";
         v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:3];
-        if (!v5)
+        if (!animationCopy)
         {
         }
       }
@@ -2190,7 +2190,7 @@ LABEL_56:
 
     if (v33)
     {
-      [(_UIQueuingScrollView *)self _replaceViews:v33 updatingContents:1 adjustContentInsets:1 animated:v5];
+      [(_UIQueuingScrollView *)self _replaceViews:v33 updatingContents:1 adjustContentInsets:1 animated:animationCopy];
     }
 
     goto LABEL_56;
@@ -2211,7 +2211,7 @@ LABEL_56:
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v34 = [(NSMutableArray *)self->_completionStateQueue lastObject];
+  lastObject = [(NSMutableArray *)self->_completionStateQueue lastObject];
   navigationOrientation = self->_navigationOrientation;
   if (navigationOrientation)
   {
@@ -2226,7 +2226,7 @@ LABEL_56:
   if (v14 || (navigationOrientation == 1 ? (v15 = v8 < v12) : (v15 = 0), v15))
   {
     v20 = [(_UIQueuingScrollView *)self _viewAtIndex:0 loadingIfNecessary:1 updatingContents:1 animated:1];
-    if (!v34 || (v24 = [v34 transitionDirection], v4) || v24 != 1 || (objc_msgSend(v34, "view"), v25 = objc_claimAutoreleasedReturnValue(), v25, v25 != v20))
+    if (!lastObject || (v24 = [lastObject transitionDirection], v4) || v24 != 1 || (objc_msgSend(lastObject, "view"), v25 = objc_claimAutoreleasedReturnValue(), v25, v25 != v20))
     {
       if ([(UIScrollView *)self _pagingLeft]|| [(UIScrollView *)self _pagingUp])
       {
@@ -2241,10 +2241,10 @@ LABEL_56:
           goto LABEL_37;
         }
 
-        v29 = [(_UIQueuingScrollView *)self _visibleView];
+        _visibleView = [(_UIQueuingScrollView *)self _visibleView];
 
         v23 = 0;
-        if (pendingVisibleView == v29)
+        if (pendingVisibleView == _visibleView)
         {
           goto LABEL_37;
         }
@@ -2262,19 +2262,19 @@ LABEL_47:
         v31 = v20;
       }
 
-      v27 = v31;
-      v26 = [(_UIQueuingScrollView *)self _visibleView];
+      _visibleView3 = v31;
+      _visibleView2 = [(_UIQueuingScrollView *)self _visibleView];
       v30 = 0;
       goto LABEL_50;
     }
 
-    v27 = [(_UIQueuingScrollView *)self _visibleView];
-    v26 = v20;
+    _visibleView3 = [(_UIQueuingScrollView *)self _visibleView];
+    _visibleView2 = v20;
     v23 = 0;
 LABEL_44:
     v30 = 1;
 LABEL_50:
-    [(_UIQueuingScrollView *)self _commitGestureDrivenScrollRevealingView:v27 concealingView:v26 inDirection:v23 canComplete:v30];
+    [(_UIQueuingScrollView *)self _commitGestureDrivenScrollRevealingView:_visibleView3 concealingView:_visibleView2 inDirection:v23 canComplete:v30];
     goto LABEL_51;
   }
 
@@ -2285,17 +2285,17 @@ LABEL_50:
   }
 
   v20 = [(_UIQueuingScrollView *)self _viewAtIndex:2 loadingIfNecessary:1 updatingContents:1 animated:1];
-  if (v34)
+  if (lastObject)
   {
-    v21 = [v34 transitionDirection];
-    if (v4 == 1 && !v21)
+    transitionDirection = [lastObject transitionDirection];
+    if (v4 == 1 && !transitionDirection)
     {
-      v22 = [v34 view];
+      view = [lastObject view];
 
-      if (v22 == v20)
+      if (view == v20)
       {
-        v27 = [(_UIQueuingScrollView *)self _visibleView];
-        v26 = v20;
+        _visibleView3 = [(_UIQueuingScrollView *)self _visibleView];
+        _visibleView2 = v20;
         v23 = 1;
         goto LABEL_44;
       }
@@ -2315,9 +2315,9 @@ LABEL_59:
     v32 = self->_pendingVisibleView;
     if (v32)
     {
-      v33 = [(_UIQueuingScrollView *)self _visibleView];
+      _visibleView4 = [(_UIQueuingScrollView *)self _visibleView];
 
-      if (v32 != v33)
+      if (v32 != _visibleView4)
       {
         v23 = v4 == 0;
         goto LABEL_59;
@@ -2326,42 +2326,42 @@ LABEL_59:
   }
 
 LABEL_37:
-  v26 = 0;
-  v27 = 0;
+  _visibleView2 = 0;
+  _visibleView3 = 0;
 LABEL_51:
 
 LABEL_52:
 }
 
-- (void)_didEndScroll:(BOOL)a3
+- (void)_didEndScroll:(BOOL)scroll
 {
-  v3 = a3;
-  if (a3 || [(NSMutableArray *)self->_completionStateQueue count]> 1)
+  scrollCopy = scroll;
+  if (scroll || [(NSMutableArray *)self->_completionStateQueue count]> 1)
   {
-    v6 = 0;
+    isManual = 0;
   }
 
   else if (self->_manualScrollInProgress)
   {
-    v5 = [(NSMutableArray *)self->_completionStateQueue _ui_peek];
-    v6 = [v5 isManual];
+    _ui_peek = [(NSMutableArray *)self->_completionStateQueue _ui_peek];
+    isManual = [_ui_peek isManual];
   }
 
   else
   {
-    v6 = 1;
+    isManual = 1;
   }
 
-  v7 = [(_UIQueuingScrollView *)self _navigationDirectionFromCurrentOffset];
-  v8 = [(_UIQueuingScrollView *)self _navigationDirectionForActiveScroll:v3];
-  if (v6 && v7 == v8)
+  _navigationDirectionFromCurrentOffset = [(_UIQueuingScrollView *)self _navigationDirectionFromCurrentOffset];
+  v8 = [(_UIQueuingScrollView *)self _navigationDirectionForActiveScroll:scrollCopy];
+  if (isManual && _navigationDirectionFromCurrentOffset == v8)
   {
     if ([(NSMutableArray *)self->_completionStateQueue count]== 1)
     {
-      v9 = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
-      v10 = [v9 view];
-      v11 = [(_UIQueuingScrollView *)self _visibleView];
-      [(_UIQueuingScrollView *)self _cleanUpCompletionState:v9 didFinish:1 didComplete:v10 == v11];
+      _ui_dequeue = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
+      view = [_ui_dequeue view];
+      _visibleView = [(_UIQueuingScrollView *)self _visibleView];
+      [(_UIQueuingScrollView *)self _cleanUpCompletionState:_ui_dequeue didFinish:1 didComplete:view == _visibleView];
 
       if (![(UIScrollView *)self isTracking])
       {
@@ -2399,12 +2399,12 @@ LABEL_19:
         [(UIScrollView *)self setContentOffset:Width, Height];
         while ([(NSMutableArray *)self->_completionStateQueue count])
         {
-          v24 = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
-          [(_UIQueuingScrollView *)self _cleanUpCompletionState:v24 didFinish:0 didComplete:0];
+          _ui_dequeue2 = [(NSMutableArray *)self->_completionStateQueue _ui_dequeue];
+          [(_UIQueuingScrollView *)self _cleanUpCompletionState:_ui_dequeue2 didFinish:0 didComplete:0];
         }
 
-        v25 = [(_UIQueuingScrollView *)self _visibleView];
-        [(_UIQueuingScrollView *)self _notifyDelegateDidBailoutOfScrollAndRevealedView:v25];
+        _visibleView2 = [(_UIQueuingScrollView *)self _visibleView];
+        [(_UIQueuingScrollView *)self _notifyDelegateDidBailoutOfScrollAndRevealedView:_visibleView2];
       }
 
       return;

@@ -1,7 +1,7 @@
 @interface ARSceneReconstructionOptions
 - (ARSceneReconstructionOptions)init;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ARSceneReconstructionOptions
@@ -26,9 +26,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = self->_voxelSize;
   *(result + 4) = self->_bucketsCount;
   *(result + 2) = self->_preset;
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(ARSceneReconstructionOptions *)self voxelSize];
-    if (v6 == [v5 voxelSize] && (v7 = -[ARSceneReconstructionOptions bucketsCount](self, "bucketsCount"), v7 == objc_msgSend(v5, "bucketsCount")) && (v8 = -[ARSceneReconstructionOptions preset](self, "preset"), v8 == objc_msgSend(v5, "preset")) && (v9 = -[ARSceneReconstructionOptions deterministicMode](self, "deterministicMode"), v9 == objc_msgSend(v5, "deterministicMode")) && (v10 = -[ARSceneReconstructionOptions lowQosSchedulingEnabled](self, "lowQosSchedulingEnabled"), v10 == objc_msgSend(v5, "lowQosSchedulingEnabled")) && (v11 = -[ARSceneReconstructionOptions enableOccupancyMapping](self, "enableOccupancyMapping"), v11 == objc_msgSend(v5, "enableOccupancyMapping")))
+    v5 = equalCopy;
+    voxelSize = [(ARSceneReconstructionOptions *)self voxelSize];
+    if (voxelSize == [v5 voxelSize] && (v7 = -[ARSceneReconstructionOptions bucketsCount](self, "bucketsCount"), v7 == objc_msgSend(v5, "bucketsCount")) && (v8 = -[ARSceneReconstructionOptions preset](self, "preset"), v8 == objc_msgSend(v5, "preset")) && (v9 = -[ARSceneReconstructionOptions deterministicMode](self, "deterministicMode"), v9 == objc_msgSend(v5, "deterministicMode")) && (v10 = -[ARSceneReconstructionOptions lowQosSchedulingEnabled](self, "lowQosSchedulingEnabled"), v10 == objc_msgSend(v5, "lowQosSchedulingEnabled")) && (v11 = -[ARSceneReconstructionOptions enableOccupancyMapping](self, "enableOccupancyMapping"), v11 == objc_msgSend(v5, "enableOccupancyMapping")))
     {
       [(ARSceneReconstructionOptions *)self minDepthUncertaintyThreshold];
       v15 = v14;

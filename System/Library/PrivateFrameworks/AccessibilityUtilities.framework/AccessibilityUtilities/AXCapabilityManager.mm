@@ -1,7 +1,7 @@
 @interface AXCapabilityManager
 + (id)sharedManager;
-- (BOOL)isAccessibilityCapability:(id)a3;
-- (BOOL)isCapabilityAvailable:(id)a3;
+- (BOOL)isAccessibilityCapability:(id)capability;
+- (BOOL)isCapabilityAvailable:(id)available;
 - (id)capabilities;
 @end
 
@@ -26,11 +26,11 @@ uint64_t __36__AXCapabilityManager_sharedManager__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isAccessibilityCapability:(id)a3
+- (BOOL)isAccessibilityCapability:(id)capability
 {
-  v4 = a3;
-  v5 = [(AXCapabilityManager *)self capabilities];
-  v6 = [v5 objectForKey:v4];
+  capabilityCopy = capability;
+  capabilities = [(AXCapabilityManager *)self capabilities];
+  v6 = [capabilities objectForKey:capabilityCopy];
 
   return v6 != 0;
 }
@@ -472,11 +472,11 @@ uint64_t __35__AXCapabilityManager_capabilities__block_invoke_109()
   return v3;
 }
 
-- (BOOL)isCapabilityAvailable:(id)a3
+- (BOOL)isCapabilityAvailable:(id)available
 {
-  v4 = a3;
-  v5 = [(AXCapabilityManager *)self capabilities];
-  v6 = [v5 objectForKey:v4];
+  availableCopy = available;
+  capabilities = [(AXCapabilityManager *)self capabilities];
+  v6 = [capabilities objectForKey:availableCopy];
 
   if (v6)
   {

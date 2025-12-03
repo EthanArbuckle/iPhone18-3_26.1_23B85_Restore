@@ -1,5 +1,5 @@
 @interface FMFSynchronizer
-- (FMFSynchronizer)initWithDescription:(id)a3 andTimeout:(double)a4;
+- (FMFSynchronizer)initWithDescription:(id)description andTimeout:(double)timeout;
 - (id)loggingID;
 - (void)signal;
 - (void)wait;
@@ -7,17 +7,17 @@
 
 @implementation FMFSynchronizer
 
-- (FMFSynchronizer)initWithDescription:(id)a3 andTimeout:(double)a4
+- (FMFSynchronizer)initWithDescription:(id)description andTimeout:(double)timeout
 {
-  v7 = a3;
+  descriptionCopy = description;
   v13.receiver = self;
   v13.super_class = FMFSynchronizer;
   v8 = [(FMFSynchronizer *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_info, a3);
-    v9->_timeout = a4;
+    objc_storeStrong(&v8->_info, description);
+    v9->_timeout = timeout;
     v10 = dispatch_semaphore_create(0);
     sem = v9->_sem;
     v9->_sem = v10;
@@ -35,9 +35,9 @@
   v4 = LogCategory_Daemon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(FMFSynchronizer *)self info];
+    info = [(FMFSynchronizer *)self info];
     v7 = 138412290;
-    v8 = v5;
+    v8 = info;
     _os_log_impl(&dword_24A33F000, v4, OS_LOG_TYPE_DEFAULT, "Signaling end of wait for %@", &v7, 0xCu);
   }
 
@@ -59,8 +59,8 @@
   v11 = LogCategory_Daemon();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(FMFSynchronizer *)self info];
-    v13 = v12;
+    info = [(FMFSynchronizer *)self info];
+    v13 = info;
     v14 = @"timed out";
     v16 = 134218498;
     v17 = v10 - v4;
@@ -70,7 +70,7 @@
       v14 = @"replied";
     }
 
-    v19 = v12;
+    v19 = info;
     v20 = 2112;
     v21 = v14;
     _os_log_impl(&dword_24A33F000, v11, OS_LOG_TYPE_DEFAULT, "Done waiting (%f seconds) for %@. Status: %@", &v16, 0x20u);
@@ -82,8 +82,8 @@
 - (id)loggingID
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(FMFSynchronizer *)self info];
-  v5 = [v3 stringWithFormat:@"%@-%@(0x%X)", v4, objc_opt_class(), self];
+  info = [(FMFSynchronizer *)self info];
+  v5 = [v3 stringWithFormat:@"%@-%@(0x%X)", info, objc_opt_class(), self];
 
   return v5;
 }

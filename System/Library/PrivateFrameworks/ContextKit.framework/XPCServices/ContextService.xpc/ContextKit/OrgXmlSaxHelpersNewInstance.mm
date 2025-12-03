@@ -1,12 +1,12 @@
 @interface OrgXmlSaxHelpersNewInstance
-+ (id)newInstanceWithNSString:(id)a3;
++ (id)newInstanceWithNSString:(id)string;
 @end
 
 @implementation OrgXmlSaxHelpersNewInstance
 
-+ (id)newInstanceWithNSString:(id)a3
++ (id)newInstanceWithNSString:(id)string
 {
-  v3 = IOSClass_forName_(a3);
+  v3 = IOSClass_forName_(string);
   if (!v3)
   {
     JreThrowNullPointerException();

@@ -1,13 +1,13 @@
 @interface FMLostModeSummaryToggleView
-- (void)labelTapped:(id)a3;
+- (void)labelTapped:(id)tapped;
 @end
 
 @implementation FMLostModeSummaryToggleView
 
-- (void)labelTapped:(id)a3
+- (void)labelTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_100373B00();
 }
 

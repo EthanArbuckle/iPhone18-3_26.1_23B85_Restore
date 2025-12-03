@@ -1,45 +1,45 @@
 @interface PendingAccountCredential
-+ (BOOL)inflatePendingProvisioning:(id)a3 forBasePendingProvisioningPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)_predicateForBasePendingProvisioningPID:(int64_t)a3;
++ (BOOL)inflatePendingProvisioning:(id)provisioning forBasePendingProvisioningPID:(int64_t)d inDatabase:(id)database;
++ (id)_predicateForBasePendingProvisioningPID:(int64_t)d;
 + (id)_properties;
 + (id)_propertySetters;
-+ (id)insertPendingProvisioning:(id)a3 forBasePendingProvisioning:(id)a4 inDatabase:(id)a5;
-+ (void)deleteEntitiesForBasePendingProvisioningPID:(int64_t)a3 inDatabase:(id)a4;
-- (PendingAccountCredential)initWithPendingProvisioning:(id)a3 forBasePendingProvisioning:(id)a4 inDatabase:(id)a5;
++ (id)insertPendingProvisioning:(id)provisioning forBasePendingProvisioning:(id)pendingProvisioning inDatabase:(id)database;
++ (void)deleteEntitiesForBasePendingProvisioningPID:(int64_t)d inDatabase:(id)database;
+- (PendingAccountCredential)initWithPendingProvisioning:(id)provisioning forBasePendingProvisioning:(id)pendingProvisioning inDatabase:(id)database;
 @end
 
 @implementation PendingAccountCredential
 
-- (PendingAccountCredential)initWithPendingProvisioning:(id)a3 forBasePendingProvisioning:(id)a4 inDatabase:(id)a5
+- (PendingAccountCredential)initWithPendingProvisioning:(id)provisioning forBasePendingProvisioning:(id)pendingProvisioning inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  databaseCopy = database;
+  pendingProvisioningCopy = pendingProvisioning;
+  provisioningCopy = provisioning;
   v11 = objc_alloc_init(NSMutableDictionary);
-  [v11 setEntityPIDOrNull:v9 forKey:@"base_pid"];
+  [v11 setEntityPIDOrNull:pendingProvisioningCopy forKey:@"base_pid"];
 
-  v12 = [v10 accountIdentifier];
-  [v11 setObjectOrNull:v12 forKey:@"a"];
+  accountIdentifier = [provisioningCopy accountIdentifier];
+  [v11 setObjectOrNull:accountIdentifier forKey:@"a"];
 
-  [v10 feature];
+  [provisioningCopy feature];
   v13 = PKFeatureIdentifierToString();
   [v11 setObjectOrNull:v13 forKey:@"b"];
 
-  v14 = [v10 sharingInstanceIdentifier];
+  sharingInstanceIdentifier = [provisioningCopy sharingInstanceIdentifier];
 
-  [v11 setObjectOrNull:v14 forKey:@"c"];
-  v15 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:v8];
+  [v11 setObjectOrNull:sharingInstanceIdentifier forKey:@"c"];
+  v15 = [(SQLiteEntity *)self initWithPropertyValues:v11 inDatabase:databaseCopy];
 
   return v15;
 }
 
-+ (id)insertPendingProvisioning:(id)a3 forBasePendingProvisioning:(id)a4 inDatabase:(id)a5
++ (id)insertPendingProvisioning:(id)provisioning forBasePendingProvisioning:(id)pendingProvisioning inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  provisioningCopy = provisioning;
+  pendingProvisioningCopy = pendingProvisioning;
+  databaseCopy = database;
   v11 = 0;
-  if (v8 && v9)
+  if (provisioningCopy && pendingProvisioningCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -52,10 +52,10 @@
     v13[2] = sub_100052090;
     v13[3] = &unk_10083F200;
     v17 = &v19;
-    v18 = a1;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
+    selfCopy = self;
+    v14 = provisioningCopy;
+    v15 = pendingProvisioningCopy;
+    v16 = databaseCopy;
     sub_1005D4424(v16, v13);
     v11 = v20[5];
 
@@ -65,28 +65,28 @@
   return v11;
 }
 
-+ (BOOL)inflatePendingProvisioning:(id)a3 forBasePendingProvisioningPID:(int64_t)a4 inDatabase:(id)a5
++ (BOOL)inflatePendingProvisioning:(id)provisioning forBasePendingProvisioningPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  provisioningCopy = provisioning;
+  databaseCopy = database;
+  if (provisioningCopy)
   {
-    v10 = [a1 _predicateForBasePendingProvisioningPID:a4];
-    v11 = [(SQLiteEntity *)PendingAccountCredential queryWithDatabase:v9 predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
+    v10 = [self _predicateForBasePendingProvisioningPID:d];
+    v11 = [(SQLiteEntity *)PendingAccountCredential queryWithDatabase:databaseCopy predicate:v10 orderingProperties:0 orderingDirections:0 limit:1];
 
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v12 = [a1 _properties];
+    _properties = [self _properties];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10005225C;
     v15[3] = &unk_10083F228;
-    v18 = a1;
-    v16 = v8;
+    selfCopy = self;
+    v16 = provisioningCopy;
     v17 = &v19;
-    [v11 enumeratePersistentIDsAndProperties:v12 usingBlock:v15];
+    [v11 enumeratePersistentIDsAndProperties:_properties usingBlock:v15];
 
     v13 = *(v20 + 24);
     _Block_object_dispose(&v19, 8);
@@ -100,18 +100,18 @@
   return v13 & 1;
 }
 
-+ (void)deleteEntitiesForBasePendingProvisioningPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForBasePendingProvisioningPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForBasePendingProvisioningPID:a3];
-  v7 = [(SQLiteEntity *)PendingAccountCredential queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForBasePendingProvisioningPID:d];
+  v7 = [(SQLiteEntity *)PendingAccountCredential queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)_predicateForBasePendingProvisioningPID:(int64_t)a3
++ (id)_predicateForBasePendingProvisioningPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"base_pid" equalToValue:v3];
 
   return v4;

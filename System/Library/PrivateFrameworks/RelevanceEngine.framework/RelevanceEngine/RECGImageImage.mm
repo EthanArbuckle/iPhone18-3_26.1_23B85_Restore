@@ -1,23 +1,23 @@
 @interface RECGImageImage
-- (BOOL)isEqual:(id)a3;
-- (RECGImageImage)initWithCoder:(id)a3;
-- (RECGImageImage)initWithImage:(CGImage *)a3 scale:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (RECGImageImage)initWithCoder:(id)coder;
+- (RECGImageImage)initWithImage:(CGImage *)image scale:(double)scale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RECGImageImage
 
-- (RECGImageImage)initWithImage:(CGImage *)a3 scale:(double)a4
+- (RECGImageImage)initWithImage:(CGImage *)image scale:(double)scale
 {
   v8.receiver = self;
   v8.super_class = RECGImageImage;
   v6 = [(RECGImageImage *)&v8 init];
   if (v6)
   {
-    v6->_CGImage = CGImageCreateCopy(a3);
-    v6->_scale = a4;
+    v6->_CGImage = CGImageCreateCopy(image);
+    v6->_scale = scale;
   }
 
   return v6;
@@ -36,22 +36,22 @@
   [(RECGImageImage *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   CGImage = self->_CGImage;
   scale = self->_scale;
 
   return [v4 initWithImage:CGImage scale:scale];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([v5 CGImage] == self->_CGImage)
     {
       [v5 scale];
@@ -73,11 +73,11 @@
   return v6;
 }
 
-- (RECGImageImage)initWithCoder:(id)a3
+- (RECGImageImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"scale"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"image-data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"scale"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image-data"];
 
   v7 = CGDataProviderCreateWithCFData(v6);
   v8 = CGImageCreateWithPNGDataProvider(v7, 0, 0, kCGRenderingIntentDefault);
@@ -89,20 +89,20 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_scale];
-  [v8 encodeObject:v4 forKey:@"scale"];
+  [coderCopy encodeObject:v4 forKey:@"scale"];
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB28]);
-  v6 = [*MEMORY[0x277CE1E10] identifier];
-  v7 = CGImageDestinationCreateWithData(v5, v6, 0, 0);
+  identifier = [*MEMORY[0x277CE1E10] identifier];
+  v7 = CGImageDestinationCreateWithData(v5, identifier, 0, 0);
 
   CGImageDestinationAddImage(v7, self->_CGImage, 0);
   if (CGImageDestinationFinalize(v7))
   {
-    [v8 encodeObject:v5 forKey:@"image-data"];
+    [coderCopy encodeObject:v5 forKey:@"image-data"];
   }
 
   CFRelease(v7);

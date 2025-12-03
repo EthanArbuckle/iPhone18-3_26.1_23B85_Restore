@@ -1,5 +1,5 @@
 @interface LocationRefinementViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateSnapToUserLocationButton;
 - (void)_triggerCrossHairLocationDecode;
@@ -8,14 +8,14 @@
 
 @implementation LocationRefinementViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LocationRefinementViewController" hasInstanceVariable:@"_snapToUserLocationButton" withType:"UIButton"];
-  [v3 validateClass:@"LocationRefinementViewController" hasInstanceVariable:@"_crosshairImageView" withType:"UIImageView"];
-  [v3 validateClass:@"LocationRefinementViewController" hasInstanceVariable:@"_mapView" withType:"MKMapView"];
-  [v3 validateClass:@"LocationRefinementViewController" hasInstanceMethod:@"mapView:regionDidChangeAnimated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"LocationRefinementViewController" hasInstanceMethod:@"crosshairType" withFullSignature:{"Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LocationRefinementViewController" hasInstanceVariable:@"_snapToUserLocationButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"LocationRefinementViewController" hasInstanceVariable:@"_crosshairImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"LocationRefinementViewController" hasInstanceVariable:@"_mapView" withType:"MKMapView"];
+  [validationsCopy validateClass:@"LocationRefinementViewController" hasInstanceMethod:@"mapView:regionDidChangeAnimated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"LocationRefinementViewController" hasInstanceMethod:@"crosshairType" withFullSignature:{"Q", 0}];
 }
 
 - (void)_axAnnotateSnapToUserLocationButton
@@ -66,7 +66,7 @@
   v13[2] = __80__LocationRefinementViewControllerAccessibility__triggerCrossHairLocationDecode__block_invoke;
   v13[3] = &unk_29F2CC588;
   v14 = v3;
-  v15 = self;
+  selfCopy = self;
   v11 = v3;
   v12 = MEMORY[0x29C2DD090](v13);
   [v10 reverseGeocodeLocation:v9 completionHandler:v12];

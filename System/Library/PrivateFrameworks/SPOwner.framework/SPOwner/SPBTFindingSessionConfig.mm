@@ -1,26 +1,26 @@
 @interface SPBTFindingSessionConfig
-- (SPBTFindingSessionConfig)initWithOptInRawRSSIMeasurement:(BOOL)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SPBTFindingSessionConfig)initWithOptInRawRSSIMeasurement:(BOOL)measurement;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SPBTFindingSessionConfig
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPBTFindingSessionConfig alloc];
-  v5 = [(SPBTFindingSessionConfig *)self optInRawRSSIMeasurement];
+  optInRawRSSIMeasurement = [(SPBTFindingSessionConfig *)self optInRawRSSIMeasurement];
 
-  return [(SPBTFindingSessionConfig *)v4 initWithOptInRawRSSIMeasurement:v5];
+  return [(SPBTFindingSessionConfig *)v4 initWithOptInRawRSSIMeasurement:optInRawRSSIMeasurement];
 }
 
-- (SPBTFindingSessionConfig)initWithOptInRawRSSIMeasurement:(BOOL)a3
+- (SPBTFindingSessionConfig)initWithOptInRawRSSIMeasurement:(BOOL)measurement
 {
   v5.receiver = self;
   v5.super_class = SPBTFindingSessionConfig;
   result = [(SPBTFindingSessionConfig *)&v5 init];
   if (result)
   {
-    result->_optInRawRSSIMeasurement = a3;
+    result->_optInRawRSSIMeasurement = measurement;
   }
 
   return result;

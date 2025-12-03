@@ -1,22 +1,22 @@
 @interface SFSettingsAnalytics
-+ (void)trackingAppAccessTransparencyVisited:(id)a3;
-+ (void)trackingControlValueChanged:(id)a3 sender:(id)a4;
-+ (void)trackingPerformSelector:(id)a3 targetString:(id)a4;
-+ (void)trackingSettingsOpenByURL:(BOOL)a3 url:(id)a4;
-+ (void)trackingSettingsSearchUsed:(BOOL)a3 isUser65AgeOrOlder:(BOOL)a4 numberOfSectionsInResults:(unint64_t)a5 numberOfTotalResults:(unint64_t)a6 searchFromSpotlight:(BOOL)a7 methodForEndingSearch:(unint64_t)a8 searchResultURL:(id)a9 searchActivityID:(id)a10;
-+ (void)trackingStateOfRequestForSpecificApp:(unint64_t)a3 view:(id)a4;
-+ (void)trackingViewControllersVisitedInRootController:(id)a3;
++ (void)trackingAppAccessTransparencyVisited:(id)visited;
++ (void)trackingControlValueChanged:(id)changed sender:(id)sender;
++ (void)trackingPerformSelector:(id)selector targetString:(id)string;
++ (void)trackingSettingsOpenByURL:(BOOL)l url:(id)url;
++ (void)trackingSettingsSearchUsed:(BOOL)used isUser65AgeOrOlder:(BOOL)older numberOfSectionsInResults:(unint64_t)results numberOfTotalResults:(unint64_t)totalResults searchFromSpotlight:(BOOL)spotlight methodForEndingSearch:(unint64_t)search searchResultURL:(id)l searchActivityID:(id)self0;
++ (void)trackingStateOfRequestForSpecificApp:(unint64_t)app view:(id)view;
++ (void)trackingViewControllersVisitedInRootController:(id)controller;
 @end
 
 @implementation SFSettingsAnalytics
 
-+ (void)trackingStateOfRequestForSpecificApp:(unint64_t)a3 view:(id)a4
++ (void)trackingStateOfRequestForSpecificApp:(unint64_t)app view:(id)view
 {
-  v4 = a4;
-  v5 = v4;
-  if (v4)
+  viewCopy = view;
+  v5 = viewCopy;
+  if (viewCopy)
   {
-    v14 = v4;
+    v14 = viewCopy;
     AnalyticsSendEventLazy();
     v6 = v14;
   }
@@ -73,13 +73,13 @@ id __68__SFSettingsAnalytics_trackingStateOfRequest_askAppsToStopTracking___bloc
   return v4;
 }
 
-+ (void)trackingAppAccessTransparencyVisited:(id)a3
++ (void)trackingAppAccessTransparencyVisited:(id)visited
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  visitedCopy = visited;
+  v4 = visitedCopy;
+  if (visitedCopy)
   {
-    v13 = v3;
+    v13 = visitedCopy;
     AnalyticsSendEventLazy();
     v5 = v13;
   }
@@ -130,14 +130,14 @@ id __47__SFSettingsAnalytics_trackingAppActivitySaved__block_invoke()
   return v0;
 }
 
-+ (void)trackingPerformSelector:(id)a3 targetString:(id)a4
++ (void)trackingPerformSelector:(id)selector targetString:(id)string
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  selectorCopy = selector;
+  stringCopy = string;
+  v7 = stringCopy;
+  if (selectorCopy && stringCopy)
   {
-    v16 = v5;
+    v16 = selectorCopy;
     v17 = v7;
     AnalyticsSendEventLazy();
 
@@ -173,13 +173,13 @@ id __60__SFSettingsAnalytics_trackingPerformSelector_targetString___block_invoke
   return v4;
 }
 
-+ (void)trackingViewControllersVisitedInRootController:(id)a3
++ (void)trackingViewControllersVisitedInRootController:(id)controller
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  controllerCopy = controller;
+  v4 = controllerCopy;
+  if (controllerCopy)
   {
-    v13 = v3;
+    v13 = controllerCopy;
     AnalyticsSendEventLazy();
     v5 = v13;
   }
@@ -211,14 +211,14 @@ id __70__SFSettingsAnalytics_trackingViewControllersVisitedInRootController___bl
   return v4;
 }
 
-+ (void)trackingControlValueChanged:(id)a3 sender:(id)a4
++ (void)trackingControlValueChanged:(id)changed sender:(id)sender
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  changedCopy = changed;
+  senderCopy = sender;
+  v7 = senderCopy;
+  if (changedCopy && senderCopy)
   {
-    v16 = v5;
+    v16 = changedCopy;
     v17 = v7;
     AnalyticsSendEventLazy();
 
@@ -254,10 +254,10 @@ id __58__SFSettingsAnalytics_trackingControlValueChanged_sender___block_invoke(u
   return v4;
 }
 
-+ (void)trackingSettingsOpenByURL:(BOOL)a3 url:(id)a4
++ (void)trackingSettingsOpenByURL:(BOOL)l url:(id)url
 {
-  v5 = a4;
-  v4 = v5;
+  urlCopy = url;
+  v4 = urlCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -281,12 +281,12 @@ id __53__SFSettingsAnalytics_trackingSettingsOpenByURL_url___block_invoke(uint64
   return v6;
 }
 
-+ (void)trackingSettingsSearchUsed:(BOOL)a3 isUser65AgeOrOlder:(BOOL)a4 numberOfSectionsInResults:(unint64_t)a5 numberOfTotalResults:(unint64_t)a6 searchFromSpotlight:(BOOL)a7 methodForEndingSearch:(unint64_t)a8 searchResultURL:(id)a9 searchActivityID:(id)a10
++ (void)trackingSettingsSearchUsed:(BOOL)used isUser65AgeOrOlder:(BOOL)older numberOfSectionsInResults:(unint64_t)results numberOfTotalResults:(unint64_t)totalResults searchFromSpotlight:(BOOL)spotlight methodForEndingSearch:(unint64_t)search searchResultURL:(id)l searchActivityID:(id)self0
 {
-  v10 = a9;
-  v13 = a10;
-  v11 = v13;
-  v12 = v10;
+  lCopy = l;
+  dCopy = d;
+  v11 = dCopy;
+  v12 = lCopy;
   AnalyticsSendEventLazy();
 }
 

@@ -57,8 +57,8 @@ LABEL_4:
     v5 = +[AMSLogConfig sharedConfig];
   }
 
-  v6 = [v5 OSLogObject];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 = objc_opt_class();
     v8 = v7;
@@ -67,7 +67,7 @@ LABEL_4:
     v11 = v7;
     v12 = 2114;
     v13 = v9;
-    _os_log_impl(&dword_192869000, v6, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown device platform", &v10, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Unknown device platform", &v10, 0x16u);
   }
 
   v3 = 0;

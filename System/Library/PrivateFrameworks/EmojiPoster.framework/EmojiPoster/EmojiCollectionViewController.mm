@@ -1,7 +1,7 @@
 @interface EmojiCollectionViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (_TtC11EmojiPoster29EmojiCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC11EmojiPoster29EmojiCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (_TtC11EmojiPoster29EmojiCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC11EmojiPoster29EmojiCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -9,30 +9,30 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_249FFD3A4();
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_24A021698();
-  v9 = a3;
-  v10 = self;
-  sub_249FFE264(v9, location, length);
+  fieldCopy = field;
+  selfCopy = self;
+  sub_249FFE264(fieldCopy, location, length);
 
   return 0;
 }
 
-- (_TtC11EmojiPoster29EmojiCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC11EmojiPoster29EmojiCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11EmojiPoster29EmojiCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11EmojiPoster29EmojiCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

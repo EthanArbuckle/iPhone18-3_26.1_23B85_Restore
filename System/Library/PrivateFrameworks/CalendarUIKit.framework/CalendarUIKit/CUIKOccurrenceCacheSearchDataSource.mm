@@ -1,12 +1,12 @@
 @interface CUIKOccurrenceCacheSearchDataSource
-- (CUIKOccurrenceCacheSearchDataSource)initWithEventStore:(id)a3 calendars:(id)a4;
+- (CUIKOccurrenceCacheSearchDataSource)initWithEventStore:(id)store calendars:(id)calendars;
 - (id)_createCachedDays;
-- (void)_runBlock:(id)a3 withRandomDelayUpperbound:(unsigned int)a4;
+- (void)_runBlock:(id)block withRandomDelayUpperbound:(unsigned int)upperbound;
 - (void)_updateCachedDays;
 - (void)dealloc;
 - (void)invalidate;
 - (void)invalidateCachedOccurrences;
-- (void)searchWithTerm:(id)a3;
+- (void)searchWithTerm:(id)term;
 - (void)stopSearching;
 @end
 
@@ -59,11 +59,11 @@
   [(CUIKOccurrenceCacheSearchDataSource *)&v3 dealloc];
 }
 
-- (CUIKOccurrenceCacheSearchDataSource)initWithEventStore:(id)a3 calendars:(id)a4
+- (CUIKOccurrenceCacheSearchDataSource)initWithEventStore:(id)store calendars:(id)calendars
 {
   v9.receiver = self;
   v9.super_class = CUIKOccurrenceCacheSearchDataSource;
-  v4 = [(CUIKOccurrenceCacheDataSource *)&v9 initWithEventStore:a3 calendars:a4];
+  v4 = [(CUIKOccurrenceCacheDataSource *)&v9 initWithEventStore:store calendars:calendars];
   v5 = v4;
   if (v4)
   {
@@ -133,11 +133,11 @@ void __56__CUIKOccurrenceCacheSearchDataSource__updateCachedDays__block_invoke(u
   }
 }
 
-- (void)searchWithTerm:(id)a3
+- (void)searchWithTerm:(id)term
 {
   v74 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  if (!v32)
+  termCopy = term;
+  if (!termCopy)
   {
     [(CUIKOccurrenceCacheSearchDataSource *)a2 searchWithTerm:?];
   }
@@ -148,9 +148,9 @@ void __56__CUIKOccurrenceCacheSearchDataSource__updateCachedDays__block_invoke(u
   pthread_mutex_lock(&self->_resultsLock);
   v6 = self->_searchSeed + 1;
   self->_searchSeed = v6;
-  v7 = [MEMORY[0x1E695DEC8] array];
+  array = [MEMORY[0x1E695DEC8] array];
   sortedDays = self->_sortedDays;
-  self->_sortedDays = v7;
+  self->_sortedDays = array;
 
   self->_sortedDaysUpdated = 1;
   self->_scrolledToToday = 0;
@@ -166,8 +166,8 @@ void __56__CUIKOccurrenceCacheSearchDataSource__updateCachedDays__block_invoke(u
     _os_log_impl(&dword_1CAB19000, v9, OS_LOG_TYPE_DEFAULT, "Search %i: [OccurrenceCacheSearchDataSource searchWithTerm:%{public}@]", buf, 0x12u);
   }
 
-  objc_storeStrong(&self->_searchTerm, a3);
-  if ([v32 length])
+  objc_storeStrong(&self->_searchTerm, term);
+  if ([termCopy length])
   {
     v67[0] = 0;
     v67[1] = v67;
@@ -183,10 +183,10 @@ void __56__CUIKOccurrenceCacheSearchDataSource__updateCachedDays__block_invoke(u
     aBlock[4] = self;
     aBlock[5] = v67;
     v31 = _Block_copy(aBlock);
-    v10 = [(NSString *)self->_searchTerm UTF8String];
-    if (v10)
+    uTF8String = [(NSString *)self->_searchTerm UTF8String];
+    if (uTF8String)
     {
-      v11 = strlen(v10) < 3;
+      v11 = strlen(uTF8String) < 3;
     }
 
     else
@@ -739,10 +739,10 @@ uint64_t __54__CUIKOccurrenceCacheSearchDataSource_searchWithTerm___block_invoke
   return [*(a1 + 32) start];
 }
 
-- (void)_runBlock:(id)a3 withRandomDelayUpperbound:(unsigned int)a4
+- (void)_runBlock:(id)block withRandomDelayUpperbound:(unsigned int)upperbound
 {
-  block = a3;
-  v5 = arc4random_uniform(a4);
+  block = block;
+  v5 = arc4random_uniform(upperbound);
   v6 = dispatch_time(0, 1000000000 * v5);
   dispatch_after(v6, MEMORY[0x1E69E96A0], block);
 }

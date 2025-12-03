@@ -1,13 +1,13 @@
 @interface AMSUIPasswordSettingsViewProvider
-+ (id)makeViewWithAccount:(id)a3;
++ (id)makeViewWithAccount:(id)account;
 @end
 
 @implementation AMSUIPasswordSettingsViewProvider
 
-+ (id)makeViewWithAccount:(id)a3
++ (id)makeViewWithAccount:(id)account
 {
-  v3 = a3;
-  v4 = static PasswordSettingsViewProvider.makeViewWith(account:)(v3);
+  accountCopy = account;
+  v4 = static PasswordSettingsViewProvider.makeViewWith(account:)(accountCopy);
 
   return v4;
 }

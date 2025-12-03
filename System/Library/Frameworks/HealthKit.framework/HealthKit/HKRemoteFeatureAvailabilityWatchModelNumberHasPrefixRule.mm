@@ -1,29 +1,29 @@
 @interface HKRemoteFeatureAvailabilityWatchModelNumberHasPrefixRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityWatchModelNumberHasPrefixRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 objectForKeyedSubscript:@"ModelNumberPrefix"];
+  v4 = [info objectForKeyedSubscript:@"ModelNumberPrefix"];
   [(HKRemoteFeatureAvailabilityWatchModelNumberHasPrefixRule *)self setModelNumberPrefix:v4];
 }
 
 - (BOOL)evaluate
 {
-  v3 = [(HKRemoteFeatureAvailabilityWatchModelNumberHasPrefixRule *)self modelNumberPrefix];
+  modelNumberPrefix = [(HKRemoteFeatureAvailabilityWatchModelNumberHasPrefixRule *)self modelNumberPrefix];
 
-  if (!v3)
+  if (!modelNumberPrefix)
   {
     return 0;
   }
 
-  v4 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v5 = [v4 watchModelNumber];
-  v6 = [(HKRemoteFeatureAvailabilityWatchModelNumberHasPrefixRule *)self modelNumberPrefix];
-  v7 = [v5 hasPrefix:v6];
+  dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  watchModelNumber = [dataSource watchModelNumber];
+  modelNumberPrefix2 = [(HKRemoteFeatureAvailabilityWatchModelNumberHasPrefixRule *)self modelNumberPrefix];
+  v7 = [watchModelNumber hasPrefix:modelNumberPrefix2];
 
   return v7;
 }

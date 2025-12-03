@@ -1,10 +1,10 @@
 @interface UIEditMenuConfiguration._Boxed
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation UIEditMenuConfiguration._Boxed
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   sub_188BBA230(self->value, v5);
   _s6_BoxedCMa();

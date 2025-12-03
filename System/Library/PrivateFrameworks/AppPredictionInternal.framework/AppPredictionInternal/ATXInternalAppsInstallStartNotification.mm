@@ -1,5 +1,5 @@
 @interface ATXInternalAppsInstallStartNotification
-+ (void)postNotificationWithInstallStartDictionary:(id)a3;
++ (void)postNotificationWithInstallStartDictionary:(id)dictionary;
 - (ATXInternalAppsInstallStartNotification)init;
 @end
 
@@ -20,16 +20,16 @@
   return v2;
 }
 
-+ (void)postNotificationWithInstallStartDictionary:(id)a3
++ (void)postNotificationWithInstallStartDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = __atxlog_handle_default();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXInternalAppsInstallStartNotification *)v3 postNotificationWithInstallStartDictionary:v4];
+    [(ATXInternalAppsInstallStartNotification *)dictionaryCopy postNotificationWithInstallStartDictionary:v4];
   }
 
-  [_ATXInternalNotification postData:v3 forNotificationNamed:@"com.apple.duetexpertd.ATXInternalAppsInstallStartNotification.appInstalling"];
+  [_ATXInternalNotification postData:dictionaryCopy forNotificationNamed:@"com.apple.duetexpertd.ATXInternalAppsInstallStartNotification.appInstalling"];
 }
 
 + (void)postNotificationWithInstallStartDictionary:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

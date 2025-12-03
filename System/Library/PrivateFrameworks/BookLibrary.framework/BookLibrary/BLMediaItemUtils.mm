@@ -1,21 +1,21 @@
 @interface BLMediaItemUtils
-+ (id)hlsOfflinePlaybackKeysForItem:(id)a3;
-+ (unint64_t)bitrateForItem:(id)a3;
-+ (void)addPersistHLSOfflinePlaybackKey:(id)a3 forUri:(id)a4 toItem:(id)a5;
-+ (void)clearPersistHLSOfflinePlaybackKeysFromItem:(id)a3;
-+ (void)removePersistHLSOfflinePlaybackKeyForUri:(id)a3 fromItem:(id)a4;
-+ (void)setBitrate:(unint64_t)a3 forItem:(id)a4;
++ (id)hlsOfflinePlaybackKeysForItem:(id)item;
++ (unint64_t)bitrateForItem:(id)item;
++ (void)addPersistHLSOfflinePlaybackKey:(id)key forUri:(id)uri toItem:(id)item;
++ (void)clearPersistHLSOfflinePlaybackKeysFromItem:(id)item;
++ (void)removePersistHLSOfflinePlaybackKeyForUri:(id)uri fromItem:(id)item;
++ (void)setBitrate:(unint64_t)bitrate forItem:(id)item;
 @end
 
 @implementation BLMediaItemUtils
 
-+ (id)hlsOfflinePlaybackKeysForItem:(id)a3
++ (id)hlsOfflinePlaybackKeysForItem:(id)item
 {
   v28[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   v4 = sub_241D11FB4();
-  v7 = objc_msgSend_valueForProperty_(v3, v5, v4, v6);
+  v7 = objc_msgSend_valueForProperty_(itemCopy, v5, v4, v6);
 
   v8 = BUDynamicCast();
 
@@ -47,32 +47,32 @@
   return v18;
 }
 
-+ (unint64_t)bitrateForItem:(id)a3
++ (unint64_t)bitrateForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = sub_241D11E44();
-  v7 = objc_msgSend_valueForProperty_(v3, v5, v4, v6);
+  v7 = objc_msgSend_valueForProperty_(itemCopy, v5, v4, v6);
 
   v11 = objc_msgSend_unsignedIntegerValue(v7, v8, v9, v10);
   return v11;
 }
 
-+ (void)setBitrate:(unint64_t)a3 forItem:(id)a4
++ (void)setBitrate:(unint64_t)bitrate forItem:(id)item
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a4;
-  v11 = objc_msgSend_numberWithUnsignedInteger_(v5, v7, a3, v8);
+  itemCopy = item;
+  v11 = objc_msgSend_numberWithUnsignedInteger_(v5, v7, bitrate, v8);
   v9 = sub_241D11E44();
-  objc_msgSend_setValue_forProperty_(v6, v10, v11, v9);
+  objc_msgSend_setValue_forProperty_(itemCopy, v10, v11, v9);
 }
 
-+ (void)addPersistHLSOfflinePlaybackKey:(id)a3 forUri:(id)a4 toItem:(id)a5
++ (void)addPersistHLSOfflinePlaybackKey:(id)key forUri:(id)uri toItem:(id)item
 {
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_hlsOfflinePlaybackKeysForItem_(a1, v11, v10, v12);
+  keyCopy = key;
+  uriCopy = uri;
+  itemCopy = item;
+  v13 = objc_msgSend_hlsOfflinePlaybackKeysForItem_(self, v11, itemCopy, v12);
   v17 = objc_msgSend_mutableCopy(v13, v14, v15, v16);
 
   if (!v17)
@@ -80,7 +80,7 @@
     v17 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v18, v19, v20);
   }
 
-  objc_msgSend_setObject_forKey_(v17, v18, v8, v9);
+  objc_msgSend_setObject_forKey_(v17, v18, keyCopy, uriCopy);
   v39 = 0;
   v22 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x277CCAAB0], v21, v17, 1, &v39);
   v23 = v39;
@@ -91,7 +91,7 @@
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
       v26 = sub_241D12404();
-      v29 = objc_msgSend_valueForProperty_(v10, v27, v26, v28);
+      v29 = objc_msgSend_valueForProperty_(itemCopy, v27, v26, v28);
       *buf = 138543618;
       v41 = v29;
       v42 = 2112;
@@ -108,7 +108,7 @@ LABEL_8:
   else if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     v26 = sub_241D12404();
-    v29 = objc_msgSend_valueForProperty_(v10, v34, v26, v35);
+    v29 = objc_msgSend_valueForProperty_(itemCopy, v34, v26, v35);
     *buf = 138543362;
     v41 = v29;
     v30 = "Archived keys for %{public}@";
@@ -119,22 +119,22 @@ LABEL_8:
   }
 
   v36 = sub_241D11FB4();
-  objc_msgSend_setValue_forProperty_(v10, v37, v22, v36);
+  objc_msgSend_setValue_forProperty_(itemCopy, v37, v22, v36);
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)removePersistHLSOfflinePlaybackKeyForUri:(id)a3 fromItem:(id)a4
++ (void)removePersistHLSOfflinePlaybackKeyForUri:(id)uri fromItem:(id)item
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_hlsOfflinePlaybackKeysForItem_(a1, v8, v7, v9);
+  uriCopy = uri;
+  itemCopy = item;
+  v10 = objc_msgSend_hlsOfflinePlaybackKeysForItem_(self, v8, itemCopy, v9);
   v14 = objc_msgSend_mutableCopy(v10, v11, v12, v13);
 
   if (v14)
   {
-    objc_msgSend_removeObjectForKey_(v14, v15, v6, v16);
+    objc_msgSend_removeObjectForKey_(v14, v15, uriCopy, v16);
     v24 = 0;
     v18 = objc_msgSend_archivedDataWithRootObject_requiringSecureCoding_error_(MEMORY[0x277CCAAB0], v17, v14, 1, &v24);
     v19 = v24;
@@ -150,17 +150,17 @@ LABEL_8:
     }
 
     v21 = sub_241D11FB4();
-    objc_msgSend_setValue_forProperty_(v7, v22, v18, v21);
+    objc_msgSend_setValue_forProperty_(itemCopy, v22, v18, v21);
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)clearPersistHLSOfflinePlaybackKeysFromItem:(id)a3
++ (void)clearPersistHLSOfflinePlaybackKeysFromItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v5 = sub_241D11FB4();
-  objc_msgSend_setValue_forProperty_(v3, v4, 0, v5);
+  objc_msgSend_setValue_forProperty_(itemCopy, v4, 0, v5);
 }
 
 @end

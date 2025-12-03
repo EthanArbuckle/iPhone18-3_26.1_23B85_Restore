@@ -1,46 +1,46 @@
 @interface ASRSchemaASRNamedEntityUserEdit
-- (ASRSchemaASRNamedEntityUserEdit)initWithDictionary:(id)a3;
-- (ASRSchemaASRNamedEntityUserEdit)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRNamedEntityUserEdit)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRNamedEntityUserEdit)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)speechProfileCategoriesAtIndex:(unint64_t)a3;
-- (int)visualContextCategoriesAtIndex:(unint64_t)a3;
+- (int)speechProfileCategoriesAtIndex:(unint64_t)index;
+- (int)visualContextCategoriesAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addSpeechProfileCategories:(int)a3;
-- (void)addVisualContextCategories:(int)a3;
-- (void)setHasIsNamedEntityPresentInSpeechProfile:(BOOL)a3;
-- (void)setHasIsNamedEntityPresentInVisualContext:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSpeechProfileCategories:(int)categories;
+- (void)addVisualContextCategories:(int)categories;
+- (void)setHasIsNamedEntityPresentInSpeechProfile:(BOOL)profile;
+- (void)setHasIsNamedEntityPresentInVisualContext:(BOOL)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRNamedEntityUserEdit
 
-- (ASRSchemaASRNamedEntityUserEdit)initWithDictionary:(id)a3
+- (ASRSchemaASRNamedEntityUserEdit)initWithDictionary:(id)dictionary
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = ASRSchemaASRNamedEntityUserEdit;
   v5 = [(ASRSchemaASRNamedEntityUserEdit *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"entityTaggerCategory"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"entityTaggerCategory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRNamedEntityUserEdit setEntityTaggerCategory:](v5, "setEntityTaggerCategory:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isNamedEntityPresentInVisualContext"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isNamedEntityPresentInVisualContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRNamedEntityUserEdit setIsNamedEntityPresentInVisualContext:](v5, "setIsNamedEntityPresentInVisualContext:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"visualContextCategories"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"visualContextCategories"];
     objc_opt_class();
     v28 = v7;
     if (objc_opt_isKindOfClass())
@@ -87,14 +87,14 @@
       v8 = v9;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"isNamedEntityPresentInSpeechProfile"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isNamedEntityPresentInSpeechProfile"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRNamedEntityUserEdit setIsNamedEntityPresentInSpeechProfile:](v5, "setIsNamedEntityPresentInSpeechProfile:", [v16 BOOLValue]);
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"speechProfileCategories"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"speechProfileCategories"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,30 +148,30 @@
   return v5;
 }
 
-- (ASRSchemaASRNamedEntityUserEdit)initWithJSON:(id)a3
+- (ASRSchemaASRNamedEntityUserEdit)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRNamedEntityUserEdit *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRNamedEntityUserEdit *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRNamedEntityUserEdit *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -184,7 +184,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -199,14 +199,14 @@
       v6 = off_1E78D1EC0[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"entityTaggerCategory"];
+    [dictionary setObject:v6 forKeyedSubscript:@"entityTaggerCategory"];
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRNamedEntityUserEdit isNamedEntityPresentInSpeechProfile](self, "isNamedEntityPresentInSpeechProfile")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isNamedEntityPresentInSpeechProfile"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isNamedEntityPresentInSpeechProfile"];
 
     has = self->_has;
   }
@@ -214,26 +214,26 @@
   if ((has & 2) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASRNamedEntityUserEdit isNamedEntityPresentInVisualContext](self, "isNamedEntityPresentInVisualContext")}];
-    [v3 setObject:v8 forKeyedSubscript:@"isNamedEntityPresentInVisualContext"];
+    [dictionary setObject:v8 forKeyedSubscript:@"isNamedEntityPresentInVisualContext"];
   }
 
   if ([(NSArray *)self->_speechProfileCategories count])
   {
-    v9 = [(ASRSchemaASRNamedEntityUserEdit *)self speechProfileCategories];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"speechProfileCategories"];
+    speechProfileCategories = [(ASRSchemaASRNamedEntityUserEdit *)self speechProfileCategories];
+    v10 = [speechProfileCategories copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"speechProfileCategories"];
   }
 
   if ([(NSArray *)self->_visualContextCategories count])
   {
-    v11 = [(ASRSchemaASRNamedEntityUserEdit *)self visualContextCategories];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"visualContextCategories"];
+    visualContextCategories = [(ASRSchemaASRNamedEntityUserEdit *)self visualContextCategories];
+    v12 = [visualContextCategories copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"visualContextCategories"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -274,16 +274,16 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5 ^ [(NSArray *)self->_speechProfileCategories hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[40];
+  v6 = equalCopy[40];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -292,13 +292,13 @@ LABEL_6:
   if (*&has)
   {
     entityTaggerCategory = self->_entityTaggerCategory;
-    if (entityTaggerCategory != [v4 entityTaggerCategory])
+    if (entityTaggerCategory != [equalCopy entityTaggerCategory])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[40];
+    v6 = equalCopy[40];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -310,26 +310,26 @@ LABEL_6:
   if (v8)
   {
     isNamedEntityPresentInVisualContext = self->_isNamedEntityPresentInVisualContext;
-    if (isNamedEntityPresentInVisualContext != [v4 isNamedEntityPresentInVisualContext])
+    if (isNamedEntityPresentInVisualContext != [equalCopy isNamedEntityPresentInVisualContext])
     {
       goto LABEL_22;
     }
   }
 
-  v10 = [(ASRSchemaASRNamedEntityUserEdit *)self visualContextCategories];
-  v11 = [v4 visualContextCategories];
-  if ((v10 != 0) == (v11 == 0))
+  visualContextCategories = [(ASRSchemaASRNamedEntityUserEdit *)self visualContextCategories];
+  visualContextCategories2 = [equalCopy visualContextCategories];
+  if ((visualContextCategories != 0) == (visualContextCategories2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(ASRSchemaASRNamedEntityUserEdit *)self visualContextCategories];
-  if (v12)
+  visualContextCategories3 = [(ASRSchemaASRNamedEntityUserEdit *)self visualContextCategories];
+  if (visualContextCategories3)
   {
-    v13 = v12;
-    v14 = [(ASRSchemaASRNamedEntityUserEdit *)self visualContextCategories];
-    v15 = [v4 visualContextCategories];
-    v16 = [v14 isEqual:v15];
+    v13 = visualContextCategories3;
+    visualContextCategories4 = [(ASRSchemaASRNamedEntityUserEdit *)self visualContextCategories];
+    visualContextCategories5 = [equalCopy visualContextCategories];
+    v16 = [visualContextCategories4 isEqual:visualContextCategories5];
 
     if (!v16)
     {
@@ -342,7 +342,7 @@ LABEL_6:
   }
 
   v17 = (*&self->_has >> 2) & 1;
-  if (v17 != ((v4[40] >> 2) & 1))
+  if (v17 != ((equalCopy[40] >> 2) & 1))
   {
     goto LABEL_22;
   }
@@ -350,18 +350,18 @@ LABEL_6:
   if (v17)
   {
     isNamedEntityPresentInSpeechProfile = self->_isNamedEntityPresentInSpeechProfile;
-    if (isNamedEntityPresentInSpeechProfile != [v4 isNamedEntityPresentInSpeechProfile])
+    if (isNamedEntityPresentInSpeechProfile != [equalCopy isNamedEntityPresentInSpeechProfile])
     {
       goto LABEL_22;
     }
   }
 
-  v10 = [(ASRSchemaASRNamedEntityUserEdit *)self speechProfileCategories];
-  v11 = [v4 speechProfileCategories];
-  if ((v10 != 0) != (v11 == 0))
+  visualContextCategories = [(ASRSchemaASRNamedEntityUserEdit *)self speechProfileCategories];
+  visualContextCategories2 = [equalCopy speechProfileCategories];
+  if ((visualContextCategories != 0) != (visualContextCategories2 == 0))
   {
-    v19 = [(ASRSchemaASRNamedEntityUserEdit *)self speechProfileCategories];
-    if (!v19)
+    speechProfileCategories = [(ASRSchemaASRNamedEntityUserEdit *)self speechProfileCategories];
+    if (!speechProfileCategories)
     {
 
 LABEL_25:
@@ -369,10 +369,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v20 = v19;
-    v21 = [(ASRSchemaASRNamedEntityUserEdit *)self speechProfileCategories];
-    v22 = [v4 speechProfileCategories];
-    v23 = [v21 isEqual:v22];
+    v20 = speechProfileCategories;
+    speechProfileCategories2 = [(ASRSchemaASRNamedEntityUserEdit *)self speechProfileCategories];
+    speechProfileCategories3 = [equalCopy speechProfileCategories];
+    v23 = [speechProfileCategories2 isEqual:speechProfileCategories3];
 
     if (v23)
     {
@@ -392,10 +392,10 @@ LABEL_23:
   return v24;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -472,23 +472,23 @@ LABEL_23:
   }
 }
 
-- (int)speechProfileCategoriesAtIndex:(unint64_t)a3
+- (int)speechProfileCategoriesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_speechProfileCategories objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_speechProfileCategories objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addSpeechProfileCategories:(int)a3
+- (void)addSpeechProfileCategories:(int)categories
 {
-  v3 = *&a3;
+  v3 = *&categories;
   speechProfileCategories = self->_speechProfileCategories;
   if (!speechProfileCategories)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_speechProfileCategories;
-    self->_speechProfileCategories = v6;
+    self->_speechProfileCategories = array;
 
     speechProfileCategories = self->_speechProfileCategories;
   }
@@ -497,9 +497,9 @@ LABEL_23:
   [(NSArray *)speechProfileCategories addObject:v8];
 }
 
-- (void)setHasIsNamedEntityPresentInSpeechProfile:(BOOL)a3
+- (void)setHasIsNamedEntityPresentInSpeechProfile:(BOOL)profile
 {
-  if (a3)
+  if (profile)
   {
     v3 = 4;
   }
@@ -512,23 +512,23 @@ LABEL_23:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)visualContextCategoriesAtIndex:(unint64_t)a3
+- (int)visualContextCategoriesAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_visualContextCategories objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_visualContextCategories objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addVisualContextCategories:(int)a3
+- (void)addVisualContextCategories:(int)categories
 {
-  v3 = *&a3;
+  v3 = *&categories;
   visualContextCategories = self->_visualContextCategories;
   if (!visualContextCategories)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_visualContextCategories;
-    self->_visualContextCategories = v6;
+    self->_visualContextCategories = array;
 
     visualContextCategories = self->_visualContextCategories;
   }
@@ -537,9 +537,9 @@ LABEL_23:
   [(NSArray *)visualContextCategories addObject:v8];
 }
 
-- (void)setHasIsNamedEntityPresentInVisualContext:(BOOL)a3
+- (void)setHasIsNamedEntityPresentInVisualContext:(BOOL)context
 {
-  if (a3)
+  if (context)
   {
     v3 = 2;
   }

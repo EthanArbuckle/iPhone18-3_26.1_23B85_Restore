@@ -32,7 +32,7 @@
   v16[5] = v15;
   v17 = a3;
   v18 = a4;
-  v19 = self;
+  selfCopy = self;
   sub_100521E40(0, 0, v11, &unk_1006B0700, v16);
 }
 
@@ -61,7 +61,7 @@
   v16[5] = v15;
   v17 = a3;
   v18 = a4;
-  v19 = self;
+  selfCopy = self;
   sub_100521E40(0, 0, v11, &unk_1006B06D0, v16);
 }
 
@@ -90,7 +90,7 @@
   v16[5] = v15;
   v17 = a3;
   v18 = a4;
-  v19 = self;
+  selfCopy = self;
   sub_100521E40(0, 0, v11, &unk_1006A16B0, v16);
 }
 

@@ -4,7 +4,7 @@
 - (id)init_internal;
 - (void)_updateForcedOffline;
 - (void)startServiceIfEnabled;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation MapsOfflineHelper
@@ -62,9 +62,9 @@
   [v2 startServiceIfEnabled];
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  if (a3.var0 == 569 && a3.var1 == &unk_101642C20)
+  if (key.var0 == 569 && key.var1 == &unk_101642C20)
   {
     [(MapsOfflineHelper *)self _updateForcedOffline];
   }
@@ -73,9 +73,9 @@
 - (BOOL)offlineServiceRunning
 {
   v2 = +[GEOOfflineService shared];
-  v3 = [v2 isUsingOffline];
+  isUsingOffline = [v2 isUsingOffline];
 
-  return v3;
+  return isUsingOffline;
 }
 
 @end

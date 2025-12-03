@@ -1,35 +1,35 @@
 @interface PKDatePicker
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (Class)_classForDay:(BOOL)a3 month:(BOOL)a4 year:(BOOL)a5 style:(unint64_t)a6;
-- (PKDatePicker)initWithCoder:(id)a3;
-- (PKDatePicker)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (Class)_classForDay:(BOOL)day month:(BOOL)month year:(BOOL)year style:(unint64_t)style;
+- (PKDatePicker)initWithCoder:(id)coder;
+- (PKDatePicker)initWithFrame:(CGRect)frame;
 - (PKDatePickerDelegate)delegate;
-- (void)_dateValueChanged:(id)a3;
+- (void)_dateValueChanged:(id)changed;
 - (void)_forceReloadInternalPicker;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)reconfigureToShowDay:(BOOL)a3 month:(BOOL)a4 year:(BOOL)a5 style:(unint64_t)a6 locale:(id)a7 calendar:(id)a8;
-- (void)setBackgroundColor:(id)a3;
-- (void)setDate:(id)a3;
+- (void)reconfigureToShowDay:(BOOL)day month:(BOOL)month year:(BOOL)year style:(unint64_t)style locale:(id)locale calendar:(id)calendar;
+- (void)setBackgroundColor:(id)color;
+- (void)setDate:(id)date;
 @end
 
 @implementation PKDatePicker
 
-- (PKDatePicker)initWithFrame:(CGRect)a3
+- (PKDatePicker)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v11.receiver = self;
   v11.super_class = PKDatePicker;
   v7 = [(PKDatePicker *)&v11 initWithFrame:?];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    v9 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-    [(PKDatePicker *)v7 reconfigureToShowDay:1 month:1 year:1 style:0 locale:v8 calendar:v9];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    [(PKDatePicker *)v7 reconfigureToShowDay:1 month:1 year:1 style:0 locale:autoupdatingCurrentLocale calendar:autoupdatingCurrentCalendar];
 
     v12.origin.x = x;
     v12.origin.y = y;
@@ -44,15 +44,15 @@
   return v7;
 }
 
-- (PKDatePicker)initWithCoder:(id)a3
+- (PKDatePicker)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];
-  v6 = a3;
+  coderCopy = coder;
   [v4 raise:v5 format:@"This class is not NSCoding compliant."];
   v9.receiver = self;
   v9.super_class = PKDatePicker;
-  v7 = [(PKDatePicker *)&v9 initWithCoder:v6];
+  v7 = [(PKDatePicker *)&v9 initWithCoder:coderCopy];
 
   return v7;
 }
@@ -66,34 +66,34 @@
   [(PKDatePicker *)&v3 dealloc];
 }
 
-- (void)reconfigureToShowDay:(BOOL)a3 month:(BOOL)a4 year:(BOOL)a5 style:(unint64_t)a6 locale:(id)a7 calendar:(id)a8
+- (void)reconfigureToShowDay:(BOOL)day month:(BOOL)month year:(BOOL)year style:(unint64_t)style locale:(id)locale calendar:(id)calendar
 {
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v28 = a7;
-  v27 = a8;
+  yearCopy = year;
+  monthCopy = month;
+  dayCopy = day;
+  localeCopy = locale;
+  calendarCopy = calendar;
   internalPicker = self->_internalPicker;
-  if (!internalPicker || self->_showsDay != v13 || self->_showsMonth != v12 || self->_showsYear != v11 || self->_style != a6)
+  if (!internalPicker || self->_showsDay != dayCopy || self->_showsMonth != monthCopy || self->_showsYear != yearCopy || self->_style != style)
   {
-    v16 = [(PKDatePickerInternalImplementationProtocol *)internalPicker date];
-    v17 = v16;
-    if (v16)
+    date = [(PKDatePickerInternalImplementationProtocol *)internalPicker date];
+    v17 = date;
+    if (date)
     {
-      v18 = v16;
+      date2 = date;
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DF00] date];
+      date2 = [MEMORY[0x1E695DF00] date];
     }
 
-    v19 = v18;
+    v19 = date2;
 
-    v20 = [(PKDatePicker *)self _classForDay:v13 month:v12 year:v11 style:a6];
+    v20 = [(PKDatePicker *)self _classForDay:dayCopy month:monthCopy year:yearCopy style:style];
     if (!v20)
     {
-      v13 = 1;
+      dayCopy = 1;
       v21 = [(PKDatePicker *)self _classForDay:1 month:1 year:1 style:0];
       if (!v21)
       {
@@ -102,52 +102,52 @@
       }
 
       v20 = v21;
-      v12 = 1;
-      v11 = 1;
+      monthCopy = 1;
+      yearCopy = 1;
     }
 
     [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker removeFromSuperview];
     [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker prepareToDie];
-    v22 = [[v20 alloc] initShowingDay:v13 month:v12 year:v11 locale:v28 calendar:v27];
+    v22 = [[v20 alloc] initShowingDay:dayCopy month:monthCopy year:yearCopy locale:localeCopy calendar:calendarCopy];
     v23 = self->_internalPicker;
     self->_internalPicker = v22;
 
     [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker setDateValueChangedTarget:self action:sel__dateValueChanged_];
     [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker setDate:v19];
     [(PKDatePicker *)self addSubview:self->_internalPicker];
-    v24 = [MEMORY[0x1E69DC888] clearColor];
-    [(PKDatePicker *)self setBackgroundColor:v24];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(PKDatePicker *)self setBackgroundColor:clearColor];
 
     [(PKDatePicker *)self setNeedsDisplay];
     [(PKDatePicker *)self setNeedsLayout];
-    self->_showsDay = v13;
-    self->_showsMonth = v12;
-    self->_showsYear = v11;
-    self->_style = a6;
-    objc_storeStrong(&self->_locale, a7);
-    objc_storeStrong(&self->_calendar, a8);
-    v25 = [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker date];
+    self->_showsDay = dayCopy;
+    self->_showsMonth = monthCopy;
+    self->_showsYear = yearCopy;
+    self->_style = style;
+    objc_storeStrong(&self->_locale, locale);
+    objc_storeStrong(&self->_calendar, calendar);
+    date3 = [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker date];
     date = self->_date;
-    self->_date = v25;
+    self->_date = date3;
 
 LABEL_13:
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  objc_storeStrong(&self->_date, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_date, date);
+  dateCopy = date;
   [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker setDate:self->_date];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = PKDatePicker;
-  v4 = a3;
-  [(PKDatePicker *)&v5 setBackgroundColor:v4];
-  [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker setBackgroundColor:v4, v5.receiver, v5.super_class];
+  colorCopy = color;
+  [(PKDatePicker *)&v5 setBackgroundColor:colorCopy];
+  [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
 }
 
 - (void)layoutSubviews
@@ -162,25 +162,25 @@ LABEL_13:
   v10 = v9;
   if ((PKHomeButtonIsAvailable() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E69DC668] sharedApplication];
-    v12 = [v11 keyWindow];
-    [v12 safeAreaInsets];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+    [keyWindow safeAreaInsets];
     v10 = v10 - v13;
   }
 
   [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker setFrame:v4, v6, v8, v10];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker sizeThatFits:a3.width, a3.height];
+  [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker sizeThatFits:fits.width, fits.height];
   v4 = v3;
   v6 = v5;
   if ((PKHomeButtonIsAvailable() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E69DC668] sharedApplication];
-    v8 = [v7 keyWindow];
-    [v8 safeAreaInsets];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+    [keyWindow safeAreaInsets];
     v6 = v6 + v9;
   }
 
@@ -198,9 +198,9 @@ LABEL_13:
   v5 = v4;
   if ((PKHomeButtonIsAvailable() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E69DC668] sharedApplication];
-    v7 = [v6 keyWindow];
-    [v7 safeAreaInsets];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+    [keyWindow safeAreaInsets];
     v5 = v5 + v8;
   }
 
@@ -211,27 +211,27 @@ LABEL_13:
   return result;
 }
 
-- (Class)_classForDay:(BOOL)a3 month:(BOOL)a4 year:(BOOL)a5 style:(unint64_t)a6
+- (Class)_classForDay:(BOOL)day month:(BOOL)month year:(BOOL)year style:(unint64_t)style
 {
-  v7 = a3 && a4;
-  if (a6)
+  v7 = day && month;
+  if (style)
   {
-    v8 = 0;
+    yearCopy = 0;
   }
 
   else
   {
-    v8 = a5;
+    yearCopy = year;
   }
 
-  if (v7 && v8 || a6 == 2 && a3 && a4 && a5 || a6 == 1 && a4 && a5)
+  if (v7 && yearCopy || style == 2 && day && month && year || style == 1 && month && year)
   {
     goto LABEL_14;
   }
 
   if (v7)
   {
-    if (a6)
+    if (style)
     {
       goto LABEL_19;
     }
@@ -242,20 +242,20 @@ LABEL_14:
     return v9;
   }
 
-  if (!a6 && a4 && a5)
+  if (!style && month && year)
   {
     goto LABEL_14;
   }
 
-  if ((a3 ^ a4) != 1 || a5)
+  if ((day ^ month) != 1 || year)
   {
-    if (v8 && !a3 && !a4)
+    if (yearCopy && !day && !month)
     {
       goto LABEL_14;
     }
   }
 
-  else if (!a6)
+  else if (!style)
   {
     goto LABEL_14;
   }
@@ -266,11 +266,11 @@ LABEL_19:
   return v9;
 }
 
-- (void)_dateValueChanged:(id)a3
+- (void)_dateValueChanged:(id)changed
 {
-  v4 = [a3 date];
+  date = [changed date];
   date = self->_date;
-  self->_date = v4;
+  self->_date = date;
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_opt_respondsToSelector();
@@ -284,19 +284,19 @@ LABEL_19:
 
 - (void)_forceReloadInternalPicker
 {
-  v3 = [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker date];
-  v4 = v3;
-  if (v3)
+  date = [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker date];
+  v4 = date;
+  if (date)
   {
-    v5 = v3;
+    date2 = date;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF00] date];
+    date2 = [MEMORY[0x1E695DF00] date];
   }
 
-  v7 = v5;
+  v7 = date2;
 
   [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker removeFromSuperview];
   [(PKDatePickerInternalImplementationProtocol *)self->_internalPicker prepareToDie];

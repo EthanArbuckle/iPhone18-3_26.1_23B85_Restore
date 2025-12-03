@@ -29,8 +29,8 @@
 {
   v3 = *a3;
   v4 = *(a3 + 8);
-  v5 = *a1;
-  v6 = a1[1];
+  v5 = *self;
+  v6 = self[1];
   v7 = *(a3 + 16);
   outlined copy of XPCSystem.SharedActorKey(*a3, v4, v7);
   v8 = swift_unknownObjectRetain();

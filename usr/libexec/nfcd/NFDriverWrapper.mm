@@ -1,43 +1,43 @@
 @interface NFDriverWrapper
-- (BOOL)enableHeadlessMode:(BOOL)a3 shutdown:(BOOL)a4;
-- (id)_getExtendedIdentifier:(id)a3;
-- (id)_refreshTagInfo:(id)a3 update:(_NFDriverRemoteTag *)a4;
-- (void)_cardRemovalDetect:(id)a3;
+- (BOOL)enableHeadlessMode:(BOOL)mode shutdown:(BOOL)shutdown;
+- (id)_getExtendedIdentifier:(id)identifier;
+- (id)_refreshTagInfo:(id)info update:(_NFDriverRemoteTag *)update;
+- (void)_cardRemovalDetect:(id)detect;
 - (void)handleReaderBurnoutTimer;
 @end
 
 @implementation NFDriverWrapper
 
-- (id)_getExtendedIdentifier:(id)a3
+- (id)_getExtendedIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = arc4random();
-  v5 = [v3 tagID];
-  v6 = [v5 hash];
-  v7 = [v3 type];
+  tagID = [identifierCopy tagID];
+  v6 = [tagID hash];
+  type = [identifierCopy type];
 
-  v10 = (v7 + v6) | (v4 << 32);
+  v10 = (type + v6) | (v4 << 32);
   v8 = [[NSData alloc] initWithBytes:&v10 length:8];
 
   return v8;
 }
 
-- (id)_refreshTagInfo:(id)a3 update:(_NFDriverRemoteTag *)a4
+- (id)_refreshTagInfo:(id)info update:(_NFDriverRemoteTag *)update
 {
-  v5 = a3;
-  v6 = [[NFTagInternal alloc] initWithNFTag:v5];
-  if (a4 && [v5 type] == 3 && a4->var2.var0.var4)
+  infoCopy = info;
+  v6 = [[NFTagInternal alloc] initWithNFTag:infoCopy];
+  if (update && [infoCopy type] == 3 && update->var2.var0.var4)
   {
-    v7 = [[NSData alloc] initWithBytes:a4->var2.var6.var3 length:a4->var2.var0.var4];
+    v7 = [[NSData alloc] initWithBytes:update->var2.var6.var3 length:update->var2.var0.var4];
     [v6 _setHistoricalBytes:v7];
   }
 
   return v6;
 }
 
-- (void)_cardRemovalDetect:(id)a3
+- (void)_cardRemovalDetect:(id)detect
 {
-  sub_1001909EC(self, a3);
+  sub_1001909EC(self, detect);
   while (![(NFReaderRestrictor *)self->_readerPolicy readerModeProtectionActive])
   {
     driver = self->_driver;
@@ -94,10 +94,10 @@
   }
 }
 
-- (BOOL)enableHeadlessMode:(BOOL)a3 shutdown:(BOOL)a4
+- (BOOL)enableHeadlessMode:(BOOL)mode shutdown:(BOOL)shutdown
 {
-  v4 = a3;
-  if (a4)
+  modeCopy = mode;
+  if (shutdown)
   {
     v7 = 1;
     byte_10035DA91 = 1;
@@ -110,7 +110,7 @@
 
   if (v7)
   {
-    v8 = !a3;
+    v8 = !mode;
   }
 
   else
@@ -139,8 +139,8 @@
     }
 
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-    v10 = NFSharedLogGetLogger();
-    if (!os_log_type_enabled(&v10->super, OS_LOG_TYPE_ERROR))
+    selfCopy = NFSharedLogGetLogger();
+    if (!os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_24;
     }
@@ -166,13 +166,13 @@
     v63 = 239;
     v20 = "%c[%{public}s %{public}s]:%i Something trying to turn LPM ON after user shutdown. Denying.";
 LABEL_23:
-    _os_log_impl(&_mh_execute_header, &v10->super, OS_LOG_TYPE_ERROR, v20, buf, 0x22u);
+    _os_log_impl(&_mh_execute_header, &selfCopy->super, OS_LOG_TYPE_ERROR, v20, buf, 0x22u);
 LABEL_24:
     v11 = 0;
     goto LABEL_48;
   }
 
-  if (a3)
+  if (mode)
   {
     v9 = sub_1002261A0();
 
@@ -197,8 +197,8 @@ LABEL_24:
       }
 
       dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
-      v10 = NFSharedLogGetLogger();
-      if (!os_log_type_enabled(&v10->super, OS_LOG_TYPE_ERROR))
+      selfCopy = NFSharedLogGetLogger();
+      if (!os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_24;
       }
@@ -227,9 +227,9 @@ LABEL_24:
     }
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  if (v10 && v10->_isClosing)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy && selfCopy->_isClosing)
   {
     v11 = 0;
   }
@@ -239,13 +239,13 @@ LABEL_24:
     dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
     v21 = NFLogGetLogger();
     v22 = v21;
-    if (v4)
+    if (modeCopy)
     {
       if (v21)
       {
-        v23 = object_getClass(v10);
+        v23 = object_getClass(selfCopy);
         v24 = class_isMetaClass(v23);
-        v25 = object_getClassName(v10);
+        v25 = object_getClassName(selfCopy);
         v53 = sel_getName(a2);
         v26 = 45;
         if (v24)
@@ -260,7 +260,7 @@ LABEL_24:
       v27 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = object_getClass(v10);
+        v28 = object_getClass(selfCopy);
         if (class_isMetaClass(v28))
         {
           v29 = 43;
@@ -274,7 +274,7 @@ LABEL_24:
         *buf = 67109890;
         v57 = v29;
         v58 = 2082;
-        v59 = object_getClassName(v10);
+        v59 = object_getClassName(selfCopy);
         v60 = 2082;
         v61 = sel_getName(a2);
         v62 = 1024;
@@ -293,9 +293,9 @@ LABEL_24:
     {
       if (v21)
       {
-        v33 = object_getClass(v10);
+        v33 = object_getClass(selfCopy);
         v34 = class_isMetaClass(v33);
-        v35 = object_getClassName(v10);
+        v35 = object_getClassName(selfCopy);
         v54 = sel_getName(a2);
         v36 = 45;
         if (v34)
@@ -310,7 +310,7 @@ LABEL_24:
       v37 = NFSharedLogGetLogger();
       if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
       {
-        v38 = object_getClass(v10);
+        v38 = object_getClass(selfCopy);
         if (class_isMetaClass(v38))
         {
           v39 = 43;
@@ -324,7 +324,7 @@ LABEL_24:
         *buf = 67109890;
         v57 = v39;
         v58 = 2082;
-        v59 = object_getClassName(v10);
+        v59 = object_getClassName(selfCopy);
         v60 = 2082;
         v61 = sel_getName(a2);
         v62 = 1024;
@@ -339,11 +339,11 @@ LABEL_24:
       v41 = sub_100226978(v31);
     }
 
-    driver = v10->_driver;
+    driver = selfCopy->_driver;
     v11 = NFDriverSetHeadlessMode();
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 LABEL_48:
 
   return v11;

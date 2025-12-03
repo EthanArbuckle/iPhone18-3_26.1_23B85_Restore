@@ -1,20 +1,20 @@
 @interface CNCollation
 + (id)defaultSortCollatorIdentifier;
-+ (id)indexSectionsFromPropertyList:(id)a3;
-+ (id)languageHeaderSectionsFromPropertyList:(id)a3 collator:(UCollator *)a4;
++ (id)indexSectionsFromPropertyList:(id)list;
++ (id)languageHeaderSectionsFromPropertyList:(id)list collator:(UCollator *)collator;
 + (id)sectionURL;
-- (CNCollation)initWithCollator:(UCollator *)a3;
-- (CNCollation)initWithCollator:(UCollator *)a3 URL:(id)a4;
+- (CNCollation)initWithCollator:(UCollator *)collator;
+- (CNCollation)initWithCollator:(UCollator *)collator URL:(id)l;
 @end
 
 @implementation CNCollation
 
 + (id)defaultSortCollatorIdentifier
 {
-  v2 = [a1 sectionURL];
-  if (v2)
+  sectionURL = [self sectionURL];
+  if (sectionURL)
   {
-    v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v2];
+    v3 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:sectionURL];
     if (v3)
     {
       v4 = [MEMORY[0x1E696AE40] propertyListWithData:v3 options:0 format:0 error:0];
@@ -56,7 +56,7 @@ void __25__CNCollation_sectionURL__block_invoke(uint64_t a1, uint64_t a2, uint64
 + (id)sectionURL
 {
   v2 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v3 = [v2 preferredLocalizations];
+  preferredLocalizations = [v2 preferredLocalizations];
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -70,7 +70,7 @@ void __25__CNCollation_sectionURL__block_invoke(uint64_t a1, uint64_t a2, uint64
   v9 = &v10;
   v4 = v2;
   v8 = v4;
-  [v3 enumerateObjectsUsingBlock:v7];
+  [preferredLocalizations enumerateObjectsUsingBlock:v7];
   v5 = v11[5];
 
   _Block_object_dispose(&v10, 8);
@@ -78,16 +78,16 @@ void __25__CNCollation_sectionURL__block_invoke(uint64_t a1, uint64_t a2, uint64
   return v5;
 }
 
-+ (id)indexSectionsFromPropertyList:(id)a3
++ (id)indexSectionsFromPropertyList:(id)list
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"SectionIndices"];
-  v5 = [v3 objectForKeyedSubscript:@"LocalizedSectionIndices"];
+  listCopy = list;
+  v4 = [listCopy objectForKeyedSubscript:@"SectionIndices"];
+  v5 = [listCopy objectForKeyedSubscript:@"LocalizedSectionIndices"];
 
   v6 = MEMORY[0x1E695DF20];
-  v7 = [v5 allKeys];
-  v8 = [v5 allValues];
-  v9 = [v6 dictionaryWithObjects:v7 forKeys:v8];
+  allKeys = [v5 allKeys];
+  allValues = [v5 allValues];
+  v9 = [v6 dictionaryWithObjects:allKeys forKeys:allValues];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -124,18 +124,18 @@ CNCollationSection *__45__CNCollation_indexSectionsFromPropertyList___block_invo
   return v8;
 }
 
-+ (id)languageHeaderSectionsFromPropertyList:(id)a3 collator:(UCollator *)a4
++ (id)languageHeaderSectionsFromPropertyList:(id)list collator:(UCollator *)collator
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"SectionHeaders"];
-  v7 = [v5 objectForKeyedSubscript:@"LocalizedSectionHeaders"];
+  listCopy = list;
+  v6 = [listCopy objectForKeyedSubscript:@"SectionHeaders"];
+  v7 = [listCopy objectForKeyedSubscript:@"LocalizedSectionHeaders"];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__CNCollation_languageHeaderSectionsFromPropertyList_collator___block_invoke;
   v11[3] = &unk_1E6ED6248;
   v12 = v7;
-  v13 = a4;
+  collatorCopy = collator;
   v8 = v7;
   v9 = [v6 _cn_map:v11];
 
@@ -174,19 +174,19 @@ CNCollationHeaderSection *__63__CNCollation_languageHeaderSectionsFromPropertyLi
   return v8;
 }
 
-- (CNCollation)initWithCollator:(UCollator *)a3
+- (CNCollation)initWithCollator:(UCollator *)collator
 {
-  v5 = [objc_opt_class() sectionURL];
-  v6 = [(CNCollation *)self initWithCollator:a3 URL:v5];
+  sectionURL = [objc_opt_class() sectionURL];
+  v6 = [(CNCollation *)self initWithCollator:collator URL:sectionURL];
 
   return v6;
 }
 
-- (CNCollation)initWithCollator:(UCollator *)a3 URL:(id)a4
+- (CNCollation)initWithCollator:(UCollator *)collator URL:(id)l
 {
-  if (a4)
+  if (l)
   {
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:a4];
+    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:l];
     if (v6)
     {
       v7 = [MEMORY[0x1E696AE40] propertyListWithData:v6 options:0 format:0 error:0];
@@ -216,32 +216,32 @@ CNCollationHeaderSection *__63__CNCollation_languageHeaderSectionsFromPropertyLi
         indexSections = self->_indexSections;
         self->_indexSections = v17;
 
-        v19 = [objc_opt_class() languageHeaderSectionsFromPropertyList:v7 collator:a3];
+        v19 = [objc_opt_class() languageHeaderSectionsFromPropertyList:v7 collator:collator];
         headerLanguages = self->_headerLanguages;
         self->_headerLanguages = v19;
 
         self = self;
-        v21 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v21 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v21 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
 @end

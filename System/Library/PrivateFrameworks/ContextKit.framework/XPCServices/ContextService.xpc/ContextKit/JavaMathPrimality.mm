@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     memcpy(__dst, &unk_100314CA0, sizeof(__dst));
     JreStrongAssignAndConsume(&qword_100554E70, [IOSIntArray newArrayWithInts:__dst count:172]);

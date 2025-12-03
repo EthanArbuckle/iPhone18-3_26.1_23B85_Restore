@@ -4,43 +4,43 @@
 + (id)_attributeKeys;
 + (id)_unserializedAttributeKeys;
 + (void)initialize;
-- (BOOL)_didValueChangeForKey:(id)a3 withPendingChange:(id)a4;
+- (BOOL)_didValueChangeForKey:(id)key withPendingChange:(id)change;
 - (BOOL)_isDelegateManagingInterpolation;
 - (BOOL)_isDelegateManagingOpacity;
-- (BOOL)_isInPlaceFilteringPossibleWithSettingsInterpolator:(id)a3;
+- (BOOL)_isInPlaceFilteringPossibleWithSettingsInterpolator:(id)interpolator;
 - (BOOL)_needsPruning;
 - (BOOL)allowsInPlaceFiltering;
-- (BOOL)shouldArchiveValueForKey:(id)a3;
+- (BOOL)shouldArchiveValueForKey:(id)key;
 - (MTMaterialLayer)init;
 - (NSString)recipeName;
 - (id)_effectiveDebugIdentifier;
 - (id)backdropScaleAdjustment;
 - (id)description;
-- (id)visualStylingProviderForCategory:(id)a3;
-- (void)_adjustScaleOfBackdropLayer:(id)a3 ifNecessaryWithSettingsInterpolator:(id)a4;
-- (void)_configureBackdropLayer:(id)a3 withSettingsInterpolator:(id)a4 preservingFiltersIfIdentity:(BOOL)a5;
-- (void)_configureBackdropLayerIfNecessaryWithSettingsInterpolator:(id)a3;
-- (void)_configureDelegateFlagsForDelegate:(id)a3;
-- (void)_configureIfNecessaryWithSettingsInterpolator:(id)a3;
+- (id)visualStylingProviderForCategory:(id)category;
+- (void)_adjustScaleOfBackdropLayer:(id)layer ifNecessaryWithSettingsInterpolator:(id)interpolator;
+- (void)_configureBackdropLayer:(id)layer withSettingsInterpolator:(id)interpolator preservingFiltersIfIdentity:(BOOL)identity;
+- (void)_configureBackdropLayerIfNecessaryWithSettingsInterpolator:(id)interpolator;
+- (void)_configureDelegateFlagsForDelegate:(id)delegate;
+- (void)_configureIfNecessaryWithSettingsInterpolator:(id)interpolator;
 - (void)_pruneAtCompletionOfCurrentTransaction;
 - (void)_updateForChangeInRecipeAndConfiguration;
 - (void)_updateForChangeInWeighting;
 - (void)_updateVisualStylingProviders;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)didChangeValueForKey:(id)a3;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)didChangeValueForKey:(id)key;
 - (void)layoutSublayers;
 - (void)prune;
-- (void)setAllowsInPlaceFiltering:(BOOL)a3;
-- (void)setBackdropScaleAdjustment:(id)a3;
-- (void)setBlurEnabled:(BOOL)a3;
-- (void)setContentReplacedWithSnapshot:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setRecipeName:(id)a3 fromBundle:(id)a4;
-- (void)setReduceMotionEnabled:(BOOL)a3;
-- (void)setReduceTransparencyEnabled:(BOOL)a3;
-- (void)setUnsafeUnretainedDelegate:(id)a3;
-- (void)setZoomEnabled:(BOOL)a3;
-- (void)willChangeValueForKey:(id)a3;
+- (void)setAllowsInPlaceFiltering:(BOOL)filtering;
+- (void)setBackdropScaleAdjustment:(id)adjustment;
+- (void)setBlurEnabled:(BOOL)enabled;
+- (void)setContentReplacedWithSnapshot:(BOOL)snapshot;
+- (void)setDelegate:(id)delegate;
+- (void)setRecipeName:(id)name fromBundle:(id)bundle;
+- (void)setReduceMotionEnabled:(BOOL)enabled;
+- (void)setReduceTransparencyEnabled:(BOOL)enabled;
+- (void)setUnsafeUnretainedDelegate:(id)delegate;
+- (void)setZoomEnabled:(BOOL)enabled;
+- (void)willChangeValueForKey:(id)key;
 @end
 
 @implementation MTMaterialLayer
@@ -68,8 +68,8 @@
   if (!settingsInterpolator)
   {
     v7 = [MTMaterialSettingsInterpolator alloc];
-    v8 = [(MTMaterialLayer *)self _recipeSettings];
-    v9 = [(MTMaterialSettingsInterpolator *)v7 initWithSettings:v8];
+    _recipeSettings = [(MTMaterialLayer *)self _recipeSettings];
+    v9 = [(MTMaterialSettingsInterpolator *)v7 initWithSettings:_recipeSettings];
     v10 = self->_settingsInterpolator;
     self->_settingsInterpolator = v9;
 
@@ -164,11 +164,11 @@ LABEL_20:
     return 0;
   }
 
-  v3 = self;
-  v4 = [(MTMaterialLayer *)self delegate];
-  LOBYTE(v3) = [v4 isManagingOpacityForMaterialLayer:v3];
+  selfCopy = self;
+  delegate = [(MTMaterialLayer *)self delegate];
+  LOBYTE(selfCopy) = [delegate isManagingOpacityForMaterialLayer:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)_updateVisualStylingProviders
@@ -199,14 +199,14 @@ LABEL_20:
         v11 = v10;
         if (v10 < 0.5 && ([(MTMaterialSettingsInterpolator *)self->_settingsInterpolator initialSettings], (v2 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v12 = [(MTMaterialSettingsInterpolator *)self->_settingsInterpolator initialSettings];
-          v13 = [v12 recipeName];
+          initialSettings = [(MTMaterialSettingsInterpolator *)self->_settingsInterpolator initialSettings];
+          recipeName = [initialSettings recipeName];
         }
 
         else
         {
-          v14 = [(MTMaterialSettingsInterpolator *)self->_settingsInterpolator finalSettings];
-          v13 = [v14 recipeName];
+          finalSettings = [(MTMaterialSettingsInterpolator *)self->_settingsInterpolator finalSettings];
+          recipeName = [finalSettings recipeName];
 
           if (v11 >= 0.5)
           {
@@ -215,7 +215,7 @@ LABEL_20:
         }
 
 LABEL_11:
-        v15 = MTSharedVisualStyleSetForRecipeAndCategory(v13, v8);
+        v15 = MTSharedVisualStyleSetForRecipeAndCategory(recipeName, v8);
         [v9 _setVisualStyleSet:v15];
       }
 
@@ -268,7 +268,7 @@ LABEL_11:
           if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_ERROR))
           {
             *buf = v13;
-            v20 = self;
+            selfCopy = self;
             v21 = 2114;
             v22 = v9;
             _os_log_error_impl(&dword_1BF527000, v11, OS_LOG_TYPE_ERROR, "%{public}@: Found expired prune promise: %{public}@", buf, 0x16u);
@@ -315,14 +315,14 @@ LABEL_11:
   [(NSMutableDictionary *)self->_pendingChange removeAllObjects];
   objc_storeStrong(&self->_previousSettingsInterpolator, self->_settingsInterpolator);
   v3 = [MTMaterialSettingsInterpolator alloc];
-  v4 = [(MTMaterialLayer *)self _recipeSettings];
-  v5 = [(MTMaterialSettingsInterpolator *)v3 initWithSettings:v4];
+  _recipeSettings = [(MTMaterialLayer *)self _recipeSettings];
+  v5 = [(MTMaterialSettingsInterpolator *)v3 initWithSettings:_recipeSettings];
   settingsInterpolator = self->_settingsInterpolator;
   self->_settingsInterpolator = v5;
 
   v7 = self->_settingsInterpolator;
-  v8 = [(MTMaterialSettingsInterpolator *)self->_previousSettingsInterpolator finalSettings];
-  [(MTMaterialSettingsInterpolator *)v7 setInitialSettings:v8];
+  finalSettings = [(MTMaterialSettingsInterpolator *)self->_previousSettingsInterpolator finalSettings];
+  [(MTMaterialSettingsInterpolator *)v7 setInitialSettings:finalSettings];
 
   if (self->_previousSettingsInterpolator)
   {
@@ -346,10 +346,10 @@ LABEL_11:
 
 - (NSString)recipeName
 {
-  v2 = [(MTMaterialLayer *)self _recipeSettings];
-  v3 = [v2 recipeName];
+  _recipeSettings = [(MTMaterialLayer *)self _recipeSettings];
+  recipeName = [_recipeSettings recipeName];
 
-  return v3;
+  return recipeName;
 }
 
 - (BOOL)_isDelegateManagingInterpolation
@@ -359,17 +359,17 @@ LABEL_11:
     return 0;
   }
 
-  v3 = self;
-  v4 = [(MTMaterialLayer *)self delegate];
-  LOBYTE(v3) = [v4 isManagingInterpolationForMaterialLayer:v3];
+  selfCopy = self;
+  delegate = [(MTMaterialLayer *)self delegate];
+  LOBYTE(selfCopy) = [delegate isManagingInterpolationForMaterialLayer:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)_needsPruning
 {
-  v2 = [(MTMaterialSettingsInterpolator *)self->_settingsInterpolator initialSettings];
-  v3 = v2 != 0;
+  initialSettings = [(MTMaterialSettingsInterpolator *)self->_settingsInterpolator initialSettings];
+  v3 = initialSettings != 0;
 
   return v3;
 }
@@ -378,7 +378,7 @@ LABEL_11:
 {
   v3 = objc_opt_self();
 
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     MTRegisterCoreMaterialLogging();
@@ -419,15 +419,15 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
   prunePromises = self->_prunePromises;
   if (!prunePromises)
   {
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v6 = self->_prunePromises;
-    self->_prunePromises = v5;
+    self->_prunePromises = weakObjectsHashTable;
 
     prunePromises = self->_prunePromises;
   }
 
   [(NSHashTable *)prunePromises addObject:v3];
-  v7 = [(MTMaterialLayer *)self delegate];
+  delegate = [(MTMaterialLayer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v19[0] = MEMORY[0x1E69E9820];
@@ -437,7 +437,7 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
     v8 = v3;
     v20 = v8;
     v18 = 0;
-    v9 = [v7 addCompletionForCurrentAnimation:v19 forMaterialLayer:self reason:&v18];
+    v9 = [delegate addCompletionForCurrentAnimation:v19 forMaterialLayer:self reason:&v18];
     v10 = v18;
     v11 = MTLogMaterials;
     v12 = os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEFAULT);
@@ -446,7 +446,7 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
       if (v12)
       {
         *buf = 138543362;
-        v22 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1BF527000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Delegate successfully added completion", buf, 0xCu);
       }
     }
@@ -456,7 +456,7 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
       if (v12)
       {
         *buf = 138543618;
-        v22 = self;
+        selfCopy3 = self;
         v23 = 2114;
         v24 = v10;
         _os_log_impl(&dword_1BF527000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Delegate didn't add completion (%{public}@) – pruning immediately", buf, 0x16u);
@@ -472,7 +472,7 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
     if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1BF527000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Delegate doesn't handle completions – adding to current transaction", buf, 0xCu);
     }
 
@@ -489,34 +489,34 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setReduceTransparencyEnabled:(BOOL)a3
+- (void)setReduceTransparencyEnabled:(BOOL)enabled
 {
-  if (self->_reduceTransparencyEnabled != a3)
+  if (self->_reduceTransparencyEnabled != enabled)
   {
-    self->_reduceTransparencyEnabled = a3;
+    self->_reduceTransparencyEnabled = enabled;
     [(MTMaterialLayer *)self _setNeedsConfiguring];
   }
 }
 
-- (void)setReduceMotionEnabled:(BOOL)a3
+- (void)setReduceMotionEnabled:(BOOL)enabled
 {
-  if (self->_reduceMotionEnabled != a3)
+  if (self->_reduceMotionEnabled != enabled)
   {
-    self->_reduceMotionEnabled = a3;
+    self->_reduceMotionEnabled = enabled;
     [(MTMaterialLayer *)self _setNeedsConfiguring];
   }
 }
 
-- (id)visualStylingProviderForCategory:(id)a3
+- (id)visualStylingProviderForCategory:(id)category
 {
-  v4 = a3;
-  v5 = v4;
+  categoryCopy = category;
+  v5 = categoryCopy;
   v6 = 0;
-  if (v4)
+  if (categoryCopy)
   {
-    if (@"none" != v4)
+    if (@"none" != categoryCopy)
     {
-      v6 = [(NSMutableDictionary *)self->_visualStyleCategoriesToProviders objectForKey:v4];
+      v6 = [(NSMutableDictionary *)self->_visualStyleCategoriesToProviders objectForKey:categoryCopy];
       if (!v6)
       {
         if (!self->_visualStyleCategoriesToProviders)
@@ -545,7 +545,7 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
     if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BF527000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Pruning", &v6, 0xCu);
     }
 
@@ -560,31 +560,31 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = MTMaterialLayer;
-  v4 = a3;
-  [(MTMaterialLayer *)&v5 setDelegate:v4];
-  [(MTMaterialLayer *)self _configureDelegateFlagsForDelegate:v4, v5.receiver, v5.super_class];
+  delegateCopy = delegate;
+  [(MTMaterialLayer *)&v5 setDelegate:delegateCopy];
+  [(MTMaterialLayer *)self _configureDelegateFlagsForDelegate:delegateCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setUnsafeUnretainedDelegate:(id)a3
+- (void)setUnsafeUnretainedDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = MTMaterialLayer;
-  v4 = a3;
-  [(MTMaterialLayer *)&v5 setUnsafeUnretainedDelegate:v4];
-  [(MTMaterialLayer *)self _configureDelegateFlagsForDelegate:v4, v5.receiver, v5.super_class];
+  delegateCopy = delegate;
+  [(MTMaterialLayer *)&v5 setUnsafeUnretainedDelegate:delegateCopy];
+  [(MTMaterialLayer *)self _configureDelegateFlagsForDelegate:delegateCopy, v5.receiver, v5.super_class];
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  if (!-[MTMaterialLayer _delegateManagesWeighting](self, "_delegateManagesWeighting") && [v7 isEqualToString:@"filters"])
+  animationCopy = animation;
+  keyCopy = key;
+  v8 = animationCopy;
+  if (!-[MTMaterialLayer _delegateManagesWeighting](self, "_delegateManagesWeighting") && [keyCopy isEqualToString:@"filters"])
   {
 
     goto LABEL_25;
@@ -596,8 +596,8 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
     goto LABEL_23;
   }
 
-  v10 = [objc_opt_class() mt_implicitlyAnimatableKeys];
-  v11 = [v10 containsObject:v7];
+  mt_implicitlyAnimatableKeys = [objc_opt_class() mt_implicitlyAnimatableKeys];
+  v11 = [mt_implicitlyAnimatableKeys containsObject:keyCopy];
 
   v9 = v8;
   if (!v11)
@@ -609,12 +609,12 @@ void __55__MTMaterialLayer_Private__mt_implicitlyAnimatableKeys__block_invoke()
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v12 = [objc_opt_class() mt_animatableKeys];
-  v13 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  mt_animatableKeys = [objc_opt_class() mt_animatableKeys];
+  v13 = [mt_animatableKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (!v13)
   {
 LABEL_17:
-    v19 = v12;
+    v19 = mt_animatableKeys;
     goto LABEL_21;
   }
 
@@ -626,7 +626,7 @@ LABEL_8:
   {
     if (*v27 != v15)
     {
-      objc_enumerationMutation(v12);
+      objc_enumerationMutation(mt_animatableKeys);
     }
 
     v17 = *(*(&v26 + 1) + 8 * v16);
@@ -648,7 +648,7 @@ LABEL_8:
 LABEL_15:
     if (v14 == ++v16)
     {
-      v14 = [v12 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v14 = [mt_animatableKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v14)
       {
         goto LABEL_8;
@@ -666,11 +666,11 @@ LABEL_15:
     v9 = [v19 copy];
     [v9 setToValue:0];
     [v9 setByValue:0];
-    v22 = [v21 keyPath];
-    [v9 setKeyPath:v22];
+    keyPath = [v21 keyPath];
+    [v9 setKeyPath:keyPath];
 
-    v23 = [v21 fromValue];
-    [v9 setFromValue:v23];
+    fromValue = [v21 fromValue];
+    [v9 setFromValue:fromValue];
 
     goto LABEL_22;
   }
@@ -684,7 +684,7 @@ LABEL_23:
   {
     v25.receiver = self;
     v25.super_class = MTMaterialLayer;
-    [(MTMaterialLayer *)&v25 addAnimation:v9 forKey:v7];
+    [(MTMaterialLayer *)&v25 addAnimation:v9 forKey:keyCopy];
   }
 
 LABEL_25:
@@ -692,19 +692,19 @@ LABEL_25:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldArchiveValueForKey:(id)a3
+- (BOOL)shouldArchiveValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _unserializedAttributeKeys];
-  if ([v5 containsObject:v4])
+  keyCopy = key;
+  _unserializedAttributeKeys = [objc_opt_class() _unserializedAttributeKeys];
+  if ([_unserializedAttributeKeys containsObject:keyCopy])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [objc_opt_class() _attributeKeys];
-    if ([v7 containsObject:v4])
+    _attributeKeys = [objc_opt_class() _attributeKeys];
+    if ([_attributeKeys containsObject:keyCopy])
     {
       v6 = 1;
     }
@@ -713,56 +713,56 @@ LABEL_25:
     {
       v9.receiver = self;
       v9.super_class = MTMaterialLayer;
-      v6 = [(MTMaterialLayer *)&v9 shouldArchiveValueForKey:v4];
+      v6 = [(MTMaterialLayer *)&v9 shouldArchiveValueForKey:keyCopy];
     }
   }
 
   return v6;
 }
 
-- (void)willChangeValueForKey:(id)a3
+- (void)willChangeValueForKey:(id)key
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"recipeSettings"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"configuration") & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"weighting"))
+  keyCopy = key;
+  if (([keyCopy isEqualToString:@"recipeSettings"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"configuration") & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"weighting"))
   {
-    v5 = [(MTMaterialLayer *)self valueForKey:v4];
+    v5 = [(MTMaterialLayer *)self valueForKey:keyCopy];
     v6 = v5;
     if (v5)
     {
-      v7 = v5;
+      null = v5;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v8 = v7;
+    v8 = null;
 
-    [(NSMutableDictionary *)self->_pendingChange setObject:v8 forKey:v4];
+    [(NSMutableDictionary *)self->_pendingChange setObject:v8 forKey:keyCopy];
   }
 
   v9.receiver = self;
   v9.super_class = MTMaterialLayer;
-  [(MTMaterialLayer *)&v9 willChangeValueForKey:v4];
+  [(MTMaterialLayer *)&v9 willChangeValueForKey:keyCopy];
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"recipe"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"recipe"])
   {
-    if ([(MTMaterialLayer *)self _didValueChangeForKey:v4 withPendingChange:self->_pendingChange])
+    if ([(MTMaterialLayer *)self _didValueChangeForKey:keyCopy withPendingChange:self->_pendingChange])
     {
-      v5 = [(MTMaterialLayer *)self recipe];
-      v6 = MTMaterialSettingsForRecipeFromBundle(v5, 0);
+      recipe = [(MTMaterialLayer *)self recipe];
+      v6 = MTMaterialSettingsForRecipeFromBundle(recipe, 0);
       [(MTMaterialLayer *)self _setRecipeSettings:v6];
     }
   }
 
-  else if (([v4 isEqualToString:@"recipeSettings"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"configuration"))
+  else if (([keyCopy isEqualToString:@"recipeSettings"] & 1) != 0 || objc_msgSend(keyCopy, "isEqualToString:", @"configuration"))
   {
-    if ([(MTMaterialLayer *)self _didValueChangeForKey:v4 withPendingChange:self->_pendingChange])
+    if ([(MTMaterialLayer *)self _didValueChangeForKey:keyCopy withPendingChange:self->_pendingChange])
     {
       if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEBUG))
       {
@@ -772,9 +772,9 @@ LABEL_25:
       [(MTMaterialLayer *)self _updateForChangeInRecipeAndConfiguration];
       if (![(MTMaterialLayer *)self _delegateManagesWeighting])
       {
-        v7 = [(MTMaterialLayer *)self _recipeSettings];
+        _recipeSettings = [(MTMaterialLayer *)self _recipeSettings];
 
-        if (v7)
+        if (_recipeSettings)
         {
           [(MTMaterialLayer *)self setWeighting:1.0];
         }
@@ -787,36 +787,36 @@ LABEL_25:
     }
   }
 
-  else if ([v4 isEqualToString:@"weighting"] && -[MTMaterialLayer _didValueChangeForKey:withPendingChange:](self, "_didValueChangeForKey:withPendingChange:", v4, self->_pendingChange))
+  else if ([keyCopy isEqualToString:@"weighting"] && -[MTMaterialLayer _didValueChangeForKey:withPendingChange:](self, "_didValueChangeForKey:withPendingChange:", keyCopy, self->_pendingChange))
   {
     [(MTMaterialLayer *)self _updateForChangeInWeighting];
   }
 
   v8.receiver = self;
   v8.super_class = MTMaterialLayer;
-  [(MTMaterialLayer *)&v8 didChangeValueForKey:v4];
+  [(MTMaterialLayer *)&v8 didChangeValueForKey:keyCopy];
 }
 
-- (void)setAllowsInPlaceFiltering:(BOOL)a3
+- (void)setAllowsInPlaceFiltering:(BOOL)filtering
 {
-  if (self->_allowsInPlaceFiltering != a3)
+  if (self->_allowsInPlaceFiltering != filtering)
   {
     v6 = v3;
     v7 = v4;
-    self->_allowsInPlaceFiltering = a3;
+    self->_allowsInPlaceFiltering = filtering;
     v5.receiver = self;
     v5.super_class = MTMaterialLayer;
     [(MTMaterialLayer *)&v5 setAllowsInPlaceFiltering:?];
   }
 }
 
-- (void)_configureIfNecessaryWithSettingsInterpolator:(id)a3
+- (void)_configureIfNecessaryWithSettingsInterpolator:(id)interpolator
 {
   self->_needsConfiguring = 0;
   [(MTMaterialLayer *)self setBackgroundColor:0];
-  v4 = [(MTMaterialSettingsInterpolator *)self->_settingsInterpolator finalSettings];
+  finalSettings = [(MTMaterialSettingsInterpolator *)self->_settingsInterpolator finalSettings];
 
-  if (v4)
+  if (finalSettings)
   {
     [(MTMaterialLayer *)self _configureBackdropLayerIfNecessaryWithSettingsInterpolator:self->_settingsInterpolator];
   }
@@ -830,11 +830,11 @@ LABEL_25:
   [(MTMaterialLayer *)self setNeedsLayout];
 }
 
-- (BOOL)_isInPlaceFilteringPossibleWithSettingsInterpolator:(id)a3
+- (BOOL)_isInPlaceFilteringPossibleWithSettingsInterpolator:(id)interpolator
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_blurEnabled && ([v4 isBlurEnabled] & 1) != 0)
+  interpolatorCopy = interpolator;
+  v5 = interpolatorCopy;
+  if (self->_blurEnabled && ([interpolatorCopy isBlurEnabled] & 1) != 0)
   {
     LOBYTE(v6) = 0;
   }
@@ -847,25 +847,25 @@ LABEL_25:
   return v6;
 }
 
-- (void)_configureBackdropLayerIfNecessaryWithSettingsInterpolator:(id)a3
+- (void)_configureBackdropLayerIfNecessaryWithSettingsInterpolator:(id)interpolator
 {
-  v4 = a3;
-  if ([v4 isBackdropRequiredEver])
+  interpolatorCopy = interpolator;
+  if ([interpolatorCopy isBackdropRequiredEver])
   {
     v5 = 1;
     [(MTMaterialLayer *)self setEnabled:!self->_contentReplacedWithSnapshot];
-    if (([v4 isWeightingChanging] & 1) == 0)
+    if (([interpolatorCopy isWeightingChanging] & 1) == 0)
     {
-      [v4 weighting];
+      [interpolatorCopy weighting];
       v5 = v6 == 0.0;
     }
 
-    [(MTMaterialLayer *)self _configureBackdropLayer:self withSettingsInterpolator:v4 preservingFiltersIfIdentity:v5];
+    [(MTMaterialLayer *)self _configureBackdropLayer:self withSettingsInterpolator:interpolatorCopy preservingFiltersIfIdentity:v5];
     if (self->_allowsInPlaceFiltering == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8.receiver = self;
       v8.super_class = MTMaterialLayer;
-      [(MTMaterialLayer *)&v8 setAllowsInPlaceFiltering:[(MTMaterialLayer *)self _isInPlaceFilteringPossibleWithSettingsInterpolator:v4]];
+      [(MTMaterialLayer *)&v8 setAllowsInPlaceFiltering:[(MTMaterialLayer *)self _isInPlaceFilteringPossibleWithSettingsInterpolator:interpolatorCopy]];
     }
   }
 
@@ -873,27 +873,27 @@ LABEL_25:
   {
     [(MTMaterialLayer *)self setFilters:0];
     [(MTMaterialLayer *)self setEnabled:0];
-    v7 = [v4 tintColor];
-    -[MTMaterialLayer setBackgroundColor:](self, "setBackgroundColor:", [v7 CGColor]);
+    tintColor = [interpolatorCopy tintColor];
+    -[MTMaterialLayer setBackgroundColor:](self, "setBackgroundColor:", [tintColor CGColor]);
   }
 }
 
-- (void)_configureBackdropLayer:(id)a3 withSettingsInterpolator:(id)a4 preservingFiltersIfIdentity:(BOOL)a5
+- (void)_configureBackdropLayer:(id)layer withSettingsInterpolator:(id)interpolator preservingFiltersIfIdentity:(BOOL)identity
 {
-  v5 = a5;
+  identityCopy = identity;
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  layerCopy = layer;
+  interpolatorCopy = interpolator;
+  v10 = interpolatorCopy;
+  if (layerCopy)
   {
-    [(MTMaterialSettingsInterpolator *)v9 weighting];
+    [(MTMaterialSettingsInterpolator *)interpolatorCopy weighting];
     v12 = v11;
     if (self->_reduceMotionEnabled && ([(MTMaterialSettingsInterpolator *)v10 initialSettings], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
     {
       v31 = [MTMaterialSettingsInterpolator alloc];
-      v32 = [(MTMaterialSettingsInterpolator *)v10 finalSettings];
-      v33 = [(MTMaterialSettingsInterpolator *)v31 initWithSettings:v32];
+      finalSettings = [(MTMaterialSettingsInterpolator *)v10 finalSettings];
+      v33 = [(MTMaterialSettingsInterpolator *)v31 initWithSettings:finalSettings];
 
       [(MTMaterialSettingsInterpolator *)v33 setWeighting:1.0];
       v40 = 1;
@@ -913,7 +913,7 @@ LABEL_25:
 
     if (self->_blurEnabled && [(MTMaterialSettingsInterpolator *)v10 isBlurEnabled])
     {
-      [(MTMaterialLayer *)self _adjustScaleOfBackdropLayer:v8 ifNecessaryWithSettingsInterpolator:v10];
+      [(MTMaterialLayer *)self _adjustScaleOfBackdropLayer:layerCopy ifNecessaryWithSettingsInterpolator:v10];
       if (self->_reduceTransparencyEnabled)
       {
         [v14 setAverageColorEnabled:1 includingOptimizations:1 withAdditionalInfoPromise:0];
@@ -928,13 +928,13 @@ LABEL_25:
       {
         [(MTMaterialSettingsInterpolator *)v10 blurRadius];
         v35 = v34;
-        v36 = [(MTMaterialSettingsInterpolator *)v10 variableBlurInputMask];
+        variableBlurInputMask = [(MTMaterialSettingsInterpolator *)v10 variableBlurInputMask];
         v41[0] = MEMORY[0x1E69E9820];
         v41[1] = 3221225472;
         v41[2] = __96__MTMaterialLayer__configureBackdropLayer_withSettingsInterpolator_preservingFiltersIfIdentity___block_invoke;
         v41[3] = &unk_1E80BDB30;
         v42 = v10;
-        [v14 setBlurRadius:v36 inputMaskImage:0 ignoringIdentity:1 includingOptimizations:v41 withAdditionalInfoPromise:v35];
+        [v14 setBlurRadius:variableBlurInputMask inputMaskImage:0 ignoringIdentity:1 includingOptimizations:v41 withAdditionalInfoPromise:v35];
         if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEBUG))
         {
           [MTMaterialLayer _configureBackdropLayer:withSettingsInterpolator:preservingFiltersIfIdentity:];
@@ -944,7 +944,7 @@ LABEL_25:
 
     else
     {
-      [v8 setScale:1.0];
+      [layerCopy setScale:1.0];
     }
 
     if ([(MTMaterialSettingsInterpolator *)v10 isAverageColorEnabledEver])
@@ -956,8 +956,8 @@ LABEL_25:
     {
       [(MTMaterialSettingsInterpolator *)v10 luminanceAmount];
       v17 = v16;
-      v18 = [(MTMaterialSettingsInterpolator *)v10 luminanceValues];
-      if (v18)
+      luminanceValues = [(MTMaterialSettingsInterpolator *)v10 luminanceValues];
+      if (luminanceValues)
       {
         v19 = 0;
       }
@@ -967,7 +967,7 @@ LABEL_25:
         v19 = &__block_literal_global;
       }
 
-      [v14 setLuminanceAmount:v18 values:0 ignoringIdentity:1 includingOptimizations:v19 withAdditionalInfoPromise:v17];
+      [v14 setLuminanceAmount:luminanceValues values:0 ignoringIdentity:1 includingOptimizations:v19 withAdditionalInfoPromise:v17];
       if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEBUG))
       {
         [MTMaterialLayer _configureBackdropLayer:withSettingsInterpolator:preservingFiltersIfIdentity:];
@@ -976,8 +976,8 @@ LABEL_25:
 
     if ([(MTMaterialSettingsInterpolator *)v10 isCurvesEnabled])
     {
-      v20 = [(MTMaterialSettingsInterpolator *)v10 curvesValues];
-      [v14 setCurvesInputValues:v20 ignoringIdentity:0 includingOptimizations:1 withAdditionalInfoPromise:0];
+      curvesValues = [(MTMaterialSettingsInterpolator *)v10 curvesValues];
+      [v14 setCurvesInputValues:curvesValues ignoringIdentity:0 includingOptimizations:1 withAdditionalInfoPromise:0];
       if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEBUG))
       {
         [MTMaterialLayer _configureBackdropLayer:withSettingsInterpolator:preservingFiltersIfIdentity:];
@@ -1035,9 +1035,9 @@ LABEL_25:
 
     if ([(MTMaterialSettingsInterpolator *)v10 isTintEnabled])
     {
-      v22 = [(MTMaterialSettingsInterpolator *)v10 tintColor];
-      [v14 setTintColor:v22 includingOptimizations:1 withAdditionalInfoPromise:0];
-      if (v22 && os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEBUG))
+      tintColor = [(MTMaterialSettingsInterpolator *)v10 tintColor];
+      [v14 setTintColor:tintColor includingOptimizations:1 withAdditionalInfoPromise:0];
+      if (tintColor && os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEBUG))
       {
         [MTMaterialLayer _configureBackdropLayer:withSettingsInterpolator:preservingFiltersIfIdentity:];
       }
@@ -1071,8 +1071,8 @@ LABEL_25:
     }
     v26 = ;
     [v14 sortFiltersWithOrder:v26];
-    v27 = !v5;
-    [v8 mt_applyMaterialDescription:v14 removingIfIdentity:v27];
+    v27 = !identityCopy;
+    [layerCopy mt_applyMaterialDescription:v14 removingIfIdentity:v27];
     if ((v40 & 1) != 0 || (v29 = 1.0, self->_blurEnabled) && [(MTMaterialSettingsInterpolator *)v10 isBlurEnabled]&& self->_reduceTransparencyEnabled)
     {
       v28 = 0;
@@ -1119,11 +1119,11 @@ id __96__MTMaterialLayer__configureBackdropLayer_withSettingsInterpolator_preser
   return v0;
 }
 
-- (void)_adjustScaleOfBackdropLayer:(id)a3 ifNecessaryWithSettingsInterpolator:(id)a4
+- (void)_adjustScaleOfBackdropLayer:(id)layer ifNecessaryWithSettingsInterpolator:(id)interpolator
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  interpolatorCopy = interpolator;
   v8 = MTDynamicBlurRadiusGraphicsQuality();
   if (!self->_blurEnabled)
   {
@@ -1131,12 +1131,12 @@ id __96__MTMaterialLayer__configureBackdropLayer_withSettingsInterpolator_preser
   }
 
   v9 = v8;
-  if (![v7 isBlurEnabled] || self->_reduceTransparencyEnabled)
+  if (![interpolatorCopy isBlurEnabled] || self->_reduceTransparencyEnabled)
   {
     goto LABEL_21;
   }
 
-  [v7 backdropScale];
+  [interpolatorCopy backdropScale];
   v11 = v10;
   backdropScaleAdjustment = self->_backdropScaleAdjustment;
   if (backdropScaleAdjustment || v9 != 100)
@@ -1182,7 +1182,7 @@ LABEL_16:
     defaultBackdropScaleAdjustment = self->_backdropScaleAdjustment;
     if (defaultBackdropScaleAdjustment || (defaultBackdropScaleAdjustment = self->_defaultBackdropScaleAdjustment) != 0)
     {
-      [v7 weighting];
+      [interpolatorCopy weighting];
       v11 = defaultBackdropScaleAdjustment[2](defaultBackdropScaleAdjustment);
     }
 
@@ -1203,11 +1203,11 @@ LABEL_19:
   if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEBUG))
   {
     v20 = v18;
-    [v7 weighting];
+    [interpolatorCopy weighting];
     v22 = v21;
-    [v6 scale];
+    [layerCopy scale];
     *buf = 138543874;
-    v35 = self;
+    selfCopy = self;
     v36 = 2050;
     v37 = v22;
     v38 = 2050;
@@ -1258,12 +1258,12 @@ uint64_t __45__MTMaterialLayer__unserializedAttributeKeys__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_configureDelegateFlagsForDelegate:(id)a3
+- (void)_configureDelegateFlagsForDelegate:(id)delegate
 {
-  v7 = a3;
+  delegateCopy = delegate;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v7 managesWeightingForMaterialLayer:self];
+    v4 = [delegateCopy managesWeightingForMaterialLayer:self];
   }
 
   else
@@ -1296,22 +1296,22 @@ uint64_t __45__MTMaterialLayer__unserializedAttributeKeys__block_invoke()
   *&self->_materialLayerDelegateFlags = *&self->_materialLayerDelegateFlags & 0xFB | v6;
 }
 
-- (BOOL)_didValueChangeForKey:(id)a3 withPendingChange:(id)a4
+- (BOOL)_didValueChangeForKey:(id)key withPendingChange:(id)change
 {
-  v6 = a3;
+  keyCopy = key;
   LOBYTE(v7) = 0;
-  if (v6 && a4)
+  if (keyCopy && change)
   {
-    v8 = [a4 objectForKey:v6];
-    v9 = [MEMORY[0x1E695DFB0] null];
+    v8 = [change objectForKey:keyCopy];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v8 == v9)
+    if (v8 == null)
     {
 
       v8 = 0;
     }
 
-    v10 = [(MTMaterialLayer *)self valueForKey:v6];
+    v10 = [(MTMaterialLayer *)self valueForKey:keyCopy];
     if ((v8 == 0) == (v10 != 0))
     {
       LOBYTE(v7) = 1;
@@ -1331,26 +1331,26 @@ uint64_t __45__MTMaterialLayer__unserializedAttributeKeys__block_invoke()
   debugIdentifier = self->_debugIdentifier;
   if (debugIdentifier)
   {
-    v3 = debugIdentifier;
+    groupName = debugIdentifier;
   }
 
   else
   {
-    v3 = [(MTMaterialLayer *)self groupName];
+    groupName = [(MTMaterialLayer *)self groupName];
   }
 
-  return v3;
+  return groupName;
 }
 
 - (id)description
 {
-  v3 = [(MTMaterialLayer *)self _effectiveDebugIdentifier];
+  _effectiveDebugIdentifier = [(MTMaterialLayer *)self _effectiveDebugIdentifier];
   v4 = MEMORY[0x1E696AEC0];
   v5 = objc_opt_class();
   v6 = v5;
-  if (v3)
+  if (_effectiveDebugIdentifier)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (%@)", v3];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" (%@)", _effectiveDebugIdentifier];
     v8 = [v4 stringWithFormat:@"<%@%@: %p>", v6, v7, self];
   }
 
@@ -1381,19 +1381,19 @@ uint64_t __45__MTMaterialLayer_Private__mt_animatableKeys__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setBlurEnabled:(BOOL)a3
+- (void)setBlurEnabled:(BOOL)enabled
 {
-  if (self->_blurEnabled != a3)
+  if (self->_blurEnabled != enabled)
   {
-    self->_blurEnabled = a3;
+    self->_blurEnabled = enabled;
     [(MTMaterialLayer *)self _setNeedsConfiguring];
   }
 }
 
-- (void)setZoomEnabled:(BOOL)a3
+- (void)setZoomEnabled:(BOOL)enabled
 {
-  self->_zoomEnabled = a3;
-  if (a3)
+  self->_zoomEnabled = enabled;
+  if (enabled)
   {
     [(MTMaterialLayer *)self _setNeedsConfiguring];
   }
@@ -1411,11 +1411,11 @@ uint64_t __45__MTMaterialLayer_Private__mt_animatableKeys__block_invoke()
   return v2;
 }
 
-- (void)setBackdropScaleAdjustment:(id)a3
+- (void)setBackdropScaleAdjustment:(id)adjustment
 {
-  if (self->_backdropScaleAdjustment != a3)
+  if (self->_backdropScaleAdjustment != adjustment)
   {
-    v4 = [a3 copy];
+    v4 = [adjustment copy];
     backdropScaleAdjustment = self->_backdropScaleAdjustment;
     self->_backdropScaleAdjustment = v4;
 
@@ -1423,17 +1423,17 @@ uint64_t __45__MTMaterialLayer_Private__mt_animatableKeys__block_invoke()
   }
 }
 
-- (void)setContentReplacedWithSnapshot:(BOOL)a3
+- (void)setContentReplacedWithSnapshot:(BOOL)snapshot
 {
   v42[9] = *MEMORY[0x1E69E9840];
-  if (self->_contentReplacedWithSnapshot == a3)
+  if (self->_contentReplacedWithSnapshot == snapshot)
   {
 LABEL_14:
     v37 = *MEMORY[0x1E69E9840];
     return;
   }
 
-  if (a3)
+  if (snapshot)
   {
     [(MTMaterialLayer *)self bounds];
     v5 = v4;
@@ -1474,10 +1474,10 @@ LABEL_14:
       v20 = *MEMORY[0x1E6979F68];
       v41[0] = v19;
       v41[1] = v20;
-      v21 = [MEMORY[0x1E6979328] mainDisplay];
-      v22 = [v21 name];
+      mainDisplay = [MEMORY[0x1E6979328] mainDisplay];
+      name = [mainDisplay name];
       v23 = *MEMORY[0x1E6979F50];
-      v42[1] = v22;
+      v42[1] = name;
       v42[2] = v16;
       v24 = *MEMORY[0x1E697A000];
       v41[2] = v23;
@@ -1496,8 +1496,8 @@ LABEL_14:
       v41[6] = *MEMORY[0x1E6979FA0];
       v41[7] = v28;
       v29 = MEMORY[0x1E696AD98];
-      v30 = [(MTMaterialLayer *)self context];
-      v31 = [v29 numberWithUnsignedInt:{objc_msgSend(v30, "contextId")}];
+      context = [(MTMaterialLayer *)self context];
+      v31 = [v29 numberWithUnsignedInt:{objc_msgSend(context, "contextId")}];
       v42[7] = v31;
       v41[8] = *MEMORY[0x1E6979FA8];
       v32 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self];
@@ -1546,9 +1546,9 @@ LABEL_14:
   [(MTMaterialLayer *)self _setNeedsConfiguring];
 }
 
-- (void)setRecipeName:(id)a3 fromBundle:(id)a4
+- (void)setRecipeName:(id)name fromBundle:(id)bundle
 {
-  v5 = MTMaterialSettingsForRecipeFromBundle(a3, a4);
+  v5 = MTMaterialSettingsForRecipeFromBundle(name, bundle);
   [(MTMaterialLayer *)self _setRecipeSettings:v5];
 }
 

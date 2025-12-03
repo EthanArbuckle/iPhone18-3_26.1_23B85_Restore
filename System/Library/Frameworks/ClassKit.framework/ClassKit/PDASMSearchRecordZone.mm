@@ -1,23 +1,23 @@
 @interface PDASMSearchRecordZone
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-+ (id)hashForQuery:(id)a3 withSearchText:(id)a4;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
++ (id)hashForQuery:(id)query withSearchText:(id)text;
 - (NSArray)immutableColumnNames;
-- (PDASMSearchRecordZone)initWithDatabaseRow:(id)a3;
-- (PDASMSearchRecordZone)initWithZoneName:(id)a3 andQueryHash:(id)a4;
+- (PDASMSearchRecordZone)initWithDatabaseRow:(id)row;
+- (PDASMSearchRecordZone)initWithZoneName:(id)name andQueryHash:(id)hash;
 - (PDDatabaseValue)identityValue;
 - (id)dictionaryRepresentation;
-- (void)bindTo:(id)a3;
-- (void)setExpiration:(double)a3;
+- (void)bindTo:(id)to;
+- (void)setExpiration:(double)expiration;
 @end
 
 @implementation PDASMSearchRecordZone
 
-+ (id)hashForQuery:(id)a3 withSearchText:(id)a4
++ (id)hashForQuery:(id)query withSearchText:(id)text
 {
-  v5 = a4;
-  if (a3)
+  textCopy = text;
+  if (query)
   {
-    v6 = [a3 hash];
+    v6 = [query hash];
   }
 
   else
@@ -25,7 +25,7 @@
     v6 = 0;
   }
 
-  v7 = [NSString stringWithFormat:@"%@::%lu", v5, v6];
+  v7 = [NSString stringWithFormat:@"%@::%lu", textCopy, v6];
 
   return v7;
 }
@@ -38,41 +38,41 @@
   return v2;
 }
 
-- (PDASMSearchRecordZone)initWithZoneName:(id)a3 andQueryHash:(id)a4
+- (PDASMSearchRecordZone)initWithZoneName:(id)name andQueryHash:(id)hash
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  hashCopy = hash;
   v12.receiver = self;
   v12.super_class = PDASMSearchRecordZone;
   v9 = [(PDASMSearchRecordZone *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_zoneName, a3);
-    objc_storeStrong(&v10->_queryHash, a4);
+    objc_storeStrong(&v9->_zoneName, name);
+    objc_storeStrong(&v10->_queryHash, hash);
     v10->_status = 0;
   }
 
   return v10;
 }
 
-- (PDASMSearchRecordZone)initWithDatabaseRow:(id)a3
+- (PDASMSearchRecordZone)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = sub_10016D778(v4, @"zoneName");
-  v6 = sub_10016D778(v4, @"queryHash");
+  rowCopy = row;
+  v5 = sub_10016D778(rowCopy, @"zoneName");
+  v6 = sub_10016D778(rowCopy, @"queryHash");
   v7 = [(PDASMSearchRecordZone *)self initWithZoneName:v5 andQueryHash:v6];
 
   if (v7)
   {
-    v8 = sub_10016D778(v4, @"cursor");
+    v8 = sub_10016D778(rowCopy, @"cursor");
     cursor = v7->_cursor;
     v7->_cursor = v8;
 
-    v10 = sub_10016D778(v4, @"status");
+    v10 = sub_10016D778(rowCopy, @"status");
     v7->_status = [v10 integerValue];
 
-    v11 = sub_10016D6F0(v4, @"dateExpires");
+    v11 = sub_10016D6F0(rowCopy, @"dateExpires");
     dateExpires = v7->_dateExpires;
     v7->_dateExpires = v11;
   }
@@ -80,38 +80,38 @@
   return v7;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PDASMSearchRecordZone *)self identityValue];
-  sub_1000982FC(v4, v5, @"identity");
+  toCopy = to;
+  identityValue = [(PDASMSearchRecordZone *)self identityValue];
+  sub_1000982FC(toCopy, identityValue, @"identity");
 
-  sub_1000982FC(v4, self->_zoneName, @"zoneName");
-  sub_1000982FC(v4, self->_queryHash, @"queryHash");
-  sub_1000982FC(v4, self->_cursor, @"cursor");
+  sub_1000982FC(toCopy, self->_zoneName, @"zoneName");
+  sub_1000982FC(toCopy, self->_queryHash, @"queryHash");
+  sub_1000982FC(toCopy, self->_cursor, @"cursor");
   v6 = [NSNumber numberWithInteger:self->_status];
-  sub_1000982FC(v4, v6, @"status");
+  sub_1000982FC(toCopy, v6, @"status");
 
-  v7 = [(PDASMSearchRecordZone *)self dateExpires];
-  sub_1000982FC(v4, v7, @"dateExpires");
+  dateExpires = [(PDASMSearchRecordZone *)self dateExpires];
+  sub_1000982FC(toCopy, dateExpires, @"dateExpires");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table PDASMSearchRecordZone(   identity text not null,    zoneName text not null,    queryHash text,    cursor blob,    status integer default 0)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDASMSearchRecordZone_identity on PDASMSearchRecordZone (identity)", 0, 0, 0) || !sub_1000B9298(v8, @"alter table PDASMSearchRecordZone add column dateExpires real", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists PDASMSearchRecordZone_dateExpires on PDASMSearchRecordZone (dateExpires)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table PDASMSearchRecordZone(   identity text not null,    zoneName text not null,    queryHash text,    cursor blob,    status integer default 0)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index PDASMSearchRecordZone_identity on PDASMSearchRecordZone (identity)", 0, 0, 0) || !sub_1000B9298(v8, @"alter table PDASMSearchRecordZone add column dateExpires real", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists PDASMSearchRecordZone_dateExpires on PDASMSearchRecordZone (dateExpires)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_9;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_9:
 
@@ -120,12 +120,12 @@ LABEL_9:
 
 - (PDDatabaseValue)identityValue
 {
-  v3 = [(PDASMSearchRecordZone *)self zoneName];
-  v4 = [(PDASMSearchRecordZone *)self queryHash];
-  v5 = [NSString stringWithFormat:@"%@/%@", v3, v4];
-  v6 = [v5 sha224];
+  zoneName = [(PDASMSearchRecordZone *)self zoneName];
+  queryHash = [(PDASMSearchRecordZone *)self queryHash];
+  v5 = [NSString stringWithFormat:@"%@/%@", zoneName, queryHash];
+  sha224 = [v5 sha224];
 
-  return v6;
+  return sha224;
 }
 
 - (id)dictionaryRepresentation
@@ -168,9 +168,9 @@ LABEL_9:
   return v9;
 }
 
-- (void)setExpiration:(double)a3
+- (void)setExpiration:(double)expiration
 {
-  if (a3 == 0.0)
+  if (expiration == 0.0)
   {
 
     [(PDASMSearchRecordZone *)self setDateExpires:0];

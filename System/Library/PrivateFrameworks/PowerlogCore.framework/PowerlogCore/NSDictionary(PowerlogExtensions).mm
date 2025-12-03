@@ -8,7 +8,7 @@
 
 - (__CFString)objectForNullMarkerForKey:()PowerlogExtensions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (!v1)
   {
     v1 = @"<none>";
@@ -19,7 +19,7 @@
 
 - (id)descriptionSingleLine
 {
-  v1 = [a1 description];
+  v1 = [self description];
   v2 = [v1 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_1F539D228];
 
   if ([v2 rangeOfString:@"  "] == 0x7FFFFFFFFFFFFFFFLL)
@@ -44,10 +44,10 @@
 
 - (id)serializedJSONString
 {
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:a1])
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:self])
   {
     v5 = 0;
-    v2 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a1 options:0 error:&v5];
+    v2 = [MEMORY[0x1E696ACB0] dataWithJSONObject:self options:0 error:&v5];
     v3 = 0;
     if (!v5)
     {

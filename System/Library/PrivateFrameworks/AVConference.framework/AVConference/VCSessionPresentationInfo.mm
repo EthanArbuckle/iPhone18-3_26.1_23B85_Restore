@@ -1,16 +1,16 @@
 @interface VCSessionPresentationInfo
-+ (unsigned)avcUIStateWithUIState:(unsigned __int8)a3;
-+ (unsigned)uiStateWithAVCUIState:(unsigned __int8)a3;
++ (unsigned)avcUIStateWithUIState:(unsigned __int8)state;
++ (unsigned)uiStateWithAVCUIState:(unsigned __int8)state;
 - (VCSessionPresentationInfo)init;
-- (VCSessionPresentationInfo)initWithCoder:(id)a3;
+- (VCSessionPresentationInfo)initWithCoder:(id)coder;
 - (const)metadataGlobalInfo;
 - (id)serialize;
 - (tagAVCSessionPresentationInfo)avcSessionPresentationInfo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)serialize;
-- (void)setAvcSessionPresentationInfo:(tagAVCSessionPresentationInfo *)a3;
-- (void)setDisplayID:(unsigned int)a3;
-- (void)unserialize:(id)a3;
+- (void)setAvcSessionPresentationInfo:(tagAVCSessionPresentationInfo *)info;
+- (void)setDisplayID:(unsigned int)d;
+- (void)unserialize:(id)unserialize;
 @end
 
 @implementation VCSessionPresentationInfo
@@ -32,36 +32,36 @@
   return v3;
 }
 
-- (void)setDisplayID:(unsigned int)a3
+- (void)setDisplayID:(unsigned int)d
 {
   self->_displaySize.width = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded screenWidth];
   self->_displaySize.height = [+[VCHardwareSettingsEmbedded sharedInstance](VCHardwareSettingsEmbedded screenHeight];
-  self->_displayID = a3;
+  self->_displayID = d;
 }
 
-+ (unsigned)uiStateWithAVCUIState:(unsigned __int8)a3
++ (unsigned)uiStateWithAVCUIState:(unsigned __int8)state
 {
-  if (a3 >= 4u)
+  if (state >= 4u)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
-+ (unsigned)avcUIStateWithUIState:(unsigned __int8)a3
++ (unsigned)avcUIStateWithUIState:(unsigned __int8)state
 {
-  if (a3 >= 4u)
+  if (state >= 4u)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return state;
   }
 }
 
@@ -90,11 +90,11 @@
   return v3;
 }
 
-- (void)unserialize:(id)a3
+- (void)unserialize:(id)unserialize
 {
   v24 = *MEMORY[0x1E69E9840];
   v15 = 0;
-  v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v15];
+  v4 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:unserialize error:&v15];
   if (v15)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -191,38 +191,38 @@
   return result;
 }
 
-- (void)setAvcSessionPresentationInfo:(tagAVCSessionPresentationInfo *)a3
+- (void)setAvcSessionPresentationInfo:(tagAVCSessionPresentationInfo *)info
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [VCSessionPresentationInfo uiStateWithAVCUIState:a3->var3];
-  v6 = [VCSessionPresentationInfo layoutWithAVCLayout:a3->var2];
-  if (a3->var1 != self->_displayID)
+  v5 = [VCSessionPresentationInfo uiStateWithAVCUIState:info->var3];
+  v6 = [VCSessionPresentationInfo layoutWithAVCLayout:info->var2];
+  if (info->var1 != self->_displayID)
   {
     [(VCSessionPresentationInfo *)self setDisplayID:?];
     self->_hasPendingChanges = 1;
   }
 
-  if (a3->var0.origin.x != self->_appWindowRect.origin.x)
+  if (info->var0.origin.x != self->_appWindowRect.origin.x)
   {
-    self->_appWindowRect.origin.x = a3->var0.origin.x;
+    self->_appWindowRect.origin.x = info->var0.origin.x;
     self->_hasPendingChanges = 1;
   }
 
-  y = a3->var0.origin.y;
+  y = info->var0.origin.y;
   if (y != self->_appWindowRect.origin.y)
   {
     self->_appWindowRect.origin.y = y;
     self->_hasPendingChanges = 1;
   }
 
-  width = a3->var0.size.width;
+  width = info->var0.size.width;
   if (width != self->_appWindowRect.size.width)
   {
     self->_appWindowRect.size.width = width;
     self->_hasPendingChanges = 1;
   }
 
-  height = a3->var0.size.height;
+  height = info->var0.size.height;
   if (height != self->_appWindowRect.size.height)
   {
     self->_appWindowRect.size.height = height;
@@ -254,7 +254,7 @@
       v16 = 1024;
       v17 = 188;
       v18 = 2112;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [AVC SPATIAL AUDIO] %@", &v12, 0x26u);
     }
   }
@@ -262,62 +262,62 @@
 
 - (const)metadataGlobalInfo
 {
-  v2 = self;
+  selfCopy = self;
   displayID = self->_displayID;
   v7 = vcvt_hight_f32_f64(vcvt_f32_f64(self->_displaySize), self->_appWindowRect.size);
   v4 = vcvt_f32_f64(self->_appWindowRect.origin);
   v5 = [VCSessionPresentationInfo metadataSateWithUIState:self->_uiState];
-  v2->_metadataGlobalInfo.displayID = displayID;
-  v2 = (v2 + 72);
-  *(&v2->super.isa + 4) = v7;
-  *(&v2->_displaySize.width + 4) = v4;
-  HIDWORD(v2->_displaySize.height) = 0;
-  LODWORD(v2->_appWindowRect.origin.x) = v5;
-  return v2;
+  selfCopy->_metadataGlobalInfo.displayID = displayID;
+  selfCopy = (selfCopy + 72);
+  *(&selfCopy->super.isa + 4) = v7;
+  *(&selfCopy->_displaySize.width + 4) = v4;
+  HIDWORD(selfCopy->_displaySize.height) = 0;
+  LODWORD(selfCopy->_appWindowRect.origin.x) = v5;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   x = self->_appWindowRect.origin.x;
   if (x != 0.0)
   {
     *&x = x;
-    [a3 encodeFloat:kVCSessionPresentationInfoAppWindowRectX forKey:x];
+    [coder encodeFloat:kVCSessionPresentationInfoAppWindowRectX forKey:x];
   }
 
   y = self->_appWindowRect.origin.y;
   if (y != 0.0)
   {
     *&y = y;
-    [a3 encodeFloat:kVCSessionPresentationInfoAppWindowRectY forKey:y];
+    [coder encodeFloat:kVCSessionPresentationInfoAppWindowRectY forKey:y];
   }
 
   width = self->_appWindowRect.size.width;
   *&width = width;
-  [a3 encodeFloat:kVCSessionPresentationInfoAppWindowRectW forKey:width];
+  [coder encodeFloat:kVCSessionPresentationInfoAppWindowRectW forKey:width];
   height = self->_appWindowRect.size.height;
   *&height = height;
-  [a3 encodeFloat:kVCSessionPresentationInfoAppWindowRectH forKey:height];
+  [coder encodeFloat:kVCSessionPresentationInfoAppWindowRectH forKey:height];
   displayID = self->_displayID;
   if (displayID)
   {
-    [a3 encodeInt32:displayID forKey:kVCSessionPresentationInfoDisplayID];
+    [coder encodeInt32:displayID forKey:kVCSessionPresentationInfoDisplayID];
   }
 
   uiLayout = self->_uiLayout;
   if (uiLayout)
   {
-    [a3 encodeInt32:uiLayout forKey:kVCSessionPresentationInfoUILayout];
+    [coder encodeInt32:uiLayout forKey:kVCSessionPresentationInfoUILayout];
   }
 
   if (self->_uiState)
   {
 
-    [a3 encodeInt32:? forKey:?];
+    [coder encodeInt32:? forKey:?];
   }
 }
 
-- (VCSessionPresentationInfo)initWithCoder:(id)a3
+- (VCSessionPresentationInfo)initWithCoder:(id)coder
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -325,43 +325,43 @@
   v4 = [(VCSessionPresentationInfo *)&v10 init];
   if (v4)
   {
-    if ([a3 containsValueForKey:kVCSessionPresentationInfoAppWindowRectX])
+    if ([coder containsValueForKey:kVCSessionPresentationInfoAppWindowRectX])
     {
-      [a3 decodeFloatForKey:kVCSessionPresentationInfoAppWindowRectX];
+      [coder decodeFloatForKey:kVCSessionPresentationInfoAppWindowRectX];
       v4->_appWindowRect.origin.x = v5;
     }
 
-    if ([a3 containsValueForKey:kVCSessionPresentationInfoAppWindowRectY])
+    if ([coder containsValueForKey:kVCSessionPresentationInfoAppWindowRectY])
     {
-      [a3 decodeFloatForKey:kVCSessionPresentationInfoAppWindowRectY];
+      [coder decodeFloatForKey:kVCSessionPresentationInfoAppWindowRectY];
       v4->_appWindowRect.origin.y = v6;
     }
 
-    if ([a3 containsValueForKey:kVCSessionPresentationInfoAppWindowRectW])
+    if ([coder containsValueForKey:kVCSessionPresentationInfoAppWindowRectW])
     {
-      [a3 decodeFloatForKey:kVCSessionPresentationInfoAppWindowRectW];
+      [coder decodeFloatForKey:kVCSessionPresentationInfoAppWindowRectW];
       v4->_appWindowRect.size.width = v7;
     }
 
-    if ([a3 containsValueForKey:kVCSessionPresentationInfoAppWindowRectH])
+    if ([coder containsValueForKey:kVCSessionPresentationInfoAppWindowRectH])
     {
-      [a3 decodeFloatForKey:kVCSessionPresentationInfoAppWindowRectH];
+      [coder decodeFloatForKey:kVCSessionPresentationInfoAppWindowRectH];
       v4->_appWindowRect.size.height = v8;
     }
 
-    if ([a3 containsValueForKey:kVCSessionPresentationInfoDisplayID])
+    if ([coder containsValueForKey:kVCSessionPresentationInfoDisplayID])
     {
-      v4->_displayID = [a3 decodeInt32ForKey:kVCSessionPresentationInfoDisplayID];
+      v4->_displayID = [coder decodeInt32ForKey:kVCSessionPresentationInfoDisplayID];
     }
 
-    if ([a3 containsValueForKey:kVCSessionPresentationInfoUILayout])
+    if ([coder containsValueForKey:kVCSessionPresentationInfoUILayout])
     {
-      v4->_uiLayout = [a3 decodeInt32ForKey:kVCSessionPresentationInfoUILayout];
+      v4->_uiLayout = [coder decodeInt32ForKey:kVCSessionPresentationInfoUILayout];
     }
 
-    if ([a3 containsValueForKey:kVCSessionPresentationInfoUIState])
+    if ([coder containsValueForKey:kVCSessionPresentationInfoUIState])
     {
-      v4->_uiState = [a3 decodeInt32ForKey:kVCSessionPresentationInfoUIState];
+      v4->_uiState = [coder decodeInt32ForKey:kVCSessionPresentationInfoUIState];
     }
   }
 

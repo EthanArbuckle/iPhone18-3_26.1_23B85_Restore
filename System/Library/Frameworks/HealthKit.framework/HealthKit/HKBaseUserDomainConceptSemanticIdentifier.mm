@@ -1,8 +1,8 @@
 @interface HKBaseUserDomainConceptSemanticIdentifier
-+ (id)semanticIdentifierWithComponents:(id)a3;
++ (id)semanticIdentifierWithComponents:(id)components;
 - (HKBaseUserDomainConceptSemanticIdentifier)init;
-- (HKBaseUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)a3;
-- (HKBaseUserDomainConceptSemanticIdentifier)initWithUUID:(id)a3;
+- (HKBaseUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)identifier;
+- (HKBaseUserDomainConceptSemanticIdentifier)initWithUUID:(id)d;
 - (id)stringValue;
 @end
 
@@ -18,7 +18,7 @@
   return 0;
 }
 
-- (HKBaseUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)a3
+- (HKBaseUserDomainConceptSemanticIdentifier)initWithTypeIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -28,9 +28,9 @@
   return 0;
 }
 
-- (HKBaseUserDomainConceptSemanticIdentifier)initWithUUID:(id)a3
+- (HKBaseUserDomainConceptSemanticIdentifier)initWithUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v6 = +[HKUserDomainConceptTypeIdentifier baseUserDomainConceptIdentifier];
   v9.receiver = self;
   v9.super_class = HKBaseUserDomainConceptSemanticIdentifier;
@@ -38,23 +38,23 @@
 
   if (v7)
   {
-    objc_storeStrong(&v7->_UUID, a3);
+    objc_storeStrong(&v7->_UUID, d);
   }
 
   return v7;
 }
 
-+ (id)semanticIdentifierWithComponents:(id)a3
++ (id)semanticIdentifierWithComponents:(id)components
 {
-  v3 = a3;
-  if ([v3 count] == 1)
+  componentsCopy = components;
+  if ([componentsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [componentsCopy firstObject];
     v5 = 0;
-    if (([v4 isEqualToString:@"(null)"] & 1) == 0 && v4)
+    if (([firstObject isEqualToString:@"(null)"] & 1) == 0 && firstObject)
     {
       v6 = MEMORY[0x1E696AFB0];
-      v7 = v4;
+      v7 = firstObject;
       v8 = [[v6 alloc] initWithUUIDString:v7];
 
       if (v8)
@@ -82,10 +82,10 @@
   v10[2] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = HKBaseUserDomainConceptSemanticIdentifier;
-  v3 = [(HKUserDomainConceptSemanticIdentifier *)&v9 stringValue];
-  v10[0] = v3;
-  v4 = [(NSUUID *)self->_UUID UUIDString];
-  v10[1] = v4;
+  stringValue = [(HKUserDomainConceptSemanticIdentifier *)&v9 stringValue];
+  v10[0] = stringValue;
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  v10[1] = uUIDString;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"|█|"];
 

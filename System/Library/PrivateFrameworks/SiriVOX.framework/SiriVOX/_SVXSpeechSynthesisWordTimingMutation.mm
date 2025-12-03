@@ -1,5 +1,5 @@
 @interface _SVXSpeechSynthesisWordTimingMutation
-- (_SVXSpeechSynthesisWordTimingMutation)initWithBaseModel:(id)a3;
+- (_SVXSpeechSynthesisWordTimingMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -59,16 +59,16 @@ LABEL_12:
   return v4;
 }
 
-- (_SVXSpeechSynthesisWordTimingMutation)initWithBaseModel:(id)a3
+- (_SVXSpeechSynthesisWordTimingMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXSpeechSynthesisWordTimingMutation;
   v6 = [(_SVXSpeechSynthesisWordTimingMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

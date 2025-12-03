@@ -1,21 +1,21 @@
 @interface CNSharingProfileRowItem
-- (CNSharingProfileRowItem)initWithLabel:(id)a3 accessoryView:(id)a4;
+- (CNSharingProfileRowItem)initWithLabel:(id)label accessoryView:(id)view;
 @end
 
 @implementation CNSharingProfileRowItem
 
-- (CNSharingProfileRowItem)initWithLabel:(id)a3 accessoryView:(id)a4
+- (CNSharingProfileRowItem)initWithLabel:(id)label accessoryView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  labelCopy = label;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = CNSharingProfileRowItem;
   v9 = [(CNSharingProfileRowItem *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_label, a3);
-    objc_storeStrong(&v10->_accessoryView, a4);
+    objc_storeStrong(&v9->_label, label);
+    objc_storeStrong(&v10->_accessoryView, view);
     v11 = v10;
   }
 

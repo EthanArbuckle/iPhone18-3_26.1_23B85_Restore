@@ -1,25 +1,25 @@
 @interface BSUIBackdropView
-- (void)applySettings:(id)a3;
+- (void)applySettings:(id)settings;
 - (void)transitionComplete;
-- (void)transitionIncrementallyToSettings:(id)a3 weighting:(double)a4;
+- (void)transitionIncrementallyToSettings:(id)settings weighting:(double)weighting;
 @end
 
 @implementation BSUIBackdropView
 
-- (void)transitionIncrementallyToSettings:(id)a3 weighting:(double)a4
+- (void)transitionIncrementallyToSettings:(id)settings weighting:(double)weighting
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  settingsCopy = settings;
   if (!BSFloatIsZero())
   {
     goto LABEL_15;
   }
 
-  v7 = [(_UIBackdropView *)self inputSettings];
-  [v7 blurRadius];
+  inputSettings = [(_UIBackdropView *)self inputSettings];
+  [inputSettings blurRadius];
   v9 = v8;
 
-  [v6 blurRadius];
+  [settingsCopy blurRadius];
   v11 = v10;
   IsZero = BSFloatIsZero();
   v13 = BSFloatIsZero();
@@ -47,8 +47,8 @@
 
     else
     {
-      v19 = [(_UIBackdropView *)self inputSettings];
-      [v19 scale];
+      inputSettings2 = [(_UIBackdropView *)self inputSettings];
+      [inputSettings2 scale];
       self->_initialScale = v20;
 
       if (v14)
@@ -57,16 +57,16 @@
       }
     }
 
-    [v6 scale];
+    [settingsCopy scale];
     scaleForNoBlur = v21;
     goto LABEL_12;
   }
 
-  v15 = [(_UIBackdropView *)self inputSettings];
-  [v15 scale];
+  inputSettings3 = [(_UIBackdropView *)self inputSettings];
+  [inputSettings3 scale];
   self->_initialScale = v16 + v16;
 
-  [v6 scale];
+  [settingsCopy scale];
   scaleForNoBlur = v17 + v17;
 LABEL_12:
   self->_finalScale = scaleForNoBlur;
@@ -87,25 +87,25 @@ LABEL_12:
   }
 
 LABEL_15:
-  self->_transitionProgress = a4;
+  self->_transitionProgress = weighting;
   v25.receiver = self;
   v25.super_class = BSUIBackdropView;
-  [(_UIBackdropView *)&v25 transitionIncrementallyToSettings:v6 weighting:a4];
+  [(_UIBackdropView *)&v25 transitionIncrementallyToSettings:settingsCopy weighting:weighting];
 }
 
-- (void)applySettings:(id)a3
+- (void)applySettings:(id)settings
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  settingsCopy = settings;
   if (self->_rasterizationScale > 0.0)
   {
-    v5 = [(_UIBackdropView *)self effectView];
-    v6 = [v5 layer];
+    effectView = [(_UIBackdropView *)self effectView];
+    layer = [effectView layer];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = layer;
     }
 
     else
@@ -129,7 +129,7 @@ LABEL_15:
 
     v17.receiver = self;
     v17.super_class = BSUIBackdropView;
-    [(_UIBackdropView *)&v17 applySettings:v4];
+    [(_UIBackdropView *)&v17 applySettings:settingsCopy];
   }
 
   else
@@ -144,7 +144,7 @@ LABEL_15:
     HIDWORD(v20) = 0;
     BSIntervalValueForFraction();
     v10 = v9;
-    [v4 setScale:?];
+    [settingsCopy setScale:?];
     v11 = BSLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -159,12 +159,12 @@ LABEL_15:
       _os_log_debug_impl(&dword_1A2D36000, v11, OS_LOG_TYPE_DEBUG, "Applying scale: %f for finalScale: %f, transitionProgress: %f", buf, 0x20u);
     }
 
-    v12 = [(_UIBackdropView *)self applyingTransition];
+    applyingTransition = [(_UIBackdropView *)self applyingTransition];
     [(_UIBackdropView *)self setApplyingTransition:0];
     v18.receiver = self;
     v18.super_class = BSUIBackdropView;
-    [(_UIBackdropView *)&v18 applySettings:v4];
-    [(_UIBackdropView *)self setApplyingTransition:v12];
+    [(_UIBackdropView *)&v18 applySettings:settingsCopy];
+    [(_UIBackdropView *)self setApplyingTransition:applyingTransition];
   }
 }
 

@@ -1,13 +1,13 @@
 @interface CNUIPRLikenessPlaceholderProvider
-+ (id)companyImageNameForDiameter:(double)a3;
-+ (id)imageNameForDiameter:(double)a3;
-- (CGImage)_cnui_circularImageForSize:(CGSize)a3 scale:(double)a4;
-- (CGImage)_cnui_roundedRectImageForSize:(CGSize)a3 scale:(double)a4;
-- (CGImage)renderCircularImageForSilhouetteImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5;
-- (CGImage)renderRoundedRectImageForSilhouetteImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5;
++ (id)companyImageNameForDiameter:(double)diameter;
++ (id)imageNameForDiameter:(double)diameter;
+- (CGImage)_cnui_circularImageForSize:(CGSize)size scale:(double)scale;
+- (CGImage)_cnui_roundedRectImageForSize:(CGSize)size scale:(double)scale;
+- (CGImage)renderCircularImageForSilhouetteImage:(CGImage *)image size:(CGSize)size scale:(double)scale;
+- (CGImage)renderRoundedRectImageForSilhouetteImage:(CGImage *)image size:(CGSize)size scale:(double)scale;
 - (CNUIPRLikenessPlaceholderProvider)init;
-- (CNUIPRLikenessPlaceholderProvider)initWithContact:(id)a3;
-- (id)_cnui_likenessForSize:(CGSize)a3 scale:(double)a4;
+- (CNUIPRLikenessPlaceholderProvider)initWithContact:(id)contact;
+- (id)_cnui_likenessForSize:(CGSize)size scale:(double)scale;
 @end
 
 @implementation CNUIPRLikenessPlaceholderProvider
@@ -19,9 +19,9 @@
   v2 = [(CNUIPRLikenessPlaceholderProvider *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6996660] atomicCache];
+    atomicCache = [MEMORY[0x1E6996660] atomicCache];
     cache = v2->_cache;
-    v2->_cache = v3;
+    v2->_cache = atomicCache;
 
     v5 = v2;
   }
@@ -29,39 +29,39 @@
   return v2;
 }
 
-+ (id)imageNameForDiameter:(double)a3
++ (id)imageNameForDiameter:(double)diameter
 {
-  if (a3 <= 32.0)
+  if (diameter <= 32.0)
   {
     return @"silhouette-S";
   }
 
-  if (a3 <= 45.0)
+  if (diameter <= 45.0)
   {
     return @"silhouette-M";
   }
 
-  if (a3 <= 96.0)
+  if (diameter <= 96.0)
   {
     return @"silhouette-L";
   }
 
-  if (a3 <= 120.0)
+  if (diameter <= 120.0)
   {
     return @"silhouette-ATV-M";
   }
 
-  if (a3 <= 148.0)
+  if (diameter <= 148.0)
   {
     return @"silhouette-ATV-L";
   }
 
-  if (a3 <= 180.0)
+  if (diameter <= 180.0)
   {
     return @"silhouette-ATV-XL";
   }
 
-  if (a3 <= 250.0)
+  if (diameter <= 250.0)
   {
     return @"silhouette-ATV-XXL";
   }
@@ -69,14 +69,14 @@
   return @"silhouette-EDU-XL";
 }
 
-+ (id)companyImageNameForDiameter:(double)a3
++ (id)companyImageNameForDiameter:(double)diameter
 {
-  if (a3 <= 14.0 || a3 <= 20.0 || a3 <= 32.0)
+  if (diameter <= 14.0 || diameter <= 20.0 || diameter <= 32.0)
   {
     return @"company-silhouette-S";
   }
 
-  if (a3 > 45.0)
+  if (diameter > 45.0)
   {
     return @"company-silhouette-L";
   }
@@ -84,15 +84,15 @@
   return @"company-silhouette-M";
 }
 
-- (CNUIPRLikenessPlaceholderProvider)initWithContact:(id)a3
+- (CNUIPRLikenessPlaceholderProvider)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = [(CNUIPRLikenessPlaceholderProvider *)self init];
   if (v5)
   {
-    if ([v4 isKeyAvailable:*MEMORY[0x1E695C410]])
+    if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C410]])
     {
-      v6 = [v4 contactType] == 1;
+      v6 = [contactCopy contactType] == 1;
     }
 
     else
@@ -107,15 +107,15 @@
   return v5;
 }
 
-- (CGImage)renderCircularImageForSilhouetteImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5
+- (CGImage)renderCircularImageForSilhouetteImage:(CGImage *)image size:(CGSize)size scale:(double)scale
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__CNUIPRLikenessPlaceholderProvider_renderCircularImageForSilhouetteImage_size_scale___block_invoke;
   v6[3] = &unk_1E76E85F8;
   v6[4] = self;
-  v6[5] = a3;
-  result = CNUICircularImageCreate(v6, a4.width, a4.height, a5);
+  v6[5] = image;
+  result = CNUICircularImageCreate(v6, size.width, size.height, scale);
   if (result)
   {
     return CFAutorelease(result);
@@ -153,14 +153,14 @@ void __86__CNUIPRLikenessPlaceholderProvider_renderCircularImageForSilhouetteIma
   DrawSilhouetteInContext(a2, v19, 1, v21.origin.x, v21.origin.y, v21.size.width, v21.size.height);
 }
 
-- (CGImage)renderRoundedRectImageForSilhouetteImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5
+- (CGImage)renderRoundedRectImageForSilhouetteImage:(CGImage *)image size:(CGSize)size scale:(double)scale
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __89__CNUIPRLikenessPlaceholderProvider_renderRoundedRectImageForSilhouetteImage_size_scale___block_invoke;
   v6[3] = &__block_descriptor_40_e72_v56__0__CGContext__8_CGRect__CGPoint_dd__CGSize_dd__16__CGColorSpace__48l;
-  v6[4] = a3;
-  result = CNUIRoundedRectImageCreate(v6, a4.width, a4.height, a5);
+  v6[4] = image;
+  result = CNUIRoundedRectImageCreate(v6, size.width, size.height, scale);
   if (result)
   {
     return CFAutorelease(result);
@@ -183,11 +183,11 @@ void __89__CNUIPRLikenessPlaceholderProvider_renderRoundedRectImageForSilhouette
   DrawSilhouetteInContext(a2, v14, 0, v17.origin.x, v17.origin.y, v17.size.width, v17.size.height);
 }
 
-- (CGImage)_cnui_circularImageForSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_cnui_circularImageForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [(CNUIPRLikenessPlaceholderProvider *)self isForCompany];
+  height = size.height;
+  width = size.width;
+  isForCompany = [(CNUIPRLikenessPlaceholderProvider *)self isForCompany];
   v9 = objc_opt_class();
   if (width >= height)
   {
@@ -199,7 +199,7 @@ void __89__CNUIPRLikenessPlaceholderProvider_renderRoundedRectImageForSilhouette
     v10 = width;
   }
 
-  if (v8)
+  if (isForCompany)
   {
     [v9 companyImageNameForDiameter:v10];
   }
@@ -209,21 +209,21 @@ void __89__CNUIPRLikenessPlaceholderProvider_renderRoundedRectImageForSilhouette
     [v9 imageNameForDiameter:v10];
   }
   v11 = ;
-  v12 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v12 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
   v13 = [v11 stringByAppendingFormat:@"_%@-Circular", v12];
 
-  v14 = [(CNUIPRLikenessPlaceholderProvider *)self cache];
+  cache = [(CNUIPRLikenessPlaceholderProvider *)self cache];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __70__CNUIPRLikenessPlaceholderProvider__cnui_circularImageForSize_scale___block_invoke;
   v18[3] = &unk_1E76E9AB0;
   v15 = v11;
   v19 = v15;
-  v20 = self;
-  v21 = a4;
+  selfCopy = self;
+  scaleCopy = scale;
   v22 = width;
   v23 = height;
-  v16 = [v14 objectForKey:v13 onCacheMiss:v18];
+  v16 = [cache objectForKey:v13 onCacheMiss:v18];
 
   if (v16)
   {
@@ -249,10 +249,10 @@ id __70__CNUIPRLikenessPlaceholderProvider__cnui_circularImageForSize_scale___bl
   return v6;
 }
 
-- (CGImage)_cnui_roundedRectImageForSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_cnui_roundedRectImageForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8 = objc_opt_class();
   if (width >= height)
   {
@@ -265,21 +265,21 @@ id __70__CNUIPRLikenessPlaceholderProvider__cnui_circularImageForSize_scale___bl
   }
 
   v10 = [v8 companyImageNameForDiameter:v9];
-  v11 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithDouble:scale];
   v12 = [v10 stringByAppendingFormat:@"_%@-RoundedRect", v11];
 
-  v13 = [(CNUIPRLikenessPlaceholderProvider *)self cache];
+  cache = [(CNUIPRLikenessPlaceholderProvider *)self cache];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __73__CNUIPRLikenessPlaceholderProvider__cnui_roundedRectImageForSize_scale___block_invoke;
   v17[3] = &unk_1E76E9AB0;
   v14 = v10;
   v18 = v14;
-  v19 = self;
-  v20 = a4;
+  selfCopy = self;
+  scaleCopy = scale;
   v21 = width;
   v22 = height;
-  v15 = [v13 objectForKey:v12 onCacheMiss:v17];
+  v15 = [cache objectForKey:v12 onCacheMiss:v17];
 
   if (v15)
   {
@@ -305,12 +305,12 @@ id __73__CNUIPRLikenessPlaceholderProvider__cnui_roundedRectImageForSize_scale__
   return v6;
 }
 
-- (id)_cnui_likenessForSize:(CGSize)a3 scale:(double)a4
+- (id)_cnui_likenessForSize:(CGSize)size scale:(double)scale
 {
-  v4 = [(CNUIPRLikenessPlaceholderProvider *)self _cnui_circularImageForSize:a3.width scale:a3.height, a4];
+  scale = [(CNUIPRLikenessPlaceholderProvider *)self _cnui_circularImageForSize:size.width scale:size.height, scale];
   v5 = MEMORY[0x1E69BDC38];
 
-  return [v5 photoWithScope:2 image:v4];
+  return [v5 photoWithScope:2 image:scale];
 }
 
 @end

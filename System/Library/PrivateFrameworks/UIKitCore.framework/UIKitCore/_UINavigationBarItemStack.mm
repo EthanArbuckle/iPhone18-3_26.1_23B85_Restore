@@ -1,61 +1,61 @@
 @interface _UINavigationBarItemStack
 - (BOOL)isPushingOrPopping;
-- (BOOL)stackItemsAreEqualTo:(id)a3;
+- (BOOL)stackItemsAreEqualTo:(id)to;
 - (NSArray)items;
 - (UINavigationItem)backItem;
 - (UINavigationItem)previousBackItem;
 - (UINavigationItem)previousTopItem;
 - (UINavigationItem)topItem;
-- (_UINavigationBarItemStack)initWithItems:(id)a3;
+- (_UINavigationBarItemStack)initWithItems:(id)items;
 - (_UINavigationBarItemStackEntry)backEntry;
 - (_UINavigationBarItemStackEntry)previousBackEntry;
 - (_UINavigationItemChangeObserver)changeObserver;
 - (id)_shim_popNestedNavigationItem;
 - (id)description;
-- (int64_t)_effectiveDisplayModeForItem:(id)a3 inStack:(id)a4;
-- (int64_t)effectiveDisplayModeForItemInCurrentStack:(id)a3;
-- (int64_t)effectiveDisplayModeForItemInPreviousStack:(id)a3;
+- (int64_t)_effectiveDisplayModeForItem:(id)item inStack:(id)stack;
+- (int64_t)effectiveDisplayModeForItemInCurrentStack:(id)stack;
+- (int64_t)effectiveDisplayModeForItemInPreviousStack:(id)stack;
 - (void)_cleanupTransitionAssistant;
 - (void)_completeTransition;
-- (void)_prepareTransitionWithAssistant:(id)a3;
-- (void)_shim_pushNestedNavigationItem:(id)a3;
-- (void)_updateChangeObserversFor:(id)a3;
+- (void)_prepareTransitionWithAssistant:(id)assistant;
+- (void)_shim_pushNestedNavigationItem:(id)item;
+- (void)_updateChangeObserversFor:(id)for;
 - (void)cancelOperation;
 - (void)completeOperation;
 - (void)endInteractiveTransition;
-- (void)iterateEntries:(id)a3;
-- (void)iterateItems:(id)a3;
-- (void)popItemWithTransitionAssistant:(id)a3;
-- (void)pushItem:(id)a3 withTransitionAssistant:(id)a4;
-- (void)reverseIterateEntries:(id)a3;
-- (void)setChangeObserver:(id)a3;
-- (void)setItems:(id)a3 withTransitionAssistant:(id)a4;
+- (void)iterateEntries:(id)entries;
+- (void)iterateItems:(id)items;
+- (void)popItemWithTransitionAssistant:(id)assistant;
+- (void)pushItem:(id)item withTransitionAssistant:(id)assistant;
+- (void)reverseIterateEntries:(id)entries;
+- (void)setChangeObserver:(id)observer;
+- (void)setItems:(id)items withTransitionAssistant:(id)assistant;
 @end
 
 @implementation _UINavigationBarItemStack
 
 - (UINavigationItem)topItem
 {
-  v2 = [(_UINavigationBarItemStack *)self topEntry];
-  v3 = [v2 item];
+  topEntry = [(_UINavigationBarItemStack *)self topEntry];
+  item = [topEntry item];
 
-  return v3;
+  return item;
 }
 
 - (UINavigationItem)backItem
 {
-  v2 = [(_UINavigationBarItemStack *)self backEntry];
-  v3 = [v2 item];
+  backEntry = [(_UINavigationBarItemStack *)self backEntry];
+  item = [backEntry item];
 
-  return v3;
+  return item;
 }
 
 - (UINavigationItem)previousTopItem
 {
-  v2 = [(_UINavigationBarItemStack *)self previousTopEntry];
-  v3 = [v2 item];
+  previousTopEntry = [(_UINavigationBarItemStack *)self previousTopEntry];
+  item = [previousTopEntry item];
 
-  return v3;
+  return item;
 }
 
 - (_UINavigationBarItemStackEntry)backEntry
@@ -92,10 +92,10 @@
 
 - (UINavigationItem)previousBackItem
 {
-  v2 = [(_UINavigationBarItemStack *)self previousBackEntry];
-  v3 = [v2 item];
+  previousBackEntry = [(_UINavigationBarItemStack *)self previousBackEntry];
+  item = [previousBackEntry item];
 
-  return v3;
+  return item;
 }
 
 - (void)_completeTransition
@@ -130,8 +130,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) item];
-        [v3 addObject:v9];
+        item = [*(*(&v11 + 1) + 8 * i) item];
+        [v3 addObject:item];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -147,11 +147,11 @@
 {
   if (self->_state)
   {
-    v3 = [(_UINavigationBarItemStack *)self previousTopItem];
-    [v3 _movedFromTopOfStack:1];
+    previousTopItem = [(_UINavigationBarItemStack *)self previousTopItem];
+    [previousTopItem _movedFromTopOfStack:1];
 
-    v4 = [(_UINavigationBarItemStack *)self topItem];
-    [v4 _movedToTopOfStack:1];
+    topItem = [(_UINavigationBarItemStack *)self topItem];
+    [topItem _movedToTopOfStack:1];
 
     [(_UINavigationBarItemStack *)self _completeTransition];
   }
@@ -160,8 +160,8 @@
 - (void)_cleanupTransitionAssistant
 {
   state = self->_state;
-  v4 = [(_UINavigationBarTransitionAssistant *)self->_transitionAssistant needsLifetimeExtended];
-  if (!state && !v4)
+  needsLifetimeExtended = [(_UINavigationBarTransitionAssistant *)self->_transitionAssistant needsLifetimeExtended];
+  if (!state && !needsLifetimeExtended)
   {
     transitionAssistant = self->_transitionAssistant;
     self->_transitionAssistant = 0;
@@ -178,9 +178,9 @@
   return [(_UINavigationBarItemStack *)self isPopping];
 }
 
-- (_UINavigationBarItemStack)initWithItems:(id)a3
+- (_UINavigationBarItemStack)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v10.receiver = self;
   v10.super_class = _UINavigationBarItemStack;
   v5 = [(_UINavigationBarItemStack *)&v10 init];
@@ -190,18 +190,18 @@
     items = v5->_items;
     v5->_items = v6;
 
-    _WrapItemsAndAddToArray(v5->_items, v4);
-    v8 = [(_UINavigationBarItemStack *)v5 topItem];
-    [v8 _movingToTopOfStack];
-    [v8 _movedToTopOfStack:1];
+    _WrapItemsAndAddToArray(v5->_items, itemsCopy);
+    topItem = [(_UINavigationBarItemStack *)v5 topItem];
+    [topItem _movingToTopOfStack];
+    [topItem _movedToTopOfStack:1];
   }
 
   return v5;
 }
 
-- (void)setChangeObserver:(id)a3
+- (void)setChangeObserver:(id)observer
 {
-  obj = a3;
+  obj = observer;
   WeakRetained = objc_loadWeakRetained(&self->_changeObserver);
 
   v5 = obj;
@@ -218,16 +218,16 @@
   }
 }
 
-- (void)_updateChangeObserversFor:(id)a3
+- (void)_updateChangeObserversFor:(id)for
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  forCopy = for;
   WeakRetained = objc_loadWeakRetained(&self->_changeObserver);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = forCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -243,8 +243,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) item];
-        [v11 _setChangeObserver:WeakRetained];
+        item = [*(*(&v12 + 1) + 8 * v10) item];
+        [item _setChangeObserver:WeakRetained];
 
         ++v10;
       }
@@ -257,23 +257,23 @@
   }
 }
 
-- (void)_prepareTransitionWithAssistant:(id)a3
+- (void)_prepareTransitionWithAssistant:(id)assistant
 {
-  objc_storeStrong(&self->_transitionAssistant, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_transitionAssistant, assistant);
+  assistantCopy = assistant;
   [(_UINavigationBarTransitionAssistant *)self->_transitionAssistant startInteractiveTransition];
 
-  v6 = [(_UINavigationBarItemStack *)self previousTopItem];
-  [v6 _movingFromTopOfStack];
+  previousTopItem = [(_UINavigationBarItemStack *)self previousTopItem];
+  [previousTopItem _movingFromTopOfStack];
 
-  v7 = [(_UINavigationBarItemStack *)self topItem];
-  [v7 _movingToTopOfStack];
+  topItem = [(_UINavigationBarItemStack *)self topItem];
+  [topItem _movingToTopOfStack];
 }
 
-- (void)pushItem:(id)a3 withTransitionAssistant:(id)a4
+- (void)pushItem:(id)item withTransitionAssistant:(id)assistant
 {
-  v11 = a3;
-  v6 = a4;
+  itemCopy = item;
+  assistantCopy = assistant;
   if (self->_state)
   {
     NSLog(&cfstr_NestedPushAnim.isa);
@@ -284,17 +284,17 @@
   self->_previousItems = v7;
 
   items = self->_items;
-  v10 = [_UINavigationBarItemStackEntry newEntryForItem:v11];
+  v10 = [_UINavigationBarItemStackEntry newEntryForItem:itemCopy];
   [(NSMutableArray *)items addObject:v10];
 
-  [(_UINavigationBarItemStack *)self _prepareTransitionWithAssistant:v6];
+  [(_UINavigationBarItemStack *)self _prepareTransitionWithAssistant:assistantCopy];
   [(_UINavigationBarItemStack *)self _updateChangeObserversFor:self->_items];
   self->_state = 1;
 }
 
-- (void)popItemWithTransitionAssistant:(id)a3
+- (void)popItemWithTransitionAssistant:(id)assistant
 {
-  v6 = a3;
+  assistantCopy = assistant;
   if (self->_state)
   {
     NSLog(&cfstr_NestedPopAnima.isa);
@@ -305,14 +305,14 @@
   self->_previousItems = v4;
 
   [(NSMutableArray *)self->_items removeLastObject];
-  [(_UINavigationBarItemStack *)self _prepareTransitionWithAssistant:v6];
+  [(_UINavigationBarItemStack *)self _prepareTransitionWithAssistant:assistantCopy];
   self->_state = 2;
 }
 
-- (void)setItems:(id)a3 withTransitionAssistant:(id)a4
+- (void)setItems:(id)items withTransitionAssistant:(id)assistant
 {
-  v9 = a3;
-  v6 = a4;
+  itemsCopy = items;
+  assistantCopy = assistant;
   if (self->_state)
   {
     NSLog(&cfstr_ChangingItemsW.isa);
@@ -323,8 +323,8 @@
   self->_previousItems = v7;
 
   [(NSMutableArray *)self->_items removeAllObjects];
-  _WrapItemsAndAddToArray(self->_items, v9);
-  [(_UINavigationBarItemStack *)self _prepareTransitionWithAssistant:v6];
+  _WrapItemsAndAddToArray(self->_items, itemsCopy);
+  [(_UINavigationBarItemStack *)self _prepareTransitionWithAssistant:assistantCopy];
   [(_UINavigationBarItemStack *)self _updateChangeObserversFor:self->_items];
   self->_state = 3;
 }
@@ -333,11 +333,11 @@
 {
   if (self->_state)
   {
-    v3 = [(_UINavigationBarItemStack *)self previousTopItem];
-    [v3 _movedFromTopOfStack:0];
+    previousTopItem = [(_UINavigationBarItemStack *)self previousTopItem];
+    [previousTopItem _movedFromTopOfStack:0];
 
-    v4 = [(_UINavigationBarItemStack *)self topItem];
-    [v4 _movedToTopOfStack:0];
+    topItem = [(_UINavigationBarItemStack *)self topItem];
+    [topItem _movedToTopOfStack:0];
 
     [(NSMutableArray *)self->_items setArray:self->_previousItems];
 
@@ -352,41 +352,41 @@
   [(_UINavigationBarItemStack *)self _cleanupTransitionAssistant];
 }
 
-- (void)_shim_pushNestedNavigationItem:(id)a3
+- (void)_shim_pushNestedNavigationItem:(id)item
 {
-  v4 = a3;
-  v7 = [(_UINavigationBarItemStack *)self topItem];
-  [v7 _movingFromTopOfStack];
-  [v4 _movingToTopOfStack];
+  itemCopy = item;
+  topItem = [(_UINavigationBarItemStack *)self topItem];
+  [topItem _movingFromTopOfStack];
+  [itemCopy _movingToTopOfStack];
   items = self->_items;
-  v6 = [_UINavigationBarItemStackEntry entryForItem:v4 replaceExistingWithNew:0];
+  v6 = [_UINavigationBarItemStackEntry entryForItem:itemCopy replaceExistingWithNew:0];
   [(NSMutableArray *)items addObject:v6];
 
-  [v7 _movedFromTopOfStack:1];
-  [v4 _movedToTopOfStack:1];
+  [topItem _movedFromTopOfStack:1];
+  [itemCopy _movedToTopOfStack:1];
 }
 
 - (id)_shim_popNestedNavigationItem
 {
-  v3 = [(_UINavigationBarItemStack *)self topItem];
-  v4 = [(_UINavigationBarItemStack *)self backItem];
-  [v3 _movingFromTopOfStack];
-  [v4 _movingToTopOfStack];
+  topItem = [(_UINavigationBarItemStack *)self topItem];
+  backItem = [(_UINavigationBarItemStack *)self backItem];
+  [topItem _movingFromTopOfStack];
+  [backItem _movingToTopOfStack];
   [(NSMutableArray *)self->_items removeLastObject];
-  [v3 _movedFromTopOfStack:1];
-  [v4 _movedToTopOfStack:1];
+  [topItem _movedFromTopOfStack:1];
+  [backItem _movedToTopOfStack:1];
 
-  return v3;
+  return topItem;
 }
 
-- (BOOL)stackItemsAreEqualTo:(id)a3
+- (BOOL)stackItemsAreEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = [(NSMutableArray *)self->_items count];
   v6 = v5;
-  if (v4)
+  if (toCopy)
   {
-    if (v5 == [v4 count])
+    if (v5 == [toCopy count])
     {
       v7 = v6 - 1;
       if (v6 < 1)
@@ -400,7 +400,7 @@
         do
         {
           v9 = [(NSMutableArray *)self->_items objectAtIndexedSubscript:v8];
-          v10 = [v4 objectAtIndexedSubscript:v8];
+          v10 = [toCopy objectAtIndexedSubscript:v8];
           v11 = [v9 isEqual:v10];
 
           if (v11)
@@ -434,22 +434,22 @@
   return v11;
 }
 
-- (void)iterateItems:(id)a3
+- (void)iterateItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42___UINavigationBarItemStack_iterateItems___block_invoke;
   v6[3] = &unk_1E70F7C90;
-  v7 = v4;
-  v5 = v4;
+  v7 = itemsCopy;
+  v5 = itemsCopy;
   [(_UINavigationBarItemStack *)self iterateEntries:v6];
 }
 
-- (void)iterateEntries:(id)a3
+- (void)iterateEntries:(id)entries
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  entriesCopy = entries;
   v14 = 0;
   v10 = 0u;
   v11 = 0u;
@@ -470,7 +470,7 @@ LABEL_3:
         objc_enumerationMutation(v5);
       }
 
-      v4[2](v4, *(*(&v10 + 1) + 8 * v9), &v14);
+      entriesCopy[2](entriesCopy, *(*(&v10 + 1) + 8 * v9), &v14);
       if (v14)
       {
         break;
@@ -490,29 +490,29 @@ LABEL_3:
   }
 }
 
-- (void)reverseIterateEntries:(id)a3
+- (void)reverseIterateEntries:(id)entries
 {
-  v4 = a3;
+  entriesCopy = entries;
   items = self->_items;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51___UINavigationBarItemStack_reverseIterateEntries___block_invoke;
   v7[3] = &unk_1E70F7CB8;
-  v8 = v4;
-  v6 = v4;
+  v8 = entriesCopy;
+  v6 = entriesCopy;
   [(NSMutableArray *)items enumerateObjectsWithOptions:2 usingBlock:v7];
 }
 
-- (int64_t)_effectiveDisplayModeForItem:(id)a3 inStack:(id)a4
+- (int64_t)_effectiveDisplayModeForItem:(id)item inStack:(id)stack
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  stackCopy = stack;
+  v7 = [stackCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -524,24 +524,24 @@ LABEL_3:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(stackCopy);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) item];
-        v13 = [v12 largeTitleDisplayMode];
-        if (v13)
+        item = [*(*(&v16 + 1) + 8 * i) item];
+        largeTitleDisplayMode = [item largeTitleDisplayMode];
+        if (largeTitleDisplayMode)
         {
-          v9 = v13;
+          v9 = largeTitleDisplayMode;
         }
 
-        if (v12 == v5)
+        if (item == itemCopy)
         {
 
           goto LABEL_16;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [stackCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -556,10 +556,10 @@ LABEL_3:
     v9 = 0;
   }
 
-  v14 = [v5 largeTitleDisplayMode];
-  if (v14)
+  largeTitleDisplayMode2 = [itemCopy largeTitleDisplayMode];
+  if (largeTitleDisplayMode2)
   {
-    v9 = v14;
+    v9 = largeTitleDisplayMode2;
   }
 
 LABEL_16:
@@ -567,9 +567,9 @@ LABEL_16:
   return v9;
 }
 
-- (int64_t)effectiveDisplayModeForItemInCurrentStack:(id)a3
+- (int64_t)effectiveDisplayModeForItemInCurrentStack:(id)stack
 {
-  if (a3)
+  if (stack)
   {
 
     return [_UINavigationBarItemStack _effectiveDisplayModeForItem:"_effectiveDisplayModeForItem:inStack:" inStack:?];
@@ -577,16 +577,16 @@ LABEL_16:
 
   else
   {
-    v5 = [(_UINavigationBarItemStack *)self topItem];
-    v6 = [(_UINavigationBarItemStack *)self _effectiveDisplayModeForItem:v5 inStack:self->_items];
+    topItem = [(_UINavigationBarItemStack *)self topItem];
+    v6 = [(_UINavigationBarItemStack *)self _effectiveDisplayModeForItem:topItem inStack:self->_items];
 
     return v6;
   }
 }
 
-- (int64_t)effectiveDisplayModeForItemInPreviousStack:(id)a3
+- (int64_t)effectiveDisplayModeForItemInPreviousStack:(id)stack
 {
-  if (a3)
+  if (stack)
   {
 
     return [_UINavigationBarItemStack _effectiveDisplayModeForItem:"_effectiveDisplayModeForItem:inStack:" inStack:?];
@@ -594,8 +594,8 @@ LABEL_16:
 
   else
   {
-    v5 = [(_UINavigationBarItemStack *)self previousTopItem];
-    v6 = [(_UINavigationBarItemStack *)self _effectiveDisplayModeForItem:v5 inStack:self->_previousItems];
+    previousTopItem = [(_UINavigationBarItemStack *)self previousTopItem];
+    v6 = [(_UINavigationBarItemStack *)self _effectiveDisplayModeForItem:previousTopItem inStack:self->_previousItems];
 
     return v6;
   }
@@ -611,21 +611,21 @@ LABEL_16:
   v5 = self->_state - 1;
   if (v5 >= 3)
   {
-    v8 = [(_UINavigationBarItemStack *)self topEntry];
-    v9 = [(_UINavigationBarItemStack *)self backEntry];
-    [v4 appendFormat:@" topEntry=%p backEntry=%p items=%p", v8, v9, self->_items, v11];
+    topEntry = [(_UINavigationBarItemStack *)self topEntry];
+    backEntry = [(_UINavigationBarItemStack *)self backEntry];
+    [v4 appendFormat:@" topEntry=%p backEntry=%p items=%p", topEntry, backEntry, self->_items, v11];
   }
 
   else
   {
     [v4 appendString:off_1E70F7CD8[v5]];
-    v6 = [(_UINavigationBarItemStack *)self topEntry];
-    v7 = [(_UINavigationBarItemStack *)self backEntry];
-    [v4 appendFormat:@" topEntry=%p backEntry=%p items=%p", v6, v7, self->_items];
+    topEntry2 = [(_UINavigationBarItemStack *)self topEntry];
+    backEntry2 = [(_UINavigationBarItemStack *)self backEntry];
+    [v4 appendFormat:@" topEntry=%p backEntry=%p items=%p", topEntry2, backEntry2, self->_items];
 
-    v8 = [(_UINavigationBarItemStack *)self previousTopEntry];
-    v9 = [(_UINavigationBarItemStack *)self previousBackEntry];
-    [v4 appendFormat:@" previousTopEntry=%p previousBackEntry=%p previousItems=%p transitionAssistant=%p", v8, v9, self->_previousItems, self->_transitionAssistant];
+    topEntry = [(_UINavigationBarItemStack *)self previousTopEntry];
+    backEntry = [(_UINavigationBarItemStack *)self previousBackEntry];
+    [v4 appendFormat:@" previousTopEntry=%p previousBackEntry=%p previousItems=%p transitionAssistant=%p", topEntry, backEntry, self->_previousItems, self->_transitionAssistant];
   }
 
   return v4;

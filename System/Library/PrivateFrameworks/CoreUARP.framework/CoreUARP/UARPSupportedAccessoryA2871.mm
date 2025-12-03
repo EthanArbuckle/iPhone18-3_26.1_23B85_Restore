@@ -65,30 +65,30 @@
   [v3 appendFormat:@"Apple Model Number: %@\n", v4];
 
   [v3 appendFormat:@"HardwareID: %@\n", self->hwID];
-  v5 = [(UARPSupportedAccessory *)self downstreamAppleModelNumbers];
-  v6 = [v5 count];
+  downstreamAppleModelNumbers = [(UARPSupportedAccessory *)self downstreamAppleModelNumbers];
+  v6 = [downstreamAppleModelNumbers count];
 
   if (v6)
   {
-    v7 = [(UARPSupportedAccessory *)self downstreamAppleModelNumbers];
-    [v3 appendFormat:@", Downstream Apple Model Numbers = %@", v7];
+    downstreamAppleModelNumbers2 = [(UARPSupportedAccessory *)self downstreamAppleModelNumbers];
+    [v3 appendFormat:@", Downstream Apple Model Numbers = %@", downstreamAppleModelNumbers2];
   }
 
-  v8 = [(UARPSupportedAccessory *)self alternativeAppleModelNumbers];
-  v9 = [v8 count];
+  alternativeAppleModelNumbers = [(UARPSupportedAccessory *)self alternativeAppleModelNumbers];
+  v9 = [alternativeAppleModelNumbers count];
 
   if (v9)
   {
-    v10 = [(UARPSupportedAccessory *)self alternativeAppleModelNumbers];
-    [v3 appendFormat:@", Alternative Apple Model Numbers = %@", v10];
+    alternativeAppleModelNumbers2 = [(UARPSupportedAccessory *)self alternativeAppleModelNumbers];
+    [v3 appendFormat:@", Alternative Apple Model Numbers = %@", alternativeAppleModelNumbers2];
   }
 
-  v11 = [(UARPSupportedAccessory *)self mobileAssetAppleModelNumber];
+  mobileAssetAppleModelNumber = [(UARPSupportedAccessory *)self mobileAssetAppleModelNumber];
 
-  if (v11)
+  if (mobileAssetAppleModelNumber)
   {
-    v12 = [(UARPSupportedAccessory *)self mobileAssetAppleModelNumber];
-    [v3 appendFormat:@", Mobile Asset Apple Model Numbers = %@", v12];
+    mobileAssetAppleModelNumber2 = [(UARPSupportedAccessory *)self mobileAssetAppleModelNumber];
+    [v3 appendFormat:@", Mobile Asset Apple Model Numbers = %@", mobileAssetAppleModelNumber2];
   }
 
   [v3 appendFormat:@"\n"];

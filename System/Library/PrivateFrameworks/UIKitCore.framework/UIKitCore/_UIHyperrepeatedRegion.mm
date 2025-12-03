@@ -1,25 +1,25 @@
 @interface _UIHyperrepeatedRegion
 + (id)keyPathsForValuesAffectingSelf;
-- (BOOL)_isBoundaryCrossedFromPoint:(const double *)a3 toPoint:(const double *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_isBoundaryCrossedFromPoint:(const double *)point toPoint:(const double *)toPoint;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (_UIHyperrepeatedRegion)initWithCoder:(id)a3;
-- (_UIHyperrepeatedRegion)initWithDimensions:(unint64_t)a3;
+- (_UIHyperrepeatedRegion)initWithCoder:(id)coder;
+- (_UIHyperrepeatedRegion)initWithDimensions:(unint64_t)dimensions;
 - (double)_mutableMaximumIndices;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_closestPoint:(double *)a3 toPoint:(const double *)a4;
-- (void)_indexOfClosestSubregion:(double *)a3 toPoint:(const double *)a4;
-- (void)_mutateIncrement:(id)a3;
-- (void)_mutateOffset:(id)a3;
-- (void)_mutateRepetitions:(id)a3;
-- (void)_setRegion:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_closestPoint:(double *)point toPoint:(const double *)toPoint;
+- (void)_indexOfClosestSubregion:(double *)subregion toPoint:(const double *)point;
+- (void)_mutateIncrement:(id)increment;
+- (void)_mutateOffset:(id)offset;
+- (void)_mutateRepetitions:(id)repetitions;
+- (void)_setRegion:(id)region;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIHyperrepeatedRegion
 
-- (_UIHyperrepeatedRegion)initWithDimensions:(unint64_t)a3
+- (_UIHyperrepeatedRegion)initWithDimensions:(unint64_t)dimensions
 {
   v7.receiver = self;
   v7.super_class = _UIHyperrepeatedRegion;
@@ -27,12 +27,12 @@
   v5 = v4;
   if (v4)
   {
-    v4->__dimensions = a3;
-    v4->__repetitions = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-    v5->__offset = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-    v5->__increment = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-    v5->__maximumIndices = malloc_type_calloc(a3, 8uLL, 0x100004000313F17uLL);
-    v5->__temp = malloc_type_calloc(2 * a3, 8uLL, 0x100004000313F17uLL);
+    v4->__dimensions = dimensions;
+    v4->__repetitions = malloc_type_calloc(dimensions, 8uLL, 0x100004000313F17uLL);
+    v5->__offset = malloc_type_calloc(dimensions, 8uLL, 0x100004000313F17uLL);
+    v5->__increment = malloc_type_calloc(dimensions, 8uLL, 0x100004000313F17uLL);
+    v5->__maximumIndices = malloc_type_calloc(dimensions, 8uLL, 0x100004000313F17uLL);
+    v5->__temp = malloc_type_calloc(2 * dimensions, 8uLL, 0x100004000313F17uLL);
   }
 
   return v5;
@@ -63,50 +63,50 @@
   return v9;
 }
 
-- (void)_setRegion:(id)a3
+- (void)_setRegion:(id)region
 {
-  v6 = a3;
-  if (self->__region != v6)
+  regionCopy = region;
+  if (self->__region != regionCopy)
   {
-    v8 = v6;
-    if ([(_UIHyperregion *)v6 _dimensions]!= self->__dimensions)
+    v8 = regionCopy;
+    if ([(_UIHyperregion *)regionCopy _dimensions]!= self->__dimensions)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:616 description:{@"Tried to set _region %@ (%lu) with unequal dimensions to %@ (%lu)", v8, -[_UIHyperregion _dimensions](v8, "_dimensions"), self, self->__dimensions}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:616 description:{@"Tried to set _region %@ (%lu) with unequal dimensions to %@ (%lu)", v8, -[_UIHyperregion _dimensions](v8, "_dimensions"), self, self->__dimensions}];
     }
 
     [(_UIHyperrepeatedRegion *)self willChangeValueForKey:@"_region"];
-    objc_storeStrong(&self->__region, a3);
+    objc_storeStrong(&self->__region, region);
     [(_UIHyperrepeatedRegion *)self didChangeValueForKey:@"_region"];
-    v6 = v8;
+    regionCopy = v8;
   }
 }
 
-- (void)_mutateRepetitions:(id)a3
+- (void)_mutateRepetitions:(id)repetitions
 {
-  v4 = a3;
+  repetitionsCopy = repetitions;
   [(_UIHyperrepeatedRegion *)self willChangeValueForKey:@"_repetitions"];
-  v4[2](v4, self->__repetitions);
+  repetitionsCopy[2](repetitionsCopy, self->__repetitions);
 
   *&self->_clean &= ~1u;
 
   [(_UIHyperrepeatedRegion *)self didChangeValueForKey:@"_repetitions"];
 }
 
-- (void)_mutateOffset:(id)a3
+- (void)_mutateOffset:(id)offset
 {
-  v4 = a3;
+  offsetCopy = offset;
   [(_UIHyperrepeatedRegion *)self willChangeValueForKey:@"_offset"];
-  v4[2](v4, self->__offset);
+  offsetCopy[2](offsetCopy, self->__offset);
 
   [(_UIHyperrepeatedRegion *)self didChangeValueForKey:@"_offset"];
 }
 
-- (void)_mutateIncrement:(id)a3
+- (void)_mutateIncrement:(id)increment
 {
-  v4 = a3;
+  incrementCopy = increment;
   [(_UIHyperrepeatedRegion *)self willChangeValueForKey:@"_increment"];
-  v4[2](v4, self->__increment);
+  incrementCopy[2](incrementCopy, self->__increment);
 
   [(_UIHyperrepeatedRegion *)self didChangeValueForKey:@"_increment"];
 }
@@ -138,59 +138,59 @@
   return self->__maximumIndices;
 }
 
-- (void)_indexOfClosestSubregion:(double *)a3 toPoint:(const double *)a4
+- (void)_indexOfClosestSubregion:(double *)subregion toPoint:(const double *)point
 {
-  vDSP_vsubD(self->__offset, 1, a4, 1, a3, 1, self->__dimensions);
-  vDSP_vdivD(self->__increment, 1, a3, 1, a3, 1, self->__dimensions);
+  vDSP_vsubD(self->__offset, 1, point, 1, subregion, 1, self->__dimensions);
+  vDSP_vdivD(self->__increment, 1, subregion, 1, subregion, 1, self->__dimensions);
   dimensions = self->__dimensions;
-  vvfloor(a3, a3, &dimensions);
+  vvfloor(subregion, subregion, &dimensions);
   v6 = self->__dimensions;
   __B = 0.0;
-  vDSP_vmaxD(a3, 1, &__B, 0, a3, 1, v6);
-  v7 = [(_UIHyperrepeatedRegion *)self _mutableMaximumIndices];
+  vDSP_vmaxD(subregion, 1, &__B, 0, subregion, 1, v6);
+  _mutableMaximumIndices = [(_UIHyperrepeatedRegion *)self _mutableMaximumIndices];
   v8 = self->__dimensions;
 
-  vDSP_vminD(a3, 1, v7, 1, a3, 1, v8);
+  vDSP_vminD(subregion, 1, _mutableMaximumIndices, 1, subregion, 1, v8);
 }
 
-- (void)_closestPoint:(double *)a3 toPoint:(const double *)a4
+- (void)_closestPoint:(double *)point toPoint:(const double *)toPoint
 {
-  [(_UIHyperrepeatedRegion *)self _indexOfClosestSubregion:a3 toPoint:a4];
-  vDSP_vmulD(a3, 1, self->__increment, 1, self->__temp, 1, self->__dimensions);
-  vDSP_vsubD(self->__temp, 1, a3, 1, a3, 1, self->__dimensions);
-  [(_UIHyperregion *)self->__region _closestPoint:a3 toPoint:a3];
-  vDSP_vaddD(a3, 1, self->__temp, 1, a3, 1, self->__dimensions);
+  [(_UIHyperrepeatedRegion *)self _indexOfClosestSubregion:point toPoint:toPoint];
+  vDSP_vmulD(point, 1, self->__increment, 1, self->__temp, 1, self->__dimensions);
+  vDSP_vsubD(self->__temp, 1, point, 1, point, 1, self->__dimensions);
+  [(_UIHyperregion *)self->__region _closestPoint:point toPoint:point];
+  vDSP_vaddD(point, 1, self->__temp, 1, point, 1, self->__dimensions);
   offset = self->__offset;
   dimensions = self->__dimensions;
 
-  vDSP_vaddD(a3, 1, offset, 1, a3, 1, dimensions);
+  vDSP_vaddD(point, 1, offset, 1, point, 1, dimensions);
 }
 
-- (BOOL)_isBoundaryCrossedFromPoint:(const double *)a3 toPoint:(const double *)a4
+- (BOOL)_isBoundaryCrossedFromPoint:(const double *)point toPoint:(const double *)toPoint
 {
-  [(_UIHyperrepeatedRegion *)self _indexOfClosestSubregion:self->__temp toPoint:a3];
-  [(_UIHyperrepeatedRegion *)self _indexOfClosestSubregion:&self->__temp[self->__dimensions] toPoint:a4];
+  [(_UIHyperrepeatedRegion *)self _indexOfClosestSubregion:self->__temp toPoint:point];
+  [(_UIHyperrepeatedRegion *)self _indexOfClosestSubregion:&self->__temp[self->__dimensions] toPoint:toPoint];
   return memcmp(self->__temp, &self->__temp[self->__dimensions], 8 * self->__dimensions) != 0;
 }
 
-- (_UIHyperrepeatedRegion)initWithCoder:(id)a3
+- (_UIHyperrepeatedRegion)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v16 = 0;
   v17 = 0;
   v15 = 0;
-  v6 = [v5 _ui_decodeNSUIntegerVectorForKey:@"_repetitions" returnedCount:&v17];
-  v7 = [v5 _ui_decodeVectorForKey:@"_offset" returnedCount:&v16];
-  v8 = [v5 _ui_decodeVectorForKey:@"_increment" returnedCount:&v15];
+  v6 = [coderCopy _ui_decodeNSUIntegerVectorForKey:@"_repetitions" returnedCount:&v17];
+  v7 = [coderCopy _ui_decodeVectorForKey:@"_offset" returnedCount:&v16];
+  v8 = [coderCopy _ui_decodeVectorForKey:@"_increment" returnedCount:&v15];
   if (v17 != v16 || v16 != v15)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:730 description:{@"Tried to decode repetitions (%lu), offset (%lu), and increment (%lu) with different number of dimensions", v17, v16, v15}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:730 description:{@"Tried to decode repetitions (%lu), offset (%lu), and increment (%lu) with different number of dimensions", v17, v16, v15}];
   }
 
   v10 = [(_UIHyperrepeatedRegion *)self initWithDimensions:?];
   v11 = _UIHyperregionClasses();
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"_region"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"_region"];
   [(_UIHyperrepeatedRegion *)v10 _setRegion:v12];
 
   [(_UIHyperrepeatedRegion *)v10 _mutateRepetitions:v6];
@@ -200,31 +200,31 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   region = self->__region;
-  v5 = a3;
-  [v5 encodeObject:region forKey:@"_region"];
-  [v5 _ui_encodeNSUIntegerVector:self->__repetitions count:self->__dimensions forKey:@"_repetitions"];
-  [v5 _ui_encodeVector:self->__offset count:self->__dimensions forKey:@"_offset"];
-  [v5 _ui_encodeVector:self->__increment count:self->__dimensions forKey:@"_increment"];
+  coderCopy = coder;
+  [coderCopy encodeObject:region forKey:@"_region"];
+  [coderCopy _ui_encodeNSUIntegerVector:self->__repetitions count:self->__dimensions forKey:@"_repetitions"];
+  [coderCopy _ui_encodeVector:self->__offset count:self->__dimensions forKey:@"_offset"];
+  [coderCopy _ui_encodeVector:self->__increment count:self->__dimensions forKey:@"_increment"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v6 = [(_UIHyperrepeatedRegion *)self _region];
+  _region = [(_UIHyperrepeatedRegion *)self _region];
   v7 = objc_opt_respondsToSelector();
 
   if ((v7 & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    v13 = [(_UIHyperrepeatedRegion *)self _region];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:753 description:{@"region (%@) must conform to NSCopying to copy self (%@)", v13, self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    _region2 = [(_UIHyperrepeatedRegion *)self _region];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIHyperregion.m" lineNumber:753 description:{@"region (%@) must conform to NSCopying to copy self (%@)", _region2, self}];
   }
 
   v8 = [[_UIHyperrepeatedRegion alloc] initWithDimensions:[(_UIHyperrepeatedRegion *)self _dimensions]];
-  v9 = [(_UIHyperrepeatedRegion *)self _region];
-  v10 = [v9 copyWithZone:a3];
+  _region3 = [(_UIHyperrepeatedRegion *)self _region];
+  v10 = [_region3 copyWithZone:zone];
   [(_UIHyperrepeatedRegion *)v8 _setRegion:v10];
 
   v16[0] = MEMORY[0x1E69E9820];
@@ -248,15 +248,15 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UIHyperrepeatedRegion *)self _dimensions];
-    if (v6 != [v5 _dimensions])
+    v5 = equalCopy;
+    _dimensions = [(_UIHyperrepeatedRegion *)self _dimensions];
+    if (_dimensions != [v5 _dimensions])
     {
       v13 = 0;
 LABEL_17:
@@ -264,10 +264,10 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v7 = [(_UIHyperrepeatedRegion *)self _region];
-    v8 = [v5 _region];
-    v9 = v7;
-    v10 = v8;
+    _region = [(_UIHyperrepeatedRegion *)self _region];
+    _region2 = [v5 _region];
+    v9 = _region;
+    v10 = _region2;
     v11 = v10;
     if (v9 == v10)
     {

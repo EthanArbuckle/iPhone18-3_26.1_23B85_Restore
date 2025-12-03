@@ -1,17 +1,17 @@
 @interface NESMFilterSessionStateStopPacketPlugin
-- (void)enterWithSession:(id)a3;
-- (void)handlePlugin:(id)a3 statusDidChangeToIdleWithError:(int64_t)a4;
-- (void)handlePluginDisposeComplete:(id)a3;
+- (void)enterWithSession:(id)session;
+- (void)handlePlugin:(id)plugin statusDidChangeToIdleWithError:(int64_t)error;
+- (void)handlePluginDisposeComplete:(id)complete;
 @end
 
 @implementation NESMFilterSessionStateStopPacketPlugin
 
-- (void)handlePluginDisposeComplete:(id)a3
+- (void)handlePluginDisposeComplete:(id)complete
 {
   v13.receiver = self;
   v13.super_class = NESMFilterSessionStateStopPacketPlugin;
-  v4 = a3;
-  [(NESMFilterSessionState *)&v13 handlePluginDisposeComplete:v4];
+  completeCopy = complete;
+  [(NESMFilterSessionState *)&v13 handlePluginDisposeComplete:completeCopy];
   if (self)
   {
     Property = objc_getProperty(self, v5, 16, 1);
@@ -28,7 +28,7 @@
 
   v8 = Property;
 
-  if (v8 == v4)
+  if (v8 == completeCopy)
   {
     if (self)
     {
@@ -50,9 +50,9 @@
   }
 }
 
-- (void)handlePlugin:(id)a3 statusDidChangeToIdleWithError:(int64_t)a4
+- (void)handlePlugin:(id)plugin statusDidChangeToIdleWithError:(int64_t)error
 {
-  v6 = a3;
+  pluginCopy = plugin;
   v7 = ne_log_obj();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -73,18 +73,18 @@
     v14 = 2112;
     v15 = v11;
     v16 = 2112;
-    v17 = v6;
+    v17 = pluginCopy;
     v18 = 2048;
-    v19 = a4;
+    errorCopy = error;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ in state %@: plugin %@ status changed to idle with error: %ld", &v12, 0x2Au);
   }
 }
 
-- (void)enterWithSession:(id)a3
+- (void)enterWithSession:(id)session
 {
   v9.receiver = self;
   v9.super_class = NESMFilterSessionStateStopPacketPlugin;
-  [(NESMFilterSessionState *)&v9 enterWithSession:a3];
+  [(NESMFilterSessionState *)&v9 enterWithSession:session];
   if (self)
   {
     Property = objc_getProperty(self, v4, 16, 1);

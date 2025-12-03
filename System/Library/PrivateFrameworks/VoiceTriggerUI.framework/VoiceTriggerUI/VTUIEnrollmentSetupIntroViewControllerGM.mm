@@ -1,6 +1,6 @@
 @interface VTUIEnrollmentSetupIntroViewControllerGM
-- (VTUIEnrollmentSetupIntroViewControllerGM)initWithDelegate:(id)a3;
-- (void)_animateVisibility:(BOOL)a3;
+- (VTUIEnrollmentSetupIntroViewControllerGM)initWithDelegate:(id)delegate;
+- (void)_animateVisibility:(BOOL)visibility;
 - (void)didEnterBackground;
 - (void)fadeIn;
 - (void)prepareReInit;
@@ -16,9 +16,9 @@
   v36.super_class = VTUIEnrollmentSetupIntroViewControllerGM;
   [(VTUIEnrollmentSetupIntroViewControllerGM *)&v36 viewDidLoad];
   v3 = +[VTUIStyle sharedStyle];
-  v4 = [v3 isIpad];
+  isIpad = [v3 isIpad];
 
-  if ((v4 & 1) == 0)
+  if ((isIpad & 1) == 0)
   {
     [(VTUIEnrollmentSetupIntroViewControllerGM *)self setOverrideUserInterfaceStyle:2];
   }
@@ -34,37 +34,37 @@
   self->_introViewController = v9;
 
   [(VTUIEnrollmentSetupIntroViewControllerGM *)self addChildViewController:self->_introViewController];
-  v11 = [(UIViewController *)self->_introViewController view];
-  v12 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
-  [v12 addSubview:v11];
+  view = [(UIViewController *)self->_introViewController view];
+  view2 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
+  [view2 addSubview:view];
 
   [(UIViewController *)self->_introViewController didMoveToParentViewController:self];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self navigationController];
-  v14 = [v13 navigationBar];
-  [v14 frame];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  navigationController = [(VTUIEnrollmentSetupIntroViewControllerGM *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   v16 = v15;
 
   v28 = MEMORY[0x277CCAAD0];
-  v34 = [v11 topAnchor];
-  v35 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
-  v33 = [v35 topAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:-v16];
+  topAnchor = [view topAnchor];
+  view3 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:-v16];
   v37[0] = v32;
-  v30 = [v11 bottomAnchor];
-  v31 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
-  v29 = [v31 bottomAnchor];
-  v27 = [v30 constraintEqualToAnchor:v29];
+  bottomAnchor = [view bottomAnchor];
+  view4 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v37[1] = v27;
-  v17 = [v11 leftAnchor];
-  v18 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
-  v19 = [v18 leftAnchor];
-  v20 = [v17 constraintEqualToAnchor:v19];
+  leftAnchor = [view leftAnchor];
+  view5 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
+  leftAnchor2 = [view5 leftAnchor];
+  v20 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v37[2] = v20;
-  v21 = [v11 rightAnchor];
-  v22 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
-  v23 = [v22 rightAnchor];
-  v24 = [v21 constraintEqualToAnchor:v23];
+  rightAnchor = [view rightAnchor];
+  view6 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
+  rightAnchor2 = [view6 rightAnchor];
+  v24 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v37[3] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:4];
   [v28 activateConstraints:v25];
@@ -72,16 +72,16 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (VTUIEnrollmentSetupIntroViewControllerGM)initWithDelegate:(id)a3
+- (VTUIEnrollmentSetupIntroViewControllerGM)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = VTUIEnrollmentSetupIntroViewControllerGM;
   v5 = [(VTUIEnrollmentSetupIntroViewControllerGM *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;
@@ -90,8 +90,8 @@
 - (void)didEnterBackground
 {
   [(GMEnrollmentSetupIntroViewManager *)self->_buddyFlowViewWrapper resetIfInTraining];
-  v3 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
-  [v3 setHidden:0];
+  view = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
+  [view setHidden:0];
 }
 
 - (void)fadeIn
@@ -114,13 +114,13 @@ void __50__VTUIEnrollmentSetupIntroViewControllerGM_fadeIn__block_invoke(uint64_
 
 - (void)prepareReInit
 {
-  v2 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self buddyFlowViewWrapper];
-  [v2 proceedToReady];
+  buddyFlowViewWrapper = [(VTUIEnrollmentSetupIntroViewControllerGM *)self buddyFlowViewWrapper];
+  [buddyFlowViewWrapper proceedToReady];
 }
 
-- (void)_animateVisibility:(BOOL)a3
+- (void)_animateVisibility:(BOOL)visibility
 {
-  if (a3)
+  if (visibility)
   {
     v5 = 0.0;
   }
@@ -130,8 +130,8 @@ void __50__VTUIEnrollmentSetupIntroViewControllerGM_fadeIn__block_invoke(uint64_
     v5 = 1.0;
   }
 
-  v6 = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
-  [v6 setAlpha:v5];
+  view = [(VTUIEnrollmentSetupIntroViewControllerGM *)self view];
+  [view setAlpha:v5];
 
   [(VTUIEnrollmentSetupIntroViewControllerGM *)self setHidden:0];
   v7[0] = MEMORY[0x277D85DD0];
@@ -139,7 +139,7 @@ void __50__VTUIEnrollmentSetupIntroViewControllerGM_fadeIn__block_invoke(uint64_
   v7[2] = __63__VTUIEnrollmentSetupIntroViewControllerGM__animateVisibility___block_invoke;
   v7[3] = &unk_279E54990;
   v7[4] = self;
-  v8 = a3;
+  visibilityCopy = visibility;
   [MEMORY[0x277D75D18] animateWithDuration:v7 animations:0 completion:0.400000006];
 }
 

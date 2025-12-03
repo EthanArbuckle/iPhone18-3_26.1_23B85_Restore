@@ -1,25 +1,25 @@
 @interface DockedViewControllerState
-+ (id)withID:(id)a3 title:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (DockedViewControllerState)initWithCoder:(id)a3;
-- (DockedViewControllerState)initWithDockableViewController:(id)a3;
-- (id)createDockedViewWithFrame:(CGRect)a3;
-- (id)restoreViewControllerWithScene:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)withID:(id)d title:(id)title;
+- (BOOL)isEqual:(id)equal;
+- (DockedViewControllerState)initWithCoder:(id)coder;
+- (DockedViewControllerState)initWithDockableViewController:(id)controller;
+- (id)createDockedViewWithFrame:(CGRect)frame;
+- (id)restoreViewControllerWithScene:(id)scene;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DockedViewControllerState
 
-- (DockedViewControllerState)initWithDockableViewController:(id)a3
+- (DockedViewControllerState)initWithDockableViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = DockedViewControllerState;
-  v5 = [(RestorableViewControllerState *)&v10 initWithRestorableViewController:v4];
+  v5 = [(RestorableViewControllerState *)&v10 initWithRestorableViewController:controllerCopy];
   if (v5)
   {
-    v6 = [v4 dockIdentifier];
-    v7 = [v6 copy];
+    dockIdentifier = [controllerCopy dockIdentifier];
+    v7 = [dockIdentifier copy];
     dockIdentifier = v5->_dockIdentifier;
     v5->_dockIdentifier = v7;
   }
@@ -27,15 +27,15 @@
   return v5;
 }
 
-- (DockedViewControllerState)initWithCoder:(id)a3
+- (DockedViewControllerState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DockedViewControllerState;
-  v5 = [(RestorableViewControllerState *)&v9 initWithCoder:v4];
+  v5 = [(RestorableViewControllerState *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kDockIdentifierKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kDockIdentifierKey"];
     dockIdentifier = v5->_dockIdentifier;
     v5->_dockIdentifier = v6;
   }
@@ -43,50 +43,50 @@
   return v5;
 }
 
-- (id)restoreViewControllerWithScene:(id)a3
+- (id)restoreViewControllerWithScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = DockedViewControllerState;
-  v3 = [(RestorableViewControllerState *)&v5 restoreViewControllerWithScene:a3];
+  v3 = [(RestorableViewControllerState *)&v5 restoreViewControllerWithScene:scene];
 
   return v3;
 }
 
-- (id)createDockedViewWithFrame:(CGRect)a3
+- (id)createDockedViewWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(RestorableViewControllerState *)self storedViewControllerClass];
-  v9 = [(RestorableViewControllerState *)self storedUserActivity];
-  v10 = [(objc_class *)v8 dockedViewForUserActivity:v9 withFrame:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  storedViewControllerClass = [(RestorableViewControllerState *)self storedViewControllerClass];
+  storedUserActivity = [(RestorableViewControllerState *)self storedUserActivity];
+  height = [(objc_class *)storedViewControllerClass dockedViewForUserActivity:storedUserActivity withFrame:x, y, width, height];
 
-  return v10;
+  return height;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = DockedViewControllerState;
-  [(RestorableViewControllerState *)&v6 encodeWithCoder:v4];
+  [(RestorableViewControllerState *)&v6 encodeWithCoder:coderCopy];
   dockIdentifier = self->_dockIdentifier;
   if (dockIdentifier)
   {
-    [v4 encodeObject:dockIdentifier forKey:@"kDockIdentifierKey"];
+    [coderCopy encodeObject:dockIdentifier forKey:@"kDockIdentifierKey"];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 dockIdentifier];
-    v6 = [(DockedViewControllerState *)self dockIdentifier];
-    v7 = [v5 isEqualToString:v6];
+    dockIdentifier = [equalCopy dockIdentifier];
+    dockIdentifier2 = [(DockedViewControllerState *)self dockIdentifier];
+    v7 = [dockIdentifier isEqualToString:dockIdentifier2];
   }
 
   else
@@ -97,16 +97,16 @@
   return v7;
 }
 
-+ (id)withID:(id)a3 title:(id)a4
++ (id)withID:(id)d title:(id)title
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  titleCopy = title;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v6)
+    if (titleCopy)
     {
-      v7 = v6;
+      v7 = titleCopy;
     }
 
     else
@@ -117,20 +117,20 @@
 
     v18[0] = MSMailActivityHandoffComposeKeyAutosaveID;
     v18[1] = MSMailActivityHandoffComposeKeySubject;
-    v19[0] = v5;
+    v19[0] = dCopy;
     v19[1] = v7;
     v10 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:2];
     v11 = [NSUserActivity alloc];
     v12 = [v11 initWithActivityType:MSMailActivityHandoffTypeComposeWithStreams];
     [v12 setUserInfo:v10];
     v8 = [(RestorableViewControllerState *)[DockedViewControllerState alloc] initWithUserActivity:v12 viewControllerClass:objc_opt_class()];
-    [(DockedViewControllerState *)v8 setDockIdentifier:v5];
+    [(DockedViewControllerState *)v8 setDockIdentifier:dCopy];
     v13 = +[DockPersistenceSerialization log];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = [(DockedViewControllerState *)v8 dockIdentifier];
+      dockIdentifier = [(DockedViewControllerState *)v8 dockIdentifier];
       v16 = 138412290;
-      v17 = v14;
+      v17 = dockIdentifier;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Created docked state with identifier: %@", &v16, 0xCu);
     }
   }

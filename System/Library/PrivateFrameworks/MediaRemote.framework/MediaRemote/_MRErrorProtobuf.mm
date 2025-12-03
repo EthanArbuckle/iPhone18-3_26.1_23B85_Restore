@@ -1,33 +1,33 @@
 @interface _MRErrorProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUnderlyingErrors:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUnderlyingErrors:(id)errors;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRErrorProtobuf
 
-- (void)addUnderlyingErrors:(id)a3
+- (void)addUnderlyingErrors:(id)errors
 {
-  v4 = a3;
+  errorsCopy = errors;
   underlyingErrors = self->_underlyingErrors;
-  v8 = v4;
+  v8 = errorsCopy;
   if (!underlyingErrors)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_underlyingErrors;
     self->_underlyingErrors = v6;
 
-    v4 = v8;
+    errorsCopy = v8;
     underlyingErrors = self->_underlyingErrors;
   }
 
-  [(NSMutableArray *)underlyingErrors addObject:v4];
+  [(NSMutableArray *)underlyingErrors addObject:errorsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = _MRErrorProtobuf;
   v4 = [(_MRErrorProtobuf *)&v8 description];
-  v5 = [(_MRErrorProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRErrorProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   if (*&self->_has)
@@ -93,8 +93,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -115,8 +115,8 @@
   userInfo = self->_userInfo;
   if (userInfo)
   {
-    v18 = [(_MRDictionaryProtobuf *)userInfo dictionaryRepresentation];
-    [v4 setObject:v18 forKey:@"userInfo"];
+    dictionaryRepresentation2 = [(_MRDictionaryProtobuf *)userInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"userInfo"];
   }
 
   v19 = *MEMORY[0x1E69E9840];
@@ -124,10 +124,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -194,20 +194,20 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_domain)
   {
-    [v4 setDomain:?];
-    v4 = v10;
+    [toCopy setDomain:?];
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_code;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 2) = self->_code;
+    *(toCopy + 64) |= 1u;
   }
 
   if (self->_localizedDescription)
@@ -223,10 +223,10 @@
   if ([(_MRErrorProtobuf *)self underlyingErrorsCount])
   {
     [v10 clearUnderlyingErrors];
-    v5 = [(_MRErrorProtobuf *)self underlyingErrorsCount];
-    if (v5)
+    underlyingErrorsCount = [(_MRErrorProtobuf *)self underlyingErrorsCount];
+    if (underlyingErrorsCount)
     {
-      v6 = v5;
+      v6 = underlyingErrorsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(_MRErrorProtobuf *)self underlyingErrorsAtIndex:i];
@@ -248,11 +248,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -262,11 +262,11 @@
     *(v5 + 64) |= 1u;
   }
 
-  v8 = [(NSString *)self->_localizedDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_localizedDescription copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(NSString *)self->_localizedFailureReason copyWithZone:a3];
+  v10 = [(NSString *)self->_localizedFailureReason copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -290,7 +290,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v24 + 1) + 8 * v16) copyWithZone:{a3, v24}];
+        v17 = [*(*(&v24 + 1) + 8 * v16) copyWithZone:{zone, v24}];
         [v5 addUnderlyingErrors:v17];
 
         ++v16;
@@ -303,11 +303,11 @@
     while (v14);
   }
 
-  v18 = [(NSString *)self->_debugMessage copyWithZone:a3];
+  v18 = [(NSString *)self->_debugMessage copyWithZone:zone];
   v19 = *(v5 + 16);
   *(v5 + 16) = v18;
 
-  v20 = [(_MRDictionaryProtobuf *)self->_userInfo copyWithZone:a3];
+  v20 = [(_MRDictionaryProtobuf *)self->_userInfo copyWithZone:zone];
   v21 = *(v5 + 56);
   *(v5 + 56) = v20;
 
@@ -315,16 +315,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   domain = self->_domain;
-  if (domain | *(v4 + 3))
+  if (domain | *(equalCopy + 3))
   {
     if (![(NSString *)domain isEqual:?])
     {
@@ -332,16 +332,16 @@
     }
   }
 
-  v6 = *(v4 + 64);
+  v6 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_code != *(v4 + 2))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_code != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
 LABEL_19:
     v12 = 0;
@@ -349,13 +349,13 @@ LABEL_19:
   }
 
   localizedDescription = self->_localizedDescription;
-  if (localizedDescription | *(v4 + 4) && ![(NSString *)localizedDescription isEqual:?])
+  if (localizedDescription | *(equalCopy + 4) && ![(NSString *)localizedDescription isEqual:?])
   {
     goto LABEL_19;
   }
 
   localizedFailureReason = self->_localizedFailureReason;
-  if (localizedFailureReason | *(v4 + 5))
+  if (localizedFailureReason | *(equalCopy + 5))
   {
     if (![(NSString *)localizedFailureReason isEqual:?])
     {
@@ -364,7 +364,7 @@ LABEL_19:
   }
 
   underlyingErrors = self->_underlyingErrors;
-  if (underlyingErrors | *(v4 + 6))
+  if (underlyingErrors | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)underlyingErrors isEqual:?])
     {
@@ -373,7 +373,7 @@ LABEL_19:
   }
 
   debugMessage = self->_debugMessage;
-  if (debugMessage | *(v4 + 2))
+  if (debugMessage | *(equalCopy + 2))
   {
     if (![(NSString *)debugMessage isEqual:?])
     {
@@ -382,7 +382,7 @@ LABEL_19:
   }
 
   userInfo = self->_userInfo;
-  if (userInfo | *(v4 + 7))
+  if (userInfo | *(equalCopy + 7))
   {
     v12 = [(_MRDictionaryProtobuf *)userInfo isEqual:?];
   }
@@ -418,27 +418,27 @@ LABEL_20:
   return v7 ^ v9 ^ [(_MRDictionaryProtobuf *)self->_userInfo hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(_MRErrorProtobuf *)self setDomain:?];
   }
 
-  if (*(v4 + 64))
+  if (*(fromCopy + 64))
   {
-    self->_code = *(v4 + 2);
+    self->_code = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(_MRErrorProtobuf *)self setLocalizedDescription:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(_MRErrorProtobuf *)self setLocalizedFailureReason:?];
   }
@@ -447,7 +447,7 @@ LABEL_20:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 6);
+  v5 = *(fromCopy + 6);
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -471,13 +471,13 @@ LABEL_20:
     while (v7);
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(_MRErrorProtobuf *)self setDebugMessage:?];
   }
 
   userInfo = self->_userInfo;
-  v11 = *(v4 + 7);
+  v11 = *(fromCopy + 7);
   if (userInfo)
   {
     if (v11)

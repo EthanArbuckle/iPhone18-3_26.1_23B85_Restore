@@ -1,19 +1,19 @@
 @interface WLDServer
 + (id)server;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (WLDServer)init;
 - (id)_init;
 - (id)_supportPath;
-- (void)_handleContinueWatchingNotification:(id)a3;
-- (void)_handleRestrictionsChangedNotification:(id)a3;
+- (void)_handleContinueWatchingNotification:(id)notification;
+- (void)_handleRestrictionsChangedNotification:(id)notification;
 - (void)_invalidateWidgets;
-- (void)addClient:(id)a3;
-- (void)clientConnectionDidInvalidate:(id)a3;
+- (void)addClient:(id)client;
+- (void)clientConnectionDidInvalidate:(id)invalidate;
 - (void)dealloc;
 - (void)handleAMSDeviceOffer;
 - (void)handleSubscriptionRegistration;
 - (void)handleUNWidgetRegistration;
-- (void)handleVideosUIInvalidationNotification:(id)a3;
+- (void)handleVideosUIInvalidationNotification:(id)notification;
 - (void)start;
 @end
 
@@ -119,28 +119,28 @@ void __18__WLDServer__init__block_invoke(uint64_t a1)
   {
     v3 = [v2 stringByAppendingPathComponent:@"applibrarydict"];
 
-    v4 = [v3 stringByExpandingTildeInPath];
+    stringByExpandingTildeInPath = [v3 stringByExpandingTildeInPath];
   }
 
   else
   {
     NSLog(@"WLDServer - Error: TVASDefaultSupportPath returned nil");
-    v4 = v2;
-    v3 = v4;
+    stringByExpandingTildeInPath = v2;
+    v3 = stringByExpandingTildeInPath;
   }
 
-  return v4;
+  return stringByExpandingTildeInPath;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   memset(&v22, 0, sizeof(v22));
-  if (v7)
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
   }
 
   v21 = 0;
@@ -235,40 +235,40 @@ LABEL_26:
   return v17;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v9 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v9;
-  clients = v4->_clients;
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = clientCopy;
+  clients = selfCopy->_clients;
   if (!clients)
   {
     v7 = [[NSMutableSet alloc] initWithCapacity:1];
-    v8 = v4->_clients;
-    v4->_clients = v7;
+    v8 = selfCopy->_clients;
+    selfCopy->_clients = v7;
 
-    clients = v4->_clients;
-    v5 = v9;
+    clients = selfCopy->_clients;
+    v5 = clientCopy;
   }
 
   [(NSMutableSet *)clients addObject:v5];
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)clientConnectionDidInvalidate:(id)a3
+- (void)clientConnectionDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  if (v4)
+  invalidateCopy = invalidate;
+  if (invalidateCopy)
   {
-    v6 = v4;
-    [v4 setDelegate:0];
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableSet *)v5->_clients removeObject:v6];
-    objc_sync_exit(v5);
+    v6 = invalidateCopy;
+    [invalidateCopy setDelegate:0];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableSet *)selfCopy->_clients removeObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    invalidateCopy = v6;
   }
 }
 
@@ -334,9 +334,9 @@ LABEL_26:
   [(WLDDeviceOfferManager *)v2 processDeviceOffers];
 }
 
-- (void)handleVideosUIInvalidationNotification:(id)a3
+- (void)handleVideosUIInvalidationNotification:(id)notification
 {
-  NSLog(@"WLDServer - handleVideosUIInvalidationNotification %@", a2, a3);
+  NSLog(@"WLDServer - handleVideosUIInvalidationNotification %@", a2, notification);
 
   [(WLDServer *)self _invalidateWidgets];
 }
@@ -349,16 +349,16 @@ LABEL_26:
   [(WLDPushNotificationController *)pushController registerOpportunisticTopics];
 }
 
-- (void)_handleRestrictionsChangedNotification:(id)a3
+- (void)_handleRestrictionsChangedNotification:(id)notification
 {
-  NSLog(@"WLDServer - _handleRestrictionsChangedNotification %@", a2, a3);
+  NSLog(@"WLDServer - _handleRestrictionsChangedNotification %@", a2, notification);
 
   [(WLDServer *)self _invalidateWidgets];
 }
 
-- (void)_handleContinueWatchingNotification:(id)a3
+- (void)_handleContinueWatchingNotification:(id)notification
 {
-  NSLog(@"WLDServer - _handleContinueWatchingNotification %@", a2, a3);
+  NSLog(@"WLDServer - _handleContinueWatchingNotification %@", a2, notification);
   +[WLKUpNextWidgetCacheManager requestInvalidation];
 
   +[WLKUpNextWidgetCacheManager requestReload];

@@ -1,24 +1,24 @@
 @interface WBSPasswordRuleParser
-+ (id)_passwordRuleSetFromPasswordRules:(id)a3;
-+ (id)mergePasswordRuleSet:(id)a3 withPasswordRuleSet:(id)a4;
-+ (id)parsePasswordRules:(id)a3 error:(id *)a4;
++ (id)_passwordRuleSetFromPasswordRules:(id)rules;
++ (id)mergePasswordRuleSet:(id)set withPasswordRuleSet:(id)ruleSet;
++ (id)parsePasswordRules:(id)rules error:(id *)error;
 @end
 
 @implementation WBSPasswordRuleParser
 
-+ (id)parsePasswordRules:(id)a3 error:(id *)a4
++ (id)parsePasswordRules:(id)rules error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  rulesCopy = rules;
+  v7 = rulesCopy;
+  if (!rulesCopy)
   {
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v14 = 2;
 LABEL_10:
       [v13 errorWithDomain:@"WBSPasswordRuleParserErrorDomain" code:v14 userInfo:0];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_17;
     }
 
@@ -27,11 +27,11 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  v8 = [(__CFString *)v6 length];
+  v8 = [(__CFString *)rulesCopy length];
   v9 = malloc_type_calloc(v8 + 1, 2uLL, 0x1000040BDFB0063uLL);
   if (!v9)
   {
-    if (a4)
+    if (error)
     {
       v13 = MEMORY[0x1E696ABC0];
       v14 = 0;
@@ -51,18 +51,18 @@ LABEL_11:
   free(v10);
   if (v16 == -1)
   {
-    if (a4)
+    if (error)
     {
-      *a4 = 0;
+      *error = 0;
     }
 
-    v12 = [a1 _passwordRuleSetFromPasswordRules:v11];
+    v12 = [self _passwordRuleSetFromPasswordRules:v11];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"WBSPasswordRuleParserErrorDomain" code:? userInfo:?];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -75,17 +75,17 @@ LABEL_17:
   return v12;
 }
 
-+ (id)_passwordRuleSetFromPasswordRules:(id)a3
++ (id)_passwordRuleSetFromPasswordRules:(id)rules
 {
   v55 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v47 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
+  rulesCopy = rules;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v5 = v3;
+  v5 = rulesCopy;
   v6 = [v5 countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (!v6)
   {
@@ -116,64 +116,64 @@ LABEL_17:
       }
 
       v13 = *(*(&v49 + 1) + 8 * v12);
-      v14 = [v13 type];
-      if (v14 <= 1)
+      type = [v13 type];
+      if (type <= 1)
       {
-        if (v14)
+        if (type)
         {
-          if (v14 != 1)
+          if (type != 1)
           {
             goto LABEL_29;
           }
 
-          v18 = [v13 value];
-          v16 = v18;
-          if (v18)
+          value = [v13 value];
+          value2 = value;
+          if (value)
           {
-            v19 = canonicalizedCharacterClasses(v18);
+            v19 = canonicalizedCharacterClasses(value);
             [WBSRequiredPasswordRule requiredRuleWithCharacterClasses:v19];
             v20 = v8;
             v21 = v5;
             v22 = v11;
             v23 = v10;
             v24 = v9;
-            v26 = v25 = v4;
-            [v47 addObject:v26];
+            v26 = v25 = array2;
+            [array addObject:v26];
 
-            v4 = v25;
+            array2 = v25;
             v9 = v24;
             v10 = v23;
             v11 = v22;
             v5 = v21;
             v8 = v20;
             v7 = v48;
-            [v4 addObjectsFromArray:v19];
+            [array2 addObjectsFromArray:v19];
           }
         }
 
         else
         {
-          v16 = [v13 value];
-          if (v16)
+          value2 = [v13 value];
+          if (value2)
           {
-            [v4 addObjectsFromArray:v16];
+            [array2 addObjectsFromArray:value2];
           }
         }
       }
 
       else
       {
-        switch(v14)
+        switch(type)
         {
           case 4:
-            v27 = [v13 value];
-            v16 = v27;
-            if (v27)
+            value3 = [v13 value];
+            value2 = value3;
+            if (value3)
             {
-              v28 = [v27 integerValue];
-              if (v10 >= v28)
+              integerValue = [value3 integerValue];
+              if (v10 >= integerValue)
               {
-                v10 = v28;
+                v10 = integerValue;
               }
 
               LOBYTE(v46) = 1;
@@ -181,14 +181,14 @@ LABEL_17:
 
             break;
           case 3:
-            v29 = [v13 value];
-            v16 = v29;
-            if (v29)
+            value4 = [v13 value];
+            value2 = value4;
+            if (value4)
             {
-              v30 = [v29 integerValue];
-              if (v9 <= v30)
+              integerValue2 = [value4 integerValue];
+              if (v9 <= integerValue2)
               {
-                v9 = v30;
+                v9 = integerValue2;
               }
 
               BYTE4(v46) = 1;
@@ -196,14 +196,14 @@ LABEL_17:
 
             break;
           case 2:
-            v15 = [v13 value];
-            v16 = v15;
-            if (v15)
+            value5 = [v13 value];
+            value2 = value5;
+            if (value5)
             {
-              v17 = [v15 integerValue];
-              if (v11 >= v17)
+              integerValue3 = [value5 integerValue];
+              if (v11 >= integerValue3)
               {
-                v11 = v17;
+                v11 = integerValue3;
               }
 
               v45 = 1;
@@ -226,7 +226,7 @@ LABEL_29:
   while (v7);
 LABEL_33:
 
-  v31 = canonicalizedCharacterClasses(v4);
+  v31 = canonicalizedCharacterClasses(array2);
   if (![v31 count])
   {
     v32 = +[WBSPasswordCharacterClass asciiPrintableCharacterClass];
@@ -237,7 +237,7 @@ LABEL_33:
   }
 
   v34 = [WBSAllowedPasswordRule allowedRuleWithCharacterClasses:v31];
-  v35 = v4;
+  v35 = array2;
   if (v45)
   {
     v36 = [MEMORY[0x1E696AD98] numberWithInteger:v11];
@@ -271,59 +271,59 @@ LABEL_33:
     v41 = 0;
   }
 
-  v42 = [WBSPasswordRuleSet ruleSetWithAllowedRule:v34 requiredRules:v47 maxConsecutiveRule:v37 minLengthRule:v41 maxLengthRule:v39];
+  v42 = [WBSPasswordRuleSet ruleSetWithAllowedRule:v34 requiredRules:array maxConsecutiveRule:v37 minLengthRule:v41 maxLengthRule:v39];
 
   v43 = *MEMORY[0x1E69E9840];
 
   return v42;
 }
 
-+ (id)mergePasswordRuleSet:(id)a3 withPasswordRuleSet:(id)a4
++ (id)mergePasswordRuleSet:(id)set withPasswordRuleSet:(id)ruleSet
 {
   v67[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  setCopy = set;
+  ruleSetCopy = ruleSet;
+  v8 = ruleSetCopy;
   v9 = 0;
-  if (!v6 || !v7)
+  if (!setCopy || !ruleSetCopy)
   {
     goto LABEL_45;
   }
 
-  v53 = a1;
-  v10 = [MEMORY[0x1E695DF70] array];
-  v11 = [v6 allowedRule];
-  v12 = [v11 value];
-  v13 = [v8 allowedRule];
-  v14 = [v13 value];
-  v15 = v12;
-  v16 = v14;
+  selfCopy = self;
+  array = [MEMORY[0x1E695DF70] array];
+  allowedRule = [setCopy allowedRule];
+  value = [allowedRule value];
+  allowedRule2 = [v8 allowedRule];
+  value2 = [allowedRule2 value];
+  v15 = value;
+  v16 = value2;
   v56 = v8;
   if ([v15 count] && objc_msgSend(v16, "count"))
   {
-    v50 = v13;
-    v51 = v11;
-    v17 = [MEMORY[0x1E696AD60] string];
-    v18 = [MEMORY[0x1E696AD60] string];
+    v50 = allowedRule2;
+    v51 = allowedRule;
+    string = [MEMORY[0x1E696AD60] string];
+    string2 = [MEMORY[0x1E696AD60] string];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __intersectCharacterClasses_block_invoke;
     aBlock[3] = &unk_1E7CF38C0;
     v62 = v15;
     v63 = v16;
-    v52 = v17;
+    v52 = string;
     v64 = v52;
-    v54 = v18;
+    v54 = string2;
     v65 = v54;
     v19 = _Block_copy(aBlock);
-    LOBYTE(v17) = v19[2](v19, 1);
+    LOBYTE(string) = v19[2](v19, 1);
     v49 = v19;
-    v20 = v19[2](v19, 0) & v17;
-    v21 = [MEMORY[0x1E695DF70] array];
+    v20 = v19[2](v19, 0) & string;
+    array2 = [MEMORY[0x1E695DF70] array];
     if ((v20 & 0x10) != 0)
     {
       v44 = +[WBSPasswordCharacterClass unicodeCharacterClass];
-      [v21 addObject:v44];
+      [array2 addObject:v44];
 
       if ((v20 & 0x20) == 0)
       {
@@ -343,7 +343,7 @@ LABEL_7:
     }
 
     v45 = +[WBSPasswordCharacterClass asciiPrintableCharacterClass];
-    [v21 addObject:v45];
+    [array2 addObject:v45];
 
     if ((v20 & 2) == 0)
     {
@@ -358,7 +358,7 @@ LABEL_8:
 
 LABEL_50:
     v46 = +[WBSPasswordCharacterClass lowercaseCharacterClass];
-    [v21 addObject:v46];
+    [array2 addObject:v46];
 
     if ((v20 & 1) == 0)
     {
@@ -373,7 +373,7 @@ LABEL_9:
 
 LABEL_51:
     v47 = +[WBSPasswordCharacterClass uppercaseCharacterClass];
-    [v21 addObject:v47];
+    [array2 addObject:v47];
 
     if ((v20 & 4) == 0)
     {
@@ -388,7 +388,7 @@ LABEL_10:
 
 LABEL_52:
     v48 = +[WBSPasswordCharacterClass digitCharacterClass];
-    [v21 addObject:v48];
+    [array2 addObject:v48];
 
     if ((v20 & 8) == 0)
     {
@@ -396,7 +396,7 @@ LABEL_12:
       v23 = v52;
       if ([v52 length] && objc_msgSend(v54, "length"))
       {
-        v24 = v21;
+        v24 = array2;
         v25 = *MEMORY[0x1E695E480];
         Mutable = CFBitVectorCreateMutable(*MEMORY[0x1E695E480], 95);
         CFBitVectorSetCount(Mutable, 95);
@@ -404,21 +404,21 @@ LABEL_12:
         v27 = CFBitVectorCreateMutable(v25, 95);
         CFBitVectorSetCount(v27, 95);
         markBitsForCustomCharacterClassPropertyValue(v27, v54);
-        v28 = [MEMORY[0x1E696AD60] string];
+        string3 = [MEMORY[0x1E696AD60] string];
         for (i = 0; i != 95; ++i)
         {
           if (CFBitVectorGetBitAtIndex(Mutable, i) && CFBitVectorGetBitAtIndex(v27, i))
           {
-            [v28 appendFormat:@"%C", i + 32];
+            [string3 appendFormat:@"%C", i + 32];
           }
         }
 
         CFRelease(Mutable);
         CFRelease(v27);
-        v21 = v24;
-        if ([v28 length])
+        array2 = v24;
+        if ([string3 length])
         {
-          v30 = [WBSPasswordCharacterClass customCharacterClassWithValue:v28];
+          v30 = [WBSPasswordCharacterClass customCharacterClassWithValue:string3];
           [v24 addObject:v30];
         }
 
@@ -426,29 +426,29 @@ LABEL_12:
         v23 = v52;
       }
 
-      v13 = v50;
-      v11 = v51;
+      allowedRule2 = v50;
+      allowedRule = v51;
       goto LABEL_24;
     }
 
 LABEL_11:
     v22 = +[WBSPasswordCharacterClass specialCharacterClass];
-    [v21 addObject:v22];
+    [array2 addObject:v22];
 
     goto LABEL_12;
   }
 
-  v21 = MEMORY[0x1E695E0F0];
+  array2 = MEMORY[0x1E695E0F0];
 LABEL_24:
 
-  if ([v21 count])
+  if ([array2 count])
   {
-    v31 = [WBSAllowedPasswordRule allowedRuleWithCharacterClasses:v21];
-    [v10 addObject:v31];
+    v31 = [WBSAllowedPasswordRule allowedRuleWithCharacterClasses:array2];
+    [array addObject:v31];
   }
 
-  v55 = v21;
-  v67[0] = v6;
+  v55 = array2;
+  v67[0] = setCopy;
   v67[1] = v8;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v67 count:2];
   v57 = 0u;
@@ -470,28 +470,28 @@ LABEL_24:
         }
 
         v37 = *(*(&v57 + 1) + 8 * j);
-        v38 = [v37 requiredRules];
-        if (v38)
+        requiredRules = [v37 requiredRules];
+        if (requiredRules)
         {
-          [v10 addObjectsFromArray:v38];
+          [array addObjectsFromArray:requiredRules];
         }
 
-        v39 = [v37 maxConsecutiveRule];
-        if (v39)
+        maxConsecutiveRule = [v37 maxConsecutiveRule];
+        if (maxConsecutiveRule)
         {
-          [v10 addObject:v39];
+          [array addObject:maxConsecutiveRule];
         }
 
-        v40 = [v37 minLengthRule];
-        if (v40)
+        minLengthRule = [v37 minLengthRule];
+        if (minLengthRule)
         {
-          [v10 addObject:v40];
+          [array addObject:minLengthRule];
         }
 
-        v41 = [v37 maxLengthRule];
-        if (v41)
+        maxLengthRule = [v37 maxLengthRule];
+        if (maxLengthRule)
         {
-          [v10 addObject:v41];
+          [array addObject:maxLengthRule];
         }
       }
 
@@ -501,9 +501,9 @@ LABEL_24:
     while (v34);
   }
 
-  if ([v10 count])
+  if ([array count])
   {
-    v9 = [v53 _passwordRuleSetFromPasswordRules:v10];
+    v9 = [selfCopy _passwordRuleSetFromPasswordRules:array];
   }
 
   else

@@ -1,23 +1,23 @@
 @interface RTSourceMapsSupportHistoryEntry
-- (BOOL)isEqual:(id)a3;
-- (RTSourceMapsSupportHistoryEntry)initWithCoder:(id)a3;
-- (RTSourceMapsSupportHistoryEntry)initWithUsageDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (RTSourceMapsSupportHistoryEntry)initWithCoder:(id)coder;
+- (RTSourceMapsSupportHistoryEntry)initWithUsageDate:(id)date;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTSourceMapsSupportHistoryEntry
 
-- (RTSourceMapsSupportHistoryEntry)initWithUsageDate:(id)a3
+- (RTSourceMapsSupportHistoryEntry)initWithUsageDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = RTSourceMapsSupportHistoryEntry;
   v5 = [(RTSourceMapsSupportHistoryEntry *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dateCopy copy];
     usageDate = v5->_usageDate;
     v5->_usageDate = v6;
   }
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (RTSourceMapsSupportHistoryEntry)initWithCoder:(id)a3
+- (RTSourceMapsSupportHistoryEntry)initWithCoder:(id)coder
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -44,10 +44,10 @@
 
   v11.receiver = self;
   v11.super_class = RTSourceMapsSupportHistoryEntry;
-  v6 = [(RTSource *)&v11 initWithCoder:v4];
+  v6 = [(RTSource *)&v11 initWithCoder:coderCopy];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usageDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usageDate"];
     usageDate = v6->_usageDate;
     v6->_usageDate = v7;
   }
@@ -56,11 +56,11 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -75,28 +75,28 @@
 
   v7.receiver = self;
   v7.super_class = RTSourceMapsSupportHistoryEntry;
-  [(RTSource *)&v7 encodeWithCoder:v4];
-  [v4 encodeObject:self->_usageDate forKey:@"usageDate"];
+  [(RTSource *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_usageDate forKey:@"usageDate"];
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = RTSourceMapsSupportHistoryEntry;
-  if ([(RTSource *)&v12 isEqual:v5])
+  if ([(RTSource *)&v12 isEqual:equalCopy])
   {
-    v6 = v5;
-    v7 = [(RTSourceMapsSupportHistoryEntry *)self usageDate];
-    if (v7 || ([v6 usageDate], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v6 = equalCopy;
+    usageDate = [(RTSourceMapsSupportHistoryEntry *)self usageDate];
+    if (usageDate || ([v6 usageDate], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = [(RTSourceMapsSupportHistoryEntry *)self usageDate];
-      v9 = [v6 usageDate];
-      v10 = [v8 isEqualToDate:v9];
+      usageDate2 = [(RTSourceMapsSupportHistoryEntry *)self usageDate];
+      usageDate3 = [v6 usageDate];
+      v10 = [usageDate2 isEqualToDate:usageDate3];
 
-      if (v7)
+      if (usageDate)
       {
 LABEL_9:
 
@@ -123,8 +123,8 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = RTSourceMapsSupportHistoryEntry;
   v3 = [(RTSource *)&v7 hash];
-  v4 = [(RTSourceMapsSupportHistoryEntry *)self usageDate];
-  v5 = [v4 hash];
+  usageDate = [(RTSourceMapsSupportHistoryEntry *)self usageDate];
+  v5 = [usageDate hash];
 
   return v5 ^ v3;
 }
@@ -135,8 +135,8 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = RTSourceMapsSupportHistoryEntry;
   v4 = [(RTSource *)&v8 description];
-  v5 = [(RTSourceMapsSupportHistoryEntry *)self usageDate];
-  v6 = [v3 stringWithFormat:@"%@, usageDate, %@", v4, v5];
+  usageDate = [(RTSourceMapsSupportHistoryEntry *)self usageDate];
+  v6 = [v3 stringWithFormat:@"%@, usageDate, %@", v4, usageDate];
 
   return v6;
 }

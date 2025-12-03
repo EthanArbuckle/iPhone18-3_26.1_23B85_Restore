@@ -38,9 +38,9 @@
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
   v4 = [v3 appendBool:-[BSAtomicSignal hasBeenSignalled](self withName:"hasBeenSignalled") ifEqualTo:{@"signalled", 1}];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

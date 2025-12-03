@@ -2,7 +2,7 @@
 - (BOOL)hasAccessibleDescendants;
 - (CGRect)accessibilityFrameRelativeToScrollAncestor;
 - (TUIAXModel)init;
-- (TUIAXModel)initWithIdentifier:(id)a3 boxType:(id)a4;
+- (TUIAXModel)initWithIdentifier:(id)identifier boxType:(id)type;
 - (id)description;
 @end
 
@@ -15,16 +15,16 @@
   return [(TUIAXModel *)&v3 init];
 }
 
-- (TUIAXModel)initWithIdentifier:(id)a3 boxType:(id)a4
+- (TUIAXModel)initWithIdentifier:(id)identifier boxType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  typeCopy = type;
   v9 = [(TUIAXModel *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_identifier, identifier);
+    v11 = [typeCopy copy];
     boxType = v10->_boxType;
     v10->_boxType = v11;
   }
@@ -36,12 +36,12 @@
 {
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TUIAXModel *)self boxType];
-  v7 = [(TUIAXModel *)self identifier];
-  if (v7)
+  boxType = [(TUIAXModel *)self boxType];
+  identifier = [(TUIAXModel *)self identifier];
+  if (identifier)
   {
-    v17 = [(TUIAXModel *)self identifier];
-    v8 = [NSString stringWithFormat:@" identifier=%@", v17];
+    identifier2 = [(TUIAXModel *)self identifier];
+    v8 = [NSString stringWithFormat:@" identifier=%@", identifier2];
   }
 
   else
@@ -49,11 +49,11 @@
     v8 = &stru_264550;
   }
 
-  v9 = [(TUIAXModel *)self stateName];
-  if (v9)
+  stateName = [(TUIAXModel *)self stateName];
+  if (stateName)
   {
-    v2 = [(TUIAXModel *)self stateName];
-    v10 = [NSString stringWithFormat:@" state=%@", v2];;
+    stateName2 = [(TUIAXModel *)self stateName];
+    v10 = [NSString stringWithFormat:@" state=%@", stateName2];;
   }
 
   else
@@ -61,17 +61,17 @@
     v10 = &stru_264550;
   }
 
-  v11 = [(TUIAXModel *)self children];
-  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 count]);
-  v16 = self;
+  children = [(TUIAXModel *)self children];
+  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [children count]);
+  selfCopy = self;
   v13 = v5;
-  v14 = [NSString stringWithFormat:@"<%@: %p %@;%@%@ #children=%@>", v5, v16, v6, v8, v10, v12];;
+  v14 = [NSString stringWithFormat:@"<%@: %p %@;%@%@ #children=%@>", v5, selfCopy, boxType, v8, v10, v12];;
 
-  if (v9)
+  if (stateName)
   {
   }
 
-  if (v7)
+  if (identifier)
   {
   }
 
@@ -80,8 +80,8 @@
 
 - (BOOL)hasAccessibleDescendants
 {
-  v3 = [(TUIAXModel *)self axAttributes];
-  if ([v3 isAXElement])
+  axAttributes = [(TUIAXModel *)self axAttributes];
+  if ([axAttributes isAXElement])
   {
 
 LABEL_4:
@@ -89,9 +89,9 @@ LABEL_4:
     return v5;
   }
 
-  v4 = [(TUIAXModel *)self shouldVendControlView];
+  shouldVendControlView = [(TUIAXModel *)self shouldVendControlView];
 
-  if (v4)
+  if (shouldVendControlView)
   {
     goto LABEL_4;
   }
@@ -100,8 +100,8 @@ LABEL_4:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v6 = [(TUIAXModel *)self children];
-  v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  children = [(TUIAXModel *)self children];
+  v5 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v7 = *v11;
@@ -111,7 +111,7 @@ LABEL_4:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
         if ([*(*(&v10 + 1) + 8 * i) hasAccessibleDescendants])
@@ -121,7 +121,7 @@ LABEL_4:
         }
       }
 
-      v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [children countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v5)
       {
         continue;

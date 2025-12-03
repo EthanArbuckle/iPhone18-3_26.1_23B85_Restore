@@ -1,6 +1,6 @@
 @interface HFEnergyCategoryStatusItem
 + (id)statusItemClasses;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFEnergyCategoryStatusItem
@@ -23,19 +23,19 @@ void __47__HFEnergyCategoryStatusItem_statusItemClasses__block_invoke_2()
   qword_280E03880 = MEMORY[0x277CBEBF8];
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = HFEnergyCategoryStatusItem;
-  v5 = [(HFAccessoryCategoryStatusItem *)&v11 _subclass_updateWithOptions:v4];
+  v5 = [(HFAccessoryCategoryStatusItem *)&v11 _subclass_updateWithOptions:optionsCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __58__HFEnergyCategoryStatusItem__subclass_updateWithOptions___block_invoke;
   v9[3] = &unk_277DF3068;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = optionsCopy;
+  v6 = optionsCopy;
   v7 = [v5 flatMap:v9];
 
   return v7;

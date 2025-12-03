@@ -13,9 +13,9 @@
   if (v2)
   {
     v15 = @"version";
-    v3 = [MEMORY[0x277CCA8D8] vg_bundle];
-    v4 = [v3 infoDictionary];
-    v5 = [v4 valueForKey:@"CFBundleVersion"];
+    vg_bundle = [MEMORY[0x277CCA8D8] vg_bundle];
+    infoDictionary = [vg_bundle infoDictionary];
+    v5 = [infoDictionary valueForKey:@"CFBundleVersion"];
     v16[0] = v5;
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     framework = v2->_framework;

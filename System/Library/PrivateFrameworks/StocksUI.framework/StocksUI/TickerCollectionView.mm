@@ -1,6 +1,6 @@
 @interface TickerCollectionView
-- (void)autoScrollWithDisplayWithDisplayLink:(id)a3;
-- (void)handleAccessibilitySettingsChangedWithNotification:(id)a3;
+- (void)autoScrollWithDisplayWithDisplayLink:(id)link;
+- (void)handleAccessibilitySettingsChangedWithNotification:(id)notification;
 - (void)layoutSubviews;
 @end
 
@@ -15,21 +15,21 @@
   sub_2204E75CC();
 }
 
-- (void)autoScrollWithDisplayWithDisplayLink:(id)a3
+- (void)autoScrollWithDisplayWithDisplayLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_2207A7E94(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_2207A7E94(linkCopy);
 }
 
-- (void)handleAccessibilitySettingsChangedWithNotification:(id)a3
+- (void)handleAccessibilitySettingsChangedWithNotification:(id)notification
 {
   v4 = sub_220884A6C();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_220884A5C();
-  v9 = self;
+  selfCopy = self;
   sub_2207A7D00();
 
   (*(v5 + 8))(v8, v4);

@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (_GCUIInteractionCompatibilityManager)init;
 - (id)_init;
-- (void)_installInteractionOnWindow:(id)a3;
-- (void)_windowDidBecomeKey:(id)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)_installInteractionOnWindow:(id)window;
+- (void)_windowDidBecomeKey:(id)key;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation _GCUIInteractionCompatibilityManager
@@ -28,11 +28,11 @@
   return 0;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v25 = *MEMORY[0x277D85DE8];
   installedInteractions = self->_installedInteractions;
-  if (!a3)
+  if (!enabled)
   {
     if (installedInteractions)
     {
@@ -56,8 +56,8 @@
             }
 
             v15 = *(*(&v20 + 1) + 8 * i);
-            v16 = [v15 view];
-            [v16 removeInteraction:v15];
+            view = [v15 view];
+            [view removeInteraction:v15];
           }
 
           v12 = [(NSMutableSet *)v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -69,8 +69,8 @@
       v17 = self->_installedInteractions;
       self->_installedInteractions = 0;
 
-      v18 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v18 removeObserver:self name:*MEMORY[0x277D77280] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D77280] object:0];
     }
 
     goto LABEL_17;
@@ -87,13 +87,13 @@ LABEL_17:
   v6 = self->_installedInteractions;
   self->_installedInteractions = v5;
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__windowDidBecomeKey_ name:*MEMORY[0x277D77280] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__windowDidBecomeKey_ name:*MEMORY[0x277D77280] object:0];
 
-  v8 = [MEMORY[0x277D75DA0] _applicationKeyWindow];
-  if (v8)
+  _applicationKeyWindow = [MEMORY[0x277D75DA0] _applicationKeyWindow];
+  if (_applicationKeyWindow)
   {
-    [(_GCUIInteractionCompatibilityManager *)self _installInteractionOnWindow:v8];
+    [(_GCUIInteractionCompatibilityManager *)self _installInteractionOnWindow:_applicationKeyWindow];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -101,16 +101,16 @@ LABEL_17:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)_installInteractionOnWindow:(id)a3
+- (void)_installInteractionOnWindow:(id)window
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = a3;
-  v4 = [v17 interactions];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  windowCopy = window;
+  interactions = [windowCopy interactions];
+  v5 = [interactions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -123,7 +123,7 @@ LABEL_17:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(interactions);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -154,7 +154,7 @@ LABEL_17:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [interactions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -171,21 +171,21 @@ LABEL_17:
     v15 = objc_opt_new();
     [v15 setHandledEventTypes:1];
     [(NSMutableSet *)self->_installedInteractions addObject:v15];
-    [v17 addInteraction:v15];
+    [windowCopy addInteraction:v15];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_windowDidBecomeKey:(id)a3
+- (void)_windowDidBecomeKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 object];
+  keyCopy = key;
+  object = [keyCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_GCUIInteractionCompatibilityManager *)self _installInteractionOnWindow:v5];
+    [(_GCUIInteractionCompatibilityManager *)self _installInteractionOnWindow:object];
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
@@ -199,7 +199,7 @@ LABEL_17:
     }
 
     v8 = v7;
-    v15 = self;
+    selfCopy = self;
     v9 = 0;
     v10 = *v17;
     do
@@ -212,9 +212,9 @@ LABEL_17:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 view];
+        view = [v12 view];
 
-        if (!v13)
+        if (!view)
         {
           if (!v9)
           {
@@ -232,7 +232,7 @@ LABEL_17:
 
     if (v9)
     {
-      [(NSMutableSet *)v15->_installedInteractions minusSet:v9];
+      [(NSMutableSet *)selfCopy->_installedInteractions minusSet:v9];
 LABEL_16:
     }
   }

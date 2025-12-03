@@ -1,35 +1,35 @@
 @interface HDClinicalDailyAnalyticsManager
-+ (id)_queryDescriptorForType:(id)a3 predicate:(id)a4;
++ (id)_queryDescriptorForType:(id)type predicate:(id)predicate;
 + (id)_recordAnalyticsDescriptions;
-- (BOOL)_submitHealthRecordsDailyAnalyticsWithCoordinator:(id)a3 error:(id *)a4;
-- (HDClinicalDailyAnalyticsManager)initWithProfileExtension:(id)a3;
-- (id)_countWithRecordCategoryAnalyticsDescription:(id)a3 timeScope:(int64_t)a4 nowDate:(id)a5 transaction:(id)a6 error:(id *)a7;
-- (id)_fetchAccountAnalyticsCollectsClinicalOptInData:(BOOL)a3 collectsImproveHealthAndActivityData:(BOOL)a4 error:(id *)a5;
-- (id)_fetchAnalyticsDictionaryWithError:(id *)a3;
-- (id)_fetchDeviceContextAnalyticsWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (id)_fetchRecordAndUserDomainConceptAnalyticsHealthDataSubmissionAllowed:(BOOL)a3 collectsClinicalOptInData:(BOOL)a4 transaction:(id)a5 error:(id *)a6;
-- (id)_recordCategoryAnalyticsWithDescription:(id)a3 nowDate:(id)a4 transaction:(id)a5 error:(id *)a6;
-- (id)_recordCountAnalyticsWithNowDate:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (int64_t)_hasMedicalRecordsOfType:(id)a3 medicalRecordEntitySubclass:(Class)a4 predicate:(id)a5 database:(id)a6 error:(id *)a7;
+- (BOOL)_submitHealthRecordsDailyAnalyticsWithCoordinator:(id)coordinator error:(id *)error;
+- (HDClinicalDailyAnalyticsManager)initWithProfileExtension:(id)extension;
+- (id)_countWithRecordCategoryAnalyticsDescription:(id)description timeScope:(int64_t)scope nowDate:(id)date transaction:(id)transaction error:(id *)error;
+- (id)_fetchAccountAnalyticsCollectsClinicalOptInData:(BOOL)data collectsImproveHealthAndActivityData:(BOOL)activityData error:(id *)error;
+- (id)_fetchAnalyticsDictionaryWithError:(id *)error;
+- (id)_fetchDeviceContextAnalyticsWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (id)_fetchRecordAndUserDomainConceptAnalyticsHealthDataSubmissionAllowed:(BOOL)allowed collectsClinicalOptInData:(BOOL)data transaction:(id)transaction error:(id *)error;
+- (id)_recordCategoryAnalyticsWithDescription:(id)description nowDate:(id)date transaction:(id)transaction error:(id *)error;
+- (id)_recordCountAnalyticsWithNowDate:(id)date transaction:(id)transaction error:(id *)error;
+- (int64_t)_hasMedicalRecordsOfType:(id)type medicalRecordEntitySubclass:(Class)subclass predicate:(id)predicate database:(id)database error:(id *)error;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion;
 @end
 
 @implementation HDClinicalDailyAnalyticsManager
 
-- (HDClinicalDailyAnalyticsManager)initWithProfileExtension:(id)a3
+- (HDClinicalDailyAnalyticsManager)initWithProfileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v10.receiver = self;
   v10.super_class = HDClinicalDailyAnalyticsManager;
   v5 = [(HDClinicalDailyAnalyticsManager *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profileExtension, v4);
-    v7 = [v4 profile];
-    [v7 registerProfileReadyObserver:v6 queue:0];
+    objc_storeWeak(&v5->_profileExtension, extensionCopy);
+    profile = [extensionCopy profile];
+    [profile registerProfileReadyObserver:v6 queue:0];
 
     profileConnectionOverride = v6->_profileConnectionOverride;
     v6->_profileConnectionOverride = 0;
@@ -41,31 +41,31 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v4 = [WeakRetained profile];
-  v5 = [v4 daemon];
-  v6 = [v5 analyticsSubmissionCoordinator];
-  [v6 removeObserver:self];
+  profile = [WeakRetained profile];
+  daemon = [profile daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator removeObserver:self];
 
   v7.receiver = self;
   v7.super_class = HDClinicalDailyAnalyticsManager;
   [(HDClinicalDailyAnalyticsManager *)&v7 dealloc];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v4 = [WeakRetained profile];
-  v5 = [v4 daemon];
-  v6 = [v5 analyticsSubmissionCoordinator];
-  [v6 addObserver:self queue:0];
+  profile = [WeakRetained profile];
+  daemon = [profile daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator addObserver:self queue:0];
 }
 
-- (BOOL)_submitHealthRecordsDailyAnalyticsWithCoordinator:(id)a3 error:(id *)a4
+- (BOOL)_submitHealthRecordsDailyAnalyticsWithCoordinator:(id)coordinator error:(id *)error
 {
-  v6 = a3;
-  if ([v6 isEventUsed:@"com.apple.HealthRecords.DailyAnalytics"])
+  coordinatorCopy = coordinator;
+  if ([coordinatorCopy isEventUsed:@"com.apple.HealthRecords.DailyAnalytics"])
   {
-    v7 = [(HDClinicalDailyAnalyticsManager *)self _fetchAnalyticsDictionaryWithError:a4];
+    v7 = [(HDClinicalDailyAnalyticsManager *)self _fetchAnalyticsDictionaryWithError:error];
     v8 = v7;
     v9 = v7 != 0;
     if (v7)
@@ -75,7 +75,7 @@
       v11[2] = sub_979C8;
       v11[3] = &unk_105F08;
       v12 = v7;
-      [v6 sendEvent:@"com.apple.HealthRecords.DailyAnalytics" block:v11];
+      [coordinatorCopy sendEvent:@"com.apple.HealthRecords.DailyAnalytics" block:v11];
     }
   }
 
@@ -87,7 +87,7 @@
   return v9;
 }
 
-- (id)_fetchAnalyticsDictionaryWithError:(id *)a3
+- (id)_fetchAnalyticsDictionaryWithError:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -96,17 +96,17 @@
   v16 = sub_97B50;
   v17 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v6 = [WeakRetained profile];
-  v7 = [v6 database];
+  profile = [WeakRetained profile];
+  database = [profile database];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_97B58;
   v11[3] = &unk_1072A8;
   v11[4] = self;
   v11[5] = &v12;
-  LODWORD(a3) = [HDMedicalRecordEntity performReadTransactionWithHealthDatabase:v7 error:a3 block:v11];
+  LODWORD(error) = [HDMedicalRecordEntity performReadTransactionWithHealthDatabase:database error:error block:v11];
 
-  if (a3)
+  if (error)
   {
     v8 = v13[5];
   }
@@ -122,18 +122,18 @@
   return v9;
 }
 
-- (id)_fetchAccountAnalyticsCollectsClinicalOptInData:(BOOL)a3 collectsImproveHealthAndActivityData:(BOOL)a4 error:(id *)a5
+- (id)_fetchAccountAnalyticsCollectsClinicalOptInData:(BOOL)data collectsImproveHealthAndActivityData:(BOOL)activityData error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  activityDataCopy = activityData;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-  v10 = [WeakRetained accountManager];
-  v11 = [v10 allAccountsWithError:a5];
+  accountManager = [WeakRetained accountManager];
+  v11 = [accountManager allAccountsWithError:error];
 
   if (v11)
   {
-    v59 = self;
-    v58 = __PAIR64__(v7, v6);
+    selfCopy = self;
+    v58 = __PAIR64__(dataCopy, activityDataCopy);
     v60 = v11;
     v61 = objc_alloc_init(NSMutableSet);
     v68 = 0u;
@@ -164,21 +164,21 @@
 
           v18 = *(*(&v68 + 1) + 8 * i);
           v19 = +[NSCalendar currentCalendar];
-          v20 = [v18 creationDate];
+          creationDate = [v18 creationDate];
           v21 = +[NSDate date];
-          v22 = [v19 components:0x2000 fromDate:v20 toDate:v21 options:0];
+          v22 = [v19 components:0x2000 fromDate:creationDate toDate:v21 options:0];
 
-          v23 = [v22 weekOfYear];
-          v24 = v23;
-          if (v23 < v16)
+          weekOfYear = [v22 weekOfYear];
+          v24 = weekOfYear;
+          if (weekOfYear < v16)
           {
-            v16 = v23;
+            v16 = weekOfYear;
           }
 
           if ([v18 isUserEnabled])
           {
             ++v67;
-            v25 = [v18 signedClinicalDataIssuer];
+            signedClinicalDataIssuer = [v18 signedClinicalDataIssuer];
 
             if (v24 <= v15)
             {
@@ -223,36 +223,36 @@
             }
 
             v32 = v64;
-            if (v25)
+            if (signedClinicalDataIssuer)
             {
               v32 = v64 + 1;
               v28 = v31;
             }
 
             v66 = v28;
-            if (v25)
+            if (signedClinicalDataIssuer)
             {
               v29 = v30;
             }
 
             v64 = v32;
             v65 = v29;
-            if (!v25)
+            if (!signedClinicalDataIssuer)
             {
               v14 = v27;
               v15 = v26;
             }
 
-            v33 = [v18 gateway];
+            gateway = [v18 gateway];
 
-            if (v33)
+            if (gateway)
             {
-              v34 = [v18 gateway];
-              v35 = [v34 externalID];
-              v36 = v35;
-              if (v35)
+              gateway2 = [v18 gateway];
+              externalID = [gateway2 externalID];
+              v36 = externalID;
+              if (externalID)
               {
-                v37 = v35;
+                v37 = externalID;
               }
 
               else
@@ -282,9 +282,9 @@
       v16 = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    v39 = objc_loadWeakRetained(&v59->_profileExtension);
-    v40 = [v39 analyticsManager];
-    v41 = [v40 acceptedVersionForImproveHealthRecords];
+    v39 = objc_loadWeakRetained(&selfCopy->_profileExtension);
+    analyticsManager = [v39 analyticsManager];
+    acceptedVersionForImproveHealthRecords = [analyticsManager acceptedVersionForImproveHealthRecords];
 
     if (v16 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -300,7 +300,7 @@
       v74[1] = &__kCFBooleanTrue;
       v73[1] = @"isOnboarded";
       v73[2] = @"isImproveHealthRecordsAllowed";
-      v43 = [NSNumber numberWithInteger:v41];
+      v43 = [NSNumber numberWithInteger:acceptedVersionForImproveHealthRecords];
       v74[2] = v43;
       v44 = [NSDictionary dictionaryWithObjects:v74 forKeys:v73 count:3];
       v45 = [v44 mutableCopy];
@@ -386,10 +386,10 @@
   return v38;
 }
 
-- (id)_fetchDeviceContextAnalyticsWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (id)_fetchDeviceContextAnalyticsWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
-  v6 = [a3 deviceContextManager];
-  v7 = [v6 numberOfDeviceContextsPerDeviceType:a5];
+  deviceContextManager = [profile deviceContextManager];
+  v7 = [deviceContextManager numberOfDeviceContextsPerDeviceType:error];
 
   if (v7)
   {
@@ -468,18 +468,18 @@
   return v24;
 }
 
-- (id)_fetchRecordAndUserDomainConceptAnalyticsHealthDataSubmissionAllowed:(BOOL)a3 collectsClinicalOptInData:(BOOL)a4 transaction:(id)a5 error:(id *)a6
+- (id)_fetchRecordAndUserDomainConceptAnalyticsHealthDataSubmissionAllowed:(BOOL)allowed collectsClinicalOptInData:(BOOL)data transaction:(id)transaction error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
+  dataCopy = data;
+  allowedCopy = allowed;
+  transactionCopy = transaction;
   v11 = objc_alloc_init(NSMutableDictionary);
-  if (v7)
+  if (dataCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_profileExtension);
-    v13 = [WeakRetained profile];
-    v14 = [v13 userDomainConceptManager];
-    v15 = [v14 userDomainConceptAnalyticsWithError:a6];
+    profile = [WeakRetained profile];
+    userDomainConceptManager = [profile userDomainConceptManager];
+    v15 = [userDomainConceptManager userDomainConceptAnalyticsWithError:error];
 
     if (!v15)
     {
@@ -488,7 +488,7 @@
 
     [v11 addEntriesFromDictionary:v15];
     v16 = +[NSDate date];
-    v17 = [(HDClinicalDailyAnalyticsManager *)self _recordCountAnalyticsWithNowDate:v16 transaction:v10 error:a6];
+    v17 = [(HDClinicalDailyAnalyticsManager *)self _recordCountAnalyticsWithNowDate:v16 transaction:transactionCopy error:error];
 
     if (!v17)
     {
@@ -499,12 +499,12 @@
     [v11 addEntriesFromDictionary:v17];
   }
 
-  if (v8)
+  if (allowedCopy)
   {
     v18 = [HKObjectType signedClinicalDataRecordTypeForIdentifier:HKSignedClinicalDataRecordTypeIdentifierSignedClinicalDataRecord];
     v19 = objc_opt_class();
-    v20 = [v10 protectedDatabase];
-    v21 = [(HDClinicalDailyAnalyticsManager *)self _hasMedicalRecordsOfType:v18 medicalRecordEntitySubclass:v19 predicate:0 database:v20 error:a6];
+    protectedDatabase = [transactionCopy protectedDatabase];
+    v21 = [(HDClinicalDailyAnalyticsManager *)self _hasMedicalRecordsOfType:v18 medicalRecordEntitySubclass:v19 predicate:0 database:protectedDatabase error:error];
 
     if (!v21)
     {
@@ -516,7 +516,7 @@
     [v11 setObject:v22 forKeyedSubscript:@"hasSignedClinicalData"];
   }
 
-  if (!v7)
+  if (!dataCopy)
   {
 LABEL_11:
     v30 = v11;
@@ -525,16 +525,16 @@ LABEL_11:
 
   v23 = [HKObjectType medicalTypeForIdentifier:HKClinicalNoteRecordTypeIdentifierClinicalNoteRecord];
   v24 = objc_opt_class();
-  v25 = [v10 protectedDatabase];
-  v26 = [(HDClinicalDailyAnalyticsManager *)self _hasMedicalRecordsOfType:v23 medicalRecordEntitySubclass:v24 predicate:0 database:v25 error:a6];
+  protectedDatabase2 = [transactionCopy protectedDatabase];
+  v26 = [(HDClinicalDailyAnalyticsManager *)self _hasMedicalRecordsOfType:v23 medicalRecordEntitySubclass:v24 predicate:0 database:protectedDatabase2 error:error];
 
   if (v26)
   {
     v27 = [NSNumber numberWithBool:v26 == 1];
     [v11 setObject:v27 forKeyedSubscript:@"hasClinicalNotes"];
 
-    v28 = [v10 protectedDatabase];
-    v29 = [(HDClinicalDailyAnalyticsManager *)self _countClinicalNoteAttachmentsInDatabase:v28 error:a6];
+    protectedDatabase3 = [transactionCopy protectedDatabase];
+    v29 = [(HDClinicalDailyAnalyticsManager *)self _countClinicalNoteAttachmentsInDatabase:protectedDatabase3 error:error];
 
     [v11 setObject:v29 forKeyedSubscript:@"countNumberClinicalNoteAttachments"];
     goto LABEL_11;
@@ -547,10 +547,10 @@ LABEL_16:
   return v30;
 }
 
-- (id)_recordCountAnalyticsWithNowDate:(id)a3 transaction:(id)a4 error:(id *)a5
+- (id)_recordCountAnalyticsWithNowDate:(id)date transaction:(id)transaction error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  transactionCopy = transaction;
   v8 = objc_alloc_init(NSMutableDictionary);
   v21 = 0u;
   v22 = 0u;
@@ -572,8 +572,8 @@ LABEL_16:
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        v18 = v6;
-        v19 = v7;
+        v18 = dateCopy;
+        v19 = transactionCopy;
         v20 = v8;
         v13 = HKWithAutoreleasePool();
 
@@ -601,17 +601,17 @@ LABEL_11:
   return v14;
 }
 
-- (id)_recordCategoryAnalyticsWithDescription:(id)a3 nowDate:(id)a4 transaction:(id)a5 error:(id *)a6
+- (id)_recordCategoryAnalyticsWithDescription:(id)description nowDate:(id)date transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v19 = a4;
-  v9 = a5;
+  descriptionCopy = description;
+  dateCopy = date;
+  transactionCopy = transaction;
   v10 = objc_alloc_init(NSMutableDictionary);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = [v8 timeScopes];
+  obj = [descriptionCopy timeScopes];
   v11 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
@@ -627,9 +627,9 @@ LABEL_11:
         }
 
         v20 = *(*(&v25 + 1) + 8 * i);
-        v21 = v8;
-        v22 = v19;
-        v23 = v9;
+        v21 = descriptionCopy;
+        v22 = dateCopy;
+        v23 = transactionCopy;
         v24 = v10;
         v15 = HKWithAutoreleasePool();
 
@@ -657,15 +657,15 @@ LABEL_11:
   return v16;
 }
 
-- (id)_countWithRecordCategoryAnalyticsDescription:(id)a3 timeScope:(int64_t)a4 nowDate:(id)a5 transaction:(id)a6 error:(id *)a7
+- (id)_countWithRecordCategoryAnalyticsDescription:(id)description timeScope:(int64_t)scope nowDate:(id)date transaction:(id)transaction error:(id *)error
 {
-  v29 = a5;
-  v31 = a6;
+  dateCopy = date;
+  transactionCopy = transaction;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = [a3 queryDescriptors];
+  obj = [description queryDescriptors];
   v10 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
@@ -683,23 +683,23 @@ LABEL_11:
         }
 
         v16 = *(*(&v32 + 1) + 8 * i);
-        v17 = [v16 samplePredicate];
-        if (a4)
+        samplePredicate = [v16 samplePredicate];
+        if (scope)
         {
-          v18 = [v29 dateByAddingTimeInterval:-a4];
+          v18 = [dateCopy dateByAddingTimeInterval:-scope];
           v19 = HDMedicalRecordEntityPredicateForSortDate();
 
-          v20 = [HDSQLitePredicate compoundPredicateWithPredicate:v17 otherPredicate:v19];
+          v20 = [HDSQLitePredicate compoundPredicateWithPredicate:samplePredicate otherPredicate:v19];
 
-          v17 = v20;
+          samplePredicate = v20;
         }
 
-        v21 = [v16 sampleTypes];
-        v22 = [v21 anyObject];
-        v23 = [objc_msgSend(v22 "dataObjectClass")];
+        sampleTypes = [v16 sampleTypes];
+        anyObject = [sampleTypes anyObject];
+        v23 = [objc_msgSend(anyObject "dataObjectClass")];
 
-        v24 = [v31 protectedDatabase];
-        v25 = [v23 countValueForProperty:v14 predicate:v17 database:v24 error:a7];
+        protectedDatabase = [transactionCopy protectedDatabase];
+        v25 = [v23 countValueForProperty:v14 predicate:samplePredicate database:protectedDatabase error:error];
 
         if (!v25)
         {
@@ -732,9 +732,9 @@ LABEL_15:
   return v26;
 }
 
-- (int64_t)_hasMedicalRecordsOfType:(id)a3 medicalRecordEntitySubclass:(Class)a4 predicate:(id)a5 database:(id)a6 error:(id *)a7
+- (int64_t)_hasMedicalRecordsOfType:(id)type medicalRecordEntitySubclass:(Class)subclass predicate:(id)predicate database:(id)database error:(id *)error
 {
-  v7 = [(objc_class *)a4 countValueForProperty:HDSQLEntityPropertyStar predicate:a5 database:a6 error:a7];
+  v7 = [(objc_class *)subclass countValueForProperty:HDSQLEntityPropertyStar predicate:predicate database:database error:error];
   v8 = v7;
   if (!v7 || ([v7 longLongValue] & 0x8000000000000000) != 0)
   {
@@ -767,7 +767,7 @@ LABEL_15:
   v44 = +[HKDiagnosticTestResultType diagnosticTestResultType];
   v5 = HDDiagnosticTestResultEntityPropertyCategory;
   v43 = [HDSQLiteComparisonPredicate predicateWithProperty:HDDiagnosticTestResultEntityPropertyCategory equalToValue:HKDiagnosticTestResultCategoryVitalSigns];
-  v42 = [a1 _queryDescriptorForType:v44 predicate:v43];
+  v42 = [self _queryDescriptorForType:v44 predicate:v43];
   v54 = v42;
   v41 = [NSArray arrayWithObjects:&v54 count:1];
   v40 = [(_HDRecordCategoryAnalyticsDescription *)v4 initWithCategoryType:3 baseAnalyticKey:@"countNumberVitalRecords" timeScopes:&off_1106C0 queryDescriptors:v41];
@@ -785,7 +785,7 @@ LABEL_15:
   v52[0] = v34;
   v33 = +[HKDiagnosticTestResultType diagnosticTestResultType];
   v32 = [HDSQLiteComparisonPredicate predicateWithProperty:v5 equalToValue:HKDiagnosticTestResultCategoryLaboratory];
-  v31 = [a1 _queryDescriptorForType:v33 predicate:v32];
+  v31 = [self _queryDescriptorForType:v33 predicate:v32];
   v52[1] = v31;
   v30 = [NSArray arrayWithObjects:v52 count:2];
   v29 = [(_HDRecordCategoryAnalyticsDescription *)v7 initWithCategoryType:2 baseAnalyticKey:@"countNumberLabRecords" timeScopes:&off_1106F0 queryDescriptors:v30];
@@ -822,23 +822,23 @@ LABEL_15:
   return v21;
 }
 
-+ (id)_queryDescriptorForType:(id)a3 predicate:(id)a4
++ (id)_queryDescriptorForType:(id)type predicate:(id)predicate
 {
-  v5 = a4;
-  v6 = a3;
+  predicateCopy = predicate;
+  typeCopy = type;
   v7 = [HDQueryDescriptor alloc];
-  v8 = [NSSet setWithObject:v6];
+  v8 = [NSSet setWithObject:typeCopy];
 
-  v9 = [v7 initWithSampleTypes:v8 encodingOptions:0 restrictedSourceEntities:0 authorizationFilter:0 samplePredicate:v5];
+  v9 = [v7 initWithSampleTypes:v8 encodingOptions:0 restrictedSourceEntities:0 authorizationFilter:0 samplePredicate:predicateCopy];
 
   return v9;
 }
 
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v13 = 0;
-  v7 = [(HDClinicalDailyAnalyticsManager *)self _submitHealthRecordsDailyAnalyticsWithCoordinator:a3 error:&v13];
+  v7 = [(HDClinicalDailyAnalyticsManager *)self _submitHealthRecordsDailyAnalyticsWithCoordinator:coordinator error:&v13];
   v8 = v13;
   if (v7)
   {
@@ -848,7 +848,7 @@ LABEL_15:
     v11[2] = sub_998D4;
     v11[3] = &unk_108D10;
     v11[4] = self;
-    v12 = v6;
+    v12 = completionCopy;
     [v9 submitDailyAnalyticsWithCompletion:v11];
   }
 
@@ -861,7 +861,7 @@ LABEL_15:
       sub_A9B50(v10);
     }
 
-    (*(v6 + 2))(v6, 0, 2, v8);
+    (*(completionCopy + 2))(completionCopy, 0, 2, v8);
   }
 }
 

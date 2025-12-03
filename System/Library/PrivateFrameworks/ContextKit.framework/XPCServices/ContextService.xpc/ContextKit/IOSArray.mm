@@ -1,16 +1,16 @@
 @interface IOSArray
-+ (id)arrayWithDimensions:(unint64_t)a3 lengths:(const int *)a4;
++ (id)arrayWithDimensions:(unint64_t)dimensions lengths:(const int *)lengths;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)getClass;
 @end
 
 @implementation IOSArray
 
-+ (id)arrayWithDimensions:(unint64_t)a3 lengths:(const int *)a4
++ (id)arrayWithDimensions:(unint64_t)dimensions lengths:(const int *)lengths
 {
-  v4 = IOSArray_NewArrayWithDimensions(a1, a3, a4);
+  v4 = IOSArray_NewArrayWithDimensions(self, dimensions, lengths);
 
   return v4;
 }
@@ -53,14 +53,14 @@
 
 - (id)getClass
 {
-  v2 = [(IOSArray *)self elementType];
+  elementType = [(IOSArray *)self elementType];
 
-  return IOSClass_arrayOf(v2);
+  return IOSClass_arrayOf(elementType);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->size_;
   return result;
 }

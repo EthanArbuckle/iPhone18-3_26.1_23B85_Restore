@@ -1,21 +1,21 @@
 @interface BEURLHandler
 + (NSArray)supportedSchemes;
 + (id)testingDelegate;
-+ (void)setTestingDelegate:(id)a3;
-- (BEURLHandler)initWithQueueMode:(unint64_t)a3 cacheItem:(id)a4;
++ (void)setTestingDelegate:(id)delegate;
+- (BEURLHandler)initWithQueueMode:(unint64_t)mode cacheItem:(id)item;
 - (BEURLHandlerDelegate)delegate;
-- (BOOL)_shouldSendSVGForAsset:(id)a3;
-- (BOOL)_shouldSendUpdatediBooksJSForAsset:(id)a3;
+- (BOOL)_shouldSendSVGForAsset:(id)asset;
+- (BOOL)_shouldSendUpdatediBooksJSForAsset:(id)asset;
 - (void)dealloc;
-- (void)loadRequest:(id)a3;
+- (void)loadRequest:(id)request;
 - (void)stopLoading;
 @end
 
 @implementation BEURLHandler
 
-- (BEURLHandler)initWithQueueMode:(unint64_t)a3 cacheItem:(id)a4
+- (BEURLHandler)initWithQueueMode:(unint64_t)mode cacheItem:(id)item
 {
-  v7 = a4;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = BEURLHandler;
   v8 = [(BEURLHandler *)&v17 init];
@@ -32,8 +32,8 @@
     imageFilterQueue = v8->_imageFilterQueue;
     v8->_imageFilterQueue = v14;
 
-    objc_storeStrong(&v8->_cacheItem, a4);
-    v8->_mode = a3;
+    objc_storeStrong(&v8->_cacheItem, item);
+    v8->_mode = mode;
   }
 
   return v8;
@@ -44,7 +44,7 @@
   readDispatchIO = self->_readDispatchIO;
   if (readDispatchIO)
   {
-    v4 = self;
+    selfCopy = self;
     dispatch_io_close(readDispatchIO, 1uLL);
     v5 = self->_readDispatchIO;
     self->_readDispatchIO = 0;
@@ -64,11 +64,11 @@
   return WeakRetained;
 }
 
-+ (void)setTestingDelegate:(id)a3
++ (void)setTestingDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&unk_36ABA0);
-  objc_storeWeak(&qword_36AB98, v3);
+  objc_storeWeak(&qword_36AB98, delegateCopy);
 
   os_unfair_lock_unlock(&unk_36ABA0);
 }
@@ -82,9 +82,9 @@
   return v2;
 }
 
-- (void)loadRequest:(id)a3
+- (void)loadRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   mode = self->_mode;
   readQueue = self->_readQueue;
   v12[0] = _NSConcreteStackBlock;
@@ -92,7 +92,7 @@
   v12[2] = sub_25FE8;
   v12[3] = &unk_328DC0;
   v12[4] = self;
-  v7 = v4;
+  v7 = requestCopy;
   v13 = v7;
   v8 = readQueue;
   v9 = v8;
@@ -139,59 +139,59 @@
   }
 }
 
-- (BOOL)_shouldSendSVGForAsset:(id)a3
+- (BOOL)_shouldSendSVGForAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [v3 requestedURL];
-  v5 = [v4 scheme];
-  if ([@"ibooks" compare:v5 options:1])
+  assetCopy = asset;
+  requestedURL = [assetCopy requestedURL];
+  scheme = [requestedURL scheme];
+  if ([@"ibooks" compare:scheme options:1])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v3 mimeType];
-    if ([v7 length])
+    mimeType = [assetCopy mimeType];
+    if ([mimeType length])
     {
-      v8 = v7;
+      v8 = mimeType;
       v9 = BESupportedImageMimeTypes();
       v6 = [v9 containsObject:v8];
     }
 
     else
     {
-      v6 = BEDoesURLPointToAnImageFile(v4);
+      v6 = BEDoesURLPointToAnImageFile(requestedURL);
     }
   }
 
   return v6;
 }
 
-- (BOOL)_shouldSendUpdatediBooksJSForAsset:(id)a3
+- (BOOL)_shouldSendUpdatediBooksJSForAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 requestedURL];
-  v6 = [v5 lastPathComponent];
+  requestedURL = [assetCopy requestedURL];
+  lastPathComponent = [requestedURL lastPathComponent];
 
-  if (![v6 caseInsensitiveCompare:@"ibooks.js"] || !objc_msgSend(v6, "caseInsensitiveCompare:", @"ibook.js"))
+  if (![lastPathComponent caseInsensitiveCompare:@"ibooks.js"] || !objc_msgSend(lastPathComponent, "caseInsensitiveCompare:", @"ibook.js"))
   {
-    v8 = [v3 sinfData];
+    sinfData = [assetCopy sinfData];
 
-    if (v8)
+    if (sinfData)
     {
       LOBYTE(v29) = 0;
-      v9 = [v3 path];
-      v10 = [v3 sinfData];
+      path = [assetCopy path];
+      sinfData2 = [assetCopy sinfData];
       v30 = 0;
-      v11 = [ft9cupR7u6OrU4m1pyhB pK0gFZ9QOdm17E9p9cpP:v9 sinfData:v10 refetch:&v29 error:&v30];
+      v11 = [ft9cupR7u6OrU4m1pyhB pK0gFZ9QOdm17E9p9cpP:path sinfData:sinfData2 refetch:&v29 error:&v30];
       v12 = v30;
 
       if (v29 == 1)
       {
-        v13 = [v3 path];
-        [ft9cupR7u6OrU4m1pyhB _8g0aKpBRl5gIBvODdOy7:v13 completion:0];
+        path2 = [assetCopy path];
+        [ft9cupR7u6OrU4m1pyhB _8g0aKpBRl5gIBvODdOy7:path2 completion:0];
       }
 
       if (v12)
@@ -205,8 +205,8 @@ LABEL_18:
 
     else
     {
-      v14 = [v3 path];
-      v11 = [NSData dataWithContentsOfFile:v14];
+      path3 = [assetCopy path];
+      v11 = [NSData dataWithContentsOfFile:path3];
     }
 
     v15 = [[NSString alloc] initWithData:v11 encoding:4];
@@ -216,15 +216,15 @@ LABEL_18:
       v28 = [NSRegularExpression regularExpressionWithPattern:@"iBooks?.VERSION[ ]*=[ ]*'([0-9]+)\\.([0-9]+)'" options:0 error:&v29];;
       v12 = v29;
       v16 = [v28 matchesInString:v15 options:0 range:{0, objc_msgSend(v15, "length")}];
-      v17 = [v16 firstObject];
-      v18 = v17;
-      if (v17 && (v19 = [v17 rangeAtIndex:1], objc_msgSend(v15, "substringWithRange:", v19, v20), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "integerValue"), v21, v22 <= 1))
+      firstObject = [v16 firstObject];
+      v18 = firstObject;
+      if (firstObject && (v19 = [firstObject rangeAtIndex:1], objc_msgSend(v15, "substringWithRange:", v19, v20), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "integerValue"), v21, v22 <= 1))
       {
         v23 = [v18 rangeAtIndex:2];
         v25 = [v15 substringWithRange:{v23, v24}];
-        v26 = [v25 integerValue];
+        integerValue = [v25 integerValue];
 
-        v7 = v26 <= 4;
+        v7 = integerValue <= 4;
       }
 
       else

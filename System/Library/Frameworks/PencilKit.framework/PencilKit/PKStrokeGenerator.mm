@@ -1,65 +1,65 @@
 @interface PKStrokeGenerator
-+ (vector<PKInputPoint,)inputPointsFromPath:(id)a2 maxSegmentLength:(SEL)a3 velocityForDistanceFunction:(CGPath *)a4;
-+ (vector<PKInputPoint,)inputPointsFromPoints:(id)a2 velocityForDistanceFunction:(SEL)a3;
++ (vector<PKInputPoint,)inputPointsFromPath:(id)path maxSegmentLength:(SEL)length velocityForDistanceFunction:(CGPath *)function;
++ (vector<PKInputPoint,)inputPointsFromPoints:(id)points velocityForDistanceFunction:(SEL)function;
 + (void)initialize;
 - (BOOL)_alwaysUseRollAngleForFountainPen;
 - (BOOL)lastPointIsMasked;
-- (BOOL)shouldSnapPointToRuler:(CGPoint)a3;
+- (BOOL)shouldSnapPointToRuler:(CGPoint)ruler;
 - (CGAffineTransform)rulerTransform;
-- (CGPoint)getRulerSnapLineOriginAndTangent:(CGPoint *)a3 andNormal:(CGPoint *)a4;
+- (CGPoint)getRulerSnapLineOriginAndTangent:(CGPoint *)tangent andNormal:(CGPoint *)normal;
 - (CGPoint)lastPoint;
-- (CGPoint)snapPointToRuler:(CGPoint)a3;
-- (PKStrokeGenerator)initWithStrokeNoiseSmoothing:(BOOL)a3;
+- (CGPoint)snapPointToRuler:(CGPoint)ruler;
+- (PKStrokeGenerator)initWithStrokeNoiseSmoothing:(BOOL)smoothing;
 - (PKStrokeGeneratorDelegate)delegate;
 - (_PKStrokePoint)_latestStrokePoint;
-- (_PKStrokePoint)outputCurrentStrokePoint:(SEL)a3 lastPoint:(id *)a4;
-- (_PKStrokePoint)outputPoint:(SEL)a3 baseValues:(id *)a4 lastPoint:(_PKStrokePoint *)a5;
-- (double)distanceToRulerCenter:(CGPoint)a3;
+- (_PKStrokePoint)outputCurrentStrokePoint:(SEL)point lastPoint:(id *)lastPoint;
+- (_PKStrokePoint)outputPoint:(SEL)point baseValues:(id *)values lastPoint:(_PKStrokePoint *)lastPoint;
+- (double)distanceToRulerCenter:(CGPoint)center;
 - (double)latestNonPredictedTimestamp;
 - (double)latestTimestamp;
 - (id).cxx_construct;
-- (id)_newStrokeWithCurrentDataAndStrokeDataUUID:(id)a3;
+- (id)_newStrokeWithCurrentDataAndStrokeDataUUID:(id)d;
 - (id)newStrokeWithCurrentData;
 - (id)newStrokeWithCurrentDataCopy;
-- (id)strokeFromInputPoints:(void *)a3 inputType:(int64_t)a4 ink:(id)a5 inputScale:(double)a6 randomSeed:(unsigned int)a7 strokeClass:(Class)a8;
-- (id)strokeFromLineSegments:(const void *)a3 maxSegmentLength:(double)a4 ink:(id)a5 inputScale:(double)a6 strokeClass:(Class)a7;
-- (id)strokeFromPath:(CGPath *)a3 ink:(id)a4 inputScale:(double)a5 maxSegmentLength:(double)a6 velocityForDistanceFunction:(id)a7 strokeClass:(Class)a8;
-- (id)strokeFromPoints:(CGPoint *)a3 count:(unint64_t)a4 ink:(id)a5 inputScale:(double)a6 strokeClass:(Class)a7;
-- (id)strokeFromPoints:(const void *)a3 sourceStroke:(id)a4 inputScale:(double)a5 averageInputPoint:(id *)a6;
-- (int64_t)fetchFilteredPointsFromIndex:(int64_t)a3 accessBlock:(id)a4;
-- (void)_drawingAddPoint:(id *)a3;
-- (void)_drawingUpdateAllPointsDidTimeout:(BOOL)a3 updateSemaphore:(BOOL)a4;
-- (void)_drawingUpdateAllPointsDidTimeoutWithStrokeUUID:(id)a3;
+- (id)strokeFromInputPoints:(void *)points inputType:(int64_t)type ink:(id)ink inputScale:(double)scale randomSeed:(unsigned int)seed strokeClass:(Class)class;
+- (id)strokeFromLineSegments:(const void *)segments maxSegmentLength:(double)length ink:(id)ink inputScale:(double)scale strokeClass:(Class)class;
+- (id)strokeFromPath:(CGPath *)path ink:(id)ink inputScale:(double)scale maxSegmentLength:(double)length velocityForDistanceFunction:(id)function strokeClass:(Class)class;
+- (id)strokeFromPoints:(CGPoint *)points count:(unint64_t)count ink:(id)ink inputScale:(double)scale strokeClass:(Class)class;
+- (id)strokeFromPoints:(const void *)points sourceStroke:(id)stroke inputScale:(double)scale averageInputPoint:(id *)point;
+- (int64_t)fetchFilteredPointsFromIndex:(int64_t)index accessBlock:(id)block;
+- (void)_drawingAddPoint:(id *)point;
+- (void)_drawingUpdateAllPointsDidTimeout:(BOOL)timeout updateSemaphore:(BOOL)semaphore;
+- (void)_drawingUpdateAllPointsDidTimeoutWithStrokeUUID:(id)d;
 - (void)_removePredictedTouches;
 - (void)_updatePredictedTouches;
-- (void)addPoint:(id *)a3;
+- (void)addPoint:(id *)point;
 - (void)addPoints:()vector<PKInputPoint;
-- (void)allowSnappingToRuler:(CGAffineTransform *)a3 width:(double)a4;
+- (void)allowSnappingToRuler:(CGAffineTransform *)ruler width:(double)width;
 - (void)closeStroke;
 - (void)configureFilters;
 - (void)dealloc;
-- (void)drawingBeganWithStroke:(id)a3 inputType:(int64_t)a4 activeInputProperties:(unint64_t)a5 inputScale:(double)a6 start:(id)a7;
-- (void)drawingCancelledWithCompletion:(id)a3;
-- (void)drawingEndedEstimatesTimeout:(double)a3 completion:(id)a4;
-- (void)drawingUpdateAllPointsDidTimeoutWithStrokeUUID:(id)a3;
-- (void)drawingUpdatePoint:(id *)a3;
-- (void)getUpdatedRangeFromIndex:(unint64_t *)a3;
+- (void)drawingBeganWithStroke:(id)stroke inputType:(int64_t)type activeInputProperties:(unint64_t)properties inputScale:(double)scale start:(id)start;
+- (void)drawingCancelledWithCompletion:(id)completion;
+- (void)drawingEndedEstimatesTimeout:(double)timeout completion:(id)completion;
+- (void)drawingUpdateAllPointsDidTimeoutWithStrokeUUID:(id)d;
+- (void)drawingUpdatePoint:(id *)point;
+- (void)getUpdatedRangeFromIndex:(unint64_t *)index;
 - (void)maskToRuler;
 - (void)reset;
 - (void)resetFilters;
-- (void)setRulerTransform:(CGAffineTransform *)a3;
-- (void)setupForInk:(id)a3 maximumSupportedContentVersion:(int64_t)a4;
+- (void)setRulerTransform:(CGAffineTransform *)transform;
+- (void)setupForInk:(id)ink maximumSupportedContentVersion:(int64_t)version;
 - (void)snapToRuler;
 - (void)updateImmutableCount;
 - (void)updateRulerSnapping;
-- (void)whenFinishedProcessingPointsCallCompletion:(id)a3;
+- (void)whenFinishedProcessingPointsCallCompletion:(id)completion;
 @end
 
 @implementation PKStrokeGenerator
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PKStrokeGenerator;
   objc_msgSendSuper2(&v2, sel_initialize);
   objc_opt_class();
@@ -132,7 +132,7 @@ void __54__PKStrokeGenerator__alwaysUseRollAngleForFountainPen__block_invoke()
   _MergedGlobals_171 = [v0 BOOLForKey:@"PKAlwaysUseRollAngleForFountainPen"];
 }
 
-- (PKStrokeGenerator)initWithStrokeNoiseSmoothing:(BOOL)a3
+- (PKStrokeGenerator)initWithStrokeNoiseSmoothing:(BOOL)smoothing
 {
   v21[2] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -144,8 +144,8 @@ void __54__PKStrokeGenerator__alwaysUseRollAngleForFountainPen__block_invoke()
     allInputPointFilters = v3->_allInputPointFilters;
     v3->_allInputPointFilters = MEMORY[0x1E695E0F0];
 
-    v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4->_enableDidUpdateRoll = [v6 BOOLForKey:@"internalSettings.drawing.disableDidUpdateRoll"] ^ 1;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4->_enableDidUpdateRoll = [standardUserDefaults BOOLForKey:@"internalSettings.drawing.disableDidUpdateRoll"] ^ 1;
 
     v7 = objc_alloc_init(PKInputPointExtraRollLatencyFilter);
     extraRollLatencyFilter = v4->_extraRollLatencyFilter;
@@ -508,9 +508,9 @@ void __54__PKStrokeGenerator__alwaysUseRollAngleForFountainPen__block_invoke()
   [(PKStrokeGenerator *)&v46 dealloc];
 }
 
-- (void)setupForInk:(id)a3 maximumSupportedContentVersion:(int64_t)a4
+- (void)setupForInk:(id)ink maximumSupportedContentVersion:(int64_t)version
 {
-  v13 = a3;
+  inkCopy = ink;
   [(PKStrokeGenerator *)self setRollAngleEnabled:0];
   [(PKStrokeGenerator *)self setAdditionalRollAngle:0.0];
   [(PKStrokeGenerator *)self setShouldClearAzimuth:0];
@@ -519,12 +519,12 @@ void __54__PKStrokeGenerator__alwaysUseRollAngleForFountainPen__block_invoke()
     goto LABEL_8;
   }
 
-  v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v6 valueForKey:@"internalSettings.drawing.markerUsesRollForAzimuth"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults valueForKey:@"internalSettings.drawing.markerUsesRollForAzimuth"];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v9 = [v8 BOOLForKey:@"internalSettings.drawing.markerUsesRollForAzimuth"];
+    standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    v9 = [standardUserDefaults2 BOOLForKey:@"internalSettings.drawing.markerUsesRollForAzimuth"];
 
     if (!v9)
     {
@@ -536,19 +536,19 @@ void __54__PKStrokeGenerator__alwaysUseRollAngleForFountainPen__block_invoke()
   {
   }
 
-  if ([v13 _isMarkerInk])
+  if ([inkCopy _isMarkerInk])
   {
     [(PKStrokeGenerator *)self setRollAngleEnabled:1];
   }
 
 LABEL_8:
-  if (![v13 _isFountainPenInkV2])
+  if (![inkCopy _isFountainPenInkV2])
   {
     goto LABEL_23;
   }
 
   v10 = _os_feature_enabled_impl() ^ 1;
-  if (a4 < 3)
+  if (version < 3)
   {
     LOBYTE(v10) = 1;
   }
@@ -556,7 +556,7 @@ LABEL_8:
   if (v10)
   {
 LABEL_23:
-    if ([v13 _isFountainPenInk])
+    if ([inkCopy _isFountainPenInk])
     {
       [(PKStrokeGenerator *)self setShouldClearAzimuth:1];
     }
@@ -572,9 +572,9 @@ LABEL_23:
 
     else
     {
-      v12 = [(PKStrokeGenerator *)self _alwaysUseRollAngleForFountainPen];
+      _alwaysUseRollAngleForFountainPen = [(PKStrokeGenerator *)self _alwaysUseRollAngleForFountainPen];
 
-      if (!v12)
+      if (!_alwaysUseRollAngleForFountainPen)
       {
         goto LABEL_18;
       }
@@ -589,16 +589,16 @@ LABEL_18:
 
 - (void)configureFilters
 {
-  v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v9 integerForKey:@"internalSettings.roll.extraLatency"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults integerForKey:@"internalSettings.roll.extraLatency"];
   extraRollLatencyFilter = self->_extraRollLatencyFilter;
   if (extraRollLatencyFilter)
   {
     extraRollLatencyFilter->_numFramesExtraLatency = v3;
   }
 
-  v10 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v5 = [v10 integerForKey:@"internalSettings.roll.noiseOffset"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v5 = [standardUserDefaults2 integerForKey:@"internalSettings.roll.noiseOffset"];
   rollNoiseFilter = self->_rollNoiseFilter;
   if (rollNoiseFilter && rollNoiseFilter->_rollOffsetNoise != v5)
   {
@@ -606,8 +606,8 @@ LABEL_18:
     [(PKInputPointRollNoiseFilter *)rollNoiseFilter _recalculateOffset];
   }
 
-  v11 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v7 = [v11 integerForKey:@"internalSettings.roll.noiseJitter"];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  v7 = [standardUserDefaults3 integerForKey:@"internalSettings.roll.noiseJitter"];
   v8 = self->_rollNoiseFilter;
   if (v8)
   {
@@ -615,12 +615,12 @@ LABEL_18:
   }
 }
 
-- (void)drawingBeganWithStroke:(id)a3 inputType:(int64_t)a4 activeInputProperties:(unint64_t)a5 inputScale:(double)a6 start:(id)a7
+- (void)drawingBeganWithStroke:(id)stroke inputType:(int64_t)type activeInputProperties:(unint64_t)properties inputScale:(double)scale start:(id)start
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [(PKStrokeGenerator *)self shouldClearAzimuth];
-  v15 = [(PKStrokeGenerator *)self rollAngleEnabled];
+  strokeCopy = stroke;
+  startCopy = start;
+  shouldClearAzimuth = [(PKStrokeGenerator *)self shouldClearAzimuth];
+  rollAngleEnabled = [(PKStrokeGenerator *)self rollAngleEnabled];
   if (self)
   {
     os_unfair_lock_lock(&self->_baseRollAngleLock);
@@ -640,18 +640,18 @@ LABEL_18:
   block[1] = 3221225472;
   block[2] = __93__PKStrokeGenerator_drawingBeganWithStroke_inputType_activeInputProperties_inputScale_start___block_invoke;
   block[3] = &unk_1E82DC6F8;
-  v29 = v14;
-  v30 = v15;
+  v29 = shouldClearAzimuth;
+  v30 = rollAngleEnabled;
   v24 = baseRollAngle;
   v25 = v18;
   block[4] = self;
-  v22 = v12;
-  v26 = a5;
-  v27 = a4;
-  v28 = a6;
-  v23 = v13;
-  v19 = v13;
-  v20 = v12;
+  v22 = strokeCopy;
+  propertiesCopy = properties;
+  typeCopy = type;
+  scaleCopy = scale;
+  v23 = startCopy;
+  v19 = startCopy;
+  v20 = strokeCopy;
   dispatch_async(inputQueue, block);
 }
 
@@ -764,19 +764,19 @@ LABEL_22:
   }
 }
 
-- (void)allowSnappingToRuler:(CGAffineTransform *)a3 width:(double)a4
+- (void)allowSnappingToRuler:(CGAffineTransform *)ruler width:(double)width
 {
   inputQueue = self->_inputQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
-  v5 = *&a3->c;
-  v7 = *&a3->a;
+  v5 = *&ruler->c;
+  v7 = *&ruler->a;
   v6[2] = __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke;
   v6[3] = &unk_1E82DC720;
   v6[4] = self;
   v8 = v5;
-  v9 = *&a3->tx;
-  v10 = a4;
+  v9 = *&ruler->tx;
+  widthCopy = width;
   dispatch_async(inputQueue, v6);
 }
 
@@ -792,7 +792,7 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
   return [*(a1 + 32) setCanSnapToRuler:1];
 }
 
-- (CGPoint)getRulerSnapLineOriginAndTangent:(CGPoint *)a3 andNormal:(CGPoint *)a4
+- (CGPoint)getRulerSnapLineOriginAndTangent:(CGPoint *)tangent andNormal:(CGPoint *)normal
 {
   [(PKStrokeGenerator *)self rulerTransform];
   [(PKStrokeGenerator *)self rulerWidth];
@@ -800,10 +800,10 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
   if ([(PKStrokeGenerator *)self isSnappedToRuler])
   {
     v9 = [(PKStroke *)self->_currentStroke ink];
-    v10 = [v9 behavior];
-    if (v10)
+    behavior = [v9 behavior];
+    if (behavior)
     {
-      v11 = -(v10[3] - self->_baseValues.aspectRatio * (self->_baseValues.edgeWidth + self->_baseValues.radius) * v10[2]);
+      v11 = -(behavior[3] - self->_baseValues.aspectRatio * (self->_baseValues.edgeWidth + self->_baseValues.radius) * behavior[2]);
     }
 
     else
@@ -826,15 +826,15 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
 
   _Q1 = 0u;
   v14 = vmulq_n_f64(0, v12);
-  if (a3)
+  if (tangent)
   {
-    *a3 = vaddq_f64(0, vmlaq_f64(v14, vdupq_n_s64(0x4059000000000000uLL), 0));
+    *tangent = vaddq_f64(0, vmlaq_f64(v14, vdupq_n_s64(0x4059000000000000uLL), 0));
   }
 
-  if (a4)
+  if (normal)
   {
     v15 = vsubq_f64(vaddq_f64(0, vmlaq_f64(vmulq_n_f64(0, v12 + v12), 0, 0)), vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, *(MEMORY[0x1E695EFF8] + 8)), 0, *MEMORY[0x1E695EFF8])));
-    *a4 = vmulq_n_f64(v15, 1.0 / sqrt(COERCE_DOUBLE(*&vmulq_f64(v15, v15).f64[1]) + v15.f64[0] * v15.f64[0]));
+    *normal = vmulq_n_f64(v15, 1.0 / sqrt(COERCE_DOUBLE(*&vmulq_f64(v15, v15).f64[1]) + v15.f64[0] * v15.f64[0]));
   }
 
   _D4 = 0xC059000000000000;
@@ -847,10 +847,10 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
   return result;
 }
 
-- (double)distanceToRulerCenter:(CGPoint)a3
+- (double)distanceToRulerCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(PKStrokeGenerator *)self rulerTransform];
   v6 = *(MEMORY[0x1E695EFF8] + 8) * 0.0 + 0.0 * *MEMORY[0x1E695EFF8] + 0.0;
   [(PKStrokeGenerator *)self rulerWidth];
@@ -859,12 +859,12 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
   return (y - v6) * (v8 * v9) + (x - v6) * (v8 * v9);
 }
 
-- (BOOL)shouldSnapPointToRuler:(CGPoint)a3
+- (BOOL)shouldSnapPointToRuler:(CGPoint)ruler
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PKStrokeGenerator *)self useRuler];
-  if (v6)
+  y = ruler.y;
+  x = ruler.x;
+  useRuler = [(PKStrokeGenerator *)self useRuler];
+  if (useRuler)
   {
     if (self->_currentInputType == 1)
     {
@@ -880,25 +880,25 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
     v9 = v8 * 0.5 + v7;
     [(PKStrokeGenerator *)self rulerTransform];
     [(PKStrokeGenerator *)self distanceToRulerCenter:x, y];
-    LOBYTE(v6) = fabs(v10) < v9 * sqrt(v13 * v13 + v12 * v12);
+    LOBYTE(useRuler) = fabs(v10) < v9 * sqrt(v13 * v13 + v12 * v12);
   }
 
-  return v6;
+  return useRuler;
 }
 
 - (void)snapToRuler
 {
-  v3 = [(PKStrokeGenerator *)self delegate];
-  if (v3)
+  delegate = [(PKStrokeGenerator *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(PKStrokeGenerator *)self delegate];
+    v4 = delegate;
+    delegate2 = [(PKStrokeGenerator *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(PKStrokeGenerator *)self delegate];
-      [v7 strokeGeneratorDidSnapToRuler:self];
+      delegate3 = [(PKStrokeGenerator *)self delegate];
+      [delegate3 strokeGeneratorDidSnapToRuler:self];
     }
   }
 
@@ -946,9 +946,9 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
   [(PKStrokeGenerator *)self distanceToRulerCenter:*self->_drawPoints.__begin_, *(self->_drawPoints.__begin_ + 1)];
   [(PKStrokeGenerator *)self setIsSnappedToRulerTopSide:v24 > 0.0];
   [(PKStrokeGenerator *)self setIsSnappedToRuler:1];
-  v25 = [(PKStroke *)self->_currentStroke _clipPlane];
+  _clipPlane = [(PKStroke *)self->_currentStroke _clipPlane];
 
-  if (v25)
+  if (_clipPlane)
   {
     [(PKStroke *)self->_currentStroke _setClipPlane:0];
   }
@@ -972,9 +972,9 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
   [(PKStrokeGenerator *)self getRulerSnapLineOriginAndTangent:0 andNormal:v11];
   v5 = v4;
   v7 = v6;
-  v8 = [(PKStroke *)self->_currentStroke _clipPlane];
+  _clipPlane = [(PKStroke *)self->_currentStroke _clipPlane];
 
-  if (!v8)
+  if (!_clipPlane)
   {
     v9 = [_PKStrokeClipPlane alloc];
     v10 = [(_PKStrokeClipPlane *)v9 initWithOrigin:v5 normal:v7, -v11[0], -v11[1]];
@@ -982,10 +982,10 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
   }
 }
 
-- (CGPoint)snapPointToRuler:(CGPoint)a3
+- (CGPoint)snapPointToRuler:(CGPoint)ruler
 {
-  y = a3.y;
-  x = a3.x;
+  y = ruler.y;
+  x = ruler.x;
   v16 = *MEMORY[0x1E69E9840];
   if ([(PKStrokeGenerator *)self isSnappedToRuler])
   {
@@ -1040,9 +1040,9 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
 
       if ([(PKStrokeGenerator *)self canSnapToRuler])
       {
-        v13 = [(PKStroke *)self->_currentStroke _clipPlane];
+        _clipPlane = [(PKStroke *)self->_currentStroke _clipPlane];
 
-        if (!v13)
+        if (!_clipPlane)
         {
           [(PKStrokeGenerator *)self maskToRuler];
         }
@@ -1082,7 +1082,7 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
   return result;
 }
 
-- (void)getUpdatedRangeFromIndex:(unint64_t *)a3
+- (void)getUpdatedRangeFromIndex:(unint64_t *)index
 {
   v7 = 0;
   v8 = &v7;
@@ -1095,7 +1095,7 @@ uint64_t __48__PKStrokeGenerator_allowSnappingToRuler_width___block_invoke(uint6
   block[3] = &unk_1E82DC748;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = index;
   dispatch_sync(outputQueue, block);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -1122,20 +1122,20 @@ uint64_t __46__PKStrokeGenerator_getUpdatedRangeFromIndex___block_invoke(uint64_
   self->_inputHasChanged = 0;
 }
 
-- (_PKStrokePoint)outputCurrentStrokePoint:(SEL)a3 lastPoint:(id *)a4
+- (_PKStrokePoint)outputCurrentStrokePoint:(SEL)point lastPoint:(id *)lastPoint
 {
-  v5 = *&a4->var13;
-  v20[6] = *&a4->var11;
+  v5 = *&lastPoint->var13;
+  v20[6] = *&lastPoint->var11;
   v20[7] = v5;
-  var15 = a4->var15;
-  v6 = *&a4->var5;
-  v20[2] = *&a4->var3;
+  var15 = lastPoint->var15;
+  v6 = *&lastPoint->var5;
+  v20[2] = *&lastPoint->var3;
   v20[3] = v6;
-  v7 = *&a4->var9;
-  v20[4] = *&a4->var7;
+  v7 = *&lastPoint->var9;
+  v20[4] = *&lastPoint->var7;
   v20[5] = v7;
-  v8 = *&a4->var1;
-  v20[0] = a4->var0;
+  v8 = *&lastPoint->var1;
+  v20[0] = lastPoint->var0;
   v20[1] = v8;
   v9 = *&self->_baseValues.force;
   v19[2] = *&self->_baseValues.aspectRatio;
@@ -1162,31 +1162,31 @@ uint64_t __46__PKStrokeGenerator_getUpdatedRangeFromIndex___block_invoke(uint64_
   return [(PKStrokeGenerator *)self outputPoint:v20 baseValues:v19 lastPoint:v17];
 }
 
-- (_PKStrokePoint)outputPoint:(SEL)a3 baseValues:(id *)a4 lastPoint:(_PKStrokePoint *)a5
+- (_PKStrokePoint)outputPoint:(SEL)point baseValues:(id *)values lastPoint:(_PKStrokePoint *)lastPoint
 {
   touchSensitivity = self->_touchSensitivity;
   if ([(PKStrokeGenerator *)self isPreviewing])
   {
     v12 = [(PKStroke *)self->_currentStroke ink];
-    v13 = [v12 identifier];
-    v14 = [v13 isEqualToString:@"com.apple.ink.watercolor"];
+    identifier = [v12 identifier];
+    v14 = [identifier isEqualToString:@"com.apple.ink.watercolor"];
 
     if (v14)
     {
-      a4->var1 = 0.7;
-      a4->var3 = 0.785398163;
+      values->var1 = 0.7;
+      values->var3 = 0.785398163;
     }
   }
 
   v48 = 0;
-  v15 = *&a5->force;
-  v47[2] = *&a5->aspectRatio;
+  v15 = *&lastPoint->force;
+  v47[2] = *&lastPoint->aspectRatio;
   v47[3] = v15;
-  v16 = *&a5->radius2;
-  v47[4] = *&a5->altitude;
+  v16 = *&lastPoint->radius2;
+  v47[4] = *&lastPoint->altitude;
   v47[5] = v16;
-  v17 = *&a5->location.y;
-  v47[0] = *&a5->timestamp;
+  v17 = *&lastPoint->location.y;
+  v47[0] = *&lastPoint->timestamp;
   v47[1] = v17;
   LOBYTE(v48) = self->_isSnappedToRuler;
   *&v17 = a6->var11;
@@ -1203,28 +1203,28 @@ uint64_t __46__PKStrokeGenerator_getUpdatedRangeFromIndex___block_invoke(uint64_
   currentActiveInputProperties = self->_currentActiveInputProperties;
   v56 = currentStroke;
   v57 = currentActiveInputProperties;
-  if (strokeMaxForce < a4->var1)
+  if (strokeMaxForce < values->var1)
   {
-    var1 = a4->var1;
+    var1 = values->var1;
   }
 
   self->_strokeMaxForce = var1;
   v21 = [(PKStroke *)currentStroke ink];
-  v22 = [v21 behavior];
-  v23 = *&a4->var13;
-  v44 = *&a4->var11;
+  behavior = [v21 behavior];
+  v23 = *&values->var13;
+  v44 = *&values->var11;
   v45 = v23;
-  var15 = a4->var15;
-  v24 = *&a4->var5;
-  v40 = *&a4->var3;
+  var15 = values->var15;
+  v24 = *&values->var5;
+  v40 = *&values->var3;
   v41 = v24;
-  v25 = *&a4->var9;
-  v42 = *&a4->var7;
+  v25 = *&values->var9;
+  v42 = *&values->var7;
   v43 = v25;
-  v26 = *&a4->var1;
-  var0 = a4->var0;
+  v26 = *&values->var1;
+  var0 = values->var0;
   v39 = v26;
-  self->_eraserIndicatorAlpha = [(PKInkBehavior *)v22 brushOpacityForPoint:v47 context:?];
+  self->_eraserIndicatorAlpha = [(PKInkBehavior *)behavior brushOpacityForPoint:v47 context:?];
 
   *&retstr->altitude = 0u;
   *&retstr->radius2 = 0u;
@@ -1233,21 +1233,21 @@ uint64_t __46__PKStrokeGenerator_getUpdatedRangeFromIndex___block_invoke(uint64_
   *&retstr->timestamp = 0u;
   *&retstr->location.y = 0u;
   v27 = [(PKStroke *)self->_currentStroke ink];
-  v28 = [v27 behavior];
-  v29 = *&a4->var13;
-  v44 = *&a4->var11;
+  behavior2 = [v27 behavior];
+  v29 = *&values->var13;
+  v44 = *&values->var11;
   v45 = v29;
-  var15 = a4->var15;
-  v30 = *&a4->var5;
-  v40 = *&a4->var3;
+  var15 = values->var15;
+  v30 = *&values->var5;
+  v40 = *&values->var3;
   v41 = v30;
-  v31 = *&a4->var9;
-  v42 = *&a4->var7;
+  v31 = *&values->var9;
+  v42 = *&values->var7;
   v43 = v31;
-  v32 = *&a4->var1;
-  var0 = a4->var0;
+  v32 = *&values->var1;
+  var0 = values->var0;
   v39 = v32;
-  [(PKInkBehavior *)v28 outputForPoint:v47 context:retstr];
+  [(PKInkBehavior *)behavior2 outputForPoint:v47 context:retstr];
 
   shouldClearAzimuth = self->_shouldClearAzimuth;
   if (!self->_currentRollAngleEnabled)
@@ -1282,7 +1282,7 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v35 = retstr->azimuth - (a4->var13 - self->_currentBaseRollAngle + self->_currentAdditionalRollAngle);
+  v35 = retstr->azimuth - (values->var13 - self->_currentBaseRollAngle + self->_currentAdditionalRollAngle);
   v36 = fmod(v35, 6.28318531);
   if (v35 <= 6.28318531 && v35 >= 0.0)
   {
@@ -1368,9 +1368,9 @@ __n128 __39__PKStrokeGenerator__latestStrokePoint__block_invoke(uint64_t a1)
   return result;
 }
 
-- (int64_t)fetchFilteredPointsFromIndex:(int64_t)a3 accessBlock:(id)a4
+- (int64_t)fetchFilteredPointsFromIndex:(int64_t)index accessBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -1381,10 +1381,10 @@ __n128 __39__PKStrokeGenerator__latestStrokePoint__block_invoke(uint64_t a1)
   v11[2] = __62__PKStrokeGenerator_fetchFilteredPointsFromIndex_accessBlock___block_invoke;
   v11[3] = &unk_1E82DC770;
   v11[4] = self;
-  v12 = v6;
+  v12 = blockCopy;
   v13 = &v15;
-  v14 = a3;
-  v8 = v6;
+  indexCopy = index;
+  v8 = blockCopy;
   dispatch_sync(outputQueue, v11);
   v9 = v16[3];
 
@@ -1497,17 +1497,17 @@ void __49__PKStrokeGenerator_newStrokeWithCurrentDataCopy__block_invoke(uint64_t
   *(v4 + 40) = v3;
 }
 
-- (id)_newStrokeWithCurrentDataAndStrokeDataUUID:(id)a3
+- (id)_newStrokeWithCurrentDataAndStrokeDataUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (!self->_currentStroke || (v5 = [(PKStrokeGenerator *)self compressionFilter], (*(*v5 + 40))(v5), compressionFilter = self->_compressionFilter, compressionFilter[11] == compressionFilter[10]))
   {
-    v7 = 0;
+    copyForMutation = 0;
   }
 
   else
   {
-    v7 = [(PKStroke *)self->_currentStroke copyForMutation];
+    copyForMutation = [(PKStroke *)self->_currentStroke copyForMutation];
     if (self->_captureLiveData)
     {
       v8 = [PKLiveStrokePath alloc];
@@ -1516,14 +1516,14 @@ void __49__PKStrokeGenerator_newStrokeWithCurrentDataCopy__block_invoke(uint64_t
       v11 = *(self->_compressionFilter + 9);
       currentInputType = self->_currentInputType;
       timestamp = self->_baseValues.timestamp;
-      v14 = v4;
-      if (!v4)
+      uUID = dCopy;
+      if (!dCopy)
       {
-        v14 = [MEMORY[0x1E696AFB0] UUID];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
       }
 
-      v15 = [(PKLiveStrokePath *)v8 initWithPoints:v9 count:0x8E38E38E38E38E39 * ((v10 - v9) >> 2) immutableCount:v11 inputType:currentInputType timestamp:v14 UUID:&self->_drawPoints inputPoints:timestamp];
-      [v7 set_strokeData:v15];
+      v15 = [(PKLiveStrokePath *)v8 initWithPoints:v9 count:0x8E38E38E38E38E39 * ((v10 - v9) >> 2) immutableCount:v11 inputType:currentInputType timestamp:uUID UUID:&self->_drawPoints inputPoints:timestamp];
+      [copyForMutation set_strokeData:v15];
     }
 
     else
@@ -1534,90 +1534,90 @@ void __49__PKStrokeGenerator_newStrokeWithCurrentDataCopy__block_invoke(uint64_t
       v19 = *(self->_compressionFilter + 9);
       v20 = self->_currentInputType;
       v21 = self->_baseValues.timestamp;
-      v14 = v4;
-      if (!v4)
+      uUID = dCopy;
+      if (!dCopy)
       {
-        v14 = [MEMORY[0x1E696AFB0] UUID];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
       }
 
-      v15 = [(PKStrokePath *)v16 initWithPoints:v17 count:0x8E38E38E38E38E39 * ((v18 - v17) >> 2) immutableCount:v19 inputType:v20 timestamp:v14 UUID:v21];
-      [v7 set_strokeData:v15];
+      v15 = [(PKStrokePath *)v16 initWithPoints:v17 count:0x8E38E38E38E38E39 * ((v18 - v17) >> 2) immutableCount:v19 inputType:v20 timestamp:uUID UUID:v21];
+      [copyForMutation set_strokeData:v15];
     }
 
-    if (!v4)
+    if (!dCopy)
     {
     }
 
-    v22 = [v7 ink];
-    if ([v22 _isFountainPenInkV2] && objc_msgSend(v7, "requiredContentVersion") <= 2)
+    v22 = [copyForMutation ink];
+    if ([v22 _isFountainPenInkV2] && objc_msgSend(copyForMutation, "requiredContentVersion") <= 2)
     {
-      v23 = [v22 _copyWithOriginalRequiredContentVersion];
+      _copyWithOriginalRequiredContentVersion = [v22 _copyWithOriginalRequiredContentVersion];
 
-      v22 = v23;
-      [v7 _setInk:v23];
+      v22 = _copyWithOriginalRequiredContentVersion;
+      [copyForMutation _setInk:_copyWithOriginalRequiredContentVersion];
     }
 
     if (self->_shouldSetIsSafeForStyleInventorFlag)
     {
-      [v7 _setIsSafeForStyleInventory:1];
+      [copyForMutation _setIsSafeForStyleInventory:1];
     }
   }
 
-  return v7;
+  return copyForMutation;
 }
 
-- (void)drawingUpdatePoint:(id *)a3
+- (void)drawingUpdatePoint:(id *)point
 {
   outputQueue = self->_outputQueue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
-  v5 = *&a3->var7;
-  v15 = *&a3->var9;
-  v6 = *&a3->var13;
-  v16 = *&a3->var11;
+  v5 = *&point->var7;
+  v15 = *&point->var9;
+  v6 = *&point->var13;
+  v16 = *&point->var11;
   v17 = v6;
-  var0 = a3->var0;
-  v11 = *&a3->var1;
-  v8 = *&a3->var5;
-  v12 = *&a3->var3;
+  var0 = point->var0;
+  v11 = *&point->var1;
+  v8 = *&point->var5;
+  v12 = *&point->var3;
   v13 = v8;
   v14 = v5;
   v9[2] = __40__PKStrokeGenerator_drawingUpdatePoint___block_invoke;
   v9[3] = &unk_1E82D85D8;
   v9[4] = self;
-  var15 = a3->var15;
+  var15 = point->var15;
   v10 = var0;
   dispatch_async(outputQueue, v9);
   [(PKStrokeGenerator *)self drawingUpdateAllPoints];
 }
 
-- (void)drawingUpdateAllPointsDidTimeoutWithStrokeUUID:(id)a3
+- (void)drawingUpdateAllPointsDidTimeoutWithStrokeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   outputQueue = self->_outputQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__PKStrokeGenerator_drawingUpdateAllPointsDidTimeoutWithStrokeUUID___block_invoke;
   v7[3] = &unk_1E82D6890;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(outputQueue, v7);
 }
 
-- (void)_drawingUpdateAllPointsDidTimeoutWithStrokeUUID:(id)a3
+- (void)_drawingUpdateAllPointsDidTimeoutWithStrokeUUID:(id)d
 {
-  v6 = a3;
-  if (!v6 || (-[PKStroke _strokeUUID](self->_currentStroke, "_strokeUUID"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isEqual:v6], v4, (v5 & 1) != 0))
+  dCopy = d;
+  if (!dCopy || (-[PKStroke _strokeUUID](self->_currentStroke, "_strokeUUID"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isEqual:dCopy], v4, (v5 & 1) != 0))
   {
-    [(PKStrokeGenerator *)self _drawingUpdateAllPointsDidTimeout:v6 != 0 updateSemaphore:1];
+    [(PKStrokeGenerator *)self _drawingUpdateAllPointsDidTimeout:dCopy != 0 updateSemaphore:1];
   }
 }
 
-- (void)_drawingUpdateAllPointsDidTimeout:(BOOL)a3 updateSemaphore:(BOOL)a4
+- (void)_drawingUpdateAllPointsDidTimeout:(BOOL)timeout updateSemaphore:(BOOL)semaphore
 {
-  v4 = a4;
-  v5 = a3;
+  semaphoreCopy = semaphore;
+  timeoutCopy = timeout;
   v33 = *MEMORY[0x1E69E9840];
   end = self->_updatedDrawPoints.__end_;
   begin = self->_updatedDrawPoints.__begin_;
@@ -1718,13 +1718,13 @@ LABEL_25:
   {
     v22 = self->_immutableCount;
     v23 = 0xF0F0F0F0F0F0F0F1 * ((self->_drawPoints.__end_ - self->_drawPoints.__begin_) >> 3);
-    if (v22 >= v23 || v5)
+    if (v22 >= v23 || timeoutCopy)
     {
       self->_drawingEndedButNotFinished = 0;
       if (v22 < v23)
       {
         self->_immutableCount = v23;
-        if (!v4)
+        if (!semaphoreCopy)
         {
           return;
         }
@@ -1737,7 +1737,7 @@ LABEL_25:
         }
       }
 
-      else if (!v4)
+      else if (!semaphoreCopy)
       {
         return;
       }
@@ -1764,8 +1764,8 @@ LABEL_25:
 
 - (void)updateImmutableCount
 {
-  v3 = [MEMORY[0x1E696AE30] processInfo];
-  [v3 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v5 = v4;
 
   if (![(PKStrokeGenerator *)self canSnapToRuler])
@@ -2061,26 +2061,26 @@ uint64_t __31__PKStrokeGenerator_addPoints___block_invoke_2(uint64_t result)
   return result;
 }
 
-- (void)addPoint:(id *)a3
+- (void)addPoint:(id *)point
 {
   inputQueue = self->_inputQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
-  v4 = *&a3->var7;
-  v14 = *&a3->var9;
-  v5 = *&a3->var13;
-  v15 = *&a3->var11;
+  v4 = *&point->var7;
+  v14 = *&point->var9;
+  v5 = *&point->var13;
+  v15 = *&point->var11;
   v16 = v5;
-  var0 = a3->var0;
-  v10 = *&a3->var1;
-  v7 = *&a3->var5;
-  v11 = *&a3->var3;
+  var0 = point->var0;
+  v10 = *&point->var1;
+  v7 = *&point->var5;
+  v11 = *&point->var3;
   v12 = v7;
   v13 = v4;
   v8[2] = __30__PKStrokeGenerator_addPoint___block_invoke;
   v8[3] = &unk_1E82D85D8;
   v8[4] = self;
-  var15 = a3->var15;
+  var15 = point->var15;
   v9 = var0;
   dispatch_async(inputQueue, v8);
 }
@@ -2197,7 +2197,7 @@ uint64_t __32__PKStrokeGenerator_closeStroke__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_drawingAddPoint:(id *)a3
+- (void)_drawingAddPoint:(id *)point
 {
   v40 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_allInputPointFilters count])
@@ -2221,18 +2221,18 @@ uint64_t __32__PKStrokeGenerator_closeStroke__block_invoke_2(uint64_t a1)
           }
 
           v9 = *(*(&v35 + 1) + 8 * i);
-          v10 = *&a3->var13;
-          v32 = *&a3->var11;
+          v10 = *&point->var13;
+          v32 = *&point->var11;
           v33 = v10;
-          var15 = a3->var15;
-          v11 = *&a3->var5;
-          v28 = *&a3->var3;
+          var15 = point->var15;
+          v11 = *&point->var5;
+          v28 = *&point->var3;
           v29 = v11;
-          v12 = *&a3->var9;
-          v30 = *&a3->var7;
+          v12 = *&point->var9;
+          v30 = *&point->var7;
           v31 = v12;
-          v13 = *&a3->var1;
-          var0 = a3->var0;
+          v13 = *&point->var1;
+          var0 = point->var0;
           v27 = v13;
           [v9 addInputPoint:&var0];
           if (v9)
@@ -2254,18 +2254,18 @@ uint64_t __32__PKStrokeGenerator_closeStroke__block_invoke_2(uint64_t a1)
           }
 
           v14 = v33;
-          *&a3->var11 = v32;
-          *&a3->var13 = v14;
-          a3->var15 = var15;
+          *&point->var11 = v32;
+          *&point->var13 = v14;
+          point->var15 = var15;
           v15 = v29;
-          *&a3->var3 = v28;
-          *&a3->var5 = v15;
+          *&point->var3 = v28;
+          *&point->var5 = v15;
           v16 = v31;
-          *&a3->var7 = v30;
-          *&a3->var9 = v16;
+          *&point->var7 = v30;
+          *&point->var9 = v16;
           v17 = v27;
-          a3->var0 = var0;
-          *&a3->var1 = v17;
+          point->var0 = var0;
+          *&point->var1 = v17;
         }
 
         v6 = [(NSArray *)v5 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -2276,13 +2276,13 @@ uint64_t __32__PKStrokeGenerator_closeStroke__block_invoke_2(uint64_t a1)
   }
 
   self->_inputHasChanged = 1;
-  if (!a3->var8)
+  if (!point->var8)
   {
     currentStrokeRollBaseValue = self->_currentStrokeRollBaseValue;
-    var13 = a3->var13;
+    var13 = point->var13;
     if (currentStrokeRollBaseValue >= 0.0)
     {
-      DKDDiffAngleInRadians(a3->var13, currentStrokeRollBaseValue);
+      DKDDiffAngleInRadians(point->var13, currentStrokeRollBaseValue);
       if (v22 >= self->_currentStrokeRollDeltaMin)
       {
         if (v22 > self->_currentStrokeRollDeltaMax)
@@ -2299,7 +2299,7 @@ uint64_t __32__PKStrokeGenerator_closeStroke__block_invoke_2(uint64_t a1)
 
     else
     {
-      v20 = fmod(a3->var13, 6.28318531);
+      v20 = fmod(point->var13, 6.28318531);
       if (var13 <= 6.28318531 && var13 >= 0.0)
       {
         v20 = var13;
@@ -2320,7 +2320,7 @@ uint64_t __32__PKStrokeGenerator_closeStroke__block_invoke_2(uint64_t a1)
       self->_currentStrokeRollDeltaMax = 0.0;
     }
 
-    var7 = a3->var7;
+    var7 = point->var7;
     if (var7 < self->_latestNonPredictedTimestamp)
     {
       var7 = self->_latestNonPredictedTimestamp;
@@ -2330,33 +2330,33 @@ uint64_t __32__PKStrokeGenerator_closeStroke__block_invoke_2(uint64_t a1)
     [(PKStrokeGenerator *)self _removePredictedTouches:*&var0];
   }
 
-  [(PKStrokeGenerator *)self snapPointToRuler:a3->var0.var0.x, a3->var0.var0.y, *&var0, v27, v28, v29, v30, v31, v32, v33, var15];
-  a3->var0.var0.x = v24;
-  a3->var0.var0.y = v25;
-  if (a3->var8)
+  [(PKStrokeGenerator *)self snapPointToRuler:point->var0.var0.x, point->var0.var0.y, *&var0, v27, v28, v29, v30, v31, v32, v33, var15];
+  point->var0.var0.x = v24;
+  point->var0.var0.y = v25;
+  if (point->var8)
   {
-    a3->var9 = -1;
+    point->var9 = -1;
   }
 
-  std::vector<PKInputPoint>::push_back[abi:ne200100](&self->_drawPoints, a3);
+  std::vector<PKInputPoint>::push_back[abi:ne200100](&self->_drawPoints, point);
   [(PKStrokeGenerator *)self updateRulerSnapping];
   [(PKStrokeGenerator *)self drawingUpdateAllPoints];
   [(PKStrokeGenerator *)self updateImmutableCount];
-  [(PKStrokeGenerator *)self setLastPoint:a3->var0.var0.x, a3->var0.var0.y];
+  [(PKStrokeGenerator *)self setLastPoint:point->var0.var0.x, point->var0.var0.y];
 }
 
-- (void)drawingEndedEstimatesTimeout:(double)a3 completion:(id)a4
+- (void)drawingEndedEstimatesTimeout:(double)timeout completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   inputQueue = self->_inputQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__PKStrokeGenerator_drawingEndedEstimatesTimeout_completion___block_invoke;
   block[3] = &unk_1E82DC798;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  timeoutCopy = timeout;
+  v8 = completionCopy;
   dispatch_async(inputQueue, block);
   [(PKStrokeGenerator *)self setLastPoint:INFINITY, INFINITY];
 }
@@ -2520,19 +2520,19 @@ void __61__PKStrokeGenerator_drawingEndedEstimatesTimeout_completion___block_inv
   *(v3 + 184) = 0;
 }
 
-- (void)drawingCancelledWithCompletion:(id)a3
+- (void)drawingCancelledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   inputQueue = self->_inputQueue;
   v7 = MEMORY[0x1E69E9820];
   v8 = 3221225472;
   v9 = __52__PKStrokeGenerator_drawingCancelledWithCompletion___block_invoke;
   v10 = &unk_1E82D63D8;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(inputQueue, &v7);
-  [(PKStrokeGenerator *)self setLastPoint:INFINITY, INFINITY, v7, v8, v9, v10, v11];
+  [(PKStrokeGenerator *)self setLastPoint:INFINITY, INFINITY, v7, v8, v9, v10, selfCopy];
 }
 
 void __52__PKStrokeGenerator_drawingCancelledWithCompletion___block_invoke(uint64_t a1)
@@ -2564,7 +2564,7 @@ void __52__PKStrokeGenerator_drawingCancelledWithCompletion___block_invoke_39(ui
   *(v3 + 184) = 0;
 }
 
-+ (vector<PKInputPoint,)inputPointsFromPoints:(id)a2 velocityForDistanceFunction:(SEL)a3
++ (vector<PKInputPoint,)inputPointsFromPoints:(id)points velocityForDistanceFunction:(SEL)function
 {
   v7 = a5;
   if (v7)
@@ -2662,14 +2662,14 @@ LABEL_15:
   return result;
 }
 
-+ (vector<PKInputPoint,)inputPointsFromPath:(id)a2 maxSegmentLength:(SEL)a3 velocityForDistanceFunction:(CGPath *)a4
++ (vector<PKInputPoint,)inputPointsFromPath:(id)path maxSegmentLength:(SEL)length velocityForDistanceFunction:(CGPath *)function
 {
   v9 = a6;
   __p = 0;
   v12 = 0;
   v13 = 0;
-  PKPointsFromPath(a4, &__p, a5, 0.0);
-  [a2 inputPointsFromPoints:&__p velocityForDistanceFunction:v9];
+  PKPointsFromPath(function, &__p, a5, 0.0);
+  [path inputPointsFromPoints:&__p velocityForDistanceFunction:v9];
   if (__p)
   {
     v12 = __p;
@@ -2679,25 +2679,25 @@ LABEL_15:
   return result;
 }
 
-- (id)strokeFromInputPoints:(void *)a3 inputType:(int64_t)a4 ink:(id)a5 inputScale:(double)a6 randomSeed:(unsigned int)a7 strokeClass:(Class)a8
+- (id)strokeFromInputPoints:(void *)points inputType:(int64_t)type ink:(id)ink inputScale:(double)scale randomSeed:(unsigned int)seed strokeClass:(Class)class
 {
-  v9 = *&a7;
-  v14 = a5;
+  v9 = *&seed;
+  inkCopy = ink;
   v15 = dispatch_semaphore_create(0);
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__29;
   v31 = __Block_byref_object_dispose__30;
-  v32 = objc_alloc_init(a8);
-  [v28[5] _setInk:v14];
+  v32 = objc_alloc_init(class);
+  [v28[5] _setInk:inkCopy];
   [v28[5] _setRandomSeed:v9];
-  if (*(a3 + 1) != *a3)
+  if (*(points + 1) != *points)
   {
-    v16 = [v28[5] path];
-    [v16 _setTimestamp:*(*a3 + 64)];
+    path = [v28[5] path];
+    [path _setTimestamp:*(*points + 64)];
 
-    if (a4)
+    if (type)
     {
       v17 = 23;
     }
@@ -2707,11 +2707,11 @@ LABEL_15:
       v17 = 8;
     }
 
-    [(PKStrokeGenerator *)self drawingBeganWithStroke:v28[5] inputType:a4 activeInputProperties:v17 inputScale:0 start:a6];
+    [(PKStrokeGenerator *)self drawingBeganWithStroke:v28[5] inputType:type activeInputProperties:v17 inputScale:0 start:scale];
     __p = 0;
     v25 = 0;
     v26 = 0;
-    std::vector<PKInputPoint>::__init_with_size[abi:ne200100]<PKInputPoint*,PKInputPoint*>(&__p, *a3, *(a3 + 1), 0xF0F0F0F0F0F0F0F1 * ((*(a3 + 1) - *a3) >> 3));
+    std::vector<PKInputPoint>::__init_with_size[abi:ne200100]<PKInputPoint*,PKInputPoint*>(&__p, *points, *(points + 1), 0xF0F0F0F0F0F0F0F1 * ((*(points + 1) - *points) >> 3));
     [(PKStrokeGenerator *)self addPoints:&__p];
     if (__p)
     {
@@ -2743,14 +2743,14 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)strokeFromPath:(CGPath *)a3 ink:(id)a4 inputScale:(double)a5 maxSegmentLength:(double)a6 velocityForDistanceFunction:(id)a7 strokeClass:(Class)a8
+- (id)strokeFromPath:(CGPath *)path ink:(id)ink inputScale:(double)scale maxSegmentLength:(double)length velocityForDistanceFunction:(id)function strokeClass:(Class)class
 {
-  v14 = a4;
-  v15 = a7;
+  inkCopy = ink;
+  functionCopy = function;
   v16 = objc_opt_class();
   if (v16)
   {
-    [v16 inputPointsFromPath:a3 maxSegmentLength:v15 velocityForDistanceFunction:a6];
+    [v16 inputPointsFromPath:path maxSegmentLength:functionCopy velocityForDistanceFunction:length];
   }
 
   else
@@ -2760,7 +2760,7 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
     v21 = 0;
   }
 
-  v17 = [(PKStrokeGenerator *)self strokeFromInputPoints:&__p inputType:0 ink:v14 inputScale:arc4random() randomSeed:a8 strokeClass:a5];
+  v17 = [(PKStrokeGenerator *)self strokeFromInputPoints:&__p inputType:0 ink:inkCopy inputScale:arc4random() randomSeed:class strokeClass:scale];
   if (__p)
   {
     v20 = __p;
@@ -2770,13 +2770,13 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
   return v17;
 }
 
-- (id)strokeFromPoints:(CGPoint *)a3 count:(unint64_t)a4 ink:(id)a5 inputScale:(double)a6 strokeClass:(Class)a7
+- (id)strokeFromPoints:(CGPoint *)points count:(unint64_t)count ink:(id)ink inputScale:(double)scale strokeClass:(Class)class
 {
-  v12 = a5;
+  inkCopy = ink;
   v19 = 0;
   v20 = 0;
   v21 = 0;
-  std::vector<CGPoint>::__init_with_size[abi:ne200100]<CGPoint*,CGPoint*>(&v19, a3, &a3[a4], a4);
+  std::vector<CGPoint>::__init_with_size[abi:ne200100]<CGPoint*,CGPoint*>(&v19, points, &points[count], count);
   v13 = objc_opt_class();
   if (v13)
   {
@@ -2790,7 +2790,7 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
     v18 = 0;
   }
 
-  v14 = [(PKStrokeGenerator *)self strokeFromInputPoints:&__p inputType:0 ink:v12 inputScale:arc4random() randomSeed:a7 strokeClass:a6];
+  v14 = [(PKStrokeGenerator *)self strokeFromInputPoints:&__p inputType:0 ink:inkCopy inputScale:arc4random() randomSeed:class strokeClass:scale];
   if (__p)
   {
     v17 = __p;
@@ -2806,30 +2806,30 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
   return v14;
 }
 
-- (id)strokeFromPoints:(const void *)a3 sourceStroke:(id)a4 inputScale:(double)a5 averageInputPoint:(id *)a6
+- (id)strokeFromPoints:(const void *)points sourceStroke:(id)stroke inputScale:(double)scale averageInputPoint:(id *)point
 {
-  v10 = a4;
+  strokeCopy = stroke;
   v11 = objc_opt_class();
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __80__PKStrokeGenerator_strokeFromPoints_sourceStroke_inputScale_averageInputPoint___block_invoke;
   v29 = &__block_descriptor_168_e8_d16__0d8l;
-  v12 = *&a6->var13;
-  v36 = *&a6->var11;
+  v12 = *&point->var13;
+  v36 = *&point->var11;
   v37 = v12;
-  var15 = a6->var15;
-  v13 = *&a6->var5;
-  v32 = *&a6->var3;
+  var15 = point->var15;
+  v13 = *&point->var5;
+  v32 = *&point->var3;
   v33 = v13;
-  v14 = *&a6->var9;
-  v34 = *&a6->var7;
+  v14 = *&point->var9;
+  v34 = *&point->var7;
   v35 = v14;
-  v15 = *&a6->var1;
-  var0 = a6->var0;
+  v15 = *&point->var1;
+  var0 = point->var0;
   v31 = v15;
   if (v11)
   {
-    [v11 inputPointsFromPoints:a3 velocityForDistanceFunction:&v26];
+    [v11 inputPointsFromPoints:points velocityForDistanceFunction:&v26];
     if (v40 != v39)
     {
       v16 = 0xF0F0F0F0F0F0F0F1 * ((v40 - v39) >> 3);
@@ -2841,10 +2841,10 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
       v17 = v39 + 112;
       do
       {
-        var13 = a6->var13;
-        var5 = a6->var5;
-        v20 = *&a6->var3;
-        *(v17 - 6) = *&a6->var1;
+        var13 = point->var13;
+        var5 = point->var5;
+        v20 = *&point->var3;
+        *(v17 - 6) = *&point->var1;
         *(v17 - 5) = v20;
         *(v17 - 8) = var5;
         *v17 = var13;
@@ -2863,10 +2863,10 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
     v41 = 0;
   }
 
-  v21 = [v10 _inputType];
-  v22 = [v10 ink];
+  _inputType = [strokeCopy _inputType];
+  v22 = [strokeCopy ink];
   v23 = arc4random();
-  v24 = [(PKStrokeGenerator *)self strokeFromInputPoints:&v39 inputType:v21 ink:v22 inputScale:v23 randomSeed:objc_opt_class() strokeClass:a5];
+  v24 = [(PKStrokeGenerator *)self strokeFromInputPoints:&v39 inputType:_inputType ink:v22 inputScale:v23 randomSeed:objc_opt_class() strokeClass:scale];
 
   if (v39)
   {
@@ -2877,22 +2877,22 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
   return v24;
 }
 
-- (id)strokeFromLineSegments:(const void *)a3 maxSegmentLength:(double)a4 ink:(id)a5 inputScale:(double)a6 strokeClass:(Class)a7
+- (id)strokeFromLineSegments:(const void *)segments maxSegmentLength:(double)length ink:(id)ink inputScale:(double)scale strokeClass:(Class)class
 {
-  v33 = a5;
+  inkCopy = ink;
   v10 = 0;
   v11 = 0;
   __src = 0;
   v37 = 0;
   v38 = 0;
-  v12 = ((*(a3 + 1) - *a3) >> 4) - 1;
+  v12 = ((*(segments + 1) - *segments) >> 4) - 1;
   do
   {
     v13 = 0;
-    v14 = *(*a3 + 16 * v11++);
-    v15 = *(*a3 + 16 * v11);
+    v14 = *(*segments + 16 * v11++);
+    v15 = *(*segments + 16 * v11);
     v16 = vsubq_f64(v14, v15);
-    v16.f64[0] = sqrt(COERCE_DOUBLE(*&vmulq_f64(v16, v16).f64[1]) + v16.f64[0] * v16.f64[0]) / a4;
+    v16.f64[0] = sqrt(COERCE_DOUBLE(*&vmulq_f64(v16, v16).f64[1]) + v16.f64[0] * v16.f64[0]) / length;
     v17 = vcvtpd_u64_f64(v16.f64[0]);
     v18 = ceil(v16.f64[0]);
     v34 = vsubq_f64(v15, v14);
@@ -2961,7 +2961,7 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
   }
 
   while (v11 != v12);
-  v30 = [PKStrokeGenerator strokeFromPoints:"strokeFromPoints:count:ink:inputScale:strokeClass:" count:a6 ink:? inputScale:? strokeClass:?];
+  v30 = [PKStrokeGenerator strokeFromPoints:"strokeFromPoints:count:ink:inputScale:strokeClass:" count:scale ink:? inputScale:? strokeClass:?];
   if (__src)
   {
     v37 = __src;
@@ -2971,17 +2971,17 @@ void __91__PKStrokeGenerator_strokeFromInputPoints_inputType_ink_inputScale_rand
   return v30;
 }
 
-- (void)whenFinishedProcessingPointsCallCompletion:(id)a3
+- (void)whenFinishedProcessingPointsCallCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   inputQueue = self->_inputQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__PKStrokeGenerator_whenFinishedProcessingPointsCallCompletion___block_invoke;
   v7[3] = &unk_1E82D6D58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(inputQueue, v7);
 }
 
@@ -3005,11 +3005,11 @@ void __64__PKStrokeGenerator_whenFinishedProcessingPointsCallCompletion___block_
   return self;
 }
 
-- (void)setRulerTransform:(CGAffineTransform *)a3
+- (void)setRulerTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_rulerTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_rulerTransform.c = *&transform->c;
   *&self->_rulerTransform.tx = v4;
   *&self->_rulerTransform.a = v3;
 }

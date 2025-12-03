@@ -1,7 +1,7 @@
 @interface CAFUILoadingViewController
 - (_TtC5CAFUI26CAFUILoadingViewController)init;
-- (_TtC5CAFUI26CAFUILoadingViewController)initWithCoder:(id)a3;
-- (_TtC5CAFUI26CAFUILoadingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5CAFUI26CAFUILoadingViewController)initWithCoder:(id)coder;
+- (_TtC5CAFUI26CAFUILoadingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -14,7 +14,7 @@
   return [(CAFUILoadingViewController *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (_TtC5CAFUI26CAFUILoadingViewController)initWithCoder:(id)a3
+- (_TtC5CAFUI26CAFUILoadingViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -23,11 +23,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CAFUILoadingViewController.viewDidLoad()();
 }
 
-- (_TtC5CAFUI26CAFUILoadingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5CAFUI26CAFUILoadingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -144,10 +144,10 @@ void __51__MapsSuggestionsMapsAppVisibleChangedTrigger_init__block_invoke(uint64
 
 - (BOOL)isTrue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isVisible = v2->_isVisible;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isVisible = selfCopy->_isVisible;
+  objc_sync_exit(selfCopy);
 
   return isVisible;
 }
@@ -155,8 +155,8 @@ void __51__MapsSuggestionsMapsAppVisibleChangedTrigger_init__block_invoke(uint64
 - (id)objectForJSON
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(MapsSuggestionsBaseTrigger *)self uniqueName];
-  v7 = v3;
+  uniqueName = [(MapsSuggestionsBaseTrigger *)self uniqueName];
+  v7 = uniqueName;
   v4 = MSg::jsonFor([(MapsSuggestionsMapsAppVisibleChangedTrigger *)self isTrue]);
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];

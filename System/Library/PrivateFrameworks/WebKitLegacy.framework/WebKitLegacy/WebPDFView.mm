@@ -1,18 +1,18 @@
 @interface WebPDFView
 + (CGColor)backgroundColor;
 + (CGColor)shadowColor;
-+ (Class)_representationClassForWebFrame:(id)a3;
-- (CGRect)rectForPageNumber:(unsigned int)a3;
-- (id)_pagesInRect:(CGRect)a3;
-- (unsigned)pageNumberForRect:(CGRect)a3;
++ (Class)_representationClassForWebFrame:(id)frame;
+- (CGRect)rectForPageNumber:(unsigned int)number;
+- (id)_pagesInRect:(CGRect)rect;
+- (unsigned)pageNumberForRect:(CGRect)rect;
 - (unsigned)totalPages;
 - (void)_checkPDFTitle;
 - (void)_computePageRects;
 - (void)dealloc;
-- (void)drawPage:(CGPDFPage *)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)finishedLoadingWithDataSource:(id)a3;
-- (void)setDataSource:(id)a3;
+- (void)drawPage:(CGPDFPage *)page;
+- (void)drawRect:(CGRect)rect;
+- (void)finishedLoadingWithDataSource:(id)source;
+- (void)setDataSource:(id)source;
 @end
 
 @implementation WebPDFView
@@ -49,9 +49,9 @@
   return result;
 }
 
-+ (Class)_representationClassForWebFrame:(id)a3
++ (Class)_representationClassForWebFrame:(id)frame
 {
-  [objc_msgSend(a3 "webView")];
+  [objc_msgSend(frame "webView")];
 
   return objc_opt_class();
 }
@@ -70,19 +70,19 @@
   [(WebPDFView *)&v4 dealloc];
 }
 
-- (void)drawPage:(CGPDFPage *)a3
+- (void)drawPage:(CGPDFPage *)page
 {
   v5 = WKGetCurrentGraphicsContext();
-  v6 = &self->_pageRects[CGPDFPageGetPageNumber(a3)];
+  v6 = &self->_pageRects[CGPDFPageGetPageNumber(page)];
   x = v6[-1].origin.x;
   y = v6[-1].origin.y;
   width = v6[-1].size.width;
   height = v6[-1].size.height;
   CGContextSaveGState(v5);
-  v11 = [objc_opt_class() shadowColor];
+  shadowColor = [objc_opt_class() shadowColor];
   v19.width = 0.0;
   v19.height = 2.0;
-  CGContextSetShadowWithColor(v5, v19, 3.0, v11);
+  CGContextSetShadowWithColor(v5, v19, 3.0, shadowColor);
   v18 = 0x11040000FFFFFFFFLL;
   WebCore::cachedCGColor();
   CGContextSetFillColorWithColor(v5, *&color.a);
@@ -131,27 +131,27 @@
   v26.origin.x = 0.0;
   v26.origin.y = 0.0;
   v26.size.width = v16;
-  CGPDFPageGetDrawingTransform(&color, a3, kCGPDFCropBox, v26, 0, 1);
+  CGPDFPageGetDrawingTransform(&color, page, kCGPDFCropBox, v26, 0, 1);
   CGContextConcatCTM(v5, &color);
-  BoxRect = CGPDFPageGetBoxRect(a3, kCGPDFCropBox);
+  BoxRect = CGPDFPageGetBoxRect(page, kCGPDFCropBox);
   CGContextClipToRect(v5, BoxRect);
-  CGContextDrawPDFPage(v5, a3);
+  CGContextDrawPDFPage(v5, page);
   CGContextRestoreGState(v5);
 }
 
-- (id)_pagesInRect:(CGRect)a3
+- (id)_pagesInRect:(CGRect)rect
 {
-  v18 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  rectCopy = rect;
+  array = [MEMORY[0x1E695DF70] array];
   NumberOfPages = CGPDFDocumentGetNumberOfPages(self->_PDFDocument);
-  v6 = bsearch(&v18, self->_pageRects, NumberOfPages, 0x20uLL, comparePageRects);
+  v6 = bsearch(&rectCopy, self->_pageRects, NumberOfPages, 0x20uLL, comparePageRects);
   if (v6)
   {
     v7 = (v6 - self->_pageRects) >> 5;
     Page = CGPDFDocumentGetPage(self->_PDFDocument, v7 + 1);
     if (Page)
     {
-      [v4 addObject:Page];
+      [array addObject:Page];
       v9 = v7;
       if (v7 - 1 < NumberOfPages)
       {
@@ -160,7 +160,7 @@
         do
         {
           v19 = CGRectInset(self->_pageRects[v10 - 1], 0.0, -16.0);
-          if (!CGRectIntersectsRect(v19, v18))
+          if (!CGRectIntersectsRect(v19, rectCopy))
           {
             break;
           }
@@ -168,7 +168,7 @@
           v13 = CGPDFDocumentGetPage(self->_PDFDocument, v11);
           if (v13)
           {
-            [v4 addObject:v13];
+            [array addObject:v13];
           }
 
           v12 = v11 - 2;
@@ -186,7 +186,7 @@
         do
         {
           v20 = CGRectInset(self->_pageRects[v9 + 1], 0.0, -16.0);
-          if (!CGRectIntersectsRect(v20, v18))
+          if (!CGRectIntersectsRect(v20, rectCopy))
           {
             break;
           }
@@ -194,7 +194,7 @@
           v16 = CGPDFDocumentGetPage(self->_PDFDocument, v15);
           if (v16)
           {
-            [v4 addObject:v16];
+            [array addObject:v16];
           }
 
           ++v15;
@@ -207,19 +207,19 @@
     }
   }
 
-  return v4;
+  return array;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = WKGetCurrentGraphicsContext();
   CGContextSaveGState(v8);
-  v9 = [objc_opt_class() backgroundColor];
-  CGContextSetFillColorWithColor(v8, v9);
+  backgroundColor = [objc_opt_class() backgroundColor];
+  CGContextSetFillColorWithColor(v8, backgroundColor);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -229,28 +229,28 @@
   if (self->_PDFDocument)
   {
     v10 = [-[WebPDFView _pagesInRect:](self _pagesInRect:{x, y, width, height), "objectEnumerator"}];
-    v11 = [v10 nextObject];
-    if (v11)
+    nextObject = [v10 nextObject];
+    if (nextObject)
     {
-      v12 = v11;
+      nextObject2 = nextObject;
       do
       {
-        [(WebPDFView *)self drawPage:v12];
-        v12 = [v10 nextObject];
+        [(WebPDFView *)self drawPage:nextObject2];
+        nextObject2 = [v10 nextObject];
       }
 
-      while (v12);
+      while (nextObject2);
     }
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
   if (!self->dataSourceHasBeenSet)
   {
     if (!self->_title.m_ptr)
     {
-      v4 = [objc_msgSend(objc_msgSend(objc_msgSend(a3 "request")];
+      v4 = [objc_msgSend(objc_msgSend(objc_msgSend(source "request")];
       m_ptr = self->_title.m_ptr;
       self->_title.m_ptr = v4;
       if (m_ptr)
@@ -258,11 +258,11 @@
       }
     }
 
-    v6 = [(WebPDFView *)self superview];
-    if (v6)
+    superview = [(WebPDFView *)self superview];
+    if (superview)
     {
-      v7 = v6;
-      [v6 bounds];
+      v7 = superview;
+      [superview bounds];
       [(WebPDFView *)self convertRect:v7 fromView:?];
       [(WebPDFView *)self setBoundsSize:v8, v9];
       self->dataSourceHasBeenSet = 1;
@@ -411,10 +411,10 @@ LABEL_16:
   }
 }
 
-- (void)finishedLoadingWithDataSource:(id)a3
+- (void)finishedLoadingWithDataSource:(id)source
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = CGDataProviderCreateWithCFData([a3 data]);
+  v5 = CGDataProviderCreateWithCFData([source data]);
   if (v5)
   {
     v6 = v5;
@@ -438,7 +438,7 @@ LABEL_16:
           jsPDFDocClass(void)::jsPDFDocClass = v10;
         }
 
-        v11 = JSObjectMake(v9, v10, a3);
+        v11 = JSObjectMake(v9, v10, source);
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
@@ -510,7 +510,7 @@ LABEL_9:
   }
 }
 
-- (unsigned)pageNumberForRect:(CGRect)a3
+- (unsigned)pageNumberForRect:(CGRect)rect
 {
   if (!self->_PDFDocument)
   {
@@ -522,10 +522,10 @@ LABEL_9:
     return 0;
   }
 
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [(WebPDFView *)self _pagesInRect:?];
   v9 = [v8 count];
   if (!v9)
@@ -570,12 +570,12 @@ LABEL_9:
   return PDFDocument;
 }
 
-- (CGRect)rectForPageNumber:(unsigned int)a3
+- (CGRect)rectForPageNumber:(unsigned int)number
 {
   pageRects = self->_pageRects;
   v4 = pageRects != 0;
-  p_x = &pageRects[a3 - 1].origin.x;
-  if (a3 == 0 || !v4)
+  p_x = &pageRects[number - 1].origin.x;
+  if (number == 0 || !v4)
   {
     p_x = MEMORY[0x1E695F050];
   }

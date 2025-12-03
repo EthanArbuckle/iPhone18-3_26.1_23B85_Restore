@@ -1,32 +1,32 @@
 @interface WFEmailContentItem
 + (id)contentCategories;
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3;
-+ (id)localizedTypeDescriptionWithContext:(id)a3;
++ (id)localizedPluralTypeDescriptionWithContext:(id)context;
++ (id)localizedTypeDescriptionWithContext:(id)context;
 + (id)outputTypes;
 + (id)ownedTypes;
 + (id)propertyBuilders;
 - (WFEmail)email;
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5;
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5;
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5;
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error;
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type;
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class;
 @end
 
 @implementation WFEmailContentItem
 
-+ (id)localizedPluralTypeDescriptionWithContext:(id)a3
++ (id)localizedPluralTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Emails", @"Emails");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-+ (id)localizedTypeDescriptionWithContext:(id)a3
++ (id)localizedTypeDescriptionWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Email", @"Email");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
@@ -169,49 +169,49 @@ void __38__WFEmailContentItem_propertyBuilders__block_invoke(uint64_t a1, void *
   (a4)[2](v6, v7);
 }
 
-- (void)generateFileRepresentation:(id)a3 options:(id)a4 forType:(id)a5
+- (void)generateFileRepresentation:(id)representation options:(id)options forType:(id)type
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v8 conformsToUTType:*MEMORY[0x277CE1DA0]])
+  representationCopy = representation;
+  typeCopy = type;
+  if ([typeCopy conformsToUTType:*MEMORY[0x277CE1DA0]])
   {
-    v9 = [(WFEmailContentItem *)self email];
+    email = [(WFEmailContentItem *)self email];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __65__WFEmailContentItem_generateFileRepresentation_options_forType___block_invoke;
     v11[3] = &unk_278349F78;
-    v12 = v7;
-    [v9 fetchContentRepresentationWithCompletionHandler:v11];
+    v12 = representationCopy;
+    [email fetchContentRepresentationWithCompletionHandler:v11];
   }
 
   else
   {
-    v10 = [objc_opt_class() badCoercionErrorForType:v8];
-    (*(v7 + 2))(v7, 0, v10);
+    v10 = [objc_opt_class() badCoercionErrorForType:typeCopy];
+    (*(representationCopy + 2))(representationCopy, 0, v10);
   }
 }
 
-- (void)generateObjectRepresentation:(id)a3 options:(id)a4 forClass:(Class)a5
+- (void)generateObjectRepresentation:(id)representation options:(id)options forClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
-  if (objc_opt_class() == a5)
+  representationCopy = representation;
+  optionsCopy = options;
+  if (objc_opt_class() == class)
   {
-    v11 = [(WFEmailContentItem *)self email];
+    email = [(WFEmailContentItem *)self email];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __68__WFEmailContentItem_generateObjectRepresentation_options_forClass___block_invoke;
     v12[3] = &unk_278349FC8;
-    v14 = v8;
+    v14 = representationCopy;
     v12[4] = self;
-    v13 = v9;
-    [v11 fetchContentRepresentationWithCompletionHandler:v12];
+    v13 = optionsCopy;
+    [email fetchContentRepresentationWithCompletionHandler:v12];
   }
 
   else
   {
-    v10 = [objc_opt_class() badCoercionErrorForObjectClass:a5];
-    (*(v8 + 2))(v8, 0, 0, v10);
+    v10 = [objc_opt_class() badCoercionErrorForObjectClass:class];
+    (*(representationCopy + 2))(representationCopy, 0, 0, v10);
   }
 }
 
@@ -238,16 +238,16 @@ void __68__WFEmailContentItem_generateObjectRepresentation_options_forClass___bl
   (*(v6 + 16))(v6, v9, v8, v7);
 }
 
-- (id)generateObjectRepresentationForClass:(Class)a3 options:(id)a4 error:(id *)a5
+- (id)generateObjectRepresentationForClass:(Class)class options:(id)options error:(id *)error
 {
-  if (objc_opt_class() == a3 && (-[WFEmailContentItem email](self, "email"), v7 = objc_claimAutoreleasedReturnValue(), [v7 sender], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  if (objc_opt_class() == class && (-[WFEmailContentItem email](self, "email"), v7 = objc_claimAutoreleasedReturnValue(), [v7 sender], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
-    v9 = [(WFEmailContentItem *)self email];
-    v10 = [v9 sender];
-    v11 = [(WFEmailContentItem *)self email];
-    v12 = [v11 sender];
-    v13 = [v12 address];
-    v6 = [WFObjectRepresentation object:v10 named:v13];
+    email = [(WFEmailContentItem *)self email];
+    sender = [email sender];
+    email2 = [(WFEmailContentItem *)self email];
+    sender2 = [email2 sender];
+    address = [sender2 address];
+    v6 = [WFObjectRepresentation object:sender named:address];
   }
 
   else

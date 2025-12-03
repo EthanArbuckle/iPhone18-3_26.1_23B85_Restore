@@ -1,31 +1,31 @@
 @interface BLAssetContainerPDFiOS
-- (BLAssetContainerPDFiOS)initWithMetadataStoreManager:(id)a3;
-- (id)installOperationForInstallInfo:(id)a3;
+- (BLAssetContainerPDFiOS)initWithMetadataStoreManager:(id)manager;
+- (id)installOperationForInstallInfo:(id)info;
 @end
 
 @implementation BLAssetContainerPDFiOS
 
-- (BLAssetContainerPDFiOS)initWithMetadataStoreManager:(id)a3
+- (BLAssetContainerPDFiOS)initWithMetadataStoreManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = BLAssetContainerPDFiOS;
   v6 = [(BLAssetContainerPDFiOS *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metadataStoreManager, a3);
+    objc_storeStrong(&v6->_metadataStoreManager, manager);
   }
 
   return v7;
 }
 
-- (id)installOperationForInstallInfo:(id)a3
+- (id)installOperationForInstallInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = [BLPDFInstallOperation alloc];
-  v6 = [(BLAssetContainerPDFiOS *)self metadataStoreManager];
-  v7 = [(BLPDFInstallOperation *)v5 initWithInfo:v4 metadataStoreManager:v6];
+  metadataStoreManager = [(BLAssetContainerPDFiOS *)self metadataStoreManager];
+  v7 = [(BLPDFInstallOperation *)v5 initWithInfo:infoCopy metadataStoreManager:metadataStoreManager];
 
   return v7;
 }

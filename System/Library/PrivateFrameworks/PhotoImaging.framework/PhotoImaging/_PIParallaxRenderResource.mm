@@ -35,20 +35,20 @@
 
 - (PFParallaxColor)dominantColor
 {
-  v2 = [(_PIParallaxRenderResource *)self imageHistogram];
-  v3 = [v2 mutableCopy];
+  imageHistogram = [(_PIParallaxRenderResource *)self imageHistogram];
+  v3 = [imageHistogram mutableCopy];
 
   [v3 smoothWithFunction:1 windowSize:13 sampleMode:0];
   v4 = [v3 red];
   [v4 mode];
   v6 = v5;
 
-  v7 = [v3 green];
-  [v7 mode];
+  green = [v3 green];
+  [green mode];
   v9 = v8;
 
-  v10 = [v3 blue];
-  [v10 mode];
+  blue = [v3 blue];
+  [blue mode];
   v12 = v11;
 
   v13 = [objc_alloc(MEMORY[0x1E69C0750]) initWithRed:v6 green:v9 blue:v12];
@@ -58,19 +58,19 @@
 
 - (PFParallaxColor)medianColor
 {
-  v3 = [(_PIParallaxRenderResource *)self imageHistogram];
-  v4 = [v3 red];
+  imageHistogram = [(_PIParallaxRenderResource *)self imageHistogram];
+  v4 = [imageHistogram red];
   [v4 median];
   v6 = v5;
 
-  v7 = [(_PIParallaxRenderResource *)self imageHistogram];
-  v8 = [v7 green];
-  [v8 median];
+  imageHistogram2 = [(_PIParallaxRenderResource *)self imageHistogram];
+  green = [imageHistogram2 green];
+  [green median];
   v10 = v9;
 
-  v11 = [(_PIParallaxRenderResource *)self imageHistogram];
-  v12 = [v11 blue];
-  [v12 median];
+  imageHistogram3 = [(_PIParallaxRenderResource *)self imageHistogram];
+  blue = [imageHistogram3 blue];
+  [blue median];
   v14 = v13;
 
   v15 = [objc_alloc(MEMORY[0x1E69C0750]) initWithRed:v6 green:v10 blue:v14];

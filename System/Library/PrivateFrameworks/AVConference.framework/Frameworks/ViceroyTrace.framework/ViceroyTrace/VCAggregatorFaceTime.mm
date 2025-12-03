@@ -1,90 +1,90 @@
 @interface VCAggregatorFaceTime
 + (id)newThermalDataCollectors;
 + (void)newThermalDataCollectors;
-- (BOOL)isDuplicationChangedForEventType:(unsigned __int16)a3;
-- (VCAggregatorFaceTime)initWithDelegate:(id)a3 nwParentActivity:(id)a4 conversationTimeBase:(id)a5;
-- (double)markHandshakeCompletion:(id)a3;
+- (BOOL)isDuplicationChangedForEventType:(unsigned __int16)type;
+- (VCAggregatorFaceTime)initWithDelegate:(id)delegate nwParentActivity:(id)activity conversationTimeBase:(id)base;
+- (double)markHandshakeCompletion:(id)completion;
 - (id)aggregatedCallReports;
 - (id)aggregatedSegmentQRReport;
-- (id)aggregatedSegmentReport:(int)a3;
-- (id)aggregatedSegmentReportInternal:(int)a3;
-- (id)updatePayloadWithSingleParticipantData:(id)a3;
-- (void)addConnectionTiming:(id)a3;
-- (void)addControlChannelTelemetry:(id)a3;
+- (id)aggregatedSegmentReport:(int)report;
+- (id)aggregatedSegmentReportInternal:(int)internal;
+- (id)updatePayloadWithSingleParticipantData:(id)data;
+- (void)addConnectionTiming:(id)timing;
+- (void)addControlChannelTelemetry:(id)telemetry;
 - (void)dealloc;
 - (void)flushCurrentSegment;
-- (void)flushCurrentSegment:(id)a3;
-- (void)markHandshakeStart:(id)a3;
-- (void)populateSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)a3 toPayload:(id)a4;
-- (void)processBackgroundReplacementStatus:(id)a3;
-- (void)processCameraResolution:(id)a3;
-- (void)processCenterStageFeatureStatus:(id)a3;
-- (void)processConnectionEstablishment:(id)a3;
-- (void)processControlChannelEventType:(unsigned __int16)a3 payload:(id)a4;
-- (void)processDuplication:(id)a3 type:(unsigned __int16)a4;
-- (void)processEventTriggerForNewSegment:(id)a3;
-- (void)processEyeContactFeatureStatus:(id)a3;
-- (void)processPortraitModeFeatureStatus:(id)a3;
-- (void)processRTXConfigData:(id)a3;
-- (void)processReactionFeatureStatus:(id)a3;
-- (void)processRtcpPSFBForResiliencyConfigData:(id)a3;
-- (void)processStudioLightFeatureStatus:(id)a3;
-- (void)processThermalLevelChange:(id)a3 withTime:(double)a4;
-- (void)processWindowMode:(id)a3 responseCode:(int)a4;
-- (void)reset:(id)a3;
-- (void)setNWActivityReportingEnabled:(BOOL)a3;
-- (void)setupAdaptiveLearningWithParameters:(id)a3;
-- (void)startNewSegment:(id)a3;
-- (void)transferActiveSegmentStatus:(id)a3;
-- (void)updateAVSyncOffsetSumAndCountWithValue:(int)a3;
-- (void)updateAlgoMetrics:(id)a3 type:(unsigned int)a4;
-- (void)updateAudioTxStatsWithPayload:(id)a3;
-- (void)updateBitrateCap:(id)a3;
-- (void)updateCellTech:(id)a3;
-- (void)updateCenterStageEnabled:(unsigned __int16)a3;
-- (void)updateConnectionSubTimes:(id)a3;
-- (void)updateConnectionTelemetry:(id)a3;
-- (void)updateCoreMotionActivityWithPayload:(id)a3;
-- (void)updateCurrentMediaBitratesWithPayload:(id)a3;
-- (void)updateErrorCode:(id)a3;
-- (void)updateLateFrameStats:(id)a3;
-- (void)updateLinkProbingStats:(unsigned int)a3 payload:(id)a4;
-- (void)updateLinkSuggestionTelemetry:(id)a3;
-- (void)updateNetworkSendResultStats:(id)a3;
-- (void)updateNetworkStats:(unsigned int)a3 payload:(id)a4;
-- (void)updateNoRemoteState:(id)a3 state:(BOOL)a4;
-- (void)updatePauseVideo:(id)a3;
-- (void)updatePortraitBlurEnabled:(unsigned __int16)a3;
-- (void)updatePrimaryConnHealthAllowedDelay:(double)a3;
-- (void)updateProtocolStackDescription:(id)a3;
-- (void)updateQRExperiments:(id)a3;
-- (void)updateRTStats:(id)a3;
-- (void)updateRTXStats:(id)a3;
-- (void)updateRateControlExperiment:(id)a3 type:(unsigned __int16)a4;
-- (void)updateRateControlSmartBrakeTrialVersion:(id)a3 type:(unsigned __int16)a4;
-- (void)updateRelayInfo:(id)a3;
-- (void)updateSegmentStats:(id)a3;
-- (void)updateSpatialAudioSupport:(id)a3;
-- (void)updateSwitchConfiguration:(unsigned int)a3 payload:(id)a4;
-- (void)updateThermalDataCollectorsStateWithPayload:(id)a3 withTime:(double)a4;
-- (void)updateThermalMetricsFromPayload:(id)a3;
-- (void)updateTotalConnectionTime:(id)a3;
-- (void)updateVCRCProfileNumber:(unsigned int)a3;
-- (void)updateVPCStatus:(id)a3;
-- (void)updateVideoQualityWithPayload:(id)a3;
-- (void)updateVideoResolution:(id)a3;
-- (void)updateVideoSwitchTimes:(id)a3;
-- (void)updateWRMMetrics:(unsigned int)a3 payload:(id)a4;
+- (void)flushCurrentSegment:(id)segment;
+- (void)markHandshakeStart:(id)start;
+- (void)populateSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)bytes toPayload:(id)payload;
+- (void)processBackgroundReplacementStatus:(id)status;
+- (void)processCameraResolution:(id)resolution;
+- (void)processCenterStageFeatureStatus:(id)status;
+- (void)processConnectionEstablishment:(id)establishment;
+- (void)processControlChannelEventType:(unsigned __int16)type payload:(id)payload;
+- (void)processDuplication:(id)duplication type:(unsigned __int16)type;
+- (void)processEventTriggerForNewSegment:(id)segment;
+- (void)processEyeContactFeatureStatus:(id)status;
+- (void)processPortraitModeFeatureStatus:(id)status;
+- (void)processRTXConfigData:(id)data;
+- (void)processReactionFeatureStatus:(id)status;
+- (void)processRtcpPSFBForResiliencyConfigData:(id)data;
+- (void)processStudioLightFeatureStatus:(id)status;
+- (void)processThermalLevelChange:(id)change withTime:(double)time;
+- (void)processWindowMode:(id)mode responseCode:(int)code;
+- (void)reset:(id)reset;
+- (void)setNWActivityReportingEnabled:(BOOL)enabled;
+- (void)setupAdaptiveLearningWithParameters:(id)parameters;
+- (void)startNewSegment:(id)segment;
+- (void)transferActiveSegmentStatus:(id)status;
+- (void)updateAVSyncOffsetSumAndCountWithValue:(int)value;
+- (void)updateAlgoMetrics:(id)metrics type:(unsigned int)type;
+- (void)updateAudioTxStatsWithPayload:(id)payload;
+- (void)updateBitrateCap:(id)cap;
+- (void)updateCellTech:(id)tech;
+- (void)updateCenterStageEnabled:(unsigned __int16)enabled;
+- (void)updateConnectionSubTimes:(id)times;
+- (void)updateConnectionTelemetry:(id)telemetry;
+- (void)updateCoreMotionActivityWithPayload:(id)payload;
+- (void)updateCurrentMediaBitratesWithPayload:(id)payload;
+- (void)updateErrorCode:(id)code;
+- (void)updateLateFrameStats:(id)stats;
+- (void)updateLinkProbingStats:(unsigned int)stats payload:(id)payload;
+- (void)updateLinkSuggestionTelemetry:(id)telemetry;
+- (void)updateNetworkSendResultStats:(id)stats;
+- (void)updateNetworkStats:(unsigned int)stats payload:(id)payload;
+- (void)updateNoRemoteState:(id)state state:(BOOL)a4;
+- (void)updatePauseVideo:(id)video;
+- (void)updatePortraitBlurEnabled:(unsigned __int16)enabled;
+- (void)updatePrimaryConnHealthAllowedDelay:(double)delay;
+- (void)updateProtocolStackDescription:(id)description;
+- (void)updateQRExperiments:(id)experiments;
+- (void)updateRTStats:(id)stats;
+- (void)updateRTXStats:(id)stats;
+- (void)updateRateControlExperiment:(id)experiment type:(unsigned __int16)type;
+- (void)updateRateControlSmartBrakeTrialVersion:(id)version type:(unsigned __int16)type;
+- (void)updateRelayInfo:(id)info;
+- (void)updateSegmentStats:(id)stats;
+- (void)updateSpatialAudioSupport:(id)support;
+- (void)updateSwitchConfiguration:(unsigned int)configuration payload:(id)payload;
+- (void)updateThermalDataCollectorsStateWithPayload:(id)payload withTime:(double)time;
+- (void)updateThermalMetricsFromPayload:(id)payload;
+- (void)updateTotalConnectionTime:(id)time;
+- (void)updateVCRCProfileNumber:(unsigned int)number;
+- (void)updateVPCStatus:(id)status;
+- (void)updateVideoQualityWithPayload:(id)payload;
+- (void)updateVideoResolution:(id)resolution;
+- (void)updateVideoSwitchTimes:(id)times;
+- (void)updateWRMMetrics:(unsigned int)metrics payload:(id)payload;
 @end
 
 @implementation VCAggregatorFaceTime
 
-- (VCAggregatorFaceTime)initWithDelegate:(id)a3 nwParentActivity:(id)a4 conversationTimeBase:(id)a5
+- (VCAggregatorFaceTime)initWithDelegate:(id)delegate nwParentActivity:(id)activity conversationTimeBase:(id)base
 {
   v28 = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = VCAggregatorFaceTime;
-  v5 = [(VCAggregator *)&v15 initWithDelegate:a3 nwParentActivity:a4 conversationTimeBase:a5];
+  v5 = [(VCAggregator *)&v15 initWithDelegate:delegate nwParentActivity:activity conversationTimeBase:base];
   v6 = v5;
   if (v5)
   {
@@ -177,11 +177,11 @@
   [(VCAggregator *)&v3 dealloc];
 }
 
-- (void)setupAdaptiveLearningWithParameters:(id)a3
+- (void)setupAdaptiveLearningWithParameters:(id)parameters
 {
-  if ([objc_msgSend(a3 objectForKeyedSubscript:{sRTCReportingAdaptiveLearningState), "intValue"}])
+  if ([objc_msgSend(parameters objectForKeyedSubscript:{sRTCReportingAdaptiveLearningState), "intValue"}])
   {
-    v5 = [[VCAdaptiveLearning alloc] initWithParameters:a3];
+    v5 = [[VCAdaptiveLearning alloc] initWithParameters:parameters];
   }
 
   else
@@ -245,9 +245,9 @@ LABEL_13:
   return v2;
 }
 
-- (id)aggregatedSegmentReportInternal:(int)a3
+- (id)aggregatedSegmentReportInternal:(int)internal
 {
-  if (a3 == 2)
+  if (internal == 2)
   {
     return [(CallSegment *)self->_currentSegment segmentReport];
   }
@@ -258,7 +258,7 @@ LABEL_13:
   }
 }
 
-- (id)aggregatedSegmentReport:(int)a3
+- (id)aggregatedSegmentReport:(int)report
 {
   v8 = 0;
   v9 = &v8;
@@ -273,7 +273,7 @@ LABEL_13:
   block[3] = &unk_278BD4890;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  reportCopy = report;
   dispatch_sync(stateQueue, block);
   v4 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -316,25 +316,25 @@ uint64_t __49__VCAggregatorFaceTime_aggregatedSegmentQRReport__block_invoke(uint
   return result;
 }
 
-- (void)addControlChannelTelemetry:(id)a3
+- (void)addControlChannelTelemetry:(id)telemetry
 {
   [(VCAggregatorFaceTime *)self markHandshakeCompletion:0];
   v4 = +[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils, "safeRoundOffNumber:toSignificantDigits:", [MEMORY[0x277CCABA8] numberWithDouble:?], 2);
 
-  [a3 setObject:v4 forKeyedSubscript:@"CCHDRTN"];
+  [telemetry setObject:v4 forKeyedSubscript:@"CCHDRTN"];
 }
 
-- (void)addConnectionTiming:(id)a3
+- (void)addConnectionTiming:(id)timing
 {
   mediaReceivedTime = self->_mediaReceivedTime;
   if (mediaReceivedTime != 0x80000000 && (mediaReceivedTime || self->_transportConnectionTime) && (self->_mediaReceivedToProcessedTime || self->super._isWalkieTalkieMode))
   {
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_totalConnectionTime), @"CTCT"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_startConnectionTime), @"CST"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_transportConnectionTime), @"CTT"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_totalMediaStallSaveInterval), @"TMSSI"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_mediaReceivedTime), @"MRT"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_mediaReceivedToProcessedTime), @"MRPT"}];
+    [timing setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_totalConnectionTime), @"CTCT"}];
+    [timing setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_startConnectionTime), @"CST"}];
+    [timing setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_transportConnectionTime), @"CTT"}];
+    [timing setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_totalMediaStallSaveInterval), @"TMSSI"}];
+    [timing setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_mediaReceivedTime), @"MRT"}];
+    [timing setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_mediaReceivedToProcessedTime), @"MRPT"}];
   }
 
   if (self->_totalConnectionTime_Alt && [MEMORY[0x277CCABA8] numberWithUnsignedInt:?])
@@ -350,25 +350,25 @@ uint64_t __49__VCAggregatorFaceTime_aggregatedSegmentQRReport__block_invoke(uint
       v7 = 0;
     }
 
-    [a3 setObject:v7 forKeyedSubscript:v6];
+    [timing setObject:v7 forKeyedSubscript:v6];
   }
 }
 
-- (void)updateTotalConnectionTime:(id)a3
+- (void)updateTotalConnectionTime:(id)time
 {
   v20 = *MEMORY[0x277D85DE8];
-  if ([a3 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithUTF8String:", &unk_23D59AAE5)}])
+  if ([time objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithUTF8String:", &unk_23D59AAE5)}])
   {
-    if ([a3 objectForKeyedSubscript:@"VCSPIDSID"])
+    if ([time objectForKeyedSubscript:@"VCSPIDSID"])
     {
-      self->_totalConnectionTime_Alt = [objc_msgSend(a3 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithUTF8String:", &unk_23D59AAE5)), "unsignedIntValue"}];
+      self->_totalConnectionTime_Alt = [objc_msgSend(time objectForKeyedSubscript:{objc_msgSend(MEMORY[0x277CCACA0], "stringWithUTF8String:", &unk_23D59AAE5)), "unsignedIntValue"}];
       if (VRTraceGetErrorLogLevelForModule("") >= 6)
       {
         v5 = VRTraceErrorLogLevelToCSTR(6u);
         v6 = gVRTraceOSLog;
         if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = [a3 objectForKeyedSubscript:@"VCSPIDSID"];
+          v7 = [time objectForKeyedSubscript:@"VCSPIDSID"];
           totalConnectionTime_Alt = self->_totalConnectionTime_Alt;
           v10 = 136316162;
           v11 = v5;
@@ -1490,14 +1490,14 @@ LABEL_167:
   dispatch_async(stateQueue, block);
 }
 
-- (void)flushCurrentSegment:(id)a3
+- (void)flushCurrentSegment:(id)segment
 {
   v45 = *MEMORY[0x277D85DE8];
   if (self->_currentSegmentKey)
   {
-    v5 = [(CallSegment *)self->_currentSegment duration];
+    duration = [(CallSegment *)self->_currentSegment duration];
     ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule("");
-    if (v5 > 1)
+    if (duration > 1)
     {
       if (ErrorLogLevelForModule >= 8)
       {
@@ -1507,8 +1507,8 @@ LABEL_167:
         {
           if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
           {
-            v16 = [(CallSegment *)self->_currentSegment duration];
-            v17 = [(NSString *)self->_currentSegmentKey UTF8String];
+            duration2 = [(CallSegment *)self->_currentSegment duration];
+            uTF8String = [(NSString *)self->_currentSegmentKey UTF8String];
             v37 = 136316162;
             v38 = v14;
             v39 = 2080;
@@ -1516,17 +1516,17 @@ LABEL_167:
             v41 = 1024;
             v42 = 2648;
             v43 = 1024;
-            *v44 = v16;
+            *v44 = duration2;
             *&v44[4] = 2080;
-            *&v44[6] = v17;
+            *&v44[6] = uTF8String;
             _os_log_impl(&dword_23D4DF000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCAggregator: Segment event counter is %d, saving the stats for the segment %s", &v37, 0x2Cu);
           }
         }
 
         else if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEBUG))
         {
-          v35 = [(CallSegment *)self->_currentSegment duration];
-          v36 = [(NSString *)self->_currentSegmentKey UTF8String];
+          duration3 = [(CallSegment *)self->_currentSegment duration];
+          uTF8String2 = [(NSString *)self->_currentSegmentKey UTF8String];
           v37 = 136316162;
           v38 = v14;
           v39 = 2080;
@@ -1534,9 +1534,9 @@ LABEL_167:
           v41 = 1024;
           v42 = 2648;
           v43 = 1024;
-          *v44 = v35;
+          *v44 = duration3;
           *&v44[4] = 2080;
-          *&v44[6] = v36;
+          *&v44[6] = uTF8String2;
           _os_log_debug_impl(&dword_23D4DF000, v15, OS_LOG_TYPE_DEBUG, " [%s] %s:%d VCAggregator: Segment event counter is %d, saving the stats for the segment %s", &v37, 0x2Cu);
         }
       }
@@ -1544,7 +1544,7 @@ LABEL_167:
       [(VCAggregatorFaceTime *)self updateAudioTxStatsWithPayload:0];
       if (self->_degradedVideoStartTime != 0.0)
       {
-        [(VCAggregator *)self microFromPayload:a3];
+        [(VCAggregator *)self microFromPayload:segment];
         v21 = v20 - self->_degradedVideoStartTime;
         [(VCHistogram *)[(CallSegment *)self->_currentSegment poorConnection] addValue:(v21 / [(VCAggregator *)self RTPeriod])];
         [(CallSegment *)self->_currentSegment poorConnectionMaxLength];
@@ -1570,7 +1570,7 @@ LABEL_167:
 
       if (self->_noRemoteStartTime != 0.0)
       {
-        [(VCAggregator *)self microFromPayload:a3];
+        [(VCAggregator *)self microFromPayload:segment];
         v27 = v26 - self->_noRemoteStartTime;
         v28 = self->_currentSegment;
         [(CallSegment *)v28 totalNoRemotePacketsTime];
@@ -1604,7 +1604,7 @@ LABEL_167:
         {
           if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
           {
-            v33 = [(NSString *)self->_currentSegmentKey UTF8String];
+            uTF8String3 = [(NSString *)self->_currentSegmentKey UTF8String];
             v37 = 136315906;
             v38 = v31;
             v39 = 2080;
@@ -1612,7 +1612,7 @@ LABEL_167:
             v41 = 1024;
             v42 = 2683;
             v43 = 2080;
-            *v44 = v33;
+            *v44 = uTF8String3;
             v11 = " [%s] %s:%d VCAggregator: Segment %s flushed";
             v12 = v32;
             v13 = 38;
@@ -1635,8 +1635,8 @@ LABEL_167:
       {
         if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [(NSString *)self->_currentSegmentKey UTF8String];
-          v10 = [(CallSegment *)self->_currentSegment duration];
+          uTF8String4 = [(NSString *)self->_currentSegmentKey UTF8String];
+          duration4 = [(CallSegment *)self->_currentSegment duration];
           v37 = 136316162;
           v38 = v7;
           v39 = 2080;
@@ -1644,9 +1644,9 @@ LABEL_167:
           v41 = 1024;
           v42 = 2646;
           v43 = 2080;
-          *v44 = v9;
+          *v44 = uTF8String4;
           *&v44[8] = 1024;
-          *&v44[10] = v10;
+          *&v44[10] = duration4;
           v11 = " [%s] %s:%d VCAggregator: Segment %s has too few events %d. Ignoring its stats";
           v12 = v8;
           v13 = 44;
@@ -1657,8 +1657,8 @@ LABEL_29:
 
       else if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [(NSString *)self->_currentSegmentKey UTF8String];
-        v19 = [(CallSegment *)self->_currentSegment duration];
+        uTF8String5 = [(NSString *)self->_currentSegmentKey UTF8String];
+        duration5 = [(CallSegment *)self->_currentSegment duration];
         v37 = 136316162;
         v38 = v7;
         v39 = 2080;
@@ -1666,9 +1666,9 @@ LABEL_29:
         v41 = 1024;
         v42 = 2646;
         v43 = 2080;
-        *v44 = v18;
+        *v44 = uTF8String5;
         *&v44[8] = 1024;
-        *&v44[10] = v19;
+        *&v44[10] = duration5;
         _os_log_debug_impl(&dword_23D4DF000, v8, OS_LOG_TYPE_DEBUG, " [%s] %s:%d VCAggregator: Segment %s has too few events %d. Ignoring its stats", &v37, 0x2Cu);
       }
     }
@@ -1677,7 +1677,7 @@ LABEL_29:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reset:(id)a3
+- (void)reset:(id)reset
 {
   v45[1] = *MEMORY[0x277D85DE8];
   [(VCAggregatorDelegate *)self->super._delegate reportSegment:[(VCAggregatorFaceTime *)self aggregatedSegmentReportInternal:2] withMessageType:2 clientType:0];
@@ -1699,7 +1699,7 @@ LABEL_29:
 
   linkProbingVersion = self->super._linkProbingVersion;
   remoteLinkProbingVersion = self->super._remoteLinkProbingVersion;
-  [(VCAggregator *)self microFromPayload:a3];
+  [(VCAggregator *)self microFromPayload:reset];
   v11 = 0.0;
   v12 = 0.0;
   if (self->_localAlertActive)
@@ -1748,10 +1748,10 @@ LABEL_29:
   v27 = [(CallSegment *)v16 initWithSegmentName:v17 previousSegmentName:currentSegmentKey mode:callMode_low deviceRole:callDeviceRole_low transportType:callTransportType_low relayServer:relayServer relayType:v34 accessToken:accessToken duplicationType:v35 switchConfig:v7 linkProbingConfig:buf nwActivity:v15 conversationTimeBase:conversationTimeBase isInitiator:v36 delegate:self];
   self->_currentSegment = v27;
   [(VCReportingCommon *)v27 setCurrentThermalLevel:self->super.super._currentThermalLevel];
-  v28 = [(VCReportingCommon *)self->_currentSegment thermalDurations];
+  thermalDurations = [(VCReportingCommon *)self->_currentSegment thermalDurations];
   currentThermalLevel = self->super.super._currentThermalLevel;
-  [(VCAggregator *)self microFromPayload:a3];
-  [(VCDurationHistogram *)v28 resumeAtBucket:currentThermalLevel currentTime:?];
+  [(VCAggregator *)self microFromPayload:reset];
+  [(VCDurationHistogram *)thermalDurations resumeAtBucket:currentThermalLevel currentTime:?];
   [(CallSegment *)self->_currentSegment setIsApplePersonalHotspot:[(VCAggregator *)self isApplePersonalHotspotAndUpdatePhyMode]];
   [(CallSegment *)self->_currentSegment setNWActivityReportingEnabled:self->super._isNWActivityReportingEnabled];
   [(CallSegment *)self->_currentSegment setIsCenterStageEnabled:self->_isCenterStageEnabled];
@@ -1802,7 +1802,7 @@ LABEL_29:
     {
       if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_DEFAULT))
       {
-        v32 = [(NSString *)self->_currentSegmentKey UTF8String];
+        uTF8String = [(NSString *)self->_currentSegmentKey UTF8String];
         *buf = 136315906;
         *v38 = v30;
         *&v38[8] = 2080;
@@ -1810,7 +1810,7 @@ LABEL_29:
         *&v38[18] = 1024;
         v39 = 2786;
         v40 = 2080;
-        v41 = v32;
+        v41 = uTF8String;
         _os_log_impl(&dword_23D4DF000, v31, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCAggregator: New key generated %s", buf, 0x26u);
       }
     }
@@ -1824,51 +1824,51 @@ LABEL_29:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transferActiveSegmentStatus:(id)a3
+- (void)transferActiveSegmentStatus:(id)status
 {
   v5 = micro();
   if (![(VCDurationHistogram *)self->super._studioLightDuration isPaused])
   {
-    [objc_msgSend(a3 "studioLightDuration")];
+    [objc_msgSend(status "studioLightDuration")];
   }
 
   if (![(VCDurationHistogram *)self->super._centerStageDuration isPaused])
   {
-    [objc_msgSend(a3 "centerStageDuration")];
+    [objc_msgSend(status "centerStageDuration")];
   }
 
   if (![(VCDurationHistogram *)self->super._portraitModeDuration isPaused])
   {
-    [objc_msgSend(a3 "portraitModeDuration")];
+    [objc_msgSend(status "portraitModeDuration")];
   }
 
   if (![(VCDurationHistogram *)self->super._eyeContactDuration isPaused])
   {
-    [objc_msgSend(a3 "eyeContactDuration")];
+    [objc_msgSend(status "eyeContactDuration")];
   }
 
   if (![(VCDurationHistogram *)self->super._reactionActiveDuration isPaused])
   {
-    [objc_msgSend(a3 "reactionActiveDuration")];
+    [objc_msgSend(status "reactionActiveDuration")];
   }
 
   if (![(VCDurationHistogram *)self->super._backgroundReplacementDuration isPaused])
   {
-    v6 = [a3 backgroundReplacementDuration];
+    backgroundReplacementDuration = [status backgroundReplacementDuration];
     currentThermalLevel = self->super.super._currentThermalLevel;
 
-    [v6 resumeAtBucket:currentThermalLevel currentTime:v5];
+    [backgroundReplacementDuration resumeAtBucket:currentThermalLevel currentTime:v5];
   }
 }
 
-- (void)setNWActivityReportingEnabled:(BOOL)a3
+- (void)setNWActivityReportingEnabled:(BOOL)enabled
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke;
   v4[3] = &unk_278BD4D20;
-  v5 = a3;
+  enabledCopy = enabled;
   v4[4] = self;
   dispatch_async(stateQueue, v4);
 }
@@ -1889,17 +1889,17 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
   return result;
 }
 
-- (void)startNewSegment:(id)a3
+- (void)startNewSegment:(id)segment
 {
   [(VCAggregatorFaceTime *)self flushCurrentSegment:?];
 
-  [(VCAggregatorFaceTime *)self reset:a3];
+  [(VCAggregatorFaceTime *)self reset:segment];
 }
 
-- (id)updatePayloadWithSingleParticipantData:(id)a3
+- (id)updatePayloadWithSingleParticipantData:(id)data
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:a3];
+  v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:data];
   v4 = [v3 objectForKeyedSubscript:sRTCReportingStreamCollection];
   v21 = 0u;
   v22 = 0u;
@@ -1925,8 +1925,8 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v9 = [v8 allKeys];
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        allKeys = [v8 allKeys];
+        v10 = [allKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -1938,7 +1938,7 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(allKeys);
               }
 
               [v3 setObject:objc_msgSend(v8 forKeyedSubscript:{"objectForKeyedSubscript:", *(*(&v17 + 1) + 8 * v13)), *(*(&v17 + 1) + 8 * v13)}];
@@ -1946,7 +1946,7 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
             }
 
             while (v11 != v13);
-            v11 = [v9 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v11 = [allKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
           }
 
           while (v11);
@@ -1966,10 +1966,10 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
   return v3;
 }
 
-- (void)updateAVSyncOffsetSumAndCountWithValue:(int)a3
+- (void)updateAVSyncOffsetSumAndCountWithValue:(int)value
 {
-  self->_avSyncOffsetSum += a3;
-  [(CallSegment *)self->_currentSegment setAvSyncOffsetSum:[(CallSegment *)self->_currentSegment avSyncOffsetSum]+ a3];
+  self->_avSyncOffsetSum += value;
+  [(CallSegment *)self->_currentSegment setAvSyncOffsetSum:[(CallSegment *)self->_currentSegment avSyncOffsetSum]+ value];
   ++self->_avSyncOffsetSamplesCount;
   currentSegment = self->_currentSegment;
   v5 = [(CallSegment *)currentSegment avSyncOffsetSamplesCount]+ 1;
@@ -1977,48 +1977,48 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
   [(CallSegment *)currentSegment setAvSyncOffsetSamplesCount:v5];
 }
 
-- (void)processCameraResolution:(id)a3
+- (void)processCameraResolution:(id)resolution
 {
-  if ([a3 objectForKeyedSubscript:@"CAMRESW"])
+  if ([resolution objectForKeyedSubscript:@"CAMRESW"])
   {
-    self->_lastCameraCaptureWidth = [objc_msgSend(a3 objectForKeyedSubscript:{@"CAMRESW", "integerValue"}];
+    self->_lastCameraCaptureWidth = [objc_msgSend(resolution objectForKeyedSubscript:{@"CAMRESW", "integerValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"CAMRESH"])
+  if ([resolution objectForKeyedSubscript:@"CAMRESH"])
   {
-    self->_lastCameraCaptureHeight = [objc_msgSend(a3 objectForKeyedSubscript:{@"CAMRESH", "integerValue"}];
+    self->_lastCameraCaptureHeight = [objc_msgSend(resolution objectForKeyedSubscript:{@"CAMRESH", "integerValue"}];
   }
 }
 
-- (void)updateNetworkSendResultStats:(id)a3
+- (void)updateNetworkSendResultStats:(id)stats
 {
-  if ([a3 objectForKeyedSubscript:@"PSSCTR"])
+  if ([stats objectForKeyedSubscript:@"PSSCTR"])
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"PSSCTR", "intValue"}];
+    v5 = [objc_msgSend(stats objectForKeyedSubscript:{@"PSSCTR", "intValue"}];
     [(CallSegment *)self->_currentSegment setPacketSendSuccessCounter:[(CallSegment *)self->_currentSegment packetSendSuccessCounter]+ v5];
     self->_packetSendSuccessCounter += v5;
   }
 
-  if ([a3 objectForKeyedSubscript:@"PSFCTR"])
+  if ([stats objectForKeyedSubscript:@"PSFCTR"])
   {
-    v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"PSFCTR", "intValue"}];
+    v6 = [objc_msgSend(stats objectForKeyedSubscript:{@"PSFCTR", "intValue"}];
     [(CallSegment *)self->_currentSegment setPacketSendFailureCounter:[(CallSegment *)self->_currentSegment packetSendFailureCounter]+ v6];
     self->_packetSendFailureCounter += v6;
   }
 }
 
-- (void)populateSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)a3 toPayload:(id)a4
+- (void)populateSegmentBytes:(tagVCAggregatorFaceTimeSegmentStatsBytes *)bytes toPayload:(id)payload
 {
-  if (a3)
+  if (bytes)
   {
-    a3->var7 = [objc_msgSend(a4 objectForKeyedSubscript:{@"CDupTxDb", "integerValue"}];
-    a3->var4 = [objc_msgSend(a4 objectForKeyedSubscript:{@"CDupRxDb", "integerValue"}];
-    a3->var5 = [objc_msgSend(a4 objectForKeyedSubscript:{@"CBudgTxDb", "integerValue"}];
-    a3->var6 = [objc_msgSend(a4 objectForKeyedSubscript:{@"CBudgRxDb", "integerValue"}];
-    a3->var0 = [objc_msgSend(a4 objectForKeyedSubscript:{@"CTxDb", "integerValue"}];
-    a3->var1 = [objc_msgSend(a4 objectForKeyedSubscript:{@"CRxDb", "integerValue"}];
-    a3->var2 = [objc_msgSend(a4 objectForKeyedSubscript:{@"WTxDb", "integerValue"}];
-    a3->var3 = [objc_msgSend(a4 objectForKeyedSubscript:{@"WRxDb", "integerValue"}];
+    bytes->var7 = [objc_msgSend(payload objectForKeyedSubscript:{@"CDupTxDb", "integerValue"}];
+    bytes->var4 = [objc_msgSend(payload objectForKeyedSubscript:{@"CDupRxDb", "integerValue"}];
+    bytes->var5 = [objc_msgSend(payload objectForKeyedSubscript:{@"CBudgTxDb", "integerValue"}];
+    bytes->var6 = [objc_msgSend(payload objectForKeyedSubscript:{@"CBudgRxDb", "integerValue"}];
+    bytes->var0 = [objc_msgSend(payload objectForKeyedSubscript:{@"CTxDb", "integerValue"}];
+    bytes->var1 = [objc_msgSend(payload objectForKeyedSubscript:{@"CRxDb", "integerValue"}];
+    bytes->var2 = [objc_msgSend(payload objectForKeyedSubscript:{@"WTxDb", "integerValue"}];
+    bytes->var3 = [objc_msgSend(payload objectForKeyedSubscript:{@"WRxDb", "integerValue"}];
   }
 
   else
@@ -2027,17 +2027,17 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
   }
 }
 
-- (void)updateSegmentStats:(id)a3
+- (void)updateSegmentStats:(id)stats
 {
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  [(VCAggregatorFaceTime *)self populateSegmentBytes:&v36 toPayload:a3];
-  v4 = [(CallSegment *)self->_currentSegment lastReportedTotalCellDupTxDataBytes];
+  [(VCAggregatorFaceTime *)self populateSegmentBytes:&v36 toPayload:stats];
+  lastReportedTotalCellDupTxDataBytes = [(CallSegment *)self->_currentSegment lastReportedTotalCellDupTxDataBytes];
   v5 = *(&v39 + 1);
   currentSegment = self->_currentSegment;
-  if (v4 <= *(&v39 + 1))
+  if (lastReportedTotalCellDupTxDataBytes <= *(&v39 + 1))
   {
     v7 = v5 - [(CallSegment *)self->_currentSegment lastReportedTotalCellDupTxDataBytes];
     v5 = v7 + [(CallSegment *)currentSegment totalCellDupTxDataBytes];
@@ -2045,10 +2045,10 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
 
   [(CallSegment *)currentSegment setTotalCellDupTxDataBytes:v5];
   [(CallSegment *)self->_currentSegment setLastReportedTotalCellDupTxDataBytes:*(&v39 + 1)];
-  v8 = [(CallSegment *)self->_currentSegment lastReportedTotalCellDupRxDataBytes];
+  lastReportedTotalCellDupRxDataBytes = [(CallSegment *)self->_currentSegment lastReportedTotalCellDupRxDataBytes];
   v9 = v38;
   v10 = self->_currentSegment;
-  if (v8 <= v38)
+  if (lastReportedTotalCellDupRxDataBytes <= v38)
   {
     v11 = v9 - [(CallSegment *)self->_currentSegment lastReportedTotalCellDupRxDataBytes];
     v9 = v11 + [(CallSegment *)v10 totalCellDupRxDataBytes];
@@ -2056,10 +2056,10 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
 
   [(CallSegment *)v10 setTotalCellDupRxDataBytes:v9];
   [(CallSegment *)self->_currentSegment setLastReportedTotalCellDupRxDataBytes:v38];
-  v12 = [(CallSegment *)self->_currentSegment lastReportedTotalUsedCellBudgetTxDataBytes];
+  lastReportedTotalUsedCellBudgetTxDataBytes = [(CallSegment *)self->_currentSegment lastReportedTotalUsedCellBudgetTxDataBytes];
   v13 = *(&v38 + 1);
   v14 = self->_currentSegment;
-  if (v12 <= *(&v38 + 1))
+  if (lastReportedTotalUsedCellBudgetTxDataBytes <= *(&v38 + 1))
   {
     v15 = v13 - [(CallSegment *)self->_currentSegment lastReportedTotalUsedCellBudgetTxDataBytes];
     v13 = v15 + [(CallSegment *)v14 totalUsedCellBudgetTxDataBytes];
@@ -2067,10 +2067,10 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
 
   [(CallSegment *)v14 setTotalUsedCellBudgetTxDataBytes:v13];
   [(CallSegment *)self->_currentSegment setLastReportedTotalUsedCellBudgetTxDataBytes:*(&v38 + 1)];
-  v16 = [(CallSegment *)self->_currentSegment lastReportedTotalUsedCellBudgetRxDataBytes];
+  lastReportedTotalUsedCellBudgetRxDataBytes = [(CallSegment *)self->_currentSegment lastReportedTotalUsedCellBudgetRxDataBytes];
   v17 = v39;
   v18 = self->_currentSegment;
-  if (v16 <= v39)
+  if (lastReportedTotalUsedCellBudgetRxDataBytes <= v39)
   {
     v19 = v17 - [(CallSegment *)self->_currentSegment lastReportedTotalUsedCellBudgetRxDataBytes];
     v17 = v19 + [(CallSegment *)v18 totalUsedCellBudgetRxDataBytes];
@@ -2078,10 +2078,10 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
 
   [(CallSegment *)v18 setTotalUsedCellBudgetRxDataBytes:v17];
   [(CallSegment *)self->_currentSegment setLastReportedTotalUsedCellBudgetRxDataBytes:v39];
-  v20 = [(CallSegment *)self->_currentSegment lastReportedTotalCellTxDataBytes];
+  lastReportedTotalCellTxDataBytes = [(CallSegment *)self->_currentSegment lastReportedTotalCellTxDataBytes];
   v21 = v36;
   v22 = self->_currentSegment;
-  if (v20 <= v36)
+  if (lastReportedTotalCellTxDataBytes <= v36)
   {
     v23 = v21 - [(CallSegment *)self->_currentSegment lastReportedTotalCellTxDataBytes];
     v21 = v23 + [(CallSegment *)v22 totalCellTxDataBytes];
@@ -2089,10 +2089,10 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
 
   [(CallSegment *)v22 setTotalCellTxDataBytes:v21];
   [(CallSegment *)self->_currentSegment setLastReportedTotalCellTxDataBytes:v36];
-  v24 = [(CallSegment *)self->_currentSegment lastReportedTotalCellRxDataBytes];
+  lastReportedTotalCellRxDataBytes = [(CallSegment *)self->_currentSegment lastReportedTotalCellRxDataBytes];
   v25 = *(&v36 + 1);
   v26 = self->_currentSegment;
-  if (v24 <= *(&v36 + 1))
+  if (lastReportedTotalCellRxDataBytes <= *(&v36 + 1))
   {
     v27 = v25 - [(CallSegment *)self->_currentSegment lastReportedTotalCellRxDataBytes];
     v25 = v27 + [(CallSegment *)v26 totalCellRxDataBytes];
@@ -2100,10 +2100,10 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
 
   [(CallSegment *)v26 setTotalCellRxDataBytes:v25];
   [(CallSegment *)self->_currentSegment setLastReportedTotalCellRxDataBytes:*(&v36 + 1)];
-  v28 = [(CallSegment *)self->_currentSegment lastReportedTotalWifiTxDataBytes];
+  lastReportedTotalWifiTxDataBytes = [(CallSegment *)self->_currentSegment lastReportedTotalWifiTxDataBytes];
   v29 = v37;
   v30 = self->_currentSegment;
-  if (v28 <= v37)
+  if (lastReportedTotalWifiTxDataBytes <= v37)
   {
     v31 = v29 - [(CallSegment *)self->_currentSegment lastReportedTotalWifiTxDataBytes];
     v29 = v31 + [(CallSegment *)v30 totalWifiTxDataBytes];
@@ -2111,10 +2111,10 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
 
   [(CallSegment *)v30 setTotalWifiTxDataBytes:v29];
   [(CallSegment *)self->_currentSegment setLastReportedTotalWifiTxDataBytes:v37];
-  v32 = [(CallSegment *)self->_currentSegment lastReportedTotalWifiRxDataBytes];
+  lastReportedTotalWifiRxDataBytes = [(CallSegment *)self->_currentSegment lastReportedTotalWifiRxDataBytes];
   v33 = *(&v37 + 1);
   v34 = self->_currentSegment;
-  if (v32 <= *(&v37 + 1))
+  if (lastReportedTotalWifiRxDataBytes <= *(&v37 + 1))
   {
     v35 = v33 - [(CallSegment *)self->_currentSegment lastReportedTotalWifiRxDataBytes];
     v33 = v35 + [(CallSegment *)v34 totalWifiRxDataBytes];
@@ -2124,7 +2124,7 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
   [(CallSegment *)self->_currentSegment setLastReportedTotalWifiRxDataBytes:*(&v37 + 1)];
 }
 
-- (void)updateRTStats:(id)a3
+- (void)updateRTStats:(id)stats
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -2132,7 +2132,7 @@ void *__54__VCAggregatorFaceTime_setNWActivityReportingEnabled___block_invoke(ui
   v4[2] = __38__VCAggregatorFaceTime_updateRTStats___block_invoke;
   v4[3] = &unk_278BD4D48;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = stats;
   dispatch_async(stateQueue, v4);
 }
 
@@ -2978,11 +2978,11 @@ LABEL_124:
   v221 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateLateFrameStats:(id)a3
+- (void)updateLateFrameStats:(id)stats
 {
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"VFEVLtPktDelay", "doubleValue"}];
+  [objc_msgSend(stats objectForKeyedSubscript:{@"VFEVLtPktDelay", "doubleValue"}];
   v6 = v5;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"VFEVMaxLtPktDelay", "doubleValue"}];
+  [objc_msgSend(stats objectForKeyedSubscript:{@"VFEVMaxLtPktDelay", "doubleValue"}];
   v8 = v7;
   self->_evictedFramesAverageLatePacketDelay = v6 + self->_evictedFramesAverageLatePacketDelay;
   evictedFramesMaxLatePacketDelay = self->_evictedFramesMaxLatePacketDelay;
@@ -3008,7 +3008,7 @@ LABEL_124:
     [(CallSegment *)self->_currentSegment setEvictedFramesAnalysisValidIntervals:[(CallSegment *)self->_currentSegment evictedFramesAnalysisValidIntervals]+ 1];
   }
 
-  v13 = [a3 objectForKeyedSubscript:@"VFEVLtPktDelayHist"];
+  v13 = [stats objectForKeyedSubscript:@"VFEVLtPktDelayHist"];
   if (v13)
   {
     v14 = v13;
@@ -3024,8 +3024,8 @@ LABEL_124:
         ValueAtIndex = CFArrayGetValueAtIndex(v14, v17);
         CFNumberGetValue(ValueAtIndex, kCFNumberIntType, &valuePtr);
         [(VCHistogram *)self->_evictedFramesLatePacketHist addValue:v16[v17] withIncrement:valuePtr];
-        v19 = [(CallSegment *)self->_currentSegment evictedFramesLatePacketDelayHist];
-        [(VCHistogram *)v19 addValue:v16[v17++] withIncrement:valuePtr];
+        evictedFramesLatePacketDelayHist = [(CallSegment *)self->_currentSegment evictedFramesLatePacketDelayHist];
+        [(VCHistogram *)evictedFramesLatePacketDelayHist addValue:v16[v17++] withIncrement:valuePtr];
       }
 
       while (v17 < (v21 - 1));
@@ -3033,83 +3033,83 @@ LABEL_124:
   }
 }
 
-- (void)updateRTXStats:(id)a3
+- (void)updateRTXStats:(id)stats
 {
-  if ([a3 objectForKeyedSubscript:@"NacksSent"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"NacksFulfilled") && objc_msgSend(a3, "objectForKeyedSubscript:", @"NacksFulfilledOnTime"))
+  if ([stats objectForKeyedSubscript:@"NacksSent"] && objc_msgSend(stats, "objectForKeyedSubscript:", @"NacksFulfilled") && objc_msgSend(stats, "objectForKeyedSubscript:", @"NacksFulfilledOnTime"))
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksSent", "integerValue"}];
+    v5 = [objc_msgSend(stats objectForKeyedSubscript:{@"NacksSent", "integerValue"}];
     self->_nacksSent += v5;
     [(CallSegment *)self->_currentSegment setNacksSent:[(CallSegment *)self->_currentSegment nacksSent]+ v5];
-    v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksFulfilled", "integerValue"}];
+    v6 = [objc_msgSend(stats objectForKeyedSubscript:{@"NacksFulfilled", "integerValue"}];
     self->_nacksFulfilled += v6;
     [(CallSegment *)self->_currentSegment setNacksFulfilled:[(CallSegment *)self->_currentSegment nacksFulfilled]+ v6];
-    v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksFulfilledOnTime", "integerValue"}];
+    v7 = [objc_msgSend(stats objectForKeyedSubscript:{@"NacksFulfilledOnTime", "integerValue"}];
     self->_nacksFulfilledOnTime += v7;
     [(CallSegment *)self->_currentSegment setNacksFulfilledOnTime:[(CallSegment *)self->_currentSegment nacksFulfilledOnTime]+ v7];
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UniqueNacksSent", "integerValue"}];
+    v8 = [objc_msgSend(stats objectForKeyedSubscript:{@"UniqueNacksSent", "integerValue"}];
     self->_uniqueNacksSent += v5;
     [(CallSegment *)self->_currentSegment setUniqueNacksSent:[(CallSegment *)self->_currentSegment uniqueNacksSent]+ v8];
-    v9 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksFrmsSchWithRTX", "integerValue"}];
+    v9 = [objc_msgSend(stats objectForKeyedSubscript:{@"NacksFrmsSchWithRTX", "integerValue"}];
     self->_lateFramesScheduledWithRTXCount += v9;
     [(CallSegment *)self->_currentSegment setLateFramesScheduledWithRTXCount:[(CallSegment *)self->_currentSegment lateFramesScheduledWithRTXCount]+ v9];
-    v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksFrmsAssemWithRTX", "integerValue"}];
+    v10 = [objc_msgSend(stats objectForKeyedSubscript:{@"NacksFrmsAssemWithRTX", "integerValue"}];
     self->_assembledFramesWithRTXPacketsCount += v10;
     [(CallSegment *)self->_currentSegment setAssembledFramesWithRTXPacketsCount:[(CallSegment *)self->_currentSegment assembledFramesWithRTXPacketsCount]+ v10];
-    v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksFrmsFailedAssemWithRTX", "integerValue"}];
+    v11 = [objc_msgSend(stats objectForKeyedSubscript:{@"NacksFrmsFailedAssemWithRTX", "integerValue"}];
     self->_failedToAssembleFramesWithRTXPacketsCount += v11;
     [(CallSegment *)self->_currentSegment setFailedToAssembleFramesWithRTXPacketsCount:[(CallSegment *)self->_currentSegment failedToAssembleFramesWithRTXPacketsCount]+ v11];
-    v12 = [(CallSegment *)self->_currentSegment nacksRTXMediaBitRate];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksMediaBitRate", "doubleValue"}];
-    [(VCHistogram *)v12 addValue:v13];
-    v14 = [(CallSegment *)self->_currentSegment nacksRTXRetransmittedMediaBitRate];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksRTXMediaBitRate", "doubleValue"}];
-    [(VCHistogram *)v14 addValue:v15];
-    v16 = [(CallSegment *)self->_currentSegment nacksPLRWithRTX];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksPLRWithRTX", "doubleValue"}];
-    [(VCHistogram *)v16 addValue:v17];
-    v18 = [(CallSegment *)self->_currentSegment nacksPLRWithoutRTX];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksPLRWithoutRTX", "doubleValue"}];
-    [(VCHistogram *)v18 addValue:v19];
+    nacksRTXMediaBitRate = [(CallSegment *)self->_currentSegment nacksRTXMediaBitRate];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"NacksMediaBitRate", "doubleValue"}];
+    [(VCHistogram *)nacksRTXMediaBitRate addValue:v13];
+    nacksRTXRetransmittedMediaBitRate = [(CallSegment *)self->_currentSegment nacksRTXRetransmittedMediaBitRate];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"NacksRTXMediaBitRate", "doubleValue"}];
+    [(VCHistogram *)nacksRTXRetransmittedMediaBitRate addValue:v15];
+    nacksPLRWithRTX = [(CallSegment *)self->_currentSegment nacksPLRWithRTX];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"NacksPLRWithRTX", "doubleValue"}];
+    [(VCHistogram *)nacksPLRWithRTX addValue:v17];
+    nacksPLRWithoutRTX = [(CallSegment *)self->_currentSegment nacksPLRWithoutRTX];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"NacksPLRWithoutRTX", "doubleValue"}];
+    [(VCHistogram *)nacksPLRWithoutRTX addValue:v19];
     nacksPLRWithRTX = self->_nacksPLRWithRTX;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksPLRWithRTX", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"NacksPLRWithRTX", "doubleValue"}];
     [(VCHistogram *)nacksPLRWithRTX addValue:v21];
     nacksPLRWithoutRTX = self->_nacksPLRWithoutRTX;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksPLRWithoutRTX", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"NacksPLRWithoutRTX", "doubleValue"}];
     [(VCHistogram *)nacksPLRWithoutRTX addValue:v23];
-    v24 = [(CallSegment *)self->_currentSegment nacksRTXResponseTime];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksAvgResponseTime", "doubleValue"}];
-    [(VCHistogram *)v24 addValue:(v25 * 1000.0)];
-    v26 = [(CallSegment *)self->_currentSegment nacksRTXLateTime];
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"NacksLateTime", "doubleValue"}];
-    [(VCHistogram *)v26 addValue:(v27 * 1000.0)];
+    nacksRTXResponseTime = [(CallSegment *)self->_currentSegment nacksRTXResponseTime];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"NacksAvgResponseTime", "doubleValue"}];
+    [(VCHistogram *)nacksRTXResponseTime addValue:(v25 * 1000.0)];
+    nacksRTXLateTime = [(CallSegment *)self->_currentSegment nacksRTXLateTime];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"NacksLateTime", "doubleValue"}];
+    [(VCHistogram *)nacksRTXLateTime addValue:(v27 * 1000.0)];
     [(CallSegment *)self->_currentSegment setIsRTXTelemetryAvailable:1];
     self->_isRTXTelemetryAvailable = 1;
     self->super._serverPacketRetransmissionsForVideoEnabled = 1;
   }
 
-  if (self->_currentSegment && [a3 objectForKeyedSubscript:@"UNRPC"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"UNFPC") && objc_msgSend(a3, "objectForKeyedSubscript:", @"ULNACKCHCNT") && objc_msgSend(a3, "objectForKeyedSubscript:", @"ULNACKCMCNT") && objc_msgSend(a3, "objectForKeyedSubscript:", @"ULNACKNRCNT"))
+  if (self->_currentSegment && [stats objectForKeyedSubscript:@"UNRPC"] && objc_msgSend(stats, "objectForKeyedSubscript:", @"UNFPC") && objc_msgSend(stats, "objectForKeyedSubscript:", @"ULNACKCHCNT") && objc_msgSend(stats, "objectForKeyedSubscript:", @"ULNACKCMCNT") && objc_msgSend(stats, "objectForKeyedSubscript:", @"ULNACKNRCNT"))
   {
     self->_currentSegment->super._isUplinkRTXTelemetryAvailable = 1;
     self->super.super._isUplinkRTXTelemetryAvailable = 1;
-    v28 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UNRPC", "integerValue"}];
+    v28 = [objc_msgSend(stats objectForKeyedSubscript:{@"UNRPC", "integerValue"}];
     self->super.super._retransmissionRequestPacketCount += v28;
     self->_currentSegment->super._retransmissionRequestPacketCount += v28;
-    v29 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UNFPC", "integerValue"}];
+    v29 = [objc_msgSend(stats objectForKeyedSubscript:{@"UNFPC", "integerValue"}];
     self->super.super._retransmissionFulfilledPacketCount += v29;
     self->_currentSegment->super._retransmissionFulfilledPacketCount += v29;
-    v30 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UNCHPC", "integerValue"}];
+    v30 = [objc_msgSend(stats objectForKeyedSubscript:{@"UNCHPC", "integerValue"}];
     self->super.super._retransmissionCacheHitCount += v30;
     self->_currentSegment->super._retransmissionCacheHitCount += v30;
-    v31 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UNCMPC", "integerValue"}];
+    v31 = [objc_msgSend(stats objectForKeyedSubscript:{@"UNCMPC", "integerValue"}];
     self->super.super._retransmissionCacheMissCount += v31;
     self->_currentSegment->super._retransmissionCacheMissCount += v31;
-    v32 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UNTRC", "integerValue"}];
+    v32 = [objc_msgSend(stats objectForKeyedSubscript:{@"UNTRC", "integerValue"}];
     self->super.super._retransmissionNACKReceivedCount += v32;
     self->_currentSegment->super._retransmissionNACKReceivedCount += v32;
-    v33 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UNRRC", "integerValue"}];
+    v33 = [objc_msgSend(stats objectForKeyedSubscript:{@"UNRRC", "integerValue"}];
     self->super.super._retransmissionRequestRepeatedCount += v33;
     self->_currentSegment->super._retransmissionRequestRepeatedCount += v33;
-    v34 = [objc_msgSend(a3 objectForKeyedSubscript:{@"UNRRMC", "integerValue"}];
+    v34 = [objc_msgSend(stats objectForKeyedSubscript:{@"UNRRMC", "integerValue"}];
     currentSegment = self->_currentSegment;
     if (v34 > currentSegment->super._retransmissionRequestRepeatedMaxCount)
     {
@@ -3118,30 +3118,30 @@ LABEL_124:
     }
 
     retransmissionResponseTime = currentSegment->super._retransmissionResponseTime;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"UNART", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"UNART", "doubleValue"}];
     [(VCHistogram *)retransmissionResponseTime addValue:(v37 * 1000.0)];
     retransmissionLateTime = self->_currentSegment->super._retransmissionLateTime;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"UNALT", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"UNALT", "doubleValue"}];
     [(VCHistogram *)retransmissionLateTime addValue:(v39 * 1000.0)];
     retransmissionActualMediaBitrate = self->_currentSegment->super._retransmissionActualMediaBitrate;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"UNMB", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"UNMB", "doubleValue"}];
     [(VCHistogram *)retransmissionActualMediaBitrate addValue:(v41 * 1000.0)];
     retransmissionBitrate = self->_currentSegment->super._retransmissionBitrate;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"UNRB", "doubleValue"}];
+    [objc_msgSend(stats objectForKeyedSubscript:{@"UNRB", "doubleValue"}];
     [(VCHistogram *)retransmissionBitrate addValue:(v43 * 1000.0)];
     self->_currentSegment->super._isUplinkRTXTelemetryAvailable = 1;
     self->super.super._isUplinkRTXTelemetryAvailable = 1;
   }
 }
 
-- (void)processRTXConfigData:(id)a3
+- (void)processRTXConfigData:(id)data
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __45__VCAggregatorFaceTime_processRTXConfigData___block_invoke;
   v4[3] = &unk_278BD4D48;
-  v4[4] = a3;
+  v4[4] = data;
   v4[5] = self;
   dispatch_async(stateQueue, v4);
 }
@@ -3175,7 +3175,7 @@ uint64_t __45__VCAggregatorFaceTime_processRTXConfigData___block_invoke(uint64_t
   return [v7 setServerPacketRetransmissionsExtraDelayBudgetEnabled:v6];
 }
 
-- (void)updateVideoResolution:(id)a3
+- (void)updateVideoResolution:(id)resolution
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3183,7 +3183,7 @@ uint64_t __45__VCAggregatorFaceTime_processRTXConfigData___block_invoke(uint64_t
   v4[2] = __46__VCAggregatorFaceTime_updateVideoResolution___block_invoke;
   v4[3] = &unk_278BD4D48;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = resolution;
   dispatch_async(stateQueue, v4);
 }
 
@@ -3244,9 +3244,9 @@ void __46__VCAggregatorFaceTime_updateVideoResolution___block_invoke(uint64_t a1
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePauseVideo:(id)a3
+- (void)updatePauseVideo:(id)video
 {
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"VCSPVideoDegraded", "BOOLValue"}];
+  v5 = [objc_msgSend(video objectForKeyedSubscript:{@"VCSPVideoDegraded", "BOOLValue"}];
   stateQueue = self->super._stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -3254,7 +3254,7 @@ void __46__VCAggregatorFaceTime_updateVideoResolution___block_invoke(uint64_t a1
   block[3] = &unk_278BD4D70;
   v8 = v5;
   block[4] = self;
-  block[5] = a3;
+  block[5] = video;
   dispatch_async(stateQueue, block);
 }
 
@@ -3362,7 +3362,7 @@ void __41__VCAggregatorFaceTime_updatePauseVideo___block_invoke(uint64_t a1)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateErrorCode:(id)a3
+- (void)updateErrorCode:(id)code
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3370,7 +3370,7 @@ void __41__VCAggregatorFaceTime_updatePauseVideo___block_invoke(uint64_t a1)
   v4[2] = __40__VCAggregatorFaceTime_updateErrorCode___block_invoke;
   v4[3] = &unk_278BD4D48;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = code;
   dispatch_async(stateQueue, v4);
 }
 
@@ -3425,7 +3425,7 @@ void __40__VCAggregatorFaceTime_updateErrorCode___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateConnectionTelemetry:(id)a3
+- (void)updateConnectionTelemetry:(id)telemetry
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3433,7 +3433,7 @@ void __40__VCAggregatorFaceTime_updateErrorCode___block_invoke(uint64_t a1)
   v4[2] = __50__VCAggregatorFaceTime_updateConnectionTelemetry___block_invoke;
   v4[3] = &unk_278BD4D48;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = telemetry;
   dispatch_async(stateQueue, v4);
 }
 
@@ -3492,7 +3492,7 @@ void __50__VCAggregatorFaceTime_updateConnectionTelemetry___block_invoke(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateNoRemoteState:(id)a3 state:(BOOL)a4
+- (void)updateNoRemoteState:(id)state state:(BOOL)a4
 {
   stateQueue = self->super._stateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -3501,7 +3501,7 @@ void __50__VCAggregatorFaceTime_updateConnectionTelemetry___block_invoke(uint64_
   block[3] = &unk_278BD4D70;
   v6 = a4;
   block[4] = self;
-  block[5] = a3;
+  block[5] = state;
   dispatch_async(stateQueue, block);
 }
 
@@ -3589,14 +3589,14 @@ LABEL_9:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRelayInfo:(id)a3
+- (void)updateRelayInfo:(id)info
 {
   v29 = *MEMORY[0x277D85DE8];
 
   self->_relayServer = 0;
   self->_accessToken = 0;
   self->_relayType = 0;
-  v5 = [a3 objectForKeyedSubscript:@"relayServer"];
+  v5 = [info objectForKeyedSubscript:@"relayServer"];
   if ([(__CFString *)v5 length]&& (([(__CFString *)v5 isEqualToString:@"QRSAK"]& 1) != 0 || [(__CFString *)v5 isEqualToString:@"QRSAP"]))
   {
     v6 = v5;
@@ -3608,8 +3608,8 @@ LABEL_9:
   }
 
   self->_relayServer = [(__CFString *)v6 copy];
-  self->_relayType = [objc_msgSend(a3 objectForKeyedSubscript:{@"relayType", "integerValue"}];
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"IDSToken", "copy"}];
+  self->_relayType = [objc_msgSend(info objectForKeyedSubscript:{@"relayType", "integerValue"}];
+  v7 = [objc_msgSend(info objectForKeyedSubscript:{@"IDSToken", "copy"}];
   self->_accessToken = v7;
   if (!v7)
   {
@@ -3667,14 +3667,14 @@ LABEL_9:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateConnectionSubTimes:(id)a3
+- (void)updateConnectionSubTimes:(id)times
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __49__VCAggregatorFaceTime_updateConnectionSubTimes___block_invoke;
   v4[3] = &unk_278BD4D48;
-  v4[4] = a3;
+  v4[4] = times;
   v4[5] = self;
   dispatch_async(stateQueue, v4);
 }
@@ -3907,14 +3907,14 @@ LABEL_9:
   v62 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVideoQualityWithPayload:(id)a3
+- (void)updateVideoQualityWithPayload:(id)payload
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __54__VCAggregatorFaceTime_updateVideoQualityWithPayload___block_invoke;
   v4[3] = &unk_278BD4D48;
-  v4[4] = a3;
+  v4[4] = payload;
   v4[5] = self;
   dispatch_async(stateQueue, v4);
 }
@@ -3931,7 +3931,7 @@ uint64_t __54__VCAggregatorFaceTime_updateVideoQualityWithPayload___block_invoke
   return [v6 setVideoResolutionWithTime:v2 width:v3 height:?];
 }
 
-- (void)updateVideoSwitchTimes:(id)a3
+- (void)updateVideoSwitchTimes:(id)times
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -3939,7 +3939,7 @@ uint64_t __54__VCAggregatorFaceTime_updateVideoQualityWithPayload___block_invoke
   v4[2] = __47__VCAggregatorFaceTime_updateVideoSwitchTimes___block_invoke;
   v4[3] = &unk_278BD4D48;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = times;
   dispatch_async(stateQueue, v4);
 }
 
@@ -3985,7 +3985,7 @@ void __47__VCAggregatorFaceTime_updateVideoSwitchTimes___block_invoke(uint64_t a
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSwitchConfiguration:(unsigned int)a3 payload:(id)a4
+- (void)updateSwitchConfiguration:(unsigned int)configuration payload:(id)payload
 {
   stateQueue = self->super._stateQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -3993,7 +3993,7 @@ void __47__VCAggregatorFaceTime_updateVideoSwitchTimes___block_invoke(uint64_t a
   v5[2] = __58__VCAggregatorFaceTime_updateSwitchConfiguration_payload___block_invoke;
   v5[3] = &unk_278BD4D48;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = payload;
   dispatch_async(stateQueue, v5);
 }
 
@@ -4088,16 +4088,16 @@ void *__58__VCAggregatorFaceTime_updateSwitchConfiguration_payload___block_invok
   return result;
 }
 
-- (void)updateLinkProbingStats:(unsigned int)a3 payload:(id)a4
+- (void)updateLinkProbingStats:(unsigned int)stats payload:(id)payload
 {
   stateQueue = self->super._stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__VCAggregatorFaceTime_updateLinkProbingStats_payload___block_invoke;
   block[3] = &unk_278BD48B8;
-  v6 = a3;
+  statsCopy = stats;
   block[4] = self;
-  block[5] = a4;
+  block[5] = payload;
   dispatch_async(stateQueue, block);
 }
 
@@ -4179,7 +4179,7 @@ LABEL_20:
   return result;
 }
 
-- (void)updateWRMMetrics:(unsigned int)a3 payload:(id)a4
+- (void)updateWRMMetrics:(unsigned int)metrics payload:(id)payload
 {
   stateQueue = self->super._stateQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -4187,7 +4187,7 @@ LABEL_20:
   v5[2] = __49__VCAggregatorFaceTime_updateWRMMetrics_payload___block_invoke;
   v5[3] = &unk_278BD4D48;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = payload;
   dispatch_async(stateQueue, v5);
 }
 
@@ -4275,7 +4275,7 @@ uint64_t __49__VCAggregatorFaceTime_updateWRMMetrics_payload___block_invoke(uint
   return result;
 }
 
-- (void)updateAlgoMetrics:(id)a3 type:(unsigned int)a4
+- (void)updateAlgoMetrics:(id)metrics type:(unsigned int)type
 {
   stateQueue = self->super._stateQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -4283,8 +4283,8 @@ uint64_t __49__VCAggregatorFaceTime_updateWRMMetrics_payload___block_invoke(uint
   block[2] = __47__VCAggregatorFaceTime_updateAlgoMetrics_type___block_invoke;
   block[3] = &unk_278BD48B8;
   block[4] = self;
-  block[5] = a3;
-  v6 = a4;
+  block[5] = metrics;
+  typeCopy = type;
   dispatch_async(stateQueue, block);
 }
 
@@ -4362,14 +4362,14 @@ LABEL_14:
   }
 }
 
-- (void)updateNetworkStats:(unsigned int)a3 payload:(id)a4
+- (void)updateNetworkStats:(unsigned int)stats payload:(id)payload
 {
   stateQueue = self->super._stateQueue;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51__VCAggregatorFaceTime_updateNetworkStats_payload___block_invoke;
   v5[3] = &unk_278BD4D48;
-  v5[4] = a4;
+  v5[4] = payload;
   v5[5] = self;
   dispatch_async(stateQueue, v5);
 }
@@ -4395,14 +4395,14 @@ id __51__VCAggregatorFaceTime_updateNetworkStats_payload___block_invoke(uint64_t
   return result;
 }
 
-- (void)updateCoreMotionActivityWithPayload:(id)a3
+- (void)updateCoreMotionActivityWithPayload:(id)payload
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__VCAggregatorFaceTime_updateCoreMotionActivityWithPayload___block_invoke;
   v4[3] = &unk_278BD4D48;
-  v4[4] = a3;
+  v4[4] = payload;
   v4[5] = self;
   dispatch_async(stateQueue, v4);
 }
@@ -4441,7 +4441,7 @@ uint64_t __60__VCAggregatorFaceTime_updateCoreMotionActivityWithPayload___block_
   return result;
 }
 
-- (void)updateVCRCProfileNumber:(unsigned int)a3
+- (void)updateVCRCProfileNumber:(unsigned int)number
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -4449,11 +4449,11 @@ uint64_t __60__VCAggregatorFaceTime_updateCoreMotionActivityWithPayload___block_
   v4[2] = __48__VCAggregatorFaceTime_updateVCRCProfileNumber___block_invoke;
   v4[3] = &unk_278BD4D98;
   v4[4] = self;
-  v5 = a3;
+  numberCopy = number;
   dispatch_async(stateQueue, v4);
 }
 
-- (void)updatePrimaryConnHealthAllowedDelay:(double)a3
+- (void)updatePrimaryConnHealthAllowedDelay:(double)delay
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -4461,14 +4461,14 @@ uint64_t __60__VCAggregatorFaceTime_updateCoreMotionActivityWithPayload___block_
   v4[2] = __60__VCAggregatorFaceTime_updatePrimaryConnHealthAllowedDelay___block_invoke;
   v4[3] = &unk_278BD4DC0;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = delay;
   dispatch_async(stateQueue, v4);
 }
 
-- (BOOL)isDuplicationChangedForEventType:(unsigned __int16)a3
+- (BOOL)isDuplicationChangedForEventType:(unsigned __int16)type
 {
   isDuplicationEnabled = self->super._isDuplicationEnabled;
-  if (isDuplicationEnabled == a3)
+  if (isDuplicationEnabled == type)
   {
     self->super._isDuplicationEnabled = isDuplicationEnabled ^ 1;
     if ((isDuplicationEnabled & 1) == 0)
@@ -4477,19 +4477,19 @@ uint64_t __60__VCAggregatorFaceTime_updateCoreMotionActivityWithPayload___block_
     }
   }
 
-  return isDuplicationEnabled == a3;
+  return isDuplicationEnabled == type;
 }
 
-- (void)updateCellTech:(id)a3
+- (void)updateCellTech:(id)tech
 {
-  if ([a3 objectForKeyedSubscript:@"IPVER"])
+  if ([tech objectForKeyedSubscript:@"IPVER"])
   {
-    -[CallSegment setIPVersion:](self->_currentSegment, "setIPVersion:", [a3 objectForKeyedSubscript:@"IPVER"]);
+    -[CallSegment setIPVersion:](self->_currentSegment, "setIPVersion:", [tech objectForKeyedSubscript:@"IPVER"]);
   }
 
-  if ([a3 objectForKeyedSubscript:@"LCTCH"])
+  if ([tech objectForKeyedSubscript:@"LCTCH"])
   {
-    v5 = [a3 objectForKeyedSubscript:@"LCTCH"];
+    v5 = [tech objectForKeyedSubscript:@"LCTCH"];
     if ([(CallSegment *)self->_currentSegment localCelltech])
     {
       [(CallSegment *)self->_currentSegment setIsLocalCelltechDirty:[(CallSegment *)self->_currentSegment isLocalCelltechDirty]| [(NSNumber *)[(CallSegment *)self->_currentSegment localCelltech] isEqualToNumber:v5]^ 1];
@@ -4498,53 +4498,53 @@ uint64_t __60__VCAggregatorFaceTime_updateCoreMotionActivityWithPayload___block_
     [(CallSegment *)self->_currentSegment setLocalCelltech:v5];
   }
 
-  if ([a3 objectForKeyedSubscript:@"LXPNSV"])
+  if ([tech objectForKeyedSubscript:@"LXPNSV"])
   {
-    -[CallSegment setIsLocalExpensive:](self->_currentSegment, "setIsLocalExpensive:", [a3 objectForKeyedSubscript:@"LXPNSV"]);
+    -[CallSegment setIsLocalExpensive:](self->_currentSegment, "setIsLocalExpensive:", [tech objectForKeyedSubscript:@"LXPNSV"]);
   }
 
-  if ([a3 objectForKeyedSubscript:@"RCTCH"])
+  if ([tech objectForKeyedSubscript:@"RCTCH"])
   {
-    -[CallSegment setRemoteCelltech:](self->_currentSegment, "setRemoteCelltech:", [a3 objectForKeyedSubscript:@"RCTCH"]);
+    -[CallSegment setRemoteCelltech:](self->_currentSegment, "setRemoteCelltech:", [tech objectForKeyedSubscript:@"RCTCH"]);
   }
 
-  if ([a3 objectForKeyedSubscript:@"RXPNSV"])
+  if ([tech objectForKeyedSubscript:@"RXPNSV"])
   {
-    v6 = [a3 objectForKeyedSubscript:@"RXPNSV"];
+    v6 = [tech objectForKeyedSubscript:@"RXPNSV"];
     currentSegment = self->_currentSegment;
 
     [(CallSegment *)currentSegment setIsRemoteExpensive:v6];
   }
 }
 
-- (void)updateCurrentMediaBitratesWithPayload:(id)a3
+- (void)updateCurrentMediaBitratesWithPayload:(id)payload
 {
-  if ([a3 objectForKeyedSubscript:@"BitRate"])
+  if ([payload objectForKeyedSubscript:@"BitRate"])
   {
-    self->_currentAudioMediaBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"BitRate", "intValue"}];
+    self->_currentAudioMediaBitrate = [objc_msgSend(payload objectForKeyedSubscript:{@"BitRate", "intValue"}];
   }
 
-  if ([a3 objectForKeyedSubscript:@"REDPayloadBitrate"])
+  if ([payload objectForKeyedSubscript:@"REDPayloadBitrate"])
   {
-    self->_currentREDPayloadBitrate = [objc_msgSend(a3 objectForKeyedSubscript:{@"REDPayloadBitrate", "unsignedLongValue"}];
+    self->_currentREDPayloadBitrate = [objc_msgSend(payload objectForKeyedSubscript:{@"REDPayloadBitrate", "unsignedLongValue"}];
   }
 }
 
-- (void)updateBitrateCap:(id)a3
+- (void)updateBitrateCap:(id)cap
 {
-  if ([a3 objectForKeyedSubscript:@"localBitrateCap"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"remoteBitrateCap"))
+  if ([cap objectForKeyedSubscript:@"localBitrateCap"] && objc_msgSend(cap, "objectForKeyedSubscript:", @"remoteBitrateCap"))
   {
     stateQueue = self->super._stateQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__VCAggregatorFaceTime_updateBitrateCap___block_invoke;
     block[3] = &unk_278BD4D48;
-    block[4] = a3;
+    block[4] = cap;
     block[5] = self;
     dispatch_async(stateQueue, block);
   }
 
-  if ([a3 objectForKeyedSubscript:@"maxTargetBitrate"])
+  if ([cap objectForKeyedSubscript:@"maxTargetBitrate"])
   {
     v6 = self->super._stateQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -4552,7 +4552,7 @@ uint64_t __60__VCAggregatorFaceTime_updateCoreMotionActivityWithPayload___block_
     v7[2] = __41__VCAggregatorFaceTime_updateBitrateCap___block_invoke_2;
     v7[3] = &unk_278BD4D48;
     v7[4] = self;
-    v7[5] = a3;
+    v7[5] = cap;
     dispatch_async(v6, v7);
   }
 }
@@ -4586,86 +4586,86 @@ uint64_t __41__VCAggregatorFaceTime_updateBitrateCap___block_invoke_2(uint64_t a
   return [v3 setMaxTargetBitrate:v2];
 }
 
-- (void)updateVPCStatus:(id)a3
+- (void)updateVPCStatus:(id)status
 {
-  if ([a3 objectForKeyedSubscript:@"VPCENABLED"])
+  if ([status objectForKeyedSubscript:@"VPCENABLED"])
   {
-    self->super._isVPCEnabled = [objc_msgSend(a3 objectForKeyedSubscript:{@"VPCENABLED", "intValue"}];
+    self->super._isVPCEnabled = [objc_msgSend(status objectForKeyedSubscript:{@"VPCENABLED", "intValue"}];
   }
 }
 
-- (void)updateLinkSuggestionTelemetry:(id)a3
+- (void)updateLinkSuggestionTelemetry:(id)telemetry
 {
-  if ([a3 objectForKeyedSubscript:@"LnkSug"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"LnkScr") && objc_msgSend(a3, "objectForKeyedSubscript:", @"LnkDec"))
+  if ([telemetry objectForKeyedSubscript:@"LnkSug"] && objc_msgSend(telemetry, "objectForKeyedSubscript:", @"LnkScr") && objc_msgSend(telemetry, "objectForKeyedSubscript:", @"LnkDec"))
   {
-    v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"LnkSug", "intValue"}];
+    v5 = [objc_msgSend(telemetry objectForKeyedSubscript:{@"LnkSug", "intValue"}];
     [(CallSegment *)self->_currentSegment setLinkPreferSuggestion:v5];
     self->super._linkPreferSuggestion = v5;
-    v6 = [objc_msgSend(a3 objectForKeyedSubscript:{@"LnkScr", "intValue"}];
+    v6 = [objc_msgSend(telemetry objectForKeyedSubscript:{@"LnkScr", "intValue"}];
     [(CallSegment *)self->_currentSegment setLinkConfidenceScore:v6];
     self->super._linkConfidenceScore = v6;
-    v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"LnkDec", "intValue"}];
+    v7 = [objc_msgSend(telemetry objectForKeyedSubscript:{@"LnkDec", "intValue"}];
     [(CallSegment *)self->_currentSegment setLinkPreferDecision:v7];
     self->super._linkPreferDecision = v7;
   }
 
-  if ([a3 objectForKeyedSubscript:@"LnkIp"])
+  if ([telemetry objectForKeyedSubscript:@"LnkIp"])
   {
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"LnkIp", "intValue"}];
+    v8 = [objc_msgSend(telemetry objectForKeyedSubscript:{@"LnkIp", "intValue"}];
     [(CallSegment *)self->_currentSegment setLinkIPPreference:v8];
     self->super._linkIPPreference = v8;
   }
 }
 
-- (void)processBackgroundReplacementStatus:(id)a3
+- (void)processBackgroundReplacementStatus:(id)status
 {
-  [(VCAggregator *)self processVideoFeatureStatus:@"CAMBGRA" durationHistogram:self->super._backgroundReplacementDuration payload:a3];
-  v5 = [(CallSegment *)self->_currentSegment backgroundReplacementDuration];
+  [(VCAggregator *)self processVideoFeatureStatus:@"CAMBGRA" durationHistogram:self->super._backgroundReplacementDuration payload:status];
+  backgroundReplacementDuration = [(CallSegment *)self->_currentSegment backgroundReplacementDuration];
 
-  [(VCAggregator *)self processVideoFeatureStatus:@"CAMBGRA" durationHistogram:v5 payload:a3];
+  [(VCAggregator *)self processVideoFeatureStatus:@"CAMBGRA" durationHistogram:backgroundReplacementDuration payload:status];
 }
 
-- (void)processStudioLightFeatureStatus:(id)a3
+- (void)processStudioLightFeatureStatus:(id)status
 {
-  [(VCAggregator *)self processVideoFeatureStatus:@"CAMSLA" durationHistogram:self->super._studioLightDuration payload:a3];
-  v5 = [(CallSegment *)self->_currentSegment studioLightDuration];
+  [(VCAggregator *)self processVideoFeatureStatus:@"CAMSLA" durationHistogram:self->super._studioLightDuration payload:status];
+  studioLightDuration = [(CallSegment *)self->_currentSegment studioLightDuration];
 
-  [(VCAggregator *)self processVideoFeatureStatus:@"CAMSLA" durationHistogram:v5 payload:a3];
+  [(VCAggregator *)self processVideoFeatureStatus:@"CAMSLA" durationHistogram:studioLightDuration payload:status];
 }
 
-- (void)processCenterStageFeatureStatus:(id)a3
+- (void)processCenterStageFeatureStatus:(id)status
 {
-  [(VCAggregator *)self processVideoFeatureStatus:@"CAMCSA" durationHistogram:self->super._centerStageDuration payload:a3];
-  v5 = [(CallSegment *)self->_currentSegment centerStageDuration];
+  [(VCAggregator *)self processVideoFeatureStatus:@"CAMCSA" durationHistogram:self->super._centerStageDuration payload:status];
+  centerStageDuration = [(CallSegment *)self->_currentSegment centerStageDuration];
 
-  [(VCAggregator *)self processVideoFeatureStatus:@"CAMCSA" durationHistogram:v5 payload:a3];
+  [(VCAggregator *)self processVideoFeatureStatus:@"CAMCSA" durationHistogram:centerStageDuration payload:status];
 }
 
-- (void)processPortraitModeFeatureStatus:(id)a3
+- (void)processPortraitModeFeatureStatus:(id)status
 {
-  [(VCAggregator *)self processVideoFeatureStatus:@"CAMPMA" durationHistogram:self->super._portraitModeDuration payload:a3];
-  v5 = [(CallSegment *)self->_currentSegment portraitModeDuration];
+  [(VCAggregator *)self processVideoFeatureStatus:@"CAMPMA" durationHistogram:self->super._portraitModeDuration payload:status];
+  portraitModeDuration = [(CallSegment *)self->_currentSegment portraitModeDuration];
 
-  [(VCAggregator *)self processVideoFeatureStatus:@"CAMPMA" durationHistogram:v5 payload:a3];
+  [(VCAggregator *)self processVideoFeatureStatus:@"CAMPMA" durationHistogram:portraitModeDuration payload:status];
 }
 
-- (void)processReactionFeatureStatus:(id)a3
+- (void)processReactionFeatureStatus:(id)status
 {
-  [(VCAggregator *)self processVideoFeatureStatus:@"REACDUR" durationHistogram:self->super._reactionActiveDuration payload:a3];
-  v5 = [(CallSegment *)self->_currentSegment reactionActiveDuration];
+  [(VCAggregator *)self processVideoFeatureStatus:@"REACDUR" durationHistogram:self->super._reactionActiveDuration payload:status];
+  reactionActiveDuration = [(CallSegment *)self->_currentSegment reactionActiveDuration];
 
-  [(VCAggregator *)self processVideoFeatureStatus:@"REACDUR" durationHistogram:v5 payload:a3];
+  [(VCAggregator *)self processVideoFeatureStatus:@"REACDUR" durationHistogram:reactionActiveDuration payload:status];
 }
 
-- (void)processEyeContactFeatureStatus:(id)a3
+- (void)processEyeContactFeatureStatus:(id)status
 {
-  [(VCAggregator *)self processVideoFeatureStatus:@"VideoEyeContact" durationHistogram:self->super._eyeContactDuration payload:a3];
-  v5 = [(CallSegment *)self->_currentSegment eyeContactDuration];
+  [(VCAggregator *)self processVideoFeatureStatus:@"VideoEyeContact" durationHistogram:self->super._eyeContactDuration payload:status];
+  eyeContactDuration = [(CallSegment *)self->_currentSegment eyeContactDuration];
 
-  [(VCAggregator *)self processVideoFeatureStatus:@"VideoEyeContact" durationHistogram:v5 payload:a3];
+  [(VCAggregator *)self processVideoFeatureStatus:@"VideoEyeContact" durationHistogram:eyeContactDuration payload:status];
 }
 
-- (void)updateCenterStageEnabled:(unsigned __int16)a3
+- (void)updateCenterStageEnabled:(unsigned __int16)enabled
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -4673,7 +4673,7 @@ uint64_t __41__VCAggregatorFaceTime_updateBitrateCap___block_invoke_2(uint64_t a
   v4[2] = __49__VCAggregatorFaceTime_updateCenterStageEnabled___block_invoke;
   v4[3] = &unk_278BD4DE8;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(stateQueue, v4);
 }
 
@@ -4690,7 +4690,7 @@ uint64_t __49__VCAggregatorFaceTime_updateCenterStageEnabled___block_invoke(uint
   return result;
 }
 
-- (void)updatePortraitBlurEnabled:(unsigned __int16)a3
+- (void)updatePortraitBlurEnabled:(unsigned __int16)enabled
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -4698,7 +4698,7 @@ uint64_t __49__VCAggregatorFaceTime_updateCenterStageEnabled___block_invoke(uint
   v4[2] = __50__VCAggregatorFaceTime_updatePortraitBlurEnabled___block_invoke;
   v4[3] = &unk_278BD4DE8;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(stateQueue, v4);
 }
 
@@ -4715,14 +4715,14 @@ uint64_t __50__VCAggregatorFaceTime_updatePortraitBlurEnabled___block_invoke(uin
   return result;
 }
 
-- (void)markHandshakeStart:(id)a3
+- (void)markHandshakeStart:(id)start
 {
   v5 = *MEMORY[0x277D85DE8];
   handshakeStartTime = self->_handshakeStartTime;
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (double)markHandshakeCompletion:(id)a3
+- (double)markHandshakeCompletion:(id)completion
 {
   v5 = *MEMORY[0x277D85DE8];
   result = self->_handshakeDuration;
@@ -4730,20 +4730,20 @@ uint64_t __50__VCAggregatorFaceTime_updatePortraitBlurEnabled___block_invoke(uin
   return result;
 }
 
-- (void)processControlChannelEventType:(unsigned __int16)a3 payload:(id)a4
+- (void)processControlChannelEventType:(unsigned __int16)type payload:(id)payload
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (a3 == 1)
+  if (type == 1)
   {
     v6 = *MEMORY[0x277D85DE8];
 
-    [(VCAggregatorFaceTime *)self markHandshakeCompletion:a4];
+    [(VCAggregatorFaceTime *)self markHandshakeCompletion:payload];
   }
 
   else
   {
-    v4 = a3;
-    if (a3)
+    typeCopy = type;
+    if (type)
     {
       if (VRTraceGetErrorLogLevelForModule("") >= 5)
       {
@@ -4758,7 +4758,7 @@ uint64_t __50__VCAggregatorFaceTime_updatePortraitBlurEnabled___block_invoke(uin
           v14 = 1024;
           v15 = 4193;
           v16 = 1024;
-          v17 = v4;
+          v17 = typeCopy;
           _os_log_impl(&dword_23D4DF000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unknown control channel event type=%d. Ignoring ...", &v10, 0x22u);
         }
       }
@@ -4770,12 +4770,12 @@ uint64_t __50__VCAggregatorFaceTime_updatePortraitBlurEnabled___block_invoke(uin
     {
       v5 = *MEMORY[0x277D85DE8];
 
-      [(VCAggregatorFaceTime *)self markHandshakeStart:a4];
+      [(VCAggregatorFaceTime *)self markHandshakeStart:payload];
     }
   }
 }
 
-- (void)processConnectionEstablishment:(id)a3
+- (void)processConnectionEstablishment:(id)establishment
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -4783,7 +4783,7 @@ uint64_t __50__VCAggregatorFaceTime_updatePortraitBlurEnabled___block_invoke(uin
   v4[2] = __55__VCAggregatorFaceTime_processConnectionEstablishment___block_invoke;
   v4[3] = &unk_278BD4D48;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = establishment;
   dispatch_sync(stateQueue, v4);
 }
 
@@ -4857,9 +4857,9 @@ LABEL_15:
   return result;
 }
 
-- (void)processEventTriggerForNewSegment:(id)a3
+- (void)processEventTriggerForNewSegment:(id)segment
 {
-  if ([a3 objectForKeyedSubscript:@"RelayedCT"])
+  if ([segment objectForKeyedSubscript:@"RelayedCT"])
   {
     stateQueue = self->super._stateQueue;
     v6[0] = MEMORY[0x277D85DD0];
@@ -4867,7 +4867,7 @@ LABEL_15:
     v6[2] = __57__VCAggregatorFaceTime_processEventTriggerForNewSegment___block_invoke;
     v6[3] = &unk_278BD4D48;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = segment;
     dispatch_sync(stateQueue, v6);
   }
 }
@@ -4894,16 +4894,16 @@ uint64_t __57__VCAggregatorFaceTime_processEventTriggerForNewSegment___block_inv
   return result;
 }
 
-- (void)processDuplication:(id)a3 type:(unsigned __int16)a4
+- (void)processDuplication:(id)duplication type:(unsigned __int16)type
 {
   stateQueue = self->super._stateQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__VCAggregatorFaceTime_processDuplication_type___block_invoke;
   block[3] = &unk_278BD4E10;
-  v6 = a4;
+  typeCopy = type;
   block[4] = self;
-  block[5] = a3;
+  block[5] = duplication;
   dispatch_sync(stateQueue, block);
 }
 
@@ -5002,14 +5002,14 @@ uint64_t __48__VCAggregatorFaceTime_processDuplication_type___block_invoke(uint6
   return result;
 }
 
-- (void)updateQRExperiments:(id)a3
+- (void)updateQRExperiments:(id)experiments
 {
-  if ([a3 count])
+  if ([experiments count])
   {
     if (self->_currentSegment)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      [(VCAggregator *)self filterDictionaryUsingQRServerPrefix:a3 addTo:v5];
+      [(VCAggregator *)self filterDictionaryUsingQRServerPrefix:experiments addTo:v5];
       [(CallSegment *)self->_currentSegment setQrExperiments:v5];
       [(VCAggregator *)self setQrExperiments:v5];
     }
@@ -5026,14 +5026,14 @@ uint64_t __48__VCAggregatorFaceTime_processDuplication_type___block_invoke(uint6
   }
 }
 
-- (void)processRtcpPSFBForResiliencyConfigData:(id)a3
+- (void)processRtcpPSFBForResiliencyConfigData:(id)data
 {
   stateQueue = self->super._stateQueue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __63__VCAggregatorFaceTime_processRtcpPSFBForResiliencyConfigData___block_invoke;
   v4[3] = &unk_278BD4D48;
-  v4[4] = a3;
+  v4[4] = data;
   v4[5] = self;
   dispatch_async(stateQueue, v4);
 }
@@ -5060,15 +5060,15 @@ uint64_t __63__VCAggregatorFaceTime_processRtcpPSFBForResiliencyConfigData___blo
   return [v6 setRtcpPSFBForLtrAckEnabled:v5];
 }
 
-- (void)updateThermalMetricsFromPayload:(id)a3
+- (void)updateThermalMetricsFromPayload:(id)payload
 {
   dispatch_assert_queue_V2(self->super._stateQueue);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v8 = __56__VCAggregatorFaceTime_updateThermalMetricsFromPayload___block_invoke;
   v9 = &unk_278BD4E38;
-  v10 = self;
-  v5 = [a3 objectForKeyedSubscript:@"Thermal"];
+  selfCopy = self;
+  v5 = [payload objectForKeyedSubscript:@"Thermal"];
   if (v5)
   {
     v8(v7, v5);
@@ -5076,7 +5076,7 @@ uint64_t __63__VCAggregatorFaceTime_processRtcpPSFBForResiliencyConfigData___blo
 
   v6.receiver = self;
   v6.super_class = VCAggregatorFaceTime;
-  [(VCAggregator *)&v6 updateThermalMetricsFromPayload:a3];
+  [(VCAggregator *)&v6 updateThermalMetricsFromPayload:payload];
 }
 
 uint64_t __56__VCAggregatorFaceTime_updateThermalMetricsFromPayload___block_invoke(uint64_t a1, void *a2)
@@ -5086,36 +5086,36 @@ uint64_t __56__VCAggregatorFaceTime_updateThermalMetricsFromPayload___block_invo
   return result;
 }
 
-- (void)updateRateControlExperiment:(id)a3 type:(unsigned __int16)a4
+- (void)updateRateControlExperiment:(id)experiment type:(unsigned __int16)type
 {
-  v4 = a4;
-  if ([a3 objectForKeyedSubscript:@"RCEV"])
+  typeCopy = type;
+  if ([experiment objectForKeyedSubscript:@"RCEV"])
   {
-    v7 = [a3 objectForKeyedSubscript:@"RCEG"];
-    if (!v4)
+    v7 = [experiment objectForKeyedSubscript:@"RCEG"];
+    if (!typeCopy)
     {
       if (v7)
       {
         self->super._reportRateControlExperiment = 1;
-        self->super._rateControlExperimentVersion = [objc_msgSend(a3 objectForKeyedSubscript:{@"RCEV", "unsignedIntValue"}];
-        self->super._rateControlExperimentGroupIndex = [objc_msgSend(a3 objectForKeyedSubscript:{@"RCEG", "unsignedIntValue"}];
+        self->super._rateControlExperimentVersion = [objc_msgSend(experiment objectForKeyedSubscript:{@"RCEV", "unsignedIntValue"}];
+        self->super._rateControlExperimentGroupIndex = [objc_msgSend(experiment objectForKeyedSubscript:{@"RCEG", "unsignedIntValue"}];
       }
     }
   }
 }
 
-- (void)updateRateControlSmartBrakeTrialVersion:(id)a3 type:(unsigned __int16)a4
+- (void)updateRateControlSmartBrakeTrialVersion:(id)version type:(unsigned __int16)type
 {
-  if (a3)
+  if (version)
   {
-    v4 = a4;
-    v7 = [a3 objectForKeyedSubscript:@"SBVERS"];
-    if (!v4)
+    typeCopy = type;
+    v7 = [version objectForKeyedSubscript:@"SBVERS"];
+    if (!typeCopy)
     {
       if (v7)
       {
-        self->super._rateControlSmartBrakeTrialVersion = [objc_msgSend(a3 objectForKeyedSubscript:{@"SBVERS", "unsignedIntValue"}];
-        v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"SBVERS", "unsignedIntValue"}];
+        self->super._rateControlSmartBrakeTrialVersion = [objc_msgSend(version objectForKeyedSubscript:{@"SBVERS", "unsignedIntValue"}];
+        v8 = [objc_msgSend(version objectForKeyedSubscript:{@"SBVERS", "unsignedIntValue"}];
         currentSegment = self->_currentSegment;
 
         [(CallSegment *)currentSegment setRateControlSmartBrakeTrialVersion:v8];
@@ -5124,18 +5124,18 @@ uint64_t __56__VCAggregatorFaceTime_updateThermalMetricsFromPayload___block_invo
   }
 }
 
-- (void)updateProtocolStackDescription:(id)a3
+- (void)updateProtocolStackDescription:(id)description
 {
-  if (a3)
+  if (description)
   {
-    if ([a3 objectForKeyedSubscript:@"Rpsd"])
+    if ([description objectForKeyedSubscript:@"Rpsd"])
     {
-      -[CallSegment setRelayProtocolStack:](self->_currentSegment, "setRelayProtocolStack:", [a3 objectForKeyedSubscript:@"Rpsd"]);
+      -[CallSegment setRelayProtocolStack:](self->_currentSegment, "setRelayProtocolStack:", [description objectForKeyedSubscript:@"Rpsd"]);
     }
 
-    if ([a3 objectForKeyedSubscript:@"Cpsd"])
+    if ([description objectForKeyedSubscript:@"Cpsd"])
     {
-      v5 = [a3 objectForKeyedSubscript:@"Cpsd"];
+      v5 = [description objectForKeyedSubscript:@"Cpsd"];
       currentSegment = self->_currentSegment;
 
       [(CallSegment *)currentSegment setChannelProtocolStack:v5];
@@ -5148,7 +5148,7 @@ uint64_t __56__VCAggregatorFaceTime_updateThermalMetricsFromPayload___block_invo
   }
 }
 
-- (void)updateThermalDataCollectorsStateWithPayload:(id)a3 withTime:(double)a4
+- (void)updateThermalDataCollectorsStateWithPayload:(id)payload withTime:(double)time
 {
   v28 = *MEMORY[0x277D85DE8];
   v22 = 0u;
@@ -5170,7 +5170,7 @@ uint64_t __56__VCAggregatorFaceTime_updateThermalMetricsFromPayload___block_invo
           objc_enumerationMutation(thermalDataCollectors);
         }
 
-        [*(*(&v22 + 1) + 8 * i) updateStateWithPayload:a3 withTime:a4];
+        [*(*(&v22 + 1) + 8 * i) updateStateWithPayload:payload withTime:time];
       }
 
       v9 = [(NSSet *)thermalDataCollectors countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -5183,8 +5183,8 @@ uint64_t __56__VCAggregatorFaceTime_updateThermalMetricsFromPayload___block_invo
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [(CallSegment *)self->_currentSegment thermalDataCollectors];
-  v13 = [(NSSet *)v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  thermalDataCollectors = [(CallSegment *)self->_currentSegment thermalDataCollectors];
+  v13 = [(NSSet *)thermalDataCollectors countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -5195,13 +5195,13 @@ uint64_t __56__VCAggregatorFaceTime_updateThermalMetricsFromPayload___block_invo
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(thermalDataCollectors);
         }
 
-        [*(*(&v18 + 1) + 8 * j) updateStateWithPayload:a3 withTime:a4];
+        [*(*(&v18 + 1) + 8 * j) updateStateWithPayload:payload withTime:time];
       }
 
-      v14 = [(NSSet *)v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v14 = [(NSSet *)thermalDataCollectors countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v14);
@@ -5210,16 +5210,16 @@ uint64_t __56__VCAggregatorFaceTime_updateThermalMetricsFromPayload___block_invo
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processThermalLevelChange:(id)a3 withTime:(double)a4
+- (void)processThermalLevelChange:(id)change withTime:(double)time
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v6 = __59__VCAggregatorFaceTime_processThermalLevelChange_withTime___block_invoke;
   v7 = &unk_278BD4E60;
-  v10 = a4;
-  v8 = self;
-  v9 = a3;
-  v4 = [a3 objectForKeyedSubscript:@"Thermal"];
+  timeCopy = time;
+  selfCopy = self;
+  changeCopy = change;
+  v4 = [change objectForKeyedSubscript:@"Thermal"];
   if (v4)
   {
     v6(v5, v4);
@@ -5291,14 +5291,14 @@ uint64_t __59__VCAggregatorFaceTime_processThermalLevelChange_withTime___block_i
   return result;
 }
 
-- (void)updateSpatialAudioSupport:(id)a3
+- (void)updateSpatialAudioSupport:(id)support
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v5 = __50__VCAggregatorFaceTime_updateSpatialAudioSupport___block_invoke;
   v6 = &unk_278BD4E38;
-  v7 = self;
-  v3 = [a3 objectForKeyedSubscript:@"SpatialAudioSupported"];
+  selfCopy = self;
+  v3 = [support objectForKeyedSubscript:@"SpatialAudioSupported"];
   if (v3)
   {
     v5(v4, v3);
@@ -5366,17 +5366,17 @@ uint64_t __62__VCAggregatorFaceTime_processEventWithCategory_type_payload___bloc
   return [v2 updateRateControlSmartBrakeTrialVersion:v3 type:v4];
 }
 
-- (void)processWindowMode:(id)a3 responseCode:(int)a4
+- (void)processWindowMode:(id)mode responseCode:(int)code
 {
   [(VCAggregator *)self microFromPayload:?];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v10 = __55__VCAggregatorFaceTime_processWindowMode_responseCode___block_invoke;
   v11 = &unk_278BD4EB0;
-  v14 = a4;
-  v12 = self;
+  codeCopy = code;
+  selfCopy = self;
   v13 = v7;
-  v8 = [a3 objectForKeyedSubscript:@"State"];
+  v8 = [mode objectForKeyedSubscript:@"State"];
   if (v8)
   {
     v10(v9, v8);
@@ -5414,7 +5414,7 @@ uint64_t __55__VCAggregatorFaceTime_processWindowMode_responseCode___block_invok
   return result;
 }
 
-- (void)updateAudioTxStatsWithPayload:(id)a3
+- (void)updateAudioTxStatsWithPayload:(id)payload
 {
   v19 = *MEMORY[0x277D85DE8];
   v6 = micro();
@@ -5443,27 +5443,27 @@ uint64_t __55__VCAggregatorFaceTime_processWindowMode_responseCode___block_invok
     }
 
     [(VCAggregatorFaceTime *)self updateMediaBitrateHistogramsWithTimeElapsed:v3, v18];
-    v9 = [a3 objectForKeyedSubscript:@"Bundle"];
+    v9 = [payload objectForKeyedSubscript:@"Bundle"];
     if (v9)
     {
-      v10 = [v9 unsignedLongValue];
+      unsignedLongValue = [v9 unsignedLongValue];
       [objc_msgSend(OUTLINED_FUNCTION_12_0() "audioFrameBundling")];
-      [(VCHistogram *)self->super._audioFrameBundling addValue:v10];
+      [(VCHistogram *)self->super._audioFrameBundling addValue:unsignedLongValue];
     }
   }
 
-  if ([a3 objectForKeyedSubscript:@"Payload"])
+  if ([payload objectForKeyedSubscript:@"Payload"])
   {
-    self->_currentAudioCodecPayload = [objc_msgSend(a3 objectForKeyedSubscript:{@"Payload", "intValue"}];
+    self->_currentAudioCodecPayload = [objc_msgSend(payload objectForKeyedSubscript:{@"Payload", "intValue"}];
   }
 
-  [(VCAggregatorFaceTime *)self updateCurrentMediaBitratesWithPayload:a3];
-  if ([a3 objectForKeyedSubscript:@"RedPayloads"])
+  [(VCAggregatorFaceTime *)self updateCurrentMediaBitratesWithPayload:payload];
+  if ([payload objectForKeyedSubscript:@"RedPayloads"])
   {
     [objc_msgSend(OUTLINED_FUNCTION_12_0() "REDNumPayloadsUsed")];
   }
 
-  if ([a3 objectForKeyedSubscript:@"RedMaxDelay"])
+  if ([payload objectForKeyedSubscript:@"RedMaxDelay"])
   {
     [objc_msgSend(OUTLINED_FUNCTION_12_0() "REDMaxDelay")];
   }

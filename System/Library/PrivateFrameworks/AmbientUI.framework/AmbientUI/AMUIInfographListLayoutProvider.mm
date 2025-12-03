@@ -1,8 +1,8 @@
 @interface AMUIInfographListLayoutProvider
 - (AMUIInfographListLayoutProvider)init;
-- (AMUIInfographListLayoutProvider)initWithScreenType:(unint64_t)a3;
-- (id)layoutForIconLocation:(id)a3;
-- (void)configureRootFolderConfiguration:(id)a3 screenType:(unint64_t)a4;
+- (AMUIInfographListLayoutProvider)initWithScreenType:(unint64_t)type;
+- (id)layoutForIconLocation:(id)location;
+- (void)configureRootFolderConfiguration:(id)configuration screenType:(unint64_t)type;
 @end
 
 @implementation AMUIInfographListLayoutProvider
@@ -14,20 +14,20 @@
   return [(AMUIInfographListLayoutProvider *)self initWithScreenType:v3];
 }
 
-- (AMUIInfographListLayoutProvider)initWithScreenType:(unint64_t)a3
+- (AMUIInfographListLayoutProvider)initWithScreenType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = AMUIInfographListLayoutProvider;
   result = [(AMUIInfographListLayoutProvider *)&v5 init];
   if (result)
   {
-    result->_screenType = a3;
+    result->_screenType = type;
   }
 
   return result;
 }
 
-- (id)layoutForIconLocation:(id)a3
+- (id)layoutForIconLocation:(id)location
 {
   v4 = objc_alloc_init(MEMORY[0x277D66298]);
   [(AMUIInfographListLayoutProvider *)self configureRootFolderConfiguration:v4 screenType:self->_screenType];
@@ -36,11 +36,11 @@
   return v5;
 }
 
-- (void)configureRootFolderConfiguration:(id)a3 screenType:(unint64_t)a4
+- (void)configureRootFolderConfiguration:(id)configuration screenType:(unint64_t)type
 {
-  v6 = a3;
-  v7 = v6;
-  switch(a4)
+  configurationCopy = configuration;
+  v7 = configurationCopy;
+  switch(type)
   {
     case 0uLL:
     case 1uLL:
@@ -51,7 +51,7 @@
       v12 = 5.0;
       v13 = 6.0;
 LABEL_26:
-      [v6 setEditModeButtonLayoutOffset:{v12, v13}];
+      [configurationCopy setEditModeButtonLayoutOffset:{v12, v13}];
       v14 = 50.0;
       v15 = 24.0;
       break;
@@ -68,11 +68,11 @@ LABEL_26:
       v16 = 28.0;
       goto LABEL_19;
     case 9uLL:
-      [v6 setEditModeButtonLayoutOffset:{14.0, 19.0}];
+      [configurationCopy setEditModeButtonLayoutOffset:{14.0, 19.0}];
       v20 = 0x404D000000000000;
       goto LABEL_21;
     case 0xAuLL:
-      [v6 setEditModeButtonLayoutOffset:{10.0, 10.0}];
+      [configurationCopy setEditModeButtonLayoutOffset:{10.0, 10.0}];
       v20 = 0x404A000000000000;
       goto LABEL_21;
     case 0xBuLL:
@@ -90,7 +90,7 @@ LABEL_26:
       v18 = 20.0;
       goto LABEL_24;
     case 0xFuLL:
-      [v6 setEditModeButtonLayoutOffset:{25.0, 19.0}];
+      [configurationCopy setEditModeButtonLayoutOffset:{25.0, 19.0}];
       v20 = 0x4050000000000000;
       goto LABEL_21;
     case 0x10uLL:
@@ -102,7 +102,7 @@ LABEL_11:
       v17 = 30.0;
       v18 = 18.0;
 LABEL_24:
-      [v6 setEditModeButtonLayoutOffset:{v17, v18}];
+      [configurationCopy setEditModeButtonLayoutOffset:{v17, v18}];
       v14 = 66.0;
       goto LABEL_22;
     case 0x12uLL:
@@ -128,7 +128,7 @@ LABEL_24:
       v8 = 25.0;
       v9 = 10.0;
 LABEL_30:
-      [v6 setEditModeButtonLayoutOffset:{v8, v9}];
+      [configurationCopy setEditModeButtonLayoutOffset:{v8, v9}];
       v14 = 66.0;
       goto LABEL_35;
     case 0x17uLL:
@@ -136,14 +136,14 @@ LABEL_30:
       v10 = 50.0;
       v11 = 16.0;
 LABEL_34:
-      [v6 setEditModeButtonLayoutOffset:{v10, v11}];
+      [configurationCopy setEditModeButtonLayoutOffset:{v10, v11}];
       v14 = 68.0;
 LABEL_35:
       v15 = 28.0;
       break;
     case 0x18uLL:
     case 0x1CuLL:
-      [v6 setEditModeButtonLayoutOffset:{40.0, 12.0}];
+      [configurationCopy setEditModeButtonLayoutOffset:{40.0, 12.0}];
       v14 = 68.0;
       v15 = 27.0;
       break;

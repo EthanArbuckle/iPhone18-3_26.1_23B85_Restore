@@ -1,32 +1,32 @@
 @interface FMDAccessorySerialNumbers
-- (FMDAccessorySerialNumbers)initWithCoder:(id)a3;
-- (FMDAccessorySerialNumbers)initWithDevice:(id)a3;
-- (FMDAccessorySerialNumbers)initWithDictionary:(id)a3;
+- (FMDAccessorySerialNumbers)initWithCoder:(id)coder;
+- (FMDAccessorySerialNumbers)initWithDevice:(id)device;
+- (FMDAccessorySerialNumbers)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FMDAccessorySerialNumbers
 
-- (FMDAccessorySerialNumbers)initWithDevice:(id)a3
+- (FMDAccessorySerialNumbers)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = FMDAccessorySerialNumbers;
   v5 = [(FMDAccessorySerialNumbers *)&v14 init];
   if (v5)
   {
-    v6 = [v4 bluetoothDevice];
-    v7 = [v6 serialNumber];
-    [(FMDAccessorySerialNumbers *)v5 setSystemSerialNumber:v7];
+    bluetoothDevice = [deviceCopy bluetoothDevice];
+    serialNumber = [bluetoothDevice serialNumber];
+    [(FMDAccessorySerialNumbers *)v5 setSystemSerialNumber:serialNumber];
 
-    v8 = [v4 bluetoothDevice];
-    v9 = [v8 serialNumberLeft];
-    [(FMDAccessorySerialNumbers *)v5 setLeftBudSerialNumber:v9];
+    bluetoothDevice2 = [deviceCopy bluetoothDevice];
+    serialNumberLeft = [bluetoothDevice2 serialNumberLeft];
+    [(FMDAccessorySerialNumbers *)v5 setLeftBudSerialNumber:serialNumberLeft];
 
-    v10 = [v4 bluetoothDevice];
-    v11 = [v10 serialNumberRight];
-    [(FMDAccessorySerialNumbers *)v5 setRightBudSerialNumber:v11];
+    bluetoothDevice3 = [deviceCopy bluetoothDevice];
+    serialNumberRight = [bluetoothDevice3 serialNumberRight];
+    [(FMDAccessorySerialNumbers *)v5 setRightBudSerialNumber:serialNumberRight];
 
     v12 = sub_100002880();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -43,67 +43,67 @@
 - (NSDictionary)dictionaryValue
 {
   v3 = objc_opt_new();
-  v4 = [(FMDAccessorySerialNumbers *)self systemSerialNumber];
-  [v3 fm_safeSetObject:v4 forKey:@"systemSerialNumber"];
+  systemSerialNumber = [(FMDAccessorySerialNumbers *)self systemSerialNumber];
+  [v3 fm_safeSetObject:systemSerialNumber forKey:@"systemSerialNumber"];
 
-  v5 = [(FMDAccessorySerialNumbers *)self leftBudSerialNumber];
-  [v3 fm_safeSetObject:v5 forKey:@"leftSerialNumber"];
+  leftBudSerialNumber = [(FMDAccessorySerialNumbers *)self leftBudSerialNumber];
+  [v3 fm_safeSetObject:leftBudSerialNumber forKey:@"leftSerialNumber"];
 
-  v6 = [(FMDAccessorySerialNumbers *)self rightBudSerialNumber];
-  [v3 fm_safeSetObject:v6 forKey:@"rightSerialNumber"];
+  rightBudSerialNumber = [(FMDAccessorySerialNumbers *)self rightBudSerialNumber];
+  [v3 fm_safeSetObject:rightBudSerialNumber forKey:@"rightSerialNumber"];
 
   return v3;
 }
 
-- (FMDAccessorySerialNumbers)initWithDictionary:(id)a3
+- (FMDAccessorySerialNumbers)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = FMDAccessorySerialNumbers;
   v5 = [(FMDAccessorySerialNumbers *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"systemSerialNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"systemSerialNumber"];
     [(FMDAccessorySerialNumbers *)v5 setSystemSerialNumber:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"leftSerialNumber"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"leftSerialNumber"];
     [(FMDAccessorySerialNumbers *)v5 setLeftBudSerialNumber:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"rightSerialNumber"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"rightSerialNumber"];
     [(FMDAccessorySerialNumbers *)v5 setRightBudSerialNumber:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FMDAccessorySerialNumbers *)self systemSerialNumber];
-  [v4 encodeObject:v5 forKey:@"systemSerialNumber"];
+  coderCopy = coder;
+  systemSerialNumber = [(FMDAccessorySerialNumbers *)self systemSerialNumber];
+  [coderCopy encodeObject:systemSerialNumber forKey:@"systemSerialNumber"];
 
-  v6 = [(FMDAccessorySerialNumbers *)self leftBudSerialNumber];
-  [v4 encodeObject:v6 forKey:@"leftBudSerialNumber"];
+  leftBudSerialNumber = [(FMDAccessorySerialNumbers *)self leftBudSerialNumber];
+  [coderCopy encodeObject:leftBudSerialNumber forKey:@"leftBudSerialNumber"];
 
-  v7 = [(FMDAccessorySerialNumbers *)self rightBudSerialNumber];
-  [v4 encodeObject:v7 forKey:@"rightBudSerialNumber"];
+  rightBudSerialNumber = [(FMDAccessorySerialNumbers *)self rightBudSerialNumber];
+  [coderCopy encodeObject:rightBudSerialNumber forKey:@"rightBudSerialNumber"];
 }
 
-- (FMDAccessorySerialNumbers)initWithCoder:(id)a3
+- (FMDAccessorySerialNumbers)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = FMDAccessorySerialNumbers;
   v5 = [(FMDAccessorySerialNumbers *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemSerialNumber"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemSerialNumber"];
     [(FMDAccessorySerialNumbers *)v5 setSystemSerialNumber:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"leftBudSerialNumber"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"leftBudSerialNumber"];
     [(FMDAccessorySerialNumbers *)v5 setLeftBudSerialNumber:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rightBudSerialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rightBudSerialNumber"];
     [(FMDAccessorySerialNumbers *)v5 setRightBudSerialNumber:v8];
   }
 

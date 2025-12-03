@@ -1,27 +1,27 @@
 @interface CRLiOSInspectorTableCellImageView
 - (CRLiOSInspectorTableViewCell)parentCell;
-- (void)setContentMode:(int64_t)a3;
-- (void)setImage:(id)a3;
+- (void)setContentMode:(int64_t)mode;
+- (void)setImage:(id)image;
 @end
 
 @implementation CRLiOSInspectorTableCellImageView
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
   v5.receiver = self;
   v5.super_class = CRLiOSInspectorTableCellImageView;
-  [(CRLiOSInspectorTableCellImageView *)&v5 setImage:a3];
-  v4 = [(CRLiOSInspectorTableCellImageView *)self parentCell];
-  [v4 p_imageDidChange];
+  [(CRLiOSInspectorTableCellImageView *)&v5 setImage:image];
+  parentCell = [(CRLiOSInspectorTableCellImageView *)self parentCell];
+  [parentCell p_imageDidChange];
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v5.receiver = self;
   v5.super_class = CRLiOSInspectorTableCellImageView;
-  [(CRLiOSInspectorTableCellImageView *)&v5 setContentMode:a3];
-  v4 = [(CRLiOSInspectorTableCellImageView *)self parentCell];
-  [v4 p_imageDidChange];
+  [(CRLiOSInspectorTableCellImageView *)&v5 setContentMode:mode];
+  parentCell = [(CRLiOSInspectorTableCellImageView *)self parentCell];
+  [parentCell p_imageDidChange];
 }
 
 - (CRLiOSInspectorTableViewCell)parentCell

@@ -11,11 +11,11 @@
   [v1 setEditable:0];
   [v1 setScrollEnabled:0];
   [v1 setTextContainerInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
-  v2 = [MEMORY[0x1E69DC888] clearColor];
-  [v1 setBackgroundColor:v2];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v1 setBackgroundColor:clearColor];
 
-  v3 = [v1 textContainer];
-  [v3 setLineFragmentPadding:0.0];
+  textContainer = [v1 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   return v1;
 }

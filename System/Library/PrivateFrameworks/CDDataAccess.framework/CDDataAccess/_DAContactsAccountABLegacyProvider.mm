@@ -1,21 +1,21 @@
 @interface _DAContactsAccountABLegacyProvider
-- (_DAContactsAccountABLegacyProvider)initWithAddressBook:(void *)a3;
-- (id)accountForContainerWithIdentifier:(id)a3;
-- (id)accountWithExternalIdentifier:(id)a3 createIfNecessary:(BOOL)a4;
+- (_DAContactsAccountABLegacyProvider)initWithAddressBook:(void *)book;
+- (id)accountForContainerWithIdentifier:(id)identifier;
+- (id)accountWithExternalIdentifier:(id)identifier createIfNecessary:(BOOL)necessary;
 - (id)allAccounts;
 - (void)dealloc;
 @end
 
 @implementation _DAContactsAccountABLegacyProvider
 
-- (_DAContactsAccountABLegacyProvider)initWithAddressBook:(void *)a3
+- (_DAContactsAccountABLegacyProvider)initWithAddressBook:(void *)book
 {
   v6.receiver = self;
   v6.super_class = _DAContactsAccountABLegacyProvider;
   v4 = [(_DAContactsAccountABLegacyProvider *)&v6 init];
   if (v4)
   {
-    v4->_addressBook = CFRetain(a3);
+    v4->_addressBook = CFRetain(book);
   }
 
   return v4;
@@ -29,14 +29,14 @@
   [(_DAContactsAccountABLegacyProvider *)&v3 dealloc];
 }
 
-- (id)accountWithExternalIdentifier:(id)a3 createIfNecessary:(BOOL)a4
+- (id)accountWithExternalIdentifier:(id)identifier createIfNecessary:(BOOL)necessary
 {
-  v4 = a4;
-  v6 = a3;
+  necessaryCopy = necessary;
+  identifierCopy = identifier;
   [(_DAContactsAccountABLegacyProvider *)self addressBook];
   v7 = ABAddressBookCopyAccountWithIdentifier();
   v8 = v7;
-  if (!v7 && v4)
+  if (!v7 && necessaryCopy)
   {
     v9 = ABAccountCreate();
     ABAccountSetIdentifier();
@@ -70,7 +70,7 @@ LABEL_7:
   v19 = *MEMORY[0x277D85DE8];
   [(_DAContactsAccountABLegacyProvider *)self addressBook];
   v2 = ABAddressBookCopyArrayOfAllAccounts();
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -93,7 +93,7 @@ LABEL_7:
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [DAABLegacyAccount alloc];
         v11 = [(DAABLegacyAccount *)v10 initWithABAccout:v9, v14];
-        [v3 addObject:v11];
+        [array addObject:v11];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -104,20 +104,20 @@ LABEL_7:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
-- (id)accountForContainerWithIdentifier:(id)a3
+- (id)accountForContainerWithIdentifier:(id)identifier
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   [(_DAContactsAccountABLegacyProvider *)self addressBook];
-  v10[0] = v4;
+  v10[0] = identifierCopy;
   [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   v5 = ABAddressBookCopySourcesWithUUIDs();
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
     [(_DAContactsAccountABLegacyProvider *)self addressBook];
     AccountForSource = ABAddressBookGetAccountForSource();

@@ -1,23 +1,23 @@
 @interface ARKeyframeList
 - (void)dealloc;
-- (void)setKeyframeList:(CV3DReconKeyframeList *)a3 updatedAnchors:(id)a4 removedAnchors:(id)a5 timestamp:(double)a6;
+- (void)setKeyframeList:(CV3DReconKeyframeList *)list updatedAnchors:(id)anchors removedAnchors:(id)removedAnchors timestamp:(double)timestamp;
 @end
 
 @implementation ARKeyframeList
 
-- (void)setKeyframeList:(CV3DReconKeyframeList *)a3 updatedAnchors:(id)a4 removedAnchors:(id)a5 timestamp:(double)a6
+- (void)setKeyframeList:(CV3DReconKeyframeList *)list updatedAnchors:(id)anchors removedAnchors:(id)removedAnchors timestamp:(double)timestamp
 {
-  v11 = a4;
-  v10 = a5;
+  anchorsCopy = anchors;
+  removedAnchorsCopy = removedAnchors;
   if (self->_keyframeList)
   {
     CV3DReconKeyframeListRelease();
   }
 
-  self->_timestamp = a6;
-  self->_keyframeList = a3;
-  [(ARKeyframeList *)self setUpdatedAnchors:v11];
-  [(ARKeyframeList *)self setRemovedAnchors:v10];
+  self->_timestamp = timestamp;
+  self->_keyframeList = list;
+  [(ARKeyframeList *)self setUpdatedAnchors:anchorsCopy];
+  [(ARKeyframeList *)self setRemovedAnchors:removedAnchorsCopy];
   if (self->_keyframeList)
   {
     CV3DReconKeyframeListRetain();

@@ -1,11 +1,11 @@
 @interface CRPhoneSearch
 + (id)copyCountryCode;
-+ (id)copyNormalizedPhoneNumber:(__CFString *)a3 countryCode:(__CFString *)a4;
-- (BOOL)hasPrefix:(id)a3;
-- (BOOL)isEqualToPhoneNumber:(id)a3;
-- (BOOL)matchesUTF8String:(const char *)a3 matchType:(unint64_t)a4;
-- (CRPhoneSearch)initWithSearchString:(id)a3;
-- (id)_copyInterpretationsForPhoneNumber:(id)a3;
++ (id)copyNormalizedPhoneNumber:(__CFString *)number countryCode:(__CFString *)code;
+- (BOOL)hasPrefix:(id)prefix;
+- (BOOL)isEqualToPhoneNumber:(id)number;
+- (BOOL)matchesUTF8String:(const char *)string matchType:(unint64_t)type;
+- (CRPhoneSearch)initWithSearchString:(id)string;
+- (id)_copyInterpretationsForPhoneNumber:(id)number;
 - (void)dealloc;
 @end
 
@@ -23,7 +23,7 @@
   return result;
 }
 
-+ (id)copyNormalizedPhoneNumber:(__CFString *)a3 countryCode:(__CFString *)a4
++ (id)copyNormalizedPhoneNumber:(__CFString *)number countryCode:(__CFString *)code
 {
   v5 = PNCopyBestGuessNormalizedNumberForCountry();
   v6 = CFStringCreateWithCStringNoCopy(kCFAllocatorDefault, v5, 0x8000100u, kCFAllocatorMalloc);
@@ -34,7 +34,7 @@
     String = CFPhoneNumberCreateString();
     if (!String)
     {
-      String = [(__CFString *)a3 lowercaseString];
+      String = [(__CFString *)number lowercaseString];
     }
   }
 
@@ -52,7 +52,7 @@
   return v9;
 }
 
-- (CRPhoneSearch)initWithSearchString:(id)a3
+- (CRPhoneSearch)initWithSearchString:(id)string
 {
   v5.receiver = self;
   v5.super_class = CRPhoneSearch;
@@ -73,23 +73,23 @@
   [(CRPhoneSearch *)&v3 dealloc];
 }
 
-- (id)_copyInterpretationsForPhoneNumber:(id)a3
+- (id)_copyInterpretationsForPhoneNumber:(id)number
 {
-  v4 = [objc_opt_class() copyNormalizedPhoneNumber:a3 countryCode:self->_countryCode];
+  v4 = [objc_opt_class() copyNormalizedPhoneNumber:number countryCode:self->_countryCode];
   countryCode = self->_countryCode;
   v6 = _PNCopyIndexStringsForAddressBookSearch();
 
   return v6;
 }
 
-- (BOOL)isEqualToPhoneNumber:(id)a3
+- (BOOL)isEqualToPhoneNumber:(id)number
 {
   if ([(NSString *)self->_searchString isEqualToString:?])
   {
     return 1;
   }
 
-  v6 = [(CRPhoneSearch *)self _copyInterpretationsForPhoneNumber:a3];
+  v6 = [(CRPhoneSearch *)self _copyInterpretationsForPhoneNumber:number];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -131,20 +131,20 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)hasPrefix:(id)a3
+- (BOOL)hasPrefix:(id)prefix
 {
   if ([(NSString *)self->_searchString hasPrefix:?])
   {
     return 1;
   }
 
-  v6 = [(CRPhoneSearch *)self _copyInterpretationsForPhoneNumber:a3];
+  v6 = [(CRPhoneSearch *)self _copyInterpretationsForPhoneNumber:prefix];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -155,7 +155,7 @@ LABEL_13:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         if ([*(*(&v13 + 1) + 8 * i) hasPrefix:self->_searchString])
@@ -165,7 +165,7 @@ LABEL_13:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         continue;
@@ -181,17 +181,17 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)matchesUTF8String:(const char *)a3 matchType:(unint64_t)a4
+- (BOOL)matchesUTF8String:(const char *)string matchType:(unint64_t)type
 {
-  v6 = [[NSString alloc] initWithBytesNoCopy:a3 length:strlen(a3) encoding:4 freeWhenDone:0];
-  if (a4 == 1)
+  v6 = [[NSString alloc] initWithBytesNoCopy:string length:strlen(string) encoding:4 freeWhenDone:0];
+  if (type == 1)
   {
     v8 = [(CRPhoneSearch *)self hasPrefix:v6];
     goto LABEL_5;
   }
 
   v7 = 0;
-  if (!a4)
+  if (!type)
   {
     v8 = [(CRPhoneSearch *)self isEqualToPhoneNumber:v6];
 LABEL_5:

@@ -1,16 +1,16 @@
 @interface PLSubstandardPhotoEditSource
-+ (id)_imageWithImage:(id)a3 orientation:(int64_t)a4;
-- (PLSubstandardPhotoEditSource)initWithImage:(id)a3 orientation:(int64_t)a4;
-- (PLSubstandardPhotoEditSource)initWithImage:(id)a3 orientation:(int64_t)a4 size:(CGSize)a5;
++ (id)_imageWithImage:(id)image orientation:(int64_t)orientation;
+- (PLSubstandardPhotoEditSource)initWithImage:(id)image orientation:(int64_t)orientation;
+- (PLSubstandardPhotoEditSource)initWithImage:(id)image orientation:(int64_t)orientation size:(CGSize)size;
 @end
 
 @implementation PLSubstandardPhotoEditSource
 
-- (PLSubstandardPhotoEditSource)initWithImage:(id)a3 orientation:(int64_t)a4 size:(CGSize)a5
+- (PLSubstandardPhotoEditSource)initWithImage:(id)image orientation:(int64_t)orientation size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = [PLSubstandardPhotoEditSource _imageWithImage:a3 orientation:?];
+  height = size.height;
+  width = size.width;
+  v9 = [PLSubstandardPhotoEditSource _imageWithImage:image orientation:?];
   [v9 extent];
   if (width != v10 || height != v11)
   {
@@ -35,13 +35,13 @@
 
     else
     {
-      v15 = [v14 imageByClampingToExtent];
+      imageByClampingToExtent = [v14 imageByClampingToExtent];
 
-      v9 = [v15 imageByCroppingToRect:{0.0, 0.0, width, height}];
+      v9 = [imageByClampingToExtent imageByCroppingToRect:{0.0, 0.0, width, height}];
     }
   }
 
-  v16 = [getPIPhotoEditHelperClass_85048() imageSourceWithCIImage:v9 orientation:a4];
+  v16 = [getPIPhotoEditHelperClass_85048() imageSourceWithCIImage:v9 orientation:orientation];
   v19.receiver = self;
   v19.super_class = PLSubstandardPhotoEditSource;
   v17 = [(PLEditSource *)&v19 initWithResolvedSource:v16 mediaType:1];
@@ -49,10 +49,10 @@
   return v17;
 }
 
-- (PLSubstandardPhotoEditSource)initWithImage:(id)a3 orientation:(int64_t)a4
+- (PLSubstandardPhotoEditSource)initWithImage:(id)image orientation:(int64_t)orientation
 {
-  v6 = [PLSubstandardPhotoEditSource _imageWithImage:a3 orientation:?];
-  v7 = [getPIPhotoEditHelperClass_85048() imageSourceWithCIImage:v6 orientation:a4];
+  v6 = [PLSubstandardPhotoEditSource _imageWithImage:image orientation:?];
+  v7 = [getPIPhotoEditHelperClass_85048() imageSourceWithCIImage:v6 orientation:orientation];
   v10.receiver = self;
   v10.super_class = PLSubstandardPhotoEditSource;
   v8 = [(PLEditSource *)&v10 initWithResolvedSource:v7 mediaType:1];
@@ -60,28 +60,28 @@
   return v8;
 }
 
-+ (id)_imageWithImage:(id)a3 orientation:(int64_t)a4
++ (id)_imageWithImage:(id)image orientation:(int64_t)orientation
 {
   v5 = [MEMORY[0x1E695F658] imageWithCGImage:DCIM_CGImageRefFromPLImage()];
   v6 = v5;
-  if (a4 == 8)
+  if (orientation == 8)
   {
-    v7 = 6;
+    orientationCopy = 6;
   }
 
   else
   {
-    v7 = a4;
+    orientationCopy = orientation;
   }
 
-  if (a4 == 6)
+  if (orientation == 6)
   {
     v8 = 8;
   }
 
   else
   {
-    v8 = v7;
+    v8 = orientationCopy;
   }
 
   v9 = [v5 imageByApplyingOrientation:v8];

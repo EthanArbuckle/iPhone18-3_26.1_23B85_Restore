@@ -1,26 +1,26 @@
 @interface FadeNavigationTransition
 - (_TtC7Journal24FadeNavigationTransition)init;
-- (id)interruptibleAnimatorForTransition:(id)a3;
-- (void)animateTransition:(id)a3;
+- (id)interruptibleAnimatorForTransition:(id)transition;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation FadeNavigationTransition
 
-- (id)interruptibleAnimatorForTransition:(id)a3
+- (id)interruptibleAnimatorForTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_1007CF278(a3);
+  selfCopy = self;
+  v6 = sub_1007CF278(transition);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  [sub_1007CF278(a3) startAnimation];
+  selfCopy = self;
+  [sub_1007CF278(transition) startAnimation];
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

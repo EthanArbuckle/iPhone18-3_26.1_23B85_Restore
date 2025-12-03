@@ -1,8 +1,8 @@
 @interface VUIFamilyInviteManager
 - (VUIFamilyInviteManager)init;
-- (id)accountsForAccountManager:(id)a3;
-- (void)presentFamilySetupScreenIfEligible:(id)a3 checkEligibility:(BOOL)a4;
-- (void)presentFamilySetupScreenWithBuyParams:(id)a3;
+- (id)accountsForAccountManager:(id)manager;
+- (void)presentFamilySetupScreenIfEligible:(id)eligible checkEligibility:(BOOL)eligibility;
+- (void)presentFamilySetupScreenWithBuyParams:(id)params;
 @end
 
 @implementation VUIFamilyInviteManager
@@ -19,8 +19,8 @@
     v2->_store = v3;
 
     v5 = objc_alloc(MEMORY[0x1E698C250]);
-    v6 = [(VUIFamilyInviteManager *)v2 store];
-    v7 = [v5 initWithAccountStore:v6];
+    store = [(VUIFamilyInviteManager *)v2 store];
+    v7 = [v5 initWithAccountStore:store];
     accountManager = v2->_accountManager;
     v2->_accountManager = v7;
 
@@ -30,23 +30,23 @@
   return v2;
 }
 
-- (void)presentFamilySetupScreenIfEligible:(id)a3 checkEligibility:(BOOL)a4
+- (void)presentFamilySetupScreenIfEligible:(id)eligible checkEligibility:(BOOL)eligibility
 {
-  v4 = a4;
-  v6 = a3;
+  eligibilityCopy = eligibility;
+  eligibleCopy = eligible;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__VUIFamilyInviteManager_presentFamilySetupScreenIfEligible_checkEligibility___block_invoke;
   aBlock[3] = &unk_1E872D768;
-  v7 = v6;
+  v7 = eligibleCopy;
   v16 = v7;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (v4)
+  if (eligibilityCopy)
   {
     v10 = objc_alloc(MEMORY[0x1E699C0A0]);
-    v11 = [(VUIFamilyInviteManager *)self accountManager];
-    v12 = [v10 initWithAccountManager:v11];
+    accountManager = [(VUIFamilyInviteManager *)self accountManager];
+    v12 = [v10 initWithAccountManager:accountManager];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -181,10 +181,10 @@ void __78__VUIFamilyInviteManager_presentFamilySetupScreenIfEligible_checkEligib
   }
 }
 
-- (void)presentFamilySetupScreenWithBuyParams:(id)a3
+- (void)presentFamilySetupScreenWithBuyParams:(id)params
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (params)
   {
     v4 = [VUIActionCommerceTransaction extractSalableAdamIDFromBuyParams:?];
     v5 = [v4 copy];
@@ -219,18 +219,18 @@ void __78__VUIFamilyInviteManager_presentFamilySetupScreenIfEligible_checkEligib
   }
 }
 
-- (id)accountsForAccountManager:(id)a3
+- (id)accountsForAccountManager:(id)manager
 {
   v3 = MEMORY[0x1E695DF90];
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 accountStore];
+  accountStore = [managerCopy accountStore];
 
-  v7 = [v6 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  if (v7)
+  if (aa_primaryAppleAccount)
   {
-    [v5 setObject:v7 forKeyedSubscript:*MEMORY[0x1E698C218]];
+    [v5 setObject:aa_primaryAppleAccount forKeyedSubscript:*MEMORY[0x1E698C218]];
   }
 
   v8 = [v5 copy];

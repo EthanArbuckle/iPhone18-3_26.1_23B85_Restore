@@ -1,5 +1,5 @@
 @interface LabelledBatteryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -7,19 +7,19 @@
 
 @implementation LabelledBatteryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SharingViewService.LabelledBatteryView"];
-  [v3 validateClass:@"SharingViewService.LabelledBatteryView" hasSwiftField:@"batteryView" withSwiftType:"_UIBatteryView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SharingViewService.LabelledBatteryView"];
+  [validationsCopy validateClass:@"SharingViewService.LabelledBatteryView" hasSwiftField:@"batteryView" withSwiftType:"_UIBatteryView"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(LabelledBatteryViewAccessibility *)self safeSwiftValueForKey:@"batteryView"];
-  v4 = [v3 accessibilityLabel];
-  v5 = [(LabelledBatteryViewAccessibility *)self _axBatteryType];
-  v8 = accessibilityLocalizedString(v5);
+  accessibilityLabel = [v3 accessibilityLabel];
+  _axBatteryType = [(LabelledBatteryViewAccessibility *)self _axBatteryType];
+  v8 = accessibilityLocalizedString(_axBatteryType);
   v6 = __UIAXStringForVariables();
 
   return v6;
@@ -28,17 +28,17 @@
 - (id)accessibilityValue
 {
   v2 = [(LabelledBatteryViewAccessibility *)self safeSwiftValueForKey:@"batteryView"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
 {
   v2 = [(LabelledBatteryViewAccessibility *)self safeSwiftValueForKey:@"batteryView"];
-  v3 = [v2 accessibilityHint];
+  accessibilityHint = [v2 accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
 @end

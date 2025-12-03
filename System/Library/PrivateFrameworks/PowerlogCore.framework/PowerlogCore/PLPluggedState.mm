@@ -1,6 +1,6 @@
 @interface PLPluggedState
 + (void)load;
-- (BOOL)updateWithEntry:(id)a3;
+- (BOOL)updateWithEntry:(id)entry;
 - (PLPluggedState)init;
 @end
 
@@ -8,7 +8,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLPluggedState;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -25,15 +25,15 @@
   return v3;
 }
 
-- (BOOL)updateWithEntry:(id)a3
+- (BOOL)updateWithEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ExternalConnected"];
+  entryCopy = entry;
+  v5 = [entryCopy objectForKeyedSubscript:@"ExternalConnected"];
   v6 = [(PLState *)self updateWithValue:v5];
   if (v6)
   {
-    v7 = [v4 entryDate];
-    [(PLState *)self setStateChangeTime:v7];
+    entryDate = [entryCopy entryDate];
+    [(PLState *)self setStateChangeTime:entryDate];
   }
 
   return v6;

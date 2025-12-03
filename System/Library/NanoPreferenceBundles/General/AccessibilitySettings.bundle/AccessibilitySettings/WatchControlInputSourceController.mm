@@ -1,10 +1,10 @@
 @interface WatchControlInputSourceController
 - (BOOL)inputSourceTypeEnabled;
 - (id)enableInputSourceSpecifiers;
-- (id)inputSourceTypeEnabled:(id)a3;
+- (id)inputSourceTypeEnabled:(id)enabled;
 - (id)specifiers;
 - (unint64_t)inputSourceType;
-- (void)inputSourceTypeSetEnabled:(id)a3 specifier:(id)a4;
+- (void)inputSourceTypeSetEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation WatchControlInputSourceController
@@ -15,13 +15,13 @@
   v4 = *(&self->super.super.super.super.super.super.isa + v3);
   if (!v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(WatchControlInputSourceController *)self enableInputSourceSpecifiers];
-    v7 = v6;
+    array = [MEMORY[0x277CBEB18] array];
+    enableInputSourceSpecifiers = [(WatchControlInputSourceController *)self enableInputSourceSpecifiers];
+    v7 = enableInputSourceSpecifiers;
     v8 = MEMORY[0x277CBEBF8];
-    if (v6)
+    if (enableInputSourceSpecifiers)
     {
-      v9 = v6;
+      v9 = enableInputSourceSpecifiers;
     }
 
     else
@@ -29,13 +29,13 @@
       v9 = MEMORY[0x277CBEBF8];
     }
 
-    [v5 addObjectsFromArray:v9];
+    [array addObjectsFromArray:v9];
 
-    v10 = [(WatchControlInputSourceController *)self inputSourceCustomizationSpecifiers];
-    v11 = v10;
-    if (v10)
+    inputSourceCustomizationSpecifiers = [(WatchControlInputSourceController *)self inputSourceCustomizationSpecifiers];
+    v11 = inputSourceCustomizationSpecifiers;
+    if (inputSourceCustomizationSpecifiers)
     {
-      v12 = v10;
+      v12 = inputSourceCustomizationSpecifiers;
     }
 
     else
@@ -43,10 +43,10 @@
       v12 = v8;
     }
 
-    [v5 addObjectsFromArray:v12];
+    [array addObjectsFromArray:v12];
 
     v13 = *(&self->super.super.super.super.super.super.isa + v3);
-    *(&self->super.super.super.super.super.super.isa + v3) = v5;
+    *(&self->super.super.super.super.super.super.isa + v3) = array;
 
     v4 = *(&self->super.super.super.super.super.super.isa + v3);
   }
@@ -56,62 +56,62 @@
 
 - (unint64_t)inputSourceType
 {
-  v2 = [(WatchControlInputSourceController *)self specifier];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"InputSource"];
-  v5 = [v4 unsignedIntegerValue];
+  specifier = [(WatchControlInputSourceController *)self specifier];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"InputSource"];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)inputSourceTypeEnabled
 {
-  v3 = [MEMORY[0x277D7A910] sharedInstance];
-  v4 = [v3 enabledInputSourceTypes];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  enabledInputSourceTypes = [mEMORY[0x277D7A910] enabledInputSourceTypes];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[WatchControlInputSourceController inputSourceType](self, "inputSourceType")}];
-  v6 = [v4 objectForKey:v5];
-  v7 = [v6 BOOLValue];
+  v6 = [enabledInputSourceTypes objectForKey:v5];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (id)enableInputSourceSpecifiers
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-  [(WatchControlInputSourceController *)self customizeEnableInputSourceGroupSpecifier:v4];
-  [v3 addObject:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+  [(WatchControlInputSourceController *)self customizeEnableInputSourceGroupSpecifier:emptyGroupSpecifier];
+  [array addObject:emptyGroupSpecifier];
   v5 = MEMORY[0x277D3FAD8];
   [(WatchControlInputSourceController *)self inputSourceType];
   v6 = WCNameForInputSourceType();
   v7 = [v5 preferenceSpecifierNamed:v6 target:self set:sel_inputSourceTypeSetEnabled_specifier_ get:sel_inputSourceTypeEnabled_ detail:0 cell:6 edit:0];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
-  return v3;
+  return array;
 }
 
-- (void)inputSourceTypeSetEnabled:(id)a3 specifier:(id)a4
+- (void)inputSourceTypeSetEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = [(WatchControlInputSourceController *)self inputSourceTypeEnabled:a3];
-  v7 = [MEMORY[0x277D7A910] sharedInstance];
-  v6 = [(WatchControlInputSourceController *)self inputSourceType];
+  v5 = [(WatchControlInputSourceController *)self inputSourceTypeEnabled:enabled];
+  mEMORY[0x277D7A910] = [MEMORY[0x277D7A910] sharedInstance];
+  inputSourceType = [(WatchControlInputSourceController *)self inputSourceType];
   if (v5)
   {
-    [v7 disableInputSourceType:v6];
+    [mEMORY[0x277D7A910] disableInputSourceType:inputSourceType];
   }
 
   else
   {
-    [v7 enableInputSourceType:v6];
+    [mEMORY[0x277D7A910] enableInputSourceType:inputSourceType];
   }
 }
 
-- (id)inputSourceTypeEnabled:(id)a3
+- (id)inputSourceTypeEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(WatchControlInputSourceController *)self inputSourceTypeEnabled];
+  inputSourceTypeEnabled = [(WatchControlInputSourceController *)self inputSourceTypeEnabled];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:inputSourceTypeEnabled];
 }
 
 @end

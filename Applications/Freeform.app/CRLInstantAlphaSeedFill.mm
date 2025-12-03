@@ -1,18 +1,18 @@
 @interface CRLInstantAlphaSeedFill
-+ (id)newSeedFillWithImage:(id)a3 seedPoint:(CGPoint)a4 context:(id *)a5 oldFill:(id)a6;
++ (id)newSeedFillWithImage:(id)image seedPoint:(CGPoint)point context:(id *)context oldFill:(id)fill;
 @end
 
 @implementation CRLInstantAlphaSeedFill
 
-+ (id)newSeedFillWithImage:(id)a3 seedPoint:(CGPoint)a4 context:(id *)a5 oldFill:(id)a6
++ (id)newSeedFillWithImage:(id)image seedPoint:(CGPoint)point context:(id *)context oldFill:(id)fill
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a3;
-  v11 = a6;
+  y = point.y;
+  x = point.x;
+  imageCopy = image;
+  fillCopy = fill;
   v38 = 0;
-  qword_101A35188 = a5;
-  v12 = [[CRLInstantAlphaBinaryBitmap alloc] initWithWidth:v10[1] height:v10[2], 0];
+  qword_101A35188 = context;
+  v12 = [[CRLInstantAlphaBinaryBitmap alloc] initWithWidth:imageCopy[1] height:imageCopy[2], 0];
   if (v12)
   {
     v13 = malloc_type_malloc(0x18uLL, 0x20040960023A9uLL);
@@ -29,7 +29,7 @@
         *v15 = 0;
         v15[1] = 0;
         *(v14 + 16) = v15 + 2;
-        sub_10049C07C(v10, v12, x, y, &v39, v11);
+        sub_10049C07C(imageCopy, v12, x, y, &v39, fillCopy);
         sub_10049C228(v12, &v39);
         sub_10049C590(v14, &v39);
         while (1)
@@ -41,7 +41,7 @@
             v18 = *(v17 + 8);
             if (!v18)
             {
-              [(CRLInstantAlphaBinaryBitmap *)v12 unionWithBitmap:v11];
+              [(CRLInstantAlphaBinaryBitmap *)v12 unionWithBitmap:fillCopy];
               sub_10049C628(v14);
               v35 = v12;
               goto LABEL_39;
@@ -65,9 +65,9 @@
               {
                 if (!sub_10049C674(v12, v20, (v19 - 1)))
                 {
-                  if (sub_10049C674(v11, v20, (v19 - 1)) || (v22 = qword_101A35188, v23 = sub_10049C988(v10, v20, (v19 - 1)), sub_10049C90C(v22, v23)))
+                  if (sub_10049C674(fillCopy, v20, (v19 - 1)) || (v22 = qword_101A35188, v23 = sub_10049C988(imageCopy, v20, (v19 - 1)), sub_10049C90C(v22, v23)))
                   {
-                    sub_10049C07C(v10, v12, v20, v19 - 1, &v37, v11);
+                    sub_10049C07C(imageCopy, v12, v20, v19 - 1, &v37, fillCopy);
                     sub_10049C228(v12, &v37);
                     if (!sub_10049C590(v14, &v37))
                     {
@@ -87,7 +87,7 @@ LABEL_27:
             }
           }
 
-          if (v10[2] - 1 > v19)
+          if (imageCopy[2] - 1 > v19)
           {
             v25 = HIDWORD(v39);
             v26 = v40;
@@ -98,9 +98,9 @@ LABEL_27:
               {
                 if (!sub_10049C674(v12, v25, v27))
                 {
-                  if (sub_10049C674(v12, v25, v27) || (v28 = qword_101A35188, v29 = sub_10049C988(v10, v25, v27), sub_10049C90C(v28, v29)))
+                  if (sub_10049C674(v12, v25, v27) || (v28 = qword_101A35188, v29 = sub_10049C988(imageCopy, v25, v27), sub_10049C90C(v28, v29)))
                   {
-                    sub_10049C07C(v10, v12, v25, v27, &v37, v11);
+                    sub_10049C07C(imageCopy, v12, v25, v27, &v37, fillCopy);
                     sub_10049C228(v12, &v37);
                     if (!sub_10049C590(v14, &v37))
                     {

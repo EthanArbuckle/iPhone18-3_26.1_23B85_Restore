@@ -1,14 +1,14 @@
 @interface DownloadNetworkConstraintError
-- (BOOL)canCoalesceWithError:(id)a3;
-- (id)_genericStringWithLocalizedKeyBase:(id)a3;
-- (id)_specificStringWithLocalizedKeyBase:(id)a3;
+- (BOOL)canCoalesceWithError:(id)error;
+- (id)_genericStringWithLocalizedKeyBase:(id)base;
+- (id)_specificStringWithLocalizedKeyBase:(id)base;
 - (id)copyUserNotification;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation DownloadNetworkConstraintError
 
-- (BOOL)canCoalesceWithError:(id)a3
+- (BOOL)canCoalesceWithError:(id)error
 {
   v5 = objc_opt_class();
   if (v5 != objc_opt_class())
@@ -16,56 +16,56 @@
     return 0;
   }
 
-  v6 = [(DownloadNetworkConstraintError *)self constrainedSizeLimit];
-  if (v6 != [a3 constrainedSizeLimit])
+  constrainedSizeLimit = [(DownloadNetworkConstraintError *)self constrainedSizeLimit];
+  if (constrainedSizeLimit != [error constrainedSizeLimit])
   {
     return 0;
   }
 
-  v7 = [(DownloadNetworkConstraintError *)self canDownloadInITunes];
-  if (v7 != [a3 canDownloadInITunes])
+  canDownloadInITunes = [(DownloadNetworkConstraintError *)self canDownloadInITunes];
+  if (canDownloadInITunes != [error canDownloadInITunes])
   {
     return 0;
   }
 
-  v9 = [(DownloadError *)self downloadKind];
-  v10 = [a3 downloadKind];
+  downloadKind = [(DownloadError *)self downloadKind];
+  downloadKind2 = [error downloadKind];
   if ((SSDownloadKindIsSoftwareKind() & 1) == 0 && !SSDownloadKindIsSoftwareKind())
   {
     return 1;
   }
 
-  return [(NSString *)v9 isEqualToString:v10];
+  return [(NSString *)downloadKind isEqualToString:downloadKind2];
 }
 
-- (id)_genericStringWithLocalizedKeyBase:(id)a3
+- (id)_genericStringWithLocalizedKeyBase:(id)base
 {
   if ([(NSMutableOrderedSet *)self->super._downloadIdentifiers count]!= 1)
   {
-    a3 = [a3 stringByAppendingString:@"_PLURAL"];
+    base = [base stringByAppendingString:@"_PLURAL"];
   }
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
 
-  return [(NSBundle *)v4 localizedStringForKey:a3 value:&stru_10033CC30 table:0];
+  return [(NSBundle *)v4 localizedStringForKey:base value:&stru_10033CC30 table:0];
 }
 
-- (id)_specificStringWithLocalizedKeyBase:(id)a3
+- (id)_specificStringWithLocalizedKeyBase:(id)base
 {
   v5 = [(NSMutableOrderedSet *)self->super._downloadIdentifiers count];
   if (v5 == 2)
   {
     v6 = @"_PLUS_ONE_%@";
-    return +[NSString stringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "stringWithValidatedFormat:validFormatSpecifiers:error:", -[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", [a3 stringByAppendingString:v6], &stru_10033CC30, 0), @"%@", 0, self->super._downloadTitle, v8);
+    return +[NSString stringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "stringWithValidatedFormat:validFormatSpecifiers:error:", -[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", [base stringByAppendingString:v6], &stru_10033CC30, 0), @"%@", 0, self->super._downloadTitle, v8);
   }
 
   if (v5 == 1)
   {
     v6 = @"_%@";
-    return +[NSString stringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "stringWithValidatedFormat:validFormatSpecifiers:error:", -[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", [a3 stringByAppendingString:v6], &stru_10033CC30, 0), @"%@", 0, self->super._downloadTitle, v8);
+    return +[NSString stringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "stringWithValidatedFormat:validFormatSpecifiers:error:", -[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", [base stringByAppendingString:v6], &stru_10033CC30, 0), @"%@", 0, self->super._downloadTitle, v8);
   }
 
-  return +[NSString stringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "stringWithValidatedFormat:validFormatSpecifiers:error:", -[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", [a3 stringByAppendingString:@"_PLURAL_%@_%d"], &stru_10033CC30, 0), @"%@%d", 0, self->super._downloadTitle, (v5 - 1));
+  return +[NSString stringWithValidatedFormat:validFormatSpecifiers:error:](NSString, "stringWithValidatedFormat:validFormatSpecifiers:error:", -[NSBundle localizedStringForKey:value:table:](+[NSBundle bundleForClass:](NSBundle, "bundleForClass:", objc_opt_class()), "localizedStringForKey:value:table:", [base stringByAppendingString:@"_PLURAL_%@_%d"], &stru_10033CC30, 0), @"%@%d", 0, self->super._downloadTitle, (v5 - 1));
 }
 
 - (id)copyUserNotification
@@ -73,15 +73,15 @@
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   v4 = [[NSBundle bundleForClass:?]value:"localizedStringForKey:value:table:" table:@"OK", &stru_10033CC30, 0];
   CFDictionarySetValue(Mutable, kCFUserNotificationDefaultButtonTitleKey, v4);
-  v5 = [(DownloadNetworkConstraintError *)self canDownloadInITunes];
+  canDownloadInITunes = [(DownloadNetworkConstraintError *)self canDownloadInITunes];
   v6 = [+[SSDevice currentDevice](SSDevice "currentDevice")];
   [(DownloadError *)self downloadKind];
   IsSoftwareKind = SSDownloadKindIsSoftwareKind();
   v8 = [(NSString *)self->super._downloadTitle length];
-  v9 = v6 & v5;
+  v9 = v6 & canDownloadInITunes;
   if (v8)
   {
-    if ((v6 | v5))
+    if ((v6 | canDownloadInITunes))
     {
       if (v9)
       {
@@ -134,7 +134,7 @@ LABEL_37:
   {
     if (!IsSoftwareKind)
     {
-      if ((v6 | v5))
+      if ((v6 | canDownloadInITunes))
       {
         if (v9)
         {
@@ -168,7 +168,7 @@ LABEL_37:
       goto LABEL_37;
     }
 
-    if ((v6 | v5))
+    if ((v6 | canDownloadInITunes))
     {
       if (v9)
       {
@@ -245,11 +245,11 @@ LABEL_45:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = DownloadNetworkConstraintError;
-  result = [(DownloadError *)&v5 copyWithZone:a3];
+  result = [(DownloadError *)&v5 copyWithZone:zone];
   *(result + 40) = self->_canDownloadInITunes;
   *(result + 6) = self->_sizeLimit;
   return result;

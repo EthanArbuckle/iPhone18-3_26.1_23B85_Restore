@@ -1,5 +1,5 @@
 @interface _OSLogDirectoryReference
-- (_OSLogDirectoryReference)initWithDescriptor:(int)a3 sandboxExtensionToken:(const char *)a4;
+- (_OSLogDirectoryReference)initWithDescriptor:(int)descriptor sandboxExtensionToken:(const char *)token;
 - (void)close;
 - (void)dealloc;
 @end
@@ -55,16 +55,16 @@ LABEL_3:
   __break(1u);
 }
 
-- (_OSLogDirectoryReference)initWithDescriptor:(int)a3 sandboxExtensionToken:(const char *)a4
+- (_OSLogDirectoryReference)initWithDescriptor:(int)descriptor sandboxExtensionToken:(const char *)token
 {
   v8.receiver = self;
   v8.super_class = _OSLogDirectoryReference;
   v6 = [(_OSLogDirectoryReference *)&v8 init];
   if (v6)
   {
-    v6->_fd = dup(a3);
+    v6->_fd = dup(descriptor);
     v6->_etk = -1;
-    if (a4)
+    if (token)
     {
       v6->_etk = sandbox_extension_consume();
     }

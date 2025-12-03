@@ -1,42 +1,42 @@
 @interface VUIVideoAdvisoryLogoImageDownloader
 - (void)cleanupImageProxies;
-- (void)downloadImageWithURL:(id)a3 imageInfo:(id)a4 completion:(id)a5;
-- (void)downloadImagesWithAdvisoryImageInfo:(id)a3 photoSensitivityImageInfo:(id)a4 highMotionWarningImageInfo:(id)a5 completion:(id)a6;
+- (void)downloadImageWithURL:(id)l imageInfo:(id)info completion:(id)completion;
+- (void)downloadImagesWithAdvisoryImageInfo:(id)info photoSensitivityImageInfo:(id)imageInfo highMotionWarningImageInfo:(id)warningImageInfo completion:(id)completion;
 @end
 
 @implementation VUIVideoAdvisoryLogoImageDownloader
 
-- (void)downloadImageWithURL:(id)a3 imageInfo:(id)a4 completion:(id)a5
+- (void)downloadImageWithURL:(id)l imageInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length])
+  lCopy = l;
+  infoCopy = info;
+  completionCopy = completion;
+  if ([lCopy length])
   {
-    v11 = [v9 width];
-    v12 = [v9 height];
+    width = [infoCopy width];
+    height = [infoCopy height];
     v13 = objc_alloc(MEMORY[0x1E69D5978]);
-    v14 = [v9 format];
-    v15 = [v13 initUrlWithProperties:v8 imageSize:0 focusSizeIncrease:v14 cropCode:v11 urlFormat:v12, 0.0];
+    format = [infoCopy format];
+    v15 = [v13 initUrlWithProperties:lCopy imageSize:0 focusSizeIncrease:format cropCode:width urlFormat:height, 0.0];
 
     v16 = [MEMORY[0x1E69D5988] imageURLWithDescription:v15];
     v17 = objc_alloc(MEMORY[0x1E69D5958]);
-    v18 = [MEMORY[0x1E69D5980] sharedInstance];
-    v19 = [v17 initWithObject:v16 imageLoader:v18 groupType:0];
+    mEMORY[0x1E69D5980] = [MEMORY[0x1E69D5980] sharedInstance];
+    v19 = [v17 initWithObject:v16 imageLoader:mEMORY[0x1E69D5980] groupType:0];
 
     if (v19)
     {
-      v20 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
+      ratingImageProxy = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
 
-      if (v20)
+      if (ratingImageProxy)
       {
-        v21 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
-        if ([v21 isEqual:v19])
+        ratingImageProxy2 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
+        if ([ratingImageProxy2 isEqual:v19])
         {
-          v22 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
-          v23 = [v22 isLoading];
+          ratingImageProxy3 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
+          isLoading = [ratingImageProxy3 isLoading];
 
-          if (v23)
+          if (isLoading)
           {
             goto LABEL_10;
           }
@@ -46,11 +46,11 @@
         {
         }
 
-        v24 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
-        [v24 cancel];
+        ratingImageProxy4 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
+        [ratingImageProxy4 cancel];
 
-        v25 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
-        [v25 setCompletionHandler:0];
+        ratingImageProxy5 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
+        [ratingImageProxy5 setCompletionHandler:0];
 
         [(VUIVideoAdvisoryLogoImageDownloader *)self setRatingImageProxy:0];
       }
@@ -59,7 +59,7 @@
       v26[1] = 3221225472;
       v26[2] = __81__VUIVideoAdvisoryLogoImageDownloader_downloadImageWithURL_imageInfo_completion___block_invoke;
       v26[3] = &unk_1E8732A50;
-      v27 = v10;
+      v27 = completionCopy;
       [v19 setCompletionHandler:v26];
       [(VUIVideoAdvisoryLogoImageDownloader *)self setRatingImageProxy:v19];
       [v19 load];
@@ -104,12 +104,12 @@ void __81__VUIVideoAdvisoryLogoImageDownloader_downloadImageWithURL_imageInfo_co
   }
 }
 
-- (void)downloadImagesWithAdvisoryImageInfo:(id)a3 photoSensitivityImageInfo:(id)a4 highMotionWarningImageInfo:(id)a5 completion:(id)a6
+- (void)downloadImagesWithAdvisoryImageInfo:(id)info photoSensitivityImageInfo:(id)imageInfo highMotionWarningImageInfo:(id)warningImageInfo completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v34 = a5;
-  v33 = a6;
+  infoCopy = info;
+  imageInfoCopy = imageInfo;
+  warningImageInfoCopy = warningImageInfo;
+  completionCopy = completion;
   v12 = dispatch_group_create();
   v55[0] = 0;
   v55[1] = v55;
@@ -129,21 +129,21 @@ void __81__VUIVideoAdvisoryLogoImageDownloader_downloadImageWithURL_imageInfo_co
   v51[3] = __Block_byref_object_copy__12;
   v51[4] = __Block_byref_object_dispose__12;
   v52 = 0;
-  v13 = __139__VUIVideoAdvisoryLogoImageDownloader_downloadImagesWithAdvisoryImageInfo_photoSensitivityImageInfo_highMotionWarningImageInfo_completion___block_invoke(v12, v10);
+  v13 = __139__VUIVideoAdvisoryLogoImageDownloader_downloadImagesWithAdvisoryImageInfo_photoSensitivityImageInfo_highMotionWarningImageInfo_completion___block_invoke(v12, infoCopy);
   v14 = v13;
   if (v13)
   {
-    v15 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
+    ratingImageProxy = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
 
-    if (v15)
+    if (ratingImageProxy)
     {
-      v16 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
-      if ([v16 isEqual:v14])
+      ratingImageProxy2 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
+      if ([ratingImageProxy2 isEqual:v14])
       {
-        v17 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
-        v18 = [v17 isLoading];
+        ratingImageProxy3 = [(VUIVideoAdvisoryLogoImageDownloader *)self ratingImageProxy];
+        isLoading = [ratingImageProxy3 isLoading];
 
-        if (v18)
+        if (isLoading)
         {
           goto LABEL_25;
         }
@@ -167,21 +167,21 @@ void __81__VUIVideoAdvisoryLogoImageDownloader_downloadImageWithURL_imageInfo_co
     [v14 load];
   }
 
-  v20 = __139__VUIVideoAdvisoryLogoImageDownloader_downloadImagesWithAdvisoryImageInfo_photoSensitivityImageInfo_highMotionWarningImageInfo_completion___block_invoke(v13, v11);
+  v20 = __139__VUIVideoAdvisoryLogoImageDownloader_downloadImagesWithAdvisoryImageInfo_photoSensitivityImageInfo_highMotionWarningImageInfo_completion___block_invoke(v13, imageInfoCopy);
   v21 = v20;
   if (v20)
   {
-    v22 = [(VUIVideoAdvisoryLogoImageDownloader *)self photoSensitivityImageProxy];
+    photoSensitivityImageProxy = [(VUIVideoAdvisoryLogoImageDownloader *)self photoSensitivityImageProxy];
 
-    if (v22)
+    if (photoSensitivityImageProxy)
     {
-      v23 = [(VUIVideoAdvisoryLogoImageDownloader *)self photoSensitivityImageProxy];
-      if ([v23 isEqual:v21])
+      photoSensitivityImageProxy2 = [(VUIVideoAdvisoryLogoImageDownloader *)self photoSensitivityImageProxy];
+      if ([photoSensitivityImageProxy2 isEqual:v21])
       {
-        v24 = [(VUIVideoAdvisoryLogoImageDownloader *)self photoSensitivityImageProxy];
-        v25 = [v24 isLoading];
+        photoSensitivityImageProxy3 = [(VUIVideoAdvisoryLogoImageDownloader *)self photoSensitivityImageProxy];
+        isLoading2 = [photoSensitivityImageProxy3 isLoading];
 
-        if (v25)
+        if (isLoading2)
         {
           goto LABEL_24;
         }
@@ -205,20 +205,20 @@ void __81__VUIVideoAdvisoryLogoImageDownloader_downloadImageWithURL_imageInfo_co
     [v21 load];
   }
 
-  v27 = __139__VUIVideoAdvisoryLogoImageDownloader_downloadImagesWithAdvisoryImageInfo_photoSensitivityImageInfo_highMotionWarningImageInfo_completion___block_invoke(v20, v34);
+  v27 = __139__VUIVideoAdvisoryLogoImageDownloader_downloadImagesWithAdvisoryImageInfo_photoSensitivityImageInfo_highMotionWarningImageInfo_completion___block_invoke(v20, warningImageInfoCopy);
   if (v27)
   {
-    v28 = [(VUIVideoAdvisoryLogoImageDownloader *)self highMotionWarningImageProxy];
+    highMotionWarningImageProxy = [(VUIVideoAdvisoryLogoImageDownloader *)self highMotionWarningImageProxy];
 
-    if (v28)
+    if (highMotionWarningImageProxy)
     {
-      v29 = [(VUIVideoAdvisoryLogoImageDownloader *)self highMotionWarningImageProxy];
-      if ([v29 isEqual:v21])
+      highMotionWarningImageProxy2 = [(VUIVideoAdvisoryLogoImageDownloader *)self highMotionWarningImageProxy];
+      if ([highMotionWarningImageProxy2 isEqual:v21])
       {
-        v30 = [(VUIVideoAdvisoryLogoImageDownloader *)self highMotionWarningImageProxy];
-        v31 = [v30 isLoading];
+        highMotionWarningImageProxy3 = [(VUIVideoAdvisoryLogoImageDownloader *)self highMotionWarningImageProxy];
+        isLoading3 = [highMotionWarningImageProxy3 isLoading];
 
-        if (v31)
+        if (isLoading3)
         {
           goto LABEL_23;
         }
@@ -248,7 +248,7 @@ void __81__VUIVideoAdvisoryLogoImageDownloader_downloadImageWithURL_imageInfo_co
   block[2] = __139__VUIVideoAdvisoryLogoImageDownloader_downloadImagesWithAdvisoryImageInfo_photoSensitivityImageInfo_highMotionWarningImageInfo_completion___block_invoke_4;
   block[3] = &unk_1E8732AA0;
   objc_copyWeak(&v40, &location);
-  v36 = v33;
+  v36 = completionCopy;
   v37 = v55;
   v38 = v53;
   v39 = v51;

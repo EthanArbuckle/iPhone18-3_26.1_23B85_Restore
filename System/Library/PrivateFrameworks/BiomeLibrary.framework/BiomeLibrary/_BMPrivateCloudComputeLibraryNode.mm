@@ -2,25 +2,25 @@
 + (id)RequestLog;
 + (id)configurationForRequestLog;
 + (id)storeConfigurationForRequestLog;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMPrivateCloudComputeLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"RequestLog"])
+  if ([name isEqualToString:@"RequestLog"])
   {
-    v4 = [a1 RequestLog];
+    requestLog = [self RequestLog];
   }
 
   else
   {
-    v4 = 0;
+    requestLog = 0;
   }
 
-  return v4;
+  return requestLog;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForRequestLog
 {
-  v3 = [a1 storeConfigurationForRequestLog];
-  v4 = [a1 syncPolicyForRequestLog];
+  storeConfigurationForRequestLog = [self storeConfigurationForRequestLog];
+  syncPolicyForRequestLog = [self syncPolicyForRequestLog];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"7EC4C68A-B0F6-41F1-8C15-C9F3C6EBE1D6"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"PrivateCloudCompute.RequestLog" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"PrivateCloudCompute.RequestLog" eventClass:objc_opt_class() storeConfig:storeConfigurationForRequestLog syncPolicy:syncPolicyForRequestLog legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)RequestLog
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForRequestLog];
+  configurationForRequestLog = [self configurationForRequestLog];
   v3 = +[BMPrivateCloudComputeRequestLog columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"PrivateCloudCompute.RequestLog" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"PrivateCloudCompute.RequestLog" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"PrivateCloudCompute.RequestLog" schema:v9 configuration:configurationForRequestLog];
 
   v11 = *MEMORY[0x1E69E9840];
 

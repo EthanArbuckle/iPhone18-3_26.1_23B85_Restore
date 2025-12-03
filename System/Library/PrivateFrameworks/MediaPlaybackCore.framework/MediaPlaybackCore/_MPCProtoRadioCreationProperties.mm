@@ -1,11 +1,11 @@
 @interface _MPCProtoRadioCreationProperties
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MPCProtoRadioCreationProperties
@@ -21,13 +21,13 @@
   return v6 ^ v8 ^ [(NSString *)self->_playActivityQueueGroupingID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((radioStationID = self->_radioStationID, !(radioStationID | v4[5])) || -[NSString isEqual:](radioStationID, "isEqual:")) && ((radioStationURLString = self->_radioStationURLString, !(radioStationURLString | v4[6])) || -[NSString isEqual:](radioStationURLString, "isEqual:")) && ((seedContentReference = self->_seedContentReference, !(seedContentReference | v4[7])) || -[_MPCProtoRadioContentReference isEqual:](seedContentReference, "isEqual:")) && ((nowPlayingContentReference = self->_nowPlayingContentReference, !(nowPlayingContentReference | v4[2])) || -[_MPCProtoRadioContentReference isEqual:](nowPlayingContentReference, "isEqual:")) && ((accountInfo = self->_accountInfo, !(accountInfo | v4[1])) || -[_MPCProtoDelegateInfo isEqual:](accountInfo, "isEqual:")) && ((playActivityFeatureName = self->_playActivityFeatureName, !(playActivityFeatureName | v4[3])) || -[NSString isEqual:](playActivityFeatureName, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((radioStationID = self->_radioStationID, !(radioStationID | equalCopy[5])) || -[NSString isEqual:](radioStationID, "isEqual:")) && ((radioStationURLString = self->_radioStationURLString, !(radioStationURLString | equalCopy[6])) || -[NSString isEqual:](radioStationURLString, "isEqual:")) && ((seedContentReference = self->_seedContentReference, !(seedContentReference | equalCopy[7])) || -[_MPCProtoRadioContentReference isEqual:](seedContentReference, "isEqual:")) && ((nowPlayingContentReference = self->_nowPlayingContentReference, !(nowPlayingContentReference | equalCopy[2])) || -[_MPCProtoRadioContentReference isEqual:](nowPlayingContentReference, "isEqual:")) && ((accountInfo = self->_accountInfo, !(accountInfo | equalCopy[1])) || -[_MPCProtoDelegateInfo isEqual:](accountInfo, "isEqual:")) && ((playActivityFeatureName = self->_playActivityFeatureName, !(playActivityFeatureName | equalCopy[3])) || -[NSString isEqual:](playActivityFeatureName, "isEqual:")))
   {
     playActivityQueueGroupingID = self->_playActivityQueueGroupingID;
-    if (playActivityQueueGroupingID | v4[4])
+    if (playActivityQueueGroupingID | equalCopy[4])
     {
       v12 = [(NSString *)playActivityQueueGroupingID isEqual:?];
     }
@@ -46,97 +46,97 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_radioStationID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_radioStationID copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_radioStationURLString copyWithZone:a3];
+  v8 = [(NSString *)self->_radioStationURLString copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
-  v10 = [(_MPCProtoRadioContentReference *)self->_seedContentReference copyWithZone:a3];
+  v10 = [(_MPCProtoRadioContentReference *)self->_seedContentReference copyWithZone:zone];
   v11 = v5[7];
   v5[7] = v10;
 
-  v12 = [(_MPCProtoRadioContentReference *)self->_nowPlayingContentReference copyWithZone:a3];
+  v12 = [(_MPCProtoRadioContentReference *)self->_nowPlayingContentReference copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
-  v14 = [(_MPCProtoDelegateInfo *)self->_accountInfo copyWithZone:a3];
+  v14 = [(_MPCProtoDelegateInfo *)self->_accountInfo copyWithZone:zone];
   v15 = v5[1];
   v5[1] = v14;
 
-  v16 = [(NSString *)self->_playActivityFeatureName copyWithZone:a3];
+  v16 = [(NSString *)self->_playActivityFeatureName copyWithZone:zone];
   v17 = v5[3];
   v5[3] = v16;
 
-  v18 = [(NSString *)self->_playActivityQueueGroupingID copyWithZone:a3];
+  v18 = [(NSString *)self->_playActivityQueueGroupingID copyWithZone:zone];
   v19 = v5[4];
   v5[4] = v18;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_radioStationID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_radioStationURLString)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_seedContentReference)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_nowPlayingContentReference)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_accountInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playActivityFeatureName)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playActivityQueueGroupingID)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v6 = 0;
@@ -145,18 +145,18 @@
       while (1)
       {
         LOBYTE(v21) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v21 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v21 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v21 & 0x7F) << v6;
@@ -173,11 +173,11 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
-        return [a3 hasError] ^ 1;
+        return [from hasError] ^ 1;
       }
 
       v14 = v13 >> 3;
@@ -232,7 +232,7 @@ LABEL_35:
           objc_storeStrong((&self->super.super.isa + v16), v15);
           v21 = 0;
           v22 = 0;
-          if (!PBReaderPlaceMark() || !_MPCProtoRadioContentReferenceReadFrom(&v15->super.super.isa, a3))
+          if (!PBReaderPlaceMark() || !_MPCProtoRadioContentReferenceReadFrom(&v15->super.super.isa, from))
           {
 LABEL_44:
 
@@ -250,7 +250,7 @@ LABEL_37:
           objc_storeStrong(&self->_accountInfo, v15);
           v21 = 0;
           v22 = 0;
-          if (!PBReaderPlaceMark() || !_MPCProtoDelegateInfoReadFrom(v15, a3))
+          if (!PBReaderPlaceMark() || !_MPCProtoDelegateInfoReadFrom(v15, from))
           {
             goto LABEL_44;
           }
@@ -265,23 +265,23 @@ LABEL_37:
       }
 
 LABEL_42:
-      v19 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v19 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   radioStationID = self->_radioStationID;
   if (radioStationID)
   {
-    [v3 setObject:radioStationID forKey:@"radioStationID"];
+    [dictionary setObject:radioStationID forKey:@"radioStationID"];
   }
 
   radioStationURLString = self->_radioStationURLString;
@@ -293,22 +293,22 @@ LABEL_42:
   seedContentReference = self->_seedContentReference;
   if (seedContentReference)
   {
-    v8 = [(_MPCProtoRadioContentReference *)seedContentReference dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"seedContentReference"];
+    dictionaryRepresentation = [(_MPCProtoRadioContentReference *)seedContentReference dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"seedContentReference"];
   }
 
   nowPlayingContentReference = self->_nowPlayingContentReference;
   if (nowPlayingContentReference)
   {
-    v10 = [(_MPCProtoRadioContentReference *)nowPlayingContentReference dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"nowPlayingContentReference"];
+    dictionaryRepresentation2 = [(_MPCProtoRadioContentReference *)nowPlayingContentReference dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"nowPlayingContentReference"];
   }
 
   accountInfo = self->_accountInfo;
   if (accountInfo)
   {
-    v12 = [(_MPCProtoDelegateInfo *)accountInfo dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"accountInfo"];
+    dictionaryRepresentation3 = [(_MPCProtoDelegateInfo *)accountInfo dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"accountInfo"];
   }
 
   playActivityFeatureName = self->_playActivityFeatureName;
@@ -332,8 +332,8 @@ LABEL_42:
   v8.receiver = self;
   v8.super_class = _MPCProtoRadioCreationProperties;
   v4 = [(_MPCProtoRadioCreationProperties *)&v8 description];
-  v5 = [(_MPCProtoRadioCreationProperties *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MPCProtoRadioCreationProperties *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

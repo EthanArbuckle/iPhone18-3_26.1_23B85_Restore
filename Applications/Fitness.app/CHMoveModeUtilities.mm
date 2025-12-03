@@ -1,27 +1,27 @@
 @interface CHMoveModeUtilities
-+ (void)saveActivityMoveModeAndDefaultGoalSamplesForActivityMoveMode:(int64_t)a3 healthStore:(id)a4 formattingManager:(id)a5;
++ (void)saveActivityMoveModeAndDefaultGoalSamplesForActivityMoveMode:(int64_t)mode healthStore:(id)store formattingManager:(id)manager;
 @end
 
 @implementation CHMoveModeUtilities
 
-+ (void)saveActivityMoveModeAndDefaultGoalSamplesForActivityMoveMode:(int64_t)a3 healthStore:(id)a4 formattingManager:(id)a5
++ (void)saveActivityMoveModeAndDefaultGoalSamplesForActivityMoveMode:(int64_t)mode healthStore:(id)store formattingManager:(id)manager
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [[FIActivitySettingsController alloc] initWithHealthStore:v7];
+  storeCopy = store;
+  managerCopy = manager;
+  v9 = [[FIActivitySettingsController alloc] initWithHealthStore:storeCopy];
   [v9 populateExistingCharacteristics];
   [v9 biologicalSex];
   [v9 weight];
-  if (a3 == 2)
+  if (mode == 2)
     v10 = {;
     v11 = [HKUnit gramUnitWithMetricPrefix:9];
     [v10 doubleValueForUnit:v11];
 
-    v12 = [v9 height];
+    height = [v9 height];
     v13 = [HKUnit meterUnitWithMetricPrefix:7];
-    [v12 doubleValueForUnit:v13];
+    [height doubleValueForUnit:v13];
 
-    v14 = [v9 dateOfBirth];
+    dateOfBirth = [v9 dateOfBirth];
     FIAgeInYearsForDateOfBirth();
 
     [v9 wheelchairUse];
@@ -31,9 +31,9 @@
 
   else
     v15 = {;
-    v16 = [v9 leanBodyMass];
-    v17 = [v9 height];
-    v18 = [v9 dateOfBirth];
+    leanBodyMass = [v9 leanBodyMass];
+    height2 = [v9 height];
+    dateOfBirth2 = [v9 dateOfBirth];
     [v9 wheelchairUse];
     FIUICalculateBMR();
 
@@ -52,11 +52,11 @@
   v28[2] = sub_1000E4E9C;
   v28[3] = &unk_10083BCD0;
   v29 = v19;
-  v30 = v7;
+  v30 = storeCopy;
   v31 = v22;
-  v32 = a3;
+  modeCopy = mode;
   v25 = v22;
-  v26 = v7;
+  v26 = storeCopy;
   v27 = v19;
   [v26 saveObject:v24 withCompletion:v28];
 }

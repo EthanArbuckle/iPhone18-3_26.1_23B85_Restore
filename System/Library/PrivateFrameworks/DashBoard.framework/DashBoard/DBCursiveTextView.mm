@@ -1,28 +1,28 @@
 @interface DBCursiveTextView
-- (DBCursiveTextView)initWithTextURL:(id)a3 pointSize:(double)a4;
+- (DBCursiveTextView)initWithTextURL:(id)l pointSize:(double)size;
 - (double)duration;
 - (void)layoutSubviews;
-- (void)setAccessibilityLabel:(id)a3;
-- (void)setAccessibilityLanguage:(id)a3;
-- (void)setFillColor:(id)a3;
-- (void)setTime:(float)a3;
+- (void)setAccessibilityLabel:(id)label;
+- (void)setAccessibilityLanguage:(id)language;
+- (void)setFillColor:(id)color;
+- (void)setTime:(float)time;
 @end
 
 @implementation DBCursiveTextView
 
-- (DBCursiveTextView)initWithTextURL:(id)a3 pointSize:(double)a4
+- (DBCursiveTextView)initWithTextURL:(id)l pointSize:(double)size
 {
-  v6 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = DBCursiveTextView;
   v7 = [(DBCursiveTextView *)&v15 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v7)
   {
-    v8 = [[DBCursiveTextPath alloc] initWithURL:v6];
+    v8 = [[DBCursiveTextPath alloc] initWithURL:lCopy];
     textPath = v7->_textPath;
     v7->_textPath = v8;
 
-    v7->_pointSize = a4;
+    v7->_pointSize = size;
     v10 = objc_alloc_init(MEMORY[0x277CD9F90]);
     textLayer = v7->_textLayer;
     v7->_textLayer = v10;
@@ -31,8 +31,8 @@
     LODWORD(v12) = 1036831949;
     [(CAShapeLayer *)v7->_textLayer setShadowOpacity:v12];
     [(CAShapeLayer *)v7->_textLayer setShadowOffset:0.0, 1.0];
-    v13 = [(DBCursiveTextView *)v7 layer];
-    [v13 addSublayer:v7->_textLayer];
+    layer = [(DBCursiveTextView *)v7 layer];
+    [layer addSublayer:v7->_textLayer];
   }
 
   return v7;
@@ -43,26 +43,26 @@
   v19.receiver = self;
   v19.super_class = DBCursiveTextView;
   [(DBCursiveTextView *)&v19 layoutSubviews];
-  v3 = [(DBCursiveTextView *)self textLayer];
+  textLayer = [(DBCursiveTextView *)self textLayer];
   [(DBCursiveTextView *)self bounds];
-  [v3 setFrame:?];
+  [textLayer setFrame:?];
 
-  v4 = [(DBCursiveTextView *)self textPath];
+  textPath = [(DBCursiveTextView *)self textPath];
 
-  if (v4)
+  if (textPath)
   {
-    v5 = [(DBCursiveTextView *)self textLayer];
-    [v5 bounds];
+    textLayer2 = [(DBCursiveTextView *)self textLayer];
+    [textLayer2 bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
-    v14 = [(DBCursiveTextView *)self textPath];
+    textPath2 = [(DBCursiveTextView *)self textPath];
     [(DBCursiveTextView *)self pointSize];
-    if (v14)
+    if (textPath2)
     {
-      [v14 transformForRect:1 pointSize:v7 flipped:{v9, v11, v13, v15}];
+      [textPath2 transformForRect:1 pointSize:v7 flipped:{v9, v11, v13, v15}];
     }
 
     else
@@ -80,59 +80,59 @@
 
 - (double)duration
 {
-  v2 = [(DBCursiveTextView *)self textPath];
-  [v2 duration];
+  textPath = [(DBCursiveTextView *)self textPath];
+  [textPath duration];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTime:(float)a3
+- (void)setTime:(float)time
 {
-  v5 = [(DBCursiveTextView *)self textPath];
-  v6 = [v5 pathForTime:a3];
+  textPath = [(DBCursiveTextView *)self textPath];
+  v6 = [textPath pathForTime:time];
 
   v7 = MEMORY[0x24C1CC250](v6, &self->_textTransform);
   if (v7)
   {
     v8 = v7;
-    v9 = [(DBCursiveTextView *)self textLayer];
-    [v9 setPath:v8];
+    textLayer = [(DBCursiveTextView *)self textLayer];
+    [textLayer setPath:v8];
 
-    v10 = [(DBCursiveTextView *)self textLayer];
-    [v10 setShadowPath:v8];
+    textLayer2 = [(DBCursiveTextView *)self textLayer];
+    [textLayer2 setShadowPath:v8];
 
     CGPathRelease(v8);
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  v4 = a3;
-  v6 = [(DBCursiveTextView *)self textLayer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  textLayer = [(DBCursiveTextView *)self textLayer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setFillColor:v5];
+  [textLayer setFillColor:cGColor];
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
   v6.receiver = self;
   v6.super_class = DBCursiveTextView;
-  v4 = a3;
-  [(DBCursiveTextView *)&v6 setAccessibilityLabel:v4];
+  labelCopy = label;
+  [(DBCursiveTextView *)&v6 setAccessibilityLabel:labelCopy];
   v5 = [(DBCursiveTextView *)self textLayer:v6.receiver];
-  [v5 setAccessibilityLabel:v4];
+  [v5 setAccessibilityLabel:labelCopy];
 }
 
-- (void)setAccessibilityLanguage:(id)a3
+- (void)setAccessibilityLanguage:(id)language
 {
   v6.receiver = self;
   v6.super_class = DBCursiveTextView;
-  v4 = a3;
-  [(DBCursiveTextView *)&v6 setAccessibilityLanguage:v4];
+  languageCopy = language;
+  [(DBCursiveTextView *)&v6 setAccessibilityLanguage:languageCopy];
   v5 = [(DBCursiveTextView *)self textLayer:v6.receiver];
-  [v5 setAccessibilityLanguage:v4];
+  [v5 setAccessibilityLanguage:languageCopy];
 }
 
 @end

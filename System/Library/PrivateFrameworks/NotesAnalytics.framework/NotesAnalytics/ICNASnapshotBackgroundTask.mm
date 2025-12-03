@@ -1,8 +1,8 @@
 @interface ICNASnapshotBackgroundTask
 + (id)makeTaskRequest;
-- (ICNASnapshotBackgroundTask)initWithAnalyticsController:(id)a3 eventReporter:(id)a4 snapshotReporter:(id)a5;
+- (ICNASnapshotBackgroundTask)initWithAnalyticsController:(id)controller eventReporter:(id)reporter snapshotReporter:(id)snapshotReporter;
 - (void)handleTaskExpiration;
-- (void)runTaskWithCompletion:(id)a3;
+- (void)runTaskWithCompletion:(id)completion;
 @end
 
 @implementation ICNASnapshotBackgroundTask
@@ -16,21 +16,21 @@
   return v2;
 }
 
-- (ICNASnapshotBackgroundTask)initWithAnalyticsController:(id)a3 eventReporter:(id)a4 snapshotReporter:(id)a5
+- (ICNASnapshotBackgroundTask)initWithAnalyticsController:(id)controller eventReporter:(id)reporter snapshotReporter:(id)snapshotReporter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  controllerCopy = controller;
+  reporterCopy = reporter;
+  snapshotReporterCopy = snapshotReporter;
   v15.receiver = self;
   v15.super_class = ICNASnapshotBackgroundTask;
   v12 = [(ICNASnapshotBackgroundTask *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_analyticsController, a3);
-    objc_storeStrong(&v13->_eventReporter, a4);
-    objc_storeStrong(&v13->_snapshotReporter, a5);
-    v13->_shouldStartSession = [v9 globalSessionState] == 0;
+    objc_storeStrong(&v12->_analyticsController, controller);
+    objc_storeStrong(&v13->_eventReporter, reporter);
+    objc_storeStrong(&v13->_snapshotReporter, snapshotReporter);
+    v13->_shouldStartSession = [controllerCopy globalSessionState] == 0;
   }
 
   return v13;
@@ -68,12 +68,12 @@ uint64_t __42__ICNASnapshotBackgroundTask_didRegister___block_invoke_2(uint64_t 
 - (void)handleTaskExpiration
 {
   v3 = +[ICNAController sharedController];
-  v4 = [(ICNASnapshotBackgroundTask *)self eventReporter];
-  v5 = [v4 subTracker];
-  [v3 enterGroupWithSubtracker:v5];
+  eventReporter = [(ICNASnapshotBackgroundTask *)self eventReporter];
+  subTracker = [eventReporter subTracker];
+  [v3 enterGroupWithSubtracker:subTracker];
 
-  v6 = [(ICNASnapshotBackgroundTask *)self eventReporter];
-  [v6 submitSnapshotCompletionEventIsSuccessful:0];
+  eventReporter2 = [(ICNASnapshotBackgroundTask *)self eventReporter];
+  [eventReporter2 submitSnapshotCompletionEventIsSuccessful:0];
 
   v7 = os_log_create("com.apple.notes", "Analytics");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -82,12 +82,12 @@ uint64_t __42__ICNASnapshotBackgroundTask_didRegister___block_invoke_2(uint64_t 
   }
 
   v8 = +[ICNAController sharedController];
-  v9 = [(ICNASnapshotBackgroundTask *)self eventReporter];
-  v10 = [v9 subTracker];
-  [v8 leaveGroupWithSubtracker:v10];
+  eventReporter3 = [(ICNASnapshotBackgroundTask *)self eventReporter];
+  subTracker2 = [eventReporter3 subTracker];
+  [v8 leaveGroupWithSubtracker:subTracker2];
 }
 
-- (void)runTaskWithCompletion:(id)a3
+- (void)runTaskWithCompletion:(id)completion
 {
   v4 = os_log_create("com.apple.notes", "Analytics");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -98,26 +98,26 @@ uint64_t __42__ICNASnapshotBackgroundTask_didRegister___block_invoke_2(uint64_t 
   [MEMORY[0x277D36278] postBasicEvent:27];
   if ([(ICNASnapshotBackgroundTask *)self shouldStartSession])
   {
-    v5 = [MEMORY[0x277D35DF0] referralURLForSnapshotBackgroundTask];
-    v6 = [(ICNASnapshotBackgroundTask *)self analyticsController];
-    [v6 startAppAndGlobalSessionIfNecessaryWithReferralURL:v5 referralApplication:&stru_286E361B0];
+    referralURLForSnapshotBackgroundTask = [MEMORY[0x277D35DF0] referralURLForSnapshotBackgroundTask];
+    analyticsController = [(ICNASnapshotBackgroundTask *)self analyticsController];
+    [analyticsController startAppAndGlobalSessionIfNecessaryWithReferralURL:referralURLForSnapshotBackgroundTask referralApplication:&stru_286E361B0];
   }
 
-  v7 = [(ICNASnapshotBackgroundTask *)self analyticsController];
-  [v7 addSnapshotReferralDataToSessionLevel];
+  analyticsController2 = [(ICNASnapshotBackgroundTask *)self analyticsController];
+  [analyticsController2 addSnapshotReferralDataToSessionLevel];
 
   v8 = +[ICNAController sharedController];
-  v9 = [(ICNASnapshotBackgroundTask *)self eventReporter];
-  v10 = [v9 subTracker];
-  [v8 enterGroupWithSubtracker:v10];
+  eventReporter = [(ICNASnapshotBackgroundTask *)self eventReporter];
+  subTracker = [eventReporter subTracker];
+  [v8 enterGroupWithSubtracker:subTracker];
 
-  v11 = [(ICNASnapshotBackgroundTask *)self eventReporter];
-  [v11 submitSnapshotTriggeredEvent];
+  eventReporter2 = [(ICNASnapshotBackgroundTask *)self eventReporter];
+  [eventReporter2 submitSnapshotTriggeredEvent];
 
   v12 = +[ICNASnapshotReporter sharedReporter];
-  LODWORD(v9) = [v12 shouldSnapshot];
+  LODWORD(eventReporter) = [v12 shouldSnapshot];
 
-  if (v9)
+  if (eventReporter)
   {
     v13 = +[ICNASnapshotReporter sharedReporter];
     v19[0] = MEMORY[0x277D85DD0];
@@ -141,9 +141,9 @@ uint64_t __42__ICNASnapshotBackgroundTask_didRegister___block_invoke_2(uint64_t 
   }
 
   v15 = +[ICNAController sharedController];
-  v16 = [(ICNASnapshotBackgroundTask *)self eventReporter];
-  v17 = [v16 subTracker];
-  [v15 leaveGroupWithSubtracker:v17];
+  eventReporter3 = [(ICNASnapshotBackgroundTask *)self eventReporter];
+  subTracker2 = [eventReporter3 subTracker];
+  [v15 leaveGroupWithSubtracker:subTracker2];
 }
 
 uint64_t __52__ICNASnapshotBackgroundTask_runTaskWithCompletion___block_invoke(uint64_t a1)

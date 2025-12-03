@@ -1,36 +1,36 @@
 @interface WFIntelligencePromptView
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)textViewShouldBeginEditing:(id)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)accessoryButtonTapped;
 - (void)contentSizeCategoryDidChange;
 - (void)detachedButtonTapped;
 - (void)layoutSubviews;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidEndEditing:(id)editing;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation WFIntelligencePromptView
 
 - (void)contentSizeCategoryDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C8399620();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C839A0FC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_1C839AD6C(width);
   v7 = v6;
 
@@ -41,28 +41,28 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1C83A0C48(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1C83A0C48(change);
 }
 
 - (void)accessoryButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C83A359C();
 }
 
 - (void)detachedButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C83A364C();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C83A3740();
   v5 = v4;
 
@@ -73,42 +73,42 @@
   return result;
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   LOBYTE(self) = sub_1C83A37EC();
 
   return self & 1;
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_1C83A38B0();
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   sub_1C83A3978();
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C83A3A40(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1C83A3A40(changeCopy);
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
   sub_1C840CDDC();
-  v7 = a3;
-  v8 = self;
-  v9 = sub_1C83A3CF4(v7);
+  viewCopy = view;
+  selfCopy = self;
+  v9 = sub_1C83A3CF4(viewCopy);
 
   return v9 & 1;
 }

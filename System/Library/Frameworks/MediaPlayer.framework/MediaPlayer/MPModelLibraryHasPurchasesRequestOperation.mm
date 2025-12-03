@@ -6,19 +6,19 @@
 
 - (void)execute
 {
-  v3 = [(MPModelLibraryHasPurchasesRequestOperation *)self request];
-  v4 = [v3 modelObject];
+  request = [(MPModelLibraryHasPurchasesRequestOperation *)self request];
+  modelObject = [request modelObject];
   v5 = [MPMediaLibraryEntityTranslator translatorForMPModelClass:objc_opt_class()];
 
   if (v5)
   {
     v6 = [MPMediaLibraryView alloc];
-    v7 = [(MPModelLibraryHasPurchasesRequestOperation *)self request];
-    v8 = [v7 mediaLibrary];
-    v9 = [(MPMediaLibraryView *)v6 initWithLibrary:v8 filteringOptions:8];
+    request2 = [(MPModelLibraryHasPurchasesRequestOperation *)self request];
+    mediaLibrary = [request2 mediaLibrary];
+    v9 = [(MPMediaLibraryView *)v6 initWithLibrary:mediaLibrary filteringOptions:8];
 
-    v10 = [v5 entityClass];
-    (*(*v10 + 120))(v10);
+    entityClass = [v5 entityClass];
+    (*(*entityClass + 120))(entityClass);
     if (v9)
     {
       [(MPMediaLibraryView *)v9 mlCoreView];
@@ -44,8 +44,8 @@
     std::allocate_shared[abi:ne200100]<mlcore::ComparisonPredicate<long long>,std::allocator<mlcore::ComparisonPredicate<long long>>,mlcore::ModelProperty<long long> *&,mlcore::ComparisonOperator &,long long const&,mlcore::ComparisonOptions &,0>();
   }
 
-  v11 = [(MPModelLibraryHasPurchasesRequestOperation *)self responseHandler];
-  v11[2](v11, 0, 0);
+  responseHandler = [(MPModelLibraryHasPurchasesRequestOperation *)self responseHandler];
+  responseHandler[2](responseHandler, 0, 0);
 }
 
 void __53__MPModelLibraryHasPurchasesRequestOperation_execute__block_invoke(uint64_t a1, uint64_t a2, void *a3)

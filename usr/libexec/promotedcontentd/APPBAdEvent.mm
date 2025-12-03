@@ -1,25 +1,25 @@
 @interface APPBAdEvent
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)connectionTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)connectionTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)deviceOrientationAsString:(int)a3;
+- (id)deviceOrientationAsString:(int)string;
 - (id)dictionaryRepresentation;
-- (id)originAsString:(int)a3;
-- (int)StringAsConnectionType:(id)a3;
-- (int)StringAsDeviceOrientation:(id)a3;
-- (int)StringAsOrigin:(id)a3;
+- (id)originAsString:(int)string;
+- (int)StringAsConnectionType:(id)type;
+- (int)StringAsDeviceOrientation:(id)orientation;
+- (int)StringAsOrigin:(id)origin;
 - (int)connectionType;
 - (int)deviceOrientation;
 - (int)origin;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasConnectionType:(BOOL)a3;
-- (void)setHasDeviceOrientation:(BOOL)a3;
-- (void)setHasOrigin:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasConnectionType:(BOOL)type;
+- (void)setHasDeviceOrientation:(BOOL)orientation;
+- (void)setHasOrigin:(BOOL)origin;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBAdEvent
@@ -49,9 +49,9 @@
   }
 }
 
-- (void)setHasDeviceOrientation:(BOOL)a3
+- (void)setHasDeviceOrientation:(BOOL)orientation
 {
-  if (a3)
+  if (orientation)
   {
     v3 = 4;
   }
@@ -64,55 +64,55 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)deviceOrientationAsString:(int)a3
+- (id)deviceOrientationAsString:(int)string
 {
-  if (a3 >= 7)
+  if (string >= 7)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047DEE0 + a3);
+    v4 = *(&off_10047DEE0 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsDeviceOrientation:(id)a3
+- (int)StringAsDeviceOrientation:(id)orientation
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  orientationCopy = orientation;
+  if ([orientationCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Portrait"])
+  else if ([orientationCopy isEqualToString:@"Portrait"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PortraitUpsideDown"])
+  else if ([orientationCopy isEqualToString:@"PortraitUpsideDown"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LandscapeLeft"])
+  else if ([orientationCopy isEqualToString:@"LandscapeLeft"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LandscapeRight"])
+  else if ([orientationCopy isEqualToString:@"LandscapeRight"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FaceUp"])
+  else if ([orientationCopy isEqualToString:@"FaceUp"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"FaceDown"])
+  else if ([orientationCopy isEqualToString:@"FaceDown"])
   {
     v4 = 6;
   }
@@ -138,9 +138,9 @@
   }
 }
 
-- (void)setHasConnectionType:(BOOL)a3
+- (void)setHasConnectionType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -153,75 +153,75 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)connectionTypeAsString:(int)a3
+- (id)connectionTypeAsString:(int)string
 {
-  if (a3 >= 0xB)
+  if (string >= 0xB)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_10047DF18 + a3);
+    v4 = *(&off_10047DF18 + string);
   }
 
   return v4;
 }
 
-- (int)StringAsConnectionType:(id)a3
+- (int)StringAsConnectionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UnknownConnection"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UnknownConnection"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WiFi"])
+  else if ([typeCopy isEqualToString:@"WiFi"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_2_G"])
+  else if ([typeCopy isEqualToString:@"Cellular_2_G"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_2_5G"])
+  else if ([typeCopy isEqualToString:@"Cellular_2_5G"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_3_G"])
+  else if ([typeCopy isEqualToString:@"Cellular_3_G"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_3_5G"])
+  else if ([typeCopy isEqualToString:@"Cellular_3_5G"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_3_75G"])
+  else if ([typeCopy isEqualToString:@"Cellular_3_75G"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_H_Plus"])
+  else if ([typeCopy isEqualToString:@"Cellular_H_Plus"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_4G"])
+  else if ([typeCopy isEqualToString:@"Cellular_4G"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Cellular_5G"])
+  else if ([typeCopy isEqualToString:@"Cellular_5G"])
   {
     v4 = 10;
   }
@@ -247,9 +247,9 @@
   }
 }
 
-- (void)setHasOrigin:(BOOL)a3
+- (void)setHasOrigin:(BOOL)origin
 {
-  if (a3)
+  if (origin)
   {
     v3 = 8;
   }
@@ -262,33 +262,33 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)originAsString:(int)a3
+- (id)originAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"Storyboard";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"Banner";
   }
 
   else
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   return v4;
 }
 
-- (int)StringAsOrigin:(id)a3
+- (int)StringAsOrigin:(id)origin
 {
-  v3 = a3;
+  originCopy = origin;
   v4 = 1;
-  if (([v3 isEqualToString:@"Storyboard"] & 1) == 0)
+  if (([originCopy isEqualToString:@"Storyboard"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"Banner"])
+    if ([originCopy isEqualToString:@"Banner"])
     {
       v4 = 2;
     }
@@ -307,8 +307,8 @@
   v7.receiver = self;
   v7.super_class = APPBAdEvent;
   v3 = [(APPBAdEvent *)&v7 description];
-  v4 = [(APPBAdEvent *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBAdEvent *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -405,9 +405,9 @@ LABEL_23:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
@@ -450,27 +450,27 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_timestampEvent;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = *&self->_timestampEvent;
+    *(toCopy + 40) |= 1u;
   }
 
   if (self->_context)
   {
-    v6 = v4;
-    [v4 setContext:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setContext:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 8) = self->_deviceOrientation;
-    *(v4 + 40) |= 4u;
+    *(toCopy + 8) = self->_deviceOrientation;
+    *(toCopy + 40) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -489,21 +489,21 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 4) = self->_connectionType;
-  *(v4 + 40) |= 2u;
+  *(toCopy + 4) = self->_connectionType;
+  *(toCopy + 40) |= 2u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_8:
-    *(v4 + 9) = self->_origin;
-    *(v4 + 40) |= 8u;
+    *(toCopy + 9) = self->_origin;
+    *(toCopy + 40) |= 8u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -511,7 +511,7 @@ LABEL_9:
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_context copyWithZone:a3];
+  v7 = [(NSString *)self->_context copyWithZone:zone];
   v8 = v6[3];
   v6[3] = v7;
 
@@ -553,10 +553,10 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
@@ -564,19 +564,19 @@ LABEL_6:
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timestampEvent != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timestampEvent != *(equalCopy + 1))
     {
       goto LABEL_24;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_24;
   }
 
   context = self->_context;
-  if (context | *(v4 + 3))
+  if (context | *(equalCopy + 3))
   {
     if (![(NSString *)context isEqual:?])
     {
@@ -590,34 +590,34 @@ LABEL_24:
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_deviceOrientation != *(v4 + 8))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_deviceOrientation != *(equalCopy + 8))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_24;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_connectionType != *(v4 + 4))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_connectionType != *(equalCopy + 4))
     {
       goto LABEL_24;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
     goto LABEL_24;
   }
 
-  v7 = (*(v4 + 40) & 8) == 0;
+  v7 = (*(equalCopy + 40) & 8) == 0;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_origin != *(v4 + 9))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_origin != *(equalCopy + 9))
     {
       goto LABEL_24;
     }
@@ -704,28 +704,28 @@ LABEL_12:
   return v9 ^ v5 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 40))
+  fromCopy = from;
+  if (*(fromCopy + 40))
   {
-    self->_timestampEvent = *(v4 + 1);
+    self->_timestampEvent = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(APPBAdEvent *)self setContext:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) != 0)
   {
-    self->_deviceOrientation = *(v4 + 8);
+    self->_deviceOrientation = *(fromCopy + 8);
     *&self->_has |= 4u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 2) == 0)
     {
 LABEL_7:
@@ -738,17 +738,17 @@ LABEL_7:
     }
   }
 
-  else if ((*(v4 + 40) & 2) == 0)
+  else if ((*(fromCopy + 40) & 2) == 0)
   {
     goto LABEL_7;
   }
 
-  self->_connectionType = *(v4 + 4);
+  self->_connectionType = *(fromCopy + 4);
   *&self->_has |= 2u;
-  if ((*(v4 + 40) & 8) != 0)
+  if ((*(fromCopy + 40) & 8) != 0)
   {
 LABEL_8:
-    self->_origin = *(v4 + 9);
+    self->_origin = *(fromCopy + 9);
     *&self->_has |= 8u;
   }
 

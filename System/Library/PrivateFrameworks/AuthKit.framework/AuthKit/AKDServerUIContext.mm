@@ -1,22 +1,22 @@
 @interface AKDServerUIContext
-+ (id)serverUIContextFromResponse:(id)a3 authContext:(id)a4 urlRequest:(id)a5 urlConfiguration:(id)a6;
++ (id)serverUIContextFromResponse:(id)response authContext:(id)context urlRequest:(id)request urlConfiguration:(id)configuration;
 @end
 
 @implementation AKDServerUIContext
 
-+ (id)serverUIContextFromResponse:(id)a3 authContext:(id)a4 urlRequest:(id)a5 urlConfiguration:(id)a6
++ (id)serverUIContextFromResponse:(id)response authContext:(id)context urlRequest:(id)request urlConfiguration:(id)configuration
 {
-  v20 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v18 = 0;
-  objc_storeStrong(&v18, a4);
+  objc_storeStrong(&v18, context);
   v17 = 0;
-  objc_storeStrong(&v17, a5);
+  objc_storeStrong(&v17, request);
   v16 = 0;
-  objc_storeStrong(&v16, a6);
-  v15 = objc_alloc_init(v20);
+  objc_storeStrong(&v16, configuration);
+  v15 = objc_alloc_init(selfCopy);
   [v15 setInitiatingServerResponse:location[0]];
   [v15 setAuthContext:v18];
   v6 = [AKServerRequestConfiguration alloc];
@@ -24,9 +24,9 @@
   [v15 setRequestConfiguration:?];
   _objc_release(v11);
   v12 = v16;
-  v13 = [v15 requestConfiguration];
-  [v13 setUrlConfiguration:v12];
-  _objc_release(v13);
+  requestConfiguration = [v15 requestConfiguration];
+  [requestConfiguration setUrlConfiguration:v12];
+  _objc_release(requestConfiguration);
   v14 = _objc_retain(v15);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);

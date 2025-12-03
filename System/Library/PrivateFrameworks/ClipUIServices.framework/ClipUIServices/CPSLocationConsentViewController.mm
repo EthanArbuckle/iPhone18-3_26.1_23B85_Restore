@@ -1,20 +1,20 @@
 @interface CPSLocationConsentViewController
-- (CPSLocationConsentViewController)initWithRequest:(id)a3;
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (void)_buttonActionTriggered:(id)a3;
+- (CPSLocationConsentViewController)initWithRequest:(id)request;
+- (id)mapView:(id)view rendererForOverlay:(id)overlay;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (void)_buttonActionTriggered:(id)triggered;
 - (void)_setupContentView;
-- (void)mapViewDidChangeVisibleRegion:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)mapViewDidChangeVisibleRegion:(id)region;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CPSLocationConsentViewController
 
-- (CPSLocationConsentViewController)initWithRequest:(id)a3
+- (CPSLocationConsentViewController)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = _CPSLocalizedString();
   v6 = [MEMORY[0x277D755D0] configurationWithScale:2];
   v7 = [MEMORY[0x277D755B8] _systemImageNamed:@"location.fill.appclip" withConfiguration:v6];
@@ -23,31 +23,31 @@
   v8 = [(CPSLocationConsentViewController *)&v23 initWithTitle:v5 detailText:0 icon:v7 contentLayout:2];
   if (v8)
   {
-    v9 = [v4 applicationName];
+    applicationName = [requestCopy applicationName];
     appName = v8->_appName;
-    v8->_appName = v9;
+    v8->_appName = applicationName;
 
-    v11 = [v4 clipBundleID];
+    clipBundleID = [requestCopy clipBundleID];
     clipBundleID = v8->_clipBundleID;
-    v8->_clipBundleID = v11;
+    v8->_clipBundleID = clipBundleID;
 
-    v13 = [v4 expectedRegion];
+    expectedRegion = [requestCopy expectedRegion];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v15 = [v4 expectedRegion];
+      expectedRegion2 = [requestCopy expectedRegion];
       region = v8->_region;
-      v8->_region = v15;
+      v8->_region = expectedRegion2;
     }
 
-    v17 = [v4 deviceLocation];
-    [v17 coordinate];
+    deviceLocation = [requestCopy deviceLocation];
+    [deviceLocation coordinate];
     v8->_deviceLocationCoordinate.latitude = v18;
     v8->_deviceLocationCoordinate.longitude = v19;
 
-    if ([v4 requestState] == 2)
+    if ([requestCopy requestState] == 2)
     {
       v20 = @"wave.3.right";
     }
@@ -70,45 +70,45 @@
   v18.super_class = CPSLocationConsentViewController;
   [(OBBaseWelcomeController *)&v18 viewDidLoad];
   [(CPSLocationConsentViewController *)self _setupContentView];
-  v3 = [MEMORY[0x277D37618] boldButton];
+  boldButton = [MEMORY[0x277D37618] boldButton];
   allowForAllButton = self->_allowForAllButton;
-  self->_allowForAllButton = v3;
+  self->_allowForAllButton = boldButton;
 
   v5 = self->_allowForAllButton;
   v6 = _CPSLocalizedString();
   [(OBBoldTrayButton *)v5 setTitle:v6 forState:0];
 
   [(OBBoldTrayButton *)self->_allowForAllButton addTarget:self action:sel__buttonActionTriggered_ forControlEvents:0x2000];
-  v7 = [(OBBoldTrayButton *)self->_allowForAllButton titleLabel];
-  [v7 setNumberOfLines:0];
+  titleLabel = [(OBBoldTrayButton *)self->_allowForAllButton titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  v8 = [MEMORY[0x277D37650] linkButton];
+  linkButton = [MEMORY[0x277D37650] linkButton];
   allowOnceButton = self->_allowOnceButton;
-  self->_allowOnceButton = v8;
+  self->_allowOnceButton = linkButton;
 
   v10 = self->_allowOnceButton;
   v11 = _CPSLocalizedString();
   [(OBLinkTrayButton *)v10 setTitle:v11 forState:0];
 
   [(OBLinkTrayButton *)self->_allowOnceButton addTarget:self action:sel__buttonActionTriggered_ forControlEvents:0x2000];
-  v12 = [(OBLinkTrayButton *)self->_allowOnceButton titleLabel];
-  [v12 setNumberOfLines:0];
+  titleLabel2 = [(OBLinkTrayButton *)self->_allowOnceButton titleLabel];
+  [titleLabel2 setNumberOfLines:0];
 
-  v13 = [MEMORY[0x277D37650] linkButton];
-  v14 = [MEMORY[0x277D75348] systemRedColor];
-  [v13 setTitleColor:v14 forState:0];
+  linkButton2 = [MEMORY[0x277D37650] linkButton];
+  systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+  [linkButton2 setTitleColor:systemRedColor forState:0];
 
   v15 = _CPSLocalizedString();
-  [v13 setTitle:v15 forState:0];
+  [linkButton2 setTitle:v15 forState:0];
 
-  [v13 addTarget:self action:sel__buttonActionTriggered_ forControlEvents:0x2000];
-  v16 = [v13 titleLabel];
-  [v16 setNumberOfLines:0];
+  [linkButton2 addTarget:self action:sel__buttonActionTriggered_ forControlEvents:0x2000];
+  titleLabel3 = [linkButton2 titleLabel];
+  [titleLabel3 setNumberOfLines:0];
 
-  v17 = [(CPSLocationConsentViewController *)self buttonTray];
-  [v17 addButton:self->_allowForAllButton];
-  [v17 addButton:self->_allowOnceButton];
-  [v17 addButton:v13];
+  buttonTray = [(CPSLocationConsentViewController *)self buttonTray];
+  [buttonTray addButton:self->_allowForAllButton];
+  [buttonTray addButton:self->_allowOnceButton];
+  [buttonTray addButton:linkButton2];
 }
 
 - (void)_setupContentView
@@ -123,16 +123,16 @@
   [(MKMapView *)self->_mapView setDelegate:self];
   [(MKMapView *)self->_mapView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MKMapView *)self->_mapView _setContinuousCornerRadius:8.0];
-  v5 = [MEMORY[0x277D75348] separatorColor];
-  v6 = [v5 CGColor];
-  v7 = [(MKMapView *)self->_mapView layer];
-  [v7 setBorderColor:v6];
+  separatorColor = [MEMORY[0x277D75348] separatorColor];
+  cGColor = [separatorColor CGColor];
+  layer = [(MKMapView *)self->_mapView layer];
+  [layer setBorderColor:cGColor];
 
-  v8 = [(MKMapView *)self->_mapView layer];
-  [v8 setBorderWidth:1.0];
+  layer2 = [(MKMapView *)self->_mapView layer];
+  [layer2 setBorderWidth:1.0];
 
-  v9 = [(CPSLocationConsentViewController *)self contentView];
-  [v9 addSubview:self->_mapView];
+  contentView = [(CPSLocationConsentViewController *)self contentView];
+  [contentView addSubview:self->_mapView];
 
   v10 = [objc_alloc(MEMORY[0x277CD4F08]) initWithCoordinate:{self->_deviceLocationCoordinate.latitude, self->_deviceLocationCoordinate.longitude}];
   deviceLocationAnnotation = self->_deviceLocationAnnotation;
@@ -160,8 +160,8 @@
   v22 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
   [v21 setFont:v22];
 
-  v23 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v21 setTextColor:v23];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [v21 setTextColor:secondaryLabelColor];
 
   [v21 setAdjustsFontForContentSizeCategory:1];
   [v21 setTextAlignment:1];
@@ -171,57 +171,57 @@
   v58 = [v24 stringWithFormat:v25, self->_appName];
 
   [v21 setText:v58];
-  v26 = [(CPSLocationConsentViewController *)self contentView];
-  [v26 addSubview:v21];
+  contentView2 = [(CPSLocationConsentViewController *)self contentView];
+  [contentView2 addSubview:v21];
 
   v45 = MEMORY[0x277CCAAD0];
-  v56 = [(MKMapView *)self->_mapView topAnchor];
-  v57 = [(CPSLocationConsentViewController *)self contentView];
-  v55 = [v57 topAnchor];
-  v54 = [v56 constraintEqualToAnchor:v55];
+  topAnchor = [(MKMapView *)self->_mapView topAnchor];
+  contentView3 = [(CPSLocationConsentViewController *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v54 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v59[0] = v54;
-  v52 = [(MKMapView *)self->_mapView leadingAnchor];
-  v53 = [(CPSLocationConsentViewController *)self contentView];
-  v51 = [v53 leadingAnchor];
-  v50 = [v52 constraintEqualToAnchor:v51];
+  leadingAnchor = [(MKMapView *)self->_mapView leadingAnchor];
+  contentView4 = [(CPSLocationConsentViewController *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v50 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v59[1] = v50;
-  v48 = [(MKMapView *)self->_mapView trailingAnchor];
-  v49 = [(CPSLocationConsentViewController *)self contentView];
-  v47 = [v49 trailingAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  trailingAnchor = [(MKMapView *)self->_mapView trailingAnchor];
+  contentView5 = [(CPSLocationConsentViewController *)self contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v59[2] = v46;
-  v44 = [(MKMapView *)self->_mapView heightAnchor];
-  v43 = [v44 constraintEqualToConstant:158.0];
+  heightAnchor = [(MKMapView *)self->_mapView heightAnchor];
+  v43 = [heightAnchor constraintEqualToConstant:158.0];
   v59[3] = v43;
-  v42 = [v21 topAnchor];
-  v41 = [(MKMapView *)self->_mapView bottomAnchor];
-  v40 = [v42 constraintEqualToSystemSpacingBelowAnchor:v41 multiplier:1.0];
+  topAnchor3 = [v21 topAnchor];
+  bottomAnchor = [(MKMapView *)self->_mapView bottomAnchor];
+  v40 = [topAnchor3 constraintEqualToSystemSpacingBelowAnchor:bottomAnchor multiplier:1.0];
   v59[4] = v40;
-  v38 = [v21 centerXAnchor];
-  v39 = [(CPSLocationConsentViewController *)self contentView];
-  v37 = [v39 centerXAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  centerXAnchor = [v21 centerXAnchor];
+  contentView6 = [(CPSLocationConsentViewController *)self contentView];
+  centerXAnchor2 = [contentView6 centerXAnchor];
+  v36 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v59[5] = v36;
-  v27 = [(CPSLocationConsentViewController *)self contentView];
-  v28 = [v27 widthAnchor];
-  v29 = [v21 widthAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29 constant:8.0];
+  contentView7 = [(CPSLocationConsentViewController *)self contentView];
+  widthAnchor = [contentView7 widthAnchor];
+  widthAnchor2 = [v21 widthAnchor];
+  v30 = [widthAnchor constraintEqualToAnchor:widthAnchor2 constant:8.0];
   v59[6] = v30;
-  v31 = [(CPSLocationConsentViewController *)self contentView];
-  v32 = [v31 bottomAnchor];
-  v33 = [v21 bottomAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  contentView8 = [(CPSLocationConsentViewController *)self contentView];
+  bottomAnchor2 = [contentView8 bottomAnchor];
+  bottomAnchor3 = [v21 bottomAnchor];
+  v34 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v59[7] = v34;
   v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v59 count:8];
   [v45 activateConstraints:v35];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v7.receiver = self;
   v7.super_class = CPSLocationConsentViewController;
-  [(CPSLocationConsentViewController *)&v7 viewWillAppear:a3];
+  [(CPSLocationConsentViewController *)&v7 viewWillAppear:appear];
   if (self->_circleOverlay)
   {
     v4 = MKMapPointForCoordinate(self->_deviceLocationCoordinate);
@@ -243,11 +243,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CPSLocationConsentViewController;
-  [(OBBaseWelcomeController *)&v5 viewDidDisappear:a3];
+  [(OBBaseWelcomeController *)&v5 viewDidDisappear:disappear];
   actionHandler = self->_actionHandler;
   if (actionHandler)
   {
@@ -255,18 +255,18 @@
   }
 }
 
-- (void)_buttonActionTriggered:(id)a3
+- (void)_buttonActionTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   actionHandler = self->_actionHandler;
   if (actionHandler)
   {
-    if (self->_allowForAllButton == v4)
+    if (self->_allowForAllButton == triggeredCopy)
     {
       v6 = 1;
     }
 
-    else if (self->_allowOnceButton == v4)
+    else if (self->_allowOnceButton == triggeredCopy)
     {
       v6 = 2;
     }
@@ -279,8 +279,8 @@
     }
 
     actionHandler[2](actionHandler, v6);
-    v7 = [MEMORY[0x277CFA680] sharedLogger];
-    [v7 recordDidShowLocationConsentWithBundleID:self->_clipBundleID response:v6];
+    mEMORY[0x277CFA680] = [MEMORY[0x277CFA680] sharedLogger];
+    [mEMORY[0x277CFA680] recordDidShowLocationConsentWithBundleID:self->_clipBundleID response:v6];
 
     v8 = self->_actionHandler;
     self->_actionHandler = 0;
@@ -289,20 +289,20 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)mapViewDidChangeVisibleRegion:(id)a3
+- (void)mapViewDidChangeVisibleRegion:(id)region
 {
   circleOverlay = self->_circleOverlay;
   if (circleOverlay)
   {
-    v5 = a3;
+    regionCopy = region;
     [(MKCircle *)circleOverlay boundingMapRect];
     v17 = MKCoordinateRegionForMapRect(v16);
-    [v5 convertRegion:v5 toRectToView:{v17.center.latitude, v17.center.longitude, v17.span.latitudeDelta, v17.span.longitudeDelta}];
+    [regionCopy convertRegion:regionCopy toRectToView:{v17.center.latitude, v17.center.longitude, v17.span.latitudeDelta, v17.span.longitudeDelta}];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [v5 viewForAnnotation:self->_circleOverlay];
+    v14 = [regionCopy viewForAnnotation:self->_circleOverlay];
 
     v18.origin.x = v7;
     v18.origin.y = v9;
@@ -312,19 +312,19 @@
   }
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_deviceLocationAnnotation == v7)
+  viewCopy = view;
+  annotationCopy = annotation;
+  v8 = annotationCopy;
+  if (self->_deviceLocationAnnotation == annotationCopy)
   {
-    v9 = [objc_alloc(MEMORY[0x277CD4ED0]) initWithAnnotation:v7 reuseIdentifier:0];
-    v10 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v9 setMarkerTintColor:v10];
+    v9 = [objc_alloc(MEMORY[0x277CD4ED0]) initWithAnnotation:annotationCopy reuseIdentifier:0];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v9 setMarkerTintColor:systemBackgroundColor];
 
-    v11 = [MEMORY[0x277D75348] labelColor];
-    [v9 setGlyphTintColor:v11];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v9 setGlyphTintColor:labelColor];
 
     v12 = [MEMORY[0x277D755B8] systemImageNamed:self->_deviceLocationSymbolName];
     [v9 setGlyphImage:v12];
@@ -334,7 +334,7 @@
 
   else
   {
-    if (self->_circleOverlay != v7)
+    if (self->_circleOverlay != annotationCopy)
     {
       v9 = 0;
       goto LABEL_7;
@@ -343,8 +343,8 @@
     v9 = [objc_alloc(MEMORY[0x277CD4D98]) initWithSize:{18.0, 18.0}];
     [v9 bounds];
     [v9 _setContinuousCornerRadius:CGRectGetHeight(v17) * 0.5];
-    v14 = [MEMORY[0x277D75348] systemBlueColor];
-    [v9 setBackgroundColor:v14];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [v9 setBackgroundColor:systemBlueColor];
 
     [v9 setAlpha:0.45];
     LODWORD(v13) = 1144750080;
@@ -356,21 +356,21 @@ LABEL_7:
   return v9;
 }
 
-- (id)mapView:(id)a3 rendererForOverlay:(id)a4
+- (id)mapView:(id)view rendererForOverlay:(id)overlay
 {
-  v5 = a4;
-  if (self->_circleOverlay == v5)
+  overlayCopy = overlay;
+  if (self->_circleOverlay == overlayCopy)
   {
     v6 = [objc_alloc(MEMORY[0x277CD4DA8]) initWithCircle:self->_circleOverlay];
-    v7 = [MEMORY[0x277D75348] systemBlueColor];
-    [v6 setFillColor:v7];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+    [v6 setFillColor:systemBlueColor];
 
     [v6 setAlpha:0.15];
   }
 
   else
   {
-    v6 = [objc_alloc(MEMORY[0x277CD4EE8]) initWithOverlay:v5];
+    v6 = [objc_alloc(MEMORY[0x277CD4EE8]) initWithOverlay:overlayCopy];
   }
 
   return v6;

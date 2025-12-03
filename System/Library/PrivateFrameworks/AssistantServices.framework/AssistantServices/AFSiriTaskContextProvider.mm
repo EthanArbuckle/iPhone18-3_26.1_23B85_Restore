@@ -1,22 +1,22 @@
 @interface AFSiriTaskContextProvider
-- (AFSiriTaskContextProvider)initWithTaskmaster:(id)a3;
-- (void)getAppContextWithDeliveryHandler:(id)a3 completionHandler:(id)a4;
+- (AFSiriTaskContextProvider)initWithTaskmaster:(id)taskmaster;
+- (void)getAppContextWithDeliveryHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation AFSiriTaskContextProvider
 
-- (void)getAppContextWithDeliveryHandler:(id)a3 completionHandler:(id)a4
+- (void)getAppContextWithDeliveryHandler:(id)handler completionHandler:(id)completionHandler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v9 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v20 = "[AFSiriTaskContextProvider getAppContextWithDeliveryHandler:completionHandler:]";
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     v23 = 2080;
     v24 = "[AFSiriTaskContextProvider getAppContextWithDeliveryHandler:completionHandler:]";
     _os_log_impl(&dword_1912FE000, v9, OS_LOG_TYPE_INFO, "%s %@ %s", buf, 0x20u);
@@ -30,7 +30,7 @@
     *buf = 136315650;
     v20 = "[AFSiriTaskContextProvider getAppContextWithDeliveryHandler:completionHandler:]";
     v21 = 2112;
-    v22 = taskmaster;
+    selfCopy = taskmaster;
     v23 = 2112;
     v24 = v10;
     _os_log_impl(&dword_1912FE000, v11, OS_LOG_TYPE_INFO, "%s asking taskmaster=%@ to handle contextRequest=%@", buf, 0x20u);
@@ -41,11 +41,11 @@
   v16[1] = 3221225472;
   v16[2] = __80__AFSiriTaskContextProvider_getAppContextWithDeliveryHandler_completionHandler___block_invoke;
   v16[3] = &unk_1E73437B8;
-  v17 = v8;
+  v17 = completionHandlerCopy;
   v18 = a2;
   v16[4] = self;
-  v14 = v8;
-  [(AFSiriTaskmaster *)v13 handleSiriRequest:v10 deliveryHandler:v7 completionHandler:v16];
+  v14 = completionHandlerCopy;
+  [(AFSiriTaskmaster *)v13 handleSiriRequest:v10 deliveryHandler:handlerCopy completionHandler:v16];
 
   v15 = *MEMORY[0x1E69E9840];
 }
@@ -104,16 +104,16 @@ LABEL_10:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (AFSiriTaskContextProvider)initWithTaskmaster:(id)a3
+- (AFSiriTaskContextProvider)initWithTaskmaster:(id)taskmaster
 {
-  v5 = a3;
+  taskmasterCopy = taskmaster;
   v9.receiver = self;
   v9.super_class = AFSiriTaskContextProvider;
   v6 = [(AFSiriTaskContextProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_taskmaster, a3);
+    objc_storeStrong(&v6->_taskmaster, taskmaster);
   }
 
   return v7;

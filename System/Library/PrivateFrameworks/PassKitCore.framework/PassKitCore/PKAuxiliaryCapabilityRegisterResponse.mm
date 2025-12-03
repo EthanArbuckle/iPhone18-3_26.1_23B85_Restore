@@ -1,38 +1,38 @@
 @interface PKAuxiliaryCapabilityRegisterResponse
-- (PKAuxiliaryCapabilityRegisterResponse)initWithData:(id)a3;
-- (id)_retrieveCertificateChainFromJSONObject:(id)a3 withParameterName:(id)a4;
+- (PKAuxiliaryCapabilityRegisterResponse)initWithData:(id)data;
+- (id)_retrieveCertificateChainFromJSONObject:(id)object withParameterName:(id)name;
 @end
 
 @implementation PKAuxiliaryCapabilityRegisterResponse
 
-- (PKAuxiliaryCapabilityRegisterResponse)initWithData:(id)a3
+- (PKAuxiliaryCapabilityRegisterResponse)initWithData:(id)data
 {
   v25 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = PKAuxiliaryCapabilityRegisterResponse;
-  v3 = [(PKWebServiceResponse *)&v20 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v20 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
-    if (v5)
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
+    if (jSONObject)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [(PKAuxiliaryCapabilityRegisterResponse *)v4 _retrieveCertificateChainFromJSONObject:v5 withParameterName:@"deviceSignatureCertificateChain"];
+        v6 = [(PKAuxiliaryCapabilityRegisterResponse *)v4 _retrieveCertificateChainFromJSONObject:jSONObject withParameterName:@"deviceSignatureCertificateChain"];
         deviceSignatureCertificateChain = v4->_deviceSignatureCertificateChain;
         v4->_deviceSignatureCertificateChain = v6;
 
-        v8 = [(PKAuxiliaryCapabilityRegisterResponse *)v4 _retrieveCertificateChainFromJSONObject:v5 withParameterName:@"deviceDecryptionCertificateChain"];
+        v8 = [(PKAuxiliaryCapabilityRegisterResponse *)v4 _retrieveCertificateChainFromJSONObject:jSONObject withParameterName:@"deviceDecryptionCertificateChain"];
         deviceDecryptionCertificateChain = v4->_deviceDecryptionCertificateChain;
         v4->_deviceDecryptionCertificateChain = v8;
 
-        v10 = [(PKAuxiliaryCapabilityRegisterResponse *)v4 _retrieveCertificateChainFromJSONObject:v5 withParameterName:@"serverDecryptionCertificateChain"];
+        v10 = [(PKAuxiliaryCapabilityRegisterResponse *)v4 _retrieveCertificateChainFromJSONObject:jSONObject withParameterName:@"serverDecryptionCertificateChain"];
         serverDecryptionCertificateChain = v4->_serverDecryptionCertificateChain;
         v4->_serverDecryptionCertificateChain = v10;
 
-        v12 = [(PKAuxiliaryCapabilityRegisterResponse *)v4 _retrieveCertificateChainFromJSONObject:v5 withParameterName:@"serverSignatureCertificateChain"];
+        v12 = [(PKAuxiliaryCapabilityRegisterResponse *)v4 _retrieveCertificateChainFromJSONObject:jSONObject withParameterName:@"serverSignatureCertificateChain"];
         serverSignatureCertificateChain = v4->_serverSignatureCertificateChain;
         v4->_serverSignatureCertificateChain = v12;
       }
@@ -62,10 +62,10 @@
   return v4;
 }
 
-- (id)_retrieveCertificateChainFromJSONObject:(id)a3 withParameterName:(id)a4
+- (id)_retrieveCertificateChainFromJSONObject:(id)object withParameterName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = [a3 objectForKeyedSubscript:a4];
+  v4 = [object objectForKeyedSubscript:name];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

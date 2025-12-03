@@ -1,36 +1,36 @@
 @interface MechanismAssertion
-- (BOOL)acquireWithReason:(id)a3 error:(id *)a4;
-- (MechanismAssertion)initWithMechanism:(id)a3;
+- (BOOL)acquireWithReason:(id)reason error:(id *)error;
+- (MechanismAssertion)initWithMechanism:(id)mechanism;
 - (MechanismBase)mechanism;
 - (id)_assertInStateAndStartMonitoring;
 - (id)description;
 - (void)_startMonitoringIfNeeded;
 - (void)_stopMonitoringIfNeeded;
 - (void)dealloc;
-- (void)dropWithReason:(id)a3;
-- (void)handleAssertionFailureWithReason:(id)a3 error:(id)a4;
-- (void)handleAssertionSuccessWithReason:(id)a3;
+- (void)dropWithReason:(id)reason;
+- (void)handleAssertionFailureWithReason:(id)reason error:(id)error;
+- (void)handleAssertionSuccessWithReason:(id)reason;
 @end
 
 @implementation MechanismAssertion
 
-- (MechanismAssertion)initWithMechanism:(id)a3
+- (MechanismAssertion)initWithMechanism:(id)mechanism
 {
-  v4 = a3;
+  mechanismCopy = mechanism;
   v16.receiver = self;
   v16.super_class = MechanismAssertion;
   v5 = [(MechanismAssertion *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_mechanism, v4);
-    v7 = [v4 description];
+    objc_storeWeak(&v5->_mechanism, mechanismCopy);
+    v7 = [mechanismCopy description];
     mechanismInitialDescription = v6->_mechanismInitialDescription;
     v6->_mechanismInitialDescription = v7;
 
-    v9 = [(MechanismAssertion *)v6 mechanism];
-    v10 = [v9 request];
-    v11 = [v10 log];
+    mechanism = [(MechanismAssertion *)v6 mechanism];
+    request = [mechanism request];
+    v11 = [request log];
     v12 = v11;
     if (v11)
     {
@@ -62,34 +62,34 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MechanismAssertion *)self mechanism];
-  v7 = v6;
-  if (!v6)
+  mechanism = [(MechanismAssertion *)self mechanism];
+  v7 = mechanism;
+  if (!mechanism)
   {
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ (post dealloc)", self->_mechanismInitialDescription];
   }
 
-  v8 = [(MechanismAssertion *)self additionalDescription];
-  v9 = [v3 stringWithFormat:@"<%@ on %@%@>", v5, v7, v8];
+  additionalDescription = [(MechanismAssertion *)self additionalDescription];
+  v9 = [v3 stringWithFormat:@"<%@ on %@%@>", v5, v7, additionalDescription];
 
-  if (!v6)
+  if (!mechanism)
   {
   }
 
   return v9;
 }
 
-- (BOOL)acquireWithReason:(id)a3 error:(id *)a4
+- (BOOL)acquireWithReason:(id)reason error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MechanismAssertion *)self _assertInStateAndStartMonitoring];
-  if (!v7)
+  reasonCopy = reason;
+  _assertInStateAndStartMonitoring = [(MechanismAssertion *)self _assertInStateAndStartMonitoring];
+  if (!_assertInStateAndStartMonitoring)
   {
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"successful acquisition for %@", v6];
+    reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"successful acquisition for %@", reasonCopy];
 
-    [(MechanismAssertion *)self handleAssertionSuccessWithReason:v11];
+    [(MechanismAssertion *)self handleAssertionSuccessWithReason:reasonCopy];
     self->_acquired = 1;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -97,34 +97,34 @@
     goto LABEL_3;
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed acquisition for %@", v6];
+  reasonCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed acquisition for %@", reasonCopy];
 
-  [(MechanismAssertion *)self handleAssertionFailureWithReason:v8 error:v7];
-  if (a4)
+  [(MechanismAssertion *)self handleAssertionFailureWithReason:reasonCopy2 error:_assertInStateAndStartMonitoring];
+  if (error)
   {
 LABEL_3:
-    v9 = v7;
-    *a4 = v7;
+    v9 = _assertInStateAndStartMonitoring;
+    *error = _assertInStateAndStartMonitoring;
   }
 
 LABEL_4:
 
-  return v7 == 0;
+  return _assertInStateAndStartMonitoring == 0;
 }
 
-- (void)dropWithReason:(id)a3
+- (void)dropWithReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_acquired)
   {
     v5 = [(MechanismAssertion *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543618;
-      v8 = self;
+      selfCopy = self;
       v9 = 2114;
-      v10 = v4;
+      v10 = reasonCopy;
       _os_log_impl(&dword_238B95000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ dropped (%{public}@)", &v7, 0x16u);
     }
 
@@ -138,13 +138,13 @@ LABEL_4:
 - (id)_assertInStateAndStartMonitoring
 {
   [(MechanismAssertion *)self _startMonitoringIfNeeded];
-  v3 = [(MechanismAssertion *)self assertInState];
-  if (v3)
+  assertInState = [(MechanismAssertion *)self assertInState];
+  if (assertInState)
   {
     [(MechanismAssertion *)self _stopMonitoringIfNeeded];
   }
 
-  return v3;
+  return assertInState;
 }
 
 - (void)_startMonitoringIfNeeded
@@ -165,40 +165,40 @@ LABEL_4:
   }
 }
 
-- (void)handleAssertionSuccessWithReason:(id)a3
+- (void)handleAssertionSuccessWithReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = [(MechanismAssertion *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_impl(&dword_238B95000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ confirmed (%{public}@)", &v7, 0x16u);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAssertionFailureWithReason:(id)a3 error:(id)a4
+- (void)handleAssertionFailureWithReason:(id)reason error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  errorCopy = error;
   v8 = [(MechanismAssertion *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [(MechanismAssertion *)self handleAssertionFailureWithReason:v6 error:v8];
+    [(MechanismAssertion *)self handleAssertionFailureWithReason:reasonCopy error:v8];
   }
 
-  v9 = [(MechanismAssertion *)self mechanism];
-  v10 = [v9 isRunning];
+  mechanism = [(MechanismAssertion *)self mechanism];
+  isRunning = [mechanism isRunning];
 
-  if (v10)
+  if (isRunning)
   {
-    v11 = [(MechanismAssertion *)self mechanism];
-    [v11 failAuthenticationWithError:v7];
+    mechanism2 = [(MechanismAssertion *)self mechanism];
+    [mechanism2 failAuthenticationWithError:errorCopy];
   }
 }
 

@@ -1,76 +1,76 @@
 @interface MPSGraphExecutableConstantDataRequest
-- (MPSGraphExecutableConstantDataRequest)initWithCoder:(id)a3;
-- (id)initForMPSGraphPackageAtURL:(id)a3 device:(id)a4 multipleInputTypes:(id)a5 compilationDescriptor:(id)a6 includeConstantDataForNewSpecializations:(BOOL)a7;
-- (void)encodeWithCoder:(id)a3;
+- (MPSGraphExecutableConstantDataRequest)initWithCoder:(id)coder;
+- (id)initForMPSGraphPackageAtURL:(id)l device:(id)device multipleInputTypes:(id)types compilationDescriptor:(id)descriptor includeConstantDataForNewSpecializations:(BOOL)specializations;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSGraphExecutableConstantDataRequest
 
-- (MPSGraphExecutableConstantDataRequest)initWithCoder:(id)a3
+- (MPSGraphExecutableConstantDataRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MPSGraphExecutableConstantDataRequest;
   v5 = [(MPSGraphExecutableConstantDataRequest *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mpsgraphPackageURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mpsgraphPackageURL"];
     [(MPSGraphExecutableConstantDataRequest *)v5 setMpsgraphPackageURL:v6];
 
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"resourceOffsets"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"resourceOffsets"];
     [(MPSGraphExecutableConstantDataRequest *)v5 setResourceOffsets:v11];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MPSGraphExecutableConstantDataRequest *)self mpsgraphPackageURL];
-  [v6 encodeObject:v4 forKey:@"mpsgraphPackageURL"];
+  coderCopy = coder;
+  mpsgraphPackageURL = [(MPSGraphExecutableConstantDataRequest *)self mpsgraphPackageURL];
+  [coderCopy encodeObject:mpsgraphPackageURL forKey:@"mpsgraphPackageURL"];
 
-  v5 = [(MPSGraphExecutableConstantDataRequest *)self resourceOffsets];
-  [v6 encodeObject:v5 forKey:@"resourceOffsets"];
+  resourceOffsets = [(MPSGraphExecutableConstantDataRequest *)self resourceOffsets];
+  [coderCopy encodeObject:resourceOffsets forKey:@"resourceOffsets"];
 }
 
-- (id)initForMPSGraphPackageAtURL:(id)a3 device:(id)a4 multipleInputTypes:(id)a5 compilationDescriptor:(id)a6 includeConstantDataForNewSpecializations:(BOOL)a7
+- (id)initForMPSGraphPackageAtURL:(id)l device:(id)device multipleInputTypes:(id)types compilationDescriptor:(id)descriptor includeConstantDataForNewSpecializations:(BOOL)specializations
 {
-  v7 = a7;
+  specializationsCopy = specializations;
   v88 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v59 = a4;
-  v53 = a5;
-  v61 = a6;
+  lCopy = l;
+  deviceCopy = device;
+  typesCopy = types;
+  descriptorCopy = descriptor;
   v69.receiver = self;
   v69.super_class = MPSGraphExecutableConstantDataRequest;
   v13 = [(MPSGraphExecutableConstantDataRequest *)&v69 init];
   v55 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_mpsgraphPackageURL, a3);
-    v51 = [[MPSGraphPackage alloc] initWithSourcePackageURL:v52];
-    v54 = [(MPSGraphPackage *)v51 getMLIRLibrary];
-    if ([v54 getResourceStorageMode] != 1 && MTLReportFailureTypeEnabled())
+    objc_storeStrong(&v13->_mpsgraphPackageURL, l);
+    v51 = [[MPSGraphPackage alloc] initWithSourcePackageURL:lCopy];
+    getMLIRLibrary = [(MPSGraphPackage *)v51 getMLIRLibrary];
+    if ([getMLIRLibrary getResourceStorageMode] != 1 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    v58 = [v54 getCallablesDescription];
+    getCallablesDescription = [getMLIRLibrary getCallablesDescription];
     v60 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    if (v7)
+    if (specializationsCopy)
     {
-      v14 = [v54 getOriginalResourcesUsed];
-      [v60 addObjectsFromArray:v14];
+      getOriginalResourcesUsed = [getMLIRLibrary getOriginalResourcesUsed];
+      [v60 addObjectsFromArray:getOriginalResourcesUsed];
     }
 
-    v57 = [v54 getOptimizedResourcesUsedLibrary];
+    getOptimizedResourcesUsedLibrary = [getMLIRLibrary getOptimizedResourcesUsedLibrary];
     memset(v68, 0, sizeof(v68));
-    obj = v53;
+    obj = typesCopy;
     if ([obj countByEnumeratingWithState:v68 objects:v87 count:16])
     {
       v15 = *v68[0].super_class;
@@ -90,12 +90,12 @@
       _Block_object_dispose(&__dst, 8);
 
       getFlatShapes(&__src, v16);
-      v17 = [v61 entryFunctionName];
-      v18 = [v59 deviceDescriptor];
-      v19 = v61;
-      v20 = v58;
-      v21 = v17;
-      v22 = v18;
+      entryFunctionName = [descriptorCopy entryFunctionName];
+      deviceDescriptor = [deviceCopy deviceDescriptor];
+      v19 = descriptorCopy;
+      v20 = getCallablesDescription;
+      v21 = entryFunctionName;
+      v22 = deviceDescriptor;
       __dst = v79;
       p_dst = 0x600000000;
       v23 = v86;
@@ -234,7 +234,7 @@ LABEL_30:
       goto LABEL_11;
     }
 
-    v40 = [v54 getResourceOffsetsLibrary];
+    getResourceOffsetsLibrary = [getMLIRLibrary getResourceOffsetsLibrary];
     v41 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v60, "count")}];
     v64 = 0u;
     v65 = 0u;
@@ -255,7 +255,7 @@ LABEL_30:
           }
 
           v46 = *(*(&v62 + 1) + 8 * i);
-          v47 = [v40 objectForKeyedSubscript:v46];
+          v47 = [getResourceOffsetsLibrary objectForKeyedSubscript:v46];
           if (v47)
           {
             [(NSDictionary *)v41 setObject:v47 forKeyedSubscript:v46];

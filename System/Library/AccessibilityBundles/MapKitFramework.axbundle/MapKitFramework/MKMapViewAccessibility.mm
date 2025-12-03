@@ -1,6 +1,6 @@
 @interface MKMapViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)_axMapsDelegate;
 - (id)accessibilityElements;
 - (int64_t)_accessibilitySortPriority;
@@ -9,17 +9,17 @@
 
 @implementation MKMapViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKMapView" hasInstanceMethod:@"_setCompassVisible:animationAllowed:force:" withFullSignature:{"v", "B", "B", "B", 0}];
-  [v3 validateClass:@"MKMapView" hasInstanceMethod:@"_mapLayer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKMapView" hasInstanceMethod:@"_didEndZoom" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MKMapView" hasInstanceVariable:@"_basicMapView" withType:"MKBasicMapView"];
-  [v3 validateClass:@"MKMapView" hasInstanceVariable:@"_showsZoomControls" withType:"B"];
-  [v3 validateClass:@"MKMapView" hasInstanceVariable:@"_compassVisible" withType:"B"];
-  [v3 validateClass:@"MKMapView" hasInstanceVariable:@"_compassView" withType:"UIView<MKCompassView>"];
-  [v3 validateClass:@"MKAttributionLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKMapView" hasInstanceMethod:@"_setCompassVisible:animationAllowed:force:" withFullSignature:{"v", "B", "B", "B", 0}];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceMethod:@"_mapLayer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceMethod:@"_didEndZoom" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceVariable:@"_basicMapView" withType:"MKBasicMapView"];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceVariable:@"_showsZoomControls" withType:"B"];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceVariable:@"_compassVisible" withType:"B"];
+  [validationsCopy validateClass:@"MKMapView" hasInstanceVariable:@"_compassView" withType:"UIView<MKCompassView>"];
+  [validationsCopy validateClass:@"MKAttributionLabel"];
 }
 
 - (id)accessibilityElements
@@ -28,16 +28,16 @@
   v3 = objc_opt_new();
   v38 = 0;
   objc_opt_class();
-  v4 = [(MKMapViewAccessibility *)self _axMapsDelegate];
-  v5 = [v4 safeValueForKey:@"chromeViewController"];
+  _axMapsDelegate = [(MKMapViewAccessibility *)self _axMapsDelegate];
+  v5 = [_axMapsDelegate safeValueForKey:@"chromeViewController"];
   v6 = __UIAccessibilityCastAsClass();
 
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = [v6 childViewControllers];
-  v8 = [v7 countByEnumeratingWithState:&v34 objects:v39 count:16];
+  childViewControllers = [v6 childViewControllers];
+  v8 = [childViewControllers countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v8)
   {
     v9 = v8;
@@ -48,7 +48,7 @@ LABEL_3:
     {
       if (*v35 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(childViewControllers);
       }
 
       v12 = *(*(&v34 + 1) + 8 * v11);
@@ -60,7 +60,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v7 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v9 = [childViewControllers countByEnumeratingWithState:&v34 objects:v39 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -77,8 +77,8 @@ LABEL_3:
       goto LABEL_13;
     }
 
-    v7 = [v13 view];
-    [v3 addObject:v7];
+    childViewControllers = [v13 view];
+    [v3 addObject:childViewControllers];
   }
 
   else
@@ -100,7 +100,7 @@ LABEL_13:
   }
 
   v16 = [(MKMapViewAccessibility *)self safeValueForKey:@"_basicMapView"];
-  v17 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v26 = MEMORY[0x29EDCA5F8];
   v27 = 3221225472;
   v28 = __47__MKMapViewAccessibility_accessibilityElements__block_invoke;
@@ -110,8 +110,8 @@ LABEL_13:
   v19 = v16;
   v31 = v19;
   v32 = 0;
-  v33 = v17;
-  v20 = v17;
+  v33 = array;
+  v20 = array;
   v21 = [(MKMapViewAccessibility *)self _accessibilityFindUnsortedSubviewDescendantsPassingTest:&v26];
   if (v19)
   {
@@ -157,19 +157,19 @@ uint64_t __47__MKMapViewAccessibility_accessibilityElements__block_invoke(id *a1
   return v6;
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v4 = [(MKMapViewAccessibility *)self safeValueForKey:@"_mapLayer"];
-  LOBYTE(a3) = [v4 accessibilityScroll:a3];
+  LOBYTE(scroll) = [v4 accessibilityScroll:scroll];
 
-  return a3;
+  return scroll;
 }
 
 - (int64_t)_accessibilitySortPriority
 {
   v2 = __UIAccessibilitySafeClass();
-  v3 = [v2 traitCollection];
-  if ([v3 horizontalSizeClass] == 1)
+  traitCollection = [v2 traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     v4 = 1;
   }

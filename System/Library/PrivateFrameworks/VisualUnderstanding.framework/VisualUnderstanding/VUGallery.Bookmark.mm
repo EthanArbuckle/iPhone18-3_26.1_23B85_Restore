@@ -1,28 +1,28 @@
 @interface VUGallery.Bookmark
 - (_TtCC19VisualUnderstanding9VUGallery8Bookmark)init;
-- (_TtCC19VisualUnderstanding9VUGallery8Bookmark)initWithCoder:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtCC19VisualUnderstanding9VUGallery8Bookmark)initWithCoder:(id)coder;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VUGallery.Bookmark
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D2185F10(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1D2185F10(coderCopy);
 }
 
-- (_TtCC19VisualUnderstanding9VUGallery8Bookmark)initWithCoder:(id)a3
+- (_TtCC19VisualUnderstanding9VUGallery8Bookmark)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_1D21A3548();
 
   return v4;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCC19VisualUnderstanding9VUGallery8Bookmark_token);
   v4 = *(&self->super.isa + OBJC_IVAR____TtCC19VisualUnderstanding9VUGallery8Bookmark_changeID);

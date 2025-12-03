@@ -1,7 +1,7 @@
 @interface GetHealthQuantityIntentResponse
-- (GetHealthQuantityIntentResponse)initWithPropertiesByName:(id)a3;
+- (GetHealthQuantityIntentResponse)initWithPropertiesByName:(id)name;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation GetHealthQuantityIntentResponse
@@ -14,20 +14,20 @@
   return HealthQuantityIntent;
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   MEMORY[0x277D82BE0](self);
-  GetHealthQuantityIntentResponse.code.setter(a3);
+  GetHealthQuantityIntentResponse.code.setter(code);
   MEMORY[0x277D82BD8](self);
 }
 
-- (GetHealthQuantityIntentResponse)initWithPropertiesByName:(id)a3
+- (GetHealthQuantityIntentResponse)initWithPropertiesByName:(id)name
 {
-  MEMORY[0x277D82BE0](a3);
-  if (a3)
+  MEMORY[0x277D82BE0](name);
+  if (name)
   {
     v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-    MEMORY[0x277D82BD8](a3);
+    MEMORY[0x277D82BD8](name);
     v5 = v4;
   }
 

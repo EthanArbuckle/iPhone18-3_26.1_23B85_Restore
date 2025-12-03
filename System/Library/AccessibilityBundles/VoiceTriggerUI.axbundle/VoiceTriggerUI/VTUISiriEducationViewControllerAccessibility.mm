@@ -1,16 +1,16 @@
 @interface VTUISiriEducationViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityHideVideoPlayer;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation VTUISiriEducationViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VTUISiriEducationViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"VTUISiriEducationViewController" hasInstanceVariable:@"_playerViewController" withType:"AVPlayerViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VTUISiriEducationViewController" hasInstanceMethod:@"viewWillAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"VTUISiriEducationViewController" hasInstanceVariable:@"_playerViewController" withType:"AVPlayerViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,11 +27,11 @@
   v3 = [(VTUISiriEducationViewControllerAccessibility *)self safeValueForKey:@"_playerViewController"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 view];
-  [v5 setAccessibilityElementsHidden:1];
+  view = [v4 view];
+  [view setAccessibilityElementsHidden:1];
 
-  v6 = [v4 view];
-  [v6 setIsAccessibilityElement:0];
+  view2 = [v4 view];
+  [view2 setIsAccessibilityElement:0];
 }
 
 @end

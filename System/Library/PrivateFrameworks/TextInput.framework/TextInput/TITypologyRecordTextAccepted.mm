@@ -1,69 +1,69 @@
 @interface TITypologyRecordTextAccepted
-- (TITypologyRecordTextAccepted)initWithCoder:(id)a3;
+- (TITypologyRecordTextAccepted)initWithCoder:(id)coder;
 - (id)changedText;
 - (id)shortDescription;
 - (id)textSummary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TITypologyRecordTextAccepted
 
 - (id)changedText
 {
-  v3 = [(TITypologyRecordTextAccepted *)self candidate];
-  v4 = [v3 input];
-  v5 = [v4 length];
+  candidate = [(TITypologyRecordTextAccepted *)self candidate];
+  input = [candidate input];
+  v5 = [input length];
 
   if (v5)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(TITypologyRecordTextAccepted *)self candidate];
-    v8 = [v7 input];
-    v9 = [(TITypologyRecordTextAccepted *)self candidate];
-    v10 = [v9 candidate];
-    v11 = [v6 stringWithFormat:@"%@->%@", v8, v10];
+    candidate2 = [(TITypologyRecordTextAccepted *)self candidate];
+    input2 = [candidate2 input];
+    candidate3 = [(TITypologyRecordTextAccepted *)self candidate];
+    v9Candidate = [candidate3 candidate];
+    v7Candidate = [v6 stringWithFormat:@"%@->%@", input2, v9Candidate];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  v12 = [(TITypologyRecordTextAccepted *)self candidate];
-  v13 = [v12 candidate];
+  candidate4 = [(TITypologyRecordTextAccepted *)self candidate];
+  v12Candidate = [candidate4 candidate];
 
-  if (v13)
+  if (v12Candidate)
   {
-    v7 = [(TITypologyRecordTextAccepted *)self candidate];
-    v11 = [v7 candidate];
+    candidate2 = [(TITypologyRecordTextAccepted *)self candidate];
+    v7Candidate = [candidate2 candidate];
     goto LABEL_5;
   }
 
-  v11 = 0;
+  v7Candidate = 0;
 LABEL_6:
 
-  return v11;
+  return v7Candidate;
 }
 
 - (id)shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(TITypologyRecordTextAccepted *)self candidate];
-  v5 = [v4 candidate];
-  v6 = [(TITypologyRecordTextAccepted *)self candidate];
-  v7 = [v6 input];
-  v8 = [v3 stringWithFormat:@"TEXT ACCEPTED: %@ for %@", v5, v7];
+  candidate = [(TITypologyRecordTextAccepted *)self candidate];
+  v4Candidate = [candidate candidate];
+  candidate2 = [(TITypologyRecordTextAccepted *)self candidate];
+  input = [candidate2 input];
+  v8 = [v3 stringWithFormat:@"TEXT ACCEPTED: %@ for %@", v4Candidate, input];
 
   return v8;
 }
 
 - (id)textSummary
 {
-  v3 = [(TITypologyRecordTextAccepted *)self candidate];
-  v4 = [v3 isAutocorrection];
+  candidate = [(TITypologyRecordTextAccepted *)self candidate];
+  isAutocorrection = [candidate isAutocorrection];
 
-  if (v4)
+  if (isAutocorrection)
   {
-    v5 = [(TITypologyRecordTextAccepted *)self candidate];
-    v6 = [(TITypologyRecord *)self textSummaryForAutocorrection:v5];
+    candidate2 = [(TITypologyRecordTextAccepted *)self candidate];
+    v6 = [(TITypologyRecord *)self textSummaryForAutocorrection:candidate2];
   }
 
   else
@@ -74,24 +74,24 @@ LABEL_6:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TITypologyRecordTextAccepted;
-  v4 = a3;
-  [(TITypologyRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_candidate forKey:{@"candidate", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(TITypologyRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_candidate forKey:{@"candidate", v5.receiver, v5.super_class}];
 }
 
-- (TITypologyRecordTextAccepted)initWithCoder:(id)a3
+- (TITypologyRecordTextAccepted)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TITypologyRecordTextAccepted;
-  v5 = [(TITypologyRecord *)&v9 initWithCoder:v4];
+  v5 = [(TITypologyRecord *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"candidate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"candidate"];
     candidate = v5->_candidate;
     v5->_candidate = v6;
   }

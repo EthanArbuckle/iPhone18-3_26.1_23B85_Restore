@@ -1,27 +1,27 @@
 @interface SXQuickLookComponent
-- (id)captionWithValue:(id)a3 withType:(int)a4;
+- (id)captionWithValue:(id)value withType:(int)type;
 @end
 
 @implementation SXQuickLookComponent
 
-- (id)captionWithValue:(id)a3 withType:(int)a4
+- (id)captionWithValue:(id)value withType:(int)type
 {
-  v5 = a3;
-  if (v5)
+  valueCopy = value;
+  if (valueCopy)
   {
     v6 = [SXFormattedText alloc];
-    v7 = [(SXJSONObject *)self specificationVersion];
-    v8 = [(SXJSONObject *)v6 initWithJSONObject:v5 andVersion:v7];
+    specificationVersion = [(SXJSONObject *)self specificationVersion];
+    v8 = [(SXJSONObject *)v6 initWithJSONObject:valueCopy andVersion:specificationVersion];
 LABEL_5:
     v9 = v8;
     goto LABEL_6;
   }
 
-  v7 = [(SXJSONObject *)self valueForLookupKey:@"caption"];
+  specificationVersion = [(SXJSONObject *)self valueForLookupKey:@"caption"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [[SXFormattedText alloc] initWithText:v7];
+    v8 = [[SXFormattedText alloc] initWithText:specificationVersion];
     goto LABEL_5;
   }
 

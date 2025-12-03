@@ -1,10 +1,10 @@
 @interface VTUITurnOnSiriView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (VTUITurnOnSiriView)initWithFrame:(CGRect)a3;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (VTUITurnOnSiriView)initWithFrame:(CGRect)frame;
 - (VTUITurnOnSiriViewDelegate)stateViewDelegate;
 - (double)imageOffsetFromTop;
 - (id)footerView;
-- (id)languageSelectionOfContinueButton:(id)a3;
+- (id)languageSelectionOfContinueButton:(id)button;
 - (void)_setupContent;
 - (void)_setupTurnOnSiriUI;
 - (void)layoutSubviews;
@@ -13,11 +13,11 @@
 
 @implementation VTUITurnOnSiriView
 
-- (VTUITurnOnSiriView)initWithFrame:(CGRect)a3
+- (VTUITurnOnSiriView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = VTUITurnOnSiriView;
-  v3 = [(VTUIEnrollmentBaseView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VTUIEnrollmentBaseView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,10 +34,10 @@
   v3 = +[VTUIStyle sharedStyle];
   [v3 setIsFloatingWithReducedWidth:1];
   v117 = 0;
-  v4 = [MEMORY[0x277CEF368] sharedPreferences];
-  v5 = [MEMORY[0x277CBEAF8] currentLocale];
-  v6 = [v5 localeIdentifier];
-  v7 = [v4 allSiriLanguageCodesForSystemLanguageCode:v6 isGoodFit:&v117];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v7 = [mEMORY[0x277CEF368] allSiriLanguageCodesForSystemLanguageCode:localeIdentifier isGoodFit:&v117];
   siriLanguages = self->_siriLanguages;
   self->_siriLanguages = v7;
 
@@ -48,21 +48,21 @@
     continueButton = self->_continueButton;
     self->_continueButton = v19;
 
-    v21 = [(UIButton *)self->_continueButton titleLabel];
-    v22 = [v3 turnOnSiriContinueButtonFont];
-    [v21 setFont:v22];
+    titleLabel = [(UIButton *)self->_continueButton titleLabel];
+    turnOnSiriContinueButtonFont = [v3 turnOnSiriContinueButtonFont];
+    [titleLabel setFont:turnOnSiriContinueButtonFont];
 
     [(UIButton *)self->_continueButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v23 = self->_continueButton;
-    v24 = [MEMORY[0x277D75348] whiteColor];
-    [(UIButton *)v23 setTitleColor:v24 forState:0];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIButton *)v23 setTitleColor:whiteColor forState:0];
 
     v25 = self->_continueButton;
-    v26 = [MEMORY[0x277D75348] lightGrayColor];
-    [(UIButton *)v25 setTitleColor:v26 forState:1];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    [(UIButton *)v25 setTitleColor:lightGrayColor forState:1];
 
-    v27 = [(UIButton *)self->_continueButton layer];
-    [v27 setCornerRadius:10.0];
+    layer = [(UIButton *)self->_continueButton layer];
+    [layer setCornerRadius:10.0];
 
     [(UIButton *)self->_continueButton setClipsToBounds:1];
     continueButtons = [(VTUITurnOnSiriView *)self footerView];
@@ -79,20 +79,20 @@
       {
         v12 = +[VTUIButton _vtuiButtonWithPrimaryStyle];
         [v12 setTag:v11];
-        v13 = [v12 titleLabel];
-        v14 = [v3 turnOnSiriContinueButtonFont];
-        [v13 setFont:v14];
+        titleLabel2 = [v12 titleLabel];
+        turnOnSiriContinueButtonFont2 = [v3 turnOnSiriContinueButtonFont];
+        [titleLabel2 setFont:turnOnSiriContinueButtonFont2];
 
         [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v15 = [MEMORY[0x277D75348] whiteColor];
-        [v12 setTitleColor:v15 forState:0];
+        whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+        [v12 setTitleColor:whiteColor2 forState:0];
 
-        v16 = [v12 layer];
-        [v16 setCornerRadius:10.0];
+        layer2 = [v12 layer];
+        [layer2 setCornerRadius:10.0];
 
         [v12 setClipsToBounds:1];
-        v17 = [(VTUITurnOnSiriView *)self footerView];
-        [v17 addSubview:v12];
+        footerView = [(VTUITurnOnSiriView *)self footerView];
+        [footerView addSubview:v12];
 
         [(NSArray *)v10 addObject:v12];
         ++v11;
@@ -112,25 +112,25 @@
   self->_laterButton = v28;
 
   [(UIButton *)self->_laterButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v31 = [(VTUITurnOnSiriView *)self footerView];
-  [v31 addSubview:self->_laterButton];
+  footerView2 = [(VTUITurnOnSiriView *)self footerView];
+  [footerView2 addSubview:self->_laterButton];
 
   v32 = *(v9 + 2688);
   v33 = *(&self->super.super.super.super.isa + v32);
   if (v33)
   {
     v34 = MEMORY[0x277CCAAD0];
-    v35 = [(VTUITurnOnSiriView *)self footerView];
+    footerView3 = [(VTUITurnOnSiriView *)self footerView];
     [v3 continueButtonOffset];
-    v37 = [v34 constraintWithItem:v33 attribute:3 relatedBy:0 toItem:v35 attribute:3 multiplier:1.0 constant:v36];
+    v37 = [v34 constraintWithItem:v33 attribute:3 relatedBy:0 toItem:footerView3 attribute:3 multiplier:1.0 constant:v36];
     [(VTUITurnOnSiriView *)self addConstraint:v37];
 
     v38 = MEMORY[0x277CCAAD0];
-    v39 = [(UIButton *)self->_laterButton titleLabel];
+    titleLabel3 = [(UIButton *)self->_laterButton titleLabel];
     v40 = *(&self->super.super.super.super.isa + v32);
     [v3 bottomOfContinueToNotNowFirstBaseline];
-    v42 = [v38 constraintWithItem:v39 attribute:12 relatedBy:0 toItem:v40 attribute:4 multiplier:1.0 constant:v41];
-    [(VTUITurnOnSiriView *)self addConstraint:v42];
+    lastObject = [v38 constraintWithItem:titleLabel3 attribute:12 relatedBy:0 toItem:v40 attribute:4 multiplier:1.0 constant:v41];
+    [(VTUITurnOnSiriView *)self addConstraint:lastObject];
   }
 
   else
@@ -141,10 +141,10 @@
     }
 
     v43 = MEMORY[0x277CCAAD0];
-    v44 = [(NSArray *)self->_continueButtons firstObject];
-    v45 = [(VTUITurnOnSiriView *)self footerView];
+    firstObject = [(NSArray *)self->_continueButtons firstObject];
+    footerView4 = [(VTUITurnOnSiriView *)self footerView];
     [v3 continueButtonOffset];
-    v47 = [v43 constraintWithItem:v44 attribute:3 relatedBy:0 toItem:v45 attribute:3 multiplier:1.0 constant:v46];
+    v47 = [v43 constraintWithItem:firstObject attribute:3 relatedBy:0 toItem:footerView4 attribute:3 multiplier:1.0 constant:v46];
     [(VTUITurnOnSiriView *)self addConstraint:v47];
 
     if ([(NSArray *)self->_continueButtons count]>= 2)
@@ -166,10 +166,10 @@
     }
 
     v54 = MEMORY[0x277CCAAD0];
-    v39 = [(UIButton *)self->_laterButton titleLabel];
-    v42 = [(NSArray *)self->_continueButtons lastObject];
+    titleLabel3 = [(UIButton *)self->_laterButton titleLabel];
+    lastObject = [(NSArray *)self->_continueButtons lastObject];
     [v3 bottomOfContinueToNotNowFirstBaseline];
-    v56 = [v54 constraintWithItem:v39 attribute:12 relatedBy:0 toItem:v42 attribute:4 multiplier:1.0 constant:v55];
+    v56 = [v54 constraintWithItem:titleLabel3 attribute:12 relatedBy:0 toItem:lastObject attribute:4 multiplier:1.0 constant:v55];
     [(VTUITurnOnSiriView *)self addConstraint:v56];
   }
 
@@ -178,8 +178,8 @@ LABEL_15:
   if (v57)
   {
     v58 = MEMORY[0x277CCAAD0];
-    v59 = [(VTUITurnOnSiriView *)self footerView];
-    v60 = [v58 constraintWithItem:v57 attribute:9 relatedBy:0 toItem:v59 attribute:9 multiplier:1.0 constant:0.0];
+    footerView5 = [(VTUITurnOnSiriView *)self footerView];
+    v60 = [v58 constraintWithItem:v57 attribute:9 relatedBy:0 toItem:footerView5 attribute:9 multiplier:1.0 constant:0.0];
     [(VTUITurnOnSiriView *)self addConstraint:v60];
   }
 
@@ -189,8 +189,8 @@ LABEL_15:
     v116 = 0u;
     v113 = 0u;
     v114 = 0u;
-    v59 = self->_continueButtons;
-    v61 = [(NSArray *)v59 countByEnumeratingWithState:&v113 objects:v119 count:16];
+    footerView5 = self->_continueButtons;
+    v61 = [(NSArray *)footerView5 countByEnumeratingWithState:&v113 objects:v119 count:16];
     if (v61)
     {
       v62 = v61;
@@ -203,7 +203,7 @@ LABEL_15:
         {
           if (*v114 != v63)
           {
-            objc_enumerationMutation(v59);
+            objc_enumerationMutation(footerView5);
           }
 
           v65 = *(*(&v113 + 1) + 8 * i);
@@ -213,7 +213,7 @@ LABEL_15:
           [(VTUITurnOnSiriView *)self addConstraint:v68];
         }
 
-        v62 = [(NSArray *)v59 countByEnumeratingWithState:&v113 objects:v119 count:16];
+        v62 = [(NSArray *)footerView5 countByEnumeratingWithState:&v113 objects:v119 count:16];
       }
 
       while (v62);
@@ -224,44 +224,44 @@ LABEL_15:
 
   v69 = MEMORY[0x277CCAAD0];
   v70 = *(&self->super.super.super.super.isa + v29);
-  v71 = [(VTUITurnOnSiriView *)self footerView];
-  v72 = [v69 constraintWithItem:v70 attribute:9 relatedBy:0 toItem:v71 attribute:9 multiplier:1.0 constant:0.0];
+  footerView6 = [(VTUITurnOnSiriView *)self footerView];
+  v72 = [v69 constraintWithItem:v70 attribute:9 relatedBy:0 toItem:footerView6 attribute:9 multiplier:1.0 constant:0.0];
   [(VTUITurnOnSiriView *)self addConstraint:v72];
 
   v73 = MEMORY[0x277CCAAD0];
   v74 = *(&self->super.super.super.super.isa + v29);
-  v75 = [(VTUITurnOnSiriView *)self footerView];
+  footerView7 = [(VTUITurnOnSiriView *)self footerView];
   [v3 skipButtonBaselineBottomMarginPortrait];
-  v77 = [v73 constraintWithItem:v74 attribute:4 relatedBy:0 toItem:v75 attribute:4 multiplier:1.0 constant:-v76];
+  v77 = [v73 constraintWithItem:v74 attribute:4 relatedBy:0 toItem:footerView7 attribute:4 multiplier:1.0 constant:-v76];
   [(VTUITurnOnSiriView *)self addConstraint:v77];
 
   v78 = *(&self->super.super.super.super.isa + v32);
   if (v78)
   {
-    v79 = [MEMORY[0x277CCAAD0] constraintWithItem:*(&self->super.super.super.super.isa + v29) attribute:7 relatedBy:0 toItem:v78 attribute:7 multiplier:1.0 constant:0.0];
-    [(VTUITurnOnSiriView *)self addConstraint:v79];
+    firstObject3 = [MEMORY[0x277CCAAD0] constraintWithItem:*(&self->super.super.super.super.isa + v29) attribute:7 relatedBy:0 toItem:v78 attribute:7 multiplier:1.0 constant:0.0];
+    [(VTUITurnOnSiriView *)self addConstraint:firstObject3];
   }
 
   else
   {
-    v80 = [(NSArray *)self->_continueButtons firstObject];
+    firstObject2 = [(NSArray *)self->_continueButtons firstObject];
 
-    if (!v80)
+    if (!firstObject2)
     {
       goto LABEL_30;
     }
 
     v81 = MEMORY[0x277CCAAD0];
     v82 = *(&self->super.super.super.super.isa + v29);
-    v79 = [(NSArray *)self->_continueButtons firstObject];
-    v83 = [v81 constraintWithItem:v82 attribute:7 relatedBy:0 toItem:v79 attribute:7 multiplier:1.0 constant:0.0];
+    firstObject3 = [(NSArray *)self->_continueButtons firstObject];
+    v83 = [v81 constraintWithItem:v82 attribute:7 relatedBy:0 toItem:firstObject3 attribute:7 multiplier:1.0 constant:0.0];
     [(VTUITurnOnSiriView *)self addConstraint:v83];
   }
 
 LABEL_30:
   v84 = MEMORY[0x277CCAAD0];
-  v85 = [*(&self->super.super.super.super.isa + v29) titleLabel];
-  v86 = [v84 constraintWithItem:v85 attribute:7 relatedBy:0 toItem:*(&self->super.super.super.super.isa + v29) attribute:7 multiplier:1.0 constant:0.0];
+  titleLabel4 = [*(&self->super.super.super.super.isa + v29) titleLabel];
+  v86 = [v84 constraintWithItem:titleLabel4 attribute:7 relatedBy:0 toItem:*(&self->super.super.super.super.isa + v29) attribute:7 multiplier:1.0 constant:0.0];
   [(VTUITurnOnSiriView *)self addConstraint:v86];
 
   v87 = *(&self->super.super.super.super.isa + v32);
@@ -322,10 +322,10 @@ LABEL_30:
   v106 = *MEMORY[0x277D85DE8];
 }
 
-- (id)languageSelectionOfContinueButton:(id)a3
+- (id)languageSelectionOfContinueButton:(id)button
 {
   siriLanguages = self->_siriLanguages;
-  v4 = [a3 tag];
+  v4 = [button tag];
 
   return [(NSArray *)siriLanguages objectAtIndex:v4];
 }
@@ -371,7 +371,7 @@ LABEL_30:
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v39 = self;
+  selfCopy = self;
   obj = self->_continueButtons;
   v40 = [(NSArray *)obj countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v40)
@@ -387,18 +387,18 @@ LABEL_30:
         }
 
         v18 = *(*(&v41 + 1) + 8 * i);
-        v19 = -[NSArray objectAtIndex:](v39->_siriLanguages, "objectAtIndex:", [v18 tag]);
-        v20 = [MEMORY[0x277CEF368] sharedPreferences];
-        v21 = [v20 languageCode];
+        v19 = -[NSArray objectAtIndex:](selfCopy->_siriLanguages, "objectAtIndex:", [v18 tag]);
+        mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+        languageCode = [mEMORY[0x277CEF368] languageCode];
 
-        if (!v21)
+        if (!languageCode)
         {
-          v22 = [MEMORY[0x277CBEAF8] currentLocale];
-          v21 = [v22 localeIdentifier];
+          currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+          languageCode = [currentLocale localeIdentifier];
         }
 
-        v23 = [MEMORY[0x277CEF2D8] sharedInstance];
-        v24 = [v23 localizedCompactNameForSiriLanguage:v19 inDisplayLanguage:v21];
+        mEMORY[0x277CEF2D8] = [MEMORY[0x277CEF2D8] sharedInstance];
+        v24 = [mEMORY[0x277CEF2D8] localizedCompactNameForSiriLanguage:v19 inDisplayLanguage:languageCode];
         v25 = v24;
         if (v24)
         {
@@ -428,8 +428,8 @@ LABEL_30:
     while (v40);
   }
 
-  v34 = [MEMORY[0x277D75348] clearColor];
-  [(VTUITurnOnSiriView *)v39 setBackgroundColor:v34];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(VTUITurnOnSiriView *)selfCopy setBackgroundColor:clearColor];
 
   v35 = *MEMORY[0x277D85DE8];
 }
@@ -473,7 +473,7 @@ LABEL_30:
   return v4;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   WeakRetained = objc_loadWeakRetained(&self->_stateViewDelegate);
   [WeakRetained aboutSelectedInTurnOnSiriView:self];

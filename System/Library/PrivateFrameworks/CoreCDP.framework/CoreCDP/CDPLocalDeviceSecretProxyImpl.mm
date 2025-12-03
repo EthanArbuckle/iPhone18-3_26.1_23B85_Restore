@@ -25,13 +25,13 @@
   v7[3] = &unk_1E869DD10;
   v7[4] = buf;
   [v3 hasLocalSecretWithCompletion:v7];
-  v5 = [(CDPDaemonConnection *)v2 connection];
-  [v5 invalidate];
+  connection = [(CDPDaemonConnection *)v2 connection];
+  [connection invalidate];
 
-  LOBYTE(v5) = v9[24];
+  LOBYTE(connection) = v9[24];
   _Block_object_dispose(buf, 8);
 
-  return v5;
+  return connection;
 }
 
 void __47__CDPLocalDeviceSecretProxyImpl_hasLocalSecret__block_invoke(uint64_t a1, void *a2)

@@ -1,34 +1,34 @@
 @interface ICDelegateAccountStoreSQLWriter
-- (BOOL)_removeAccountForIdentityKey:(id)a3;
-- (BOOL)_removeTokenForIdentityKey:(id)a3;
-- (ICDelegateAccountStoreSQLWriter)initWithConnection:(id)a3;
-- (void)_setToken:(id)a3 forIdentityKey:(id)a4;
-- (void)addDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
+- (BOOL)_removeAccountForIdentityKey:(id)key;
+- (BOOL)_removeTokenForIdentityKey:(id)key;
+- (ICDelegateAccountStoreSQLWriter)initWithConnection:(id)connection;
+- (void)_setToken:(id)token forIdentityKey:(id)key;
+- (void)addDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler;
 - (void)invalidate;
-- (void)removeAllTokensWithCompletionHandler:(id)a3;
-- (void)removeDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
-- (void)removeIdentityPropertiesForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)removeTokenForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)removeTokensExpiringBeforeDate:(id)a3 completionHandler:(id)a4;
-- (void)setIdentityProperties:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
-- (void)setToken:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
+- (void)removeAllTokensWithCompletionHandler:(id)handler;
+- (void)removeDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeIdentityPropertiesForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeTokenForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeTokensExpiringBeforeDate:(id)date completionHandler:(id)handler;
+- (void)setIdentityProperties:(id)properties forUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)setToken:(id)token forUserIdentity:(id)identity completionHandler:(id)handler;
 @end
 
 @implementation ICDelegateAccountStoreSQLWriter
 
-- (void)_setToken:(id)a3 forIdentityKey:(id)a4
+- (void)_setToken:(id)token forIdentityKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  keyCopy = key;
   connection = self->_connection;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__ICDelegateAccountStoreSQLWriter__setToken_forIdentityKey___block_invoke;
   v11[3] = &unk_1E7BF8C88;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = tokenCopy;
+  v9 = tokenCopy;
+  v10 = keyCopy;
   [(ICSQLiteConnection *)connection executeStatement:@"INSERT OR REPLACE INTO token (account_identity error:data bindings:expiration_date, type) VALUES(?, ?, ?, ?)", 0, v11];
 }
 
@@ -64,81 +64,81 @@ void __60__ICDelegateAccountStoreSQLWriter__setToken_forIdentityKey___block_invo
   [v6 bindInt64:v5 atPosition:4];
 }
 
-- (BOOL)_removeTokenForIdentityKey:(id)a3
+- (BOOL)_removeTokenForIdentityKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   connection = self->_connection;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __62__ICDelegateAccountStoreSQLWriter__removeTokenForIdentityKey___block_invoke;
   v8[3] = &unk_1E7BF8CD8;
-  v9 = v4;
-  v6 = v4;
+  v9 = keyCopy;
+  v6 = keyCopy;
   [(ICSQLiteConnection *)connection executeStatement:@"DELETE FROM token WHERE account_identity==?" error:0 bindings:v8];
   LOBYTE(self) = [(ICSQLiteConnection *)self->_connection lastChangeCount]> 0;
 
   return self;
 }
 
-- (BOOL)_removeAccountForIdentityKey:(id)a3
+- (BOOL)_removeAccountForIdentityKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   connection = self->_connection;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__ICDelegateAccountStoreSQLWriter__removeAccountForIdentityKey___block_invoke;
   v8[3] = &unk_1E7BF8CD8;
-  v9 = v4;
-  v6 = v4;
+  v9 = keyCopy;
+  v6 = keyCopy;
   [(ICSQLiteConnection *)connection executeStatement:@"DELETE FROM account WHERE identity==?" error:0 bindings:v8];
   LOBYTE(self) = [(ICSQLiteConnection *)self->_connection lastChangeCount]> 0;
 
   return self;
 }
 
-- (void)setToken:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)setToken:(id)token forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  tokenCopy = token;
+  identityCopy = identity;
+  handlerCopy = handler;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
-  v11 = ICDelegateAccountStorePrimaryKeyForUserIdentity(v9);
+  v11 = ICDelegateAccountStorePrimaryKeyForUserIdentity(identityCopy);
   if (!v11)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", v9}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", identityCopy}];
   }
 
-  [(ICDelegateAccountStoreSQLWriter *)self _setToken:v8 forIdentityKey:v11];
-  if (v10)
+  [(ICDelegateAccountStoreSQLWriter *)self _setToken:tokenCopy forIdentityKey:v11];
+  if (handlerCopy)
   {
     connection = self->_connection;
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __78__ICDelegateAccountStoreSQLWriter_setToken_forUserIdentity_completionHandler___block_invoke;
     v13[3] = &unk_1E7BF9D20;
-    v14 = v10;
+    v14 = handlerCopy;
     [(ICSQLiteConnection *)connection dispatchAfterTransaction:v13];
   }
 }
 
-- (void)setIdentityProperties:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)setIdentityProperties:(id)properties forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  propertiesCopy = properties;
+  identityCopy = identity;
+  handlerCopy = handler;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
-  v11 = ICDelegateAccountStorePrimaryKeyForUserIdentity(v9);
+  v11 = ICDelegateAccountStorePrimaryKeyForUserIdentity(identityCopy);
   if (!v11)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", v9}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", identityCopy}];
   }
 
   connection = self->_connection;
@@ -147,14 +147,14 @@ void __60__ICDelegateAccountStoreSQLWriter__setToken_forIdentityKey___block_invo
   v18[2] = __91__ICDelegateAccountStoreSQLWriter_setIdentityProperties_forUserIdentity_completionHandler___block_invoke;
   v18[3] = &unk_1E7BF8C88;
   v18[4] = v11;
-  v13 = v8;
+  v13 = propertiesCopy;
   v19 = v13;
   [(ICSQLiteConnection *)connection executeStatement:@"INSERT OR REPLACE INTO account (identity error:storefront) VALUES (? bindings:?)", 0, v18];
-  v14 = [v13 delegateToken];
-  if (!v14)
+  delegateToken = [v13 delegateToken];
+  if (!delegateToken)
   {
     [(ICDelegateAccountStoreSQLWriter *)self _removeTokenForIdentityKey:v11];
-    if (!v10)
+    if (!handlerCopy)
     {
       goto LABEL_8;
     }
@@ -162,8 +162,8 @@ void __60__ICDelegateAccountStoreSQLWriter__setToken_forIdentityKey___block_invo
     goto LABEL_7;
   }
 
-  [(ICDelegateAccountStoreSQLWriter *)self _setToken:v14 forIdentityKey:v11];
-  if (v10)
+  [(ICDelegateAccountStoreSQLWriter *)self _setToken:delegateToken forIdentityKey:v11];
+  if (handlerCopy)
   {
 LABEL_7:
     v15 = self->_connection;
@@ -171,7 +171,7 @@ LABEL_7:
     v16[1] = 3221225472;
     v16[2] = __91__ICDelegateAccountStoreSQLWriter_setIdentityProperties_forUserIdentity_completionHandler___block_invoke_2;
     v16[3] = &unk_1E7BF9D20;
-    v17 = v10;
+    v17 = handlerCopy;
     [(ICSQLiteConnection *)v15 dispatchAfterTransaction:v16];
   }
 
@@ -196,10 +196,10 @@ void __91__ICDelegateAccountStoreSQLWriter_setIdentityProperties_forUserIdentity
   }
 }
 
-- (void)removeTokensExpiringBeforeDate:(id)a3 completionHandler:(id)a4
+- (void)removeTokensExpiringBeforeDate:(id)date completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
@@ -210,10 +210,10 @@ void __91__ICDelegateAccountStoreSQLWriter_setIdentityProperties_forUserIdentity
   v19[1] = 3221225472;
   v19[2] = __84__ICDelegateAccountStoreSQLWriter_removeTokensExpiringBeforeDate_completionHandler___block_invoke;
   v19[3] = &unk_1E7BF8CD8;
-  v9 = v6;
+  v9 = dateCopy;
   v20 = v9;
   [(ICSQLiteConnection *)connection executeStatement:@"DELETE FROM token WHERE expiration_date<?" error:0 bindings:v19];
-  v10 = [(ICSQLiteConnection *)self->_connection lastChangeCount];
+  lastChangeCount = [(ICSQLiteConnection *)self->_connection lastChangeCount];
   v11 = self->_connection;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -222,15 +222,15 @@ void __91__ICDelegateAccountStoreSQLWriter_setIdentityProperties_forUserIdentity
   v12 = v9;
   v18 = v12;
   [(ICSQLiteConnection *)v11 executeStatement:@"INSERT OR REPLACE INTO metadata (key error:value) VALUES (? bindings:?)", 0, v17];
-  if (v7)
+  if (handlerCopy)
   {
     v13 = self->_connection;
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __84__ICDelegateAccountStoreSQLWriter_removeTokensExpiringBeforeDate_completionHandler___block_invoke_3;
     v14[3] = &unk_1E7BF8C60;
-    v15 = v7;
-    v16 = v10 > 0;
+    v15 = handlerCopy;
+    v16 = lastChangeCount > 0;
     [(ICSQLiteConnection *)v13 dispatchAfterTransaction:v14];
   }
 }
@@ -253,23 +253,23 @@ void __84__ICDelegateAccountStoreSQLWriter_removeTokensExpiringBeforeDate_comple
   [v5 bindDouble:2 atPosition:v4];
 }
 
-- (void)removeTokenForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)removeTokenForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
-  v8 = ICDelegateAccountStorePrimaryKeyForUserIdentity(v6);
+  v8 = ICDelegateAccountStorePrimaryKeyForUserIdentity(identityCopy);
   if (!v8)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", v6}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", identityCopy}];
   }
 
   v9 = [(ICDelegateAccountStoreSQLWriter *)self _removeTokenForIdentityKey:v8];
-  if (v7)
+  if (handlerCopy)
   {
     v10 = v9;
     connection = self->_connection;
@@ -277,30 +277,30 @@ void __84__ICDelegateAccountStoreSQLWriter_removeTokensExpiringBeforeDate_comple
     v12[1] = 3221225472;
     v12[2] = __80__ICDelegateAccountStoreSQLWriter_removeTokenForUserIdentity_completionHandler___block_invoke;
     v12[3] = &unk_1E7BF8C60;
-    v13 = v7;
+    v13 = handlerCopy;
     v14 = v10;
     [(ICSQLiteConnection *)connection dispatchAfterTransaction:v12];
   }
 }
 
-- (void)removeIdentityPropertiesForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)removeIdentityPropertiesForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
-  v8 = ICDelegateAccountStorePrimaryKeyForUserIdentity(v6);
+  v8 = ICDelegateAccountStorePrimaryKeyForUserIdentity(identityCopy);
   if (!v8)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", v6}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", identityCopy}];
   }
 
   v9 = [(ICDelegateAccountStoreSQLWriter *)self _removeAccountForIdentityKey:v8];
   v10 = [(ICDelegateAccountStoreSQLWriter *)self _removeTokenForIdentityKey:v8];
-  if (v7)
+  if (handlerCopy)
   {
     v11 = v10;
     connection = self->_connection;
@@ -308,7 +308,7 @@ void __84__ICDelegateAccountStoreSQLWriter_removeTokensExpiringBeforeDate_comple
     v13[1] = 3221225472;
     v13[2] = __93__ICDelegateAccountStoreSQLWriter_removeIdentityPropertiesForUserIdentity_completionHandler___block_invoke;
     v13[3] = &unk_1E7BF8CB0;
-    v14 = v7;
+    v14 = handlerCopy;
     v15 = v9;
     v16 = v11;
     [(ICSQLiteConnection *)connection dispatchAfterTransaction:v13];
@@ -331,21 +331,21 @@ uint64_t __93__ICDelegateAccountStoreSQLWriter_removeIdentityPropertiesForUserId
   return (*(v2 + 16))(v2, v3 & 1, 0);
 }
 
-- (void)removeDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)removeDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
-  v26 = ICDelegateAccountStorePrimaryKeyForUserIdentity(v9);
+  v26 = ICDelegateAccountStorePrimaryKeyForUserIdentity(identityCopy);
   if (!v26)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", v9}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", identityCopy}];
   }
 
   connection = self->_connection;
@@ -356,7 +356,7 @@ uint64_t __93__ICDelegateAccountStoreSQLWriter_removeIdentityPropertiesForUserId
   if (!v12)
   {
     LOBYTE(v19) = 0;
-    if (!v10)
+    if (!handlerCopy)
     {
       goto LABEL_19;
     }
@@ -365,12 +365,12 @@ uint64_t __93__ICDelegateAccountStoreSQLWriter_removeIdentityPropertiesForUserId
   }
 
   v24 = v13;
-  v25 = v8;
+  v25 = dsCopy;
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v15 = v8;
+  v15 = dsCopy;
   v16 = [v15 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v16)
   {
@@ -408,9 +408,9 @@ uint64_t __93__ICDelegateAccountStoreSQLWriter_removeIdentityPropertiesForUserId
     LOBYTE(v19) = 1;
   }
 
-  v8 = v25;
+  dsCopy = v25;
   v14 = v24;
-  if (v10)
+  if (handlerCopy)
   {
 LABEL_18:
     v23 = self->_connection;
@@ -418,7 +418,7 @@ LABEL_18:
     v27[1] = 3221225472;
     v27[2] = __91__ICDelegateAccountStoreSQLWriter_removeDelegationUUIDs_forUserIdentity_completionHandler___block_invoke_2;
     v27[3] = &unk_1E7BF9B68;
-    v29 = v10;
+    v29 = handlerCopy;
     v30 = v19 & 1;
     v28 = v14;
     [(ICSQLiteConnection *)v23 dispatchAfterTransaction:v27];
@@ -435,16 +435,16 @@ void __91__ICDelegateAccountStoreSQLWriter_removeDelegationUUIDs_forUserIdentity
   [v4 bindString:*(a1 + 40) atPosition:2];
 }
 
-- (void)removeAllTokensWithCompletionHandler:(id)a3
+- (void)removeAllTokensWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
   [(ICSQLiteConnection *)self->_connection executeStatement:@"DELETE FROM token" error:0];
-  if (v4)
+  if (handlerCopy)
   {
     v5 = [(ICSQLiteConnection *)self->_connection lastChangeCount]> 0;
     connection = self->_connection;
@@ -452,7 +452,7 @@ void __91__ICDelegateAccountStoreSQLWriter_removeDelegationUUIDs_forUserIdentity
     v7[1] = 3221225472;
     v7[2] = __72__ICDelegateAccountStoreSQLWriter_removeAllTokensWithCompletionHandler___block_invoke;
     v7[3] = &unk_1E7BF8C60;
-    v8 = v4;
+    v8 = handlerCopy;
     v9 = v5;
     [(ICSQLiteConnection *)connection dispatchAfterTransaction:v7];
   }
@@ -466,21 +466,21 @@ void __91__ICDelegateAccountStoreSQLWriter_removeDelegationUUIDs_forUserIdentity
   self->_isValid = 0;
 }
 
-- (void)addDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)addDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   if (!self->_isValid)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Out-of-scope transaction usage: %@", self}];
   }
 
-  v29 = ICDelegateAccountStorePrimaryKeyForUserIdentity(v9);
+  v29 = ICDelegateAccountStorePrimaryKeyForUserIdentity(identityCopy);
   if (!v29)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", v9}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Non-concrete user identity: %@", identityCopy}];
   }
 
   connection = self->_connection;
@@ -491,7 +491,7 @@ void __91__ICDelegateAccountStoreSQLWriter_removeDelegationUUIDs_forUserIdentity
   if (!v12)
   {
     LOBYTE(v22) = 0;
-    if (!v10)
+    if (!handlerCopy)
     {
       goto LABEL_19;
     }
@@ -500,16 +500,16 @@ void __91__ICDelegateAccountStoreSQLWriter_removeDelegationUUIDs_forUserIdentity
   }
 
   v27 = v13;
-  v15 = [MEMORY[0x1E695DF00] date];
-  [ICDelegateAccountStoreSchema valueForDate:v15];
+  date = [MEMORY[0x1E695DF00] date];
+  [ICDelegateAccountStoreSchema valueForDate:date];
   v17 = v16;
 
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v28 = v8;
-  v18 = v8;
+  v28 = dsCopy;
+  v18 = dsCopy;
   v19 = [v18 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v19)
   {
@@ -548,9 +548,9 @@ void __91__ICDelegateAccountStoreSQLWriter_removeDelegationUUIDs_forUserIdentity
     LOBYTE(v22) = 1;
   }
 
-  v8 = v28;
+  dsCopy = v28;
   v14 = v27;
-  if (v10)
+  if (handlerCopy)
   {
 LABEL_18:
     v26 = self->_connection;
@@ -558,7 +558,7 @@ LABEL_18:
     v30[1] = 3221225472;
     v30[2] = __88__ICDelegateAccountStoreSQLWriter_addDelegationUUIDs_forUserIdentity_completionHandler___block_invoke_2;
     v30[3] = &unk_1E7BF9B68;
-    v32 = v10;
+    v32 = handlerCopy;
     v33 = v22 & 1;
     v31 = v14;
     [(ICSQLiteConnection *)v26 dispatchAfterTransaction:v30];
@@ -576,16 +576,16 @@ void __88__ICDelegateAccountStoreSQLWriter_addDelegationUUIDs_forUserIdentity_co
   [v4 bindDouble:3 atPosition:*(a1 + 48)];
 }
 
-- (ICDelegateAccountStoreSQLWriter)initWithConnection:(id)a3
+- (ICDelegateAccountStoreSQLWriter)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = ICDelegateAccountStoreSQLWriter;
   v6 = [(ICDelegateAccountStoreSQLWriter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v7->_isValid = 1;
   }
 

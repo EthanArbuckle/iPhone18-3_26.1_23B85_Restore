@@ -1,28 +1,28 @@
 @interface WFTemporaryFileManager
-+ (BOOL)isTemporaryFile:(id)a3;
-+ (id)createSharedTemporaryDirectoryWithFilename:(id)a3;
-+ (id)createSharedTemporaryFileWithFilename:(id)a3;
-+ (id)createTemporaryDirectoryWithFilename:(id)a3;
-+ (id)createTemporaryDirectoryWithFilename:(id)a3 inDirectory:(id)a4;
-+ (id)createTemporaryFileWithFilename:(id)a3;
-+ (id)createTemporaryFileWithFilename:(id)a3 inDirectory:(id)a4;
-+ (id)createUniqueDirectoryInDirectory:(id)a3;
-+ (id)proposedFileURLForFilename:(id)a3 atTheRootOfDirectory:(id)a4 isDirectory:(BOOL)a5;
-+ (id)proposedFileURLForFilename:(id)a3 inDirectory:(id)a4 isDirectory:(BOOL)a5;
-+ (id)proposedSharedTemporaryFileURLForFilename:(id)a3 isDirectory:(BOOL)a4;
-+ (id)proposedTemporaryFileURLForFilename:(id)a3 isDirectory:(BOOL)a4;
++ (BOOL)isTemporaryFile:(id)file;
++ (id)createSharedTemporaryDirectoryWithFilename:(id)filename;
++ (id)createSharedTemporaryFileWithFilename:(id)filename;
++ (id)createTemporaryDirectoryWithFilename:(id)filename;
++ (id)createTemporaryDirectoryWithFilename:(id)filename inDirectory:(id)directory;
++ (id)createTemporaryFileWithFilename:(id)filename;
++ (id)createTemporaryFileWithFilename:(id)filename inDirectory:(id)directory;
++ (id)createUniqueDirectoryInDirectory:(id)directory;
++ (id)proposedFileURLForFilename:(id)filename atTheRootOfDirectory:(id)directory isDirectory:(BOOL)isDirectory;
++ (id)proposedFileURLForFilename:(id)filename inDirectory:(id)directory isDirectory:(BOOL)isDirectory;
++ (id)proposedSharedTemporaryFileURLForFilename:(id)filename isDirectory:(BOOL)directory;
++ (id)proposedTemporaryFileURLForFilename:(id)filename isDirectory:(BOOL)directory;
 + (id)sharedAppGroupDirectoryURL;
 + (id)sharedShortcutsAppGroupDirectoryURL;
 + (id)sharedTemporaryDirectoryURL;
 + (id)temporaryDirectoryURL;
-+ (id)wf_uncachedContainerURLForSecurityApplicationGroupIdentifier:(id)a3 error:(id *)a4;
++ (id)wf_uncachedContainerURLForSecurityApplicationGroupIdentifier:(id)identifier error:(id *)error;
 + (void)clearTemporaryFiles;
-+ (void)configureBackupFlagAtURL:(id)a3;
++ (void)configureBackupFlagAtURL:(id)l;
 + (void)configureBackupFlagIfNecessary;
-+ (void)configureFileProtectionAtPath:(id)a3;
++ (void)configureFileProtectionAtPath:(id)path;
 + (void)configureTemporaryDirectoryProtectionIfNecessary;
 + (void)createSharedDirectoryIfNecessary;
-+ (void)markDirectoryAsPurgeableAtURL:(id)a3;
++ (void)markDirectoryAsPurgeableAtURL:(id)l;
 + (void)setUpDirectories;
 @end
 
@@ -30,24 +30,24 @@
 
 + (void)setUpDirectories
 {
-  [a1 createSharedDirectoryIfNecessary];
+  [self createSharedDirectoryIfNecessary];
   v3 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__WFTemporaryFileManager_setUpDirectories__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(v3, block);
 }
 
 + (id)sharedTemporaryDirectoryURL
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [a1 sharedAppGroupDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"Temporary" isDirectory:1];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v3 URLByAppendingPathComponent:v5 isDirectory:1];
+  sharedAppGroupDirectoryURL = [self sharedAppGroupDirectoryURL];
+  v3 = [sharedAppGroupDirectoryURL URLByAppendingPathComponent:@"Temporary" isDirectory:1];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v6 = [v3 URLByAppendingPathComponent:bundleIdentifier isDirectory:1];
 
   if (!v6)
   {
@@ -66,9 +66,9 @@
 + (id)sharedAppGroupDirectoryURL
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [a1 appGroupIdentifier];
-  v5 = [v3 containerURLForSecurityApplicationGroupIdentifier:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  appGroupIdentifier = [self appGroupIdentifier];
+  v5 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:appGroupIdentifier];
 
   if (v5)
   {
@@ -77,9 +77,9 @@
 
   else
   {
-    v7 = [a1 appGroupIdentifier];
+    appGroupIdentifier2 = [self appGroupIdentifier];
     v10 = 0;
-    v5 = [a1 wf_uncachedContainerURLForSecurityApplicationGroupIdentifier:v7 error:&v10];
+    v5 = [self wf_uncachedContainerURLForSecurityApplicationGroupIdentifier:appGroupIdentifier2 error:&v10];
     v6 = v10;
 
     if (!v5)
@@ -103,9 +103,9 @@
 
 + (void)createSharedDirectoryIfNecessary
 {
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [a1 sharedTemporaryDirectoryURL];
-  [v4 createDirectoryAtURL:v3 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  sharedTemporaryDirectoryURL = [self sharedTemporaryDirectoryURL];
+  [defaultManager createDirectoryAtURL:sharedTemporaryDirectoryURL withIntermediateDirectories:1 attributes:0 error:0];
 }
 
 void __45__WFTemporaryFileManager_clearTemporaryFiles__block_invoke(uint64_t a1)
@@ -144,20 +144,20 @@ void __45__WFTemporaryFileManager_clearTemporaryFiles__block_invoke(uint64_t a1)
 
 + (void)configureBackupFlagIfNecessary
 {
-  v3 = [a1 sharedTemporaryDirectoryURL];
-  [a1 configureBackupFlagAtURL:v3];
+  sharedTemporaryDirectoryURL = [self sharedTemporaryDirectoryURL];
+  [self configureBackupFlagAtURL:sharedTemporaryDirectoryURL];
 }
 
 + (void)clearTemporaryFiles
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = objc_opt_new();
-  v5 = [a1 temporaryDirectoryURL];
-  v6 = [v3 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:0 options:0 error:0];
+  temporaryDirectoryURL = [self temporaryDirectoryURL];
+  v6 = [defaultManager contentsOfDirectoryAtURL:temporaryDirectoryURL includingPropertiesForKeys:0 options:0 error:0];
   [v4 addObjectsFromArray:v6];
 
-  v7 = [a1 sharedTemporaryDirectoryURL];
-  v8 = [v3 contentsOfDirectoryAtURL:v7 includingPropertiesForKeys:0 options:0 error:0];
+  sharedTemporaryDirectoryURL = [self sharedTemporaryDirectoryURL];
+  v8 = [defaultManager contentsOfDirectoryAtURL:sharedTemporaryDirectoryURL includingPropertiesForKeys:0 options:0 error:0];
   [v4 addObjectsFromArray:v8];
 
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -169,8 +169,8 @@ void __45__WFTemporaryFileManager_clearTemporaryFiles__block_invoke(uint64_t a1)
   v14[2] = __45__WFTemporaryFileManager_clearTemporaryFiles__block_invoke;
   v14[3] = &unk_278347FF0;
   v15 = v4;
-  v16 = v3;
-  v12 = v3;
+  v16 = defaultManager;
+  v12 = defaultManager;
   v13 = v4;
   dispatch_async(v11, v14);
 }
@@ -185,9 +185,9 @@ void __45__WFTemporaryFileManager_clearTemporaryFiles__block_invoke(uint64_t a1)
 
   if ((temporaryDirectoryURL_hasCheckedDirectoryExists & 1) == 0)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
-    v4 = [temporaryDirectoryURL_URL path];
-    v5 = [v3 fileExistsAtPath:v4 isDirectory:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [temporaryDirectoryURL_URL path];
+    v5 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
     if (v5)
     {
@@ -195,11 +195,11 @@ void __45__WFTemporaryFileManager_clearTemporaryFiles__block_invoke(uint64_t a1)
       v6 = getWFFilesLogObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [temporaryDirectoryURL_URL path];
+        path2 = [temporaryDirectoryURL_URL path];
         *buf = 136315394;
         v19 = "+[WFTemporaryFileManager temporaryDirectoryURL]";
         v20 = 2112;
-        v21 = v7;
+        v21 = path2;
         _os_log_impl(&dword_21E1BD000, v6, OS_LOG_TYPE_DEFAULT, "%s Found an existing temporary directory at %@", buf, 0x16u);
       }
     }
@@ -209,17 +209,17 @@ void __45__WFTemporaryFileManager_clearTemporaryFiles__block_invoke(uint64_t a1)
       v8 = getWFFilesLogObject();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [temporaryDirectoryURL_URL path];
+        path3 = [temporaryDirectoryURL_URL path];
         *buf = 136315394;
         v19 = "+[WFTemporaryFileManager temporaryDirectoryURL]";
         v20 = 2112;
-        v21 = v9;
+        v21 = path3;
         _os_log_impl(&dword_21E1BD000, v8, OS_LOG_TYPE_DEFAULT, "%s Creating a new temporary directory at %@", buf, 0x16u);
       }
 
-      v10 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v17 = 0;
-      v11 = [v10 createDirectoryAtURL:temporaryDirectoryURL_URL withIntermediateDirectories:1 attributes:0 error:&v17];
+      v11 = [defaultManager2 createDirectoryAtURL:temporaryDirectoryURL_URL withIntermediateDirectories:1 attributes:0 error:&v17];
       v6 = v17;
 
       if (v11)
@@ -238,7 +238,7 @@ void __45__WFTemporaryFileManager_clearTemporaryFiles__block_invoke(uint64_t a1)
         v16[1] = 3221225472;
         v16[2] = __47__WFTemporaryFileManager_temporaryDirectoryURL__block_invoke_75;
         v16[3] = &__block_descriptor_40_e5_v8__0l;
-        v16[4] = a1;
+        v16[4] = self;
         dispatch_async(v13, v16);
       }
 
@@ -323,60 +323,60 @@ uint64_t __42__WFTemporaryFileManager_setUpDirectories__block_invoke(uint64_t a1
 
 + (void)configureTemporaryDirectoryProtectionIfNecessary
 {
-  v3 = [a1 temporaryDirectoryURL];
-  v4 = [v3 path];
-  [a1 configureFileProtectionAtPath:v4];
+  temporaryDirectoryURL = [self temporaryDirectoryURL];
+  path = [temporaryDirectoryURL path];
+  [self configureFileProtectionAtPath:path];
 
-  v6 = [a1 sharedTemporaryDirectoryURL];
-  v5 = [v6 path];
-  [a1 configureFileProtectionAtPath:v5];
+  sharedTemporaryDirectoryURL = [self sharedTemporaryDirectoryURL];
+  path2 = [sharedTemporaryDirectoryURL path];
+  [self configureFileProtectionAtPath:path2];
 }
 
-+ (BOOL)isTemporaryFile:(id)a3
++ (BOOL)isTemporaryFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v4 = +[WFTemporaryFileManager temporaryDirectoryURL];
   v5 = +[WFTemporaryFileManager sharedTemporaryDirectoryURL];
-  if ([v3 wf_proposedFileIsContainedByDirectoryAtURL:v4])
+  if ([fileCopy wf_proposedFileIsContainedByDirectoryAtURL:v4])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v3 wf_proposedFileIsContainedByDirectoryAtURL:v5];
+    v6 = [fileCopy wf_proposedFileIsContainedByDirectoryAtURL:v5];
   }
 
   return v6;
 }
 
-+ (id)createSharedTemporaryFileWithFilename:(id)a3
++ (id)createSharedTemporaryFileWithFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [a1 sharedTemporaryDirectoryURL];
-  v6 = [a1 createTemporaryFileWithFilename:v4 inDirectory:v5];
+  filenameCopy = filename;
+  sharedTemporaryDirectoryURL = [self sharedTemporaryDirectoryURL];
+  v6 = [self createTemporaryFileWithFilename:filenameCopy inDirectory:sharedTemporaryDirectoryURL];
 
   return v6;
 }
 
-+ (id)createTemporaryFileWithFilename:(id)a3
++ (id)createTemporaryFileWithFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [a1 temporaryDirectoryURL];
-  v6 = [a1 createTemporaryFileWithFilename:v4 inDirectory:v5];
+  filenameCopy = filename;
+  temporaryDirectoryURL = [self temporaryDirectoryURL];
+  v6 = [self createTemporaryFileWithFilename:filenameCopy inDirectory:temporaryDirectoryURL];
 
   return v6;
 }
 
-+ (id)createTemporaryFileWithFilename:(id)a3 inDirectory:(id)a4
++ (id)createTemporaryFileWithFilename:(id)filename inDirectory:(id)directory
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  filenameCopy = filename;
+  directoryCopy = directory;
+  v9 = directoryCopy;
+  if (filenameCopy)
   {
-    if (v8)
+    if (directoryCopy)
     {
       goto LABEL_3;
     }
@@ -384,8 +384,8 @@ uint64_t __42__WFTemporaryFileManager_setUpDirectories__block_invoke(uint64_t a1
 
   else
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:405 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:405 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
 
     if (v9)
     {
@@ -393,11 +393,11 @@ uint64_t __42__WFTemporaryFileManager_setUpDirectories__block_invoke(uint64_t a1
     }
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:406 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:406 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
 
 LABEL_3:
-  v10 = [v9 URLByAppendingPathComponent:v7 isDirectory:0];
+  v10 = [v9 URLByAppendingPathComponent:filenameCopy isDirectory:0];
   v11 = v10;
   if (v10)
   {
@@ -411,8 +411,8 @@ LABEL_3:
 
     if (*__error() == 17)
     {
-      v14 = [a1 createUniqueDirectoryInDirectory:v9];
-      v13 = [a1 createTemporaryFileWithFilename:v7 inDirectory:v14];
+      v14 = [self createUniqueDirectoryInDirectory:v9];
+      v13 = [self createTemporaryFileWithFilename:filenameCopy inDirectory:v14];
 
       goto LABEL_12;
     }
@@ -435,32 +435,32 @@ LABEL_12:
   return v13;
 }
 
-+ (id)createTemporaryDirectoryWithFilename:(id)a3
++ (id)createTemporaryDirectoryWithFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [a1 temporaryDirectoryURL];
-  v6 = [a1 createTemporaryDirectoryWithFilename:v4 inDirectory:v5];
+  filenameCopy = filename;
+  temporaryDirectoryURL = [self temporaryDirectoryURL];
+  v6 = [self createTemporaryDirectoryWithFilename:filenameCopy inDirectory:temporaryDirectoryURL];
 
   return v6;
 }
 
-+ (id)createSharedTemporaryDirectoryWithFilename:(id)a3
++ (id)createSharedTemporaryDirectoryWithFilename:(id)filename
 {
-  v4 = a3;
-  v5 = [a1 sharedTemporaryDirectoryURL];
-  v6 = [a1 createTemporaryDirectoryWithFilename:v4 inDirectory:v5];
+  filenameCopy = filename;
+  sharedTemporaryDirectoryURL = [self sharedTemporaryDirectoryURL];
+  v6 = [self createTemporaryDirectoryWithFilename:filenameCopy inDirectory:sharedTemporaryDirectoryURL];
 
   return v6;
 }
 
-+ (id)createTemporaryDirectoryWithFilename:(id)a3 inDirectory:(id)a4
++ (id)createTemporaryDirectoryWithFilename:(id)filename inDirectory:(id)directory
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  filenameCopy = filename;
+  directoryCopy = directory;
+  v9 = directoryCopy;
+  if (filenameCopy)
   {
-    if (v8)
+    if (directoryCopy)
     {
       goto LABEL_3;
     }
@@ -468,8 +468,8 @@ LABEL_12:
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
 
     if (v9)
     {
@@ -477,20 +477,20 @@ LABEL_12:
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:380 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:380 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
 
 LABEL_3:
-  v10 = [v9 URLByAppendingPathComponent:v7 isDirectory:1];
+  v10 = [v9 URLByAppendingPathComponent:filenameCopy isDirectory:1];
   if (!v10)
   {
     v13 = 0;
     goto LABEL_9;
   }
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v21 = 0;
-  v12 = [v11 createDirectoryAtURL:v10 withIntermediateDirectories:0 attributes:0 error:&v21];
+  v12 = [defaultManager createDirectoryAtURL:v10 withIntermediateDirectories:0 attributes:0 error:&v21];
   v13 = v21;
 
   if (v12)
@@ -500,15 +500,15 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v14 = [v13 domain];
-  if ([v14 isEqualToString:*MEMORY[0x277CCA050]])
+  domain = [v13 domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v15 = [v13 code];
+    code = [v13 code];
 
-    if (v15 == 516)
+    if (code == 516)
     {
-      v16 = [a1 createUniqueDirectoryInDirectory:v9];
-      v17 = [a1 createTemporaryDirectoryWithFilename:v7 inDirectory:v16];
+      v16 = [self createUniqueDirectoryInDirectory:v9];
+      v17 = [self createTemporaryDirectoryWithFilename:filenameCopy inDirectory:v16];
 
       goto LABEL_12;
     }
@@ -524,35 +524,35 @@ LABEL_12:
   return v17;
 }
 
-+ (id)proposedSharedTemporaryFileURLForFilename:(id)a3 isDirectory:(BOOL)a4
++ (id)proposedSharedTemporaryFileURLForFilename:(id)filename isDirectory:(BOOL)directory
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 sharedTemporaryDirectoryURL];
-  v8 = [a1 proposedFileURLForFilename:v6 inDirectory:v7 isDirectory:v4];
+  directoryCopy = directory;
+  filenameCopy = filename;
+  sharedTemporaryDirectoryURL = [self sharedTemporaryDirectoryURL];
+  v8 = [self proposedFileURLForFilename:filenameCopy inDirectory:sharedTemporaryDirectoryURL isDirectory:directoryCopy];
 
   return v8;
 }
 
-+ (id)proposedTemporaryFileURLForFilename:(id)a3 isDirectory:(BOOL)a4
++ (id)proposedTemporaryFileURLForFilename:(id)filename isDirectory:(BOOL)directory
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [a1 temporaryDirectoryURL];
-  v8 = [a1 proposedFileURLForFilename:v6 inDirectory:v7 isDirectory:v4];
+  directoryCopy = directory;
+  filenameCopy = filename;
+  temporaryDirectoryURL = [self temporaryDirectoryURL];
+  v8 = [self proposedFileURLForFilename:filenameCopy inDirectory:temporaryDirectoryURL isDirectory:directoryCopy];
 
   return v8;
 }
 
-+ (id)proposedFileURLForFilename:(id)a3 atTheRootOfDirectory:(id)a4 isDirectory:(BOOL)a5
++ (id)proposedFileURLForFilename:(id)filename atTheRootOfDirectory:(id)directory isDirectory:(BOOL)isDirectory
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  isDirectoryCopy = isDirectory;
+  filenameCopy = filename;
+  directoryCopy = directory;
+  v11 = directoryCopy;
+  if (filenameCopy)
   {
-    if (v10)
+    if (directoryCopy)
     {
       goto LABEL_3;
     }
@@ -560,8 +560,8 @@ LABEL_12:
 
   else
   {
-    v29 = [MEMORY[0x277CCA890] currentHandler];
-    [v29 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:335 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
 
     if (v11)
     {
@@ -569,22 +569,22 @@ LABEL_12:
     }
   }
 
-  v30 = [MEMORY[0x277CCA890] currentHandler];
-  [v30 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:336 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:336 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
 
 LABEL_3:
   v31 = a2;
-  v32 = a1;
-  v12 = [v11 URLByAppendingPathComponent:v9 isDirectory:v5];
+  selfCopy = self;
+  v12 = [v11 URLByAppendingPathComponent:filenameCopy isDirectory:isDirectoryCopy];
   if (v12)
   {
     v13 = v12;
     v14 = 2;
     do
     {
-      v15 = [MEMORY[0x277CCAA00] defaultManager];
-      v16 = [v13 path];
-      v17 = [v15 fileExistsAtPath:v16];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v13 path];
+      v17 = [defaultManager fileExistsAtPath:path];
 
       if (!v17)
       {
@@ -592,10 +592,10 @@ LABEL_3:
       }
 
       v18 = v11;
-      v19 = v9;
+      v19 = filenameCopy;
       if (v11)
       {
-        if (!v9)
+        if (!filenameCopy)
         {
           goto LABEL_11;
         }
@@ -603,22 +603,22 @@ LABEL_3:
 
       else
       {
-        v23 = [MEMORY[0x277CCA890] currentHandler];
+        currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
         v24 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NSURL * _Nonnull WFFileURLByAppendingIterationCount(NSURL * _Nonnull __strong, NSString * _Nonnull __strong, BOOL, NSUInteger)"}];
-        [v23 handleFailureInFunction:v24 file:@"WFTemporaryFileManager.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
+        [currentHandler3 handleFailureInFunction:v24 file:@"WFTemporaryFileManager.m" lineNumber:296 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
 
-        if (!v9)
+        if (!filenameCopy)
         {
 LABEL_11:
-          v25 = [MEMORY[0x277CCA890] currentHandler];
+          currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
           v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"NSURL * _Nonnull WFFileURLByAppendingIterationCount(NSURL * _Nonnull __strong, NSString * _Nonnull __strong, BOOL, NSUInteger)"}];
-          [v25 handleFailureInFunction:v26 file:@"WFTemporaryFileManager.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
+          [currentHandler4 handleFailureInFunction:v26 file:@"WFTemporaryFileManager.m" lineNumber:297 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
         }
       }
 
       v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"-%lu", v14];
       v21 = [v19 wf_filenameTruncatedToMaximumLengthWithSuffix:v20];
-      v22 = [v18 URLByAppendingPathComponent:v21 isDirectory:v5];
+      v22 = [v18 URLByAppendingPathComponent:v21 isDirectory:isDirectoryCopy];
 
       ++v14;
       v13 = v22;
@@ -627,8 +627,8 @@ LABEL_11:
     while (v22);
   }
 
-  v27 = [MEMORY[0x277CCA890] currentHandler];
-  [v27 handleFailureInMethod:v31 object:v32 file:@"WFTemporaryFileManager.m" lineNumber:346 description:@"fileURL should not be nil"];
+  currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler5 handleFailureInMethod:v31 object:selfCopy file:@"WFTemporaryFileManager.m" lineNumber:346 description:@"fileURL should not be nil"];
 
   v13 = 0;
 LABEL_13:
@@ -636,16 +636,16 @@ LABEL_13:
   return v13;
 }
 
-+ (id)proposedFileURLForFilename:(id)a3 inDirectory:(id)a4 isDirectory:(BOOL)a5
++ (id)proposedFileURLForFilename:(id)filename inDirectory:(id)directory isDirectory:(BOOL)isDirectory
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  isDirectoryCopy = isDirectory;
+  filenameCopy = filename;
+  directoryCopy = directory;
+  v11 = directoryCopy;
+  if (!filenameCopy)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:321 description:{@"Invalid parameter not satisfying: %@", @"filename"}];
 
     if (v11)
     {
@@ -653,29 +653,29 @@ LABEL_13:
     }
 
 LABEL_10:
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:322 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!directoryCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  v12 = [v11 URLByAppendingPathComponent:v9 isDirectory:v5];
+  v12 = [v11 URLByAppendingPathComponent:filenameCopy isDirectory:isDirectoryCopy];
   if (v12)
   {
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
-    v14 = [v12 path];
-    v15 = [v13 fileExistsAtPath:v14];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v12 path];
+    v15 = [defaultManager fileExistsAtPath:path];
 
     if (v15)
     {
-      v16 = [a1 createUniqueDirectoryInDirectory:v11];
-      v17 = [v16 URLByAppendingPathComponent:v9 isDirectory:v5];
+      v16 = [self createUniqueDirectoryInDirectory:v11];
+      v17 = [v16 URLByAppendingPathComponent:filenameCopy isDirectory:isDirectoryCopy];
 
       v12 = v17;
     }
@@ -684,23 +684,23 @@ LABEL_3:
   return v12;
 }
 
-+ (id)createUniqueDirectoryInDirectory:(id)a3
++ (id)createUniqueDirectoryInDirectory:(id)directory
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  directoryCopy = directory;
+  if (!directoryCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
   }
 
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v8 = [v5 URLByAppendingPathComponent:v7 isDirectory:1];
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [directoryCopy URLByAppendingPathComponent:uUIDString isDirectory:1];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = 0;
-  v10 = [v9 createDirectoryAtURL:v8 withIntermediateDirectories:0 attributes:0 error:&v16];
+  v10 = [defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:0 attributes:0 error:&v16];
   v11 = v16;
 
   if (v10)
@@ -728,12 +728,12 @@ LABEL_3:
   return v12;
 }
 
-+ (void)markDirectoryAsPurgeableAtURL:(id)a3
++ (void)markDirectoryAsPurgeableAtURL:(id)l
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [a3 fileSystemRepresentation];
+  fileSystemRepresentation = [l fileSystemRepresentation];
   v14 = 73733;
-  v4 = open(v3, 0);
+  v4 = open(fileSystemRepresentation, 0);
   if (v4 < 0)
   {
     v8 = getWFFilesLogObject();
@@ -744,7 +744,7 @@ LABEL_3:
       *buf = 136315650;
       v16 = "+[WFTemporaryFileManager markDirectoryAsPurgeableAtURL:]";
       v17 = 2080;
-      v18 = v3;
+      v18 = fileSystemRepresentation;
       v19 = 2080;
       v20 = v13;
       v11 = "%s Could not get file descriptor to %s with error: %s";
@@ -769,7 +769,7 @@ LABEL_8:
       *buf = 136315650;
       v16 = "+[WFTemporaryFileManager markDirectoryAsPurgeableAtURL:]";
       v17 = 2080;
-      v18 = v3;
+      v18 = fileSystemRepresentation;
       v19 = 2080;
       v20 = v10;
       v11 = "%s Failed to mark %s as purgeable with error: %s";
@@ -786,27 +786,27 @@ LABEL_7:
     *buf = 136315394;
     v16 = "+[WFTemporaryFileManager markDirectoryAsPurgeableAtURL:]";
     v17 = 2080;
-    v18 = v3;
+    v18 = fileSystemRepresentation;
     _os_log_impl(&dword_21E1BD000, v8, OS_LOG_TYPE_DEBUG, "%s Marked shared temp directory %s as purgeable", buf, 0x16u);
   }
 
   close(v5);
 }
 
-+ (void)configureBackupFlagAtURL:(id)a3
++ (void)configureBackupFlagAtURL:(id)l
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
   }
 
   v21 = 0;
   v6 = *MEMORY[0x277CBE878];
   v20 = 0;
-  v7 = [v5 getResourceValue:&v21 forKey:v6 error:&v20];
+  v7 = [lCopy getResourceValue:&v21 forKey:v6 error:&v20];
   v8 = v21;
   v9 = v20;
   if ((v7 & 1) == 0)
@@ -817,7 +817,7 @@ LABEL_7:
       *buf = 136315650;
       v23 = "+[WFTemporaryFileManager configureBackupFlagAtURL:]";
       v24 = 2112;
-      v25 = v5;
+      v25 = lCopy;
       v26 = 2112;
       v27 = v9;
       _os_log_impl(&dword_21E1BD000, v13, OS_LOG_TYPE_ERROR, "%s Error checking backup flag at %@: %@", buf, 0x20u);
@@ -829,7 +829,7 @@ LABEL_7:
   if (([v8 BOOLValue] & 1) == 0)
   {
     v19 = v9;
-    v10 = [v5 setResourceValue:MEMORY[0x277CBEC38] forKey:v6 error:&v19];
+    v10 = [lCopy setResourceValue:MEMORY[0x277CBEC38] forKey:v6 error:&v19];
     v11 = v19;
 
     v12 = getWFTemporaryFileManagerLogObject();
@@ -841,7 +841,7 @@ LABEL_7:
         *buf = 136315394;
         v23 = "+[WFTemporaryFileManager configureBackupFlagAtURL:]";
         v24 = 2112;
-        v25 = v5;
+        v25 = lCopy;
         v14 = "%s Set backup flag at %@";
         v15 = v13;
         v16 = OS_LOG_TYPE_INFO;
@@ -856,7 +856,7 @@ LABEL_12:
       *buf = 136315650;
       v23 = "+[WFTemporaryFileManager configureBackupFlagAtURL:]";
       v24 = 2112;
-      v25 = v5;
+      v25 = lCopy;
       v26 = 2112;
       v27 = v11;
       v14 = "%s Error setting backup flag at %@: %@";
@@ -871,14 +871,14 @@ LABEL_14:
   }
 }
 
-+ (void)configureFileProtectionAtPath:(id)a3
++ (void)configureFileProtectionAtPath:(id)path
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:202 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v6 = getWFFilesLogObject();
@@ -887,13 +887,13 @@ LABEL_14:
     *buf = 136315394;
     v23 = "+[WFTemporaryFileManager configureFileProtectionAtPath:]";
     v24 = 2112;
-    v25 = v5;
+    v25 = pathCopy;
     _os_log_impl(&dword_21E1BD000, v6, OS_LOG_TYPE_DEBUG, "%s Configuring file protection at path: %@", buf, 0x16u);
   }
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v19 = 0;
-  v8 = [v7 attributesOfItemAtPath:v5 error:&v19];
+  v8 = [defaultManager attributesOfItemAtPath:pathCopy error:&v19];
   v9 = v19;
   if (v9)
   {
@@ -904,7 +904,7 @@ LABEL_14:
       *buf = 136315650;
       v23 = "+[WFTemporaryFileManager configureFileProtectionAtPath:]";
       v24 = 2112;
-      v25 = v5;
+      v25 = pathCopy;
       v26 = 2112;
       v27 = v10;
       _os_log_impl(&dword_21E1BD000, v11, OS_LOG_TYPE_ERROR, "%s Failed to read attributes of path %@: %@", buf, 0x20u);
@@ -922,7 +922,7 @@ LABEL_14:
       v21 = v14;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v18 = 0;
-      [v7 setAttributes:v15 ofItemAtPath:v5 error:&v18];
+      [defaultManager setAttributes:v15 ofItemAtPath:pathCopy error:&v18];
       v10 = v18;
 
       if (v10)
@@ -962,8 +962,8 @@ uint64_t __47__WFTemporaryFileManager_temporaryDirectoryURL__block_invoke_75(uin
 + (id)sharedShortcutsAppGroupDirectoryURL
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [v3 containerURLForSecurityApplicationGroupIdentifier:@"group.is.workflow.shortcuts"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v4 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.is.workflow.shortcuts"];
 
   if (v4)
   {
@@ -973,7 +973,7 @@ uint64_t __47__WFTemporaryFileManager_temporaryDirectoryURL__block_invoke_75(uin
   else
   {
     v8 = 0;
-    v4 = [a1 wf_uncachedContainerURLForSecurityApplicationGroupIdentifier:@"group.is.workflow.shortcuts" error:&v8];
+    v4 = [self wf_uncachedContainerURLForSecurityApplicationGroupIdentifier:@"group.is.workflow.shortcuts" error:&v8];
     v5 = v8;
     if (!v4)
     {
@@ -994,16 +994,16 @@ uint64_t __47__WFTemporaryFileManager_temporaryDirectoryURL__block_invoke_75(uin
   return v4;
 }
 
-+ (id)wf_uncachedContainerURLForSecurityApplicationGroupIdentifier:(id)a3 error:(id *)a4
++ (id)wf_uncachedContainerURLForSecurityApplicationGroupIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  if (![v6 length])
+  identifierCopy = identifier;
+  if (![identifierCopy length])
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"WFTemporaryFileManager.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"groupIdentifier.length"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTemporaryFileManager.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"groupIdentifier.length"}];
   }
 
-  [v6 UTF8String];
+  [identifierCopy UTF8String];
   v7 = container_create_or_lookup_path_for_current_user();
   if (v7)
   {

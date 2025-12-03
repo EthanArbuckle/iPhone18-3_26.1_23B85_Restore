@@ -1,5 +1,5 @@
 @interface _SMTTCUPackageMutation
-- (_SMTTCUPackageMutation)initWithBase:(id)a3;
+- (_SMTTCUPackageMutation)initWithBase:(id)base;
 - (double)getEndAudioTimeStampInMs;
 - (double)getStartAudioTimeStampInMs;
 - (id)getPrevTCUIds;
@@ -32,15 +32,15 @@
 {
   if ((*&self->_mutationFlags & 0x400) != 0)
   {
-    v2 = self->_speechPackage;
+    speechPackage = self->_speechPackage;
   }
 
   else
   {
-    v2 = [(SMTTCUPackage *)self->_base speechPackage];
+    speechPackage = [(SMTTCUPackage *)self->_base speechPackage];
   }
 
-  return v2;
+  return speechPackage;
 }
 
 - (double)getEndAudioTimeStampInMs
@@ -69,30 +69,30 @@
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_prevTCUIds;
+    prevTCUIds = self->_prevTCUIds;
   }
 
   else
   {
-    v2 = [(SMTTCUPackage *)self->_base prevTCUIds];
+    prevTCUIds = [(SMTTCUPackage *)self->_base prevTCUIds];
   }
 
-  return v2;
+  return prevTCUIds;
 }
 
 - (id)getSiriIntendedInfo
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_siriIntendedInfo;
+    siriIntendedInfo = self->_siriIntendedInfo;
   }
 
   else
   {
-    v2 = [(SMTTCUPackage *)self->_base siriIntendedInfo];
+    siriIntendedInfo = [(SMTTCUPackage *)self->_base siriIntendedInfo];
   }
 
-  return v2;
+  return siriIntendedInfo;
 }
 
 - (int64_t)getVoiceTriggerPhraseType
@@ -138,42 +138,42 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_requestId;
+    requestId = self->_requestId;
   }
 
   else
   {
-    v2 = [(SMTTCUPackage *)self->_base requestId];
+    requestId = [(SMTTCUPackage *)self->_base requestId];
   }
 
-  return v2;
+  return requestId;
 }
 
 - (id)getTcuId
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_tcuId;
+    tcuId = self->_tcuId;
   }
 
   else
   {
-    v2 = [(SMTTCUPackage *)self->_base tcuId];
+    tcuId = [(SMTTCUPackage *)self->_base tcuId];
   }
 
-  return v2;
+  return tcuId;
 }
 
-- (_SMTTCUPackageMutation)initWithBase:(id)a3
+- (_SMTTCUPackageMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SMTTCUPackageMutation;
   v6 = [(_SMTTCUPackageMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

@@ -1,88 +1,88 @@
 @interface disparityDebugUtils
-+ (void)createPathIfNeeded:(id)a3;
-- (disparityDebugUtils)initWithMetalContext:(id)a3;
-- (void)computeRobustMinMaxForF16DisparityBuffer:(__CVBuffer *)a3 WithDisparityScale:(float)a4 AndPercentile:(float)a5 OutSignalMin:(float *)a6 OutSignalMax:(float *)a7;
-- (void)convertRGB10A2ToRGBA8:(char *)a3 rbs:(unint64_t)a4 ToRGBA:(char *)a5 outWidth:(unsigned int)a6 outHeight:(unsigned int)a7;
-- (void)convertVUYA444:(char *)a3 rbs:(unint64_t)a4 ToRGBA:(char *)a5 ofSize:(CGSize)a6;
-- (void)save32BGRAPixelBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4;
-- (void)save420CVPixelBuffer:(__CVBuffer *)a3 to:(const char *)a4;
-- (void)saveAccumulationFrom:(id)a3 asBinaryFiles:(const char *)a4 forSize:(CGSize)a5 costLineSize:(unsigned __int16)a6;
-- (void)saveF16Buffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4 scale:(float)a5;
-- (void)saveF16DisparityBuffer:(__CVBuffer *)a3 AsBinaryFile:(const char *)a4;
-- (void)saveF16DisparityBuffer:(__CVBuffer *)a3 AsGrayScalePPMFile:(const char *)a4 range:;
-- (void)saveF16DisparityBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4;
-- (void)saveF16DisparityBufferAsTurbo:(__CVBuffer *)a3 AsPPMFile:(const char *)a4 WithDisparityScale:(float)a5 AndPercentile:(float)a6;
-- (void)saveF16DisparityBufferAsTurbo:(__CVBuffer *)a3 AsPPMFile:(const char *)a4 WithMin:(float)a5 WithMax:(float)a6;
-- (void)saveF16DisparityTexture:(id)a3 AsBinaryFile:(const char *)a4;
-- (void)saveF16DisparityTexture:(id)a3 AsPPMFile:(const char *)a4;
-- (void)saveF16RGTexture:(id)a3 AsBinaryFile:(const char *)a4;
-- (void)saveF16Texture:(id)a3 AsF32BinaryFile:(const char *)a4;
-- (void)saveF16Texture:(id)a3 AsGrayScalePPMFile:(const char *)a4 range:;
-- (void)saveF16Texture:(id)a3 AsPPMFile:(const char *)a4;
-- (void)saveF32Buffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4;
-- (void)saveF32DisparityBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4;
-- (void)saveF32FPBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4 scale:(float)a5;
-- (void)saveF32Texture:(id)a3 AsF32BinaryFile:(const char *)a4;
-- (void)saveLumaTexture:(id)a3 to:(const char *)a4;
-- (void)saveNCCOutputFrom:(id)a3 asBinaryFiles:(const char *)a4;
-- (void)savePixelBuffer:(__CVBuffer *)a3 AsBinaryFile:(const char *)a4;
-- (void)saveRGB10A2PixelBuffer:(__CVBuffer *)a3 out_width:(unsigned int)a4 out_height:(unsigned int)a5 AsPPMFile:(const char *)a6;
-- (void)saveRGB10A2PixelBuffer:(__CVBuffer *)a3 out_width:(unsigned int)a4 out_height:(unsigned int)a5 AsPPMFileWithAlpha:(const char *)a6;
-- (void)saveRGB10A2Texture:(id)a3 AsPPMFile:(const char *)a4;
-- (void)saveRGBA16FTexture:(id)a3 AsF32File:(const char *)a4;
-- (void)saveRGBA16FTexture:(id)a3 AsPPMFile:(const char *)a4;
-- (void)saveRGBA8Texture:(id)a3 AsBinaryFile:(const char *)a4;
-- (void)saveRGBA8Texture:(id)a3 AsPPMFile:(const char *)a4;
-- (void)saveRGBAF16PixelBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4;
-- (void)saveRGBAF16PixelBuffer:(__CVBuffer *)a3 AsPPMFileWithAlpha:(const char *)a4;
-- (void)saveRGBATexture:(id)a3 AsPPMFile:(const char *)a4;
-- (void)saveRGF16ShiftmapTexture:(id)a3 AsPPMFileSx:(id)a4 AsPPMFileSy:(id)a5;
-- (void)saveRGF16Texture:(id)a3 AsF32BinaryFile0:(id)a4 AsF32BinaryFile1:(id)a5;
-- (void)saveRgbaF32PixelBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4;
-- (void)saveU16Texture:(id)a3 AsPGMFile:(const char *)a4;
-- (void)saveU8Buffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4;
-- (void)saveU8Texture:(id)a3 AsPGMFile:(const char *)a4;
-- (void)saveVUYA4444PixelBuffer:(__CVBuffer *)a3 out_width:(unsigned int)a4 out_height:(unsigned int)a5 AsPPMFile:(const char *)a6;
-- (void)saveVUYA4444Texture:(id)a3 AsBinaryFile:(const char *)a4;
-- (void)saveVUYA4444Texture:(id)a3 AsPPMFile:(const char *)a4;
++ (void)createPathIfNeeded:(id)needed;
+- (disparityDebugUtils)initWithMetalContext:(id)context;
+- (void)computeRobustMinMaxForF16DisparityBuffer:(__CVBuffer *)buffer WithDisparityScale:(float)scale AndPercentile:(float)percentile OutSignalMin:(float *)min OutSignalMax:(float *)max;
+- (void)convertRGB10A2ToRGBA8:(char *)a8 rbs:(unint64_t)rbs ToRGBA:(char *)a outWidth:(unsigned int)width outHeight:(unsigned int)height;
+- (void)convertVUYA444:(char *)rbs44 rbs:(unint64_t)rbs ToRGBA:(char *)a ofSize:(CGSize)size;
+- (void)save32BGRAPixelBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file;
+- (void)save420CVPixelBuffer:(__CVBuffer *)buffer to:(const char *)to;
+- (void)saveAccumulationFrom:(id)from asBinaryFiles:(const char *)files forSize:(CGSize)size costLineSize:(unsigned __int16)lineSize;
+- (void)saveF16Buffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file scale:(float)scale;
+- (void)saveF16DisparityBuffer:(__CVBuffer *)buffer AsBinaryFile:(const char *)file;
+- (void)saveF16DisparityBuffer:(__CVBuffer *)buffer AsGrayScalePPMFile:(const char *)file range:;
+- (void)saveF16DisparityBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file;
+- (void)saveF16DisparityBufferAsTurbo:(__CVBuffer *)turbo AsPPMFile:(const char *)file WithDisparityScale:(float)scale AndPercentile:(float)percentile;
+- (void)saveF16DisparityBufferAsTurbo:(__CVBuffer *)turbo AsPPMFile:(const char *)file WithMin:(float)min WithMax:(float)max;
+- (void)saveF16DisparityTexture:(id)texture AsBinaryFile:(const char *)file;
+- (void)saveF16DisparityTexture:(id)texture AsPPMFile:(const char *)file;
+- (void)saveF16RGTexture:(id)texture AsBinaryFile:(const char *)file;
+- (void)saveF16Texture:(id)texture AsF32BinaryFile:(const char *)file;
+- (void)saveF16Texture:(id)texture AsGrayScalePPMFile:(const char *)file range:;
+- (void)saveF16Texture:(id)texture AsPPMFile:(const char *)file;
+- (void)saveF32Buffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file;
+- (void)saveF32DisparityBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file;
+- (void)saveF32FPBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file scale:(float)scale;
+- (void)saveF32Texture:(id)texture AsF32BinaryFile:(const char *)file;
+- (void)saveLumaTexture:(id)texture to:(const char *)to;
+- (void)saveNCCOutputFrom:(id)from asBinaryFiles:(const char *)files;
+- (void)savePixelBuffer:(__CVBuffer *)buffer AsBinaryFile:(const char *)file;
+- (void)saveRGB10A2PixelBuffer:(__CVBuffer *)buffer out_width:(unsigned int)out_width out_height:(unsigned int)out_height AsPPMFile:(const char *)file;
+- (void)saveRGB10A2PixelBuffer:(__CVBuffer *)buffer out_width:(unsigned int)out_width out_height:(unsigned int)out_height AsPPMFileWithAlpha:(const char *)alpha;
+- (void)saveRGB10A2Texture:(id)texture AsPPMFile:(const char *)file;
+- (void)saveRGBA16FTexture:(id)texture AsF32File:(const char *)file;
+- (void)saveRGBA16FTexture:(id)texture AsPPMFile:(const char *)file;
+- (void)saveRGBA8Texture:(id)texture AsBinaryFile:(const char *)file;
+- (void)saveRGBA8Texture:(id)texture AsPPMFile:(const char *)file;
+- (void)saveRGBAF16PixelBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file;
+- (void)saveRGBAF16PixelBuffer:(__CVBuffer *)buffer AsPPMFileWithAlpha:(const char *)alpha;
+- (void)saveRGBATexture:(id)texture AsPPMFile:(const char *)file;
+- (void)saveRGF16ShiftmapTexture:(id)texture AsPPMFileSx:(id)sx AsPPMFileSy:(id)sy;
+- (void)saveRGF16Texture:(id)texture AsF32BinaryFile0:(id)file0 AsF32BinaryFile1:(id)file1;
+- (void)saveRgbaF32PixelBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file;
+- (void)saveU16Texture:(id)texture AsPGMFile:(const char *)file;
+- (void)saveU8Buffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file;
+- (void)saveU8Texture:(id)texture AsPGMFile:(const char *)file;
+- (void)saveVUYA4444PixelBuffer:(__CVBuffer *)buffer out_width:(unsigned int)out_width out_height:(unsigned int)out_height AsPPMFile:(const char *)file;
+- (void)saveVUYA4444Texture:(id)texture AsBinaryFile:(const char *)file;
+- (void)saveVUYA4444Texture:(id)texture AsPPMFile:(const char *)file;
 @end
 
 @implementation disparityDebugUtils
 
-- (disparityDebugUtils)initWithMetalContext:(id)a3
+- (disparityDebugUtils)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = disparityDebugUtils;
   v6 = [(disparityDebugUtils *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metalContext, a3);
+    objc_storeStrong(&v6->_metalContext, context);
   }
 
   return v7;
 }
 
-- (void)saveF32DisparityBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4
+- (void)saveF32DisparityBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file
 {
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
 
-  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(self, v9, Width, Height, BaseAddress, a4);
+  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(self, v9, Width, Height, BaseAddress, file);
 }
 
-- (void)saveF32FPBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4 scale:(float)a5
+- (void)saveF32FPBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file scale:(float)scale
 {
-  v9 = sub_2956EEA7C(a4, a2, a3, a4, v5, v6);
+  v9 = sub_2956EEA7C(file, a2, buffer, file, v5, v6);
   if (v9)
   {
     v10 = v9;
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+    BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
     v15 = malloc_type_malloc(3 * Width, 0x100004077774924uLL);
     __nitems = Width;
     fprintf(v10, "P6 %u %u 255\n", Width, Height);
@@ -101,7 +101,7 @@
           v21 = 2;
           do
           {
-            v22 = vcvtms_s32_f32(fmaxf(fminf(powf(*&BaseAddress[v20], a5) * 255.0, 255.0), 0.0));
+            v22 = vcvtms_s32_f32(fmaxf(fminf(powf(*&BaseAddress[v20], scale) * 255.0, 255.0), 0.0));
             v15[v21 - 2] = v22;
             v15[v21 - 1] = v22;
             v15[v21] = v22;
@@ -127,16 +127,16 @@
   }
 }
 
-- (void)saveF16Buffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4 scale:(float)a5
+- (void)saveF16Buffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file scale:(float)scale
 {
-  v9 = sub_2956EEA7C(a4, a2, a3, a4, v5, v6);
+  v9 = sub_2956EEA7C(file, a2, buffer, file, v5, v6);
   if (v9)
   {
     v10 = v9;
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+    BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
     v15 = malloc_type_malloc(3 * Width, 0x100004077774924uLL);
     __nitems = Width;
     fprintf(v10, "P6 %u %u 255\n", Width, Height);
@@ -158,7 +158,7 @@
             _H0 = *&BaseAddress[v20];
             __asm { FCVT            S0, H0; float }
 
-            v28 = vcvtms_s32_f32(fmaxf(fminf(powf(_S0, a5) * 255.0, 255.0), 0.0));
+            v28 = vcvtms_s32_f32(fmaxf(fminf(powf(_S0, scale) * 255.0, 255.0), 0.0));
             v15[v21 - 2] = v28;
             v15[v21 - 1] = v28;
             v15[v21] = v28;
@@ -184,25 +184,25 @@
   }
 }
 
-- (void)saveF16Texture:(id)a3 AsPPMFile:(const char *)a4
+- (void)saveF16Texture:(id)texture AsPPMFile:(const char *)file
 {
-  v6 = a3;
-  v12 = sub_2956EEA7C(a4, v7, v8, v9, v10, v11);
+  textureCopy = texture;
+  v12 = sub_2956EEA7C(file, v7, v8, v9, v10, v11);
   if (v12)
   {
     v18 = v12;
-    v19 = objc_msgSend_width(v6, v13, v14, v15, v16, v17);
-    v25 = objc_msgSend_height(v6, v20, v21, v22, v23, v24);
+    v19 = objc_msgSend_width(textureCopy, v13, v14, v15, v16, v17);
+    v25 = objc_msgSend_height(textureCopy, v20, v21, v22, v23, v24);
     v26 = malloc_type_malloc(3 * v19, 0x100004077774924uLL);
     v27 = malloc_type_malloc(2 * v19 * v25, 0x1000040BDFB0063uLL);
     fprintf(v18, "P6 %u %u 255\n", v19, v25);
-    objc_msgSend_makeCoherent_(self, v28, v6, v29, v30, v31);
+    objc_msgSend_makeCoherent_(self, v28, textureCopy, v29, v30, v31);
     memset(v45, 0, 24);
     v45[3] = v19;
     v45[4] = v25;
     v45[5] = 1;
     v44 = v27;
-    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v32, v27, 2 * v19, v45, 0);
+    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v32, v27, 2 * v19, v45, 0);
     if (v25)
     {
       v33 = 0;
@@ -243,11 +243,11 @@
   }
 }
 
-- (void)saveF32Buffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4
+- (void)saveF32Buffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file
 {
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   v9 = malloc_type_malloc(4 * Width * Height, 0xDD18702AuLL);
   v14 = v9;
   if (Height)
@@ -278,7 +278,7 @@
     while (v16 != Height);
   }
 
-  v32 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v10, @"%s", v11, v12, v13, a4);
+  v32 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v10, @"%s", v11, v12, v13, file);
   objc_msgSend_createPathIfNeeded_(disparityDebugUtils, v20, v32, v21, v22, v23);
   v24 = v32;
   v30 = objc_msgSend_UTF8String(v32, v25, v26, v27, v28, v29);
@@ -286,12 +286,12 @@
   free(v14);
 }
 
-- (void)saveU8Buffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4
+- (void)saveU8Buffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file
 {
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   v10 = malloc_type_malloc(4 * Width * Height, 0xBA44AB5AuLL);
   v15 = v10;
   if (Height)
@@ -326,7 +326,7 @@
     while (v18 != Height);
   }
 
-  v35 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v11, @"%s", v12, v13, v14, a4);
+  v35 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v11, @"%s", v12, v13, v14, file);
   objc_msgSend_createPathIfNeeded_(disparityDebugUtils, v23, v35, v24, v25, v26);
   v27 = v35;
   v33 = objc_msgSend_UTF8String(v35, v28, v29, v30, v31, v32);
@@ -334,86 +334,86 @@
   free(v15);
 }
 
-- (void)saveVUYA4444Texture:(id)a3 AsPPMFile:(const char *)a4
+- (void)saveVUYA4444Texture:(id)texture AsPPMFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
   v19 = malloc_type_malloc(4 * v12 * v18, 0x100004077774924uLL);
-  objc_msgSend_makeCoherent_(self, v20, v6, v21, v22, v23);
+  objc_msgSend_makeCoherent_(self, v20, textureCopy, v21, v22, v23);
   memset(v28, 0, 24);
   v28[3] = v12;
   v28[4] = v18;
   v28[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v24, v19, 4 * v12, v28, 0);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v24, v19, 4 * v12, v28, 0);
 
   objc_msgSend_convertVUYA444_rbs_ToRGBA_ofSize_(self, v25, v19, 4 * v12, v19, v26, v12, v18);
-  sub_2956EF080(v12, v18, 4 * v12, v19, a4, v27);
+  sub_2956EF080(v12, v18, 4 * v12, v19, file, v27);
   free(v19);
 }
 
-- (void)saveVUYA4444Texture:(id)a3 AsBinaryFile:(const char *)a4
+- (void)saveVUYA4444Texture:(id)texture AsBinaryFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
   v19 = malloc_type_malloc(4 * v12 * v18, 0x12E7F8D9uLL);
-  objc_msgSend_makeCoherent_(self, v20, v6, v21, v22, v23);
+  objc_msgSend_makeCoherent_(self, v20, textureCopy, v21, v22, v23);
   memset(v27, 0, 24);
   v27[3] = v12;
   v27[4] = v18;
   v27[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v24, v19, 4 * v12, v27, 0);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v24, v19, 4 * v12, v27, 0);
 
-  objc_msgSend_WriteBinDataToFile_length_fileFullPath_(self, v25, v19, 4 * v12 * v18, a4, v26);
+  objc_msgSend_WriteBinDataToFile_length_fileFullPath_(self, v25, v19, 4 * v12 * v18, file, v26);
   free(v19);
 }
 
-- (void)saveVUYA4444PixelBuffer:(__CVBuffer *)a3 out_width:(unsigned int)a4 out_height:(unsigned int)a5 AsPPMFile:(const char *)a6
+- (void)saveVUYA4444PixelBuffer:(__CVBuffer *)buffer out_width:(unsigned int)out_width out_height:(unsigned int)out_height AsPPMFile:(const char *)file
 {
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   v14 = malloc_type_malloc(4 * Width * Height, 0x85AD6BAFuLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
   objc_msgSend_convertVUYA444_rbs_ToRGBA_ofSize_(self, v16, BaseAddress, BytesPerRow, v14, v17, Width, Height);
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-  if (a4)
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
+  if (out_width)
   {
-    v19 = a4;
+    out_widthCopy = out_width;
   }
 
   else
   {
-    v19 = Width;
+    out_widthCopy = Width;
   }
 
-  if (a5)
+  if (out_height)
   {
-    v20 = a5;
+    out_heightCopy = out_height;
   }
 
   else
   {
-    v20 = Height;
+    out_heightCopy = Height;
   }
 
-  sub_2956EF080(v19, v20, 4 * Width, v14, a6, v18);
+  sub_2956EF080(out_widthCopy, out_heightCopy, 4 * Width, v14, file, v18);
 
   free(v14);
 }
 
-- (void)saveRGB10A2PixelBuffer:(__CVBuffer *)a3 out_width:(unsigned int)a4 out_height:(unsigned int)a5 AsPPMFile:(const char *)a6
+- (void)saveRGB10A2PixelBuffer:(__CVBuffer *)buffer out_width:(unsigned int)out_width out_height:(unsigned int)out_height AsPPMFile:(const char *)file
 {
-  LODWORD(v7) = a5;
-  LODWORD(v8) = a4;
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  LODWORD(v7) = out_height;
+  LODWORD(v8) = out_width;
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   v14 = malloc_type_malloc(4 * Width * Height, 0x6C1AACBuLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
   if (v8)
   {
     v8 = v8;
@@ -436,21 +436,21 @@
     objc_msgSend_convertRGB10A2ToRGBA8_rbs_ToRGBA_outWidth_outHeight_(self, v15, BaseAddress, BytesPerRow, v14, v8, Height);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-  sub_2956EF080(v8, v7, (4 * v8), v14, a6, v17);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
+  sub_2956EF080(v8, v7, (4 * v8), v14, file, v17);
 
   free(v14);
 }
 
-- (void)saveRGB10A2PixelBuffer:(__CVBuffer *)a3 out_width:(unsigned int)a4 out_height:(unsigned int)a5 AsPPMFileWithAlpha:(const char *)a6
+- (void)saveRGB10A2PixelBuffer:(__CVBuffer *)buffer out_width:(unsigned int)out_width out_height:(unsigned int)out_height AsPPMFileWithAlpha:(const char *)alpha
 {
-  LODWORD(v8) = a4;
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  LODWORD(v8) = out_width;
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   v14 = malloc_type_malloc(4 * Width * Height, 0x33047A7FuLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
   if (v8)
   {
     v8 = v8;
@@ -461,19 +461,19 @@
     v8 = Width;
   }
 
-  if (a5)
+  if (out_height)
   {
-    objc_msgSend_convertRGB10A2ToRGBA8_rbs_ToRGBA_outWidth_outHeight_(self, v15, BaseAddress, BytesPerRow, v14, v8, a5);
+    objc_msgSend_convertRGB10A2ToRGBA8_rbs_ToRGBA_outWidth_outHeight_(self, v15, BaseAddress, BytesPerRow, v14, v8, out_height);
   }
 
   else
   {
-    a5 = Height;
+    out_height = Height;
     objc_msgSend_convertRGB10A2ToRGBA8_rbs_ToRGBA_outWidth_outHeight_(self, v15, BaseAddress, BytesPerRow, v14, v8, Height);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-  v22 = sub_2956EEA7C(a6, v17, v18, v19, v20, v21);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
+  v22 = sub_2956EEA7C(alpha, v17, v18, v19, v20, v21);
   if (v22)
   {
     v23 = v22;
@@ -481,8 +481,8 @@
     if (v24)
     {
       v25 = v24;
-      fprintf(v23, "P7\nWIDTH %u\nHEIGHT %u\nDEPTH 4\nMAXVAL 255\nTUPLTYPE RGB_ALPHA\nENDHDR", v8, a5);
-      if (a5)
+      fprintf(v23, "P7\nWIDTH %u\nHEIGHT %u\nDEPTH 4\nMAXVAL 255\nTUPLTYPE RGB_ALPHA\nENDHDR", v8, out_height);
+      if (out_height)
       {
         v26 = 0;
         v27 = v14;
@@ -511,7 +511,7 @@
           ++v26;
         }
 
-        while (v26 != a5);
+        while (v26 != out_height);
       }
 
       free(v25);
@@ -523,17 +523,17 @@
   free(v14);
 }
 
-- (void)save420CVPixelBuffer:(__CVBuffer *)a3 to:(const char *)a4
+- (void)save420CVPixelBuffer:(__CVBuffer *)buffer to:(const char *)to
 {
-  v7 = sub_2956EEA7C(a4, a2, a3, a4, v4, v5);
+  v7 = sub_2956EEA7C(to, a2, buffer, to, v4, v5);
   if (v7)
   {
     v8 = v7;
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
+    BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+    BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
     if (Height)
     {
       v13 = BytesPerRowOfPlane;
@@ -548,8 +548,8 @@
       while (v14);
     }
 
-    v15 = CVPixelBufferGetBaseAddressOfPlane(a3, 1uLL);
-    v16 = CVPixelBufferGetBytesPerRowOfPlane(a3, 1uLL);
+    v15 = CVPixelBufferGetBaseAddressOfPlane(buffer, 1uLL);
+    v16 = CVPixelBufferGetBytesPerRowOfPlane(buffer, 1uLL);
     if (Height)
     {
       v17 = 0;
@@ -566,27 +566,27 @@
 
     fclose(v8);
 
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   }
 }
 
-- (void)saveLumaTexture:(id)a3 to:(const char *)a4
+- (void)saveLumaTexture:(id)texture to:(const char *)to
 {
-  v6 = a3;
-  v12 = sub_2956EEA7C(a4, v7, v8, v9, v10, v11);
+  textureCopy = texture;
+  v12 = sub_2956EEA7C(to, v7, v8, v9, v10, v11);
   if (v12)
   {
     v18 = v12;
-    v19 = objc_msgSend_width(v6, v13, v14, v15, v16, v17);
-    v25 = objc_msgSend_height(v6, v20, v21, v22, v23, v24);
+    v19 = objc_msgSend_width(textureCopy, v13, v14, v15, v16, v17);
+    v25 = objc_msgSend_height(textureCopy, v20, v21, v22, v23, v24);
     v26 = malloc_type_malloc(v25 * v19, 0x4EAF6647uLL);
-    objc_msgSend_makeCoherent_(self, v27, v6, v28, v29, v30);
+    objc_msgSend_makeCoherent_(self, v27, textureCopy, v28, v29, v30);
     v31 = v19;
     memset(v34, 0, 24);
     v34[3] = v19;
     v34[4] = v25;
     v34[5] = 1;
-    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v32, v26, v19, v34, 0);
+    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v32, v26, v19, v34, 0);
     fwrite(v26, 1uLL, v25 * v19, v18);
     bzero(v26, v19);
     if (v25)
@@ -602,15 +602,15 @@
   }
 }
 
-- (void)convertVUYA444:(char *)a3 rbs:(unint64_t)a4 ToRGBA:(char *)a5 ofSize:(CGSize)a6
+- (void)convertVUYA444:(char *)rbs44 rbs:(unint64_t)rbs ToRGBA:(char *)a ofSize:(CGSize)size
 {
-  v6 = vcvtmd_u64_f64(a6.height);
+  v6 = vcvtmd_u64_f64(size.height);
   if (v6)
   {
     v7 = 0;
     v8 = 0;
     v9 = 0;
-    v10 = vcvtmd_u64_f64(a6.width);
+    v10 = vcvtmd_u64_f64(size.width);
     do
     {
       if (v10)
@@ -618,9 +618,9 @@
         v11 = 0;
         do
         {
-          v12 = a3[(v8 + v11 + 3)];
-          v13 = a3[(v8 + v11)] - 128;
-          v14 = 74 * a3[(v8 + v11 + 2)] - 1152;
+          v12 = a444[(v8 + v11 + 3)];
+          v13 = a444[(v8 + v11)] - 128;
+          v14 = 74 * a444[(v8 + v11 + 2)] - 1152;
           v15 = (v14 + 102 * v13) >> 6;
           if (v15 >= 0xFF)
           {
@@ -642,7 +642,7 @@
             v17 = 0;
           }
 
-          v18 = a3[(v8 + v11 + 1)] - 128;
+          v18 = a444[(v8 + v11 + 1)] - 128;
           v19 = (v14 - 51 * v13 - 25 * v18) >> 6;
           if (v19 >= 0xFF)
           {
@@ -703,10 +703,10 @@
           }
 
           v27 = v7 + v11;
-          a5[v27] = v26;
-          a5[v27 + 1] = v21;
-          a5[v27 + 2] = v24;
-          a5[v27 + 3] = -1;
+          a[v27] = v26;
+          a[v27 + 1] = v21;
+          a[v27 + 2] = v24;
+          a[v27 + 3] = -1;
           v11 += 4;
         }
 
@@ -714,7 +714,7 @@
       }
 
       ++v9;
-      v8 += a4;
+      v8 += rbs;
       v7 += 4 * v10;
     }
 
@@ -722,22 +722,22 @@
   }
 }
 
-- (void)convertRGB10A2ToRGBA8:(char *)a3 rbs:(unint64_t)a4 ToRGBA:(char *)a5 outWidth:(unsigned int)a6 outHeight:(unsigned int)a7
+- (void)convertRGB10A2ToRGBA8:(char *)a8 rbs:(unint64_t)rbs ToRGBA:(char *)a outWidth:(unsigned int)width outHeight:(unsigned int)height
 {
-  if (a7)
+  if (height)
   {
     v7 = 0;
     v8 = 0;
-    v9 = a7;
+    heightCopy = height;
     do
     {
-      if (a6)
+      if (width)
       {
         v10 = 0;
         do
         {
-          v11 = *&a3[v8 * a4 + v10];
-          v12 = &a5[(v7 + v10)];
+          v11 = *&a8[v8 * rbs + v10];
+          v12 = &a[(v7 + v10)];
           *v12 = v11 >> 2;
           v12[1] = v11 >> 12;
           v12[2] = v11 >> 22;
@@ -745,32 +745,32 @@
           v10 += 4;
         }
 
-        while (4 * a6 != v10);
+        while (4 * width != v10);
       }
 
       ++v8;
-      v7 += 4 * a6;
+      v7 += 4 * width;
     }
 
-    while (v8 != v9);
+    while (v8 != heightCopy);
   }
 }
 
-- (void)saveRGBATexture:(id)a3 AsPPMFile:(const char *)a4
+- (void)saveRGBATexture:(id)texture AsPPMFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
   v19 = malloc_type_malloc(4 * v12 * v18, 0xF858F8E4uLL);
-  objc_msgSend_makeCoherent_(self, v20, v6, v21, v22, v23);
-  v29 = objc_msgSend_width(v6, v24, v25, v26, v27, v28);
+  objc_msgSend_makeCoherent_(self, v20, textureCopy, v21, v22, v23);
+  v29 = objc_msgSend_width(textureCopy, v24, v25, v26, v27, v28);
   memset(v48, 0, 24);
   v48[3] = v12;
   v48[4] = v18;
   v48[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v30, v19, 4 * v29, v48, 0);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v30, v19, 4 * v29, v48, 0);
 
-  v35 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v31, @"%s", v32, v33, v34, a4);
+  v35 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v31, @"%s", v32, v33, v34, file);
   objc_msgSend_createPathIfNeeded_(disparityDebugUtils, v36, v35, v37, v38, v39);
   v40 = v35;
   v46 = objc_msgSend_UTF8String(v40, v41, v42, v43, v44, v45);
@@ -778,13 +778,13 @@
   free(v19);
 }
 
-- (void)saveF16DisparityBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4
+- (void)saveF16DisparityBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
   v11 = malloc_type_malloc(4 * (Width * Height), 0x100004052888210uLL);
   v12 = v11;
   if (Height)
@@ -815,24 +815,24 @@
     while (v13 != Height);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(self, v22, Width, Height, v12, a4);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
+  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(self, v22, Width, Height, v12, file);
 
   free(v12);
 }
 
-- (void)computeRobustMinMaxForF16DisparityBuffer:(__CVBuffer *)a3 WithDisparityScale:(float)a4 AndPercentile:(float)a5 OutSignalMin:(float *)a6 OutSignalMax:(float *)a7
+- (void)computeRobustMinMaxForF16DisparityBuffer:(__CVBuffer *)buffer WithDisparityScale:(float)scale AndPercentile:(float)percentile OutSignalMin:(float *)min OutSignalMax:(float *)max
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
   bzero(v37, 0x1000uLL);
   if (Height)
   {
     for (i = 0; i != Height; ++i)
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
-      BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+      BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
       if (Width)
       {
         v17 = &BaseAddress[BytesPerRow * i];
@@ -844,7 +844,7 @@
           _H0 = v19;
           __asm { FCVT            S0, H0 }
 
-          v26 = (((_S0 / a4) * 8.0) + 0.5);
+          v26 = (((_S0 / scale) * 8.0) + 0.5);
           if (v26 >= 0x3FF)
           {
             v26 = 1023;
@@ -862,11 +862,11 @@
   v27 = 0;
   v28 = 0;
   v29 = (Height * Width);
-  *a6 = 3.4028e38;
-  *a7 = 1.1755e-38;
-  v30 = ((v29 * a5) + 0.5);
-  v31 = ((v29 * (1.0 - a5)) + 0.5);
-  v32 = *a6;
+  *min = 3.4028e38;
+  *max = 1.1755e-38;
+  v30 = ((v29 * percentile) + 0.5);
+  v31 = ((v29 * (1.0 - percentile)) + 0.5);
+  v32 = *min;
   v33 = 1.1755e-38;
   while (1)
   {
@@ -875,8 +875,8 @@
     if (v32 == 3.4028e38 && v28 > v30)
     {
       v32 = ((v27 + -0.5) + ((v28 - v30) / v34)) * 0.125;
-      *a6 = v32;
-      v33 = *a7;
+      *min = v32;
+      v33 = *max;
     }
 
     if (v33 == 1.1755e-38 && v28 > v31)
@@ -890,19 +890,19 @@
     }
   }
 
-  *a7 = ((v27 + -0.5) + ((v28 - v31) / v34)) * 0.125;
+  *max = ((v27 + -0.5) + ((v28 - v31) / v34)) * 0.125;
 LABEL_23:
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
 }
 
-- (void)saveF16DisparityBufferAsTurbo:(__CVBuffer *)a3 AsPPMFile:(const char *)a4 WithMin:(float)a5 WithMax:(float)a6
+- (void)saveF16DisparityBufferAsTurbo:(__CVBuffer *)turbo AsPPMFile:(const char *)file WithMin:(float)min WithMax:(float)max
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
+  Width = CVPixelBufferGetWidth(turbo);
+  Height = CVPixelBufferGetHeight(turbo);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(turbo);
+  CVPixelBufferLockBaseAddress(turbo, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(turbo);
   v14 = malloc_type_malloc(4 * Width * Height, 0x100004077774924uLL);
   if (v14)
   {
@@ -921,7 +921,7 @@ LABEL_23:
             _H3 = *&BaseAddress[v17];
             __asm { FCVT            S3, H3 }
 
-            v25 = &unk_29570BC50 + 3 * ((((fmaxf(a5, fminf(a6, _S3)) - a5) / (a6 - a5)) * 1024.0) + -0.49);
+            v25 = &unk_29570BC50 + 3 * ((((fmaxf(min, fminf(max, _S3)) - min) / (max - min)) * 1024.0) + -0.49);
             *v18 = *v25;
             v18[2] = v25[2];
             v18[3] = -1;
@@ -939,30 +939,30 @@ LABEL_23:
       while (v16 != Height);
     }
 
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
-    sub_2956EF080(Width, Height, 4 * Width, v15, a4, v26);
+    CVPixelBufferUnlockBaseAddress(turbo, 1uLL);
+    sub_2956EF080(Width, Height, 4 * Width, v15, file, v26);
 
     free(v15);
   }
 }
 
-- (void)saveF16DisparityBufferAsTurbo:(__CVBuffer *)a3 AsPPMFile:(const char *)a4 WithDisparityScale:(float)a5 AndPercentile:(float)a6
+- (void)saveF16DisparityBufferAsTurbo:(__CVBuffer *)turbo AsPPMFile:(const char *)file WithDisparityScale:(float)scale AndPercentile:(float)percentile
 {
   v16 = 0;
-  objc_msgSend_computeRobustMinMaxForF16DisparityBuffer_WithDisparityScale_AndPercentile_OutSignalMin_OutSignalMax_(self, a2, a3, &v16 + 4, &v16, v6);
-  *&v11 = *(&v16 + 1) * a5;
-  *&v12 = *&v16 * a5;
-  objc_msgSend_saveF16DisparityBufferAsTurbo_AsPPMFile_WithMin_WithMax_(self, v13, a3, a4, v14, v15, v11, v12);
+  objc_msgSend_computeRobustMinMaxForF16DisparityBuffer_WithDisparityScale_AndPercentile_OutSignalMin_OutSignalMax_(self, a2, turbo, &v16 + 4, &v16, v6);
+  *&v11 = *(&v16 + 1) * scale;
+  *&v12 = *&v16 * scale;
+  objc_msgSend_saveF16DisparityBufferAsTurbo_AsPPMFile_WithMin_WithMax_(self, v13, turbo, file, v14, v15, v11, v12);
 }
 
-- (void)saveF16DisparityBuffer:(__CVBuffer *)a3 AsGrayScalePPMFile:(const char *)a4 range:
+- (void)saveF16DisparityBuffer:(__CVBuffer *)buffer AsGrayScalePPMFile:(const char *)file range:
 {
   v40 = v4;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
   v11 = malloc_type_malloc(4 * Height * Width, 0x100004052888210uLL);
   v12 = v11;
   _H0 = *BaseAddress;
@@ -1000,7 +1000,7 @@ LABEL_23:
     v21 = _S9;
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   v25 = *&v40 != 0.0;
   v26 = *(&v40 + 1) != 0.0;
   v27 = v25 && v26;
@@ -1056,44 +1056,44 @@ LABEL_23:
     while (v32 != Height);
   }
 
-  sub_2956EF080(Width, Height, v31, v28, a4, v29);
+  sub_2956EF080(Width, Height, v31, v28, file, v29);
   free(v30);
 
   free(v12);
 }
 
-- (void)saveF16DisparityTexture:(id)a3 AsBinaryFile:(const char *)a4
+- (void)saveF16DisparityTexture:(id)texture AsBinaryFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
   v19 = v12;
   v20 = 2 * v12;
-  objc_msgSend_makeCoherent_(self, v21, v6, v22, v23, v24);
+  objc_msgSend_makeCoherent_(self, v21, textureCopy, v22, v23, v24);
   v25 = malloc_type_malloc(v20 * v18, 0x1000040BDFB0063uLL);
   memset(v29, 0, 24);
   v29[3] = v19;
   v29[4] = v18;
   v29[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v26, v25, v20, v29, 0);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v26, v25, v20, v29, 0);
 
-  objc_msgSend_WriteBinDataToFile_length_fileFullPath_(self, v27, v25, v20 * v18, a4, v28);
+  objc_msgSend_WriteBinDataToFile_length_fileFullPath_(self, v27, v25, v20 * v18, file, v28);
   free(v25);
 }
 
-- (void)saveF16Texture:(id)a3 AsGrayScalePPMFile:(const char *)a4 range:
+- (void)saveF16Texture:(id)texture AsGrayScalePPMFile:(const char *)file range:
 {
   v57 = v4;
-  v7 = a3;
-  objc_msgSend_makeCoherent_(self, v8, v7, v9, v10, v11);
-  v17 = objc_msgSend_width(v7, v12, v13, v14, v15, v16);
-  v23 = objc_msgSend_height(v7, v18, v19, v20, v21, v22);
+  textureCopy = texture;
+  objc_msgSend_makeCoherent_(self, v8, textureCopy, v9, v10, v11);
+  v17 = objc_msgSend_width(textureCopy, v12, v13, v14, v15, v16);
+  v23 = objc_msgSend_height(textureCopy, v18, v19, v20, v21, v22);
   v24 = malloc_type_malloc(2 * v17 * v23, 0x1000040BDFB0063uLL);
   memset(v58, 0, 24);
   v58[3] = v17;
   v58[4] = v23;
   v58[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v7, v25, v24, 2 * v17, v58, 0);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v25, v24, 2 * v17, v58, 0);
   v26 = malloc_type_malloc(4 * v23 * v17, 0x100004052888210uLL);
   v27 = v26;
   v28 = 4 * v17;
@@ -1192,23 +1192,23 @@ LABEL_23:
     while (v49 != v23);
   }
 
-  sub_2956EF080(v17, v23, v48, v45, a4, v46);
+  sub_2956EF080(v17, v23, v48, v45, file, v46);
   free(v47);
   free(v24);
   free(v27);
 }
 
-- (void)saveF16DisparityBuffer:(__CVBuffer *)a3 AsBinaryFile:(const char *)a4
+- (void)saveF16DisparityBuffer:(__CVBuffer *)buffer AsBinaryFile:(const char *)file
 {
-  v8 = sub_2956EEA7C(a4, a2, a3, a4, v4, v5);
+  v8 = sub_2956EEA7C(file, a2, buffer, file, v4, v5);
   if (v8)
   {
     v9 = v8;
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
+    BaseAddress = CVPixelBufferGetBaseAddress(buffer);
     if (Height)
     {
       v14 = BaseAddress;
@@ -1222,7 +1222,7 @@ LABEL_23:
       while (Height);
     }
 
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
 
     fclose(v9);
   }
@@ -1238,26 +1238,26 @@ LABEL_23:
     if (os_log_type_enabled(qword_2A1388C78, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 136315138;
-      v17 = a4;
+      fileCopy = file;
       _os_log_impl(&dword_2956ED000, v15, OS_LOG_TYPE_DEFAULT, "Could not write %s", &v16, 0xCu);
     }
   }
 }
 
-- (void)saveU8Texture:(id)a3 AsPGMFile:(const char *)a4
+- (void)saveU8Texture:(id)texture AsPGMFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
   v19 = v12;
   v20 = malloc_type_malloc(v18 * v12 + 4096, 0x2D19AE8DuLL);
-  objc_msgSend_makeCoherent_(self, v21, v6, v22, v23, v24);
+  objc_msgSend_makeCoherent_(self, v21, textureCopy, v22, v23, v24);
   memset(v34, 0, 24);
   v34[3] = v12;
   v34[4] = v18;
   v34[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v25, v20, v12, v34, 0);
-  v31 = sub_2956EEA7C(a4, v26, v27, v28, v29, v30);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v25, v20, v12, v34, 0);
+  v31 = sub_2956EEA7C(file, v26, v27, v28, v29, v30);
   if (v31)
   {
     v32 = v31;
@@ -1281,19 +1281,19 @@ LABEL_23:
   free(v20);
 }
 
-- (void)saveU16Texture:(id)a3 AsPGMFile:(const char *)a4
+- (void)saveU16Texture:(id)texture AsPGMFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
   v19 = malloc_type_malloc(2 * v12 * v18, 0x14ADE848uLL);
-  objc_msgSend_makeCoherent_(self, v20, v6, v21, v22, v23);
+  objc_msgSend_makeCoherent_(self, v20, textureCopy, v21, v22, v23);
   memset(v36, 0, 24);
   v36[3] = v12;
   v36[4] = v18;
   v36[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v24, v19, 2 * v12, v36, 0);
-  v30 = sub_2956EEA7C(a4, v25, v26, v27, v28, v29);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v24, v19, 2 * v12, v36, 0);
+  v30 = sub_2956EEA7C(file, v25, v26, v27, v28, v29);
   if (v30)
   {
     v31 = v30;
@@ -1331,38 +1331,38 @@ LABEL_23:
   free(v19);
 }
 
-- (void)saveF16RGTexture:(id)a3 AsBinaryFile:(const char *)a4
+- (void)saveF16RGTexture:(id)texture AsBinaryFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
   v19 = v12;
   v20 = 4 * v12;
-  objc_msgSend_makeCoherent_(self, v21, v6, v22, v23, v24);
+  objc_msgSend_makeCoherent_(self, v21, textureCopy, v22, v23, v24);
   v25 = malloc_type_malloc(v20 * v18, 0x1000040BDFB0063uLL);
   memset(v29, 0, 24);
   v29[3] = v19;
   v29[4] = v18;
   v29[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v26, v25, v20, v29, 0);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v26, v25, v20, v29, 0);
 
-  objc_msgSend_WriteBinDataToFile_length_fileFullPath_(self, v27, v25, v20 * v18, a4, v28);
+  objc_msgSend_WriteBinDataToFile_length_fileFullPath_(self, v27, v25, v20 * v18, file, v28);
   free(v25);
 }
 
-- (void)saveF16DisparityTexture:(id)a3 AsPPMFile:(const char *)a4
+- (void)saveF16DisparityTexture:(id)texture AsPPMFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
-  objc_msgSend_makeCoherent_(self, v19, v6, v20, v21, v22);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
+  objc_msgSend_makeCoherent_(self, v19, textureCopy, v20, v21, v22);
   v23 = malloc_type_malloc((2 * v12 * v18), 0x1000040BDFB0063uLL);
   v24 = malloc_type_malloc(4 * (v12 * v18), 0x100004052888210uLL);
   memset(v37, 0, 24);
   v37[3] = v12;
   v37[4] = v18;
   v37[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v25, v23, (2 * v12), v37, 0);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v25, v23, (2 * v12), v37, 0);
   if (v18)
   {
     v26 = 0;
@@ -1393,19 +1393,19 @@ LABEL_23:
   }
 
   free(v23);
-  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(self, v36, v12, v18, v24, a4);
+  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(self, v36, v12, v18, v24, file);
   free(v24);
 }
 
-- (void)saveRGF16ShiftmapTexture:(id)a3 AsPPMFileSx:(id)a4 AsPPMFileSy:(id)a5
+- (void)saveRGF16ShiftmapTexture:(id)texture AsPPMFileSx:(id)sx AsPPMFileSy:(id)sy
 {
-  v8 = a3;
-  v59 = a4;
-  v9 = a5;
-  v15 = objc_msgSend_width(v8, v10, v11, v12, v13, v14);
-  v21 = objc_msgSend_height(v8, v16, v17, v18, v19, v20);
-  v58 = self;
-  objc_msgSend_makeCoherent_(self, v22, v8, v23, v24, v25);
+  textureCopy = texture;
+  sxCopy = sx;
+  syCopy = sy;
+  v15 = objc_msgSend_width(textureCopy, v10, v11, v12, v13, v14);
+  v21 = objc_msgSend_height(textureCopy, v16, v17, v18, v19, v20);
+  selfCopy = self;
+  objc_msgSend_makeCoherent_(self, v22, textureCopy, v23, v24, v25);
   v26 = malloc_type_malloc((2 * v21 * 4 * v15), 0x1000040BDFB0063uLL);
   v27 = malloc_type_malloc(4 * (v15 * v21), 0x100004052888210uLL);
   v28 = malloc_type_malloc(4 * (v15 * v21), 0x100004052888210uLL);
@@ -1413,7 +1413,7 @@ LABEL_23:
   v60[3] = v15;
   v60[4] = v21;
   v60[5] = 1;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v8, v29, v26, (4 * v15), v60, 0);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v29, v26, (4 * v15), v60, 0);
   if (v21)
   {
     v30 = 0;
@@ -1442,28 +1442,28 @@ LABEL_23:
   }
 
   free(v26);
-  v42 = v59;
+  v42 = sxCopy;
   v48 = objc_msgSend_UTF8String(v42, v43, v44, v45, v46, v47);
-  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(v58, v49, v15, v21, v27, v48);
+  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(selfCopy, v49, v15, v21, v27, v48);
   free(v27);
-  v50 = v9;
+  v50 = syCopy;
   v56 = objc_msgSend_UTF8String(v50, v51, v52, v53, v54, v55);
-  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(v58, v57, v15, v21, v28, v56);
+  objc_msgSend_ApplyColorWheelAndWrite_height_data_fileFullPath_(selfCopy, v57, v15, v21, v28, v56);
   free(v28);
 }
 
-- (void)saveRGF16Texture:(id)a3 AsF32BinaryFile0:(id)a4 AsF32BinaryFile1:(id)a5
+- (void)saveRGF16Texture:(id)texture AsF32BinaryFile0:(id)file0 AsF32BinaryFile1:(id)file1
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v9;
+  textureCopy = texture;
+  file0Copy = file0;
+  file1Copy = file1;
+  v11 = file0Copy;
   v17 = objc_msgSend_UTF8String(v11, v12, v13, v14, v15, v16);
   v23 = sub_2956EEA7C(v17, v18, v19, v20, v21, v22);
   if (v23)
   {
     v24 = v23;
-    v25 = v10;
+    v25 = file1Copy;
     v31 = objc_msgSend_UTF8String(v25, v26, v27, v28, v29, v30);
     __stream = sub_2956EEA7C(v31, v32, v33, v34, v35, v36);
     if (!__stream)
@@ -1474,10 +1474,10 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v42 = objc_msgSend_width(v8, v37, v38, v39, v40, v41);
-    v48 = objc_msgSend_height(v8, v43, v44, v45, v46, v47);
+    v42 = objc_msgSend_width(textureCopy, v37, v38, v39, v40, v41);
+    v48 = objc_msgSend_height(textureCopy, v43, v44, v45, v46, v47);
     v49 = 4 * v42;
-    objc_msgSend_makeCoherent_(self, v50, v8, v51, v52, v53);
+    objc_msgSend_makeCoherent_(self, v50, textureCopy, v51, v52, v53);
     v54 = malloc_type_malloc(v49 * v48, 0x1000040BDFB0063uLL);
     v55 = v54;
     if (!v54)
@@ -1495,20 +1495,20 @@ LABEL_17:
       v58 = malloc_type_malloc(4 * (v42 & 0x3FFFFFFF), 0x100004052888210uLL);
       if (v58)
       {
-        v77 = v10;
+        v77 = file1Copy;
         memset(v80, 0, 24);
         v80[3] = v42;
         v80[4] = v48;
         v80[5] = 1;
-        v59 = v8;
-        v60 = v8;
+        v59 = textureCopy;
+        v60 = textureCopy;
         v61 = v78;
         objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v59, v57, v78, 4 * v42, v80, 0);
         if (!v48)
         {
           v55 = v78;
-          v8 = v60;
-          v10 = v77;
+          textureCopy = v60;
+          file1Copy = v77;
           goto LABEL_16;
         }
 
@@ -1545,8 +1545,8 @@ LABEL_17:
         }
 
         while (v62 != v48);
-        v8 = v76;
-        v10 = v77;
+        textureCopy = v76;
+        file1Copy = v77;
       }
 
       else
@@ -1574,22 +1574,22 @@ LABEL_16:
 LABEL_18:
 }
 
-- (void)saveRGBA8Texture:(id)a3 AsPPMFile:(const char *)a4
+- (void)saveRGBA8Texture:(id)texture AsPPMFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
   v19 = malloc_type_malloc(4 * v12 * v18, 0xD13A6CE5uLL);
   if (v19)
   {
     v24 = v19;
-    objc_msgSend_makeCoherent_(self, v20, v6, v21, v22, v23);
+    objc_msgSend_makeCoherent_(self, v20, textureCopy, v21, v22, v23);
     memset(v28, 0, 24);
     v28[3] = v12;
     v28[4] = v18;
     v28[5] = 1;
-    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v25, v24, 4 * v12, v28, 0);
-    sub_2956EF080(v12, v18, 4 * v12, v24, a4, v26);
+    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v25, v24, 4 * v12, v28, 0);
+    sub_2956EF080(v12, v18, 4 * v12, v24, file, v26);
     free(v24);
   }
 
@@ -1609,24 +1609,24 @@ LABEL_18:
   }
 }
 
-- (void)saveRGBA8Texture:(id)a3 AsBinaryFile:(const char *)a4
+- (void)saveRGBA8Texture:(id)texture AsBinaryFile:(const char *)file
 {
-  v6 = a3;
-  v12 = objc_msgSend_width(v6, v7, v8, v9, v10, v11);
-  v18 = objc_msgSend_height(v6, v13, v14, v15, v16, v17);
+  textureCopy = texture;
+  v12 = objc_msgSend_width(textureCopy, v7, v8, v9, v10, v11);
+  v18 = objc_msgSend_height(textureCopy, v13, v14, v15, v16, v17);
   v24 = malloc_type_malloc(4 * v12 * v18, 0xABE21FF2uLL);
   if (v24)
   {
-    v25 = sub_2956EEA7C(a4, v19, v20, v21, v22, v23);
+    v25 = sub_2956EEA7C(file, v19, v20, v21, v22, v23);
     if (v25)
     {
       v30 = v25;
-      objc_msgSend_makeCoherent_(self, v26, v6, v27, v28, v29);
+      objc_msgSend_makeCoherent_(self, v26, textureCopy, v27, v28, v29);
       memset(v32, 0, 24);
       v32[3] = v12;
       v32[4] = v18;
       v32[5] = 1;
-      objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v31, v24, 4 * v12, v32, 0);
+      objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v31, v24, 4 * v12, v32, 0);
       fwrite(v24, 4 * v12 * v18, 1uLL, v30);
       fclose(v30);
     }
@@ -1645,18 +1645,18 @@ LABEL_18:
   free(v24);
 }
 
-- (void)saveRgbaF32PixelBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4
+- (void)saveRgbaF32PixelBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file
 {
-  v8 = sub_2956EEA7C(a4, a2, a3, a4, v4, v5);
+  v8 = sub_2956EEA7C(file, a2, buffer, file, v4, v5);
   if (v8)
   {
     v9 = v8;
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     v12 = malloc_type_malloc(4 * (Width & 0x3FFFFFFF), 0x100004077774924uLL);
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+    BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
     fprintf(v9, "P6 %u %u 255\n", Width, Height);
     if (Height)
     {
@@ -1688,7 +1688,7 @@ LABEL_18:
       while (v15 != Height);
     }
 
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
     fclose(v9);
 
     free(v12);
@@ -1705,24 +1705,24 @@ LABEL_18:
     if (os_log_type_enabled(qword_2A1388C78, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
-      v21 = a4;
+      fileCopy = file;
       _os_log_impl(&dword_2956ED000, v19, OS_LOG_TYPE_DEFAULT, "Could not create %s", buf, 0xCu);
     }
   }
 }
 
-- (void)save32BGRAPixelBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4
+- (void)save32BGRAPixelBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file
 {
-  v7 = sub_2956EEA7C(a4, a2, a3, a4, v4, v5);
+  v7 = sub_2956EEA7C(file, a2, buffer, file, v4, v5);
   if (v7)
   {
     v8 = v7;
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     v11 = malloc_type_malloc(4 * (Width & 0x3FFFFFFF), 0x100004077774924uLL);
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+    BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
     fprintf(v8, "P6 %u %u 255\n", Width, Height);
     if (Height)
     {
@@ -1749,47 +1749,47 @@ LABEL_18:
       }
     }
 
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
     fclose(v8);
 
     free(v11);
   }
 }
 
-- (void)saveRGBAF16PixelBuffer:(__CVBuffer *)a3 AsPPMFile:(const char *)a4
+- (void)saveRGBAF16PixelBuffer:(__CVBuffer *)buffer AsPPMFile:(const char *)file
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
 
-  MEMORY[0x2A1C70FE8](self, sel_saveRGBAF16PixelBuffer_out_width_out_height_AsPPMFile_, a3, Width, Height, a4);
+  MEMORY[0x2A1C70FE8](self, sel_saveRGBAF16PixelBuffer_out_width_out_height_AsPPMFile_, buffer, Width, Height, file);
 }
 
-- (void)saveRGBAF16PixelBuffer:(__CVBuffer *)a3 AsPPMFileWithAlpha:(const char *)a4
+- (void)saveRGBAF16PixelBuffer:(__CVBuffer *)buffer AsPPMFileWithAlpha:(const char *)alpha
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
 
-  MEMORY[0x2A1C70FE8](self, sel_saveRGBAF16PixelBuffer_out_width_out_height_AsPPMFileWithAlpha_, a3, Width, Height, a4);
+  MEMORY[0x2A1C70FE8](self, sel_saveRGBAF16PixelBuffer_out_width_out_height_AsPPMFileWithAlpha_, buffer, Width, Height, alpha);
 }
 
-- (void)saveF16Texture:(id)a3 AsF32BinaryFile:(const char *)a4
+- (void)saveF16Texture:(id)texture AsF32BinaryFile:(const char *)file
 {
-  v6 = a3;
-  v12 = sub_2956EEA7C(a4, v7, v8, v9, v10, v11);
+  textureCopy = texture;
+  v12 = sub_2956EEA7C(file, v7, v8, v9, v10, v11);
   if (v12)
   {
     v18 = v12;
-    v19 = objc_msgSend_width(v6, v13, v14, v15, v16, v17);
-    v25 = objc_msgSend_height(v6, v20, v21, v22, v23, v24);
+    v19 = objc_msgSend_width(textureCopy, v13, v14, v15, v16, v17);
+    v25 = objc_msgSend_height(textureCopy, v20, v21, v22, v23, v24);
     v26 = 2 * v19;
     v27 = malloc_type_malloc(4 * v19, 0x100004052888210uLL);
     v28 = malloc_type_malloc(v26 * v25, 0x1000040BDFB0063uLL);
-    objc_msgSend_makeCoherent_(self, v29, v6, v30, v31, v32);
+    objc_msgSend_makeCoherent_(self, v29, textureCopy, v30, v31, v32);
     memset(v43, 0, 24);
     v43[3] = v19;
     v43[4] = v25;
     v43[5] = 1;
-    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v33, v28, v26, v43, 0);
+    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v33, v28, v26, v43, 0);
     if (v25)
     {
       v34 = 0;
@@ -1819,14 +1819,14 @@ LABEL_18:
   }
 }
 
-- (void)saveNCCOutputFrom:(id)a3 asBinaryFiles:(const char *)a4
+- (void)saveNCCOutputFrom:(id)from asBinaryFiles:(const char *)files
 {
-  v6 = a3;
+  fromCopy = from;
   objc_msgSend_waitForIdle(self->_metalContext, v7, v8, v9, v10, v11);
-  objc_msgSend_makeCoherent_(self, v12, v6, v13, v14, v15);
-  v21 = objc_msgSend_width(v6, v16, v17, v18, v19, v20);
-  v27 = objc_msgSend_height(v6, v22, v23, v24, v25, v26);
-  v33 = objc_msgSend_bufferBytesPerRow(v6, v28, v29, v30, v31, v32);
+  objc_msgSend_makeCoherent_(self, v12, fromCopy, v13, v14, v15);
+  v21 = objc_msgSend_width(fromCopy, v16, v17, v18, v19, v20);
+  v27 = objc_msgSend_height(fromCopy, v22, v23, v24, v25, v26);
+  v33 = objc_msgSend_bufferBytesPerRow(fromCopy, v28, v29, v30, v31, v32);
   v34 = malloc_type_malloc(v33 * v27, 0x885D3F11uLL);
   v35 = vabd_s32(vdup_n_s32(v33), vshl_u32(vdup_n_s32(v21), 0x400000003));
   v36 = vcgt_u32(vdup_lane_s32(v35, 1), v35).u8[0];
@@ -1844,13 +1844,13 @@ LABEL_18:
   v160[5] = 1;
   v146 = v34;
   v151 = v33;
-  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v39, v34, v33, v160, 0);
-  v44 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v40, @"%s_L_%dx%d.%@", v41, v42, v43, a4, v21, v27, v38);
-  v49 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v45, @"%s_R_%dx%d.%@", v46, v47, v48, a4, v21, v27, v38);
-  v54 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v50, @"%s_C_%dx%d.%@", v51, v52, v53, a4, v21, v27, v38);
+  objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(fromCopy, v39, v34, v33, v160, 0);
+  v44 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v40, @"%s_L_%dx%d.%@", v41, v42, v43, files, v21, v27, v38);
+  v49 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v45, @"%s_R_%dx%d.%@", v46, v47, v48, files, v21, v27, v38);
+  v54 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v50, @"%s_C_%dx%d.%@", v51, v52, v53, files, v21, v27, v38);
   v154 = v21;
-  v158 = a4;
-  v59 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v55, @"%s_F_%dx%d.%@", v56, v57, v58, a4, v21, v27, v38);
+  filesCopy = files;
+  v59 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v55, @"%s_F_%dx%d.%@", v56, v57, v58, files, v21, v27, v38);
   v60 = v44;
   v66 = objc_msgSend_UTF8String(v60, v61, v62, v63, v64, v65);
   v72 = sub_2956EEA7C(v66, v67, v68, v69, v70, v71);
@@ -1899,7 +1899,7 @@ LABEL_37:
   v152 = v27;
   v142 = v49;
   v143 = v44;
-  v144 = v6;
+  v144 = fromCopy;
   v114 = 4;
   if (v36)
   {
@@ -1987,7 +1987,7 @@ LABEL_15:
     goto LABEL_23;
   }
 
-  v147 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v120, @"%s_L_%dx%d.ppm", v121, v122, v123, v158, v154, v152);
+  v147 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v120, @"%s_L_%dx%d.ppm", v121, v122, v123, filesCopy, v154, v152);
   v111 = malloc_type_malloc((4 * v154 * v152), 0x72A3BA2BuLL);
   if (v152)
   {
@@ -2014,7 +2014,7 @@ LABEL_23:
     free(v118);
   }
 
-  v6 = v144;
+  fromCopy = v144;
   if (v119)
   {
     free(v119);
@@ -2059,19 +2059,19 @@ LABEL_38:
   }
 }
 
-- (void)savePixelBuffer:(__CVBuffer *)a3 AsBinaryFile:(const char *)a4
+- (void)savePixelBuffer:(__CVBuffer *)buffer AsBinaryFile:(const char *)file
 {
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  v22 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v7, @"%s.%c%c%c%c", v8, v9, v10, a4, HIBYTE(PixelFormatType), BYTE2(PixelFormatType), BYTE1(PixelFormatType), PixelFormatType);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  v22 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v7, @"%s.%c%c%c%c", v8, v9, v10, file, HIBYTE(PixelFormatType), BYTE2(PixelFormatType), BYTE1(PixelFormatType), PixelFormatType);
   objc_msgSend_createPathIfNeeded_(disparityDebugUtils, v11, v22, v12, v13, v14);
   v15 = v22;
   v21 = objc_msgSend_UTF8String(v22, v16, v17, v18, v19, v20);
-  MEMORY[0x29C250900](v21, a3);
+  MEMORY[0x29C250900](v21, buffer);
 }
 
-+ (void)createPathIfNeeded:(id)a3
++ (void)createPathIfNeeded:(id)needed
 {
-  v6 = objc_msgSend_stringByDeletingLastPathComponent(a3, a2, a3, v3, v4, v5);
+  v6 = objc_msgSend_stringByDeletingLastPathComponent(needed, a2, needed, v3, v4, v5);
   v12 = objc_msgSend_defaultManager(MEMORY[0x29EDB9FB8], v7, v8, v9, v10, v11);
   v21 = 0;
   DirectoryAtPath_withIntermediateDirectories_attributes_error = objc_msgSend_createDirectoryAtPath_withIntermediateDirectories_attributes_error_(v12, v13, v6, 1, 0, &v21);
@@ -2095,26 +2095,26 @@ LABEL_38:
   }
 }
 
-- (void)saveAccumulationFrom:(id)a3 asBinaryFiles:(const char *)a4 forSize:(CGSize)a5 costLineSize:(unsigned __int16)a6
+- (void)saveAccumulationFrom:(id)from asBinaryFiles:(const char *)files forSize:(CGSize)size costLineSize:(unsigned __int16)lineSize
 {
-  v136 = a6;
-  height = a5.height;
-  width = a5.width;
-  v129 = a3;
+  lineSizeCopy = lineSize;
+  height = size.height;
+  width = size.width;
+  fromCopy = from;
   objc_msgSend_waitForIdle(self->_metalContext, v10, v11, v12, v13, v14);
-  objc_msgSend_makeCoherent_(self, v15, v129, v16, v17, v18);
+  objc_msgSend_makeCoherent_(self, v15, fromCopy, v16, v17, v18);
   v138 = width;
   v19 = malloc_type_malloc(4 * v138, 0x100004052888210uLL);
   v20 = malloc_type_malloc(4 * v138, 0x100004052888210uLL);
   v21 = malloc_type_malloc(4 * v138, 0x100004052888210uLL);
   v22 = malloc_type_malloc(4 * v138, 0x100004052888210uLL);
-  v23 = v129;
-  v29 = objc_msgSend_contents(v129, v24, v25, v26, v27, v28);
-  v34 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v30, @"%s_L.f32", v31, v32, v33, a4);
-  v39 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v35, @"%s_R.f32", v36, v37, v38, a4);
-  v44 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v40, @"%s_C.f32", v41, v42, v43, a4);
-  v49 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v45, @"%s_W.f32", v46, v47, v48, a4);
-  v128 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v50, @"%s_L.ppm", v51, v52, v53, a4);
+  v23 = fromCopy;
+  v29 = objc_msgSend_contents(fromCopy, v24, v25, v26, v27, v28);
+  v34 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v30, @"%s_L.f32", v31, v32, v33, files);
+  v39 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v35, @"%s_R.f32", v36, v37, v38, files);
+  v44 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v40, @"%s_C.f32", v41, v42, v43, files);
+  v49 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v45, @"%s_W.f32", v46, v47, v48, files);
+  v128 = objc_msgSend_stringWithFormat_(MEMORY[0x29EDBA0F8], v50, @"%s_L.ppm", v51, v52, v53, files);
   v54 = v34;
   v127 = v34;
   v60 = objc_msgSend_UTF8String(v54, v55, v56, v57, v58, v59);
@@ -2153,7 +2153,7 @@ LABEL_12:
     {
       v110 = 0;
       v111 = 0;
-      v130 = v136;
+      v130 = lineSizeCopy;
       do
       {
         v137 = v111;
@@ -2230,14 +2230,14 @@ LABEL_13:
   free(v22);
 }
 
-- (void)saveF32Texture:(id)a3 AsF32BinaryFile:(const char *)a4
+- (void)saveF32Texture:(id)texture AsF32BinaryFile:(const char *)file
 {
-  v6 = a3;
-  v17 = sub_2956EEA7C(a4, v7, v8, v9, v10, v11);
+  textureCopy = texture;
+  v17 = sub_2956EEA7C(file, v7, v8, v9, v10, v11);
   if (v17)
   {
-    v18 = objc_msgSend_width(v6, v12, v13, v14, v15, v16);
-    v24 = objc_msgSend_height(v6, v19, v20, v21, v22, v23);
+    v18 = objc_msgSend_width(textureCopy, v12, v13, v14, v15, v16);
+    v24 = objc_msgSend_height(textureCopy, v19, v20, v21, v22, v23);
     v25 = v18;
     v26 = 4 * v18;
     v27 = malloc_type_malloc(v26, 0x100004052888210uLL);
@@ -2246,12 +2246,12 @@ LABEL_13:
       v32 = malloc_type_malloc((v26 * v24) & 0xFFFFFFFC, 0x100004052888210uLL);
       if (v32)
       {
-        objc_msgSend_makeCoherent_(self, v28, v6, v29, v30, v31);
+        objc_msgSend_makeCoherent_(self, v28, textureCopy, v29, v30, v31);
         memset(v37, 0, 24);
         v37[3] = v25;
         v37[4] = v24;
         v37[5] = 1;
-        objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v33, v32, v26 & 0xFFFFFFFC, v37, 0);
+        objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v33, v32, v26 & 0xFFFFFFFC, v37, 0);
         if (v24)
         {
           v34 = 0;
@@ -2304,25 +2304,25 @@ LABEL_13:
   fclose(v17);
 }
 
-- (void)saveRGBA16FTexture:(id)a3 AsPPMFile:(const char *)a4
+- (void)saveRGBA16FTexture:(id)texture AsPPMFile:(const char *)file
 {
-  v6 = a3;
-  v12 = sub_2956EEA7C(a4, v7, v8, v9, v10, v11);
+  textureCopy = texture;
+  v12 = sub_2956EEA7C(file, v7, v8, v9, v10, v11);
   if (v12)
   {
     v18 = v12;
-    v19 = objc_msgSend_width(v6, v13, v14, v15, v16, v17);
-    v25 = objc_msgSend_height(v6, v20, v21, v22, v23, v24);
+    v19 = objc_msgSend_width(textureCopy, v13, v14, v15, v16, v17);
+    v25 = objc_msgSend_height(textureCopy, v20, v21, v22, v23, v24);
     v26 = malloc_type_malloc(3 * v19, 0x100004077774924uLL);
     v27 = malloc_type_malloc(8 * v19 * v25, 0x1000040BDFB0063uLL);
     fprintf(v18, "P6 %u %u 255\n", v19, v25);
-    objc_msgSend_makeCoherent_(self, v28, v6, v29, v30, v31);
+    objc_msgSend_makeCoherent_(self, v28, textureCopy, v29, v30, v31);
     memset(v48, 0, 24);
     v48[3] = v19;
     v48[4] = v25;
     v48[5] = 1;
-    v47 = v6;
-    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v32, v27, 8 * v19, v48, 0);
+    v47 = textureCopy;
+    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v32, v27, 8 * v19, v48, 0);
     if (v25)
     {
       v33 = 0;
@@ -2367,28 +2367,28 @@ LABEL_13:
     free(v26);
     free(v27);
     fclose(v18);
-    v6 = v47;
+    textureCopy = v47;
   }
 }
 
-- (void)saveRGBA16FTexture:(id)a3 AsF32File:(const char *)a4
+- (void)saveRGBA16FTexture:(id)texture AsF32File:(const char *)file
 {
-  v6 = a3;
-  v12 = sub_2956EEA7C(a4, v7, v8, v9, v10, v11);
+  textureCopy = texture;
+  v12 = sub_2956EEA7C(file, v7, v8, v9, v10, v11);
   if (v12)
   {
     v18 = v12;
-    v19 = objc_msgSend_width(v6, v13, v14, v15, v16, v17);
-    v25 = objc_msgSend_height(v6, v20, v21, v22, v23, v24);
+    v19 = objc_msgSend_width(textureCopy, v13, v14, v15, v16, v17);
+    v25 = objc_msgSend_height(textureCopy, v20, v21, v22, v23, v24);
     v26 = malloc_type_malloc(16 * (v19 & 0x3FFFFFFF), 0x100004052888210uLL);
     v27 = malloc_type_malloc(8 * v19 * v25, 0x1000040BDFB0063uLL);
-    objc_msgSend_makeCoherent_(self, v28, v6, v29, v30, v31);
+    objc_msgSend_makeCoherent_(self, v28, textureCopy, v29, v30, v31);
     memset(v43, 0, 24);
     v43[3] = v19;
     v43[4] = v25;
     v43[5] = 1;
     v42 = v27;
-    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v32, v27, 8 * v19, v43, 0);
+    objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v32, v27, 8 * v19, v43, 0);
     if (v25)
     {
       for (i = 0; i != v25; ++i)
@@ -2423,27 +2423,27 @@ LABEL_13:
   }
 }
 
-- (void)saveRGB10A2Texture:(id)a3 AsPPMFile:(const char *)a4
+- (void)saveRGB10A2Texture:(id)texture AsPPMFile:(const char *)file
 {
-  v6 = a3;
-  v12 = sub_2956EEA7C(a4, v7, v8, v9, v10, v11);
+  textureCopy = texture;
+  v12 = sub_2956EEA7C(file, v7, v8, v9, v10, v11);
   if (v12)
   {
     v18 = v12;
-    if (objc_msgSend_pixelFormat(v6, v13, v14, v15, v16, v17) == 90)
+    if (objc_msgSend_pixelFormat(textureCopy, v13, v14, v15, v16, v17) == 90)
     {
-      v24 = objc_msgSend_width(v6, v19, v20, v21, v22, v23);
-      v30 = objc_msgSend_height(v6, v25, v26, v27, v28, v29);
+      v24 = objc_msgSend_width(textureCopy, v19, v20, v21, v22, v23);
+      v30 = objc_msgSend_height(textureCopy, v25, v26, v27, v28, v29);
       v31 = malloc_type_malloc(3 * v24, 0x100004077774924uLL);
       v32 = malloc_type_malloc(4 * v24 * v30, 0x100004052888210uLL);
       fprintf(v18, "P6 %u %u 255\n", v24, v30);
-      objc_msgSend_makeCoherent_(self, v33, v6, v34, v35, v36);
+      objc_msgSend_makeCoherent_(self, v33, textureCopy, v34, v35, v36);
       memset(v44, 0, 24);
       v44[3] = v24;
       v44[4] = v30;
       v44[5] = 1;
       v43 = v32;
-      objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(v6, v37, v32, 4 * v24, v44, 0);
+      objc_msgSend_getBytes_bytesPerRow_fromRegion_mipmapLevel_(textureCopy, v37, v32, 4 * v24, v44, 0);
       if (v30)
       {
         v38 = 0;

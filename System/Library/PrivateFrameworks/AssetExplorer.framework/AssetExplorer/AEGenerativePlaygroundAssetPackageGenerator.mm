@@ -1,38 +1,38 @@
 @interface AEGenerativePlaygroundAssetPackageGenerator
-- (id)generatePackageFromGenerativePlaygroundAsset:(id)a3;
+- (id)generatePackageFromGenerativePlaygroundAsset:(id)asset;
 @end
 
 @implementation AEGenerativePlaygroundAssetPackageGenerator
 
-- (id)generatePackageFromGenerativePlaygroundAsset:(id)a3
+- (id)generatePackageFromGenerativePlaygroundAsset:(id)asset
 {
-  v3 = a3;
+  assetCopy = asset;
   v4 = [AEMutableAssetPackage alloc];
-  v5 = [v3 identifier];
-  v6 = [(AEMutableAssetPackage *)v4 initWithAssetIdentifier:v5];
+  identifier = [assetCopy identifier];
+  v6 = [(AEMutableAssetPackage *)v4 initWithAssetIdentifier:identifier];
 
-  v7 = [v3 imageURLWrapper];
-  v8 = [v7 url];
-  v9 = [*MEMORY[0x277CE1DB0] identifier];
-  [(AEMutableAssetPackage *)v6 storeURL:v8 forType:v9];
+  imageURLWrapper = [assetCopy imageURLWrapper];
+  v8 = [imageURLWrapper url];
+  identifier2 = [*MEMORY[0x277CE1DB0] identifier];
+  [(AEMutableAssetPackage *)v6 storeURL:v8 forType:identifier2];
 
-  v10 = [v3 previewImage];
-  [(AEMutableAssetPackage *)v6 setSidecarObject:v10 forKey:@"com.apple.assetexplorer.asset-preview-image"];
+  previewImage = [assetCopy previewImage];
+  [(AEMutableAssetPackage *)v6 setSidecarObject:previewImage forKey:@"com.apple.assetexplorer.asset-preview-image"];
 
-  v11 = [v3 recipeData];
-  v12 = [v11 underlyingData];
-  [(AEMutableAssetPackage *)v6 setSidecarObject:v12 forKey:@"com.apple.assetexplorer.generatedimagerecipe"];
+  recipeData = [assetCopy recipeData];
+  underlyingData = [recipeData underlyingData];
+  [(AEMutableAssetPackage *)v6 setSidecarObject:underlyingData forKey:@"com.apple.assetexplorer.generatedimagerecipe"];
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v14 = [v3 pixelWidth];
-  [v13 setValue:v14 forKey:@"AEAssetPackageDisplayPixelWidth"];
+  pixelWidth = [assetCopy pixelWidth];
+  [v13 setValue:pixelWidth forKey:@"AEAssetPackageDisplayPixelWidth"];
 
-  v15 = [v3 pixelHeight];
-  [v13 setValue:v15 forKey:@"AEAssetPackageDisplayPixelHeight"];
+  pixelHeight = [assetCopy pixelHeight];
+  [v13 setValue:pixelHeight forKey:@"AEAssetPackageDisplayPixelHeight"];
 
-  v16 = [v3 creationDate];
+  creationDate = [assetCopy creationDate];
 
-  [v13 setValue:v16 forKey:@"AEAssetPackageDisplayCreationDate"];
+  [v13 setValue:creationDate forKey:@"AEAssetPackageDisplayCreationDate"];
   [v13 setValue:&unk_2852F95C0 forKey:@"AEAssetPackageDisplayMediaType"];
   [v13 setValue:&unk_2852F95D8 forKey:@"AEAssetPackageDisplayPlaybackStyle"];
   [(AEMutableAssetPackage *)v6 addSidecarEntriesFromDictionary:v13];

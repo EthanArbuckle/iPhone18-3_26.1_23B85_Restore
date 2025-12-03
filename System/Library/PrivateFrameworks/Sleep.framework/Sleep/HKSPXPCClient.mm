@@ -1,8 +1,8 @@
 @interface HKSPXPCClient
-+ (id)clientForConnection:(id)a3 clientIdentifierProvider:(id)a4 clientLink:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (HKSPXPCClient)initWithConnection:(id)a3 clientIdentifierProvider:(id)a4 clientLink:(id)a5;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)clientForConnection:(id)connection clientIdentifierProvider:(id)provider clientLink:(id)link;
+- (BOOL)isEqual:(id)equal;
+- (HKSPXPCClient)initWithConnection:(id)connection clientIdentifierProvider:(id)provider clientLink:(id)link;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (int)processID;
@@ -15,53 +15,53 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendInt:-[HKSPXPCClient processID](self withName:{"processID"), @"pid"}];
-  v5 = [(HKSPXPCClient *)self clientIdentifier];
-  v6 = [v5 loggingIdentifier];
-  v7 = [v3 appendObject:v6 withName:@"id" skipIfNil:1];
+  clientIdentifier = [(HKSPXPCClient *)self clientIdentifier];
+  loggingIdentifier = [clientIdentifier loggingIdentifier];
+  v7 = [v3 appendObject:loggingIdentifier withName:@"id" skipIfNil:1];
 
   return v3;
 }
 
 - (int)processID
 {
-  v2 = [(HKSPXPCClient *)self connection];
-  v3 = [v2 processIdentifier];
+  connection = [(HKSPXPCClient *)self connection];
+  processIdentifier = [connection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_connection];
-  v5 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_connection];
+  v5 = [builder hash];
 
   return v5;
 }
 
-+ (id)clientForConnection:(id)a3 clientIdentifierProvider:(id)a4 clientLink:(id)a5
++ (id)clientForConnection:(id)connection clientIdentifierProvider:(id)provider clientLink:(id)link
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithConnection:v9 clientIdentifierProvider:v8 clientLink:v7];
+  linkCopy = link;
+  providerCopy = provider;
+  connectionCopy = connection;
+  v10 = [objc_alloc(objc_opt_class()) initWithConnection:connectionCopy clientIdentifierProvider:providerCopy clientLink:linkCopy];
 
   return v10;
 }
 
-- (HKSPXPCClient)initWithConnection:(id)a3 clientIdentifierProvider:(id)a4 clientLink:(id)a5
+- (HKSPXPCClient)initWithConnection:(id)connection clientIdentifierProvider:(id)provider clientLink:(id)link
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  providerCopy = provider;
+  linkCopy = link;
   v21.receiver = self;
   v21.super_class = HKSPXPCClient;
   v12 = [(HKSPXPCClient *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_connection, a3);
-    objc_storeStrong(&v13->_clientIdentifierProvider, a4);
+    objc_storeStrong(&v12->_connection, connection);
+    objc_storeStrong(&v13->_clientIdentifierProvider, provider);
     objc_initWeak(&location, v13);
     clientIdentifierProvider = v13->_clientIdentifierProvider;
     v18[0] = MEMORY[0x277D85DD0];
@@ -70,7 +70,7 @@
     v18[3] = &unk_279C75F50;
     objc_copyWeak(&v19, &location);
     v15 = [(NAFuture *)clientIdentifierProvider addSuccessBlock:v18];
-    objc_storeStrong(&v13->_clientLink, a5);
+    objc_storeStrong(&v13->_clientLink, link);
     v16 = v13;
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -88,10 +88,10 @@ void __72__HKSPXPCClient_initWithConnection_clientIdentifierProvider_clientLink_
   [WeakRetained setClientIdentifier:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -101,7 +101,7 @@ void __72__HKSPXPCClient_initWithConnection_clientIdentifierProvider_clientLink_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [MEMORY[0x277CF0C20] builderWithObject:v5 ofExpectedClass:objc_opt_class()];
       connection = self->_connection;
       v12[0] = MEMORY[0x277D85DD0];
@@ -125,18 +125,18 @@ void __72__HKSPXPCClient_initWithConnection_clientIdentifierProvider_clientLink_
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPXPCClient *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPXPCClient *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPXPCClient *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPXPCClient *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

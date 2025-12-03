@@ -1,32 +1,32 @@
 @interface VNGenerateImageSegmentationRequest
-+ (void)downloadModelForTests:(id)a3;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
++ (void)downloadModelForTests:(id)tests;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
 - (VNGenerateImageSegmentationRequest)init;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
-- (id)supportedFeaturesAndReturnError:(id *)a3;
-- (id)supportedOutputPixelFormatsAndReturnError:(id *)a3;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
+- (id)supportedFeaturesAndReturnError:(id *)error;
+- (id)supportedOutputPixelFormatsAndReturnError:(id *)error;
 - (int64_t)maximumTargetPoints;
 - (unsigned)outputPixelFormat;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setOutputPixelFormat:(unsigned int)a3;
-- (void)setTargetPoints:(id)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setOutputPixelFormat:(unsigned int)format;
+- (void)setTargetPoints:(id)points;
 @end
 
 @implementation VNGenerateImageSegmentationRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [v8 session];
+  contextCopy = context;
+  session = [contextCopy session];
   v23 = 0;
-  v10 = [(VNRequest *)self applicableDetectorAndOptions:&v23 forRevision:a3 loadedInSession:v9 error:a5];
+  v10 = [(VNRequest *)self applicableDetectorAndOptions:&v23 forRevision:revision loadedInSession:session error:error];
   v11 = v23;
   if (v10)
   {
-    v12 = [v8 imageBufferAndReturnError:a5];
+    v12 = [contextCopy imageBufferAndReturnError:error];
     v13 = v12;
     if (v12)
     {
@@ -47,9 +47,9 @@
       v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VNGenerateImageSegmentationRequest outputPixelFormat](self, "outputPixelFormat")}];
       [v11 setObject:v18 forKeyedSubscript:@"VNImageSegmenterProcessOption_OutputPixelFormat"];
 
-      v19 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v20 = [v10 processUsingQualityOfServiceClass:v19 options:v11 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v20 = [v10 processUsingQualityOfServiceClass:qosClass options:v11 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v21 = v20 != 0;
       if (v20)
       {
@@ -71,15 +71,15 @@
   return v21;
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNGenerateImageSegmentationRequest *)self outputPixelFormat];
-  if (v5 == [v4 outputPixelFormat])
+  configurationCopy = configuration;
+  outputPixelFormat = [(VNGenerateImageSegmentationRequest *)self outputPixelFormat];
+  if (outputPixelFormat == [configurationCopy outputPixelFormat])
   {
     v8.receiver = self;
     v8.super_class = VNGenerateImageSegmentationRequest;
-    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v6 = [(VNImageBasedRequest *)&v8 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -90,47 +90,47 @@
   return v6;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v6.receiver = self;
     v6.super_class = VNGenerateImageSegmentationRequest;
-    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v6 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = requestCopy;
       [(VNGenerateImageSegmentationRequest *)self setOutputPixelFormat:[(VNGenerateImageSegmentationRequest *)v5 outputPixelFormat]];
     }
   }
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
   if (+[VNImageSegmenter supportsExecution])
   {
-    if (a3 == 1)
+    if (revision == 1)
     {
       v7 = @"VNImageSegmenterType";
       v8 = @"VNImageSegmenterType";
       goto LABEL_10;
     }
 
-    if (a4)
+    if (error)
     {
-      v9 = [VNError errorForUnsupportedRevision:a3 ofRequest:self];
+      v9 = [VNError errorForUnsupportedRevision:revision ofRequest:self];
       goto LABEL_8;
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v9 = [VNError errorWithCode:22 message:@"Requires newer ANE device"];
 LABEL_8:
     v7 = 0;
-    *a4 = v9;
+    *error = v9;
     goto LABEL_10;
   }
 
@@ -140,21 +140,21 @@ LABEL_10:
   return v7;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v5.receiver = self;
   v5.super_class = VNGenerateImageSegmentationRequest;
-  return [(VNRequest *)&v5 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
+  return [(VNRequest *)&v5 newDefaultDetectorOptionsForRequestRevision:revision session:session];
 }
 
-- (id)supportedOutputPixelFormatsAndReturnError:(id *)a3
+- (id)supportedOutputPixelFormatsAndReturnError:(id *)error
 {
   v8 = 0;
-  v4 = [(VNRequest *)self applicableDetectorClassAndOptions:&v8 forRevision:[(VNRequest *)self resolvedRevision] error:a3];
+  v4 = [(VNRequest *)self applicableDetectorClassAndOptions:&v8 forRevision:[(VNRequest *)self resolvedRevision] error:error];
   v5 = v8;
   if (v4)
   {
-    v6 = [(objc_class *)v4 supportedOutputPixelFormatsForOptions:v5 error:a3];
+    v6 = [(objc_class *)v4 supportedOutputPixelFormatsForOptions:v5 error:error];
   }
 
   else
@@ -165,26 +165,26 @@ LABEL_10:
   return v6;
 }
 
-- (void)setOutputPixelFormat:(unsigned int)a3
+- (void)setOutputPixelFormat:(unsigned int)format
 {
-  v3 = *&a3;
-  v4 = [(VNRequest *)self configuration];
-  [v4 setOutputPixelFormat:v3];
+  v3 = *&format;
+  configuration = [(VNRequest *)self configuration];
+  [configuration setOutputPixelFormat:v3];
 }
 
 - (unsigned)outputPixelFormat
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 outputPixelFormat];
+  configuration = [(VNRequest *)self configuration];
+  outputPixelFormat = [configuration outputPixelFormat];
 
-  return v3;
+  return outputPixelFormat;
 }
 
-- (id)supportedFeaturesAndReturnError:(id *)a3
+- (id)supportedFeaturesAndReturnError:(id *)error
 {
-  v5 = [(VNRequest *)self resolvedRevision];
+  resolvedRevision = [(VNRequest *)self resolvedRevision];
   v10 = 0;
-  v6 = [(VNRequest *)self applicableDetectorClassAndOptions:&v10 forRevision:v5 error:a3];
+  v6 = [(VNRequest *)self applicableDetectorClassAndOptions:&v10 forRevision:resolvedRevision error:error];
   v7 = v10;
   if (!v6)
   {
@@ -193,14 +193,14 @@ LABEL_10:
 
   if ([(objc_class *)v6 isSubclassOfClass:objc_opt_class()])
   {
-    v8 = [(objc_class *)v6 supportedFeaturesForOptions:v7 error:a3];
+    v8 = [(objc_class *)v6 supportedFeaturesForOptions:v7 error:error];
     goto LABEL_7;
   }
 
-  if (a3)
+  if (error)
   {
-    [VNError errorForUnsupportedRevision:v5 ofRequest:self];
-    *a3 = v8 = 0;
+    [VNError errorForUnsupportedRevision:resolvedRevision ofRequest:self];
+    *error = v8 = 0;
   }
 
   else
@@ -217,28 +217,28 @@ LABEL_7:
 - (int64_t)maximumTargetPoints
 {
   v5 = 0;
-  v2 = [(VNRequest *)self applicableDetectorClassAndOptions:&v5 forRevision:[(VNRequest *)self resolvedRevision] error:0];
+  maximumTargetPoints = [(VNRequest *)self applicableDetectorClassAndOptions:&v5 forRevision:[(VNRequest *)self resolvedRevision] error:0];
   v3 = v5;
-  if (v2)
+  if (maximumTargetPoints)
   {
-    if ([(objc_class *)v2 isSubclassOfClass:objc_opt_class()])
+    if ([(objc_class *)maximumTargetPoints isSubclassOfClass:objc_opt_class()])
     {
-      v2 = [(objc_class *)v2 maximumTargetPoints];
+      maximumTargetPoints = [(objc_class *)maximumTargetPoints maximumTargetPoints];
     }
 
     else
     {
-      v2 = 0;
+      maximumTargetPoints = 0;
     }
   }
 
-  return v2;
+  return maximumTargetPoints;
 }
 
-- (void)setTargetPoints:(id)a3
+- (void)setTargetPoints:(id)points
 {
-  v6 = a3;
-  v4 = [v6 copy];
+  pointsCopy = points;
+  v4 = [pointsCopy copy];
   targetPoints = self->_targetPoints;
   self->_targetPoints = v4;
 }
@@ -260,19 +260,19 @@ LABEL_7:
   return v3;
 }
 
-+ (void)downloadModelForTests:(id)a3
++ (void)downloadModelForTests:(id)tests
 {
-  v5 = a3;
+  testsCopy = tests;
   v3 = objc_alloc_init(VNModelCatalogBridgingInterface);
   v4 = [(VNModelCatalogBridgingInterface *)v3 foregroundBackgroundSegmentationModelBundleURLWithError:0];
   if (v4)
   {
-    v5[2](v5, 0);
+    testsCopy[2](testsCopy, 0);
   }
 
   else
   {
-    [(VNModelCatalogBridgingInterface *)v3 downloadForegroundBackgroundSegmentationModelBundleWithCompletionHandler:v5];
+    [(VNModelCatalogBridgingInterface *)v3 downloadForegroundBackgroundSegmentationModelBundleWithCompletionHandler:testsCopy];
   }
 }
 

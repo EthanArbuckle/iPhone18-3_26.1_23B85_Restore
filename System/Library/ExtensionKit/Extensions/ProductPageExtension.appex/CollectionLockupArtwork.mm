@@ -1,5 +1,5 @@
 @interface CollectionLockupArtwork
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -14,16 +14,16 @@
   sub_1004D4530(v4);
   sub_10000CF78(v4, v4[3]);
   sub_10076422C();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   sub_10076E0EC();
 
   sub_10000CD74(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = [(CollectionLockupArtwork *)v3 traitCollection];
+  selfCopy = self;
+  traitCollection = [(CollectionLockupArtwork *)selfCopy traitCollection];
   sub_1004D4530(v11);
   sub_10000CF78(v11, v11[3]);
   sub_10076E0FC();

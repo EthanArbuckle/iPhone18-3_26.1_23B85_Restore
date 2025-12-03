@@ -2,13 +2,13 @@
 + (id)sortKey;
 + (id)statusItemClasses;
 - (BOOL)_hasRequiredStatusItems;
-- (BOOL)shouldEncapsulateItem:(id)a3;
+- (BOOL)shouldEncapsulateItem:(id)item;
 - (NSSet)items;
-- (id)_statusItemOfClass:(Class)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addItem:(id)a3;
-- (void)removeItem:(id)a3;
+- (id)_statusItemOfClass:(Class)class;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addItem:(id)item;
+- (void)removeItem:(id)item;
 @end
 
 @implementation HFAbstractGroupedStatusItem
@@ -29,14 +29,14 @@
   return v3;
 }
 
-- (BOOL)shouldEncapsulateItem:(id)a3
+- (BOOL)shouldEncapsulateItem:(id)item
 {
-  v3 = a3;
-  v4 = [objc_opt_class() statusItemClasses];
-  if ([v4 containsObject:objc_opt_class()])
+  itemCopy = item;
+  statusItemClasses = [objc_opt_class() statusItemClasses];
+  if ([statusItemClasses containsObject:objc_opt_class()])
   {
-    v5 = [v3 latestResults];
-    v6 = [v5 objectForKeyedSubscript:@"hidden"];
+    latestResults = [itemCopy latestResults];
+    v6 = [latestResults objectForKeyedSubscript:@"hidden"];
     v7 = [v6 BOOLValue] ^ 1;
   }
 
@@ -48,9 +48,9 @@
   return v7;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v7 = a3;
+  itemCopy = item;
   if (!self->_allItems)
   {
     v4 = [MEMORY[0x277CBEB58] set];
@@ -58,48 +58,48 @@
     self->_allItems = v4;
   }
 
-  v6 = [(HFAbstractGroupedStatusItem *)self allItems];
-  [v6 addObject:v7];
+  allItems = [(HFAbstractGroupedStatusItem *)self allItems];
+  [allItems addObject:itemCopy];
 }
 
-- (void)removeItem:(id)a3
+- (void)removeItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HFAbstractGroupedStatusItem *)self allItems];
-  [v5 removeObject:v4];
+  itemCopy = item;
+  allItems = [(HFAbstractGroupedStatusItem *)self allItems];
+  [allItems removeObject:itemCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = HFAbstractGroupedStatusItem;
   v5 = [(HFStatusItem *)&v9 copyWithZone:?];
-  v6 = [(HFAbstractGroupedStatusItem *)self allItems];
-  v7 = [v6 copyWithZone:a3];
+  allItems = [(HFAbstractGroupedStatusItem *)self allItems];
+  v7 = [allItems copyWithZone:zone];
   [v5 setAllItems:v7];
 
   return v5;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (-[HFAbstractGroupedStatusItem _hasRequiredStatusItems](self, "_hasRequiredStatusItems") && ([v4 objectForKey:HFItemUpdateOptionFastInitialUpdate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "BOOLValue"), v5, !v6))
+  optionsCopy = options;
+  if (-[HFAbstractGroupedStatusItem _hasRequiredStatusItems](self, "_hasRequiredStatusItems") && ([optionsCopy objectForKey:HFItemUpdateOptionFastInitialUpdate], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "BOOLValue"), v5, !v6))
   {
     v11 = objc_alloc_init(MEMORY[0x277D2C900]);
-    v12 = [(HFAbstractGroupedStatusItem *)self allItems];
+    allItems = [(HFAbstractGroupedStatusItem *)self allItems];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __59__HFAbstractGroupedStatusItem__subclass_updateWithOptions___block_invoke;
     v27[3] = &unk_277DF4310;
-    v28 = v4;
-    v13 = [v12 na_map:v27];
+    v28 = optionsCopy;
+    v13 = [allItems na_map:v27];
 
     v14 = MEMORY[0x277D2C900];
-    v15 = [v13 allObjects];
-    v16 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v17 = [v14 combineAllFutures:v15 ignoringErrors:1 scheduler:v16];
+    allObjects = [v13 allObjects];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v17 = [v14 combineAllFutures:allObjects ignoringErrors:1 scheduler:mainThreadScheduler];
 
     objc_initWeak(&location, self);
     v23[0] = MEMORY[0x277D85DD0];
@@ -309,13 +309,13 @@ void __59__HFAbstractGroupedStatusItem__subclass_updateWithOptions___block_invok
 
 - (BOOL)_hasRequiredStatusItems
 {
-  v3 = [objc_opt_class() statusItemClasses];
+  statusItemClasses = [objc_opt_class() statusItemClasses];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __54__HFAbstractGroupedStatusItem__hasRequiredStatusItems__block_invoke;
   v5[3] = &unk_277DF9908;
   v5[4] = self;
-  LOBYTE(self) = [v3 na_any:v5];
+  LOBYTE(self) = [statusItemClasses na_any:v5];
 
   return self ^ 1;
 }
@@ -328,23 +328,23 @@ BOOL __54__HFAbstractGroupedStatusItem__hasRequiredStatusItems__block_invoke(uin
   return v3;
 }
 
-- (id)_statusItemOfClass:(Class)a3
+- (id)_statusItemOfClass:(Class)class
 {
-  v4 = [(HFAbstractGroupedStatusItem *)self allItems];
+  allItems = [(HFAbstractGroupedStatusItem *)self allItems];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HFAbstractGroupedStatusItem__statusItemOfClass___block_invoke;
   v7[3] = &__block_descriptor_40_e22_B16__0__HFStatusItem_8lu32l8;
-  v7[4] = a3;
-  v5 = [v4 na_firstObjectPassingTest:v7];
+  v7[4] = class;
+  v5 = [allItems na_firstObjectPassingTest:v7];
 
   return v5;
 }
 
 + (id)statusItemClasses
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractGroupedStatusItem.m" lineNumber:160 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractGroupedStatusItem statusItemClasses]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractGroupedStatusItem.m" lineNumber:160 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractGroupedStatusItem statusItemClasses]", objc_opt_class()}];
 
   v5 = MEMORY[0x277CBEB98];
 
@@ -353,8 +353,8 @@ BOOL __54__HFAbstractGroupedStatusItem__hasRequiredStatusItems__block_invoke(uin
 
 + (id)sortKey
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"HFAbstractGroupedStatusItem.m" lineNumber:166 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractGroupedStatusItem sortKey]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractGroupedStatusItem.m" lineNumber:166 description:{@"%s is an abstract method that must be overriden by subclass %@", "+[HFAbstractGroupedStatusItem sortKey]", objc_opt_class()}];
 
   return 0;
 }

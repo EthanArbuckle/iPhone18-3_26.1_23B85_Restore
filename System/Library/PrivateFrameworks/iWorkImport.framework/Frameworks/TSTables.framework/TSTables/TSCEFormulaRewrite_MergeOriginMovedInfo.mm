@@ -1,52 +1,52 @@
 @interface TSCEFormulaRewrite_MergeOriginMovedInfo
-- (TSCEFormulaRewrite_MergeOriginMovedInfo)initWithMergeOriginsMap:(const void *)a3 reverseMap:(const void *)a4;
+- (TSCEFormulaRewrite_MergeOriginMovedInfo)initWithMergeOriginsMap:(const void *)map reverseMap:(const void *)reverseMap;
 - (id).cxx_construct;
 - (id)description;
-- (id)initFromMessage:(const void *)a3;
-- (void)saveToMessage:(void *)a3;
+- (id)initFromMessage:(const void *)message;
+- (void)saveToMessage:(void *)message;
 @end
 
 @implementation TSCEFormulaRewrite_MergeOriginMovedInfo
 
-- (TSCEFormulaRewrite_MergeOriginMovedInfo)initWithMergeOriginsMap:(const void *)a3 reverseMap:(const void *)a4
+- (TSCEFormulaRewrite_MergeOriginMovedInfo)initWithMergeOriginsMap:(const void *)map reverseMap:(const void *)reverseMap
 {
-  v7 = objc_msgSend_init(self, a2, a3, a4, v4);
+  v7 = objc_msgSend_init(self, a2, map, reverseMap, v4);
   v8 = v7;
   if (v7)
   {
     v9 = (v7 + 8);
-    if ((v8 + 8) != a3)
+    if ((v8 + 8) != map)
     {
-      *(v8 + 40) = *(a3 + 8);
-      sub_2214C0E20(v9, *(a3 + 2), 0);
+      *(v8 + 40) = *(map + 8);
+      sub_2214C0E20(v9, *(map + 2), 0);
     }
 
-    if ((v8 + 48) != a4)
+    if ((v8 + 48) != reverseMap)
     {
-      *(v8 + 80) = *(a4 + 8);
-      sub_2214C0E20((v8 + 48), *(a4 + 2), 0);
+      *(v8 + 80) = *(reverseMap + 8);
+      sub_2214C0E20((v8 + 48), *(reverseMap + 2), 0);
     }
   }
 
   return v8;
 }
 
-- (id)initFromMessage:(const void *)a3
+- (id)initFromMessage:(const void *)message
 {
   memset(v16, 0, sizeof(v16));
   v17 = 1065353216;
   memset(v14, 0, sizeof(v14));
   v15 = 1065353216;
-  if (*(a3 + 4) >= 1)
+  if (*(message + 4) >= 1)
   {
     v6 = 0;
     do
     {
       v13 = 0;
-      v7 = *(*(a3 + 5) + 4 * v6) | (*(*(a3 + 3) + 4 * v6) << 32);
+      v7 = *(*(message + 5) + 4 * v6) | (*(*(message + 3) + 4 * v6) << 32);
       v12 = 0;
       v13 = v7;
-      v12 = *(*(a3 + 9) + 4 * v6) | (*(*(a3 + 7) + 4 * v6) << 32);
+      v12 = *(*(message + 9) + 4 * v6) | (*(*(message + 7) + 4 * v6) << 32);
       v18 = &v13;
       v8 = sub_2214C13E4(v16, &v13);
       v8[3] = v12;
@@ -56,7 +56,7 @@
       ++v6;
     }
 
-    while (v6 < *(a3 + 4));
+    while (v6 < *(message + 4));
   }
 
   v10 = objc_msgSend_initWithMergeOriginsMap_reverseMap_(self, a2, v16, v14, v3);
@@ -65,74 +65,74 @@
   return v10;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
   for (i = self->_mergeOriginsMap.__table_.__first_node_.__next_; i; i = *i)
   {
     v5 = *(i + 10);
-    v6 = *(a3 + 4);
-    if (v6 == *(a3 + 5))
+    v6 = *(message + 4);
+    if (v6 == *(message + 5))
     {
       v7 = v6 + 1;
-      sub_2210BBC64(a3 + 4, v6 + 1);
-      *(*(a3 + 3) + 4 * v6) = v5;
+      sub_2210BBC64(message + 4, v6 + 1);
+      *(*(message + 3) + 4 * v6) = v5;
     }
 
     else
     {
-      *(*(a3 + 3) + 4 * v6) = v5;
+      *(*(message + 3) + 4 * v6) = v5;
       v7 = v6 + 1;
     }
 
-    *(a3 + 4) = v7;
+    *(message + 4) = v7;
     v8 = i[4];
-    v9 = *(a3 + 8);
-    if (v9 == *(a3 + 9))
+    v9 = *(message + 8);
+    if (v9 == *(message + 9))
     {
       v10 = v9 + 1;
-      sub_2210BBC64(a3 + 8, v9 + 1);
-      *(*(a3 + 5) + 4 * v9) = v8;
+      sub_2210BBC64(message + 8, v9 + 1);
+      *(*(message + 5) + 4 * v9) = v8;
     }
 
     else
     {
-      *(*(a3 + 5) + 4 * v9) = v8;
+      *(*(message + 5) + 4 * v9) = v8;
       v10 = v9 + 1;
     }
 
-    *(a3 + 8) = v10;
+    *(message + 8) = v10;
     v11 = *(i + 14);
-    v12 = *(a3 + 12);
-    if (v12 == *(a3 + 13))
+    v12 = *(message + 12);
+    if (v12 == *(message + 13))
     {
       v13 = v12 + 1;
-      sub_2210BBC64(a3 + 12, v12 + 1);
-      *(*(a3 + 7) + 4 * v12) = v11;
+      sub_2210BBC64(message + 12, v12 + 1);
+      *(*(message + 7) + 4 * v12) = v11;
     }
 
     else
     {
-      *(*(a3 + 7) + 4 * v12) = v11;
+      *(*(message + 7) + 4 * v12) = v11;
       v13 = v12 + 1;
     }
 
-    *(a3 + 12) = v13;
+    *(message + 12) = v13;
     v14 = i[6];
-    v15 = *(a3 + 16);
-    if (v15 == *(a3 + 17))
+    v15 = *(message + 16);
+    if (v15 == *(message + 17))
     {
       v16 = v15 + 1;
-      sub_2210BBC64(a3 + 16, v15 + 1);
-      *(*(a3 + 9) + 4 * v15) = v14;
+      sub_2210BBC64(message + 16, v15 + 1);
+      *(*(message + 9) + 4 * v15) = v14;
     }
 
     else
     {
-      *(*(a3 + 9) + 4 * v15) = v14;
+      *(*(message + 9) + 4 * v15) = v14;
       v16 = v15 + 1;
     }
 
-    *(a3 + 16) = v16;
+    *(message + 16) = v16;
   }
 }
 

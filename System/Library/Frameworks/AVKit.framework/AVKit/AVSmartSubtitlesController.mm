@@ -1,19 +1,19 @@
 @interface AVSmartSubtitlesController
 - (AVSmartSubtitlesController)init;
 - (AVSmartSubtitlesControllerDelegate)delegate;
-- (BOOL)_toggleCaptions:(BOOL)a3;
+- (BOOL)_toggleCaptions:(BOOL)captions;
 - (BOOL)smartSubtitlesActive;
 - (void)__transitionToDisplayingCaptionsIfAble;
 - (void)_performSkipBackDelegateCallback;
-- (void)_setPlayerTimeObserver:(id *)a1;
+- (void)_setPlayerTimeObserver:(id *)observer;
 - (void)_updateSubtitlesOnMuteIfNeeded;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setPlayerController:(id)a3;
-- (void)setState:(int64_t)a3;
-- (void)setSubtitlesOnMuteActive:(BOOL)a3;
-- (void)updatePlayerVolumeToPlayerMuted:(BOOL)a3;
-- (void)userRequestedSeekWithTimeInterval:(double)a3;
+- (void)setPlayerController:(id)controller;
+- (void)setState:(int64_t)state;
+- (void)setSubtitlesOnMuteActive:(BOOL)active;
+- (void)updatePlayerVolumeToPlayerMuted:(BOOL)muted;
+- (void)userRequestedSeekWithTimeInterval:(double)interval;
 - (void)userRequestedSmartSubtitlesHiddenIfActive;
 @end
 
@@ -26,20 +26,20 @@
   return WeakRetained;
 }
 
-- (BOOL)_toggleCaptions:(BOOL)a3
+- (BOOL)_toggleCaptions:(BOOL)captions
 {
-  v3 = a3;
-  v4 = [(AVSmartSubtitlesController *)self playerController];
-  [v4 setMediaOptionCriteriaAlwaysOn:v3];
+  captionsCopy = captions;
+  playerController = [(AVSmartSubtitlesController *)self playerController];
+  [playerController setMediaOptionCriteriaAlwaysOn:captionsCopy];
 
-  return v3;
+  return captionsCopy;
 }
 
 - (void)__transitionToDisplayingCaptionsIfAble
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(AVSmartSubtitlesController *)self playerController];
-  v4 = v3;
+  playerController = [(AVSmartSubtitlesController *)self playerController];
+  v4 = playerController;
   if (self->_currentSkipBackTimeInterval > 30.0)
   {
     v5 = _AVLog();
@@ -61,7 +61,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (![v3 isPlaying])
+  if (![playerController isPlaying])
   {
     v5 = _AVLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -79,10 +79,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v10 = [v4 timeControlStatus];
+  timeControlStatus = [v4 timeControlStatus];
   v5 = _AVLog();
   v11 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v10 == 1)
+  if (timeControlStatus == 1)
   {
     if (v11)
     {
@@ -114,10 +114,10 @@ LABEL_13:
 - (void)_performSkipBackDelegateCallback
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = [(AVSmartSubtitlesController *)self delegate];
+  delegate = [(AVSmartSubtitlesController *)self delegate];
   [(AVSmartSubtitlesController *)self skipBackSeekDelta];
   v5 = v4;
-  v6 = (*&v4 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || v3 == 0;
+  v6 = (*&v4 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL || delegate == 0;
   if (!v6 && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v7 = _AVLog();
@@ -128,7 +128,7 @@ LABEL_13:
       _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "%s Captions were toggled in response to a skip back, notifying delegate", &v8, 0xCu);
     }
 
-    [v3 smartSubtitlesController:self didToggleSubtitlesOnSkipBackForTimeInterval:v5];
+    [delegate smartSubtitlesController:self didToggleSubtitlesOnSkipBackForTimeInterval:v5];
   }
 }
 
@@ -149,16 +149,16 @@ LABEL_13:
   if (result)
   {
     v1 = result;
-    v2 = [result playerController];
-    v3 = [v2 captionAppearanceDisplayType];
+    playerController = [result playerController];
+    captionAppearanceDisplayType = [playerController captionAppearanceDisplayType];
 
-    v4 = [v1 delegate];
+    delegate = [v1 delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [v1 delegate];
-      v7 = [v6 observesMediaSelectionForSmartSubtitlesController:v1];
+      delegate2 = [v1 delegate];
+      v7 = [delegate2 observesMediaSelectionForSmartSubtitlesController:v1];
     }
 
     else
@@ -169,12 +169,12 @@ LABEL_13:
     v8 = +[AVKitGlobalSettings shared];
     if ([v8 subtitlesOnMuteEnabled])
     {
-      v9 = [v1 playerController];
-      v10 = [v9 hasLegibleMediaSelectionOptions] & v7;
+      playerController2 = [v1 playerController];
+      v10 = [playerController2 hasLegibleMediaSelectionOptions] & v7;
 
       if (v10)
       {
-        if ([v1 state] == 3 || v3 != 2 || (objc_msgSend(v1, "playerMuted") & 1) != 0)
+        if ([v1 state] == 3 || captionAppearanceDisplayType != 2 || (objc_msgSend(v1, "playerMuted") & 1) != 0)
         {
           result = [v1 playerMuted];
           if (!result)
@@ -228,7 +228,7 @@ LABEL_13:
 
     result = [v1 setSubtitlesOnMuteActive:0];
     v12 = 0;
-    if (v3 == 2)
+    if (captionAppearanceDisplayType == 2)
     {
       return [v1 _toggleCaptions:v12];
     }
@@ -237,15 +237,15 @@ LABEL_13:
   return result;
 }
 
-- (void)userRequestedSeekWithTimeInterval:(double)a3
+- (void)userRequestedSeekWithTimeInterval:(double)interval
 {
-  v5 = [(AVSmartSubtitlesController *)self delegate];
+  delegate = [(AVSmartSubtitlesController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVSmartSubtitlesController *)self delegate];
-    v8 = [v7 observesMediaSelectionForSmartSubtitlesController:self];
+    delegate2 = [(AVSmartSubtitlesController *)self delegate];
+    v8 = [delegate2 observesMediaSelectionForSmartSubtitlesController:self];
 
     v9 = v8 ^ 1;
   }
@@ -258,19 +258,19 @@ LABEL_13:
   if (![(AVSmartSubtitlesController *)self isSubtitlesOnMuteActive]&& (v9 & 1) == 0)
   {
     v10 = +[AVKitGlobalSettings shared];
-    v11 = [v10 skipBackCaptionsEnabled];
+    skipBackCaptionsEnabled = [v10 skipBackCaptionsEnabled];
 
-    if (v11)
+    if (skipBackCaptionsEnabled)
     {
-      v12 = [(AVSmartSubtitlesController *)self playerController];
-      v13 = [v12 hasLegibleMediaSelectionOptions];
+      playerController = [(AVSmartSubtitlesController *)self playerController];
+      hasLegibleMediaSelectionOptions = [playerController hasLegibleMediaSelectionOptions];
 
-      if (fabs(a3) != INFINITY)
+      if (fabs(interval) != INFINITY)
       {
-        if (v13)
+        if (hasLegibleMediaSelectionOptions)
         {
           [(AVSmartSubtitlesController *)self setState:1];
-          self->_currentSkipBackTimeInterval = self->_currentSkipBackTimeInterval - a3;
+          self->_currentSkipBackTimeInterval = self->_currentSkipBackTimeInterval - interval;
           [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel___transitionToDisplayingCaptionsIfAble object:0];
 
           [(AVSmartSubtitlesController *)self performSelector:sel___transitionToDisplayingCaptionsIfAble withObject:0 afterDelay:1.25];
@@ -280,9 +280,9 @@ LABEL_13:
   }
 }
 
-- (void)updatePlayerVolumeToPlayerMuted:(BOOL)a3
+- (void)updatePlayerVolumeToPlayerMuted:(BOOL)muted
 {
-  [(AVSmartSubtitlesController *)self setPlayerMuted:a3];
+  [(AVSmartSubtitlesController *)self setPlayerMuted:muted];
 
   [(AVSmartSubtitlesController *)self _updateSubtitlesOnMuteIfNeeded];
 }
@@ -291,13 +291,13 @@ LABEL_13:
 {
   v11 = *MEMORY[0x1E69E9840];
   v2 = +[AVKitGlobalSettings shared];
-  v3 = [v2 subtitleAutomaticallyEnabledState];
+  subtitleAutomaticallyEnabledState = [v2 subtitleAutomaticallyEnabledState];
 
   v4 = _AVLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "YES";
-    if (!v3)
+    if (!subtitleAutomaticallyEnabledState)
     {
       v5 = "NO";
     }
@@ -309,49 +309,49 @@ LABEL_13:
     _os_log_impl(&dword_18B49C000, v4, OS_LOG_TYPE_DEFAULT, "%s AVSubtitleAutomaticallyEnabledState:%{public}s", &v7, 0x16u);
   }
 
-  return v3 != 0;
+  return subtitleAutomaticallyEnabledState != 0;
 }
 
-- (void)setSubtitlesOnMuteActive:(BOOL)a3
+- (void)setSubtitlesOnMuteActive:(BOOL)active
 {
-  if (self->_subtitlesOnMuteActive != a3)
+  if (self->_subtitlesOnMuteActive != active)
   {
-    self->_subtitlesOnMuteActive = a3;
+    self->_subtitlesOnMuteActive = active;
   }
 }
 
-- (void)setPlayerController:(id)a3
+- (void)setPlayerController:(id)controller
 {
-  v5 = a3;
-  if (self->_playerController != v5)
+  controllerCopy = controller;
+  if (self->_playerController != controllerCopy)
   {
-    v16 = v5;
+    v16 = controllerCopy;
     [(AVObservationController *)self->_smartSubtitlesControllerKVO stopAllObservation];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
     [(AVSmartSubtitlesController *)self setState:0];
-    objc_storeStrong(&self->_playerController, a3);
-    v5 = v16;
+    objc_storeStrong(&self->_playerController, controller);
+    controllerCopy = v16;
     if (v16)
     {
-      v7 = [(AVSmartSubtitlesController *)self smartSubtitlesControllerKVO];
-      v8 = [v7 startObserving:self keyPath:@"playerController.timeControlStatus" observationHandler:&__block_literal_global_27121];
-      v9 = [v7 startObserving:self keyPath:@"playerController.player.currentItem" observationHandler:&__block_literal_global_17_27123];
-      v10 = [v7 startObserving:self keyPath:@"playerController.currentLegibleMediaSelectionOption" includeInitialValue:0 observationHandler:&__block_literal_global_24_27125];
+      smartSubtitlesControllerKVO = [(AVSmartSubtitlesController *)self smartSubtitlesControllerKVO];
+      v8 = [smartSubtitlesControllerKVO startObserving:self keyPath:@"playerController.timeControlStatus" observationHandler:&__block_literal_global_27121];
+      v9 = [smartSubtitlesControllerKVO startObserving:self keyPath:@"playerController.player.currentItem" observationHandler:&__block_literal_global_17_27123];
+      v10 = [smartSubtitlesControllerKVO startObserving:self keyPath:@"playerController.currentLegibleMediaSelectionOption" includeInitialValue:0 observationHandler:&__block_literal_global_24_27125];
       v11 = +[AVKitGlobalSettings shared];
-      v12 = [v11 showsTVControls];
+      showsTVControls = [v11 showsTVControls];
 
-      if ((v12 & 1) == 0)
+      if ((showsTVControls & 1) == 0)
       {
-        v13 = [v7 startObserving:self keyPath:@"playerController.currentAssetIfReady" includeInitialValue:0 observationHandler:&__block_literal_global_31_27127];
-        [v7 startObservingNotificationForName:*MEMORY[0x1E69E4C98] object:0 notificationCenter:0 observationHandler:&__block_literal_global_35_27128];
-        v14 = [v7 startObserving:self keyPath:@"playerController.seeking" includeInitialValue:0 observationHandler:&__block_literal_global_42];
-        v15 = [v7 startObserving:self keyPath:@"playerController.hasLegibleMediaSelectionOptions" observationHandler:&__block_literal_global_48_27131];
+        v13 = [smartSubtitlesControllerKVO startObserving:self keyPath:@"playerController.currentAssetIfReady" includeInitialValue:0 observationHandler:&__block_literal_global_31_27127];
+        [smartSubtitlesControllerKVO startObservingNotificationForName:*MEMORY[0x1E69E4C98] object:0 notificationCenter:0 observationHandler:&__block_literal_global_35_27128];
+        v14 = [smartSubtitlesControllerKVO startObserving:self keyPath:@"playerController.seeking" includeInitialValue:0 observationHandler:&__block_literal_global_42];
+        v15 = [smartSubtitlesControllerKVO startObserving:self keyPath:@"playerController.hasLegibleMediaSelectionOptions" observationHandler:&__block_literal_global_48_27131];
       }
 
-      [v7 startObservingNotificationForName:*MEMORY[0x1E69E4C90] object:0 notificationCenter:0 observationHandler:&__block_literal_global_50_27132];
+      [smartSubtitlesControllerKVO startObservingNotificationForName:*MEMORY[0x1E69E4C90] object:0 notificationCenter:0 observationHandler:&__block_literal_global_50_27132];
 
-      v5 = v16;
+      controllerCopy = v16;
     }
   }
 }
@@ -693,20 +693,20 @@ void __48__AVSmartSubtitlesController__startObservations__block_invoke_2(uint64_
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  if (self->_state == a3)
+  if (self->_state == state)
   {
     return;
   }
 
-  self->_state = a3;
-  if (a3 <= 1)
+  self->_state = state;
+  if (state <= 1)
   {
-    if (a3)
+    if (state)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
         return;
       }
@@ -752,7 +752,7 @@ LABEL_22:
     return;
   }
 
-  if (a3 == 2)
+  if (state == 2)
   {
     v4 = _AVLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -765,7 +765,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
     return;
   }
@@ -818,8 +818,8 @@ LABEL_14:
   }
 
   objc_initWeak(&location, self);
-  v11 = [(AVSmartSubtitlesController *)self playerController];
-  v12 = [v11 player];
+  playerController = [(AVSmartSubtitlesController *)self playerController];
+  player = [playerController player];
   CMTimeMakeWithSeconds(&v16, 0.5, 1000000000);
   v13 = MEMORY[0x1E69E96A0];
   *buf = MEMORY[0x1E69E9820];
@@ -828,7 +828,7 @@ LABEL_14:
   v19 = COERCE_DOUBLE(&unk_1E72095A8);
   objc_copyWeak(v20, &location);
   v20[1] = *&timeOfSeekStart;
-  v14 = [v12 addPeriodicTimeObserverForInterval:&v16 queue:MEMORY[0x1E69E96A0] usingBlock:buf];
+  v14 = [player addPeriodicTimeObserverForInterval:&v16 queue:MEMORY[0x1E69E96A0] usingBlock:buf];
 
   [(AVSmartSubtitlesController *)&self->super.isa _setPlayerTimeObserver:v14];
   v15 = [(AVSmartSubtitlesController *)self _toggleCaptions:1];
@@ -847,20 +847,20 @@ LABEL_14:
   objc_destroyWeak(&location);
 }
 
-- (void)_setPlayerTimeObserver:(id *)a1
+- (void)_setPlayerTimeObserver:(id *)observer
 {
   v4 = a2;
-  if (a1)
+  if (observer)
   {
     v7 = v4;
-    if (a1[10])
+    if (observer[10])
     {
-      v5 = [a1 playerController];
-      v6 = [v5 player];
-      [v6 removeTimeObserver:a1[10]];
+      playerController = [observer playerController];
+      player = [playerController player];
+      [player removeTimeObserver:observer[10]];
     }
 
-    objc_storeStrong(a1 + 10, a2);
+    objc_storeStrong(observer + 10, a2);
     v4 = v7;
   }
 }

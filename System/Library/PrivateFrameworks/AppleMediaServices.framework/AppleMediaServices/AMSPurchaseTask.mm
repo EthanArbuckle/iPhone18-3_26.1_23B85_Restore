@@ -1,37 +1,37 @@
 @interface AMSPurchaseTask
 + (AMSBagKeySet)bagKeySet;
-+ (BOOL)shouldPreauthenticatePurchaseWithInfo:(id)a3;
-+ (id)_filterResponseDictionary:(id)a3 bag:(id)a4;
-+ (id)_filterResponseDictionary:(id)a3 keyPaths:(id)a4;
-+ (id)engagementEventWithInfo:(id)a3 bag:(id)a4 responseDictionary:(id)a5 error:(id)a6;
-+ (void)_captureBugReportForPurchaseEventEnqueueFailure:(id)a3 process:(id)a4;
++ (BOOL)shouldPreauthenticatePurchaseWithInfo:(id)info;
++ (id)_filterResponseDictionary:(id)dictionary bag:(id)bag;
++ (id)_filterResponseDictionary:(id)dictionary keyPaths:(id)paths;
++ (id)engagementEventWithInfo:(id)info bag:(id)bag responseDictionary:(id)dictionary error:(id)error;
++ (void)_captureBugReportForPurchaseEventEnqueueFailure:(id)failure process:(id)process;
 - (AMSPurchaseDelegate)delegate;
-- (AMSPurchaseTask)initWithPurchase:(id)a3 bag:(id)a4;
+- (AMSPurchaseTask)initWithPurchase:(id)purchase bag:(id)bag;
 - (BOOL)_shouldAttemptCardEnrollment;
-- (BOOL)_shouldGenerateAFDSWithPurchaseInfo:(id)a3;
+- (BOOL)_shouldGenerateAFDSWithPurchaseInfo:(id)info;
 - (NSNumber)hostProcessIdentifier;
-- (id)_buySignatureJSONWithFinalizedBlindedItems:(id)a3;
+- (id)_buySignatureJSONWithFinalizedBlindedItems:(id)items;
 - (id)_decorateBuyParamsWithCohortParams;
-- (id)_determineIfShouldAttachPaymentServicesURL:(id)a3;
+- (id)_determineIfShouldAttachPaymentServicesURL:(id)l;
 - (id)_determineIfShouldSendBlindedData;
-- (id)_finalizeBlindingWithPurchaseInfo:(id)a3 responseDictionary:(id)a4 purchaseResult:(id)a5 outError:(id *)a6;
+- (id)_finalizeBlindingWithPurchaseInfo:(id)info responseDictionary:(id)dictionary purchaseResult:(id)result outError:(id *)error;
 - (id)_generateBlindedSignature;
 - (id)_promptForAccount;
-- (id)_recordEngagementEventWithInfo:(id)a3 responseDictionary:(id)a4 finalizedBlindedItems:(id)a5 error:(id)a6;
-- (id)_runAuthenticateRequest:(id)a3;
-- (id)_runDialogRequest:(id)a3;
-- (id)_shouldFinalizeBlindedDataWithResponseDictionary:(id)a3;
+- (id)_recordEngagementEventWithInfo:(id)info responseDictionary:(id)dictionary finalizedBlindedItems:(id)items error:(id)error;
+- (id)_runAuthenticateRequest:(id)request;
+- (id)_runDialogRequest:(id)request;
+- (id)_shouldFinalizeBlindedDataWithResponseDictionary:(id)dictionary;
 - (id)performPreauthenticate;
 - (id)performPurchase;
 - (id)performPurchaseRequest;
 - (id)preauthenticateOptions;
-- (void)_partialFDSWithInfo:(id)a3 bag:(id)a4 action:(unint64_t)a5;
-- (void)_regenerateFDSWithInfo:(id)a3 bag:(id)a4 action:(unint64_t)a5;
+- (void)_partialFDSWithInfo:(id)info bag:(id)bag action:(unint64_t)action;
+- (void)_regenerateFDSWithInfo:(id)info bag:(id)bag action:(unint64_t)action;
 - (void)_saveBlindedData;
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)generateFDSWithInfo:(id)a3 bag:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setHostProcessIdentifier:(id)a3;
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)generateFDSWithInfo:(id)info bag:(id)bag;
+- (void)setDelegate:(id)delegate;
+- (void)setHostProcessIdentifier:(id)identifier;
 @end
 
 @implementation AMSPurchaseTask
@@ -43,18 +43,18 @@
   return v2;
 }
 
-- (void)generateFDSWithInfo:(id)a3 bag:(id)a4
+- (void)generateFDSWithInfo:(id)info bag:(id)bag
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 purchase];
-  v9 = [v8 logUUID];
+  infoCopy = info;
+  bagCopy = bag;
+  purchase = [infoCopy purchase];
+  logUUID = [purchase logUUID];
 
-  v10 = [v6 purchase];
-  v11 = [v10 purchaseType];
+  purchase2 = [infoCopy purchase];
+  purchaseType = [purchase2 purchaseType];
 
-  if (v11 == 5)
+  if (purchaseType == 5)
   {
     v12 = +[AMSLogConfig sharedConfig];
     if (!v12)
@@ -62,43 +62,43 @@
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [(AMSGenerateFDSTask *)v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
+    oSLogObject = [(AMSGenerateFDSTask *)v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
       v27 = objc_opt_class();
       v28 = 2114;
-      v29 = v9;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Skipping AFDS for VPP download", buf, 0x16u);
+      v29 = logUUID;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] Skipping AFDS for VPP download", buf, 0x16u);
     }
   }
 
   else
   {
-    v14 = [[AMSGenerateFDSTask alloc] initWithPurchaseInfo:v6 bag:v7];
+    v14 = [[AMSGenerateFDSTask alloc] initWithPurchaseInfo:infoCopy bag:bagCopy];
     [(AMSTask *)v14 setRunMode:1];
-    v13 = [(AMSGenerateFDSTask *)v14 runTask];
+    oSLogObject = [(AMSGenerateFDSTask *)v14 runTask];
     objc_initWeak(buf, self);
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __48__AMSPurchaseTask_FDS__generateFDSWithInfo_bag___block_invoke;
     v20[3] = &unk_1E73BB530;
     objc_copyWeak(&v25, buf);
-    v15 = v9;
+    v15 = logUUID;
     v21 = v15;
     v12 = v14;
     v22 = v12;
-    v16 = v6;
+    v16 = infoCopy;
     v23 = v16;
-    v24 = v7;
-    [v13 addErrorBlock:v20];
+    v24 = bagCopy;
+    [oSLogObject addErrorBlock:v20];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __48__AMSPurchaseTask_FDS__generateFDSWithInfo_bag___block_invoke_3;
     v17[3] = &unk_1E73BB558;
     v18 = v15;
     v19 = v16;
-    [v13 addSuccessBlock:v17];
+    [oSLogObject addSuccessBlock:v17];
 
     objc_destroyWeak(&v25);
     objc_destroyWeak(buf);
@@ -183,48 +183,48 @@ void __48__AMSPurchaseTask_FDS__generateFDSWithInfo_bag___block_invoke_3(uint64_
   v9 = [AMSFDSService cacheFDS:v3 forPurchaseInfo:*(a1 + 40)];
 }
 
-- (void)_partialFDSWithInfo:(id)a3 bag:(id)a4 action:(unint64_t)a5
+- (void)_partialFDSWithInfo:(id)info bag:(id)bag action:(unint64_t)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 purchase];
-  v11 = [v10 logUUID];
+  infoCopy = info;
+  bagCopy = bag;
+  purchase = [infoCopy purchase];
+  logUUID = [purchase logUUID];
 
   v12 = objc_alloc_init(AMSFDSOptions);
-  [(AMSFDSOptions *)v12 setAction:a5];
-  v13 = [v8 clientInfo];
-  [(AMSFDSOptions *)v12 setClientInfo:v13];
+  [(AMSFDSOptions *)v12 setAction:action];
+  clientInfo = [infoCopy clientInfo];
+  [(AMSFDSOptions *)v12 setClientInfo:clientInfo];
 
   v14 = [AMSFDSRequest alloc];
-  v15 = [v8 purchase];
-  v16 = [v15 uniqueIdentifier];
-  v17 = [v8 account];
-  v18 = [(AMSFDSRequest *)v14 initWithPurchaseIdentifier:v16 account:v17 options:v12];
+  purchase2 = [infoCopy purchase];
+  uniqueIdentifier = [purchase2 uniqueIdentifier];
+  account = [infoCopy account];
+  v18 = [(AMSFDSRequest *)v14 initWithPurchaseIdentifier:uniqueIdentifier account:account options:v12];
 
-  [(AMSFDSRequest *)v18 setLogKey:v11];
-  v19 = [[AMSGeneratePartialFDSTask alloc] initWithRequest:v18 bag:v9];
+  [(AMSFDSRequest *)v18 setLogKey:logUUID];
+  v19 = [[AMSGeneratePartialFDSTask alloc] initWithRequest:v18 bag:bagCopy];
 
   [(AMSTask *)v19 setRunMode:1];
-  v20 = [(AMSGeneratePartialFDSTask *)v19 runTask];
+  runTask = [(AMSGeneratePartialFDSTask *)v19 runTask];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __55__AMSPurchaseTask_FDS___partialFDSWithInfo_bag_action___block_invoke;
   v28[3] = &unk_1E73BB580;
   v28[4] = self;
-  v21 = v11;
+  v21 = logUUID;
   v29 = v21;
-  v30 = a5;
-  [v20 addErrorBlock:v28];
+  actionCopy = action;
+  [runTask addErrorBlock:v28];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __55__AMSPurchaseTask_FDS___partialFDSWithInfo_bag_action___block_invoke_10;
   v24[3] = &unk_1E73BB5A8;
-  v26 = v8;
-  v27 = a5;
+  v26 = infoCopy;
+  actionCopy2 = action;
   v25 = v21;
-  v22 = v8;
+  v22 = infoCopy;
   v23 = v21;
-  [v20 addSuccessBlock:v24];
+  [runTask addSuccessBlock:v24];
 }
 
 void __55__AMSPurchaseTask_FDS___partialFDSWithInfo_bag_action___block_invoke(uint64_t a1, void *a2)
@@ -287,48 +287,48 @@ void __55__AMSPurchaseTask_FDS___partialFDSWithInfo_bag_action___block_invoke_10
   v10 = [AMSFDSService cacheFDS:v3 forPurchaseInfo:a1[5]];
 }
 
-- (void)_regenerateFDSWithInfo:(id)a3 bag:(id)a4 action:(unint64_t)a5
+- (void)_regenerateFDSWithInfo:(id)info bag:(id)bag action:(unint64_t)action
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 purchase];
-  v11 = [v10 logUUID];
+  infoCopy = info;
+  bagCopy = bag;
+  purchase = [infoCopy purchase];
+  logUUID = [purchase logUUID];
 
   v12 = objc_alloc_init(AMSFDSOptions);
-  [(AMSFDSOptions *)v12 setAction:a5];
-  v13 = [v8 clientInfo];
-  [(AMSFDSOptions *)v12 setClientInfo:v13];
+  [(AMSFDSOptions *)v12 setAction:action];
+  clientInfo = [infoCopy clientInfo];
+  [(AMSFDSOptions *)v12 setClientInfo:clientInfo];
 
   v14 = [AMSFDSRequest alloc];
-  v15 = [v8 purchase];
-  v16 = [v15 uniqueIdentifier];
-  v17 = [v8 account];
-  v18 = [(AMSFDSRequest *)v14 initWithPurchaseIdentifier:v16 account:v17 options:v12];
+  purchase2 = [infoCopy purchase];
+  uniqueIdentifier = [purchase2 uniqueIdentifier];
+  account = [infoCopy account];
+  v18 = [(AMSFDSRequest *)v14 initWithPurchaseIdentifier:uniqueIdentifier account:account options:v12];
 
-  [(AMSFDSRequest *)v18 setLogKey:v11];
-  v19 = [[AMSGenerateFDSTask alloc] initWithRequest:v18 bag:v9];
+  [(AMSFDSRequest *)v18 setLogKey:logUUID];
+  v19 = [[AMSGenerateFDSTask alloc] initWithRequest:v18 bag:bagCopy];
 
   [(AMSTask *)v19 setRunMode:1];
-  v20 = [(AMSGenerateFDSTask *)v19 runTask];
+  runTask = [(AMSGenerateFDSTask *)v19 runTask];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __58__AMSPurchaseTask_FDS___regenerateFDSWithInfo_bag_action___block_invoke;
   v28[3] = &unk_1E73BB580;
   v28[4] = self;
-  v21 = v11;
+  v21 = logUUID;
   v29 = v21;
-  v30 = a5;
-  [v20 addErrorBlock:v28];
+  actionCopy = action;
+  [runTask addErrorBlock:v28];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __58__AMSPurchaseTask_FDS___regenerateFDSWithInfo_bag_action___block_invoke_11;
   v24[3] = &unk_1E73BB5A8;
-  v26 = v8;
-  v27 = a5;
+  v26 = infoCopy;
+  actionCopy2 = action;
   v25 = v21;
-  v22 = v8;
+  v22 = infoCopy;
   v23 = v21;
-  [v20 addSuccessBlock:v24];
+  [runTask addSuccessBlock:v24];
 }
 
 void __58__AMSPurchaseTask_FDS___regenerateFDSWithInfo_bag_action___block_invoke(uint64_t a1, void *a2)
@@ -391,10 +391,10 @@ void __58__AMSPurchaseTask_FDS___regenerateFDSWithInfo_bag_action___block_invoke
   v10 = [AMSFDSService cacheFDS:v3 forPurchaseInfo:a1[5]];
 }
 
-- (AMSPurchaseTask)initWithPurchase:(id)a3 bag:(id)a4
+- (AMSPurchaseTask)initWithPurchase:(id)purchase bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
+  purchaseCopy = purchase;
+  bagCopy = bag;
   v23.receiver = self;
   v23.super_class = AMSPurchaseTask;
   v8 = [(AMSTask *)&v23 init];
@@ -404,19 +404,19 @@ void __58__AMSPurchaseTask_FDS___regenerateFDSWithInfo_bag_action___block_invoke
     paymentSheetTaskClass = v8->_paymentSheetTaskClass;
     v8->_paymentSheetTaskClass = v9;
 
-    v11 = [[AMSPurchaseInfo alloc] initWithPurchase:v6];
+    v11 = [[AMSPurchaseInfo alloc] initWithPurchase:purchaseCopy];
     purchaseInfo = v8->_purchaseInfo;
     v8->_purchaseInfo = v11;
 
     [(AMSPurchaseInfo *)v8->_purchaseInfo setActivePurchaseTask:v8];
-    v13 = v7;
-    if (!v7)
+    v13 = bagCopy;
+    if (!bagCopy)
     {
       v13 = +[AMSPurchaseTask createBagForSubProfile];
     }
 
     objc_storeStrong(&v8->_bag, v13);
-    if (!v7)
+    if (!bagCopy)
     {
     }
 
@@ -441,62 +441,62 @@ void __58__AMSPurchaseTask_FDS___regenerateFDSWithInfo_bag_action___block_invoke
 
 - (AMSPurchaseDelegate)delegate
 {
-  v2 = [(AMSPurchaseTask *)self purchaseInfo];
-  v3 = [v2 delegate];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  delegate = [purchaseInfo delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(AMSPurchaseTask *)self purchaseInfo];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  [purchaseInfo setDelegate:delegateCopy];
 }
 
 - (NSNumber)hostProcessIdentifier
 {
-  v2 = [(AMSPurchaseTask *)self purchaseInfo];
-  v3 = [v2 hostProcessIdentifier];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  hostProcessIdentifier = [purchaseInfo hostProcessIdentifier];
 
-  return v3;
+  return hostProcessIdentifier;
 }
 
-- (void)setHostProcessIdentifier:(id)a3
+- (void)setHostProcessIdentifier:(id)identifier
 {
-  v5 = [a3 copy];
-  v4 = [(AMSPurchaseTask *)self purchaseInfo];
-  [v4 setHostProcessIdentifier:v5];
+  v5 = [identifier copy];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  [purchaseInfo setHostProcessIdentifier:v5];
 }
 
 - (BOOL)_shouldAttemptCardEnrollment
 {
-  v2 = [(AMSPurchaseTask *)self purchaseInfo];
-  v3 = [v2 purchase];
-  v4 = [v3 purchaseType];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  purchase = [purchaseInfo purchase];
+  purchaseType = [purchase purchaseType];
 
-  return (v4 > 5) | (9u >> v4) & 1;
+  return (purchaseType > 5) | (9u >> purchaseType) & 1;
 }
 
-- (BOOL)_shouldGenerateAFDSWithPurchaseInfo:(id)a3
+- (BOOL)_shouldGenerateAFDSWithPurchaseInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 account];
-  v5 = [v4 ams_isEphemeralAccount];
+  infoCopy = info;
+  account = [infoCopy account];
+  ams_isEphemeralAccount = [account ams_isEphemeralAccount];
 
-  if (v5 & 1) != 0 || ([v3 purchase], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isRedownload"), v6, (v7))
+  if (ams_isEphemeralAccount & 1) != 0 || ([infoCopy purchase], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isRedownload"), v6, (v7))
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v3 purchase];
-    v10 = [v9 purchaseType];
+    purchase = [infoCopy purchase];
+    purchaseType = [purchase purchaseType];
 
-    if (v10)
+    if (purchaseType)
     {
-      v11 = v10 == 3;
+      v11 = purchaseType == 3;
     }
 
     else
@@ -1338,20 +1338,20 @@ void __34__AMSPurchaseTask_performPurchase__block_invoke_87(uint64_t a1)
   }
 }
 
-+ (void)_captureBugReportForPurchaseEventEnqueueFailure:(id)a3 process:(id)a4
++ (void)_captureBugReportForPurchaseEventEnqueueFailure:(id)failure process:(id)process
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a3;
-  v9 = [[AMSAutoBugCaptureReport alloc] initWithDomain:@"AppleMediaServices" type:@"Purchase" subtype:@"Purchase Event" subtypeContext:@"Enqueue Failure" process:v7 thresholdValues:0];
+  processCopy = process;
+  failureCopy = failure;
+  v9 = [[AMSAutoBugCaptureReport alloc] initWithDomain:@"AppleMediaServices" type:@"Purchase" subtype:@"Purchase Event" subtypeContext:@"Enqueue Failure" process:processCopy thresholdValues:0];
   v10 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v10)
   {
     v10 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v10 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v10 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v12 = AMSLogKey();
     v13 = MEMORY[0x1E696AEC0];
@@ -1371,8 +1371,8 @@ void __34__AMSPurchaseTask_performPurchase__block_invoke_87(uint64_t a1)
     *buf = 138543618;
     v25 = v16;
     v26 = 2114;
-    v27 = v7;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Sending bug capture report for process %{public}@", buf, 0x16u);
+    v27 = processCopy;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Sending bug capture report for process %{public}@", buf, 0x16u);
     if (v12)
     {
 
@@ -1381,9 +1381,9 @@ void __34__AMSPurchaseTask_performPurchase__block_invoke_87(uint64_t a1)
   }
 
   v21 = @"error";
-  v17 = [v8 localizedDescription];
+  localizedDescription = [failureCopy localizedDescription];
 
-  v22 = v17;
+  v22 = localizedDescription;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
   v23 = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
@@ -1391,7 +1391,7 @@ void __34__AMSPurchaseTask_performPurchase__block_invoke_87(uint64_t a1)
   v20[1] = 3221225472;
   v20[2] = __75__AMSPurchaseTask__captureBugReportForPurchaseEventEnqueueFailure_process___block_invoke;
   v20[3] = &__block_descriptor_40_e53_v24__0__AMSAutoBugCaptureReportResponse_8__NSError_16l;
-  v20[4] = a1;
+  v20[4] = self;
   [(AMSAutoBugCaptureReport *)v9 captureWithDelay:v19 events:0 payload:0 actions:v20 completionHandler:0.0];
 }
 
@@ -1479,16 +1479,16 @@ LABEL_16:
   }
 }
 
-+ (id)_filterResponseDictionary:(id)a3 keyPaths:(id)a4
++ (id)_filterResponseDictionary:(id)dictionary keyPaths:(id)paths
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
+  pathsCopy = paths;
+  v6 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = pathsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -1517,30 +1517,30 @@ LABEL_16:
   return v12;
 }
 
-+ (id)_filterResponseDictionary:(id)a3 bag:(id)a4
++ (id)_filterResponseDictionary:(id)dictionary bag:(id)bag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dictionaryCopy = dictionary;
+  bagCopy = bag;
+  v8 = bagCopy;
+  if (dictionaryCopy)
   {
-    if (v7)
+    if (bagCopy)
     {
-      v9 = [v7 arrayForKey:@"purchase-event-filter-key-paths"];
-      v10 = [v9 valuePromise];
+      v9 = [bagCopy arrayForKey:@"purchase-event-filter-key-paths"];
+      valuePromise = [v9 valuePromise];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __49__AMSPurchaseTask__filterResponseDictionary_bag___block_invoke;
       v13[3] = &unk_1E73BB760;
-      v16 = a1;
-      v14 = v6;
+      selfCopy = self;
+      v14 = dictionaryCopy;
       v15 = &unk_1F0779C40;
-      v11 = [v10 continueWithBlock:v13];
+      v11 = [valuePromise continueWithBlock:v13];
     }
 
     else
     {
-      v9 = [a1 _filterResponseDictionary:v6 keyPaths:&unk_1F0779C40];
+      v9 = [self _filterResponseDictionary:dictionaryCopy keyPaths:&unk_1F0779C40];
       v11 = [AMSPromise promiseWithResult:v9];
     }
   }
@@ -1577,9 +1577,9 @@ id __49__AMSPurchaseTask__filterResponseDictionary_bag___block_invoke(uint64_t a
 {
   v4 = objc_alloc_init(AMSAuthenticateOptions);
   [(AMSAuthenticateOptions *)v4 setAuthenticationType:2];
-  v5 = [(AMSPurchaseTask *)self purchaseInfo];
-  v6 = [v5 clientInfo];
-  [(AMSAuthenticateOptions *)v4 setClientInfo:v6];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  clientInfo = [purchaseInfo clientInfo];
+  [(AMSAuthenticateOptions *)v4 setClientInfo:clientInfo];
 
   v7 = MEMORY[0x1E696AEC0];
   v8 = objc_opt_class();
@@ -1599,19 +1599,19 @@ id __49__AMSPurchaseTask__filterResponseDictionary_bag___block_invoke(uint64_t a
   return v14;
 }
 
-- (id)_shouldFinalizeBlindedDataWithResponseDictionary:(id)a3
+- (id)_shouldFinalizeBlindedDataWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(AMSPurchaseTask *)self bag];
   v6 = [v5 BOOLForKey:@"preventSendingBlindedData"];
-  v7 = [v6 valuePromise];
+  valuePromise = [v6 valuePromise];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__AMSPurchaseTask__shouldFinalizeBlindedDataWithResponseDictionary___block_invoke;
   v11[3] = &unk_1E73BB788;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 continueWithBlock:v11];
+  v12 = dictionaryCopy;
+  v8 = dictionaryCopy;
+  v9 = [valuePromise continueWithBlock:v11];
 
   return v9;
 }
@@ -1657,8 +1657,8 @@ id __68__AMSPurchaseTask__shouldFinalizeBlindedDataWithResponseDictionary___bloc
       v3 = +[AMSLogConfig sharedConfig];
     }
 
-    v4 = [v3 OSLogObject];
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v5 = AMSLogKey();
       v6 = MEMORY[0x1E696AEC0];
@@ -1674,14 +1674,14 @@ id __68__AMSPurchaseTask__shouldFinalizeBlindedDataWithResponseDictionary___bloc
       {
         [v6 stringWithFormat:@"%@: ", v7];
       }
-      v9 = ;
+      selfCopy = ;
       *buf = 138543362;
-      v17 = v9;
-      _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@Overriding shouldSendBlindedData for user defaults", buf, 0xCu);
+      v17 = selfCopy;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Overriding shouldSendBlindedData for user defaults", buf, 0xCu);
       if (v5)
       {
 
-        v9 = self;
+        selfCopy = self;
       }
     }
 
@@ -1693,13 +1693,13 @@ id __68__AMSPurchaseTask__shouldFinalizeBlindedDataWithResponseDictionary___bloc
   {
     v10 = [(AMSPurchaseTask *)self bag];
     v11 = [v10 BOOLForKey:@"preventSendingBlindedData"];
-    v12 = [v11 valuePromise];
+    valuePromise = [v11 valuePromise];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __52__AMSPurchaseTask__determineIfShouldSendBlindedData__block_invoke;
     v15[3] = &unk_1E73BB788;
     v15[4] = self;
-    v13 = [v12 continueWithBlock:v15];
+    v13 = [valuePromise continueWithBlock:v15];
   }
 
   return v13;
@@ -1724,16 +1724,16 @@ id __52__AMSPurchaseTask__determineIfShouldSendBlindedData__block_invoke(uint64_
   return v4;
 }
 
-- (id)_recordEngagementEventWithInfo:(id)a3 responseDictionary:(id)a4 finalizedBlindedItems:(id)a5 error:(id)a6
+- (id)_recordEngagementEventWithInfo:(id)info responseDictionary:(id)dictionary finalizedBlindedItems:(id)items error:(id)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = a4;
+  infoCopy = info;
+  itemsCopy = items;
+  errorCopy = error;
+  dictionaryCopy = dictionary;
   v14 = objc_alloc_init(AMSMutableBinaryPromise);
   v15 = objc_opt_class();
   v16 = [(AMSPurchaseTask *)self bag];
-  v17 = [v15 engagementEventWithInfo:v10 bag:v16 responseDictionary:v13 error:v12];
+  v17 = [v15 engagementEventWithInfo:infoCopy bag:v16 responseDictionary:dictionaryCopy error:errorCopy];
 
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
@@ -1746,15 +1746,15 @@ id __52__AMSPurchaseTask__determineIfShouldSendBlindedData__block_invoke(uint64_
   v26[1] = 3221225472;
   v26[2] = __97__AMSPurchaseTask__recordEngagementEventWithInfo_responseDictionary_finalizedBlindedItems_error___block_invoke_2;
   v26[3] = &unk_1E73BB800;
-  v27 = v11;
-  v28 = self;
-  v29 = v12;
+  v27 = itemsCopy;
+  selfCopy = self;
+  v29 = errorCopy;
   v19 = v18;
   v30 = v19;
-  v31 = v10;
-  v20 = v10;
-  v21 = v12;
-  v22 = v11;
+  v31 = infoCopy;
+  v20 = infoCopy;
+  v21 = errorCopy;
+  v22 = itemsCopy;
   [v17 addSuccessBlock:v26];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -2075,19 +2075,19 @@ void __97__AMSPurchaseTask__recordEngagementEventWithInfo_responseDictionary_fin
   }
 }
 
-- (id)_determineIfShouldAttachPaymentServicesURL:(id)a3
+- (id)_determineIfShouldAttachPaymentServicesURL:(id)l
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AMSPurchaseTask *)self purchaseInfo];
-  v6 = [v5 purchase];
-  v7 = [v6 logUUID];
+  lCopy = l;
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  purchase = [purchaseInfo purchase];
+  logUUID = [purchase logUUID];
 
   if ([(AMSPurchaseTask *)self _shouldAttemptCardEnrollment])
   {
     v8 = objc_opt_new();
-    v9 = [(AMSPurchaseTask *)self purchaseInfo];
-    v10 = [v9 account];
+    purchaseInfo2 = [(AMSPurchaseTask *)self purchaseInfo];
+    account = [purchaseInfo2 account];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __62__AMSPurchaseTask__determineIfShouldAttachPaymentServicesURL___block_invoke;
@@ -2095,9 +2095,9 @@ void __97__AMSPurchaseTask__recordEngagementEventWithInfo_responseDictionary_fin
     v23[4] = self;
     v11 = v8;
     v24 = v11;
-    v25 = v4;
-    v26 = v7;
-    [v25 beginCardEnrollmentAttemptWithAccount:v10 completionHandler:v23];
+    v25 = lCopy;
+    v26 = logUUID;
+    [v25 beginCardEnrollmentAttemptWithAccount:account completionHandler:v23];
 
     v12 = v26;
     v13 = v11;
@@ -2111,14 +2111,14 @@ void __97__AMSPurchaseTask__recordEngagementEventWithInfo_responseDictionary_fin
       v14 = +[AMSLogConfig sharedConfig];
     }
 
-    v15 = [v14 OSLogObject];
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v14 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v16 = MEMORY[0x1E696AEC0];
       v17 = objc_opt_class();
-      if (v7)
+      if (logUUID)
       {
-        [v16 stringWithFormat:@"%@: [%@] ", v17, v7];
+        [v16 stringWithFormat:@"%@: [%@] ", v17, logUUID];
       }
 
       else
@@ -2126,13 +2126,13 @@ void __97__AMSPurchaseTask__recordEngagementEventWithInfo_responseDictionary_fin
         [v16 stringWithFormat:@"%@: ", v17, v22];
       }
       v18 = ;
-      v19 = [(AMSPurchaseTask *)self purchaseInfo];
-      v20 = [v19 purchase];
+      purchaseInfo3 = [(AMSPurchaseTask *)self purchaseInfo];
+      purchase2 = [purchaseInfo3 purchase];
       *buf = 138543618;
       v28 = v18;
       v29 = 2050;
-      v30 = [v20 purchaseType];
-      _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Shouldn't attempt to card enrollment for purchaseType: %{public}ld", buf, 0x16u);
+      purchaseType = [purchase2 purchaseType];
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Shouldn't attempt to card enrollment for purchaseType: %{public}ld", buf, 0x16u);
     }
 
     v13 = +[AMSBinaryPromise promiseWithSuccess];
@@ -2259,24 +2259,24 @@ LABEL_6:
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:3];
     v5 = [v3 setWithArray:v4];
 
-    v6 = [(AMSPurchaseTask *)self purchaseInfo];
-    v7 = [v6 buyParams];
-    v8 = [v7 parameterForKey:0x1F0722118];
+    purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+    buyParams = [purchaseInfo buyParams];
+    v8 = [buyParams parameterForKey:0x1F0722118];
     v9 = [v5 containsObject:v8];
 
     if (v9)
     {
       v10 = objc_alloc_init(AMSMutableBinaryPromise);
       v11 = +[AMSCampaignCohortParamsProvider provider];
-      v12 = [(AMSPurchaseTask *)self purchaseInfo];
-      v13 = [v12 buyParams];
-      v14 = [v13 parameterForKey:@"mtExtraInfo"];
+      purchaseInfo2 = [(AMSPurchaseTask *)self purchaseInfo];
+      buyParams2 = [purchaseInfo2 buyParams];
+      v14 = [buyParams2 parameterForKey:@"mtExtraInfo"];
 
       if (v14)
       {
-        v15 = [(AMSPurchaseTask *)self purchaseInfo];
-        v16 = [v15 buyParams];
-        v17 = [v16 parameterForKey:@"mtExtraInfo"];
+        purchaseInfo3 = [(AMSPurchaseTask *)self purchaseInfo];
+        buyParams3 = [purchaseInfo3 buyParams];
+        v17 = [buyParams3 parameterForKey:@"mtExtraInfo"];
       }
 
       else
@@ -2329,65 +2329,65 @@ uint64_t __53__AMSPurchaseTask__decorateBuyParamsWithCohortParams__block_invoke(
   return [v7 finishWithSuccess];
 }
 
-- (id)_runAuthenticateRequest:(id)a3
+- (id)_runAuthenticateRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AMSPurchaseTask *)self delegate];
+  requestCopy = request;
+  delegate = [(AMSPurchaseTask *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_alloc_init(AMSPromise);
-    v8 = [(AMSPurchaseTask *)self delegate];
-    v9 = [(AMSPurchaseTask *)self purchaseInfo];
-    v10 = [v9 purchase];
-    v11 = [(AMSPromise *)v7 completionHandlerAdapter];
-    [v8 purchase:v10 handleAuthenticateRequest:v4 completion:v11];
+    delegate2 = [(AMSPurchaseTask *)self delegate];
+    purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+    purchase = [purchaseInfo purchase];
+    completionHandlerAdapter = [(AMSPromise *)v7 completionHandlerAdapter];
+    [delegate2 purchase:purchase handleAuthenticateRequest:requestCopy completion:completionHandlerAdapter];
   }
 
   else
   {
-    v8 = AMSError(12, @"Purchase Authentication Failed", @"Delegate does not respond to auth callback", 0);
-    v7 = [AMSPromise promiseWithError:v8];
+    delegate2 = AMSError(12, @"Purchase Authentication Failed", @"Delegate does not respond to auth callback", 0);
+    v7 = [AMSPromise promiseWithError:delegate2];
   }
 
   return v7;
 }
 
-- (id)_runDialogRequest:(id)a3
+- (id)_runDialogRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AMSPurchaseTask *)self delegate];
+  requestCopy = request;
+  delegate = [(AMSPurchaseTask *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_alloc_init(AMSPromise);
-    v8 = [(AMSPurchaseTask *)self delegate];
-    v9 = [(AMSPurchaseTask *)self purchaseInfo];
-    v10 = [v9 purchase];
-    v11 = [(AMSPromise *)v7 completionHandlerAdapter];
-    [v8 purchase:v10 handleDialogRequest:v4 completion:v11];
+    delegate2 = [(AMSPurchaseTask *)self delegate];
+    purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+    purchase = [purchaseInfo purchase];
+    completionHandlerAdapter = [(AMSPromise *)v7 completionHandlerAdapter];
+    [delegate2 purchase:purchase handleDialogRequest:requestCopy completion:completionHandlerAdapter];
   }
 
   else
   {
-    v8 = AMSError(12, @"Purchase Dialog Failed", @"Delegate does not respond to dialog callback", 0);
-    v7 = [AMSPromise promiseWithError:v8];
+    delegate2 = AMSError(12, @"Purchase Dialog Failed", @"Delegate does not respond to dialog callback", 0);
+    v7 = [AMSPromise promiseWithError:delegate2];
   }
 
   return v7;
 }
 
-- (id)_buySignatureJSONWithFinalizedBlindedItems:(id)a3
+- (id)_buySignatureJSONWithFinalizedBlindedItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 allKeys];
-  v5 = [v4 sortedArrayUsingComparator:&__block_literal_global_118];
+  itemsCopy = items;
+  allKeys = [itemsCopy allKeys];
+  v5 = [allKeys sortedArrayUsingComparator:&__block_literal_global_118];
 
-  v25 = v3;
-  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  v25 = itemsCopy;
+  v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -2410,20 +2410,20 @@ uint64_t __53__AMSPurchaseTask__decorateBuyParamsWithCohortParams__block_invoke(
         v11 = *(*(&v26 + 1) + 8 * i);
         v12 = [v25 objectForKeyedSubscript:v11];
         v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        v14 = [v12 adamId];
-        [v13 setObject:v14 forKey:@"songId"];
+        adamId = [v12 adamId];
+        [v13 setObject:adamId forKey:@"songId"];
 
-        v15 = [v12 finalizedData];
-        v16 = [v15 base64EncodedStringWithOptions:0];
+        finalizedData = [v12 finalizedData];
+        v16 = [finalizedData base64EncodedStringWithOptions:0];
         [v13 setObject:v16 forKey:@"finalizedBlindedData"];
 
-        v17 = [v12 privateInput];
-        v18 = [v17 base64EncodedStringWithOptions:0];
+        privateInput = [v12 privateInput];
+        v18 = [privateInput base64EncodedStringWithOptions:0];
         [v13 setObject:v18 forKey:@"privateInput"];
 
         v19 = MEMORY[0x1E696AD98];
-        v20 = [v12 timestamp];
-        v21 = [v19 numberWithUnsignedLongLong:{objc_msgSend(v20, "longLongValue")}];
+        timestamp = [v12 timestamp];
+        v21 = [v19 numberWithUnsignedLongLong:{objc_msgSend(timestamp, "longLongValue")}];
         [v13 setObject:v21 forKey:@"timestamp"];
 
         if (([v11 isEqualToString:@"AMSBlindedDataPlaceholderKey"] & 1) == 0)
@@ -2445,26 +2445,26 @@ uint64_t __53__AMSPurchaseTask__decorateBuyParamsWithCohortParams__block_invoke(
   return v22;
 }
 
-- (id)_finalizeBlindingWithPurchaseInfo:(id)a3 responseDictionary:(id)a4 purchaseResult:(id)a5 outError:(id *)a6
+- (id)_finalizeBlindingWithPurchaseInfo:(id)info responseDictionary:(id)dictionary purchaseResult:(id)result outError:(id *)error
 {
   v158 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v136 = a4;
-  v117 = a5;
-  v119 = v9;
-  v10 = [v9 purchase];
-  v11 = [v10 blindedData];
+  infoCopy = info;
+  dictionaryCopy = dictionary;
+  resultCopy = result;
+  v119 = infoCopy;
+  purchase = [infoCopy purchase];
+  blindedData = [purchase blindedData];
 
-  if (v11)
+  if (blindedData)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __96__AMSPurchaseTask__finalizeBlindingWithPurchaseInfo_responseDictionary_purchaseResult_outError___block_invoke;
     aBlock[3] = &unk_1E73B3680;
-    v126 = v9;
+    v126 = infoCopy;
     v151 = v126;
     v115 = _Block_copy(aBlock);
-    v12 = [v136 objectForKeyedSubscript:@"buySignatures"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"buySignatures"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2505,9 +2505,9 @@ uint64_t __53__AMSPurchaseTask__decorateBuyParamsWithCohortParams__block_invoke(
           if (objc_opt_respondsToSelector())
           {
             v24 = [v22 objectForKeyedSubscript:@"songId"];
-            v25 = [v24 unsignedIntegerValue];
+            unsignedIntegerValue = [v24 unsignedIntegerValue];
 
-            if (v25)
+            if (unsignedIntegerValue)
             {
               v26 = [v22 objectForKeyedSubscript:@"token-info"];
               objc_opt_class();
@@ -2517,21 +2517,21 @@ uint64_t __53__AMSPurchaseTask__decorateBuyParamsWithCohortParams__block_invoke(
 
                 if (v27)
                 {
-                  v28 = [v136 objectForKeyedSubscript:@"metrics"];
+                  v28 = [dictionaryCopy objectForKeyedSubscript:@"metrics"];
                   objc_opt_class();
                   if (objc_opt_isKindOfClass())
                   {
-                    v29 = v28;
+                    oSLogObject6 = v28;
 
-                    if (v29)
+                    if (oSLogObject6)
                     {
-                      v30 = [v29 objectForKeyedSubscript:@"commerceEvent_purchase_priceType"];
+                      v30 = [oSLogObject6 objectForKeyedSubscript:@"commerceEvent_purchase_priceType"];
                       objc_opt_class();
                       if (objc_opt_isKindOfClass())
                       {
-                        v31 = v30;
+                        oSLogObject5 = v30;
 
-                        if (v31)
+                        if (oSLogObject5)
                         {
                           v32 = [v22 objectForKeyedSubscript:@"type"];
                           objc_opt_class();
@@ -2541,9 +2541,9 @@ uint64_t __53__AMSPurchaseTask__decorateBuyParamsWithCohortParams__block_invoke(
                             goto LABEL_66;
                           }
 
-                          v33 = v32;
+                          oSLogObject4 = v32;
 
-                          if (!v33)
+                          if (!oSLogObject4)
                           {
 LABEL_66:
                             v57 = +[AMSLogConfig sharedPurchaseConfig];
@@ -2552,8 +2552,8 @@ LABEL_66:
                               v57 = +[AMSLogConfig sharedConfig];
                             }
 
-                            v58 = [v57 OSLogObject];
-                            if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
+                            oSLogObject = [v57 OSLogObject];
+                            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
                             {
                               v133 = AMSLogKey();
                               v129 = MEMORY[0x1E696AEC0];
@@ -2561,20 +2561,20 @@ LABEL_66:
                               {
                                 v59 = objc_opt_class();
                                 v114 = AMSLogKey();
-                                v60 = [v129 stringWithFormat:@"%@: [%@] ", v59, v114];
-                                v109 = v60;
+                                v114 = [v129 stringWithFormat:@"%@: [%@] ", v59, v114];
+                                v109 = v114;
                                 v61 = v112;
                               }
 
                               else
                               {
-                                v60 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
-                                v61 = v60;
+                                v114 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
+                                v61 = v114;
                               }
 
                               *buf = 138543362;
-                              v154 = v60;
-                              _os_log_impl(&dword_192869000, v58, OS_LOG_TYPE_DEFAULT, "%{public}@No type information, using single signature model.", buf, 0xCu);
+                              v154 = v114;
+                              _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@No type information, using single signature model.", buf, 0xCu);
                               v112 = v61;
                               v64 = v61;
                               if (v133)
@@ -2584,18 +2584,18 @@ LABEL_66:
                               }
                             }
 
-                            v33 = @"AMSBlindedDataPlaceholderKey";
+                            oSLogObject4 = @"AMSBlindedDataPlaceholderKey";
                           }
 
-                          v65 = [v126 purchase];
-                          v66 = [v65 blindedData];
-                          v134 = [v66 objectForKeyedSubscript:v33];
+                          purchase2 = [v126 purchase];
+                          blindedData2 = [purchase2 blindedData];
+                          v134 = [blindedData2 objectForKeyedSubscript:oSLogObject4];
 
                           if (v134)
                           {
-                            v67 = [v126 purchase];
-                            v68 = [v67 publicInputComponents];
-                            v130 = [v68 objectForKeyedSubscript:v33];
+                            purchase3 = [v126 purchase];
+                            publicInputComponents = [purchase3 publicInputComponents];
+                            v130 = [publicInputComponents objectForKeyedSubscript:oSLogObject4];
 
                             if (!v130)
                             {
@@ -2605,22 +2605,22 @@ LABEL_66:
                               v130 = [MEMORY[0x1E695DEC8] arrayWithObjects:v152 count:3];
                             }
 
-                            log = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v25];
-                            v124 = [(AMSPurchaseTask *)self purchaseInfo];
-                            v69 = [v124 purchase];
-                            v70 = [v69 isRedownload];
-                            v71 = [v134 timestamp];
-                            v123 = [AMSBlinder publicInputWithComponents:v130 adamID:log isRedownload:v70 priceType:v31 timestamp:v71];
+                            log = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", unsignedIntegerValue];
+                            purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+                            purchase4 = [purchaseInfo purchase];
+                            isRedownload = [purchase4 isRedownload];
+                            timestamp = [v134 timestamp];
+                            v123 = [AMSBlinder publicInputWithComponents:v130 adamID:log isRedownload:isRedownload priceType:oSLogObject5 timestamp:timestamp];
 
-                            v72 = [v134 privateInput];
-                            v73 = [v134 timestamp];
+                            privateInput = [v134 privateInput];
+                            timestamp2 = [v134 timestamp];
                             v145 = 0;
-                            v74 = [AMSBlinder finalizeBlindedDataWithPrivateInput:v72 timeStamp:v73 adamId:log publicInput:v123 signatureType:v33 serverData:v27 error:&v145];
+                            v74 = [AMSBlinder finalizeBlindedDataWithPrivateInput:privateInput timeStamp:timestamp2 adamId:log publicInput:v123 signatureType:oSLogObject4 serverData:v27 error:&v145];
                             v125 = v145;
 
                             if (v74)
                             {
-                              [v120 setObject:v74 forKeyedSubscript:v33];
+                              [v120 setObject:v74 forKeyedSubscript:oSLogObject4];
                             }
 
                             else
@@ -2632,8 +2632,8 @@ LABEL_66:
                               }
 
                               v111 = v80;
-                              v113 = [v80 OSLogObject];
-                              if (os_log_type_enabled(v113, OS_LOG_TYPE_ERROR))
+                              oSLogObject2 = [v80 OSLogObject];
+                              if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
                               {
                                 v110 = AMSLogKey();
                                 v81 = MEMORY[0x1E696AEC0];
@@ -2641,22 +2641,22 @@ LABEL_66:
                                 {
                                   v82 = objc_opt_class();
                                   v105 = AMSLogKey();
-                                  v83 = [v81 stringWithFormat:@"%@: [%@] ", v82, v105];
-                                  v103 = v83;
+                                  v105 = [v81 stringWithFormat:@"%@: [%@] ", v82, v105];
+                                  v103 = v105;
                                 }
 
                                 else
                                 {
-                                  v83 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
-                                  v104 = v83;
+                                  v105 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
+                                  v104 = v105;
                                 }
 
                                 v86 = AMSLogableError(v125);
                                 *buf = 138543618;
-                                v154 = v83;
+                                v154 = v105;
                                 v155 = 2114;
                                 v156 = v86;
-                                _os_log_impl(&dword_192869000, v113, OS_LOG_TYPE_ERROR, "%{public}@Finalize Blinding failed to return data. Error: %{public}@", buf, 0x16u);
+                                _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Finalize Blinding failed to return data. Error: %{public}@", buf, 0x16u);
                                 v87 = v104;
                                 if (v110)
                                 {
@@ -2665,10 +2665,10 @@ LABEL_66:
                                 }
                               }
 
-                              if (a6)
+                              if (error)
                               {
                                 v88 = v125;
-                                *a6 = v125;
+                                *error = v125;
                               }
                             }
                           }
@@ -2691,19 +2691,19 @@ LABEL_66:
                               {
                                 v78 = objc_opt_class();
                                 v108 = AMSLogKey();
-                                v79 = [v77 stringWithFormat:@"%@: [%@] ", v78, v108];
-                                v106 = v79;
+                                v108 = [v77 stringWithFormat:@"%@: [%@] ", v78, v108];
+                                v106 = v108;
                               }
 
                               else
                               {
-                                v79 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
-                                v107 = v79;
+                                v108 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
+                                v107 = v108;
                               }
 
-                              v84 = AMSHashIfNeeded(v33);
+                              v84 = AMSHashIfNeeded(oSLogObject4);
                               *buf = 138543618;
-                              v154 = v79;
+                              v154 = v108;
                               v155 = 2112;
                               v156 = v84;
                               _os_log_impl(&dword_192869000, log, OS_LOG_TYPE_ERROR, "%{public}@Unable to Finalize Blinding. Unable to find blindedData for type: %@", buf, 0x16u);
@@ -2716,7 +2716,7 @@ LABEL_66:
                             }
                           }
 
-                          v50 = v134;
+                          oSLogObject3 = v134;
 LABEL_108:
 
 LABEL_109:
@@ -2730,14 +2730,14 @@ LABEL_110:
                       {
                       }
 
-                      v33 = +[AMSLogConfig sharedPurchaseConfig];
-                      if (!v33)
+                      oSLogObject4 = +[AMSLogConfig sharedPurchaseConfig];
+                      if (!oSLogObject4)
                       {
-                        v33 = +[AMSLogConfig sharedConfig];
+                        oSLogObject4 = +[AMSLogConfig sharedConfig];
                       }
 
-                      v50 = [(__CFString *)v33 OSLogObject];
-                      if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
+                      oSLogObject3 = [(__CFString *)oSLogObject4 OSLogObject];
+                      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
                       {
                         v51 = AMSLogKey();
                         v52 = MEMORY[0x1E696AEC0];
@@ -2745,19 +2745,19 @@ LABEL_110:
                         {
                           v53 = objc_opt_class();
                           v127 = AMSLogKey();
-                          v54 = [v52 stringWithFormat:@"%@: [%@] ", v53, v127];
-                          v121 = v54;
+                          v127 = [v52 stringWithFormat:@"%@: [%@] ", v53, v127];
+                          v121 = v127;
                         }
 
                         else
                         {
-                          v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
-                          v122 = v54;
+                          v127 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
+                          v122 = v127;
                         }
 
-                        v62 = AMSHashIfNeeded(v29);
+                        v62 = AMSHashIfNeeded(oSLogObject6);
                         *buf = 138543618;
-                        v154 = v54;
+                        v154 = v127;
                         v155 = 2112;
                         v156 = v62;
                         v63 = v122;
@@ -2768,7 +2768,7 @@ LABEL_110:
                         }
                       }
 
-                      v31 = 0;
+                      oSLogObject5 = 0;
                       goto LABEL_108;
                     }
                   }
@@ -2777,14 +2777,14 @@ LABEL_110:
                   {
                   }
 
-                  v31 = +[AMSLogConfig sharedPurchaseConfig];
-                  if (!v31)
+                  oSLogObject5 = +[AMSLogConfig sharedPurchaseConfig];
+                  if (!oSLogObject5)
                   {
-                    v31 = +[AMSLogConfig sharedConfig];
+                    oSLogObject5 = +[AMSLogConfig sharedConfig];
                   }
 
-                  v33 = [v31 OSLogObject];
-                  if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+                  oSLogObject4 = [oSLogObject5 OSLogObject];
+                  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
                   {
                     v44 = AMSLogKey();
                     v45 = MEMORY[0x1E696AEC0];
@@ -2792,19 +2792,19 @@ LABEL_110:
                     {
                       v46 = objc_opt_class();
                       v135 = AMSLogKey();
-                      v47 = [v45 stringWithFormat:@"%@: [%@] ", v46, v135];
-                      v131 = v47;
+                      v135 = [v45 stringWithFormat:@"%@: [%@] ", v46, v135];
+                      v131 = v135;
                     }
 
                     else
                     {
-                      v47 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
-                      v132 = v47;
+                      v135 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
+                      v132 = v135;
                     }
 
                     v55 = AMSHashIfNeeded(0);
                     *buf = 138543618;
-                    v154 = v47;
+                    v154 = v135;
                     v155 = 2112;
                     v156 = v55;
                     v56 = v132;
@@ -2815,7 +2815,7 @@ LABEL_110:
                     }
                   }
 
-                  v29 = 0;
+                  oSLogObject6 = 0;
                   goto LABEL_109;
                 }
               }
@@ -2824,14 +2824,14 @@ LABEL_110:
               {
               }
 
-              v29 = +[AMSLogConfig sharedPurchaseConfig];
-              if (!v29)
+              oSLogObject6 = +[AMSLogConfig sharedPurchaseConfig];
+              if (!oSLogObject6)
               {
-                v29 = +[AMSLogConfig sharedConfig];
+                oSLogObject6 = +[AMSLogConfig sharedConfig];
               }
 
-              v31 = [v29 OSLogObject];
-              if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
+              oSLogObject5 = [oSLogObject6 OSLogObject];
+              if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
               {
                 v38 = AMSLogKey();
                 v39 = MEMORY[0x1E696AEC0];
@@ -2839,19 +2839,19 @@ LABEL_110:
                 {
                   v40 = objc_opt_class();
                   v139 = AMSLogKey();
-                  v41 = [v39 stringWithFormat:@"%@: [%@] ", v40, v139];
-                  v137 = v41;
+                  v139 = [v39 stringWithFormat:@"%@: [%@] ", v40, v139];
+                  v137 = v139;
                 }
 
                 else
                 {
-                  v41 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
-                  v138 = v41;
+                  v139 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
+                  v138 = v139;
                 }
 
                 v48 = AMSHashIfNeeded(v22);
                 *buf = 138543618;
-                v154 = v41;
+                v154 = v139;
                 v155 = 2112;
                 v156 = v48;
                 v49 = v138;
@@ -2877,35 +2877,35 @@ LABEL_110:
             v27 = +[AMSLogConfig sharedConfig];
           }
 
-          v29 = [v27 OSLogObject];
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+          oSLogObject6 = [v27 OSLogObject];
+          if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
           {
             v34 = AMSLogKey();
             v35 = MEMORY[0x1E696AEC0];
             if (v34)
             {
               v36 = objc_opt_class();
-              v9 = AMSLogKey();
-              v37 = [v35 stringWithFormat:@"%@: [%@] ", v36, v9];
-              v140 = v37;
+              infoCopy = AMSLogKey();
+              infoCopy = [v35 stringWithFormat:@"%@: [%@] ", v36, infoCopy];
+              v140 = infoCopy;
             }
 
             else
             {
-              v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
-              v141 = v37;
+              infoCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@: ", objc_opt_class()];
+              v141 = infoCopy;
             }
 
             v42 = AMSHashIfNeeded(v22);
             *buf = 138543618;
-            v154 = v37;
+            v154 = infoCopy;
             v155 = 2112;
             v156 = v42;
             v43 = v141;
             if (v34)
             {
 
-              v43 = v9;
+              v43 = infoCopy;
             }
           }
 
@@ -2920,7 +2920,7 @@ LABEL_113:
           if ([v120 count])
           {
             v89 = [v120 copy];
-            [v117 setFinalizedBlindedData:v89];
+            [resultCopy setFinalizedBlindedData:v89];
           }
 
           else
@@ -2931,8 +2931,8 @@ LABEL_113:
               v89 = +[AMSLogConfig sharedConfig];
             }
 
-            v96 = [v89 OSLogObject];
-            if (os_log_type_enabled(v96, OS_LOG_TYPE_DEFAULT))
+            oSLogObject7 = [v89 OSLogObject];
+            if (os_log_type_enabled(oSLogObject7, OS_LOG_TYPE_DEFAULT))
             {
               v97 = AMSLogKey();
               v98 = MEMORY[0x1E696AEC0];
@@ -2950,7 +2950,7 @@ LABEL_113:
               v100 = ;
               *buf = 138543362;
               v154 = v100;
-              _os_log_impl(&dword_192869000, v96, OS_LOG_TYPE_DEFAULT, "%{public}@Skipping attachment of Finalized Blinded due to empty dictionary", buf, 0xCu);
+              _os_log_impl(&dword_192869000, oSLogObject7, OS_LOG_TYPE_DEFAULT, "%{public}@Skipping attachment of Finalized Blinded due to empty dictionary", buf, 0xCu);
               if (v97)
               {
 
@@ -2972,16 +2972,16 @@ LABEL_113:
     }
 
     v120 = v90;
-    v91 = [v90 OSLogObject];
-    if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
+    oSLogObject8 = [v90 OSLogObject];
+    if (os_log_type_enabled(oSLogObject8, OS_LOG_TYPE_ERROR))
     {
       v92 = AMSLogKey();
       v93 = MEMORY[0x1E696AEC0];
       if (v92)
       {
         v94 = objc_opt_class();
-        v9 = AMSLogKey();
-        [v93 stringWithFormat:@"%@: [%@] ", v94, v9];
+        infoCopy = AMSLogKey();
+        [v93 stringWithFormat:@"%@: [%@] ", v94, infoCopy];
       }
 
       else
@@ -2991,11 +2991,11 @@ LABEL_113:
       v95 = ;
       *buf = 138543362;
       v154 = v95;
-      _os_log_impl(&dword_192869000, v91, OS_LOG_TYPE_ERROR, "%{public}@Unable to Finalize Blinding. Array is empty.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject8, OS_LOG_TYPE_ERROR, "%{public}@Unable to Finalize Blinding. Array is empty.", buf, 0xCu);
       if (v92)
       {
 
-        v95 = v9;
+        v95 = infoCopy;
       }
     }
 
@@ -3014,8 +3014,8 @@ LABEL_141:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject9 = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject9, OS_LOG_TYPE_ERROR))
     {
       v15 = AMSLogKey();
       v16 = MEMORY[0x1E696AEC0];
@@ -3034,7 +3034,7 @@ LABEL_141:
       v19 = ;
       *buf = 138543362;
       v154 = v19;
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@Unable to Finalize Blinding. Data missing!", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject9, OS_LOG_TYPE_ERROR, "%{public}@Unable to Finalize Blinding. Data missing!", buf, 0xCu);
       if (v15)
       {
 
@@ -3094,20 +3094,20 @@ void __96__AMSPurchaseTask__finalizeBlindingWithPurchaseInfo_responseDictionary_
 - (id)_generateBlindedSignature
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v2 = [(AMSPurchaseTask *)self purchaseInfo];
-  v3 = [v2 purchase];
-  v4 = [v3 blindedData];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  purchase = [purchaseInfo purchase];
+  blindedData = [purchase blindedData];
 
-  v5 = [v4 objectForKeyedSubscript:@"AMSBlindedDataPlaceholderKey"];
-  if ([v4 count] == 1 && v5)
+  v5 = [blindedData objectForKeyedSubscript:@"AMSBlindedDataPlaceholderKey"];
+  if ([blindedData count] == 1 && v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v37[0] = 0x1F0722298;
-    v7 = [v5 blindedElementString];
+    blindedElementString = [v5 blindedElementString];
     v37[1] = 0x1F0722278;
-    v38[0] = v7;
-    v8 = [v5 timestamp];
-    v38[1] = v8;
+    v38[0] = blindedElementString;
+    timestamp = [v5 timestamp];
+    v38[1] = timestamp;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:2];
 
     [v6 setObject:v9 forKeyedSubscript:0x1F07222D8];
@@ -3122,8 +3122,8 @@ void __96__AMSPurchaseTask__finalizeBlindingWithPurchaseInfo_responseDictionary_
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v25 = v4;
-    obj = [v4 keyEnumerator];
+    v25 = blindedData;
+    obj = [blindedData keyEnumerator];
     v11 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v11)
     {
@@ -3141,17 +3141,17 @@ void __96__AMSPurchaseTask__finalizeBlindingWithPurchaseInfo_responseDictionary_
           v14 = *(*(&v30 + 1) + 8 * i);
           v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
           [v15 setObject:v14 forKeyedSubscript:0x1F07222F8];
-          v16 = [(AMSPurchaseTask *)self purchaseInfo];
-          v17 = [v16 purchase];
-          v18 = [v17 blindedData];
-          v19 = [v18 objectForKeyedSubscript:v14];
+          purchaseInfo2 = [(AMSPurchaseTask *)self purchaseInfo];
+          purchase2 = [purchaseInfo2 purchase];
+          blindedData2 = [purchase2 blindedData];
+          v19 = [blindedData2 objectForKeyedSubscript:v14];
 
           v34[0] = 0x1F0722298;
-          v20 = [v19 blindedElementString];
+          blindedElementString2 = [v19 blindedElementString];
           v34[1] = 0x1F0722278;
-          v35[0] = v20;
-          v21 = [v19 timestamp];
-          v35[1] = v21;
+          v35[0] = blindedElementString2;
+          timestamp2 = [v19 timestamp];
+          v35[1] = timestamp2;
           v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
 
           [v15 setObject:v22 forKeyedSubscript:0x1F07222D8];
@@ -3167,7 +3167,7 @@ void __96__AMSPurchaseTask__finalizeBlindingWithPurchaseInfo_responseDictionary_
     v6 = v29;
     v10 = [v29 copy];
     v5 = v24;
-    v4 = v25;
+    blindedData = v25;
   }
 
   return v10;
@@ -3176,11 +3176,11 @@ void __96__AMSPurchaseTask__finalizeBlindingWithPurchaseInfo_responseDictionary_
 - (void)_saveBlindedData
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = [(AMSPurchaseTask *)self purchaseInfo];
-  v5 = [v4 purchase];
-  v6 = [v5 buySignatureTypes];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  purchase = [purchaseInfo purchase];
+  buySignatureTypes = [purchase buySignatureTypes];
 
-  if (!v6)
+  if (!buySignatureTypes)
   {
 LABEL_26:
     v8 = +[AMSBlinder generateRandomPrivateInput];
@@ -3188,29 +3188,29 @@ LABEL_26:
     v32 = @"AMSBlindedDataPlaceholderKey";
     v33 = v11;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
-    v28 = [(AMSPurchaseTask *)self purchaseInfo];
-    v29 = [v28 purchase];
-    [v29 setBlindedData:v27];
+    purchaseInfo2 = [(AMSPurchaseTask *)self purchaseInfo];
+    purchase2 = [purchaseInfo2 purchase];
+    [purchase2 setBlindedData:v27];
 
     goto LABEL_27;
   }
 
-  if (![v6 count])
+  if (![buySignatureTypes count])
   {
-    if (![v6 count])
+    if (![buySignatureTypes count])
     {
       v12 = +[AMSUnitTests isRunningUnitTests];
       v13 = +[AMSLogConfig sharedPurchaseConfig];
-      v14 = v13;
+      defaultCenter = v13;
       if (v12)
       {
         if (!v13)
         {
-          v14 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v15 = [v14 OSLogObject];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        oSLogObject = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v16 = AMSLogKey();
           v17 = MEMORY[0x1E696AEC0];
@@ -3229,7 +3229,7 @@ LABEL_26:
           v20 = ;
           *buf = 138543362;
           v35 = v20;
-          _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_ERROR, "%{public}@Warning: buySignatureTypes array is set but empty, this is probably a programmer error", buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Warning: buySignatureTypes array is set but empty, this is probably a programmer error", buf, 0xCu);
           if (v16)
           {
 
@@ -3237,20 +3237,20 @@ LABEL_26:
           }
         }
 
-        v14 = [MEMORY[0x1E696AD88] defaultCenter];
-        v21 = +[AMSLogConfig sharedPurchaseConfig];
-        [v14 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v21 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject2 = +[AMSLogConfig sharedPurchaseConfig];
+        [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
       }
 
       else
       {
         if (!v13)
         {
-          v14 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v21 = [v14 OSLogObject];
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
+        oSLogObject2 = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
         {
           v22 = AMSLogKey();
           v23 = MEMORY[0x1E696AEC0];
@@ -3269,7 +3269,7 @@ LABEL_26:
           v26 = ;
           *buf = 138543362;
           v35 = v26;
-          _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_FAULT, "%{public}@Warning: buySignatureTypes array is set but empty, this is probably a programmer error", buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Warning: buySignatureTypes array is set but empty, this is probably a programmer error", buf, 0xCu);
           if (v22)
           {
 
@@ -3289,10 +3289,10 @@ LABEL_26:
   v30[3] = &unk_1E73B3A38;
   v31 = v7;
   v8 = v7;
-  [v6 enumerateObjectsUsingBlock:v30];
-  v9 = [(AMSPurchaseTask *)self purchaseInfo];
-  v10 = [v9 purchase];
-  [v10 setBlindedData:v8];
+  [buySignatureTypes enumerateObjectsUsingBlock:v30];
+  purchaseInfo3 = [(AMSPurchaseTask *)self purchaseInfo];
+  purchase3 = [purchaseInfo3 purchase];
+  [purchase3 setBlindedData:v8];
 
   v11 = v31;
 LABEL_27:
@@ -3306,31 +3306,31 @@ void __35__AMSPurchaseTask__saveBlindedData__block_invoke(uint64_t a1, void *a2)
   [*(a1 + 32) setObject:v4 forKeyedSubscript:v3];
 }
 
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(AMSPurchaseTask *)self delegate];
+  requestCopy = request;
+  completionCopy = completion;
+  delegate = [(AMSPurchaseTask *)self delegate];
 
-  if (v9)
+  if (delegate)
   {
-    v10 = [(AMSPurchaseTask *)self delegate];
-    v11 = [(AMSPurchaseTask *)self purchaseInfo];
-    v12 = [v11 purchase];
-    [v10 purchase:v12 handleDialogRequest:v7 completion:v8];
+    delegate2 = [(AMSPurchaseTask *)self delegate];
+    purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+    purchase = [purchaseInfo purchase];
+    [delegate2 purchase:purchase handleDialogRequest:requestCopy completion:completionCopy];
   }
 
   else
   {
-    v10 = +[AMSLogConfig sharedConfig];
-    if (!v10)
+    delegate2 = +[AMSLogConfig sharedConfig];
+    if (!delegate2)
     {
-      v10 = +[AMSLogConfig sharedConfig];
+      delegate2 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v10 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [delegate2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
@@ -3338,19 +3338,19 @@ void __35__AMSPurchaseTask__saveBlindedData__block_invoke(uint64_t a1, void *a2)
       v17 = v14;
       v18 = 2114;
       v19 = v15;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Auth task dialog is being dropped as there is no purchase delegate set on this task.", &v16, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Auth task dialog is being dropped as there is no purchase delegate set on this task.", &v16, 0x16u);
     }
   }
 }
 
-+ (id)engagementEventWithInfo:(id)a3 bag:(id)a4 responseDictionary:(id)a5 error:(id)a6
++ (id)engagementEventWithInfo:(id)info bag:(id)bag responseDictionary:(id)dictionary error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  infoCopy = info;
+  bagCopy = bag;
+  dictionaryCopy = dictionary;
+  errorCopy = error;
   v13 = +[AMSDefaults forceEngagementPurchaseSuccess];
-  if (v12)
+  if (errorCopy)
   {
     v14 = v13;
   }
@@ -3360,49 +3360,49 @@ void __35__AMSPurchaseTask__saveBlindedData__block_invoke(uint64_t a1, void *a2)
     v14 = 1;
   }
 
-  v15 = [[AMSMetricsEvent alloc] initForEngagement];
-  [v15 setProperty:@"purchase" forBodyKey:@"eventType"];
-  [v15 setProperty:@"AMS" forBodyKey:@"source"];
+  initForEngagement = [[AMSMetricsEvent alloc] initForEngagement];
+  [initForEngagement setProperty:@"purchase" forBodyKey:@"eventType"];
+  [initForEngagement setProperty:@"AMS" forBodyKey:@"source"];
   v16 = [MEMORY[0x1E696AD98] numberWithBool:v14];
-  [v15 setProperty:v16 forBodyKey:@"success"];
+  [initForEngagement setProperty:v16 forBodyKey:@"success"];
 
   v17 = MEMORY[0x1E696AD98];
-  v18 = [v9 purchase];
-  v19 = [v17 numberWithInteger:{objc_msgSend(v18, "purchaseType")}];
-  [v15 setProperty:v19 forBodyKey:@"purchaseType"];
+  purchase = [infoCopy purchase];
+  v19 = [v17 numberWithInteger:{objc_msgSend(purchase, "purchaseType")}];
+  [initForEngagement setProperty:v19 forBodyKey:@"purchaseType"];
 
-  v20 = [v9 purchase];
-  v21 = [v20 account];
-  v22 = [v21 ams_DSID];
-  v23 = [v22 description];
-  [v15 setProperty:v23 forBodyKey:@"accountId"];
+  purchase2 = [infoCopy purchase];
+  account = [purchase2 account];
+  ams_DSID = [account ams_DSID];
+  v23 = [ams_DSID description];
+  [initForEngagement setProperty:v23 forBodyKey:@"accountId"];
 
-  v24 = [v9 purchase];
-  v25 = [v24 buyParams];
-  v26 = [v25 dictionary];
-  v27 = [AMSMetricsEvent sanitizedObject:v26];
+  purchase3 = [infoCopy purchase];
+  buyParams = [purchase3 buyParams];
+  dictionary = [buyParams dictionary];
+  v27 = [AMSMetricsEvent sanitizedObject:dictionary];
   v28 = [v27 mutableCopy];
 
-  v29 = [v10 arrayForKey:@"purchase-event-filter-buy-params"];
-  v30 = [v29 valuePromise];
+  v29 = [bagCopy arrayForKey:@"purchase-event-filter-buy-params"];
+  valuePromise = [v29 valuePromise];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __100__AMSPurchaseTask_AppleMediaServices_Project__engagementEventWithInfo_bag_responseDictionary_error___block_invoke;
   v40[3] = &unk_1E73BB8C0;
   v41 = v28;
-  v42 = v15;
-  v43 = v11;
-  v44 = v9;
-  v46 = v10;
-  v47 = a1;
-  v45 = v12;
-  v31 = v10;
-  v32 = v12;
-  v33 = v9;
-  v34 = v11;
-  v35 = v15;
+  v42 = initForEngagement;
+  v43 = dictionaryCopy;
+  v44 = infoCopy;
+  v46 = bagCopy;
+  selfCopy = self;
+  v45 = errorCopy;
+  v31 = bagCopy;
+  v32 = errorCopy;
+  v33 = infoCopy;
+  v34 = dictionaryCopy;
+  v35 = initForEngagement;
   v36 = v28;
-  v37 = [v30 continueWithBlock:v40];
+  v37 = [valuePromise continueWithBlock:v40];
 
   return v37;
 }
@@ -3564,8 +3564,8 @@ AMSPromise *__100__AMSPurchaseTask_AppleMediaServices_Project__engagementEventWi
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = v5;
@@ -3574,14 +3574,14 @@ AMSPromise *__100__AMSPurchaseTask_AppleMediaServices_Project__engagementEventWi
     v18 = v5;
     v19 = 2114;
     v20 = v7;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to pre-authenticate purchase for device restrictions", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Attempting to pre-authenticate purchase for device restrictions", buf, 0x16u);
   }
 
-  v8 = [(AMSPurchaseTask *)self preauthenticateOptions];
+  preauthenticateOptions = [(AMSPurchaseTask *)self preauthenticateOptions];
   v9 = [AMSAuthenticateRequest alloc];
-  v10 = [(AMSPurchaseTask *)self purchaseInfo];
-  v11 = [v10 account];
-  v12 = [(AMSAuthenticateRequest *)v9 initWithAccount:v11 options:v8];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  account = [purchaseInfo account];
+  v12 = [(AMSAuthenticateRequest *)v9 initWithAccount:account options:preauthenticateOptions];
 
   v13 = AMSLogKey();
   [(AMSAuthenticateRequest *)v12 setLogKey:v13];
@@ -3649,9 +3649,9 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
 - (id)performPurchaseRequest
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSPurchaseTask *)self purchaseInfo];
-  v4 = [v3 purchase];
-  v5 = [v4 logUUID];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  purchase = [purchaseInfo purchase];
+  logUUID = [purchase logUUID];
 
   v6 = +[AMSLogConfig sharedPurchaseConfig];
   if (!v6)
@@ -3659,14 +3659,14 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = MEMORY[0x1E696AEC0];
     v9 = objc_opt_class();
-    if (v5)
+    if (logUUID)
     {
-      [v8 stringWithFormat:@"%@: [%@] ", v9, v5];
+      [v8 stringWithFormat:@"%@: [%@] ", v9, logUUID];
     }
 
     else
@@ -3676,13 +3676,13 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
     v10 = ;
     *buf = 138543362;
     v18 = v10;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@Performing purchase", buf, 0xCu);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Performing purchase", buf, 0xCu);
   }
 
-  v11 = [(AMSPurchaseTask *)self purchaseRequestEncoder];
-  v12 = [(AMSPurchaseTask *)self session];
-  v13 = [v11 encodeRequest];
-  v14 = [v12 dataTaskPromiseWithRequestPromise:v13];
+  purchaseRequestEncoder = [(AMSPurchaseTask *)self purchaseRequestEncoder];
+  session = [(AMSPurchaseTask *)self session];
+  encodeRequest = [purchaseRequestEncoder encodeRequest];
+  v14 = [session dataTaskPromiseWithRequestPromise:encodeRequest];
 
   return v14;
 }
@@ -3692,19 +3692,19 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
   v3 = objc_alloc_init(AMSAuthenticateOptions);
   [(AMSAuthenticateOptions *)v3 setAuthenticationType:2];
   [(AMSAuthenticateOptions *)v3 setCanMakeAccountActive:0];
-  v4 = [(AMSPurchaseTask *)self purchaseInfo];
-  v5 = [v4 clientInfo];
-  [(AMSAuthenticateOptions *)v3 setClientInfo:v5];
+  purchaseInfo = [(AMSPurchaseTask *)self purchaseInfo];
+  clientInfo = [purchaseInfo clientInfo];
+  [(AMSAuthenticateOptions *)v3 setClientInfo:clientInfo];
 
   [(AMSAuthenticateOptions *)v3 setDebugReason:@"Pre-authentication due to device restrictions around purchasing."];
 
   return v3;
 }
 
-+ (BOOL)shouldPreauthenticatePurchaseWithInfo:(id)a3
++ (BOOL)shouldPreauthenticatePurchaseWithInfo:(id)info
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  infoCopy = info;
   v4 = +[AMSRestrictions requirePasswordImmediately];
   v5 = +[AMSLogConfig sharedPurchaseConfig];
   v6 = v5;
@@ -3715,8 +3715,8 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       goto LABEL_27;
     }
@@ -3729,7 +3729,7 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
     v34 = 2114;
     v35 = v14;
     v15 = "%{public}@: [%{public}@] Purchase pre-authentication not required.";
-    v17 = v11;
+    v17 = oSLogObject;
     v18 = OS_LOG_TYPE_INFO;
     goto LABEL_26;
   }
@@ -3739,8 +3739,8 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject2 = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = v8;
@@ -3749,10 +3749,10 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
     v33 = v8;
     v34 = 2114;
     v35 = v10;
-    _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Purchase requires pre-authentication.", &v32, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Purchase requires pre-authentication.", &v32, 0x16u);
   }
 
-  if ([v3 hasBeenAuthedForBuy])
+  if ([infoCopy hasBeenAuthedForBuy])
   {
     v6 = +[AMSLogConfig sharedPurchaseConfig];
     if (!v6)
@@ -3760,8 +3760,8 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_27;
     }
@@ -3777,9 +3777,9 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
     goto LABEL_25;
   }
 
-  v19 = [v3 purchase];
-  v20 = [v19 account];
-  v21 = [AMSBiometrics isAvailableForAccount:v20];
+  purchase = [infoCopy purchase];
+  account = [purchase account];
+  v21 = [AMSBiometrics isAvailableForAccount:account];
 
   if (v21)
   {
@@ -3789,8 +3789,8 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_27;
     }
@@ -3806,20 +3806,20 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
     goto LABEL_25;
   }
 
-  v23 = [v3 purchase];
-  v24 = [v23 ignoreRequirePasswordRestriction];
+  purchase2 = [infoCopy purchase];
+  ignoreRequirePasswordRestriction = [purchase2 ignoreRequirePasswordRestriction];
 
   v25 = +[AMSLogConfig sharedPurchaseConfig];
   v6 = v25;
-  if (v24)
+  if (ignoreRequirePasswordRestriction)
   {
     if (!v25)
     {
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v11 = [v6 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v6 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_27;
     }
@@ -3833,7 +3833,7 @@ void __69__AMSPurchaseTask_AppleMediaServices_Project__performPreauthenticate__b
     v35 = v14;
     v15 = "%{public}@: [%{public}@] Purchase is configured to ignore password restriction, skipping purchase pre-authentication.";
 LABEL_25:
-    v17 = v11;
+    v17 = oSLogObject;
     v18 = OS_LOG_TYPE_DEFAULT;
 LABEL_26:
     _os_log_impl(&dword_192869000, v17, v18, v15, &v32, 0x16u);
@@ -3848,8 +3848,8 @@ LABEL_27:
     v6 = +[AMSLogConfig sharedConfig];
   }
 
-  v11 = [v6 OSLogObject];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v29 = objc_opt_class();
     v30 = v29;
@@ -3858,7 +3858,7 @@ LABEL_27:
     v33 = v29;
     v34 = 2114;
     v35 = v31;
-    _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Enforcing purchase pre-authentication.", &v32, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Enforcing purchase pre-authentication.", &v32, 0x16u);
   }
 
   v27 = 1;

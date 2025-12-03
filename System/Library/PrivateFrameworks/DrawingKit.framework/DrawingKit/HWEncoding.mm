@@ -1,43 +1,43 @@
 @interface HWEncoding
-+ (id)decodeHandwritingFromData:(id)a3;
-+ (id)decodedBrushStrokesWithData:(id)a3 inCanvasBounds:(CGRect)a4 inStrokesFrame:(CGRect)a5 strokeDataFieldCount:(unsigned int)a6 count:(unint64_t)a7;
-+ (id)encodeBrushStrokesAsData:(id)a3 inCanvasBounds:(CGRect)a4 inStrokesFrame:(CGRect)a5;
-+ (id)encodeHandwriting:(id)a3 compress:(BOOL)a4;
-+ (id)protoDrawingFromDrawing:(id)a3 compress:(BOOL)a4;
-+ (id)protoMessageFromHandwriting:(id)a3;
-+ (void)writeDataToDisk:(id)a3 withName:(id)a4;
++ (id)decodeHandwritingFromData:(id)data;
++ (id)decodedBrushStrokesWithData:(id)data inCanvasBounds:(CGRect)bounds inStrokesFrame:(CGRect)frame strokeDataFieldCount:(unsigned int)count count:(unint64_t)a7;
++ (id)encodeBrushStrokesAsData:(id)data inCanvasBounds:(CGRect)bounds inStrokesFrame:(CGRect)frame;
++ (id)encodeHandwriting:(id)handwriting compress:(BOOL)compress;
++ (id)protoDrawingFromDrawing:(id)drawing compress:(BOOL)compress;
++ (id)protoMessageFromHandwriting:(id)handwriting;
++ (void)writeDataToDisk:(id)disk withName:(id)name;
 @end
 
 @implementation HWEncoding
 
-+ (id)encodeHandwriting:(id)a3 compress:(BOOL)a4
++ (id)encodeHandwriting:(id)handwriting compress:(BOOL)compress
 {
-  v4 = a4;
-  v5 = a3;
+  compressCopy = compress;
+  handwritingCopy = handwriting;
   v6 = objc_opt_class();
-  v7 = [v5 drawing];
-  v8 = [v6 protoDrawingFromDrawing:v7 compress:v4];
+  drawing = [handwritingCopy drawing];
+  v8 = [v6 protoDrawingFromDrawing:drawing compress:compressCopy];
 
-  v9 = [objc_opt_class() protoMessageFromHandwriting:v5];
+  v9 = [objc_opt_class() protoMessageFromHandwriting:handwritingCopy];
 
-  v10 = [v8 data];
-  [v9 setDrawing:v10];
+  data = [v8 data];
+  [v9 setDrawing:data];
 
-  v11 = [v9 data];
+  data2 = [v9 data];
 
-  return v11;
+  return data2;
 }
 
-+ (id)decodeHandwritingFromData:(id)a3
++ (id)decodeHandwritingFromData:(id)data
 {
-  v3 = a3;
-  if (!v3)
+  dataCopy = data;
+  if (!dataCopy)
   {
     v10 = 0;
     goto LABEL_32;
   }
 
-  v4 = [[HWPMessage alloc] initWithData:v3];
+  v4 = [[HWPMessage alloc] initWithData:dataCopy];
   if (!v4)
   {
     NSLog(&cfstr_UnableToUnarch_0.isa);
@@ -47,15 +47,15 @@ LABEL_30:
   }
 
   v5 = [HWPDrawing alloc];
-  v6 = [(HWPMessage *)v4 drawing];
-  v7 = [(HWPDrawing *)v5 initWithData:v6];
+  drawing = [(HWPMessage *)v4 drawing];
+  v7 = [(HWPDrawing *)v5 initWithData:drawing];
 
   if (v7)
   {
     if ([(HWPDrawing *)v7 compressionAlgorithm]< 2)
     {
-      v11 = [(HWPDrawing *)v7 strokes];
-      if (!v11)
+      strokes = [(HWPDrawing *)v7 strokes];
+      if (!strokes)
       {
 LABEL_28:
         NSLog(&cfstr_NoArchivedstro.isa);
@@ -76,38 +76,38 @@ LABEL_28:
         v9 = dword_249D9D7F0[v8];
       }
 
-      v35 = [(HWPDrawing *)v7 compressionAlgorithm];
-      if (v35 >= 7)
+      compressionAlgorithm = [(HWPDrawing *)v7 compressionAlgorithm];
+      if (compressionAlgorithm >= 7)
       {
-        v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v35];
+        v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", compressionAlgorithm];
       }
 
       else
       {
-        v36 = off_278FB76B0[v35];
+        v36 = off_278FB76B0[compressionAlgorithm];
       }
 
-      v37 = [(HWPDrawing *)v7 strokes];
-      v38 = [v37 length];
+      strokes2 = [(HWPDrawing *)v7 strokes];
+      v38 = [strokes2 length];
 
-      v39 = [(HWPDrawing *)v7 decompressedLength];
-      v40 = [(HWPDrawing *)v7 strokes];
-      v41 = [v40 bytes];
+      decompressedLength = [(HWPDrawing *)v7 decompressedLength];
+      strokes3 = [(HWPDrawing *)v7 strokes];
+      bytes = [strokes3 bytes];
 
-      v42 = malloc_type_calloc(v39, 1uLL, 0x70119030uLL);
+      v42 = malloc_type_calloc(decompressedLength, 1uLL, 0x70119030uLL);
       if (v42)
       {
         v43 = v42;
-        v44 = compression_decode_buffer(v42, v39, v41, v38, 0, v9);
+        v44 = compression_decode_buffer(v42, decompressedLength, bytes, v38, 0, v9);
         if (v44)
         {
-          v11 = [MEMORY[0x277CBEA90] dataWithBytes:v43 length:v44];
+          strokes = [MEMORY[0x277CBEA90] dataWithBytes:v43 length:v44];
         }
 
         else
         {
           NSLog(&cfstr_DecodingZuByte.isa, v38, v36);
-          v11 = 0;
+          strokes = 0;
         }
 
         free(v43);
@@ -115,28 +115,28 @@ LABEL_28:
 
       else
       {
-        v11 = 0;
+        strokes = 0;
       }
 
-      if (!v11)
+      if (!strokes)
       {
         goto LABEL_28;
       }
     }
 
-    v12 = [(HWPDrawing *)v7 encodedCanvasSize];
-    v13 = HW_CGSizeFromIntegralData(v12);
+    encodedCanvasSize = [(HWPDrawing *)v7 encodedCanvasSize];
+    v13 = HW_CGSizeFromIntegralData(encodedCanvasSize);
     v15 = v14;
 
-    v16 = [(HWPDrawing *)v7 encodedStrokesFrame];
-    v17 = HW_CGRectFromIntegralData(v16);
+    encodedStrokesFrame = [(HWPDrawing *)v7 encodedStrokesFrame];
+    v17 = HW_CGRectFromIntegralData(encodedStrokesFrame);
     v19 = v18;
     v21 = v20;
     v23 = v22;
 
-    v24 = [(HWPDrawing *)v7 strokesCount];
-    v25 = [(HWPDrawing *)v7 strokeDataFieldCount];
-    if (v25 < 4)
+    strokesCount = [(HWPDrawing *)v7 strokesCount];
+    strokeDataFieldCount = [(HWPDrawing *)v7 strokeDataFieldCount];
+    if (strokeDataFieldCount < 4)
     {
       NSLog(&cfstr_InvalidStroked.isa);
 LABEL_29:
@@ -144,11 +144,11 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v26 = v25;
+    v26 = strokeDataFieldCount;
     v27 = objc_alloc_init(DKDrawing);
     [(DKDrawing *)v27 setStrokesFrame:v17, v19, v21, v23];
     [(DKDrawing *)v27 setCanvasBounds:0.0, 0.0, v13, v15];
-    v28 = [HWEncoding decodedBrushStrokesWithData:v11 inCanvasBounds:v26 inStrokesFrame:v24 strokeDataFieldCount:0.0 count:0.0, v13, v15, v17, v19, v21, v23];
+    v28 = [HWEncoding decodedBrushStrokesWithData:strokes inCanvasBounds:v26 inStrokesFrame:strokesCount strokeDataFieldCount:0.0 count:0.0, v13, v15, v17, v19, v21, v23];
     if (!v28)
     {
       NSLog(&cfstr_FailedToUnarch.isa);
@@ -161,8 +161,8 @@ LABEL_29:
     v30 = [(HWPMessage *)v4 creationDate]/ 1000.0;
     v10 = [[HWHandwritingItem alloc] initWithDrawing:v27];
     v31 = objc_alloc(MEMORY[0x277CCAD78]);
-    v32 = [(HWPMessage *)v4 identifier];
-    v33 = [v31 initWithUUIDString:v32];
+    identifier = [(HWPMessage *)v4 identifier];
+    v33 = [v31 initWithUUIDString:identifier];
     [(HWHandwritingItem *)v10 setUuid:v33];
 
     v34 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v30];
@@ -181,20 +181,20 @@ LABEL_32:
   return v10;
 }
 
-+ (id)protoMessageFromHandwriting:(id)a3
++ (id)protoMessageFromHandwriting:(id)handwriting
 {
-  if (a3)
+  if (handwriting)
   {
-    v3 = a3;
+    handwritingCopy = handwriting;
     v4 = objc_alloc_init(HWPMessage);
-    v5 = [v3 creationDate];
-    [v5 timeIntervalSinceReferenceDate];
+    creationDate = [handwritingCopy creationDate];
+    [creationDate timeIntervalSinceReferenceDate];
     [(HWPMessage *)v4 setCreationDate:(v6 * 1000.0)];
 
-    v7 = [v3 uuid];
+    uuid = [handwritingCopy uuid];
 
-    v8 = [v7 UUIDString];
-    [(HWPMessage *)v4 setIdentifier:v8];
+    uUIDString = [uuid UUIDString];
+    [(HWPMessage *)v4 setIdentifier:uUIDString];
   }
 
   else
@@ -205,21 +205,21 @@ LABEL_32:
   return v4;
 }
 
-+ (id)encodeBrushStrokesAsData:(id)a3 inCanvasBounds:(CGRect)a4 inStrokesFrame:(CGRect)a5
++ (id)encodeBrushStrokesAsData:(id)data inCanvasBounds:(CGRect)bounds inStrokesFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.origin.y;
-  v10 = a4.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = bounds.origin.y;
+  v10 = bounds.origin.x;
   v66 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v55 = [v11 strokes];
-  v12 = [v55 count];
-  v13 = [v11 totalPoints];
-  v53 = [MEMORY[0x277CBEB28] dataWithLength:8 * v13 + 2 * v12];
-  v54 = [v53 mutableBytes];
+  dataCopy = data;
+  strokes = [dataCopy strokes];
+  v12 = [strokes count];
+  totalPoints = [dataCopy totalPoints];
+  v53 = [MEMORY[0x277CBEB28] dataWithLength:8 * totalPoints + 2 * v12];
+  mutableBytes = [v53 mutableBytes];
   memset(&v64, 0, sizeof(v64));
   v14 = *(MEMORY[0x277CBF2C0] + 16);
   *&v63.a = *MEMORY[0x277CBF2C0];
@@ -236,18 +236,18 @@ LABEL_32:
     do
     {
       v57 = v16;
-      v23 = [v55 objectAtIndex:?];
-      v24 = [v23 strokePoints];
-      v25 = [v24 count];
+      v23 = [strokes objectAtIndex:?];
+      strokePoints = [v23 strokePoints];
+      v25 = [strokePoints count];
 
-      *(v54 + 2 * v15++) = v25;
+      *(mutableBytes + 2 * v15++) = v25;
       v61 = 0u;
       v62 = 0u;
       v59 = 0u;
       v60 = 0u;
       v56 = v23;
-      v26 = [v23 strokePoints];
-      v27 = [v26 countByEnumeratingWithState:&v59 objects:v65 count:16];
+      strokePoints2 = [v23 strokePoints];
+      v27 = [strokePoints2 countByEnumeratingWithState:&v59 objects:v65 count:16];
       if (v27)
       {
         v28 = v27;
@@ -255,13 +255,13 @@ LABEL_32:
         do
         {
           v30 = 0;
-          v31 = v54 + 4 + 2 * v15;
+          v31 = mutableBytes + 4 + 2 * v15;
           v15 += 4 * v28;
           do
           {
             if (*v60 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(strokePoints2);
             }
 
             v32 = *(*(&v59 + 1) + 8 * v30);
@@ -312,7 +312,7 @@ LABEL_32:
           }
 
           while (v28 != v30);
-          v28 = [v26 countByEnumeratingWithState:&v59 objects:v65 count:16];
+          v28 = [strokePoints2 countByEnumeratingWithState:&v59 objects:v65 count:16];
         }
 
         while (v28);
@@ -327,19 +327,19 @@ LABEL_32:
   return v53;
 }
 
-+ (id)decodedBrushStrokesWithData:(id)a3 inCanvasBounds:(CGRect)a4 inStrokesFrame:(CGRect)a5 strokeDataFieldCount:(unsigned int)a6 count:(unint64_t)a7
++ (id)decodedBrushStrokesWithData:(id)data inCanvasBounds:(CGRect)bounds inStrokesFrame:(CGRect)frame strokeDataFieldCount:(unsigned int)count count:(unint64_t)a7
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  v15 = a3;
-  v16 = v15;
-  if (a6 > 3)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v13 = bounds.origin.y;
+  v14 = bounds.origin.x;
+  dataCopy = data;
+  v16 = dataCopy;
+  if (count > 3)
   {
-    v17 = [v15 length];
+    v17 = [dataCopy length];
     v43 = 0;
     if (a7 && v17)
     {
@@ -350,7 +350,7 @@ LABEL_32:
       *&v49.c = v18;
       *&v49.tx = *(MEMORY[0x277CBF2C0] + 32);
       CGAffineTransformTranslate(&v50, &v49, -(v14 - x), -(v13 - y));
-      v42 = [v16 bytes];
+      bytes = [v16 bytes];
       v40 = v16;
       v19 = [v16 length];
       if (v19 >= 2)
@@ -358,19 +358,19 @@ LABEL_32:
         v20 = 0;
         v21 = 0;
         v48 = v19 >> 1;
-        v22 = a6;
-        v45 = 2 * a6;
-        v46 = a6 - 1;
+        countCopy = count;
+        v45 = 2 * count;
+        v46 = count - 1;
         v41 = a7;
         do
         {
           v44 = v21;
           v23 = objc_alloc_init(DKDrawingStroke);
-          v47 = *(v42 + 2 * v20);
-          if (*(v42 + 2 * v20))
+          v47 = *(bytes + 2 * v20);
+          if (*(bytes + 2 * v20))
           {
             v24 = 0;
-            v25 = (v42 + 2 + 2 * v20++);
+            v25 = (bytes + 2 + 2 * v20++);
             do
             {
               if (v46 + v20 >= v48)
@@ -414,8 +414,8 @@ LABEL_32:
                 ++v26;
               }
 
-              while (v22 != v26);
-              v20 += v22;
+              while (countCopy != v26);
+              v20 += countCopy;
               v31 = objc_alloc_init(DKDrawingStrokePoint);
               v52.origin.x = 0.0;
               v52.origin.y = 0.0;
@@ -434,8 +434,8 @@ LABEL_32:
               [(DKDrawingStrokePoint *)v31 setVelocity:v34];
               [(DKDrawingStrokePoint *)v31 location];
               [(DKDrawingStrokePoint *)v31 setLocation:vaddq_f64(*&v50.tx, vmlaq_n_f64(vmulq_n_f64(*&v50.c, v36), *&v50.a, v37))];
-              v38 = [(DKDrawingStroke *)v23 strokePoints];
-              [v38 addObject:v31];
+              strokePoints = [(DKDrawingStroke *)v23 strokePoints];
+              [strokePoints addObject:v31];
 
               ++v24;
               v25 = (v25 + v45);
@@ -470,29 +470,29 @@ LABEL_32:
   return v43;
 }
 
-+ (void)writeDataToDisk:(id)a3 withName:(id)a4
++ (void)writeDataToDisk:(id)disk withName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  diskCopy = disk;
   v7 = NSTemporaryDirectory();
   v8 = [MEMORY[0x277CBEBC0] fileURLWithPath:v7];
-  if ([v5 length])
+  if ([nameCopy length])
   {
-    v9 = v5;
+    v9 = nameCopy;
   }
 
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    v9 = [v10 stringWithFormat:@"handwriting_%@.data", v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v9 = [v10 stringWithFormat:@"handwriting_%@.data", uUIDString];
   }
 
   v13 = [v8 URLByAppendingPathComponent:v9];
 
   v16 = 0;
-  [v6 writeToURL:v13 options:1 error:&v16];
+  [diskCopy writeToURL:v13 options:1 error:&v16];
 
   v14 = v16;
   v15 = v14;
@@ -507,12 +507,12 @@ LABEL_32:
   }
 }
 
-+ (id)protoDrawingFromDrawing:(id)a3 compress:(BOOL)a4
++ (id)protoDrawingFromDrawing:(id)drawing compress:(BOOL)compress
 {
-  if (a3)
+  if (drawing)
   {
-    v4 = a4;
-    v5 = [a3 copy];
+    compressCopy = compress;
+    v5 = [drawing copy];
     v6 = objc_alloc_init(HWPDrawing);
     [v5 canvasBounds];
     v9 = HW_DataFromIntegralCGSize(v7, v8);
@@ -526,7 +526,7 @@ LABEL_32:
     [v5 strokesFrame];
     v27 = [HWEncoding encodeBrushStrokesAsData:v5 inCanvasBounds:v16 inStrokesFrame:v18, v20, v22, v23, v24, v25, v26];
     v28 = v27;
-    if (v4)
+    if (compressCopy)
     {
       v29 = [v27 length];
       v30 = malloc_type_calloc(v29, 1uLL, 0x100004077774924uLL);
@@ -555,8 +555,8 @@ LABEL_32:
     [(HWPDrawing *)v6 setEncodedCanvasSize:v9];
     [(HWPDrawing *)v6 setEncodedStrokesFrame:v14];
     [(HWPDrawing *)v6 setStrokes:v28];
-    v34 = [v5 strokes];
-    -[HWPDrawing setStrokesCount:](v6, "setStrokesCount:", [v34 count]);
+    strokes = [v5 strokes];
+    -[HWPDrawing setStrokesCount:](v6, "setStrokesCount:", [strokes count]);
 
     [(HWPDrawing *)v6 setStrokeDataFieldCount:4];
   }

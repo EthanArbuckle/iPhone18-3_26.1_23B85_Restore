@@ -1,24 +1,24 @@
 @interface CXNotificationServiceExtensionVoIPXPCHost
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CXNotificationServiceExtensionHostDelegate)delegate;
-- (CXNotificationServiceExtensionVoIPXPCHost)initWithDelegate:(id)a3;
-- (void)notificationServiceExtension:(id)a3 reply:(id)a4;
-- (void)notificationServiceExtensionHost:(id)a3 didReceiveIncomingMessage:(id)a4 forBundleIdentifier:(id)a5 reply:(id)a6;
+- (CXNotificationServiceExtensionVoIPXPCHost)initWithDelegate:(id)delegate;
+- (void)notificationServiceExtension:(id)extension reply:(id)reply;
+- (void)notificationServiceExtensionHost:(id)host didReceiveIncomingMessage:(id)message forBundleIdentifier:(id)identifier reply:(id)reply;
 @end
 
 @implementation CXNotificationServiceExtensionVoIPXPCHost
 
-- (CXNotificationServiceExtensionVoIPXPCHost)initWithDelegate:(id)a3
+- (CXNotificationServiceExtensionVoIPXPCHost)initWithDelegate:(id)delegate
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = CXNotificationServiceExtensionVoIPXPCHost;
   v5 = [(CXNotificationServiceExtensionVoIPXPCHost *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = CXDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -39,62 +39,62 @@
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  connectionCopy = connection;
   v6 = CXDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v5;
+    v11 = connectionCopy;
     _os_log_impl(&dword_1B47F3000, v6, OS_LOG_TYPE_DEFAULT, "Asked to accept new connection from %@", &v10, 0xCu);
   }
 
-  [v5 setExportedObject:self];
-  v7 = [MEMORY[0x1E696B0D0] cx_notificationServiceExtensionInterface];
-  [v5 setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
+  cx_notificationServiceExtensionInterface = [MEMORY[0x1E696B0D0] cx_notificationServiceExtensionInterface];
+  [connectionCopy setExportedInterface:cx_notificationServiceExtensionInterface];
 
-  [v5 resume];
+  [connectionCopy resume];
   v8 = *MEMORY[0x1E69E9840];
   return 1;
 }
 
-- (void)notificationServiceExtension:(id)a3 reply:(id)a4
+- (void)notificationServiceExtension:(id)extension reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696B0B8] currentConnection];
-  v9 = v8;
-  if (v8)
+  extensionCopy = extension;
+  replyCopy = reply;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v9 = currentConnection;
+  if (currentConnection)
   {
-    v10 = [v8 cx_bundleIdentifier];
-    if (v10)
+    cx_bundleIdentifier = [currentConnection cx_bundleIdentifier];
+    if (cx_bundleIdentifier)
     {
-      v11 = v10;
+      v11 = cx_bundleIdentifier;
       v23 = 0;
-      v12 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:v10 error:&v23];
+      v12 = [objc_alloc(MEMORY[0x1E69635D0]) initWithBundleIdentifier:cx_bundleIdentifier error:&v23];
       v13 = v23;
       if (v12)
       {
-        v14 = [v12 extensionPointRecord];
-        v15 = [v14 name];
-        v16 = [v15 isEqualToString:@"com.apple.usernotifications.service"];
+        extensionPointRecord = [v12 extensionPointRecord];
+        name = [extensionPointRecord name];
+        v16 = [name isEqualToString:@"com.apple.usernotifications.service"];
 
         if (v16)
         {
-          v17 = [v12 containingBundleRecord];
-          v18 = [v17 bundleIdentifier];
+          containingBundleRecord = [v12 containingBundleRecord];
+          bundleIdentifier = [containingBundleRecord bundleIdentifier];
 
-          if (v18)
+          if (bundleIdentifier)
           {
-            [(CXNotificationServiceExtensionVoIPXPCHost *)self notificationServiceExtensionHost:self didReceiveIncomingMessage:v6 forBundleIdentifier:v18 reply:v7];
+            [(CXNotificationServiceExtensionVoIPXPCHost *)self notificationServiceExtensionHost:self didReceiveIncomingMessage:extensionCopy forBundleIdentifier:bundleIdentifier reply:replyCopy];
 LABEL_16:
 
             goto LABEL_17;
           }
 
-          if (!v7)
+          if (!replyCopy)
           {
             goto LABEL_17;
           }
@@ -102,8 +102,8 @@ LABEL_16:
           v21 = MEMORY[0x1E696ABC0];
           v22 = 0;
 LABEL_15:
-          v18 = [v21 cx_notificationServiceExtensionErrorWithCode:v22];
-          v7[2](v7, v18);
+          bundleIdentifier = [v21 cx_notificationServiceExtensionErrorWithCode:v22];
+          replyCopy[2](replyCopy, bundleIdentifier);
           goto LABEL_16;
         }
 
@@ -123,7 +123,7 @@ LABEL_15:
         }
       }
 
-      if (!v7)
+      if (!replyCopy)
       {
 LABEL_17:
 
@@ -136,22 +136,22 @@ LABEL_17:
     }
   }
 
-  if (v7)
+  if (replyCopy)
   {
     v19 = [MEMORY[0x1E696ABC0] cx_notificationServiceExtensionErrorWithCode:1];
-    v7[2](v7, v19);
+    replyCopy[2](replyCopy, v19);
   }
 
 LABEL_18:
 }
 
-- (void)notificationServiceExtensionHost:(id)a3 didReceiveIncomingMessage:(id)a4 forBundleIdentifier:(id)a5 reply:(id)a6
+- (void)notificationServiceExtensionHost:(id)host didReceiveIncomingMessage:(id)message forBundleIdentifier:(id)identifier reply:(id)reply
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = [(CXNotificationServiceExtensionVoIPXPCHost *)self delegate];
-  [v12 notificationServiceExtensionHost:self didReceiveIncomingMessage:v11 forBundleIdentifier:v10 reply:v9];
+  replyCopy = reply;
+  identifierCopy = identifier;
+  messageCopy = message;
+  delegate = [(CXNotificationServiceExtensionVoIPXPCHost *)self delegate];
+  [delegate notificationServiceExtensionHost:self didReceiveIncomingMessage:messageCopy forBundleIdentifier:identifierCopy reply:replyCopy];
 }
 
 - (CXNotificationServiceExtensionHostDelegate)delegate

@@ -1,17 +1,17 @@
 @interface ChannelCheckpoint
-+ (id)predicateForChannelIdentifier:(id)a3;
++ (id)predicateForChannelIdentifier:(id)identifier;
 @end
 
 @implementation ChannelCheckpoint
 
-+ (id)predicateForChannelIdentifier:(id)a3
++ (id)predicateForChannelIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[ChannelCheckpoint identifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 @end

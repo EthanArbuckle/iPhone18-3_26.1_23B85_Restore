@@ -1,29 +1,29 @@
 @interface FLOWSchemaFLOWHomeCommunicationContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWHomeCommunicationContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWHomeCommunicationContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWHomeCommunicationContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWHomeCommunicationContext)initWithJSON:(id)n;
 - (FLOWSchemaFLOWHomeCommunicationSendOrReply)sendOrReplyContext;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
 - (void)deleteSendOrReplyContext;
-- (void)setSendOrReplyContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setSendOrReplyContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWHomeCommunicationContext
 
-- (FLOWSchemaFLOWHomeCommunicationContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWHomeCommunicationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = FLOWSchemaFLOWHomeCommunicationContext;
   v5 = [(FLOWSchemaFLOWHomeCommunicationContext *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"homeContext"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"homeContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,14 +31,14 @@
       [(FLOWSchemaFLOWHomeCommunicationContext *)v5 setHomeContext:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"taskType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"taskType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWHomeCommunicationContext setTaskType:](v5, "setTaskType:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"sendOrReplyContext"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"sendOrReplyContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -52,30 +52,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWHomeCommunicationContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWHomeCommunicationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWHomeCommunicationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWHomeCommunicationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWHomeCommunicationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -88,36 +88,36 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_homeContext)
   {
-    v4 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    homeContext = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
+    dictionaryRepresentation = [homeContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"homeContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"homeContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"homeContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"homeContext"];
     }
   }
 
   if (self->_sendOrReplyContext)
   {
-    v7 = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    sendOrReplyContext = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
+    dictionaryRepresentation2 = [sendOrReplyContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"sendOrReplyContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"sendOrReplyContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"sendOrReplyContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"sendOrReplyContext"];
     }
   }
 
@@ -134,12 +134,12 @@
       v11 = off_1E78D5230[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"taskType"];
+    [dictionary setObject:v11 forKeyedSubscript:@"taskType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -158,34 +158,34 @@
   return v4 ^ v3 ^ [(FLOWSchemaFLOWHomeCommunicationSendOrReply *)self->_sendOrReplyContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   whichTaskcontext = self->_whichTaskcontext;
-  if (whichTaskcontext != [v4 whichTaskcontext])
+  if (whichTaskcontext != [equalCopy whichTaskcontext])
   {
     goto LABEL_16;
   }
 
-  v6 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
-  v7 = [v4 homeContext];
-  if ((v6 != 0) == (v7 == 0))
+  homeContext = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
+  homeContext2 = [equalCopy homeContext];
+  if ((homeContext != 0) == (homeContext2 == 0))
   {
     goto LABEL_15;
   }
 
-  v8 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
-  if (v8)
+  homeContext3 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
+  if (homeContext3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
-    v11 = [v4 homeContext];
-    v12 = [v10 isEqual:v11];
+    v9 = homeContext3;
+    homeContext4 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
+    homeContext5 = [equalCopy homeContext];
+    v12 = [homeContext4 isEqual:homeContext5];
 
     if (!v12)
     {
@@ -197,7 +197,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[32] & 1))
+  if ((*&self->_has & 1) != (equalCopy[32] & 1))
   {
     goto LABEL_16;
   }
@@ -205,18 +205,18 @@
   if (*&self->_has)
   {
     taskType = self->_taskType;
-    if (taskType != [v4 taskType])
+    if (taskType != [equalCopy taskType])
     {
       goto LABEL_16;
     }
   }
 
-  v6 = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
-  v7 = [v4 sendOrReplyContext];
-  if ((v6 != 0) != (v7 == 0))
+  homeContext = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
+  homeContext2 = [equalCopy sendOrReplyContext];
+  if ((homeContext != 0) != (homeContext2 == 0))
   {
-    v14 = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
-    if (!v14)
+    sendOrReplyContext = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
+    if (!sendOrReplyContext)
     {
 
 LABEL_19:
@@ -224,10 +224,10 @@ LABEL_19:
       goto LABEL_17;
     }
 
-    v15 = v14;
-    v16 = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
-    v17 = [v4 sendOrReplyContext];
-    v18 = [v16 isEqual:v17];
+    v15 = sendOrReplyContext;
+    sendOrReplyContext2 = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
+    sendOrReplyContext3 = [equalCopy sendOrReplyContext];
+    v18 = [sendOrReplyContext2 isEqual:sendOrReplyContext3];
 
     if (v18)
     {
@@ -247,14 +247,14 @@ LABEL_17:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
+  toCopy = to;
+  homeContext = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
 
-  if (v4)
+  if (homeContext)
   {
-    v5 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
+    homeContext2 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -263,15 +263,15 @@ LABEL_17:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
+  sendOrReplyContext = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (sendOrReplyContext)
   {
-    v8 = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
+    sendOrReplyContext2 = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
@@ -300,38 +300,38 @@ LABEL_17:
   return v3;
 }
 
-- (void)setSendOrReplyContext:(id)a3
+- (void)setSendOrReplyContext:(id)context
 {
   v3 = 3;
-  if (!a3)
+  if (!context)
   {
     v3 = 0;
   }
 
   self->_whichTaskcontext = v3;
-  objc_storeStrong(&self->_sendOrReplyContext, a3);
+  objc_storeStrong(&self->_sendOrReplyContext, context);
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = FLOWSchemaFLOWHomeCommunicationContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  homeContext = [(FLOWSchemaFLOWHomeCommunicationContext *)self homeContext];
+  v7 = [homeContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWHomeCommunicationContext *)self deleteHomeContext];
   }
 
-  v9 = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  sendOrReplyContext = [(FLOWSchemaFLOWHomeCommunicationContext *)self sendOrReplyContext];
+  v10 = [sendOrReplyContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWHomeCommunicationContext *)self deleteSendOrReplyContext];
   }

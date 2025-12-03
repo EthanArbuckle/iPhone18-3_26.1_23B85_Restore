@@ -1,7 +1,7 @@
 @interface PRUISPosterSnapshotResult
 - (PRPosterSnapshotBundle)snapshotBundle;
 - (PRUISPosterSnapshotBundle)posterSnapshotBundle;
-- (PRUISPosterSnapshotResult)initWith_PRUISPosterSnapshotResult:(id)a3;
+- (PRUISPosterSnapshotResult)initWith_PRUISPosterSnapshotResult:(id)result;
 - (UIImage)backgroundLayerImage;
 - (UIImage)compositeLayerImage;
 - (UIImage)floatingLayerImage;
@@ -10,10 +10,10 @@
 
 @implementation PRUISPosterSnapshotResult
 
-- (PRUISPosterSnapshotResult)initWith_PRUISPosterSnapshotResult:(id)a3
+- (PRUISPosterSnapshotResult)initWith_PRUISPosterSnapshotResult:(id)result
 {
-  v5 = a3;
-  if (v5)
+  resultCopy = result;
+  if (resultCopy)
   {
     v10.receiver = self;
     v10.super_class = PRUISPosterSnapshotResult;
@@ -21,68 +21,68 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_underlyingResult, a3);
+      objc_storeStrong(&v6->_underlyingResult, result);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (PRPosterSnapshotBundle)snapshotBundle
 {
   v2 = MEMORY[0x1E69C5330];
-  v3 = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
-  v4 = [v2 snapshotBundleWithPUIPosterSnapshotBundle:v3];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
+  v4 = [v2 snapshotBundleWithPUIPosterSnapshotBundle:snapshotBundle];
 
   return v4;
 }
 
 - (PRUISPosterSnapshotBundle)posterSnapshotBundle
 {
-  v2 = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
-  v3 = [PRUISPosterSnapshotBundle snapshotBundleWithPUIPosterSnapshotBundle:v2];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
+  v3 = [PRUISPosterSnapshotBundle snapshotBundleWithPUIPosterSnapshotBundle:snapshotBundle];
 
   return v3;
 }
 
 - (UIImage)floatingLayerImage
 {
-  v2 = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
-  v3 = [v2 floatingSnapshot];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
+  floatingSnapshot = [snapshotBundle floatingSnapshot];
 
-  return v3;
+  return floatingSnapshot;
 }
 
 - (UIImage)foregroundLayerImage
 {
-  v2 = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
-  v3 = [v2 foregroundSnapshot];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
+  foregroundSnapshot = [snapshotBundle foregroundSnapshot];
 
-  return v3;
+  return foregroundSnapshot;
 }
 
 - (UIImage)backgroundLayerImage
 {
-  v2 = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
-  v3 = [v2 backgroundSnapshot];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
+  backgroundSnapshot = [snapshotBundle backgroundSnapshot];
 
-  return v3;
+  return backgroundSnapshot;
 }
 
 - (UIImage)compositeLayerImage
 {
-  v2 = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
-  v3 = [v2 compositeSnapshot];
+  snapshotBundle = [(_PRUISPosterSnapshotResult *)self->_underlyingResult snapshotBundle];
+  compositeSnapshot = [snapshotBundle compositeSnapshot];
 
-  return v3;
+  return compositeSnapshot;
 }
 
 @end

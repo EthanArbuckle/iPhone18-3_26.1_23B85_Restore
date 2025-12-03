@@ -1,26 +1,26 @@
 @interface AVTResourceLocator
 + (id)sharedResourceLocator;
 - (id)_init;
-- (id)pathForAnimojiResource:(void *)a1 ofType:inDirectory:isDirectory:;
-- (id)pathForAnimojiResource:(void *)a1 ofType:isDirectory:;
-- (id)pathForEnvironmentResource:(void *)a1 ofType:inDirectory:isDirectory:;
-- (id)pathForEnvironmentResource:(void *)a1 ofType:isDirectory:;
-- (id)pathForMemojiResource:(void *)a1 ofType:inDirectory:isDirectory:;
-- (id)pathForMemojiResource:(void *)a1 ofType:isDirectory:;
-- (id)pathForPoseResource:(void *)a1 ofType:inDirectory:isDirectory:;
-- (id)pathForPoseResource:(void *)a1 ofType:isDirectory:;
-- (id)pathForStickerResource:(void *)a1 ofType:inDirectory:isDirectory:;
-- (id)pathForStickerResource:(void *)a1 ofType:isDirectory:;
+- (id)pathForAnimojiResource:(void *)resource ofType:inDirectory:isDirectory:;
+- (id)pathForAnimojiResource:(void *)resource ofType:isDirectory:;
+- (id)pathForEnvironmentResource:(void *)resource ofType:inDirectory:isDirectory:;
+- (id)pathForEnvironmentResource:(void *)resource ofType:isDirectory:;
+- (id)pathForMemojiResource:(void *)resource ofType:inDirectory:isDirectory:;
+- (id)pathForMemojiResource:(void *)resource ofType:isDirectory:;
+- (id)pathForPoseResource:(void *)resource ofType:inDirectory:isDirectory:;
+- (id)pathForPoseResource:(void *)resource ofType:isDirectory:;
+- (id)pathForStickerResource:(void *)resource ofType:inDirectory:isDirectory:;
+- (id)pathForStickerResource:(void *)resource ofType:isDirectory:;
 - (id)rootCacheURL;
 - (id)subdivDataCacheURL;
-- (id)urlForFrameworkResourceAtPath:(uint64_t)a3 isDirectory:;
-- (id)urlForMemojiAssetAtPath:(uint64_t)a3 isDirectory:;
-- (id)urlForMemojiResourceAtPath:(uint64_t)a3 isDirectory:;
-- (id)urlForStickerResourceAtPath:(uint64_t)a3 isDirectory:;
+- (id)urlForFrameworkResourceAtPath:(uint64_t)path isDirectory:;
+- (id)urlForMemojiAssetAtPath:(uint64_t)path isDirectory:;
+- (id)urlForMemojiResourceAtPath:(uint64_t)path isDirectory:;
+- (id)urlForStickerResourceAtPath:(uint64_t)path isDirectory:;
 - (void)_init;
 - (void)deleteLegacyCache;
-- (void)deleteObsoleteVersionsInCache:(id)a3 currentVersion:(unint64_t)a4;
-- (void)imageWithPath:(uint64_t)a1;
+- (void)deleteObsoleteVersionsInCache:(id)cache currentVersion:(unint64_t)version;
+- (void)imageWithPath:(uint64_t)path;
 - (void)initCaches;
 @end
 
@@ -39,15 +39,15 @@ LABEL_18:
     return v2;
   }
 
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   imageCache = v2->_imageCache;
-  v2->_imageCache = v3;
+  v2->_imageCache = dictionary;
 
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v6 = [v5 resourceURL];
+  resourceURL = [v5 resourceURL];
   p_resourcesURL = &v2->_resourcesURL;
   resourcesURL = v2->_resourcesURL;
-  v2->_resourcesURL = v6;
+  v2->_resourcesURL = resourceURL;
 
   v9 = v2->_resourcesURL;
   if (!v9)
@@ -61,8 +61,8 @@ LABEL_18:
     v9 = *p_resourcesURL;
   }
 
-  v18 = [v9 path];
-  v19 = [v18 containsString:@"AvatarKit.framework"];
+  path = [v9 path];
+  v19 = [path containsString:@"AvatarKit.framework"];
 
   if (v19)
   {
@@ -136,13 +136,13 @@ LABEL_13:
   v53 = v2->_resourcesURL;
   v54 = objc_opt_class();
   v55 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
-  v56 = [v55 bundlePath];
+  bundlePath = [v55 bundlePath];
   v58 = 138412802;
   v59 = v53;
   v60 = 2112;
   v61 = v54;
   v62 = 2112;
-  v63 = v56;
+  v63 = bundlePath;
   _os_log_send_and_compose_impl();
 
   result = _os_crash_msg();
@@ -178,7 +178,7 @@ uint64_t __43__AVTResourceLocator_sharedResourceLocator__block_invoke(uint64_t a
 - (void)initCaches
 {
   v8 = *MEMORY[0x1E69E9840];
-  v7 = [a1 localizedDescription];
+  localizedDescription = [self localizedDescription];
   OUTLINED_FUNCTION_2_1();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
 
@@ -196,13 +196,13 @@ uint64_t __32__AVTResourceLocator_initCaches__block_invoke(uint64_t a1)
   return [v2 deleteObsoleteVersionsInCache:v3 currentVersion:v4];
 }
 
-- (void)deleteObsoleteVersionsInCache:(id)a3 currentVersion:(unint64_t)a4
+- (void)deleteObsoleteVersionsInCache:(id)cache currentVersion:(unint64_t)version
 {
   v55 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v34 = v4;
-  v6 = [v5 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:0 options:0 error:0];
+  cacheCopy = cache;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v34 = cacheCopy;
+  v6 = [defaultManager contentsOfDirectoryAtURL:cacheCopy includingPropertiesForKeys:0 options:0 error:0];
 
   v46 = 0u;
   v47 = 0u;
@@ -226,22 +226,22 @@ uint64_t __32__AVTResourceLocator_initCaches__block_invoke(uint64_t a1)
         }
 
         v11 = *(*(&v44 + 1) + 8 * v10);
-        v12 = [v11 lastPathComponent];
-        if (![v12 hasPrefix:@"AvatarKit-"])
+        lastPathComponent = [v11 lastPathComponent];
+        if (![lastPathComponent hasPrefix:@"AvatarKit-"])
         {
           v15 = avt_default_log();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v49 = v12;
+            v49 = lastPathComponent;
             _os_log_error_impl(&dword_1BB472000, v15, OS_LOG_TYPE_ERROR, "Error: [Cache] Unknown cache folder %@", buf, 0xCu);
           }
 
 LABEL_12:
-          v16 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
           v53 = v9;
           v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v53 count:1];
-          v18 = [v16 enumeratorAtURL:v11 includingPropertiesForKeys:v17 options:0 errorHandler:0];
+          v18 = [defaultManager2 enumeratorAtURL:v11 includingPropertiesForKeys:v17 options:0 errorHandler:0];
 
           v42 = 0u;
           v43 = 0u;
@@ -280,23 +280,23 @@ LABEL_12:
             v22 = 0;
           }
 
-          v26 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
           v38 = 0;
-          v27 = [v26 removeItemAtURL:v11 error:&v38];
+          v27 = [defaultManager3 removeItemAtURL:v11 error:&v38];
           v28 = v38;
 
           if (v27)
           {
             v29 = [MEMORY[0x1E696AAF0] stringFromByteCount:v22 countStyle:0];
-            v30 = avt_default_log();
-            if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+            path2 = avt_default_log();
+            if (os_log_type_enabled(path2, OS_LOG_TYPE_DEFAULT))
             {
-              v31 = [v11 path];
+              path = [v11 path];
               *buf = 138412546;
               v49 = v29;
               v50 = 2112;
-              v51 = v31;
-              _os_log_impl(&dword_1BB472000, v30, OS_LOG_TYPE_DEFAULT, "[Cache] Reclaimed %@ from obsolete cache: %@", buf, 0x16u);
+              v51 = path;
+              _os_log_impl(&dword_1BB472000, path2, OS_LOG_TYPE_DEFAULT, "[Cache] Reclaimed %@ from obsolete cache: %@", buf, 0x16u);
               goto LABEL_24;
             }
 
@@ -306,12 +306,12 @@ LABEL_12:
           v29 = avt_default_log();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
-            v30 = [v11 path];
-            v31 = [v28 description];
+            path2 = [v11 path];
+            path = [v28 description];
             *buf = 138412546;
-            v49 = v30;
+            v49 = path2;
             v50 = 2112;
-            v51 = v31;
+            v51 = path;
             _os_log_error_impl(&dword_1BB472000, v29, OS_LOG_TYPE_ERROR, "Error: [Cache] Failed to delete %@ with error %@", buf, 0x16u);
 LABEL_24:
 
@@ -321,10 +321,10 @@ LABEL_25:
           goto LABEL_28;
         }
 
-        v13 = [v12 substringFromIndex:10];
+        v13 = [lastPathComponent substringFromIndex:10];
         v14 = AVTAvatarKitSnapshotVersionNumberFromString(v13);
 
-        if (v14 < a4)
+        if (v14 < version)
         {
           goto LABEL_12;
         }
@@ -348,7 +348,7 @@ LABEL_28:
 - (void)deleteLegacyCache
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [a1 path];
+  path = [self path];
   v10 = [a2 description];
   OUTLINED_FUNCTION_2_1();
   _os_log_error_impl(v4, v5, v6, v7, v8, 0x16u);
@@ -356,197 +356,197 @@ LABEL_28:
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)urlForFrameworkResourceAtPath:(uint64_t)a3 isDirectory:
+- (id)urlForFrameworkResourceAtPath:(uint64_t)path isDirectory:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[2] URLByAppendingPathComponent:a2 isDirectory:a3];
+    self = [self[2] URLByAppendingPathComponent:a2 isDirectory:path];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)pathForEnvironmentResource:(void *)a1 ofType:isDirectory:
+- (id)pathForEnvironmentResource:(void *)resource ofType:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_4_0();
     v3 = *(v2 + 24);
-    a1 = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (id)pathForEnvironmentResource:(void *)a1 ofType:inDirectory:isDirectory:
+- (id)pathForEnvironmentResource:(void *)resource ofType:inDirectory:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_5_0();
     v3 = *(v2 + 24);
-    a1 = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (id)pathForAnimojiResource:(void *)a1 ofType:isDirectory:
+- (id)pathForAnimojiResource:(void *)resource ofType:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_4_0();
     v3 = *(v2 + 32);
-    a1 = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (id)pathForAnimojiResource:(void *)a1 ofType:inDirectory:isDirectory:
+- (id)pathForAnimojiResource:(void *)resource ofType:inDirectory:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_5_0();
     v3 = *(v2 + 32);
-    a1 = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (id)urlForMemojiAssetAtPath:(uint64_t)a3 isDirectory:
+- (id)urlForMemojiAssetAtPath:(uint64_t)path isDirectory:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[8] URLByAppendingPathComponent:a2 isDirectory:a3];
+    self = [self[8] URLByAppendingPathComponent:a2 isDirectory:path];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)urlForMemojiResourceAtPath:(uint64_t)a3 isDirectory:
+- (id)urlForMemojiResourceAtPath:(uint64_t)path isDirectory:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[5] URLByAppendingPathComponent:a2 isDirectory:a3];
+    self = [self[5] URLByAppendingPathComponent:a2 isDirectory:path];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)pathForMemojiResource:(void *)a1 ofType:isDirectory:
+- (id)pathForMemojiResource:(void *)resource ofType:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_4_0();
     v3 = *(v2 + 40);
-    a1 = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (id)pathForMemojiResource:(void *)a1 ofType:inDirectory:isDirectory:
+- (id)pathForMemojiResource:(void *)resource ofType:inDirectory:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_5_0();
     v3 = *(v2 + 40);
-    a1 = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (id)urlForStickerResourceAtPath:(uint64_t)a3 isDirectory:
+- (id)urlForStickerResourceAtPath:(uint64_t)path isDirectory:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [a1[6] URLByAppendingPathComponent:a2 isDirectory:a3];
+    self = [self[6] URLByAppendingPathComponent:a2 isDirectory:path];
     v3 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)pathForStickerResource:(void *)a1 ofType:isDirectory:
+- (id)pathForStickerResource:(void *)resource ofType:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_4_0();
     v3 = *(v2 + 48);
-    a1 = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (id)pathForStickerResource:(void *)a1 ofType:inDirectory:isDirectory:
+- (id)pathForStickerResource:(void *)resource ofType:inDirectory:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_5_0();
     v3 = *(v2 + 48);
-    a1 = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (id)pathForPoseResource:(void *)a1 ofType:isDirectory:
+- (id)pathForPoseResource:(void *)resource ofType:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_4_0();
     v3 = *(v2 + 56);
-    a1 = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_0_2(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (id)pathForPoseResource:(void *)a1 ofType:inDirectory:isDirectory:
+- (id)pathForPoseResource:(void *)resource ofType:inDirectory:isDirectory:
 {
-  if (a1)
+  if (resource)
   {
     OUTLINED_FUNCTION_5_0();
     v3 = *(v2 + 56);
-    a1 = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
+    resource = [OUTLINED_FUNCTION_3_0(AVTResourceLocator) _resourcePathInDirectoryURL:? subDirectory:? name:? ofType:? isDirectory:?];
     v1 = vars8;
   }
 
-  return a1;
+  return resource;
 }
 
-- (void)imageWithPath:(uint64_t)a1
+- (void)imageWithPath:(uint64_t)path
 {
   v3 = a2;
-  if (a1)
+  if (path)
   {
-    ImageAtIndex = [*(a1 + 8) objectForKeyedSubscript:v3];
+    ImageAtIndex = [*(path + 8) objectForKeyedSubscript:v3];
 
     if (!ImageAtIndex)
     {
       v6 = +[AVTResourceLocator sharedResourceLocator];
-      v7 = [v3 lastPathComponent];
+      lastPathComponent = [v3 lastPathComponent];
       v8 = [AVTResourceLocator pathForMemojiResource:v6 ofType:? isDirectory:?];
 
       if (v8 && ([MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:0], v9 = objc_claimAutoreleasedReturnValue(), v10 = CGImageSourceCreateWithURL(v9, 0), v9, v10))
       {
         ImageAtIndex = CGImageSourceCreateImageAtIndex(v10, 0, 0);
-        [*(a1 + 8) setObject:ImageAtIndex forKeyedSubscript:v3];
+        [*(path + 8) setObject:ImageAtIndex forKeyedSubscript:v3];
         if (ImageAtIndex)
         {
           CGImageRelease(ImageAtIndex);
@@ -572,24 +572,24 @@ LABEL_28:
 
 - (id)rootCacheURL
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[9];
+    self = self[9];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)subdivDataCacheURL
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[10];
+    self = self[10];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_init

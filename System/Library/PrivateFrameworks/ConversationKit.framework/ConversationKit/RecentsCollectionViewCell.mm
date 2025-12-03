@@ -1,25 +1,25 @@
 @interface RecentsCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIView)trailingAccessoryView;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
-- (void)didDoubleTapWithGesture:(id)a3;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
+- (void)didDoubleTapWithGesture:(id)gesture;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RecentsCollectionViewCell
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   RecentsCollectionViewCell.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = RecentsCollectionViewCell.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -29,17 +29,17 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   RecentsCollectionViewCell.traitCollectionDidChange(_:)(v9);
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   v3 = type metadata accessor for UICellConfigurationState();
   v4 = *(v3 - 8);
@@ -49,16 +49,16 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)didDoubleTapWithGesture:(id)a3
+- (void)didDoubleTapWithGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = self;
-  RecentsCollectionViewCell.didDoubleTap(gesture:)(v4);
+  gestureCopy = gesture;
+  selfCopy = self;
+  RecentsCollectionViewCell.didDoubleTap(gesture:)(gestureCopy);
 }
 
 - (UIView)trailingAccessoryView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = RecentsCollectionViewCell.trailingAccessoryView.getter();
 
   return v3;

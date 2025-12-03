@@ -1,26 +1,26 @@
 @interface LPMessagesPayload
-+ (id)_linkWithDataRepresentation:(id)a3 substitutingAttachments:(BOOL)a4 attachments:(id)a5;
-+ (id)linkWithDataRepresentation:(id)a3 attachments:(id)a4;
-+ (id)linkWithDataRepresentationWithoutSubstitutingAttachments:(id)a3;
++ (id)_linkWithDataRepresentation:(id)representation substitutingAttachments:(BOOL)attachments attachments:(id)a5;
++ (id)linkWithDataRepresentation:(id)representation attachments:(id)attachments;
++ (id)linkWithDataRepresentationWithoutSubstitutingAttachments:(id)attachments;
 - (BOOL)_needsWorkaroundForAppStoreTransformerCrash;
-- (LPMessagesPayload)initWithCoder:(id)a3;
-- (id)dataRepresentationWithOutOfLineAttachments:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)performSubstitutionWithAttachments:(id)a3;
+- (LPMessagesPayload)initWithCoder:(id)coder;
+- (id)dataRepresentationWithOutOfLineAttachments:(id *)attachments;
+- (void)encodeWithCoder:(id)coder;
+- (void)performSubstitutionWithAttachments:(id)attachments;
 @end
 
 @implementation LPMessagesPayload
 
-- (LPMessagesPayload)initWithCoder:(id)a3
+- (LPMessagesPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = LPMessagesPayload;
   v5 = [(LPMessagesPayload *)&v11 init];
   if (v5)
   {
-    v5->_placeholder = [v4 decodeBoolForKey:@"richLinkIsPlaceholder"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"richLinkMetadata"];
+    v5->_placeholder = [coderCopy decodeBoolForKey:@"richLinkIsPlaceholder"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"richLinkMetadata"];
     metadata = v5->_metadata;
     v5->_metadata = v6;
 
@@ -37,27 +37,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:self->_placeholder forKey:@"richLinkIsPlaceholder"];
-  [v4 encodeObject:self->_metadata forKey:@"richLinkMetadata"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_placeholder forKey:@"richLinkIsPlaceholder"];
+  [coderCopy encodeObject:self->_metadata forKey:@"richLinkMetadata"];
 }
 
-+ (id)_linkWithDataRepresentation:(id)a3 substitutingAttachments:(BOOL)a4 attachments:(id)a5
++ (id)_linkWithDataRepresentation:(id)representation substitutingAttachments:(BOOL)attachments attachments:(id)a5
 {
-  v6 = a4;
+  attachmentsCopy = attachments;
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  representationCopy = representation;
   v8 = a5;
-  v9 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v7 error:0];
+  v9 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:representationCopy error:0];
   [v9 setClass:objc_opt_class() forClassName:@"RichLink"];
   [v9 setClass:objc_opt_class() forClassName:@"RichLinkARAssetAttachmentSubstitute"];
   [v9 setClass:objc_opt_class() forClassName:@"RichLinkImageAttachmentSubstitute"];
   [v9 setClass:objc_opt_class() forClassName:@"RichLinkVideoAttachmentSubstitute"];
   [v9 _enableStrictSecureDecodingMode];
   [v9 setDecodingFailurePolicy:1];
-  if (v6)
+  if (attachmentsCopy)
   {
     v10 = objc_alloc_init(RichLinkAttachmentSubstituter);
     [(RichLinkAttachmentSubstituter *)v10 setAttachmentsForUnarchiving:v8];
@@ -72,7 +72,7 @@
   v11 = MEMORY[0x1E695DFD8];
   v12 = objc_opt_class();
   v13 = objc_opt_class();
-  v14 = 0x1E7A34000;
+  metadata4 = 0x1E7A34000;
   v15 = [v11 setWithObjects:{v12, v13, objc_opt_class(), 0}];
   v16 = *MEMORY[0x1E696A508];
   v31 = 0;
@@ -108,8 +108,8 @@ LABEL_7:
   if (objc_opt_isKindOfClass())
   {
     v20 = v17;
-    v22 = [(LPMessagesPayload *)v20 metadata];
-    -[LPMessagesPayload setNeedsCompleteFetch:](v20, "setNeedsCompleteFetch:", [v22 _isCurrentlyLoadingOrIncomplete]);
+    metadata = [(LPMessagesPayload *)v20 metadata];
+    -[LPMessagesPayload setNeedsCompleteFetch:](v20, "setNeedsCompleteFetch:", [metadata _isCurrentlyLoadingOrIncomplete]);
   }
 
   else
@@ -119,8 +119,8 @@ LABEL_7:
     {
       v20 = objc_alloc_init(LPMessagesPayload);
       [(LPMessagesPayload *)v20 setMetadata:v17];
-      v24 = [(LPMessagesPayload *)v20 metadata];
-      -[LPMessagesPayload setNeedsCompleteFetch:](v20, "setNeedsCompleteFetch:", [v24 _isCurrentlyLoadingOrIncomplete]);
+      metadata2 = [(LPMessagesPayload *)v20 metadata];
+      -[LPMessagesPayload setNeedsCompleteFetch:](v20, "setNeedsCompleteFetch:", [metadata2 _isCurrentlyLoadingOrIncomplete]);
     }
 
     else
@@ -140,24 +140,24 @@ LABEL_7:
 
       v20 = objc_alloc_init(LPMessagesPayload);
       v25 = v17;
-      v26 = [v25 metadata];
-      [(LPMessagesPayload *)v20 setMetadata:v26];
+      metadata3 = [v25 metadata];
+      [(LPMessagesPayload *)v20 setMetadata:metadata3];
 
       -[LPMessagesPayload setNeedsSubresourceFetch:](v20, "setNeedsSubresourceFetch:", [v25 hasFetchedSubresources] ^ 1);
-      v27 = [v25 hasCompletedFetch];
-      if (v27)
+      hasCompletedFetch = [v25 hasCompletedFetch];
+      if (hasCompletedFetch)
       {
-        v14 = [v25 metadata];
-        v28 = [v14 _isCurrentlyLoadingOrIncomplete];
+        metadata4 = [v25 metadata];
+        _isCurrentlyLoadingOrIncomplete = [metadata4 _isCurrentlyLoadingOrIncomplete];
       }
 
       else
       {
-        v28 = 1;
+        _isCurrentlyLoadingOrIncomplete = 1;
       }
 
-      [(LPMessagesPayload *)v20 setNeedsCompleteFetch:v28];
-      if (v27)
+      [(LPMessagesPayload *)v20 setNeedsCompleteFetch:_isCurrentlyLoadingOrIncomplete];
+      if (hasCompletedFetch)
       {
       }
     }
@@ -168,25 +168,25 @@ LABEL_8:
   return v20;
 }
 
-+ (id)linkWithDataRepresentation:(id)a3 attachments:(id)a4
++ (id)linkWithDataRepresentation:(id)representation attachments:(id)attachments
 {
-  v4 = [a1 _linkWithDataRepresentation:a3 substitutingAttachments:1 attachments:a4];
+  v4 = [self _linkWithDataRepresentation:representation substitutingAttachments:1 attachments:attachments];
 
   return v4;
 }
 
-+ (id)linkWithDataRepresentationWithoutSubstitutingAttachments:(id)a3
++ (id)linkWithDataRepresentationWithoutSubstitutingAttachments:(id)attachments
 {
-  v3 = [a1 _linkWithDataRepresentation:a3 substitutingAttachments:0 attachments:0];
+  v3 = [self _linkWithDataRepresentation:attachments substitutingAttachments:0 attachments:0];
 
   return v3;
 }
 
-- (void)performSubstitutionWithAttachments:(id)a3
+- (void)performSubstitutionWithAttachments:(id)attachments
 {
-  v4 = a3;
+  attachmentsCopy = attachments;
   v5 = objc_alloc_init(RichLinkAttachmentSubstituter);
-  [(RichLinkAttachmentSubstituter *)v5 setAttachmentsForUnarchiving:v4];
+  [(RichLinkAttachmentSubstituter *)v5 setAttachmentsForUnarchiving:attachmentsCopy];
   metadata = self->_metadata;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -218,7 +218,7 @@ void __56__LPMessagesPayload_performSubstitutionWithAttachments___block_invoke(u
   }
 }
 
-- (id)dataRepresentationWithOutOfLineAttachments:(id *)a3
+- (id)dataRepresentationWithOutOfLineAttachments:(id *)attachments
 {
   v5 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v5 setClassName:@"RichLink" forClass:objc_opt_class()];
@@ -226,22 +226,22 @@ void __56__LPMessagesPayload_performSubstitutionWithAttachments___block_invoke(u
   [v5 setClassName:@"RichLinkImageAttachmentSubstitute" forClass:objc_opt_class()];
   [v5 setClassName:@"RichLinkVideoAttachmentSubstitute" forClass:objc_opt_class()];
   v6 = objc_alloc_init(RichLinkAttachmentSubstituter);
-  [(RichLinkAttachmentSubstituter *)v6 setShouldSubstituteAttachments:a3 != 0];
+  [(RichLinkAttachmentSubstituter *)v6 setShouldSubstituteAttachments:attachments != 0];
   [(RichLinkAttachmentSubstituter *)v6 setShouldIgnoreAppStoreMetadata:[(LPMessagesPayload *)self _needsWorkaroundForAppStoreTransformerCrash]];
   [v5 setDelegate:v6];
   [v5 encodeObject:self forKey:*MEMORY[0x1E696A508]];
-  v7 = [v5 encodedData];
-  if (a3)
+  encodedData = [v5 encodedData];
+  if (attachments)
   {
-    *a3 = [(RichLinkAttachmentSubstituter *)v6 archivedAttachments];
+    *attachments = [(RichLinkAttachmentSubstituter *)v6 archivedAttachments];
   }
 
-  return v7;
+  return encodedData;
 }
 
 - (BOOL)_needsWorkaroundForAppStoreTransformerCrash
 {
-  v3 = [(LPLinkMetadata *)self->_metadata specialization];
+  specialization = [(LPLinkMetadata *)self->_metadata specialization];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -250,9 +250,9 @@ void __56__LPMessagesPayload_performSubstitutionWithAttachments___block_invoke(u
     return 0;
   }
 
-  v5 = [(LPLinkMetadata *)self->_metadata specialization];
-  v6 = [v5 screenshots];
-  v7 = [v6 count] == 0;
+  specialization2 = [(LPLinkMetadata *)self->_metadata specialization];
+  screenshots = [specialization2 screenshots];
+  v7 = [screenshots count] == 0;
 
   return v7;
 }

@@ -1,42 +1,42 @@
 @interface SearchCardView.Coordinator
-- (BOOL)canPerformCommand:(id)a3;
+- (BOOL)canPerformCommand:(id)command;
 - (_TtCV20VisualIntelligenceUI14SearchCardView11Coordinator)init;
-- (void)cardViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4 animated:(BOOL)a5;
-- (void)performCommand:(id)a3;
-- (void)presentViewController:(id)a3;
+- (void)cardViewController:(id)controller preferredContentSizeDidChange:(CGSize)change animated:(BOOL)animated;
+- (void)performCommand:(id)command;
+- (void)presentViewController:(id)controller;
 @end
 
 @implementation SearchCardView.Coordinator
 
-- (void)cardViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4 animated:(BOOL)a5
+- (void)cardViewController:(id)controller preferredContentSizeDidChange:(CGSize)change animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = self;
-  sub_21DFF26EC(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21DFF26EC(controller);
 }
 
-- (void)presentViewController:(id)a3
+- (void)presentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_21DFF11EC(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21DFF11EC(controller);
 }
 
-- (BOOL)canPerformCommand:(id)a3
+- (BOOL)canPerformCommand:(id)command
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_21DFF2814(v3);
+  commandCopy = command;
+  commandCopy2 = command;
+  selfCopy = self;
+  LOBYTE(commandCopy) = sub_21DFF2814(commandCopy);
 
-  return v3 & 1;
+  return commandCopy & 1;
 }
 
-- (void)performCommand:(id)a3
+- (void)performCommand:(id)command
 {
-  v5 = a3;
-  v6 = self;
-  sub_21DFF18FC(a3);
+  commandCopy = command;
+  selfCopy = self;
+  sub_21DFF18FC(command);
 }
 
 - (_TtCV20VisualIntelligenceUI14SearchCardView11Coordinator)init

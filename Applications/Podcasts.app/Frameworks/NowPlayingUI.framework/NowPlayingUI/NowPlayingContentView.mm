@@ -1,6 +1,6 @@
 @interface NowPlayingContentView
 - (AVPlayerLayer)accessibilityPlayerVideoLayer;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (void)layoutSubviews;
 @end
 
@@ -8,24 +8,24 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_C6E1C();
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (key)
   {
     sub_1448DC();
-    a3 = v6;
-    v7 = self;
+    key = v6;
+    selfCopy = self;
     v8 = sub_14489C();
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0;
   }
 
@@ -39,7 +39,7 @@
     return 1;
   }
 
-  if (a3)
+  if (key)
   {
     v14._countAndFlagsBits = 0x776F64616873;
     v14._object = 0xE600000000000000;
@@ -54,7 +54,7 @@
 
 - (AVPlayerLayer)accessibilityPlayerVideoLayer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_C8424();
 
   return v3;

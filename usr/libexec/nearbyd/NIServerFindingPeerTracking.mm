@@ -1,25 +1,25 @@
 @interface NIServerFindingPeerTracking
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation NIServerFindingPeerTracking
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   LOBYTE(v4) = self->_clientWantsUpdates;
   [NIServerFindingPeerTracking peerTrackingWithDiscoveryState:self->_discoveryState advertisingState:self->_advertisingState rangingState:self->_rangingState algorithmOutputFlags:self->_algorithmOutputFlags receivedSignalFlags:self->_receivedSignalFlags tellClientAboutPeer:self->_tellClientAboutPeer clientWantsUpdates:v4 nbUwbAcquisitionChannelIdx:self->_nbUwbAcquisitionChannelIdx nbUwbAcquisitionUseLowPriorityDutyCycle:self->_nbUwbAcquisitionUseLowPriorityDutyCycle oobRefreshPeriod:self->_oobRefreshPeriodSeconds keepAliveTimeout:self->_keepAliveTimeoutSeconds];
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -36,8 +36,8 @@ LABEL_41:
 
     else
     {
-      v9 = [(NIServerFindingPeerTracking *)v5 nbUwbAcquisitionChannelIdx];
-      v7 = v9 == 0;
+      nbUwbAcquisitionChannelIdx = [(NIServerFindingPeerTracking *)v5 nbUwbAcquisitionChannelIdx];
+      v7 = nbUwbAcquisitionChannelIdx == 0;
 
       if (!self->_nbUwbAcquisitionChannelIdx)
       {
@@ -45,12 +45,12 @@ LABEL_41:
       }
     }
 
-    v10 = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionChannelIdx];
-    if (v10)
+    nbUwbAcquisitionChannelIdx2 = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionChannelIdx];
+    if (nbUwbAcquisitionChannelIdx2)
     {
       nbUwbAcquisitionChannelIdx = self->_nbUwbAcquisitionChannelIdx;
-      v12 = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionChannelIdx];
-      v13 = [(NSNumber *)nbUwbAcquisitionChannelIdx isEqualToNumber:v12];
+      nbUwbAcquisitionChannelIdx3 = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionChannelIdx];
+      v13 = [(NSNumber *)nbUwbAcquisitionChannelIdx isEqualToNumber:nbUwbAcquisitionChannelIdx3];
     }
 
     else
@@ -67,8 +67,8 @@ LABEL_12:
 
     else
     {
-      v15 = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
-      v14 = v15 == 0;
+      nbUwbAcquisitionUseLowPriorityDutyCycle = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
+      v14 = nbUwbAcquisitionUseLowPriorityDutyCycle == 0;
 
       if (!self->_nbUwbAcquisitionUseLowPriorityDutyCycle)
       {
@@ -76,12 +76,12 @@ LABEL_12:
       }
     }
 
-    v16 = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
-    if (v16)
+    nbUwbAcquisitionUseLowPriorityDutyCycle2 = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
+    if (nbUwbAcquisitionUseLowPriorityDutyCycle2)
     {
       nbUwbAcquisitionUseLowPriorityDutyCycle = self->_nbUwbAcquisitionUseLowPriorityDutyCycle;
-      v18 = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
-      v19 = [(NSNumber *)nbUwbAcquisitionUseLowPriorityDutyCycle isEqualToNumber:v18];
+      nbUwbAcquisitionUseLowPriorityDutyCycle3 = [(NIServerFindingPeerTracking *)v6 nbUwbAcquisitionUseLowPriorityDutyCycle];
+      v19 = [(NSNumber *)nbUwbAcquisitionUseLowPriorityDutyCycle isEqualToNumber:nbUwbAcquisitionUseLowPriorityDutyCycle3];
     }
 
     else
@@ -98,8 +98,8 @@ LABEL_19:
 
     else
     {
-      v21 = [(NIServerFindingPeerTracking *)v6 oobRefreshPeriodSeconds];
-      v20 = v21 == 0;
+      oobRefreshPeriodSeconds = [(NIServerFindingPeerTracking *)v6 oobRefreshPeriodSeconds];
+      v20 = oobRefreshPeriodSeconds == 0;
 
       if (!self->_oobRefreshPeriodSeconds)
       {
@@ -107,12 +107,12 @@ LABEL_19:
       }
     }
 
-    v22 = [(NIServerFindingPeerTracking *)v6 oobRefreshPeriodSeconds];
-    if (v22)
+    oobRefreshPeriodSeconds2 = [(NIServerFindingPeerTracking *)v6 oobRefreshPeriodSeconds];
+    if (oobRefreshPeriodSeconds2)
     {
       oobRefreshPeriodSeconds = self->_oobRefreshPeriodSeconds;
-      v24 = [(NIServerFindingPeerTracking *)v6 oobRefreshPeriodSeconds];
-      v25 = [(NSNumber *)oobRefreshPeriodSeconds isEqualToNumber:v24];
+      oobRefreshPeriodSeconds3 = [(NIServerFindingPeerTracking *)v6 oobRefreshPeriodSeconds];
+      v25 = [(NSNumber *)oobRefreshPeriodSeconds isEqualToNumber:oobRefreshPeriodSeconds3];
     }
 
     else
@@ -129,8 +129,8 @@ LABEL_26:
 
     else
     {
-      v27 = [(NIServerFindingPeerTracking *)v6 keepAliveTimeoutSeconds];
-      v26 = v27 == 0;
+      keepAliveTimeoutSeconds = [(NIServerFindingPeerTracking *)v6 keepAliveTimeoutSeconds];
+      v26 = keepAliveTimeoutSeconds == 0;
 
       if (!self->_keepAliveTimeoutSeconds)
       {
@@ -151,12 +151,12 @@ LABEL_33:
       }
     }
 
-    v28 = [(NIServerFindingPeerTracking *)v6 keepAliveTimeoutSeconds];
-    if (v28)
+    keepAliveTimeoutSeconds2 = [(NIServerFindingPeerTracking *)v6 keepAliveTimeoutSeconds];
+    if (keepAliveTimeoutSeconds2)
     {
       keepAliveTimeoutSeconds = self->_keepAliveTimeoutSeconds;
-      v30 = [(NIServerFindingPeerTracking *)v6 keepAliveTimeoutSeconds];
-      v31 = [(NSNumber *)keepAliveTimeoutSeconds isEqualToNumber:v30];
+      keepAliveTimeoutSeconds3 = [(NIServerFindingPeerTracking *)v6 keepAliveTimeoutSeconds];
+      v31 = [(NSNumber *)keepAliveTimeoutSeconds isEqualToNumber:keepAliveTimeoutSeconds3];
     }
 
     else

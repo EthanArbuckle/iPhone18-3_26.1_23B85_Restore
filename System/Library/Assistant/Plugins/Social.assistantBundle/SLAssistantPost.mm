@@ -3,26 +3,26 @@
 - (BOOL)_shouldInitializeLocationSearch;
 - (id)account;
 - (id)accountStore;
-- (void)_attemptPostRequest:(id)a3 withCompletionBlock:(id)a4;
+- (void)_attemptPostRequest:(id)request withCompletionBlock:(id)block;
 - (void)_callLocationAcquiredHandler;
-- (void)_checkAccountCredentialsWithCompletionHandler:(id)a3;
-- (void)_checkAccountGeoTagStatusWithCompletionHandler:(id)a3;
-- (void)_checkLocationAndAccountsForObject:(id)a3 completion:(id)a4;
+- (void)_checkAccountCredentialsWithCompletionHandler:(id)handler;
+- (void)_checkAccountGeoTagStatusWithCompletionHandler:(id)handler;
+- (void)_checkLocationAndAccountsForObject:(id)object completion:(id)completion;
 - (void)_cleanupLocationServices;
-- (void)_createAndExecutePostRequestWithStatus:(id)a3 account:(id)a4 completion:(id)a5;
-- (void)_finishedPostRequest:(id)a3 withCompletionBlock:(id)a4 responseData:(id)a5 urlResponse:(id)a6 error:(id)a7;
+- (void)_createAndExecutePostRequestWithStatus:(id)status account:(id)account completion:(id)completion;
+- (void)_finishedPostRequest:(id)request withCompletionBlock:(id)block responseData:(id)data urlResponse:(id)response error:(id)error;
 - (void)_makeLocationSwitchVisible;
-- (void)_processResponseFromServiceWithHandler:(id)a3;
-- (void)_setLocationWithLatitude:(float)a3 longitude:(float)a4;
+- (void)_processResponseFromServiceWithHandler:(id)handler;
+- (void)_setLocationWithLatitude:(float)latitude longitude:(float)longitude;
 - (void)_stopUpdatingLocation;
 - (void)dealloc;
 - (void)initializeLocationSearch;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateToLocation:(id)a4 fromLocation:(id)a5;
-- (void)performCreateWithObject:(id)a3 completion:(id)a4;
-- (void)performPostRequestWithObject:(id)a3 completion:(id)a4;
-- (void)waitUntilLocationAcquiredOrTimeElapsed:(float)a3 andExecute:(id)a4;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateToLocation:(id)location fromLocation:(id)fromLocation;
+- (void)performCreateWithObject:(id)object completion:(id)completion;
+- (void)performPostRequestWithObject:(id)object completion:(id)completion;
+- (void)waitUntilLocationAcquiredOrTimeElapsed:(float)elapsed andExecute:(id)execute;
 @end
 
 @implementation SLAssistantPost
@@ -55,12 +55,12 @@
   if (!self->_account && !self->_checkedForAccount)
   {
     self->_checkedForAccount = 1;
-    v3 = [(SLAssistantPost *)self accountStore];
-    v4 = [v3 accountTypeWithAccountTypeIdentifier:{-[SLAssistantPostDelegate accountTypeIdentifier](self->_delegate, "accountTypeIdentifier")}];
-    v5 = [(SLAssistantPostDelegate *)self->_delegate lastAccountIdentifier];
-    if (v5)
+    accountStore = [(SLAssistantPost *)self accountStore];
+    v4 = [accountStore accountTypeWithAccountTypeIdentifier:{-[SLAssistantPostDelegate accountTypeIdentifier](self->_delegate, "accountTypeIdentifier")}];
+    lastAccountIdentifier = [(SLAssistantPostDelegate *)self->_delegate lastAccountIdentifier];
+    if (lastAccountIdentifier)
     {
-      v6 = [v3 accountWithIdentifier:v5];
+      v6 = [accountStore accountWithIdentifier:lastAccountIdentifier];
       self->_account = v6;
       if (v6)
       {
@@ -73,7 +73,7 @@
       return self->_account;
     }
 
-    v7 = [v3 accountsWithAccountType:v4];
+    v7 = [accountStore accountsWithAccountType:v4];
     if ([v7 count])
     {
       v8 = [v7 objectAtIndex:0];
@@ -85,38 +85,38 @@
   return self->_account;
 }
 
-- (void)_attemptPostRequest:(id)a3 withCompletionBlock:(id)a4
+- (void)_attemptPostRequest:(id)request withCompletionBlock:(id)block
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_17B4;
   v4[3] = &unk_81E8;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
-  [a3 performRequestWithHandler:v4];
+  v4[5] = request;
+  v4[6] = block;
+  [request performRequestWithHandler:v4];
 }
 
-- (void)_finishedPostRequest:(id)a3 withCompletionBlock:(id)a4 responseData:(id)a5 urlResponse:(id)a6 error:(id)a7
+- (void)_finishedPostRequest:(id)request withCompletionBlock:(id)block responseData:(id)data urlResponse:(id)response error:(id)error
 {
-  if (a7)
+  if (error)
   {
-    v12 = [a7 localizedDescription];
+    localizedDescription = [error localizedDescription];
   }
 
   else
   {
-    v13 = [a6 statusCode];
-    if ((v13 - 400) > 0xFFFFFFFFFFFFFE70)
+    statusCode = [response statusCode];
+    if ((statusCode - 400) > 0xFFFFFFFFFFFFFE70)
     {
       goto LABEL_8;
     }
 
-    v12 = [NSHTTPURLResponse localizedStringForStatusCode:v13];
+    localizedDescription = [NSHTTPURLResponse localizedStringForStatusCode:statusCode];
   }
 
-  v14 = v12;
-  if (!v12)
+  v14 = localizedDescription;
+  if (!localizedDescription)
   {
 LABEL_8:
     v16 = +[SADomainObjectCommitCompleted domainObjectCommitCompleted];
@@ -130,14 +130,14 @@ LABEL_8:
     }
 
 LABEL_9:
-    v17 = [(SACommandFailed *)v16 dictionary];
-    v18 = *(a4 + 2);
+    dictionary = [(SACommandFailed *)v16 dictionary];
+    v18 = *(block + 2);
 
-    v18(a4, v17);
+    v18(block, dictionary);
     return;
   }
 
-  if ([(SLAssistantPostDelegate *)self->_delegate responseDataIndicatesDuplicatePost:a5 urlResponse:a6])
+  if ([(SLAssistantPostDelegate *)self->_delegate responseDataIndicatesDuplicatePost:data urlResponse:response])
   {
     v15 = [SACommandFailed commandFailedWithErrorCode:SAMicroblogMicroblogDupliatePostingErrorCode];
     goto LABEL_21;
@@ -145,7 +145,7 @@ LABEL_9:
 
   if (!self->_shouldRetry || (remainingRetryCount = self->_remainingRetryCount, v20 = remainingRetryCount < 1, v21 = remainingRetryCount - 1, v20))
   {
-    v22 = [(SLAssistantPostDelegate *)self->_delegate extractErrorDetailsFromResponseData:a5 urlResponse:a6];
+    v22 = [(SLAssistantPostDelegate *)self->_delegate extractErrorDetailsFromResponseData:data urlResponse:response];
     if (v22)
     {
       v23 = [NSString stringWithFormat:@"%@ (%@)", v14, v22];
@@ -169,31 +169,31 @@ LABEL_21:
 
   self->_remainingRetryCount = v21;
 
-  [(SLAssistantPost *)self _attemptPostRequest:a3 withCompletionBlock:a4];
+  [(SLAssistantPost *)self _attemptPostRequest:request withCompletionBlock:block];
 }
 
-- (void)performCreateWithObject:(id)a3 completion:(id)a4
+- (void)performCreateWithObject:(id)object completion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1AD0;
   v4[3] = &unk_8210;
-  v4[4] = a4;
-  -[SLAssistantPost _checkLocationAndAccountsForObject:completion:](self, "_checkLocationAndAccountsForObject:completion:", [a3 object], v4);
+  v4[4] = completion;
+  -[SLAssistantPost _checkLocationAndAccountsForObject:completion:](self, "_checkLocationAndAccountsForObject:completion:", [object object], v4);
 }
 
-- (void)performPostRequestWithObject:(id)a3 completion:(id)a4
+- (void)performPostRequestWithObject:(id)object completion:(id)completion
 {
   object = self->_object;
   if (object)
   {
   }
 
-  v8 = a3;
-  self->_object = v8;
-  v9 = [(SADomainObjectCommit *)v8 identifier];
-  v10 = [v9 content];
-  if (!v10)
+  objectCopy = object;
+  self->_object = objectCopy;
+  identifier = [(SADomainObjectCommit *)objectCopy identifier];
+  content = [identifier content];
+  if (!content)
   {
     v15 = [SACommandFailed commandFailedWithReason:@"No string to send."];
     if (v15)
@@ -202,11 +202,11 @@ LABEL_21:
     }
   }
 
-  v11 = [(SLAssistantPost *)self account];
-  if (v11)
+  account = [(SLAssistantPost *)self account];
+  if (account)
   {
-    v12 = v11;
-    if (![v9 useLocation] || !objc_msgSend(objc_msgSend(v9, "useLocation"), "intValue"))
+    v12 = account;
+    if (![identifier useLocation] || !objc_msgSend(objc_msgSend(identifier, "useLocation"), "intValue"))
     {
       v16 = 0;
       goto LABEL_16;
@@ -229,10 +229,10 @@ LABEL_21:
       v16 = 1;
 LABEL_16:
       v17 = 0;
-      if ([v9 location])
+      if ([identifier location])
       {
-        v18 = [objc_msgSend(v9 "location")];
-        v19 = [objc_msgSend(v9 "location")];
+        v18 = [objc_msgSend(identifier "location")];
+        v19 = [objc_msgSend(identifier "location")];
         v20 = 0;
         if (v18)
         {
@@ -272,9 +272,9 @@ LABEL_21:
         v28 = v17;
         v29 = v22;
         v27[4] = self;
-        v27[5] = v10;
+        v27[5] = content;
         v27[6] = v12;
-        v27[7] = a4;
+        v27[7] = completion;
         [(SLAssistantPost *)self _checkAccountGeoTagStatusWithCompletionHandler:v27];
         return;
       }
@@ -285,9 +285,9 @@ LABEL_30:
       v26[2] = sub_1F2C;
       v26[3] = &unk_8288;
       v26[4] = self;
-      v26[5] = v10;
+      v26[5] = content;
       v26[6] = v12;
-      v26[7] = a4;
+      v26[7] = completion;
       dispatch_async(&_dispatch_main_q, v26);
       return;
     }
@@ -303,62 +303,62 @@ LABEL_30:
 LABEL_24:
   v15 = [SACommandFailed commandFailedWithErrorCode:*v14];
 LABEL_25:
-  v24 = [(SACommandFailed *)v15 dictionary];
-  v25 = *(a4 + 2);
+  dictionary = [(SACommandFailed *)v15 dictionary];
+  v25 = *(completion + 2);
 
-  v25(a4, v24);
+  v25(completion, dictionary);
 }
 
-- (void)_createAndExecutePostRequestWithStatus:(id)a3 account:(id)a4 completion:(id)a5
+- (void)_createAndExecutePostRequestWithStatus:(id)status account:(id)account completion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1FB0;
   v5[3] = &unk_82B0;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
-  v5[7] = a5;
+  v5[5] = status;
+  v5[6] = account;
+  v5[7] = completion;
   [(SLAssistantPost *)self waitUntilLocationAcquiredOrTimeElapsed:v5 andExecute:COERCE_DOUBLE(COERCE_UNSIGNED_INT(3.0))];
 }
 
-- (void)_checkAccountCredentialsWithCompletionHandler:(id)a3
+- (void)_checkAccountCredentialsWithCompletionHandler:(id)handler
 {
-  v5 = [(SLAssistantPost *)self account];
-  if (!v5)
+  account = [(SLAssistantPost *)self account];
+  if (!account)
   {
-    (*(a3 + 2))(a3, 0);
+    (*(handler + 2))(handler, 0);
   }
 
   delegate = self->_delegate;
 
-  [(SLAssistantPostDelegate *)delegate verifyCredentialsForAccount:v5 completion:a3];
+  [(SLAssistantPostDelegate *)delegate verifyCredentialsForAccount:account completion:handler];
 }
 
-- (void)_checkAccountGeoTagStatusWithCompletionHandler:(id)a3
+- (void)_checkAccountGeoTagStatusWithCompletionHandler:(id)handler
 {
-  v5 = [(SLAssistantPost *)self account];
-  if (v5)
+  account = [(SLAssistantPost *)self account];
+  if (account)
   {
-    v6 = v5;
+    v6 = account;
     delegate = self->_delegate;
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_21BC;
     v9[3] = &unk_8300;
-    v9[4] = a3;
+    v9[4] = handler;
     [(SLAssistantPostDelegate *)delegate verifyGeotagSettingsForAccount:v6 defaultSetting:1 completion:v9];
   }
 
   else
   {
-    v8 = *(a3 + 2);
+    v8 = *(handler + 2);
 
-    v8(a3, 1);
+    v8(handler, 1);
   }
 }
 
-- (void)_checkLocationAndAccountsForObject:(id)a3 completion:(id)a4
+- (void)_checkLocationAndAccountsForObject:(id)object completion:(id)completion
 {
   if ([ACAccountStore accountsWithAccountTypeIdentifierExist:[(SLAssistantPostDelegate *)self->_delegate accountTypeIdentifier]]!= 1)
   {
@@ -369,9 +369,9 @@ LABEL_25:
     }
   }
 
-  if ([a3 useLocation])
+  if ([object useLocation])
   {
-    v8 = [objc_msgSend(a3 "useLocation")] != 0;
+    v8 = [objc_msgSend(object "useLocation")] != 0;
   }
 
   else
@@ -448,7 +448,7 @@ LABEL_29:
       v15[2] = sub_24E4;
       v15[3] = &unk_8350;
       v15[4] = self;
-      v15[5] = a4;
+      v15[5] = completion;
       [(SLAssistantPost *)self _checkAccountCredentialsWithCompletionHandler:v15];
       if (v8)
       {
@@ -457,7 +457,7 @@ LABEL_29:
         v14[2] = sub_2580;
         v14[3] = &unk_8350;
         v14[4] = self;
-        v14[5] = a4;
+        v14[5] = completion;
         [(SLAssistantPost *)self _checkAccountGeoTagStatusWithCompletionHandler:v14];
       }
 
@@ -471,12 +471,12 @@ LABEL_29:
   }
 
 LABEL_24:
-  v13 = *(a4 + 2);
+  v13 = *(completion + 2);
 
-  v13(a4, v7);
+  v13(completion, v7);
 }
 
-- (void)_processResponseFromServiceWithHandler:(id)a3
+- (void)_processResponseFromServiceWithHandler:(id)handler
 {
   delegate = self->_delegate;
   v6 = objc_opt_class();
@@ -495,7 +495,7 @@ LABEL_24:
   {
     v8 = &SAMicroblogMicroblogLoginFailedErrorCode;
 LABEL_9:
-    v7 = [SACommandFailed commandFailedWithErrorCode:*v8, v10, awaitingAccountCredentialVerification, awaitingLocationSettingStatus, accountCredentialsVerified, locationSettingAllowed];
+    locationSettingAllowed = [SACommandFailed commandFailedWithErrorCode:*v8, v10, awaitingAccountCredentialVerification, awaitingLocationSettingStatus, accountCredentialsVerified, locationSettingAllowed];
     goto LABEL_10;
   }
 
@@ -505,18 +505,18 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v7 = 0;
+  locationSettingAllowed = 0;
 LABEL_10:
-  v9 = *(a3 + 2);
+  v9 = *(handler + 2);
 
-  v9(a3, v7);
+  v9(handler, locationSettingAllowed);
 }
 
 - (void)_makeLocationSwitchVisible
 {
-  v2 = [(SLAssistantPostDelegate *)self->_delegate locationPermissionBundle];
+  locationPermissionBundle = [(SLAssistantPostDelegate *)self->_delegate locationPermissionBundle];
 
-  [CLLocationManager setAuthorizationStatus:0 forBundle:v2];
+  [CLLocationManager setAuthorizationStatus:0 forBundle:locationPermissionBundle];
 }
 
 + (id)locationPermissionBundleForSiri
@@ -528,18 +528,18 @@ LABEL_10:
 
 - (BOOL)_shouldInitializeLocationSearch
 {
-  LODWORD(v3) = +[CLLocationManager locationServicesEnabled];
-  if (v3)
+  LODWORD(useLocation) = +[CLLocationManager locationServicesEnabled];
+  if (useLocation)
   {
-    v4 = [(SADomainObjectCommit *)self->_object identifier];
-    v3 = [v4 useLocation];
-    if (v3)
+    identifier = [(SADomainObjectCommit *)self->_object identifier];
+    useLocation = [identifier useLocation];
+    if (useLocation)
     {
-      LOBYTE(v3) = [objc_msgSend(v4 "useLocation")] != 0;
+      LOBYTE(useLocation) = [objc_msgSend(identifier "useLocation")] != 0;
     }
   }
 
-  return v3;
+  return useLocation;
 }
 
 - (void)initializeLocationSearch
@@ -560,7 +560,7 @@ LABEL_10:
   }
 }
 
-- (void)waitUntilLocationAcquiredOrTimeElapsed:(float)a3 andExecute:(id)a4
+- (void)waitUntilLocationAcquiredOrTimeElapsed:(float)elapsed andExecute:(id)execute
 {
   if (self->_updatingLocation)
   {
@@ -570,15 +570,15 @@ LABEL_10:
       _Block_release(locationAcquiredHandler);
     }
 
-    self->_locationAcquiredHandler = _Block_copy(a4);
+    self->_locationAcquiredHandler = _Block_copy(execute);
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_stopUpdatingLocation" object:0];
 
-    [(SLAssistantPost *)self performSelector:"_stopUpdatingLocation" withObject:0 afterDelay:a3];
+    [(SLAssistantPost *)self performSelector:"_stopUpdatingLocation" withObject:0 afterDelay:elapsed];
   }
 
   else
   {
-    (*(a4 + 2))(a4, self->_bestLocation, a3);
+    (*(execute + 2))(execute, self->_bestLocation, elapsed);
     v8 = self->_locationAcquiredHandler;
     if (v8)
     {
@@ -588,7 +588,7 @@ LABEL_10:
   }
 }
 
-- (void)_setLocationWithLatitude:(float)a3 longitude:(float)a4
+- (void)_setLocationWithLatitude:(float)latitude longitude:(float)longitude
 {
   if (self->_updatingLocation)
   {
@@ -602,7 +602,7 @@ LABEL_10:
     self->_bestLocation = 0;
   }
 
-  self->_bestLocation = [[CLLocation alloc] initWithLatitude:a3 longitude:a4];
+  self->_bestLocation = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
 }
 
 - (void)_cleanupLocationServices
@@ -646,12 +646,12 @@ LABEL_10:
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateToLocation:(id)a4 fromLocation:(id)a5
+- (void)locationManager:(id)manager didUpdateToLocation:(id)location fromLocation:(id)fromLocation
 {
-  [objc_msgSend(a4 timestamp];
+  [objc_msgSend(location timestamp];
   if (v7 >= -5.0)
   {
-    [a4 horizontalAccuracy];
+    [location horizontalAccuracy];
     if (v8 >= 0.0)
     {
       bestLocation = self->_bestLocation;
@@ -659,7 +659,7 @@ LABEL_10:
       {
         [(CLLocation *)bestLocation horizontalAccuracy];
         v11 = v10;
-        [a4 horizontalAccuracy];
+        [location horizontalAccuracy];
         if (v11 <= v12)
         {
           return;
@@ -673,8 +673,8 @@ LABEL_10:
         v13 = 0;
       }
 
-      self->_bestLocation = a4;
-      [a4 horizontalAccuracy];
+      self->_bestLocation = location;
+      [location horizontalAccuracy];
       v15 = v14;
       [(CLLocationManager *)self->_locationManager desiredAccuracy];
       if (v15 <= v16)
@@ -686,18 +686,18 @@ LABEL_10:
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  if ([a4 code])
+  if ([error code])
   {
 
     [(SLAssistantPost *)self _stopUpdatingLocation];
   }
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  if (a4 != 3)
+  if (status != 3)
   {
     [(SLAssistantPost *)self _stopUpdatingLocation];
   }

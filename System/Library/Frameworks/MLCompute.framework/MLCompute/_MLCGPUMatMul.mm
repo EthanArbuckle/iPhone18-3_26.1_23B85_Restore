@@ -1,50 +1,50 @@
 @interface _MLCGPUMatMul
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
-+ (id)layerWithDevice:(id)a3 descriptor:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
-- (_MLCGPUMatMul)initWithDevice:(id)a3 descriptor:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6;
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor;
++ (id)layerWithDevice:(id)device descriptor:(id)descriptor sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (_MLCGPUMatMul)initWithDevice:(id)device descriptor:(id)descriptor sourceTensors:(id)tensors resultTensor:(id)tensor;
 @end
 
 @implementation _MLCGPUMatMul
 
-+ (id)layerWithDevice:(id)a3 descriptor:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (id)layerWithDevice:(id)device descriptor:(id)descriptor sourceTensors:(id)tensors resultTensor:(id)tensor
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithDevice:v13 descriptor:v12 sourceTensors:v11 resultTensor:v10];
+  tensorCopy = tensor;
+  tensorsCopy = tensors;
+  descriptorCopy = descriptor;
+  deviceCopy = device;
+  v14 = [[self alloc] initWithDevice:deviceCopy descriptor:descriptorCopy sourceTensors:tensorsCopy resultTensor:tensorCopy];
 
   return v14;
 }
 
-- (_MLCGPUMatMul)initWithDevice:(id)a3 descriptor:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
+- (_MLCGPUMatMul)initWithDevice:(id)device descriptor:(id)descriptor sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v150[3] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  deviceCopy = device;
+  descriptorCopy = descriptor;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
   v147.receiver = self;
   v147.super_class = _MLCGPUMatMul;
   v14 = [(_MLCGPUMatMul *)&v147 init];
   if (v14)
   {
-    v113 = v13;
-    v15 = [v10 deviceList];
-    v133 = [v15 count];
+    v113 = tensorCopy;
+    deviceList = [deviceCopy deviceList];
+    v133 = [deviceList count];
 
     v117 = [MEMORY[0x277CBEBF8] mutableCopy];
-    if (([v11 transposesX] & 1) != 0 || objc_msgSend(v11, "transposesY"))
+    if (([descriptorCopy transposesX] & 1) != 0 || objc_msgSend(descriptorCopy, "transposesY"))
     {
-      if ([v11 transposesX] && !objc_msgSend(v11, "transposesY"))
+      if ([descriptorCopy transposesX] && !objc_msgSend(descriptorCopy, "transposesY"))
       {
         v140 = 0;
         v134 = 1;
       }
 
-      else if (([v11 transposesX] & 1) != 0 || (objc_msgSend(v11, "transposesY") & 1) == 0)
+      else if (([descriptorCopy transposesX] & 1) != 0 || (objc_msgSend(descriptorCopy, "transposesY") & 1) == 0)
       {
-        if ([v11 transposesX] && objc_msgSend(v11, "transposesY"))
+        if ([descriptorCopy transposesX] && objc_msgSend(descriptorCopy, "transposesY"))
         {
           v134 = 0x100000001;
           v140 = 1;
@@ -70,10 +70,10 @@
       v134 = 0x100000001;
     }
 
-    v116 = ([v11 transposesX] & 1) == 0 && (objc_msgSend(v11, "transposesY") & 1) != 0 || (objc_msgSend(v11, "transposesX") & 1) == 0 && (objc_msgSend(v11, "transposesY") & 1) == 0;
-    v135 = v10;
-    v143 = v11;
-    v115 = [v11 transposesX] && !objc_msgSend(v11, "transposesY") || (objc_msgSend(v11, "transposesX") & 1) == 0 && (objc_msgSend(v11, "transposesY") & 1) == 0;
+    v116 = ([descriptorCopy transposesX] & 1) == 0 && (objc_msgSend(descriptorCopy, "transposesY") & 1) != 0 || (objc_msgSend(descriptorCopy, "transposesX") & 1) == 0 && (objc_msgSend(descriptorCopy, "transposesY") & 1) == 0;
+    v135 = deviceCopy;
+    v143 = descriptorCopy;
+    v115 = [descriptorCopy transposesX] && !objc_msgSend(descriptorCopy, "transposesY") || (objc_msgSend(descriptorCopy, "transposesX") & 1) == 0 && (objc_msgSend(descriptorCopy, "transposesY") & 1) == 0;
     v114 = v14;
     v16 = 0;
     v17 = &v146;
@@ -86,19 +86,19 @@
       v21 = 1;
       while (1)
       {
-        v22 = [v12 objectAtIndexedSubscript:v16];
-        v23 = [v22 descriptor];
-        v24 = [v23 dimensionCount] - 2;
+        v22 = [tensorsCopy objectAtIndexedSubscript:v16];
+        descriptor = [v22 descriptor];
+        v24 = [descriptor dimensionCount] - 2;
 
         if (v19 >= v24)
         {
           break;
         }
 
-        v25 = [v12 objectAtIndexedSubscript:v16];
-        v26 = [v25 descriptor];
-        v27 = [v26 shape];
-        v28 = [v27 objectAtIndexedSubscript:v19];
+        v25 = [tensorsCopy objectAtIndexedSubscript:v16];
+        descriptor2 = [v25 descriptor];
+        shape = [descriptor2 shape];
+        v28 = [shape objectAtIndexedSubscript:v19];
         v21 *= [v28 unsignedIntegerValue];
         *v17 = v21;
 
@@ -111,8 +111,8 @@
     }
 
     while ((v20 & 1) != 0);
-    v10 = v135;
-    v11 = v143;
+    deviceCopy = v135;
+    descriptorCopy = v143;
     if (v133)
     {
       v29 = 0;
@@ -120,127 +120,127 @@
       v132 = v146;
       do
       {
-        v30 = [v10 deviceList];
+        deviceList2 = [deviceCopy deviceList];
         v141 = v29;
-        v31 = [v30 objectAtIndexedSubscript:v29];
+        v31 = [deviceList2 objectAtIndexedSubscript:v29];
 
         v142 = v31;
         if (v132 == v131)
         {
-          v32 = [v12 objectAtIndexedSubscript:0];
-          v33 = [v32 descriptor];
-          v34 = v11;
-          v35 = [v33 dimensionCount] - 2;
+          v32 = [tensorsCopy objectAtIndexedSubscript:0];
+          descriptor3 = [v32 descriptor];
+          v34 = descriptorCopy;
+          v35 = [descriptor3 dimensionCount] - 2;
 
-          v36 = [v12 objectAtIndexedSubscript:0];
-          v37 = [v36 descriptor];
-          v137 = [v37 dimensionCount] - 1;
+          v36 = [tensorsCopy objectAtIndexedSubscript:0];
+          descriptor4 = [v36 descriptor];
+          v137 = [descriptor4 dimensionCount] - 1;
 
-          v38 = [v12 objectAtIndexedSubscript:1];
-          v39 = [v38 descriptor];
-          v40 = [v39 dimensionCount];
+          v38 = [tensorsCopy objectAtIndexedSubscript:1];
+          descriptor5 = [v38 descriptor];
+          dimensionCount = [descriptor5 dimensionCount];
 
-          v41 = [v12 objectAtIndexedSubscript:1];
-          v42 = [v41 descriptor];
-          v43 = [v42 dimensionCount] - 1;
+          v41 = [tensorsCopy objectAtIndexedSubscript:1];
+          descriptor6 = [v41 descriptor];
+          v43 = [descriptor6 dimensionCount] - 1;
 
-          v44 = [v12 objectAtIndexedSubscript:0];
-          v45 = [v44 descriptor];
-          v46 = [v45 shape];
-          v47 = [v46 objectAtIndexedSubscript:v35];
+          v44 = [tensorsCopy objectAtIndexedSubscript:0];
+          descriptor7 = [v44 descriptor];
+          shape2 = [descriptor7 shape];
+          v47 = [shape2 objectAtIndexedSubscript:v35];
 
-          v48 = [v12 objectAtIndexedSubscript:1];
-          v49 = [v48 descriptor];
-          v50 = [v49 shape];
+          v48 = [tensorsCopy objectAtIndexedSubscript:1];
+          descriptor8 = [v48 descriptor];
+          shape3 = [descriptor8 shape];
           v130 = v43;
-          v51 = [v50 objectAtIndexedSubscript:v43];
+          v51 = [shape3 objectAtIndexedSubscript:v43];
 
-          LODWORD(v50) = [v34 transposesX];
-          v52 = [v12 objectAtIndexedSubscript:0];
-          v53 = [v52 descriptor];
-          v54 = [v53 shape];
-          v55 = v54;
+          LODWORD(shape3) = [v34 transposesX];
+          v52 = [tensorsCopy objectAtIndexedSubscript:0];
+          descriptor9 = [v52 descriptor];
+          shape4 = [descriptor9 shape];
+          shape5 = shape4;
           v128 = v35;
-          if (v50)
+          if (shape3)
           {
-            v56 = [v54 objectAtIndexedSubscript:v35];
-            v126 = [v56 unsignedIntegerValue];
+            v56 = [shape4 objectAtIndexedSubscript:v35];
+            unsignedIntegerValue = [v56 unsignedIntegerValue];
 
-            v52 = [v12 objectAtIndexedSubscript:0];
-            v53 = [v52 descriptor];
-            v55 = [v53 shape];
+            v52 = [tensorsCopy objectAtIndexedSubscript:0];
+            descriptor9 = [v52 descriptor];
+            shape5 = [descriptor9 shape];
             v57 = v137;
-            [v55 objectAtIndexedSubscript:?];
+            [shape5 objectAtIndexedSubscript:?];
             v47 = v58 = v47;
           }
 
           else
           {
             v57 = v137;
-            v58 = [v54 objectAtIndexedSubscript:?];
-            v126 = [v58 unsignedIntegerValue];
+            v58 = [shape4 objectAtIndexedSubscript:?];
+            unsignedIntegerValue = [v58 unsignedIntegerValue];
           }
 
-          v136 = v40 - 2;
+          v136 = dimensionCount - 2;
 
           if ([v143 transposesY])
           {
-            v63 = [v12 objectAtIndexedSubscript:1];
-            v64 = [v63 descriptor];
-            v65 = [v64 shape];
-            v66 = [v65 objectAtIndexedSubscript:v136];
+            v63 = [tensorsCopy objectAtIndexedSubscript:1];
+            descriptor10 = [v63 descriptor];
+            shape6 = [descriptor10 shape];
+            v66 = [shape6 objectAtIndexedSubscript:v136];
 
             v51 = v66;
           }
 
           v67 = v57;
           v68 = objc_alloc(MEMORY[0x277CD75E0]);
-          v69 = [v143 transposesX];
-          v70 = [v143 transposesY];
-          v71 = [v47 unsignedIntegerValue];
+          transposesX = [v143 transposesX];
+          transposesY = [v143 transposesY];
+          unsignedIntegerValue2 = [v47 unsignedIntegerValue];
           v138 = v47;
-          v72 = [v51 unsignedIntegerValue];
+          unsignedIntegerValue3 = [v51 unsignedIntegerValue];
           [v143 alpha];
-          v127 = [v68 initWithDevice:v142 transposeLeft:v69 transposeRight:v70 resultRows:v71 resultColumns:v72 interiorColumns:v126 alpha:v73 beta:0.0];
+          v127 = [v68 initWithDevice:v142 transposeLeft:transposesX transposeRight:transposesY resultRows:unsignedIntegerValue2 resultColumns:unsignedIntegerValue3 interiorColumns:unsignedIntegerValue alpha:v73 beta:0.0];
           v118 = objc_alloc(MEMORY[0x277CD75E0]);
-          v123 = [v12 objectAtIndexedSubscript:0];
-          v121 = [v123 descriptor];
-          v119 = [v121 shape];
-          v74 = [v119 objectAtIndexedSubscript:v128];
-          v75 = [v74 unsignedIntegerValue];
-          v76 = [v12 objectAtIndexedSubscript:0];
-          v77 = [v76 descriptor];
-          v78 = [v77 shape];
-          [v78 objectAtIndexedSubscript:v67];
+          v123 = [tensorsCopy objectAtIndexedSubscript:0];
+          descriptor11 = [v123 descriptor];
+          shape7 = [descriptor11 shape];
+          v74 = [shape7 objectAtIndexedSubscript:v128];
+          unsignedIntegerValue4 = [v74 unsignedIntegerValue];
+          v76 = [tensorsCopy objectAtIndexedSubscript:0];
+          descriptor12 = [v76 descriptor];
+          shape8 = [descriptor12 shape];
+          [shape8 objectAtIndexedSubscript:v67];
           v79 = v51;
           v80 = v125 = v51;
-          v81 = [v80 unsignedIntegerValue];
-          v82 = [v79 unsignedIntegerValue];
+          unsignedIntegerValue5 = [v80 unsignedIntegerValue];
+          unsignedIntegerValue6 = [v79 unsignedIntegerValue];
           [v143 alpha];
-          v129 = [v118 initWithDevice:v142 transposeLeft:v140 transposeRight:v134 resultRows:v75 resultColumns:v81 interiorColumns:v82 alpha:v83 beta:0.0];
+          v129 = [v118 initWithDevice:v142 transposeLeft:v140 transposeRight:v134 resultRows:unsignedIntegerValue4 resultColumns:unsignedIntegerValue5 interiorColumns:unsignedIntegerValue6 alpha:v83 beta:0.0];
 
           v120 = objc_alloc(MEMORY[0x277CD75E0]);
-          v124 = [v12 objectAtIndexedSubscript:1];
-          v122 = [v124 descriptor];
-          v84 = [v122 shape];
-          v85 = [v84 objectAtIndexedSubscript:v136];
-          v86 = [v85 unsignedIntegerValue];
-          v87 = [v12 objectAtIndexedSubscript:1];
-          v88 = [v87 descriptor];
-          v89 = [v88 shape];
-          v90 = [v89 objectAtIndexedSubscript:v130];
-          v91 = [v90 unsignedIntegerValue];
-          v92 = [v138 unsignedIntegerValue];
+          v124 = [tensorsCopy objectAtIndexedSubscript:1];
+          descriptor13 = [v124 descriptor];
+          shape9 = [descriptor13 shape];
+          v85 = [shape9 objectAtIndexedSubscript:v136];
+          unsignedIntegerValue7 = [v85 unsignedIntegerValue];
+          v87 = [tensorsCopy objectAtIndexedSubscript:1];
+          descriptor14 = [v87 descriptor];
+          shape10 = [descriptor14 shape];
+          v90 = [shape10 objectAtIndexedSubscript:v130];
+          unsignedIntegerValue8 = [v90 unsignedIntegerValue];
+          unsignedIntegerValue9 = [v138 unsignedIntegerValue];
           [v143 alpha];
-          v94 = v86;
-          v11 = v143;
-          v95 = [v120 initWithDevice:v142 transposeLeft:HIDWORD(v134) transposeRight:v140 resultRows:v94 resultColumns:v91 interiorColumns:v92 alpha:v93 beta:0.0];
+          v94 = unsignedIntegerValue7;
+          descriptorCopy = v143;
+          v95 = [v120 initWithDevice:v142 transposeLeft:HIDWORD(v134) transposeRight:v140 resultRows:v94 resultColumns:unsignedIntegerValue8 interiorColumns:unsignedIntegerValue9 alpha:v93 beta:0.0];
 
           v62 = [MLCMatMulGPUDeviceOps deviceOpsWithForwardKernel:v127 gradientKernel:v129 secondaryGradientKernel:v95];
 
           v59 = 0;
           v61 = 0;
-          v10 = v135;
+          deviceCopy = v135;
           if (!v62)
           {
             goto LABEL_44;
@@ -250,7 +250,7 @@
         else
         {
           v59 = [objc_alloc(MEMORY[0x277CD7608]) initWithDevice:v31 sourceCount:2];
-          [v11 alpha];
+          [descriptorCopy alpha];
           [v59 setAlpha:v60];
           v61 = [objc_alloc(MEMORY[0x277CD7610]) initWithDevice:v31 axis:2];
           v62 = +[MLCMatMulGPUDeviceOps deviceOps];
@@ -264,7 +264,7 @@
         [v62 setMatmulKernel:v59];
         [v62 setReduceSumKernel:v61];
         v139 = v61;
-        v96 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v11, "transposesX")}];
+        v96 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(descriptorCopy, "transposesX")}];
         v150[0] = v96;
         v97 = [MEMORY[0x277CCABB0] numberWithBool:v140];
         v150[1] = v97;
@@ -292,8 +292,8 @@
         v109 = [v108 copy];
         [v62 setGradientLeftRightMatrixSelectionFlags:v109];
 
-        v10 = v135;
-        v11 = v143;
+        deviceCopy = v135;
+        descriptorCopy = v143;
 
         v61 = v139;
         [v62 setSourceOfForwardNeededForGradient:1];
@@ -313,27 +313,27 @@ LABEL_44:
     v144.super_class = _MLCGPUMatMul;
     [(_MLCGPULayer *)&v144 setDeviceOps:v110];
 
-    v13 = v113;
+    tensorCopy = v113;
   }
 
   v111 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-+ (BOOL)compileWithDevice:(id)a3 deviceOps:(id)a4 sourceTensors:(id)a5 resultTensor:(id)a6
++ (BOOL)compileWithDevice:(id)device deviceOps:(id)ops sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v154[3] = *MEMORY[0x277D85DE8];
-  v124 = a3;
-  v133 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v9 objectAtIndexedSubscript:0];
+  deviceCopy = device;
+  opsCopy = ops;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v11 = [tensorsCopy objectAtIndexedSubscript:0];
   v154[0] = v11;
-  v137 = v9;
-  v12 = [v9 objectAtIndexedSubscript:1];
+  v137 = tensorsCopy;
+  v12 = [tensorsCopy objectAtIndexedSubscript:1];
   v154[1] = v12;
-  v154[2] = v10;
-  v130 = v10;
+  v154[2] = tensorCopy;
+  v130 = tensorCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v154 count:3];
 
   v14 = MEMORY[0x277CBEBF8];
@@ -344,30 +344,30 @@ LABEL_44:
   do
   {
     v16 = [v13 objectAtIndexedSubscript:v15];
-    v17 = [v16 descriptor];
-    v18 = [v17 dimensionCount] - 1;
+    descriptor = [v16 descriptor];
+    v18 = [descriptor dimensionCount] - 1;
 
     v19 = [v13 objectAtIndexedSubscript:v15];
-    v20 = [v19 descriptor];
-    v21 = [v20 dimensionCount] - 2;
+    descriptor2 = [v19 descriptor];
+    v21 = [descriptor2 dimensionCount] - 2;
 
     v22 = [v13 objectAtIndexedSubscript:v15];
-    v23 = [v22 descriptor];
-    v24 = [v23 shape];
-    v25 = [v24 objectAtIndexedSubscript:v21];
-    v144 = [v25 unsignedIntegerValue];
+    descriptor3 = [v22 descriptor];
+    shape = [descriptor3 shape];
+    v25 = [shape objectAtIndexedSubscript:v21];
+    unsignedIntegerValue = [v25 unsignedIntegerValue];
 
     v26 = [v13 objectAtIndexedSubscript:v15];
-    v27 = [v26 descriptor];
-    v28 = [v27 shape];
-    v29 = [v28 objectAtIndexedSubscript:v18];
-    v142 = [v29 unsignedIntegerValue];
+    descriptor4 = [v26 descriptor];
+    shape2 = [descriptor4 shape];
+    v29 = [shape2 objectAtIndexedSubscript:v18];
+    unsignedIntegerValue2 = [v29 unsignedIntegerValue];
 
     v30 = [v13 objectAtIndexedSubscript:v15];
-    v31 = [v30 descriptor];
-    v32 = [v31 stride];
-    v33 = [v32 objectAtIndexedSubscript:v18];
-    v140 = [v33 unsignedIntegerValue];
+    descriptor5 = [v30 descriptor];
+    stride = [descriptor5 stride];
+    v33 = [stride objectAtIndexedSubscript:v18];
+    unsignedIntegerValue3 = [v33 unsignedIntegerValue];
 
     v153[v15] = 1;
     v34 = 1;
@@ -378,9 +378,9 @@ LABEL_44:
       do
       {
         v36 = [v13 objectAtIndexedSubscript:v15];
-        v37 = [v36 descriptor];
-        v38 = [v37 shape];
-        v39 = [v38 objectAtIndexedSubscript:v35];
+        descriptor6 = [v36 descriptor];
+        shape3 = [descriptor6 shape];
+        v39 = [shape3 objectAtIndexedSubscript:v35];
         v34 *= [v39 unsignedIntegerValue];
         v153[v15] = v34;
 
@@ -391,15 +391,15 @@ LABEL_44:
     }
 
     v40 = [v13 objectAtIndexedSubscript:v15];
-    v41 = [v40 descriptor];
-    v42 = [v41 shape];
-    v43 = [v42 mutableCopy];
+    descriptor7 = [v40 descriptor];
+    shape4 = [descriptor7 shape];
+    v43 = [shape4 mutableCopy];
     [v146 setObject:v43 atIndexedSubscript:v15];
 
     v44 = [v13 objectAtIndexedSubscript:v15];
-    v45 = [v44 descriptor];
-    v46 = [v45 shape];
-    v47 = [v46 count];
+    descriptor8 = [v44 descriptor];
+    shape5 = [descriptor8 shape];
+    v47 = [shape5 count];
 
     v48 = v146;
     if (v47 <= 3)
@@ -416,10 +416,10 @@ LABEL_44:
 
     v13 = v138;
     v52 = [v138 objectAtIndexedSubscript:v15];
-    v53 = [v52 descriptor];
-    DataType = GPU_GetDataType([v53 dataType]);
+    descriptor9 = [v52 descriptor];
+    DataType = GPU_GetDataType([descriptor9 dataType]);
 
-    v55 = [MEMORY[0x277CD7258] matrixDescriptorWithRows:v144 columns:v142 matrices:v34 rowBytes:v140 * v142 matrixBytes:v140 * v142 * v144 dataType:DataType];
+    v55 = [MEMORY[0x277CD7258] matrixDescriptorWithRows:unsignedIntegerValue columns:unsignedIntegerValue2 matrices:v34 rowBytes:unsignedIntegerValue3 * unsignedIntegerValue2 matrixBytes:unsignedIntegerValue3 * unsignedIntegerValue2 * unsignedIntegerValue dataType:DataType];
     [v139 addObject:v55];
 
     ++v15;
@@ -443,21 +443,21 @@ LABEL_44:
       v141 = v58;
       v59 = [v48 objectAtIndexedSubscript:v56];
       v60 = [v59 objectAtIndexedSubscript:1];
-      v61 = [v60 unsignedIntegerValue];
+      unsignedIntegerValue4 = [v60 unsignedIntegerValue];
       v62 = [v48 objectAtIndexedSubscript:2];
       v63 = [v62 objectAtIndexedSubscript:1];
-      v64 = [v63 unsignedIntegerValue];
+      unsignedIntegerValue5 = [v63 unsignedIntegerValue];
 
       v143 = v56;
       v65 = [v48 objectAtIndexedSubscript:v56];
       v66 = [v65 objectAtIndexedSubscript:0];
-      v67 = [v66 unsignedIntegerValue];
+      unsignedIntegerValue6 = [v66 unsignedIntegerValue];
       v68 = [v48 objectAtIndexedSubscript:2];
       v69 = [v68 objectAtIndexedSubscript:0];
-      v70 = [v69 unsignedIntegerValue];
+      unsignedIntegerValue7 = [v69 unsignedIntegerValue];
 
-      *v57 = (v61 != v64) | (2 * (v67 != v70));
-      if (v67 == v70)
+      *v57 = (unsignedIntegerValue4 != unsignedIntegerValue5) | (2 * (unsignedIntegerValue6 != unsignedIntegerValue7));
+      if (unsignedIntegerValue6 == unsignedIntegerValue7)
       {
         v71 = [&unk_284BA5FF0 copy];
         [v145 setObject:v71 atIndexedSubscript:2 * v143];
@@ -469,7 +469,7 @@ LABEL_44:
       else
       {
         v131 = 2 * v143;
-        if (v61 == v64)
+        if (unsignedIntegerValue4 == unsignedIntegerValue5)
         {
           v135 = [v146 objectAtIndexedSubscript:2];
           v129 = [v135 objectAtIndexedSubscript:0];
@@ -477,10 +477,10 @@ LABEL_44:
           v83 = MEMORY[0x277CCABB0];
           v127 = [v146 objectAtIndexedSubscript:v143];
           v125 = [v127 objectAtIndexedSubscript:1];
-          v84 = [v125 unsignedIntegerValue];
+          unsignedIntegerValue8 = [v125 unsignedIntegerValue];
           v85 = [v146 objectAtIndexedSubscript:v143];
           v86 = [v85 objectAtIndexedSubscript:2];
-          v87 = [v83 numberWithUnsignedInteger:{objc_msgSend(v86, "unsignedIntegerValue") * v84}];
+          v87 = [v83 numberWithUnsignedInteger:{objc_msgSend(v86, "unsignedIntegerValue") * unsignedIntegerValue8}];
           v151[1] = v87;
           v88 = [v146 objectAtIndexedSubscript:v143];
           v89 = [v88 objectAtIndexedSubscript:3];
@@ -493,10 +493,10 @@ LABEL_44:
           v91 = MEMORY[0x277CCABB0];
           v136 = [v146 objectAtIndexedSubscript:v143];
           v132 = [v136 objectAtIndexedSubscript:1];
-          v92 = [v132 unsignedIntegerValue];
+          unsignedIntegerValue9 = [v132 unsignedIntegerValue];
           v93 = [v146 objectAtIndexedSubscript:v143];
           v94 = [v93 objectAtIndexedSubscript:2];
-          v95 = [v91 numberWithUnsignedInteger:{objc_msgSend(v94, "unsignedIntegerValue") * v92}];
+          v95 = [v91 numberWithUnsignedInteger:{objc_msgSend(v94, "unsignedIntegerValue") * unsignedIntegerValue9}];
           v150[1] = v95;
           v96 = [v146 objectAtIndexedSubscript:v143];
           v97 = [v96 objectAtIndexedSubscript:3];
@@ -512,10 +512,10 @@ LABEL_44:
           v73 = MEMORY[0x277CCABB0];
           v134 = [v146 objectAtIndexedSubscript:2];
           v128 = [v134 objectAtIndexedSubscript:0];
-          v74 = [v128 unsignedIntegerValue];
+          unsignedIntegerValue10 = [v128 unsignedIntegerValue];
           v126 = [v146 objectAtIndexedSubscript:2];
           v75 = [v126 objectAtIndexedSubscript:1];
-          v76 = [v73 numberWithUnsignedInteger:{objc_msgSend(v75, "unsignedIntegerValue") * v74}];
+          v76 = [v73 numberWithUnsignedInteger:{objc_msgSend(v75, "unsignedIntegerValue") * unsignedIntegerValue10}];
           v152[0] = v76;
           v77 = [v146 objectAtIndexedSubscript:v143];
           v78 = [v77 objectAtIndexedSubscript:2];
@@ -541,8 +541,8 @@ LABEL_44:
     while ((v141 & 1) != 0);
   }
 
-  v100 = [v124 deviceList];
-  v101 = [v100 count];
+  deviceList = [deviceCopy deviceList];
+  v101 = [deviceList count];
 
   if (v101)
   {
@@ -551,7 +551,7 @@ LABEL_44:
     v103 = v148;
     do
     {
-      v105 = [v133 objectAtIndexedSubscript:v102];
+      v105 = [opsCopy objectAtIndexedSubscript:v102];
       v106 = objc_opt_new();
       [v105 setLayer:v106];
 
@@ -570,17 +570,17 @@ LABEL_44:
       [v105 setReductionShapes:v145];
       if ([v137 count] >= 3)
       {
-        v112 = [v130 descriptor];
-        v113 = [v112 shape];
-        v114 = [v113 count];
+        descriptor10 = [v130 descriptor];
+        shape6 = [descriptor10 shape];
+        v114 = [shape6 count];
 
-        v115 = [v130 descriptor];
-        v116 = [v115 newShapeWithCount:v114];
+        descriptor11 = [v130 descriptor];
+        v116 = [descriptor11 newShapeWithCount:v114];
         [v105 setSource0Shape:v116];
 
         v117 = [v137 objectAtIndexedSubscript:2];
-        v118 = [v117 descriptor];
-        v119 = [v118 newShapeWithCount:v114];
+        descriptor12 = [v117 descriptor];
+        v119 = [descriptor12 newShapeWithCount:v114];
         [v105 setSource1Shape:v119];
 
         [v105 setArithmeticOp:0];
@@ -588,8 +588,8 @@ LABEL_44:
       }
 
       ++v102;
-      v120 = [v124 deviceList];
-      v121 = [v120 count];
+      deviceList2 = [deviceCopy deviceList];
+      v121 = [deviceList2 count];
 
       v48 = v146;
     }

@@ -1,16 +1,16 @@
 @interface SBSceneViewAppIconView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SBSceneViewAppIconView)initWithIcon:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SBSceneViewAppIconView)initWithIcon:(id)icon;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
 @end
 
 @implementation SBSceneViewAppIconView
 
-- (SBSceneViewAppIconView)initWithIcon:(id)a3
+- (SBSceneViewAppIconView)initWithIcon:(id)icon
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  iconCopy = icon;
   v5 = [(SBSceneViewAppIconView *)self init];
   if (v5)
   {
@@ -18,7 +18,7 @@
     imageView = v5->_imageView;
     v5->_imageView = v6;
 
-    [(SBIconImageView *)v5->_imageView setIcon:v4 location:*MEMORY[0x277D666D0] animated:0];
+    [(SBIconImageView *)v5->_imageView setIcon:iconCopy location:*MEMORY[0x277D666D0] animated:0];
     [(SBSceneViewAppIconView *)v5 addSubview:v5->_imageView];
     v8 = objc_alloc_init(MEMORY[0x277D756B8]);
     label = v5->_label;
@@ -26,7 +26,7 @@
 
     [(UILabel *)v5->_label setTextAlignment:1];
     v10 = v5->_label;
-    v11 = [v4 displayNameForLocation:*MEMORY[0x277D666C8]];
+    v11 = [iconCopy displayNameForLocation:*MEMORY[0x277D666C8]];
     [(UILabel *)v10 setText:v11];
 
     [(UILabel *)v5->_label setAdjustsFontSizeToFitWidth:1];
@@ -59,17 +59,17 @@
   return v5;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SBSceneViewAppIconView *)self imageView];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  imageView = [(SBSceneViewAppIconView *)self imageView];
+  [imageView sizeThatFits:{width, height}];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(SBSceneViewAppIconView *)self label];
-  [v11 sizeThatFits:{width, height}];
+  label = [(SBSceneViewAppIconView *)self label];
+  [label sizeThatFits:{width, height}];
   v13 = v12;
   v15 = v14;
 
@@ -99,14 +99,14 @@
   v8.receiver = self;
   v8.super_class = SBSceneViewAppIconView;
   [(SBSceneViewAppIconView *)&v8 didMoveToWindow];
-  v3 = [(SBSceneViewAppIconView *)self window];
-  v4 = [v3 _sbWindowScene];
-  v5 = [v4 iconController];
-  v6 = [v5 iconManager];
-  v7 = [v6 iconImageCache];
-  if (v7)
+  window = [(SBSceneViewAppIconView *)self window];
+  _sbWindowScene = [window _sbWindowScene];
+  iconController = [_sbWindowScene iconController];
+  iconManager = [iconController iconManager];
+  iconImageCache = [iconManager iconImageCache];
+  if (iconImageCache)
   {
-    [(SBIconImageView *)self->_imageView setIconImageCache:v7];
+    [(SBIconImageView *)self->_imageView setIconImageCache:iconImageCache];
   }
 }
 
@@ -120,8 +120,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SBSceneViewAppIconView *)self imageView];
-  [v11 sizeThatFits:{v8, v10}];
+  imageView = [(SBSceneViewAppIconView *)self imageView];
+  [imageView sizeThatFits:{v8, v10}];
   v13 = v12;
   v15 = v14;
   v25.origin.x = v4;
@@ -134,14 +134,14 @@
   v26.size.width = v13;
   v26.size.height = v15;
   v17 = MidX + CGRectGetWidth(v26) * -0.5;
-  v18 = [(SBSceneViewAppIconView *)self imageView];
-  [v18 setFrame:{v17, 0.0, v13, v15}];
+  imageView2 = [(SBSceneViewAppIconView *)self imageView];
+  [imageView2 setFrame:{v17, 0.0, v13, v15}];
 
-  v19 = [(SBSceneViewAppIconView *)self shadowView];
-  [v19 setFrame:{v17, 0.0, v13, v15}];
+  shadowView = [(SBSceneViewAppIconView *)self shadowView];
+  [shadowView setFrame:{v17, 0.0, v13, v15}];
 
-  v20 = [(SBSceneViewAppIconView *)self label];
-  [v20 sizeThatFits:{v8, v10}];
+  label = [(SBSceneViewAppIconView *)self label];
+  [label sizeThatFits:{v8, v10}];
   v22 = v21;
   v27.origin.x = v4;
   v27.origin.y = v6;
@@ -152,7 +152,7 @@
   v28.origin.x = v17;
   v28.size.width = v13;
   v28.size.height = v15;
-  [v20 setFrame:{0.0, CGRectGetMaxY(v28) + 4.0, Width, v22}];
+  [label setFrame:{0.0, CGRectGetMaxY(v28) + 4.0, Width, v22}];
 }
 
 @end

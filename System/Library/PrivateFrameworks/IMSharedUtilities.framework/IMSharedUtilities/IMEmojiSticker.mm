@@ -1,10 +1,10 @@
 @interface IMEmojiSticker
 + (id)stickerPackID;
-+ (id)tempFileURLForStickerID:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (IMEmojiSticker)initWithEmojiString:(id)a3 stickerID:(id)a4 stickerPackID:(id)a5 fileURL:(id)a6 accessibilityLabel:(id)a7 moodCategory:(id)a8 stickerName:(id)a9 textToSpeechName:(id)a10;
-- (IMEmojiSticker)initWithEmojiString:(id)a3 stickerPackID:(id)a4 fileURL:(id)a5 moodCategory:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)tempFileURLForStickerID:(id)d;
+- (BOOL)isEqual:(id)equal;
+- (IMEmojiSticker)initWithEmojiString:(id)string stickerID:(id)d stickerPackID:(id)iD fileURL:(id)l accessibilityLabel:(id)label moodCategory:(id)category stickerName:(id)name textToSpeechName:(id)self0;
+- (IMEmojiSticker)initWithEmojiString:(id)string stickerPackID:(id)d fileURL:(id)l moodCategory:(id)category;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)tapbackEquivalent;
 @end
@@ -19,15 +19,15 @@
   return v3;
 }
 
-- (IMEmojiSticker)initWithEmojiString:(id)a3 stickerID:(id)a4 stickerPackID:(id)a5 fileURL:(id)a6 accessibilityLabel:(id)a7 moodCategory:(id)a8 stickerName:(id)a9 textToSpeechName:(id)a10
+- (IMEmojiSticker)initWithEmojiString:(id)string stickerID:(id)d stickerPackID:(id)iD fileURL:(id)l accessibilityLabel:(id)label moodCategory:(id)category stickerName:(id)name textToSpeechName:(id)self0
 {
-  v16 = a3;
+  stringCopy = string;
   v21.receiver = self;
   v21.super_class = IMEmojiSticker;
-  v17 = [(IMSticker *)&v21 initWithStickerID:a4 stickerPackID:a5 fileURL:a6 accessibilityLabel:a7 accessibilityName:0 searchText:0 sanitizedPrompt:0 moodCategory:a8 stickerName:a9 textToSpeechName:a10];
+  v17 = [(IMSticker *)&v21 initWithStickerID:d stickerPackID:iD fileURL:l accessibilityLabel:label accessibilityName:0 searchText:0 sanitizedPrompt:0 moodCategory:category stickerName:name textToSpeechName:speechName];
   if (v17)
   {
-    v18 = [v16 copy];
+    v18 = [stringCopy copy];
     emojiString = v17->_emojiString;
     v17->_emojiString = v18;
   }
@@ -35,18 +35,18 @@
   return v17;
 }
 
-- (IMEmojiSticker)initWithEmojiString:(id)a3 stickerPackID:(id)a4 fileURL:(id)a5 moodCategory:(id)a6
+- (IMEmojiSticker)initWithEmojiString:(id)string stickerPackID:(id)d fileURL:(id)l moodCategory:(id)category
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  stringCopy = string;
+  dCopy = d;
+  lCopy = l;
+  categoryCopy = category;
+  if (stringCopy)
   {
-    v14 = [v10 __im_emojiStickerID];
-    if (!v12)
+    __im_emojiStickerID = [stringCopy __im_emojiStickerID];
+    if (!lCopy)
     {
-      v12 = [IMEmojiSticker tempFileURLForStickerID:v14];
+      lCopy = [IMEmojiSticker tempFileURLForStickerID:__im_emojiStickerID];
     }
 
     v40 = 0;
@@ -73,11 +73,11 @@
     v25 = sub_1A8601E98;
     v26 = sub_1A8602140;
     v27 = 0;
-    v15 = [MEMORY[0x1E695DF58] currentLocale];
-    [v15 localeIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [currentLocale localeIdentifier];
     CEMCreateEmojiLocaleData();
 
-    [v10 length];
+    [stringCopy length];
     v21 = MEMORY[0x1E69E9820];
     CEMEnumerateEmojiTokensInStringWithLocaleAndBlock();
     v16 = v23[5];
@@ -99,20 +99,20 @@
       }
 
       v17 = v23[5];
-      v18 = [v17 __im_emojiStickerID];
-      self = [(IMEmojiSticker *)self initWithEmojiString:v17 stickerID:v18 stickerPackID:v11 fileURL:v12 accessibilityLabel:v29[5] moodCategory:v13 stickerName:v41[5] textToSpeechName:v35[5], v21, 3221225472, sub_1A864DB98, &unk_1E78276D8, &v22, &v34, &v40, &v28];
-      v19 = self;
+      __im_emojiStickerID2 = [v17 __im_emojiStickerID];
+      self = [(IMEmojiSticker *)self initWithEmojiString:v17 stickerID:__im_emojiStickerID2 stickerPackID:dCopy fileURL:lCopy accessibilityLabel:v29[5] moodCategory:categoryCopy stickerName:v41[5] textToSpeechName:v35[5], v21, 3221225472, sub_1A864DB98, &unk_1E78276D8, &v22, &v34, &v40, &v28];
+      selfCopy = self;
     }
 
     else
     {
-      v18 = IMLogHandleForCategory("IMEmojiSticker");
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      __im_emojiStickerID2 = IMLogHandleForCategory("IMEmojiSticker");
+      if (os_log_type_enabled(__im_emojiStickerID2, OS_LOG_TYPE_ERROR))
       {
-        sub_1A88C1510(v10, v18);
+        sub_1A88C1510(stringCopy, __im_emojiStickerID2);
       }
 
-      v19 = 0;
+      selfCopy = 0;
     }
 
     _Block_object_dispose(&v22, 8);
@@ -124,40 +124,40 @@
 
   else
   {
-    v14 = IMLogHandleForCategory("IMEmojiSticker");
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    __im_emojiStickerID = IMLogHandleForCategory("IMEmojiSticker");
+    if (os_log_type_enabled(__im_emojiStickerID, OS_LOG_TYPE_ERROR))
     {
-      sub_1A88C1588(v14);
+      sub_1A88C1588(__im_emojiStickerID);
     }
 
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
-+ (id)tempFileURLForStickerID:(id)a3
++ (id)tempFileURLForStickerID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = IMSafeTemporaryDirectory();
-  v5 = [v4 path];
-  v6 = [v5 stringByAppendingPathComponent:v3];
+  path = [v4 path];
+  v6 = [path stringByAppendingPathComponent:dCopy];
 
   v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = IMEmojiSticker;
-  if ([(IMSticker *)&v9 isEqual:v4])
+  if ([(IMSticker *)&v9 isEqual:equalCopy])
   {
-    v5 = [(IMEmojiSticker *)self emojiString];
-    v6 = [v4 emojiString];
-    v7 = [v5 isEqualToString:v6];
+    emojiString = [(IMEmojiSticker *)self emojiString];
+    emojiString2 = [equalCopy emojiString];
+    v7 = [emojiString isEqualToString:emojiString2];
   }
 
   else
@@ -168,32 +168,32 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(IMEmojiSticker *)self emojiString];
-  v6 = [(IMSticker *)self stickerGUID];
-  v7 = [(IMSticker *)self stickerPackGUID];
-  v8 = [(IMSticker *)self fileURL];
-  v9 = [(IMSticker *)self accessibilityLabel];
-  v10 = [(IMSticker *)self moodCategory];
-  v11 = [(IMSticker *)self stickerName];
-  v12 = [(IMSticker *)self textToSpeechName];
-  v13 = [v4 initWithEmojiString:v5 stickerID:v6 stickerPackID:v7 fileURL:v8 accessibilityLabel:v9 moodCategory:v10 stickerName:v11 textToSpeechName:v12];
+  emojiString = [(IMEmojiSticker *)self emojiString];
+  stickerGUID = [(IMSticker *)self stickerGUID];
+  stickerPackGUID = [(IMSticker *)self stickerPackGUID];
+  fileURL = [(IMSticker *)self fileURL];
+  accessibilityLabel = [(IMSticker *)self accessibilityLabel];
+  moodCategory = [(IMSticker *)self moodCategory];
+  stickerName = [(IMSticker *)self stickerName];
+  textToSpeechName = [(IMSticker *)self textToSpeechName];
+  v13 = [v4 initWithEmojiString:emojiString stickerID:stickerGUID stickerPackID:stickerPackGUID fileURL:fileURL accessibilityLabel:accessibilityLabel moodCategory:moodCategory stickerName:stickerName textToSpeechName:textToSpeechName];
 
   return v13;
 }
 
 - (id)description
 {
-  v3 = [(IMSticker *)self fileURL];
+  fileURL = [(IMSticker *)self fileURL];
   v4 = @"NO";
-  if (v3)
+  if (fileURL)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    v6 = [(IMSticker *)self fileURL];
-    v7 = [v6 path];
-    if ([v5 fileExistsAtPath:v7])
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    fileURL2 = [(IMSticker *)self fileURL];
+    path = [fileURL2 path];
+    if ([defaultManager fileExistsAtPath:path])
     {
       v4 = @"YES";
     }
@@ -207,25 +207,25 @@
   }
 
   v20 = MEMORY[0x1E696AEC0];
-  v18 = [(IMEmojiSticker *)self emojiString];
-  v8 = [(IMSticker *)self stickerName];
-  v9 = [(IMSticker *)self stickerGUID];
-  v10 = [(IMSticker *)self stickerPackGUID];
-  v11 = [(IMSticker *)self fileURL];
-  v12 = [(IMSticker *)self accessibilityLabel];
-  v13 = [(IMSticker *)self moodCategory];
-  v14 = [(IMSticker *)self attributionInfo];
-  v15 = [(IMSticker *)self ballonBundleID];
-  v16 = [(IMSticker *)self textToSpeechName];
-  v21 = [v20 stringWithFormat:@"<IMEmojiSticker: %@, Name: %@, guid %@, packID %@, fileURL %@, fileExists: %@, accessibilityLabel %@, moodCategory %@, attributionInfo: %@, balloonBundleID: %@, textToSpeechName: %@, self %p>", v18, v8, v9, v10, v11, v19, v12, v13, v14, v15, v16, self];
+  emojiString = [(IMEmojiSticker *)self emojiString];
+  stickerName = [(IMSticker *)self stickerName];
+  stickerGUID = [(IMSticker *)self stickerGUID];
+  stickerPackGUID = [(IMSticker *)self stickerPackGUID];
+  fileURL3 = [(IMSticker *)self fileURL];
+  accessibilityLabel = [(IMSticker *)self accessibilityLabel];
+  moodCategory = [(IMSticker *)self moodCategory];
+  attributionInfo = [(IMSticker *)self attributionInfo];
+  ballonBundleID = [(IMSticker *)self ballonBundleID];
+  textToSpeechName = [(IMSticker *)self textToSpeechName];
+  v21 = [v20 stringWithFormat:@"<IMEmojiSticker: %@, Name: %@, guid %@, packID %@, fileURL %@, fileExists: %@, accessibilityLabel %@, moodCategory %@, attributionInfo: %@, balloonBundleID: %@, textToSpeechName: %@, self %p>", emojiString, stickerName, stickerGUID, stickerPackGUID, fileURL3, v19, accessibilityLabel, moodCategory, attributionInfo, ballonBundleID, textToSpeechName, self];
 
   return v21;
 }
 
 - (id)tapbackEquivalent
 {
-  v2 = [(IMEmojiSticker *)self emojiString];
-  v3 = [[IMEmojiTapback alloc] initWithEmoji:v2 isRemoved:0];
+  emojiString = [(IMEmojiSticker *)self emojiString];
+  v3 = [[IMEmojiTapback alloc] initWithEmoji:emojiString isRemoved:0];
 
   return v3;
 }

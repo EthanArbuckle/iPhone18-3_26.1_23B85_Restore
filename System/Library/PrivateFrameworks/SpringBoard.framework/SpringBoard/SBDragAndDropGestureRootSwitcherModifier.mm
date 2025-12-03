@@ -1,49 +1,49 @@
 @interface SBDragAndDropGestureRootSwitcherModifier
-- (SBDragAndDropGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)a3 floatingSwitcherVisible:(BOOL)a4 fullScreenAppLayout:(id)a5;
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4;
-- (id)handleSwitcherDropEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (SBDragAndDropGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)visible fullScreenAppLayout:(id)layout;
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier;
+- (id)handleSwitcherDropEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 @end
 
 @implementation SBDragAndDropGestureRootSwitcherModifier
 
-- (SBDragAndDropGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)a3 floatingSwitcherVisible:(BOOL)a4 fullScreenAppLayout:(id)a5
+- (SBDragAndDropGestureRootSwitcherModifier)initWithStartingEnvironmentMode:(int64_t)mode floatingSwitcherVisible:(BOOL)visible fullScreenAppLayout:(id)layout
 {
-  v10 = a5;
+  layoutCopy = layout;
   v13.receiver = self;
   v13.super_class = SBDragAndDropGestureRootSwitcherModifier;
-  v11 = [(SBGestureRootSwitcherModifier *)&v13 initWithStartingEnvironmentMode:a3];
+  v11 = [(SBGestureRootSwitcherModifier *)&v13 initWithStartingEnvironmentMode:mode];
   if (v11)
   {
-    if (a3 == 3 && !v10)
+    if (mode == 3 && !layoutCopy)
     {
       [SBDragAndDropGestureRootSwitcherModifier initWithStartingEnvironmentMode:a2 floatingSwitcherVisible:v11 fullScreenAppLayout:?];
     }
 
-    v11->_floatingSwitcherVisible = a4;
-    objc_storeStrong(&v11->_fullScreenAppLayout, a5);
+    v11->_floatingSwitcherVisible = visible;
+    objc_storeStrong(&v11->_fullScreenAppLayout, layout);
   }
 
   return v11;
 }
 
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier
 {
-  v5 = a3;
-  v6 = [(SBGestureRootSwitcherModifier *)self currentEnvironmentMode];
-  if (v6 == 2)
+  eventCopy = event;
+  currentEnvironmentMode = [(SBGestureRootSwitcherModifier *)self currentEnvironmentMode];
+  if (currentEnvironmentMode == 2)
   {
     v10 = [SBCardDragAndDropGestureSwitcherModifier alloc];
-    v8 = [v5 gestureID];
-    v9 = [(SBCardDragAndDropGestureSwitcherModifier *)v10 initWithGestureID:v8];
+    gestureID = [eventCopy gestureID];
+    v9 = [(SBCardDragAndDropGestureSwitcherModifier *)v10 initWithGestureID:gestureID];
     goto LABEL_5;
   }
 
-  if (v6 == 3)
+  if (currentEnvironmentMode == 3)
   {
     v7 = [SBAppDragAndDropGestureSwitcherModifier alloc];
-    v8 = [v5 gestureID];
-    v9 = [(SBAppDragAndDropGestureSwitcherModifier *)v7 initWithGestureID:v8 floatingSwitcherVisible:self->_floatingSwitcherVisible fullScreenAppLayout:self->_fullScreenAppLayout];
+    gestureID = [eventCopy gestureID];
+    v9 = [(SBAppDragAndDropGestureSwitcherModifier *)v7 initWithGestureID:gestureID floatingSwitcherVisible:self->_floatingSwitcherVisible fullScreenAppLayout:self->_fullScreenAppLayout];
 LABEL_5:
     v11 = v9;
 
@@ -56,36 +56,36 @@ LABEL_7:
   return v11;
 }
 
-- (id)handleSwitcherDropEvent:(id)a3
+- (id)handleSwitcherDropEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 phase] == 1)
+  eventCopy = event;
+  if ([eventCopy phase] == 1)
   {
     v5 = [SBCardDropSwitcherModifier alloc];
-    v6 = [v4 context];
-    v7 = [(SBCardDropSwitcherModifier *)v5 initWithDropContext:v6];
+    context = [eventCopy context];
+    v7 = [(SBCardDropSwitcherModifier *)v5 initWithDropContext:context];
 
     [(SBChainableModifier *)self addChildModifier:v7];
   }
 
   v10.receiver = self;
   v10.super_class = SBDragAndDropGestureRootSwitcherModifier;
-  v8 = [(SBSwitcherModifier *)&v10 handleSwitcherDropEvent:v4];
+  v8 = [(SBSwitcherModifier *)&v10 handleSwitcherDropEvent:eventCopy];
 
   return v8;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBDragAndDropGestureRootSwitcherModifier;
-  v3 = a3;
-  v4 = [(SBGestureRootSwitcherModifier *)&v10 handleTransitionEvent:v3];
+  eventCopy = event;
+  v4 = [(SBGestureRootSwitcherModifier *)&v10 handleTransitionEvent:eventCopy];
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"%@ handling drag and drop initiated transition.", v7];
-  [v3 handleWithReason:v8];
+  [eventCopy handleWithReason:v8];
 
   return v4;
 }

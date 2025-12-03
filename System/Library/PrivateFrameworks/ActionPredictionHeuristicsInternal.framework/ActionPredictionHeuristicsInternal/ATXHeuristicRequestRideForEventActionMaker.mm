@@ -1,49 +1,49 @@
 @interface ATXHeuristicRequestRideForEventActionMaker
-- (ATXHeuristicRequestRideForEventActionMaker)initWithCoder:(id)a3;
-- (ATXHeuristicRequestRideForEventActionMaker)initWithTitle:(id)a3 subtitle:(id)a4 pickupLocation:(id)a5 dropoffEvent:(id)a6 preferredAppBundleID:(id)a7;
-- (BOOL)shouldPredictDropOffLocationGivenPickupLocation:(id)a3 andDropOffLocation:(id)a4;
+- (ATXHeuristicRequestRideForEventActionMaker)initWithCoder:(id)coder;
+- (ATXHeuristicRequestRideForEventActionMaker)initWithTitle:(id)title subtitle:(id)subtitle pickupLocation:(id)location dropoffEvent:(id)event preferredAppBundleID:(id)d;
+- (BOOL)shouldPredictDropOffLocationGivenPickupLocation:(id)location andDropOffLocation:(id)offLocation;
 - (id)_makeAction;
 - (id)actionTypeName;
-- (id)dropOffLocationFromEKEvent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)dropOffLocationFromEKEvent:(id)event;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHeuristicRequestRideForEventActionMaker
 
-- (ATXHeuristicRequestRideForEventActionMaker)initWithTitle:(id)a3 subtitle:(id)a4 pickupLocation:(id)a5 dropoffEvent:(id)a6 preferredAppBundleID:(id)a7
+- (ATXHeuristicRequestRideForEventActionMaker)initWithTitle:(id)title subtitle:(id)subtitle pickupLocation:(id)location dropoffEvent:(id)event preferredAppBundleID:(id)d
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  locationCopy = location;
+  eventCopy = event;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = ATXHeuristicRequestRideForEventActionMaker;
   v17 = [(ATXHeuristicRequestRideForEventActionMaker *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->super._title, a3);
-    objc_storeStrong(&v18->super._subtitle, a4);
-    objc_storeStrong(&v18->_pickupLocation, a5);
-    objc_storeStrong(&v18->_dropoffEvent, a6);
-    objc_storeStrong(&v18->_preferredAppBundleID, a7);
+    objc_storeStrong(&v17->super._title, title);
+    objc_storeStrong(&v18->super._subtitle, subtitle);
+    objc_storeStrong(&v18->_pickupLocation, location);
+    objc_storeStrong(&v18->_dropoffEvent, event);
+    objc_storeStrong(&v18->_preferredAppBundleID, d);
   }
 
   return v18;
 }
 
-- (id)dropOffLocationFromEKEvent:(id)a3
+- (id)dropOffLocationFromEKEvent:(id)event
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  eventCopy = event;
+  if (eventCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 structuredLocation];
-      v6 = [v5 geoLocation];
+      structuredLocation = [eventCopy structuredLocation];
+      geoLocation = [structuredLocation geoLocation];
 
       goto LABEL_9;
     }
@@ -60,52 +60,52 @@
     v7 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(ATXHeuristicActionMaker *)self heuristic];
+      heuristic = [(ATXHeuristicActionMaker *)self heuristic];
       v11 = 138412290;
-      v12 = v8;
+      v12 = heuristic;
       _os_log_impl(&dword_23E3EA000, v7, OS_LOG_TYPE_DEFAULT, "Failed to create drop off location because of nil ekEvent. Heuristic: %@.", &v11, 0xCu);
     }
   }
 
-  v6 = 0;
+  geoLocation = 0;
 LABEL_9:
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return geoLocation;
 }
 
-- (BOOL)shouldPredictDropOffLocationGivenPickupLocation:(id)a3 andDropOffLocation:(id)a4
+- (BOOL)shouldPredictDropOffLocationGivenPickupLocation:(id)location andDropOffLocation:(id)offLocation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  locationCopy = location;
+  offLocationCopy = offLocation;
+  v8 = offLocationCopy;
+  if (locationCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v7 == 0;
+    v9 = offLocationCopy == 0;
   }
 
   v10 = !v9;
-  if (v6 && v7)
+  if (locationCopy && offLocationCopy)
   {
-    [(CLLocation *)self->_pickupLocation distanceFromLocation:v7];
+    [(CLLocation *)self->_pickupLocation distanceFromLocation:offLocationCopy];
     v12 = v11;
     if (v11 > 96600.0)
     {
       v13 = __atxlog_handle_heuristic();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(ATXHeuristicActionMaker *)self heuristic];
+        heuristic = [(ATXHeuristicActionMaker *)self heuristic];
         v17 = 134218242;
         v18 = v12 / 1610.0;
         v19 = 2112;
-        v20 = v14;
+        v20 = heuristic;
         _os_log_impl(&dword_23E3EA000, v13, OS_LOG_TYPE_DEFAULT, "Dropoff location of %f miles is more than 40 miles away from pickup location . Heuristic: %@.", &v17, 0x16u);
       }
 
@@ -130,25 +130,25 @@ LABEL_9:
   if ([(ATXHeuristicRequestRideForEventActionMaker *)self shouldPredictDropOffLocationGivenPickupLocation:self->_pickupLocation andDropOffLocation:v4])
   {
     v5 = MEMORY[0x277CBFC40];
-    v6 = [v3 structuredLocation];
-    v7 = [v6 title];
-    v8 = [v5 placemarkWithLocation:v4 name:v7 postalAddress:0];
+    structuredLocation = [v3 structuredLocation];
+    title = [structuredLocation title];
+    v8 = [v5 placemarkWithLocation:v4 name:title postalAddress:0];
 
-    v9 = [v3 eventIdentifier];
+    eventIdentifier = [v3 eventIdentifier];
 
-    if (v9)
+    if (eventIdentifier)
     {
       v20 = *MEMORY[0x277CEB208];
-      v10 = [v3 eventIdentifier];
-      v21[0] = v10;
-      v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
+      eventIdentifier2 = [v3 eventIdentifier];
+      v21[0] = eventIdentifier2;
+      eventIdentifier = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     }
   }
 
   else
   {
     v8 = 0;
-    v9 = 0;
+    eventIdentifier = 0;
   }
 
   pickupLocation = self->_pickupLocation;
@@ -167,7 +167,7 @@ LABEL_9:
   v14 = objc_alloc(MEMORY[0x277CEB2C8]);
   v15 = objc_opt_new();
   LOBYTE(v19) = 0;
-  v16 = [v14 initWithIntent:v13 actionUUID:v15 bundleId:self->_preferredAppBundleID heuristic:0 heuristicMetadata:v9 criteria:0 isFutureMedia:v19 title:self->super._title subtitle:self->super._subtitle];
+  v16 = [v14 initWithIntent:v13 actionUUID:v15 bundleId:self->_preferredAppBundleID heuristic:0 heuristicMetadata:eventIdentifier criteria:0 isFutureMedia:v19 title:self->super._title subtitle:self->super._subtitle];
 
   v17 = *MEMORY[0x277D85DE8];
 
@@ -181,23 +181,23 @@ LABEL_9:
   return NSStringFromClass(v2);
 }
 
-- (ATXHeuristicRequestRideForEventActionMaker)initWithCoder:(id)a3
+- (ATXHeuristicRequestRideForEventActionMaker)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ATXHeuristicRequestRideForEventActionMaker;
-  v5 = [(ATXHeuristicActionMaker *)&v13 initWithCoder:v4];
+  v5 = [(ATXHeuristicActionMaker *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pickupLocation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pickupLocation"];
     pickupLocation = v5->_pickupLocation;
     v5->_pickupLocation = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dropoffEvent"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dropoffEvent"];
     dropoffEvent = v5->_dropoffEvent;
     v5->_dropoffEvent = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredAppBundleID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredAppBundleID"];
     preferredAppBundleID = v5->_preferredAppBundleID;
     v5->_preferredAppBundleID = v10;
   }
@@ -205,25 +205,25 @@ LABEL_9:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = ATXHeuristicRequestRideForEventActionMaker;
-  [(ATXHeuristicActionMaker *)&v7 encodeWithCoder:v4];
+  [(ATXHeuristicActionMaker *)&v7 encodeWithCoder:coderCopy];
   pickupLocation = self->_pickupLocation;
   if (pickupLocation)
   {
-    [v4 encodeObject:pickupLocation forKey:@"pickupLocation"];
+    [coderCopy encodeObject:pickupLocation forKey:@"pickupLocation"];
   }
 
   dropoffEvent = self->_dropoffEvent;
   if (dropoffEvent)
   {
-    [v4 encodeObject:dropoffEvent forKey:@"dropoffEvent"];
+    [coderCopy encodeObject:dropoffEvent forKey:@"dropoffEvent"];
   }
 
-  [v4 encodeObject:self->_preferredAppBundleID forKey:@"preferredAppBundleID"];
+  [coderCopy encodeObject:self->_preferredAppBundleID forKey:@"preferredAppBundleID"];
 }
 
 @end

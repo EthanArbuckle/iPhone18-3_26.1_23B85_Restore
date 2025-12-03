@@ -1,42 +1,42 @@
 @interface EXWorksheet
-+ (BOOL)readDistinctSheetElementsFrom:(_xmlTextReader *)a3 state:(id)a4;
-+ (id)edSheetWithState:(id)a3;
-+ (void)readColumnInfosFrom:(_xmlNode *)a3 state:(id)a4;
-+ (void)readCommentTextFrom:(id)a3;
-+ (void)readHyperlinksFrom:(_xmlNode *)a3 state:(id)a4;
-+ (void)readOleObjectsFrom:(_xmlNode *)a3 state:(id)a4;
-+ (void)readOtherSheetComponentsWithState:(id)a3;
-+ (void)readPivotTables:(id)a3;
-+ (void)readSheetExtension:(_xmlNode *)a3 state:(id)a4;
-+ (void)readSheetExtensions:(_xmlNode *)a3 state:(id)a4;
-+ (void)readTables:(id)a3;
-+ (void)readWorksheetFormatPropertiesFrom:(_xmlNode *)a3 state:(id)a4;
-+ (void)readWorksheetViewsFrom:(_xmlNode *)a3 state:(id)a4;
-+ (void)setupProcessors:(id)a3;
++ (BOOL)readDistinctSheetElementsFrom:(_xmlTextReader *)from state:(id)state;
++ (id)edSheetWithState:(id)state;
++ (void)readColumnInfosFrom:(_xmlNode *)from state:(id)state;
++ (void)readCommentTextFrom:(id)from;
++ (void)readHyperlinksFrom:(_xmlNode *)from state:(id)state;
++ (void)readOleObjectsFrom:(_xmlNode *)from state:(id)state;
++ (void)readOtherSheetComponentsWithState:(id)state;
++ (void)readPivotTables:(id)tables;
++ (void)readSheetExtension:(_xmlNode *)extension state:(id)state;
++ (void)readSheetExtensions:(_xmlNode *)extensions state:(id)state;
++ (void)readTables:(id)tables;
++ (void)readWorksheetFormatPropertiesFrom:(_xmlNode *)from state:(id)state;
++ (void)readWorksheetViewsFrom:(_xmlNode *)from state:(id)state;
++ (void)setupProcessors:(id)processors;
 @end
 
 @implementation EXWorksheet
 
-+ (id)edSheetWithState:(id)a3
++ (id)edSheetWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [EDWorksheet alloc];
-  v6 = [v4 workbook];
-  v7 = [(EDSheet *)v5 initWithWorkbook:v6];
+  workbook = [stateCopy workbook];
+  v7 = [(EDSheet *)v5 initWithWorkbook:workbook];
 
-  v8 = [(EDSheet *)v7 processors];
-  [a1 setupProcessors:v8];
+  processors = [(EDSheet *)v7 processors];
+  [self setupProcessors:processors];
 
   return v7;
 }
 
-+ (BOOL)readDistinctSheetElementsFrom:(_xmlTextReader *)a3 state:(id)a4
++ (BOOL)readDistinctSheetElementsFrom:(_xmlTextReader *)from state:(id)state
 {
-  v6 = a4;
-  v7 = xmlTextReaderConstLocalName(a3);
+  stateCopy = state;
+  v7 = xmlTextReaderConstLocalName(from);
   if (xmlStrEqual(v7, "sheetData"))
   {
-    [EXRow readRowsFrom:a3 state:v6];
+    [EXRow readRowsFrom:from state:stateCopy];
 LABEL_3:
     v8 = 0;
     goto LABEL_6;
@@ -47,50 +47,50 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v8 = xmlTextReaderExpand(a3);
+  v8 = xmlTextReaderExpand(from);
 LABEL_6:
   if (xmlStrEqual(v7, "sheetViews"))
   {
-    [a1 readWorksheetViewsFrom:v8 state:v6];
+    [self readWorksheetViewsFrom:v8 state:stateCopy];
   }
 
   else if (xmlStrEqual(v7, "sheetFormatPr"))
   {
-    [a1 readWorksheetFormatPropertiesFrom:v8 state:v6];
+    [self readWorksheetFormatPropertiesFrom:v8 state:stateCopy];
   }
 
   else if (xmlStrEqual(v7, "cols"))
   {
-    [a1 readColumnInfosFrom:v8 state:v6];
+    [self readColumnInfosFrom:v8 state:stateCopy];
   }
 
   else if (xmlStrEqual(v7, "mergeCells"))
   {
-    [EXMergeTable readFrom:v8 state:v6];
+    [EXMergeTable readFrom:v8 state:stateCopy];
   }
 
   else if (xmlStrEqual(v7, "conditionalFormatting"))
   {
-    [EXConditionalFormatting readFrom:v8 x14:0 state:v6];
+    [EXConditionalFormatting readFrom:v8 x14:0 state:stateCopy];
   }
 
   else if (xmlStrEqual(v7, "hyperlinks"))
   {
-    [a1 readHyperlinksFrom:v8 state:v6];
+    [self readHyperlinksFrom:v8 state:stateCopy];
   }
 
   else if (xmlStrEqual(v7, "oleObjects"))
   {
-    [a1 readOleObjectsFrom:v8 state:v6];
+    [self readOleObjectsFrom:v8 state:stateCopy];
   }
 
   else if (xmlStrEqual(v7, "dimension"))
   {
-    Attribute = xmlTextReaderGetAttribute(a3, "ref");
+    Attribute = xmlTextReaderGetAttribute(from, "ref");
     v10 = [MEMORY[0x277CCACA8] tc_stringWithXmlString:Attribute];
     free(Attribute);
     v11 = [EXReference edReferenceFromXmlReference:v10];
-    [v6 setSheetDimension:v11];
+    [stateCopy setSheetDimension:v11];
   }
 
   else
@@ -101,7 +101,7 @@ LABEL_6:
       goto LABEL_25;
     }
 
-    [a1 readSheetExtensions:v8 state:v6];
+    [self readSheetExtensions:v8 state:stateCopy];
   }
 
   v12 = 1;
@@ -110,27 +110,27 @@ LABEL_25:
   return v12;
 }
 
-+ (void)readOtherSheetComponentsWithState:(id)a3
++ (void)readOtherSheetComponentsWithState:(id)state
 {
-  v4 = a3;
-  [a1 readCommentTextFrom:?];
-  [a1 readPivotTables:v4];
+  stateCopy = state;
+  [self readCommentTextFrom:?];
+  [self readPivotTables:stateCopy];
 }
 
-+ (void)readTables:(id)a3
++ (void)readTables:(id)tables
 {
-  v22 = a3;
-  v3 = [(OCXState *)v22 currentSheet];
-  v4 = [v3 tables];
+  tablesCopy = tables;
+  currentSheet = [(OCXState *)tablesCopy currentSheet];
+  tables = [currentSheet tables];
 
-  v5 = [(OCXState *)v22 currentPart];
-  v6 = OCXPartRelationshipsByTypeWithFallback(v5, v22, sel_OCXTableRelationshipType);
+  currentPart = [(OCXState *)tablesCopy currentPart];
+  v6 = OCXPartRelationshipsByTypeWithFallback(currentPart, tablesCopy, sel_OCXTableRelationshipType);
   if (v6)
   {
-    [EXTableStyleTable readPredefinedTableStylesWithState:v22];
-    v7 = [(OCPPackagePart *)v5 package];
-    v21 = v5;
-    if (!v7)
+    [EXTableStyleTable readPredefinedTableStylesWithState:tablesCopy];
+    package = [(OCPPackagePart *)currentPart package];
+    v21 = currentPart;
+    if (!package)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
@@ -144,86 +144,86 @@ LABEL_25:
       }
 
       v10 = [v6 objectAtIndex:i];
-      v11 = [v10 targetLocation];
-      v12 = [v7 partForLocation:v11];
+      targetLocation = [v10 targetLocation];
+      v12 = [package partForLocation:targetLocation];
 
       if (!v12)
       {
         [TCMessageException raise:TCInvalidFileFormatMessage];
       }
 
-      v13 = [v12 xmlDocument];
-      if (!v13)
+      xmlDocument = [v12 xmlDocument];
+      if (!xmlDocument)
       {
         [TCMessageException raise:TCInvalidFileFormatMessage];
       }
 
-      v14 = OCXGetRootElement(v13);
+      v14 = OCXGetRootElement(xmlDocument);
       v15 = v14;
-      if (!v14 || !xmlStrEqual(v14->name, "table") || (-[OCXState EXSpreadsheetMLNamespace](v22, "EXSpreadsheetMLNamespace"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 containsNode:v15], v16, (v17 & 1) == 0))
+      if (!v14 || !xmlStrEqual(v14->name, "table") || (-[OCXState EXSpreadsheetMLNamespace](tablesCopy, "EXSpreadsheetMLNamespace"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 containsNode:v15], v16, (v17 & 1) == 0))
       {
         [TCMessageException raise:TCInvalidFileFormatMessage];
       }
 
-      v18 = [EXTable edTableFromXmlTableElement:v15 state:v22];
-      [v4 addObject:v18];
+      v18 = [EXTable edTableFromXmlTableElement:v15 state:tablesCopy];
+      [tables addObject:v18];
 
       v19 = [v6 objectAtIndex:v9];
-      v20 = [v19 targetLocation];
-      [v7 resetPartForLocation:v20];
+      targetLocation2 = [v19 targetLocation];
+      [package resetPartForLocation:targetLocation2];
     }
 
-    v5 = v21;
+    currentPart = v21;
   }
 }
 
-+ (void)setupProcessors:(id)a3
++ (void)setupProcessors:(id)processors
 {
-  v3 = a3;
-  [v3 removeAllObjects];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
-  [v3 addProcessorClass:objc_opt_class()];
+  processorsCopy = processors;
+  [processorsCopy removeAllObjects];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
+  [processorsCopy addProcessorClass:objc_opt_class()];
 }
 
-+ (void)readOleObjectsFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readOleObjectsFrom:(_xmlNode *)from state:(id)state
 {
-  v40 = a4;
+  stateCopy = state;
   [TCProgressContext createStageWithSteps:@"read OLE objects" takingSteps:1.0 name:1.0];
-  if (a3)
+  if (from)
   {
-    v37 = [v40 currentPart];
-    v5 = [v37 package];
-    if (!v5)
+    currentPart = [stateCopy currentPart];
+    package = [currentPart package];
+    if (!package)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
-    parent = a3->parent;
+    parent = from->parent;
     if (parent)
     {
-      v7 = [v40 EXSpreadsheetMLNamespace];
-      OCXFindChild(parent, v7, "oleObjects");
+      eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+      OCXFindChild(parent, eXSpreadsheetMLNamespace, "oleObjects");
     }
 
-    v8 = [v40 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v8, "oleObject");
+    eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace2, "oleObject");
 
     if (Child)
     {
       v10 = -1;
-      v38 = v5;
+      v38 = package;
       do
       {
         [TCProgressContext createStageWithSteps:@"read OLE object" takingSteps:1.0 name:ldexp(1.0, v10)];
@@ -239,66 +239,66 @@ LABEL_25:
         v39 = v11;
         v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"_x0000_s%@", v14];
 
-        v16 = [v40 oavState];
-        v17 = [v16 drawableForVmlShapeId:v15];
+        oavState = [stateCopy oavState];
+        v17 = [oavState drawableForVmlShapeId:v15];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = v17;
-          [v18 setOle:v13];
+          object = v17;
+          [object setOle:v13];
         }
 
         else
         {
           v19 = objc_opt_class();
           v20 = TSUDynamicCast(v19, v17);
-          v21 = [v20 type];
+          type = [v20 type];
 
-          if (v21 != 75)
+          if (type != 75)
           {
             goto LABEL_15;
           }
 
-          v18 = [(OADOle *)v13 object];
+          object = [(OADOle *)v13 object];
         }
 
 LABEL_15:
-        v22 = [v40 EXSpreadsheetMLNamespace];
-        v23 = OCXFindChild(Child, v22, "objectPr");
+        eXSpreadsheetMLNamespace3 = [stateCopy EXSpreadsheetMLNamespace];
+        v23 = OCXFindChild(Child, eXSpreadsheetMLNamespace3, "objectPr");
 
         if (v23)
         {
-          v24 = [v40 EXSpreadsheetMLNamespace];
-          v25 = OCXFindChild(v23, v24, "anchor");
+          eXSpreadsheetMLNamespace4 = [stateCopy EXSpreadsheetMLNamespace];
+          v25 = OCXFindChild(v23, eXSpreadsheetMLNamespace4, "anchor");
 
           if (v25)
           {
-            v26 = [v17 clientData];
-            if (v26)
+            clientData = [v17 clientData];
+            if (clientData)
             {
               v27 = objc_alloc_init(EDTwoCellAnchor);
               [(EDTwoCellAnchor *)v27 setRelative:0];
               [(EDTwoCellAnchor *)v27 setEditAs:1];
-              v28 = [v40 EXSpreadsheetMLNamespace];
-              v29 = OCXFirstChild(v25, v28, "from");
+              eXSpreadsheetMLNamespace5 = [stateCopy EXSpreadsheetMLNamespace];
+              v29 = OCXFirstChild(v25, eXSpreadsheetMLNamespace5, "from");
 
-              v30 = [EXDrawing readAnchorMarkerFromNode:v29 state:v40];
+              v30 = [EXDrawing readAnchorMarkerFromNode:v29 state:stateCopy];
               [(EDTwoCellAnchor *)v27 setFrom:v30, v31];
-              v32 = [v40 EXSpreadsheetMLNamespace];
-              v33 = OCXNextSibling(v29, v32, "to");
+              eXSpreadsheetMLNamespace6 = [stateCopy EXSpreadsheetMLNamespace];
+              v33 = OCXNextSibling(v29, eXSpreadsheetMLNamespace6, "to");
 
-              v34 = [EXDrawing readAnchorMarkerFromNode:v33 state:v40];
+              v34 = [EXDrawing readAnchorMarkerFromNode:v33 state:stateCopy];
               [(EDTwoCellAnchor *)v27 setTo:v34, v35];
-              [v26 setAnchor:v27];
+              [clientData setAnchor:v27];
             }
           }
         }
 
         +[TCProgressContext endStage];
 
-        v5 = v38;
-        v36 = [v40 EXSpreadsheetMLNamespace];
-        Child = OCXFindNextChild(a3, v36, "oleObject");
+        package = v38;
+        eXSpreadsheetMLNamespace7 = [stateCopy EXSpreadsheetMLNamespace];
+        Child = OCXFindNextChild(from, eXSpreadsheetMLNamespace7, "oleObject");
 
         --v10;
       }
@@ -310,37 +310,37 @@ LABEL_15:
   +[TCProgressContext endStage];
 }
 
-+ (void)readWorksheetViewsFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readWorksheetViewsFrom:(_xmlNode *)from state:(id)state
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3)
+  stateCopy = state;
+  v6 = stateCopy;
+  if (from)
   {
-    v7 = [v5 EXSpreadsheetMLNamespace];
-    v8 = OCXFindChild(a3, v7, "sheetView");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v8 = OCXFindChild(from, eXSpreadsheetMLNamespace, "sheetView");
 
     if (v8)
     {
-      v9 = [v6 currentSheet];
-      v10 = [v6 EXSpreadsheetMLNamespace];
-      v11 = OCXFindChild(v8, v10, "pane");
+      currentSheet = [v6 currentSheet];
+      eXSpreadsheetMLNamespace2 = [v6 EXSpreadsheetMLNamespace];
+      v11 = OCXFindChild(v8, eXSpreadsheetMLNamespace2, "pane");
 
       if (v11)
       {
         v12 = [EXPane edPaneFromXMLPaneElement:v11];
-        [v9 setPane:v12];
+        [currentSheet setPane:v12];
       }
 
       v19 = 1;
       if (CXOptionalBoolAttribute(v8, CXNoNamespace, "showFormulas", &v19))
       {
-        [v9 setDisplayFormulas:v19];
+        [currentSheet setDisplayFormulas:v19];
       }
 
       v18 = 1;
       if (CXOptionalBoolAttribute(v8, CXNoNamespace, "showGridLines", &v18))
       {
-        [v9 setDisplayGridlines:v18];
+        [currentSheet setDisplayGridlines:v18];
       }
 
       v17 = 1;
@@ -351,109 +351,109 @@ LABEL_15:
         if (CXOptionalUnsignedLongAttribute(v8, CXNoNamespace, "colorId", &v16))
         {
           v13 = v16;
-          v14 = [v6 resources];
-          v15 = [EDColorReference colorReferenceWithColorIndex:v13 resources:v14];
-          [v9 setDefaultGridlineColorReference:v15];
+          resources = [v6 resources];
+          v15 = [EDColorReference colorReferenceWithColorIndex:v13 resources:resources];
+          [currentSheet setDefaultGridlineColorReference:v15];
         }
       }
     }
   }
 }
 
-+ (void)readWorksheetFormatPropertiesFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readWorksheetFormatPropertiesFrom:(_xmlNode *)from state:(id)state
 {
-  v5 = a4;
-  v6 = [v5 currentSheet];
-  if (a3)
+  stateCopy = state;
+  currentSheet = [stateCopy currentSheet];
+  if (from)
   {
     v13 = 0.0;
-    if (!CXOptionalDoubleAttribute(a3, CXNoNamespace, "defaultColWidth", &v13))
+    if (!CXOptionalDoubleAttribute(from, CXNoNamespace, "defaultColWidth", &v13))
     {
-      CXOptionalDoubleAttribute(a3, CXNoNamespace, "defColWidth", &v13);
+      CXOptionalDoubleAttribute(from, CXNoNamespace, "defColWidth", &v13);
     }
 
     v7 = v13;
     if (v13 == 0.0)
     {
       v12 = 8.0;
-      CXOptionalDoubleAttribute(a3, CXNoNamespace, "baseColWidth", &v12);
-      v8 = [v5 columnWidthConvertor];
-      [v8 xlColumnWidthFromXlBaseColumnWidth:v12];
+      CXOptionalDoubleAttribute(from, CXNoNamespace, "baseColWidth", &v12);
+      columnWidthConvertor = [stateCopy columnWidthConvertor];
+      [columnWidthConvertor xlColumnWidthFromXlBaseColumnWidth:v12];
       v13 = v9;
 
       v7 = v13;
     }
 
-    [v6 setDefaultColumnWidth:v7];
-    [v5 setDefaultColumnWidth:v13];
+    [currentSheet setDefaultColumnWidth:v7];
+    [stateCopy setDefaultColumnWidth:v13];
     v12 = 15.0;
-    if (!CXOptionalDoubleAttribute(a3, CXNoNamespace, "defaultRowHeight", &v12))
+    if (!CXOptionalDoubleAttribute(from, CXNoNamespace, "defaultRowHeight", &v12))
     {
-      CXOptionalDoubleAttribute(a3, CXNoNamespace, "defRowHeight", &v12);
+      CXOptionalDoubleAttribute(from, CXNoNamespace, "defRowHeight", &v12);
     }
 
-    [v6 setDefaultRowHeight:(v12 * 20.0)];
-    [v5 setDefaultRowHeight:v12 * 20.0];
+    [currentSheet setDefaultRowHeight:(v12 * 20.0)];
+    [stateCopy setDefaultRowHeight:v12 * 20.0];
     v11 = 0;
-    if (CXOptionalUnsignedLongAttribute(a3, CXNoNamespace, "outlineLevelRow", &v11))
+    if (CXOptionalUnsignedLongAttribute(from, CXNoNamespace, "outlineLevelRow", &v11))
     {
-      [v6 setMaxRowOutlineLevel:v11];
+      [currentSheet setMaxRowOutlineLevel:v11];
     }
 
     v10 = 0;
-    if (CXOptionalUnsignedLongAttribute(a3, CXNoNamespace, "outlineLevelCol", &v10))
+    if (CXOptionalUnsignedLongAttribute(from, CXNoNamespace, "outlineLevelCol", &v10))
     {
-      [v6 setMaxColumnOutlineLevel:v10];
+      [currentSheet setMaxColumnOutlineLevel:v10];
     }
   }
 }
 
-+ (void)readColumnInfosFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readColumnInfosFrom:(_xmlNode *)from state:(id)state
 {
-  v11 = a4;
-  v5 = [v11 currentSheet];
-  v6 = [v5 columnInfos];
+  stateCopy = state;
+  currentSheet = [stateCopy currentSheet];
+  columnInfos = [currentSheet columnInfos];
 
-  if (a3)
+  if (from)
   {
-    v7 = [v11 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v7, "col");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "col");
 
     while (Child)
     {
-      v9 = [EXColumnInfo edColumnInfoFromXmlColumnInfoElement:Child state:v11];
-      [v6 addObject:v9];
+      v9 = [EXColumnInfo edColumnInfoFromXmlColumnInfoElement:Child state:stateCopy];
+      [columnInfos addObject:v9];
 
-      v10 = [v11 EXSpreadsheetMLNamespace];
-      Child = OCXFindNextChild(Child, v10, "col");
+      eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+      Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "col");
     }
   }
 }
 
-+ (void)readHyperlinksFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readHyperlinksFrom:(_xmlNode *)from state:(id)state
 {
-  v11 = a4;
-  if (a3)
+  stateCopy = state;
+  if (from)
   {
-    v5 = [v11 EXSpreadsheetMLNamespace];
-    Child = OCXFindChild(a3, v5, "hyperlink");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    Child = OCXFindChild(from, eXSpreadsheetMLNamespace, "hyperlink");
 
     if (Child)
     {
-      v7 = 0;
+      hyperlinks = 0;
       do
       {
-        if (!v7)
+        if (!hyperlinks)
         {
-          v8 = [v11 currentSheet];
-          v7 = [v8 hyperlinks];
+          currentSheet = [stateCopy currentSheet];
+          hyperlinks = [currentSheet hyperlinks];
         }
 
-        v9 = [EXHyperlink edHyperlinkFromXmlHyperlinkElement:Child state:v11];
-        [v7 addObject:v9];
+        v9 = [EXHyperlink edHyperlinkFromXmlHyperlinkElement:Child state:stateCopy];
+        [hyperlinks addObject:v9];
 
-        v10 = [v11 EXSpreadsheetMLNamespace];
-        Child = OCXFindNextChild(Child, v10, "hyperlink");
+        eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+        Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace2, "hyperlink");
       }
 
       while (Child);
@@ -461,86 +461,86 @@ LABEL_15:
   }
 }
 
-+ (void)readSheetExtensions:(_xmlNode *)a3 state:(id)a4
++ (void)readSheetExtensions:(_xmlNode *)extensions state:(id)state
 {
-  v9 = a4;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  stateCopy = state;
+  for (i = OCXFirstChild(extensions); i; i = OCXNextSibling(i))
   {
     if (i->type == XML_ELEMENT_NODE)
     {
-      v7 = [v9 EXSpreadsheetMLNamespace];
-      v8 = [v7 containsNode:i];
+      eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+      v8 = [eXSpreadsheetMLNamespace containsNode:i];
 
       if (v8)
       {
         if (xmlStrEqual(i->name, "ext"))
         {
-          [a1 readSheetExtension:i state:v9];
+          [self readSheetExtension:i state:stateCopy];
         }
       }
     }
   }
 }
 
-+ (void)readSheetExtension:(_xmlNode *)a3 state:(id)a4
++ (void)readSheetExtension:(_xmlNode *)extension state:(id)state
 {
-  v6 = a4;
-  for (i = OCXFirstChild(a3); i; i = OCXNextSibling(i))
+  stateCopy = state;
+  for (i = OCXFirstChild(extension); i; i = OCXNextSibling(i))
   {
     if (i->type == XML_ELEMENT_NODE && [EXXL2010Namespace containsNode:i])
     {
       if (xmlStrEqual(i->name, "sparklineGroups"))
       {
-        [v6 reportWarning:ECUnsupportedSparklines];
+        [stateCopy reportWarning:ECUnsupportedSparklines];
       }
 
       else if (xmlStrEqual(i->name, "conditionalFormattings"))
       {
-        [EXConditionalFormatting readConditionalFormattingsFrom:i x14:1 state:v6];
+        [EXConditionalFormatting readConditionalFormattingsFrom:i x14:1 state:stateCopy];
       }
     }
   }
 }
 
-+ (void)readCommentTextFrom:(id)a3
++ (void)readCommentTextFrom:(id)from
 {
-  v3 = a3;
-  v4 = [(OCXState *)v3 currentPart];
-  v5 = OCXPartRelationshipsByTypeWithFallback(v4, v3, sel_OCXCommentsRelationshipType);
+  fromCopy = from;
+  currentPart = [(OCXState *)fromCopy currentPart];
+  v5 = OCXPartRelationshipsByTypeWithFallback(currentPart, fromCopy, sel_OCXCommentsRelationshipType);
   if (v5)
   {
-    v6 = [(OCPPackagePart *)v4 package];
-    if (!v6)
+    package = [(OCPPackagePart *)currentPart package];
+    if (!package)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
     v7 = [v5 objectAtIndex:0];
-    v8 = [v7 targetLocation];
-    v9 = [v6 partForLocation:v8];
+    targetLocation = [v7 targetLocation];
+    v9 = [package partForLocation:targetLocation];
 
     if (v9)
     {
       v42 = v9;
-      v10 = [v9 xmlDocument];
-      if (v10)
+      xmlDocument = [v9 xmlDocument];
+      if (xmlDocument)
       {
-        v39 = v6;
-        v41 = v4;
+        v39 = package;
+        v41 = currentPart;
         v43 = v5;
-        v11 = OCXGetRootElement(v10);
+        v11 = OCXGetRootElement(xmlDocument);
         v12 = v11;
-        if (!v11 || !xmlStrEqual(v11->name, "comments") || (-[OCXState EXSpreadsheetMLNamespace](v3, "EXSpreadsheetMLNamespace"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsNode:v12], v13, (v14 & 1) == 0))
+        if (!v11 || !xmlStrEqual(v11->name, "comments") || (-[OCXState EXSpreadsheetMLNamespace](fromCopy, "EXSpreadsheetMLNamespace"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 containsNode:v12], v13, (v14 & 1) == 0))
         {
-          [TCMessageException raise:TCInvalidFileFormatMessage, v6];
+          [TCMessageException raise:TCInvalidFileFormatMessage, package];
         }
 
         v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v16 = [(OCXState *)v3 EXSpreadsheetMLNamespace];
-        v17 = OCXFindChild(v12, v16, "authors");
+        eXSpreadsheetMLNamespace = [(OCXState *)fromCopy EXSpreadsheetMLNamespace];
+        v17 = OCXFindChild(v12, eXSpreadsheetMLNamespace, "authors");
 
-        v18 = [(OCXState *)v3 EXSpreadsheetMLNamespace];
-        Child = OCXFindChild(v17, v18, "author");
+        eXSpreadsheetMLNamespace2 = [(OCXState *)fromCopy EXSpreadsheetMLNamespace];
+        Child = OCXFindChild(v17, eXSpreadsheetMLNamespace2, "author");
 
         while (Child)
         {
@@ -553,15 +553,15 @@ LABEL_15:
           }
 
           [v15 addObject:v21];
-          v22 = [(OCXState *)v3 EXSpreadsheetMLNamespace];
-          Child = OCXFindNextChild(Child, v22, "author");
+          eXSpreadsheetMLNamespace3 = [(OCXState *)fromCopy EXSpreadsheetMLNamespace];
+          Child = OCXFindNextChild(Child, eXSpreadsheetMLNamespace3, "author");
         }
 
-        v23 = [(OCXState *)v3 EXSpreadsheetMLNamespace];
-        v24 = OCXFindChild(v12, v23, "commentList");
+        eXSpreadsheetMLNamespace4 = [(OCXState *)fromCopy EXSpreadsheetMLNamespace];
+        v24 = OCXFindChild(v12, eXSpreadsheetMLNamespace4, "commentList");
 
-        v25 = [(OCXState *)v3 EXSpreadsheetMLNamespace];
-        v26 = OCXFindChild(v24, v25, "comment");
+        eXSpreadsheetMLNamespace5 = [(OCXState *)fromCopy EXSpreadsheetMLNamespace];
+        v26 = OCXFindChild(v24, eXSpreadsheetMLNamespace5, "comment");
 
         while (v26)
         {
@@ -598,51 +598,51 @@ LABEL_23:
             }
           }
 
-          v32 = [(OCXState *)v3 EXSpreadsheetMLNamespace];
-          v33 = OCXFindChild(v26, v32, "text");
+          eXSpreadsheetMLNamespace6 = [(OCXState *)fromCopy EXSpreadsheetMLNamespace];
+          v33 = OCXFindChild(v26, eXSpreadsheetMLNamespace6, "text");
 
           v34 = +[EDTextBox textBox];
-          v35 = [EXString edStringWithRunsFromXmlStringElement:v33 state:v3];
+          v35 = [EXString edStringWithRunsFromXmlStringElement:v33 state:fromCopy];
           [v34 setText:v35];
 
-          [(OCXState *)v3 setTextBox:v34 author:v31 forReference:v29];
-          v36 = [(OCXState *)v3 EXSpreadsheetMLNamespace];
-          v26 = OCXFindNextChild(v26, v36, "comment");
+          [(OCXState *)fromCopy setTextBox:v34 author:v31 forReference:v29];
+          eXSpreadsheetMLNamespace7 = [(OCXState *)fromCopy EXSpreadsheetMLNamespace];
+          v26 = OCXFindNextChild(v26, eXSpreadsheetMLNamespace7, "comment");
         }
 
         v9 = v42;
-        v6 = v40;
+        package = v40;
         v37 = [v43 objectAtIndex:0];
-        v38 = [v37 targetLocation];
-        [v40 resetPartForLocation:v38];
+        targetLocation2 = [v37 targetLocation];
+        [v40 resetPartForLocation:targetLocation2];
 
-        v4 = v41;
+        currentPart = v41;
         v5 = v43;
       }
     }
   }
 }
 
-+ (void)readPivotTables:(id)a3
++ (void)readPivotTables:(id)tables
 {
-  v22 = a3;
-  v3 = [(OCXState *)v22 currentSheet];
-  v4 = [v3 pivotTables];
+  tablesCopy = tables;
+  currentSheet = [(OCXState *)tablesCopy currentSheet];
+  pivotTables = [currentSheet pivotTables];
 
-  v5 = [(OCXState *)v22 currentPart];
-  v6 = OCXPartRelationshipsByTypeWithFallback(v5, v22, sel_OCXPivotTableRelationshipType);
+  currentPart = [(OCXState *)tablesCopy currentPart];
+  v6 = OCXPartRelationshipsByTypeWithFallback(currentPart, tablesCopy, sel_OCXPivotTableRelationshipType);
   if (v6)
   {
-    [EXTableStyleTable readPredefinedTableStylesWithState:v22];
-    v7 = [(OCPPackagePart *)v5 package];
-    if (!v7)
+    [EXTableStyleTable readPredefinedTableStylesWithState:tablesCopy];
+    package = [(OCPPackagePart *)currentPart package];
+    if (!package)
     {
       [TCMessageException raise:TCInvalidFileFormatMessage];
     }
 
     if ([v6 count])
     {
-      [(OCXState *)v22 reportWorksheetWarning:ECPivotTables];
+      [(OCXState *)tablesCopy reportWorksheetWarning:ECPivotTables];
     }
 
     for (i = 0; ; i = v9 + 1)
@@ -654,36 +654,36 @@ LABEL_23:
       }
 
       v10 = [v6 objectAtIndex:i];
-      v11 = [v10 targetLocation];
-      v12 = [v7 partForLocation:v11];
+      targetLocation = [v10 targetLocation];
+      v12 = [package partForLocation:targetLocation];
 
       if (!v12)
       {
         [TCMessageException raise:TCInvalidFileFormatMessage];
       }
 
-      v13 = [v12 xmlDocument];
-      if (!v13)
+      xmlDocument = [v12 xmlDocument];
+      if (!xmlDocument)
       {
         [TCMessageException raise:TCInvalidFileFormatMessage];
       }
 
-      v14 = OCXGetRootElement(v13);
+      v14 = OCXGetRootElement(xmlDocument);
       v15 = v14;
-      if (!v14 || !xmlStrEqual(v14->name, "pivotTableDefinition") || (-[OCXState EXSpreadsheetMLNamespace](v22, "EXSpreadsheetMLNamespace"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 containsNode:v15], v16, (v17 & 1) == 0))
+      if (!v14 || !xmlStrEqual(v14->name, "pivotTableDefinition") || (-[OCXState EXSpreadsheetMLNamespace](tablesCopy, "EXSpreadsheetMLNamespace"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 containsNode:v15], v16, (v17 & 1) == 0))
       {
         [TCMessageException raise:TCInvalidFileFormatMessage];
       }
 
-      v18 = [EXPivotTable edPivotTableFromXmlPivotTableElement:v15 state:v22];
-      [v4 addObject:v18];
+      v18 = [EXPivotTable edPivotTableFromXmlPivotTableElement:v15 state:tablesCopy];
+      [pivotTables addObject:v18];
 
       v19 = [v6 objectAtIndex:v9];
-      v20 = [v19 targetLocation];
-      [v7 resetPartForLocation:v20];
+      targetLocation2 = [v19 targetLocation];
+      [package resetPartForLocation:targetLocation2];
     }
 
-    v5 = v21;
+    currentPart = v21;
   }
 }
 

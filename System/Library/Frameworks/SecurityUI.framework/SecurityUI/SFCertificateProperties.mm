@@ -1,18 +1,18 @@
 @interface SFCertificateProperties
-- (SFCertificateProperties)initWithCertificate:(__SecCertificate *)a3;
-- (id)_cellInfosForSection:(id)a3;
-- (id)_copyPropertiesFromCertificate:(__SecCertificate *)a3;
-- (id)_sectionInfoForCertSection:(id)a3 title:(id)a4;
-- (id)_sectionsFromProperties:(id)a3;
-- (id)_sendablePropertiesFromCertificate:(__SecCertificate *)a3;
-- (id)_sendablePropertiesFromProperties:(id)a3;
-- (id)_sendablePropertyFromProperty:(id)a3;
-- (void)_setup:(id)a3;
+- (SFCertificateProperties)initWithCertificate:(__SecCertificate *)certificate;
+- (id)_cellInfosForSection:(id)section;
+- (id)_copyPropertiesFromCertificate:(__SecCertificate *)certificate;
+- (id)_sectionInfoForCertSection:(id)section title:(id)title;
+- (id)_sectionsFromProperties:(id)properties;
+- (id)_sendablePropertiesFromCertificate:(__SecCertificate *)certificate;
+- (id)_sendablePropertiesFromProperties:(id)properties;
+- (id)_sendablePropertyFromProperty:(id)property;
+- (void)_setup:(id)_setup;
 @end
 
 @implementation SFCertificateProperties
 
-- (SFCertificateProperties)initWithCertificate:(__SecCertificate *)a3
+- (SFCertificateProperties)initWithCertificate:(__SecCertificate *)certificate
 {
   v9.receiver = self;
   v9.super_class = SFCertificateProperties;
@@ -20,7 +20,7 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(SFCertificateProperties *)v4 _sendablePropertiesFromCertificate:a3];
+    v6 = [(SFCertificateProperties *)v4 _sendablePropertiesFromCertificate:certificate];
     v7 = [(SFCertificateProperties *)v5 _sectionsFromProperties:v6];
     [(SFCertificateProperties *)v5 _setup:v7];
   }
@@ -28,17 +28,17 @@
   return v5;
 }
 
-- (void)_setup:(id)a3
+- (void)_setup:(id)_setup
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  _setupCopy = _setup;
   v25 = objc_opt_new();
   v24 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = _setupCopy;
   v27 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v27)
   {
@@ -133,16 +133,16 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_cellInfosForSection:(id)a3
+- (id)_cellInfosForSection:(id)section
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  sectionCopy = section;
+  array = [MEMORY[0x277CBEB18] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = sectionCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -165,7 +165,7 @@
         if ([v11 isEqualToString:@"section"])
         {
           v13 = [(SFCertificateProperties *)self _cellInfosForSection:v12];
-          [v4 addObjectsFromArray:v13];
+          [array addObjectsFromArray:v13];
         }
 
         else
@@ -182,7 +182,7 @@
 
           v13 = v14;
           v15 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithObjectsAndKeys:{v10, @"cell title", v14, @"cell value", 0}];
-          [v4 addObject:v15];
+          [array addObject:v15];
         }
 
         ++v8;
@@ -198,31 +198,31 @@
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-- (id)_sectionInfoForCertSection:(id)a3 title:(id)a4
+- (id)_sectionInfoForCertSection:(id)section title:(id)title
 {
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = [(SFCertificateProperties *)self _cellInfosForSection:a3];
-  v9 = [v6 dictionaryWithObjectsAndKeys:{v8, @"cell infos", v7, @"header title", 0}];
+  titleCopy = title;
+  v8 = [(SFCertificateProperties *)self _cellInfosForSection:section];
+  v9 = [v6 dictionaryWithObjectsAndKeys:{v8, @"cell infos", titleCopy, @"header title", 0}];
 
   return v9;
 }
 
-- (id)_sectionsFromProperties:(id)a3
+- (id)_sectionsFromProperties:(id)properties
 {
-  v16 = self;
+  selfCopy = self;
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v18 = [MEMORY[0x277CBEB18] array];
+  propertiesCopy = properties;
+  array = [MEMORY[0x277CBEB18] array];
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v3;
+  obj = propertiesCopy;
   v4 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
@@ -238,13 +238,13 @@
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [v8 objectForKey:{@"localized label", v16}];
+        v9 = [v8 objectForKey:{@"localized label", selfCopy}];
         v10 = [v8 objectForKey:@"type"];
         v11 = [v8 objectForKey:@"value"];
         if ([v10 isEqualToString:@"section"])
         {
-          v12 = [(SFCertificateProperties *)v16 _sectionInfoForCertSection:v11 title:v9];
-          [v18 addObject:v12];
+          v12 = [(SFCertificateProperties *)selfCopy _sectionInfoForCertSection:v11 title:v9];
+          [array addObject:v12];
         }
 
         else
@@ -261,61 +261,61 @@
 
   if ([v17 count])
   {
-    v13 = [(SFCertificateProperties *)v16 _sectionInfoForCertSection:v17 title:0];
-    [v18 addObject:v13];
+    v13 = [(SFCertificateProperties *)selfCopy _sectionInfoForCertSection:v17 title:0];
+    [array addObject:v13];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return array;
 }
 
-- (id)_sendablePropertyFromProperty:(id)a3
+- (id)_sendablePropertyFromProperty:(id)property
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:*MEMORY[0x277CDC508]];
+  propertyCopy = property;
+  v5 = [propertyCopy objectForKey:*MEMORY[0x277CDC508]];
   if ([v5 isEqualToString:*MEMORY[0x277CDC538]])
   {
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
+    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:propertyCopy];
 
     v7 = *MEMORY[0x277CDC510];
-    v8 = [v4 objectForKey:*MEMORY[0x277CDC510]];
-    v9 = [v8 absoluteString];
+    v8 = [propertyCopy objectForKey:*MEMORY[0x277CDC510]];
+    absoluteString = [v8 absoluteString];
   }
 
   else
   {
-    v6 = v4;
+    v6 = propertyCopy;
     if (![v5 isEqualToString:*MEMORY[0x277CDC528]])
     {
       goto LABEL_6;
     }
 
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v4];
+    v6 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:propertyCopy];
 
     v7 = *MEMORY[0x277CDC510];
-    v8 = [v4 objectForKey:*MEMORY[0x277CDC510]];
-    v9 = [(SFCertificateProperties *)self _sendablePropertiesFromProperties:v8];
+    v8 = [propertyCopy objectForKey:*MEMORY[0x277CDC510]];
+    absoluteString = [(SFCertificateProperties *)self _sendablePropertiesFromProperties:v8];
   }
 
-  v10 = v9;
-  [v6 setObject:v9 forKey:v7];
+  v10 = absoluteString;
+  [v6 setObject:absoluteString forKey:v7];
 
 LABEL_6:
 
   return v6;
 }
 
-- (id)_sendablePropertiesFromProperties:(id)a3
+- (id)_sendablePropertiesFromProperties:(id)properties
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  propertiesCopy = properties;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = propertiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -345,12 +345,12 @@ LABEL_6:
   return v5;
 }
 
-- (id)_copyPropertiesFromCertificate:(__SecCertificate *)a3
+- (id)_copyPropertiesFromCertificate:(__SecCertificate *)certificate
 {
-  if (a3)
+  if (certificate)
   {
 
-    return MEMORY[0x28212B1B8](a3, a2);
+    return MEMORY[0x28212B1B8](certificate, a2);
   }
 
   else
@@ -365,9 +365,9 @@ LABEL_6:
   }
 }
 
-- (id)_sendablePropertiesFromCertificate:(__SecCertificate *)a3
+- (id)_sendablePropertiesFromCertificate:(__SecCertificate *)certificate
 {
-  v4 = [(SFCertificateProperties *)self _copyPropertiesFromCertificate:a3];
+  v4 = [(SFCertificateProperties *)self _copyPropertiesFromCertificate:certificate];
   v5 = [(SFCertificateProperties *)self _sendablePropertiesFromProperties:v4];
 
   return v5;

@@ -1,14 +1,14 @@
 @interface CPAnalyticsDestinationsRegistry
 - (CPAnalyticsDestinationsRegistry)init;
 - (id)_destinationClassMap;
-- (id)_readConfiguration:(id)a3;
-- (void)_parseDestinationsFromConfig:(id)a3 cpAnalyticsInstance:(id)a4;
-- (void)addDestination:(id)a3;
-- (void)removeDestination:(id)a3;
+- (id)_readConfiguration:(id)configuration;
+- (void)_parseDestinationsFromConfig:(id)config cpAnalyticsInstance:(id)instance;
+- (void)addDestination:(id)destination;
+- (void)removeDestination:(id)destination;
 - (void)removePhotoLibraryFromDestinations;
-- (void)sendToAllDestinations:(id)a3;
-- (void)setupWithConfigurationAtURL:(id)a3 cpAnalyticsInstance:(id)a4;
-- (void)updateWithConfigurationAtURL:(id)a3 cpAnalyticsInstance:(id)a4;
+- (void)sendToAllDestinations:(id)destinations;
+- (void)setupWithConfigurationAtURL:(id)l cpAnalyticsInstance:(id)instance;
+- (void)updateWithConfigurationAtURL:(id)l cpAnalyticsInstance:(id)instance;
 @end
 
 @implementation CPAnalyticsDestinationsRegistry
@@ -53,15 +53,15 @@
   return v2;
 }
 
-- (void)_parseDestinationsFromConfig:(id)a3 cpAnalyticsInstance:(id)a4
+- (void)_parseDestinationsFromConfig:(id)config cpAnalyticsInstance:(id)instance
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v32 = a4;
-  v30 = v5;
-  if (v5)
+  configCopy = config;
+  instanceCopy = instance;
+  v30 = configCopy;
+  if (configCopy)
   {
-    v29 = [v5 objectForKey:@"destinations"];
+    v29 = [configCopy objectForKey:@"destinations"];
     v6 = v29;
     if (v29)
     {
@@ -70,11 +70,11 @@
       {
         v7 = self->_destinations;
         objc_sync_enter(v7);
-        v8 = [(CPAnalyticsDestinationsRegistry *)self destinations];
-        v33 = [v8 copy];
+        destinations = [(CPAnalyticsDestinationsRegistry *)self destinations];
+        v33 = [destinations copy];
 
         objc_sync_exit(v7);
-        v34 = [(CPAnalyticsDestinationsRegistry *)self _destinationClassMap];
+        _destinationClassMap = [(CPAnalyticsDestinationsRegistry *)self _destinationClassMap];
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
@@ -102,16 +102,16 @@
             if (objc_opt_isKindOfClass())
             {
               v14 = [v13 objectForKey:@"enabled"];
-              v15 = [v14 BOOLValue];
+              bOOLValue = [v14 BOOLValue];
 
-              if (v15)
+              if (bOOLValue)
               {
                 v16 = [v13 objectForKey:@"name"];
                 v17 = [v13 objectForKey:@"config"];
                 v36 = 0;
                 v37 = &v36;
                 v38 = 0x2050000000;
-                v39 = [v34 objectForKey:v16];
+                v39 = [_destinationClassMap objectForKey:v16];
                 if (!v37[3])
                 {
                   v20 = CPAnalyticsLog();
@@ -133,7 +133,7 @@
                 v18 = [v33 indexOfObjectPassingTest:v35];
                 if (v18 == 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  v19 = [objc_alloc(v37[3]) initWithConfig:v17 cpAnalyticsInstance:v32];
+                  v19 = [objc_alloc(v37[3]) initWithConfig:v17 cpAnalyticsInstance:instanceCopy];
                   v20 = v19;
                   if (v19)
                   {
@@ -245,10 +245,10 @@ LABEL_39:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_readConfiguration:(id)a3
+- (id)_readConfiguration:(id)configuration
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (configuration)
   {
     v3 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:?];
     if (v3)
@@ -310,8 +310,8 @@ LABEL_39:
   v17 = *MEMORY[0x277D85DE8];
   v3 = self->_destinations;
   objc_sync_enter(v3);
-  v4 = [(CPAnalyticsDestinationsRegistry *)self destinations];
-  v5 = [v4 copy];
+  destinations = [(CPAnalyticsDestinationsRegistry *)self destinations];
+  v5 = [destinations copy];
 
   objc_sync_exit(v3);
   v14 = 0u;
@@ -352,14 +352,14 @@ LABEL_39:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendToAllDestinations:(id)a3
+- (void)sendToAllDestinations:(id)destinations
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  destinationsCopy = destinations;
   v5 = self->_destinations;
   objc_sync_enter(v5);
-  v6 = [(CPAnalyticsDestinationsRegistry *)self destinations];
-  v7 = [v6 copy];
+  destinations = [(CPAnalyticsDestinationsRegistry *)self destinations];
+  v7 = [destinations copy];
 
   objc_sync_exit(v5);
   v15 = 0u;
@@ -381,7 +381,7 @@ LABEL_39:
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v13 + 1) + 8 * v11++) processEvent:{v4, v13}];
+        [*(*(&v13 + 1) + 8 * v11++) processEvent:{destinationsCopy, v13}];
       }
 
       while (v9 != v11);
@@ -394,47 +394,47 @@ LABEL_39:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDestination:(id)a3
+- (void)removeDestination:(id)destination
 {
-  v5 = a3;
+  destinationCopy = destination;
   v4 = self->_destinations;
   objc_sync_enter(v4);
-  [(NSMutableArray *)self->_destinations removeObject:v5];
+  [(NSMutableArray *)self->_destinations removeObject:destinationCopy];
   objc_sync_exit(v4);
 }
 
-- (void)addDestination:(id)a3
+- (void)addDestination:(id)destination
 {
-  v4 = a3;
-  if (v4)
+  destinationCopy = destination;
+  if (destinationCopy)
   {
-    v6 = v4;
+    v6 = destinationCopy;
     v5 = self->_destinations;
     objc_sync_enter(v5);
     [(NSMutableArray *)self->_destinations addObject:v6];
     objc_sync_exit(v5);
 
-    v4 = v6;
+    destinationCopy = v6;
   }
 }
 
-- (void)updateWithConfigurationAtURL:(id)a3 cpAnalyticsInstance:(id)a4
+- (void)updateWithConfigurationAtURL:(id)l cpAnalyticsInstance:(id)instance
 {
-  v6 = a4;
-  v7 = [(CPAnalyticsDestinationsRegistry *)self _readConfiguration:a3];
-  [(CPAnalyticsDestinationsRegistry *)self _parseDestinationsFromConfig:v7 cpAnalyticsInstance:v6];
+  instanceCopy = instance;
+  v7 = [(CPAnalyticsDestinationsRegistry *)self _readConfiguration:l];
+  [(CPAnalyticsDestinationsRegistry *)self _parseDestinationsFromConfig:v7 cpAnalyticsInstance:instanceCopy];
 }
 
-- (void)setupWithConfigurationAtURL:(id)a3 cpAnalyticsInstance:(id)a4
+- (void)setupWithConfigurationAtURL:(id)l cpAnalyticsInstance:(id)instance
 {
-  v8 = a3;
-  v6 = a4;
+  lCopy = l;
+  instanceCopy = instance;
   v7 = self->_destinations;
   objc_sync_enter(v7);
   [(NSMutableArray *)self->_destinations removeAllObjects];
   objc_sync_exit(v7);
 
-  [(CPAnalyticsDestinationsRegistry *)self updateWithConfigurationAtURL:v8 cpAnalyticsInstance:v6];
+  [(CPAnalyticsDestinationsRegistry *)self updateWithConfigurationAtURL:lCopy cpAnalyticsInstance:instanceCopy];
 }
 
 @end

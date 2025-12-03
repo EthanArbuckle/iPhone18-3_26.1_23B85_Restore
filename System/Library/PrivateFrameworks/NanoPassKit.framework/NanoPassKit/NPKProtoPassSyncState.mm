@@ -1,33 +1,33 @@
 @interface NPKProtoPassSyncState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPassSyncStateItems:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPassSyncStateItems:(id)items;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoPassSyncState
 
-- (void)addPassSyncStateItems:(id)a3
+- (void)addPassSyncStateItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   passSyncStateItems = self->_passSyncStateItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!passSyncStateItems)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_passSyncStateItems;
     self->_passSyncStateItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     passSyncStateItems = self->_passSyncStateItems;
   }
 
-  [(NSMutableArray *)passSyncStateItems addObject:v4];
+  [(NSMutableArray *)passSyncStateItems addObject:itemsCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoPassSyncState;
   v4 = [(NPKProtoPassSyncState *)&v8 description];
-  v5 = [(NPKProtoPassSyncState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoPassSyncState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,7 +45,7 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_passSyncStateItems count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_passSyncStateItems, "count")}];
@@ -68,8 +68,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -78,24 +78,24 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"passSyncStateItems"];
+    [dictionary setObject:v4 forKey:@"passSyncStateItems"];
   }
 
   if (*&self->_has)
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_version];
-    [v3 setObject:v11 forKey:@"version"];
+    [dictionary setObject:v11 forKey:@"version"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -137,35 +137,35 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(NPKProtoPassSyncState *)self passSyncStateItemsCount])
   {
-    [v8 clearPassSyncStateItems];
-    v4 = [(NPKProtoPassSyncState *)self passSyncStateItemsCount];
-    if (v4)
+    [toCopy clearPassSyncStateItems];
+    passSyncStateItemsCount = [(NPKProtoPassSyncState *)self passSyncStateItemsCount];
+    if (passSyncStateItemsCount)
     {
-      v5 = v4;
+      v5 = passSyncStateItemsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoPassSyncState *)self passSyncStateItemsAtIndex:i];
-        [v8 addPassSyncStateItems:v7];
+        [toCopy addPassSyncStateItems:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v8 + 4) = self->_version;
-    *(v8 + 20) |= 1u;
+    *(toCopy + 4) = self->_version;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -186,7 +186,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addPassSyncStateItems:v11];
 
         ++v10;
@@ -209,16 +209,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   passSyncStateItems = self->_passSyncStateItems;
-  if (passSyncStateItems | *(v4 + 1))
+  if (passSyncStateItems | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)passSyncStateItems isEqual:?])
     {
@@ -226,10 +226,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_version == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_version == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -260,15 +260,15 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
@@ -294,9 +294,9 @@ LABEL_9:
     while (v7);
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_version = *(v4 + 4);
+    self->_version = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

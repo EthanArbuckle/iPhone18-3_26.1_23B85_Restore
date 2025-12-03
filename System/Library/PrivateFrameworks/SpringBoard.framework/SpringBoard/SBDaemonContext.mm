@@ -1,10 +1,10 @@
 @interface SBDaemonContext
-- (SBDaemonContext)initWithPid:(int)a3 queue:(id)a4;
-- (id)_newDispatchSourceForPid:(int)a3 queue:(id)a4;
+- (SBDaemonContext)initWithPid:(int)pid queue:(id)queue;
+- (id)_newDispatchSourceForPid:(int)pid queue:(id)queue;
 - (id)description;
 - (void)_handleCancelation;
-- (void)addRequest:(id)a3 forKey:(id)a4;
-- (void)removeRequestForKey:(id)a3;
+- (void)addRequest:(id)request forKey:(id)key;
+- (void)removeRequestForKey:(id)key;
 @end
 
 @implementation SBDaemonContext
@@ -16,8 +16,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_daemonRequests allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_daemonRequests allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -30,14 +30,14 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v11 + 1) + 8 * v8++) dispatchDisablerOnQueue:v7];
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -55,10 +55,10 @@
   [SBDaemonHandler noteDaemonCanceled:self];
 }
 
-- (SBDaemonContext)initWithPid:(int)a3 queue:(id)a4
+- (SBDaemonContext)initWithPid:(int)pid queue:(id)queue
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&pid;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = SBDaemonContext;
   v7 = [(SBDaemonContext *)&v14 init];
@@ -70,7 +70,7 @@
     daemonRequests = v8->_daemonRequests;
     v8->_daemonRequests = v9;
 
-    v11 = [(SBDaemonContext *)v8 _newDispatchSourceForPid:v4 queue:v6];
+    v11 = [(SBDaemonContext *)v8 _newDispatchSourceForPid:v4 queue:queueCopy];
     dispatchSource = v8->_dispatchSource;
     v8->_dispatchSource = v11;
 
@@ -84,10 +84,10 @@
   return v8;
 }
 
-- (id)_newDispatchSourceForPid:(int)a3 queue:(id)a4
+- (id)_newDispatchSourceForPid:(int)pid queue:(id)queue
 {
-  v6 = a4;
-  if (!a3)
+  queueCopy = queue;
+  if (!pid)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -98,13 +98,13 @@
     goto LABEL_8;
   }
 
-  v7 = dispatch_source_create(MEMORY[0x277D85D20], a3, 0x80000000uLL, v6);
+  v7 = dispatch_source_create(MEMORY[0x277D85D20], pid, 0x80000000uLL, queueCopy);
   if (!v7)
   {
     v9 = SBLogCommon();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [SBDaemonContext _newDispatchSourceForPid:a3 queue:v9];
+      [SBDaemonContext _newDispatchSourceForPid:pid queue:v9];
     }
 
 LABEL_8:
@@ -132,25 +132,25 @@ LABEL_9:
   return v8;
 }
 
-- (void)addRequest:(id)a3 forKey:(id)a4
+- (void)addRequest:(id)request forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_daemonRequests objectForKey:v6];
+  requestCopy = request;
+  keyCopy = key;
+  v7 = [(NSMutableDictionary *)self->_daemonRequests objectForKey:keyCopy];
   if (!v7)
   {
-    [(NSMutableDictionary *)self->_daemonRequests setObject:v8 forKey:v6];
-    [v8 dispatchEnablerOnQueue:MEMORY[0x277D85CD0]];
+    [(NSMutableDictionary *)self->_daemonRequests setObject:requestCopy forKey:keyCopy];
+    [requestCopy dispatchEnablerOnQueue:MEMORY[0x277D85CD0]];
   }
 }
 
-- (void)removeRequestForKey:(id)a3
+- (void)removeRequestForKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v4 = [(NSMutableDictionary *)self->_daemonRequests objectForKey:?];
   if (v4)
   {
-    [(NSMutableDictionary *)self->_daemonRequests removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_daemonRequests removeObjectForKey:keyCopy];
     [v4 dispatchDisablerOnQueue:MEMORY[0x277D85CD0]];
     if (![(NSMutableDictionary *)self->_daemonRequests count])
     {

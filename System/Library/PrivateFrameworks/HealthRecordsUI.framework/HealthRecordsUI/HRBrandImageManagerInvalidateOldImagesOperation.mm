@@ -8,9 +8,9 @@
 {
   v56 = *MEMORY[0x1E69E9840];
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"BrandLogos"];
+  v4 = [firstObject stringByAppendingPathComponent:@"BrandLogos"];
 
   v5 = v4;
   v47 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:-259200.0];
@@ -31,21 +31,21 @@
     _os_log_impl(&dword_1D101F000, v7, OS_LOG_TYPE_INFO, "%{public}@: removing old brand logos: %@ with cutoff date %{public}@", buf, 0x20u);
   }
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v11 enumeratorAtPath:v4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v12 = [defaultManager enumeratorAtPath:v4];
 
-  v13 = [v12 nextObject];
+  nextObject = [v12 nextObject];
   v46 = v4;
-  if (v13)
+  if (nextObject)
   {
-    v14 = v13;
+    v14 = nextObject;
     v15 = *MEMORY[0x1E696A308];
     do
     {
       v16 = [v5 stringByAppendingPathComponent:v14];
-      v17 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
       v49 = 0;
-      v18 = [v17 attributesOfItemAtPath:v16 error:&v49];
+      v18 = [defaultManager2 attributesOfItemAtPath:v16 error:&v49];
       v19 = v49;
 
       v20 = [v18 objectForKeyedSubscript:v15];
@@ -69,9 +69,9 @@
             _os_log_debug_impl(&dword_1D101F000, v33, OS_LOG_TYPE_DEBUG, "%{public}@: deleting file: %{public}@", buf, 0x16u);
           }
 
-          v23 = [MEMORY[0x1E696AC08] defaultManager];
+          defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
           v48 = v19;
-          v24 = [v23 removeItemAtPath:v16 error:&v48];
+          v24 = [defaultManager3 removeItemAtPath:v16 error:&v48];
           v25 = v48;
 
           if (v24)
@@ -131,12 +131,12 @@
         }
       }
 
-      v28 = [v12 nextObject];
+      nextObject2 = [v12 nextObject];
 
-      v14 = v28;
+      v14 = nextObject2;
     }
 
-    while (v28);
+    while (nextObject2);
   }
 
   _HKInitializeLogging();

@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_OrgApacheLuceneDocumentFieldType_init();
     JreStrongAssignAndConsume(&OrgApacheLuceneDocumentTextField_TYPE_NOT_STORED_, v2);

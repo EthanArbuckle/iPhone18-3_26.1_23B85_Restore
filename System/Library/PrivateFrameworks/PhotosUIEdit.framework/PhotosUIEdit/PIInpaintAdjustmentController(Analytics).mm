@@ -11,10 +11,10 @@
   v3 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v3 setMinimumFractionDigits:1];
   [v3 setMaximumFractionDigits:2];
-  v4 = [a1 adjustment];
-  if (v4 && (v5 = v4, v6 = [a1 enabled], v5, v6))
+  adjustment = [self adjustment];
+  if (adjustment && (v5 = adjustment, v6 = [self enabled], v5, v6))
   {
-    v7 = [a1 objectForKeyedSubscript:@"operations"];
+    v7 = [self objectForKeyedSubscript:@"operations"];
     v8 = v7;
     if (v7)
     {
@@ -50,7 +50,7 @@
             }
 
             v17 = [objc_alloc(*(v15 + 2304)) initWithDictionary:*(*(&v46 + 1) + 8 * v16)];
-            v18 = [v17 mode];
+            mode = [v17 mode];
             if (([v17 options] & 0x100) != 0)
             {
               v20 = 0;
@@ -59,34 +59,34 @@
 
             else
             {
-              v19 = [v17 options];
-              v12 += (v19 >> 9) & 1;
-              v20 = (v19 & 0x200) == 0;
+              options = [v17 options];
+              v12 += (options >> 9) & 1;
+              v20 = (options & 0x200) == 0;
             }
 
-            switch(v18)
+            switch(mode)
             {
               case 4:
                 v21 = v11;
                 v22 = v12;
                 v23 = v15;
                 v24 = v8;
-                v25 = [v17 isTargetPoints];
-                v26 = [v17 isTapSelect];
-                v27 = [v17 isFilledBrushStroke];
-                if (v25)
+                isTargetPoints = [v17 isTargetPoints];
+                isTapSelect = [v17 isTapSelect];
+                isFilledBrushStroke = [v17 isFilledBrushStroke];
+                if (isTargetPoints)
                 {
                   ++v42;
                 }
 
-                else if (v26)
+                else if (isTapSelect)
                 {
                   ++v41;
                 }
 
                 else
                 {
-                  v40 += v27 ^ 1u;
+                  v40 += isFilledBrushStroke ^ 1u;
                 }
 
                 v8 = v24;

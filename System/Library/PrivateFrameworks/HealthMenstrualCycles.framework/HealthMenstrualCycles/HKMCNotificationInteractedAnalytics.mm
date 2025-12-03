@@ -1,21 +1,21 @@
 @interface HKMCNotificationInteractedAnalytics
 + (BOOL)_isMetricEnabled;
 + (BOOL)shouldSubmit;
-+ (void)submitMetricForCategory:(id)a3 action:(id)a4;
++ (void)submitMetricForCategory:(id)category action:(id)action;
 @end
 
 @implementation HKMCNotificationInteractedAnalytics
 
 + (BOOL)shouldSubmit
 {
-  v3 = [a1 _isMetricEnabled];
-  if (v3)
+  _isMetricEnabled = [self _isMetricEnabled];
+  if (_isMetricEnabled)
   {
 
-    LOBYTE(v3) = [a1 _isAllowed];
+    LOBYTE(_isMetricEnabled) = [self _isAllowed];
   }
 
-  return v3;
+  return _isMetricEnabled;
 }
 
 + (BOOL)_isMetricEnabled
@@ -23,28 +23,28 @@
   v2 = +[HKMCNotificationInteractedMetric eventName];
   if (AnalyticsIsEventUsed())
   {
-    v3 = 1;
+    hkmc_analyticsDebugModeEnabled = 1;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
-    v3 = [v4 hkmc_analyticsDebugModeEnabled];
+    hkmc_menstrualCyclesDefaults = [MEMORY[0x277CBEBD0] hkmc_menstrualCyclesDefaults];
+    hkmc_analyticsDebugModeEnabled = [hkmc_menstrualCyclesDefaults hkmc_analyticsDebugModeEnabled];
   }
 
-  return v3;
+  return hkmc_analyticsDebugModeEnabled;
 }
 
-+ (void)submitMetricForCategory:(id)a3 action:(id)a4
++ (void)submitMetricForCategory:(id)category action:(id)action
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([a1 shouldSubmit])
+  categoryCopy = category;
+  actionCopy = action;
+  if ([self shouldSubmit])
   {
-    v8 = [[HKMCNotificationInteractedMetric alloc] initWithCategory:v6 action:v7];
+    v8 = [[HKMCNotificationInteractedMetric alloc] initWithCategory:categoryCopy action:actionCopy];
     v9 = +[HKMCNotificationInteractedMetric eventName];
-    v10 = [(HKMCNotificationInteractedMetric *)v8 eventPayload];
+    eventPayload = [(HKMCNotificationInteractedMetric *)v8 eventPayload];
     AnalyticsSendEvent();
 
     _HKInitializeLogging();
@@ -78,8 +78,8 @@ LABEL_6:
     v17 = objc_opt_class();
     v18 = MEMORY[0x277CCABB0];
     v12 = v17;
-    v19 = [v18 numberWithBool:{objc_msgSend(a1, "_isMetricEnabled")}];
-    v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "_isAllowed")}];
+    v19 = [v18 numberWithBool:{objc_msgSend(self, "_isMetricEnabled")}];
+    v20 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "_isAllowed")}];
     v22 = 138543874;
     v23 = v17;
     v24 = 2114;

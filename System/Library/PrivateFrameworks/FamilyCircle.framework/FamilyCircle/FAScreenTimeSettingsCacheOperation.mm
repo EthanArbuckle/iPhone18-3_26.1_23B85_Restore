@@ -1,28 +1,28 @@
 @interface FAScreenTimeSettingsCacheOperation
 + (id)cacheQueue;
-- (FAScreenTimeSettingsCacheOperation)initWithDSID:(id)a3;
+- (FAScreenTimeSettingsCacheOperation)initWithDSID:(id)d;
 - (id)_cacheURL;
-- (id)_cacheURLWithError:(id *)a3;
+- (id)_cacheURLWithError:(id *)error;
 - (id)_createCacheFile;
-- (id)_fetchData:(id *)a3;
-- (id)_onQueue:(id)a3;
-- (id)cacheScreenTimeSettingsObject:(id)a3;
+- (id)_fetchData:(id *)data;
+- (id)_onQueue:(id)queue;
+- (id)cacheScreenTimeSettingsObject:(id)object;
 - (id)invalidate;
 - (id)loadScreenTimeSettingsObject;
 @end
 
 @implementation FAScreenTimeSettingsCacheOperation
 
-- (FAScreenTimeSettingsCacheOperation)initWithDSID:(id)a3
+- (FAScreenTimeSettingsCacheOperation)initWithDSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = FAScreenTimeSettingsCacheOperation;
   v6 = [(FAScreenTimeSettingsCacheOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dsid, a3);
+    objc_storeStrong(&v6->_dsid, d);
   }
 
   return v7;
@@ -40,20 +40,20 @@
   return v3;
 }
 
-- (id)cacheScreenTimeSettingsObject:(id)a3
+- (id)cacheScreenTimeSettingsObject:(id)object
 {
-  v4 = a3;
-  v5 = [(FAScreenTimeSettingsCacheOperation *)self _createCacheFile];
+  objectCopy = object;
+  _createCacheFile = [(FAScreenTimeSettingsCacheOperation *)self _createCacheFile];
   v6 = [AAFPromise alloc];
-  v7 = [v4 dataRepresentation];
+  dataRepresentation = [objectCopy dataRepresentation];
 
-  v8 = [v6 initWithValue:v7];
+  v8 = [v6 initWithValue:dataRepresentation];
   v14[0] = v8;
-  v14[1] = v5;
+  v14[1] = _createCacheFile;
   v9 = [NSArray arrayWithObjects:v14 count:2];
   v10 = [AAFPromise all:v9];
-  v11 = [v10 then];
-  v12 = (v11)[2](v11, &stru_1000A65A0);
+  then = [v10 then];
+  v12 = (then)[2](then, &stru_1000A65A0);
 
   return v12;
 }
@@ -72,23 +72,23 @@
 
 - (id)invalidate
 {
-  v3 = [(FAScreenTimeSettingsCacheOperation *)self _cacheURL];
-  v4 = [v3 then];
+  _cacheURL = [(FAScreenTimeSettingsCacheOperation *)self _cacheURL];
+  then = [_cacheURL then];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000B4CC;
   v7[3] = &unk_1000A65F0;
   v7[4] = self;
-  v5 = (v4)[2](v4, v7);
+  v5 = (then)[2](then, v7);
 
   return v5;
 }
 
-- (id)_cacheURLWithError:(id *)a3
+- (id)_cacheURLWithError:(id *)error
 {
-  v5 = [(FAScreenTimeSettingsCacheOperation *)self dsid];
+  dsid = [(FAScreenTimeSettingsCacheOperation *)self dsid];
 
-  if (v5)
+  if (dsid)
   {
     v6 = +[NSFileManager defaultManager];
     v17 = 0;
@@ -103,20 +103,20 @@
         sub_100078318();
       }
 
-      if (a3)
+      if (error)
       {
         v10 = v8;
-        *a3 = v8;
+        *error = v8;
       }
     }
 
     v11 = [v7 URLByAppendingPathComponent:@"com.apple.family/cachedObjects" isDirectory:1];
-    v12 = [(FAScreenTimeSettingsCacheOperation *)self dsid];
-    v13 = [v12 stringValue];
-    v14 = [v11 URLByAppendingPathComponent:v13 isDirectory:0];
+    dsid2 = [(FAScreenTimeSettingsCacheOperation *)self dsid];
+    stringValue = [dsid2 stringValue];
+    v14 = [v11 URLByAppendingPathComponent:stringValue isDirectory:0];
   }
 
-  else if (a3)
+  else if (error)
   {
     v15 = _FALogSystem();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -125,7 +125,7 @@
     }
 
     [NSError fa_familyErrorWithCode:-1013];
-    *a3 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -136,7 +136,7 @@
   return v14;
 }
 
-- (id)_fetchData:(id *)a3
+- (id)_fetchData:(id *)data
 {
   v9 = 0;
   v10 = &v9;
@@ -144,15 +144,15 @@
   v12 = sub_10000B900;
   v13 = sub_10000B910;
   v14 = 0;
-  v5 = [objc_opt_class() cacheQueue];
+  cacheQueue = [objc_opt_class() cacheQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000B918;
   block[3] = &unk_1000A6618;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = data;
+  dispatch_sync(cacheQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -174,29 +174,29 @@
 
 - (id)_createCacheFile
 {
-  v3 = [(FAScreenTimeSettingsCacheOperation *)self _cacheURL];
-  v4 = [v3 then];
+  _cacheURL = [(FAScreenTimeSettingsCacheOperation *)self _cacheURL];
+  then = [_cacheURL then];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000BBB4;
   v7[3] = &unk_1000A65F0;
   v7[4] = self;
-  v5 = (v4)[2](v4, v7);
+  v5 = (then)[2](then, v7);
 
   return v5;
 }
 
-- (id)_onQueue:(id)a3
+- (id)_onQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [AAFPromise alloc];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000BE0C;
   v9[3] = &unk_1000A6668;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = queueCopy;
+  v6 = queueCopy;
   v7 = [v5 initWithBlock:v9];
 
   return v7;

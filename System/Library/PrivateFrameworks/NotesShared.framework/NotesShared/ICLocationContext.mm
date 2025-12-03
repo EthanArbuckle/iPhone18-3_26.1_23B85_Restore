@@ -2,8 +2,8 @@
 + (id)sharedContext;
 - (BOOL)canGetLocation;
 - (CLLocationManager)locationManager;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)lookupPlaceAtLatitude:(double)a3 longitude:(double)a4 handler:(id)a5;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)lookupPlaceAtLatitude:(double)latitude longitude:(double)longitude handler:(id)handler;
 - (void)requestAuthorizationIfNeeded;
 @end
 
@@ -30,39 +30,39 @@ void __34__ICLocationContext_sharedContext__block_invoke()
 
 - (BOOL)canGetLocation
 {
-  v3 = [MEMORY[0x277CBFC10] locationServicesEnabled];
-  if (v3)
+  locationServicesEnabled = [MEMORY[0x277CBFC10] locationServicesEnabled];
+  if (locationServicesEnabled)
   {
-    v4 = [(ICLocationContext *)self locationManager];
-    v5 = [v4 authorizationStatus];
+    locationManager = [(ICLocationContext *)self locationManager];
+    authorizationStatus = [locationManager authorizationStatus];
 
     [(ICLocationContext *)self requestAuthorizationIfNeeded];
-    LOBYTE(v3) = v5 > 2;
+    LOBYTE(locationServicesEnabled) = authorizationStatus > 2;
   }
 
-  return v3;
+  return locationServicesEnabled;
 }
 
-- (void)lookupPlaceAtLatitude:(double)a3 longitude:(double)a4 handler:(id)a5
+- (void)lookupPlaceAtLatitude:(double)latitude longitude:(double)longitude handler:(id)handler
 {
-  v8 = a5;
-  v9 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:a3 longitude:a4];
-  v10 = [(ICLocationContext *)self geocoder];
+  handlerCopy = handler;
+  v9 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:latitude longitude:longitude];
+  geocoder = [(ICLocationContext *)self geocoder];
 
-  if (!v10)
+  if (!geocoder)
   {
     v11 = objc_alloc_init(MEMORY[0x277CBFBE8]);
     [(ICLocationContext *)self setGeocoder:v11];
   }
 
-  v12 = [(ICLocationContext *)self geocoder];
+  geocoder2 = [(ICLocationContext *)self geocoder];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__ICLocationContext_lookupPlaceAtLatitude_longitude_handler___block_invoke;
   v14[3] = &unk_27819A430;
-  v15 = v8;
-  v13 = v8;
-  [v12 reverseGeocodeLocation:v9 completionHandler:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [geocoder2 reverseGeocodeLocation:v9 completionHandler:v14];
 }
 
 void __61__ICLocationContext_lookupPlaceAtLatitude_longitude_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -85,11 +85,11 @@ void __61__ICLocationContext_lookupPlaceAtLatitude_longitude_handler___block_inv
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   [(ICLocationContext *)self setRequestedAuthorization:0];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"ICLocationContextAuthorizationStatusDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICLocationContextAuthorizationStatusDidChange" object:0];
 }
 
 - (CLLocationManager)locationManager
@@ -112,13 +112,13 @@ void __61__ICLocationContext_lookupPlaceAtLatitude_longitude_handler___block_inv
 {
   if (![(ICLocationContext *)self requestedAuthorization])
   {
-    v3 = [(ICLocationContext *)self locationManager];
-    v4 = [v3 authorizationStatus];
+    locationManager = [(ICLocationContext *)self locationManager];
+    authorizationStatus = [locationManager authorizationStatus];
 
-    if (!v4)
+    if (!authorizationStatus)
     {
-      v5 = [(ICLocationContext *)self locationManager];
-      [v5 requestWhenInUseAuthorization];
+      locationManager2 = [(ICLocationContext *)self locationManager];
+      [locationManager2 requestWhenInUseAuthorization];
 
       [(ICLocationContext *)self setRequestedAuthorization:1];
     }

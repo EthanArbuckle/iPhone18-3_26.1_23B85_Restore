@@ -1,71 +1,71 @@
 @interface IDSPersistentMapMergePolicy
 + (id)ditchMemoryPolicy;
 + (id)prioritizeMemoryPolicy;
-- (IDSPersistentMapMergePolicy)initWithPolicyBlock:(id)a3;
-- (IDSPersistentMapMergePolicy)initWithStandardPolicy:(unint64_t)a3;
-- (id)processedDictionaryForDisk:(id)a3 andMemory:(id)a4;
+- (IDSPersistentMapMergePolicy)initWithPolicyBlock:(id)block;
+- (IDSPersistentMapMergePolicy)initWithStandardPolicy:(unint64_t)policy;
+- (id)processedDictionaryForDisk:(id)disk andMemory:(id)memory;
 @end
 
 @implementation IDSPersistentMapMergePolicy
 
 + (id)ditchMemoryPolicy
 {
-  v2 = [[a1 alloc] initWithStandardPolicy:0];
+  v2 = [[self alloc] initWithStandardPolicy:0];
 
   return v2;
 }
 
 + (id)prioritizeMemoryPolicy
 {
-  v2 = [[a1 alloc] initWithStandardPolicy:1];
+  v2 = [[self alloc] initWithStandardPolicy:1];
 
   return v2;
 }
 
-- (IDSPersistentMapMergePolicy)initWithStandardPolicy:(unint64_t)a3
+- (IDSPersistentMapMergePolicy)initWithStandardPolicy:(unint64_t)policy
 {
   v5.receiver = self;
   v5.super_class = IDSPersistentMapMergePolicy;
   result = [(IDSPersistentMapMergePolicy *)&v5 init];
   if (result)
   {
-    result->_policy = a3;
+    result->_policy = policy;
   }
 
   return result;
 }
 
-- (IDSPersistentMapMergePolicy)initWithPolicyBlock:(id)a3
+- (IDSPersistentMapMergePolicy)initWithPolicyBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = [(IDSPersistentMapMergePolicy *)self initWithStandardPolicy:2];
     if (v5)
     {
-      v6 = objc_retainBlock(v4);
+      v6 = objc_retainBlock(blockCopy);
       block = v5->_block;
       v5->_block = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)processedDictionaryForDisk:(id)a3 andMemory:(id)a4
+- (id)processedDictionaryForDisk:(id)disk andMemory:(id)memory
 {
   block = self->_block;
   if (block)
   {
-    v6 = block[2](block, a3, a4);
+    v6 = block[2](block, disk, memory);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,7 +83,7 @@
 
   else
   {
-    v6 = [NSAssertionHandler currentHandler:a3];
+    v6 = [NSAssertionHandler currentHandler:disk];
     v9 = 0;
   }
 

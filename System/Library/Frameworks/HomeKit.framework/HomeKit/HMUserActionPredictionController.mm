@@ -1,28 +1,28 @@
 @interface HMUserActionPredictionController
 + (id)logCategory;
-- (HMUserActionPredictionController)initWithHomeIdentifier:(id)a3 predictionProvider:(id)a4;
+- (HMUserActionPredictionController)initWithHomeIdentifier:(id)identifier predictionProvider:(id)provider;
 - (HMUserActionPredictionControllerDelegate)delegate;
 - (id)predictions;
-- (void)didUpdatePredictions:(id)a3 forHomeWithIdentifier:(id)a4;
-- (void)fetchPredictionsWithCompletion:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)didUpdatePredictions:(id)predictions forHomeWithIdentifier:(id)identifier;
+- (void)fetchPredictionsWithCompletion:(id)completion;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HMUserActionPredictionController
 
-- (void)didUpdatePredictions:(id)a3 forHomeWithIdentifier:(id)a4
+- (void)didUpdatePredictions:(id)predictions forHomeWithIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMUserActionPredictionController *)self homeIdentifier];
-  v9 = [v7 hmf_isEqualToUUID:v8];
+  predictionsCopy = predictions;
+  identifierCopy = identifier;
+  homeIdentifier = [(HMUserActionPredictionController *)self homeIdentifier];
+  v9 = [identifierCopy hmf_isEqualToUUID:homeIdentifier];
 
   if (v9)
   {
-    v10 = [(HMUserActionPredictionController *)self delegate];
+    delegate = [(HMUserActionPredictionController *)self delegate];
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -30,34 +30,34 @@
       *buf = 138544130;
       v27 = v14;
       v28 = 2112;
-      v29 = v10;
+      v29 = delegate;
       v30 = 2112;
-      v31 = v6;
+      v31 = predictionsCopy;
       v32 = 2112;
-      v33 = v7;
+      v33 = identifierCopy;
       _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Notifying delegate: %@ of updated user action predictions: %@ for home with identifier: %@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v11);
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(HMUserActionPredictionController *)v12 context];
-      v16 = [v15 delegateCaller];
+      context = [(HMUserActionPredictionController *)selfCopy context];
+      delegateCaller = [context delegateCaller];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __79__HMUserActionPredictionController_didUpdatePredictions_forHomeWithIdentifier___block_invoke;
       v22[3] = &unk_1E754E5E8;
-      v23 = v10;
-      v24 = v12;
-      v25 = v6;
-      [v16 invokeBlock:v22];
+      v23 = delegate;
+      v24 = selfCopy;
+      v25 = predictionsCopy;
+      [delegateCaller invokeBlock:v22];
     }
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -65,9 +65,9 @@
       *buf = 138543874;
       v27 = v20;
       v28 = 2112;
-      v29 = v6;
+      v29 = predictionsCopy;
       v30 = 2112;
-      v31 = v7;
+      v31 = identifierCopy;
       _os_log_impl(&dword_19BB39000, v19, OS_LOG_TYPE_ERROR, "%{public}@Not notifying of updated user action predictions: %@ for home with identifier: %@ due to wrong home", buf, 0x20u);
     }
 
@@ -90,31 +90,31 @@
   objc_exception_throw(v7);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_lock);
-  if (!v4 || WeakRetained)
+  if (!delegateCopy || WeakRetained)
   {
-    if (v4 || !WeakRetained)
+    if (delegateCopy || !WeakRetained)
     {
       return;
     }
 
-    v7 = [(HMUserActionPredictionController *)self predictionProvider];
-    v6 = [(HMUserActionPredictionController *)self homeIdentifier];
-    [v7 removeSubscriber:self forHomeIdentifier:v6];
+    predictionProvider = [(HMUserActionPredictionController *)self predictionProvider];
+    homeIdentifier = [(HMUserActionPredictionController *)self homeIdentifier];
+    [predictionProvider removeSubscriber:self forHomeIdentifier:homeIdentifier];
   }
 
   else
   {
-    v7 = [(HMUserActionPredictionController *)self predictionProvider];
-    v6 = [(HMUserActionPredictionController *)self homeIdentifier];
-    [v7 addSubscriber:self forHomeIdentifier:v6];
+    predictionProvider = [(HMUserActionPredictionController *)self predictionProvider];
+    homeIdentifier = [(HMUserActionPredictionController *)self homeIdentifier];
+    [predictionProvider addSubscriber:self forHomeIdentifier:homeIdentifier];
   }
 }
 
@@ -127,15 +127,15 @@
   return WeakRetained;
 }
 
-- (void)fetchPredictionsWithCompletion:(id)a3
+- (void)fetchPredictionsWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMUserActionPredictionController fetchPredictionsWithCompletion:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -152,30 +152,30 @@
     objc_exception_throw(v22);
   }
 
-  v5 = v4;
-  v6 = [(HMUserActionPredictionController *)self context];
+  v5 = completionCopy;
+  context = [(HMUserActionPredictionController *)self context];
 
-  if (v6)
+  if (context)
   {
-    v7 = [(HMUserActionPredictionController *)self context];
-    v8 = [v7 delegateCaller];
+    context2 = [(HMUserActionPredictionController *)self context];
+    delegateCaller = [context2 delegateCaller];
 
-    v9 = [(HMUserActionPredictionController *)self predictionProvider];
-    v10 = [(HMUserActionPredictionController *)self homeIdentifier];
+    predictionProvider = [(HMUserActionPredictionController *)self predictionProvider];
+    homeIdentifier = [(HMUserActionPredictionController *)self homeIdentifier];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __67__HMUserActionPredictionController_fetchPredictionsWithCompletion___block_invoke;
     v23[3] = &unk_1E7547588;
-    v24 = v8;
+    v24 = delegateCaller;
     v25 = v5;
-    v11 = v8;
-    [v9 fetchPredictionsForHomeWithIdentifier:v10 completion:v23];
+    v11 = delegateCaller;
+    [predictionProvider fetchPredictionsForHomeWithIdentifier:homeIdentifier completion:v23];
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -192,18 +192,18 @@
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (HMUserActionPredictionController)initWithHomeIdentifier:(id)a3 predictionProvider:(id)a4
+- (HMUserActionPredictionController)initWithHomeIdentifier:(id)identifier predictionProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  providerCopy = provider;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = providerCopy;
+  if (!providerCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -215,11 +215,11 @@ LABEL_7:
   v9 = [(HMUserActionPredictionController *)&v15 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:v6];
+    v10 = [MEMORY[0x1E69A2A28] hmf_cachedInstanceForNSUUID:identifierCopy];
     homeIdentifier = v9->_homeIdentifier;
     v9->_homeIdentifier = v10;
 
-    objc_storeStrong(&v9->_predictionProvider, a4);
+    objc_storeStrong(&v9->_predictionProvider, provider);
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 

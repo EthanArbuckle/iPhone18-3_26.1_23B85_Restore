@@ -1,59 +1,59 @@
 @interface _ATXActiveMissedNotificationRankingTuple
-- (_ATXActiveMissedNotificationRankingTuple)initWithActiveUpcomingRanking:(id)a3 activeDeliveredRanking:(id)a4 justCompletedRanking:(id)a5;
-- (_ATXActiveMissedNotificationRankingTuple)initWithCoder:(id)a3;
-- (_ATXActiveMissedNotificationRankingTuple)initWithPreviousTuple:(id)a3 nextRankingEvent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (_ATXActiveMissedNotificationRankingTuple)initWithActiveUpcomingRanking:(id)ranking activeDeliveredRanking:(id)deliveredRanking justCompletedRanking:(id)completedRanking;
+- (_ATXActiveMissedNotificationRankingTuple)initWithCoder:(id)coder;
+- (_ATXActiveMissedNotificationRankingTuple)initWithPreviousTuple:(id)tuple nextRankingEvent:(id)event;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _ATXActiveMissedNotificationRankingTuple
 
-- (_ATXActiveMissedNotificationRankingTuple)initWithActiveUpcomingRanking:(id)a3 activeDeliveredRanking:(id)a4 justCompletedRanking:(id)a5
+- (_ATXActiveMissedNotificationRankingTuple)initWithActiveUpcomingRanking:(id)ranking activeDeliveredRanking:(id)deliveredRanking justCompletedRanking:(id)completedRanking
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  rankingCopy = ranking;
+  deliveredRankingCopy = deliveredRanking;
+  completedRankingCopy = completedRanking;
   v15.receiver = self;
   v15.super_class = _ATXActiveMissedNotificationRankingTuple;
   v12 = [(_ATXActiveMissedNotificationRankingTuple *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_activeUpcomingRanking, a3);
-    objc_storeStrong(&v13->_activeDeliveredRanking, a4);
-    objc_storeStrong(&v13->_justCompletedRanking, a5);
+    objc_storeStrong(&v12->_activeUpcomingRanking, ranking);
+    objc_storeStrong(&v13->_activeDeliveredRanking, deliveredRanking);
+    objc_storeStrong(&v13->_justCompletedRanking, completedRanking);
   }
 
   return v13;
 }
 
-- (_ATXActiveMissedNotificationRankingTuple)initWithPreviousTuple:(id)a3 nextRankingEvent:(id)a4
+- (_ATXActiveMissedNotificationRankingTuple)initWithPreviousTuple:(id)tuple nextRankingEvent:(id)event
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  tupleCopy = tuple;
+  eventCopy = event;
   v8 = MEMORY[0x277CBEAA8];
-  [v7 timestamp];
+  [eventCopy timestamp];
   v9 = [v8 dateWithTimeIntervalSinceReferenceDate:?];
-  v10 = [v7 eventType];
-  if (v10 <= 3)
+  eventType = [eventCopy eventType];
+  if (eventType <= 3)
   {
-    if (v10 < 2)
+    if (eventType < 2)
     {
       v20 = __atxlog_handle_metrics();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v21 = objc_opt_class();
         v22 = NSStringFromClass(v21);
-        v23 = [v7 eventType];
-        v24 = [v7 missedNotificationRanking];
-        v25 = [v24 uuid];
-        v26 = [v25 UUIDString];
+        eventType2 = [eventCopy eventType];
+        missedNotificationRanking = [eventCopy missedNotificationRanking];
+        uuid = [missedNotificationRanking uuid];
+        uUIDString = [uuid UUIDString];
         v72 = 138412802;
         v73 = v22;
         v74 = 2048;
-        v75 = v23;
+        v75 = eventType2;
         v76 = 2112;
-        v77 = v26;
+        v77 = uUIDString;
         _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_INFO, "%@ - Received unsupported deprecated event type %ld on ranking with UUID %@", &v72, 0x20u);
       }
 
@@ -61,135 +61,135 @@
       goto LABEL_28;
     }
 
-    if (v10 != 2)
+    if (eventType != 2)
     {
-      if (v10 != 3)
+      if (eventType != 3)
       {
         goto LABEL_25;
       }
 
 LABEL_15:
-      v28 = [v6 activeUpcomingRanking];
-      if (v28)
+      activeUpcomingRanking = [tupleCopy activeUpcomingRanking];
+      if (activeUpcomingRanking)
       {
-        v29 = v28;
-        v30 = [v6 activeUpcomingRanking];
-        v31 = [v7 missedNotificationRanking];
-        v32 = [v30 doesRankingShareContentWithOtherRanking:v31];
+        v29 = activeUpcomingRanking;
+        activeUpcomingRanking2 = [tupleCopy activeUpcomingRanking];
+        missedNotificationRanking2 = [eventCopy missedNotificationRanking];
+        v32 = [activeUpcomingRanking2 doesRankingShareContentWithOtherRanking:missedNotificationRanking2];
 
         if (v32)
         {
-          v15 = [v7 missedNotificationRanking];
-          v33 = [v6 activeUpcomingRanking];
-          v34 = [v33 digestTimeline];
-          [v15 setDigestTimeline:v34];
+          missedNotificationRanking3 = [eventCopy missedNotificationRanking];
+          activeUpcomingRanking3 = [tupleCopy activeUpcomingRanking];
+          digestTimeline = [activeUpcomingRanking3 digestTimeline];
+          [missedNotificationRanking3 setDigestTimeline:digestTimeline];
 
-          v35 = [v15 digestTimeline];
-          [v35 setFirstScheduledViewTimestamp:v9];
+          digestTimeline2 = [missedNotificationRanking3 digestTimeline];
+          [digestTimeline2 setFirstScheduledViewTimestamp:v9];
 
-          v36 = [v6 activeDeliveredRanking];
-          v18 = v36;
-          if (v36)
+          activeDeliveredRanking = [tupleCopy activeDeliveredRanking];
+          activeUpcomingRanking4 = activeDeliveredRanking;
+          if (activeDeliveredRanking)
           {
-            v37 = [v36 digestTimeline];
-            [v37 setDigestRemovedTimestamp:v9];
+            digestTimeline3 = [activeDeliveredRanking digestTimeline];
+            [digestTimeline3 setDigestRemovedTimestamp:v9];
           }
 
-          v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:0 activeDeliveredRanking:v15 justCompletedRanking:v18];
+          v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:0 activeDeliveredRanking:missedNotificationRanking3 justCompletedRanking:activeUpcomingRanking4];
           goto LABEL_41;
         }
       }
 
-      v38 = [v6 activeDeliveredRanking];
-      if (v38)
+      activeDeliveredRanking2 = [tupleCopy activeDeliveredRanking];
+      if (activeDeliveredRanking2)
       {
-        v39 = v38;
-        v40 = [v6 activeDeliveredRanking];
-        v41 = [v7 missedNotificationRanking];
-        v42 = [v40 doesRankingShareContentWithOtherRanking:v41];
+        v39 = activeDeliveredRanking2;
+        activeDeliveredRanking3 = [tupleCopy activeDeliveredRanking];
+        missedNotificationRanking4 = [eventCopy missedNotificationRanking];
+        v42 = [activeDeliveredRanking3 doesRankingShareContentWithOtherRanking:missedNotificationRanking4];
 
         if (v42)
         {
-          v15 = [v7 missedNotificationRanking];
-          v43 = [v6 activeDeliveredRanking];
-          v44 = [v43 digestTimeline];
-          [v15 setDigestTimeline:v44];
+          missedNotificationRanking3 = [eventCopy missedNotificationRanking];
+          activeDeliveredRanking4 = [tupleCopy activeDeliveredRanking];
+          digestTimeline4 = [activeDeliveredRanking4 digestTimeline];
+          [missedNotificationRanking3 setDigestTimeline:digestTimeline4];
 
-          v18 = [v6 activeUpcomingRanking];
-          v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:v18 activeDeliveredRanking:v15 justCompletedRanking:0];
+          activeUpcomingRanking4 = [tupleCopy activeUpcomingRanking];
+          v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:activeUpcomingRanking4 activeDeliveredRanking:missedNotificationRanking3 justCompletedRanking:0];
           goto LABEL_41;
         }
       }
 
-      v15 = [v7 missedNotificationRanking];
+      missedNotificationRanking3 = [eventCopy missedNotificationRanking];
       v51 = objc_opt_new();
-      [v15 setDigestTimeline:v51];
+      [missedNotificationRanking3 setDigestTimeline:v51];
 
-      v52 = [v15 digestTimeline];
-      [v52 setFirstScheduledViewTimestamp:v9];
+      digestTimeline5 = [missedNotificationRanking3 digestTimeline];
+      [digestTimeline5 setFirstScheduledViewTimestamp:v9];
 
-      v53 = [v6 activeDeliveredRanking];
-      v18 = v53;
-      if (v53)
+      activeDeliveredRanking5 = [tupleCopy activeDeliveredRanking];
+      activeUpcomingRanking4 = activeDeliveredRanking5;
+      if (activeDeliveredRanking5)
       {
-        v54 = [v53 digestTimeline];
-        [v54 setDigestRemovedTimestamp:v9];
+        digestTimeline6 = [activeDeliveredRanking5 digestTimeline];
+        [digestTimeline6 setDigestRemovedTimestamp:v9];
       }
 
-      v55 = [v6 activeUpcomingRanking];
-      v56 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:v55 activeDeliveredRanking:v15 justCompletedRanking:v18];
+      activeUpcomingRanking5 = [tupleCopy activeUpcomingRanking];
+      v56 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:activeUpcomingRanking5 activeDeliveredRanking:missedNotificationRanking3 justCompletedRanking:activeUpcomingRanking4];
       goto LABEL_36;
     }
 
     goto LABEL_9;
   }
 
-  switch(v10)
+  switch(eventType)
   {
     case 6:
-      v45 = [v6 activeUpcomingRanking];
-      v46 = [v7 missedNotificationRanking];
-      v47 = [v45 doesRankingShareContentWithOtherRanking:v46];
+      activeUpcomingRanking6 = [tupleCopy activeUpcomingRanking];
+      missedNotificationRanking5 = [eventCopy missedNotificationRanking];
+      v47 = [activeUpcomingRanking6 doesRankingShareContentWithOtherRanking:missedNotificationRanking5];
 
       if (v47)
       {
-        v15 = [v6 activeUpcomingRanking];
-        v48 = [v15 digestTimeline];
-        [v48 setDigestRemovedTimestamp:v9];
+        missedNotificationRanking3 = [tupleCopy activeUpcomingRanking];
+        digestTimeline7 = [missedNotificationRanking3 digestTimeline];
+        [digestTimeline7 setDigestRemovedTimestamp:v9];
 
-        v18 = [v6 activeDeliveredRanking];
-        v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:0 activeDeliveredRanking:v18 justCompletedRanking:v15];
+        activeUpcomingRanking4 = [tupleCopy activeDeliveredRanking];
+        v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:0 activeDeliveredRanking:activeUpcomingRanking4 justCompletedRanking:missedNotificationRanking3];
       }
 
       else
       {
-        v64 = [v6 activeDeliveredRanking];
-        if (!v64)
+        activeDeliveredRanking6 = [tupleCopy activeDeliveredRanking];
+        if (!activeDeliveredRanking6)
         {
           goto LABEL_40;
         }
 
-        v65 = v64;
-        v66 = [v6 activeDeliveredRanking];
-        v67 = [v7 missedNotificationRanking];
-        v68 = [v66 doesRankingShareContentWithOtherRanking:v67];
+        v65 = activeDeliveredRanking6;
+        activeDeliveredRanking7 = [tupleCopy activeDeliveredRanking];
+        missedNotificationRanking6 = [eventCopy missedNotificationRanking];
+        v68 = [activeDeliveredRanking7 doesRankingShareContentWithOtherRanking:missedNotificationRanking6];
 
         if (v68)
         {
-          v15 = [v6 activeDeliveredRanking];
-          v69 = [v15 digestTimeline];
-          [v69 setDigestRemovedTimestamp:v9];
+          missedNotificationRanking3 = [tupleCopy activeDeliveredRanking];
+          digestTimeline8 = [missedNotificationRanking3 digestTimeline];
+          [digestTimeline8 setDigestRemovedTimestamp:v9];
 
-          v18 = [v6 activeUpcomingRanking];
-          v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:v18 activeDeliveredRanking:0 justCompletedRanking:v15];
+          activeUpcomingRanking4 = [tupleCopy activeUpcomingRanking];
+          v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:activeUpcomingRanking4 activeDeliveredRanking:0 justCompletedRanking:missedNotificationRanking3];
         }
 
         else
         {
 LABEL_40:
-          v15 = [v6 activeUpcomingRanking];
-          v18 = [v6 activeDeliveredRanking];
-          v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:v15 activeDeliveredRanking:v18 justCompletedRanking:0];
+          missedNotificationRanking3 = [tupleCopy activeUpcomingRanking];
+          activeUpcomingRanking4 = [tupleCopy activeDeliveredRanking];
+          v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:missedNotificationRanking3 activeDeliveredRanking:activeUpcomingRanking4 justCompletedRanking:0];
         }
       }
 
@@ -198,59 +198,59 @@ LABEL_40:
       goto LABEL_15;
     case 4:
 LABEL_9:
-      v11 = [v6 activeUpcomingRanking];
+      activeUpcomingRanking7 = [tupleCopy activeUpcomingRanking];
 
-      if (!v11)
+      if (!activeUpcomingRanking7)
       {
-        v15 = [v7 missedNotificationRanking];
+        missedNotificationRanking3 = [eventCopy missedNotificationRanking];
         v57 = objc_opt_new();
-        [v15 setDigestTimeline:v57];
+        [missedNotificationRanking3 setDigestTimeline:v57];
 
-        v58 = [v15 digestTimeline];
-        [v58 setFirstUpcomingViewTimestamp:v9];
+        digestTimeline9 = [missedNotificationRanking3 digestTimeline];
+        [digestTimeline9 setFirstUpcomingViewTimestamp:v9];
 
-        v18 = [v6 activeDeliveredRanking];
-        v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:v15 activeDeliveredRanking:v18 justCompletedRanking:0];
+        activeUpcomingRanking4 = [tupleCopy activeDeliveredRanking];
+        v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:missedNotificationRanking3 activeDeliveredRanking:activeUpcomingRanking4 justCompletedRanking:0];
         goto LABEL_41;
       }
 
-      v12 = [v6 activeUpcomingRanking];
-      v13 = [v7 missedNotificationRanking];
-      v14 = [v12 doesRankingShareContentWithOtherRanking:v13];
+      activeUpcomingRanking8 = [tupleCopy activeUpcomingRanking];
+      missedNotificationRanking7 = [eventCopy missedNotificationRanking];
+      v14 = [activeUpcomingRanking8 doesRankingShareContentWithOtherRanking:missedNotificationRanking7];
 
-      v15 = [v7 missedNotificationRanking];
+      missedNotificationRanking3 = [eventCopy missedNotificationRanking];
       if (v14)
       {
-        v16 = [v6 activeUpcomingRanking];
-        v17 = [v16 digestTimeline];
-        [v15 setDigestTimeline:v17];
+        activeUpcomingRanking9 = [tupleCopy activeUpcomingRanking];
+        digestTimeline10 = [activeUpcomingRanking9 digestTimeline];
+        [missedNotificationRanking3 setDigestTimeline:digestTimeline10];
 
-        v18 = [v6 activeDeliveredRanking];
-        v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:v15 activeDeliveredRanking:v18 justCompletedRanking:0];
+        activeUpcomingRanking4 = [tupleCopy activeDeliveredRanking];
+        v19 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:missedNotificationRanking3 activeDeliveredRanking:activeUpcomingRanking4 justCompletedRanking:0];
 LABEL_41:
         v50 = v19;
         goto LABEL_42;
       }
 
       v59 = objc_opt_new();
-      [v15 setDigestTimeline:v59];
+      [missedNotificationRanking3 setDigestTimeline:v59];
 
-      v60 = [v15 digestTimeline];
-      [v60 setFirstUpcomingViewTimestamp:v9];
+      digestTimeline11 = [missedNotificationRanking3 digestTimeline];
+      [digestTimeline11 setFirstUpcomingViewTimestamp:v9];
 
-      v18 = [v6 activeUpcomingRanking];
-      v61 = [v18 digestTimeline];
-      [v61 setFirstScheduledViewTimestamp:v9];
+      activeUpcomingRanking4 = [tupleCopy activeUpcomingRanking];
+      digestTimeline12 = [activeUpcomingRanking4 digestTimeline];
+      [digestTimeline12 setFirstScheduledViewTimestamp:v9];
 
-      v62 = [v6 activeDeliveredRanking];
-      v55 = v62;
-      if (v62)
+      activeDeliveredRanking8 = [tupleCopy activeDeliveredRanking];
+      activeUpcomingRanking5 = activeDeliveredRanking8;
+      if (activeDeliveredRanking8)
       {
-        v63 = [v62 digestTimeline];
-        [v63 setDigestRemovedTimestamp:v9];
+        digestTimeline13 = [activeDeliveredRanking8 digestTimeline];
+        [digestTimeline13 setDigestRemovedTimestamp:v9];
       }
 
-      v56 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:v15 activeDeliveredRanking:v18 justCompletedRanking:v55];
+      v56 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:missedNotificationRanking3 activeDeliveredRanking:activeUpcomingRanking4 justCompletedRanking:activeUpcomingRanking5];
 LABEL_36:
       v50 = v56;
 
@@ -262,7 +262,7 @@ LABEL_25:
   v49 = __atxlog_handle_metrics();
   if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
   {
-    [(_ATXActiveMissedNotificationRankingTuple *)self initWithPreviousTuple:v7 nextRankingEvent:v49];
+    [(_ATXActiveMissedNotificationRankingTuple *)self initWithPreviousTuple:eventCopy nextRankingEvent:v49];
   }
 
   v27 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:0 activeDeliveredRanking:0 justCompletedRanking:0];
@@ -274,36 +274,36 @@ LABEL_43:
   return v50;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(_ATXActiveMissedNotificationRankingTuple *)self activeUpcomingRanking];
-  [v4 encodeObject:v5 forKey:@"codingKeyForActiveUpcomingMNR"];
+  coderCopy = coder;
+  activeUpcomingRanking = [(_ATXActiveMissedNotificationRankingTuple *)self activeUpcomingRanking];
+  [coderCopy encodeObject:activeUpcomingRanking forKey:@"codingKeyForActiveUpcomingMNR"];
 
-  v6 = [(_ATXActiveMissedNotificationRankingTuple *)self activeDeliveredRanking];
-  [v4 encodeObject:v6 forKey:@"codingKeyForActiveDeliveredMNR"];
+  activeDeliveredRanking = [(_ATXActiveMissedNotificationRankingTuple *)self activeDeliveredRanking];
+  [coderCopy encodeObject:activeDeliveredRanking forKey:@"codingKeyForActiveDeliveredMNR"];
 
-  v7 = [(_ATXActiveMissedNotificationRankingTuple *)self justCompletedRanking];
-  [v4 encodeObject:v7 forKey:@"codingKeyForJustCompletedMNR"];
+  justCompletedRanking = [(_ATXActiveMissedNotificationRankingTuple *)self justCompletedRanking];
+  [coderCopy encodeObject:justCompletedRanking forKey:@"codingKeyForJustCompletedMNR"];
 }
 
-- (_ATXActiveMissedNotificationRankingTuple)initWithCoder:(id)a3
+- (_ATXActiveMissedNotificationRankingTuple)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277D42620];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = __atxlog_handle_notification_management();
-  v8 = [v4 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForActiveUpcomingMNR" withCoder:v5 expectNonNull:0 errorDomain:@"com.apple.ATXCompletedMNRBiomeStream" errorCode:-1 logHandle:v7];
+  v8 = [v4 robustDecodeObjectOfClass:v6 forKey:@"codingKeyForActiveUpcomingMNR" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.ATXCompletedMNRBiomeStream" errorCode:-1 logHandle:v7];
 
   v9 = MEMORY[0x277D42620];
   v10 = objc_opt_class();
   v11 = __atxlog_handle_notification_management();
-  v12 = [v9 robustDecodeObjectOfClass:v10 forKey:@"codingKeyForActiveDeliveredMNR" withCoder:v5 expectNonNull:0 errorDomain:@"com.apple.ATXCompletedMNRBiomeStream" errorCode:-1 logHandle:v11];
+  v12 = [v9 robustDecodeObjectOfClass:v10 forKey:@"codingKeyForActiveDeliveredMNR" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.ATXCompletedMNRBiomeStream" errorCode:-1 logHandle:v11];
 
   v13 = MEMORY[0x277D42620];
   v14 = objc_opt_class();
   v15 = __atxlog_handle_notification_management();
-  v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"codingKeyForJustCompletedMNR" withCoder:v5 expectNonNull:0 errorDomain:@"com.apple.ATXCompletedMNRBiomeStream" errorCode:-1 logHandle:v15];
+  v16 = [v13 robustDecodeObjectOfClass:v14 forKey:@"codingKeyForJustCompletedMNR" withCoder:coderCopy expectNonNull:0 errorDomain:@"com.apple.ATXCompletedMNRBiomeStream" errorCode:-1 logHandle:v15];
 
   v17 = [(_ATXActiveMissedNotificationRankingTuple *)self initWithActiveUpcomingRanking:v8 activeDeliveredRanking:v12 justCompletedRanking:v16];
   return v17;

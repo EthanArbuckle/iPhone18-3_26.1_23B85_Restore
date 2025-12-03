@@ -1,16 +1,16 @@
 @interface HealthArticleViewController
-- (_TtC16HealthArticlesUI27HealthArticleViewController)initWithCoder:(id)a3;
-- (_TtC16HealthArticlesUI27HealthArticleViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
+- (_TtC16HealthArticlesUI27HealthArticleViewController)initWithCoder:(id)coder;
+- (_TtC16HealthArticlesUI27HealthArticleViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)dismissArticleModal;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
 - (void)viewDidLoad;
 @end
 
 @implementation HealthArticleViewController
 
-- (_TtC16HealthArticlesUI27HealthArticleViewController)initWithCoder:(id)a3
+- (_TtC16HealthArticlesUI27HealthArticleViewController)initWithCoder:(id)coder
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -42,13 +42,13 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for HealthArticleViewController();
-  v3 = self;
+  selfCopy = self;
   [(HealthArticleViewController *)&v10 viewDidLoad];
   sub_251325BCC();
   v4 = objc_allocWithZone(MEMORY[0x277D751E0]);
-  v5 = [v4 initWithBarButtonSystemItem:0 target:v3 action:{sel_dismissArticleModal, v10.receiver, v10.super_class}];
-  v6 = [(HealthArticleViewController *)v3 navigationItem];
-  [v6 setRightBarButtonItem_];
+  v5 = [v4 initWithBarButtonSystemItem:0 target:selfCopy action:{sel_dismissArticleModal, v10.receiver, v10.super_class}];
+  navigationItem = [(HealthArticleViewController *)selfCopy navigationItem];
+  [navigationItem setRightBarButtonItem_];
 
   sub_25131C208();
   v7 = swift_allocObject();
@@ -88,9 +88,9 @@
   [(HealthArticleViewController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
+  decelerateCopy = decelerate;
   sub_25133F8F4();
   sub_25133F8E4();
   sub_25133F894();
@@ -99,18 +99,18 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (v4)
+  if (decelerateCopy)
   {
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
     sub_2513264D8(0);
   }
 }
 
-- (_TtC16HealthArticlesUI27HealthArticleViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16HealthArticlesUI27HealthArticleViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -125,7 +125,7 @@
   return result;
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
   sub_25133F8F4();
   sub_25133F8E4();
@@ -135,9 +135,9 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = [(HealthArticleViewController *)self supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [(HealthArticleViewController *)self supportedInterfaceOrientations];
 
-  return v4;
+  return supportedInterfaceOrientations;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface UISTextLineDrawing
 - (CGRect)alignmentRect;
 - (CGSize)drawingSize;
-- (UISTextLineDrawing)initWithAttributedString:(__CFAttributedString *)a3 lineBreakMode:(unsigned __int8)a4 textAlignment:(unsigned __int8)a5 width:(double)a6 scale:(double)a7;
-- (UISTextLineDrawing)initWithNonretainedLine:(__CTLine *)a3 lineBreakMode:(unsigned __int8)a4 textAlignment:(unsigned __int8)a5 width:(double)a6 scale:(double)a7;
-- (UISTextLineDrawing)initWithString:(__CFString *)a3 attributes:(__CFDictionary *)a4 lineBreakMode:(unsigned __int8)a5 textAlignment:(unsigned __int8)a6 width:(double)a7 scale:(double)a8;
+- (UISTextLineDrawing)initWithAttributedString:(__CFAttributedString *)string lineBreakMode:(unsigned __int8)mode textAlignment:(unsigned __int8)alignment width:(double)width scale:(double)scale;
+- (UISTextLineDrawing)initWithNonretainedLine:(__CTLine *)line lineBreakMode:(unsigned __int8)mode textAlignment:(unsigned __int8)alignment width:(double)width scale:(double)scale;
+- (UISTextLineDrawing)initWithString:(__CFString *)string attributes:(__CFDictionary *)attributes lineBreakMode:(unsigned __int8)mode textAlignment:(unsigned __int8)alignment width:(double)width scale:(double)scale;
 - (void)dealloc;
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4;
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point;
 @end
 
 @implementation UISTextLineDrawing
 
-- (UISTextLineDrawing)initWithNonretainedLine:(__CTLine *)a3 lineBreakMode:(unsigned __int8)a4 textAlignment:(unsigned __int8)a5 width:(double)a6 scale:(double)a7
+- (UISTextLineDrawing)initWithNonretainedLine:(__CTLine *)line lineBreakMode:(unsigned __int8)mode textAlignment:(unsigned __int8)alignment width:(double)width scale:(double)scale
 {
-  v8 = a5;
-  v9 = a4;
+  alignmentCopy = alignment;
+  modeCopy = mode;
   v25.receiver = self;
   v25.super_class = UISTextLineDrawing;
   v11 = [(UISTextLineDrawing *)&v25 init];
@@ -23,15 +23,15 @@
   }
 
   v12 = 0;
-  if (v9 > 2)
+  if (modeCopy > 2)
   {
-    if (v9 != 3 && v9 != 4 && v9 != 5)
+    if (modeCopy != 3 && modeCopy != 4 && modeCopy != 5)
     {
       goto LABEL_19;
     }
 
     TruncatedLineWithTokenHandler = CTLineCreateTruncatedLineWithTokenHandler();
-    if (TruncatedLineWithTokenHandler == a3)
+    if (TruncatedLineWithTokenHandler == line)
     {
       v12 = 0;
 LABEL_17:
@@ -42,17 +42,17 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  if (!v9)
+  if (!modeCopy)
   {
-    length = CTLineGetStringRange(a3).length;
+    length = CTLineGetStringRange(line).length;
     CGFloatIsValid();
     v14 = CTLineSuggestLineBreakWithOffset();
     goto LABEL_13;
   }
 
-  if (v9 == 1)
+  if (modeCopy == 1)
   {
-    length = CTLineGetStringRange(a3).length;
+    length = CTLineGetStringRange(line).length;
     CGFloatIsValid();
     v14 = CTLineSuggestClusterBreakWithOffset();
 LABEL_13:
@@ -67,8 +67,8 @@ LABEL_15:
     if (TruncatedLineWithTokenHandler)
     {
       v12 = 1;
-      TruncatedLineWithTokenHandler = a3;
-      a3 = v16;
+      TruncatedLineWithTokenHandler = line;
+      line = v16;
       goto LABEL_17;
     }
 
@@ -79,20 +79,20 @@ LABEL_18:
 LABEL_19:
   v11->_hasLineBreak = v12;
   v17 = 0.0;
-  if (v8 > 2)
+  if (alignmentCopy > 2)
   {
-    if (v8 == 3)
+    if (alignmentCopy == 3)
     {
-      JustifiedLine = CTLineCreateJustifiedLine(a3, 1.0, a6);
+      JustifiedLine = CTLineCreateJustifiedLine(line, 1.0, width);
       if (JustifiedLine)
       {
         v20 = JustifiedLine;
-        CFRelease(a3);
-        a3 = v20;
+        CFRelease(line);
+        line = v20;
       }
     }
 
-    else if (v8 == 4)
+    else if (alignmentCopy == 4)
     {
       if (CTLineIsRightToLeft())
       {
@@ -109,12 +109,12 @@ LABEL_19:
   else
   {
     v18 = 0.5;
-    if (v8 != 2)
+    if (alignmentCopy != 2)
     {
       v18 = 0.0;
     }
 
-    if (v8 == 1)
+    if (alignmentCopy == 1)
     {
       v17 = 1.0;
     }
@@ -125,33 +125,33 @@ LABEL_19:
     }
   }
 
-  v11->_line = a3;
+  v11->_line = line;
   CTLineGetDefaultBounds();
-  v21.f64[0] = a6;
+  v21.f64[0] = width;
   v21.f64[1] = 0.0 + 0.0;
-  v22 = vdivq_f64(vrndpq_f64(vmulq_n_f64(v21, a7)), vdupq_lane_s64(*&a7, 0));
+  v22 = vdivq_f64(vrndpq_f64(vmulq_n_f64(v21, scale)), vdupq_lane_s64(*&scale, 0));
   v11->_size = v22;
   v11->_offset.dx = CTLineGetPenOffsetForFlush(v11->_line, v17, v22.f64[0]);
-  v11->_offset.dy = round(0.0 * a7) / a7;
+  v11->_offset.dy = round(0.0 * scale) / scale;
   return v11;
 }
 
-- (UISTextLineDrawing)initWithString:(__CFString *)a3 attributes:(__CFDictionary *)a4 lineBreakMode:(unsigned __int8)a5 textAlignment:(unsigned __int8)a6 width:(double)a7 scale:(double)a8
+- (UISTextLineDrawing)initWithString:(__CFString *)string attributes:(__CFDictionary *)attributes lineBreakMode:(unsigned __int8)mode textAlignment:(unsigned __int8)alignment width:(double)width scale:(double)scale
 {
-  v10 = a6;
-  v11 = a5;
+  alignmentCopy = alignment;
+  modeCopy = mode;
   v13 = CTLineCreateWithString();
 
-  return [(UISTextLineDrawing *)self initWithNonretainedLine:v13 lineBreakMode:v11 textAlignment:v10 width:a7 scale:a8];
+  return [(UISTextLineDrawing *)self initWithNonretainedLine:v13 lineBreakMode:modeCopy textAlignment:alignmentCopy width:width scale:scale];
 }
 
-- (UISTextLineDrawing)initWithAttributedString:(__CFAttributedString *)a3 lineBreakMode:(unsigned __int8)a4 textAlignment:(unsigned __int8)a5 width:(double)a6 scale:(double)a7
+- (UISTextLineDrawing)initWithAttributedString:(__CFAttributedString *)string lineBreakMode:(unsigned __int8)mode textAlignment:(unsigned __int8)alignment width:(double)width scale:(double)scale
 {
-  v9 = a5;
-  v10 = a4;
-  v12 = CTLineCreateWithAttributedString(a3);
+  alignmentCopy = alignment;
+  modeCopy = mode;
+  v12 = CTLineCreateWithAttributedString(string);
 
-  return [(UISTextLineDrawing *)self initWithNonretainedLine:v12 lineBreakMode:v10 textAlignment:v9 width:a6 scale:a7];
+  return [(UISTextLineDrawing *)self initWithNonretainedLine:v12 lineBreakMode:modeCopy textAlignment:alignmentCopy width:width scale:scale];
 }
 
 - (void)dealloc
@@ -189,19 +189,19 @@ LABEL_19:
   return result;
 }
 
-- (void)drawInContext:(CGContext *)a3 atPoint:(CGPoint)a4
+- (void)drawInContext:(CGContext *)context atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   CGContextSetFontRenderingStyle();
-  CGContextScaleCTM(a3, 1.0, -1.0);
+  CGContextScaleCTM(context, 1.0, -1.0);
   v8 = *(MEMORY[0x1E695EFD0] + 16);
   *&v9.a = *MEMORY[0x1E695EFD0];
   *&v9.c = v8;
   *&v9.tx = *(MEMORY[0x1E695EFD0] + 32);
-  CGContextSetTextMatrix(a3, &v9);
-  CGContextSetTextPosition(a3, x + self->_offset.dx, -(y + self->_offset.dy));
-  CTLineDraw(self->_line, a3);
+  CGContextSetTextMatrix(context, &v9);
+  CGContextSetTextPosition(context, x + self->_offset.dx, -(y + self->_offset.dy));
+  CTLineDraw(self->_line, context);
 }
 
 @end

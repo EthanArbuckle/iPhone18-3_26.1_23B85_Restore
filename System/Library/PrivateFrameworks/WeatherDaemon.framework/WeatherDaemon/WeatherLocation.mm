@@ -1,12 +1,12 @@
 @interface WeatherLocation
-- (_TtC8weatherd15WeatherLocation)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (_TtC8weatherd15WeatherLocation)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 @end
 
 @implementation WeatherLocation
 
-- (_TtC8weatherd15WeatherLocation)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (_TtC8weatherd15WeatherLocation)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v8 = v7;
@@ -20,7 +20,7 @@
 
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a5)
+  if (hint)
   {
     v12 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v14 = v13;

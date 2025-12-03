@@ -1,14 +1,14 @@
 @interface CarMultiButtonView
 - (CGSize)intrinsicContentSize;
-- (CarMultiButtonView)initWithFrame:(CGRect)a3;
+- (CarMultiButtonView)initWithFrame:(CGRect)frame;
 - (double)_buttonSpacing;
 - (void)_recalculateShadowAttributes;
 - (void)_reparentStackView;
-- (void)_setCombineButtons:(BOOL)a3;
+- (void)_setCombineButtons:(BOOL)buttons;
 - (void)didMoveToWindow;
-- (void)setButtons:(id)a3;
-- (void)setCombineButtons:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setButtons:(id)buttons;
+- (void)setCombineButtons:(BOOL)buttons;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CarMultiButtonView
@@ -18,9 +18,9 @@
   v4.receiver = self;
   v4.super_class = CarMultiButtonView;
   [(CarMultiButtonView *)&v4 didMoveToWindow];
-  v3 = [(CarMultiButtonView *)self window];
+  window = [(CarMultiButtonView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(UIView *)self->_shadowView _mapsCar_updateShadow];
     [(CarMultiButtonView *)self _recalculateShadowAttributes];
@@ -31,17 +31,17 @@
 
 - (void)_recalculateShadowAttributes
 {
-  v3 = [(NSArray *)self->_buttons firstObject];
-  v4 = [v3 roundedCorners];
+  firstObject = [(NSArray *)self->_buttons firstObject];
+  roundedCorners = [firstObject roundedCorners];
 
-  v5 = [(NSArray *)self->_buttons lastObject];
-  v6 = [v5 roundedCorners];
+  lastObject = [(NSArray *)self->_buttons lastObject];
+  roundedCorners2 = [lastObject roundedCorners];
 
-  v7 = [(NSArray *)self->_buttons firstObject];
-  [v7 roundedCornerRadius];
+  firstObject2 = [(NSArray *)self->_buttons firstObject];
+  [firstObject2 roundedCornerRadius];
   v9 = v8;
-  v10 = [(NSArray *)self->_buttons lastObject];
-  [v10 roundedCornerRadius];
+  lastObject2 = [(NSArray *)self->_buttons lastObject];
+  [lastObject2 roundedCornerRadius];
   buttons = self->_buttons;
   if (v9 > v12)
   {
@@ -53,12 +53,12 @@
     [(NSArray *)buttons lastObject];
   }
   v13 = ;
-  v14 = v6 | v4;
+  v14 = roundedCorners2 | roundedCorners;
   [v13 roundedCornerRadius];
   v16 = v15;
 
-  v17 = [(NSArray *)self->_buttons firstObject];
-  if ([v17 needsContinuousRoundedCorners])
+  firstObject3 = [(NSArray *)self->_buttons firstObject];
+  if ([firstObject3 needsContinuousRoundedCorners])
   {
     v18 = kCACornerCurveContinuous;
     v26 = v18;
@@ -66,11 +66,11 @@
 
   else
   {
-    v19 = [(NSArray *)self->_buttons firstObject];
-    v20 = [v19 needsContinuousRoundedCorners];
+    firstObject4 = [(NSArray *)self->_buttons firstObject];
+    needsContinuousRoundedCorners = [firstObject4 needsContinuousRoundedCorners];
     v18 = kCACornerCurveContinuous;
     v21 = kCACornerCurveCircular;
-    if (v20)
+    if (needsContinuousRoundedCorners)
     {
       v21 = kCACornerCurveContinuous;
     }
@@ -78,44 +78,44 @@
     v26 = v21;
   }
 
-  v22 = [(UIView *)self->_shadowView layer];
-  [v22 setCornerRadius:v16];
+  layer = [(UIView *)self->_shadowView layer];
+  [layer setCornerRadius:v16];
 
-  v23 = [(UIView *)self->_shadowView layer];
-  [v23 setMaskedCorners:v14 & 0xF];
+  layer2 = [(UIView *)self->_shadowView layer];
+  [layer2 setMaskedCorners:v14 & 0xF];
 
-  v24 = [(UIView *)self->_shadowView layer];
-  [v24 setCornerCurve:v26];
+  layer3 = [(UIView *)self->_shadowView layer];
+  [layer3 setCornerCurve:v26];
 
   if ([(CarMultiButtonView *)self combineButtons])
   {
     [(CarDynamicBlurView *)self->_combinedBlurView _setCornerRadius:v26 == v18 continuous:15 maskedCorners:v16];
-    v25 = [(CarDynamicBlurView *)self->_combinedBlurView layer];
-    [v25 setCornerCurve:v26];
+    layer4 = [(CarDynamicBlurView *)self->_combinedBlurView layer];
+    [layer4 setCornerCurve:v26];
   }
 }
 
 - (double)_buttonSpacing
 {
-  v3 = [(CarMultiButtonView *)self combineButtons];
+  combineButtons = [(CarMultiButtonView *)self combineButtons];
   result = 4.0;
-  if (v3)
+  if (combineButtons)
   {
-    v5 = [(CarMultiButtonView *)self window];
-    v6 = [v5 screen];
-    [v6 scale];
+    window = [(CarMultiButtonView *)self window];
+    screen = [window screen];
+    [screen scale];
     if (v7 == 0.0)
     {
-      v8 = +[UIScreen _carScreen];
-      [v8 scale];
+      window2 = +[UIScreen _carScreen];
+      [window2 scale];
       v11 = v12;
     }
 
     else
     {
-      v8 = [(CarMultiButtonView *)self window];
-      v9 = [v8 screen];
-      [v9 scale];
+      window2 = [(CarMultiButtonView *)self window];
+      screen2 = [window2 screen];
+      [screen2 scale];
       v11 = v10;
     }
 
@@ -131,20 +131,20 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CarMultiButtonView *)self buttons];
-  if ([v3 count] == 1)
+  buttons = [(CarMultiButtonView *)self buttons];
+  if ([buttons count] == 1)
   {
 
 LABEL_4:
-    v6 = [(CarMultiButtonView *)self buttons];
-    [v6 count];
+    buttons2 = [(CarMultiButtonView *)self buttons];
+    [buttons2 count];
     [(CarMultiButtonView *)self _buttonSpacing];
 
     goto LABEL_5;
   }
 
-  v4 = [(CarMultiButtonView *)self buttons];
-  v5 = [v4 count] * 36.0;
+  buttons3 = [(CarMultiButtonView *)self buttons];
+  v5 = [buttons3 count] * 36.0;
 
   if (v5 > 0.0)
   {
@@ -160,13 +160,13 @@ LABEL_5:
   return result;
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
-  v5 = a3;
-  if (self->_buttons != v5)
+  buttonsCopy = buttons;
+  if (self->_buttons != buttonsCopy)
   {
-    v17 = v5;
-    objc_storeStrong(&self->_buttons, a3);
+    v17 = buttonsCopy;
+    objc_storeStrong(&self->_buttons, buttons);
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
@@ -205,19 +205,19 @@ LABEL_5:
           [v11 _mapsCar_setBlurViewDisabled:{-[CarMultiButtonView disableGlass](self, "disableGlass") ^ 1}];
         }
 
-        v12 = [(NSArray *)self->_buttons firstObject];
+        firstObject = [(NSArray *)self->_buttons firstObject];
 
         v13 = 0.0;
         v14 = 0.0;
-        if (v11 == v12)
+        if (v11 == firstObject)
         {
           [v11 setRoundedCorners:{objc_msgSend(v11, "roundedCorners") | 3}];
           v14 = -4.0;
         }
 
-        v15 = [(NSArray *)self->_buttons lastObject];
+        lastObject = [(NSArray *)self->_buttons lastObject];
 
-        if (v11 == v15)
+        if (v11 == lastObject)
         {
           v16 = [v11 roundedCorners] | 0xC;
           v13 = -4.0;
@@ -241,24 +241,24 @@ LABEL_20:
         [(UIView *)self->_shadowView _mapsCar_updateShadow];
         [(CarMultiButtonView *)self _recalculateShadowAttributes];
         [(CarMultiButtonView *)self invalidateIntrinsicContentSize];
-        v5 = v17;
+        buttonsCopy = v17;
         break;
       }
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CarMultiButtonView;
-  v4 = a3;
-  [(CarMultiButtonView *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CarMultiButtonView *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(CarMultiButtonView *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(UIView *)self->_shadowView _mapsCar_updateShadow];
   }
@@ -266,9 +266,9 @@ LABEL_20:
 
 - (void)_reparentStackView
 {
-  v3 = [(CarDynamicBlurView *)self->_combinedBlurView contentView];
-  shadowView = v3;
-  if (!v3)
+  contentView = [(CarDynamicBlurView *)self->_combinedBlurView contentView];
+  shadowView = contentView;
+  if (!contentView)
   {
     shadowView = self->_shadowView;
     if (!shadowView)
@@ -279,23 +279,23 @@ LABEL_20:
 
   v9 = shadowView;
 
-  v5 = [(CarMultiButtonStackView *)self->_stackView superview];
+  superview = [(CarMultiButtonStackView *)self->_stackView superview];
 
-  if (v5 != v9)
+  if (superview != v9)
   {
     [(CarMultiButtonStackView *)self->_stackView removeFromSuperview];
     [(CarMultiButtonView *)v9 addSubview:self->_stackView];
     LODWORD(v6) = 1148846080;
     v7 = [(CarMultiButtonStackView *)self->_stackView _maps_constraintsEqualToEdgesOfView:v9 priority:v6];
-    v8 = [v7 allConstraints];
-    [NSLayoutConstraint activateConstraints:v8];
+    allConstraints = [v7 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 }
 
-- (void)_setCombineButtons:(BOOL)a3
+- (void)_setCombineButtons:(BOOL)buttons
 {
-  self->_combineButtons = a3;
-  if (!a3 || [(CarMultiButtonView *)self disableGlass])
+  self->_combineButtons = buttons;
+  if (!buttons || [(CarMultiButtonView *)self disableGlass])
   {
     combinedBlurView = self->_combinedBlurView;
     if (!combinedBlurView)
@@ -323,24 +323,24 @@ LABEL_7:
   [(CarMultiButtonStackView *)self->_stackView setSpacing:?];
   buttons = self->_buttons;
   self->_buttons = 0;
-  v8 = buttons;
+  buttonsCopy = buttons;
 
-  [(CarMultiButtonView *)self setButtons:v8];
+  [(CarMultiButtonView *)self setButtons:buttonsCopy];
 }
 
-- (void)setCombineButtons:(BOOL)a3
+- (void)setCombineButtons:(BOOL)buttons
 {
-  if (self->_combineButtons != a3)
+  if (self->_combineButtons != buttons)
   {
     [(CarMultiButtonView *)self _setCombineButtons:?];
   }
 }
 
-- (CarMultiButtonView)initWithFrame:(CGRect)a3
+- (CarMultiButtonView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CarMultiButtonView;
-  v3 = [(CarMultiButtonView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarMultiButtonView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     [(CarMultiButtonView *)v3 setDisableGlass:GEOConfigGetBOOL()];

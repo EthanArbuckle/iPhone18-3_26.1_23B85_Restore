@@ -1,13 +1,13 @@
 @interface SBSABackgroundBlurDescription
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)blurFrame;
 - (NSString)description;
 - (NSUUID)interfaceElementIdentifier;
-- (id)copyBySettingBlurFrame:(CGRect)a3;
-- (id)copyBySettingBlurHidden:(BOOL)a3;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyBySettingBlurFrame:(CGRect)frame;
+- (id)copyBySettingBlurHidden:(BOOL)hidden;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -38,23 +38,23 @@
   return result;
 }
 
-- (id)copyBySettingBlurHidden:(BOOL)a3
+- (id)copyBySettingBlurHidden:(BOOL)hidden
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __57__SBSABackgroundBlurDescription_copyBySettingBlurHidden___block_invoke;
   v4[3] = &__block_descriptor_33_e46_v16__0__SBSABackgroundBlurDescriptionMutator_8l;
-  v5 = a3;
+  hiddenCopy = hidden;
   return [(SBSABackgroundBlurDescription *)self copyWithBlock:v4];
 }
 
-- (id)copyBySettingBlurFrame:(CGRect)a3
+- (id)copyBySettingBlurFrame:(CGRect)frame
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __56__SBSABackgroundBlurDescription_copyBySettingBlurFrame___block_invoke;
   v4[3] = &__block_descriptor_64_e46_v16__0__SBSABackgroundBlurDescriptionMutator_8l;
-  v5 = a3;
+  frameCopy = frame;
   return [(SBSABackgroundBlurDescription *)self copyWithBlock:v4];
 }
 
@@ -65,38 +65,38 @@ void __59__SBSABackgroundBlurDescription_interfaceElementIdentifier__block_invok
   interfaceElementIdentifier___backgroundBlurInterfaceElementUUID = v0;
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSABackgroundBlurDescription *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   blurHidden = self->_blurHidden;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __41__SBSABackgroundBlurDescription_isEqual___block_invoke;
   v21[3] = &unk_2783ACE58;
-  v7 = v4;
+  v7 = equalCopy;
   v22 = v7;
   v8 = [v5 appendBool:blurHidden counterpart:v21];
   v16 = MEMORY[0x277D85DD0];
@@ -117,8 +117,8 @@ void __59__SBSABackgroundBlurDescription_interfaceElementIdentifier__block_invok
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendBool:self->_blurHidden];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendBool:self->_blurHidden];
   v5 = [v4 appendCGRect:{self->_blurFrame.origin.x, self->_blurFrame.origin.y, self->_blurFrame.size.width, self->_blurFrame.size.height}];
   v6 = [v5 hash];
 
@@ -136,7 +136,7 @@ void __59__SBSABackgroundBlurDescription_interfaceElementIdentifier__block_invok
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 8) = self->_blurHidden;

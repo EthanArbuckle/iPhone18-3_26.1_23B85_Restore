@@ -1,19 +1,19 @@
 @interface PCPrintJob
 + (id)jobs;
-- (id)initJob:(id)a3;
+- (id)initJob:(id)job;
 @end
 
 @implementation PCPrintJob
 
-- (id)initJob:(id)a3
+- (id)initJob:(id)job
 {
-  v4 = a3;
-  v5 = [v4 localJobID];
-  v6 = [v4 updatableState];
+  jobCopy = job;
+  localJobID = [jobCopy localJobID];
+  updatableState = [jobCopy updatableState];
 
   v9.receiver = self;
   v9.super_class = PCPrintJob;
-  v7 = [(PCPrintJob *)&v9 initWithJobID:v5 updateState:v6];
+  v7 = [(PCPrintJob *)&v9 initWithJobID:localJobID updateState:updatableState];
 
   return v7;
 }
@@ -21,7 +21,7 @@
 + (id)jobs
 {
   v3 = +[NSMutableArray array];
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___PCPrintJob;
   v4 = objc_msgSendSuper2(&v15, "jobs");
   v11 = 0u;

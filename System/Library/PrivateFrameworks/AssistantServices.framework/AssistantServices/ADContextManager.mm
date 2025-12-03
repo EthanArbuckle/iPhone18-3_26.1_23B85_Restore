@@ -1,98 +1,98 @@
 @interface ADContextManager
-+ (BOOL)_isResumableFirstPartyBundleID:(id)a3;
-+ (BOOL)_isResumableThirdPartyGenreID:(id)a3;
-- (ADContextManager)initWithDelegate:(id)a3;
++ (BOOL)_isResumableFirstPartyBundleID:(id)d;
++ (BOOL)_isResumableThirdPartyGenreID:(id)d;
+- (ADContextManager)initWithDelegate:(id)delegate;
 - (ADContextManagerDelegate)delegate;
 - (BOOL)_inlineUpdateCurrentHomeKitHome;
 - (BOOL)_inlineUpdatePhoneState;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (id)_alarmAceObjectFromAlarm:(id)a3 withProximity:(int64_t)a4 inDeviceContext:(id)a5;
-- (id)_appInfoWithBundleID:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (id)_alarmAceObjectFromAlarm:(id)alarm withProximity:(int64_t)proximity inDeviceContext:(id)context;
+- (id)_appInfoWithBundleID:(id)d;
 - (id)_configuredContextLink;
-- (id)_configuredLocalContextStoreWithInstanceContext:(id)a3 rapportLink:(id)a4 queue:(id)a5;
-- (id)_configuredRemoteContextStoreWithRapportLink:(id)a3 queue:(id)a4;
+- (id)_configuredLocalContextStoreWithInstanceContext:(id)context rapportLink:(id)link queue:(id)queue;
+- (id)_configuredRemoteContextStoreWithRapportLink:(id)link queue:(id)queue;
 - (id)_contextLinkMessageOptions;
-- (id)_dataSourceInfoWithProximity:(int64_t)a3 deviceContext:(id)a4;
-- (id)_filteredApplicationInfosForLockedStark:(id)a3;
-- (id)_initWithDelegate:(id)a3 deviceCircleManager:(id)a4 deviceProximityManager:(id)a5;
-- (id)_makeUserTokenStatusWithICTokenStatus:(id)a3 icError:(id)a4;
-- (id)_timerAceObjectFromTimer:(id)a3 withProximity:(int64_t)a4 inDeviceContext:(id)a5;
-- (void)_addDeviceContextConnection:(id)a3;
-- (void)_callStateDidChange:(id)a3;
+- (id)_dataSourceInfoWithProximity:(int64_t)proximity deviceContext:(id)context;
+- (id)_filteredApplicationInfosForLockedStark:(id)stark;
+- (id)_initWithDelegate:(id)delegate deviceCircleManager:(id)manager deviceProximityManager:(id)proximityManager;
+- (id)_makeUserTokenStatusWithICTokenStatus:(id)status icError:(id)error;
+- (id)_timerAceObjectFromTimer:(id)timer withProximity:(int64_t)proximity inDeviceContext:(id)context;
+- (void)_addDeviceContextConnection:(id)connection;
+- (void)_callStateDidChange:(id)change;
 - (void)_cancelNowPlayingCoalescingTimer;
-- (void)_enumerateDeviceContextConnectionsUsingBlock:(id)a3;
+- (void)_enumerateDeviceContextConnectionsUsingBlock:(id)block;
 - (void)_fetchContextSnapshotForCurrentRequest;
-- (void)_getBackgroundContext:(id)a3;
-- (void)_getCurrentUserActivityOnQueue:(id)a3 completion:(id)a4;
-- (void)_getDevicesWithContexts:(id)a3 passingTest:(id)a4 capabilitesPassingTest:(id)a5 completion:(id)a6;
-- (void)_getNowPlayingMediaIsResumable:(id)a3;
-- (void)_handleAggregateContextFetchWithMessage:(id)a3 fromDeviceWithPeerInfo:(id)a4 completion:(id)a5;
-- (void)_handleContextSnapshotPush:(id)a3 completion:(id)a4;
-- (void)_handleDeviceProblemsChangedWithToken:(int)a3;
-- (void)_handleHomeAnnouncementSnapshotUpdate:(id)a3;
-- (void)_handlePushContextMessage:(id)a3 fromDeviceWithPeerInfo:(id)a4 completion:(id)a5;
+- (void)_getBackgroundContext:(id)context;
+- (void)_getCurrentUserActivityOnQueue:(id)queue completion:(id)completion;
+- (void)_getDevicesWithContexts:(id)contexts passingTest:(id)test capabilitesPassingTest:(id)passingTest completion:(id)completion;
+- (void)_getNowPlayingMediaIsResumable:(id)resumable;
+- (void)_handleAggregateContextFetchWithMessage:(id)message fromDeviceWithPeerInfo:(id)info completion:(id)completion;
+- (void)_handleContextSnapshotPush:(id)push completion:(id)completion;
+- (void)_handleDeviceProblemsChangedWithToken:(int)token;
+- (void)_handleHomeAnnouncementSnapshotUpdate:(id)update;
+- (void)_handlePushContextMessage:(id)message fromDeviceWithPeerInfo:(id)info completion:(id)completion;
 - (void)_initialize;
-- (void)_logContextCollectorFetchEnded:(id)a3 numDeviceContextsFetched:(unint64_t)a4;
-- (void)_logContextCollectorFetchFailed:(id)a3;
-- (void)_logContextCollectorFetchStarted:(id)a3;
-- (void)_logFetchLocalContextEnded:(id)a3;
-- (void)_logFetchLocalContextStarted:(id)a3;
-- (void)_logForceFetchContextEndedWithHALMetricsId:(id)a3 contextId:(id)a4 forceFetchCount:(unint64_t)a5;
-- (void)_logForceFetchContextFailedWithHALMetricsId:(id)a3 contextId:(id)a4 error:(id)a5;
-- (void)_logForceFetchContextStartedWithHALMetricsId:(id)a3 contextId:(id)a4 timestamp:(unint64_t)a5;
-- (void)_logForceFetchWithStartTime:(unint64_t)a3 forceFetchCount:(unint64_t)a4 forceFetchError:(id)a5 halMetricsId:(id)a6;
-- (void)_playbackDevicesDidChange:(id)a3;
-- (void)_reallyUpdateBackgroundContextIfNowPlayingInfoChangedForReason:(id)a3;
+- (void)_logContextCollectorFetchEnded:(id)ended numDeviceContextsFetched:(unint64_t)fetched;
+- (void)_logContextCollectorFetchFailed:(id)failed;
+- (void)_logContextCollectorFetchStarted:(id)started;
+- (void)_logFetchLocalContextEnded:(id)ended;
+- (void)_logFetchLocalContextStarted:(id)started;
+- (void)_logForceFetchContextEndedWithHALMetricsId:(id)id contextId:(id)contextId forceFetchCount:(unint64_t)count;
+- (void)_logForceFetchContextFailedWithHALMetricsId:(id)id contextId:(id)contextId error:(id)error;
+- (void)_logForceFetchContextStartedWithHALMetricsId:(id)id contextId:(id)contextId timestamp:(unint64_t)timestamp;
+- (void)_logForceFetchWithStartTime:(unint64_t)time forceFetchCount:(unint64_t)count forceFetchError:(id)error halMetricsId:(id)id;
+- (void)_playbackDevicesDidChange:(id)change;
+- (void)_reallyUpdateBackgroundContextIfNowPlayingInfoChangedForReason:(id)reason;
 - (void)_registerForBGUpdates;
-- (void)_removeDeviceContextConnection:(id)a3;
-- (void)_resetContextLinkAndReconnectNow:(BOOL)a3;
-- (void)_scheduleNowPlayingRefreshForReason:(id)a3 isPlaying:(id)a4;
-- (void)_setCollectingContext:(BOOL)a3;
-- (void)_setDelegate:(id)a3;
+- (void)_removeDeviceContextConnection:(id)connection;
+- (void)_resetContextLinkAndReconnectNow:(BOOL)now;
+- (void)_scheduleNowPlayingRefreshForReason:(id)reason isPlaying:(id)playing;
+- (void)_setCollectingContext:(BOOL)context;
+- (void)_setDelegate:(id)delegate;
 - (void)_startPeriodicContextFetchFromNearbyDevices;
 - (void)_stopPeriodicContextFetchFromNearbyDevices;
 - (void)_unregisterForBGUpdates;
 - (void)_updateBackgroundContextIfMusicPersonalizationTokenChanged;
-- (void)_updateDeviceProblemsWithContext:(id)a3 token:(int)a4 completion:(id)a5;
-- (void)_updateHomeAnnouncementWithContext:(id)a3 supplementalSnapshot:(id)a4 completion:(id)a5;
-- (void)_updateMultiUserPersonalizationTokensWithSingleUserTokenChanged:(BOOL)a3 completion:(id)a4;
-- (void)_updateMusicPersonalizationTokenWithContext:(id)a3 completion:(id)a4;
-- (void)_updateNavStatusWithContext:(id)a3 completion:(id)a4;
-- (void)_updateNowPlayingInfoWithContext:(id)a3 completion:(id)a4;
-- (void)_updatePlaybackDevicesWithContext:(id)a3 completion:(id)a4;
-- (void)_updateSimpleThingsWithContext:(id)a3 completion:(id)a4;
-- (void)_updateSingleUserMusicPersonalizationTokenFromKeychainWithCompletion:(id)a3;
-- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)a3 localDeviceIsCollector:(BOOL)a4;
+- (void)_updateDeviceProblemsWithContext:(id)context token:(int)token completion:(id)completion;
+- (void)_updateHomeAnnouncementWithContext:(id)context supplementalSnapshot:(id)snapshot completion:(id)completion;
+- (void)_updateMultiUserPersonalizationTokensWithSingleUserTokenChanged:(BOOL)changed completion:(id)completion;
+- (void)_updateMusicPersonalizationTokenWithContext:(id)context completion:(id)completion;
+- (void)_updateNavStatusWithContext:(id)context completion:(id)completion;
+- (void)_updateNowPlayingInfoWithContext:(id)context completion:(id)completion;
+- (void)_updatePlaybackDevicesWithContext:(id)context completion:(id)completion;
+- (void)_updateSimpleThingsWithContext:(id)context completion:(id)completion;
+- (void)_updateSingleUserMusicPersonalizationTokenFromKeychainWithCompletion:(id)completion;
+- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)identifiers localDeviceIsCollector:(BOOL)collector;
 - (void)dealloc;
-- (void)deviceContextConnection:(id)a3 getLocalDeviceContextWithCompletion:(id)a4;
-- (void)deviceContextConnectionDidInvalidate:(id)a3;
-- (void)getAlertContextWithBulletins:(id)a3 externalAlarmSnapshot:(id)a4 timerSnapshot:(id)a5 nlAlertContextCompletion:(id)a6 fullAlertContextCompletion:(id)a7;
-- (void)getAppContextForDeviceState:(int64_t)a3 applicationInfos:(id)a4 completion:(id)a5;
-- (void)getBackgroundContext:(id)a3;
-- (void)getContextIncludingKeys:(id)a3 excludingMandatoryKeys:(id)a4 timeOut:(double)a5 localContextCompletion:(id)a6 completion:(id)a7;
-- (void)getContextSnapshotForCurrentRequestWithCompletion:(id)a3;
-- (void)getContextSnapshotForForeignRequestID:(id)a3 completion:(id)a4;
-- (void)getDeviceContextsForKeys:(id)a3 forForeignRequestID:(id)a4 includesNearbyDevices:(BOOL)a5 completion:(id)a6;
-- (void)getDomainObjectFromMessageContext:(id)a3 completion:(id)a4;
-- (void)getLocalContextWithPrivacyClass:(int64_t)a3 completion:(id)a4;
-- (void)getNowPlayingMediaIsResumable:(id)a3;
+- (void)deviceContextConnection:(id)connection getLocalDeviceContextWithCompletion:(id)completion;
+- (void)deviceContextConnectionDidInvalidate:(id)invalidate;
+- (void)getAlertContextWithBulletins:(id)bulletins externalAlarmSnapshot:(id)snapshot timerSnapshot:(id)timerSnapshot nlAlertContextCompletion:(id)completion fullAlertContextCompletion:(id)contextCompletion;
+- (void)getAppContextForDeviceState:(int64_t)state applicationInfos:(id)infos completion:(id)completion;
+- (void)getBackgroundContext:(id)context;
+- (void)getContextIncludingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys timeOut:(double)out localContextCompletion:(id)completion completion:(id)a7;
+- (void)getContextSnapshotForCurrentRequestWithCompletion:(id)completion;
+- (void)getContextSnapshotForForeignRequestID:(id)d completion:(id)completion;
+- (void)getDeviceContextsForKeys:(id)keys forForeignRequestID:(id)d includesNearbyDevices:(BOOL)devices completion:(id)completion;
+- (void)getDomainObjectFromMessageContext:(id)context completion:(id)completion;
+- (void)getLocalContextWithPrivacyClass:(int64_t)class completion:(id)completion;
+- (void)getNowPlayingMediaIsResumable:(id)resumable;
 - (void)keepReportingNowPlayingTimingEventsHeuristically;
-- (void)localContextStore:(id)a3 didUpdateDeviceContext:(id)a4;
-- (void)markBulletinAsAcknolwedgedForDomainObject:(id)a3;
-- (void)navStatusDidChange:(id)a3;
-- (void)nowPlayingObserver:(id)a3 playbackStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5 lastPlayingDate:(id)a6;
-- (void)nowPlayingObserverNowPlayingInfoDidChange:(id)a3;
+- (void)localContextStore:(id)store didUpdateDeviceContext:(id)context;
+- (void)markBulletinAsAcknolwedgedForDomainObject:(id)object;
+- (void)navStatusDidChange:(id)change;
+- (void)nowPlayingObserver:(id)observer playbackStateDidChangeFrom:(int64_t)from to:(int64_t)to lastPlayingDate:(id)date;
+- (void)nowPlayingObserverNowPlayingInfoDidChange:(id)change;
 - (void)preheatBackgroundContext;
-- (void)pushContextSnapshotForCurrentRequestWithID:(id)a3 toDevice:(id)a4;
-- (void)pushMyriadAdvertisementContextToContextCollector:(id)a3 completion:(id)a4;
-- (void)pushSCDAAdvertisementContextToContextCollector:(id)a3 completion:(id)a4;
-- (void)rapportLink:(id)a3 didReceiveMessage:(id)a4 ofType:(id)a5 fromPeer:(id)a6 completion:(id)a7;
-- (void)rapportLinkDidInterrupt:(id)a3;
-- (void)rapportLinkDidInvalidate:(id)a3;
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6;
+- (void)pushContextSnapshotForCurrentRequestWithID:(id)d toDevice:(id)device;
+- (void)pushMyriadAdvertisementContextToContextCollector:(id)collector completion:(id)completion;
+- (void)pushSCDAAdvertisementContextToContextCollector:(id)collector completion:(id)completion;
+- (void)rapportLink:(id)link didReceiveMessage:(id)message ofType:(id)type fromPeer:(id)peer completion:(id)completion;
+- (void)rapportLinkDidInterrupt:(id)interrupt;
+- (void)rapportLinkDidInvalidate:(id)invalidate;
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client;
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client;
 - (void)reset;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)updateBackgroundContextIfHomeKitInfoChanged;
 - (void)updateBackgroundContextIfNowPlayingInfoChanged;
 @end
@@ -213,16 +213,16 @@
 - (BOOL)_inlineUpdatePhoneState
 {
   v3 = +[ADCommandCenter sharedCommandCenter];
-  v4 = [v3 _isInCall];
-  v5 = [v3 _hasIncomingCall];
-  v6 = [(AFInstanceContext *)self->_instanceContext supportsTelephony];
+  _isInCall = [v3 _isInCall];
+  _hasIncomingCall = [v3 _hasIncomingCall];
+  supportsTelephony = [(AFInstanceContext *)self->_instanceContext supportsTelephony];
   v7 = objc_alloc_init(SAPhoneCallState);
-  [v7 setActive:v6 & v4];
-  [v7 setIncoming:v6 & v5];
-  v8 = [(ADBackgroundContextCache *)self->_bgContext phoneCallState];
-  if (v7 | v8)
+  [v7 setActive:supportsTelephony & _isInCall];
+  [v7 setIncoming:supportsTelephony & _hasIncomingCall];
+  phoneCallState = [(ADBackgroundContextCache *)self->_bgContext phoneCallState];
+  if (v7 | phoneCallState)
   {
-    v9 = [v7 isEqual:v8] ^ 1;
+    v9 = [v7 isEqual:phoneCallState] ^ 1;
   }
 
   else
@@ -235,8 +235,8 @@
   {
     v11 = v10;
     v12 = [NSNumber numberWithBool:v9];
-    v13 = [NSNumber numberWithBool:v6 & v4];
-    v14 = [NSNumber numberWithBool:v6 & v5];
+    v13 = [NSNumber numberWithBool:supportsTelephony & _isInCall];
+    v14 = [NSNumber numberWithBool:supportsTelephony & _hasIncomingCall];
     *buf = 136315906;
     v17 = "[ADContextManager _inlineUpdatePhoneState]";
     v18 = 2112;
@@ -273,12 +273,12 @@
   v3 = v12[5];
   _Block_object_dispose(&v11, 8);
 
-  v4 = [v3 absoluteString];
+  absoluteString = [v3 absoluteString];
 
-  if ([v4 length])
+  if ([absoluteString length])
   {
     v5 = objc_alloc_init(SAHACurrentHome);
-    [v5 setCurrentHomeIdentifier:v4];
+    [v5 setCurrentHomeIdentifier:absoluteString];
   }
 
   else
@@ -286,9 +286,9 @@
     v5 = 0;
   }
 
-  v6 = [(ADBackgroundContextCache *)self->_bgContext currentHome];
-  v7 = v6;
-  if (v5 | v6 && ([v6 isEqual:v5] & 1) == 0)
+  currentHome = [(ADBackgroundContextCache *)self->_bgContext currentHome];
+  v7 = currentHome;
+  if (v5 | currentHome && ([currentHome isEqual:v5] & 1) == 0)
   {
     [(ADBackgroundContextCache *)self->_bgContext setCurrentHome:v5];
     v8 = 1;
@@ -388,58 +388,58 @@
   [(ADContextManager *)self getContextIncludingKeys:v15 excludingMandatoryKeys:0 timeOut:v27 localContextCompletion:v22 completion:v13];
 }
 
-- (void)_enumerateDeviceContextConnectionsUsingBlock:(id)a3
+- (void)_enumerateDeviceContextConnectionsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     deviceContextConnections = self->_deviceContextConnections;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100109234;
     v7[3] = &unk_1005123A8;
-    v8 = v4;
+    v8 = blockCopy;
     [(NSMutableSet *)deviceContextConnections enumerateObjectsUsingBlock:v7];
   }
 }
 
-- (void)_removeDeviceContextConnection:(id)a3
+- (void)_removeDeviceContextConnection:(id)connection
 {
   deviceContextConnections = self->_deviceContextConnections;
-  v4 = a3;
-  [(NSMutableSet *)deviceContextConnections removeObject:v4];
-  [v4 invalidate];
+  connectionCopy = connection;
+  [(NSMutableSet *)deviceContextConnections removeObject:connectionCopy];
+  [connectionCopy invalidate];
 }
 
-- (void)_addDeviceContextConnection:(id)a3
+- (void)_addDeviceContextConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   deviceContextConnections = self->_deviceContextConnections;
-  v8 = v4;
+  v8 = connectionCopy;
   if (!deviceContextConnections)
   {
     v6 = objc_alloc_init(NSMutableSet);
     v7 = self->_deviceContextConnections;
     self->_deviceContextConnections = v6;
 
-    v4 = v8;
+    connectionCopy = v8;
     deviceContextConnections = self->_deviceContextConnections;
   }
 
-  [(NSMutableSet *)deviceContextConnections addObject:v4];
+  [(NSMutableSet *)deviceContextConnections addObject:connectionCopy];
 }
 
-- (void)_handleHomeAnnouncementSnapshotUpdate:(id)a3
+- (void)_handleHomeAnnouncementSnapshotUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v8 = "[ADContextManager _handleHomeAnnouncementSnapshotUpdate:]";
     v9 = 2112;
-    v10 = v4;
+    v10 = updateCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s snapshot = %@", buf, 0x16u);
   }
 
@@ -448,26 +448,26 @@
   v6[2] = sub_100109444;
   v6[3] = &unk_10051B778;
   v6[4] = self;
-  [(ADContextManager *)self _updateHomeAnnouncementWithContext:&off_1005341F8 supplementalSnapshot:v4 completion:v6];
+  [(ADContextManager *)self _updateHomeAnnouncementWithContext:&off_1005341F8 supplementalSnapshot:updateCopy completion:v6];
 }
 
-- (void)_updateHomeAnnouncementWithContext:(id)a3 supplementalSnapshot:(id)a4 completion:(id)a5
+- (void)_updateHomeAnnouncementWithContext:(id)context supplementalSnapshot:(id)snapshot completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  snapshotCopy = snapshot;
+  completionCopy = completion;
   v11 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315394;
     v21 = "[ADContextManager _updateHomeAnnouncementWithContext:supplementalSnapshot:completion:]";
     v22 = 2112;
-    v23 = v9;
+    v23 = snapshotCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%s supplementalSnapshot = %@", buf, 0x16u);
   }
 
-  [(AFAnalytics *)self->_analytics logEventWithType:4528 context:v8];
-  [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4529 context:v8 completion:v10];
+  [(AFAnalytics *)self->_analytics logEventWithType:4528 context:contextCopy];
+  [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4529 context:contextCopy completion:completionCopy];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100109724;
@@ -476,9 +476,9 @@
   v19 = v12;
   v13 = objc_retainBlock(v18);
   v14 = v13;
-  if (v9)
+  if (snapshotCopy)
   {
-    (v13[2])(v13, v9);
+    (v13[2])(v13, snapshotCopy);
   }
 
   else
@@ -494,21 +494,21 @@
   }
 }
 
-- (void)pushSCDAAdvertisementContextToContextCollector:(id)a3 completion:(id)a4
+- (void)pushSCDAAdvertisementContextToContextCollector:(id)collector completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 contextData];
-  [v7 contextFetchDelay];
+  completionCopy = completion;
+  collectorCopy = collector;
+  contextData = [collectorCopy contextData];
+  [collectorCopy contextFetchDelay];
   v10 = v9;
 
-  if (v8)
+  if (contextData)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(ADContextManager *)self localContextStore];
-      objc_initWeak(&location, v11);
+      localContextStore = [(ADContextManager *)self localContextStore];
+      objc_initWeak(&location, localContextStore);
 
       objc_initWeak(&from, self);
       queue = self->_queue;
@@ -518,8 +518,8 @@
       block[3] = &unk_100512358;
       objc_copyWeak(&v18, &from);
       objc_copyWeak(v19, &location);
-      v16 = v8;
-      v17 = v6;
+      v16 = contextData;
+      v17 = completionCopy;
       v19[1] = v10;
       dispatch_async(queue, block);
 
@@ -539,29 +539,29 @@
   }
 
   v14 = [AFError errorWithCode:30 description:v13];
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 
 LABEL_9:
 }
 
-- (void)pushMyriadAdvertisementContextToContextCollector:(id)a3 completion:(id)a4
+- (void)pushMyriadAdvertisementContextToContextCollector:(id)collector completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 contextData];
-  [v7 contextFetchDelay];
+  completionCopy = completion;
+  collectorCopy = collector;
+  contextData = [collectorCopy contextData];
+  [collectorCopy contextFetchDelay];
   v10 = v9;
 
-  if (v8)
+  if (contextData)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(ADContextManager *)self localContextStore];
-      objc_initWeak(&location, v11);
+      localContextStore = [(ADContextManager *)self localContextStore];
+      objc_initWeak(&location, localContextStore);
 
       objc_initWeak(&from, self);
       queue = self->_queue;
@@ -571,8 +571,8 @@ LABEL_9:
       block[3] = &unk_100512358;
       objc_copyWeak(&v18, &from);
       objc_copyWeak(v19, &location);
-      v16 = v8;
-      v17 = v6;
+      v16 = contextData;
+      v17 = completionCopy;
       v19[1] = v10;
       dispatch_async(queue, block);
 
@@ -592,15 +592,15 @@ LABEL_9:
   }
 
   v14 = [AFError errorWithCode:30 description:v13];
-  if (v6)
+  if (completionCopy)
   {
-    (*(v6 + 2))(v6, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 
 LABEL_9:
 }
 
-- (void)_playbackDevicesDidChange:(id)a3
+- (void)_playbackDevicesDidChange:(id)change
 {
   bgContextQueue = self->_bgContextQueue;
   block[0] = _NSConcreteStackBlock;
@@ -611,24 +611,24 @@ LABEL_9:
   dispatch_async(bgContextQueue, block);
 }
 
-- (void)_updatePlaybackDevicesWithContext:(id)a3 completion:(id)a4
+- (void)_updatePlaybackDevicesWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4524 context:v6 completion:a4];
+  contextCopy = context;
+  v7 = [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4524 context:contextCopy completion:completion];
   bgContextQueue = self->_bgContextQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10010A804;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
+  v12 = contextCopy;
   v13 = v7;
   v9 = v7;
-  v10 = v6;
+  v10 = contextCopy;
   dispatch_async(bgContextQueue, block);
 }
 
-- (void)_callStateDidChange:(id)a3
+- (void)_callStateDidChange:(id)change
 {
   bgContextQueue = self->_bgContextQueue;
   block[0] = _NSConcreteStackBlock;
@@ -639,24 +639,24 @@ LABEL_9:
   dispatch_async(bgContextQueue, block);
 }
 
-- (void)_updateDeviceProblemsWithContext:(id)a3 token:(int)a4 completion:(id)a5
+- (void)_updateDeviceProblemsWithContext:(id)context token:(int)token completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     out_token = 136315394;
     v23 = "[ADContextManager _updateDeviceProblemsWithContext:token:completion:]";
     v24 = 1024;
-    LODWORD(v25) = a4;
+    LODWORD(v25) = token;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s token = %d", &out_token, 0x12u);
   }
 
-  [(AFAnalytics *)self->_analytics logEventWithType:4509 context:v8];
-  v11 = [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4510 context:v8 completion:v9];
+  [(AFAnalytics *)self->_analytics logEventWithType:4509 context:contextCopy];
+  v11 = [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4510 context:contextCopy completion:completionCopy];
   state64 = 0;
-  if (a4 == -1)
+  if (token == -1)
   {
     out_token = -1;
     state = notify_register_check("com.apple.sharing.problems", &out_token);
@@ -669,7 +669,7 @@ LABEL_9:
 
   else
   {
-    state = notify_get_state(a4, &state64);
+    state = notify_get_state(token, &state64);
   }
 
   v13 = AFSiriLogContextDaemon;
@@ -995,9 +995,9 @@ LABEL_58:
   [v14 setValues:v16];
 
 LABEL_59:
-  v18 = [(ADBackgroundContextCache *)self->_bgContext errorIndicatorStatus];
-  v19 = v18;
-  if (v14 | v18 && ([v18 isEqual:v14] & 1) == 0)
+  errorIndicatorStatus = [(ADBackgroundContextCache *)self->_bgContext errorIndicatorStatus];
+  v19 = errorIndicatorStatus;
+  if (v14 | errorIndicatorStatus && ([errorIndicatorStatus isEqual:v14] & 1) == 0)
   {
     [(ADBackgroundContextCache *)self->_bgContext setErrorIndicatorStatus:v14];
     v20 = 1;
@@ -1013,9 +1013,9 @@ LABEL_59:
 LABEL_64:
 }
 
-- (void)_handleDeviceProblemsChangedWithToken:(int)a3
+- (void)_handleDeviceProblemsChangedWithToken:(int)token
 {
-  v3 = *&a3;
+  v3 = *&token;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -1045,13 +1045,13 @@ LABEL_64:
   dispatch_async(self->_bgContextQueue, v3);
 }
 
-- (void)_reallyUpdateBackgroundContextIfNowPlayingInfoChangedForReason:(id)a3
+- (void)_reallyUpdateBackgroundContextIfNowPlayingInfoChangedForReason:(id)reason
 {
-  v4 = a3;
-  if (![(__CFString *)v4 length])
+  reasonCopy = reason;
+  if (![(__CFString *)reasonCopy length])
   {
 
-    v4 = @"poll";
+    reasonCopy = @"poll";
   }
 
   v5 = AFSiriLogContextDaemon;
@@ -1060,12 +1060,12 @@ LABEL_64:
     *buf = 136315394;
     v11 = "[ADContextManager _reallyUpdateBackgroundContextIfNowPlayingInfoChangedForReason:]";
     v12 = 2112;
-    v13 = v4;
+    v13 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 
   v8 = @"source";
-  v9 = v4;
+  v9 = reasonCopy;
   v6 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -1075,10 +1075,10 @@ LABEL_64:
   [(ADContextManager *)self _updateNowPlayingInfoWithContext:v6 completion:v7];
 }
 
-- (void)_updateNowPlayingInfoWithContext:(id)a3 completion:(id)a4
+- (void)_updateNowPlayingInfoWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = dispatch_group_create();
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1091,35 +1091,35 @@ LABEL_64:
   }
 
   [(ADContextManager *)self _cancelNowPlayingCoalescingTimer];
-  v10 = [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4506 context:v7 completion:v6];
+  v10 = [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4506 context:contextCopy completion:completionCopy];
 
-  [(AFAnalytics *)self->_analytics logEventWithType:4505 context:v7];
+  [(AFAnalytics *)self->_analytics logEventWithType:4505 context:contextCopy];
   v13 = v8;
   v11 = v10;
   v12 = v8;
   AFGetNowPlayingQueueState();
 }
 
-- (void)_scheduleNowPlayingRefreshForReason:(id)a3 isPlaying:(id)a4
+- (void)_scheduleNowPlayingRefreshForReason:(id)reason isPlaying:(id)playing
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  playingCopy = playing;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v22 = "[ADContextManager _scheduleNowPlayingRefreshForReason:isPlaying:]";
     v23 = 2112;
-    v24 = v6;
+    v24 = reasonCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = playingCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s reason = %@, isPlaying = %@", buf, 0x20u);
   }
 
-  if (v7 && mach_absolute_time() <= self->_ignoreNowPlayingUpdatesAfterTimestamp)
+  if (playingCopy && mach_absolute_time() <= self->_ignoreNowPlayingUpdatesAfterTimestamp)
   {
     v19 = kMRMediaRemoteNowPlayingApplicationIsPlayingUserInfoKey;
-    v20 = v7;
+    v20 = playingCopy;
     v9 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     [(AFAnalytics *)self->_analytics logEventWithType:2801 context:v9];
   }
@@ -1156,25 +1156,25 @@ LABEL_64:
     }
   }
 
-  if (![(__CFString *)v6 length])
+  if (![(__CFString *)reasonCopy length])
   {
 
-    v6 = @"UNKNOWN";
+    reasonCopy = @"UNKNOWN";
   }
 
-  [(NSMutableSet *)self->_coalescedNowPlayingUpdateSources addObject:v6];
+  [(NSMutableSet *)self->_coalescedNowPlayingUpdateSources addObject:reasonCopy];
 }
 
-- (void)nowPlayingObserverNowPlayingInfoDidChange:(id)a3
+- (void)nowPlayingObserverNowPlayingInfoDidChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v10 = "[ADContextManager nowPlayingObserverNowPlayingInfoDidChange:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = changeCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s nowPlayingObserver = %@", buf, 0x16u);
   }
 
@@ -1188,10 +1188,10 @@ LABEL_64:
   dispatch_async(bgContextQueue, v8);
 }
 
-- (void)nowPlayingObserver:(id)a3 playbackStateDidChangeFrom:(int64_t)a4 to:(int64_t)a5 lastPlayingDate:(id)a6
+- (void)nowPlayingObserver:(id)observer playbackStateDidChangeFrom:(int64_t)from to:(int64_t)to lastPlayingDate:(id)date
 {
-  v10 = a3;
-  v11 = a6;
+  observerCopy = observer;
+  dateCopy = date;
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1201,13 +1201,13 @@ LABEL_64:
     *buf = 136316162;
     v19 = "[ADContextManager nowPlayingObserver:playbackStateDidChangeFrom:to:lastPlayingDate:]";
     v20 = 2112;
-    v21 = v10;
+    v21 = observerCopy;
     v22 = 2112;
     v23 = v14;
     v24 = 2112;
     v25 = v15;
     v26 = 2112;
-    v27 = v11;
+    v27 = dateCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s nowPlayingObserver = %@, fromState = %@, toState = %@, lastPlayingDate = %@", buf, 0x34u);
   }
 
@@ -1217,12 +1217,12 @@ LABEL_64:
   block[2] = sub_10010C050;
   block[3] = &unk_10051C678;
   block[4] = self;
-  block[5] = a5;
+  block[5] = to;
   block[6] = a2;
   dispatch_async(bgContextQueue, block);
 }
 
-- (void)navStatusDidChange:(id)a3
+- (void)navStatusDidChange:(id)change
 {
   bgContextQueue = self->_bgContextQueue;
   block[0] = _NSConcreteStackBlock;
@@ -1233,29 +1233,29 @@ LABEL_64:
   dispatch_async(bgContextQueue, block);
 }
 
-- (void)_updateNavStatusWithContext:(id)a3 completion:(id)a4
+- (void)_updateNavStatusWithContext:(id)context completion:(id)completion
 {
-  v7 = a3;
+  contextCopy = context;
   v8 = self->_analytics;
-  v9 = [(AFAnalytics *)v8 _ad_contextLoggerWithEventType:4504 context:v7 completion:a4];
-  [(AFAnalytics *)v8 logEventWithType:4503 context:v7];
-  [(AFAnalytics *)v8 logEventWithType:4521 context:v7];
-  v10 = [(ADBackgroundContextCache *)self->_bgContext navStatus];
-  v11 = [(ADBackgroundContextCache *)self->_bgContext localSearchGetNavigationStatusCompleted];
+  v9 = [(AFAnalytics *)v8 _ad_contextLoggerWithEventType:4504 context:contextCopy completion:completion];
+  [(AFAnalytics *)v8 logEventWithType:4503 context:contextCopy];
+  [(AFAnalytics *)v8 logEventWithType:4521 context:contextCopy];
+  navStatus = [(ADBackgroundContextCache *)self->_bgContext navStatus];
+  localSearchGetNavigationStatusCompleted = [(ADBackgroundContextCache *)self->_bgContext localSearchGetNavigationStatusCompleted];
   v12 = +[AFPreferences sharedPreferences];
-  v13 = [v12 currentNavigationState];
+  currentNavigationState = [v12 currentNavigationState];
 
   IsNavigating = AFNavigationStateIsNavigating();
   v15 = objc_alloc_init(SANavStatus);
-  if (v13 <= 4)
+  if (currentNavigationState <= 4)
   {
-    v4 = **(&off_100516D78 + v13);
+    v4 = **(&off_100516D78 + currentNavigationState);
   }
 
   [v15 setStatusValue:v4];
 
-  v36 = v10;
-  if (v10 | v15 && ([v15 isEqual:v10] & 1) == 0)
+  v36 = navStatus;
+  if (navStatus | v15 && ([v15 isEqual:navStatus] & 1) == 0)
   {
     [(ADBackgroundContextCache *)self->_bgContext setNavStatus:v15];
     v16 = 1;
@@ -1266,7 +1266,7 @@ LABEL_64:
     v16 = 0;
   }
 
-  if (v7)
+  if (contextCopy)
   {
     v17 = IsNavigating;
   }
@@ -1278,7 +1278,7 @@ LABEL_64:
 
   if (v17)
   {
-    v46[0] = v7;
+    v46[0] = contextCopy;
     v44 = @"isNavigating";
     v33 = [NSNumber numberWithBool:1];
     v45 = v33;
@@ -1286,27 +1286,27 @@ LABEL_64:
     v18 = v34 = v9;
     v46[1] = v18;
     [NSArray arrayWithObjects:v46 count:2];
-    v19 = v7;
-    v20 = self;
+    v19 = contextCopy;
+    selfCopy = self;
     v21 = v8;
     v22 = v15;
     v23 = IsNavigating;
-    v25 = v24 = v11;
+    v25 = v24 = localSearchGetNavigationStatusCompleted;
     v26 = AFAnalyticsContextsMerge();
 
-    v11 = v24;
+    localSearchGetNavigationStatusCompleted = v24;
     IsNavigating = v23;
     v15 = v22;
     v8 = v21;
-    self = v20;
-    v7 = v19;
+    self = selfCopy;
+    contextCopy = v19;
 
     v9 = v34;
   }
 
   else
   {
-    v26 = v7;
+    v26 = contextCopy;
   }
 
   [(AFAnalytics *)v8 logEventWithType:4522 context:v26];
@@ -1314,9 +1314,9 @@ LABEL_64:
   v39[1] = 3221225472;
   v39[2] = sub_10010C668;
   v39[3] = &unk_100512290;
-  v27 = v11;
+  v27 = localSearchGetNavigationStatusCompleted;
   v40 = v27;
-  v41 = self;
+  selfCopy2 = self;
   v28 = v9;
   v42 = v28;
   v43 = v16;
@@ -1372,13 +1372,13 @@ LABEL_64:
   [(ADContextManager *)self _updateMusicPersonalizationTokenWithContext:&off_100534108 completion:v2];
 }
 
-- (void)_updateMusicPersonalizationTokenWithContext:(id)a3 completion:(id)a4
+- (void)_updateMusicPersonalizationTokenWithContext:(id)context completion:(id)completion
 {
   analytics = self->_analytics;
-  v7 = a4;
-  v8 = a3;
-  [(AFAnalytics *)analytics logEventWithType:4515 context:v8];
-  v9 = [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4516 context:v8 completion:v7];
+  completionCopy = completion;
+  contextCopy = context;
+  [(AFAnalytics *)analytics logEventWithType:4515 context:contextCopy];
+  v9 = [(AFAnalytics *)self->_analytics _ad_contextLoggerWithEventType:4516 context:contextCopy completion:completionCopy];
 
   [off_10058B438() sharedProvider];
   v12[0] = _NSConcreteStackBlock;
@@ -1392,43 +1392,43 @@ LABEL_64:
   [v11 getTokenForcingRefresh:0 completion:v12];
 }
 
-- (void)_updateMultiUserPersonalizationTokensWithSingleUserTokenChanged:(BOOL)a3 completion:(id)a4
+- (void)_updateMultiUserPersonalizationTokensWithSingleUserTokenChanged:(BOOL)changed completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [off_10058B438() sharedProvider];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10010D3C4;
   v10 = v9[3] = &unk_100512178;
-  v11 = self;
-  v13 = a3;
-  v12 = v6;
-  v7 = v6;
+  selfCopy = self;
+  changedCopy = changed;
+  v12 = completionCopy;
+  v7 = completionCopy;
   v8 = v10;
   [v8 getAllTokensForAssistantForcingRefresh:0 completion:v9];
 }
 
-- (id)_makeUserTokenStatusWithICTokenStatus:(id)a3 icError:(id)a4
+- (id)_makeUserTokenStatusWithICTokenStatus:(id)status icError:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  statusCopy = status;
+  errorCopy = error;
   v7 = objc_alloc_init(SAUserTokenStatus);
-  if (v6)
+  if (errorCopy)
   {
-    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 code]);
+    v8 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
     [v7 setErrorCode:v8];
   }
 
   else
   {
-    v9 = [v5 lastError];
-    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 code]);
+    lastError = [statusCopy lastError];
+    v10 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [lastError code]);
     [v7 setErrorCode:v10];
 
-    v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v5 shouldExcludeFromBackgroundRefresh]);
+    v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [statusCopy shouldExcludeFromBackgroundRefresh]);
     [v7 setShouldExcludeFromBackgroundRefresh:v11];
 
-    [v5 lastUpdateAttemptTime];
+    [statusCopy lastUpdateAttemptTime];
     v8 = [NSNumber numberWithDouble:?];
     [v7 setLastUpdateAttemptTime:v8];
   }
@@ -1436,9 +1436,9 @@ LABEL_64:
   return v7;
 }
 
-- (void)_updateSingleUserMusicPersonalizationTokenFromKeychainWithCompletion:(id)a3
+- (void)_updateSingleUserMusicPersonalizationTokenFromKeychainWithCompletion:(id)completion
 {
-  v7 = a3;
+  completionCopy = completion;
   v4 = AFKeychainValueForAccountAndKey();
   if ([v4 length])
   {
@@ -1450,19 +1450,19 @@ LABEL_64:
     v5 = 0;
   }
 
-  v6 = [(ADBackgroundContextCache *)self->_bgContext musicPersonalizationToken];
-  if (([v6 isEqual:v5] & 1) == 0)
+  musicPersonalizationToken = [(ADBackgroundContextCache *)self->_bgContext musicPersonalizationToken];
+  if (([musicPersonalizationToken isEqual:v5] & 1) == 0)
   {
     [(ADBackgroundContextCache *)self->_bgContext setMusicPersonalizationToken:v5];
-    v7[2](v7, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)_handleContextSnapshotPush:(id)a3 completion:(id)a4
+- (void)_handleContextSnapshotPush:(id)push completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"request_id"];
+  pushCopy = push;
+  completionCopy = completion;
+  v8 = [pushCopy objectForKey:@"request_id"];
   if (v8)
   {
     if (!self->_contextSnapshotByForeignRequestID)
@@ -1473,7 +1473,7 @@ LABEL_64:
     }
 
     v11 = objc_alloc_init(NSMutableArray);
-    v12 = [(ADDeviceCircleManager *)self->_deviceCircleManager localPeerInfo];
+    localPeerInfo = [(ADDeviceCircleManager *)self->_deviceCircleManager localPeerInfo];
     v13 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
@@ -1484,7 +1484,7 @@ LABEL_64:
       _os_log_debug_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%s #hal received context_snapshot_push for request %@:", buf, 0x16u);
     }
 
-    v14 = [v6 objectForKey:@"context_snapshot"];
+    v14 = [pushCopy objectForKey:@"context_snapshot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1500,13 +1500,13 @@ LABEL_64:
     v32[1] = 3221225472;
     v32[2] = sub_10010E354;
     v32[3] = &unk_100514E80;
-    v18 = v12;
+    v18 = localPeerInfo;
     v33 = v18;
     v19 = v11;
     v34 = v19;
     [v15 enumerateKeysAndObjectsUsingBlock:v32];
 
-    v20 = [v6 objectForKey:@"context_snapshot_by_assistant_identifier"];
+    v20 = [pushCopy objectForKey:@"context_snapshot_by_assistant_identifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1541,9 +1541,9 @@ LABEL_64:
     v27[4] = self;
     v28 = v8;
     dispatch_after(v25, queue, v27);
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     goto LABEL_18;
@@ -1555,7 +1555,7 @@ LABEL_64:
     *buf = 136315138;
     v36 = "[ADContextManager _handleContextSnapshotPush:completion:]";
     _os_log_error_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%s #hal malformed message: missing request ID", buf, 0xCu);
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_19;
     }
@@ -1563,31 +1563,31 @@ LABEL_64:
     goto LABEL_10;
   }
 
-  if (v7)
+  if (completionCopy)
   {
 LABEL_10:
     v17 = [AFError errorWithCode:11];
-    (v7)[2](v7, v17);
+    (completionCopy)[2](completionCopy, v17);
 LABEL_18:
   }
 
 LABEL_19:
 }
 
-- (void)_handlePushContextMessage:(id)a3 fromDeviceWithPeerInfo:(id)a4 completion:(id)a5
+- (void)_handlePushContextMessage:(id)message fromDeviceWithPeerInfo:(id)info completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   queue = self->_queue;
-  v10 = a4;
-  v11 = a3;
+  infoCopy = info;
+  messageCopy = message;
   dispatch_assert_queue_V2(queue);
-  v24 = [(ADContextManager *)self remoteContextStore];
-  v12 = [[AFDeviceContext alloc] initWithSerializedBackingStore:v11 fromLocalDevice:0 contextCollectorSource:0];
-  v13 = [v11 objectForKey:@"included_context_types_in_request"];
-  v14 = [v11 objectForKey:@"excluded_context_keys_in_request"];
-  v15 = [v11 objectForKey:@"included_context_types_in_response"];
-  v16 = [v11 objectForKey:@"excluded_context_keys_in_response"];
-  v17 = [v11 objectForKey:@"prefers_assistant_identifiers"];
+  remoteContextStore = [(ADContextManager *)self remoteContextStore];
+  v12 = [[AFDeviceContext alloc] initWithSerializedBackingStore:messageCopy fromLocalDevice:0 contextCollectorSource:0];
+  v13 = [messageCopy objectForKey:@"included_context_types_in_request"];
+  v14 = [messageCopy objectForKey:@"excluded_context_keys_in_request"];
+  v15 = [messageCopy objectForKey:@"included_context_types_in_response"];
+  v16 = [messageCopy objectForKey:@"excluded_context_keys_in_response"];
+  v17 = [messageCopy objectForKey:@"prefers_assistant_identifiers"];
 
   objc_opt_class();
   v18 = 0;
@@ -1596,36 +1596,36 @@ LABEL_19:
     v18 = v17;
   }
 
-  v19 = [v18 BOOLValue];
+  bOOLValue = [v18 BOOLValue];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10010E984;
   v25[3] = &unk_1005167F0;
   v26 = v15;
-  v27 = self;
-  v31 = v19;
+  selfCopy = self;
+  v31 = bOOLValue;
   v28 = v16;
   v29 = objc_alloc_init(NSMutableDictionary);
-  v30 = v8;
-  v20 = v8;
+  v30 = completionCopy;
+  v20 = completionCopy;
   v21 = v29;
   v22 = v16;
   v23 = v15;
-  [v24 setDeviceContext:v12 includedKeys:v13 excludedKeys:v14 forDeviceWithPeerInfo:v10 completion:v25];
+  [remoteContextStore setDeviceContext:v12 includedKeys:v13 excludedKeys:v14 forDeviceWithPeerInfo:infoCopy completion:v25];
 }
 
-- (void)_handleAggregateContextFetchWithMessage:(id)a3 fromDeviceWithPeerInfo:(id)a4 completion:(id)a5
+- (void)_handleAggregateContextFetchWithMessage:(id)message fromDeviceWithPeerInfo:(id)info completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  messageCopy = message;
+  infoCopy = info;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v11 = +[AFAnalytics sharedAnalytics];
     [v11 logEventWithType:4586 context:0];
 
     v12 = dispatch_group_create();
-    v13 = [v8 objectForKey:@"prefers_assistant_identifiers"];
+    v13 = [messageCopy objectForKey:@"prefers_assistant_identifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1637,7 +1637,7 @@ LABEL_19:
       v14 = 0;
     }
 
-    v55 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
     v92[0] = 0;
     v92[1] = v92;
     v92[2] = 0x3032000000;
@@ -1668,14 +1668,14 @@ LABEL_19:
         *buf = 136315394;
         *&buf[4] = "[ADContextManager _handleAggregateContextFetchWithMessage:fromDeviceWithPeerInfo:completion:]";
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = infoCopy;
         _os_log_debug_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEBUG, "%s Direct force fetch requested from %@", buf, 0x16u);
       }
 
       goto LABEL_61;
     }
 
-    v16 = [v8 objectForKey:@"force_fetch_assistant_identifiers"];
+    v16 = [messageCopy objectForKey:@"force_fetch_assistant_identifiers"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1726,7 +1726,7 @@ LABEL_19:
     {
     }
 
-    v24 = [v8 objectForKey:@"forceFetchingContextFrom"];
+    localPeerInfo = [messageCopy objectForKey:@"forceFetchingContextFrom"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -1745,13 +1745,13 @@ LABEL_50:
           *buf = 136315394;
           *&buf[4] = "[ADContextManager _handleAggregateContextFetchWithMessage:fromDeviceWithPeerInfo:completion:]";
           *&buf[12] = 2112;
-          *&buf[14] = v9;
+          *&buf[14] = infoCopy;
           _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "%s #hal Relaying force fetch request from %@", buf, 0x16u);
         }
 
         dispatch_group_enter(group);
         remoteContextStore = self->_remoteContextStore;
-        v42 = [v18 allObjects];
+        allObjects = [v18 allObjects];
         v71[0] = _NSConcreteStackBlock;
         v71[1] = 3221225472;
         v71[2] = sub_10010FD0C;
@@ -1759,7 +1759,7 @@ LABEL_50:
         v72 = v18;
         v74 = v87;
         v73 = group;
-        [(ADRemoteContextStore *)remoteContextStore fetchContextSnapshotFromDevicesWithPeerInfo:v42 completion:v71];
+        [(ADRemoteContextStore *)remoteContextStore fetchContextSnapshotFromDevicesWithPeerInfo:allObjects completion:v71];
       }
 
       else if (v36)
@@ -1769,7 +1769,7 @@ LABEL_50:
           *buf = 136315394;
           *&buf[4] = "[ADContextManager _handleAggregateContextFetchWithMessage:fromDeviceWithPeerInfo:completion:]";
           *&buf[12] = 2112;
-          *&buf[14] = v9;
+          *&buf[14] = infoCopy;
           _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "%s #hal Regular context fetch request from %@", buf, 0x16u);
         }
 
@@ -1791,7 +1791,7 @@ LABEL_50:
         *buf = 136315394;
         *&buf[4] = "[ADContextManager _handleAggregateContextFetchWithMessage:fromDeviceWithPeerInfo:completion:]";
         *&buf[12] = 2112;
-        *&buf[14] = v9;
+        *&buf[14] = infoCopy;
         _os_log_debug_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEBUG, "%s #hal Direct force fetch requested from %@", buf, 0x16u);
       }
 
@@ -1807,13 +1807,13 @@ LABEL_61:
       v61[1] = 3221225472;
       v61[2] = sub_100110020;
       v61[3] = &unk_1005120B0;
-      v67 = v55;
+      v67 = bOOLValue;
       v61[4] = self;
       v64 = buf;
       v65 = v92;
       v66 = v87;
-      v62 = v9;
-      v63 = v10;
+      v62 = infoCopy;
+      v63 = completionCopy;
       v46 = [v45 initWithBlock:v61];
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -1844,7 +1844,7 @@ LABEL_61:
       goto LABEL_62;
     }
 
-    v25 = v24;
+    v25 = localPeerInfo;
 
     if (v25)
     {
@@ -1883,8 +1883,8 @@ LABEL_61:
       if (v18)
       {
 LABEL_33:
-        v54 = v8;
-        v24 = [(ADDeviceCircleManager *)self->_deviceCircleManager localPeerInfo];
+        v54 = messageCopy;
+        localPeerInfo = [(ADDeviceCircleManager *)self->_deviceCircleManager localPeerInfo];
         v77 = 0u;
         v78 = 0u;
         v75 = 0u;
@@ -1904,7 +1904,7 @@ LABEL_33:
               }
 
               v35 = *(*(&v75 + 1) + 8 * k);
-              if ((sub_10001A834(v35, v24) & 1) != 0 || sub_10001A834(v35, v9))
+              if ((sub_10001A834(v35, localPeerInfo) & 1) != 0 || sub_10001A834(v35, infoCopy))
               {
                 [v18 removeObject:v35];
               }
@@ -1916,7 +1916,7 @@ LABEL_33:
           while (v32);
         }
 
-        v8 = v54;
+        messageCopy = v54;
         v36 = 0;
         goto LABEL_45;
       }
@@ -1934,30 +1934,30 @@ LABEL_33:
 LABEL_62:
 }
 
-- (void)rapportLink:(id)a3 didReceiveMessage:(id)a4 ofType:(id)a5 fromPeer:(id)a6 completion:(id)a7
+- (void)rapportLink:(id)link didReceiveMessage:(id)message ofType:(id)type fromPeer:(id)peer completion:(id)completion
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v13 idsDeviceUniqueIdentifier];
+  messageCopy = message;
+  typeCopy = type;
+  peerCopy = peer;
+  completionCopy = completion;
+  idsDeviceUniqueIdentifier = [peerCopy idsDeviceUniqueIdentifier];
   v16 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315906;
     v27 = "[ADContextManager rapportLink:didReceiveMessage:ofType:fromPeer:completion:]";
     v28 = 2112;
-    v29 = v12;
+    v29 = typeCopy;
     v30 = 2112;
-    v31 = v11;
+    v31 = messageCopy;
     v32 = 2112;
-    v33 = v15;
+    v33 = idsDeviceUniqueIdentifier;
     _os_log_debug_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "%s type: %@, message: %@, device ID: %@", buf, 0x2Au);
   }
 
-  if (![v12 isEqualToString:@"agg_context_fetch"])
+  if (![typeCopy isEqualToString:@"agg_context_fetch"])
   {
-    if ([v12 isEqualToString:@"context_push"])
+    if ([typeCopy isEqualToString:@"context_push"])
     {
       if (self->_collectingContext)
       {
@@ -1965,8 +1965,8 @@ LABEL_62:
         v24[1] = 3221225472;
         v24[2] = sub_1001109F8;
         v24[3] = &unk_10051CF08;
-        v25 = v14;
-        [(ADContextManager *)self _handlePushContextMessage:v11 fromDeviceWithPeerInfo:v13 completion:v24];
+        v25 = completionCopy;
+        [(ADContextManager *)self _handlePushContextMessage:messageCopy fromDeviceWithPeerInfo:peerCopy completion:v24];
         v17 = v25;
 LABEL_10:
 
@@ -1979,13 +1979,13 @@ LABEL_10:
         *buf = 136315138;
         v27 = "[ADContextManager rapportLink:didReceiveMessage:ofType:fromPeer:completion:]";
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s #hal Not collecting context. Ignored", buf, 0xCu);
-        if (!v14)
+        if (!completionCopy)
         {
           goto LABEL_18;
         }
       }
 
-      else if (!v14)
+      else if (!completionCopy)
       {
         goto LABEL_18;
       }
@@ -1995,14 +1995,14 @@ LABEL_10:
 
     else
     {
-      if ([v12 isEqualToString:@"context_snapshot_push"])
+      if ([typeCopy isEqualToString:@"context_snapshot_push"])
       {
         v22[0] = _NSConcreteStackBlock;
         v22[1] = 3221225472;
         v22[2] = sub_100110A14;
         v22[3] = &unk_10051D2F0;
-        v23 = v14;
-        [(ADContextManager *)self _handleContextSnapshotPush:v11 completion:v22];
+        v23 = completionCopy;
+        [(ADContextManager *)self _handleContextSnapshotPush:messageCopy completion:v22];
         v17 = v23;
         goto LABEL_10;
       }
@@ -2013,17 +2013,17 @@ LABEL_10:
         *buf = 136315650;
         v27 = "[ADContextManager rapportLink:didReceiveMessage:ofType:fromPeer:completion:]";
         v28 = 2112;
-        v29 = v12;
+        v29 = typeCopy;
         v30 = 2112;
-        v31 = v15;
+        v31 = idsDeviceUniqueIdentifier;
         _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%s Unexpected request to handle message: %@, from device: %@", buf, 0x20u);
-        if (!v14)
+        if (!completionCopy)
         {
           goto LABEL_18;
         }
       }
 
-      else if (!v14)
+      else if (!completionCopy)
       {
         goto LABEL_18;
       }
@@ -2032,16 +2032,16 @@ LABEL_10:
     }
 
     v21 = [AFError errorWithCode:v19];
-    (*(v14 + 2))(v14, 0, v21);
+    (*(completionCopy + 2))(completionCopy, 0, v21);
 
     goto LABEL_18;
   }
 
-  [(ADContextManager *)self _handleAggregateContextFetchWithMessage:v11 fromDeviceWithPeerInfo:v13 completion:v14];
+  [(ADContextManager *)self _handleAggregateContextFetchWithMessage:messageCopy fromDeviceWithPeerInfo:peerCopy completion:completionCopy];
 LABEL_18:
 }
 
-- (void)rapportLinkDidInvalidate:(id)a3
+- (void)rapportLinkDidInvalidate:(id)invalidate
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -2054,7 +2054,7 @@ LABEL_18:
   [(ADContextManager *)self _resetContextLinkAndReconnectNow:0];
 }
 
-- (void)rapportLinkDidInterrupt:(id)a3
+- (void)rapportLinkDidInterrupt:(id)interrupt
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -2067,9 +2067,9 @@ LABEL_18:
   [(ADContextManager *)self _resetContextLinkAndReconnectNow:1];
 }
 
-- (void)_resetContextLinkAndReconnectNow:(BOOL)a3
+- (void)_resetContextLinkAndReconnectNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   [(ADRapportLink *)self->_rapportLink removeListener:self];
   [(ADRapportLink *)self->_rapportLink invalidate];
   rapportLink = self->_rapportLink;
@@ -2082,7 +2082,7 @@ LABEL_18:
   v12[4] = self;
   v6 = objc_retainBlock(v12);
   v7 = v6;
-  if (v3)
+  if (nowCopy)
   {
     (v6[2])(v6);
   }
@@ -2101,64 +2101,64 @@ LABEL_18:
   }
 }
 
-- (void)localContextStore:(id)a3 didUpdateDeviceContext:(id)a4
+- (void)localContextStore:(id)store didUpdateDeviceContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  contextCopy = context;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100110E4C;
   block[3] = &unk_10051DB68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = storeCopy;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = storeCopy;
   dispatch_async(queue, block);
 }
 
-- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)a3 localDeviceIsCollector:(BOOL)a4
+- (void)contextCollectorChangedToDevicesWithIdentifiers:(id)identifiers localDeviceIsCollector:(BOOL)collector
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100110F98;
   block[3] = &unk_10051C890;
-  v12 = a4;
-  v10 = v6;
-  v11 = self;
-  v8 = v6;
+  collectorCopy = collector;
+  v10 = identifiersCopy;
+  selfCopy = self;
+  v8 = identifiersCopy;
   dispatch_async(queue, block);
 }
 
-- (void)deviceContextConnection:(id)a3 getLocalDeviceContextWithCompletion:(id)a4
+- (void)deviceContextConnection:(id)connection getLocalDeviceContextWithCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
     [(ADContextManager *)self getLocalContextWithPrivacyClass:10 completion:?];
   }
 }
 
-- (void)deviceContextConnectionDidInvalidate:(id)a3
+- (void)deviceContextConnectionDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001111D4;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = invalidateCopy;
+  v6 = invalidateCopy;
   dispatch_async(queue, v7);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  if (self->_deviceContextServiceListener != a3)
+  connectionCopy = connection;
+  if (self->_deviceContextServiceListener != listener)
   {
 LABEL_6:
     v10 = 0;
@@ -2178,7 +2178,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v7 = [[ADDeviceContextConnection alloc] initWithQueue:self->_queue xpcConnection:v6 delegate:self];
+  v7 = [[ADDeviceContextConnection alloc] initWithQueue:self->_queue xpcConnection:connectionCopy delegate:self];
   queue = self->_queue;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -2195,21 +2195,21 @@ LABEL_7:
   return v10;
 }
 
-- (id)_dataSourceInfoWithProximity:(int64_t)a3 deviceContext:(id)a4
+- (id)_dataSourceInfoWithProximity:(int64_t)proximity deviceContext:(id)context
 {
-  v5 = a4;
+  contextCopy = context;
   v6 = objc_alloc_init(SADataSourceInfo);
   v7 = SAProximityHintUnknownValue;
-  if (a3 > 2999)
+  if (proximity > 2999)
   {
-    if (a3 == 4000)
+    if (proximity == 4000)
     {
       v8 = &SAProximityHintPrimaryValue;
     }
 
     else
     {
-      if (a3 != 3000)
+      if (proximity != 3000)
       {
         goto LABEL_11;
       }
@@ -2218,14 +2218,14 @@ LABEL_7:
     }
   }
 
-  else if (a3 == 1000)
+  else if (proximity == 1000)
   {
     v8 = &SAProximityHintFarValue;
   }
 
   else
   {
-    if (a3 != 2000)
+    if (proximity != 2000)
     {
       goto LABEL_11;
     }
@@ -2238,15 +2238,15 @@ LABEL_7:
   v7 = v9;
 LABEL_11:
   [v6 setProximityHint:v7];
-  v10 = [v5 identifier];
-  v11 = [v10 UUIDString];
-  [v6 setContextIdentifier:v11];
+  identifier = [contextCopy identifier];
+  uUIDString = [identifier UUIDString];
+  [v6 setContextIdentifier:uUIDString];
 
-  v12 = [v5 deviceInfo];
+  deviceInfo = [contextCopy deviceInfo];
 
-  v13 = [v12 isCommunalDevice];
+  isCommunalDevice = [deviceInfo isCommunalDevice];
   v14 = &SASourceDeviceOwnershipCommunalValue;
-  if (!v13)
+  if (!isCommunalDevice)
   {
     v14 = &SASourceDeviceOwnershipPersonalValue;
   }
@@ -2256,28 +2256,28 @@ LABEL_11:
   return v6;
 }
 
-- (id)_alarmAceObjectFromAlarm:(id)a3 withProximity:(int64_t)a4 inDeviceContext:(id)a5
+- (id)_alarmAceObjectFromAlarm:(id)alarm withProximity:(int64_t)proximity inDeviceContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  alarmCopy = alarm;
+  contextCopy = context;
   v10 = objc_alloc_init(SAAlarmObject);
-  v11 = [v8 alarmURL];
-  [v10 setIdentifier:v11];
+  alarmURL = [alarmCopy alarmURL];
+  [v10 setIdentifier:alarmURL];
 
-  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 hour]);
+  v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [alarmCopy hour]);
   [v10 setHour:v12];
 
-  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 minute]);
+  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [alarmCopy minute]);
   [v10 setMinute:v13];
 
-  v14 = [v8 repeatOptions];
-  if (!v14)
+  repeatOptions = [alarmCopy repeatOptions];
+  if (!repeatOptions)
   {
     v17 = 0;
     goto LABEL_18;
   }
 
-  v15 = v14;
+  v15 = repeatOptions;
   v16 = objc_alloc_init(NSMutableArray);
   v17 = v16;
   if (v15)
@@ -2373,44 +2373,44 @@ LABEL_18:
 
   v19 = v18;
   [v10 setFrequency:v18];
-  v20 = [v8 title];
-  [v10 setLabel:v20];
+  title = [alarmCopy title];
+  [v10 setLabel:title];
 
-  v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 isFiring]);
+  v21 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [alarmCopy isFiring]);
   [v10 setFiring:v21];
 
-  v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 isEnabled]);
+  v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [alarmCopy isEnabled]);
   [v10 setEnabled:v22];
 
-  v23 = [(ADContextManager *)self _dataSourceInfoWithProximity:a4 deviceContext:v9];
+  v23 = [(ADContextManager *)self _dataSourceInfoWithProximity:proximity deviceContext:contextCopy];
 
   [v10 setDataSourceInfo:v23];
 
   return v10;
 }
 
-- (id)_timerAceObjectFromTimer:(id)a3 withProximity:(int64_t)a4 inDeviceContext:(id)a5
+- (id)_timerAceObjectFromTimer:(id)timer withProximity:(int64_t)proximity inDeviceContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  timerCopy = timer;
+  contextCopy = context;
   v10 = objc_alloc_init(SATimerObject);
-  v11 = [v8 timerURL];
-  [v10 setIdentifier:v11];
+  timerURL = [timerCopy timerURL];
+  [v10 setIdentifier:timerURL];
 
-  if (![v8 isFiring])
+  if (![timerCopy isFiring])
   {
-    v13 = [v8 state];
+    state = [timerCopy state];
     v12 = 0;
-    if (v13 > 1)
+    if (state > 1)
     {
-      if (v13 == 2)
+      if (state == 2)
       {
         v14 = &SATimerStatePausedValue;
       }
 
       else
       {
-        if (v13 != 3)
+        if (state != 3)
         {
           goto LABEL_13;
         }
@@ -2419,9 +2419,9 @@ LABEL_18:
       }
     }
 
-    else if (v13)
+    else if (state)
     {
-      if (v13 != 1)
+      if (state != 1)
       {
         goto LABEL_13;
       }
@@ -2442,34 +2442,34 @@ LABEL_18:
   [v10 setIsFiring:&__kCFBooleanTrue];
 LABEL_13:
   [v10 setState:v12];
-  if ([v8 state] == 1 || objc_msgSend(v8, "state") == 2)
+  if ([timerCopy state] == 1 || objc_msgSend(timerCopy, "state") == 2)
   {
-    [v8 fireTimeInterval];
+    [timerCopy fireTimeInterval];
     v15 = [NSNumber numberWithDouble:?];
     [v10 setTimerValue:v15];
   }
 
-  if ([v8 state] == 3)
+  if ([timerCopy state] == 3)
   {
-    v16 = [v8 fireDate];
-    [v16 timeIntervalSinceNow];
+    fireDate = [timerCopy fireDate];
+    [fireDate timeIntervalSinceNow];
     v17 = [NSNumber numberWithDouble:?];
     [v10 setTimerValue:v17];
   }
 
-  v18 = [v8 title];
-  [v10 setTitle:v18];
+  title = [timerCopy title];
+  [v10 setTitle:title];
 
   v19 = SATimerTypeUndefinedValue;
-  v20 = [v8 type];
-  if (v20 == 1)
+  type = [timerCopy type];
+  if (type == 1)
   {
     v21 = &SATimerTypeDefaultValue;
   }
 
   else
   {
-    if (v20 != 2)
+    if (type != 2)
     {
       goto LABEL_23;
     }
@@ -2482,31 +2482,31 @@ LABEL_13:
   v19 = v22;
 LABEL_23:
   [v10 setType:v19];
-  v23 = [(ADContextManager *)self _dataSourceInfoWithProximity:a4 deviceContext:v9];
+  v23 = [(ADContextManager *)self _dataSourceInfoWithProximity:proximity deviceContext:contextCopy];
 
   [v10 setDataSourceInfo:v23];
 
   return v10;
 }
 
-- (void)_setCollectingContext:(BOOL)a3
+- (void)_setCollectingContext:(BOOL)context
 {
-  if (self->_collectingContext != a3)
+  if (self->_collectingContext != context)
   {
-    v3 = a3;
+    contextCopy = context;
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       v7 = 136315394;
       v8 = "[ADContextManager _setCollectingContext:]";
       v9 = 1024;
-      v10 = v3;
+      v10 = contextCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s #hal %d", &v7, 0x12u);
     }
 
-    self->_collectingContext = v3;
+    self->_collectingContext = contextCopy;
     remoteContextStore = self->_remoteContextStore;
-    if (v3)
+    if (contextCopy)
     {
       [(ADRemoteContextStore *)remoteContextStore startCollectingContext];
     }
@@ -2556,9 +2556,9 @@ LABEL_23:
   }
 }
 
-- (void)getBackgroundContext:(id)a3
+- (void)getBackgroundContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -2572,8 +2572,8 @@ LABEL_23:
   v8[2] = sub_100111ED0;
   v8[3] = &unk_10051E038;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = contextCopy;
+  v6 = contextCopy;
   v7 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_USER_INITIATED, 0, v8);
   dispatch_async(self->_bgContextQueue, v7);
 }
@@ -2591,9 +2591,9 @@ LABEL_23:
   [(ADContextManager *)self getBackgroundContext:0];
 }
 
-- (void)_getBackgroundContext:(id)a3
+- (void)_getBackgroundContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = dispatch_group_create();
   v6 = self->_analytics;
   v49 = @"group";
@@ -2706,27 +2706,27 @@ LABEL_23:
   v24 = v6;
   v25 = v8;
   v26 = v5;
-  v27 = self;
-  v28 = v4;
-  v19 = v4;
+  selfCopy = self;
+  v28 = contextCopy;
+  v19 = contextCopy;
   v20 = v5;
   v21 = v8;
   v22 = v6;
   dispatch_group_notify(v20, bgContextQueue, v23);
 }
 
-- (void)_updateSimpleThingsWithContext:(id)a3 completion:(id)a4
+- (void)_updateSimpleThingsWithContext:(id)context completion:(id)completion
 {
-  v16 = a3;
-  v6 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v7 = self->_analytics;
-  [(AFAnalytics *)v7 logEventWithType:4519 context:v16];
+  [(AFAnalytics *)v7 logEventWithType:4519 context:contextCopy];
   if ([(AFInstanceContext *)self->_instanceContext supportsTelephony])
   {
-    [(AFAnalytics *)v7 logEventWithType:4517 context:v16];
-    v8 = [(ADContextManager *)self _inlineUpdatePhoneState];
-    v9 = v8;
-    v10 = sub_1000090A4(v16, v8);
+    [(AFAnalytics *)v7 logEventWithType:4517 context:contextCopy];
+    _inlineUpdatePhoneState = [(ADContextManager *)self _inlineUpdatePhoneState];
+    v9 = _inlineUpdatePhoneState;
+    v10 = sub_1000090A4(contextCopy, _inlineUpdatePhoneState);
     [(AFAnalytics *)v7 logEventWithType:4518 context:v10];
   }
 
@@ -2735,78 +2735,78 @@ LABEL_23:
     v9 = 0;
   }
 
-  [(AFAnalytics *)self->_analytics logEventWithType:4511 context:v16];
-  v11 = [(ADContextManager *)self _inlineUpdateCurrentHomeKitHome];
-  v12 = v11;
+  [(AFAnalytics *)self->_analytics logEventWithType:4511 context:contextCopy];
+  _inlineUpdateCurrentHomeKitHome = [(ADContextManager *)self _inlineUpdateCurrentHomeKitHome];
+  v12 = _inlineUpdateCurrentHomeKitHome;
   analytics = self->_analytics;
-  v14 = sub_1000090A4(v16, v11);
+  v14 = sub_1000090A4(contextCopy, _inlineUpdateCurrentHomeKitHome);
   [(AFAnalytics *)analytics logEventWithType:4512 context:v14];
 
-  v15 = sub_1000090A4(v16, v9 | v12);
+  v15 = sub_1000090A4(contextCopy, v9 | v12);
   [(AFAnalytics *)v7 logEventWithType:4520 context:v15];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v9 | v12);
+    completionCopy[2](completionCopy, v9 | v12);
   }
 }
 
-- (void)_logForceFetchWithStartTime:(unint64_t)a3 forceFetchCount:(unint64_t)a4 forceFetchError:(id)a5 halMetricsId:(id)a6
+- (void)_logForceFetchWithStartTime:(unint64_t)time forceFetchCount:(unint64_t)count forceFetchError:(id)error halMetricsId:(id)id
 {
-  v10 = a5;
-  v11 = a6;
+  errorCopy = error;
+  idCopy = id;
   metricsQueue = self->_metricsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100112D9C;
   block[3] = &unk_10051D628;
   block[4] = self;
-  v16 = v11;
-  v18 = a3;
-  v19 = a4;
-  v17 = v10;
-  v13 = v10;
-  v14 = v11;
+  v16 = idCopy;
+  timeCopy = time;
+  countCopy = count;
+  v17 = errorCopy;
+  v13 = errorCopy;
+  v14 = idCopy;
   dispatch_async(metricsQueue, block);
 }
 
-- (void)_logForceFetchContextFailedWithHALMetricsId:(id)a3 contextId:(id)a4 error:(id)a5
+- (void)_logForceFetchContextFailedWithHALMetricsId:(id)id contextId:(id)contextId error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 domain];
-  LODWORD(a3) = [v10 isEqualToString:kAFAssistantErrorDomain];
+  errorCopy = error;
+  contextIdCopy = contextId;
+  idCopy = id;
+  domain = [errorCopy domain];
+  LODWORD(id) = [domain isEqualToString:kAFAssistantErrorDomain];
 
-  if (a3)
+  if (id)
   {
-    v11 = [v7 code];
-    if (v11 == 1013)
+    code = [errorCopy code];
+    if (code == 1013)
     {
       v12 = 3;
     }
 
     else
     {
-      v12 = v11 == 3102;
+      v12 = code == 3102;
     }
   }
 
   else
   {
-    v12 = 2 * (v7 == 0);
+    v12 = 2 * (errorCopy == 0);
   }
 
   v13 = objc_alloc_init(HALSchemaHALForceFetchFailed);
   [v13 setFailureReason:v12];
   v14 = objc_alloc_init(HALSchemaHALClientEvent);
   v15 = objc_alloc_init(HALSchemaHALForceFetchContext);
-  [v15 setContextId:v8];
+  [v15 setContextId:contextIdCopy];
 
   [v15 setFailed:v13];
   [v14 setForceFetchContext:v15];
   v16 = objc_alloc_init(HALSchemaHALClientEventMetadata);
-  v17 = [[SISchemaUUID alloc] initWithNSUUID:v9];
+  v17 = [[SISchemaUUID alloc] initWithNSUUID:idCopy];
 
   [v16 setHalId:v17];
   [v14 setEventMetadata:v16];
@@ -2824,20 +2824,20 @@ LABEL_23:
   }
 }
 
-- (void)_logForceFetchContextEndedWithHALMetricsId:(id)a3 contextId:(id)a4 forceFetchCount:(unint64_t)a5
+- (void)_logForceFetchContextEndedWithHALMetricsId:(id)id contextId:(id)contextId forceFetchCount:(unint64_t)count
 {
-  v7 = a4;
-  v8 = a3;
+  contextIdCopy = contextId;
+  idCopy = id;
   v9 = objc_alloc_init(HALSchemaHALForceFetchEnded);
-  [v9 setNumDeviceContextsFetched:a5];
+  [v9 setNumDeviceContextsFetched:count];
   v10 = objc_alloc_init(HALSchemaHALClientEvent);
   v11 = objc_alloc_init(HALSchemaHALForceFetchContext);
-  [v11 setContextId:v7];
+  [v11 setContextId:contextIdCopy];
 
   [v11 setEnded:v9];
   [v10 setForceFetchContext:v11];
   v12 = objc_alloc_init(HALSchemaHALClientEventMetadata);
-  v13 = [[SISchemaUUID alloc] initWithNSUUID:v8];
+  v13 = [[SISchemaUUID alloc] initWithNSUUID:idCopy];
 
   [v12 setHalId:v13];
   [v10 setEventMetadata:v12];
@@ -2855,25 +2855,25 @@ LABEL_23:
   }
 }
 
-- (void)_logForceFetchContextStartedWithHALMetricsId:(id)a3 contextId:(id)a4 timestamp:(unint64_t)a5
+- (void)_logForceFetchContextStartedWithHALMetricsId:(id)id contextId:(id)contextId timestamp:(unint64_t)timestamp
 {
-  v7 = a4;
-  v8 = a3;
+  contextIdCopy = contextId;
+  idCopy = id;
   v9 = objc_alloc_init(HALSchemaHALForceFetchStarted);
   [v9 setExists:1];
   v10 = objc_alloc_init(HALSchemaHALClientEvent);
   v11 = objc_alloc_init(HALSchemaHALForceFetchContext);
-  [v11 setContextId:v7];
+  [v11 setContextId:contextIdCopy];
 
   [v11 setStartedOrChanged:v9];
   [v10 setForceFetchContext:v11];
   v12 = objc_alloc_init(HALSchemaHALClientEventMetadata);
-  v13 = [[SISchemaUUID alloc] initWithNSUUID:v8];
+  v13 = [[SISchemaUUID alloc] initWithNSUUID:idCopy];
 
   [v12 setHalId:v13];
   [v10 setEventMetadata:v12];
   v14 = +[AssistantSiriAnalytics sharedStream];
-  [v14 emitMessage:v10 timestamp:a5];
+  [v14 emitMessage:v10 timestamp:timestamp];
 
   mach_absolute_time();
   AFMachAbsoluteTimeGetTimeInterval();
@@ -2891,69 +2891,69 @@ LABEL_23:
   }
 }
 
-- (void)_logFetchLocalContextEnded:(id)a3
+- (void)_logFetchLocalContextEnded:(id)ended
 {
-  v4 = a3;
+  endedCopy = ended;
   metricsQueue = self->_metricsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001134A0;
   block[3] = &unk_10051DFE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = endedCopy;
+  v6 = endedCopy;
   dispatch_async(metricsQueue, block);
 }
 
-- (void)_logFetchLocalContextStarted:(id)a3
+- (void)_logFetchLocalContextStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   metricsQueue = self->_metricsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001136B8;
   block[3] = &unk_10051DFE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = startedCopy;
+  v6 = startedCopy;
   dispatch_async(metricsQueue, block);
 }
 
-- (void)_logContextCollectorFetchFailed:(id)a3
+- (void)_logContextCollectorFetchFailed:(id)failed
 {
-  v4 = a3;
+  failedCopy = failed;
   metricsQueue = self->_metricsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001138D0;
   block[3] = &unk_10051DFE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = failedCopy;
+  v6 = failedCopy;
   dispatch_async(metricsQueue, block);
 }
 
-- (void)_logContextCollectorFetchEnded:(id)a3 numDeviceContextsFetched:(unint64_t)a4
+- (void)_logContextCollectorFetchEnded:(id)ended numDeviceContextsFetched:(unint64_t)fetched
 {
-  v6 = a3;
+  endedCopy = ended;
   metricsQueue = self->_metricsQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100113AEC;
   v9[3] = &unk_10051D770;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = endedCopy;
+  fetchedCopy = fetched;
+  v8 = endedCopy;
   dispatch_async(metricsQueue, v9);
 }
 
-- (void)_logContextCollectorFetchStarted:(id)a3
+- (void)_logContextCollectorFetchStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   metricsQueue = self->_metricsQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100113D0C;
   block[3] = &unk_10051DFE8;
-  v8 = v4;
-  v6 = v4;
+  v8 = startedCopy;
+  v6 = startedCopy;
   dispatch_async(metricsQueue, block);
 }
 
@@ -2996,22 +2996,22 @@ LABEL_23:
   [(AFWatchdogTimer *)self->_contextRefreshTimer start];
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestDidEndWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestDidEndWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
-  v8 = a4;
-  v9 = [v8 uuid];
+  infoCopy = info;
+  uuid = [infoCopy uuid];
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v14 = v10;
-    v15 = [NSNumber numberWithInteger:a5];
+    v15 = [NSNumber numberWithInteger:origin];
     currentRequestInfoUUID = self->_currentRequestInfoUUID;
     *buf = 136315906;
     v23 = "[ADContextManager requestLifecycleObserver:requestDidEndWithInfo:origin:client:]";
     v24 = 2112;
     v25 = v15;
     v26 = 2112;
-    v27 = v9;
+    v27 = uuid;
     v28 = 2112;
     v29 = currentRequestInfoUUID;
     _os_log_debug_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%s #hal requestDidEndWithInfo origin:%@, uuid: %@. _currentRequestInfoUUID: %@", buf, 0x2Au);
@@ -3022,64 +3022,64 @@ LABEL_23:
   v17[1] = 3221225472;
   v17[2] = sub_100114444;
   v17[3] = &unk_10051DBB8;
-  v18 = v9;
-  v19 = self;
-  v20 = v8;
-  v21 = a5;
-  v12 = v8;
-  v13 = v9;
+  v18 = uuid;
+  selfCopy = self;
+  v20 = infoCopy;
+  originCopy = origin;
+  v12 = infoCopy;
+  v13 = uuid;
   dispatch_async(queue, v17);
 }
 
-- (void)requestLifecycleObserver:(id)a3 requestWillBeginWithInfo:(id)a4 origin:(int64_t)a5 client:(id)a6
+- (void)requestLifecycleObserver:(id)observer requestWillBeginWithInfo:(id)info origin:(int64_t)origin client:(id)client
 {
-  v8 = a4;
+  infoCopy = info;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001146C0;
   block[3] = &unk_10051E128;
-  v13 = self;
-  v14 = a5;
-  v12 = v8;
-  v10 = v8;
+  selfCopy = self;
+  originCopy = origin;
+  v12 = infoCopy;
+  v10 = infoCopy;
   dispatch_async(queue, block);
 }
 
-- (void)getContextSnapshotForForeignRequestID:(id)a3 completion:(id)a4
+- (void)getContextSnapshotForForeignRequestID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100114A80;
   block[3] = &unk_10051E088;
-  v12 = v6;
-  v13 = v7;
+  v12 = dCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = dCopy;
+  v10 = completionCopy;
   dispatch_async(queue, block);
 }
 
-- (void)pushContextSnapshotForCurrentRequestWithID:(id)a3 toDevice:(id)a4
+- (void)pushContextSnapshotForCurrentRequestWithID:(id)d toDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  deviceCopy = device;
   if (AFSupportsHALContextDonation())
   {
-    if (v6)
+    if (dCopy)
     {
-      v8 = [v7 afPeerInfo];
-      v9 = sub_10001A498(v8, 0);
+      afPeerInfo = [deviceCopy afPeerInfo];
+      v9 = sub_10001A498(afPeerInfo, 0);
 
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_100114C6C;
       v12[3] = &unk_100514C98;
-      v13 = v6;
-      v14 = self;
+      v13 = dCopy;
+      selfCopy = self;
       v15 = v9;
       v10 = v9;
       [(ADContextManager *)self getContextSnapshotForCurrentRequestWithCompletion:v12];
@@ -3098,9 +3098,9 @@ LABEL_23:
   }
 }
 
-- (void)getContextSnapshotForCurrentRequestWithCompletion:(id)a3
+- (void)getContextSnapshotForCurrentRequestWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -3109,7 +3109,7 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s ", &buf, 0xCu);
   }
 
-  if (v4)
+  if (completionCopy)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -3124,7 +3124,7 @@ LABEL_23:
     v19[3] = &unk_10051C8B8;
     p_buf = &buf;
     v19[4] = self;
-    v20 = v4;
+    v20 = completionCopy;
     v7 = [v6 initWithBlock:v19];
     objc_initWeak(&location, v7);
     v8 = [AFWatchdogTimer alloc];
@@ -3157,23 +3157,23 @@ LABEL_23:
   }
 }
 
-- (void)_getDevicesWithContexts:(id)a3 passingTest:(id)a4 capabilitesPassingTest:(id)a5 completion:(id)a6
+- (void)_getDevicesWithContexts:(id)contexts passingTest:(id)test capabilitesPassingTest:(id)passingTest completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v27 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v12)
+  contextsCopy = contexts;
+  testCopy = test;
+  passingTestCopy = passingTest;
+  completionCopy = completion;
+  v13 = completionCopy;
+  if (completionCopy)
   {
-    v25 = v12;
+    v25 = completionCopy;
     v26 = objc_alloc_init(NSMutableArray);
     v14 = dispatch_group_create();
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = v10;
+    obj = contextsCopy;
     v15 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v15)
     {
@@ -3188,10 +3188,10 @@ LABEL_23:
             objc_enumerationMutation(obj);
           }
 
-          v19 = [*(*(&v37 + 1) + 8 * i) content];
-          if (v11[2](v11, v19))
+          content = [*(*(&v37 + 1) + 8 * i) content];
+          if (testCopy[2](testCopy, content))
           {
-            v20 = [v19 deviceInfo];
+            deviceInfo = [content deviceInfo];
             dispatch_group_enter(v14);
             deviceCircleManager = self->_deviceCircleManager;
             v32[0] = _NSConcreteStackBlock;
@@ -3199,11 +3199,11 @@ LABEL_23:
             v32[2] = sub_1001161F4;
             v32[3] = &unk_100511D30;
             v32[4] = self;
-            v36 = v27;
+            v36 = passingTestCopy;
             v33 = v26;
-            v34 = v20;
+            v34 = deviceInfo;
             v35 = v14;
-            v22 = v20;
+            v22 = deviceInfo;
             [(ADDeviceCircleManager *)deviceCircleManager getCapabilitiesForDevice:v22 completion:v32];
           }
         }
@@ -3227,12 +3227,12 @@ LABEL_23:
   }
 }
 
-- (void)getDeviceContextsForKeys:(id)a3 forForeignRequestID:(id)a4 includesNearbyDevices:(BOOL)a5 completion:(id)a6
+- (void)getDeviceContextsForKeys:(id)keys forForeignRequestID:(id)d includesNearbyDevices:(BOOL)devices completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  devicesCopy = devices;
+  keysCopy = keys;
+  dCopy = d;
+  completionCopy = completion;
   v13 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -3241,30 +3241,30 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s #hal", buf, 0xCu);
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100116608;
     v23[3] = &unk_100511D08;
-    v26 = v7;
+    v26 = devicesCopy;
     v23[4] = self;
-    v24 = v10;
-    v25 = v12;
+    v24 = keysCopy;
+    v25 = completionCopy;
     v14 = objc_retainBlock(v23);
     v15 = v14;
-    if (v11)
+    if (dCopy)
     {
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_10011686C;
       v21[3] = &unk_10051CD10;
       v22 = v14;
-      [(ADContextManager *)self getContextSnapshotForForeignRequestID:v11 completion:v21];
+      [(ADContextManager *)self getContextSnapshotForForeignRequestID:dCopy completion:v21];
       v16 = v22;
     }
 
-    else if (v7)
+    else if (devicesCopy)
     {
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
@@ -3290,24 +3290,24 @@ LABEL_23:
   }
 }
 
-- (void)getLocalContextWithPrivacyClass:(int64_t)a3 completion:(id)a4
+- (void)getLocalContextWithPrivacyClass:(int64_t)class completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    [(ADLocalContextStore *)self->_localContextStore getLocalContextWithPrivacyClass:a3 completion:?];
+    [(ADLocalContextStore *)self->_localContextStore getLocalContextWithPrivacyClass:class completion:?];
   }
 }
 
-- (void)getContextIncludingKeys:(id)a3 excludingMandatoryKeys:(id)a4 timeOut:(double)a5 localContextCompletion:(id)a6 completion:(id)a7
+- (void)getContextIncludingKeys:(id)keys excludingMandatoryKeys:(id)mandatoryKeys timeOut:(double)out localContextCompletion:(id)completion completion:(id)a7
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  keysCopy = keys;
+  mandatoryKeysCopy = mandatoryKeys;
+  completionCopy = completion;
   v15 = a7;
   v16 = +[NSUUID UUID];
-  v17 = [v16 UUIDString];
-  v18 = [v17 componentsSeparatedByString:@"-"];
-  v19 = [v18 firstObject];
+  uUIDString = [v16 UUIDString];
+  v18 = [uUIDString componentsSeparatedByString:@"-"];
+  firstObject = [v18 firstObject];
 
   v20 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3315,13 +3315,13 @@ LABEL_23:
     *buf = 136316162;
     v31 = "[ADContextManager getContextIncludingKeys:excludingMandatoryKeys:timeOut:localContextCompletion:completion:]";
     v32 = 2112;
-    v33 = v19;
+    v33 = firstObject;
     v34 = 2112;
-    v35 = v12;
+    v35 = keysCopy;
     v36 = 2112;
-    v37 = v13;
+    v37 = mandatoryKeysCopy;
     v38 = 2048;
-    v39 = a5;
+    outCopy = out;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%s #hal (%@) includedKeys: %@, excludedKeys: %@, timeOut: %f", buf, 0x34u);
   }
 
@@ -3333,33 +3333,33 @@ LABEL_23:
     block[1] = 3221225472;
     block[2] = sub_100117430;
     block[3] = &unk_100511CB8;
-    v23 = v19;
-    v24 = self;
+    v23 = firstObject;
+    selfCopy = self;
     v27 = v15;
-    v29 = a5;
-    v28 = v14;
-    v25 = v12;
-    v26 = v13;
+    outCopy2 = out;
+    v28 = completionCopy;
+    v25 = keysCopy;
+    v26 = mandatoryKeysCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)_getNowPlayingMediaIsResumable:(id)a3
+- (void)_getNowPlayingMediaIsResumable:(id)resumable
 {
-  v4 = a3;
-  v5 = [(ADBackgroundContextCache *)self->_bgContext queueState];
-  v6 = [v5 applicationIdentifier];
-  if ([v6 isEqualToString:@"com.apple.sirireaderd"])
+  resumableCopy = resumable;
+  queueState = [(ADBackgroundContextCache *)self->_bgContext queueState];
+  applicationIdentifier = [queueState applicationIdentifier];
+  if ([applicationIdentifier isEqualToString:@"com.apple.sirireaderd"])
   {
-    v7 = [v5 state] == 2;
+    v7 = [queueState state] == 2;
   }
 
   else
   {
-    v8 = [v5 applicationIdentifier];
-    if ([v8 isEqualToString:@"com.apple.siri.sirireaderd"])
+    applicationIdentifier2 = [queueState applicationIdentifier];
+    if ([applicationIdentifier2 isEqualToString:@"com.apple.siri.sirireaderd"])
     {
-      v7 = [v5 state] == 2;
+      v7 = [queueState state] == 2;
     }
 
     else
@@ -3368,7 +3368,7 @@ LABEL_23:
     }
   }
 
-  if ([v5 state] != 1 && !v7)
+  if ([queueState state] != 1 && !v7)
   {
     v9 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -3384,9 +3384,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v11 = [v5 listeningToItem];
-  v12 = [v11 mediaType];
-  v13 = [v12 isEqualToString:SANPMediaTypeVideoValue];
+  listeningToItem = [queueState listeningToItem];
+  mediaType = [listeningToItem mediaType];
+  v13 = [mediaType isEqualToString:SANPMediaTypeVideoValue];
 
   if (v13)
   {
@@ -3405,8 +3405,8 @@ LABEL_15:
   }
 
   v15 = objc_opt_class();
-  v16 = [v5 applicationIdentifier];
-  LODWORD(v15) = [v15 _isResumableFirstPartyBundleID:v16];
+  applicationIdentifier3 = [queueState applicationIdentifier];
+  LODWORD(v15) = [v15 _isResumableFirstPartyBundleID:applicationIdentifier3];
 
   if (v15)
   {
@@ -3422,12 +3422,12 @@ LABEL_15:
 
   else
   {
-    v18 = [v5 applicationIdentifier];
-    v19 = [LSApplicationProxy applicationProxyForIdentifier:v18];
+    applicationIdentifier4 = [queueState applicationIdentifier];
+    v19 = [LSApplicationProxy applicationProxyForIdentifier:applicationIdentifier4];
 
     v20 = objc_opt_class();
-    v21 = [v19 genreID];
-    v14 = [v20 _isResumableThirdPartyGenreID:v21];
+    genreID = [v19 genreID];
+    v14 = [v20 _isResumableThirdPartyGenreID:genreID];
 
     if (v14)
     {
@@ -3442,40 +3442,40 @@ LABEL_15:
   }
 
 LABEL_16:
-  if (v4)
+  if (resumableCopy)
   {
-    v4[2](v4, v14);
+    resumableCopy[2](resumableCopy, v14);
   }
 }
 
-- (void)getNowPlayingMediaIsResumable:(id)a3
+- (void)getNowPlayingMediaIsResumable:(id)resumable
 {
-  v4 = a3;
+  resumableCopy = resumable;
   bgContextQueue = self->_bgContextQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001188F4;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = resumableCopy;
+  v6 = resumableCopy;
   dispatch_async(bgContextQueue, v7);
 }
 
-- (void)getDomainObjectFromMessageContext:(id)a3 completion:(id)a4
+- (void)getDomainObjectFromMessageContext:(id)context completion:(id)completion
 {
-  v11 = a4;
-  if (v11)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v7 = a3;
+    contextCopy = context;
     v8 = AFMessagesGetDomainObjectsFromContext();
 
-    v11[2](v11, v8);
+    completionCopy[2](completionCopy, v8);
   }
 
   else
   {
-    v9 = a3;
+    contextCopy2 = context;
     v10 = +[NSAssertionHandler currentHandler];
     [v10 handleFailureInMethod:a2 object:self file:@"ADContextManager.m" lineNumber:891 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
@@ -3483,44 +3483,44 @@ LABEL_16:
   }
 }
 
-- (void)markBulletinAsAcknolwedgedForDomainObject:(id)a3
+- (void)markBulletinAsAcknolwedgedForDomainObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 identifier];
-    v6 = [v5 URLByDeletingPathExtension];
-    v7 = [v6 lastPathComponent];
+    v4 = objectCopy;
+    identifier = [v4 identifier];
+    uRLByDeletingPathExtension = [identifier URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-    if ([v7 length])
+    if ([lastPathComponent length])
     {
       v8 = objc_alloc_init(off_10058B430());
-      v9 = -[NSObject voicemailWithIdentifier:](v8, "voicemailWithIdentifier:", [v7 integerValue]);
+      identifier3 = -[NSObject voicemailWithIdentifier:](v8, "voicemailWithIdentifier:", [lastPathComponent integerValue]);
       v10 = AFSiriLogContextDaemon;
-      if (v9)
+      if (identifier3)
       {
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
         {
           v15 = 136315394;
           v16 = "[ADContextManager markBulletinAsAcknolwedgedForDomainObject:]";
           v17 = 2112;
-          v18 = v9;
+          v18 = identifier3;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Marking voicemail as played: %@", &v15, 0x16u);
         }
 
-        v11 = [v8 markVoicemailAsRead:v9];
+        v11 = [v8 markVoicemailAsRead:identifier3];
       }
 
       else if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
       {
         v13 = v10;
-        v14 = [v4 identifier];
+        identifier2 = [v4 identifier];
         v15 = 136315394;
         v16 = "[ADContextManager markBulletinAsAcknolwedgedForDomainObject:]";
         v17 = 2112;
-        v18 = v14;
+        v18 = identifier2;
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Unable to find voicemail: %@", &v15, 0x16u);
       }
     }
@@ -3536,13 +3536,13 @@ LABEL_12:
       }
 
       v8 = v12;
-      v9 = [v4 identifier];
+      identifier3 = [v4 identifier];
       v15 = 136315650;
       v16 = "[ADContextManager markBulletinAsAcknolwedgedForDomainObject:]";
       v17 = 2112;
       v18 = v4;
       v19 = 2112;
-      v20 = v9;
+      v20 = identifier3;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s Voicemail contains invalid identifier: %@, %@", &v15, 0x20u);
     }
 
@@ -3552,13 +3552,13 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)getAlertContextWithBulletins:(id)a3 externalAlarmSnapshot:(id)a4 timerSnapshot:(id)a5 nlAlertContextCompletion:(id)a6 fullAlertContextCompletion:(id)a7
+- (void)getAlertContextWithBulletins:(id)bulletins externalAlarmSnapshot:(id)snapshot timerSnapshot:(id)timerSnapshot nlAlertContextCompletion:(id)completion fullAlertContextCompletion:(id)contextCompletion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v39 = a7;
+  bulletinsCopy = bulletins;
+  snapshotCopy = snapshot;
+  timerSnapshotCopy = timerSnapshot;
+  completionCopy = completion;
+  contextCompletionCopy = contextCompletion;
   v15 = objc_alloc_init(NSMutableDictionary);
   v16 = dispatch_group_create();
   v17 = dispatch_group_create();
@@ -3569,14 +3569,14 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_10011912C;
   block[3] = &unk_10051DB18;
-  v57 = v11;
+  v57 = bulletinsCopy;
   v19 = v15;
   v58 = v19;
   v20 = v16;
   v59 = v20;
   v21 = v17;
   v60 = v21;
-  v40 = v11;
+  v40 = bulletinsCopy;
   dispatch_async(v18, block);
 
   v22 = objc_alloc_init(NSMutableDictionary);
@@ -3588,10 +3588,10 @@ LABEL_13:
   v47[1] = 3221225472;
   v47[2] = sub_1001193B4;
   v47[3] = &unk_1005141E8;
-  v48 = v12;
-  v49 = self;
+  v48 = snapshotCopy;
+  selfCopy = self;
   v50 = v22;
-  v51 = v13;
+  v51 = timerSnapshotCopy;
   v52 = v23;
   v25 = v19;
   v53 = v25;
@@ -3600,9 +3600,9 @@ LABEL_13:
   v26 = v21;
   v27 = v20;
   v38 = v23;
-  v28 = v13;
+  v28 = timerSnapshotCopy;
   v29 = v22;
-  v30 = v12;
+  v30 = snapshotCopy;
   dispatch_async(v24, v47);
 
   v31 = sub_10006C1DC();
@@ -3612,8 +3612,8 @@ LABEL_13:
   v44[3] = &unk_10051E038;
   v32 = v25;
   v45 = v32;
-  v46 = v14;
-  v33 = v14;
+  v46 = completionCopy;
+  v33 = completionCopy;
   dispatch_group_notify(v27, v31, v44);
 
   v34 = sub_10006C1DC();
@@ -3622,16 +3622,16 @@ LABEL_13:
   v41[2] = sub_100119720;
   v41[3] = &unk_10051E038;
   v42 = v32;
-  v43 = v39;
-  v35 = v39;
+  v43 = contextCompletionCopy;
+  v35 = contextCompletionCopy;
   v36 = v32;
   dispatch_group_notify(v26, v34, v41);
 }
 
-- (void)_getCurrentUserActivityOnQueue:(id)a3 completion:(id)a4
+- (void)_getCurrentUserActivityOnQueue:(id)queue completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -3663,26 +3663,26 @@ LABEL_13:
   v10[1] = 3221225472;
   v10[2] = sub_100119E6C;
   v10[3] = &unk_100511C18;
-  v11 = v6;
+  v11 = completionCopy;
   v12 = v20;
   v13 = v18;
-  v9 = v6;
-  dispatch_group_notify(v8, v5, v10);
+  v9 = completionCopy;
+  dispatch_group_notify(v8, queueCopy, v10);
 
   _Block_object_dispose(v18, 8);
   _Block_object_dispose(v20, 8);
 }
 
-- (void)getAppContextForDeviceState:(int64_t)a3 applicationInfos:(id)a4 completion:(id)a5
+- (void)getAppContextForDeviceState:(int64_t)state applicationInfos:(id)infos completion:(id)completion
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v6)
+  stateCopy = state;
+  infosCopy = infos;
+  completionCopy = completion;
+  if (stateCopy)
   {
-    if ((v6 & 2) != 0)
+    if ((stateCopy & 2) != 0)
     {
-      v10 = [(ADContextManager *)self _filteredApplicationInfosForLockedStark:v8];
+      v10 = [(ADContextManager *)self _filteredApplicationInfosForLockedStark:infosCopy];
     }
 
     else
@@ -3690,7 +3690,7 @@ LABEL_13:
       v10 = 0;
     }
 
-    v8 = v10;
+    infosCopy = v10;
   }
 
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -3700,36 +3700,36 @@ LABEL_13:
   v16[1] = 3221225472;
   v16[2] = sub_10011A3D4;
   v16[3] = &unk_10051E0D8;
-  v17 = v8;
+  v17 = infosCopy;
   v18 = v12;
-  v19 = self;
-  v20 = v9;
-  v13 = v9;
+  selfCopy = self;
+  v20 = completionCopy;
+  v13 = completionCopy;
   v14 = v12;
-  v15 = v8;
+  v15 = infosCopy;
   dispatch_async(v14, v16);
 }
 
-- (id)_appInfoWithBundleID:(id)a3
+- (id)_appInfoWithBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(SAAppInfo);
   v5 = objc_alloc_init(SASyncAppIdentifyingInfo);
-  [v5 setBundleId:v3];
+  [v5 setBundleId:dCopy];
 
   [v4 setAppIdentifyingInfo:v5];
 
   return v4;
 }
 
-- (id)_filteredApplicationInfosForLockedStark:(id)a3
+- (id)_filteredApplicationInfosForLockedStark:(id)stark
 {
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  starkCopy = stark;
+  v4 = [starkCopy countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3740,12 +3740,12 @@ LABEL_3:
     {
       if (*v15 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(starkCopy);
       }
 
       v8 = *(*(&v14 + 1) + 8 * v7);
-      v9 = [v8 identifier];
-      v10 = [v9 isEqualToString:@"com.apple.Maps"];
+      identifier = [v8 identifier];
+      v10 = [identifier isEqualToString:@"com.apple.Maps"];
 
       if (v10)
       {
@@ -3754,7 +3754,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v5 = [starkCopy countByEnumeratingWithState:&v14 objects:v19 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -3780,7 +3780,7 @@ LABEL_3:
   {
 LABEL_9:
     v11 = 0;
-    v12 = v3;
+    v12 = starkCopy;
 LABEL_12:
   }
 
@@ -3810,7 +3810,7 @@ LABEL_12:
     *buf = 136315394;
     v7 = "[ADContextManager dealloc]";
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 
@@ -3825,23 +3825,23 @@ LABEL_12:
   [(ADContextManager *)&v5 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   bgContextQueue = self->_bgContextQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10011B444;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_async(bgContextQueue, v7);
 }
 
-- (void)_setDelegate:(id)a3
+- (void)_setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v6 = obj;
@@ -3850,18 +3850,18 @@ LABEL_12:
     objc_storeWeak(&self->_delegate, obj);
     if (obj)
     {
-      v5 = [(ADContextManager *)self _registerForBGUpdates];
+      _registerForBGUpdates = [(ADContextManager *)self _registerForBGUpdates];
     }
 
     else
     {
-      v5 = [(ADContextManager *)self _unregisterForBGUpdates];
+      _registerForBGUpdates = [(ADContextManager *)self _unregisterForBGUpdates];
     }
 
     v6 = obj;
   }
 
-  _objc_release_x1(v5, v6);
+  _objc_release_x1(_registerForBGUpdates, v6);
 }
 
 - (void)_initialize
@@ -3922,8 +3922,8 @@ LABEL_12:
   v6 = [ADRapportLinkConfiguration newWithBuilder:&v11];
   v7 = [ADRapportLink alloc];
   v8 = [(ADRapportLink *)v7 initWithQueue:self->_queue configuration:v6, v11, v12, v13, v14];
-  v9 = [(ADContextManager *)self _contextLinkMessageOptions];
-  [(ADRapportLink *)v8 registerRequestID:@"com.apple.siri.rapport-link.request.generic" options:v9];
+  _contextLinkMessageOptions = [(ADContextManager *)self _contextLinkMessageOptions];
+  [(ADRapportLink *)v8 registerRequestID:@"com.apple.siri.rapport-link.request.generic" options:_contextLinkMessageOptions];
   if ((v4 & 1) == 0)
   {
     [(ADRapportLink *)v8 setRequestHandler:self forRequestID:@"com.apple.siri.rapport-link.request.generic" messageType:@"context_push"];
@@ -3935,30 +3935,30 @@ LABEL_12:
   return v8;
 }
 
-- (id)_configuredRemoteContextStoreWithRapportLink:(id)a3 queue:(id)a4
+- (id)_configuredRemoteContextStoreWithRapportLink:(id)link queue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ADRemoteContextStore alloc] initWithRapportLink:v6 queue:v5];
+  queueCopy = queue;
+  linkCopy = link;
+  v7 = [[ADRemoteContextStore alloc] initWithRapportLink:linkCopy queue:queueCopy];
 
   return v7;
 }
 
-- (id)_configuredLocalContextStoreWithInstanceContext:(id)a3 rapportLink:(id)a4 queue:(id)a5
+- (id)_configuredLocalContextStoreWithInstanceContext:(id)context rapportLink:(id)link queue:(id)queue
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[ADLocalContextStore alloc] initWithInstanceContext:v10 rapportLink:v9 queue:v8 delegate:self];
+  queueCopy = queue;
+  linkCopy = link;
+  contextCopy = context;
+  v11 = [[ADLocalContextStore alloc] initWithInstanceContext:contextCopy rapportLink:linkCopy queue:queueCopy delegate:self];
 
   return v11;
 }
 
-- (id)_initWithDelegate:(id)a3 deviceCircleManager:(id)a4 deviceProximityManager:(id)a5
+- (id)_initWithDelegate:(id)delegate deviceCircleManager:(id)manager deviceProximityManager:(id)proximityManager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  managerCopy = manager;
+  proximityManagerCopy = proximityManager;
   v54.receiver = self;
   v54.super_class = ADContextManager;
   v11 = [(ADContextManager *)&v54 init];
@@ -3979,9 +3979,9 @@ LABEL_12:
       dispatch_once(&qword_100590148, &stru_1005121E8);
     }
 
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v11->_deviceCircleManager, a4);
-    objc_storeStrong(&v11->_deviceProximityManager, a5);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_deviceCircleManager, manager);
+    objc_storeStrong(&v11->_deviceProximityManager, proximityManager);
     [(ADContextManager *)v11 _initialize];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_create("BackgroundContextQueue", v13);
@@ -4012,9 +4012,9 @@ LABEL_12:
     contextSnapshotsReadUUIDs = v11->_contextSnapshotsReadUUIDs;
     v11->_contextSnapshotsReadUUIDs = v26;
 
-    v28 = [(ADContextManager *)v11 _configuredContextLink];
+    _configuredContextLink = [(ADContextManager *)v11 _configuredContextLink];
     rapportLink = v11->_rapportLink;
-    v11->_rapportLink = v28;
+    v11->_rapportLink = _configuredContextLink;
 
     [(ADRapportLink *)v11->_rapportLink addListener:v11];
     v30 = [(ADContextManager *)v11 _configuredRemoteContextStoreWithRapportLink:v11->_rapportLink queue:v11->_queue];
@@ -4075,43 +4075,43 @@ LABEL_12:
   return v11;
 }
 
-- (ADContextManager)initWithDelegate:(id)a3
+- (ADContextManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = +[ADDeviceCircleManager sharedInstance];
   v6 = +[ADDeviceProximityManager sharedManager];
-  v7 = [(ADContextManager *)self _initWithDelegate:v4 deviceCircleManager:v5 deviceProximityManager:v6];
+  v7 = [(ADContextManager *)self _initWithDelegate:delegateCopy deviceCircleManager:v5 deviceProximityManager:v6];
 
   return v7;
 }
 
-+ (BOOL)_isResumableThirdPartyGenreID:(id)a3
++ (BOOL)_isResumableThirdPartyGenreID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToNumber:&off_1005338C0] & 1) != 0 || (objc_msgSend(v3, "isEqualToNumber:", &off_1005338D8))
+  dCopy = d;
+  if ([dCopy isEqualToNumber:&off_1005338C0] & 1) != 0 || (objc_msgSend(dCopy, "isEqualToNumber:", &off_1005338D8))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToNumber:&off_1005338F0];
+    v4 = [dCopy isEqualToNumber:&off_1005338F0];
   }
 
   return v4;
 }
 
-+ (BOOL)_isResumableFirstPartyBundleID:(id)a3
++ (BOOL)_isResumableFirstPartyBundleID:(id)d
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.podcasts") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.iBooks") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.NanoMusic") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.NanoRadio") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.NanoBooks") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"com.apple.sirireaderd"))
+  dCopy = d;
+  if ([dCopy isEqualToString:@"com.apple.Music"] & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.podcasts") & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.iBooks") & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.NanoMusic") & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.NanoRadio") & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.NanoBooks") & 1) != 0 || (objc_msgSend(dCopy, "isEqualToString:", @"com.apple.sirireaderd"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"com.apple.siri.sirireaderd"];
+    v4 = [dCopy isEqualToString:@"com.apple.siri.sirireaderd"];
   }
 
   return v4;

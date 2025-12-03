@@ -1,16 +1,16 @@
 @interface DADeviceObserverWatch
 - (DADeviceObserverWatch)init;
-- (id)_createDeviceWithNanoDevice:(id)a3;
-- (id)beginDiscoveringDevicesWithHandler:(id)a3;
+- (id)_createDeviceWithNanoDevice:(id)device;
+- (id)beginDiscoveringDevicesWithHandler:(id)handler;
 - (void)_beginObserving;
 - (void)_endObserving;
-- (void)_nanoRegistryDevicePaired:(id)a3;
-- (void)_nanoRegistryDeviceUnpaired:(id)a3;
-- (void)_updateDevicesWithSerialNumber:(id)a3;
+- (void)_nanoRegistryDevicePaired:(id)paired;
+- (void)_nanoRegistryDeviceUnpaired:(id)unpaired;
+- (void)_updateDevicesWithSerialNumber:(id)number;
 - (void)_updateHandlers;
 - (void)_waitUntilFirstResponse;
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3;
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3;
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler;
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier;
 @end
 
 @implementation DADeviceObserverWatch
@@ -47,69 +47,69 @@
   return v2;
 }
 
-- (void)discoverAllDevicesWithCompletionHandler:(id)a3
+- (void)discoverAllDevicesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(DADeviceObserverWatch *)self _updateDevicesWithSerialNumber:0];
   [(DADeviceObserverWatch *)self _waitUntilFirstResponse];
-  v5 = [(DADeviceObserverWatch *)self devices];
-  v4[2](v4, v5);
+  devices = [(DADeviceObserverWatch *)self devices];
+  handlerCopy[2](handlerCopy, devices);
 }
 
-- (id)beginDiscoveringDevicesWithHandler:(id)a3
+- (id)beginDiscoveringDevicesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSUUID UUID];
-  v6 = [(DADeviceObserverWatch *)self handlers];
-  objc_sync_enter(v6);
-  v7 = [v4 copy];
+  handlers = [(DADeviceObserverWatch *)self handlers];
+  objc_sync_enter(handlers);
+  v7 = [handlerCopy copy];
   v8 = objc_retainBlock(v7);
-  v9 = [(DADeviceObserverWatch *)self handlers];
-  [v9 setObject:v8 forKeyedSubscript:v5];
+  handlers2 = [(DADeviceObserverWatch *)self handlers];
+  [handlers2 setObject:v8 forKeyedSubscript:v5];
 
   [(DADeviceObserverWatch *)self _beginObserving];
-  objc_sync_exit(v6);
+  objc_sync_exit(handlers);
 
   return v5;
 }
 
-- (void)endDiscoveringDevicesWithIdentifier:(id)a3
+- (void)endDiscoveringDevicesWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = [(DADeviceObserverWatch *)self handlers];
-  objc_sync_enter(v4);
-  v5 = [(DADeviceObserverWatch *)self handlers];
-  [v5 removeObjectForKey:v8];
+  identifierCopy = identifier;
+  handlers = [(DADeviceObserverWatch *)self handlers];
+  objc_sync_enter(handlers);
+  handlers2 = [(DADeviceObserverWatch *)self handlers];
+  [handlers2 removeObjectForKey:identifierCopy];
 
-  v6 = [(DADeviceObserverWatch *)self handlers];
-  v7 = [v6 count];
+  handlers3 = [(DADeviceObserverWatch *)self handlers];
+  v7 = [handlers3 count];
 
   if (!v7)
   {
     [(DADeviceObserverWatch *)self _endObserving];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(handlers);
 }
 
 - (void)_waitUntilFirstResponse
 {
-  v3 = [(DADeviceObserverWatch *)self firstResponseLock];
-  [v3 lock];
+  firstResponseLock = [(DADeviceObserverWatch *)self firstResponseLock];
+  [firstResponseLock lock];
 
   if (![(DADeviceObserverWatch *)self firstResponseSent])
   {
     do
     {
-      v4 = [(DADeviceObserverWatch *)self firstResponseLock];
-      [v4 wait];
+      firstResponseLock2 = [(DADeviceObserverWatch *)self firstResponseLock];
+      [firstResponseLock2 wait];
     }
 
     while (![(DADeviceObserverWatch *)self firstResponseSent]);
   }
 
-  v5 = [(DADeviceObserverWatch *)self firstResponseLock];
-  [v5 unlock];
+  firstResponseLock3 = [(DADeviceObserverWatch *)self firstResponseLock];
+  [firstResponseLock3 unlock];
 }
 
 - (void)_beginObserving
@@ -117,13 +117,13 @@
   if (!self->_isObserving)
   {
     self->_isObserving = 1;
-    v3 = [(DADeviceObserverWatch *)self nanoRegistrationQueue];
+    nanoRegistrationQueue = [(DADeviceObserverWatch *)self nanoRegistrationQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100008B98;
     block[3] = &unk_1000147E8;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(nanoRegistrationQueue, block);
   }
 
   v4 = dispatch_get_global_queue(21, 0);
@@ -135,46 +135,46 @@
   dispatch_async(v4, v5);
 }
 
-- (void)_nanoRegistryDevicePaired:(id)a3
+- (void)_nanoRegistryDevicePaired:(id)paired
 {
-  v4 = a3;
-  v5 = [(DADeviceObserverWatch *)self nanoObservationQueue];
+  pairedCopy = paired;
+  nanoObservationQueue = [(DADeviceObserverWatch *)self nanoObservationQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100008D04;
   v7[3] = &unk_100014708;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = pairedCopy;
+  selfCopy = self;
+  v6 = pairedCopy;
+  dispatch_async(nanoObservationQueue, v7);
 }
 
-- (void)_nanoRegistryDeviceUnpaired:(id)a3
+- (void)_nanoRegistryDeviceUnpaired:(id)unpaired
 {
-  v4 = a3;
-  v5 = [(DADeviceObserverWatch *)self nanoObservationQueue];
+  unpairedCopy = unpaired;
+  nanoObservationQueue = [(DADeviceObserverWatch *)self nanoObservationQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100008F08;
   v7[3] = &unk_100014708;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = unpairedCopy;
+  selfCopy = self;
+  v6 = unpairedCopy;
+  dispatch_async(nanoObservationQueue, v7);
 }
 
-- (id)_createDeviceWithNanoDevice:(id)a3
+- (id)_createDeviceWithNanoDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = NSClassFromString(@"DADeviceWatchProxy");
   if (v4)
   {
-    v5 = [[v4 alloc] initWithNanoDevice:v3];
+    v5 = [[v4 alloc] initWithNanoDevice:deviceCopy];
   }
 
   else
   {
-    v6 = [v3 valueForProperty:NRDevicePropertySerialNumber];
+    v6 = [deviceCopy valueForProperty:NRDevicePropertySerialNumber];
     v5 = [[DADeviceRepresentation alloc] initWithSerialNumber:v6 isLocal:0 attributes:&__NSDictionary0__struct];
   }
 
@@ -188,32 +188,32 @@
     block[7] = v2;
     block[8] = v3;
     self->_isObserving = 0;
-    v5 = [(DADeviceObserverWatch *)self firstResponseLock];
-    [v5 lock];
+    firstResponseLock = [(DADeviceObserverWatch *)self firstResponseLock];
+    [firstResponseLock lock];
 
     [(DADeviceObserverWatch *)self setFirstResponseSent:0];
-    v6 = [(DADeviceObserverWatch *)self firstResponseLock];
-    [v6 unlock];
+    firstResponseLock2 = [(DADeviceObserverWatch *)self firstResponseLock];
+    [firstResponseLock2 unlock];
 
-    v7 = [(DADeviceObserverWatch *)self nanoRegistrationQueue];
+    nanoRegistrationQueue = [(DADeviceObserverWatch *)self nanoRegistrationQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000091DC;
     block[3] = &unk_1000147E8;
     block[4] = self;
-    dispatch_async(v7, block);
+    dispatch_async(nanoRegistrationQueue, block);
   }
 }
 
-- (void)_updateDevicesWithSerialNumber:(id)a3
+- (void)_updateDevicesWithSerialNumber:(id)number
 {
-  v4 = [(DADeviceObserverWatch *)self nanoObservationQueue];
+  nanoObservationQueue = [(DADeviceObserverWatch *)self nanoObservationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000092BC;
   block[3] = &unk_1000147E8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(nanoObservationQueue, block);
 }
 
 - (void)_updateHandlers
@@ -222,8 +222,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(DADeviceObserverWatch *)self handlers];
-  v4 = [v3 copy];
+  handlers = [(DADeviceObserverWatch *)self handlers];
+  v4 = [handlers copy];
 
   v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
@@ -241,13 +241,13 @@
         }
 
         v9 = *(*(&v16 + 1) + 8 * v8);
-        v10 = [(DADeviceObserverWatch *)self handlers];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        handlers2 = [(DADeviceObserverWatch *)self handlers];
+        v11 = [handlers2 objectForKeyedSubscript:v9];
 
         if (v11)
         {
-          v12 = [(DADeviceObserverWatch *)self devices];
-          (v11)[2](v11, v12);
+          devices = [(DADeviceObserverWatch *)self devices];
+          (v11)[2](v11, devices);
         }
 
         v8 = v8 + 1;
@@ -260,15 +260,15 @@
     while (v6);
   }
 
-  v13 = [(DADeviceObserverWatch *)self firstResponseLock];
-  [v13 lock];
+  firstResponseLock = [(DADeviceObserverWatch *)self firstResponseLock];
+  [firstResponseLock lock];
 
   [(DADeviceObserverWatch *)self setFirstResponseSent:1];
-  v14 = [(DADeviceObserverWatch *)self firstResponseLock];
-  [v14 signal];
+  firstResponseLock2 = [(DADeviceObserverWatch *)self firstResponseLock];
+  [firstResponseLock2 signal];
 
-  v15 = [(DADeviceObserverWatch *)self firstResponseLock];
-  [v15 unlock];
+  firstResponseLock3 = [(DADeviceObserverWatch *)self firstResponseLock];
+  [firstResponseLock3 unlock];
 }
 
 @end

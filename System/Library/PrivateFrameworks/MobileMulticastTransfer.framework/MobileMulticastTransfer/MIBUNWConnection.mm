@@ -1,28 +1,28 @@
 @interface MIBUNWConnection
-- (MIBUNWConnection)initWithConfiguration:(id)a3 messageFramer:(id)a4 dispatchQueue:(id)a5 statusDelegate:(id)a6;
-- (MIBUNWConnection)initWithNWConnection:(id)a3 dispatchQueue:(id)a4 statusDelegate:(id)a5;
-- (id)_getRemoteIPv6AddressFromConnection:(id)a3;
+- (MIBUNWConnection)initWithConfiguration:(id)configuration messageFramer:(id)framer dispatchQueue:(id)queue statusDelegate:(id)delegate;
+- (MIBUNWConnection)initWithNWConnection:(id)connection dispatchQueue:(id)queue statusDelegate:(id)delegate;
+- (id)_getRemoteIPv6AddressFromConnection:(id)connection;
 - (id)description;
 - (void)_cancelTimerForWaitingState;
 - (void)_close;
-- (void)_handleNewConnectionState:(int)a3 error:(id)a4;
+- (void)_handleNewConnectionState:(int)state error:(id)error;
 - (void)_open;
 - (void)_scheduleNextMessageReception;
-- (void)_sendMessage:(id)a3 withCompletion:(id)a4;
+- (void)_sendMessage:(id)message withCompletion:(id)completion;
 - (void)_setupTimerForWaitingState;
 - (void)close;
 - (void)open;
-- (void)sendMessage:(id)a3 withCompletion:(id)a4;
-- (void)setState:(unint64_t)a3;
+- (void)sendMessage:(id)message withCompletion:(id)completion;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation MIBUNWConnection
 
-- (MIBUNWConnection)initWithNWConnection:(id)a3 dispatchQueue:(id)a4 statusDelegate:(id)a5
+- (MIBUNWConnection)initWithNWConnection:(id)connection dispatchQueue:(id)queue statusDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  connectionCopy = connection;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = MIBUNWConnection;
   v12 = [(MIBUNWConnection *)&v17 init];
@@ -30,10 +30,10 @@
   if (v12)
   {
     v12->_state = 0;
-    objc_storeStrong(&v12->_connection, a3);
-    objc_storeStrong(&v13->_queue, a4);
-    objc_storeStrong(&v13->_delegate, a5);
-    v14 = [(MIBUNWConnection *)v13 _getRemoteIPv6AddressFromConnection:v9];
+    objc_storeStrong(&v12->_connection, connection);
+    objc_storeStrong(&v13->_queue, queue);
+    objc_storeStrong(&v13->_delegate, delegate);
+    v14 = [(MIBUNWConnection *)v13 _getRemoteIPv6AddressFromConnection:connectionCopy];
     remoteIPv6Address = v13->_remoteIPv6Address;
     v13->_remoteIPv6Address = v14;
   }
@@ -41,15 +41,15 @@
   return v13;
 }
 
-- (MIBUNWConnection)initWithConfiguration:(id)a3 messageFramer:(id)a4 dispatchQueue:(id)a5 statusDelegate:(id)a6
+- (MIBUNWConnection)initWithConfiguration:(id)configuration messageFramer:(id)framer dispatchQueue:(id)queue statusDelegate:(id)delegate
 {
   v39 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 objectForKey:@"RemoteAddress"];
-  v15 = [v10 objectForKey:@"RemotePort"];
+  configurationCopy = configuration;
+  framerCopy = framer;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  v14 = [configurationCopy objectForKey:@"RemoteAddress"];
+  v15 = [configurationCopy objectForKey:@"RemotePort"];
   v16 = v15;
   if (v14 && v15)
   {
@@ -66,13 +66,13 @@
         [MIBUNWConnection initWithConfiguration:messageFramer:dispatchQueue:statusDelegate:];
       }
 
-      v23 = 0;
+      selfCopy3 = 0;
       goto LABEL_37;
     }
 
-    v18 = [v10 objectForKey:@"InterfaceName"];
+    v18 = [configurationCopy objectForKey:@"InterfaceName"];
     parameters = nw_parameters_create_secure_tcp(*MEMORY[0x277CD9238], *MEMORY[0x277CD9230]);
-    v31 = v13;
+    v31 = delegateCopy;
     if (!v18)
     {
       if (MIBUOnceToken != -1)
@@ -80,12 +80,12 @@
         [MIBUNWConnection initWithConfiguration:messageFramer:dispatchQueue:statusDelegate:];
       }
 
-      v30 = v12;
+      v30 = queueCopy;
       v24 = MIBUConnObj;
       if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v34 = self;
+        selfCopy4 = self;
         _os_log_impl(&dword_259B04000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: connection with no interface name specified", buf, 0xCu);
       }
 
@@ -101,7 +101,7 @@
     if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v34 = self;
+      selfCopy4 = self;
       v35 = 2114;
       v36 = v18;
       _os_log_impl(&dword_259B04000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: configure connection with interface name: %{public}@", buf, 0x16u);
@@ -112,19 +112,19 @@
     if (v20)
     {
       v21 = v20;
-      v30 = v12;
+      v30 = queueCopy;
       nw_parameters_require_interface(parameters, v20);
 
 LABEL_25:
       v25 = nw_parameters_copy_default_protocol_stack(parameters);
-      options = nw_framer_create_options(v11);
+      options = nw_framer_create_options(framerCopy);
       nw_protocol_stack_prepend_application_protocol(v25, options);
 
       v27 = nw_connection_create(host, parameters);
       if (v27)
       {
         self = [(MIBUNWConnection *)self initWithNWConnection:v27 dispatchQueue:v30 statusDelegate:v31];
-        v23 = self;
+        selfCopy3 = self;
       }
 
       else
@@ -139,10 +139,10 @@ LABEL_25:
           [MIBUNWConnection initWithConfiguration:messageFramer:dispatchQueue:statusDelegate:];
         }
 
-        v23 = 0;
+        selfCopy3 = 0;
       }
 
-      v12 = v30;
+      queueCopy = v30;
       goto LABEL_36;
     }
 
@@ -151,9 +151,9 @@ LABEL_25:
       if (!os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
       {
 LABEL_35:
-        v23 = 0;
+        selfCopy3 = 0;
 LABEL_36:
-        v13 = v31;
+        delegateCopy = v31;
 
 LABEL_37:
         goto LABEL_38;
@@ -182,7 +182,7 @@ LABEL_37:
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v34 = self;
+    selfCopy4 = self;
     v35 = 2114;
     v36 = v14;
     v37 = 2114;
@@ -190,11 +190,11 @@ LABEL_37:
     _os_log_error_impl(&dword_259B04000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Invalid remote address or remote port specified: %{public}@:%{public}@", buf, 0x20u);
   }
 
-  v23 = 0;
+  selfCopy3 = 0;
 LABEL_38:
 
   v28 = *MEMORY[0x277D85DE8];
-  return v23;
+  return selfCopy3;
 }
 
 void __85__MIBUNWConnection_initWithConfiguration_messageFramer_dispatchQueue_statusDelegate___block_invoke()
@@ -315,34 +315,34 @@ void __85__MIBUNWConnection_initWithConfiguration_messageFramer_dispatchQueue_st
   dispatch_async(queue, block);
 }
 
-- (void)sendMessage:(id)a3 withCompletion:(id)a4
+- (void)sendMessage:(id)message withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__MIBUNWConnection_sendMessage_withCompletion___block_invoke;
   block[3] = &unk_2798EB9D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     delegate = self->_delegate;
     if (objc_opt_respondsToSelector())
     {
       v6 = self->_delegate;
 
-      [(MIBUNWConnectionDelegate *)v6 unicastConnection:self didEnterNewState:a3];
+      [(MIBUNWConnectionDelegate *)v6 unicastConnection:self didEnterNewState:state];
     }
   }
 }
@@ -417,22 +417,22 @@ void __26__MIBUNWConnection__close__block_invoke()
   }
 }
 
-- (void)_sendMessage:(id)a3 withCompletion:(id)a4
+- (void)_sendMessage:(id)message withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   if ([(MIBUNWConnection *)self state]== 2)
   {
-    v8 = [v6 createContent];
-    v9 = [v6 createContentContext];
+    createContent = [messageCopy createContent];
+    createContentContext = [messageCopy createContentContext];
     connection = self->_connection;
     completion[0] = MEMORY[0x277D85DD0];
     completion[1] = 3221225472;
     completion[2] = __48__MIBUNWConnection__sendMessage_withCompletion___block_invoke_38;
     completion[3] = &unk_2798EBA20;
-    v13 = v7;
-    nw_connection_send(connection, v8, v9, 1, completion);
+    v13 = completionCopy;
+    nw_connection_send(connection, createContent, createContentContext, 1, completion);
   }
 
   else
@@ -591,10 +591,10 @@ void __49__MIBUNWConnection__scheduleNextMessageReception__block_invoke_45()
   }
 }
 
-- (void)_handleNewConnectionState:(int)a3 error:(id)a4
+- (void)_handleNewConnectionState:(int)state error:(id)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   if (MIBUOnceToken != -1)
   {
@@ -605,25 +605,25 @@ void __49__MIBUNWConnection__scheduleNextMessageReception__block_invoke_45()
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = NSStringFromNWConnectionState(a3);
+    v9 = NSStringFromNWConnectionState(state);
     v15 = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = v9;
     v19 = 2114;
-    v20 = v6;
+    v20 = errorCopy;
     _os_log_impl(&dword_259B04000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: New connection state: %{public}@, error: %{public}@", &v15, 0x20u);
   }
 
   [(MIBUNWConnection *)self _cancelTimerForWaitingState];
-  if (a3 > 3)
+  if (state > 3)
   {
-    if (a3 == 4)
+    if (state == 4)
     {
       [(MIBUNWConnection *)self _close];
     }
 
-    else if (a3 == 5)
+    else if (state == 5)
     {
       connection = self->_connection;
       self->_connection = 0;
@@ -632,17 +632,17 @@ void __49__MIBUNWConnection__scheduleNextMessageReception__block_invoke_45()
       delegate = self->_delegate;
       if (objc_opt_respondsToSelector())
       {
-        [(MIBUNWConnectionDelegate *)self->_delegate unicastConnectionDidClose:self withError:v6];
+        [(MIBUNWConnectionDelegate *)self->_delegate unicastConnectionDidClose:self withError:errorCopy];
       }
     }
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
     [(MIBUNWConnection *)self _setupTimerForWaitingState];
   }
 
-  else if (a3 == 3)
+  else if (state == 3)
   {
     [(MIBUNWConnection *)self setState:2];
     v10 = self->_delegate;
@@ -677,9 +677,9 @@ void __52__MIBUNWConnection__handleNewConnectionState_error___block_invoke()
   }
 }
 
-- (id)_getRemoteIPv6AddressFromConnection:(id)a3
+- (id)_getRemoteIPv6AddressFromConnection:(id)connection
 {
-  v3 = nw_connection_copy_endpoint(a3);
+  v3 = nw_connection_copy_endpoint(connection);
   v4 = v3;
   if (v3)
   {

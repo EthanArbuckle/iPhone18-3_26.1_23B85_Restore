@@ -1,18 +1,18 @@
 @interface NTPBEvent
-- (void)ft_setTemporalBoundsBySanitizingStartDate:(id)a3 endDate:(id)a4;
+- (void)ft_setTemporalBoundsBySanitizingStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation NTPBEvent
 
-- (void)ft_setTemporalBoundsBySanitizingStartDate:(id)a3 endDate:(id)a4
+- (void)ft_setTemporalBoundsBySanitizingStartDate:(id)date endDate:(id)endDate
 {
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v13 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-  v8 = [v13 components:28 fromDate:v7];
+  v8 = [v13 components:28 fromDate:dateCopy];
   v9 = [v13 dateFromComponents:v8];
   [(NTPBEvent *)self nss_setStartDate:v9];
-  [v6 timeIntervalSinceDate:v7];
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   v11 = v10;
 
   v12 = round(v11);

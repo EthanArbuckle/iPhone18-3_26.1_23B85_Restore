@@ -1,9 +1,9 @@
 @interface UIDebuggingInformationListTableViewController
-- (UIDebuggingInformationListTableViewController)initWithStyle:(int64_t)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)topLevelViewControllerForName:(id)a3;
-- (void)addTopLevelViewController:(id)a3 forName:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (UIDebuggingInformationListTableViewController)initWithStyle:(int64_t)style;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)topLevelViewControllerForName:(id)name;
+- (void)addTopLevelViewController:(id)controller forName:(id)name;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)toggleOverlayFullscreen;
 - (void)toggleOverlayVisibility;
 - (void)viewDidLoad;
@@ -11,11 +11,11 @@
 
 @implementation UIDebuggingInformationListTableViewController
 
-- (UIDebuggingInformationListTableViewController)initWithStyle:(int64_t)a3
+- (UIDebuggingInformationListTableViewController)initWithStyle:(int64_t)style
 {
   v9.receiver = self;
   v9.super_class = UIDebuggingInformationListTableViewController;
-  v3 = [(UITableViewController *)&v9 initWithStyle:a3];
+  v3 = [(UITableViewController *)&v9 initWithStyle:style];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -47,40 +47,40 @@
   v8.receiver = self;
   v8.super_class = UIDebuggingInformationListTableViewController;
   [(UIViewController *)&v8 viewDidLoad];
-  v3 = [(UITableViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"kReuseIdentifier"];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"kReuseIdentifier"];
 
   v4 = [UIView alloc];
-  v5 = [(UITableViewController *)self tableView];
-  [v5 frame];
+  tableView2 = [(UITableViewController *)self tableView];
+  [tableView2 frame];
   v6 = [(UIView *)v4 initWithFrame:0.0, 0.0];
-  v7 = [(UITableViewController *)self tableView];
-  [v7 setTableFooterView:v6];
+  tableView3 = [(UITableViewController *)self tableView];
+  [tableView3 setTableFooterView:v6];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"kReuseIdentifier" forIndexPath:v6];
-  v8 = [v7 textLabel];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"kReuseIdentifier" forIndexPath:pathCopy];
+  textLabel = [v7 textLabel];
   topLevelViewControllerNames = self->topLevelViewControllerNames;
-  v10 = [v6 row];
+  v10 = [pathCopy row];
 
   v11 = [(NSMutableArray *)topLevelViewControllerNames objectAtIndex:v10];
-  [v8 setText:v11];
+  [textLabel setText:v11];
 
   [v7 setAccessoryType:1];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   topLevelViewControllers = self->topLevelViewControllers;
-  v6 = a4;
-  v19 = -[NSMutableArray objectAtIndex:](topLevelViewControllers, "objectAtIndex:", [v6 row]);
+  pathCopy = path;
+  v19 = -[NSMutableArray objectAtIndex:](topLevelViewControllers, "objectAtIndex:", [pathCopy row]);
   topLevelViewControllerNames = self->topLevelViewControllerNames;
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v9 = [(NSMutableArray *)topLevelViewControllerNames objectAtIndexedSubscript:v8];
   [v19 setTitle:v9];
@@ -90,39 +90,39 @@
     [v19 prepareForDisplayAsTopLevelDebuggingViewController];
   }
 
-  v10 = [v19 navigationItem];
-  v11 = [v10 rightBarButtonItems];
-  v12 = [v11 count];
+  navigationItem = [v19 navigationItem];
+  rightBarButtonItems = [navigationItem rightBarButtonItems];
+  v12 = [rightBarButtonItems count];
 
   if (!v12)
   {
-    v13 = [(UIViewController *)self navigationController];
-    v14 = [v13 topViewController];
-    v15 = [v14 navigationItem];
-    v16 = [v15 rightBarButtonItems];
-    v17 = [v19 navigationItem];
-    [v17 setRightBarButtonItems:v16];
+    navigationController = [(UIViewController *)self navigationController];
+    topViewController = [navigationController topViewController];
+    navigationItem2 = [topViewController navigationItem];
+    rightBarButtonItems2 = [navigationItem2 rightBarButtonItems];
+    navigationItem3 = [v19 navigationItem];
+    [navigationItem3 setRightBarButtonItems:rightBarButtonItems2];
   }
 
-  v18 = [(UIViewController *)self navigationController];
-  [v18 pushViewController:v19 animated:1];
+  navigationController2 = [(UIViewController *)self navigationController];
+  [navigationController2 pushViewController:v19 animated:1];
 }
 
-- (void)addTopLevelViewController:(id)a3 forName:(id)a4
+- (void)addTopLevelViewController:(id)controller forName:(id)name
 {
-  v9 = a3;
+  controllerCopy = controller;
   topLevelViewControllers = self->topLevelViewControllers;
-  v7 = a4;
-  [(NSMutableArray *)topLevelViewControllers addObject:v9];
-  [(NSMutableArray *)self->topLevelViewControllerNames addObject:v7];
+  nameCopy = name;
+  [(NSMutableArray *)topLevelViewControllers addObject:controllerCopy];
+  [(NSMutableArray *)self->topLevelViewControllerNames addObject:nameCopy];
 
-  v8 = [(UITableViewController *)self tableView];
-  [v8 reloadData];
+  tableView = [(UITableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)topLevelViewControllerForName:(id)a3
+- (id)topLevelViewControllerForName:(id)name
 {
-  v4 = [(NSMutableArray *)self->topLevelViewControllerNames indexOfObjectIdenticalTo:a3];
+  v4 = [(NSMutableArray *)self->topLevelViewControllerNames indexOfObjectIdenticalTo:name];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;

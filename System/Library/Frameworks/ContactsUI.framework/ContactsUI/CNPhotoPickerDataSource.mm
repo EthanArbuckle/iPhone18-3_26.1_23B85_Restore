@@ -1,34 +1,34 @@
 @interface CNPhotoPickerDataSource
 + (AVTAvatarStore)avatarStore;
-- (BOOL)isItemAtIndexPathAddItem:(id)a3;
-- (CNPhotoPickerDataSource)initWithVisualIdentity:(id)a3 contactViewCache:(id)a4 photoPickerConfiguration:(id)a5;
-- (CNPhotoPickerDataSource)initWithVisualIdentity:(id)a3 contactViewCache:(id)a4 providerGroups:(id)a5 avatarStore:(id)a6;
+- (BOOL)isItemAtIndexPathAddItem:(id)item;
+- (CNPhotoPickerDataSource)initWithVisualIdentity:(id)identity contactViewCache:(id)cache photoPickerConfiguration:(id)configuration;
+- (CNPhotoPickerDataSource)initWithVisualIdentity:(id)identity contactViewCache:(id)cache providerGroups:(id)groups avatarStore:(id)store;
 - (CNPhotoPickerProviderGroupDelegate)delegate;
-- (id)actionTitleForSection:(int64_t)a3;
-- (id)findActiveIndexPathInGroup:(id)a3 withImageData:(id)a4;
-- (id)indexOfAddedItem:(id)a3 inGroupOfType:(int64_t)a4;
-- (id)indexPathsToReloadForUpdatedGroup:(id)a3;
+- (id)actionTitleForSection:(int64_t)section;
+- (id)findActiveIndexPathInGroup:(id)group withImageData:(id)data;
+- (id)indexOfAddedItem:(id)item inGroupOfType:(int64_t)type;
+- (id)indexPathsToReloadForUpdatedGroup:(id)group;
 - (id)injectedItemsGroup;
-- (id)monogramProviderDefaultItemWithSize:(CGSize)a3;
-- (id)monogramProviderMonogramItemWithSize:(CGSize)a3;
-- (id)providerGroupAtIndexPath:(id)a3;
-- (id)providerGroupAtSection:(int64_t)a3;
-- (id)providerItemAtIndexPath:(id)a3;
-- (id)removeItem:(id)a3;
+- (id)monogramProviderDefaultItemWithSize:(CGSize)size;
+- (id)monogramProviderMonogramItemWithSize:(CGSize)size;
+- (id)providerGroupAtIndexPath:(id)path;
+- (id)providerGroupAtSection:(int64_t)section;
+- (id)providerItemAtIndexPath:(id)path;
+- (id)removeItem:(id)item;
 - (id)suggestionsGroup;
-- (id)titleForSection:(int64_t)a3;
-- (id)uniqueEmojiSuggestionItems:(id)a3;
-- (int64_t)numberOfItemsInSection:(int64_t)a3;
+- (id)titleForSection:(int64_t)section;
+- (id)uniqueEmojiSuggestionItems:(id)items;
+- (int64_t)numberOfItemsInSection:(int64_t)section;
 - (int64_t)numberOfSections;
-- (int64_t)sectionIndexForProviderGroup:(id)a3;
-- (int64_t)sectionIndexForProviderGroupType:(int64_t)a3;
+- (int64_t)sectionIndexForProviderGroup:(id)group;
+- (int64_t)sectionIndexForProviderGroupType:(int64_t)type;
 - (unint64_t)itemsPerRow;
-- (unint64_t)itemsPerRowForSection:(int64_t)a3;
-- (void)loadProviderGroupsItemsForSize:(CGSize)a3 itemsPerRow:(double)a4 scale:(double)a5 RTL:(BOOL)a6;
-- (void)photoPickerProviderGroup:(id)a3 didUpdateItem:(id)a4;
-- (void)photoPickerProviderGroupDidUpdate:(id)a3 requiresFullReload:(BOOL)a4;
-- (void)setItemsPerRow:(unint64_t)a3 requiresFullReload:(BOOL)a4;
-- (void)updateGroupCollapsedStateForSection:(int64_t)a3;
+- (unint64_t)itemsPerRowForSection:(int64_t)section;
+- (void)loadProviderGroupsItemsForSize:(CGSize)size itemsPerRow:(double)row scale:(double)scale RTL:(BOOL)l;
+- (void)photoPickerProviderGroup:(id)group didUpdateItem:(id)item;
+- (void)photoPickerProviderGroupDidUpdate:(id)update requiresFullReload:(BOOL)reload;
+- (void)setItemsPerRow:(unint64_t)row requiresFullReload:(BOOL)reload;
+- (void)updateGroupCollapsedStateForSection:(int64_t)section;
 @end
 
 @implementation CNPhotoPickerDataSource
@@ -40,11 +40,11 @@
   return WeakRetained;
 }
 
-- (id)uniqueEmojiSuggestionItems:(id)a3
+- (id)uniqueEmojiSuggestionItems:(id)items
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerDataSource *)self emojiSuggestionItems];
-  v6 = [v5 _cn_map:&__block_literal_global_43];
+  itemsCopy = items;
+  emojiSuggestionItems = [(CNPhotoPickerDataSource *)self emojiSuggestionItems];
+  v6 = [emojiSuggestionItems _cn_map:&__block_literal_global_43];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -52,7 +52,7 @@
   v10[3] = &unk_1E74E28F0;
   v11 = v6;
   v7 = v6;
-  v8 = [v4 _cn_filter:v10];
+  v8 = [itemsCopy _cn_filter:v10];
 
   return v8;
 }
@@ -66,52 +66,52 @@ uint64_t __54__CNPhotoPickerDataSource_uniqueEmojiSuggestionItems___block_invoke
   return v2 ^ 1;
 }
 
-- (void)photoPickerProviderGroup:(id)a3 didUpdateItem:(id)a4
+- (void)photoPickerProviderGroup:(id)group didUpdateItem:(id)item
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(CNPhotoPickerDataSource *)self delegate];
+  groupCopy = group;
+  itemCopy = item;
+  delegate = [(CNPhotoPickerDataSource *)self delegate];
 
-  if (v7)
+  if (delegate)
   {
-    v8 = [(CNPhotoPickerDataSource *)self delegate];
-    [v8 photoPickerProviderGroup:v9 didUpdateItem:v6];
+    delegate2 = [(CNPhotoPickerDataSource *)self delegate];
+    [delegate2 photoPickerProviderGroup:groupCopy didUpdateItem:itemCopy];
   }
 }
 
-- (void)photoPickerProviderGroupDidUpdate:(id)a3 requiresFullReload:(BOOL)a4
+- (void)photoPickerProviderGroupDidUpdate:(id)update requiresFullReload:(BOOL)reload
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [(CNPhotoPickerDataSource *)self delegate];
+  reloadCopy = reload;
+  updateCopy = update;
+  delegate = [(CNPhotoPickerDataSource *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
-    v7 = [(CNPhotoPickerDataSource *)self delegate];
-    [v7 photoPickerProviderGroupDidUpdate:v8 requiresFullReload:v4];
+    delegate2 = [(CNPhotoPickerDataSource *)self delegate];
+    [delegate2 photoPickerProviderGroupDidUpdate:updateCopy requiresFullReload:reloadCopy];
   }
 }
 
-- (void)updateGroupCollapsedStateForSection:(int64_t)a3
+- (void)updateGroupCollapsedStateForSection:(int64_t)section
 {
-  v5 = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
-  v6 = [v5 count];
+  groupIsCollapsedState = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
+  v6 = [groupIsCollapsedState count];
 
-  if (v6 > a3)
+  if (v6 > section)
   {
-    v7 = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
-    v8 = [v7 objectAtIndexedSubscript:a3];
-    v9 = [v8 BOOLValue];
+    groupIsCollapsedState2 = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
+    v8 = [groupIsCollapsedState2 objectAtIndexedSubscript:section];
+    bOOLValue = [v8 BOOLValue];
 
-    v11 = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
-    v10 = [MEMORY[0x1E696AD98] numberWithInt:v9 ^ 1u];
-    [v11 replaceObjectAtIndex:a3 withObject:v10];
+    groupIsCollapsedState3 = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
+    v10 = [MEMORY[0x1E696AD98] numberWithInt:bOOLValue ^ 1u];
+    [groupIsCollapsedState3 replaceObjectAtIndex:section withObject:v10];
   }
 }
 
-- (id)removeItem:(id)a3
+- (id)removeItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -120,16 +120,16 @@ uint64_t __54__CNPhotoPickerDataSource_uniqueEmojiSuggestionItems___block_invoke
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = [(CNPhotoPickerDataSource *)self providerGroups];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __38__CNPhotoPickerDataSource_removeItem___block_invoke;
   v9[3] = &unk_1E74E28A8;
-  v6 = v4;
+  v6 = itemCopy;
   v10 = v6;
   v11 = &v13;
   v12 = &v17;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [providerGroups enumerateObjectsUsingBlock:v9];
 
   if (v18[3] == 0x7FFFFFFFFFFFFFFFLL || v14[3] == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -160,23 +160,23 @@ uint64_t __38__CNPhotoPickerDataSource_removeItem___block_invoke(void *a1, void 
   return result;
 }
 
-- (id)indexOfAddedItem:(id)a3 inGroupOfType:(int64_t)a4
+- (id)indexOfAddedItem:(id)item inGroupOfType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(CNPhotoPickerDataSource *)self providerGroups];
+  itemCopy = item;
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__CNPhotoPickerDataSource_indexOfAddedItem_inGroupOfType___block_invoke;
   v15[3] = &__block_descriptor_40_e36_B16__0__CNPhotoPickerProviderGroup_8l;
-  v15[4] = a4;
-  v8 = [v7 _cn_firstObjectPassingTest:v15];
+  v15[4] = type;
+  v8 = [providerGroups _cn_firstObjectPassingTest:v15];
 
-  if (v8 && (v9 = [v8 addProviderItem:v6], v9 != 0x7FFFFFFFFFFFFFFFLL))
+  if (v8 && (v9 = [v8 addProviderItem:itemCopy], v9 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v11 = v9;
     v12 = MEMORY[0x1E696AC88];
-    v13 = [(CNPhotoPickerDataSource *)self providerGroups];
-    v10 = [v12 indexPathForItem:v11 inSection:{objc_msgSend(v13, "indexOfObjectIdenticalTo:", v8)}];
+    providerGroups2 = [(CNPhotoPickerDataSource *)self providerGroups];
+    v10 = [v12 indexPathForItem:v11 inSection:{objc_msgSend(providerGroups2, "indexOfObjectIdenticalTo:", v8)}];
   }
 
   else
@@ -187,14 +187,14 @@ uint64_t __38__CNPhotoPickerDataSource_removeItem___block_invoke(void *a1, void 
   return v10;
 }
 
-- (id)findActiveIndexPathInGroup:(id)a3 withImageData:(id)a4
+- (id)findActiveIndexPathInGroup:(id)group withImageData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v9 = [v8 indexOfObject:v6];
+  groupCopy = group;
+  dataCopy = data;
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v9 = [providerGroups indexOfObject:groupCopy];
 
-  if (v9 == 0x7FFFFFFFFFFFFFFFLL || [v6 numberOfItems] < 1)
+  if (v9 == 0x7FFFFFFFFFFFFFFFLL || [groupCopy numberOfItems] < 1)
   {
     goto LABEL_8;
   }
@@ -202,16 +202,16 @@ uint64_t __38__CNPhotoPickerDataSource_removeItem___block_invoke(void *a1, void 
   v10 = 0;
   while (1)
   {
-    v11 = [v6 providerItemAtIndex:v10];
-    v12 = [v11 imageData];
-    v13 = [v12 isEqualToData:v7];
+    v11 = [groupCopy providerItemAtIndex:v10];
+    imageData = [v11 imageData];
+    v13 = [imageData isEqualToData:dataCopy];
 
     if (v13)
     {
       break;
     }
 
-    if (++v10 >= [v6 numberOfItems])
+    if (++v10 >= [groupCopy numberOfItems])
     {
       goto LABEL_8;
     }
@@ -233,8 +233,8 @@ LABEL_8:
 
 - (id)injectedItemsGroup
 {
-  v2 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v3 = [v2 _cn_firstObjectPassingTest:&__block_literal_global_37];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v3 = [providerGroups _cn_firstObjectPassingTest:&__block_literal_global_37];
 
   objc_opt_class();
   v4 = v3;
@@ -255,8 +255,8 @@ LABEL_8:
 
 - (id)suggestionsGroup
 {
-  v2 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v3 = [v2 _cn_firstObjectPassingTest:&__block_literal_global_34];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v3 = [providerGroups _cn_firstObjectPassingTest:&__block_literal_global_34];
 
   objc_opt_class();
   v4 = v3;
@@ -275,76 +275,76 @@ LABEL_8:
   return v5;
 }
 
-- (id)monogramProviderMonogramItemWithSize:(CGSize)a3
+- (id)monogramProviderMonogramItemWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1;
-  v7 = [(CNPhotoPickerDataSource *)self visualIdentity];
-  v8 = [v7 mutableCopy];
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v9 scale];
+  visualIdentity = [(CNPhotoPickerDataSource *)self visualIdentity];
+  v8 = [visualIdentity mutableCopy];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v11 = [CNPhotoPickerMonogramProvider monogramProviderItemForVisualIdentity:v8 size:v6 scale:1 RTL:0 isVariantOptionItem:width backgroundColor:height, v10];
 
   return v11;
 }
 
-- (id)monogramProviderDefaultItemWithSize:(CGSize)a3
+- (id)monogramProviderDefaultItemWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection] == 1;
-  v7 = [(CNPhotoPickerDataSource *)self visualIdentity];
-  v8 = [CNPhotoPickerMonogramProvider providerItemForVisualIdentity:v7 size:v6 RTL:width, height];
+  visualIdentity = [(CNPhotoPickerDataSource *)self visualIdentity];
+  height = [CNPhotoPickerMonogramProvider providerItemForVisualIdentity:visualIdentity size:v6 RTL:width, height];
 
-  return v8;
+  return height;
 }
 
-- (id)providerItemAtIndexPath:(id)a3
+- (id)providerItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerDataSource *)self providerGroupAtIndexPath:v4];
-  v6 = [v4 row];
+  pathCopy = path;
+  v5 = [(CNPhotoPickerDataSource *)self providerGroupAtIndexPath:pathCopy];
+  v6 = [pathCopy row];
 
   v7 = [v5 providerItemAtIndex:v6];
 
   return v7;
 }
 
-- (id)providerGroupAtIndexPath:(id)a3
+- (id)providerGroupAtIndexPath:(id)path
 {
-  v4 = [a3 section];
+  section = [path section];
 
-  return [(CNPhotoPickerDataSource *)self providerGroupAtSection:v4];
+  return [(CNPhotoPickerDataSource *)self providerGroupAtSection:section];
 }
 
-- (id)providerGroupAtSection:(int64_t)a3
+- (id)providerGroupAtSection:(int64_t)section
 {
-  if (a3 < 0 || (-[CNPhotoPickerDataSource providerGroups](self, "providerGroups"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= a3))
+  if (section < 0 || (-[CNPhotoPickerDataSource providerGroups](self, "providerGroups"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 <= section))
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(CNPhotoPickerDataSource *)self providerGroups];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+    v8 = [providerGroups objectAtIndexedSubscript:section];
   }
 
   return v8;
 }
 
-- (BOOL)isItemAtIndexPathAddItem:(id)a3
+- (BOOL)isItemAtIndexPathAddItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v6 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "section")}];
+  itemCopy = item;
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v6 = [providerGroups objectAtIndexedSubscript:{objc_msgSend(itemCopy, "section")}];
 
   if ([v6 allowAddItem])
   {
-    v7 = [v4 row];
-    v8 = [v6 addItems];
-    v9 = v7 < [v8 count];
+    v7 = [itemCopy row];
+    addItems = [v6 addItems];
+    v9 = v7 < [addItems count];
   }
 
   else
@@ -355,16 +355,16 @@ LABEL_8:
   return v9;
 }
 
-- (id)actionTitleForSection:(int64_t)a3
+- (id)actionTitleForSection:(int64_t)section
 {
-  v5 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v6 = [providerGroups objectAtIndexedSubscript:section];
 
   if ([v6 groupType] == 2)
   {
-    v7 = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
-    v8 = [v7 objectAtIndexedSubscript:a3];
-    v9 = [v8 BOOLValue];
+    groupIsCollapsedState = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
+    v8 = [groupIsCollapsedState objectAtIndexedSubscript:section];
+    bOOLValue = [v8 BOOLValue];
 
     v10 = CNContactsUIBundle();
     v11 = [v10 localizedStringForKey:@"PHOTO_EDIT_ANIMOJI_HEADER_COLLAPSE_ACTION" value:&stru_1F0CE7398 table:@"Localized"];
@@ -372,7 +372,7 @@ LABEL_8:
     v12 = CNContactsUIBundle();
     v13 = [v12 localizedStringForKey:@"PHOTO_EDIT_ANIMOJI_HEADER_EXPAND_ACTION" value:&stru_1F0CE7398 table:@"Localized"];
 
-    if (v9)
+    if (bOOLValue)
     {
       v14 = v13;
     }
@@ -393,22 +393,22 @@ LABEL_8:
   return v15;
 }
 
-- (id)titleForSection:(int64_t)a3
+- (id)titleForSection:(int64_t)section
 {
-  v4 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v5 = [providerGroups objectAtIndexedSubscript:section];
 
-  v6 = [v5 groupType];
-  switch(v6)
+  groupType = [v5 groupType];
+  switch(groupType)
   {
     case 3:
       v10 = CNContactsUIBundle();
-      v7 = v10;
+      currentDevice = v10;
       v11 = @"PHOTO_EDIT_EMOJI_HEADER";
       goto LABEL_8;
     case 2:
       v10 = CNContactsUIBundle();
-      v7 = v10;
+      currentDevice = v10;
       v11 = @"PHOTO_EDIT_ANIMOJI_HEADER";
 LABEL_8:
       v9 = [v10 localizedStringForKey:v11 value:&stru_1F0CE7398 table:@"Localized"];
@@ -416,8 +416,8 @@ LABEL_9:
 
       goto LABEL_11;
     case 1:
-      v7 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v7 userInterfaceIdiom])
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom])
       {
         v8 = CNContactsUIBundle();
         v9 = [v8 localizedStringForKey:@"PHOTO_EDIT_PHOTOS_HEADER" value:&stru_1F0CE7398 table:@"Localized"];
@@ -437,20 +437,20 @@ LABEL_11:
   return v9;
 }
 
-- (id)indexPathsToReloadForUpdatedGroup:(id)a3
+- (id)indexPathsToReloadForUpdatedGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerDataSource *)self sectionIndexForProviderGroup:v4];
-  v6 = [v4 numberOfItems];
-  v7 = v6 - 1;
-  if (v6 < 1)
+  groupCopy = group;
+  v5 = [(CNPhotoPickerDataSource *)self sectionIndexForProviderGroup:groupCopy];
+  numberOfItems = [groupCopy numberOfItems];
+  v7 = numberOfItems - 1;
+  if (numberOfItems < 1)
   {
     v12 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v8 = v6;
+    v8 = numberOfItems;
     v9 = 0;
     v10 = MEMORY[0x1E695E0F0];
     do
@@ -465,7 +465,7 @@ LABEL_11:
     while (v8 != v9);
   }
 
-  if ([v4 allowAddItem])
+  if ([groupCopy allowAddItem])
   {
     v13 = [v12 _cn_takeLast:v7];
 
@@ -475,111 +475,111 @@ LABEL_11:
   return v12;
 }
 
-- (int64_t)sectionIndexForProviderGroupType:(int64_t)a3
+- (int64_t)sectionIndexForProviderGroupType:(int64_t)type
 {
-  v4 = [(CNPhotoPickerDataSource *)self providerGroups];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__CNPhotoPickerDataSource_sectionIndexForProviderGroupType___block_invoke;
   v7[3] = &__block_descriptor_40_e36_B16__0__CNPhotoPickerProviderGroup_8l;
-  v7[4] = a3;
-  v5 = [v4 _cn_indexOfFirstObjectPassingTest:v7];
+  v7[4] = type;
+  v5 = [providerGroups _cn_indexOfFirstObjectPassingTest:v7];
 
   return v5;
 }
 
-- (int64_t)sectionIndexForProviderGroup:(id)a3
+- (int64_t)sectionIndexForProviderGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(CNPhotoPickerDataSource *)self providerGroups];
+  groupCopy = group;
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__CNPhotoPickerDataSource_sectionIndexForProviderGroup___block_invoke;
   v9[3] = &unk_1E74E2840;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 _cn_indexOfFirstObjectPassingTest:v9];
+  v10 = groupCopy;
+  v6 = groupCopy;
+  v7 = [providerGroups _cn_indexOfFirstObjectPassingTest:v9];
 
   return v7;
 }
 
-- (int64_t)numberOfItemsInSection:(int64_t)a3
+- (int64_t)numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v6 = [v5 objectAtIndexedSubscript:a3];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v6 = [providerGroups objectAtIndexedSubscript:section];
 
-  v7 = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
-  v8 = [v7 objectAtIndexedSubscript:a3];
-  v9 = [v8 BOOLValue];
+  groupIsCollapsedState = [(CNPhotoPickerDataSource *)self groupIsCollapsedState];
+  v8 = [groupIsCollapsedState objectAtIndexedSubscript:section];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
-    v10 = 2 * [(CNPhotoPickerDataSource *)self itemsPerRowForSection:a3];
-    v11 = [v6 numberOfItems];
-    if (v10 >= v11)
+    numberOfItems2 = 2 * [(CNPhotoPickerDataSource *)self itemsPerRowForSection:section];
+    numberOfItems = [v6 numberOfItems];
+    if (numberOfItems2 >= numberOfItems)
     {
-      v10 = v11;
+      numberOfItems2 = numberOfItems;
     }
   }
 
   else
   {
-    v10 = [v6 numberOfItems];
+    numberOfItems2 = [v6 numberOfItems];
   }
 
-  return v10;
+  return numberOfItems2;
 }
 
 - (int64_t)numberOfSections
 {
-  v2 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v3 = [v2 count];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v3 = [providerGroups count];
 
   return v3;
 }
 
-- (void)setItemsPerRow:(unint64_t)a3 requiresFullReload:(BOOL)a4
+- (void)setItemsPerRow:(unint64_t)row requiresFullReload:(BOOL)reload
 {
-  v6 = [(CNPhotoPickerDataSource *)self providerGroups];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__CNPhotoPickerDataSource_setItemsPerRow_requiresFullReload___block_invoke;
   v7[3] = &__block_descriptor_41_e36_v16__0__CNPhotoPickerProviderGroup_8l;
-  v7[4] = a3;
-  v8 = a4;
-  [v6 _cn_each:v7];
+  v7[4] = row;
+  reloadCopy = reload;
+  [providerGroups _cn_each:v7];
 }
 
-- (unint64_t)itemsPerRowForSection:(int64_t)a3
+- (unint64_t)itemsPerRowForSection:(int64_t)section
 {
-  v4 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v5 = [v4 objectAtIndex:a3];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v5 = [providerGroups objectAtIndex:section];
 
-  v6 = [v5 itemsPerRow];
-  return v6;
+  itemsPerRow = [v5 itemsPerRow];
+  return itemsPerRow;
 }
 
 - (unint64_t)itemsPerRow
 {
-  v2 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v3 = [v2 firstObject];
-  v4 = [v3 itemsPerRow];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  firstObject = [providerGroups firstObject];
+  itemsPerRow = [firstObject itemsPerRow];
 
-  return v4;
+  return itemsPerRow;
 }
 
-- (void)loadProviderGroupsItemsForSize:(CGSize)a3 itemsPerRow:(double)a4 scale:(double)a5 RTL:(BOOL)a6
+- (void)loadProviderGroupsItemsForSize:(CGSize)size itemsPerRow:(double)row scale:(double)scale RTL:(BOOL)l
 {
-  v6 = a6;
-  height = a3.height;
-  width = a3.width;
+  lCopy = l;
+  height = size.height;
+  width = size.width;
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = [(CNPhotoPickerDataSource *)self providerGroups];
-  v12 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  providerGroups = [(CNPhotoPickerDataSource *)self providerGroups];
+  v12 = [providerGroups countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v12)
   {
     v13 = v12;
@@ -591,44 +591,44 @@ LABEL_11:
       {
         if (*v17 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(providerGroups);
         }
 
-        [*(*(&v16 + 1) + 8 * v15++) loadProvidersItemsForSize:v6 itemsPerRow:width scale:height RTL:{a4, a5}];
+        [*(*(&v16 + 1) + 8 * v15++) loadProvidersItemsForSize:lCopy itemsPerRow:width scale:height RTL:{row, scale}];
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v13 = [providerGroups countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v13);
   }
 }
 
-- (CNPhotoPickerDataSource)initWithVisualIdentity:(id)a3 contactViewCache:(id)a4 providerGroups:(id)a5 avatarStore:(id)a6
+- (CNPhotoPickerDataSource)initWithVisualIdentity:(id)identity contactViewCache:(id)cache providerGroups:(id)groups avatarStore:(id)store
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identityCopy = identity;
+  cacheCopy = cache;
+  groupsCopy = groups;
+  storeCopy = store;
   v29.receiver = self;
   v29.super_class = CNPhotoPickerDataSource;
   v15 = [(CNPhotoPickerDataSource *)&v29 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_visualIdentity, a3);
-    objc_storeStrong(&v16->_contactViewCache, a4);
+    objc_storeStrong(&v15->_visualIdentity, identity);
+    objc_storeStrong(&v16->_contactViewCache, cache);
     activePhotoIndexPath = v16->_activePhotoIndexPath;
     v16->_activePhotoIndexPath = 0;
 
-    objc_storeStrong(&v16->_providerGroups, a5);
-    objc_storeStrong(&v16->_avatarStore, a6);
+    objc_storeStrong(&v16->_providerGroups, groups);
+    objc_storeStrong(&v16->_avatarStore, store);
     v18 = objc_alloc_init(CNPhotoPickerVariantsManager);
     variantsManager = v16->_variantsManager;
     v16->_variantsManager = v18;
 
-    v20 = [v13 _cn_map:&__block_literal_global_13183];
+    v20 = [groupsCopy _cn_map:&__block_literal_global_13183];
     v21 = [v20 mutableCopy];
     groupIsCollapsedState = v16->_groupIsCollapsedState;
     v16->_groupIsCollapsedState = v21;
@@ -642,7 +642,7 @@ LABEL_11:
     v27[3] = &unk_1E74E27F8;
     v24 = v16;
     v28 = v24;
-    [v13 _cn_each:v27];
+    [groupsCopy _cn_each:v27];
     v25 = v24;
   }
 
@@ -664,20 +664,20 @@ id __94__CNPhotoPickerDataSource_initWithVisualIdentity_contactViewCache_provide
   return v2;
 }
 
-- (CNPhotoPickerDataSource)initWithVisualIdentity:(id)a3 contactViewCache:(id)a4 photoPickerConfiguration:(id)a5
+- (CNPhotoPickerDataSource)initWithVisualIdentity:(id)identity contactViewCache:(id)cache photoPickerConfiguration:(id)configuration
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [objc_opt_class() avatarStore];
-  v12 = [v10 mutableCopy];
+  configurationCopy = configuration;
+  cacheCopy = cache;
+  identityCopy = identity;
+  avatarStore = [objc_opt_class() avatarStore];
+  v12 = [identityCopy mutableCopy];
   v13 = +[CNUIContactsEnvironment currentEnvironment];
-  v14 = [CNPhotoPickerProviderGroupsBuilder builderWithVisualIdentity:v12 avatarStore:v11 environment:v13 contactViewCache:v9 photoPickerConfiguration:v8];
+  v14 = [CNPhotoPickerProviderGroupsBuilder builderWithVisualIdentity:v12 avatarStore:avatarStore environment:v13 contactViewCache:cacheCopy photoPickerConfiguration:configurationCopy];
 
-  LOBYTE(v12) = [v8 allowPhotoCapture];
+  LOBYTE(v12) = [configurationCopy allowPhotoCapture];
   self->_allowsPhotoLibraryAccess = v12;
-  v15 = [v14 build];
-  v16 = [(CNPhotoPickerDataSource *)self initWithVisualIdentity:v10 contactViewCache:v9 providerGroups:v15 avatarStore:v11];
+  build = [v14 build];
+  v16 = [(CNPhotoPickerDataSource *)self initWithVisualIdentity:identityCopy contactViewCache:cacheCopy providerGroups:build avatarStore:avatarStore];
 
   return v16;
 }

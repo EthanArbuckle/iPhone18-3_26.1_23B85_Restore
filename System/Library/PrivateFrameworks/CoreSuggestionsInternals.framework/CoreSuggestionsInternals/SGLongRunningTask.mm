@@ -1,6 +1,6 @@
 @interface SGLongRunningTask
 - (BOOL)shouldDefer;
-- (SGLongRunningTask)initWithDeadline:(id)a3 manager:(id)a4;
+- (SGLongRunningTask)initWithDeadline:(id)deadline manager:(id)manager;
 - (void)markFinished;
 @end
 
@@ -33,18 +33,18 @@
   return deadline;
 }
 
-- (SGLongRunningTask)initWithDeadline:(id)a3 manager:(id)a4
+- (SGLongRunningTask)initWithDeadline:(id)deadline manager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  deadlineCopy = deadline;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = SGLongRunningTask;
   v9 = [(SGLongRunningTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deadline, a3);
-    objc_storeWeak(&v10->_manager, v8);
+    objc_storeStrong(&v9->_deadline, deadline);
+    objc_storeWeak(&v10->_manager, managerCopy);
   }
 
   return v10;

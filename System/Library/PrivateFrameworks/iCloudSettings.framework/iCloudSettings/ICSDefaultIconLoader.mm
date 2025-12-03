@@ -1,23 +1,23 @@
 @interface ICSDefaultIconLoader
-+ (id)graphicIconWithType:(int64_t)a3 size:(CGSize)a4;
-+ (id)tableIconWithType:(int64_t)a3;
++ (id)graphicIconWithType:(int64_t)type size:(CGSize)size;
++ (id)tableIconWithType:(int64_t)type;
 - (ICSDefaultIconLoader)init;
 @end
 
 @implementation ICSDefaultIconLoader
 
-+ (id)tableIconWithType:(int64_t)a3
++ (id)tableIconWithType:(int64_t)type
 {
-  v3 = _s14iCloudSettings17DefaultIconLoaderC05tableD04typeSo7UIImageCSgAA16ICSIconUTTypeKeyO_tFZ_0(a3);
+  v3 = _s14iCloudSettings17DefaultIconLoaderC05tableD04typeSo7UIImageCSgAA16ICSIconUTTypeKeyO_tFZ_0(type);
 
   return v3;
 }
 
-+ (id)graphicIconWithType:(int64_t)a3 size:(CGSize)a4
++ (id)graphicIconWithType:(int64_t)type size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = ICSIconUTTypeKey.utType.getter(a3);
+  height = size.height;
+  width = size.width;
+  v6 = ICSIconUTTypeKey.utType.getter(type);
   v8 = _s14iCloudSettings17DefaultIconLoaderC07graphicD010identifier4sizeSo7UIImageCSgSS_So6CGSizeVtFZ_0(v6, v7, width, height);
 
   return v8;

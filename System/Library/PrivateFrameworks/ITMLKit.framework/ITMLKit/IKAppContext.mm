@@ -1,8 +1,8 @@
 @interface IKAppContext
-- (void)_evaluateFoundationWithDeviceConfig:(id)a3 addPrivateInterfaces:(BOOL)a4;
+- (void)_evaluateFoundationWithDeviceConfig:(id)config addPrivateInterfaces:(BOOL)interfaces;
 - (void)evaluateFoundationJS;
-- (void)exitAppWithOptions:(id)a3;
-- (void)launchAppWithOptions:(id)a3;
+- (void)exitAppWithOptions:(id)options;
+- (void)launchAppWithOptions:(id)options;
 - (void)resetFoundationJS;
 @end
 
@@ -11,7 +11,7 @@
 - (void)evaluateFoundationJS
 {
   kdebug_trace();
-  v3 = [(IKAppContext *)self jsContext];
+  jsContext = [(IKAppContext *)self jsContext];
   v65 = 0;
   v66 = &v65;
   v67 = 0x3032000000;
@@ -55,63 +55,63 @@
   v5 = [(IKJSDevice *)v4 initWithAppContext:self deviceConfig:v66[5]];
   if (*(v44 + 24) == 1)
   {
-    v6 = [MEMORY[0x277CD4658] valueWithObject:v5 inContext:v3];
-    v7 = [MEMORY[0x277D7FCE0] sharedInstance];
-    v8 = [v7 guid];
-    [v6 setObject:v8 forKeyedSubscript:@"guid"];
+    v6 = [MEMORY[0x277CD4658] valueWithObject:v5 inContext:jsContext];
+    mEMORY[0x277D7FCE0] = [MEMORY[0x277D7FCE0] sharedInstance];
+    guid = [mEMORY[0x277D7FCE0] guid];
+    [v6 setObject:guid forKeyedSubscript:@"guid"];
   }
 
-  [v3 setObject:v5 forKeyedSubscript:@"Device"];
+  [jsContext setObject:v5 forKeyedSubscript:@"Device"];
   v9 = [IKJSDeviceSettings alloc];
   v10 = [(IKJSDeviceSettings *)v9 initWithAppContext:self deviceConfig:v66[5]];
-  [v3 setObject:v10 forKeyedSubscript:@"Settings"];
+  [jsContext setObject:v10 forKeyedSubscript:@"Settings"];
 
   v11 = [(IKJSObject *)[IKDOMImplementationRegistry alloc] initWithAppContext:self];
-  [v3 setObject:v11 forKeyedSubscript:@"DOMImplementationRegistry"];
+  [jsContext setObject:v11 forKeyedSubscript:@"DOMImplementationRegistry"];
 
   v12 = [(IKJSObject *)[IKJSApplication alloc] initWithAppContext:self];
-  [v3 setObject:v12 forKeyedSubscript:@"App"];
+  [jsContext setObject:v12 forKeyedSubscript:@"App"];
 
   if (v60[5])
   {
     v13 = [IKJSNavigationDocument alloc];
     v14 = [(IKJSNavigationDocument *)v13 initWithAppContext:self navigationController:v60[5]];
-    [v3 setObject:v14 forKeyedSubscript:@"navigationDocument"];
+    [jsContext setObject:v14 forKeyedSubscript:@"navigationDocument"];
   }
 
   if (v54[5])
   {
     v15 = [IKJSNavigationDocument alloc];
     v16 = [(IKJSNavigationDocument *)v15 initWithAppContext:self navigationController:v54[5]];
-    [v3 setObject:v16 forKeyedSubscript:@"modal"];
+    [jsContext setObject:v16 forKeyedSubscript:@"modal"];
   }
 
   if (v48[5])
   {
     v17 = [IKJSTabBar alloc];
     v18 = [(IKJSTabBar *)v17 initWithAppContext:self appTabBar:v48[5]];
-    [v3 setObject:v18 forKeyedSubscript:@"tabBar"];
+    [jsContext setObject:v18 forKeyedSubscript:@"tabBar"];
   }
 
   v19 = [[IKJSStorage alloc] initWithAppContext:self appStorage:0];
-  [v3 setObject:v19 forKeyedSubscript:@"sessionStorage"];
+  [jsContext setObject:v19 forKeyedSubscript:@"sessionStorage"];
 
   v20 = [(IKAppContext *)self app];
-  v21 = [v20 localStorage];
+  localStorage = [v20 localStorage];
 
-  if (v21)
+  if (localStorage)
   {
-    v22 = [[IKJSStorage alloc] initWithAppContext:self appStorage:v21];
-    [v3 setObject:v22 forKeyedSubscript:@"localStorage"];
+    v22 = [[IKJSStorage alloc] initWithAppContext:self appStorage:localStorage];
+    [jsContext setObject:v22 forKeyedSubscript:@"localStorage"];
   }
 
   v23 = [(IKAppContext *)self app];
-  v24 = [v23 vendorStorage];
+  vendorStorage = [v23 vendorStorage];
 
-  if (v24)
+  if (vendorStorage)
   {
-    v25 = [[IKJSStorage alloc] initWithAppContext:self appStorage:v24];
-    [v3 setObject:v25 forKeyedSubscript:@"vendorStorage"];
+    v25 = [[IKJSStorage alloc] initWithAppContext:self appStorage:vendorStorage];
+    [jsContext setObject:v25 forKeyedSubscript:@"vendorStorage"];
   }
 
   v26 = [(IKAppContext *)self app];
@@ -120,77 +120,77 @@
   if (v27)
   {
     v28 = [(IKAppContext *)self app];
-    v29 = [v28 userDefaultsStorage];
+    userDefaultsStorage = [v28 userDefaultsStorage];
 
-    if (v29)
+    if (userDefaultsStorage)
     {
-      v30 = [[IKJSUserDefaults alloc] initWithAppContext:self userDefaultsStorage:v29];
-      [v3 setObject:v30 forKeyedSubscript:@"userDefaults"];
+      v30 = [[IKJSUserDefaults alloc] initWithAppContext:self userDefaultsStorage:userDefaultsStorage];
+      [jsContext setObject:v30 forKeyedSubscript:@"userDefaults"];
     }
   }
 
   v31 = [(IKJSObject *)[IKJSApplication alloc] initWithAppContext:self];
   [(IKAppContext *)self setJsApp:v31];
 
-  v32 = [(IKAppContext *)self jsApp];
-  [v3 setObject:v32 forKeyedSubscript:@"App"];
+  jsApp = [(IKAppContext *)self jsApp];
+  [jsContext setObject:jsApp forKeyedSubscript:@"App"];
 
   v33 = [[IKJSWeakMap alloc] initWithAppContext:self];
   [(IKAppContext *)self setJsWeakMap:v33];
 
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"CharacterData"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Comment"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"CustomEvent"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Document"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"DocumentFragment"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"DOMException"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"DOMImplementation"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"DOMParser"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Element"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Event"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"HTMLCollection"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Impression"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"MediaItem"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"CharacterData"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Comment"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"CustomEvent"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Document"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"DocumentFragment"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"DOMException"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"DOMImplementation"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"DOMParser"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Element"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Event"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"HTMLCollection"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Impression"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"MediaItem"];
   v34 = objc_opt_new();
-  [v3 setObject:v34 forKeyedSubscript:@"MediaItemChangeReason"];
+  [jsContext setObject:v34 forKeyedSubscript:@"MediaItemChangeReason"];
 
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"NamedNodeMap"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Node"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"NodeList"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Player"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Playlist"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"NamedNodeMap"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Node"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"NodeList"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Player"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Playlist"];
   v35 = objc_opt_new();
-  [v3 setObject:v35 forKeyedSubscript:@"PlaylistEndAction"];
+  [jsContext setObject:v35 forKeyedSubscript:@"PlaylistEndAction"];
 
   v36 = objc_opt_new();
-  [v3 setObject:v36 forKeyedSubscript:@"PlaylistRepeatMode"];
+  [jsContext setObject:v36 forKeyedSubscript:@"PlaylistRepeatMode"];
 
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Text"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"XMLHttpRequest"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"XMLSerializer"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"XPathException"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"XPathExpression"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"XPathResult"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"Browser"];
-  [v3 setObject:&__block_literal_global forKeyedSubscript:@"DataItem"];
-  [v3 setObject:&__block_literal_global_173 forKeyedSubscript:@"DataSource"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"NSError"];
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"LoadIndexesRequest"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Text"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"XMLHttpRequest"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"XMLSerializer"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"XPathException"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"XPathExpression"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"XPathResult"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"Browser"];
+  [jsContext setObject:&__block_literal_global forKeyedSubscript:@"DataItem"];
+  [jsContext setObject:&__block_literal_global_173 forKeyedSubscript:@"DataSource"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"NSError"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"LoadIndexesRequest"];
   v37 = [(IKJSObject *)[IKJSViewModelService alloc] initWithAppContext:self];
   [(IKAppContext *)self setJsViewModelService:v37];
 
-  [v3 setObject:objc_opt_class() forKeyedSubscript:@"ViewModelLink"];
-  v38 = [(IKAppContext *)self jsViewModelService];
-  [v3 setObject:v38 forKeyedSubscript:@"viewModelService"];
+  [jsContext setObject:objc_opt_class() forKeyedSubscript:@"ViewModelLink"];
+  jsViewModelService = [(IKAppContext *)self jsViewModelService];
+  [jsContext setObject:jsViewModelService forKeyedSubscript:@"viewModelService"];
 
   [(IKAppContext *)self _evaluateFoundationWithDeviceConfig:v66[5] addPrivateInterfaces:1];
-  v39 = [(IKAppContext *)self delegate];
+  delegate = [(IKAppContext *)self delegate];
   v40 = objc_opt_respondsToSelector();
 
   if (v40)
   {
-    v41 = [(IKAppContext *)self delegate];
-    [v41 appContext:self evaluateAppJavaScriptInContext:v3];
+    delegate2 = [(IKAppContext *)self delegate];
+    [delegate2 appContext:self evaluateAppJavaScriptInContext:jsContext];
   }
 
   kdebug_trace();
@@ -265,44 +265,44 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   [(IKAppContext *)self setJsViewModelService:0];
 }
 
-- (void)launchAppWithOptions:(id)a3
+- (void)launchAppWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(IKAppContext *)self jsContext];
+  optionsCopy = options;
+  jsContext = [(IKAppContext *)self jsContext];
   v6 = ITMLKitGetLogObject(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(IKAppContext(JS) *)v4 launchAppWithOptions:v6];
+    [(IKAppContext(JS) *)optionsCopy launchAppWithOptions:v6];
   }
 
-  v7 = [v5 objectForKeyedSubscript:@"App"];
+  v7 = [jsContext objectForKeyedSubscript:@"App"];
   v8 = [v7 toObjectOfClass:objc_opt_class()];
 
-  [v8 launchAppWithOptions:v4];
+  [v8 launchAppWithOptions:optionsCopy];
 }
 
-- (void)exitAppWithOptions:(id)a3
+- (void)exitAppWithOptions:(id)options
 {
-  v4 = a3;
-  v8 = [(IKAppContext *)self jsContext];
-  v5 = [v8 objectForKeyedSubscript:@"App"];
+  optionsCopy = options;
+  jsContext = [(IKAppContext *)self jsContext];
+  v5 = [jsContext objectForKeyedSubscript:@"App"];
   v6 = [v5 toObjectOfClass:objc_opt_class()];
 
-  [v6 exitAppWithOptions:v4];
-  v7 = [(IKAppContext *)self jsFoundation];
-  [v7 stopTimers];
+  [v6 exitAppWithOptions:optionsCopy];
+  jsFoundation = [(IKAppContext *)self jsFoundation];
+  [jsFoundation stopTimers];
 }
 
-- (void)_evaluateFoundationWithDeviceConfig:(id)a3 addPrivateInterfaces:(BOOL)a4
+- (void)_evaluateFoundationWithDeviceConfig:(id)config addPrivateInterfaces:(BOOL)interfaces
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[IKJSFoundation alloc] initWithAppContext:self deviceConfig:v6];
+  interfacesCopy = interfaces;
+  configCopy = config;
+  v7 = [[IKJSFoundation alloc] initWithAppContext:self deviceConfig:configCopy];
   [(IKAppContext *)self setJsFoundation:v7];
 
-  v8 = [(IKAppContext *)self jsContext];
+  jsContext = [(IKAppContext *)self jsContext];
   objc_initWeak(location, self);
-  if (v4)
+  if (interfacesCopy)
   {
     v58[0] = MEMORY[0x277D85DD0];
     v58[1] = 3221225472;
@@ -310,7 +310,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
     v58[3] = &unk_2797990B8;
     objc_copyWeak(&v59, location);
     v9 = MEMORY[0x259C21BA0](v58);
-    [v8 setObject:v9 forKeyedSubscript:@"imageScaleFactor"];
+    [jsContext setObject:v9 forKeyedSubscript:@"imageScaleFactor"];
 
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
@@ -318,7 +318,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
     v56[3] = &unk_2797990B8;
     objc_copyWeak(&v57, location);
     v10 = MEMORY[0x259C21BA0](v56);
-    [v8 setObject:v10 forKeyedSubscript:@"layeredImageScaleFactor"];
+    [jsContext setObject:v10 forKeyedSubscript:@"layeredImageScaleFactor"];
 
     objc_destroyWeak(&v57);
     objc_destroyWeak(&v59);
@@ -328,7 +328,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
     v54[3] = &unk_2797990E0;
     objc_copyWeak(&v55, location);
     v11 = MEMORY[0x259C21BA0](v54);
-    [v8 setObject:v11 forKeyedSubscript:@"formatLocalizedNumber"];
+    [jsContext setObject:v11 forKeyedSubscript:@"formatLocalizedNumber"];
 
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
@@ -336,7 +336,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
     v52[3] = &unk_279799108;
     objc_copyWeak(&v53, location);
     v12 = MEMORY[0x259C21BA0](v52);
-    [v8 setObject:v12 forKeyedSubscript:@"formatLocalizedLocaleIdentifier"];
+    [jsContext setObject:v12 forKeyedSubscript:@"formatLocalizedLocaleIdentifier"];
 
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
@@ -344,7 +344,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
     v50[3] = &unk_279799108;
     objc_copyWeak(&v51, location);
     v13 = MEMORY[0x259C21BA0](v50);
-    [v8 setObject:v13 forKeyedSubscript:@"joinComponentsWithLocalizedCommaAndSpace"];
+    [jsContext setObject:v13 forKeyedSubscript:@"joinComponentsWithLocalizedCommaAndSpace"];
 
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
@@ -352,7 +352,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
     v48[3] = &unk_279799108;
     objc_copyWeak(&v49, location);
     v14 = MEMORY[0x259C21BA0](v48);
-    [v8 setObject:v14 forKeyedSubscript:@"joinComponentsWithLocalizedSemicolonAndSpace"];
+    [jsContext setObject:v14 forKeyedSubscript:@"joinComponentsWithLocalizedSemicolonAndSpace"];
 
     objc_destroyWeak(&v49);
     objc_destroyWeak(&v51);
@@ -360,14 +360,14 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
     objc_destroyWeak(&v55);
   }
 
-  [v8 setObject:&__block_literal_global_241 forKeyedSubscript:@"UUID"];
+  [jsContext setObject:&__block_literal_global_241 forKeyedSubscript:@"UUID"];
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __77__IKAppContext_JS___evaluateFoundationWithDeviceConfig_addPrivateInterfaces___block_invoke_8;
   v46[3] = &unk_279799150;
   objc_copyWeak(&v47, location);
   v15 = MEMORY[0x259C21BA0](v46);
-  [v8 setObject:v15 forKeyedSubscript:@"makeXMLHttpRequest"];
+  [jsContext setObject:v15 forKeyedSubscript:@"makeXMLHttpRequest"];
 
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
@@ -375,7 +375,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   v44[3] = &unk_279799178;
   objc_copyWeak(&v45, location);
   v16 = MEMORY[0x259C21BA0](v44);
-  [v8 setObject:v16 forKeyedSubscript:@"evaluateScripts"];
+  [jsContext setObject:v16 forKeyedSubscript:@"evaluateScripts"];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
@@ -383,7 +383,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   v42[3] = &unk_2797991A0;
   objc_copyWeak(&v43, location);
   v17 = MEMORY[0x259C21BA0](v42);
-  [v8 setObject:v17 forKeyedSubscript:@"setInterval"];
+  [jsContext setObject:v17 forKeyedSubscript:@"setInterval"];
 
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
@@ -391,7 +391,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   v40[3] = &unk_2797991C8;
   objc_copyWeak(&v41, location);
   v18 = MEMORY[0x259C21BA0](v40);
-  [v8 setObject:v18 forKeyedSubscript:@"clearInterval"];
+  [jsContext setObject:v18 forKeyedSubscript:@"clearInterval"];
 
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
@@ -399,7 +399,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   v38[3] = &unk_2797991A0;
   objc_copyWeak(&v39, location);
   v19 = MEMORY[0x259C21BA0](v38);
-  [v8 setObject:v19 forKeyedSubscript:@"setTimeout"];
+  [jsContext setObject:v19 forKeyedSubscript:@"setTimeout"];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -407,7 +407,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   v36[3] = &unk_2797991C8;
   objc_copyWeak(&v37, location);
   v20 = MEMORY[0x259C21BA0](v36);
-  [v8 setObject:v20 forKeyedSubscript:@"clearTimeout"];
+  [jsContext setObject:v20 forKeyedSubscript:@"clearTimeout"];
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
@@ -415,7 +415,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   v34[3] = &unk_2797991F0;
   objc_copyWeak(&v35, location);
   v21 = MEMORY[0x259C21BA0](v34);
-  [v8 setObject:v21 forKeyedSubscript:@"formatDate"];
+  [jsContext setObject:v21 forKeyedSubscript:@"formatDate"];
 
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
@@ -423,7 +423,7 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   v32[3] = &unk_279799108;
   objc_copyWeak(&v33, location);
   v22 = MEMORY[0x259C21BA0](v32);
-  [v8 setObject:v22 forKeyedSubscript:@"formatDuration"];
+  [jsContext setObject:v22 forKeyedSubscript:@"formatDuration"];
 
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
@@ -431,16 +431,16 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   v30[3] = &unk_279799218;
   objc_copyWeak(&v31, location);
   v23 = MEMORY[0x259C21BA0](v30);
-  [v8 setObject:v23 forKeyedSubscript:@"formatNumber"];
+  [jsContext setObject:v23 forKeyedSubscript:@"formatNumber"];
 
-  [v8 setObject:&__block_literal_global_292 forKeyedSubscript:@"canOpenURL"];
+  [jsContext setObject:&__block_literal_global_292 forKeyedSubscript:@"canOpenURL"];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __77__IKAppContext_JS___evaluateFoundationWithDeviceConfig_addPrivateInterfaces___block_invoke_18;
   v28[3] = &unk_279799288;
   objc_copyWeak(&v29, location);
   v24 = MEMORY[0x259C21BA0](v28);
-  [v8 setObject:v24 forKeyedSubscript:@"openURL"];
+  [jsContext setObject:v24 forKeyedSubscript:@"openURL"];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -448,14 +448,14 @@ void __40__IKAppContext_JS__evaluateFoundationJS__block_invoke(uint64_t a1, void
   v26[3] = &unk_2797992D8;
   objc_copyWeak(&v27, location);
   v25 = MEMORY[0x259C21BA0](v26);
-  [v8 setObject:v25 forKeyedSubscript:@"getActiveDocument"];
+  [jsContext setObject:v25 forKeyedSubscript:@"getActiveDocument"];
 
-  [v8 setObject:&__block_literal_global_311 forKeyedSubscript:@"sort"];
-  [v8 setObject:&__block_literal_global_318 forKeyedSubscript:@"atob"];
-  [v8 setObject:&__block_literal_global_325 forKeyedSubscript:@"btoa"];
-  [v8 setObject:&__block_literal_global_331 forKeyedSubscript:@"localizedUppercaseString"];
-  [v8 setObject:&__block_literal_global_336 forKeyedSubscript:@"localizedLowercaseString"];
-  [v8 setObject:&__block_literal_global_341 forKeyedSubscript:@"localizedCapitalizedString"];
+  [jsContext setObject:&__block_literal_global_311 forKeyedSubscript:@"sort"];
+  [jsContext setObject:&__block_literal_global_318 forKeyedSubscript:@"atob"];
+  [jsContext setObject:&__block_literal_global_325 forKeyedSubscript:@"btoa"];
+  [jsContext setObject:&__block_literal_global_331 forKeyedSubscript:@"localizedUppercaseString"];
+  [jsContext setObject:&__block_literal_global_336 forKeyedSubscript:@"localizedLowercaseString"];
+  [jsContext setObject:&__block_literal_global_341 forKeyedSubscript:@"localizedCapitalizedString"];
   objc_destroyWeak(&v27);
   objc_destroyWeak(&v29);
   objc_destroyWeak(&v31);

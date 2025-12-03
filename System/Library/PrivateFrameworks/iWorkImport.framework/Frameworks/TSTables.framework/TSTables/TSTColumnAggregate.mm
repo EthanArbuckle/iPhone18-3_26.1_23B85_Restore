@@ -1,29 +1,29 @@
 @interface TSTColumnAggregate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSKUIDStruct)columnAggregateUid;
 - (TSKUIDStruct)columnUid;
 - (TSKUIDStruct)runningTotalGroupingColumnUid;
-- (TSTColumnAggregate)initWithArchive:(const void *)a3;
-- (TSTColumnAggregate)initWithColumnAggregateUid:(TSKUIDStruct)a3 columnUid:(TSKUIDStruct)a4 aggregateType:(unsigned __int8)a5 level:(int)a6 showAsType:(unsigned __int8)a7 runningTotalGroupingColumnUid:(TSKUIDStruct)a8;
+- (TSTColumnAggregate)initWithArchive:(const void *)archive;
+- (TSTColumnAggregate)initWithColumnAggregateUid:(TSKUIDStruct)uid columnUid:(TSKUIDStruct)columnUid aggregateType:(unsigned __int8)type level:(int)level showAsType:(unsigned __int8)asType runningTotalGroupingColumnUid:(TSKUIDStruct)groupingColumnUid;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initForPivotWithColumnUid:(TSKUIDStruct)a3 aggregateType:(unsigned __int8)a4;
-- (id)initForPivotWithColumnUid:(TSKUIDStruct)a3 aggregateType:(unsigned __int8)a4 showAsType:(unsigned __int8)a5 runningTotalGroupingColumnUid:(TSKUIDStruct)a6;
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4;
-- (void)getUUIDBytesForColumn:(unsigned __int8)a3[16];
-- (void)getUUIDBytesForColumnAggregate:(unsigned __int8)a3[16];
-- (void)getUUIDBytesForRunningTotalGroupingColumn:(unsigned __int8)a3[16];
+- (id)initForPivotWithColumnUid:(TSKUIDStruct)uid aggregateType:(unsigned __int8)type;
+- (id)initForPivotWithColumnUid:(TSKUIDStruct)uid aggregateType:(unsigned __int8)type showAsType:(unsigned __int8)asType runningTotalGroupingColumnUid:(TSKUIDStruct)columnUid;
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver;
+- (void)getUUIDBytesForColumn:(unsigned __int8)column[16];
+- (void)getUUIDBytesForColumnAggregate:(unsigned __int8)aggregate[16];
+- (void)getUUIDBytesForRunningTotalGroupingColumn:(unsigned __int8)column[16];
 @end
 
 @implementation TSTColumnAggregate
 
-- (TSTColumnAggregate)initWithColumnAggregateUid:(TSKUIDStruct)a3 columnUid:(TSKUIDStruct)a4 aggregateType:(unsigned __int8)a5 level:(int)a6 showAsType:(unsigned __int8)a7 runningTotalGroupingColumnUid:(TSKUIDStruct)a8
+- (TSTColumnAggregate)initWithColumnAggregateUid:(TSKUIDStruct)uid columnUid:(TSKUIDStruct)columnUid aggregateType:(unsigned __int8)type level:(int)level showAsType:(unsigned __int8)asType runningTotalGroupingColumnUid:(TSKUIDStruct)groupingColumnUid
 {
-  upper = a4._upper;
-  lower = a4._lower;
-  v12 = a3._upper;
-  v13 = a3._lower;
+  upper = columnUid._upper;
+  lower = columnUid._lower;
+  v12 = uid._upper;
+  v13 = uid._lower;
   v15.receiver = self;
   v15.super_class = TSTColumnAggregate;
   result = [(TSTColumnAggregate *)&v15 init];
@@ -31,39 +31,39 @@
   {
     result->_columnUid.var0.var0._lower = lower;
     result->_columnUid.var0.var0._upper = upper;
-    result->_level = a6;
-    result->_aggregateType = a5;
-    result->_showAsType = a7;
+    result->_level = level;
+    result->_aggregateType = type;
+    result->_showAsType = asType;
     result->_columnAggregateUid.var0.var0._lower = v13;
     result->_columnAggregateUid.var0.var0._upper = v12;
     result->_definedColumnAggregateUid = (v13 | v12) != 0;
-    result->_runningTotalGroupingColumnUid = a8;
-    result->_definedRunningTotalGroupingColumnUid = a8 != 0uLL;
+    result->_runningTotalGroupingColumnUid = groupingColumnUid;
+    result->_definedRunningTotalGroupingColumnUid = groupingColumnUid != 0uLL;
   }
 
   return result;
 }
 
-- (id)initForPivotWithColumnUid:(TSKUIDStruct)a3 aggregateType:(unsigned __int8)a4
+- (id)initForPivotWithColumnUid:(TSKUIDStruct)uid aggregateType:(unsigned __int8)type
 {
-  v4 = a4;
-  upper = a3._upper;
-  lower = a3._lower;
+  typeCopy = type;
+  upper = uid._upper;
+  lower = uid._lower;
   v8 = TSKMakeUIDStructRandom();
   v11 = 0;
-  return objc_msgSend_initWithColumnAggregateUid_columnUid_aggregateType_level_showAsType_runningTotalGroupingColumnUid_(self, v9, v8, v9, lower, upper, v4, 0, v11, 0, 0);
+  return objc_msgSend_initWithColumnAggregateUid_columnUid_aggregateType_level_showAsType_runningTotalGroupingColumnUid_(self, v9, v8, v9, lower, upper, typeCopy, 0, v11, 0, 0);
 }
 
-- (id)initForPivotWithColumnUid:(TSKUIDStruct)a3 aggregateType:(unsigned __int8)a4 showAsType:(unsigned __int8)a5 runningTotalGroupingColumnUid:(TSKUIDStruct)a6
+- (id)initForPivotWithColumnUid:(TSKUIDStruct)uid aggregateType:(unsigned __int8)type showAsType:(unsigned __int8)asType runningTotalGroupingColumnUid:(TSKUIDStruct)columnUid
 {
-  upper = a6._upper;
-  lower = a6._lower;
-  v9 = a4;
-  v10 = a3._upper;
-  v11 = a3._lower;
+  upper = columnUid._upper;
+  lower = columnUid._lower;
+  typeCopy = type;
+  v10 = uid._upper;
+  v11 = uid._lower;
   v13 = TSKMakeUIDStructRandom();
-  v16 = a5;
-  return objc_msgSend_initWithColumnAggregateUid_columnUid_aggregateType_level_showAsType_runningTotalGroupingColumnUid_(self, v14, v13, v14, v11, v10, v9, 0, v16, lower, upper);
+  asTypeCopy = asType;
+  return objc_msgSend_initWithColumnAggregateUid_columnUid_aggregateType_level_showAsType_runningTotalGroupingColumnUid_(self, v14, v13, v14, v11, v10, typeCopy, 0, asTypeCopy, lower, upper);
 }
 
 - (TSKUIDStruct)columnUid
@@ -96,7 +96,7 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TSTColumnAggregate alloc];
   v9 = objc_msgSend_columnAggregateUid(self, v5, v6, v7, v8);
@@ -141,11 +141,11 @@
   return v18;
 }
 
-- (TSTColumnAggregate)initWithArchive:(const void *)a3
+- (TSTColumnAggregate)initWithArchive:(const void *)archive
 {
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v5 = *(a3 + 3);
+    v5 = *(archive + 3);
   }
 
   else
@@ -155,21 +155,21 @@
 
   v7 = TSKUIDStruct::loadFromMessage(v5, a2);
   v8 = v6;
-  self->_level = *(a3 + 12);
-  self->_aggregateType = *(a3 + 13);
-  v9 = *(a3 + 4);
-  v10 = *(a3 + 14);
+  self->_level = *(archive + 12);
+  self->_aggregateType = *(archive + 13);
+  v9 = *(archive + 4);
+  v10 = *(archive + 14);
   if ((v9 & 2) != 0)
   {
-    v12 = TSKUIDStruct::loadFromMessage(*(a3 + 4), v6);
+    v12 = TSKUIDStruct::loadFromMessage(*(archive + 4), v6);
     v11 = v6;
-    if ((*(a3 + 4) & 4) == 0)
+    if ((*(archive + 4) & 4) == 0)
     {
       goto LABEL_6;
     }
 
 LABEL_8:
-    v13 = TSKUIDStruct::loadFromMessage(*(a3 + 5), v6);
+    v13 = TSKUIDStruct::loadFromMessage(*(archive + 5), v6);
     return objc_msgSend_initWithColumnAggregateUid_columnUid_aggregateType_level_showAsType_runningTotalGroupingColumnUid_(self, v14, v12, v11, v7, v8, self->_aggregateType, self->_level, v10 & (v9 << 26 >> 31), v13, v14);
   }
 
@@ -186,45 +186,45 @@ LABEL_6:
   return objc_msgSend_initWithColumnAggregateUid_columnUid_aggregateType_level_showAsType_runningTotalGroupingColumnUid_(self, v14, v12, v11, v7, v8, self->_aggregateType, self->_level, v10 & (v9 << 26 >> 31), v13, v14);
 }
 
-- (void)encodeToArchive:(void *)a3 archiver:(id)a4
+- (void)encodeToArchive:(void *)archive archiver:(id)archiver
 {
-  v16 = a4;
-  *(a3 + 4) |= 1u;
-  v6 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v6 = *(archive + 3);
   if (!v6)
   {
-    v7 = *(a3 + 1);
+    v7 = *(archive + 1);
     if (v7)
     {
       v7 = *(v7 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v6 = MEMORY[0x223DA0360](v7);
-    *(a3 + 3) = v6;
+    *(archive + 3) = v6;
   }
 
   TSP::UUIDData::saveToMessage(&self->_columnUid, v6);
-  v8 = *(a3 + 4);
+  v8 = *(archive + 4);
   aggregateType = self->_aggregateType;
-  *(a3 + 12) = self->_level;
-  *(a3 + 13) = aggregateType;
+  *(archive + 12) = self->_level;
+  *(archive + 13) = aggregateType;
   showAsType = self->_showAsType;
-  *(a3 + 4) = v8 | 0x38;
-  *(a3 + 14) = showAsType;
+  *(archive + 4) = v8 | 0x38;
+  *(archive + 14) = showAsType;
   if (self->_columnAggregateUid.var0.var0._lower || self->_columnAggregateUid.var0.var0._upper)
   {
-    *(a3 + 4) = v8 | 0x3A;
-    v11 = *(a3 + 4);
+    *(archive + 4) = v8 | 0x3A;
+    v11 = *(archive + 4);
     if (!v11)
     {
-      v12 = *(a3 + 1);
+      v12 = *(archive + 1);
       if (v12)
       {
         v12 = *(v12 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v11 = MEMORY[0x223DA0360](v12);
-      *(a3 + 4) = v11;
+      *(archive + 4) = v11;
     }
 
     TSP::UUIDData::saveToMessage(&self->_columnAggregateUid, v11);
@@ -233,52 +233,52 @@ LABEL_6:
   p_runningTotalGroupingColumnUid = &self->_runningTotalGroupingColumnUid;
   if (p_runningTotalGroupingColumnUid->var0.var0._lower || p_runningTotalGroupingColumnUid->var0.var0._upper)
   {
-    *(a3 + 4) |= 4u;
-    v14 = *(a3 + 5);
+    *(archive + 4) |= 4u;
+    v14 = *(archive + 5);
     if (!v14)
     {
-      v15 = *(a3 + 1);
+      v15 = *(archive + 1);
       if (v15)
       {
         v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v14 = MEMORY[0x223DA0360](v15);
-      *(a3 + 5) = v14;
+      *(archive + 5) = v14;
     }
 
     TSP::UUIDData::saveToMessage(p_runningTotalGroupingColumnUid, v14);
   }
 }
 
-- (void)getUUIDBytesForColumnAggregate:(unsigned __int8)a3[16]
+- (void)getUUIDBytesForColumnAggregate:(unsigned __int8)aggregate[16]
 {
-  if (a3)
+  if (aggregate)
   {
-    uuid_copy(a3, self->_columnAggregateUid.var0._uuid);
+    uuid_copy(aggregate, self->_columnAggregateUid.var0._uuid);
   }
 }
 
-- (void)getUUIDBytesForColumn:(unsigned __int8)a3[16]
+- (void)getUUIDBytesForColumn:(unsigned __int8)column[16]
 {
-  if (a3)
+  if (column)
   {
-    uuid_copy(a3, self->_columnUid.var0._uuid);
+    uuid_copy(column, self->_columnUid.var0._uuid);
   }
 }
 
-- (void)getUUIDBytesForRunningTotalGroupingColumn:(unsigned __int8)a3[16]
+- (void)getUUIDBytesForRunningTotalGroupingColumn:(unsigned __int8)column[16]
 {
-  if (a3)
+  if (column)
   {
-    uuid_copy(a3, self->_runningTotalGroupingColumnUid.var0._uuid);
+    uuid_copy(column, self->_runningTotalGroupingColumnUid.var0._uuid);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v46 = 1;
     goto LABEL_20;

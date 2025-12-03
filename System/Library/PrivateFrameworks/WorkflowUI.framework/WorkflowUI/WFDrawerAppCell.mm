@@ -1,5 +1,5 @@
 @interface WFDrawerAppCell
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (void)layoutSubviews;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_27484B2EC();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  sub_27484B558(v3);
+  selfCopy = self;
+  sub_27484B558(selfCopy);
   v5 = v4;
   v7 = v6;
 

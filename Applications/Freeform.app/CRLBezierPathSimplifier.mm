@@ -1,33 +1,33 @@
 @interface CRLBezierPathSimplifier
-+ (id)cleanPathForPath:(id)a3;
-+ (id)simplifiedPathWithRawPath:(id)a3 threshold:(double)a4;
-- (BOOL)findApproximationForPointsWithTailElementType:(int64_t)a3;
++ (id)cleanPathForPath:(id)path;
++ (id)simplifiedPathWithRawPath:(id)path threshold:(double)threshold;
+- (BOOL)findApproximationForPointsWithTailElementType:(int64_t)type;
 - (CGPoint)controlPoint1;
 - (CGPoint)controlPoint2;
 - (CGPoint)startOfSubpath;
-- (CRLBezierPathSimplifier)initWithPath:(id)a3 threshold:(double)a4;
+- (CRLBezierPathSimplifier)initWithPath:(id)path threshold:(double)threshold;
 - (id).cxx_construct;
-- (void)addPointsForElementOfType:(int64_t)a3;
+- (void)addPointsForElementOfType:(int64_t)type;
 - (void)outputCurrentSolution;
 - (void)resetSolution;
 - (void)run;
-- (void)setAssociatedPoints:(CRLPointVector3 *)a3;
-- (void)setPointsToSimplify:(void *)a3;
+- (void)setAssociatedPoints:(CRLPointVector3 *)points;
+- (void)setPointsToSimplify:(void *)simplify;
 @end
 
 @implementation CRLBezierPathSimplifier
 
-- (CRLBezierPathSimplifier)initWithPath:(id)a3 threshold:(double)a4
+- (CRLBezierPathSimplifier)initWithPath:(id)path threshold:(double)threshold
 {
-  v7 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = CRLBezierPathSimplifier;
   v8 = [(CRLBezierPathSimplifier *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_path, a3);
-    v9->_threshold = a4;
+    objc_storeStrong(&v8->_path, path);
+    v9->_threshold = threshold;
     v10 = objc_alloc_init(CRLBezierPath);
     simplifiedPath = v9->_simplifiedPath;
     v9->_simplifiedPath = v10;
@@ -36,15 +36,15 @@
   return v9;
 }
 
-- (void)addPointsForElementOfType:(int64_t)a3
+- (void)addPointsForElementOfType:(int64_t)type
 {
-  v5 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
-  v72 = *v5;
-  v73 = v5[1];
+  pointsToSimplify = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+  v72 = *pointsToSimplify;
+  v73 = pointsToSimplify[1];
   v6 = *([(CRLBezierPathSimplifier *)self pointsToSimplify]+ 1);
   v7 = *(v6 - 16);
   v8 = *(v6 - 8);
-  if (a3 == 2)
+  if (type == 2)
   {
     v9 = 0;
     v10 = *(v6 - 8);
@@ -65,20 +65,20 @@
     while (v9 != 48);
     if (!sub_10011ECC8(v11, v10, v13, v12))
     {
-      v16 = [(CRLBezierPathSimplifier *)self associatedPoints];
-      y = v16->v[0].y;
-      x = v16->v[0].x;
-      v18 = [(CRLBezierPathSimplifier *)self associatedPoints];
-      v19 = v18->v[1].x;
-      v20 = v18->v[1].y;
-      v21 = [(CRLBezierPathSimplifier *)self associatedPoints];
-      v22 = v21->v[2].x;
-      v23 = v21->v[2].y;
+      associatedPoints = [(CRLBezierPathSimplifier *)self associatedPoints];
+      y = associatedPoints->v[0].y;
+      x = associatedPoints->v[0].x;
+      associatedPoints2 = [(CRLBezierPathSimplifier *)self associatedPoints];
+      v19 = associatedPoints2->v[1].x;
+      v20 = associatedPoints2->v[1].y;
+      associatedPoints3 = [(CRLBezierPathSimplifier *)self associatedPoints];
+      v22 = associatedPoints3->v[2].x;
+      v23 = associatedPoints3->v[2].y;
       [(CRLBezierPathSimplifier *)self threshold];
       v25 = v24;
       [(CRLBezierPathSimplifier *)self threshold];
       v70 = v26;
-      v27 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+      pointsToSimplify2 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
       v77 = 0uLL;
       v78 = 0;
       v71 = +[CRLBezierPath bezierPath];
@@ -86,8 +86,8 @@
       [v71 curveToPoint:v22 controlPoint1:v23 controlPoint2:{x, y, v19, v20}];
       v28 = v25;
       v29 = [v71 bezierPathByFlatteningPathWithFlatness:(v28 * 0.5)];
-      v30 = [v29 elementCount];
-      if (v30)
+      elementCount = [v29 elementCount];
+      if (elementCount)
       {
         v32 = 0;
         v33 = v70 * 4.0;
@@ -159,11 +159,11 @@
               for (i = v77; i != v41; ++i)
               {
                 v76 = vaddq_f64(vmulq_n_f64(v75, 1.0 - *i), vmulq_n_f64(*buf, *i));
-                sub_1000DACAC(v27, &v76);
+                sub_1000DACAC(pointsToSimplify2, &v76);
               }
             }
 
-            sub_1000DACAC(v27, buf);
+            sub_1000DACAC(pointsToSimplify2, buf);
             v42 = *buf;
           }
 
@@ -177,7 +177,7 @@ LABEL_23:
           ++v32;
         }
 
-        while (v32 != v30);
+        while (v32 != elementCount);
       }
 
       v51 = v77;
@@ -193,9 +193,9 @@ LABEL_46:
   else
   {
     v77 = *[(CRLBezierPathSimplifier *)self associatedPoints];
-    if (a3 != 1)
+    if (type != 1)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         [(CRLBezierPathSimplifier *)self startOfSubpath];
         *&v77 = v49;
@@ -234,9 +234,9 @@ LABEL_46:
       }
     }
 
-    v55 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+    pointsToSimplify3 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
     v56 = v77;
-    if (!sub_10011ECC8(*(v55[1] - 16), *(v55[1] - 8), *&v77, *(&v77 + 1)))
+    if (!sub_10011ECC8(*(pointsToSimplify3[1] - 16), *(pointsToSimplify3[1] - 8), *&v77, *(&v77 + 1)))
     {
       __p[0] = 0;
       __p[1] = 0;
@@ -252,11 +252,11 @@ LABEL_46:
       for (j = __p[1]; v63 != j; ++v63)
       {
         v65 = *v63;
-        v66 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+        pointsToSimplify4 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
         v67 = 1.0 - v65;
         v76.f64[0] = v7 * v67 + *&v56 * v65;
         v76.f64[1] = v8 * v67 + *(&v56 + 1) * v65;
-        sub_1000DACAC(v66, &v76);
+        sub_1000DACAC(pointsToSimplify4, &v76);
       }
 
       sub_1000DACAC([(CRLBezierPathSimplifier *)self pointsToSimplify], &v77);
@@ -269,14 +269,14 @@ LABEL_46:
     }
   }
 
-  v68 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
-  [(CRLBezierPathSimplifier *)self setTailLength:((v68[1] - *v68) >> 4) - ((v73 - v72) >> 4)];
+  pointsToSimplify5 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+  [(CRLBezierPathSimplifier *)self setTailLength:((pointsToSimplify5[1] - *pointsToSimplify5) >> 4) - ((v73 - v72) >> 4)];
 }
 
-- (BOOL)findApproximationForPointsWithTailElementType:(int64_t)a3
+- (BOOL)findApproximationForPointsWithTailElementType:(int64_t)type
 {
-  v5 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
-  if (v5[1] - *v5 <= 0x10uLL)
+  pointsToSimplify = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+  if (pointsToSimplify[1] - *pointsToSimplify <= 0x10uLL)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -307,18 +307,18 @@ LABEL_46:
     [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:330 isFatal:0 description:"At least 2 points expected"];
   }
 
-  v9 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
-  v11 = *v9;
-  v10 = v9[1];
+  pointsToSimplify2 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+  v11 = *pointsToSimplify2;
+  v10 = pointsToSimplify2[1];
   if (((v10 - v11) >> 4) == [(CRLBezierPathSimplifier *)self tailLength]+ 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       [(CRLBezierPathSimplifier *)self setSolutionElementType:2];
-      v12 = [(CRLBezierPathSimplifier *)self associatedPoints];
-      [(CRLBezierPathSimplifier *)self setControlPoint1:v12->v[0].x, v12->v[0].y];
-      v13 = [(CRLBezierPathSimplifier *)self associatedPoints];
-      [(CRLBezierPathSimplifier *)self setControlPoint2:v13->v[1].x, v13->v[1].y];
+      associatedPoints = [(CRLBezierPathSimplifier *)self associatedPoints];
+      [(CRLBezierPathSimplifier *)self setControlPoint1:associatedPoints->v[0].x, associatedPoints->v[0].y];
+      associatedPoints2 = [(CRLBezierPathSimplifier *)self associatedPoints];
+      [(CRLBezierPathSimplifier *)self setControlPoint2:associatedPoints2->v[1].x, associatedPoints2->v[1].y];
     }
 
     else
@@ -361,8 +361,8 @@ LABEL_46:
 
 - (void)outputCurrentSolution
 {
-  v3 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
-  v4 = v3[1] - *v3;
+  pointsToSimplify = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+  v4 = pointsToSimplify[1] - *pointsToSimplify;
   if ([(CRLBezierPathSimplifier *)self tailLength]+ 2 > v4 >> 4)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -432,18 +432,18 @@ LABEL_46:
       [CRLAssertionHandler handleFailureInFunction:v17 file:v18 lineNumber:369 isFatal:0 description:"Undefined cubic control points"];
     }
 
-    v19 = [(CRLBezierPathSimplifier *)self simplifiedPath];
+    simplifiedPath = [(CRLBezierPathSimplifier *)self simplifiedPath];
     [(CRLBezierPathSimplifier *)self controlPoint1];
     v21 = v20;
     v23 = v22;
     [(CRLBezierPathSimplifier *)self controlPoint2];
-    [v19 curveToPoint:v11 controlPoint1:v10 controlPoint2:{v21, v23, v24, v25}];
+    [simplifiedPath curveToPoint:v11 controlPoint1:v10 controlPoint2:{v21, v23, v24, v25}];
   }
 
   else if ([(CRLBezierPathSimplifier *)self solutionElementType]== 1)
   {
-    v19 = [(CRLBezierPathSimplifier *)self simplifiedPath];
-    [v19 lineToPoint:{v11, v10}];
+    simplifiedPath = [(CRLBezierPathSimplifier *)self simplifiedPath];
+    [simplifiedPath lineToPoint:{v11, v10}];
   }
 
   else
@@ -473,26 +473,26 @@ LABEL_46:
       sub_10130E89C();
     }
 
-    v19 = [NSString stringWithUTF8String:"[CRLBezierPathSimplifier outputCurrentSolution]"];
+    simplifiedPath = [NSString stringWithUTF8String:"[CRLBezierPathSimplifier outputCurrentSolution]"];
     v29 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLBezierPathSimplifier.mm"];
-    [CRLAssertionHandler handleFailureInFunction:v19 file:v29 lineNumber:374 isFatal:0 description:"Unexpected solution element type: %d", [(CRLBezierPathSimplifier *)self solutionElementType]];
+    [CRLAssertionHandler handleFailureInFunction:simplifiedPath file:v29 lineNumber:374 isFatal:0 description:"Unexpected solution element type: %d", [(CRLBezierPathSimplifier *)self solutionElementType]];
   }
 
-  v30 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+  pointsToSimplify2 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
   v31 = *[(CRLBezierPathSimplifier *)self pointsToSimplify];
   v32 = *([(CRLBezierPathSimplifier *)self pointsToSimplify]+ 1);
   v33 = v32 - 16 * [(CRLBezierPathSimplifier *)self tailLength]- 16 - v31;
   if (v33)
   {
     v34 = &v31[v33];
-    v35 = v30[1];
+    v35 = pointsToSimplify2[1];
     v36 = v35 - v34;
     if (v35 != v34)
     {
       memmove(v31, v34, v35 - v34);
     }
 
-    v30[1] = &v31[v36];
+    pointsToSimplify2[1] = &v31[v36];
   }
 
   [(CRLBezierPathSimplifier *)self resetSolution];
@@ -500,41 +500,41 @@ LABEL_46:
 
 - (void)run
 {
-  v3 = [(CRLBezierPathSimplifier *)self path];
-  v4 = [v3 elementCount];
+  path = [(CRLBezierPathSimplifier *)self path];
+  elementCount = [path elementCount];
 
-  v5 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
-  v5[1] = *v5;
-  if (v4)
+  pointsToSimplify = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+  pointsToSimplify[1] = *pointsToSimplify;
+  if (elementCount)
   {
     v7 = 0;
     *&v6 = 67109378;
     v43 = v6;
     while (1)
     {
-      v8 = [(CRLBezierPathSimplifier *)self associatedPoints];
-      v8->v[2] = xmmword_1014629F0;
-      v9 = [(CRLBezierPathSimplifier *)self associatedPoints];
-      v9->v[1] = v8->v[2];
-      *[(CRLBezierPathSimplifier *)self associatedPoints]= v9->v[1];
-      v10 = [(CRLBezierPathSimplifier *)self path];
-      v11 = [v10 elementAtIndex:v7 associatedPoints:{-[CRLBezierPathSimplifier associatedPoints](self, "associatedPoints")}];
+      associatedPoints = [(CRLBezierPathSimplifier *)self associatedPoints];
+      associatedPoints->v[2] = xmmword_1014629F0;
+      associatedPoints2 = [(CRLBezierPathSimplifier *)self associatedPoints];
+      associatedPoints2->v[1] = associatedPoints->v[2];
+      *[(CRLBezierPathSimplifier *)self associatedPoints]= associatedPoints2->v[1];
+      path2 = [(CRLBezierPathSimplifier *)self path];
+      v11 = [path2 elementAtIndex:v7 associatedPoints:{-[CRLBezierPathSimplifier associatedPoints](self, "associatedPoints")}];
 
       v12 = v7 + 1;
       v13 = 1;
-      if (v4 - 1 != v7 && v11 != 3)
+      if (elementCount - 1 != v7 && v11 != 3)
       {
-        v14 = [(CRLBezierPathSimplifier *)self path];
-        v15 = [v14 elementAtIndex:v7 + 1];
+        path3 = [(CRLBezierPathSimplifier *)self path];
+        v15 = [path3 elementAtIndex:v7 + 1];
 
         v13 = v15 == 0;
       }
 
-      v16 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
-      v17 = v16[1];
+      pointsToSimplify2 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+      v17 = pointsToSimplify2[1];
       if (!v11)
       {
-        if (v17 != *v16)
+        if (v17 != *pointsToSimplify2)
         {
           v28 = +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
@@ -583,20 +583,20 @@ LABEL_46:
         }
 
         [(CRLBezierPathSimplifier *)self resetSolution];
-        v33 = [(CRLBezierPathSimplifier *)self associatedPoints];
-        [(CRLBezierPathSimplifier *)self setStartOfSubpath:v33->v[0].x, v33->v[0].y];
-        v34 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+        associatedPoints3 = [(CRLBezierPathSimplifier *)self associatedPoints];
+        [(CRLBezierPathSimplifier *)self setStartOfSubpath:associatedPoints3->v[0].x, associatedPoints3->v[0].y];
+        pointsToSimplify3 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
         [(CRLBezierPathSimplifier *)self startOfSubpath];
         *buf = v35;
         *v45 = v36;
-        sub_1000DACAC(v34, buf);
-        v37 = [(CRLBezierPathSimplifier *)self simplifiedPath];
+        sub_1000DACAC(pointsToSimplify3, buf);
+        simplifiedPath = [(CRLBezierPathSimplifier *)self simplifiedPath];
         [(CRLBezierPathSimplifier *)self startOfSubpath];
-        [v37 moveToPoint:?];
+        [simplifiedPath moveToPoint:?];
         goto LABEL_49;
       }
 
-      if (v17 == *v16)
+      if (v17 == *pointsToSimplify2)
       {
         v18 = +[CRLAssertionHandler _atomicIncrementAssertCount];
         if (qword_101AD5A10 != -1)
@@ -700,14 +700,14 @@ LABEL_46:
 LABEL_47:
       if (v11 == 3)
       {
-        v37 = [(CRLBezierPathSimplifier *)self simplifiedPath];
-        [v37 closePath];
+        simplifiedPath = [(CRLBezierPathSimplifier *)self simplifiedPath];
+        [simplifiedPath closePath];
 LABEL_49:
       }
 
 LABEL_50:
       v7 = v12;
-      if (v4 == v12)
+      if (elementCount == v12)
       {
         return;
       }
@@ -718,27 +718,27 @@ LABEL_50:
       goto LABEL_47;
     }
 
-    v38 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
-    if (v38[1] - *v38 != 16)
+    pointsToSimplify4 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+    if (pointsToSimplify4[1] - *pointsToSimplify4 != 16)
     {
 LABEL_45:
       [(CRLBezierPathSimplifier *)self outputCurrentSolution];
     }
 
-    v39 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
-    v39[1] = *v39;
+    pointsToSimplify5 = [(CRLBezierPathSimplifier *)self pointsToSimplify];
+    pointsToSimplify5[1] = *pointsToSimplify5;
     goto LABEL_47;
   }
 }
 
-+ (id)cleanPathForPath:(id)a3
++ (id)cleanPathForPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = objc_alloc_init(CRLBezierPath);
   x = CGPointZero.x;
   y = CGPointZero.y;
-  v7 = [v3 elementCount];
-  if (v7 >= 1)
+  elementCount = [pathCopy elementCount];
+  if (elementCount >= 1)
   {
     v8 = 0;
     v21 = y;
@@ -748,7 +748,7 @@ LABEL_45:
       v24 = CGPointZero;
       v25 = v24;
       v23 = v24;
-      v9 = [v3 elementAtIndex:v8 associatedPoints:{&v23, *&v21, *&v22}];
+      v9 = [pathCopy elementAtIndex:v8 associatedPoints:{&v23, *&v21, *&v22}];
       if (v9 <= 1)
       {
         if (v9)
@@ -759,7 +759,7 @@ LABEL_45:
             v10 = v23.x;
             if (!sub_10011ECC8(x, y, v23.x, v23.y))
             {
-              if (v8 + 1 >= v7 || (v12 = [v3 elementAtIndex:?], v11 = v23.y, v10 = v23.x, v12 != 3) || !sub_10011ECC8(v23.x, v23.y, v22, v21))
+              if (v8 + 1 >= elementCount || (v12 = [pathCopy elementAtIndex:?], v11 = v23.y, v10 = v23.x, v12 != 3) || !sub_10011ECC8(v23.x, v23.y, v22, v21))
               {
                 [(CRLBezierPath *)v4 lineToPoint:v10, v11];
                 y = v23.y;
@@ -821,36 +821,36 @@ LABEL_21:
       ++v8;
     }
 
-    while (v7 != v8);
+    while (elementCount != v8);
   }
 
   return v4;
 }
 
-+ (id)simplifiedPathWithRawPath:(id)a3 threshold:(double)a4
++ (id)simplifiedPathWithRawPath:(id)path threshold:(double)threshold
 {
-  v5 = [a1 cleanPathForPath:a3];
-  v6 = [[CRLBezierPathSimplifier alloc] initWithPath:v5 threshold:a4];
+  v5 = [self cleanPathForPath:path];
+  v6 = [[CRLBezierPathSimplifier alloc] initWithPath:v5 threshold:threshold];
   [(CRLBezierPathSimplifier *)v6 run];
-  v7 = [(CRLBezierPathSimplifier *)v6 simplifiedPath];
+  simplifiedPath = [(CRLBezierPathSimplifier *)v6 simplifiedPath];
 
-  return v7;
+  return simplifiedPath;
 }
 
-- (void)setPointsToSimplify:(void *)a3
+- (void)setPointsToSimplify:(void *)simplify
 {
   p_pointsToSimplify = &self->_pointsToSimplify;
-  if (p_pointsToSimplify != a3)
+  if (p_pointsToSimplify != simplify)
   {
-    sub_1000DB520(p_pointsToSimplify, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
+    sub_1000DB520(p_pointsToSimplify, *simplify, *(simplify + 1), (*(simplify + 1) - *simplify) >> 4);
   }
 }
 
-- (void)setAssociatedPoints:(CRLPointVector3 *)a3
+- (void)setAssociatedPoints:(CRLPointVector3 *)points
 {
-  v3 = a3->v[0];
-  v4 = a3->v[1];
-  self->_associatedPoints.v[2] = a3->v[2];
+  v3 = points->v[0];
+  v4 = points->v[1];
+  self->_associatedPoints.v[2] = points->v[2];
   self->_associatedPoints.v[1] = v4;
   self->_associatedPoints.v[0] = v3;
 }

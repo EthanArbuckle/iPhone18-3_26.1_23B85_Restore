@@ -6,21 +6,21 @@
 - (double)elapsedTimeLabelFirstBaselineAnchorLayoutConstraintConstant;
 - (double)remainingTime;
 - (double)remainingTimeLabelFirstBaselineAnchorLayoutConstraintConstant;
-- (id)localizedStringForTimeInterval:(double)a3 timeFormatter:(id)a4;
+- (id)localizedStringForTimeInterval:(double)interval timeFormatter:(id)formatter;
 - (void)_updateTextColor;
 - (void)commonInit;
-- (void)detailSlider:(id)a3 didChangeElapsedTime:(double)a4;
-- (void)detailSliderTrackingDidBegin:(id)a3;
-- (void)detailSliderTrackingDidCancel:(id)a3;
-- (void)detailSliderTrackingDidEnd:(id)a3;
+- (void)detailSlider:(id)slider didChangeElapsedTime:(double)time;
+- (void)detailSliderTrackingDidBegin:(id)begin;
+- (void)detailSliderTrackingDidCancel:(id)cancel;
+- (void)detailSliderTrackingDidEnd:(id)end;
 - (void)loadConstraints;
 - (void)loadLabelConstraints;
 - (void)loadView;
-- (void)setDuration:(double)a3;
-- (void)setElapsedTime:(double)a3;
-- (void)setElapsedTime:(double)a3 animated:(BOOL)a4;
-- (void)setLabelsEnabled:(BOOL)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
+- (void)setDuration:(double)duration;
+- (void)setElapsedTime:(double)time;
+- (void)setElapsedTime:(double)time animated:(BOOL)animated;
+- (void)setLabelsEnabled:(BOOL)enabled;
+- (void)setValue:(float)value animated:(BOOL)animated;
 - (void)tintColorDidChange;
 - (void)unloadConstraints;
 - (void)updateConstraintsConstants;
@@ -33,23 +33,23 @@
 
 - (double)duration
 {
-  v2 = [(VMPlayerTimelineSlider *)self slider];
-  [v2 maximumTime];
+  slider = [(VMPlayerTimelineSlider *)self slider];
+  [slider maximumTime];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  v5 = [(VMPlayerTimelineSlider *)self slider];
-  [v5 maximumTime];
+  slider = [(VMPlayerTimelineSlider *)self slider];
+  [slider maximumTime];
   v7 = v6;
 
-  if (v7 != a3)
+  if (v7 != duration)
   {
-    v8 = [(VMPlayerTimelineSlider *)self slider];
-    [v8 setMaximumTime:a3];
+    slider2 = [(VMPlayerTimelineSlider *)self slider];
+    [slider2 setMaximumTime:duration];
 
     [(VMPlayerTimelineSlider *)self updateElapsedTimeLabelText];
 
@@ -59,28 +59,28 @@
 
 - (double)elapsedTime
 {
-  v2 = [(VMPlayerTimelineSlider *)self slider];
-  [v2 elapsedTime];
+  slider = [(VMPlayerTimelineSlider *)self slider];
+  [slider elapsedTime];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
-  v5 = [(VMPlayerTimelineSlider *)self slider];
-  [v5 setElapsedTime:a3];
+  slider = [(VMPlayerTimelineSlider *)self slider];
+  [slider setElapsedTime:time];
 
   [(VMPlayerTimelineSlider *)self updateElapsedTimeLabelText];
 
   [(VMPlayerTimelineSlider *)self updateRemainingTimeLabelText];
 }
 
-- (void)setElapsedTime:(double)a3 animated:(BOOL)a4
+- (void)setElapsedTime:(double)time animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(VMPlayerTimelineSlider *)self slider];
-  [v7 setElapsedTime:v4 animated:a3];
+  animatedCopy = animated;
+  slider = [(VMPlayerTimelineSlider *)self slider];
+  [slider setElapsedTime:animatedCopy animated:time];
 
   [(VMPlayerTimelineSlider *)self updateElapsedTimeLabelText];
 
@@ -89,39 +89,39 @@
 
 - (double)remainingTime
 {
-  v3 = [(VMPlayerTimelineSlider *)self slider];
-  [v3 maximumTime];
+  slider = [(VMPlayerTimelineSlider *)self slider];
+  [slider maximumTime];
   v5 = v4;
-  v6 = [(VMPlayerTimelineSlider *)self slider];
-  [v6 elapsedTime];
+  slider2 = [(VMPlayerTimelineSlider *)self slider];
+  [slider2 elapsedTime];
   v8 = v5 - v7;
 
   return v8;
 }
 
-- (void)setLabelsEnabled:(BOOL)a3
+- (void)setLabelsEnabled:(BOOL)enabled
 {
-  if (self->_labelsEnabled != a3)
+  if (self->_labelsEnabled != enabled)
   {
-    self->_labelsEnabled = a3;
+    self->_labelsEnabled = enabled;
     [(VMPlayerTimelineSlider *)self unloadConstraints];
     labelsEnabled = self->_labelsEnabled;
-    v5 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
-    v6 = v5;
+    elapsedTimeLabel = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
+    v6 = elapsedTimeLabel;
     if (labelsEnabled)
     {
-      [(VMPlayerTimelineSlider *)self addSubview:v5];
+      [(VMPlayerTimelineSlider *)self addSubview:elapsedTimeLabel];
 
-      v7 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
-      [(VMPlayerTimelineSlider *)self addSubview:v7];
+      remainingTimeLabel = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
+      [(VMPlayerTimelineSlider *)self addSubview:remainingTimeLabel];
     }
 
     else
     {
-      [v5 removeFromSuperview];
+      [elapsedTimeLabel removeFromSuperview];
 
-      v7 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
-      [v7 removeFromSuperview];
+      remainingTimeLabel = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
+      [remainingTimeLabel removeFromSuperview];
     }
 
     [(VMPlayerTimelineSlider *)self setNeedsUpdateConstraints];
@@ -143,12 +143,12 @@
   return timeFormatter;
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(VMPlayerTimelineSlider *)self slider];
-  *&v6 = a3;
-  [v7 setValue:v4 animated:v6];
+  animatedCopy = animated;
+  slider = [(VMPlayerTimelineSlider *)self slider];
+  *&v6 = value;
+  [slider setValue:animatedCopy animated:v6];
 }
 
 - (void)commonInit
@@ -208,30 +208,30 @@
   v23.receiver = self;
   v23.super_class = VMPlayerTimelineSlider;
   [(VMPlayerTimelineSlider *)&v23 loadConstraints];
-  v3 = [(VMPlayerTimelineSlider *)self slider];
-  v4 = [v3 leadingAnchor];
-  v5 = [(VMPlayerTimelineSlider *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  slider = [(VMPlayerTimelineSlider *)self slider];
+  leadingAnchor = [slider leadingAnchor];
+  leadingAnchor2 = [(VMPlayerTimelineSlider *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
   v7 = NSStringFromSelector("sliderLeadingAnchorLayoutConstraint");
   [v6 setIdentifier:v7];
 
   [v6 setActive:1];
   [(VMPlayerTimelineSlider *)self setSliderLeadingAnchorLayoutConstraint:v6];
-  v8 = [(VMPlayerTimelineSlider *)self trailingAnchor];
-  v9 = [(VMPlayerTimelineSlider *)self slider];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  trailingAnchor = [(VMPlayerTimelineSlider *)self trailingAnchor];
+  slider2 = [(VMPlayerTimelineSlider *)self slider];
+  trailingAnchor2 = [slider2 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   v12 = NSStringFromSelector("sliderTrailingAnchorLayoutConstraint");
   [v11 setIdentifier:v12];
 
   [v11 setActive:1];
   [(VMPlayerTimelineSlider *)self setSliderTrailingAnchorLayoutConstraint:v11];
-  v13 = [(VMPlayerTimelineSlider *)self slider];
-  v14 = [v13 topAnchor];
-  v15 = [(VMPlayerTimelineSlider *)self topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  slider3 = [(VMPlayerTimelineSlider *)self slider];
+  topAnchor = [slider3 topAnchor];
+  topAnchor2 = [(VMPlayerTimelineSlider *)self topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
 
   v17 = NSStringFromSelector("sliderTopAnchorLayoutConstraint");
   [v16 setIdentifier:v17];
@@ -245,10 +245,10 @@
 
   else
   {
-    v18 = [(VMPlayerTimelineSlider *)self bottomAnchor];
-    v19 = [(VMPlayerTimelineSlider *)self slider];
-    v20 = [v19 bottomAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
+    bottomAnchor = [(VMPlayerTimelineSlider *)self bottomAnchor];
+    slider4 = [(VMPlayerTimelineSlider *)self slider];
+    bottomAnchor2 = [slider4 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
 
     v22 = NSStringFromSelector("sliderBottomAnchorLayoutConstraint");
     [v21 setIdentifier:v22];
@@ -266,86 +266,86 @@
 
 - (void)loadLabelConstraints
 {
-  v3 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
-  v4 = [v3 leadingAnchor];
-  v5 = [(VMPlayerTimelineSlider *)self leadingAnchor];
-  v6 = [v4 constraintEqualToAnchor:v5];
+  elapsedTimeLabel = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
+  leadingAnchor = [elapsedTimeLabel leadingAnchor];
+  leadingAnchor2 = [(VMPlayerTimelineSlider *)self leadingAnchor];
+  v6 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
   v7 = NSStringFromSelector("elapsedTimeLabelLeadingAnchorLayoutConstraint");
   [v6 setIdentifier:v7];
 
   [v6 setActive:1];
   [(VMPlayerTimelineSlider *)self setElapsedTimeLabelLeadingAnchorLayoutConstraint:v6];
-  v8 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
-  v9 = [v8 firstBaselineAnchor];
-  v10 = [(VMPlayerTimelineSlider *)self slider];
-  v11 = [v10 lastBaselineAnchor];
+  elapsedTimeLabel2 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
+  firstBaselineAnchor = [elapsedTimeLabel2 firstBaselineAnchor];
+  slider = [(VMPlayerTimelineSlider *)self slider];
+  lastBaselineAnchor = [slider lastBaselineAnchor];
   [(VMPlayerTimelineSlider *)self elapsedTimeLabelFirstBaselineAnchorLayoutConstraintConstant];
-  v12 = [v9 constraintGreaterThanOrEqualToAnchor:v11 constant:?];
+  v12 = [firstBaselineAnchor constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor constant:?];
 
   v13 = NSStringFromSelector("elapsedTimeLabelFirstBaselineAnchorLayoutConstraint");
   [v12 setIdentifier:v13];
 
   [v12 setActive:1];
   [(VMPlayerTimelineSlider *)self setElapsedTimeLabelFirstBaselineAnchorLayoutConstraint:v12];
-  v14 = [(VMPlayerTimelineSlider *)self bottomAnchor];
-  v15 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
-  v16 = [v15 bottomAnchor];
-  v17 = [v14 constraintGreaterThanOrEqualToAnchor:v16];
+  bottomAnchor = [(VMPlayerTimelineSlider *)self bottomAnchor];
+  elapsedTimeLabel3 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
+  bottomAnchor2 = [elapsedTimeLabel3 bottomAnchor];
+  v17 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
 
   v18 = NSStringFromSelector("elapsedTimeLabelBottomAnchorLayoutConstraint");
   [v17 setIdentifier:v18];
 
   [v17 setActive:1];
   [(VMPlayerTimelineSlider *)self setElapsedTimeLabelBottomAnchorLayoutConstraint:v17];
-  v19 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
-  v20 = [v19 leadingAnchor];
-  v21 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
-  v22 = [v21 trailingAnchor];
-  v23 = [v20 constraintGreaterThanOrEqualToAnchor:v22];
+  remainingTimeLabel = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
+  leadingAnchor3 = [remainingTimeLabel leadingAnchor];
+  elapsedTimeLabel4 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
+  trailingAnchor = [elapsedTimeLabel4 trailingAnchor];
+  v23 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor];
 
   v24 = NSStringFromSelector("remainingTimeLabelLeadingAnchorLayoutConstraint");
   [v23 setIdentifier:v24];
 
   [v23 setActive:1];
   [(VMPlayerTimelineSlider *)self setRemainingTimeLabelLeadingAnchorLayoutConstraint:v23];
-  v25 = [(VMPlayerTimelineSlider *)self trailingAnchor];
-  v26 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
-  v27 = [v26 trailingAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  trailingAnchor2 = [(VMPlayerTimelineSlider *)self trailingAnchor];
+  remainingTimeLabel2 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
+  trailingAnchor3 = [remainingTimeLabel2 trailingAnchor];
+  v28 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
 
   v29 = NSStringFromSelector("remainingTimeLabelTrailingAnchorLayoutConstraint");
   [v28 setIdentifier:v29];
 
   [v28 setActive:1];
   [(VMPlayerTimelineSlider *)self setRemainingTimeLabelTrailingAnchorLayoutConstraint:v28];
-  v30 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
-  v31 = [v30 firstBaselineAnchor];
-  v32 = [(VMPlayerTimelineSlider *)self slider];
-  v33 = [v32 lastBaselineAnchor];
+  remainingTimeLabel3 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
+  firstBaselineAnchor2 = [remainingTimeLabel3 firstBaselineAnchor];
+  slider2 = [(VMPlayerTimelineSlider *)self slider];
+  lastBaselineAnchor2 = [slider2 lastBaselineAnchor];
   [(VMPlayerTimelineSlider *)self remainingTimeLabelFirstBaselineAnchorLayoutConstraintConstant];
-  v34 = [v31 constraintGreaterThanOrEqualToAnchor:v33 constant:?];
+  v34 = [firstBaselineAnchor2 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2 constant:?];
 
   v35 = NSStringFromSelector("remainingTimeLabelFirstBaselineAnchorLayoutConstraint");
   [v34 setIdentifier:v35];
 
   [v34 setActive:1];
   [(VMPlayerTimelineSlider *)self setRemainingTimeLabelFirstBaselineAnchorLayoutConstraint:v34];
-  v36 = [(VMPlayerTimelineSlider *)self bottomAnchor];
-  v37 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
-  v38 = [v37 bottomAnchor];
-  v39 = [v36 constraintGreaterThanOrEqualToAnchor:v38];
+  bottomAnchor3 = [(VMPlayerTimelineSlider *)self bottomAnchor];
+  remainingTimeLabel4 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
+  bottomAnchor4 = [remainingTimeLabel4 bottomAnchor];
+  v39 = [bottomAnchor3 constraintGreaterThanOrEqualToAnchor:bottomAnchor4];
 
   v40 = NSStringFromSelector("remainingTimeLabelBottomAnchorLayoutConstraint");
   [v39 setIdentifier:v40];
 
   [v39 setActive:1];
   [(VMPlayerTimelineSlider *)self setRemainingTimeLabelBottomAnchorLayoutConstraint:v39];
-  v41 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
-  v42 = [v41 firstBaselineAnchor];
-  v43 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
-  v44 = [v43 firstBaselineAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  remainingTimeLabel5 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
+  firstBaselineAnchor3 = [remainingTimeLabel5 firstBaselineAnchor];
+  elapsedTimeLabel5 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
+  firstBaselineAnchor4 = [elapsedTimeLabel5 firstBaselineAnchor];
+  v45 = [firstBaselineAnchor3 constraintEqualToAnchor:firstBaselineAnchor4];
 
   [v45 setActive:1];
 }
@@ -355,41 +355,41 @@
   v15.receiver = self;
   v15.super_class = VMPlayerTimelineSlider;
   [(VMPlayerTimelineSlider *)&v15 unloadConstraints];
-  v3 = [(VMPlayerTimelineSlider *)self sliderBottomAnchorLayoutConstraint];
-  [v3 setActive:0];
+  sliderBottomAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self sliderBottomAnchorLayoutConstraint];
+  [sliderBottomAnchorLayoutConstraint setActive:0];
 
-  v4 = [(VMPlayerTimelineSlider *)self sliderLeadingAnchorLayoutConstraint];
-  [v4 setActive:0];
+  sliderLeadingAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self sliderLeadingAnchorLayoutConstraint];
+  [sliderLeadingAnchorLayoutConstraint setActive:0];
 
-  v5 = [(VMPlayerTimelineSlider *)self sliderTopAnchorLayoutConstraint];
-  [v5 setActive:0];
+  sliderTopAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self sliderTopAnchorLayoutConstraint];
+  [sliderTopAnchorLayoutConstraint setActive:0];
 
-  v6 = [(VMPlayerTimelineSlider *)self sliderTrailingAnchorLayoutConstraint];
-  [v6 setActive:0];
+  sliderTrailingAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self sliderTrailingAnchorLayoutConstraint];
+  [sliderTrailingAnchorLayoutConstraint setActive:0];
 
-  v7 = [(VMPlayerTimelineSlider *)self elapsedTimeLabelBottomAnchorLayoutConstraint];
-  [v7 setActive:0];
+  elapsedTimeLabelBottomAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self elapsedTimeLabelBottomAnchorLayoutConstraint];
+  [elapsedTimeLabelBottomAnchorLayoutConstraint setActive:0];
 
-  v8 = [(VMPlayerTimelineSlider *)self elapsedTimeLabelLeadingAnchorLayoutConstraint];
-  [v8 setActive:0];
+  elapsedTimeLabelLeadingAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self elapsedTimeLabelLeadingAnchorLayoutConstraint];
+  [elapsedTimeLabelLeadingAnchorLayoutConstraint setActive:0];
 
-  v9 = [(VMPlayerTimelineSlider *)self elapsedTimeLabelFirstBaselineAnchorLayoutConstraint];
-  [v9 setActive:0];
+  elapsedTimeLabelFirstBaselineAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self elapsedTimeLabelFirstBaselineAnchorLayoutConstraint];
+  [elapsedTimeLabelFirstBaselineAnchorLayoutConstraint setActive:0];
 
-  v10 = [(VMPlayerTimelineSlider *)self elapsedTimeLabelTrailingAnchorLayoutConstraint];
-  [v10 setActive:0];
+  elapsedTimeLabelTrailingAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self elapsedTimeLabelTrailingAnchorLayoutConstraint];
+  [elapsedTimeLabelTrailingAnchorLayoutConstraint setActive:0];
 
-  v11 = [(VMPlayerTimelineSlider *)self remainingTimeLabelBottomAnchorLayoutConstraint];
-  [v11 setActive:0];
+  remainingTimeLabelBottomAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self remainingTimeLabelBottomAnchorLayoutConstraint];
+  [remainingTimeLabelBottomAnchorLayoutConstraint setActive:0];
 
-  v12 = [(VMPlayerTimelineSlider *)self remainingTimeLabelLeadingAnchorLayoutConstraint];
-  [v12 setActive:0];
+  remainingTimeLabelLeadingAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self remainingTimeLabelLeadingAnchorLayoutConstraint];
+  [remainingTimeLabelLeadingAnchorLayoutConstraint setActive:0];
 
-  v13 = [(VMPlayerTimelineSlider *)self remainingTimeLabelFirstBaselineAnchorLayoutConstraint];
-  [v13 setActive:0];
+  remainingTimeLabelFirstBaselineAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self remainingTimeLabelFirstBaselineAnchorLayoutConstraint];
+  [remainingTimeLabelFirstBaselineAnchorLayoutConstraint setActive:0];
 
-  v14 = [(VMPlayerTimelineSlider *)self remainingTimeLabelTrailingAnchorLayoutConstraint];
-  [v14 setActive:0];
+  remainingTimeLabelTrailingAnchorLayoutConstraint = [(VMPlayerTimelineSlider *)self remainingTimeLabelTrailingAnchorLayoutConstraint];
+  [remainingTimeLabelTrailingAnchorLayoutConstraint setActive:0];
 }
 
 - (void)updateConstraintsConstants
@@ -407,95 +407,95 @@
   v3 = +[UIFont telephonyUIFootnoteShortFont];
   [v3 pointSize];
   v4 = [UIFont monospacedDigitSystemFontOfSize:"monospacedDigitSystemFontOfSize:weight:" weight:?];
-  v5 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
-  [v5 setFont:v4];
+  elapsedTimeLabel = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
+  [elapsedTimeLabel setFont:v4];
 
-  v6 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
-  v7 = [v6 font];
-  v8 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
-  [v8 setFont:v7];
+  elapsedTimeLabel2 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
+  font = [elapsedTimeLabel2 font];
+  remainingTimeLabel = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
+  [remainingTimeLabel setFont:font];
 }
 
-- (id)localizedStringForTimeInterval:(double)a3 timeFormatter:(id)a4
+- (id)localizedStringForTimeInterval:(double)interval timeFormatter:(id)formatter
 {
-  v4 = [a4 stringFromSeconds:a3];
+  v4 = [formatter stringFromSeconds:interval];
 
   return v4;
 }
 
 - (void)updateElapsedTimeLabelText
 {
-  v5 = [(VMPlayerTimelineSlider *)self timeFormatter];
-  [v5 setStyle:1];
+  timeFormatter = [(VMPlayerTimelineSlider *)self timeFormatter];
+  [timeFormatter setStyle:1];
   [(VMPlayerTimelineSlider *)self elapsedTime];
-  v3 = [(VMPlayerTimelineSlider *)self localizedStringForTimeInterval:v5 timeFormatter:?];
-  v4 = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
-  [v4 setText:v3];
+  v3 = [(VMPlayerTimelineSlider *)self localizedStringForTimeInterval:timeFormatter timeFormatter:?];
+  elapsedTimeLabel = [(VMPlayerTimelineSlider *)self elapsedTimeLabel];
+  [elapsedTimeLabel setText:v3];
 }
 
 - (void)updateRemainingTimeLabelText
 {
-  v5 = [(VMPlayerTimelineSlider *)self timeFormatter];
-  [v5 setStyle:2];
+  timeFormatter = [(VMPlayerTimelineSlider *)self timeFormatter];
+  [timeFormatter setStyle:2];
   [(VMPlayerTimelineSlider *)self remainingTime];
-  v3 = [(VMPlayerTimelineSlider *)self localizedStringForTimeInterval:v5 timeFormatter:?];
-  v4 = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
-  [v4 setText:v3];
+  v3 = [(VMPlayerTimelineSlider *)self localizedStringForTimeInterval:timeFormatter timeFormatter:?];
+  remainingTimeLabel = [(VMPlayerTimelineSlider *)self remainingTimeLabel];
+  [remainingTimeLabel setText:v3];
 }
 
-- (void)detailSliderTrackingDidBegin:(id)a3
+- (void)detailSliderTrackingDidBegin:(id)begin
 {
-  v4 = [(VMPlayerTimelineSlider *)self delegate];
+  delegate = [(VMPlayerTimelineSlider *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VMPlayerTimelineSlider *)self delegate];
-    [v6 playerTimelineSliderScrubbingDidBegin:self];
+    delegate2 = [(VMPlayerTimelineSlider *)self delegate];
+    [delegate2 playerTimelineSliderScrubbingDidBegin:self];
   }
 }
 
-- (void)detailSliderTrackingDidCancel:(id)a3
+- (void)detailSliderTrackingDidCancel:(id)cancel
 {
-  v4 = [(VMPlayerTimelineSlider *)self delegate];
+  delegate = [(VMPlayerTimelineSlider *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VMPlayerTimelineSlider *)self delegate];
-    [v6 playerTimelineSliderScrubbingDidCancel:self];
+    delegate2 = [(VMPlayerTimelineSlider *)self delegate];
+    [delegate2 playerTimelineSliderScrubbingDidCancel:self];
   }
 }
 
-- (void)detailSliderTrackingDidEnd:(id)a3
+- (void)detailSliderTrackingDidEnd:(id)end
 {
-  v4 = [(VMPlayerTimelineSlider *)self delegate];
+  delegate = [(VMPlayerTimelineSlider *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VMPlayerTimelineSlider *)self delegate];
-    [v6 playerTimelineSliderScrubbingDidEnd:self];
+    delegate2 = [(VMPlayerTimelineSlider *)self delegate];
+    [delegate2 playerTimelineSliderScrubbingDidEnd:self];
   }
 }
 
-- (void)detailSlider:(id)a3 didChangeElapsedTime:(double)a4
+- (void)detailSlider:(id)slider didChangeElapsedTime:(double)time
 {
-  v6 = [(VMPlayerTimelineSlider *)self delegate];
+  delegate = [(VMPlayerTimelineSlider *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(VMPlayerTimelineSlider *)self delegate];
-    [v8 playerTimelineSlider:self didChangeElapsedTime:a4];
+    delegate2 = [(VMPlayerTimelineSlider *)self delegate];
+    [delegate2 playerTimelineSlider:self didChangeElapsedTime:time];
   }
 }
 
 - (double)elapsedTimeLabelFirstBaselineAnchorLayoutConstraintConstant
 {
   v2 = +[UIFont telephonyUIFootnoteShortFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {
@@ -515,8 +515,8 @@
 - (double)remainingTimeLabelFirstBaselineAnchorLayoutConstraintConstant
 {
   v2 = +[UIFont telephonyUIFootnoteShortFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {

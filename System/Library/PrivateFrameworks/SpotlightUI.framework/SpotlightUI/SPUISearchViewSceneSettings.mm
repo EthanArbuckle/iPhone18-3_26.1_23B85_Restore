@@ -1,8 +1,8 @@
 @interface SPUISearchViewSceneSettings
 - (double)revealProgress;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
 - (unint64_t)presentationIntent;
 - (unint64_t)presentationSource;
 @end
@@ -11,27 +11,27 @@
 
 - (unint64_t)presentationSource
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1002];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1002];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (double)revealProgress
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1000];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1000];
 
   objc_opt_class();
   v4 = 0.0;
@@ -46,33 +46,33 @@
 
 - (unint64_t)presentationIntent
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1003];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1003];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [SPUIMutableSearchViewSceneSettings alloc];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  switch(a3)
+  switch(setting)
   {
     case 0x3E8uLL:
       v5 = @"revealProgress";
@@ -99,19 +99,19 @@
   return v5;
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  v8 = a4;
-  if (a5 - 1000 > 3 || a5 == 1001)
+  objectCopy = object;
+  if (setting - 1000 > 3 || setting == 1001)
   {
     v13.receiver = self;
     v13.super_class = SPUISearchViewSceneSettings;
-    v10 = [(SPUILegibilitySceneSettings *)&v13 valueDescriptionForFlag:a3 object:v8 ofSetting:a5];
+    v10 = [(SPUILegibilitySceneSettings *)&v13 valueDescriptionForFlag:flag object:objectCopy ofSetting:setting];
   }
 
   else
   {
-    v10 = SPUISearchViewSceneSettingValueDescription(a5, v8);
+    v10 = SPUISearchViewSceneSettingValueDescription(setting, objectCopy);
   }
 
   v11 = v10;

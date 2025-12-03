@@ -1,5 +1,5 @@
 @interface HMDCameraRecordingFragmentAnalyzedEvent
-- (HMDCameraRecordingFragmentAnalyzedEvent)initWithSessionID:(id)a3 cameraID:(id)a4 sequenceNumber:(unint64_t)a5;
+- (HMDCameraRecordingFragmentAnalyzedEvent)initWithSessionID:(id)d cameraID:(id)iD sequenceNumber:(unint64_t)number;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (id)attributeDescriptions;
 @end
@@ -29,23 +29,23 @@
 {
   v12.receiver = self;
   v12.super_class = HMDCameraRecordingFragmentAnalyzedEvent;
-  v3 = [(HMDCameraRecordingLogEvent *)&v12 attributeDescriptions];
-  v4 = [v3 mutableCopy];
+  attributeDescriptions = [(HMDCameraRecordingLogEvent *)&v12 attributeDescriptions];
+  v4 = [attributeDescriptions mutableCopy];
 
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDCameraRecordingFragmentAnalyzedEvent isSuccess](self, "isSuccess")}];
   v7 = [v5 initWithName:@"isSuccess" value:v6];
   [v4 addObject:v7];
 
-  v8 = [(HMDCameraRecordingFragmentAnalyzedEvent *)self recordingReason];
-  if ((v8 - 1) >= 4)
+  recordingReason = [(HMDCameraRecordingFragmentAnalyzedEvent *)self recordingReason];
+  if ((recordingReason - 1) >= 4)
   {
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v8];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", recordingReason];
   }
 
   else
   {
-    v9 = off_2786787B0[(v8 - 1)];
+    v9 = off_2786787B0[(recordingReason - 1)];
   }
 
   v10 = [objc_alloc(MEMORY[0x277D0F778]) initWithName:@"recordingReason" value:v9];
@@ -54,11 +54,11 @@
   return v4;
 }
 
-- (HMDCameraRecordingFragmentAnalyzedEvent)initWithSessionID:(id)a3 cameraID:(id)a4 sequenceNumber:(unint64_t)a5
+- (HMDCameraRecordingFragmentAnalyzedEvent)initWithSessionID:(id)d cameraID:(id)iD sequenceNumber:(unint64_t)number
 {
   v6.receiver = self;
   v6.super_class = HMDCameraRecordingFragmentAnalyzedEvent;
-  return [(HMDCameraRecordingLogEvent *)&v6 initWithSessionID:a3 cameraID:a4 sequenceNumber:a5];
+  return [(HMDCameraRecordingLogEvent *)&v6 initWithSessionID:d cameraID:iD sequenceNumber:number];
 }
 
 @end

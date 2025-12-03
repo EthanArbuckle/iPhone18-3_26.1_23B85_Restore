@@ -2,7 +2,7 @@
 - (UIBarButtonItem)scrubberBarButtonItem;
 - (void)_invalidateScrubberBarButtonItem;
 - (void)_updateScrubberBarButtonItemIfNeeded;
-- (void)setBrowsingSession:(id)a3;
+- (void)setBrowsingSession:(id)session;
 @end
 
 @implementation PUScrubberBarItemController
@@ -41,19 +41,19 @@
   return scrubberBarButtonItem;
 }
 
-- (void)setBrowsingSession:(id)a3
+- (void)setBrowsingSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   p_browsingSession = &self->_browsingSession;
-  if (self->_browsingSession != v5)
+  if (self->_browsingSession != sessionCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_browsingSession, a3);
+    v7 = sessionCopy;
+    objc_storeStrong(p_browsingSession, session);
     p_browsingSession = [(PUScrubberBarItemController *)self _invalidateScrubberBarButtonItem];
-    v5 = v7;
+    sessionCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_browsingSession, v5);
+  MEMORY[0x1EEE66BB8](p_browsingSession, sessionCopy);
 }
 
 @end

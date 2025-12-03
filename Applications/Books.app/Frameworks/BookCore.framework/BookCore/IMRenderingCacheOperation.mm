@@ -1,24 +1,24 @@
 @interface IMRenderingCacheOperation
 - (CGSize)desiredSize;
 - (IMRenderingCache)imageCache;
-- (IMRenderingCacheOperation)initWithOptions:(int64_t)a3;
+- (IMRenderingCacheOperation)initWithOptions:(int64_t)options;
 - (SEL)selector;
 - (id)description;
-- (id)renderingCacheCallbackInvocationWithImage:(id)a3 pageNumber:(int64_t)a4;
+- (id)renderingCacheCallbackInvocationWithImage:(id)image pageNumber:(int64_t)number;
 - (id)target;
 - (void)cancel;
 - (void)clearCallbackState;
 - (void)dealloc;
 - (void)main;
-- (void)performCallbackWithImage:(id)a3;
+- (void)performCallbackWithImage:(id)image;
 - (void)performOperation;
-- (void)setSelector:(SEL)a3;
-- (void)storeImage:(id)a3 forKey:(id)a4 size:(CGSize)a5;
+- (void)setSelector:(SEL)selector;
+- (void)storeImage:(id)image forKey:(id)key size:(CGSize)size;
 @end
 
 @implementation IMRenderingCacheOperation
 
-- (IMRenderingCacheOperation)initWithOptions:(int64_t)a3
+- (IMRenderingCacheOperation)initWithOptions:(int64_t)options
 {
   v7.receiver = self;
   v7.super_class = IMRenderingCacheOperation;
@@ -27,7 +27,7 @@
   if (v4)
   {
     [(IMRenderingCacheOperation *)v4 setSerializeFormat:1];
-    v5->_options = a3;
+    v5->_options = options;
   }
 
   return v5;
@@ -61,55 +61,55 @@
   [(IMRenderingCacheOperation *)&v3 cancel];
 }
 
-- (id)renderingCacheCallbackInvocationWithImage:(id)a3 pageNumber:(int64_t)a4
+- (id)renderingCacheCallbackInvocationWithImage:(id)image pageNumber:(int64_t)number
 {
-  v6 = a3;
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(IMRenderingCacheOperation *)v7 target];
-  v9 = [(IMRenderingCacheOperation *)v7 selector];
-  v10 = [(IMRenderingCacheOperation *)v7 context];
-  objc_sync_exit(v7);
+  imageCopy = image;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  target = [(IMRenderingCacheOperation *)selfCopy target];
+  selector = [(IMRenderingCacheOperation *)selfCopy selector];
+  context = [(IMRenderingCacheOperation *)selfCopy context];
+  objc_sync_exit(selfCopy);
 
   v11 = 0;
-  if (v8 && v9)
+  if (target && selector)
   {
-    v12 = [[AEBookRenderingCallbackTargetProxy alloc] initWithTarget:v8];
-    v18 = a4;
-    v13 = [v8 methodSignatureForSelector:v9];
-    v14 = [v13 numberOfArguments];
+    v12 = [[AEBookRenderingCallbackTargetProxy alloc] initWithTarget:target];
+    numberCopy = number;
+    v13 = [target methodSignatureForSelector:selector];
+    numberOfArguments = [v13 numberOfArguments];
     v11 = [NSInvocation invocationWithMethodSignature:v13];
-    [v11 setSelector:v9];
+    [v11 setSelector:selector];
     [v11 setTarget:v12];
-    v17 = v6;
+    v17 = imageCopy;
     [v11 setArgument:&v17 atIndex:2];
-    if (v14 - 2 >= 2)
+    if (numberOfArguments - 2 >= 2)
     {
-      v16 = v10;
+      v16 = context;
       [v11 setArgument:&v16 atIndex:3];
-      if (v14 != &dword_4)
+      if (numberOfArguments != &dword_4)
       {
-        [v11 setArgument:&v18 atIndex:4];
+        [v11 setArgument:&numberCopy atIndex:4];
       }
     }
 
     [v11 retainArguments];
 
-    v10 = 0;
-    v8 = 0;
+    context = 0;
+    target = 0;
   }
 
   return v11;
 }
 
-- (void)storeImage:(id)a3 forKey:(id)a4 size:(CGSize)a5
+- (void)storeImage:(id)image forKey:(id)key size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(IMRenderingCacheOperation *)self imageCache];
-  [v11 storeImage:v10 forKey:v9 size:-[IMRenderingCacheOperation serializeFormat](self format:{"serializeFormat"), width, height}];
+  height = size.height;
+  width = size.width;
+  keyCopy = key;
+  imageCopy = image;
+  imageCache = [(IMRenderingCacheOperation *)self imageCache];
+  [imageCache storeImage:imageCopy forKey:keyCopy size:-[IMRenderingCacheOperation serializeFormat](self format:{"serializeFormat"), width, height}];
 }
 
 - (void)performOperation
@@ -119,17 +119,17 @@
     return;
   }
 
-  v3 = [(IMRenderingCacheOperation *)self target];
+  target = [(IMRenderingCacheOperation *)self target];
 
-  v4 = [(IMRenderingCacheOperation *)self imageCache];
-  v5 = [(IMRenderingCacheOperation *)self storageKey];
+  imageCache = [(IMRenderingCacheOperation *)self imageCache];
+  storageKey = [(IMRenderingCacheOperation *)self storageKey];
 
-  if (v5)
+  if (storageKey)
   {
-    v6 = [(IMRenderingCacheOperation *)self storageKey];
-    if (v3)
+    storageKey2 = [(IMRenderingCacheOperation *)self storageKey];
+    if (target)
     {
-      v24 = [v4 fetchImageForKey:v6];
+      v24 = [imageCache fetchImageForKey:storageKey2];
 
       if (v24)
       {
@@ -143,43 +143,43 @@ LABEL_22:
       }
 
 LABEL_9:
-      [v4 primaryImageSize];
+      [imageCache primaryImageSize];
       v11 = v9;
       v12 = v10;
       v13 = v9 == CGSizeZero.width && v10 == CGSizeZero.height;
       if (v13 || ((p_desiredSize = &self->_desiredSize, self->_desiredSize.width == v9) ? (v15 = self->_desiredSize.height == v10) : (v15 = 0), v15 || (-[IMRenderingCacheOperation masterImageKey](self, "masterImageKey"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 length], v16, !v17) || p_desiredSize->width > v11 || self->_desiredSize.height > v12))
       {
         v24 = [(IMRenderingCacheOperation *)self generateImage:self->_desiredSize.width, self->_desiredSize.height];
-        v18 = [(IMRenderingCacheOperation *)self storageKey];
+        storageKey3 = [(IMRenderingCacheOperation *)self storageKey];
         width = self->_desiredSize.width;
         height = self->_desiredSize.height;
       }
 
       else
       {
-        v21 = [(IMRenderingCacheOperation *)self masterImageKey];
-        v22 = [v4 fetchImageForKey:v21 canAcceptSurfaceBacked:0];
+        masterImageKey = [(IMRenderingCacheOperation *)self masterImageKey];
+        v22 = [imageCache fetchImageForKey:masterImageKey canAcceptSurfaceBacked:0];
 
         if (!v22)
         {
           v22 = [(IMRenderingCacheOperation *)self generateImage:v11, v12];
-          v23 = [(IMRenderingCacheOperation *)self masterImageKey];
-          [(IMRenderingCacheOperation *)self storeImage:v22 forKey:v23 size:v11, v12];
+          masterImageKey2 = [(IMRenderingCacheOperation *)self masterImageKey];
+          [(IMRenderingCacheOperation *)self storeImage:v22 forKey:masterImageKey2 size:v11, v12];
         }
 
         v24 = [IMThumbnailUtilities scaleImage:v22 toSize:[(IMRenderingCacheOperation *)self options] options:self->_desiredSize.width, self->_desiredSize.height];
 
-        v18 = [(IMRenderingCacheOperation *)self storageKey];
+        storageKey3 = [(IMRenderingCacheOperation *)self storageKey];
         width = p_desiredSize->width;
         height = self->_desiredSize.height;
       }
 
-      [(IMRenderingCacheOperation *)self storeImage:v24 forKey:v18 size:width, height];
+      [(IMRenderingCacheOperation *)self storeImage:v24 forKey:storageKey3 size:width, height];
 
       goto LABEL_22;
     }
 
-    v8 = [v4 hasImageForKey:v6];
+    v8 = [imageCache hasImageForKey:storageKey2];
 
     if ((v8 & 1) == 0)
     {
@@ -197,25 +197,25 @@ LABEL_9:
 LABEL_24:
 }
 
-- (void)performCallbackWithImage:(id)a3
+- (void)performCallbackWithImage:(id)image
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  WeakRetained = objc_loadWeakRetained(&v4->_target);
-  if (!WeakRetained || !v4->_selector)
+  imageCopy = image;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_target);
+  if (!WeakRetained || !selfCopy->_selector)
   {
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
     goto LABEL_9;
   }
 
-  objc_sync_exit(v4);
-  if (([(IMRenderingCacheOperation *)v4 isCancelled]& 1) == 0)
+  objc_sync_exit(selfCopy);
+  if (([(IMRenderingCacheOperation *)selfCopy isCancelled]& 1) == 0)
   {
     v6 = +[NSThread isMainThread];
-    v7 = [(IMRenderingCacheOperation *)v4 callbackInvocationWithImage:v8];
-    v4 = v7;
+    v7 = [(IMRenderingCacheOperation *)selfCopy callbackInvocationWithImage:imageCopy];
+    selfCopy = v7;
     if ((v6 & 1) == 0)
     {
       [(IMRenderingCacheOperation *)v7 performSelectorOnMainThread:"invoke" withObject:0 waitUntilDone:1];
@@ -226,7 +226,7 @@ LABEL_24:
     {
       [(IMRenderingCacheOperation *)v7 invoke];
 LABEL_14:
-      [(IMRenderingCacheOperation *)v4 setTarget:0];
+      [(IMRenderingCacheOperation *)selfCopy setTarget:0];
     }
 
 LABEL_9:
@@ -277,19 +277,19 @@ LABEL_9:
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 - (CGSize)desiredSize

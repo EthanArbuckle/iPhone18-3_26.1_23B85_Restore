@@ -1,46 +1,46 @@
 @interface HUCharacteristicTriggerServicePickerViewController
-+ (BOOL)canPickServicesFromSource:(unint64_t)a3 home:(id)a4;
-+ (unint64_t)sourceForTriggerBuilder:(id)a3;
++ (BOOL)canPickServicesFromSource:(unint64_t)source home:(id)home;
++ (unint64_t)sourceForTriggerBuilder:(id)builder;
 - (HUCharacteristicTriggerServicePickerContentViewController)servicePickerContentViewController;
-- (HUCharacteristicTriggerServicePickerViewController)initWithEventBuilderItem:(id)a3 triggerBuilder:(id)a4 mode:(unint64_t)a5 source:(unint64_t)a6 delegate:(id)a7;
-- (HUCharacteristicTriggerServicePickerViewController)initWithInstructionsItem:(id)a3 contentViewController:(id)a4;
+- (HUCharacteristicTriggerServicePickerViewController)initWithEventBuilderItem:(id)item triggerBuilder:(id)builder mode:(unint64_t)mode source:(unint64_t)source delegate:(id)delegate;
+- (HUCharacteristicTriggerServicePickerViewController)initWithInstructionsItem:(id)item contentViewController:(id)controller;
 - (HUTriggerEditorDelegate)delegate;
 - (id)characteristicTriggerBuilder;
 - (id)filter;
 - (unint64_t)mode;
 - (unint64_t)source;
-- (void)setDelegate:(id)a3;
-- (void)setFilter:(id)a3;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (void)setDelegate:(id)delegate;
+- (void)setFilter:(id)filter;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCharacteristicTriggerServicePickerViewController
 
-+ (BOOL)canPickServicesFromSource:(unint64_t)a3 home:(id)a4
++ (BOOL)canPickServicesFromSource:(unint64_t)source home:(id)home
 {
-  v5 = a4;
-  if (a3 == 1)
+  homeCopy = home;
+  if (source == 1)
   {
-    v9 = [HUCharacteristicEventOptionProvider hasOptionsForAnyServiceInHome:v5 allowingSensors:0];
+    v9 = [HUCharacteristicEventOptionProvider hasOptionsForAnyServiceInHome:homeCopy allowingSensors:0];
   }
 
-  else if (a3)
+  else if (source)
   {
     v9 = 0;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
-    v7 = [v5 accessories];
+    hf_sensingCharacteristicTypes = [MEMORY[0x277CD1970] hf_sensingCharacteristicTypes];
+    accessories = [homeCopy accessories];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __85__HUCharacteristicTriggerServicePickerViewController_canPickServicesFromSource_home___block_invoke;
     v11[3] = &unk_277DB8EC0;
-    v12 = v6;
-    v8 = v6;
-    v9 = [v7 na_any:v11];
+    v12 = hf_sensingCharacteristicTypes;
+    v8 = hf_sensingCharacteristicTypes;
+    v9 = [accessories na_any:v11];
   }
 
   return v9;
@@ -91,22 +91,22 @@ uint64_t __85__HUCharacteristicTriggerServicePickerViewController_canPickService
   return v7;
 }
 
-+ (unint64_t)sourceForTriggerBuilder:(id)a3
++ (unint64_t)sourceForTriggerBuilder:(id)builder
 {
   v3 = MEMORY[0x277CD1970];
-  v4 = a3;
-  v5 = [v3 hf_sensingCharacteristicTypes];
-  v6 = [v4 characteristics];
+  builderCopy = builder;
+  hf_sensingCharacteristicTypes = [v3 hf_sensingCharacteristicTypes];
+  characteristics = [builderCopy characteristics];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __78__HUCharacteristicTriggerServicePickerViewController_sourceForTriggerBuilder___block_invoke;
   v9[3] = &unk_277DB9538;
-  v10 = v5;
-  v7 = v5;
-  LODWORD(v4) = [v6 na_any:v9];
+  v10 = hf_sensingCharacteristicTypes;
+  v7 = hf_sensingCharacteristicTypes;
+  LODWORD(builderCopy) = [characteristics na_any:v9];
 
-  return v4 ^ 1;
+  return builderCopy ^ 1;
 }
 
 uint64_t __78__HUCharacteristicTriggerServicePickerViewController_sourceForTriggerBuilder___block_invoke(uint64_t a1, void *a2)
@@ -118,23 +118,23 @@ uint64_t __78__HUCharacteristicTriggerServicePickerViewController_sourceForTrigg
   return v4;
 }
 
-- (HUCharacteristicTriggerServicePickerViewController)initWithInstructionsItem:(id)a3 contentViewController:(id)a4
+- (HUCharacteristicTriggerServicePickerViewController)initWithInstructionsItem:(id)item contentViewController:(id)controller
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithEventBuilderItem_triggerBuilder_mode_source_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUCharacteristicTriggerServicePickerViewController.m" lineNumber:70 description:{@"%s is unavailable; use %@ instead", "-[HUCharacteristicTriggerServicePickerViewController initWithInstructionsItem:contentViewController:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCharacteristicTriggerServicePickerViewController.m" lineNumber:70 description:{@"%s is unavailable; use %@ instead", "-[HUCharacteristicTriggerServicePickerViewController initWithInstructionsItem:contentViewController:]", v7}];
 
   return 0;
 }
 
-- (HUCharacteristicTriggerServicePickerViewController)initWithEventBuilderItem:(id)a3 triggerBuilder:(id)a4 mode:(unint64_t)a5 source:(unint64_t)a6 delegate:(id)a7
+- (HUCharacteristicTriggerServicePickerViewController)initWithEventBuilderItem:(id)item triggerBuilder:(id)builder mode:(unint64_t)mode source:(unint64_t)source delegate:(id)delegate
 {
-  v13 = a4;
-  v14 = a7;
-  v15 = a3;
+  builderCopy = builder;
+  delegateCopy = delegate;
+  itemCopy = item;
   v16 = [HUCharacteristicTriggerServicePickerContentViewController alloc];
-  v17 = [(HUCharacteristicTriggerServicePickerViewController *)self navigationItem];
-  v18 = [(HUCharacteristicTriggerServicePickerContentViewController *)v16 initWithTriggerBuilder:v13 eventBuilderItem:v15 mode:a5 source:a6 effectiveNavigationItem:v17 delegate:v14];
+  navigationItem = [(HUCharacteristicTriggerServicePickerViewController *)self navigationItem];
+  v18 = [(HUCharacteristicTriggerServicePickerContentViewController *)v16 initWithTriggerBuilder:builderCopy eventBuilderItem:itemCopy mode:mode source:source effectiveNavigationItem:navigationItem delegate:delegateCopy];
 
   [(HUServiceGridViewController *)v18 setContentMargins:1];
   v22.receiver = self;
@@ -143,7 +143,7 @@ uint64_t __78__HUCharacteristicTriggerServicePickerViewController_sourceForTrigg
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_triggerBuilder, a4);
+    objc_storeStrong(&v19->_triggerBuilder, builder);
   }
 
   return v20;
@@ -154,10 +154,10 @@ uint64_t __78__HUCharacteristicTriggerServicePickerViewController_sourceForTrigg
   v9.receiver = self;
   v9.super_class = HUCharacteristicTriggerServicePickerViewController;
   [(HUInstructionsTableViewController *)&v9 viewDidLoad];
-  v3 = [(HUCharacteristicTriggerServicePickerViewController *)self source];
-  if (v3)
+  source = [(HUCharacteristicTriggerServicePickerViewController *)self source];
+  if (source)
   {
-    if (v3 != 1)
+    if (source != 1)
     {
       v6 = 0;
       v7 = 0;
@@ -178,19 +178,19 @@ uint64_t __78__HUCharacteristicTriggerServicePickerViewController_sourceForTrigg
   v7 = _HULocalizedStringWithDefaultValue(v4, v4, 1);
 LABEL_7:
   [(HUCharacteristicTriggerServicePickerViewController *)self setTitle:v6];
-  v8 = [(HUCharacteristicTriggerServicePickerViewController *)self navigationItem];
-  [v8 setPrompt:v7];
+  navigationItem = [(HUCharacteristicTriggerServicePickerViewController *)self navigationItem];
+  [navigationItem setPrompt:v7];
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v14.receiver = self;
   v14.super_class = HUCharacteristicTriggerServicePickerViewController;
-  [(HUInstructionsTableViewController *)&v14 updateCell:v10 forItem:a4 indexPath:a5 animated:v6];
+  [(HUInstructionsTableViewController *)&v14 updateCell:cellCopy forItem:item indexPath:path animated:animatedCopy];
   objc_opt_class();
-  v11 = v10;
+  v11 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -212,10 +212,10 @@ LABEL_7:
 - (HUCharacteristicTriggerServicePickerContentViewController)servicePickerContentViewController
 {
   objc_opt_class();
-  v3 = [(HUInstructionsTableViewController *)self contentViewController];
+  contentViewController = [(HUInstructionsTableViewController *)self contentViewController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = contentViewController;
   }
 
   else
@@ -230,56 +230,56 @@ LABEL_7:
 
 - (id)characteristicTriggerBuilder
 {
-  v2 = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
-  v3 = [v2 triggerBuilder];
+  servicePickerContentViewController = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
+  triggerBuilder = [servicePickerContentViewController triggerBuilder];
 
-  return v3;
+  return triggerBuilder;
 }
 
 - (unint64_t)mode
 {
-  v2 = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
-  v3 = [v2 mode];
+  servicePickerContentViewController = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
+  mode = [servicePickerContentViewController mode];
 
-  return v3;
+  return mode;
 }
 
 - (unint64_t)source
 {
-  v2 = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
-  v3 = [v2 source];
+  servicePickerContentViewController = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
+  source = [servicePickerContentViewController source];
 
-  return v3;
+  return source;
 }
 
 - (HUTriggerEditorDelegate)delegate
 {
-  v2 = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
-  v3 = [v2 delegate];
+  servicePickerContentViewController = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
+  delegate = [servicePickerContentViewController delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  servicePickerContentViewController = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
+  [servicePickerContentViewController setDelegate:delegateCopy];
 }
 
 - (id)filter
 {
-  v2 = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
-  v3 = [v2 filter];
+  servicePickerContentViewController = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
+  filter = [servicePickerContentViewController filter];
 
-  return v3;
+  return filter;
 }
 
-- (void)setFilter:(id)a3
+- (void)setFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
-  [v5 setFilter:v4];
+  filterCopy = filter;
+  servicePickerContentViewController = [(HUCharacteristicTriggerServicePickerViewController *)self servicePickerContentViewController];
+  [servicePickerContentViewController setFilter:filterCopy];
 }
 
 @end

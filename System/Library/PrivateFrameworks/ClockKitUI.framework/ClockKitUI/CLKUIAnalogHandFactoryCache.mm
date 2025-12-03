@@ -52,8 +52,8 @@ void __45__CLKUIAnalogHandFactoryCache_sharedInstance__block_invoke()
 
 + (void)purge
 {
-  v2 = [a1 sharedInstance];
-  [v2 removeAllImagesWithCompletion:0];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance removeAllImagesWithCompletion:0];
 }
 
 @end

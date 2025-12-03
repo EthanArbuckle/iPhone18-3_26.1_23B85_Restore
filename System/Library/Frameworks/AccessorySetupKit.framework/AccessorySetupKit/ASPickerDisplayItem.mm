@@ -1,44 +1,44 @@
 @interface ASPickerDisplayItem
-- (ASPickerDisplayItem)initWithCoder:(id)a3;
-- (ASPickerDisplayItem)initWithName:(id)a3 productImage:(id)a4 descriptor:(id)a5;
-- (ASPickerDisplayItem)initWithXPCObject:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (ASPickerDisplayItem)initWithCoder:(id)coder;
+- (ASPickerDisplayItem)initWithName:(id)name productImage:(id)image descriptor:(id)descriptor;
+- (ASPickerDisplayItem)initWithXPCObject:(id)object error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
 - (id)resizedImage;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ASPickerDisplayItem
 
-- (ASPickerDisplayItem)initWithName:(id)a3 productImage:(id)a4 descriptor:(id)a5
+- (ASPickerDisplayItem)initWithName:(id)name productImage:(id)image descriptor:(id)descriptor
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  imageCopy = image;
+  descriptorCopy = descriptor;
   v18.receiver = self;
   v18.super_class = ASPickerDisplayItem;
   v12 = [(ASPickerDisplayItem *)&v18 init];
   if (v12)
   {
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    v14 = [v13 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v12->_identifier;
-    v12->_identifier = v14;
+    v12->_identifier = uUIDString;
 
-    objc_storeStrong(&v12->_name, a3);
-    objc_storeStrong(&v12->_productImage, a4);
-    objc_storeStrong(&v12->_descriptor, a5);
+    objc_storeStrong(&v12->_name, name);
+    objc_storeStrong(&v12->_productImage, image);
+    objc_storeStrong(&v12->_descriptor, descriptor);
     v16 = v12;
   }
 
   return v12;
 }
 
-- (ASPickerDisplayItem)initWithCoder:(id)a3
+- (ASPickerDisplayItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ASPickerDisplayItem *)self init];
   v6 = v5;
   if (v5)
@@ -52,7 +52,7 @@
     NSDecodeObjectIfPresent();
     objc_opt_class();
     NSDecodeObjectIfPresent();
-    v7 = v4;
+    v7 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -83,79 +83,79 @@
 
   else
   {
-    [ASAccessory initWithCoder:v4];
+    [ASAccessory initWithCoder:coderCopy];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
+  coderCopy = coder;
   accessoryType = self->_accessoryType;
   if (accessoryType)
   {
-    [v13 encodeObject:accessoryType forKey:@"aTe"];
+    [coderCopy encodeObject:accessoryType forKey:@"aTe"];
   }
 
   if (self->_allowsRename)
   {
-    [v13 encodeBool:1 forKey:@"aRm"];
+    [coderCopy encodeBool:1 forKey:@"aRm"];
   }
 
   descriptor = self->_descriptor;
   if (descriptor)
   {
-    [v13 encodeObject:descriptor forKey:@"aDr"];
+    [coderCopy encodeObject:descriptor forKey:@"aDr"];
   }
 
   name = self->_name;
   if (name)
   {
-    [v13 encodeObject:name forKey:@"dNm"];
+    [coderCopy encodeObject:name forKey:@"dNm"];
   }
 
-  v7 = [(ASPickerDisplayItem *)self resizedImage];
-  v8 = UIImagePNGRepresentation(v7);
+  resizedImage = [(ASPickerDisplayItem *)self resizedImage];
+  v8 = UIImagePNGRepresentation(resizedImage);
   if (v8)
   {
-    [v13 encodeObject:v8 forKey:@"pImg"];
+    [coderCopy encodeObject:v8 forKey:@"pImg"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v13 encodeObject:identifier forKey:@"pDid"];
+    [coderCopy encodeObject:identifier forKey:@"pDid"];
   }
 
   renameOptions = self->_renameOptions;
-  v11 = v13;
+  v11 = coderCopy;
   if (renameOptions)
   {
-    [v13 encodeInteger:renameOptions forKey:@"rOp"];
-    v11 = v13;
+    [coderCopy encodeInteger:renameOptions forKey:@"rOp"];
+    v11 = coderCopy;
   }
 
   setupOptions = self->_setupOptions;
   if (setupOptions)
   {
-    [v13 encodeInteger:setupOptions forKey:@"pDop"];
-    v11 = v13;
+    [coderCopy encodeInteger:setupOptions forKey:@"pDop"];
+    v11 = coderCopy;
   }
 }
 
-- (ASPickerDisplayItem)initWithXPCObject:(id)a3 error:(id *)a4
+- (ASPickerDisplayItem)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ASPickerDisplayItem *)self init];
   if (!v7)
   {
-    [ASPickerDisplayItem initWithXPCObject:a4 error:&v20];
+    [ASPickerDisplayItem initWithXPCObject:error error:&v20];
     v17 = v20;
     goto LABEL_19;
   }
 
-  if (MEMORY[0x2383B4C90](v6) == MEMORY[0x277D86468])
+  if (MEMORY[0x2383B4C90](objectCopy) == MEMORY[0x277D86468])
   {
     if (!CUXPCDecodeNSString())
     {
@@ -179,7 +179,7 @@ LABEL_20:
     v14 = [MEMORY[0x277D755B8] imageWithData:0];
     if (!v14)
     {
-      [(ASPickerDisplayItem *)a4 initWithXPCObject:v7 error:&v20];
+      [(ASPickerDisplayItem *)error initWithXPCObject:v7 error:&v20];
       v17 = v20;
       goto LABEL_17;
     }
@@ -225,10 +225,10 @@ LABEL_21:
     goto LABEL_17;
   }
 
-  if (a4)
+  if (error)
   {
     ASErrorF(-6756, "XPC non-dict", v8, v9, v10, v11, v12, v13, v19);
-    *a4 = v17 = 0;
+    *error = v17 = 0;
   }
 
   else
@@ -241,38 +241,38 @@ LABEL_19:
   return v17;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   descriptor = self->_descriptor;
   CUXPCEncodeObject();
   name = self->_name;
-  v7 = v4;
-  v8 = [(NSString *)name UTF8String];
-  if (v8)
+  v7 = objectCopy;
+  uTF8String = [(NSString *)name UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v7, "dNm", v8);
+    xpc_dictionary_set_string(v7, "dNm", uTF8String);
   }
 
-  v9 = [(UTType *)self->_accessoryType identifier];
+  identifier = [(UTType *)self->_accessoryType identifier];
   v10 = v7;
-  v11 = [v9 UTF8String];
-  if (v11)
+  uTF8String2 = [identifier UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v10, "aTe", v11);
+    xpc_dictionary_set_string(v10, "aTe", uTF8String2);
   }
 
-  v12 = [(ASPickerDisplayItem *)self resizedImage];
-  v13 = UIImagePNGRepresentation(v12);
+  resizedImage = [(ASPickerDisplayItem *)self resizedImage];
+  v13 = UIImagePNGRepresentation(resizedImage);
   v14 = v13;
   if (v13)
   {
     v15 = v13;
     v16 = v10;
-    v17 = [v14 bytes];
-    if (v17)
+    bytes = [v14 bytes];
+    if (bytes)
     {
-      v18 = v17;
+      v18 = bytes;
     }
 
     else
@@ -285,10 +285,10 @@ LABEL_19:
 
   identifier = self->_identifier;
   xdict = v10;
-  v20 = [(NSString *)identifier UTF8String];
-  if (v20)
+  uTF8String3 = [(NSString *)identifier UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(xdict, "pDid", v20);
+    xpc_dictionary_set_string(xdict, "pDid", uTF8String3);
   }
 
   renameOptions = self->_renameOptions;
@@ -304,9 +304,9 @@ LABEL_19:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(UTType *)self->_accessoryType copy];
   v6 = *(v4 + 56);
   *(v4 + 56) = v5;
@@ -333,13 +333,13 @@ LABEL_19:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (![(ASPickerDisplayItem *)v6 isMemberOfClass:objc_opt_class()])
     {
       v13 = 0;
@@ -349,9 +349,9 @@ LABEL_29:
     }
 
     name = self->_name;
-    v8 = [(ASPickerDisplayItem *)v6 name];
+    name = [(ASPickerDisplayItem *)v6 name];
     p_isa = name;
-    v10 = v8;
+    v10 = name;
     v11 = v10;
     if (p_isa == v10)
     {
@@ -380,9 +380,9 @@ LABEL_28:
     }
 
     descriptor = self->_descriptor;
-    v15 = [(ASPickerDisplayItem *)v6 descriptor];
+    descriptor = [(ASPickerDisplayItem *)v6 descriptor];
     v16 = descriptor;
-    v17 = v15;
+    v17 = descriptor;
     p_isa = &v17->super.isa;
     if (v16 == v17)
     {
@@ -408,9 +408,9 @@ LABEL_27:
     }
 
     identifier = self->_identifier;
-    v20 = [(ASPickerDisplayItem *)v6 identifier];
+    identifier = [(ASPickerDisplayItem *)v6 identifier];
     v21 = identifier;
-    v22 = v20;
+    v22 = identifier;
     v16 = v22;
     if (v21 == v22)
     {
@@ -453,8 +453,8 @@ LABEL_30:
 
 - (id)resizedImage
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
   v6 = CGImageGetWidth([(UIImage *)self->_productImage CGImage]) / v5;
@@ -494,9 +494,9 @@ LABEL_30:
   return v12;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -522,7 +522,7 @@ LABEL_30:
   if (accessoryType)
   {
     v8 = accessoryType;
-    v20 = [(UTType *)v8 identifier];
+    identifier = [(UTType *)v8 identifier];
     CUAppendF();
     v9 = v4;
 

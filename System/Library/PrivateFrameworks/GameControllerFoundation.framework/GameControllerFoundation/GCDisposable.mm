@@ -1,26 +1,26 @@
 @interface GCDisposable
-+ (id)withCleanupHandler:(id)a3;
-- (GCDisposable)initWithCleanupHandler:(id)a3;
++ (id)withCleanupHandler:(id)handler;
+- (GCDisposable)initWithCleanupHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation GCDisposable
 
-+ (id)withCleanupHandler:(id)a3
++ (id)withCleanupHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithCleanupHandler:v4];
+  handlerCopy = handler;
+  v5 = [[self alloc] initWithCleanupHandler:handlerCopy];
 
   return v5;
 }
 
-- (GCDisposable)initWithCleanupHandler:(id)a3
+- (GCDisposable)initWithCleanupHandler:(id)handler
 {
   v8.receiver = self;
   v8.super_class = GCDisposable;
-  v3 = a3;
+  handlerCopy = handler;
   v4 = [(GCDisposable *)&v8 init];
-  v5 = [v3 copy];
+  v5 = [handlerCopy copy];
 
   handler = v4->_handler;
   v4->_handler = v5;

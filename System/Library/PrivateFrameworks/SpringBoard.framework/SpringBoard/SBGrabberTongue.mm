@@ -1,47 +1,47 @@
 @interface SBGrabberTongue
-- (BOOL)_shouldAllowSecondSwipeWithRecognizer:(id)a3;
-- (BOOL)_shouldReceiveTouch:(id)a3;
-- (BOOL)_shouldSecondSwipeDismissTongueWithRecognizer:(id)a3;
-- (BOOL)_shouldShowTongueOnFirstSwipeWithRecognizer:(id)a3;
-- (BOOL)_tongueOrPullEnabledForGestureRecognizer:(id)a3;
-- (BOOL)dismissWithStyle:(int64_t)a3 animated:(BOOL)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_shouldAllowSecondSwipeWithRecognizer:(id)recognizer;
+- (BOOL)_shouldReceiveTouch:(id)touch;
+- (BOOL)_shouldSecondSwipeDismissTongueWithRecognizer:(id)recognizer;
+- (BOOL)_shouldShowTongueOnFirstSwipeWithRecognizer:(id)recognizer;
+- (BOOL)_tongueOrPullEnabledForGestureRecognizer:(id)recognizer;
+- (BOOL)dismissWithStyle:(int64_t)style animated:(BOOL)animated;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGAffineTransform)_transformForTongueContainer;
-- (CGRect)_chevronFrameForTongueBounds:(CGRect)a3;
-- (CGRect)_frameForTongueWhenVisible:(BOOL)a3;
+- (CGRect)_chevronFrameForTongueBounds:(CGRect)bounds;
+- (CGRect)_frameForTongueWhenVisible:(BOOL)visible;
 - (SBGrabberTongue)init;
-- (SBGrabberTongue)initWithDelegate:(id)a3 edge:(unint64_t)a4 type:(unint64_t)a5 windowScene:(id)a6;
+- (SBGrabberTongue)initWithDelegate:(id)delegate edge:(unint64_t)edge type:(unint64_t)type windowScene:(id)scene;
 - (SBGrabberTongueDelegate)delegate;
 - (UIEdgeInsets)_grabberTongueScreenInsets;
 - (double)_ambiguousActivationMargin;
 - (double)_ambiguousActivationMarginIfHonored;
 - (double)_centerOnScreenEdge;
-- (double)_distanceFromEdgeForRecognizer:(id)a3;
-- (double)_edgeOrientedVelocityForRecognizer:(id)a3;
-- (double)edgeLocationForTouch:(id)a3;
-- (id)_createEdgePullGestureRecognizerWithAction:(SEL)a3;
-- (id)_createTapGestureRecognizerWithAction:(SEL)a3;
-- (id)_newBackdropViewWithColorStyle:(int64_t)a3;
+- (double)_distanceFromEdgeForRecognizer:(id)recognizer;
+- (double)_edgeOrientedVelocityForRecognizer:(id)recognizer;
+- (double)edgeLocationForTouch:(id)touch;
+- (id)_createEdgePullGestureRecognizerWithAction:(SEL)action;
+- (id)_createTapGestureRecognizerWithAction:(SEL)action;
+- (id)_newBackdropViewWithColorStyle:(int64_t)style;
 - (id)_newChevronView;
 - (void)_cancelPendingTongueDismissRequests;
-- (void)_createTongueAndGestureRecognizersIfNecessaryWithColorStyle:(int64_t)a3;
+- (void)_createTongueAndGestureRecognizersIfNecessaryWithColorStyle:(int64_t)style;
 - (void)_didDismiss;
-- (void)_didPresentInteractively:(id)a3;
-- (void)_dismissTongueWithStyle:(int64_t)a3 animated:(BOOL)a4;
-- (void)_handlePullGesture:(id)a3;
-- (void)_handleTapped:(id)a3;
-- (void)_presentTongueAnimated:(BOOL)a3 autoDismiss:(BOOL)a4;
-- (void)_pullGestureBegan:(id)a3;
-- (void)_pullGestureCanceled:(id)a3;
-- (void)_pullGestureEnded:(id)a3;
-- (void)_pullGestureUpdated:(id)a3;
-- (void)_updateCancelsTouchesWithRecognizerIfNeeded:(id)a3;
+- (void)_didPresentInteractively:(id)interactively;
+- (void)_dismissTongueWithStyle:(int64_t)style animated:(BOOL)animated;
+- (void)_handlePullGesture:(id)gesture;
+- (void)_handleTapped:(id)tapped;
+- (void)_presentTongueAnimated:(BOOL)animated autoDismiss:(BOOL)dismiss;
+- (void)_pullGestureBegan:(id)began;
+- (void)_pullGestureCanceled:(id)canceled;
+- (void)_pullGestureEnded:(id)ended;
+- (void)_pullGestureUpdated:(id)updated;
+- (void)_updateCancelsTouchesWithRecognizerIfNeeded:(id)needed;
 - (void)_willDismiss;
 - (void)_willPresent;
-- (void)_willPresentInteractively:(id)a3;
+- (void)_willPresentInteractively:(id)interactively;
 - (void)dealloc;
-- (void)installInView:(id)a3 withColorStyle:(int64_t)a4;
+- (void)installInView:(id)view withColorStyle:(int64_t)style;
 - (void)invalidate;
 - (void)uninstall;
 @end
@@ -63,17 +63,17 @@
 
 - (SBGrabberTongue)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBGrabberTongue.m" lineNumber:92 description:@"use initWithDelegate:..."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBGrabberTongue.m" lineNumber:92 description:@"use initWithDelegate:..."];
 
   return 0;
 }
 
-- (SBGrabberTongue)initWithDelegate:(id)a3 edge:(unint64_t)a4 type:(unint64_t)a5 windowScene:(id)a6
+- (SBGrabberTongue)initWithDelegate:(id)delegate edge:(unint64_t)edge type:(unint64_t)type windowScene:(id)scene
 {
-  v11 = a3;
-  v12 = a6;
-  if (!v11)
+  delegateCopy = delegate;
+  sceneCopy = scene;
+  if (!delegateCopy)
   {
     [SBGrabberTongue initWithDelegate:a2 edge:self type:? windowScene:?];
   }
@@ -84,10 +84,10 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v11);
-    v14->_screenEdge = a4;
-    v14->_systemGestureType = a5;
-    objc_storeWeak(&v14->_windowScene, v12);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
+    v14->_screenEdge = edge;
+    v14->_systemGestureType = type;
+    objc_storeWeak(&v14->_windowScene, sceneCopy);
     v14->_gestureStartTime = -1.79769313e308;
   }
 
@@ -96,8 +96,8 @@
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBGrabberTongue.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"_invalidated"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBGrabberTongue.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"_invalidated"}];
 }
 
 - (void)invalidate
@@ -107,19 +107,19 @@
   self->_invalidated = 1;
 }
 
-- (void)installInView:(id)a3 withColorStyle:(int64_t)a4
+- (void)installInView:(id)view withColorStyle:(int64_t)style
 {
-  v7 = a3;
+  viewCopy = view;
   if (self->_containingView)
   {
     [SBGrabberTongue installInView:a2 withColorStyle:self];
   }
 
   containingView = self->_containingView;
-  self->_containingView = v7;
-  v9 = v7;
+  self->_containingView = viewCopy;
+  v9 = viewCopy;
 
-  [(SBGrabberTongue *)self _createTongueAndGestureRecognizersIfNecessaryWithColorStyle:a4];
+  [(SBGrabberTongue *)self _createTongueAndGestureRecognizersIfNecessaryWithColorStyle:style];
   [(UIView *)self->_tongueContainer setAccessibilityIdentifier:@"sb-grabber-tongue"];
   [(UIView *)self->_containingView addSubview:self->_tongueContainer];
 }
@@ -140,19 +140,19 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v11 = [WeakRetained systemGestureManager];
+  systemGestureManager = [WeakRetained systemGestureManager];
 
-  [v11 removeGestureRecognizer:self->_edgePullGestureRecognizer];
+  [systemGestureManager removeGestureRecognizer:self->_edgePullGestureRecognizer];
   [(UIPanGestureRecognizer *)self->_edgePullGestureRecognizer setDelegate:0];
   edgePullGestureRecognizer = self->_edgePullGestureRecognizer;
   self->_edgePullGestureRecognizer = 0;
 
-  [v11 removeGestureRecognizer:self->_indirectEdgePullGestureRecognizer];
+  [systemGestureManager removeGestureRecognizer:self->_indirectEdgePullGestureRecognizer];
   [(SBIndirectPanGestureRecognizer *)self->_indirectEdgePullGestureRecognizer setDelegate:0];
   indirectEdgePullGestureRecognizer = self->_indirectEdgePullGestureRecognizer;
   self->_indirectEdgePullGestureRecognizer = 0;
 
-  [v11 removeGestureRecognizer:self->_tapGestureRecognizer];
+  [systemGestureManager removeGestureRecognizer:self->_tapGestureRecognizer];
   [(UITapGestureRecognizer *)self->_tapGestureRecognizer setDelegate:0];
   tapGestureRecognizer = self->_tapGestureRecognizer;
   self->_tapGestureRecognizer = 0;
@@ -161,18 +161,18 @@
   self->_containingView = 0;
 }
 
-- (BOOL)dismissWithStyle:(int64_t)a3 animated:(BOOL)a4
+- (BOOL)dismissWithStyle:(int64_t)style animated:(BOOL)animated
 {
   tongueVisible = self->_tongueVisible;
   if (tongueVisible)
   {
-    [(SBGrabberTongue *)self _dismissTongueWithStyle:a3 animated:a4];
+    [(SBGrabberTongue *)self _dismissTongueWithStyle:style animated:animated];
   }
 
   return tongueVisible;
 }
 
-- (double)edgeLocationForTouch:(id)a3
+- (double)edgeLocationForTouch:(id)touch
 {
   _UISystemGestureLocationForTouchInView();
   v6 = v5;
@@ -206,14 +206,14 @@
   return result;
 }
 
-- (BOOL)_tongueOrPullEnabledForGestureRecognizer:(id)a3
+- (BOOL)_tongueOrPullEnabledForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
   if (WeakRetained)
   {
-    v7 = [WeakRetained grabberTongueOrPullEnabled:self forGestureRecognizer:v4];
+    v7 = [WeakRetained grabberTongueOrPullEnabled:self forGestureRecognizer:recognizerCopy];
   }
 
   else
@@ -224,12 +224,12 @@
   return v7;
 }
 
-- (BOOL)_shouldShowTongueOnFirstSwipeWithRecognizer:(id)a3
+- (BOOL)_shouldShowTongueOnFirstSwipeWithRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
-  if (self->_indirectEdgePullGestureRecognizer != v4 && WeakRetained != 0)
+  if (self->_indirectEdgePullGestureRecognizer != recognizerCopy && WeakRetained != 0)
   {
     _UISystemGestureLocationInView();
     v11 = v9;
@@ -272,13 +272,13 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)_shouldReceiveTouch:(id)a3
+- (BOOL)_shouldReceiveTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v6 = [WeakRetained grabberTongue:self shouldReceiveTouch:v4];
+    v6 = [WeakRetained grabberTongue:self shouldReceiveTouch:touchCopy];
   }
 
   else
@@ -289,9 +289,9 @@ LABEL_16:
   return v6;
 }
 
-- (BOOL)_shouldAllowSecondSwipeWithRecognizer:(id)a3
+- (BOOL)_shouldAllowSecondSwipeWithRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -357,9 +357,9 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)_shouldSecondSwipeDismissTongueWithRecognizer:(id)a3
+- (BOOL)_shouldSecondSwipeDismissTongueWithRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -437,8 +437,8 @@ LABEL_6:
   }
 
   v2 = +[SBWorkspace mainWorkspace];
-  v3 = [v2 transientOverlayPresentationManager];
-  if ([v3 hasActivePresentation])
+  transientOverlayPresentationManager = [v2 transientOverlayPresentationManager];
+  if ([transientOverlayPresentationManager hasActivePresentation])
   {
 LABEL_5:
 
@@ -453,9 +453,9 @@ LABEL_5:
   }
 
   v7 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-  v8 = [v7 isAnySwitcherVisible];
+  isAnySwitcherVisible = [v7 isAnySwitcherVisible];
 
-  if (v8)
+  if (isAnySwitcherVisible)
   {
     goto LABEL_6;
   }
@@ -480,12 +480,12 @@ LABEL_5:
           objc_enumerationMutation(v9);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * i) sceneIfExists];
-        v16 = v15;
-        if (v15)
+        sceneIfExists = [*(*(&v20 + 1) + 8 * i) sceneIfExists];
+        v16 = sceneIfExists;
+        if (sceneIfExists)
         {
-          v17 = [v15 uiClientSettings];
-          [v17 controlCenterAmbiguousActivationMargin];
+          uiClientSettings = [sceneIfExists uiClientSettings];
+          [uiClientSettings controlCenterAmbiguousActivationMargin];
           v19 = v18;
 
           if (v19 >= v13)
@@ -526,55 +526,55 @@ LABEL_5:
   }
 }
 
-- (void)_pullGestureBegan:(id)a3
+- (void)_pullGestureBegan:(id)began
 {
-  v8 = a3;
+  beganCopy = began;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:v8];
+    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:beganCopy];
     v6 = v5;
-    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:v8];
-    [WeakRetained grabberTongueBeganPulling:self withDistance:v8 andVelocity:v6 andGesture:v7];
+    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:beganCopy];
+    [WeakRetained grabberTongueBeganPulling:self withDistance:beganCopy andVelocity:v6 andGesture:v7];
   }
 }
 
-- (void)_pullGestureUpdated:(id)a3
+- (void)_pullGestureUpdated:(id)updated
 {
-  v8 = a3;
+  updatedCopy = updated;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:v8];
+    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:updatedCopy];
     v6 = v5;
-    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:v8];
-    [WeakRetained grabberTongueUpdatedPulling:self withDistance:v8 andVelocity:v6 andGesture:v7];
+    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:updatedCopy];
+    [WeakRetained grabberTongueUpdatedPulling:self withDistance:updatedCopy andVelocity:v6 andGesture:v7];
   }
 }
 
-- (void)_pullGestureEnded:(id)a3
+- (void)_pullGestureEnded:(id)ended
 {
-  v8 = a3;
+  endedCopy = ended;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:v8];
+    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:endedCopy];
     v6 = v5;
-    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:v8];
-    [WeakRetained grabberTongueEndedPulling:self withDistance:v8 andVelocity:v6 andGesture:v7];
+    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:endedCopy];
+    [WeakRetained grabberTongueEndedPulling:self withDistance:endedCopy andVelocity:v6 andGesture:v7];
   }
 }
 
-- (void)_pullGestureCanceled:(id)a3
+- (void)_pullGestureCanceled:(id)canceled
 {
-  v8 = a3;
+  canceledCopy = canceled;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:v8];
+    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:canceledCopy];
     v6 = v5;
-    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:v8];
-    [WeakRetained grabberTongueCanceledPulling:self withDistance:v8 andVelocity:v6 andGesture:v7];
+    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:canceledCopy];
+    [WeakRetained grabberTongueCanceledPulling:self withDistance:canceledCopy andVelocity:v6 andGesture:v7];
   }
 }
 
@@ -605,33 +605,33 @@ LABEL_5:
   }
 }
 
-- (void)_willPresentInteractively:(id)a3
+- (void)_willPresentInteractively:(id)interactively
 {
-  v8 = a3;
+  interactivelyCopy = interactively;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:v8];
+    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:interactivelyCopy];
     v6 = v5;
-    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:v8];
+    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:interactivelyCopy];
     [WeakRetained grabberTongueWillPresentInteractively:self withDistance:v6 andVelocity:v7];
   }
 }
 
-- (void)_didPresentInteractively:(id)a3
+- (void)_didPresentInteractively:(id)interactively
 {
-  v8 = a3;
+  interactivelyCopy = interactively;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:v8];
+    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:interactivelyCopy];
     v6 = v5;
-    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:v8];
+    [(SBGrabberTongue *)self _edgeOrientedVelocityForRecognizer:interactivelyCopy];
     [WeakRetained grabberTongueDidPresentInteractively:self withDistance:v6 andVelocity:v7];
   }
 }
 
-- (void)_createTongueAndGestureRecognizersIfNecessaryWithColorStyle:(int64_t)a3
+- (void)_createTongueAndGestureRecognizersIfNecessaryWithColorStyle:(int64_t)style
 {
   if (self->_tongueContainer)
   {
@@ -639,13 +639,13 @@ LABEL_5:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_windowScene);
-  v34 = [WeakRetained systemGestureManager];
+  systemGestureManager = [WeakRetained systemGestureManager];
 
-  v7 = [(SBGrabberTongue *)self name];
-  v8 = v7;
-  if (v7)
+  name = [(SBGrabberTongue *)self name];
+  v8 = name;
+  if (name)
   {
-    v9 = v7;
+    v9 = name;
   }
 
   else
@@ -666,7 +666,7 @@ LABEL_5:
 
   [(UIPanGestureRecognizer *)self->_edgePullGestureRecognizer setDelegate:self];
   [(UIPanGestureRecognizer *)self->_edgePullGestureRecognizer setCancelsTouchesInView:0];
-  [v34 addGestureRecognizer:self->_edgePullGestureRecognizer withType:self->_systemGestureType];
+  [systemGestureManager addGestureRecognizer:self->_edgePullGestureRecognizer withType:self->_systemGestureType];
   v16 = [(SBGrabberTongue *)self _createTapGestureRecognizerWithAction:sel__handleTapped_];
   tapGestureRecognizer = self->_tapGestureRecognizer;
   self->_tapGestureRecognizer = v16;
@@ -690,7 +690,7 @@ LABEL_5:
   {
     v21 = 22;
 LABEL_9:
-    [v34 addGestureRecognizer:self->_tapGestureRecognizer withType:v21];
+    [systemGestureManager addGestureRecognizer:self->_tapGestureRecognizer withType:v21];
   }
 
   v22 = objc_loadWeakRetained(&self->_delegate);
@@ -706,7 +706,7 @@ LABEL_9:
   {
     [(SBIndirectPanGestureRecognizer *)v25 setDelegate:self];
     [(SBIndirectPanGestureRecognizer *)self->_indirectEdgePullGestureRecognizer addTarget:self action:sel__handlePullGesture_];
-    [v34 addGestureRecognizer:self->_indirectEdgePullGestureRecognizer withType:{objc_msgSend(v22, "indirectPanSystemGestureTypeForGrabberTongue:", self)}];
+    [systemGestureManager addGestureRecognizer:self->_indirectEdgePullGestureRecognizer withType:{objc_msgSend(v22, "indirectPanSystemGestureTypeForGrabberTongue:", self)}];
   }
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v22 shouldSuppressTongueViewForGrabberTongue:self])
@@ -725,16 +725,16 @@ LABEL_9:
     [(UIView *)self->_tongueContainer setOpaque:0];
     [(UIView *)self->_tongueContainer setUserInteractionEnabled:1];
     [(UIView *)self->_tongueContainer _setContinuousCornerRadius:13.0];
-    v29 = [(UIView *)self->_tongueContainer layer];
-    [v29 setMaskedCorners:12];
+    layer = [(UIView *)self->_tongueContainer layer];
+    [layer setMaskedCorners:12];
 
-    v30 = [(SBGrabberTongue *)self _newBackdropViewWithColorStyle:a3];
+    v30 = [(SBGrabberTongue *)self _newBackdropViewWithColorStyle:style];
     tongueBackdropView = self->_tongueBackdropView;
     self->_tongueBackdropView = v30;
 
-    v32 = [(SBGrabberTongue *)self _newChevronView];
+    _newChevronView = [(SBGrabberTongue *)self _newChevronView];
     tongueChevron = self->_tongueChevron;
-    self->_tongueChevron = v32;
+    self->_tongueChevron = _newChevronView;
 
     [(UIView *)self->_tongueContainer addSubview:self->_tongueBackdropView];
     [(UIView *)self->_tongueContainer addSubview:self->_tongueChevron];
@@ -746,7 +746,7 @@ LABEL_9:
   [(UIView *)self->_tongueContainer setAlpha:0.0];
 }
 
-- (id)_createEdgePullGestureRecognizerWithAction:(SEL)a3
+- (id)_createEdgePullGestureRecognizerWithAction:(SEL)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -756,25 +756,25 @@ LABEL_9:
 
   else
   {
-    v6 = [[SBScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:a3];
+    v6 = [[SBScreenEdgePanGestureRecognizer alloc] initWithTarget:self action:action];
     [(UIScreenEdgePanGestureRecognizer *)v6 setEdges:self->_screenEdge];
   }
 
-  [(SBScreenEdgePanGestureRecognizer *)v6 addTarget:self action:a3];
+  [(SBScreenEdgePanGestureRecognizer *)v6 addTarget:self action:action];
 
   return v6;
 }
 
-- (id)_createTapGestureRecognizerWithAction:(SEL)a3
+- (id)_createTapGestureRecognizerWithAction:(SEL)action
 {
-  v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:a3];
+  v3 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:action];
 
   return v3;
 }
 
-- (id)_newBackdropViewWithColorStyle:(int64_t)a3
+- (id)_newBackdropViewWithColorStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
     v4 = 11050;
   }
@@ -808,9 +808,9 @@ LABEL_9:
   [v3 cancelPreviousPerformRequestsWithTarget:self selector:sel__dismissTongue_ object:0];
 }
 
-- (void)_dismissTongueWithStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)_dismissTongueWithStyle:(int64_t)style animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(SBGrabberTongue *)self _cancelPendingTongueDismissRequests];
   self->_tongueVisible = 0;
   [(SBGrabberTongue *)self _willDismiss];
@@ -819,16 +819,16 @@ LABEL_9:
   v13[2] = __52__SBGrabberTongue__dismissTongueWithStyle_animated___block_invoke;
   v13[3] = &unk_2783A8BC8;
   v13[4] = self;
-  v13[5] = a3;
+  v13[5] = style;
   v7 = MEMORY[0x223D6F7F0](v13);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __52__SBGrabberTongue__dismissTongueWithStyle_animated___block_invoke_2;
   v12[3] = &unk_2783B3C38;
   v12[4] = self;
-  v12[5] = a3;
+  v12[5] = style;
   v8 = MEMORY[0x223D6F7F0](v12);
-  if (v4)
+  if (animatedCopy)
   {
     v9 = MEMORY[0x277D75D18];
     v10[0] = MEMORY[0x277D85DD0];
@@ -883,13 +883,13 @@ uint64_t __52__SBGrabberTongue__dismissTongueWithStyle_animated___block_invoke_2
   return [v4 _didDismiss];
 }
 
-- (void)_presentTongueAnimated:(BOOL)a3 autoDismiss:(BOOL)a4
+- (void)_presentTongueAnimated:(BOOL)animated autoDismiss:(BOOL)dismiss
 {
-  v4 = a4;
+  dismissCopy = dismiss;
   v20[1] = *MEMORY[0x277D85DE8];
   if (!self->_tongueVisible)
   {
-    v6 = a3;
+    animatedCopy = animated;
     self->_tongueVisible = 1;
     [(SBGrabberTongue *)self _willPresent];
     if (!self->_deferOrientationUpdatesAssertion)
@@ -922,7 +922,7 @@ uint64_t __52__SBGrabberTongue__dismissTongueWithStyle_animated___block_invoke_2
     v16[2] = v19;
     [(UIView *)v12 setTransform:v16];
     v13 = 0.2;
-    if (!v6)
+    if (!animatedCopy)
     {
       v13 = 0.0;
     }
@@ -936,7 +936,7 @@ uint64_t __52__SBGrabberTongue__dismissTongueWithStyle_animated___block_invoke_2
   }
 
   [(SBGrabberTongue *)self _cancelPendingTongueDismissRequests];
-  if (v4)
+  if (dismissCopy)
   {
     v20[0] = *MEMORY[0x277CBE738];
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
@@ -953,9 +953,9 @@ uint64_t __54__SBGrabberTongue__presentTongueAnimated_autoDismiss___block_invoke
   return [v2 setFrame:?];
 }
 
-- (CGRect)_frameForTongueWhenVisible:(BOOL)a3
+- (CGRect)_frameForTongueWhenVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   [(UIView *)self->_tongueContainer frame];
   MinX = v6;
   v9 = v8;
@@ -977,7 +977,7 @@ uint64_t __54__SBGrabberTongue__presentTongueAnimated_autoDismiss___block_invoke
       SBScreenScale();
       SBFloatFloorForScale();
       MinX = v26;
-      if (!v3)
+      if (!visibleCopy)
       {
         v9 = -v13;
         goto LABEL_20;
@@ -993,7 +993,7 @@ uint64_t __54__SBGrabberTongue__presentTongueAnimated_autoDismiss___block_invoke
 
     if (screenEdge == 2)
     {
-      if (v3)
+      if (visibleCopy)
       {
         MinX = CGRectGetMinX(*&v15);
       }
@@ -1013,8 +1013,8 @@ LABEL_19:
     }
 
 LABEL_11:
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"SBGrabberTongue.m" lineNumber:547 description:@"Grabbers can only be installed on one edge"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBGrabberTongue.m" lineNumber:547 description:@"Grabbers can only be installed on one edge"];
 
     goto LABEL_20;
   }
@@ -1025,7 +1025,7 @@ LABEL_11:
     {
       MaxX = CGRectGetMaxX(*&v15);
       v24 = -0.0;
-      if (v3)
+      if (visibleCopy)
       {
         v24 = v11;
       }
@@ -1047,7 +1047,7 @@ LABEL_11:
   v36.size.height = v22;
   MaxY = CGRectGetMaxY(v36);
   v30 = -0.0;
-  if (v3)
+  if (visibleCopy)
   {
     v30 = v13;
   }
@@ -1067,11 +1067,11 @@ LABEL_20:
 
 - (UIEdgeInsets)_grabberTongueScreenInsets
 {
-  v3 = [MEMORY[0x277D77780] sb_thisDeviceDisplayShape];
-  v4 = v3;
-  if (v3)
+  sb_thisDeviceDisplayShape = [MEMORY[0x277D77780] sb_thisDeviceDisplayShape];
+  v4 = sb_thisDeviceDisplayShape;
+  if (sb_thisDeviceDisplayShape)
   {
-    [v3 rect];
+    [sb_thisDeviceDisplayShape rect];
     MaxY = CGRectGetMaxY(v23);
   }
 
@@ -1082,11 +1082,11 @@ LABEL_20:
 
   if (SBSIsSystemApertureAvailable())
   {
-    v6 = [SBApp systemApertureControllerForMainDisplay];
-    v7 = v6;
-    if (v6)
+    systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+    v7 = systemApertureControllerForMainDisplay;
+    if (systemApertureControllerForMainDisplay)
     {
-      [v6 defaultIslandFrameInCoordinateSpace:self->_containingView];
+      [systemApertureControllerForMainDisplay defaultIslandFrameInCoordinateSpace:self->_containingView];
       MaxY = CGRectGetMaxY(v24);
     }
   }
@@ -1098,14 +1098,14 @@ LABEL_20:
   if (MaxY > 0.0)
   {
     v12 = objc_opt_class();
-    v13 = SBSafeCast(v12, self->_containingView);
-    if (!v13)
+    window = SBSafeCast(v12, self->_containingView);
+    if (!window)
     {
-      v13 = [(UIView *)self->_containingView window];
+      window = [(UIView *)self->_containingView window];
     }
 
-    v14 = [v13 interfaceOrientation];
-    if (v14 == 4)
+    interfaceOrientation = [window interfaceOrientation];
+    if (interfaceOrientation == 4)
     {
       v15 = MaxY;
     }
@@ -1115,7 +1115,7 @@ LABEL_20:
       v15 = v10;
     }
 
-    if (v14 == 3)
+    if (interfaceOrientation == 3)
     {
       v15 = v10;
       v16 = MaxY;
@@ -1126,7 +1126,7 @@ LABEL_20:
       v16 = v8;
     }
 
-    if (v14 == 2)
+    if (interfaceOrientation == 2)
     {
       v17 = MaxY;
     }
@@ -1136,7 +1136,7 @@ LABEL_20:
       v17 = v11;
     }
 
-    if (v14 == 1)
+    if (interfaceOrientation == 1)
     {
       v17 = v11;
       v18 = MaxY;
@@ -1147,7 +1147,7 @@ LABEL_20:
       v18 = v9;
     }
 
-    if (v14 <= 2)
+    if (interfaceOrientation <= 2)
     {
       v11 = v17;
     }
@@ -1157,7 +1157,7 @@ LABEL_20:
       v10 = v15;
     }
 
-    if (v14 <= 2)
+    if (interfaceOrientation <= 2)
     {
       v9 = v18;
     }
@@ -1179,7 +1179,7 @@ LABEL_20:
   return result;
 }
 
-- (CGRect)_chevronFrameForTongueBounds:(CGRect)a3
+- (CGRect)_chevronFrameForTongueBounds:(CGRect)bounds
 {
   SBRectWithSize();
   UIRectCenteredIntegralRectScale();
@@ -1221,9 +1221,9 @@ LABEL_20:
   return UIIntegralTransform();
 }
 
-- (double)_distanceFromEdgeForRecognizer:(id)a3
+- (double)_distanceFromEdgeForRecognizer:(id)recognizer
 {
-  [a3 locationInView:self->_containingView];
+  [recognizer locationInView:self->_containingView];
   v5 = v4;
   v7 = v6;
   [(UIView *)self->_containingView bounds];
@@ -1261,9 +1261,9 @@ LABEL_20:
   return result;
 }
 
-- (double)_edgeOrientedVelocityForRecognizer:(id)a3
+- (double)_edgeOrientedVelocityForRecognizer:(id)recognizer
 {
-  [a3 velocityInView:self->_containingView];
+  [recognizer velocityInView:self->_containingView];
   screenEdge = self->_screenEdge;
   v7 = -v5;
   v8 = -result;
@@ -1295,13 +1295,13 @@ LABEL_20:
   return result;
 }
 
-- (void)_updateCancelsTouchesWithRecognizerIfNeeded:(id)a3
+- (void)_updateCancelsTouchesWithRecognizerIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_tapGestureRecognizer != v4)
+  neededCopy = needed;
+  v5 = neededCopy;
+  if (self->_tapGestureRecognizer != neededCopy)
   {
-    v8 = v4;
+    v8 = neededCopy;
     if (self->_tongueVisible)
     {
       v6 = 1;
@@ -1309,7 +1309,7 @@ LABEL_20:
 
     else
     {
-      v6 = ![(SBGrabberTongue *)self _shouldShowTongueOnFirstSwipeWithRecognizer:v4];
+      v6 = ![(SBGrabberTongue *)self _shouldShowTongueOnFirstSwipeWithRecognizer:neededCopy];
     }
 
     [(SBGrabberTongue *)self _ambiguousActivationMarginIfHonored];
@@ -1320,27 +1320,27 @@ LABEL_20:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIPanGestureRecognizer *)v6 view];
-  [v7 locationInView:v8];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  view = [(UIPanGestureRecognizer *)recognizerCopy view];
+  [touchCopy locationInView:view];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(UIView *)self->_containingView _sbWindowScene];
-  v14 = [v13 pictureInPictureManager];
-  v15 = [v14 isPointWithinAnyPictureInPictureContent:{v10, v12}];
+  _sbWindowScene = [(UIView *)self->_containingView _sbWindowScene];
+  pictureInPictureManager = [_sbWindowScene pictureInPictureManager];
+  v15 = [pictureInPictureManager isPointWithinAnyPictureInPictureContent:{v10, v12}];
 
-  if ((v15 & 1) != 0 || self->_tapGestureRecognizer == v6 && (self->_inPullGesture || self->_inShowTongueGesture || self->_inDismissTongueGesture) || ![(SBGrabberTongue *)self _shouldReceiveTouch:v7])
+  if ((v15 & 1) != 0 || self->_tapGestureRecognizer == recognizerCopy && (self->_inPullGesture || self->_inShowTongueGesture || self->_inDismissTongueGesture) || ![(SBGrabberTongue *)self _shouldReceiveTouch:touchCopy])
   {
     LOBYTE(v16) = 0;
   }
 
-  else if (self->_edgePullGestureRecognizer == v6 || self->_tapGestureRecognizer == v6)
+  else if (self->_edgePullGestureRecognizer == recognizerCopy || self->_tapGestureRecognizer == recognizerCopy)
   {
-    v16 = [v7 _isPointerTouch] ^ 1;
+    v16 = [touchCopy _isPointerTouch] ^ 1;
   }
 
   else
@@ -1351,13 +1351,13 @@ LABEL_20:
   return v16;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  beginCopy = begin;
+  v6 = beginCopy;
   v7 = self->_inPullGesture || self->_inShowTongueGesture || self->_inDismissTongueGesture;
-  if (self->_tapGestureRecognizer == v5 || self->_edgePullGestureRecognizer == v5)
+  if (self->_tapGestureRecognizer == beginCopy || self->_edgePullGestureRecognizer == beginCopy)
   {
     if (!v7)
     {
@@ -1369,7 +1369,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (self->_indirectEdgePullGestureRecognizer == v5 && v7)
+  if (self->_indirectEdgePullGestureRecognizer == beginCopy && v7)
   {
     goto LABEL_15;
   }
@@ -1380,7 +1380,7 @@ LABEL_8:
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = [(UITapGestureRecognizer *)v6 name];
+    name = [(UITapGestureRecognizer *)v6 name];
     v12 = NSStringFromBOOL();
     v13 = NSStringFromBOOL();
     v14 = NSStringFromBOOL();
@@ -1389,7 +1389,7 @@ LABEL_8:
     v19 = 2050;
     v20 = v6;
     v21 = 2114;
-    v22 = v11;
+    v22 = name;
     v23 = 2112;
     v24 = v12;
     v25 = 2112;
@@ -1411,13 +1411,13 @@ LABEL_16:
   return v15;
 }
 
-- (void)_handlePullGesture:(id)a3
+- (void)_handlePullGesture:(id)gesture
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   [(SBGrabberTongue *)self _ambiguousActivationMarginIfHonored];
   IsZero = BSFloatIsZero();
-  if ([v4 state] == 1)
+  if ([gestureCopy state] == 1)
   {
     BSContinuousMachTimeNow();
     self->_gestureStartTime = v6;
@@ -1425,16 +1425,16 @@ LABEL_16:
 
   if (self->_inAmbiguousGesture || !self->_inPullGesture && !self->_inDismissTongueGesture && ((self->_inShowTongueGesture | IsZero) & 1) == 0)
   {
-    v7 = [v4 state];
-    if (v7 <= 2)
+    state = [gestureCopy state];
+    if (state <= 2)
     {
-      if (v7 == 1)
+      if (state == 1)
       {
         *&self->_inAmbiguousGesture = 1;
         goto LABEL_50;
       }
 
-      if (v7 != 2)
+      if (state != 2)
       {
         goto LABEL_50;
       }
@@ -1448,32 +1448,32 @@ LABEL_16:
 
       if (!self->_beganAmbiguousPullGesture)
       {
-        [(SBGrabberTongue *)self _pullGestureBegan:v4];
+        [(SBGrabberTongue *)self _pullGestureBegan:gestureCopy];
         self->_beganAmbiguousPullGesture = 1;
       }
 
       goto LABEL_30;
     }
 
-    if (v7 != 3)
+    if (state != 3)
     {
-      if (v7 != 4)
+      if (state != 4)
       {
         goto LABEL_50;
       }
 
-      [(SBGrabberTongue *)self _pullGestureCanceled:v4];
+      [(SBGrabberTongue *)self _pullGestureCanceled:gestureCopy];
       goto LABEL_49;
     }
 
     [(SBGrabberTongue *)self _ambiguousActivationMarginIfHonored];
     v18 = fmax(v17, 64.0);
-    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:v4];
+    [(SBGrabberTongue *)self _distanceFromEdgeForRecognizer:gestureCopy];
     if (v19 >= v18)
     {
       if (!self->_beganAmbiguousPullGesture)
       {
-        [(SBGrabberTongue *)self _pullGestureBegan:v4];
+        [(SBGrabberTongue *)self _pullGestureBegan:gestureCopy];
         self->_beganAmbiguousPullGesture = 1;
       }
     }
@@ -1483,16 +1483,16 @@ LABEL_16:
       goto LABEL_49;
     }
 
-    [(SBGrabberTongue *)self _pullGestureEnded:v4];
+    [(SBGrabberTongue *)self _pullGestureEnded:gestureCopy];
 LABEL_49:
     *&self->_inAmbiguousGesture = 0;
     goto LABEL_50;
   }
 
   tongueVisible = self->_tongueVisible;
-  v12 = [(SBGrabberTongue *)self _shouldShowTongueOnFirstSwipeWithRecognizer:v4];
-  v13 = [(SBGrabberTongue *)self _shouldAllowSecondSwipeWithRecognizer:v4];
-  v14 = [(SBGrabberTongue *)self _shouldSecondSwipeDismissTongueWithRecognizer:v4];
+  v12 = [(SBGrabberTongue *)self _shouldShowTongueOnFirstSwipeWithRecognizer:gestureCopy];
+  v13 = [(SBGrabberTongue *)self _shouldAllowSecondSwipeWithRecognizer:gestureCopy];
+  v14 = [(SBGrabberTongue *)self _shouldSecondSwipeDismissTongueWithRecognizer:gestureCopy];
   if (tongueVisible)
   {
     v15 = v13;
@@ -1506,22 +1506,22 @@ LABEL_49:
   if (self->_inShowTongueGesture)
   {
 LABEL_20:
-    if ([v4 state] == 1)
+    if ([gestureCopy state] == 1)
     {
       [(SBGrabberTongue *)self _presentTongueAnimated:1 autoDismiss:1];
-      [(SBGrabberTongue *)self _willPresentInteractively:v4];
+      [(SBGrabberTongue *)self _willPresentInteractively:gestureCopy];
       self->_inShowTongueGesture = 1;
     }
 
-    else if ([v4 state] == 2)
+    else if ([gestureCopy state] == 2)
     {
-      [(SBGrabberTongue *)self _willPresentInteractively:v4];
+      [(SBGrabberTongue *)self _willPresentInteractively:gestureCopy];
     }
 
-    else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+    else if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
     {
       self->_inShowTongueGesture = 0;
-      [(SBGrabberTongue *)self _didPresentInteractively:v4];
+      [(SBGrabberTongue *)self _didPresentInteractively:gestureCopy];
     }
 
     goto LABEL_50;
@@ -1549,13 +1549,13 @@ LABEL_20:
     }
 
 LABEL_38:
-    if ([v4 state] == 1)
+    if ([gestureCopy state] == 1)
     {
       [(SBGrabberTongue *)self _dismissTongue:0];
       self->_inDismissTongueGesture = 1;
     }
 
-    else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4)
+    else if ([gestureCopy state] == 3 || objc_msgSend(gestureCopy, "state") == 4)
     {
       self->_inDismissTongueGesture = 0;
     }
@@ -1569,39 +1569,39 @@ LABEL_38:
   }
 
 LABEL_27:
-  v16 = [v4 state];
-  if (v16 <= 2)
+  state2 = [gestureCopy state];
+  if (state2 <= 2)
   {
-    if (v16 == 1)
+    if (state2 == 1)
     {
       self->_inPullGesture = 1;
-      [(SBGrabberTongue *)self _pullGestureBegan:v4];
+      [(SBGrabberTongue *)self _pullGestureBegan:gestureCopy];
       goto LABEL_50;
     }
 
-    if (v16 != 2)
+    if (state2 != 2)
     {
       goto LABEL_50;
     }
 
 LABEL_30:
-    [(SBGrabberTongue *)self _pullGestureUpdated:v4];
+    [(SBGrabberTongue *)self _pullGestureUpdated:gestureCopy];
     goto LABEL_50;
   }
 
-  if (v16 == 3)
+  if (state2 == 3)
   {
-    [(SBGrabberTongue *)self _pullGestureEnded:v4];
+    [(SBGrabberTongue *)self _pullGestureEnded:gestureCopy];
   }
 
   else
   {
-    if (v16 != 4)
+    if (state2 != 4)
     {
       goto LABEL_50;
     }
 
-    [(SBGrabberTongue *)self _pullGestureCanceled:v4];
+    [(SBGrabberTongue *)self _pullGestureCanceled:gestureCopy];
   }
 
   self->_inPullGesture = 0;
@@ -1614,7 +1614,7 @@ LABEL_50:
     v23 = NSStringFromBOOL();
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
-    v26 = [v4 name];
+    name = [gestureCopy name];
     v28 = 138413570;
     v29 = v21;
     v30 = 2112;
@@ -1624,18 +1624,18 @@ LABEL_50:
     v34 = 2114;
     v35 = v25;
     v36 = 2050;
-    v37 = v4;
+    v37 = gestureCopy;
     v38 = 2114;
-    v39 = v26;
+    v39 = name;
     _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "[SBGrabberTongue _handlePullGesture:] with state: _inPullGesture:%@ _inShowTongueGesture:%@ _inDismissTongueGesture:%@ from gesture <%{public}@:%{public}p> (%{public}@)", &v28, 0x3Eu);
   }
 }
 
-- (void)_handleTapped:(id)a3
+- (void)_handleTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [v4 locationInView:self->_tongueBackdropView];
+  [tappedCopy locationInView:self->_tongueBackdropView];
   v6 = v5;
   v8 = v7;
 

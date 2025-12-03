@@ -1,11 +1,11 @@
 @interface PXTilingChangeEvent
 - (CGSize)referenceSize;
 - (PXTilingChangeEvent)init;
-- (PXTilingChangeEvent)initWithChangeToContentInset:(UIEdgeInsets)a3;
-- (PXTilingChangeEvent)initWithChangeToLayout:(id)a3;
-- (PXTilingChangeEvent)initWithChangeToReferenceSize:(CGSize)a3;
+- (PXTilingChangeEvent)initWithChangeToContentInset:(UIEdgeInsets)inset;
+- (PXTilingChangeEvent)initWithChangeToLayout:(id)layout;
+- (PXTilingChangeEvent)initWithChangeToReferenceSize:(CGSize)size;
 - (PXTilingChangeEvent)initWithCoordinateSpaceChange;
-- (PXTilingChangeEvent)initWithLayoutInvalidationContext:(id)a3;
+- (PXTilingChangeEvent)initWithLayoutInvalidationContext:(id)context;
 - (UIEdgeInsets)contentInset;
 - (id)description;
 @end
@@ -91,15 +91,15 @@ LABEL_17:
   return v4;
 }
 
-- (PXTilingChangeEvent)initWithLayoutInvalidationContext:(id)a3
+- (PXTilingChangeEvent)initWithLayoutInvalidationContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = [(PXTilingChangeEvent *)self init];
   v7 = v6;
   if (v6)
   {
     v6->_type = 5;
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -116,12 +116,12 @@ LABEL_17:
   return result;
 }
 
-- (PXTilingChangeEvent)initWithChangeToContentInset:(UIEdgeInsets)a3
+- (PXTilingChangeEvent)initWithChangeToContentInset:(UIEdgeInsets)inset
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
   result = [(PXTilingChangeEvent *)self init];
   if (result)
   {
@@ -135,10 +135,10 @@ LABEL_17:
   return result;
 }
 
-- (PXTilingChangeEvent)initWithChangeToReferenceSize:(CGSize)a3
+- (PXTilingChangeEvent)initWithChangeToReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   result = [(PXTilingChangeEvent *)self init];
   if (result)
   {
@@ -150,15 +150,15 @@ LABEL_17:
   return result;
 }
 
-- (PXTilingChangeEvent)initWithChangeToLayout:(id)a3
+- (PXTilingChangeEvent)initWithChangeToLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v6 = [(PXTilingChangeEvent *)self init];
   v7 = v6;
   if (v6)
   {
     v6->_type = 1;
-    objc_storeStrong(&v6->_layout, a3);
+    objc_storeStrong(&v6->_layout, layout);
   }
 
   return v7;

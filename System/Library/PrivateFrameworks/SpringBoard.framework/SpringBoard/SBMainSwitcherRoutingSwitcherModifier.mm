@@ -1,33 +1,33 @@
 @interface SBMainSwitcherRoutingSwitcherModifier
-- (BOOL)canPerformKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4;
-- (SBMainSwitcherRoutingSwitcherModifier)initWithMainModifierSubtree:(id)a3 floatingModifierSubtree:(id)a4;
-- (id)_modifierToHandleLayoutElement:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)canPerformKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier;
+- (SBMainSwitcherRoutingSwitcherModifier)initWithMainModifierSubtree:(id)subtree floatingModifierSubtree:(id)modifierSubtree;
+- (id)_modifierToHandleLayoutElement:(id)element;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugPotentialChildModifiers;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)routingModifier:(id)a3 event:(id)a4 forModifier:(id)a5;
-- (id)routingModifier:(id)a3 filteredAppLayouts:(id)a4 forModifier:(id)a5;
-- (id)routingModifier:(id)a3 filteredContinuousExposeIdentifiers:(id)a4 forModifier:(id)a5;
-- (id)routingModifier:(id)a3 modifierForAppLayout:(id)a4;
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (id)handleGestureEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)routingModifier:(id)modifier event:(id)event forModifier:(id)forModifier;
+- (id)routingModifier:(id)modifier filteredAppLayouts:(id)layouts forModifier:(id)forModifier;
+- (id)routingModifier:(id)modifier filteredContinuousExposeIdentifiers:(id)identifiers forModifier:(id)forModifier;
+- (id)routingModifier:(id)modifier modifierForAppLayout:(id)layout;
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 @end
 
 @implementation SBMainSwitcherRoutingSwitcherModifier
 
-- (SBMainSwitcherRoutingSwitcherModifier)initWithMainModifierSubtree:(id)a3 floatingModifierSubtree:(id)a4
+- (SBMainSwitcherRoutingSwitcherModifier)initWithMainModifierSubtree:(id)subtree floatingModifierSubtree:(id)modifierSubtree
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  subtreeCopy = subtree;
+  modifierSubtreeCopy = modifierSubtree;
   v16.receiver = self;
   v16.super_class = SBMainSwitcherRoutingSwitcherModifier;
   v9 = [(SBSwitcherModifier *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mainModifierSubtree, a3);
-    objc_storeStrong(&v10->_floatingModifierSubtree, a4);
+    objc_storeStrong(&v9->_mainModifierSubtree, subtree);
+    objc_storeStrong(&v10->_floatingModifierSubtree, modifierSubtree);
     objc_storeStrong(&v10->_currentScrollableSubtree, v10->_mainModifierSubtree);
     objc_storeStrong(&v10->_activeSubtree, v10->_mainModifierSubtree);
     v11 = [SBRoutingSwitcherModifier alloc];
@@ -44,7 +44,7 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(SBSwitcherModifier *)self->_mainModifierSubtree copy];
@@ -65,17 +65,17 @@
   return v3;
 }
 
-- (id)routingModifier:(id)a3 event:(id)a4 forModifier:(id)a5
+- (id)routingModifier:(id)modifier event:(id)event forModifier:(id)forModifier
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v7 type] == 17)
+  eventCopy = event;
+  forModifierCopy = forModifier;
+  if ([eventCopy type] == 17)
   {
-    v9 = [v7 appLayout];
-    v10 = [v9 environment];
+    appLayout = [eventCopy appLayout];
+    environment = [appLayout environment];
 
-    v11 = v10 != 2;
-    v12 = v10 == 2;
+    v11 = environment != 2;
+    v12 = environment == 2;
   }
 
   else
@@ -84,51 +84,51 @@
     v11 = 1;
   }
 
-  if ([v7 type] == 16)
+  if ([eventCopy type] == 16)
   {
     v11 = !self->_floatingSwitcherVisible;
     v12 = self->_floatingSwitcherVisible || self->_currentEnvironmentMode == 3;
   }
 
-  if ([v7 type] == 12)
+  if ([eventCopy type] == 12)
   {
-    v13 = [v7 appLayout];
-    v14 = [v13 environment];
+    appLayout2 = [eventCopy appLayout];
+    environment2 = [appLayout2 environment];
 
-    v11 = v14 != 2;
-    v12 = v14 == 2;
+    v11 = environment2 != 2;
+    v12 = environment2 == 2;
   }
 
-  if ([v7 type] == 14)
+  if ([eventCopy type] == 14)
   {
-    v15 = [v7 appLayout];
-    v16 = [v15 environment];
+    appLayout3 = [eventCopy appLayout];
+    environment3 = [appLayout3 environment];
 
-    v11 = v16 != 2;
-    v12 = v16 == 2;
+    v11 = environment3 != 2;
+    v12 = environment3 == 2;
   }
 
-  if ([v7 type] == 13)
+  if ([eventCopy type] == 13)
   {
-    v17 = [v7 appLayout];
-    v18 = [v17 environment];
+    appLayout4 = [eventCopy appLayout];
+    environment4 = [appLayout4 environment];
 
-    v11 = v18 != 2;
-    v12 = v18 == 2;
+    v11 = environment4 != 2;
+    v12 = environment4 == 2;
   }
 
-  if ([v7 type] == 40)
+  if ([eventCopy type] == 40)
   {
-    v19 = [v7 displayItemEnvironment];
-    v12 = v19 == 2;
-    v11 = v19 != 2;
+    displayItemEnvironment = [eventCopy displayItemEnvironment];
+    v12 = displayItemEnvironment == 2;
+    v11 = displayItemEnvironment != 2;
   }
 
-  if (self->_mainModifierSubtree == v8 || (v11 = v12, self->_floatingModifierSubtree == v8))
+  if (self->_mainModifierSubtree == forModifierCopy || (v11 = v12, self->_floatingModifierSubtree == forModifierCopy))
   {
     if (v11)
     {
-      v21 = v7;
+      v21 = eventCopy;
     }
 
     else
@@ -147,28 +147,28 @@
   return v20;
 }
 
-- (id)routingModifier:(id)a3 filteredAppLayouts:(id)a4 forModifier:(id)a5
+- (id)routingModifier:(id)modifier filteredAppLayouts:(id)layouts forModifier:(id)forModifier
 {
-  v7 = a5;
+  forModifierCopy = forModifier;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __88__SBMainSwitcherRoutingSwitcherModifier_routingModifier_filteredAppLayouts_forModifier___block_invoke;
   v11[3] = &unk_2783AEDB8;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = [a4 bs_filter:v11];
+  v12 = forModifierCopy;
+  selfCopy = self;
+  v8 = forModifierCopy;
+  v9 = [layouts bs_filter:v11];
 
   return v9;
 }
 
-- (id)routingModifier:(id)a3 filteredContinuousExposeIdentifiers:(id)a4 forModifier:(id)a5
+- (id)routingModifier:(id)modifier filteredContinuousExposeIdentifiers:(id)identifiers forModifier:(id)forModifier
 {
-  v7 = a4;
-  v8 = v7;
-  if (self->_mainModifierSubtree == a5)
+  identifiersCopy = identifiers;
+  v8 = identifiersCopy;
+  if (self->_mainModifierSubtree == forModifier)
   {
-    v9 = v7;
+    v9 = identifiersCopy;
   }
 
   else
@@ -179,11 +179,11 @@
   return v9;
 }
 
-- (id)routingModifier:(id)a3 modifierForAppLayout:(id)a4
+- (id)routingModifier:(id)modifier modifierForAppLayout:(id)layout
 {
-  v5 = [a4 environment];
+  environment = [layout environment];
   v6 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__mainModifierSubtree;
-  if (v5 == 2)
+  if (environment == 2)
   {
     v6 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__floatingModifierSubtree;
   }
@@ -193,19 +193,19 @@
   return v7;
 }
 
-- (id)_modifierToHandleLayoutElement:(id)a3
+- (id)_modifierToHandleLayoutElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 switcherLayoutElementType];
+  elementCopy = element;
+  switcherLayoutElementType = [elementCopy switcherLayoutElementType];
   v6 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__floatingModifierSubtree;
-  if ((v5 - 2) >= 3)
+  if ((switcherLayoutElementType - 2) >= 3)
   {
-    if (v5)
+    if (switcherLayoutElementType)
     {
       v6 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__mainModifierSubtree;
     }
 
-    else if ([v4 environment] != 2)
+    else if ([elementCopy environment] != 2)
     {
       v6 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__mainModifierSubtree;
     }
@@ -217,36 +217,36 @@
   return v7;
 }
 
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   v38.receiver = self;
   v38.super_class = SBMainSwitcherRoutingSwitcherModifier;
-  v7 = [(SBMainSwitcherRoutingSwitcherModifier *)&v38 occlusionStateForLayoutRole:a3 inAppLayout:v6];
+  v7 = [(SBMainSwitcherRoutingSwitcherModifier *)&v38 occlusionStateForLayoutRole:role inAppLayout:layoutCopy];
   if (!SBOcclusionStateIsOccluded(v7) && self->_floatingAppLayout && self->_currentEnvironmentMode == 3 && (self->_floatingConfiguration - 1) <= 1)
   {
-    v8 = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
-    if ([v8 containsObject:v6])
+    appLayouts = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
+    if ([appLayouts containsObject:layoutCopy])
     {
-      v9 = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
-      v10 = [v9 containsObject:self->_floatingAppLayout];
+      appLayouts2 = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
+      v10 = [appLayouts2 containsObject:self->_floatingAppLayout];
 
       if (v10)
       {
-        v11 = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
-        -[SBMainSwitcherRoutingSwitcherModifier frameForIndex:](self, "frameForIndex:", [v11 indexOfObject:v6]);
+        appLayouts3 = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
+        -[SBMainSwitcherRoutingSwitcherModifier frameForIndex:](self, "frameForIndex:", [appLayouts3 indexOfObject:layoutCopy]);
         v13 = v12;
         v15 = v14;
         v17 = v16;
         v19 = v18;
 
-        [(SBMainSwitcherRoutingSwitcherModifier *)self frameForLayoutRole:a3 inAppLayout:v6 withBounds:v13, v15, v17, v19];
+        [(SBMainSwitcherRoutingSwitcherModifier *)self frameForLayoutRole:role inAppLayout:layoutCopy withBounds:v13, v15, v17, v19];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
-        v28 = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
-        -[SBMainSwitcherRoutingSwitcherModifier frameForIndex:](self, "frameForIndex:", [v28 indexOfObject:self->_floatingAppLayout]);
+        appLayouts4 = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
+        -[SBMainSwitcherRoutingSwitcherModifier frameForIndex:](self, "frameForIndex:", [appLayouts4 indexOfObject:self->_floatingAppLayout]);
         v30 = v29;
         v32 = v31;
         v34 = v33;
@@ -296,35 +296,35 @@
   return v7;
 }
 
-- (BOOL)canPerformKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4
+- (BOOL)canPerformKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v36.receiver = self;
   v36.super_class = SBMainSwitcherRoutingSwitcherModifier;
-  v7 = [(SBMainSwitcherRoutingSwitcherModifier *)&v36 canPerformKeyboardShortcutAction:a3 forBundleIdentifier:v6];
+  v7 = [(SBMainSwitcherRoutingSwitcherModifier *)&v36 canPerformKeyboardShortcutAction:action forBundleIdentifier:identifierCopy];
   v8 = v7;
-  if (a3 <= 11)
+  if (action <= 11)
   {
-    if ((a3 - 4) >= 2)
+    if ((action - 4) >= 2)
     {
-      if ((a3 - 9) < 2)
+      if ((action - 9) < 2)
       {
         v32 = 0;
         v33 = &v32;
         v34 = 0x2020000000;
         v35 = 0;
-        v10 = [(SBSwitcherModifier *)self->_floatingModifierSubtree visibleAppLayouts];
-        v11 = [v10 count];
+        visibleAppLayouts = [(SBSwitcherModifier *)self->_floatingModifierSubtree visibleAppLayouts];
+        v11 = [visibleAppLayouts count];
 
         if (v11)
         {
-          v12 = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
+          appLayouts = [(SBMainSwitcherRoutingSwitcherModifier *)self appLayouts];
           v31[0] = MEMORY[0x277D85DD0];
           v31[1] = 3221225472;
           v31[2] = __94__SBMainSwitcherRoutingSwitcherModifier_canPerformKeyboardShortcutAction_forBundleIdentifier___block_invoke_3;
           v31[3] = &unk_2783AFC08;
           v31[4] = &v32;
-          [v12 enumerateObjectsUsingBlock:v31];
+          [appLayouts enumerateObjectsUsingBlock:v31];
         }
 
         if (v8)
@@ -341,42 +341,42 @@
     goto LABEL_15;
   }
 
-  if ((a3 - 13) < 2)
+  if ((action - 13) < 2)
   {
-    if (v6)
+    if (identifierCopy)
     {
       v15 = +[SBApplicationController sharedInstanceIfExists];
-      v16 = [v15 applicationWithBundleIdentifier:v6];
+      v16 = [v15 applicationWithBundleIdentifier:identifierCopy];
 
       if (v16)
       {
-        v18 = [v16 info];
-        v17 = [v18 supportsMultiwindow];
+        info = [v16 info];
+        supportsMultiwindow = [info supportsMultiwindow];
 
-        LOBYTE(v18) = v17 & v8;
-        if ((v17 & 1) == 0 && ((v8 ^ 1) & 1) == 0)
+        LOBYTE(info) = supportsMultiwindow & v8;
+        if ((supportsMultiwindow & 1) == 0 && ((v8 ^ 1) & 1) == 0)
         {
-          v19 = [(SBSwitcherModifier *)self->_mainModifierSubtree visibleAppLayouts];
+          visibleAppLayouts2 = [(SBSwitcherModifier *)self->_mainModifierSubtree visibleAppLayouts];
           v26[0] = MEMORY[0x277D85DD0];
           v26[1] = 3221225472;
           v26[2] = __94__SBMainSwitcherRoutingSwitcherModifier_canPerformKeyboardShortcutAction_forBundleIdentifier___block_invoke_5;
           v26[3] = &unk_2783A8CB8;
-          v27 = v6;
-          LODWORD(v18) = [v19 bs_containsObjectPassingTest:v26] ^ 1;
+          v27 = identifierCopy;
+          LODWORD(info) = [visibleAppLayouts2 bs_containsObjectPassingTest:v26] ^ 1;
         }
       }
 
       else
       {
-        LOBYTE(v18) = v8;
+        LOBYTE(info) = v8;
       }
 
-      LOBYTE(v8) = v18;
+      LOBYTE(v8) = info;
       goto LABEL_35;
     }
 
-    v20 = [(SBMainSwitcherRoutingSwitcherModifier *)self leafAppLayoutForKeyboardFocusedScene];
-    if ((a3 == 13) != ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1))
+    leafAppLayoutForKeyboardFocusedScene = [(SBMainSwitcherRoutingSwitcherModifier *)self leafAppLayoutForKeyboardFocusedScene];
+    if ((action == 13) != ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1))
     {
       v21 = &SBLayoutRolePrimary;
     }
@@ -387,15 +387,15 @@
     }
 
     v22 = *v21;
-    v23 = [(SBSwitcherModifier *)self->_mainModifierSubtree visibleAppLayouts];
+    visibleAppLayouts3 = [(SBSwitcherModifier *)self->_mainModifierSubtree visibleAppLayouts];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __94__SBMainSwitcherRoutingSwitcherModifier_canPerformKeyboardShortcutAction_forBundleIdentifier___block_invoke_4;
     v28[3] = &unk_2783AFC30;
-    v29 = v20;
+    v29 = leafAppLayoutForKeyboardFocusedScene;
     v30 = v22;
-    v13 = v20;
-    v24 = [v23 bs_containsObjectPassingTest:v28];
+    visibleAppLayouts4 = leafAppLayoutForKeyboardFocusedScene;
+    v24 = [visibleAppLayouts3 bs_containsObjectPassingTest:v28];
 
     LOBYTE(v8) = v8 & (v24 ^ 1);
 LABEL_30:
@@ -403,7 +403,7 @@ LABEL_30:
     goto LABEL_35;
   }
 
-  if ((a3 - 15) < 2)
+  if ((action - 15) < 2)
   {
 LABEL_15:
     if (!v7)
@@ -416,11 +416,11 @@ LABEL_15:
       goto LABEL_24;
     }
 
-    v13 = [(SBSwitcherModifier *)self->_mainModifierSubtree visibleAppLayouts];
-    if ([v13 bs_containsObjectPassingTest:&__block_literal_global_7_0])
+    visibleAppLayouts4 = [(SBSwitcherModifier *)self->_mainModifierSubtree visibleAppLayouts];
+    if ([visibleAppLayouts4 bs_containsObjectPassingTest:&__block_literal_global_7_0])
     {
-      v14 = [(SBSwitcherModifier *)self->_floatingModifierSubtree visibleAppLayouts];
-      LOBYTE(v8) = [v14 count] != 0;
+      visibleAppLayouts5 = [(SBSwitcherModifier *)self->_floatingModifierSubtree visibleAppLayouts];
+      LOBYTE(v8) = [visibleAppLayouts5 count] != 0;
     }
 
     else
@@ -431,12 +431,12 @@ LABEL_15:
     goto LABEL_30;
   }
 
-  if (a3 == 12 && v7)
+  if (action == 12 && v7)
   {
     if (self->_currentEnvironmentMode == 3)
     {
-      v9 = [(SBSwitcherModifier *)self->_mainModifierSubtree visibleAppLayouts];
-      LOBYTE(v8) = [v9 bs_containsObjectPassingTest:&__block_literal_global_67];
+      visibleAppLayouts6 = [(SBSwitcherModifier *)self->_mainModifierSubtree visibleAppLayouts];
+      LOBYTE(v8) = [visibleAppLayouts6 bs_containsObjectPassingTest:&__block_literal_global_67];
 
       goto LABEL_35;
     }
@@ -498,43 +498,43 @@ BOOL __94__SBMainSwitcherRoutingSwitcherModifier_canPerformKeyboardShortcutActio
   return v6;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 toFloatingSwitcherVisible];
+  eventCopy = event;
+  toFloatingSwitcherVisible = [eventCopy toFloatingSwitcherVisible];
   v6 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__floatingModifierSubtree;
-  if ((v5 & 1) == 0)
+  if ((toFloatingSwitcherVisible & 1) == 0)
   {
-    v7 = [v4 fromFloatingSwitcherVisible];
+    fromFloatingSwitcherVisible = [eventCopy fromFloatingSwitcherVisible];
     v6 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__mainModifierSubtree;
-    if (v7)
+    if (fromFloatingSwitcherVisible)
     {
       v6 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__floatingModifierSubtree;
     }
   }
 
   objc_storeStrong(&self->_currentScrollableSubtree, *(&self->super.super.super.super.isa + *v6));
-  self->_currentEnvironmentMode = [v4 toEnvironmentMode];
-  self->_floatingSwitcherVisible = [v4 toFloatingSwitcherVisible];
-  v8 = [v4 toFloatingAppLayout];
+  self->_currentEnvironmentMode = [eventCopy toEnvironmentMode];
+  self->_floatingSwitcherVisible = [eventCopy toFloatingSwitcherVisible];
+  toFloatingAppLayout = [eventCopy toFloatingAppLayout];
   floatingAppLayout = self->_floatingAppLayout;
-  self->_floatingAppLayout = v8;
+  self->_floatingAppLayout = toFloatingAppLayout;
 
-  self->_floatingConfiguration = [v4 toFloatingConfiguration];
-  if ([v4 phase] == 1 && (objc_msgSend(v4, "isGestureInitiated") & 1) == 0)
+  self->_floatingConfiguration = [eventCopy toFloatingConfiguration];
+  if ([eventCopy phase] == 1 && (objc_msgSend(eventCopy, "isGestureInitiated") & 1) == 0)
   {
-    v10 = [v4 fromWindowPickerRole] != 1 && objc_msgSend(v4, "toWindowPickerRole") == 1;
-    v11 = [v4 fromWindowPickerRole] == 1 && objc_msgSend(v4, "toWindowPickerRole") != 1;
-    v12 = [v4 fromWindowPickerRole] != 2 && objc_msgSend(v4, "toWindowPickerRole") == 2;
-    v13 = [v4 fromWindowPickerRole] == 2 && objc_msgSend(v4, "toWindowPickerRole") != 2;
+    v10 = [eventCopy fromWindowPickerRole] != 1 && objc_msgSend(eventCopy, "toWindowPickerRole") == 1;
+    v11 = [eventCopy fromWindowPickerRole] == 1 && objc_msgSend(eventCopy, "toWindowPickerRole") != 1;
+    v12 = [eventCopy fromWindowPickerRole] != 2 && objc_msgSend(eventCopy, "toWindowPickerRole") == 2;
+    v13 = [eventCopy fromWindowPickerRole] == 2 && objc_msgSend(eventCopy, "toWindowPickerRole") != 2;
     v14 = v10 || v11 || v12 || v13;
-    v15 = [v4 fromAppExposeBundleID];
-    v16 = [v4 toAppExposeBundleID];
+    fromAppExposeBundleID = [eventCopy fromAppExposeBundleID];
+    toAppExposeBundleID = [eventCopy toAppExposeBundleID];
     v17 = BSEqualStrings();
 
-    v18 = [v4 fromAppLayout];
-    v19 = [v4 toAppLayout];
-    if (v18 == v19 && (v20 = [v4 fromEnvironmentMode], !((v20 != objc_msgSend(v4, "toEnvironmentMode")) | v14 & 1)))
+    fromAppLayout = [eventCopy fromAppLayout];
+    toAppLayout = [eventCopy toAppLayout];
+    if (fromAppLayout == toAppLayout && (v20 = [eventCopy fromEnvironmentMode], !((v20 != objc_msgSend(eventCopy, "toEnvironmentMode")) | v14 & 1)))
     {
 
       v21 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__mainModifierSubtree;
@@ -555,20 +555,20 @@ BOOL __94__SBMainSwitcherRoutingSwitcherModifier_canPerformKeyboardShortcutActio
 
   v24.receiver = self;
   v24.super_class = SBMainSwitcherRoutingSwitcherModifier;
-  v22 = [(SBSwitcherModifier *)&v24 handleTransitionEvent:v4];
+  v22 = [(SBSwitcherModifier *)&v24 handleTransitionEvent:eventCopy];
 
   return v22;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 phase] == 1)
+  eventCopy = event;
+  if ([eventCopy phase] == 1)
   {
-    v5 = [v4 selectedAppLayout];
-    v6 = [v5 environment];
+    selectedAppLayout = [eventCopy selectedAppLayout];
+    environment = [selectedAppLayout environment];
     v7 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__mainModifierSubtree;
-    if (v6 == 2)
+    if (environment == 2)
     {
       v7 = &OBJC_IVAR___SBMainSwitcherRoutingSwitcherModifier__floatingModifierSubtree;
     }
@@ -578,7 +578,7 @@ BOOL __94__SBMainSwitcherRoutingSwitcherModifier_canPerformKeyboardShortcutActio
 
   v10.receiver = self;
   v10.super_class = SBMainSwitcherRoutingSwitcherModifier;
-  v8 = [(SBSwitcherModifier *)&v10 handleGestureEvent:v4];
+  v8 = [(SBSwitcherModifier *)&v10 handleGestureEvent:eventCopy];
 
   return v8;
 }

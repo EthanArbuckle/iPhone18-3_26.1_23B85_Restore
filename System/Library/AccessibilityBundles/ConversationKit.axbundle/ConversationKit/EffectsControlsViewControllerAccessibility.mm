@@ -1,15 +1,15 @@
 @interface EffectsControlsViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation EffectsControlsViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.EffectsControlsViewController" hasInstanceMethod:@"effectsButtonIsVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.EffectsControlsViewController" hasInstanceMethod:@"effectsButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.EffectsControlsViewController" hasInstanceMethod:@"effectsButtonIsVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.EffectsControlsViewController" hasInstanceMethod:@"effectsButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

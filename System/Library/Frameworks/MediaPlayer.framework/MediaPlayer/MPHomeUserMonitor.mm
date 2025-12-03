@@ -2,42 +2,42 @@
 + (BOOL)isExplicitSettingEnabledForCurrentUser;
 + (BOOL)isPrivateListeningEnabledForCurrentUserAndAccessory;
 + (MPHomeUserMonitor)monitorForCurrentUser;
-+ (MPHomeUserMonitor)userMonitorWithHomeIdentifier:(id)a3;
-+ (MPHomeUserMonitor)userMonitorWithHomeIdentifiers:(id)a3;
-+ (MPHomeUserMonitor)userMonitorWithUserIdentity:(id)a3 fromUserIdentityStore:(id)a4;
-+ (void)setExplicitSettingEnabledForCurrentUser:(BOOL)a3;
-+ (void)setPrivateListeningEnabledForCurrentUserAndAccessory:(BOOL)a3;
-- (BOOL)hasAccessoryWithRouteID:(id)a3;
++ (MPHomeUserMonitor)userMonitorWithHomeIdentifier:(id)identifier;
++ (MPHomeUserMonitor)userMonitorWithHomeIdentifiers:(id)identifiers;
++ (MPHomeUserMonitor)userMonitorWithUserIdentity:(id)identity fromUserIdentityStore:(id)store;
++ (void)setExplicitSettingEnabledForCurrentUser:(BOOL)user;
++ (void)setPrivateListeningEnabledForCurrentUserAndAccessory:(BOOL)accessory;
+- (BOOL)hasAccessoryWithRouteID:(id)d;
 - (BOOL)isExplicitSettingEnabled;
 - (BOOL)isPrivateListeningEnabledForCurrentAccessory;
-- (BOOL)privateListeningEnabledForAccessoryWithRouteID:(id)a3;
-- (MPHomeUserMonitor)initWithUser:(id)a3 homeManager:(id)a4;
-- (id)_homeAccesssoryWithRouteID:(id)a3;
-- (id)privateListeningEnabledForGroupWithRouteIDs:(id)a3;
+- (BOOL)privateListeningEnabledForAccessoryWithRouteID:(id)d;
+- (MPHomeUserMonitor)initWithUser:(id)user homeManager:(id)manager;
+- (id)_homeAccesssoryWithRouteID:(id)d;
+- (id)privateListeningEnabledForGroupWithRouteIDs:(id)ds;
 - (void)_loadAllowExplicitValue;
 - (void)_loadCurrentAccessoryPrivateListening;
-- (void)_postNotificationWithName:(id)a3;
+- (void)_postNotificationWithName:(id)name;
 - (void)_update;
-- (void)_updateUserListeningHistoryControlForAccessory:(id)a3 enable:(BOOL)a4;
-- (void)setExplicitSettingEnabled:(BOOL)a3;
-- (void)setPrivateListeningEnabledForAccessoryWithRouteID:(id)a3 enabled:(BOOL)a4;
-- (void)setPrivateListeningEnabledForCurrentAccessory:(BOOL)a3;
-- (void)settingsDidUpdate:(id)a3;
-- (void)user:(id)a3 didUpdateUserListeningHistoryUpdateControl:(id)a4 forHome:(id)a5;
+- (void)_updateUserListeningHistoryControlForAccessory:(id)accessory enable:(BOOL)enable;
+- (void)setExplicitSettingEnabled:(BOOL)enabled;
+- (void)setPrivateListeningEnabledForAccessoryWithRouteID:(id)d enabled:(BOOL)enabled;
+- (void)setPrivateListeningEnabledForCurrentAccessory:(BOOL)accessory;
+- (void)settingsDidUpdate:(id)update;
+- (void)user:(id)user didUpdateUserListeningHistoryUpdateControl:(id)control forHome:(id)home;
 @end
 
 @implementation MPHomeUserMonitor
 
-- (void)user:(id)a3 didUpdateUserListeningHistoryUpdateControl:(id)a4 forHome:(id)a5
+- (void)user:(id)user didUpdateUserListeningHistoryUpdateControl:(id)control forHome:(id)home
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  userCopy = user;
+  homeCopy = home;
   v9 = os_log_create("com.apple.amp.mediaplayer", "Preferences");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEBUG, "<MPHomeUserMonitor %p> HMUserDelegatePrivate user:didUpdateUserListeningHistoryUpdateControl:forHome:", buf, 0xCu);
   }
 
@@ -47,10 +47,10 @@
   block[2] = __77__MPHomeUserMonitor_user_didUpdateUserListeningHistoryUpdateControl_forHome___block_invoke;
   block[3] = &unk_1E76800A0;
   block[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
+  v14 = userCopy;
+  v15 = homeCopy;
+  v11 = homeCopy;
+  v12 = userCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -94,15 +94,15 @@ void __77__MPHomeUserMonitor_user_didUpdateUserListeningHistoryUpdateControl_for
 LABEL_11:
 }
 
-- (void)settingsDidUpdate:(id)a3
+- (void)settingsDidUpdate:(id)update
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   v5 = os_log_create("com.apple.amp.mediaplayer", "Preferences");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEBUG, "<MPHomeUserMonitor %p> HMSettingsDelegate settingsDidUpdate", buf, 0xCu);
   }
 
@@ -111,9 +111,9 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = __39__MPHomeUserMonitor_settingsDidUpdate___block_invoke;
   v8[3] = &unk_1E76823C0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = updateCopy;
+  selfCopy2 = self;
+  v7 = updateCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -128,17 +128,17 @@ void __39__MPHomeUserMonitor_settingsDidUpdate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_postNotificationWithName:(id)a3
+- (void)_postNotificationWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   calloutQueue = self->_calloutQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __47__MPHomeUserMonitor__postNotificationWithName___block_invoke;
   v7[3] = &unk_1E76823C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = nameCopy;
+  v6 = nameCopy;
   dispatch_async(calloutQueue, v7);
 }
 
@@ -161,30 +161,30 @@ void __47__MPHomeUserMonitor__postNotificationWithName___block_invoke(uint64_t a
   [v5 postNotificationName:*(a1 + 40) object:*(a1 + 32)];
 }
 
-- (void)_updateUserListeningHistoryControlForAccessory:(id)a3 enable:(BOOL)a4
+- (void)_updateUserListeningHistoryControlForAccessory:(id)accessory enable:(BOOL)enable
 {
-  v4 = a4;
+  enableCopy = enable;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  accessoryCopy = accessory;
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (v6)
+  if (accessoryCopy)
   {
-    v7 = [(HMHomeManager *)self->_homeManager currentHome];
-    if (v7)
+    currentHome = [(HMHomeManager *)self->_homeManager currentHome];
+    if (currentHome)
     {
-      v8 = [(HMUser *)self->_user userListeningHistoryUpdateControlForHome:v7];
+      v8 = [(HMUser *)self->_user userListeningHistoryUpdateControlForHome:currentHome];
       v9 = [v8 mutableCopy];
 
       if (v9)
       {
-        if (v4)
+        if (enableCopy)
         {
-          [v9 removeAccessory:v6];
+          [v9 removeAccessory:accessoryCopy];
         }
 
         else
         {
-          [v9 addAccessory:v6];
+          [v9 addAccessory:accessoryCopy];
         }
       }
     }
@@ -192,14 +192,14 @@ void __47__MPHomeUserMonitor__postNotificationWithName___block_invoke(uint64_t a
 
   else
   {
-    v7 = os_log_create("com.apple.amp.mediaplayer", "Preferences");
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    currentHome = os_log_create("com.apple.amp.mediaplayer", "Preferences");
+    if (os_log_type_enabled(currentHome, OS_LOG_TYPE_ERROR))
     {
       v10 = 134218240;
-      v11 = self;
+      selfCopy = self;
       v12 = 1024;
-      v13 = v4;
-      _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_ERROR, "[<MPHomeUserMonitor %p> _updateUserListeningHistoryControlForAccessory:] failed to set enable=%{BOOL}u [accessory=nil]", &v10, 0x12u);
+      v13 = enableCopy;
+      _os_log_impl(&dword_1A238D000, currentHome, OS_LOG_TYPE_ERROR, "[<MPHomeUserMonitor %p> _updateUserListeningHistoryControlForAccessory:] failed to set enable=%{BOOL}u [accessory=nil]", &v10, 0x12u);
     }
   }
 }
@@ -208,20 +208,20 @@ void __47__MPHomeUserMonitor__postNotificationWithName___block_invoke(uint64_t a
 {
   v19 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
-  v3 = [(HMHomeManager *)self->_homeManager currentAccessory];
-  v4 = [(HMHomeManager *)self->_homeManager currentHome];
-  if (v4)
+  currentAccessory = [(HMHomeManager *)self->_homeManager currentAccessory];
+  currentHome = [(HMHomeManager *)self->_homeManager currentHome];
+  if (currentHome)
   {
     user = self->_user;
-    v6 = [(HMHomeManager *)self->_homeManager currentHome];
-    v7 = [(HMUser *)user userListeningHistoryUpdateControlForHome:v6];
+    currentHome2 = [(HMHomeManager *)self->_homeManager currentHome];
+    v7 = [(HMUser *)user userListeningHistoryUpdateControlForHome:currentHome2];
 
-    if (v3)
+    if (currentAccessory)
     {
       if (v7)
       {
-        v8 = [v7 accessories];
-        v9 = [v8 containsObject:v3] ^ 1;
+        accessories = [v7 accessories];
+        v9 = [accessories containsObject:currentAccessory] ^ 1;
 
         goto LABEL_13;
       }
@@ -234,14 +234,14 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v13 = 134217984;
-      v14 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_ERROR, "[<MPHomeUserMonitor %p> _loadCurrentAccessoryPrivateListening:] failed to fetch privateListeningSetting [currentAccessory=nil]", &v13, 0xCu);
     }
 
     goto LABEL_12;
   }
 
-  if (!v3)
+  if (!currentAccessory)
   {
     v7 = 0;
     goto LABEL_9;
@@ -252,7 +252,7 @@ LABEL_6:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
     v13 = 134217984;
-    v14 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_ERROR, "[<MPHomeUserMonitor %p> _loadCurrentAccessoryPrivateListening:] failed to fetch privateListeningSetting [userListeningControl=nil]", &v13, 0xCu);
   }
 
@@ -266,13 +266,13 @@ LABEL_13:
     v11 = os_log_create("com.apple.amp.mediaplayer", "Preferences");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(HMUser *)self->_user userID];
+      userID = [(HMUser *)self->_user userID];
       v13 = 134218499;
-      v14 = self;
+      selfCopy3 = self;
       v15 = 1024;
       v16 = v9;
       v17 = 2113;
-      v18 = v12;
+      v18 = userID;
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "[<MPHomeUserMonitor %p> _loadCurrentAccessoryPrivateListening:] updating value privateListeningEnabled=%{BOOL}u for userID=%{private}@", &v13, 0x1Cu);
     }
 
@@ -284,14 +284,14 @@ LABEL_13:
 {
   v20 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
-  v3 = [(HMSettings *)self->_sharedSettings rootGroup];
-  v4 = _findSettingWithKeyPath(v3);
+  rootGroup = [(HMSettings *)self->_sharedSettings rootGroup];
+  v4 = _findSettingWithKeyPath(rootGroup);
 
   v5 = objc_opt_class();
   if (_isValidSetting(v4, v5))
   {
-    v6 = [v4 value];
-    v7 = [v6 BOOLValue];
+    value = [v4 value];
+    bOOLValue = [value BOOLValue];
   }
 
   else
@@ -300,57 +300,57 @@ LABEL_13:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v12 = 134217984;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1A238D000, v8, OS_LOG_TYPE_ERROR, "<MPHomeUserMonitor %p> _loadAllowExplicitValueFromSetting: failed [invalid setting]", &v12, 0xCu);
     }
 
-    v7 = 1;
+    bOOLValue = 1;
   }
 
-  if (self->_allowExplicitCachedValue != v7)
+  if (self->_allowExplicitCachedValue != bOOLValue)
   {
     v9 = os_log_create("com.apple.amp.mediaplayer", "Preferences");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(HMUser *)self->_user userID];
+      userID = [(HMUser *)self->_user userID];
       allowExplicitCachedValue = self->_allowExplicitCachedValue;
       v12 = 134218755;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2113;
-      v15 = v10;
+      v15 = userID;
       v16 = 1024;
       v17 = allowExplicitCachedValue;
       v18 = 1024;
-      v19 = v7;
+      v19 = bOOLValue;
       _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_DEFAULT, "<MPHomeUserMonitor %p> _loadAllowExplicitValueFromSetting: userID=%{private}@ cachedValue=%{BOOL}u newValue=%{BOOL}u", &v12, 0x22u);
     }
 
-    self->_allowExplicitCachedValue = v7;
+    self->_allowExplicitCachedValue = bOOLValue;
     [(MPHomeUserMonitor *)self _notifyAllowExplicitUpdated];
   }
 }
 
-- (id)_homeAccesssoryWithRouteID:(id)a3
+- (id)_homeAccesssoryWithRouteID:(id)d
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMHomeManager *)self->_homeManager currentHome];
-  v6 = v5;
+  dCopy = d;
+  currentHome = [(HMHomeManager *)self->_homeManager currentHome];
+  v6 = currentHome;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__14429;
   v19 = __Block_byref_object_dispose__14430;
   v20 = 0;
-  if (!v5 || ([v5 accessories], v7 = objc_claimAutoreleasedReturnValue(), v12[0] = MEMORY[0x1E69E9820], v12[1] = 3221225472, v12[2] = __48__MPHomeUserMonitor__homeAccesssoryWithRouteID___block_invoke, v12[3] = &unk_1E7678500, v13 = v4, v14 = &v15, objc_msgSend(v7, "enumerateObjectsUsingBlock:", v12), v7, v13, (v8 = v16[5]) == 0))
+  if (!currentHome || ([currentHome accessories], v7 = objc_claimAutoreleasedReturnValue(), v12[0] = MEMORY[0x1E69E9820], v12[1] = 3221225472, v12[2] = __48__MPHomeUserMonitor__homeAccesssoryWithRouteID___block_invoke, v12[3] = &unk_1E7678500, v13 = dCopy, v14 = &v15, objc_msgSend(v7, "enumerateObjectsUsingBlock:", v12), v7, v13, (v8 = v16[5]) == 0))
   {
     v9 = os_log_create("com.apple.amp.mediaplayer", "Preferences");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v22 = self;
+      selfCopy = self;
       v23 = 2114;
-      v24 = v4;
+      v24 = dCopy;
       _os_log_impl(&dword_1A238D000, v9, OS_LOG_TYPE_ERROR, "<MPHomeManagerObserver %p> homeAccesssoryWithRouteID: No homeAccessory with routeID=%{public}@", buf, 0x16u);
     }
 
@@ -378,9 +378,9 @@ void __48__MPHomeUserMonitor__homeAccesssoryWithRouteID___block_invoke(uint64_t 
   }
 }
 
-- (id)privateListeningEnabledForGroupWithRouteIDs:(id)a3
+- (id)privateListeningEnabledForGroupWithRouteIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   if (+[MPHomeMonitor isCurrentDeviceValidHomeAccessory])
   {
     v8 = 0;
@@ -395,7 +395,7 @@ void __48__MPHomeUserMonitor__homeAccesssoryWithRouteID___block_invoke(uint64_t 
     v7[3] = &unk_1E7678528;
     v7[4] = self;
     v7[5] = &v8;
-    [v4 enumerateObjectsUsingBlock:v7];
+    [dsCopy enumerateObjectsUsingBlock:v7];
     v5 = v9[5];
     _Block_object_dispose(&v8, 8);
   }
@@ -441,9 +441,9 @@ void __65__MPHomeUserMonitor_privateListeningEnabledForGroupWithRouteIDs___block
   }
 }
 
-- (BOOL)privateListeningEnabledForAccessoryWithRouteID:(id)a3
+- (BOOL)privateListeningEnabledForAccessoryWithRouteID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -453,10 +453,10 @@ void __65__MPHomeUserMonitor_privateListeningEnabledForGroupWithRouteIDs___block
   block[1] = 3221225472;
   block[2] = __68__MPHomeUserMonitor_privateListeningEnabledForAccessoryWithRouteID___block_invoke;
   block[3] = &unk_1E7681330;
-  v9 = v4;
-  v10 = self;
+  v9 = dCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(accessQueue, block);
   LOBYTE(accessQueue) = *(v13 + 24);
 
@@ -543,25 +543,25 @@ void __68__MPHomeUserMonitor_privateListeningEnabledForAccessoryWithRouteID___bl
   }
 }
 
-- (BOOL)hasAccessoryWithRouteID:(id)a3
+- (BOOL)hasAccessoryWithRouteID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMHomeManager *)self->_homeManager currentHome];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  currentHome = [(HMHomeManager *)self->_homeManager currentHome];
+  v6 = currentHome;
+  if (currentHome)
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v7 = [v5 accessories];
+    accessories = [currentHome accessories];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __45__MPHomeUserMonitor_hasAccessoryWithRouteID___block_invoke;
     v10[3] = &unk_1E7678500;
-    v11 = v4;
+    v11 = dCopy;
     v12 = &v13;
-    [v7 enumerateObjectsUsingBlock:v10];
+    [accessories enumerateObjectsUsingBlock:v10];
 
     v8 = *(v14 + 24);
     _Block_object_dispose(&v13, 8);
@@ -588,18 +588,18 @@ void __45__MPHomeUserMonitor_hasAccessoryWithRouteID___block_invoke(uint64_t a1,
   }
 }
 
-- (void)setPrivateListeningEnabledForAccessoryWithRouteID:(id)a3 enabled:(BOOL)a4
+- (void)setPrivateListeningEnabledForAccessoryWithRouteID:(id)d enabled:(BOOL)enabled
 {
-  v6 = a3;
+  dCopy = d;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__MPHomeUserMonitor_setPrivateListeningEnabledForAccessoryWithRouteID_enabled___block_invoke;
   block[3] = &unk_1E767A6F8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dCopy;
+  enabledCopy = enabled;
+  v8 = dCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -628,7 +628,7 @@ void __79__MPHomeUserMonitor_setPrivateListeningEnabledForAccessoryWithRouteID_e
   [*(a1 + 32) _updateUserListeningHistoryControlForAccessory:v7 enable:*(a1 + 48)];
 }
 
-- (void)setPrivateListeningEnabledForCurrentAccessory:(BOOL)a3
+- (void)setPrivateListeningEnabledForCurrentAccessory:(BOOL)accessory
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -636,7 +636,7 @@ void __79__MPHomeUserMonitor_setPrivateListeningEnabledForAccessoryWithRouteID_e
   v4[2] = __67__MPHomeUserMonitor_setPrivateListeningEnabledForCurrentAccessory___block_invoke;
   v4[3] = &unk_1E7682280;
   v4[4] = self;
-  v5 = a3;
+  accessoryCopy = accessory;
   dispatch_async(accessQueue, v4);
 }
 
@@ -704,7 +704,7 @@ void __67__MPHomeUserMonitor_setPrivateListeningEnabledForCurrentAccessory___blo
   return v3;
 }
 
-- (void)setExplicitSettingEnabled:(BOOL)a3
+- (void)setExplicitSettingEnabled:(BOOL)enabled
 {
   accessQueue = self->_accessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -712,7 +712,7 @@ void __67__MPHomeUserMonitor_setPrivateListeningEnabledForCurrentAccessory___blo
   v4[2] = __47__MPHomeUserMonitor_setExplicitSettingEnabled___block_invoke;
   v4[3] = &unk_1E7682280;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(accessQueue, v4);
 }
 
@@ -803,10 +803,10 @@ void __47__MPHomeUserMonitor_setExplicitSettingEnabled___block_invoke_2(uint64_t
   [(MPHomeUserMonitor *)self _loadCurrentAccessoryPrivateListening];
 }
 
-- (MPHomeUserMonitor)initWithUser:(id)a3 homeManager:(id)a4
+- (MPHomeUserMonitor)initWithUser:(id)user homeManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  userCopy = user;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = MPHomeUserMonitor;
   v8 = [(MPHomeUserMonitor *)&v19 init];
@@ -826,8 +826,8 @@ void __47__MPHomeUserMonitor_setExplicitSettingEnabled___block_invoke_2(uint64_t
     block[2] = __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke;
     block[3] = &unk_1E76800A0;
     v16 = v8;
-    v17 = v7;
-    v18 = v6;
+    v17 = managerCopy;
+    v18 = userCopy;
     dispatch_sync(v13, block);
   }
 
@@ -864,15 +864,15 @@ uint64_t __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke(uint64_
   return [v16 _update];
 }
 
-+ (void)setPrivateListeningEnabledForCurrentUserAndAccessory:(BOOL)a3
++ (void)setPrivateListeningEnabledForCurrentUserAndAccessory:(BOOL)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   v8 = *MEMORY[0x1E69E9840];
   v4 = +[MPHomeUserMonitor monitorForCurrentUser];
   v5 = v4;
   if (v4)
   {
-    [v4 setPrivateListeningEnabledForCurrentAccessory:v3];
+    [v4 setPrivateListeningEnabledForCurrentAccessory:accessoryCopy];
   }
 
   else
@@ -881,7 +881,7 @@ uint64_t __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke(uint64_
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7[0] = 67109120;
-      v7[1] = v3;
+      v7[1] = accessoryCopy;
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_ERROR, "[MPHomeUserMonitor setPrivateListeningEnabledForCurrentUserAndAccessory:] failed to set privateListeningEnabled=%{BOOL}u [monitorForCurrentUser=nil]", v7, 8u);
     }
   }
@@ -894,7 +894,7 @@ uint64_t __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke(uint64_
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 isPrivateListeningEnabledForCurrentAccessory];
+    isPrivateListeningEnabledForCurrentAccessory = [v2 isPrivateListeningEnabledForCurrentAccessory];
   }
 
   else
@@ -907,21 +907,21 @@ uint64_t __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke(uint64_
       _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_ERROR, "MPHomeUserMonitor.isPrivateListeningEnabledForCurrentUserAndAccessory returning fallback value=%{BOOL}u [monitorForCurrentUser=nil]", v7, 8u);
     }
 
-    v4 = 1;
+    isPrivateListeningEnabledForCurrentAccessory = 1;
   }
 
-  return v4;
+  return isPrivateListeningEnabledForCurrentAccessory;
 }
 
-+ (void)setExplicitSettingEnabledForCurrentUser:(BOOL)a3
++ (void)setExplicitSettingEnabledForCurrentUser:(BOOL)user
 {
-  v3 = a3;
+  userCopy = user;
   v8 = *MEMORY[0x1E69E9840];
   v4 = +[MPHomeUserMonitor monitorForCurrentUser];
   v5 = v4;
   if (v4)
   {
-    [v4 setExplicitSettingEnabled:v3];
+    [v4 setExplicitSettingEnabled:userCopy];
   }
 
   else
@@ -930,7 +930,7 @@ uint64_t __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke(uint64_
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v7[0] = 67109120;
-      v7[1] = v3;
+      v7[1] = userCopy;
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_ERROR, "[MPHomeUserMonitor setExplicitSettingEnabledForCurrentUser:] failed to set explicitSettingEnabled=%{BOOL}u [monitorForCurrentUser=nil]", v7, 8u);
     }
   }
@@ -943,7 +943,7 @@ uint64_t __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke(uint64_
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 isExplicitSettingEnabled];
+    isExplicitSettingEnabled = [v2 isExplicitSettingEnabled];
   }
 
   else
@@ -956,10 +956,10 @@ uint64_t __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke(uint64_
       _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_ERROR, "MPHomeUserMonitor.isExplicitSettingEnabledForCurrentUser returning fallback value=%{BOOL}u [monitorForCurrentUser=nil]", v7, 8u);
     }
 
-    v4 = 1;
+    isExplicitSettingEnabled = 1;
   }
 
-  return v4;
+  return isExplicitSettingEnabled;
 }
 
 + (MPHomeUserMonitor)monitorForCurrentUser
@@ -967,39 +967,39 @@ uint64_t __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke(uint64_
   if (+[MPHomeMonitor isCurrentDeviceValidHomeAccessory])
   {
     v2 = +[MPHomeManagerObserver sharedObserver];
-    v3 = [v2 monitorForCurrentUser];
+    monitorForCurrentUser = [v2 monitorForCurrentUser];
   }
 
   else
   {
-    v3 = 0;
+    monitorForCurrentUser = 0;
   }
 
-  return v3;
+  return monitorForCurrentUser;
 }
 
-+ (MPHomeUserMonitor)userMonitorWithUserIdentity:(id)a3 fromUserIdentityStore:(id)a4
++ (MPHomeUserMonitor)userMonitorWithUserIdentity:(id)identity fromUserIdentityStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
+  identityCopy = identity;
+  storeCopy = store;
   if (!+[MPHomeMonitor isCurrentDeviceValidHomeAccessory])
   {
     v8 = 0;
     goto LABEL_16;
   }
 
-  if (v6)
+  if (storeCopy)
   {
-    v7 = v6;
+    defaultIdentityStore = storeCopy;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E69E4688] defaultIdentityStore];
+    defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
   }
 
-  v9 = v7;
-  v10 = [v7 getPropertiesForUserIdentity:v5 error:0];
+  v9 = defaultIdentityStore;
+  v10 = [defaultIdentityStore getPropertiesForUserIdentity:identityCopy error:0];
   v11 = v10;
   if (!v10)
   {
@@ -1013,8 +1013,8 @@ uint64_t __46__MPHomeUserMonitor_initWithUser_homeManager___block_invoke(uint64_
     goto LABEL_14;
   }
 
-  v12 = [v10 homeUserIdentifiers];
-  v13 = [MPHomeUserMonitor userMonitorWithHomeIdentifiers:v12];
+  homeUserIdentifiers = [v10 homeUserIdentifiers];
+  v13 = [MPHomeUserMonitor userMonitorWithHomeIdentifiers:homeUserIdentifiers];
 
   if (!v13)
   {
@@ -1040,13 +1040,13 @@ LABEL_16:
   return v8;
 }
 
-+ (MPHomeUserMonitor)userMonitorWithHomeIdentifiers:(id)a3
++ (MPHomeUserMonitor)userMonitorWithHomeIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   if (+[MPHomeMonitor isCurrentDeviceValidHomeAccessory])
   {
     v4 = +[MPHomeManagerObserver sharedObserver];
-    v5 = [v4 userMonitorWithHomeIdentifiers:v3];
+    v5 = [v4 userMonitorWithHomeIdentifiers:identifiersCopy];
   }
 
   else
@@ -1057,13 +1057,13 @@ LABEL_16:
   return v5;
 }
 
-+ (MPHomeUserMonitor)userMonitorWithHomeIdentifier:(id)a3
++ (MPHomeUserMonitor)userMonitorWithHomeIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (+[MPHomeMonitor isCurrentDeviceValidHomeAccessory])
   {
     v4 = +[MPHomeManagerObserver sharedObserver];
-    v5 = [v4 userMonitorWithHomeIdentifier:v3];
+    v5 = [v4 userMonitorWithHomeIdentifier:identifierCopy];
   }
 
   else

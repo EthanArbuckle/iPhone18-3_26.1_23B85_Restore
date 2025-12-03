@@ -6,9 +6,9 @@
 
 - (id)categoryTitle
 {
-  if ([a1 ratingType])
+  if ([self ratingType])
   {
-    [a1 localizedTitle];
+    [self localizedTitle];
   }
 
   else

@@ -1,34 +1,34 @@
 @interface SHServerGetResponseParser
-+ (id)dataResponseFromServerObjects:(id)a3 error:(id *)a4;
-+ (id)mediaDictionaryFromResourcesResponse:(id)a3 shazamID:(id)a4 campaignToken:(id)a5;
-+ (id)mediaItemFromResourcesResponse:(id)a3 shazamID:(id)a4 campaignToken:(id)a5;
-+ (id)mediaItemsFromServerData:(id)a3 context:(id)a4 error:(id *)a5;
-+ (id)resourcesResponseFromServerObjects:(id)a3 error:(id *)a4;
++ (id)dataResponseFromServerObjects:(id)objects error:(id *)error;
++ (id)mediaDictionaryFromResourcesResponse:(id)response shazamID:(id)d campaignToken:(id)token;
++ (id)mediaItemFromResourcesResponse:(id)response shazamID:(id)d campaignToken:(id)token;
++ (id)mediaItemsFromServerData:(id)data context:(id)context error:(id *)error;
++ (id)resourcesResponseFromServerObjects:(id)objects error:(id *)error;
 @end
 
 @implementation SHServerGetResponseParser
 
-+ (id)mediaItemsFromServerData:(id)a3 context:(id)a4 error:(id *)a5
++ (id)mediaItemsFromServerData:(id)data context:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   v35 = 0;
-  v9 = [NSJSONSerialization JSONObjectWithData:a3 options:0 error:&v35];
+  v9 = [NSJSONSerialization JSONObjectWithData:data options:0 error:&v35];
   v10 = v35;
   v11 = v10;
   if (v9)
   {
     v29 = v10;
-    v12 = [a1 resourcesResponseFromServerObjects:v9 error:a5];
+    v12 = [self resourcesResponseFromServerObjects:v9 error:error];
     v30 = v9;
-    v27 = a5;
-    v28 = [a1 dataResponseFromServerObjects:v9 error:a5];
-    v13 = [v28 shazamIDs];
-    v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v13 count]);
+    errorCopy = error;
+    v28 = [self dataResponseFromServerObjects:v9 error:error];
+    shazamIDs = [v28 shazamIDs];
+    v14 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [shazamIDs count]);
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v15 = v13;
+    v15 = shazamIDs;
     v16 = [v15 countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v16)
     {
@@ -44,8 +44,8 @@
           }
 
           v20 = *(*(&v31 + 1) + 8 * i);
-          v21 = [v8 campaignToken];
-          v22 = [a1 mediaItemFromResourcesResponse:v12 shazamID:v20 campaignToken:v21];
+          campaignToken = [contextCopy campaignToken];
+          v22 = [self mediaItemFromResourcesResponse:v12 shazamID:v20 campaignToken:campaignToken];
 
           [v14 addObject:v22];
         }
@@ -73,7 +73,7 @@
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEBUG, "Server response parser: has no media items", buf, 2u);
       }
 
-      [SHError annotateClientError:v27 code:202 underlyingError:0];
+      [SHError annotateClientError:errorCopy code:202 underlyingError:0];
       v23 = 0;
       v9 = v30;
     }
@@ -89,16 +89,16 @@
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Server response parser: No response %@", buf, 0xCu);
     }
 
-    [SHError annotateClientError:a5 code:202 underlyingError:v11];
+    [SHError annotateClientError:error code:202 underlyingError:v11];
     v23 = 0;
   }
 
   return v23;
 }
 
-+ (id)resourcesResponseFromServerObjects:(id)a3 error:(id *)a4
++ (id)resourcesResponseFromServerObjects:(id)objects error:(id *)error
 {
-  v5 = [a3 objectForKeyedSubscript:@"resources"];
+  v5 = [objects objectForKeyedSubscript:@"resources"];
   if (v5)
   {
     v6 = [[SHServerResourcesResponse alloc] initWithResourcesDictionary:v5];
@@ -113,31 +113,31 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Server response parser: has no match", v9, 2u);
     }
 
-    [SHError annotateClientError:a4 code:202 underlyingError:0];
+    [SHError annotateClientError:error code:202 underlyingError:0];
     v6 = 0;
   }
 
   return v6;
 }
 
-+ (id)dataResponseFromServerObjects:(id)a3 error:(id *)a4
++ (id)dataResponseFromServerObjects:(id)objects error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"errors"];
-  v7 = [v6 firstObject];
+  objectsCopy = objects;
+  v6 = [objectsCopy objectForKeyedSubscript:@"errors"];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [[SHServerErrorResponse alloc] initWithErrorDictionary:v7];
-    v9 = [(SHServerErrorResponse *)v8 error];
-    [SHCoreError annotateError:a4 withError:v9];
+    v8 = [[SHServerErrorResponse alloc] initWithErrorDictionary:firstObject];
+    error = [(SHServerErrorResponse *)v8 error];
+    [SHCoreError annotateError:error withError:error];
 
     v10 = 0;
   }
 
   else
   {
-    v11 = [v5 objectForKeyedSubscript:@"data"];
+    v11 = [objectsCopy objectForKeyedSubscript:@"data"];
     if (v11)
     {
       v10 = [[SHServerDataResponse alloc] initWithDataArray:v11];
@@ -152,7 +152,7 @@
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Server response parser: has no data array", v14, 2u);
       }
 
-      [SHError annotateClientError:a4 code:202 underlyingError:0];
+      [SHError annotateClientError:error code:202 underlyingError:0];
       v10 = 0;
     }
   }
@@ -160,127 +160,127 @@
   return v10;
 }
 
-+ (id)mediaItemFromResourcesResponse:(id)a3 shazamID:(id)a4 campaignToken:(id)a5
++ (id)mediaItemFromResourcesResponse:(id)response shazamID:(id)d campaignToken:(id)token
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [SHServerGetResponseParser mediaDictionaryFromResourcesResponse:v9 shazamID:v8 campaignToken:v7];
+  tokenCopy = token;
+  dCopy = d;
+  responseCopy = response;
+  v10 = [SHServerGetResponseParser mediaDictionaryFromResourcesResponse:responseCopy shazamID:dCopy campaignToken:tokenCopy];
   v11 = [SHMediaItem mediaItemWithProperties:v10];
-  v12 = [v9 shazamResponse];
-  v13 = [v12 itemForIdentifier:v8];
+  shazamResponse = [responseCopy shazamResponse];
+  v13 = [shazamResponse itemForIdentifier:dCopy];
 
-  v14 = [v9 songsResponse];
+  songsResponse = [responseCopy songsResponse];
 
-  v15 = [v13 songRelationIDs];
-  v16 = [v14 itemForIdentifiers:v15];
+  songRelationIDs = [v13 songRelationIDs];
+  v16 = [songsResponse itemForIdentifiers:songRelationIDs];
 
-  v17 = [v16 rawResponseDataWithCampaignToken:v7];
+  v17 = [v16 rawResponseDataWithCampaignToken:tokenCopy];
 
   [v11 set_rawResponseSongsData:v17];
 
   return v11;
 }
 
-+ (id)mediaDictionaryFromResourcesResponse:(id)a3 shazamID:(id)a4 campaignToken:(id)a5
++ (id)mediaDictionaryFromResourcesResponse:(id)response shazamID:(id)d campaignToken:(id)token
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  responseCopy = response;
+  tokenCopy = token;
+  dCopy = d;
   v10 = +[NSMutableDictionary dictionary];
-  v11 = [v7 shazamResponse];
-  v12 = [v11 itemForIdentifier:v9];
+  shazamResponse = [responseCopy shazamResponse];
+  v12 = [shazamResponse itemForIdentifier:dCopy];
 
-  v13 = [v12 shazamID];
-  [v10 setValue:v13 forKey:SHMediaItemShazamID];
+  shazamID = [v12 shazamID];
+  [v10 setValue:shazamID forKey:SHMediaItemShazamID];
 
-  v14 = [v12 shazamURL];
-  [v10 setValue:v14 forKey:SHMediaItemWebURL];
+  shazamURL = [v12 shazamURL];
+  [v10 setValue:shazamURL forKey:SHMediaItemWebURL];
 
-  v15 = [v12 title];
-  [v10 setValue:v15 forKey:SHMediaItemTitle];
+  title = [v12 title];
+  [v10 setValue:title forKey:SHMediaItemTitle];
 
-  v16 = [v12 artistName];
-  [v10 setValue:v16 forKey:SHMediaItemSubtitle];
+  artistName = [v12 artistName];
+  [v10 setValue:artistName forKey:SHMediaItemSubtitle];
 
-  v17 = [v12 artistName];
-  [v10 setValue:v17 forKey:SHMediaItemArtist];
+  artistName2 = [v12 artistName];
+  [v10 setValue:artistName2 forKey:SHMediaItemArtist];
 
-  v18 = [v12 shazamCount];
-  [v10 setValue:v18 forKey:SHMediaItemShazamCount];
+  shazamCount = [v12 shazamCount];
+  [v10 setValue:shazamCount forKey:SHMediaItemShazamCount];
 
-  v19 = [v12 songRelationIDs];
-  v20 = [v19 count];
+  songRelationIDs = [v12 songRelationIDs];
+  v20 = [songRelationIDs count];
 
   if (v20)
   {
-    v21 = [v7 songsResponse];
-    v22 = [v12 songRelationIDs];
-    v23 = [v21 itemForIdentifiers:v22];
+    songsResponse = [responseCopy songsResponse];
+    songRelationIDs2 = [v12 songRelationIDs];
+    v23 = [songsResponse itemForIdentifiers:songRelationIDs2];
 
-    v24 = [v23 appleMusicID];
-    [v10 setValue:v24 forKey:SHMediaItemAppleMusicID];
+    appleMusicID = [v23 appleMusicID];
+    [v10 setValue:appleMusicID forKey:SHMediaItemAppleMusicID];
 
-    v25 = [v23 artworkDictionary];
+    artworkDictionary = [v23 artworkDictionary];
     v26 = SHMediaItemArtworkDictionary;
-    [v10 setValue:v25 forKey:SHMediaItemArtworkDictionary];
+    [v10 setValue:artworkDictionary forKey:SHMediaItemArtworkDictionary];
 
-    v27 = [v23 genreNames];
-    [v10 setValue:v27 forKey:SHMediaItemGenres];
+    genreNames = [v23 genreNames];
+    [v10 setValue:genreNames forKey:SHMediaItemGenres];
 
-    v28 = [v23 releaseDate];
-    [v10 setValue:v28 forKey:SHMediaItemReleaseDate];
+    releaseDate = [v23 releaseDate];
+    [v10 setValue:releaseDate forKey:SHMediaItemReleaseDate];
 
     v29 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v23 isExplicitContent]);
     [v10 setValue:v29 forKey:SHMediaItemExplicitContent];
 
-    v30 = [v23 albumName];
-    [v10 setValue:v30 forKey:SHMediaItemAlbumName];
+    albumName = [v23 albumName];
+    [v10 setValue:albumName forKey:SHMediaItemAlbumName];
 
-    v31 = [v23 isrc];
-    [v10 setValue:v31 forKey:SHMediaItemISRC];
+    isrc = [v23 isrc];
+    [v10 setValue:isrc forKey:SHMediaItemISRC];
 
-    v32 = [v23 appleMusicURLString];
+    appleMusicURLString = [v23 appleMusicURLString];
 
-    if (v32)
+    if (appleMusicURLString)
     {
       v33 = [SHTokenizedURL alloc];
-      v34 = [v23 appleMusicURLString];
-      v35 = [v33 initWithString:v34];
+      appleMusicURLString2 = [v23 appleMusicURLString];
+      v35 = [v33 initWithString:appleMusicURLString2];
 
       if ([v35 containsTokens])
       {
-        [v35 updateToken:5 withValue:v8];
+        [v35 updateToken:5 withValue:tokenCopy];
       }
 
-      v36 = [v35 URLRepresentation];
-      [v10 setValue:v36 forKey:SHMediaItemAppleMusicURL];
+      uRLRepresentation = [v35 URLRepresentation];
+      [v10 setValue:uRLRepresentation forKey:SHMediaItemAppleMusicURL];
     }
 
-    v37 = [v23 lyricsRelationIDs];
-    v38 = [v37 count];
+    lyricsRelationIDs = [v23 lyricsRelationIDs];
+    v38 = [lyricsRelationIDs count];
 
     if (v38)
     {
-      v39 = [v7 lyricsResponse];
-      v40 = [v23 lyricsRelationIDs];
-      v41 = [v39 itemForIdentifiers:v40];
+      lyricsResponse = [responseCopy lyricsResponse];
+      lyricsRelationIDs2 = [v23 lyricsRelationIDs];
+      v41 = [lyricsResponse itemForIdentifiers:lyricsRelationIDs2];
 
-      v42 = [v41 lyricsSnippet];
-      [v10 setValue:v42 forKey:SHMediaItemLyricsSnippet];
+      lyricsSnippet = [v41 lyricsSnippet];
+      [v10 setValue:lyricsSnippet forKey:SHMediaItemLyricsSnippet];
 
-      v43 = [v41 staticLyrics];
-      [v10 setValue:v43 forKey:SHMediaItemStaticLyricLines];
+      staticLyrics = [v41 staticLyrics];
+      [v10 setValue:staticLyrics forKey:SHMediaItemStaticLyricLines];
     }
 
-    v44 = [v23 musicVideoRelationIDs];
-    v45 = [v44 count];
+    musicVideoRelationIDs = [v23 musicVideoRelationIDs];
+    v45 = [musicVideoRelationIDs count];
 
     if (v45)
     {
-      v46 = [v7 musicVideoResponse];
-      v47 = [v23 musicVideoRelationIDs];
-      v48 = [v46 itemForIdentifiers:v47];
+      musicVideoResponse = [responseCopy musicVideoResponse];
+      musicVideoRelationIDs2 = [v23 musicVideoRelationIDs];
+      v48 = [musicVideoResponse itemForIdentifiers:musicVideoRelationIDs2];
 
       v49 = [v48 url];
       [v10 setValue:v49 forKey:SHMediaItemVideoURL];
@@ -296,8 +296,8 @@
 
   if (!v50)
   {
-    v51 = [v12 artworkURL];
-    [v10 setValue:v51 forKey:SHMediaItemArtworkURL];
+    artworkURL = [v12 artworkURL];
+    [v10 setValue:artworkURL forKey:SHMediaItemArtworkURL];
   }
 
   v52 = [v10 copy];

@@ -1,19 +1,19 @@
 @interface WFImgArrayCache
-+ (id)imgArrayCacheWithArray:(id)a3;
-- (WFImgArrayCache)initWithArray:(id)a3;
++ (id)imgArrayCacheWithArray:(id)array;
+- (WFImgArrayCache)initWithArray:(id)array;
 - (void)dealloc;
 @end
 
 @implementation WFImgArrayCache
 
-+ (id)imgArrayCacheWithArray:(id)a3
++ (id)imgArrayCacheWithArray:(id)array
 {
-  v3 = [[a1 alloc] initWithArray:a3];
+  v3 = [[self alloc] initWithArray:array];
 
   return v3;
 }
 
-- (WFImgArrayCache)initWithArray:(id)a3
+- (WFImgArrayCache)initWithArray:(id)array
 {
   v26 = *MEMORY[0x277D85DE8];
   v24.receiver = self;
@@ -30,7 +30,7 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    v6 = [array countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v6)
     {
       v7 = v6;
@@ -41,7 +41,7 @@
         {
           if (*v21 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(array);
           }
 
           v10 = *(*(&v20 + 1) + 8 * i);
@@ -57,8 +57,8 @@
             goto LABEL_27;
           }
 
-          v11 = [v10 area];
-          if (v11 == kWFImgDimensionUnknown)
+          area = [v10 area];
+          if (area == kWFImgDimensionUnknown)
           {
             p_numberOfUnknownSizedImages = &v4->numberOfUnknownSizedImages;
           }
@@ -68,31 +68,31 @@
             p_numberOfUnknownSizedImages = &v4->numberOfKnownImagePixels;
           }
 
-          if (v11 == kWFImgDimensionUnknown)
+          if (area == kWFImgDimensionUnknown)
           {
             v13 = 1;
           }
 
           else
           {
-            v13 = v11;
+            v13 = area;
           }
 
           *p_numberOfUnknownSizedImages += v13;
           v14 = [v10 alt];
-          v15 = [v10 title];
+          title = [v10 title];
           if (v14 && ([v14 isEqualToString:&stru_28826CB10] & 1) == 0)
           {
             [(NSMutableString *)v4->imageAlternativeDescriptions appendFormat:@"%@\n", v14];
           }
 
-          if (v15 && ([v15 isEqualToString:&stru_28826CB10] & 1) == 0 && (!v14 || (objc_msgSend(v15, "isEqualToString:", v14) & 1) == 0))
+          if (title && ([title isEqualToString:&stru_28826CB10] & 1) == 0 && (!v14 || (objc_msgSend(title, "isEqualToString:", v14) & 1) == 0))
           {
-            [(NSMutableString *)v4->imageAlternativeDescriptions appendFormat:@"%@\n", v15];
+            [(NSMutableString *)v4->imageAlternativeDescriptions appendFormat:@"%@\n", title];
           }
         }
 
-        v7 = [a3 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v7 = [array countByEnumeratingWithState:&v20 objects:v25 count:16];
         if (v7)
         {
           continue;

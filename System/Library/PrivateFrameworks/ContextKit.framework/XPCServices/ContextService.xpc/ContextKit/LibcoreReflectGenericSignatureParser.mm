@@ -8,27 +8,27 @@
 - (id)parseTypeSignature;
 - (id)parseTypeVariableSignature;
 - (void)dealloc;
-- (void)expectWithChar:(unsigned __int16)a3;
+- (void)expectWithChar:(unsigned __int16)char;
 - (void)parseClassSignature;
-- (void)parseForClassWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4;
-- (void)parseForConstructorWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4 withIOSClassArray:(id)a5;
-- (void)parseForFieldWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4;
-- (void)parseForMethodWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4 withIOSClassArray:(id)a5;
-- (void)parseMethodTypeSignatureWithIOSClassArray:(id)a3;
+- (void)parseForClassWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string;
+- (void)parseForConstructorWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string withIOSClassArray:(id)array;
+- (void)parseForFieldWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string;
+- (void)parseForMethodWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string withIOSClassArray:(id)array;
+- (void)parseMethodTypeSignatureWithIOSClassArray:(id)array;
 - (void)parseOptFormalTypeParameters;
 - (void)scanIdentifier;
 - (void)scanSymbol;
-- (void)setInputWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4;
+- (void)setInputWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string;
 @end
 
 @implementation LibcoreReflectGenericSignatureParser
 
-- (void)setInputWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4
+- (void)setInputWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string
 {
-  if (a4)
+  if (string)
   {
-    JreStrongAssign(&self->genericDecl_, a3);
-    JreStrongAssign(&self->buffer_, [a4 toCharArray]);
+    JreStrongAssign(&self->genericDecl_, declaration);
+    JreStrongAssign(&self->buffer_, [string toCharArray]);
     self->eof_ = 0;
 
     [(LibcoreReflectGenericSignatureParser *)self scanSymbol];
@@ -40,16 +40,16 @@
   }
 }
 
-- (void)parseForClassWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4
+- (void)parseForClassWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string
 {
-  [(LibcoreReflectGenericSignatureParser *)self setInputWithJavaLangReflectGenericDeclaration:a3 withNSString:a4];
+  [(LibcoreReflectGenericSignatureParser *)self setInputWithJavaLangReflectGenericDeclaration:declaration withNSString:string];
   if (self->eof_)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
-      if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+      if (declaration && (objc_opt_isKindOfClass() & 1) == 0)
       {
         JreThrowClassCastException();
       }
@@ -60,7 +60,7 @@
       }
 
       JreStrongAssign(&self->formalTypeParameters_, LibcoreUtilEmptyArray_TYPE_VARIABLE_);
-      if (!a3 || (JreStrongAssign(&self->superclassType_, [a3 getSuperclass]), (v6 = objc_msgSend(a3, "getInterfaces")) == 0))
+      if (!declaration || (JreStrongAssign(&self->superclassType_, [declaration getSuperclass]), (v6 = objc_msgSend(declaration, "getInterfaces")) == 0))
       {
         JreThrowNullPointerException();
       }
@@ -106,13 +106,13 @@ LABEL_22:
   [(LibcoreReflectGenericSignatureParser *)self parseClassSignature];
 }
 
-- (void)parseForMethodWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4 withIOSClassArray:(id)a5
+- (void)parseForMethodWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string withIOSClassArray:(id)array
 {
-  [(LibcoreReflectGenericSignatureParser *)self setInputWithJavaLangReflectGenericDeclaration:a3 withNSString:a4];
+  [(LibcoreReflectGenericSignatureParser *)self setInputWithJavaLangReflectGenericDeclaration:declaration withNSString:string];
   if (self->eof_)
   {
     objc_opt_class();
-    if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (declaration && (objc_opt_isKindOfClass() & 1) == 0)
     {
       JreThrowClassCastException();
     }
@@ -123,20 +123,20 @@ LABEL_22:
     }
 
     JreStrongAssign(&self->formalTypeParameters_, LibcoreUtilEmptyArray_TYPE_VARIABLE_);
-    if (!a3)
+    if (!declaration)
     {
       goto LABEL_25;
     }
 
-    v8 = [a3 getParameterTypes];
-    if (!v8)
+    getParameterTypes = [declaration getParameterTypes];
+    if (!getParameterTypes)
     {
       goto LABEL_25;
     }
 
-    if (v8[2])
+    if (getParameterTypes[2])
     {
-      v9 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(v8);
+      v9 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(getParameterTypes);
       JreStrongAssignAndConsume(&self->parameterTypes_, v9);
     }
 
@@ -150,16 +150,16 @@ LABEL_22:
       JreStrongAssign(&self->parameterTypes_, LibcoreReflectListOfTypes_EMPTY_);
     }
 
-    v10 = [a3 getExceptionTypes];
-    if (!v10)
+    getExceptionTypes = [declaration getExceptionTypes];
+    if (!getExceptionTypes)
     {
 LABEL_25:
       JreThrowNullPointerException();
     }
 
-    if (v10[2])
+    if (getExceptionTypes[2])
     {
-      v11 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(v10);
+      v11 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(getExceptionTypes);
       JreStrongAssignAndConsume(&self->exceptionTypes_, v11);
     }
 
@@ -173,25 +173,25 @@ LABEL_25:
       JreStrongAssign(&self->exceptionTypes_, LibcoreReflectListOfTypes_EMPTY_);
     }
 
-    v12 = [a3 getReturnType];
+    getReturnType = [declaration getReturnType];
 
-    JreStrongAssign(&self->returnType_, v12);
+    JreStrongAssign(&self->returnType_, getReturnType);
   }
 
   else
   {
 
-    [(LibcoreReflectGenericSignatureParser *)self parseMethodTypeSignatureWithIOSClassArray:a5];
+    [(LibcoreReflectGenericSignatureParser *)self parseMethodTypeSignatureWithIOSClassArray:array];
   }
 }
 
-- (void)parseForConstructorWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4 withIOSClassArray:(id)a5
+- (void)parseForConstructorWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string withIOSClassArray:(id)array
 {
-  [(LibcoreReflectGenericSignatureParser *)self setInputWithJavaLangReflectGenericDeclaration:a3 withNSString:a4];
+  [(LibcoreReflectGenericSignatureParser *)self setInputWithJavaLangReflectGenericDeclaration:declaration withNSString:string];
   if (self->eof_)
   {
     objc_opt_class();
-    if (a3 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (declaration && (objc_opt_isKindOfClass() & 1) == 0)
     {
       JreThrowClassCastException();
     }
@@ -202,20 +202,20 @@ LABEL_25:
     }
 
     JreStrongAssign(&self->formalTypeParameters_, LibcoreUtilEmptyArray_TYPE_VARIABLE_);
-    if (!a3)
+    if (!declaration)
     {
       goto LABEL_26;
     }
 
-    v8 = [a3 getParameterTypes];
-    if (!v8)
+    getParameterTypes = [declaration getParameterTypes];
+    if (!getParameterTypes)
     {
       goto LABEL_26;
     }
 
-    if (v8[2])
+    if (getParameterTypes[2])
     {
-      v9 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(v8);
+      v9 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(getParameterTypes);
       JreStrongAssignAndConsume(&self->parameterTypes_, v9);
     }
 
@@ -229,16 +229,16 @@ LABEL_25:
       JreStrongAssign(&self->parameterTypes_, LibcoreReflectListOfTypes_EMPTY_);
     }
 
-    v10 = [a3 getExceptionTypes];
-    if (!v10)
+    getExceptionTypes = [declaration getExceptionTypes];
+    if (!getExceptionTypes)
     {
 LABEL_26:
       JreThrowNullPointerException();
     }
 
-    if (v10[2])
+    if (getExceptionTypes[2])
     {
-      v11 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(v10);
+      v11 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(getExceptionTypes);
 
       JreStrongAssignAndConsume(&self->exceptionTypes_, v11);
     }
@@ -259,18 +259,18 @@ LABEL_26:
   else
   {
 
-    [(LibcoreReflectGenericSignatureParser *)self parseMethodTypeSignatureWithIOSClassArray:a5];
+    [(LibcoreReflectGenericSignatureParser *)self parseMethodTypeSignatureWithIOSClassArray:array];
   }
 }
 
-- (void)parseForFieldWithJavaLangReflectGenericDeclaration:(id)a3 withNSString:(id)a4
+- (void)parseForFieldWithJavaLangReflectGenericDeclaration:(id)declaration withNSString:(id)string
 {
-  [(LibcoreReflectGenericSignatureParser *)self setInputWithJavaLangReflectGenericDeclaration:a3 withNSString:a4];
+  [(LibcoreReflectGenericSignatureParser *)self setInputWithJavaLangReflectGenericDeclaration:declaration withNSString:string];
   if (!self->eof_)
   {
-    v5 = [(LibcoreReflectGenericSignatureParser *)self parseFieldTypeSignature];
+    parseFieldTypeSignature = [(LibcoreReflectGenericSignatureParser *)self parseFieldTypeSignature];
 
-    JreStrongAssign(&self->fieldType_, v5);
+    JreStrongAssign(&self->fieldType_, parseFieldTypeSignature);
   }
 }
 
@@ -302,9 +302,9 @@ LABEL_26:
     [(LibcoreReflectGenericSignatureParser *)self expectWithChar:62];
   }
 
-  v6 = [(LibcoreReflectListOfVariables *)v3 getArray];
+  getArray = [(LibcoreReflectListOfVariables *)v3 getArray];
 
-  JreStrongAssign(&self->formalTypeParameters_, v6);
+  JreStrongAssign(&self->formalTypeParameters_, getArray);
 }
 
 - (id)parseFormalTypeParameter
@@ -316,7 +316,7 @@ LABEL_26:
     JreThrowNullPointerException();
   }
 
-  v4 = [(NSString *)identifier intern];
+  intern = [(NSString *)identifier intern];
   v5 = new_LibcoreReflectListOfTypes_initWithInt_(8);
   [(LibcoreReflectGenericSignatureParser *)self expectWithChar:58];
   symbol = self->symbol_;
@@ -338,7 +338,7 @@ LABEL_11:
     [(LibcoreReflectGenericSignatureParser *)self scanSymbol];
   }
 
-  v8 = new_LibcoreReflectTypeVariableImpl_initWithJavaLangReflectGenericDeclaration_withNSString_withLibcoreReflectListOfTypes_(self->genericDecl_, v4, v5);
+  v8 = new_LibcoreReflectTypeVariableImpl_initWithJavaLangReflectGenericDeclaration_withNSString_withLibcoreReflectListOfTypes_(self->genericDecl_, intern, v5);
 
   return v8;
 }
@@ -442,16 +442,16 @@ LABEL_9:
       goto LABEL_7;
     case '+':
       [(LibcoreReflectGenericSignatureParser *)self scanSymbol];
-      v6 = [(LibcoreReflectGenericSignatureParser *)self parseFieldTypeSignature];
+      parseFieldTypeSignature = [(LibcoreReflectGenericSignatureParser *)self parseFieldTypeSignature];
 LABEL_8:
-      [(LibcoreReflectListOfTypes *)v3 addWithJavaLangReflectType:v6];
+      [(LibcoreReflectListOfTypes *)v3 addWithJavaLangReflectType:parseFieldTypeSignature];
       v7 = new_LibcoreReflectWildcardTypeImpl_initWithLibcoreReflectListOfTypes_withLibcoreReflectListOfTypes_(v3, v4);
 
       return v7;
     case '*':
       [(LibcoreReflectGenericSignatureParser *)self scanSymbol];
 LABEL_7:
-      v6 = NSObject_class_();
+      parseFieldTypeSignature = NSObject_class_();
       goto LABEL_8;
   }
 
@@ -548,7 +548,7 @@ LABEL_36:
   return +[IOSClass byteClass];
 }
 
-- (void)parseMethodTypeSignatureWithIOSClassArray:(id)a3
+- (void)parseMethodTypeSignatureWithIOSClassArray:(id)array
 {
   [(LibcoreReflectGenericSignatureParser *)self parseOptFormalTypeParameters];
   v5 = new_LibcoreReflectListOfTypes_initWithInt_(16);
@@ -571,15 +571,15 @@ LABEL_36:
       exceptionTypes = self->exceptionTypes_;
       if (self->symbol_ == 84)
       {
-        v8 = [(LibcoreReflectGenericSignatureParser *)self parseTypeVariableSignature];
+        parseTypeVariableSignature = [(LibcoreReflectGenericSignatureParser *)self parseTypeVariableSignature];
       }
 
       else
       {
-        v8 = [(LibcoreReflectGenericSignatureParser *)self parseClassTypeSignature];
+        parseTypeVariableSignature = [(LibcoreReflectGenericSignatureParser *)self parseClassTypeSignature];
       }
 
-      [(LibcoreReflectListOfTypes *)exceptionTypes addWithJavaLangReflectType:v8];
+      [(LibcoreReflectListOfTypes *)exceptionTypes addWithJavaLangReflectType:parseTypeVariableSignature];
     }
 
     while (self->symbol_ == 94);
@@ -587,9 +587,9 @@ LABEL_36:
 
   else
   {
-    if (a3)
+    if (array)
     {
-      v9 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(a3);
+      v9 = new_LibcoreReflectListOfTypes_initWithJavaLangReflectTypeArray_(array);
     }
 
     else
@@ -652,9 +652,9 @@ LABEL_36:
   }
 }
 
-- (void)expectWithChar:(unsigned __int16)a3
+- (void)expectWithChar:(unsigned __int16)char
 {
-  if (self->symbol_ != a3)
+  if (self->symbol_ != char)
   {
     v4 = new_JavaLangReflectGenericSignatureFormatError_init();
     objc_exception_throw(v4);

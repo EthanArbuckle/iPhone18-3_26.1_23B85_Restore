@@ -1,44 +1,44 @@
 @interface RBDomainAttributeManagerDataProvider
-- (BOOL)_checkConflictingAttributes:(uint64_t)a3 error:;
-- (RBDomainAttributeManagerDataProvider)initWithDictionary:(id)a3;
-- (RBDomainAttributeManagerDataProvider)initWithPath:(id)a3;
+- (BOOL)_checkConflictingAttributes:(uint64_t)attributes error:;
+- (RBDomainAttributeManagerDataProvider)initWithDictionary:(id)dictionary;
+- (RBDomainAttributeManagerDataProvider)initWithPath:(id)path;
 - (RBDomainAttributeTemplate)_templateWithDomain:name:dictionary:errors:;
 - (RBDomainAttributeTemplate)_validatedDomainAttributeTemplateFromDomainAttributeTemplate:dependenciesByFullyQualifiedName:errors:;
 - (id)_additionalRestrictionsFromDictionary:forDomainAttributeWithDomain:name:errors:;
-- (id)_attributeTemplateForItem:(uint64_t)a3 domain:(uint64_t)a4 name:(void *)a5 errors:;
-- (id)_attributeTemplateGroupsFromArray:(uint64_t)a3 forDomainAttributeWithDomain:(uint64_t)a4 name:(NSObject *)a5 errors:;
+- (id)_attributeTemplateForItem:(uint64_t)item domain:(uint64_t)domain name:(void *)name errors:;
+- (id)_attributeTemplateGroupsFromArray:(uint64_t)array forDomainAttributeWithDomain:(uint64_t)domain name:(NSObject *)name errors:;
 - (id)_attributeTemplatesFromArray:forDomainAttributeWithDomain:name:errors:;
 - (id)_bundlePropertiesFromDictionary:forDomainAttributeWithDomain:name:errors:;
 - (id)_legalClassNames;
 - (id)_legalPropertyNamesByClassName;
-- (id)_restrictionFromDictionary:(void *)a3 forDomainAttributeWithDomain:(void *)a4 name:(void *)a5 errors:;
-- (id)_templatesByDomainWithErrors:(uint64_t)a1;
-- (id)_templatesWithDomain:(void *)a3 fromDictionary:(void *)a4 errors:;
-- (id)_templatesWithDomain:(void *)a3 fromFilename:(void *)a4 dirpath:(void *)a5 errors:;
-- (id)_validatedAttributeTemplateFromAttributeTemplate:(void *)a3 domainAttributeTemplate:(void *)a4 dependenciesByFullyQualifiedName:(void *)a5 errors:;
-- (id)_validatedTemplatesByDomainWithErrors:(id)a1;
+- (id)_restrictionFromDictionary:(void *)dictionary forDomainAttributeWithDomain:(void *)domain name:(void *)name errors:;
+- (id)_templatesByDomainWithErrors:(uint64_t)errors;
+- (id)_templatesWithDomain:(void *)domain fromDictionary:(void *)dictionary errors:;
+- (id)_templatesWithDomain:(void *)domain fromFilename:(void *)filename dirpath:(void *)dirpath errors:;
+- (id)_validatedAttributeTemplateFromAttributeTemplate:(void *)template domainAttributeTemplate:(void *)attributeTemplate dependenciesByFullyQualifiedName:(void *)name errors:;
+- (id)_validatedTemplatesByDomainWithErrors:(id)errors;
 - (id)templatesByDomain;
 - (id)validDomains;
 - (id)validationErrors;
-- (uint64_t)_isPropertyLegalForClassName:(uint64_t)a3 propertyName:(uint64_t)a4 value:(uint64_t)a5 error:;
-- (void)_configureTemplate:(uint64_t)a3 fromInfo:(uint64_t)a4 forDomain:(void *)a5 name:(char)a6 allowRestrictions:(void *)a7 errors:;
+- (uint64_t)_isPropertyLegalForClassName:(uint64_t)name propertyName:(uint64_t)propertyName value:(uint64_t)value error:;
+- (void)_configureTemplate:(uint64_t)template fromInfo:(uint64_t)info forDomain:(void *)domain name:(char)name allowRestrictions:(void *)restrictions errors:;
 - (void)_isAttributeClassNameLegal:(void *)result;
-- (void)_preAttributeTemplateFromAttributeTemplate:(void *)a3 domainAttributeTemplate:(void *)a4 generateDependenciesByFullyQualifiedName:;
-- (void)_preDomainAttributeTemplateFromDomainAttributeTemplate:(void *)a3 generateDependenciesByFullyQualifiedName:;
-- (void)_templatesWithDomain:(void *)a3 fromFilename:(void *)a4 errors:;
+- (void)_preAttributeTemplateFromAttributeTemplate:(void *)template domainAttributeTemplate:(void *)attributeTemplate generateDependenciesByFullyQualifiedName:;
+- (void)_preDomainAttributeTemplateFromDomainAttributeTemplate:(void *)template generateDependenciesByFullyQualifiedName:;
+- (void)_templatesWithDomain:(void *)domain fromFilename:(void *)filename errors:;
 @end
 
 @implementation RBDomainAttributeManagerDataProvider
 
-- (RBDomainAttributeManagerDataProvider)initWithPath:(id)a3
+- (RBDomainAttributeManagerDataProvider)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = RBDomainAttributeManagerDataProvider;
   v5 = [(RBDomainAttributeManagerDataProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
   }
@@ -46,16 +46,16 @@
   return v5;
 }
 
-- (RBDomainAttributeManagerDataProvider)initWithDictionary:(id)a3
+- (RBDomainAttributeManagerDataProvider)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = RBDomainAttributeManagerDataProvider;
   v6 = [(RBDomainAttributeManagerDataProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rawTemplates, a3);
+    objc_storeStrong(&v6->_rawTemplates, dictionary);
   }
 
   return v7;
@@ -63,19 +63,19 @@
 
 - (id)validationErrors
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(RBDomainAttributeManagerDataProvider *)self _validatedTemplatesByDomainWithErrors:v3];
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = [(RBDomainAttributeManagerDataProvider *)self _validatedTemplatesByDomainWithErrors:array];
 
-  return v3;
+  return array;
 }
 
 - (id)validDomains
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(RBDomainAttributeManagerDataProvider *)self _templatesByDomainWithErrors:v3];
-  v5 = [v4 allKeys];
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = [(RBDomainAttributeManagerDataProvider *)self _templatesByDomainWithErrors:array];
+  allKeys = [v4 allKeys];
 
-  return v5;
+  return allKeys;
 }
 
 void __78__RBDomainAttributeManagerDataProvider__validatedTemplatesByDomainWithErrors___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -293,15 +293,15 @@ LABEL_10:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_restrictionFromDictionary:(void *)a3 forDomainAttributeWithDomain:(void *)a4 name:(void *)a5 errors:
+- (id)_restrictionFromDictionary:(void *)dictionary forDomainAttributeWithDomain:(void *)domain name:(void *)name errors:
 {
   v25 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dictionaryCopy = dictionary;
+  domainCopy = domain;
+  nameCopy = name;
   v13 = 0;
-  if (a1 && v9)
+  if (self && v9)
   {
     v18 = 0;
     v13 = [RBDomainRestriction domainRestrictionForDictionary:v9 withError:&v18];
@@ -312,15 +312,15 @@ LABEL_10:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v20 = v10;
+        v20 = dictionaryCopy;
         v21 = 2114;
-        v22 = v11;
+        v22 = domainCopy;
         v23 = 2114;
         v24 = v14;
         _os_log_error_impl(&dword_262485000, v15, OS_LOG_TYPE_ERROR, "Domain %{public}@ attribute %{public}@ contains restriction that failed to resolve with error: %{public}@", buf, 0x20u);
       }
 
-      [v12 addObject:v14];
+      [nameCopy addObject:v14];
     }
   }
 
@@ -661,57 +661,57 @@ void __70__RBDomainAttributeManagerDataProvider__legalPropertyNamesByClassName__
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_validatedTemplatesByDomainWithErrors:(id)a1
+- (id)_validatedTemplatesByDomainWithErrors:(id)errors
 {
   v3 = a2;
-  if (a1)
+  if (errors)
   {
-    v4 = [(RBDomainAttributeManagerDataProvider *)a1 _templatesByDomainWithErrors:v3];
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    v4 = [(RBDomainAttributeManagerDataProvider *)errors _templatesByDomainWithErrors:v3];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __78__RBDomainAttributeManagerDataProvider__validatedTemplatesByDomainWithErrors___block_invoke;
     v16[3] = &unk_279B33F90;
-    v16[4] = a1;
-    v7 = v6;
+    v16[4] = errors;
+    v7 = dictionary2;
     v17 = v7;
     [v4 enumerateKeysAndObjectsUsingBlock:v16];
     OUTLINED_FUNCTION_0_2();
     v12[1] = 3221225472;
     v12[2] = __78__RBDomainAttributeManagerDataProvider__validatedTemplatesByDomainWithErrors___block_invoke_3;
     v12[3] = &unk_279B33FE0;
-    v12[4] = a1;
+    v12[4] = errors;
     v13 = v7;
     v14 = v3;
-    v8 = v5;
+    v8 = dictionary;
     v15 = v8;
     v9 = v7;
     [v4 enumerateKeysAndObjectsUsingBlock:v12];
     v10 = v15;
-    a1 = v8;
+    errors = v8;
   }
 
-  return a1;
+  return errors;
 }
 
-- (id)_templatesByDomainWithErrors:(uint64_t)a1
+- (id)_templatesByDomainWithErrors:(uint64_t)errors
 {
   v140[1] = *MEMORY[0x277D85DE8];
   v112 = a2;
-  if (a1)
+  if (errors)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    v4 = v3;
-    if (!*(a1 + 8))
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v4 = dictionary;
+    if (!*(errors + 8))
     {
-      v18 = *(a1 + 16);
+      v18 = *(errors + 16);
       v113[0] = MEMORY[0x277D85DD0];
       v113[1] = 3221225472;
       v113[2] = __69__RBDomainAttributeManagerDataProvider__templatesByDomainWithErrors___block_invoke;
       v113[3] = &unk_279B34008;
-      v114 = v3;
-      v115 = a1;
+      v114 = dictionary;
+      errorsCopy = errors;
       v116 = v112;
       [v18 enumerateKeysAndObjectsUsingBlock:v113];
 
@@ -724,14 +724,14 @@ LABEL_52:
     v5 = rbs_general_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = *(a1 + 8);
+      v6 = *(errors + 8);
       *buf = 138543362;
       v129 = v6;
       _os_log_impl(&dword_262485000, v5, OS_LOG_TYPE_DEFAULT, "Loading Domain Attributes from: %{public}@", buf, 0xCu);
     }
 
-    v7 = [*(a1 + 8) stringByDeletingLastPathComponent];
-    v8 = [v7 stringByAppendingPathComponent:@"domains.plist"];
+    stringByDeletingLastPathComponent = [*(errors + 8) stringByDeletingLastPathComponent];
+    v8 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:@"domains.plist"];
 
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v8];
     v10 = MEMORY[0x277CCA470];
@@ -748,11 +748,11 @@ LABEL_52:
         {
 LABEL_20:
 
-          v27 = [MEMORY[0x277CCAA00] defaultManager];
-          v110 = a1;
-          v28 = *(a1 + 8);
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+          errorsCopy2 = errors;
+          v28 = *(errors + 8);
           v126 = 0;
-          v29 = [v27 contentsOfDirectoryAtPath:v28 error:&v126];
+          v29 = [defaultManager contentsOfDirectoryAtPath:v28 error:&v126];
           v104 = v126;
 
           v124 = 0u;
@@ -780,11 +780,11 @@ LABEL_20:
                 }
 
                 v38 = *(*(&v122 + 1) + 8 * v36);
-                v39 = [v38 stringByDeletingPathExtension];
+                stringByDeletingPathExtension = [v38 stringByDeletingPathExtension];
                 if ([v37 containsObject:v38])
                 {
-                  v52 = [(RBDomainAttributeManagerDataProvider *)v110 _templatesWithDomain:v39 fromFilename:v38 errors:v112];
-                  [v109 setObject:v52 forKeyedSubscript:v39];
+                  v52 = [(RBDomainAttributeManagerDataProvider *)errorsCopy2 _templatesWithDomain:stringByDeletingPathExtension fromFilename:v38 errors:v112];
+                  [v109 setObject:v52 forKeyedSubscript:stringByDeletingPathExtension];
                 }
 
                 else
@@ -800,7 +800,7 @@ LABEL_20:
 
                   v49 = MEMORY[0x277CCA9B8];
                   v132 = v35;
-                  v100 = v39;
+                  v100 = stringByDeletingPathExtension;
                   v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"Domain %@ not allowed"];
                   v133 = v50;
                   v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v133 forKeys:&v132 count:1];
@@ -823,10 +823,10 @@ LABEL_20:
 
           if (os_variant_has_internal_content())
           {
-            v55 = [v110[1] stringByReplacingOccurrencesOfString:@"System/Library/LifecyclePolicy" withString:@"AppleInternal/LifecyclePolicy"];
-            v56 = [MEMORY[0x277CCAA00] defaultManager];
+            v55 = [errorsCopy2[1] stringByReplacingOccurrencesOfString:@"System/Library/LifecyclePolicy" withString:@"AppleInternal/LifecyclePolicy"];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
             v121 = v104;
-            v57 = [v56 contentsOfDirectoryAtPath:v55 error:&v121];
+            v57 = [defaultManager2 contentsOfDirectoryAtPath:v55 error:&v121];
             v103 = v121;
 
             v58 = rbs_general_log();
@@ -863,8 +863,8 @@ LABEL_20:
                   }
 
                   v65 = *(*(&v117 + 1) + 8 * i);
-                  v66 = [v65 stringByDeletingPathExtension];
-                  v67 = [v109 objectForKeyedSubscript:v66];
+                  stringByDeletingPathExtension2 = [v65 stringByDeletingPathExtension];
+                  v67 = [v109 objectForKeyedSubscript:stringByDeletingPathExtension2];
 
                   v68 = rbs_general_log();
                   v69 = os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT);
@@ -876,7 +876,7 @@ LABEL_20:
                     }
 
                     OUTLINED_FUNCTION_18_1(v69, v70, v71, v72, v73, v74, v75, v76, v100, v101, v103, v104, v105, v106, v108);
-                    *(v80 + 212) = v66;
+                    *(v80 + 212) = stringByDeletingPathExtension2;
                     v78 = v68;
                     v79 = "Replacing domain %{public}@ with internal version";
                   }
@@ -889,7 +889,7 @@ LABEL_20:
                     }
 
                     OUTLINED_FUNCTION_18_1(v69, v70, v71, v72, v73, v74, v75, v76, v100, v101, v103, v104, v105, v106, v108);
-                    *(v77 + 212) = v66;
+                    *(v77 + 212) = stringByDeletingPathExtension2;
                     v78 = v68;
                     v79 = "Adding internal domain %{public}@";
                   }
@@ -897,8 +897,8 @@ LABEL_20:
                   _os_log_impl(&dword_262485000, v78, OS_LOG_TYPE_DEFAULT, v79, buf, 0xCu);
 LABEL_47:
 
-                  v81 = [(RBDomainAttributeManagerDataProvider *)v110 _templatesWithDomain:v66 fromFilename:v65 dirpath:v55 errors:v112];
-                  [v109 setObject:v81 forKeyedSubscript:v66];
+                  v81 = [(RBDomainAttributeManagerDataProvider *)errorsCopy2 _templatesWithDomain:stringByDeletingPathExtension2 fromFilename:v65 dirpath:v55 errors:v112];
+                  [v109 setObject:v81 forKeyedSubscript:stringByDeletingPathExtension2];
                 }
 
                 v62 = [v30 countByEnumeratingWithState:&v117 objects:v127 count:16];
@@ -998,27 +998,27 @@ LABEL_53:
 
 - (id)templatesByDomain
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(RBDomainAttributeManagerDataProvider *)self _validatedTemplatesByDomainWithErrors:v3];
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = [(RBDomainAttributeManagerDataProvider *)self _validatedTemplatesByDomainWithErrors:array];
 
   return v4;
 }
 
-- (void)_preDomainAttributeTemplateFromDomainAttributeTemplate:(void *)a3 generateDependenciesByFullyQualifiedName:
+- (void)_preDomainAttributeTemplateFromDomainAttributeTemplate:(void *)template generateDependenciesByFullyQualifiedName:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  templateCopy = template;
+  if (self)
   {
-    v7 = [v5 attributeGroups];
+    attributeGroups = [v5 attributeGroups];
     OUTLINED_FUNCTION_0_1();
     OUTLINED_FUNCTION_31_0();
     v9 = __136__RBDomainAttributeManagerDataProvider__preDomainAttributeTemplateFromDomainAttributeTemplate_generateDependenciesByFullyQualifiedName___block_invoke;
     v10 = &unk_279B340A8;
-    v11 = a1;
+    selfCopy = self;
     v12 = v5;
-    v13 = v6;
-    [v7 enumerateObjectsUsingBlock:v8];
+    v13 = templateCopy;
+    [attributeGroups enumerateObjectsUsingBlock:v8];
   }
 }
 
@@ -1067,8 +1067,8 @@ LABEL_53:
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_1_18() setRestriction:?];
 
-    v16 = [MEMORY[0x277CBEB18] array];
-    v17 = [v6 attributeGroups];
+    array = [MEMORY[0x277CBEB18] array];
+    attributeGroups = [v6 attributeGroups];
     OUTLINED_FUNCTION_0_1();
     OUTLINED_FUNCTION_31_0();
     v21 = __141__RBDomainAttributeManagerDataProvider__validatedDomainAttributeTemplateFromDomainAttributeTemplate_dependenciesByFullyQualifiedName_errors___block_invoke;
@@ -1077,9 +1077,9 @@ LABEL_53:
     v24 = v6;
     v25 = v7;
     v26 = v8;
-    v27 = v16;
-    v18 = v16;
-    [v17 enumerateObjectsUsingBlock:v20];
+    v27 = array;
+    v18 = array;
+    [attributeGroups enumerateObjectsUsingBlock:v20];
 
     [(RBDomainAttributeTemplate *)v9 setAttributeGroups:v18];
   }
@@ -1092,73 +1092,73 @@ LABEL_53:
   return v9;
 }
 
-- (void)_templatesWithDomain:(void *)a3 fromFilename:(void *)a4 errors:
+- (void)_templatesWithDomain:(void *)domain fromFilename:(void *)filename errors:
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(RBDomainAttributeManagerDataProvider *)a1 _templatesWithDomain:a2 fromFilename:a3 dirpath:a1[1] errors:a4];
+    self = [(RBDomainAttributeManagerDataProvider *)self _templatesWithDomain:a2 fromFilename:domain dirpath:self[1] errors:filename];
     v4 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_templatesWithDomain:(void *)a3 fromFilename:(void *)a4 dirpath:(void *)a5 errors:
+- (id)_templatesWithDomain:(void *)domain fromFilename:(void *)filename dirpath:(void *)dirpath errors:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (a1)
+  domainCopy = domain;
+  dirpathCopy = dirpath;
+  if (self)
   {
-    v12 = [a4 stringByAppendingPathComponent:v10];
+    v12 = [filename stringByAppendingPathComponent:domainCopy];
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v12];
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     OUTLINED_FUNCTION_0_1();
     OUTLINED_FUNCTION_31_0();
     v19 = __89__RBDomainAttributeManagerDataProvider__templatesWithDomain_fromFilename_dirpath_errors___block_invoke;
     v20 = &unk_279B34058;
-    v21 = a1;
+    selfCopy = self;
     v22 = v9;
-    v23 = v11;
-    v15 = v14;
+    v23 = dirpathCopy;
+    v15 = dictionary;
     v24 = v15;
-    v25 = v10;
+    v25 = domainCopy;
     [v13 enumerateKeysAndObjectsUsingBlock:v18];
     v16 = v25;
-    a1 = v15;
+    self = v15;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_templatesWithDomain:(void *)a3 fromDictionary:(void *)a4 errors:
+- (id)_templatesWithDomain:(void *)domain fromDictionary:(void *)dictionary errors:
 {
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  dictionaryCopy = dictionary;
+  if (self)
   {
     v9 = MEMORY[0x277CBEB38];
-    v10 = a3;
-    v11 = [v9 dictionary];
+    domainCopy = domain;
+    dictionary = [v9 dictionary];
     OUTLINED_FUNCTION_0_2();
     v15[1] = 3221225472;
     v15[2] = __83__RBDomainAttributeManagerDataProvider__templatesWithDomain_fromDictionary_errors___block_invoke;
     v15[3] = &unk_279B33888;
-    v15[4] = a1;
+    v15[4] = self;
     v16 = v7;
-    v17 = v8;
-    v12 = v11;
+    v17 = dictionaryCopy;
+    v12 = dictionary;
     v18 = v12;
-    [v10 enumerateKeysAndObjectsUsingBlock:v15];
+    [domainCopy enumerateKeysAndObjectsUsingBlock:v15];
 
     v13 = v18;
-    a1 = v12;
+    self = v12;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_attributeTemplateForItem:(uint64_t)a3 domain:(uint64_t)a4 name:(void *)a5 errors:
+- (id)_attributeTemplateForItem:(uint64_t)item domain:(uint64_t)domain name:(void *)name errors:
 {
   OUTLINED_FUNCTION_11_1();
   v9 = v8;
@@ -1166,7 +1166,7 @@ LABEL_53:
   v11 = v10;
   v12 = v5;
   v93 = v6;
-  v92 = a5;
+  nameCopy = name;
   if (!v9)
   {
     v30 = 0;
@@ -1180,7 +1180,7 @@ LABEL_53:
     v32 = OUTLINED_FUNCTION_27(v31);
     if (v32)
     {
-      OUTLINED_FUNCTION_5_6(5.8383e-34, v32, v33, v34, v35, v36, v37, v38, v39, v76, v77, v78, v79, v80, v82, v84, v85, v86, v88, v90, v92, v93);
+      OUTLINED_FUNCTION_5_6(5.8383e-34, v32, v33, v34, v35, v36, v37, v38, v39, v76, v77, v78, v79, v80, v82, v84, v85, v86, v88, v90, nameCopy, v93);
       v113 = v11;
       OUTLINED_FUNCTION_14_1(&dword_262485000, v61, v62, "Domain %{public}@ attribute %{public}@ contains subattribute template of wrong type: %{public}@");
     }
@@ -1192,7 +1192,7 @@ LABEL_53:
     v42 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v107 forKeys:&v106 count:1];
     v13 = [v40 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:2 userInfo:v42];
 
-    [v92 addObject:v13];
+    [nameCopy addObject:v13];
     v30 = 0;
     goto LABEL_12;
   }
@@ -1205,7 +1205,7 @@ LABEL_53:
     v15 = OUTLINED_FUNCTION_27(v14);
     if (v15)
     {
-      OUTLINED_FUNCTION_5_6(5.8383e-34, v15, v16, v17, v18, v19, v20, v21, v22, v76, v77, v78, v79, v80, v82, v84, v85, v86, v88, v90, v92, v93);
+      OUTLINED_FUNCTION_5_6(5.8383e-34, v15, v16, v17, v18, v19, v20, v21, v22, v76, v77, v78, v79, v80, v82, v84, v85, v86, v88, v90, nameCopy, v93);
       v113 = v13;
       OUTLINED_FUNCTION_14_1(&dword_262485000, v63, v64, "Domain %{public}@ attribute %{public}@ contains subattribute with class name of wrong type: %{public}@");
     }
@@ -1221,7 +1221,7 @@ LABEL_7:
     v28 = [v25 dictionaryWithObjects:v26 forKeys:v27 count:1];
     v29 = [v23 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:2 userInfo:v28];
 
-    [v92 addObject:v29];
+    [nameCopy addObject:v29];
     v30 = 0;
     goto LABEL_8;
   }
@@ -1232,7 +1232,7 @@ LABEL_7:
     v66 = OUTLINED_FUNCTION_27(v65);
     if (v66)
     {
-      OUTLINED_FUNCTION_5_6(5.8383e-34, v66, v67, v68, v69, v70, v71, v72, v73, v76, v77, v78, v79, v80, v82, v84, v85, v86, v88, v90, v92, v93);
+      OUTLINED_FUNCTION_5_6(5.8383e-34, v66, v67, v68, v69, v70, v71, v72, v73, v76, v77, v78, v79, v80, v82, v84, v85, v86, v88, v90, nameCopy, v93);
       v113 = v13;
       OUTLINED_FUNCTION_14_1(&dword_262485000, v74, v75, "Domain %{public}@ attribute %{public}@ contains subattribute property with an unsupported class name: %{public}@");
     }
@@ -1298,7 +1298,7 @@ LABEL_7:
 
         else
         {
-          [v92 addObject:v54];
+          [nameCopy addObject:v54];
         }
 
         v12 = v87;
@@ -1325,7 +1325,7 @@ LABEL_7:
         v59 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v100 forKeys:&v99 count:1];
         v54 = [v57 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:2 userInfo:v59];
 
-        [v92 addObject:v54];
+        [nameCopy addObject:v54];
       }
 
 LABEL_30:
@@ -1342,7 +1342,7 @@ LABEL_35:
 
   v13 = v91;
   v29 = v83;
-  v30 = [RBAttributeFactory attributeForClass:v91 andProperties:v83 errors:v92];
+  v30 = [RBAttributeFactory attributeForClass:v91 andProperties:v83 errors:nameCopy];
   v11 = v81;
 LABEL_8:
 
@@ -1360,8 +1360,8 @@ LABEL_13:
   {
     v2 = result;
     v3 = a2;
-    v4 = [(RBDomainAttributeManagerDataProvider *)v2 _legalClassNames];
-    v5 = [v4 containsObject:v3];
+    _legalClassNames = [(RBDomainAttributeManagerDataProvider *)v2 _legalClassNames];
+    v5 = [_legalClassNames containsObject:v3];
 
     return v5;
   }
@@ -1369,7 +1369,7 @@ LABEL_13:
   return result;
 }
 
-- (uint64_t)_isPropertyLegalForClassName:(uint64_t)a3 propertyName:(uint64_t)a4 value:(uint64_t)a5 error:
+- (uint64_t)_isPropertyLegalForClassName:(uint64_t)name propertyName:(uint64_t)propertyName value:(uint64_t)value error:
 {
   OUTLINED_FUNCTION_11_1();
   v9 = v8;
@@ -1379,12 +1379,12 @@ LABEL_13:
   v13 = v6;
   if (!v9)
   {
-    a5 = 0;
+    value = 0;
     goto LABEL_13;
   }
 
-  v14 = [(RBDomainAttributeManagerDataProvider *)v9 _legalPropertyNamesByClassName];
-  v15 = [v14 objectForKeyedSubscript:v11];
+  _legalPropertyNamesByClassName = [(RBDomainAttributeManagerDataProvider *)v9 _legalPropertyNamesByClassName];
+  v15 = [_legalPropertyNamesByClassName objectForKeyedSubscript:v11];
   v16 = [v15 objectForKeyedSubscript:v12];
   v17 = v16;
   if (!v16)
@@ -1399,7 +1399,7 @@ LABEL_13:
       OUTLINED_FUNCTION_11_0(&dword_262485000, v21, v22, "Unknown property %{public}@ of attribute class %{public}@", buf);
     }
 
-    if (!a5)
+    if (!value)
     {
       goto LABEL_12;
     }
@@ -1413,17 +1413,17 @@ LABEL_13:
     v27 = &v40;
 LABEL_11:
     v28 = [v25 dictionaryWithObjects:v26 forKeys:v27 count:1];
-    *a5 = [v23 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:3 userInfo:v28];
+    *value = [v23 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:3 userInfo:v28];
 
-    a5 = 0;
+    value = 0;
     goto LABEL_12;
   }
 
   if (([v16 containsObject:v13] & 1) == 0 && objc_msgSend(v17, "count") != 1)
   {
-    v18 = [v17 firstObject];
-    v19 = [MEMORY[0x277CBEB68] null];
-    v20 = [v18 isEqual:v19];
+    firstObject = [v17 firstObject];
+    null = [MEMORY[0x277CBEB68] null];
+    v20 = [firstObject isEqual:null];
 
     if ((v20 & 1) == 0)
     {
@@ -1439,7 +1439,7 @@ LABEL_11:
         _os_log_error_impl(&dword_262485000, v31, OS_LOG_TYPE_ERROR, "Unknown value %{public}@ for property %{public}@ of attribute class %{public}@", buf, 0x20u);
       }
 
-      if (!a5)
+      if (!value)
       {
         goto LABEL_12;
       }
@@ -1455,12 +1455,12 @@ LABEL_11:
     }
   }
 
-  a5 = 1;
+  value = 1;
 LABEL_12:
 
 LABEL_13:
   v29 = *MEMORY[0x277D85DE8];
-  return a5;
+  return value;
 }
 
 - (id)_attributeTemplatesFromArray:forDomainAttributeWithDomain:name:errors:
@@ -1473,7 +1473,7 @@ LABEL_13:
   v8 = v2;
   if (v3)
   {
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v5)
     {
       objc_opt_class();
@@ -1502,7 +1502,7 @@ LABEL_13:
               v15 = [(RBDomainAttributeManagerDataProvider *)v3 _attributeTemplateForItem:v6 domain:v7 name:v8 errors:?];
               if (v15)
               {
-                [v9 addObject:v15];
+                [array addObject:v15];
               }
             }
 
@@ -1512,7 +1512,7 @@ LABEL_13:
           while (v12);
         }
 
-        if ([v9 count])
+        if ([array count])
         {
           v5 = v45;
           goto LABEL_23;
@@ -1588,23 +1588,23 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v9 = 0;
+  array = 0;
 LABEL_23:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return array;
 }
 
-- (void)_configureTemplate:(uint64_t)a3 fromInfo:(uint64_t)a4 forDomain:(void *)a5 name:(char)a6 allowRestrictions:(void *)a7 errors:
+- (void)_configureTemplate:(uint64_t)template fromInfo:(uint64_t)info forDomain:(void *)domain name:(char)name allowRestrictions:(void *)restrictions errors:
 {
   OUTLINED_FUNCTION_11_1();
   v13 = v12;
   v15 = v14;
   v16 = v7;
   v17 = v8;
-  v18 = a5;
-  v19 = a7;
+  domainCopy = domain;
+  restrictionsCopy = restrictions;
   if (v13)
   {
     OUTLINED_FUNCTION_0_1();
@@ -1613,10 +1613,10 @@ LABEL_23:
     v22 = &unk_279B34030;
     v23 = v17;
     v24 = v16;
-    v29 = a6;
-    v25 = v19;
+    nameCopy = name;
+    v25 = restrictionsCopy;
     v26 = v13;
-    v27 = v18;
+    v27 = domainCopy;
     v28 = v15;
     [v24 enumerateKeysAndObjectsUsingBlock:v20];
   }
@@ -1632,7 +1632,7 @@ LABEL_23:
   v9 = v2;
   if (v3)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     if (!v6)
     {
       goto LABEL_10;
@@ -1645,7 +1645,7 @@ LABEL_23:
       v40 = v7;
       v43 = v8;
       v46 = v9;
-      v11 = v10;
+      v11 = dictionary;
       OUTLINED_FUNCTION_26_1(v11, v12, v13, v14, v15, v16, v17, v18, v31, v32, v33, v34, v35, 3221225472, __113__RBDomainAttributeManagerDataProvider__bundlePropertiesFromDictionary_forDomainAttributeWithDomain_name_errors___block_invoke, &unk_279B33888, v40, v43, v46, v48);
 
       v19 = v41;
@@ -1677,14 +1677,14 @@ LABEL_9:
 
   else
   {
-    v10 = 0;
+    dictionary = 0;
   }
 
 LABEL_10:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return dictionary;
 }
 
 - (id)_additionalRestrictionsFromDictionary:forDomainAttributeWithDomain:name:errors:
@@ -1697,7 +1697,7 @@ LABEL_10:
   v9 = v2;
   if (v3)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     if (!v6)
     {
       goto LABEL_10;
@@ -1710,7 +1710,7 @@ LABEL_10:
       v40 = v7;
       v43 = v8;
       v46 = v9;
-      v11 = v10;
+      v11 = dictionary;
       OUTLINED_FUNCTION_26_1(v11, v12, v13, v14, v15, v16, v17, v18, v31, v32, v33, v34, v35, 3221225472, __119__RBDomainAttributeManagerDataProvider__additionalRestrictionsFromDictionary_forDomainAttributeWithDomain_name_errors___block_invoke, &unk_279B33888, v40, v43, v46, v48);
 
       v19 = v41;
@@ -1742,22 +1742,22 @@ LABEL_9:
 
   else
   {
-    v10 = 0;
+    dictionary = 0;
   }
 
 LABEL_10:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return dictionary;
 }
 
-- (BOOL)_checkConflictingAttributes:(uint64_t)a3 error:
+- (BOOL)_checkConflictingAttributes:(uint64_t)attributes error:
 {
   if (result)
   {
     v4 = [MEMORY[0x277CBEB98] setWithArray:a2];
-    v5 = [RBAssertionDescriptorValidator checkConflictingAttributes:v4 error:a3];
+    v5 = [RBAssertionDescriptorValidator checkConflictingAttributes:v4 error:attributes];
 
     return v5;
   }
@@ -1765,7 +1765,7 @@ LABEL_10:
   return result;
 }
 
-- (id)_attributeTemplateGroupsFromArray:(uint64_t)a3 forDomainAttributeWithDomain:(uint64_t)a4 name:(NSObject *)a5 errors:
+- (id)_attributeTemplateGroupsFromArray:(uint64_t)array forDomainAttributeWithDomain:(uint64_t)domain name:(NSObject *)name errors:
 {
   OUTLINED_FUNCTION_11_1();
   v9 = v8;
@@ -1773,11 +1773,11 @@ LABEL_10:
   v11 = v10;
   v12 = v5;
   v13 = v6;
-  v51 = a5;
+  nameCopy = name;
   v49 = v9;
   if (v9)
   {
-    v14 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v11)
     {
       objc_opt_class();
@@ -1811,12 +1811,12 @@ LABEL_10:
               if (objc_opt_isKindOfClass())
               {
                 v26 = [v21 objectForKeyedSubscript:@"Attributes"];
-                a5 = [RBDomainAttributeManagerDataProvider _attributeTemplatesFromArray:forDomainAttributeWithDomain:name:errors:];
+                name = [RBDomainAttributeManagerDataProvider _attributeTemplatesFromArray:forDomainAttributeWithDomain:name:errors:];
 
-                if (a5)
+                if (name)
                 {
                   v52 = 0;
-                  v27 = [(RBDomainAttributeManagerDataProvider *)v49 _checkConflictingAttributes:a5 error:&v52];
+                  v27 = [(RBDomainAttributeManagerDataProvider *)v49 _checkConflictingAttributes:name error:&v52];
                   v48 = v52;
                   if (!v27)
                   {
@@ -1837,13 +1837,13 @@ LABEL_10:
                     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
                     v45 = [v44 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:5 userInfo:v28];
 
-                    [v51 addObject:v45];
+                    [nameCopy addObject:v45];
                   }
 
                   v29 = objc_alloc_init(RBAttributeTemplateGroup);
-                  [(RBAttributeTemplateGroup *)v29 setAttributes:a5];
-                  [(RBDomainAttributeManagerDataProvider *)v49 _configureTemplate:v29 fromInfo:v21 forDomain:v12 name:v13 allowRestrictions:0 errors:v51];
-                  [v14 addObject:v29];
+                  [(RBAttributeTemplateGroup *)v29 setAttributes:name];
+                  [(RBDomainAttributeManagerDataProvider *)v49 _configureTemplate:v29 fromInfo:v21 forDomain:v12 name:v13 allowRestrictions:0 errors:nameCopy];
+                  [array addObject:v29];
                 }
               }
 
@@ -1858,7 +1858,7 @@ LABEL_10:
                   v67 = v13;
                   v68 = 2114;
                   v69 = v21;
-                  _os_log_error_impl(&dword_262485000, a5, OS_LOG_TYPE_ERROR, "Domain %{public}@ attribute %{public}@ contains attribute group of wrong type: %{public}@", buf, 0x20u);
+                  _os_log_error_impl(&dword_262485000, name, OS_LOG_TYPE_ERROR, "Domain %{public}@ attribute %{public}@ contains attribute group of wrong type: %{public}@", buf, 0x20u);
                 }
 
                 v23 = MEMORY[0x277CCA9B8];
@@ -1866,9 +1866,9 @@ LABEL_10:
                 v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Domain %@ attribute %@ contains attribute group of wrong type: %@", v12, v13, v21];
                 v60 = v24;
                 v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v60 forKeys:&v59 count:1];
-                a5 = [v23 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:2 userInfo:v25];
+                name = [v23 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:2 userInfo:v25];
 
-                [v51 addObject:a5];
+                [nameCopy addObject:name];
               }
 
               ++v20;
@@ -1893,7 +1893,7 @@ LABEL_10:
         OUTLINED_FUNCTION_7_5(5.8383e-34);
         v68 = v42;
         v69 = v11;
-        _os_log_error_impl(&dword_262485000, a5, OS_LOG_TYPE_ERROR, "Domain %{public}@ attribute %{public}@ contains attribute groups data of wrong type: %{public}@", buf, 0x20u);
+        _os_log_error_impl(&dword_262485000, name, OS_LOG_TYPE_ERROR, "Domain %{public}@ attribute %{public}@ contains attribute groups data of wrong type: %{public}@", buf, 0x20u);
       }
 
       v38 = MEMORY[0x277CCA9B8];
@@ -1911,7 +1911,7 @@ LABEL_10:
       if (OUTLINED_FUNCTION_27(v31))
       {
         OUTLINED_FUNCTION_7_5(5.8382e-34);
-        OUTLINED_FUNCTION_11_0(&dword_262485000, a5, v41, "Domain %{public}@ attribute %{public}@ contains no attribute groups", buf);
+        OUTLINED_FUNCTION_11_0(&dword_262485000, name, v41, "Domain %{public}@ attribute %{public}@ contains no attribute groups", buf);
       }
 
       v32 = MEMORY[0x277CCA9B8];
@@ -1925,18 +1925,18 @@ LABEL_10:
 
     v15 = [v35 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:v36 userInfo:v34];
 
-    [v51 addObject:v15];
+    [nameCopy addObject:v15];
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v14 = 0;
+  array = 0;
 LABEL_31:
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return array;
 }
 
 - (RBDomainAttributeTemplate)_templateWithDomain:name:dictionary:errors:
@@ -1979,9 +1979,9 @@ LABEL_31:
         v15 = &v34;
 LABEL_12:
         v18 = [v13 dictionaryWithObjects:v14 forKeys:v15 count:1];
-        v19 = [v11 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:2 userInfo:v18];
+        firstObject = [v11 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:2 userInfo:v18];
 
-        [v8 addObject:v19];
+        [v8 addObject:firstObject];
         v20 = 0;
 LABEL_13:
 
@@ -1996,9 +1996,9 @@ LABEL_13:
     [(RBDomainAttributeTemplate *)v20 setDomain:v5];
     [(RBDomainAttributeManagerDataProvider *)v3 _configureTemplate:v20 fromInfo:v7 forDomain:v5 name:v6 allowRestrictions:1 errors:v8];
     v23 = RBSArrayForKey();
-    v19 = [v23 firstObject];
+    firstObject = [v23 firstObject];
 
-    if (v19)
+    if (firstObject)
     {
       v25 = rbs_general_log();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
@@ -2015,7 +2015,7 @@ LABEL_13:
       v29 = [v26 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:3 userInfo:v28];
 
       [v8 addObject:v29];
-      v24 = v19;
+      v24 = firstObject;
     }
 
     else
@@ -2137,25 +2137,25 @@ void __83__RBDomainAttributeManagerDataProvider__templatesWithDomain_fromDiction
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_preAttributeTemplateFromAttributeTemplate:(void *)a3 domainAttributeTemplate:(void *)a4 generateDependenciesByFullyQualifiedName:
+- (void)_preAttributeTemplateFromAttributeTemplate:(void *)template domainAttributeTemplate:(void *)attributeTemplate generateDependenciesByFullyQualifiedName:
 {
   v21 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v8 = a4;
-  if (a1)
+  attributeTemplateCopy = attributeTemplate;
+  if (self)
   {
-    v9 = a3;
-    v10 = [(RBDomainAttributeTemplate *)v9 domain];
-    v11 = [(RBDomainAttributeTemplate *)v9 name];
+    templateCopy = template;
+    domain = [(RBDomainAttributeTemplate *)templateCopy domain];
+    name = [(RBDomainAttributeTemplate *)templateCopy name];
 
-    v12 = [v10 stringByAppendingPathExtension:v11];
+    v12 = [domain stringByAppendingPathExtension:name];
 
     objc_opt_class();
     if (OUTLINED_FUNCTION_25_1())
     {
       v13 = v7;
-      v14 = [v13 domain];
-      v15 = [v13 name];
+      domain2 = [v13 domain];
+      name2 = [v13 name];
       v16 = [OUTLINED_FUNCTION_15_1() stringByAppendingPathExtension:?];
       if ([v16 isEqualToString:v12])
       {
@@ -2170,11 +2170,11 @@ void __83__RBDomainAttributeManagerDataProvider__templatesWithDomain_fromDiction
 
       else
       {
-        v17 = [v8 objectForKeyedSubscript:v12];
+        v17 = [attributeTemplateCopy objectForKeyedSubscript:v12];
         if (!v17)
         {
           v17 = [MEMORY[0x277CBEB58] set];
-          [v8 setObject:v17 forKeyedSubscript:v12];
+          [attributeTemplateCopy setObject:v17 forKeyedSubscript:v12];
         }
 
         [v17 addObject:v16];
@@ -2185,17 +2185,17 @@ void __83__RBDomainAttributeManagerDataProvider__templatesWithDomain_fromDiction
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_validatedAttributeTemplateFromAttributeTemplate:(void *)a3 domainAttributeTemplate:(void *)a4 dependenciesByFullyQualifiedName:(void *)a5 errors:
+- (id)_validatedAttributeTemplateFromAttributeTemplate:(void *)template domainAttributeTemplate:(void *)attributeTemplate dependenciesByFullyQualifiedName:(void *)name errors:
 {
   v39[1] = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a4;
-  v11 = a5;
-  if (a1)
+  attributeTemplateCopy = attributeTemplate;
+  nameCopy = name;
+  if (self)
   {
-    v12 = a3;
-    v13 = [(RBDomainAttributeTemplate *)v12 domain];
-    v14 = [(RBDomainAttributeTemplate *)v12 name];
+    templateCopy = template;
+    domain = [(RBDomainAttributeTemplate *)templateCopy domain];
+    name = [(RBDomainAttributeTemplate *)templateCopy name];
 
     v15 = [OUTLINED_FUNCTION_15_1() stringByAppendingPathExtension:?];
 
@@ -2203,9 +2203,9 @@ void __83__RBDomainAttributeManagerDataProvider__templatesWithDomain_fromDiction
     if (OUTLINED_FUNCTION_25_1())
     {
       v16 = v9;
-      v17 = [v16 domain];
-      v18 = [v16 name];
-      v19 = [v17 stringByAppendingPathExtension:v18];
+      domain2 = [v16 domain];
+      name2 = [v16 name];
+      v19 = [domain2 stringByAppendingPathExtension:name2];
       if ([v19 isEqualToString:v15])
       {
         v20 = rbs_assertion_log();
@@ -2216,7 +2216,7 @@ void __83__RBDomainAttributeManagerDataProvider__templatesWithDomain_fromDiction
           _os_log_error_impl(&dword_262485000, v20, OS_LOG_TYPE_ERROR, "Domain attribute %{public}@ attempts to include itself", buf, 0xCu);
         }
 
-        if (!v11)
+        if (!nameCopy)
         {
           goto LABEL_14;
         }
@@ -2228,22 +2228,22 @@ void __83__RBDomainAttributeManagerDataProvider__templatesWithDomain_fromDiction
         [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
         objc_claimAutoreleasedReturnValue();
         OUTLINED_FUNCTION_12_0();
-        v23 = [v21 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:3 userInfo:v17];
+        v23 = [v21 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:3 userInfo:domain2];
 
         OUTLINED_FUNCTION_24_1();
         v19 = v31;
 
-        [v11 addObject:v23];
+        [nameCopy addObject:v23];
 LABEL_13:
 
 LABEL_14:
-        a1 = 0;
+        self = 0;
 LABEL_17:
 
         goto LABEL_18;
       }
 
-      v23 = [v10 objectForKeyedSubscript:v19];
+      v23 = [attributeTemplateCopy objectForKeyedSubscript:v19];
       if ([v23 containsObject:v15])
       {
         v24 = rbs_assertion_log();
@@ -2256,7 +2256,7 @@ LABEL_17:
           OUTLINED_FUNCTION_11_0(&dword_262485000, v24, v25, "Detected cycle between domain attributes %{public}@ and %{public}@", buf);
         }
 
-        if (v11)
+        if (nameCopy)
         {
           v26 = MEMORY[0x277CCA9B8];
           v32 = *MEMORY[0x277CCA470];
@@ -2265,19 +2265,19 @@ LABEL_17:
           [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
           objc_claimAutoreleasedReturnValue();
           OUTLINED_FUNCTION_12_0();
-          v27 = [v26 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:3 userInfo:v17];
+          v27 = [v26 errorWithDomain:@"RBDomainAttributeManagerDataProviderErrorDomain" code:3 userInfo:domain2];
 
           OUTLINED_FUNCTION_24_1();
           v19 = v31;
 
-          [v11 addObject:v27];
+          [nameCopy addObject:v27];
         }
 
         goto LABEL_13;
       }
     }
 
-    a1 = [v9 copy];
+    self = [v9 copy];
     goto LABEL_17;
   }
 
@@ -2285,39 +2285,39 @@ LABEL_18:
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
 - (id)_legalPropertyNamesByClassName
 {
-  if (a1)
+  if (self)
   {
     if (qword_2814AA110 != -1)
     {
       dispatch_once(&qword_2814AA110, &__block_literal_global_263);
     }
 
-    a1 = qword_2814AA108;
+    self = qword_2814AA108;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_legalClassNames
 {
-  if (a1)
+  if (self)
   {
     if (qword_2814AA100 != -1)
     {
       dispatch_once(&qword_2814AA100, &__block_literal_global_25);
     }
 
-    a1 = _MergedGlobals_1;
+    self = _MergedGlobals_1;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __113__RBDomainAttributeManagerDataProvider__bundlePropertiesFromDictionary_forDomainAttributeWithDomain_name_errors___block_invoke_cold_1(uint64_t a1)

@@ -1,14 +1,14 @@
 @interface _UINavigationInteractiveTransition
-- (BOOL)_gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4;
-- (BOOL)_isBackGestureRecognizer:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_UINavigationInteractiveTransition)initWithViewController:(id)a3 animator:(id)a4;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event;
+- (BOOL)_isBackGestureRecognizer:(id)recognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_UINavigationInteractiveTransition)initWithViewController:(id)controller animator:(id)animator;
 - (id)gestureRecognizerView;
 - (void)_configureNavigationGesture;
-- (void)_setShouldReverseLayoutDirection:(BOOL)a3;
+- (void)_setShouldReverseLayoutDirection:(BOOL)direction;
 - (void)setNotInteractiveTransition;
 - (void)startInteractiveTransition;
 @end
@@ -18,7 +18,7 @@
 - (void)_configureNavigationGesture
 {
   WeakRetained = objc_loadWeakRetained(&self->super.__parent);
-  v15 = [WeakRetained view];
+  view = [WeakRetained view];
 
   v4 = objc_loadWeakRetained(&self->super._gestureRecognizer);
   v5 = v4;
@@ -27,7 +27,7 @@
   {
     if (v4 != edgePanRecognizer)
     {
-      [v15 removeGestureRecognizer:?];
+      [view removeGestureRecognizer:?];
       edgePanRecognizer = self->_edgePanRecognizer;
     }
 
@@ -38,7 +38,7 @@
 
   if (v5)
   {
-    [v15 removeGestureRecognizer:v5];
+    [view removeGestureRecognizer:v5];
     [(UIPanGestureRecognizer *)v5 setDelegate:0];
     objc_storeWeak(&self->super._gestureRecognizer, 0);
   }
@@ -46,7 +46,7 @@
   v8 = self->super._contentSwipeGestureRecognizer;
   if (v8)
   {
-    [v15 removeGestureRecognizer:v8];
+    [view removeGestureRecognizer:v8];
     [(UIPanGestureRecognizer *)v8 setDelegate:0];
     contentSwipeGestureRecognizer = self->super._contentSwipeGestureRecognizer;
     self->super._contentSwipeGestureRecognizer = 0;
@@ -69,42 +69,42 @@
   [(UIGestureRecognizer *)self->_edgePanRecognizer setName:@"UINavigationController.edgeSwipe"];
   [(UIScreenEdgePanGestureRecognizer *)self->_edgePanRecognizer setEdges:v10];
   [(UIPanGestureRecognizer *)self->_edgePanRecognizer setDelegate:self];
-  [v15 addGestureRecognizer:self->_edgePanRecognizer];
+  [view addGestureRecognizer:self->_edgePanRecognizer];
   if (+[_UIParallaxTransitionPanGestureRecognizer isContentBackSwipeEnabled])
   {
-    v13 = [(_UINavigationInteractiveTransitionBase *)self _createContentSwipeGestureRecognizer];
+    _createContentSwipeGestureRecognizer = [(_UINavigationInteractiveTransitionBase *)self _createContentSwipeGestureRecognizer];
     v14 = self->super._contentSwipeGestureRecognizer;
-    self->super._contentSwipeGestureRecognizer = v13;
+    self->super._contentSwipeGestureRecognizer = _createContentSwipeGestureRecognizer;
 
     [(UIGestureRecognizer *)self->super._contentSwipeGestureRecognizer setName:@"UINavigationController.contentSwipe"];
     [(UIScreenEdgePanGestureRecognizer *)self->super._contentSwipeGestureRecognizer setEdges:v10];
     [(UIPanGestureRecognizer *)self->super._contentSwipeGestureRecognizer setDelegate:self];
-    [v15 addGestureRecognizer:self->super._contentSwipeGestureRecognizer];
+    [view addGestureRecognizer:self->super._contentSwipeGestureRecognizer];
     [(UIGestureRecognizer *)self->super._contentSwipeGestureRecognizer requireGestureRecognizerToFail:self->_edgePanRecognizer];
   }
 
   objc_storeWeak(&self->super._gestureRecognizer, self->_edgePanRecognizer);
 }
 
-- (_UINavigationInteractiveTransition)initWithViewController:(id)a3 animator:(id)a4
+- (_UINavigationInteractiveTransition)initWithViewController:(id)controller animator:(id)animator
 {
   v10.receiver = self;
   v10.super_class = _UINavigationInteractiveTransition;
-  v5 = a4;
-  v6 = a3;
+  animatorCopy = animator;
+  controllerCopy = controller;
   v7 = [(UIPercentDrivenInteractiveTransition *)&v10 init];
   v7->super.__useAugmentedShouldPopDecisionProcedure = _UINavigationControllerUseAugmentedPopGesture();
   v7->super.__interactionState = 0;
-  objc_storeWeak(&v7->super.__parent, v6);
+  objc_storeWeak(&v7->super.__parent, controllerCopy);
   v7->super.__completesTransitionOnEnd = 1;
-  [(_UINavigationInteractiveTransitionBase *)v7 setAnimationController:v5, v10.receiver, v10.super_class];
+  [(_UINavigationInteractiveTransitionBase *)v7 setAnimationController:animatorCopy, v10.receiver, v10.super_class];
 
   [(_UINavigationInteractiveTransition *)v7 _configureNavigationGesture];
   [(UIPercentDrivenInteractiveTransition *)v7 _setUsesPacedFractionComplete:1];
-  v8 = [v6 traitCollection];
+  traitCollection = [controllerCopy traitCollection];
 
-  LODWORD(v6) = [UIView _fluidParallaxTransitionsEnabledWithTraitCollection:v8];
-  if (v6)
+  LODWORD(controllerCopy) = [UIView _fluidParallaxTransitionsEnabledWithTraitCollection:traitCollection];
+  if (controllerCopy)
   {
     [(UIPercentDrivenInteractiveTransition *)v7 _setClampsPercentComplete:0];
   }
@@ -112,13 +112,13 @@
   return v7;
 }
 
-- (void)_setShouldReverseLayoutDirection:(BOOL)a3
+- (void)_setShouldReverseLayoutDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   v6.receiver = self;
   v6.super_class = _UINavigationInteractiveTransition;
   [(_UINavigationInteractiveTransitionBase *)&v6 _setShouldReverseLayoutDirection:?];
-  if (v3)
+  if (directionCopy)
   {
     v5 = 8;
   }
@@ -132,34 +132,34 @@
   [(UIScreenEdgePanGestureRecognizer *)self->_edgePanRecognizer setEdges:v5];
 }
 
-- (BOOL)_isBackGestureRecognizer:(id)a3
+- (BOOL)_isBackGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   WeakRetained = objc_loadWeakRetained(&self->super._gestureRecognizer);
-  v6 = WeakRetained == v4 || self->_edgePanRecognizer == v4 || self->super._contentSwipeGestureRecognizer == v4;
+  v6 = WeakRetained == recognizerCopy || self->_edgePanRecognizer == recognizerCopy || self->super._contentSwipeGestureRecognizer == recognizerCopy;
 
   return v6;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldReceiveEvent:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldReceiveEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  eventCopy = event;
   WeakRetained = objc_loadWeakRetained(&self->super.__parent);
-  if ([(_UINavigationInteractiveTransition *)self _isBackGestureRecognizer:v6])
+  if ([(_UINavigationInteractiveTransition *)self _isBackGestureRecognizer:recognizerCopy])
   {
     if (dyld_program_sdk_at_least())
     {
-      v9 = [(UIGestureRecognizer *)v6 _failureDependents];
-      if ([v9 count])
+      _failureDependents = [(UIGestureRecognizer *)recognizerCopy _failureDependents];
+      if ([_failureDependents count])
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(UIGestureRecognizer *)v6 _failureRequirements];
-        v10 = [v13 count] != 0;
+        _failureRequirements = [(UIGestureRecognizer *)recognizerCopy _failureRequirements];
+        v10 = [_failureRequirements count] != 0;
       }
     }
 
@@ -169,7 +169,7 @@
     }
 
     edgePanRecognizer = self->_edgePanRecognizer;
-    if (!edgePanRecognizer || (contentSwipeGestureRecognizer = self->super._contentSwipeGestureRecognizer) == 0 || (edgePanRecognizer != v6 ? (v16 = contentSwipeGestureRecognizer == v6) : (v16 = 1), !v16))
+    if (!edgePanRecognizer || (contentSwipeGestureRecognizer = self->super._contentSwipeGestureRecognizer) == 0 || (edgePanRecognizer != recognizerCopy ? (v16 = contentSwipeGestureRecognizer == recognizerCopy) : (v16 = 1), !v16))
     {
 LABEL_22:
       if (([WeakRetained _shouldUseBuiltinInteractionController] & 1) == 0 && !v10)
@@ -177,19 +177,19 @@ LABEL_22:
         goto LABEL_24;
       }
 
-      v25 = [WeakRetained traitCollection];
-      if ([UIView _interruptibleParallaxTransitionsEnabledWithTraitCollection:v25])
+      traitCollection = [WeakRetained traitCollection];
+      if ([UIView _interruptibleParallaxTransitionsEnabledWithTraitCollection:traitCollection])
       {
-        v26 = [(_UINavigationInteractiveTransitionBase *)self _shouldPauseRunningTransition];
+        _shouldPauseRunningTransition = [(_UINavigationInteractiveTransitionBase *)self _shouldPauseRunningTransition];
 
-        if (v26)
+        if (_shouldPauseRunningTransition)
         {
           v27 = [_UIViewControllerTransitionContext _associatedTransitionContextsForInteractionController:self];
           v28 = [v27 count];
 
           if (v28)
           {
-            LOBYTE(v12) = 1;
+            LOBYTE(_isCurrentTransitionPreemptable) = 1;
             goto LABEL_25;
           }
         }
@@ -199,68 +199,68 @@ LABEL_22:
       {
       }
 
-      v12 = [WeakRetained _isCurrentTransitionPreemptable];
+      _isCurrentTransitionPreemptable = [WeakRetained _isCurrentTransitionPreemptable];
       if ([WeakRetained _isTransitioning])
       {
-        if (!v12)
+        if (!_isCurrentTransitionPreemptable)
         {
           goto LABEL_25;
         }
       }
 
-      else if (!(v12 & 1 | (([WeakRetained needsDeferredTransition] & 1) == 0)))
+      else if (!(_isCurrentTransitionPreemptable & 1 | (([WeakRetained needsDeferredTransition] & 1) == 0)))
       {
         goto LABEL_24;
       }
 
-      v29 = [WeakRetained _transitionCoordinator];
-      v30 = v29 == 0;
+      _transitionCoordinator = [WeakRetained _transitionCoordinator];
+      v30 = _transitionCoordinator == 0;
 
-      if ((v30 | v12))
+      if ((v30 | _isCurrentTransitionPreemptable))
       {
         v31 = +[UIPeripheralHost sharedInstance];
-        v32 = [v31 _isTransitioning];
+        _isTransitioning = [v31 _isTransitioning];
 
-        if ((v32 & 1) == 0)
+        if ((_isTransitioning & 1) == 0)
         {
-          v11 = [WeakRetained _shouldInteractivePopGestureBeEnabled];
+          _shouldInteractivePopGestureBeEnabled = [WeakRetained _shouldInteractivePopGestureBeEnabled];
           goto LABEL_6;
         }
       }
 
 LABEL_24:
-      LOBYTE(v12) = 0;
+      LOBYTE(_isCurrentTransitionPreemptable) = 0;
       goto LABEL_25;
     }
 
     v17 = edgePanRecognizer->super.super.super._failureDependents;
-    v18 = [(UIGestureRecognizer *)&self->_edgePanRecognizer->super.super.super.super.isa _failureRequirements];
-    v19 = [(UIGestureRecognizer *)&self->super._contentSwipeGestureRecognizer->super.super.super.super.isa _failureDependents];
-    v20 = [(UIGestureRecognizer *)&self->super._contentSwipeGestureRecognizer->super.super.super.super.isa _failureRequirements];
+    _failureRequirements2 = [(UIGestureRecognizer *)&self->_edgePanRecognizer->super.super.super.super.isa _failureRequirements];
+    _failureDependents2 = [(UIGestureRecognizer *)&self->super._contentSwipeGestureRecognizer->super.super.super.super.isa _failureDependents];
+    _failureRequirements3 = [(UIGestureRecognizer *)&self->super._contentSwipeGestureRecognizer->super.super.super.super.isa _failureRequirements];
     v36 = v17;
-    v37 = v18;
-    if (-[NSMutableSet count](v17, "count") == 1 && ![v18 count])
+    v37 = _failureRequirements2;
+    if (-[NSMutableSet count](v17, "count") == 1 && ![_failureRequirements2 count])
     {
-      v21 = v20;
-      if ([v20 count] == 1)
+      v21 = _failureRequirements3;
+      if ([_failureRequirements3 count] == 1)
       {
         v23 = v36;
-        v22 = v19;
-        if ([v19 count])
+        v22 = _failureDependents2;
+        if ([_failureDependents2 count])
         {
           v10 = 1;
         }
 
         else
         {
-          v33 = [(NSMutableSet *)v36 anyObject];
-          if (v33 == self->super._contentSwipeGestureRecognizer)
+          anyObject = [(NSMutableSet *)v36 anyObject];
+          if (anyObject == self->super._contentSwipeGestureRecognizer)
           {
-            v34 = v33;
-            v35 = [v21 anyObject];
-            v10 = v35 != self->_edgePanRecognizer;
+            v34 = anyObject;
+            anyObject2 = [v21 anyObject];
+            v10 = anyObject2 != self->_edgePanRecognizer;
 
-            v33 = v34;
+            anyObject = v34;
           }
 
           else
@@ -275,10 +275,10 @@ LABEL_24:
 
     else
     {
-      v21 = v20;
+      v21 = _failureRequirements3;
     }
 
-    v22 = v19;
+    v22 = _failureDependents2;
     v10 = 1;
     v23 = v36;
 LABEL_21:
@@ -286,31 +286,31 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v11 = [v6 _shouldReceiveEvent:v7];
+  _shouldInteractivePopGestureBeEnabled = [recognizerCopy _shouldReceiveEvent:eventCopy];
 LABEL_6:
-  LOBYTE(v12) = v11;
+  LOBYTE(_isCurrentTransitionPreemptable) = _shouldInteractivePopGestureBeEnabled;
 LABEL_25:
 
-  return v12;
+  return _isCurrentTransitionPreemptable;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->super.__parent);
-  if ([(_UINavigationInteractiveTransition *)self _isBackGestureRecognizer:v6])
+  if ([(_UINavigationInteractiveTransition *)self _isBackGestureRecognizer:recognizerCopy])
   {
-    v9 = [WeakRetained navigationBar];
-    v10 = [WeakRetained _existingToolbar];
-    if ((self->_edgePanRecognizer == v6 || (v11 = objc_loadWeakRetained(&self->super._gestureRecognizer), v11, v11 == v6)) && (([v9 isHidden] & 1) == 0 && (objc_msgSend(v9, "window"), (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(v9, "bounds"), v15 = v14, v17 = v16, v19 = v18, v21 = v20, objc_msgSend(v7, "locationInView:", v9), v40.x = v22, v40.y = v23, v42.origin.x = v15, v42.origin.y = v17, v42.size.width = v19, v42.size.height = v21, v24 = CGRectContainsPoint(v42, v40), v13, v24) || (objc_msgSend(v10, "isHidden") & 1) == 0 && (objc_msgSend(v10, "window"), (v25 = objc_claimAutoreleasedReturnValue()) != 0) && (v26 = v25, objc_msgSend(v10, "bounds"), v28 = v27, v30 = v29, v32 = v31, v34 = v33, objc_msgSend(v7, "locationInView:", v10), v41.x = v35, v41.y = v36, v43.origin.x = v28, v43.origin.y = v30, v43.size.width = v32, v43.size.height = v34, v37 = CGRectContainsPoint(v43, v41), v26, v37)))
+    navigationBar = [WeakRetained navigationBar];
+    _existingToolbar = [WeakRetained _existingToolbar];
+    if ((self->_edgePanRecognizer == recognizerCopy || (v11 = objc_loadWeakRetained(&self->super._gestureRecognizer), v11, v11 == recognizerCopy)) && (([navigationBar isHidden] & 1) == 0 && (objc_msgSend(navigationBar, "window"), (v12 = objc_claimAutoreleasedReturnValue()) != 0) && (v13 = v12, objc_msgSend(navigationBar, "bounds"), v15 = v14, v17 = v16, v19 = v18, v21 = v20, objc_msgSend(touchCopy, "locationInView:", navigationBar), v40.x = v22, v40.y = v23, v42.origin.x = v15, v42.origin.y = v17, v42.size.width = v19, v42.size.height = v21, v24 = CGRectContainsPoint(v42, v40), v13, v24) || (objc_msgSend(_existingToolbar, "isHidden") & 1) == 0 && (objc_msgSend(_existingToolbar, "window"), (v25 = objc_claimAutoreleasedReturnValue()) != 0) && (v26 = v25, objc_msgSend(_existingToolbar, "bounds"), v28 = v27, v30 = v29, v32 = v31, v34 = v33, objc_msgSend(touchCopy, "locationInView:", _existingToolbar), v41.x = v35, v41.y = v36, v43.origin.x = v28, v43.origin.y = v30, v43.size.width = v32, v43.size.height = v34, v37 = CGRectContainsPoint(v43, v41), v26, v37)))
     {
       v38 = 0;
     }
 
     else
     {
-      v38 = self->super._contentSwipeGestureRecognizer != v6 || +[_UIParallaxTransitionPanGestureRecognizer isContentBackSwipeEnabled];
+      v38 = self->super._contentSwipeGestureRecognizer != recognizerCopy || +[_UIParallaxTransitionPanGestureRecognizer isContentBackSwipeEnabled];
     }
   }
 
@@ -322,12 +322,12 @@ LABEL_25:
   return v38;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->super.__parent);
-  v6 = [WeakRetained topViewController];
-  if (_UIViewControllerHierarchyWantsInteractivePopGesturesEnabled(v6))
+  topViewController = [WeakRetained topViewController];
+  if (_UIViewControllerHierarchyWantsInteractivePopGesturesEnabled(topViewController))
   {
   }
 
@@ -337,36 +337,36 @@ LABEL_25:
 
     if (v7)
     {
-      v8 = [WeakRetained traitCollection];
-      if ([UIView _interruptibleParallaxTransitionsEnabledWithTraitCollection:v8])
+      traitCollection = [WeakRetained traitCollection];
+      if ([UIView _interruptibleParallaxTransitionsEnabledWithTraitCollection:traitCollection])
       {
       }
 
       else
       {
-        v9 = [(_UINavigationInteractiveTransitionBase *)self _interactionState];
+        _interactionState = [(_UINavigationInteractiveTransitionBase *)self _interactionState];
 
-        if (v9)
+        if (_interactionState)
         {
           goto LABEL_8;
         }
       }
 
-      v10 = [v4 view];
-      [v4 translationInView:v10];
+      view = [beginCopy view];
+      [beginCopy translationInView:view];
       v12 = v11;
 
       if (!self->super.__transitionWasStopped)
       {
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) == 0 || ([v4 edges] & 2) != 0)
+        if ((objc_opt_isKindOfClass() & 1) == 0 || ([beginCopy edges] & 2) != 0)
         {
           v13 = v12 >= 0.0;
           goto LABEL_9;
         }
 
         v13 = v12 <= 0.0;
-        if (([v4 edges] & 8) != 0)
+        if (([beginCopy edges] & 8) != 0)
         {
           goto LABEL_9;
         }
@@ -381,35 +381,35 @@ LABEL_9:
   return v13;
 }
 
-- (BOOL)_gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)_gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  if (![(_UINavigationInteractiveTransition *)self _isBackGestureRecognizer:v6]|| self->super._contentSwipeGestureRecognizer == v6)
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  if (![(_UINavigationInteractiveTransition *)self _isBackGestureRecognizer:recognizerCopy]|| self->super._contentSwipeGestureRecognizer == recognizerCopy)
   {
     v13.receiver = self;
     v13.super_class = _UINavigationInteractiveTransition;
-    v8 = [(_UINavigationInteractiveTransitionBase *)&v13 _gestureRecognizer:v6 shouldBeRequiredToFailByGestureRecognizer:v7];
+    v8 = [(_UINavigationInteractiveTransitionBase *)&v13 _gestureRecognizer:recognizerCopy shouldBeRequiredToFailByGestureRecognizer:gestureRecognizerCopy];
   }
 
-  else if (([v7 _isGestureType:16] & 1) != 0 || (objc_msgSend(v7, "_shouldDelayUntilForceLevelRequirementIsMet") & 1) != 0 || -[UIScreenEdgePanGestureRecognizer _rootFeatureState](self->_edgePanRecognizer, "_rootFeatureState") == 2)
+  else if (([gestureRecognizerCopy _isGestureType:16] & 1) != 0 || (objc_msgSend(gestureRecognizerCopy, "_shouldDelayUntilForceLevelRequirementIsMet") & 1) != 0 || -[UIScreenEdgePanGestureRecognizer _rootFeatureState](self->_edgePanRecognizer, "_rootFeatureState") == 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v10 = [(_UINavigationInteractiveTransitionBase *)self _parent];
-    v11 = [v10 _splitViewControllerEnforcingClass:1];
+    _parent = [(_UINavigationInteractiveTransitionBase *)self _parent];
+    v11 = [_parent _splitViewControllerEnforcingClass:1];
 
-    if ([v11 _shouldUseFluidSidebarGestures] && (objc_msgSend(v11, "_fluidOpenSidebarPresentationGestureRecognizer"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12 == v7) || +[_UIPassthroughScrollInteraction _isPassthroughGestureRecognizer:](_UIPassthroughScrollInteraction, "_isPassthroughGestureRecognizer:", v7))
+    if ([v11 _shouldUseFluidSidebarGestures] && (objc_msgSend(v11, "_fluidOpenSidebarPresentationGestureRecognizer"), v12 = objc_claimAutoreleasedReturnValue(), v12, v12 == gestureRecognizerCopy) || +[_UIPassthroughScrollInteraction _isPassthroughGestureRecognizer:](_UIPassthroughScrollInteraction, "_isPassthroughGestureRecognizer:", gestureRecognizerCopy))
     {
       v8 = 0;
     }
 
-    else if (v7)
+    else if (gestureRecognizerCopy)
     {
-      v8 = (v7[15] & 0x10) == 0;
+      v8 = (gestureRecognizerCopy[15] & 0x10) == 0;
     }
 
     else
@@ -421,12 +421,12 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  if ([(_UINavigationInteractiveTransition *)self _isBackGestureRecognizer:a3])
+  gestureRecognizerCopy = gestureRecognizer;
+  if ([(_UINavigationInteractiveTransition *)self _isBackGestureRecognizer:recognizer])
   {
-    v7 = [_UIPassthroughScrollInteraction _isPassthroughGestureRecognizer:v6];
+    v7 = [_UIPassthroughScrollInteraction _isPassthroughGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -439,20 +439,20 @@ LABEL_9:
 
 - (id)gestureRecognizerView
 {
-  v2 = [(_UINavigationInteractiveTransitionBase *)self _parent];
-  v3 = [v2 view];
+  _parent = [(_UINavigationInteractiveTransitionBase *)self _parent];
+  view = [_parent view];
 
-  return v3;
+  return view;
 }
 
 - (void)startInteractiveTransition
 {
   WeakRetained = objc_loadWeakRetained(&self->super.__parent);
   [WeakRetained setInteractiveTransition:1];
-  v2 = [WeakRetained _shouldIgnoreDelegateTransitionController];
+  _shouldIgnoreDelegateTransitionController = [WeakRetained _shouldIgnoreDelegateTransitionController];
   [WeakRetained _setShouldIgnoreDelegateTransitionController:1];
   v3 = [WeakRetained popViewControllerAnimated:1];
-  [WeakRetained _setShouldIgnoreDelegateTransitionController:v2];
+  [WeakRetained _setShouldIgnoreDelegateTransitionController:_shouldIgnoreDelegateTransitionController];
 }
 
 - (void)setNotInteractiveTransition

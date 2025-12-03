@@ -1,13 +1,13 @@
 @interface SearchHintCell
-- (_TtC16MusicApplication14SearchHintCell)initWithCoder:(id)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (_TtC16MusicApplication14SearchHintCell)initWithCoder:(id)coder;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SearchHintCell
 
-- (_TtC16MusicApplication14SearchHintCell)initWithCoder:(id)a3
+- (_TtC16MusicApplication14SearchHintCell)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC16MusicApplication14SearchHintCell__highlightedText);
   *v3 = 0;
@@ -21,19 +21,19 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2283C4();
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  [(SearchHintCell *)v5 music_inheritedLayoutInsets];
+  attributesCopy = attributes;
+  selfCopy = self;
+  [(SearchHintCell *)selfCopy music_inheritedLayoutInsets];
   v7 = v6;
   v9 = v8;
-  v10 = [(SearchHintCell *)v5 contentView];
-  [v10 bounds];
+  contentView = [(SearchHintCell *)selfCopy contentView];
+  [contentView bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -45,17 +45,17 @@
   v23 = sub_228DA4();
   [v23 sizeThatFits:{v20, v22}];
 
-  [v4 frame];
-  [v4 setFrame:?];
+  [attributesCopy frame];
+  [attributesCopy setFrame:?];
 
-  return v4;
+  return attributesCopy;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2287B8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2287B8(change);
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface NPKContactlessPaymentSessionManagerTransactionContext
-+ (id)_NPKTransactionContextActionDescriptionForNPKTransactionContextAction:(unint64_t)a3;
++ (id)_NPKTransactionContextActionDescriptionForNPKTransactionContextAction:(unint64_t)action;
 - (NPKContactlessPaymentSessionManagerTransactionContext)init;
 - (id)description;
-- (void)forceToTransitTypeTransactionWithTransactionStatus:(unint64_t)a3;
-- (void)updateWithConcreteTransactions:(id)a3 ephemeralTransaction:(id)a4 updatedPassTransitItems:(id)a5 paymentApplication:(id)a6;
+- (void)forceToTransitTypeTransactionWithTransactionStatus:(unint64_t)status;
+- (void)updateWithConcreteTransactions:(id)transactions ephemeralTransaction:(id)transaction updatedPassTransitItems:(id)items paymentApplication:(id)application;
 @end
 
 @implementation NPKContactlessPaymentSessionManagerTransactionContext
@@ -22,13 +22,13 @@
   return v3;
 }
 
-- (void)updateWithConcreteTransactions:(id)a3 ephemeralTransaction:(id)a4 updatedPassTransitItems:(id)a5 paymentApplication:(id)a6
+- (void)updateWithConcreteTransactions:(id)transactions ephemeralTransaction:(id)transaction updatedPassTransitItems:(id)items paymentApplication:(id)application
 {
   v63 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  transactionsCopy = transactions;
+  transactionCopy = transaction;
+  itemsCopy = items;
+  applicationCopy = application;
   v55 = 0;
   v56 = &v55;
   v57 = 0x3032000000;
@@ -50,7 +50,7 @@
   v43 = 0x2020000000;
   v44 = 0;
   v14 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_10];
-  v15 = [v12 filteredArrayUsingPredicate:v14];
+  v15 = [itemsCopy filteredArrayUsingPredicate:v14];
 
   v16 = pk_General_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -61,13 +61,13 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      *v62 = v10;
+      *v62 = transactionsCopy;
       *&v62[8] = 2112;
-      *&v62[10] = v11;
+      *&v62[10] = transactionCopy;
       *&v62[18] = 2112;
-      *&v62[20] = v12;
+      *&v62[20] = itemsCopy;
       *&v62[28] = 2112;
-      *&v62[30] = v13;
+      *&v62[30] = applicationCopy;
       _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: NPKPaymentView: updateWithConcreteTransactions:%@ ephemeralTransaction:%@ updatedPassTransitItems:%@ paymentApplication:%@", buf, 0x2Au);
     }
   }
@@ -79,14 +79,14 @@
   v37 = &v51;
   v38 = &v41;
   v39 = &v45;
-  v19 = v13;
+  v19 = applicationCopy;
   v36 = v19;
   v40 = &v55;
   v20 = _Block_copy(aBlock);
   v21 = v20;
-  if (v11)
+  if (transactionCopy)
   {
-    (*(v20 + 2))(v20, v11);
+    (*(v20 + 2))(v20, transactionCopy);
   }
 
   else
@@ -96,7 +96,7 @@
     v32 = __152__NPKContactlessPaymentSessionManagerTransactionContext_updateWithConcreteTransactions_ephemeralTransaction_updatedPassTransitItems_paymentApplication___block_invoke_402;
     v33 = &unk_279946DB8;
     v34 = v20;
-    [v10 enumerateObjectsUsingBlock:&v30];
+    [transactionsCopy enumerateObjectsUsingBlock:&v30];
   }
 
   [(NPKContactlessPaymentSessionManagerTransactionContext *)self setPaymentTransaction:v56[5], v30, v31, v32, v33];
@@ -293,7 +293,7 @@ LABEL_15:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceToTransitTypeTransactionWithTransactionStatus:(unint64_t)a3
+- (void)forceToTransitTypeTransactionWithTransactionStatus:(unint64_t)status
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = pk_General_log();
@@ -305,29 +305,29 @@ LABEL_15:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = a3;
+      statusCopy = status;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Requested forceToTransitTypeTransactionWithTransactionStatus:%lu", &v9, 0xCu);
     }
   }
 
-  if (a3 <= 5)
+  if (status <= 5)
   {
-    [(NPKContactlessPaymentSessionManagerTransactionContext *)self setTransactionStatus:qword_25B59A938[a3]];
+    [(NPKContactlessPaymentSessionManagerTransactionContext *)self setTransactionStatus:qword_25B59A938[status]];
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_NPKTransactionContextActionDescriptionForNPKTransactionContextAction:(unint64_t)a3
++ (id)_NPKTransactionContextActionDescriptionForNPKTransactionContextAction:(unint64_t)action
 {
-  if (a3 - 1 > 4)
+  if (action - 1 > 4)
   {
     return @"None";
   }
 
   else
   {
-    return off_279947090[a3 - 1];
+    return off_279947090[action - 1];
   }
 }
 
@@ -338,25 +338,25 @@ LABEL_15:
   v3 = [(NPKContactlessPaymentSessionManagerTransactionContext *)&v17 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(NPKContactlessPaymentSessionManagerTransactionContext *)self transactionPass];
-  v6 = [(NPKContactlessPaymentSessionManagerTransactionContext *)self valueAddedServicePass];
-  v7 = [(NPKContactlessPaymentSessionManagerTransactionContext *)self transactionDescription];
+  transactionPass = [(NPKContactlessPaymentSessionManagerTransactionContext *)self transactionPass];
+  valueAddedServicePass = [(NPKContactlessPaymentSessionManagerTransactionContext *)self valueAddedServicePass];
+  transactionDescription = [(NPKContactlessPaymentSessionManagerTransactionContext *)self transactionDescription];
   v8 = NSStringFromNPKContactlessPaymentSessionTransactionType([(NPKContactlessPaymentSessionManagerTransactionContext *)self transactionType]);
-  v9 = [(NPKContactlessPaymentSessionManagerTransactionContext *)self transactionDescription];
-  v10 = [(NPKContactlessPaymentSessionManagerTransactionContext *)self displayablePassItems];
+  transactionDescription2 = [(NPKContactlessPaymentSessionManagerTransactionContext *)self transactionDescription];
+  displayablePassItems = [(NPKContactlessPaymentSessionManagerTransactionContext *)self displayablePassItems];
   v11 = NSStringFromNPKTransactionContextStatus([(NPKContactlessPaymentSessionManagerTransactionContext *)self transactionStatus]);
-  [v4 appendFormat:@" (transactionPass %@ valueAddedServicePass %@ paymentMethodDescription %@ transactionType %@ transactionDescription %@ displayablePassItems %@ transactionStatus: %@)\n", v5, v6, v7, v8, v9, v10, v11];
+  [v4 appendFormat:@" (transactionPass %@ valueAddedServicePass %@ paymentMethodDescription %@ transactionType %@ transactionDescription %@ displayablePassItems %@ transactionStatus: %@)\n", transactionPass, valueAddedServicePass, transactionDescription, v8, transactionDescription2, displayablePassItems, v11];
 
-  v12 = [(NPKContactlessPaymentSessionManagerTransactionContext *)self paymentBarcode];
-  [v4 appendFormat:@" (Barcode payment related: paymentBarcode %@ authentication requested %d)", v12, -[NPKContactlessPaymentSessionManagerTransactionContext authenticationRequested](self, "authenticationRequested")];
+  paymentBarcode = [(NPKContactlessPaymentSessionManagerTransactionContext *)self paymentBarcode];
+  [v4 appendFormat:@" (Barcode payment related: paymentBarcode %@ authentication requested %d)", paymentBarcode, -[NPKContactlessPaymentSessionManagerTransactionContext authenticationRequested](self, "authenticationRequested")];
 
   v13 = NSStringFromNPKDataReleaseStatus([(NPKContactlessPaymentSessionManagerTransactionContext *)self releaseDataStatus]);
   [v4 appendFormat:@" (releaseDataStatus:%@)\n", v13];
 
   v14 = [objc_opt_class() _NPKTransactionContextActionDescriptionForNPKTransactionContextAction:{-[NPKContactlessPaymentSessionManagerTransactionContext action](self, "action")}];
   [v4 appendFormat:@" (Action :%@)", v14];
-  v15 = [(NPKContactlessPaymentSessionManagerTransactionContext *)self accessory];
-  [v4 appendFormat:@" (Accessory :%@)", v15];
+  accessory = [(NPKContactlessPaymentSessionManagerTransactionContext *)self accessory];
+  [v4 appendFormat:@" (Accessory :%@)", accessory];
 
   return v4;
 }

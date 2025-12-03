@@ -7,24 +7,24 @@
 - (void)startTest
 {
   objc_opt_class();
-  v3 = [(PPTBasicTest *)self bookController];
+  bookController = [(PPTBasicTest *)self bookController];
   v4 = BUDynamicCast();
 
   if (v4)
   {
     [v4 turnToInitialPage:0];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
 LABEL_7:
-    [(PPTBasicTest *)v5 setResult:v6];
-    v12 = [(PPTBasicTest *)self onTestFinished];
-    v12[2]();
+    [(PPTBasicTest *)selfCopy2 setResult:v6];
+    onTestFinished = [(PPTBasicTest *)self onTestFinished];
+    onTestFinished[2]();
 
     goto LABEL_8;
   }
 
-  v7 = [(PPTBasicTest *)self bookController];
-  v8 = [_TtC5Books12RETestDriver isValidWithViewController:v7];
+  bookController2 = [(PPTBasicTest *)self bookController];
+  v8 = [_TtC5Books12RETestDriver isValidWithViewController:bookController2];
 
   if (v8)
   {
@@ -35,11 +35,11 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Asking RETestDriver to turn to initial page", v13, 2u);
     }
 
-    v10 = [(PPTBasicTest *)self bookController];
-    v11 = [_TtC5Books12RETestDriver turnToInitialPageWithViewController:v10];
+    bookController3 = [(PPTBasicTest *)self bookController];
+    v11 = [_TtC5Books12RETestDriver turnToInitialPageWithViewController:bookController3];
 
     v6 = v11 ^ 1;
-    v5 = self;
+    selfCopy2 = self;
     goto LABEL_7;
   }
 

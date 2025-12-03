@@ -1,29 +1,29 @@
 @interface NEKTinyStore
-- (BOOL)compareAndSwapIntegerValue:(int64_t)a3 expectedExistingValue:(int64_t)a4 forKey:(id)a5;
-- (NEKTinyStore)initWithDatabaseManager:(id)a3;
-- (double)getDoubleValueForKey:(id)a3 default:(double)a4;
-- (id)_formattedDateForKey:(id)a3;
-- (id)_loadPlistFrom:(id)a3;
+- (BOOL)compareAndSwapIntegerValue:(int64_t)value expectedExistingValue:(int64_t)existingValue forKey:(id)key;
+- (NEKTinyStore)initWithDatabaseManager:(id)manager;
+- (double)getDoubleValueForKey:(id)key default:(double)default;
+- (id)_formattedDateForKey:(id)key;
+- (id)_loadPlistFrom:(id)from;
 - (id)asDictionary;
-- (id)getDataValueForKey:(id)a3;
-- (id)getStringValueForKey:(id)a3 default:(id)a4;
-- (int64_t)getIntegerValueForKey:(id)a3 default:(int64_t)a4;
-- (void)_convertIfNeeded:(id)a3;
-- (void)_migrateDoubleFrom:(id)a3 key:(id)a4;
-- (void)_migrateIntegerFrom:(id)a3 key:(id)a4;
-- (void)_migrateStringFrom:(id)a3 key:(id)a4;
-- (void)deleteValueForKey:(id)a3;
-- (void)setDataValue:(id)a3 forKey:(id)a4;
-- (void)setDoubleValue:(double)a3 forKey:(id)a4;
-- (void)setIntegerValue:(int64_t)a3 forKey:(id)a4;
-- (void)setStringValue:(id)a3 forKey:(id)a4;
+- (id)getDataValueForKey:(id)key;
+- (id)getStringValueForKey:(id)key default:(id)default;
+- (int64_t)getIntegerValueForKey:(id)key default:(int64_t)default;
+- (void)_convertIfNeeded:(id)needed;
+- (void)_migrateDoubleFrom:(id)from key:(id)key;
+- (void)_migrateIntegerFrom:(id)from key:(id)key;
+- (void)_migrateStringFrom:(id)from key:(id)key;
+- (void)deleteValueForKey:(id)key;
+- (void)setDataValue:(id)value forKey:(id)key;
+- (void)setDoubleValue:(double)value forKey:(id)key;
+- (void)setIntegerValue:(int64_t)value forKey:(id)key;
+- (void)setStringValue:(id)value forKey:(id)key;
 @end
 
 @implementation NEKTinyStore
 
-- (NEKTinyStore)initWithDatabaseManager:(id)a3
+- (NEKTinyStore)initWithDatabaseManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = NEKTinyStore;
   v5 = [(NEKTinyStore *)&v19 init];
@@ -33,7 +33,7 @@
     queue = v5->_queue;
     v5->_queue = v6;
 
-    v8 = [v4 syncStateDBPathFor:@"tinyStore.sqlitedb"];
+    v8 = [managerCopy syncStateDBPathFor:@"tinyStore.sqlitedb"];
     path = v5->_path;
     v5->_path = v8;
 
@@ -46,24 +46,24 @@
     v5->_store = v12;
 
     [(NDTSQFile *)v5->_file addSchema:v5->_store];
-    [(NEKTinyStore *)v5 _convertIfNeeded:v4];
+    [(NEKTinyStore *)v5 _convertIfNeeded:managerCopy];
     v14 = objc_alloc_init(NSISO8601DateFormatter);
     dateFormatter = v5->_dateFormatter;
     v5->_dateFormatter = v14;
 
     v16 = +[NSCalendar currentCalendar];
-    v17 = [v16 timeZone];
-    [(NSISO8601DateFormatter *)v5->_dateFormatter setTimeZone:v17];
+    timeZone = [v16 timeZone];
+    [(NSISO8601DateFormatter *)v5->_dateFormatter setTimeZone:timeZone];
   }
 
   return v5;
 }
 
-- (void)_convertIfNeeded:(id)a3
+- (void)_convertIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 syncStateDBPathFor:@"tinyStore.plist"];
+  v6 = [neededCopy syncStateDBPathFor:@"tinyStore.plist"];
 
   if ([v5 fileExistsAtPath:v6])
   {
@@ -107,76 +107,76 @@
   }
 }
 
-- (void)_migrateIntegerFrom:(id)a3 key:(id)a4
+- (void)_migrateIntegerFrom:(id)from key:(id)key
 {
-  v8 = a4;
-  v6 = [a3 objectForKeyedSubscript:?];
+  keyCopy = key;
+  v6 = [from objectForKeyedSubscript:?];
   v7 = v6;
   if (v6)
   {
-    -[NEKTinyStore setIntegerValue:forKey:](self, "setIntegerValue:forKey:", [v6 integerValue], v8);
+    -[NEKTinyStore setIntegerValue:forKey:](self, "setIntegerValue:forKey:", [v6 integerValue], keyCopy);
   }
 }
 
-- (void)_migrateStringFrom:(id)a3 key:(id)a4
+- (void)_migrateStringFrom:(id)from key:(id)key
 {
-  v7 = a4;
-  v6 = [a3 objectForKeyedSubscript:?];
+  keyCopy = key;
+  v6 = [from objectForKeyedSubscript:?];
   if (v6)
   {
-    [(NEKTinyStore *)self setStringValue:v6 forKey:v7];
+    [(NEKTinyStore *)self setStringValue:v6 forKey:keyCopy];
   }
 }
 
-- (void)_migrateDoubleFrom:(id)a3 key:(id)a4
+- (void)_migrateDoubleFrom:(id)from key:(id)key
 {
-  v8 = a4;
-  v6 = [a3 objectForKeyedSubscript:?];
+  keyCopy = key;
+  v6 = [from objectForKeyedSubscript:?];
   v7 = v6;
   if (v6)
   {
     [v6 doubleValue];
-    [(NEKTinyStore *)self setDoubleValue:v8 forKey:?];
+    [(NEKTinyStore *)self setDoubleValue:keyCopy forKey:?];
   }
 }
 
-- (void)setStringValue:(id)a3 forKey:(id)a4
+- (void)setStringValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100011358;
   block[3] = &unk_1000B4D58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = valueCopy;
   dispatch_sync(queue, block);
 }
 
-- (id)getStringValueForKey:(id)a3 default:(id)a4
+- (id)getStringValueForKey:(id)key default:(id)default
 {
-  v6 = a3;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_1000114AC;
   v20 = sub_1000114BC;
-  v21 = a4;
+  defaultCopy = default;
   queue = self->_queue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000114C4;
   v12[3] = &unk_1000B4D80;
   v12[4] = self;
-  v13 = v6;
-  v14 = v21;
+  v13 = keyCopy;
+  v14 = defaultCopy;
   v15 = &v16;
-  v8 = v21;
-  v9 = v6;
+  v8 = defaultCopy;
+  v9 = keyCopy;
   dispatch_sync(queue, v12);
   v10 = v17[5];
 
@@ -185,38 +185,38 @@
   return v10;
 }
 
-- (void)setIntegerValue:(int64_t)a3 forKey:(id)a4
+- (void)setIntegerValue:(int64_t)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000115C0;
   block[3] = &unk_1000B4DA8;
-  v10 = v6;
-  v11 = a3;
+  v10 = keyCopy;
+  valueCopy = value;
   block[4] = self;
-  v8 = v6;
+  v8 = keyCopy;
   dispatch_sync(queue, block);
 }
 
-- (int64_t)getIntegerValueForKey:(id)a3 default:(int64_t)a4
+- (int64_t)getIntegerValueForKey:(id)key default:(int64_t)default
 {
-  v6 = a3;
+  keyCopy = key;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v18 = a4;
+  defaultCopy = default;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000116AC;
   v11[3] = &unk_1000B4DD0;
   v11[4] = self;
-  v12 = v6;
+  v12 = keyCopy;
   v13 = &v15;
-  v14 = a4;
-  v8 = v6;
+  defaultCopy2 = default;
+  v8 = keyCopy;
   dispatch_sync(queue, v11);
   v9 = v16[3];
 
@@ -224,9 +224,9 @@
   return v9;
 }
 
-- (BOOL)compareAndSwapIntegerValue:(int64_t)a3 expectedExistingValue:(int64_t)a4 forKey:(id)a5
+- (BOOL)compareAndSwapIntegerValue:(int64_t)value expectedExistingValue:(int64_t)existingValue forKey:(id)key
 {
-  v8 = a5;
+  keyCopy = key;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -237,50 +237,50 @@
   block[2] = sub_1000117C8;
   block[3] = &unk_1000B4DF8;
   v14 = &v17;
-  v15 = a3;
-  v16 = a4;
+  valueCopy = value;
+  existingValueCopy = existingValue;
   block[4] = self;
-  v13 = v8;
-  v10 = v8;
+  v13 = keyCopy;
+  v10 = keyCopy;
   dispatch_sync(queue, block);
-  LOBYTE(a3) = *(v18 + 24);
+  LOBYTE(value) = *(v18 + 24);
 
   _Block_object_dispose(&v17, 8);
-  return a3;
+  return value;
 }
 
-- (void)setDoubleValue:(double)a3 forKey:(id)a4
+- (void)setDoubleValue:(double)value forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000118AC;
   block[3] = &unk_1000B4DA8;
-  v11 = a3;
+  valueCopy = value;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = keyCopy;
+  v8 = keyCopy;
   dispatch_sync(queue, block);
 }
 
-- (double)getDoubleValueForKey:(id)a3 default:(double)a4
+- (double)getDoubleValueForKey:(id)key default:(double)default
 {
-  v6 = a3;
+  keyCopy = key;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v18 = a4;
+  defaultCopy = default;
   queue = self->_queue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100011998;
   v11[3] = &unk_1000B4DD0;
-  v12 = v6;
+  v12 = keyCopy;
   v13 = &v15;
   v11[4] = self;
-  v14 = a4;
-  v8 = v6;
+  defaultCopy2 = default;
+  v8 = keyCopy;
   dispatch_sync(queue, v11);
   v9 = v16[3];
 
@@ -288,9 +288,9 @@
   return v9;
 }
 
-- (id)getDataValueForKey:(id)a3
+- (id)getDataValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -302,10 +302,10 @@
   block[1] = 3221225472;
   block[2] = sub_100011AE4;
   block[3] = &unk_1000B4E20;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -314,40 +314,40 @@
   return v7;
 }
 
-- (void)setDataValue:(id)a3 forKey:(id)a4
+- (void)setDataValue:(id)value forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100011BFC;
   block[3] = &unk_1000B4D58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = valueCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = valueCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)deleteValueForKey:(id)a3
+- (void)deleteValueForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011CA8;
   v7[3] = &unk_1000B4BB8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = keyCopy;
+  v6 = keyCopy;
   dispatch_sync(queue, v7);
 }
 
-- (id)_loadPlistFrom:(id)a3
+- (id)_loadPlistFrom:(id)from
 {
-  v3 = [NSData dataWithContentsOfFile:a3];
+  v3 = [NSData dataWithContentsOfFile:from];
   v4 = v3;
   if (v3 && [v3 length])
   {
@@ -449,9 +449,9 @@
   return v3;
 }
 
-- (id)_formattedDateForKey:(id)a3
+- (id)_formattedDateForKey:(id)key
 {
-  [(NEKTinyStore *)self getDoubleValueForKey:a3 default:*&qword_1000D1130];
+  [(NEKTinyStore *)self getDoubleValueForKey:key default:*&qword_1000D1130];
   if (v4 == *&qword_1000D1130)
   {
     v5 = @"NULL";

@@ -1,17 +1,17 @@
 @interface IMActionOpenWeb
 - (IMActionOpenWeb)init;
-- (IMActionOpenWeb)initWithMode:(int64_t)a3 url:(id)a4 parameters:(id)a5;
+- (IMActionOpenWeb)initWithMode:(int64_t)mode url:(id)url parameters:(id)parameters;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation IMActionOpenWeb
 
-- (IMActionOpenWeb)initWithMode:(int64_t)a3 url:(id)a4 parameters:(id)a5
+- (IMActionOpenWeb)initWithMode:(int64_t)mode url:(id)url parameters:(id)parameters
 {
   v7 = sub_1A88C82E8();
   v9 = v8;
   v10 = sub_1A88C82E8();
-  *(self + OBJC_IVAR___IMActionOpenWeb_mode) = a3;
+  *(self + OBJC_IVAR___IMActionOpenWeb_mode) = mode;
   v11 = (self + OBJC_IVAR___IMActionOpenWeb_url);
   *v11 = v7;
   v11[1] = v9;
@@ -25,7 +25,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A87E8AE8();
 
   v3 = sub_1A88C8188();

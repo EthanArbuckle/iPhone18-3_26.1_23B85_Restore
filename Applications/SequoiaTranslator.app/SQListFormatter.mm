@@ -1,18 +1,18 @@
 @interface SQListFormatter
-- (SQListFormatter)initWithLocale:(id)a3 style:(id)a4;
+- (SQListFormatter)initWithLocale:(id)locale style:(id)style;
 @end
 
 @implementation SQListFormatter
 
-- (SQListFormatter)initWithLocale:(id)a3 style:(id)a4
+- (SQListFormatter)initWithLocale:(id)locale style:(id)style
 {
   v8.receiver = self;
   v8.super_class = SQListFormatter;
-  v4 = [(SQListFormatter *)&v8 initWithLocale:a3, a4];
-  v5 = v4;
-  if (v4)
+  style = [(SQListFormatter *)&v8 initWithLocale:locale, style];
+  v5 = style;
+  if (style)
   {
-    v6 = v4;
+    v6 = style;
   }
 
   return v5;

@@ -1,26 +1,26 @@
 @interface MPMutableSectionedCollection
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_initializeAsEmptySectionedCollection;
-- (void)appendItem:(id)a3;
-- (void)appendItems:(id)a3;
-- (void)appendSection:(id)a3;
-- (void)insertItem:(id)a3 atIndexPath:(id)a4;
-- (void)insertSection:(id)a3 atIndex:(int64_t)a4;
-- (void)moveItemFromIndexPath:(id)a3 toIndexPath:(id)a4;
-- (void)moveSectionFromIndex:(int64_t)a3 toIndex:(int64_t)a4;
+- (void)appendItem:(id)item;
+- (void)appendItems:(id)items;
+- (void)appendSection:(id)section;
+- (void)insertItem:(id)item atIndexPath:(id)path;
+- (void)insertSection:(id)section atIndex:(int64_t)index;
+- (void)moveItemFromIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)moveSectionFromIndex:(int64_t)index toIndex:(int64_t)toIndex;
 - (void)removeAllObjects;
-- (void)removeItemAtIndexPath:(id)a3;
-- (void)removeSectionAtIndex:(int64_t)a3;
-- (void)replaceItemsUsingBlock:(id)a3;
-- (void)replaceObjectAtIndexPath:(id)a3 withObject:(id)a4;
-- (void)replaceSectionsUsingBlock:(id)a3;
+- (void)removeItemAtIndexPath:(id)path;
+- (void)removeSectionAtIndex:(int64_t)index;
+- (void)replaceItemsUsingBlock:(id)block;
+- (void)replaceObjectAtIndexPath:(id)path withObject:(id)object;
+- (void)replaceSectionsUsingBlock:(id)block;
 @end
 
 @implementation MPMutableSectionedCollection
 
-- (void)replaceItemsUsingBlock:(id)a3
+- (void)replaceItemsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(NSArray *)self->super._sections count])
   {
     v5 = 0;
@@ -46,7 +46,7 @@ LABEL_9:
     {
       v8 = [v6 objectAtIndexedSubscript:v7];
       v9 = [MEMORY[0x1E696AC88] indexPathForItem:v7 inSection:v5];
-      v10 = v4[2](v4, v8, v9, &v13);
+      v10 = blockCopy[2](blockCopy, v8, v9, &v13);
 
       if (v8 != v10)
       {
@@ -71,9 +71,9 @@ LABEL_9:
 LABEL_12:
 }
 
-- (void)replaceSectionsUsingBlock:(id)a3
+- (void)replaceSectionsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = 0;
   if ([(NSArray *)self->super._sections count])
   {
@@ -81,7 +81,7 @@ LABEL_12:
     do
     {
       v6 = [(NSArray *)self->super._sections objectAtIndexedSubscript:v5];
-      v7 = v4[2](v4, v6, v5, &v9);
+      v7 = blockCopy[2](blockCopy, v6, v5, &v9);
       if (v6 != v7)
       {
         [(NSArray *)self->super._sections replaceObjectAtIndex:v5 withObject:v7];
@@ -109,15 +109,15 @@ LABEL_12:
   [(NSArray *)sectionedItems removeAllObjects];
 }
 
-- (void)appendItems:(id)a3
+- (void)appendItems:(id)items
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -129,129 +129,129 @@ LABEL_12:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         [(MPMutableSectionedCollection *)self appendItem:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)appendItem:(id)a3
+- (void)appendItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(MPSectionedCollection *)self numberOfSections]- 1;
   v6 = [(MPSectionedCollection *)self numberOfItemsInSection:v5];
   v7 = [MEMORY[0x1E696AC88] indexPathForItem:v6 inSection:v5];
-  [(MPMutableSectionedCollection *)self insertItem:v4 atIndexPath:v7];
+  [(MPMutableSectionedCollection *)self insertItem:itemCopy atIndexPath:v7];
 }
 
-- (void)moveItemFromIndexPath:(id)a3 toIndexPath:(id)a4
+- (void)moveItemFromIndexPath:(id)path toIndexPath:(id)indexPath
 {
   v16 = self->super._sectionedItems;
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 section];
-  v9 = [v7 item];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  v10 = [v6 section];
-  v11 = [v6 item];
+  section2 = [indexPathCopy section];
+  item2 = [indexPathCopy item];
 
-  v12 = [(NSArray *)v16 objectAtIndex:v8];
+  v12 = [(NSArray *)v16 objectAtIndex:section];
   v13 = v12;
-  if (v8 == v10)
+  if (section == section2)
   {
-    [v12 exchangeObjectAtIndex:v9 withObjectAtIndex:v11];
+    [v12 exchangeObjectAtIndex:item withObjectAtIndex:item2];
   }
 
   else
   {
-    v14 = [(NSArray *)v16 objectAtIndex:v10];
-    v15 = [v13 objectAtIndex:v9];
-    [v13 removeObjectAtIndex:v9];
-    [v14 insertObject:v15 atIndex:v11];
+    v14 = [(NSArray *)v16 objectAtIndex:section2];
+    v15 = [v13 objectAtIndex:item];
+    [v13 removeObjectAtIndex:item];
+    [v14 insertObject:v15 atIndex:item2];
   }
 }
 
-- (void)replaceObjectAtIndexPath:(id)a3 withObject:(id)a4
+- (void)replaceObjectAtIndexPath:(id)path withObject:(id)object
 {
   v6 = self->super._sectionedItems;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 section];
-  v10 = [v8 item];
+  objectCopy = object;
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  v11 = [(NSArray *)v6 objectAtIndex:v9];
+  v11 = [(NSArray *)v6 objectAtIndex:section];
 
-  [v11 replaceObjectAtIndex:v10 withObject:v7];
+  [v11 replaceObjectAtIndex:item withObject:objectCopy];
 }
 
-- (void)removeItemAtIndexPath:(id)a3
+- (void)removeItemAtIndexPath:(id)path
 {
   v4 = self->super._sectionedItems;
-  v5 = a3;
-  v6 = [v5 section];
-  v7 = [v5 item];
+  pathCopy = path;
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  v8 = [(NSArray *)v4 objectAtIndex:v6];
+  v8 = [(NSArray *)v4 objectAtIndex:section];
 
-  [v8 removeObjectAtIndex:v7];
+  [v8 removeObjectAtIndex:item];
 }
 
-- (void)insertItem:(id)a3 atIndexPath:(id)a4
+- (void)insertItem:(id)item atIndexPath:(id)path
 {
   v6 = self->super._sectionedItems;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 section];
-  v10 = [v7 item];
+  pathCopy = path;
+  itemCopy = item;
+  section = [pathCopy section];
+  item = [pathCopy item];
 
-  v11 = [(NSArray *)v6 objectAtIndex:v9];
+  v11 = [(NSArray *)v6 objectAtIndex:section];
 
-  [v11 insertObject:v8 atIndex:v10];
+  [v11 insertObject:itemCopy atIndex:item];
 }
 
-- (void)appendSection:(id)a3
+- (void)appendSection:(id)section
 {
-  v4 = a3;
-  [(MPMutableSectionedCollection *)self insertSection:v4 atIndex:[(MPSectionedCollection *)self numberOfSections]];
+  sectionCopy = section;
+  [(MPMutableSectionedCollection *)self insertSection:sectionCopy atIndex:[(MPSectionedCollection *)self numberOfSections]];
 }
 
-- (void)moveSectionFromIndex:(int64_t)a3 toIndex:(int64_t)a4
+- (void)moveSectionFromIndex:(int64_t)index toIndex:(int64_t)toIndex
 {
   sections = self->super._sections;
   v7 = self->super._sectionedItems;
   v8 = sections;
-  [(NSArray *)v8 exchangeObjectAtIndex:a3 withObjectAtIndex:a4];
-  [(NSArray *)v7 exchangeObjectAtIndex:a3 withObjectAtIndex:a4];
+  [(NSArray *)v8 exchangeObjectAtIndex:index withObjectAtIndex:toIndex];
+  [(NSArray *)v7 exchangeObjectAtIndex:index withObjectAtIndex:toIndex];
 }
 
-- (void)removeSectionAtIndex:(int64_t)a3
+- (void)removeSectionAtIndex:(int64_t)index
 {
   sections = self->super._sections;
   v5 = self->super._sectionedItems;
   v6 = sections;
-  [(NSArray *)v6 removeObjectAtIndex:a3];
-  [(NSArray *)v5 removeObjectAtIndex:a3];
+  [(NSArray *)v6 removeObjectAtIndex:index];
+  [(NSArray *)v5 removeObjectAtIndex:index];
 }
 
-- (void)insertSection:(id)a3 atIndex:(int64_t)a4
+- (void)insertSection:(id)section atIndex:(int64_t)index
 {
   sections = self->super._sections;
   v7 = self->super._sectionedItems;
   v9 = sections;
-  [(NSArray *)v9 insertObject:a3 atIndex:a4];
+  [(NSArray *)v9 insertObject:section atIndex:index];
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [(NSArray *)v7 insertObject:v8 atIndex:a4];
+  [(NSArray *)v7 insertObject:v8 atIndex:index];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MPSectionedCollection);

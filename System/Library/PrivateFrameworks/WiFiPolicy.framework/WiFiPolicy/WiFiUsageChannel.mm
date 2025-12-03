@@ -1,19 +1,19 @@
 @interface WiFiUsageChannel
-+ (id)channelWithBssDetails:(id)a3;
-+ (id)channelWithChannelInfo:(id)a3;
-+ (id)channelWithScanChannel:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToChannel:(id)a3;
-- (WiFiUsageChannel)initWithChannel:(unint64_t)a3 flags:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)channelWithBssDetails:(id)details;
++ (id)channelWithChannelInfo:(id)info;
++ (id)channelWithScanChannel:(id)channel;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToChannel:(id)channel;
+- (WiFiUsageChannel)initWithChannel:(unint64_t)channel flags:(unint64_t)flags;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)updateDFSInfoFromSupportedChannels:(id)a3;
+- (void)updateDFSInfoFromSupportedChannels:(id)channels;
 @end
 
 @implementation WiFiUsageChannel
 
-- (WiFiUsageChannel)initWithChannel:(unint64_t)a3 flags:(unint64_t)a4
+- (WiFiUsageChannel)initWithChannel:(unint64_t)channel flags:(unint64_t)flags
 {
   v9.receiver = self;
   v9.super_class = WiFiUsageChannel;
@@ -21,41 +21,41 @@
   v7 = v6;
   if (v6)
   {
-    [(WiFiUsageChannel *)v6 setChannel:a3];
-    [(WiFiUsageChannel *)v7 setChannelFlags:a4];
-    [(WiFiUsageChannel *)v7 setBand:[WiFiUsagePrivacyFilter bandFromFlags:a4]];
-    [(WiFiUsageChannel *)v7 setChannelWidth:[WiFiUsagePrivacyFilter channelWidthFromFlags:a4]];
+    [(WiFiUsageChannel *)v6 setChannel:channel];
+    [(WiFiUsageChannel *)v7 setChannelFlags:flags];
+    [(WiFiUsageChannel *)v7 setBand:[WiFiUsagePrivacyFilter bandFromFlags:flags]];
+    [(WiFiUsageChannel *)v7 setChannelWidth:[WiFiUsagePrivacyFilter channelWidthFromFlags:flags]];
   }
 
   return v7;
 }
 
-+ (id)channelWithBssDetails:(id)a3
++ (id)channelWithBssDetails:(id)details
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 channel];
-  v7 = [v4 channelFlags];
-  v8 = [v4 band];
-  v9 = [v4 channelWidth];
+  detailsCopy = details;
+  v5 = [self alloc];
+  channel = [detailsCopy channel];
+  channelFlags = [detailsCopy channelFlags];
+  band = [detailsCopy band];
+  channelWidth = [detailsCopy channelWidth];
 
-  v10 = [v5 initWithChannel:v6 flags:v7 band:v8 width:v9 isDFS:0];
+  v10 = [v5 initWithChannel:channel flags:channelFlags band:band width:channelWidth isDFS:0];
 
   return v10;
 }
 
-+ (id)channelWithChannelInfo:(id)a3
++ (id)channelWithChannelInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"CHANNELINFO_CH_NUM"];
+  infoCopy = info;
+  v5 = [infoCopy objectForKeyedSubscript:@"CHANNELINFO_CH_NUM"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 objectForKeyedSubscript:@"CHANNELINFO_DFS"];
+    v6 = [infoCopy objectForKeyedSubscript:@"CHANNELINFO_DFS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [[a1 alloc] initWithChannel:objc_msgSend(v5 flags:"integerValue") band:0 width:+[WiFiUsagePrivacyFilter bandFromChanInfo:](WiFiUsagePrivacyFilter isDFS:{"bandFromChanInfo:", v4), 0, objc_msgSend(v6, "BOOLValue")}];
+      v7 = [[self alloc] initWithChannel:objc_msgSend(v5 flags:"integerValue") band:0 width:+[WiFiUsagePrivacyFilter bandFromChanInfo:](WiFiUsagePrivacyFilter isDFS:{"bandFromChanInfo:", infoCopy), 0, objc_msgSend(v6, "BOOLValue")}];
     }
 
     else
@@ -72,18 +72,18 @@
   return v7;
 }
 
-+ (id)channelWithScanChannel:(id)a3
++ (id)channelWithScanChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"CHANNEL"];
+  channelCopy = channel;
+  v5 = [channelCopy objectForKeyedSubscript:@"CHANNEL"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v4 objectForKeyedSubscript:@"CHANNEL_FLAGS"];
+    v6 = [channelCopy objectForKeyedSubscript:@"CHANNEL_FLAGS"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [[a1 alloc] initWithChannel:objc_msgSend(v5 flags:{"integerValue"), objc_msgSend(v6, "integerValue")}];
+      v7 = [[self alloc] initWithChannel:objc_msgSend(v5 flags:{"integerValue"), objc_msgSend(v6, "integerValue")}];
     }
 
     else
@@ -100,9 +100,9 @@
   return v7;
 }
 
-- (void)updateDFSInfoFromSupportedChannels:(id)a3
+- (void)updateDFSInfoFromSupportedChannels:(id)channels
 {
-  v4 = [a3 member:self];
+  v4 = [channels member:self];
   if (v4)
   {
     v5 = v4;
@@ -119,23 +119,23 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WiFiUsageChannel *)self isEqualToChannel:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WiFiUsageChannel *)self isEqualToChannel:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToChannel:(id)a3
+- (BOOL)isEqualToChannel:(id)channel
 {
-  v4 = a3;
-  v5 = [v4 channel];
-  if (v5 == [(WiFiUsageChannel *)self channel])
+  channelCopy = channel;
+  channel = [channelCopy channel];
+  if (channel == [(WiFiUsageChannel *)self channel])
   {
-    v6 = [v4 band];
-    v7 = v6 == [(WiFiUsageChannel *)self band];
+    band = [channelCopy band];
+    v7 = band == [(WiFiUsageChannel *)self band];
   }
 
   else
@@ -146,7 +146,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_alloc_init(objc_opt_class());
   *(result + 2) = self->_channel;
@@ -161,15 +161,15 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [WiFiUsagePrivacyFilter bandAsString:[(WiFiUsageChannel *)self band]];
-  v5 = [(WiFiUsageChannel *)self channel];
-  v6 = [(WiFiUsageChannel *)self isDFSChannel];
+  channel = [(WiFiUsageChannel *)self channel];
+  isDFSChannel = [(WiFiUsageChannel *)self isDFSChannel];
   v7 = @"NO";
-  if (v6)
+  if (isDFSChannel)
   {
     v7 = @"YES";
   }
 
-  v8 = [v3 stringWithFormat:@"{band:%@ channel:%lu isDFS:%@}", v4, v5, v7];
+  v8 = [v3 stringWithFormat:@"{band:%@ channel:%lu isDFS:%@}", v4, channel, v7];
 
   return v8;
 }

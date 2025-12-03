@@ -1,6 +1,6 @@
 @interface ICSVideoMessageRootViewController
-- (ICSVideoMessageRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4;
+- (ICSVideoMessageRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle;
 - (void)viewDidLoad;
 @end
 
@@ -8,25 +8,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001A7CC4();
 }
 
-- (ICSVideoMessageRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICSVideoMessageRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1001A8168();
 }
 
-- (void)callDisplayStyleDidChangeFromStyle:(int64_t)a3 toStyle:(int64_t)a4
+- (void)callDisplayStyleDidChangeFromStyle:(int64_t)style toStyle:(int64_t)toStyle
 {
-  v5 = self;
-  sub_1001A8228(v5, a4);
+  selfCopy = self;
+  sub_1001A8228(selfCopy, toStyle);
 }
 
 @end

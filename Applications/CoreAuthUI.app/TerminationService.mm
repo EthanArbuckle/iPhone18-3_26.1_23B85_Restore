@@ -1,6 +1,6 @@
 @interface TerminationService
 + (_TtC10CoreAuthUI18TerminationService)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (_TtC10CoreAuthUI18TerminationService)init;
 - (void)scheduleTermination;
 @end
@@ -29,10 +29,10 @@
   return qword_1000B1CC8;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = qword_1000B0568;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
     swift_once();
@@ -40,13 +40,13 @@
 
   swift_beginAccess();
   v5 = qword_1000B1CC8;
-  qword_1000B1CC8 = v4;
+  qword_1000B1CC8 = sharedCopy;
 }
 
 - (void)scheduleTermination
 {
   *(&self->super.isa + OBJC_IVAR____TtC10CoreAuthUI18TerminationService_terminationScheduled) = 1;
-  v2 = self;
+  selfCopy = self;
   sub_100032930();
 }
 

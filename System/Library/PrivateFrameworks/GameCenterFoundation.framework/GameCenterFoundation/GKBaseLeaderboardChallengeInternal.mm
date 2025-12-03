@@ -1,6 +1,6 @@
 @interface GKBaseLeaderboardChallengeInternal
 + (id)secureCodedPropertyKeys;
-- (void)updateWithServerResponse:(id)a3;
+- (void)updateWithServerResponse:(id)response;
 @end
 
 @implementation GKBaseLeaderboardChallengeInternal
@@ -46,33 +46,33 @@ void __61__GKBaseLeaderboardChallengeInternal_secureCodedPropertyKeys__block_inv
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithServerResponse:(id)a3
+- (void)updateWithServerResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"challenge-id"];
+  responseCopy = response;
+  v5 = [responseCopy objectForKeyedSubscript:@"challenge-id"];
   [(GKBaseLeaderboardChallengeInternal *)self setChallengeID:v5];
 
-  v6 = [v4 objectForKeyedSubscript:@"challenge-vendor-id"];
+  v6 = [responseCopy objectForKeyedSubscript:@"challenge-vendor-id"];
   [(GKBaseLeaderboardChallengeInternal *)self setChallengeVendorID:v6];
 
-  v7 = [v4 objectForKeyedSubscript:@"bundle-id"];
+  v7 = [responseCopy objectForKeyedSubscript:@"bundle-id"];
   [(GKBaseLeaderboardChallengeInternal *)self setBundleID:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"bundle-ids"];
+  v8 = [responseCopy objectForKeyedSubscript:@"bundle-ids"];
   [(GKBaseLeaderboardChallengeInternal *)self setBundleIDs:v8];
 
   v9 = MEMORY[0x277CBEAA8];
-  v10 = [v4 objectForKeyedSubscript:@"start-timestamp"];
+  v10 = [responseCopy objectForKeyedSubscript:@"start-timestamp"];
   v11 = [v9 _gkDateFromServerTimestamp:v10];
   [(GKBaseLeaderboardChallengeInternal *)self setStartDate:v11];
 
   v12 = MEMORY[0x277CBEAA8];
-  v13 = [v4 objectForKeyedSubscript:@"end-timestamp"];
+  v13 = [responseCopy objectForKeyedSubscript:@"end-timestamp"];
   v14 = [v12 _gkDateFromServerTimestamp:v13];
   [(GKBaseLeaderboardChallengeInternal *)self setEndDate:v14];
 
   v15 = MEMORY[0x277CBEAA8];
-  v17 = [v4 objectForKeyedSubscript:@"scheduled-end-timestamp"];
+  v17 = [responseCopy objectForKeyedSubscript:@"scheduled-end-timestamp"];
 
   v16 = [v15 _gkDateFromServerTimestamp:v17];
   [(GKBaseLeaderboardChallengeInternal *)self setScheduledEndDate:v16];

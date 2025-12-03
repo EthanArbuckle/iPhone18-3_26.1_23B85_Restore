@@ -1,11 +1,11 @@
 @interface SCNCommonProfileProgramGenerator
-+ (id)generatorWithProfile:(int)a3 allowingHotReload:(BOOL)a4;
++ (id)generatorWithProfile:(int)profile allowingHotReload:(BOOL)reload;
 - (SCNCommonProfileProgramGenerator)init;
-- (__C3DFXProgram)programWithHashCode:(__C3DProgramHashCode *)a3 engineContext:(__C3DEngineContext *)a4 trackedResource:(id)a5 introspectionDataPtr:(void *)a6;
+- (__C3DFXProgram)programWithHashCode:(__C3DProgramHashCode *)code engineContext:(__C3DEngineContext *)context trackedResource:(id)resource introspectionDataPtr:(void *)ptr;
 - (int)profile;
 - (void)dealloc;
 - (void)emptyShaderCache;
-- (void)releaseProgramForResource:(id)a3;
+- (void)releaseProgramForResource:(id)resource;
 @end
 
 @implementation SCNCommonProfileProgramGenerator
@@ -72,11 +72,11 @@
   CFDictionaryRemoveAllValues(trackedResourcesToHashcode);
 }
 
-+ (id)generatorWithProfile:(int)a3 allowingHotReload:(BOOL)a4
++ (id)generatorWithProfile:(int)profile allowingHotReload:(BOOL)reload
 {
-  v4 = a4;
-  v5 = *&a3;
-  objc_sync_enter(a1);
+  reloadCopy = reload;
+  v5 = *&profile;
+  objc_sync_enter(self);
   if (!s_registry[v5])
   {
     if (v5)
@@ -86,18 +86,18 @@
 
     else
     {
-      s_registry[0] = [[SCNCommonProfileProgramGeneratorMetal alloc] initAllowingHotReload:v4];
+      s_registry[0] = [[SCNCommonProfileProgramGeneratorMetal alloc] initAllowingHotReload:reloadCopy];
     }
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
   return s_registry[v5];
 }
 
-- (__C3DFXProgram)programWithHashCode:(__C3DProgramHashCode *)a3 engineContext:(__C3DEngineContext *)a4 trackedResource:(id)a5 introspectionDataPtr:(void *)a6
+- (__C3DFXProgram)programWithHashCode:(__C3DProgramHashCode *)code engineContext:(__C3DEngineContext *)context trackedResource:(id)resource introspectionDataPtr:(void *)ptr
 {
   v37 = *MEMORY[0x277D85DE8];
-  HashCode = C3DProgramHashCodeGetHashCode(a3);
+  HashCode = C3DProgramHashCodeGetHashCode(code);
   if (HashCode)
   {
     v12 = HashCode;
@@ -106,11 +106,11 @@
     if (Value)
     {
       v14 = Value;
-      v15 = CFSetContainsValue(Value[2], a5);
+      v15 = CFSetContainsValue(Value[2], resource);
       v16 = v15 == 0;
       if (!v15)
       {
-        CFSetAddValue(v14[2], a5);
+        CFSetAddValue(v14[2], resource);
       }
 
       v17 = v14[1];
@@ -120,12 +120,12 @@
     {
       v26 = objc_autoreleasePoolPush();
       kdebug_trace();
-      v17 = [(SCNCommonProfileProgramGenerator *)self _newProgramWithHashCode:a3 engineContext:a4 introspectionDataPtr:a6];
+      v17 = [(SCNCommonProfileProgramGenerator *)self _newProgramWithHashCode:code engineContext:context introspectionDataPtr:ptr];
       kdebug_trace();
       objc_autoreleasePoolPop(v26);
       if (!v17)
       {
-        v30 = CFCopyDescription(a3);
+        v30 = CFCopyDescription(code);
         v31 = scn_default_log();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
@@ -144,7 +144,7 @@
       C3DEntitySetName(v17, v12);
       v27 = objc_alloc_init(SCNCommonProfileProgramCache);
       v27->_program = CFRetain(v17);
-      CFSetAddValue(v27->_owners, a5);
+      CFSetAddValue(v27->_owners, resource);
       CFDictionarySetValue(self->_shaders, v12, v27);
 
       CFRelease(v17);
@@ -153,11 +153,11 @@
 
     if (v16 && v17 != 0)
     {
-      Mutable = CFDictionaryGetValue(self->_trackedResourcesToHashcode, a5);
+      Mutable = CFDictionaryGetValue(self->_trackedResourcesToHashcode, resource);
       if (!Mutable)
       {
         Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x277CBF128]);
-        CFDictionarySetValue(self->_trackedResourcesToHashcode, a5, Mutable);
+        CFDictionarySetValue(self->_trackedResourcesToHashcode, resource, Mutable);
         CFRelease(Mutable);
       }
 
@@ -178,9 +178,9 @@ LABEL_21:
   return 0;
 }
 
-- (void)releaseProgramForResource:(id)a3
+- (void)releaseProgramForResource:(id)resource
 {
-  if (!a3)
+  if (!resource)
   {
     v5 = scn_default_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
@@ -190,7 +190,7 @@ LABEL_21:
   }
 
   os_unfair_lock_lock(&self->_programMutex);
-  Value = CFDictionaryGetValue(self->_trackedResourcesToHashcode, a3);
+  Value = CFDictionaryGetValue(self->_trackedResourcesToHashcode, resource);
   if (Value)
   {
     v14 = Value;
@@ -205,7 +205,7 @@ LABEL_21:
         if (v19)
         {
           v20 = v19;
-          CFSetRemoveValue(v19[2], a3);
+          CFSetRemoveValue(v19[2], resource);
           if (!CFSetGetCount(v20[2]))
           {
             CFDictionaryRemoveValue(self->_shaders, ValueAtIndex);
@@ -225,7 +225,7 @@ LABEL_21:
     }
   }
 
-  CFDictionaryRemoveValue(self->_trackedResourcesToHashcode, a3);
+  CFDictionaryRemoveValue(self->_trackedResourcesToHashcode, resource);
   os_unfair_lock_unlock(&self->_programMutex);
 }
 

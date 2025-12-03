@@ -1,20 +1,20 @@
 @interface RMModelStatusSchema
 + (id)_processManagedSettingsSchemas;
-+ (void)_loadDynamicSchemaFromDictionary:(id)a3 into:(id)a4 fileURL:(id)a5;
-+ (void)_loadDynamicSchemaFromDirectory:(id)a3 into:(id)a4;
-+ (void)_loadDynamicSchemaFromFile:(id)a3 into:(id)a4;
-+ (void)loadDynamicSchemaFromDirectory:(id)a3;
-+ (void)loadDynamicSchemaFromFiles:(id)a3;
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4;
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5;
-- (id)initFromDictionary:(id)a3;
++ (void)_loadDynamicSchemaFromDictionary:(id)dictionary into:(id)into fileURL:(id)l;
++ (void)_loadDynamicSchemaFromDirectory:(id)directory into:(id)into;
++ (void)_loadDynamicSchemaFromFile:(id)file into:(id)into;
++ (void)loadDynamicSchemaFromDirectory:(id)directory;
++ (void)loadDynamicSchemaFromFiles:(id)files;
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope;
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation RMModelStatusSchema
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = RMModelStatusSchema;
   v5 = [(RMModelStatusSchema *)&v17 init];
@@ -23,7 +23,7 @@
     goto LABEL_8;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"version"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"version"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || [v6 intValue] != 1)
   {
@@ -34,7 +34,7 @@ LABEL_11:
   }
 
   objc_storeStrong(&v5->_version, v6);
-  v7 = [v4 objectForKeyedSubscript:@"status-type"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"status-type"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -44,14 +44,14 @@ LABEL_10:
   }
 
   objc_storeStrong(&v5->_statusType, v7);
-  v8 = [v4 objectForKeyedSubscript:@"managed-setting"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"managed-setting"];
   v9 = [RMModelStatusSchemaManagedSetting parseJSON:v8];
   managedSetting = v5->_managedSetting;
   v5->_managedSetting = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"array-value"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"array-value"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v5->_isArrayValue = [v11 BOOLValue], objc_msgSend(v4, "objectForKeyedSubscript:", @"supported-os"), v12 = objc_claimAutoreleasedReturnValue(), +[RMModelSchemaParser loadSupportedOSFromDictionary:](RMModelSchemaParser, "loadSupportedOSFromDictionary:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v5->_isArrayValue = [v11 BOOLValue], objc_msgSend(dictionaryCopy, "objectForKeyedSubscript:", @"supported-os"), v12 = objc_claimAutoreleasedReturnValue(), +[RMModelSchemaParser loadSupportedOSFromDictionary:](RMModelSchemaParser, "loadSupportedOSFromDictionary:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
   {
 
     goto LABEL_10;
@@ -67,47 +67,47 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope
 {
-  v6 = [(RMModelStatusSchema *)self supportedOS];
-  LOBYTE(a4) = [RMModelPayloadUtilities isSupportedForPlatform:a3 scope:a4 supportedOS:v6];
+  supportedOS = [(RMModelStatusSchema *)self supportedOS];
+  LOBYTE(scope) = [RMModelPayloadUtilities isSupportedForPlatform:platform scope:scope supportedOS:supportedOS];
 
-  return a4;
+  return scope;
 }
 
-- (BOOL)isSupportedForPlatform:(int64_t)a3 scope:(int64_t)a4 enrollmentType:(int64_t)a5
+- (BOOL)isSupportedForPlatform:(int64_t)platform scope:(int64_t)scope enrollmentType:(int64_t)type
 {
-  v8 = [(RMModelStatusSchema *)self supportedOS];
-  LOBYTE(a5) = [RMModelPayloadUtilities isSupportedForPlatform:a3 scope:a4 enrollmentType:a5 supportedOS:v8];
+  supportedOS = [(RMModelStatusSchema *)self supportedOS];
+  LOBYTE(type) = [RMModelPayloadUtilities isSupportedForPlatform:platform scope:scope enrollmentType:type supportedOS:supportedOS];
 
-  return a5;
+  return type;
 }
 
-+ (void)loadDynamicSchemaFromDirectory:(id)a3
++ (void)loadDynamicSchemaFromDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v9 = objc_opt_new();
-  [a1 _loadDynamicSchemaFromDirectory:v4 into:v9];
+  [self _loadDynamicSchemaFromDirectory:directoryCopy into:v9];
 
   v5 = [v9 copy];
   v6 = _schemas_0;
   _schemas_0 = v5;
 
-  v7 = [a1 _processManagedSettingsSchemas];
+  _processManagedSettingsSchemas = [self _processManagedSettingsSchemas];
   v8 = _managedSettingsSchemas_0;
-  _managedSettingsSchemas_0 = v7;
+  _managedSettingsSchemas_0 = _processManagedSettingsSchemas;
 }
 
-+ (void)loadDynamicSchemaFromFiles:(id)a3
++ (void)loadDynamicSchemaFromFiles:(id)files
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  filesCopy = files;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = filesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -123,7 +123,7 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        [a1 _loadDynamicSchemaFromFile:*(*(&v16 + 1) + 8 * v10++) into:{v5, v16}];
+        [self _loadDynamicSchemaFromFile:*(*(&v16 + 1) + 8 * v10++) into:{v5, v16}];
       }
 
       while (v8 != v10);
@@ -137,22 +137,22 @@ LABEL_12:
   v12 = _schemas_0;
   _schemas_0 = v11;
 
-  v13 = [a1 _processManagedSettingsSchemas];
+  _processManagedSettingsSchemas = [self _processManagedSettingsSchemas];
   v14 = _managedSettingsSchemas_0;
-  _managedSettingsSchemas_0 = v13;
+  _managedSettingsSchemas_0 = _processManagedSettingsSchemas;
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_loadDynamicSchemaFromDirectory:(id)a3 into:(id)a4
++ (void)_loadDynamicSchemaFromDirectory:(id)directory into:(id)into
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = v5;
-  v9 = [v5 path];
-  v10 = [v7 contentsOfDirectoryAtPath:v9 error:0];
+  directoryCopy = directory;
+  intoCopy = into;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = directoryCopy;
+  path = [directoryCopy path];
+  v10 = [defaultManager contentsOfDirectoryAtPath:path error:0];
 
   v24 = 0u;
   v25 = 0u;
@@ -174,13 +174,13 @@ LABEL_12:
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
-        v17 = [v16 pathExtension];
-        v18 = [v17 isEqualToString:@"json"];
+        pathExtension = [v16 pathExtension];
+        v18 = [pathExtension isEqualToString:@"json"];
 
         if (v18)
         {
           v19 = [v8 URLByAppendingPathComponent:v16];
-          [a1 _loadDynamicSchemaFromFile:v19 into:v6];
+          [self _loadDynamicSchemaFromFile:v19 into:intoCopy];
         }
       }
 
@@ -193,12 +193,12 @@ LABEL_12:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_loadDynamicSchemaFromFile:(id)a3 into:(id)a4
++ (void)_loadDynamicSchemaFromFile:(id)file into:(id)into
 {
-  v6 = a3;
-  v7 = a4;
+  fileCopy = file;
+  intoCopy = into;
   v13 = 0;
-  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v6 options:0 error:&v13];
+  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:fileCopy options:0 error:&v13];
   v9 = v13;
   if (v8)
   {
@@ -208,7 +208,7 @@ LABEL_12:
 
     if (v10)
     {
-      [a1 _loadDynamicSchemaFromDictionary:v10 into:v7 fileURL:v6];
+      [self _loadDynamicSchemaFromDictionary:v10 into:intoCopy fileURL:fileCopy];
     }
 
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -228,18 +228,18 @@ LABEL_12:
   }
 }
 
-+ (void)_loadDynamicSchemaFromDictionary:(id)a3 into:(id)a4 fileURL:(id)a5
++ (void)_loadDynamicSchemaFromDictionary:(id)dictionary into:(id)into fileURL:(id)l
 {
   v18 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [[RMModelStatusSchema alloc] initFromDictionary:v9];
+  intoCopy = into;
+  lCopy = l;
+  dictionaryCopy = dictionary;
+  v10 = [[RMModelStatusSchema alloc] initFromDictionary:dictionaryCopy];
 
   if (v10)
   {
-    v11 = [v10 statusType];
-    v12 = [v7 objectForKeyedSubscript:v11];
+    statusType = [v10 statusType];
+    v12 = [intoCopy objectForKeyedSubscript:statusType];
 
     if (v12)
     {
@@ -253,25 +253,25 @@ LABEL_12:
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v10 statusType];
+        statusType2 = [v10 statusType];
         v16 = 138543362;
-        v17 = v13;
+        v17 = statusType2;
         _os_log_impl(&dword_261DAE000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Loaded status item schema: %{public}@", &v16, 0xCu);
       }
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
-        [RMModelStatusSchema _loadDynamicSchemaFromDictionary:v10 into:v8 fileURL:?];
+        [RMModelStatusSchema _loadDynamicSchemaFromDictionary:v10 into:lCopy fileURL:?];
       }
 
-      v14 = [v10 statusType];
-      [v7 setObject:v10 forKeyedSubscript:v14];
+      statusType3 = [v10 statusType];
+      [intoCopy setObject:v10 forKeyedSubscript:statusType3];
     }
   }
 
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [RMModelStatusSchema _loadDynamicSchemaFromDictionary:v8 into:? fileURL:?];
+    [RMModelStatusSchema _loadDynamicSchemaFromDictionary:lCopy into:? fileURL:?];
   }
 
   v15 = *MEMORY[0x277D85DE8];

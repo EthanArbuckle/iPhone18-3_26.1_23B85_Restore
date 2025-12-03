@@ -3,8 +3,8 @@
 - (CGRect)frame;
 - (UIEdgeInsets)safeAreaInsets;
 - (UIResponder)nextResponder;
-- (_TtCC7SwiftUI17HostingScrollView17PlatformContainer)initWithCoder:(id)a3;
-- (_TtCC7SwiftUI17HostingScrollView17PlatformContainer)initWithFrame:(CGRect)a3;
+- (_TtCC7SwiftUI17HostingScrollView17PlatformContainer)initWithCoder:(id)coder;
+- (_TtCC7SwiftUI17HostingScrollView17PlatformContainer)initWithFrame:(CGRect)frame;
 - (_UIGestureRecognizerContainer)_parentGestureRecognizerContainer;
 - (void)_updateSafeAreaInsets;
 @end
@@ -94,11 +94,11 @@
 
 - (void)_updateSafeAreaInsets
 {
-  v2 = self;
+  selfCopy = self;
   HostingScrollView.PlatformContainer._updateSafeAreaInsets()();
 }
 
-- (_TtCC7SwiftUI17HostingScrollView17PlatformContainer)initWithCoder:(id)a3
+- (_TtCC7SwiftUI17HostingScrollView17PlatformContainer)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtCC7SwiftUI17HostingScrollView17PlatformContainer_safeAreaHelper;
   type metadata accessor for PlatformSafeAreaHelper();
@@ -122,7 +122,7 @@
 
 - (UIResponder)nextResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HostingScrollView.PlatformContainer.next.getter();
 
   return v3;
@@ -130,13 +130,13 @@
 
 - (_UIGestureRecognizerContainer)_parentGestureRecognizerContainer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HostingScrollView.PlatformContainer._parentContainer.getter();
 
   return v3;
 }
 
-- (_TtCC7SwiftUI17HostingScrollView17PlatformContainer)initWithFrame:(CGRect)a3
+- (_TtCC7SwiftUI17HostingScrollView17PlatformContainer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

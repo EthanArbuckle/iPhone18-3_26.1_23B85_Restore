@@ -1,8 +1,8 @@
 @interface STConcretePasscodeAuthenticationProviderService
-- (STConcretePasscodeAuthenticationProviderService)initWithClientListenerEndpoint:(id)a3;
+- (STConcretePasscodeAuthenticationProviderService)initWithClientListenerEndpoint:(id)endpoint;
 - (id)description;
-- (void)authenticatePasscodeWithCommunicationServiceProxy:(id)a3 completionHandler:(id)a4;
-- (void)receivePasscodeAuthenticationResult:(id)a3 completionHandler:(id)a4;
+- (void)authenticatePasscodeWithCommunicationServiceProxy:(id)proxy completionHandler:(id)handler;
+- (void)receivePasscodeAuthenticationResult:(id)result completionHandler:(id)handler;
 @end
 
 @implementation STConcretePasscodeAuthenticationProviderService
@@ -11,30 +11,30 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(STConcretePasscodeAuthenticationProviderService *)self pendingAuthenticationCompletionHandler];
-  v6 = [v3 stringWithFormat:@"<%@ { Pending: %ld }>", v4, v5 != 0];
+  pendingAuthenticationCompletionHandler = [(STConcretePasscodeAuthenticationProviderService *)self pendingAuthenticationCompletionHandler];
+  v6 = [v3 stringWithFormat:@"<%@ { Pending: %ld }>", v4, pendingAuthenticationCompletionHandler != 0];
 
   return v6;
 }
 
-- (STConcretePasscodeAuthenticationProviderService)initWithClientListenerEndpoint:(id)a3
+- (STConcretePasscodeAuthenticationProviderService)initWithClientListenerEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   v8.receiver = self;
   v8.super_class = STConcretePasscodeAuthenticationProviderService;
   v5 = [(STConcretePasscodeAuthenticationProviderService *)&v8 init];
   clientListenerEndpoint = v5->_clientListenerEndpoint;
-  v5->_clientListenerEndpoint = v4;
+  v5->_clientListenerEndpoint = endpointCopy;
 
   return v5;
 }
 
-- (void)authenticatePasscodeWithCommunicationServiceProxy:(id)a3 completionHandler:(id)a4
+- (void)authenticatePasscodeWithCommunicationServiceProxy:(id)proxy completionHandler:(id)handler
 {
-  v6 = a3;
-  [(STConcretePasscodeAuthenticationProviderService *)self setPendingAuthenticationCompletionHandler:a4];
-  v7 = [(STConcretePasscodeAuthenticationProviderService *)self clientListenerEndpoint];
-  [v6 authenticatePasscodeForUserWithEndpoint:v7 completionHandler:&__block_literal_global_5];
+  proxyCopy = proxy;
+  [(STConcretePasscodeAuthenticationProviderService *)self setPendingAuthenticationCompletionHandler:handler];
+  clientListenerEndpoint = [(STConcretePasscodeAuthenticationProviderService *)self clientListenerEndpoint];
+  [proxyCopy authenticatePasscodeForUserWithEndpoint:clientListenerEndpoint completionHandler:&__block_literal_global_5];
 }
 
 void __119__STConcretePasscodeAuthenticationProviderService_authenticatePasscodeWithCommunicationServiceProxy_completionHandler___block_invoke()
@@ -47,16 +47,16 @@ void __119__STConcretePasscodeAuthenticationProviderService_authenticatePasscode
   }
 }
 
-- (void)receivePasscodeAuthenticationResult:(id)a3 completionHandler:(id)a4
+- (void)receivePasscodeAuthenticationResult:(id)result completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STConcretePasscodeAuthenticationProviderService *)self pendingAuthenticationCompletionHandler];
-  if (v8)
+  resultCopy = result;
+  handlerCopy = handler;
+  pendingAuthenticationCompletionHandler = [(STConcretePasscodeAuthenticationProviderService *)self pendingAuthenticationCompletionHandler];
+  if (pendingAuthenticationCompletionHandler)
   {
     v9 = +[STLog passcodeAuthenticationProviderService];
     v10 = v9;
-    if (v6)
+    if (resultCopy)
     {
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -64,7 +64,7 @@ void __119__STConcretePasscodeAuthenticationProviderService_authenticatePasscode
         _os_log_impl(&dword_1B831F000, v10, OS_LOG_TYPE_DEFAULT, "Resolving pending completion with authentication result", v14, 2u);
       }
 
-      (v8)[2](v8, v6, 0);
+      (pendingAuthenticationCompletionHandler)[2](pendingAuthenticationCompletionHandler, resultCopy, 0);
     }
 
     else
@@ -75,11 +75,11 @@ void __119__STConcretePasscodeAuthenticationProviderService_authenticatePasscode
       }
 
       v13 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:51 userInfo:0];
-      (v8)[2](v8, 0, v13);
+      (pendingAuthenticationCompletionHandler)[2](pendingAuthenticationCompletionHandler, 0, v13);
     }
 
     [(STConcretePasscodeAuthenticationProviderService *)self setPendingAuthenticationCompletionHandler:0];
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -91,9 +91,9 @@ void __119__STConcretePasscodeAuthenticationProviderService_authenticatePasscode
     }
 
     v12 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"STErrorDomain" code:1 userInfo:0];
-    v7[2](v7, v12);
+    handlerCopy[2](handlerCopy, v12);
 
-    v7 = v12;
+    handlerCopy = v12;
   }
 }
 

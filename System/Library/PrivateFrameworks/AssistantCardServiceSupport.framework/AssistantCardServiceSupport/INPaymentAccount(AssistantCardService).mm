@@ -6,21 +6,21 @@
 
 - (id)acs_formattedAccountName
 {
-  v2 = [a1 nickname];
-  v3 = [v2 spokenPhrase];
-  if ([v3 length])
+  nickname = [self nickname];
+  spokenPhrase = [nickname spokenPhrase];
+  if ([spokenPhrase length])
   {
-    [a1 nickname];
+    [self nickname];
   }
 
   else
   {
-    [a1 organizationName];
+    [self organizationName];
   }
   v4 = ;
-  v5 = [v4 spokenPhrase];
+  spokenPhrase2 = [v4 spokenPhrase];
 
-  return v5;
+  return spokenPhrase2;
 }
 
 @end

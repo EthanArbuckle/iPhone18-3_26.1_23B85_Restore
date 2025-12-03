@@ -8,7 +8,7 @@
 - (id)px_dictionaryByAddingEntriesFromDictionary:()PhotosUICore
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 addEntriesFromDictionary:v4];
 
   v6 = [v5 copy];
@@ -20,7 +20,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 mutableCopy];
+  v8 = [self mutableCopy];
   [v8 setObject:v7 forKeyedSubscript:v6];
 
   v9 = [v8 copy];

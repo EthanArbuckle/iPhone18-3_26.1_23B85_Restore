@@ -1,5 +1,5 @@
 @interface TransactionsListProvider
-+ (id)makeProviderWithPrimaryAccountIdentifier:(id)a3 dateFromYear:(id)a4 groupType:(unint64_t)a5;
++ (id)makeProviderWithPrimaryAccountIdentifier:(id)identifier dateFromYear:(id)year groupType:(unint64_t)type;
 - (FKBankConnectTransactionsListProviderDelegate)delegate;
 - (_TtC10FinanceKit24TransactionsListProvider)init;
 - (void)performFetchAndStartObservingNotifications;
@@ -15,7 +15,7 @@
   return Strong;
 }
 
-+ (id)makeProviderWithPrimaryAccountIdentifier:(id)a3 dateFromYear:(id)a4 groupType:(unint64_t)a5
++ (id)makeProviderWithPrimaryAccountIdentifier:(id)identifier dateFromYear:(id)year groupType:(unint64_t)type
 {
   v6 = sub_1B77FF988();
   v7 = *(v6 - 8);
@@ -24,7 +24,7 @@
   v10 = sub_1B7800868();
   v12 = v11;
   sub_1B77FF928();
-  v13 = sub_1B76FBAFC(v10, v12, v9, a5);
+  v13 = sub_1B76FBAFC(v10, v12, v9, type);
 
   (*(v7 + 8))(v9, v6);
 
@@ -33,7 +33,7 @@
 
 - (void)performFetchAndStartObservingNotifications
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B76FA9B0();
 }
 

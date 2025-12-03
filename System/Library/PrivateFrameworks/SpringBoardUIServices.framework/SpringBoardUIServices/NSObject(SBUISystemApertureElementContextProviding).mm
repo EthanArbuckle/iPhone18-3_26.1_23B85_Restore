@@ -8,12 +8,12 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v2 = [a1 presentableContext];
+    presentableContext = [self presentableContext];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [v2 systemApertureElementContext];
+      systemApertureElementContext = [presentableContext systemApertureElementContext];
 
-      if (v3)
+      if (systemApertureElementContext)
       {
         goto LABEL_7;
       }
@@ -24,10 +24,10 @@
     }
   }
 
-  v3 = +[SBUISystemApertureElementSource unassociatedContext];
+  systemApertureElementContext = +[SBUISystemApertureElementSource unassociatedContext];
 LABEL_7:
 
-  return v3;
+  return systemApertureElementContext;
 }
 
 @end

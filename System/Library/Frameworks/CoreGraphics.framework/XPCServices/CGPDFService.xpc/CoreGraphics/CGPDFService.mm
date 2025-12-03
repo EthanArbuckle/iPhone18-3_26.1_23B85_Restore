@@ -1,6 +1,6 @@
 @interface CGPDFService
 - (CGPDFService)init;
-- (void)newPDFDocumentWithData:(id)a3 withReply:(id)a4;
+- (void)newPDFDocumentWithData:(id)data withReply:(id)reply;
 @end
 
 @implementation CGPDFService
@@ -22,20 +22,20 @@
   return v2;
 }
 
-- (void)newPDFDocumentWithData:(id)a3 withReply:(id)a4
+- (void)newPDFDocumentWithData:(id)data withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  replyCopy = reply;
   requestQueue = self->_requestQueue;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __49__CGPDFService_newPDFDocumentWithData_withReply___block_invoke;
   v11[3] = &unk_1000083C8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = dataCopy;
   [(NSOperationQueue *)requestQueue addOperationWithBlock:v11];
 }
 

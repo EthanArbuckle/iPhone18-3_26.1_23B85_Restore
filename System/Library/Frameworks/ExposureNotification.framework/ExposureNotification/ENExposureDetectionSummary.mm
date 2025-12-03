@@ -1,34 +1,34 @@
 @interface ENExposureDetectionSummary
-- (ENExposureDetectionSummary)initWithXPCObject:(id)a3 error:(id *)a4;
+- (ENExposureDetectionSummary)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ENExposureDetectionSummary
 
-- (ENExposureDetectionSummary)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureDetectionSummary)initWithXPCObject:(id)object error:(id *)error
 {
   v35[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   v33.receiver = self;
   v33.super_class = ENExposureDetectionSummary;
   v7 = [(ENExposureDetectionSummary *)&v33 init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_29;
     }
 
 LABEL_28:
     ENErrorF(2);
-    *a4 = v17 = 0;
+    *error = v17 = 0;
     goto LABEL_24;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_29;
     }
@@ -87,7 +87,7 @@ LABEL_13:
   }
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = xpc_dictionary_get_array(v6, "daySummaries");
+  v12 = xpc_dictionary_get_array(objectCopy, "daySummaries");
   v13 = v12;
   if (!v12)
   {
@@ -110,10 +110,10 @@ LABEL_13:
   v14 = v28[5];
   if (v14)
   {
-    if (a4)
+    if (error)
     {
       v25 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -191,39 +191,39 @@ BOOL __54__ENExposureDetectionSummary_initWithXPCObject_error___block_invoke(uin
   return v8;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   attenuationDurations = self->_attenuationDurations;
   CUXPCEncodeNSArrayOfNSNumber();
   daysSinceLastExposure = self->_daysSinceLastExposure;
   if (daysSinceLastExposure)
   {
-    xpc_dictionary_set_int64(v4, "daLE", daysSinceLastExposure);
+    xpc_dictionary_set_int64(objectCopy, "daLE", daysSinceLastExposure);
   }
 
   matchedKeyCount = self->_matchedKeyCount;
   if (matchedKeyCount)
   {
-    xpc_dictionary_set_uint64(v4, "mtKC", matchedKeyCount);
+    xpc_dictionary_set_uint64(objectCopy, "mtKC", matchedKeyCount);
   }
 
   if (self->_maximumRiskScore)
   {
-    xpc_dictionary_set_uint64(v4, "mxRS", self->_maximumRiskScore);
+    xpc_dictionary_set_uint64(objectCopy, "mxRS", self->_maximumRiskScore);
   }
 
   maximumRiskScoreFullRange = self->_maximumRiskScoreFullRange;
   if (maximumRiskScoreFullRange != 0.0)
   {
-    xpc_dictionary_set_double(v4, "mxRSFR", maximumRiskScoreFullRange);
+    xpc_dictionary_set_double(objectCopy, "mxRSFR", maximumRiskScoreFullRange);
   }
 
   riskScoreSumFullRange = self->_riskScoreSumFullRange;
   if (riskScoreSumFullRange != 0.0)
   {
-    xpc_dictionary_set_double(v4, "rssFR", riskScoreSumFullRange);
+    xpc_dictionary_set_double(objectCopy, "rssFR", riskScoreSumFullRange);
   }
 
   v10 = self->_daySummaries;
@@ -261,7 +261,7 @@ BOOL __54__ENExposureDetectionSummary_initWithXPCObject_error___block_invoke(uin
       while (v14);
     }
 
-    xpc_dictionary_set_value(v4, "daySummaries", v11);
+    xpc_dictionary_set_value(objectCopy, "daySummaries", v11);
   }
 
   v19 = *MEMORY[0x277D85DE8];

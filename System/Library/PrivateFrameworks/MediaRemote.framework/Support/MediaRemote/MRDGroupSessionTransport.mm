@@ -1,25 +1,25 @@
 @interface MRDGroupSessionTransport
-- (MRDGroupSessionTransport)initWithOutputDevice:(id)a3;
-- (id)createConnectionWithUserInfo:(id)a3;
+- (MRDGroupSessionTransport)initWithOutputDevice:(id)device;
+- (id)createConnectionWithUserInfo:(id)info;
 - (id)description;
 - (id)deviceInfo;
 - (id)name;
 - (id)uid;
-- (void)resetWithError:(id)a3;
+- (void)resetWithError:(id)error;
 @end
 
 @implementation MRDGroupSessionTransport
 
-- (MRDGroupSessionTransport)initWithOutputDevice:(id)a3
+- (MRDGroupSessionTransport)initWithOutputDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = MRDGroupSessionTransport;
   v6 = [(MRDGroupSessionTransport *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputDevice, a3);
+    objc_storeStrong(&v6->_outputDevice, device);
     v8 = [MRClient alloc];
     v9 = [v8 initWithBundleIdentifier:kMRMediaRemoteSystemMediaApplicationDisplayIdentifier];
     v10 = [[MRPlayerPath alloc] initWithOrigin:0 client:v9 player:0];
@@ -36,113 +36,113 @@
 {
   v3 = objc_opt_class();
   v4 = [(MRAVOutputDevice *)self->_outputDevice uid];
-  v5 = [(MRAVOutputDevice *)self->_outputDevice groupSessionInfo];
-  v6 = [NSString stringWithFormat:@"<%@:%p identifier=%@ info=%@>", v3, self, v4, v5];
+  groupSessionInfo = [(MRAVOutputDevice *)self->_outputDevice groupSessionInfo];
+  v6 = [NSString stringWithFormat:@"<%@:%p identifier=%@ info=%@>", v3, self, v4, groupSessionInfo];
 
   return v6;
 }
 
-- (id)createConnectionWithUserInfo:(id)a3
+- (id)createConnectionWithUserInfo:(id)info
 {
   v4 = +[MRDMediaRemoteServer server];
-  v5 = [v4 groupSessionServer];
-  v6 = [v5 sessionManager];
-  v7 = [v6 session];
+  groupSessionServer = [v4 groupSessionServer];
+  sessionManager = [groupSessionServer sessionManager];
+  session = [sessionManager session];
 
-  v8 = [(MRDGroupSessionTransport *)self outputDevice];
-  v9 = [v8 groupID];
+  outputDevice = [(MRDGroupSessionTransport *)self outputDevice];
+  groupID = [outputDevice groupID];
 
-  v10 = [v7 identifier];
-  v11 = v10;
-  if (v10 == v9)
+  identifier = [session identifier];
+  v11 = identifier;
+  if (identifier == groupID)
   {
   }
 
   else
   {
-    v12 = [v10 isEqual:v9];
+    v12 = [identifier isEqual:groupID];
 
     if ((v12 & 1) == 0)
     {
       v13 = MRGroupSessionError;
-      v14 = [NSString stringWithFormat:@"Could not find session corresponding to identifier: %@", v9];
+      v14 = [NSString stringWithFormat:@"Could not find session corresponding to identifier: %@", groupID];
       [NSError msv_errorWithDomain:v13 code:2 debugDescription:@"%@", v14];
       goto LABEL_8;
     }
   }
 
-  v15 = [v7 leader];
+  leader = [session leader];
 
-  if (v15)
+  if (leader)
   {
     v16 = [MRDGroupSessionTransportConnection alloc];
-    v17 = [v7 leader];
-    v18 = [v17 identifier];
-    v19 = [(MRDGroupSessionTransportConnection *)v16 initWithGroupSession:v7 participantIdentifier:v18];
+    leader2 = [session leader];
+    identifier2 = [leader2 identifier];
+    v19 = [(MRDGroupSessionTransportConnection *)v16 initWithGroupSession:session participantIdentifier:identifier2];
     [(MRDGroupSessionTransport *)self setConnection:v19];
 
-    v20 = [(MRDGroupSessionTransport *)self connection];
+    connection = [(MRDGroupSessionTransport *)self connection];
     goto LABEL_9;
   }
 
   v21 = MRGroupSessionError;
-  v14 = [NSString stringWithFormat:@"Could not find session leader on session: %@", v7];
+  v14 = [NSString stringWithFormat:@"Could not find session leader on session: %@", session];
   [NSError msv_errorWithDomain:v21 code:8 debugDescription:@"%@", v14];
   v22 = LABEL_8:;
   [(MRDGroupSessionTransport *)self setConnectionError:v22];
 
-  v20 = 0;
+  connection = 0;
 LABEL_9:
 
-  return v20;
+  return connection;
 }
 
-- (void)resetWithError:(id)a3
+- (void)resetWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDGroupSessionTransport] %@ Reset with error: %@", &v7, 0x16u);
   }
 
-  [(MRDGroupSessionTransport *)self setConnectionError:v4];
-  v6 = [(MRDGroupSessionTransport *)self connection];
-  [v6 closeWithError:v4];
+  [(MRDGroupSessionTransport *)self setConnectionError:errorCopy];
+  connection = [(MRDGroupSessionTransport *)self connection];
+  [connection closeWithError:errorCopy];
 }
 
 - (id)deviceInfo
 {
   v3 = objc_alloc_init(MRDeviceInfo);
-  v4 = [(MRDGroupSessionTransport *)self outputDevice];
-  v5 = [v4 name];
-  [v3 setName:v5];
+  outputDevice = [(MRDGroupSessionTransport *)self outputDevice];
+  name = [outputDevice name];
+  [v3 setName:name];
 
-  v6 = [(MRDGroupSessionTransport *)self outputDevice];
-  v7 = [v6 primaryID];
-  [v3 setDeviceUID:v7];
+  outputDevice2 = [(MRDGroupSessionTransport *)self outputDevice];
+  primaryID = [outputDevice2 primaryID];
+  [v3 setDeviceUID:primaryID];
 
   return v3;
 }
 
 - (id)uid
 {
-  v2 = [(MRDGroupSessionTransport *)self outputDevice];
-  v3 = [v2 uid];
+  outputDevice = [(MRDGroupSessionTransport *)self outputDevice];
+  v3 = [outputDevice uid];
 
   return v3;
 }
 
 - (id)name
 {
-  v2 = [(MRDGroupSessionTransport *)self outputDevice];
-  v3 = [v2 name];
+  outputDevice = [(MRDGroupSessionTransport *)self outputDevice];
+  name = [outputDevice name];
 
-  return v3;
+  return name;
 }
 
 @end

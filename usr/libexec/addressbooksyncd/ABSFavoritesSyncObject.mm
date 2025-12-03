@@ -1,9 +1,9 @@
 @interface ABSFavoritesSyncObject
 + (id)shaFile;
 - (ABSFavoritesSyncObject)init;
-- (id)createProtobufWithOptions:(id)a3;
+- (id)createProtobufWithOptions:(id)options;
 - (id)description;
-- (int)contactPropertyKeyToProperty:(id)a3;
+- (int)contactPropertyKeyToProperty:(id)property;
 @end
 
 @implementation ABSFavoritesSyncObject
@@ -46,8 +46,8 @@
   v18[4] = &v19;
   [v2 accessSync:v18];
 
-  v3 = [v20[5] entries];
-  v4 = [v3 count] == 0;
+  entries = [v20[5] entries];
+  v4 = [entries count] == 0;
 
   if (v4)
   {
@@ -67,9 +67,9 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [v20[5] entries];
+    entries2 = [v20[5] entries];
     v6 = 0;
-    v7 = [v5 countByEnumeratingWithState:&v14 objects:v25 count:16];
+    v7 = [entries2 countByEnumeratingWithState:&v14 objects:v25 count:16];
     if (v7)
     {
       v8 = *v15;
@@ -79,13 +79,13 @@
         {
           if (*v15 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(entries2);
           }
 
           v6 ^= [*(*(&v14 + 1) + 8 * i) hash];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v25 count:16];
+        v7 = [entries2 countByEnumeratingWithState:&v14 objects:v25 count:16];
       }
 
       while (v7);
@@ -99,10 +99,10 @@
   return v10;
 }
 
-- (int)contactPropertyKeyToProperty:(id)a3
+- (int)contactPropertyKeyToProperty:(id)property
 {
   v11[0] = CNContactPhoneNumbersKey;
-  v3 = a3;
+  propertyCopy = property;
   v4 = [NSNumber numberWithInt:kABPersonPhoneProperty];
   v12[0] = v4;
   v11[1] = CNContactEmailAddressesKey;
@@ -116,26 +116,26 @@
   v12[3] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v12 forKeys:v11 count:4];
 
-  v9 = [v8 objectForKey:v3];
+  v9 = [v8 objectForKey:propertyCopy];
 
-  LODWORD(v3) = [v9 integerValue];
-  return v3;
+  LODWORD(propertyCopy) = [v9 integerValue];
+  return propertyCopy;
 }
 
-- (id)createProtobufWithOptions:(id)a3
+- (id)createProtobufWithOptions:(id)options
 {
-  v46 = a3;
+  optionsCopy = options;
   v4 = [[ABSPBSyncObject alloc] initWithMemo:@"Favorites"];
   v49 = dispatch_semaphore_create(0);
   v5 = objc_alloc_init(ABSPBFavoritesSyncObject);
   [(ABSPBSyncObject *)v4 setFavoritesSyncObject:v5];
 
   v6 = [NSMutableArray alloc];
-  v50 = self;
-  v7 = [(CNFavorites *)self->_favorites entries];
-  v8 = [v6 initWithCapacity:{objc_msgSend(v7, "count")}];
-  v9 = [(ABSPBSyncObject *)v4 favoritesSyncObject];
-  [v9 setEntrys:v8];
+  selfCopy = self;
+  entries = [(CNFavorites *)self->_favorites entries];
+  v8 = [v6 initWithCapacity:{objc_msgSend(entries, "count")}];
+  favoritesSyncObject = [(ABSPBSyncObject *)v4 favoritesSyncObject];
+  [favoritesSyncObject setEntrys:v8];
 
   v62 = 0u;
   v63 = 0u;
@@ -145,12 +145,12 @@
   v10 = [obj countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (v10)
   {
-    v11 = 0;
+    identifier = 0;
     v48 = *v61;
     do
     {
       v12 = 0;
-      v13 = v11;
+      v13 = identifier;
       do
       {
         if (*v61 != v48)
@@ -179,69 +179,69 @@
         dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
         v17 = objc_alloc_init(ABSPBFavoritesEntry);
         -[ABSPBFavoritesEntry setAbIdentifier:](v17, "setAbIdentifier:", [v55[5] iOSLegacyIdentifier]);
-        v18 = [v14 contactProperty];
-        v19 = [v18 key];
+        contactProperty = [v14 contactProperty];
+        v19 = [contactProperty key];
         v20 = [CNFavoritesEntry mapCNContactPropertyKeyToABProperty:v19];
 
         [(ABSPBFavoritesEntry *)v17 setEntryType:v20];
-        v21 = [v14 contactProperty];
-        v22 = [v21 key];
-        [(ABSPBFavoritesEntry *)v17 setProperty:[(ABSFavoritesSyncObject *)v50 contactPropertyKeyToProperty:v22]];
+        contactProperty2 = [v14 contactProperty];
+        v22 = [contactProperty2 key];
+        [(ABSPBFavoritesEntry *)v17 setProperty:[(ABSFavoritesSyncObject *)selfCopy contactPropertyKeyToProperty:v22]];
 
-        v23 = [v14 value];
-        [(ABSPBFavoritesEntry *)v17 setValue:v23];
+        value = [v14 value];
+        [(ABSPBFavoritesEntry *)v17 setValue:value];
 
-        v24 = [v14 name];
-        [(ABSPBFavoritesEntry *)v17 setName:v24];
+        name = [v14 name];
+        [(ABSPBFavoritesEntry *)v17 setName:name];
 
-        v25 = [v14 actionType];
-        [(ABSPBFavoritesEntry *)v17 setActionType:v25];
+        actionType = [v14 actionType];
+        [(ABSPBFavoritesEntry *)v17 setActionType:actionType];
 
-        v26 = [v14 bundleIdentifier];
-        [(ABSPBFavoritesEntry *)v17 setBundleIdentifier:v26];
+        bundleIdentifier = [v14 bundleIdentifier];
+        [(ABSPBFavoritesEntry *)v17 setBundleIdentifier:bundleIdentifier];
 
-        v27 = [v14 contactProperty];
-        v28 = [v27 contact];
-        v11 = [v28 identifier];
+        contactProperty3 = [v14 contactProperty];
+        contact = [contactProperty3 contact];
+        identifier = [contact identifier];
 
-        v29 = [v14 contactProperty];
-        v30 = [v29 key];
+        contactProperty4 = [v14 contactProperty];
+        v30 = [contactProperty4 key];
         [(ABSPBFavoritesEntry *)v17 setPropertyKey:v30];
 
-        v31 = [v14 contactProperty];
-        v32 = [v31 label];
-        [(ABSPBFavoritesEntry *)v17 setLabel:v32];
+        contactProperty5 = [v14 contactProperty];
+        label = [contactProperty5 label];
+        [(ABSPBFavoritesEntry *)v17 setLabel:label];
 
-        if (v11)
+        if (identifier)
         {
-          [(ABSPBFavoritesEntry *)v17 setGuid:v11];
+          [(ABSPBFavoritesEntry *)v17 setGuid:identifier];
         }
 
         else
         {
           v33 = +[NSUUID UUID];
-          v34 = [v33 UUIDString];
-          [(ABSPBFavoritesEntry *)v17 setGuid:v34];
+          uUIDString = [v33 UUIDString];
+          [(ABSPBFavoritesEntry *)v17 setGuid:uUIDString];
         }
 
-        v35 = [v14 dictionaryRepresentation];
+        dictionaryRepresentation = [v14 dictionaryRepresentation];
         v36 = [NSMutableArray alloc];
-        v37 = [v35 allKeys];
-        v38 = [v36 initWithArray:v37];
+        allKeys = [dictionaryRepresentation allKeys];
+        v38 = [v36 initWithArray:allKeys];
         [(ABSPBFavoritesEntry *)v17 setDictionaryKeys:v38];
 
         v39 = [NSMutableArray alloc];
-        v40 = [v35 allValues];
-        v41 = [v39 initWithArray:v40];
+        allValues = [dictionaryRepresentation allValues];
+        v41 = [v39 initWithArray:allValues];
         [(ABSPBFavoritesEntry *)v17 setDictionaryValues:v41];
 
-        v42 = [(ABSPBSyncObject *)v4 favoritesSyncObject];
-        v43 = [v42 entrys];
-        [v43 addObject:v17];
+        favoritesSyncObject2 = [(ABSPBSyncObject *)v4 favoritesSyncObject];
+        entrys = [favoritesSyncObject2 entrys];
+        [entrys addObject:v17];
 
         _Block_object_dispose(&v54, 8);
         v12 = v12 + 1;
-        v13 = v11;
+        v13 = identifier;
       }
 
       while (v10 != v12);
@@ -251,9 +251,9 @@
     while (v10);
   }
 
-  v44 = [(ABSPBSyncObject *)v4 data];
+  data = [(ABSPBSyncObject *)v4 data];
 
-  return v44;
+  return data;
 }
 
 - (id)description
@@ -263,8 +263,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CNFavorites *)self->_favorites entries];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  entries = [(CNFavorites *)self->_favorites entries];
+  v5 = [entries countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -275,16 +275,16 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entries);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) contactProperty];
-        v10 = [v9 contact];
-        v11 = [v10 identifier];
-        [v3 appendFormat:@"%@, ", v11];
+        contactProperty = [*(*(&v13 + 1) + 8 * i) contactProperty];
+        contact = [contactProperty contact];
+        identifier = [contact identifier];
+        [v3 appendFormat:@"%@, ", identifier];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [entries countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);

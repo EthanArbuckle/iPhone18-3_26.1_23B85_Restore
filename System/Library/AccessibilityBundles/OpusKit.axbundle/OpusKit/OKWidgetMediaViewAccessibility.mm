@@ -1,20 +1,20 @@
 @interface OKWidgetMediaViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation OKWidgetMediaViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"OKWidgetMediaView" isKindOfClass:@"OKWidgetMediaViewProxy"];
-  [v3 validateClass:@"OKWidgetViewProxy" hasInstanceMethod:@"mediaURLs" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OKWidgetViewProxy" hasInstanceMethod:@"pageViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OKPageViewController" hasInstanceMethod:@"presentationViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OKPresentationViewControllerProxy" hasInstanceMethod:@"presentation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"OKPresentation" hasInstanceMethod:@"mediaItemForURL:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"OKMediaPhotoKitItem" hasInstanceVariable:@"_asset" withType:"PHAsset"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"OKWidgetMediaView" isKindOfClass:@"OKWidgetMediaViewProxy"];
+  [validationsCopy validateClass:@"OKWidgetViewProxy" hasInstanceMethod:@"mediaURLs" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OKWidgetViewProxy" hasInstanceMethod:@"pageViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OKPageViewController" hasInstanceMethod:@"presentationViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OKPresentationViewControllerProxy" hasInstanceMethod:@"presentation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"OKPresentation" hasInstanceMethod:@"mediaItemForURL:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"OKMediaPhotoKitItem" hasInstanceVariable:@"_asset" withType:"PHAsset"];
 }
 
 - (id)accessibilityLabel
@@ -45,9 +45,9 @@
   _Block_object_dispose(&v17, 8);
   v12 = [v11 safeValueForKey:@"_asset"];
 
-  v13 = [v12 accessibilityLabel];
+  accessibilityLabel = [v12 accessibilityLabel];
 
-  return v13;
+  return accessibilityLabel;
 }
 
 void __52__OKWidgetMediaViewAccessibility_accessibilityLabel__block_invoke(uint64_t a1)

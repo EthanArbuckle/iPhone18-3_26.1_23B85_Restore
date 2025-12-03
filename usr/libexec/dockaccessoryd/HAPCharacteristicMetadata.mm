@@ -1,50 +1,50 @@
 @interface HAPCharacteristicMetadata
-- (BOOL)isEqualToCharacteristicMetadata:(id)a3;
-- (HAPCharacteristicMetadata)initWithCoder:(id)a3;
-- (HAPCharacteristicMetadata)initWithConstraints:(id)a3 description:(id)a4 format:(id)a5 units:(id)a6;
-- (id)_generateValidConstraints:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqualToCharacteristicMetadata:(id)metadata;
+- (HAPCharacteristicMetadata)initWithCoder:(id)coder;
+- (HAPCharacteristicMetadata)initWithConstraints:(id)constraints description:(id)description format:(id)format units:(id)units;
+- (id)_generateValidConstraints:(id)constraints;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HAPCharacteristicMetadata
 
-- (HAPCharacteristicMetadata)initWithConstraints:(id)a3 description:(id)a4 format:(id)a5 units:(id)a6
+- (HAPCharacteristicMetadata)initWithConstraints:(id)constraints description:(id)description format:(id)format units:(id)units
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
-  if (!v10 && !v11 && !v12 && !v13)
+  constraintsCopy = constraints;
+  descriptionCopy = description;
+  formatCopy = format;
+  unitsCopy = units;
+  v14 = unitsCopy;
+  if (!constraintsCopy && !descriptionCopy && !formatCopy && !unitsCopy)
   {
 LABEL_12:
-    v28 = 0;
+    selfCopy2 = 0;
     goto LABEL_16;
   }
 
-  v15 = [v10 maxLength];
-  if (v15)
+  maxLength = [constraintsCopy maxLength];
+  if (maxLength)
   {
-    v16 = v15;
-    [v10 maxLength];
-    v34 = a5;
-    v17 = v10;
-    v18 = self;
-    v19 = v12;
+    v16 = maxLength;
+    [constraintsCopy maxLength];
+    formatCopy2 = format;
+    v17 = constraintsCopy;
+    selfCopy = self;
+    v19 = formatCopy;
     v20 = v14;
-    v22 = v21 = v11;
-    v23 = [v22 unsignedIntValue];
+    v22 = v21 = descriptionCopy;
+    unsignedIntValue = [v22 unsignedIntValue];
 
-    v11 = v21;
+    descriptionCopy = v21;
     v14 = v20;
-    v12 = v19;
-    self = v18;
-    v10 = v17;
-    a5 = v34;
+    formatCopy = v19;
+    self = selfCopy;
+    constraintsCopy = v17;
+    format = formatCopy2;
 
-    if (v23 >= 0x101)
+    if (unsignedIntValue >= 0x101)
     {
       v24 = sub_10007FAA0();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -74,19 +74,19 @@ LABEL_12:
   v30 = v29;
   if (v29)
   {
-    objc_storeStrong(&v29->_manufacturerDescription, a4);
-    objc_storeStrong(&v30->_format, a5);
-    objc_storeStrong(&v30->_units, a6);
-    v31 = [(HAPCharacteristicMetadata *)v30 _generateValidConstraints:v10];
+    objc_storeStrong(&v29->_manufacturerDescription, description);
+    objc_storeStrong(&v30->_format, format);
+    objc_storeStrong(&v30->_units, units);
+    v31 = [(HAPCharacteristicMetadata *)v30 _generateValidConstraints:constraintsCopy];
     constraints = v30->_constraints;
     v30->_constraints = v31;
   }
 
   self = v30;
-  v28 = self;
+  selfCopy2 = self;
 LABEL_16:
 
-  return v28;
+  return selfCopy2;
 }
 
 - (id)description
@@ -97,53 +97,53 @@ LABEL_16:
   v4 = [(HAPCharacteristicMetadata *)&v10 description];
   [v3 appendFormat:@"%@  ", v4];
 
-  v5 = [(HAPCharacteristicMetadata *)self constraints];
-  [v3 appendFormat:@"Constraints: %@  ", v5];
+  constraints = [(HAPCharacteristicMetadata *)self constraints];
+  [v3 appendFormat:@"Constraints: %@  ", constraints];
 
-  v6 = [(HAPCharacteristicMetadata *)self manufacturerDescription];
-  [v3 appendFormat:@"Description: %@  ", v6];
+  manufacturerDescription = [(HAPCharacteristicMetadata *)self manufacturerDescription];
+  [v3 appendFormat:@"Description: %@  ", manufacturerDescription];
 
-  v7 = [(HAPCharacteristicMetadata *)self format];
-  [v3 appendFormat:@"Format: %@  ", v7];
+  format = [(HAPCharacteristicMetadata *)self format];
+  [v3 appendFormat:@"Format: %@  ", format];
 
-  v8 = [(HAPCharacteristicMetadata *)self units];
-  [v3 appendFormat:@"Units: %@  ", v8];
+  units = [(HAPCharacteristicMetadata *)self units];
+  [v3 appendFormat:@"Units: %@  ", units];
 
   return v3;
 }
 
-- (id)_generateValidConstraints:(id)a3
+- (id)_generateValidConstraints:(id)constraints
 {
-  v4 = a3;
-  v5 = [(HAPCharacteristicMetadata *)self format];
-  v6 = [v5 isEqualToString:@"string"];
+  constraintsCopy = constraints;
+  format = [(HAPCharacteristicMetadata *)self format];
+  v6 = [format isEqualToString:@"string"];
 
-  v7 = v4;
+  v7 = constraintsCopy;
   if (v6)
   {
-    v7 = v4;
-    if (!v4)
+    v7 = constraintsCopy;
+    if (!constraintsCopy)
     {
       v7 = objc_alloc_init(HAPMetadataConstraints);
     }
 
-    v8 = [(HAPMetadataConstraints *)v7 maxLength];
+    maxLength = [(HAPMetadataConstraints *)v7 maxLength];
 
-    if (!v8)
+    if (!maxLength)
     {
       v9 = [NSNumber numberWithUnsignedInteger:64];
       [(HAPMetadataConstraints *)v7 setMaxLength:v9];
     }
   }
 
-  v10 = [(HAPMetadataConstraints *)v7 minimumValue];
-  if (v10)
+  minimumValue = [(HAPMetadataConstraints *)v7 minimumValue];
+  if (minimumValue)
   {
     goto LABEL_11;
   }
 
-  v10 = [(HAPMetadataConstraints *)v7 maximumValue];
-  if (v10 || ([(HAPMetadataConstraints *)v7 stepValue], (v10 = objc_claimAutoreleasedReturnValue()) != 0) || ([(HAPMetadataConstraints *)v7 minLength], (v10 = objc_claimAutoreleasedReturnValue()) != 0) || ([(HAPMetadataConstraints *)v7 maxLength], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  minimumValue = [(HAPMetadataConstraints *)v7 maximumValue];
+  if (minimumValue || ([(HAPMetadataConstraints *)v7 stepValue], (minimumValue = objc_claimAutoreleasedReturnValue()) != 0) || ([(HAPMetadataConstraints *)v7 minLength], (minimumValue = objc_claimAutoreleasedReturnValue()) != 0) || ([(HAPMetadataConstraints *)v7 maxLength], (minimumValue = objc_claimAutoreleasedReturnValue()) != 0))
   {
 LABEL_11:
 
@@ -152,8 +152,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v13 = [(HAPMetadataConstraints *)v7 validValues];
-  v14 = [v13 count];
+  validValues = [(HAPMetadataConstraints *)v7 validValues];
+  v14 = [validValues count];
 
   if (v14)
   {
@@ -166,10 +166,10 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)isEqualToCharacteristicMetadata:(id)a3
+- (BOOL)isEqualToCharacteristicMetadata:(id)metadata
 {
-  v4 = a3;
-  if (self == v4)
+  metadataCopy = metadata;
+  if (self == metadataCopy)
   {
     v14 = 1;
   }
@@ -182,20 +182,20 @@ LABEL_13:
       goto LABEL_6;
     }
 
-    v5 = [(HAPCharacteristicMetadata *)self manufacturerDescription];
-    v6 = [(HAPCharacteristicMetadata *)v4 manufacturerDescription];
-    v7 = sub_10007EC2C(v5, v6);
+    manufacturerDescription = [(HAPCharacteristicMetadata *)self manufacturerDescription];
+    manufacturerDescription2 = [(HAPCharacteristicMetadata *)metadataCopy manufacturerDescription];
+    v7 = sub_10007EC2C(manufacturerDescription, manufacturerDescription2);
 
     if (v7)
     {
       goto LABEL_6;
     }
 
-    v8 = [(HAPCharacteristicMetadata *)self format];
-    v9 = [(HAPCharacteristicMetadata *)v4 format];
-    v10 = sub_10007EC2C(v8, v9);
+    format = [(HAPCharacteristicMetadata *)self format];
+    format2 = [(HAPCharacteristicMetadata *)metadataCopy format];
+    v10 = sub_10007EC2C(format, format2);
 
-    if (v10 & 1) != 0 || ([(HAPCharacteristicMetadata *)self units], v11 = objc_claimAutoreleasedReturnValue(), [(HAPCharacteristicMetadata *)v4 units], v12 = objc_claimAutoreleasedReturnValue(), v13 = sub_10007EC2C(v11, v12), v12, v11, (v13))
+    if (v10 & 1) != 0 || ([(HAPCharacteristicMetadata *)self units], v11 = objc_claimAutoreleasedReturnValue(), [(HAPCharacteristicMetadata *)metadataCopy units], v12 = objc_claimAutoreleasedReturnValue(), v13 = sub_10007EC2C(v11, v12), v12, v11, (v13))
     {
 LABEL_6:
       v14 = 0;
@@ -203,18 +203,18 @@ LABEL_6:
 
     else
     {
-      v16 = [(HAPCharacteristicMetadata *)self constraints];
-      v17 = [(HAPCharacteristicMetadata *)v4 constraints];
-      if (v16 == v17)
+      constraints = [(HAPCharacteristicMetadata *)self constraints];
+      constraints2 = [(HAPCharacteristicMetadata *)metadataCopy constraints];
+      if (constraints == constraints2)
       {
         v14 = 1;
       }
 
       else
       {
-        v18 = [(HAPCharacteristicMetadata *)self constraints];
-        v19 = [(HAPCharacteristicMetadata *)v4 constraints];
-        v14 = [v18 isEqualToMetadataConstraints:v19];
+        constraints3 = [(HAPCharacteristicMetadata *)self constraints];
+        constraints4 = [(HAPCharacteristicMetadata *)metadataCopy constraints];
+        v14 = [constraints3 isEqualToMetadataConstraints:constraints4];
       }
     }
   }
@@ -222,28 +222,28 @@ LABEL_6:
   return v14 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(HAPCharacteristicMetadata *)self constraints];
-    v7 = [v6 copyWithZone:a3];
+    constraints = [(HAPCharacteristicMetadata *)self constraints];
+    v7 = [constraints copyWithZone:zone];
     v8 = v5[1];
     v5[1] = v7;
 
-    v9 = [(HAPCharacteristicMetadata *)self manufacturerDescription];
-    v10 = [v9 copyWithZone:a3];
+    manufacturerDescription = [(HAPCharacteristicMetadata *)self manufacturerDescription];
+    v10 = [manufacturerDescription copyWithZone:zone];
     v11 = v5[2];
     v5[2] = v10;
 
-    v12 = [(HAPCharacteristicMetadata *)self format];
-    v13 = [v12 copyWithZone:a3];
+    format = [(HAPCharacteristicMetadata *)self format];
+    v13 = [format copyWithZone:zone];
     v14 = v5[3];
     v5[3] = v13;
 
-    v15 = [(HAPCharacteristicMetadata *)self units];
-    v16 = [v15 copyWithZone:a3];
+    units = [(HAPCharacteristicMetadata *)self units];
+    v16 = [units copyWithZone:zone];
     v17 = v5[4];
     v5[4] = v16;
   }
@@ -251,43 +251,43 @@ LABEL_6:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HAPCharacteristicMetadata *)self constraints];
-  [v4 encodeObject:v5 forKey:@"MC"];
+  coderCopy = coder;
+  constraints = [(HAPCharacteristicMetadata *)self constraints];
+  [coderCopy encodeObject:constraints forKey:@"MC"];
 
-  v6 = [(HAPCharacteristicMetadata *)self manufacturerDescription];
-  [v4 encodeObject:v6 forKey:@"MD"];
+  manufacturerDescription = [(HAPCharacteristicMetadata *)self manufacturerDescription];
+  [coderCopy encodeObject:manufacturerDescription forKey:@"MD"];
 
-  v7 = [(HAPCharacteristicMetadata *)self format];
-  [v4 encodeObject:v7 forKey:@"MF"];
+  format = [(HAPCharacteristicMetadata *)self format];
+  [coderCopy encodeObject:format forKey:@"MF"];
 
-  v8 = [(HAPCharacteristicMetadata *)self units];
-  [v4 encodeObject:v8 forKey:@"MU"];
+  units = [(HAPCharacteristicMetadata *)self units];
+  [coderCopy encodeObject:units forKey:@"MU"];
 }
 
-- (HAPCharacteristicMetadata)initWithCoder:(id)a3
+- (HAPCharacteristicMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = HAPCharacteristicMetadata;
   v5 = [(HAPCharacteristicMetadata *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MC"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MC"];
     constraints = v5->_constraints;
     v5->_constraints = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MD"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MD"];
     manufacturerDescription = v5->_manufacturerDescription;
     v5->_manufacturerDescription = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MF"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MF"];
     format = v5->_format;
     v5->_format = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MU"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MU"];
     units = v5->_units;
     v5->_units = v12;
   }

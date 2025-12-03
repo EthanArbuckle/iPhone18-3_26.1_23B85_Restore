@@ -1,5 +1,5 @@
 @interface MSPMutableHistoryEntryRoute
-- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)a3;
+- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)object;
 - (BOOL)navigationWasInterrupted;
 - (GEOAutomobileOptions)automobileOptions;
 - (GEOComposedWaypoint)endWaypoint;
@@ -8,43 +8,43 @@
 - (GEOTransitOptions)transitOptions;
 - (GEOURLRouteHandle)routeHandle;
 - (GEOWalkingOptions)walkingOptions;
-- (MSPMutableHistoryEntryRoute)initWithStorage:(id)a3;
+- (MSPMutableHistoryEntryRoute)initWithStorage:(id)storage;
 - (NSArray)waypoints;
 - (NSString)identifier;
 - (id)_routeRequestStorage;
-- (id)transferToImmutableIfValidWithError:(id *)a3;
+- (id)transferToImmutableIfValidWithError:(id *)error;
 - (int64_t)transportType;
-- (void)setRouteInformationSource:(id)a3;
+- (void)setRouteInformationSource:(id)source;
 @end
 
 @implementation MSPMutableHistoryEntryRoute
 
-- (MSPMutableHistoryEntryRoute)initWithStorage:(id)a3
+- (MSPMutableHistoryEntryRoute)initWithStorage:(id)storage
 {
-  v4 = a3;
-  if (!v4)
+  storageCopy = storage;
+  if (!storageCopy)
   {
-    v4 = objc_alloc_init(MSPHistoryEntryStorage);
-    [(MSPHistoryEntryStorage *)v4 setSearchType:2];
+    storageCopy = objc_alloc_init(MSPHistoryEntryStorage);
+    [(MSPHistoryEntryStorage *)storageCopy setSearchType:2];
     v5 = objc_alloc_init(MSPDirectionsSearch);
-    [(MSPHistoryEntryStorage *)v4 setDirectionsSearch:v5];
+    [(MSPHistoryEntryStorage *)storageCopy setDirectionsSearch:v5];
   }
 
   v27.receiver = self;
   v27.super_class = MSPMutableHistoryEntryRoute;
-  v6 = [(MSPMutableHistoryEntry *)&v27 initWithStorage:v4];
+  v6 = [(MSPMutableHistoryEntry *)&v27 initWithStorage:storageCopy];
   v7 = v6;
   if (!v6)
   {
     goto LABEL_14;
   }
 
-  v8 = [(MSPMutableHistoryEntry *)v6 storage];
-  if ([v8 searchType] == 2)
+  storage = [(MSPMutableHistoryEntry *)v6 storage];
+  if ([storage searchType] == 2)
   {
-    v9 = [(MSPMutableHistoryEntry *)v7 storage];
-    v10 = [v9 directionsSearch];
-    v11 = v10 != 0;
+    storage2 = [(MSPMutableHistoryEntry *)v7 storage];
+    directionsSearch = [storage2 directionsSearch];
+    v11 = directionsSearch != 0;
   }
 
   else
@@ -52,8 +52,8 @@
     v11 = 0;
   }
 
-  v12 = [(MSPMutableHistoryEntry *)v7 storage];
-  if ([v12 searchType] != 5)
+  storage3 = [(MSPMutableHistoryEntry *)v7 storage];
+  if ([storage3 searchType] != 5)
   {
 
     if (!v11)
@@ -62,23 +62,23 @@
     }
 
 LABEL_12:
-    v16 = [(MSPMutableHistoryEntry *)v7 storage];
-    v17 = [v16 directionsSearch];
-    v24 = [v17 routeRequestStorage];
+    storage4 = [(MSPMutableHistoryEntry *)v7 storage];
+    directionsSearch2 = [storage4 directionsSearch];
+    routeRequestStorage = [directionsSearch2 routeRequestStorage];
     routeInformationSource = v7->_routeInformationSource;
-    v7->_routeInformationSource = v24;
+    v7->_routeInformationSource = routeRequestStorage;
     goto LABEL_13;
   }
 
-  v13 = [(MSPMutableHistoryEntry *)v7 storage];
-  v14 = [v13 ridesharingTrip];
+  storage5 = [(MSPMutableHistoryEntry *)v7 storage];
+  ridesharingTrip = [storage5 ridesharingTrip];
 
   if (v11)
   {
     goto LABEL_12;
   }
 
-  if (!v14)
+  if (!ridesharingTrip)
   {
 LABEL_15:
     v25 = 0;
@@ -86,13 +86,13 @@ LABEL_15:
   }
 
   v15 = [MSPRidesharingInformationSource alloc];
-  v16 = [(MSPMutableHistoryEntry *)v7 storage];
-  v17 = [v16 ridesharingTrip];
-  routeInformationSource = [v17 startWaypoint];
-  v19 = [(MSPMutableHistoryEntry *)v7 storage];
-  v20 = [v19 ridesharingTrip];
-  v21 = [v20 endWaypoint];
-  v22 = [(MSPRidesharingInformationSource *)v15 initWithStartWaypoint:routeInformationSource endWaypoint:v21];
+  storage4 = [(MSPMutableHistoryEntry *)v7 storage];
+  directionsSearch2 = [storage4 ridesharingTrip];
+  routeInformationSource = [directionsSearch2 startWaypoint];
+  storage6 = [(MSPMutableHistoryEntry *)v7 storage];
+  ridesharingTrip2 = [storage6 ridesharingTrip];
+  endWaypoint = [ridesharingTrip2 endWaypoint];
+  v22 = [(MSPRidesharingInformationSource *)v15 initWithStartWaypoint:routeInformationSource endWaypoint:endWaypoint];
   v23 = v7->_routeInformationSource;
   v7->_routeInformationSource = v22;
 
@@ -106,45 +106,45 @@ LABEL_16:
 
 - (NSString)identifier
 {
-  v2 = [(MSPMutableHistoryEntry *)self storage];
-  v3 = [v2 identifier];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  identifier = [storage identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (id)_routeRequestStorage
 {
-  v2 = [(MSPMutableHistoryEntry *)self storage];
-  v3 = [v2 directionsSearch];
-  v4 = [v3 routeRequestStorage];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  directionsSearch = [storage directionsSearch];
+  routeRequestStorage = [directionsSearch routeRequestStorage];
 
-  return v4;
+  return routeRequestStorage;
 }
 
-- (void)setRouteInformationSource:(id)a3
+- (void)setRouteInformationSource:(id)source
 {
-  v20 = a3;
+  sourceCopy = source;
   [(MSPMutableHistoryEntry *)self _noteWillMutate];
-  if (self->_routeInformationSource != v20)
+  if (self->_routeInformationSource != sourceCopy)
   {
-    objc_storeStrong(&self->_routeInformationSource, a3);
+    objc_storeStrong(&self->_routeInformationSource, source);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MSPMutableHistoryEntry *)self storage];
-      [v5 setSearchType:2];
+      storage = [(MSPMutableHistoryEntry *)self storage];
+      [storage setSearchType:2];
 
-      v6 = [(MSPMutableHistoryEntry *)self storage];
-      [v6 setRidesharingTrip:0];
+      storage2 = [(MSPMutableHistoryEntry *)self storage];
+      [storage2 setRidesharingTrip:0];
 
       v7 = objc_alloc_init(MSPDirectionsSearch);
-      v8 = [(MSPMutableHistoryEntry *)self storage];
-      [v8 setDirectionsSearch:v7];
+      storage3 = [(MSPMutableHistoryEntry *)self storage];
+      [storage3 setDirectionsSearch:v7];
 
-      v9 = [(MSPRouteInformationSource *)v20 copy];
-      v10 = [(MSPMutableHistoryEntry *)self storage];
-      v11 = [v10 directionsSearch];
-      [v11 setRouteRequestStorage:v9];
+      _endWaypoint = [(MSPRouteInformationSource *)sourceCopy copy];
+      storage4 = [(MSPMutableHistoryEntry *)self storage];
+      directionsSearch = [storage4 directionsSearch];
+      [directionsSearch setRouteRequestStorage:_endWaypoint];
     }
 
     else
@@ -155,27 +155,27 @@ LABEL_16:
         goto LABEL_7;
       }
 
-      v12 = v20;
-      v13 = [(MSPMutableHistoryEntry *)self storage];
-      [v13 setSearchType:5];
+      v12 = sourceCopy;
+      storage5 = [(MSPMutableHistoryEntry *)self storage];
+      [storage5 setSearchType:5];
 
-      v14 = [(MSPMutableHistoryEntry *)self storage];
-      [v14 setDirectionsSearch:0];
+      storage6 = [(MSPMutableHistoryEntry *)self storage];
+      [storage6 setDirectionsSearch:0];
 
       v15 = objc_alloc_init(MSPRidesharingTrip);
-      v16 = [(MSPMutableHistoryEntry *)self storage];
-      [v16 setRidesharingTrip:v15];
+      storage7 = [(MSPMutableHistoryEntry *)self storage];
+      [storage7 setRidesharingTrip:v15];
 
-      v17 = [(MSPRouteInformationSource *)v12 _startWaypoint];
-      v18 = [(MSPMutableHistoryEntry *)self storage];
-      v19 = [v18 ridesharingTrip];
-      [v19 setStartWaypoint:v17];
+      _startWaypoint = [(MSPRouteInformationSource *)v12 _startWaypoint];
+      storage8 = [(MSPMutableHistoryEntry *)self storage];
+      ridesharingTrip = [storage8 ridesharingTrip];
+      [ridesharingTrip setStartWaypoint:_startWaypoint];
 
-      v9 = [(MSPRouteInformationSource *)v12 _endWaypoint];
+      _endWaypoint = [(MSPRouteInformationSource *)v12 _endWaypoint];
 
-      v10 = [(MSPMutableHistoryEntry *)self storage];
-      v11 = [v10 ridesharingTrip];
-      [v11 setEndWaypoint:v9];
+      storage4 = [(MSPMutableHistoryEntry *)self storage];
+      directionsSearch = [storage4 ridesharingTrip];
+      [directionsSearch setEndWaypoint:_endWaypoint];
     }
   }
 
@@ -186,74 +186,74 @@ LABEL_7:
 
 - (GEOComposedWaypoint)startWaypoint
 {
-  v3 = [(MSPMutableHistoryEntry *)self storage];
-  v4 = [v3 ridesharingTrip];
-  v5 = [v4 startWaypoint];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  ridesharingTrip = [storage ridesharingTrip];
+  startWaypoint = [ridesharingTrip startWaypoint];
 
-  if (!v5)
+  if (!startWaypoint)
   {
-    v6 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-    v7 = [v6 waypoints];
-    if ([v7 count] < 2)
+    _routeRequestStorage = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+    waypoints = [_routeRequestStorage waypoints];
+    if ([waypoints count] < 2)
     {
-      v5 = 0;
+      startWaypoint = 0;
     }
 
     else
     {
-      v8 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-      v9 = [v8 waypoints];
-      v5 = [v9 firstObject];
+      _routeRequestStorage2 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+      waypoints2 = [_routeRequestStorage2 waypoints];
+      startWaypoint = [waypoints2 firstObject];
     }
   }
 
-  return v5;
+  return startWaypoint;
 }
 
 - (GEOComposedWaypoint)endWaypoint
 {
-  v3 = [(MSPMutableHistoryEntry *)self storage];
-  v4 = [v3 ridesharingTrip];
-  v5 = [v4 endWaypoint];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  ridesharingTrip = [storage ridesharingTrip];
+  endWaypoint = [ridesharingTrip endWaypoint];
 
-  if (!v5)
+  if (!endWaypoint)
   {
-    v6 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-    v7 = [v6 waypoints];
-    v5 = [v7 lastObject];
+    _routeRequestStorage = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+    waypoints = [_routeRequestStorage waypoints];
+    endWaypoint = [waypoints lastObject];
   }
 
-  return v5;
+  return endWaypoint;
 }
 
 - (NSArray)waypoints
 {
-  v2 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-  v3 = [v2 waypoints];
+  _routeRequestStorage = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+  waypoints = [_routeRequestStorage waypoints];
 
-  return v3;
+  return waypoints;
 }
 
 - (int64_t)transportType
 {
-  v3 = [(MSPMutableHistoryEntry *)self storage];
-  v4 = [v3 ridesharingTrip];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  ridesharingTrip = [storage ridesharingTrip];
 
-  if (v4)
+  if (ridesharingTrip)
   {
     return 4;
   }
 
-  v6 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-  v7 = [v6 hasTransportType];
+  _routeRequestStorage = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+  hasTransportType = [_routeRequestStorage hasTransportType];
 
-  if (!v7)
+  if (!hasTransportType)
   {
     return 0;
   }
 
-  v8 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-  v9 = [v8 transportType] - 1;
+  _routeRequestStorage2 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+  v9 = [_routeRequestStorage2 transportType] - 1;
   if (v9 > 5)
   {
     v5 = 1;
@@ -269,69 +269,69 @@ LABEL_7:
 
 - (GEOURLRouteHandle)routeHandle
 {
-  v2 = [(MSPMutableHistoryEntryRoute *)self routeInformationSource];
-  v3 = [v2 ifGEOStorageRouteRequestStorage];
-  v4 = [v3 routeHandle];
+  routeInformationSource = [(MSPMutableHistoryEntryRoute *)self routeInformationSource];
+  ifGEOStorageRouteRequestStorage = [routeInformationSource ifGEOStorageRouteRequestStorage];
+  routeHandle = [ifGEOStorageRouteRequestStorage routeHandle];
 
-  return v4;
+  return routeHandle;
 }
 
 - (GEOAutomobileOptions)automobileOptions
 {
-  v2 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-  v3 = [v2 automobileOptions];
+  _routeRequestStorage = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+  automobileOptions = [_routeRequestStorage automobileOptions];
 
-  return v3;
+  return automobileOptions;
 }
 
 - (GEOTransitOptions)transitOptions
 {
-  v2 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-  v3 = [v2 transitOptions];
+  _routeRequestStorage = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+  transitOptions = [_routeRequestStorage transitOptions];
 
-  return v3;
+  return transitOptions;
 }
 
 - (GEOWalkingOptions)walkingOptions
 {
-  v2 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-  v3 = [v2 walkingOptions];
+  _routeRequestStorage = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+  walkingOptions = [_routeRequestStorage walkingOptions];
 
-  return v3;
+  return walkingOptions;
 }
 
 - (GEOCyclingOptions)cyclingOptions
 {
-  v2 = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
-  v3 = [v2 cyclingOptions];
+  _routeRequestStorage = [(MSPMutableHistoryEntryRoute *)self _routeRequestStorage];
+  cyclingOptions = [_routeRequestStorage cyclingOptions];
 
-  return v3;
+  return cyclingOptions;
 }
 
 - (BOOL)navigationWasInterrupted
 {
-  v2 = [(MSPMutableHistoryEntry *)self storage];
-  v3 = [v2 directionsSearch];
-  v4 = [v3 navigationInterrupted];
+  storage = [(MSPMutableHistoryEntry *)self storage];
+  directionsSearch = [storage directionsSearch];
+  navigationInterrupted = [directionsSearch navigationInterrupted];
 
-  return v4;
+  return navigationInterrupted;
 }
 
-- (id)transferToImmutableIfValidWithError:(id *)a3
+- (id)transferToImmutableIfValidWithError:(id *)error
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(MSPMutableHistoryEntryRoute *)self routeInformationSource];
+  routeInformationSource = [(MSPMutableHistoryEntryRoute *)self routeInformationSource];
 
-  if (!v6)
+  if (!routeInformationSource)
   {
     v8 = @"routeInformationSource";
     goto LABEL_7;
   }
 
-  v7 = [(MSPMutableHistoryEntryRoute *)self endWaypoint];
+  endWaypoint = [(MSPMutableHistoryEntryRoute *)self endWaypoint];
 
-  if (!v7)
+  if (!endWaypoint)
   {
     [v5 addObject:@"endWaypoint"];
   }
@@ -345,7 +345,7 @@ LABEL_7:
 
   if ([v5 count])
   {
-    if (a3)
+    if (error)
     {
       v9 = MEMORY[0x277CCA9B8];
       v13[0] = @"MSPContainerUntransferableObject";
@@ -353,33 +353,33 @@ LABEL_7:
       v14[0] = self;
       v14[1] = v5;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
-      *a3 = [v9 errorWithDomain:@"com.apple.MapsSupport.MSPContainer" code:1 userInfo:v10];
+      *error = [v9 errorWithDomain:@"com.apple.MapsSupport.MSPContainer" code:1 userInfo:v10];
 
-      a3 = 0;
+      error = 0;
     }
   }
 
   else
   {
     [(MSPMutableHistoryEntry *)self _markImmutable];
-    a3 = self;
+    error = self;
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)a3
+- (BOOL)_isUserVisibleDuplicateOfSameClassObject:(id)object
 {
-  v5 = a3;
-  v6 = [(MSPMutableHistoryEntryRoute *)self startWaypoint];
-  if (v6)
+  objectCopy = object;
+  startWaypoint = [(MSPMutableHistoryEntryRoute *)self startWaypoint];
+  if (startWaypoint)
   {
-    v7 = [(MSPMutableHistoryEntryRoute *)self startWaypoint];
-    v3 = [v7 isCurrentLocation];
+    startWaypoint2 = [(MSPMutableHistoryEntryRoute *)self startWaypoint];
+    isCurrentLocation = [startWaypoint2 isCurrentLocation];
 
-    v8 = v3 ^ 1;
+    v8 = isCurrentLocation ^ 1;
   }
 
   else
@@ -387,13 +387,13 @@ LABEL_7:
     v8 = 0;
   }
 
-  v9 = [v5 startWaypoint];
-  if (v9)
+  startWaypoint3 = [objectCopy startWaypoint];
+  if (startWaypoint3)
   {
-    v10 = [v5 startWaypoint];
-    v3 = [v10 isCurrentLocation];
+    startWaypoint4 = [objectCopy startWaypoint];
+    isCurrentLocation = [startWaypoint4 isCurrentLocation];
 
-    v11 = v3 ^ 1;
+    v11 = isCurrentLocation ^ 1;
   }
 
   else
@@ -403,16 +403,16 @@ LABEL_7:
 
   if ((v8 | v11))
   {
-    v12 = [(MSPMutableHistoryEntryRoute *)self startWaypoint];
-    if (v12)
+    startWaypoint5 = [(MSPMutableHistoryEntryRoute *)self startWaypoint];
+    if (startWaypoint5)
     {
-      v3 = [v5 startWaypoint];
-      if (v3)
+      isCurrentLocation = [objectCopy startWaypoint];
+      if (isCurrentLocation)
       {
-        v13 = [(MSPMutableHistoryEntryRoute *)self startWaypoint];
-        v14 = [v13 geoMapItem];
-        v15 = [v5 startWaypoint];
-        v16 = [v15 geoMapItem];
+        startWaypoint6 = [(MSPMutableHistoryEntryRoute *)self startWaypoint];
+        geoMapItem = [startWaypoint6 geoMapItem];
+        startWaypoint7 = [objectCopy startWaypoint];
+        geoMapItem2 = [startWaypoint7 geoMapItem];
         IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose();
       }
 
@@ -433,12 +433,12 @@ LABEL_7:
     IsEqualToMapItemForPurpose = 1;
   }
 
-  v18 = [(MSPMutableHistoryEntryRoute *)self endWaypoint];
-  v19 = [v18 isCurrentLocation];
-  if (v19)
+  endWaypoint = [(MSPMutableHistoryEntryRoute *)self endWaypoint];
+  isCurrentLocation2 = [endWaypoint isCurrentLocation];
+  if (isCurrentLocation2)
   {
-    v3 = [v5 endWaypoint];
-    if ([v3 isCurrentLocation])
+    isCurrentLocation = [objectCopy endWaypoint];
+    if ([isCurrentLocation isCurrentLocation])
     {
       v20 = 1;
 LABEL_20:
@@ -447,13 +447,13 @@ LABEL_20:
     }
   }
 
-  v21 = [(MSPMutableHistoryEntryRoute *)self endWaypoint];
-  v22 = [v21 geoMapItem];
-  v23 = [v5 endWaypoint];
-  v24 = [v23 geoMapItem];
+  endWaypoint2 = [(MSPMutableHistoryEntryRoute *)self endWaypoint];
+  geoMapItem3 = [endWaypoint2 geoMapItem];
+  endWaypoint3 = [objectCopy endWaypoint];
+  geoMapItem4 = [endWaypoint3 geoMapItem];
   v20 = GEOMapItemIsEqualToMapItemForPurpose();
 
-  if (v19)
+  if (isCurrentLocation2)
   {
     goto LABEL_20;
   }

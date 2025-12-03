@@ -1,16 +1,16 @@
 @interface INGetCarLockStatusIntentResponse
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INGetCarLockStatusIntentResponse)initWithBackingStore:(id)a3;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INGetCarLockStatusIntentResponse)initWithBackingStore:(id)store;
 - (INGetCarLockStatusIntentResponse)initWithCode:(INGetCarLockStatusIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INGetCarLockStatusIntentResponse)initWithCoder:(id)a3;
+- (INGetCarLockStatusIntentResponse)initWithCoder:(id)coder;
 - (INGetCarLockStatusIntentResponseCode)code;
 - (NSNumber)locked;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setLocked:(NSNumber *)locked;
 @end
 
@@ -20,32 +20,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INGetCarLockStatusIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < (INGetCarLockStatusIntentResponseCodeFailure|INGetCarLockStatusIntentResponseCodeInProgress))
+  code = [(INGetCarLockStatusIntentResponse *)self code];
+  v4 = code;
+  if (code < (INGetCarLockStatusIntentResponseCodeFailure|INGetCarLockStatusIntentResponseCodeInProgress))
   {
-    v5 = off_1E7283388[v3];
-    v6 = v5;
+    null = off_1E7283388[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"locked";
-  v13[0] = v5;
-  v7 = [(INGetCarLockStatusIntentResponse *)self locked];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  locked = [(INGetCarLockStatusIntentResponse *)self locked];
+  null2 = locked;
+  if (!locked)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!locked)
   {
   }
 
@@ -61,30 +61,30 @@
 - (void)setLocked:(NSNumber *)locked
 {
   v7 = locked;
-  v4 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   if (v7)
   {
-    [v4 setLocked:{-[NSNumber BOOLValue](v7, "BOOLValue")}];
+    [_responseMessagePBRepresentation setLocked:{-[NSNumber BOOLValue](v7, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasLocked:0];
+    [_responseMessagePBRepresentation setHasLocked:0];
   }
 
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSNumber)locked
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if ([v3 hasLocked])
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if ([_responseMessagePBRepresentation hasLocked])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "locked")}];
+    _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    v6 = [v4 numberWithBool:{objc_msgSend(_responseMessagePBRepresentation2, "locked")}];
   }
 
   else
@@ -95,22 +95,22 @@
   return v6;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INGetCarLockStatusIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INGetCarLockStatusIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INGetCarLockStatusIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INGetCarLockStatusIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INGetCarLockStatusIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INGetCarLockStatusIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INGetCarLockStatusIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INGetCarLockStatusIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INGetCarLockStatusIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INGetCarLockStatusIntentResponseCodeFailure"])
   {
     v5 = 4;
   }
@@ -120,7 +120,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INGetCarLockStatusIntentResponseCodeFailureRequiringAppLaunch"];
+  v6 = [nameCopy isEqualToString:@"INGetCarLockStatusIntentResponseCodeFailureRequiringAppLaunch"];
 
   if (v6)
   {
@@ -135,30 +135,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INGetCarLockStatusIntentResponse *)self code];
-  if ((v2 - 1) > 4)
+  code = [(INGetCarLockStatusIntentResponse *)self code];
+  if ((code - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FDC8[v2 - 1];
+    return qword_18EE5FDC8[code - 1];
   }
 }
 
-- (INGetCarLockStatusIntentResponse)initWithCoder:(id)a3
+- (INGetCarLockStatusIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INGetCarLockStatusIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INGetCarLockStatusIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INGetCarLockStatusIntentResponseCode)code
@@ -168,18 +168,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INGetCarLockStatusIntentResponse)initWithBackingStore:(id)a3
+- (INGetCarLockStatusIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INGetCarLockStatusIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INGetCarLockStatusIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INGetCarLockStatusIntentResponse)initWithCode:(INGetCarLockStatusIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -220,45 +220,45 @@
   return v11;
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 4)
+  if ((code - 1) > 4)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FDB0[a3 - 1];
+    return dword_18EE5FDB0[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

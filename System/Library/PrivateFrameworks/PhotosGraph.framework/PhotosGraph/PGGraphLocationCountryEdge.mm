@@ -1,15 +1,15 @@
 @interface PGGraphLocationCountryEdge
 + (id)filter;
-- (id)initFromLocationNode:(id)a3 toCountryNode:(id)a4;
+- (id)initFromLocationNode:(id)node toCountryNode:(id)countryNode;
 @end
 
 @implementation PGGraphLocationCountryEdge
 
-- (id)initFromLocationNode:(id)a3 toCountryNode:(id)a4
+- (id)initFromLocationNode:(id)node toCountryNode:(id)countryNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphLocationCountryEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:countryNode];
 }
 
 + (id)filter

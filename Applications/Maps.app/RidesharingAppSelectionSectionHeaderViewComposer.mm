@@ -1,14 +1,14 @@
 @interface RidesharingAppSelectionSectionHeaderViewComposer
-+ (void)configureHeader:(id)a3 withPrimaryText:(id)a4;
++ (void)configureHeader:(id)header withPrimaryText:(id)text;
 @end
 
 @implementation RidesharingAppSelectionSectionHeaderViewComposer
 
-+ (void)configureHeader:(id)a3 withPrimaryText:(id)a4
++ (void)configureHeader:(id)header withPrimaryText:(id)text
 {
-  v5 = a3;
-  v6 = [a4 localizedUppercaseString];
-  [v5 setMajorString:v6];
+  headerCopy = header;
+  localizedUppercaseString = [text localizedUppercaseString];
+  [headerCopy setMajorString:localizedUppercaseString];
 }
 
 @end

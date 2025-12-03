@@ -1,6 +1,6 @@
 @interface EKReminderListDetailItem
 + (id)titleForCell;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update;
 - (id)_createEventDetailCell;
 @end
 
@@ -29,19 +29,19 @@ id __57__EKReminderListDetailItem_textFromEventAndReminderBlock__block_invoke(ui
   v3 = [EKReminderDetailTextCell alloc];
   event = self->super.super.super._event;
   reminder = self->super.super.super._reminder;
-  v6 = [(EKReminderListDetailItem *)self showExtraSpaceAtBottom];
-  v7 = [objc_opt_class() allowDataDetector];
-  v8 = [objc_opt_class() titleForCell];
-  v9 = [objc_opt_class() textFromEventAndReminderBlock];
+  showExtraSpaceAtBottom = [(EKReminderListDetailItem *)self showExtraSpaceAtBottom];
+  allowDataDetector = [objc_opt_class() allowDataDetector];
+  titleForCell = [objc_opt_class() titleForCell];
+  textFromEventAndReminderBlock = [objc_opt_class() textFromEventAndReminderBlock];
   LOBYTE(v12) = 1;
-  v10 = [(EKReminderDetailTextCell *)v3 initWithEvent:event reminder:reminder editable:0 showExtraSpaceAtBottom:v6 allowDataDetector:v7 title:v8 textFromEventAndReminderBlock:v9 noBackgroundStyle:v12];
+  v10 = [(EKReminderDetailTextCell *)v3 initWithEvent:event reminder:reminder editable:0 showExtraSpaceAtBottom:showExtraSpaceAtBottom allowDataDetector:allowDataDetector title:titleForCell textFromEventAndReminderBlock:textFromEventAndReminderBlock noBackgroundStyle:v12];
 
   return v10;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4 forceUpdate:(BOOL)a5
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width forceUpdate:(BOOL)update
 {
-  v5 = a5;
+  updateCopy = update;
   if (MEMORY[0x1D38B98D0](self, a2))
   {
     return *MEMORY[0x1E69DE3D0];
@@ -49,7 +49,7 @@ id __57__EKReminderListDetailItem_textFromEventAndReminderBlock__block_invoke(ui
 
   v10.receiver = self;
   v10.super_class = EKReminderListDetailItem;
-  [(EKReminderTextDetailItem *)&v10 defaultCellHeightForSubitemAtIndex:a3 forWidth:v5 forceUpdate:a4];
+  [(EKReminderTextDetailItem *)&v10 defaultCellHeightForSubitemAtIndex:index forWidth:updateCopy forceUpdate:width];
   return result;
 }
 

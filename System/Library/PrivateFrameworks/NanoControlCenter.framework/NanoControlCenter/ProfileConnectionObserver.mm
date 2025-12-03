@@ -1,7 +1,7 @@
 @interface ProfileConnectionObserver
 - (_TtC17NanoControlCenter25ProfileConnectionObserver)init;
 - (void)dealloc;
-- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation ProfileConnectionObserver
@@ -24,14 +24,14 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedConnection];
-  if (v5)
+  selfCopy = self;
+  sharedConnection = [v3 sharedConnection];
+  if (sharedConnection)
   {
-    v6 = v5;
-    [v5 unregisterObserver_];
+    v6 = sharedConnection;
+    [sharedConnection unregisterObserver_];
 
-    v7.receiver = v4;
+    v7.receiver = selfCopy;
     v7.super_class = type metadata accessor for ProfileConnectionObserver();
     [(ProfileConnectionObserver *)&v7 dealloc];
   }
@@ -42,15 +42,15 @@
   }
 }
 
-- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceivePasscodeChangedNotification:(id)notification userInfo:(id)info
 {
-  if (a4)
+  if (info)
   {
     sub_25B0058C4();
   }
 
-  v6 = a3;
-  v7 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_25AF456B8();
 }
 

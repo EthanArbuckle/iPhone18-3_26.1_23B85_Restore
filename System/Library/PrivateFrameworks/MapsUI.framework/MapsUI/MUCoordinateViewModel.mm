@@ -1,5 +1,5 @@
 @interface MUCoordinateViewModel
-- (MUCoordinateViewModel)initWithMapItem:(id)a3 isUserLocation:(BOOL)a4;
+- (MUCoordinateViewModel)initWithMapItem:(id)item isUserLocation:(BOOL)location;
 - (NSString)valueString;
 @end
 
@@ -10,10 +10,10 @@
   v3 = objc_alloc_init(MUCoordinateStringFormatter);
   if (self->_isUserLocation)
   {
-    v4 = [MEMORY[0x1E696F268] sharedLocationManager];
-    v5 = [v4 isAuthorizedForPreciseLocation];
+    mEMORY[0x1E696F268] = [MEMORY[0x1E696F268] sharedLocationManager];
+    isAuthorizedForPreciseLocation = [mEMORY[0x1E696F268] isAuthorizedForPreciseLocation];
 
-    v6 = v5 ^ 1u;
+    v6 = isAuthorizedForPreciseLocation ^ 1u;
   }
 
   else
@@ -28,17 +28,17 @@
   return v7;
 }
 
-- (MUCoordinateViewModel)initWithMapItem:(id)a3 isUserLocation:(BOOL)a4
+- (MUCoordinateViewModel)initWithMapItem:(id)item isUserLocation:(BOOL)location
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = MUCoordinateViewModel;
   v8 = [(MUCoordinateViewModel *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mapItem, a3);
-    v9->_isUserLocation = a4;
+    objc_storeStrong(&v8->_mapItem, item);
+    v9->_isUserLocation = location;
   }
 
   return v9;

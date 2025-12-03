@@ -1,25 +1,25 @@
 @interface IUIRTIInputSource
 - (BOOL)_disableAutomaticKeyboardUI;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (CGRect)_lastRectForRange:(id)a3;
-- (CGRect)_rectForLineIntersectingRange:(id)a3 firstLine:(BOOL)a4;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)firstRectForRange:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (CGRect)_lastRectForRange:(id)range;
+- (CGRect)_rectForLineIntersectingRange:(id)range firstLine:(BOOL)line;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)firstRectForRange:(id)range;
 - (IUIRTIInputSource)init;
 - (IUIRTIInputSourceDelegate)dataTransportDelegate;
 - (id)_additionalTextInputLocales;
 - (id)inputView;
-- (id)selectionRectsForRange:(id)a3;
+- (id)selectionRectsForRange:(id)range;
 - (id)textInputContextIdentifier;
 - (id)textInputMode;
 - (void)didMoveToWindow;
-- (void)handleTextActionPayload:(id)a3;
-- (void)ingestDataPayload:(id)a3;
-- (void)ingestDocumentState:(id)a3;
-- (void)ingestDocumentTraits:(id)a3;
+- (void)handleTextActionPayload:(id)payload;
+- (void)ingestDataPayload:(id)payload;
+- (void)ingestDocumentState:(id)state;
+- (void)ingestDocumentTraits:(id)traits;
 - (void)matchInputDestinationFrame;
-- (void)setContinuousSpellCheckingEnabled:(BOOL)a3;
+- (void)setContinuousSpellCheckingEnabled:(BOOL)enabled;
 @end
 
 @implementation IUIRTIInputSource
@@ -50,8 +50,8 @@
 
 - (void)matchInputDestinationFrame
 {
-  v4 = [(IUIRTIInputSource *)self window];
-  if (!v4)
+  window = [(IUIRTIInputSource *)self window];
+  if (!window)
   {
     v10 = sub_10000A9D0();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -65,15 +65,15 @@
     goto LABEL_12;
   }
 
-  v5 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
-  v6 = [v5 contextID];
+  documentTraits = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
+  contextID = [documentTraits contextID];
 
-  v7 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
-  v8 = [v7 layerID];
+  documentTraits2 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
+  layerID = [documentTraits2 layerID];
 
-  if (v6)
+  if (contextID)
   {
-    v9 = v8 == 0;
+    v9 = layerID == 0;
   }
 
   else
@@ -90,9 +90,9 @@
       *buf = 138412802;
       *&buf[4] = v11;
       *&buf[12] = 1024;
-      *&buf[14] = v6;
+      *&buf[14] = contextID;
       *&buf[18] = 2048;
-      *&buf[20] = v8;
+      *&buf[20] = layerID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%@: destinationContextID = %u, destinationLayerID = %llu", buf, 0x1Cu);
     }
 
@@ -119,12 +119,12 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = sub_10000AA14;
   block[3] = &unk_100020780;
-  v34 = v6;
+  v34 = contextID;
   block[4] = buf;
-  block[5] = v8;
+  block[5] = layerID;
   dispatch_group_async(v13, layerTransformQueue, block);
-  v15 = [v4 _contextId];
-  v16 = [v4 layer];
+  _contextId = [window _contextId];
+  layer = [window layer];
   RenderId = CALayerGetRenderId();
 
   v24[0] = 0;
@@ -144,7 +144,7 @@ LABEL_12:
   v22[1] = 3221225472;
   v22[2] = sub_10000AA74;
   v22[3] = &unk_100020780;
-  v23 = v15;
+  v23 = _contextId;
   v22[4] = v24;
   v22[5] = RenderId;
   dispatch_group_async(v13, v18, v22);
@@ -165,16 +165,16 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)setContinuousSpellCheckingEnabled:(BOOL)a3
+- (void)setContinuousSpellCheckingEnabled:(BOOL)enabled
 {
   v3.receiver = self;
   v3.super_class = IUIRTIInputSource;
   [(IUIRTIInputSource *)&v3 setContinuousSpellCheckingEnabled:0];
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
-  [(IUIRTIInputSource *)self _rectForLineIntersectingRange:a3 firstLine:1];
+  [(IUIRTIInputSource *)self _rectForLineIntersectingRange:range firstLine:1];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -182,9 +182,9 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)_lastRectForRange:(id)a3
+- (CGRect)_lastRectForRange:(id)range
 {
-  [(IUIRTIInputSource *)self _rectForLineIntersectingRange:a3 firstLine:0];
+  [(IUIRTIInputSource *)self _rectForLineIntersectingRange:range firstLine:0];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -192,10 +192,10 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)_rectForLineIntersectingRange:(id)a3 firstLine:(BOOL)a4
+- (CGRect)_rectForLineIntersectingRange:(id)range firstLine:(BOOL)line
 {
-  v4 = a4;
-  v6 = a3;
+  lineCopy = line;
+  rangeCopy = range;
   v38 = 0;
   v39 = &v38;
   v40 = 0x4010000000;
@@ -203,14 +203,14 @@ LABEL_13:
   size = CGRectNull.size;
   origin = CGRectNull.origin;
   v43 = size;
-  v8 = [(RTIDocumentState *)self->_documentState documentState];
+  documentState = [(RTIDocumentState *)self->_documentState documentState];
 
-  if (v6)
+  if (rangeCopy)
   {
-    if (v8)
+    if (documentState)
     {
-      v9 = [(RTIDocumentState *)self->_documentState documentState];
-      v10 = [IUIRangeTransform rangeInDocumentState:v9 fromTextRange:v6 inUITextInput:self];
+      documentState2 = [(RTIDocumentState *)self->_documentState documentState];
+      v10 = [IUIRangeTransform rangeInDocumentState:documentState2 fromTextRange:rangeCopy inUITextInput:self];
       v12 = v11;
 
       if (v10 != 0x7FFFFFFFFFFFFFFFLL)
@@ -225,7 +225,7 @@ LABEL_13:
         v33 = &unk_1000186BA;
         v34 = v10;
         v35 = 0;
-        if (v4)
+        if (lineCopy)
         {
           v13 = 0;
         }
@@ -287,7 +287,7 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   [(RTIDocumentState *)self->_documentState caretRectInWindow];
   result.size.height = v6;
@@ -297,11 +297,11 @@ LABEL_13:
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
   v4 = objc_alloc_init(NSMutableArray);
   documentState = self->_documentState;
-  v6 = [(RTIDocumentState *)documentState selectedTextRange];
+  selectedTextRange = [(RTIDocumentState *)documentState selectedTextRange];
   v8 = v7;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -309,7 +309,7 @@ LABEL_13:
   v11[3] = &unk_1000207F8;
   v9 = v4;
   v12 = v9;
-  [(RTIDocumentState *)documentState enumerateRectsWithOptions:2 range:v6 granularity:v8 block:-1, v11];
+  [(RTIDocumentState *)documentState enumerateRectsWithOptions:2 range:selectedTextRange granularity:v8 block:-1, v11];
 
   return v9;
 }
@@ -320,17 +320,17 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     sourceSession = self->_sourceSession;
-    v5 = [(RTIInputSystemSourceSession *)sourceSession documentTraits];
+    documentTraits = [(RTIInputSystemSourceSession *)sourceSession documentTraits];
     v40 = 138412546;
     v41 = sourceSession;
     v42 = 2112;
-    v43 = v5;
+    v43 = documentTraits;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "inputView, sourceSession: %@, traits: %@", &v40, 0x16u);
   }
 
-  v6 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
+  documentTraits2 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
 
-  if (!v6)
+  if (!documentTraits2)
   {
     remoteInputView = self->_remoteInputView;
     self->_remoteInputView = 0;
@@ -341,23 +341,23 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v7 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
-  v8 = [v7 inputViewInfo];
+  documentTraits3 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
+  inputViewInfo = [documentTraits3 inputViewInfo];
 
   v9 = sub_10000A9D0();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     inputViewInfo = self->_inputViewInfo;
-    v11 = [v8 contextId];
-    [v8 size];
+    contextId = [inputViewInfo contextId];
+    [inputViewInfo size];
     v12 = NSStringFromCGSize(v51);
-    [v8 insets];
+    [inputViewInfo insets];
     v40 = 138413314;
-    v41 = v8;
+    v41 = inputViewInfo;
     v42 = 2048;
     v43 = inputViewInfo;
     v44 = 1024;
-    v45 = v11;
+    v45 = contextId;
     v46 = 2112;
     v47 = v12;
     v48 = 2048;
@@ -365,7 +365,7 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "inputView, inputViewInfo: %@ (_inputViewInfo %p), contextId: %u size: %@ insets: %f", &v40, 0x30u);
   }
 
-  if (![v8 contextId])
+  if (![inputViewInfo contextId])
   {
     v36 = self->_remoteInputView;
     self->_remoteInputView = 0;
@@ -380,36 +380,36 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (([v8 isEqual:self->_inputViewInfo] & 1) == 0)
+  if (([inputViewInfo isEqual:self->_inputViewInfo] & 1) == 0)
   {
     v14 = [IUIRTIInputView alloc];
     y = CGPointZero.y;
-    [v8 size];
+    [inputViewInfo size];
     v18 = [(IUIRTIInputView *)v14 initWithFrame:CGPointZero.x, y, v16, v17];
     v19 = self->_remoteInputView;
     self->_remoteInputView = v18;
 
     if (objc_opt_respondsToSelector())
     {
-      -[IUIRTIInputView setShouldShowDockView:](self->_remoteInputView, "setShouldShowDockView:", [v8 shouldShowDockView]);
+      -[IUIRTIInputView setShouldShowDockView:](self->_remoteInputView, "setShouldShowDockView:", [inputViewInfo shouldShowDockView]);
     }
 
     v20 = [_UILayerHostView alloc];
-    [v8 insets];
+    [inputViewInfo insets];
     v22 = -v21;
-    [v8 size];
+    [inputViewInfo size];
     v24 = v23;
-    [v8 size];
+    [inputViewInfo size];
     v26 = v25;
-    [v8 insets];
+    [inputViewInfo insets];
     v28 = v26 + v27;
-    v29 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
-    v30 = [v20 initWithFrame:objc_msgSend(v29 pid:"processId") contextID:{objc_msgSend(v8, "contextId"), 0.0, v22, v24, v28}];
+    documentTraits4 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
+    v30 = [v20 initWithFrame:objc_msgSend(documentTraits4 pid:"processId") contextID:{objc_msgSend(inputViewInfo, "contextId"), 0.0, v22, v24, v28}];
     v31 = self->_remoteInputViewLayerHost;
     self->_remoteInputViewLayerHost = v30;
 
     [(IUIRTIInputView *)self->_remoteInputView addSubview:self->_remoteInputViewLayerHost];
-    v32 = [v8 copy];
+    v32 = [inputViewInfo copy];
     v33 = self->_inputViewInfo;
     self->_inputViewInfo = v32;
     goto LABEL_13;
@@ -425,40 +425,40 @@ LABEL_15:
 
 - (id)textInputContextIdentifier
 {
-  v2 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
-  v3 = [v2 textInputContextIdentifier];
+  documentTraits = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
+  textInputContextIdentifier = [documentTraits textInputContextIdentifier];
 
-  return v3;
+  return textInputContextIdentifier;
 }
 
 - (id)textInputMode
 {
-  v3 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
-  v4 = [v3 textInputModeData];
+  documentTraits = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
+  textInputModeData = [documentTraits textInputModeData];
 
-  if (!v4 || ([NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:0], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!textInputModeData || ([NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:textInputModeData error:0], (textInputMode = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v7.receiver = self;
     v7.super_class = IUIRTIInputSource;
-    v5 = [(IUIRTIInputSource *)&v7 textInputMode];
+    textInputMode = [(IUIRTIInputSource *)&v7 textInputMode];
   }
 
-  return v5;
+  return textInputMode;
 }
 
 - (id)_additionalTextInputLocales
 {
-  v3 = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
-  v4 = [v3 additionalLocaleIdentifiers];
+  documentTraits = [(RTIInputSystemSourceSession *)self->_sourceSession documentTraits];
+  additionalLocaleIdentifiers = [documentTraits additionalLocaleIdentifiers];
 
-  if ([v4 count])
+  if ([additionalLocaleIdentifiers count])
   {
-    v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    _additionalTextInputLocales = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [additionalLocaleIdentifiers count]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = additionalLocaleIdentifiers;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -476,7 +476,7 @@ LABEL_15:
           v11 = [NSLocale localeWithLocaleIdentifier:*(*(&v14 + 1) + 8 * i)];
           if (v11)
           {
-            [v5 addObject:v11];
+            [_additionalTextInputLocales addObject:v11];
           }
         }
 
@@ -491,125 +491,125 @@ LABEL_15:
   {
     v13.receiver = self;
     v13.super_class = IUIRTIInputSource;
-    v5 = [(IUIRTIInputSource *)&v13 _additionalTextInputLocales];
+    _additionalTextInputLocales = [(IUIRTIInputSource *)&v13 _additionalTextInputLocales];
   }
 
-  return v5;
+  return _additionalTextInputLocales;
 }
 
-- (void)ingestDataPayload:(id)a3
+- (void)ingestDataPayload:(id)payload
 {
-  v10 = a3;
+  payloadCopy = payload;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v10 documentTraits];
-    v5 = [v4 textInputTraits];
+    documentTraits = [payloadCopy documentTraits];
+    textInputTraits = [documentTraits textInputTraits];
 
-    v6 = [v10 documentState];
+    documentState = [payloadCopy documentState];
     documentState = self->_documentState;
-    self->_documentState = v6;
+    self->_documentState = documentState;
 
-    if (v5)
+    if (textInputTraits)
     {
       v8 = +[UITextInputTraits defaultTextInputTraits];
-      [v8 overlayWithTITextInputTraits:v5];
+      [v8 overlayWithTITextInputTraits:textInputTraits];
       v9 = [(IUIRTIInputSource *)self performSelector:"_textInputTraits"];
       [v9 takeTraitsFrom:v8];
     }
   }
 
-  [(RTIInputSystemSourceSession *)self->_sourceSession handleTextActionPayload:v10];
+  [(RTIInputSystemSourceSession *)self->_sourceSession handleTextActionPayload:payloadCopy];
   [(IUIRTIInputSource *)self matchInputDestinationFrame];
 }
 
-- (void)ingestDocumentTraits:(id)a3
+- (void)ingestDocumentTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   v9 = +[UITextInputTraits defaultTextInputTraits];
-  v5 = [v4 textInputTraits];
-  [v9 overlayWithTITextInputTraits:v5];
+  textInputTraits = [traitsCopy textInputTraits];
+  [v9 overlayWithTITextInputTraits:textInputTraits];
 
   v6 = [(IUIRTIInputSource *)self performSelector:"_textInputTraits"];
   [v6 takeTraitsFrom:v9];
   v7 = [RTIInputSystemDataPayload payloadWithData:0];
-  [v7 setDocumentTraits:v4];
+  [v7 setDocumentTraits:traitsCopy];
 
-  v8 = [(RTIInputSystemSourceSession *)self->_sourceSession uuid];
-  [v7 setSessionUUID:v8];
+  uuid = [(RTIInputSystemSourceSession *)self->_sourceSession uuid];
+  [v7 setSessionUUID:uuid];
 
   [(RTIInputSystemSourceSession *)self->_sourceSession handleTextActionPayload:v7];
   [(IUIRTIInputSource *)self matchInputDestinationFrame];
 }
 
-- (void)ingestDocumentState:(id)a3
+- (void)ingestDocumentState:(id)state
 {
-  objc_storeStrong(&self->_documentState, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_documentState, state);
+  stateCopy = state;
   v7 = [RTIInputSystemDataPayload payloadWithData:0];
-  [v7 setDocumentState:v5];
-  v6 = [(RTIInputSystemSourceSession *)self->_sourceSession uuid];
-  [v7 setSessionUUID:v6];
+  [v7 setDocumentState:stateCopy];
+  uuid = [(RTIInputSystemSourceSession *)self->_sourceSession uuid];
+  [v7 setSessionUUID:uuid];
 
   [(RTIInputSystemSourceSession *)self->_sourceSession handleTextActionPayload:v7];
 }
 
-- (void)handleTextActionPayload:(id)a3
+- (void)handleTextActionPayload:(id)payload
 {
-  v4 = a3;
-  v6 = [(IUIRTIInputSource *)self dataTransportDelegate];
-  v5 = [(IUIRTIInputSource *)self sourceSession];
-  [v6 inputSource:v5 didGenerateTextActionPayload:v4];
+  payloadCopy = payload;
+  dataTransportDelegate = [(IUIRTIInputSource *)self dataTransportDelegate];
+  sourceSession = [(IUIRTIInputSource *)self sourceSession];
+  [dataTransportDelegate inputSource:sourceSession didGenerateTextActionPayload:payloadCopy];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
-  v4 = a3;
-  v5 = [(IUIRTIInputSource *)self sourceSession];
-  v6 = [v5 documentTraits];
+  protocolCopy = protocol;
+  sourceSession = [(IUIRTIInputSource *)self sourceSession];
+  documentTraits = [sourceSession documentTraits];
 
-  v7 = [v6 delegateConformanceType];
-  if (&OBJC_PROTOCOL___UITextInput == v4)
+  delegateConformanceType = [documentTraits delegateConformanceType];
+  if (&OBJC_PROTOCOL___UITextInput == protocolCopy)
   {
-    self = ((v7 >> 1) & 1);
+    self = ((delegateConformanceType >> 1) & 1);
   }
 
-  else if (&OBJC_PROTOCOL___UITextInputPrivate == v4)
+  else if (&OBJC_PROTOCOL___UITextInputPrivate == protocolCopy)
   {
-    self = ((v7 >> 2) & 1);
+    self = ((delegateConformanceType >> 2) & 1);
   }
 
-  else if (&OBJC_PROTOCOL___UIKeyInput == v4)
+  else if (&OBJC_PROTOCOL___UIKeyInput == protocolCopy)
   {
-    LOBYTE(self) = v7 & 1;
+    LOBYTE(self) = delegateConformanceType & 1;
   }
 
-  else if (&OBJC_PROTOCOL___UIKeyInputPrivate == v4)
+  else if (&OBJC_PROTOCOL___UIKeyInputPrivate == protocolCopy)
   {
-    self = ((v7 >> 4) & 1);
+    self = ((delegateConformanceType >> 4) & 1);
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = IUIRTIInputSource;
-    LOBYTE(self) = [(IUIRTIInputSource *)&v9 conformsToProtocol:v4];
+    LOBYTE(self) = [(IUIRTIInputSource *)&v9 conformsToProtocol:protocolCopy];
   }
 
   return self;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  v5 = [(IUIRTIInputSource *)self sourceSession];
-  v6 = [v5 documentTraits];
+  sourceSession = [(IUIRTIInputSource *)self sourceSession];
+  documentTraits = [sourceSession documentTraits];
 
-  v7 = [v6 delegateConformanceType];
-  if (!sel_isEqual(a3, "handleKeyWebEvent:withCompletionHandler:") || (v7 & 0x20) == 0)
+  delegateConformanceType = [documentTraits delegateConformanceType];
+  if (!sel_isEqual(selector, "handleKeyWebEvent:withCompletionHandler:") || (delegateConformanceType & 0x20) == 0)
   {
     v11.receiver = self;
     v11.super_class = IUIRTIInputSource;
-    v9 = [(IUIRTIInputSource *)&v11 respondsToSelector:a3];
+    v9 = [(IUIRTIInputSource *)&v11 respondsToSelector:selector];
   }
 
   else
@@ -622,22 +622,22 @@ LABEL_15:
 
 - (BOOL)_disableAutomaticKeyboardUI
 {
-  v3 = [(IUIRTIInputSource *)self sourceSession];
-  v4 = [v3 documentTraits];
+  sourceSession = [(IUIRTIInputSource *)self sourceSession];
+  documentTraits = [sourceSession documentTraits];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 disableAutomaticKeyboardUI];
+    disableAutomaticKeyboardUI = [documentTraits disableAutomaticKeyboardUI];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = IUIRTIInputSource;
-    v5 = [(IUIRTIInputSource *)&v8 _disableAutomaticKeyboardUI];
+    disableAutomaticKeyboardUI = [(IUIRTIInputSource *)&v8 _disableAutomaticKeyboardUI];
   }
 
-  v6 = v5;
+  v6 = disableAutomaticKeyboardUI;
 
   return v6;
 }

@@ -1,23 +1,23 @@
 @interface WAEngine
 - (BOOL)_isDPSQuickRecoveryEngineUsed;
-- (BOOL)alreadyContainsHashID:(id)a3 inArray:(id)a4;
-- (BOOL)canProcessWiFiAnalyticsMessageJSONFiles:(id)a3;
-- (BOOL)everAssociated:(BOOL)a3 assocDoneSuccess:(BOOL)a4;
+- (BOOL)alreadyContainsHashID:(id)d inArray:(id)array;
+- (BOOL)canProcessWiFiAnalyticsMessageJSONFiles:(id)files;
+- (BOOL)everAssociated:(BOOL)associated assocDoneSuccess:(BOOL)success;
 - (BOOL)fetchConfiguredDnsInfo;
-- (BOOL)hasDuplicateHashIDs:(id)a3;
+- (BOOL)hasDuplicateHashIDs:(id)ds;
 - (BOOL)isAXAssociatoin;
 - (BOOL)isAssociated;
 - (BOOL)isInternalScenario;
-- (BOOL)isScoreBelowThreshold:(id)a3 type:(unint64_t)a4 instanceId:(unsigned int)a5;
+- (BOOL)isScoreBelowThreshold:(id)threshold type:(unint64_t)type instanceId:(unsigned int)id;
 - (BOOL)isUsingCustomDNSSettings;
 - (BOOL)isWiFiAssociatedToNetwork;
 - (BOOL)isWiFiInterfacePrimary;
 - (BOOL)isWiFiNetworkCaptive;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)populateApProfile:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)populateApProfile:(id)profile;
 - (BOOL)queryInfraInterfaceInstanceAndChip;
-- (BOOL)submitterMapCheck:(id)a3 group:(int64_t)a4;
-- (BOOL)testDNSResolution:(id)a3;
+- (BOOL)submitterMapCheck:(id)check group:(int64_t)group;
+- (BOOL)testDNSResolution:(id)resolution;
 - (BOOL)updateDriverType;
 - (WAEngine)init;
 - (id)IPv4SubnetMasks;
@@ -28,126 +28,126 @@
 - (id)__dnsSetupConfig;
 - (id)__dnsStateConfig;
 - (id)__ipv4SetupConfig;
-- (id)_cachedModelObjectsForProcess:(id)a3 groupType:(int64_t)a4 key:(id)a5;
+- (id)_cachedModelObjectsForProcess:(id)process groupType:(int64_t)type key:(id)key;
 - (id)_createNextWorkReportSnapshot;
 - (id)_createWorkReportDictionaryForTelemetryAndRollBucket;
 - (id)_getBasePersistenceKeychainQuery;
-- (id)_getDataFromKeychain:(id)a3;
+- (id)_getDataFromKeychain:(id)keychain;
 - (id)_getDeviceAnalyticsConfiguration;
-- (id)_getMessageByUUID:(id)a3 forProcessToken:(id)a4 error:(id *)a5;
-- (id)_getMessagesModelForProcessToken:(id)a3 groupType:(int64_t)a4 andError:(id *)a5;
+- (id)_getMessageByUUID:(id)d forProcessToken:(id)token error:(id *)error;
+- (id)_getMessagesModelForProcessToken:(id)token groupType:(int64_t)type andError:(id *)error;
 - (id)_getObscureKey;
-- (id)_ingestMessage:(id)a3 forProcessToken:(id)a4;
+- (id)_ingestMessage:(id)message forProcessToken:(id)token;
 - (id)_rotateObscureKey;
-- (id)_setDeviceAnalyticsConfiguration:(id)a3;
-- (id)_submitMessage:(id)a3 groupType:(int64_t)a4 forProcessToken:(id)a5;
-- (id)_updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a3 maxAgeInDays:(unint64_t)a4;
+- (id)_setDeviceAnalyticsConfiguration:(id)configuration;
+- (id)_submitMessage:(id)message groupType:(int64_t)type forProcessToken:(id)token;
+- (id)_updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days;
 - (id)getDpsMetaDataString;
-- (id)getNewMessageForKey:(id)a3 groupType:(int64_t)a4 forProcessWithToken:(id)a5;
-- (id)getValueForKeyFromUserDefaults:(id)a3;
+- (id)getNewMessageForKey:(id)key groupType:(int64_t)type forProcessWithToken:(id)token;
+- (id)getValueForKeyFromUserDefaults:(id)defaults;
 - (id)getW5Client;
-- (id)getXPCConnectionForProcessToken:(id)a3;
+- (id)getXPCConnectionForProcessToken:(id)token;
 - (int64_t)getRSSI;
-- (unint64_t)_getTimeInProfileState:(unsigned __int8)a3;
-- (unint64_t)abstime_to_ns:(unint64_t)a3;
+- (unint64_t)_getTimeInProfileState:(unsigned __int8)state;
+- (unint64_t)abstime_to_ns:(unint64_t)abstime_to_ns;
 - (unint64_t)getCCA;
-- (unsigned)getIPv4InterfaceNetwork:(unsigned int)a3;
+- (unsigned)getIPv4InterfaceNetwork:(unsigned int)network;
 - (unsigned)getIPv4InterfaceSubnet;
 - (unsigned)getIPv6InterfacePrefix;
 - (void)_calculateEstimatedUptime;
 - (void)_calculateProcessUsage;
 - (void)_calculateProfileUptime;
 - (void)_cancelWorkReportRecurringTimer;
-- (void)_clearMessageStoreAndReply:(id)a3;
-- (void)_convertWiFiStatsIntoPercentile:(id)a3 analysisGroup:(int64_t)a4 groupTarget:(id)a5 forProcessToken:(id)a6 andReply:(id)a7;
+- (void)_clearMessageStoreAndReply:(id)reply;
+- (void)_convertWiFiStatsIntoPercentile:(id)percentile analysisGroup:(int64_t)group groupTarget:(id)target forProcessToken:(id)token andReply:(id)reply;
 - (void)_enableWorkReportRecurringTimer;
-- (void)_examinePeerMessageForIntegrity:(id)a3;
-- (void)_getNewMessageForKey:(id)a3 groupType:(int64_t)a4 forProcessToken:(id)a5 shouldCheckForPrePopulation:(BOOL)a6 andReply:(id)a7;
-- (void)_getNewMessageForKey:(id)a3 groupType:(int64_t)a4 withCopy:(BOOL)a5 forProcessToken:(id)a6 shouldCheckForPrePopulation:(BOOL)a7 andReply:(id)a8;
-- (void)_getNewMessageForKeyWithinPopulatorBlock:(id)a3 groupType:(int64_t)a4 forProcessToken:(id)a5 shouldCheckForPrePopulation:(BOOL)a6 andReply:(id)a7;
+- (void)_examinePeerMessageForIntegrity:(id)integrity;
+- (void)_getNewMessageForKey:(id)key groupType:(int64_t)type forProcessToken:(id)token shouldCheckForPrePopulation:(BOOL)population andReply:(id)reply;
+- (void)_getNewMessageForKey:(id)key groupType:(int64_t)type withCopy:(BOOL)copy forProcessToken:(id)token shouldCheckForPrePopulation:(BOOL)population andReply:(id)reply;
+- (void)_getNewMessageForKeyWithinPopulatorBlock:(id)block groupType:(int64_t)type forProcessToken:(id)token shouldCheckForPrePopulation:(BOOL)population andReply:(id)reply;
 - (void)_handleUnpersistForUsageData;
-- (void)_initSubmitterAndQueryableRegistrationForProcessToken:(id)a3 andGroupType:(int64_t)a4;
-- (void)_issueIOReportManagementCommand:(unint64_t)a3 forProcessToken:(id)a4 andReply:(id)a5;
-- (void)_killDaemonAndReply:(id)a3;
-- (void)_logWorkReport:(id)a3 indent:(int)a4 prefix:(id)a5;
-- (void)_lqmCrashTracerNotifyForInterfaceWithName:(id)a3 andReply:(id)a4;
-- (void)_lqmCrashTracerReceiveBlock:(id)a3 forInterfaceWithName:(id)a4 andReply:(id)a5;
+- (void)_initSubmitterAndQueryableRegistrationForProcessToken:(id)token andGroupType:(int64_t)type;
+- (void)_issueIOReportManagementCommand:(unint64_t)command forProcessToken:(id)token andReply:(id)reply;
+- (void)_killDaemonAndReply:(id)reply;
+- (void)_logWorkReport:(id)report indent:(int)indent prefix:(id)prefix;
+- (void)_lqmCrashTracerNotifyForInterfaceWithName:(id)name andReply:(id)reply;
+- (void)_lqmCrashTracerReceiveBlock:(id)block forInterfaceWithName:(id)name andReply:(id)reply;
 - (void)_persist;
 - (void)_prepareToTerminate;
 - (void)_prepareToTerminateViaEagerExit;
-- (void)_purgeGroupTypeIfNecessary:(int64_t)a3;
+- (void)_purgeGroupTypeIfNecessary:(int64_t)necessary;
 - (void)_removePersistenceFile;
 - (void)_reportWorkReportInterval;
-- (void)_saveKeyIVData:(id)a3 andTagData:(id)a4;
-- (void)_sendMemoryPressureRequestAndReply:(id)a3;
-- (void)_storeChangedHandler:(id)a3;
-- (void)_trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)a3 andReply:(id)a4;
-- (void)_trapFWWithReason:(id)a3 andReply:(id)a4;
-- (void)_triggerDPSStudy:(int64_t)a3 forProcessToken:(id)a4 waMessage:(id)a5 andReply:(id)a6;
-- (void)_triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)a3 forProcessToken:(id)a4 waMessage:(id)a5 andReply:(id)a6;
-- (void)_triggerDeviceAnalyticsStoreMigrationAndReply:(id)a3;
-- (void)_triggerQueryForNWActivity:(int64_t)a3 forProcessToken:(id)a4 andReply:(id)a5;
-- (void)_triggerQueryForNWActivityWithPeers:(id)a3 forProcessToken:(id)a4 andReply:(id)a5;
-- (void)_triggerSlowWiFiStudy:(int64_t)a3 forProcessToken:(id)a4 waMessage:(id)a5 andReply:(id)a6;
+- (void)_saveKeyIVData:(id)data andTagData:(id)tagData;
+- (void)_sendMemoryPressureRequestAndReply:(id)reply;
+- (void)_storeChangedHandler:(id)handler;
+- (void)_trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)name andReply:(id)reply;
+- (void)_trapFWWithReason:(id)reason andReply:(id)reply;
+- (void)_triggerDPSStudy:(int64_t)study forProcessToken:(id)token waMessage:(id)message andReply:(id)reply;
+- (void)_triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)updates forProcessToken:(id)token waMessage:(id)message andReply:(id)reply;
+- (void)_triggerDeviceAnalyticsStoreMigrationAndReply:(id)reply;
+- (void)_triggerQueryForNWActivity:(int64_t)activity forProcessToken:(id)token andReply:(id)reply;
+- (void)_triggerQueryForNWActivityWithPeers:(id)peers forProcessToken:(id)token andReply:(id)reply;
+- (void)_triggerSlowWiFiStudy:(int64_t)study forProcessToken:(id)token waMessage:(id)message andReply:(id)reply;
 - (void)_unpersist;
-- (void)_updateProfileStateDate:(unsigned __int8)a3;
-- (void)_writeWiFiAnalyticsMessageToJSONFile:(id)a3 metricInfo:(id)a4;
+- (void)_updateProfileStateDate:(unsigned __int8)date;
+- (void)_writeWiFiAnalyticsMessageToJSONFile:(id)file metricInfo:(id)info;
 - (void)clearDnsStudyVariables;
-- (void)computeAverageCcaSinceStudyStart:(id)a3;
-- (void)convertToIPv6Network:(unsigned int *)a3 prefixLength:(unsigned int)a4;
+- (void)computeAverageCcaSinceStudyStart:(id)start;
+- (void)convertToIPv6Network:(unsigned int *)network prefixLength:(unsigned int)length;
 - (void)createNighltyTimer;
 - (void)dealloc;
-- (void)fetchSymptomsScores:(unsigned int)a3;
-- (void)freeAllocationsForProcessToken:(id)a3;
-- (void)gatherConsecutiveDatapathReadings:(int64_t)a3 forProcessToken:(id)a4 andReply:(id)a5;
-- (void)gatherConsecutiveLinkQualitySamples:(int64_t)a3 forProcessToken:(id)a4 andReply:(id)a5;
-- (void)gatherDiscoveredPeerInfo:(id)a3;
-- (void)handleMemoryWarning:(BOOL)a3;
-- (void)incrementWorkReportValueForKey:(id)a3;
+- (void)fetchSymptomsScores:(unsigned int)scores;
+- (void)freeAllocationsForProcessToken:(id)token;
+- (void)gatherConsecutiveDatapathReadings:(int64_t)readings forProcessToken:(id)token andReply:(id)reply;
+- (void)gatherConsecutiveLinkQualitySamples:(int64_t)samples forProcessToken:(id)token andReply:(id)reply;
+- (void)gatherDiscoveredPeerInfo:(id)info;
+- (void)handleMemoryWarning:(BOOL)warning;
+- (void)incrementWorkReportValueForKey:(id)key;
 - (void)initDatapathMetricGetterAndFetcher;
 - (void)initializeProbeCxt;
 - (void)keyBagLockStateChangeNotification;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)persist;
-- (void)populateChannelInfo:(id)a3;
-- (void)prepareToTerminateAnyReply:(id)a3;
+- (void)populateChannelInfo:(id)info;
+- (void)prepareToTerminateAnyReply:(id)reply;
 - (void)prepareToTerminateViaEagerExit;
-- (void)processWiFiAnalyticsFilesInTmpDir:(BOOL)a3;
-- (void)processWiFiAnalyticsMessageWAMFile:(id)a3 file:(id)a4;
+- (void)processWiFiAnalyticsFilesInTmpDir:(BOOL)dir;
+- (void)processWiFiAnalyticsMessageWAMFile:(id)file file:(id)a4;
 - (void)resolveAppleCaptiveServer;
 - (void)run;
-- (void)sendWakeUpNotificationForProcessWithName:(id)a3;
-- (void)setValueForKeyToUserDefaults:(id)a3 forKey:(id)a4;
+- (void)sendWakeUpNotificationForProcessWithName:(id)name;
+- (void)setValueForKeyToUserDefaults:(id)defaults forKey:(id)key;
 - (void)triggerDNSResetRecoveryAction;
-- (void)triggerDiagnosticPingWithrequestId:(unsigned int)a3;
-- (void)triggerPeerDiagnosticsStudy:(unint64_t)a3 symptomsDnsStats:(id)a4;
+- (void)triggerDiagnosticPingWithrequestId:(unsigned int)id;
+- (void)triggerPeerDiagnosticsStudy:(unint64_t)study symptomsDnsStats:(id)stats;
 - (void)triggerPeerDiscovery;
 - (void)triggerStepwiseDNSRecovery;
-- (void)xpcConnection:(id)a3 clearMessageStoreAndReply:(id)a4;
-- (void)xpcConnection:(id)a3 convertWiFiStatsIntoPercentile:(id)a4 analysisGroup:(int64_t)a5 groupTarget:(id)a6 andReply:(id)a7;
-- (void)xpcConnection:(id)a3 establishConnectionWithToken:(id)a4 andReply:(id)a5;
-- (void)xpcConnection:(id)a3 getDeviceAnalyticsConfigurationAndReply:(id)a4;
-- (void)xpcConnection:(id)a3 getDpsStatsandReply:(id)a4;
-- (void)xpcConnection:(id)a3 getMessagesModelForGroupType:(int64_t)a4 andReply:(id)a5;
-- (void)xpcConnection:(id)a3 getNewMessageForKey:(id)a4 groupType:(int64_t)a5 withCopy:(id)a6 andReply:(id)a7;
-- (void)xpcConnection:(id)a3 getUsageStatsandReply:(id)a4;
-- (void)xpcConnection:(id)a3 issueIOReportManagementCommand:(unint64_t)a4 andReply:(id)a5;
-- (void)xpcConnection:(id)a3 killDaemonAndReply:(id)a4;
-- (void)xpcConnection:(id)a3 lqmCrashTracerNotifyForInterfaceWithName:(id)a4 andReply:(id)a5;
-- (void)xpcConnection:(id)a3 lqmCrashTracerReceiveBlock:(id)a4 forInterfaceWithName:(id)a5 andReply:(id)a6;
-- (void)xpcConnection:(id)a3 processManagedFault:(id)a4 at:(id)a5 andReply:(id)a6;
-- (void)xpcConnection:(id)a3 registerMessageGroup:(int64_t)a4 andReply:(id)a5;
-- (void)xpcConnection:(id)a3 sendMemoryPressureRequestAndReply:(id)a4;
-- (void)xpcConnection:(id)a3 setDeviceAnalyticsConfiguration:(id)a4 andReply:(id)a5;
-- (void)xpcConnection:(id)a3 signalPotentialNewIORChannelsAndReply:(id)a4;
-- (void)xpcConnection:(id)a3 submitMessage:(id)a4 groupType:(int64_t)a5 andReply:(id)a6;
-- (void)xpcConnection:(id)a3 trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)a4 andReply:(id)a5;
-- (void)xpcConnection:(id)a3 triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)a4 waMessage:(id)a5 andReply:(id)a6;
-- (void)xpcConnection:(id)a3 triggerDeviceAnalyticsStoreMigrationAndReply:(id)a4;
-- (void)xpcConnection:(id)a3 triggerQueryForNWActivity:(int64_t)a4 andReply:(id)a5;
-- (void)xpcConnection:(id)a3 triggerQueryForNWActivityWithPeers:(id)a4 andReply:(id)a5;
-- (void)xpcConnection:(id)a3 updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a4 maxAgeInDays:(unint64_t)a5 andReply:(id)a6;
-- (void)xpcConnection:(id)a3 updateRoamPoliciesForSourceBssid:(id)a4 andUpdateRoamCache:(BOOL)a5 andReply:(id)a6;
+- (void)xpcConnection:(id)connection clearMessageStoreAndReply:(id)reply;
+- (void)xpcConnection:(id)connection convertWiFiStatsIntoPercentile:(id)percentile analysisGroup:(int64_t)group groupTarget:(id)target andReply:(id)reply;
+- (void)xpcConnection:(id)connection establishConnectionWithToken:(id)token andReply:(id)reply;
+- (void)xpcConnection:(id)connection getDeviceAnalyticsConfigurationAndReply:(id)reply;
+- (void)xpcConnection:(id)connection getDpsStatsandReply:(id)reply;
+- (void)xpcConnection:(id)connection getMessagesModelForGroupType:(int64_t)type andReply:(id)reply;
+- (void)xpcConnection:(id)connection getNewMessageForKey:(id)key groupType:(int64_t)type withCopy:(id)copy andReply:(id)reply;
+- (void)xpcConnection:(id)connection getUsageStatsandReply:(id)reply;
+- (void)xpcConnection:(id)connection issueIOReportManagementCommand:(unint64_t)command andReply:(id)reply;
+- (void)xpcConnection:(id)connection killDaemonAndReply:(id)reply;
+- (void)xpcConnection:(id)connection lqmCrashTracerNotifyForInterfaceWithName:(id)name andReply:(id)reply;
+- (void)xpcConnection:(id)connection lqmCrashTracerReceiveBlock:(id)block forInterfaceWithName:(id)name andReply:(id)reply;
+- (void)xpcConnection:(id)connection processManagedFault:(id)fault at:(id)at andReply:(id)reply;
+- (void)xpcConnection:(id)connection registerMessageGroup:(int64_t)group andReply:(id)reply;
+- (void)xpcConnection:(id)connection sendMemoryPressureRequestAndReply:(id)reply;
+- (void)xpcConnection:(id)connection setDeviceAnalyticsConfiguration:(id)configuration andReply:(id)reply;
+- (void)xpcConnection:(id)connection signalPotentialNewIORChannelsAndReply:(id)reply;
+- (void)xpcConnection:(id)connection submitMessage:(id)message groupType:(int64_t)type andReply:(id)reply;
+- (void)xpcConnection:(id)connection trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)name andReply:(id)reply;
+- (void)xpcConnection:(id)connection triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)updates waMessage:(id)message andReply:(id)reply;
+- (void)xpcConnection:(id)connection triggerDeviceAnalyticsStoreMigrationAndReply:(id)reply;
+- (void)xpcConnection:(id)connection triggerQueryForNWActivity:(int64_t)activity andReply:(id)reply;
+- (void)xpcConnection:(id)connection triggerQueryForNWActivityWithPeers:(id)peers andReply:(id)reply;
+- (void)xpcConnection:(id)connection updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days andReply:(id)reply;
+- (void)xpcConnection:(id)connection updateRoamPoliciesForSourceBssid:(id)bssid andUpdateRoamCache:(BOOL)cache andReply:(id)reply;
 @end
 
 @implementation WAEngine
@@ -167,9 +167,9 @@
   if (+[WAUtil isKeyBagUnlocked])
   {
     v3 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
-    v4 = [v3 storeLoaded];
+    storeLoaded = [v3 storeLoaded];
 
-    if ((v4 & 1) == 0)
+    if ((storeLoaded & 1) == 0)
     {
       v5 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -424,13 +424,13 @@ LABEL_42:
         }
 
         v67 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
-        v68 = [v67 storeLoadError];
-        v69 = v68;
+        storeLoadError = [v67 storeLoadError];
+        v69 = storeLoadError;
         *buf = 136446978;
         v117 = "[WAEngine init]";
-        if (v68)
+        if (storeLoadError)
         {
-          v70 = v68;
+          v70 = storeLoadError;
         }
 
         else
@@ -486,8 +486,8 @@ LABEL_42:
       [v2 initDatapathMetricGetterAndFetcher];
       v86 = *(v2 + 648);
       v87 = *(v2 + 632);
-      v88 = [v2 DatapathMetricGetter];
-      [v86 setDispatchQueueAndAddObservers:v87 withGetter:v88];
+      datapathMetricGetter = [v2 DatapathMetricGetter];
+      [v86 setDispatchQueueAndAddObservers:v87 withGetter:datapathMetricGetter];
 
       v89 = +[NSDate distantPast];
       v90 = *(v2 + 664);
@@ -524,8 +524,8 @@ LABEL_42:
 
       if (*(v94 + 85))
       {
-        v100 = [v94 managedConfiguration];
-        [v100 addObserver:v94 forKeyPath:@"megawifiprofile_diagnostic_metrics_enabled" options:5 context:0];
+        managedConfiguration = [v94 managedConfiguration];
+        [managedConfiguration addObserver:v94 forKeyPath:@"megawifiprofile_diagnostic_metrics_enabled" options:5 context:0];
 
         *(v94 + 91) = arc4random_uniform(0x18u);
         *(v94 + 92) = arc4random_uniform(0x90u) + 24;
@@ -556,7 +556,7 @@ LABEL_42:
       {
         v104 = *(v94 + 17);
         v105 = +[NSProcessInfo processInfo];
-        v106 = [v105 globallyUniqueString];
+        globallyUniqueString = [v105 globallyUniqueString];
         *buf = 136446978;
         v117 = "[WAEngine init]";
         v118 = 1024;
@@ -564,7 +564,7 @@ LABEL_42:
         v120 = 1024;
         *v121 = v104;
         *&v121[4] = 2112;
-        *&v121[6] = v106;
+        *&v121[6] = globallyUniqueString;
         _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:WAEngine init with pid %d uniqueString %@", buf, 0x22u);
       }
 
@@ -625,10 +625,10 @@ LABEL_29:
   [(WAEngine *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = [a5 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+  pathCopy = path;
+  v9 = [change objectForKeyedSubscript:NSKeyValueChangeNewKey];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -641,7 +641,7 @@ LABEL_29:
   }
 
   v11 = v10;
-  if ([v8 isEqualToString:@"megawifiprofile_diagnostic_metrics_enabled"] && v11)
+  if ([pathCopy isEqualToString:@"megawifiprofile_diagnostic_metrics_enabled"] && v11)
   {
     engineQ = self->_engineQ;
     v15[0] = _NSConcreteStackBlock;
@@ -650,7 +650,7 @@ LABEL_29:
     v15[3] = &unk_1000ED988;
     v13 = v11;
     v16 = v13;
-    v17 = self;
+    selfCopy = self;
     dispatch_async(engineQ, v15);
     v14 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -660,7 +660,7 @@ LABEL_29:
       v20 = 1024;
       v21 = 620;
       v22 = 2112;
-      v23 = v8;
+      v23 = pathCopy;
       v24 = 2112;
       v25 = v13;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%@ Preference is %@", buf, 0x26u);
@@ -670,24 +670,24 @@ LABEL_29:
 
 - (id)_DPSQuickRecoveryEngineObj
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_dpsQuickRecoveryEngine || ![(WAEngine *)v2 _isDPSQuickRecoveryEngineUsed])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_dpsQuickRecoveryEngine || ![(WAEngine *)selfCopy _isDPSQuickRecoveryEngineUsed])
   {
     goto LABEL_5;
   }
 
   v3 = objc_alloc_init(DPSQuickRecoveryRecommendationEngine);
-  dpsQuickRecoveryEngine = v2->_dpsQuickRecoveryEngine;
-  v2->_dpsQuickRecoveryEngine = v3;
+  dpsQuickRecoveryEngine = selfCopy->_dpsQuickRecoveryEngine;
+  selfCopy->_dpsQuickRecoveryEngine = v3;
 
-  v5 = v2->_dpsQuickRecoveryEngine;
+  v5 = selfCopy->_dpsQuickRecoveryEngine;
   if (v5)
   {
-    [(DPSQuickRecoveryRecommendationEngine *)v5 updateFromPersistedStats:v2->_persistedDPSStatsDict];
-    [(DPSQuickRecoveryRecommendationEngine *)v2->_dpsQuickRecoveryEngine updateFromPersistedBudget:v2->_persistedDPSRecoveryActionBudgetDict];
+    [(DPSQuickRecoveryRecommendationEngine *)v5 updateFromPersistedStats:selfCopy->_persistedDPSStatsDict];
+    [(DPSQuickRecoveryRecommendationEngine *)selfCopy->_dpsQuickRecoveryEngine updateFromPersistedBudget:selfCopy->_persistedDPSRecoveryActionBudgetDict];
 LABEL_5:
-    v6 = v2->_dpsQuickRecoveryEngine;
+    v6 = selfCopy->_dpsQuickRecoveryEngine;
     goto LABEL_6;
   }
 
@@ -703,7 +703,7 @@ LABEL_5:
 
   v6 = 0;
 LABEL_6:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -732,9 +732,9 @@ LABEL_6:
   }
 
   v4 = +[WAApple80211Manager sharedObject];
-  v5 = [v4 getInfraApple80211];
+  getInfraApple80211 = [v4 getInfraApple80211];
 
-  if (!v5)
+  if (!getInfraApple80211)
   {
     v8 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -753,9 +753,9 @@ LABEL_12:
     return 0;
   }
 
-  v6 = [v5 getDriverType];
-  self->_driverType = v6;
-  if (!v6)
+  getDriverType = [getInfraApple80211 getDriverType];
+  self->_driverType = getDriverType;
+  if (!getDriverType)
   {
     v8 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -775,9 +775,9 @@ LABEL_12:
   return driverType != 4;
 }
 
-- (void)_updateProfileStateDate:(unsigned __int8)a3
+- (void)_updateProfileStateDate:(unsigned __int8)date
 {
-  v3 = a3;
+  dateCopy = date;
   v5 = +[NSDate now];
   v6 = [(WAEngine *)self _getTimeInProfileState:1];
   v7 = [(WAEngine *)self _getTimeInProfileState:0];
@@ -795,7 +795,7 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:MegaWiFi Profile state change: currentEnabledSeconds %lu currentDisabledSeconds %lu", &v17, 0x26u);
   }
 
-  if (v3 == 1 && !self->_isMegaEnabled)
+  if (dateCopy == 1 && !self->_isMegaEnabled)
   {
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -826,7 +826,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v3 && self->_isMegaEnabled == 1)
+  if (!dateCopy && self->_isMegaEnabled == 1)
   {
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -856,9 +856,9 @@ LABEL_13:
 LABEL_14:
 }
 
-- (unint64_t)_getTimeInProfileState:(unsigned __int8)a3
+- (unint64_t)_getTimeInProfileState:(unsigned __int8)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = +[NSDate now];
   [(NSDate *)self->_pidLaunchDate timeIntervalSinceDate:v5];
   if (v6 < 0.0)
@@ -867,7 +867,7 @@ LABEL_14:
   }
 
   profileMegaEnabledDate = self->_profileMegaEnabledDate;
-  if (v3)
+  if (stateCopy)
   {
     if (!profileMegaEnabledDate)
     {
@@ -951,9 +951,9 @@ LABEL_22:
   objc_destroyWeak(&location);
 }
 
-- (void)_storeChangedHandler:(id)a3
+- (void)_storeChangedHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -962,18 +962,18 @@ LABEL_22:
     v7 = 1024;
     v8 = 809;
     v9 = 2112;
-    v10 = v3;
+    v10 = handlerCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Received Notification %@", &v5, 0x1Cu);
   }
 }
 
-- (void)_triggerDeviceAnalyticsStoreMigrationAndReply:(id)a3
+- (void)_triggerDeviceAnalyticsStoreMigrationAndReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v4 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
-  v5 = [v4 storeLoaded];
+  storeLoaded = [v4 storeLoaded];
 
-  if ((v5 & 1) == 0)
+  if ((storeLoaded & 1) == 0)
   {
     if (!+[WAUtil isKeyBagUnlocked])
     {
@@ -992,21 +992,21 @@ LABEL_22:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Result for triggerDeviceAnalyticsStoreMigrationAndReply via XPC - Error: WAErrorCodeKeyBagLocked. KeyBag not unlocked", &v11, 0x12u);
       }
 
-      if (v3)
+      if (replyCopy)
       {
-        v3[2](v3, 0, v8);
+        replyCopy[2](replyCopy, 0, v8);
       }
 
       goto LABEL_9;
     }
 
     v6 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
-    v7 = [v6 loadStoreIfNeeded];
+    loadStoreIfNeeded = [v6 loadStoreIfNeeded];
 
-    if (v3)
+    if (replyCopy)
     {
-      v8 = [NSNumber numberWithBool:v7];
-      (v3)[2](v3, v8, 0);
+      v8 = [NSNumber numberWithBool:loadStoreIfNeeded];
+      (replyCopy)[2](replyCopy, v8, 0);
 LABEL_9:
     }
   }
@@ -1054,13 +1054,13 @@ LABEL_9:
     [(WAEngine *)self analyticsDeferredProcessingTimeIntervalSecs];
     dispatch_source_set_timer(v14, v15, 1000000000 * v16, 0x174876E800uLL);
     dispatch_resume(self->_nightlyTimer);
-    v17 = [(WAEngine *)self fileHandlingQ];
+    fileHandlingQ = [(WAEngine *)self fileHandlingQ];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100055B18;
     v19[3] = &unk_1000ED880;
     v19[4] = self;
-    dispatch_async(v17, v19);
+    dispatch_async(fileHandlingQ, v19);
   }
 
   else
@@ -1096,16 +1096,16 @@ LABEL_9:
   block[3] = &unk_1000ED880;
   block[4] = self;
   dispatch_sync(engineQ, block);
-  v5 = [(WAEngine *)self listener];
-  [v5 resume];
+  listener = [(WAEngine *)self listener];
+  [listener resume];
 }
 
 - (BOOL)queryInfraInterfaceInstanceAndChip
 {
   v3 = +[WAApple80211Manager sharedObject];
-  v4 = [v3 getInfraApple80211];
+  getInfraApple80211 = [v3 getInfraApple80211];
 
-  if (!v4)
+  if (!getInfraApple80211)
   {
     v15 = WALogCategoryDefaultHandle();
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1124,9 +1124,9 @@ LABEL_9:
   infraInterfaceName = self->_infraInterfaceName;
   if (!infraInterfaceName || [(NSString *)infraInterfaceName isEqualToString:@"dunno"])
   {
-    v6 = [v4 ifName];
+    ifName = [getInfraApple80211 ifName];
     v7 = self->_infraInterfaceName;
-    self->_infraInterfaceName = v6;
+    self->_infraInterfaceName = ifName;
 
     v8 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -1165,15 +1165,15 @@ LABEL_25:
 
   if (!v11)
   {
-    [(NSMutableDictionary *)self->_interfaceNameToApple80211InstanceMap setObject:v4 forKeyedSubscript:self->_infraInterfaceName];
+    [(NSMutableDictionary *)self->_interfaceNameToApple80211InstanceMap setObject:getInfraApple80211 forKeyedSubscript:self->_infraInterfaceName];
   }
 
   wifiChipSet = self->_wifiChipSet;
   if (!wifiChipSet || [(NSString *)wifiChipSet isEqualToString:&stru_1000F04E0])
   {
-    v13 = [v4 getChipSet];
+    getChipSet = [getInfraApple80211 getChipSet];
     v14 = self->_wifiChipSet;
-    self->_wifiChipSet = v13;
+    self->_wifiChipSet = getChipSet;
   }
 
   if (!self->_wifiChipSet && [0 isEqualToString:&stru_1000F04E0])
@@ -1212,29 +1212,29 @@ LABEL_18:
   return v16;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.private.wifianalytics"];
-  v7 = [v6 BOOLValue];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.private.wifianalytics"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [[WAXPCConnection alloc] initWithXPCConnection:v5];
+    v8 = [[WAXPCConnection alloc] initWithXPCConnection:connectionCopy];
     [v8 setDelegate:self];
-    v9 = [(WAEngine *)self exportedInterface];
+    exportedInterface = [(WAEngine *)self exportedInterface];
 
-    if (!v9)
+    if (!exportedInterface)
     {
       v10 = WAXPCRequestDelegateInterface();
       [(WAEngine *)self setExportedInterface:v10];
     }
 
-    v11 = [(WAEngine *)self exportedInterface];
-    [v5 setExportedInterface:v11];
+    exportedInterface2 = [(WAEngine *)self exportedInterface];
+    [connectionCopy setExportedInterface:exportedInterface2];
 
-    [v5 setExportedObject:v8];
-    [v5 resume];
+    [connectionCopy setExportedObject:v8];
+    [connectionCopy resume];
     v12 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -1243,11 +1243,11 @@ LABEL_18:
       v16 = 1024;
       v17 = 935;
       v18 = 1024;
-      v19 = [v5 processIdentifier];
+      processIdentifier = [connectionCopy processIdentifier];
       v20 = 1024;
-      v21 = [v5 effectiveUserIdentifier];
+      effectiveUserIdentifier = [connectionCopy effectiveUserIdentifier];
       v22 = 1024;
-      v23 = [v5 effectiveGroupIdentifier];
+      effectiveGroupIdentifier = [connectionCopy effectiveGroupIdentifier];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:XPC: ADDED XPC CONNECTION [pid=%d, euid=%d, egid=%d]", &v14, 0x24u);
     }
   }
@@ -1265,25 +1265,25 @@ LABEL_18:
     }
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)xpcConnection:(id)a3 establishConnectionWithToken:(id)a4 andReply:(id)a5
+- (void)xpcConnection:(id)connection establishConnectionWithToken:(id)token andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v33 = a5;
-  objc_initWeak(&location, v8);
+  connectionCopy = connection;
+  tokenCopy = token;
+  replyCopy = reply;
+  objc_initWeak(&location, connectionCopy);
   objc_initWeak(&v46, self);
-  v32 = v9;
+  v32 = tokenCopy;
   v10 = objc_loadWeakRetained(&location);
-  v11 = [v10 connection];
-  objc_initWeak(&from, v11);
+  connection = [v10 connection];
+  objc_initWeak(&from, connection);
 
   if (v32)
   {
     v31 = 0;
-    v16 = v32;
+    uUIDString = v32;
   }
 
   else
@@ -1291,32 +1291,32 @@ LABEL_18:
     v12 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = [v8 connection];
-      v14 = [v13 processIdentifier];
+      connection2 = [connectionCopy connection];
+      processIdentifier = [connection2 processIdentifier];
       *buf = 136446722;
       v49 = "[WAEngine xpcConnection:establishConnectionWithToken:andReply:]";
       v50 = 1024;
       v51 = 954;
       v52 = 1024;
-      LODWORD(v53) = v14;
+      LODWORD(v53) = processIdentifier;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%{public}s::%d:XPC: Connection from pid=%d without token. Generating a token for the reply", buf, 0x18u);
     }
 
     v15 = +[NSUUID UUID];
-    v16 = [v15 UUIDString];
+    uUIDString = [v15 UUIDString];
 
-    v31 = v16;
+    v31 = uUIDString;
   }
 
-  [v8 setToken:v16];
+  [connectionCopy setToken:uUIDString];
   v42[0] = _NSConcreteStackBlock;
   v42[1] = 3221225472;
   v42[2] = sub_100056828;
   v42[3] = &unk_1000EDE20;
   objc_copyWeak(&v43, &location);
   objc_copyWeak(&v44, &from);
-  v17 = [v8 connection];
-  [v17 setInterruptionHandler:v42];
+  connection3 = [connectionCopy connection];
+  [connection3 setInterruptionHandler:v42];
 
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
@@ -1326,33 +1326,33 @@ LABEL_18:
   objc_copyWeak(&v39, &location);
   objc_copyWeak(&v40, &from);
   objc_copyWeak(&v41, &v46);
-  v18 = [v8 connection];
-  [v18 setInvalidationHandler:v38];
+  connection4 = [connectionCopy connection];
+  [connection4 setInvalidationHandler:v38];
 
-  v19 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100056C88;
   block[3] = &unk_1000EDE98;
   objc_copyWeak(&v37, &v46);
-  v20 = v16;
+  v20 = uUIDString;
   v35 = v20;
-  v21 = v8;
+  v21 = connectionCopy;
   v36 = v21;
-  dispatch_async(v19, block);
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(&v37);
   v22 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
-    v23 = [v21 token];
-    v24 = [WAUtil trimTokenForLogging:v23];
-    v25 = [v21 connection];
-    v26 = [v25 processIdentifier];
-    v27 = [v21 connection];
-    v28 = [v27 effectiveUserIdentifier];
-    v29 = [v21 connection];
-    v30 = [v29 effectiveGroupIdentifier];
+    token = [v21 token];
+    v24 = [WAUtil trimTokenForLogging:token];
+    connection5 = [v21 connection];
+    processIdentifier2 = [connection5 processIdentifier];
+    connection6 = [v21 connection];
+    effectiveUserIdentifier = [connection6 effectiveUserIdentifier];
+    connection7 = [v21 connection];
+    effectiveGroupIdentifier = [connection7 effectiveGroupIdentifier];
     *buf = 136447490;
     v49 = "[WAEngine xpcConnection:establishConnectionWithToken:andReply:]";
     v50 = 1024;
@@ -1360,17 +1360,17 @@ LABEL_18:
     v52 = 2112;
     v53 = v24;
     v54 = 1024;
-    v55 = v26;
+    v55 = processIdentifier2;
     v56 = 1024;
-    v57 = v28;
+    v57 = effectiveUserIdentifier;
     v58 = 1024;
-    v59 = v30;
+    v59 = effectiveGroupIdentifier;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:XPC: Token: %@ is for: [pid=%d, euid=%d, egid=%d]", buf, 0x2Eu);
   }
 
-  if (v33)
+  if (replyCopy)
   {
-    v33[2](v33, v31, 0);
+    replyCopy[2](replyCopy, v31, 0);
   }
 
   objc_destroyWeak(&v41);
@@ -1384,115 +1384,115 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 submitMessage:(id)a4 groupType:(int64_t)a5 andReply:(id)a6
+- (void)xpcConnection:(id)connection submitMessage:(id)message groupType:(int64_t)type andReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  connectionCopy = connection;
+  messageCopy = message;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v13 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100056E68;
   v17[3] = &unk_1000EDEC0;
   objc_copyWeak(v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v21[1] = a5;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v17);
+  v18 = connectionCopy;
+  v19 = messageCopy;
+  v21[1] = type;
+  v20 = replyCopy;
+  v14 = replyCopy;
+  v15 = messageCopy;
+  v16 = connectionCopy;
+  dispatch_async(engineQ, v17);
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 getMessagesModelForGroupType:(int64_t)a4 andReply:(id)a5
+- (void)xpcConnection:(id)connection getMessagesModelForGroupType:(int64_t)type andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v10 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100057218;
   block[3] = &unk_1000EDDD0;
   objc_copyWeak(v16, &location);
-  v16[1] = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v16[1] = type;
+  v14 = connectionCopy;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = connectionCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 registerMessageGroup:(int64_t)a4 andReply:(id)a5
+- (void)xpcConnection:(id)connection registerMessageGroup:(int64_t)group andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v10 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005751C;
   block[3] = &unk_1000EDDD0;
   objc_copyWeak(v16, &location);
-  v16[1] = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v16[1] = group;
+  v14 = connectionCopy;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = connectionCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 getNewMessageForKey:(id)a4 groupType:(int64_t)a5 withCopy:(id)a6 andReply:(id)a7
+- (void)xpcConnection:(id)connection getNewMessageForKey:(id)key groupType:(int64_t)type withCopy:(id)copy andReply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  connectionCopy = connection;
+  keyCopy = key;
+  copyCopy = copy;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v16 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100057D90;
   block[3] = &unk_1000EDF10;
   objc_copyWeak(v26, &location);
-  v26[1] = a5;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  dispatch_async(v16, block);
+  v26[1] = type;
+  v22 = connectionCopy;
+  v23 = keyCopy;
+  v24 = copyCopy;
+  v25 = replyCopy;
+  v17 = replyCopy;
+  v18 = copyCopy;
+  v19 = keyCopy;
+  v20 = connectionCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(v26);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 killDaemonAndReply:(id)a4
+- (void)xpcConnection:(id)connection killDaemonAndReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v8 = [v6 connection];
-  v9 = [v8 valueForEntitlement:@"com.apple.private.wifianalytics.test"];
-  v10 = [v9 BOOLValue];
+  connection = [connectionCopy connection];
+  v9 = [connection valueForEntitlement:@"com.apple.private.wifianalytics.test"];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = WALogCategoryDefaultHandle();
   v12 = v11;
-  if (v10)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -1503,16 +1503,16 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Received killDaemon via XPC - this shouldn't happen outside of unit tests", buf, 0x12u);
     }
 
-    v13 = [(WAEngine *)self engineQ];
+    engineQ = [(WAEngine *)self engineQ];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100058398;
     block[3] = &unk_1000EDF60;
     block[4] = self;
     objc_copyWeak(&v21, &location);
-    v19 = v6;
-    v20 = v7;
-    dispatch_async(v13, block);
+    v19 = connectionCopy;
+    v20 = replyCopy;
+    dispatch_async(engineQ, block);
 
     objc_destroyWeak(&v21);
   }
@@ -1521,10 +1521,10 @@ LABEL_18:
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v6 token];
-      v15 = [WAUtil trimTokenForLogging:v14];
-      v16 = [v6 connection];
-      v17 = [v16 processIdentifier];
+      token = [connectionCopy token];
+      v15 = [WAUtil trimTokenForLogging:token];
+      connection2 = [connectionCopy connection];
+      processIdentifier = [connection2 processIdentifier];
       *buf = 136447234;
       v24 = "[WAEngine xpcConnection:killDaemonAndReply:]";
       v25 = 1024;
@@ -1532,7 +1532,7 @@ LABEL_18:
       v27 = 2112;
       v28 = v15;
       v29 = 1024;
-      v30 = v17;
+      v30 = processIdentifier;
       v31 = 2112;
       v32 = @"com.apple.private.wifianalytics";
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}s::%d:XPC: ERROR: %@ (%d) is not entitled with WA_XPC_ENTITLEMENT_TEST  for %@, rejecting connection!!!", buf, 0x2Cu);
@@ -1542,18 +1542,18 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 clearMessageStoreAndReply:(id)a4
+- (void)xpcConnection:(id)connection clearMessageStoreAndReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v8 = [v6 connection];
-  v9 = [v8 valueForEntitlement:@"com.apple.private.wifianalytics.test"];
-  v10 = [v9 BOOLValue];
+  connection = [connectionCopy connection];
+  v9 = [connection valueForEntitlement:@"com.apple.private.wifianalytics.test"];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = WALogCategoryDefaultHandle();
   v12 = v11;
-  if (v10)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -1564,15 +1564,15 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Received clearMessageStoreAndReply via XPC - this shouldn't happen outside of unit tests", buf, 0x12u);
     }
 
-    v13 = [(WAEngine *)self engineQ];
+    engineQ = [(WAEngine *)self engineQ];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1000587B8;
     v18[3] = &unk_1000EDF38;
     objc_copyWeak(&v21, &location);
-    v19 = v6;
-    v20 = v7;
-    dispatch_async(v13, v18);
+    v19 = connectionCopy;
+    v20 = replyCopy;
+    dispatch_async(engineQ, v18);
 
     objc_destroyWeak(&v21);
   }
@@ -1581,10 +1581,10 @@ LABEL_18:
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v6 token];
-      v15 = [WAUtil trimTokenForLogging:v14];
-      v16 = [v6 connection];
-      v17 = [v16 processIdentifier];
+      token = [connectionCopy token];
+      v15 = [WAUtil trimTokenForLogging:token];
+      connection2 = [connectionCopy connection];
+      processIdentifier = [connection2 processIdentifier];
       *buf = 136447234;
       v24 = "[WAEngine xpcConnection:clearMessageStoreAndReply:]";
       v25 = 1024;
@@ -1592,7 +1592,7 @@ LABEL_18:
       v27 = 2112;
       v28 = v15;
       v29 = 1024;
-      v30 = v17;
+      v30 = processIdentifier;
       v31 = 2112;
       v32 = @"com.apple.private.wifianalytics";
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}s::%d:XPC: ERROR: %@ (%d) is not entitled with WA_XPC_ENTITLEMENT_TEST  for %@, rejecting connection!!!", buf, 0x2Cu);
@@ -1602,19 +1602,19 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)a4 andReply:(id)a5
+- (void)xpcConnection:(id)connection trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)name andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  nameCopy = name;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v11 = [v8 connection];
-  v12 = [v11 valueForEntitlement:@"com.apple.private.wifianalytics.fw-trap"];
-  v13 = [v12 BOOLValue];
+  connection = [connectionCopy connection];
+  v12 = [connection valueForEntitlement:@"com.apple.private.wifianalytics.fw-trap"];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = WALogCategoryDefaultHandle();
   v15 = v14;
-  if (v13)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -1625,16 +1625,16 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Received trapCrashMiniTracerDumpReady via XPC, usually this due to wifid detecting the kApple80211DriverAvailabilityFlagHasTrapCrashTracerMiniDump flag in a driver availability message", buf, 0x12u);
     }
 
-    v16 = [(WAEngine *)self engineQ];
+    engineQ = [(WAEngine *)self engineQ];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100058BE8;
     block[3] = &unk_1000EDF60;
     objc_copyWeak(&v25, &location);
-    v22 = v8;
-    v23 = v9;
-    v24 = v10;
-    dispatch_async(v16, block);
+    v22 = connectionCopy;
+    v23 = nameCopy;
+    v24 = replyCopy;
+    dispatch_async(engineQ, block);
 
     objc_destroyWeak(&v25);
   }
@@ -1643,10 +1643,10 @@ LABEL_18:
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v8 token];
-      v18 = [WAUtil trimTokenForLogging:v17];
-      v19 = [v8 connection];
-      v20 = [v19 processIdentifier];
+      token = [connectionCopy token];
+      v18 = [WAUtil trimTokenForLogging:token];
+      connection2 = [connectionCopy connection];
+      processIdentifier = [connection2 processIdentifier];
       *buf = 136447234;
       v28 = "[WAEngine xpcConnection:trapCrashMiniTracerDumpReadyForInterfaceWithName:andReply:]";
       v29 = 1024;
@@ -1654,7 +1654,7 @@ LABEL_18:
       v31 = 2112;
       v32 = v18;
       v33 = 1024;
-      v34 = v20;
+      v34 = processIdentifier;
       v35 = 2112;
       v36 = @"com.apple.private.wifianalytics";
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}s::%d:XPC: ERROR: %@ (%d) is not entitled with WA_XPC_ENTITLEMENT_FW_TRAP  for %@, rejecting connection!!!", buf, 0x2Cu);
@@ -1664,19 +1664,19 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 lqmCrashTracerNotifyForInterfaceWithName:(id)a4 andReply:(id)a5
+- (void)xpcConnection:(id)connection lqmCrashTracerNotifyForInterfaceWithName:(id)name andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  nameCopy = name;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v11 = [v8 connection];
-  v12 = [v11 valueForEntitlement:@"com.apple.private.wifianalytics.fw-trap"];
-  v13 = [v12 BOOLValue];
+  connection = [connectionCopy connection];
+  v12 = [connection valueForEntitlement:@"com.apple.private.wifianalytics.fw-trap"];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = WALogCategoryDefaultHandle();
   v15 = v14;
-  if (v13)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -1687,16 +1687,16 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Received lqmCrashTracerNotify via XPC", buf, 0x12u);
     }
 
-    v16 = [(WAEngine *)self engineQ];
+    engineQ = [(WAEngine *)self engineQ];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100059018;
     block[3] = &unk_1000EDF60;
     objc_copyWeak(&v25, &location);
-    v22 = v8;
-    v23 = v9;
-    v24 = v10;
-    dispatch_async(v16, block);
+    v22 = connectionCopy;
+    v23 = nameCopy;
+    v24 = replyCopy;
+    dispatch_async(engineQ, block);
 
     objc_destroyWeak(&v25);
   }
@@ -1705,10 +1705,10 @@ LABEL_18:
   {
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v8 token];
-      v18 = [WAUtil trimTokenForLogging:v17];
-      v19 = [v8 connection];
-      v20 = [v19 processIdentifier];
+      token = [connectionCopy token];
+      v18 = [WAUtil trimTokenForLogging:token];
+      connection2 = [connectionCopy connection];
+      processIdentifier = [connection2 processIdentifier];
       *buf = 136447234;
       v28 = "[WAEngine xpcConnection:lqmCrashTracerNotifyForInterfaceWithName:andReply:]";
       v29 = 1024;
@@ -1716,7 +1716,7 @@ LABEL_18:
       v31 = 2112;
       v32 = v18;
       v33 = 1024;
-      v34 = v20;
+      v34 = processIdentifier;
       v35 = 2112;
       v36 = @"com.apple.private.wifianalytics";
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}s::%d:XPC: ERROR: %@ (%d) is not entitled with WA_XPC_ENTITLEMENT_FW_TRAP  for %@, rejecting connection!!!", buf, 0x2Cu);
@@ -1726,20 +1726,20 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 lqmCrashTracerReceiveBlock:(id)a4 forInterfaceWithName:(id)a5 andReply:(id)a6
+- (void)xpcConnection:(id)connection lqmCrashTracerReceiveBlock:(id)block forInterfaceWithName:(id)name andReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  blockCopy = block;
+  nameCopy = name;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v14 = [v10 connection];
-  v15 = [v14 valueForEntitlement:@"com.apple.private.wifianalytics.fw-trap"];
-  v16 = [v15 BOOLValue];
+  connection = [connectionCopy connection];
+  v15 = [connection valueForEntitlement:@"com.apple.private.wifianalytics.fw-trap"];
+  bOOLValue = [v15 BOOLValue];
 
   v17 = WALogCategoryDefaultHandle();
   v18 = v17;
-  if (v16)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -1750,17 +1750,17 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Received lqmCrashTracerReceiveBlock via XPC", buf, 0x12u);
     }
 
-    v19 = [(WAEngine *)self engineQ];
+    engineQ = [(WAEngine *)self engineQ];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_100059468;
     v24[3] = &unk_1000EDF88;
     objc_copyWeak(&v29, &location);
-    v25 = v10;
-    v26 = v11;
-    v27 = v12;
-    v28 = v13;
-    dispatch_async(v19, v24);
+    v25 = connectionCopy;
+    v26 = blockCopy;
+    v27 = nameCopy;
+    v28 = replyCopy;
+    dispatch_async(engineQ, v24);
 
     objc_destroyWeak(&v29);
   }
@@ -1769,10 +1769,10 @@ LABEL_18:
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v10 token];
-      v21 = [WAUtil trimTokenForLogging:v20];
-      v22 = [v10 connection];
-      v23 = [v22 processIdentifier];
+      token = [connectionCopy token];
+      v21 = [WAUtil trimTokenForLogging:token];
+      connection2 = [connectionCopy connection];
+      processIdentifier = [connection2 processIdentifier];
       *buf = 136447234;
       v32 = "[WAEngine xpcConnection:lqmCrashTracerReceiveBlock:forInterfaceWithName:andReply:]";
       v33 = 1024;
@@ -1780,7 +1780,7 @@ LABEL_18:
       v35 = 2112;
       v36 = v21;
       v37 = 1024;
-      v38 = v23;
+      v38 = processIdentifier;
       v39 = 2112;
       v40 = @"com.apple.private.wifianalytics";
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}s::%d:XPC: ERROR: %@ (%d) is not entitled with WA_XPC_ENTITLEMENT_FW_TRAP  for %@, rejecting connection!!!", buf, 0x2Cu);
@@ -1790,268 +1790,268 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 triggerQueryForNWActivity:(int64_t)a4 andReply:(id)a5
+- (void)xpcConnection:(id)connection triggerQueryForNWActivity:(int64_t)activity andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v10 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000596D0;
   block[3] = &unk_1000EDDD0;
   objc_copyWeak(v16, &location);
-  v16[1] = a4;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v16[1] = activity;
+  v14 = connectionCopy;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = connectionCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 triggerQueryForNWActivityWithPeers:(id)a4 andReply:(id)a5
+- (void)xpcConnection:(id)connection triggerQueryForNWActivityWithPeers:(id)peers andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  peersCopy = peers;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v11 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100059BDC;
   block[3] = &unk_1000EDF60;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = connectionCopy;
+  v17 = peersCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = peersCopy;
+  v14 = connectionCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 convertWiFiStatsIntoPercentile:(id)a4 analysisGroup:(int64_t)a5 groupTarget:(id)a6 andReply:(id)a7
+- (void)xpcConnection:(id)connection convertWiFiStatsIntoPercentile:(id)percentile analysisGroup:(int64_t)group groupTarget:(id)target andReply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  connectionCopy = connection;
+  percentileCopy = percentile;
+  targetCopy = target;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v16 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005A10C;
   block[3] = &unk_1000EDF10;
   objc_copyWeak(v26, &location);
-  v22 = v12;
-  v23 = v13;
-  v26[1] = a5;
-  v24 = v14;
-  v25 = v15;
-  v17 = v15;
-  v18 = v14;
-  v19 = v13;
-  v20 = v12;
-  dispatch_async(v16, block);
+  v22 = connectionCopy;
+  v23 = percentileCopy;
+  v26[1] = group;
+  v24 = targetCopy;
+  v25 = replyCopy;
+  v17 = replyCopy;
+  v18 = targetCopy;
+  v19 = percentileCopy;
+  v20 = connectionCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(v26);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)a4 waMessage:(id)a5 andReply:(id)a6
+- (void)xpcConnection:(id)connection triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)updates waMessage:(id)message andReply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  connectionCopy = connection;
+  messageCopy = message;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v13 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10005A550;
   v17[3] = &unk_1000EDEC0;
   objc_copyWeak(v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v21[1] = a4;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v17);
+  v18 = connectionCopy;
+  v19 = messageCopy;
+  v21[1] = updates;
+  v20 = replyCopy;
+  v14 = replyCopy;
+  v15 = messageCopy;
+  v16 = connectionCopy;
+  dispatch_async(engineQ, v17);
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 getDpsStatsandReply:(id)a4
+- (void)xpcConnection:(id)connection getDpsStatsandReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v8 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005A940;
   v11[3] = &unk_1000EDF38;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = connectionCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = connectionCopy;
+  dispatch_async(engineQ, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 getUsageStatsandReply:(id)a4
+- (void)xpcConnection:(id)connection getUsageStatsandReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v8 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005AD64;
   block[3] = &unk_1000EDF60;
   objc_copyWeak(&v15, &location);
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = connectionCopy;
+  selfCopy = self;
+  v14 = replyCopy;
+  v9 = replyCopy;
+  v10 = connectionCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 setDeviceAnalyticsConfiguration:(id)a4 andReply:(id)a5
+- (void)xpcConnection:(id)connection setDeviceAnalyticsConfiguration:(id)configuration andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  connectionCopy = connection;
+  configurationCopy = configuration;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v11 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005B1DC;
   block[3] = &unk_1000EDF60;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = connectionCopy;
+  v17 = configurationCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = configurationCopy;
+  v14 = connectionCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 getDeviceAnalyticsConfigurationAndReply:(id)a4
+- (void)xpcConnection:(id)connection getDeviceAnalyticsConfigurationAndReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v8 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005B554;
   v11[3] = &unk_1000EDF38;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = connectionCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = connectionCopy;
+  dispatch_async(engineQ, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 signalPotentialNewIORChannelsAndReply:(id)a4
+- (void)xpcConnection:(id)connection signalPotentialNewIORChannelsAndReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v8 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10005B8DC;
   v11[3] = &unk_1000EDF38;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = connectionCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = connectionCopy;
+  dispatch_async(engineQ, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 updateRoamPoliciesForSourceBssid:(id)a4 andUpdateRoamCache:(BOOL)a5 andReply:(id)a6
+- (void)xpcConnection:(id)connection updateRoamPoliciesForSourceBssid:(id)bssid andUpdateRoamCache:(BOOL)cache andReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  connectionCopy = connection;
+  bssidCopy = bssid;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v13 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10005BCF0;
   v17[3] = &unk_1000EDFB0;
   objc_copyWeak(&v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v22 = a5;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v17);
+  v18 = connectionCopy;
+  v19 = bssidCopy;
+  cacheCopy = cache;
+  v20 = replyCopy;
+  v14 = replyCopy;
+  v15 = bssidCopy;
+  v16 = connectionCopy;
+  dispatch_async(engineQ, v17);
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a4 maxAgeInDays:(unint64_t)a5 andReply:(id)a6
+- (void)xpcConnection:(id)connection updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days andReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  connectionCopy = connection;
+  networkCopy = network;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v13 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10005C138;
   v17[3] = &unk_1000EDEC0;
   objc_copyWeak(v21, &location);
-  v18 = v10;
-  v19 = v11;
-  v21[1] = a5;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, v17);
+  v18 = connectionCopy;
+  v19 = networkCopy;
+  v21[1] = days;
+  v20 = replyCopy;
+  v14 = replyCopy;
+  v15 = networkCopy;
+  v16 = connectionCopy;
+  dispatch_async(engineQ, v17);
 
   objc_destroyWeak(v21);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 triggerDeviceAnalyticsStoreMigrationAndReply:(id)a4
+- (void)xpcConnection:(id)connection triggerDeviceAnalyticsStoreMigrationAndReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   v8 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -2063,34 +2063,34 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Received triggerDeviceAnalyticsStoreMigrationAndReply via XPC", buf, 0x12u);
   }
 
-  v9 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10005C564;
   v12[3] = &unk_1000EDF38;
   objc_copyWeak(&v15, &location);
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, v12);
+  v13 = connectionCopy;
+  v14 = replyCopy;
+  v10 = replyCopy;
+  v11 = connectionCopy;
+  dispatch_async(engineQ, v12);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 sendMemoryPressureRequestAndReply:(id)a4
+- (void)xpcConnection:(id)connection sendMemoryPressureRequestAndReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v8 = [v6 connection];
-  v9 = [v8 valueForEntitlement:@"com.apple.private.wifianalytics.test"];
-  v10 = [v9 BOOLValue];
+  connection = [connectionCopy connection];
+  v9 = [connection valueForEntitlement:@"com.apple.private.wifianalytics.test"];
+  bOOLValue = [v9 BOOLValue];
 
   v11 = WALogCategoryDefaultHandle();
   v12 = v11;
-  if (v10)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
@@ -2101,15 +2101,15 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Received MemoryPressure request via XPC - this shouldn't happen outside of unit tests", buf, 0x12u);
     }
 
-    v13 = [(WAEngine *)self engineQ];
+    engineQ = [(WAEngine *)self engineQ];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10005CAEC;
     v18[3] = &unk_1000EDF38;
     objc_copyWeak(&v21, &location);
-    v19 = v6;
-    v20 = v7;
-    dispatch_async(v13, v18);
+    v19 = connectionCopy;
+    v20 = replyCopy;
+    dispatch_async(engineQ, v18);
 
     objc_destroyWeak(&v21);
   }
@@ -2118,10 +2118,10 @@ LABEL_18:
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v14 = [v6 token];
-      v15 = [WAUtil trimTokenForLogging:v14];
-      v16 = [v6 connection];
-      v17 = [v16 processIdentifier];
+      token = [connectionCopy token];
+      v15 = [WAUtil trimTokenForLogging:token];
+      connection2 = [connectionCopy connection];
+      processIdentifier = [connection2 processIdentifier];
       *buf = 136447234;
       v24 = "[WAEngine xpcConnection:sendMemoryPressureRequestAndReply:]";
       v25 = 1024;
@@ -2129,7 +2129,7 @@ LABEL_18:
       v27 = 2112;
       v28 = v15;
       v29 = 1024;
-      v30 = v17;
+      v30 = processIdentifier;
       v31 = 2112;
       v32 = @"com.apple.private.wifianalytics";
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}s::%d:XPC: ERROR: %@ (%d) is not entitled with WA_XPC_ENTITLEMENT_TEST  for %@, rejecting connection!!!", buf, 0x2Cu);
@@ -2139,10 +2139,10 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 issueIOReportManagementCommand:(unint64_t)a4 andReply:(id)a5
+- (void)xpcConnection:(id)connection issueIOReportManagementCommand:(unint64_t)command andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
+  connectionCopy = connection;
+  replyCopy = reply;
   objc_initWeak(&location, self);
   v28 = 0;
   v29 = &v28;
@@ -2150,13 +2150,13 @@ LABEL_18:
   v31 = sub_10005CFFC;
   v32 = sub_10005D00C;
   v33 = 0;
-  v10 = [v8 connection];
-  v11 = [v10 valueForEntitlement:@"com.apple.private.wifianalytics.test"];
-  v12 = [v11 BOOLValue];
+  connection = [connectionCopy connection];
+  v11 = [connection valueForEntitlement:@"com.apple.private.wifianalytics.test"];
+  bOOLValue = [v11 BOOLValue];
 
   v13 = WALogCategoryDefaultHandle();
   v14 = v13;
-  if (v12)
+  if (bOOLValue)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -2167,17 +2167,17 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Received issueIOReportManagementCommand request via XPC - this shouldn't happen outside of unit tests", buf, 0x12u);
     }
 
-    v15 = [(WAEngine *)self engineQ];
+    engineQ = [(WAEngine *)self engineQ];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10005D014;
     v23[3] = &unk_1000EDFD8;
     objc_copyWeak(v27, &location);
-    v24 = v8;
+    v24 = connectionCopy;
     v26 = &v28;
-    v27[1] = a4;
-    v25 = v9;
-    dispatch_async(v15, v23);
+    v27[1] = command;
+    v25 = replyCopy;
+    dispatch_async(engineQ, v23);
 
     objc_destroyWeak(v27);
   }
@@ -2186,10 +2186,10 @@ LABEL_18:
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v8 token];
-      v17 = [WAUtil trimTokenForLogging:v16];
-      v18 = [v8 connection];
-      v19 = [v18 processIdentifier];
+      token = [connectionCopy token];
+      v17 = [WAUtil trimTokenForLogging:token];
+      connection2 = [connectionCopy connection];
+      processIdentifier = [connection2 processIdentifier];
       *buf = 136447234;
       v38 = "[WAEngine xpcConnection:issueIOReportManagementCommand:andReply:]";
       v39 = 1024;
@@ -2197,7 +2197,7 @@ LABEL_18:
       v41 = 2112;
       v42 = v17;
       v43 = 1024;
-      v44 = v19;
+      v44 = processIdentifier;
       v45 = 2112;
       v46 = @"com.apple.private.wifianalytics";
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}s::%d:XPC: ERROR: %@ (%d) is not entitled with WA_XPC_ENTITLEMENT_TEST  for %@, rejecting connection!!!", buf, 0x2Cu);
@@ -2211,9 +2211,9 @@ LABEL_18:
     v29[5] = v21;
   }
 
-  if (v9)
+  if (replyCopy)
   {
-    (*(v9 + 2))(v9, 0, v29[5]);
+    (*(replyCopy + 2))(replyCopy, 0, v29[5]);
   }
 
   _Block_object_dispose(&v28, 8);
@@ -2221,41 +2221,41 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)xpcConnection:(id)a3 processManagedFault:(id)a4 at:(id)a5 andReply:(id)a6
+- (void)xpcConnection:(id)connection processManagedFault:(id)fault at:(id)at andReply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  connectionCopy = connection;
+  faultCopy = fault;
+  atCopy = at;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v14 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005D4E4;
   block[3] = &unk_1000EE000;
   objc_copyWeak(&v25, &location);
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = connectionCopy;
+  selfCopy = self;
+  v22 = faultCopy;
+  v23 = atCopy;
+  v24 = replyCopy;
+  v15 = replyCopy;
+  v16 = atCopy;
+  v17 = faultCopy;
+  v18 = connectionCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)submitterMapCheck:(id)a3 group:(int64_t)a4
+- (BOOL)submitterMapCheck:(id)check group:(int64_t)group
 {
-  v6 = a3;
+  checkCopy = check;
   submitterMap = self->_submitterMap;
-  v8 = [v6 token];
-  v9 = [(NSMutableDictionary *)submitterMap objectForKeyedSubscript:v8];
-  v10 = [NSNumber numberWithInteger:a4];
+  token = [checkCopy token];
+  v9 = [(NSMutableDictionary *)submitterMap objectForKeyedSubscript:token];
+  v10 = [NSNumber numberWithInteger:group];
   v11 = [v9 objectForKeyedSubscript:v10];
 
   if (!v11)
@@ -2263,23 +2263,23 @@ LABEL_18:
     v12 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v6 connection];
-      v14 = [v13 processIdentifier];
-      v15 = [v6 connection];
-      v16 = [v15 serviceName];
-      v17 = [WAUtil groupTypeToString:a4];
+      connection = [checkCopy connection];
+      processIdentifier = [connection processIdentifier];
+      connection2 = [checkCopy connection];
+      serviceName = [connection2 serviceName];
+      v17 = [WAUtil groupTypeToString:group];
       v19 = 136447490;
       v20 = "[WAEngine submitterMapCheck:group:]";
       v21 = 1024;
       v22 = 1675;
       v23 = 1024;
-      v24 = v14;
+      v24 = processIdentifier;
       v25 = 2112;
-      v26 = v16;
+      v26 = serviceName;
       v27 = 2112;
       v28 = v17;
       v29 = 2048;
-      v30 = a4;
+      groupCopy = group;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:pid %d proc %@ group %@(%ld) not in submitterMap", &v19, 0x36u);
     }
   }
@@ -2287,11 +2287,11 @@ LABEL_18:
   return v11 != 0;
 }
 
-- (void)freeAllocationsForProcessToken:(id)a3
+- (void)freeAllocationsForProcessToken:(id)token
 {
-  v4 = a3;
-  v5 = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  tokenCopy = token;
+  cachedModelObjectsKeyToMessageMap = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
+  v6 = [cachedModelObjectsKeyToMessageMap objectForKeyedSubscript:tokenCopy];
 
   v7 = WALogCategoryDefaultHandle();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -2299,11 +2299,11 @@ LABEL_18:
   {
     if (v8)
     {
-      v9 = [WAUtil trimTokenForLogging:v4];
-      v10 = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
-      v11 = [v10 objectForKeyedSubscript:v4];
+      v9 = [WAUtil trimTokenForLogging:tokenCopy];
+      cachedModelObjectsKeyToMessageMap2 = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
+      v11 = [cachedModelObjectsKeyToMessageMap2 objectForKeyedSubscript:tokenCopy];
       v12 = [WAUtil countTotalKeysInNSObject:v11];
-      v13 = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
+      cachedModelObjectsKeyToMessageMap3 = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
       v19 = 136447234;
       v20 = "[WAEngine freeAllocationsForProcessToken:]";
       v21 = 1024;
@@ -2313,19 +2313,19 @@ LABEL_18:
       v25 = 2048;
       v26 = v12;
       v27 = 2048;
-      v28 = [WAUtil countTotalKeysInNSObject:v13];
+      v28 = [WAUtil countTotalKeysInNSObject:cachedModelObjectsKeyToMessageMap3];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Removing processToken %@ objects from cachedModelObjectsKeyToMessageMap - countTotalKeysInNSObject to remove %ld, initial total is %ld", &v19, 0x30u);
     }
 
-    v14 = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
-    [v14 removeObjectForKey:v4];
+    cachedModelObjectsKeyToMessageMap4 = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
+    [cachedModelObjectsKeyToMessageMap4 removeObjectForKey:tokenCopy];
 
     v7 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [WAUtil trimTokenForLogging:v4];
-      v16 = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
-      v17 = [WAUtil countTotalKeysInNSObject:v16];
+      v15 = [WAUtil trimTokenForLogging:tokenCopy];
+      cachedModelObjectsKeyToMessageMap5 = [(WAEngine *)self cachedModelObjectsKeyToMessageMap];
+      v17 = [WAUtil countTotalKeysInNSObject:cachedModelObjectsKeyToMessageMap5];
       v19 = 136446978;
       v20 = "[WAEngine freeAllocationsForProcessToken:]";
       v21 = 1024;
@@ -2340,7 +2340,7 @@ LABEL_18:
 
   else if (v8)
   {
-    v18 = [WAUtil trimTokenForLogging:v4];
+    v18 = [WAUtil trimTokenForLogging:tokenCopy];
     v19 = 136446722;
     v20 = "[WAEngine freeAllocationsForProcessToken:]";
     v21 = 1024;
@@ -2351,25 +2351,25 @@ LABEL_18:
   }
 }
 
-- (id)getXPCConnectionForProcessToken:(id)a3
+- (id)getXPCConnectionForProcessToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10005CFFC;
   v16 = sub_10005D00C;
   v17 = 0;
-  v5 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005DE14;
   block[3] = &unk_1000EE028;
-  v10 = v4;
+  v10 = tokenCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = tokenCopy;
+  dispatch_sync(engineQ, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -2377,30 +2377,30 @@ LABEL_18:
   return v7;
 }
 
-- (void)sendWakeUpNotificationForProcessWithName:(id)a3
+- (void)sendWakeUpNotificationForProcessWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(WAEngine *)self engineQ];
+  nameCopy = name;
+  engineQ = [(WAEngine *)self engineQ];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005DF28;
   v7[3] = &unk_1000ED988;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = nameCopy;
+  v6 = nameCopy;
+  dispatch_async(engineQ, v7);
 }
 
 - (void)prepareToTerminateViaEagerExit
 {
   objc_initWeak(&location, self);
-  v3 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005E12C;
   v4[3] = &unk_1000ED938;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(engineQ, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -2431,19 +2431,19 @@ LABEL_18:
   }
 }
 
-- (void)prepareToTerminateAnyReply:(id)a3
+- (void)prepareToTerminateAnyReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   objc_initWeak(&location, self);
-  v5 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005E44C;
   block[3] = &unk_1000EE050;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = replyCopy;
+  v6 = replyCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -2457,8 +2457,8 @@ LABEL_18:
   v4 = +[NSDate date];
   [(NSMutableDictionary *)cachedUsage setObject:v4 forKey:@"Last Graceful Termination Date"];
 
-  v5 = [(WAEngine *)self listener];
-  [v5 suspend];
+  listener = [(WAEngine *)self listener];
+  [listener suspend];
 
   v6 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -2481,8 +2481,8 @@ LABEL_18:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:persistIORObjects", &v10, 0x12u);
   }
 
-  v8 = [(WAEngine *)self iorMessagePopulator];
-  [v8 persistIORObjects:1];
+  iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
+  [iorMessagePopulator persistIORObjects:1];
 
   v9 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -2495,9 +2495,9 @@ LABEL_18:
   }
 }
 
-- (void)handleMemoryWarning:(BOOL)a3
+- (void)handleMemoryWarning:(BOOL)warning
 {
-  v3 = a3;
+  warningCopy = warning;
   objc_initWeak(&location, self);
   v5 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2509,18 +2509,18 @@ LABEL_18:
     v15 = 2080;
     v16 = "[WAEngine handleMemoryWarning:]";
     v17 = 1024;
-    v18 = v3;
+    v18 = warningCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s: critical=%d", buf, 0x22u);
   }
 
-  v6 = [(WAEngine *)self engineQ];
+  engineQ = [(WAEngine *)self engineQ];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005E8F0;
   block[3] = &unk_1000ED960;
   objc_copyWeak(&v8, &location);
-  v9 = v3;
-  dispatch_async(v6, block);
+  v9 = warningCopy;
+  dispatch_async(engineQ, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -2545,14 +2545,14 @@ LABEL_18:
 - (id)_rotateObscureKey
 {
   v3 = +[NSUUID UUID];
-  v4 = [v3 UUIDString];
+  uUIDString = [v3 UUIDString];
 
-  v5 = [(WAEngine *)self _getBasePersistenceKeychainQuery];
-  v6 = v5;
-  if (v5)
+  _getBasePersistenceKeychainQuery = [(WAEngine *)self _getBasePersistenceKeychainQuery];
+  v6 = _getBasePersistenceKeychainQuery;
+  if (_getBasePersistenceKeychainQuery)
   {
-    SecItemDelete(v5);
-    v7 = [v4 dataUsingEncoding:4];
+    SecItemDelete(_getBasePersistenceKeychainQuery);
+    v7 = [uUIDString dataUsingEncoding:4];
     [(__CFDictionary *)v6 setObject:v7 forKeyedSubscript:kSecValueData];
 
     [(__CFDictionary *)v6 setObject:kSecAttrAccessibleAlways forKeyedSubscript:kSecAttrAccessible];
@@ -2605,11 +2605,11 @@ LABEL_3:
 - (id)_getObscureKey
 {
   result = 0;
-  v2 = [(WAEngine *)self _getBasePersistenceKeychainQuery];
-  v3 = v2;
-  if (v2)
+  _getBasePersistenceKeychainQuery = [(WAEngine *)self _getBasePersistenceKeychainQuery];
+  v3 = _getBasePersistenceKeychainQuery;
+  if (_getBasePersistenceKeychainQuery)
   {
-    [(__CFDictionary *)v2 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnData];
+    [(__CFDictionary *)_getBasePersistenceKeychainQuery setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnData];
     v4 = SecItemCopyMatching(v3, &result);
     if (v4)
     {
@@ -2677,7 +2677,7 @@ LABEL_5:
   return v7;
 }
 
-- (void)_saveKeyIVData:(id)a3 andTagData:(id)a4
+- (void)_saveKeyIVData:(id)data andTagData:(id)tagData
 {
   v25[0] = kSecAttrAccount;
   v25[1] = kSecAttrService;
@@ -2689,8 +2689,8 @@ LABEL_5:
   v26[3] = kSecAttrAccessibleAlways;
   v25[4] = kSecClass;
   v26[4] = kSecClassGenericPassword;
-  v16 = a4;
-  v5 = a3;
+  tagDataCopy = tagData;
+  dataCopy = data;
   v6 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:5];
   v7 = [v6 mutableCopy];
 
@@ -2709,9 +2709,9 @@ LABEL_5:
 
   SecItemDelete(v7);
   SecItemDelete(v9);
-  [(__CFDictionary *)v7 setObject:v5 forKeyedSubscript:kSecValueData];
+  [(__CFDictionary *)v7 setObject:dataCopy forKeyedSubscript:kSecValueData];
 
-  [(__CFDictionary *)v9 setObject:v16 forKeyedSubscript:kSecValueData];
+  [(__CFDictionary *)v9 setObject:tagDataCopy forKeyedSubscript:kSecValueData];
   v10 = SecItemAdd(v7, 0);
   if (v10)
   {
@@ -2758,13 +2758,13 @@ LABEL_9:
 LABEL_3:
 }
 
-- (id)_getDataFromKeychain:(id)a3
+- (id)_getDataFromKeychain:(id)keychain
 {
-  v3 = a3;
+  keychainCopy = keychain;
   result = 0;
   v21[0] = kSecAttrAccount;
   v21[1] = kSecAttrService;
-  v22[0] = v3;
+  v22[0] = keychainCopy;
   v22[1] = @"WiFiAnalytics";
   v21[2] = kSecAttrAccessGroup;
   v21[3] = kSecReturnData;
@@ -2814,7 +2814,7 @@ LABEL_10:
       v17 = 1024;
       v18 = 1918;
       v19 = 2112;
-      v20[0] = v3;
+      v20[0] = keychainCopy;
       v11 = "%{public}s::%d:Keychain didn't return any key data for %@";
       v12 = v10;
       v13 = 28;
@@ -2892,8 +2892,8 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Ending transaction %s", buf, 0x1Cu);
     }
 
-    v15 = [p_superclass + 19 sharedActivityManager];
-    [v15 osTransactionComplete:v7];
+    sharedActivityManager = [p_superclass + 19 sharedActivityManager];
+    [sharedActivityManager osTransactionComplete:v7];
 
     v16 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -3029,9 +3029,9 @@ LABEL_32:
 
   context = objc_autoreleasePoolPush();
   v46 = +[NSMutableDictionary dictionary];
-  v47 = [(WAEngine *)self cachedUsage];
+  cachedUsage = [(WAEngine *)self cachedUsage];
   v165 = v37;
-  v48 = [NSKeyedArchiver archivedDataWithRootObject:v47 requiringSecureCoding:1 error:&v165];
+  v48 = [NSKeyedArchiver archivedDataWithRootObject:cachedUsage requiringSecureCoding:1 error:&v165];
   v49 = v165;
 
   if (v49)
@@ -3068,9 +3068,9 @@ LABEL_32:
   }
 
   v148 = v48;
-  v53 = [(WAEngine *)self messageStore];
+  messageStore = [(WAEngine *)self messageStore];
   v164 = 0;
-  v54 = [NSKeyedArchiver archivedDataWithRootObject:v53 requiringSecureCoding:1 error:&v164];
+  v54 = [NSKeyedArchiver archivedDataWithRootObject:messageStore requiringSecureCoding:1 error:&v164];
   v55 = v164;
 
   if (v55)
@@ -3106,9 +3106,9 @@ LABEL_32:
     [v46 setObject:v54 forKey:@"WA_PERSIST_MESSAGE_STORE"];
   }
 
-  v59 = [(WAEngine *)self processTokenToGroupTypeMap];
+  processTokenToGroupTypeMap = [(WAEngine *)self processTokenToGroupTypeMap];
   v163 = 0;
-  v152 = [NSKeyedArchiver archivedDataWithRootObject:v59 requiringSecureCoding:1 error:&v163];
+  v152 = [NSKeyedArchiver archivedDataWithRootObject:processTokenToGroupTypeMap requiringSecureCoding:1 error:&v163];
   v60 = v163;
 
   if (v60)
@@ -3131,9 +3131,9 @@ LABEL_32:
     [v46 setObject:v152 forKey:@"WA_PERSIST_PROCESS_REGISTRATION"];
   }
 
-  v62 = [(WAEngine *)self iorMessagePopulator];
+  iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
   v162 = 0;
-  v153 = [NSKeyedArchiver archivedDataWithRootObject:v62 requiringSecureCoding:1 error:&v162];
+  v153 = [NSKeyedArchiver archivedDataWithRootObject:iorMessagePopulator requiringSecureCoding:1 error:&v162];
   v63 = v162;
 
   if (v63)
@@ -3173,21 +3173,21 @@ LABEL_32:
   v67 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
   {
-    v68 = [(WAEngine *)self recommendationEngine];
-    v69 = [v68 dpsWDBudgetDict];
+    recommendationEngine = [(WAEngine *)self recommendationEngine];
+    dpsWDBudgetDict = [recommendationEngine dpsWDBudgetDict];
     *buf = 136446722;
     v169 = "[WAEngine _persist]";
     v170 = 1024;
     v171 = 2016;
     v172 = 2112;
-    v173 = v69;
+    v173 = dpsWDBudgetDict;
     _os_log_impl(&_mh_execute_header, v67, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:self.recommendationEngine.dpsWDBudgetDict %@", buf, 0x1Cu);
   }
 
-  v70 = [(WAEngine *)self recommendationEngine];
-  v71 = [v70 dpsWDBudgetDict];
+  recommendationEngine2 = [(WAEngine *)self recommendationEngine];
+  dpsWDBudgetDict2 = [recommendationEngine2 dpsWDBudgetDict];
   v161 = 0;
-  v151 = [NSKeyedArchiver archivedDataWithRootObject:v71 requiringSecureCoding:1 error:&v161];
+  v151 = [NSKeyedArchiver archivedDataWithRootObject:dpsWDBudgetDict2 requiringSecureCoding:1 error:&v161];
   v72 = v161;
 
   if (v72)
@@ -3250,29 +3250,29 @@ LABEL_32:
     }
   }
 
-  v80 = [(WAEngine *)self dpsQuickRecoveryEngine];
+  dpsQuickRecoveryEngine = [(WAEngine *)self dpsQuickRecoveryEngine];
 
   v150 = v46;
-  if (v80)
+  if (dpsQuickRecoveryEngine)
   {
     v81 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v81, OS_LOG_TYPE_DEFAULT))
     {
-      v82 = [(WAEngine *)self dpsQuickRecoveryEngine];
-      v83 = [v82 dpsQuickRecoveryWDBudgetDict];
+      dpsQuickRecoveryEngine2 = [(WAEngine *)self dpsQuickRecoveryEngine];
+      dpsQuickRecoveryWDBudgetDict = [dpsQuickRecoveryEngine2 dpsQuickRecoveryWDBudgetDict];
       *buf = 136446722;
       v169 = "[WAEngine _persist]";
       v170 = 1024;
       v171 = 2039;
       v172 = 2112;
-      v173 = v83;
+      v173 = dpsQuickRecoveryWDBudgetDict;
       _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:self.dpsQuickRecoveryEngine.dpsQuickRecoveryWDBudgetDict %@", buf, 0x1Cu);
     }
 
-    v84 = [(WAEngine *)self dpsQuickRecoveryEngine];
-    v85 = [v84 dpsQuickRecoveryWDBudgetDict];
+    dpsQuickRecoveryEngine3 = [(WAEngine *)self dpsQuickRecoveryEngine];
+    dpsQuickRecoveryWDBudgetDict2 = [dpsQuickRecoveryEngine3 dpsQuickRecoveryWDBudgetDict];
     v159 = 0;
-    v86 = [NSKeyedArchiver archivedDataWithRootObject:v85 requiringSecureCoding:1 error:&v159];
+    v86 = [NSKeyedArchiver archivedDataWithRootObject:dpsQuickRecoveryWDBudgetDict2 requiringSecureCoding:1 error:&v159];
     v87 = v159;
 
     if (v87)
@@ -3298,21 +3298,21 @@ LABEL_32:
     v89 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
     {
-      v90 = [(WAEngine *)self dpsQuickRecoveryEngine];
-      v91 = [v90 dpsStats];
+      dpsQuickRecoveryEngine4 = [(WAEngine *)self dpsQuickRecoveryEngine];
+      dpsStats = [dpsQuickRecoveryEngine4 dpsStats];
       *buf = 136446722;
       v169 = "[WAEngine _persist]";
       v170 = 1024;
       v171 = 2050;
       v172 = 2112;
-      v173 = v91;
+      v173 = dpsStats;
       _os_log_impl(&_mh_execute_header, v89, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:self.dpsQuickRecoveryEngine.dpsStats %@", buf, 0x1Cu);
     }
 
-    v92 = [(WAEngine *)self dpsQuickRecoveryEngine];
-    v93 = [v92 dpsStats];
+    dpsQuickRecoveryEngine5 = [(WAEngine *)self dpsQuickRecoveryEngine];
+    dpsStats2 = [dpsQuickRecoveryEngine5 dpsStats];
     v158 = 0;
-    v94 = [NSKeyedArchiver archivedDataWithRootObject:v93 requiringSecureCoding:1 error:&v158];
+    v94 = [NSKeyedArchiver archivedDataWithRootObject:dpsStats2 requiringSecureCoding:1 error:&v158];
     v95 = v158;
 
     v46 = v150;
@@ -3342,19 +3342,19 @@ LABEL_32:
     v99 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v99, OS_LOG_TYPE_DEBUG))
     {
-      v100 = [(WAEngine *)self infraInterfaceName];
+      infraInterfaceName = [(WAEngine *)self infraInterfaceName];
       *buf = 136446722;
       v169 = "[WAEngine _persist]";
       v170 = 1024;
       v171 = 2063;
       v172 = 2112;
-      v173 = v100;
+      v173 = infraInterfaceName;
       _os_log_impl(&_mh_execute_header, v99, OS_LOG_TYPE_DEBUG, "%{public}s::%d:self.infrainterfacename %@", buf, 0x1Cu);
     }
 
-    v101 = [(WAEngine *)self infraInterfaceName];
+    infraInterfaceName2 = [(WAEngine *)self infraInterfaceName];
     v157 = 0;
-    v102 = [NSKeyedArchiver archivedDataWithRootObject:v101 requiringSecureCoding:1 error:&v157];
+    v102 = [NSKeyedArchiver archivedDataWithRootObject:infraInterfaceName2 requiringSecureCoding:1 error:&v157];
     v103 = v157;
 
     if (v103)
@@ -3383,13 +3383,13 @@ LABEL_32:
     v102 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
     {
-      v105 = [(WAEngine *)self infraInterfaceName];
+      infraInterfaceName3 = [(WAEngine *)self infraInterfaceName];
       *buf = 136446722;
       v169 = "[WAEngine _persist]";
       v170 = 1024;
       v171 = 2073;
       v172 = 2112;
-      v173 = v105;
+      v173 = infraInterfaceName3;
       _os_log_impl(&_mh_execute_header, v102, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:self.infrainterfacename is %@, not persisting", buf, 0x1Cu);
     }
   }
@@ -3397,19 +3397,19 @@ LABEL_32:
   v106 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v106, OS_LOG_TYPE_DEBUG))
   {
-    v107 = [(WAEngine *)self wifiChipSet];
+    wifiChipSet = [(WAEngine *)self wifiChipSet];
     *buf = 136446722;
     v169 = "[WAEngine _persist]";
     v170 = 1024;
     v171 = 2077;
     v172 = 2112;
-    v173 = v107;
+    v173 = wifiChipSet;
     _os_log_impl(&_mh_execute_header, v106, OS_LOG_TYPE_DEBUG, "%{public}s::%d:self.wifiChipSet %@", buf, 0x1Cu);
   }
 
-  v108 = [(WAEngine *)self wifiChipSet];
+  wifiChipSet2 = [(WAEngine *)self wifiChipSet];
   v156 = 0;
-  v109 = [NSKeyedArchiver archivedDataWithRootObject:v108 requiringSecureCoding:1 error:&v156];
+  v109 = [NSKeyedArchiver archivedDataWithRootObject:wifiChipSet2 requiringSecureCoding:1 error:&v156];
   v110 = v156;
 
   if (v110)
@@ -3455,10 +3455,10 @@ LABEL_32:
     }
   }
 
-  v117 = [(WAEngine *)self _rotateObscureKey];
+  _rotateObscureKey = [(WAEngine *)self _rotateObscureKey];
   memset(key, 0, sizeof(key));
   v179 = 0;
-  [v117 getCString:key maxLength:33 encoding:4];
+  [_rotateObscureKey getCString:key maxLength:33 encoding:4];
   v118 = [v113 length];
   dataOutMoved = 0;
   v119 = malloc_type_malloc(v118 + 16, 0xAC309455uLL);
@@ -3538,7 +3538,7 @@ LABEL_152:
 
   else
   {
-    v125 = [NSData dataWithBytes:bytes length:12, v118, dataOut, v176, 16, v146, v147];
+    v147 = [NSData dataWithBytes:bytes length:12, v118, dataOut, v176, 16, v146, v147];
     v126 = [NSData dataWithBytes:v176 length:16];
     v127 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v127, OS_LOG_TYPE_DEFAULT))
@@ -3552,7 +3552,7 @@ LABEL_152:
       _os_log_impl(&_mh_execute_header, v127, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:%s: writing IV and tag data", buf, 0x1Cu);
     }
 
-    [(WAEngine *)self _saveKeyIVData:v125 andTagData:v126];
+    [(WAEngine *)self _saveKeyIVData:v147 andTagData:v126];
     dataOutMoved = v118;
   }
 
@@ -3627,8 +3627,8 @@ LABEL_140:
     _os_log_impl(&_mh_execute_header, v141, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Ending transaction %s", buf, 0x1Cu);
   }
 
-  v143 = [v135 + 19 sharedActivityManager];
-  [v143 osTransactionComplete:v7];
+  sharedActivityManager2 = [v135 + 19 sharedActivityManager];
+  [sharedActivityManager2 osTransactionComplete:v7];
 
   v17 = WALogCategoryDefaultHandle();
   if (os_signpost_enabled(v17))
@@ -3672,7 +3672,7 @@ LABEL_145:
 
   v226 = objc_autoreleasePoolPush();
   v252 = 0;
-  v230 = [(WAEngine *)self _getObscureKey];
+  _getObscureKey = [(WAEngine *)self _getObscureKey];
   self->_readingPersistFile = 1;
   v9 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -3703,7 +3703,7 @@ LABEL_145:
   {
     self->_persistFileExistedAtPIDLoad = 0;
     v28 = WALogCategoryDefaultHandle();
-    v17 = v230;
+    v17 = _getObscureKey;
     v29 = obj;
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
@@ -3722,8 +3722,8 @@ LABEL_145:
   }
 
   self->_persistFileExistedAtPIDLoad = 1;
-  v17 = v230;
-  if (!v230)
+  v17 = _getObscureKey;
+  if (!_getObscureKey)
   {
     v200 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v200, OS_LOG_TYPE_ERROR))
@@ -3741,7 +3741,7 @@ LABEL_145:
 
   v18 = v15;
   v19 = v15 + 16;
-  [v230 getCString:key maxLength:33 encoding:4];
+  [_getObscureKey getCString:key maxLength:33 encoding:4];
   v20 = malloc_type_malloc(v19, 0xD0415A50uLL);
   if (!v20)
   {
@@ -3775,9 +3775,9 @@ LABEL_16:
   v215 = v23;
   if (v22 && (v24 = v23) != 0)
   {
-    v25 = [v22 bytes];
-    v26 = v25[2];
-    v260 = *v25;
+    bytes = [v22 bytes];
+    v26 = bytes[2];
+    v260 = *bytes;
     v261 = v26;
     *buf = *[v24 bytes];
     [v228 bytes];
@@ -3872,7 +3872,7 @@ LABEL_16:
     {
       v48 = [v32 objectForKeyedSubscript:@"WA_BUILD_VERSION_PERSIST_KEY"];
 
-      v49 = v230;
+      v49 = _getObscureKey;
       if (v48)
       {
         v30 = &WAXPCRequestDelegateInterface_ptr;
@@ -3929,7 +3929,7 @@ LABEL_16:
     v30 = &WAXPCRequestDelegateInterface_ptr;
   }
 
-  v49 = v230;
+  v49 = _getObscureKey;
 LABEL_37:
 
 LABEL_38:
@@ -4044,13 +4044,13 @@ LABEL_55:
   v76 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
   {
-    v77 = [(WAEngine *)self wifiChipSet];
+    wifiChipSet = [(WAEngine *)self wifiChipSet];
     *buf = 136446722;
     *&buf[4] = "[WAEngine _unpersist]";
     *&buf[12] = 1024;
     *&buf[14] = 2300;
     v256 = 2112;
-    v257 = v77;
+    v257 = wifiChipSet;
     _os_log_impl(&_mh_execute_header, v76, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:self.wifiChipSet %@", buf, 0x1Cu);
   }
 
@@ -4107,13 +4107,13 @@ LABEL_66:
   v87 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v87, OS_LOG_TYPE_DEFAULT))
   {
-    v88 = [(WAEngine *)self infraInterfaceName];
+    infraInterfaceName = [(WAEngine *)self infraInterfaceName];
     *buf = 136446722;
     *&buf[4] = "[WAEngine _unpersist]";
     *&buf[12] = 1024;
     *&buf[14] = 2313;
     v256 = 2112;
-    v257 = v88;
+    v257 = infraInterfaceName;
     _os_log_impl(&_mh_execute_header, v87, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:self.infraInterfaceName %@", buf, 0x1Cu);
   }
 
@@ -4178,8 +4178,8 @@ LABEL_78:
     v101 = 1;
   }
 
-  v103 = [(WAEngine *)self recommendationEngine];
-  [v103 setDpsWDBudgetDict:v102];
+  recommendationEngine = [(WAEngine *)self recommendationEngine];
+  [recommendationEngine setDpsWDBudgetDict:v102];
 
   if (v101)
   {
@@ -4188,14 +4188,14 @@ LABEL_78:
   v104 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
   {
-    v105 = [(WAEngine *)self recommendationEngine];
-    v106 = [v105 dpsWDBudgetDict];
+    recommendationEngine2 = [(WAEngine *)self recommendationEngine];
+    dpsWDBudgetDict = [recommendationEngine2 dpsWDBudgetDict];
     *buf = 136446722;
     *&buf[4] = "[WAEngine _unpersist]";
     *&buf[12] = 1024;
     *&buf[14] = 2328;
     v256 = 2112;
-    v257 = v106;
+    v257 = dpsWDBudgetDict;
     _os_log_impl(&_mh_execute_header, v104, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:self.recommendationEngine.dpsWDBudgetDict %@", buf, 0x1Cu);
   }
 
@@ -4575,20 +4575,20 @@ LABEL_145:
 
   [(WAEngine *)self setIorMessagePopulator:v177];
 
-  v181 = [(WAEngine *)self iorMessagePopulator];
-  [v181 setMessageDelegate:self];
+  iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
+  [iorMessagePopulator setMessageDelegate:self];
 
-  v182 = [(WAEngine *)self iorMessagePopulator];
-  [v182 setPersistenceDelegate:self];
+  iorMessagePopulator2 = [(WAEngine *)self iorMessagePopulator];
+  [iorMessagePopulator2 setPersistenceDelegate:self];
 
   v238 = 0u;
   v239 = 0u;
   v236 = 0u;
   v237 = 0u;
-  v183 = [(WAEngine *)self processTokenToGroupTypeMap];
-  v184 = [v183 allKeys];
+  processTokenToGroupTypeMap = [(WAEngine *)self processTokenToGroupTypeMap];
+  allKeys = [processTokenToGroupTypeMap allKeys];
 
-  v185 = [v184 countByEnumeratingWithState:&v236 objects:v254 count:16];
+  v185 = [allKeys countByEnumeratingWithState:&v236 objects:v254 count:16];
   if (v185)
   {
     v186 = v185;
@@ -4599,7 +4599,7 @@ LABEL_145:
       {
         if (*v237 != v187)
         {
-          objc_enumerationMutation(v184);
+          objc_enumerationMutation(allKeys);
         }
 
         v189 = *(*(&v236 + 1) + 8 * i);
@@ -4607,8 +4607,8 @@ LABEL_145:
         v233 = 0u;
         v234 = 0u;
         v235 = 0u;
-        v190 = [(WAEngine *)self processTokenToGroupTypeMap];
-        v191 = [v190 objectForKeyedSubscript:v189];
+        processTokenToGroupTypeMap2 = [(WAEngine *)self processTokenToGroupTypeMap];
+        v191 = [processTokenToGroupTypeMap2 objectForKeyedSubscript:v189];
 
         v192 = [v191 countByEnumeratingWithState:&v232 objects:v253 count:16];
         if (v192)
@@ -4634,7 +4634,7 @@ LABEL_145:
         }
       }
 
-      v186 = [v184 countByEnumeratingWithState:&v236 objects:v254 count:16];
+      v186 = [allKeys countByEnumeratingWithState:&v236 objects:v254 count:16];
     }
 
     while (v186);
@@ -4717,13 +4717,13 @@ LABEL_145:
       v19 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        v20 = [v18 localizedDescription];
+        localizedDescription = [v18 localizedDescription];
         *buf = 136446722;
         v50 = "[WAEngine _removePersistenceFile]";
         v51 = 1024;
         v52 = 2436;
         v53 = 2112;
-        v54 = v20;
+        v54 = localizedDescription;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error removing file at path: %@", buf, 0x1Cu);
       }
     }
@@ -4751,13 +4751,13 @@ LABEL_145:
       v28 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
-        v29 = [v27 localizedDescription];
+        localizedDescription2 = [v27 localizedDescription];
         *buf = 136446722;
         v50 = "[WAEngine _removePersistenceFile]";
         v51 = 1024;
         v52 = 2443;
         v53 = 2112;
-        v54 = v29;
+        v54 = localizedDescription2;
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error removing file getIORPopAvailabeIOReportersTempFile at path: %@", buf, 0x1Cu);
       }
     }
@@ -4785,13 +4785,13 @@ LABEL_145:
       v36 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v37 = [v8 localizedDescription];
+        localizedDescription3 = [v8 localizedDescription];
         *buf = 136446722;
         v50 = "[WAEngine _removePersistenceFile]";
         v51 = 1024;
         v52 = 2450;
         v53 = 2112;
-        v54 = v37;
+        v54 = localizedDescription3;
         _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error removing file getUnavailablePredTempFile at path: %@", buf, 0x1Cu);
       }
     }
@@ -4822,13 +4822,13 @@ LABEL_145:
     v4 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v44 = [v7 localizedDescription];
+      localizedDescription4 = [v7 localizedDescription];
       *buf = 136446722;
       v50 = "[WAEngine _removePersistenceFile]";
       v51 = 1024;
       v52 = 2457;
       v53 = 2112;
-      v54 = v44;
+      v54 = localizedDescription4;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "%{public}s::%d:Error removing file getUsageTempFile at path: %@", buf, 0x1Cu);
     }
 
@@ -5221,14 +5221,14 @@ LABEL_18:
   [(NSMutableDictionary *)v5 setObject:v6 forKey:@"Profile: MegaWiFi Uninstalled (s)"];
 }
 
-- (unint64_t)abstime_to_ns:(unint64_t)a3
+- (unint64_t)abstime_to_ns:(unint64_t)abstime_to_ns
 {
   if (qword_10010DEB0 != -1)
   {
     dispatch_once(&qword_10010DEB0, &stru_1000EE070);
   }
 
-  return (*&qword_10010DB18 * a3);
+  return (*&qword_10010DB18 * abstime_to_ns);
 }
 
 - (void)_calculateProcessUsage
@@ -5341,7 +5341,7 @@ LABEL_39:
   if (v5)
   {
     v9 = self->_workReportTimerRunning;
-    v10 = [(RecommendationPreferences *)self->_preferences work_report_seconds];
+    work_report_seconds = [(RecommendationPreferences *)self->_preferences work_report_seconds];
     workReportTimer = self->_workReportTimer;
     v12 = workReportTimer != 0;
     if (workReportTimer)
@@ -5361,7 +5361,7 @@ LABEL_39:
     v40 = 1024;
     *v41 = v9;
     *&v41[4] = 2048;
-    *&v41[6] = v10;
+    *&v41[6] = work_report_seconds;
     v42 = 1024;
     v43 = v12;
     v44 = 1024;
@@ -5390,13 +5390,13 @@ LABEL_25:
         v23 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(RecommendationPreferences *)self->_preferences work_report_seconds];
+          work_report_seconds2 = [(RecommendationPreferences *)self->_preferences work_report_seconds];
           *buf = 136446722;
           v37 = "[WAEngine _enableWorkReportRecurringTimer]";
           v38 = 1024;
           v39 = 2635;
           v40 = 2048;
-          *v41 = v24;
+          *v41 = work_report_seconds2;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Starting dispatch_source_set_timer fire in %lu s", buf, 0x1Cu);
         }
 
@@ -5516,7 +5516,7 @@ LABEL_34:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v31 = self->_workReportTimerRunning;
-    v32 = [(RecommendationPreferences *)self->_preferences work_report_seconds];
+    work_report_seconds3 = [(RecommendationPreferences *)self->_preferences work_report_seconds];
     v33 = self->_workReportTimer;
     if (v33)
     {
@@ -5535,7 +5535,7 @@ LABEL_34:
     v40 = 1024;
     *v41 = v31;
     *&v41[4] = 2048;
-    *&v41[6] = v32;
+    *&v41[6] = work_report_seconds3;
     v42 = 1024;
     v43 = v34;
     v6 = "%{public}s::%d:Timer State : Enabled %d Period(ms) %lu valid %d";
@@ -5549,37 +5549,37 @@ LABEL_40:
 
 - (id)_createNextWorkReportSnapshot
 {
-  v3 = [(WAEngine *)self cachedUsage];
-  [WAUtil incrementValueForKey:@"Telemetry: Work Report Window" inMutableDict:v3 onQueue:self->_engineQ];
+  cachedUsage = [(WAEngine *)self cachedUsage];
+  [WAUtil incrementValueForKey:@"Telemetry: Work Report Window" inMutableDict:cachedUsage onQueue:self->_engineQ];
 
   [(WAEngine *)self _calculateEstimatedUptime];
   [(WAEngine *)self _calculateProcessUsage];
   [(WAEngine *)self _calculateProfileUptime];
-  v4 = [(WAEngine *)self cachedUsage];
+  cachedUsage2 = [(WAEngine *)self cachedUsage];
 
-  if (v4)
+  if (cachedUsage2)
   {
-    v5 = [(WAEngine *)self iorMessagePopulator];
-    v6 = [v5 getCachedUsage];
-    v7 = [v6 copy];
+    iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
+    getCachedUsage = [iorMessagePopulator getCachedUsage];
+    cachedUsage4 = [getCachedUsage copy];
 
-    if (v7)
+    if (cachedUsage4)
     {
       v14[0] = @"Module_Engine";
-      v8 = [(WAEngine *)self cachedUsage];
-      v9 = [v8 copy];
+      cachedUsage3 = [(WAEngine *)self cachedUsage];
+      v9 = [cachedUsage3 copy];
       v14[1] = @"Module_IOR";
       v15[0] = v9;
-      v15[1] = v7;
+      v15[1] = cachedUsage4;
       v10 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
     }
 
     else
     {
       v12 = @"Module_Engine";
-      v7 = [(WAEngine *)self cachedUsage];
-      v8 = [v7 copy];
-      v13 = v8;
+      cachedUsage4 = [(WAEngine *)self cachedUsage];
+      cachedUsage3 = [cachedUsage4 copy];
+      v13 = cachedUsage3;
       v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     }
   }
@@ -5595,47 +5595,47 @@ LABEL_40:
 - (id)_createWorkReportDictionaryForTelemetryAndRollBucket
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(WAEngine *)self nowCacheUsageForTelemetry];
-  v5 = [(WAEngine *)self oldCacheUsageForTelemetry];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_AgeOutAnalytics" dictKey:@"AnalyticsProcessor: Age Out Analytics" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_ApProfileForBSSID" dictKey:@"AnalyticsProcessor: AP Profile For BSSID" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_ProcessDatapathMetricsStream" dictKey:@"AnalyticsProcessor: Datapath Metrics Stream" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_ProcessWAM" dictKey:@"AnalyticsProcessor: Process WAM File" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_ProcessWAMessageMetric" dictKey:@"AnalyticsProcessor: Process WA Message Metric" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_Prune" dictKey:@"AnalyticsProcessor: Prune" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_SummarizeForNetwork" dictKey:@"AnalyticsProcessor: Summarize Analytics For Network" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_ClearMessageStore" dictKey:@"Client: Clear Message Store" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_ClientConfigChangeDelegate" dictKey:@"Client: Client Config Change Deligate" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_ConvertWiFiStatsIntoPercentile" dictKey:@"Client: Convert WiFi Stats into Percentile" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_EstablishConnection" dictKey:@"Client: Establish Connection" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetDeviceAnalyticsConfiguration" dictKey:@"Client: Get Device Analytics Config" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetDpsStats" dictKey:@"Client: Get DPS Stats" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetMessageModelForGroup" dictKey:@"Client: Get Message Model For Group" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetNewMessageForKey" dictKey:@"Client: Get New Message For Key" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetUsageStats" dictKey:@"Client: Get Usage Stats" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_IssueIOReportManagementCommand" dictKey:@"Client: Issue IOReport Managemen Command" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_KillDaemon" dictKey:@"Client: Kill Daemon" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_lqmCrashTracerNotify" dictKey:@"Client: LQM Crash Tracer Notify" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_lqmCrashTracerReceive" dictKey:@"Client: LQM Crash Tracer Receive" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_RegisterMessageGroup" dictKey:@"Client: Register Message Group" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SendMemoryPressureRequest" dictKey:@"Client: Send Memory Pressure Request" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SetDeviceAnalyticsConfiguration" dictKey:@"Client: Set Device Analytics Config" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SubmitMessage" dictKey:@"Client: Submit Message" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SubmitWiFiAnalayticsMessage" dictKey:@"Client: Submit WiFi Analytics Message" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SubmitWiFiAnalayticsMessageAdvanced" dictKey:@"Client: Submit WiFi Analytics Message Advanced" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SummarizeDeviceAnalyticsForNetwork" dictKey:@"Client: Summarize Device Analytics For Network" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TrapCrashMiniTracerDump" dictKey:@"Client: Trap Crash Mini Tracer Dump" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_Trigger11axPerfStudy" dictKey:@"Client: Trigger 11ax Perf Study" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TriggerDatapathDiagnostic" dictKey:@"Client: Trigger Datapath Diagnostic" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TriggerDeviceAnalyticsStoreMigration" dictKey:@"Client: Trigger Device Analytics Store Migration" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TriggerQueryForNWActivity" dictKey:@"Client: Trigger Query for NW Activity" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TriggerQueryForNWPeerActivity" dictKey:@"Client: Trigger Query for NW Peer Activity" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_UpdateRoamPoliciesForSourceBssid" dictKey:@"Client: Update Roam Policies For Source BSSID" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"debug_profileUptime" dictKey:@"Profile: MegaWiFi Enabled (s)" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
+  nowCacheUsageForTelemetry = [(WAEngine *)self nowCacheUsageForTelemetry];
+  oldCacheUsageForTelemetry = [(WAEngine *)self oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_AgeOutAnalytics" dictKey:@"AnalyticsProcessor: Age Out Analytics" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_ApProfileForBSSID" dictKey:@"AnalyticsProcessor: AP Profile For BSSID" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_ProcessDatapathMetricsStream" dictKey:@"AnalyticsProcessor: Datapath Metrics Stream" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_ProcessWAM" dictKey:@"AnalyticsProcessor: Process WAM File" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_ProcessWAMessageMetric" dictKey:@"AnalyticsProcessor: Process WA Message Metric" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_Prune" dictKey:@"AnalyticsProcessor: Prune" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ap_SummarizeForNetwork" dictKey:@"AnalyticsProcessor: Summarize Analytics For Network" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_ClearMessageStore" dictKey:@"Client: Clear Message Store" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_ClientConfigChangeDelegate" dictKey:@"Client: Client Config Change Deligate" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_ConvertWiFiStatsIntoPercentile" dictKey:@"Client: Convert WiFi Stats into Percentile" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_EstablishConnection" dictKey:@"Client: Establish Connection" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetDeviceAnalyticsConfiguration" dictKey:@"Client: Get Device Analytics Config" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetDpsStats" dictKey:@"Client: Get DPS Stats" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetMessageModelForGroup" dictKey:@"Client: Get Message Model For Group" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetNewMessageForKey" dictKey:@"Client: Get New Message For Key" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_GetUsageStats" dictKey:@"Client: Get Usage Stats" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_IssueIOReportManagementCommand" dictKey:@"Client: Issue IOReport Managemen Command" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_KillDaemon" dictKey:@"Client: Kill Daemon" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_lqmCrashTracerNotify" dictKey:@"Client: LQM Crash Tracer Notify" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_lqmCrashTracerReceive" dictKey:@"Client: LQM Crash Tracer Receive" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_RegisterMessageGroup" dictKey:@"Client: Register Message Group" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SendMemoryPressureRequest" dictKey:@"Client: Send Memory Pressure Request" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SetDeviceAnalyticsConfiguration" dictKey:@"Client: Set Device Analytics Config" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SubmitMessage" dictKey:@"Client: Submit Message" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SubmitWiFiAnalayticsMessage" dictKey:@"Client: Submit WiFi Analytics Message" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SubmitWiFiAnalayticsMessageAdvanced" dictKey:@"Client: Submit WiFi Analytics Message Advanced" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_SummarizeDeviceAnalyticsForNetwork" dictKey:@"Client: Summarize Device Analytics For Network" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TrapCrashMiniTracerDump" dictKey:@"Client: Trap Crash Mini Tracer Dump" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_Trigger11axPerfStudy" dictKey:@"Client: Trigger 11ax Perf Study" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TriggerDatapathDiagnostic" dictKey:@"Client: Trigger Datapath Diagnostic" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TriggerDeviceAnalyticsStoreMigration" dictKey:@"Client: Trigger Device Analytics Store Migration" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TriggerQueryForNWActivity" dictKey:@"Client: Trigger Query for NW Activity" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_TriggerQueryForNWPeerActivity" dictKey:@"Client: Trigger Query for NW Peer Activity" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"client_UpdateRoamPoliciesForSourceBssid" dictKey:@"Client: Update Roam Policies For Source BSSID" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"debug_profileUptime" dictKey:@"Profile: MegaWiFi Enabled (s)" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
   v6 = [v3 objectForKeyedSubscript:@"debug_profileUptime"];
-  v7 = [v6 unsignedLongValue];
+  unsignedLongValue = [v6 unsignedLongValue];
 
-  if (v7)
+  if (unsignedLongValue)
   {
     v8 = &__kCFBooleanTrue;
   }
@@ -5646,58 +5646,58 @@ LABEL_40:
   }
 
   [v3 setObject:v8 forKeyedSubscript:@"debug_profileInstalled"];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"dispatch_RxMemoryCritical" dictKey:@"Dispatch: Received Memory Critical" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"dispatch_RxMemoryWarning" dictKey:@"Dispatch: Received Memory Warning" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_PersistCalls" dictKey:@"Persist Calls" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_TerminationGraceful" dictKey:@"Terminations - Graceful" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_TerminationUnknown" dictKey:@"Terminations - Unknown" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_TerminationTryEagerExit" dictKey:@"Terminations - Try Eager Exit" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_UnpersistedCalls" dictKey:@"Unpersisted Count" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_Uptime" dictKey:@"Estimated Uptime (s)" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_BuildStructuredDict" dictKey:@"Build Structured Dict Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_CreateSamples" dictKey:@"CreateSamples Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_CreateSamplesFailed" dictKey:@"CreateSamples Failed Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_CreateSubscription" dictKey:@"CreateSubscription Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_CreateSubscriptionFailed" dictKey:@"CreateSubscription Failed Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_FindChannels" dictKey:@"Find Channels Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_FullTeardown" dictKey:@"IOR Full Teardown Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_FullTeardownFailed" dictKey:@"IOR Full Teardown Failed Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_FullTeardownRecovered" dictKey:@"IOR Full Teardown Recovered Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_LegendQuery" dictKey:@"Legend Query Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_LegendQueryFailed" dictKey:@"Legend Query Failed" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PersistCalls" dictKey:@"Persist Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PopulationFailed" dictKey:@"IOR Population Failed Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PopulationSuccess" dictKey:@"IOR Population Success Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PopulationViaIterator" dictKey:@"IOR Population via Iterate" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PopulationViaDictionary" dictKey:@"IOR Population via Dict" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RequestDetermine" dictKey:@"External: Determine Channels Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RequestPopulate" dictKey:@"Populate IOReporter Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanDenied" dictKey:@"Rescan Denied" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanExplore" dictKey:@"Rescan Reason: Explore Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanHintSignals" dictKey:@"Rescan Signal Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanLowChannel" dictKey:@"Rescan Reason: Low Channel Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanNewPhy" dictKey:@"IOR Unprepared For Sample Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanPerformed" dictKey:@"Rescan Permitted: Last Rescan Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_StaleDriverID" dictKey:@"Fault Detection: Stale DriverID Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_TerminationGraceful" dictKey:@"Terminations - Graceful" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_TerminationUnknown" dictKey:@"Terminations - Unknown" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_UnpersistedCalls" dictKey:@"Unpersisted Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_Unprepared" dictKey:@"IOR Unprepared For Sample Count" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_UpdateSamples" dictKey:@"UpdateSamples Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_UpdateSamplesFailed" dictKey:@"UpdateSamples Failed Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_Uptime" dictKey:@"Estimated Uptime (s)" dictModule:@"Module_IOR" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"log_Datapath" dictKey:@"Log: DatapathMetricStream Trigger" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"log_WorkReport" dictKey:@"Log: Work Report" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  v9 = [v4 objectForKeyedSubscript:@"Module_Engine"];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"dispatch_RxMemoryCritical" dictKey:@"Dispatch: Received Memory Critical" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"dispatch_RxMemoryWarning" dictKey:@"Dispatch: Received Memory Warning" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_PersistCalls" dictKey:@"Persist Calls" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_TerminationGraceful" dictKey:@"Terminations - Graceful" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_TerminationUnknown" dictKey:@"Terminations - Unknown" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_TerminationTryEagerExit" dictKey:@"Terminations - Try Eager Exit" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_UnpersistedCalls" dictKey:@"Unpersisted Count" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"engine_Uptime" dictKey:@"Estimated Uptime (s)" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_BuildStructuredDict" dictKey:@"Build Structured Dict Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_CreateSamples" dictKey:@"CreateSamples Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_CreateSamplesFailed" dictKey:@"CreateSamples Failed Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_CreateSubscription" dictKey:@"CreateSubscription Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_CreateSubscriptionFailed" dictKey:@"CreateSubscription Failed Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_FindChannels" dictKey:@"Find Channels Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_FullTeardown" dictKey:@"IOR Full Teardown Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_FullTeardownFailed" dictKey:@"IOR Full Teardown Failed Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_FullTeardownRecovered" dictKey:@"IOR Full Teardown Recovered Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_LegendQuery" dictKey:@"Legend Query Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_LegendQueryFailed" dictKey:@"Legend Query Failed" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PersistCalls" dictKey:@"Persist Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PopulationFailed" dictKey:@"IOR Population Failed Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PopulationSuccess" dictKey:@"IOR Population Success Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PopulationViaIterator" dictKey:@"IOR Population via Iterate" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_PopulationViaDictionary" dictKey:@"IOR Population via Dict" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RequestDetermine" dictKey:@"External: Determine Channels Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RequestPopulate" dictKey:@"Populate IOReporter Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanDenied" dictKey:@"Rescan Denied" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanExplore" dictKey:@"Rescan Reason: Explore Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanHintSignals" dictKey:@"Rescan Signal Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanLowChannel" dictKey:@"Rescan Reason: Low Channel Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanNewPhy" dictKey:@"IOR Unprepared For Sample Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_RescanPerformed" dictKey:@"Rescan Permitted: Last Rescan Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_StaleDriverID" dictKey:@"Fault Detection: Stale DriverID Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_TerminationGraceful" dictKey:@"Terminations - Graceful" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_TerminationUnknown" dictKey:@"Terminations - Unknown" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_UnpersistedCalls" dictKey:@"Unpersisted Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_Unprepared" dictKey:@"IOR Unprepared For Sample Count" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_UpdateSamples" dictKey:@"UpdateSamples Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_UpdateSamplesFailed" dictKey:@"UpdateSamples Failed Calls" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"ior_Uptime" dictKey:@"Estimated Uptime (s)" dictModule:@"Module_IOR" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"log_Datapath" dictKey:@"Log: DatapathMetricStream Trigger" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"log_WorkReport" dictKey:@"Log: Work Report" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  v9 = [nowCacheUsageForTelemetry objectForKeyedSubscript:@"Module_Engine"];
   v10 = [v9 objectForKeyedSubscript:@"Process: current_mem kB"];
   [v3 setObject:v10 forKeyedSubscript:@"process_CurrentMemory"];
 
-  v11 = [v4 objectForKeyedSubscript:@"Module_Engine"];
+  v11 = [nowCacheUsageForTelemetry objectForKeyedSubscript:@"Module_Engine"];
   v12 = [v11 objectForKeyedSubscript:@"Process: lifetime_peak kB"];
   [v3 setObject:v12 forKeyedSubscript:@"process_PeakMemory"];
 
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"process_StorageDirtied" dictKey:@"Process: storage_dirtied kB" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"process_CPUTime" dictKey:@"Process: cpu_time ns" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"process_StorageDirtied" dictKey:@"Process: storage_dirtied kB" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"process_CPUTime" dictKey:@"Process: cpu_time ns" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
   v13 = [v3 objectForKeyedSubscript:@"process_CPUTime"];
   if (v13)
   {
@@ -5715,17 +5715,17 @@ LABEL_40:
     }
   }
 
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"bgTaskManager_utilityTask" dictKey:@"com.apple.wifi.analytics.daily-bg-tasks-ui" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
-  [WAUtil addDeltaNSNumberForTelemetryKey:@"bgTaskManager_maintenanceTask" dictKey:@"com.apple.wifi.analytics.daily-bg-tasks" dictModule:@"Module_Engine" telDict:v3 recentDict:v4 oldDict:v5];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"bgTaskManager_utilityTask" dictKey:@"com.apple.wifi.analytics.daily-bg-tasks-ui" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
+  [WAUtil addDeltaNSNumberForTelemetryKey:@"bgTaskManager_maintenanceTask" dictKey:@"com.apple.wifi.analytics.daily-bg-tasks" dictModule:@"Module_Engine" telDict:v3 recentDict:nowCacheUsageForTelemetry oldDict:oldCacheUsageForTelemetry];
   v21 = [NSNumber numberWithUnsignedLong:[(RecommendationPreferences *)self->_preferences work_report_seconds]];
   [v3 setObject:v21 forKeyedSubscript:@"reportingInterval"];
 
   [v3 setObject:&__kCFBooleanFalse forKeyedSubscript:@"build_Debug"];
   workReportSelectingSingleWithinFirstDay = self->_workReportSelectingSingleWithinFirstDay;
   v23 = [(NSMutableDictionary *)self->_cachedUsage objectForKeyedSubscript:@"Telemetry: Work Report Window"];
-  v24 = [v23 unsignedIntegerValue];
+  unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-  if (workReportSelectingSingleWithinFirstDay == v24)
+  if (workReportSelectingSingleWithinFirstDay == unsignedIntegerValue)
   {
     v25 = &__kCFBooleanTrue;
   }
@@ -5738,9 +5738,9 @@ LABEL_40:
   [v3 setObject:v25 forKeyedSubscript:@"singleAgg_InFirstDay"];
   workReportSelectingSingleWithinFirstWeek = self->_workReportSelectingSingleWithinFirstWeek;
   v27 = [(NSMutableDictionary *)self->_cachedUsage objectForKeyedSubscript:@"Telemetry: Work Report Window"];
-  v28 = [v27 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v27 unsignedIntegerValue];
 
-  if (workReportSelectingSingleWithinFirstWeek == v28)
+  if (workReportSelectingSingleWithinFirstWeek == unsignedIntegerValue2)
   {
     v29 = &__kCFBooleanTrue;
   }
@@ -5755,13 +5755,13 @@ LABEL_40:
   return v3;
 }
 
-- (void)_logWorkReport:(id)a3 indent:(int)a4 prefix:(id)a5
+- (void)_logWorkReport:(id)report indent:(int)indent prefix:(id)prefix
 {
-  v6 = a3;
-  v40 = a5;
+  reportCopy = report;
+  prefixCopy = prefix;
   v7 = [[NSSortDescriptor alloc] initWithKey:0 ascending:1];
-  v8 = [v6 allKeys];
-  v9 = v8;
+  allKeys = [reportCopy allKeys];
+  v9 = allKeys;
   if (!v7)
   {
     v11 = WALogCategoryDefaultHandle();
@@ -5783,7 +5783,7 @@ LABEL_30:
     goto LABEL_25;
   }
 
-  if (![v8 count])
+  if (![allKeys count])
   {
     v11 = WALogCategoryDefaultHandle();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -5796,7 +5796,7 @@ LABEL_30:
     *&v46[8] = 1024;
     *&v46[10] = 2816;
     v47 = 2112;
-    v48 = v40;
+    v48 = prefixCopy;
     v31 = "%{public}s::%d:Zero keys found in dictionary entry %@";
     v32 = v11;
     v33 = OS_LOG_TYPE_DEFAULT;
@@ -5836,20 +5836,20 @@ LABEL_30:
         }
 
         v16 = *(*(&v41 + 1) + 8 * v15);
-        v17 = [v6 objectForKeyedSubscript:v16];
+        v17 = [reportCopy objectForKeyedSubscript:v16];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
 
 LABEL_12:
-          v21 = [NSString stringWithFormat:@"%@ %@", v40, v16];
-          v22 = [v6 objectForKeyedSubscript:v16];
-          [(WAEngine *)self _logWorkReport:v22 indent:(a4 + 4) prefix:v21];
+          v21 = [NSString stringWithFormat:@"%@ %@", prefixCopy, v16];
+          v22 = [reportCopy objectForKeyedSubscript:v16];
+          [(WAEngine *)self _logWorkReport:v22 indent:(indent + 4) prefix:v21];
 
           goto LABEL_13;
         }
 
-        [v6 objectForKeyedSubscript:v16];
+        [reportCopy objectForKeyedSubscript:v16];
         v19 = v18 = v11;
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
@@ -5860,11 +5860,11 @@ LABEL_12:
           goto LABEL_12;
         }
 
-        v23 = [v6 objectForKeyedSubscript:v16];
+        v23 = [reportCopy objectForKeyedSubscript:v16];
         objc_opt_class();
         v24 = objc_opt_isKindOfClass();
 
-        v25 = [v6 objectForKeyedSubscript:v16];
+        v25 = [reportCopy objectForKeyedSubscript:v16];
         v26 = v25;
         if (v24)
         {
@@ -5876,13 +5876,13 @@ LABEL_12:
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
 LABEL_22:
-              v29 = [v6 objectForKeyedSubscript:v16];
+              v29 = [reportCopy objectForKeyedSubscript:v16];
               *buf = 67110146;
-              *v46 = a4;
+              *v46 = indent;
               *&v46[4] = 2080;
               *&v46[6] = "";
               v47 = 2112;
-              v48 = v40;
+              v48 = prefixCopy;
               v49 = 2112;
               v50 = v16;
               v51 = 2112;
@@ -5936,7 +5936,7 @@ LABEL_24:
     *&v46[8] = 1024;
     *&v46[10] = 2819;
     v47 = 2112;
-    v48 = v40;
+    v48 = prefixCopy;
     v49 = 2112;
     v50 = v9;
     _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to create sortedKeys on entry %@ keys %@", buf, 0x26u);
@@ -5961,23 +5961,23 @@ LABEL_25:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v3, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Engine reportWorkReportInterval", "", buf, 2u);
   }
 
-  v4 = [(WAEngine *)self nowCacheUsageForTelemetry];
-  v5 = [v4 objectForKeyedSubscript:@"Module_IOR"];
+  nowCacheUsageForTelemetry = [(WAEngine *)self nowCacheUsageForTelemetry];
+  v5 = [nowCacheUsageForTelemetry objectForKeyedSubscript:@"Module_IOR"];
   [(WAEngine *)self setOldCacheUsageForTelemetry:v5];
 
-  v6 = [(WAEngine *)self _createNextWorkReportSnapshot];
-  [(WAEngine *)self setNowCacheUsageForTelemetry:v6];
+  _createNextWorkReportSnapshot = [(WAEngine *)self _createNextWorkReportSnapshot];
+  [(WAEngine *)self setNowCacheUsageForTelemetry:_createNextWorkReportSnapshot];
 
   if ([(RecommendationPreferences *)self->_preferences work_report_logs_enabled])
   {
     [WAUtil incrementValueForKey:@"Log: Work Report" inMutableDict:self->_cachedUsage onQueue:self->_engineQ];
-    v7 = [(WAEngine *)self _createWorkReportDictionaryForTelemetryAndRollBucket];
+    _createWorkReportDictionaryForTelemetryAndRollBucket = [(WAEngine *)self _createWorkReportDictionaryForTelemetryAndRollBucket];
     v8 = v20[5];
-    v20[5] = v7;
+    v20[5] = _createWorkReportDictionaryForTelemetryAndRollBucket;
 
     [(WAEngine *)self _logWorkReport:v20[5] indent:0 prefix:@"Interval Work Report"];
-    v9 = [(WAEngine *)self nowCacheUsageForTelemetry];
-    [(WAEngine *)self _logWorkReport:v9 indent:0 prefix:@"Current Accumulation"];
+    nowCacheUsageForTelemetry2 = [(WAEngine *)self nowCacheUsageForTelemetry];
+    [(WAEngine *)self _logWorkReport:nowCacheUsageForTelemetry2 indent:0 prefix:@"Current Accumulation"];
   }
 
   objc_initWeak(buf, self);
@@ -6000,59 +6000,59 @@ LABEL_25:
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)incrementWorkReportValueForKey:(id)a3
+- (void)incrementWorkReportValueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(WAEngine *)self engineQ];
+  keyCopy = key;
+  engineQ = [(WAEngine *)self engineQ];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000671D4;
   v7[3] = &unk_1000ED988;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = keyCopy;
+  selfCopy = self;
+  v6 = keyCopy;
+  dispatch_async(engineQ, v7);
 }
 
-- (void)_initSubmitterAndQueryableRegistrationForProcessToken:(id)a3 andGroupType:(int64_t)a4
+- (void)_initSubmitterAndQueryableRegistrationForProcessToken:(id)token andGroupType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(WAEngine *)self submitterMap];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  tokenCopy = token;
+  submitterMap = [(WAEngine *)self submitterMap];
+  v8 = [submitterMap objectForKeyedSubscript:tokenCopy];
 
   if (!v8)
   {
     v9 = objc_alloc_init(NSMutableDictionary);
-    v10 = [(WAEngine *)self submitterMap];
-    [v10 setObject:v9 forKeyedSubscript:v6];
+    submitterMap2 = [(WAEngine *)self submitterMap];
+    [submitterMap2 setObject:v9 forKeyedSubscript:tokenCopy];
   }
 
-  if (a4 > 3)
+  if (type > 3)
   {
-    switch(a4)
+    switch(type)
     {
       case 4:
         v20 = [[WADatapathDiagnosticsMessageSubmitter alloc] initWithMessageGroupType:4];
-        v21 = [(WAEngine *)self submitterMap];
-        v22 = [v21 objectForKeyedSubscript:v6];
+        submitterMap3 = [(WAEngine *)self submitterMap];
+        v22 = [submitterMap3 objectForKeyedSubscript:tokenCopy];
         v23 = [NSNumber numberWithInteger:4];
         [v22 setObject:v20 forKeyedSubscript:v23];
 
-        v15 = [(WAEngine *)self messageStore];
-        v16 = [(WAEngine *)self submitterMap];
-        v17 = [v16 objectForKeyedSubscript:v6];
+        messageStore = [(WAEngine *)self messageStore];
+        submitterMap4 = [(WAEngine *)self submitterMap];
+        v17 = [submitterMap4 objectForKeyedSubscript:tokenCopy];
         v18 = 4;
         break;
       case 5:
         v24 = [[WAMessageSubmitter alloc] initWithMessageGroupType:5];
-        v25 = [(WAEngine *)self submitterMap];
-        v26 = [v25 objectForKeyedSubscript:v6];
+        submitterMap5 = [(WAEngine *)self submitterMap];
+        v26 = [submitterMap5 objectForKeyedSubscript:tokenCopy];
         v27 = [NSNumber numberWithInteger:5];
         [v26 setObject:v24 forKeyedSubscript:v27];
 
-        v15 = [(WAEngine *)self messageStore];
-        v16 = [(WAEngine *)self submitterMap];
-        v17 = [v16 objectForKeyedSubscript:v6];
+        messageStore = [(WAEngine *)self messageStore];
+        submitterMap4 = [(WAEngine *)self submitterMap];
+        v17 = [submitterMap4 objectForKeyedSubscript:tokenCopy];
         v18 = 5;
         break;
       case 6:
@@ -6064,27 +6064,27 @@ LABEL_25:
 LABEL_16:
     v28 = [NSNumber numberWithInteger:v18];
     v29 = [v17 objectForKeyedSubscript:v28];
-    [v29 setSubmissionDelegate:v15];
+    [v29 setSubmissionDelegate:messageStore];
 
     goto LABEL_17;
   }
 
-  if (a4)
+  if (type)
   {
-    if (a4 != 3)
+    if (type != 3)
     {
       goto LABEL_17;
     }
 
     v11 = [[WANWActivityMessageSubmitter alloc] initWithMessageGroupType:3];
-    v12 = [(WAEngine *)self submitterMap];
-    v13 = [v12 objectForKeyedSubscript:v6];
+    submitterMap6 = [(WAEngine *)self submitterMap];
+    v13 = [submitterMap6 objectForKeyedSubscript:tokenCopy];
     v14 = [NSNumber numberWithInteger:3];
     [v13 setObject:v11 forKeyedSubscript:v14];
 
-    v15 = [(WAEngine *)self messageStore];
-    v16 = [(WAEngine *)self submitterMap];
-    v17 = [v16 objectForKeyedSubscript:v6];
+    messageStore = [(WAEngine *)self messageStore];
+    submitterMap4 = [(WAEngine *)self submitterMap];
+    v17 = [submitterMap4 objectForKeyedSubscript:tokenCopy];
     v18 = 3;
     goto LABEL_16;
   }
@@ -6104,8 +6104,8 @@ LABEL_17:
   v30 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [WAUtil groupTypeToString:a4];
-    v32 = [WAUtil trimTokenForLogging:v6];
+    v31 = [WAUtil groupTypeToString:type];
+    v32 = [WAUtil trimTokenForLogging:tokenCopy];
     v33 = 136447234;
     v34 = "[WAEngine _initSubmitterAndQueryableRegistrationForProcessToken:andGroupType:]";
     v35 = 1024;
@@ -6113,18 +6113,18 @@ LABEL_17:
     v37 = 2112;
     v38 = v31;
     v39 = 2048;
-    v40 = a4;
+    typeCopy = type;
     v41 = 2112;
     v42 = v32;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Registered group %@(%lu) for token %@", &v33, 0x30u);
   }
 }
 
-- (id)_getMessagesModelForProcessToken:(id)a3 groupType:(int64_t)a4 andError:(id *)a5
+- (id)_getMessagesModelForProcessToken:(id)token groupType:(int64_t)type andError:(id *)error
 {
   v36 = objc_alloc_init(NSMutableDictionary);
   v7 = +[WAUtil resourcePath];
-  v8 = [NSString stringWithFormat:@"%@/%ld/", v7, a4];
+  type = [NSString stringWithFormat:@"%@/%ld/", v7, type];
 
   v9 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -6134,14 +6134,14 @@ LABEL_17:
     v44 = 1024;
     v45 = 2923;
     v46 = 2112;
-    v47 = v8;
+    v47 = type;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:pathForGrouppathForGroup %@", buf, 0x1Cu);
   }
 
-  if (v8)
+  if (type)
   {
     v10 = +[NSFileManager defaultManager];
-    v11 = [v10 contentsOfDirectoryAtPath:v8 error:0];
+    v11 = [v10 contentsOfDirectoryAtPath:type error:0];
 
     if ([v11 count])
     {
@@ -6161,12 +6161,12 @@ LABEL_17:
       }
 
       v14 = v13;
-      v32 = a5;
+      errorCopy = error;
       v15 = 0;
       v16 = 0;
       v17 = 0;
       v34 = *v39;
-      v35 = v8;
+      v35 = type;
       obj = v12;
       while (2)
       {
@@ -6182,10 +6182,10 @@ LABEL_17:
           }
 
           v22 = [*(*(&v38 + 1) + 8 * v18) componentsSeparatedByString:@"."];
-          v23 = [v22 firstObject];
+          firstObject = [v22 firstObject];
 
           v24 = [NSData alloc];
-          v25 = [NSString stringWithFormat:@"%@/%@.wam", v35, v23];
+          v25 = [NSString stringWithFormat:@"%@/%@.wam", v35, firstObject];
           v26 = [v24 initWithContentsOfFile:v25 options:8 error:0];
 
           v16 = v26;
@@ -6204,7 +6204,7 @@ LABEL_17:
               v44 = 1024;
               v45 = 2934;
               v46 = 2112;
-              v47 = v23;
+              v47 = firstObject;
               v48 = 2112;
               v49 = v17;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to unarchive a WAMessageAWD instance with key of %@. Error: %@", buf, 0x26u);
@@ -6221,7 +6221,7 @@ LABEL_17:
               v44 = 1024;
               v45 = 2936;
               v46 = 2112;
-              v47 = v23;
+              v47 = firstObject;
               _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to unobscure message for key: %@", buf, 0x1Cu);
             }
 
@@ -6230,7 +6230,7 @@ LABEL_17:
             goto LABEL_22;
           }
 
-          [v36 setObject:v15 forKeyedSubscript:v23];
+          [v36 setObject:v15 forKeyedSubscript:firstObject];
 
           v18 = v18 + 1;
           v19 = v15;
@@ -6251,8 +6251,8 @@ LABEL_17:
 
 LABEL_22:
       v11 = v29;
-      v8 = v35;
-      a5 = v32;
+      type = v35;
+      error = errorCopy;
     }
 
     else
@@ -6277,9 +6277,9 @@ LABEL_22:
     v11 = 0;
   }
 
-  if (a5 && v17)
+  if (error && v17)
   {
-    *a5 = [v17 copy];
+    *error = [v17 copy];
   }
 
   v12 = v11;
@@ -6288,11 +6288,11 @@ LABEL_27:
   return v36;
 }
 
-- (id)_cachedModelObjectsForProcess:(id)a3 groupType:(int64_t)a4 key:(id)a5
+- (id)_cachedModelObjectsForProcess:(id)process groupType:(int64_t)type key:(id)key
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
+  processCopy = process;
+  keyCopy = key;
+  v10 = keyCopy;
   v11 = 0;
   v20 = 0;
   v21 = &v20;
@@ -6300,7 +6300,7 @@ LABEL_27:
   v23 = sub_10005CFFC;
   v24 = sub_10005D00C;
   v25 = 0;
-  if (a4 >= 1 && v9)
+  if (type >= 1 && keyCopy)
   {
     mutexQueue = self->_mutexQueue;
     block[0] = _NSConcreteStackBlock;
@@ -6308,8 +6308,8 @@ LABEL_27:
     block[2] = sub_100067D94;
     block[3] = &unk_1000EE0C0;
     block[4] = self;
-    v16 = v8;
-    v19 = a4;
+    v16 = processCopy;
+    typeCopy = type;
     v17 = v10;
     v18 = &v20;
     dispatch_sync(mutexQueue, block);
@@ -6323,13 +6323,13 @@ LABEL_27:
   return v13;
 }
 
-- (void)_getNewMessageForKey:(id)a3 groupType:(int64_t)a4 forProcessToken:(id)a5 shouldCheckForPrePopulation:(BOOL)a6 andReply:(id)a7
+- (void)_getNewMessageForKey:(id)key groupType:(int64_t)type forProcessToken:(id)token shouldCheckForPrePopulation:(BOOL)population andReply:(id)reply
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = [(WAEngine *)self _cachedModelObjectsForProcess:v13 groupType:a4 key:v12];
+  populationCopy = population;
+  keyCopy = key;
+  tokenCopy = token;
+  replyCopy = reply;
+  v15 = [(WAEngine *)self _cachedModelObjectsForProcess:tokenCopy groupType:type key:keyCopy];
   v16 = [WAUtil rotateUUIDsForMessage:v15];
   if (!v15)
   {
@@ -6341,17 +6341,17 @@ LABEL_27:
       v31 = 1024;
       v32 = 2994;
       v33 = 2112;
-      v34 = v12;
+      v34 = keyCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%{public}s::%d:No model class found for key: %@. This is a CRITICAL error", buf, 0x1Cu);
     }
 
     goto LABEL_11;
   }
 
-  if (!v8 || (-[WAEngine iorMessagePopulator](self, "iorMessagePopulator"), v17 = objc_claimAutoreleasedReturnValue(), [v15 originalClassName], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "doesMessageNeedPrepopulation:", v18), v18, v17, !v19))
+  if (!populationCopy || (-[WAEngine iorMessagePopulator](self, "iorMessagePopulator"), v17 = objc_claimAutoreleasedReturnValue(), [v15 originalClassName], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "doesMessageNeedPrepopulation:", v18), v18, v17, !v19))
   {
 LABEL_11:
-    v14[2](v14, v15, 0);
+    replyCopy[2](replyCopy, v15, 0);
     goto LABEL_7;
   }
 
@@ -6359,8 +6359,8 @@ LABEL_11:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     v21 = [v15 key];
-    v22 = [v15 originalClassName];
-    v23 = [WAUtil trimTokenForLogging:v13];
+    originalClassName = [v15 originalClassName];
+    v23 = [WAUtil trimTokenForLogging:tokenCopy];
     *buf = 136447234;
     v30 = "[WAEngine _getNewMessageForKey:groupType:forProcessToken:shouldCheckForPrePopulation:andReply:]";
     v31 = 1024;
@@ -6368,31 +6368,31 @@ LABEL_11:
     v33 = 2112;
     v34 = v21;
     v35 = 2112;
-    v36 = v22;
+    v36 = originalClassName;
     v37 = 2112;
     v38 = v23;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%{public}s::%d:WAMessageAWD with key: %@ and original classname: %@ requires IOReporter population... (proc token: %@)", buf, 0x30u);
   }
 
-  v24 = [(WAEngine *)self iorMessagePopulator];
+  iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1000685C8;
   v26[3] = &unk_1000EE0E8;
-  v28 = v14;
+  v28 = replyCopy;
   v27 = v15;
-  [v24 prepopulateMessage:v27 forProcess:v13 groupType:a4 andReply:v26];
+  [iorMessagePopulator prepopulateMessage:v27 forProcess:tokenCopy groupType:type andReply:v26];
 
 LABEL_7:
 }
 
-- (void)_getNewMessageForKeyWithinPopulatorBlock:(id)a3 groupType:(int64_t)a4 forProcessToken:(id)a5 shouldCheckForPrePopulation:(BOOL)a6 andReply:(id)a7
+- (void)_getNewMessageForKeyWithinPopulatorBlock:(id)block groupType:(int64_t)type forProcessToken:(id)token shouldCheckForPrePopulation:(BOOL)population andReply:(id)reply
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = [(WAEngine *)self _cachedModelObjectsForProcess:v13 groupType:a4 key:v12];
+  populationCopy = population;
+  blockCopy = block;
+  tokenCopy = token;
+  replyCopy = reply;
+  v15 = [(WAEngine *)self _cachedModelObjectsForProcess:tokenCopy groupType:type key:blockCopy];
   v16 = [WAUtil rotateUUIDsForMessage:v15];
   if (!v15)
   {
@@ -6404,17 +6404,17 @@ LABEL_7:
       v31 = 1024;
       v32 = 3019;
       v33 = 2112;
-      v34 = v12;
+      v34 = blockCopy;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_ERROR, "%{public}s::%d:No model class found for key: %@. This is a CRITICAL error", buf, 0x1Cu);
     }
 
     goto LABEL_11;
   }
 
-  if (!v8 || (-[WAEngine iorMessagePopulator](self, "iorMessagePopulator"), v17 = objc_claimAutoreleasedReturnValue(), [v15 originalClassName], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "doesMessageNeedPrepopulation:", v18), v18, v17, !v19))
+  if (!populationCopy || (-[WAEngine iorMessagePopulator](self, "iorMessagePopulator"), v17 = objc_claimAutoreleasedReturnValue(), [v15 originalClassName], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v17, "doesMessageNeedPrepopulation:", v18), v18, v17, !v19))
   {
 LABEL_11:
-    v14[2](v14, v15, 0);
+    replyCopy[2](replyCopy, v15, 0);
     goto LABEL_7;
   }
 
@@ -6422,8 +6422,8 @@ LABEL_11:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
     v21 = [v15 key];
-    v22 = [v15 originalClassName];
-    v23 = [WAUtil trimTokenForLogging:v13];
+    originalClassName = [v15 originalClassName];
+    v23 = [WAUtil trimTokenForLogging:tokenCopy];
     *buf = 136447234;
     v30 = "[WAEngine _getNewMessageForKeyWithinPopulatorBlock:groupType:forProcessToken:shouldCheckForPrePopulation:andReply:]";
     v31 = 1024;
@@ -6431,34 +6431,34 @@ LABEL_11:
     v33 = 2112;
     v34 = v21;
     v35 = 2112;
-    v36 = v22;
+    v36 = originalClassName;
     v37 = 2112;
     v38 = v23;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%{public}s::%d:WAMessageAWD with key: %@ and original classname: %@ requires IOReporter population... (proc token: %@)", buf, 0x30u);
   }
 
-  v24 = [(WAEngine *)self iorMessagePopulator];
+  iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1000688E4;
   v26[3] = &unk_1000EE0E8;
-  v28 = v14;
+  v28 = replyCopy;
   v27 = v15;
-  [v24 prepopulateMessageWithinPopulatorBlock:v27 forProcess:v13 groupType:a4 andReply:v26];
+  [iorMessagePopulator prepopulateMessageWithinPopulatorBlock:v27 forProcess:tokenCopy groupType:type andReply:v26];
 
 LABEL_7:
 }
 
-- (void)_getNewMessageForKey:(id)a3 groupType:(int64_t)a4 withCopy:(BOOL)a5 forProcessToken:(id)a6 shouldCheckForPrePopulation:(BOOL)a7 andReply:(id)a8
+- (void)_getNewMessageForKey:(id)key groupType:(int64_t)type withCopy:(BOOL)copy forProcessToken:(id)token shouldCheckForPrePopulation:(BOOL)population andReply:(id)reply
 {
-  v9 = a7;
-  v11 = a5;
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
-  v17 = [(WAEngine *)self _cachedModelObjectsForProcess:v15 groupType:a4 key:v14];
+  populationCopy = population;
+  copyCopy = copy;
+  keyCopy = key;
+  tokenCopy = token;
+  replyCopy = reply;
+  v17 = [(WAEngine *)self _cachedModelObjectsForProcess:tokenCopy groupType:type key:keyCopy];
   v18 = v17;
-  if (v11)
+  if (copyCopy)
   {
     v19 = [v17 copy];
 
@@ -6476,17 +6476,17 @@ LABEL_7:
       v35 = 1024;
       v36 = 3045;
       v37 = 2112;
-      v38 = v14;
+      v38 = keyCopy;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "%{public}s::%d:No model class found for key: %@. This is a CRITICAL error", buf, 0x1Cu);
     }
 
     goto LABEL_13;
   }
 
-  if (!v9 || (-[WAEngine iorMessagePopulator](self, "iorMessagePopulator"), v21 = objc_claimAutoreleasedReturnValue(), [v18 originalClassName], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "doesMessageNeedPrepopulation:", v22), v22, v21, !v23))
+  if (!populationCopy || (-[WAEngine iorMessagePopulator](self, "iorMessagePopulator"), v21 = objc_claimAutoreleasedReturnValue(), [v18 originalClassName], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "doesMessageNeedPrepopulation:", v22), v22, v21, !v23))
   {
 LABEL_13:
-    v16[2](v16, v18, 0);
+    replyCopy[2](replyCopy, v18, 0);
     goto LABEL_9;
   }
 
@@ -6494,8 +6494,8 @@ LABEL_13:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
     v25 = [v18 key];
-    v26 = [v18 originalClassName];
-    v27 = [WAUtil trimTokenForLogging:v15];
+    originalClassName = [v18 originalClassName];
+    v27 = [WAUtil trimTokenForLogging:tokenCopy];
     *buf = 136447234;
     v34 = "[WAEngine _getNewMessageForKey:groupType:withCopy:forProcessToken:shouldCheckForPrePopulation:andReply:]";
     v35 = 1024;
@@ -6503,33 +6503,33 @@ LABEL_13:
     v37 = 2112;
     v38 = v25;
     v39 = 2112;
-    v40 = v26;
+    v40 = originalClassName;
     v41 = 2112;
     v42 = v27;
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "%{public}s::%d:WAMessageAWD with key: %@ and original classname: %@ requires IOReporter population... (proc token: %@)", buf, 0x30u);
   }
 
-  v28 = [(WAEngine *)self iorMessagePopulator];
+  iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100068C1C;
   v30[3] = &unk_1000EE0E8;
-  v32 = v16;
+  v32 = replyCopy;
   v31 = v18;
-  [v28 prepopulateMessage:v31 forProcess:v15 groupType:a4 andReply:v30];
+  [iorMessagePopulator prepopulateMessage:v31 forProcess:tokenCopy groupType:type andReply:v30];
 
 LABEL_9:
 }
 
-- (id)_ingestMessage:(id)a3 forProcessToken:(id)a4
+- (id)_ingestMessage:(id)message forProcessToken:(id)token
 {
-  v5 = a3;
-  v6 = [(WAEngine *)self messageStore];
+  messageCopy = message;
+  messageStore = [(WAEngine *)self messageStore];
 
-  if (v6)
+  if (messageStore)
   {
-    v7 = [(WAEngine *)self messageStore];
-    [v7 updateMessage:v5];
+    messageStore2 = [(WAEngine *)self messageStore];
+    [messageStore2 updateMessage:messageCopy];
 
     [(WAEngine *)self _persist];
     v8 = 0;
@@ -6546,24 +6546,24 @@ LABEL_9:
   return v8;
 }
 
-- (id)_submitMessage:(id)a3 groupType:(int64_t)a4 forProcessToken:(id)a5
+- (id)_submitMessage:(id)message groupType:(int64_t)type forProcessToken:(id)token
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  messageCopy = message;
+  tokenCopy = token;
+  if (messageCopy)
   {
-    v10 = [(WAEngine *)self submitterMap];
-    v11 = [v10 objectForKeyedSubscript:v9];
-    v12 = [NSNumber numberWithInteger:a4];
+    submitterMap = [(WAEngine *)self submitterMap];
+    v11 = [submitterMap objectForKeyedSubscript:tokenCopy];
+    v12 = [NSNumber numberWithInteger:type];
     v13 = [v11 objectForKeyedSubscript:v12];
 
     if (v13)
     {
-      v14 = [(WAEngine *)self submitterMap];
-      v15 = [v14 objectForKeyedSubscript:v9];
-      v16 = [NSNumber numberWithInteger:a4];
+      submitterMap2 = [(WAEngine *)self submitterMap];
+      v15 = [submitterMap2 objectForKeyedSubscript:tokenCopy];
+      v16 = [NSNumber numberWithInteger:type];
       v17 = [v15 objectForKeyedSubscript:v16];
-      v18 = [v17 submitMessage:v8];
+      v18 = [v17 submitMessage:messageCopy];
 
       goto LABEL_4;
     }
@@ -6580,7 +6580,7 @@ LABEL_9:
 
     v23 = NSLocalizedFailureReasonErrorKey;
     v24 = @"WAErrorCodeMessageNotRegistered";
-    v14 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
+    submitterMap2 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v21 = 9005;
   }
 
@@ -6594,29 +6594,29 @@ LABEL_9:
       v29 = 1024;
       v30 = 3072;
       v31 = 2112;
-      v32 = v9;
+      v32 = tokenCopy;
       v33 = 2048;
-      v34 = a4;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}s::%d:Process with token: %@ for grouptype: %ld tried to submit a NULL message ", buf, 0x26u);
     }
 
     v25 = NSLocalizedFailureReasonErrorKey;
     v26 = @"WAErrorCodeLacksRequiredArgument";
-    v14 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
+    submitterMap2 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v21 = 9010;
   }
 
-  v18 = [NSError errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:v21 userInfo:v14];
+  v18 = [NSError errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:v21 userInfo:submitterMap2];
 LABEL_4:
 
   return v18;
 }
 
-- (void)_writeWiFiAnalyticsMessageToJSONFile:(id)a3 metricInfo:(id)a4
+- (void)_writeWiFiAnalyticsMessageToJSONFile:(id)file metricInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [NSJSONSerialization isValidJSONObject:v7];
+  fileCopy = file;
+  infoCopy = info;
+  v8 = [NSJSONSerialization isValidJSONObject:infoCopy];
   v9 = WALogCategoryDefaultHandle();
   v10 = v9;
   if (v8)
@@ -6633,11 +6633,11 @@ LABEL_4:
     v13 = [v11 stringFromDate:v12];
 
     v14 = [NSString stringWithFormat:@"wifianalytics_%@.json", v13];
-    v15 = [(WAEngine *)self wifianalyticsTmpDir];
-    v16 = [v15 URLByAppendingPathComponent:v14 isDirectory:0];
+    wifianalyticsTmpDir = [(WAEngine *)self wifianalyticsTmpDir];
+    v16 = [wifianalyticsTmpDir URLByAppendingPathComponent:v14 isDirectory:0];
 
     v23 = 0;
-    v17 = [NSJSONSerialization dataWithJSONObject:v7 options:3 error:&v23];
+    v17 = [NSJSONSerialization dataWithJSONObject:infoCopy options:3 error:&v23];
     v18 = v23;
     if (v18)
     {
@@ -6681,7 +6681,7 @@ LABEL_4:
       v26 = 1024;
       v27 = 3094;
       v28 = 2112;
-      v29 = v6;
+      v29 = fileCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}s::%d:Invalid data passed to JSON serialization for %@", buf, 0x1Cu);
     }
 
@@ -6702,18 +6702,18 @@ LABEL_10:
   }
 }
 
-- (id)_getMessageByUUID:(id)a3 forProcessToken:(id)a4 error:(id *)a5
+- (id)_getMessageByUUID:(id)d forProcessToken:(id)token error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  dCopy = d;
+  tokenCopy = token;
+  if (tokenCopy)
   {
-    v10 = [(WAEngine *)self messageStore];
+    messageStore = [(WAEngine *)self messageStore];
 
-    if (v10)
+    if (messageStore)
     {
-      v11 = [(WAEngine *)self messageStore];
-      v12 = [v11 messageForUUID:v8];
+      messageStore2 = [(WAEngine *)self messageStore];
+      v12 = [messageStore2 messageForUUID:dCopy];
 
       if (v12)
       {
@@ -6738,10 +6738,10 @@ LABEL_10:
     v13 = [NSError errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:v18 userInfo:v17];
 
     v12 = 0;
-    if (a5 && v13)
+    if (error && v13)
     {
       v12 = 0;
-      *a5 = [v13 copy];
+      *error = [v13 copy];
     }
   }
 
@@ -6761,49 +6761,49 @@ LABEL_5:
   return v12;
 }
 
-- (void)_killDaemonAndReply:(id)a3
+- (void)_killDaemonAndReply:(id)reply
 {
-  v4 = a3;
-  if (v4)
+  replyCopy = reply;
+  if (replyCopy)
   {
-    (*(v4 + 2))(v4, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 
   [(WAEngine *)self _prepareToTerminate];
   exit(143);
 }
 
-- (void)_clearMessageStoreAndReply:(id)a3
+- (void)_clearMessageStoreAndReply:(id)reply
 {
-  v6 = a3;
-  v4 = [(WAEngine *)self messageStore];
-  [v4 clearMessageStore];
+  replyCopy = reply;
+  messageStore = [(WAEngine *)self messageStore];
+  [messageStore clearMessageStore];
 
   [(WAEngine *)self _persist];
-  v5 = v6;
-  if (v6)
+  v5 = replyCopy;
+  if (replyCopy)
   {
-    (*(v6 + 2))(v6, 0, 0);
-    v5 = v6;
+    (*(replyCopy + 2))(replyCopy, 0, 0);
+    v5 = replyCopy;
   }
 }
 
-- (void)_purgeGroupTypeIfNecessary:(int64_t)a3
+- (void)_purgeGroupTypeIfNecessary:(int64_t)necessary
 {
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = [(WAEngine *)self processTokenToGroupTypeMap];
-  v5 = [v4 allKeys];
+  processTokenToGroupTypeMap = [(WAEngine *)self processTokenToGroupTypeMap];
+  allKeys = [processTokenToGroupTypeMap allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v30 objects:v43 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v30 objects:v43 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = 0;
     v9 = *v31;
-    obj = v5;
+    obj = allKeys;
     do
     {
       for (i = 0; i != v7; i = i + 1)
@@ -6818,8 +6818,8 @@ LABEL_5:
         v27 = 0u;
         v28 = 0u;
         v29 = 0u;
-        v12 = [(WAEngine *)self processTokenToGroupTypeMap];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        processTokenToGroupTypeMap2 = [(WAEngine *)self processTokenToGroupTypeMap];
+        v13 = [processTokenToGroupTypeMap2 objectForKeyedSubscript:v11];
 
         v14 = [v13 countByEnumeratingWithState:&v26 objects:v42 count:16];
         if (v14)
@@ -6835,7 +6835,7 @@ LABEL_5:
                 objc_enumerationMutation(v13);
               }
 
-              if ([*(*(&v26 + 1) + 8 * j) integerValue] == a3)
+              if ([*(*(&v26 + 1) + 8 * j) integerValue] == necessary)
               {
                 v18 = v11;
 
@@ -6873,20 +6873,20 @@ LABEL_16:
         v36 = 1024;
         v37 = 3169;
         v38 = 2048;
-        v39 = a3;
+        necessaryCopy2 = necessary;
         v40 = 2112;
         v41 = v20;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:XPC: Found an old token for WAGroupType: %ld (%@). Purging it now as a process is trying to register for the same group type", buf, 0x26u);
       }
 
-      v21 = [(WAEngine *)self processTokenToGroupTypeMap];
-      [v21 removeObjectForKey:v8];
+      processTokenToGroupTypeMap3 = [(WAEngine *)self processTokenToGroupTypeMap];
+      [processTokenToGroupTypeMap3 removeObjectForKey:v8];
 
-      v22 = [(WAEngine *)self submitterMap];
-      [v22 removeObjectForKey:v8];
+      submitterMap = [(WAEngine *)self submitterMap];
+      [submitterMap removeObjectForKey:v8];
 
-      v23 = [(WAEngine *)self processTokenToXPCConnectionMap];
-      [v23 removeObjectForKey:v8];
+      processTokenToXPCConnectionMap = [(WAEngine *)self processTokenToXPCConnectionMap];
+      [processTokenToXPCConnectionMap removeObjectForKey:v8];
 
       goto LABEL_25;
     }
@@ -6904,36 +6904,36 @@ LABEL_16:
     v36 = 1024;
     v37 = 3168;
     v38 = 2048;
-    v39 = a3;
+    necessaryCopy2 = necessary;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%{public}s::%d:XPC: No old tokens for newly registered WAGroupType: %ld - no purge necessary.", buf, 0x1Cu);
   }
 
 LABEL_25:
 }
 
-- (void)_sendMemoryPressureRequestAndReply:(id)a3
+- (void)_sendMemoryPressureRequestAndReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   [(WAEngine *)self handleMemoryWarning:1];
-  v4 = v5;
-  if (v5)
+  v4 = replyCopy;
+  if (replyCopy)
   {
-    (*(v5 + 2))(v5, 0, 0);
-    v4 = v5;
+    (*(replyCopy + 2))(replyCopy, 0, 0);
+    v4 = replyCopy;
   }
 }
 
-- (void)_issueIOReportManagementCommand:(unint64_t)a3 forProcessToken:(id)a4 andReply:(id)a5
+- (void)_issueIOReportManagementCommand:(unint64_t)command forProcessToken:(id)token andReply:(id)reply
 {
-  v8 = a4;
-  v133 = a5;
+  tokenCopy = token;
+  replyCopy = reply;
   v9 = objc_alloc_init(NSMutableDictionary);
-  v10 = [NSNumber numberWithUnsignedInteger:a3];
+  v10 = [NSNumber numberWithUnsignedInteger:command];
   [v9 setObject:v10 forKeyedSubscript:@"Command"];
 
   [v9 setObject:&__kCFBooleanFalse forKeyedSubscript:@"Success"];
-  v11 = [(WAEngine *)self submitterMap];
-  v12 = [v11 objectForKeyedSubscript:v8];
+  submitterMap = [(WAEngine *)self submitterMap];
+  v12 = [submitterMap objectForKeyedSubscript:tokenCopy];
   v13 = [NSNumber numberWithInteger:3];
   v14 = [v12 objectForKeyedSubscript:v13];
 
@@ -6952,7 +6952,7 @@ LABEL_25:
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}s::%d:Caller did not register", buf, 0x12u);
   }
 
-  if (!v8)
+  if (!tokenCopy)
   {
     v115 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
@@ -6973,8 +6973,8 @@ LABEL_25:
     goto LABEL_149;
   }
 
-  v16 = [(WAEngine *)self processTokenToGroupTypeMap];
-  v17 = [v16 objectForKeyedSubscript:v8];
+  processTokenToGroupTypeMap = [(WAEngine *)self processTokenToGroupTypeMap];
+  v17 = [processTokenToGroupTypeMap objectForKeyedSubscript:tokenCopy];
   v18 = [NSNumber numberWithInteger:3];
   v19 = [v17 containsObject:v18];
 
@@ -6999,24 +6999,24 @@ LABEL_149:
     v120 = [NSDictionary dictionaryWithObjects:&v138 forKeys:&v137 count:1];
     v66 = [NSError errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9003 userInfo:v120];
 
-    v31 = v133;
-    (*(v133 + 2))(v133, 0, v66);
+    v31 = replyCopy;
+    (*(replyCopy + 2))(replyCopy, 0, v66);
     goto LABEL_90;
   }
 
   [(WAEngine *)self _purgeGroupTypeIfNecessary:3];
-  v20 = [(WAEngine *)self processTokenToGroupTypeMap];
-  v21 = [v20 objectForKeyedSubscript:v8];
+  processTokenToGroupTypeMap2 = [(WAEngine *)self processTokenToGroupTypeMap];
+  v21 = [processTokenToGroupTypeMap2 objectForKeyedSubscript:tokenCopy];
 
   if (!v21)
   {
     v22 = objc_alloc_init(NSMutableSet);
-    v23 = [(WAEngine *)self processTokenToGroupTypeMap];
-    [v23 setObject:v22 forKeyedSubscript:v8];
+    processTokenToGroupTypeMap3 = [(WAEngine *)self processTokenToGroupTypeMap];
+    [processTokenToGroupTypeMap3 setObject:v22 forKeyedSubscript:tokenCopy];
   }
 
-  v24 = [(WAEngine *)self processTokenToGroupTypeMap];
-  v25 = [v24 objectForKeyedSubscript:v8];
+  processTokenToGroupTypeMap4 = [(WAEngine *)self processTokenToGroupTypeMap];
+  v25 = [processTokenToGroupTypeMap4 objectForKeyedSubscript:tokenCopy];
   v26 = [NSNumber numberWithInteger:3];
   [v25 addObject:v26];
 
@@ -7024,7 +7024,7 @@ LABEL_149:
   v27 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
-    v28 = [WAUtil trimTokenForLogging:v8];
+    v28 = [WAUtil trimTokenForLogging:tokenCopy];
     *buf = 136446978;
     *&buf[4] = "[WAEngine _issueIOReportManagementCommand:forProcessToken:andReply:]";
     *&buf[12] = 1024;
@@ -7039,12 +7039,12 @@ LABEL_149:
 LABEL_11:
   v29 = WALogCategoryDefaultHandle();
   v30 = v29;
-  if (a3 <= 3)
+  if (command <= 3)
   {
-    if (a3 > 1)
+    if (command > 1)
     {
-      v31 = v133;
-      if (a3 == 2)
+      v31 = replyCopy;
+      if (command == 2)
       {
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
@@ -7065,8 +7065,8 @@ LABEL_11:
           _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_DEBUG, "%{public}s::%d:kWAIORCommandErrorNextCreateOrUpdateSample running [self.iorMessagePopulator injectErrorOnNextCreateOrUpdateSample];", buf, 0x12u);
         }
 
-        v62 = [(WAEngine *)self iorMessagePopulator];
-        [v62 injectErrorOnNextCreateOrUpdateSample];
+        iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
+        [iorMessagePopulator injectErrorOnNextCreateOrUpdateSample];
 
         [v9 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Success"];
         v33 = WALogCategoryDefaultHandle();
@@ -7114,8 +7114,8 @@ LABEL_11:
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "%{public}s::%d:kWAIORCommandPersist running [self.iorMessagePopulator persistIORObjects];", buf, 0x12u);
         }
 
-        v39 = [(WAEngine *)self iorMessagePopulator];
-        [v39 persistIORObjects:0];
+        iorMessagePopulator2 = [(WAEngine *)self iorMessagePopulator];
+        [iorMessagePopulator2 persistIORObjects:0];
 
         [v9 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Success"];
         v33 = WALogCategoryDefaultHandle();
@@ -7134,10 +7134,10 @@ LABEL_11:
       goto LABEL_83;
     }
 
-    if (a3)
+    if (command)
     {
-      v31 = v133;
-      if (a3 == 1)
+      v31 = replyCopy;
+      if (command == 1)
       {
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
@@ -7158,8 +7158,8 @@ LABEL_11:
           _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEBUG, "%{public}s::%d:kWAIORCommandBuildSubscription running [self.iorMessagePopulator determineChannelsPerIORPopulatable];", buf, 0x12u);
         }
 
-        v36 = [(WAEngine *)self iorMessagePopulator];
-        [v36 determineChannelsPerIORPopulatable];
+        iorMessagePopulator3 = [(WAEngine *)self iorMessagePopulator];
+        [iorMessagePopulator3 determineChannelsPerIORPopulatable];
 
         [v9 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Success"];
         v33 = WALogCategoryDefaultHandle();
@@ -7200,7 +7200,7 @@ LABEL_91:
 
     [(WAEngine *)self setIorMessagePopulator:0];
     v136 = 0;
-    v41 = [(WAEngine *)self _getObscureKey];
+    _getObscureKey = [(WAEngine *)self _getObscureKey];
     self->_readingPersistFile = 1;
     v42 = [NSData alloc];
     v43 = NSHomeDirectory();
@@ -7212,15 +7212,15 @@ LABEL_91:
     v132 = v45;
     if (v45)
     {
-      if (v41)
+      if (_getObscureKey)
       {
         v128 = v46;
         dataOutAvailable = v46 + 16;
-        [v41 getCString:key maxLength:33 encoding:4];
+        [_getObscureKey getCString:key maxLength:33 encoding:4];
         v48 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
-          v49 = [v41 length];
+          v49 = [_getObscureKey length];
           *buf = 136446722;
           *&buf[4] = "[WAEngine _issueIOReportManagementCommand:forProcessToken:andReply:]";
           *&buf[12] = 1024;
@@ -7253,9 +7253,9 @@ LABEL_91:
           v127 = v53;
           if (v53 && (v55 = v54) != 0)
           {
-            v56 = [v53 bytes];
-            v57 = v56[2];
-            v146[1] = *v56;
+            bytes = [v53 bytes];
+            v57 = bytes[2];
+            v146[1] = *bytes;
             v147 = v57;
             *buf = *[v55 bytes];
             v58 = v132;
@@ -7308,14 +7308,14 @@ LABEL_91:
             v66 = [NSError errorWithDomain:@"com.apple.wifi.analytics.errordomain" code:9003 userInfo:v85];
 
             [v9 setObject:@"CCCrypt failed" forKeyedSubscript:@"Details"];
-            v31 = v133;
+            v31 = replyCopy;
             v86 = v127;
 LABEL_141:
 
             goto LABEL_142;
           }
 
-          v129 = v41;
+          v129 = _getObscureKey;
           v87 = [NSData alloc];
           v88 = [v87 initWithBytes:v59 length:v136];
           v124 = objc_opt_class();
@@ -7433,13 +7433,13 @@ LABEL_141:
               [(WAEngine *)self setIorMessagePopulator:v104];
               [v9 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Success"];
 LABEL_138:
-              v31 = v133;
+              v31 = replyCopy;
 
-              v112 = [(WAEngine *)self iorMessagePopulator];
-              [v112 setMessageDelegate:self];
+              iorMessagePopulator4 = [(WAEngine *)self iorMessagePopulator];
+              [iorMessagePopulator4 setMessageDelegate:self];
 
-              v113 = [(WAEngine *)self iorMessagePopulator];
-              [v113 setPersistenceDelegate:self];
+              iorMessagePopulator5 = [(WAEngine *)self iorMessagePopulator];
+              [iorMessagePopulator5 setPersistenceDelegate:self];
 
               v114 = WALogCategoryDefaultHandle();
               v86 = v127;
@@ -7452,7 +7452,7 @@ LABEL_138:
                 _os_log_impl(&_mh_execute_header, v114, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:kWAIORCommandReloadViaUnpersist end", buf, 0x12u);
               }
 
-              v41 = v129;
+              _getObscureKey = v129;
               v58 = v132;
               goto LABEL_141;
             }
@@ -7541,16 +7541,16 @@ LABEL_138:
 
     [v9 setObject:v79 forKeyedSubscript:@"Details"];
     v58 = v132;
-    v31 = v133;
+    v31 = replyCopy;
 LABEL_142:
 
     goto LABEL_86;
   }
 
-  if (a3 <= 5)
+  if (command <= 5)
   {
-    v31 = v133;
-    if (a3 == 4)
+    v31 = replyCopy;
+    if (command == 4)
     {
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
       {
@@ -7571,8 +7571,8 @@ LABEL_142:
         _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEBUG, "%{public}s::%d:kWAIORCommandClearCaches running [self.iorMessagePopulator freeIORCaches];", buf, 0x12u);
       }
 
-      v69 = [(WAEngine *)self iorMessagePopulator];
-      [v69 freeIORCaches];
+      iorMessagePopulator6 = [(WAEngine *)self iorMessagePopulator];
+      [iorMessagePopulator6 freeIORCaches];
 
       [v9 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Success"];
       v33 = WALogCategoryDefaultHandle();
@@ -7627,8 +7627,8 @@ LABEL_142:
     goto LABEL_83;
   }
 
-  v31 = v133;
-  if (a3 == 6)
+  v31 = replyCopy;
+  if (command == 6)
   {
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
@@ -7649,10 +7649,10 @@ LABEL_142:
       _os_log_impl(&_mh_execute_header, v63, OS_LOG_TYPE_DEBUG, "%{public}s::%d:kWAIORCommandRunIOLegendTest running [self.iorMessagePopulator runIOLegendTest];", buf, 0x12u);
     }
 
-    v64 = [(WAEngine *)self iorMessagePopulator];
-    v65 = [v64 runIOLegendTest];
+    iorMessagePopulator7 = [(WAEngine *)self iorMessagePopulator];
+    runIOLegendTest = [iorMessagePopulator7 runIOLegendTest];
 
-    if (v65)
+    if (runIOLegendTest)
     {
       v66 = 0;
       v67 = &__kCFBooleanTrue;
@@ -7682,7 +7682,7 @@ LABEL_142:
     goto LABEL_86;
   }
 
-  if (a3 == 7)
+  if (command == 7)
   {
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
     {
@@ -7703,8 +7703,8 @@ LABEL_142:
       _os_log_impl(&_mh_execute_header, v70, OS_LOG_TYPE_DEBUG, "%{public}s::%d:kWAIORCommandScanPredicatesNotYetFound running [self.iorMessagePopulator scanPredicatesNotYetFound];", buf, 0x12u);
     }
 
-    v71 = [(WAEngine *)self iorMessagePopulator];
-    [v71 scanPredicatesNotYetFoundAndMutable];
+    iorMessagePopulator8 = [(WAEngine *)self iorMessagePopulator];
+    [iorMessagePopulator8 scanPredicatesNotYetFoundAndMutable];
 
     [v9 setObject:&__kCFBooleanTrue forKeyedSubscript:@"Success"];
     v33 = WALogCategoryDefaultHandle();
@@ -7721,7 +7721,7 @@ LABEL_142:
     goto LABEL_83;
   }
 
-  if (a3 != 8)
+  if (command != 8)
   {
     goto LABEL_91;
   }
@@ -7785,173 +7785,173 @@ LABEL_86:
 LABEL_90:
 }
 
-- (void)_trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)a3 andReply:(id)a4
+- (void)_trapCrashMiniTracerDumpReadyForInterfaceWithName:(id)name andReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  nameCopy = name;
+  replyCopy = reply;
+  interfaceNameToApple80211InstanceMap = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
 
-  if (!v8)
+  if (!interfaceNameToApple80211InstanceMap)
   {
     v9 = +[NSMutableDictionary dictionary];
     [(WAEngine *)self setInterfaceNameToApple80211InstanceMap:v9];
   }
 
-  v10 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  interfaceNameToApple80211InstanceMap2 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  v11 = [interfaceNameToApple80211InstanceMap2 objectForKeyedSubscript:nameCopy];
 
   if (!v11)
   {
-    v12 = [[WAApple80211 alloc] initWithInterfaceName:v6];
+    v12 = [[WAApple80211 alloc] initWithInterfaceName:nameCopy];
     if (v12)
     {
-      v13 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-      [v13 setObject:v12 forKeyedSubscript:v6];
+      interfaceNameToApple80211InstanceMap3 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+      [interfaceNameToApple80211InstanceMap3 setObject:v12 forKeyedSubscript:nameCopy];
     }
   }
 
-  v14 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-  v15 = [v14 objectForKeyedSubscript:v6];
+  interfaceNameToApple80211InstanceMap4 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  v15 = [interfaceNameToApple80211InstanceMap4 objectForKeyedSubscript:nameCopy];
 
   if (v15)
   {
-    v16 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-    v17 = [v16 objectForKeyedSubscript:v6];
+    interfaceNameToApple80211InstanceMap5 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+    v17 = [interfaceNameToApple80211InstanceMap5 objectForKeyedSubscript:nameCopy];
     [v17 grabAndSubmitFWTrapInfo];
   }
 
   else
   {
-    v16 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    interfaceNameToApple80211InstanceMap5 = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(interfaceNameToApple80211InstanceMap5, OS_LOG_TYPE_ERROR))
     {
       v18 = 136446466;
       v19 = "[WAEngine _trapCrashMiniTracerDumpReadyForInterfaceWithName:andReply:]";
       v20 = 1024;
       v21 = 3456;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}s::%d:No Apple80211 wrapper to process trap crash mini tracer dump with!", &v18, 0x12u);
+      _os_log_impl(&_mh_execute_header, interfaceNameToApple80211InstanceMap5, OS_LOG_TYPE_ERROR, "%{public}s::%d:No Apple80211 wrapper to process trap crash mini tracer dump with!", &v18, 0x12u);
     }
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 }
 
-- (void)_lqmCrashTracerNotifyForInterfaceWithName:(id)a3 andReply:(id)a4
+- (void)_lqmCrashTracerNotifyForInterfaceWithName:(id)name andReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  nameCopy = name;
+  replyCopy = reply;
+  interfaceNameToApple80211InstanceMap = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
 
-  if (!v8)
+  if (!interfaceNameToApple80211InstanceMap)
   {
     v9 = +[NSMutableDictionary dictionary];
     [(WAEngine *)self setInterfaceNameToApple80211InstanceMap:v9];
   }
 
-  v10 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  interfaceNameToApple80211InstanceMap2 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  v11 = [interfaceNameToApple80211InstanceMap2 objectForKeyedSubscript:nameCopy];
 
   if (!v11)
   {
-    v12 = [[WAApple80211 alloc] initWithInterfaceName:v6];
+    v12 = [[WAApple80211 alloc] initWithInterfaceName:nameCopy];
     if (v12)
     {
-      v13 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-      [v13 setObject:v12 forKeyedSubscript:v6];
+      interfaceNameToApple80211InstanceMap3 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+      [interfaceNameToApple80211InstanceMap3 setObject:v12 forKeyedSubscript:nameCopy];
     }
   }
 
-  v14 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-  v15 = [v14 objectForKeyedSubscript:v6];
+  interfaceNameToApple80211InstanceMap4 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  v15 = [interfaceNameToApple80211InstanceMap4 objectForKeyedSubscript:nameCopy];
 
   if (v15)
   {
-    v16 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-    v17 = [v16 objectForKeyedSubscript:v6];
+    interfaceNameToApple80211InstanceMap5 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+    v17 = [interfaceNameToApple80211InstanceMap5 objectForKeyedSubscript:nameCopy];
     [v17 grabAndSubmitLqmMetrics];
   }
 
   else
   {
-    v16 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    interfaceNameToApple80211InstanceMap5 = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(interfaceNameToApple80211InstanceMap5, OS_LOG_TYPE_ERROR))
     {
       v18 = 136446466;
       v19 = "[WAEngine _lqmCrashTracerNotifyForInterfaceWithName:andReply:]";
       v20 = 1024;
       v21 = 3475;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%{public}s::%d:No Apple80211 wrapper to process lqmCrashTracer with!", &v18, 0x12u);
+      _os_log_impl(&_mh_execute_header, interfaceNameToApple80211InstanceMap5, OS_LOG_TYPE_ERROR, "%{public}s::%d:No Apple80211 wrapper to process lqmCrashTracer with!", &v18, 0x12u);
     }
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 }
 
-- (void)_lqmCrashTracerReceiveBlock:(id)a3 forInterfaceWithName:(id)a4 andReply:(id)a5
+- (void)_lqmCrashTracerReceiveBlock:(id)block forInterfaceWithName:(id)name andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  blockCopy = block;
+  nameCopy = name;
+  replyCopy = reply;
+  interfaceNameToApple80211InstanceMap = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
 
-  if (!v11)
+  if (!interfaceNameToApple80211InstanceMap)
   {
     v12 = +[NSMutableDictionary dictionary];
     [(WAEngine *)self setInterfaceNameToApple80211InstanceMap:v12];
   }
 
-  v13 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-  v14 = [v13 objectForKeyedSubscript:v9];
+  interfaceNameToApple80211InstanceMap2 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  v14 = [interfaceNameToApple80211InstanceMap2 objectForKeyedSubscript:nameCopy];
 
   if (!v14)
   {
-    v15 = [[WAApple80211 alloc] initWithInterfaceName:v9];
+    v15 = [[WAApple80211 alloc] initWithInterfaceName:nameCopy];
     if (v15)
     {
-      v16 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-      [v16 setObject:v15 forKeyedSubscript:v9];
+      interfaceNameToApple80211InstanceMap3 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+      [interfaceNameToApple80211InstanceMap3 setObject:v15 forKeyedSubscript:nameCopy];
     }
   }
 
-  v17 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-  v18 = [v17 objectForKeyedSubscript:v9];
+  interfaceNameToApple80211InstanceMap4 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  v18 = [interfaceNameToApple80211InstanceMap4 objectForKeyedSubscript:nameCopy];
 
   if (v18)
   {
-    v19 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-    v20 = [v19 objectForKeyedSubscript:v9];
-    [v20 submitLqmMetrics:v8];
+    interfaceNameToApple80211InstanceMap5 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+    v20 = [interfaceNameToApple80211InstanceMap5 objectForKeyedSubscript:nameCopy];
+    [v20 submitLqmMetrics:blockCopy];
   }
 
   else
   {
-    v19 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    interfaceNameToApple80211InstanceMap5 = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(interfaceNameToApple80211InstanceMap5, OS_LOG_TYPE_ERROR))
     {
       v21 = 136446466;
       v22 = "[WAEngine _lqmCrashTracerReceiveBlock:forInterfaceWithName:andReply:]";
       v23 = 1024;
       v24 = 3494;
-      _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}s::%d:No Apple80211 wrapper to process lqmCrashTracer with!", &v21, 0x12u);
+      _os_log_impl(&_mh_execute_header, interfaceNameToApple80211InstanceMap5, OS_LOG_TYPE_ERROR, "%{public}s::%d:No Apple80211 wrapper to process lqmCrashTracer with!", &v21, 0x12u);
     }
   }
 
-  if (v10)
+  if (replyCopy)
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 }
 
-- (void)_trapFWWithReason:(id)a3 andReply:(id)a4
+- (void)_trapFWWithReason:(id)reason andReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  reasonCopy = reason;
+  replyCopy = reply;
   infraInterfaceName = self->_infraInterfaceName;
   if (!infraInterfaceName)
   {
@@ -7963,9 +7963,9 @@ LABEL_90:
     goto LABEL_4;
   }
 
-  v9 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-  v10 = [(WAEngine *)self infraInterfaceName];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  interfaceNameToApple80211InstanceMap = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  infraInterfaceName = [(WAEngine *)self infraInterfaceName];
+  v11 = [interfaceNameToApple80211InstanceMap objectForKeyedSubscript:infraInterfaceName];
 
   if (!v11)
   {
@@ -7978,9 +7978,9 @@ LABEL_4:
     goto LABEL_8;
   }
 
-  v12 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-  v13 = [(WAEngine *)self infraInterfaceName];
-  v14 = [v12 objectForKeyedSubscript:v13];
+  interfaceNameToApple80211InstanceMap2 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  infraInterfaceName2 = [(WAEngine *)self infraInterfaceName];
+  v14 = [interfaceNameToApple80211InstanceMap2 objectForKeyedSubscript:infraInterfaceName2];
 
   if (!v14)
   {
@@ -7995,44 +7995,44 @@ LABEL_8:
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}s::%d:failed to find _infraInterfaceName", &v21, 0x12u);
     }
 
-    v15 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
+    interfaceNameToApple80211InstanceMap3 = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(interfaceNameToApple80211InstanceMap3, OS_LOG_TYPE_FAULT))
     {
       v20 = self->_infraInterfaceName;
       v21 = 138412546;
-      v22 = v6;
+      v22 = reasonCopy;
       v23 = 2112;
       v24 = v20;
-      _os_log_fault_impl(&_mh_execute_header, v15, OS_LOG_TYPE_FAULT, "Failed to initiate FW trap reason %@, interface %@", &v21, 0x16u);
+      _os_log_fault_impl(&_mh_execute_header, interfaceNameToApple80211InstanceMap3, OS_LOG_TYPE_FAULT, "Failed to initiate FW trap reason %@, interface %@", &v21, 0x16u);
     }
   }
 
   else
   {
-    v15 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-    v16 = [(WAEngine *)self infraInterfaceName];
-    v17 = [v15 objectForKeyedSubscript:v16];
-    v18 = [(WAEngine *)self getDpsMetaDataString];
-    [v17 triggerDpsReset:@"TrapOnSlowDPS" metaData:v18];
+    interfaceNameToApple80211InstanceMap3 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+    infraInterfaceName3 = [(WAEngine *)self infraInterfaceName];
+    v17 = [interfaceNameToApple80211InstanceMap3 objectForKeyedSubscript:infraInterfaceName3];
+    getDpsMetaDataString = [(WAEngine *)self getDpsMetaDataString];
+    [v17 triggerDpsReset:@"TrapOnSlowDPS" metaData:getDpsMetaDataString];
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 }
 
-- (void)_examinePeerMessageForIntegrity:(id)a3
+- (void)_examinePeerMessageForIntegrity:(id)integrity
 {
-  v3 = a3;
-  v4 = [v3 fieldForKey:@"NWAPS_txLatencyBEs"];
-  v5 = [v4 repeatableValues];
+  integrityCopy = integrity;
+  v4 = [integrityCopy fieldForKey:@"NWAPS_txLatencyBEs"];
+  repeatableValues = [v4 repeatableValues];
 
-  if (v5)
+  if (repeatableValues)
   {
-    v6 = [v3 fieldForKey:@"NWAPS_txLatencyBEs"];
-    v7 = [v6 repeatableValues];
-    v8 = [v7 count];
+    v6 = [integrityCopy fieldForKey:@"NWAPS_txLatencyBEs"];
+    repeatableValues2 = [v6 repeatableValues];
+    v8 = [repeatableValues2 count];
 
     v9 = v8;
   }
@@ -8089,19 +8089,19 @@ LABEL_13:
     {
       if (v12 != v14)
       {
-        v37 = [v3 fieldForKey:@"NWAPS_txLatencyBEs"];
-        v35 = [v37 repeatableValues];
-        v15 = [v35 objectAtIndex:v12];
+        v37 = [integrityCopy fieldForKey:@"NWAPS_txLatencyBEs"];
+        repeatableValues3 = [v37 repeatableValues];
+        v15 = [repeatableValues3 objectAtIndex:v12];
         v16 = [v15 fieldForKey:@"NWAHB_bin"];
-        [v3 fieldForKey:@"NWAPS_txLatencyBEs"];
+        [integrityCopy fieldForKey:@"NWAPS_txLatencyBEs"];
         v18 = v17 = v9;
         [v18 repeatableValues];
         v19 = v12;
-        v21 = v20 = v3;
+        v21 = v20 = integrityCopy;
         v22 = [v21 objectAtIndex:v14];
         v23 = [v22 fieldForKey:@"NWAHB_bin"];
 
-        v3 = v20;
+        integrityCopy = v20;
         v12 = v19;
 
         v9 = v17;
@@ -8110,13 +8110,13 @@ LABEL_13:
           v24 = WALogCategoryDefaultHandle();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
-            v38 = [v3 fieldForKey:@"NWAPS_txLatencyBEs"];
-            v36 = [v38 repeatableValues];
-            v34 = [v36 objectAtIndex:v19];
+            v38 = [integrityCopy fieldForKey:@"NWAPS_txLatencyBEs"];
+            repeatableValues4 = [v38 repeatableValues];
+            v34 = [repeatableValues4 objectAtIndex:v19];
             v25 = [v34 fieldForKey:@"NWAHB_bin"];
-            v26 = [v3 fieldForKey:@"NWAPS_txLatencyBEs"];
-            v27 = [v26 repeatableValues];
-            v28 = [v27 objectAtIndex:v14];
+            v26 = [integrityCopy fieldForKey:@"NWAPS_txLatencyBEs"];
+            repeatableValues5 = [v26 repeatableValues];
+            v28 = [repeatableValues5 objectAtIndex:v14];
             v29 = [v28 fieldForKey:@"NWAHB_bin"];
             *buf = 136447490;
             v40 = "[WAEngine _examinePeerMessageForIntegrity:]";
@@ -8182,10 +8182,10 @@ LABEL_25:
 LABEL_32:
 }
 
-- (void)_triggerQueryForNWActivity:(int64_t)a3 forProcessToken:(id)a4 andReply:(id)a5
+- (void)_triggerQueryForNWActivity:(int64_t)activity forProcessToken:(id)token andReply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  tokenCopy = token;
+  replyCopy = reply;
   v68 = 0;
   v69 = &v68;
   v70 = 0x3032000000;
@@ -8198,7 +8198,7 @@ LABEL_32:
   v65 = sub_10005CFFC;
   v66 = sub_10005D00C;
   v67 = 0;
-  if (!a3)
+  if (!activity)
   {
     v10 = WALogCategoryDefaultHandle();
     if (os_signpost_enabled(v10))
@@ -8207,7 +8207,7 @@ LABEL_32:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Engine NWActivity reply style 0", "", buf, 2u);
     }
 
-    v9[2](v9, 0, v63[5]);
+    replyCopy[2](replyCopy, 0, v63[5]);
     v11 = WALogCategoryDefaultHandle();
     if (os_signpost_enabled(v11))
     {
@@ -8224,10 +8224,10 @@ LABEL_32:
   }
 
   self->_isNWActivityInProgress = 1;
-  if (!a3)
+  if (!activity)
   {
-    v13 = [(WAEngine *)self submitterMap];
-    v14 = [v13 objectForKeyedSubscript:v8];
+    submitterMap = [(WAEngine *)self submitterMap];
+    v14 = [submitterMap objectForKeyedSubscript:tokenCopy];
     v15 = [NSNumber numberWithInteger:3];
     v16 = [v14 objectForKeyedSubscript:v15];
     v17 = v16 == 0;
@@ -8244,7 +8244,7 @@ LABEL_32:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%{public}s::%d:Caller did not register", buf, 0x12u);
       }
 
-      if (!v8)
+      if (!tokenCopy)
       {
         v52 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
@@ -8266,8 +8266,8 @@ LABEL_32:
         goto LABEL_49;
       }
 
-      v19 = [(WAEngine *)self processTokenToGroupTypeMap];
-      v20 = [v19 objectForKeyedSubscript:v8];
+      processTokenToGroupTypeMap = [(WAEngine *)self processTokenToGroupTypeMap];
+      v20 = [processTokenToGroupTypeMap objectForKeyedSubscript:tokenCopy];
       v21 = [NSNumber numberWithInteger:3];
       v22 = [v20 containsObject:v21];
 
@@ -8296,28 +8296,28 @@ LABEL_32:
       }
 
       [(WAEngine *)self _purgeGroupTypeIfNecessary:3];
-      v25 = [(WAEngine *)self processTokenToGroupTypeMap];
-      v26 = [v25 objectForKeyedSubscript:v8];
+      processTokenToGroupTypeMap2 = [(WAEngine *)self processTokenToGroupTypeMap];
+      v26 = [processTokenToGroupTypeMap2 objectForKeyedSubscript:tokenCopy];
       v27 = v26 == 0;
 
       if (v27)
       {
         v28 = objc_alloc_init(NSMutableSet);
-        v29 = [(WAEngine *)self processTokenToGroupTypeMap];
-        [v29 setObject:v28 forKeyedSubscript:v8];
+        processTokenToGroupTypeMap3 = [(WAEngine *)self processTokenToGroupTypeMap];
+        [processTokenToGroupTypeMap3 setObject:v28 forKeyedSubscript:tokenCopy];
       }
 
-      v30 = [(WAEngine *)self processTokenToGroupTypeMap];
-      v31 = [v30 objectForKeyedSubscript:v8];
+      processTokenToGroupTypeMap4 = [(WAEngine *)self processTokenToGroupTypeMap];
+      v31 = [processTokenToGroupTypeMap4 objectForKeyedSubscript:tokenCopy];
       v32 = [NSNumber numberWithInteger:3];
       [v31 addObject:v32];
 
-      [(WAEngine *)self _initSubmitterAndQueryableRegistrationForProcessToken:v8 andGroupType:3];
+      [(WAEngine *)self _initSubmitterAndQueryableRegistrationForProcessToken:tokenCopy andGroupType:3];
       [(WAEngine *)self _persist];
       v33 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
-        v34 = [WAUtil trimTokenForLogging:v8];
+        v34 = [WAUtil trimTokenForLogging:tokenCopy];
         *buf = 136446978;
         v77 = "[WAEngine _triggerQueryForNWActivity:forProcessToken:andReply:]";
         v78 = 1024;
@@ -8338,7 +8338,7 @@ LABEL_32:
     }
   }
 
-  v36 = [(WAEngine *)self _cachedModelObjectsForProcess:v8 groupType:3 key:@"NWA"];
+  v36 = [(WAEngine *)self _cachedModelObjectsForProcess:tokenCopy groupType:3 key:@"NWA"];
   v37 = v69[5];
   v69[5] = v36;
 
@@ -8366,9 +8366,9 @@ LABEL_32:
     goto LABEL_39;
   }
 
-  v38 = [(WAEngine *)self iorMessagePopulator];
-  v39 = [v69[5] originalClassName];
-  v40 = [v38 doesMessageNeedPrepopulation:v39];
+  iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
+  originalClassName = [v69[5] originalClassName];
+  v40 = [iorMessagePopulator doesMessageNeedPrepopulation:originalClassName];
 
   v41 = WALogCategoryDefaultHandle();
   v42 = v41;
@@ -8385,7 +8385,7 @@ LABEL_32:
 
 LABEL_39:
 
-    if (a3 != 1)
+    if (activity != 1)
     {
 LABEL_50:
       self->_isNWActivityInProgress = 0;
@@ -8406,7 +8406,7 @@ LABEL_50:
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v51, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Engine NWActivity Reply", "", buf, 2u);
     }
 
-    v9[2](v9, v69[5], v63[5]);
+    replyCopy[2](replyCopy, v69[5], v63[5]);
     v24 = WALogCategoryDefaultHandle();
     if (os_signpost_enabled(v24))
     {
@@ -8438,7 +8438,7 @@ LABEL_49:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v44, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Engine NWActivity Poplulate", "", buf, 2u);
   }
 
-  v45 = [(WAEngine *)self iorMessagePopulator];
+  iorMessagePopulator2 = [(WAEngine *)self iorMessagePopulator];
   v46 = v69[5];
   v55[0] = _NSConcreteStackBlock;
   v55[1] = 3221225472;
@@ -8447,11 +8447,11 @@ LABEL_49:
   v58 = &v68;
   v55[4] = self;
   v59 = &v62;
-  v56 = v8;
+  v56 = tokenCopy;
   v60 = 3;
-  v61 = a3;
-  v57 = v9;
-  [v45 prepopulateMessage:v46 forProcess:v56 groupType:3 andReply:v55];
+  activityCopy = activity;
+  v57 = replyCopy;
+  [iorMessagePopulator2 prepopulateMessage:v46 forProcess:v56 groupType:3 andReply:v55];
 
   self->_isNWActivityInProgress = 0;
   v47 = WALogCategoryDefaultHandle();
@@ -8468,19 +8468,19 @@ LABEL_33:
   _Block_object_dispose(&v68, 8);
 }
 
-- (BOOL)hasDuplicateHashIDs:(id)a3
+- (BOOL)hasDuplicateHashIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = +[NSMutableDictionary dictionary];
   v6 = 0;
-  if ([v3 count])
+  if ([dsCopy count])
   {
     v7 = 0;
     *&v5 = 136447234;
     v14 = v5;
     do
     {
-      v8 = [v3 objectAtIndexedSubscript:{v7, v14}];
+      v8 = [dsCopy objectAtIndexedSubscript:{v7, v14}];
       v9 = [v8 objectForKeyedSubscript:@"hashID"];
       if (v9)
       {
@@ -8517,33 +8517,33 @@ LABEL_33:
       ++v7;
     }
 
-    while (v7 < [v3 count]);
+    while (v7 < [dsCopy count]);
   }
 
   return v6 & 1;
 }
 
-- (BOOL)alreadyContainsHashID:(id)a3 inArray:(id)a4
+- (BOOL)alreadyContainsHashID:(id)d inArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  dCopy = d;
+  arrayCopy = array;
+  if ([arrayCopy count])
   {
     v7 = 0;
     while (1)
     {
-      v8 = [v6 objectAtIndexedSubscript:v7];
+      v8 = [arrayCopy objectAtIndexedSubscript:v7];
       v9 = [v8 objectForKeyedSubscript:@"hashID"];
       v10 = v9;
       if (v9)
       {
-        if ([v9 isEqualToString:v5])
+        if ([v9 isEqualToString:dCopy])
         {
           break;
         }
       }
 
-      if (++v7 >= [v6 count])
+      if (++v7 >= [arrayCopy count])
       {
         goto LABEL_6;
       }
@@ -8561,11 +8561,11 @@ LABEL_6:
   return v11;
 }
 
-- (void)_triggerQueryForNWActivityWithPeers:(id)a3 forProcessToken:(id)a4 andReply:(id)a5
+- (void)_triggerQueryForNWActivityWithPeers:(id)peers forProcessToken:(id)token andReply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  peersCopy = peers;
+  tokenCopy = token;
+  replyCopy = reply;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -8585,15 +8585,15 @@ LABEL_6:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v11, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Engine NWPeerActivity", "", buf, 2u);
   }
 
-  v12 = [(WAEngine *)self _cachedModelObjectsForProcess:v9 groupType:3 key:@"NWPA"];
+  v12 = [(WAEngine *)self _cachedModelObjectsForProcess:tokenCopy groupType:3 key:@"NWPA"];
   v13 = v41[5];
   v41[5] = v12;
 
   if (v41[5])
   {
-    v14 = [(WAEngine *)self iorMessagePopulator];
-    v15 = [v41[5] originalClassName];
-    v16 = [v14 doesMessageNeedPrepopulation:v15];
+    iorMessagePopulator = [(WAEngine *)self iorMessagePopulator];
+    originalClassName = [v41[5] originalClassName];
+    v16 = [iorMessagePopulator doesMessageNeedPrepopulation:originalClassName];
 
     v17 = WALogCategoryDefaultHandle();
     v18 = v17;
@@ -8611,8 +8611,8 @@ LABEL_6:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Send WAMessageAWD %@ for population... ", buf, 0x1Cu);
       }
 
-      v20 = [(WAEngine *)self iorMessagePopulator];
-      [v20 updateListOfMonitoredPeers:v8];
+      iorMessagePopulator2 = [(WAEngine *)self iorMessagePopulator];
+      [iorMessagePopulator2 updateListOfMonitoredPeers:peersCopy];
 
       v21 = WALogCategoryDefaultHandle();
       if (os_signpost_enabled(v21))
@@ -8621,7 +8621,7 @@ LABEL_6:
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v21, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Engine NWPeerActivity Poplulate", "", buf, 2u);
       }
 
-      v22 = [(WAEngine *)self iorMessagePopulator];
+      iorMessagePopulator3 = [(WAEngine *)self iorMessagePopulator];
       v23 = v41[5];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
@@ -8630,8 +8630,8 @@ LABEL_6:
       v32 = &v34;
       v30[4] = self;
       v33 = &v40;
-      v31 = v10;
-      [v22 prepopulateMessage:v23 forProcess:v9 groupType:3 andReply:v30];
+      v31 = replyCopy;
+      [iorMessagePopulator3 prepopulateMessage:v23 forProcess:tokenCopy groupType:3 andReply:v30];
 
       v18 = WALogCategoryDefaultHandle();
       if (os_signpost_enabled(v18))
@@ -8680,7 +8680,7 @@ LABEL_6:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v24, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "Engine NWPeerActivity Reply", "", buf, 2u);
   }
 
-  (*(v10 + 2))(v10, v41[5], v35[5]);
+  (*(replyCopy + 2))(replyCopy, v41[5], v35[5]);
   v25 = WALogCategoryDefaultHandle();
   if (os_signpost_enabled(v25))
   {
@@ -8700,20 +8700,20 @@ LABEL_6:
   _Block_object_dispose(&v40, 8);
 }
 
-- (void)_convertWiFiStatsIntoPercentile:(id)a3 analysisGroup:(int64_t)a4 groupTarget:(id)a5 forProcessToken:(id)a6 andReply:(id)a7
+- (void)_convertWiFiStatsIntoPercentile:(id)percentile analysisGroup:(int64_t)group groupTarget:(id)target forProcessToken:(id)token andReply:(id)reply
 {
-  v46 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  percentileCopy = percentile;
+  targetCopy = target;
+  tokenCopy = token;
+  replyCopy = reply;
   v50 = 0;
   v51 = &v50;
   v52 = 0x3032000000;
   v53 = sub_10005CFFC;
   v54 = sub_10005D00C;
   v55 = 0;
-  v15 = [(WAEngine *)self submitterMap];
-  v16 = [v15 objectForKeyedSubscript:v13];
+  submitterMap = [(WAEngine *)self submitterMap];
+  v16 = [submitterMap objectForKeyedSubscript:tokenCopy];
   v17 = [NSNumber numberWithInteger:3];
   v18 = [v16 objectForKeyedSubscript:v17];
   v19 = v18 == 0;
@@ -8733,7 +8733,7 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}s::%d:Caller did not register", buf, 0x12u);
   }
 
-  if (!v13)
+  if (!tokenCopy)
   {
     v40 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -8756,8 +8756,8 @@ LABEL_6:
     goto LABEL_24;
   }
 
-  v21 = [(WAEngine *)self processTokenToGroupTypeMap];
-  v22 = [v21 objectForKeyedSubscript:v13];
+  processTokenToGroupTypeMap = [(WAEngine *)self processTokenToGroupTypeMap];
+  v22 = [processTokenToGroupTypeMap objectForKeyedSubscript:tokenCopy];
   v23 = [NSNumber numberWithInteger:3];
   v24 = [v22 containsObject:v23];
 
@@ -8785,33 +8785,33 @@ LABEL_16:
     v39 = v51[5];
     v51[5] = v38;
 
-    v14[2](v14, 0, v51[5]);
+    replyCopy[2](replyCopy, 0, v51[5]);
     goto LABEL_17;
   }
 
   [(WAEngine *)self _purgeGroupTypeIfNecessary:3];
-  v25 = [(WAEngine *)self processTokenToGroupTypeMap];
-  v26 = [v25 objectForKeyedSubscript:v13];
+  processTokenToGroupTypeMap2 = [(WAEngine *)self processTokenToGroupTypeMap];
+  v26 = [processTokenToGroupTypeMap2 objectForKeyedSubscript:tokenCopy];
   v27 = v26 == 0;
 
   if (v27)
   {
     v28 = objc_alloc_init(NSMutableSet);
-    v29 = [(WAEngine *)self processTokenToGroupTypeMap];
-    [v29 setObject:v28 forKeyedSubscript:v13];
+    processTokenToGroupTypeMap3 = [(WAEngine *)self processTokenToGroupTypeMap];
+    [processTokenToGroupTypeMap3 setObject:v28 forKeyedSubscript:tokenCopy];
   }
 
-  v30 = [(WAEngine *)self processTokenToGroupTypeMap];
-  v31 = [v30 objectForKeyedSubscript:v13];
+  processTokenToGroupTypeMap4 = [(WAEngine *)self processTokenToGroupTypeMap];
+  v31 = [processTokenToGroupTypeMap4 objectForKeyedSubscript:tokenCopy];
   v32 = [NSNumber numberWithInteger:3];
   [v31 addObject:v32];
 
-  [(WAEngine *)self _initSubmitterAndQueryableRegistrationForProcessToken:v13 andGroupType:3];
+  [(WAEngine *)self _initSubmitterAndQueryableRegistrationForProcessToken:tokenCopy andGroupType:3];
   [(WAEngine *)self _persist];
   v33 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
   {
-    v34 = [WAUtil trimTokenForLogging:v13];
+    v34 = [WAUtil trimTokenForLogging:tokenCopy];
     *buf = 136446978;
     v61 = "[WAEngine _convertWiFiStatsIntoPercentile:analysisGroup:groupTarget:forProcessToken:andReply:]";
     v62 = 1024;
@@ -8824,7 +8824,7 @@ LABEL_16:
   }
 
 LABEL_11:
-  v35 = [[NWActivityDistributionStoreDescriptor alloc] _initWithGroupAndOptions:a4 groupTarget:v12];
+  v35 = [[NWActivityDistributionStoreDescriptor alloc] _initWithGroupAndOptions:group groupTarget:targetCopy];
   if (!v35)
   {
     v36 = WALogCategoryDefaultHandle();
@@ -8848,22 +8848,22 @@ LABEL_11:
   v47[1] = 3221225472;
   v47[2] = sub_1000703B8;
   v47[3] = &unk_1000EE188;
-  v48 = v14;
+  v48 = replyCopy;
   v49 = &v50;
-  [v35 findInterpolatedPercentileFromWiFiStats:v46 andReply:v47];
+  [v35 findInterpolatedPercentileFromWiFiStats:percentileCopy andReply:v47];
 
 LABEL_17:
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)populateChannelInfo:(id)a3
+- (void)populateChannelInfo:(id)info
 {
   v17 = 0;
-  v3 = a3;
+  infoCopy = info;
   v4 = +[WAApple80211Manager sharedObject];
-  v5 = [v4 getInfraApple80211];
+  getInfraApple80211 = [v4 getInfraApple80211];
 
-  if (!v5)
+  if (!getInfraApple80211)
   {
     v9 = WALogCategoryDefaultHandle();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -8881,7 +8881,7 @@ LABEL_17:
     goto LABEL_14;
   }
 
-  if ([v5 currentChannelInfo:&v16])
+  if ([getInfraApple80211 currentChannelInfo:&v16])
   {
     if ((v17 & 0x400) != 0)
     {
@@ -8934,10 +8934,10 @@ LABEL_15:
 
   v8 = 0;
 LABEL_16:
-  v13 = [v3 fieldForKey:@"NWACS_channel"];
+  v13 = [infoCopy fieldForKey:@"NWACS_channel"];
   [v13 setUint32Value:HIDWORD(v16)];
 
-  v14 = [v3 fieldForKey:@"NWACS_channelBandwidth"];
+  v14 = [infoCopy fieldForKey:@"NWACS_channelBandwidth"];
 
   [v14 setUint32Value:v8];
   v15 = WALogCategoryDefaultHandle();
@@ -8955,16 +8955,16 @@ LABEL_16:
   }
 }
 
-- (BOOL)populateApProfile:(id)a3
+- (BOOL)populateApProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [v4 fieldForKey:@"NWA_apProfile"];
+  profileCopy = profile;
+  v5 = [profileCopy fieldForKey:@"NWA_apProfile"];
   [v5 setStringValue:&stru_1000F04E0];
 
   v6 = +[WAApple80211Manager sharedObject];
-  v7 = [v6 getInfraApple80211];
+  getInfraApple80211 = [v6 getInfraApple80211];
 
-  if (!v7)
+  if (!getInfraApple80211)
   {
     v17 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -8983,8 +8983,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v8 = [v7 currentBSSIDandSSID];
-  if (!v8)
+  currentBSSIDandSSID = [getInfraApple80211 currentBSSIDandSSID];
+  if (!currentBSSIDandSSID)
   {
     v17 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -9000,7 +9000,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = v8;
+  v9 = currentBSSIDandSSID;
   [WAUtil incrementValueForKey:@"AnalyticsProcessor: AP Profile For BSSID" inMutableDict:self->_cachedUsage onQueue:self->_engineQ];
   v10 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
   v11 = [v9 objectForKeyedSubscript:@"bssid"];
@@ -9008,7 +9008,7 @@ LABEL_13:
 
   if (v12)
   {
-    v13 = [v4 fieldForKey:@"NWA_apProfile"];
+    v13 = [profileCopy fieldForKey:@"NWA_apProfile"];
     [v13 setStringValue:v12];
 
     v14 = WALogCategoryDefaultHandle();
@@ -9060,37 +9060,37 @@ LABEL_7:
   return v15;
 }
 
-- (BOOL)everAssociated:(BOOL)a3 assocDoneSuccess:(BOOL)a4
+- (BOOL)everAssociated:(BOOL)associated assocDoneSuccess:(BOOL)success
 {
-  v4 = a4;
-  v5 = a3;
-  if (a3 || a4)
+  successCopy = success;
+  associatedCopy = associated;
+  if (associated || success)
   {
-    v7 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    getInfraApple80211 = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(getInfraApple80211, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 136446978;
       v12 = "[WAEngine everAssociated:assocDoneSuccess:]";
       v13 = 1024;
       v14 = 4081;
       v15 = 1024;
-      v16 = v5;
+      v16 = associatedCopy;
       v17 = 1024;
-      v18 = v4;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:everAssociated true due to hasLinkChanged %d hasAssocDoneSuccess %d", &v11, 0x1Eu);
+      v18 = successCopy;
+      _os_log_impl(&_mh_execute_header, getInfraApple80211, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:everAssociated true due to hasLinkChanged %d hasAssocDoneSuccess %d", &v11, 0x1Eu);
     }
 
-    v8 = 1;
+    everAssociated = 1;
   }
 
   else
   {
     v6 = +[WAApple80211Manager sharedObject];
-    v7 = [v6 getInfraApple80211];
+    getInfraApple80211 = [v6 getInfraApple80211];
 
-    if (v7)
+    if (getInfraApple80211)
     {
-      v8 = [v7 everAssociated];
+      everAssociated = [getInfraApple80211 everAssociated];
     }
 
     else
@@ -9105,31 +9105,31 @@ LABEL_7:
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}s::%d:invalid apple80211API", &v11, 0x12u);
       }
 
-      v7 = WALogCategoryDefaultHandle();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      getInfraApple80211 = WALogCategoryDefaultHandle();
+      if (os_log_type_enabled(getInfraApple80211, OS_LOG_TYPE_ERROR))
       {
         v11 = 136446466;
         v12 = "[WAEngine everAssociated:assocDoneSuccess:]";
         v13 = 1024;
         v14 = 4095;
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:everAssociated failed", &v11, 0x12u);
+        _os_log_impl(&_mh_execute_header, getInfraApple80211, OS_LOG_TYPE_ERROR, "%{public}s::%d:everAssociated failed", &v11, 0x12u);
       }
 
-      v8 = 0;
+      everAssociated = 0;
     }
   }
 
-  return v8;
+  return everAssociated;
 }
 
 - (BOOL)isAssociated
 {
   v2 = +[WAApple80211Manager sharedObject];
-  v3 = [v2 getInfraApple80211];
+  getInfraApple80211 = [v2 getInfraApple80211];
 
-  if (v3)
+  if (getInfraApple80211)
   {
-    v4 = [v3 isAssociated];
+    isAssociated = [getInfraApple80211 isAssociated];
   }
 
   else
@@ -9154,20 +9154,20 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:everAssociated failed", &v8, 0x12u);
     }
 
-    v4 = 0;
+    isAssociated = 0;
   }
 
-  return v4;
+  return isAssociated;
 }
 
 - (BOOL)isAXAssociatoin
 {
   v2 = +[WAApple80211Manager sharedObject];
-  v3 = [v2 getInfraApple80211];
+  getInfraApple80211 = [v2 getInfraApple80211];
 
-  if (v3)
+  if (getInfraApple80211)
   {
-    v4 = [v3 isAXAssociatoin];
+    isAXAssociatoin = [getInfraApple80211 isAXAssociatoin];
   }
 
   else
@@ -9192,16 +9192,16 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%{public}s::%d:isAXAssociatoin failed", &v8, 0x12u);
     }
 
-    v4 = 0;
+    isAXAssociatoin = 0;
   }
 
-  return v4;
+  return isAXAssociatoin;
 }
 
-- (void)gatherConsecutiveDatapathReadings:(int64_t)a3 forProcessToken:(id)a4 andReply:(id)a5
+- (void)gatherConsecutiveDatapathReadings:(int64_t)readings forProcessToken:(id)token andReply:(id)reply
 {
-  v7 = a4;
-  v58 = a5;
+  tokenCopy = token;
+  replyCopy = reply;
   group = dispatch_group_create();
   v51 = dispatch_semaphore_create(0);
   v8 = dispatch_semaphore_create(0);
@@ -9236,8 +9236,8 @@ LABEL_7:
   v97 = &v108;
   dsema = v8;
   v96 = dsema;
-  v56 = v7;
-  [(WAEngine *)self _getNewMessageForKey:@"DPSR" groupType:4 forProcessToken:v7 shouldCheckForPrePopulation:0 andReply:v95];
+  v56 = tokenCopy;
+  [(WAEngine *)self _getNewMessageForKey:@"DPSR" groupType:4 forProcessToken:tokenCopy shouldCheckForPrePopulation:0 andReply:v95];
   v9 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(dsema, v9);
   v10 = WALogCategoryDefaultHandle();
@@ -9254,21 +9254,21 @@ LABEL_7:
   {
     if (self->_dnsStudyInProgress)
     {
-      v55 = [(WAEngine *)self fetchConfiguredDnsInfo];
+      fetchConfiguredDnsInfo = [(WAEngine *)self fetchConfiguredDnsInfo];
       [(WAEngine *)self triggerPeerDiscovery];
     }
 
     else
     {
-      v55 = 1;
+      fetchConfiguredDnsInfo = 1;
     }
 
-    v57 = [(WAEngine *)self _DPSQuickRecoveryEngineObj];
+    _DPSQuickRecoveryEngineObj = [(WAEngine *)self _DPSQuickRecoveryEngineObj];
     v11 = [v109[5] fieldForKey:@"DPSR_dpsEpiloge"];
-    v12 = [v11 subMessageValue];
-    v13 = [v12 fieldForKey:@"DPSE_qDpsStats"];
-    v14 = [v13 subMessageValue];
-    [v57 updateTimeSincePreviousTriggerForQuickDps:v14];
+    subMessageValue = [v11 subMessageValue];
+    v13 = [subMessageValue fieldForKey:@"DPSE_qDpsStats"];
+    subMessageValue2 = [v13 subMessageValue];
+    [_DPSQuickRecoveryEngineObj updateTimeSincePreviousTriggerForQuickDps:subMessageValue2];
 
     v15 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -9281,8 +9281,8 @@ LABEL_7:
     }
 
     dispatch_group_enter(group);
-    v16 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-    v17 = dispatch_time(0, 1000000000 * [v16 dps_report_sent_after]);
+    preferences = [(RecommendationEngine *)self->_recommendationEngine preferences];
+    v17 = dispatch_time(0, 1000000000 * [preferences dps_report_sent_after]);
     dpsReadWriteSerialQueue = self->_dpsReadWriteSerialQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -9311,23 +9311,23 @@ LABEL_7:
     v89[1] = v89;
     v89[2] = 0x2020000000;
     v90 = 1;
-    v20 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-    v21 = [v20 dps_duration_between_samples];
+    preferences2 = [(RecommendationEngine *)self->_recommendationEngine preferences];
+    dps_duration_between_samples = [preferences2 dps_duration_between_samples];
 
     if (self->_dnsStudyInProgress)
     {
-      v60 = [(RecommendationPreferences *)self->_preferences dns_symptoms_interrogation_sample_count];
-      v22 = [(RecommendationPreferences *)self->_preferences dns_symptoms_trap_evaluated_at_sample];
-      v54 = [(RecommendationPreferences *)self->_preferences dns_symptoms_trap_evaluated_at_sample];
-      v23 = v22 - 1;
+      dns_symptoms_interrogation_sample_count = [(RecommendationPreferences *)self->_preferences dns_symptoms_interrogation_sample_count];
+      dns_symptoms_trap_evaluated_at_sample = [(RecommendationPreferences *)self->_preferences dns_symptoms_trap_evaluated_at_sample];
+      dns_symptoms_trap_evaluated_at_sample2 = [(RecommendationPreferences *)self->_preferences dns_symptoms_trap_evaluated_at_sample];
+      v23 = dns_symptoms_trap_evaluated_at_sample - 1;
     }
 
     else
     {
-      v24 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-      v60 = [v24 dps_interrogation_sample_count];
+      preferences3 = [(RecommendationEngine *)self->_recommendationEngine preferences];
+      dns_symptoms_interrogation_sample_count = [preferences3 dps_interrogation_sample_count];
 
-      v54 = 0;
+      dns_symptoms_trap_evaluated_at_sample2 = 0;
       v23 = 1;
     }
 
@@ -9340,14 +9340,14 @@ LABEL_7:
       v116 = 1024;
       v117 = 4197;
       v118 = 2048;
-      *v119 = v60;
+      *v119 = dns_symptoms_interrogation_sample_count;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:DPS: interrogationCount: %lu", buf, 0x1Cu);
     }
 
-    if (v60)
+    if (dns_symptoms_interrogation_sample_count)
     {
       v26 = 0;
-      for (i = 0; i < v60; v26 = ++i)
+      for (i = 0; i < dns_symptoms_interrogation_sample_count; v26 = ++i)
       {
         v28 = dispatch_semaphore_create(0);
         if (!self->_dnsStudyInProgress)
@@ -9357,32 +9357,32 @@ LABEL_7:
 
         if (i && v59 >= v26)
         {
-          v29 = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_before_trap];
+          dns_symptoms_duration_between_samples_before_trap = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_before_trap];
         }
 
-        else if (v54 == v26)
+        else if (dns_symptoms_trap_evaluated_at_sample2 == v26)
         {
-          v29 = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_during_recovery];
+          dns_symptoms_duration_between_samples_before_trap = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_during_recovery];
         }
 
         else
         {
-          if (v54 + 1 == v26)
+          if (dns_symptoms_trap_evaluated_at_sample2 + 1 == v26)
           {
-            v37 = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_during_recovery];
-            v21 = v37 - [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_after_trap];
+            dns_symptoms_duration_between_samples_during_recovery = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_during_recovery];
+            dps_duration_between_samples = dns_symptoms_duration_between_samples_during_recovery - [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_after_trap];
             goto LABEL_25;
           }
 
-          if (v54 >= v26)
+          if (dns_symptoms_trap_evaluated_at_sample2 >= v26)
           {
             goto LABEL_25;
           }
 
-          v29 = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_after_trap];
+          dns_symptoms_duration_between_samples_before_trap = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_samples_after_trap];
         }
 
-        v21 = v29;
+        dps_duration_between_samples = dns_symptoms_duration_between_samples_before_trap;
 LABEL_25:
         v30 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -9394,7 +9394,7 @@ LABEL_25:
           v118 = 1024;
           *v119 = i;
           *&v119[4] = 2048;
-          *&v119[6] = v21;
+          *&v119[6] = dps_duration_between_samples;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:DNS-Failure-Recovery:: scheduling study Instance %d (will start after:%lu)", buf, 0x22u);
         }
 
@@ -9409,11 +9409,11 @@ LABEL_28:
           v118 = 1024;
           *v119 = i;
           *&v119[4] = 2048;
-          *&v119[6] = v21;
+          *&v119[6] = dps_duration_between_samples;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:DPS: sample:%u durationBetweenSamples: %lu", buf, 0x22u);
         }
 
-        v32 = dispatch_time(0, 1000000 * v21);
+        v32 = dispatch_time(0, 1000000 * dps_duration_between_samples);
         v33 = self->_dpsReadWriteSerialQueue;
         v78[0] = _NSConcreteStackBlock;
         v78[1] = 3221225472;
@@ -9424,7 +9424,7 @@ LABEL_28:
         v81 = v89;
         v82 = v91;
         v85 = v59;
-        v86 = v60;
+        v86 = dns_symptoms_interrogation_sample_count;
         v87 = 4;
         v79 = v56;
         v83 = v98;
@@ -9442,15 +9442,15 @@ LABEL_28:
         v72 = &v108;
         v69[4] = self;
         v76 = i;
-        v70 = v57;
+        v70 = _DPSQuickRecoveryEngineObj;
         v73 = v89;
         v74 = v106;
-        v71 = v58;
+        v71 = replyCopy;
         v75 = v91;
-        v77 = v55;
+        v77 = fetchConfiguredDnsInfo;
         dispatch_async(v36, v69);
 
-        if (v60 - 1 == v26)
+        if (dns_symptoms_interrogation_sample_count - 1 == v26)
         {
           v38 = WALogCategoryDefaultHandle();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
@@ -9478,29 +9478,29 @@ LABEL_28:
       }
     }
 
-    v40 = [(WAEngine *)self engineQ];
+    engineQ = [(WAEngine *)self engineQ];
     v61[0] = _NSConcreteStackBlock;
     v61[1] = 3221225472;
     v61[2] = sub_100074FF8;
     v61[3] = &unk_1000EE2F0;
     v64 = &v108;
     v61[4] = self;
-    v67 = v60;
+    v67 = dns_symptoms_interrogation_sample_count;
     v62 = v56;
     v65 = &v100;
     v68 = 4;
     v66 = v106;
     v41 = v51;
     v63 = v41;
-    dispatch_group_notify(v49, v40, v61);
+    dispatch_group_notify(v49, engineQ, v61);
 
     _Block_object_dispose(v89, 8);
     _Block_object_dispose(v91, 8);
 
-    if (a3 == 1)
+    if (readings == 1)
     {
-      v42 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-      v43 = dispatch_time(0, 1000000000 * [v42 dps_report_sent_after] + 5000000000);
+      preferences4 = [(RecommendationEngine *)self->_recommendationEngine preferences];
+      v43 = dispatch_time(0, 1000000000 * [preferences4 dps_report_sent_after] + 5000000000);
       dispatch_semaphore_wait(v41, v43);
 
       v44 = WALogCategoryDefaultHandle();
@@ -9552,10 +9552,10 @@ LABEL_47:
     v48 = v101[5];
     v101[5] = v47;
 
-    v57 = 0;
+    _DPSQuickRecoveryEngineObj = 0;
   }
 
-  (*(v58 + 2))(v58, v109[5], v101[5]);
+  (*(replyCopy + 2))(replyCopy, v109[5], v101[5]);
   _Block_object_dispose(v98, 8);
 
   _Block_object_dispose(&v100, 8);
@@ -9564,11 +9564,11 @@ LABEL_47:
   _Block_object_dispose(&v108, 8);
 }
 
-- (void)_triggerDPSStudy:(int64_t)a3 forProcessToken:(id)a4 waMessage:(id)a5 andReply:(id)a6
+- (void)_triggerDPSStudy:(int64_t)study forProcessToken:(id)token waMessage:(id)message andReply:(id)reply
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  tokenCopy = token;
+  messageCopy = message;
+  replyCopy = reply;
   v109 = dispatch_semaphore_create(0);
   v13 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -9583,7 +9583,7 @@ LABEL_47:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:_dpsStudyInProgress is %d", buf, 0x18u);
   }
 
-  v15 = [v11 key];
+  v15 = [messageCopy key];
   v16 = [v15 isEqualToString:@"DPSN"];
 
   if (!v16)
@@ -9610,7 +9610,7 @@ LABEL_47:
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Not adding dpsStatsContainer while _dpsCurrentlyGatheringConsecutiveSamples", buf, 0x12u);
       }
 
-      v22 = v10;
+      v22 = tokenCopy;
     }
 
     else
@@ -9629,8 +9629,8 @@ LABEL_47:
       v115[2] = sub_100078B58;
       v115[3] = &unk_1000EE340;
       v115[4] = self;
-      v22 = v10;
-      [(WAEngine *)self _getNewMessageForKey:@"DPSCS" groupType:4 forProcessToken:v10 shouldCheckForPrePopulation:1 andReply:v115];
+      v22 = tokenCopy;
+      [(WAEngine *)self _getNewMessageForKey:@"DPSCS" groupType:4 forProcessToken:tokenCopy shouldCheckForPrePopulation:1 andReply:v115];
     }
   }
 
@@ -9658,30 +9658,30 @@ LABEL_109:
       goto LABEL_110;
     }
 
-    v28 = [v11 fieldForKey:@"DPSN_symptom"];
-    v29 = [v28 int32Value];
+    v28 = [messageCopy fieldForKey:@"DPSN_symptom"];
+    int32Value = [v28 int32Value];
 
-    v107 = v29;
-    v108 = a3;
-    if (v29)
+    v107 = int32Value;
+    studyCopy = study;
+    if (int32Value)
     {
-      v30 = [v11 fieldForKey:@"DPSN_symptom"];
-      v31 = [v30 int32Value];
+      v30 = [messageCopy fieldForKey:@"DPSN_symptom"];
+      int32Value2 = [v30 int32Value];
 
       v32 = WALogCategoryDefaultHandle();
       v24 = v32;
-      if (v31 != 4)
+      if (int32Value2 != 4)
       {
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
         {
-          v105 = [v11 fieldForKey:@"DPSN_symptom"];
-          v106 = [v105 int32Value];
+          v105 = [messageCopy fieldForKey:@"DPSN_symptom"];
+          int32Value3 = [v105 int32Value];
           *buf = 136446722;
           v119 = "[WAEngine _triggerDPSStudy:forProcessToken:waMessage:andReply:]";
           v120 = 1024;
           v121 = 4796;
           v122 = 1024;
-          LODWORD(v123) = v106;
+          LODWORD(v123) = int32Value3;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Got Stall Notification for symptom:%d when not currently in study, so ignore..", buf, 0x18u);
         }
 
@@ -9746,13 +9746,13 @@ LABEL_109:
     [(WAEngine *)self setDpsStudyTransaction:v40];
 
     self->_dpsAction = 0;
-    v41 = [v11 fieldForKey:@"DPSN_timestamp"];
+    v41 = [messageCopy fieldForKey:@"DPSN_timestamp"];
     self->_dpsNotificationTimeInSeconds = [v41 uint64Value] / 0x3E8;
 
-    v42 = [v11 fieldForKey:@"DPSN_cca"];
+    v42 = [messageCopy fieldForKey:@"DPSN_cca"];
     self->_dpsNotificationCCA = [v42 uint32Value];
 
-    v43 = [v11 fieldForKey:@"DPSN_isNANEnabled"];
+    v43 = [messageCopy fieldForKey:@"DPSN_isNANEnabled"];
     self->_isNANEnabled = [v43 BOOLValue];
 
     v44 = WALogCategoryDefaultHandle();
@@ -9774,9 +9774,9 @@ LABEL_109:
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:DPS: NAN Status:%s", buf, 0x1Cu);
     }
 
-    v22 = v10;
+    v22 = tokenCopy;
 
-    a3 = v108;
+    study = studyCopy;
     if (!v107)
     {
       peerDiagnosticsStudyQueue = self->_peerDiagnosticsStudyQueue;
@@ -9789,27 +9789,27 @@ LABEL_109:
       dispatch_async(peerDiagnosticsStudyQueue, v116);
     }
 
-    v48 = [v11 fieldForKey:@"DPSN_facetimeCallInProgress"];
+    v48 = [messageCopy fieldForKey:@"DPSN_facetimeCallInProgress"];
     self->_isCriticalAppInUse = [v48 BOOLValue];
 
     v49 = +[NSDate date];
     [(NSMutableDictionary *)self->_studyTimeStamps setObject:v49 forKeyedSubscript:@"start"];
 
-    v50 = [v11 fieldForKey:@"DPSN_timestamp"];
+    v50 = [messageCopy fieldForKey:@"DPSN_timestamp"];
     [v50 setUint64Value:v23];
   }
 
-  v51 = [v11 fieldForKey:@"DPSN_symptom"];
+  v51 = [messageCopy fieldForKey:@"DPSN_symptom"];
   if ([v51 int32Value] == 2)
   {
   }
 
   else
   {
-    v52 = [v11 fieldForKey:@"DPSN_symptom"];
-    v53 = [v52 int32Value];
+    v52 = [messageCopy fieldForKey:@"DPSN_symptom"];
+    int32Value4 = [v52 int32Value];
 
-    if (v53 != 3)
+    if (int32Value4 != 3)
     {
       goto LABEL_37;
     }
@@ -9817,7 +9817,7 @@ LABEL_109:
 
   self->_dpsAction |= 0x20u;
 LABEL_37:
-  v54 = [v11 fieldForKey:@"DPSN_symptom"];
+  v54 = [messageCopy fieldForKey:@"DPSN_symptom"];
   if ([v54 int32Value] == 2)
   {
     v55 = [(NSMutableDictionary *)self->_studyTimeStamps objectForKeyedSubscript:@"userToggle"];
@@ -9832,7 +9832,7 @@ LABEL_37:
   }
 
 LABEL_41:
-  v56 = [v11 fieldForKey:@"DPSN_symptom"];
+  v56 = [messageCopy fieldForKey:@"DPSN_symptom"];
   if ([v56 int32Value] == 2)
   {
     v57 = [(NSMutableDictionary *)self->_studyTimeStamps objectForKeyedSubscript:@"decisionInstance"];
@@ -9850,7 +9850,7 @@ LABEL_41:
   }
 
 LABEL_45:
-  v58 = [v11 fieldForKey:@"DPSN_symptom"];
+  v58 = [messageCopy fieldForKey:@"DPSN_symptom"];
   if ([v58 int32Value] == 2 && (-[NSMutableDictionary objectForKeyedSubscript:](self->_studyTimeStamps, "objectForKeyedSubscript:", @"decisionInstance"), (v59 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v60 = v59;
@@ -9866,7 +9866,7 @@ LABEL_45:
   {
   }
 
-  v62 = [v11 fieldForKey:@"DPSN_symptom"];
+  v62 = [messageCopy fieldForKey:@"DPSN_symptom"];
   if ([v62 int32Value] == 3)
   {
     v63 = [(NSMutableDictionary *)self->_studyTimeStamps objectForKeyedSubscript:@"decisionInstance"];
@@ -9881,12 +9881,12 @@ LABEL_45:
   {
   }
 
-  v64 = [v11 fieldForKey:@"DPSN_symptom"];
+  v64 = [messageCopy fieldForKey:@"DPSN_symptom"];
   if ([v64 int32Value] == 3)
   {
     v65 = [(NSMutableDictionary *)self->_studyTimeStamps objectForKeyedSubscript:@"decisionInstance"];
 
-    v10 = v22;
+    tokenCopy = v22;
     if (v65)
     {
       [(NSMutableDictionary *)self->_studyTimeStamps setObject:&__kCFBooleanTrue forKeyedSubscript:@"LinkUpAfterDecision"];
@@ -9896,10 +9896,10 @@ LABEL_45:
   else
   {
 
-    v10 = v22;
+    tokenCopy = v22;
   }
 
-  v66 = [v11 fieldForKey:@"DPSN_symptom"];
+  v66 = [messageCopy fieldForKey:@"DPSN_symptom"];
   if ([v66 int32Value])
   {
   }
@@ -9924,14 +9924,14 @@ LABEL_45:
     _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Adding DPSR_stallNotifications", buf, 0x12u);
   }
 
-  [(NSMutableArray *)self->_dpsnToAppend addObject:v11];
+  [(NSMutableArray *)self->_dpsnToAppend addObject:messageCopy];
 LABEL_65:
   if (!self->_dpsStudyInProgress)
   {
     v24 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v76 = [v11 key];
+      v76 = [messageCopy key];
       v77 = self->_dpsStudyInProgress;
       *buf = 136446978;
       v119 = "[WAEngine _triggerDPSStudy:forProcessToken:waMessage:andReply:]";
@@ -9947,12 +9947,12 @@ LABEL_65:
     goto LABEL_110;
   }
 
-  v69 = [v11 key];
+  v69 = [messageCopy key];
   v70 = [v69 isEqualToString:@"DPSAPS"];
 
   if (v70)
   {
-    v71 = [v11 fieldForKey:@"DPSAPS_timestamp"];
+    v71 = [messageCopy fieldForKey:@"DPSAPS_timestamp"];
     [v71 setUint64Value:{+[WAUtil getAWDTimestamp](WAUtil, "getAWDTimestamp")}];
 
     v72 = WALogCategoryDefaultHandle();
@@ -9963,11 +9963,11 @@ LABEL_65:
       v120 = 1024;
       v121 = 4884;
       v122 = 2112;
-      v123 = v11;
+      v123 = messageCopy;
       _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Adding DPSR_probeResults %@", buf, 0x1Cu);
     }
 
-    [(NSMutableArray *)self->_dpsapToAppend addObject:v11];
+    [(NSMutableArray *)self->_dpsapToAppend addObject:messageCopy];
     v73 = self->_dpsCurrentlyGatheringConsecutiveSamples;
     v74 = WALogCategoryDefaultHandle();
     v75 = os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT);
@@ -9999,16 +9999,16 @@ LABEL_65:
       v114[2] = sub_100078CA8;
       v114[3] = &unk_1000EE340;
       v114[4] = self;
-      [(WAEngine *)self _getNewMessageForKey:@"DPSCS" groupType:4 forProcessToken:v10 shouldCheckForPrePopulation:1 andReply:v114];
+      [(WAEngine *)self _getNewMessageForKey:@"DPSCS" groupType:4 forProcessToken:tokenCopy shouldCheckForPrePopulation:1 andReply:v114];
     }
   }
 
-  v78 = [v11 key];
+  v78 = [messageCopy key];
   v79 = [v78 isEqualToString:@"WFAAWDWADAAD"];
 
   if (v79)
   {
-    v80 = [v11 fieldForKey:@"WFAAWDWADAAD_timestamp"];
+    v80 = [messageCopy fieldForKey:@"WFAAWDWADAAD_timestamp"];
     [v80 setUint64Value:{+[WAUtil getAWDTimestamp](WAUtil, "getAWDTimestamp")}];
 
     v81 = WALogCategoryDefaultHandle();
@@ -10019,12 +10019,12 @@ LABEL_65:
       v120 = 1024;
       v121 = 4905;
       v122 = 2112;
-      v123 = v11;
+      v123 = messageCopy;
       _os_log_impl(&_mh_execute_header, v81, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Adding DPSE_associationChanges %@", buf, 0x1Cu);
     }
 
-    [(NSMutableArray *)self->_assocDiffToAppend addObject:v11];
-    v82 = [v11 fieldForKey:@"WFAAWDWADAAD_eventType"];
+    [(NSMutableArray *)self->_assocDiffToAppend addObject:messageCopy];
+    v82 = [messageCopy fieldForKey:@"WFAAWDWADAAD_eventType"];
     if ([v82 int32Value]== 5)
     {
       v83 = [(NSMutableDictionary *)self->_studyTimeStamps objectForKeyedSubscript:@"decisionInstance"];
@@ -10041,7 +10041,7 @@ LABEL_65:
         v86 = +[NSDate date];
         [(NSMutableDictionary *)self->_studyTimeStamps setObject:v86 forKeyedSubscript:@"IPConfiguredEventTimeStamp"];
 
-        v87 = [v11 fieldForKey:@"WFAAWDWADAAD_additionalInfo"];
+        v87 = [messageCopy fieldForKey:@"WFAAWDWADAAD_additionalInfo"];
         v88 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v87 uint32Value]);
         [(NSMutableDictionary *)self->_studyTimeStamps setObject:v88 forKeyedSubscript:@"IPAddressTypeOnInterface"];
 
@@ -10095,11 +10095,11 @@ LABEL_87:
       v113[2] = sub_100078DC8;
       v113[3] = &unk_1000EE340;
       v113[4] = self;
-      [(WAEngine *)self _getNewMessageForKey:@"DPSCS" groupType:4 forProcessToken:v10 shouldCheckForPrePopulation:1 andReply:v113];
+      [(WAEngine *)self _getNewMessageForKey:@"DPSCS" groupType:4 forProcessToken:tokenCopy shouldCheckForPrePopulation:1 andReply:v113];
     }
   }
 
-  v94 = [v11 key];
+  v94 = [messageCopy key];
   v95 = [v94 isEqualToString:@"WFAAWDWAAAPI"];
 
   if (v95)
@@ -10112,14 +10112,14 @@ LABEL_87:
       v120 = 1024;
       v121 = 4932;
       v122 = 2112;
-      v123 = v11;
+      v123 = messageCopy;
       _os_log_impl(&_mh_execute_header, v96, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Adding DPSE_accessPointInfo %@", buf, 0x1Cu);
     }
 
-    [(NSMutableArray *)self->_accessPointInfoToAppend addObject:v11];
+    [(NSMutableArray *)self->_accessPointInfoToAppend addObject:messageCopy];
   }
 
-  v97 = [v11 key];
+  v97 = [messageCopy key];
   v98 = [v97 isEqualToString:@"USBEN"];
 
   if (v98)
@@ -10132,11 +10132,11 @@ LABEL_87:
       v120 = 1024;
       v121 = 4937;
       v122 = 2112;
-      v123 = v11;
+      v123 = messageCopy;
       _os_log_impl(&_mh_execute_header, v99, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Adding DPSR_usbEvent %@", buf, 0x1Cu);
     }
 
-    [(NSMutableArray *)self->_usbEventNotificationToAppend addObject:v11];
+    [(NSMutableArray *)self->_usbEventNotificationToAppend addObject:messageCopy];
   }
 
   if (v18)
@@ -10147,15 +10147,15 @@ LABEL_87:
     v110[2] = sub_100078EE8;
     v110[3] = &unk_1000EE368;
     v110[4] = self;
-    v111 = v10;
+    v111 = tokenCopy;
     v101 = v109;
     v112 = v101;
     dispatch_async(studyQueue, v110);
 
-    if (a3 == 1)
+    if (study == 1)
     {
-      v102 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-      v103 = dispatch_time(0, 1000000000 * [v102 dps_report_sent_after] + 5000000000);
+      preferences = [(RecommendationEngine *)self->_recommendationEngine preferences];
+      v103 = dispatch_time(0, 1000000000 * [preferences dps_report_sent_after] + 5000000000);
       dispatch_semaphore_wait(v101, v103);
 
       v24 = WALogCategoryDefaultHandle();
@@ -10190,7 +10190,7 @@ LABEL_108:
 LABEL_110:
   }
 
-  (*(v12 + 2))(v12, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 0, 0);
 }
 
 - (BOOL)isInternalScenario
@@ -10198,9 +10198,9 @@ LABEL_110:
   sub_1000548E8();
   if (objc_opt_class())
   {
-    v3 = [(WAEngine *)self getW5Client];
+    getW5Client = [(WAEngine *)self getW5Client];
     v9 = 0;
-    v4 = [v3 queryDebugConfigurationForPeer:0 error:&v9];
+    v4 = [getW5Client queryDebugConfigurationForPeer:0 error:&v9];
     v5 = v9;
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -10227,9 +10227,9 @@ LABEL_110:
   return v7;
 }
 
-- (void)triggerPeerDiagnosticsStudy:(unint64_t)a3 symptomsDnsStats:(id)a4
+- (void)triggerPeerDiagnosticsStudy:(unint64_t)study symptomsDnsStats:(id)stats
 {
-  v6 = a4;
+  statsCopy = stats;
   v7 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -10238,14 +10238,14 @@ LABEL_110:
     *&buf[12] = 1024;
     *&buf[14] = 4978;
     *&buf[18] = 1024;
-    *&buf[20] = a3;
+    *&buf[20] = study;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:PeerDiagnostics: triggerPeerDiagnosticsStudy with type:%d", buf, 0x18u);
   }
 
-  v8 = [(WAEngine *)self isInternalScenario];
-  if (a3)
+  isInternalScenario = [(WAEngine *)self isInternalScenario];
+  if (study)
   {
-    v9 = v8;
+    v9 = isInternalScenario;
   }
 
   else
@@ -10274,11 +10274,11 @@ LABEL_110:
     v47 = 0;
     if ([(WAEngine *)self isWiFiAssociatedToNetwork])
     {
-      v13 = [(WAEngine *)self _DPSQuickRecoveryEngineObj];
-      v14 = v13;
-      if (v13)
+      _DPSQuickRecoveryEngineObj = [(WAEngine *)self _DPSQuickRecoveryEngineObj];
+      v14 = _DPSQuickRecoveryEngineObj;
+      if (_DPSQuickRecoveryEngineObj)
       {
-        if ([v13 isPeerDiagnosticsTriggerAllowed:a3])
+        if ([_DPSQuickRecoveryEngineObj isPeerDiagnosticsTriggerAllowed:study])
         {
           sub_100079974();
           if (objc_opt_class())
@@ -10286,8 +10286,8 @@ LABEL_110:
             sub_1000548E8();
             if (objc_opt_class())
             {
-              v15 = [(WAEngine *)self getW5Client];
-              if (v15)
+              getW5Client = [(WAEngine *)self getW5Client];
+              if (getW5Client)
               {
                 v16 = [sub_100079974() requestWithTestID:60 configuration:0];
                 v54 = v16;
@@ -10300,7 +10300,7 @@ LABEL_110:
                 v40 = buf;
                 v41 = &v42;
                 v39 = v10;
-                v18 = [v15 runDiagnostics:v17 configuration:0 update:0 reply:v38];
+                v18 = [getW5Client runDiagnostics:v17 configuration:0 update:0 reply:v38];
               }
 
               v19 = dispatch_time(0, 6000000000);
@@ -10325,21 +10325,21 @@ LABEL_110:
         }
       }
 
-      if (a3)
+      if (study)
       {
         goto LABEL_35;
       }
 
-      v22 = [v6 fieldForKey:@"DPSR_dpsEpiloge"];
-      v23 = [v22 subMessageValue];
-      v24 = [v23 fieldForKey:@"DPSE_symptomsDnsStats"];
-      v25 = [v24 subMessageValue];
+      v22 = [statsCopy fieldForKey:@"DPSR_dpsEpiloge"];
+      subMessageValue = [v22 subMessageValue];
+      v24 = [subMessageValue fieldForKey:@"DPSE_symptomsDnsStats"];
+      subMessageValue2 = [v24 subMessageValue];
       LODWORD(v37) = self->_cumulativeAverageCcaSinceStudyStart;
-      v26 = [v14 recommendSymptomsDpsRecovery:0 symptomsDnsStats:v25 awdlState:self->_isAWDLActivitySuspected currentSymptomsCondition:self->_isPoorSymptomsDnsConditions isLANPingSuccessful:self->_isGatewayReachable appUsage:self->_isCriticalAppInUse averageCCA:v37 driverType:self->_driverType];
+      v26 = [v14 recommendSymptomsDpsRecovery:0 symptomsDnsStats:subMessageValue2 awdlState:self->_isAWDLActivitySuspected currentSymptomsCondition:self->_isPoorSymptomsDnsConditions isLANPingSuccessful:self->_isGatewayReachable appUsage:self->_isCriticalAppInUse averageCCA:v37 driverType:self->_driverType];
 
-      v27 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-      v28 = [(WAEngine *)self infraInterfaceName];
-      v29 = [v27 objectForKeyedSubscript:v28];
+      interfaceNameToApple80211InstanceMap = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+      infraInterfaceName = [(WAEngine *)self infraInterfaceName];
+      v29 = [interfaceNameToApple80211InstanceMap objectForKeyedSubscript:infraInterfaceName];
       LODWORD(v24) = v29 == 0;
 
       if (v24)
@@ -10348,8 +10348,8 @@ LABEL_110:
       }
 
       [(WAEngine *)self _persist];
-      v30 = WALogCategoryDefaultHandle();
-      v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
+      interfaceNameToApple80211InstanceMap2 = WALogCategoryDefaultHandle();
+      v31 = os_log_type_enabled(interfaceNameToApple80211InstanceMap2, OS_LOG_TYPE_DEFAULT);
       if (v26 == 2)
       {
         if (v31)
@@ -10358,13 +10358,13 @@ LABEL_110:
           v49 = "[WAEngine triggerPeerDiagnosticsStudy:symptomsDnsStats:]";
           v50 = 1024;
           v51 = 5035;
-          _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:PeerDiagnostics: Triggering Reassoc for symptoms-dps", v48, 0x12u);
+          _os_log_impl(&_mh_execute_header, interfaceNameToApple80211InstanceMap2, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:PeerDiagnostics: Triggering Reassoc for symptoms-dps", v48, 0x12u);
         }
 
         self->_dpsAction |= 0x80u;
-        v30 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-        v34 = [(WAEngine *)self infraInterfaceName];
-        v35 = [v30 objectForKeyedSubscript:v34];
+        interfaceNameToApple80211InstanceMap2 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+        infraInterfaceName2 = [(WAEngine *)self infraInterfaceName];
+        v35 = [interfaceNameToApple80211InstanceMap2 objectForKeyedSubscript:infraInterfaceName2];
         [v35 triggerReassociation:@"DNSFailureRecovery-Reassoc-Only"];
       }
 
@@ -10376,13 +10376,13 @@ LABEL_110:
           v49 = "[WAEngine triggerPeerDiagnosticsStudy:symptomsDnsStats:]";
           v50 = 1024;
           v51 = 5031;
-          _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:PeerDiagnostics: Triggering Trap for symptoms-dps", v48, 0x12u);
+          _os_log_impl(&_mh_execute_header, interfaceNameToApple80211InstanceMap2, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:PeerDiagnostics: Triggering Trap for symptoms-dps", v48, 0x12u);
         }
 
         self->_dpsAction |= 0x40u;
-        v30 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-        v32 = [(WAEngine *)self infraInterfaceName];
-        v33 = [v30 objectForKeyedSubscript:v32];
+        interfaceNameToApple80211InstanceMap2 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+        infraInterfaceName3 = [(WAEngine *)self infraInterfaceName];
+        v33 = [interfaceNameToApple80211InstanceMap2 objectForKeyedSubscript:infraInterfaceName3];
         [v33 triggerDpsReset:@"TrapOnDNSSymptoms" metaData:0];
       }
 
@@ -10392,20 +10392,20 @@ LABEL_110:
         v49 = "[WAEngine triggerPeerDiagnosticsStudy:symptomsDnsStats:]";
         v50 = 1024;
         v51 = 5039;
-        _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:PeerDiagnostics: No Recovery Action recommended for symptoms-dps", v48, 0x12u);
+        _os_log_impl(&_mh_execute_header, interfaceNameToApple80211InstanceMap2, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:PeerDiagnostics: No Recovery Action recommended for symptoms-dps", v48, 0x12u);
       }
     }
 
     else
     {
-      v30 = WALogCategoryDefaultHandle();
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      interfaceNameToApple80211InstanceMap2 = WALogCategoryDefaultHandle();
+      if (os_log_type_enabled(interfaceNameToApple80211InstanceMap2, OS_LOG_TYPE_ERROR))
       {
         *v48 = 136446466;
         v49 = "[WAEngine triggerPeerDiagnosticsStudy:symptomsDnsStats:]";
         v50 = 1024;
         v51 = 4991;
-        _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%{public}s::%d:WiFi disassocited during study so not continuing...", v48, 0x12u);
+        _os_log_impl(&_mh_execute_header, interfaceNameToApple80211InstanceMap2, OS_LOG_TYPE_ERROR, "%{public}s::%d:WiFi disassocited during study so not continuing...", v48, 0x12u);
       }
 
       v14 = 0;
@@ -10434,10 +10434,10 @@ LABEL_35:
 LABEL_36:
 }
 
-- (void)gatherConsecutiveLinkQualitySamples:(int64_t)a3 forProcessToken:(id)a4 andReply:(id)a5
+- (void)gatherConsecutiveLinkQualitySamples:(int64_t)samples forProcessToken:(id)token andReply:(id)reply
 {
-  v8 = a4;
-  v44 = a5;
+  tokenCopy = token;
+  replyCopy = reply;
   v74 = 0;
   v75 = &v74;
   v76 = 0x3032000000;
@@ -10458,8 +10458,8 @@ LABEL_36:
   v65 = sub_10005CFFC;
   v66 = sub_10005D00C;
   v67 = 0;
-  v46 = v8;
-  v9 = [(WAEngine *)self _cachedModelObjectsForProcess:v8 groupType:4 key:@"SWFR"];
+  v46 = tokenCopy;
+  v9 = [(WAEngine *)self _cachedModelObjectsForProcess:tokenCopy groupType:4 key:@"SWFR"];
   v10 = v69[5];
   v69[5] = v9;
 
@@ -10471,8 +10471,8 @@ LABEL_36:
     [v13 setUint64Value:{+[WAUtil getAWDTimestamp](WAUtil, "getAWDTimestamp")}];
 
     dispatch_group_enter(group);
-    v14 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-    v15 = dispatch_time(0, 1000000000 * [v14 slow_wifi_report_sent_after]);
+    preferences = [(RecommendationEngine *)self->_recommendationEngine preferences];
+    v15 = dispatch_time(0, 1000000000 * [preferences slow_wifi_report_sent_after]);
     dpsReadWriteSerialQueue = self->_dpsReadWriteSerialQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -10484,8 +10484,8 @@ LABEL_36:
 
     for (i = 0; ; ++i)
     {
-      v18 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-      v19 = [v18 slow_wifi_interrogation_sample_count] > i;
+      preferences2 = [(RecommendationEngine *)self->_recommendationEngine preferences];
+      v19 = [preferences2 slow_wifi_interrogation_sample_count] > i;
 
       if (!v19)
       {
@@ -10496,8 +10496,8 @@ LABEL_36:
       v21 = dispatch_semaphore_create(0);
       if (i)
       {
-        v5 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-        v22 = 1000000 * [v5 slow_wifi_duration_between_samples];
+        preferences3 = [(RecommendationEngine *)self->_recommendationEngine preferences];
+        v22 = 1000000 * [preferences3 slow_wifi_duration_between_samples];
       }
 
       else
@@ -10523,8 +10523,8 @@ LABEL_36:
       {
       }
 
-      v26 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-      v27 = [v26 slow_wifi_interrogation_sample_count] - 1 == i;
+      preferences4 = [(RecommendationEngine *)self->_recommendationEngine preferences];
+      v27 = [preferences4 slow_wifi_interrogation_sample_count] - 1 == i;
 
       if (v27)
       {
@@ -10545,7 +10545,7 @@ LABEL_36:
       objc_autoreleasePoolPop(v20);
     }
 
-    v30 = [(WAEngine *)self engineQ];
+    engineQ = [(WAEngine *)self engineQ];
     v47[0] = _NSConcreteStackBlock;
     v47[1] = 3221225472;
     v47[2] = sub_10007B1D4;
@@ -10558,12 +10558,12 @@ LABEL_36:
     v53 = 4;
     v31 = v43;
     v49 = v31;
-    dispatch_group_notify(v41, v30, v47);
+    dispatch_group_notify(v41, engineQ, v47);
 
-    if (a3 == 1)
+    if (samples == 1)
     {
-      v32 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-      v33 = dispatch_time(0, 1000000000 * [v32 slow_wifi_report_sent_after] + 5000000000);
+      preferences5 = [(RecommendationEngine *)self->_recommendationEngine preferences];
+      v33 = dispatch_time(0, 1000000000 * [preferences5 slow_wifi_report_sent_after] + 5000000000);
       dispatch_semaphore_wait(v31, v33);
 
       v34 = WALogCategoryDefaultHandle();
@@ -10634,18 +10634,18 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:retErr will return %@", buf, 0x1Cu);
   }
 
-  v44[2](v44, v69[5], v75[5]);
+  replyCopy[2](replyCopy, v69[5], v75[5]);
   _Block_object_dispose(&v62, 8);
 
   _Block_object_dispose(&v68, 8);
   _Block_object_dispose(&v74, 8);
 }
 
-- (void)_triggerSlowWiFiStudy:(int64_t)a3 forProcessToken:(id)a4 waMessage:(id)a5 andReply:(id)a6
+- (void)_triggerSlowWiFiStudy:(int64_t)study forProcessToken:(id)token waMessage:(id)message andReply:(id)reply
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  tokenCopy = token;
+  messageCopy = message;
+  replyCopy = reply;
   v46 = 0;
   v47 = &v46;
   v48 = 0x3032000000;
@@ -10656,7 +10656,7 @@ LABEL_20:
   v14 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 key];
+    v15 = [messageCopy key];
     *buf = 136446722;
     v53 = "[WAEngine _triggerSlowWiFiStudy:forProcessToken:waMessage:andReply:]";
     v54 = 1024;
@@ -10666,12 +10666,12 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Got WAMessageAWD%@ ", buf, 0x1Cu);
   }
 
-  v16 = [v11 key];
+  v16 = [messageCopy key];
   v17 = [v16 isEqualToString:@"WFAAWDSWFN"];
 
   if (v17)
   {
-    v18 = [v11 fieldForKey:@"WFAAWDSWFN_timestamp"];
+    v18 = [messageCopy fieldForKey:@"WFAAWDSWFN_timestamp"];
     [v18 setUint64Value:{+[WAUtil getAWDTimestamp](WAUtil, "getAWDTimestamp")}];
 
     v19 = WALogCategoryDefaultHandle();
@@ -10752,7 +10752,7 @@ LABEL_32:
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Adding _swfnToAppend", buf, 0x12u);
     }
 
-    [(NSMutableArray *)self->_swfnToAppend addObject:v11];
+    [(NSMutableArray *)self->_swfnToAppend addObject:messageCopy];
   }
 
   else
@@ -10762,7 +10762,7 @@ LABEL_32:
 
   if (self->_slowWiFiStudyInProgress)
   {
-    v32 = [v11 key];
+    v32 = [messageCopy key];
     v33 = [v32 isEqualToString:@"USBEN"];
 
     if (v33)
@@ -10775,11 +10775,11 @@ LABEL_32:
         v54 = 1024;
         v55 = 5307;
         v56 = 2112;
-        v57 = v11;
+        v57 = messageCopy;
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Adding _usbEvent %@", buf, 0x1Cu);
       }
 
-      [(NSMutableArray *)self->_usbEventNotificationToAppend addObject:v11];
+      [(NSMutableArray *)self->_usbEventNotificationToAppend addObject:messageCopy];
     }
   }
 
@@ -10791,16 +10791,16 @@ LABEL_32:
     v41[2] = sub_10007C84C;
     v41[3] = &unk_1000EE4A8;
     v41[4] = self;
-    v42 = v10;
+    v42 = tokenCopy;
     v44 = &v46;
     v36 = v13;
     v43 = v36;
     dispatch_async(studyQueue, v41);
 
-    if (a3 == 1)
+    if (study == 1)
     {
-      v37 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-      v38 = dispatch_time(0, 1000000000 * [v37 slow_wifi_report_sent_after] + 5000000000);
+      preferences = [(RecommendationEngine *)self->_recommendationEngine preferences];
+      v38 = dispatch_time(0, 1000000000 * [preferences slow_wifi_report_sent_after] + 5000000000);
       dispatch_semaphore_wait(v36, v38);
 
       v23 = WALogCategoryDefaultHandle();
@@ -10850,15 +10850,15 @@ LABEL_33:
     _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:gatherConsecutiveLinkQualitySamples reply err %@", buf, 0x1Cu);
   }
 
-  v12[2](v12, 0, v47[5]);
+  replyCopy[2](replyCopy, 0, v47[5]);
   _Block_object_dispose(&v46, 8);
 }
 
-- (void)_triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)a3 forProcessToken:(id)a4 waMessage:(id)a5 andReply:(id)a6
+- (void)_triggerDatapathDiagnosticsAndCollectUpdates:(int64_t)updates forProcessToken:(id)token waMessage:(id)message andReply:(id)reply
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  tokenCopy = token;
+  messageCopy = message;
+  replyCopy = reply;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -10870,13 +10870,13 @@ LABEL_33:
     [(WAEngine *)self resolveAppleCaptiveServer];
   }
 
-  v13 = [v11 key];
+  v13 = [messageCopy key];
   if ([v13 isEqualToString:@"DPSN"])
   {
     goto LABEL_10;
   }
 
-  v14 = [v11 key];
+  v14 = [messageCopy key];
   if ([v14 isEqualToString:@"DPSAPS"])
   {
 LABEL_9:
@@ -10889,12 +10889,12 @@ LABEL_11:
     v24[2] = sub_10007CD1C;
     v24[3] = &unk_1000EE4D0;
     v24[5] = &v25;
-    v24[4] = v12;
-    [(WAEngine *)self _triggerDPSStudy:a3 forProcessToken:v10 waMessage:v11 andReply:v24];
+    v24[4] = replyCopy;
+    [(WAEngine *)self _triggerDPSStudy:updates forProcessToken:tokenCopy waMessage:messageCopy andReply:v24];
     goto LABEL_12;
   }
 
-  v15 = [v11 key];
+  v15 = [messageCopy key];
   if ([v15 isEqualToString:@"WFAAWDWADAAD"])
   {
 LABEL_8:
@@ -10902,14 +10902,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [v11 key];
+  v16 = [messageCopy key];
   if ([v16 isEqualToString:@"WFAAWDWAAAPI"])
   {
 
     goto LABEL_8;
   }
 
-  v18 = [v11 key];
+  v18 = [messageCopy key];
   v22 = [v18 isEqualToString:@"USBEN"];
 
   if (v22)
@@ -10917,14 +10917,14 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v19 = [v11 key];
+  v19 = [messageCopy key];
   if ([v19 isEqualToString:@"WFAAWDSWFN"])
   {
   }
 
   else
   {
-    v20 = [v11 key];
+    v20 = [messageCopy key];
     v21 = [v20 isEqualToString:@"USBEN"];
 
     if (!v21)
@@ -10939,19 +10939,19 @@ LABEL_8:
   v23[2] = sub_10007CDA8;
   v23[3] = &unk_1000EE4D0;
   v23[5] = &v25;
-  v23[4] = v12;
-  [(WAEngine *)self _triggerSlowWiFiStudy:a3 forProcessToken:v10 waMessage:v11 andReply:v23];
+  v23[4] = replyCopy;
+  [(WAEngine *)self _triggerSlowWiFiStudy:updates forProcessToken:tokenCopy waMessage:messageCopy andReply:v23];
 LABEL_12:
 
 LABEL_13:
-  (*(v12 + 2))(v12, 0, v26[5]);
+  (*(replyCopy + 2))(replyCopy, 0, v26[5]);
   _Block_object_dispose(&v25, 8);
 }
 
-- (id)getNewMessageForKey:(id)a3 groupType:(int64_t)a4 forProcessWithToken:(id)a5
+- (id)getNewMessageForKey:(id)key groupType:(int64_t)type forProcessWithToken:(id)token
 {
-  v8 = a3;
-  v9 = a5;
+  keyCopy = key;
+  tokenCopy = token;
   v10 = WALogCategoryDefaultHandle();
   if (os_signpost_enabled(v10))
   {
@@ -10972,7 +10972,7 @@ LABEL_13:
   v19 = buf;
   v11 = dispatch_semaphore_create(0);
   v18 = v11;
-  [(WAEngine *)self _getNewMessageForKey:v8 groupType:a4 forProcessToken:v9 shouldCheckForPrePopulation:0 andReply:v17];
+  [(WAEngine *)self _getNewMessageForKey:keyCopy groupType:type forProcessToken:tokenCopy shouldCheckForPrePopulation:0 andReply:v17];
   v12 = dispatch_time(0, 15000000000);
   dispatch_semaphore_wait(v11, v12);
   v13 = WALogCategoryDefaultHandle();
@@ -10999,13 +10999,13 @@ LABEL_13:
   dispatch_sync(engineQ, block);
 }
 
-- (id)_setDeviceAnalyticsConfiguration:(id)a3
+- (id)_setDeviceAnalyticsConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy)
   {
-    v6 = [v4 objectForKeyedSubscript:@"WA_DEVICE_ANALYTICS_PROCESSING_INTERVAL_SECS"];
+    v6 = [configurationCopy objectForKeyedSubscript:@"WA_DEVICE_ANALYTICS_PROCESSING_INTERVAL_SECS"];
     if (v6 || ([v5 objectForKeyedSubscript:@"WA_DEVICE_ANALYTICS_AGE_OUT_INTERVAL"], (v6 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v5, "objectForKeyedSubscript:", @"WA_DEVICE_ANALYTICS_CONFIG_AGE_OUT_TEST_DAYS_DIFF"), (v6 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v5, "objectForKeyedSubscript:", @"WA_DEVICE_ANALYTICS_CONFIG_DEPLOYMENT_METRIC_DAYS_DIFF"), (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
 
@@ -11030,13 +11030,13 @@ LABEL_7:
         v10 = WALogCategoryDefaultHandle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v11 = [(WAEngine *)self analyticsDeferredProcessingAtHour];
+          analyticsDeferredProcessingAtHour = [(WAEngine *)self analyticsDeferredProcessingAtHour];
           *buf = 136446722;
           *&buf[4] = "[WAEngine _setDeviceAnalyticsConfiguration:]";
           *&buf[12] = 1024;
           *&buf[14] = 5446;
           *&buf[18] = 2048;
-          *&buf[20] = v11;
+          *&buf[20] = analyticsDeferredProcessingAtHour;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%{public}s::%d:Updated analyticsDeferredProcessingAtHour to %lu hours after midnight", buf, 0x1Cu);
         }
       }
@@ -11065,42 +11065,42 @@ LABEL_7:
 
       if (v15)
       {
-        v16 = [v15 unsignedLongValue];
+        unsignedLongValue = [v15 unsignedLongValue];
       }
 
       else
       {
-        v16 = 0x7FFFFFFFFFFFFFFFLL;
+        unsignedLongValue = 0x7FFFFFFFFFFFFFFFLL;
       }
 
       v21 = [v5 objectForKeyedSubscript:@"WA_DEVICE_ANALYTICS_CONFIG_DEPLOYMENT_METRIC_DAYS_DIFF"];
 
       if (v21)
       {
-        v22 = [v21 unsignedLongValue];
+        unsignedLongValue2 = [v21 unsignedLongValue];
       }
 
       else
       {
-        v22 = 0x7FFFFFFFFFFFFFFFLL;
+        unsignedLongValue2 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
       v19 = [v5 objectForKeyedSubscript:@"WA_DEVICE_ANALYTICS_CONFIG_ROAM_SAMPLES"];
 
       if (v19)
       {
-        v23 = [v19 unsignedLongValue];
+        unsignedLongValue3 = [v19 unsignedLongValue];
       }
 
       else
       {
-        v23 = 0x7FFFFFFFFFFFFFFFLL;
+        unsignedLongValue3 = 0x7FFFFFFFFFFFFFFFLL;
       }
 
       v24 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
-      *buf = v16;
-      *&buf[8] = v22;
-      *&buf[16] = v23;
+      *buf = unsignedLongValue;
+      *&buf[8] = unsignedLongValue2;
+      *&buf[16] = unsignedLongValue3;
       [v24 setPolicyHandlersConfig:buf];
 
       v20 = 0;
@@ -11174,11 +11174,11 @@ LABEL_31:
   return v10;
 }
 
-- (void)setValueForKeyToUserDefaults:(id)a3 forKey:(id)a4
+- (void)setValueForKeyToUserDefaults:(id)defaults forKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  defaultsCopy = defaults;
+  keyCopy = key;
+  if (!keyCopy)
   {
     v8 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -11197,19 +11197,19 @@ LABEL_31:
   if (v7)
   {
     v8 = v7;
-    [v7 setObject:v5 forKey:v6];
+    [v7 setObject:defaultsCopy forKey:keyCopy];
     [v8 synchronize];
 LABEL_4:
   }
 }
 
-- (id)getValueForKeyFromUserDefaults:(id)a3
+- (id)getValueForKeyFromUserDefaults:(id)defaults
 {
-  v3 = a3;
-  if (v3)
+  defaultsCopy = defaults;
+  if (defaultsCopy)
   {
     v4 = +[NSUserDefaults standardUserDefaults];
-    v5 = [v4 valueForKey:v3];
+    v5 = [v4 valueForKey:defaultsCopy];
   }
 
   else
@@ -11230,22 +11230,22 @@ LABEL_4:
   return v5;
 }
 
-- (id)_updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)a3 maxAgeInDays:(unint64_t)a4
+- (id)_updateRoamPoliciesAndSummarizeAnalyticsForNetwork:(id)network maxAgeInDays:(unint64_t)days
 {
   cachedUsage = self->_cachedUsage;
   engineQ = self->_engineQ;
-  v7 = a3;
+  networkCopy = network;
   [WAUtil incrementValueForKey:@"AnalyticsProcessor: Summarize Analytics For Network" inMutableDict:cachedUsage onQueue:engineQ];
   v8 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
-  v9 = [v8 updateRoamPoliciesAndSummarizeAnalyticsForNetwork:v7 maxAgeInDays:a4];
+  v9 = [v8 updateRoamPoliciesAndSummarizeAnalyticsForNetwork:networkCopy maxAgeInDays:days];
 
   return v9;
 }
 
-- (BOOL)canProcessWiFiAnalyticsMessageJSONFiles:(id)a3
+- (BOOL)canProcessWiFiAnalyticsMessageJSONFiles:(id)files
 {
-  v4 = a3;
-  if (!v4)
+  filesCopy = files;
+  if (!filesCopy)
   {
     LOBYTE(v6) = 0;
     goto LABEL_20;
@@ -11254,7 +11254,7 @@ LABEL_4:
   [(WAEngine *)self analyticsDeferredProcessingTimeIntervalSecs];
   if (v5 != 0.0 && (+[WAUtil shouldProcessAnalyticsImmediately]& 1) == 0)
   {
-    if ([v4 count] >= 0x32)
+    if ([filesCopy count] >= 0x32)
     {
       v7 = WALogCategoryDeviceStoreHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -11302,7 +11302,7 @@ LABEL_16:
           v26 = 2048;
           v27 = v14;
           v28 = 2048;
-          v29 = [v4 count];
+          v29 = [filesCopy count];
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:canProcess: %d lastProcessedDate: %@ secondsBetween:%2.2f interval:%2.2f pendingJSONs:%lu", &v16, 0x40u);
         }
 
@@ -11326,7 +11326,7 @@ LABEL_20:
   return v6;
 }
 
-- (void)processWiFiAnalyticsFilesInTmpDir:(BOOL)a3
+- (void)processWiFiAnalyticsFilesInTmpDir:(BOOL)dir
 {
   v3 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v3))
@@ -11339,16 +11339,16 @@ LABEL_20:
   [v4 loadStoreIfNeeded];
 
   v5 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
-  v6 = [v5 storeLoaded];
+  storeLoaded = [v5 storeLoaded];
 
-  if (v6)
+  if (storeLoaded)
   {
-    v7 = [(WAEngine *)self wifianalyticsTmpDir];
-    v8 = [v7 path];
+    wifianalyticsTmpDir = [(WAEngine *)self wifianalyticsTmpDir];
+    path = [wifianalyticsTmpDir path];
 
     +[NSFileManager defaultManager];
     v44 = v54 = 0;
-    v9 = [v44 contentsOfDirectoryAtPath:v8 error:&v54];
+    v9 = [v44 contentsOfDirectoryAtPath:path error:&v54];
     v10 = v54;
     v11 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -11358,7 +11358,7 @@ LABEL_20:
       v58 = 1024;
       v59 = 5595;
       v60 = 2112;
-      v61 = v8;
+      v61 = path;
       v62 = 2112;
       v63 = v9;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:files at %@: %@", buf, 0x26u);
@@ -11374,7 +11374,7 @@ LABEL_20:
         v58 = 1024;
         v59 = 5596;
         v60 = 2112;
-        v61 = v8;
+        v61 = path;
         v62 = 2112;
         v63 = v10;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%{public}s::%d:Unable to list files at %@: %@", buf, 0x26u);
@@ -11414,7 +11414,7 @@ LABEL_20:
               }
 
               v16 = *(*(&v50 + 1) + 8 * v15);
-              v17 = [v8 stringByAppendingPathComponent:v16];
+              v17 = [path stringByAppendingPathComponent:v16];
               v18 = WALogCategoryDeviceStoreHandle();
               if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
               {
@@ -11459,9 +11459,9 @@ LABEL_20:
                     if (objc_opt_isKindOfClass())
                     {
                       v20 = v20;
-                      v22 = [v20 allKeys];
-                      v23 = v22;
-                      if (v22 && [v22 count] == 1)
+                      allKeys = [v20 allKeys];
+                      v23 = allKeys;
+                      if (allKeys && [allKeys count] == 1)
                       {
                         v24 = [v23 objectAtIndex:0];
                         if (v24)
@@ -11486,7 +11486,7 @@ LABEL_20:
                             if ([v24 isEqualToString:@"WA_DEVICE_ANALYTICS_DATAPATH_METRIC_STREAM"])
                             {
                               v26 = [v20 objectForKeyedSubscript:v24];
-                              v27 = v8;
+                              v27 = path;
                               v28 = v26;
                               v29 = v27;
                               v30 = [v27 stringByAppendingPathComponent:v26];
@@ -11527,7 +11527,7 @@ LABEL_20:
                                 }
                               }
 
-                              v8 = v29;
+                              path = v29;
                               goto LABEL_37;
                             }
 
@@ -11677,7 +11677,7 @@ LABEL_46:
     v12 = 0;
     v9 = 0;
     v44 = 0;
-    v8 = 0;
+    path = 0;
   }
 
 LABEL_61:
@@ -11690,9 +11690,9 @@ LABEL_61:
   }
 }
 
-- (void)processWiFiAnalyticsMessageWAMFile:(id)a3 file:(id)a4
+- (void)processWiFiAnalyticsMessageWAMFile:(id)file file:(id)a4
 {
-  v6 = a3;
+  fileCopy = file;
   v7 = a4;
   v8 = WALogCategoryDeviceStoreHandle();
   if (os_signpost_enabled(v8))
@@ -11708,7 +11708,7 @@ LABEL_61:
   v12 = [v9 dateFromString:v11];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = [NSData dataWithContentsOfFile:v6];
+  v14 = [NSData dataWithContentsOfFile:fileCopy];
   v15 = v14;
   if (v14)
   {
@@ -11776,14 +11776,14 @@ LABEL_61:
 
           v12 = *(*(&v26 + 1) + 8 * i);
           v13 = [v12 fieldForKey:@"DPSN_symptom"];
-          v14 = [v13 int32Value];
+          int32Value = [v13 int32Value];
 
-          if (!v14)
+          if (!int32Value)
           {
             v15 = [v12 fieldForKey:@"DPSN_problemAC"];
-            v16 = [v15 uint32Value];
+            uint32Value = [v15 uint32Value];
 
-            if (!(v6 & 1 | ((v16 & 1) == 0)))
+            if (!(v6 & 1 | ((uint32Value & 1) == 0)))
             {
               v17 = [v12 fieldForKey:@"DPSN_txBETrId"];
               [v25 appendFormat:@" BE(trId=%d)", objc_msgSend(v17, "uint32Value")];
@@ -11791,7 +11791,7 @@ LABEL_61:
               v6 = 1;
             }
 
-            if (!(v7 & 1 | ((v16 & 2) == 0)))
+            if (!(v7 & 1 | ((uint32Value & 2) == 0)))
             {
               v18 = [v12 fieldForKey:@"DPSN_txBKTrId"];
               [v25 appendFormat:@" BK(trId=%d)", objc_msgSend(v18, "uint32Value")];
@@ -11799,7 +11799,7 @@ LABEL_61:
               v7 = 1;
             }
 
-            if (!(v9 & 1 | ((v16 & 4) == 0)))
+            if (!(v9 & 1 | ((uint32Value & 4) == 0)))
             {
               v19 = [v12 fieldForKey:@"DPSN_txVITrId"];
               [v25 appendFormat:@" VI(trId=%d)", objc_msgSend(v19, "uint32Value")];
@@ -11807,7 +11807,7 @@ LABEL_61:
               v9 = 1;
             }
 
-            if (!(v8 & 1 | ((v16 & 8) == 0)))
+            if (!(v8 & 1 | ((uint32Value & 8) == 0)))
             {
               v20 = [v12 fieldForKey:@"DPSN_txVOTrId"];
               [v25 appendFormat:@" VO(trId=%d)", objc_msgSend(v20, "uint32Value")];
@@ -11857,10 +11857,10 @@ LABEL_61:
   *&self->_totalWANPingSuccessBeforeTrap = 0u;
   *&self->_totalLANPingSuccessAfterTrap = 0u;
   *&self->_totalWANPingSuccessAfterTrap = 0u;
-  v3 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-  v4 = [v3 dns_symptoms_interrogation_sample_count];
-  v5 = [*(p_cumulativeAverageCcaSinceStudyStart - 8) preferences];
-  p_cumulativeAverageCcaSinceStudyStart[10] = v4 - [v5 dns_symptoms_trap_evaluated_at_sample];
+  preferences = [(RecommendationEngine *)self->_recommendationEngine preferences];
+  dns_symptoms_interrogation_sample_count = [preferences dns_symptoms_interrogation_sample_count];
+  preferences2 = [*(p_cumulativeAverageCcaSinceStudyStart - 8) preferences];
+  p_cumulativeAverageCcaSinceStudyStart[10] = dns_symptoms_interrogation_sample_count - [preferences2 dns_symptoms_trap_evaluated_at_sample];
 
   *(p_cumulativeAverageCcaSinceStudyStart + 23) = 0u;
   *(p_cumulativeAverageCcaSinceStudyStart + 21) = 0u;
@@ -11873,8 +11873,8 @@ LABEL_61:
 
 - (id)__ipv4SetupConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (v3 && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, v3, kSCEntNetIPv4)) != 0)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (networkServiceID && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, networkServiceID, kSCEntNetIPv4)) != 0)
   {
     v5 = NetworkServiceEntity;
     v6 = SCDynamicStoreCopyValue(self->_storeRef, NetworkServiceEntity);
@@ -11903,8 +11903,8 @@ LABEL_61:
 
 - (id)__IPv4StateConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (v3 && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, v3, kSCEntNetIPv4)) != 0)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (networkServiceID && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, networkServiceID, kSCEntNetIPv4)) != 0)
   {
     v5 = NetworkServiceEntity;
     v6 = SCDynamicStoreCopyValue(self->_storeRef, NetworkServiceEntity);
@@ -11933,8 +11933,8 @@ LABEL_61:
 
 - (id)__IPv6StateConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (v3 && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, v3, kSCEntNetIPv6)) != 0)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (networkServiceID && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, networkServiceID, kSCEntNetIPv6)) != 0)
   {
     v5 = NetworkServiceEntity;
     v6 = SCDynamicStoreCopyValue(self->_storeRef, NetworkServiceEntity);
@@ -11963,8 +11963,8 @@ LABEL_61:
 
 - (id)__dnsStateConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (v3 && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, v3, kSCEntNetDNS)) != 0)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (networkServiceID && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainState, networkServiceID, kSCEntNetDNS)) != 0)
   {
     v5 = NetworkServiceEntity;
     v6 = SCDynamicStoreCopyValue(self->_storeRef, NetworkServiceEntity);
@@ -11993,8 +11993,8 @@ LABEL_61:
 
 - (id)__dnsSetupConfig
 {
-  v3 = [(CWFInterface *)self->_corewifi networkServiceID];
-  if (v3 && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, v3, kSCEntNetDNS)) != 0)
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  if (networkServiceID && (NetworkServiceEntity = SCDynamicStoreKeyCreateNetworkServiceEntity(kCFAllocatorDefault, kSCDynamicStoreDomainSetup, networkServiceID, kSCEntNetDNS)) != 0)
   {
     v5 = NetworkServiceEntity;
     v6 = SCDynamicStoreCopyValue(self->_storeRef, NetworkServiceEntity);
@@ -12023,8 +12023,8 @@ LABEL_61:
 
 - (BOOL)isUsingCustomDNSSettings
 {
-  v2 = [(WAEngine *)self __dnsSetupConfig];
-  v3 = v2 != 0;
+  __dnsSetupConfig = [(WAEngine *)self __dnsSetupConfig];
+  v3 = __dnsSetupConfig != 0;
 
   return v3;
 }
@@ -12036,9 +12036,9 @@ LABEL_61:
   if ([(WAEngine *)self isUsingCustomDNSSettings])
   {
     self->_dnsServerConfigType = 2;
-    v2 = [(WAEngine *)self __dnsSetupConfig];
+    __dnsSetupConfig = [(WAEngine *)self __dnsSetupConfig];
     v3 = kSCPropNetDNSServerAddresses;
-    v4 = [v2 objectForKeyedSubscript:kSCPropNetDNSServerAddresses];
+    v4 = [__dnsSetupConfig objectForKeyedSubscript:kSCPropNetDNSServerAddresses];
 
     if (v4)
     {
@@ -12054,16 +12054,16 @@ LABEL_7:
     v3 = kSCPropNetDNSServerAddresses;
   }
 
-  v5 = [(WAEngine *)self __dnsStateConfig];
-  v4 = [v5 objectForKeyedSubscript:v3];
+  __dnsStateConfig = [(WAEngine *)self __dnsStateConfig];
+  v4 = [__dnsStateConfig objectForKeyedSubscript:v3];
 
   if (v4)
   {
     goto LABEL_7;
   }
 
-  v6 = [(WAEngine *)self __ipv4SetupConfig];
-  v4 = [v6 objectForKeyedSubscript:v3];
+  __ipv4SetupConfig = [(WAEngine *)self __ipv4SetupConfig];
+  v4 = [__ipv4SetupConfig objectForKeyedSubscript:v3];
 
   if (v4)
   {
@@ -12072,9 +12072,9 @@ LABEL_7:
 
   v46 = 0;
 LABEL_8:
-  v48 = [(WAEngine *)self getIPv4InterfaceSubnet];
+  getIPv4InterfaceSubnet = [(WAEngine *)self getIPv4InterfaceSubnet];
   v49 = [(WAEngine *)self getIPv4InterfaceNetwork:?];
-  v47 = [(WAEngine *)self getIPv6InterfacePrefix];
+  getIPv6InterfacePrefix = [(WAEngine *)self getIPv6InterfacePrefix];
   [(WAEngine *)self getIPv6InterfaceNetwork:&v81 prefixLength:?];
   v7 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -12162,14 +12162,14 @@ LABEL_8:
           v24 = v10;
           v25 = v12;
           v27 = v26 = v15;
-          v50 = [v27 integerValue];
+          integerValue = [v27 integerValue];
 
           v15 = v26;
           v12 = v25;
           v10 = v24;
           v14 = v23;
 
-          if (v50 != 254)
+          if (integerValue != 254)
           {
             goto LABEL_37;
           }
@@ -12200,7 +12200,7 @@ LABEL_37:
             }
 
             v32 = v30 - 1 < 0xFFFFFFFE;
-            v33 = v30 & v48;
+            v33 = v30 & getIPv4InterfaceSubnet;
             v34 = WALogCategoryDefaultHandle();
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
@@ -12298,7 +12298,7 @@ LABEL_37:
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:DNS-config: IPv6 DNS address:%08x %08x %08x %08x", v67, 0x2Au);
           }
 
-          [(WAEngine *)self convertToIPv6Network:&v79 prefixLength:v47];
+          [(WAEngine *)self convertToIPv6Network:&v79 prefixLength:getIPv6InterfacePrefix];
           v37 = WALogCategoryDefaultHandle();
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
@@ -12390,13 +12390,13 @@ LABEL_68:
 - (unsigned)getIPv4InterfaceSubnet
 {
   v8.s_addr = 0;
-  v2 = [(WAEngine *)self IPv4SubnetMasks];
-  v3 = [v2 firstObject];
-  v4 = v3;
-  if (v3)
+  iPv4SubnetMasks = [(WAEngine *)self IPv4SubnetMasks];
+  firstObject = [iPv4SubnetMasks firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
     v8.s_addr = 0;
-    if (inet_aton([v3 UTF8String], &v8))
+    if (inet_aton([firstObject UTF8String], &v8))
     {
       v5 = bswap32(v8.s_addr);
       v6 = WALogCategoryDefaultHandle();
@@ -12436,16 +12436,16 @@ LABEL_68:
   return v5;
 }
 
-- (unsigned)getIPv4InterfaceNetwork:(unsigned int)a3
+- (unsigned)getIPv4InterfaceNetwork:(unsigned int)network
 {
   v10.s_addr = 0;
-  v4 = [(CWFInterface *)self->_corewifi IPv4Addresses];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5)
+  iPv4Addresses = [(CWFInterface *)self->_corewifi IPv4Addresses];
+  firstObject = [iPv4Addresses firstObject];
+  v6 = firstObject;
+  if (firstObject)
   {
     v10.s_addr = 0;
-    if (inet_aton([v5 UTF8String], &v10))
+    if (inet_aton([firstObject UTF8String], &v10))
     {
       v7 = bswap32(v10.s_addr);
       v8 = WALogCategoryDefaultHandle();
@@ -12482,17 +12482,17 @@ LABEL_68:
     v7 = 0;
   }
 
-  return v7 & a3;
+  return v7 & network;
 }
 
 - (unsigned)getIPv6InterfacePrefix
 {
-  v2 = [(WAEngine *)self IPv6PrefixLengths];
-  v3 = [v2 firstObject];
-  v4 = v3;
-  if (v3)
+  iPv6PrefixLengths = [(WAEngine *)self IPv6PrefixLengths];
+  firstObject = [iPv6PrefixLengths firstObject];
+  v4 = firstObject;
+  if (firstObject)
   {
-    v5 = [v3 unsignedIntValue];
+    unsignedIntValue = [firstObject unsignedIntValue];
     v6 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -12501,75 +12501,75 @@ LABEL_68:
       v10 = 1024;
       v11 = 6081;
       v12 = 1024;
-      v13 = v5;
+      v13 = unsignedIntValue;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:DNS-config: interface IPv6 prefix length: %u", &v8, 0x18u);
     }
   }
 
   else
   {
-    v5 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v5;
+  return unsignedIntValue;
 }
 
-- (void)convertToIPv6Network:(unsigned int *)a3 prefixLength:(unsigned int)a4
+- (void)convertToIPv6Network:(unsigned int *)network prefixLength:(unsigned int)length
 {
-  if (a4)
+  if (length)
   {
     v4 = 3;
     do
     {
-      if (a4 <= 0x1F)
+      if (length <= 0x1F)
       {
-        v5 = a3[v4];
+        v5 = network[v4];
         if (v5)
         {
-          v6 = a4;
+          lengthCopy = length;
           do
           {
             v7 = v5;
             v5 >>= 1;
-            a4 = v6 - 1;
+            length = lengthCopy - 1;
             if (v7 < 2)
             {
               break;
             }
 
-            --v6;
+            --lengthCopy;
           }
 
-          while (v6);
+          while (lengthCopy);
         }
       }
 
       else
       {
         v5 = 0;
-        a4 -= 32;
+        length -= 32;
       }
 
-      a3[v4] = v5;
+      network[v4] = v5;
       v8 = v4-- != 0;
     }
 
-    while (v8 && a4);
+    while (v8 && length);
   }
 }
 
 - (id)IPv4SubnetMasks
 {
-  v2 = [(WAEngine *)self __IPv4StateConfig];
-  v3 = [v2 objectForKeyedSubscript:kSCPropNetIPv4SubnetMasks];
+  __IPv4StateConfig = [(WAEngine *)self __IPv4StateConfig];
+  v3 = [__IPv4StateConfig objectForKeyedSubscript:kSCPropNetIPv4SubnetMasks];
 
   return v3;
 }
 
 - (id)IPv6PrefixLengths
 {
-  v2 = [(WAEngine *)self __IPv6StateConfig];
-  v3 = [v2 objectForKeyedSubscript:kSCPropNetIPv6PrefixLength];
+  __IPv6StateConfig = [(WAEngine *)self __IPv6StateConfig];
+  v3 = [__IPv6StateConfig objectForKeyedSubscript:kSCPropNetIPv6PrefixLength];
 
   return v3;
 }
@@ -12578,14 +12578,14 @@ LABEL_68:
 {
   if (![(WAEngine *)self isWiFiAssociatedToNetwork])
   {
-    v3 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    getW5Client = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(getW5Client, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446466;
       v9 = "[WAEngine triggerPeerDiscovery]";
       v10 = 1024;
       v11 = 6145;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "%{public}s::%d:WiFi disassocited during study so not continuing...", buf, 0x12u);
+      _os_log_impl(&_mh_execute_header, getW5Client, OS_LOG_TYPE_ERROR, "%{public}s::%d:WiFi disassocited during study so not continuing...", buf, 0x12u);
     }
 
     goto LABEL_6;
@@ -12597,14 +12597,14 @@ LABEL_68:
     sub_1000548E8();
     if (objc_opt_class())
     {
-      v3 = [(WAEngine *)self getW5Client];
-      if (v3)
+      getW5Client = [(WAEngine *)self getW5Client];
+      if (getW5Client)
       {
         v4 = [sub_100079974() requestWithTestID:62 configuration:0];
         v7 = v4;
         v5 = [NSArray arrayWithObjects:&v7 count:1];
 
-        v6 = [v3 runDiagnostics:v5 configuration:0 update:0 reply:&stru_1000EE510];
+        v6 = [getW5Client runDiagnostics:v5 configuration:0 update:0 reply:&stru_1000EE510];
       }
 
 LABEL_6:
@@ -12612,9 +12612,9 @@ LABEL_6:
   }
 }
 
-- (void)gatherDiscoveredPeerInfo:(id)a3
+- (void)gatherDiscoveredPeerInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v41 = dispatch_semaphore_create(0);
   v52 = 0;
   v53 = &v52;
@@ -12649,8 +12649,8 @@ LABEL_6:
     sub_1000548E8();
     if (objc_opt_class())
     {
-      v5 = [(WAEngine *)self getW5Client];
-      if (v5)
+      getW5Client = [(WAEngine *)self getW5Client];
+      if (getW5Client)
       {
         v6 = [sub_100079974() requestWithTestID:61 configuration:0];
         v68 = v6;
@@ -12664,7 +12664,7 @@ LABEL_6:
         v45 = &v46;
         v8 = v41;
         v43 = v8;
-        v9 = [v5 runDiagnostics:v7 configuration:0 update:0 reply:v42];
+        v9 = [getW5Client runDiagnostics:v7 configuration:0 update:0 reply:v42];
         v10 = dispatch_time(0, 5000000000);
         dispatch_semaphore_wait(v8, v10);
         if (!v53[5])
@@ -12686,9 +12686,9 @@ LABEL_6:
     }
   }
 
-  v13 = [v53[5] firstObject];
-  v14 = [v13 info];
-  v15 = [v14 objectForKeyedSubscript:@"PeerDevicesInfo"];
+  firstObject = [v53[5] firstObject];
+  info = [firstObject info];
+  v15 = [info objectForKeyedSubscript:@"PeerDevicesInfo"];
 
   v16 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -12705,8 +12705,8 @@ LABEL_6:
   if (v15)
   {
     v17 = +[NSDate date];
-    v18 = [v15 allKeys];
-    if ([v18 containsObject:@"Timestamp"])
+    allKeys = [v15 allKeys];
+    if ([allKeys containsObject:@"Timestamp"])
     {
       v19 = [v15 valueForKey:@"Timestamp"];
 
@@ -12731,70 +12731,70 @@ LABEL_19:
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:PeerDiscovery: current_time:%@ update_time:%@ minutesBetweenDates:%ld", buf, 0x30u);
         }
 
-        v23 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-        v24 = v21 < ([v23 dps_report_sent_after] / 0x3C);
+        preferences = [(RecommendationEngine *)self->_recommendationEngine preferences];
+        v24 = v21 < ([preferences dps_report_sent_after] / 0x3C);
 
         if (v24)
         {
-          v25 = [v15 allKeys];
-          if ([v25 containsObject:@"numberOfIOSDevices"])
+          allKeys2 = [v15 allKeys];
+          if ([allKeys2 containsObject:@"numberOfIOSDevices"])
           {
             v26 = [v15 valueForKey:@"numberOfIOSDevices"];
-            v27 = [v26 unsignedIntValue];
+            unsignedIntValue = [v26 unsignedIntValue];
           }
 
           else
           {
-            v27 = 0;
+            unsignedIntValue = 0;
           }
 
-          v28 = [v15 allKeys];
-          if ([v28 containsObject:@"numberOfMacOSDevices"])
+          allKeys3 = [v15 allKeys];
+          if ([allKeys3 containsObject:@"numberOfMacOSDevices"])
           {
             v29 = [v15 valueForKey:@"numberOfMacOSDevices"];
-            v30 = [v29 unsignedIntValue];
+            unsignedIntValue2 = [v29 unsignedIntValue];
           }
 
           else
           {
-            v30 = 0;
+            unsignedIntValue2 = 0;
           }
 
-          v31 = [v15 allKeys];
-          if ([v31 containsObject:@"numberOfTVOSDevices"])
+          allKeys4 = [v15 allKeys];
+          if ([allKeys4 containsObject:@"numberOfTVOSDevices"])
           {
             v32 = [v15 valueForKey:@"numberOfTVOSDevices"];
-            v33 = [v32 unsignedIntValue];
+            unsignedIntValue3 = [v32 unsignedIntValue];
           }
 
           else
           {
-            v33 = 0;
+            unsignedIntValue3 = 0;
           }
 
-          v34 = [v15 allKeys];
-          if ([v34 containsObject:@"numberOfWatchOSDevices"])
+          allKeys5 = [v15 allKeys];
+          if ([allKeys5 containsObject:@"numberOfWatchOSDevices"])
           {
             v35 = [v15 valueForKey:@"numberOfTVOSDevices"];
-            v36 = [v35 unsignedIntValue];
+            unsignedIntValue4 = [v35 unsignedIntValue];
           }
 
           else
           {
-            v36 = 0;
+            unsignedIntValue4 = 0;
           }
 
-          v37 = [v4 fieldForKey:@"WFAAWDWAPDI_numPeersDiscovered"];
-          [v37 setUint32Value:v30 + v27 + v33 + v36];
+          v37 = [infoCopy fieldForKey:@"WFAAWDWAPDI_numPeersDiscovered"];
+          [v37 setUint32Value:unsignedIntValue2 + unsignedIntValue + unsignedIntValue3 + unsignedIntValue4];
 
-          v38 = [v4 fieldForKey:@"WFAAWDWAPDI_iOSPeers"];
-          [v38 setUint32Value:v27];
+          v38 = [infoCopy fieldForKey:@"WFAAWDWAPDI_iOSPeers"];
+          [v38 setUint32Value:unsignedIntValue];
 
-          v39 = [v4 fieldForKey:@"WFAAWDWAPDI_tvOSPeers"];
-          [v39 setUint32Value:v33];
+          v39 = [infoCopy fieldForKey:@"WFAAWDWAPDI_tvOSPeers"];
+          [v39 setUint32Value:unsignedIntValue3];
 
-          v40 = [v4 fieldForKey:@"WFAAWDWAPDI_macOSPeers"];
-          [v40 setUint32Value:v30];
+          v40 = [infoCopy fieldForKey:@"WFAAWDWAPDI_macOSPeers"];
+          [v40 setUint32Value:unsignedIntValue2];
         }
 
 LABEL_36:
@@ -12823,14 +12823,14 @@ LABEL_37:
   objc_initWeak(&location, self);
   if (![(WAEngine *)self isWiFiInterfacePrimary])
   {
-    v3 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    getW5Client = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(getW5Client, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446466;
       v13 = "[WAEngine resolveAppleCaptiveServer]";
       v14 = 1024;
       v15 = 6224;
-      _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_ERROR, "%{public}s::%d:WiFi interface not primary...aborting DNS resolution", buf, 0x12u);
+      _os_log_impl(&_mh_execute_header, getW5Client, OS_LOG_TYPE_ERROR, "%{public}s::%d:WiFi interface not primary...aborting DNS resolution", buf, 0x12u);
     }
 
     goto LABEL_8;
@@ -12842,8 +12842,8 @@ LABEL_37:
     sub_1000548E8();
     if (objc_opt_class())
     {
-      v3 = [(WAEngine *)self getW5Client];
-      if (v3)
+      getW5Client = [(WAEngine *)self getW5Client];
+      if (getW5Client)
       {
         v4 = [sub_100079974() requestWithTestID:7 configuration:0];
         v11 = v4;
@@ -12864,7 +12864,7 @@ LABEL_37:
         v8[2] = sub_100081530;
         v8[3] = &unk_1000EE538;
         objc_copyWeak(&v9, &location);
-        v7 = [v3 runDiagnostics:v5 configuration:0 update:0 reply:v8];
+        v7 = [getW5Client runDiagnostics:v5 configuration:0 update:0 reply:v8];
         objc_destroyWeak(&v9);
       }
 
@@ -12975,21 +12975,21 @@ LABEL_8:
   }
 }
 
-- (void)triggerDiagnosticPingWithrequestId:(unsigned int)a3
+- (void)triggerDiagnosticPingWithrequestId:(unsigned int)id
 {
   objc_initWeak(&location, self);
   if (![(WAEngine *)self isWiFiInterfacePrimary])
   {
-    v5 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    getW5Client = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(getW5Client, OS_LOG_TYPE_ERROR))
     {
       *v58 = 136446722;
       *&v58[4] = "[WAEngine triggerDiagnosticPingWithrequestId:]";
       *&v58[12] = 1024;
       *&v58[14] = 6296;
       *&v58[18] = 1024;
-      *&v58[20] = a3;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%{public}s::%d:WiFi interface not primary...aborting ping instance:%d", v58, 0x18u);
+      *&v58[20] = id;
+      _os_log_impl(&_mh_execute_header, getW5Client, OS_LOG_TYPE_ERROR, "%{public}s::%d:WiFi interface not primary...aborting ping instance:%d", v58, 0x18u);
     }
 
     goto LABEL_20;
@@ -13001,7 +13001,7 @@ LABEL_8:
     sub_1000548E8();
     if (objc_opt_class())
     {
-      v5 = [(WAEngine *)self getW5Client];
+      getW5Client = [(WAEngine *)self getW5Client];
       *v58 = 0;
       *&v58[8] = v58;
       *&v58[16] = 0x3032000000;
@@ -13037,7 +13037,7 @@ LABEL_8:
       block[7] = &v35;
       block[8] = &v29;
       dispatch_sync(dnsStudyQueue, block);
-      if (!v5)
+      if (!getW5Client)
       {
 LABEL_19:
         _Block_object_dispose(&v29, 8);
@@ -13082,7 +13082,7 @@ LABEL_20:
       }
 
       v18 = v17;
-      if (!a3)
+      if (!id)
       {
         self->_isCaptiveServerIPResolved = self->_appleCaptiveServerIP != 0;
       }
@@ -13096,14 +13096,14 @@ LABEL_20:
         v50 = 1024;
         v51 = 6324;
         v52 = 1024;
-        v53 = a3;
+        idCopy = id;
         v54 = 2112;
         v55 = appleCaptiveServerIP;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Ping: instanceId:%u equeueing...  CaptiveServerIP:%@", buf, 0x22u);
       }
 
-      v21 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-      v22 = [v21 dns_symptoms_trap_evaluated_at_sample] > a3;
+      preferences = [(RecommendationEngine *)self->_recommendationEngine preferences];
+      v22 = [preferences dns_symptoms_trap_evaluated_at_sample] > id;
 
       if (v22)
       {
@@ -13131,8 +13131,8 @@ LABEL_17:
       v25[2] = sub_1000823E4;
       v25[3] = &unk_1000EE5B0;
       objc_copyWeak(&v26, &location);
-      v27 = a3;
-      v24 = [v5 runDiagnostics:v18 configuration:0 update:0 reply:v25];
+      idCopy2 = id;
+      v24 = [getW5Client runDiagnostics:v18 configuration:0 update:0 reply:v25];
       objc_destroyWeak(&v26);
 
       goto LABEL_19;
@@ -13143,7 +13143,7 @@ LABEL_21:
   objc_destroyWeak(&location);
 }
 
-- (void)fetchSymptomsScores:(unsigned int)a3
+- (void)fetchSymptomsScores:(unsigned int)scores
 {
   v5 = WALogCategoryDefaultHandle();
   v6 = v5;
@@ -13156,13 +13156,13 @@ LABEL_21:
       v13 = 1024;
       v14 = 6392;
       v15 = 1024;
-      v16 = a3;
+      scoresCopy = scores;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Netscore: instanceId:%u enqueuing...", buf, 0x18u);
     }
 
     objc_initWeak(&location, self);
     objc_copyWeak(&v8, &location);
-    v9 = a3;
+    scoresCopy2 = scores;
     if ((managed_event_fetch() & 1) == 0)
     {
       v7 = WALogCategoryDefaultHandle();
@@ -13193,20 +13193,20 @@ LABEL_21:
   }
 }
 
-- (BOOL)isScoreBelowThreshold:(id)a3 type:(unint64_t)a4 instanceId:(unsigned int)a5
+- (BOOL)isScoreBelowThreshold:(id)threshold type:(unint64_t)type instanceId:(unsigned int)id
 {
-  v8 = a3;
-  v9 = [v8 objectForKeyedSubscript:@"AWD-info"];
+  thresholdCopy = threshold;
+  v9 = [thresholdCopy objectForKeyedSubscript:@"AWD-info"];
   v10 = v9;
   if (v9)
   {
     v11 = [v9 objectForKeyedSubscript:@"dns-total"];
-    v12 = [v11 intValue];
+    intValue = [v11 intValue];
 
     v13 = [v10 objectForKeyedSubscript:@"dns-impacted"];
-    v14 = [v13 intValue];
+    intValue2 = [v13 intValue];
 
-    if (a4)
+    if (type)
     {
       goto LABEL_3;
     }
@@ -13214,28 +13214,28 @@ LABEL_21:
 
   else
   {
-    v14 = 0;
-    v12 = 0;
-    if (a4)
+    intValue2 = 0;
+    intValue = 0;
+    if (type)
     {
 LABEL_3:
       v15 = [v10 objectForKeyedSubscript:@"data-stalls-score"];
-      v16 = [v15 intValue];
+      intValue3 = [v15 intValue];
 
-      if (a5)
+      if (id)
       {
-        v17 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-        v18 = [v17 dns_symptoms_interrogation_sample_count] - 1;
+        preferences = [(RecommendationEngine *)self->_recommendationEngine preferences];
+        v18 = [preferences dns_symptoms_interrogation_sample_count] - 1;
 
-        if (v18 != a5)
+        if (v18 != id)
         {
 LABEL_17:
-          v24 = v12;
+          v24 = intValue;
 LABEL_18:
-          v25 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-          v23 = v16 <= [v25 reset_score_threshold];
+          preferences2 = [(RecommendationEngine *)self->_recommendationEngine preferences];
+          v23 = intValue3 <= [preferences2 reset_score_threshold];
 
-          v12 = v24;
+          intValue = v24;
           goto LABEL_19;
         }
 
@@ -13247,35 +13247,35 @@ LABEL_18:
         v19 = 408;
       }
 
-      *(&self->super.isa + v19) = v16;
+      *(&self->super.isa + v19) = intValue3;
       goto LABEL_17;
     }
   }
 
-  v20 = [v8 objectForKeyedSubscript:@"net-score"];
-  v16 = [v20 intValue];
+  v20 = [thresholdCopy objectForKeyedSubscript:@"net-score"];
+  intValue3 = [v20 intValue];
 
   v21 = 424;
-  if (!a5)
+  if (!id)
   {
     v21 = 400;
   }
 
   v22 = 440;
-  if (!a5)
+  if (!id)
   {
     v22 = 416;
   }
 
-  *(&self->super.isa + v21) = v16;
-  *(&self->super.isa + v22) = v14;
-  if (v12)
+  *(&self->super.isa + v21) = intValue3;
+  *(&self->super.isa + v22) = intValue2;
+  if (intValue)
   {
     v23 = 0;
-    if (v14)
+    if (intValue2)
     {
-      v24 = v14;
-      if (v12 == v14)
+      v24 = intValue2;
+      if (intValue == intValue2)
       {
         goto LABEL_18;
       }
@@ -13302,15 +13302,15 @@ LABEL_19:
     }
 
     v33 = 1024;
-    v34 = a5;
+    idCopy = id;
     v35 = 2048;
-    v36 = a4;
+    typeCopy = type;
     v37 = 1024;
-    v38 = v16;
+    v38 = intValue3;
     v39 = 1024;
-    v40 = v12;
+    v40 = intValue;
     v41 = 1024;
-    v42 = v14;
+    v42 = intValue2;
     v43 = 2080;
     v44 = v27;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:InstanceId:%u scoreType:%lu score:%d totalServers:%d impactedDnsServers:%d isBelowThreshold-result:%s", &v29, 0x3Eu);
@@ -13321,14 +13321,14 @@ LABEL_19:
 
 - (BOOL)isWiFiAssociatedToNetwork
 {
-  v2 = [(CWFInterface *)self->_corewifi networkName];
+  networkName = [(CWFInterface *)self->_corewifi networkName];
   v3 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = "Not Associated";
     v7 = "[WAEngine isWiFiAssociatedToNetwork]";
     v6 = 136446722;
-    if (v2)
+    if (networkName)
     {
       v4 = "Associated";
     }
@@ -13340,15 +13340,15 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:isWiFiAssociatedToNetwork result: %s", &v6, 0x1Cu);
   }
 
-  return v2 != 0;
+  return networkName != 0;
 }
 
-- (void)computeAverageCcaSinceStudyStart:(id)a3
+- (void)computeAverageCcaSinceStudyStart:(id)start
 {
-  v27 = a3;
-  v3 = [v27 fieldForKey:@"DPSR_dpsCounterSamples"];
-  v4 = [v3 repeatableValues];
-  v5 = [v4 count];
+  startCopy = start;
+  v3 = [startCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+  repeatableValues = [v3 repeatableValues];
+  v5 = [repeatableValues count];
 
   if (v5)
   {
@@ -13356,21 +13356,21 @@ LABEL_19:
     v7 = 0.0;
     for (i = v5; i != v6; v5 = i)
     {
-      v8 = [v27 fieldForKey:@"DPSR_dpsCounterSamples"];
-      v9 = [v8 repeatableValues];
-      v10 = [v9 objectAtIndex:v6];
+      v8 = [startCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+      repeatableValues2 = [v8 repeatableValues];
+      v10 = [repeatableValues2 objectAtIndex:v6];
       v11 = [v10 fieldForKey:@"DPSCS_peerStats"];
-      v12 = [v11 subMessageValue];
-      v13 = [v12 fieldForKey:@"NWAPS_obssCCA"];
-      v14 = [v13 uint32Value];
+      subMessageValue = [v11 subMessageValue];
+      v13 = [subMessageValue fieldForKey:@"NWAPS_obssCCA"];
+      uint32Value = [v13 uint32Value];
 
-      v15 = [v27 fieldForKey:@"DPSR_dpsCounterSamples"];
-      v16 = [v15 repeatableValues];
-      v17 = [v16 objectAtIndex:v6];
+      v15 = [startCopy fieldForKey:@"DPSR_dpsCounterSamples"];
+      repeatableValues3 = [v15 repeatableValues];
+      v17 = [repeatableValues3 objectAtIndex:v6];
       v18 = [v17 fieldForKey:@"DPSCS_peerStats"];
-      v19 = [v18 subMessageValue];
-      v20 = [v19 fieldForKey:@"NWAPS_interferenceCCA"];
-      v21 = [v20 uint32Value];
+      subMessageValue2 = [v18 subMessageValue];
+      v20 = [subMessageValue2 fieldForKey:@"NWAPS_interferenceCCA"];
+      uint32Value2 = [v20 uint32Value];
 
       v22 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -13382,13 +13382,13 @@ LABEL_19:
         v32 = 2048;
         *v33 = v6;
         *&v33[8] = 1024;
-        *v34 = v14;
+        *v34 = uint32Value;
         *&v34[4] = 1024;
-        *&v34[6] = v21;
+        *&v34[6] = uint32Value2;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:AvgCCAComputation: instance:%lu obssCCA:%d interferenceCCA:%d", buf, 0x28u);
       }
 
-      v7 = v7 + (v21 + v14);
+      v7 = v7 + (uint32Value2 + uint32Value);
 
       ++v6;
     }
@@ -13421,12 +13421,12 @@ LABEL_19:
 
 - (BOOL)isWiFiInterfacePrimary
 {
-  v3 = [(CWFInterface *)self->_corewifi globalIPv4InterfaceName];
-  v4 = [(CWFInterface *)self->_corewifi globalIPv4NetworkServiceID];
-  v5 = [(CWFInterface *)self->_corewifi globalIPv4InterfaceName];
-  v6 = [(CWFInterface *)self->_corewifi globalIPv6NetworkServiceID];
-  v7 = [(CWFInterface *)self->_corewifi networkServiceID];
-  v8 = ([v7 isEqualToString:v4] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", v6);
+  globalIPv4InterfaceName = [(CWFInterface *)self->_corewifi globalIPv4InterfaceName];
+  globalIPv4NetworkServiceID = [(CWFInterface *)self->_corewifi globalIPv4NetworkServiceID];
+  globalIPv4InterfaceName2 = [(CWFInterface *)self->_corewifi globalIPv4InterfaceName];
+  globalIPv6NetworkServiceID = [(CWFInterface *)self->_corewifi globalIPv6NetworkServiceID];
+  networkServiceID = [(CWFInterface *)self->_corewifi networkServiceID];
+  v8 = ([networkServiceID isEqualToString:globalIPv4NetworkServiceID] & 1) != 0 || objc_msgSend(networkServiceID, "isEqualToString:", globalIPv6NetworkServiceID);
   v9 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -13443,9 +13443,9 @@ LABEL_19:
 
     v17 = v10;
     v18 = 2112;
-    v19 = v3;
+    v19 = globalIPv4InterfaceName;
     v20 = 2112;
-    v21 = v5;
+    v21 = globalIPv4InterfaceName2;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:isWiFiInterfacePrimary result:%s IPv4interface:%@ IPv6Interface:%@ ", &v12, 0x30u);
   }
 
@@ -13454,19 +13454,19 @@ LABEL_19:
 
 - (BOOL)isWiFiNetworkCaptive
 {
-  v2 = [(CWFInterface *)self->_corewifi currentKnownNetworkProfile];
-  v3 = v2;
-  if (v2)
+  currentKnownNetworkProfile = [(CWFInterface *)self->_corewifi currentKnownNetworkProfile];
+  v3 = currentKnownNetworkProfile;
+  if (currentKnownNetworkProfile)
   {
-    v4 = [v2 isCaptive];
+    isCaptive = [currentKnownNetworkProfile isCaptive];
   }
 
   else
   {
-    v4 = 0;
+    isCaptive = 0;
   }
 
-  return v4;
+  return isCaptive;
 }
 
 - (unint64_t)getCCA
@@ -13492,13 +13492,13 @@ LABEL_19:
   v3 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CWFInterface *)self->_corewifi RSSI];
+    rSSI = [(CWFInterface *)self->_corewifi RSSI];
     v6 = 136446722;
     v7 = "[WAEngine getRSSI]";
     v8 = 1024;
     v9 = 6554;
     v10 = 2048;
-    v11 = v4;
+    v11 = rSSI;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:SDNS: RSSI: %ld", &v6, 0x1Cu);
   }
 
@@ -13513,9 +13513,9 @@ LABEL_19:
   }
 
   v3 = +[WAApple80211Manager sharedObject];
-  v4 = [v3 getInfraApple80211];
+  getInfraApple80211 = [v3 getInfraApple80211];
 
-  if (!v4)
+  if (!getInfraApple80211)
   {
     v7 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -13534,9 +13534,9 @@ LABEL_12:
     return 0;
   }
 
-  v5 = [v4 getDriverType];
-  self->_driverType = v5;
-  if (!v5)
+  getDriverType = [getInfraApple80211 getDriverType];
+  self->_driverType = getDriverType;
+  if (!getDriverType)
   {
     v7 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -13623,8 +13623,8 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v3 = [(WAEngine *)self getCCA];
-  if (v3 > [(RecommendationPreferences *)self->_preferences dps_symptoms_average_cca_threshold])
+  getCCA = [(WAEngine *)self getCCA];
+  if (getCCA > [(RecommendationPreferences *)self->_preferences dps_symptoms_average_cca_threshold])
   {
     v12 = WALogCategoryDefaultHandle();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -13640,8 +13640,8 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v4 = [(WAEngine *)self getRSSI];
-  if (v4 < [(RecommendationPreferences *)self->_preferences reset_pd_rssi_threshold])
+  getRSSI = [(WAEngine *)self getRSSI];
+  if (getRSSI < [(RecommendationPreferences *)self->_preferences reset_pd_rssi_threshold])
   {
     v12 = WALogCategoryDefaultHandle();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -13691,9 +13691,9 @@ LABEL_28:
     }
 
     self->_dpsAction |= 0x40u;
-    v9 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-    v10 = [(WAEngine *)self infraInterfaceName];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    interfaceNameToApple80211InstanceMap = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+    infraInterfaceName = [(WAEngine *)self infraInterfaceName];
+    v11 = [interfaceNameToApple80211InstanceMap objectForKeyedSubscript:infraInterfaceName];
     [v11 triggerDpsReset:@"TrapOnDNSSymptoms" metaData:0];
 
     [(WAEngine *)self persist];
@@ -13712,9 +13712,9 @@ LABEL_28:
   }
 }
 
-- (BOOL)testDNSResolution:(id)a3
+- (BOOL)testDNSResolution:(id)resolution
 {
-  v4 = a3;
+  resolutionCopy = resolution;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -13725,7 +13725,7 @@ LABEL_28:
   v33[1] = v33;
   v33[2] = 0x2020000000;
   v34 = 0;
-  if (!v4)
+  if (!resolutionCopy)
   {
     v9 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -13781,8 +13781,8 @@ LABEL_13:
       v30 = v9;
       if (nw_resolver_set_update_handler())
       {
-        v10 = [(RecommendationEngine *)self->_recommendationEngine preferences];
-        v11 = dispatch_time(0, 1000000000 * [v10 dns_symptoms_query_resolution_timeout]);
+        preferences = [(RecommendationEngine *)self->_recommendationEngine preferences];
+        v11 = dispatch_time(0, 1000000000 * [preferences dns_symptoms_query_resolution_timeout]);
         v12 = dispatch_semaphore_wait(v9, v11);
 
         if (v12)
@@ -13793,7 +13793,7 @@ LABEL_13:
           v22[3] = &unk_1000EDB80;
           v24 = v33;
           v23 = v6;
-          dispatch_sync(v4, v22);
+          dispatch_sync(resolutionCopy, v22);
           v13 = 0;
           v14 = v23;
 LABEL_25:
@@ -13895,8 +13895,8 @@ LABEL_15:
 - (void)triggerStepwiseDNSRecovery
 {
   objc_initWeak(&location, self);
-  v2 = [(RecommendationPreferences *)self->_preferences dns_symptoms_status_polling_count_post_reassoc];
-  v3 = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_status_polling_post_reassoc];
+  dns_symptoms_status_polling_count_post_reassoc = [(RecommendationPreferences *)self->_preferences dns_symptoms_status_polling_count_post_reassoc];
+  dns_symptoms_duration_between_status_polling_post_reassoc = [(RecommendationPreferences *)self->_preferences dns_symptoms_duration_between_status_polling_post_reassoc];
   v19 = dispatch_semaphore_create(0);
   v26 = 0;
   v27 = &v26;
@@ -13916,9 +13916,9 @@ LABEL_15:
   }
 
   self->_dpsAction |= 0x80u;
-  v6 = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
-  v7 = [(WAEngine *)self infraInterfaceName];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  interfaceNameToApple80211InstanceMap = [(WAEngine *)self interfaceNameToApple80211InstanceMap];
+  infraInterfaceName = [(WAEngine *)self infraInterfaceName];
+  v8 = [interfaceNameToApple80211InstanceMap objectForKeyedSubscript:infraInterfaceName];
   [v8 triggerReassociation:@"DNSFailureRecovery-Reassoc-Attempt"];
 
   v9 = WALogCategoryDefaultHandle();
@@ -13929,23 +13929,23 @@ LABEL_15:
     v33 = 1024;
     v34 = 6700;
     v35 = 2048;
-    v36 = v2;
+    v36 = dns_symptoms_status_polling_count_post_reassoc;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:SDNS: PollingCount: %lu", buf, 0x1Cu);
   }
 
-  if (v2)
+  if (dns_symptoms_status_polling_count_post_reassoc)
   {
     v10 = 1;
     while (1)
     {
-      v11 = dispatch_time(0, 1000000 * v3);
+      v11 = dispatch_time(0, 1000000 * dns_symptoms_duration_between_status_polling_post_reassoc);
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100084F10;
       block[3] = &unk_1000EE650;
       objc_copyWeak(v24, &location);
       v23 = &v26;
-      v24[1] = v3;
+      v24[1] = dns_symptoms_duration_between_status_polling_post_reassoc;
       v25 = v10 - 1;
       v12 = v19;
       v22 = v12;
@@ -13959,7 +13959,7 @@ LABEL_15:
       dispatch_semaphore_wait(v12, v13);
 
       objc_destroyWeak(v24);
-      if (v2 <= v10++)
+      if (dns_symptoms_status_polling_count_post_reassoc <= v10++)
       {
         goto LABEL_11;
       }

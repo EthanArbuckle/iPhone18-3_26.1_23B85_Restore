@@ -1,5 +1,5 @@
 @interface _UIMotionAnalyzerSettings
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 - (void)setDefaultValues;
 @end
@@ -104,13 +104,13 @@
   [(_UIMotionAnalyzerSettings *)self setShowDirectionalLockIndicators:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(_UIMotionAnalyzerSettings *)self inputSmoothingFactor];
     v7 = v6;
     [v5 inputSmoothingFactor];

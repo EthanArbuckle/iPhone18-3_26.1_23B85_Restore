@@ -25,17 +25,17 @@
 
   if (v3)
   {
-    v4 = accessibilityLocalizedString(@"combined.header.hint");
+    accessibilityHint = accessibilityLocalizedString(@"combined.header.hint");
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = CNComposeHeaderLabelViewAccessibility;
-    v4 = [(CNComposeHeaderLabelViewAccessibility *)&v6 accessibilityHint];
+    accessibilityHint = [(CNComposeHeaderLabelViewAccessibility *)&v6 accessibilityHint];
   }
 
-  return v4;
+  return accessibilityHint;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface EFSQLUpdateStatement
-- (EFSQLUpdateStatement)initWithTable:(id)a3 conflictResolution:(unint64_t)a4;
+- (EFSQLUpdateStatement)initWithTable:(id)table conflictResolution:(unint64_t)resolution;
 - (NSString)queryString;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)_renderSQLExpressionForUpsert:(void *)a3 into:;
-- (void)enumerateBindingNamesAndValuesUsingBlock:(id)a3;
-- (void)renderStatementForUpsertInto:(uint64_t)a1;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)_renderSQLExpressionForUpsert:(void *)upsert into:;
+- (void)enumerateBindingNamesAndValuesUsingBlock:(id)block;
+- (void)renderStatementForUpsertInto:(uint64_t)into;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation EFSQLUpdateStatement
@@ -18,15 +18,15 @@
   return v3;
 }
 
-- (EFSQLUpdateStatement)initWithTable:(id)a3 conflictResolution:(unint64_t)a4
+- (EFSQLUpdateStatement)initWithTable:(id)table conflictResolution:(unint64_t)resolution
 {
-  v6 = a3;
+  tableCopy = table;
   v15.receiver = self;
   v15.super_class = EFSQLUpdateStatement;
   v7 = [(EFSQLUpdateStatement *)&v15 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [tableCopy copy];
     table = v7->_table;
     v7->_table = v8;
 
@@ -38,22 +38,22 @@
     expressables = v7->_expressables;
     v7->_expressables = v12;
 
-    v7->_conflictResolution = a4;
+    v7->_conflictResolution = resolution;
   }
 
   return v7;
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v15 = a3;
-  v7 = a4;
+  objectCopy = object;
+  subscriptCopy = subscript;
   v8 = objc_opt_respondsToSelector();
   v9 = objc_opt_respondsToSelector();
   v10 = v9;
   if ((v8 | v9))
   {
-    if (v7)
+    if (subscriptCopy)
     {
       goto LABEL_3;
     }
@@ -61,10 +61,10 @@
 
   else
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"EFSQLUpdateStatement.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"isBindable || isExpressable"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EFSQLUpdateStatement.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"isBindable || isExpressable"}];
 
-    if (v7)
+    if (subscriptCopy)
     {
 LABEL_3:
       if (v8)
@@ -76,8 +76,8 @@ LABEL_3:
     }
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"EFSQLUpdateStatement.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"columnName != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"EFSQLUpdateStatement.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"columnName != nil"}];
 
   if (v8)
   {
@@ -111,7 +111,7 @@ LABEL_8:
     v14 = 0;
   }
 
-  [(NSMutableDictionary *)v14 setObject:0 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)v14 setObject:0 forKeyedSubscript:subscriptCopy];
   if (self)
   {
     bindables = self->_expressables;
@@ -123,7 +123,7 @@ LABEL_8:
   }
 
 LABEL_13:
-  [(NSMutableDictionary *)bindables setObject:v15 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)bindables setObject:objectCopy forKeyedSubscript:subscriptCopy];
 LABEL_14:
 }
 
@@ -134,23 +134,23 @@ void __65__EFSQLUpdateStatement_enumerateBindingNamesAndValuesUsingBlock___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_renderSQLExpressionForUpsert:(void *)a3 into:
+- (void)_renderSQLExpressionForUpsert:(void *)upsert into:
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!a1)
+  upsertCopy = upsert;
+  if (!self)
   {
     goto LABEL_21;
   }
 
-  v6 = *(a1 + 16);
+  v6 = *(self + 16);
   v7 = [v6 count];
-  v8 = [*(a1 + 24) count];
+  v8 = [*(self + 24) count];
 
   if (!(v7 + v8))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:sel__renderSQLExpressionForUpsert_into_ object:a1 file:@"EFSQLUpdateStatement.m" lineNumber:72 description:@"Need at least one bindable value for a column to generate a queryString"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel__renderSQLExpressionForUpsert_into_ object:self file:@"EFSQLUpdateStatement.m" lineNumber:72 description:@"Need at least one bindable value for a column to generate a queryString"];
 
     if (a2)
     {
@@ -158,16 +158,16 @@ void __65__EFSQLUpdateStatement_enumerateBindingNamesAndValuesUsingBlock___block
     }
 
 LABEL_6:
-    v10 = *(a1 + 40);
+    v10 = *(self + 40);
     if (v10)
     {
       v11 = EFSQLStringForConflictResolution(v10);
-      [v5 appendFormat:@"UPDATE OR %@ %@ SET ", v11, *(a1 + 32)];
+      [upsertCopy appendFormat:@"UPDATE OR %@ %@ SET ", v11, *(self + 32)];
     }
 
     else
     {
-      [v5 appendFormat:@"UPDATE %@ SET ", *(a1 + 32)];
+      [upsertCopy appendFormat:@"UPDATE %@ SET ", *(self + 32)];
     }
 
     goto LABEL_9;
@@ -179,7 +179,7 @@ LABEL_6:
   }
 
 LABEL_4:
-  [v5 appendString:@"UPDATE SET "];
+  [upsertCopy appendString:@"UPDATE SET "];
 LABEL_9:
   v27 = 0;
   v28 = &v27;
@@ -189,8 +189,8 @@ LABEL_9:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = [*(a1 + 16) allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  allKeys = [*(self + 16) allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v13)
   {
     v14 = *v24;
@@ -201,41 +201,41 @@ LABEL_9:
       {
         if (*v24 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v16 = *(*(&v23 + 1) + 8 * v15);
         if (v28[3] >= 1)
         {
-          [v5 appendString:{@", "}];
+          [upsertCopy appendString:{@", "}];
         }
 
-        [v5 appendFormat:@"%@ = :update_%@", v16, v16];
+        [upsertCopy appendFormat:@"%@ = :update_%@", v16, v16];
         ++v28[3];
         ++v15;
       }
 
       while (v13 != v15);
-      v13 = [v12 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v13 = [allKeys countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v13);
   }
 
-  v17 = *(a1 + 24);
+  v17 = *(self + 24);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __59__EFSQLUpdateStatement__renderSQLExpressionForUpsert_into___block_invoke;
   v20[3] = &unk_1E824A100;
   v22 = &v27;
-  v18 = v5;
+  v18 = upsertCopy;
   v21 = v18;
   [v17 enumerateKeysAndObjectsUsingBlock:v20];
 
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     [v18 appendString:@" WHERE "];
-    [*(a1 + 8) ef_renderSQLExpressionInto:v18];
+    [*(self + 8) ef_renderSQLExpressionInto:v18];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -260,18 +260,18 @@ void __59__EFSQLUpdateStatement__renderSQLExpressionForUpsert_into___block_invok
   ++*(*(*(a1 + 40) + 8) + 24);
 }
 
-- (void)renderStatementForUpsertInto:(uint64_t)a1
+- (void)renderStatementForUpsertInto:(uint64_t)into
 {
   v3 = a2;
-  if (a1)
+  if (into)
   {
-    [(EFSQLUpdateStatement *)a1 _renderSQLExpressionForUpsert:v3 into:?];
+    [(EFSQLUpdateStatement *)into _renderSQLExpressionForUpsert:v3 into:?];
   }
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
+  subscriptCopy = subscript;
   if (self)
   {
     bindables = self->_bindables;
@@ -283,7 +283,7 @@ void __59__EFSQLUpdateStatement__renderSQLExpressionForUpsert_into___block_invok
   }
 
   v6 = bindables;
-  v7 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)v6 objectForKeyedSubscript:subscriptCopy];
   v8 = v7;
   if (v7)
   {
@@ -302,7 +302,7 @@ void __59__EFSQLUpdateStatement__renderSQLExpressionForUpsert_into___block_invok
       expressables = 0;
     }
 
-    v9 = [(NSMutableDictionary *)expressables objectForKeyedSubscript:v4];
+    v9 = [(NSMutableDictionary *)expressables objectForKeyedSubscript:subscriptCopy];
   }
 
   v11 = v9;
@@ -310,9 +310,9 @@ void __59__EFSQLUpdateStatement__renderSQLExpressionForUpsert_into___block_invok
   return v11;
 }
 
-- (void)enumerateBindingNamesAndValuesUsingBlock:(id)a3
+- (void)enumerateBindingNamesAndValuesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (self)
   {
     bindables = self->_bindables;
@@ -328,8 +328,8 @@ void __59__EFSQLUpdateStatement__renderSQLExpressionForUpsert_into___block_invok
   v8[1] = 3221225472;
   v8[2] = __65__EFSQLUpdateStatement_enumerateBindingNamesAndValuesUsingBlock___block_invoke;
   v8[3] = &unk_1E824A0D8;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [(NSMutableDictionary *)v6 enumerateKeysAndObjectsUsingBlock:v8];
 }
 

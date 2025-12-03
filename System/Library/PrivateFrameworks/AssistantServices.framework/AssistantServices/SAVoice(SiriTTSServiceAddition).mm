@@ -7,24 +7,24 @@
 - (void)initWithSiriVoice:()SiriTTSServiceAddition
 {
   v4 = a3;
-  v5 = [a1 init];
-  v6 = [v4 language];
-  [v5 setLanguageString:v6];
+  v5 = [self init];
+  language = [v4 language];
+  [v5 setLanguageString:language];
 
-  v7 = [v4 name];
-  [v5 setName:v7];
+  name = [v4 name];
+  [v5 setName:name];
 
-  v8 = [v4 SAVoiceGender];
-  [v5 setGender:v8];
+  sAVoiceGender = [v4 SAVoiceGender];
+  [v5 setGender:sAVoiceGender];
 
-  v9 = [v4 SAVoiceQuality];
-  [v5 setQuality:v9];
+  sAVoiceQuality = [v4 SAVoiceQuality];
+  [v5 setQuality:sAVoiceQuality];
 
-  v10 = [v4 SAVoiceType];
-  [v5 setVoiceType:v10];
+  sAVoiceType = [v4 SAVoiceType];
+  [v5 setVoiceType:sAVoiceType];
 
-  v11 = [v4 version];
-  [v5 setVoiceContentVersion:v11];
+  version = [v4 version];
+  [v5 setVoiceContentVersion:version];
   return v5;
 }
 

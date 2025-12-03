@@ -1,6 +1,6 @@
 @interface COSFollupUpItemDetailViewController
 - (id)specifiers;
-- (void)completeTask:(id)a3;
+- (void)completeTask:(id)task;
 @end
 
 @implementation COSFollupUpItemDetailViewController
@@ -33,8 +33,8 @@
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
-          v10 = [v9 label];
-          v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:self set:0 get:0 detail:0 cell:13 edit:0];
+          label = [v9 label];
+          v11 = [PSSpecifier preferenceSpecifierNamed:label target:self set:0 get:0 detail:0 cell:13 edit:0];
 
           v12 = [v9 url];
           [v11 setProperty:v12 forKey:@"URLKey"];
@@ -58,13 +58,13 @@
   return v3;
 }
 
-- (void)completeTask:(id)a3
+- (void)completeTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = [[FLFollowUpController alloc] initWithClientIdentifier:@"com.apple.Bridge"];
   v6 = [*&self->BPSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"FollowUpItemKey"];
-  v7 = [v6 uniqueIdentifier];
-  v18 = v7;
+  uniqueIdentifier = [v6 uniqueIdentifier];
+  v18 = uniqueIdentifier;
   v8 = [NSArray arrayWithObjects:&v18 count:1];
   v13 = 0;
   [v5 clearPendingFollowUpItemsWithUniqueIdentifiers:v8 error:&v13];
@@ -73,15 +73,15 @@
   v10 = pbb_bridge_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 title];
+    title = [v6 title];
     *buf = 138412546;
-    v15 = v11;
+    v15 = title;
     v16 = 2112;
     v17 = v9;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Completed Task! %@ (Error %@)", buf, 0x16u);
   }
 
-  v12 = [v4 propertyForKey:@"URLKey"];
+  v12 = [taskCopy propertyForKey:@"URLKey"];
 
   if (v12)
   {

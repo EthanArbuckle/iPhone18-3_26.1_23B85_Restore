@@ -1,29 +1,29 @@
 @interface AMSStorageDatabase
-+ (id)sharedDatabaseWithDomain:(id)a3;
-- (AMSStorageDatabase)initWithDomain:(id)a3;
-- (BOOL)BOOLeanForKey:(id)a3 error:(id *)a4;
-- (BOOL)_setValueData:(id)a3 valueType:(int64_t)a4 forKey:(id)a5 error:(id *)a6;
-- (BOOL)connection:(id)a3 needsResetForCorruptionError:(id)a4 error:(id *)a5;
-- (BOOL)deleteForKey:(id)a3 error:(id *)a4;
-- (BOOL)setBoolean:(BOOL)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setDouble:(double)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setInteger:(int64_t)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)setIsLasset:(id)a3 error:(id *)a4;
-- (BOOL)setValue:(id)a3 forKey:(id)a4 error:(id *)a5;
-- (double)doubleForKey:(id)a3 error:(id *)a4;
-- (id)_allKeysPrefixedByDomainWithError:(id *)a3;
-- (id)_convertToDataWithValue:(id)a3 valueType:(int64_t)a4 error:(id *)a5;
-- (id)_convertToValueWithData:(id)a3 valueType:(int64_t)a4 error:(id *)a5;
-- (id)_dataForPlistValue:(id)a3 error:(id *)a4;
-- (id)_plistValueForData:(id)a3 error:(id *)a4;
-- (id)allKeyValuesWithError:(id *)a3;
-- (id)allKeysForDomain:(id)a3 withError:(id *)a4;
-- (id)isLassetAndReturnError:(id *)a3;
-- (id)sizeWithError:(id *)a3;
-- (id)valueForKey:(id)a3 error:(id *)a4;
-- (int64_t)_valueTypeForValue:(id)a3;
-- (int64_t)integerForKey:(id)a3 error:(id *)a4;
-- (void)_performTransaction:(id)a3;
++ (id)sharedDatabaseWithDomain:(id)domain;
+- (AMSStorageDatabase)initWithDomain:(id)domain;
+- (BOOL)BOOLeanForKey:(id)key error:(id *)error;
+- (BOOL)_setValueData:(id)data valueType:(int64_t)type forKey:(id)key error:(id *)error;
+- (BOOL)connection:(id)connection needsResetForCorruptionError:(id)error error:(id *)a5;
+- (BOOL)deleteForKey:(id)key error:(id *)error;
+- (BOOL)setBoolean:(BOOL)boolean forKey:(id)key error:(id *)error;
+- (BOOL)setDouble:(double)double forKey:(id)key error:(id *)error;
+- (BOOL)setInteger:(int64_t)integer forKey:(id)key error:(id *)error;
+- (BOOL)setIsLasset:(id)lasset error:(id *)error;
+- (BOOL)setValue:(id)value forKey:(id)key error:(id *)error;
+- (double)doubleForKey:(id)key error:(id *)error;
+- (id)_allKeysPrefixedByDomainWithError:(id *)error;
+- (id)_convertToDataWithValue:(id)value valueType:(int64_t)type error:(id *)error;
+- (id)_convertToValueWithData:(id)data valueType:(int64_t)type error:(id *)error;
+- (id)_dataForPlistValue:(id)value error:(id *)error;
+- (id)_plistValueForData:(id)data error:(id *)error;
+- (id)allKeyValuesWithError:(id *)error;
+- (id)allKeysForDomain:(id)domain withError:(id *)error;
+- (id)isLassetAndReturnError:(id *)error;
+- (id)sizeWithError:(id *)error;
+- (id)valueForKey:(id)key error:(id *)error;
+- (int64_t)_valueTypeForValue:(id)value;
+- (int64_t)integerForKey:(id)key error:(id *)error;
+- (void)_performTransaction:(id)transaction;
 - (void)close;
 - (void)dealloc;
 @end
@@ -43,9 +43,9 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = [AMSKeepAlive keepAliveWithName:@"AMSStorage"];
-  v4 = [(AMSStorageDatabase *)self connection];
+  connection = [(AMSStorageDatabase *)self connection];
   v12 = 0;
-  v5 = [v4 closeWithError:&v12];
+  v5 = [connection closeWithError:&v12];
   v6 = v12;
 
   if ((v5 & 1) == 0)
@@ -56,8 +56,8 @@
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = v9;
@@ -66,27 +66,27 @@
       v14 = v9;
       v15 = 2114;
       v16 = v11;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: Failed to close the AMSStorage database connection: %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to close the AMSStorage database connection: %{public}@", buf, 0x16u);
     }
   }
 
   [v3 invalidate];
 }
 
-- (id)isLassetAndReturnError:(id *)a3
+- (id)isLassetAndReturnError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   v5.super.super.isa = AMSStorageDatabase.isLasset()().super.super.isa;
 
   if (v6.super.super.isa)
   {
-    if (a3)
+    if (error)
     {
       v7 = sub_192F958CC();
 
       v8 = v7;
       v5.super.super.isa = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else
@@ -99,20 +99,20 @@
   return v5.super.super.isa;
 }
 
-- (BOOL)setIsLasset:(id)a3 error:(id *)a4
+- (BOOL)setIsLasset:(id)lasset error:(id *)error
 {
-  v6 = a3;
-  v7 = self;
-  AMSStorageDatabase.setIsLasset(_:)(v6);
+  lassetCopy = lasset;
+  selfCopy = self;
+  AMSStorageDatabase.setIsLasset(_:)(lassetCopy);
 
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v9 = sub_192F958CC();
 
       v10 = v9;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -123,10 +123,10 @@
   return v8 == 0;
 }
 
-- (AMSStorageDatabase)initWithDomain:(id)a3
+- (AMSStorageDatabase)initWithDomain:(id)domain
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  domainCopy = domain;
   v35.receiver = self;
   v35.super_class = AMSStorageDatabase;
   v6 = [(AMSStorageDatabase *)&v35 init];
@@ -136,7 +136,7 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v6->_domain, a3);
+  objc_storeStrong(&v6->_domain, domain);
   v8 = [AMSKeepAlive keepAliveWithName:@"AMSStorage"];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -145,8 +145,8 @@
   v9 = v8;
   v34 = v9;
   v10 = _Block_copy(aBlock);
-  v11 = [(AMSStorageDatabase *)v7 _cachePath];
-  v12 = [AMSDatabaseHelper databasePathForCachePath:v11 type:1];
+  _cachePath = [(AMSStorageDatabase *)v7 _cachePath];
+  v12 = [AMSDatabaseHelper databasePathForCachePath:_cachePath type:1];
 
   if (!v12)
   {
@@ -156,13 +156,13 @@
       v23 = +[AMSLogConfig sharedConfig];
     }
 
-    v24 = [v23 OSLogObject];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v23 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v25 = objc_opt_class();
       *buf = 138543362;
       v37 = v25;
-      _os_log_impl(&dword_192869000, v24, OS_LOG_TYPE_ERROR, "%{public}@: Fatal Error: Failed to fetch AMSStorage database path.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Fatal Error: Failed to fetch AMSStorage database path.", buf, 0xCu);
     }
 
     v10[2](v10);
@@ -192,19 +192,19 @@
       v26 = +[AMSLogConfig sharedConfig];
     }
 
-    v27 = [v26 OSLogObject];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v26 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
-      v31 = v5;
+      v31 = domainCopy;
       v28 = objc_opt_class();
       v29 = AMSLogableError(v21);
       *buf = 138543618;
       v37 = v28;
       v38 = 2114;
       v39 = v29;
-      _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_ERROR, "%{public}@: Fatal Error: Failed to create the AMSStorage database schema: %{public}@.", buf, 0x16u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Fatal Error: Failed to create the AMSStorage database schema: %{public}@.", buf, 0x16u);
 
-      v5 = v31;
+      domainCopy = v31;
     }
 
     v10[2](v10);
@@ -221,9 +221,9 @@ LABEL_17:
   return v22;
 }
 
-- (id)valueForKey:(id)a3 error:(id *)a4
+- (id)valueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -246,7 +246,7 @@ LABEL_17:
   v22[3] = &unk_1E73BC428;
   v22[4] = self;
   v24 = &v27;
-  v7 = v6;
+  v7 = keyCopy;
   v23 = v7;
   v25 = &v33;
   v26 = &v37;
@@ -255,11 +255,11 @@ LABEL_17:
   v13 = v28[5];
   if (v13)
   {
-    if (a4)
+    if (error)
     {
 LABEL_3:
       v15 = 0;
-      *a4 = v13;
+      *error = v13;
       goto LABEL_9;
     }
   }
@@ -280,7 +280,7 @@ LABEL_3:
     v19 = v28[5];
     v28[5] = v18;
 
-    if (a4)
+    if (error)
     {
       v13 = v28[5];
       goto LABEL_3;
@@ -395,23 +395,23 @@ void __40__AMSStorageDatabase_valueForKey_error___block_invoke_18(void *a1, void
   }
 }
 
-- (BOOL)setValue:(id)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setValue:(id)value forKey:(id)key error:(id *)error
 {
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(AMSStorageDatabase *)self _valueTypeForValue:v8];
+  valueCopy = value;
+  keyCopy = key;
+  v10 = [(AMSStorageDatabase *)self _valueTypeForValue:valueCopy];
   if (v10 != 1)
   {
     v16 = v10;
     if (!v10)
     {
-      AMSErrorWithFormat(2, @"Value type not supported", @"The value type you are trying to use is not supported. Did you mean to conform to 'AMSStorageDatabasePersistable'? Key: %@", v11, v12, v13, v14, v15, v9);
+      AMSErrorWithFormat(2, @"Value type not supported", @"The value type you are trying to use is not supported. Did you mean to conform to 'AMSStorageDatabasePersistable'? Key: %@", v11, v12, v13, v14, v15, keyCopy);
       goto LABEL_5;
     }
 
     v37 = 0;
-    v21 = [(AMSStorageDatabase *)self _convertToDataWithValue:v8 valueType:v10 error:&v37];
+    v21 = [(AMSStorageDatabase *)self _convertToDataWithValue:valueCopy valueType:v10 error:&v37];
     v18 = v37;
     if (v18)
     {
@@ -421,24 +421,24 @@ void __40__AMSStorageDatabase_valueForKey_error___block_invoke_18(void *a1, void
         v27 = +[AMSLogConfig sharedConfig];
       }
 
-      v28 = [v27 OSLogObject];
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v27 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v29 = objc_opt_class();
         *buf = 138543874;
         v39 = v29;
         v40 = 2114;
-        v41 = v9;
+        v41 = keyCopy;
         v42 = 2114;
         v43 = v18;
-        _os_log_impl(&dword_192869000, v28, OS_LOG_TYPE_ERROR, "%{public}@: Creating data object for %{public}@ failed with error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Creating data object for %{public}@ failed with error: %{public}@", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v30 = v18;
         v20 = 0;
-        *a5 = v18;
+        *error = v18;
 LABEL_25:
 
         goto LABEL_26;
@@ -449,34 +449,34 @@ LABEL_25:
     {
       if (v21)
       {
-        v20 = [(AMSStorageDatabase *)self _setValueData:v21 valueType:v16 forKey:v9 error:a5];
+        v20 = [(AMSStorageDatabase *)self _setValueData:v21 valueType:v16 forKey:keyCopy error:error];
         goto LABEL_25;
       }
 
-      v31 = AMSErrorWithFormat(2, @"Error converting value to data", @"There was an issue converting value to data for key: %@", v22, v23, v24, v25, v26, v9);
+      v31 = AMSErrorWithFormat(2, @"Error converting value to data", @"There was an issue converting value to data for key: %@", v22, v23, v24, v25, v26, keyCopy);
       v32 = +[AMSLogConfig sharedConfig];
       if (!v32)
       {
         v32 = +[AMSLogConfig sharedConfig];
       }
 
-      v33 = [v32 OSLogObject];
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v32 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v34 = objc_opt_class();
         *buf = 138543874;
         v39 = v34;
         v40 = 2114;
-        v41 = v9;
+        v41 = keyCopy;
         v42 = 2114;
         v43 = v31;
-        _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_ERROR, "%{public}@: Creating data object for %{public}@ failed with error: %{public}@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: Creating data object for %{public}@ failed with error: %{public}@", buf, 0x20u);
       }
 
-      if (a5)
+      if (error)
       {
         v35 = v31;
-        *a5 = v31;
+        *error = v31;
       }
     }
 
@@ -484,14 +484,14 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  AMSErrorWithFormat(2, @"Value is null", @"You are trying to save a null value. Did you mean to call 'deleteForKey'? Key: %@", v11, v12, v13, v14, v15, v9);
+  AMSErrorWithFormat(2, @"Value is null", @"You are trying to save a null value. Did you mean to call 'deleteForKey'? Key: %@", v11, v12, v13, v14, v15, keyCopy);
   v17 = LABEL_5:;
   v18 = v17;
-  if (a5)
+  if (error)
   {
     v19 = v17;
     v20 = 0;
-    *a5 = v18;
+    *error = v18;
   }
 
   else
@@ -504,68 +504,68 @@ LABEL_26:
   return v20;
 }
 
-- (BOOL)BOOLeanForKey:(id)a3 error:(id *)a4
+- (BOOL)BOOLeanForKey:(id)key error:(id *)error
 {
-  v4 = [(AMSStorageDatabase *)self valueForKey:a3 error:a4];
-  v5 = [v4 BOOLValue];
+  v4 = [(AMSStorageDatabase *)self valueForKey:key error:error];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)setBoolean:(BOOL)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setBoolean:(BOOL)boolean forKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  booleanCopy = boolean;
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = [v8 numberWithBool:v6];
-  v11 = [(AMSStorageDatabase *)self _convertToDataWithValue:v10 valueType:2 error:a5];
+  keyCopy = key;
+  v10 = [v8 numberWithBool:booleanCopy];
+  v11 = [(AMSStorageDatabase *)self _convertToDataWithValue:v10 valueType:2 error:error];
 
-  LOBYTE(a5) = [(AMSStorageDatabase *)self _setValueData:v11 valueType:2 forKey:v9 error:a5];
-  return a5;
+  LOBYTE(error) = [(AMSStorageDatabase *)self _setValueData:v11 valueType:2 forKey:keyCopy error:error];
+  return error;
 }
 
-- (int64_t)integerForKey:(id)a3 error:(id *)a4
+- (int64_t)integerForKey:(id)key error:(id *)error
 {
-  v4 = [(AMSStorageDatabase *)self valueForKey:a3 error:a4];
-  v5 = [v4 integerValue];
+  v4 = [(AMSStorageDatabase *)self valueForKey:key error:error];
+  integerValue = [v4 integerValue];
 
-  return v5;
+  return integerValue;
 }
 
-- (BOOL)setInteger:(int64_t)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setInteger:(int64_t)integer forKey:(id)key error:(id *)error
 {
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = [v8 numberWithInteger:a3];
-  v11 = [(AMSStorageDatabase *)self _convertToDataWithValue:v10 valueType:2 error:a5];
+  keyCopy = key;
+  v10 = [v8 numberWithInteger:integer];
+  v11 = [(AMSStorageDatabase *)self _convertToDataWithValue:v10 valueType:2 error:error];
 
-  LOBYTE(a5) = [(AMSStorageDatabase *)self _setValueData:v11 valueType:2 forKey:v9 error:a5];
-  return a5;
+  LOBYTE(error) = [(AMSStorageDatabase *)self _setValueData:v11 valueType:2 forKey:keyCopy error:error];
+  return error;
 }
 
-- (double)doubleForKey:(id)a3 error:(id *)a4
+- (double)doubleForKey:(id)key error:(id *)error
 {
-  v4 = [(AMSStorageDatabase *)self valueForKey:a3 error:a4];
+  v4 = [(AMSStorageDatabase *)self valueForKey:key error:error];
   [v4 doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-- (BOOL)setDouble:(double)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)setDouble:(double)double forKey:(id)key error:(id *)error
 {
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = [v8 numberWithDouble:a3];
-  v11 = [(AMSStorageDatabase *)self _convertToDataWithValue:v10 valueType:2 error:a5];
+  keyCopy = key;
+  v10 = [v8 numberWithDouble:double];
+  v11 = [(AMSStorageDatabase *)self _convertToDataWithValue:v10 valueType:2 error:error];
 
-  LOBYTE(a5) = [(AMSStorageDatabase *)self _setValueData:v11 valueType:2 forKey:v9 error:a5];
-  return a5;
+  LOBYTE(error) = [(AMSStorageDatabase *)self _setValueData:v11 valueType:2 forKey:keyCopy error:error];
+  return error;
 }
 
-- (BOOL)deleteForKey:(id)a3 error:(id *)a4
+- (BOOL)deleteForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -578,14 +578,14 @@ LABEL_26:
   v11[3] = &unk_1E73B9610;
   v11[4] = self;
   v13 = &v14;
-  v7 = v6;
+  v7 = keyCopy;
   v12 = v7;
   [(AMSStorageDatabase *)self _performTransaction:v11];
   v8 = v15[5];
-  if (a4 && v8)
+  if (error && v8)
   {
     v8 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -647,7 +647,7 @@ void __41__AMSStorageDatabase_deleteForKey_error___block_invoke_2(uint64_t a1, v
   [v4 bindString:v5 atPosition:2];
 }
 
-- (id)sizeWithError:(id *)a3
+- (id)sizeWithError:(id *)error
 {
   v12[0] = 0;
   v12[1] = v12;
@@ -762,9 +762,9 @@ void __36__AMSStorageDatabase_sizeWithError___block_invoke_60(uint64_t a1, void 
   }
 }
 
-- (id)allKeysForDomain:(id)a3 withError:(id *)a4
+- (id)allKeysForDomain:(id)domain withError:(id *)error
 {
-  v6 = a3;
+  domainCopy = domain;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -783,16 +783,16 @@ void __36__AMSStorageDatabase_sizeWithError___block_invoke_60(uint64_t a1, void 
   v11[3] = &unk_1E73BC4F0;
   v11[4] = self;
   v13 = &v21;
-  v7 = v6;
+  v7 = domainCopy;
   v12 = v7;
   v14 = &v15;
   [(AMSStorageDatabase *)self _performTransaction:v11];
-  if (a4)
+  if (error)
   {
     v8 = v22[5];
     if (v8)
     {
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -893,7 +893,7 @@ void __49__AMSStorageDatabase_allKeysForDomain_withError___block_invoke_65(uint6
   }
 }
 
-- (id)allKeyValuesWithError:(id *)a3
+- (id)allKeyValuesWithError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v29[0] = 0;
@@ -1148,28 +1148,28 @@ void __44__AMSStorageDatabase_allKeyValuesWithError___block_invoke_76(void *a1, 
   }
 }
 
-- (BOOL)connection:(id)a3 needsResetForCorruptionError:(id)a4 error:(id *)a5
+- (BOOL)connection:(id)connection needsResetForCorruptionError:(id)error error:(id *)a5
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  connectionCopy = connection;
+  errorCopy = error;
   v10 = [AMSKeepAlive keepAliveWithName:@"AMSStorage"];
   v30 = 0;
-  v11 = [v8 truncateWithError:&v30];
+  v11 = [connectionCopy truncateWithError:&v30];
   v12 = v30;
   if ((v11 & 1) == 0)
   {
     v29 = 0;
-    [v8 closeWithError:&v29];
+    [connectionCopy closeWithError:&v29];
     v13 = v29;
-    v14 = [(AMSStorageDatabase *)self _cachePath];
+    _cachePath = [(AMSStorageDatabase *)self _cachePath];
     v28 = 0;
-    v15 = [AMSDatabaseHelper removeDatabaseForCachePath:v14 error:&v28];
+    v15 = [AMSDatabaseHelper removeDatabaseForCachePath:_cachePath error:&v28];
     v16 = v28;
 
     if (!v15)
     {
-      v20 = AMSErrorBySettingUnderlyingError(v12, v9);
+      v20 = AMSErrorBySettingUnderlyingError(v12, errorCopy);
       v18 = AMSErrorBySettingUnderlyingError(v16, v20);
 
       goto LABEL_7;
@@ -1177,7 +1177,7 @@ void __44__AMSStorageDatabase_allKeyValuesWithError___block_invoke_76(void *a1, 
   }
 
   v27 = 0;
-  v17 = [AMSStorageDatabaseSchema createOrUpdateSchemaUsingConnection:v8 error:&v27];
+  v17 = [AMSStorageDatabaseSchema createOrUpdateSchemaUsingConnection:connectionCopy error:&v27];
   v18 = v27;
   if (v17)
   {
@@ -1192,8 +1192,8 @@ LABEL_7:
     v21 = +[AMSLogConfig sharedConfig];
   }
 
-  v22 = [v21 OSLogObject];
-  if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v21 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v23 = objc_opt_class();
     v24 = AMSLogableError(v18);
@@ -1201,7 +1201,7 @@ LABEL_7:
     v32 = v23;
     v33 = 2114;
     v34 = v24;
-    _os_log_impl(&dword_192869000, v22, OS_LOG_TYPE_ERROR, "%{public}@: Failed to reset AMSStorage database after corruption. This is bad! Error = %{public}@", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Failed to reset AMSStorage database after corruption. This is bad! Error = %{public}@", buf, 0x16u);
   }
 
   v19 = 0;
@@ -1216,7 +1216,7 @@ LABEL_12:
   return v19;
 }
 
-- (id)_allKeysPrefixedByDomainWithError:(id *)a3
+- (id)_allKeysPrefixedByDomainWithError:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   v30 = 0;
@@ -1279,12 +1279,12 @@ LABEL_12:
     while (v6);
   }
 
-  if (a3)
+  if (error)
   {
     v15 = v31[5];
     if (v15)
     {
-      *a3 = v15;
+      *error = v15;
     }
   }
 
@@ -1378,9 +1378,9 @@ void __56__AMSStorageDatabase__allKeysPrefixedByDomainWithError___block_invoke_7
   }
 }
 
-- (int64_t)_valueTypeForValue:(id)a3
+- (int64_t)_valueTypeForValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1419,14 +1419,14 @@ void __56__AMSStorageDatabase__allKeysPrefixedByDomainWithError___block_invoke_7
             v4 = 6;
           }
 
-          else if ([v3 conformsToProtocol:&unk_1F0792658])
+          else if ([valueCopy conformsToProtocol:&unk_1F0792658])
           {
             v4 = 7;
           }
 
           else
           {
-            v4 = v3 == 0;
+            v4 = valueCopy == 0;
           }
         }
       }
@@ -1436,41 +1436,41 @@ void __56__AMSStorageDatabase__allKeysPrefixedByDomainWithError___block_invoke_7
   return v4;
 }
 
-- (id)_convertToDataWithValue:(id)a3 valueType:(int64_t)a4 error:(id *)a5
+- (id)_convertToDataWithValue:(id)value valueType:(int64_t)type error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = v9;
-  if (a4 > 3)
+  valueCopy = value;
+  v10 = valueCopy;
+  if (type > 3)
   {
-    if (a4 > 5)
+    if (type > 5)
     {
-      if (a4 != 6)
+      if (type != 6)
       {
-        if (a4 == 7)
+        if (type == 7)
         {
-          v11 = [v9 serializeToDictionary];
-          v5 = [(AMSStorageDatabase *)self _dataForPlistValue:v11 error:a5];
+          serializeToDictionary = [valueCopy serializeToDictionary];
+          v5 = [(AMSStorageDatabase *)self _dataForPlistValue:serializeToDictionary error:error];
         }
 
         goto LABEL_20;
       }
     }
 
-    else if (a4 == 4)
+    else if (type == 4)
     {
-      v12 = [v9 dataUsingEncoding:4];
+      v12 = [valueCopy dataUsingEncoding:4];
       goto LABEL_19;
     }
 
 LABEL_12:
-    v12 = [(AMSStorageDatabase *)self _dataForPlistValue:v9 error:a5];
+    v12 = [(AMSStorageDatabase *)self _dataForPlistValue:valueCopy error:error];
 LABEL_19:
     v5 = v12;
     goto LABEL_20;
   }
 
-  if (a4 < 2)
+  if (type < 2)
   {
     v13 = +[AMSLogConfig sharedConfig];
     if (!v13)
@@ -1478,27 +1478,27 @@ LABEL_19:
       v13 = +[AMSLogConfig sharedConfig];
     }
 
-    v14 = [v13 OSLogObject];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v13 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
       v18 = objc_opt_class();
-      _os_log_impl(&dword_192869000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Unsupported value can't be saved to the database. This path should not be reachable.", buf, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Unsupported value can't be saved to the database. This path should not be reachable.", buf, 0xCu);
     }
 
     v5 = 0;
     goto LABEL_20;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", v9];
-    v5 = [v16 dataUsingEncoding:4];
+    valueCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@", valueCopy];
+    v5 = [valueCopy dataUsingEncoding:4];
 
     goto LABEL_20;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     goto LABEL_12;
   }
@@ -1508,34 +1508,34 @@ LABEL_20:
   return v5;
 }
 
-- (id)_convertToValueWithData:(id)a3 valueType:(int64_t)a4 error:(id *)a5
+- (id)_convertToValueWithData:(id)data valueType:(int64_t)type error:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  if (a4 > 3)
+  dataCopy = data;
+  if (type > 3)
   {
-    if (a4 > 5)
+    if (type > 5)
     {
-      if (a4 != 6 && a4 != 7)
+      if (type != 6 && type != 7)
       {
         goto LABEL_20;
       }
     }
 
-    else if (a4 == 4)
+    else if (type == 4)
     {
-      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v9 encoding:4];
+      v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
       goto LABEL_12;
     }
 
 LABEL_11:
-    v10 = [(AMSStorageDatabase *)self _plistValueForData:v9 error:a5];
+    v10 = [(AMSStorageDatabase *)self _plistValueForData:dataCopy error:error];
 LABEL_12:
     v5 = v10;
     goto LABEL_20;
   }
 
-  if (a4 < 2)
+  if (type < 2)
   {
     v11 = +[AMSLogConfig sharedConfig];
     if (!v11)
@@ -1543,28 +1543,28 @@ LABEL_12:
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v16 = 138543362;
       v17 = objc_opt_class();
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Unsupported value should not have been saved to the database. This path should not be reachable.", &v16, 0xCu);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Unsupported value should not have been saved to the database. This path should not be reachable.", &v16, 0xCu);
     }
 
     v5 = 0;
     goto LABEL_20;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v9 encoding:4];
+    v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:dataCopy encoding:4];
     v14 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     v5 = [v14 numberFromString:v13];
 
     goto LABEL_20;
   }
 
-  if (a4 == 3)
+  if (type == 3)
   {
     goto LABEL_11;
   }
@@ -1574,13 +1574,13 @@ LABEL_20:
   return v5;
 }
 
-- (id)_dataForPlistValue:(id)a3 error:(id *)a4
+- (id)_dataForPlistValue:(id)value error:(id *)error
 {
-  v5 = a3;
-  if ([MEMORY[0x1E696AE40] propertyList:v5 isValidForFormat:100])
+  valueCopy = value;
+  if ([MEMORY[0x1E696AE40] propertyList:valueCopy isValidForFormat:100])
   {
     v25 = 0;
-    v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:100 options:0 error:&v25];
+    v11 = [MEMORY[0x1E696AE40] dataWithPropertyList:valueCopy format:100 options:0 error:&v25];
     v12 = v25;
     v18 = v12;
     if (v11)
@@ -1591,10 +1591,10 @@ LABEL_20:
     else
     {
       v22 = AMSErrorWithFormat(3, @"Error serializing data", @"Error serializing plist data in the AMSStorage database: %@", v13, v14, v15, v16, v17, v12);
-      if (a4)
+      if (error)
       {
         v22 = v22;
-        *a4 = v22;
+        *error = v22;
       }
     }
   }
@@ -1603,11 +1603,11 @@ LABEL_20:
   {
     v20 = AMSErrorWithFormat(3, @"AMSStorage invalid format", @"Trying to save invalid format in the AMSStorage database.", v6, v7, v8, v9, v10, v24);
     v18 = v20;
-    if (a4)
+    if (error)
     {
       v21 = v20;
       v11 = 0;
-      *a4 = v18;
+      *error = v18;
     }
 
     else
@@ -1619,11 +1619,11 @@ LABEL_20:
   return v11;
 }
 
-- (id)_plistValueForData:(id)a3 error:(id *)a4
+- (id)_plistValueForData:(id)data error:(id *)error
 {
   v19 = 0;
   v20 = 0;
-  v5 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:&v20 error:&v19];
+  v5 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:&v20 error:&v19];
   v6 = v19;
   v12 = v6;
   if (v5)
@@ -1637,11 +1637,11 @@ LABEL_20:
     {
       v15 = AMSErrorWithFormat(3, @"AMSStorage invalid format", @"Trying to read invalid format from the AMSStorage database.", v7, v8, v9, v10, v11, v18);
 
-      if (a4)
+      if (error)
       {
         v16 = v15;
         v13 = 0;
-        *a4 = v15;
+        *error = v15;
       }
 
       else
@@ -1656,10 +1656,10 @@ LABEL_20:
   else
   {
     v14 = AMSErrorWithFormat(3, @"Error deserializing data", @"Error deserializing plist data in the AMSStorage database: %@", v7, v8, v9, v10, v11, v6);
-    if (a4)
+    if (error)
     {
       v14 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     v13 = 0;
@@ -1668,10 +1668,10 @@ LABEL_20:
   return v13;
 }
 
-- (BOOL)_setValueData:(id)a3 valueType:(int64_t)a4 forKey:(id)a5 error:(id *)a6
+- (BOOL)_setValueData:(id)data valueType:(int64_t)type forKey:(id)key error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  dataCopy = data;
+  keyCopy = key;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1684,17 +1684,17 @@ LABEL_20:
   v17[3] = &unk_1E73BC540;
   v17[4] = self;
   v20 = &v22;
-  v12 = v11;
+  v12 = keyCopy;
   v18 = v12;
-  v21 = a4;
-  v13 = v10;
+  typeCopy = type;
+  v13 = dataCopy;
   v19 = v13;
   [(AMSStorageDatabase *)self _performTransaction:v17];
   v14 = v23[5];
-  if (a6 && v14)
+  if (error && v14)
   {
     v14 = v14;
-    *a6 = v14;
+    *error = v14;
   }
 
   v15 = v14 == 0;
@@ -1764,21 +1764,21 @@ void __59__AMSStorageDatabase__setValueData_valueType_forKey_error___block_invok
   [v5 bindDouble:5 atPosition:?];
 }
 
-- (void)_performTransaction:(id)a3
+- (void)_performTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = [AMSKeepAlive keepAliveWithName:@"AMSStorage"];
-  v6 = [(AMSStorageDatabase *)self internalQueue];
+  internalQueue = [(AMSStorageDatabase *)self internalQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __42__AMSStorageDatabase__performTransaction___block_invoke;
   block[3] = &unk_1E73B4378;
   v10 = v5;
-  v11 = v4;
+  v11 = transactionCopy;
   block[4] = self;
   v7 = v5;
-  v8 = v4;
-  dispatch_sync(v6, block);
+  v8 = transactionCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __42__AMSStorageDatabase__performTransaction___block_invoke(id *a1)
@@ -1844,10 +1844,10 @@ uint64_t __42__AMSStorageDatabase__performTransaction___block_invoke_3(uint64_t 
   return v2;
 }
 
-+ (id)sharedDatabaseWithDomain:(id)a3
++ (id)sharedDatabaseWithDomain:(id)domain
 {
-  v3 = a3;
-  v4 = [[AMSStorageDatabase alloc] initWithDomain:v3];
+  domainCopy = domain;
+  v4 = [[AMSStorageDatabase alloc] initWithDomain:domainCopy];
 
   return v4;
 }

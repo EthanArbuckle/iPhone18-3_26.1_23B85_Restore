@@ -1,7 +1,7 @@
 @interface SocialLayerSharedItemCenter
 - (_TtC8NewsFeed27SocialLayerSharedItemCenter)init;
-- (void)highlightCenter:(id)a3 didRemoveHighlights:(id)a4;
-- (void)highlightCenterDidAddHighlights:(id)a3;
+- (void)highlightCenter:(id)center didRemoveHighlights:(id)highlights;
+- (void)highlightCenterDidAddHighlights:(id)highlights;
 @end
 
 @implementation SocialLayerSharedItemCenter
@@ -26,19 +26,19 @@
   return [(SocialLayerSharedItemCenter *)&v7 init];
 }
 
-- (void)highlightCenter:(id)a3 didRemoveHighlights:(id)a4
+- (void)highlightCenter:(id)center didRemoveHighlights:(id)highlights
 {
   sub_1D5B5A498(0, &qword_1EDF3C798);
   v6 = sub_1D726267C();
-  v7 = a3;
-  v8 = self;
-  SocialLayerSharedItemCenter.highlightCenter(_:didRemove:)(v7, v6);
+  centerCopy = center;
+  selfCopy = self;
+  SocialLayerSharedItemCenter.highlightCenter(_:didRemove:)(centerCopy, v6);
 }
 
-- (void)highlightCenterDidAddHighlights:(id)a3
+- (void)highlightCenterDidAddHighlights:(id)highlights
 {
-  v4 = a3;
-  v5 = self;
+  highlightsCopy = highlights;
+  selfCopy = self;
   _s8NewsFeed27SocialLayerSharedItemCenterC09highlightG16DidAddHighlightsyySo011SLHighlightG0CF_0();
 }
 

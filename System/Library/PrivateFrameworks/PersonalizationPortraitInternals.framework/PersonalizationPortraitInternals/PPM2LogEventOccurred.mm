@@ -1,22 +1,22 @@
 @interface PPM2LogEventOccurred
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (int)event;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2LogEventOccurred
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_event = *(a3 + 2);
+    self->_event = *(from + 2);
     *&self->_has |= 1u;
   }
 }
@@ -34,18 +34,18 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_event == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_event == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;
@@ -60,9 +60,9 @@ LABEL_7:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = self->_event;
@@ -72,16 +72,16 @@ LABEL_7:
   return result;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_event;
-    *(a3 + 12) |= 1u;
+    *(to + 2) = self->_event;
+    *(to + 12) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -92,7 +92,7 @@ LABEL_7:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     if (self->_event)
@@ -105,10 +105,10 @@ LABEL_7:
       v4 = @"MaxFeedbackRowsHit";
     }
 
-    [v3 setObject:v4 forKey:@"event"];
+    [dictionary setObject:v4 forKey:@"event"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -117,8 +117,8 @@ LABEL_7:
   v8.receiver = self;
   v8.super_class = PPM2LogEventOccurred;
   v4 = [(PPM2LogEventOccurred *)&v8 description];
-  v5 = [(PPM2LogEventOccurred *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2LogEventOccurred *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

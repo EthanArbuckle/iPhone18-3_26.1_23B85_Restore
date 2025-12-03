@@ -1,12 +1,12 @@
 @interface SNTunableDSPGraphHost
-- (SNTunableDSPGraphHost)initWithGraph:(id)a3 error:(id *)a4;
+- (SNTunableDSPGraphHost)initWithGraph:(id)graph error:(id *)error;
 @end
 
 @implementation SNTunableDSPGraphHost
 
-- (SNTunableDSPGraphHost)initWithGraph:(id)a3 error:(id *)a4
+- (SNTunableDSPGraphHost)initWithGraph:(id)graph error:(id *)error
 {
-  v6 = a3;
+  graphCopy = graph;
   v22.receiver = self;
   v22.super_class = SNTunableDSPGraphHost;
   v7 = [(SNTunableDSPGraphHost *)&v22 init];
@@ -24,8 +24,8 @@
     v12[2] = sub_1C9A4F1D8;
     v12[3] = &unk_1E8346C68;
     v14 = &v15;
-    v13 = v6;
-    if (sub_1C9A74388(SNDSPGraphUtilities, v12, a4))
+    v13 = graphCopy;
+    if (sub_1C9A74388(SNDSPGraphUtilities, v12, error))
     {
       v8 = v16[6];
       v16[6] = 0;

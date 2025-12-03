@@ -1,6 +1,6 @@
 @interface RBEncoderSet
 - (RBEncoderSet)init;
-- (void)addDisplayList:(id)a3;
+- (void)addDisplayList:(id)list;
 @end
 
 @implementation RBEncoderSet
@@ -17,17 +17,17 @@
   return 0;
 }
 
-- (void)addDisplayList:(id)a3
+- (void)addDisplayList:(id)list
 {
   if (self->_final)
   {
     [(RBEncoderSet *)self addDisplayList:a2];
   }
 
-  v4 = [a3 _rb_contents];
-  if (v4)
+  _rb_contents = [list _rb_contents];
+  if (_rb_contents)
   {
-    v5 = v4;
+    v5 = _rb_contents;
     p = self->_font_set._p;
     *v7 = 0u;
     *v8 = 0u;

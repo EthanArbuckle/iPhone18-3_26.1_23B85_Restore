@@ -1,25 +1,25 @@
 @interface PurchaseHistoryOperation
 - (NSArray)purchaseHistoryItems;
 - (NSArray)purchasedItems;
-- (PurchaseHistoryOperation)initWithPurchaseHistoryItems:(id)a3 authenticationContext:(id)a4;
+- (PurchaseHistoryOperation)initWithPurchaseHistoryItems:(id)items authenticationContext:(id)context;
 - (SSAuthenticationContext)authenticationContext;
 - (id)_newURLOperation;
-- (void)_setOutputItemsWithMapping:(id)a3;
+- (void)_setOutputItemsWithMapping:(id)mapping;
 - (void)dealloc;
 - (void)run;
 @end
 
 @implementation PurchaseHistoryOperation
 
-- (PurchaseHistoryOperation)initWithPurchaseHistoryItems:(id)a3 authenticationContext:(id)a4
+- (PurchaseHistoryOperation)initWithPurchaseHistoryItems:(id)items authenticationContext:(id)context
 {
   v8.receiver = self;
   v8.super_class = PurchaseHistoryOperation;
   v6 = [(PurchaseHistoryOperation *)&v8 init];
   if (v6)
   {
-    v6->_authenticationContext = [a4 copy];
-    v6->_inputItems = [a3 copy];
+    v6->_authenticationContext = [context copy];
+    v6->_inputItems = [items copy];
   }
 
   return v6;
@@ -56,22 +56,22 @@
 
 - (void)run
 {
-  v3 = [(PurchaseHistoryOperation *)self _newURLOperation];
+  _newURLOperation = [(PurchaseHistoryOperation *)self _newURLOperation];
   v4 = +[SSLogConfig sharedDaemonConfig];
   if (!v4)
   {
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
   if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
@@ -101,10 +101,10 @@
   }
 
   *v17 = 0;
-  v12 = [(PurchaseHistoryOperation *)self runSubOperation:v3 returningError:v17, v15];
+  v12 = [(PurchaseHistoryOperation *)self runSubOperation:_newURLOperation returningError:v17, v15];
   if (v12)
   {
-    v13 = [objc_msgSend(v3 "dataProvider")];
+    v13 = [objc_msgSend(_newURLOperation "dataProvider")];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,8 +130,8 @@
   v4 = objc_alloc_init(SSMutableURLRequestProperties);
   [v4 setClientIdentifier:{-[SSAuthenticationContext clientIdentifierHeader](self->_authenticationContext, "clientIdentifierHeader")}];
   [v4 setURLBagKey:@"bundle-owns-check"];
-  v5 = [(SSAuthenticationContext *)self->_authenticationContext HTTPHeaders];
-  [v4 setValue:objc_msgSend(v5 forHTTPHeaderField:{"objectForKey:", SSHTTPHeaderUserAgent), SSHTTPHeaderUserAgent}];
+  hTTPHeaders = [(SSAuthenticationContext *)self->_authenticationContext HTTPHeaders];
+  [v4 setValue:objc_msgSend(hTTPHeaders forHTTPHeaderField:{"objectForKey:", SSHTTPHeaderUserAgent), SSHTTPHeaderUserAgent}];
   [v4 setValue:-[ISDevice guid](+[ISDevice sharedInstance](ISDevice forRequestParameter:{"sharedInstance"), "guid"), @"guid"}];
   v6 = objc_alloc_init(NSMutableString);
   v15 = 0u;
@@ -182,14 +182,14 @@
   return v3;
 }
 
-- (void)_setOutputItemsWithMapping:(id)a3
+- (void)_setOutputItemsWithMapping:(id)mapping
 {
   v24 = objc_alloc_init(NSMutableArray);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  v4 = [mapping countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
@@ -201,11 +201,11 @@
       {
         if (*v26 != v6)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(mapping);
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [a3 objectForKey:v9];
+        v10 = [mapping objectForKey:v9];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && [v10 BOOLValue])
         {
@@ -215,7 +215,7 @@
         }
       }
 
-      v5 = [a3 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v5 = [mapping countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v5);
@@ -227,15 +227,15 @@
     v12 = +[SSLogConfig sharedConfig];
   }
 
-  v13 = [v12 shouldLog];
+  shouldLog = [v12 shouldLog];
   if ([v12 shouldLogToDisk])
   {
-    v14 = v13 | 2;
+    v14 = shouldLog | 2;
   }
 
   else
   {
-    v14 = v13;
+    v14 = shouldLog;
   }
 
   if (os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_INFO))

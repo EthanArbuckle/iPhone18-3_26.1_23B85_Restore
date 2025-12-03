@@ -1,10 +1,10 @@
 @interface NTKCharacterColorEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)legacyOptionWithPigmentEditOption:(id)a3 forDevice:(id)a4;
-+ (id)optionAtIndex:(unint64_t)a3 forCharacter:(unint64_t)a4 forDevice:(id)a5;
-+ (id)optionWithOption:(id)a3 forCharacter:(unint64_t)a4 forDevice:(id)a5;
-+ (unint64_t)indexOfOption:(id)a3 forCharacter:(unint64_t)a4 forDevice:(id)a5;
-+ (unint64_t)numberOfOptionsForCharacter:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)legacyOptionWithPigmentEditOption:(id)option forDevice:(id)device;
++ (id)optionAtIndex:(unint64_t)index forCharacter:(unint64_t)character forDevice:(id)device;
++ (id)optionWithOption:(id)option forCharacter:(unint64_t)character forDevice:(id)device;
++ (unint64_t)indexOfOption:(id)option forCharacter:(unint64_t)character forDevice:(id)device;
++ (unint64_t)numberOfOptionsForCharacter:(unint64_t)character forDevice:(id)device;
 - (BOOL)isValidOption;
 - (UIColor)colorValue;
 - (double)desaturation;
@@ -15,57 +15,57 @@
 
 @implementation NTKCharacterColorEditOption
 
-+ (id)optionWithOption:(id)a3 forCharacter:(unint64_t)a4 forDevice:(id)a5
++ (id)optionWithOption:(id)option forCharacter:(unint64_t)character forDevice:(id)device
 {
-  v8 = a5;
-  v9 = [a3 color];
-  v10 = sub_58D8(a4, v8);
-  v11 = [NSNumber numberWithUnsignedInteger:v9];
+  deviceCopy = device;
+  color = [option color];
+  v10 = sub_58D8(character, deviceCopy);
+  v11 = [NSNumber numberWithUnsignedInteger:color];
   v12 = [v10 containsObject:v11];
 
   if ((v12 & 1) == 0)
   {
     v13 = [v10 objectAtIndex:1];
-    v9 = [v13 unsignedIntegerValue];
+    color = [v13 unsignedIntegerValue];
   }
 
-  v14 = [a1 optionWithFaceColor:v9 forDevice:v8];
+  v14 = [self optionWithFaceColor:color forDevice:deviceCopy];
 
   return v14;
 }
 
-+ (unint64_t)numberOfOptionsForCharacter:(unint64_t)a3 forDevice:(id)a4
++ (unint64_t)numberOfOptionsForCharacter:(unint64_t)character forDevice:(id)device
 {
-  v4 = sub_58D8(a3, a4);
+  v4 = sub_58D8(character, device);
   v5 = [v4 count];
 
   return v5;
 }
 
-+ (id)optionAtIndex:(unint64_t)a3 forCharacter:(unint64_t)a4 forDevice:(id)a5
++ (id)optionAtIndex:(unint64_t)index forCharacter:(unint64_t)character forDevice:(id)device
 {
-  v8 = a5;
-  if ([a1 numberOfOptionsForCharacter:a4 forDevice:v8] <= a3)
+  deviceCopy = device;
+  if ([self numberOfOptionsForCharacter:character forDevice:deviceCopy] <= index)
   {
-    a3 = 0;
+    index = 0;
   }
 
-  v9 = sub_58D8(a4, v8);
-  v10 = [v9 objectAtIndex:a3];
-  v11 = [v10 unsignedIntegerValue];
+  v9 = sub_58D8(character, deviceCopy);
+  v10 = [v9 objectAtIndex:index];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-  v12 = [a1 optionWithFaceColor:v11 forDevice:v8];
+  v12 = [self optionWithFaceColor:unsignedIntegerValue forDevice:deviceCopy];
 
   return v12;
 }
 
-+ (unint64_t)indexOfOption:(id)a3 forCharacter:(unint64_t)a4 forDevice:(id)a5
++ (unint64_t)indexOfOption:(id)option forCharacter:(unint64_t)character forDevice:(id)device
 {
-  v7 = a5;
-  v8 = [a3 color];
-  v9 = sub_58D8(a4, v7);
+  deviceCopy = device;
+  color = [option color];
+  v9 = sub_58D8(character, deviceCopy);
 
-  v10 = [NSNumber numberWithUnsignedInteger:v8];
+  v10 = [NSNumber numberWithUnsignedInteger:color];
   v11 = [v9 indexOfObject:v10];
 
   return v11;
@@ -77,8 +77,8 @@
   v4 = 1;
   while (1)
   {
-    v5 = [(NTKCharacterColorEditOption *)self device];
-    v6 = sub_58D8(v3, v5);
+    device = [(NTKCharacterColorEditOption *)self device];
+    v6 = sub_58D8(v3, device);
     v7 = [NSNumber numberWithUnsignedInteger:[(NTKCharacterColorEditOption *)self _value]];
     v8 = [v6 containsObject:v7];
 
@@ -115,36 +115,36 @@
   return v3;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   result = 0;
-  if (a3 > 999)
+  if (value > 999)
   {
     v5 = @"gold-generic-3";
     v6 = @"vintage";
-    if (a3 != 3000)
+    if (value != 3000)
     {
       v6 = 0;
     }
 
-    if (a3 != 1002)
+    if (value != 1002)
     {
       v5 = v6;
     }
 
     v7 = @"gold-generic-1";
     v8 = @"gold-generic-2";
-    if (a3 != 1001)
+    if (value != 1001)
     {
       v8 = 0;
     }
 
-    if (a3 != 1000)
+    if (value != 1000)
     {
       v7 = v8;
     }
 
-    if (a3 <= 1001)
+    if (value <= 1001)
     {
       return v7;
     }
@@ -157,7 +157,7 @@
 
   else
   {
-    switch(a3)
+    switch(value)
     {
       case 0uLL:
         result = @"pink";
@@ -448,23 +448,23 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKCharacterColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKCharacterColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (UIColor)colorValue
 {
-  v3 = [(NTKCharacterColorEditOption *)self color];
-  if (v3 == 3000 || v3 == 6)
+  color = [(NTKCharacterColorEditOption *)self color];
+  if (color == 3000 || color == 6)
   {
     v4 = [UIColor colorWithRed:0.862745098 green:0.129411765 blue:0.152941176 alpha:1.0];
   }
 
   else
   {
-    v5 = [(NTKCharacterColorEditOption *)self device];
+    device = [(NTKCharacterColorEditOption *)self device];
     v4 = NTKForegroundColor();
   }
 
@@ -473,9 +473,9 @@
 
 - (double)desaturation
 {
-  v2 = [(NTKCharacterColorEditOption *)self color];
+  color = [(NTKCharacterColorEditOption *)self color];
   result = 0.0;
-  if (v2 == 3000)
+  if (color == 3000)
   {
     return 1.0;
   }
@@ -485,14 +485,14 @@
 
 - (id)pigmentEditOption
 {
-  v3 = [(NTKCharacterColorEditOption *)self color];
-  if (v3 == 6)
+  color = [(NTKCharacterColorEditOption *)self color];
+  if (color == 6)
   {
     v4 = NTKColorPaletteDomainMickey;
     v5 = NTKFaceColorName();
   }
 
-  else if (v3 == 3000)
+  else if (color == 3000)
   {
     v4 = NTKColorPaletteDomainMickey;
     v5 = @"vintage";
@@ -511,32 +511,32 @@
   return v6;
 }
 
-+ (id)legacyOptionWithPigmentEditOption:(id)a3 forDevice:(id)a4
++ (id)legacyOptionWithPigmentEditOption:(id)option forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 optionName];
-  v9 = [v8 isEqualToString:@"vintage"];
+  optionCopy = option;
+  deviceCopy = device;
+  optionName = [optionCopy optionName];
+  v9 = [optionName isEqualToString:@"vintage"];
 
   if (v9)
   {
-    v10 = a1;
+    selfCopy2 = self;
     v11 = 3000;
   }
 
   else
   {
-    v12 = [v6 optionName];
+    optionName2 = [optionCopy optionName];
     v13 = NTKFaceColorName();
-    v14 = [v12 isEqualToString:v13];
+    v14 = [optionName2 isEqualToString:v13];
 
     if (!v14)
     {
-      v16 = [NTKFaceColorEditOption legacyOptionWithPigmentEditOption:v6 forDevice:v7];
+      v16 = [NTKFaceColorEditOption legacyOptionWithPigmentEditOption:optionCopy forDevice:deviceCopy];
       v17 = v16;
       if (v16)
       {
-        v15 = [a1 optionWithFaceColor:objc_msgSend(v16 forDevice:{"faceColor"), v7}];
+        v15 = [self optionWithFaceColor:objc_msgSend(v16 forDevice:{"faceColor"), deviceCopy}];
       }
 
       else
@@ -547,11 +547,11 @@
       goto LABEL_10;
     }
 
-    v10 = a1;
+    selfCopy2 = self;
     v11 = 6;
   }
 
-  v15 = [v10 optionWithFaceColor:v11 forDevice:v7];
+  v15 = [selfCopy2 optionWithFaceColor:v11 forDevice:deviceCopy];
 LABEL_10:
 
   return v15;

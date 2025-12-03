@@ -2,14 +2,14 @@
 - (BOOL)hasRows;
 - (NSNumber)firstNumberValue;
 - (int64_t)firstInt64Value;
-- (void)enumerateRowsUsingBlock:(id)a3;
+- (void)enumerateRowsUsingBlock:(id)block;
 @end
 
 @implementation ASUSQLiteQueryResults
 
-- (void)enumerateRowsUsingBlock:(id)a3
+- (void)enumerateRowsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_100670AC0([ASUSQLiteCursor alloc], self->_statement);
   v6 = sub_100670E48(self->_statement);
   v7 = sub_100670E3C(self->_statement);
@@ -19,7 +19,7 @@
   v13[2] = sub_1001E9854;
   v13[3] = &unk_100756C08;
   v16 = v6;
-  v8 = v4;
+  v8 = blockCopy;
   v15 = v8;
   v9 = v5;
   v14 = v9;

@@ -1,14 +1,14 @@
 @interface SearchUISectionBackgroundStyleUtilities
-+ (BOOL)backgroundStyleNeedsInset:(int64_t)a3;
++ (BOOL)backgroundStyleNeedsInset:(int64_t)inset;
 @end
 
 @implementation SearchUISectionBackgroundStyleUtilities
 
-+ (BOOL)backgroundStyleNeedsInset:(int64_t)a3
++ (BOOL)backgroundStyleNeedsInset:(int64_t)inset
 {
-  if (a3)
+  if (inset)
   {
-    v3 = a3 == 5;
+    v3 = inset == 5;
   }
 
   else

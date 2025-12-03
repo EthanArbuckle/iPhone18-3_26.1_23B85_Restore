@@ -43,46 +43,46 @@
 
 + (id)gizmoTotalScoreFriendDetailConfiguration
 {
-  v2 = [a1 gizmoTotalScoreConfiguration];
+  gizmoTotalScoreConfiguration = [self gizmoTotalScoreConfiguration];
   v3 = [MEMORY[0x277D74300] systemFontOfSize:13.0];
-  [v2 setHeaderFont:v3];
+  [gizmoTotalScoreConfiguration setHeaderFont:v3];
 
-  [v2 setHeaderBaselineOffset:19.5];
-  [v2 setNameBaselineOffset:21.0];
-  [v2 setShowsScoreTypeHeader:1];
+  [gizmoTotalScoreConfiguration setHeaderBaselineOffset:19.5];
+  [gizmoTotalScoreConfiguration setNameBaselineOffset:21.0];
+  [gizmoTotalScoreConfiguration setShowsScoreTypeHeader:1];
 
-  return v2;
+  return gizmoTotalScoreConfiguration;
 }
 
 + (id)gizmoTodayScoreConfiguration
 {
-  v2 = [a1 gizmoTotalScoreFriendDetailConfiguration];
-  [v2 setShowsNames:0];
-  [v2 setPrimaryScoreSource:1];
+  gizmoTotalScoreFriendDetailConfiguration = [self gizmoTotalScoreFriendDetailConfiguration];
+  [gizmoTotalScoreFriendDetailConfiguration setShowsNames:0];
+  [gizmoTotalScoreFriendDetailConfiguration setPrimaryScoreSource:1];
 
-  return v2;
+  return gizmoTotalScoreFriendDetailConfiguration;
 }
 
 + (id)gizmoTotalWinsConfiguration
 {
-  v2 = [a1 gizmoTotalScoreFriendDetailConfiguration];
-  [v2 setShowsNames:0];
-  [v2 setPrimaryScoreSource:2];
-  [v2 setAchievementThumbnailSize:{20.0, 20.0}];
-  [v2 setAchievementThumbnailTopMargin:5.5];
-  [v2 setShowsAchievementThumbnail:1];
-  [v2 setAchievementThumbnailAlignment:0];
-  [v2 setAchievementThumbnailQuality:0];
+  gizmoTotalScoreFriendDetailConfiguration = [self gizmoTotalScoreFriendDetailConfiguration];
+  [gizmoTotalScoreFriendDetailConfiguration setShowsNames:0];
+  [gizmoTotalScoreFriendDetailConfiguration setPrimaryScoreSource:2];
+  [gizmoTotalScoreFriendDetailConfiguration setAchievementThumbnailSize:{20.0, 20.0}];
+  [gizmoTotalScoreFriendDetailConfiguration setAchievementThumbnailTopMargin:5.5];
+  [gizmoTotalScoreFriendDetailConfiguration setShowsAchievementThumbnail:1];
+  [gizmoTotalScoreFriendDetailConfiguration setAchievementThumbnailAlignment:0];
+  [gizmoTotalScoreFriendDetailConfiguration setAchievementThumbnailQuality:0];
 
-  return v2;
+  return gizmoTotalScoreFriendDetailConfiguration;
 }
 
 + (id)gizmoTotalWinsStandaloneConfiguration
 {
-  v2 = [a1 gizmoTotalWinsConfiguration];
-  [v2 setShowsNames:1];
+  gizmoTotalWinsConfiguration = [self gizmoTotalWinsConfiguration];
+  [gizmoTotalWinsConfiguration setShowsNames:1];
 
-  return v2;
+  return gizmoTotalWinsConfiguration;
 }
 
 + (id)companionTotalScoreFriendDetailConfiguration
@@ -104,8 +104,8 @@
   v20[0] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
-  v9 = [v4 fontDescriptor];
-  v10 = [v9 fontDescriptorByAddingAttributes:v8];
+  fontDescriptor = [v4 fontDescriptor];
+  v10 = [fontDescriptor fontDescriptorByAddingAttributes:v8];
 
   v11 = [MEMORY[0x277D74300] fontWithDescriptor:v10 size:0.0];
   v12 = objc_alloc_init(ASCompetitionScoreViewConfiguration);
@@ -140,38 +140,38 @@
 
 + (id)companionFriendListConfiguration
 {
-  v2 = [a1 companionTotalScoreFriendDetailConfiguration];
-  [v2 setDivision:0];
-  [v2 setNameBaselineOffset:30.0];
-  [v2 setMinimumMiddleMargin:19.0];
-  [v2 setSideMargin:19.0];
+  companionTotalScoreFriendDetailConfiguration = [self companionTotalScoreFriendDetailConfiguration];
+  [companionTotalScoreFriendDetailConfiguration setDivision:0];
+  [companionTotalScoreFriendDetailConfiguration setNameBaselineOffset:30.0];
+  [companionTotalScoreFriendDetailConfiguration setMinimumMiddleMargin:19.0];
+  [companionTotalScoreFriendDetailConfiguration setSideMargin:19.0];
 
-  return v2;
+  return companionTotalScoreFriendDetailConfiguration;
 }
 
 + (id)companionTotalWinsFriendDetailConfiguration
 {
-  v2 = [a1 companionTotalScoreFriendDetailConfiguration];
-  [v2 setPrimaryScoreSource:2];
-  [v2 setShowsPrimaryScoreUnits:0];
-  [v2 setShowsNames:0];
-  [v2 setShowsTodaySecondaryScore:0];
-  [v2 setBottomMargin:19.0];
-  [v2 setPrimaryScoreBaselineOffset:29.0];
-  [v2 setShowsAchievementThumbnail:1];
-  [v2 setAchievementThumbnailAlignment:1];
-  [v2 setAchievementThumbnailQuality:1];
-  [v2 setAchievementThumbnailSize:{41.0, 41.0}];
+  companionTotalScoreFriendDetailConfiguration = [self companionTotalScoreFriendDetailConfiguration];
+  [companionTotalScoreFriendDetailConfiguration setPrimaryScoreSource:2];
+  [companionTotalScoreFriendDetailConfiguration setShowsPrimaryScoreUnits:0];
+  [companionTotalScoreFriendDetailConfiguration setShowsNames:0];
+  [companionTotalScoreFriendDetailConfiguration setShowsTodaySecondaryScore:0];
+  [companionTotalScoreFriendDetailConfiguration setBottomMargin:19.0];
+  [companionTotalScoreFriendDetailConfiguration setPrimaryScoreBaselineOffset:29.0];
+  [companionTotalScoreFriendDetailConfiguration setShowsAchievementThumbnail:1];
+  [companionTotalScoreFriendDetailConfiguration setAchievementThumbnailAlignment:1];
+  [companionTotalScoreFriendDetailConfiguration setAchievementThumbnailQuality:1];
+  [companionTotalScoreFriendDetailConfiguration setAchievementThumbnailSize:{41.0, 41.0}];
 
-  return v2;
+  return companionTotalScoreFriendDetailConfiguration;
 }
 
 + (id)companionTotalWinsStandaloneFriendDetailConfiguration
 {
-  v2 = [a1 companionTotalWinsFriendDetailConfiguration];
-  [v2 setShowsNames:1];
+  companionTotalWinsFriendDetailConfiguration = [self companionTotalWinsFriendDetailConfiguration];
+  [companionTotalWinsFriendDetailConfiguration setShowsNames:1];
 
-  return v2;
+  return companionTotalWinsFriendDetailConfiguration;
 }
 
 - (CGSize)achievementThumbnailSize

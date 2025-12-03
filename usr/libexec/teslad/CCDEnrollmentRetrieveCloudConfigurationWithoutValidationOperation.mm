@@ -1,15 +1,15 @@
 @interface CCDEnrollmentRetrieveCloudConfigurationWithoutValidationOperation
-- (id)responseWithResponseData:(id)a3 contentType:(id)a4 outError:(id *)a5;
+- (id)responseWithResponseData:(id)data contentType:(id)type outError:(id *)error;
 @end
 
 @implementation CCDEnrollmentRetrieveCloudConfigurationWithoutValidationOperation
 
-- (id)responseWithResponseData:(id)a3 contentType:(id)a4 outError:(id *)a5
+- (id)responseWithResponseData:(id)data contentType:(id)type outError:(id *)error
 {
-  v6 = a3;
-  if ([a4 containsString:@"text/plain"])
+  dataCopy = data;
+  if ([type containsString:@"text/plain"])
   {
-    v7 = [CCDError cloudConfigErrorInResponse:v6];
+    v7 = [CCDError cloudConfigErrorInResponse:dataCopy];
     v8 = *(DEPLogObjects() + 8);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -19,7 +19,7 @@
     }
 
     v16 = @"Response";
-    v17 = v6;
+    v17 = dataCopy;
     v9 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   }
 
@@ -29,14 +29,14 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = v10;
-      v12 = [[NSString alloc] initWithData:v6 encoding:4];
+      v12 = [[NSString alloc] initWithData:dataCopy encoding:4];
       *buf = 138543362;
       v19 = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Enrollment Response: %{public}@", buf, 0xCu);
     }
 
     v15 = 0;
-    v9 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:&v15];
+    v9 = [NSJSONSerialization JSONObjectWithData:dataCopy options:0 error:&v15];
     v7 = v15;
     if (v7)
     {

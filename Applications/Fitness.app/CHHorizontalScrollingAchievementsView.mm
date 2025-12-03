@@ -1,46 +1,46 @@
 @interface CHHorizontalScrollingAchievementsView
 - (BOOL)hasVisibleAchievements;
-- (CHHorizontalScrollingAchievementsView)initWithFrame:(CGRect)a3 badgeImageFactory:(id)a4 locProvider:(id)a5;
+- (CHHorizontalScrollingAchievementsView)initWithFrame:(CGRect)frame badgeImageFactory:(id)factory locProvider:(id)provider;
 - (CHHorizontalScrollingAchievementsViewDelegate)delegate;
 - (UIEdgeInsets)scrollViewContentInset;
 - (id)_createLayout;
 - (void)layoutSubviews;
-- (void)setAchievements:(id)a3;
-- (void)setScrollViewContentInset:(UIEdgeInsets)a3;
+- (void)setAchievements:(id)achievements;
+- (void)setScrollViewContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation CHHorizontalScrollingAchievementsView
 
-- (CHHorizontalScrollingAchievementsView)initWithFrame:(CGRect)a3 badgeImageFactory:(id)a4 locProvider:(id)a5
+- (CHHorizontalScrollingAchievementsView)initWithFrame:(CGRect)frame badgeImageFactory:(id)factory locProvider:(id)provider
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
-  v13 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  factoryCopy = factory;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = CHHorizontalScrollingAchievementsView;
-  v14 = [(CHHorizontalScrollingAchievementsView *)&v21 initWithFrame:x, y, width, height];
-  if (v14)
+  height = [(CHHorizontalScrollingAchievementsView *)&v21 initWithFrame:x, y, width, height];
+  if (height)
   {
     v15 = [UICollectionView alloc];
-    v16 = [(CHHorizontalScrollingAchievementsView *)v14 _createLayout];
-    v17 = [v15 initWithFrame:v16 collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    collectionView = v14->_collectionView;
-    v14->_collectionView = v17;
+    _createLayout = [(CHHorizontalScrollingAchievementsView *)height _createLayout];
+    v17 = [v15 initWithFrame:_createLayout collectionViewLayout:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
+    collectionView = height->_collectionView;
+    height->_collectionView = v17;
 
     v19 = +[UIColor clearColor];
-    [(UICollectionView *)v14->_collectionView setBackgroundColor:v19];
+    [(UICollectionView *)height->_collectionView setBackgroundColor:v19];
 
-    [(UICollectionView *)v14->_collectionView setShowsHorizontalScrollIndicator:0];
-    [(UICollectionView *)v14->_collectionView setShowsVerticalScrollIndicator:0];
-    [(CHHorizontalScrollingAchievementsView *)v14 addSubview:v14->_collectionView];
-    objc_storeStrong(&v14->_locProvider, a5);
-    objc_storeStrong(&v14->_imageFactory, a4);
+    [(UICollectionView *)height->_collectionView setShowsHorizontalScrollIndicator:0];
+    [(UICollectionView *)height->_collectionView setShowsVerticalScrollIndicator:0];
+    [(CHHorizontalScrollingAchievementsView *)height addSubview:height->_collectionView];
+    objc_storeStrong(&height->_locProvider, provider);
+    objc_storeStrong(&height->_imageFactory, factory);
   }
 
-  return v14;
+  return height;
 }
 
 - (id)_createLayout
@@ -53,18 +53,18 @@
   return v2;
 }
 
-- (void)setAchievements:(id)a3
+- (void)setAchievements:(id)achievements
 {
-  v5 = a3;
-  if (self->_achievements != v5)
+  achievementsCopy = achievements;
+  if (self->_achievements != achievementsCopy)
   {
-    objc_storeStrong(&self->_achievements, a3);
+    objc_storeStrong(&self->_achievements, achievements);
     v6 = [CHHorizontalScrollingAchievementsDataSource alloc];
-    v7 = [(CHHorizontalScrollingAchievementsView *)self collectionView];
+    collectionView = [(CHHorizontalScrollingAchievementsView *)self collectionView];
     achievements = self->_achievements;
-    v9 = [(CHHorizontalScrollingAchievementsView *)self imageFactory];
-    v10 = [(CHHorizontalScrollingAchievementsView *)self locProvider];
-    v11 = [(CHHorizontalScrollingAchievementsDataSource *)v6 initWithCollectionView:v7 achievements:achievements imageFactory:v9 locProvider:v10];
+    imageFactory = [(CHHorizontalScrollingAchievementsView *)self imageFactory];
+    locProvider = [(CHHorizontalScrollingAchievementsView *)self locProvider];
+    v11 = [(CHHorizontalScrollingAchievementsDataSource *)v6 initWithCollectionView:collectionView achievements:achievements imageFactory:imageFactory locProvider:locProvider];
     dataSource = self->_dataSource;
     self->_dataSource = v11;
 
@@ -82,36 +82,36 @@
   }
 }
 
-- (void)setScrollViewContentInset:(UIEdgeInsets)a3
+- (void)setScrollViewContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_scrollViewContentInset.top), vceqq_f64(v4, *&self->_scrollViewContentInset.bottom)))) & 1) == 0)
   {
-    self->_scrollViewContentInset = a3;
-    right = a3.right;
-    left = a3.left;
-    bottom = a3.bottom;
-    top = a3.top;
-    v8 = [(CHHorizontalScrollingAchievementsView *)self dataSource];
-    [v8 setEdgeInsets:{top, left, bottom, right}];
+    self->_scrollViewContentInset = inset;
+    right = inset.right;
+    left = inset.left;
+    bottom = inset.bottom;
+    top = inset.top;
+    dataSource = [(CHHorizontalScrollingAchievementsView *)self dataSource];
+    [dataSource setEdgeInsets:{top, left, bottom, right}];
   }
 }
 
 - (BOOL)hasVisibleAchievements
 {
-  v3 = [(CHHorizontalScrollingAchievementsView *)self dataSource];
-  if ([v3 numberOfSectionsInCollectionView:self->_collectionView] < 1)
+  dataSource = [(CHHorizontalScrollingAchievementsView *)self dataSource];
+  if ([dataSource numberOfSectionsInCollectionView:self->_collectionView] < 1)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [(CHHorizontalScrollingAchievementsView *)self dataSource];
-    v5 = [v4 collectionView:self->_collectionView numberOfItemsInSection:0] > 0;
+    dataSource2 = [(CHHorizontalScrollingAchievementsView *)self dataSource];
+    v5 = [dataSource2 collectionView:self->_collectionView numberOfItemsInSection:0] > 0;
   }
 
   return v5;
@@ -127,12 +127,12 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CHHorizontalScrollingAchievementsView *)self collectionView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  collectionView = [(CHHorizontalScrollingAchievementsView *)self collectionView];
+  [collectionView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(CHHorizontalScrollingAchievementsView *)self collectionView];
-  v13 = [v12 collectionViewLayout];
-  [v13 invalidateLayout];
+  collectionView2 = [(CHHorizontalScrollingAchievementsView *)self collectionView];
+  collectionViewLayout = [collectionView2 collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (UIEdgeInsets)scrollViewContentInset

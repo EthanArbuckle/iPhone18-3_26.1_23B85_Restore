@@ -1,17 +1,17 @@
 @interface BMLocationMicroLocationVisit
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMLocationMicroLocationVisit)initWithDomain:(id)a3 maxProbabilityMicroLocationIdentifier:(id)a4 maxProbability:(id)a5 probabilityVector:(id)a6 isStable:(id)a7 numDevicesVector:(id)a8;
-- (BMLocationMicroLocationVisit)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMLocationMicroLocationVisit)initWithDomain:(id)domain maxProbabilityMicroLocationIdentifier:(id)identifier maxProbability:(id)probability probabilityVector:(id)vector isStable:(id)stable numDevicesVector:(id)devicesVector;
+- (BMLocationMicroLocationVisit)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_numDevicesVectorJSONArray;
 - (id)_probabilityVectorJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMLocationMicroLocationVisit
@@ -38,25 +38,25 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMLocationMicroLocationVisit *)self domain];
-    v7 = [v5 domain];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    domain = [(BMLocationMicroLocationVisit *)self domain];
+    domain2 = [v5 domain];
+    v8 = domain2;
+    if (domain == domain2)
     {
     }
 
     else
     {
-      v9 = [(BMLocationMicroLocationVisit *)self domain];
-      v10 = [v5 domain];
-      v11 = [v9 isEqual:v10];
+      domain3 = [(BMLocationMicroLocationVisit *)self domain];
+      domain4 = [v5 domain];
+      v11 = [domain3 isEqual:domain4];
 
       if (!v11)
       {
@@ -64,18 +64,18 @@
       }
     }
 
-    v13 = [(BMLocationMicroLocationVisit *)self maxProbabilityMicroLocationIdentifier];
-    v14 = [v5 maxProbabilityMicroLocationIdentifier];
-    v15 = v14;
-    if (v13 == v14)
+    maxProbabilityMicroLocationIdentifier = [(BMLocationMicroLocationVisit *)self maxProbabilityMicroLocationIdentifier];
+    maxProbabilityMicroLocationIdentifier2 = [v5 maxProbabilityMicroLocationIdentifier];
+    v15 = maxProbabilityMicroLocationIdentifier2;
+    if (maxProbabilityMicroLocationIdentifier == maxProbabilityMicroLocationIdentifier2)
     {
     }
 
     else
     {
-      v16 = [(BMLocationMicroLocationVisit *)self maxProbabilityMicroLocationIdentifier];
-      v17 = [v5 maxProbabilityMicroLocationIdentifier];
-      v18 = [v16 isEqual:v17];
+      maxProbabilityMicroLocationIdentifier3 = [(BMLocationMicroLocationVisit *)self maxProbabilityMicroLocationIdentifier];
+      maxProbabilityMicroLocationIdentifier4 = [v5 maxProbabilityMicroLocationIdentifier];
+      v18 = [maxProbabilityMicroLocationIdentifier3 isEqual:maxProbabilityMicroLocationIdentifier4];
 
       if (!v18)
       {
@@ -104,18 +104,18 @@
       }
     }
 
-    v22 = [(BMLocationMicroLocationVisit *)self probabilityVector];
-    v23 = [v5 probabilityVector];
-    v24 = v23;
-    if (v22 == v23)
+    probabilityVector = [(BMLocationMicroLocationVisit *)self probabilityVector];
+    probabilityVector2 = [v5 probabilityVector];
+    v24 = probabilityVector2;
+    if (probabilityVector == probabilityVector2)
     {
     }
 
     else
     {
-      v25 = [(BMLocationMicroLocationVisit *)self probabilityVector];
-      v26 = [v5 probabilityVector];
-      v27 = [v25 isEqual:v26];
+      probabilityVector3 = [(BMLocationMicroLocationVisit *)self probabilityVector];
+      probabilityVector4 = [v5 probabilityVector];
+      v27 = [probabilityVector3 isEqual:probabilityVector4];
 
       if (!v27)
       {
@@ -125,18 +125,18 @@
 
     if (!-[BMLocationMicroLocationVisit hasIsStable](self, "hasIsStable") && ![v5 hasIsStable] || -[BMLocationMicroLocationVisit hasIsStable](self, "hasIsStable") && objc_msgSend(v5, "hasIsStable") && (v28 = -[BMLocationMicroLocationVisit isStable](self, "isStable"), v28 == objc_msgSend(v5, "isStable")))
     {
-      v30 = [(BMLocationMicroLocationVisit *)self numDevicesVector];
-      v31 = [v5 numDevicesVector];
-      if (v30 == v31)
+      numDevicesVector = [(BMLocationMicroLocationVisit *)self numDevicesVector];
+      numDevicesVector2 = [v5 numDevicesVector];
+      if (numDevicesVector == numDevicesVector2)
       {
         v12 = 1;
       }
 
       else
       {
-        v32 = [(BMLocationMicroLocationVisit *)self numDevicesVector];
-        v33 = [v5 numDevicesVector];
-        v12 = [v32 isEqual:v33];
+        numDevicesVector3 = [(BMLocationMicroLocationVisit *)self numDevicesVector];
+        numDevicesVector4 = [v5 numDevicesVector];
+        v12 = [numDevicesVector3 isEqual:numDevicesVector4];
       }
 
       goto LABEL_26;
@@ -158,8 +158,8 @@ LABEL_27:
 - (id)jsonDictionary
 {
   v25[6] = *MEMORY[0x1E69E9840];
-  v3 = [(BMLocationMicroLocationVisit *)self domain];
-  v4 = [(BMLocationMicroLocationVisit *)self maxProbabilityMicroLocationIdentifier];
+  domain = [(BMLocationMicroLocationVisit *)self domain];
+  maxProbabilityMicroLocationIdentifier = [(BMLocationMicroLocationVisit *)self maxProbabilityMicroLocationIdentifier];
   if (![(BMLocationMicroLocationVisit *)self hasMaxProbability]|| ([(BMLocationMicroLocationVisit *)self maxProbability], fabs(v5) == INFINITY))
   {
     v7 = 0;
@@ -173,7 +173,7 @@ LABEL_27:
     v7 = [v6 numberWithDouble:?];
   }
 
-  v8 = [(BMLocationMicroLocationVisit *)self _probabilityVectorJSONArray];
+  _probabilityVectorJSONArray = [(BMLocationMicroLocationVisit *)self _probabilityVectorJSONArray];
   if ([(BMLocationMicroLocationVisit *)self hasIsStable])
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMLocationMicroLocationVisit isStable](self, "isStable")}];
@@ -184,60 +184,60 @@ LABEL_27:
     v9 = 0;
   }
 
-  v10 = [(BMLocationMicroLocationVisit *)self _numDevicesVectorJSONArray];
+  _numDevicesVectorJSONArray = [(BMLocationMicroLocationVisit *)self _numDevicesVectorJSONArray];
   v24[0] = @"domain";
-  v11 = v3;
-  if (!v3)
+  null = domain;
+  if (!domain)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v11;
-  v22 = v4;
-  v25[0] = v11;
+  v20 = null;
+  v22 = maxProbabilityMicroLocationIdentifier;
+  v25[0] = null;
   v24[1] = @"maxProbabilityMicroLocationIdentifier";
-  v12 = v4;
-  if (!v4)
+  null2 = maxProbabilityMicroLocationIdentifier;
+  if (!maxProbabilityMicroLocationIdentifier)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[1] = v12;
+  v25[1] = null2;
   v24[2] = @"maxProbability";
-  v13 = v7;
+  null3 = v7;
   if (!v7)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v3;
-  v25[2] = v13;
+  v23 = domain;
+  v25[2] = null3;
   v24[3] = @"probabilityVector";
-  v14 = v8;
-  if (!v8)
+  null4 = _probabilityVectorJSONArray;
+  if (!_probabilityVectorJSONArray)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[3] = v14;
+  v25[3] = null4;
   v24[4] = @"isStable";
-  v15 = v9;
+  null5 = v9;
   if (!v9)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[4] = v15;
+  v25[4] = null5;
   v24[5] = @"numDevicesVector";
-  v16 = v10;
-  if (!v10)
+  null6 = _numDevicesVectorJSONArray;
+  if (!_numDevicesVectorJSONArray)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25[5] = v16;
+  v25[5] = null6;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v25 forKeys:v24 count:{6, v20}];
-  if (v10)
+  if (_numDevicesVectorJSONArray)
   {
     if (v9)
     {
@@ -246,7 +246,7 @@ LABEL_27:
 
 LABEL_31:
 
-    if (v8)
+    if (_probabilityVectorJSONArray)
     {
       goto LABEL_23;
     }
@@ -260,7 +260,7 @@ LABEL_31:
   }
 
 LABEL_22:
-  if (v8)
+  if (_probabilityVectorJSONArray)
   {
     goto LABEL_23;
   }
@@ -303,8 +303,8 @@ LABEL_27:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMLocationMicroLocationVisit *)self numDevicesVector];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  numDevicesVector = [(BMLocationMicroLocationVisit *)self numDevicesVector];
+  v5 = [numDevicesVector countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -315,14 +315,14 @@ LABEL_27:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(numDevicesVector);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [numDevicesVector countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -341,8 +341,8 @@ LABEL_27:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMLocationMicroLocationVisit *)self probabilityVector];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  probabilityVector = [(BMLocationMicroLocationVisit *)self probabilityVector];
+  v5 = [probabilityVector countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -353,14 +353,14 @@ LABEL_27:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(probabilityVector);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [probabilityVector countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -371,34 +371,34 @@ LABEL_27:
   return v3;
 }
 
-- (BMLocationMicroLocationVisit)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMLocationMicroLocationVisit)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v126[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"domain"];
+  dictionaryCopy = dictionary;
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"domain"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v27 = objc_alloc(MEMORY[0x1E696ABC0]);
         v28 = *MEMORY[0x1E698F240];
         v125 = *MEMORY[0x1E696A578];
-        v29 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"domain"];
-        v126[0] = v29;
+        errorCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"domain"];
+        v126[0] = errorCopy;
         v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v126 forKeys:&v125 count:1];
         v31 = v28;
         v8 = v30;
         v7 = 0;
-        v32 = 0;
-        *a4 = [v27 initWithDomain:v31 code:2 userInfo:v30];
+        selfCopy3 = 0;
+        *error = [v27 initWithDomain:v31 code:2 userInfo:v30];
         goto LABEL_98;
       }
 
       v7 = 0;
-      v32 = 0;
+      selfCopy3 = 0;
       goto LABEL_99;
     }
 
@@ -410,14 +410,14 @@ LABEL_27:
     v7 = 0;
   }
 
-  v8 = [v5 objectForKeyedSubscript:@"maxProbabilityMicroLocationIdentifier"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"maxProbabilityMicroLocationIdentifier"];
   if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v29 = a4;
-      if (a4)
+      errorCopy = error;
+      if (error)
       {
         v33 = objc_alloc(MEMORY[0x1E696ABC0]);
         v34 = v8;
@@ -429,13 +429,13 @@ LABEL_27:
         v37 = v35;
         v8 = v34;
         v91 = v36;
-        v29 = 0;
-        v32 = 0;
-        *a4 = [v33 initWithDomain:v37 code:2 userInfo:?];
+        errorCopy = 0;
+        selfCopy3 = 0;
+        *error = [v33 initWithDomain:v37 code:2 userInfo:?];
         goto LABEL_97;
       }
 
-      v32 = 0;
+      selfCopy3 = 0;
       goto LABEL_98;
     }
 
@@ -447,7 +447,7 @@ LABEL_27:
     v90 = 0;
   }
 
-  v9 = [v5 objectForKeyedSubscript:@"maxProbability"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"maxProbability"];
   v88 = v6;
   v89 = v7;
   v91 = v9;
@@ -456,7 +456,7 @@ LABEL_27:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v38 = objc_alloc(MEMORY[0x1E696ABC0]);
         v39 = v8;
@@ -469,16 +469,16 @@ LABEL_27:
         v8 = v39;
         v94 = v41;
         v23 = 0;
-        v32 = 0;
-        *a4 = [v38 initWithDomain:v42 code:2 userInfo:?];
-        v29 = v90;
+        selfCopy3 = 0;
+        *error = [v38 initWithDomain:v42 code:2 userInfo:?];
+        errorCopy = v90;
 
         goto LABEL_96;
       }
 
       v23 = 0;
-      v32 = 0;
-      v29 = v90;
+      selfCopy3 = 0;
+      errorCopy = v90;
       goto LABEL_97;
     }
 
@@ -490,15 +490,15 @@ LABEL_27:
     v87 = 0;
   }
 
-  v11 = [v5 objectForKeyedSubscript:@"probabilityVector"];
-  v12 = [MEMORY[0x1E695DFB0] null];
-  v13 = [v11 isEqual:v12];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"probabilityVector"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v13 = [v11 isEqual:null];
 
   v85 = v8;
-  v86 = v5;
+  v86 = dictionaryCopy;
   if (v13)
   {
-    v81 = self;
+    selfCopy2 = self;
 
     v11 = 0;
   }
@@ -510,10 +510,10 @@ LABEL_27:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
-          v32 = 0;
-          v29 = v90;
+          selfCopy3 = 0;
+          errorCopy = v90;
           v23 = v87;
           goto LABEL_96;
         }
@@ -524,13 +524,13 @@ LABEL_27:
         v93 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"probabilityVector"];
         v120 = v93;
         v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v120 forKeys:&v119 count:1];
-        v32 = 0;
-        *a4 = [v51 initWithDomain:v52 code:2 userInfo:v50];
+        selfCopy3 = 0;
+        *error = [v51 initWithDomain:v52 code:2 userInfo:v50];
         goto LABEL_71;
       }
     }
 
-    v81 = self;
+    selfCopy2 = self;
   }
 
   v93 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v11, "count")}];
@@ -557,9 +557,9 @@ LABEL_27:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if (a4)
+          if (error)
           {
-            v43 = a4;
+            errorCopy3 = error;
             v44 = objc_alloc(MEMORY[0x1E696ABC0]);
             v45 = *MEMORY[0x1E698F240];
             v116 = *MEMORY[0x1E696A578];
@@ -572,12 +572,12 @@ LABEL_27:
           }
 
 LABEL_70:
-          v32 = 0;
+          selfCopy3 = 0;
           v50 = v11;
-          v5 = v86;
-          self = v81;
+          dictionaryCopy = v86;
+          self = selfCopy2;
 LABEL_71:
-          v29 = v90;
+          errorCopy = v90;
           v23 = v87;
           goto LABEL_94;
         }
@@ -585,8 +585,8 @@ LABEL_71:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          v43 = a4;
-          if (!a4)
+          errorCopy3 = error;
+          if (!error)
           {
             goto LABEL_70;
           }
@@ -601,15 +601,15 @@ LABEL_71:
           v48 = &v114;
 LABEL_46:
           v24 = [v46 dictionaryWithObjects:v47 forKeys:v48 count:1];
-          v32 = 0;
-          *v43 = [v44 initWithDomain:v45 code:2 userInfo:v24];
+          selfCopy3 = 0;
+          *errorCopy3 = [v44 initWithDomain:v45 code:2 userInfo:v24];
 LABEL_50:
           v50 = v11;
-          v5 = v86;
+          dictionaryCopy = v86;
           v23 = v87;
-          self = v81;
+          self = selfCopy2;
 LABEL_51:
-          v29 = v90;
+          errorCopy = v90;
           goto LABEL_92;
         }
 
@@ -621,13 +621,13 @@ LABEL_51:
         if (v22)
         {
           v24 = v22;
-          if (a4)
+          if (error)
           {
             v49 = v22;
-            *a4 = v24;
+            *error = v24;
           }
 
-          v32 = 0;
+          selfCopy3 = 0;
           goto LABEL_50;
         }
 
@@ -640,7 +640,7 @@ LABEL_51:
     while (v15);
   }
 
-  v5 = v86;
+  dictionaryCopy = v86;
   v19 = [v86 objectForKeyedSubscript:@"isStable"];
   v23 = v87;
   if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -648,12 +648,12 @@ LABEL_51:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         v50 = 0;
-        v32 = 0;
-        self = v81;
-        v29 = v90;
+        selfCopy3 = 0;
+        self = selfCopy2;
+        errorCopy = v90;
         goto LABEL_93;
       }
 
@@ -665,9 +665,9 @@ LABEL_51:
       v54 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v113 forKeys:&v112 count:1];
       v67 = [v84 initWithDomain:v66 code:2 userInfo:v54];
       v50 = 0;
-      v32 = 0;
-      *a4 = v67;
-      self = v81;
+      selfCopy3 = 0;
+      *error = v67;
+      self = selfCopy2;
       goto LABEL_80;
     }
 
@@ -680,8 +680,8 @@ LABEL_51:
   }
 
   v24 = [v86 objectForKeyedSubscript:@"numDevicesVector"];
-  v25 = [MEMORY[0x1E695DFB0] null];
-  v26 = [v24 isEqual:v25];
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v26 = [v24 isEqual:null2];
 
   if (v26)
   {
@@ -701,10 +701,10 @@ LABEL_58:
   v50 = v80;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    self = v81;
-    if (!a4)
+    self = selfCopy2;
+    if (!error)
     {
-      v32 = 0;
+      selfCopy3 = 0;
       goto LABEL_51;
     }
 
@@ -716,11 +716,11 @@ LABEL_58:
     v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v111 forKeys:&v110 count:1];
     v56 = v53;
     v50 = v80;
-    *a4 = [v82 initWithDomain:v56 code:2 userInfo:v55];
+    *error = [v82 initWithDomain:v56 code:2 userInfo:v55];
 
-    v32 = 0;
+    selfCopy3 = 0;
 LABEL_80:
-    v29 = v90;
+    errorCopy = v90;
     goto LABEL_91;
   }
 
@@ -753,14 +753,14 @@ LABEL_59:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = v86;
-        self = v81;
-        v29 = v90;
-        v68 = a4;
-        if (a4)
+        dictionaryCopy = v86;
+        self = selfCopy2;
+        errorCopy = v90;
+        errorCopy5 = error;
+        if (error)
         {
           v69 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v70 = v81;
+          v70 = selfCopy2;
           v71 = *MEMORY[0x1E698F240];
           v107 = *MEMORY[0x1E696A578];
           v62 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type null for element of %@, must not be null", @"numDevicesVector"];
@@ -772,14 +772,14 @@ LABEL_85:
           v75 = [v72 dictionaryWithObjects:v73 forKeys:v74 count:1];
           v76 = v71;
           self = v70;
-          v29 = v90;
-          *v68 = [v69 initWithDomain:v76 code:2 userInfo:v75];
+          errorCopy = v90;
+          *errorCopy5 = [v69 initWithDomain:v76 code:2 userInfo:v75];
 LABEL_89:
         }
 
 LABEL_90:
 
-        v32 = 0;
+        selfCopy3 = 0;
         v23 = v87;
         v50 = v80;
         v54 = v83;
@@ -789,14 +789,14 @@ LABEL_90:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v5 = v86;
-        self = v81;
-        v29 = v90;
-        v68 = a4;
-        if (a4)
+        dictionaryCopy = v86;
+        self = selfCopy2;
+        errorCopy = v90;
+        errorCopy5 = error;
+        if (error)
         {
           v69 = objc_alloc(MEMORY[0x1E696ABC0]);
-          v70 = v81;
+          v70 = selfCopy2;
           v71 = *MEMORY[0x1E698F240];
           v105 = *MEMORY[0x1E696A578];
           v62 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSDictionary", objc_opt_class(), @"numDevicesVector"];
@@ -818,15 +818,15 @@ LABEL_90:
       if (v65)
       {
         v75 = v65;
-        if (a4)
+        if (error)
         {
           v77 = v65;
-          *a4 = v75;
+          *error = v75;
         }
 
-        v5 = v86;
-        self = v81;
-        v29 = v90;
+        dictionaryCopy = v86;
+        self = selfCopy2;
+        errorCopy = v90;
         goto LABEL_89;
       }
 
@@ -847,10 +847,10 @@ LABEL_90:
 
 LABEL_69:
 
-  v29 = v90;
-  self = [(BMLocationMicroLocationVisit *)v81 initWithDomain:v89 maxProbabilityMicroLocationIdentifier:v90 maxProbability:v23 probabilityVector:v93 isStable:v50 numDevicesVector:v54];
-  v32 = self;
-  v5 = v86;
+  errorCopy = v90;
+  self = [(BMLocationMicroLocationVisit *)selfCopy2 initWithDomain:v89 maxProbabilityMicroLocationIdentifier:v90 maxProbability:v23 probabilityVector:v93 isStable:v50 numDevicesVector:v54];
+  selfCopy3 = self;
+  dictionaryCopy = v86;
 LABEL_91:
 
 LABEL_92:
@@ -868,22 +868,22 @@ LABEL_98:
 LABEL_99:
 
   v78 = *MEMORY[0x1E69E9840];
-  return v32;
+  return selfCopy3;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMLocationMicroLocationVisit *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -923,7 +923,7 @@ LABEL_99:
         v11 = *(*(&v25 + 1) + 8 * v10);
         v24 = 0;
         PBDataWriterPlaceMark();
-        [v11 writeTo:v4];
+        [v11 writeTo:toCopy];
         PBDataWriterRecallMark();
         ++v10;
       }
@@ -964,7 +964,7 @@ LABEL_99:
         v18 = *(*(&v20 + 1) + 8 * v17);
         v24 = 0;
         PBDataWriterPlaceMark();
-        [v18 writeTo:{v4, v20}];
+        [v18 writeTo:{toCopy, v20}];
         PBDataWriterRecallMark();
         ++v17;
       }
@@ -979,9 +979,9 @@ LABEL_99:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v43.receiver = self;
   v43.super_class = BMLocationMicroLocationVisit;
   v5 = [(BMEventBase *)&v43 init];
@@ -992,12 +992,12 @@ LABEL_99:
 
   v6 = objc_opt_new();
   v7 = objc_opt_new();
-  v8 = [v4 position];
-  if (v8 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -1008,18 +1008,18 @@ LABEL_99:
       while (1)
       {
         LOBYTE(v44) = 0;
-        v12 = [v4 position] + 1;
-        if (v12 >= [v4 position] && (v13 = objc_msgSend(v4, "position") + 1, v13 <= objc_msgSend(v4, "length")))
+        v12 = [fromCopy position] + 1;
+        if (v12 >= [fromCopy position] && (v13 = objc_msgSend(fromCopy, "position") + 1, v13 <= objc_msgSend(fromCopy, "length")))
         {
-          v14 = [v4 data];
-          [v14 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v11 |= (LOBYTE(v44) & 0x7F) << v9;
@@ -1037,9 +1037,9 @@ LABEL_99:
         }
       }
 
-      v16 = [v4 hasError] ? 0 : v11;
+      v16 = [fromCopy hasError] ? 0 : v11;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v16 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v16 & 7) == 4)
       {
         break;
       }
@@ -1052,7 +1052,7 @@ LABEL_16:
           case 4:
             v44 = 0.0;
             v45 = 0;
-            if (!PBReaderPlaceMark() || (v25 = [[BMLocationMicroLocationVisitProbabilityPerLocation alloc] initByReadFrom:v4]) == 0)
+            if (!PBReaderPlaceMark() || (v25 = [[BMLocationMicroLocationVisitProbabilityPerLocation alloc] initByReadFrom:fromCopy]) == 0)
             {
 LABEL_58:
 
@@ -1070,18 +1070,18 @@ LABEL_58:
             while (1)
             {
               LOBYTE(v44) = 0;
-              v30 = [v4 position] + 1;
-              if (v30 >= [v4 position] && (v31 = objc_msgSend(v4, "position") + 1, v31 <= objc_msgSend(v4, "length")))
+              v30 = [fromCopy position] + 1;
+              if (v30 >= [fromCopy position] && (v31 = objc_msgSend(fromCopy, "position") + 1, v31 <= objc_msgSend(fromCopy, "length")))
               {
-                v32 = [v4 data];
-                [v32 getBytes:&v44 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v29 |= (LOBYTE(v44) & 0x7F) << v27;
@@ -1099,7 +1099,7 @@ LABEL_58:
               }
             }
 
-            v33 = (v29 != 0) & ~[v4 hasError];
+            v33 = (v29 != 0) & ~[fromCopy hasError];
 LABEL_50:
             v5->_isStable = v33;
             goto LABEL_53;
@@ -1111,7 +1111,7 @@ LABEL_50:
               goto LABEL_58;
             }
 
-            v20 = [[BMLocationMicroLocationVisitNumDevicesPerTechnology alloc] initByReadFrom:v4];
+            v20 = [[BMLocationMicroLocationVisitNumDevicesPerTechnology alloc] initByReadFrom:fromCopy];
             if (!v20)
             {
               goto LABEL_58;
@@ -1146,18 +1146,18 @@ LABEL_39:
           case 3:
             v5->_hasMaxProbability = 1;
             v44 = 0.0;
-            v18 = [v4 position] + 8;
-            if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+            v18 = [fromCopy position] + 8;
+            if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
             {
-              v34 = [v4 data];
-              [v34 getBytes:&v44 range:{objc_msgSend(v4, "position"), 8}];
+              data3 = [fromCopy data];
+              [data3 getBytes:&v44 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-              [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+              [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
             }
 
             else
             {
-              [v4 _setError];
+              [fromCopy _setError];
             }
 
             v5->_maxProbability = v44;
@@ -1171,10 +1171,10 @@ LABEL_39:
       }
 
 LABEL_53:
-      v35 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v35 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
   v36 = [v6 copy];
@@ -1185,8 +1185,8 @@ LABEL_53:
   numDevicesVector = v5->_numDevicesVector;
   v5->_numDevicesVector = v38;
 
-  v40 = [v4 hasError];
-  if (v40)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_55:
     v41 = 0;
@@ -1204,39 +1204,39 @@ LABEL_56:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMLocationMicroLocationVisit *)self domain];
-  v5 = [(BMLocationMicroLocationVisit *)self maxProbabilityMicroLocationIdentifier];
+  domain = [(BMLocationMicroLocationVisit *)self domain];
+  maxProbabilityMicroLocationIdentifier = [(BMLocationMicroLocationVisit *)self maxProbabilityMicroLocationIdentifier];
   v6 = MEMORY[0x1E696AD98];
   [(BMLocationMicroLocationVisit *)self maxProbability];
   v7 = [v6 numberWithDouble:?];
-  v8 = [(BMLocationMicroLocationVisit *)self probabilityVector];
+  probabilityVector = [(BMLocationMicroLocationVisit *)self probabilityVector];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[BMLocationMicroLocationVisit isStable](self, "isStable")}];
-  v10 = [(BMLocationMicroLocationVisit *)self numDevicesVector];
-  v11 = [v3 initWithFormat:@"BMLocationMicroLocationVisit with domain: %@, maxProbabilityMicroLocationIdentifier: %@, maxProbability: %@, probabilityVector: %@, isStable: %@, numDevicesVector: %@", v4, v5, v7, v8, v9, v10];
+  numDevicesVector = [(BMLocationMicroLocationVisit *)self numDevicesVector];
+  v11 = [v3 initWithFormat:@"BMLocationMicroLocationVisit with domain: %@, maxProbabilityMicroLocationIdentifier: %@, maxProbability: %@, probabilityVector: %@, isStable: %@, numDevicesVector: %@", domain, maxProbabilityMicroLocationIdentifier, v7, probabilityVector, v9, numDevicesVector];
 
   return v11;
 }
 
-- (BMLocationMicroLocationVisit)initWithDomain:(id)a3 maxProbabilityMicroLocationIdentifier:(id)a4 maxProbability:(id)a5 probabilityVector:(id)a6 isStable:(id)a7 numDevicesVector:(id)a8
+- (BMLocationMicroLocationVisit)initWithDomain:(id)domain maxProbabilityMicroLocationIdentifier:(id)identifier maxProbability:(id)probability probabilityVector:(id)vector isStable:(id)stable numDevicesVector:(id)devicesVector
 {
-  v23 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  domainCopy = domain;
+  identifierCopy = identifier;
+  probabilityCopy = probability;
+  vectorCopy = vector;
+  stableCopy = stable;
+  devicesVectorCopy = devicesVector;
   v24.receiver = self;
   v24.super_class = BMLocationMicroLocationVisit;
   v20 = [(BMEventBase *)&v24 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_domain, a3);
-    objc_storeStrong(&v20->_maxProbabilityMicroLocationIdentifier, a4);
-    if (v16)
+    objc_storeStrong(&v20->_domain, domain);
+    objc_storeStrong(&v20->_maxProbabilityMicroLocationIdentifier, identifier);
+    if (probabilityCopy)
     {
       v20->_hasMaxProbability = 1;
-      [v16 doubleValue];
+      [probabilityCopy doubleValue];
     }
 
     else
@@ -1246,11 +1246,11 @@ LABEL_56:
     }
 
     v20->_maxProbability = v21;
-    objc_storeStrong(&v20->_probabilityVector, a6);
-    if (v18)
+    objc_storeStrong(&v20->_probabilityVector, vector);
+    if (stableCopy)
     {
       v20->_hasIsStable = 1;
-      v20->_isStable = [v18 BOOLValue];
+      v20->_isStable = [stableCopy BOOLValue];
     }
 
     else
@@ -1259,7 +1259,7 @@ LABEL_56:
       v20->_isStable = 0;
     }
 
-    objc_storeStrong(&v20->_numDevicesVector, a8);
+    objc_storeStrong(&v20->_numDevicesVector, devicesVector);
   }
 
   return v20;
@@ -1305,9 +1305,9 @@ id __39__BMLocationMicroLocationVisit_columns__block_invoke(uint64_t a1, void *a
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1315,8 +1315,8 @@ id __39__BMLocationMicroLocationVisit_columns__block_invoke(uint64_t a1, void *a
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMLocationMicroLocationVisit alloc] initByReadFrom:v7];
     v4 = v8;

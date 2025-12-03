@@ -2,17 +2,17 @@
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismissAndExit;
 - (void)_main_dismissAndExit;
-- (void)_presentAsChildViewController:(id)a3;
+- (void)_presentAsChildViewController:(id)controller;
 - (void)_removeChildViewControllers;
 - (void)_showFamilyFlow;
 - (void)_showLoadingView;
 - (void)dealloc;
-- (void)dismissModalRUIController:(id)a3 completion:(id)a4;
-- (void)presentModalRUIController:(id)a3 completion:(id)a4;
-- (void)replaceModalRUIController:(id)a3 byController:(id)a4 completion:(id)a5;
-- (void)ruiDidDismissAlertController:(id)a3;
-- (void)ruiPresentAlertController:(id)a3;
-- (void)startFlowWithContext:(id)a3;
+- (void)dismissModalRUIController:(id)controller completion:(id)completion;
+- (void)presentModalRUIController:(id)controller completion:(id)completion;
+- (void)replaceModalRUIController:(id)controller byController:(id)byController completion:(id)completion;
+- (void)ruiDidDismissAlertController:(id)controller;
+- (void)ruiPresentAlertController:(id)controller;
+- (void)startFlowWithContext:(id)context;
 - (void)viewDidLoad;
 @end
 
@@ -25,14 +25,14 @@
   [(FARemoteServiceViewController *)&v2 viewDidLoad];
 }
 
-- (void)presentModalRUIController:(id)a3 completion:(id)a4
+- (void)presentModalRUIController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  [(FARemoteServiceViewController *)self _presentAsChildViewController:v7];
-  if (v6)
+  completionCopy = completion;
+  controllerCopy = controller;
+  [(FARemoteServiceViewController *)self _presentAsChildViewController:controllerCopy];
+  if (completionCopy)
   {
-    v8 = v6;
+    v8 = completionCopy;
   }
 
   else
@@ -42,50 +42,50 @@
 
   v11 = _Block_copy(v8);
 
-  v9 = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
-  v10 = [v7 ruiModalPresentationStyle];
+  _remoteViewControllerProxy = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
+  ruiModalPresentationStyle = [controllerCopy ruiModalPresentationStyle];
 
-  [v9 presentWithRUIModalPresentationStyle:v10 completion:v11];
+  [_remoteViewControllerProxy presentWithRUIModalPresentationStyle:ruiModalPresentationStyle completion:v11];
 }
 
-- (void)dismissModalRUIController:(id)a3 completion:(id)a4
+- (void)dismissModalRUIController:(id)controller completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
+    completionCopy = completion;
   }
 
   else
   {
-    v5 = &__block_literal_global_30;
+    completionCopy = &__block_literal_global_30;
   }
 
-  v7 = _Block_copy(v5);
+  v7 = _Block_copy(completionCopy);
   v7[2]();
-  v6 = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
-  [v6 dismissWithCompletion:&__block_literal_global_32];
+  _remoteViewControllerProxy = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismissWithCompletion:&__block_literal_global_32];
 }
 
-- (void)replaceModalRUIController:(id)a3 byController:(id)a4 completion:(id)a5
+- (void)replaceModalRUIController:(id)controller byController:(id)byController completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
-  v12 = [v8 ruiModalPresentationStyle];
-  v13 = [v9 ruiModalPresentationStyle];
+  controllerCopy = controller;
+  byControllerCopy = byController;
+  completionCopy = completion;
+  _remoteViewControllerProxy = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
+  ruiModalPresentationStyle = [controllerCopy ruiModalPresentationStyle];
+  ruiModalPresentationStyle2 = [byControllerCopy ruiModalPresentationStyle];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __83__FARemoteServiceViewController_replaceModalRUIController_byController_completion___block_invoke;
   v17[3] = &unk_2782F3420;
   v17[4] = self;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  v14 = v10;
-  v15 = v8;
-  v16 = v9;
-  [v11 replaceModalRUIControllerWithStyle:v12 byController:v13 completion:v17];
+  v18 = byControllerCopy;
+  v19 = controllerCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = controllerCopy;
+  v16 = byControllerCopy;
+  [_remoteViewControllerProxy replaceModalRUIControllerWithStyle:ruiModalPresentationStyle byController:ruiModalPresentationStyle2 completion:v17];
 }
 
 uint64_t __83__FARemoteServiceViewController_replaceModalRUIController_byController_completion___block_invoke(uint64_t a1)
@@ -106,51 +106,51 @@ uint64_t __83__FARemoteServiceViewController_replaceModalRUIController_byControl
   return result;
 }
 
-- (void)ruiPresentAlertController:(id)a3
+- (void)ruiPresentAlertController:(id)controller
 {
-  v4 = a3;
-  v5 = [(FARemoteServiceViewController *)self childViewControllers];
-  v6 = [v5 count];
+  controllerCopy = controller;
+  childViewControllers = [(FARemoteServiceViewController *)self childViewControllers];
+  v6 = [childViewControllers count];
 
   if (v6)
   {
-    [(FARemoteServiceViewController *)self presentViewController:v4 animated:1 completion:0];
+    [(FARemoteServiceViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
   else
   {
-    v7 = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
+    _remoteViewControllerProxy = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __59__FARemoteServiceViewController_ruiPresentAlertController___block_invoke;
     v8[3] = &unk_2782F2AF8;
     v8[4] = self;
-    v9 = v4;
-    [v7 presentAlertProxyWithCompletion:v8];
+    v9 = controllerCopy;
+    [_remoteViewControllerProxy presentAlertProxyWithCompletion:v8];
   }
 }
 
-- (void)ruiDidDismissAlertController:(id)a3
+- (void)ruiDidDismissAlertController:(id)controller
 {
-  v4 = [(FARemoteServiceViewController *)self childViewControllers];
-  v5 = [v4 count];
+  childViewControllers = [(FARemoteServiceViewController *)self childViewControllers];
+  v5 = [childViewControllers count];
 
   if (!v5)
   {
-    v6 = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
-    [v6 dismissAlertProxyWithCompletion:&__block_literal_global_34];
+    _remoteViewControllerProxy = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy dismissAlertProxyWithCompletion:&__block_literal_global_34];
   }
 }
 
-- (void)startFlowWithContext:(id)a3
+- (void)startFlowWithContext:(id)context
 {
-  v7 = a3;
-  objc_storeStrong(&self->_circleContext, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_circleContext, context);
   if ([(FACircleContext *)self->_circleContext activityIndicatorStyle]== 1)
   {
-    v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v6 = [(FARemoteServiceViewController *)self view];
-    [v6 setBackgroundColor:v5];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    view = [(FARemoteServiceViewController *)self view];
+    [view setBackgroundColor:systemBackgroundColor];
 
     [(FARemoteServiceViewController *)self _showLoadingView];
   }
@@ -169,8 +169,8 @@ uint64_t __83__FARemoteServiceViewController_replaceModalRUIController_byControl
   v3 = [_TtC14FamilyCircleUI34FASwiftUIHostingControllerProvider getLoadingControllerWithCancelAction:&v7];
   v4 = objc_alloc(MEMORY[0x277D757A0]);
   v5 = [v4 initWithRootViewController:{v3, v7, v8, v9, v10}];
-  v6 = [v5 navigationBar];
-  [v6 setRequestedContentSize:3];
+  navigationBar = [v5 navigationBar];
+  [navigationBar setRequestedContentSize:3];
 
   [(FARemoteServiceViewController *)self _presentAsChildViewController:v5];
   objc_destroyWeak(&v11);
@@ -218,7 +218,7 @@ uint64_t __48__FARemoteServiceViewController__showFamilyFlow__block_invoke(uint6
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21BB35000, v3, OS_LOG_TYPE_DEFAULT, "%@ deallocated", buf, 0xCu);
   }
 
@@ -230,10 +230,10 @@ uint64_t __48__FARemoteServiceViewController__showFamilyFlow__block_invoke(uint6
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }
@@ -251,8 +251,8 @@ uint64_t __48__FARemoteServiceViewController__showFamilyFlow__block_invoke(uint6
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(FARemoteServiceViewController *)self childViewControllers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childViewControllers = [(FARemoteServiceViewController *)self childViewControllers];
+  v4 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -263,17 +263,17 @@ uint64_t __48__FARemoteServiceViewController__showFamilyFlow__block_invoke(uint6
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childViewControllers);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        v9 = [v8 view];
-        [v9 removeFromSuperview];
+        view = [v8 view];
+        [view removeFromSuperview];
 
         [(FARemoteServiceViewController *)self removeChildViewController:v8 notifyDidMove:1];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [childViewControllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -282,47 +282,47 @@ uint64_t __48__FARemoteServiceViewController__showFamilyFlow__block_invoke(uint6
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_presentAsChildViewController:(id)a3
+- (void)_presentAsChildViewController:(id)controller
 {
-  v27 = a3;
+  controllerCopy = controller;
   [(FARemoteServiceViewController *)self _removeChildViewControllers];
-  [(FARemoteServiceViewController *)self addChildViewController:v27];
-  v4 = [(FARemoteServiceViewController *)self view];
-  v5 = [v27 view];
-  [v4 addSubview:v5];
+  [(FARemoteServiceViewController *)self addChildViewController:controllerCopy];
+  view = [(FARemoteServiceViewController *)self view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  v6 = [v27 view];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [controllerCopy view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [v27 view];
-  v8 = [v7 topAnchor];
-  v9 = [(FARemoteServiceViewController *)self view];
-  v10 = [v9 topAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  view4 = [controllerCopy view];
+  topAnchor = [view4 topAnchor];
+  view5 = [(FARemoteServiceViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v11 setActive:1];
 
-  v12 = [v27 view];
-  v13 = [v12 bottomAnchor];
-  v14 = [(FARemoteServiceViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  view6 = [controllerCopy view];
+  bottomAnchor = [view6 bottomAnchor];
+  view7 = [(FARemoteServiceViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v16 setActive:1];
 
-  v17 = [v27 view];
-  v18 = [v17 leftAnchor];
-  v19 = [(FARemoteServiceViewController *)self view];
-  v20 = [v19 leftAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  view8 = [controllerCopy view];
+  leftAnchor = [view8 leftAnchor];
+  view9 = [(FARemoteServiceViewController *)self view];
+  leftAnchor2 = [view9 leftAnchor];
+  v21 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v21 setActive:1];
 
-  v22 = [v27 view];
-  v23 = [v22 rightAnchor];
-  v24 = [(FARemoteServiceViewController *)self view];
-  v25 = [v24 rightAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  view10 = [controllerCopy view];
+  rightAnchor = [view10 rightAnchor];
+  view11 = [(FARemoteServiceViewController *)self view];
+  rightAnchor2 = [view11 rightAnchor];
+  v26 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v26 setActive:1];
 
-  [v27 didMoveToParentViewController:self];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
 - (void)_dismissAndExit
@@ -338,8 +338,8 @@ uint64_t __48__FARemoteServiceViewController__showFamilyFlow__block_invoke(uint6
 - (void)_main_dismissAndExit
 {
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v3 = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
-  [v3 dismissWithCompletion:&__block_literal_global_62];
+  _remoteViewControllerProxy = [(FARemoteServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy dismissWithCompletion:&__block_literal_global_62];
 }
 
 @end

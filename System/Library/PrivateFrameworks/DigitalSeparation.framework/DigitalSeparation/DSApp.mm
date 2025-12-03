@@ -1,85 +1,85 @@
 @interface DSApp
-+ (BOOL)app:(id)a3 hasPermission:(id)a4;
-+ (BOOL)app:(id)a3 hasPermissionAcceptingAnyLocationAuthorization:(id)a4;
-+ (BOOL)appHasNoPermissions:(id)a3;
-+ (BOOL)skipTCCCheck:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
++ (BOOL)app:(id)app hasPermission:(id)permission;
++ (BOOL)app:(id)app hasPermissionAcceptingAnyLocationAuthorization:(id)authorization;
++ (BOOL)appHasNoPermissions:(id)permissions;
++ (BOOL)skipTCCCheck:(id)check;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation DSApp
 
-+ (BOOL)skipTCCCheck:(id)a3
++ (BOOL)skipTCCCheck:(id)check
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DSLocationAlways"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DSLocationWhenInUse") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DSHealth") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DSLocalNetwork"))
+  checkCopy = check;
+  if ([checkCopy isEqualToString:@"DSLocationAlways"] & 1) != 0 || (objc_msgSend(checkCopy, "isEqualToString:", @"DSLocationWhenInUse") & 1) != 0 || (objc_msgSend(checkCopy, "isEqualToString:", @"DSHealth") & 1) != 0 || (objc_msgSend(checkCopy, "isEqualToString:", @"DSLocalNetwork"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"DSContacts"];
+    v4 = [checkCopy isEqualToString:@"DSContacts"];
   }
 
   return v4;
 }
 
-+ (BOOL)appHasNoPermissions:(id)a3
++ (BOOL)appHasNoPermissions:(id)permissions
 {
-  v3 = a3;
-  v4 = [v3 permissionsGranted];
-  if ([v4 count])
+  permissionsCopy = permissions;
+  permissionsGranted = [permissionsCopy permissionsGranted];
+  if ([permissionsGranted count])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v3 locationAuthorization] == 0;
+    v5 = [permissionsCopy locationAuthorization] == 0;
   }
 
   return v5;
 }
 
-+ (BOOL)app:(id)a3 hasPermissionAcceptingAnyLocationAuthorization:(id)a4
++ (BOOL)app:(id)app hasPermissionAcceptingAnyLocationAuthorization:(id)authorization
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isEqualToString:@"DSLocationAlways"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"DSLocationWhenInUse"))
+  appCopy = app;
+  authorizationCopy = authorization;
+  if (([authorizationCopy isEqualToString:@"DSLocationAlways"] & 1) != 0 || objc_msgSend(authorizationCopy, "isEqualToString:", @"DSLocationWhenInUse"))
   {
-    v7 = [v5 hasLocationAccess];
+    hasLocationAccess = [appCopy hasLocationAccess];
   }
 
   else
   {
-    v8 = [v5 permissionsGranted];
-    v7 = [v8 containsObject:v6];
+    permissionsGranted = [appCopy permissionsGranted];
+    hasLocationAccess = [permissionsGranted containsObject:authorizationCopy];
   }
 
-  return v7;
+  return hasLocationAccess;
 }
 
-+ (BOOL)app:(id)a3 hasPermission:(id)a4
++ (BOOL)app:(id)app hasPermission:(id)permission
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"DSLocationAlways"])
+  appCopy = app;
+  permissionCopy = permission;
+  if ([permissionCopy isEqualToString:@"DSLocationAlways"])
   {
-    v7 = [v5 locationAuthorization] == 2;
+    v7 = [appCopy locationAuthorization] == 2;
   }
 
   else
   {
-    if (![v6 isEqualToString:@"DSLocationWhenInUse"])
+    if (![permissionCopy isEqualToString:@"DSLocationWhenInUse"])
     {
-      v9 = [v5 permissionsGranted];
-      v8 = [v9 containsObject:v6];
+      permissionsGranted = [appCopy permissionsGranted];
+      v8 = [permissionsGranted containsObject:permissionCopy];
 
       goto LABEL_9;
     }
 
-    v7 = [v5 locationAuthorization] == 1;
+    v7 = [appCopy locationAuthorization] == 1;
   }
 
   v8 = v7;
@@ -88,9 +88,9 @@ LABEL_9:
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = +[DSUtilities tccServices];
   if ([v5 count])
   {
@@ -98,9 +98,9 @@ LABEL_9:
     v7 = 1;
     while (1)
     {
-      v8 = [v5 objectAtIndexedSubscript:v6];
-      v9 = [DSApp app:self hasPermission:v8];
-      if (v9 != [DSApp app:v4 hasPermission:v8])
+      displayName = [v5 objectAtIndexedSubscript:v6];
+      v9 = [DSApp app:self hasPermission:displayName];
+      if (v9 != [DSApp app:compareCopy hasPermission:displayName])
       {
         break;
       }
@@ -112,7 +112,7 @@ LABEL_9:
       }
     }
 
-    if ([DSApp app:self hasPermission:v8])
+    if ([DSApp app:self hasPermission:displayName])
     {
       v12 = -1;
     }
@@ -127,25 +127,25 @@ LABEL_9:
   {
 LABEL_5:
     displayName = self->_displayName;
-    v8 = [v4 displayName];
-    v12 = [(NSString *)displayName localizedStandardCompare:v8];
+    displayName = [compareCopy displayName];
+    v12 = [(NSString *)displayName localizedStandardCompare:displayName];
   }
 
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_displayName mutableCopyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_displayName mutableCopyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_appID mutableCopyWithZone:a3];
+  v8 = [(NSString *)self->_appID mutableCopyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSMutableSet *)self->_permissionsGranted mutableCopyWithZone:a3];
+  v10 = [(NSMutableSet *)self->_permissionsGranted mutableCopyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 

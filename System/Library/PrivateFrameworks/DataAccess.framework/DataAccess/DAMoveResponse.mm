@@ -10,11 +10,11 @@
   v11.receiver = self;
   v11.super_class = DAMoveResponse;
   v4 = [(DAMoveResponse *)&v11 description];
-  v5 = [(DAMoveResponse *)self status];
-  v6 = [(DAMoveResponse *)self sourceID];
-  v7 = [(DAMoveResponse *)self destID];
-  v8 = [(DAMoveResponse *)self origRequest];
-  v9 = [v3 stringWithFormat:@"%@ status %d, sourceID %@, destID %@, origRequest (%@)", v4, v5, v6, v7, v8];
+  status = [(DAMoveResponse *)self status];
+  sourceID = [(DAMoveResponse *)self sourceID];
+  destID = [(DAMoveResponse *)self destID];
+  origRequest = [(DAMoveResponse *)self origRequest];
+  v9 = [v3 stringWithFormat:@"%@ status %d, sourceID %@, destID %@, origRequest (%@)", v4, status, sourceID, destID, origRequest];
 
   return v9;
 }

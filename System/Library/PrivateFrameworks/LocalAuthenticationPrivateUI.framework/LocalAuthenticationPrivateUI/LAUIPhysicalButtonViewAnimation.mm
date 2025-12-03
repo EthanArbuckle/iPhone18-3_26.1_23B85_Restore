@@ -1,24 +1,24 @@
 @interface LAUIPhysicalButtonViewAnimation
-- (LAUIPhysicalButtonViewAnimation)initWith:(id)a3 layer:(id)a4;
-- (void)addAdditiveAnimation:(id)a3 to:(id)a4 keyPath:(id)a5;
+- (LAUIPhysicalButtonViewAnimation)initWith:(id)with layer:(id)layer;
+- (void)addAdditiveAnimation:(id)animation to:(id)to keyPath:(id)path;
 - (void)end;
 - (void)endImmediately;
 @end
 
 @implementation LAUIPhysicalButtonViewAnimation
 
-- (LAUIPhysicalButtonViewAnimation)initWith:(id)a3 layer:(id)a4
+- (LAUIPhysicalButtonViewAnimation)initWith:(id)with layer:(id)layer
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  layerCopy = layer;
   v11.receiver = self;
   v11.super_class = LAUIPhysicalButtonViewAnimation;
   v8 = [(LAUIPhysicalButtonViewAnimation *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_physicalButtonView, v6);
-    objc_storeWeak(&v9->_layer, v7);
+    objc_storeWeak(&v8->_physicalButtonView, withCopy);
+    objc_storeWeak(&v9->_layer, layerCopy);
   }
 
   return v9;
@@ -77,12 +77,12 @@ void __38__LAUIPhysicalButtonViewAnimation_end__block_invoke(uint64_t a1)
   [WeakRetained removeAnimationForKey:*(a1 + 40)];
 }
 
-- (void)addAdditiveAnimation:(id)a3 to:(id)a4 keyPath:(id)a5
+- (void)addAdditiveAnimation:(id)animation to:(id)to keyPath:(id)path
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = LAUILayerAddAdditiveAnimation(v8, v9, v12);
+  animationCopy = animation;
+  toCopy = to;
+  pathCopy = path;
+  v10 = LAUILayerAddAdditiveAnimation(toCopy, pathCopy, animationCopy);
   animationKey = self->_animationKey;
   self->_animationKey = v10;
 }

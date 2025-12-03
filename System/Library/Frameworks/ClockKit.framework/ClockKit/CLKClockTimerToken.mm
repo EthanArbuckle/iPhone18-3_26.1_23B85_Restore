@@ -1,21 +1,21 @@
 @interface CLKClockTimerToken
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLKClockTimer)owner;
-- (CLKClockTimerToken)initWithID:(int64_t)a3;
+- (CLKClockTimerToken)initWithID:(int64_t)d;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation CLKClockTimerToken
 
-- (CLKClockTimerToken)initWithID:(int64_t)a3
+- (CLKClockTimerToken)initWithID:(int64_t)d
 {
   v8.receiver = self;
   v8.super_class = CLKClockTimerToken;
   v4 = [(CLKClockTimerToken *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithInteger:d];
     id = v4->_id;
     v4->_id = v5;
   }
@@ -23,18 +23,18 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
-    v6 = [(NSNumber *)v4->_id isEqual:self->_id];
+    v6 = [(NSNumber *)equalCopy->_id isEqual:self->_id];
   }
 
   else
@@ -86,7 +86,7 @@
 - (void)dealloc
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 log];
+  v3 = [self log];
   v4 = v3[2]();
   v5 = 138412290;
   v6 = v4;

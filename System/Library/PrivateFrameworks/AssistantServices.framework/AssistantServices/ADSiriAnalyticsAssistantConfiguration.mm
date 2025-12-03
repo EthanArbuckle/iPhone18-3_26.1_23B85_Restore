@@ -10,17 +10,17 @@
 - (BOOL)assistantEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  assistantIsEnabled = [v2 assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
 - (BOOL)removePersistentIdentifiers
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 longLivedIdentifierUploadingEnabled];
+  longLivedIdentifierUploadingEnabled = [v2 longLivedIdentifierUploadingEnabled];
 
-  return v3 ^ 1;
+  return longLivedIdentifierUploadingEnabled ^ 1;
 }
 
 - (BOOL)optedInToDataSharing
@@ -34,9 +34,9 @@
 - (BOOL)dictationEnabled
 {
   v2 = +[AFPreferences sharedPreferences];
-  v3 = [v2 dictationIsEnabled];
+  dictationIsEnabled = [v2 dictationIsEnabled];
 
-  return v3;
+  return dictationIsEnabled;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface _HKDateCalendarUnitKey
-- (BOOL)isEqual:(id)a3;
-- (_HKDateCalendarUnitKey)initWithDate:(id)a3 calendar:(id)a4 unit:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (_HKDateCalendarUnitKey)initWithDate:(id)date calendar:(id)calendar unit:(unint64_t)unit;
 - (unint64_t)hash;
 @end
 
 @implementation _HKDateCalendarUnitKey
 
-- (_HKDateCalendarUnitKey)initWithDate:(id)a3 calendar:(id)a4 unit:(unint64_t)a5
+- (_HKDateCalendarUnitKey)initWithDate:(id)date calendar:(id)calendar unit:(unint64_t)unit
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  dateCopy = date;
+  calendarCopy = calendar;
+  v11 = calendarCopy;
+  if (dateCopy)
   {
-    if (v10)
+    if (calendarCopy)
     {
       goto LABEL_3;
     }
@@ -35,39 +35,39 @@ LABEL_3:
   v12 = [(_HKDateCalendarUnitKey *)&v16 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [dateCopy copy];
     date = v12->_date;
     v12->_date = v13;
 
-    objc_storeStrong(&v12->_calendar, a4);
-    v12->_calendarUnit = a5;
+    objc_storeStrong(&v12->_calendar, calendar);
+    v12->_calendarUnit = unit;
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [(_HKDateCalendarUnitKey *)self date];
-    v10 = [v8 date];
-    if (v9 != v10)
+    v8 = equalCopy;
+    date = [(_HKDateCalendarUnitKey *)self date];
+    date2 = [v8 date];
+    if (date != date2)
     {
-      v11 = [v8 date];
-      if (!v11)
+      date3 = [v8 date];
+      if (!date3)
       {
         v12 = 0;
         goto LABEL_19;
       }
 
-      v3 = v11;
-      v4 = [(_HKDateCalendarUnitKey *)self date];
-      v5 = [v8 date];
-      if (![v4 isEqualToDate:v5])
+      calendar4 = date3;
+      date4 = [(_HKDateCalendarUnitKey *)self date];
+      date5 = [v8 date];
+      if (![date4 isEqualToDate:date5])
       {
         v12 = 0;
 LABEL_18:
@@ -75,28 +75,28 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v18 = v5;
-      v19 = v4;
-      v20 = v3;
+      v18 = date5;
+      v19 = date4;
+      v20 = calendar4;
     }
 
-    v13 = [(_HKDateCalendarUnitKey *)self calendar];
-    v14 = [v8 calendar];
-    if (v13 == v14)
+    calendar = [(_HKDateCalendarUnitKey *)self calendar];
+    calendar2 = [v8 calendar];
+    if (calendar == calendar2)
     {
       goto LABEL_12;
     }
 
-    v15 = [v8 calendar];
-    if (!v15)
+    calendar3 = [v8 calendar];
+    if (!calendar3)
     {
 
       v12 = 0;
 LABEL_17:
-      v4 = v19;
-      v3 = v20;
-      v5 = v18;
-      if (v9 != v10)
+      date4 = v19;
+      calendar4 = v20;
+      date5 = v18;
+      if (date != date2)
       {
         goto LABEL_18;
       }
@@ -106,15 +106,15 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v4 = v15;
-    v5 = [(_HKDateCalendarUnitKey *)self calendar];
-    v3 = [v8 calendar];
-    if ([v5 isEqual:v3])
+    date4 = calendar3;
+    date5 = [(_HKDateCalendarUnitKey *)self calendar];
+    calendar4 = [v8 calendar];
+    if ([date5 isEqual:calendar4])
     {
 LABEL_12:
-      v16 = [(_HKDateCalendarUnitKey *)self calendarUnit];
-      v12 = v16 == [v8 calendarUnit];
-      if (v13 == v14)
+      calendarUnit = [(_HKDateCalendarUnitKey *)self calendarUnit];
+      v12 = calendarUnit == [v8 calendarUnit];
+      if (calendar == calendar2)
       {
 LABEL_14:
 
@@ -138,16 +138,16 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(_HKDateCalendarUnitKey *)self date];
-  v4 = [v3 hash];
+  date = [(_HKDateCalendarUnitKey *)self date];
+  v4 = [date hash];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[_HKDateCalendarUnitKey calendarUnit](self, "calendarUnit")}];
   v6 = [v5 hash];
-  v7 = [(_HKDateCalendarUnitKey *)self calendar];
-  v8 = [v7 calendarIdentifier];
-  v9 = v4 ^ [v8 hash];
-  v10 = [(_HKDateCalendarUnitKey *)self calendar];
-  v11 = [v10 timeZone];
-  v12 = v9 ^ [v11 hash];
+  calendar = [(_HKDateCalendarUnitKey *)self calendar];
+  calendarIdentifier = [calendar calendarIdentifier];
+  v9 = v4 ^ [calendarIdentifier hash];
+  calendar2 = [(_HKDateCalendarUnitKey *)self calendar];
+  timeZone = [calendar2 timeZone];
+  v12 = v9 ^ [timeZone hash];
 
   return v6 ^ v12;
 }

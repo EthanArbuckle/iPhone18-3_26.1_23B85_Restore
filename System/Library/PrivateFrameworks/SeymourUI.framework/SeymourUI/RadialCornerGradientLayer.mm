@@ -1,13 +1,13 @@
 @interface RadialCornerGradientLayer
 - (_TtC9SeymourUI25RadialCornerGradientLayer)init;
-- (_TtC9SeymourUI25RadialCornerGradientLayer)initWithCoder:(id)a3;
-- (_TtC9SeymourUI25RadialCornerGradientLayer)initWithLayer:(id)a3;
+- (_TtC9SeymourUI25RadialCornerGradientLayer)initWithCoder:(id)coder;
+- (_TtC9SeymourUI25RadialCornerGradientLayer)initWithLayer:(id)layer;
 - (void)layoutSublayers;
 @end
 
 @implementation RadialCornerGradientLayer
 
-- (_TtC9SeymourUI25RadialCornerGradientLayer)initWithLayer:(id)a3
+- (_TtC9SeymourUI25RadialCornerGradientLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_20C13DA64();
@@ -15,7 +15,7 @@
   return sub_20BCA0540(v4);
 }
 
-- (_TtC9SeymourUI25RadialCornerGradientLayer)initWithCoder:(id)a3
+- (_TtC9SeymourUI25RadialCornerGradientLayer)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);
@@ -24,7 +24,7 @@
 
 - (void)layoutSublayers
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BCA0708();
 }
 

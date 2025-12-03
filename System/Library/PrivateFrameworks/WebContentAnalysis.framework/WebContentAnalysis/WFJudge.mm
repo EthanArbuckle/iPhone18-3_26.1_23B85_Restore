@@ -2,11 +2,11 @@
 + (id)defaultJudge;
 + (id)defaultLSMMapPath;
 + (void)defaultJudge;
-- (WFJudge)initWithMap:(id)a3;
-- (WFJudge)initWithMap:(id)a3 systemContentWhitelist:(id)a4;
-- (id)_pronounceOnWebpage:(id)a3;
-- (id)pronounceOnPageContent:(id)a3 pageURL:(id)a4 debugPage:(id *)a5 pageTitle:(id *)a6;
-- (id)pronounceOnPageContent:(id)a3 pageURL:(id)a4 whitelistUserPreferences:(id)a5 debugPage:(id *)a6 pageTitle:(id *)a7;
+- (WFJudge)initWithMap:(id)map;
+- (WFJudge)initWithMap:(id)map systemContentWhitelist:(id)whitelist;
+- (id)_pronounceOnWebpage:(id)webpage;
+- (id)pronounceOnPageContent:(id)content pageURL:(id)l debugPage:(id *)page pageTitle:(id *)title;
+- (id)pronounceOnPageContent:(id)content pageURL:(id)l whitelistUserPreferences:(id)preferences debugPage:(id *)page pageTitle:(id *)title;
 - (void)dealloc;
 @end
 
@@ -36,20 +36,20 @@ LABEL_3:
     goto LABEL_9;
   }
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  v6 = [a1 defaultLSMMapPath];
-  if ([v5 fileExistsAtPath:v6 isDirectory:&v11] && (v11 & 1) == 0)
+  defaultLSMMapPath = [self defaultLSMMapPath];
+  if ([defaultManager fileExistsAtPath:defaultLSMMapPath isDirectory:&v11] && (v11 & 1) == 0)
   {
-    gDefaultJudge = [objc_alloc(objc_opt_class()) initWithMap:{+[WFLSMMap mapFromFilePath:](WFLSMScoreNormalizedMap, "mapFromFilePath:", v6)}];
+    gDefaultJudge = [objc_alloc(objc_opt_class()) initWithMap:{+[WFLSMMap mapFromFilePath:](WFLSMScoreNormalizedMap, "mapFromFilePath:", defaultLSMMapPath)}];
     v9 = __WFDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [a1 defaultLSMMapPath];
+      defaultLSMMapPath2 = [self defaultLSMMapPath];
       *buf = 136446466;
       v13 = "+[WFJudge defaultJudge]";
       v14 = 2112;
-      v15 = v10;
+      v15 = defaultLSMMapPath2;
       _os_log_impl(&dword_272D73000, v9, OS_LOG_TYPE_INFO, "%{public}s map:%@", buf, 0x16u);
     }
 
@@ -59,7 +59,7 @@ LABEL_3:
   v7 = __WFDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
   {
-    +[(WFJudge *)a1];
+    +[(WFJudge *)self];
   }
 
   result = 0;
@@ -68,22 +68,22 @@ LABEL_9:
   return result;
 }
 
-- (WFJudge)initWithMap:(id)a3
+- (WFJudge)initWithMap:(id)map
 {
   v5 = +[WFSystemContentWhitelist defaultSystemWhitelist];
 
-  return [(WFJudge *)self initWithMap:a3 systemContentWhitelist:v5];
+  return [(WFJudge *)self initWithMap:map systemContentWhitelist:v5];
 }
 
-- (WFJudge)initWithMap:(id)a3 systemContentWhitelist:(id)a4
+- (WFJudge)initWithMap:(id)map systemContentWhitelist:(id)whitelist
 {
   v8.receiver = self;
   v8.super_class = WFJudge;
   v6 = [(WFJudge *)&v8 init];
   if (v6)
   {
-    v6->map = a3;
-    v6->whitelist = a4;
+    v6->map = map;
+    v6->whitelist = whitelist;
   }
 
   return v6;
@@ -96,10 +96,10 @@ LABEL_9:
   [(WFJudge *)&v3 dealloc];
 }
 
-- (id)_pronounceOnWebpage:(id)a3
+- (id)_pronounceOnWebpage:(id)webpage
 {
   v5 = objc_opt_new();
-  if ([a3 selfRestricted])
+  if ([webpage selfRestricted])
   {
     [v5 setRestricted:1];
     [v5 setEvidence:3];
@@ -111,7 +111,7 @@ LABEL_9:
 
   v17 = 0;
   v16 = 0;
-  if (![a3 isWorthAnalyzingWithEvidence:&v17 message:&v16])
+  if (![webpage isWorthAnalyzingWithEvidence:&v17 message:&v16])
   {
 LABEL_8:
     [v5 setRestricted:0];
@@ -120,10 +120,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [a3 URLString];
-  if (v7)
+  uRLString = [webpage URLString];
+  if (uRLString)
   {
-    v8 = [MEMORY[0x277CBEBC0] URLWithString:v7];
+    v8 = [MEMORY[0x277CBEBC0] URLWithString:uRLString];
     if (v8)
     {
       v9 = v8;
@@ -136,9 +136,9 @@ LABEL_8:
     }
   }
 
-  v10 = -[WFLSMMap evaluate:](self->map, "evaluate:", [a3 plainText]);
-  v11 = [v10 isRestricted];
-  if (v11)
+  v10 = -[WFLSMMap evaluate:](self->map, "evaluate:", [webpage plainText]);
+  isRestricted = [v10 isRestricted];
+  if (isRestricted)
   {
     v12 = @"RESTRICTED";
   }
@@ -156,27 +156,27 @@ LABEL_8:
   }
 
   [v5 setMessage:v14];
-  [v5 setRestricted:v11];
+  [v5 setRestricted:isRestricted];
   [v5 setLSMEvaluationResult:v10];
   [v5 setEvidence:0];
   return v5;
 }
 
-- (id)pronounceOnPageContent:(id)a3 pageURL:(id)a4 debugPage:(id *)a5 pageTitle:(id *)a6
+- (id)pronounceOnPageContent:(id)content pageURL:(id)l debugPage:(id *)page pageTitle:(id *)title
 {
-  if (a3)
+  if (content)
   {
-    v9 = [(WFWebPageDecorator *)WFWebPageToFilterText webPageWithString:a3 URLString:a4, a5];
-    v10 = v9;
-    if (a6)
+    page = [(WFWebPageDecorator *)WFWebPageToFilterText webPageWithString:content URLString:l, page];
+    v10 = page;
+    if (title)
     {
-      *a6 = [v9 pageTitle];
+      *title = [page pageTitle];
     }
 
     if (v10)
     {
       v11 = [(WFJudge *)self _pronounceOnWebpage:v10];
-      [v11 setURL:a4];
+      [v11 setURL:l];
       return v11;
     }
 
@@ -190,26 +190,26 @@ LABEL_8:
     v14 = @"Allowed, nil pageContentString";
   }
 
-  v15 = [v13 stringWithFormat:v14, a4, a5, a6];
+  title = [v13 stringWithFormat:v14, l, page, title];
 
-  return [WFVerdict verdictWithRestriction:0 URL:a4 evidence:2 LSMEvaluationResult:0 message:v15];
+  return [WFVerdict verdictWithRestriction:0 URL:l evidence:2 LSMEvaluationResult:0 message:title];
 }
 
-- (id)pronounceOnPageContent:(id)a3 pageURL:(id)a4 whitelistUserPreferences:(id)a5 debugPage:(id *)a6 pageTitle:(id *)a7
+- (id)pronounceOnPageContent:(id)content pageURL:(id)l whitelistUserPreferences:(id)preferences debugPage:(id *)page pageTitle:(id *)title
 {
-  v10 = a3;
+  contentCopy = content;
   v25 = *MEMORY[0x277D85DE8];
   v22 = 1;
-  if (a5)
+  if (preferences)
   {
-    v12 = [a5 filterEnabled];
-    if (v12)
+    filterEnabled = [preferences filterEnabled];
+    if (filterEnabled)
     {
-      LOBYTE(v12) = [a5 whitelistEnabled];
+      LOBYTE(filterEnabled) = [preferences whitelistEnabled];
     }
 
-    v22 = v12;
-    v13 = [a5 pronounceOnPageURLString:a4 shouldFilter:&v22];
+    v22 = filterEnabled;
+    v13 = [preferences pronounceOnPageURLString:l shouldFilter:&v22];
   }
 
   else
@@ -225,30 +225,30 @@ LABEL_8:
     _os_log_impl(&dword_272D73000, v14, OS_LOG_TYPE_INFO, "whitelistVerdict: %@", buf, 0xCu);
   }
 
-  if (v10)
+  if (contentCopy)
   {
-    v10 = [(WFWebPageDecorator *)WFWebPageToFilterText webPageWithString:v10 URLString:a4];
+    contentCopy = [(WFWebPageDecorator *)WFWebPageToFilterText webPageWithString:contentCopy URLString:l];
   }
 
-  if (a7)
+  if (title)
   {
-    *a7 = [v10 pageTitle];
+    *title = [contentCopy pageTitle];
   }
 
-  if ([a4 hasPrefix:@"https://"])
+  if ([l hasPrefix:@"https://"])
   {
-    if ([a5 alwaysAllowHTTPS])
+    if ([preferences alwaysAllowHTTPS])
     {
       v15 = @"Always allow HTTPS";
 LABEL_15:
-      v16 = a4;
+      lCopy2 = l;
       v17 = 10;
 LABEL_30:
-      v13 = [WFVerdict verdictWithRestriction:0 URL:v16 evidence:v17 LSMEvaluationResult:0 message:v15];
+      v13 = [WFVerdict verdictWithRestriction:0 URL:lCopy2 evidence:v17 LSMEvaluationResult:0 message:v15];
       goto LABEL_31;
     }
 
-    if (v13 && ([a5 whitelistEnabled] & 1) == 0 && (!objc_msgSend(a5, "filterEnabled") || -[WFVerdict evidence](v13, "evidence") != 8))
+    if (v13 && ([preferences whitelistEnabled] & 1) == 0 && (!objc_msgSend(preferences, "filterEnabled") || -[WFVerdict evidence](v13, "evidence") != 8))
     {
       [(WFVerdict *)v13 setMessage:@"https url but user has no whitelist restrictions"];
       v15 = @"user has no whitelist restrictions";
@@ -275,16 +275,16 @@ LABEL_30:
       _os_log_impl(&dword_272D73000, v18, OS_LOG_TYPE_INFO, "LSM analyzer used to evaluate page content", buf, 2u);
     }
 
-    if (!v10)
+    if (!contentCopy)
     {
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Allowed, NULL pageContentString"];
-      v16 = a4;
+      lCopy2 = l;
       v17 = 2;
       goto LABEL_30;
     }
 
-    v13 = [(WFJudge *)self _pronounceOnWebpage:v10];
-    [(WFVerdict *)v13 setURL:a4];
+    v13 = [(WFJudge *)self _pronounceOnWebpage:contentCopy];
+    [(WFVerdict *)v13 setURL:l];
   }
 
 LABEL_31:

@@ -8,7 +8,7 @@
 {
   v7.receiver = self;
   v7.super_class = SUSubtitledButtonAccessibility;
-  v3 = [(SUSubtitledButtonAccessibility *)&v7 accessibilityLabel];
+  accessibilityLabel = [(SUSubtitledButtonAccessibility *)&v7 accessibilityLabel];
   v6 = [(SUSubtitledButtonAccessibility *)self safeValueForKey:@"currentSubtitle"];
   v4 = __UIAXStringForVariables();
 

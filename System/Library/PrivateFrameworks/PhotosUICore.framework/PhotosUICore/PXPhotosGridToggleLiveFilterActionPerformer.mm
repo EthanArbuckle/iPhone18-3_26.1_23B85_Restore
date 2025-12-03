@@ -1,20 +1,20 @@
 @interface PXPhotosGridToggleLiveFilterActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridToggleLiveFilterActionPerformer
 
-+ (BOOL)canPerformActionType:(id)a3 withViewModel:(id)a4
++ (BOOL)canPerformActionType:(id)type withViewModel:(id)model
 {
-  v6 = a4;
-  v9.receiver = a1;
+  modelCopy = model;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___PXPhotosGridToggleLiveFilterActionPerformer;
-  if (objc_msgSendSuper2(&v9, sel_canPerformActionType_withViewModel_, a3, v6))
+  if (objc_msgSendSuper2(&v9, sel_canPerformActionType_withViewModel_, type, modelCopy))
   {
-    v7 = ![PXPhotosGridToggleFilterActionPerformer isContentFilterHidden:14 viewModel:v6];
+    v7 = ![PXPhotosGridToggleFilterActionPerformer isContentFilterHidden:14 viewModel:modelCopy];
   }
 
   else
@@ -27,32 +27,32 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  [v3 setLive:{objc_msgSend(v3, "live") ^ 1}];
-  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:v3];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  [currentContentFilterState setLive:{objc_msgSend(currentContentFilterState, "live") ^ 1}];
+  [(PXPhotosGridToggleFilterActionPerformer *)self updateToContentFilterStateAndFinishTask:currentContentFilterState];
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  if (a3 == 1)
+  if (case == 1)
   {
-    v5 = [(PXPhotosGridActionPerformer *)self viewModel];
-    v6 = [v5 contentFilterState];
+    viewModel = [(PXPhotosGridActionPerformer *)self viewModel];
+    contentFilterState = [viewModel contentFilterState];
 
-    if (v6)
+    if (contentFilterState)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = objc_opt_class();
         v12 = NSStringFromClass(v11);
-        v13 = [v6 px_descriptionForAssertionMessage];
-        [v10 handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleLiveFilterActionPerformer.m" lineNumber:39 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewModel.contentFilterState", v12, v13}];
+        px_descriptionForAssertionMessage = [contentFilterState px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridToggleLiveFilterActionPerformer.m" lineNumber:39 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.viewModel.contentFilterState", v12, px_descriptionForAssertionMessage}];
       }
     }
 
-    if ([v6 live])
+    if ([contentFilterState live])
     {
       v7 = @"DISABLE_LIVE_FILTER_SHORTCUT";
     }
@@ -75,8 +75,8 @@
 
 - (int64_t)menuElementState
 {
-  v2 = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
-  v3 = [v2 isContentFilterActive:14];
+  currentContentFilterState = [(PXPhotosGridActionPerformer *)self currentContentFilterState];
+  v3 = [currentContentFilterState isContentFilterActive:14];
 
   return v3;
 }

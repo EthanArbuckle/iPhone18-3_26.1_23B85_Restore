@@ -1,58 +1,58 @@
 @interface _DASLogConditionHistory
-+ (id)condition:(id)a3 fromDate:(id)a4;
-- (_DASLogConditionHistory)initWithCondition:(id)a3 fromDate:(id)a4;
++ (id)condition:(id)condition fromDate:(id)date;
+- (_DASLogConditionHistory)initWithCondition:(id)condition fromDate:(id)date;
 - (id)description;
 - (id)idealIntervals;
-- (void)addCondition:(id)a3 atDate:(id)a4;
+- (void)addCondition:(id)condition atDate:(id)date;
 @end
 
 @implementation _DASLogConditionHistory
 
-- (_DASLogConditionHistory)initWithCondition:(id)a3 fromDate:(id)a4
+- (_DASLogConditionHistory)initWithCondition:(id)condition fromDate:(id)date
 {
   v10.receiver = self;
   v10.super_class = _DASLogConditionHistory;
-  v4 = [(_DASLogConditionHistory *)&v10 init:a3];
+  v4 = [(_DASLogConditionHistory *)&v10 init:condition];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     conditions = v4->_conditions;
-    v4->_conditions = v5;
+    v4->_conditions = array;
 
-    v7 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     intervals = v4->_intervals;
-    v4->_intervals = v7;
+    v4->_intervals = array2;
   }
 
   return v4;
 }
 
-+ (id)condition:(id)a3 fromDate:(id)a4
++ (id)condition:(id)condition fromDate:(id)date
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithCondition:v6 fromDate:v5];
+  dateCopy = date;
+  conditionCopy = condition;
+  v7 = [objc_alloc(objc_opt_class()) initWithCondition:conditionCopy fromDate:dateCopy];
 
   return v7;
 }
 
-- (void)addCondition:(id)a3 atDate:(id)a4
+- (void)addCondition:(id)condition atDate:(id)date
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->_conditions lastObject];
-  v8 = [v7 isEqual:v9];
+  conditionCopy = condition;
+  dateCopy = date;
+  lastObject = [(NSMutableArray *)self->_conditions lastObject];
+  v8 = [lastObject isEqual:conditionCopy];
 
   if ((v8 & 1) == 0)
   {
-    [(NSMutableArray *)self->_conditions addObject:v9];
-    [(NSMutableArray *)self->_intervals addObject:v6];
+    [(NSMutableArray *)self->_conditions addObject:conditionCopy];
+    [(NSMutableArray *)self->_intervals addObject:dateCopy];
   }
 }
 
 - (id)idealIntervals
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if ([(NSMutableArray *)self->_conditions count])
   {
     v4 = 0;
@@ -60,9 +60,9 @@
     do
     {
       v6 = [(NSMutableArray *)self->_conditions objectAtIndexedSubscript:v4];
-      v7 = [v6 isIdeal];
+      isIdeal = [v6 isIdeal];
 
-      if (v7)
+      if (isIdeal)
       {
         if (!v5)
         {
@@ -75,7 +75,7 @@
         v8 = objc_alloc(MEMORY[0x277CCA970]);
         v9 = [(NSMutableArray *)self->_intervals objectAtIndexedSubscript:v4];
         v10 = [v8 initWithStartDate:v5 endDate:v9];
-        [v3 addObject:v10];
+        [array addObject:v10];
 
         v5 = 0;
       }
@@ -87,9 +87,9 @@
     if (v5)
     {
       v11 = objc_alloc(MEMORY[0x277CCA970]);
-      v12 = [MEMORY[0x277CBEAA8] distantFuture];
-      v13 = [v11 initWithStartDate:v5 endDate:v12];
-      [v3 addObject:v13];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v13 = [v11 initWithStartDate:v5 endDate:distantFuture];
+      [array addObject:v13];
     }
   }
 
@@ -98,7 +98,7 @@
     v5 = 0;
   }
 
-  v14 = [v3 copy];
+  v14 = [array copy];
 
   return v14;
 }
@@ -112,12 +112,12 @@
       [_DASLogConditionHistory description];
     }
 
-    v3 = [MEMORY[0x277CBEA80] currentCalendar];
-    v4 = [MEMORY[0x277CCAB68] string];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    string = [MEMORY[0x277CCAB68] string];
     v5 = [(NSMutableArray *)self->_conditions count];
     if (v5)
     {
-      v35 = v3;
+      v35 = currentCalendar;
       if (v5 == 1)
       {
         v11 = 0;
@@ -131,7 +131,7 @@
         do
         {
           [(NSMutableArray *)self->_intervals objectAtIndexedSubscript:v6];
-          v9 = v8 = v4;
+          v9 = v8 = string;
           v10 = [v35 components:24 fromDate:v9];
           v11 = v7;
           v12 = [(NSMutableArray *)self->_intervals objectAtIndexedSubscript:v7];
@@ -153,10 +153,10 @@
           v22 = [v20 stringFromDate:v21];
           v23 = [v15 stringWithFormat:@"%@ - %@", v18, v22];
 
-          v4 = v8;
-          v24 = [v23 UTF8String];
+          string = v8;
+          uTF8String = [v23 UTF8String];
           v25 = [(NSMutableArray *)self->_conditions objectAtIndexedSubscript:v6];
-          [v8 appendFormat:@"  %-50s %@\n", v24, v25];
+          [v8 appendFormat:@"  %-50s %@\n", uTF8String, v25];
 
           v26 = v34 > v7++;
           v6 = v11;
@@ -168,14 +168,14 @@
       v28 = description_formatter;
       v29 = [(NSMutableArray *)self->_intervals objectAtIndexedSubscript:v11];
       v30 = [v28 stringFromDate:v29];
-      v31 = [v30 UTF8String];
+      uTF8String2 = [v30 UTF8String];
       v32 = [(NSMutableArray *)self->_conditions objectAtIndexedSubscript:v11];
-      [v4 appendFormat:@"  %-50s %@", v31, v32];
+      [string appendFormat:@"  %-50s %@", uTF8String2, v32];
 
-      v3 = v35;
+      currentCalendar = v35;
     }
 
-    v27 = [v4 copy];
+    v27 = [string copy];
   }
 
   else

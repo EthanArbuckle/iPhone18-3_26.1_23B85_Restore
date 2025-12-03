@@ -1,7 +1,7 @@
 @interface BCUI2x2AvocadoViewController
 - (BOOL)_includeEmptyDevices;
 - (id)_newBatteryDeviceView;
-- (void)_configureBatteryDeviceView:(id)a3 withBatteryDevice:(id)a4 transitionCoordinator:(id)a5;
+- (void)_configureBatteryDeviceView:(id)view withBatteryDevice:(id)device transitionCoordinator:(id)coordinator;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -12,16 +12,16 @@
   v40.receiver = self;
   v40.super_class = BCUI2x2AvocadoViewController;
   [(BCUIAvocadoViewController *)&v40 viewWillLayoutSubviews];
-  v3 = [(BCUI2x2AvocadoViewController *)self view];
-  [v3 bounds];
+  view = [(BCUI2x2AvocadoViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(BCUIAvocadoViewController *)self batteryDevices];
-  v13 = [v12 count];
+  batteryDevices = [(BCUIAvocadoViewController *)self batteryDevices];
+  v13 = [batteryDevices count];
 
-  v14 = [v3 _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [view _shouldReverseLayoutDirection];
   v41.origin.x = v5;
   v41.origin.y = v7;
   v41.size.width = v9;
@@ -70,7 +70,7 @@
   v25 = y;
   v26 = width;
   v27 = height;
-  if (v14)
+  if (_shouldReverseLayoutDirection)
   {
     MinX = CGRectGetMaxX(*&v24) - v20;
   }
@@ -89,23 +89,23 @@
   v45.size.width = width;
   v45.size.height = height;
   v38[3] = CGRectGetMinY(v45);
-  v29 = [v3 window];
-  if (v29)
+  window = [view window];
+  if (window)
   {
-    v30 = [v3 window];
-    v31 = [v30 screen];
-    [v31 scale];
+    window2 = [view window];
+    screen = [window2 screen];
+    [screen scale];
     v33 = v32;
   }
 
   else
   {
-    v30 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v30 scale];
+    window2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [window2 scale];
     v33 = v34;
   }
 
-  v35 = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
+  _batteryDeviceViews = [(BCUIAvocadoViewController *)self _batteryDeviceViews];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __54__BCUI2x2AvocadoViewController_viewWillLayoutSubviews__block_invoke;
@@ -114,13 +114,13 @@
   v36[5] = v38;
   *&v36[6] = v20;
   *&v36[7] = v23;
-  v37 = v14;
+  v37 = _shouldReverseLayoutDirection;
   v36[8] = v33;
   *&v36[9] = x;
   *&v36[10] = y;
   *&v36[11] = width;
   *&v36[12] = height;
-  [v35 enumerateObjectsUsingBlock:v36];
+  [_batteryDeviceViews enumerateObjectsUsingBlock:v36];
 
   _Block_object_dispose(v38, 8);
   _Block_object_dispose(v39, 8);
@@ -170,8 +170,8 @@ void __54__BCUI2x2AvocadoViewController_viewWillLayoutSubviews__block_invoke(uin
 
 - (BOOL)_includeEmptyDevices
 {
-  v2 = [(BCUIAvocadoViewController *)self batteryDevices];
-  v3 = [v2 count] > 1;
+  batteryDevices = [(BCUIAvocadoViewController *)self batteryDevices];
+  v3 = [batteryDevices count] > 1;
 
   return v3;
 }
@@ -183,17 +183,17 @@ void __54__BCUI2x2AvocadoViewController_viewWillLayoutSubviews__block_invoke(uin
   return v2;
 }
 
-- (void)_configureBatteryDeviceView:(id)a3 withBatteryDevice:(id)a4 transitionCoordinator:(id)a5
+- (void)_configureBatteryDeviceView:(id)view withBatteryDevice:(id)device transitionCoordinator:(id)coordinator
 {
-  v8 = a3;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = BCUI2x2AvocadoViewController;
-  [(BCUIAvocadoViewController *)&v15 _configureBatteryDeviceView:v8 withBatteryDevice:a4 transitionCoordinator:a5];
-  v9 = [(BCUIAvocadoViewController *)self batteryDevices];
-  v10 = [v9 count];
+  [(BCUIAvocadoViewController *)&v15 _configureBatteryDeviceView:viewCopy withBatteryDevice:device transitionCoordinator:coordinator];
+  batteryDevices = [(BCUIAvocadoViewController *)self batteryDevices];
+  v10 = [batteryDevices count];
 
   v11 = objc_opt_class();
-  v12 = v8;
+  v12 = viewCopy;
   if (v11)
   {
     if (objc_opt_isKindOfClass())

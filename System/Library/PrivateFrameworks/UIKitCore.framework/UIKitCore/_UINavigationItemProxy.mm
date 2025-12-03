@@ -1,45 +1,45 @@
 @interface _UINavigationItemProxy
-- (BOOL)navigationItemIsBackItem:(id)a3;
-- (BOOL)navigationItemIsTopItem:(id)a3;
-- (BOOL)shouldSearchControllerDeferPresentationTransitionForNavigationItem:(id)a3;
-- (_UINavigationItemProxy)initWithDestinationNavigationItem:(id)a3 sourceNavigationItem:(id)a4;
-- (void)navigationItem:(id)a3 appearance:(id)a4 categoriesChanged:(int64_t)a5;
-- (void)navigationItem:(id)a3 updatedPalettePart:(int64_t)a4 oldPalette:(id)a5;
-- (void)navigationItemUpdatedAdditionalOverflowItems:(id)a3;
-- (void)navigationItemUpdatedAllowsInteractivePopWhenBackButtonHidden:(id)a3;
-- (void)navigationItemUpdatedAllowsInteractivePopWhenNavigationBarHidden:(id)a3;
-- (void)navigationItemUpdatedBackButtonContent:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedBackgroundAppearance:(id)a3;
-- (void)navigationItemUpdatedBottomPalette:(id)a3 oldPalette:(id)a4;
-- (void)navigationItemUpdatedCenterBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedContentLayout:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedLargeTitleContent:(id)a3;
-- (void)navigationItemUpdatedLargeTitleDisplayMode:(id)a3;
-- (void)navigationItemUpdatedLeftBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedNavigationBarVisibility:(id)a3;
-- (void)navigationItemUpdatedPromptContent:(id)a3;
-- (void)navigationItemUpdatedRightBarButtonItems:(id)a3 animated:(BOOL)a4;
-- (void)navigationItemUpdatedScrollEdgeProgress:(id)a3;
-- (void)navigationItemUpdatedSearchBarPlacementAllowsExternalIntegration:(id)a3;
-- (void)navigationItemUpdatedSearchBarPlacementAllowsToolbarIntegration:(id)a3;
-- (void)navigationItemUpdatedSearchController:(id)a3 oldSearchController:(id)a4;
-- (void)navigationItemUpdatedTitleContent:(id)a3 animated:(BOOL)a4;
+- (BOOL)navigationItemIsBackItem:(id)item;
+- (BOOL)navigationItemIsTopItem:(id)item;
+- (BOOL)shouldSearchControllerDeferPresentationTransitionForNavigationItem:(id)item;
+- (_UINavigationItemProxy)initWithDestinationNavigationItem:(id)item sourceNavigationItem:(id)navigationItem;
+- (void)navigationItem:(id)item appearance:(id)appearance categoriesChanged:(int64_t)changed;
+- (void)navigationItem:(id)item updatedPalettePart:(int64_t)part oldPalette:(id)palette;
+- (void)navigationItemUpdatedAdditionalOverflowItems:(id)items;
+- (void)navigationItemUpdatedAllowsInteractivePopWhenBackButtonHidden:(id)hidden;
+- (void)navigationItemUpdatedAllowsInteractivePopWhenNavigationBarHidden:(id)hidden;
+- (void)navigationItemUpdatedBackButtonContent:(id)content animated:(BOOL)animated;
+- (void)navigationItemUpdatedBackgroundAppearance:(id)appearance;
+- (void)navigationItemUpdatedBottomPalette:(id)palette oldPalette:(id)oldPalette;
+- (void)navigationItemUpdatedCenterBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)navigationItemUpdatedContentLayout:(id)layout animated:(BOOL)animated;
+- (void)navigationItemUpdatedLargeTitleContent:(id)content;
+- (void)navigationItemUpdatedLargeTitleDisplayMode:(id)mode;
+- (void)navigationItemUpdatedLeftBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)navigationItemUpdatedNavigationBarVisibility:(id)visibility;
+- (void)navigationItemUpdatedPromptContent:(id)content;
+- (void)navigationItemUpdatedRightBarButtonItems:(id)items animated:(BOOL)animated;
+- (void)navigationItemUpdatedScrollEdgeProgress:(id)progress;
+- (void)navigationItemUpdatedSearchBarPlacementAllowsExternalIntegration:(id)integration;
+- (void)navigationItemUpdatedSearchBarPlacementAllowsToolbarIntegration:(id)integration;
+- (void)navigationItemUpdatedSearchController:(id)controller oldSearchController:(id)searchController;
+- (void)navigationItemUpdatedTitleContent:(id)content animated:(BOOL)animated;
 - (void)reloadDestinationItemFromSource;
 @end
 
 @implementation _UINavigationItemProxy
 
-- (_UINavigationItemProxy)initWithDestinationNavigationItem:(id)a3 sourceNavigationItem:(id)a4
+- (_UINavigationItemProxy)initWithDestinationNavigationItem:(id)item sourceNavigationItem:(id)navigationItem
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  navigationItemCopy = navigationItem;
   v16.receiver = self;
   v16.super_class = _UINavigationItemProxy;
   v9 = [(_UINavigationItemProxy *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    if (v7 == v8)
+    if (itemCopy == navigationItemCopy)
     {
       if (os_variant_has_internal_diagnostics())
       {
@@ -64,9 +64,9 @@
 
     else
     {
-      objc_storeStrong(&v9->_destinationNavigationItem, a3);
-      v11 = objc_storeWeak(&v10->_sourceNavigationItem, v8);
-      [v8 _setChangeObserver:v10];
+      objc_storeStrong(&v9->_destinationNavigationItem, item);
+      v11 = objc_storeWeak(&v10->_sourceNavigationItem, navigationItemCopy);
+      [navigationItemCopy _setChangeObserver:v10];
 
       [(_UINavigationItemProxy *)v10 reloadDestinationItemFromSource];
     }
@@ -88,58 +88,58 @@
   [UIView performWithoutAnimation:v5];
 }
 
-- (BOOL)navigationItemIsTopItem:(id)a3
+- (BOOL)navigationItemIsTopItem:(id)item
 {
-  v4 = [(UINavigationItem *)self->_destinationNavigationItem _changeObserver];
+  _changeObserver = [(UINavigationItem *)self->_destinationNavigationItem _changeObserver];
 
-  if (!v4)
+  if (!_changeObserver)
   {
     return 1;
   }
 
-  v5 = [(UINavigationItem *)self->_destinationNavigationItem _changeObserver];
-  v6 = [v5 navigationItemIsTopItem:self->_destinationNavigationItem];
+  _changeObserver2 = [(UINavigationItem *)self->_destinationNavigationItem _changeObserver];
+  v6 = [_changeObserver2 navigationItemIsTopItem:self->_destinationNavigationItem];
 
   return v6;
 }
 
-- (BOOL)navigationItemIsBackItem:(id)a3
+- (BOOL)navigationItemIsBackItem:(id)item
 {
-  v4 = [(UINavigationItem *)self->_destinationNavigationItem _changeObserver];
+  _changeObserver = [(UINavigationItem *)self->_destinationNavigationItem _changeObserver];
 
-  if (!v4)
+  if (!_changeObserver)
   {
     return 0;
   }
 
-  v5 = [(UINavigationItem *)self->_destinationNavigationItem _changeObserver];
-  v6 = [v5 navigationItemIsBackItem:self->_destinationNavigationItem];
+  _changeObserver2 = [(UINavigationItem *)self->_destinationNavigationItem _changeObserver];
+  v6 = [_changeObserver2 navigationItemIsBackItem:self->_destinationNavigationItem];
 
   return v6;
 }
 
-- (void)navigationItemUpdatedTitleContent:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedTitleContent:(id)content animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   destinationNavigationItem = self->_destinationNavigationItem;
-  v7 = a3;
-  v8 = [v7 title];
-  [(UINavigationItem *)destinationNavigationItem _setTitle:v8 animated:v4];
+  contentCopy = content;
+  title = [contentCopy title];
+  [(UINavigationItem *)destinationNavigationItem _setTitle:title animated:animatedCopy];
 
-  v9 = [v7 titleView];
-  [(UINavigationItem *)self->_destinationNavigationItem setTitleView:v9];
+  titleView = [contentCopy titleView];
+  [(UINavigationItem *)self->_destinationNavigationItem setTitleView:titleView];
 
-  v10 = [v7 _weeTitle];
+  _weeTitle = [contentCopy _weeTitle];
 
-  [(UINavigationItem *)self->_destinationNavigationItem _setWeeTitle:v10];
+  [(UINavigationItem *)self->_destinationNavigationItem _setWeeTitle:_weeTitle];
 }
 
-- (void)navigationItemUpdatedLeftBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedLeftBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v5 = a3;
+  itemsCopy = items;
   v14 = 0;
   v15 = 0;
-  [v5 _getLeadingItems:&v15 groups:&v14];
+  [itemsCopy _getLeadingItems:&v15 groups:&v14];
   if (v15)
   {
     destinationNavigationItem = self->_destinationNavigationItem;
@@ -156,28 +156,28 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [(UINavigationItem *)v7 leftBarButtonItems];
-  if (v8)
+  leftBarButtonItems = [(UINavigationItem *)v7 leftBarButtonItems];
+  if (leftBarButtonItems)
   {
-    v9 = v8;
-    v10 = [v5 leftBarButtonItems];
+    v9 = leftBarButtonItems;
+    leftBarButtonItems2 = [itemsCopy leftBarButtonItems];
 
-    if (!v10)
+    if (!leftBarButtonItems2)
     {
       destinationNavigationItem = self->_destinationNavigationItem;
       goto LABEL_3;
     }
   }
 
-  v11 = [(UINavigationItem *)self->_destinationNavigationItem leadingItemGroups];
-  if (![v11 count])
+  leadingItemGroups = [(UINavigationItem *)self->_destinationNavigationItem leadingItemGroups];
+  if (![leadingItemGroups count])
   {
 
     goto LABEL_6;
   }
 
-  v12 = [v5 leadingItemGroups];
-  v13 = [v12 count];
+  leadingItemGroups2 = [itemsCopy leadingItemGroups];
+  v13 = [leadingItemGroups2 count];
 
   if (!v13)
   {
@@ -188,12 +188,12 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)navigationItemUpdatedRightBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedRightBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v5 = a3;
+  itemsCopy = items;
   v14 = 0;
   v15 = 0;
-  [v5 _getTrailingItems:&v15 groups:&v14];
+  [itemsCopy _getTrailingItems:&v15 groups:&v14];
   if (v15)
   {
     destinationNavigationItem = self->_destinationNavigationItem;
@@ -210,28 +210,28 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [(UINavigationItem *)v7 rightBarButtonItems];
-  if (v8)
+  rightBarButtonItems = [(UINavigationItem *)v7 rightBarButtonItems];
+  if (rightBarButtonItems)
   {
-    v9 = v8;
-    v10 = [v5 rightBarButtonItems];
+    v9 = rightBarButtonItems;
+    rightBarButtonItems2 = [itemsCopy rightBarButtonItems];
 
-    if (!v10)
+    if (!rightBarButtonItems2)
     {
       destinationNavigationItem = self->_destinationNavigationItem;
       goto LABEL_3;
     }
   }
 
-  v11 = [(UINavigationItem *)self->_destinationNavigationItem trailingItemGroups];
-  if (![v11 count])
+  trailingItemGroups = [(UINavigationItem *)self->_destinationNavigationItem trailingItemGroups];
+  if (![trailingItemGroups count])
   {
 
     goto LABEL_6;
   }
 
-  v12 = [v5 trailingItemGroups];
-  v13 = [v12 count];
+  trailingItemGroups2 = [itemsCopy trailingItemGroups];
+  v13 = [trailingItemGroups2 count];
 
   if (!v13)
   {
@@ -242,83 +242,83 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)navigationItemUpdatedContentLayout:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedContentLayout:(id)layout animated:(BOOL)animated
 {
-  v5 = a3;
-  -[UINavigationItem setHidesBackButton:](self->_destinationNavigationItem, "setHidesBackButton:", [v5 hidesBackButton]);
-  v6 = [v5 leftItemsSupplementBackButton];
+  layoutCopy = layout;
+  -[UINavigationItem setHidesBackButton:](self->_destinationNavigationItem, "setHidesBackButton:", [layoutCopy hidesBackButton]);
+  leftItemsSupplementBackButton = [layoutCopy leftItemsSupplementBackButton];
 
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem setLeftItemsSupplementBackButton:v6];
+  [(UINavigationItem *)destinationNavigationItem setLeftItemsSupplementBackButton:leftItemsSupplementBackButton];
 }
 
-- (void)navigationItemUpdatedBackButtonContent:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedBackButtonContent:(id)content animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  contentCopy = content;
   if ([(_UINavigationItemProxy *)self navigationItemIsBackItem:?])
   {
-    [(_UINavigationItemProxy *)self navigationItemUpdatedTitleContent:v8 animated:v4];
+    [(_UINavigationItemProxy *)self navigationItemUpdatedTitleContent:contentCopy animated:animatedCopy];
   }
 
   else
   {
-    v6 = [v8 backButtonTitle];
-    [(UINavigationItem *)self->_destinationNavigationItem setBackButtonTitle:v6];
+    backButtonTitle = [contentCopy backButtonTitle];
+    [(UINavigationItem *)self->_destinationNavigationItem setBackButtonTitle:backButtonTitle];
 
-    v7 = [v8 backBarButtonItem];
-    [(UINavigationItem *)self->_destinationNavigationItem setBackBarButtonItem:v7];
+    backBarButtonItem = [contentCopy backBarButtonItem];
+    [(UINavigationItem *)self->_destinationNavigationItem setBackBarButtonItem:backBarButtonItem];
   }
 }
 
-- (void)navigationItemUpdatedLargeTitleDisplayMode:(id)a3
+- (void)navigationItemUpdatedLargeTitleDisplayMode:(id)mode
 {
-  v4 = [a3 largeTitleDisplayMode];
+  largeTitleDisplayMode = [mode largeTitleDisplayMode];
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem setLargeTitleDisplayMode:v4];
+  [(UINavigationItem *)destinationNavigationItem setLargeTitleDisplayMode:largeTitleDisplayMode];
 }
 
-- (void)navigationItemUpdatedLargeTitleContent:(id)a3
+- (void)navigationItemUpdatedLargeTitleContent:(id)content
 {
-  v4 = a3;
-  v5 = [v4 _largeTitleAccessoryView];
-  [(UINavigationItem *)self->_destinationNavigationItem _setLargeTitleAccessoryView:v5];
+  contentCopy = content;
+  _largeTitleAccessoryView = [contentCopy _largeTitleAccessoryView];
+  [(UINavigationItem *)self->_destinationNavigationItem _setLargeTitleAccessoryView:_largeTitleAccessoryView];
 
-  v6 = [v4 _largeTitleTwoLineMode];
+  _largeTitleTwoLineMode = [contentCopy _largeTitleTwoLineMode];
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem _setLargeTitleTwoLineMode:v6];
+  [(UINavigationItem *)destinationNavigationItem _setLargeTitleTwoLineMode:_largeTitleTwoLineMode];
 }
 
-- (void)navigationItem:(id)a3 appearance:(id)a4 categoriesChanged:(int64_t)a5
+- (void)navigationItem:(id)item appearance:(id)appearance categoriesChanged:(int64_t)changed
 {
-  v6 = a3;
-  v7 = [v6 compactAppearance];
-  [(UINavigationItem *)self->_destinationNavigationItem setCompactAppearance:v7];
+  itemCopy = item;
+  compactAppearance = [itemCopy compactAppearance];
+  [(UINavigationItem *)self->_destinationNavigationItem setCompactAppearance:compactAppearance];
 
-  v8 = [v6 standardAppearance];
-  [(UINavigationItem *)self->_destinationNavigationItem setStandardAppearance:v8];
+  standardAppearance = [itemCopy standardAppearance];
+  [(UINavigationItem *)self->_destinationNavigationItem setStandardAppearance:standardAppearance];
 
-  v9 = [v6 scrollEdgeAppearance];
+  scrollEdgeAppearance = [itemCopy scrollEdgeAppearance];
 
-  [(UINavigationItem *)self->_destinationNavigationItem setScrollEdgeAppearance:v9];
+  [(UINavigationItem *)self->_destinationNavigationItem setScrollEdgeAppearance:scrollEdgeAppearance];
 }
 
-- (void)navigationItemUpdatedBackgroundAppearance:(id)a3
+- (void)navigationItemUpdatedBackgroundAppearance:(id)appearance
 {
-  v4 = [a3 _backgroundHidden];
+  _backgroundHidden = [appearance _backgroundHidden];
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem _setBackgroundHidden:v4];
+  [(UINavigationItem *)destinationNavigationItem _setBackgroundHidden:_backgroundHidden];
 }
 
-- (void)navigationItemUpdatedScrollEdgeProgress:(id)a3
+- (void)navigationItemUpdatedScrollEdgeProgress:(id)progress
 {
-  v4 = a3;
-  -[UINavigationItem _setManualScrollEdgeAppearanceEnabled:](self->_destinationNavigationItem, "_setManualScrollEdgeAppearanceEnabled:", [v4 _isManualScrollEdgeAppearanceEnabled]);
-  [v4 _manualScrollEdgeAppearanceProgress];
+  progressCopy = progress;
+  -[UINavigationItem _setManualScrollEdgeAppearanceEnabled:](self->_destinationNavigationItem, "_setManualScrollEdgeAppearanceEnabled:", [progressCopy _isManualScrollEdgeAppearanceEnabled]);
+  [progressCopy _manualScrollEdgeAppearanceProgress];
   v6 = v5;
 
   destinationNavigationItem = self->_destinationNavigationItem;
@@ -326,103 +326,103 @@ LABEL_6:
   [(UINavigationItem *)destinationNavigationItem _setManualScrollEdgeAppearanceProgress:v6];
 }
 
-- (void)navigationItemUpdatedPromptContent:(id)a3
+- (void)navigationItemUpdatedPromptContent:(id)content
 {
-  v4 = [a3 prompt];
-  [(UINavigationItem *)self->_destinationNavigationItem setPrompt:v4];
+  prompt = [content prompt];
+  [(UINavigationItem *)self->_destinationNavigationItem setPrompt:prompt];
 }
 
-- (void)navigationItemUpdatedSearchController:(id)a3 oldSearchController:(id)a4
+- (void)navigationItemUpdatedSearchController:(id)controller oldSearchController:(id)searchController
 {
-  v5 = a3;
-  v6 = [v5 searchController];
-  [(UINavigationItem *)self->_destinationNavigationItem setSearchController:v6];
+  controllerCopy = controller;
+  searchController = [controllerCopy searchController];
+  [(UINavigationItem *)self->_destinationNavigationItem setSearchController:searchController];
 
-  -[UINavigationItem setHidesSearchBarWhenScrolling:](self->_destinationNavigationItem, "setHidesSearchBarWhenScrolling:", [v5 hidesSearchBarWhenScrolling]);
-  v7 = [v5 preferredSearchBarPlacement];
+  -[UINavigationItem setHidesSearchBarWhenScrolling:](self->_destinationNavigationItem, "setHidesSearchBarWhenScrolling:", [controllerCopy hidesSearchBarWhenScrolling]);
+  preferredSearchBarPlacement = [controllerCopy preferredSearchBarPlacement];
 
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem setPreferredSearchBarPlacement:v7];
+  [(UINavigationItem *)destinationNavigationItem setPreferredSearchBarPlacement:preferredSearchBarPlacement];
 }
 
-- (void)navigationItemUpdatedSearchBarPlacementAllowsToolbarIntegration:(id)a3
+- (void)navigationItemUpdatedSearchBarPlacementAllowsToolbarIntegration:(id)integration
 {
-  v4 = [a3 searchBarPlacementAllowsToolbarIntegration];
+  searchBarPlacementAllowsToolbarIntegration = [integration searchBarPlacementAllowsToolbarIntegration];
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem setSearchBarPlacementAllowsToolbarIntegration:v4];
+  [(UINavigationItem *)destinationNavigationItem setSearchBarPlacementAllowsToolbarIntegration:searchBarPlacementAllowsToolbarIntegration];
 }
 
-- (void)navigationItemUpdatedSearchBarPlacementAllowsExternalIntegration:(id)a3
+- (void)navigationItemUpdatedSearchBarPlacementAllowsExternalIntegration:(id)integration
 {
-  v4 = [a3 searchBarPlacementAllowsExternalIntegration];
+  searchBarPlacementAllowsExternalIntegration = [integration searchBarPlacementAllowsExternalIntegration];
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem setSearchBarPlacementAllowsExternalIntegration:v4];
+  [(UINavigationItem *)destinationNavigationItem setSearchBarPlacementAllowsExternalIntegration:searchBarPlacementAllowsExternalIntegration];
 }
 
-- (void)navigationItemUpdatedBottomPalette:(id)a3 oldPalette:(id)a4
+- (void)navigationItemUpdatedBottomPalette:(id)palette oldPalette:(id)oldPalette
 {
-  v5 = [a3 _bottomPalette];
-  [(UINavigationItem *)self->_destinationNavigationItem _setBottomPalette:v5];
+  _bottomPalette = [palette _bottomPalette];
+  [(UINavigationItem *)self->_destinationNavigationItem _setBottomPalette:_bottomPalette];
 }
 
-- (void)navigationItemUpdatedCenterBarButtonItems:(id)a3 animated:(BOOL)a4
+- (void)navigationItemUpdatedCenterBarButtonItems:(id)items animated:(BOOL)animated
 {
-  v5 = [a3 centerItemGroups];
-  [(UINavigationItem *)self->_destinationNavigationItem setCenterItemGroups:v5];
+  centerItemGroups = [items centerItemGroups];
+  [(UINavigationItem *)self->_destinationNavigationItem setCenterItemGroups:centerItemGroups];
 }
 
-- (void)navigationItemUpdatedAdditionalOverflowItems:(id)a3
+- (void)navigationItemUpdatedAdditionalOverflowItems:(id)items
 {
-  v4 = [a3 additionalOverflowItems];
-  [(UINavigationItem *)self->_destinationNavigationItem setAdditionalOverflowItems:v4];
+  additionalOverflowItems = [items additionalOverflowItems];
+  [(UINavigationItem *)self->_destinationNavigationItem setAdditionalOverflowItems:additionalOverflowItems];
 }
 
-- (void)navigationItemUpdatedNavigationBarVisibility:(id)a3
+- (void)navigationItemUpdatedNavigationBarVisibility:(id)visibility
 {
-  v4 = a3;
-  -[UINavigationItem _setPreferredNavigationBarVisibility:](self->_destinationNavigationItem, "_setPreferredNavigationBarVisibility:", [v4 _navigationBarVisibility]);
-  v5 = [v4 _isNavigationBarHidden];
+  visibilityCopy = visibility;
+  -[UINavigationItem _setPreferredNavigationBarVisibility:](self->_destinationNavigationItem, "_setPreferredNavigationBarVisibility:", [visibilityCopy _navigationBarVisibility]);
+  _isNavigationBarHidden = [visibilityCopy _isNavigationBarHidden];
 
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem _setNavigationBarHidden:v5];
+  [(UINavigationItem *)destinationNavigationItem _setNavigationBarHidden:_isNavigationBarHidden];
 }
 
-- (void)navigationItem:(id)a3 updatedPalettePart:(int64_t)a4 oldPalette:(id)a5
+- (void)navigationItem:(id)item updatedPalettePart:(int64_t)part oldPalette:(id)palette
 {
-  v6 = a3;
-  v7 = [v6 _topPalette];
-  [(UINavigationItem *)self->_destinationNavigationItem _setTopPalette:v7];
+  itemCopy = item;
+  _topPalette = [itemCopy _topPalette];
+  [(UINavigationItem *)self->_destinationNavigationItem _setTopPalette:_topPalette];
 
-  v8 = [v6 _bottomPalette];
+  _bottomPalette = [itemCopy _bottomPalette];
 
-  [(UINavigationItem *)self->_destinationNavigationItem _setBottomPalette:v8];
+  [(UINavigationItem *)self->_destinationNavigationItem _setBottomPalette:_bottomPalette];
 }
 
-- (void)navigationItemUpdatedAllowsInteractivePopWhenNavigationBarHidden:(id)a3
+- (void)navigationItemUpdatedAllowsInteractivePopWhenNavigationBarHidden:(id)hidden
 {
-  v4 = [a3 _allowsInteractivePopWhenNavigationBarHidden];
+  _allowsInteractivePopWhenNavigationBarHidden = [hidden _allowsInteractivePopWhenNavigationBarHidden];
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem _setAllowsInteractivePopWhenNavigationBarHidden:v4];
+  [(UINavigationItem *)destinationNavigationItem _setAllowsInteractivePopWhenNavigationBarHidden:_allowsInteractivePopWhenNavigationBarHidden];
 }
 
-- (void)navigationItemUpdatedAllowsInteractivePopWhenBackButtonHidden:(id)a3
+- (void)navigationItemUpdatedAllowsInteractivePopWhenBackButtonHidden:(id)hidden
 {
-  v4 = [a3 _allowsInteractivePopWhenBackButtonHidden];
+  _allowsInteractivePopWhenBackButtonHidden = [hidden _allowsInteractivePopWhenBackButtonHidden];
   destinationNavigationItem = self->_destinationNavigationItem;
 
-  [(UINavigationItem *)destinationNavigationItem _setAllowsInteractivePopWhenBackButtonHidden:v4];
+  [(UINavigationItem *)destinationNavigationItem _setAllowsInteractivePopWhenBackButtonHidden:_allowsInteractivePopWhenBackButtonHidden];
 }
 
-- (BOOL)shouldSearchControllerDeferPresentationTransitionForNavigationItem:(id)a3
+- (BOOL)shouldSearchControllerDeferPresentationTransitionForNavigationItem:(id)item
 {
   destinationNavigationItem = self->_destinationNavigationItem;
-  v4 = [a3 searchController];
-  LOBYTE(destinationNavigationItem) = [(UINavigationItem *)destinationNavigationItem _shouldSearchControllerDeferPresentationTransition:v4];
+  searchController = [item searchController];
+  LOBYTE(destinationNavigationItem) = [(UINavigationItem *)destinationNavigationItem _shouldSearchControllerDeferPresentationTransition:searchController];
 
   return destinationNavigationItem;
 }

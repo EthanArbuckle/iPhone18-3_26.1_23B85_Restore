@@ -1,6 +1,6 @@
 @interface MTRChimeClusterChimeSoundStruct
 - (MTRChimeClusterChimeSoundStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChimeClusterChimeSoundStruct);
-  v5 = [(MTRChimeClusterChimeSoundStruct *)self chimeID];
-  [(MTRChimeClusterChimeSoundStruct *)v4 setChimeID:v5];
+  chimeID = [(MTRChimeClusterChimeSoundStruct *)self chimeID];
+  [(MTRChimeClusterChimeSoundStruct *)v4 setChimeID:chimeID];
 
-  v6 = [(MTRChimeClusterChimeSoundStruct *)self name];
-  [(MTRChimeClusterChimeSoundStruct *)v4 setName:v6];
+  name = [(MTRChimeClusterChimeSoundStruct *)self name];
+  [(MTRChimeClusterChimeSoundStruct *)v4 setName:name];
 
   return v4;
 }

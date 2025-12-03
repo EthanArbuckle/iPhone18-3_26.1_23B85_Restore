@@ -28,9 +28,9 @@
 + (id)upNext;
 + (id)upNextLockupArtSettingChanged;
 + (id)utsk;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VUIAppDocumentUpdateEventDescriptor)init;
-- (VUIAppDocumentUpdateEventDescriptor)initWithEventType:(unint64_t)a3;
+- (VUIAppDocumentUpdateEventDescriptor)initWithEventType:(unint64_t)type;
 - (id)description;
 @end
 
@@ -597,35 +597,35 @@ void __56__VUIAppDocumentUpdateEventDescriptor_pinnedTabsChanged__block_invoke()
   return 0;
 }
 
-- (VUIAppDocumentUpdateEventDescriptor)initWithEventType:(unint64_t)a3
+- (VUIAppDocumentUpdateEventDescriptor)initWithEventType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = VUIAppDocumentUpdateEventDescriptor;
   result = [(VUIAppDocumentUpdateEventDescriptor *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(VUIAppDocumentUpdateEventDescriptor *)self type];
-    v8 = [(VUIAppDocumentUpdateEventDescriptor *)v6 type];
+    type = [(VUIAppDocumentUpdateEventDescriptor *)self type];
+    type2 = [(VUIAppDocumentUpdateEventDescriptor *)v6 type];
 
-    v9 = v7 == v8;
+    v9 = type == type2;
   }
 
   else

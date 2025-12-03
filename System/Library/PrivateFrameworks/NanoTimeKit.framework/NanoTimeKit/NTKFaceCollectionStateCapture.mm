@@ -1,5 +1,5 @@
 @interface NTKFaceCollectionStateCapture
-- (NTKFaceCollectionStateCapture)initWithFaceCollection:(id)a3 identifier:(id)a4;
+- (NTKFaceCollectionStateCapture)initWithFaceCollection:(id)collection identifier:(id)identifier;
 - (id)_faceCollectionDescription;
 - (os_state_data_s)_stateDump;
 - (void)dealloc;
@@ -8,18 +8,18 @@
 
 @implementation NTKFaceCollectionStateCapture
 
-- (NTKFaceCollectionStateCapture)initWithFaceCollection:(id)a3 identifier:(id)a4
+- (NTKFaceCollectionStateCapture)initWithFaceCollection:(id)collection identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  collectionCopy = collection;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = NTKFaceCollectionStateCapture;
   v9 = [(NTKFaceCollectionStateCapture *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_faceCollection, a3);
-    objc_storeStrong(&v10->_identifier, a4);
+    objc_storeStrong(&v9->_faceCollection, collection);
+    objc_storeStrong(&v10->_identifier, identifier);
     objc_initWeak(&location, v10);
     objc_copyWeak(&v12, &location);
     v10->_stateDumpHandler = os_state_add_handler();
@@ -76,9 +76,9 @@ uint64_t __67__NTKFaceCollectionStateCapture_initWithFaceCollection_identifier__
 - (os_state_data_s)_stateDump
 {
   v3 = [@"NTKFaceCollection" stringByAppendingFormat:@"-%@", self->_identifier];
-  v4 = [(NTKFaceCollectionStateCapture *)self _faceCollectionDescription];
+  _faceCollectionDescription = [(NTKFaceCollectionStateCapture *)self _faceCollectionDescription];
   v15 = 0;
-  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:v4 format:200 options:0 error:&v15];
+  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:_faceCollectionDescription format:200 options:0 error:&v15];
   v6 = v15;
   if (v6)
   {
@@ -116,8 +116,8 @@ uint64_t __67__NTKFaceCollectionStateCapture_initWithFaceCollection_identifier__
   if ([(NTKFaceCollection *)self->_faceCollection hasLoaded])
   {
     v4 = self->_faceCollection;
-    v5 = [(NTKFaceCollection *)v4 numberOfFaces];
-    v6 = [(NTKFaceCollection *)v4 selectedFace];
+    numberOfFaces = [(NTKFaceCollection *)v4 numberOfFaces];
+    selectedFace = [(NTKFaceCollection *)v4 selectedFace];
     v35 = 0;
     v36 = &v35;
     v37 = 0x3032000000;
@@ -130,22 +130,22 @@ uint64_t __67__NTKFaceCollectionStateCapture_initWithFaceCollection_identifier__
     v32 = __Block_byref_object_copy__25;
     v33 = __Block_byref_object_dispose__25;
     v34 = 0;
-    if (v5 >= 2)
+    if (numberOfFaces >= 2)
     {
-      v7 = [(NTKFaceCollection *)v4 selectedFaceIndex];
-      if (v7 == v5 - 1)
+      selectedFaceIndex = [(NTKFaceCollection *)v4 selectedFaceIndex];
+      if (selectedFaceIndex == numberOfFaces - 1)
       {
         v8 = -1;
       }
 
       else
       {
-        v8 = v7 + 1;
+        v8 = selectedFaceIndex + 1;
       }
 
-      if (v7)
+      if (selectedFaceIndex)
       {
-        v9 = v7 - 1;
+        v9 = selectedFaceIndex - 1;
       }
 
       else
@@ -153,7 +153,7 @@ uint64_t __67__NTKFaceCollectionStateCapture_initWithFaceCollection_identifier__
         v9 = -1;
       }
 
-      if (v7)
+      if (selectedFaceIndex)
       {
         v10 = v8;
       }
@@ -176,10 +176,10 @@ uint64_t __67__NTKFaceCollectionStateCapture_initWithFaceCollection_identifier__
       [(NTKFaceCollection *)v23 enumerateFacesUsingBlock:v22];
     }
 
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of Faces: %u\n", v5];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of Faces: %u\n", numberOfFaces];
     [v3 appendString:v11];
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"\nSelected Face: %@\n", v6];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"\nSelected Face: %@\n", selectedFace];
     [v3 appendString:v12];
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"\nLeft On Deck Face: %@\n", v36[5]];
@@ -189,10 +189,10 @@ uint64_t __67__NTKFaceCollectionStateCapture_initWithFaceCollection_identifier__
     [v3 appendString:v14];
 
     v15 = +[NTKFastFaceSwitchingSettings sharedInstance];
-    v16 = [v15 fastFaceSwitchingEnabled];
+    fastFaceSwitchingEnabled = [v15 fastFaceSwitchingEnabled];
 
     v17 = MEMORY[0x277CCACA8];
-    v18 = [MEMORY[0x277CCABB0] numberWithBool:v16];
+    v18 = [MEMORY[0x277CCABB0] numberWithBool:fastFaceSwitchingEnabled];
     v19 = [v17 stringWithFormat:@"\nFast Face Switching Enabled: %@\n", v18];
     [v3 appendString:v19];
 

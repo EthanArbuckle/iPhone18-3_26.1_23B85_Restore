@@ -1,13 +1,13 @@
 @interface ATXProactiveSuggestioniOSUIFeedbackQuery
-- (id)contextPublisherWithStartTime:(double)a3;
+- (id)contextPublisherWithStartTime:(double)time;
 @end
 
 @implementation ATXProactiveSuggestioniOSUIFeedbackQuery
 
-- (id)contextPublisherWithStartTime:(double)a3
+- (id)contextPublisherWithStartTime:(double)time
 {
   v4 = objc_opt_new();
-  v5 = [v4 publisherFromStartTime:a3];
+  v5 = [v4 publisherFromStartTime:time];
 
   return v5;
 }

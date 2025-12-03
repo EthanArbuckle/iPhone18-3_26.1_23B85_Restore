@@ -4,9 +4,9 @@
 - (void)_updateNumeratorDenominator;
 - (void)_updateTextDisplay;
 - (void)loadView;
-- (void)showString:(id)a3;
-- (void)uiLockPressed:(id)a3;
-- (void)updateText:(id)a3;
+- (void)showString:(id)string;
+- (void)uiLockPressed:(id)pressed;
+- (void)updateText:(id)text;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -69,11 +69,11 @@
 
   v8 = +[UIColor blackColor];
   v9 = [v8 colorWithAlphaComponent:0.649999976];
-  v10 = [(AXLocalizationCaptionViewController *)self backgroundView];
-  [v10 setBackgroundColor:v9];
+  backgroundView = [(AXLocalizationCaptionViewController *)self backgroundView];
+  [backgroundView setBackgroundColor:v9];
 
-  v11 = [(AXLocalizationCaptionViewController *)self view];
-  [v11 setAccessibilityElementsHidden:1];
+  view = [(AXLocalizationCaptionViewController *)self view];
+  [view setAccessibilityElementsHidden:1];
 
   v12 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   stringCountLabelNumerator = self->_stringCountLabelNumerator;
@@ -92,8 +92,8 @@
   [(UILabel *)v17 setFont:v18];
 
   [(UILabel *)self->_stringCountLabelNumerator setNumberOfLines:1];
-  v19 = [(AXLocalizationCaptionViewController *)self backgroundView];
-  [v19 addSubview:self->_stringCountLabelNumerator];
+  backgroundView2 = [(AXLocalizationCaptionViewController *)self backgroundView];
+  [backgroundView2 addSubview:self->_stringCountLabelNumerator];
 
   v20 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   stringCountLabelDenominator = self->_stringCountLabelDenominator;
@@ -112,76 +112,76 @@
   [(UILabel *)v25 setFont:v26];
 
   [(UILabel *)self->_stringCountLabelDenominator setNumberOfLines:1];
-  v27 = [(AXLocalizationCaptionViewController *)self backgroundView];
-  [v27 addSubview:self->_stringCountLabelDenominator];
+  backgroundView3 = [(AXLocalizationCaptionViewController *)self backgroundView];
+  [backgroundView3 addSubview:self->_stringCountLabelDenominator];
 
   v28 = +[UIColor clearColor];
-  v29 = [(AXLocalizationCaptionViewController *)self view];
-  [v29 setBackgroundColor:v28];
+  view2 = [(AXLocalizationCaptionViewController *)self view];
+  [view2 setBackgroundColor:v28];
 
   v30 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(AXLocalizationCaptionViewController *)self setCaptionPanelText:v30];
 
   v31 = +[UIColor clearColor];
-  v32 = [(AXLocalizationCaptionViewController *)self captionPanelText];
-  [v32 setBackgroundColor:v31];
+  captionPanelText = [(AXLocalizationCaptionViewController *)self captionPanelText];
+  [captionPanelText setBackgroundColor:v31];
 
-  v33 = [(AXLocalizationCaptionViewController *)self captionPanelText];
+  captionPanelText2 = [(AXLocalizationCaptionViewController *)self captionPanelText];
   v34 = +[UIColor whiteColor];
-  [v33 setTextColor:v34];
+  [captionPanelText2 setTextColor:v34];
 
-  v35 = [(AXLocalizationCaptionViewController *)self captionPanelText];
-  [v35 setTextAlignment:0];
+  captionPanelText3 = [(AXLocalizationCaptionViewController *)self captionPanelText];
+  [captionPanelText3 setTextAlignment:0];
 
-  v36 = [(AXLocalizationCaptionViewController *)self captionPanelText];
+  captionPanelText4 = [(AXLocalizationCaptionViewController *)self captionPanelText];
   v37 = [UIFont systemFontOfSize:9.0];
-  [v36 setFont:v37];
+  [captionPanelText4 setFont:v37];
 
-  v38 = [(AXLocalizationCaptionViewController *)self captionPanelText];
-  [v38 setLineBreakMode:2];
+  captionPanelText5 = [(AXLocalizationCaptionViewController *)self captionPanelText];
+  [captionPanelText5 setLineBreakMode:2];
 
-  v39 = [(AXLocalizationCaptionViewController *)self captionPanelText];
-  [v39 setNumberOfLines:2];
+  captionPanelText6 = [(AXLocalizationCaptionViewController *)self captionPanelText];
+  [captionPanelText6 setNumberOfLines:2];
 
-  v40 = [(AXLocalizationCaptionViewController *)self backgroundView];
-  v41 = [(AXLocalizationCaptionViewController *)self captionPanelText];
-  [v40 addSubview:v41];
+  backgroundView4 = [(AXLocalizationCaptionViewController *)self backgroundView];
+  captionPanelText7 = [(AXLocalizationCaptionViewController *)self captionPanelText];
+  [backgroundView4 addSubview:captionPanelText7];
 
-  v42 = [[AXLocCaptionPanelUILockButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[AXLocCaptionPanelUILockButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   uiLockButton = self->_uiLockButton;
-  self->_uiLockButton = v42;
+  self->_uiLockButton = height;
 
   v44 = +[UIColor clearColor];
   [(AXLocCaptionPanelUILockButton *)self->_uiLockButton setBackgroundColor:v44];
 
-  v45 = [(AXLocalizationCaptionViewController *)self backgroundView];
-  [v45 addSubview:self->_uiLockButton];
+  backgroundView5 = [(AXLocalizationCaptionViewController *)self backgroundView];
+  [backgroundView5 addSubview:self->_uiLockButton];
 
   [(AXLocCaptionPanelUILockButton *)self->_uiLockButton addTarget:self action:"uiLockPressed:" forControlEvents:64];
   v46 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(AXLocalizationCaptionViewController *)self setLineView:v46];
 
-  v47 = [(AXLocalizationCaptionViewController *)self lineView];
+  lineView = [(AXLocalizationCaptionViewController *)self lineView];
   v48 = +[UIColor whiteColor];
-  [v47 setBackgroundColor:v48];
+  [lineView setBackgroundColor:v48];
 
-  v49 = [(AXLocalizationCaptionViewController *)self view];
-  v50 = [(AXLocalizationCaptionViewController *)self backgroundView];
-  [v49 addSubview:v50];
+  view3 = [(AXLocalizationCaptionViewController *)self view];
+  backgroundView6 = [(AXLocalizationCaptionViewController *)self backgroundView];
+  [view3 addSubview:backgroundView6];
 
-  v51 = [(AXLocalizationCaptionViewController *)self view];
-  v52 = [(AXLocalizationCaptionViewController *)self lineView];
-  [v51 addSubview:v52];
+  view4 = [(AXLocalizationCaptionViewController *)self view];
+  lineView2 = [(AXLocalizationCaptionViewController *)self lineView];
+  [view4 addSubview:lineView2];
 
-  v53 = [(AXLocalizationCaptionViewController *)self view];
-  [v53 setNeedsLayout];
+  view5 = [(AXLocalizationCaptionViewController *)self view];
+  [view5 setNeedsLayout];
 }
 
-- (void)uiLockPressed:(id)a3
+- (void)uiLockPressed:(id)pressed
 {
   [(AXLocCaptionPanelUILockButton *)self->_uiLockButton setLocked:[(AXLocCaptionPanelUILockButton *)self->_uiLockButton locked]^ 1];
-  v4 = [(AXLocalizationCaptionViewController *)self delegate];
-  [v4 uiLockStateChanged:{-[AXLocCaptionPanelUILockButton locked](self->_uiLockButton, "locked")}];
+  delegate = [(AXLocalizationCaptionViewController *)self delegate];
+  [delegate uiLockStateChanged:{-[AXLocCaptionPanelUILockButton locked](self->_uiLockButton, "locked")}];
 }
 
 - (void)_updateTextDisplay
@@ -199,16 +199,16 @@
   }
 
   v49 = [(NSArray *)self->_packages objectAtIndexedSubscript:v4];
-  v48 = [v49 englishText];
-  v5 = [v49 text];
+  englishText = [v49 englishText];
+  text = [v49 text];
   v47 = [v49 key];
-  v6 = [v49 file];
-  v46 = [v49 bundle];
-  if (v5)
+  file = [v49 file];
+  bundle = [v49 bundle];
+  if (text)
   {
-    if (v48)
+    if (englishText)
     {
-      v43 = [v48 isEqualToString:v5] ^ 1;
+      v43 = [englishText isEqualToString:text] ^ 1;
     }
 
     else
@@ -216,14 +216,14 @@
       v43 = 0;
     }
 
-    if ([v5 length] >= 0x29)
+    if ([text length] >= 0x29)
     {
-      v7 = [v5 substringWithRange:{0, 40}];
+      v7 = [text substringWithRange:{0, 40}];
 
-      v5 = [v7 stringByAppendingString:@"…"];
+      text = [v7 stringByAppendingString:@"…"];
     }
 
-    v45 = [NSString stringWithFormat:@" %@", v5];
+    v45 = [NSString stringWithFormat:@" %@", text];
 
     v8 = [[NSMutableAttributedString alloc] initWithString:&stru_85F8];
     v9 = objc_alloc_init(NSMutableParagraphStyle);
@@ -231,10 +231,10 @@
     [v9 setLineHeightMultiple:1.0];
     [v9 setParagraphSpacingBefore:0.0];
     [v9 setMaximumLineHeight:8.0];
-    v44 = [v46 hasSuffix:@"axbundle"];
+    v44 = [bundle hasSuffix:@"axbundle"];
     if ([v47 length])
     {
-      v10 = v6;
+      v10 = file;
       v11 = [v8 length];
       v12 = [NSAttributedString alloc];
       v13 = [NSString stringWithFormat:@"[%@]", v47];
@@ -244,18 +244,18 @@
       v15 = +[UIColor whiteColor];
       v16 = ([v8 length] - v11);
       v17 = v11;
-      v6 = v10;
+      file = v10;
       [v8 addAttribute:NSForegroundColorAttributeName value:v15 range:{v17, v16}];
     }
 
     if ([v45 length])
     {
       v18 = +[AXSettings sharedInstance];
-      v19 = [v18 localizationQACaptionShowLocalizedString];
+      localizationQACaptionShowLocalizedString = [v18 localizationQACaptionShowLocalizedString];
 
-      if (v19)
+      if (localizationQACaptionShowLocalizedString)
       {
-        v42 = v6;
+        v42 = file;
         if (v44)
         {
           +[UIColor greenColor];
@@ -271,28 +271,28 @@
         [v8 appendAttributedString:v22];
 
         [v8 addAttribute:NSForegroundColorAttributeName value:v20 range:{v21, objc_msgSend(v8, "length") - v21}];
-        v6 = v42;
+        file = v42;
       }
     }
 
     if (v43)
     {
       v23 = +[AXSettings sharedInstance];
-      v24 = [v23 localizationQACaptionShowUSString];
+      localizationQACaptionShowUSString = [v23 localizationQACaptionShowUSString];
 
-      if (v24)
+      if (localizationQACaptionShowUSString)
       {
         v25 = [v8 length];
         v26 = [NSAttributedString alloc];
-        [NSString stringWithFormat:@" ¦ %@", v48];
-        v28 = v27 = v6;
+        [NSString stringWithFormat:@" ¦ %@", englishText];
+        v28 = v27 = file;
         v29 = [v26 initWithString:v28];
         [v8 appendAttributedString:v29];
 
         v30 = +[UIColor cyanColor];
         [v8 addAttribute:NSForegroundColorAttributeName value:v30 range:{v25, objc_msgSend(v8, "length") - v25}];
 
-        v6 = v27;
+        file = v27;
       }
     }
 
@@ -306,16 +306,16 @@
       [v8 addAttribute:NSForegroundColorAttributeName value:v33 range:{v31, objc_msgSend(v8, "length") - v31}];
     }
 
-    if ([v6 length])
+    if ([file length])
     {
       v34 = +[AXSettings sharedInstance];
-      v35 = [v34 localizationQACaptionShowFilePath];
+      localizationQACaptionShowFilePath = [v34 localizationQACaptionShowFilePath];
 
-      if (v35)
+      if (localizationQACaptionShowFilePath)
       {
         v36 = [v8 length];
         v37 = [NSAttributedString alloc];
-        v38 = [NSString stringWithFormat:@"\n%@.strings:%@", v6, v46];
+        v38 = [NSString stringWithFormat:@"\n%@.strings:%@", file, bundle];
         v39 = [v37 initWithString:v38];
         [v8 appendAttributedString:v39];
 
@@ -325,8 +325,8 @@
     }
 
     [v8 addAttribute:NSParagraphStyleAttributeName value:v9 range:{0, objc_msgSend(v8, "length")}];
-    v41 = [(AXLocalizationCaptionViewController *)self captionPanelText];
-    [v41 setAttributedText:v8];
+    captionPanelText = [(AXLocalizationCaptionViewController *)self captionPanelText];
+    [captionPanelText setAttributedText:v8];
 
     [(AXLocalizationCaptionViewController *)self _updateNumeratorDenominator];
     [(AXLocalizationCaptionViewController *)self _processNextTextDisplayTimer];
@@ -351,12 +351,12 @@
   [(UILabel *)stringCountLabelDenominator setFrame:5.0, 14.0];
 }
 
-- (void)showString:(id)a3
+- (void)showString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v6 = +[NSMutableArray array];
   v5 = objc_opt_new();
-  [v5 setText:v4];
+  [v5 setText:stringCopy];
 
   [v6 addObject:v5];
   [(AXLocalizationCaptionViewController *)self updateText:v6];
@@ -376,16 +376,16 @@
   }
 }
 
-- (void)updateText:(id)a3
+- (void)updateText:(id)text
 {
-  v6 = a3;
-  if ([v6 count])
+  textCopy = text;
+  if ([textCopy count])
   {
-    objc_storeStrong(&self->_packages, a3);
+    objc_storeStrong(&self->_packages, text);
     [(AXDispatchTimer *)self->_changeDisplayTimer cancel];
     self->_displayedPackage = 0;
-    v5 = [(AXLocalizationCaptionViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(AXLocalizationCaptionViewController *)self view];
+    [view setNeedsLayout];
 
     [(AXLocalizationCaptionViewController *)self _processNextTextDisplayTimer];
     [(AXLocalizationCaptionViewController *)self _updateTextDisplay];
@@ -394,13 +394,13 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(AXLocalizationCaptionViewController *)self view];
-  [v3 frame];
+  view = [(AXLocalizationCaptionViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(AXLocalizationCaptionViewController *)self backgroundView];
-  [v8 setFrame:{0.0, v7 + -28.0, v5, 28.0}];
+  backgroundView = [(AXLocalizationCaptionViewController *)self backgroundView];
+  [backgroundView setFrame:{0.0, v7 + -28.0, v5, 28.0}];
 
   v9 = [(NSArray *)self->_packages count];
   v10 = v9 < 2;
@@ -416,15 +416,15 @@
 
   [(UILabel *)self->_stringCountLabelNumerator setHidden:v10];
   [(UILabel *)self->_stringCountLabelDenominator setHidden:v10];
-  v12 = [(AXLocalizationCaptionViewController *)self captionPanelText];
-  [v12 frame];
+  captionPanelText = [(AXLocalizationCaptionViewController *)self captionPanelText];
+  [captionPanelText frame];
 
-  v13 = [(AXLocalizationCaptionViewController *)self captionPanelText];
-  [v13 setFrame:{v11, 0.0, v5 + -25.0, 28.0}];
+  captionPanelText2 = [(AXLocalizationCaptionViewController *)self captionPanelText];
+  [captionPanelText2 setFrame:{v11, 0.0, v5 + -25.0, 28.0}];
 
   [(AXLocCaptionPanelUILockButton *)self->_uiLockButton setFrame:v5 + -25.0, 4.0, 20.0, 20.0];
-  v14 = [(AXLocalizationCaptionViewController *)self lineView];
-  [v14 setFrame:{0.0, v7 + -28.25, v5, 0.25}];
+  lineView = [(AXLocalizationCaptionViewController *)self lineView];
+  [lineView setFrame:{0.0, v7 + -28.25, v5, 0.25}];
 }
 
 - (AXLocalizationCaptionViewControllerDelegate)delegate

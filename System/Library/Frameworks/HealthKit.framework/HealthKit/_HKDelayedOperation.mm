@@ -1,36 +1,36 @@
 @interface _HKDelayedOperation
-- (_HKDelayedOperation)initWithMode:(int64_t)a3 clock:(int64_t)a4 queue:(id)a5 delay:(double)a6 block:(id)a7;
+- (_HKDelayedOperation)initWithMode:(int64_t)mode clock:(int64_t)clock queue:(id)queue delay:(double)delay block:(id)block;
 - (void)_queue_executeBlockIfScheduled;
 - (void)disableLogging;
-- (void)enableLoggingWithName:(id)a3 category:(id)a4;
-- (void)executeWithDelay:(double)a3;
+- (void)enableLoggingWithName:(id)name category:(id)category;
+- (void)executeWithDelay:(double)delay;
 - (void)invalidate;
 @end
 
 @implementation _HKDelayedOperation
 
-- (_HKDelayedOperation)initWithMode:(int64_t)a3 clock:(int64_t)a4 queue:(id)a5 delay:(double)a6 block:(id)a7
+- (_HKDelayedOperation)initWithMode:(int64_t)mode clock:(int64_t)clock queue:(id)queue delay:(double)delay block:(id)block
 {
-  v13 = a5;
-  v14 = a7;
+  queueCopy = queue;
+  blockCopy = block;
   v25.receiver = self;
   v25.super_class = _HKDelayedOperation;
   v15 = [(_HKDelayedOperation *)&v25 init];
   if (v15)
   {
-    v16 = _Block_copy(v14);
+    v16 = _Block_copy(blockCopy);
     v17 = *(v15 + 1);
     *(v15 + 1) = v16;
 
-    objc_storeStrong(v15 + 2, a5);
-    *(v15 + 3) = a3;
-    *(v15 + 4) = a4;
+    objc_storeStrong(v15 + 2, queue);
+    *(v15 + 3) = mode;
+    *(v15 + 4) = clock;
     *(v15 + 7) = 0;
     v18 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, *(v15 + 2));
     v19 = *(v15 + 5);
     *(v15 + 5) = v18;
 
-    *(v15 + 6) = a6;
+    *(v15 + 6) = delay;
     objc_initWeak(&location, v15);
     v20 = *(v15 + 5);
     v22[0] = MEMORY[0x1E69E9820];
@@ -47,7 +47,7 @@
   return v15;
 }
 
-- (void)executeWithDelay:(double)a3
+- (void)executeWithDelay:(double)delay
 {
   v31 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_queue);
@@ -60,7 +60,7 @@
       lastExecution = self->_lastExecution;
     }
 
-    v8 = lastExecution + a3;
+    v8 = lastExecution + delay;
     v9 = v8 - v7;
     if (v8 - v7 <= 0.0)
     {
@@ -167,19 +167,19 @@
   dispatch_async(queue, block);
 }
 
-- (void)enableLoggingWithName:(id)a3 category:(id)a4
+- (void)enableLoggingWithName:(id)name category:(id)category
 {
-  v6 = a4;
+  categoryCopy = category;
   queue = self->_queue;
-  v8 = a3;
+  nameCopy = name;
   dispatch_assert_queue_V2(queue);
-  v9 = [v8 copy];
+  v9 = [nameCopy copy];
 
   loggingName = self->_loggingName;
   self->_loggingName = v9;
 
   loggingCategory = self->_loggingCategory;
-  self->_loggingCategory = v6;
+  self->_loggingCategory = categoryCopy;
 }
 
 - (void)disableLogging

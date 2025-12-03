@@ -1,9 +1,9 @@
 @interface _LABKMatchOperation
 - (BKMatchOperationDelegate)delegate;
-- (void)matchOperation:(id)a3 failedWithReason:(int64_t)a4;
-- (void)matchOperation:(id)a3 matchedWithResult:(id)a4;
-- (void)matchOperation:(id)a3 presenceDetectedInLockout:(int64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)matchOperation:(id)operation failedWithReason:(int64_t)reason;
+- (void)matchOperation:(id)operation matchedWithResult:(id)result;
+- (void)matchOperation:(id)operation presenceDetectedInLockout:(int64_t)lockout;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _LABKMatchOperation
@@ -12,18 +12,18 @@
 {
   v4.receiver = self;
   v4.super_class = _LABKMatchOperation;
-  v2 = [(_LABKOperation *)&v4 delegate];
+  delegate = [(_LABKOperation *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   v13 = NSStringFromSelector(sel_biometricMethodResult);
-  v14 = [v10 isEqualToString:v13];
+  v14 = [pathCopy isEqualToString:v13];
 
   if (v14)
   {
@@ -37,52 +37,52 @@
 
   v15.receiver = self;
   v15.super_class = _LABKMatchOperation;
-  [(_LABKOperation *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(_LABKOperation *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 }
 
-- (void)matchOperation:(id)a3 matchedWithResult:(id)a4
+- (void)matchOperation:(id)operation matchedWithResult:(id)result
 {
-  v10 = a4;
-  v7 = a3;
-  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %@", v7, v10];
+  resultCopy = result;
+  operationCopy = operation;
+  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %@", operationCopy, resultCopy];
 
-  v8 = [(_LABKMatchOperation *)self delegate];
+  delegate = [(_LABKMatchOperation *)self delegate];
   LOBYTE(a2) = objc_opt_respondsToSelector();
 
   if (a2)
   {
-    v9 = [(_LABKMatchOperation *)self delegate];
-    [v9 matchOperation:self matchedWithResult:v10];
+    delegate2 = [(_LABKMatchOperation *)self delegate];
+    [delegate2 matchOperation:self matchedWithResult:resultCopy];
   }
 }
 
-- (void)matchOperation:(id)a3 presenceDetectedInLockout:(int64_t)a4
+- (void)matchOperation:(id)operation presenceDetectedInLockout:(int64_t)lockout
 {
-  v7 = a3;
-  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %d", v7, a4];
+  operationCopy = operation;
+  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %d", operationCopy, lockout];
 
-  v8 = [(_LABKMatchOperation *)self delegate];
+  delegate = [(_LABKMatchOperation *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(_LABKMatchOperation *)self delegate];
-    [v10 matchOperation:self presenceDetectedInLockout:a4];
+    delegate2 = [(_LABKMatchOperation *)self delegate];
+    [delegate2 matchOperation:self presenceDetectedInLockout:lockout];
   }
 }
 
-- (void)matchOperation:(id)a3 failedWithReason:(int64_t)a4
+- (void)matchOperation:(id)operation failedWithReason:(int64_t)reason
 {
-  v7 = a3;
-  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %d", v7, a4];
+  operationCopy = operation;
+  [_LABKLog logClass:objc_opt_class() selector:a2 message:@"%@, %d", operationCopy, reason];
 
-  v8 = [(_LABKMatchOperation *)self delegate];
+  delegate = [(_LABKMatchOperation *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(_LABKMatchOperation *)self delegate];
-    [v10 matchOperation:self failedWithReason:a4];
+    delegate2 = [(_LABKMatchOperation *)self delegate];
+    [delegate2 matchOperation:self failedWithReason:reason];
   }
 }
 

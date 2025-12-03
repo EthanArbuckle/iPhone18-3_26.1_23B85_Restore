@@ -1,12 +1,12 @@
 @interface PKEncryptedPushProvisioningTarget
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEncryptedProvisioningTarget:(id)a3;
-- (PKEncryptedPushProvisioningTarget)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEncryptedProvisioningTarget:(id)target;
+- (PKEncryptedPushProvisioningTarget)initWithCoder:(id)coder;
 - (id)asWebServiceDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKEncryptedPushProvisioningTarget
@@ -14,8 +14,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(NSData *)self->_publicKeyHash hexEncoding];
-  [v3 appendFormat:@"publicKeyHash: '%@'; ", v4];
+  hexEncoding = [(NSData *)self->_publicKeyHash hexEncoding];
+  [v3 appendFormat:@"publicKeyHash: '%@'; ", hexEncoding];
 
   v5 = [(NSData *)self->_ephemeralPublicKey base64EncodedStringWithOptions:0];
   [v3 appendFormat:@"ephemeralPublicKey: '%@'; ", v5];
@@ -34,34 +34,34 @@
   return v7;
 }
 
-- (PKEncryptedPushProvisioningTarget)initWithCoder:(id)a3
+- (PKEncryptedPushProvisioningTarget)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = PKEncryptedPushProvisioningTarget;
   v5 = [(PKEncryptedPushProvisioningTarget *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyHash"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicKeyHash"];
     publicKeyHash = v5->_publicKeyHash;
     v5->_publicKeyHash = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralPublicKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ephemeralPublicKey"];
     ephemeralPublicKey = v5->_ephemeralPublicKey;
     v5->_ephemeralPublicKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"encryptedProvisioningTarget"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encryptedProvisioningTarget"];
     data = v5->_data;
     v5->_data = v10;
 
-    v5->_source = [v4 decodeIntegerForKey:@"source"];
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v5->_targetDevice = [v4 decodeIntegerForKey:@"targetDevice"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"verificationCode"];
+    v5->_source = [coderCopy decodeIntegerForKey:@"source"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v5->_targetDevice = [coderCopy decodeIntegerForKey:@"targetDevice"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verificationCode"];
     verificationCode = v5->_verificationCode;
     v5->_verificationCode = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondarySource"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondarySource"];
     secondarySource = v5->_secondarySource;
     v5->_secondarySource = v14;
   }
@@ -69,47 +69,47 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   publicKeyHash = self->_publicKeyHash;
-  v5 = a3;
-  [v5 encodeObject:publicKeyHash forKey:@"publicKeyHash"];
-  [v5 encodeObject:self->_ephemeralPublicKey forKey:@"ephemeralPublicKey"];
-  [v5 encodeObject:self->_data forKey:@"encryptedProvisioningTarget"];
-  [v5 encodeInteger:self->_source forKey:@"source"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
-  [v5 encodeInteger:self->_targetDevice forKey:@"targetDevice"];
-  [v5 encodeObject:self->_verificationCode forKey:@"verificationCode"];
-  [v5 encodeObject:self->_secondarySource forKey:@"secondarySource"];
+  coderCopy = coder;
+  [coderCopy encodeObject:publicKeyHash forKey:@"publicKeyHash"];
+  [coderCopy encodeObject:self->_ephemeralPublicKey forKey:@"ephemeralPublicKey"];
+  [coderCopy encodeObject:self->_data forKey:@"encryptedProvisioningTarget"];
+  [coderCopy encodeInteger:self->_source forKey:@"source"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeInteger:self->_targetDevice forKey:@"targetDevice"];
+  [coderCopy encodeObject:self->_verificationCode forKey:@"verificationCode"];
+  [coderCopy encodeObject:self->_secondarySource forKey:@"secondarySource"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKEncryptedPushProvisioningTarget *)self isEqualToEncryptedProvisioningTarget:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKEncryptedPushProvisioningTarget *)self isEqualToEncryptedProvisioningTarget:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToEncryptedProvisioningTarget:(id)a3
+- (BOOL)isEqualToEncryptedProvisioningTarget:(id)target
 {
-  v4 = a3;
-  if (!v4)
+  targetCopy = target;
+  if (!targetCopy)
   {
     goto LABEL_28;
   }
 
   ephemeralPublicKey = self->_ephemeralPublicKey;
-  v6 = v4[1];
+  v6 = targetCopy[1];
   if (ephemeralPublicKey)
   {
     v7 = v6 == 0;
@@ -138,7 +138,7 @@
   }
 
   publicKeyHash = self->_publicKeyHash;
-  v10 = v4[2];
+  v10 = targetCopy[2];
   if (publicKeyHash && v10)
   {
     if (([(NSData *)publicKeyHash isEqual:?]& 1) == 0)
@@ -153,7 +153,7 @@
   }
 
   data = self->_data;
-  v12 = v4[3];
+  v12 = targetCopy[3];
   if (!data || !v12)
   {
     if (data == v12)
@@ -172,12 +172,12 @@ LABEL_28:
   }
 
 LABEL_20:
-  if (self->_status != v4[4] || self->_source != v4[5] || self->_targetDevice != v4[6])
+  if (self->_status != targetCopy[4] || self->_source != targetCopy[5] || self->_targetDevice != targetCopy[6])
   {
     goto LABEL_28;
   }
 
-  v13 = v4[7];
+  v13 = targetCopy[7];
   v14 = self->_verificationCode;
   v15 = v13;
   v16 = v15;
@@ -201,7 +201,7 @@ LABEL_36:
   {
 LABEL_31:
     secondarySource = self->_secondarySource;
-    v20 = v4[8];
+    v20 = targetCopy[8];
     v14 = secondarySource;
     v21 = v20;
     v16 = v21;
@@ -243,18 +243,18 @@ LABEL_29:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_ephemeralPublicKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_ephemeralPublicKey copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSData *)self->_publicKeyHash copyWithZone:a3];
+  v8 = [(NSData *)self->_publicKeyHash copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSData *)self->_data copyWithZone:a3];
+  v10 = [(NSData *)self->_data copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -269,8 +269,8 @@ LABEL_29:
 - (id)asWebServiceDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(NSData *)self->_publicKeyHash hexEncoding];
-  [v3 setObject:v4 forKey:@"publicKeyHash"];
+  hexEncoding = [(NSData *)self->_publicKeyHash hexEncoding];
+  [v3 setObject:hexEncoding forKey:@"publicKeyHash"];
 
   v5 = [(NSData *)self->_ephemeralPublicKey base64EncodedStringWithOptions:0];
   [v3 setObject:v5 forKey:@"ephemeralPublicKey"];

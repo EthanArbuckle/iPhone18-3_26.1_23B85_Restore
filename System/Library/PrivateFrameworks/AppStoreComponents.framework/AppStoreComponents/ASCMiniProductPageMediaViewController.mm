@@ -1,19 +1,19 @@
 @interface ASCMiniProductPageMediaViewController
 + (id)log;
-- (ASCMiniProductPageMediaViewController)initWithScreenshots:(id)a3 selectedIndex:(unint64_t)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (ASCMiniProductPageMediaViewController)initWithScreenshots:(id)screenshots selectedIndex:(unint64_t)index;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (UIEdgeInsets)additionalSafeAreaInsets;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (id)artworkForDisplay;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)adjustEdgeInsets;
-- (void)performFollowUpWork:(id)a3;
+- (void)performFollowUpWork:(id)work;
 - (void)performScreenshotsFetch;
-- (void)screenshotArtwork:(id)a3 didFailFetchWithError:(id)a4 atIndex:(unint64_t)a5;
-- (void)screenshotArtwork:(id)a3 didFetchImage:(id)a4 atIndex:(int64_t)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)screenshotArtwork:(id)artwork didFailFetchWithError:(id)error atIndex:(unint64_t)index;
+- (void)screenshotArtwork:(id)artwork didFetchImage:(id)image atIndex:(int64_t)index;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation ASCMiniProductPageMediaViewController
@@ -37,9 +37,9 @@ uint64_t __44__ASCMiniProductPageMediaViewController_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (ASCMiniProductPageMediaViewController)initWithScreenshots:(id)a3 selectedIndex:(unint64_t)a4
+- (ASCMiniProductPageMediaViewController)initWithScreenshots:(id)screenshots selectedIndex:(unint64_t)index
 {
-  v7 = a3;
+  screenshotsCopy = screenshots;
   v8 = objc_alloc_init(ASCMiniProductPageMediaFlowLayout);
   +[ASCMediaCollectionViewCell minimumLineSpacing];
   [(UICollectionViewFlowLayout *)v8 setMinimumLineSpacing:?];
@@ -47,14 +47,14 @@ uint64_t __44__ASCMiniProductPageMediaViewController_log__block_invoke()
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_screenshots, a3);
+    objc_storeStrong(&v9->_screenshots, screenshots);
     v11 = +[ASCPresenterContext sharedContext];
     context = v10->_context;
     v10->_context = v11;
 
     v13 = objc_alloc(MEMORY[0x277CBEB38]);
-    v14 = [(ASCScreenshots *)v10->_screenshots artwork];
-    v15 = [v13 initWithCapacity:{objc_msgSend(v14, "count")}];
+    artwork = [(ASCScreenshots *)v10->_screenshots artwork];
+    v15 = [v13 initWithCapacity:{objc_msgSend(artwork, "count")}];
     loadedImages = v10->_loadedImages;
     v10->_loadedImages = v15;
 
@@ -62,30 +62,30 @@ uint64_t __44__ASCMiniProductPageMediaViewController_log__block_invoke()
     pendingArtworkPromises = v10->_pendingArtworkPromises;
     v10->_pendingArtworkPromises = v17;
 
-    v10->_selectedIndex = a4;
+    v10->_selectedIndex = index;
     [(ASCMiniProductPageMediaViewController *)v10 setInstallsStandardGestureForInteractiveMovement:0];
-    v19 = [MEMORY[0x277D75348] systemBackgroundColor];
-    v20 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
-    [v20 setBackgroundColor:v19];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    collectionView = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
+    [collectionView setBackgroundColor:systemBackgroundColor];
 
-    v21 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
-    [v21 setAllowsSelection:0];
+    collectionView2 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
+    [collectionView2 setAllowsSelection:0];
 
-    v22 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
-    [v22 setAlwaysBounceHorizontal:1];
+    collectionView3 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
+    [collectionView3 setAlwaysBounceHorizontal:1];
 
     v23 = *MEMORY[0x277D76EB8];
-    v24 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
-    [v24 setDecelerationRate:v23];
+    collectionView4 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
+    [collectionView4 setDecelerationRate:v23];
 
-    v25 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
-    [v25 setShowsHorizontalScrollIndicator:0];
+    collectionView5 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
+    [collectionView5 setShowsHorizontalScrollIndicator:0];
 
-    v26 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
-    [v26 setRemembersLastFocusedIndexPath:1];
+    collectionView6 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
+    [collectionView6 setRemembersLastFocusedIndexPath:1];
 
-    v27 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
-    [v27 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ASCMiniProductPageMediaViewCellIdentifier"];
+    collectionView7 = [(ASCMiniProductPageMediaViewController *)v10 collectionView];
+    [collectionView7 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"ASCMiniProductPageMediaViewCellIdentifier"];
 
     objc_initWeak(&location, v10);
     v28 = MEMORY[0x277D750C8];
@@ -97,8 +97,8 @@ uint64_t __44__ASCMiniProductPageMediaViewController_log__block_invoke()
     v29 = [v28 actionWithHandler:&v36];
     v30 = objc_alloc(MEMORY[0x277D751E0]);
     v31 = [v30 initWithBarButtonSystemItem:24 primaryAction:{v29, v36, v37, v38, v39}];
-    v32 = [(ASCMiniProductPageMediaViewController *)v10 navigationItem];
-    [v32 setRightBarButtonItem:v31];
+    navigationItem = [(ASCMiniProductPageMediaViewController *)v10 navigationItem];
+    [navigationItem setRightBarButtonItem:v31];
 
     v34 = ASCLocalizedString(@"MINI_PRODUCT_PAGE_SCREENSHOT_SHEET_TITLE", v33);
     [(ASCMiniProductPageMediaViewController *)v10 setTitle:v34];
@@ -117,27 +117,27 @@ void __75__ASCMiniProductPageMediaViewController_initWithScreenshots_selectedInd
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v11.receiver = self;
   v11.super_class = ASCMiniProductPageMediaViewController;
-  [(ASCMiniProductPageMediaViewController *)&v11 viewIsAppearing:a3];
+  [(ASCMiniProductPageMediaViewController *)&v11 viewIsAppearing:appearing];
   [(ASCMiniProductPageMediaViewController *)self performScreenshotsFetch];
   if (([(ASCMiniProductPageMediaViewController *)self selectedIndex]& 0x8000000000000000) == 0)
   {
-    v4 = [(ASCMiniProductPageMediaViewController *)self selectedIndex];
-    v5 = [(ASCMiniProductPageMediaViewController *)self screenshots];
-    v6 = [v5 artwork];
-    v7 = [v6 count];
+    selectedIndex = [(ASCMiniProductPageMediaViewController *)self selectedIndex];
+    screenshots = [(ASCMiniProductPageMediaViewController *)self screenshots];
+    artwork = [screenshots artwork];
+    v7 = [artwork count];
 
-    if (v4 < v7)
+    if (selectedIndex < v7)
     {
-      v8 = [(ASCMiniProductPageMediaViewController *)self view];
-      [v8 layoutIfNeeded];
+      view = [(ASCMiniProductPageMediaViewController *)self view];
+      [view layoutIfNeeded];
 
       v9 = [MEMORY[0x277CCAA70] indexPathForItem:-[ASCMiniProductPageMediaViewController selectedIndex](self inSection:{"selectedIndex"), 0}];
-      v10 = [(ASCMiniProductPageMediaViewController *)self collectionView];
-      [v10 scrollToItemAtIndexPath:v9 atScrollPosition:16 animated:0];
+      collectionView = [(ASCMiniProductPageMediaViewController *)self collectionView];
+      [collectionView scrollToItemAtIndexPath:v9 atScrollPosition:16 animated:0];
     }
   }
 }
@@ -157,68 +157,68 @@ void __75__ASCMiniProductPageMediaViewController_initWithScreenshots_selectedInd
 
 - (void)adjustEdgeInsets
 {
-  v3 = [(ASCMiniProductPageMediaViewController *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(ASCMiniProductPageMediaViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v5 = [(ASCMiniProductPageMediaViewController *)self view];
-  v7 = v5;
+  view = [(ASCMiniProductPageMediaViewController *)self view];
+  v7 = view;
   v6 = 8.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v6 = 36.0;
   }
 
-  [v5 setLayoutMargins:{8.0, v6, 8.0, v6}];
+  [view setLayoutMargins:{8.0, v6, 8.0, v6}];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(ASCMiniProductPageMediaViewController *)self collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"ASCMiniProductPageMediaViewCellIdentifier" forIndexPath:v5];
+  pathCopy = path;
+  collectionView = [(ASCMiniProductPageMediaViewController *)self collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"ASCMiniProductPageMediaViewCellIdentifier" forIndexPath:pathCopy];
 
-  v8 = [(ASCMiniProductPageMediaViewController *)self screenshots];
-  v9 = [v8 artwork];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v5, "item")}];
+  screenshots = [(ASCMiniProductPageMediaViewController *)self screenshots];
+  artwork = [screenshots artwork];
+  v10 = [artwork objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-  v11 = [(ASCMiniProductPageMediaViewController *)self loadedImages];
-  v12 = [v11 objectForKeyedSubscript:v5];
+  loadedImages = [(ASCMiniProductPageMediaViewController *)self loadedImages];
+  v12 = [loadedImages objectForKeyedSubscript:pathCopy];
 
   v13 = [ASCScreenshotDisplayConfiguration alloc];
-  v14 = [(ASCMiniProductPageMediaViewController *)self screenshots];
-  v15 = [v14 mediaPlatform];
-  v16 = [v15 deviceCornerRadiusFactor];
-  v17 = [(ASCScreenshotDisplayConfiguration *)v13 initWithDeviceCornerRadiusFactor:v16];
+  screenshots2 = [(ASCMiniProductPageMediaViewController *)self screenshots];
+  mediaPlatform = [screenshots2 mediaPlatform];
+  deviceCornerRadiusFactor = [mediaPlatform deviceCornerRadiusFactor];
+  v17 = [(ASCScreenshotDisplayConfiguration *)v13 initWithDeviceCornerRadiusFactor:deviceCornerRadiusFactor];
 
   [v7 applyArtwork:v10 image:v12 screenshotDisplayConfiguration:v17];
 
   return v7;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(ASCMiniProductPageMediaViewController *)self screenshots:a3];
-  v5 = [v4 artwork];
-  v6 = [v5 count];
+  v4 = [(ASCMiniProductPageMediaViewController *)self screenshots:view];
+  artwork = [v4 artwork];
+  v6 = [artwork count];
 
   return v6;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a5;
-  v7 = [v6 item];
-  v8 = [(ASCMiniProductPageMediaViewController *)self artworkForDisplay];
-  v9 = [v8 count];
+  pathCopy = path;
+  item = [pathCopy item];
+  artworkForDisplay = [(ASCMiniProductPageMediaViewController *)self artworkForDisplay];
+  v9 = [artworkForDisplay count];
 
-  if (v7 >= v9)
+  if (item >= v9)
   {
     v27 = +[ASCMiniProductPageMediaViewController log];
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       v30 = 138543362;
-      v31 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21571A000, v27, OS_LOG_TYPE_INFO, "%{public}@: Ignoring out of bounds screenshot artwork", &v30, 0xCu);
     }
 
@@ -228,20 +228,20 @@ void __75__ASCMiniProductPageMediaViewController_initWithScreenshots_selectedInd
 
   else
   {
-    v10 = [(ASCMiniProductPageMediaViewController *)self artworkForDisplay];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+    artworkForDisplay2 = [(ASCMiniProductPageMediaViewController *)self artworkForDisplay];
+    v11 = [artworkForDisplay2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "item")}];
 
-    v12 = [(ASCMiniProductPageMediaViewController *)self view];
-    [v12 bounds];
+    view = [(ASCMiniProductPageMediaViewController *)self view];
+    [view bounds];
     v14 = v13;
     v16 = v15;
-    v17 = [(ASCMiniProductPageMediaViewController *)self view];
-    [v17 layoutMargins];
+    view2 = [(ASCMiniProductPageMediaViewController *)self view];
+    [view2 layoutMargins];
     v20 = v14 - (v18 + v19);
     v23 = v16 - (v21 + v22);
 
-    v24 = [(ASCMiniProductPageMediaViewController *)self traitCollection];
-    [ASCMediaCollectionViewCell sizeForArtwork:v11 thatFits:v24 usingTraitCollection:v20, v23];
+    traitCollection = [(ASCMiniProductPageMediaViewController *)self traitCollection];
+    [ASCMediaCollectionViewCell sizeForArtwork:v11 thatFits:traitCollection usingTraitCollection:v20, v23];
     v26 = v25;
   }
 
@@ -252,25 +252,25 @@ void __75__ASCMiniProductPageMediaViewController_initWithScreenshots_selectedInd
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(ASCMiniProductPageMediaViewController *)self screenshots];
-  v11 = [v10 artwork];
-  v12 = [v11 count] - 1;
+  layoutCopy = layout;
+  viewCopy = view;
+  screenshots = [(ASCMiniProductPageMediaViewController *)self screenshots];
+  artwork = [screenshots artwork];
+  v12 = [artwork count] - 1;
 
-  v13 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:a5];
-  [(ASCMiniProductPageMediaViewController *)self collectionView:v9 layout:v8 sizeForItemAtIndexPath:v13];
+  v13 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:index];
+  [(ASCMiniProductPageMediaViewController *)self collectionView:viewCopy layout:layoutCopy sizeForItemAtIndexPath:v13];
   v15 = v14;
 
-  v16 = [MEMORY[0x277CCAA70] indexPathForItem:v12 inSection:a5];
-  [(ASCMiniProductPageMediaViewController *)self collectionView:v9 layout:v8 sizeForItemAtIndexPath:v16];
+  v16 = [MEMORY[0x277CCAA70] indexPathForItem:v12 inSection:index];
+  [(ASCMiniProductPageMediaViewController *)self collectionView:viewCopy layout:layoutCopy sizeForItemAtIndexPath:v16];
   v18 = v17;
 
-  [v9 bounds];
+  [viewCopy bounds];
   v20 = (v19 - v15) * 0.5;
-  [v9 bounds];
+  [viewCopy bounds];
   v22 = v21;
 
   v23 = (v22 - v18) * 0.5;
@@ -284,18 +284,18 @@ void __75__ASCMiniProductPageMediaViewController_initWithScreenshots_selectedInd
   return result;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
-  [v4 contentOffset];
+  deceleratingCopy = decelerating;
+  [deceleratingCopy contentOffset];
   v6 = v5;
-  [v4 bounds];
+  [deceleratingCopy bounds];
   v8 = v6 + v7 * 0.5;
-  [v4 bounds];
+  [deceleratingCopy bounds];
   v10 = v9;
 
-  v11 = [(ASCMiniProductPageMediaViewController *)self collectionView];
-  v13 = [v11 indexPathForItemAtPoint:{v8, v10 * 0.5}];
+  collectionView = [(ASCMiniProductPageMediaViewController *)self collectionView];
+  v13 = [collectionView indexPathForItemAtPoint:{v8, v10 * 0.5}];
 
   v12 = v13;
   if (v13)
@@ -307,25 +307,25 @@ void __75__ASCMiniProductPageMediaViewController_initWithScreenshots_selectedInd
 
 - (id)artworkForDisplay
 {
-  v2 = [(ASCMiniProductPageMediaViewController *)self screenshots];
-  v3 = [__ASCLayoutProxy artworkFrom:v2 and:0];
+  screenshots = [(ASCMiniProductPageMediaViewController *)self screenshots];
+  v3 = [__ASCLayoutProxy artworkFrom:screenshots and:0];
 
   return v3;
 }
 
 - (void)performScreenshotsFetch
 {
-  v3 = [(ASCMiniProductPageMediaViewController *)self artworkForDisplay];
-  v4 = [(ASCMiniProductPageMediaViewController *)self traitCollection];
-  v5 = [v4 userInterfaceIdiom];
+  artworkForDisplay = [(ASCMiniProductPageMediaViewController *)self artworkForDisplay];
+  traitCollection = [(ASCMiniProductPageMediaViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__ASCMiniProductPageMediaViewController_performScreenshotsFetch__block_invoke;
   v6[3] = &unk_2781CC870;
   v6[4] = self;
-  v6[5] = v5;
-  [v3 enumerateObjectsUsingBlock:v6];
+  v6[5] = userInterfaceIdiom;
+  [artworkForDisplay enumerateObjectsUsingBlock:v6];
 }
 
 void __64__ASCMiniProductPageMediaViewController_performScreenshotsFetch__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -417,10 +417,10 @@ void __64__ASCMiniProductPageMediaViewController_performScreenshotsFetch__block_
   [WeakRetained screenshotArtwork:*(a1 + 32) didFailFetchWithError:v3 atIndex:*(a1 + 48)];
 }
 
-- (void)performFollowUpWork:(id)a3
+- (void)performFollowUpWork:(id)work
 {
   v3 = MEMORY[0x277CCACC8];
-  block = a3;
+  block = work;
   if ([v3 isMainThread])
   {
     block[2]();
@@ -432,20 +432,20 @@ void __64__ASCMiniProductPageMediaViewController_performScreenshotsFetch__block_
   }
 }
 
-- (void)screenshotArtwork:(id)a3 didFetchImage:(id)a4 atIndex:(int64_t)a5
+- (void)screenshotArtwork:(id)artwork didFetchImage:(id)image atIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
+  artworkCopy = artwork;
+  imageCopy = image;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__ASCMiniProductPageMediaViewController_screenshotArtwork_didFetchImage_atIndex___block_invoke;
   v12[3] = &unk_2781CC2E8;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v15 = a5;
-  v10 = v9;
-  v11 = v8;
+  v13 = artworkCopy;
+  v14 = imageCopy;
+  indexCopy = index;
+  v10 = imageCopy;
+  v11 = artworkCopy;
   [(ASCMiniProductPageMediaViewController *)self performFollowUpWork:v12];
 }
 
@@ -518,17 +518,17 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)screenshotArtwork:(id)a3 didFailFetchWithError:(id)a4 atIndex:(unint64_t)a5
+- (void)screenshotArtwork:(id)artwork didFailFetchWithError:(id)error atIndex:(unint64_t)index
 {
-  v7 = a3;
+  artworkCopy = artwork;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __89__ASCMiniProductPageMediaViewController_screenshotArtwork_didFailFetchWithError_atIndex___block_invoke;
   v9[3] = &unk_2781CC310;
-  v10 = v7;
-  v11 = a5;
+  v10 = artworkCopy;
+  indexCopy = index;
   v9[4] = self;
-  v8 = v7;
+  v8 = artworkCopy;
   [(ASCMiniProductPageMediaViewController *)self performFollowUpWork:v9];
 }
 

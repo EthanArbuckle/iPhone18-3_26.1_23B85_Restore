@@ -14,12 +14,12 @@
     v5 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [v4 archiverContext];
+      archiverContext = [v4 archiverContext];
       v7 = objc_opt_class();
       v8 = v7;
       v9 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v19 = v6;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v7;
       v22 = 2112;
@@ -47,12 +47,12 @@
     v5 = __CPLGenericOSLogDomain();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      v6 = [v4 archiverContext];
+      archiverContext = [v4 archiverContext];
       v7 = objc_opt_class();
       v8 = v7;
       v9 = NSStringFromSelector(a2);
       *buf = 138413058;
-      v19 = v6;
+      v19 = archiverContext;
       v20 = 2112;
       v21 = v7;
       v22 = 2112;

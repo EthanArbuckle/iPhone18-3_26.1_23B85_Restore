@@ -1,17 +1,17 @@
 @interface GDSQLEntityIterator
-- (GDSQLEntityIterator)initWithColumns:(unint64_t)a3 statement:(id)a4;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (GDSQLEntityIterator)initWithColumns:(unint64_t)columns statement:(id)statement;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 @end
 
 @implementation GDSQLEntityIterator
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (!a3->var0)
+  if (!state->var0)
   {
-    a3->var0 = 1;
-    a3->var1 = &self->_innerIterator;
-    a3->var2 = self;
+    state->var0 = 1;
+    state->var1 = &self->_innerIterator;
+    state->var2 = self;
   }
 
   innerIterator = self->_innerIterator;
@@ -34,8 +34,8 @@
           }
         }
 
-        v9 = [(GDLazyGraphTripleRow *)lazyTripleRow subject];
-        v10 = [v9 isEqualToString:innerIterator->_iterateSubjectValue];
+        subject = [(GDLazyGraphTripleRow *)lazyTripleRow subject];
+        v10 = [subject isEqualToString:innerIterator->_iterateSubjectValue];
 
         if (!v10)
         {
@@ -54,9 +54,9 @@
     v11 = innerIterator->_lazyTripleRow;
     if (!v11 || (v12 = v11->_cursor) == 0 || !v12->_done)
     {
-      v13 = [(GDLazyGraphTripleRow *)v11 subject];
+      subject2 = [(GDLazyGraphTripleRow *)v11 subject];
       iterateSubjectValue = innerIterator->_iterateSubjectValue;
-      innerIterator->_iterateSubjectValue = v13;
+      innerIterator->_iterateSubjectValue = subject2;
     }
   }
 
@@ -64,16 +64,16 @@
   return !v15 || (v16 = v15->_cursor) == 0 || !v16->_done;
 }
 
-- (GDSQLEntityIterator)initWithColumns:(unint64_t)a3 statement:(id)a4
+- (GDSQLEntityIterator)initWithColumns:(unint64_t)columns statement:(id)statement
 {
-  v4 = a3;
-  v6 = a4;
+  columnsCopy = columns;
+  statementCopy = statement;
   v14.receiver = self;
   v14.super_class = GDSQLEntityIterator;
   v7 = [(GDSQLEntityIterator *)&v14 init];
   if (v7)
   {
-    v8 = sub_1ABF081D8([GDLazyGraphTripleRowCursor alloc], v4, v6);
+    v8 = sub_1ABF081D8([GDLazyGraphTripleRowCursor alloc], columnsCopy, statementCopy);
     v9 = sub_1ABF07EF4([GDLazyGraphTripleRow alloc], v8, 0);
     lazyTripleRow = v7->_lazyTripleRow;
     v7->_lazyTripleRow = v9;

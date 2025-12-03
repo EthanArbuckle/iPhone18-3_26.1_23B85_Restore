@@ -1,9 +1,9 @@
 @interface WBSStartPageSuggestionsProviderBroadcaster
 - (WBSStartPageSuggestionsProvider)suggestionsProvider;
-- (WBSStartPageSuggestionsProviderBroadcaster)initWithSuggestionsProvider:(id)a3;
+- (WBSStartPageSuggestionsProviderBroadcaster)initWithSuggestionsProvider:(id)provider;
 - (id)createSuggestionProviderProxy;
-- (void)startPageSuggestionsProvider:(id)a3 didUpdateSuggestions:(id)a4;
-- (void)startPageSuggestionsProvider:(id)a3 forceReloadSuggestions:(id)a4;
+- (void)startPageSuggestionsProvider:(id)provider didUpdateSuggestions:(id)suggestions;
+- (void)startPageSuggestionsProvider:(id)provider forceReloadSuggestions:(id)suggestions;
 @end
 
 @implementation WBSStartPageSuggestionsProviderBroadcaster
@@ -24,21 +24,21 @@
   return WeakRetained;
 }
 
-- (WBSStartPageSuggestionsProviderBroadcaster)initWithSuggestionsProvider:(id)a3
+- (WBSStartPageSuggestionsProviderBroadcaster)initWithSuggestionsProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = WBSStartPageSuggestionsProviderBroadcaster;
   v5 = [(WBSStartPageSuggestionsProviderBroadcaster *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_suggestionsProvider, v4);
+    objc_storeWeak(&v5->_suggestionsProvider, providerCopy);
     v6->_providerSupportsAttributionViews = objc_opt_respondsToSelector() & 1;
-    [v4 setSuggestionsProviderDelegate:v6];
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [providerCopy setSuggestionsProviderDelegate:v6];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     proxies = v6->_proxies;
-    v6->_proxies = v7;
+    v6->_proxies = weakObjectsHashTable;
 
     v9 = v6;
   }
@@ -46,10 +46,10 @@
   return v6;
 }
 
-- (void)startPageSuggestionsProvider:(id)a3 didUpdateSuggestions:(id)a4
+- (void)startPageSuggestionsProvider:(id)provider didUpdateSuggestions:(id)suggestions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  suggestionsCopy = suggestions;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -70,8 +70,8 @@
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        v12 = [v11 suggestionsProviderDelegate];
-        [v12 startPageSuggestionsProvider:v11 didUpdateSuggestions:v5];
+        suggestionsProviderDelegate = [v11 suggestionsProviderDelegate];
+        [suggestionsProviderDelegate startPageSuggestionsProvider:v11 didUpdateSuggestions:suggestionsCopy];
       }
 
       v8 = [(NSHashTable *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -81,10 +81,10 @@
   }
 }
 
-- (void)startPageSuggestionsProvider:(id)a3 forceReloadSuggestions:(id)a4
+- (void)startPageSuggestionsProvider:(id)provider forceReloadSuggestions:(id)suggestions
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  suggestionsCopy = suggestions;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -105,8 +105,8 @@
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
-        v12 = [v11 suggestionsProviderDelegate];
-        [v12 startPageSuggestionsProvider:v11 forceReloadSuggestions:v5];
+        suggestionsProviderDelegate = [v11 suggestionsProviderDelegate];
+        [suggestionsProviderDelegate startPageSuggestionsProvider:v11 forceReloadSuggestions:suggestionsCopy];
       }
 
       v8 = [(NSHashTable *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];

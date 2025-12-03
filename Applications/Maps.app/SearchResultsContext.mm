@@ -3,8 +3,8 @@
 - (_TtC4Maps20SearchResultsContext)init;
 - (id)desiredCards;
 - (id)personalizedItemSources;
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4;
-- (void)prepareToEnterStackInChromeViewController:(id)a3;
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation;
+- (void)prepareToEnterStackInChromeViewController:(id)controller;
 - (void)searchRedoFloatingControlPressed;
 @end
 
@@ -24,19 +24,19 @@
   return result;
 }
 
-- (void)prepareToEnterStackInChromeViewController:(id)a3
+- (void)prepareToEnterStackInChromeViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001815C4(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1001815C4(controllerCopy);
 }
 
-- (void)leaveStackInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)leaveStackInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1001817C8(v6, v7);
+  controllerCopy = controller;
+  animationCopy = animation;
+  selfCopy = self;
+  sub_1001817C8(controllerCopy, animationCopy);
 }
 
 - (id)desiredCards
@@ -57,7 +57,7 @@
 
 - (id)personalizedItemSources
 {
-  v2 = self;
+  selfCopy = self;
   sub_100181BFC();
 
   sub_1000E2690();
@@ -68,7 +68,7 @@
 
 - (void)searchRedoFloatingControlPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_100181E48();
 }
 

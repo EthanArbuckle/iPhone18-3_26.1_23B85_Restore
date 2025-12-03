@@ -1,68 +1,68 @@
 @interface THWViewportRep
 - (BOOL)allowSelectionPopover;
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)centeredInScrollViewForScrollableCanvasController:(id)a3;
-- (BOOL)deferViewCreationForScrollableCanvasController:(id)a3;
-- (BOOL)expandedShouldDismissOnChangeFromSizeClassPairWithController:(id)a3 flowMode:(BOOL)a4;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)centeredInScrollViewForScrollableCanvasController:(id)controller;
+- (BOOL)deferViewCreationForScrollableCanvasController:(id)controller;
+- (BOOL)expandedShouldDismissOnChangeFromSizeClassPairWithController:(id)controller flowMode:(BOOL)mode;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isExpanded;
 - (BOOL)isFreeTransformInProgress;
-- (BOOL)isRelatedCanvasScrollingForscrollableCanvasController:(id)a3;
-- (BOOL)scrollableCanvasController:(id)a3 allowsEditMenuForRep:(id)a4;
-- (BOOL)scrollableCanvasController:(id)a3 allowsHyperlinkWithGesture:(id)a4 forRep:(id)a5;
-- (BOOL)scrollableCanvasController:(id)a3 shouldBeginEditingTHWPRep:(id)a4 withGesture:(id)a5;
+- (BOOL)isRelatedCanvasScrollingForscrollableCanvasController:(id)controller;
+- (BOOL)scrollableCanvasController:(id)controller allowsEditMenuForRep:(id)rep;
+- (BOOL)scrollableCanvasController:(id)controller allowsHyperlinkWithGesture:(id)gesture forRep:(id)rep;
+- (BOOL)scrollableCanvasController:(id)controller shouldBeginEditingTHWPRep:(id)rep withGesture:(id)gesture;
 - (BOOL)shouldAnimateToFit;
 - (BOOL)wantsPressAction;
 - (BOOL)wantsPressAnimation;
 - (CALayer)pressableAnimationLayer;
 - (CGAffineTransform)freeTransform;
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (CGRect)ftcTargetFrame;
 - (CGRect)rectForCompletion;
-- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)a3;
+- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)controller;
 - (THAnimationController)animationController;
 - (THWPressableRepGestureTargetHandler)pressableHandler;
-- (THWViewportRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)a3;
-- (double)contentsScaleForScrollableCanvasController:(id)a3;
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
-- (double)scrollableCanvasController:(id)a3 maxViewScaleForFrameSize:(CGSize)a4;
-- (double)scrollableCanvasController:(id)a3 viewScaleForFrameSize:(CGSize)a4 withScale:(double)a5;
+- (THWViewportRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)controller;
+- (double)contentsScaleForScrollableCanvasController:(id)controller;
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
+- (double)scrollableCanvasController:(id)controller maxViewScaleForFrameSize:(CGSize)size;
+- (double)scrollableCanvasController:(id)controller viewScaleForFrameSize:(CGSize)size withScale:(double)scale;
 - (id)animationLayer;
-- (id)bookNavigatorForScrollableCanvasController:(id)a3;
-- (id)documentNavigatorForScrollableCanvasController:(id)a3;
+- (id)bookNavigatorForScrollableCanvasController:(id)controller;
+- (id)documentNavigatorForScrollableCanvasController:(id)controller;
 - (id)expandedBackgroundColor;
-- (id)maskLayerForScrollableCanvasController:(id)a3;
-- (id)p_innerMaskLayerWithBounds:(CGRect)a3 path:(CGPath *)a4 fadeSizes:(UIEdgeInsets)a5 maskGroupVerticalInset:(double)a6;
-- (id)p_outerMaskLayerWithFrame:(CGRect)a3 path:(CGPath *)a4;
-- (id)scrollableCanvasController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6;
-- (id)scrollableCanvasController:(id)a3 infosToDisplayForViewport:(CGRect)a4;
-- (id)scrollableCanvasController:(id)a3 primaryTargetForGesture:(id)a4;
+- (id)maskLayerForScrollableCanvasController:(id)controller;
+- (id)p_innerMaskLayerWithBounds:(CGRect)bounds path:(CGPath *)path fadeSizes:(UIEdgeInsets)sizes maskGroupVerticalInset:(double)inset;
+- (id)p_outerMaskLayerWithFrame:(CGRect)frame path:(CGPath *)path;
+- (id)scrollableCanvasController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture;
+- (id)scrollableCanvasController:(id)controller infosToDisplayForViewport:(CGRect)viewport;
+- (id)scrollableCanvasController:(id)controller primaryTargetForGesture:(id)gesture;
 - (id)scrollableCanvasHost;
 - (id)shadowAnimationLayer;
-- (id)strokeLayerForScrollableCanvasController:(id)a3;
+- (id)strokeLayerForScrollableCanvasController:(id)controller;
 - (id)targetLayer;
-- (void)control:(id)a3 repWasAdded:(id)a4;
-- (void)control:(id)a3 repWillBeRemoved:(id)a4;
+- (void)control:(id)control repWasAdded:(id)added;
+- (void)control:(id)control repWillBeRemoved:(id)removed;
 - (void)dealloc;
-- (void)expandedDidTransitionToSize:(CGSize)a3;
-- (void)expandedViewControllerWillPresent:(id)a3;
-- (void)expandedWillAnimateRotationFromSize:(CGSize)a3 toSize:(CGSize)a4 duration:(double)a5;
-- (void)expandedWillTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (void)expandedDidTransitionToSize:(CGSize)size;
+- (void)expandedViewControllerWillPresent:(id)present;
+- (void)expandedWillAnimateRotationFromSize:(CGSize)size toSize:(CGSize)toSize duration:(double)duration;
+- (void)expandedWillTransitionFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (void)freeTransformDidEnd;
 - (void)freeTransformWillBegin;
-- (void)scrollableCanvasController:(id)a3 customizeLayerHost:(id)a4;
+- (void)scrollableCanvasController:(id)controller customizeLayerHost:(id)host;
 - (void)updateChildrenFromLayout;
-- (void)willBeginHandlingGesture:(id)a3;
+- (void)willBeginHandlingGesture:(id)gesture;
 @end
 
 @implementation THWViewportRep
 
-- (THWViewportRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWViewportRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v7.receiver = self;
   v7.super_class = THWViewportRep;
-  v4 = [(THWViewportRep *)&v7 initWithLayout:a3 canvas:a4];
+  v4 = [(THWViewportRep *)&v7 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4 && [-[THWViewportRep layout](v4 "layout")])
   {
@@ -78,8 +78,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(THWViewportRep *)self childReps];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childReps = [(THWViewportRep *)self childReps];
+  v4 = [(NSArray *)childReps countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -91,7 +91,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childReps);
         }
 
         [*(*(&v9 + 1) + 8 * v7) setParentRep:0];
@@ -99,7 +99,7 @@
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [(NSArray *)childReps countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -123,10 +123,10 @@
   {
     objc_opt_class();
     [(THWViewportRep *)self interactiveCanvasController];
-    v3 = [TSUDynamicCast() pressHandlerForPressableReps];
-    if (v3)
+    pressHandlerForPressableReps = [TSUDynamicCast() pressHandlerForPressableReps];
+    if (pressHandlerForPressableReps)
     {
-      v4 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:v3];
+      v4 = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:pressHandlerForPressableReps];
       self->_pressableHandler = v4;
       [(THWPressableRepGestureTargetHandler *)v4 setEnabledOnlyIfWidgetInteractionDisabledOnPage:1];
     }
@@ -135,11 +135,11 @@
   return self->_pressableHandler;
 }
 
-- (void)expandedViewControllerWillPresent:(id)a3
+- (void)expandedViewControllerWillPresent:(id)present
 {
-  v3 = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] interactiveCanvasController];
+  interactiveCanvasController = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] interactiveCanvasController];
 
-  [(THInteractiveCanvasController *)v3 endEditing];
+  [(THInteractiveCanvasController *)interactiveCanvasController endEditing];
 }
 
 - (void)updateChildrenFromLayout
@@ -149,37 +149,37 @@
   [(THWViewportRep *)self setChildReps:v3];
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
   self->_scrollableCanvasController = 0;
   objc_opt_class();
-  v5 = [TSUDynamicCast() scrollableCanvasController];
-  self->_scrollableCanvasController = v5;
-  [(THWScrollableCanvasController *)v5 setDelegate:self];
+  scrollableCanvasController = [TSUDynamicCast() scrollableCanvasController];
+  self->_scrollableCanvasController = scrollableCanvasController;
+  [(THWScrollableCanvasController *)scrollableCanvasController setDelegate:self];
   scrollableCanvasController = self->_scrollableCanvasController;
 
   [(THWScrollableCanvasController *)scrollableCanvasController setUpdateCanvasSizeOnLayout:1];
 }
 
-- (void)control:(id)a3 repWillBeRemoved:(id)a4
+- (void)control:(id)control repWillBeRemoved:(id)removed
 {
-  [(THWScrollableCanvasController *)self->_scrollableCanvasController setDelegate:0, a4];
+  [(THWScrollableCanvasController *)self->_scrollableCanvasController setDelegate:0, removed];
 
   self->_scrollableCanvasController = 0;
 }
 
 - (CALayer)pressableAnimationLayer
 {
-  v2 = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] scrollView];
+  scrollView = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] scrollView];
 
-  return [(TSKScrollView *)v2 layer];
+  return [(TSKScrollView *)scrollView layer];
 }
 
 - (BOOL)wantsPressAnimation
 {
-  v2 = [(THWViewportRep *)self pressableHandler];
+  pressableHandler = [(THWViewportRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v2 widgetInteractionDisabledOnPage];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler widgetInteractionDisabledOnPage];
 }
 
 - (BOOL)wantsPressAction
@@ -192,46 +192,46 @@
   return v3;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  if ([(THWFreeTransformableRepGestureTargetHandler *)[(THWViewportRep *)self freeTransformableHandler] canHandleGesture:a3])
+  if ([(THWFreeTransformableRepGestureTargetHandler *)[(THWViewportRep *)self freeTransformableHandler] canHandleGesture:gesture])
   {
     return 1;
   }
 
-  v6 = [(THWViewportRep *)self pressableHandler];
+  pressableHandler = [(THWViewportRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v6 canHandleGesture:a3];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler canHandleGesture:gesture];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  if ([(THWPressableRepGestureTargetHandler *)[(THWViewportRep *)self pressableHandler] canHandleGesture:a3]&& [(THWPressableRepGestureTargetHandler *)[(THWViewportRep *)self pressableHandler] handleGesture:a3])
+  if ([(THWPressableRepGestureTargetHandler *)[(THWViewportRep *)self pressableHandler] canHandleGesture:gesture]&& [(THWPressableRepGestureTargetHandler *)[(THWViewportRep *)self pressableHandler] handleGesture:gesture])
   {
     return 1;
   }
 
-  v6 = [(THWViewportRep *)self freeTransformableHandler];
+  freeTransformableHandler = [(THWViewportRep *)self freeTransformableHandler];
 
-  return [(THWFreeTransformableRepGestureTargetHandler *)v6 handleGesture:a3];
+  return [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler handleGesture:gesture];
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 == TSDFreeTransform)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform)
   {
-    v6 = [(THWViewportRep *)self freeTransformableHandler];
+    freeTransformableHandler = [(THWViewportRep *)self freeTransformableHandler];
 
-    [(THWFreeTransformableRepGestureTargetHandler *)v6 willBeginHandlingGesture:a3];
+    [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler willBeginHandlingGesture:gesture];
   }
 }
 
 - (BOOL)isExpanded
 {
-  v2 = [(THWViewportRep *)self layout];
+  layout = [(THWViewportRep *)self layout];
 
-  return [v2 isExpanded];
+  return [layout isExpanded];
 }
 
 - (BOOL)isFreeTransformInProgress
@@ -245,24 +245,24 @@
 {
   [(CALayer *)[(THWViewportRep *)self pressableAnimationLayer] removeAllAnimations];
   [-[TSKScrollView layer](-[THWScrollableCanvasController scrollView](-[THWViewportRep scrollableCanvasController](self "scrollableCanvasController")];
-  v3 = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] scrollView];
+  scrollView = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] scrollView];
 
-  [(TSKScrollView *)v3 setClipsToBounds:1];
+  [(TSKScrollView *)scrollView setClipsToBounds:1];
 }
 
 - (void)freeTransformDidEnd
 {
   [-[TSKScrollView layer](-[THWScrollableCanvasController scrollView](-[THWViewportRep scrollableCanvasController](self "scrollableCanvasController")];
-  v3 = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] scrollView];
+  scrollView = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] scrollView];
 
-  [(TSKScrollView *)v3 setClipsToBounds:0];
+  [(TSKScrollView *)scrollView setClipsToBounds:0];
 }
 
 - (CGRect)rectForCompletion
 {
-  v2 = [(THWViewportRep *)self layout];
+  layout = [(THWViewportRep *)self layout];
 
-  [v2 frameInParent];
+  [layout frameInParent];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -286,9 +286,9 @@
 {
   if (![(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWViewportRep *)self freeTransformableHandler] ftc] isFreeTransformInProgress]|| (result = [(THWFreeTransformController *)[(THWFreeTransformableRepGestureTargetHandler *)[(THWViewportRep *)self freeTransformableHandler] ftc] freeTransformLayer]) == 0)
   {
-    v4 = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] scrollView];
+    scrollView = [(THWScrollableCanvasController *)[(THWViewportRep *)self scrollableCanvasController] scrollView];
 
-    return [(TSKScrollView *)v4 layer];
+    return [(TSKScrollView *)scrollView layer];
   }
 
   return result;
@@ -359,9 +359,9 @@
 
 - (BOOL)shouldAnimateToFit
 {
-  v2 = [(THWViewportRep *)self layout];
+  layout = [(THWViewportRep *)self layout];
 
-  return [v2 isExpanded];
+  return [layout isExpanded];
 }
 
 - (THAnimationController)animationController
@@ -403,9 +403,9 @@
   }
 }
 
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  width = a4.width;
+  width = toSize.width;
   [objc_msgSend(-[THWViewportRep layout](self layout];
   v7 = v6;
   [-[THWViewportRep info](self "info")];
@@ -421,7 +421,7 @@
   return v12 / v11;
 }
 
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -430,56 +430,56 @@
   return result;
 }
 
-- (void)expandedWillAnimateRotationFromSize:(CGSize)a3 toSize:(CGSize)a4 duration:(double)a5
+- (void)expandedWillAnimateRotationFromSize:(CGSize)size toSize:(CGSize)toSize duration:(double)duration
 {
   [-[THWViewportRep layout](self layout];
   [-[THWViewportRep layout](self "layout")];
-  v6 = [(THWViewportRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWViewportRep *)self interactiveCanvasController];
 
-  [v6 layoutIfNeeded];
+  [interactiveCanvasController layoutIfNeeded];
 }
 
-- (void)expandedWillTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (void)expandedWillTransitionFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  v4 = [(THWViewportRep *)self interactiveCanvasController:a3.width];
+  v4 = [(THWViewportRep *)self interactiveCanvasController:size.width];
 
   [v4 setViewScale:1.0];
 }
 
-- (void)expandedDidTransitionToSize:(CGSize)a3
+- (void)expandedDidTransitionToSize:(CGSize)size
 {
   [-[THWViewportRep layout](self layout];
-  v4 = [(THWViewportRep *)self layout];
+  layout = [(THWViewportRep *)self layout];
 
-  [v4 invalidateChildren];
+  [layout invalidateChildren];
 }
 
-- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)a3
+- (CGSize)sizeOfCanvasForScrollableCanvasController:(id)controller
 {
-  v3 = [-[THWViewportRep layout](self layout];
+  layout = [-[THWViewportRep layout](self layout];
 
-  [v3 canvasSize];
+  [layout canvasSize];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (id)scrollableCanvasController:(id)a3 infosToDisplayForViewport:(CGRect)a4
+- (id)scrollableCanvasController:(id)controller infosToDisplayForViewport:(CGRect)viewport
 {
-  v4 = [(THWViewportRep *)self info:a3];
+  v4 = [(THWViewportRep *)self info:controller];
 
   return [v4 canvasInfos];
 }
 
-- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)a3
+- (UIEdgeInsets)contentInsetsForScrollableCanvasController:(id)controller
 {
   [-[THWViewportRep info](self info];
   v5 = v4;
   [-[THWViewportRep canvas](self "canvas")];
   v7 = v5 * v6;
-  v8 = [(THWViewportRep *)self isExpanded];
+  isExpanded = [(THWViewportRep *)self isExpanded];
   v9 = fmax(v7, 20.0);
-  if (v8)
+  if (isExpanded)
   {
     v10 = v9;
   }
@@ -499,20 +499,20 @@
   return result;
 }
 
-- (id)scrollableCanvasController:(id)a3 primaryTargetForGesture:(id)a4
+- (id)scrollableCanvasController:(id)controller primaryTargetForGesture:(id)gesture
 {
   [-[THWViewportRep interactiveCanvasController](self interactiveCanvasController];
   v6 = TSUProtocolCast();
   [-[THWViewportRep interactiveCanvasController](self "interactiveCanvasController")];
   v7 = TSUProtocolCast();
-  if (([v6 canHandleGesture:a4] & 1) == 0)
+  if (([v6 canHandleGesture:gesture] & 1) == 0)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       goto LABEL_5;
     }
 
-    v6 = [v7 interactiveCanvasController:-[THWViewportRep interactiveCanvasController](self primaryTargetForGesture:{"interactiveCanvasController"), a4}];
+    v6 = [v7 interactiveCanvasController:-[THWViewportRep interactiveCanvasController](self primaryTargetForGesture:{"interactiveCanvasController"), gesture}];
   }
 
   if (v6)
@@ -521,7 +521,7 @@
   }
 
 LABEL_5:
-  if (![(THWPressableRepGestureTargetHandler *)[(THWViewportRep *)self pressableHandler] canHandleGesture:a4])
+  if (![(THWPressableRepGestureTargetHandler *)[(THWViewportRep *)self pressableHandler] canHandleGesture:gesture])
   {
     return 0;
   }
@@ -531,15 +531,15 @@ LABEL_5:
 
 - (id)scrollableCanvasHost
 {
-  v2 = [(THWViewportRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWViewportRep *)self interactiveCanvasController];
 
-  return [v2 scrollableCanvasHost];
+  return [interactiveCanvasController scrollableCanvasHost];
 }
 
-- (id)strokeLayerForScrollableCanvasController:(id)a3
+- (id)strokeLayerForScrollableCanvasController:(id)controller
 {
-  v4 = [-[THWViewportRep info](self info];
-  if (![v4 shouldRender] || (objc_msgSend(-[THWViewportRep layout](self, "layout"), "isExpanded") & 1) != 0)
+  info = [-[THWViewportRep info](self info];
+  if (![info shouldRender] || (objc_msgSend(-[THWViewportRep layout](self, "layout"), "isExpanded") & 1) != 0)
   {
     return 0;
   }
@@ -577,31 +577,31 @@ LABEL_5:
 
   v22 = v20;
   [v5 setAffineTransform:{&v22, *&v20.a, *&v20.c, *&v20.tx}];
-  v16 = [(THWViewportRep *)self canvas];
+  canvas = [(THWViewportRep *)self canvas];
   [objc_msgSend(-[THWViewportRep layout](self "layout")];
   TSDRectWithSize();
-  [v16 convertUnscaledToBoundsRect:?];
+  [canvas convertUnscaledToBoundsRect:?];
   TSDRoundedRectForMainScreen();
   [v5 setBounds:?];
-  v17 = [(THWViewportRep *)self canvas];
+  canvas2 = [(THWViewportRep *)self canvas];
   [objc_msgSend(-[THWViewportRep layout](self "layout")];
   TSDRectWithSize();
   TSDCenterOfRect();
-  [v17 convertUnscaledToBoundsPoint:?];
+  [canvas2 convertUnscaledToBoundsPoint:?];
   [v5 setPosition:?];
-  if (([v4 canApplyToShapeRenderable] & 1) == 0)
+  if (([info canApplyToShapeRenderable] & 1) == 0)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   v18 = [TSDRenderable renderableFromLayer:v5];
   [-[THWViewportRep canvas](self "canvas")];
-  [v4 applyToRepRenderable:v18 withScale:?];
+  [info applyToRepRenderable:v18 withScale:?];
 
   return v5;
 }
 
-- (id)maskLayerForScrollableCanvasController:(id)a3
+- (id)maskLayerForScrollableCanvasController:(id)controller
 {
   if ([-[THWViewportRep layout](self layout])
   {
@@ -618,23 +618,23 @@ LABEL_5:
   *&v17.tx = *&CGAffineTransformIdentity.tx;
   CGAffineTransformScale(&v18, &v17, v7, v9);
   [v5 transformUsingAffineTransform:&v18];
-  v10 = [v5 CGPath];
+  cGPath = [v5 CGPath];
   [-[THWViewportRep canvas](self "canvas")];
-  v11 = [(THWViewportRep *)self canvas];
+  canvas = [(THWViewportRep *)self canvas];
   [objc_msgSend(-[THWViewportRep layout](self "layout")];
-  [v11 convertUnscaledToBoundsSize:?];
+  [canvas convertUnscaledToBoundsSize:?];
   TSDRectWithSize();
   [-[THWViewportRep info](self "info")];
   v13 = v12;
   [-[THWViewportRep canvas](self "canvas")];
   v15 = v13 * v14;
   TSDRoundedRectForMainScreen();
-  v4 = [(THWViewportRep *)self p_innerMaskLayerWithBounds:v10 path:fmax(v15 fadeSizes:0.0) maskGroupVerticalInset:?];
+  v4 = [(THWViewportRep *)self p_innerMaskLayerWithBounds:cGPath path:fmax(v15 fadeSizes:0.0) maskGroupVerticalInset:?];
 
   return v4;
 }
 
-- (BOOL)scrollableCanvasController:(id)a3 allowsEditMenuForRep:(id)a4
+- (BOOL)scrollableCanvasController:(id)controller allowsEditMenuForRep:(id)rep
 {
   [-[THWViewportRep interactiveCanvasController](self interactiveCanvasController];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -643,12 +643,12 @@ LABEL_5:
   }
 
   v5 = [-[THWViewportRep interactiveCanvasController](self "interactiveCanvasController")];
-  v6 = [(THWViewportRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWViewportRep *)self interactiveCanvasController];
 
-  return [v5 interactiveCanvasController:v6 allowsEditMenuForRep:self];
+  return [v5 interactiveCanvasController:interactiveCanvasController allowsEditMenuForRep:self];
 }
 
-- (BOOL)scrollableCanvasController:(id)a3 shouldBeginEditingTHWPRep:(id)a4 withGesture:(id)a5
+- (BOOL)scrollableCanvasController:(id)controller shouldBeginEditingTHWPRep:(id)rep withGesture:(id)gesture
 {
   [-[THWViewportRep interactiveCanvasController](self interactiveCanvasController];
   if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -658,24 +658,24 @@ LABEL_5:
 
   [-[THWViewportRep interactiveCanvasController](self "interactiveCanvasController")];
   v8 = TSUProtocolCast();
-  v9 = [(THWViewportRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWViewportRep *)self interactiveCanvasController];
 
-  return [v8 interactiveCanvasController:v9 shouldBeginEditingTHWPRep:a4 withGesture:a5];
+  return [v8 interactiveCanvasController:interactiveCanvasController shouldBeginEditingTHWPRep:rep withGesture:gesture];
 }
 
-- (BOOL)scrollableCanvasController:(id)a3 allowsHyperlinkWithGesture:(id)a4 forRep:(id)a5
+- (BOOL)scrollableCanvasController:(id)controller allowsHyperlinkWithGesture:(id)gesture forRep:(id)rep
 {
-  v8 = [a4 gestureKind];
+  gestureKind = [gesture gestureKind];
   [-[THWViewportRep interactiveCanvasController](self "interactiveCanvasController")];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    return v8 == TSWPImmediateSingleTap;
+    return gestureKind == TSWPImmediateSingleTap;
   }
 
   v9 = [-[THWViewportRep interactiveCanvasController](self "interactiveCanvasController")];
-  v10 = [(THWViewportRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWViewportRep *)self interactiveCanvasController];
 
-  return [v9 interactiveCanvasController:v10 allowsHyperlinkWithGesture:a4 forRep:a5];
+  return [v9 interactiveCanvasController:interactiveCanvasController allowsHyperlinkWithGesture:gesture forRep:rep];
 }
 
 - (BOOL)allowSelectionPopover
@@ -687,20 +687,20 @@ LABEL_5:
   }
 
   v3 = [-[THWViewportRep interactiveCanvasController](self "interactiveCanvasController")];
-  v4 = [(THWViewportRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWViewportRep *)self interactiveCanvasController];
 
-  return [v3 allowSelectionPopoverForInteractiveCanvasController:v4];
+  return [v3 allowSelectionPopoverForInteractiveCanvasController:interactiveCanvasController];
 }
 
-- (id)scrollableCanvasController:(id)a3 actionForHyperlink:(id)a4 inRep:(id)a5 gesture:(id)a6
+- (id)scrollableCanvasController:(id)controller actionForHyperlink:(id)hyperlink inRep:(id)rep gesture:(id)gesture
 {
   [-[THWViewportRep interactiveCanvasController](self interactiveCanvasController];
   v9 = TSUProtocolCast();
 
-  return [v9 actionForHyperlink:a4 inRep:a5 gesture:a6];
+  return [v9 actionForHyperlink:hyperlink inRep:rep gesture:gesture];
 }
 
-- (id)bookNavigatorForScrollableCanvasController:(id)a3
+- (id)bookNavigatorForScrollableCanvasController:(id)controller
 {
   objc_opt_class();
   [(THWViewportRep *)self interactiveCanvasController];
@@ -709,7 +709,7 @@ LABEL_5:
   return [v4 bookNavigator];
 }
 
-- (id)documentNavigatorForScrollableCanvasController:(id)a3
+- (id)documentNavigatorForScrollableCanvasController:(id)controller
 {
   objc_opt_class();
   [(THWViewportRep *)self interactiveCanvasController];
@@ -718,22 +718,22 @@ LABEL_5:
   return [v4 documentNavigator];
 }
 
-- (BOOL)isRelatedCanvasScrollingForscrollableCanvasController:(id)a3
+- (BOOL)isRelatedCanvasScrollingForscrollableCanvasController:(id)controller
 {
-  v3 = [(THWViewportRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWViewportRep *)self interactiveCanvasController];
 
-  return [v3 currentlyScrolling];
+  return [interactiveCanvasController currentlyScrolling];
 }
 
-- (void)scrollableCanvasController:(id)a3 customizeLayerHost:(id)a4
+- (void)scrollableCanvasController:(id)controller customizeLayerHost:(id)host
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v6 = sub_19D2FC;
   v7 = &unk_45AE58;
-  v8 = a3;
-  v9 = self;
-  if ([NSThread isMainThread:a3])
+  controllerCopy = controller;
+  selfCopy = self;
+  if ([NSThread isMainThread:controller])
   {
     v6(v5);
   }
@@ -749,31 +749,31 @@ LABEL_5:
   }
 }
 
-- (BOOL)deferViewCreationForScrollableCanvasController:(id)a3
+- (BOOL)deferViewCreationForScrollableCanvasController:(id)controller
 {
-  v3 = [(THWViewportRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWViewportRep *)self interactiveCanvasController];
 
-  return [v3 currentlyScrolling];
+  return [interactiveCanvasController currentlyScrolling];
 }
 
-- (double)contentsScaleForScrollableCanvasController:(id)a3
+- (double)contentsScaleForScrollableCanvasController:(id)controller
 {
-  v3 = [-[THWViewportRep interactiveCanvasController](self interactiveCanvasController];
+  interactiveCanvasController = [-[THWViewportRep interactiveCanvasController](self interactiveCanvasController];
 
-  [v3 contentsScale];
+  [interactiveCanvasController contentsScale];
   return result;
 }
 
-- (BOOL)centeredInScrollViewForScrollableCanvasController:(id)a3
+- (BOOL)centeredInScrollViewForScrollableCanvasController:(id)controller
 {
-  v3 = [(THWViewportRep *)self layout];
+  layout = [(THWViewportRep *)self layout];
 
-  return [v3 isExpanded];
+  return [layout isExpanded];
 }
 
-- (double)scrollableCanvasController:(id)a3 viewScaleForFrameSize:(CGSize)a4 withScale:(double)a5
+- (double)scrollableCanvasController:(id)controller viewScaleForFrameSize:(CGSize)size withScale:(double)scale
 {
-  width = a4.width;
+  width = size.width;
   if ([-[THWViewportRep layout](self layout])
   {
     [objc_msgSend(-[THWViewportRep layout](self "layout")];
@@ -792,14 +792,14 @@ LABEL_5:
     }
   }
 
-  return a5;
+  return scale;
 }
 
-- (double)scrollableCanvasController:(id)a3 maxViewScaleForFrameSize:(CGSize)a4
+- (double)scrollableCanvasController:(id)controller maxViewScaleForFrameSize:(CGSize)size
 {
-  v4 = [-[THWViewportRep layout](self layout];
+  layout = [-[THWViewportRep layout](self layout];
   result = 1.0;
-  if (v4)
+  if (layout)
   {
     return 2.0;
   }
@@ -807,7 +807,7 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)expandedShouldDismissOnChangeFromSizeClassPairWithController:(id)a3 flowMode:(BOOL)a4
+- (BOOL)expandedShouldDismissOnChangeFromSizeClassPairWithController:(id)controller flowMode:(BOOL)mode
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -822,15 +822,15 @@ LABEL_5:
   return v4;
 }
 
-- (id)p_innerMaskLayerWithBounds:(CGRect)a3 path:(CGPath *)a4 fadeSizes:(UIEdgeInsets)a5 maskGroupVerticalInset:(double)a6
+- (id)p_innerMaskLayerWithBounds:(CGRect)bounds path:(CGPath *)path fadeSizes:(UIEdgeInsets)sizes maskGroupVerticalInset:(double)inset
 {
-  rect_8 = a5.bottom;
-  rect_16 = a3.size.width;
-  top = a5.top;
-  rect_24 = a3.size.height;
-  x = a3.origin.x;
-  y = a3.origin.y;
-  CGPathGetBoundingBox(a4);
+  rect_8 = sizes.bottom;
+  rect_16 = bounds.size.width;
+  top = sizes.top;
+  rect_24 = bounds.size.height;
+  x = bounds.origin.x;
+  y = bounds.origin.y;
+  CGPathGetBoundingBox(path);
   TSDRoundedRectForMainScreen();
   v9 = v8;
   v11 = v10;
@@ -840,7 +840,7 @@ LABEL_5:
   v17 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", [+[TSUColor colorWithWhite:alpha:](TSUColor CGColor:0.0], [[TSUColor colorWithWhite:0 alpha:?];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v19 = CGGradientCreateWithColors(DeviceRGB, v17, 0);
-  CGContextAddPath(v16, a4);
+  CGContextAddPath(v16, path);
   CGContextClip(v16);
   v38.origin.x = v9;
   v38.origin.y = v11;
@@ -907,15 +907,15 @@ LABEL_5:
   return v25;
 }
 
-- (id)p_outerMaskLayerWithFrame:(CGRect)a3 path:(CGPath *)a4
+- (id)p_outerMaskLayerWithFrame:(CGRect)frame path:(CGPath *)path
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9 = objc_alloc_init(CAShapeLayer);
   [v9 setFrame:{x, y, width, height}];
-  [v9 setPath:a4];
+  [v9 setPath:path];
 
   return v9;
 }

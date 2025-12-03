@@ -1,54 +1,54 @@
 @interface _UICollectionViewMultiSelectController
-- (BOOL)_allowsBandSelectionStartingAtPoint:(CGPoint)a3 multiSelectInteraction:(id)a4;
-- (BOOL)_allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionAtPoint:(CGPoint)a3;
+- (BOOL)_allowsBandSelectionStartingAtPoint:(CGPoint)point multiSelectInteraction:(id)interaction;
+- (BOOL)_allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionAtPoint:(CGPoint)point;
 - (BOOL)_isUsingTableLayoutSPI;
-- (BOOL)_point:(CGPoint)a3 liesBeyondFrame:(CGRect)a4 inDirection:(double)a5;
-- (BOOL)_shouldBeginInteractionAtIndexPath:(id)a3;
-- (BOOL)_shouldBeginInteractionAtPoint:(CGPoint)a3;
-- (BOOL)_testTouchPolicyAtPoint:(CGPoint)a3 withVelocity:(CGPoint)a4;
-- (BOOL)interaction:(id)a3 shouldAutomaticallyTransitionToMultiSelectModeAtPoint:(CGPoint)a4 withVelocity:(CGPoint)a5;
+- (BOOL)_point:(CGPoint)_point liesBeyondFrame:(CGRect)frame inDirection:(double)direction;
+- (BOOL)_shouldBeginInteractionAtIndexPath:(id)path;
+- (BOOL)_shouldBeginInteractionAtPoint:(CGPoint)point;
+- (BOOL)_testTouchPolicyAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
+- (BOOL)interaction:(id)interaction shouldAutomaticallyTransitionToMultiSelectModeAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
 - (BOOL)isInMultiSelectMode;
 - (BOOL)isInMultiselectInteraction;
-- (BOOL)multiSelectInteraction:(id)a3 shouldShowBandForSelectionStartingAtPoint:(CGPoint)a4;
-- (BOOL)multiSelectInteractionGestureShouldPreventDragLiftGesture:(id)a3;
-- (BOOL)shouldAllowSelectionAppendageAtPoint:(CGPoint)a3;
-- (BOOL)shouldAllowSelectionExtensionAtIndexPath:(id)a3;
-- (BOOL)shouldAllowSelectionExtensionAtPoint:(CGPoint)a3;
-- (BOOL)shouldBeginMultiSelectInteraction:(id)a3 ofType:(int64_t)a4 atPoint:(CGPoint)a5 withVelocity:(CGPoint)a6;
-- (BOOL)supportsMultiSelectInteraction:(id)a3;
+- (BOOL)multiSelectInteraction:(id)interaction shouldShowBandForSelectionStartingAtPoint:(CGPoint)point;
+- (BOOL)multiSelectInteractionGestureShouldPreventDragLiftGesture:(id)gesture;
+- (BOOL)shouldAllowSelectionAppendageAtPoint:(CGPoint)point;
+- (BOOL)shouldAllowSelectionExtensionAtIndexPath:(id)path;
+- (BOOL)shouldAllowSelectionExtensionAtPoint:(CGPoint)point;
+- (BOOL)shouldBeginMultiSelectInteraction:(id)interaction ofType:(int64_t)type atPoint:(CGPoint)point withVelocity:(CGPoint)velocity;
+- (BOOL)supportsMultiSelectInteraction:(id)interaction;
 - (UICollectionView)collectionView;
-- (_UICollectionViewMultiSelectController)initWithCollectionView:(id)a3;
-- (id)_antecedentIndexPathsForLayoutAttributes:(id)a3 inDirection:(double)a4;
-- (id)_autoScrollAssistantForIndexPaths:(id)a3;
-- (id)_boundingScrollViewForIndexPath:(id)a3;
+- (_UICollectionViewMultiSelectController)initWithCollectionView:(id)view;
+- (id)_antecedentIndexPathsForLayoutAttributes:(id)attributes inDirection:(double)direction;
+- (id)_autoScrollAssistantForIndexPaths:(id)paths;
+- (id)_boundingScrollViewForIndexPath:(id)path;
 - (id)_collectionViewDelegate;
-- (id)_indexPathsWithinRect:(CGRect)a3;
-- (id)childScrollViewAtLocation:(CGPoint)a3;
-- (id)indexPathsBetweenIndexPath:(id)a3 andIndexPath:(id)a4;
-- (int64_t)_hitTestForSystemEditControlAtPoint:(CGPoint)a3;
-- (int64_t)axisConstraintAtIndexPath:(id)a3;
-- (int64_t)axisConstraintAtPoint:(CGPoint)a3;
-- (int64_t)axisConstraintForSingleFingerPanGestureAtPoint:(CGPoint)a3;
-- (void)_autoScrollAtIndexPaths:(id)a3 fromPoint:(CGPoint)a4;
-- (void)_deselectIndexPaths:(id)a3;
-- (void)_extendSelectionToPoint:(CGPoint)a3;
-- (void)_performWithPrewarmingCache:(id)a3;
-- (void)_selectIndexPaths:(id)a3;
+- (id)_indexPathsWithinRect:(CGRect)rect;
+- (id)childScrollViewAtLocation:(CGPoint)location;
+- (id)indexPathsBetweenIndexPath:(id)path andIndexPath:(id)indexPath;
+- (int64_t)_hitTestForSystemEditControlAtPoint:(CGPoint)point;
+- (int64_t)axisConstraintAtIndexPath:(id)path;
+- (int64_t)axisConstraintAtPoint:(CGPoint)point;
+- (int64_t)axisConstraintForSingleFingerPanGestureAtPoint:(CGPoint)point;
+- (void)_autoScrollAtIndexPaths:(id)paths fromPoint:(CGPoint)point;
+- (void)_deselectIndexPaths:(id)paths;
+- (void)_extendSelectionToPoint:(CGPoint)point;
+- (void)_performWithPrewarmingCache:(id)cache;
+- (void)_selectIndexPaths:(id)paths;
 - (void)_updateContentMasksForVisibleCells;
-- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)a3;
+- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)selection;
 - (void)clearSelectionState;
 - (void)collectionViewDidUpdateVisibleCells;
 - (void)dealloc;
-- (void)didCancelMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4;
-- (void)didEndMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4;
-- (void)multiSelectInteraction:(id)a3 appendSelectionAtPoint:(CGPoint)a4;
-- (void)multiSelectInteraction:(id)a3 extendSelectionInDirection:(unint64_t)a4;
-- (void)multiSelectInteraction:(id)a3 selectItemsWithinRect:(CGRect)a4 leadingPoint:(CGPoint)a5;
-- (void)multiSelectInteraction:(id)a3 toggleSelectionWithinRect:(CGRect)a4 leadingPoint:(CGPoint)a5;
-- (void)selectedIndexPathsChanged:(id)a3;
+- (void)didCancelMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point;
+- (void)didEndMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point;
+- (void)multiSelectInteraction:(id)interaction appendSelectionAtPoint:(CGPoint)point;
+- (void)multiSelectInteraction:(id)interaction extendSelectionInDirection:(unint64_t)direction;
+- (void)multiSelectInteraction:(id)interaction selectItemsWithinRect:(CGRect)rect leadingPoint:(CGPoint)point;
+- (void)multiSelectInteraction:(id)interaction toggleSelectionWithinRect:(CGRect)rect leadingPoint:(CGPoint)point;
+- (void)selectedIndexPathsChanged:(id)changed;
 - (void)uninstallFromCollectionView;
-- (void)updateSelectedIndexPaths:(id)a3;
-- (void)willBeginMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4 keepCurrentSelection:(BOOL)a5;
+- (void)updateSelectedIndexPaths:(id)paths;
+- (void)willBeginMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point keepCurrentSelection:(BOOL)selection;
 @end
 
 @implementation _UICollectionViewMultiSelectController
@@ -56,19 +56,19 @@
 - (void)clearSelectionState
 {
   [(_UICollectionViewMultiSelectController *)self setSelectionState:0];
-  v3 = [(_UICollectionViewMultiSelectController *)self multiSelectInteraction];
-  if ([v3 isEnabled])
+  multiSelectInteraction = [(_UICollectionViewMultiSelectController *)self multiSelectInteraction];
+  if ([multiSelectInteraction isEnabled])
   {
-    [v3 setEnabled:0];
-    [v3 setEnabled:1];
+    [multiSelectInteraction setEnabled:0];
+    [multiSelectInteraction setEnabled:1];
   }
 }
 
 - (void)collectionViewDidUpdateVisibleCells
 {
-  v3 = [(_UICollectionViewMultiSelectController *)self contentMaskCache];
+  contentMaskCache = [(_UICollectionViewMultiSelectController *)self contentMaskCache];
 
-  if (v3)
+  if (contentMaskCache)
   {
     if ((*&self->_flags & 1) == 0)
     {
@@ -85,10 +85,10 @@
 
 - (BOOL)isInMultiselectInteraction
 {
-  v2 = [(_UICollectionViewMultiSelectController *)self selectionState];
-  v3 = [v2 isInMultiselectInteraction];
+  selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
+  isInMultiselectInteraction = [selectionState isInMultiselectInteraction];
 
-  return v3;
+  return isInMultiselectInteraction;
 }
 
 - (void)dealloc
@@ -108,16 +108,16 @@
   }
 }
 
-- (_UICollectionViewMultiSelectController)initWithCollectionView:(id)a3
+- (_UICollectionViewMultiSelectController)initWithCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = _UICollectionViewMultiSelectController;
   v5 = [(_UICollectionViewMultiSelectController *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_collectionView, v4);
+    objc_storeWeak(&v5->_collectionView, viewCopy);
     v7 = objc_alloc_init(UIMultiSelectInteraction);
     multiSelectInteraction = v6->_multiSelectInteraction;
     v6->_multiSelectInteraction = v7;
@@ -133,19 +133,19 @@
   return v6;
 }
 
-- (int64_t)axisConstraintForSingleFingerPanGestureAtPoint:(CGPoint)a3
+- (int64_t)axisConstraintForSingleFingerPanGestureAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v7 = [v6 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v7 = [collectionView indexPathForItemAtPoint:{x, y}];
   v8 = [(_UICollectionViewMultiSelectController *)self axisConstraintAtIndexPath:v7];
   if (v8 == 1)
   {
     if (v7)
     {
-      v9 = [v6 collectionViewLayout];
-      v10 = [v9 _supportsSwipeActionsForIndexPath:v7];
+      collectionViewLayout = [collectionView collectionViewLayout];
+      v10 = [collectionViewLayout _supportsSwipeActionsForIndexPath:v7];
 
       v8 = ~v10 & 1;
     }
@@ -159,22 +159,22 @@
   return v8;
 }
 
-- (int64_t)axisConstraintAtIndexPath:(id)a3
+- (int64_t)axisConstraintAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v6 = [v5 collectionViewLayout];
-  v7 = [v6 _hasOrthogonalScrollingSections];
+  pathCopy = path;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  _hasOrthogonalScrollingSections = [collectionViewLayout _hasOrthogonalScrollingSections];
 
-  if ((v7 & 1) != 0 || (computedAxisConstraint = self->_computedAxisConstraint, computedAxisConstraint == 4))
+  if ((_hasOrthogonalScrollingSections & 1) != 0 || (computedAxisConstraint = self->_computedAxisConstraint, computedAxisConstraint == 4))
   {
-    v9 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v10 = [v9 collectionViewLayout];
-    v11 = [v10 _hasOrthogonalScrollingSections];
+    collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    collectionViewLayout2 = [collectionView2 collectionViewLayout];
+    _hasOrthogonalScrollingSections2 = [collectionViewLayout2 _hasOrthogonalScrollingSections];
 
-    if ((v11 & 1) != 0 || (-[_UICollectionViewMultiSelectController collectionView](self, "collectionView"), v12 = objc_claimAutoreleasedReturnValue(), [v12 collectionViewLayout], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "_layoutAxis"), v13, v12, v14 >= 4))
+    if ((_hasOrthogonalScrollingSections2 & 1) != 0 || (-[_UICollectionViewMultiSelectController collectionView](self, "collectionView"), v12 = objc_claimAutoreleasedReturnValue(), [v12 collectionViewLayout], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "_layoutAxis"), v13, v12, v14 >= 4))
     {
-      v15 = [(_UICollectionViewMultiSelectController *)self _boundingScrollViewForIndexPath:v4];
+      v15 = [(_UICollectionViewMultiSelectController *)self _boundingScrollViewForIndexPath:pathCopy];
       [v15 bounds];
       v17 = v16;
       v19 = v18;
@@ -217,27 +217,27 @@
   return computedAxisConstraint;
 }
 
-- (int64_t)axisConstraintAtPoint:(CGPoint)a3
+- (int64_t)axisConstraintAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v7 = [v6 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v7 = [collectionView indexPathForItemAtPoint:{x, y}];
 
   v8 = [(_UICollectionViewMultiSelectController *)self axisConstraintAtIndexPath:v7];
   return v8;
 }
 
-- (id)_autoScrollAssistantForIndexPaths:(id)a3
+- (id)_autoScrollAssistantForIndexPaths:(id)paths
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 anyObject];
+  pathsCopy = paths;
+  anyObject = [pathsCopy anyObject];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = pathsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -252,8 +252,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * i) section];
-        if (v11 != [v5 section])
+        section = [*(*(&v18 + 1) + 8 * i) section];
+        if (section != [anyObject section])
         {
           v12 = 0;
           goto LABEL_11;
@@ -274,59 +274,59 @@
 LABEL_11:
 
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
-  v14 = [WeakRetained _autoScrollAssistant];
+  _autoScrollAssistant = [WeakRetained _autoScrollAssistant];
 
   if (v12)
   {
     v15 = objc_loadWeakRetained(&self->_collectionView);
-    v16 = [v15 _autoScrollAssistantForIndexPath:v5];
+    v16 = [v15 _autoScrollAssistantForIndexPath:anyObject];
 
-    v14 = v16;
+    _autoScrollAssistant = v16;
   }
 
-  return v14;
+  return _autoScrollAssistant;
 }
 
-- (id)_boundingScrollViewForIndexPath:(id)a3
+- (id)_boundingScrollViewForIndexPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [MEMORY[0x1E695DFD8] setWithObject:?];
     v5 = [(_UICollectionViewMultiSelectController *)self _autoScrollAssistantForIndexPaths:v4];
-    v6 = [v5 scrollView];
+    scrollView = [v5 scrollView];
   }
 
   else
   {
-    v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    scrollView = [(_UICollectionViewMultiSelectController *)self collectionView];
   }
 
-  return v6;
+  return scrollView;
 }
 
-- (id)childScrollViewAtLocation:(CGPoint)a3
+- (id)childScrollViewAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v7 = [v6 indexPathForItemAtPoint:{x, y}];
+  y = location.y;
+  x = location.x;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v7 = [collectionView indexPathForItemAtPoint:{x, y}];
 
   v8 = [(_UICollectionViewMultiSelectController *)self _boundingScrollViewForIndexPath:v7];
 
   return v8;
 }
 
-- (void)_autoScrollAtIndexPaths:(id)a3 fromPoint:(CGPoint)a4
+- (void)_autoScrollAtIndexPaths:(id)paths fromPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(_UICollectionViewMultiSelectController *)self _autoScrollAssistantForIndexPaths:a3];
+  y = point.y;
+  x = point.x;
+  v7 = [(_UICollectionViewMultiSelectController *)self _autoScrollAssistantForIndexPaths:paths];
   if (v7)
   {
     v14 = v7;
-    v8 = [v7 scrollView];
-    v9 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    [v8 convertPoint:v9 fromView:{x, y}];
+    scrollView = [v7 scrollView];
+    collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+    [scrollView convertPoint:collectionView fromView:{x, y}];
     v11 = v10;
     v13 = v12;
 
@@ -335,14 +335,14 @@ LABEL_11:
   }
 }
 
-- (id)_antecedentIndexPathsForLayoutAttributes:(id)a3 inDirection:(double)a4
+- (id)_antecedentIndexPathsForLayoutAttributes:(id)attributes inDirection:(double)direction
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  attributesCopy = attributes;
   v6 = [MEMORY[0x1E695DFA8] set];
-  v7 = [v5 indexPath];
-  v8 = [(_UICollectionViewMultiSelectController *)self axisConstraintAtIndexPath:v7];
-  v9 = [(_UICollectionViewMultiSelectController *)self _boundingScrollViewForIndexPath:v7];
+  indexPath = [attributesCopy indexPath];
+  v8 = [(_UICollectionViewMultiSelectController *)self axisConstraintAtIndexPath:indexPath];
+  v9 = [(_UICollectionViewMultiSelectController *)self _boundingScrollViewForIndexPath:indexPath];
   v32 = v9;
   if (v8 == 2)
   {
@@ -361,18 +361,18 @@ LABEL_11:
     v10 = 0;
   }
 
-  v11 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v12 = [v11 collectionViewLayout];
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  v13 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  [v13 contentScaleFactor];
+  collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+  [collectionView2 contentScaleFactor];
   v15 = v14;
 
-  [v5 frame];
-  v33 = v5;
-  [v12 _orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:v5 frame:?];
-  v31 = v12;
-  v20 = [v12 _layoutAttributesForElementsInProjectedRect:UIRectInsetEdges(v10 withProjectionVector:v16 projectionDistance:{v17, v18, v19, v15)}];
+  [attributesCopy frame];
+  v33 = attributesCopy;
+  [collectionViewLayout _orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:attributesCopy frame:?];
+  v31 = collectionViewLayout;
+  v20 = [collectionViewLayout _layoutAttributesForElementsInProjectedRect:UIRectInsetEdges(v10 withProjectionVector:v16 projectionDistance:{v17, v18, v19, v15)}];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
@@ -392,14 +392,14 @@ LABEL_11:
         }
 
         v25 = *(*(&v34 + 1) + 8 * i);
-        v26 = [v25 indexPath];
-        v27 = [v26 section];
-        v28 = [v7 section];
+        indexPath2 = [v25 indexPath];
+        section = [indexPath2 section];
+        section2 = [indexPath section];
 
-        if (v27 == v28 && ![v25 representedElementCategory])
+        if (section == section2 && ![v25 representedElementCategory])
         {
-          v29 = [v25 indexPath];
-          [v6 addObject:v29];
+          indexPath3 = [v25 indexPath];
+          [v6 addObject:indexPath3];
         }
       }
 
@@ -412,16 +412,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)_point:(CGPoint)a3 liesBeyondFrame:(CGRect)a4 inDirection:(double)a5
+- (BOOL)_point:(CGPoint)_point liesBeyondFrame:(CGRect)frame inDirection:(double)direction
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = _point.y;
+  v11 = _point.x;
   v12 = [(_UICollectionViewMultiSelectController *)self axisConstraintAtPoint:?];
-  if (a5 < 0.0)
+  if (direction < 0.0)
   {
     if (v12 == 2)
     {
@@ -470,30 +470,30 @@ LABEL_11:
   return !v14;
 }
 
-- (id)indexPathsBetweenIndexPath:(id)a3 andIndexPath:(id)a4
+- (id)indexPathsBetweenIndexPath:(id)path andIndexPath:(id)indexPath
 {
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  v10 = [v9 layoutAttributesForItemAtIndexPath:v6];
+  v10 = [collectionViewLayout layoutAttributesForItemAtIndexPath:pathCopy];
   [v10 frame];
   v54 = v10;
-  [v9 _orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:v10 frame:?];
+  [collectionViewLayout _orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:v10 frame:?];
   v59 = v12;
   v60 = v11;
   v13 = v11 + v12 * 0.5;
   v58 = v14;
   v16 = v15;
   v17 = v15 + v14 * 0.5;
-  v18 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v55 = v7;
-  v19 = [v18 layoutAttributesForItemAtIndexPath:v7];
+  collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v55 = indexPathCopy;
+  v19 = [collectionView2 layoutAttributesForItemAtIndexPath:indexPathCopy];
 
   [v19 frame];
-  [v9 _orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:v19 frame:?];
+  [collectionViewLayout _orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:v19 frame:?];
   v22 = v21 + v20 * 0.5;
   v25 = v24 + v23 * 0.5;
   v26 = [MEMORY[0x1E695DFA8] set];
@@ -537,9 +537,9 @@ LABEL_11:
     v30 = v25;
   }
 
-  v31 = [v9 _extendedAttributesQueryIncludingOrthogonalScrollingRegions:{v28, v30, fmax(v27 - v28, 1.0), fmax(v29 - v30, 1.0)}];
-  v56 = v6;
-  if ([(_UICollectionViewMultiSelectController *)self axisConstraintAtIndexPath:v6]== 1)
+  v31 = [collectionViewLayout _extendedAttributesQueryIncludingOrthogonalScrollingRegions:{v28, v30, fmax(v27 - v28, 1.0), fmax(v29 - v30, 1.0)}];
+  v56 = pathCopy;
+  if ([(_UICollectionViewMultiSelectController *)self axisConstraintAtIndexPath:pathCopy]== 1)
   {
     v32 = v25 < v17;
   }
@@ -583,13 +583,13 @@ LABEL_11:
         if (![v39 representedElementCategory])
         {
           [v39 frame];
-          [v9 _orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:v39 frame:?];
+          [collectionViewLayout _orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:v39 frame:?];
           v41 = v40;
           v43 = v42;
           v45 = v44;
           v47 = v46;
-          v48 = [v39 indexPath];
-          [v26 addObject:v48];
+          indexPath = [v39 indexPath];
+          [v26 addObject:indexPath];
 
           if ([(_UICollectionViewMultiSelectController *)self _point:v41 liesBeyondFrame:v43 inDirection:v60, v16, v59, v58, v33])
           {
@@ -626,31 +626,31 @@ LABEL_11:
   return v26;
 }
 
-- (void)_extendSelectionToPoint:(CGPoint)a3
+- (void)_extendSelectionToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UICollectionViewMultiSelectController *)self selectionState];
+  y = point.y;
+  x = point.x;
+  selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
 
-  if (v6)
+  if (selectionState)
   {
-    v7 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    v8 = [v7 startIndexPath];
+    selectionState2 = [(_UICollectionViewMultiSelectController *)self selectionState];
+    startIndexPath = [selectionState2 startIndexPath];
 
-    if (v8)
+    if (startIndexPath)
     {
       if ((*&self->_flags & 4) == 0)
       {
-        v9 = [(_UICollectionViewMultiSelectController *)self collectionView];
-        v14 = [v9 _indexPathOfItemNearestToPoint:x intersectingRect:{y, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+        collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+        v14 = [collectionView _indexPathOfItemNearestToPoint:x intersectingRect:{y, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
         v10 = v14;
         if (v14)
         {
-          v11 = [(_UICollectionViewMultiSelectController *)self selectionState];
-          v12 = [v11 startIndexPath];
+          selectionState3 = [(_UICollectionViewMultiSelectController *)self selectionState];
+          startIndexPath2 = [selectionState3 startIndexPath];
 
-          v13 = [(_UICollectionViewMultiSelectController *)self indexPathsBetweenIndexPath:v12 andIndexPath:v14];
+          v13 = [(_UICollectionViewMultiSelectController *)self indexPathsBetweenIndexPath:startIndexPath2 andIndexPath:v14];
           if ([v13 count])
           {
             *&self->_flags |= 4u;
@@ -670,10 +670,10 @@ LABEL_11:
 {
   v33 = *MEMORY[0x1E69E9840];
   flags = self->_flags;
-  v5 = [(_UICollectionViewMultiSelectController *)self contentMaskCache];
-  if (v5)
+  contentMaskCache = [(_UICollectionViewMultiSelectController *)self contentMaskCache];
+  if (contentMaskCache)
   {
-    v6 = v5;
+    strongToStrongObjectsMapTable = contentMaskCache;
     if ((flags & 1) == 0)
     {
       goto LABEL_27;
@@ -682,28 +682,28 @@ LABEL_11:
 
   else
   {
-    v6 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-    [(_UICollectionViewMultiSelectController *)self setContentMaskCache:v6];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    [(_UICollectionViewMultiSelectController *)self setContentMaskCache:strongToStrongObjectsMapTable];
   }
 
   *&self->_flags &= ~1u;
-  v7 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v8 = v7;
-  if (v7)
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v8 = collectionView;
+  if (collectionView)
   {
-    v9 = [v7 _identityTracker:1];
+    v9 = [collectionView _identityTracker:1];
     if (!v9)
     {
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v22 handleFailureInMethod:a2 object:self file:@"_UICollectionViewMultiSelectController.m" lineNumber:520 description:{@"Invalid parameter not satisfying: %@", @"identityTracker != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UICollectionViewMultiSelectController.m" lineNumber:520 description:{@"Invalid parameter not satisfying: %@", @"identityTracker != nil"}];
     }
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [v8 visibleCells];
-    v11 = [v10 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    visibleCells = [v8 visibleCells];
+    v11 = [visibleCells countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v11)
     {
       v12 = v11;
@@ -716,22 +716,22 @@ LABEL_11:
         {
           if (*v27 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(visibleCells);
           }
 
           v15 = *(*(&v26 + 1) + 8 * i);
-          v16 = [v15 _layoutAttributes];
-          v17 = [v16 indexPath];
+          _layoutAttributes = [v15 _layoutAttributes];
+          indexPath = [_layoutAttributes indexPath];
 
-          v18 = [(_UIIndexPathIdentityTracker *)v9 identifierForIndexPath:v17];
-          v19 = [v6 objectForKey:v18];
+          v18 = [(_UIIndexPathIdentityTracker *)v9 identifierForIndexPath:indexPath];
+          v19 = [strongToStrongObjectsMapTable objectForKey:v18];
 
           if (!v19)
           {
             v20 = _UIImageForView(v15);
             if (v20)
             {
-              [v6 setObject:v20 forKey:v18];
+              [strongToStrongObjectsMapTable setObject:v20 forKey:v18];
             }
 
             else
@@ -741,7 +741,7 @@ LABEL_11:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v26 objects:v32 count:16];
+        v12 = [visibleCells countByEnumeratingWithState:&v26 objects:v32 count:16];
       }
 
       while (v12);
@@ -783,24 +783,24 @@ LABEL_11:
 LABEL_27:
 }
 
-- (id)_indexPathsWithinRect:(CGRect)a3
+- (id)_indexPathsWithinRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v53 = *MEMORY[0x1E69E9840];
-  v8 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
-  v10 = v9;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  v10 = collectionViewLayout;
   v11 = 0;
-  v46 = v8;
-  if (v8 && v9)
+  v46 = collectionView;
+  if (collectionView && collectionViewLayout)
   {
-    v12 = [(_UICollectionViewMultiSelectController *)v7 contentMaskCache];
+    contentMaskCache = [(_UICollectionViewMultiSelectController *)selfCopy contentMaskCache];
 
-    v13 = !v12 && ([(_UICollectionViewMultiSelectController *)v7 _updateContentMasksForVisibleCells], [(UIMultiSelectInteraction *)v7->_multiSelectInteraction activeGestureType]== 8) && (*&v7->_flags & 2) == 0;
+    v13 = !contentMaskCache && ([(_UICollectionViewMultiSelectController *)selfCopy _updateContentMasksForVisibleCells], [(UIMultiSelectInteraction *)selfCopy->_multiSelectInteraction activeGestureType]== 8) && (*&selfCopy->_flags & 2) == 0;
     v47 = [v46 _identityTracker:0];
     if ([v10 _hasOrthogonalScrollingSections])
     {
@@ -815,7 +815,7 @@ LABEL_27:
     if ([v14 count])
     {
       v44 = v13;
-      v45 = v7;
+      v45 = selfCopy;
       v15 = [MEMORY[0x1E695DFA8] set];
       v48 = 0u;
       v49 = 0u;
@@ -842,7 +842,7 @@ LABEL_27:
           }
 
           v21 = *(*(&v48 + 1) + 8 * v20);
-          v22 = [v21 indexPath];
+          indexPath = [v21 indexPath];
           if (v21)
           {
             if ((v21[288] & 1) != 0 && ([v21 isHidden] & 1) == 0)
@@ -850,11 +850,11 @@ LABEL_27:
               [v21 alpha];
               if (v23 > 0.0)
               {
-                v24 = [(UICollectionViewLayoutAttributes *)v21 _existingListAttributes];
+                _existingListAttributes = [(UICollectionViewLayoutAttributes *)v21 _existingListAttributes];
 
                 [v21 frame];
                 [v10 _orthogonalFrameWithOffsetElidedForItemWithLayoutAttributes:v21 frame:?];
-                if (v24)
+                if (_existingListAttributes)
                 {
                   goto LABEL_24;
                 }
@@ -876,9 +876,9 @@ LABEL_27:
                   goto LABEL_24;
                 }
 
-                v33 = [(_UIIndexPathIdentityTracker *)v47 identifierForIndexPath:v22];
-                v34 = [(_UICollectionViewMultiSelectController *)v45 contentMaskCache];
-                v35 = [v34 objectForKey:v33];
+                v33 = [(_UIIndexPathIdentityTracker *)v47 identifierForIndexPath:indexPath];
+                contentMaskCache2 = [(_UICollectionViewMultiSelectController *)v45 contentMaskCache];
+                v35 = [contentMaskCache2 objectForKey:v33];
 
                 if (v35)
                 {
@@ -901,7 +901,7 @@ LABEL_27:
                   }
 
 LABEL_24:
-                  [v15 addObject:v22];
+                  [v15 addObject:indexPath];
                   goto LABEL_25;
                 }
 
@@ -935,7 +935,7 @@ LABEL_25:
         {
 LABEL_30:
 
-          v7 = v45;
+          selfCopy = v45;
           v14 = v43;
           if (v44)
           {
@@ -951,7 +951,7 @@ LABEL_30:
     if (v13)
     {
 LABEL_31:
-      [(_UICollectionViewMultiSelectController *)v7 setContentMaskCache:0];
+      [(_UICollectionViewMultiSelectController *)selfCopy setContentMaskCache:0];
     }
 
 LABEL_32:
@@ -961,24 +961,24 @@ LABEL_32:
   return v11;
 }
 
-- (void)multiSelectInteraction:(id)a3 selectItemsWithinRect:(CGRect)a4 leadingPoint:(CGPoint)a5
+- (void)multiSelectInteraction:(id)interaction selectItemsWithinRect:(CGRect)rect leadingPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = [(_UICollectionViewMultiSelectController *)self _indexPathsWithinRect:a3, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  y = point.y;
+  x = point.x;
+  v8 = [(_UICollectionViewMultiSelectController *)self _indexPathsWithinRect:interaction, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(_UICollectionViewMultiSelectController *)self updateSelectedIndexPaths:v8];
   [(_UICollectionViewMultiSelectController *)self _autoScrollAtIndexPaths:v8 fromPoint:x, y];
 }
 
-- (void)multiSelectInteraction:(id)a3 toggleSelectionWithinRect:(CGRect)a4 leadingPoint:(CGPoint)a5
+- (void)multiSelectInteraction:(id)interaction toggleSelectionWithinRect:(CGRect)rect leadingPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v18 = [(_UICollectionViewMultiSelectController *)self _indexPathsWithinRect:a3, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  y = point.y;
+  x = point.x;
+  v18 = [(_UICollectionViewMultiSelectController *)self _indexPathsWithinRect:interaction, rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v8 = MEMORY[0x1E695DFD8];
-  v9 = [(_UICollectionViewMultiSelectController *)self selectionState];
-  v10 = [v9 originallySelectedIndexPaths];
-  v11 = [v8 setWithArray:v10];
+  selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
+  originallySelectedIndexPaths = [selectionState originallySelectedIndexPaths];
+  v11 = [v8 setWithArray:originallySelectedIndexPaths];
 
   v12 = [v18 mutableCopy];
   [v12 intersectSet:v11];
@@ -986,9 +986,9 @@ LABEL_32:
   [v13 unionSet:v18];
   [v13 minusSet:v12];
   v14 = MEMORY[0x1E695DFA8];
-  v15 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v16 = [v15 indexPathsForSelectedItems];
-  v17 = [v14 setWithArray:v16];
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v17 = [v14 setWithArray:indexPathsForSelectedItems];
 
   [v17 minusSet:v13];
   [(_UICollectionViewMultiSelectController *)self _selectIndexPaths:v13];
@@ -996,16 +996,16 @@ LABEL_32:
   [(_UICollectionViewMultiSelectController *)self _autoScrollAtIndexPaths:v18 fromPoint:x, y];
 }
 
-- (void)_selectIndexPaths:(id)a3
+- (void)_selectIndexPaths:(id)paths
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v7 = [v6 indexPathsForSelectedItems];
-  v8 = v7;
-  if (v7)
+  pathsCopy = paths;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v8 = indexPathsForSelectedItems;
+  if (indexPathsForSelectedItems)
   {
-    v9 = v7;
+    v9 = indexPathsForSelectedItems;
   }
 
   else
@@ -1015,116 +1015,116 @@ LABEL_32:
 
   v10 = [v4 setWithArray:v9];
 
-  v11 = [v5 mutableCopy];
+  v11 = [pathsCopy mutableCopy];
   [v11 minusSet:v10];
-  v12 = [(_UICollectionViewMultiSelectController *)self selectionState];
+  selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60___UICollectionViewMultiSelectController__selectIndexPaths___block_invoke;
   v14[3] = &unk_1E70F35B8;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v13 = v11;
-  [v12 ignoreSelectionChangedNotificationsWithBlock:v14];
+  [selectionState ignoreSelectionChangedNotificationsWithBlock:v14];
 }
 
-- (void)_deselectIndexPaths:(id)a3
+- (void)_deselectIndexPaths:(id)paths
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v7 = [v6 indexPathsForSelectedItems];
-  v8 = [v4 setWithArray:v7];
+  pathsCopy = paths;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v8 = [v4 setWithArray:indexPathsForSelectedItems];
 
-  v9 = [v5 mutableCopy];
+  v9 = [pathsCopy mutableCopy];
   [v9 intersectSet:v8];
-  v10 = [(_UICollectionViewMultiSelectController *)self selectionState];
+  selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __62___UICollectionViewMultiSelectController__deselectIndexPaths___block_invoke;
   v12[3] = &unk_1E70F35B8;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v11 = v9;
-  [v10 ignoreSelectionChangedNotificationsWithBlock:v12];
+  [selectionState ignoreSelectionChangedNotificationsWithBlock:v12];
 }
 
-- (void)updateSelectedIndexPaths:(id)a3
+- (void)updateSelectedIndexPaths:(id)paths
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v7 = [v6 indexPathsForSelectedItems];
-  v12 = [v4 setWithArray:v7];
+  pathsCopy = paths;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  v12 = [v4 setWithArray:indexPathsForSelectedItems];
 
-  v8 = [(_UICollectionViewMultiSelectController *)self selectionState];
-  v9 = [v8 pathsToSelectForInterpolatedIndexPaths:v5];
+  selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
+  v9 = [selectionState pathsToSelectForInterpolatedIndexPaths:pathsCopy];
 
-  v10 = [(_UICollectionViewMultiSelectController *)self selectionState];
-  v11 = [v10 pathsToDeselectForInterpolatedIndexPaths:v5 currentlySelectedIndexPaths:v12];
+  selectionState2 = [(_UICollectionViewMultiSelectController *)self selectionState];
+  v11 = [selectionState2 pathsToDeselectForInterpolatedIndexPaths:pathsCopy currentlySelectedIndexPaths:v12];
 
   [(_UICollectionViewMultiSelectController *)self _selectIndexPaths:v9];
   [(_UICollectionViewMultiSelectController *)self _deselectIndexPaths:v11];
 }
 
-- (void)selectedIndexPathsChanged:(id)a3
+- (void)selectedIndexPathsChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(_UICollectionViewMultiSelectController *)self selectionState];
+  changedCopy = changed;
+  selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
 
-  if (v5)
+  if (selectionState)
   {
-    v6 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    [(UIMultiSelectInteractionState *)v6 updateStateWithDifferenceFromCurrentSelection:v4];
+    selectionState2 = [(_UICollectionViewMultiSelectController *)self selectionState];
+    [(UIMultiSelectInteractionState *)selectionState2 updateStateWithDifferenceFromCurrentSelection:changedCopy];
   }
 
   else
   {
-    v6 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:v4];
+    selectionState2 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:changedCopy];
 
-    [(_UICollectionViewMultiSelectController *)self setSelectionState:v6];
+    [(_UICollectionViewMultiSelectController *)self setSelectionState:selectionState2];
   }
 }
 
 - (id)_collectionViewDelegate
 {
-  v3 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v4 = [v3 delegate];
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  delegate = [collectionView delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v7 = [v6 delegate];
+    collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    delegate2 = [collectionView2 delegate];
   }
 
   else
   {
-    v7 = 0;
+    delegate2 = 0;
   }
 
-  return v7;
+  return delegate2;
 }
 
 - (BOOL)_isUsingTableLayoutSPI
 {
-  v2 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v3 = [v2 collectionViewLayout];
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (int64_t)_hitTestForSystemEditControlAtPoint:(CGPoint)a3
+- (int64_t)_hitTestForSystemEditControlAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v6 = [v5 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v6 = [collectionView indexPathForItemAtPoint:{x, y}];
   if (v6)
   {
-    v7 = [v5 cellForItemAtIndexPath:v6];
+    v7 = [collectionView cellForItemAtIndexPath:v6];
     if (!v7)
     {
       v10 = 0;
@@ -1136,10 +1136,10 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 _viewForMultiSelectAccessory];
-      if (v8)
+      _viewForMultiSelectAccessory = [v7 _viewForMultiSelectAccessory];
+      if (_viewForMultiSelectAccessory)
       {
-        v9 = v8;
+        tableViewCell2 = _viewForMultiSelectAccessory;
         goto LABEL_10;
       }
     }
@@ -1149,24 +1149,24 @@ LABEL_15:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = [v7 tableViewCell];
-        v12 = [v11 editingData:0];
-        v9 = [v12 editControl:0];
+        tableViewCell = [v7 tableViewCell];
+        v12 = [tableViewCell editingData:0];
+        tableViewCell2 = [v12 editControl:0];
 
-        if (!v9)
+        if (!tableViewCell2)
         {
-          v9 = [v7 tableViewCell];
-          [v9 convertPoint:v5 fromView:{x, y}];
+          tableViewCell2 = [v7 tableViewCell];
+          [tableViewCell2 convertPoint:collectionView fromView:{x, y}];
           v23 = v22;
           v25 = v24;
-          [v9 frame];
+          [tableViewCell2 frame];
           v27.x = v23;
           v27.y = v25;
           if (CGRectContainsPoint(v28, v27))
           {
-            [v9 frame];
+            [tableViewCell2 frame];
             v26 = vabdd_f64(CGRectGetMinX(v29), x);
-            [v9 frame];
+            [tableViewCell2 frame];
             if (fmin(v26, vabdd_f64(CGRectGetMaxX(v30), x)) >= 70.0)
             {
               v10 = 1;
@@ -1187,10 +1187,10 @@ LABEL_15:
         }
 
 LABEL_10:
-        [v9 convertPoint:v5 fromView:{x, y}];
+        [tableViewCell2 convertPoint:collectionView fromView:{x, y}];
         v14 = v13;
         v16 = v15;
-        [v9 bounds];
+        [tableViewCell2 bounds];
         if (sqrt((v18 + v17 * 0.5 - v14) * (v18 + v17 * 0.5 - v14) + (v20 + v19 * 0.5 - v16) * (v20 + v19 * 0.5 - v16)) >= 35.0)
         {
           v10 = 2;
@@ -1217,17 +1217,17 @@ LABEL_16:
   return v10;
 }
 
-- (void)multiSelectInteraction:(id)a3 extendSelectionInDirection:(unint64_t)a4
+- (void)multiSelectInteraction:(id)interaction extendSelectionInDirection:(unint64_t)direction
 {
-  v6 = [(_UICollectionViewMultiSelectController *)self selectionEndIndexPath];
-  if (!v6)
+  selectionEndIndexPath = [(_UICollectionViewMultiSelectController *)self selectionEndIndexPath];
+  if (!selectionEndIndexPath)
   {
-    v7 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v8 = [v7 indexPathsForSelectedItems];
+    collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-    v9 = [v8 sortedArrayUsingSelector:sel_compare_];
+    v9 = [indexPathsForSelectedItems sortedArrayUsingSelector:sel_compare_];
 
-    if ((a4 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+    if ((direction & 0xFFFFFFFFFFFFFFFDLL) != 0)
     {
       [v9 lastObject];
     }
@@ -1238,18 +1238,18 @@ LABEL_16:
     }
     v74 = ;
 
-    v6 = v74;
+    selectionEndIndexPath = v74;
     if (!v74)
     {
       return;
     }
   }
 
-  v75 = v6;
-  v10 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v11 = [v10 collectionViewLayout];
+  v75 = selectionEndIndexPath;
+  collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+  collectionViewLayout = [collectionView2 collectionViewLayout];
 
-  v12 = [v11 layoutAttributesForItemAtIndexPath:v75];
+  v12 = [collectionViewLayout layoutAttributesForItemAtIndexPath:v75];
   v13 = *MEMORY[0x1E695EFF8];
   v14 = *(MEMORY[0x1E695EFF8] + 8);
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -1260,8 +1260,8 @@ LABEL_16:
   v23 = v22;
 
   v24 = [(_UICollectionViewMultiSelectController *)self _boundingScrollViewForIndexPath:v75];
-  v25 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  if (v24 == v25)
+  collectionView3 = [(_UICollectionViewMultiSelectController *)self collectionView];
+  if (v24 == collectionView3)
   {
     goto LABEL_17;
   }
@@ -1270,7 +1270,7 @@ LABEL_16:
   if (v26 == 2)
   {
 
-    if (a4 - 1 >= 2)
+    if (direction - 1 >= 2)
     {
       goto LABEL_16;
     }
@@ -1288,9 +1288,9 @@ LABEL_17:
       }
 
 LABEL_16:
-      v25 = [(_UICollectionViewMultiSelectController *)self collectionView];
+      collectionView3 = [(_UICollectionViewMultiSelectController *)self collectionView];
       [v24 visibleBounds];
-      [v25 convertRect:v24 fromView:?];
+      [collectionView3 convertRect:v24 fromView:?];
       v17 = v27;
       v19 = v28;
       v21 = v29;
@@ -1298,7 +1298,7 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    if (a4 && a4 != 3)
+    if (direction && direction != 3)
     {
       goto LABEL_16;
     }
@@ -1309,7 +1309,7 @@ LABEL_18:
   v32 = 1.0;
   v33 = v19 - v23;
   v34 = v23 + v23;
-  if (a4 == 2)
+  if (direction == 2)
   {
     v35 = v23 + v23;
   }
@@ -1319,7 +1319,7 @@ LABEL_18:
     v35 = v23;
   }
 
-  if (a4 == 2)
+  if (direction == 2)
   {
     v36 = -1.0;
   }
@@ -1330,7 +1330,7 @@ LABEL_18:
     v36 = v14;
   }
 
-  if (a4 == 3)
+  if (direction == 3)
   {
     v35 = v23;
     v37 = v21 + v21;
@@ -1341,7 +1341,7 @@ LABEL_18:
     v37 = v21;
   }
 
-  if (a4 == 3)
+  if (direction == 3)
   {
     v33 = v19;
     v36 = v14;
@@ -1354,13 +1354,13 @@ LABEL_18:
   }
 
   v39 = v17 - v21;
-  if (a4 != 1)
+  if (direction != 1)
   {
     v34 = v23;
     v32 = v14;
   }
 
-  if (a4)
+  if (direction)
   {
     v31 = v21;
   }
@@ -1370,7 +1370,7 @@ LABEL_18:
     v34 = v23;
   }
 
-  if (a4)
+  if (direction)
   {
     v39 = v17;
   }
@@ -1380,7 +1380,7 @@ LABEL_18:
     v32 = v14;
   }
 
-  if (a4)
+  if (direction)
   {
     v40 = v13;
   }
@@ -1390,7 +1390,7 @@ LABEL_18:
     v40 = -1.0;
   }
 
-  if (a4 > 1)
+  if (direction > 1)
   {
     v41 = v37;
   }
@@ -1401,7 +1401,7 @@ LABEL_18:
     v41 = v31;
   }
 
-  if (a4 <= 1)
+  if (direction <= 1)
   {
     v42 = v19;
   }
@@ -1411,7 +1411,7 @@ LABEL_18:
     v42 = v33;
   }
 
-  if (a4 <= 1)
+  if (direction <= 1)
   {
     v43 = v39;
   }
@@ -1421,7 +1421,7 @@ LABEL_18:
     v43 = v17;
   }
 
-  if (a4 <= 1)
+  if (direction <= 1)
   {
     v44 = v40;
   }
@@ -1432,11 +1432,11 @@ LABEL_18:
     v44 = v38;
   }
 
-  v45 = [v11 _layoutAttributesForNextItemInDirection:v75 fromIndexPath:v44 constrainedToRect:{v32, v43, v42, v41, v35}];
-  v46 = [v45 indexPath];
-  if (v46)
+  v45 = [collectionViewLayout _layoutAttributesForNextItemInDirection:v75 fromIndexPath:v44 constrainedToRect:{v32, v43, v42, v41, v35}];
+  indexPath = [v45 indexPath];
+  if (indexPath)
   {
-    v47 = [(_UICollectionViewMultiSelectController *)self _boundingScrollViewForIndexPath:v46];
+    v47 = [(_UICollectionViewMultiSelectController *)self _boundingScrollViewForIndexPath:indexPath];
     [v47 bounds];
     v49 = v48;
     v51 = v50;
@@ -1517,172 +1517,172 @@ LABEL_18:
     }
 
     v67 = [(_UICollectionViewMultiSelectController *)self selectionState:*&height];
-    v68 = [v67 startIndexPath];
+    startIndexPath = [v67 startIndexPath];
 
     if (v61)
     {
       v69 = objc_loadWeakRetained(&self->_collectionView);
-      [v69 _scrollToItemAtPresentationIndexPath:v46 atScrollPosition:v61 additionalInsets:0 animated:{0.0, 0.0, 0.0, 0.0}];
+      [v69 _scrollToItemAtPresentationIndexPath:indexPath atScrollPosition:v61 additionalInsets:0 animated:{0.0, 0.0, 0.0, 0.0}];
     }
 
-    v70 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    [v70 setEndIndexPath:v46];
+    selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
+    [selectionState setEndIndexPath:indexPath];
 
-    v71 = [(_UICollectionViewMultiSelectController *)self indexPathsBetweenIndexPath:v68 andIndexPath:v46];
+    v71 = [(_UICollectionViewMultiSelectController *)self indexPathsBetweenIndexPath:startIndexPath andIndexPath:indexPath];
     [(_UICollectionViewMultiSelectController *)self updateSelectedIndexPaths:v71];
   }
 }
 
-- (BOOL)supportsMultiSelectInteraction:(id)a3
+- (BOOL)supportsMultiSelectInteraction:(id)interaction
 {
-  v4 = [(_UICollectionViewMultiSelectController *)self _collectionViewDelegate];
+  _collectionViewDelegate = [(_UICollectionViewMultiSelectController *)self _collectionViewDelegate];
 
-  if (v4)
+  if (_collectionViewDelegate)
   {
     return 1;
   }
 
   v6 = dyld_program_sdk_at_least();
-  v7 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v8 = v7;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v8 = collectionView;
   if (v6)
   {
-    v9 = [v7 allowsMultipleSelectionDuringEditing];
+    allowsMultipleSelectionDuringEditing = [collectionView allowsMultipleSelectionDuringEditing];
   }
 
   else
   {
-    v9 = [v7 _allowsMultipleSelectionDuringEditing];
+    allowsMultipleSelectionDuringEditing = [collectionView _allowsMultipleSelectionDuringEditing];
   }
 
-  v5 = v9;
+  v5 = allowsMultipleSelectionDuringEditing;
 
   return v5;
 }
 
 - (BOOL)isInMultiSelectMode
 {
-  v3 = [(_UICollectionViewMultiSelectController *)self collectionView];
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
   if (![(_UICollectionViewMultiSelectController *)self _isUsingTableLayoutSPI])
   {
     if (dyld_program_sdk_at_least())
     {
-      v4 = [v3 _allowsEffectiveMultipleSelection];
+      _allowsEffectiveMultipleSelection = [collectionView _allowsEffectiveMultipleSelection];
     }
 
     else
     {
-      v4 = [v3 allowsMultipleSelection];
+      _allowsEffectiveMultipleSelection = [collectionView allowsMultipleSelection];
     }
 
     goto LABEL_8;
   }
 
-  if ([v3 isEditing])
+  if ([collectionView isEditing])
   {
-    v4 = [v3 allowsSelectionDuringEditing];
+    _allowsEffectiveMultipleSelection = [collectionView allowsSelectionDuringEditing];
 LABEL_8:
-    v6 = v4;
+    isEditing = _allowsEffectiveMultipleSelection;
     goto LABEL_9;
   }
 
-  v5 = [UIViewController viewControllerForView:v3];
-  v6 = [v5 isEditing];
+  v5 = [UIViewController viewControllerForView:collectionView];
+  isEditing = [v5 isEditing];
 
 LABEL_9:
-  return v6;
+  return isEditing;
 }
 
-- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)a3
+- (void)automaticallyTransitionToMultiSelectModeKeepingCurrentSelection:(BOOL)selection
 {
-  v3 = a3;
-  v5 = [(_UICollectionViewMultiSelectController *)self multiSelectInteraction];
-  v6 = [v5 activeGestureType];
+  selectionCopy = selection;
+  multiSelectInteraction = [(_UICollectionViewMultiSelectController *)self multiSelectInteraction];
+  activeGestureType = [multiSelectInteraction activeGestureType];
 
   if ([(_UICollectionViewMultiSelectController *)self isInMultiSelectMode])
   {
-    if (!dyld_program_sdk_at_least() || (v6 - 1) > 1)
+    if (!dyld_program_sdk_at_least() || (activeGestureType - 1) > 1)
     {
       return;
     }
 
-    v18 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    if (([v18 _isEditing] & 1) == 0)
+    collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+    if (([collectionView _isEditing] & 1) == 0)
     {
-      v7 = [(_UICollectionViewMultiSelectController *)self collectionView];
-      v8 = [v7 _allowsMultipleSelectionDuringEditing];
+      collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+      _allowsMultipleSelectionDuringEditing = [collectionView2 _allowsMultipleSelectionDuringEditing];
 
-      if (!v8)
+      if (!_allowsMultipleSelectionDuringEditing)
       {
         return;
       }
 
-      v18 = [(_UICollectionViewMultiSelectController *)self collectionView];
-      [v18 setEditing:1];
+      collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+      [collectionView setEditing:1];
     }
 
     goto LABEL_14;
   }
 
-  if (v3)
+  if (selectionCopy)
   {
-    v9 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v10 = [v9 indexPathsForSelectedItems];
+    collectionView3 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView3 indexPathsForSelectedItems];
 
-    v11 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:v10];
+    v11 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:indexPathsForSelectedItems];
     [(_UICollectionViewMultiSelectController *)self setSelectionState:v11];
   }
 
   v12 = dyld_program_sdk_at_least();
-  v13 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v14 = v13;
+  collectionView4 = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v14 = collectionView4;
   if (v12)
   {
-    [v13 setEditing:1];
+    [collectionView4 setEditing:1];
   }
 
   else
   {
-    [v13 setAllowsMultipleSelection:1];
+    [collectionView4 setAllowsMultipleSelection:1];
   }
 
-  if (v3)
+  if (selectionCopy)
   {
     v15 = MEMORY[0x1E695DFD8];
-    v18 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    v16 = [v18 originallySelectedIndexPaths];
-    v17 = [v15 setWithArray:v16];
+    collectionView = [(_UICollectionViewMultiSelectController *)self selectionState];
+    originallySelectedIndexPaths = [collectionView originallySelectedIndexPaths];
+    v17 = [v15 setWithArray:originallySelectedIndexPaths];
     [(_UICollectionViewMultiSelectController *)self _selectIndexPaths:v17];
 
 LABEL_14:
   }
 }
 
-- (BOOL)_shouldBeginInteractionAtPoint:(CGPoint)a3
+- (BOOL)_shouldBeginInteractionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v7 = [v6 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v7 = [collectionView indexPathForItemAtPoint:{x, y}];
 
-  LOBYTE(v5) = [(_UICollectionViewMultiSelectController *)v5 _shouldBeginInteractionAtIndexPath:v7];
-  return v5;
+  LOBYTE(selfCopy) = [(_UICollectionViewMultiSelectController *)selfCopy _shouldBeginInteractionAtIndexPath:v7];
+  return selfCopy;
 }
 
-- (BOOL)_shouldBeginInteractionAtIndexPath:(id)a3
+- (BOOL)_shouldBeginInteractionAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(_UICollectionViewMultiSelectController *)self isInMultiSelectMode])
   {
     v5 = 1;
   }
 
-  else if (v4)
+  else if (pathCopy)
   {
-    v6 = [(_UICollectionViewMultiSelectController *)self _collectionViewDelegate];
-    v7 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v5 = [v6 collectionView:v7 shouldBeginMultipleSelectionInteractionAtIndexPath:v4];
+    _collectionViewDelegate = [(_UICollectionViewMultiSelectController *)self _collectionViewDelegate];
+    collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+    v5 = [_collectionViewDelegate collectionView:collectionView shouldBeginMultipleSelectionInteractionAtIndexPath:pathCopy];
   }
 
   else
@@ -1693,12 +1693,12 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)interaction:(id)a3 shouldAutomaticallyTransitionToMultiSelectModeAtPoint:(CGPoint)a4 withVelocity:(CGPoint)a5
+- (BOOL)interaction:(id)interaction shouldAutomaticallyTransitionToMultiSelectModeAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity
 {
-  y = a5.y;
-  x = a5.x;
-  v7 = a4.y;
-  v8 = a4.x;
+  y = velocity.y;
+  x = velocity.x;
+  v7 = point.y;
+  v8 = point.x;
   if ([(_UICollectionViewMultiSelectController *)self _isUsingTableLayoutSPI])
   {
     v10 = *MEMORY[0x1E695EFF8] == x && *(MEMORY[0x1E695EFF8] + 8) == y;
@@ -1713,14 +1713,14 @@ LABEL_14:
   return [(_UICollectionViewMultiSelectController *)self _shouldBeginInteractionAtPoint:v8, v7];
 }
 
-- (void)willBeginMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4 keepCurrentSelection:(BOOL)a5
+- (void)willBeginMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point keepCurrentSelection:(BOOL)selection
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
-  v48 = a3;
-  v9 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v10 = [v9 indexPathsForSelectedItems];
+  selectionCopy = selection;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
   if (x == *MEMORY[0x1E695F050] && y == *(MEMORY[0x1E695F050] + 8))
   {
@@ -1729,17 +1729,17 @@ LABEL_14:
 
   else
   {
-    v12 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v13 = [v12 indexPathForItemAtPoint:{x, y}];
+    collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    v13 = [collectionView2 indexPathForItemAtPoint:{x, y}];
   }
 
-  v14 = [(_UICollectionViewMultiSelectController *)self selectionState];
+  selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
 
-  if (!v14)
+  if (!selectionState)
   {
-    if (v5)
+    if (selectionCopy)
     {
-      v15 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:v10];
+      v15 = [[UIMultiSelectInteractionState alloc] initWithCurrentSelection:indexPathsForSelectedItems];
     }
 
     else
@@ -1751,100 +1751,100 @@ LABEL_14:
     [(_UICollectionViewMultiSelectController *)self setSelectionState:v15];
   }
 
-  v17 = [(_UICollectionViewMultiSelectController *)self selectionState];
-  [v17 beginMultiselectInteraction];
+  selectionState2 = [(_UICollectionViewMultiSelectController *)self selectionState];
+  [selectionState2 beginMultiselectInteraction];
 
-  if ([v48 activeGestureType] == 5 || objc_msgSend(v48, "activeGestureType") == 6 || objc_msgSend(v48, "activeGestureType") == 7)
+  if ([interactionCopy activeGestureType] == 5 || objc_msgSend(interactionCopy, "activeGestureType") == 6 || objc_msgSend(interactionCopy, "activeGestureType") == 7)
   {
-    v18 = [v48 activeGestureType] != 5;
-    v19 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    [v19 beginSelectingWithStartingIndexPath:v13 otherSelectedIndexPaths:v10 keepCurrentSelection:v18];
+    v18 = [interactionCopy activeGestureType] != 5;
+    selectionState3 = [(_UICollectionViewMultiSelectController *)self selectionState];
+    [selectionState3 beginSelectingWithStartingIndexPath:v13 otherSelectedIndexPaths:indexPathsForSelectedItems keepCurrentSelection:v18];
   }
 
   else
   {
-    v19 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    [v19 updateStateWithStartingIndexPath:v13 otherSelectedIndexPaths:v10];
+    selectionState3 = [(_UICollectionViewMultiSelectController *)self selectionState];
+    [selectionState3 updateStateWithStartingIndexPath:v13 otherSelectedIndexPaths:indexPathsForSelectedItems];
   }
 
-  v20 = [(_UICollectionViewMultiSelectController *)self selectionState];
-  v21 = [v20 startIndexPath];
+  selectionState4 = [(_UICollectionViewMultiSelectController *)self selectionState];
+  startIndexPath = [selectionState4 startIndexPath];
 
-  if (v21)
+  if (startIndexPath)
   {
-    v22 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    v23 = [v22 startIndexPath];
+    selectionState5 = [(_UICollectionViewMultiSelectController *)self selectionState];
+    startIndexPath2 = [selectionState5 startIndexPath];
 
-    v24 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v25 = [v24 collectionViewLayout];
+    collectionView3 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    collectionViewLayout = [collectionView3 collectionViewLayout];
 
-    v26 = [v25 layoutAttributesForItemAtIndexPath:v23];
+    v26 = [collectionViewLayout layoutAttributesForItemAtIndexPath:startIndexPath2];
     [v26 frame];
     v29 = v28 + v27 * 0.5;
     v32 = v31 + v30 * 0.5;
-    v33 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    [v33 setStartPoint:{v29, v32}];
+    selectionState6 = [(_UICollectionViewMultiSelectController *)self selectionState];
+    [selectionState6 setStartPoint:{v29, v32}];
 
-    v34 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    v35 = [v34 originallySelectedIndexPaths];
+    selectionState7 = [(_UICollectionViewMultiSelectController *)self selectionState];
+    originallySelectedIndexPaths = [selectionState7 originallySelectedIndexPaths];
 
-    if (!v35)
+    if (!originallySelectedIndexPaths)
     {
-      v36 = [(_UICollectionViewMultiSelectController *)self selectionState];
-      [v36 setOriginallySelectedIndexPaths:v10];
+      selectionState8 = [(_UICollectionViewMultiSelectController *)self selectionState];
+      [selectionState8 setOriginallySelectedIndexPaths:indexPathsForSelectedItems];
     }
 
-    v13 = v23;
+    v13 = startIndexPath2;
   }
 
-  v37 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v38 = [v37 delegate];
+  collectionView4 = [(_UICollectionViewMultiSelectController *)self collectionView];
+  delegate = [collectionView4 delegate];
 
   if (objc_opt_respondsToSelector())
   {
-    v39 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    [v38 collectionView:v39 didBeginMultipleSelectionInteractionAtIndexPath:v13];
+    collectionView5 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    [delegate collectionView:collectionView5 didBeginMultipleSelectionInteractionAtIndexPath:v13];
 
-    v40 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    v41 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v42 = [v41 indexPathsForSelectedItems];
-    v43 = [v40 stillValidForSelectedIndexPaths:v42];
+    selectionState9 = [(_UICollectionViewMultiSelectController *)self selectionState];
+    collectionView6 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    indexPathsForSelectedItems2 = [collectionView6 indexPathsForSelectedItems];
+    v43 = [selectionState9 stillValidForSelectedIndexPaths:indexPathsForSelectedItems2];
 
     if ((v43 & 1) == 0)
     {
       v44 = MEMORY[0x1E695DFD8];
-      v45 = [(_UICollectionViewMultiSelectController *)self selectionState];
-      v46 = [v45 allSelectedIndexPaths];
-      v47 = [v44 setWithArray:v46];
+      selectionState10 = [(_UICollectionViewMultiSelectController *)self selectionState];
+      allSelectedIndexPaths = [selectionState10 allSelectedIndexPaths];
+      v47 = [v44 setWithArray:allSelectedIndexPaths];
       [(_UICollectionViewMultiSelectController *)self _selectIndexPaths:v47];
     }
   }
 }
 
-- (void)_performWithPrewarmingCache:(id)a3
+- (void)_performWithPrewarmingCache:(id)cache
 {
   flags = self->_flags;
   *&self->_flags = flags | 2;
-  (*(a3 + 2))(a3, a2);
+  (*(cache + 2))(cache, a2);
   *&self->_flags = *&self->_flags & 0xFD | flags & 2;
 }
 
-- (BOOL)shouldBeginMultiSelectInteraction:(id)a3 ofType:(int64_t)a4 atPoint:(CGPoint)a5 withVelocity:(CGPoint)a6
+- (BOOL)shouldBeginMultiSelectInteraction:(id)interaction ofType:(int64_t)type atPoint:(CGPoint)point withVelocity:(CGPoint)velocity
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v12 = a3;
+  y = velocity.y;
+  x = velocity.x;
+  v8 = point.y;
+  v9 = point.x;
+  interactionCopy = interaction;
   if (![(_UICollectionViewMultiSelectController *)self _shouldBeginInteractionAtPoint:v9, v8])
   {
     goto LABEL_11;
   }
 
-  v13 = [(_UICollectionViewMultiSelectController *)self isInMultiSelectMode];
-  if (a4 != 5)
+  isInMultiSelectMode = [(_UICollectionViewMultiSelectController *)self isInMultiSelectMode];
+  if (type != 5)
   {
-    if (a4)
+    if (type)
     {
       v14 = 1;
       goto LABEL_12;
@@ -1853,10 +1853,10 @@ LABEL_14:
     goto LABEL_9;
   }
 
-  if (![(_UICollectionViewMultiSelectController *)self _allowsBandSelectionStartingAtPoint:v12 multiSelectInteraction:v9, v8])
+  if (![(_UICollectionViewMultiSelectController *)self _allowsBandSelectionStartingAtPoint:interactionCopy multiSelectInteraction:v9, v8])
   {
 LABEL_9:
-    if (v13)
+    if (isInMultiSelectMode)
     {
       v14 = [(_UICollectionViewMultiSelectController *)self _testTouchPolicyAtPoint:v9 withVelocity:v8, x, y];
       goto LABEL_12;
@@ -1880,7 +1880,7 @@ LABEL_11:
   *&v16[6] = v9;
   *&v16[7] = v8;
   [(_UICollectionViewMultiSelectController *)self _performWithPrewarmingCache:v16];
-  if (v13 && (v18[3] & 1) != 0)
+  if (isInMultiSelectMode && (v18[3] & 1) != 0)
   {
     v14 = 1;
   }
@@ -1897,18 +1897,18 @@ LABEL_12:
   return v14;
 }
 
-- (BOOL)_allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionAtPoint:(CGPoint)a3
+- (BOOL)_allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v7 = [v6 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v7 = [collectionView indexPathForItemAtPoint:{x, y}];
 
   if (v7)
   {
-    v8 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v9 = [v8 collectionViewLayout];
-    v10 = [v9 _allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionInSection:{objc_msgSend(v7, "section")}];
+    collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    collectionViewLayout = [collectionView2 collectionViewLayout];
+    v10 = [collectionViewLayout _allowsPanningAcrossConstrainedAxisToBeginMultiSelectInteractionInSection:{objc_msgSend(v7, "section")}];
   }
 
   else
@@ -1919,12 +1919,12 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)_testTouchPolicyAtPoint:(CGPoint)a3 withVelocity:(CGPoint)a4
+- (BOOL)_testTouchPolicyAtPoint:(CGPoint)point withVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = point.y;
+  v7 = point.x;
   v9 = [(_UICollectionViewMultiSelectController *)self _hitTestForSystemEditControlAtPoint:?];
   if (v9 == 3)
   {
@@ -1936,8 +1936,8 @@ LABEL_12:
     return 0;
   }
 
-  v10 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  if (![v10 _isEditing])
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  if (![collectionView _isEditing])
   {
 
     return 0;
@@ -1966,13 +1966,13 @@ LABEL_14:
       return 0;
     }
 
-    v13 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v14 = [v13 collectionViewLayout];
-    v15 = [v14 _layoutAxis];
+    collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    collectionViewLayout = [collectionView2 collectionViewLayout];
+    _layoutAxis = [collectionViewLayout _layoutAxis];
 
-    if (v15 != 2)
+    if (_layoutAxis != 2)
     {
-      if (v15 == 1)
+      if (_layoutAxis == 1)
       {
         goto LABEL_10;
       }
@@ -1989,58 +1989,58 @@ LABEL_10:
   return v16 > v17;
 }
 
-- (void)didEndMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4
+- (void)didEndMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point
 {
   self->_computedAxisConstraint = 4;
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [(UIMultiSelectInteractionState *)self->_selectionState allSelectedIndexPaths:a3];
+  v6 = [(UIMultiSelectInteractionState *)self->_selectionState allSelectedIndexPaths:interaction];
   v7 = [v5 setWithArray:v6];
   v8 = [(_UICollectionViewMultiSelectController *)self _autoScrollAssistantForIndexPaths:v7];
   [v8 stop];
 
-  v9 = [(_UICollectionViewMultiSelectController *)self _collectionViewDelegate];
+  _collectionViewDelegate = [(_UICollectionViewMultiSelectController *)self _collectionViewDelegate];
   LOBYTE(v6) = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v10 = [(_UICollectionViewMultiSelectController *)self _collectionViewDelegate];
-    v11 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    [v10 collectionViewDidEndMultipleSelectionInteraction:v11];
+    _collectionViewDelegate2 = [(_UICollectionViewMultiSelectController *)self _collectionViewDelegate];
+    collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+    [_collectionViewDelegate2 collectionViewDidEndMultipleSelectionInteraction:collectionView];
   }
 
-  v12 = [(_UICollectionViewMultiSelectController *)self selectionState];
-  [v12 endMultiselectInteraction];
+  selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
+  [selectionState endMultiselectInteraction];
 
   [(_UICollectionViewMultiSelectController *)self setContentMaskCache:0];
 }
 
-- (BOOL)shouldAllowSelectionExtensionAtPoint:(CGPoint)a3
+- (BOOL)shouldAllowSelectionExtensionAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
-  v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v7 = [v6 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v7 = [collectionView indexPathForItemAtPoint:{x, y}];
 
-  LOBYTE(v5) = [(_UICollectionViewMultiSelectController *)v5 shouldAllowSelectionExtensionAtIndexPath:v7];
-  return v5;
+  LOBYTE(selfCopy) = [(_UICollectionViewMultiSelectController *)selfCopy shouldAllowSelectionExtensionAtIndexPath:v7];
+  return selfCopy;
 }
 
-- (BOOL)shouldAllowSelectionExtensionAtIndexPath:(id)a3
+- (BOOL)shouldAllowSelectionExtensionAtIndexPath:(id)path
 {
-  v4 = a3;
-  if (!v4)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v5 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v6 = [v5 indexPathsForSelectedItems];
-    v4 = [v6 lastObject];
+    collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    pathCopy = [indexPathsForSelectedItems lastObject];
   }
 
-  v7 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v8 = [v7 indexPathsForSelectedItems];
-  if ([v8 count])
+  collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+  indexPathsForSelectedItems2 = [collectionView2 indexPathsForSelectedItems];
+  if ([indexPathsForSelectedItems2 count])
   {
-    v9 = [(_UICollectionViewMultiSelectController *)self _shouldBeginInteractionAtIndexPath:v4];
+    v9 = [(_UICollectionViewMultiSelectController *)self _shouldBeginInteractionAtIndexPath:pathCopy];
   }
 
   else
@@ -2051,10 +2051,10 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)shouldAllowSelectionAppendageAtPoint:(CGPoint)a3
+- (BOOL)shouldAllowSelectionAppendageAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (dyld_program_sdk_at_least())
   {
 
@@ -2068,21 +2068,21 @@ LABEL_10:
   }
 }
 
-- (void)multiSelectInteraction:(id)a3 appendSelectionAtPoint:(CGPoint)a4
+- (void)multiSelectInteraction:(id)interaction appendSelectionAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v13 = [v7 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v13 = [collectionView indexPathForItemAtPoint:{x, y}];
 
   v8 = v13;
   if (v13)
   {
-    v9 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    v10 = [v9 isSelecting];
+    selectionState = [(_UICollectionViewMultiSelectController *)self selectionState];
+    isSelecting = [selectionState isSelecting];
 
     v11 = [MEMORY[0x1E695DFD8] setWithObject:v13];
-    if (v10)
+    if (isSelecting)
     {
       [(_UICollectionViewMultiSelectController *)self _selectIndexPaths:v11];
     }
@@ -2092,16 +2092,16 @@ LABEL_10:
       [(_UICollectionViewMultiSelectController *)self _deselectIndexPaths:v11];
     }
 
-    v12 = [(_UICollectionViewMultiSelectController *)self selectionState];
-    [v12 setStartIndexPath:v13];
+    selectionState2 = [(_UICollectionViewMultiSelectController *)self selectionState];
+    [selectionState2 setStartIndexPath:v13];
 
     v8 = v13;
   }
 }
 
-- (BOOL)multiSelectInteractionGestureShouldPreventDragLiftGesture:(id)a3
+- (BOOL)multiSelectInteractionGestureShouldPreventDragLiftGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if ([(_UICollectionViewMultiSelectController *)self _isUsingTableLayoutSPI])
   {
     v5 = 1;
@@ -2109,8 +2109,8 @@ LABEL_10:
 
   else
   {
-    v6 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    [v4 locationInView:v6];
+    collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+    [gestureCopy locationInView:collectionView];
     v8 = v7;
     v10 = v9;
 
@@ -2120,30 +2120,30 @@ LABEL_10:
   return v5;
 }
 
-- (void)didCancelMultiSelectInteraction:(id)a3 atPoint:(CGPoint)a4
+- (void)didCancelMultiSelectInteraction:(id)interaction atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v7 = MEMORY[0x1E695DFD8];
-  v9 = a3;
+  interactionCopy = interaction;
   v8 = [v7 set];
   [(_UICollectionViewMultiSelectController *)self updateSelectedIndexPaths:v8];
 
-  [(_UICollectionViewMultiSelectController *)self didEndMultiSelectInteraction:v9 atPoint:x, y];
+  [(_UICollectionViewMultiSelectController *)self didEndMultiSelectInteraction:interactionCopy atPoint:x, y];
 }
 
-- (BOOL)multiSelectInteraction:(id)a3 shouldShowBandForSelectionStartingAtPoint:(CGPoint)a4
+- (BOOL)multiSelectInteraction:(id)interaction shouldShowBandForSelectionStartingAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v8 = [v7 _indexPathOfItemNearestToPoint:x intersectingRect:{y, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  y = point.y;
+  x = point.x;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v8 = [collectionView _indexPathOfItemNearestToPoint:x intersectingRect:{y, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
   if (v8)
   {
-    v9 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v10 = [v9 collectionViewLayout];
-    v11 = [v10 _wantsBandSelectionVisualsInSection:{objc_msgSend(v8, "section")}];
+    collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    collectionViewLayout = [collectionView2 collectionViewLayout];
+    v11 = [collectionViewLayout _wantsBandSelectionVisualsInSection:{objc_msgSend(v8, "section")}];
   }
 
   else
@@ -2154,20 +2154,20 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_allowsBandSelectionStartingAtPoint:(CGPoint)a3 multiSelectInteraction:(id)a4
+- (BOOL)_allowsBandSelectionStartingAtPoint:(CGPoint)point multiSelectInteraction:(id)interaction
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v8 = [v7 _allowsBandSelectionForMultipleSelection];
+  y = point.y;
+  x = point.x;
+  collectionView = [(_UICollectionViewMultiSelectController *)self collectionView];
+  _allowsBandSelectionForMultipleSelection = [collectionView _allowsBandSelectionForMultipleSelection];
 
-  if (!v8)
+  if (!_allowsBandSelectionForMultipleSelection)
   {
     return 0;
   }
 
-  v9 = [(_UICollectionViewMultiSelectController *)self collectionView];
-  v10 = [v9 hitTest:0 withEvent:{x, y}];
+  collectionView2 = [(_UICollectionViewMultiSelectController *)self collectionView];
+  v10 = [collectionView2 hitTest:0 withEvent:{x, y}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2177,8 +2177,8 @@ LABEL_10:
 
   else
   {
-    v12 = [(_UICollectionViewMultiSelectController *)self collectionView];
-    v13 = [v12 _indexPathOfItemNearestToPoint:x intersectingRect:{y, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    collectionView3 = [(_UICollectionViewMultiSelectController *)self collectionView];
+    v13 = [collectionView3 _indexPathOfItemNearestToPoint:x intersectingRect:{y, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 
     v11 = v13 != 0;
   }

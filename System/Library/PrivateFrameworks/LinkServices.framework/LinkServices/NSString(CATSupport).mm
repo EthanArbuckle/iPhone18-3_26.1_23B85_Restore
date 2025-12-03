@@ -6,7 +6,7 @@
 
 - (id)ln_stringByEscapingForXML
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 replaceOccurrencesOfString:@"&" withString:@"&amp;" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@"<" withString:@"&lt;" options:0 range:{0, objc_msgSend(v1, "length")}];
   [v1 replaceOccurrencesOfString:@">" withString:@"&gt;" options:0 range:{0, objc_msgSend(v1, "length")}];

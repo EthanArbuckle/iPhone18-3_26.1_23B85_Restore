@@ -1,12 +1,12 @@
 @interface BKDisplayBrightnessUpdateTransactionManager
 + (BKDisplayBrightnessUpdateTransactionManager)sharedInstance;
 - (float)systemDisplayBrightness;
-- (id)_initWithBrightnessController:(id)a3;
-- (void)_beginUpdateTransaction:(id)a3;
-- (void)_endUpdateTransaction:(id)a3;
+- (id)_initWithBrightnessController:(id)controller;
+- (void)_beginUpdateTransaction:(id)transaction;
+- (void)_endUpdateTransaction:(id)transaction;
 - (void)_lock_commitDisplayBrightness;
 - (void)restoreSystemDisplayBrightness;
-- (void)setDisplayBrightness:(float)a3 permanently:(BOOL)a4;
+- (void)setDisplayBrightness:(float)brightness permanently:(BOOL)permanently;
 - (void)synchronizeALSPreferencesAndSystemDisplayBrightness;
 @end
 
@@ -23,18 +23,18 @@
     {
       sub_100077C70();
       v5 = +[BKSDefaults externalDefaults];
-      v6 = [v5 springBoardDefaults];
+      springBoardDefaults = [v5 springBoardDefaults];
       *&v7 = v4;
-      [v6 setBrightness:v7];
+      [springBoardDefaults setBrightness:v7];
     }
 
     self->_commitPending = 0;
   }
 }
 
-- (void)_endUpdateTransaction:(id)a3
+- (void)_endUpdateTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   --self->_numPendingTransactions;
@@ -43,7 +43,7 @@
   {
     numPendingTransactions = self->_numPendingTransactions;
     v14 = 138543618;
-    v15 = v5;
+    v15 = transactionCopy;
     v16 = 1024;
     LODWORD(v17) = numPendingTransactions;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Ending transaction: %{public}@; %d remain", &v14, 0x12u);
@@ -63,7 +63,7 @@
       v16 = 2114;
       v17 = v13;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"BKDisplayBrightnessUpdateTransactionManager.m";
       v22 = 1024;
@@ -91,9 +91,9 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_beginUpdateTransaction:(id)a3
+- (void)_beginUpdateTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   numPendingTransactions = self->_numPendingTransactions;
@@ -110,7 +110,7 @@
   {
     v9 = self->_numPendingTransactions;
     v10 = 138543618;
-    v11 = v4;
+    v11 = transactionCopy;
     v12 = 1024;
     v13 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Begin transaction: %{public}@; %d now exist", &v10, 0x12u);
@@ -150,9 +150,9 @@
   return systemDisplayBrightness;
 }
 
-- (void)setDisplayBrightness:(float)a3 permanently:(BOOL)a4
+- (void)setDisplayBrightness:(float)brightness permanently:(BOOL)permanently
 {
-  v4 = a4;
+  permanentlyCopy = permanently;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   numPendingTransactions = self->_numPendingTransactions;
@@ -166,7 +166,7 @@
     v9 = 3;
   }
 
-  if (v4)
+  if (permanentlyCopy)
   {
     v10 = @"setDisplayBrightness (permanent)";
   }
@@ -176,11 +176,11 @@
     v10 = @"setDisplayBrightness (transient)";
   }
 
-  *&v7 = a3;
+  *&v7 = brightness;
   [(BKDisplayBrightnessController *)self->_brightnessController setBrightnessLevel:v10 reason:v9 options:v7];
-  if (v4 || self->_systemDisplayBrightness < 0.0)
+  if (permanentlyCopy || self->_systemDisplayBrightness < 0.0)
   {
-    self->_systemDisplayBrightness = a3;
+    self->_systemDisplayBrightness = brightness;
     if (numPendingTransactions)
     {
 LABEL_10:
@@ -219,9 +219,9 @@ LABEL_13:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_initWithBrightnessController:(id)a3
+- (id)_initWithBrightnessController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = BKDisplayBrightnessUpdateTransactionManager;
   v6 = [(BKDisplayBrightnessUpdateTransactionManager *)&v12 init];
@@ -231,11 +231,11 @@ LABEL_13:
     *&v6->_lock._os_unfair_lock_opaque = 0;
     v6->_commitPending = 0;
     v8 = +[BKSDefaults externalDefaults];
-    v9 = [v8 springBoardDefaults];
-    [v9 brightness];
+    springBoardDefaults = [v8 springBoardDefaults];
+    [springBoardDefaults brightness];
     v7->_systemDisplayBrightness = v10;
 
-    objc_storeStrong(&v7->_brightnessController, a3);
+    objc_storeStrong(&v7->_brightnessController, controller);
   }
 
   return v7;

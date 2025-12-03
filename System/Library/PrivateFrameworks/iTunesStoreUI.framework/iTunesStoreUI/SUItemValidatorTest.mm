@@ -1,8 +1,8 @@
 @interface SUItemValidatorTest
 + (id)defaultTest;
-- (BOOL)validateItem:(id)a3 offer:(id)a4 error:(id *)a5;
-- (BOOL)validateItems:(id)a3 offers:(id)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)validateItem:(id)item offer:(id)offer error:(id *)error;
+- (BOOL)validateItems:(id)items offers:(id)offers error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SUItemValidatorTest
@@ -14,27 +14,27 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
 
-- (BOOL)validateItem:(id)a3 offer:(id)a4 error:(id *)a5
+- (BOOL)validateItem:(id)item offer:(id)offer error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   return 1;
 }
 
-- (BOOL)validateItems:(id)a3 offers:(id)a4 error:(id *)a5
+- (BOOL)validateItems:(id)items offers:(id)offers error:(id *)error
 {
-  v9 = [a3 count];
-  v10 = [a4 count];
+  v9 = [items count];
+  v10 = [offers count];
   if (v9 < 1)
   {
     return 1;
@@ -46,7 +46,7 @@
     v12 = 0;
     for (i = 0; i != v9; v12 = i >= v9)
     {
-      v14 = [a3 objectAtIndex:i];
+      v14 = [items objectAtIndex:i];
       if (i >= v11)
       {
         v15 = 0;
@@ -54,10 +54,10 @@
 
       else
       {
-        v15 = [a4 objectAtIndex:i];
+        v15 = [offers objectAtIndex:i];
       }
 
-      if (![(SUItemValidatorTest *)self validateItem:v14 offer:v15 error:a5])
+      if (![(SUItemValidatorTest *)self validateItem:v14 offer:v15 error:error])
       {
         break;
       }

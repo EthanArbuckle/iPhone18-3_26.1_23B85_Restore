@@ -1,38 +1,38 @@
 @interface HUAudioAnalysisSettingsViewController
-- (HUAudioAnalysisSettingsViewController)initWithAccessoryGroupItem:(id)a3;
-- (HUAudioAnalysisSettingsViewController)initWithAccessorySettingItem:(id)a3;
-- (HUAudioAnalysisSettingsViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4;
-- (HUAudioAnalysisSettingsViewController)initWithHome:(id)a3;
-- (id)buildItemModuleControllerForModule:(id)a3;
+- (HUAudioAnalysisSettingsViewController)initWithAccessoryGroupItem:(id)item;
+- (HUAudioAnalysisSettingsViewController)initWithAccessorySettingItem:(id)item;
+- (HUAudioAnalysisSettingsViewController)initWithAccessorySettingItem:(id)item module:(id)module;
+- (HUAudioAnalysisSettingsViewController)initWithHome:(id)home;
+- (id)buildItemModuleControllerForModule:(id)module;
 @end
 
 @implementation HUAudioAnalysisSettingsViewController
 
-- (HUAudioAnalysisSettingsViewController)initWithAccessoryGroupItem:(id)a3
+- (HUAudioAnalysisSettingsViewController)initWithAccessoryGroupItem:(id)item
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithAccessoryGroupItem_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisSettingsViewController.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUAudioAnalysisSettingsViewController initWithAccessoryGroupItem:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisSettingsViewController.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUAudioAnalysisSettingsViewController initWithAccessoryGroupItem:]", v6}];
 
   return 0;
 }
 
-- (HUAudioAnalysisSettingsViewController)initWithAccessorySettingItem:(id)a3
+- (HUAudioAnalysisSettingsViewController)initWithAccessorySettingItem:(id)item
 {
-  v4 = [a3 homeKitSettingsVendor];
-  v5 = [v4 hf_home];
-  v6 = [(HUAudioAnalysisSettingsViewController *)self initWithHome:v5];
+  homeKitSettingsVendor = [item homeKitSettingsVendor];
+  hf_home = [homeKitSettingsVendor hf_home];
+  v6 = [(HUAudioAnalysisSettingsViewController *)self initWithHome:hf_home];
 
   return v6;
 }
 
-- (HUAudioAnalysisSettingsViewController)initWithHome:(id)a3
+- (HUAudioAnalysisSettingsViewController)initWithHome:(id)home
 {
-  v5 = a3;
-  if (!v5)
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v11 = [MEMORY[0x277CCA890] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisSettingsViewController.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUAudioAnalysisSettingsViewController.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"home != nil"}];
   }
 
   v6 = [objc_alloc(MEMORY[0x277D14B08]) initWithDelegate:self];
@@ -40,7 +40,7 @@
   v13[1] = 3221225472;
   v13[2] = __54__HUAudioAnalysisSettingsViewController_initWithHome___block_invoke;
   v13[3] = &unk_277DB7478;
-  v7 = v5;
+  v7 = homeCopy;
   v14 = v7;
   [v6 setHomeCreator:v13];
   [v6 setItemModuleCreator:&__block_literal_global_186];
@@ -69,29 +69,29 @@ id __54__HUAudioAnalysisSettingsViewController_initWithHome___block_invoke_2(uin
   return v7;
 }
 
-- (HUAudioAnalysisSettingsViewController)initWithAccessorySettingItem:(id)a3 module:(id)a4
+- (HUAudioAnalysisSettingsViewController)initWithAccessorySettingItem:(id)item module:(id)module
 {
-  v5 = [a4 home];
-  v6 = [(HUAudioAnalysisSettingsViewController *)self initWithHome:v5];
+  home = [module home];
+  v6 = [(HUAudioAnalysisSettingsViewController *)self initWithHome:home];
 
   return v6;
 }
 
-- (id)buildItemModuleControllerForModule:(id)a3
+- (id)buildItemModuleControllerForModule:(id)module
 {
-  v4 = a3;
+  moduleCopy = module;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    NSLog(&cfstr_UnexpectedModu.isa, v4);
+    NSLog(&cfstr_UnexpectedModu.isa, moduleCopy);
   }
 
-  v5 = [(HUItemModuleController *)[HUAudioAnalysisSettingsItemModuleController alloc] initWithModule:v4];
+  v5 = [(HUItemModuleController *)[HUAudioAnalysisSettingsItemModuleController alloc] initWithModule:moduleCopy];
   [(HUAudioAnalysisSettingsViewController *)self setModuleController:v5];
 
-  v6 = [(HUAudioAnalysisSettingsViewController *)self moduleController];
+  moduleController = [(HUAudioAnalysisSettingsViewController *)self moduleController];
 
-  return v6;
+  return moduleController;
 }
 
 @end

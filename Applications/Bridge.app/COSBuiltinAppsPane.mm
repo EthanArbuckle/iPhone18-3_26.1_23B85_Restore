@@ -16,9 +16,9 @@
 - (id)markupString
 {
   WeakRetained = objc_loadWeakRetained(&qword_1002BD2D0);
-  v3 = [WeakRetained builtinAppsMarkup];
+  builtinAppsMarkup = [WeakRetained builtinAppsMarkup];
 
-  return v3;
+  return builtinAppsMarkup;
 }
 
 @end

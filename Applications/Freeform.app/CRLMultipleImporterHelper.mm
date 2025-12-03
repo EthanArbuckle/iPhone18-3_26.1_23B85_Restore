@@ -1,25 +1,25 @@
 @interface CRLMultipleImporterHelper
-- (CRLMultipleImporterHelper)initWithImporters:(id)a3;
-- (void)completeImportWithCompatibilityOnAllDevices:(BOOL)a3 allowHEVCContent:(BOOL)a4;
-- (void)importer:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6;
-- (void)mediaCompatibilityCheckHasBeenHandledForImporter:(id)a3;
+- (CRLMultipleImporterHelper)initWithImporters:(id)importers;
+- (void)completeImportWithCompatibilityOnAllDevices:(BOOL)devices allowHEVCContent:(BOOL)content;
+- (void)importer:(id)importer needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block;
+- (void)mediaCompatibilityCheckHasBeenHandledForImporter:(id)importer;
 @end
 
 @implementation CRLMultipleImporterHelper
 
-- (CRLMultipleImporterHelper)initWithImporters:(id)a3
+- (CRLMultipleImporterHelper)initWithImporters:(id)importers
 {
-  v4 = a3;
+  importersCopy = importers;
   v11.receiver = self;
   v11.super_class = CRLMultipleImporterHelper;
   v5 = [(CRLMultipleImporterHelper *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [importersCopy copy];
     importers = v5->_importers;
     v5->_importers = v6;
 
-    v8 = [[NSMutableSet alloc] initWithArray:v4];
+    v8 = [[NSMutableSet alloc] initWithArray:importersCopy];
     importersNeedingToRequestMediaCompatibilityRequirement = v5->_importersNeedingToRequestMediaCompatibilityRequirement;
     v5->_importersNeedingToRequestMediaCompatibilityRequirement = v8;
   }
@@ -27,10 +27,10 @@
   return v5;
 }
 
-- (void)importer:(id)a3 needsMediaCompatibilityFeedbackWithReasons:(int64_t)a4 forMediaType:(int64_t)a5 usingBlock:(id)a6
+- (void)importer:(id)importer needsMediaCompatibilityFeedbackWithReasons:(int64_t)reasons forMediaType:(int64_t)type usingBlock:(id)block
 {
-  v17 = a3;
-  v10 = a6;
+  importerCopy = importer;
+  blockCopy = block;
   mediaCompatibilityRequirementReplyBlocksForImporters = self->_mediaCompatibilityRequirementReplyBlocksForImporters;
   if (!mediaCompatibilityRequirementReplyBlocksForImporters)
   {
@@ -41,19 +41,19 @@
     mediaCompatibilityRequirementReplyBlocksForImporters = self->_mediaCompatibilityRequirementReplyBlocksForImporters;
   }
 
-  v14 = [v10 copy];
-  [(NSMapTable *)mediaCompatibilityRequirementReplyBlocksForImporters setObject:v14 forKey:v17];
+  v14 = [blockCopy copy];
+  [(NSMapTable *)mediaCompatibilityRequirementReplyBlocksForImporters setObject:v14 forKey:importerCopy];
 
-  v15 = sub_10032658C(self->_mediaTypesRequestingConversion, a5);
-  v16 = self->_reasonsForMediaConversion | a4;
+  v15 = sub_10032658C(self->_mediaTypesRequestingConversion, type);
+  v16 = self->_reasonsForMediaConversion | reasons;
   self->_mediaTypesRequestingConversion = v15;
   self->_reasonsForMediaConversion = v16;
 }
 
-- (void)mediaCompatibilityCheckHasBeenHandledForImporter:(id)a3
+- (void)mediaCompatibilityCheckHasBeenHandledForImporter:(id)importer
 {
-  v4 = a3;
-  if (([(NSMutableSet *)self->_importersNeedingToRequestMediaCompatibilityRequirement containsObject:v4]& 1) == 0)
+  importerCopy = importer;
+  if (([(NSMutableSet *)self->_importersNeedingToRequestMediaCompatibilityRequirement containsObject:importerCopy]& 1) == 0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -82,13 +82,13 @@
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:55 isFatal:0 description:"Importer compatibility check is being handled for an importer not in the list."];
   }
 
-  [(NSMutableSet *)self->_importersNeedingToRequestMediaCompatibilityRequirement removeObject:v4];
+  [(NSMutableSet *)self->_importersNeedingToRequestMediaCompatibilityRequirement removeObject:importerCopy];
 }
 
-- (void)completeImportWithCompatibilityOnAllDevices:(BOOL)a3 allowHEVCContent:(BOOL)a4
+- (void)completeImportWithCompatibilityOnAllDevices:(BOOL)devices allowHEVCContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = a3;
+  contentCopy = content;
+  devicesCopy = devices;
   if (![(CRLMultipleImporterHelper *)self allImportersHaveGivenCompatibilityResponse])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -138,7 +138,7 @@
         }
 
         v15 = [(NSMapTable *)self->_mediaCompatibilityRequirementReplyBlocksForImporters objectForKey:*(*(&v16 + 1) + 8 * i), v16];
-        v15[2](v15, v5, v4);
+        v15[2](v15, devicesCopy, contentCopy);
       }
 
       v12 = [(NSMapTable *)v10 countByEnumeratingWithState:&v16 objects:v20 count:16];

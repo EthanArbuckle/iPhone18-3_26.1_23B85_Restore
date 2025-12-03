@@ -1,13 +1,13 @@
 @interface REDataSourceLoader
-+ (id)aggregateDataSourceLoaderWithDataSourceLoaders:(id)a3;
-+ (id)dataSourceLoaderWithBlock:(id)a3;
-+ (id)dataSourceLoaderWithDataSources:(id)a3;
-+ (id)dataSourceLoaderWithDirectories:(id)a3 dataSourceKey:(id)a4;
-+ (id)dataSourceLoaderWithDirectory:(id)a3;
++ (id)aggregateDataSourceLoaderWithDataSourceLoaders:(id)loaders;
++ (id)dataSourceLoaderWithBlock:(id)block;
++ (id)dataSourceLoaderWithDataSources:(id)sources;
++ (id)dataSourceLoaderWithDirectories:(id)directories dataSourceKey:(id)key;
++ (id)dataSourceLoaderWithDirectory:(id)directory;
 + (id)defaultDataSourceLoader;
 + (id)disabledDataSourceLoader;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation REDataSourceLoader
@@ -43,7 +43,7 @@ uint64_t __46__REDataSourceLoader_disabledDataSourceLoader__block_invoke()
   block[1] = 3221225472;
   block[2] = __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultDataSourceLoader_onceToken != -1)
   {
     dispatch_once(&defaultDataSourceLoader_onceToken, block);
@@ -115,21 +115,21 @@ void __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke(uint64_t a1)
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)dataSourceLoaderWithDirectory:(id)a3
++ (id)dataSourceLoaderWithDirectory:(id)directory
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  directoryCopy = directory;
+  v5 = directoryCopy;
+  if (directoryCopy)
   {
-    v10[0] = v4;
+    v10[0] = directoryCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-    v7 = [a1 dataSourceLoaderWithDirectories:v6];
+    v7 = [self dataSourceLoaderWithDirectories:v6];
   }
 
   else
   {
-    v7 = [a1 dataSourceLoaderWithDirectories:MEMORY[0x277CBEBF8]];
+    v7 = [self dataSourceLoaderWithDirectories:MEMORY[0x277CBEBF8]];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -137,13 +137,13 @@ void __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)dataSourceLoaderWithDirectories:(id)a3 dataSourceKey:(id)a4
++ (id)dataSourceLoaderWithDirectories:(id)directories dataSourceKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
+  keyCopy = key;
+  directoriesCopy = directories;
   v7 = objc_opt_new();
   v8 = +[REDataSourceLoaderConfiguration sharedInstance];
-  v9 = [REClassLoader loaderWithDirectories:v6 dataSourceKey:v5 configuration:v8];
+  v9 = [REClassLoader loaderWithDirectories:directoriesCopy dataSourceKey:keyCopy configuration:v8];
 
   v10 = v7[1];
   v7[1] = v9;
@@ -151,12 +151,12 @@ void __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)dataSourceLoaderWithBlock:(id)a3
++ (id)dataSourceLoaderWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
   v5 = +[REDataSourceLoaderConfiguration sharedInstance];
-  v6 = [REClassLoader loaderWithBlock:v3 configuration:v5];
+  v6 = [REClassLoader loaderWithBlock:blockCopy configuration:v5];
 
   v7 = v4[1];
   v4[1] = v6;
@@ -164,12 +164,12 @@ void __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)dataSourceLoaderWithDataSources:(id)a3
++ (id)dataSourceLoaderWithDataSources:(id)sources
 {
-  v3 = a3;
+  sourcesCopy = sources;
   v4 = objc_opt_new();
   v5 = +[REDataSourceLoaderConfiguration sharedInstance];
-  v6 = [REClassLoader loaderWithObjects:v3 configuration:v5];
+  v6 = [REClassLoader loaderWithObjects:sourcesCopy configuration:v5];
 
   v7 = v4[1];
   v4[1] = v6;
@@ -177,16 +177,16 @@ void __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke(uint64_t a1)
   return v4;
 }
 
-+ (id)aggregateDataSourceLoaderWithDataSourceLoaders:(id)a3
++ (id)aggregateDataSourceLoaderWithDataSourceLoaders:(id)loaders
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB40] orderedSet];
+  loadersCopy = loaders;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = loadersCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -203,7 +203,7 @@ void __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke(uint64_t a1)
 
         if (*(*(*(&v15 + 1) + 8 * i) + 8))
         {
-          [v4 addObject:v15];
+          [orderedSet addObject:v15];
         }
       }
 
@@ -214,7 +214,7 @@ void __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke(uint64_t a1)
   }
 
   v10 = objc_opt_new();
-  v11 = [REClassLoader groupLoaderWithLoaders:v4];
+  v11 = [REClassLoader groupLoaderWithLoaders:orderedSet];
   v12 = v10[1];
   v10[1] = v11;
 
@@ -223,17 +223,17 @@ void __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_loader);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -244,7 +244,7 @@ void __45__REDataSourceLoader_defaultDataSourceLoader__block_invoke(uint64_t a1)
     if (objc_opt_isKindOfClass())
     {
       loader = self->_loader;
-      v6 = v4->_loader;
+      v6 = equalCopy->_loader;
       v7 = loader;
       v8 = v7;
       if (v7 == v6)

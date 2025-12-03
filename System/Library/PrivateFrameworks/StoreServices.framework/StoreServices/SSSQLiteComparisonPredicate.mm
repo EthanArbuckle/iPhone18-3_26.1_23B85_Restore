@@ -1,9 +1,9 @@
 @interface SSSQLiteComparisonPredicate
-+ (id)predicateWithProperty:(id)a3 equalToLongLong:(int64_t)a4;
-+ (id)predicateWithProperty:(id)a3 value:(id)a4 comparisonType:(int64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)predicateWithProperty:(id)property equalToLongLong:(int64_t)long;
++ (id)predicateWithProperty:(id)property value:(id)value comparisonType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (id)_comparisonTypeString;
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4;
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index;
 - (void)dealloc;
 @end
 
@@ -11,10 +11,10 @@
 
 - (id)_comparisonTypeString
 {
-  v4 = [(SSSQLiteComparisonPredicate *)self comparisonType];
-  if ((v4 - 1) < 7)
+  comparisonType = [(SSSQLiteComparisonPredicate *)self comparisonType];
+  if ((comparisonType - 1) < 7)
   {
-    return off_1E84B2048[v4 - 1];
+    return off_1E84B2048[comparisonType - 1];
   }
 
   [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
@@ -28,40 +28,40 @@
   [(SSSQLitePropertyPredicate *)&v3 dealloc];
 }
 
-+ (id)predicateWithProperty:(id)a3 equalToLongLong:(int64_t)a4
++ (id)predicateWithProperty:(id)property equalToLongLong:(int64_t)long
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:a4];
-  v7 = [a1 predicateWithProperty:a3 equalToValue:v6];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:long];
+  v7 = [self predicateWithProperty:property equalToValue:v6];
 
   return v7;
 }
 
-+ (id)predicateWithProperty:(id)a3 value:(id)a4 comparisonType:(int64_t)a5
++ (id)predicateWithProperty:(id)property value:(id)value comparisonType:(int64_t)type
 {
   v8 = objc_alloc_init(objc_opt_class());
-  v8[2] = a5;
-  v8[1] = [a3 copy];
-  if ([a4 conformsToProtocol:&unk_1F507D4B0])
+  v8[2] = type;
+  v8[1] = [property copy];
+  if ([value conformsToProtocol:&unk_1F507D4B0])
   {
-    v9 = [a4 copy];
+    valueCopy = [value copy];
   }
 
   else
   {
-    v9 = a4;
+    valueCopy = value;
   }
 
-  v8[3] = v9;
+  v8[3] = valueCopy;
 
   return v8;
 }
 
-- (void)bindToStatement:(sqlite3_stmt *)a3 bindingIndex:(int *)a4
+- (void)bindToStatement:(sqlite3_stmt *)statement bindingIndex:(int *)index
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    sqlite3_bind_text(a3, *a4, [self->_value UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
+    sqlite3_bind_text(statement, *index, [self->_value UTF8String], -1, 0xFFFFFFFFFFFFFFFFLL);
   }
 
   else
@@ -69,18 +69,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [self->_value objCType];
-      v9 = *v8;
-      if ((v9 == 102 || v9 == 100) && !v8[1])
+      objCType = [self->_value objCType];
+      v9 = *objCType;
+      if ((v9 == 102 || v9 == 100) && !objCType[1])
       {
-        v10 = *a4;
+        v10 = *index;
         [self->_value doubleValue];
-        sqlite3_bind_double(a3, v10, v11);
+        sqlite3_bind_double(statement, v10, v11);
       }
 
       else
       {
-        sqlite3_bind_int64(a3, *a4, [self->_value longLongValue]);
+        sqlite3_bind_int64(statement, *index, [self->_value longLongValue]);
       }
     }
 
@@ -90,21 +90,21 @@
     }
   }
 
-  ++*a4;
+  ++*index;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v9.receiver = self;
   v9.super_class = SSSQLiteComparisonPredicate;
   v5 = [(SSSQLitePropertyPredicate *)&v9 isEqual:?];
   if (v5)
   {
-    v6 = [(SSSQLiteComparisonPredicate *)self comparisonType];
-    if (v6 == [a3 comparisonType])
+    comparisonType = [(SSSQLiteComparisonPredicate *)self comparisonType];
+    if (comparisonType == [equal comparisonType])
     {
-      v7 = [(SSSQLiteComparisonPredicate *)self value];
-      if (v7 == [a3 value])
+      value = [(SSSQLiteComparisonPredicate *)self value];
+      if (value == [equal value])
       {
         LOBYTE(v5) = 1;
       }

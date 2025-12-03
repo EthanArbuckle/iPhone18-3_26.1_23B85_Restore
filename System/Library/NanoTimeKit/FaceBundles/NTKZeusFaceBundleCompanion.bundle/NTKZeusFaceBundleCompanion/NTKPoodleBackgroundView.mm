@@ -1,23 +1,23 @@
 @interface NTKPoodleBackgroundView
 - (CGRect)faceBounds;
-- (NTKPoodleBackgroundView)initWithDevice:(id)a3;
+- (NTKPoodleBackgroundView)initWithDevice:(id)device;
 - (void)layoutSubviews;
-- (void)setPalette:(id)a3;
+- (void)setPalette:(id)palette;
 @end
 
 @implementation NTKPoodleBackgroundView
 
-- (NTKPoodleBackgroundView)initWithDevice:(id)a3
+- (NTKPoodleBackgroundView)initWithDevice:(id)device
 {
-  v5 = a3;
-  sub_16F44(v5, v37);
+  deviceCopy = device;
+  sub_16F44(deviceCopy, v37);
   v36.receiver = self;
   v36.super_class = NTKPoodleBackgroundView;
   v6 = [(NTKPoodleBackgroundView *)&v36 initWithFrame:v38, v39, v40, v41];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     [(NTKPoodleBackgroundView *)v7 dialWidth];
     v9 = v8;
     v10 = sub_16AD8();
@@ -32,8 +32,8 @@
     -[CALayer setBackgroundColor:](v13, "setBackgroundColor:", [v14 CGColor]);
 
     [(CALayer *)v7->_dialInnerLayer setActions:v10];
-    v15 = [(NTKPoodleBackgroundView *)v7 layer];
-    [v15 addSublayer:v7->_dialInnerLayer];
+    layer = [(NTKPoodleBackgroundView *)v7 layer];
+    [layer addSublayer:v7->_dialInnerLayer];
 
     v16 = +[CALayer layer];
     dialOuterLayer = v7->_dialOuterLayer;
@@ -47,8 +47,8 @@
     -[CALayer setBorderColor:](v18, "setBorderColor:", [v19 CGColor]);
 
     [(CALayer *)v7->_dialOuterLayer setActions:v10];
-    v20 = [(NTKPoodleBackgroundView *)v7 layer];
-    [v20 addSublayer:v7->_dialOuterLayer];
+    layer2 = [(NTKPoodleBackgroundView *)v7 layer];
+    [layer2 addSublayer:v7->_dialOuterLayer];
 
     v21 = +[CALayer layer];
     dialInnerBorderLayer = v7->_dialInnerBorderLayer;
@@ -62,8 +62,8 @@
     -[CALayer setBorderColor:](v23, "setBorderColor:", [v24 CGColor]);
 
     [(CALayer *)v7->_dialInnerBorderLayer setActions:v10];
-    v25 = [(NTKPoodleBackgroundView *)v7 layer];
-    [v25 addSublayer:v7->_dialInnerBorderLayer];
+    layer3 = [(NTKPoodleBackgroundView *)v7 layer];
+    [layer3 addSublayer:v7->_dialInnerBorderLayer];
 
     v26 = +[CALayer layer];
     dialOuterBorderLayer = v7->_dialOuterBorderLayer;
@@ -77,15 +77,15 @@
     -[CALayer setBorderColor:](v28, "setBorderColor:", [v29 CGColor]);
 
     [(CALayer *)v7->_dialOuterBorderLayer setActions:v10];
-    v30 = [(NTKPoodleBackgroundView *)v7 layer];
-    [v30 addSublayer:v7->_dialOuterBorderLayer];
+    layer4 = [(NTKPoodleBackgroundView *)v7 layer];
+    [layer4 addSublayer:v7->_dialOuterBorderLayer];
 
-    v31 = [(NTKPoodleBackgroundView *)v7 layer];
-    [v31 setMasksToBounds:1];
+    layer5 = [(NTKPoodleBackgroundView *)v7 layer];
+    [layer5 setMasksToBounds:1];
 
-    v32 = [(NTKPoodleBackgroundView *)v7 layer];
+    layer6 = [(NTKPoodleBackgroundView *)v7 layer];
     v33 = sub_16AD8();
-    [v32 setActions:v33];
+    [layer6 setActions:v33];
 
     v34 = v7;
   }
@@ -129,34 +129,34 @@
   [(CALayer *)self->_dialOuterBorderLayer setCornerRadius:width * 0.5];
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  objc_storeStrong(&self->_palette, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_palette, palette);
+  paletteCopy = palette;
   dialInnerLayer = self->_dialInnerLayer;
-  v7 = [v5 innerDialBackground];
-  -[CALayer setBackgroundColor:](dialInnerLayer, "setBackgroundColor:", [v7 CGColor]);
+  innerDialBackground = [paletteCopy innerDialBackground];
+  -[CALayer setBackgroundColor:](dialInnerLayer, "setBackgroundColor:", [innerDialBackground CGColor]);
 
   dialInnerBorderLayer = self->_dialInnerBorderLayer;
-  v9 = [v5 innerDialBackgroundBorder];
-  -[CALayer setBorderColor:](dialInnerBorderLayer, "setBorderColor:", [v9 CGColor]);
+  innerDialBackgroundBorder = [paletteCopy innerDialBackgroundBorder];
+  -[CALayer setBorderColor:](dialInnerBorderLayer, "setBorderColor:", [innerDialBackgroundBorder CGColor]);
 
   v10 = self->_dialInnerBorderLayer;
-  v11 = [v5 innerDialBorderWidth];
-  [v11 floatValue];
+  innerDialBorderWidth = [paletteCopy innerDialBorderWidth];
+  [innerDialBorderWidth floatValue];
   [(CALayer *)v10 setBorderWidth:v12];
 
   dialOuterLayer = self->_dialOuterLayer;
-  v14 = [v5 outerDialBackground];
-  -[CALayer setBorderColor:](dialOuterLayer, "setBorderColor:", [v14 CGColor]);
+  outerDialBackground = [paletteCopy outerDialBackground];
+  -[CALayer setBorderColor:](dialOuterLayer, "setBorderColor:", [outerDialBackground CGColor]);
 
   dialOuterBorderLayer = self->_dialOuterBorderLayer;
-  v16 = [v5 outerDialBackgroundBorder];
-  -[CALayer setBorderColor:](dialOuterBorderLayer, "setBorderColor:", [v16 CGColor]);
+  outerDialBackgroundBorder = [paletteCopy outerDialBackgroundBorder];
+  -[CALayer setBorderColor:](dialOuterBorderLayer, "setBorderColor:", [outerDialBackgroundBorder CGColor]);
 
   v17 = self->_dialOuterBorderLayer;
-  v19 = [v5 outerDialBorderWidth];
-  [v19 floatValue];
+  outerDialBorderWidth = [paletteCopy outerDialBorderWidth];
+  [outerDialBorderWidth floatValue];
   [(CALayer *)v17 setBorderWidth:v18];
 }
 

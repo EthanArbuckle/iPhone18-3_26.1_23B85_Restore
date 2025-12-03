@@ -3,11 +3,11 @@
 + (id)dimSumCollationStrategy;
 + (id)myCurrentCollation;
 + (void)prewarm;
-- (BOOL)isEqual:(id)a3;
-- (SBHLocalizedIndexedCollationStrategy)initWithAdditionalSections:(id)a3;
-- (id)sortedArrayFromArray:(id)a3 collationStringSelector:(SEL)a4;
-- (int64_t)sectionForObject:(id)a3 collationStringSelector:(SEL)a4;
-- (int64_t)sectionForSectionIndexTitleAtIndex:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (SBHLocalizedIndexedCollationStrategy)initWithAdditionalSections:(id)sections;
+- (id)sortedArrayFromArray:(id)array collationStringSelector:(SEL)selector;
+- (int64_t)sectionForObject:(id)object collationStringSelector:(SEL)selector;
+- (int64_t)sectionForSectionIndexTitleAtIndex:(int64_t)index;
 @end
 
 @implementation SBHLocalizedIndexedCollationStrategy
@@ -37,21 +37,21 @@ uint64_t __58__SBHLocalizedIndexedCollationStrategy_myCurrentCollation__block_in
 + (void)prewarm
 {
   BSDispatchQueueAssertMain();
-  v3 = [a1 myCurrentCollation];
-  [v3 tokenizer];
+  myCurrentCollation = [self myCurrentCollation];
+  [myCurrentCollation tokenizer];
 
   v4 = +[SBHLocalizedIndexedCollationStrategy myCurrentCollation];
-  v5 = [v4 sectionTitles];
+  sectionTitles = [v4 sectionTitles];
   v6 = __defaultSectionTitles;
-  __defaultSectionTitles = v5;
+  __defaultSectionTitles = sectionTitles;
 
   v7 = +[SBHLocalizedIndexedCollationStrategy myCurrentCollation];
-  v8 = [v7 sectionIndexTitles];
+  sectionIndexTitles = [v7 sectionIndexTitles];
   v9 = __defaultSectionIndexTitles;
-  __defaultSectionIndexTitles = v8;
+  __defaultSectionIndexTitles = sectionIndexTitles;
 
-  v10 = [a1 dimSumCollationStrategy];
-  v11 = [a1 defaultCollationStrategy];
+  dimSumCollationStrategy = [self dimSumCollationStrategy];
+  defaultCollationStrategy = [self defaultCollationStrategy];
 }
 
 + (id)dimSumCollationStrategy
@@ -98,9 +98,9 @@ uint64_t __64__SBHLocalizedIndexedCollationStrategy_defaultCollationStrategy__bl
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (SBHLocalizedIndexedCollationStrategy)initWithAdditionalSections:(id)a3
+- (SBHLocalizedIndexedCollationStrategy)initWithAdditionalSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v19.receiver = self;
   v19.super_class = SBHLocalizedIndexedCollationStrategy;
   v5 = [(SBHLocalizedIndexedCollationStrategy *)&v19 init];
@@ -110,25 +110,25 @@ uint64_t __64__SBHLocalizedIndexedCollationStrategy_defaultCollationStrategy__bl
     currentCollation = v5->_currentCollation;
     v5->_currentCollation = v6;
 
-    v8 = [objc_opt_class() defaultSectionTitles];
+    defaultSectionTitles = [objc_opt_class() defaultSectionTitles];
     cachedSectionTitles = v5->_cachedSectionTitles;
-    v5->_cachedSectionTitles = v8;
+    v5->_cachedSectionTitles = defaultSectionTitles;
 
-    v10 = [objc_opt_class() defaultSectionIndexTitles];
+    defaultSectionIndexTitles = [objc_opt_class() defaultSectionIndexTitles];
     cachedSectionIndexTitles = v5->_cachedSectionIndexTitles;
-    v5->_cachedSectionIndexTitles = v10;
+    v5->_cachedSectionIndexTitles = defaultSectionIndexTitles;
 
-    if ([v4 count])
+    if ([sectionsCopy count])
     {
-      v12 = [(NSArray *)v5->_cachedSectionTitles arrayByAddingObjectsFromArray:v4];
+      v12 = [(NSArray *)v5->_cachedSectionTitles arrayByAddingObjectsFromArray:sectionsCopy];
       v13 = v5->_cachedSectionTitles;
       v5->_cachedSectionTitles = v12;
 
-      v14 = [(NSArray *)v5->_cachedSectionIndexTitles arrayByAddingObjectsFromArray:v4];
+      v14 = [(NSArray *)v5->_cachedSectionIndexTitles arrayByAddingObjectsFromArray:sectionsCopy];
       v15 = v5->_cachedSectionIndexTitles;
       v5->_cachedSectionIndexTitles = v14;
 
-      v16 = [v4 copy];
+      v16 = [sectionsCopy copy];
       appendedSections = v5->_appendedSections;
       v5->_appendedSections = v16;
     }
@@ -137,11 +137,11 @@ uint64_t __64__SBHLocalizedIndexedCollationStrategy_defaultCollationStrategy__bl
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   BSDispatchQueueAssertMain();
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -151,7 +151,7 @@ uint64_t __64__SBHLocalizedIndexedCollationStrategy_defaultCollationStrategy__bl
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v6 = 0;
-    if (v4 && (isKindOfClass & 1) != 0)
+    if (equalCopy && (isKindOfClass & 1) != 0)
     {
       v6 = BSEqualObjects();
     }
@@ -160,14 +160,14 @@ uint64_t __64__SBHLocalizedIndexedCollationStrategy_defaultCollationStrategy__bl
   return v6;
 }
 
-- (int64_t)sectionForObject:(id)a3 collationStringSelector:(SEL)a4
+- (int64_t)sectionForObject:(id)object collationStringSelector:(SEL)selector
 {
-  v6 = a3;
+  objectCopy = object;
   BSDispatchQueueAssertMain();
-  v7 = [(UILocalizedIndexedCollation *)self->_currentCollation sectionForObject:v6 collationStringSelector:a4];
+  v7 = [(UILocalizedIndexedCollation *)self->_currentCollation sectionForObject:objectCopy collationStringSelector:selector];
   if (self->_appendedSections)
   {
-    v8 = [v6 performSelector:sel__sbhIconLibraryOverrideCollationSectionTitle];
+    v8 = [objectCopy performSelector:sel__sbhIconLibraryOverrideCollationSectionTitle];
     if (v8)
     {
       v7 = [(NSArray *)self->_cachedSectionIndexTitles indexOfObject:v8];
@@ -177,21 +177,21 @@ uint64_t __64__SBHLocalizedIndexedCollationStrategy_defaultCollationStrategy__bl
   return v7;
 }
 
-- (id)sortedArrayFromArray:(id)a3 collationStringSelector:(SEL)a4
+- (id)sortedArrayFromArray:(id)array collationStringSelector:(SEL)selector
 {
-  v6 = a3;
+  arrayCopy = array;
   BSDispatchQueueAssertMain();
-  v7 = [(UILocalizedIndexedCollation *)self->_currentCollation sortedArrayFromArray:v6 collationStringSelector:a4];
+  v7 = [(UILocalizedIndexedCollation *)self->_currentCollation sortedArrayFromArray:arrayCopy collationStringSelector:selector];
 
   return v7;
 }
 
-- (int64_t)sectionForSectionIndexTitleAtIndex:(int64_t)a3
+- (int64_t)sectionForSectionIndexTitleAtIndex:(int64_t)index
 {
   BSDispatchQueueAssertMain();
   currentCollation = self->_currentCollation;
 
-  return [(UILocalizedIndexedCollation *)currentCollation sectionForSectionIndexTitleAtIndex:a3];
+  return [(UILocalizedIndexedCollation *)currentCollation sectionForSectionIndexTitleAtIndex:index];
 }
 
 @end

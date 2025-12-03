@@ -1,293 +1,293 @@
 @interface WBSection
-+ (void)mapPrinterSettings:(void *)a3 toSection:(id)a4;
-+ (void)mapSection:(id)a3 toSectionProperties:(void *)a4;
-+ (void)mapSectionProperties:(void *)a3 toSection:(id)a4;
-+ (void)readFrom:(id)a3 textRun:(WrdSectionTextRun *)a4 document:(id)a5 index:(int)a6 section:(id)a7;
-+ (void)readHeaderFrom:(id)a3 type:(int)a4 index:(int)a5 header:(id)a6;
++ (void)mapPrinterSettings:(void *)settings toSection:(id)section;
++ (void)mapSection:(id)section toSectionProperties:(void *)properties;
++ (void)mapSectionProperties:(void *)properties toSection:(id)section;
++ (void)readFrom:(id)from textRun:(WrdSectionTextRun *)run document:(id)document index:(int)index section:(id)section;
++ (void)readHeaderFrom:(id)from type:(int)type index:(int)index header:(id)header;
 @end
 
 @implementation WBSection
 
-+ (void)readFrom:(id)a3 textRun:(WrdSectionTextRun *)a4 document:(id)a5 index:(int)a6 section:(id)a7
++ (void)readFrom:(id)from textRun:(WrdSectionTextRun *)run document:(id)document index:(int)index section:(id)section
 {
-  v8 = *&a6;
-  v23 = a3;
-  v12 = a5;
-  v13 = a7;
-  var4 = a4->var4;
-  var5 = a4->var5;
-  [v23 setReportProgress:1];
-  v16 = [v13 text];
-  [WBText readFrom:v23 text:v16 textRun:a4];
+  v8 = *&index;
+  fromCopy = from;
+  documentCopy = document;
+  sectionCopy = section;
+  var4 = run->var4;
+  var5 = run->var5;
+  [fromCopy setReportProgress:1];
+  text = [sectionCopy text];
+  [WBText readFrom:fromCopy text:text textRun:run];
 
-  [v23 setReportProgress:0];
-  v17 = [v13 oddPageHeader];
-  [a1 readHeaderFrom:v23 type:7 index:v8 header:v17];
+  [fromCopy setReportProgress:0];
+  oddPageHeader = [sectionCopy oddPageHeader];
+  [self readHeaderFrom:fromCopy type:7 index:v8 header:oddPageHeader];
 
-  v18 = [v13 evenPageHeader];
-  [a1 readHeaderFrom:v23 type:6 index:v8 header:v18];
+  evenPageHeader = [sectionCopy evenPageHeader];
+  [self readHeaderFrom:fromCopy type:6 index:v8 header:evenPageHeader];
 
-  v19 = [v13 firstPageHeader];
-  [a1 readHeaderFrom:v23 type:10 index:v8 header:v19];
+  firstPageHeader = [sectionCopy firstPageHeader];
+  [self readHeaderFrom:fromCopy type:10 index:v8 header:firstPageHeader];
 
-  v20 = [v13 oddPageFooter];
-  [a1 readHeaderFrom:v23 type:9 index:v8 header:v20];
+  oddPageFooter = [sectionCopy oddPageFooter];
+  [self readHeaderFrom:fromCopy type:9 index:v8 header:oddPageFooter];
 
-  v21 = [v13 evenPageFooter];
-  [a1 readHeaderFrom:v23 type:8 index:v8 header:v21];
+  evenPageFooter = [sectionCopy evenPageFooter];
+  [self readHeaderFrom:fromCopy type:8 index:v8 header:evenPageFooter];
 
-  v22 = [v13 firstPageFooter];
-  [a1 readHeaderFrom:v23 type:11 index:v8 header:v22];
+  firstPageFooter = [sectionCopy firstPageFooter];
+  [self readHeaderFrom:fromCopy type:11 index:v8 header:firstPageFooter];
 
   if (!v8)
   {
-    [a1 mapPrinterSettings:var4 toSection:v13];
+    [self mapPrinterSettings:var4 toSection:sectionCopy];
   }
 
-  [v13 setResolveMode:0];
-  [a1 mapSectionProperties:var4 toSection:v13];
-  [v13 setResolveMode:1];
-  [a1 mapSectionProperties:var5 toSection:v13];
-  [v13 setResolveMode:2];
+  [sectionCopy setResolveMode:0];
+  [self mapSectionProperties:var4 toSection:sectionCopy];
+  [sectionCopy setResolveMode:1];
+  [self mapSectionProperties:var5 toSection:sectionCopy];
+  [sectionCopy setResolveMode:2];
 }
 
-+ (void)readHeaderFrom:(id)a3 type:(int)a4 index:(int)a5 header:(id)a6
++ (void)readHeaderFrom:(id)from type:(int)type index:(int)index header:(id)header
 {
-  v7 = a5;
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 tableHeaders];
-  if (((*(v11 + 16) - *(v11 + 8)) & 0x3FFFC) != 0)
+  indexCopy = index;
+  fromCopy = from;
+  headerCopy = header;
+  tableHeaders = [fromCopy tableHeaders];
+  if (((*(tableHeaders + 16) - *(tableHeaders + 8)) & 0x3FFFC) != 0)
   {
     v12[0] = &unk_286ED3718;
-    WrdCPTableHeaders::getTextRun(v11, v12, a4, v7);
-    [WBText readFrom:v9 text:v10 textRun:v12];
-    if ([v10 blockCount] >= 2)
+    WrdCPTableHeaders::getTextRun(tableHeaders, v12, type, indexCopy);
+    [WBText readFrom:fromCopy text:headerCopy textRun:v12];
+    if ([headerCopy blockCount] >= 2)
     {
-      [v10 removeLastBlock];
+      [headerCopy removeLastBlock];
     }
   }
 }
 
-+ (void)mapSectionProperties:(void *)a3 toSection:(id)a4
++ (void)mapSectionProperties:(void *)properties toSection:(id)section
 {
-  v39 = a4;
-  v5 = *(a3 + 2);
+  sectionCopy = section;
+  v5 = *(properties + 2);
   if (v5)
   {
-    v6 = *(a3 + 3);
-    v7 = [v39 mutableTopBorder];
-    [WBBorder readFrom:v6 to:v7];
+    v6 = *(properties + 3);
+    mutableTopBorder = [sectionCopy mutableTopBorder];
+    [WBBorder readFrom:v6 to:mutableTopBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 2) != 0)
   {
-    *(a3 + 2) = v5;
-    v8 = *(a3 + 4);
-    v9 = [v39 mutableLeftBorder];
-    [WBBorder readFrom:v8 to:v9];
+    *(properties + 2) = v5;
+    v8 = *(properties + 4);
+    mutableLeftBorder = [sectionCopy mutableLeftBorder];
+    [WBBorder readFrom:v8 to:mutableLeftBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 4) != 0)
   {
-    *(a3 + 2) = v5;
-    v10 = *(a3 + 5);
-    v11 = [v39 mutableBottomBorder];
-    [WBBorder readFrom:v10 to:v11];
+    *(properties + 2) = v5;
+    v10 = *(properties + 5);
+    mutableBottomBorder = [sectionCopy mutableBottomBorder];
+    [WBBorder readFrom:v10 to:mutableBottomBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 8) != 0)
   {
-    *(a3 + 2) = v5;
-    v12 = *(a3 + 6);
-    v13 = [v39 mutableRightBorder];
-    [WBBorder readFrom:v12 to:v13];
+    *(properties + 2) = v5;
+    v12 = *(properties + 6);
+    mutableRightBorder = [sectionCopy mutableRightBorder];
+    [WBBorder readFrom:v12 to:mutableRightBorder];
 
-    v5 = *(a3 + 2);
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x40) != 0)
   {
-    [v39 setBreakType:*(a3 + 18)];
-    v5 = *(a3 + 2);
+    [sectionCopy setBreakType:*(properties + 18)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x400000) != 0)
   {
-    [v39 setPageWidth:*(a3 + 34)];
-    v5 = *(a3 + 2);
+    [sectionCopy setPageWidth:*(properties + 34)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x800000) != 0)
   {
-    [v39 setPageHeight:*(a3 + 35)];
-    v5 = *(a3 + 2);
+    [sectionCopy setPageHeight:*(properties + 35)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x4000) != 0)
   {
-    [v39 setPageOrientation:*(a3 + 26)];
-    v5 = *(a3 + 2);
+    [sectionCopy setPageOrientation:*(properties + 26)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x1000000) != 0)
   {
-    [v39 setLeftMargin:*(a3 + 36)];
-    v5 = *(a3 + 2);
+    [sectionCopy setLeftMargin:*(properties + 36)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x2000000) != 0)
   {
-    [v39 setRightMargin:*(a3 + 37)];
-    v5 = *(a3 + 2);
+    [sectionCopy setRightMargin:*(properties + 37)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x80000) != 0)
   {
-    [v39 setTopMargin:*(a3 + 31)];
-    v5 = *(a3 + 2);
+    [sectionCopy setTopMargin:*(properties + 31)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x100000) != 0)
   {
-    [v39 setBottomMargin:*(a3 + 32)];
-    v5 = *(a3 + 2);
+    [sectionCopy setBottomMargin:*(properties + 32)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x8000000) != 0)
   {
-    [v39 setHeaderMargin:*(a3 + 39)];
-    v5 = *(a3 + 2);
+    [sectionCopy setHeaderMargin:*(properties + 39)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x10000000) != 0)
   {
-    [v39 setFooterMargin:*(a3 + 40)];
-    v5 = *(a3 + 2);
+    [sectionCopy setFooterMargin:*(properties + 40)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x4000000) != 0)
   {
-    [v39 setGutterMargin:*(a3 + 38)];
-    v5 = *(a3 + 2);
+    [sectionCopy setGutterMargin:*(properties + 38)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x10000000000000) != 0)
   {
-    [v39 setRtlGutter:*(a3 + 248) != 0];
-    v5 = *(a3 + 2);
+    [sectionCopy setRtlGutter:*(properties + 248) != 0];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x800) != 0)
   {
-    [v39 setBorderDepth:*(a3 + 23)];
-    v5 = *(a3 + 2);
+    [sectionCopy setBorderDepth:*(properties + 23)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x400) != 0)
   {
-    [v39 setBorderDisplay:*(a3 + 22)];
-    v5 = *(a3 + 2);
+    [sectionCopy setBorderDisplay:*(properties + 22)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x1000) != 0)
   {
-    [v39 setBorderOffset:*(a3 + 24)];
-    v5 = *(a3 + 2);
+    [sectionCopy setBorderOffset:*(properties + 24)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x10000000000) != 0)
   {
-    [v39 setLineNumberStart:*(a3 + 117)];
-    v5 = *(a3 + 2);
+    [sectionCopy setLineNumberStart:*(properties + 117)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x80000000) != 0)
   {
-    [v39 setLineNumberIncrement:*(a3 + 108)];
-    v5 = *(a3 + 2);
+    [sectionCopy setLineNumberIncrement:*(properties + 108)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x10000) != 0)
   {
-    [v39 setLineNumberDistance:*(a3 + 56)];
-    v5 = *(a3 + 2);
+    [sectionCopy setLineNumberDistance:*(properties + 56)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x80) != 0)
   {
-    [v39 setLineNumberRestart:*(a3 + 19)];
-    v5 = *(a3 + 2);
+    [sectionCopy setLineNumberRestart:*(properties + 19)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x100) != 0)
   {
-    [v39 setPageNumberFormat:*(a3 + 20)];
-    v5 = *(a3 + 2);
+    [sectionCopy setPageNumberFormat:*(properties + 20)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x800000000) != 0)
   {
-    [v39 setPageNumberStart:*(a3 + 112)];
-    v5 = *(a3 + 2);
+    [sectionCopy setPageNumberStart:*(properties + 112)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x400000000000) != 0)
   {
-    [v39 setPageNumberRestart:*(a3 + 242) != 0];
-    v5 = *(a3 + 2);
+    [sectionCopy setPageNumberRestart:*(properties + 242) != 0];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x200000000000) != 0)
   {
-    [v39 setChapterNumberSeparator:*(a3 + 241)];
-    v5 = *(a3 + 2);
+    [sectionCopy setChapterNumberSeparator:*(properties + 241)];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x2000000000000) != 0)
   {
-    [v39 setColumnsEqualWidth:*(a3 + 245) != 0];
-    v5 = *(a3 + 2);
+    [sectionCopy setColumnsEqualWidth:*(properties + 245) != 0];
+    v5 = *(properties + 2);
   }
 
   if ((v5 & 0x4000000000000) != 0)
   {
-    [v39 setBidi:*(a3 + 246) != 0];
-    v5 = *(a3 + 2);
+    [sectionCopy setBidi:*(properties + 246) != 0];
+    v5 = *(properties + 2);
   }
 
-  if ((v5 & 0x20000000000) == 0 || (v14 = *(a3 + 118) + 1, [v39 setColumnCount:v14], !v14))
+  if ((v5 & 0x20000000000) == 0 || (columnCount = *(properties + 118) + 1, [sectionCopy setColumnCount:columnCount], !columnCount))
   {
-    v15 = [v39 resolveMode];
-    [v39 setResolveMode:2];
-    if ([v39 isColumnCountOverridden])
+    resolveMode = [sectionCopy resolveMode];
+    [sectionCopy setResolveMode:2];
+    if ([sectionCopy isColumnCountOverridden])
     {
-      v14 = [v39 columnCount];
+      columnCount = [sectionCopy columnCount];
     }
 
     else
     {
-      v14 = 0;
+      columnCount = 0;
     }
 
-    [v39 setResolveMode:v15];
+    [sectionCopy setResolveMode:resolveMode];
   }
 
-  v16 = v14;
-  if (v14 >= 2u)
+  v16 = columnCount;
+  if (columnCount >= 2u)
   {
     v17 = 0;
-    v18 = (a3 + 200);
-    v19 = (a3 + 176);
+    v18 = (properties + 200);
+    v19 = (properties + 176);
     while (1)
     {
-      v20 = *(a3 + 2);
+      v20 = *(properties + 2);
       if ((v20 & 0x40000000) == 0 || (v21 = *v18) == 0)
       {
 LABEL_74:
@@ -311,7 +311,7 @@ LABEL_75:
           {
             if (v26 >= v17)
             {
-              v31 = (a3 + 176);
+              v31 = (properties + 176);
               do
               {
                 v32 = *(v24 + 7);
@@ -328,7 +328,7 @@ LABEL_75:
               while (v24);
               if (v31 != v19 && v17 >= *(v31 + 7))
               {
-                [v39 appendColumnSpace:*(v31 + 8)];
+                [sectionCopy appendColumnSpace:*(v31 + 8)];
                 goto LABEL_99;
               }
 
@@ -370,7 +370,7 @@ LABEL_73:
         break;
       }
 
-      v27 = (a3 + 200);
+      v27 = (properties + 200);
       do
       {
         v28 = *(v21 + 7);
@@ -390,8 +390,8 @@ LABEL_73:
         goto LABEL_120;
       }
 
-      [v39 appendColumnWidth:*(v27 + 8)];
-      if ((*(a3 + 2) & 0x20000000) != 0)
+      [sectionCopy appendColumnWidth:*(v27 + 8)];
+      if ((*(properties + 2) & 0x20000000) != 0)
       {
         goto LABEL_75;
       }
@@ -408,48 +408,48 @@ LABEL_99:
   }
 
 LABEL_100:
-  v34 = *(a3 + 2);
+  v34 = *(properties + 2);
   if ((v34 & 0x200000) != 0)
   {
-    [v39 setColumnSpace:*(a3 + 33)];
-    v34 = *(a3 + 2);
+    [sectionCopy setColumnSpace:*(properties + 33)];
+    v34 = *(properties + 2);
   }
 
   if ((v34 & 0x200) != 0)
   {
-    [v39 setVerticalJustification:*(a3 + 21)];
-    v34 = *(a3 + 2);
+    [sectionCopy setVerticalJustification:*(properties + 21)];
+    v34 = *(properties + 2);
   }
 
   if ((v34 & 0x80000000000) != 0)
   {
-    [v39 setTitlePage:*(a3 + 239) != 0];
-    v34 = *(a3 + 2);
+    [sectionCopy setTitlePage:*(properties + 239) != 0];
+    v34 = *(properties + 2);
   }
 
   if ((v34 & 0x4000000000) != 0)
   {
-    [v39 setFormattingChanged:*(a3 + 115) != 0];
-    v34 = *(a3 + 2);
+    [sectionCopy setFormattingChanged:*(properties + 115) != 0];
+    v34 = *(properties + 2);
   }
 
   if ((v34 & 0x8000000000) != 0)
   {
-    [v39 setIndexToAuthorIDOfFormattingChange:*(a3 + 116)];
-    v34 = *(a3 + 2);
+    [sectionCopy setIndexToAuthorIDOfFormattingChange:*(properties + 116)];
+    v34 = *(properties + 2);
   }
 
   if ((v34 & 0x10) != 0)
   {
-    v35 = [MEMORY[0x277CBEAA8] tc_dateWithWordDate:*(a3 + 7)];
-    [v39 setFormattingChangeDate:v35];
+    v35 = [MEMORY[0x277CBEAA8] tc_dateWithWordDate:*(properties + 7)];
+    [sectionCopy setFormattingChangeDate:v35];
 
-    v34 = *(a3 + 2);
+    v34 = *(properties + 2);
   }
 
   if ((v34 & 0x8000) != 0)
   {
-    v36 = *(a3 + 27) - 1;
+    v36 = *(properties + 27) - 1;
     if (v36 > 4)
     {
       v37 = 1;
@@ -460,218 +460,218 @@ LABEL_100:
       v37 = dword_25D70E318[v36];
     }
 
-    [v39 setTextDirection:v37];
+    [sectionCopy setTextDirection:v37];
   }
 }
 
-+ (void)mapSection:(id)a3 toSectionProperties:(void *)a4
++ (void)mapSection:(id)section toSectionProperties:(void *)properties
 {
-  v5 = a3;
-  if ([v5 isTopBorderOverridden])
+  sectionCopy = section;
+  if ([sectionCopy isTopBorderOverridden])
   {
-    v6 = [v5 topBorder];
-    v7 = *(a4 + 3);
-    *(a4 + 2) |= 1uLL;
-    [WBBorder write:v6 to:v7];
+    topBorder = [sectionCopy topBorder];
+    v7 = *(properties + 3);
+    *(properties + 2) |= 1uLL;
+    [WBBorder write:topBorder to:v7];
   }
 
-  if ([v5 isLeftBorderOverridden])
+  if ([sectionCopy isLeftBorderOverridden])
   {
-    v8 = [v5 leftBorder];
-    *(a4 + 2) |= 2uLL;
-    [WBBorder write:v8 to:*(a4 + 4)];
+    leftBorder = [sectionCopy leftBorder];
+    *(properties + 2) |= 2uLL;
+    [WBBorder write:leftBorder to:*(properties + 4)];
   }
 
-  if ([v5 isBottomBorderOverridden])
+  if ([sectionCopy isBottomBorderOverridden])
   {
-    v9 = [v5 bottomBorder];
-    *(a4 + 2) |= 4uLL;
-    [WBBorder write:v9 to:*(a4 + 5)];
+    bottomBorder = [sectionCopy bottomBorder];
+    *(properties + 2) |= 4uLL;
+    [WBBorder write:bottomBorder to:*(properties + 5)];
   }
 
-  if ([v5 isRightBorderOverridden])
+  if ([sectionCopy isRightBorderOverridden])
   {
-    v10 = [v5 rightBorder];
-    *(a4 + 2) |= 8uLL;
-    [WBBorder write:v10 to:*(a4 + 6)];
+    rightBorder = [sectionCopy rightBorder];
+    *(properties + 2) |= 8uLL;
+    [WBBorder write:rightBorder to:*(properties + 6)];
   }
 
-  if ([v5 isBreakTypeOverridden])
+  if ([sectionCopy isBreakTypeOverridden])
   {
-    *(a4 + 18) = [v5 breakType];
-    *(a4 + 2) |= 0x40uLL;
+    *(properties + 18) = [sectionCopy breakType];
+    *(properties + 2) |= 0x40uLL;
   }
 
-  if ([v5 isPageWidthOverridden])
+  if ([sectionCopy isPageWidthOverridden])
   {
-    *(a4 + 34) = [v5 pageWidth];
-    *(a4 + 2) |= 0x400000uLL;
+    *(properties + 34) = [sectionCopy pageWidth];
+    *(properties + 2) |= 0x400000uLL;
   }
 
-  if ([v5 isPageHeightOverridden])
+  if ([sectionCopy isPageHeightOverridden])
   {
-    *(a4 + 35) = [v5 pageHeight];
-    *(a4 + 2) |= 0x800000uLL;
+    *(properties + 35) = [sectionCopy pageHeight];
+    *(properties + 2) |= 0x800000uLL;
   }
 
-  if ([v5 isPageOrientationOverridden])
+  if ([sectionCopy isPageOrientationOverridden])
   {
-    *(a4 + 26) = [v5 pageOrientation];
-    *(a4 + 2) |= 0x4000uLL;
+    *(properties + 26) = [sectionCopy pageOrientation];
+    *(properties + 2) |= 0x4000uLL;
   }
 
-  if ([v5 isLeftMarginOverridden])
+  if ([sectionCopy isLeftMarginOverridden])
   {
-    *(a4 + 36) = [v5 leftMargin];
-    *(a4 + 2) |= 0x1000000uLL;
+    *(properties + 36) = [sectionCopy leftMargin];
+    *(properties + 2) |= 0x1000000uLL;
   }
 
-  if ([v5 isRightMarginOverridden])
+  if ([sectionCopy isRightMarginOverridden])
   {
-    *(a4 + 37) = [v5 rightMargin];
-    *(a4 + 2) |= 0x2000000uLL;
+    *(properties + 37) = [sectionCopy rightMargin];
+    *(properties + 2) |= 0x2000000uLL;
   }
 
-  if ([v5 isTopMarginOverridden])
+  if ([sectionCopy isTopMarginOverridden])
   {
-    *(a4 + 31) = [v5 topMargin];
-    *(a4 + 2) |= 0x80000uLL;
+    *(properties + 31) = [sectionCopy topMargin];
+    *(properties + 2) |= 0x80000uLL;
   }
 
-  if ([v5 isBottomMarginOverridden])
+  if ([sectionCopy isBottomMarginOverridden])
   {
-    *(a4 + 32) = [v5 bottomMargin];
-    *(a4 + 2) |= 0x100000uLL;
+    *(properties + 32) = [sectionCopy bottomMargin];
+    *(properties + 2) |= 0x100000uLL;
   }
 
-  if ([v5 isHeaderMarginOverridden])
+  if ([sectionCopy isHeaderMarginOverridden])
   {
-    *(a4 + 39) = [v5 headerMargin];
-    *(a4 + 2) |= 0x8000000uLL;
+    *(properties + 39) = [sectionCopy headerMargin];
+    *(properties + 2) |= 0x8000000uLL;
   }
 
-  if ([v5 isFooterMarginOverridden])
+  if ([sectionCopy isFooterMarginOverridden])
   {
-    *(a4 + 40) = [v5 footerMargin];
-    *(a4 + 2) |= 0x10000000uLL;
+    *(properties + 40) = [sectionCopy footerMargin];
+    *(properties + 2) |= 0x10000000uLL;
   }
 
-  if ([v5 isGutterMarginOverridden])
+  if ([sectionCopy isGutterMarginOverridden])
   {
-    *(a4 + 38) = [v5 gutterMargin];
-    *(a4 + 2) |= 0x4000000uLL;
+    *(properties + 38) = [sectionCopy gutterMargin];
+    *(properties + 2) |= 0x4000000uLL;
   }
 
-  if ([v5 isRtlGutterOverridden])
+  if ([sectionCopy isRtlGutterOverridden])
   {
-    *(a4 + 248) = [v5 rtlGutter];
-    *(a4 + 2) |= 0x10000000000000uLL;
+    *(properties + 248) = [sectionCopy rtlGutter];
+    *(properties + 2) |= 0x10000000000000uLL;
   }
 
-  if ([v5 isBorderDepthOverridden])
+  if ([sectionCopy isBorderDepthOverridden])
   {
-    *(a4 + 23) = [v5 borderDepth];
-    *(a4 + 2) |= 0x800uLL;
+    *(properties + 23) = [sectionCopy borderDepth];
+    *(properties + 2) |= 0x800uLL;
   }
 
-  if ([v5 isBorderDisplayOverridden])
+  if ([sectionCopy isBorderDisplayOverridden])
   {
-    *(a4 + 22) = [v5 borderDisplay];
-    *(a4 + 2) |= 0x400uLL;
+    *(properties + 22) = [sectionCopy borderDisplay];
+    *(properties + 2) |= 0x400uLL;
   }
 
-  if ([v5 isBorderOffsetOverridden])
+  if ([sectionCopy isBorderOffsetOverridden])
   {
-    *(a4 + 24) = [v5 borderOffset];
-    *(a4 + 2) |= 0x1000uLL;
+    *(properties + 24) = [sectionCopy borderOffset];
+    *(properties + 2) |= 0x1000uLL;
   }
 
-  if ([v5 isLineNumberStartOverridden])
+  if ([sectionCopy isLineNumberStartOverridden])
   {
-    *(a4 + 117) = [v5 lineNumberStart];
-    *(a4 + 2) |= 0x10000000000uLL;
+    *(properties + 117) = [sectionCopy lineNumberStart];
+    *(properties + 2) |= 0x10000000000uLL;
   }
 
-  if ([v5 isLineNumberIncrementOverridden])
+  if ([sectionCopy isLineNumberIncrementOverridden])
   {
-    *(a4 + 108) = [v5 lineNumberIncrement];
-    *(a4 + 2) |= 0x80000000uLL;
+    *(properties + 108) = [sectionCopy lineNumberIncrement];
+    *(properties + 2) |= 0x80000000uLL;
   }
 
-  if ([v5 isLineNumberDistanceOverridden])
+  if ([sectionCopy isLineNumberDistanceOverridden])
   {
-    *(a4 + 28) = [v5 lineNumberDistance];
-    *(a4 + 2) |= 0x10000uLL;
+    *(properties + 28) = [sectionCopy lineNumberDistance];
+    *(properties + 2) |= 0x10000uLL;
   }
 
-  if ([v5 isLineNumberRestartOverridden])
+  if ([sectionCopy isLineNumberRestartOverridden])
   {
-    *(a4 + 19) = [v5 lineNumberRestart];
-    *(a4 + 2) |= 0x80uLL;
+    *(properties + 19) = [sectionCopy lineNumberRestart];
+    *(properties + 2) |= 0x80uLL;
   }
 
-  if ([v5 isPageNumberFormatOverridden])
+  if ([sectionCopy isPageNumberFormatOverridden])
   {
-    *(a4 + 20) = +[WBListLevel numberFormatEnumFor:](WBListLevel, "numberFormatEnumFor:", [v5 pageNumberFormat]);
-    *(a4 + 2) |= 0x100uLL;
+    *(properties + 20) = +[WBListLevel numberFormatEnumFor:](WBListLevel, "numberFormatEnumFor:", [sectionCopy pageNumberFormat]);
+    *(properties + 2) |= 0x100uLL;
   }
 
-  if ([v5 isPageNumberStartOverridden])
+  if ([sectionCopy isPageNumberStartOverridden])
   {
-    *(a4 + 112) = [v5 pageNumberStart];
-    *(a4 + 2) |= 0x800000000uLL;
+    *(properties + 112) = [sectionCopy pageNumberStart];
+    *(properties + 2) |= 0x800000000uLL;
   }
 
-  if ([v5 isPageNumberRestartOverridden])
+  if ([sectionCopy isPageNumberRestartOverridden])
   {
-    *(a4 + 242) = [v5 pageNumberRestart];
-    *(a4 + 2) |= 0x400000000000uLL;
+    *(properties + 242) = [sectionCopy pageNumberRestart];
+    *(properties + 2) |= 0x400000000000uLL;
   }
 
-  if ([v5 isChapterNumberSeparatorOverridden])
+  if ([sectionCopy isChapterNumberSeparatorOverridden])
   {
-    *(a4 + 241) = [v5 chapterNumberSeparator];
-    *(a4 + 2) |= 0x200000000000uLL;
+    *(properties + 241) = [sectionCopy chapterNumberSeparator];
+    *(properties + 2) |= 0x200000000000uLL;
   }
 
-  if ([v5 isColumnCountOverridden])
+  if ([sectionCopy isColumnCountOverridden])
   {
-    *(a4 + 118) = [v5 columnCount] - 1;
-    *(a4 + 2) |= 0x20000000000uLL;
+    *(properties + 118) = [sectionCopy columnCount] - 1;
+    *(properties + 2) |= 0x20000000000uLL;
   }
 
-  if ([v5 isColumnsEqualWidthOverridden])
+  if ([sectionCopy isColumnsEqualWidthOverridden])
   {
-    *(a4 + 245) = [v5 columnsEqualWidth];
-    *(a4 + 2) |= 0x2000000000000uLL;
+    *(properties + 245) = [sectionCopy columnsEqualWidth];
+    *(properties + 2) |= 0x2000000000000uLL;
   }
 
-  if ([v5 isColumnCountOverridden])
+  if ([sectionCopy isColumnCountOverridden])
   {
-    if ([v5 isColumnsEqualWidthOverridden])
+    if ([sectionCopy isColumnsEqualWidthOverridden])
     {
-      if (([v5 columnsEqualWidth] & 1) == 0)
+      if (([sectionCopy columnsEqualWidth] & 1) == 0)
       {
-        v11 = [v5 columnCount];
-        v12 = v11;
-        if (v11)
+        columnCount = [sectionCopy columnCount];
+        v12 = columnCount;
+        if (columnCount)
         {
           v13 = 0;
-          v14 = v11 - 1;
+          v14 = columnCount - 1;
           do
           {
-            v15 = [v5 columnWidthAt:v13];
-            *(a4 + 2) |= 0x40000000uLL;
+            v15 = [sectionCopy columnWidthAt:v13];
+            *(properties + 2) |= 0x40000000uLL;
             v20 = v13;
             v21 = &v20;
-            *(std::__tree<std::__value_type<unsigned int,int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,int>,CsLess<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a4 + 192, &v20) + 8) = v15;
+            *(std::__tree<std::__value_type<unsigned int,int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,int>,CsLess<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(properties + 192, &v20) + 8) = v15;
             if (v13 < v14)
             {
-              v16 = [v5 columnSpaceAt:v13];
-              *(a4 + 2) |= 0x20000000uLL;
+              v16 = [sectionCopy columnSpaceAt:v13];
+              *(properties + 2) |= 0x20000000uLL;
               v20 = v13;
               v21 = &v20;
-              *(std::__tree<std::__value_type<unsigned int,int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,int>,CsLess<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(a4 + 168, &v20) + 8) = v16;
+              *(std::__tree<std::__value_type<unsigned int,int>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,int>,CsLess<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,int>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int const&>,std::tuple<>>(properties + 168, &v20) + 8) = v16;
             }
 
             v13 = (v13 + 1);
@@ -683,95 +683,95 @@ LABEL_100:
     }
   }
 
-  if ([v5 isColumnSpaceOverridden])
+  if ([sectionCopy isColumnSpaceOverridden])
   {
-    *(a4 + 33) = [v5 columnSpace];
-    *(a4 + 2) |= 0x200000uLL;
+    *(properties + 33) = [sectionCopy columnSpace];
+    *(properties + 2) |= 0x200000uLL;
   }
 
-  if ([v5 isVerticalJustificationOverridden])
+  if ([sectionCopy isVerticalJustificationOverridden])
   {
-    *(a4 + 21) = [v5 verticalJustification];
-    *(a4 + 2) |= 0x200uLL;
+    *(properties + 21) = [sectionCopy verticalJustification];
+    *(properties + 2) |= 0x200uLL;
   }
 
-  if ([v5 isTitlePageOverridden])
+  if ([sectionCopy isTitlePageOverridden])
   {
-    *(a4 + 239) = [v5 titlePage];
-    *(a4 + 2) |= 0x80000000000uLL;
+    *(properties + 239) = [sectionCopy titlePage];
+    *(properties + 2) |= 0x80000000000uLL;
   }
 
-  if ([v5 isBidiOverridden])
+  if ([sectionCopy isBidiOverridden])
   {
-    *(a4 + 246) = [v5 bidi];
-    *(a4 + 2) |= 0x4000000000000uLL;
+    *(properties + 246) = [sectionCopy bidi];
+    *(properties + 2) |= 0x4000000000000uLL;
   }
 
-  if ([v5 isFormattingChangedOverridden])
+  if ([sectionCopy isFormattingChangedOverridden])
   {
-    *(a4 + 115) = [v5 formattingChanged];
-    *(a4 + 2) |= 0x4000000000uLL;
+    *(properties + 115) = [sectionCopy formattingChanged];
+    *(properties + 2) |= 0x4000000000uLL;
   }
 
-  if ([v5 isIndexToAuthorIDOfFormattingChangeOverridden])
+  if ([sectionCopy isIndexToAuthorIDOfFormattingChangeOverridden])
   {
-    *(a4 + 116) = [v5 indexToAuthorIDOfFormattingChange];
-    *(a4 + 2) |= 0x8000000000uLL;
+    *(properties + 116) = [sectionCopy indexToAuthorIDOfFormattingChange];
+    *(properties + 2) |= 0x8000000000uLL;
   }
 
-  if ([v5 isFormattingChangeDateOverridden])
+  if ([sectionCopy isFormattingChangeDateOverridden])
   {
-    v17 = [v5 formattingChangeDate];
-    *(a4 + 2) |= 0x10uLL;
-    [v17 tc_copyToWordDate:*(a4 + 7)];
+    formattingChangeDate = [sectionCopy formattingChangeDate];
+    *(properties + 2) |= 0x10uLL;
+    [formattingChangeDate tc_copyToWordDate:*(properties + 7)];
   }
 
-  if ([v5 isTextDirectionOverridden])
+  if ([sectionCopy isTextDirectionOverridden])
   {
-    v18 = [v5 textDirection];
-    if (v18 >= 6)
+    textDirection = [sectionCopy textDirection];
+    if (textDirection >= 6)
     {
       v19 = 0;
     }
 
     else
     {
-      v19 = dword_25D70E32C[v18];
+      v19 = dword_25D70E32C[textDirection];
     }
 
-    *(a4 + 27) = v19;
-    *(a4 + 2) |= 0x8000uLL;
+    *(properties + 27) = v19;
+    *(properties + 2) |= 0x8000uLL;
   }
 }
 
-+ (void)mapPrinterSettings:(void *)a3 toSection:(id)a4
++ (void)mapPrinterSettings:(void *)settings toSection:(id)section
 {
-  v9 = a4;
-  v5 = *(a3 + 74);
+  sectionCopy = section;
+  v5 = *(settings + 74);
   if (v5 < 0x7B)
   {
     if (v5 == 120)
     {
-      [v9 setPageScale:*(*(a3 + 38) + 56)];
+      [sectionCopy setPageScale:*(*(settings + 38) + 56)];
     }
 
     else if (v5 >= 0x3D)
     {
-      v8 = *(a3 + 38);
+      v8 = *(settings + 38);
       if ((*(v8 + 40) & 0x10) != 0)
       {
-        [v9 setPageScale:*(v8 + 52)];
+        [sectionCopy setPageScale:*(v8 + 52)];
       }
     }
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 38) + 122 length:v5 - 122];
+    v6 = [MEMORY[0x277CBEA90] dataWithBytes:*(settings + 38) + 122 length:v5 - 122];
     [WXSection scaleFromPrinterSettings:v6];
     if (v7 != 1.0)
     {
-      [v9 setPageScale:(v7 * 100.0)];
+      [sectionCopy setPageScale:(v7 * 100.0)];
     }
   }
 }

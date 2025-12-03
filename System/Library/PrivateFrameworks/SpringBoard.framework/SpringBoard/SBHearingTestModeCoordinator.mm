@@ -1,14 +1,14 @@
 @interface SBHearingTestModeCoordinator
 - (SBHearingTestModeCoordinator)init;
-- (void)_noteHearingTestModeActiveForProviderWithIdentifier:(id)a3;
-- (void)_noteHearingTestModeInactiveForProviderWithIdentifier:(id)a3;
+- (void)_noteHearingTestModeActiveForProviderWithIdentifier:(id)identifier;
+- (void)_noteHearingTestModeInactiveForProviderWithIdentifier:(id)identifier;
 - (void)_recalculateHearingTestMode;
-- (void)_setDNDHearingTestModeActive:(BOOL)a3;
-- (void)addObserver:(id)a3;
-- (void)addSceneExtensionIfNeeded:(id)a3;
-- (void)hearingTestModeHostComponentDidChangeActiveState:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setHearingTestMode:(int64_t)a3;
+- (void)_setDNDHearingTestModeActive:(BOOL)active;
+- (void)addObserver:(id)observer;
+- (void)addSceneExtensionIfNeeded:(id)needed;
+- (void)hearingTestModeHostComponentDidChangeActiveState:(id)state;
+- (void)removeObserver:(id)observer;
+- (void)setHearingTestMode:(int64_t)mode;
 @end
 
 @implementation SBHearingTestModeCoordinator
@@ -27,38 +27,38 @@
   return v3;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v9 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v9;
+    v9 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v9;
     if (!v5)
     {
       observers = self->_observers;
       if (!observers)
       {
-        v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         v8 = self->_observers;
-        self->_observers = v7;
+        self->_observers = weakObjectsHashTable;
 
         observers = self->_observers;
       }
 
       [(NSHashTable *)observers addObject:v9];
-      v4 = v9;
+      observerCopy = v9;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  if (v5)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v5];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 
   if (![(NSHashTable *)self->_observers count])
@@ -68,18 +68,18 @@
   }
 }
 
-- (void)setHearingTestMode:(int64_t)a3
+- (void)setHearingTestMode:(int64_t)mode
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (self->_hearingTestMode != a3)
+  if (self->_hearingTestMode != mode)
   {
-    self->_hearingTestMode = a3;
-    if (a3 == 1)
+    self->_hearingTestMode = mode;
+    if (mode == 1)
     {
       [(SBHearingTestModeCoordinator *)self _acquireDNDModeAssertion];
     }
 
-    else if (!a3)
+    else if (!mode)
     {
       [(SBHearingTestModeCoordinator *)self _invalidateDNDModeAssertion];
     }
@@ -122,31 +122,31 @@
   }
 }
 
-- (void)_noteHearingTestModeActiveForProviderWithIdentifier:(id)a3
+- (void)_noteHearingTestModeActiveForProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   identifiersForHearingTestModeActiveProviders = self->_identifiersForHearingTestModeActiveProviders;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!identifiersForHearingTestModeActiveProviders)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_identifiersForHearingTestModeActiveProviders;
     self->_identifiersForHearingTestModeActiveProviders = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     identifiersForHearingTestModeActiveProviders = self->_identifiersForHearingTestModeActiveProviders;
   }
 
-  [(NSMutableSet *)identifiersForHearingTestModeActiveProviders addObject:v4];
+  [(NSMutableSet *)identifiersForHearingTestModeActiveProviders addObject:identifierCopy];
   [(SBHearingTestModeCoordinator *)self _recalculateHearingTestMode];
 }
 
-- (void)_noteHearingTestModeInactiveForProviderWithIdentifier:(id)a3
+- (void)_noteHearingTestModeInactiveForProviderWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(NSMutableSet *)self->_identifiersForHearingTestModeActiveProviders containsObject:?])
   {
-    [(NSMutableSet *)self->_identifiersForHearingTestModeActiveProviders removeObject:v4];
+    [(NSMutableSet *)self->_identifiersForHearingTestModeActiveProviders removeObject:identifierCopy];
     [(SBHearingTestModeCoordinator *)self _recalculateHearingTestMode];
   }
 }
@@ -176,7 +176,7 @@
   }
 }
 
-- (void)_setDNDHearingTestModeActive:(BOOL)a3
+- (void)_setDNDHearingTestModeActive:(BOOL)active
 {
   v5 = dispatch_get_global_queue(-32768, 0);
   v6[0] = MEMORY[0x277D85DD0];
@@ -184,7 +184,7 @@
   v6[2] = __61__SBHearingTestModeCoordinator__setDNDHearingTestModeActive___block_invoke;
   v6[3] = &unk_2783A9F58;
   v6[4] = self;
-  v7 = a3;
+  activeCopy = active;
   dispatch_async(v5, v6);
 }
 
@@ -218,25 +218,25 @@ void __61__SBHearingTestModeCoordinator__setDNDHearingTestModeActive___block_inv
   }
 }
 
-- (void)addSceneExtensionIfNeeded:(id)a3
+- (void)addSceneExtensionIfNeeded:(id)needed
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 clientProcess];
-  if ([v5 hasEntitlement:@"com.apple.springboard.hearing-test-mode"])
+  neededCopy = needed;
+  clientProcess = [neededCopy clientProcess];
+  if ([clientProcess hasEntitlement:@"com.apple.springboard.hearing-test-mode"])
   {
-    [v4 addExtension:objc_opt_class()];
+    [neededCopy addExtension:objc_opt_class()];
     v6 = SBLogHearingTestMode();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 identifier];
+      identifier = [neededCopy identifier];
       v11 = 138543362;
-      v12 = v7;
+      v12 = identifier;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Successfully added scene extension to scene with hearing test mode entitlement: %{public}@", &v11, 0xCu);
     }
 
     v8 = objc_opt_class();
-    v9 = [v4 componentForExtension:v8 ofClass:objc_opt_class()];
+    v9 = [neededCopy componentForExtension:v8 ofClass:objc_opt_class()];
     hearingTestModeHostComponent = self->_hearingTestModeHostComponent;
     self->_hearingTestModeHostComponent = v9;
 
@@ -244,30 +244,30 @@ void __61__SBHearingTestModeCoordinator__setDNDHearingTestModeActive___block_inv
   }
 }
 
-- (void)hearingTestModeHostComponentDidChangeActiveState:(id)a3
+- (void)hearingTestModeHostComponentDidChangeActiveState:(id)state
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = SBLogHearingTestMode();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    [v4 hearingTestMode];
+    [stateCopy hearingTestMode];
     v6 = SBSHearingTestModeDescription();
     v9 = 138543362;
     v10 = v6;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Coordinator did receive %{public}@ for hearing test mode via delegate", &v9, 0xCu);
   }
 
-  v7 = [v4 hearingTestMode];
-  v8 = [v4 identifier];
-  if (v7 == 1)
+  hearingTestMode = [stateCopy hearingTestMode];
+  identifier = [stateCopy identifier];
+  if (hearingTestMode == 1)
   {
-    [(SBHearingTestModeCoordinator *)self _noteHearingTestModeActiveForProviderWithIdentifier:v8];
+    [(SBHearingTestModeCoordinator *)self _noteHearingTestModeActiveForProviderWithIdentifier:identifier];
   }
 
   else
   {
-    [(SBHearingTestModeCoordinator *)self _noteHearingTestModeInactiveForProviderWithIdentifier:v8];
+    [(SBHearingTestModeCoordinator *)self _noteHearingTestModeInactiveForProviderWithIdentifier:identifier];
   }
 }
 

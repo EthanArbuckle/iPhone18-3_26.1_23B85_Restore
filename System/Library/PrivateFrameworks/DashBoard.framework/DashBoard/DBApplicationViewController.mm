@@ -1,22 +1,22 @@
 @interface DBApplicationViewController
 - (BOOL)presentsFullScreen;
 - (DBApplicationSceneHostViewController)sceneHostViewController;
-- (DBApplicationViewController)initWithScene:(id)a3 entity:(id)a4 environment:(id)a5;
+- (DBApplicationViewController)initWithScene:(id)scene entity:(id)entity environment:(id)environment;
 - (DBEnvironment)environment;
 - (NSString)identifier;
-- (id)presentationViewWithIdentifier:(id)a3;
+- (id)presentationViewWithIdentifier:(id)identifier;
 - (void)_addAlertSubviewIfNeeded;
 - (void)_removeAlertSubviewIfNeeded;
 - (void)_requestDismissal;
-- (void)activateSceneWithSettings:(id)a3 completion:(id)a4;
-- (void)applicationSceneHostViewController:(id)a3 didUpdateSceneContentState:(int64_t)a4;
-- (void)backgroundSceneWithCompletion:(id)a3;
-- (void)deactivateSceneWithReasonMask:(unint64_t)a3;
+- (void)activateSceneWithSettings:(id)settings completion:(id)completion;
+- (void)applicationSceneHostViewController:(id)controller didUpdateSceneContentState:(int64_t)state;
+- (void)backgroundSceneWithCompletion:(id)completion;
+- (void)deactivateSceneWithReasonMask:(unint64_t)mask;
 - (void)dealloc;
-- (void)foregroundSceneWithSettings:(id)a3 completion:(id)a4;
-- (void)handleEvent:(id)a3;
-- (void)invalidatePresentationViewForIdentifier:(id)a3;
-- (void)setUserAlert:(id)a3;
+- (void)foregroundSceneWithSettings:(id)settings completion:(id)completion;
+- (void)handleEvent:(id)event;
+- (void)invalidatePresentationViewForIdentifier:(id)identifier;
+- (void)setUserAlert:(id)alert;
 - (void)viewDidLoad;
 @end
 
@@ -28,11 +28,11 @@
   if (!sceneHostViewController)
   {
     v4 = [DBApplicationSceneHostViewController alloc];
-    v5 = [(DBApplicationViewController *)self scene];
-    v6 = [(DBApplicationViewController *)self application];
-    v7 = [(DBApplicationViewController *)self proxyApplication];
-    v8 = [(DBApplicationViewController *)self environment];
-    v9 = [(DBSceneHostViewController *)v4 initWithScene:v5 application:v6 proxyApplication:v7 environment:v8];
+    scene = [(DBApplicationViewController *)self scene];
+    application = [(DBApplicationViewController *)self application];
+    proxyApplication = [(DBApplicationViewController *)self proxyApplication];
+    environment = [(DBApplicationViewController *)self environment];
+    v9 = [(DBSceneHostViewController *)v4 initWithScene:scene application:application proxyApplication:proxyApplication environment:environment];
     v10 = self->_sceneHostViewController;
     self->_sceneHostViewController = v9;
 
@@ -56,55 +56,55 @@
   v40.receiver = self;
   v40.super_class = DBApplicationViewController;
   [(DBApplicationViewController *)&v40 viewDidLoad];
-  v3 = [(DBApplicationViewController *)self environment];
-  v4 = [v3 environmentConfiguration];
-  v5 = [v4 effectiveSceneBackgroundColor];
-  v6 = [(DBApplicationViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  environment = [(DBApplicationViewController *)self environment];
+  environmentConfiguration = [environment environmentConfiguration];
+  effectiveSceneBackgroundColor = [environmentConfiguration effectiveSceneBackgroundColor];
+  view = [(DBApplicationViewController *)self view];
+  [view setBackgroundColor:effectiveSceneBackgroundColor];
 
-  v7 = [(DBApplicationViewController *)self sceneHostViewController];
-  [(DBApplicationViewController *)self addChildViewController:v7];
+  sceneHostViewController = [(DBApplicationViewController *)self sceneHostViewController];
+  [(DBApplicationViewController *)self addChildViewController:sceneHostViewController];
 
-  v8 = [(DBApplicationViewController *)self view];
-  v9 = [(DBApplicationViewController *)self sceneHostViewController];
-  v10 = [v9 view];
-  [v8 addSubview:v10];
+  view2 = [(DBApplicationViewController *)self view];
+  sceneHostViewController2 = [(DBApplicationViewController *)self sceneHostViewController];
+  view3 = [sceneHostViewController2 view];
+  [view2 addSubview:view3];
 
-  v11 = [(DBApplicationViewController *)self sceneHostViewController];
-  [v11 didMoveToParentViewController:self];
+  sceneHostViewController3 = [(DBApplicationViewController *)self sceneHostViewController];
+  [sceneHostViewController3 didMoveToParentViewController:self];
 
-  v12 = [(DBApplicationViewController *)self sceneHostViewController];
-  v13 = [v12 view];
-  [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+  sceneHostViewController4 = [(DBApplicationViewController *)self sceneHostViewController];
+  view4 = [sceneHostViewController4 view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v28 = MEMORY[0x277CCAAD0];
-  v39 = [(DBApplicationViewController *)self sceneHostViewController];
-  v38 = [v39 view];
-  v36 = [v38 leadingAnchor];
-  v37 = [(DBApplicationViewController *)self view];
-  v35 = [v37 leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  sceneHostViewController5 = [(DBApplicationViewController *)self sceneHostViewController];
+  view5 = [sceneHostViewController5 view];
+  leadingAnchor = [view5 leadingAnchor];
+  view6 = [(DBApplicationViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[0] = v34;
-  v33 = [(DBApplicationViewController *)self sceneHostViewController];
-  v32 = [v33 view];
-  v30 = [v32 trailingAnchor];
-  v31 = [(DBApplicationViewController *)self view];
-  v29 = [v31 trailingAnchor];
-  v27 = [v30 constraintEqualToAnchor:v29];
+  sceneHostViewController6 = [(DBApplicationViewController *)self sceneHostViewController];
+  view7 = [sceneHostViewController6 view];
+  trailingAnchor = [view7 trailingAnchor];
+  view8 = [(DBApplicationViewController *)self view];
+  trailingAnchor2 = [view8 trailingAnchor];
+  v27 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[1] = v27;
-  v26 = [(DBApplicationViewController *)self sceneHostViewController];
-  v25 = [v26 view];
-  v24 = [v25 topAnchor];
-  v14 = [(DBApplicationViewController *)self view];
-  v15 = [v14 topAnchor];
-  v16 = [v24 constraintEqualToAnchor:v15];
+  sceneHostViewController7 = [(DBApplicationViewController *)self sceneHostViewController];
+  view9 = [sceneHostViewController7 view];
+  topAnchor = [view9 topAnchor];
+  view10 = [(DBApplicationViewController *)self view];
+  topAnchor2 = [view10 topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v41[2] = v16;
-  v17 = [(DBApplicationViewController *)self sceneHostViewController];
-  v18 = [v17 view];
-  v19 = [v18 bottomAnchor];
-  v20 = [(DBApplicationViewController *)self view];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  sceneHostViewController8 = [(DBApplicationViewController *)self sceneHostViewController];
+  view11 = [sceneHostViewController8 view];
+  bottomAnchor = [view11 bottomAnchor];
+  view12 = [(DBApplicationViewController *)self view];
+  bottomAnchor2 = [view12 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v41[3] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:4];
   [v28 activateConstraints:v23];
@@ -112,123 +112,123 @@
 
 - (BOOL)presentsFullScreen
 {
-  v2 = [(DBApplicationViewController *)self application];
-  v3 = [v2 presentsFullScreen];
+  application = [(DBApplicationViewController *)self application];
+  presentsFullScreen = [application presentsFullScreen];
 
-  return v3;
+  return presentsFullScreen;
 }
 
 - (NSString)identifier
 {
-  v2 = [(DBApplicationViewController *)self application];
-  v3 = [v2 bundleIdentifier];
+  application = [(DBApplicationViewController *)self application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (void)_addAlertSubviewIfNeeded
 {
   v47[4] = *MEMORY[0x277D85DE8];
-  v3 = [(DBApplicationViewController *)self userAlert];
-  if (v3)
+  userAlert = [(DBApplicationViewController *)self userAlert];
+  if (userAlert)
   {
-    v44 = v3;
-    v4 = [(DBApplicationViewController *)self alertPresentationView];
-    if (v4)
+    v44 = userAlert;
+    alertPresentationView = [(DBApplicationViewController *)self alertPresentationView];
+    if (alertPresentationView)
     {
     }
 
     else
     {
-      v5 = [(DBApplicationViewController *)self sceneHostViewController];
-      v6 = [v5 sceneContentState];
+      sceneHostViewController = [(DBApplicationViewController *)self sceneHostViewController];
+      sceneContentState = [sceneHostViewController sceneContentState];
 
-      if (v6 == 2)
+      if (sceneContentState == 2)
       {
-        v7 = [(DBApplicationViewController *)self userAlert];
-        v8 = [(DBApplicationViewController *)self alertPresentationRequester];
-        v9 = [v7 presentationViewForRequester:v8];
+        userAlert2 = [(DBApplicationViewController *)self userAlert];
+        alertPresentationRequester = [(DBApplicationViewController *)self alertPresentationRequester];
+        v9 = [userAlert2 presentationViewForRequester:alertPresentationRequester];
 
         [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v10 = [(DBApplicationViewController *)self view];
-        [v10 addSubview:v9];
+        view = [(DBApplicationViewController *)self view];
+        [view addSubview:v9];
 
         [(DBApplicationViewController *)self setAlertPresentationView:v9];
-        v11 = [(DBApplicationViewController *)self userAlert];
-        LODWORD(v8) = [v11 requiresSafeAreaWindow];
+        userAlert3 = [(DBApplicationViewController *)self userAlert];
+        LODWORD(alertPresentationRequester) = [userAlert3 requiresSafeAreaWindow];
 
-        if (v8)
+        if (alertPresentationRequester)
         {
-          v12 = [(DBApplicationViewController *)self view];
-          v13 = [v12 safeAreaLayoutGuide];
+          view2 = [(DBApplicationViewController *)self view];
+          safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
 
           v37 = MEMORY[0x277CCAAD0];
-          v14 = [v9 topAnchor];
-          v15 = [v13 topAnchor];
-          v45 = [v14 constraintEqualToAnchor:v15];
+          topAnchor = [v9 topAnchor];
+          topAnchor2 = [safeAreaLayoutGuide topAnchor];
+          v45 = [topAnchor constraintEqualToAnchor:topAnchor2];
           v47[0] = v45;
-          v16 = [v9 bottomAnchor];
-          v42 = [v13 bottomAnchor];
-          v43 = v16;
-          v41 = [v16 constraintEqualToAnchor:?];
+          bottomAnchor = [v9 bottomAnchor];
+          bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+          v43 = bottomAnchor;
+          v41 = [bottomAnchor constraintEqualToAnchor:?];
           v47[1] = v41;
-          v17 = [v9 leadingAnchor];
-          v39 = [v13 leadingAnchor];
-          v40 = v17;
-          v18 = [v17 constraintEqualToAnchor:?];
-          v47[2] = v18;
-          v19 = [v9 trailingAnchor];
-          v20 = [v13 trailingAnchor];
-          v21 = [v19 constraintEqualToAnchor:v20];
-          v47[3] = v21;
-          v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:4];
-          [v37 activateConstraints:v22];
+          leadingAnchor = [v9 leadingAnchor];
+          leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+          v40 = leadingAnchor;
+          view4 = [leadingAnchor constraintEqualToAnchor:?];
+          v47[2] = view4;
+          trailingAnchor = [v9 trailingAnchor];
+          trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+          trailingAnchor3 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+          v47[3] = trailingAnchor3;
+          view5 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:4];
+          [v37 activateConstraints:view5];
         }
 
         else
         {
           v38 = MEMORY[0x277CCAAD0];
-          v36 = [v9 topAnchor];
-          v35 = [(DBApplicationViewController *)self view];
-          v34 = [v35 topAnchor];
-          v45 = [v36 constraintEqualToAnchor:v34];
+          topAnchor3 = [v9 topAnchor];
+          view3 = [(DBApplicationViewController *)self view];
+          topAnchor4 = [view3 topAnchor];
+          v45 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
           v46[0] = v45;
-          v23 = [v9 bottomAnchor];
-          v42 = [(DBApplicationViewController *)self view];
-          [v42 bottomAnchor];
-          v41 = v43 = v23;
-          v40 = [v23 constraintEqualToAnchor:?];
+          bottomAnchor3 = [v9 bottomAnchor];
+          bottomAnchor2 = [(DBApplicationViewController *)self view];
+          [bottomAnchor2 bottomAnchor];
+          v41 = v43 = bottomAnchor3;
+          v40 = [bottomAnchor3 constraintEqualToAnchor:?];
           v46[1] = v40;
-          v24 = [v9 leadingAnchor];
-          v18 = [(DBApplicationViewController *)self view];
-          v19 = [v18 leadingAnchor];
-          v39 = v24;
-          v20 = [v24 constraintEqualToAnchor:v19];
-          v46[2] = v20;
-          v21 = [v9 trailingAnchor];
-          v22 = [(DBApplicationViewController *)self view];
-          v25 = [v22 trailingAnchor];
-          v26 = [v21 constraintEqualToAnchor:v25];
+          leadingAnchor3 = [v9 leadingAnchor];
+          view4 = [(DBApplicationViewController *)self view];
+          trailingAnchor = [view4 leadingAnchor];
+          leadingAnchor2 = leadingAnchor3;
+          trailingAnchor2 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor];
+          v46[2] = trailingAnchor2;
+          trailingAnchor3 = [v9 trailingAnchor];
+          view5 = [(DBApplicationViewController *)self view];
+          trailingAnchor4 = [view5 trailingAnchor];
+          v26 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
           v46[3] = v26;
           v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v46 count:4];
           [v38 activateConstraints:v27];
 
-          v14 = v35;
-          v15 = v34;
+          topAnchor = view3;
+          topAnchor2 = topAnchor4;
 
-          v13 = v36;
+          safeAreaLayoutGuide = topAnchor3;
         }
 
-        v28 = [(DBApplicationViewController *)self environment];
+        environment = [(DBApplicationViewController *)self environment];
         v29 = objc_opt_respondsToSelector();
 
         if (v29)
         {
-          v30 = [(DBApplicationViewController *)self userAlert];
-          v31 = [(DBApplicationViewController *)self environment];
-          v32 = [(DBApplicationViewController *)self application];
-          v33 = [(DBApplicationViewController *)self proxyApplication];
-          [v30 setUserInterfaceStyle:{objc_msgSend(v31, "sceneInterfaceStyleForApplication:proxyApplication:", v32, v33)}];
+          userAlert4 = [(DBApplicationViewController *)self userAlert];
+          environment2 = [(DBApplicationViewController *)self environment];
+          application = [(DBApplicationViewController *)self application];
+          proxyApplication = [(DBApplicationViewController *)self proxyApplication];
+          [userAlert4 setUserInterfaceStyle:{objc_msgSend(environment2, "sceneInterfaceStyleForApplication:proxyApplication:", application, proxyApplication)}];
         }
       }
     }
@@ -237,16 +237,16 @@
 
 - (void)_removeAlertSubviewIfNeeded
 {
-  v3 = [(DBApplicationViewController *)self userAlert];
+  userAlert = [(DBApplicationViewController *)self userAlert];
 
-  if (v3)
+  if (userAlert)
   {
-    v4 = [(DBApplicationViewController *)self userAlert];
-    v5 = [(DBApplicationViewController *)self alertPresentationRequester];
-    [v4 relinquishPresentationForRequester:v5];
+    userAlert2 = [(DBApplicationViewController *)self userAlert];
+    alertPresentationRequester = [(DBApplicationViewController *)self alertPresentationRequester];
+    [userAlert2 relinquishPresentationForRequester:alertPresentationRequester];
 
-    v6 = [(DBApplicationViewController *)self alertPresentationView];
-    [v6 removeFromSuperview];
+    alertPresentationView = [(DBApplicationViewController *)self alertPresentationView];
+    [alertPresentationView removeFromSuperview];
 
     [(DBApplicationViewController *)self setAlertPresentationView:0];
   }
@@ -254,34 +254,34 @@
 
 - (void)dealloc
 {
-  v3 = [(DBApplicationViewController *)self sceneHostViewController];
-  [v3 invalidateScenePresenter];
+  sceneHostViewController = [(DBApplicationViewController *)self sceneHostViewController];
+  [sceneHostViewController invalidateScenePresenter];
 
-  v4 = [(DBApplicationViewController *)self userAlert];
-  v5 = [(DBApplicationViewController *)self alertPresentationRequester];
-  [v4 relinquishPresentationForRequester:v5];
+  userAlert = [(DBApplicationViewController *)self userAlert];
+  alertPresentationRequester = [(DBApplicationViewController *)self alertPresentationRequester];
+  [userAlert relinquishPresentationForRequester:alertPresentationRequester];
 
   v6.receiver = self;
   v6.super_class = DBApplicationViewController;
   [(DBApplicationViewController *)&v6 dealloc];
 }
 
-- (DBApplicationViewController)initWithScene:(id)a3 entity:(id)a4 environment:(id)a5
+- (DBApplicationViewController)initWithScene:(id)scene entity:(id)entity environment:(id)environment
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sceneCopy = scene;
+  entityCopy = entity;
+  environmentCopy = environment;
   v37.receiver = self;
   v37.super_class = DBApplicationViewController;
   v12 = [(DBApplicationViewController *)&v37 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_scene, a3);
-    if ([v10 isApplicationEntity])
+    objc_storeStrong(&v12->_scene, scene);
+    if ([entityCopy isApplicationEntity])
     {
       v14 = objc_opt_class();
-      v15 = v10;
+      v15 = entityCopy;
       if (v14)
       {
         if (objc_opt_isKindOfClass())
@@ -302,18 +302,18 @@
 
       v17 = v16;
 
-      v18 = [v17 application];
+      application = [v17 application];
       application = v13->_application;
-      v13->_application = v18;
+      v13->_application = application;
 
       proxyApplication = v13->_proxyApplication;
       v13->_proxyApplication = 0;
     }
 
-    if ([v10 isProxiedApplicationEntity])
+    if ([entityCopy isProxiedApplicationEntity])
     {
       v21 = objc_opt_class();
-      v22 = v10;
+      v22 = entityCopy;
       if (v21)
       {
         if (objc_opt_isKindOfClass())
@@ -334,23 +334,23 @@
 
       v24 = v23;
 
-      v25 = [v24 applicationToProxy];
+      applicationToProxy = [v24 applicationToProxy];
       v26 = v13->_application;
-      v13->_application = v25;
+      v13->_application = applicationToProxy;
 
-      v27 = [v24 proxyEntity];
-      v28 = [v27 application];
+      proxyEntity = [v24 proxyEntity];
+      application2 = [proxyEntity application];
       v29 = v13->_proxyApplication;
-      v13->_proxyApplication = v28;
+      v13->_proxyApplication = application2;
     }
 
-    objc_storeStrong(&v13->_entity, a4);
-    objc_storeWeak(&v13->_environment, v11);
+    objc_storeStrong(&v13->_entity, entity);
+    objc_storeWeak(&v13->_environment, environmentCopy);
     v30 = MEMORY[0x277CCACA8];
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
-    v33 = [(DBApplication *)v13->_application bundleIdentifier];
-    v34 = [v30 stringWithFormat:@"%@-%@-%u", v32, v33, ++counter];
+    bundleIdentifier = [(DBApplication *)v13->_application bundleIdentifier];
+    v34 = [v30 stringWithFormat:@"%@-%@-%u", v32, bundleIdentifier, ++counter];
     alertPresentationRequester = v13->_alertPresentationRequester;
     v13->_alertPresentationRequester = v34;
   }
@@ -358,22 +358,22 @@
   return v13;
 }
 
-- (void)setUserAlert:(id)a3
+- (void)setUserAlert:(id)alert
 {
-  v5 = a3;
-  if (self->_userAlert != v5)
+  alertCopy = alert;
+  if (self->_userAlert != alertCopy)
   {
-    v6 = v5;
+    v6 = alertCopy;
     [(DBApplicationViewController *)self _removeAlertSubviewIfNeeded];
-    objc_storeStrong(&self->_userAlert, a3);
+    objc_storeStrong(&self->_userAlert, alert);
     [(DBApplicationViewController *)self _addAlertSubviewIfNeeded];
-    v5 = v6;
+    alertCopy = v6;
   }
 }
 
-- (void)applicationSceneHostViewController:(id)a3 didUpdateSceneContentState:(int64_t)a4
+- (void)applicationSceneHostViewController:(id)controller didUpdateSceneContentState:(int64_t)state
 {
-  if (a4 == 2)
+  if (state == 2)
   {
     [(DBApplicationViewController *)self _addAlertSubviewIfNeeded];
   }
@@ -384,54 +384,54 @@
   }
 }
 
-- (id)presentationViewWithIdentifier:(id)a3
+- (id)presentationViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBApplicationViewController *)self sceneHostViewController];
-  v6 = [v5 presentationViewWithIdentifier:v4];
+  identifierCopy = identifier;
+  sceneHostViewController = [(DBApplicationViewController *)self sceneHostViewController];
+  v6 = [sceneHostViewController presentationViewWithIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (void)invalidatePresentationViewForIdentifier:(id)a3
+- (void)invalidatePresentationViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBApplicationViewController *)self sceneHostViewController];
-  [v5 invalidatePresentationViewForIdentifier:v4];
+  identifierCopy = identifier;
+  sceneHostViewController = [(DBApplicationViewController *)self sceneHostViewController];
+  [sceneHostViewController invalidatePresentationViewForIdentifier:identifierCopy];
 }
 
-- (void)foregroundSceneWithSettings:(id)a3 completion:(id)a4
+- (void)foregroundSceneWithSettings:(id)settings completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DBApplicationViewController *)self sceneHostViewController];
-  [v8 foregroundSceneWithSettings:v7 completion:v6];
+  completionCopy = completion;
+  settingsCopy = settings;
+  sceneHostViewController = [(DBApplicationViewController *)self sceneHostViewController];
+  [sceneHostViewController foregroundSceneWithSettings:settingsCopy completion:completionCopy];
 }
 
-- (void)backgroundSceneWithCompletion:(id)a3
+- (void)backgroundSceneWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(DBApplicationViewController *)self sceneHostViewController];
-  [v5 backgroundSceneWithCompletion:v4];
+  completionCopy = completion;
+  sceneHostViewController = [(DBApplicationViewController *)self sceneHostViewController];
+  [sceneHostViewController backgroundSceneWithCompletion:completionCopy];
 }
 
-- (void)activateSceneWithSettings:(id)a3 completion:(id)a4
+- (void)activateSceneWithSettings:(id)settings completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DBApplicationViewController *)self sceneHostViewController];
-  [v8 activateSceneWithSettings:v7 completion:v6];
+  completionCopy = completion;
+  settingsCopy = settings;
+  sceneHostViewController = [(DBApplicationViewController *)self sceneHostViewController];
+  [sceneHostViewController activateSceneWithSettings:settingsCopy completion:completionCopy];
 }
 
-- (void)deactivateSceneWithReasonMask:(unint64_t)a3
+- (void)deactivateSceneWithReasonMask:(unint64_t)mask
 {
-  v4 = [(DBApplicationViewController *)self sceneHostViewController];
-  [v4 deactivateSceneWithReasonMask:a3];
+  sceneHostViewController = [(DBApplicationViewController *)self sceneHostViewController];
+  [sceneHostViewController deactivateSceneWithReasonMask:mask];
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
-  if ([a3 type] == 1)
+  if ([event type] == 1)
   {
 
     [(DBApplicationViewController *)self _requestDismissal];
@@ -441,12 +441,12 @@
 - (void)_requestDismissal
 {
   v6 = objc_alloc_init(DBMutableWorkspaceStateChangeRequest);
-  v3 = [(DBApplicationViewController *)self application];
-  [(DBMutableWorkspaceStateChangeRequest *)v6 deactivateApplication:v3];
+  application = [(DBApplicationViewController *)self application];
+  [(DBMutableWorkspaceStateChangeRequest *)v6 deactivateApplication:application];
 
-  v4 = [(DBApplicationViewController *)self environment];
-  v5 = [v4 workspace];
-  [v5 requestStateChange:v6];
+  environment = [(DBApplicationViewController *)self environment];
+  workspace = [environment workspace];
+  [workspace requestStateChange:v6];
 }
 
 @end

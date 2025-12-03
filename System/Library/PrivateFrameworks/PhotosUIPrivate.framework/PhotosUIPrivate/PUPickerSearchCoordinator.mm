@@ -2,36 +2,36 @@
 - (BOOL)isCompact;
 - (BOOL)isEditing;
 - (NSAttributedString)searchText;
-- (PUPickerSearchCoordinator)initWithPhotoLibrary:(id)a3 configuration:(id)a4 isCompact:(BOOL)a5 searchHandler:(id)a6 contextualVideoThumbnailsHandler:(id)a7 scopeHandler:(id)a8 editingHandler:(id)a9;
+- (PUPickerSearchCoordinator)initWithPhotoLibrary:(id)library configuration:(id)configuration isCompact:(BOOL)compact searchHandler:(id)handler contextualVideoThumbnailsHandler:(id)thumbnailsHandler scopeHandler:(id)scopeHandler editingHandler:(id)editingHandler;
 - (UIBarButtonItem)compactSearchBarButtonItem;
 - (UIViewController)suggestionViewContainerController;
-- (void)setContainerFromPickerConfiguration:(id)a3;
-- (void)setContainerFromSuggestion:(id)a3;
-- (void)setIsCompact:(BOOL)a3;
-- (void)setIsEditing:(BOOL)a3;
-- (void)setIsVisible:(BOOL)a3;
-- (void)setSearchText:(id)a3;
-- (void)setSuggestionViewContainerController:(id)a3;
+- (void)setContainerFromPickerConfiguration:(id)configuration;
+- (void)setContainerFromSuggestion:(id)suggestion;
+- (void)setIsCompact:(BOOL)compact;
+- (void)setIsEditing:(BOOL)editing;
+- (void)setIsVisible:(BOOL)visible;
+- (void)setSearchText:(id)text;
+- (void)setSuggestionViewContainerController:(id)controller;
 @end
 
 @implementation PUPickerSearchCoordinator
 
-- (PUPickerSearchCoordinator)initWithPhotoLibrary:(id)a3 configuration:(id)a4 isCompact:(BOOL)a5 searchHandler:(id)a6 contextualVideoThumbnailsHandler:(id)a7 scopeHandler:(id)a8 editingHandler:(id)a9
+- (PUPickerSearchCoordinator)initWithPhotoLibrary:(id)library configuration:(id)configuration isCompact:(BOOL)compact searchHandler:(id)handler contextualVideoThumbnailsHandler:(id)thumbnailsHandler scopeHandler:(id)scopeHandler editingHandler:(id)editingHandler
 {
-  v14 = _Block_copy(a6);
-  v15 = _Block_copy(a7);
-  v16 = _Block_copy(a8);
-  v17 = _Block_copy(a9);
+  v14 = _Block_copy(handler);
+  v15 = _Block_copy(thumbnailsHandler);
+  v16 = _Block_copy(scopeHandler);
+  v17 = _Block_copy(editingHandler);
   *(swift_allocObject() + 16) = v14;
   *(swift_allocObject() + 16) = v15;
   *(swift_allocObject() + 16) = v16;
   *(swift_allocObject() + 16) = v17;
-  return sub_1B380E600(a3, a4, a5);
+  return sub_1B380E600(library, configuration, compact);
 }
 
 - (UIBarButtonItem)compactSearchBarButtonItem
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B380ED54();
 
   return v3;
@@ -39,80 +39,80 @@
 
 - (UIViewController)suggestionViewContainerController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B380EF48();
 
   return v3;
 }
 
-- (void)setSuggestionViewContainerController:(id)a3
+- (void)setSuggestionViewContainerController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_1B380EFD0();
 }
 
-- (void)setIsVisible:(BOOL)a3
+- (void)setIsVisible:(BOOL)visible
 {
-  v4 = self;
-  sub_1B380F088(a3);
+  selfCopy = self;
+  sub_1B380F088(visible);
 }
 
 - (BOOL)isCompact
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B380F0CC();
 
   return v3;
 }
 
-- (void)setIsCompact:(BOOL)a3
+- (void)setIsCompact:(BOOL)compact
 {
-  v4 = self;
-  sub_1B380F244(a3);
+  selfCopy = self;
+  sub_1B380F244(compact);
 }
 
 - (BOOL)isEditing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B380F374();
 
   return v3 & 1;
 }
 
-- (void)setIsEditing:(BOOL)a3
+- (void)setIsEditing:(BOOL)editing
 {
-  v3 = self;
+  selfCopy = self;
   sub_1B380F3F8();
 }
 
 - (NSAttributedString)searchText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B380F468();
 
   return v3;
 }
 
-- (void)setSearchText:(id)a3
+- (void)setSearchText:(id)text
 {
-  v4 = a3;
-  v5 = self;
+  textCopy = text;
+  selfCopy = self;
   sub_1B380F4F0();
 }
 
-- (void)setContainerFromSuggestion:(id)a3
+- (void)setContainerFromSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B380F51C(v4);
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  sub_1B380F51C(suggestionCopy);
 }
 
-- (void)setContainerFromPickerConfiguration:(id)a3
+- (void)setContainerFromPickerConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B380F5DC(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  sub_1B380F5DC(configurationCopy);
 }
 
 @end

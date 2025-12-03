@@ -1,9 +1,9 @@
 @interface hjIvoYfuuA5g1aoN
 + (id)sharedInstance;
 - (hjIvoYfuuA5g1aoN)init;
-- (id)ciiN3o1L7RiefeS5:(_KUwyEjpVZR65eUyl *)a3;
-- (id)ofrSKnQ5RUKxzAHY:(id)a3;
-- (void)x7PkBasAKbApbiZS:(_KUwyEjpVZR65eUyl *)a3;
+- (id)ciiN3o1L7RiefeS5:(_KUwyEjpVZR65eUyl *)s5;
+- (id)ofrSKnQ5RUKxzAHY:(id)y;
+- (void)x7PkBasAKbApbiZS:(_KUwyEjpVZR65eUyl *)s;
 @end
 
 @implementation hjIvoYfuuA5g1aoN
@@ -39,20 +39,20 @@
   return v3;
 }
 
-- (id)ofrSKnQ5RUKxzAHY:(id)a3
+- (id)ofrSKnQ5RUKxzAHY:(id)y
 {
-  v4 = a3;
-  v5 = [(hjIvoYfuuA5g1aoN *)self locationManagers];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  yCopy = y;
+  locationManagers = [(hjIvoYfuuA5g1aoN *)self locationManagers];
+  v6 = [locationManagers objectForKeyedSubscript:yCopy];
 
   if (!v6)
   {
     v6 = objc_opt_new();
-    v7 = [(hjIvoYfuuA5g1aoN *)self locationQueue];
-    [v6 prepareWithBundlePath:v4 andLocationQueue:v7];
+    locationQueue = [(hjIvoYfuuA5g1aoN *)self locationQueue];
+    [v6 prepareWithBundlePath:yCopy andLocationQueue:locationQueue];
 
-    v8 = [(hjIvoYfuuA5g1aoN *)self locationManagers];
-    [v8 setObject:v6 forKeyedSubscript:v4];
+    locationManagers2 = [(hjIvoYfuuA5g1aoN *)self locationManagers];
+    [locationManagers2 setObject:v6 forKeyedSubscript:yCopy];
   }
 
   v9 = v6;
@@ -60,7 +60,7 @@
   return v9;
 }
 
-- (id)ciiN3o1L7RiefeS5:(_KUwyEjpVZR65eUyl *)a3
+- (id)ciiN3o1L7RiefeS5:(_KUwyEjpVZR65eUyl *)s5
 {
   *v9 = kCLLocationAccuracyBestForNavigation;
   *&v9[1] = kCLLocationAccuracyBest;
@@ -68,10 +68,10 @@
   *&v9[3] = kCLLocationAccuracyHundredMeters;
   *&v9[4] = kCLLocationAccuracyKilometer;
   *&v9[5] = kCLLocationAccuracyThreeKilometers;
-  if ((a3->var1 & 0xFFFFFFFE) == 4)
+  if ((s5->var1 & 0xFFFFFFFE) == 4)
   {
-    v5 = [eTBtehykeBvfpeTP rsNB9HkZVEH0l6fT:a3->var4.var0.var0 gsx0MJUoOpcxcozG:a3->var4.var1.var0.var1];
-    v6 = *&v9[a3->var4.var5.var2];
+    v5 = [eTBtehykeBvfpeTP rsNB9HkZVEH0l6fT:s5->var4.var0.var0 gsx0MJUoOpcxcozG:s5->var4.var1.var0.var1];
+    v6 = *&v9[s5->var4.var5.var2];
     v7 = [(hjIvoYfuuA5g1aoN *)self ofrSKnQ5RUKxzAHY:v5];
     [v7 setMsur5CGmk1XEBjLD:v6];
     [v7 setG6zbwvXxUAZNoblY:0.8];
@@ -85,16 +85,16 @@
   return v7;
 }
 
-- (void)x7PkBasAKbApbiZS:(_KUwyEjpVZR65eUyl *)a3
+- (void)x7PkBasAKbApbiZS:(_KUwyEjpVZR65eUyl *)s
 {
-  v5 = [(hjIvoYfuuA5g1aoN *)self locationQueue];
+  locationQueue = [(hjIvoYfuuA5g1aoN *)self locationQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000CE24;
   v6[3] = &unk_10068F2F8;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = s;
+  dispatch_async(locationQueue, v6);
 }
 
 @end

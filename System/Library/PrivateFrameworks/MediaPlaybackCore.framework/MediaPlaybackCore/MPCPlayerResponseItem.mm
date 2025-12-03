@@ -1,17 +1,17 @@
 @interface MPCPlayerResponseItem
 - ($04B05C73ED6AEEF31C5815932084562D)duration;
 - (BOOL)_isDisliked;
-- (BOOL)_isDislikedValueForSong:(id)a3;
+- (BOOL)_isDislikedValueForSong:(id)song;
 - (BOOL)_isFavoriteEligible;
-- (BOOL)_isFavoriteValueForSong:(id)a3;
+- (BOOL)_isFavoriteValueForSong:(id)song;
 - (BOOL)_isFavorited;
 - (MPCPlayerResponse)response;
-- (MPCPlayerResponseItem)initWithModelGenericObject:(id)a3 indexPath:(id)a4 enqueueingParticipant:(id)a5 response:(id)a6;
+- (MPCPlayerResponseItem)initWithModelGenericObject:(id)object indexPath:(id)path enqueueingParticipant:(id)participant response:(id)response;
 - (MPCPlayerResponseItemMusicAudio)musicAudio;
-- (id)_buildLanguageOptionGroups:(id)a3 currentLanguageOptions:(id)a4;
-- (id)_favoriteCommandWithMediaRemoteCommand:(unsigned int)a3;
-- (id)_feedbackCommandWithMediaRemoteCommand:(unsigned int)a3;
-- (id)_initWithContentItemID:(id)a3 autoPlay:(BOOL)a4;
+- (id)_buildLanguageOptionGroups:(id)groups currentLanguageOptions:(id)options;
+- (id)_favoriteCommandWithMediaRemoteCommand:(unsigned int)command;
+- (id)_feedbackCommandWithMediaRemoteCommand:(unsigned int)command;
+- (id)_initWithContentItemID:(id)d autoPlay:(BOOL)play;
 - (id)_modelSongMetadataObject;
 - (id)_stateDumpObject;
 - (id)dislikeCommand;
@@ -42,28 +42,28 @@
   return self;
 }
 
-- (BOOL)_isDislikedValueForSong:(id)a3
+- (BOOL)_isDislikedValueForSong:(id)song
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 hasLoadedValueForKey:*MEMORY[0x1E696FF58]])
+  songCopy = song;
+  v4 = songCopy;
+  if (songCopy && [songCopy hasLoadedValueForKey:*MEMORY[0x1E696FF58]])
   {
-    v5 = [v4 isDisliked];
+    isDisliked = [v4 isDisliked];
   }
 
   else
   {
-    v5 = 0;
+    isDisliked = 0;
   }
 
-  return v5;
+  return isDisliked;
 }
 
 - (BOOL)_isDisliked
 {
-  v3 = [(MPCPlayerResponseItem *)self _modelSongMetadataObject];
-  v4 = [MEMORY[0x1E69706D8] sharedDeviceLibraryController];
-  v5 = [v4 transientFavoriteStateForModelObject:v3];
+  _modelSongMetadataObject = [(MPCPlayerResponseItem *)self _modelSongMetadataObject];
+  mEMORY[0x1E69706D8] = [MEMORY[0x1E69706D8] sharedDeviceLibraryController];
+  v5 = [mEMORY[0x1E69706D8] transientFavoriteStateForModelObject:_modelSongMetadataObject];
   if (v5)
   {
     v6 = v5 == 3;
@@ -71,34 +71,34 @@
 
   else
   {
-    v6 = [(MPCPlayerResponseItem *)self _isDislikedValueForSong:v3];
+    v6 = [(MPCPlayerResponseItem *)self _isDislikedValueForSong:_modelSongMetadataObject];
   }
 
   return v6;
 }
 
-- (BOOL)_isFavoriteValueForSong:(id)a3
+- (BOOL)_isFavoriteValueForSong:(id)song
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 hasLoadedValueForKey:*MEMORY[0x1E696FF60]])
+  songCopy = song;
+  v4 = songCopy;
+  if (songCopy && [songCopy hasLoadedValueForKey:*MEMORY[0x1E696FF60]])
   {
-    v5 = [v4 isFavorite];
+    isFavorite = [v4 isFavorite];
   }
 
   else
   {
-    v5 = 0;
+    isFavorite = 0;
   }
 
-  return v5;
+  return isFavorite;
 }
 
 - (BOOL)_isFavorited
 {
-  v3 = [(MPCPlayerResponseItem *)self _modelSongMetadataObject];
-  v4 = [MEMORY[0x1E69706D8] sharedDeviceLibraryController];
-  v5 = [v4 transientFavoriteStateForModelObject:v3];
+  _modelSongMetadataObject = [(MPCPlayerResponseItem *)self _modelSongMetadataObject];
+  mEMORY[0x1E69706D8] = [MEMORY[0x1E69706D8] sharedDeviceLibraryController];
+  v5 = [mEMORY[0x1E69706D8] transientFavoriteStateForModelObject:_modelSongMetadataObject];
   if (v5)
   {
     v6 = v5 == 2;
@@ -106,7 +106,7 @@
 
   else
   {
-    v6 = [(MPCPlayerResponseItem *)self _isFavoriteValueForSong:v3];
+    v6 = [(MPCPlayerResponseItem *)self _isFavoriteValueForSong:_modelSongMetadataObject];
   }
 
   return v6;
@@ -117,64 +117,64 @@
   WeakRetained = objc_loadWeakRetained(&self->_response);
   if (_os_feature_enabled_impl() && [MEMORY[0x1E69705E8] authorizationStatus] == 3 && self->_metadataObject && self->_isFavoritable)
   {
-    v4 = [WeakRetained requestingUserSubscriptionStatus];
-    v5 = [v4 capabilities];
+    requestingUserSubscriptionStatus = [WeakRetained requestingUserSubscriptionStatus];
+    capabilities = [requestingUserSubscriptionStatus capabilities];
 
-    v6 = [(MPCPlayerResponseItem *)self _modelSongMetadataObject];
-    v7 = v6;
-    if (v5 & 0x200) != 0 && ([v6 isLibraryAddEligible])
+    _modelSongMetadataObject = [(MPCPlayerResponseItem *)self _modelSongMetadataObject];
+    v7 = _modelSongMetadataObject;
+    if (capabilities & 0x200) != 0 && ([_modelSongMetadataObject isLibraryAddEligible])
     {
-      v8 = 1;
+      isLibraryAdded = 1;
     }
 
     else
     {
-      v8 = [v7 isLibraryAdded];
+      isLibraryAdded = [v7 isLibraryAdded];
     }
   }
 
   else
   {
-    v8 = 0;
+    isLibraryAdded = 0;
   }
 
-  return v8;
+  return isLibraryAdded;
 }
 
 - (id)_modelSongMetadataObject
 {
-  v3 = [(MPModelGenericObject *)self->_metadataObject type];
-  if (v3 == 5)
+  type = [(MPModelGenericObject *)self->_metadataObject type];
+  if (type == 5)
   {
-    v5 = [(MPModelGenericObject *)self->_metadataObject playlistEntry];
-    v4 = [v5 song];
+    playlistEntry = [(MPModelGenericObject *)self->_metadataObject playlistEntry];
+    song = [playlistEntry song];
   }
 
-  else if (v3 == 1)
+  else if (type == 1)
   {
-    v4 = [(MPModelGenericObject *)self->_metadataObject song];
+    song = [(MPModelGenericObject *)self->_metadataObject song];
   }
 
   else
   {
-    v4 = 0;
+    song = 0;
   }
 
-  return v4;
+  return song;
 }
 
-- (id)_feedbackCommandWithMediaRemoteCommand:(unsigned int)a3
+- (id)_feedbackCommandWithMediaRemoteCommand:(unsigned int)command
 {
-  v3 = *&a3;
+  v3 = *&command;
   WeakRetained = objc_loadWeakRetained(&self->_response);
-  v6 = [WeakRetained builder];
-  v7 = [WeakRetained chain];
-  v8 = [v6 playerCommandEnabled:0 command:v3 chain:v7];
+  builder = [WeakRetained builder];
+  chain = [WeakRetained chain];
+  v8 = [builder playerCommandEnabled:0 command:v3 chain:chain];
 
-  v9 = [WeakRetained builder];
+  builder2 = [WeakRetained builder];
   v10 = *MEMORY[0x1E69B0CD0];
-  v11 = [WeakRetained chain];
-  v12 = [v9 playerCommandOptionValue:&unk_1F4599670 forKey:v10 command:v3 chain:v11];
+  chain2 = [WeakRetained chain];
+  v12 = [builder2 playerCommandOptionValue:&unk_1F4599670 forKey:v10 command:v3 chain:chain2];
   v13 = v12;
   if (v12)
   {
@@ -188,13 +188,13 @@
 
   v15 = v14;
 
-  v16 = [v15 integerValue];
+  integerValue = [v15 integerValue];
   v17 = 0;
-  if (v8 && v16 != 2)
+  if (v8 && integerValue != 2)
   {
     v17 = [[_MPCPlayerFeedbackCommand alloc] initWithResponse:WeakRetained mediaRemoteCommand:v3];
     [(_MPCPlayerItemCommand *)v17 setContentItemID:self->_contentItemIdentifier];
-    [(_MPCPlayerFeedbackCommand *)v17 setPresentationStyle:v16];
+    [(_MPCPlayerFeedbackCommand *)v17 setPresentationStyle:integerValue];
     if (v3 == 21)
     {
       v18 = @"REMOTE_CONTROL_LIKE_TRACK_SHORT";
@@ -214,30 +214,30 @@
       v19 = @"REMOTE_CONTROL_DISLIKE_TRACK_RADIO";
     }
 
-    v20 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
-    v21 = [v20 localizedStringForKey:v19 value:&stru_1F454A698 table:@"MediaPlaybackCore"];
+    mediaPlaybackCoreBundle = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
+    v21 = [mediaPlaybackCoreBundle localizedStringForKey:v19 value:&stru_1F454A698 table:@"MediaPlaybackCore"];
 
-    v22 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
-    v23 = [v22 localizedStringForKey:v18 value:&stru_1F454A698 table:@"MediaPlaybackCore"];
+    mediaPlaybackCoreBundle2 = [MEMORY[0x1E696AAE8] mediaPlaybackCoreBundle];
+    v23 = [mediaPlaybackCoreBundle2 localizedStringForKey:v18 value:&stru_1F454A698 table:@"MediaPlaybackCore"];
 
 LABEL_12:
-    v24 = [WeakRetained builder];
+    builder3 = [WeakRetained builder];
     v25 = *MEMORY[0x1E69B0C80];
-    v26 = [WeakRetained chain];
-    v27 = [v24 playerCommandOptionValue:v21 forKey:v25 command:v3 chain:v26];
+    chain3 = [WeakRetained chain];
+    v27 = [builder3 playerCommandOptionValue:v21 forKey:v25 command:v3 chain:chain3];
     [(_MPCPlayerFeedbackCommand *)v17 setLocalizedTitle:v27];
 
-    v28 = [WeakRetained builder];
+    builder4 = [WeakRetained builder];
     v29 = *MEMORY[0x1E69B0C78];
-    v30 = [WeakRetained chain];
-    v31 = [v28 playerCommandOptionValue:v23 forKey:v29 command:v3 chain:v30];
+    chain4 = [WeakRetained chain];
+    v31 = [builder4 playerCommandOptionValue:v23 forKey:v29 command:v3 chain:chain4];
     [(_MPCPlayerFeedbackCommand *)v17 setLocalizedShortTitle:v31];
 
-    v32 = [WeakRetained builder];
+    builder5 = [WeakRetained builder];
     v33 = *MEMORY[0x1E69B0C68];
-    v34 = [WeakRetained chain];
+    chain5 = [WeakRetained chain];
     v35 = MEMORY[0x1E695E110];
-    v36 = [v32 playerCommandOptionValue:MEMORY[0x1E695E110] forKey:v33 command:v3 chain:v34];
+    v36 = [builder5 playerCommandOptionValue:MEMORY[0x1E695E110] forKey:v33 command:v3 chain:chain5];
     v37 = v36;
     if (v36)
     {
@@ -251,24 +251,24 @@ LABEL_12:
 
     v39 = v38;
 
-    v40 = [v39 BOOLValue];
-    [(_MPCPlayerFeedbackCommand *)v17 setValue:v40];
+    bOOLValue = [v39 BOOLValue];
+    [(_MPCPlayerFeedbackCommand *)v17 setValue:bOOLValue];
   }
 
   return v17;
 }
 
-- (id)_buildLanguageOptionGroups:(id)a3 currentLanguageOptions:(id)a4
+- (id)_buildLanguageOptionGroups:(id)groups currentLanguageOptions:(id)options
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  groupsCopy = groups;
+  optionsCopy = options;
+  v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(groupsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v6;
+  obj = groupsCopy;
   v9 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -286,7 +286,7 @@ LABEL_12:
         v13 = *(*(&v20 + 1) + 8 * i);
         v14 = [MPCPlayerLanguageOptionGroup alloc];
         WeakRetained = objc_loadWeakRetained(&self->_response);
-        v16 = [(MPCPlayerLanguageOptionGroup *)v14 initWithLanguageOptionGroups:v13 currentLanguageOptions:v7 response:WeakRetained];
+        v16 = [(MPCPlayerLanguageOptionGroup *)v14 initWithLanguageOptionGroups:v13 currentLanguageOptions:optionsCopy response:WeakRetained];
         [v8 addObject:v16];
       }
 
@@ -304,9 +304,9 @@ LABEL_12:
 - (unint64_t)_determineSeekSupport
 {
   WeakRetained = objc_loadWeakRetained(&self->_response);
-  v3 = [WeakRetained builder];
-  v4 = [WeakRetained chain];
-  v5 = [v3 playerCommandEnabled:0 command:8 chain:v4];
+  builder = [WeakRetained builder];
+  chain = [WeakRetained chain];
+  v5 = [builder playerCommandEnabled:0 command:8 chain:chain];
 
   if (v5)
   {
@@ -318,36 +318,36 @@ LABEL_12:
     v6 = 1;
   }
 
-  v7 = [WeakRetained builder];
-  v8 = [WeakRetained chain];
-  v9 = [v7 playerCommandEnabled:0 command:10 chain:v8];
+  builder2 = [WeakRetained builder];
+  chain2 = [WeakRetained chain];
+  v9 = [builder2 playerCommandEnabled:0 command:10 chain:chain2];
 
   if (v9)
   {
     v6 |= 0x18uLL;
   }
 
-  v10 = [WeakRetained builder];
-  v11 = [WeakRetained chain];
-  v12 = [v10 playerCommandEnabled:0 command:17 chain:v11];
+  builder3 = [WeakRetained builder];
+  chain3 = [WeakRetained chain];
+  v12 = [builder3 playerCommandEnabled:0 command:17 chain:chain3];
 
   if (v12)
   {
     v6 |= 0x20uLL;
   }
 
-  v13 = [WeakRetained builder];
-  v14 = [WeakRetained chain];
-  v15 = [v13 playerCommandEnabled:0 command:18 chain:v14];
+  builder4 = [WeakRetained builder];
+  chain4 = [WeakRetained chain];
+  v15 = [builder4 playerCommandEnabled:0 command:18 chain:chain4];
 
   if (v15)
   {
     v6 |= 0x40uLL;
   }
 
-  v16 = [WeakRetained builder];
-  v17 = [WeakRetained chain];
-  v18 = [v16 playerCommandEnabled:0 command:24 chain:v17];
+  builder5 = [WeakRetained builder];
+  chain5 = [WeakRetained chain];
+  v18 = [builder5 playerCommandEnabled:0 command:24 chain:chain5];
 
   if (v18)
   {
@@ -359,13 +359,13 @@ LABEL_12:
     v19 = v6;
   }
 
-  v20 = [WeakRetained builder];
+  builder6 = [WeakRetained builder];
   v21 = *MEMORY[0x1E69B0D70];
-  v22 = [WeakRetained chain];
-  v23 = [v20 playerCommandOptionValue:MEMORY[0x1E695E110] forKey:v21 command:24 chain:v22];
-  v24 = [v23 BOOLValue];
+  chain6 = [WeakRetained chain];
+  v23 = [builder6 playerCommandOptionValue:MEMORY[0x1E695E110] forKey:v21 command:24 chain:chain6];
+  bOOLValue = [v23 BOOLValue];
 
-  if (v24)
+  if (bOOLValue)
   {
     v25 = v19 | 0x100;
   }
@@ -382,15 +382,15 @@ LABEL_12:
 {
   if (self->_activeFormat)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)_stateDumpObject
@@ -533,9 +533,9 @@ LABEL_12:
 {
   v19[1] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_response);
-  v4 = [WeakRetained builder];
-  v5 = [WeakRetained chain];
-  v6 = [v4 playerCommandEnabled:0 command:129 chain:v5];
+  builder = [WeakRetained builder];
+  chain = [WeakRetained chain];
+  v6 = [builder playerCommandEnabled:0 command:129 chain:chain];
 
   if (v6 && ([WeakRetained builder], v7 = objc_claimAutoreleasedReturnValue(), indexPath = self->_indexPath, objc_msgSend(WeakRetained, "chain"), v9 = objc_claimAutoreleasedReturnValue(), LOBYTE(indexPath) = objc_msgSend(v7, "playerItemEditingStyleFlags:atIndexPath:chain:", 0, indexPath, v9), v9, v7, (indexPath & 2) != 0))
   {
@@ -546,10 +546,10 @@ LABEL_12:
       v19[0] = v11;
       v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
       v13 = [MPCPlayerCommandRequest alloc];
-      v14 = [WeakRetained controller];
-      v15 = [WeakRetained request];
-      v16 = [v15 label];
-      v10 = [(MPCPlayerCommandRequest *)v13 initWithMediaRemoteCommand:129 options:v12 controller:v14 label:v16];
+      controller = [WeakRetained controller];
+      request = [WeakRetained request];
+      label = [request label];
+      v10 = [(MPCPlayerCommandRequest *)v13 initWithMediaRemoteCommand:129 options:v12 controller:controller label:label];
     }
 
     else
@@ -569,16 +569,16 @@ LABEL_12:
 - (id)rateCommand
 {
   WeakRetained = objc_loadWeakRetained(&self->_response);
-  v4 = [WeakRetained builder];
-  v5 = [WeakRetained chain];
-  v6 = [v4 playerCommandEnabled:0 command:20 chain:v5];
+  builder = [WeakRetained builder];
+  chain = [WeakRetained chain];
+  v6 = [builder playerCommandEnabled:0 command:20 chain:chain];
 
   if (v6)
   {
-    v7 = [WeakRetained builder];
+    builder2 = [WeakRetained builder];
     v8 = *MEMORY[0x1E69B0C90];
-    v9 = [WeakRetained chain];
-    v10 = [v7 playerCommandOptionValue:&unk_1F4599B00 forKey:v8 command:20 chain:v9];
+    chain2 = [WeakRetained chain];
+    v10 = [builder2 playerCommandOptionValue:&unk_1F4599B00 forKey:v8 command:20 chain:chain2];
     v11 = v10;
     if (v10)
     {
@@ -592,10 +592,10 @@ LABEL_12:
 
     v13 = v12;
 
-    v14 = [WeakRetained builder];
+    builder3 = [WeakRetained builder];
     v15 = *MEMORY[0x1E69B0C88];
-    v16 = [WeakRetained chain];
-    v17 = [v14 playerCommandOptionValue:&unk_1F4599AF0 forKey:v15 command:20 chain:v16];
+    chain3 = [WeakRetained chain];
+    v17 = [builder3 playerCommandOptionValue:&unk_1F4599AF0 forKey:v15 command:20 chain:chain3];
     v18 = v17;
     if (v17)
     {
@@ -631,9 +631,9 @@ LABEL_12:
   return v21;
 }
 
-- (id)_favoriteCommandWithMediaRemoteCommand:(unsigned int)a3
+- (id)_favoriteCommandWithMediaRemoteCommand:(unsigned int)command
 {
-  v3 = *&a3;
+  v3 = *&command;
   if (![(MPCPlayerResponseItem *)self _isFavoriteEligible]|| (LODWORD(v5) = [(MPCPlayerResponseItem *)self _isDisliked], v6 = [(MPCPlayerResponseItem *)self _isFavorited], v3 == 22) && v6)
   {
     v7 = 0;
@@ -656,8 +656,8 @@ LABEL_12:
     WeakRetained = objc_loadWeakRetained(&self->_response);
     v7 = [(_MPCPlayerFeedbackCommand *)v9 initWithResponse:WeakRetained mediaRemoteCommand:v3];
 
-    v11 = [(MPCPlayerResponseItem *)self _modelSongMetadataObject];
-    [(_MPCPlayerFeedbackCommand *)v7 setFavoritableModelObject:v11];
+    _modelSongMetadataObject = [(MPCPlayerResponseItem *)self _modelSongMetadataObject];
+    [(_MPCPlayerFeedbackCommand *)v7 setFavoritableModelObject:_modelSongMetadataObject];
 
     [(_MPCPlayerFeedbackCommand *)v7 setIsDislikingFavoritableModelObject:v8];
     [(_MPCPlayerFeedbackCommand *)v7 setValue:v5];
@@ -670,11 +670,11 @@ LABEL_12:
 - (id)dislikeCommand
 {
   WeakRetained = objc_loadWeakRetained(&self->_response);
-  v4 = [WeakRetained controller];
-  v5 = [v4 resolvedPlayerPath];
-  v6 = [v5 isSystemMusicPath];
+  controller = [WeakRetained controller];
+  resolvedPlayerPath = [controller resolvedPlayerPath];
+  isSystemMusicPath = [resolvedPlayerPath isSystemMusicPath];
 
-  if (v6)
+  if (isSystemMusicPath)
   {
     [(MPCPlayerResponseItem *)self _favoriteCommandWithMediaRemoteCommand:22];
   }
@@ -691,11 +691,11 @@ LABEL_12:
 - (id)likeCommand
 {
   WeakRetained = objc_loadWeakRetained(&self->_response);
-  v4 = [WeakRetained controller];
-  v5 = [v4 resolvedPlayerPath];
-  v6 = [v5 isSystemMusicPath];
+  controller = [WeakRetained controller];
+  resolvedPlayerPath = [controller resolvedPlayerPath];
+  isSystemMusicPath = [resolvedPlayerPath isSystemMusicPath];
 
-  if (v6)
+  if (isSystemMusicPath)
   {
     [(MPCPlayerResponseItem *)self _favoriteCommandWithMediaRemoteCommand:21];
   }
@@ -712,14 +712,14 @@ LABEL_12:
 - (id)playbackRateCommand
 {
   WeakRetained = objc_loadWeakRetained(&self->_response);
-  v4 = [WeakRetained builder];
-  v5 = [WeakRetained chain];
-  v6 = [v4 playerState:0 chain:v5];
+  builder = [WeakRetained builder];
+  chain = [WeakRetained chain];
+  v6 = [builder playerState:0 chain:chain];
 
-  v7 = [WeakRetained builder];
+  builder2 = [WeakRetained builder];
   v8 = *MEMORY[0x1E69B0CC8];
-  v9 = [WeakRetained chain];
-  v10 = [v7 playerCommandOptionValue:0 forKey:v8 command:19 chain:v9];
+  chain2 = [WeakRetained chain];
+  v10 = [builder2 playerCommandOptionValue:0 forKey:v8 command:19 chain:chain2];
 
   if (v10)
   {
@@ -733,22 +733,22 @@ LABEL_12:
 
   if (!v11)
   {
-    v12 = [WeakRetained request];
-    v13 = [v12 disablePlaybackRateValidation];
+    request = [WeakRetained request];
+    disablePlaybackRateValidation = [request disablePlaybackRateValidation];
 
-    if (!v13)
+    if (!disablePlaybackRateValidation)
     {
       v10 = 0;
       goto LABEL_19;
     }
   }
 
-  v14 = [WeakRetained request];
-  if (![v14 disablePlaybackRateValidation])
+  request2 = [WeakRetained request];
+  if (![request2 disablePlaybackRateValidation])
   {
-    v15 = [WeakRetained builder];
-    v16 = [WeakRetained chain];
-    v17 = [v15 playerCommandEnabled:0 command:19 chain:v16];
+    builder3 = [WeakRetained builder];
+    chain3 = [WeakRetained chain];
+    v17 = [builder3 playerCommandEnabled:0 command:19 chain:chain3];
 
     if (v17)
     {
@@ -763,10 +763,10 @@ LABEL_19:
 LABEL_9:
   v18 = [(_MPCPlayerCommand *)[_MPCPlayerPlaybackRateCommand alloc] initWithResponse:WeakRetained];
   [(_MPCPlayerItemCommand *)v18 setContentItemID:self->_contentItemIdentifier];
-  v19 = [WeakRetained builder];
+  builder4 = [WeakRetained builder];
   v20 = *MEMORY[0x1E69B0D40];
-  v21 = [WeakRetained chain];
-  v22 = [v19 playerCommandOptionValue:&unk_1F4599970 forKey:v20 command:19 chain:v21];
+  chain4 = [WeakRetained chain];
+  v22 = [builder4 playerCommandOptionValue:&unk_1F4599970 forKey:v20 command:19 chain:chain4];
   v23 = v22;
   if (v22)
   {
@@ -780,10 +780,10 @@ LABEL_9:
 
   [(_MPCPlayerPlaybackRateCommand *)v18 setSupportedPlaybackRates:v24];
 
-  v25 = [WeakRetained builder];
+  builder5 = [WeakRetained builder];
   v26 = *MEMORY[0x1E69B0C60];
-  v27 = [WeakRetained chain];
-  v28 = [v25 playerCommandOptionValue:0 forKey:v26 command:19 chain:v27];
+  chain5 = [WeakRetained chain];
+  v28 = [builder5 playerCommandOptionValue:0 forKey:v26 command:19 chain:chain5];
   v29 = v28;
   if (v28)
   {
@@ -803,14 +803,14 @@ LABEL_9:
     v39 = 0u;
     v40 = 0u;
     v38 = 0u;
-    v31 = [WeakRetained builder];
+    builder6 = [WeakRetained builder];
     indexPath = self->_indexPath;
-    v33 = [WeakRetained chain];
-    if (v31)
+    chain6 = [WeakRetained chain];
+    if (builder6)
     {
       v37 = 0;
       memset(v36, 0, sizeof(v36));
-      [v31 playerItemDuration:v36 atIndexPath:indexPath chain:v33];
+      [builder6 playerItemDuration:v36 atIndexPath:indexPath chain:chain6];
     }
 
     else
@@ -851,14 +851,14 @@ LABEL_23:
     WeakRetained = objc_loadWeakRetained(&self->_response);
     v4 = [[_MPCPlayerSeekCommand alloc] initWithResponse:WeakRetained seekSupport:self->_seekSupport];
     [(_MPCPlayerItemCommand *)v4 setContentItemID:self->_contentItemIdentifier];
-    v6 = [(_MPCPlayerSeekCommand *)v4 seekSupport];
+    seekSupport = [(_MPCPlayerSeekCommand *)v4 seekSupport];
     v7 = MEMORY[0x1E69B0CC0];
-    if ((v6 & 0x20) != 0)
+    if ((seekSupport & 0x20) != 0)
     {
-      v8 = [WeakRetained builder];
+      builder = [WeakRetained builder];
       v9 = *v7;
-      v10 = [WeakRetained chain];
-      v11 = [v8 playerCommandOptionValue:&unk_1F4599958 forKey:v9 command:17 chain:v10];
+      chain = [WeakRetained chain];
+      v11 = [builder playerCommandOptionValue:&unk_1F4599958 forKey:v9 command:17 chain:chain];
       v12 = v11;
       if (v11)
       {
@@ -875,25 +875,25 @@ LABEL_23:
 
     if (([(_MPCPlayerSeekCommand *)v4 seekSupport]& 0x40) != 0)
     {
-      v14 = [WeakRetained builder];
+      builder2 = [WeakRetained builder];
       v15 = *v7;
-      v16 = [WeakRetained chain];
-      v17 = [v14 playerCommandOptionValue:&unk_1F4599958 forKey:v15 command:18 chain:v16];
+      chain2 = [WeakRetained chain];
+      v17 = [builder2 playerCommandOptionValue:&unk_1F4599958 forKey:v15 command:18 chain:chain2];
       v18 = v17;
       v19 = v17 ? v17 : &unk_1F4599958;
       [(_MPCPlayerSeekCommand *)v4 setPreferredBackwardJumpIntervals:v19];
 
-      v20 = [(_MPCPlayerSeekCommand *)v4 preferredBackwardJumpIntervals];
-      v21 = [v20 firstObject];
-      [v21 doubleValue];
+      preferredBackwardJumpIntervals = [(_MPCPlayerSeekCommand *)v4 preferredBackwardJumpIntervals];
+      firstObject = [preferredBackwardJumpIntervals firstObject];
+      [firstObject doubleValue];
       v23 = v22;
       v24 = v22 < 0.0;
 
       [(_MPCPlayerSeekCommand *)v4 setPrefersNegativeBackwardSkipIntervals:v24];
       if (v23 >= 0.0)
       {
-        v25 = [(_MPCPlayerSeekCommand *)v4 preferredBackwardJumpIntervals];
-        v26 = [v25 mutableCopy];
+        preferredBackwardJumpIntervals2 = [(_MPCPlayerSeekCommand *)v4 preferredBackwardJumpIntervals];
+        v26 = [preferredBackwardJumpIntervals2 mutableCopy];
 
         if ([v26 count] >= 1)
         {
@@ -928,49 +928,49 @@ LABEL_23:
   return v4;
 }
 
-- (id)_initWithContentItemID:(id)a3 autoPlay:(BOOL)a4
+- (id)_initWithContentItemID:(id)d autoPlay:(BOOL)play
 {
-  v6 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = MPCPlayerResponseItem;
   v7 = [(MPCPlayerResponseItem *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     contentItemIdentifier = v7->_contentItemIdentifier;
     v7->_contentItemIdentifier = v8;
 
-    v7->_autoPlay = a4;
+    v7->_autoPlay = play;
   }
 
   return v7;
 }
 
-- (MPCPlayerResponseItem)initWithModelGenericObject:(id)a3 indexPath:(id)a4 enqueueingParticipant:(id)a5 response:(id)a6
+- (MPCPlayerResponseItem)initWithModelGenericObject:(id)object indexPath:(id)path enqueueingParticipant:(id)participant response:(id)response
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  objectCopy = object;
+  pathCopy = path;
+  participantCopy = participant;
+  responseCopy = response;
   v92.receiver = self;
   v92.super_class = MPCPlayerResponseItem;
   v15 = [(MPCPlayerResponseItem *)&v92 init];
   if (v15)
   {
-    v16 = [v11 identifiers];
-    v17 = [v16 contentItemID];
+    identifiers = [objectCopy identifiers];
+    contentItemID = [identifiers contentItemID];
     contentItemIdentifier = v15->_contentItemIdentifier;
-    v15->_contentItemIdentifier = v17;
+    v15->_contentItemIdentifier = contentItemID;
 
     v15->_revision = 0;
-    objc_storeWeak(&v15->_response, v14);
-    objc_storeStrong(&v15->_enqueueingParticipant, a5);
-    objc_storeStrong(&v15->_indexPath, a4);
-    objc_storeStrong(&v15->_metadataObject, a3);
-    v19 = [v14 builder];
+    objc_storeWeak(&v15->_response, responseCopy);
+    objc_storeStrong(&v15->_enqueueingParticipant, participant);
+    objc_storeStrong(&v15->_indexPath, path);
+    objc_storeStrong(&v15->_metadataObject, object);
+    builder = [responseCopy builder];
     indexPath = v15->_indexPath;
-    v21 = [v14 chain];
-    v22 = [v19 queueItemIdentifier:0 atIndexPath:indexPath chain:v21];
+    chain = [responseCopy chain];
+    v22 = [builder queueItemIdentifier:0 atIndexPath:indexPath chain:chain];
     v23 = v22;
     if (!v22)
     {
@@ -979,19 +979,19 @@ LABEL_23:
 
     objc_storeStrong(&v15->_queueItemIdentifier, v23);
 
-    v24 = [v14 builder];
+    builder2 = [responseCopy builder];
     v25 = v15->_indexPath;
-    v26 = [v14 chain];
-    v15->_placeholder = [v24 playerItemIsPlaceholder:0 atIndexPath:v25 chain:v26];
+    chain2 = [responseCopy chain];
+    v15->_placeholder = [builder2 playerItemIsPlaceholder:0 atIndexPath:v25 chain:chain2];
 
-    v27 = [v14 builder];
+    builder3 = [responseCopy builder];
     v28 = v15->_indexPath;
-    v29 = [v14 chain];
-    if (v27)
+    chain3 = [responseCopy chain];
+    if (builder3)
     {
       v87 = 0;
       memset(v86, 0, sizeof(v86));
-      [v27 playerItemDuration:v86 atIndexPath:v28 chain:v29];
+      [builder3 playerItemDuration:v86 atIndexPath:v28 chain:chain3];
     }
 
     else
@@ -1008,87 +1008,87 @@ LABEL_23:
     *&v15->_duration.elapsedDuration = v90;
     *&v15->_duration.isLiveContent = v91;
 
-    v31 = [v14 builder];
+    builder4 = [responseCopy builder];
     v32 = v15->_indexPath;
-    v33 = [v14 chain];
-    v34 = [v31 playerItemLocalizedDurationString:0 atIndexPath:v32 chain:v33];
+    chain4 = [responseCopy chain];
+    v34 = [builder4 playerItemLocalizedDurationString:0 atIndexPath:v32 chain:chain4];
     localizedDurationString = v15->_localizedDurationString;
     v15->_localizedDurationString = v34;
 
-    v36 = [v14 builder];
+    builder5 = [responseCopy builder];
     v37 = v15->_indexPath;
-    v38 = [v14 chain];
-    v39 = [v36 playerItemExplicitBadge:0 atIndexPath:v37 chain:v38];
+    chain5 = [responseCopy chain];
+    v39 = [builder5 playerItemExplicitBadge:0 atIndexPath:v37 chain:chain5];
     explicitBadge = v15->_explicitBadge;
     v15->_explicitBadge = v39;
 
-    v41 = [v14 builder];
+    builder6 = [responseCopy builder];
     v42 = v15->_indexPath;
-    v43 = [v14 chain];
-    v44 = [v41 playerItemTransitionInfo:0 atIndexPath:v42 chain:v43];
+    chain6 = [responseCopy chain];
+    v44 = [builder6 playerItemTransitionInfo:0 atIndexPath:v42 chain:chain6];
     transitionInfo = v15->_transitionInfo;
     v15->_transitionInfo = v44;
 
-    v46 = [v14 builder];
-    v47 = [(NSIndexPath *)v15->_indexPath section];
-    v48 = [v14 chain];
-    v15->_autoPlay = [v46 sectionIsAutoPlaySection:0 atIndex:v47 chain:v48];
+    builder7 = [responseCopy builder];
+    section = [(NSIndexPath *)v15->_indexPath section];
+    chain7 = [responseCopy chain];
+    v15->_autoPlay = [builder7 sectionIsAutoPlaySection:0 atIndex:section chain:chain7];
 
-    v49 = [v14 builder];
+    builder8 = [responseCopy builder];
     v50 = v15->_indexPath;
-    v51 = [v14 chain];
-    v15->_preview = [v49 playerItemIsPreview:0 atIndexPath:v50 chain:v51];
+    chain8 = [responseCopy chain];
+    v15->_preview = [builder8 playerItemIsPreview:0 atIndexPath:v50 chain:chain8];
 
-    v52 = [v14 builder];
+    builder9 = [responseCopy builder];
     v53 = v15->_indexPath;
-    v54 = [v14 chain];
-    v55 = [v52 playerItemLanguageOptionGroups:0 atIndexPath:v53 chain:v54];
+    chain9 = [responseCopy chain];
+    v55 = [builder9 playerItemLanguageOptionGroups:0 atIndexPath:v53 chain:chain9];
 
-    v56 = [v14 builder];
+    builder10 = [responseCopy builder];
     v57 = v15->_indexPath;
-    v58 = [v14 chain];
-    v59 = [v56 playerItemCurrentLanguageOptions:0 atIndexPath:v57 chain:v58];
+    chain10 = [responseCopy chain];
+    v59 = [builder10 playerItemCurrentLanguageOptions:0 atIndexPath:v57 chain:chain10];
 
     v60 = [(MPCPlayerResponseItem *)v15 _buildLanguageOptionGroups:v55 currentLanguageOptions:v59];
     languageOptionGroups = v15->_languageOptionGroups;
     v15->_languageOptionGroups = v60;
 
-    v62 = [v14 builder];
-    v63 = [v14 chain];
-    v64 = [v62 preferredAudioFormat:0 chain:v63];
+    builder11 = [responseCopy builder];
+    chain11 = [responseCopy chain];
+    v64 = [builder11 preferredAudioFormat:0 chain:chain11];
     preferredFormat = v15->_preferredFormat;
     v15->_preferredFormat = v64;
 
-    v66 = [v14 builder];
-    v67 = [v14 chain];
-    v68 = [v66 activeAudioFormat:0 chain:v67];
+    builder12 = [responseCopy builder];
+    chain12 = [responseCopy chain];
+    v68 = [builder12 activeAudioFormat:0 chain:chain12];
     activeFormat = v15->_activeFormat;
     v15->_activeFormat = v68;
 
-    v70 = [v14 builder];
-    v71 = [v14 chain];
-    v15->_activeFormatJustification = [v70 activeAudioFormatJustification:0 chain:v71];
+    builder13 = [responseCopy builder];
+    chain13 = [responseCopy chain];
+    v15->_activeFormatJustification = [builder13 activeAudioFormatJustification:0 chain:chain13];
 
-    v72 = [v14 builder];
-    v73 = [v14 chain];
-    v15->_preferredTiers = [v72 audioFormatPreference:0 chain:v73];
+    builder14 = [responseCopy builder];
+    chain14 = [responseCopy chain];
+    v15->_preferredTiers = [builder14 audioFormatPreference:0 chain:chain14];
 
-    v74 = [v14 builder];
-    v75 = [v14 chain];
-    v76 = [v74 alternateAudioFormats:0 chain:v75];
+    builder15 = [responseCopy builder];
+    chain15 = [responseCopy chain];
+    v76 = [builder15 alternateAudioFormats:0 chain:chain15];
     alternateFormats = v15->_alternateFormats;
     v15->_alternateFormats = v76;
 
-    v78 = [v14 builder];
-    v79 = [v14 chain];
-    v80 = [v78 audioRoute:0 chain:v79];
+    builder16 = [responseCopy builder];
+    chain16 = [responseCopy chain];
+    v80 = [builder16 audioRoute:0 chain:chain16];
     audioRoute = v15->_audioRoute;
     v15->_audioRoute = v80;
 
-    v82 = [v14 builder];
+    builder17 = [responseCopy builder];
     v83 = v15->_indexPath;
-    v84 = [v14 chain];
-    v15->_isFavoritable = [v82 playerItemIsFavoritable:0 atIndexPath:v83 chain:v84];
+    chain17 = [responseCopy chain];
+    v15->_isFavoritable = [builder17 playerItemIsFavoritable:0 atIndexPath:v83 chain:chain17];
   }
 
   return v15;

@@ -1,7 +1,7 @@
 @interface WFShortcutSummaryCell
-- (WFShortcutSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (WFShortcutSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)addActionViewIfNeeded;
-- (void)configureWithTitle:(id)a3 actionIcons:(id)a4;
+- (void)configureWithTitle:(id)title actionIcons:(id)icons;
 - (void)prepareForReuse;
 - (void)removeActionViewIfNeeded;
 @end
@@ -10,8 +10,8 @@
 
 - (void)addActionViewIfNeeded
 {
-  v3 = [(UIStackView *)self->_mainStackView subviews];
-  v4 = [v3 containsObject:self->_actionIconsView];
+  subviews = [(UIStackView *)self->_mainStackView subviews];
+  v4 = [subviews containsObject:self->_actionIconsView];
 
   if ((v4 & 1) == 0)
   {
@@ -24,8 +24,8 @@
 
 - (void)removeActionViewIfNeeded
 {
-  v3 = [(UIStackView *)self->_mainStackView subviews];
-  v4 = [v3 containsObject:self->_actionIconsView];
+  subviews = [(UIStackView *)self->_mainStackView subviews];
+  v4 = [subviews containsObject:self->_actionIconsView];
 
   if (v4)
   {
@@ -36,16 +36,16 @@
   }
 }
 
-- (void)configureWithTitle:(id)a3 actionIcons:(id)a4
+- (void)configureWithTitle:(id)title actionIcons:(id)icons
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 count])
+  titleCopy = title;
+  iconsCopy = icons;
+  v7 = iconsCopy;
+  if (iconsCopy && [iconsCopy count])
   {
     [(WFShortcutSummaryCell *)self addActionViewIfNeeded];
-    v8 = [(WFShortcutSummaryCell *)self actionIconsView];
-    [v8 setIcons:v7];
+    actionIconsView = [(WFShortcutSummaryCell *)self actionIconsView];
+    [actionIconsView setIcons:v7];
   }
 
   else
@@ -53,8 +53,8 @@
     [(WFShortcutSummaryCell *)self removeActionViewIfNeeded];
   }
 
-  v9 = [(WFShortcutSummaryCell *)self summaryLabel];
-  [v9 setText:v10];
+  summaryLabel = [(WFShortcutSummaryCell *)self summaryLabel];
+  [summaryLabel setText:titleCopy];
 }
 
 - (void)prepareForReuse
@@ -62,19 +62,19 @@
   v5.receiver = self;
   v5.super_class = WFShortcutSummaryCell;
   [(WFShortcutSummaryCell *)&v5 prepareForReuse];
-  v3 = [(WFShortcutSummaryCell *)self summaryLabel];
-  [v3 setText:0];
+  summaryLabel = [(WFShortcutSummaryCell *)self summaryLabel];
+  [summaryLabel setText:0];
 
-  v4 = [(WFShortcutSummaryCell *)self actionIconsView];
-  [v4 setIcons:MEMORY[0x277CBEBF8]];
+  actionIconsView = [(WFShortcutSummaryCell *)self actionIconsView];
+  [actionIconsView setIcons:MEMORY[0x277CBEBF8]];
 }
 
-- (WFShortcutSummaryCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (WFShortcutSummaryCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v44[4] = *MEMORY[0x277D85DE8];
   v43.receiver = self;
   v43.super_class = WFShortcutSummaryCell;
-  v4 = [(WFShortcutSummaryCell *)&v43 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(WFShortcutSummaryCell *)&v43 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -109,39 +109,39 @@
     LODWORD(v16) = 1144750080;
     [(UILabel *)v5->_summaryLabel setContentCompressionResistancePriority:1 forAxis:v16];
     [(UIStackView *)v5->_mainStackView addArrangedSubview:v5->_summaryLabel];
-    v17 = [(WFShortcutSummaryCell *)v5 contentView];
-    [v17 addSubview:v5->_mainStackView];
+    contentView = [(WFShortcutSummaryCell *)v5 contentView];
+    [contentView addSubview:v5->_mainStackView];
 
     v33 = MEMORY[0x277CCAAD0];
-    v42 = [(WFShortcutSummaryCell *)v5 contentView];
-    v41 = [v42 layoutMarginsGuide];
-    v40 = [v41 topAnchor];
-    v39 = [(UIStackView *)v5->_mainStackView topAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39];
+    contentView2 = [(WFShortcutSummaryCell *)v5 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    topAnchor = [layoutMarginsGuide topAnchor];
+    topAnchor2 = [(UIStackView *)v5->_mainStackView topAnchor];
+    v38 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v44[0] = v38;
-    v37 = [(WFShortcutSummaryCell *)v5 contentView];
-    v36 = [v37 layoutMarginsGuide];
-    v35 = [v36 leadingAnchor];
-    v34 = [(UIStackView *)v5->_mainStackView leadingAnchor];
-    v32 = [v35 constraintEqualToAnchor:v34];
+    contentView3 = [(WFShortcutSummaryCell *)v5 contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    leadingAnchor = [layoutMarginsGuide2 leadingAnchor];
+    leadingAnchor2 = [(UIStackView *)v5->_mainStackView leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v44[1] = v32;
-    v31 = [(WFShortcutSummaryCell *)v5 contentView];
-    v30 = [v31 layoutMarginsGuide];
-    v29 = [v30 trailingAnchor];
-    v18 = [(UIStackView *)v5->_mainStackView trailingAnchor];
-    v19 = [v29 constraintEqualToAnchor:v18];
+    contentView4 = [(WFShortcutSummaryCell *)v5 contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide3 trailingAnchor];
+    trailingAnchor2 = [(UIStackView *)v5->_mainStackView trailingAnchor];
+    v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v44[2] = v19;
-    v20 = [(WFShortcutSummaryCell *)v5 contentView];
-    v21 = [v20 layoutMarginsGuide];
-    v22 = [v21 bottomAnchor];
-    v23 = [(UIStackView *)v5->_mainStackView bottomAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
+    contentView5 = [(WFShortcutSummaryCell *)v5 contentView];
+    layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+    bottomAnchor = [layoutMarginsGuide4 bottomAnchor];
+    bottomAnchor2 = [(UIStackView *)v5->_mainStackView bottomAnchor];
+    v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v44[3] = v24;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v44 count:4];
     [v33 activateConstraints:v25];
 
-    v26 = [(WFShortcutSummaryCell *)v5 contentView];
-    [v26 setLayoutMargins:{14.0, 15.0, 14.0, 15.0}];
+    contentView6 = [(WFShortcutSummaryCell *)v5 contentView];
+    [contentView6 setLayoutMargins:{14.0, 15.0, 14.0, 15.0}];
 
     v27 = v5;
   }

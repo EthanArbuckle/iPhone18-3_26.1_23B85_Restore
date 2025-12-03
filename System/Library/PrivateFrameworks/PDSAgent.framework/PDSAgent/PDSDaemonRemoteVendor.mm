@@ -1,19 +1,19 @@
 @interface PDSDaemonRemoteVendor
-- (PDSDaemonRemoteVendor)initWithQueue:(id)a3 daemonListenerVendor:(id)a4;
-- (id)_remoteForSync:(BOOL)a3;
-- (id)_remoteInternalForSync:(BOOL)a3;
+- (PDSDaemonRemoteVendor)initWithQueue:(id)queue daemonListenerVendor:(id)vendor;
+- (id)_remoteForSync:(BOOL)sync;
+- (id)_remoteInternalForSync:(BOOL)sync;
 @end
 
 @implementation PDSDaemonRemoteVendor
 
-- (PDSDaemonRemoteVendor)initWithQueue:(id)a3 daemonListenerVendor:(id)a4
+- (PDSDaemonRemoteVendor)initWithQueue:(id)queue daemonListenerVendor:(id)vendor
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  queueCopy = queue;
+  vendorCopy = vendor;
+  v9 = vendorCopy;
+  if (queueCopy)
   {
-    if (v8)
+    if (vendorCopy)
     {
       goto LABEL_3;
     }
@@ -36,31 +36,31 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_queue, a3);
-    objc_storeStrong(&v11->_daemonListenerVendor, a4);
+    objc_storeStrong(&v10->_queue, queue);
+    objc_storeStrong(&v11->_daemonListenerVendor, vendor);
   }
 
   return v11;
 }
 
-- (id)_remoteInternalForSync:(BOOL)a3
+- (id)_remoteInternalForSync:(BOOL)sync
 {
-  v4 = !a3;
-  v5 = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteInternalListener];
+  v4 = !sync;
+  remoteInternalListener = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteInternalListener];
   v6 = [PDSQueueProxy alloc];
-  v7 = [(PDSDaemonRemoteVendor *)self queue];
-  v8 = [(PDSQueueProxy *)v6 initWithTarget:v5 queue:v7 mode:v4];
+  queue = [(PDSDaemonRemoteVendor *)self queue];
+  v8 = [(PDSQueueProxy *)v6 initWithTarget:remoteInternalListener queue:queue mode:v4];
 
   return v8;
 }
 
-- (id)_remoteForSync:(BOOL)a3
+- (id)_remoteForSync:(BOOL)sync
 {
-  v4 = !a3;
-  v5 = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteListenerForAllClientIDs];
+  v4 = !sync;
+  remoteListenerForAllClientIDs = [(PDSDaemonListenerVendor *)self->_daemonListenerVendor remoteListenerForAllClientIDs];
   v6 = [PDSQueueProxy alloc];
-  v7 = [(PDSDaemonRemoteVendor *)self queue];
-  v8 = [(PDSQueueProxy *)v6 initWithTarget:v5 queue:v7 mode:v4];
+  queue = [(PDSDaemonRemoteVendor *)self queue];
+  v8 = [(PDSQueueProxy *)v6 initWithTarget:remoteListenerForAllClientIDs queue:queue mode:v4];
 
   return v8;
 }

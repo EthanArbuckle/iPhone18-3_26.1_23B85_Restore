@@ -1,14 +1,14 @@
 @interface GCSystemButtonServer
-- (BOOL)acceptConnection:(id)a3 fromProcess:(id)a4;
+- (BOOL)acceptConnection:(id)connection fromProcess:(id)process;
 - (BOOL)hasButtonThief;
 - (BOOL)tryHandleButtonPress;
 - (GCSystemButtonServer)init;
 - (NSSet)responders;
 - (_GCSystemButton)activeButton;
-- (id)activeProcessRespondingToSystemButton:(id)a3;
-- (id)systemButtonAvailableWithLocalizedName:(id)a3 sfSymbolName:(id)a4;
+- (id)activeProcessRespondingToSystemButton:(id)button;
+- (id)systemButtonAvailableWithLocalizedName:(id)name sfSymbolName:(id)symbolName;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation GCSystemButtonServer
@@ -91,8 +91,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+  reverseObjectEnumerator = [v6 reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v18 count:16];
   if (v8)
   {
     v9 = *v14;
@@ -102,7 +102,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         if ([*(*(&v13 + 1) + 8 * i) handleButtonPress])
@@ -112,7 +112,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v13 objects:v18 count:16];
+      v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v13 objects:v18 count:16];
       if (v8)
       {
         continue;
@@ -182,10 +182,10 @@ LABEL_11:
 {
   v3 = self->_buttons;
   objc_sync_enter(v3);
-  v4 = [(NSMutableArray *)self->_buttons lastObject];
+  lastObject = [(NSMutableArray *)self->_buttons lastObject];
   objc_sync_exit(v3);
 
-  return v4;
+  return lastObject;
 }
 
 - (NSSet)responders
@@ -236,17 +236,17 @@ LABEL_11:
   return v12;
 }
 
-- (id)activeProcessRespondingToSystemButton:(id)a3
+- (id)activeProcessRespondingToSystemButton:(id)button
 {
-  v4 = a3;
-  if (v4)
+  buttonCopy = button;
+  if (buttonCopy)
   {
     if (gc_isInternalBuild())
     {
-      [GCSystemButtonServer activeProcessRespondingToSystemButton:v4];
+      [GCSystemButtonServer activeProcessRespondingToSystemButton:buttonCopy];
     }
 
-    v5 = [[_GCSystemButtonResponder alloc] _initWithBundleIdentifier:v4];
+    v5 = [[_GCSystemButtonResponder alloc] _initWithBundleIdentifier:buttonCopy];
     [v5 addObserver:self forKeyPath:@"invalid" options:1 context:0];
     [(GCSystemButtonServer *)self willChangeValueForKey:@"responders"];
     v7 = self->_responders;
@@ -263,19 +263,19 @@ LABEL_11:
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 isEqualToString:@"invalid"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [pathCopy isEqualToString:@"invalid"])
   {
-    [v11 removeObserver:self forKeyPath:@"invalid" context:0];
+    [objectCopy removeObserver:self forKeyPath:@"invalid" context:0];
     [(GCSystemButtonServer *)self willChangeValueForKey:@"activeButton"];
     v13 = self->_buttons;
     objc_sync_enter(v13);
-    [(NSMutableArray *)self->_buttons removeObject:v11];
+    [(NSMutableArray *)self->_buttons removeObject:objectCopy];
     objc_sync_exit(v13);
 
     v14 = @"activeButton";
@@ -285,13 +285,13 @@ LABEL_14:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 isEqualToString:@"invalid"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [pathCopy isEqualToString:@"invalid"])
   {
-    [v11 removeObserver:self forKeyPath:@"invalid" context:0];
+    [objectCopy removeObserver:self forKeyPath:@"invalid" context:0];
     [(GCSystemButtonServer *)self willChangeValueForKey:@"responders"];
     v15 = self->_responders;
     objc_sync_enter(v15);
-    [(NSMutableArray *)self->_responders removeObject:v11];
+    [(NSMutableArray *)self->_responders removeObject:objectCopy];
     objc_sync_exit(v15);
 
     v14 = @"responders";
@@ -299,32 +299,32 @@ LABEL_14:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v10 isEqualToString:@"invalid"])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [pathCopy isEqualToString:@"invalid"])
   {
-    [v11 removeObserver:self forKeyPath:@"invalid" context:0];
-    [v11 removeObserver:self forKeyPath:@"wantsPressEvents" context:0];
+    [objectCopy removeObserver:self forKeyPath:@"invalid" context:0];
+    [objectCopy removeObserver:self forKeyPath:@"wantsPressEvents" context:0];
     v16 = self->_clients;
     objc_sync_enter(v16);
-    [(NSMutableArray *)self->_clients removeObject:v11];
+    [(NSMutableArray *)self->_clients removeObject:objectCopy];
     objc_sync_exit(v16);
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v10 isEqualToString:@"wantsPressEvents"])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![pathCopy isEqualToString:@"wantsPressEvents"])
     {
       v19.receiver = self;
       v19.super_class = GCSystemButtonServer;
-      [(GCSystemButtonServer *)&v19 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(GCSystemButtonServer *)&v19 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_16;
     }
 
-    v17 = [v12 objectForKey:*MEMORY[0x1E696A4F8]];
-    v18 = [v17 BOOLValue];
+    v17 = [changeCopy objectForKey:*MEMORY[0x1E696A4F8]];
+    bOOLValue = [v17 BOOLValue];
 
     v14 = @"hasButtonThief";
-    if (!v18)
+    if (!bOOLValue)
     {
       goto LABEL_14;
     }
@@ -335,20 +335,20 @@ LABEL_14:
 LABEL_16:
 }
 
-- (BOOL)acceptConnection:(id)a3 fromProcess:(id)a4
+- (BOOL)acceptConnection:(id)connection fromProcess:(id)process
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  processCopy = process;
   v8 = _gc_log_system_button();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 serviceName];
+    serviceName = [connectionCopy serviceName];
     OUTLINED_FUNCTION_1_12();
     OUTLINED_FUNCTION_2_7(&dword_1D2CD5000, v10, v11, "Accepting connection '%@' on mach service '%@'.", v12, v13, v14, v15, v22);
   }
 
-  v16 = [[_GCSystemButtonClientConnection alloc] initWithConnection:v6];
+  v16 = [[_GCSystemButtonClientConnection alloc] initWithConnection:connectionCopy];
   v17 = [[_GCSystemButtonClientProxy alloc] _initWithConnection:v16 server:self];
   OUTLINED_FUNCTION_3_5(v17, v18, self, @"invalid");
   [v17 addObserver:self forKeyPath:@"wantsPressEvents" options:11 context:0];
@@ -361,11 +361,11 @@ LABEL_16:
   return 1;
 }
 
-- (id)systemButtonAvailableWithLocalizedName:(id)a3 sfSymbolName:(id)a4
+- (id)systemButtonAvailableWithLocalizedName:(id)name sfSymbolName:(id)symbolName
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  symbolNameCopy = symbolName;
   if (gc_isInternalBuild())
   {
     v13 = getGCLogger();
@@ -376,7 +376,7 @@ LABEL_16:
     }
   }
 
-  v8 = [[_GCSystemButton alloc] _initWithLocalizedName:v6 sfSymbolName:v7];
+  v8 = [[_GCSystemButton alloc] _initWithLocalizedName:nameCopy sfSymbolName:symbolNameCopy];
   OUTLINED_FUNCTION_3_5(v8, v9, self, @"invalid");
   [(GCSystemButtonServer *)self willChangeValueForKey:@"activeButton"];
   v10 = self->_buttons;

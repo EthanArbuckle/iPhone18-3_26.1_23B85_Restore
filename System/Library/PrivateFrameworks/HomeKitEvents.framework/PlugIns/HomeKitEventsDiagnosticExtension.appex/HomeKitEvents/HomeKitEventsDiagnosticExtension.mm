@@ -1,13 +1,13 @@
 @interface HomeKitEventsDiagnosticExtension
 - (_TtC32HomeKitEventsDiagnosticExtension32HomeKitEventsDiagnosticExtension)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation HomeKitEventsDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_1000047B4();
   }
@@ -17,7 +17,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1000012E8(v4);
   v7 = v6;
 

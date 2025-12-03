@@ -1,16 +1,16 @@
 @interface CTXPCGetProvisioningServerURLResponse
-- (CTXPCGetProvisioningServerURLResponse)initWithURL:(id)a3;
+- (CTXPCGetProvisioningServerURLResponse)initWithURL:(id)l;
 - (NSString)url;
 @end
 
 @implementation CTXPCGetProvisioningServerURLResponse
 
-- (CTXPCGetProvisioningServerURLResponse)initWithURL:(id)a3
+- (CTXPCGetProvisioningServerURLResponse)initWithURL:(id)l
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v10 = @"url";
-  v11[0] = v4;
+  v11[0] = lCopy;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
   v9.receiver = self;
   v9.super_class = CTXPCGetProvisioningServerURLResponse;
@@ -22,8 +22,8 @@
 
 - (NSString)url
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"url"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"url"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;

@@ -1,10 +1,10 @@
 @interface NSSafeMutableDictionary
 - (NSSafeMutableDictionary)init;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (unint64_t)count;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation NSSafeMutableDictionary
@@ -37,37 +37,37 @@
   [(NSLock *)lock unlock];
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   lock = self->_lock;
-  v5 = a3;
+  keyCopy = key;
   [(NSLock *)lock lock];
-  [(NSMutableDictionary *)self->_storage removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_storage removeObjectForKey:keyCopy];
 
   v6 = self->_lock;
 
   [(NSLock *)v6 unlock];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   lock = self->_lock;
-  v7 = a4;
-  v8 = a3;
+  keyCopy = key;
+  objectCopy = object;
   [(NSLock *)lock lock];
-  [(NSMutableDictionary *)self->_storage setObject:v8 forKey:v7];
+  [(NSMutableDictionary *)self->_storage setObject:objectCopy forKey:keyCopy];
 
   v9 = self->_lock;
 
   [(NSLock *)v9 unlock];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   lock = self->_lock;
-  v5 = a3;
+  keyCopy = key;
   [(NSLock *)lock lock];
-  v6 = [(NSMutableDictionary *)self->_storage objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_storage objectForKey:keyCopy];
 
   [(NSLock *)self->_lock unlock];
 

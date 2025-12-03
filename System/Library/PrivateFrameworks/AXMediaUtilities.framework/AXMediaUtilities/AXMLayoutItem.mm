@@ -1,10 +1,10 @@
 @interface AXMLayoutItem
-+ (CGRect)boundingFrameForItems:(id)a3;
-+ (CGRect)normalizedBoundingFrameForItem:(id)a3;
-+ (CGRect)normalizedBoundingFrameForItems:(id)a3;
-- (BOOL)metric:(int64_t)a3 inProximityOfMetric:(int64_t)a4 item:(id)a5 threshold:(double)a6;
-- (CGRect)_rectValueForMetric:(int64_t)a3;
-- (double)_floatValueForMetric:(int64_t)a3;
++ (CGRect)boundingFrameForItems:(id)items;
++ (CGRect)normalizedBoundingFrameForItem:(id)item;
++ (CGRect)normalizedBoundingFrameForItems:(id)items;
+- (BOOL)metric:(int64_t)metric inProximityOfMetric:(int64_t)ofMetric item:(id)item threshold:(double)threshold;
+- (CGRect)_rectValueForMetric:(int64_t)metric;
+- (double)_floatValueForMetric:(int64_t)metric;
 - (double)bottom;
 - (double)right;
 - (id)description;
@@ -49,20 +49,20 @@
   return v4 + v5;
 }
 
-- (BOOL)metric:(int64_t)a3 inProximityOfMetric:(int64_t)a4 item:(id)a5 threshold:(double)a6
+- (BOOL)metric:(int64_t)metric inProximityOfMetric:(int64_t)ofMetric item:(id)item threshold:(double)threshold
 {
-  v11 = a5;
-  v12 = [(AXMLayoutItem *)self _metricTypeForMetric:a3];
-  if (v12 == [(AXMLayoutItem *)self _metricTypeForMetric:a4])
+  itemCopy = item;
+  v12 = [(AXMLayoutItem *)self _metricTypeForMetric:metric];
+  if (v12 == [(AXMLayoutItem *)self _metricTypeForMetric:ofMetric])
   {
     if (v12 == 1)
     {
-      [(AXMLayoutItem *)self _rectValueForMetric:a3];
+      [(AXMLayoutItem *)self _rectValueForMetric:metric];
       v18 = v17;
       v20 = v19;
       v22 = v21;
       v24 = v23;
-      [v11 _rectValueForMetric:a4];
+      [itemCopy _rectValueForMetric:ofMetric];
       v26 = v25;
       v28 = v27;
       v30 = v29;
@@ -71,7 +71,7 @@
       v34.origin.y = v20;
       v34.size.width = v22;
       v34.size.height = v24;
-      v35 = CGRectInset(v34, -a6, -a6);
+      v35 = CGRectInset(v34, -threshold, -threshold);
       v36.origin.x = v26;
       v36.origin.y = v28;
       v36.size.width = v30;
@@ -81,10 +81,10 @@
 
     else if (!v12)
     {
-      [(AXMLayoutItem *)self _floatValueForMetric:a3];
+      [(AXMLayoutItem *)self _floatValueForMetric:metric];
       v14 = v13;
-      [v11 _floatValueForMetric:a4];
-      v6 = vabdd_f64(v14, v15) <= a6;
+      [itemCopy _floatValueForMetric:ofMetric];
+      v6 = vabdd_f64(v14, v15) <= threshold;
     }
   }
 
@@ -102,11 +102,11 @@
   return v6;
 }
 
-- (double)_floatValueForMetric:(int64_t)a3
+- (double)_floatValueForMetric:(int64_t)metric
 {
-  if (a3 > 2)
+  if (metric > 2)
   {
-    switch(a3)
+    switch(metric)
     {
       case 3:
 
@@ -132,11 +132,11 @@ LABEL_20:
     }
   }
 
-  else if (a3)
+  else if (metric)
   {
-    if (a3 != 1)
+    if (metric != 1)
     {
-      if (a3 == 2)
+      if (metric == 2)
       {
 
         [(AXMLayoutItem *)self bottom];
@@ -158,9 +158,9 @@ LABEL_20:
   return result;
 }
 
-- (CGRect)_rectValueForMetric:(int64_t)a3
+- (CGRect)_rectValueForMetric:(int64_t)metric
 {
-  if (a3 == 6)
+  if (metric == 6)
   {
     [(AXMLayoutItem *)self frame];
   }
@@ -186,10 +186,10 @@ LABEL_20:
   return result;
 }
 
-+ (CGRect)boundingFrameForItems:(id)a3
++ (CGRect)boundingFrameForItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = *MEMORY[0x1E695F050];
   v5 = *(MEMORY[0x1E695F050] + 8);
   v6 = *(MEMORY[0x1E695F050] + 16);
@@ -198,7 +198,7 @@ LABEL_20:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v8 = [itemsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -210,7 +210,7 @@ LABEL_20:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v12 = *(*(&v26 + 1) + 8 * v11);
@@ -241,7 +241,7 @@ LABEL_20:
       }
 
       while (v9 != v11);
-      v9 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [itemsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
@@ -258,10 +258,10 @@ LABEL_20:
   return result;
 }
 
-+ (CGRect)normalizedBoundingFrameForItems:(id)a3
++ (CGRect)normalizedBoundingFrameForItems:(id)items
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = *MEMORY[0x1E695F050];
   v5 = *(MEMORY[0x1E695F050] + 8);
   v6 = *(MEMORY[0x1E695F050] + 16);
@@ -270,7 +270,7 @@ LABEL_20:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v8 = [itemsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -282,7 +282,7 @@ LABEL_20:
       {
         if (*v27 != v10)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v12 = *(*(&v26 + 1) + 8 * v11);
@@ -313,7 +313,7 @@ LABEL_20:
       }
 
       while (v9 != v11);
-      v9 = [v3 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v9 = [itemsCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v9);
@@ -330,19 +330,19 @@ LABEL_20:
   return result;
 }
 
-+ (CGRect)normalizedBoundingFrameForItem:(id)a3
++ (CGRect)normalizedBoundingFrameForItem:(id)item
 {
   v3 = *MEMORY[0x1E695F050];
   v4 = *(MEMORY[0x1E695F050] + 8);
   v5 = *(MEMORY[0x1E695F050] + 16);
   v6 = *(MEMORY[0x1E695F050] + 24);
-  v7 = a3;
+  itemCopy = item;
   v21.origin.x = v3;
   v21.origin.y = v4;
   v21.size.width = v5;
   v21.size.height = v6;
   IsNull = CGRectIsNull(v21);
-  [v7 normalizedFrame];
+  [itemCopy normalizedFrame];
   x = v9;
   y = v11;
   width = v13;

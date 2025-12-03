@@ -1,43 +1,43 @@
 @interface CCDValidationKeyInfo
-- (BOOL)_validateCertificateArrayInDictionary:(id)a3;
-- (BOOL)_validateCredentialTokenInDictionary:(id)a3;
-- (BOOL)_validateDictionaryInDictionary:(id)a3 resultsDictionary:(id)a4;
-- (BOOL)_validateHttpsURLStringInDictionary:(id)a3;
-- (BOOL)_validateNumberInDictionary:(id)a3;
-- (BOOL)_validateStringArrayInDictionary:(id)a3;
-- (BOOL)_validateStringInDictionary:(id)a3;
-- (BOOL)_validateUnstructureddDictionaryInDictionary:(id)a3;
-- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)a3 resultsDictionary:(id)a4;
-- (CCDValidationKeyInfo)initWithName:(id)a3 validationInfo:(id)a4;
-- (id)_certificateDataFromBase64EncodedString:(id)a3;
+- (BOOL)_validateCertificateArrayInDictionary:(id)dictionary;
+- (BOOL)_validateCredentialTokenInDictionary:(id)dictionary;
+- (BOOL)_validateDictionaryInDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary;
+- (BOOL)_validateHttpsURLStringInDictionary:(id)dictionary;
+- (BOOL)_validateNumberInDictionary:(id)dictionary;
+- (BOOL)_validateStringArrayInDictionary:(id)dictionary;
+- (BOOL)_validateStringInDictionary:(id)dictionary;
+- (BOOL)_validateUnstructureddDictionaryInDictionary:(id)dictionary;
+- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary;
+- (CCDValidationKeyInfo)initWithName:(id)name validationInfo:(id)info;
+- (id)_certificateDataFromBase64EncodedString:(id)string;
 - (id)description;
 @end
 
 @implementation CCDValidationKeyInfo
 
-- (CCDValidationKeyInfo)initWithName:(id)a3 validationInfo:(id)a4
+- (CCDValidationKeyInfo)initWithName:(id)name validationInfo:(id)info
 {
-  v6 = a4;
+  infoCopy = info;
   v31.receiver = self;
   v31.super_class = CCDValidationKeyInfo;
-  v7 = [(CCDValidationInfo *)&v31 initWithName:a3 validationInfo:v6];
+  v7 = [(CCDValidationInfo *)&v31 initWithName:name validationInfo:infoCopy];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"validationType"];
+    v8 = [infoCopy objectForKeyedSubscript:@"validationType"];
     v7->_validationType = [v8 integerValue];
 
-    v9 = [v6 objectForKeyedSubscript:@"destinationKey"];
+    v9 = [infoCopy objectForKeyedSubscript:@"destinationKey"];
     destinationKey = v7->_destinationKey;
     v7->_destinationKey = v9;
 
     if (v7->_validationType == 8)
     {
-      v11 = [v6 objectForKeyedSubscript:@"subKey"];
+      v11 = [infoCopy objectForKeyedSubscript:@"subKey"];
 
       if (v11)
       {
-        v26 = v6;
-        v12 = [v6 objectForKeyedSubscript:@"subKey"];
+        v26 = infoCopy;
+        v12 = [infoCopy objectForKeyedSubscript:@"subKey"];
         v13 = objc_opt_new();
         v27 = 0u;
         v28 = 0u;
@@ -79,7 +79,7 @@
         subKeys = v7->_subKeys;
         v7->_subKeys = v23;
 
-        v6 = v26;
+        infoCopy = v26;
       }
     }
   }
@@ -89,7 +89,7 @@
 
 - (id)description
 {
-  v3 = [(CCDValidationInfo *)self name];
+  name = [(CCDValidationInfo *)self name];
   if ([(CCDValidationInfo *)self isRequired])
   {
     v4 = @"YES";
@@ -100,57 +100,57 @@
     v4 = @"NO";
   }
 
-  v5 = [(CCDValidationInfo *)self validationInfo];
-  v6 = [v5 objectForKeyedSubscript:@"validationType"];
-  v7 = [(CCDValidationKeyInfo *)self destinationKey];
-  v8 = [NSString stringWithFormat:@"\n***********\nCloud Config Key Name: %@\nRequired: %@\nValidation Type: %@\nDestination Key: %@\n***********\n", v3, v4, v6, v7];
+  validationInfo = [(CCDValidationInfo *)self validationInfo];
+  v6 = [validationInfo objectForKeyedSubscript:@"validationType"];
+  destinationKey = [(CCDValidationKeyInfo *)self destinationKey];
+  v8 = [NSString stringWithFormat:@"\n***********\nCloud Config Key Name: %@\nRequired: %@\nValidation Type: %@\nDestination Key: %@\n***********\n", name, v4, v6, destinationKey];
 
   return v8;
 }
 
-- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)a3 resultsDictionary:(id)a4
+- (BOOL)validateSelfUsingValidationInfoWithDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CCDValidationKeyInfo *)self validationType];
+  dictionaryCopy = dictionary;
+  resultsDictionaryCopy = resultsDictionary;
+  validationType = [(CCDValidationKeyInfo *)self validationType];
   v9 = 0;
   LOBYTE(v10) = 0;
-  if (v8 <= 4)
+  if (validationType <= 4)
   {
-    if (v8 <= 1)
+    if (validationType <= 1)
     {
-      if (v8)
+      if (validationType)
       {
-        if (v8 != 1)
+        if (validationType != 1)
         {
           goto LABEL_47;
         }
 
-        v11 = [(CCDValidationKeyInfo *)self _validateCertificateArrayInDictionary:v6];
+        v11 = [(CCDValidationKeyInfo *)self _validateCertificateArrayInDictionary:dictionaryCopy];
         goto LABEL_20;
       }
 
 LABEL_16:
-      v11 = [(CCDValidationKeyInfo *)self _validateBooleanInDictionary:v6];
+      v11 = [(CCDValidationKeyInfo *)self _validateBooleanInDictionary:dictionaryCopy];
       goto LABEL_20;
     }
 
-    if (v8 != 2)
+    if (validationType != 2)
     {
-      if (v8 != 3)
+      if (validationType != 3)
       {
-        v11 = [(CCDValidationKeyInfo *)self _validateNumberInDictionary:v6];
+        v11 = [(CCDValidationKeyInfo *)self _validateNumberInDictionary:dictionaryCopy];
         goto LABEL_20;
       }
 
       goto LABEL_16;
     }
 
-    v11 = [(CCDValidationKeyInfo *)self _validateHttpsURLStringInDictionary:v6];
+    v11 = [(CCDValidationKeyInfo *)self _validateHttpsURLStringInDictionary:dictionaryCopy];
 LABEL_20:
     LODWORD(v10) = v11;
     v9 = 0;
-    if (!v7)
+    if (!resultsDictionaryCopy)
     {
       goto LABEL_47;
     }
@@ -158,41 +158,41 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (v8 <= 6)
+  if (validationType <= 6)
   {
-    if (v8 == 5)
+    if (validationType == 5)
     {
-      v11 = [(CCDValidationKeyInfo *)self _validateStringInDictionary:v6];
+      v11 = [(CCDValidationKeyInfo *)self _validateStringInDictionary:dictionaryCopy];
     }
 
     else
     {
-      v11 = [(CCDValidationKeyInfo *)self _validateStringArrayInDictionary:v6];
+      v11 = [(CCDValidationKeyInfo *)self _validateStringArrayInDictionary:dictionaryCopy];
     }
 
     goto LABEL_20;
   }
 
-  if (v8 == 7)
+  if (validationType == 7)
   {
-    v11 = [(CCDValidationKeyInfo *)self _validateCredentialTokenInDictionary:v6];
+    v11 = [(CCDValidationKeyInfo *)self _validateCredentialTokenInDictionary:dictionaryCopy];
     goto LABEL_20;
   }
 
-  if (v8 != 8)
+  if (validationType != 8)
   {
-    if (v8 != 9)
+    if (validationType != 9)
     {
       goto LABEL_47;
     }
 
-    v11 = [(CCDValidationKeyInfo *)self _validateUnstructureddDictionaryInDictionary:v6];
+    v11 = [(CCDValidationKeyInfo *)self _validateUnstructureddDictionaryInDictionary:dictionaryCopy];
     goto LABEL_20;
   }
 
   v9 = objc_opt_new();
-  LODWORD(v10) = [(CCDValidationKeyInfo *)self _validateDictionaryInDictionary:v6 resultsDictionary:v9];
-  if (!v7)
+  LODWORD(v10) = [(CCDValidationKeyInfo *)self _validateDictionaryInDictionary:dictionaryCopy resultsDictionary:v9];
+  if (!resultsDictionaryCopy)
   {
     goto LABEL_47;
   }
@@ -200,8 +200,8 @@ LABEL_20:
 LABEL_21:
   if (v10)
   {
-    v12 = [(CCDValidationInfo *)self name];
-    v10 = [v6 objectForKeyedSubscript:v12];
+    name = [(CCDValidationInfo *)self name];
+    v10 = [dictionaryCopy objectForKeyedSubscript:name];
 
     if (!v10)
     {
@@ -211,18 +211,18 @@ LABEL_46:
       goto LABEL_47;
     }
 
-    v13 = [(CCDValidationKeyInfo *)self validationType];
-    if (v13 > 6)
+    validationType2 = [(CCDValidationKeyInfo *)self validationType];
+    if (validationType2 > 6)
     {
-      if (v13 == 7)
+      if (validationType2 == 7)
       {
-        v17 = [(CCDValidationKeyInfo *)self destinationKey];
+        destinationKey = [(CCDValidationKeyInfo *)self destinationKey];
         v19 = &__kCFBooleanTrue;
-        v18 = v7;
+        v18 = resultsDictionaryCopy;
         goto LABEL_45;
       }
 
-      if (v13 == 8)
+      if (validationType2 == 8)
       {
         v14 = [v9 copy];
         goto LABEL_30;
@@ -231,7 +231,7 @@ LABEL_46:
 
     else
     {
-      if (v13 == 1)
+      if (validationType2 == 1)
       {
         v30 = v10;
         v20 = v10;
@@ -268,30 +268,30 @@ LABEL_46:
           while (v24);
         }
 
-        v28 = [(CCDValidationKeyInfo *)self destinationKey];
-        [v7 setObject:v21 forKeyedSubscript:v28];
+        destinationKey2 = [(CCDValidationKeyInfo *)self destinationKey];
+        [resultsDictionaryCopy setObject:v21 forKeyedSubscript:destinationKey2];
 
         v10 = v30;
         goto LABEL_46;
       }
 
-      if (v13 == 3)
+      if (validationType2 == 3)
       {
         v14 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v10 BOOLValue] ^ 1);
 LABEL_30:
         v15 = v14;
-        v16 = [(CCDValidationKeyInfo *)self destinationKey];
-        [v7 setObject:v15 forKeyedSubscript:v16];
+        destinationKey3 = [(CCDValidationKeyInfo *)self destinationKey];
+        [resultsDictionaryCopy setObject:v15 forKeyedSubscript:destinationKey3];
 
         goto LABEL_46;
       }
     }
 
-    v17 = [(CCDValidationKeyInfo *)self destinationKey];
-    v18 = v7;
+    destinationKey = [(CCDValidationKeyInfo *)self destinationKey];
+    v18 = resultsDictionaryCopy;
     v19 = v10;
 LABEL_45:
-    [v18 setObject:v19 forKeyedSubscript:v17];
+    [v18 setObject:v19 forKeyedSubscript:destinationKey];
 
     goto LABEL_46;
   }
@@ -301,13 +301,13 @@ LABEL_47:
   return v10;
 }
 
-- (id)_certificateDataFromBase64EncodedString:(id)a3
+- (id)_certificateDataFromBase64EncodedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [CCDCertificateSupport decodeCertificateFromBase64String:v3];
+    v4 = [CCDCertificateSupport decodeCertificateFromBase64String:stringCopy];
   }
 
   else
@@ -318,11 +318,11 @@ LABEL_47:
   return v4;
 }
 
-- (BOOL)_validateCertificateArrayInDictionary:(id)a3
+- (BOOL)_validateCertificateArrayInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(CCDValidationInfo *)self name];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  dictionaryCopy = dictionary;
+  name = [(CCDValidationInfo *)self name];
+  v6 = [dictionaryCopy objectForKeyedSubscript:name];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -377,19 +377,19 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)_validateHttpsURLStringInDictionary:(id)a3
+- (BOOL)_validateHttpsURLStringInDictionary:(id)dictionary
 {
-  v4 = a3;
-  if ([(CCDValidationKeyInfo *)self _validateStringInDictionary:v4])
+  dictionaryCopy = dictionary;
+  if ([(CCDValidationKeyInfo *)self _validateStringInDictionary:dictionaryCopy])
   {
-    v5 = [(CCDValidationInfo *)self name];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    name = [(CCDValidationInfo *)self name];
+    v6 = [dictionaryCopy objectForKeyedSubscript:name];
 
     if (v6)
     {
       v7 = [NSURL URLWithString:v6];
-      v8 = [v7 scheme];
-      v9 = [@"https" isEqualToString:v8];
+      scheme = [v7 scheme];
+      v9 = [@"https" isEqualToString:scheme];
     }
 
     else
@@ -406,35 +406,35 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)_validateNumberInDictionary:(id)a3
+- (BOOL)_validateNumberInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(CCDValidationInfo *)self name];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  dictionaryCopy = dictionary;
+  name = [(CCDValidationInfo *)self name];
+  v6 = [dictionaryCopy objectForKeyedSubscript:name];
 
   objc_opt_class();
-  LOBYTE(v4) = objc_opt_isKindOfClass();
+  LOBYTE(dictionaryCopy) = objc_opt_isKindOfClass();
 
-  return v4 & 1;
+  return dictionaryCopy & 1;
 }
 
-- (BOOL)_validateStringInDictionary:(id)a3
+- (BOOL)_validateStringInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(CCDValidationInfo *)self name];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  dictionaryCopy = dictionary;
+  name = [(CCDValidationInfo *)self name];
+  v6 = [dictionaryCopy objectForKeyedSubscript:name];
 
   objc_opt_class();
-  LOBYTE(v4) = objc_opt_isKindOfClass();
+  LOBYTE(dictionaryCopy) = objc_opt_isKindOfClass();
 
-  return v4 & 1;
+  return dictionaryCopy & 1;
 }
 
-- (BOOL)_validateStringArrayInDictionary:(id)a3
+- (BOOL)_validateStringArrayInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(CCDValidationInfo *)self name];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  dictionaryCopy = dictionary;
+  name = [(CCDValidationInfo *)self name];
+  v6 = [dictionaryCopy objectForKeyedSubscript:name];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -489,11 +489,11 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)_validateCredentialTokenInDictionary:(id)a3
+- (BOOL)_validateCredentialTokenInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(CCDValidationInfo *)self name];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  dictionaryCopy = dictionary;
+  name = [(CCDValidationInfo *)self name];
+  v6 = [dictionaryCopy objectForKeyedSubscript:name];
 
   v7 = [CCDKeychain dataFromString:v6];
   v14 = 0;
@@ -517,12 +517,12 @@ LABEL_13:
   return v8 == 0;
 }
 
-- (BOOL)_validateDictionaryInDictionary:(id)a3 resultsDictionary:(id)a4
+- (BOOL)_validateDictionaryInDictionary:(id)dictionary resultsDictionary:(id)resultsDictionary
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CCDValidationInfo *)self name];
-  v9 = [v6 objectForKeyedSubscript:v8];
+  dictionaryCopy = dictionary;
+  resultsDictionaryCopy = resultsDictionary;
+  name = [(CCDValidationInfo *)self name];
+  v9 = [dictionaryCopy objectForKeyedSubscript:name];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -531,8 +531,8 @@ LABEL_13:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [v9 allKeys];
-    v11 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    allKeys = [v9 allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v11)
     {
       v12 = v11;
@@ -543,7 +543,7 @@ LABEL_4:
       {
         if (*v27 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v26 + 1) + 8 * v14);
@@ -555,7 +555,7 @@ LABEL_4:
 
         if (v12 == ++v14)
         {
-          v12 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
+          v12 = [allKeys countByEnumeratingWithState:&v26 objects:v31 count:16];
           if (v12)
           {
             goto LABEL_4;
@@ -574,8 +574,8 @@ LABEL_10:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v10 = [(CCDValidationKeyInfo *)self subKeys];
-      v16 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      allKeys = [(CCDValidationKeyInfo *)self subKeys];
+      v16 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (!v16)
       {
         v20 = 1;
@@ -590,17 +590,17 @@ LABEL_12:
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allKeys);
         }
 
-        if (![*(*(&v22 + 1) + 8 * v19) validateSelfWithDictionary:v9 resultsDictionary:v7])
+        if (![*(*(&v22 + 1) + 8 * v19) validateSelfWithDictionary:v9 resultsDictionary:resultsDictionaryCopy])
         {
           break;
         }
 
         if (v17 == ++v19)
         {
-          v17 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v17 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
           v20 = 1;
           if (v17)
           {
@@ -624,16 +624,16 @@ LABEL_22:
   return v20;
 }
 
-- (BOOL)_validateUnstructureddDictionaryInDictionary:(id)a3
+- (BOOL)_validateUnstructureddDictionaryInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(CCDValidationInfo *)self name];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  dictionaryCopy = dictionary;
+  name = [(CCDValidationInfo *)self name];
+  v6 = [dictionaryCopy objectForKeyedSubscript:name];
 
   objc_opt_class();
-  LOBYTE(v5) = objc_opt_isKindOfClass();
+  LOBYTE(name) = objc_opt_isKindOfClass();
 
-  return v5 & 1;
+  return name & 1;
 }
 
 @end

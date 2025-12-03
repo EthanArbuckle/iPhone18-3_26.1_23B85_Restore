@@ -10,7 +10,7 @@
 {
   if (+[PHUIConfiguration handsetDialerSpacing](PHUIConfiguration, "handsetDialerSpacing") || (+[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 hasCurrentAudioCalls], v5, v4 = 3.5, (v6 & 1) == 0) && !+[PHUIConfiguration requiresSmallScreenConfig](PHUIConfiguration, "requiresSmallScreenConfig"))
   {
-    v8.receiver = a1;
+    v8.receiver = self;
     v8.super_class = &OBJC_METACLASS___PHHandsetDialerNumberPadButton;
     objc_msgSendSuper2(&v8, "verticalPadding");
     return v3;
@@ -21,7 +21,7 @@
 
 + (double)outerCircleDiameter
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___PHHandsetDialerNumberPadButton;
   objc_msgSendSuper2(&v6, "outerCircleDiameter");
   v3 = v2;
@@ -51,17 +51,17 @@
 {
   if ([objc_opt_class() isUsingGlass])
   {
-    v3 = 0;
+    buttonColor = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PHHandsetDialerNumberPadButton;
-    v3 = [(PHHandsetDialerNumberPadButton *)&v5 buttonColor];
+    buttonColor = [(PHHandsetDialerNumberPadButton *)&v5 buttonColor];
   }
 
-  return v3;
+  return buttonColor;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface STResolveIDSDestinationsOperation
-- (STResolveIDSDestinationsOperation)initWithDestinations:(id)a3 toLocal:(BOOL)a4 organizationIdentifier:(id)a5 persistenceController:(id)a6;
+- (STResolveIDSDestinationsOperation)initWithDestinations:(id)destinations toLocal:(BOOL)local organizationIdentifier:(id)identifier persistenceController:(id)controller;
 - (void)_resolveDestinationsFromLocal;
 - (void)_resolveDestinationsToLocal;
 - (void)main;
@@ -7,25 +7,25 @@
 
 @implementation STResolveIDSDestinationsOperation
 
-- (STResolveIDSDestinationsOperation)initWithDestinations:(id)a3 toLocal:(BOOL)a4 organizationIdentifier:(id)a5 persistenceController:(id)a6
+- (STResolveIDSDestinationsOperation)initWithDestinations:(id)destinations toLocal:(BOOL)local organizationIdentifier:(id)identifier persistenceController:(id)controller
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
+  localCopy = local;
+  destinationsCopy = destinations;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = STResolveIDSDestinationsOperation;
-  v12 = [(STPersistenceOperation *)&v20 initWithPersistenceController:a6];
+  v12 = [(STPersistenceOperation *)&v20 initWithPersistenceController:controller];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [destinationsCopy copy];
     destinations = v12->_destinations;
     v12->_destinations = v13;
 
-    v15 = [v11 copy];
+    v15 = [identifierCopy copy];
     organizationIdentifier = v12->_organizationIdentifier;
     v12->_organizationIdentifier = v15;
 
-    v12->_toLocal = v8;
+    v12->_toLocal = localCopy;
   }
 
   v17 = +[STLog familyMessaging];
@@ -34,13 +34,13 @@
     v18 = "NO";
     v22 = "[STResolveIDSDestinationsOperation initWithDestinations:toLocal:organizationIdentifier:persistenceController:]";
     *buf = 136446723;
-    if (v8)
+    if (localCopy)
     {
       v18 = "YES";
     }
 
     v23 = 2113;
-    v24 = v10;
+    v24 = destinationsCopy;
     v25 = 2080;
     v26 = v18;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[v1] %{public}s: \ndestinations: %{private}@, toLocal: %s", buf, 0x20u);
@@ -60,9 +60,9 @@
   v5 = +[STLog idsTransport];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(STResolveIDSDestinationsOperation *)self toLocal];
+    toLocal = [(STResolveIDSDestinationsOperation *)self toLocal];
     v7 = "NO";
-    if (v6)
+    if (toLocal)
     {
       v7 = "YES";
     }
@@ -89,24 +89,24 @@
 
 - (void)_resolveDestinationsFromLocal
 {
-  v3 = [(STPersistenceOperation *)self persistenceController];
+  persistenceController = [(STPersistenceOperation *)self persistenceController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10007136C;
   v4[3] = &unk_1001A3BF0;
   v4[4] = self;
-  [v3 performBackgroundTask:v4];
+  [persistenceController performBackgroundTask:v4];
 }
 
 - (void)_resolveDestinationsToLocal
 {
-  v3 = [(STPersistenceOperation *)self persistenceController];
+  persistenceController = [(STPersistenceOperation *)self persistenceController];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100071AC8;
   v4[3] = &unk_1001A3BF0;
   v4[4] = self;
-  [v3 performBackgroundTask:v4];
+  [persistenceController performBackgroundTask:v4];
 }
 
 @end

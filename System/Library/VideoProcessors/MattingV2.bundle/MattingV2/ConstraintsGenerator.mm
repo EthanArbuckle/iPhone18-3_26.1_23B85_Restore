@@ -1,22 +1,22 @@
 @interface ConstraintsGenerator
-- (ConstraintsGenerator)initWithMetalContext:(id)a3;
-- (int)encodeToCommandBuffer:(id)a3 segmentationTexture:(id)a4 constraintsTexture:(id)a5 config:(id *)a6;
-- (int)prepareForConfiguration:(id *)a3;
+- (ConstraintsGenerator)initWithMetalContext:(id)context;
+- (int)encodeToCommandBuffer:(id)buffer segmentationTexture:(id)texture constraintsTexture:(id)constraintsTexture config:(id *)config;
+- (int)prepareForConfiguration:(id *)configuration;
 @end
 
 @implementation ConstraintsGenerator
 
-- (ConstraintsGenerator)initWithMetalContext:(id)a3
+- (ConstraintsGenerator)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = ConstraintsGenerator;
   v6 = [(ConstraintsGenerator *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_metalContext, a3);
-    v10 = objc_msgSend_device(v5, v8, v9);
+    objc_storeStrong(&v6->_metalContext, context);
+    v10 = objc_msgSend_device(contextCopy, v8, v9);
     device = v7->_device;
     v7->_device = v10;
 
@@ -42,13 +42,13 @@
   return v16;
 }
 
-- (int)encodeToCommandBuffer:(id)a3 segmentationTexture:(id)a4 constraintsTexture:(id)a5 config:(id *)a6
+- (int)encodeToCommandBuffer:(id)buffer segmentationTexture:(id)texture constraintsTexture:(id)constraintsTexture config:(id *)config
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v54 = *&a6->var0;
-  LODWORD(v55) = a6->var4;
+  bufferCopy = buffer;
+  textureCopy = texture;
+  constraintsTextureCopy = constraintsTexture;
+  v54 = *&config->var0;
+  LODWORD(v55) = config->var4;
   v14 = objc_msgSend_prepareForConfiguration_(self, v13, &v54);
   if (v14)
   {
@@ -57,8 +57,8 @@
     goto LABEL_5;
   }
 
-  v17 = objc_msgSend_width(v12, v15, v16);
-  if (v17 != objc_msgSend_width(v11, v18, v19))
+  v17 = objc_msgSend_width(constraintsTextureCopy, v15, v16);
+  if (v17 != objc_msgSend_width(textureCopy, v18, v19))
   {
     sub_2957E0C50();
 LABEL_9:
@@ -66,26 +66,26 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  v22 = objc_msgSend_height(v12, v20, v21);
-  if (v22 != objc_msgSend_height(v11, v23, v24))
+  v22 = objc_msgSend_height(constraintsTextureCopy, v20, v21);
+  if (v22 != objc_msgSend_height(textureCopy, v23, v24))
   {
     sub_2957E0CB0();
     goto LABEL_9;
   }
 
-  objc_msgSend_encodeToCommandBuffer_sourceTexture_destinationTexture_(self->_fgThresholdFilter, v25, v10, v11, self->_tmpSegmentation);
-  objc_msgSend_encodeToCommandBuffer_sourceTexture_destinationTexture_(self->_erosionFilter, v26, v10, self->_tmpSegmentation, self->_fgErodedSegmentation);
-  objc_msgSend_encodeToCommandBuffer_sourceTexture_destinationTexture_(self->_bgThresholdFilter, v27, v10, v11, self->_tmpSegmentation);
-  objc_msgSend_encodeToCommandBuffer_sourceTexture_destinationTexture_(self->_erosionFilter, v28, v10, self->_tmpSegmentation, self->_bgErodedSegmentation);
-  v31 = objc_msgSend_computeCommandEncoder(v10, v29, v30);
+  objc_msgSend_encodeToCommandBuffer_sourceTexture_destinationTexture_(self->_fgThresholdFilter, v25, bufferCopy, textureCopy, self->_tmpSegmentation);
+  objc_msgSend_encodeToCommandBuffer_sourceTexture_destinationTexture_(self->_erosionFilter, v26, bufferCopy, self->_tmpSegmentation, self->_fgErodedSegmentation);
+  objc_msgSend_encodeToCommandBuffer_sourceTexture_destinationTexture_(self->_bgThresholdFilter, v27, bufferCopy, textureCopy, self->_tmpSegmentation);
+  objc_msgSend_encodeToCommandBuffer_sourceTexture_destinationTexture_(self->_erosionFilter, v28, bufferCopy, self->_tmpSegmentation, self->_bgErodedSegmentation);
+  v31 = objc_msgSend_computeCommandEncoder(bufferCopy, v29, v30);
   objc_msgSend_setComputePipelineState_(v31, v32, self->_assembleConstraintsKernel);
   objc_msgSend_setTexture_atIndex_(v31, v33, self->_fgErodedSegmentation, 0);
   objc_msgSend_setTexture_atIndex_(v31, v34, self->_bgErodedSegmentation, 1);
-  objc_msgSend_setTexture_atIndex_(v31, v35, v12, 2);
+  objc_msgSend_setTexture_atIndex_(v31, v35, constraintsTextureCopy, 2);
   v38 = objc_msgSend_threadExecutionWidth(self->_assembleConstraintsKernel, v36, v37);
   v41 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_assembleConstraintsKernel, v39, v40) / v38;
-  v44 = objc_msgSend_width(v12, v42, v43);
-  v47 = objc_msgSend_height(v12, v45, v46);
+  v44 = objc_msgSend_width(constraintsTextureCopy, v42, v43);
+  v47 = objc_msgSend_height(constraintsTextureCopy, v45, v46);
   *&v54 = v44;
   *(&v54 + 1) = v47;
   v55 = 1;
@@ -101,12 +101,12 @@ LABEL_5:
   return v51;
 }
 
-- (int)prepareForConfiguration:(id *)a3
+- (int)prepareForConfiguration:(id *)configuration
 {
-  v5 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, 10, a3->var0, a3->var1, 0);
+  v5 = objc_msgSend_texture2DDescriptorWithPixelFormat_width_height_mipmapped_(MEMORY[0x29EDBB670], a2, 10, configuration->var0, configuration->var1, 0);
   objc_msgSend_setUsage_(v5, v6, 3);
   fgErodedSegmentation = self->_fgErodedSegmentation;
-  if (!fgErodedSegmentation || objc_msgSend_width(fgErodedSegmentation, v7, v8) != a3->var0 || objc_msgSend_height(self->_fgErodedSegmentation, v7, v10) != a3->var1)
+  if (!fgErodedSegmentation || objc_msgSend_width(fgErodedSegmentation, v7, v8) != configuration->var0 || objc_msgSend_height(self->_fgErodedSegmentation, v7, v10) != configuration->var1)
   {
     v12 = objc_msgSend_newTextureWithDescriptor_(self->_device, v7, v5);
     v13 = self->_fgErodedSegmentation;
@@ -122,7 +122,7 @@ LABEL_37:
   }
 
   bgErodedSegmentation = self->_bgErodedSegmentation;
-  if (!bgErodedSegmentation || objc_msgSend_width(bgErodedSegmentation, v7, v11) != a3->var0 || objc_msgSend_height(self->_bgErodedSegmentation, v7, v15) != a3->var1)
+  if (!bgErodedSegmentation || objc_msgSend_width(bgErodedSegmentation, v7, v11) != configuration->var0 || objc_msgSend_height(self->_bgErodedSegmentation, v7, v15) != configuration->var1)
   {
     v17 = objc_msgSend_newTextureWithDescriptor_(self->_device, v7, v5);
     v18 = self->_bgErodedSegmentation;
@@ -136,7 +136,7 @@ LABEL_37:
   }
 
   tmpSegmentation = self->_tmpSegmentation;
-  if (!tmpSegmentation || objc_msgSend_width(tmpSegmentation, v7, v16) != a3->var0 || objc_msgSend_height(self->_tmpSegmentation, v7, v20) != a3->var1)
+  if (!tmpSegmentation || objc_msgSend_width(tmpSegmentation, v7, v16) != configuration->var0 || objc_msgSend_height(self->_tmpSegmentation, v7, v20) != configuration->var1)
   {
     v22 = objc_msgSend_newTextureWithDescriptor_(self->_device, v7, v5);
     v23 = self->_tmpSegmentation;
@@ -150,10 +150,10 @@ LABEL_37:
   }
 
   fgThresholdFilter = self->_fgThresholdFilter;
-  if (!fgThresholdFilter || (objc_msgSend_thresholdValue(fgThresholdFilter, v7, v21), v27 != a3->var2))
+  if (!fgThresholdFilter || (objc_msgSend_thresholdValue(fgThresholdFilter, v7, v21), v27 != configuration->var2))
   {
     v28 = objc_alloc(MEMORY[0x29EDBB808]);
-    *&v29 = a3->var2;
+    *&v29 = configuration->var2;
     LODWORD(v30) = 1.0;
     v32 = objc_msgSend_initWithDevice_thresholdValue_maximumValue_linearGrayColorTransform_(v28, v31, self->_device, 0, v29, v30);
     v33 = self->_fgThresholdFilter;
@@ -167,10 +167,10 @@ LABEL_37:
   }
 
   bgThresholdFilter = self->_bgThresholdFilter;
-  if (!bgThresholdFilter || (objc_msgSend_thresholdValue(bgThresholdFilter, v25, v26), v37 != a3->var3))
+  if (!bgThresholdFilter || (objc_msgSend_thresholdValue(bgThresholdFilter, v25, v26), v37 != configuration->var3))
   {
     v38 = objc_alloc(MEMORY[0x29EDBB810]);
-    *&v39 = a3->var3;
+    *&v39 = configuration->var3;
     LODWORD(v40) = 1.0;
     v42 = objc_msgSend_initWithDevice_thresholdValue_maximumValue_linearGrayColorTransform_(v38, v41, self->_device, 0, v39, v40);
     v43 = self->_bgThresholdFilter;
@@ -184,10 +184,10 @@ LABEL_37:
   }
 
   erosionFilter = self->_erosionFilter;
-  if (!erosionFilter || objc_msgSend_kernelWidth(erosionFilter, v35, v36) != a3->var4 || objc_msgSend_kernelHeight(self->_erosionFilter, v45, v46) != a3->var4)
+  if (!erosionFilter || objc_msgSend_kernelWidth(erosionFilter, v35, v36) != configuration->var4 || objc_msgSend_kernelHeight(self->_erosionFilter, v45, v46) != configuration->var4)
   {
     v49 = objc_alloc(MEMORY[0x29EDBB7D8]);
-    v51 = objc_msgSend_initWithDevice_kernelWidth_kernelHeight_(v49, v50, self->_device, a3->var4, a3->var4);
+    v51 = objc_msgSend_initWithDevice_kernelWidth_kernelHeight_(v49, v50, self->_device, configuration->var4, configuration->var4);
     v52 = self->_erosionFilter;
     self->_erosionFilter = v51;
 

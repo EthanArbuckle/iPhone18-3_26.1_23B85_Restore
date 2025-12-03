@@ -2,8 +2,8 @@
 + (_TtC9storekitd14SQLiteFunction)extractJWSPayload;
 + (_TtC9storekitd14SQLiteFunction)unarchiveRenewalInfoAsJSON;
 - (NSString)name;
-- (id)transformSQLWithRoot:(id)a3;
-- (void)withUnsafePropertyPointers:(id)a3;
+- (id)transformSQLWithRoot:(id)root;
+- (void)withUnsafePropertyPointers:(id)pointers;
 @end
 
 @implementation SQLiteFunction
@@ -16,20 +16,20 @@
   return v2;
 }
 
-- (void)withUnsafePropertyPointers:(id)a3
+- (void)withUnsafePropertyPointers:(id)pointers
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(pointers);
   _Block_copy(v4);
-  v5 = self;
-  sub_10009FB14(v5, v4);
+  selfCopy = self;
+  sub_10009FB14(selfCopy, v4);
   _Block_release(v4);
 }
 
-- (id)transformSQLWithRoot:(id)a3
+- (id)transformSQLWithRoot:(id)root
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1000A0538(v4, v6);
 
   v8 = String._bridgeToObjectiveC()();

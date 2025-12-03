@@ -1,13 +1,13 @@
 @interface HMDSiriEndpointSessionStateTLV
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDSiriEndpointSessionStateTLV)init;
-- (HMDSiriEndpointSessionStateTLV)initWithSessionState:(id)a3 hubIdentifier:(id)a4;
+- (HMDSiriEndpointSessionStateTLV)initWithSessionState:(id)state hubIdentifier:(id)identifier;
 - (NSString)description;
 - (NSUUID)hubUUID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDSiriEndpointSessionStateTLV
@@ -15,17 +15,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
-  v5 = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
-  v6 = [v3 stringWithFormat:@"<HMDSiriEndpointSessionStateTLV sessionState=%@, hubIdentifier=%@>", v4, v5];
+  sessionState = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
+  hubIdentifier = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
+  v6 = [v3 stringWithFormat:@"<HMDSiriEndpointSessionStateTLV sessionState=%@, hubIdentifier=%@>", sessionState, hubIdentifier];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -35,14 +35,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
-      v8 = [(HMDSiriEndpointSessionStateTLV *)v6 sessionState];
-      if (v7 != v8)
+      v6 = equalCopy;
+      sessionState = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
+      sessionState2 = [(HMDSiriEndpointSessionStateTLV *)v6 sessionState];
+      if (sessionState != sessionState2)
       {
-        v9 = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
-        v3 = [(HMDSiriEndpointSessionStateTLV *)v6 sessionState];
-        if (![v9 isEqual:v3])
+        sessionState3 = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
+        sessionState4 = [(HMDSiriEndpointSessionStateTLV *)v6 sessionState];
+        if (![sessionState3 isEqual:sessionState4])
         {
           v10 = 0;
 LABEL_13:
@@ -51,25 +51,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = sessionState3;
       }
 
-      v11 = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
-      v12 = [(HMDSiriEndpointSessionStateTLV *)v6 hubIdentifier];
-      if (v11 == v12)
+      hubIdentifier = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
+      hubIdentifier2 = [(HMDSiriEndpointSessionStateTLV *)v6 hubIdentifier];
+      if (hubIdentifier == hubIdentifier2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
-        v14 = [(HMDSiriEndpointSessionStateTLV *)v6 hubIdentifier];
-        v10 = [v13 isEqual:v14];
+        hubIdentifier3 = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
+        hubIdentifier4 = [(HMDSiriEndpointSessionStateTLV *)v6 hubIdentifier];
+        v10 = [hubIdentifier3 isEqual:hubIdentifier4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      sessionState3 = v16;
+      if (sessionState == sessionState2)
       {
         goto LABEL_14;
       }
@@ -85,17 +85,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDSiriEndpointSessionStateTLV allocWithZone:a3];
-  v5 = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
-  v6 = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
-  v7 = [(HMDSiriEndpointSessionStateTLV *)v4 initWithSessionState:v5 hubIdentifier:v6];
+  v4 = [HMDSiriEndpointSessionStateTLV allocWithZone:zone];
+  sessionState = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
+  hubIdentifier = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
+  v7 = [(HMDSiriEndpointSessionStateTLV *)v4 initWithSessionState:sessionState hubIdentifier:hubIdentifier];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
   v44 = 0u;
@@ -120,13 +120,13 @@ LABEL_15:
   v27 = 0u;
   v25 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
+  sessionState = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
 
-  if (v5)
+  if (sessionState)
   {
-    v6 = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
+    sessionState2 = [(HMDSiriEndpointSessionStateTLV *)self sessionState];
     v24 = 0;
-    v7 = [v6 serializeWithError:&v24];
+    v7 = [sessionState2 serializeWithError:&v24];
     v8 = v24;
 
     if (v8)
@@ -141,11 +141,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_21:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_26;
       }
 
@@ -154,9 +154,9 @@ LABEL_21:
     }
   }
 
-  v10 = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
+  hubIdentifier = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
 
-  if (!v10)
+  if (!hubIdentifier)
   {
 LABEL_23:
     v13 = [MEMORY[0x277CBEA90] dataWithBytes:v25 length:?];
@@ -164,25 +164,25 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  v11 = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
+  hubIdentifier2 = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
   v23 = 0;
-  v7 = [v11 serializeWithError:&v23];
+  v7 = [hubIdentifier2 serializeWithError:&v23];
   v8 = v23;
 
   if (!v8)
   {
-    v14 = [v7 bytes];
-    v15 = v14 + [v7 length];
+    bytes = [v7 bytes];
+    v15 = bytes + [v7 length];
     do
     {
-      if ((v15 - v14) >= 255)
+      if ((v15 - bytes) >= 255)
       {
         v16 = 255;
       }
 
       else
       {
-        v16 = v15 - v14;
+        v16 = v15 - bytes;
       }
 
       v17 = TLV8BufferAppend();
@@ -196,7 +196,7 @@ LABEL_23:
         v18 = v16;
       }
 
-      v14 += v18;
+      bytes += v18;
       if (v17)
       {
         v19 = 1;
@@ -204,7 +204,7 @@ LABEL_23:
 
       else
       {
-        v19 = v14 >= v15;
+        v19 = bytes >= v15;
       }
     }
 
@@ -221,11 +221,11 @@ LABEL_23:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_26;
   }
 
@@ -239,28 +239,28 @@ LABEL_26:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
     v10 = 0;
 LABEL_16:
-    [(HMDSiriEndpointSessionStateTLV *)self setSessionState:v10, v22];
+    [(HMDSiriEndpointSessionStateTLV *)self setSessionState:v10, errorCopy];
     [(HMDSiriEndpointSessionStateTLV *)self setHubIdentifier:v9];
     v11 = 0;
     v18 = 1;
     goto LABEL_23;
   }
 
-  v22 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = v7 + v8;
+  v12 = bytes + v8;
   while (1)
   {
     v29 = 0;
@@ -269,10 +269,10 @@ LABEL_16:
     v26 = 0;
     if (TLV8GetNext())
     {
-      if (v22)
+      if (errorCopy)
       {
         HMErrorFromOSStatus();
-        *v22 = v18 = 0;
+        *errorCopy = v18 = 0;
         goto LABEL_23;
       }
 
@@ -337,11 +337,11 @@ LABEL_12:
   }
 
 LABEL_20:
-  if (v22)
+  if (errorCopy)
   {
     v20 = v11;
     v18 = 0;
-    *v22 = v11;
+    *errorCopy = v11;
     goto LABEL_23;
   }
 
@@ -352,18 +352,18 @@ LABEL_23:
   return v18;
 }
 
-- (HMDSiriEndpointSessionStateTLV)initWithSessionState:(id)a3 hubIdentifier:(id)a4
+- (HMDSiriEndpointSessionStateTLV)initWithSessionState:(id)state hubIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = HMDSiriEndpointSessionStateTLV;
   v9 = [(HMDSiriEndpointSessionStateTLV *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_sessionState, a3);
-    objc_storeStrong(&v10->_hubIdentifier, a4);
+    objc_storeStrong(&v9->_sessionState, state);
+    objc_storeStrong(&v10->_hubIdentifier, identifier);
   }
 
   return v10;
@@ -376,24 +376,24 @@ LABEL_23:
   return [(HMDSiriEndpointSessionStateTLV *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDSiriEndpointSessionStateTLV);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDSiriEndpointSessionStateTLV *)v6 parseFromData:v5 error:&v11];
+    [(HMDSiriEndpointSessionStateTLV *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -411,8 +411,8 @@ LABEL_23:
   v9[2] = *MEMORY[0x277D85DE8];
   v9[0] = 0;
   v9[1] = 0;
-  v2 = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
-  [v2 getBytes:v9 length:16];
+  hubIdentifier = [(HMDSiriEndpointSessionStateTLV *)self hubIdentifier];
+  [hubIdentifier getBytes:v9 length:16];
 
   v3 = 0;
   for (i = 15; i > v3; --i)
@@ -423,15 +423,15 @@ LABEL_23:
     ++v3;
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v9];
-  if (!v6)
+  hmf_zeroUUID = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v9];
+  if (!hmf_zeroUUID)
   {
-    v6 = [MEMORY[0x277CCAD78] hmf_zeroUUID];
+    hmf_zeroUUID = [MEMORY[0x277CCAD78] hmf_zeroUUID];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return hmf_zeroUUID;
 }
 
 @end

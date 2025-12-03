@@ -1,18 +1,18 @@
 @interface MUQuickLookContentEditorViewController
-+ (CGSize)_suggestedContentSizeForImageSource:(CGImageSource *)a3;
-+ (CGSize)_suggestedContentSizeForPDF:(id)a3;
-+ (CGSize)suggestedContentSizeForData:(id)a3;
-+ (CGSize)suggestedContentSizeForURL:(id)a3;
++ (CGSize)_suggestedContentSizeForImageSource:(CGImageSource *)source;
++ (CGSize)_suggestedContentSizeForPDF:(id)f;
++ (CGSize)suggestedContentSizeForData:(id)data;
++ (CGSize)suggestedContentSizeForURL:(id)l;
 - (BOOL)_canShowWhileLocked;
 - (BOOL)_hasImageContent;
 - (BOOL)_hasPDFContent;
-- (BOOL)_imageAnalysisOverlayAcceptSingleTouch:(id)a3;
-- (BOOL)acceptSingleTouch:(id)a3;
+- (BOOL)_imageAnalysisOverlayAcceptSingleTouch:(id)touch;
+- (BOOL)acceptSingleTouch:(id)touch;
 - (BOOL)allowsEditing;
 - (BOOL)canEditContent;
 - (BOOL)canEditPDF;
 - (BOOL)canEncryptDocument;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)documentIsLocked;
 - (BOOL)hasResultsForVisualSearch;
 - (BOOL)isInteractionActive;
@@ -28,75 +28,75 @@
 - (UIImage)imageForAnalysis;
 - (UIView)transitioningView;
 - (id)_editedImageAnalysisQueue;
-- (id)getMenuElementsForPage:(id)a3;
-- (id)pdfPageOptionsForImageRef:(CGImage *)a3 withPreviousPage:(id)a4;
+- (id)getMenuElementsForPage:(id)page;
+- (id)pdfPageOptionsForImageRef:(CGImage *)ref withPreviousPage:(id)page;
 - (id)sharedSerialPagesEditionQueue;
 - (id)supportedUTTypes;
-- (unint64_t)_insertPagesFromProvidedPDFDocument:(id)a3 toPDFDocument:(id)a4 atPageIndex:(unint64_t)a5;
-- (void)PDFView:(id)a3 allowsFormFillingMode:(BOOL)a4 forPage:(id)a5;
-- (void)_adjustImageInteractionForScrollEvent:(id)a3;
-- (void)_convertToPDFAndWrite:(id)a3 completionHandler:(id)a4;
-- (void)_deletePage:(id)a3;
-- (void)_deletePages:(id)a3 inDocument:(id)a4;
-- (void)_detectedEditEnablingMarkup:(BOOL)a3;
+- (unint64_t)_insertPagesFromProvidedPDFDocument:(id)document toPDFDocument:(id)fDocument atPageIndex:(unint64_t)index;
+- (void)PDFView:(id)view allowsFormFillingMode:(BOOL)mode forPage:(id)page;
+- (void)_adjustImageInteractionForScrollEvent:(id)event;
+- (void)_convertToPDFAndWrite:(id)write completionHandler:(id)handler;
+- (void)_deletePage:(id)page;
+- (void)_deletePages:(id)pages inDocument:(id)document;
+- (void)_detectedEditEnablingMarkup:(BOOL)markup;
 - (void)_flattenImageForAnalysis;
-- (void)_handleLoadingWithCompletion:(id)a3;
-- (void)_insertBlankPage:(id)a3 atIndex:(unint64_t)a4;
-- (void)_insertBlankPageAfterPage:(id)a3;
-- (void)_insertDeletedPage:(id)a3 atIndex:(unint64_t)a4;
-- (void)_insertFileAtURL:(id)a3 type:(id)a4 afterPage:(id)a5 completionHandler:(id)a6;
-- (void)_insertImageWithURL:(id)a3 afterPage:(id)a4 completionHandler:(id)a5;
-- (void)_insertPDFDocumentWithURL:(id)a3 afterPage:(id)a4 completionHandler:(id)a5;
-- (void)_insertPage:(id)a3 atIndex:(unint64_t)a4;
-- (void)_insertPageFromFileAfterPage:(id)a3;
-- (void)_insertPagesFromFileURLs:(id)a3 afterPage:(id)a4;
-- (void)_loadSourceContentWithCompletion:(id)a3;
-- (void)_presentDocumentPicker:(id)a3;
-- (void)_presentDocumentScannerAfterPage:(id)a3;
-- (void)_registerActionNotEnablingMarkup:(id)a3;
+- (void)_handleLoadingWithCompletion:(id)completion;
+- (void)_insertBlankPage:(id)page atIndex:(unint64_t)index;
+- (void)_insertBlankPageAfterPage:(id)page;
+- (void)_insertDeletedPage:(id)page atIndex:(unint64_t)index;
+- (void)_insertFileAtURL:(id)l type:(id)type afterPage:(id)page completionHandler:(id)handler;
+- (void)_insertImageWithURL:(id)l afterPage:(id)page completionHandler:(id)handler;
+- (void)_insertPDFDocumentWithURL:(id)l afterPage:(id)page completionHandler:(id)handler;
+- (void)_insertPage:(id)page atIndex:(unint64_t)index;
+- (void)_insertPageFromFileAfterPage:(id)page;
+- (void)_insertPagesFromFileURLs:(id)ls afterPage:(id)page;
+- (void)_loadSourceContentWithCompletion:(id)completion;
+- (void)_presentDocumentPicker:(id)picker;
+- (void)_presentDocumentScannerAfterPage:(id)page;
+- (void)_registerActionNotEnablingMarkup:(id)markup;
 - (void)_resetOriginalDelegate;
-- (void)_rotatePage:(id)a3 clockwise:(BOOL)a4;
+- (void)_rotatePage:(id)page clockwise:(BOOL)clockwise;
 - (void)_setAsPDFViewDelegatePrivateIfNecessary;
-- (void)_setPresentationModeForImageContent:(unint64_t)a3;
-- (void)_setPresentationModeForPDFContent:(unint64_t)a3;
+- (void)_setPresentationModeForImageContent:(unint64_t)content;
+- (void)_setPresentationModeForPDFContent:(unint64_t)content;
 - (void)_setupAndStartImageAnalysisIfNeeded;
 - (void)_updateAnalysisButtonsContainerConstraints;
 - (void)_updatePeekSize;
-- (void)_updateThumbnailViewWithTraitCollection:(id)a3;
-- (void)annotationController:(id)a3 detectedEditOfType:(unint64_t)a4;
-- (void)contentControllerDidUnlockDocument:(id)a3;
-- (void)convertToPDFAndWrite:(id)a3 completionHandler:(id)a4;
-- (void)documentCameraViewController:(id)a3 didFailWithError:(id)a4;
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4;
-- (void)documentCameraViewControllerDidCancel:(id)a3;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
-- (void)find:(id)a3;
-- (void)findNext:(id)a3;
-- (void)findPrevious:(id)a3;
+- (void)_updateThumbnailViewWithTraitCollection:(id)collection;
+- (void)annotationController:(id)controller detectedEditOfType:(unint64_t)type;
+- (void)contentControllerDidUnlockDocument:(id)document;
+- (void)convertToPDFAndWrite:(id)write completionHandler:(id)handler;
+- (void)documentCameraViewController:(id)controller didFailWithError:(id)error;
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan;
+- (void)documentCameraViewControllerDidCancel:(id)cancel;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
+- (void)find:(id)find;
+- (void)findNext:(id)next;
+- (void)findPrevious:(id)previous;
 - (void)flattenImageForAnalysis;
 - (void)imageAnalysisInteractionDidDismissVisualSearchController;
 - (void)imageAnalysisInteractionWillPresentVisualSearchController;
-- (void)imageAnalyzerWantsUpdateInfoButtonWithAnimation:(BOOL)a3;
+- (void)imageAnalyzerWantsUpdateInfoButtonWithAnimation:(BOOL)animation;
 - (void)infoButtonTapped;
-- (void)insertPages:(id)a3 atIndexes:(id)a4 inDocument:(id)a5;
-- (void)loadWithData:(id)a3 archivedModelData:(id)a4 placeholderImage:(id)a5 completionHandler:(id)a6;
-- (void)loadWithURL:(id)a3 archivedModelData:(id)a4 placeholderImage:(id)a5 completionHandler:(id)a6;
-- (void)setAnnotationEditingEnabled:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setPresentationMode:(unint64_t)a3;
-- (void)setShouldEnterVisualSearchAfterNextAnalysis:(BOOL)a3;
-- (void)setShouldHighlightTextAndDDAfterNextAnalysis:(BOOL)a3;
-- (void)setShouldUpliftSubjectAfterNextAnalysis:(BOOL)a3;
+- (void)insertPages:(id)pages atIndexes:(id)indexes inDocument:(id)document;
+- (void)loadWithData:(id)data archivedModelData:(id)modelData placeholderImage:(id)image completionHandler:(id)handler;
+- (void)loadWithURL:(id)l archivedModelData:(id)data placeholderImage:(id)image completionHandler:(id)handler;
+- (void)setAnnotationEditingEnabled:(BOOL)enabled;
+- (void)setDelegate:(id)delegate;
+- (void)setPresentationMode:(unint64_t)mode;
+- (void)setShouldEnterVisualSearchAfterNextAnalysis:(BOOL)analysis;
+- (void)setShouldHighlightTextAndDDAfterNextAnalysis:(BOOL)analysis;
+- (void)setShouldUpliftSubjectAfterNextAnalysis:(BOOL)analysis;
 - (void)setupAndStartImageAnalysisIfNeeded;
-- (void)shouldHideMarkupOverlays:(BOOL)a3 animated:(BOOL)a4;
+- (void)shouldHideMarkupOverlays:(BOOL)overlays animated:(BOOL)animated;
 - (void)stopImageAnalysis;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateForFullScreen:(BOOL)a3 animated:(BOOL)a4;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateForFullScreen:(BOOL)screen animated:(BOOL)animated;
 - (void)updateThumbnailView;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MUQuickLookContentEditorViewController
@@ -108,22 +108,22 @@
   v2 = [(MUQuickLookContentEditorViewController *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
-    [(MarkupViewController *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(MarkupViewController *)v2 setBackgroundColor:clearColor];
   }
 
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = MUQuickLookContentEditorViewController;
   [(MarkupViewController *)&v6 viewWillAppear:?];
   if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent]&& [(MarkupViewController *)self thumbnailViewStyle]== 1)
   {
-    if (v3)
+    if (appearCopy)
     {
       v5[0] = MEMORY[0x277D85DD0];
       v5[1] = 3221225472;
@@ -153,21 +153,21 @@
 
 - (void)_updatePeekSize
 {
-  v3 = [(MUQuickLookContentEditorViewController *)self view];
-  v19 = [v3 superview];
+  view = [(MUQuickLookContentEditorViewController *)self view];
+  superview = [view superview];
 
-  v4 = v19;
-  if (v19)
+  v4 = superview;
+  if (superview)
   {
-    [v19 frame];
+    [superview frame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(MUQuickLookContentEditorViewController *)self presentationMode];
+    presentationMode = [(MUQuickLookContentEditorViewController *)self presentationMode];
     v14 = v6 + -5.0;
     v15 = v8 + -5.0;
-    if (v13 == 1)
+    if (presentationMode == 1)
     {
       v12 = v12 + 10.0;
       v10 = v10 + 10.0;
@@ -183,45 +183,45 @@
     v22.size.height = v12;
     v17 = CGRectEqualToRect(v21, v22);
 
-    v4 = v19;
+    v4 = superview;
     if (!v17)
     {
-      v18 = [(MUQuickLookContentEditorViewController *)self view];
-      [v18 setFrame:{v6, v8, v10, v12}];
+      view2 = [(MUQuickLookContentEditorViewController *)self view];
+      [view2 setFrame:{v6, v8, v10, v12}];
 
-      v4 = v19;
+      v4 = superview;
     }
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_find_ == a3 || sel_findPrevious_ == a3 || sel_findNext_ == a3)
+  if (sel_find_ == action || sel_findPrevious_ == action || sel_findNext_ == action)
   {
-    v8 = a4;
-    v9 = [(MarkupViewController *)self contentViewController];
-    v11 = [v9 canPerformAction:a3 withSender:v8];
+    senderCopy = sender;
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    v11 = [contentViewController canPerformAction:action withSender:senderCopy];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = MUQuickLookContentEditorViewController;
-    v10 = a4;
-    v11 = [(MarkupViewController *)&v13 canPerformAction:a3 withSender:v10];
+    senderCopy2 = sender;
+    v11 = [(MarkupViewController *)&v13 canPerformAction:action withSender:senderCopy2];
   }
 
   return v11;
 }
 
-+ (CGSize)suggestedContentSizeForURL:(id)a3
++ (CGSize)suggestedContentSizeForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
-  if (v4)
+  if (lCopy)
   {
-    v7 = [MUImageDownsamplingUtilities _sourceContentType:v4];
+    v7 = [MUImageDownsamplingUtilities _sourceContentType:lCopy];
     if (v7)
     {
       v8 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v7];
@@ -234,19 +234,19 @@
 
     if ([v8 conformsToType:*MEMORY[0x277CE1E08]])
     {
-      v9 = [objc_alloc(MEMORY[0x277CD93D0]) initWithURL:v4];
-      [a1 _suggestedContentSizeForPDF:v9];
+      v9 = [objc_alloc(MEMORY[0x277CD93D0]) initWithURL:lCopy];
+      [self _suggestedContentSizeForPDF:v9];
       v5 = v10;
       v6 = v11;
     }
 
     else if ([v8 conformsToType:*MEMORY[0x277CE1DB0]])
     {
-      v12 = CGImageSourceCreateWithURL(v4, 0);
+      v12 = CGImageSourceCreateWithURL(lCopy, 0);
       if (v12)
       {
         v13 = v12;
-        [a1 _suggestedContentSizeForImageSource:v12];
+        [self _suggestedContentSizeForImageSource:v12];
         v5 = v14;
         v6 = v15;
         CFRelease(v13);
@@ -261,14 +261,14 @@
   return result;
 }
 
-+ (CGSize)suggestedContentSizeForData:(id)a3
++ (CGSize)suggestedContentSizeForData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
-  if (v4)
+  if (dataCopy)
   {
-    v7 = [MUImageDownsamplingUtilities _sourceContentType:v4];
+    v7 = [MUImageDownsamplingUtilities _sourceContentType:dataCopy];
     if (v7)
     {
       v8 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v7];
@@ -281,19 +281,19 @@
 
     if ([v8 conformsToType:*MEMORY[0x277CE1E08]])
     {
-      v9 = [objc_alloc(MEMORY[0x277CD93D0]) initWithData:v4];
-      [a1 _suggestedContentSizeForPDF:v9];
+      v9 = [objc_alloc(MEMORY[0x277CD93D0]) initWithData:dataCopy];
+      [self _suggestedContentSizeForPDF:v9];
       v5 = v10;
       v6 = v11;
     }
 
     else if ([v8 conformsToType:*MEMORY[0x277CE1DB0]])
     {
-      v12 = CGImageSourceCreateWithData(v4, 0);
+      v12 = CGImageSourceCreateWithData(dataCopy, 0);
       if (v12)
       {
         v13 = v12;
-        [a1 _suggestedContentSizeForImageSource:v12];
+        [self _suggestedContentSizeForImageSource:v12];
         v5 = v14;
         v6 = v15;
         CFRelease(v13);
@@ -308,9 +308,9 @@
   return result;
 }
 
-+ (CGSize)_suggestedContentSizeForImageSource:(CGImageSource *)a3
++ (CGSize)_suggestedContentSizeForImageSource:(CGImageSource *)source
 {
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, 0);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(source, 0, 0);
   if (ImageAtIndex)
   {
     v4 = ImageAtIndex;
@@ -333,13 +333,13 @@
   return result;
 }
 
-+ (CGSize)_suggestedContentSizeForPDF:(id)a3
++ (CGSize)_suggestedContentSizeForPDF:(id)f
 {
-  v3 = a3;
-  v4 = v3;
+  fCopy = f;
+  v4 = fCopy;
   width = *MEMORY[0x277CBF3A8];
   height = *(MEMORY[0x277CBF3A8] + 8);
-  if (v3 && [v3 pageCount])
+  if (fCopy && [fCopy pageCount])
   {
     v7 = [v4 pageAtIndex:0];
     BoxRect = CGPDFPageGetBoxRect([v7 pageRef], kCGPDFMediaBox);
@@ -354,25 +354,25 @@
   return result;
 }
 
-- (void)loadWithData:(id)a3 archivedModelData:(id)a4 placeholderImage:(id)a5 completionHandler:(id)a6
+- (void)loadWithData:(id)data archivedModelData:(id)modelData placeholderImage:(id)image completionHandler:(id)handler
 {
-  v10 = a6;
-  [(MarkupViewController *)self setData:a3 withArchivedModelData:a4 placeholderImage:a5];
-  [(MUQuickLookContentEditorViewController *)self _handleLoadingWithCompletion:v10];
+  handlerCopy = handler;
+  [(MarkupViewController *)self setData:data withArchivedModelData:modelData placeholderImage:image];
+  [(MUQuickLookContentEditorViewController *)self _handleLoadingWithCompletion:handlerCopy];
 }
 
-- (void)loadWithURL:(id)a3 archivedModelData:(id)a4 placeholderImage:(id)a5 completionHandler:(id)a6
+- (void)loadWithURL:(id)l archivedModelData:(id)data placeholderImage:(id)image completionHandler:(id)handler
 {
-  v10 = a6;
-  [(MarkupViewController *)self setFileURL:a3 withArchivedModelData:a4 placeholderImage:a5];
-  [(MUQuickLookContentEditorViewController *)self _handleLoadingWithCompletion:v10];
+  handlerCopy = handler;
+  [(MarkupViewController *)self setFileURL:l withArchivedModelData:data placeholderImage:image];
+  [(MUQuickLookContentEditorViewController *)self _handleLoadingWithCompletion:handlerCopy];
 }
 
-- (void)_handleLoadingWithCompletion:(id)a3
+- (void)_handleLoadingWithCompletion:(id)completion
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent]&& ([(MarkupViewController *)self _pdfView], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
@@ -391,16 +391,16 @@
 
     v6 = 0;
 LABEL_8:
-    v4[2](v4, v6);
+    completionCopy[2](completionCopy, v6);
   }
 }
 
 - (BOOL)_canShowWhileLocked
 {
-  v3 = [(MarkupViewController *)self delegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(MarkupViewController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 editorCanShowWhileLocked:self];
+    v4 = [delegate editorCanShowWhileLocked:self];
   }
 
   else
@@ -411,23 +411,23 @@ LABEL_8:
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v13.receiver = self;
   v13.super_class = MUQuickLookContentEditorViewController;
-  [(MarkupViewController *)&v13 traitCollectionDidChange:v4];
+  [(MarkupViewController *)&v13 traitCollectionDidChange:changeCopy];
   if ([(MUQuickLookContentEditorViewController *)self _hasImageContent])
   {
-    v5 = [(MUQuickLookContentEditorViewController *)self traitCollection];
-    v6 = [v5 horizontalSizeClass];
-    if (v6 == [v4 horizontalSizeClass])
+    traitCollection = [(MUQuickLookContentEditorViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
+    if (horizontalSizeClass == [changeCopy horizontalSizeClass])
     {
-      v7 = [(MUQuickLookContentEditorViewController *)self traitCollection];
-      v8 = [v7 userInterfaceIdiom];
-      v9 = [v4 userInterfaceIdiom];
+      traitCollection2 = [(MUQuickLookContentEditorViewController *)self traitCollection];
+      userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
+      userInterfaceIdiom2 = [changeCopy userInterfaceIdiom];
 
-      if (v8 == v9)
+      if (userInterfaceIdiom == userInterfaceIdiom2)
       {
         goto LABEL_12;
       }
@@ -442,11 +442,11 @@ LABEL_8:
 
   else if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent])
   {
-    v10 = [v4 horizontalSizeClass];
-    v11 = [(MUQuickLookContentEditorViewController *)self traitCollection];
-    v12 = [v11 horizontalSizeClass];
+    horizontalSizeClass2 = [changeCopy horizontalSizeClass];
+    traitCollection3 = [(MUQuickLookContentEditorViewController *)self traitCollection];
+    horizontalSizeClass3 = [traitCollection3 horizontalSizeClass];
 
-    if (v10 != v12 && -[MarkupViewController thumbnailViewStyle](self, "thumbnailViewStyle") == 1 && ![v4 horizontalSizeClass])
+    if (horizontalSizeClass2 != horizontalSizeClass3 && -[MarkupViewController thumbnailViewStyle](self, "thumbnailViewStyle") == 1 && ![changeCopy horizontalSizeClass])
     {
       [(MUQuickLookContentEditorViewController *)self updateThumbnailView];
     }
@@ -455,10 +455,10 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
   if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent]&& [(MarkupViewController *)self thumbnailViewStyle]== 1)
   {
     v9[0] = MEMORY[0x277D85DD0];
@@ -466,47 +466,47 @@ LABEL_12:
     v9[2] = __100__MUQuickLookContentEditorViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
     v9[3] = &unk_27986E2F0;
     v9[4] = self;
-    v10 = v6;
-    [v7 animateAlongsideTransition:v9 completion:0];
+    v10 = collectionCopy;
+    [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   }
 
   v8.receiver = self;
   v8.super_class = MUQuickLookContentEditorViewController;
-  [(MUQuickLookContentEditorViewController *)&v8 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
+  [(MUQuickLookContentEditorViewController *)&v8 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
 }
 
-- (void)PDFView:(id)a3 allowsFormFillingMode:(BOOL)a4 forPage:(id)a5
+- (void)PDFView:(id)view allowsFormFillingMode:(BOOL)mode forPage:(id)page
 {
-  v5 = a4;
-  if ([(MUQuickLookContentEditorViewController *)self delegateRespondsToDetectedFormInContent:a3]&& v5 && ![(MUQuickLookContentEditorViewController *)self formDetectedInDocument])
+  modeCopy = mode;
+  if ([(MUQuickLookContentEditorViewController *)self delegateRespondsToDetectedFormInContent:view]&& modeCopy && ![(MUQuickLookContentEditorViewController *)self formDetectedInDocument])
   {
     [(MUQuickLookContentEditorViewController *)self setFormDetectedInDocument:1];
-    v7 = [(MarkupViewController *)self delegate];
-    [v7 editor:self detectedFormInContent:1];
+    delegate = [(MarkupViewController *)self delegate];
+    [delegate editor:self detectedFormInContent:1];
   }
 }
 
-- (void)annotationController:(id)a3 detectedEditOfType:(unint64_t)a4
+- (void)annotationController:(id)controller detectedEditOfType:(unint64_t)type
 {
-  v5 = a4 == 0;
-  v12 = [(MarkupViewController *)self undoManager];
-  v6 = [(MUQuickLookContentEditorViewController *)self actionsNotEnablingMarkup];
-  v7 = [v12 undoActionName];
-  v8 = [v6 containsObject:v7];
+  v5 = type == 0;
+  undoManager = [(MarkupViewController *)self undoManager];
+  actionsNotEnablingMarkup = [(MUQuickLookContentEditorViewController *)self actionsNotEnablingMarkup];
+  undoActionName = [undoManager undoActionName];
+  v8 = [actionsNotEnablingMarkup containsObject:undoActionName];
 
-  v9 = [(MUQuickLookContentEditorViewController *)self actionsNotEnablingMarkup];
-  v10 = [v12 redoActionName];
-  v11 = [v9 containsObject:v10];
+  actionsNotEnablingMarkup2 = [(MUQuickLookContentEditorViewController *)self actionsNotEnablingMarkup];
+  redoActionName = [undoManager redoActionName];
+  v11 = [actionsNotEnablingMarkup2 containsObject:redoActionName];
 
   [(MUQuickLookContentEditorViewController *)self _detectedEditEnablingMarkup:v5 & ((v8 | v11) ^ 1u)];
 }
 
-- (void)contentControllerDidUnlockDocument:(id)a3
+- (void)contentControllerDidUnlockDocument:(id)document
 {
-  v4 = [(MarkupViewController *)self delegate];
-  if (v4)
+  delegate = [(MarkupViewController *)self delegate];
+  if (delegate)
   {
-    v5 = v4;
+    v5 = delegate;
     if (objc_opt_respondsToSelector())
     {
       [v5 editorDidUnlockDocument:self];
@@ -516,21 +516,21 @@ LABEL_12:
   MEMORY[0x2821F9730]();
 }
 
-- (void)setAnnotationEditingEnabled:(BOOL)a3
+- (void)setAnnotationEditingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v6.receiver = self;
   v6.super_class = MUQuickLookContentEditorViewController;
   [(MarkupViewController *)&v6 setAnnotationEditingEnabled:?];
   if ([(MUQuickLookContentEditorViewController *)self _hasImageContent])
   {
-    if (v3)
+    if (enabledCopy)
     {
       [(MUQuickLookContentEditorViewController *)self flattenImageForAnalysis];
     }
 
-    v5 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-    [v5 enableMarkupMode:v3];
+    imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+    [imageAnalysisManager enableMarkupMode:enabledCopy];
   }
 }
 
@@ -552,27 +552,27 @@ LABEL_12:
 
 - (BOOL)documentIsLocked
 {
-  v3 = [(MUQuickLookContentEditorViewController *)self _hasPDFContent];
-  if (v3)
+  _hasPDFContent = [(MUQuickLookContentEditorViewController *)self _hasPDFContent];
+  if (_hasPDFContent)
   {
-    v4 = [(MarkupViewController *)self _pdfDocument];
-    v5 = [v4 isLocked];
+    _pdfDocument = [(MarkupViewController *)self _pdfDocument];
+    isLocked = [_pdfDocument isLocked];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_hasPDFContent) = isLocked;
   }
 
-  return v3;
+  return _hasPDFContent;
 }
 
 - (BOOL)canEncryptDocument
 {
   if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent])
   {
-    v3 = [(MarkupViewController *)self _pdfDocument];
-    v4 = v3;
-    if (v3)
+    _pdfDocument = [(MarkupViewController *)self _pdfDocument];
+    v4 = _pdfDocument;
+    if (_pdfDocument)
     {
-      v5 = [v3 isEncrypted] ^ 1;
+      v5 = [_pdfDocument isEncrypted] ^ 1;
     }
 
     else
@@ -589,37 +589,37 @@ LABEL_12:
   return v5;
 }
 
-- (void)setPresentationMode:(unint64_t)a3
+- (void)setPresentationMode:(unint64_t)mode
 {
-  if (![(MUQuickLookContentEditorViewController *)self didAppearOnce]&& !a3 && self->_presentationMode == 1)
+  if (![(MUQuickLookContentEditorViewController *)self didAppearOnce]&& !mode && self->_presentationMode == 1)
   {
     [(MUQuickLookContentEditorViewController *)self setDidAppearOnce:1];
   }
 
-  self->_presentationMode = a3;
+  self->_presentationMode = mode;
   if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent])
   {
 
-    [(MUQuickLookContentEditorViewController *)self _setPresentationModeForPDFContent:a3];
+    [(MUQuickLookContentEditorViewController *)self _setPresentationModeForPDFContent:mode];
   }
 
   else if ([(MUQuickLookContentEditorViewController *)self _hasImageContent])
   {
 
-    [(MUQuickLookContentEditorViewController *)self _setPresentationModeForImageContent:a3];
+    [(MUQuickLookContentEditorViewController *)self _setPresentationModeForImageContent:mode];
   }
 }
 
 - (void)flattenImageForAnalysis
 {
   objc_initWeak(&location, self);
-  v3 = [(MUQuickLookContentEditorViewController *)self _editedImageAnalysisQueue];
+  _editedImageAnalysisQueue = [(MUQuickLookContentEditorViewController *)self _editedImageAnalysisQueue];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __65__MUQuickLookContentEditorViewController_flattenImageForAnalysis__block_invoke;
   v4[3] = &unk_27986E318;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(_editedImageAnalysisQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -631,21 +631,21 @@ void __65__MUQuickLookContentEditorViewController_flattenImageForAnalysis__block
   [WeakRetained _flattenImageForAnalysis];
 }
 
-- (void)updateForFullScreen:(BOOL)a3 animated:(BOOL)a4
+- (void)updateForFullScreen:(BOOL)screen animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  screenCopy = screen;
   if ([(MUQuickLookContentEditorViewController *)self _hasImageContent])
   {
-    v7 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-    [v7 updateForFullScreen:v5 animated:v4];
+    imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+    [imageAnalysisManager updateForFullScreen:screenCopy animated:animatedCopy];
 
     [(MUQuickLookContentEditorViewController *)self _updateAnalysisButtonsContainerConstraints];
   }
 
   else if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent])
   {
-    if (v4)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
@@ -663,14 +663,14 @@ void __65__MUQuickLookContentEditorViewController_flattenImageForAnalysis__block
   }
 }
 
-- (void)shouldHideMarkupOverlays:(BOOL)a3 animated:(BOOL)a4
+- (void)shouldHideMarkupOverlays:(BOOL)overlays animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  overlaysCopy = overlays;
   if ([(MUQuickLookContentEditorViewController *)self _hasImageContent])
   {
-    v7 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-    [v7 shouldHideInteraction:v5 animated:v4];
+    imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+    [imageAnalysisManager shouldHideInteraction:overlaysCopy animated:animatedCopy];
   }
 }
 
@@ -678,30 +678,30 @@ void __65__MUQuickLookContentEditorViewController_flattenImageForAnalysis__block
 {
   if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent])
   {
-    v3 = [(MarkupViewController *)self _pdfView];
-    v4 = [v3 findInteraction];
+    _pdfView = [(MarkupViewController *)self _pdfView];
+    findInteraction = [_pdfView findInteraction];
   }
 
   else
   {
-    v4 = 0;
+    findInteraction = 0;
   }
 
-  return v4;
+  return findInteraction;
 }
 
-- (BOOL)acceptSingleTouch:(id)a3
+- (BOOL)acceptSingleTouch:(id)touch
 {
-  v4 = a3;
+  touchCopy = touch;
   if ([(MUQuickLookContentEditorViewController *)self _hasImageContent])
   {
-    v5 = [(MUQuickLookContentEditorViewController *)self _imageAnalysisOverlayAcceptSingleTouch:v4];
+    v5 = [(MUQuickLookContentEditorViewController *)self _imageAnalysisOverlayAcceptSingleTouch:touchCopy];
   }
 
   else
   {
-    v6 = [(MarkupViewController *)self contentViewController];
-    v5 = [v6 acceptSingleTouch:v4];
+    contentViewController = [(MarkupViewController *)self contentViewController];
+    v5 = [contentViewController acceptSingleTouch:touchCopy];
   }
 
   return v5;
@@ -709,42 +709,42 @@ void __65__MUQuickLookContentEditorViewController_flattenImageForAnalysis__block
 
 - (void)updateThumbnailView
 {
-  v3 = [(MUQuickLookContentEditorViewController *)self traitCollection];
-  [(MUQuickLookContentEditorViewController *)self _updateThumbnailViewWithTraitCollection:v3];
+  traitCollection = [(MUQuickLookContentEditorViewController *)self traitCollection];
+  [(MUQuickLookContentEditorViewController *)self _updateThumbnailViewWithTraitCollection:traitCollection];
 }
 
 - (BOOL)isInteractionActive
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v3 = [v2 isInteractionActive];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  isInteractionActive = [imageAnalysisManager isInteractionActive];
 
-  return v3;
+  return isInteractionActive;
 }
 
 - (BOOL)hasResultsForVisualSearch
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v3 = [v2 hasResultsForVisualSearch];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  hasResultsForVisualSearch = [imageAnalysisManager hasResultsForVisualSearch];
 
-  return v3;
+  return hasResultsForVisualSearch;
 }
 
 - (void)infoButtonTapped
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  [v2 infoButtonTapped];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  [imageAnalysisManager infoButtonTapped];
 }
 
 - (BOOL)canEditPDF
 {
-  v3 = [(MUQuickLookContentEditorViewController *)self _hasPDFContent];
-  if (v3)
+  _hasPDFContent = [(MUQuickLookContentEditorViewController *)self _hasPDFContent];
+  if (_hasPDFContent)
   {
 
-    LOBYTE(v3) = [(MUQuickLookContentEditorViewController *)self canEditContent];
+    LOBYTE(_hasPDFContent) = [(MUQuickLookContentEditorViewController *)self canEditContent];
   }
 
-  return v3;
+  return _hasPDFContent;
 }
 
 - (BOOL)canEditContent
@@ -754,26 +754,26 @@ void __65__MUQuickLookContentEditorViewController_flattenImageForAnalysis__block
     return 0;
   }
 
-  v3 = [(MarkupViewController *)self contentViewController];
-  if ([v3 canEditContent])
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  if ([contentViewController canEditContent])
   {
-    v4 = [(MUQuickLookContentEditorViewController *)self allowsEditing];
+    allowsEditing = [(MUQuickLookContentEditorViewController *)self allowsEditing];
   }
 
   else
   {
-    v4 = 0;
+    allowsEditing = 0;
   }
 
-  return v4;
+  return allowsEditing;
 }
 
 - (BOOL)allowsEditing
 {
-  v3 = [(MarkupViewController *)self delegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(MarkupViewController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 editorShouldAllowEditingContents:self];
+    v4 = [delegate editorShouldAllowEditingContents:self];
   }
 
   else
@@ -784,9 +784,9 @@ void __65__MUQuickLookContentEditorViewController_flattenImageForAnalysis__block
   return v4;
 }
 
-- (id)getMenuElementsForPage:(id)a3
+- (id)getMenuElementsForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   if ([(MUQuickLookContentEditorViewController *)self canEditPDF])
   {
     objc_initWeak(location, self);
@@ -800,7 +800,7 @@ void __65__MUQuickLookContentEditorViewController_flattenImageForAnalysis__block
     v62[2] = __65__MUQuickLookContentEditorViewController_getMenuElementsForPage___block_invoke;
     v62[3] = &unk_27986E340;
     objc_copyWeak(&v64, location);
-    v10 = v4;
+    v10 = pageCopy;
     v63 = v10;
     v11 = [v6 actionWithTitle:v8 image:v9 identifier:@"rotate_left" handler:v62];
 
@@ -870,10 +870,10 @@ void __65__MUQuickLookContentEditorViewController_flattenImageForAnalysis__block
       v31 = v24;
     }
 
-    v37 = [(MarkupViewController *)self _pdfDocument];
-    v38 = [v37 pageCount];
+    _pdfDocument = [(MarkupViewController *)self _pdfDocument];
+    pageCount = [_pdfDocument pageCount];
 
-    if (v38 >= 2)
+    if (pageCount >= 2)
     {
       v39 = MEMORY[0x277D750C8];
       v40 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -946,22 +946,22 @@ void __65__MUQuickLookContentEditorViewController_getMenuElementsForPage___block
   [WeakRetained _deletePage:*(a1 + 32)];
 }
 
-- (void)convertToPDFAndWrite:(id)a3 completionHandler:(id)a4
+- (void)convertToPDFAndWrite:(id)write completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  writeCopy = write;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(MUQuickLookContentEditorViewController *)self sharedSerialPagesEditionQueue];
+  sharedSerialPagesEditionQueue = [(MUQuickLookContentEditorViewController *)self sharedSerialPagesEditionQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__MUQuickLookContentEditorViewController_convertToPDFAndWrite_completionHandler___block_invoke;
   v11[3] = &unk_27986E368;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = writeCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = writeCopy;
+  dispatch_async(sharedSerialPagesEditionQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -973,34 +973,34 @@ void __81__MUQuickLookContentEditorViewController_convertToPDFAndWrite_completio
   [WeakRetained _convertToPDFAndWrite:*(a1 + 32) completionHandler:*(a1 + 40)];
 }
 
-- (void)documentCameraViewControllerDidCancel:(id)a3
+- (void)documentCameraViewControllerDidCancel:(id)cancel
 {
-  v6 = a3;
-  v4 = [(MUQuickLookContentEditorViewController *)self scanPDFHandler];
-  if (v4)
+  cancelCopy = cancel;
+  scanPDFHandler = [(MUQuickLookContentEditorViewController *)self scanPDFHandler];
+  if (scanPDFHandler)
   {
     v5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.MarkupUI.MUQuickLookContentEditorViewController" code:3 userInfo:0];
-    (v4)[2](v4, 0, v5);
+    (scanPDFHandler)[2](scanPDFHandler, 0, v5);
     [(MUQuickLookContentEditorViewController *)self setScanPDFHandler:0];
   }
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [cancelCopy dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)documentCameraViewController:(id)a3 didFinishWithScan:(id)a4
+- (void)documentCameraViewController:(id)controller didFinishWithScan:(id)scan
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  scanCopy = scan;
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __89__MUQuickLookContentEditorViewController_documentCameraViewController_didFinishWithScan___block_invoke;
   v9[3] = &unk_27986E3E0;
   objc_copyWeak(&v12, &location);
-  v8 = v6;
+  v8 = controllerCopy;
   v10 = v8;
-  v11 = self;
-  [(MUQuickLookContentEditorViewController *)self convertToPDFAndWrite:v7 completionHandler:v9];
+  selfCopy = self;
+  [(MUQuickLookContentEditorViewController *)self convertToPDFAndWrite:scanCopy completionHandler:v9];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -1061,20 +1061,20 @@ void __89__MUQuickLookContentEditorViewController_documentCameraViewController_d
   }
 }
 
-- (void)documentCameraViewController:(id)a3 didFailWithError:(id)a4
+- (void)documentCameraViewController:(id)controller didFailWithError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  NSLog(&cfstr_InsertingPdfPa.isa, self, v6);
-  v7 = [(MUQuickLookContentEditorViewController *)self scanPDFHandler];
-  v8 = v7;
-  if (v7)
+  controllerCopy = controller;
+  errorCopy = error;
+  NSLog(&cfstr_InsertingPdfPa.isa, self, errorCopy);
+  scanPDFHandler = [(MUQuickLookContentEditorViewController *)self scanPDFHandler];
+  v8 = scanPDFHandler;
+  if (scanPDFHandler)
   {
-    (*(v7 + 16))(v7, 0, v6);
+    (*(scanPDFHandler + 16))(scanPDFHandler, 0, errorCopy);
     [(MUQuickLookContentEditorViewController *)self setScanPDFHandler:0];
   }
 
-  [v9 dismissViewControllerAnimated:1 completion:0];
+  [controllerCopy dismissViewControllerAnimated:1 completion:0];
 }
 
 - (id)sharedSerialPagesEditionQueue
@@ -1099,10 +1099,10 @@ void __71__MUQuickLookContentEditorViewController_sharedSerialPagesEditionQueue_
   sharedSerialPagesEditionQueue__sharedSerialPagesEditionQueue = v1;
 }
 
-- (id)pdfPageOptionsForImageRef:(CGImage *)a3 withPreviousPage:(id)a4
+- (id)pdfPageOptionsForImageRef:(CGImage *)ref withPreviousPage:(id)page
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  [a4 boundsForBox:0];
+  [page boundsForBox:0];
   v5 = v4;
   CGImageGetSizeAfterOrientation();
   v8 = [MEMORY[0x277CCAE60] valueWithCGRect:{0.0, 0.0, v5, v5 * v6 / v7}];
@@ -1116,26 +1116,26 @@ void __71__MUQuickLookContentEditorViewController_sharedSerialPagesEditionQueue_
   return v10;
 }
 
-- (void)insertPages:(id)a3 atIndexes:(id)a4 inDocument:(id)a5
+- (void)insertPages:(id)pages atIndexes:(id)indexes inDocument:(id)document
 {
-  v25 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v25 count];
-  if (v10 == [v8 count])
+  pagesCopy = pages;
+  indexesCopy = indexes;
+  documentCopy = document;
+  v10 = [pagesCopy count];
+  if (v10 == [indexesCopy count])
   {
-    v11 = [v8 count];
-    v12 = v25;
+    v11 = [indexesCopy count];
+    v12 = pagesCopy;
     if (v11)
     {
       for (i = 0; i < v16; ++i)
       {
         v14 = [v12 objectAtIndexedSubscript:i];
-        v15 = [v8 objectAtIndexedSubscript:i];
-        [v9 insertPage:v14 atIndex:{objc_msgSend(v15, "unsignedIntegerValue")}];
+        v15 = [indexesCopy objectAtIndexedSubscript:i];
+        [documentCopy insertPage:v14 atIndex:{objc_msgSend(v15, "unsignedIntegerValue")}];
 
-        v16 = [v8 count];
-        v12 = v25;
+        v16 = [indexesCopy count];
+        v12 = pagesCopy;
       }
     }
 
@@ -1155,12 +1155,12 @@ void __71__MUQuickLookContentEditorViewController_sharedSerialPagesEditionQueue_
     v21 = [v18 localizedStringForKey:v20 value:&stru_286962590 table:@"MUQuickLookContentEditorViewController"];
 
     [(MUQuickLookContentEditorViewController *)self _registerActionNotEnablingMarkup:v21];
-    v22 = [(MarkupViewController *)self undoManager];
-    v23 = [v22 prepareWithInvocationTarget:self];
-    [v23 _deletePages:v25 inDocument:v9];
+    undoManager = [(MarkupViewController *)self undoManager];
+    v23 = [undoManager prepareWithInvocationTarget:self];
+    [v23 _deletePages:pagesCopy inDocument:documentCopy];
 
-    v24 = [(MarkupViewController *)self undoManager];
-    [v24 setActionName:v21];
+    undoManager2 = [(MarkupViewController *)self undoManager];
+    [undoManager2 setActionName:v21];
   }
 
   else
@@ -1169,27 +1169,27 @@ void __71__MUQuickLookContentEditorViewController_sharedSerialPagesEditionQueue_
   }
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
-  v8 = a4;
-  v5 = [v8 description];
+  lsCopy = ls;
+  v5 = [lsCopy description];
   NSLog(&cfstr_Importing.isa, v5);
 
-  v6 = [(MUQuickLookContentEditorViewController *)self importHandler];
-  v7 = v6;
-  if (v6)
+  importHandler = [(MUQuickLookContentEditorViewController *)self importHandler];
+  v7 = importHandler;
+  if (importHandler)
   {
-    (*(v6 + 16))(v6, v8, 0);
+    (*(importHandler + 16))(importHandler, lsCopy, 0);
     [(MUQuickLookContentEditorViewController *)self setImportHandler:0];
   }
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  NSLog(&cfstr_DocumentPickin.isa, a2, a3);
-  v4 = [(MUQuickLookContentEditorViewController *)self importHandler];
-  if (v4)
+  NSLog(&cfstr_DocumentPickin.isa, a2, cancelled);
+  importHandler = [(MUQuickLookContentEditorViewController *)self importHandler];
+  if (importHandler)
   {
     v5 = MEMORY[0x277CCA9B8];
     v8 = *MEMORY[0x277CCA068];
@@ -1197,72 +1197,72 @@ void __71__MUQuickLookContentEditorViewController_sharedSerialPagesEditionQueue_
     v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
     v7 = [v5 errorWithDomain:@"com.apple.MarkupUI.MUQuickLookContentEditorViewController" code:2 userInfo:v6];
 
-    (v4)[2](v4, 0, v7);
+    (importHandler)[2](importHandler, 0, v7);
     [(MUQuickLookContentEditorViewController *)self setImportHandler:0];
   }
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
-  v7 = a3;
-  v4 = [(MarkupViewController *)self contentViewController];
-  v5 = [v4 canPerformAction:sel_find_ withSender:v7];
+  findCopy = find;
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  v5 = [contentViewController canPerformAction:sel_find_ withSender:findCopy];
 
   if (v5)
   {
-    v6 = [(MarkupViewController *)self contentViewController];
-    [v6 find:v7];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    [contentViewController2 find:findCopy];
   }
 }
 
-- (void)findPrevious:(id)a3
+- (void)findPrevious:(id)previous
 {
-  v7 = a3;
-  v4 = [(MarkupViewController *)self contentViewController];
-  v5 = [v4 canPerformAction:sel_findPrevious_ withSender:v7];
+  previousCopy = previous;
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  v5 = [contentViewController canPerformAction:sel_findPrevious_ withSender:previousCopy];
 
   if (v5)
   {
-    v6 = [(MarkupViewController *)self contentViewController];
-    [v6 findPrevious:v7];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    [contentViewController2 findPrevious:previousCopy];
   }
 }
 
-- (void)findNext:(id)a3
+- (void)findNext:(id)next
 {
-  v7 = a3;
-  v4 = [(MarkupViewController *)self contentViewController];
-  v5 = [v4 canPerformAction:sel_findNext_ withSender:v7];
+  nextCopy = next;
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  v5 = [contentViewController canPerformAction:sel_findNext_ withSender:nextCopy];
 
   if (v5)
   {
-    v6 = [(MarkupViewController *)self contentViewController];
-    [v6 findNext:v7];
+    contentViewController2 = [(MarkupViewController *)self contentViewController];
+    [contentViewController2 findNext:nextCopy];
   }
 }
 
 - (BOOL)isVisualSearchEnabled
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v3 = [v2 isVisualSearchEnabled];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  isVisualSearchEnabled = [imageAnalysisManager isVisualSearchEnabled];
 
-  return v3;
+  return isVisualSearchEnabled;
 }
 
 - (NSString)filledInfoButtonGlyphName
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v3 = [v2 filledInfoButtonGlyphName];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  filledInfoButtonGlyphName = [imageAnalysisManager filledInfoButtonGlyphName];
 
-  return v3;
+  return filledInfoButtonGlyphName;
 }
 
 - (NSString)infoButtonGlyphName
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v3 = [v2 infoButtonGlyphName];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  infoButtonGlyphName = [imageAnalysisManager infoButtonGlyphName];
 
-  return v3;
+  return infoButtonGlyphName;
 }
 
 - (void)setupAndStartImageAnalysisIfNeeded
@@ -1276,106 +1276,106 @@ void __71__MUQuickLookContentEditorViewController_sharedSerialPagesEditionQueue_
 
 - (void)stopImageAnalysis
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  [v2 stopImageAnalysis];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  [imageAnalysisManager stopImageAnalysis];
 }
 
 - (BOOL)shouldHighlightTextAndDDAfterNextAnalysis
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v3 = [v2 shouldHighlightTextAndDDAfterNextAnalysis];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  shouldHighlightTextAndDDAfterNextAnalysis = [imageAnalysisManager shouldHighlightTextAndDDAfterNextAnalysis];
 
-  return v3;
+  return shouldHighlightTextAndDDAfterNextAnalysis;
 }
 
-- (void)setShouldHighlightTextAndDDAfterNextAnalysis:(BOOL)a3
+- (void)setShouldHighlightTextAndDDAfterNextAnalysis:(BOOL)analysis
 {
-  v3 = a3;
-  v4 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  [v4 setShouldHighlightTextAndDDAfterNextAnalysis:v3];
+  analysisCopy = analysis;
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  [imageAnalysisManager setShouldHighlightTextAndDDAfterNextAnalysis:analysisCopy];
 }
 
 - (BOOL)shouldEnterVisualSearchAfterNextAnalysis
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v3 = [v2 shouldEnterVisualSearchAfterNextAnalysis];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  shouldEnterVisualSearchAfterNextAnalysis = [imageAnalysisManager shouldEnterVisualSearchAfterNextAnalysis];
 
-  return v3;
+  return shouldEnterVisualSearchAfterNextAnalysis;
 }
 
-- (void)setShouldEnterVisualSearchAfterNextAnalysis:(BOOL)a3
+- (void)setShouldEnterVisualSearchAfterNextAnalysis:(BOOL)analysis
 {
-  v3 = a3;
-  v4 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  [v4 setShouldEnterVisualSearchAfterNextAnalysis:v3];
+  analysisCopy = analysis;
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  [imageAnalysisManager setShouldEnterVisualSearchAfterNextAnalysis:analysisCopy];
 }
 
 - (BOOL)shouldUpliftSubjectAfterNextAnalysis
 {
-  v2 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v3 = [v2 shouldUpliftSubjectAfterNextAnalysis];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  shouldUpliftSubjectAfterNextAnalysis = [imageAnalysisManager shouldUpliftSubjectAfterNextAnalysis];
 
-  return v3;
+  return shouldUpliftSubjectAfterNextAnalysis;
 }
 
-- (void)setShouldUpliftSubjectAfterNextAnalysis:(BOOL)a3
+- (void)setShouldUpliftSubjectAfterNextAnalysis:(BOOL)analysis
 {
-  v3 = a3;
-  v4 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  [v4 setShouldUpliftSubjectAfterNextAnalysis:v3];
+  analysisCopy = analysis;
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  [imageAnalysisManager setShouldUpliftSubjectAfterNextAnalysis:analysisCopy];
 }
 
 - (UIImage)imageForAnalysis
 {
   if ([(MUQuickLookContentEditorViewController *)self _hasImageContent])
   {
-    v3 = [(MUQuickLookContentEditorViewController *)self latestImageForAnalysis];
-    v4 = v3;
-    if (v3)
+    latestImageForAnalysis = [(MUQuickLookContentEditorViewController *)self latestImageForAnalysis];
+    v4 = latestImageForAnalysis;
+    if (latestImageForAnalysis)
     {
-      v5 = v3;
+      imageForAnalysis = latestImageForAnalysis;
     }
 
     else
     {
-      v6 = [(MarkupViewController *)self contentViewController];
-      v5 = [v6 imageForAnalysis];
+      contentViewController = [(MarkupViewController *)self contentViewController];
+      imageForAnalysis = [contentViewController imageForAnalysis];
     }
   }
 
   else
   {
-    v5 = 0;
+    imageForAnalysis = 0;
   }
 
-  return v5;
+  return imageForAnalysis;
 }
 
 - (NSDictionary)clientPreviewOptions
 {
-  v2 = [(MarkupViewController *)self delegate];
-  v3 = [v2 clientPreviewOptions];
+  delegate = [(MarkupViewController *)self delegate];
+  clientPreviewOptions = [delegate clientPreviewOptions];
 
-  return v3;
+  return clientPreviewOptions;
 }
 
-- (void)imageAnalyzerWantsUpdateInfoButtonWithAnimation:(BOOL)a3
+- (void)imageAnalyzerWantsUpdateInfoButtonWithAnimation:(BOOL)animation
 {
-  v3 = a3;
-  v5 = [(MarkupViewController *)self delegate];
-  [v5 editor:self needsToUpdateChromeWithAnimation:v3];
+  animationCopy = animation;
+  delegate = [(MarkupViewController *)self delegate];
+  [delegate editor:self needsToUpdateChromeWithAnimation:animationCopy];
 }
 
 - (void)imageAnalysisInteractionWillPresentVisualSearchController
 {
-  v3 = [(MarkupViewController *)self delegate];
-  [v3 editor:self willPresentViewControllerWithAnimation:0];
+  delegate = [(MarkupViewController *)self delegate];
+  [delegate editor:self willPresentViewControllerWithAnimation:0];
 }
 
 - (void)imageAnalysisInteractionDidDismissVisualSearchController
 {
-  v3 = [(MarkupViewController *)self delegate];
-  [v3 editor:self didDismissViewControllerWithAnimation:0];
+  delegate = [(MarkupViewController *)self delegate];
+  [delegate editor:self didDismissViewControllerWithAnimation:0];
 }
 
 - (id)_editedImageAnalysisQueue
@@ -1400,22 +1400,22 @@ void __67__MUQuickLookContentEditorViewController__editedImageAnalysisQueue__blo
   _editedImageAnalysisQueue_queue = v1;
 }
 
-- (void)_adjustImageInteractionForScrollEvent:(id)a3
+- (void)_adjustImageInteractionForScrollEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  [v5 adjustImageInteractionForScrollView:v4];
+  eventCopy = event;
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  [imageAnalysisManager adjustImageInteractionForScrollView:eventCopy];
 
   [(MUQuickLookContentEditorViewController *)self _updateAnalysisButtonsContainerConstraints];
 }
 
 - (void)_setupAndStartImageAnalysisIfNeeded
 {
-  v3 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v10 = v3;
-  if (v3)
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  v10 = imageAnalysisManager;
+  if (imageAnalysisManager)
   {
-    if ([v3 hasAnalysis])
+    if ([imageAnalysisManager hasAnalysis])
     {
       [v10 addInteractionIfNeeded];
       [v10 setupAnalysisButtonsContainer];
@@ -1434,15 +1434,15 @@ LABEL_5:
   }
 
   v5 = [MUImageAnalysisManager alloc];
-  v6 = [(MUQuickLookContentEditorViewController *)self view];
-  v7 = [(MUImageAnalysisManager *)v5 initWithDelegate:self presentingView:v6];
+  view = [(MUQuickLookContentEditorViewController *)self view];
+  v7 = [(MUImageAnalysisManager *)v5 initWithDelegate:self presentingView:view];
 
   [(MUQuickLookContentEditorViewController *)self setImageAnalysisManager:v7];
-  v8 = [(MarkupViewController *)self contentViewController];
-  v9 = v8;
-  if (v8)
+  contentViewController = [(MarkupViewController *)self contentViewController];
+  v9 = contentViewController;
+  if (contentViewController)
   {
-    [v8 setScrollViewDelegate:self];
+    [contentViewController setScrollViewDelegate:self];
   }
 
   [(MUQuickLookContentEditorViewController *)self _updateAnalysisButtonsContainerConstraints];
@@ -1451,53 +1451,53 @@ LABEL_5:
 LABEL_10:
 }
 
-- (BOOL)_imageAnalysisOverlayAcceptSingleTouch:(id)a3
+- (BOOL)_imageAnalysisOverlayAcceptSingleTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v6 = [(MUQuickLookContentEditorViewController *)self imageAnalysisView];
+  touchCopy = touch;
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  imageAnalysisView = [(MUQuickLookContentEditorViewController *)self imageAnalysisView];
   LOBYTE(v7) = 0;
-  if (v6 && v5)
+  if (imageAnalysisView && imageAnalysisManager)
   {
-    [v4 locationInView:v6];
+    [touchCopy locationInView:imageAnalysisView];
     v9 = v8;
     v11 = v10;
-    if ([v4 _isPointerTouch] && objc_msgSend(v5, "isTextSelectionEnabled") && (objc_msgSend(v5, "textExistsAtPoint:", v9, v11) & 1) != 0 || (objc_msgSend(v5, "dataDetectorExistsAtPoint:", v9, v11) & 1) != 0)
+    if ([touchCopy _isPointerTouch] && objc_msgSend(imageAnalysisManager, "isTextSelectionEnabled") && (objc_msgSend(imageAnalysisManager, "textExistsAtPoint:", v9, v11) & 1) != 0 || (objc_msgSend(imageAnalysisManager, "dataDetectorExistsAtPoint:", v9, v11) & 1) != 0)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = [v5 visualSearchExistsAtPoint:{v9, v11}];
+      v12 = [imageAnalysisManager visualSearchExistsAtPoint:{v9, v11}];
     }
 
-    v7 = v12 | [v5 hasActiveTextSelection];
+    v7 = v12 | [imageAnalysisManager hasActiveTextSelection];
   }
 
   return v7;
 }
 
-- (unint64_t)_insertPagesFromProvidedPDFDocument:(id)a3 toPDFDocument:(id)a4 atPageIndex:(unint64_t)a5
+- (unint64_t)_insertPagesFromProvidedPDFDocument:(id)document toPDFDocument:(id)fDocument atPageIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  v26 = self;
-  v27 = [(MarkupViewController *)self _pdfView];
-  v10 = [v27 displayBox];
-  v11 = [v8 pageCount];
-  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:v11];
-  if (v11)
+  documentCopy = document;
+  fDocumentCopy = fDocument;
+  selfCopy = self;
+  _pdfView = [(MarkupViewController *)self _pdfView];
+  displayBox = [_pdfView displayBox];
+  pageCount = [documentCopy pageCount];
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:pageCount];
+  if (pageCount)
   {
-    for (i = 0; i != v11; ++i)
+    for (i = 0; i != pageCount; ++i)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = [v8 pageAtIndex:i];
+      v15 = [documentCopy pageAtIndex:i];
       v16 = [v15 copy];
 
       [v16 boundsForBox:1];
-      [v16 setBounds:v10 forBox:?];
-      [v9 insertPage:v16 atIndex:a5 + i];
+      [v16 setBounds:displayBox forBox:?];
+      [fDocumentCopy insertPage:v16 atIndex:index + i];
       [v12 addObject:v16];
 
       objc_autoreleasePoolPop(v14);
@@ -1506,30 +1506,30 @@ LABEL_10:
 
   v17 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v18 = [v17 localizedStringForKey:@"Insert from File" value:&stru_286962590 table:@"MUQuickLookContentEditorViewController"];
-  [(MUQuickLookContentEditorViewController *)v26 _registerActionNotEnablingMarkup:v18];
+  [(MUQuickLookContentEditorViewController *)selfCopy _registerActionNotEnablingMarkup:v18];
 
-  v19 = [(MarkupViewController *)v26 undoManager];
-  v20 = [v19 prepareWithInvocationTarget:v26];
-  [v20 _deletePages:v12 inDocument:v9];
+  undoManager = [(MarkupViewController *)selfCopy undoManager];
+  v20 = [undoManager prepareWithInvocationTarget:selfCopy];
+  [v20 _deletePages:v12 inDocument:fDocumentCopy];
 
-  v21 = [(MarkupViewController *)v26 undoManager];
+  undoManager2 = [(MarkupViewController *)selfCopy undoManager];
   v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v23 = [v22 localizedStringForKey:@"Insert from File" value:&stru_286962590 table:@"MUQuickLookContentEditorViewController"];
-  [v21 setActionName:v23];
+  [undoManager2 setActionName:v23];
 
   v24 = [v12 count];
   return v24;
 }
 
-- (void)_insertPagesFromFileURLs:(id)a3 afterPage:(id)a4
+- (void)_insertPagesFromFileURLs:(id)ls afterPage:(id)page
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 document];
+  lsCopy = ls;
+  pageCopy = page;
+  document = [pageCopy document];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
-  v18 = [v8 indexForPage:v7];
+  v18 = [document indexForPage:pageCopy];
   if (v16[3] == 0x7FFFFFFFFFFFFFFFLL)
   {
     NSLog(&cfstr_CouldNotFindIn.isa);
@@ -1537,16 +1537,16 @@ LABEL_10:
 
   else
   {
-    v9 = [(MUQuickLookContentEditorViewController *)self sharedSerialPagesEditionQueue];
+    sharedSerialPagesEditionQueue = [(MUQuickLookContentEditorViewController *)self sharedSerialPagesEditionQueue];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __77__MUQuickLookContentEditorViewController__insertPagesFromFileURLs_afterPage___block_invoke;
     v10[3] = &unk_27986E450;
-    v11 = v6;
-    v13 = self;
+    v11 = lsCopy;
+    selfCopy = self;
     v14 = &v15;
-    v12 = v8;
-    dispatch_async(v9, v10);
+    v12 = document;
+    dispatch_async(sharedSerialPagesEditionQueue, v10);
   }
 
   _Block_object_dispose(&v15, 8);
@@ -1615,19 +1615,19 @@ void __77__MUQuickLookContentEditorViewController__insertPagesFromFileURLs_after
   }
 }
 
-- (void)_insertFileAtURL:(id)a3 type:(id)a4 afterPage:(id)a5 completionHandler:(id)a6
+- (void)_insertFileAtURL:(id)l type:(id)type afterPage:(id)page completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  typeCopy = type;
+  pageCopy = page;
+  handlerCopy = handler;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = [(MUQuickLookContentEditorViewController *)self supportedUTTypes];
-  v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  supportedUTTypes = [(MUQuickLookContentEditorViewController *)self supportedUTTypes];
+  v15 = [supportedUTTypes countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1638,35 +1638,35 @@ void __77__MUQuickLookContentEditorViewController__insertPagesFromFileURLs_after
       {
         if (*v23 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(supportedUTTypes);
         }
 
         v19 = *(*(&v22 + 1) + 8 * i);
-        if ([v11 conformsToType:v19])
+        if ([typeCopy conformsToType:v19])
         {
-          v21 = [v11 description];
+          v21 = [typeCopy description];
           NSLog(&cfstr_InsertingEleme.isa, v21);
 
           if (v19 == *MEMORY[0x277CE1E08])
           {
-            [(MUQuickLookContentEditorViewController *)self _insertPDFDocumentWithURL:v10 afterPage:v12 completionHandler:v13];
+            [(MUQuickLookContentEditorViewController *)self _insertPDFDocumentWithURL:lCopy afterPage:pageCopy completionHandler:handlerCopy];
           }
 
           else if (v19 == *MEMORY[0x277CE1DB0])
           {
-            [(MUQuickLookContentEditorViewController *)self _insertImageWithURL:v10 afterPage:v12 completionHandler:v13];
+            [(MUQuickLookContentEditorViewController *)self _insertImageWithURL:lCopy afterPage:pageCopy completionHandler:handlerCopy];
           }
 
           else
           {
-            v13[2](v13, 0);
+            handlerCopy[2](handlerCopy, 0);
           }
 
           goto LABEL_16;
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v16 = [supportedUTTypes countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v16)
       {
         continue;
@@ -1676,20 +1676,20 @@ void __77__MUQuickLookContentEditorViewController__insertPagesFromFileURLs_after
     }
   }
 
-  v20 = [v11 description];
+  v20 = [typeCopy description];
   NSLog(&cfstr_CouldNotInsert.isa, v20);
 
-  v13[2](v13, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_16:
 }
 
-- (void)_insertPDFDocumentWithURL:(id)a3 afterPage:(id)a4 completionHandler:(id)a5
+- (void)_insertPDFDocumentWithURL:(id)l afterPage:(id)page completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  pageCopy = page;
+  handlerCopy = handler;
   v10 = MEMORY[0x277CD93D0];
-  v11 = a3;
-  v12 = [[v10 alloc] initWithURL:v11];
+  lCopy = l;
+  v12 = [[v10 alloc] initWithURL:lCopy];
 
   if (v12)
   {
@@ -1697,16 +1697,16 @@ LABEL_16:
     v13[1] = 3221225472;
     v13[2] = __96__MUQuickLookContentEditorViewController__insertPDFDocumentWithURL_afterPage_completionHandler___block_invoke;
     v13[3] = &unk_27986E478;
-    v14 = v8;
-    v17 = v9;
-    v15 = self;
+    v14 = pageCopy;
+    v17 = handlerCopy;
+    selfCopy = self;
     v16 = v12;
     dispatch_sync(MEMORY[0x277D85CD0], v13);
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -1727,15 +1727,15 @@ void __96__MUQuickLookContentEditorViewController__insertPDFDocumentWithURL_afte
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_insertImageWithURL:(id)a3 afterPage:(id)a4 completionHandler:(id)a5
+- (void)_insertImageWithURL:(id)l afterPage:(id)page completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 document];
-  v12 = [v11 indexForPage:v10];
+  lCopy = l;
+  handlerCopy = handler;
+  pageCopy = page;
+  document = [pageCopy document];
+  v12 = [document indexForPage:pageCopy];
 
-  v13 = CGImageSourceCreateWithURL(v8, 0);
+  v13 = CGImageSourceCreateWithURL(lCopy, 0);
   if (v13)
   {
     v14 = v13;
@@ -1744,7 +1744,7 @@ void __96__MUQuickLookContentEditorViewController__insertPDFDocumentWithURL_afte
     if (ImageAtIndex)
     {
       v16 = v12 + 1;
-      if ([v11 pageCount] && v16 <= objc_msgSend(v11, "pageCount"))
+      if ([document pageCount] && v16 <= objc_msgSend(document, "pageCount"))
       {
         if (v12 == -1)
         {
@@ -1756,7 +1756,7 @@ void __96__MUQuickLookContentEditorViewController__insertPDFDocumentWithURL_afte
           v18 = v12;
         }
 
-        v19 = [v11 pageAtIndex:v18];
+        v19 = [document pageAtIndex:v18];
         v17 = [(MUQuickLookContentEditorViewController *)self pdfPageOptionsForImageRef:ImageAtIndex withPreviousPage:v19];
       }
 
@@ -1779,22 +1779,22 @@ void __96__MUQuickLookContentEditorViewController__insertPDFDocumentWithURL_afte
         block[4] = self;
         v24 = v22;
         v27 = v16;
-        v25 = v11;
-        v26 = v9;
+        v25 = document;
+        v26 = handlerCopy;
         dispatch_sync(MEMORY[0x277D85CD0], block);
       }
 
       else
       {
-        NSLog(&cfstr_PdfDocumentCou.isa, v8);
-        (*(v9 + 2))(v9, 0);
+        NSLog(&cfstr_PdfDocumentCou.isa, lCopy);
+        (*(handlerCopy + 2))(handlerCopy, 0);
       }
     }
 
     else
     {
       NSLog(&cfstr_ImageToInsertC.isa);
-      (*(v9 + 2))(v9, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -1818,17 +1818,17 @@ uint64_t __90__MUQuickLookContentEditorViewController__insertImageWithURL_afterP
   return (*(a1[7] + 16))();
 }
 
-- (void)_convertToPDFAndWrite:(id)a3 completionHandler:(id)a4
+- (void)_convertToPDFAndWrite:(id)write completionHandler:(id)handler
 {
   v42[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  writeCopy = write;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x277CD93D0]);
   v9 = objc_autoreleasePoolPush();
-  if ([v6 pageCount])
+  if ([writeCopy pageCount])
   {
     v37 = v9;
-    v38 = v7;
+    v38 = handlerCopy;
     v10 = 0;
     v11 = 0;
     v12 = 0;
@@ -1836,10 +1836,10 @@ uint64_t __90__MUQuickLookContentEditorViewController__insertImageWithURL_afterP
     {
       v13 = v11;
       v14 = v10;
-      v11 = [v6 imageOfPageAtIndex:v12];
+      v11 = [writeCopy imageOfPageAtIndex:v12];
 
-      v15 = [(MUQuickLookContentEditorViewController *)self scanImageToPDFConversionHandler];
-      v10 = (v15)[2](v15, v11);
+      scanImageToPDFConversionHandler = [(MUQuickLookContentEditorViewController *)self scanImageToPDFConversionHandler];
+      v10 = (scanImageToPDFConversionHandler)[2](scanImageToPDFConversionHandler, v11);
 
       if (v10)
       {
@@ -1848,51 +1848,51 @@ uint64_t __90__MUQuickLookContentEditorViewController__insertImageWithURL_afterP
 
       else
       {
-        v16 = [v6 pageCount];
+        pageCount = [writeCopy pageCount];
         v17 = [v11 debugDescription];
-        NSLog(&cfstr_FailedToCreate.isa, v12, v16, v17);
+        NSLog(&cfstr_FailedToCreate.isa, v12, pageCount, v17);
       }
 
       ++v12;
     }
 
-    while (v12 < [v6 pageCount]);
+    while (v12 < [writeCopy pageCount]);
 
     v9 = v37;
-    v7 = v38;
+    handlerCopy = v38;
   }
 
   objc_autoreleasePoolPop(v9);
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v19 = [v18 temporaryDirectory];
-  v20 = [MEMORY[0x277CCAD78] UUID];
-  v21 = [v20 UUIDString];
-  v22 = [v19 URLByAppendingPathComponent:v21];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  temporaryDirectory = [defaultManager temporaryDirectory];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v22 = [temporaryDirectory URLByAppendingPathComponent:uUIDString];
 
-  v23 = [v22 path];
-  LOBYTE(v21) = [v18 fileExistsAtPath:v23];
+  path = [v22 path];
+  LOBYTE(uUIDString) = [defaultManager fileExistsAtPath:path];
 
-  if (v21)
+  if (uUIDString)
   {
-    v24 = [v22 path];
+    path2 = [v22 path];
     v40 = 0;
-    [v18 removeItemAtPath:v24 error:&v40];
+    [defaultManager removeItemAtPath:path2 error:&v40];
     v25 = v40;
 
     if (v25)
     {
-      v26 = [v22 path];
-      NSLog(&cfstr_FailedToRemove.isa, v26, v25);
+      path3 = [v22 path];
+      NSLog(&cfstr_FailedToRemove.isa, path3, v25);
 
 LABEL_13:
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_18;
     }
   }
 
-  v27 = [v22 path];
+  path4 = [v22 path];
   v39 = 0;
-  [v18 createDirectoryAtPath:v27 withIntermediateDirectories:1 attributes:0 error:&v39];
+  [defaultManager createDirectoryAtPath:path4 withIntermediateDirectories:1 attributes:0 error:&v39];
   v25 = v39;
 
   if (v25)
@@ -1902,12 +1902,12 @@ LABEL_13:
   }
 
   v28 = MEMORY[0x277CCACA8];
-  v29 = [MEMORY[0x277CCA8D8] mainBundle];
-  [v29 localizedStringForKey:@"Scanned Document" value:&stru_286962590 table:0];
-  v31 = v30 = v7;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  [mainBundle localizedStringForKey:@"Scanned Document" value:&stru_286962590 table:0];
+  v31 = v30 = handlerCopy;
   v32 = [v28 stringWithFormat:@"%@.pdf", v31];
 
-  v7 = v30;
+  handlerCopy = v30;
   v33 = v32;
   v34 = [v22 URLByAppendingPathComponent:v32];
   v41 = *MEMORY[0x277CBF5D0];
@@ -1923,31 +1923,31 @@ LABEL_13:
     v36 = 0;
   }
 
-  (v7)[2](v7, v36);
+  (handlerCopy)[2](handlerCopy, v36);
 
 LABEL_18:
 }
 
-- (void)_detectedEditEnablingMarkup:(BOOL)a3
+- (void)_detectedEditEnablingMarkup:(BOOL)markup
 {
-  v3 = a3;
-  v5 = [(MarkupViewController *)self formFillingEnabled];
-  v6 = [(MarkupViewController *)self delegate];
-  if (v6)
+  markupCopy = markup;
+  formFillingEnabled = [(MarkupViewController *)self formFillingEnabled];
+  delegate = [(MarkupViewController *)self delegate];
+  if (delegate)
   {
-    v7 = v6;
+    v7 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      [v7 editorDidChangeContent:self enablingMarkup:v3 && !v5];
+      [v7 editorDidChangeContent:self enablingMarkup:markupCopy && !formFillingEnabled];
     }
   }
 
   MEMORY[0x2821F9730]();
 }
 
-- (void)_loadSourceContentWithCompletion:(id)a3
+- (void)_loadSourceContentWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(MUQuickLookContentEditorViewController *)self setFormDetectedInDocument:0];
   [(MUQuickLookContentEditorViewController *)self _resetOriginalDelegate];
   v7[0] = MEMORY[0x277D85DD0];
@@ -1955,10 +1955,10 @@ LABEL_18:
   v7[2] = __75__MUQuickLookContentEditorViewController__loadSourceContentWithCompletion___block_invoke;
   v7[3] = &unk_27986E4C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v6.receiver = self;
   v6.super_class = MUQuickLookContentEditorViewController;
-  v5 = v4;
+  v5 = completionCopy;
   [(MarkupViewController *)&v6 _loadSourceContentWithCompletion:v7];
 }
 
@@ -1982,13 +1982,13 @@ uint64_t __75__MUQuickLookContentEditorViewController__loadSourceContentWithComp
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6.receiver = self;
   v6.super_class = MUQuickLookContentEditorViewController;
-  [(MarkupViewController *)&v6 setDelegate:v4];
-  if (v4)
+  [(MarkupViewController *)&v6 setDelegate:delegateCopy];
+  if (delegateCopy)
   {
     v5 = objc_opt_respondsToSelector();
   }
@@ -2015,13 +2015,13 @@ uint64_t __75__MUQuickLookContentEditorViewController__loadSourceContentWithComp
       [(PDFViewDelegatePrivate *)self->_pdfViewDelegateProxy setFirstDelegate:self];
     }
 
-    v5 = [(MarkupViewController *)self _pdfView];
-    v6 = [v5 delegate];
-    [(PDFViewDelegatePrivate *)self->_pdfViewDelegateProxy setSecondDelegate:v6];
+    _pdfView = [(MarkupViewController *)self _pdfView];
+    delegate = [_pdfView delegate];
+    [(PDFViewDelegatePrivate *)self->_pdfViewDelegateProxy setSecondDelegate:delegate];
 
     v7 = self->_pdfViewDelegateProxy;
-    v8 = [(MarkupViewController *)self _pdfView];
-    [v8 setDelegate:v7];
+    _pdfView2 = [(MarkupViewController *)self _pdfView];
+    [_pdfView2 setDelegate:v7];
   }
 
   else
@@ -2036,42 +2036,42 @@ uint64_t __75__MUQuickLookContentEditorViewController__loadSourceContentWithComp
   pdfViewDelegateProxy = self->_pdfViewDelegateProxy;
   if (pdfViewDelegateProxy)
   {
-    v5 = [(PDFViewDelegatePrivate *)pdfViewDelegateProxy secondDelegate];
-    v4 = [(MarkupViewController *)self _pdfView];
-    [v4 setDelegate:v5];
+    secondDelegate = [(PDFViewDelegatePrivate *)pdfViewDelegateProxy secondDelegate];
+    _pdfView = [(MarkupViewController *)self _pdfView];
+    [_pdfView setDelegate:secondDelegate];
   }
 }
 
 - (void)_updateAnalysisButtonsContainerConstraints
 {
-  v3 = [(MarkupViewController *)self imageViewCombinedContentView];
-  v4 = [v3 subviews];
-  v7 = [v4 firstObject];
+  imageViewCombinedContentView = [(MarkupViewController *)self imageViewCombinedContentView];
+  subviews = [imageViewCombinedContentView subviews];
+  firstObject = [subviews firstObject];
 
-  v5 = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
-  v6 = [(MUQuickLookContentEditorViewController *)self view];
-  [v5 updateBottomRightContainerPositionForImageView:v7 view:v6];
+  imageAnalysisManager = [(MUQuickLookContentEditorViewController *)self imageAnalysisManager];
+  view = [(MUQuickLookContentEditorViewController *)self view];
+  [imageAnalysisManager updateBottomRightContainerPositionForImageView:firstObject view:view];
 }
 
-- (void)_updateThumbnailViewWithTraitCollection:(id)a3
+- (void)_updateThumbnailViewWithTraitCollection:(id)collection
 {
-  v11 = a3;
+  collectionCopy = collection;
   if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent]&& [(MarkupViewController *)self thumbnailViewStyle]== 1)
   {
-    v4 = [(MUQuickLookContentEditorViewController *)self _shouldShowMarkupOverlays];
-    v5 = [(MarkupViewController *)self fixedThumbnailView];
-    v6 = v4 && [v11 horizontalSizeClass] == 2;
+    _shouldShowMarkupOverlays = [(MUQuickLookContentEditorViewController *)self _shouldShowMarkupOverlays];
+    fixedThumbnailView = [(MarkupViewController *)self fixedThumbnailView];
+    v6 = _shouldShowMarkupOverlays && [collectionCopy horizontalSizeClass] == 2;
     [(MarkupViewController *)self setFixedThumbnailView:v6];
-    if (v5 && ![(MarkupViewController *)self fixedThumbnailView])
+    if (fixedThumbnailView && ![(MarkupViewController *)self fixedThumbnailView])
     {
-      v7 = [(MarkupViewController *)self contentViewController];
-      [v7 setShouldShowThumbnailView:0];
+      contentViewController = [(MarkupViewController *)self contentViewController];
+      [contentViewController setShouldShowThumbnailView:0];
     }
 
-    if (v4)
+    if (_shouldShowMarkupOverlays)
     {
-      v8 = [(MarkupViewController *)self contentViewController];
-      v9 = ([v8 shouldShowThumbnailView] & 1) != 0 || -[MarkupViewController fixedThumbnailView](self, "fixedThumbnailView");
+      contentViewController2 = [(MarkupViewController *)self contentViewController];
+      v9 = ([contentViewController2 shouldShowThumbnailView] & 1) != 0 || -[MarkupViewController fixedThumbnailView](self, "fixedThumbnailView");
     }
 
     else
@@ -2080,10 +2080,10 @@ uint64_t __75__MUQuickLookContentEditorViewController__loadSourceContentWithComp
     }
 
     [(MarkupViewController *)self setShowThumbnailViewForMultipage:v9];
-    v10 = [(MarkupViewController *)self delegate];
-    if (v10 && (objc_opt_respondsToSelector() & 1) == 0)
+    delegate = [(MarkupViewController *)self delegate];
+    if (delegate && (objc_opt_respondsToSelector() & 1) == 0)
     {
-      [v10 editor:self needsScreenEdgePanGestureRecognition:{-[MarkupViewController showThumbnailViewForMultipage](self, "showThumbnailViewForMultipage")}];
+      [delegate editor:self needsScreenEdgePanGestureRecognition:{-[MarkupViewController showThumbnailViewForMultipage](self, "showThumbnailViewForMultipage")}];
     }
   }
 }
@@ -2120,11 +2120,11 @@ void __66__MUQuickLookContentEditorViewController__flattenImageForAnalysis__bloc
   [v1 startImageAnalysis];
 }
 
-- (void)_setPresentationModeForImageContent:(unint64_t)a3
+- (void)_setPresentationModeForImageContent:(unint64_t)content
 {
   if ([(MUQuickLookContentEditorViewController *)self _hasImageContent]&& _os_feature_enabled_impl())
   {
-    if (+[MUImageAnalysisManager shouldStartImageAnalysisForPresentationMode:](MUImageAnalysisManager, "shouldStartImageAnalysisForPresentationMode:", a3) && (-[MUQuickLookContentEditorViewController didAppearOnce](self, "didAppearOnce") || (-[MUQuickLookContentEditorViewController imageAnalysisManager](self, "imageAnalysisManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 hasAnalysis], v5, v6)))
+    if (+[MUImageAnalysisManager shouldStartImageAnalysisForPresentationMode:](MUImageAnalysisManager, "shouldStartImageAnalysisForPresentationMode:", content) && (-[MUQuickLookContentEditorViewController didAppearOnce](self, "didAppearOnce") || (-[MUQuickLookContentEditorViewController imageAnalysisManager](self, "imageAnalysisManager"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 hasAnalysis], v5, v6)))
     {
 
       [(MUQuickLookContentEditorViewController *)self _setupAndStartImageAnalysisIfNeeded];
@@ -2138,64 +2138,64 @@ void __66__MUQuickLookContentEditorViewController__flattenImageForAnalysis__bloc
   }
 }
 
-- (void)_setPresentationModeForPDFContent:(unint64_t)a3
+- (void)_setPresentationModeForPDFContent:(unint64_t)content
 {
   if ([(MUQuickLookContentEditorViewController *)self _hasPDFContent])
   {
-    v10 = [(MarkupViewController *)self _pdfView];
-    v5 = [v10 layer];
-    [v5 setAllowsGroupOpacity:0];
+    _pdfView = [(MarkupViewController *)self _pdfView];
+    layer = [_pdfView layer];
+    [layer setAllowsGroupOpacity:0];
 
-    if (a3 == 1)
+    if (content == 1)
     {
-      [v10 setFindInteractionEnabled:0];
-      [v10 usePageViewController:1 withViewOptions:0];
-      [v10 setDisplayDirection:0];
-      v9 = [MEMORY[0x277D75348] clearColor];
-      [v10 setBackgroundColor:v9];
+      [_pdfView setFindInteractionEnabled:0];
+      [_pdfView usePageViewController:1 withViewOptions:0];
+      [_pdfView setDisplayDirection:0];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [_pdfView setBackgroundColor:clearColor];
     }
 
-    else if (!a3)
+    else if (!content)
     {
-      v6 = [v10 documentScrollView];
-      [v6 setKeyboardDismissMode:1];
+      documentScrollView = [_pdfView documentScrollView];
+      [documentScrollView setKeyboardDismissMode:1];
 
       [(MarkupViewController *)self setForcesPDFViewTopAlignment:1];
-      v7 = [(MarkupViewController *)self contentViewScrollView];
-      [v7 setContentInsetAdjustmentBehavior:2];
+      contentViewScrollView = [(MarkupViewController *)self contentViewScrollView];
+      [contentViewScrollView setContentInsetAdjustmentBehavior:2];
 
-      v8 = [(MarkupViewController *)self contentViewScrollView];
-      [v8 _setIndicatorInsetAdjustmentBehavior:1];
+      contentViewScrollView2 = [(MarkupViewController *)self contentViewScrollView];
+      [contentViewScrollView2 _setIndicatorInsetAdjustmentBehavior:1];
 
-      [v10 setFindInteractionEnabled:1];
+      [_pdfView setFindInteractionEnabled:1];
     }
 
     [(MarkupViewController *)self setAllowsThumbnailViewPageReordering:[(MUQuickLookContentEditorViewController *)self canEditPDF]];
   }
 }
 
-- (void)_registerActionNotEnablingMarkup:(id)a3
+- (void)_registerActionNotEnablingMarkup:(id)markup
 {
-  v4 = a3;
-  v5 = [(MUQuickLookContentEditorViewController *)self actionsNotEnablingMarkup];
+  markupCopy = markup;
+  actionsNotEnablingMarkup = [(MUQuickLookContentEditorViewController *)self actionsNotEnablingMarkup];
 
-  if (!v5)
+  if (!actionsNotEnablingMarkup)
   {
     v6 = objc_opt_new();
     [(MUQuickLookContentEditorViewController *)self setActionsNotEnablingMarkup:v6];
   }
 
-  v7 = [(MUQuickLookContentEditorViewController *)self actionsNotEnablingMarkup];
-  [v7 addObject:v4];
+  actionsNotEnablingMarkup2 = [(MUQuickLookContentEditorViewController *)self actionsNotEnablingMarkup];
+  [actionsNotEnablingMarkup2 addObject:markupCopy];
 }
 
-- (void)_rotatePage:(id)a3 clockwise:(BOOL)a4
+- (void)_rotatePage:(id)page clockwise:(BOOL)clockwise
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [v15 rotation];
+  clockwiseCopy = clockwise;
+  pageCopy = page;
+  rotation = [pageCopy rotation];
   v7 = 90;
-  if (v4)
+  if (clockwiseCopy)
   {
     v8 = @"Rotate Left";
   }
@@ -2206,29 +2206,29 @@ void __66__MUQuickLookContentEditorViewController__flattenImageForAnalysis__bloc
     v8 = @"Rotate Right";
   }
 
-  [v15 setRotation:v6 + v7];
+  [pageCopy setRotation:rotation + v7];
   v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:v8 value:&stru_286962590 table:@"MUQuickLookContentEditorViewController"];
 
   [(MUQuickLookContentEditorViewController *)self _registerActionNotEnablingMarkup:v10];
-  v11 = [(MarkupViewController *)self undoManager];
-  v12 = [v11 prepareWithInvocationTarget:self];
-  [v12 _rotatePage:v15 clockwise:!v4];
+  undoManager = [(MarkupViewController *)self undoManager];
+  v12 = [undoManager prepareWithInvocationTarget:self];
+  [v12 _rotatePage:pageCopy clockwise:!clockwiseCopy];
 
-  v13 = [(MarkupViewController *)self undoManager];
-  [v13 setActionName:v10];
+  undoManager2 = [(MarkupViewController *)self undoManager];
+  [undoManager2 setActionName:v10];
 
-  v14 = [(MarkupViewController *)self _pdfView];
-  [v14 setAutoScales:{objc_msgSend(v14, "autoScales")}];
+  _pdfView = [(MarkupViewController *)self _pdfView];
+  [_pdfView setAutoScales:{objc_msgSend(_pdfView, "autoScales")}];
 }
 
-- (void)_insertBlankPageAfterPage:(id)a3
+- (void)_insertBlankPageAfterPage:(id)page
 {
-  v4 = a3;
-  v5 = [v4 document];
-  v6 = [v5 indexForPage:v4];
+  pageCopy = page;
+  document = [pageCopy document];
+  v6 = [document indexForPage:pageCopy];
   v7 = objc_alloc_init(MEMORY[0x277CD93E0]);
-  [v4 boundsForBox:1];
+  [pageCopy boundsForBox:1];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -2258,20 +2258,20 @@ void __68__MUQuickLookContentEditorViewController__insertBlankPageAfterPage___bl
   [v2 goToPage:*(a1 + 32)];
 }
 
-- (void)_insertPageFromFileAfterPage:(id)a3
+- (void)_insertPageFromFileAfterPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   [(MUQuickLookContentEditorViewController *)self setAnnotationEditingEnabled:0];
-  v5 = [(MarkupViewController *)self delegate];
-  [v5 editor:self willPresentViewControllerWithAnimation:1];
+  delegate = [(MarkupViewController *)self delegate];
+  [delegate editor:self willPresentViewControllerWithAnimation:1];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__MUQuickLookContentEditorViewController__insertPageFromFileAfterPage___block_invoke;
   v7[3] = &unk_27986E518;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pageCopy;
+  v6 = pageCopy;
   [(MUQuickLookContentEditorViewController *)self _presentDocumentPicker:v7];
 }
 
@@ -2316,90 +2316,90 @@ void __71__MUQuickLookContentEditorViewController__insertPageFromFileAfterPage__
 LABEL_10:
 }
 
-- (void)_insertPage:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertPage:(id)page atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(MarkupViewController *)self _pdfDocument];
-  [v7 insertPage:v6 atIndex:a4];
+  pageCopy = page;
+  _pdfDocument = [(MarkupViewController *)self _pdfDocument];
+  [_pdfDocument insertPage:pageCopy atIndex:index];
 }
 
-- (void)_insertBlankPage:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertBlankPage:(id)page atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [(MUQuickLookContentEditorViewController *)self _insertPage:v6 atIndex:a4];
+  pageCopy = page;
+  [(MUQuickLookContentEditorViewController *)self _insertPage:pageCopy atIndex:index];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"Insert Blank Page" value:&stru_286962590 table:@"MUQuickLookContentEditorViewController"];
   [(MUQuickLookContentEditorViewController *)self _registerActionNotEnablingMarkup:v8];
 
-  v9 = [(MarkupViewController *)self undoManager];
-  v10 = [v9 prepareWithInvocationTarget:self];
-  [v10 _deletePage:v6];
+  undoManager = [(MarkupViewController *)self undoManager];
+  v10 = [undoManager prepareWithInvocationTarget:self];
+  [v10 _deletePage:pageCopy];
 
-  v13 = [(MarkupViewController *)self undoManager];
+  undoManager2 = [(MarkupViewController *)self undoManager];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"Insert Blank Page" value:&stru_286962590 table:@"MUQuickLookContentEditorViewController"];
-  [v13 setActionName:v12];
+  [undoManager2 setActionName:v12];
 }
 
-- (void)_insertDeletedPage:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertDeletedPage:(id)page atIndex:(unint64_t)index
 {
-  v6 = a3;
-  [(MUQuickLookContentEditorViewController *)self _insertPage:v6 atIndex:a4];
+  pageCopy = page;
+  [(MUQuickLookContentEditorViewController *)self _insertPage:pageCopy atIndex:index];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v8 = [v7 localizedStringForKey:@"Insert Deleted Page" value:&stru_286962590 table:@"MUQuickLookContentEditorViewController"];
   [(MUQuickLookContentEditorViewController *)self _registerActionNotEnablingMarkup:v8];
 
-  v9 = [(MarkupViewController *)self undoManager];
-  v10 = [v9 prepareWithInvocationTarget:self];
-  [v10 _deletePage:v6];
+  undoManager = [(MarkupViewController *)self undoManager];
+  v10 = [undoManager prepareWithInvocationTarget:self];
+  [v10 _deletePage:pageCopy];
 
-  v13 = [(MarkupViewController *)self undoManager];
+  undoManager2 = [(MarkupViewController *)self undoManager];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"Insert Deleted Page" value:&stru_286962590 table:@"MUQuickLookContentEditorViewController"];
-  [v13 setActionName:v12];
+  [undoManager2 setActionName:v12];
 }
 
-- (void)_deletePage:(id)a3
+- (void)_deletePage:(id)page
 {
   v9 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  pageCopy = page;
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
-  v6 = [v4 arrayWithObjects:&v8 count:1];
+  pageCopy2 = page;
+  v6 = [v4 arrayWithObjects:&pageCopy count:1];
 
-  v7 = [(MarkupViewController *)self _pdfDocument:v8];
+  v7 = [(MarkupViewController *)self _pdfDocument:pageCopy];
   [(MUQuickLookContentEditorViewController *)self _deletePages:v6 inDocument:v7];
 }
 
-- (void)_deletePages:(id)a3 inDocument:(id)a4
+- (void)_deletePages:(id)pages inDocument:(id)document
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MarkupViewController *)self _pdfView];
-  v9 = [v8 currentPage];
-  v10 = [v7 indexForPage:v9];
+  pagesCopy = pages;
+  documentCopy = document;
+  _pdfView = [(MarkupViewController *)self _pdfView];
+  currentPage = [_pdfView currentPage];
+  v10 = [documentCopy indexForPage:currentPage];
 
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
-  v12 = [v6 reverseObjectEnumerator];
-  v13 = [v12 allObjects];
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(pagesCopy, "count")}];
+  reverseObjectEnumerator = [pagesCopy reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __66__MUQuickLookContentEditorViewController__deletePages_inDocument___block_invoke;
   v29[3] = &unk_27986E540;
-  v14 = v7;
+  v14 = documentCopy;
   v30 = v14;
   v15 = v11;
   v31 = v15;
-  v28 = v13;
-  [v13 enumerateObjectsUsingBlock:v29];
+  v28 = allObjects;
+  [allObjects enumerateObjectsUsingBlock:v29];
   if (v14 && [v14 pageCount] && v10 >= objc_msgSend(v14, "pageCount"))
   {
     v16 = [v14 pageAtIndex:{objc_msgSend(v14, "pageCount") - 1}];
-    [v8 goToPage:v16];
+    [_pdfView goToPage:v16];
   }
 
-  v17 = [v6 count];
+  v17 = [pagesCopy count];
   v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v19 = v18;
   if (v17 >= 2)
@@ -2415,15 +2415,15 @@ LABEL_10:
   v21 = [v18 localizedStringForKey:v20 value:&stru_286962590 table:@"MUQuickLookContentEditorViewController"];
 
   [(MUQuickLookContentEditorViewController *)self _registerActionNotEnablingMarkup:v21];
-  v22 = [(MarkupViewController *)self undoManager];
-  v23 = [v22 prepareWithInvocationTarget:self];
-  v24 = [v15 reverseObjectEnumerator];
-  [v24 allObjects];
-  v26 = v25 = v8;
-  [v23 insertPages:v6 atIndexes:v26 inDocument:v14];
+  undoManager = [(MarkupViewController *)self undoManager];
+  v23 = [undoManager prepareWithInvocationTarget:self];
+  reverseObjectEnumerator2 = [v15 reverseObjectEnumerator];
+  [reverseObjectEnumerator2 allObjects];
+  v26 = v25 = _pdfView;
+  [v23 insertPages:pagesCopy atIndexes:v26 inDocument:v14];
 
-  v27 = [(MarkupViewController *)self undoManager];
-  [v27 setActionName:v21];
+  undoManager2 = [(MarkupViewController *)self undoManager];
+  [undoManager2 setActionName:v21];
 }
 
 void __66__MUQuickLookContentEditorViewController__deletePages_inDocument___block_invoke(uint64_t a1, uint64_t a2)
@@ -2458,16 +2458,16 @@ void __58__MUQuickLookContentEditorViewController_supportedUTTypes__block_invoke
   supportedUTTypes_supportedTypes = v1;
 }
 
-- (void)_presentDocumentPicker:(id)a3
+- (void)_presentDocumentPicker:(id)picker
 {
-  v4 = a3;
+  pickerCopy = picker;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __65__MUQuickLookContentEditorViewController__presentDocumentPicker___block_invoke;
   v6[3] = &unk_27986E4C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = pickerCopy;
+  v5 = pickerCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -2489,12 +2489,12 @@ void __65__MUQuickLookContentEditorViewController__presentDocumentPicker___block
   [*(a1 + 32) presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)_presentDocumentScannerAfterPage:(id)a3
+- (void)_presentDocumentScannerAfterPage:(id)page
 {
-  v4 = a3;
-  v5 = [(MUQuickLookContentEditorViewController *)self scanPDFHandler];
+  pageCopy = page;
+  scanPDFHandler = [(MUQuickLookContentEditorViewController *)self scanPDFHandler];
 
-  if (v5)
+  if (scanPDFHandler)
   {
     NSLog(&cfstr_TryingToScanNe.isa, self);
   }
@@ -2507,7 +2507,7 @@ void __65__MUQuickLookContentEditorViewController__presentDocumentPicker___block
     v12[2] = __75__MUQuickLookContentEditorViewController__presentDocumentScannerAfterPage___block_invoke;
     v12[3] = &unk_27986E568;
     objc_copyWeak(&v14, &location);
-    v6 = v4;
+    v6 = pageCopy;
     v13 = v6;
     [(MUQuickLookContentEditorViewController *)self setScanPDFHandler:v12];
     v9[0] = MEMORY[0x277D85DD0];
@@ -2644,7 +2644,7 @@ void __75__MUQuickLookContentEditorViewController__presentDocumentScannerAfterPa
 
 - (BOOL)_hasPDFContent
 {
-  v2 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2653,7 +2653,7 @@ void __75__MUQuickLookContentEditorViewController__presentDocumentScannerAfterPa
 
 - (BOOL)_hasImageContent
 {
-  v2 = [(MarkupViewController *)self contentViewController];
+  contentViewController = [(MarkupViewController *)self contentViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

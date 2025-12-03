@@ -1,14 +1,14 @@
 @interface EXPSiriSchemaEXPSiriServerEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (EXPSiriSchemaEXPServerCounterfactualTriggered)counterfactualTriggeredNonTier1;
 - (EXPSiriSchemaEXPServerCounterfactualTriggeredTier1)counterfactualTriggered;
 - (EXPSiriSchemaEXPServerExperimentTriggeredTier1)experimentTriggered;
-- (EXPSiriSchemaEXPSiriServerEvent)initWithDictionary:(id)a3;
-- (EXPSiriSchemaEXPSiriServerEvent)initWithJSON:(id)a3;
+- (EXPSiriSchemaEXPSiriServerEvent)initWithDictionary:(id)dictionary;
+- (EXPSiriSchemaEXPSiriServerEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
@@ -16,23 +16,23 @@
 - (void)deleteCounterfactualTriggered;
 - (void)deleteCounterfactualTriggeredNonTier1;
 - (void)deleteExperimentTriggered;
-- (void)setCounterfactualTriggered:(id)a3;
-- (void)setCounterfactualTriggeredNonTier1:(id)a3;
-- (void)setExperimentTriggered:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCounterfactualTriggered:(id)triggered;
+- (void)setCounterfactualTriggeredNonTier1:(id)tier1;
+- (void)setExperimentTriggered:(id)triggered;
+- (void)writeTo:(id)to;
 @end
 
 @implementation EXPSiriSchemaEXPSiriServerEvent
 
-- (EXPSiriSchemaEXPSiriServerEvent)initWithDictionary:(id)a3
+- (EXPSiriSchemaEXPSiriServerEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = EXPSiriSchemaEXPSiriServerEvent;
   v5 = [(EXPSiriSchemaEXPSiriServerEvent *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"experimentTriggered"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"experimentTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,7 +40,7 @@
       [(EXPSiriSchemaEXPSiriServerEvent *)v5 setExperimentTriggered:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"counterfactualTriggered"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"counterfactualTriggered"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,7 +48,7 @@
       [(EXPSiriSchemaEXPSiriServerEvent *)v5 setCounterfactualTriggered:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"counterfactualTriggeredNonTier1"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"counterfactualTriggeredNonTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,30 +62,30 @@
   return v5;
 }
 
-- (EXPSiriSchemaEXPSiriServerEvent)initWithJSON:(id)a3
+- (EXPSiriSchemaEXPSiriServerEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(EXPSiriSchemaEXPSiriServerEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(EXPSiriSchemaEXPSiriServerEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(EXPSiriSchemaEXPSiriServerEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -98,58 +98,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_counterfactualTriggered)
   {
-    v4 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    counterfactualTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
+    dictionaryRepresentation = [counterfactualTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"counterfactualTriggered"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"counterfactualTriggered"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"counterfactualTriggered"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"counterfactualTriggered"];
     }
   }
 
   if (self->_counterfactualTriggeredNonTier1)
   {
-    v7 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    counterfactualTriggeredNonTier1 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
+    dictionaryRepresentation2 = [counterfactualTriggeredNonTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"counterfactualTriggeredNonTier1"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"counterfactualTriggeredNonTier1"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"counterfactualTriggeredNonTier1"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"counterfactualTriggeredNonTier1"];
     }
   }
 
   if (self->_experimentTriggered)
   {
-    v10 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    experimentTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
+    dictionaryRepresentation3 = [experimentTriggered dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"experimentTriggered"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"experimentTriggered"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"experimentTriggered"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"experimentTriggered"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -159,34 +159,34 @@
   return v4 ^ [(EXPSiriSchemaEXPServerCounterfactualTriggered *)self->_counterfactualTriggeredNonTier1 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
-  v7 = [v4 experimentTriggered];
-  if ((v6 != 0) == (v7 == 0))
+  experimentTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
+  experimentTriggered2 = [equalCopy experimentTriggered];
+  if ((experimentTriggered != 0) == (experimentTriggered2 == 0))
   {
     goto LABEL_17;
   }
 
-  v8 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
-  if (v8)
+  experimentTriggered3 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
+  if (experimentTriggered3)
   {
-    v9 = v8;
-    v10 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
-    v11 = [v4 experimentTriggered];
-    v12 = [v10 isEqual:v11];
+    v9 = experimentTriggered3;
+    experimentTriggered4 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
+    experimentTriggered5 = [equalCopy experimentTriggered];
+    v12 = [experimentTriggered4 isEqual:experimentTriggered5];
 
     if (!v12)
     {
@@ -198,20 +198,20 @@
   {
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
-  v7 = [v4 counterfactualTriggered];
-  if ((v6 != 0) == (v7 == 0))
+  experimentTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
+  experimentTriggered2 = [equalCopy counterfactualTriggered];
+  if ((experimentTriggered != 0) == (experimentTriggered2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
-  if (v13)
+  counterfactualTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
+  if (counterfactualTriggered)
   {
-    v14 = v13;
-    v15 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
-    v16 = [v4 counterfactualTriggered];
-    v17 = [v15 isEqual:v16];
+    v14 = counterfactualTriggered;
+    counterfactualTriggered2 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
+    counterfactualTriggered3 = [equalCopy counterfactualTriggered];
+    v17 = [counterfactualTriggered2 isEqual:counterfactualTriggered3];
 
     if (!v17)
     {
@@ -223,12 +223,12 @@
   {
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
-  v7 = [v4 counterfactualTriggeredNonTier1];
-  if ((v6 != 0) != (v7 == 0))
+  experimentTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
+  experimentTriggered2 = [equalCopy counterfactualTriggeredNonTier1];
+  if ((experimentTriggered != 0) != (experimentTriggered2 == 0))
   {
-    v18 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
-    if (!v18)
+    counterfactualTriggeredNonTier1 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
+    if (!counterfactualTriggeredNonTier1)
     {
 
 LABEL_21:
@@ -236,10 +236,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
-    v21 = [v4 counterfactualTriggeredNonTier1];
-    v22 = [v20 isEqual:v21];
+    v19 = counterfactualTriggeredNonTier1;
+    counterfactualTriggeredNonTier12 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
+    counterfactualTriggeredNonTier13 = [equalCopy counterfactualTriggeredNonTier1];
+    v22 = [counterfactualTriggeredNonTier12 isEqual:counterfactualTriggeredNonTier13];
 
     if (v22)
     {
@@ -259,34 +259,34 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
+  toCopy = to;
+  experimentTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
 
-  if (v4)
+  if (experimentTriggered)
   {
-    v5 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
+    experimentTriggered2 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
+  counterfactualTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
 
-  if (v6)
+  if (counterfactualTriggered)
   {
-    v7 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
+    counterfactualTriggered2 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
+  counterfactualTriggeredNonTier1 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (counterfactualTriggeredNonTier1)
   {
-    v10 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
+    counterfactualTriggeredNonTier12 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -315,9 +315,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setCounterfactualTriggeredNonTier1:(id)a3
+- (void)setCounterfactualTriggeredNonTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   experimentTriggered = self->_experimentTriggered;
   self->_experimentTriggered = 0;
 
@@ -325,14 +325,14 @@ LABEL_19:
   self->_counterfactualTriggered = 0;
 
   v7 = 103;
-  if (!v4)
+  if (!tier1Copy)
   {
     v7 = 0;
   }
 
   self->_whichEvent_Type = v7;
   counterfactualTriggeredNonTier1 = self->_counterfactualTriggeredNonTier1;
-  self->_counterfactualTriggeredNonTier1 = v4;
+  self->_counterfactualTriggeredNonTier1 = tier1Copy;
 }
 
 - (void)deleteCounterfactualTriggered
@@ -360,9 +360,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setCounterfactualTriggered:(id)a3
+- (void)setCounterfactualTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   experimentTriggered = self->_experimentTriggered;
   self->_experimentTriggered = 0;
 
@@ -370,14 +370,14 @@ LABEL_19:
   self->_counterfactualTriggeredNonTier1 = 0;
 
   v7 = 102;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v7 = 0;
   }
 
   self->_whichEvent_Type = v7;
   counterfactualTriggered = self->_counterfactualTriggered;
-  self->_counterfactualTriggered = v4;
+  self->_counterfactualTriggered = triggeredCopy;
 }
 
 - (void)deleteExperimentTriggered
@@ -405,9 +405,9 @@ LABEL_19:
   return v3;
 }
 
-- (void)setExperimentTriggered:(id)a3
+- (void)setExperimentTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   counterfactualTriggered = self->_counterfactualTriggered;
   self->_counterfactualTriggered = 0;
 
@@ -415,59 +415,59 @@ LABEL_19:
   self->_counterfactualTriggeredNonTier1 = 0;
 
   v7 = 101;
-  if (!v4)
+  if (!triggeredCopy)
   {
     v7 = 0;
   }
 
   self->_whichEvent_Type = v7;
   experimentTriggered = self->_experimentTriggered;
-  self->_experimentTriggered = v4;
+  self->_experimentTriggered = triggeredCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(EXPSiriSchemaEXPSiriServerEvent *)self whichEvent_Type];
-  if (v2 - 101 > 2)
+  whichEvent_Type = [(EXPSiriSchemaEXPSiriServerEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 2)
   {
     return @"com.apple.aiml.exp.siri.EXPSiriServerEvent";
   }
 
   else
   {
-    return off_1E78D4C28[v2 - 101];
+    return off_1E78D4C28[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = EXPSiriSchemaEXPSiriServerEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  experimentTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self experimentTriggered];
+  v7 = [experimentTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(EXPSiriSchemaEXPSiriServerEvent *)self deleteExperimentTriggered];
   }
 
-  v9 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  counterfactualTriggered = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggered];
+  v10 = [counterfactualTriggered applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(EXPSiriSchemaEXPSiriServerEvent *)self deleteCounterfactualTriggered];
   }
 
-  v12 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  counterfactualTriggeredNonTier1 = [(EXPSiriSchemaEXPSiriServerEvent *)self counterfactualTriggeredNonTier1];
+  v13 = [counterfactualTriggeredNonTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(EXPSiriSchemaEXPSiriServerEvent *)self deleteCounterfactualTriggeredNonTier1];
   }
@@ -485,30 +485,30 @@ LABEL_19:
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(EXPSiriSchemaEXPSiriServerEvent *)self whichEvent_Type];
-  if (v3 - 101 > 2)
+  whichEvent_Type = [(EXPSiriSchemaEXPSiriServerEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E95F8[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E95F8[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 2)
+  if (tag - 101 > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9610[a3 - 101];
+    return off_1E78E9610[tag - 101];
   }
 }
 

@@ -2,30 +2,30 @@
 + (SBIcon)genericApplicationIcon;
 + (id)backgroundGenerationQueue;
 + (id)backgroundGenericGenerationQueue;
-+ (id)fallbackGenericIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-+ (id)genericIconImageWithInfo:(SBIconImageInfo *)a3;
-+ (id)genericIconLayerViewWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-+ (id)iconImageFromUnmaskedImage:(id)a3 info:(SBIconImageInfo *)a4;
-+ (id)iconLayerViewForApplicationWithBundleIdentifier:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6 priority:(int64_t)a7;
-+ (id)makeEmptyIconLayerViewWithIcon:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6 priority:(int64_t)a7;
-+ (id)makeIconLayerFromImage:(id)a3;
-+ (unsigned)qosClassForPriority:(int64_t)a3;
-+ (void)configureIconContentLayer:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 options:(unint64_t)a5;
-+ (void)genericIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-+ (void)performBackgroundGenerationActivityWithPriority:(int64_t)a3 usingBlock:(id)a4;
-+ (void)performBackgroundGenerationActivityWithQOSClass:(unsigned int)a3 usingBlock:(id)a4;
-+ (void)setMissingIconLayerOnLayerView:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6;
++ (id)fallbackGenericIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
++ (id)genericIconImageWithInfo:(SBIconImageInfo *)info;
++ (id)genericIconLayerViewWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
++ (id)iconImageFromUnmaskedImage:(id)image info:(SBIconImageInfo *)info;
++ (id)iconLayerViewForApplicationWithBundleIdentifier:(id)identifier iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority;
++ (id)makeEmptyIconLayerViewWithIcon:(id)icon iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority;
++ (id)makeIconLayerFromImage:(id)image;
++ (unsigned)qosClassForPriority:(int64_t)priority;
++ (void)configureIconContentLayer:(id)layer iconImageInfo:(SBIconImageInfo *)info options:(unint64_t)options;
++ (void)genericIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options completionHandler:(id)handler;
++ (void)performBackgroundGenerationActivityWithPriority:(int64_t)priority usingBlock:(id)block;
++ (void)performBackgroundGenerationActivityWithQOSClass:(unsigned int)class usingBlock:(id)block;
++ (void)setMissingIconLayerOnLayerView:(id)view iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
 - (BOOL)allowsGlass;
 - (BOOL)canBeAddedToSubfolder;
 - (BOOL)canGenerateIconsInBackground;
-- (BOOL)consumePrefetchedRealIconLayerContentsMatchingInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 consumptionHandler:(id)a6;
-- (BOOL)containsNodeIdentifier:(id)a3;
+- (BOOL)consumePrefetchedRealIconLayerContentsMatchingInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options consumptionHandler:(id)handler;
+- (BOOL)containsNodeIdentifier:(id)identifier;
 - (BOOL)hasIconImage;
-- (BOOL)isGridSizeClassAllowed:(id)a3;
+- (BOOL)isGridSizeClassAllowed:(id)allowed;
 - (BOOL)isPlaceholder;
-- (BOOL)setIconContentLayerForIconLayerView:(id)a3 possibleContentLayer:(id)a4 imageGeneration:(unint64_t)a5 iconImageInfo:(SBIconImageInfo *)a6 traitCollection:(id)a7 options:(unint64_t)a8 skipIfMissing:(BOOL)a9;
-- (BOOL)setIconContentLayerForIconLayerView:(id)a3 possibleContentLayer:(id)a4 imageGeneration:(unint64_t)a5 iconImageInfo:(SBIconImageInfo *)a6 traitCollection:(id)a7 options:(unint64_t)a8 skipIfMissing:(BOOL)a9 animated:(BOOL)a10;
-- (BOOL)takeIconLayerIfDesired:(id)a3;
+- (BOOL)setIconContentLayerForIconLayerView:(id)view possibleContentLayer:(id)layer imageGeneration:(unint64_t)generation iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options skipIfMissing:(BOOL)missing;
+- (BOOL)setIconContentLayerForIconLayerView:(id)view possibleContentLayer:(id)layer imageGeneration:(unint64_t)generation iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options skipIfMissing:(BOOL)missing animated:(BOOL)self0;
+- (BOOL)takeIconLayerIfDesired:(id)desired;
 - (NSDictionary)imageLoadContext;
 - (NSString)automationID;
 - (NSString)displayName;
@@ -35,63 +35,63 @@
 - (SBIcon)init;
 - (SBIconDelegate)delegate;
 - (id)_sbhIconLibraryCollationString;
-- (id)accessoryTextForLocation:(id)a3;
+- (id)accessoryTextForLocation:(id)location;
 - (id)badgeNumberOrString;
 - (id)containedNodeIdentifiers;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)fallbackLoadingIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-- (id)genericIconImageWithInfo:(SBIconImageInfo *)a3;
-- (id)iconImageIdentityWithIconImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 masked:(BOOL)a5;
-- (id)iconImageIdentityWithIconImageInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 masked:(BOOL)a5;
-- (id)iconImageIdentityWithImageAppearance:(id)a3 masked:(BOOL)a4;
-- (id)iconImageIdentityWithTraitCollection:(id)a3 masked:(BOOL)a4;
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6;
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-- (id)iconLayerViewWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 priority:(int64_t)a6;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)fallbackLoadingIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (id)genericIconImageWithInfo:(SBIconImageInfo *)info;
+- (id)iconImageIdentityWithIconImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance masked:(BOOL)masked;
+- (id)iconImageIdentityWithIconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection masked:(BOOL)masked;
+- (id)iconImageIdentityWithImageAppearance:(id)appearance masked:(BOOL)masked;
+- (id)iconImageIdentityWithTraitCollection:(id)collection masked:(BOOL)masked;
+- (id)iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options;
+- (id)iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (id)iconLayerViewWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority;
 - (id)iconLibraryQueryingFilterStrings;
-- (id)indexPathsForContainedNodeIdentifier:(id)a3 prefixPath:(id)a4;
-- (id)loadingIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-- (id)loadingIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-- (id)makeEmptyIconLayerViewWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 priority:(int64_t)a6;
-- (id)makeIconLayerFromImage:(id)a3;
-- (id)makeIconLayerFromImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6;
-- (id)makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6;
-- (id)makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5;
-- (id)nodeDescriptionWithPrefix:(id)a3;
-- (id)nodesAlongIndexPath:(id)a3 consumedIndexes:(unint64_t)a4;
-- (id)prefetchIconLayerWithInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5 priority:(int64_t)a6 reason:(id)a7 prefetchBehavior:(int64_t)a8;
-- (id)prefetchIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 imageOptions:(unint64_t)a5 priority:(int64_t)a6 reason:(id)a7 prefetchBehavior:(int64_t)a8;
+- (id)indexPathsForContainedNodeIdentifier:(id)identifier prefixPath:(id)path;
+- (id)loadingIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (id)loadingIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (id)makeEmptyIconLayerViewWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority;
+- (id)makeIconLayerFromImage:(id)image;
+- (id)makeIconLayerFromImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options;
+- (id)makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options;
+- (id)makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (id)nodeDescriptionWithPrefix:(id)prefix;
+- (id)nodesAlongIndexPath:(id)path consumedIndexes:(unint64_t)indexes;
+- (id)prefetchIconLayerWithInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options priority:(int64_t)priority reason:(id)reason prefetchBehavior:(int64_t)behavior;
+- (id)prefetchIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection imageOptions:(unint64_t)options priority:(int64_t)priority reason:(id)reason prefetchBehavior:(int64_t)behavior;
 - (id)succinctDescription;
-- (int64_t)accessoryTypeForLocation:(id)a3;
+- (int64_t)accessoryTypeForLocation:(id)location;
 - (int64_t)badgeValue;
 - (int64_t)labelAccessoryType;
-- (int64_t)localizedCompareDisplayNames:(id)a3;
-- (unint64_t)adjustImageOptions:(unint64_t)a3;
+- (int64_t)localizedCompareDisplayNames:(id)names;
+- (unint64_t)adjustImageOptions:(unint64_t)options;
 - (void)_notifyAccessoriesDidUpdate;
 - (void)_notifyImageDidUpdate;
 - (void)_notifyLaunchEnabledDidChange;
 - (void)_notifyProgressDidChange;
-- (void)_setPropertiesFromIcon:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applyTreatmentsToMiniGridCellView:(id)a3;
+- (void)_setPropertiesFromIcon:(id)icon;
+- (void)addObserver:(id)observer;
+- (void)applyTreatmentsToMiniGridCellView:(id)view;
 - (void)archivableStateDidChange;
 - (void)completeUninstall;
-- (void)enumerateObserversUsingBlock:(id)a3;
-- (void)launchFromLocation:(id)a3 context:(id)a4;
-- (void)loadIconLayerInBackgroundWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6 priority:(int64_t)a7 completionHandler:(id)a8;
-- (void)loadRealIconContentLayerForLayerView:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6 priority:(int64_t)a7;
-- (void)loadRealIconContentLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 priority:(int64_t)a6 completionHandler:(id)a7;
-- (void)prefetchAssertionDidInvalidate:(id)a3;
+- (void)enumerateObserversUsingBlock:(id)block;
+- (void)launchFromLocation:(id)location context:(id)context;
+- (void)loadIconLayerInBackgroundWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options priority:(int64_t)priority completionHandler:(id)handler;
+- (void)loadRealIconContentLayerForLayerView:(id)view iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority;
+- (void)loadRealIconContentLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority completionHandler:(id)handler;
+- (void)prefetchAssertionDidInvalidate:(id)invalidate;
 - (void)reloadIconImage;
-- (void)removeObserver:(id)a3;
-- (void)setBadge:(id)a3;
-- (void)setGridSizeClass:(id)a3;
-- (void)setLoadingIconLayerOnLayerView:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6;
-- (void)setOverrideBadgeNumberOrString:(id)a3;
-- (void)updateIconLayerView:(id)a3 traitCollection:(id)a4 options:(unint64_t)a5 animated:(BOOL)a6 completionHandler:(id)a7;
-- (void)updateImageInIconLayerView:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)setBadge:(id)badge;
+- (void)setGridSizeClass:(id)class;
+- (void)setLoadingIconLayerOnLayerView:(id)view iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options;
+- (void)setOverrideBadgeNumberOrString:(id)string;
+- (void)updateIconLayerView:(id)view traitCollection:(id)collection options:(unint64_t)options animated:(BOOL)animated completionHandler:(id)handler;
+- (void)updateImageInIconLayerView:(id)view;
 @end
 
 @implementation SBIcon
@@ -135,8 +135,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -148,7 +148,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -161,7 +161,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -175,8 +175,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -188,7 +188,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -201,7 +201,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -215,8 +215,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -228,7 +228,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -241,7 +241,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -255,8 +255,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -268,7 +268,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -281,7 +281,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -394,34 +394,34 @@ uint64_t __35__SBIcon_backgroundGenerationQueue__block_invoke()
     v2 = &stru_1F3D472A8;
   }
 
-  v4 = [(__CFString *)v2 localizedUppercaseString];
+  localizedUppercaseString = [(__CFString *)v2 localizedUppercaseString];
 
-  return v4;
+  return localizedUppercaseString;
 }
 
-- (void)applyTreatmentsToMiniGridCellView:(id)a3
+- (void)applyTreatmentsToMiniGridCellView:(id)view
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 layer];
+  layer = [view layer];
   if ([(SBIcon *)self isTimedOut]|| [(SBIcon *)self progressState])
   {
     v5 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CB0]];
     v6 = [MEMORY[0x1E69DC888] colorWithWhite:0.5 alpha:1.0];
-    v7 = [v6 CGColor];
-    [v5 setValue:v7 forKey:*MEMORY[0x1E6979AA0]];
+    cGColor = [v6 CGColor];
+    [v5 setValue:cGColor forKey:*MEMORY[0x1E6979AA0]];
 
     v9[0] = v5;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
-    [v4 setFilters:v8];
+    [layer setFilters:v8];
   }
 
   else
   {
-    [v4 setFilters:MEMORY[0x1E695E0F0]];
+    [layer setFilters:MEMORY[0x1E695E0F0]];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
@@ -434,21 +434,21 @@ uint64_t __35__SBIcon_backgroundGenerationQueue__block_invoke()
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  observerCopy = observer;
+  v9 = observerCopy;
+  if (observerCopy)
   {
-    if (![(NSHashTable *)self->_observers containsObject:v4])
+    if (![(NSHashTable *)self->_observers containsObject:observerCopy])
     {
       observers = self->_observers;
       v6 = v9;
       if (!observers)
       {
-        v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
         v8 = self->_observers;
-        self->_observers = v7;
+        self->_observers = weakObjectsHashTable;
 
         v6 = v9;
         observers = self->_observers;
@@ -464,24 +464,24 @@ uint64_t __35__SBIcon_backgroundGenerationQueue__block_invoke()
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)enumerateObserversUsingBlock:(id)a3
+- (void)enumerateObserversUsingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSHashTable *)self->_observers allObjects];
-  v6 = [v5 copy];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v6 = [allObjects copy];
 
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
@@ -499,7 +499,7 @@ LABEL_3:
 
       v11 = *(*(&v13 + 1) + 8 * v10);
       v12 = 0;
-      v4[2](v4, v11, &v12);
+      blockCopy[2](blockCopy, v11, &v12);
       if (v12)
       {
         break;
@@ -519,11 +519,11 @@ LABEL_3:
   }
 }
 
-- (BOOL)containsNodeIdentifier:(id)a3
+- (BOOL)containsNodeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBIcon *)self nodeIdentifier];
-  v6 = [v5 isEqual:v4];
+  identifierCopy = identifier;
+  nodeIdentifier = [(SBIcon *)self nodeIdentifier];
+  v6 = [nodeIdentifier isEqual:identifierCopy];
 
   return v6;
 }
@@ -531,22 +531,22 @@ LABEL_3:
 - (id)containedNodeIdentifiers
 {
   v2 = MEMORY[0x1E695DFA8];
-  v3 = [(SBIcon *)self nodeIdentifier];
-  v4 = [v2 setWithObject:v3];
+  nodeIdentifier = [(SBIcon *)self nodeIdentifier];
+  v4 = [v2 setWithObject:nodeIdentifier];
 
   return v4;
 }
 
-- (id)indexPathsForContainedNodeIdentifier:(id)a3 prefixPath:(id)a4
+- (id)indexPathsForContainedNodeIdentifier:(id)identifier prefixPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBIcon *)self nodeIdentifier];
-  v9 = [v8 isEqual:v7];
+  pathCopy = path;
+  identifierCopy = identifier;
+  nodeIdentifier = [(SBIcon *)self nodeIdentifier];
+  v9 = [nodeIdentifier isEqual:identifierCopy];
 
   if (v9)
   {
-    v10 = [MEMORY[0x1E695DFA8] setWithObject:v6];
+    v10 = [MEMORY[0x1E695DFA8] setWithObject:pathCopy];
   }
 
   else
@@ -557,36 +557,36 @@ LABEL_3:
   return v10;
 }
 
-- (id)nodesAlongIndexPath:(id)a3 consumedIndexes:(unint64_t)a4
+- (id)nodesAlongIndexPath:(id)path consumedIndexes:(unint64_t)indexes
 {
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:a4 + 1];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:indexes + 1];
   [v5 insertObject:self atIndex:0];
 
   return v5;
 }
 
-- (id)nodeDescriptionWithPrefix:(id)a3
+- (id)nodeDescriptionWithPrefix:(id)prefix
 {
-  v4 = a3;
-  if (!v4)
+  prefixCopy = prefix;
+  if (!prefixCopy)
   {
-    v4 = [MEMORY[0x1E696AEC0] string];
+    prefixCopy = [MEMORY[0x1E696AEC0] string];
   }
 
-  v5 = [(SBIcon *)self nodeIdentifier];
+  nodeIdentifier = [(SBIcon *)self nodeIdentifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v7 = MEMORY[0x1E696AEC0];
   if (isKindOfClass)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v4, v5];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", prefixCopy, nodeIdentifier];
   }
 
   else
   {
     v9 = objc_opt_class();
     v10 = [(SBIcon *)self displayNameForLocation:@"SBIconLocationNone"];
-    v8 = [v7 stringWithFormat:@"%@%@-%p (%@)", v4, v9, v5, v10];
+    v8 = [v7 stringWithFormat:@"%@%@-%p (%@)", prefixCopy, v9, nodeIdentifier, v10];
   }
 
   return v8;
@@ -611,9 +611,9 @@ LABEL_3:
   return &v4->isa;
 }
 
-- (int64_t)localizedCompareDisplayNames:(id)a3
+- (int64_t)localizedCompareDisplayNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v5 = [(SBIcon *)self displayNameForLocation:@"SBIconLocationNone"];
   if (v5)
   {
@@ -625,7 +625,7 @@ LABEL_3:
     v6 = &stru_1F3D472A8;
   }
 
-  v7 = [v4 displayNameForLocation:@"SBIconLocationNone"];
+  v7 = [namesCopy displayNameForLocation:@"SBIconLocationNone"];
 
   if (v7)
   {
@@ -642,17 +642,17 @@ LABEL_3:
   return v9;
 }
 
-+ (id)iconImageFromUnmaskedImage:(id)a3 info:(SBIconImageInfo *)a4
++ (id)iconImageFromUnmaskedImage:(id)image info:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
   v9 = v4;
   v26[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  imageCopy = image;
   v11 = objc_alloc(MEMORY[0x1E69A8988]);
-  v12 = [v10 CGImage];
-  [v10 scale];
-  v13 = [v11 initWithCGImage:v12 scale:?];
+  cGImage = [imageCopy CGImage];
+  [imageCopy scale];
+  v13 = [v11 initWithCGImage:cGImage scale:?];
   v14 = objc_alloc(MEMORY[0x1E69A8A00]);
   v26[0] = v13;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
@@ -665,95 +665,95 @@ LABEL_3:
   if (v18)
   {
     v20 = MEMORY[0x1E69DCAB8];
-    v21 = [v18 CGImage];
+    cGImage2 = [v18 CGImage];
     [v19 scale];
-    v22 = [v20 imageWithCGImage:v21 scale:0 orientation:?];
+    v22 = [v20 imageWithCGImage:cGImage2 scale:0 orientation:?];
   }
 
   else
   {
-    v22 = v10;
+    v22 = imageCopy;
   }
 
   v23 = v22;
-  if ([v10 flipsForRightToLeftLayoutDirection])
+  if ([imageCopy flipsForRightToLeftLayoutDirection])
   {
-    v24 = [v23 imageFlippedForRightToLeftLayoutDirection];
+    imageFlippedForRightToLeftLayoutDirection = [v23 imageFlippedForRightToLeftLayoutDirection];
 
-    v23 = v24;
+    v23 = imageFlippedForRightToLeftLayoutDirection;
   }
 
   return v23;
 }
 
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
-  v16 = [(SBIcon *)self imageLoadContext];
-  v17 = [(SBIcon *)self iconImageWithInfo:v15 traitCollection:v16 context:a4 options:v13, v12, v11, v10];
+  infoCopy = info;
+  imageLoadContext = [(SBIcon *)self imageLoadContext];
+  v17 = [(SBIcon *)self iconImageWithInfo:infoCopy traitCollection:imageLoadContext context:collection options:v13, v12, v11, v10];
 
   return v17;
 }
 
-- (id)iconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (id)iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v17 = a3;
-  v18 = a4;
-  if ((a5 & 2) != 0 && ![(SBIcon *)self supportsCachedIconLookup])
+  infoCopy = info;
+  collectionCopy = collection;
+  if ((context & 2) != 0 && ![(SBIcon *)self supportsCachedIconLookup])
   {
     v19 = 0;
   }
 
   else
   {
-    v19 = [(SBIcon *)self makeIconImageWithInfo:v17 traitCollection:v18 context:a5 options:v15, v14, v13, v12];
-    v20 = [(SBIcon *)self iconImageIdentityWithIconImageInfo:v17 traitCollection:a5 & 1 masked:v15, v14, v13, v12];
+    v19 = [(SBIcon *)self makeIconImageWithInfo:infoCopy traitCollection:collectionCopy context:context options:v15, v14, v13, v12];
+    v20 = [(SBIcon *)self iconImageIdentityWithIconImageInfo:infoCopy traitCollection:context & 1 masked:v15, v14, v13, v12];
     [v19 sbh_setIconImageIdentity:v20];
   }
 
   return v19;
 }
 
-- (id)makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
-  v16 = [(SBIcon *)self imageLoadContext];
-  v17 = [(SBIcon *)self makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:v15 traitCollection:v16 context:a4 options:v13, v12, v11, v10];
+  infoCopy = info;
+  imageLoadContext = [(SBIcon *)self imageLoadContext];
+  v17 = [(SBIcon *)self makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:infoCopy traitCollection:imageLoadContext context:collection options:v13, v12, v11, v10];
 
   return v17;
 }
 
-- (id)makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (id)makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options
 {
-  if ((a5 & 0x10) != 0)
+  if ((context & 0x10) != 0)
   {
-    [SBIcon makeIconLayerFromImageWithInfo:"makeIconLayerFromImageWithInfo:traitCollection:context:options:" traitCollection:a3 context:a4 options:?];
+    [SBIcon makeIconLayerFromImageWithInfo:"makeIconLayerFromImageWithInfo:traitCollection:context:options:" traitCollection:info context:collection options:?];
   }
 
   else
   {
-    [SBIcon makeIconLayerWithInfo:"makeIconLayerWithInfo:traitCollection:context:options:" traitCollection:a3 context:a4 options:?];
+    [SBIcon makeIconLayerWithInfo:"makeIconLayerWithInfo:traitCollection:context:options:" traitCollection:info context:collection options:?];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)makeIconLayerFromImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (id)makeIconLayerFromImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options
 {
-  v7 = [(SBIcon *)self iconImageWithInfo:a3 traitCollection:a4 context:a5 options:a6];
+  v7 = [(SBIcon *)self iconImageWithInfo:info traitCollection:collection context:context options:options];
   if (v7)
   {
     v8 = [(SBIcon *)self makeIconLayerFromImage:v7];
@@ -767,15 +767,15 @@ LABEL_3:
   return v8;
 }
 
-+ (id)makeIconLayerFromImage:(id)a3
++ (id)makeIconLayerFromImage:(id)image
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AF00] isMainThread];
+  imageCopy = image;
+  isMainThread = [MEMORY[0x1E696AF00] isMainThread];
   v5 = objc_alloc_init(MEMORY[0x1E6979398]);
   v6 = v5;
-  if (v4)
+  if (isMainThread)
   {
-    [v5 setContents:{objc_msgSend(v3, "CGImage")}];
+    [v5 setContents:{objc_msgSend(imageCopy, "CGImage")}];
   }
 
   else
@@ -785,7 +785,7 @@ LABEL_3:
     v8[2] = __33__SBIcon_makeIconLayerFromImage___block_invoke;
     v8[3] = &unk_1E8088F18;
     v9 = v5;
-    v10 = v3;
+    v10 = imageCopy;
     dispatch_async(MEMORY[0x1E69E96A0], v8);
   }
 
@@ -800,49 +800,49 @@ uint64_t __33__SBIcon_makeIconLayerFromImage___block_invoke(uint64_t a1)
   return [v1 setContents:v2];
 }
 
-- (id)makeIconLayerFromImage:(id)a3
+- (id)makeIconLayerFromImage:(id)image
 {
-  v3 = a3;
-  v4 = [objc_opt_class() makeIconLayerFromImage:v3];
+  imageCopy = image;
+  v4 = [objc_opt_class() makeIconLayerFromImage:imageCopy];
 
   return v4;
 }
 
-- (id)iconLayerViewWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 priority:(int64_t)a6
+- (id)iconLayerViewWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v17 = a3;
-  v18 = [(SBIcon *)self makeEmptyIconLayerViewWithInfo:v17 traitCollection:a4 options:a5 priority:v15, v14, v13, v12];
-  [(SBIcon *)self loadRealIconContentLayerForLayerView:v18 iconImageInfo:v17 traitCollection:a4 options:a5 priority:v15, v14, v13, v12];
+  infoCopy = info;
+  v18 = [(SBIcon *)self makeEmptyIconLayerViewWithInfo:infoCopy traitCollection:collection options:options priority:v15, v14, v13, v12];
+  [(SBIcon *)self loadRealIconContentLayerForLayerView:v18 iconImageInfo:infoCopy traitCollection:collection options:options priority:v15, v14, v13, v12];
 
   return v18;
 }
 
-+ (id)iconLayerViewForApplicationWithBundleIdentifier:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6 priority:(int64_t)a7
++ (id)iconLayerViewForApplicationWithBundleIdentifier:(id)identifier iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority
 {
   v13 = v10;
   v14 = v9;
   v15 = v8;
   v16 = v7;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[SBHImageOnlyApplication alloc] initWithBundleIdentifier:v19];
+  infoCopy = info;
+  identifierCopy = identifier;
+  v20 = [[SBHImageOnlyApplication alloc] initWithBundleIdentifier:identifierCopy];
 
   v21 = [[SBHApplicationIcon alloc] initWithApplication:v20];
-  v22 = [(SBIcon *)v21 iconLayerViewWithInfo:v18 traitCollection:a5 options:a6 priority:v16, v15, v14, v13];
+  v22 = [(SBIcon *)v21 iconLayerViewWithInfo:infoCopy traitCollection:collection options:options priority:v16, v15, v14, v13];
 
   return v22;
 }
 
-+ (id)makeEmptyIconLayerViewWithIcon:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6 priority:(int64_t)a7
++ (id)makeEmptyIconLayerViewWithIcon:(id)icon iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority
 {
   v13 = v9;
   v14 = v8;
   v15 = v7;
-  if (a5)
+  if (collection)
   {
     v17 = v10;
   }
@@ -853,32 +853,32 @@ uint64_t __33__SBIcon_makeIconLayerFromImage___block_invoke(uint64_t a1)
   }
 
   v18 = MEMORY[0x1E69DD1B8];
-  v19 = a4;
-  v20 = a3;
-  v21 = [v18 sbh_iconImageStyleConfigurationFromTraitCollection:v19];
-  v22 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v19];
+  infoCopy = info;
+  iconCopy = icon;
+  v21 = [v18 sbh_iconImageStyleConfigurationFromTraitCollection:infoCopy];
+  v22 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:infoCopy];
 
-  v23 = [[SBHIconLayerView alloc] initWithIcon:v20 iconImageInfo:v21 iconImageStyleConfiguration:v22 iconImageAppearance:a5 iconImageOptions:v15, v14, v13, v17];
-  [(SBHIconLayerView *)v23 setIconImageLoadPriority:a6];
+  v23 = [[SBHIconLayerView alloc] initWithIcon:iconCopy iconImageInfo:v21 iconImageStyleConfiguration:v22 iconImageAppearance:collection iconImageOptions:v15, v14, v13, v17];
+  [(SBHIconLayerView *)v23 setIconImageLoadPriority:options];
 
   return v23;
 }
 
-- (id)makeEmptyIconLayerViewWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 priority:(int64_t)a6
+- (id)makeEmptyIconLayerViewWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v17 = a3;
-  v18 = [objc_opt_class() makeEmptyIconLayerViewWithIcon:self iconImageInfo:v17 traitCollection:a4 options:a5 priority:{v15, v14, v13, v12}];
+  infoCopy = info;
+  v18 = [objc_opt_class() makeEmptyIconLayerViewWithIcon:self iconImageInfo:infoCopy traitCollection:collection options:options priority:{v15, v14, v13, v12}];
 
   iconLayerViews = self->_iconLayerViews;
   if (!iconLayerViews)
   {
-    v20 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v21 = self->_iconLayerViews;
-    self->_iconLayerViews = v20;
+    self->_iconLayerViews = weakObjectsHashTable;
 
     iconLayerViews = self->_iconLayerViews;
   }
@@ -888,118 +888,118 @@ uint64_t __33__SBIcon_makeIconLayerFromImage___block_invoke(uint64_t a1)
   return v18;
 }
 
-- (BOOL)setIconContentLayerForIconLayerView:(id)a3 possibleContentLayer:(id)a4 imageGeneration:(unint64_t)a5 iconImageInfo:(SBIconImageInfo *)a6 traitCollection:(id)a7 options:(unint64_t)a8 skipIfMissing:(BOOL)a9
+- (BOOL)setIconContentLayerForIconLayerView:(id)view possibleContentLayer:(id)layer imageGeneration:(unint64_t)generation iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options skipIfMissing:(BOOL)missing
 {
   v16 = v12;
   v17 = v11;
   v18 = v10;
   v19 = v9;
-  v23 = a3;
-  v24 = a4;
-  v25 = a6;
-  v26 = [v23 iconImageAppearance];
-  v27 = [v23 iconContentType];
-  v28 = [v23 contentVisibility];
-  if (v27 == 2 || !v28)
+  viewCopy = view;
+  layerCopy = layer;
+  infoCopy = info;
+  iconImageAppearance = [viewCopy iconImageAppearance];
+  iconContentType = [viewCopy iconContentType];
+  contentVisibility = [viewCopy contentVisibility];
+  if (iconContentType == 2 || !contentVisibility)
   {
-    v29 = [v26 isOpaque];
+    isOpaque = [iconImageAppearance isOpaque];
   }
 
   else
   {
-    v29 = 0;
+    isOpaque = 0;
   }
 
-  LOBYTE(v32) = v29;
-  v30 = [(SBIcon *)self setIconContentLayerForIconLayerView:v23 possibleContentLayer:v24 imageGeneration:a5 iconImageInfo:v25 traitCollection:a7 options:a8 skipIfMissing:v19 animated:v18, v17, v16, v32];
+  LOBYTE(v32) = isOpaque;
+  v30 = [(SBIcon *)self setIconContentLayerForIconLayerView:viewCopy possibleContentLayer:layerCopy imageGeneration:generation iconImageInfo:infoCopy traitCollection:collection options:options skipIfMissing:v19 animated:v18, v17, v16, v32];
 
   return v30;
 }
 
-- (BOOL)setIconContentLayerForIconLayerView:(id)a3 possibleContentLayer:(id)a4 imageGeneration:(unint64_t)a5 iconImageInfo:(SBIconImageInfo *)a6 traitCollection:(id)a7 options:(unint64_t)a8 skipIfMissing:(BOOL)a9 animated:(BOOL)a10
+- (BOOL)setIconContentLayerForIconLayerView:(id)view possibleContentLayer:(id)layer imageGeneration:(unint64_t)generation iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options skipIfMissing:(BOOL)missing animated:(BOOL)self0
 {
-  v14 = a8;
+  optionsCopy = options;
   v17 = v13;
   v18 = v12;
   v19 = v11;
   v20 = v10;
-  v24 = a3;
-  v25 = a4;
-  v26 = a6;
-  if (v25)
+  viewCopy = view;
+  layerCopy = layer;
+  infoCopy = info;
+  if (layerCopy)
   {
-    [objc_opt_class() configureIconContentLayer:v25 iconImageInfo:a7 options:{v20, v19, v18, v17}];
-    [(SBIcon *)self takeIconLayerIfDesired:v24];
-    [v24 setIconContentLayer:v25 generation:a5 type:2 animated:a9];
+    [objc_opt_class() configureIconContentLayer:layerCopy iconImageInfo:collection options:{v20, v19, v18, v17}];
+    [(SBIcon *)self takeIconLayerIfDesired:viewCopy];
+    [viewCopy setIconContentLayer:layerCopy generation:generation type:2 animated:missing];
   }
 
-  else if ((v14 & 1) == 0)
+  else if ((optionsCopy & 1) == 0)
   {
-    [objc_opt_class() setMissingIconLayerOnLayerView:v24 iconImageInfo:v26 traitCollection:a7 options:{v20, v19, v18, v17}];
+    [objc_opt_class() setMissingIconLayerOnLayerView:viewCopy iconImageInfo:infoCopy traitCollection:collection options:{v20, v19, v18, v17}];
   }
 
-  return v25 != 0;
+  return layerCopy != 0;
 }
 
-- (void)loadRealIconContentLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 priority:(int64_t)a6 completionHandler:(id)a7
+- (void)loadRealIconContentLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority completionHandler:(id)handler
 {
   v14 = v10;
   v15 = v9;
   v16 = v8;
   v17 = v7;
-  v23 = a3;
-  v19 = a6;
+  infoCopy = info;
+  priorityCopy = priority;
   if (![(SBIcon *)self hasIconImage])
   {
     goto LABEL_8;
   }
 
-  if ([(SBIcon *)self consumePrefetchedRealIconLayerContentsMatchingInfo:v23 traitCollection:a4 options:v19 consumptionHandler:v17, v16, v15, v14])
+  if ([(SBIcon *)self consumePrefetchedRealIconLayerContentsMatchingInfo:infoCopy traitCollection:collection options:priorityCopy consumptionHandler:v17, v16, v15, v14])
   {
     goto LABEL_14;
   }
 
-  if ((a4 & 2) == 0 || [(SBIcon *)self supportsCachedIconLookup])
+  if ((collection & 2) == 0 || [(SBIcon *)self supportsCachedIconLookup])
   {
-    v20 = [(SBIcon *)self imageLoadContext];
-    v21 = [(SBIcon *)self adjustImageOptions:a4];
+    imageLoadContext = [(SBIcon *)self imageLoadContext];
+    v21 = [(SBIcon *)self adjustImageOptions:collection];
     if (![(SBIcon *)self canGenerateIconsInBackground]|| (v21 & 0x20) != 0)
     {
-      v22 = [(SBIcon *)self makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:v23 traitCollection:v20 context:v21 options:v17, v16, v15, v14];
-      if (v19)
+      v22 = [(SBIcon *)self makeIconLayerNativelyOrFromImageIfNecessaryWithInfo:infoCopy traitCollection:imageLoadContext context:v21 options:v17, v16, v15, v14];
+      if (priorityCopy)
       {
-        v19[2](v19, v22, [(SBIcon *)self imageGeneration]);
+        priorityCopy[2](priorityCopy, v22, [(SBIcon *)self imageGeneration]);
       }
     }
 
     else
     {
-      [(SBIcon *)self loadIconLayerInBackgroundWithInfo:v23 traitCollection:v20 context:v21 options:a5 priority:v19 completionHandler:v17, v16, v15, v14];
+      [(SBIcon *)self loadIconLayerInBackgroundWithInfo:infoCopy traitCollection:imageLoadContext context:v21 options:options priority:priorityCopy completionHandler:v17, v16, v15, v14];
     }
   }
 
   else
   {
 LABEL_8:
-    if (v19)
+    if (priorityCopy)
     {
-      v19[2](v19, 0, 0);
+      priorityCopy[2](priorityCopy, 0, 0);
     }
   }
 
 LABEL_14:
 }
 
-- (unint64_t)adjustImageOptions:(unint64_t)a3
+- (unint64_t)adjustImageOptions:(unint64_t)options
 {
   if ([(SBIcon *)self supportsIconLayers])
   {
-    return a3;
+    return options;
   }
 
   else
   {
-    return a3 | 0x10;
+    return options | 0x10;
   }
 }
 
@@ -1012,16 +1012,16 @@ LABEL_14:
   return v4;
 }
 
-- (void)loadIconLayerInBackgroundWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 context:(id)a5 options:(unint64_t)a6 priority:(int64_t)a7 completionHandler:(id)a8
+- (void)loadIconLayerInBackgroundWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection context:(id)context options:(unint64_t)options priority:(int64_t)priority completionHandler:(id)handler
 {
   v16 = v11;
   v17 = v10;
   v18 = v9;
   v19 = v8;
-  v21 = a3;
-  v22 = a4;
-  v23 = a7;
-  v24 = [(SBIcon *)self imageGeneration];
+  infoCopy = info;
+  collectionCopy = collection;
+  priorityCopy = priority;
+  imageGeneration = [(SBIcon *)self imageGeneration];
   v25 = objc_opt_class();
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
@@ -1032,16 +1032,16 @@ LABEL_14:
   v35 = v17;
   v36 = v16;
   v29[4] = self;
-  v30 = v21;
-  v37 = a5;
-  v38 = v24;
-  v39 = a6;
-  v31 = v22;
-  v32 = v23;
-  v26 = v23;
-  v27 = v22;
-  v28 = v21;
-  [v25 performBackgroundGenerationActivityWithPriority:a6 usingBlock:v29];
+  v30 = infoCopy;
+  contextCopy = context;
+  v38 = imageGeneration;
+  optionsCopy = options;
+  v31 = collectionCopy;
+  v32 = priorityCopy;
+  v26 = priorityCopy;
+  v27 = collectionCopy;
+  v28 = infoCopy;
+  [v25 performBackgroundGenerationActivityWithPriority:options usingBlock:v29];
 }
 
 void __103__SBIcon_loadIconLayerInBackgroundWithInfo_traitCollection_context_options_priority_completionHandler___block_invoke(uint64_t a1)
@@ -1087,14 +1087,14 @@ uint64_t __103__SBIcon_loadIconLayerInBackgroundWithInfo_traitCollection_context
   return result;
 }
 
-- (void)loadRealIconContentLayerForLayerView:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6 priority:(int64_t)a7
+- (void)loadRealIconContentLayerForLayerView:(id)view iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options priority:(int64_t)priority
 {
   v14 = v10;
   v15 = v9;
   v16 = v8;
   v17 = v7;
-  v19 = a3;
-  v20 = a4;
+  viewCopy = view;
+  infoCopy = info;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -1104,20 +1104,20 @@ uint64_t __103__SBIcon_loadIconLayerInBackgroundWithInfo_traitCollection_context
   v23[2] = __94__SBIcon_loadRealIconContentLayerForLayerView_iconImageInfo_traitCollection_options_priority___block_invoke;
   v23[3] = &unk_1E8090E78;
   v23[4] = self;
-  v21 = v19;
+  v21 = viewCopy;
   v24 = v21;
   v27 = v17;
   v28 = v16;
   v29 = v15;
   v30 = v14;
-  v22 = v20;
-  v31 = a5;
+  v22 = infoCopy;
+  collectionCopy = collection;
   v25 = v22;
   v26 = &v32;
-  [(SBIcon *)self loadRealIconContentLayerWithInfo:v22 traitCollection:a5 options:a6 priority:v23 completionHandler:v17, v16, v15, v14];
+  [(SBIcon *)self loadRealIconContentLayerWithInfo:v22 traitCollection:collection options:options priority:v23 completionHandler:v17, v16, v15, v14];
   if ((v33[3] & 1) == 0)
   {
-    [(SBIcon *)self setLoadingIconLayerOnLayerView:v21 iconImageInfo:v22 traitCollection:a5 options:v17, v16, v15, v14];
+    [(SBIcon *)self setLoadingIconLayerOnLayerView:v21 iconImageInfo:v22 traitCollection:collection options:v17, v16, v15, v14];
   }
 
   _Block_object_dispose(&v32, 8);
@@ -1130,52 +1130,52 @@ uint64_t __94__SBIcon_loadRealIconContentLayerForLayerView_iconImageInfo_traitCo
   return result;
 }
 
-+ (void)configureIconContentLayer:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 options:(unint64_t)a5
++ (void)configureIconContentLayer:(id)layer iconImageInfo:(SBIconImageInfo *)info options:(unint64_t)options
 {
-  v9 = a4;
+  infoCopy = info;
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v14 = a3;
-  [v14 setContentsScale:v11];
-  [v14 setBounds:{0.0, 0.0, v13, v12}];
-  if (v9)
+  layerCopy = layer;
+  [layerCopy setContentsScale:v11];
+  [layerCopy setBounds:{0.0, 0.0, v13, v12}];
+  if (infoCopy)
   {
-    [v14 setCornerRadius:v10];
-    [v14 setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layerCopy setCornerRadius:v10];
+    [layerCopy setCornerCurve:*MEMORY[0x1E69796E8]];
   }
 }
 
-- (void)updateIconLayerView:(id)a3 traitCollection:(id)a4 options:(unint64_t)a5 animated:(BOOL)a6 completionHandler:(id)a7
+- (void)updateIconLayerView:(id)view traitCollection:(id)collection options:(unint64_t)options animated:(BOOL)animated completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  [v12 iconImageInfo];
+  viewCopy = view;
+  collectionCopy = collection;
+  handlerCopy = handler;
+  [viewCopy iconImageInfo];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v12 iconImageLoadPriority];
+  iconImageLoadPriority = [viewCopy iconImageLoadPriority];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __81__SBIcon_updateIconLayerView_traitCollection_options_animated_completionHandler___block_invoke;
   v27[3] = &unk_1E8090EA0;
   v27[4] = self;
-  v28 = v12;
+  v28 = viewCopy;
   v31 = v16;
   v32 = v18;
   v33 = v20;
   v34 = v22;
-  v35 = a5;
-  v36 = a6;
-  v29 = v13;
-  v30 = v14;
-  v24 = v14;
-  v25 = v13;
-  v26 = v12;
-  [(SBIcon *)self loadRealIconContentLayerWithInfo:v25 traitCollection:a5 options:v23 priority:v27 completionHandler:v16, v18, v20, v22];
+  optionsCopy = options;
+  animatedCopy = animated;
+  v29 = collectionCopy;
+  v30 = handlerCopy;
+  v24 = handlerCopy;
+  v25 = collectionCopy;
+  v26 = viewCopy;
+  [(SBIcon *)self loadRealIconContentLayerWithInfo:v25 traitCollection:options options:iconImageLoadPriority priority:v27 completionHandler:v16, v18, v20, v22];
 }
 
 uint64_t __81__SBIcon_updateIconLayerView_traitCollection_options_animated_completionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -1193,37 +1193,37 @@ uint64_t __81__SBIcon_updateIconLayerView_traitCollection_options_animated_compl
   return result;
 }
 
-- (id)prefetchIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 imageOptions:(unint64_t)a5 priority:(int64_t)a6 reason:(id)a7 prefetchBehavior:(int64_t)a8
+- (id)prefetchIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection imageOptions:(unint64_t)options priority:(int64_t)priority reason:(id)reason prefetchBehavior:(int64_t)behavior
 {
   v16 = v11;
   v17 = v10;
   v18 = v9;
   v19 = v8;
   v21 = MEMORY[0x1E69DD1B8];
-  v22 = a6;
-  v23 = [v21 sbh_iconImageAppearanceFromTraitCollection:a3];
-  v24 = [(SBIcon *)self prefetchIconLayerWithInfo:v23 imageAppearance:a4 imageOptions:a5 priority:v22 reason:a7 prefetchBehavior:v19, v18, v17, v16];
+  priorityCopy = priority;
+  v23 = [v21 sbh_iconImageAppearanceFromTraitCollection:info];
+  v24 = [(SBIcon *)self prefetchIconLayerWithInfo:v23 imageAppearance:collection imageOptions:options priority:priorityCopy reason:reason prefetchBehavior:v19, v18, v17, v16];
 
   return v24;
 }
 
-- (id)prefetchIconLayerWithInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 imageOptions:(unint64_t)a5 priority:(int64_t)a6 reason:(id)a7 prefetchBehavior:(int64_t)a8
+- (id)prefetchIconLayerWithInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance imageOptions:(unint64_t)options priority:(int64_t)priority reason:(id)reason prefetchBehavior:(int64_t)behavior
 {
   v16 = v11;
   v17 = v10;
   v18 = v9;
   v19 = v8;
-  v21 = a3;
-  v22 = a6;
+  infoCopy = info;
+  priorityCopy = priority;
   if ([objc_opt_class() allowsPrefetch])
   {
-    v23 = [[SBIconPrefetchAssertion alloc] initWithIcon:self iconImageInfo:v21 imageAppearance:a5 priority:a4 imageOptions:v22 reason:a7 prefetchBehavior:v19, v18, v17, v16];
+    v23 = [[SBIconPrefetchAssertion alloc] initWithIcon:self iconImageInfo:infoCopy imageAppearance:options priority:appearance imageOptions:priorityCopy reason:reason prefetchBehavior:v19, v18, v17, v16];
     iconPrefetchAssertions = self->_iconPrefetchAssertions;
     if (!iconPrefetchAssertions)
     {
-      v25 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v26 = self->_iconPrefetchAssertions;
-      self->_iconPrefetchAssertions = v25;
+      self->_iconPrefetchAssertions = weakObjectsHashTable;
 
       iconPrefetchAssertions = self->_iconPrefetchAssertions;
     }
@@ -1239,34 +1239,34 @@ uint64_t __81__SBIcon_updateIconLayerView_traitCollection_options_animated_compl
   return v23;
 }
 
-- (BOOL)consumePrefetchedRealIconLayerContentsMatchingInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 consumptionHandler:(id)a6
+- (BOOL)consumePrefetchedRealIconLayerContentsMatchingInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options consumptionHandler:(id)handler
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
   v40 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a5;
-  if ((a4 & 8) != 0)
+  infoCopy = info;
+  optionsCopy = options;
+  if ((collection & 8) != 0)
   {
     v31 = 0;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v17];
-    v20 = [(NSHashTable *)self->_iconPrefetchAssertions allObjects];
+    v19 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:infoCopy];
+    allObjects = [(NSHashTable *)self->_iconPrefetchAssertions allObjects];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v21 = [v20 countByEnumeratingWithState:&v35 objects:v39 count:16];
+    v21 = [allObjects countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v21)
     {
       v22 = v21;
-      v33 = v18;
-      v34 = v17;
+      v33 = optionsCopy;
+      v34 = infoCopy;
       v23 = 0;
       v24 = 0;
       v25 = *v36;
@@ -1276,11 +1276,11 @@ uint64_t __81__SBIcon_updateIconLayerView_traitCollection_options_animated_compl
         {
           if (*v36 != v25)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(allObjects);
           }
 
           v27 = *(*(&v35 + 1) + 8 * i);
-          v28 = [v27 priorityForProvidingContentLayerIfMatchesImageInfo:v19 imageAppearance:a4 imageOptions:{v15, v14, v13, v12, v33}];
+          v28 = [v27 priorityForProvidingContentLayerIfMatchesImageInfo:v19 imageAppearance:collection imageOptions:{v15, v14, v13, v12, v33}];
           if (v28 > v24)
           {
             v29 = v28;
@@ -1291,23 +1291,23 @@ uint64_t __81__SBIcon_updateIconLayerView_traitCollection_options_animated_compl
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v35 objects:v39 count:16];
+        v22 = [allObjects countByEnumeratingWithState:&v35 objects:v39 count:16];
       }
 
       while (v22);
       if (v23)
       {
-        v18 = v33;
-        v31 = [v23 consumeContentLayerIfMatchesImageInfo:v19 imageAppearance:a4 imageOptions:v33 consumptionHandler:{v15, v14, v13, v12}];
+        optionsCopy = v33;
+        v31 = [v23 consumeContentLayerIfMatchesImageInfo:v19 imageAppearance:collection imageOptions:v33 consumptionHandler:{v15, v14, v13, v12}];
       }
 
       else
       {
         v31 = 0;
-        v18 = v33;
+        optionsCopy = v33;
       }
 
-      v17 = v34;
+      infoCopy = v34;
     }
 
     else
@@ -1319,12 +1319,12 @@ uint64_t __81__SBIcon_updateIconLayerView_traitCollection_options_animated_compl
   return v31;
 }
 
-- (void)prefetchAssertionDidInvalidate:(id)a3
+- (void)prefetchAssertionDidInvalidate:(id)invalidate
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(NSHashTable *)self->_iconPrefetchAssertions removeObject:v4];
-  if ([v4 state] == 1)
+  invalidateCopy = invalidate;
+  [(NSHashTable *)self->_iconPrefetchAssertions removeObject:invalidateCopy];
+  if ([invalidateCopy state] == 1)
   {
     [(NSHashTable *)self->_iconPrefetchAssertions allObjects];
     v10 = 0u;
@@ -1345,7 +1345,7 @@ LABEL_4:
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * v9) takeIconLayerFromPrefetchAssertionIfDesired:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * v9) takeIconLayerFromPrefetchAssertionIfDesired:{invalidateCopy, v10}])
         {
           break;
         }
@@ -1365,17 +1365,17 @@ LABEL_4:
   }
 }
 
-+ (void)performBackgroundGenerationActivityWithPriority:(int64_t)a3 usingBlock:(id)a4
++ (void)performBackgroundGenerationActivityWithPriority:(int64_t)priority usingBlock:(id)block
 {
-  v6 = a4;
-  [a1 performBackgroundGenerationActivityWithQOSClass:objc_msgSend(objc_opt_class() usingBlock:{"qosClassForPriority:", a3), v6}];
+  blockCopy = block;
+  [self performBackgroundGenerationActivityWithQOSClass:objc_msgSend(objc_opt_class() usingBlock:{"qosClassForPriority:", priority), blockCopy}];
 }
 
-+ (void)performBackgroundGenerationActivityWithQOSClass:(unsigned int)a3 usingBlock:(id)a4
++ (void)performBackgroundGenerationActivityWithQOSClass:(unsigned int)class usingBlock:(id)block
 {
-  v4 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, a4);
+  v4 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, block);
   v5 = os_transaction_create();
-  v6 = [objc_opt_class() backgroundGenerationQueue];
+  backgroundGenerationQueue = [objc_opt_class() backgroundGenerationQueue];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__SBIcon_performBackgroundGenerationActivityWithQOSClass_usingBlock___block_invoke;
@@ -1384,19 +1384,19 @@ LABEL_4:
   v11 = v4;
   v7 = v5;
   v8 = v4;
-  dispatch_async(v6, v9);
+  dispatch_async(backgroundGenerationQueue, v9);
 }
 
-+ (unsigned)qosClassForPriority:(int64_t)a3
++ (unsigned)qosClassForPriority:(int64_t)priority
 {
-  if ((a3 + 2) > 4)
+  if ((priority + 2) > 4)
   {
     return 0;
   }
 
   else
   {
-    return dword_1BEE887E8[a3 + 2];
+    return dword_1BEE887E8[priority + 2];
   }
 }
 
@@ -1409,21 +1409,21 @@ uint64_t __42__SBIcon_backgroundGenericGenerationQueue__block_invoke()
   return MEMORY[0x1EEE66BB8](SerialWithQoS, v1);
 }
 
-- (void)updateImageInIconLayerView:(id)a3
+- (void)updateImageInIconLayerView:(id)view
 {
-  v4 = a3;
-  v6 = [v4 iconImageAppearance];
-  v5 = [MEMORY[0x1E69DD1B8] sbh_traitCollectionWithIconImageAppearance:v6];
-  [(SBIcon *)self updateIconLayerView:v4 traitCollection:v5 options:1 animated:1 completionHandler:0];
+  viewCopy = view;
+  iconImageAppearance = [viewCopy iconImageAppearance];
+  v5 = [MEMORY[0x1E69DD1B8] sbh_traitCollectionWithIconImageAppearance:iconImageAppearance];
+  [(SBIcon *)self updateIconLayerView:viewCopy traitCollection:v5 options:1 animated:1 completionHandler:0];
 }
 
-- (BOOL)takeIconLayerIfDesired:(id)a3
+- (BOOL)takeIconLayerIfDesired:(id)desired
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 iconContentType] == 2)
+  desiredCopy = desired;
+  if ([desiredCopy iconContentType] == 2)
   {
-    v5 = [v4 iconIdentifier];
+    iconIdentifier = [desiredCopy iconIdentifier];
     [(NSHashTable *)self->_iconPrefetchAssertions allObjects];
     v11 = 0u;
     v12 = 0u;
@@ -1442,7 +1442,7 @@ uint64_t __42__SBIcon_backgroundGenericGenerationQueue__block_invoke()
             objc_enumerationMutation(v6);
           }
 
-          if ([*(*(&v11 + 1) + 8 * i) takeIconLayerIfDesired:{v4, v11}])
+          if ([*(*(&v11 + 1) + 8 * i) takeIconLayerIfDesired:{desiredCopy, v11}])
           {
             LOBYTE(v7) = 1;
             goto LABEL_13;
@@ -1470,7 +1470,7 @@ LABEL_13:
   return v7;
 }
 
-- (id)genericIconImageWithInfo:(SBIconImageInfo *)a3
+- (id)genericIconImageWithInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
@@ -1481,16 +1481,16 @@ LABEL_13:
   return [v11 genericIconImageWithInfo:{v10, v9, v8, v7}];
 }
 
-+ (id)genericIconImageWithInfo:(SBIconImageInfo *)a3
++ (id)genericIconImageWithInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
   v9 = v4;
   v10 = v3;
   v28 = *MEMORY[0x1E69E9840];
-  v11 = [MEMORY[0x1E69A8A00] genericApplicationIcon];
+  genericApplicationIcon = [MEMORY[0x1E69A8A00] genericApplicationIcon];
   v12 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v10 scale:{v9, v8}];
-  v13 = [v11 prepareImageForDescriptor:v12];
+  v13 = [genericApplicationIcon prepareImageForDescriptor:v12];
   v14 = v13;
   if (!v13 || (v15 = MEMORY[0x1E69DCAB8], v16 = [v13 CGImage], objc_msgSend(v14, "scale"), objc_msgSend(v15, "imageWithCGImage:scale:orientation:", v16, 0), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
   {
@@ -1500,7 +1500,7 @@ LABEL_13:
       *buf = 138412802;
       v23 = v14;
       v24 = 2112;
-      v25 = v11;
+      v25 = genericApplicationIcon;
       v26 = 2112;
       v27 = v12;
       _os_log_error_impl(&dword_1BEB18000, v18, OS_LOG_TYPE_ERROR, "Could not create generic application icon via IconServices. isImage=%@, genericIcon=%@, imageDescriptor=%@", buf, 0x20u);
@@ -1538,29 +1538,29 @@ void __35__SBIcon_genericIconImageWithInfo___block_invoke(double *a1)
   UIRectFill(*&v6);
 }
 
-+ (id)genericIconLayerViewWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
++ (id)genericIconLayerViewWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
-  v16 = [a1 genericApplicationIcon];
-  v17 = [v16 iconLayerViewWithInfo:v15 traitCollection:a4 options:{v13, v12, v11, v10}];
+  infoCopy = info;
+  genericApplicationIcon = [self genericApplicationIcon];
+  v17 = [genericApplicationIcon iconLayerViewWithInfo:infoCopy traitCollection:collection options:{v13, v12, v11, v10}];
 
   return v17;
 }
 
-+ (void)genericIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
++ (void)genericIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options completionHandler:(id)handler
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v17 = a3;
-  v18 = a5;
-  v19 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v17];
-  v20 = [objc_opt_class() backgroundGenericGenerationQueue];
+  infoCopy = info;
+  optionsCopy = options;
+  v19 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:infoCopy];
+  backgroundGenericGenerationQueue = [objc_opt_class() backgroundGenericGenerationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__SBIcon_genericIconLayerWithInfo_traitCollection_options_completionHandler___block_invoke;
@@ -1569,15 +1569,15 @@ void __35__SBIcon_genericIconImageWithInfo___block_invoke(double *a1)
   v29 = v14;
   v30 = v13;
   v31 = v12;
-  v32 = a4;
-  v33 = a1;
+  collectionCopy = collection;
+  selfCopy = self;
   v25 = v19;
-  v26 = v17;
-  v27 = v18;
-  v21 = v18;
-  v22 = v17;
+  v26 = infoCopy;
+  v27 = optionsCopy;
+  v21 = optionsCopy;
+  v22 = infoCopy;
   v23 = v19;
-  dispatch_async(v20, block);
+  dispatch_async(backgroundGenericGenerationQueue, block);
 }
 
 void __77__SBIcon_genericIconLayerWithInfo_traitCollection_options_completionHandler___block_invoke(uint64_t a1)
@@ -1621,15 +1621,15 @@ uint64_t __77__SBIcon_genericIconLayerWithInfo_traitCollection_options_completio
   return MEMORY[0x1EEE66BB8](v4, v3);
 }
 
-+ (id)fallbackGenericIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
++ (id)fallbackGenericIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
+  infoCopy = info;
   v16 = objc_alloc_init(MEMORY[0x1E6979398]);
-  v17 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v15];
+  v17 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:infoCopy];
   if (SBHIconImageAppearanceTypeIsDark([v17 appearanceType]))
   {
     [MEMORY[0x1E69DC888] darkGrayColor];
@@ -1641,8 +1641,8 @@ uint64_t __77__SBIcon_genericIconLayerWithInfo_traitCollection_options_completio
   }
   v18 = ;
   [v16 setBackgroundColor:{objc_msgSend(v18, "CGColor")}];
-  [a1 configureIconContentLayer:v16 iconImageInfo:a4 options:{v13, v12, v11, v10}];
-  SBHIconServicesAddDebugLayerOverlayWithTraitCollection(v16, v15, 0, v13, v12, v11, v10);
+  [self configureIconContentLayer:v16 iconImageInfo:collection options:{v13, v12, v11, v10}];
+  SBHIconServicesAddDebugLayerOverlayWithTraitCollection(v16, infoCopy, 0, v13, v12, v11, v10);
 
   return v16;
 }
@@ -1668,23 +1668,23 @@ uint64_t __32__SBIcon_genericApplicationIcon__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)setLoadingIconLayerOnLayerView:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6
+- (void)setLoadingIconLayerOnLayerView:(id)view iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v20 = a3;
-  v17 = a4;
-  v18 = [(SBIcon *)self hasIconImage];
-  if ((a5 & 4) == 0 && v18)
+  viewCopy = view;
+  infoCopy = info;
+  hasIconImage = [(SBIcon *)self hasIconImage];
+  if ((collection & 4) == 0 && hasIconImage)
   {
-    v19 = [(SBIcon *)self loadingIconLayerWithInfo:v17 traitCollection:a5 options:v15, v14, v13, v12];
-    [v20 setIconContentLayer:v19 generation:0 type:1 animated:0];
+    v19 = [(SBIcon *)self loadingIconLayerWithInfo:infoCopy traitCollection:collection options:v15, v14, v13, v12];
+    [viewCopy setIconContentLayer:v19 generation:0 type:1 animated:0];
   }
 }
 
-- (id)loadingIconLayerWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)loadingIconLayerWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v8 = v7;
   if (v5 < 20.0 && v6 < 20.0)
@@ -1698,41 +1698,41 @@ uint64_t __32__SBIcon_genericApplicationIcon__block_invoke()
 
   else
   {
-    v11 = [(SBIcon *)self loadingIconImageWithInfo:a3 traitCollection:a4 options:a5];
+    v11 = [(SBIcon *)self loadingIconImageWithInfo:info traitCollection:collection options:options];
     v12 = [(SBIcon *)self makeIconLayerFromImage:v11];
   }
 
   return v12;
 }
 
-- (id)loadingIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)loadingIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
-  v16 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v15];
-  v17 = [MEMORY[0x1E69A8A00] placeholderIcon];
+  infoCopy = info;
+  v16 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:infoCopy];
+  placeholderIcon = [MEMORY[0x1E69A8A00] placeholderIcon];
   v18 = [objc_alloc(MEMORY[0x1E69A8A30]) initWithSize:v13 scale:{v12, v11}];
-  v19 = SBHIconServicesOptionsForImageOptions(a4);
-  v20 = SBHIconServicesImageForDescriptor(v17, v18, v19);
+  v19 = SBHIconServicesOptionsForImageOptions(collection);
+  v20 = SBHIconServicesImageForDescriptor(placeholderIcon, v18, v19);
   v21 = SBHGetIconImageFromIconServicesImage(v20);
   if (!v21)
   {
-    v21 = [(SBIcon *)self fallbackLoadingIconImageWithInfo:v15 traitCollection:a4 options:v13, v12, v11, v10];
+    v21 = [(SBIcon *)self fallbackLoadingIconImageWithInfo:infoCopy traitCollection:collection options:v13, v12, v11, v10];
   }
 
   return v21;
 }
 
-- (id)fallbackLoadingIconImageWithInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 options:(unint64_t)a5
+- (id)fallbackLoadingIconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  if ([(SBIconImageInfo *)a3 userInterfaceStyle]== 2)
+  if ([(SBIconImageInfo *)info userInterfaceStyle]== 2)
   {
     v14 = 0.2;
     v15 = 0.6;
@@ -1756,7 +1756,7 @@ uint64_t __32__SBIcon_genericApplicationIcon__block_invoke()
   v25 = v12;
   v26 = v11;
   v27 = v10;
-  v28 = a4;
+  collectionCopy = collection;
   v23 = v16;
   v19 = v16;
   v20 = [v18 imageWithActions:v22];
@@ -1779,16 +1779,16 @@ void __67__SBIcon_fallbackLoadingIconImageWithInfo_traitCollection_options___blo
   [v6 fillRect:0 blendMode:{0.0, 0.0, v3, v4}];
 }
 
-+ (void)setMissingIconLayerOnLayerView:(id)a3 iconImageInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6
++ (void)setMissingIconLayerOnLayerView:(id)view iconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options
 {
   v12 = v9;
   v13 = v8;
   v14 = v7;
   v15 = v6;
-  v17 = a3;
-  v18 = a4;
-  v19 = [a1 hasIconImage];
-  if ((a5 & 4) == 0 && v19 && ![v17 iconContentType])
+  viewCopy = view;
+  infoCopy = info;
+  hasIconImage = [self hasIconImage];
+  if ((collection & 4) == 0 && hasIconImage && ![viewCopy iconContentType])
   {
     v28 = 0;
     v29 = &v28;
@@ -1798,13 +1798,13 @@ void __67__SBIcon_fallbackLoadingIconImageWithInfo_traitCollection_options___blo
     v23 = 3221225472;
     v24 = __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_options___block_invoke;
     v25 = &unk_1E8090F10;
-    v20 = v17;
+    v20 = viewCopy;
     v26 = v20;
     v27 = &v28;
-    [a1 genericIconLayerWithInfo:v18 traitCollection:a5 options:&v22 completionHandler:{v15, v14, v13, v12}];
+    [self genericIconLayerWithInfo:infoCopy traitCollection:collection options:&v22 completionHandler:{v15, v14, v13, v12}];
     if ((v29[3] & 1) == 0)
     {
-      v21 = [a1 fallbackGenericIconLayerWithInfo:v18 traitCollection:a5 options:{v15, v14, v13, v12, v22, v23, v24, v25}];
+      v21 = [self fallbackGenericIconLayerWithInfo:infoCopy traitCollection:collection options:{v15, v14, v13, v12, v22, v23, v24, v25}];
       [v20 setIconContentLayer:v21 generation:0 type:1 animated:0];
     }
 
@@ -1844,54 +1844,54 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
   return [v2 allowsGlass];
 }
 
-- (id)iconImageIdentityWithTraitCollection:(id)a3 masked:(BOOL)a4
+- (id)iconImageIdentityWithTraitCollection:(id)collection masked:(BOOL)masked
 {
-  v4 = a4;
-  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:a3];
-  v7 = [(SBIcon *)self iconImageIdentityWithImageAppearance:v6 masked:v4];
+  maskedCopy = masked;
+  v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:collection];
+  v7 = [(SBIcon *)self iconImageIdentityWithImageAppearance:v6 masked:maskedCopy];
 
   return v7;
 }
 
-- (id)iconImageIdentityWithImageAppearance:(id)a3 masked:(BOOL)a4
+- (id)iconImageIdentityWithImageAppearance:(id)appearance masked:(BOOL)masked
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[SBHIconImageIdentity alloc] initWithIcon:self iconImageInfo:[(SBIcon *)self imageGeneration] imageGeneration:v6 imageAppearance:v4 masked:0.0, 0.0, 0.0, 0.0];
+  maskedCopy = masked;
+  appearanceCopy = appearance;
+  v7 = [[SBHIconImageIdentity alloc] initWithIcon:self iconImageInfo:[(SBIcon *)self imageGeneration] imageGeneration:appearanceCopy imageAppearance:maskedCopy masked:0.0, 0.0, 0.0, 0.0];
 
   return v7;
 }
 
-- (id)iconImageIdentityWithIconImageInfo:(SBIconImageInfo *)a3 traitCollection:(id)a4 masked:(BOOL)a5
+- (id)iconImageIdentityWithIconImageInfo:(SBIconImageInfo *)info traitCollection:(id)collection masked:(BOOL)masked
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:{a3, a4, a5}];
-  v16 = [(SBIcon *)self iconImageIdentityWithIconImageInfo:v15 imageAppearance:a4 masked:v13, v12, v11, v10];
+  v15 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:{info, collection, masked}];
+  v16 = [(SBIcon *)self iconImageIdentityWithIconImageInfo:v15 imageAppearance:collection masked:v13, v12, v11, v10];
 
   return v16;
 }
 
-- (id)iconImageIdentityWithIconImageInfo:(SBIconImageInfo *)a3 imageAppearance:(id)a4 masked:(BOOL)a5
+- (id)iconImageIdentityWithIconImageInfo:(SBIconImageInfo *)info imageAppearance:(id)appearance masked:(BOOL)masked
 {
   v10 = v8;
   v11 = v7;
   v12 = v6;
   v13 = v5;
-  v15 = a3;
-  v16 = [[SBHIconImageIdentity alloc] initWithIcon:self iconImageInfo:[(SBIcon *)self imageGeneration] imageGeneration:v15 imageAppearance:a4 masked:v13, v12, v11, v10];
+  infoCopy = info;
+  v16 = [[SBHIconImageIdentity alloc] initWithIcon:self iconImageInfo:[(SBIcon *)self imageGeneration] imageGeneration:infoCopy imageAppearance:appearance masked:v13, v12, v11, v10];
 
   return v16;
 }
 
-- (void)setOverrideBadgeNumberOrString:(id)a3
+- (void)setOverrideBadgeNumberOrString:(id)string
 {
-  v6 = a3;
+  stringCopy = string;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [stringCopy copy];
     overrideBadgeNumberOrString = self->_overrideBadgeNumberOrString;
     self->_overrideBadgeNumberOrString = v4;
 
@@ -1910,19 +1910,19 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
 
   else
   {
-    v5 = [(SBIcon *)self badgeNumberOrString];
-    v6 = [v5 integerValue];
+    badgeNumberOrString = [(SBIcon *)self badgeNumberOrString];
+    integerValue = [badgeNumberOrString integerValue];
 
-    return v6;
+    return integerValue;
   }
 }
 
-- (id)accessoryTextForLocation:(id)a3
+- (id)accessoryTextForLocation:(id)location
 {
-  v3 = [(SBIcon *)self badgeNumberOrString];
+  badgeNumberOrString = [(SBIcon *)self badgeNumberOrString];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = v3;
+  v5 = badgeNumberOrString;
   v6 = v5;
   v7 = v5;
   if (isKindOfClass)
@@ -1934,28 +1934,28 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
 
     else
     {
-      v8 = [MEMORY[0x1E696ADA0] sbf_cachedDecimalNumberFormatter];
-      v7 = [v8 stringFromNumber:v6];
+      sbf_cachedDecimalNumberFormatter = [MEMORY[0x1E696ADA0] sbf_cachedDecimalNumberFormatter];
+      v7 = [sbf_cachedDecimalNumberFormatter stringFromNumber:v6];
     }
   }
 
   return v7;
 }
 
-- (int64_t)accessoryTypeForLocation:(id)a3
+- (int64_t)accessoryTypeForLocation:(id)location
 {
-  v3 = [(SBIcon *)self accessoryTextForLocation:a3];
+  v3 = [(SBIcon *)self accessoryTextForLocation:location];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)setBadge:(id)a3
+- (void)setBadge:(id)badge
 {
-  v5 = a3;
+  badgeCopy = badge;
   if (([self->_badgeNumberOrString isEqual:?] & 1) == 0)
   {
-    objc_storeStrong(&self->_badgeNumberOrString, a3);
+    objc_storeStrong(&self->_badgeNumberOrString, badge);
     [(SBIcon *)self noteBadgeDidChange];
   }
 }
@@ -1981,29 +1981,29 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
   return v3;
 }
 
-- (void)launchFromLocation:(id)a3 context:(id)a4
+- (void)launchFromLocation:(id)location context:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBIcon *)self delegate];
+  locationCopy = location;
+  contextCopy = context;
+  delegate = [(SBIcon *)self delegate];
   v9 = SBLogIcon();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138413058;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v6;
+    v13 = locationCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = contextCopy;
     v16 = 2112;
-    v17 = v8;
+    v17 = delegate;
     _os_log_impl(&dword_1BEB18000, v9, OS_LOG_TYPE_DEFAULT, "SBIcon %@ launchFromLocation:%{public}@ context:%@ delegate:%@", &v10, 0x2Au);
   }
 
-  if (![(SBIcon *)self performLaunchFromLocation:v6 context:v7])
+  if (![(SBIcon *)self performLaunchFromLocation:locationCopy context:contextCopy])
   {
-    [v8 icon:self launchFromLocation:v6 context:v7];
+    [delegate icon:self launchFromLocation:locationCopy context:contextCopy];
   }
 }
 
@@ -2014,7 +2014,7 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1BEB18000, v3, OS_LOG_TYPE_DEFAULT, "Complete uninstall for icon: %@", &v4, 0xCu);
   }
 }
@@ -2048,27 +2048,27 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
 
 - (BOOL)canBeAddedToSubfolder
 {
-  v3 = [(SBIcon *)self gridSizeClass];
-  if (v3 == @"SBHIconGridSizeClassDefault")
+  gridSizeClass = [(SBIcon *)self gridSizeClass];
+  if (gridSizeClass == @"SBHIconGridSizeClassDefault")
   {
     v5 = 1;
   }
 
   else
   {
-    v4 = [(SBIcon *)self gridSizeClass];
-    v5 = [v4 isEqualToString:@"SBHIconGridSizeClassDefault"];
+    gridSizeClass2 = [(SBIcon *)self gridSizeClass];
+    v5 = [gridSizeClass2 isEqualToString:@"SBHIconGridSizeClassDefault"];
   }
 
   return v5;
 }
 
-- (void)setGridSizeClass:(id)a3
+- (void)setGridSizeClass:(id)class
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->_gridSizeClass != v4 && ![(NSString *)v4 isEqualToString:?]&& [(SBIcon *)self isGridSizeClassAllowed:v5])
+  classCopy = class;
+  v5 = classCopy;
+  if (self->_gridSizeClass != classCopy && ![(NSString *)classCopy isEqualToString:?]&& [(SBIcon *)self isGridSizeClassAllowed:v5])
   {
     v6 = [(NSString *)v5 copy];
     gridSizeClass = self->_gridSizeClass;
@@ -2078,8 +2078,8 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(NSHashTable *)self->_observers allObjects];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v9 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2091,7 +2091,7 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allObjects);
           }
 
           v13 = *(*(&v14 + 1) + 8 * v12);
@@ -2104,7 +2104,7 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [allObjects countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -2112,11 +2112,11 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
   }
 }
 
-- (BOOL)isGridSizeClassAllowed:(id)a3
+- (BOOL)isGridSizeClassAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = [(SBIcon *)self supportedGridSizeClasses];
-  v6 = [v5 containsGridSizeClass:v4];
+  allowedCopy = allowed;
+  supportedGridSizeClasses = [(SBIcon *)self supportedGridSizeClasses];
+  v6 = [supportedGridSizeClasses containsGridSizeClass:allowedCopy];
 
   return v6;
 }
@@ -2128,8 +2128,8 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2141,7 +2141,7 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allObjects);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -2154,28 +2154,28 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allObjects countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_setPropertiesFromIcon:(id)a3
+- (void)_setPropertiesFromIcon:(id)icon
 {
-  v4 = a3;
-  v5 = [v4 gridSizeClass];
-  [(SBIcon *)self setGridSizeClass:v5];
+  iconCopy = icon;
+  gridSizeClass = [iconCopy gridSizeClass];
+  [(SBIcon *)self setGridSizeClass:gridSizeClass];
 
-  -[SBIcon setImageGeneration:](self, "setImageGeneration:", [v4 imageGeneration]);
-  v6 = [v4 badgeNumberOrString];
-  [(SBIcon *)self setBadge:v6];
+  -[SBIcon setImageGeneration:](self, "setImageGeneration:", [iconCopy imageGeneration]);
+  badgeNumberOrString = [iconCopy badgeNumberOrString];
+  [(SBIcon *)self setBadge:badgeNumberOrString];
 
-  v7 = [v4 overrideBadgeNumberOrString];
-  [(SBIcon *)self setOverrideBadgeNumberOrString:v7];
+  overrideBadgeNumberOrString = [iconCopy overrideBadgeNumberOrString];
+  [(SBIcon *)self setOverrideBadgeNumberOrString:overrideBadgeNumberOrString];
 
-  LODWORD(v7) = [v4 isUninstalled];
-  if (v7)
+  LODWORD(overrideBadgeNumberOrString) = [iconCopy isUninstalled];
+  if (overrideBadgeNumberOrString)
   {
 
     [(SBIcon *)self setUninstalled];
@@ -2184,43 +2184,43 @@ void __79__SBIcon_setMissingIconLayerOnLayerView_iconImageInfo_traitCollection_o
 
 - (id)succinctDescription
 {
-  v2 = [(SBIcon *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIcon *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIcon *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIcon *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v5 = [(SBIcon *)self nodeIdentifier];
-  if (v5 == self)
+  nodeIdentifier = [(SBIcon *)self nodeIdentifier];
+  if (nodeIdentifier == self)
   {
-    v7 = [v4 appendPointer:v5 withName:@"nodeID"];
+    v7 = [v4 appendPointer:nodeIdentifier withName:@"nodeID"];
   }
 
   else
   {
-    v6 = [v4 appendObject:v5 withName:@"nodeID"];
+    v6 = [v4 appendObject:nodeIdentifier withName:@"nodeID"];
   }
 
   if ([(SBIcon *)self isLeafIcon])
   {
-    v8 = [(SBIcon *)self applicationBundleID];
-    [v4 appendString:v8 withName:@"bundleID" skipIfEmpty:1];
+    applicationBundleID = [(SBIcon *)self applicationBundleID];
+    [v4 appendString:applicationBundleID withName:@"bundleID" skipIfEmpty:1];
   }
 
-  v9 = [(SBIcon *)self gridSizeClass];
-  v10 = v9;
-  if (v9 != @"SBHIconGridSizeClassDefault" && ([(__CFString *)v9 isEqualToString:?]& 1) == 0)
+  gridSizeClass = [(SBIcon *)self gridSizeClass];
+  v10 = gridSizeClass;
+  if (gridSizeClass != @"SBHIconGridSizeClassDefault" && ([(__CFString *)gridSizeClass isEqualToString:?]& 1) == 0)
   {
     v11 = SBHStringForIconGridSizeClass(v10);
     [v4 appendString:v11 withName:@"gridSizeClass"];

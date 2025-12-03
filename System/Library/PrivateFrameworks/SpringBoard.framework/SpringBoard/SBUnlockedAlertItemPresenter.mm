@@ -1,23 +1,23 @@
 @interface SBUnlockedAlertItemPresenter
-- (SBUnlockedAlertItemPresenter)initWithSharedModalAlertItemPresenter:(id)a3 windowSceneManager:(id)a4;
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)windowSceneDidConnect:(id)a3 withSharedModalAlertItemPresenter:(id)a4;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (SBUnlockedAlertItemPresenter)initWithSharedModalAlertItemPresenter:(id)presenter windowSceneManager:(id)manager;
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion;
+- (void)presentAlertItem:(id)item animated:(BOOL)animated completion:(id)completion;
+- (void)windowSceneDidConnect:(id)connect withSharedModalAlertItemPresenter:(id)presenter;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBUnlockedAlertItemPresenter
 
-- (SBUnlockedAlertItemPresenter)initWithSharedModalAlertItemPresenter:(id)a3 windowSceneManager:(id)a4
+- (SBUnlockedAlertItemPresenter)initWithSharedModalAlertItemPresenter:(id)presenter windowSceneManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  presenterCopy = presenter;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = SBUnlockedAlertItemPresenter;
   v8 = [(SBUnlockedAlertItemPresenter *)&v12 init];
   if (v8)
   {
-    v9 = [[SBAlertItemPresenterWindowSceneResolver alloc] initWithSharedModalAlertItemPresenter:v6 windowSceneManager:v7];
+    v9 = [[SBAlertItemPresenterWindowSceneResolver alloc] initWithSharedModalAlertItemPresenter:presenterCopy windowSceneManager:managerCopy];
     windowSceneResolver = v8->_windowSceneResolver;
     v8->_windowSceneResolver = v9;
   }
@@ -25,46 +25,46 @@
   return v8;
 }
 
-- (void)presentAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentAlertItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v14 = a3;
-  v8 = a5;
+  animatedCopy = animated;
+  itemCopy = item;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  v9 = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
-  v10 = [v9 resolvedSharedModalAlertItemPresenterForAlertItem:v14];
+  windowSceneResolver = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
+  v10 = [windowSceneResolver resolvedSharedModalAlertItemPresenterForAlertItem:itemCopy];
 
-  v11 = [v10 windowScene];
-  v12 = [v11 homeScreenController];
+  windowScene = [v10 windowScene];
+  homeScreenController = [windowScene homeScreenController];
 
-  [v12 noteViewCovered];
-  if ([v14 wakeDisplay])
+  [homeScreenController noteViewCovered];
+  if ([itemCopy wakeDisplay])
   {
     v13 = +[SBIdleTimerGlobalCoordinator sharedInstance];
     [v13 resetIdleTimerForReason:@"PresentAlertItem"];
   }
 
-  [v10 presentAlertItem:v14 isLocked:0 animated:v6 completion:v8];
+  [v10 presentAlertItem:itemCopy isLocked:0 animated:animatedCopy completion:completionCopy];
 }
 
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  itemCopy = item;
   BSDispatchQueueAssertMain();
-  v11 = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
-  v10 = [v11 resolvedSharedModalAlertItemPresenterForAlertItem:v9];
-  [v10 dismissAlertItem:v9 animated:v5 completion:v8];
+  windowSceneResolver = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
+  v10 = [windowSceneResolver resolvedSharedModalAlertItemPresenterForAlertItem:itemCopy];
+  [v10 dismissAlertItem:itemCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)windowSceneDidConnect:(id)a3 withSharedModalAlertItemPresenter:(id)a4
+- (void)windowSceneDidConnect:(id)connect withSharedModalAlertItemPresenter:(id)presenter
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10)
+  connectCopy = connect;
+  presenterCopy = presenter;
+  if (connectCopy)
   {
-    if (v7)
+    if (presenterCopy)
     {
       goto LABEL_3;
     }
@@ -73,7 +73,7 @@
   else
   {
     [SBUnlockedAlertItemPresenter windowSceneDidConnect:a2 withSharedModalAlertItemPresenter:self];
-    if (v7)
+    if (presenterCopy)
     {
       goto LABEL_3;
     }
@@ -81,32 +81,32 @@
 
   [SBUnlockedAlertItemPresenter windowSceneDidConnect:a2 withSharedModalAlertItemPresenter:self];
 LABEL_3:
-  v8 = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
+  windowSceneResolver = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
 
-  if (v8)
+  if (windowSceneResolver)
   {
-    v9 = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
-    [v9 windowSceneDidConnect:v10 withSharedModalAlertItemPresenter:v7];
+    windowSceneResolver2 = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
+    [windowSceneResolver2 windowSceneDidConnect:connectCopy withSharedModalAlertItemPresenter:presenterCopy];
   }
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
-  v8 = a3;
-  if (!v8)
+  disconnectCopy = disconnect;
+  if (!disconnectCopy)
   {
     [(SBUnlockedAlertItemPresenter *)a2 windowSceneDidDisconnect:?];
   }
 
-  v5 = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
+  windowSceneResolver = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
 
-  v6 = v8;
-  if (v5)
+  v6 = disconnectCopy;
+  if (windowSceneResolver)
   {
-    v7 = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
-    [v7 windowSceneDidDisconnect:v8];
+    windowSceneResolver2 = [(SBUnlockedAlertItemPresenter *)self windowSceneResolver];
+    [windowSceneResolver2 windowSceneDidDisconnect:disconnectCopy];
 
-    v6 = v8;
+    v6 = disconnectCopy;
   }
 }
 

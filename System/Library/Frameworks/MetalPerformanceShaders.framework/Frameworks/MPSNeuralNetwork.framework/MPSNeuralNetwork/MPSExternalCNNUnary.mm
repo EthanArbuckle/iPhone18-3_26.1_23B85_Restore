@@ -1,11 +1,11 @@
 @interface MPSExternalCNNUnary
-- (unint64_t)encodeToCommandBuffer:(id)a3 computeCommandEncoder:(id)a4 options:(unint64_t)a5 pluginOptions:(unint64_t)a6 sourceTexture:(id)a7 sourceInfo:(id *)a8 destinationTexture:(id)a9 destinationInfo:(id *)a10;
-- (unint64_t)encodeToCommandBuffer:(id)a3 computeCommandEncoder:(id)a4 options:(unint64_t)a5 sourceTexture:(id)a6 sourceInfo:(id *)a7 destinationTexture:(id)a8 destinationInfo:(id *)a9;
+- (unint64_t)encodeToCommandBuffer:(id)buffer computeCommandEncoder:(id)encoder options:(unint64_t)options pluginOptions:(unint64_t)pluginOptions sourceTexture:(id)texture sourceInfo:(id *)info destinationTexture:(id)destinationTexture destinationInfo:(id *)self0;
+- (unint64_t)encodeToCommandBuffer:(id)buffer computeCommandEncoder:(id)encoder options:(unint64_t)options sourceTexture:(id)texture sourceInfo:(id *)info destinationTexture:(id)destinationTexture destinationInfo:(id *)destinationInfo;
 @end
 
 @implementation MPSExternalCNNUnary
 
-- (unint64_t)encodeToCommandBuffer:(id)a3 computeCommandEncoder:(id)a4 options:(unint64_t)a5 sourceTexture:(id)a6 sourceInfo:(id *)a7 destinationTexture:(id)a8 destinationInfo:(id *)a9
+- (unint64_t)encodeToCommandBuffer:(id)buffer computeCommandEncoder:(id)encoder options:(unint64_t)options sourceTexture:(id)texture sourceInfo:(id *)info destinationTexture:(id)destinationTexture destinationInfo:(id *)destinationInfo
 {
   if (MTLReportFailureTypeEnabled())
   {
@@ -18,7 +18,7 @@
   return 0;
 }
 
-- (unint64_t)encodeToCommandBuffer:(id)a3 computeCommandEncoder:(id)a4 options:(unint64_t)a5 pluginOptions:(unint64_t)a6 sourceTexture:(id)a7 sourceInfo:(id *)a8 destinationTexture:(id)a9 destinationInfo:(id *)a10
+- (unint64_t)encodeToCommandBuffer:(id)buffer computeCommandEncoder:(id)encoder options:(unint64_t)options pluginOptions:(unint64_t)pluginOptions sourceTexture:(id)texture sourceInfo:(id *)info destinationTexture:(id)destinationTexture destinationInfo:(id *)self0
 {
   if (MTLReportFailureTypeEnabled())
   {

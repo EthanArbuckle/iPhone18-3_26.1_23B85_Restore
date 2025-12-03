@@ -1,5 +1,5 @@
 @interface CKFullScreenBalloonViewDisplayConfiguration
-+ (id)addStickerContextDismissingAppCardOnExit:(BOOL)a3;
++ (id)addStickerContextDismissingAppCardOnExit:(BOOL)exit;
 + (id)tapbackKeyboardInputContext;
 + (id)tapbackPickerContext;
 - (BOOL)shouldAvoidAppCardAtInitialPresentation;
@@ -23,25 +23,25 @@
 - (double)tintRevealDuration;
 - (id)supplementaryLayoutContext;
 - (int64_t)type;
-- (void)setDarkModeTintAlpha:(double)a3;
-- (void)setScrollDuration:(double)a3;
-- (void)setShouldAvoidAppCardAtInitialPresentation:(BOOL)a3;
-- (void)setShouldDismissAppCardOnExit:(BOOL)a3;
-- (void)setShouldDismissWithAppCard:(BOOL)a3;
-- (void)setShouldHideBalloonTail:(BOOL)a3;
-- (void)setShouldHideTapbackAttributionAndPicker:(BOOL)a3;
-- (void)setShouldPresentAsTapbackKeyboardInput:(BOOL)a3;
-- (void)setShouldPresentTintViewBeforeScrolling:(BOOL)a3;
-- (void)setShouldReturnToStartingScrollOffset:(BOOL)a3;
-- (void)setShouldShowHighlightButton:(BOOL)a3;
-- (void)setShouldShowReplyButton:(BOOL)a3;
-- (void)setShouldShowStickers:(BOOL)a3;
-- (void)setSupplementaryLayoutContext:(id)a3;
-- (void)setTintAlpha:(double)a3;
-- (void)setTintDismissDuration:(double)a3;
-- (void)setTintRevealDuration:(double)a3;
-- (void)setTintViewBackgroundColor:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)setDarkModeTintAlpha:(double)alpha;
+- (void)setScrollDuration:(double)duration;
+- (void)setShouldAvoidAppCardAtInitialPresentation:(BOOL)presentation;
+- (void)setShouldDismissAppCardOnExit:(BOOL)exit;
+- (void)setShouldDismissWithAppCard:(BOOL)card;
+- (void)setShouldHideBalloonTail:(BOOL)tail;
+- (void)setShouldHideTapbackAttributionAndPicker:(BOOL)picker;
+- (void)setShouldPresentAsTapbackKeyboardInput:(BOOL)input;
+- (void)setShouldPresentTintViewBeforeScrolling:(BOOL)scrolling;
+- (void)setShouldReturnToStartingScrollOffset:(BOOL)offset;
+- (void)setShouldShowHighlightButton:(BOOL)button;
+- (void)setShouldShowReplyButton:(BOOL)button;
+- (void)setShouldShowStickers:(BOOL)stickers;
+- (void)setSupplementaryLayoutContext:(id)context;
+- (void)setTintAlpha:(double)alpha;
+- (void)setTintDismissDuration:(double)duration;
+- (void)setTintRevealDuration:(double)duration;
+- (void)setTintViewBackgroundColor:(id)color;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation CKFullScreenBalloonViewDisplayConfiguration
@@ -53,11 +53,11 @@
   return *(self + v3);
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_type;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (BOOL)shouldPresentTintViewBeforeScrolling
@@ -67,11 +67,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldPresentTintViewBeforeScrolling:(BOOL)a3
+- (void)setShouldPresentTintViewBeforeScrolling:(BOOL)scrolling
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldPresentTintViewBeforeScrolling;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = scrolling;
 }
 
 - (BOOL)shouldHideTapbackAttributionAndPicker
@@ -81,11 +81,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldHideTapbackAttributionAndPicker:(BOOL)a3
+- (void)setShouldHideTapbackAttributionAndPicker:(BOOL)picker
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldHideTapbackAttributionAndPicker;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = picker;
 }
 
 - (BOOL)shouldShowReplyButton
@@ -95,11 +95,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldShowReplyButton:(BOOL)a3
+- (void)setShouldShowReplyButton:(BOOL)button
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldShowReplyButton;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = button;
 }
 
 - (BOOL)shouldShowHighlightButton
@@ -109,11 +109,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldShowHighlightButton:(BOOL)a3
+- (void)setShouldShowHighlightButton:(BOOL)button
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldShowHighlightButton;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = button;
 }
 
 - (BOOL)shouldAvoidAppCardAtInitialPresentation
@@ -123,11 +123,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldAvoidAppCardAtInitialPresentation:(BOOL)a3
+- (void)setShouldAvoidAppCardAtInitialPresentation:(BOOL)presentation
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldAvoidAppCardAtInitialPresentation;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = presentation;
 }
 
 - (BOOL)shouldReturnToStartingScrollOffset
@@ -137,11 +137,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldReturnToStartingScrollOffset:(BOOL)a3
+- (void)setShouldReturnToStartingScrollOffset:(BOOL)offset
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldReturnToStartingScrollOffset;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = offset;
 }
 
 - (BOOL)shouldShowStickers
@@ -151,11 +151,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldShowStickers:(BOOL)a3
+- (void)setShouldShowStickers:(BOOL)stickers
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldShowStickers;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = stickers;
 }
 
 - (BOOL)shouldDismissAppCardOnExit
@@ -165,11 +165,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldDismissAppCardOnExit:(BOOL)a3
+- (void)setShouldDismissAppCardOnExit:(BOOL)exit
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldDismissAppCardOnExit;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = exit;
 }
 
 - (BOOL)shouldDismissWithAppCard
@@ -179,11 +179,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldDismissWithAppCard:(BOOL)a3
+- (void)setShouldDismissWithAppCard:(BOOL)card
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldDismissWithAppCard;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = card;
 }
 
 - (BOOL)shouldPresentAsTapbackKeyboardInput
@@ -193,11 +193,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldPresentAsTapbackKeyboardInput:(BOOL)a3
+- (void)setShouldPresentAsTapbackKeyboardInput:(BOOL)input
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldPresentAsTapbackKeyboardInput;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = input;
 }
 
 - (BOOL)shouldHideBalloonTail
@@ -207,11 +207,11 @@
   return *(self + v3);
 }
 
-- (void)setShouldHideBalloonTail:(BOOL)a3
+- (void)setShouldHideBalloonTail:(BOOL)tail
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_shouldHideBalloonTail;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = tail;
 }
 
 - (UIView)snapshotView
@@ -228,11 +228,11 @@
   return *(self + v3);
 }
 
-- (void)setTintAlpha:(double)a3
+- (void)setTintAlpha:(double)alpha
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintAlpha;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = alpha;
 }
 
 - (double)tintRevealDuration
@@ -242,11 +242,11 @@
   return *(self + v3);
 }
 
-- (void)setTintRevealDuration:(double)a3
+- (void)setTintRevealDuration:(double)duration
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintRevealDuration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = duration;
 }
 
 - (double)tintDismissDuration
@@ -256,11 +256,11 @@
   return *(self + v3);
 }
 
-- (void)setTintDismissDuration:(double)a3
+- (void)setTintDismissDuration:(double)duration
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintDismissDuration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = duration;
 }
 
 - (double)darkModeTintAlpha
@@ -270,11 +270,11 @@
   return *(self + v3);
 }
 
-- (void)setDarkModeTintAlpha:(double)a3
+- (void)setDarkModeTintAlpha:(double)alpha
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_darkModeTintAlpha;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = alpha;
 }
 
 - (double)scrollDuration
@@ -284,11 +284,11 @@
   return *(self + v3);
 }
 
-- (void)setScrollDuration:(double)a3
+- (void)setScrollDuration:(double)duration
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_scrollDuration;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = duration;
 }
 
 - (UIColor)tintViewBackgroundColor
@@ -298,13 +298,13 @@
   return *(self + v3);
 }
 
-- (void)setTintViewBackgroundColor:(id)a3
+- (void)setTintViewBackgroundColor:(id)color
 {
   v5 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_tintViewBackgroundColor;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = color;
+  colorCopy = color;
 }
 
 - (CKMessagePartChatItem)supplementaryLayoutChatItem
@@ -340,11 +340,11 @@
   return v10;
 }
 
-- (void)setSupplementaryLayoutContext:(id)a3
+- (void)setSupplementaryLayoutContext:(id)context
 {
-  if (a3)
+  if (context)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_190D58140();
     swift_unknownObjectRelease();
@@ -353,7 +353,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = OBJC_IVAR___CKFullScreenBalloonViewDisplayConfiguration_supplementaryLayoutContext;
@@ -379,9 +379,9 @@
   return v2;
 }
 
-+ (id)addStickerContextDismissingAppCardOnExit:(BOOL)a3
++ (id)addStickerContextDismissingAppCardOnExit:(BOOL)exit
 {
-  v3 = _s7ChatKit41FullScreenBalloonViewDisplayConfigurationC17addStickerContext23dismissingAppCardOnExitACSb_tFZ_0(a3);
+  v3 = _s7ChatKit41FullScreenBalloonViewDisplayConfigurationC17addStickerContext23dismissingAppCardOnExitACSb_tFZ_0(exit);
 
   return v3;
 }

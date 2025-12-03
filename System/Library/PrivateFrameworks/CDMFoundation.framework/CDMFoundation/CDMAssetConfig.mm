@@ -1,18 +1,18 @@
 @interface CDMAssetConfig
 - (CDMAssetConfig)init;
-- (id)getAssetConfigItemForKey:(id)a3;
+- (id)getAssetConfigItemForKey:(id)key;
 @end
 
 @implementation CDMAssetConfig
 
-- (id)getAssetConfigItemForKey:(id)a3
+- (id)getAssetConfigItemForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_assetConfigs objectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self->_assetConfigs objectForKey:keyCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_assetConfigs objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_assetConfigs objectForKeyedSubscript:keyCopy];
   }
 
   else

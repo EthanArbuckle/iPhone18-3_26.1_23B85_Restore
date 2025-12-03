@@ -1,15 +1,15 @@
 @interface WFAnisetteRequest
 - (WFAnisetteRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFAnisetteRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_26C6CBAB8(v4, &OBJC_IVAR___WFAnisetteRequest_id, &OBJC_IVAR___WFAnisetteRequest_data, &qword_2804A9198, &qword_26C6DE428);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_26C6CBAB8(coderCopy, &OBJC_IVAR___WFAnisetteRequest_id, &OBJC_IVAR___WFAnisetteRequest_data, &qword_2804A9198, &qword_26C6DE428);
 }
 
 - (WFAnisetteRequest)init

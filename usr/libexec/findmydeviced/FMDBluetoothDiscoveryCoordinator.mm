@@ -1,19 +1,19 @@
 @interface FMDBluetoothDiscoveryCoordinator
-- (FMDBluetoothDiscoveryCoordinator)initWithDiscovery:(id)a3;
+- (FMDBluetoothDiscoveryCoordinator)initWithDiscovery:(id)discovery;
 - (id)newDiscovery;
-- (void)didEndDiscoveryWithError:(id)a3;
-- (void)discoveryRequestedStart:(id)a3;
-- (void)discoveryRequestedStop:(id)a3;
+- (void)didEndDiscoveryWithError:(id)error;
+- (void)discoveryRequestedStart:(id)start;
+- (void)discoveryRequestedStop:(id)stop;
 - (void)scanningTimerFired;
-- (void)startDiscoveryTimerWithDuration:(double)a3;
+- (void)startDiscoveryTimerWithDuration:(double)duration;
 - (void)updateDiscovery;
 @end
 
 @implementation FMDBluetoothDiscoveryCoordinator
 
-- (FMDBluetoothDiscoveryCoordinator)initWithDiscovery:(id)a3
+- (FMDBluetoothDiscoveryCoordinator)initWithDiscovery:(id)discovery
 {
-  v4 = a3;
+  discoveryCopy = discovery;
   v17.receiver = self;
   v17.super_class = FMDBluetoothDiscoveryCoordinator;
   v5 = [(FMDBluetoothDiscoveryCoordinator *)&v17 init];
@@ -26,26 +26,26 @@
     v8 = +[NSMutableArray array];
     [(FMDBluetoothDiscoveryCoordinator *)v5 setActiveTokens:v8];
 
-    [(FMDBluetoothDiscoveryCoordinator *)v5 setDiscovery:v4];
+    [(FMDBluetoothDiscoveryCoordinator *)v5 setDiscovery:discoveryCopy];
     objc_initWeak(&location, v5);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1001C4678;
     v14[3] = &unk_1002CFD38;
     objc_copyWeak(&v15, &location);
-    [v4 setDidDiscoverDevice:v14];
+    [discoveryCopy setDidDiscoverDevice:v14];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001C46F4;
     v12[3] = &unk_1002CFD38;
     objc_copyWeak(&v13, &location);
-    [v4 setDidLoseDevice:v12];
+    [discoveryCopy setDidLoseDevice:v12];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1001C4770;
     v10[3] = &unk_1002CFD60;
     objc_copyWeak(&v11, &location);
-    [v4 setDidEndDiscovery:v10];
+    [discoveryCopy setDidEndDiscovery:v10];
     objc_destroyWeak(&v11);
     objc_destroyWeak(&v13);
     objc_destroyWeak(&v15);
@@ -70,61 +70,61 @@
   return v3;
 }
 
-- (void)discoveryRequestedStop:(id)a3
+- (void)discoveryRequestedStop:(id)stop
 {
-  v4 = a3;
+  stopCopy = stop;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = stopCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscoveryCoordinator discoveryRequestedStop %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(FMDBluetoothDiscoveryCoordinator *)self serialQueue];
+  serialQueue = [(FMDBluetoothDiscoveryCoordinator *)self serialQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001C4A04;
   v8[3] = &unk_1002CD288;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = stopCopy;
+  v7 = stopCopy;
+  dispatch_async(serialQueue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)discoveryRequestedStart:(id)a3
+- (void)discoveryRequestedStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = startCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscoveryCoordinator discoveryRequestedStart %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(FMDBluetoothDiscoveryCoordinator *)self serialQueue];
+  serialQueue = [(FMDBluetoothDiscoveryCoordinator *)self serialQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001C4C44;
   v8[3] = &unk_1002CD288;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = startCopy;
+  v7 = startCopy;
+  dispatch_async(serialQueue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)didEndDiscoveryWithError:(id)a3
+- (void)didEndDiscoveryWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -133,33 +133,33 @@
   }
 
   objc_initWeak(buf, self);
-  v6 = [(FMDBluetoothDiscoveryCoordinator *)self serialQueue];
+  serialQueue = [(FMDBluetoothDiscoveryCoordinator *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001C4E24;
   block[3] = &unk_1002CD518;
   objc_copyWeak(&v10, buf);
-  dispatch_async(v6, block);
+  dispatch_async(serialQueue, block);
 
   [(FMDBluetoothDiscoveryCoordinator *)self setIsDiscoveryActive:0];
-  v7 = [(FMDBluetoothDiscoveryCoordinator *)self didEndDiscovery];
+  didEndDiscovery = [(FMDBluetoothDiscoveryCoordinator *)self didEndDiscovery];
 
-  if (v7)
+  if (didEndDiscovery)
   {
-    v8 = [(FMDBluetoothDiscoveryCoordinator *)self didEndDiscovery];
-    (v8)[2](v8, v4);
+    didEndDiscovery2 = [(FMDBluetoothDiscoveryCoordinator *)self didEndDiscovery];
+    (didEndDiscovery2)[2](didEndDiscovery2, errorCopy);
   }
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)startDiscoveryTimerWithDuration:(double)a3
+- (void)startDiscoveryTimerWithDuration:(double)duration
 {
-  v5 = [(FMDBluetoothDiscoveryCoordinator *)self discoveryTimer];
-  [v5 cancel];
+  discoveryTimer = [(FMDBluetoothDiscoveryCoordinator *)self discoveryTimer];
+  [discoveryTimer cancel];
 
-  v6 = [NSDate dateWithTimeIntervalSinceNow:a3];
+  v6 = [NSDate dateWithTimeIntervalSinceNow:duration];
   [(FMDBluetoothDiscoveryCoordinator *)self setDiscoveryEndDate:v6];
 
   objc_initWeak(&location, self);
@@ -170,11 +170,11 @@
   v13 = sub_1001C5094;
   v14 = &unk_1002CD518;
   objc_copyWeak(&v15, &location);
-  v9 = [(FMDDispatchTimer *)v7 initWithQueue:&_dispatch_main_q timeout:&v11 completion:a3];
+  v9 = [(FMDDispatchTimer *)v7 initWithQueue:&_dispatch_main_q timeout:&v11 completion:duration];
   [(FMDBluetoothDiscoveryCoordinator *)self setDiscoveryTimer:v9, v11, v12, v13, v14];
 
-  v10 = [(FMDBluetoothDiscoveryCoordinator *)self discoveryTimer];
-  [v10 start];
+  discoveryTimer2 = [(FMDBluetoothDiscoveryCoordinator *)self discoveryTimer];
+  [discoveryTimer2 start];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -189,13 +189,13 @@
   }
 
   objc_initWeak(&location, self);
-  v4 = [(FMDBluetoothDiscoveryCoordinator *)self serialQueue];
+  serialQueue = [(FMDBluetoothDiscoveryCoordinator *)self serialQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001C51C4;
   v5[3] = &unk_1002CD518;
   objc_copyWeak(&v6, &location);
-  dispatch_async(v4, v5);
+  dispatch_async(serialQueue, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -203,13 +203,13 @@
 
 - (void)updateDiscovery
 {
-  v3 = [(FMDBluetoothDiscoveryCoordinator *)self activeTokens];
-  v4 = [v3 count];
+  activeTokens = [(FMDBluetoothDiscoveryCoordinator *)self activeTokens];
+  v4 = [activeTokens count];
 
   if (v4)
   {
-    v5 = [(FMDBluetoothDiscoveryCoordinator *)self activeTokens];
-    v6 = [v5 sortedArrayUsingComparator:&stru_1002D0EC8];
+    activeTokens2 = [(FMDBluetoothDiscoveryCoordinator *)self activeTokens];
+    v6 = [activeTokens2 sortedArrayUsingComparator:&stru_1002D0EC8];
 
     v7 = sub_100002880();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -219,19 +219,19 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscoveryCoordinator active tokens %@", &v24, 0xCu);
     }
 
-    v8 = [v6 firstObject];
-    v9 = [(FMDBluetoothDiscoveryCoordinator *)self discoveryEndDate];
-    [v9 timeIntervalSinceNow];
+    firstObject = [v6 firstObject];
+    discoveryEndDate = [(FMDBluetoothDiscoveryCoordinator *)self discoveryEndDate];
+    [discoveryEndDate timeIntervalSinceNow];
     v11 = v10;
-    v12 = [v8 endDate];
-    [v12 timeIntervalSinceNow];
+    endDate = [firstObject endDate];
+    [endDate timeIntervalSinceNow];
     v14 = v13;
 
     v15 = sub_100002880();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 138412290;
-      v25 = *&v8;
+      v25 = *&firstObject;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscoveryCoordinator updating discovery with token %@", &v24, 0xCu);
     }
 
@@ -241,11 +241,11 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 138412290;
-        v25 = *&v8;
+        v25 = *&firstObject;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "FMDBluetoothDiscoveryCoordinator discovery expired, stopping discovery %@", &v24, 0xCu);
       }
 
-      [(FMDBluetoothDiscoveryCoordinator *)self discoveryRequestedStop:v8];
+      [(FMDBluetoothDiscoveryCoordinator *)self discoveryRequestedStop:firstObject];
     }
 
     else if (v14 <= v11)
@@ -263,12 +263,12 @@
     {
       if (![(FMDBluetoothDiscoveryCoordinator *)self isDiscoveryActive])
       {
-        v16 = [(FMDBluetoothDiscoveryCoordinator *)self didStartDiscovery];
+        didStartDiscovery = [(FMDBluetoothDiscoveryCoordinator *)self didStartDiscovery];
 
-        if (v16)
+        if (didStartDiscovery)
         {
-          v17 = [(FMDBluetoothDiscoveryCoordinator *)self didStartDiscovery];
-          v17[2]();
+          didStartDiscovery2 = [(FMDBluetoothDiscoveryCoordinator *)self didStartDiscovery];
+          didStartDiscovery2[2]();
         }
       }
 
@@ -281,8 +281,8 @@
       }
 
       [(FMDBluetoothDiscoveryCoordinator *)self startDiscoveryTimerWithDuration:v14];
-      v19 = [(FMDBluetoothDiscoveryCoordinator *)self discovery];
-      [v19 startDiscovery];
+      discovery = [(FMDBluetoothDiscoveryCoordinator *)self discovery];
+      [discovery startDiscovery];
 
       [(FMDBluetoothDiscoveryCoordinator *)self setIsDiscoveryActive:1];
     }
@@ -296,8 +296,8 @@
       sub_10022DFA8(v20);
     }
 
-    v21 = [(FMDBluetoothDiscoveryCoordinator *)self discovery];
-    [v21 stopDiscovery];
+    discovery2 = [(FMDBluetoothDiscoveryCoordinator *)self discovery];
+    [discovery2 stopDiscovery];
 
     [(FMDBluetoothDiscoveryCoordinator *)self setIsDiscoveryActive:0];
   }

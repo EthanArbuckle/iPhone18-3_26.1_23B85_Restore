@@ -1,5 +1,5 @@
 @interface PKPassPaymentCardFrontFaceViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsAccessPass;
 - (BOOL)_accessibilityIsApplePayCashCard;
 - (BOOL)_accessibilityIsStoredValuePass;
@@ -9,13 +9,13 @@
 
 @implementation PKPassPaymentCardFrontFaceViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKPassPaymentCardFrontFaceView" isKindOfClass:@"PKPassFaceView"];
-  [v3 validateClass:@"PKPassFaceView" hasInstanceVariable:@"_pass" withType:"PKPass"];
-  [v3 validateClass:@"PKPassPaymentCardFrontFaceView" hasInstanceVariable:@"_balanceLabel" withType:"UILabel"];
-  [v3 validateClass:@"PKPass" hasInstanceMethod:@"localizedDescription" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKPassPaymentCardFrontFaceView" isKindOfClass:@"PKPassFaceView"];
+  [validationsCopy validateClass:@"PKPassFaceView" hasInstanceVariable:@"_pass" withType:"PKPass"];
+  [validationsCopy validateClass:@"PKPassPaymentCardFrontFaceView" hasInstanceVariable:@"_balanceLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"PKPass" hasInstanceMethod:@"localizedDescription" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)_accessibilityIsApplePayCashCard
@@ -26,16 +26,16 @@
 
   if ([v4 passType] == 1)
   {
-    v5 = [v4 paymentPass];
-    v6 = [v5 hasAssociatedPeerPaymentAccount];
+    paymentPass = [v4 paymentPass];
+    hasAssociatedPeerPaymentAccount = [paymentPass hasAssociatedPeerPaymentAccount];
   }
 
   else
   {
-    v6 = 0;
+    hasAssociatedPeerPaymentAccount = 0;
   }
 
-  return v6;
+  return hasAssociatedPeerPaymentAccount;
 }
 
 - (BOOL)_accessibilityIsAccessPass
@@ -44,8 +44,8 @@
   v3 = [(PKPassPaymentCardFrontFaceViewAccessibility *)self safeValueForKey:@"_pass"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 paymentPass];
-  LOBYTE(v3) = [v5 isAccessPass];
+  paymentPass = [v4 paymentPass];
+  LOBYTE(v3) = [paymentPass isAccessPass];
 
   return v3;
 }
@@ -56,8 +56,8 @@
   v3 = [(PKPassPaymentCardFrontFaceViewAccessibility *)self safeValueForKey:@"_pass"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 paymentPass];
-  LOBYTE(v3) = [v5 isStoredValuePass];
+  paymentPass = [v4 paymentPass];
+  LOBYTE(v3) = [paymentPass isStoredValuePass];
 
   return v3;
 }
@@ -84,10 +84,10 @@
 
     else
     {
-      v8 = [(PKPassPaymentCardFrontFaceViewAccessibility *)self _accessibilityIsStoredValuePass];
+      _accessibilityIsStoredValuePass = [(PKPassPaymentCardFrontFaceViewAccessibility *)self _accessibilityIsStoredValuePass];
       v9 = [(PKPassPaymentCardFrontFaceViewAccessibility *)self safeValueForKey:@"_pass"];
       v5 = v9;
-      if (!v8)
+      if (!_accessibilityIsStoredValuePass)
       {
         v10 = [v9 safeValueForKey:@"organizationName"];
 
@@ -127,13 +127,13 @@ LABEL_12:
   if ([(PKPassPaymentCardFrontFaceViewAccessibility *)self _accessibilityIsApplePayCashCard])
   {
     v3 = [(PKPassPaymentCardFrontFaceViewAccessibility *)self safeValueForKey:@"_balanceLabel"];
-    v4 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
 
-    if ([v4 length])
+    if ([accessibilityLabel length])
     {
       v5 = MEMORY[0x29EDBA0F8];
       v6 = accessibilityLocalizedString(@"current.balance.fmt");
-      v7 = [v5 stringWithFormat:v6, v4];
+      accessibilityValue = [v5 stringWithFormat:v6, accessibilityLabel];
 
       goto LABEL_6;
     }
@@ -141,10 +141,10 @@ LABEL_12:
 
   v9.receiver = self;
   v9.super_class = PKPassPaymentCardFrontFaceViewAccessibility;
-  v7 = [(PKPassPaymentCardFrontFaceViewAccessibility *)&v9 accessibilityValue];
+  accessibilityValue = [(PKPassPaymentCardFrontFaceViewAccessibility *)&v9 accessibilityValue];
 LABEL_6:
 
-  return v7;
+  return accessibilityValue;
 }
 
 @end

@@ -1,9 +1,9 @@
 @interface _TVMonogramImageGenerator
 - (NSOperationQueue)imageGeneratorQueue;
-- (id)imageKeyForObject:(id)a3;
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8;
-- (id)loadImageForURL:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8;
-- (void)cancelLoad:(id)a3;
+- (id)imageKeyForObject:(id)object;
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler;
+- (id)loadImageForURL:(id)l scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler;
+- (void)cancelLoad:(id)load;
 @end
 
 @implementation _TVMonogramImageGenerator
@@ -23,27 +23,27 @@
   return imageGeneratorQueue;
 }
 
-- (id)loadImageForURL:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8
+- (id)loadImageForURL:(id)l scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler
 {
-  v10 = a5;
-  height = a4.height;
-  width = a4.width;
-  v14 = a8;
-  v15 = a7;
-  v16 = a3;
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  loaderCopy = loader;
+  lCopy = l;
   v17 = +[TVURLImageLoader sharedInstance];
-  v18 = [v17 loadImageForObject:v16 scaleToSize:v10 cropToFit:a6 imageDirection:v15 requestLoader:v14 completionHandler:{width, height}];
+  v18 = [v17 loadImageForObject:lCopy scaleToSize:fitCopy cropToFit:direction imageDirection:loaderCopy requestLoader:handlerCopy completionHandler:{width, height}];
 
   return v18;
 }
 
-- (id)imageKeyForObject:(id)a3
+- (id)imageKeyForObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
   }
 
   else
@@ -53,22 +53,22 @@
 
   v5 = v4;
   v6 = +[TVURLImageLoader sharedInstance];
-  v7 = [v5 imageURL];
-  v8 = [v6 imageKeyForObject:v7];
+  imageURL = [v5 imageURL];
+  v8 = [v6 imageKeyForObject:imageURL];
 
-  v9 = [v5 imageURL];
-  if ([v9 tv_isResourceURL])
+  imageURL2 = [v5 imageURL];
+  if ([imageURL2 tv_isResourceURL])
   {
-    v10 = [v5 fillColor];
+    fillColor = [v5 fillColor];
 
-    if (v10)
+    if (fillColor)
     {
       v20 = 0.0;
       v18 = 0.0;
       v19 = 0.0;
       v17 = 0;
-      v11 = [v5 fillColor];
-      [v11 getRed:&v20 green:&v19 blue:&v18 alpha:&v17];
+      fillColor2 = [v5 fillColor];
+      [fillColor2 getRed:&v20 green:&v19 blue:&v18 alpha:&v17];
 
       v12 = 0x277CCA000uLL;
       v13 = &off_26CE87000;
@@ -88,39 +88,39 @@
   return v8;
 }
 
-- (id)loadImageForObject:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5 imageDirection:(int64_t)a6 requestLoader:(id)a7 completionHandler:(id)a8
+- (id)loadImageForObject:(id)object scaleToSize:(CGSize)size cropToFit:(BOOL)fit imageDirection:(int64_t)direction requestLoader:(id)loader completionHandler:(id)handler
 {
-  v11 = a5;
-  height = a4.height;
-  width = a4.width;
-  v15 = a3;
-  v16 = a7;
-  v17 = a8;
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  objectCopy = object;
+  loaderCopy = loader;
+  handlerCopy = handler;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v19 = 0;
-  if (v15 && (isKindOfClass & 1) != 0)
+  height = 0;
+  if (objectCopy && (isKindOfClass & 1) != 0)
   {
-    v20 = [v15 imageURL];
-    if (v20)
+    imageURL = [objectCopy imageURL];
+    if (imageURL)
     {
-      v19 = [(_TVMonogramImageGenerator *)self loadImageForURL:v20 scaleToSize:v11 cropToFit:a6 imageDirection:v16 requestLoader:v17 completionHandler:width, height];
+      height = [(_TVMonogramImageGenerator *)self loadImageForURL:imageURL scaleToSize:fitCopy cropToFit:direction imageDirection:loaderCopy requestLoader:handlerCopy completionHandler:width, height];
     }
 
     else
     {
-      v19 = 0;
+      height = 0;
     }
   }
 
-  return v19;
+  return height;
 }
 
-- (void)cancelLoad:(id)a3
+- (void)cancelLoad:(id)load
 {
-  v3 = a3;
+  loadCopy = load;
   v4 = +[TVURLImageLoader sharedInstance];
-  [v4 cancelLoad:v3];
+  [v4 cancelLoad:loadCopy];
 }
 
 @end

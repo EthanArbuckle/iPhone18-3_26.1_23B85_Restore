@@ -1,12 +1,12 @@
 @interface ConstrainingView
-- (_TtC23SetupAssistantSupportUIP33_AD4A13777B11A6832A98F7B78726629716ConstrainingView)initWithCoder:(id)a3;
-- (_TtC23SetupAssistantSupportUIP33_AD4A13777B11A6832A98F7B78726629716ConstrainingView)initWithFrame:(CGRect)a3;
+- (_TtC23SetupAssistantSupportUIP33_AD4A13777B11A6832A98F7B78726629716ConstrainingView)initWithCoder:(id)coder;
+- (_TtC23SetupAssistantSupportUIP33_AD4A13777B11A6832A98F7B78726629716ConstrainingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ConstrainingView
 
-- (_TtC23SetupAssistantSupportUIP33_AD4A13777B11A6832A98F7B78726629716ConstrainingView)initWithCoder:(id)a3
+- (_TtC23SetupAssistantSupportUIP33_AD4A13777B11A6832A98F7B78726629716ConstrainingView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = sub_265AA79E0();
@@ -31,7 +31,7 @@
   }
 }
 
-- (_TtC23SetupAssistantSupportUIP33_AD4A13777B11A6832A98F7B78726629716ConstrainingView)initWithFrame:(CGRect)a3
+- (_TtC23SetupAssistantSupportUIP33_AD4A13777B11A6832A98F7B78726629716ConstrainingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

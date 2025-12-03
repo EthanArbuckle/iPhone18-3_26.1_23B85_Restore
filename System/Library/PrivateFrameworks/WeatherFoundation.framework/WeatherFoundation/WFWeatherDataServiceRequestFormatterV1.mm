@@ -1,15 +1,15 @@
 @interface WFWeatherDataServiceRequestFormatterV1
-+ (id)aqiRequestForScaleNamed:(id)a3 language:(id)a4;
-+ (id)forecastRequest:(unint64_t)a3 forLocation:(id)a4 withUnits:(int)a5 locale:(id)a6 date:(id)a7 rules:(id)a8 options:(id)a9;
-+ (id)geocodePathForLocation:(id)a3 rules:(id)a4;
-+ (id)hostURLForEnvironment:(id)a3;
++ (id)aqiRequestForScaleNamed:(id)named language:(id)language;
++ (id)forecastRequest:(unint64_t)request forLocation:(id)location withUnits:(int)units locale:(id)locale date:(id)date rules:(id)rules options:(id)options;
++ (id)geocodePathForLocation:(id)location rules:(id)rules;
++ (id)hostURLForEnvironment:(id)environment;
 + (id)hostURLForService;
-+ (id)languagePathForLocale:(id)a3;
++ (id)languagePathForLocale:(id)locale;
 @end
 
 @implementation WFWeatherDataServiceRequestFormatterV1
 
-+ (id)hostURLForEnvironment:(id)a3
++ (id)hostURLForEnvironment:(id)environment
 {
   v3 = WeatherFoundationInternalUserDefaults();
   v4 = [v3 stringForKey:@"WDSEndpointOverride"];
@@ -76,66 +76,66 @@
   return [v2 hostURLForEnvironment:0];
 }
 
-+ (id)forecastRequest:(unint64_t)a3 forLocation:(id)a4 withUnits:(int)a5 locale:(id)a6 date:(id)a7 rules:(id)a8 options:(id)a9
++ (id)forecastRequest:(unint64_t)request forLocation:(id)location withUnits:(int)units locale:(id)locale date:(id)date rules:(id)rules options:(id)options
 {
   v81 = *MEMORY[0x277D85DE8];
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = v14;
-  v19 = a9;
-  v20 = [v14 geoLocation];
+  locationCopy = location;
+  localeCopy = locale;
+  dateCopy = date;
+  rulesCopy = rules;
+  v18 = locationCopy;
+  optionsCopy = options;
+  geoLocation = [locationCopy geoLocation];
 
-  if (v20)
+  if (geoLocation)
   {
-    v69 = v19;
+    v69 = optionsCopy;
     v21 = +[WFWeatherConditions calendar];
     v22 = [v21 copy];
 
-    v23 = [v18 timeZone];
-    v70 = v15;
-    if (v23)
+    timeZone = [v18 timeZone];
+    v70 = localeCopy;
+    if (timeZone)
     {
-      [v22 setTimeZone:v23];
+      [v22 setTimeZone:timeZone];
     }
 
     else
     {
-      v27 = [MEMORY[0x277CBEBB0] systemTimeZone];
-      [v22 setTimeZone:v27];
+      systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+      [v22 setTimeZone:systemTimeZone];
     }
 
     v64 = v22;
-    v65 = v16;
-    v28 = [v22 components:28 fromDate:v16];
+    v65 = dateCopy;
+    v28 = [v22 components:28 fromDate:dateCopy];
     v29 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v28, "year")}];
-    v68 = [v29 stringValue];
+    stringValue = [v29 stringValue];
 
     v30 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v28, "day")}];
-    v72 = [v30 stringValue];
+    stringValue2 = [v30 stringValue];
 
     v31 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v28, "month")}];
-    v71 = [v31 stringValue];
+    stringValue3 = [v31 stringValue];
 
     v32 = [MEMORY[0x277CBEB18] arrayWithCapacity:12];
     v33 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v34 = a3;
+    requestCopy2 = request;
     v63 = v28;
-    if (WFForecastTypeIsRequestedInTypes(1, a3))
+    if (WFForecastTypeIsRequestedInTypes(1, request))
     {
-      if (v17 && ![v18 shouldQueryForAirQualityData])
+      if (rulesCopy && ![v18 shouldQueryForAirQualityData])
       {
-        if (WFForecastTypeIsSingleType(a3))
+        if (WFForecastTypeIsSingleType(request))
         {
-          v24 = v17;
+          v24 = rulesCopy;
           v26 = 0;
-          v19 = v69;
-          v15 = v70;
+          optionsCopy = v69;
+          localeCopy = v70;
 LABEL_54:
 
           v25 = v64;
-          v16 = v65;
+          dateCopy = v65;
           goto LABEL_55;
         }
 
@@ -147,90 +147,90 @@ LABEL_54:
           _os_log_impl(&dword_272B94000, v59, OS_LOG_TYPE_DEFAULT, "AQI is not enabled for the location. AQI will not be requested. location=%{public}@", buf, 0xCu);
         }
 
-        v34 = a3;
+        requestCopy2 = request;
       }
 
       else
       {
-        v34 = a3 & 0xFFFFFFFFFFFFFFFELL;
+        requestCopy2 = request & 0xFFFFFFFFFFFFFFFELL;
         [v32 addObject:@"air_quality"];
       }
     }
 
-    if (WFForecastTypeIsRequestedInTypes(2, v34))
+    if (WFForecastTypeIsRequestedInTypes(2, requestCopy2))
     {
-      v34 &= ~2uLL;
+      requestCopy2 &= ~2uLL;
       [v32 addObject:@"current_observations"];
     }
 
-    if (WFForecastTypeIsRequestedInTypes(4, v34))
+    if (WFForecastTypeIsRequestedInTypes(4, requestCopy2))
     {
-      v34 &= ~4uLL;
+      requestCopy2 &= ~4uLL;
       [v32 addObject:@"hourly_forecast"];
     }
 
-    if (WFForecastTypeIsRequestedInTypes(8, v34))
+    if (WFForecastTypeIsRequestedInTypes(8, requestCopy2))
     {
-      v34 &= ~8uLL;
+      requestCopy2 &= ~8uLL;
       [v32 addObject:@"daily_forecast"];
     }
 
-    if (WFForecastTypeIsRequestedInTypes(256, v34))
+    if (WFForecastTypeIsRequestedInTypes(256, requestCopy2))
     {
-      v34 &= ~0x100uLL;
+      requestCopy2 &= ~0x100uLL;
       [v32 addObject:@"now_links"];
     }
 
-    if (WFForecastTypeIsRequestedInTypes(16, v34))
+    if (WFForecastTypeIsRequestedInTypes(16, requestCopy2))
     {
-      v34 &= ~0x10uLL;
+      requestCopy2 &= ~0x10uLL;
       [v32 addObject:@"primaryPollutant"];
     }
 
-    if (WFForecastTypeIsRequestedInTypes(64, v34))
+    if (WFForecastTypeIsRequestedInTypes(64, requestCopy2))
     {
-      v34 &= ~0x40uLL;
+      requestCopy2 &= ~0x40uLL;
       [v32 addObject:@"daily_history"];
-      v35 = [MEMORY[0x277CCAD18] queryItemWithName:@"dayOfMonth" value:v72];
+      v35 = [MEMORY[0x277CCAD18] queryItemWithName:@"dayOfMonth" value:stringValue2];
       [v33 addObject:v35];
 
-      v36 = [MEMORY[0x277CCAD18] queryItemWithName:@"month" value:v71];
+      v36 = [MEMORY[0x277CCAD18] queryItemWithName:@"month" value:stringValue3];
       [v33 addObject:v36];
 
-      v37 = [MEMORY[0x277CCAD18] queryItemWithName:@"year" value:v68];
+      v37 = [MEMORY[0x277CCAD18] queryItemWithName:@"year" value:stringValue];
       [v33 addObject:v37];
     }
 
-    if (WFForecastTypeIsRequestedInTypes(128, v34))
+    if (WFForecastTypeIsRequestedInTypes(128, requestCopy2))
     {
-      v34 &= ~0x80uLL;
+      requestCopy2 &= ~0x80uLL;
       [v32 addObject:@"daily_almanac"];
-      v38 = [MEMORY[0x277CCAD18] queryItemWithName:@"dayOfMonth" value:v72];
+      v38 = [MEMORY[0x277CCAD18] queryItemWithName:@"dayOfMonth" value:stringValue2];
       [v33 addObject:v38];
 
-      v39 = [MEMORY[0x277CCAD18] queryItemWithName:@"month" value:v71];
+      v39 = [MEMORY[0x277CCAD18] queryItemWithName:@"month" value:stringValue3];
       [v33 addObject:v39];
     }
 
-    if (WFForecastTypeIsRequestedInTypes(512, v34))
+    if (WFForecastTypeIsRequestedInTypes(512, requestCopy2))
     {
-      v34 &= ~0x200uLL;
+      requestCopy2 &= ~0x200uLL;
       [v32 addObject:@"weather_change"];
     }
 
-    if (WFForecastTypeIsRequestedInTypes(1024, v34))
+    if (WFForecastTypeIsRequestedInTypes(1024, requestCopy2))
     {
-      v34 &= ~0x400uLL;
+      requestCopy2 &= ~0x400uLL;
       [v32 addObject:@"severe_weather"];
     }
 
-    if (WFForecastTypeIsRequestedInTypes(2048, v34))
+    if (WFForecastTypeIsRequestedInTypes(2048, requestCopy2))
     {
-      v34 &= ~0x800uLL;
+      requestCopy2 &= ~0x800uLL;
       [v32 addObject:@"next_hour_forecast"];
     }
 
-    if (v34)
+    if (requestCopy2)
     {
       v40 = WFLogForCategory(0);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
@@ -241,45 +241,45 @@ LABEL_54:
 
     if (![v32 count])
     {
-      v24 = v17;
-      v41 = WFLogForCategory(0);
-      if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
+      v24 = rulesCopy;
+      hostURLForService = WFLogForCategory(0);
+      if (os_log_type_enabled(hostURLForService, OS_LOG_TYPE_ERROR))
       {
         v60 = objc_opt_class();
         *buf = 138543874;
         v76 = v60;
         v77 = 2048;
-        v78 = a3;
+        requestCopy3 = request;
         v79 = 2112;
         v80 = v18;
         v61 = v60;
-        _os_log_error_impl(&dword_272B94000, v41, OS_LOG_TYPE_ERROR, "%{public}@ is unable to build %lu forecast request for %@.", buf, 0x20u);
+        _os_log_error_impl(&dword_272B94000, hostURLForService, OS_LOG_TYPE_ERROR, "%{public}@ is unable to build %lu forecast request for %@.", buf, 0x20u);
       }
 
       v26 = 0;
       goto LABEL_53;
     }
 
-    v41 = [a1 hostURLForService];
+    hostURLForService = [self hostURLForService];
     v42 = [v32 componentsJoinedByString:{@", "}];
-    v43 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v41 resolvingAgainstBaseURL:0];
+    v43 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:hostURLForService resolvingAgainstBaseURL:0];
     v62 = v42;
     v44 = [MEMORY[0x277CCAD18] queryItemWithName:@"include" value:v42];
     [v33 addObject:v44];
 
-    if ((a5 - 2) < 2)
+    if ((units - 2) < 2)
     {
       v46 = @"m";
     }
 
-    else if (a5 == 1)
+    else if (units == 1)
     {
       v46 = @"e";
     }
 
     else
     {
-      if (!a5)
+      if (!units)
       {
         v45 = MEMORY[0x277CCAD18];
         v46 = @"m";
@@ -287,13 +287,13 @@ LABEL_50:
         v47 = [v45 queryItemWithName:@"units" value:v46];
         [v33 addObject:v47];
 
-        v48 = [v33 allObjects];
-        [v43 setQueryItems:v48];
+        allObjects = [v33 allObjects];
+        [v43 setQueryItems:allObjects];
 
-        v49 = [a1 languagePathForLocale:v70];
+        v49 = [self languagePathForLocale:v70];
         v67 = v18;
-        v24 = v17;
-        v50 = [objc_opt_class() geocodePathForLocation:v18 rules:v17];
+        v24 = rulesCopy;
+        v50 = [objc_opt_class() geocodePathForLocation:v18 rules:rulesCopy];
         v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"/v1/weather/%@/%@", v49, v50];
         [v43 setPath:v51];
 
@@ -306,14 +306,14 @@ LABEL_50:
 
         [v54 setHTTPMethod:@"GET"];
         [v54 setHTTPShouldHandleCookies:0];
-        v56 = [v69 httpHeaderDictionary];
+        httpHeaderDictionary = [v69 httpHeaderDictionary];
         v73[0] = MEMORY[0x277D85DD0];
         v73[1] = 3221225472;
         v73[2] = __106__WFWeatherDataServiceRequestFormatterV1_forecastRequest_forLocation_withUnits_locale_date_rules_options___block_invoke;
         v73[3] = &unk_279E6ED10;
         v26 = v54;
         v74 = v26;
-        [v56 enumerateKeysAndObjectsUsingBlock:v73];
+        [httpHeaderDictionary enumerateKeysAndObjectsUsingBlock:v73];
         v57 = WFLogForCategory(2uLL);
         if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
         {
@@ -322,9 +322,9 @@ LABEL_50:
 
         v18 = v67;
 LABEL_53:
-        v19 = v69;
+        optionsCopy = v69;
 
-        v15 = v70;
+        localeCopy = v70;
         goto LABEL_54;
       }
 
@@ -335,7 +335,7 @@ LABEL_53:
     goto LABEL_50;
   }
 
-  v24 = v17;
+  v24 = rulesCopy;
   v25 = WFLogForCategory(2uLL);
   if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
   {
@@ -348,21 +348,21 @@ LABEL_55:
   return v26;
 }
 
-+ (id)aqiRequestForScaleNamed:(id)a3 language:(id)a4
++ (id)aqiRequestForScaleNamed:(id)named language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  namedCopy = named;
+  languageCopy = language;
+  if (namedCopy)
   {
-    v8 = [MEMORY[0x277CBEAF8] currentLocale];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
     v9 = MEMORY[0x277CCACA8];
-    v10 = [v8 countryCode];
-    v11 = [v9 stringWithFormat:@"%@_%@", v7, v10];
+    countryCode = [currentLocale countryCode];
+    v11 = [v9 stringWithFormat:@"%@_%@", languageCopy, countryCode];
 
-    v12 = [a1 hostURLForService];
-    v13 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v12 resolvingAgainstBaseURL:0];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/%@", @"/v1/airQualityScale", v11, v6];
-    [v13 setPath:v14];
+    hostURLForService = [self hostURLForService];
+    v13 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:hostURLForService resolvingAgainstBaseURL:0];
+    namedCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@/%@", @"/v1/airQualityScale", v11, namedCopy];
+    [v13 setPath:namedCopy];
 
     v15 = MEMORY[0x277CCAB70];
     v16 = [v13 URL];
@@ -382,10 +382,10 @@ LABEL_55:
 
   else
   {
-    v8 = WFLogForCategory(2uLL);
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    currentLocale = WFLogForCategory(2uLL);
+    if (os_log_type_enabled(currentLocale, OS_LOG_TYPE_ERROR))
     {
-      [WFWeatherDataServiceRequestFormatterV1 aqiRequestForScaleNamed:v8 language:?];
+      [WFWeatherDataServiceRequestFormatterV1 aqiRequestForScaleNamed:currentLocale language:?];
     }
 
     v17 = 0;
@@ -394,22 +394,22 @@ LABEL_55:
   return v17;
 }
 
-+ (id)geocodePathForLocation:(id)a3 rules:(id)a4
++ (id)geocodePathForLocation:(id)location rules:(id)rules
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  locationCopy = location;
+  rulesCopy = rules;
+  v7 = rulesCopy;
+  if (rulesCopy)
   {
-    v8 = [v6 locationNumDecimalsOfPrecision];
-    if (v8 < 0)
+    locationNumDecimalsOfPrecision = [rulesCopy locationNumDecimalsOfPrecision];
+    if (locationNumDecimalsOfPrecision < 0)
     {
       v9 = MEMORY[0x277CCACA8];
-      v10 = [v5 geoLocation];
-      [v10 coordinate];
+      geoLocation = [locationCopy geoLocation];
+      [geoLocation coordinate];
       v12 = v11;
-      v13 = [v5 geoLocation];
-      [v13 coordinate];
+      geoLocation2 = [locationCopy geoLocation];
+      [geoLocation2 coordinate];
       v15 = [v9 stringWithFormat:@"%f/%f", v12, v14];
 
       v16 = WFLogForCategory(2uLL);
@@ -424,24 +424,24 @@ LABEL_55:
 
   else
   {
-    v8 = 3;
+    locationNumDecimalsOfPrecision = 3;
   }
 
   v17 = MEMORY[0x277CCACA8];
-  v18 = [v5 geoLocation];
-  [v18 coordinate];
-  v16 = [v17 stringWithFormat:@"%.*f", v8, v19];
+  geoLocation3 = [locationCopy geoLocation];
+  [geoLocation3 coordinate];
+  v16 = [v17 stringWithFormat:@"%.*f", locationNumDecimalsOfPrecision, v19];
 
   v20 = MEMORY[0x277CCACA8];
-  v21 = [v5 geoLocation];
-  [v21 coordinate];
-  v23 = [v20 stringWithFormat:@"%.*f", v8, v22];
+  geoLocation4 = [locationCopy geoLocation];
+  [geoLocation4 coordinate];
+  v23 = [v20 stringWithFormat:@"%.*f", locationNumDecimalsOfPrecision, v22];
 
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v16, v23];
   v24 = WFLogForCategory(2uLL);
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
   {
-    [(WFWeatherDataServiceRequestFormatterV1 *)v15 geocodePathForLocation:v8 rules:v24];
+    [(WFWeatherDataServiceRequestFormatterV1 *)v15 geocodePathForLocation:locationNumDecimalsOfPrecision rules:v24];
   }
 
 LABEL_9:
@@ -449,20 +449,20 @@ LABEL_9:
   return v15;
 }
 
-+ (id)languagePathForLocale:(id)a3
++ (id)languagePathForLocale:(id)locale
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
-  v5 = [v3 mainBundle];
-  v6 = [v5 preferredLocalizations];
-  v7 = [v6 objectAtIndex:0];
+  localeCopy = locale;
+  mainBundle = [v3 mainBundle];
+  preferredLocalizations = [mainBundle preferredLocalizations];
+  v7 = [preferredLocalizations objectAtIndex:0];
 
   v8 = [v7 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
 
   v9 = MEMORY[0x277CCACA8];
-  v10 = [v4 countryCode];
+  countryCode = [localeCopy countryCode];
 
-  v11 = [v9 stringWithFormat:@"%@_%@", v8, v10];
+  v11 = [v9 stringWithFormat:@"%@_%@", v8, countryCode];
 
   return v11;
 }

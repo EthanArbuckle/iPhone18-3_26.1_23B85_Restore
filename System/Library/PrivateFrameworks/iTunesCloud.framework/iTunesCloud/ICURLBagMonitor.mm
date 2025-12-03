@@ -4,76 +4,76 @@
 - (NSString)description;
 - (id)_description;
 - (id)_init;
-- (id)beginObservingBagWithHandler:(id)a3;
+- (id)beginObservingBagWithHandler:(id)handler;
 - (void)_beginObservingBag;
 - (void)_endObservingBag;
-- (void)_handleUserIdentityStoreDidChange:(id)a3;
+- (void)_handleUserIdentityStoreDidChange:(id)change;
 - (void)_invalidateBagExpirationTimer;
-- (void)_requestBagWithPolicy:(unint64_t)a3 completionHandler:(id)a4;
-- (void)_scheduleBagExpirationTimerForDate:(id)a3;
-- (void)_updateWithBag:(id)a3;
+- (void)_requestBagWithPolicy:(unint64_t)policy completionHandler:(id)handler;
+- (void)_scheduleBagExpirationTimerForDate:(id)date;
+- (void)_updateWithBag:(id)bag;
 - (void)dealloc;
-- (void)endObservingBagWithToken:(id)a3;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
+- (void)endObservingBagWithToken:(id)token;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
 @end
 
 @implementation ICURLBagMonitor
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reachabilityCopy = reachability;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  v5 = [v4 isRemoteServerLikelyReachable];
+  isRemoteServerLikelyReachable = [reachabilityCopy isRemoteServerLikelyReachable];
 
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = v5;
+    v10 = isRemoteServerLikelyReachable;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Handling network reachability change; isRemoteServerLikelyReachable = %{BOOL}u.", &v7, 0x12u);
   }
 
-  if (v5)
+  if (isRemoteServerLikelyReachable)
   {
     [(ICURLBagMonitor *)self _requestBagWithPolicy:1 completionHandler:0];
   }
 }
 
-- (void)_updateWithBag:(id)a3
+- (void)_updateWithBag:(id)bag
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  bagCopy = bag;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if (![(ICURLBag *)self->_bag isEqual:v5])
+  if (![(ICURLBag *)self->_bag isEqual:bagCopy])
   {
-    objc_storeStrong(&self->_bag, a3);
+    objc_storeStrong(&self->_bag, bag);
     v11 = [(NSMutableDictionary *)self->_observers copy];
     v13 = [v11 count];
     v14 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(ICURLBagMonitor *)self _description];
-      v16 = [v5 serverCorrelationKey];
-      v17 = [v5 serverEnvironment];
-      v18 = v17;
+      _description = [(ICURLBagMonitor *)self _description];
+      serverCorrelationKey = [bagCopy serverCorrelationKey];
+      serverEnvironment = [bagCopy serverEnvironment];
+      v18 = serverEnvironment;
       *buf = 138544642;
       v19 = "s";
-      v25 = v15;
+      v25 = _description;
       if (v13 == 1)
       {
         v19 = "";
       }
 
       v26 = 2114;
-      v27 = v5;
+      v27 = bagCopy;
       v28 = 2114;
-      v29 = v16;
+      v29 = serverCorrelationKey;
       v30 = 2114;
-      v31 = v17;
+      v31 = serverEnvironment;
       v32 = 2048;
       v33 = v13;
       v34 = 2080;
@@ -87,23 +87,23 @@
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(ICURLBagMonitor *)self _description];
+    _description2 = [(ICURLBagMonitor *)self _description];
     *buf = 138543362;
-    v25 = v7;
+    v25 = _description2;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Bag did not change. Skipping invoking observation handlers.", buf, 0xCu);
   }
 
-  v8 = [(ICURLBag *)self->_bag expirationDate];
-  v9 = [v5 expirationDate];
-  v10 = [v8 compare:v9];
+  expirationDate = [(ICURLBag *)self->_bag expirationDate];
+  expirationDate2 = [bagCopy expirationDate];
+  v10 = [expirationDate compare:expirationDate2];
 
   v11 = 0;
   v12 = 0;
   if (v10 == -1)
   {
 LABEL_11:
-    v20 = [v5 expirationDate];
-    [(ICURLBagMonitor *)self _scheduleBagExpirationTimerForDate:v20];
+    expirationDate3 = [bagCopy expirationDate];
+    [(ICURLBagMonitor *)self _scheduleBagExpirationTimerForDate:expirationDate3];
 
     v12 = v11;
   }
@@ -114,8 +114,8 @@ LABEL_11:
   v22[2] = __34__ICURLBagMonitor__updateWithBag___block_invoke;
   v22[3] = &unk_1E7BF6828;
   v22[4] = self;
-  v23 = v5;
-  v21 = v5;
+  v23 = bagCopy;
+  v21 = bagCopy;
   [v12 enumerateKeysAndObjectsUsingBlock:v22];
 }
 
@@ -141,18 +141,18 @@ void __34__ICURLBagMonitor__updateWithBag___block_invoke(uint64_t a1, void *a2, 
   v6[2](v6, *(a1 + 40));
 }
 
-- (void)_requestBagWithPolicy:(unint64_t)a3 completionHandler:(id)a4
+- (void)_requestBagWithPolicy:(unint64_t)policy completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  if (a3 == 1)
+  if (policy == 1)
   {
     v7 = 0;
     v8 = @"requireValidBag";
   }
 
-  else if (a3)
+  else if (policy)
   {
     v8 = 0;
     v7 = 0;
@@ -176,7 +176,7 @@ void __34__ICURLBagMonitor__updateWithBag___block_invoke(uint64_t a1, void *a2, 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
     v21 = v8;
     _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Requesting bag with policy %{public}@.", buf, 0x16u);
@@ -188,8 +188,8 @@ void __34__ICURLBagMonitor__updateWithBag___block_invoke(uint64_t a1, void *a2, 
   v14[2] = __59__ICURLBagMonitor__requestBagWithPolicy_completionHandler___block_invoke_29;
   v14[3] = &unk_1E7BF68D8;
   v14[4] = self;
-  v15 = v6;
-  v13 = v6;
+  v15 = handlerCopy;
+  v13 = handlerCopy;
   [v12 getBagForRequestContext:v10 withCompletionHandler:v14];
 }
 
@@ -237,19 +237,19 @@ void __59__ICURLBagMonitor__requestBagWithPolicy_completionHandler___block_invok
   }
 }
 
-- (void)_handleUserIdentityStoreDidChange:(id)a3
+- (void)_handleUserIdentityStoreDidChange:(id)change
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_not_owner(&self->_lock);
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [changeCopy name];
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Handling %{public}@.", &v7, 0x16u);
   }
 
@@ -260,8 +260,8 @@ void __59__ICURLBagMonitor__requestBagWithPolicy_completionHandler___block_invok
 {
   v9 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"ICUserIdentityStoreDidChangeNotification" object:self->_identityStore];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"ICUserIdentityStoreDidChangeNotification" object:self->_identityStore];
   [(ICURLBagMonitor *)self _invalidateBagExpirationTimer];
   v4 = +[ICEnvironmentMonitor sharedMonitor];
   [v4 unregisterObserver:self];
@@ -269,9 +269,9 @@ void __59__ICURLBagMonitor__requestBagWithPolicy_completionHandler___block_invok
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICURLBagMonitor *)self _description];
+    _description = [(ICURLBagMonitor *)self _description];
     v7 = 138543362;
-    v8 = v6;
+    v8 = _description;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopped observing bag.", &v7, 0xCu);
   }
 }
@@ -283,31 +283,31 @@ void __59__ICURLBagMonitor__requestBagWithPolicy_completionHandler___block_invok
   v3 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(ICURLBagMonitor *)self _description];
+    _description = [(ICURLBagMonitor *)self _description];
     v8 = 138543362;
-    v9 = v4;
+    v9 = _description;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Beginning to observe bag.", &v8, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel__handleUserIdentityStoreDidChange_ name:@"ICUserIdentityStoreDidChangeNotification" object:self->_identityStore];
-  v6 = [(ICURLBag *)self->_bag expirationDate];
-  if (v6)
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleUserIdentityStoreDidChange_ name:@"ICUserIdentityStoreDidChangeNotification" object:self->_identityStore];
+  expirationDate = [(ICURLBag *)self->_bag expirationDate];
+  if (expirationDate)
   {
-    [(ICURLBagMonitor *)self _scheduleBagExpirationTimerForDate:v6];
+    [(ICURLBagMonitor *)self _scheduleBagExpirationTimerForDate:expirationDate];
   }
 
   v7 = +[ICEnvironmentMonitor sharedMonitor];
   [v7 registerObserver:self];
 }
 
-- (void)_scheduleBagExpirationTimerForDate:(id)a3
+- (void)_scheduleBagExpirationTimerForDate:(id)date
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_assert_owner(&self->_lock);
   [(ICURLBagMonitor *)self _invalidateBagExpirationTimer];
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v6 = v5;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -315,11 +315,11 @@ void __59__ICURLBagMonitor__requestBagWithPolicy_completionHandler___block_invok
   {
     if (v8)
     {
-      v10 = [(ICURLBagMonitor *)self _description];
+      _description = [(ICURLBagMonitor *)self _description];
       *buf = 138543874;
-      v20 = v10;
+      v20 = _description;
       v21 = 2114;
-      v22 = v4;
+      v22 = dateCopy;
       v23 = 2048;
       v24 = v6;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Scheduling timer for bag expiration for date %{public}@; i.e. for %.1f seconds.", buf, 0x20u);
@@ -350,11 +350,11 @@ void __59__ICURLBagMonitor__requestBagWithPolicy_completionHandler___block_invok
   {
     if (v8)
     {
-      v9 = [(ICURLBagMonitor *)self _description];
+      _description2 = [(ICURLBagMonitor *)self _description];
       *buf = 138543618;
-      v20 = v9;
+      v20 = _description2;
       v21 = 2114;
-      v22 = v4;
+      v22 = dateCopy;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Bag expiration date is in the past: %{public}@. Not scheduling timer for bag expiration.", buf, 0x16u);
     }
   }
@@ -389,30 +389,30 @@ void __54__ICURLBagMonitor__scheduleBagExpirationTimerForDate___block_invoke(uin
     v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(ICURLBagMonitor *)self _description];
+      _description = [(ICURLBagMonitor *)self _description];
       v7 = 138543362;
-      v8 = v6;
+      v8 = _description;
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Invalidated timer for bag expiration.", &v7, 0xCu);
     }
   }
 }
 
-- (void)endObservingBagWithToken:(id)a3
+- (void)endObservingBagWithToken:(id)token
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(NSMutableDictionary *)self->_observers removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_observers removeObjectForKey:tokenCopy];
   v5 = [(NSMutableDictionary *)self->_observers count];
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(ICURLBagMonitor *)self _description];
+    _description = [(ICURLBagMonitor *)self _description];
     v8 = 138543618;
-    v9 = v7;
+    v9 = _description;
     v10 = 2114;
-    v11 = v4;
+    v11 = tokenCopy;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Removed bag observer with token: %{public}@.", &v8, 0x16u);
   }
 
@@ -424,28 +424,28 @@ void __54__ICURLBagMonitor__scheduleBagExpirationTimerForDate___block_invoke(uin
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)beginObservingBagWithHandler:(id)a3
+- (id)beginObservingBagWithHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   os_unfair_lock_lock(&self->_lock);
   observers = self->_observers;
-  v7 = [v4 copy];
+  v7 = [handlerCopy copy];
 
   v8 = MEMORY[0x1B8C781E0](v7);
-  [(NSMutableDictionary *)observers setObject:v8 forKey:v5];
+  [(NSMutableDictionary *)observers setObject:v8 forKey:uUID];
 
   v9 = [(NSMutableDictionary *)self->_observers count];
   v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(ICURLBagMonitor *)self _description];
+    _description = [(ICURLBagMonitor *)self _description];
     *buf = 138543618;
-    v15 = v11;
+    v15 = _description;
     v16 = 2114;
-    v17 = v5;
+    v17 = uUID;
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Registered new bag observer with token: %{public}@.", buf, 0x16u);
   }
 
@@ -466,7 +466,7 @@ void __54__ICURLBagMonitor__scheduleBagExpirationTimerForDate___block_invoke(uin
     os_unfair_lock_unlock(&self->_lock);
   }
 
-  return v5;
+  return uUID;
 }
 
 - (ICURLBag)bag
@@ -483,10 +483,10 @@ void __54__ICURLBagMonitor__scheduleBagExpirationTimerForDate___block_invoke(uin
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(ICURLBagMonitor *)self _description];
+  _description = [(ICURLBagMonitor *)self _description];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _description;
 }
 
 - (id)_description

@@ -1,6 +1,6 @@
 @interface MBFollowupPrebuddyViewController
 - (BOOL)_hasDisabledCategories;
-- (BOOL)_showExpensiveNetworkPromptBeforeNextViewController:(id)a3;
+- (BOOL)_showExpensiveNetworkPromptBeforeNextViewController:(id)controller;
 - (id)_dateOfLastBackup;
 - (id)_disabledBackupDomains;
 - (id)_disabledSyncCategories;
@@ -8,25 +8,25 @@
 - (id)_extraStorageOfferViewController;
 - (id)_gettingStartedViewController;
 - (id)_initialViewController;
-- (id)_moveAllAppsAndDataViewControllerWithDisabledSyncCategories:(id)a3 disabledBackupDomains:(id)a4;
+- (id)_moveAllAppsAndDataViewControllerWithDisabledSyncCategories:(id)categories disabledBackupDomains:(id)domains;
 - (id)_startTransferViewController;
 - (id)_telemetryQueue;
 - (id)_viewControllerAfterExtraStorageOffer;
-- (id)_viewControllerAfterGettingStarted:(id)a3;
+- (id)_viewControllerAfterGettingStarted:(id)started;
 - (id)_xpcQueue;
 - (int64_t)_entryPoint;
-- (int64_t)_prebuddyTelemetryForStep:(int64_t)a3;
-- (void)_beginBackup:(id)a3;
-- (void)_extendExpirationDate:(id)a3;
+- (int64_t)_prebuddyTelemetryForStep:(int64_t)step;
+- (void)_beginBackup:(id)backup;
+- (void)_extendExpirationDate:(id)date;
 - (void)_fetchDeepLinkURL;
-- (void)_presentError:(id)a3;
-- (void)_presentNavigationViewControllerWithRootViewController:(id)a3;
-- (void)_presentNextViewController:(id)a3;
-- (void)mb_didTapCancelFromViewController:(id)a3;
-- (void)mb_didTapNextFromViewController:(id)a3;
-- (void)prebuddyCancel:(id)a3;
-- (void)prebuddyDone:(id)a3;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
+- (void)_presentError:(id)error;
+- (void)_presentNavigationViewControllerWithRootViewController:(id)controller;
+- (void)_presentNextViewController:(id)controller;
+- (void)mb_didTapCancelFromViewController:(id)controller;
+- (void)mb_didTapNextFromViewController:(id)controller;
+- (void)prebuddyCancel:(id)cancel;
+- (void)prebuddyDone:(id)done;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
 @end
 
 @implementation MBFollowupPrebuddyViewController
@@ -58,20 +58,20 @@
 - (id)_dateOfLastBackup
 {
   v2 = +[MBPrebuddyManager sharedManager];
-  v3 = [v2 dateOfLastBackup];
+  dateOfLastBackup = [v2 dateOfLastBackup];
 
   v4 = objc_opt_new();
   [v4 setDateStyle:2];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:dateOfLastBackup];
 
   return v5;
 }
 
 - (int64_t)_entryPoint
 {
-  v3 = [(MBFollowupPrebuddyViewController *)self deepLinkURL];
+  deepLinkURL = [(MBFollowupPrebuddyViewController *)self deepLinkURL];
 
-  if (v3)
+  if (deepLinkURL)
   {
     return 2;
   }
@@ -148,16 +148,16 @@
 
 - (BOOL)_hasDisabledCategories
 {
-  v3 = [(MBFollowupPrebuddyViewController *)self _disabledSyncCategories];
-  if ([v3 count])
+  _disabledSyncCategories = [(MBFollowupPrebuddyViewController *)self _disabledSyncCategories];
+  if ([_disabledSyncCategories count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MBFollowupPrebuddyViewController *)self _disabledBackupDomains];
-    v4 = [v5 count] != 0;
+    _disabledBackupDomains = [(MBFollowupPrebuddyViewController *)self _disabledBackupDomains];
+    v4 = [_disabledBackupDomains count] != 0;
   }
 
   return v4;
@@ -169,7 +169,7 @@
   {
     if (self->_needsTemporaryStorage)
     {
-      v3 = [(MBFollowupPrebuddyViewController *)self _extraStorageOfferViewController];
+      _extraStorageOfferViewController = [(MBFollowupPrebuddyViewController *)self _extraStorageOfferViewController];
       goto LABEL_19;
     }
 
@@ -178,12 +178,12 @@
       goto LABEL_18;
     }
 
-    v9 = [(MBFollowupPrebuddyViewController *)self altDSIDForHSA2Upgrade];
-    if (!v9 && ![(MBFollowupPrebuddyViewController *)self _hasDisabledCategories])
+    altDSIDForHSA2Upgrade = [(MBFollowupPrebuddyViewController *)self altDSIDForHSA2Upgrade];
+    if (!altDSIDForHSA2Upgrade && ![(MBFollowupPrebuddyViewController *)self _hasDisabledCategories])
     {
       if (![(MBFollowupPrebuddyViewController *)self needsBackupEnabled])
       {
-        v3 = [(MBFollowupPrebuddyViewController *)self _doneViewController];
+        _extraStorageOfferViewController = [(MBFollowupPrebuddyViewController *)self _doneViewController];
         goto LABEL_19;
       }
 
@@ -193,29 +193,29 @@
     goto LABEL_17;
   }
 
-  v4 = [(NSError *)self->_eligibilityError domain];
-  v5 = [v4 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"];
+  domain = [(NSError *)self->_eligibilityError domain];
+  v5 = [domain isEqualToString:@"MBMegaBackupEligibilityErrorDomain"];
 
   if (v5)
   {
-    v6 = [(NSError *)self->_eligibilityError code];
-    if (v6 == 5)
+    code = [(NSError *)self->_eligibilityError code];
+    if (code == 5)
     {
       [(MBFollowupPrebuddyViewController *)self setInitiallyNeededHSA2Upgrade:1];
-      v9 = [(NSError *)self->_eligibilityError userInfo];
-      v10 = [v9 objectForKeyedSubscript:@"MBMegaBackupEligibilityErrorUserInfoAltDSIDKey"];
+      altDSIDForHSA2Upgrade = [(NSError *)self->_eligibilityError userInfo];
+      v10 = [altDSIDForHSA2Upgrade objectForKeyedSubscript:@"MBMegaBackupEligibilityErrorUserInfoAltDSIDKey"];
       [(MBFollowupPrebuddyViewController *)self setAltDSIDForHSA2Upgrade:v10];
 
 LABEL_17:
       goto LABEL_18;
     }
 
-    if (v6 == 1)
+    if (code == 1)
     {
       [(MBFollowupPrebuddyViewController *)self setNoInitialAccount:1];
       [(MBFollowupPrebuddyViewController *)self setNeedsAccountSignIn:1];
 LABEL_18:
-      v3 = [(MBFollowupPrebuddyViewController *)self _gettingStartedViewController];
+      _extraStorageOfferViewController = [(MBFollowupPrebuddyViewController *)self _gettingStartedViewController];
       goto LABEL_19;
     }
   }
@@ -231,20 +231,20 @@ LABEL_18:
     _MBLog();
   }
 
-  v3 = 0;
+  _extraStorageOfferViewController = 0;
 LABEL_19:
 
-  return v3;
+  return _extraStorageOfferViewController;
 }
 
 - (id)_gettingStartedViewController
 {
   v3 = [MBPrebuddyGettingStartedViewController alloc];
-  v4 = [(MBFollowupPrebuddyViewController *)self _entryPoint];
-  v5 = [(MBFollowupPrebuddyViewController *)self deepLinkURL];
-  v6 = [(MBFollowupPrebuddyViewController *)self needsAccountSignIn];
-  v7 = [(MBFollowupPrebuddyViewController *)self altDSIDForHSA2Upgrade];
-  v8 = [(MBPrebuddyGettingStartedViewController *)v3 initWithFlow:self entryPoint:v4 deepLinkURL:v5 needsAccountSignIn:v6 altDSIDForHSA2Upgrade:v7];
+  _entryPoint = [(MBFollowupPrebuddyViewController *)self _entryPoint];
+  deepLinkURL = [(MBFollowupPrebuddyViewController *)self deepLinkURL];
+  needsAccountSignIn = [(MBFollowupPrebuddyViewController *)self needsAccountSignIn];
+  altDSIDForHSA2Upgrade = [(MBFollowupPrebuddyViewController *)self altDSIDForHSA2Upgrade];
+  v8 = [(MBPrebuddyGettingStartedViewController *)v3 initWithFlow:self entryPoint:_entryPoint deepLinkURL:deepLinkURL needsAccountSignIn:needsAccountSignIn altDSIDForHSA2Upgrade:altDSIDForHSA2Upgrade];
 
   return v8;
 }
@@ -263,11 +263,11 @@ LABEL_19:
   return v2;
 }
 
-- (id)_moveAllAppsAndDataViewControllerWithDisabledSyncCategories:(id)a3 disabledBackupDomains:(id)a4
+- (id)_moveAllAppsAndDataViewControllerWithDisabledSyncCategories:(id)categories disabledBackupDomains:(id)domains
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[MBPrebuddyDisabledDataclassesViewController alloc] initWithFlow:self disabledSyncCategories:v7 disabledBackupDomains:v6 needsTemporaryStorage:[(MBFollowupPrebuddyViewController *)self needsTemporaryStorage]];
+  domainsCopy = domains;
+  categoriesCopy = categories;
+  v8 = [[MBPrebuddyDisabledDataclassesViewController alloc] initWithFlow:self disabledSyncCategories:categoriesCopy disabledBackupDomains:domainsCopy needsTemporaryStorage:[(MBFollowupPrebuddyViewController *)self needsTemporaryStorage]];
 
   return v8;
 }
@@ -279,23 +279,23 @@ LABEL_19:
   return v2;
 }
 
-- (id)_viewControllerAfterGettingStarted:(id)a3
+- (id)_viewControllerAfterGettingStarted:(id)started
 {
-  v4 = a3;
-  self->_eligibilityStatus = [v4 eligibilityStatus];
-  v5 = [v4 eligibilityError];
+  startedCopy = started;
+  self->_eligibilityStatus = [startedCopy eligibilityStatus];
+  eligibilityError = [startedCopy eligibilityError];
   eligibilityError = self->_eligibilityError;
-  self->_eligibilityError = v5;
+  self->_eligibilityError = eligibilityError;
 
-  self->_needsTemporaryStorage = [v4 needsTemporaryStorage];
-  v7 = [v4 daysUntilExpiration];
+  self->_needsTemporaryStorage = [startedCopy needsTemporaryStorage];
+  daysUntilExpiration = [startedCopy daysUntilExpiration];
 
-  self->_daysUntilExpiration = v7;
+  self->_daysUntilExpiration = daysUntilExpiration;
   if ([(MBFollowupPrebuddyViewController *)self noInitialAccount]|| [(MBFollowupPrebuddyViewController *)self needsTemporaryStorage])
   {
     if (self->_eligibilityStatus == 2)
     {
-      v8 = [(MBFollowupPrebuddyViewController *)self _startTransferViewController];
+      _startTransferViewController = [(MBFollowupPrebuddyViewController *)self _startTransferViewController];
     }
 
     else
@@ -311,40 +311,40 @@ LABEL_19:
         _MBLog();
       }
 
-      v8 = 0;
+      _startTransferViewController = 0;
     }
   }
 
   else
   {
-    v8 = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterExtraStorageOffer];
+    _startTransferViewController = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterExtraStorageOffer];
   }
 
-  return v8;
+  return _startTransferViewController;
 }
 
 - (id)_viewControllerAfterExtraStorageOffer
 {
-  v3 = [(MBFollowupPrebuddyViewController *)self _disabledSyncCategories];
-  v4 = [v3 allObjects];
+  _disabledSyncCategories = [(MBFollowupPrebuddyViewController *)self _disabledSyncCategories];
+  allObjects = [_disabledSyncCategories allObjects];
 
-  v5 = [(MBFollowupPrebuddyViewController *)self _disabledBackupDomains];
-  if ([v4 count] || objc_msgSend(v5, "count"))
+  _disabledBackupDomains = [(MBFollowupPrebuddyViewController *)self _disabledBackupDomains];
+  if ([allObjects count] || objc_msgSend(_disabledBackupDomains, "count"))
   {
-    v6 = [(MBFollowupPrebuddyViewController *)self _moveAllAppsAndDataViewControllerWithDisabledSyncCategories:v4 disabledBackupDomains:v5];
+    _viewControllerAfterMoveAllAppsAndData = [(MBFollowupPrebuddyViewController *)self _moveAllAppsAndDataViewControllerWithDisabledSyncCategories:allObjects disabledBackupDomains:_disabledBackupDomains];
   }
 
   else
   {
-    v6 = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterMoveAllAppsAndData];
+    _viewControllerAfterMoveAllAppsAndData = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterMoveAllAppsAndData];
   }
 
-  v7 = v6;
+  v7 = _viewControllerAfterMoveAllAppsAndData;
 
   return v7;
 }
 
-- (void)prebuddyDone:(id)a3
+- (void)prebuddyDone:(id)done
 {
   +[DKFollowUp clearFollowUp];
   v4 = dispatch_get_global_queue(25, 0);
@@ -356,7 +356,7 @@ LABEL_19:
   dispatch_async(v4, block);
 }
 
-- (void)prebuddyCancel:(id)a3
+- (void)prebuddyCancel:(id)cancel
 {
   v4 = dispatch_get_global_queue(25, 0);
   block[0] = _NSConcreteStackBlock;
@@ -367,24 +367,24 @@ LABEL_19:
   dispatch_async(v4, block);
 }
 
-- (void)_presentNavigationViewControllerWithRootViewController:(id)a3
+- (void)_presentNavigationViewControllerWithRootViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(MBFollowupPrebuddyViewController *)self navController];
+  controllerCopy = controller;
+  navController = [(MBFollowupPrebuddyViewController *)self navController];
 
-  if (v5)
+  if (navController)
   {
-    [v4 setModalPresentationStyle:0];
-    v6 = [(MBFollowupPrebuddyViewController *)self navController];
-    v9 = v4;
+    [controllerCopy setModalPresentationStyle:0];
+    navController2 = [(MBFollowupPrebuddyViewController *)self navController];
+    v9 = controllerCopy;
     v7 = [NSArray arrayWithObjects:&v9 count:1];
 
-    [v6 setViewControllers:v7 animated:0];
+    [navController2 setViewControllers:v7 animated:0];
   }
 
   else
   {
-    v8 = [[UINavigationController alloc] initWithRootViewController:v4];
+    v8 = [[UINavigationController alloc] initWithRootViewController:controllerCopy];
 
     [(MBFollowupPrebuddyViewController *)self setNavController:v8];
     [v8 setModalPresentationStyle:0];
@@ -393,22 +393,22 @@ LABEL_19:
   }
 }
 
-- (void)_presentError:(id)a3
+- (void)_presentError:(id)error
 {
-  v4 = a3;
-  v5 = [(MBFollowupPrebuddyViewController *)self loadingViewController];
-  [v5 stopAnimating];
+  errorCopy = error;
+  loadingViewController = [(MBFollowupPrebuddyViewController *)self loadingViewController];
+  [loadingViewController stopAnimating];
 
   v6 = MBLocalizedStringFromTable();
   v7 = MBLocalizedStringFromTable();
   v8 = MBLocalizedStringFromTable();
-  v9 = [v4 domain];
+  domain = [errorCopy domain];
   v10 = _ICQMegaBackupErrorDomain;
-  if ([v9 isEqualToString:_ICQMegaBackupErrorDomain])
+  if ([domain isEqualToString:_ICQMegaBackupErrorDomain])
   {
-    v11 = [v4 code];
+    code = [errorCopy code];
 
-    if (v11 == 5)
+    if (code == 5)
     {
       v12 = MGGetBoolAnswer();
       v13 = @"WIFI";
@@ -418,10 +418,10 @@ LABEL_19:
       }
 
       v14 = v13;
-      v15 = objc_opt_new();
+      domain5 = objc_opt_new();
       v16 = +[ACAccountStore defaultStore];
-      v17 = [v16 aa_primaryAppleAccount];
-      v18 = [v15 isBackupOnCellularAllowedWithAccount:v17 error:0];
+      aa_primaryAppleAccount = [v16 aa_primaryAppleAccount];
+      v18 = [domain5 isBackupOnCellularAllowedWithAccount:aa_primaryAppleAccount error:0];
 
       if (v18)
       {
@@ -447,12 +447,12 @@ LABEL_19:
   {
   }
 
-  v23 = [v4 domain];
-  if ([v23 isEqualToString:v10])
+  domain2 = [errorCopy domain];
+  if ([domain2 isEqualToString:v10])
   {
-    v24 = [v4 code];
+    code2 = [errorCopy code];
 
-    if (v24 == 6)
+    if (code2 == 6)
     {
 LABEL_27:
       v21 = MBLocalizedStringFromTable();
@@ -461,7 +461,7 @@ LABEL_27:
 
       v28 = MBLocalizedStringFromTable();
       v22 = 0;
-      v15 = v8;
+      domain5 = v8;
       goto LABEL_28;
     }
   }
@@ -470,19 +470,19 @@ LABEL_27:
   {
   }
 
-  v25 = [v4 domain];
-  if ([v25 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
+  domain3 = [errorCopy domain];
+  if ([domain3 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
   {
-    v26 = [v4 code];
+    code3 = [errorCopy code];
 
-    if (v26 == 6)
+    if (code3 == 6)
     {
       v21 = MBLocalizedStringFromTable();
 
       v27 = MBLocalizedStringFromTable();
 
       v28 = MBLocalizedStringFromTable();
-      v15 = v8;
+      domain5 = v8;
       v22 = 1;
 LABEL_28:
       v8 = v28;
@@ -497,12 +497,12 @@ LABEL_29:
   {
   }
 
-  v29 = [v4 domain];
-  if ([v29 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
+  domain4 = [errorCopy domain];
+  if ([domain4 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
   {
-    v30 = [v4 code];
+    code4 = [errorCopy code];
 
-    if (v30 == 2)
+    if (code4 == 2)
     {
       goto LABEL_27;
     }
@@ -512,18 +512,18 @@ LABEL_29:
   {
   }
 
-  v15 = [v4 domain];
-  if ([v15 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
+  domain5 = [errorCopy domain];
+  if ([domain5 isEqualToString:@"MBMegaBackupEligibilityErrorDomain"])
   {
-    if ([v4 code] == 3)
+    if ([errorCopy code] == 3)
     {
     }
 
     else
     {
-      v31 = [v4 code];
+      code5 = [errorCopy code];
 
-      if (v31 != 4)
+      if (code5 != 4)
       {
         v22 = 0;
         goto LABEL_31;
@@ -549,22 +549,22 @@ LABEL_31:
   v37[4] = self;
   v34 = [UIAlertAction actionWithTitle:v8 style:0 handler:v37];
   [v32 addAction:v34];
-  v35 = [(MBFollowupPrebuddyViewController *)self navController];
-  v36 = [v35 visibleViewController];
-  [v36 presentViewController:v32 animated:1 completion:0];
+  navController = [(MBFollowupPrebuddyViewController *)self navController];
+  visibleViewController = [navController visibleViewController];
+  [visibleViewController presentViewController:v32 animated:1 completion:0];
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 identifier];
-  v12 = [v11 isEqualToString:@"ExtendMegaBackupExpirationFollowUpIdentifier"];
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
+  identifier = [actionCopy identifier];
+  v12 = [identifier isEqualToString:@"ExtendMegaBackupExpirationFollowUpIdentifier"];
 
   if (v12)
   {
-    v10[2](v10, 0);
+    completionCopy[2](completionCopy, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000B4B8;
@@ -580,8 +580,8 @@ LABEL_31:
     goto LABEL_18;
   }
 
-  v13 = [v9 identifier];
-  v14 = [v13 isEqualToString:@"TrackOrderFollowUpIdentifier"];
+  identifier2 = [actionCopy identifier];
+  v14 = [identifier2 isEqualToString:@"TrackOrderFollowUpIdentifier"];
 
   if (v14)
   {
@@ -610,8 +610,8 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v20 = [v9 identifier];
-  v21 = [v20 isEqualToString:@"TurnOnAppsUsingiCloudFollowUpIdentifier"];
+  identifier3 = [actionCopy identifier];
+  v21 = [identifier3 isEqualToString:@"TurnOnAppsUsingiCloudFollowUpIdentifier"];
 
   if (v21)
   {
@@ -636,13 +636,13 @@ LABEL_16:
     }
 
 LABEL_17:
-    v10[2](v10, 1);
+    completionCopy[2](completionCopy, 1);
 
     goto LABEL_18;
   }
 
-  v24 = [v9 identifier];
-  v25 = [v24 isEqualToString:@"TurnOnAppsBackingUpFollowUpIdentifier"];
+  identifier4 = [actionCopy identifier];
+  v25 = [identifier4 isEqualToString:@"TurnOnAppsBackingUpFollowUpIdentifier"];
 
   if (v25)
   {
@@ -691,14 +691,14 @@ LABEL_17:
     }
   }
 
-  v33 = [v9 userInfo];
-  v34 = [v33 objectForKeyedSubscript:MBPrebuddyFollowUpIsManualSignalKey];
+  userInfo = [actionCopy userInfo];
+  v34 = [userInfo objectForKeyedSubscript:MBPrebuddyFollowUpIsManualSignalKey];
   -[MBFollowupPrebuddyViewController setFromManualSignal:](self, "setFromManualSignal:", [v34 BOOLValue]);
 
   [(MBFollowupPrebuddyViewController *)self _fetchDeepLinkURL];
-  v35 = [(MBFollowupPrebuddyViewController *)self _entryPoint];
+  _entryPoint = [(MBFollowupPrebuddyViewController *)self _entryPoint];
   v48 = 0;
-  LOBYTE(v34) = [v28 setEntryPointForMegaBackupTelemetry:v35 error:&v48];
+  LOBYTE(v34) = [v28 setEntryPointForMegaBackupTelemetry:_entryPoint error:&v48];
   v36 = v48;
   if ((v34 & 1) == 0)
   {
@@ -706,7 +706,7 @@ LABEL_17:
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v56 = v35;
+      v56 = _entryPoint;
       v57 = 2112;
       v58 = v36;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "Failed to set EntryPoint for MegaBackup telemetry to %ld: %@", buf, 0x16u);
@@ -718,7 +718,7 @@ LABEL_17:
   v39 = v38;
   if (self->_deepLinkURL && [(MBMegaBackupEligibilityManager *)v38 needsAccountSignIn])
   {
-    v10[2](v10, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   else
@@ -729,34 +729,34 @@ LABEL_17:
     v47[3] = &unk_10001C9C8;
     v47[4] = self;
     dispatch_async(&_dispatch_main_q, v47);
-    v40 = [(MBFollowupPrebuddyViewController *)self _xpcQueue];
+    _xpcQueue = [(MBFollowupPrebuddyViewController *)self _xpcQueue];
     v44[0] = _NSConcreteStackBlock;
     v44[1] = 3221225472;
     v44[2] = sub_10000B674;
     v44[3] = &unk_10001CA40;
     v44[4] = self;
     v45 = v39;
-    v46 = v35;
+    v46 = _entryPoint;
     v41 = v39;
-    dispatch_async(v40, v44);
+    dispatch_async(_xpcQueue, v44);
 
-    [(MBFollowupPrebuddyViewController *)self setFollowupItem:v8];
-    v10[2](v10, 0);
+    [(MBFollowupPrebuddyViewController *)self setFollowupItem:itemCopy];
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_18:
 }
 
-- (void)_extendExpirationDate:(id)a3
+- (void)_extendExpirationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[ACAccountStore defaultStore];
-  v6 = [v5 aa_primaryAppleAccount];
+  aa_primaryAppleAccount = [v5 aa_primaryAppleAccount];
 
-  if (v6)
+  if (aa_primaryAppleAccount)
   {
     v7 = objc_opt_new();
-    v8 = [v7 backupDeviceUUID];
+    backupDeviceUUID = [v7 backupDeviceUUID];
     v9 = +[NSDate now];
     v18 = 0;
     v10 = [v7 setPrebuddyUIDeltaTelemetry:@"MegaBackupRefreshDelta" date:v9 error:&v18];
@@ -782,41 +782,41 @@ LABEL_18:
     v15[2] = sub_10000BAB0;
     v15[3] = &unk_10001CAB8;
     v16 = v7;
-    v17 = v4;
+    v17 = dateCopy;
     v15[4] = self;
     v14 = v7;
-    [v13 extendExpirationForAccount:v6 deviceBackupUUID:v8 requestedExpirationDate:0 queue:&_dispatch_main_q completion:v15];
+    [v13 extendExpirationForAccount:aa_primaryAppleAccount deviceBackupUUID:backupDeviceUUID requestedExpirationDate:0 queue:&_dispatch_main_q completion:v15];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(dateCopy + 2))(dateCopy, 0);
   }
 }
 
-- (void)_beginBackup:(id)a3
+- (void)_beginBackup:(id)backup
 {
-  v4 = a3;
-  v5 = [(MBFollowupPrebuddyViewController *)self _xpcQueue];
+  backupCopy = backup;
+  _xpcQueue = [(MBFollowupPrebuddyViewController *)self _xpcQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000C328;
   v7[3] = &unk_10001C898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = backupCopy;
+  v6 = backupCopy;
+  dispatch_async(_xpcQueue, v7);
 }
 
-- (BOOL)_showExpensiveNetworkPromptBeforeNextViewController:(id)a3
+- (BOOL)_showExpensiveNetworkPromptBeforeNextViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_opt_new();
-  v6 = [v5 path];
-  v7 = [v6 interface];
-  v8 = [v7 isExpensive];
+  path = [v5 path];
+  interface = [path interface];
+  isExpensive = [interface isExpensive];
 
-  if (v8)
+  if (isExpensive)
   {
     [(MBFollowupPrebuddyViewController *)self setExpensiveNetwork:1];
     v9 = MBLocalizedStringFromTable();
@@ -835,24 +835,24 @@ LABEL_18:
     v21 = 3221225472;
     v22 = sub_10000C7BC;
     v23 = &unk_10001CB50;
-    v24 = self;
-    v25 = v4;
+    selfCopy = self;
+    v25 = controllerCopy;
     v16 = [UIAlertAction actionWithTitle:v15 style:0 handler:&v20];
-    [v11 addAction:{v16, v20, v21, v22, v23, v24}];
+    [v11 addAction:{v16, v20, v21, v22, v23, selfCopy}];
 
-    v17 = [(MBFollowupPrebuddyViewController *)self navController];
-    v18 = [v17 visibleViewController];
-    [v18 presentViewController:v11 animated:1 completion:0];
+    navController = [(MBFollowupPrebuddyViewController *)self navController];
+    visibleViewController = [navController visibleViewController];
+    [visibleViewController presentViewController:v11 animated:1 completion:0];
   }
 
-  return v8;
+  return isExpensive;
 }
 
-- (int64_t)_prebuddyTelemetryForStep:(int64_t)a3
+- (int64_t)_prebuddyTelemetryForStep:(int64_t)step
 {
-  if (a3 < 6)
+  if (step < 6)
   {
-    return a3 + 1;
+    return step + 1;
   }
 
   else
@@ -861,33 +861,33 @@ LABEL_18:
   }
 }
 
-- (void)mb_didTapNextFromViewController:(id)a3
+- (void)mb_didTapNextFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 mb_step];
-  v6 = [(MBFollowupPrebuddyViewController *)self _telemetryQueue];
+  controllerCopy = controller;
+  mb_step = [controllerCopy mb_step];
+  _telemetryQueue = [(MBFollowupPrebuddyViewController *)self _telemetryQueue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000CB68;
   v9[3] = &unk_10001CB78;
   v9[4] = self;
-  v9[5] = v5;
-  dispatch_async(v6, v9);
+  v9[5] = mb_step;
+  dispatch_async(_telemetryQueue, v9);
 
   v7 = 0;
-  if (v5 > 1)
+  if (mb_step > 1)
   {
-    if ((v5 - 2) < 2)
+    if ((mb_step - 2) < 2)
     {
-      v8 = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterExtraStorageOffer];
+      _viewControllerAfterExtraStorageOffer = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterExtraStorageOffer];
 LABEL_10:
-      v7 = v8;
+      v7 = _viewControllerAfterExtraStorageOffer;
       goto LABEL_11;
     }
 
-    if (v5 == 4)
+    if (mb_step == 4)
     {
-      v8 = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterMoveAllAppsAndData];
+      _viewControllerAfterExtraStorageOffer = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterMoveAllAppsAndData];
       goto LABEL_10;
     }
 
@@ -897,15 +897,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v5)
+  if (!mb_step)
   {
     [(MBFollowupPrebuddyViewController *)self setNeedsAccountSignIn:0];
     [(MBFollowupPrebuddyViewController *)self setAltDSIDForHSA2Upgrade:0];
-    v8 = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterGettingStarted:v4];
+    _viewControllerAfterExtraStorageOffer = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterGettingStarted:controllerCopy];
     goto LABEL_10;
   }
 
-  if (v5 != 1)
+  if (mb_step != 1)
   {
     goto LABEL_11;
   }
@@ -914,20 +914,20 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)mb_didTapCancelFromViewController:(id)a3
+- (void)mb_didTapCancelFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 mb_step];
-  if (v5 >= 4)
+  controllerCopy = controller;
+  mb_step = [controllerCopy mb_step];
+  if (mb_step >= 4)
   {
-    if (v5 == 4)
+    if (mb_step == 4)
     {
-      v7 = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterMoveAllAppsAndData];
+      _viewControllerAfterMoveAllAppsAndData = [(MBFollowupPrebuddyViewController *)self _viewControllerAfterMoveAllAppsAndData];
     }
 
     else
     {
-      if (v5 == 5)
+      if (mb_step == 5)
       {
         v6 = MBGetDefaultLog();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -938,25 +938,25 @@ LABEL_12:
         }
       }
 
-      v7 = 0;
+      _viewControllerAfterMoveAllAppsAndData = 0;
     }
 
-    [(MBFollowupPrebuddyViewController *)self _presentNextViewController:v7];
+    [(MBFollowupPrebuddyViewController *)self _presentNextViewController:_viewControllerAfterMoveAllAppsAndData];
   }
 
   else
   {
-    [(MBFollowupPrebuddyViewController *)self prebuddyCancel:v4];
+    [(MBFollowupPrebuddyViewController *)self prebuddyCancel:controllerCopy];
   }
 }
 
-- (void)_presentNextViewController:(id)a3
+- (void)_presentNextViewController:(id)controller
 {
-  v4 = a3;
-  if ([v4 mb_step] == 5)
+  controllerCopy = controller;
+  if ([controllerCopy mb_step] == 5)
   {
     [(MBFollowupPrebuddyViewController *)self setExpensiveNetwork:0];
-    if (![(MBFollowupPrebuddyViewController *)self _showExpensiveNetworkPromptBeforeNextViewController:v4])
+    if (![(MBFollowupPrebuddyViewController *)self _showExpensiveNetworkPromptBeforeNextViewController:controllerCopy])
     {
       v5 = dispatch_semaphore_create(0);
       v15[0] = _NSConcreteStackBlock;
@@ -964,32 +964,32 @@ LABEL_12:
       v15[2] = sub_10000CF44;
       v15[3] = &unk_10001CB28;
       v15[4] = self;
-      v16 = v4;
+      v16 = controllerCopy;
       v6 = v5;
       v17 = v6;
       [(MBFollowupPrebuddyViewController *)self _beginBackup:v15];
       v7 = dispatch_time(0, 300000000);
       if (dispatch_semaphore_wait(v6, v7))
       {
-        v8 = [(MBFollowupPrebuddyViewController *)self navController];
-        v9 = [v8 topViewController];
-        v10 = [(MBFollowupPrebuddyViewController *)self loadingViewController];
-        v11 = [v9 isEqual:v10];
+        navController = [(MBFollowupPrebuddyViewController *)self navController];
+        topViewController = [navController topViewController];
+        loadingViewController = [(MBFollowupPrebuddyViewController *)self loadingViewController];
+        v11 = [topViewController isEqual:loadingViewController];
 
         if ((v11 & 1) == 0)
         {
-          v12 = [(MBFollowupPrebuddyViewController *)self navController];
-          v13 = [(MBFollowupPrebuddyViewController *)self loadingViewController];
-          [v12 pushViewController:v13 animated:1];
+          navController2 = [(MBFollowupPrebuddyViewController *)self navController];
+          loadingViewController2 = [(MBFollowupPrebuddyViewController *)self loadingViewController];
+          [navController2 pushViewController:loadingViewController2 animated:1];
         }
       }
     }
   }
 
-  else if (v4)
+  else if (controllerCopy)
   {
-    v14 = [(MBFollowupPrebuddyViewController *)self navController];
-    [v14 pushViewController:v4 animated:1];
+    navController3 = [(MBFollowupPrebuddyViewController *)self navController];
+    [navController3 pushViewController:controllerCopy animated:1];
   }
 
   else

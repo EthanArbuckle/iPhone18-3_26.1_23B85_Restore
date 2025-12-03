@@ -1,58 +1,58 @@
 @interface SIRawImage
-- (BOOL)printAsMIMEAttachment:(id)a3;
-- (BOOL)printPGMAsMIMEAttachment:(id)a3;
-- (BOOL)saveToDataURL:(id)a3 metadataURL:(id)a4;
-- (BOOL)saveToURL:(id)a3;
-- (SIRawImage)initWithInfo:(id)a3 data:(id)a4;
-- (SIRawImage)initWithInfo:(id)a3 mutableData:(id)a4;
-- (__CVBuffer)createPixelBufferWithAttributes:(id)a3 zeroCopy:(BOOL)a4;
-- (id)ToPGMImageAsBinary:(BOOL)a3;
+- (BOOL)printAsMIMEAttachment:(id)attachment;
+- (BOOL)printPGMAsMIMEAttachment:(id)attachment;
+- (BOOL)saveToDataURL:(id)l metadataURL:(id)rL;
+- (BOOL)saveToURL:(id)l;
+- (SIRawImage)initWithInfo:(id)info data:(id)data;
+- (SIRawImage)initWithInfo:(id)info mutableData:(id)data;
+- (__CVBuffer)createPixelBufferWithAttributes:(id)attributes zeroCopy:(BOOL)copy;
+- (id)ToPGMImageAsBinary:(BOOL)binary;
 - (id)asByteArray;
-- (id)createSurfaceWithAllocator:(id)a3;
-- (id)createSurfaceWithAllocator:(id)a3 stride:(unint64_t)a4;
+- (id)createSurfaceWithAllocator:(id)allocator;
+- (id)createSurfaceWithAllocator:(id)allocator stride:(unint64_t)stride;
 - (id)debugQuickLookObject;
-- (id)initFromCVPixelBuffer:(__CVBuffer *)a3;
-- (id)initFromDataURL:(id)a3 metadataURL:(id)a4;
-- (id)initFromSurface:(id)a3;
+- (id)initFromCVPixelBuffer:(__CVBuffer *)buffer;
+- (id)initFromDataURL:(id)l metadataURL:(id)rL;
+- (id)initFromSurface:(id)surface;
 - (id)metadataAsJson;
-- (id)reshapeWithWidth:(unint64_t)a3 height:(unint64_t)a4;
+- (id)reshapeWithWidth:(unint64_t)width height:(unint64_t)height;
 - (unint64_t)bytesPerElement;
 - (unint64_t)bytesPerRow;
 - (unint64_t)height;
 - (unint64_t)width;
 - (unsigned)pixelFormat;
-- (void)getMutableBytesWithHandler:(id)a3;
+- (void)getMutableBytesWithHandler:(id)handler;
 @end
 
 @implementation SIRawImage
 
-- (id)initFromSurface:(id)a3
+- (id)initFromSurface:(id)surface
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  surfaceCopy = surface;
+  v5 = surfaceCopy;
+  if (surfaceCopy)
   {
-    if ([v4 planes] < 2)
+    if ([surfaceCopy planes] < 2)
     {
       v8 = objc_opt_new();
-      v9 = [v5 width];
-      *[v8 width] = v9;
-      v10 = [v5 height];
-      *[v8 height] = v10;
-      v11 = [v5 bytesPerElement];
-      *[v8 bytesPerPixel] = v11;
-      v12 = [v5 bytesPerRow];
-      *[v8 bytesPerRow] = v12;
-      v13 = [v5 allocationSize];
-      *[v8 size] = v13;
+      width = [v5 width];
+      *[v8 width] = width;
+      height = [v5 height];
+      *[v8 height] = height;
+      bytesPerElement = [v5 bytesPerElement];
+      *[v8 bytesPerPixel] = bytesPerElement;
+      bytesPerRow = [v5 bytesPerRow];
+      *[v8 bytesPerRow] = bytesPerRow;
+      allocationSize = [v5 allocationSize];
+      *[v8 size] = allocationSize;
       [v8 setPlanes:{objc_msgSend(v5, "planes")}];
       [v8 setPixelFormat:objc_msgSend(v5, "pixelFormat")];
       [v8 setChannels:0];
-      v14 = [v5 copyData];
-      self = [(SIRawImage *)self initWithInfo:v8 data:v14];
+      copyData = [v5 copyData];
+      self = [(SIRawImage *)self initWithInfo:v8 data:copyData];
 
-      v7 = self;
+      selfCopy = self;
       goto LABEL_10;
     }
 
@@ -80,51 +80,51 @@
     }
   }
 
-  v7 = 0;
+  selfCopy = 0;
 LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy;
 }
 
-- (SIRawImage)initWithInfo:(id)a3 mutableData:(id)a4
+- (SIRawImage)initWithInfo:(id)info mutableData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = SIRawImage;
   v8 = [(SIRawImage *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    if (!v6)
+    if (!infoCopy)
     {
       __assert_rtn("[SIRawImage initWithInfo:mutableData:]", "SIIOUtility.mm", 453, "info");
     }
 
-    [(SIRawImage *)v8 setInfo:v6];
-    [(SIRawImage *)v9 setData:v7];
+    [(SIRawImage *)v8 setInfo:infoCopy];
+    [(SIRawImage *)v9 setData:dataCopy];
     v10 = v9;
   }
 
   return v9;
 }
 
-- (SIRawImage)initWithInfo:(id)a3 data:(id)a4
+- (SIRawImage)initWithInfo:(id)info data:(id)data
 {
-  v6 = a3;
-  v7 = [a4 mutableCopy];
-  v8 = [(SIRawImage *)self initWithInfo:v6 mutableData:v7];
+  infoCopy = info;
+  v7 = [data mutableCopy];
+  v8 = [(SIRawImage *)self initWithInfo:infoCopy mutableData:v7];
 
   return v8;
 }
 
-- (id)initFromCVPixelBuffer:(__CVBuffer *)a3
+- (id)initFromCVPixelBuffer:(__CVBuffer *)buffer
 {
   v18.receiver = self;
   v18.super_class = SIRawImage;
   v4 = [(SIRawImage *)&v18 init];
-  v5 = [SIIOUtility_private ImageInfoFromCVPixelBuffer:a3];
+  v5 = [SIIOUtility_private ImageInfoFromCVPixelBuffer:buffer];
   if (![v5 planes])
   {
     v16 = "info.planes > 0";
@@ -134,9 +134,9 @@ LABEL_10:
 
   if ([v5 planes] == 1)
   {
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
+    BaseAddress = CVPixelBufferGetBaseAddress(buffer);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
     v7 = [MEMORY[0x277CBEA90] dataWithBytes:BaseAddress length:{*objc_msgSend(v5, "size")}];
   }
 
@@ -149,21 +149,21 @@ LABEL_10:
     }
 
     v7 = [MEMORY[0x277CBEB28] dataWithLength:v8];
-    v10 = [v7 mutableBytes];
-    CVPixelBufferLockBaseAddress(a3, 1uLL);
+    mutableBytes = [v7 mutableBytes];
+    CVPixelBufferLockBaseAddress(buffer, 1uLL);
     for (j = 0; j < [v5 planes]; ++j)
     {
-      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, j);
+      BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, j);
       v13 = *([v5 size] + 8 * j);
       if (v13)
       {
-        memmove(v10, BaseAddressOfPlane, v13);
+        memmove(mutableBytes, BaseAddressOfPlane, v13);
       }
 
-      v10 += *([v5 size] + 8 * j);
+      mutableBytes += *([v5 size] + 8 * j);
     }
 
-    CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+    CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   }
 
   if (!v7)
@@ -179,12 +179,12 @@ LABEL_17:
   return v14;
 }
 
-- (id)initFromDataURL:(id)a3 metadataURL:(id)a4
+- (id)initFromDataURL:(id)l metadataURL:(id)rL
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v7];
+  lCopy = l;
+  rLCopy = rL;
+  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:rLCopy];
   if (v8)
   {
     v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:0];
@@ -199,11 +199,11 @@ LABEL_17:
         v25 = 1025;
         v26 = 510;
         v27 = 2112;
-        v28 = v7;
+        v28 = rLCopy;
         _os_log_impl(&dword_21DE0D000, v11, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Could not decode image metadata at '%@' ***", &v23, 0x1Cu);
       }
 
-      v17 = 0;
+      selfCopy = 0;
       goto LABEL_23;
     }
 
@@ -231,7 +231,7 @@ LABEL_17:
       __assert_rtn("[SIRawImage initFromDataURL:metadataURL:]", "SIIOUtility.mm", 524, "totalSize > 0 && Image size must be positive.");
     }
 
-    v15 = [MEMORY[0x277CBEB28] dataWithContentsOfURL:v6];
+    v15 = [MEMORY[0x277CBEB28] dataWithContentsOfURL:lCopy];
     v16 = v15;
     if (v15)
     {
@@ -240,7 +240,7 @@ LABEL_17:
         if ([v12 pixelFormat])
         {
           self = [(SIRawImage *)self initWithInfo:v12 data:v16];
-          v17 = self;
+          selfCopy = self;
 LABEL_22:
 
 LABEL_23:
@@ -268,11 +268,11 @@ LABEL_23:
       v25 = 1025;
       v26 = 529;
       v27 = 2113;
-      v28 = v6;
+      v28 = lCopy;
       _os_log_impl(&dword_21DE0D000, v18, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Could not load image data '%{private}@' ***", &v23, 0x1Cu);
     }
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
@@ -284,52 +284,52 @@ LABEL_23:
     v25 = 1025;
     v26 = 504;
     v27 = 2112;
-    v28 = v7;
+    v28 = rLCopy;
     _os_log_impl(&dword_21DE0D000, v10, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Could not load image metadata '%@' ***", &v23, 0x1Cu);
   }
 
-  v17 = 0;
+  selfCopy = 0;
 LABEL_24:
 
   v19 = *MEMORY[0x277D85DE8];
-  return v17;
+  return selfCopy;
 }
 
-- (__CVBuffer)createPixelBufferWithAttributes:(id)a3 zeroCopy:(BOOL)a4
+- (__CVBuffer)createPixelBufferWithAttributes:(id)attributes zeroCopy:(BOOL)copy
 {
-  v4 = a4;
+  copyCopy = copy;
   v80[3] = *MEMORY[0x277D85DE8];
-  v70 = a3;
+  attributesCopy = attributes;
   v6 = MEMORY[0x277CBEB38];
   v79[0] = *MEMORY[0x277CC4E30];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [(SIRawImage *)self info];
-  v9 = [v7 numberWithUnsignedInt:{objc_msgSend(v8, "pixelFormat")}];
+  info = [(SIRawImage *)self info];
+  v9 = [v7 numberWithUnsignedInt:{objc_msgSend(info, "pixelFormat")}];
   v80[0] = v9;
   v79[1] = *MEMORY[0x277CC4EC8];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [(SIRawImage *)self info];
-  v12 = [v10 numberWithUnsignedLong:{*objc_msgSend(v11, "width")}];
+  info2 = [(SIRawImage *)self info];
+  v12 = [v10 numberWithUnsignedLong:{*objc_msgSend(info2, "width")}];
   v80[1] = v12;
   v79[2] = *MEMORY[0x277CC4DD8];
   v13 = MEMORY[0x277CCABB0];
-  v14 = [(SIRawImage *)self info];
-  v15 = [v13 numberWithUnsignedLong:{*objc_msgSend(v14, "height")}];
+  info3 = [(SIRawImage *)self info];
+  v15 = [v13 numberWithUnsignedLong:{*objc_msgSend(info3, "height")}];
   v80[2] = v15;
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v80 forKeys:v79 count:3];
   pixelBufferAttributes = [v6 dictionaryWithDictionary:v16];
 
-  [(__CFDictionary *)pixelBufferAttributes addEntriesFromDictionary:v70];
-  if (!v4)
+  [(__CFDictionary *)pixelBufferAttributes addEntriesFromDictionary:attributesCopy];
+  if (!copyCopy)
   {
     texture = 0;
-    v30 = [(SIRawImage *)self info];
-    v31 = *[v30 width];
-    v32 = [(SIRawImage *)self info];
-    v33 = *[v32 height];
-    v34 = [(SIRawImage *)self info];
-    v35 = [v34 pixelFormat];
-    v36 = CVPixelBufferCreate(*MEMORY[0x277CBECE8], v31, v33, v35, pixelBufferAttributes, &texture);
+    info4 = [(SIRawImage *)self info];
+    v31 = *[info4 width];
+    info5 = [(SIRawImage *)self info];
+    v33 = *[info5 height];
+    info6 = [(SIRawImage *)self info];
+    pixelFormat = [info6 pixelFormat];
+    v36 = CVPixelBufferCreate(*MEMORY[0x277CBECE8], v31, v33, pixelFormat, pixelBufferAttributes, &texture);
 
     if (v36)
     {
@@ -354,38 +354,38 @@ LABEL_24:
       __assert_rtn("[SIRawImage createPixelBufferWithAttributes:zeroCopy:]", "SIIOUtility.mm", 580, "buffer");
     }
 
-    v39 = [(SIRawImage *)self data];
-    v40 = v39;
-    v41 = [v39 bytes];
+    data = [(SIRawImage *)self data];
+    v40 = data;
+    bytes = [data bytes];
 
     CVPixelBufferLockBaseAddress(texture, 0);
-    v42 = [(SIRawImage *)self info];
-    v43 = [v42 planes] == 1;
+    info7 = [(SIRawImage *)self info];
+    v43 = [info7 planes] == 1;
 
     if (v43)
     {
       BytesPerRow = CVPixelBufferGetBytesPerRow(texture);
-      v45 = [(SIRawImage *)self info];
-      v46 = *[v45 bytesPerRow];
+      info8 = [(SIRawImage *)self info];
+      v46 = *[info8 bytesPerRow];
 
       Width = CVPixelBufferGetWidth(texture);
-      v48 = [(SIRawImage *)self info];
-      v49 = *[v48 width];
+      info9 = [(SIRawImage *)self info];
+      v49 = *[info9 width];
 
       Height = CVPixelBufferGetHeight(texture);
-      v51 = [(SIRawImage *)self info];
-      v52 = *[v51 height];
+      info10 = [(SIRawImage *)self info];
+      v52 = *[info10 height];
 
       BaseAddress = CVPixelBufferGetBaseAddress(texture);
-      SIStridedCopy(v41, v49, v52, v46, BaseAddress, Width, Height, BytesPerRow);
+      SIStridedCopy(bytes, v49, v52, v46, BaseAddress, Width, Height, BytesPerRow);
     }
 
     else
     {
       for (i = 0; ; ++i)
       {
-        v57 = [(SIRawImage *)self info];
-        v58 = i < [v57 planes];
+        info11 = [(SIRawImage *)self info];
+        v58 = i < [info11 planes];
 
         if (!v58)
         {
@@ -393,20 +393,20 @@ LABEL_24:
         }
 
         BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(texture, i);
-        v60 = [(SIRawImage *)self info];
-        v61 = *([v60 bytesPerRow] + 8 * i);
+        info12 = [(SIRawImage *)self info];
+        v61 = *([info12 bytesPerRow] + 8 * i);
 
         WidthOfPlane = CVPixelBufferGetWidthOfPlane(texture, i);
-        v63 = [(SIRawImage *)self info];
-        v64 = *([v63 width] + 8 * i);
+        info13 = [(SIRawImage *)self info];
+        v64 = *([info13 width] + 8 * i);
 
         HeightOfPlane = CVPixelBufferGetHeightOfPlane(texture, i);
-        v66 = [(SIRawImage *)self info];
-        v67 = *([v66 height] + 8 * i);
+        info14 = [(SIRawImage *)self info];
+        v67 = *([info14 height] + 8 * i);
 
         BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(texture, i);
-        SIStridedCopy(v41, v64, v67, v61, BaseAddressOfPlane, WidthOfPlane, HeightOfPlane, BytesPerRowOfPlane);
-        v41 += v67 * v61;
+        SIStridedCopy(bytes, v64, v67, v61, BaseAddressOfPlane, WidthOfPlane, HeightOfPlane, BytesPerRowOfPlane);
+        bytes += v67 * v61;
       }
     }
 
@@ -416,20 +416,20 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v17 = [(SIRawImage *)self data];
+  data2 = [(SIRawImage *)self data];
   texture = 0;
-  v69 = [(SIRawImage *)self info];
-  v18 = *[v69 width];
-  v19 = [(SIRawImage *)self info];
-  v20 = *[v19 height];
-  v21 = [(SIRawImage *)self info];
-  v22 = [v21 pixelFormat];
-  v23 = [(SIRawImage *)self data];
-  v24 = v23;
-  v25 = [v23 bytes];
-  v26 = [(SIRawImage *)self info];
-  v27 = [v26 bytesPerRow];
-  v28 = CVPixelBufferCreateWithBytes(*MEMORY[0x277CBECE8], v18, v20, v22, v25, *v27, [SIRawImage createPixelBufferWithAttributes:zeroCopy:]::$_1::__invoke, v17, pixelBufferAttributes, &texture);
+  info15 = [(SIRawImage *)self info];
+  v18 = *[info15 width];
+  info16 = [(SIRawImage *)self info];
+  v20 = *[info16 height];
+  info17 = [(SIRawImage *)self info];
+  pixelFormat2 = [info17 pixelFormat];
+  data3 = [(SIRawImage *)self data];
+  v24 = data3;
+  bytes2 = [data3 bytes];
+  info18 = [(SIRawImage *)self info];
+  bytesPerRow = [info18 bytesPerRow];
+  v28 = CVPixelBufferCreateWithBytes(*MEMORY[0x277CBECE8], v18, v20, pixelFormat2, bytes2, *bytesPerRow, [SIRawImage createPixelBufferWithAttributes:zeroCopy:]::$_1::__invoke, data2, pixelBufferAttributes, &texture);
 
   if (!v28)
   {
@@ -457,32 +457,32 @@ LABEL_16:
   return v38;
 }
 
-- (id)createSurfaceWithAllocator:(id)a3
+- (id)createSurfaceWithAllocator:(id)allocator
 {
-  v3 = [(SIRawImage *)self createSurfaceWithAllocator:a3 stride:0];
+  v3 = [(SIRawImage *)self createSurfaceWithAllocator:allocator stride:0];
 
   return v3;
 }
 
-- (id)createSurfaceWithAllocator:(id)a3 stride:(unint64_t)a4
+- (id)createSurfaceWithAllocator:(id)allocator stride:(unint64_t)stride
 {
-  v6 = a3;
+  allocatorCopy = allocator;
   v36 = 0;
   v37 = &v36;
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy_;
   v40 = __Block_byref_object_dispose_;
-  v7 = [(SIRawImage *)self info];
-  v8 = *[v7 width];
-  v9 = [(SIRawImage *)self info];
-  v10 = *[v9 height];
-  v11 = [(SIRawImage *)self info];
-  v41 = [v6 allocateWithWidth:v8 height:v10 pixelFormat:objc_msgSend(v11 stride:"pixelFormat"), a4];
+  info = [(SIRawImage *)self info];
+  v8 = *[info width];
+  info2 = [(SIRawImage *)self info];
+  v10 = *[info2 height];
+  info3 = [(SIRawImage *)self info];
+  stride = [allocatorCopy allocateWithWidth:v8 height:v10 pixelFormat:objc_msgSend(info3 stride:"pixelFormat"), stride];
 
-  v12 = [(SIRawImage *)self info];
-  v13 = [v12 planes];
+  info4 = [(SIRawImage *)self info];
+  planes = [info4 planes];
 
-  if (v13 == 1)
+  if (planes == 1)
   {
     v14 = v37[5];
     v35[0] = MEMORY[0x277D85DD0];
@@ -499,33 +499,33 @@ LABEL_16:
     v34[0] = 0;
     v34[1] = v34;
     v34[2] = 0x2020000000;
-    v15 = [(SIRawImage *)self data];
-    v32 = v6;
-    v16 = [v15 bytes];
+    data = [(SIRawImage *)self data];
+    v32 = allocatorCopy;
+    bytes = [data bytes];
 
     v17 = 0;
-    v34[3] = v16;
+    v34[3] = bytes;
     while (1)
     {
-      v18 = [(SIRawImage *)self info];
-      v19 = [v18 planes];
+      info5 = [(SIRawImage *)self info];
+      planes2 = [info5 planes];
 
-      if (v17 >= v19)
+      if (v17 >= planes2)
       {
         break;
       }
 
       v20 = [v37[5] bytesPerRowOfPlane:v17];
-      v21 = [(SIRawImage *)self info];
-      v22 = *([v21 bytesPerRow] + 8 * v17);
+      info6 = [(SIRawImage *)self info];
+      v22 = *([info6 bytesPerRow] + 8 * v17);
 
       v23 = [v37[5] widthOfPlane:v17];
-      v24 = [(SIRawImage *)self info];
-      v25 = *([v24 width] + 8 * v17);
+      info7 = [(SIRawImage *)self info];
+      v25 = *([info7 width] + 8 * v17);
 
       v26 = [v37[5] heightOfPlane:v17];
-      v27 = [(SIRawImage *)self info];
-      v28 = *([v27 height] + 8 * v17);
+      info8 = [(SIRawImage *)self info];
+      v28 = *([info8 height] + 8 * v17);
 
       v29 = v37[5];
       v33[0] = MEMORY[0x277D85DD0];
@@ -543,7 +543,7 @@ LABEL_16:
     }
 
     _Block_object_dispose(v34, 8);
-    v6 = v32;
+    allocatorCopy = v32;
   }
 
   v30 = v37[5];
@@ -575,8 +575,8 @@ char *__48__SIRawImage_createSurfaceWithAllocator_stride___block_invoke_2(void *
 - (id)metadataAsJson
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v2 = [(SIRawImage *)self info];
-  v3 = [SIIOUtility_private DictionaryFromImageInfo:v2];
+  info = [(SIRawImage *)self info];
+  v3 = [SIIOUtility_private DictionaryFromImageInfo:info];
 
   v8 = @"ImageInfo";
   v9[0] = v3;
@@ -588,19 +588,19 @@ char *__48__SIRawImage_createSurfaceWithAllocator_stride___block_invoke_2(void *
   return v5;
 }
 
-- (BOOL)saveToDataURL:(id)a3 metadataURL:(id)a4
+- (BOOL)saveToDataURL:(id)l metadataURL:(id)rL
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SIRawImage *)self data];
-  v9 = v8;
-  if (!v8)
+  lCopy = l;
+  rLCopy = rL;
+  data = [(SIRawImage *)self data];
+  v9 = data;
+  if (!data)
   {
     __assert_rtn("[SIRawImage saveToDataURL:metadataURL:]", "SIIOUtility.mm", 661, "data");
   }
 
-  if (([v8 writeToURL:v6 atomically:0] & 1) == 0)
+  if (([data writeToURL:lCopy atomically:0] & 1) == 0)
   {
     v13 = __SceneIntelligenceLogSharedInstance();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -610,7 +610,7 @@ char *__48__SIRawImage_createSurfaceWithAllocator_stride___block_invoke_2(void *
       v19 = 1025;
       v20 = 663;
       v21 = 2112;
-      v22 = v6;
+      v22 = lCopy;
       v14 = " %{private}s:%{private}d *** Error saving raw image: %@ ***";
 LABEL_9:
       _os_log_impl(&dword_21DE0D000, v13, OS_LOG_TYPE_ERROR, v14, &v17, 0x1Cu);
@@ -622,8 +622,8 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [(SIRawImage *)self metadataAsJson];
-  v11 = [v10 writeToURL:v7 atomically:0];
+  metadataAsJson = [(SIRawImage *)self metadataAsJson];
+  v11 = [metadataAsJson writeToURL:rLCopy atomically:0];
 
   if ((v11 & 1) == 0)
   {
@@ -635,7 +635,7 @@ LABEL_10:
       v19 = 1025;
       v20 = 668;
       v21 = 2112;
-      v22 = v7;
+      v22 = rLCopy;
       v14 = " %{private}s:%{private}d *** Error saving image matadata: %@ ***";
       goto LABEL_9;
     }
@@ -650,33 +650,33 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)saveToURL:(id)a3
+- (BOOL)saveToURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 URLByAppendingPathExtension:@"json"];
-  LOBYTE(self) = [(SIRawImage *)self saveToDataURL:v4 metadataURL:v5];
+  lCopy = l;
+  v5 = [lCopy URLByAppendingPathExtension:@"json"];
+  LOBYTE(self) = [(SIRawImage *)self saveToDataURL:lCopy metadataURL:v5];
 
   return self;
 }
 
-- (BOOL)printAsMIMEAttachment:(id)a3
+- (BOOL)printAsMIMEAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [v4 stringByAppendingPathExtension:@"json"];
-  v6 = [(SIRawImage *)self data];
-  PrintMIMEAttachment(v6, v4, &cfstr_ApplicationOct.isa);
+  attachmentCopy = attachment;
+  v5 = [attachmentCopy stringByAppendingPathExtension:@"json"];
+  data = [(SIRawImage *)self data];
+  PrintMIMEAttachment(data, attachmentCopy, &cfstr_ApplicationOct.isa);
 
-  v7 = [(SIRawImage *)self metadataAsJson];
-  PrintMIMEAttachment(v7, v5, &cfstr_ApplicationJso.isa);
+  metadataAsJson = [(SIRawImage *)self metadataAsJson];
+  PrintMIMEAttachment(metadataAsJson, v5, &cfstr_ApplicationJso.isa);
 
   return 1;
 }
 
-- (BOOL)printPGMAsMIMEAttachment:(id)a3
+- (BOOL)printPGMAsMIMEAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   v5 = [(SIRawImage *)self ToPGMImageAsBinary:1];
-  PrintMIMEAttachment(v5, v4, &cfstr_ApplicationOct.isa);
+  PrintMIMEAttachment(v5, attachmentCopy, &cfstr_ApplicationOct.isa);
 
   return 1;
 }
@@ -695,25 +695,25 @@ LABEL_11:
   return v3;
 }
 
-- (id)ToPGMImageAsBinary:(BOOL)a3
+- (id)ToPGMImageAsBinary:(BOOL)binary
 {
-  v74 = a3;
+  binaryCopy = binary;
   v87 = *MEMORY[0x277D85DE8];
-  v3 = [(SIRawImage *)self info];
-  v4 = [v3 pixelFormat];
+  info = [(SIRawImage *)self info];
+  pixelFormat = [info pixelFormat];
 
-  if (v4 <= 1278226535)
+  if (pixelFormat <= 1278226535)
   {
-    if (v4 > 1278226487)
+    if (pixelFormat > 1278226487)
     {
-      if (v4 != 1278226488)
+      if (pixelFormat != 1278226488)
       {
-        if (v4 == 1278226534)
+        if (pixelFormat == 1278226534)
         {
-          v6 = [(SIRawImage *)self info];
+          info2 = [(SIRawImage *)self info];
           v9 = 0;
           v10 = 0;
-          v70 = *[v6 bytesPerRow];
+          v70 = *[info2 bytesPerRow];
           v76 = 4;
           v11 = 1;
           v12 = 16;
@@ -727,10 +727,10 @@ LABEL_11:
         goto LABEL_76;
       }
 
-      v6 = [(SIRawImage *)self info];
+      info2 = [(SIRawImage *)self info];
       v9 = 0;
       v10 = 0;
-      v70 = *[v6 bytesPerRow];
+      v70 = *[info2 bytesPerRow];
       v76 = 1;
       v12 = 8;
       v13 = 4;
@@ -740,16 +740,16 @@ LABEL_11:
 
     else
     {
-      if (v4 != 24)
+      if (pixelFormat != 24)
       {
-        if (v4 != 1111970369)
+        if (pixelFormat != 1111970369)
         {
           goto LABEL_76;
         }
 
-        v6 = [(SIRawImage *)self info];
+        info2 = [(SIRawImage *)self info];
         v72 = 0;
-        v70 = *[v6 bytesPerRow];
+        v70 = *[info2 bytesPerRow];
         v9 = 1;
         v12 = 8;
         v11 = 3;
@@ -762,10 +762,10 @@ LABEL_22:
         goto LABEL_26;
       }
 
-      v6 = [(SIRawImage *)self info];
+      info2 = [(SIRawImage *)self info];
       v72 = 0;
       v10 = 0;
-      v70 = *[v6 bytesPerRow];
+      v70 = *[info2 bytesPerRow];
       v9 = 1;
       v12 = 8;
       v13 = 4;
@@ -779,14 +779,14 @@ LABEL_20:
     goto LABEL_26;
   }
 
-  if (v4 <= 1380401728)
+  if (pixelFormat <= 1380401728)
   {
-    if (v4 == 1278226536)
+    if (pixelFormat == 1278226536)
     {
-      v6 = [(SIRawImage *)self info];
+      info2 = [(SIRawImage *)self info];
       v9 = 0;
       v10 = 0;
-      v70 = *[v6 bytesPerRow];
+      v70 = *[info2 bytesPerRow];
       v15 = 3;
       v11 = 1;
       v12 = 16;
@@ -797,15 +797,15 @@ LABEL_20:
       goto LABEL_26;
     }
 
-    if (v4 != 1278226742)
+    if (pixelFormat != 1278226742)
     {
       goto LABEL_76;
     }
 
-    v6 = [(SIRawImage *)self info];
+    info2 = [(SIRawImage *)self info];
     v9 = 0;
     v10 = 0;
-    v70 = *[v6 bytesPerRow];
+    v70 = *[info2 bytesPerRow];
     v76 = 2;
     v11 = 1;
     v12 = 16;
@@ -815,13 +815,13 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  switch(v4)
+  switch(pixelFormat)
   {
     case 1380401729:
-      v6 = [(SIRawImage *)self info];
+      info2 = [(SIRawImage *)self info];
       v72 = 0;
       v10 = 0;
-      v70 = *[v6 bytesPerRow];
+      v70 = *[info2 bytesPerRow];
       v9 = 1;
       v12 = 8;
       v11 = 3;
@@ -829,10 +829,10 @@ LABEL_20:
       v15 = 1;
       goto LABEL_22;
     case 1380411457:
-      v6 = [(SIRawImage *)self info];
+      info2 = [(SIRawImage *)self info];
       v72 = 0;
       v10 = 0;
-      v70 = *[v6 bytesPerRow];
+      v70 = *[info2 bytesPerRow];
       v11 = 3;
       v12 = 16;
       v13 = 6;
@@ -841,13 +841,13 @@ LABEL_20:
       v14 = 8;
       goto LABEL_25;
     case 1919365992:
-      v5 = [(SIRawImage *)self info];
-      v70 = *[v5 bytesPerRow];
+      info3 = [(SIRawImage *)self info];
+      v70 = *[info3 bytesPerRow];
 
-      v6 = [(SIRawImage *)self info];
-      v7 = *[v6 bytesPerRow];
-      v8 = [(SIRawImage *)self info];
-      v9 = *[v8 height] * v7;
+      info2 = [(SIRawImage *)self info];
+      v7 = *[info2 bytesPerRow];
+      info4 = [(SIRawImage *)self info];
+      v9 = *[info4 height] * v7;
 
       v72 = 0;
       v10 = 0;
@@ -866,7 +866,7 @@ LABEL_26:
       v81[2] = __33__SIRawImage_ToPGMImageAsBinary___block_invoke;
       v81[3] = &__block_descriptor_41_e15___NSString_8__0l;
       v81[4] = v11;
-      v82 = v74;
+      v82 = binaryCopy;
       v68 = __33__SIRawImage_ToPGMImageAsBinary___block_invoke(v81);
       if (!v68)
       {
@@ -902,28 +902,28 @@ LABEL_72:
           v80[2] = __33__SIRawImage_ToPGMImageAsBinary___block_invoke_2;
           v80[3] = &__block_descriptor_40_e5_i8__0l;
           v16 = __33__SIRawImage_ToPGMImageAsBinary___block_invoke_2(v80);
-          v17 = [(SIRawImage *)self info];
-          v18 = *[v17 width];
+          info5 = [(SIRawImage *)self info];
+          v18 = *[info5 width];
 
-          v19 = [(SIRawImage *)self info];
-          v20 = *[v19 height];
+          info6 = [(SIRawImage *)self info];
+          v20 = *[info6 height];
 
-          if (v74)
+          if (binaryCopy)
           {
             v13 = 1;
           }
 
           v67 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n%ld %ld\n%ld\n", v68, v18, v20, v16];
           v21 = ((v12 * v13) >> 3) * v11 * v18 * v20 + 32;
-          if (v74)
+          if (binaryCopy)
           {
             v22 = [MEMORY[0x277CBEB28] dataWithCapacity:v21];
             v23 = [v67 dataUsingEncoding:4];
             [v22 appendData:v23];
 
-            v24 = [(SIRawImage *)self data];
-            v25 = v24;
-            v69 = [v24 bytes];
+            data = [(SIRawImage *)self data];
+            v25 = data;
+            bytes = [data bytes];
 
             v26 = 0;
             v73 = v72 & v10;
@@ -931,9 +931,9 @@ LABEL_72:
             v28 = v12 >> 3;
             while (1)
             {
-              v29 = [(SIRawImage *)self info];
+              info7 = [(SIRawImage *)self info];
               v71 = v26;
-              v30 = v26 < *[v29 height];
+              v30 = v26 < *[info7 height];
 
               if (!v30)
               {
@@ -942,8 +942,8 @@ LABEL_72:
 
               for (i = 0; ; ++i)
               {
-                v32 = [(SIRawImage *)self info];
-                v33 = i < *[v32 width];
+                info8 = [(SIRawImage *)self info];
+                v33 = i < *[info8 width];
 
                 if (!v33)
                 {
@@ -969,7 +969,7 @@ LABEL_72:
                     v36 = v34;
                   }
 
-                  v37 = (v69 + v71 * v70 + i * v76 + v36 * v9);
+                  v37 = (bytes + v71 * v70 + i * v76 + v36 * v9);
                   if (v15 == 1)
                   {
                     [v22 appendBytes:v37 length:v28];
@@ -1016,17 +1016,17 @@ LABEL_71:
 
           v45 = [MEMORY[0x277CCAB68] stringWithCapacity:v21];
           [v45 appendString:v67];
-          v46 = [(SIRawImage *)self data];
-          v47 = v46;
-          v75 = [v46 bytes];
+          data2 = [(SIRawImage *)self data];
+          v47 = data2;
+          bytes2 = [data2 bytes];
 
           v48 = 0;
           v49 = v78;
           while (1)
           {
-            v50 = [(SIRawImage *)self info];
+            info9 = [(SIRawImage *)self info];
             v79 = v48;
-            v51 = v48 < *[v50 height];
+            v51 = v48 < *[info9 height];
 
             if (!v51)
             {
@@ -1036,10 +1036,10 @@ LABEL_71:
             }
 
             v52 = 0;
-            v53 = v75;
+            v53 = bytes2;
 LABEL_58:
-            v54 = [(SIRawImage *)self info];
-            v55 = v52 < *[v54 width];
+            info10 = [(SIRawImage *)self info];
+            v55 = v52 < *[info10 width];
 
             v56 = v53;
             v57 = v11;
@@ -1050,7 +1050,7 @@ LABEL_58:
 
             [v45 appendFormat:@"\n "];
             v48 = v79 + 1;
-            v75 += v70;
+            bytes2 += v70;
           }
 
           while (v15 != 3)
@@ -1210,16 +1210,16 @@ uint64_t __33__SIRawImage_ToPGMImageAsBinary___block_invoke_2(uint64_t a1)
 - (id)asByteArray
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(SIRawImage *)self info];
-  v4 = [v3 planes];
+  info = [(SIRawImage *)self info];
+  planes = [info planes];
 
-  if (v4 < 2)
+  if (planes < 2)
   {
     v7 = objc_opt_new();
-    v8 = [(SIRawImage *)self info];
-    v9 = *[v8 height];
-    v10 = [(SIRawImage *)self info];
-    v11 = *[v10 bytesPerRow];
+    info2 = [(SIRawImage *)self info];
+    v9 = *[info2 height];
+    info3 = [(SIRawImage *)self info];
+    v11 = *[info3 bytesPerRow];
     *[v7 width] = v11 * v9;
 
     v12 = *[v7 width];
@@ -1231,8 +1231,8 @@ uint64_t __33__SIRawImage_ToPGMImageAsBinary___block_invoke_2(uint64_t a1)
     v13 = *[v7 width];
     *[v7 bytesPerRow] = v13;
     v14 = [SIRawImage alloc];
-    v15 = [(SIRawImage *)self data];
-    v6 = [(SIRawImage *)v14 initWithInfo:v7 data:v15];
+    data = [(SIRawImage *)self data];
+    v6 = [(SIRawImage *)v14 initWithInfo:v7 data:data];
   }
 
   else
@@ -1255,38 +1255,38 @@ uint64_t __33__SIRawImage_ToPGMImageAsBinary___block_invoke_2(uint64_t a1)
   return v6;
 }
 
-- (id)reshapeWithWidth:(unint64_t)a3 height:(unint64_t)a4
+- (id)reshapeWithWidth:(unint64_t)width height:(unint64_t)height
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = [(SIRawImage *)self info];
-  v8 = [v7 planes];
+  info = [(SIRawImage *)self info];
+  planes = [info planes];
 
-  if (v8 == 1)
+  if (planes == 1)
   {
-    v9 = [(SIRawImage *)self info];
-    v10 = *[v9 width];
-    v11 = [(SIRawImage *)self info];
-    v12 = *[v11 bytesPerPixel];
-    v13 = [(SIRawImage *)self info];
+    info2 = [(SIRawImage *)self info];
+    v10 = *[info2 width];
+    info3 = [(SIRawImage *)self info];
+    v12 = *[info3 bytesPerPixel];
+    info4 = [(SIRawImage *)self info];
     v14 = v12 * v10;
-    v15 = *[v13 bytesPerRow];
+    v15 = *[info4 bytesPerRow];
 
     if (v14 == v15)
     {
-      v16 = [(SIRawImage *)self width];
-      if ([(SIRawImage *)self height]* v16 == a4 * a3)
+      width = [(SIRawImage *)self width];
+      if ([(SIRawImage *)self height]* width == height * width)
       {
         v17 = [SIRawImageInfo alloc];
-        v18 = [(SIRawImage *)self info];
-        v19 = [(SIRawImageInfo *)v17 initWithInfo:v18];
+        info5 = [(SIRawImage *)self info];
+        v19 = [(SIRawImageInfo *)v17 initWithInfo:info5];
 
-        *[(SIRawImageInfo *)v19 width]= a3;
-        *[(SIRawImageInfo *)v19 height]= a4;
+        *[(SIRawImageInfo *)v19 width]= width;
+        *[(SIRawImageInfo *)v19 height]= height;
         v20 = *[(SIRawImageInfo *)v19 bytesPerPixel];
-        *[(SIRawImageInfo *)v19 bytesPerRow]= v20 * a3;
+        *[(SIRawImageInfo *)v19 bytesPerRow]= v20 * width;
         v21 = [SIRawImage alloc];
-        v22 = [(SIRawImage *)self data];
-        v23 = [(SIRawImage *)v21 initWithInfo:v19 mutableData:v22];
+        data = [(SIRawImage *)self data];
+        v23 = [(SIRawImage *)v21 initWithInfo:v19 mutableData:data];
 
         goto LABEL_14;
       }
@@ -1299,13 +1299,13 @@ uint64_t __33__SIRawImage_ToPGMImageAsBinary___block_invoke_2(uint64_t a1)
         v29 = 1025;
         v30 = 1039;
         v31 = 2048;
-        v32 = [(SIRawImage *)self width];
+        width2 = [(SIRawImage *)self width];
         v33 = 2048;
-        v34 = [(SIRawImage *)self height];
+        height = [(SIRawImage *)self height];
         v35 = 2048;
-        v36 = a3;
+        widthCopy = width;
         v37 = 2048;
-        v38 = a4;
+        heightCopy = height;
         _os_log_impl(&dword_21DE0D000, v24, OS_LOG_TYPE_ERROR, " %{private}s:%{private}d *** Incompatible reshape dimensions.  Source: (%ld, %ld). Destination: (%ld, %ld) ***", &v27, 0x3Au);
       }
     }
@@ -1346,49 +1346,49 @@ LABEL_14:
 
 - (unsigned)pixelFormat
 {
-  v2 = [(SIRawImage *)self info];
-  v3 = [v2 pixelFormat];
+  info = [(SIRawImage *)self info];
+  pixelFormat = [info pixelFormat];
 
-  return v3;
+  return pixelFormat;
 }
 
 - (unint64_t)width
 {
-  v2 = [(SIRawImage *)self info];
-  v3 = *[v2 width];
+  info = [(SIRawImage *)self info];
+  v3 = *[info width];
 
   return v3;
 }
 
 - (unint64_t)height
 {
-  v2 = [(SIRawImage *)self info];
-  v3 = *[v2 height];
+  info = [(SIRawImage *)self info];
+  v3 = *[info height];
 
   return v3;
 }
 
 - (unint64_t)bytesPerRow
 {
-  v2 = [(SIRawImage *)self info];
-  v3 = *[v2 bytesPerRow];
+  info = [(SIRawImage *)self info];
+  v3 = *[info bytesPerRow];
 
   return v3;
 }
 
 - (unint64_t)bytesPerElement
 {
-  v2 = [(SIRawImage *)self info];
-  v3 = *[v2 bytesPerPixel];
+  info = [(SIRawImage *)self info];
+  v3 = *[info bytesPerPixel];
 
   return v3;
 }
 
-- (void)getMutableBytesWithHandler:(id)a3
+- (void)getMutableBytesWithHandler:(id)handler
 {
-  v5 = a3;
-  v4 = [(SIRawImage *)self data];
-  v5[2](v5, [v4 mutableBytes]);
+  handlerCopy = handler;
+  data = [(SIRawImage *)self data];
+  handlerCopy[2](handlerCopy, [data mutableBytes]);
 }
 
 @end

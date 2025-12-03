@@ -1,9 +1,9 @@
 @interface PRXCardContentViewController
 - (PRXButton)infoButton;
 - (PRXCardContentView)contentView;
-- (PRXCardContentViewController)initWithContentView:(id)a3;
+- (PRXCardContentViewController)initWithContentView:(id)view;
 - (UIImageView)bottomTrayImageView;
-- (id)addAction:(id)a3;
+- (id)addAction:(id)action;
 - (id)bottomTray;
 - (void)_prxCommonInit;
 - (void)_updateActionButtons;
@@ -12,40 +12,40 @@
 - (void)_updateTitleLabel;
 - (void)hideActivityIndicator;
 - (void)loadView;
-- (void)removeAction:(id)a3;
-- (void)replaceAction:(id)a3 withNewAction:(id)a4;
+- (void)removeAction:(id)action;
+- (void)replaceAction:(id)action withNewAction:(id)newAction;
 - (void)scrollToBottom;
-- (void)setAttributedBottomTrayTitle:(id)a3;
-- (void)setAttributedSubtitle:(id)a3;
-- (void)setAuxiliaryButtonWithSymbolName:(id)a3 handler:(id)a4;
-- (void)setBottomTrayImageView:(id)a3;
-- (void)setBottomTrayTitle:(id)a3;
-- (void)setDesiredHeight:(double)a3;
-- (void)setDismissButtonAction:(id)a3;
-- (void)setDismissalType:(unint64_t)a3;
-- (void)setInfoButtonAction:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)showActivityIndicatorWithStatus:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updatePreferredContentSizeForCardWidth:(double)a3;
+- (void)setAttributedBottomTrayTitle:(id)title;
+- (void)setAttributedSubtitle:(id)subtitle;
+- (void)setAuxiliaryButtonWithSymbolName:(id)name handler:(id)handler;
+- (void)setBottomTrayImageView:(id)view;
+- (void)setBottomTrayTitle:(id)title;
+- (void)setDesiredHeight:(double)height;
+- (void)setDismissButtonAction:(id)action;
+- (void)setDismissalType:(unint64_t)type;
+- (void)setInfoButtonAction:(id)action;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)showActivityIndicatorWithStatus:(id)status;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updatePreferredContentSizeForCardWidth:(double)width;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PRXCardContentViewController
 
-- (PRXCardContentViewController)initWithContentView:(id)a3
+- (PRXCardContentViewController)initWithContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = PRXCardContentViewController;
   v6 = [(PRXCardContentViewController *)&v12 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentView, a3);
+    objc_storeStrong(&v6->_contentView, view);
     [(PRXCardContentViewController *)v7 _prxCommonInit];
     if (v7->_contentView)
     {
@@ -85,8 +85,8 @@
 
 - (void)loadView
 {
-  v3 = [objc_opt_class() contentViewClass];
-  if (([v3 isSubclassOfClass:objc_opt_class()] & 1) == 0)
+  contentViewClass = [objc_opt_class() contentViewClass];
+  if (([contentViewClass isSubclassOfClass:objc_opt_class()] & 1) == 0)
   {
     v9 = MEMORY[0x277CBEAD8];
     v10 = *MEMORY[0x277CBE648];
@@ -102,7 +102,7 @@
 
   if (!self->_contentView)
   {
-    v4 = [[v3 alloc] initWithCardStyle:0];
+    v4 = [[contentViewClass alloc] initWithCardStyle:0];
     contentView = self->_contentView;
     self->_contentView = v4;
 
@@ -118,7 +118,7 @@
     v19 = MEMORY[0x277CCACA8];
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    v22 = NSStringFromClass(v3);
+    v22 = NSStringFromClass(contentViewClass);
     v23 = [v19 stringWithFormat:@"%@'s contentView must be a %@", v21, v22];
     v24 = [v17 exceptionWithName:v18 reason:v23 userInfo:0];
     v25 = v24;
@@ -142,15 +142,15 @@
   [(PRXCardContentViewController *)self _updateActionButtons];
 }
 
-- (void)updatePreferredContentSizeForCardWidth:(double)a3
+- (void)updatePreferredContentSizeForCardWidth:(double)width
 {
-  v5 = [(PRXCardContentViewController *)self contentView];
-  [v5 updateTitleTextViewExclusionPathsForCardWidth:a3];
+  contentView = [(PRXCardContentViewController *)self contentView];
+  [contentView updateTitleTextViewExclusionPathsForCardWidth:width];
 
-  v6 = [(PRXCardContentViewController *)self view];
+  view = [(PRXCardContentViewController *)self view];
   LODWORD(v7) = 1148846080;
   LODWORD(v8) = 1112014848;
-  [v6 systemLayoutSizeFittingSize:a3 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v7, v8}];
+  [view systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v7, v8}];
   v10 = v9;
   v12 = v11;
 
@@ -164,16 +164,16 @@
   [(PRXCardContentViewController *)&v15 viewDidLayoutSubviews];
   if (!self->_transitioningSize)
   {
-    v3 = [(PRXCardContentViewController *)self contentView];
+    contentView = [(PRXCardContentViewController *)self contentView];
     [(PRXCardContentView *)self->_contentView bounds];
-    [v3 updateTitleTextViewExclusionPathsForCardWidth:CGRectGetWidth(v16)];
+    [contentView updateTitleTextViewExclusionPathsForCardWidth:CGRectGetWidth(v16)];
 
-    v4 = [(PRXCardContentViewController *)self view];
+    view = [(PRXCardContentViewController *)self view];
     [(PRXCardContentView *)self->_contentView bounds];
     Width = CGRectGetWidth(v17);
     LODWORD(v6) = 1148846080;
     LODWORD(v7) = 1112014848;
-    [v4 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v6, v7}];
+    [view systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v6, v7}];
     v9 = v8;
     v11 = v10;
 
@@ -185,57 +185,57 @@
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v10.receiver = self;
   v10.super_class = PRXCardContentViewController;
-  v7 = a4;
-  [(PRXCardContentViewController *)&v10 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(PRXCardContentViewController *)&v10 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   self->_transitioningSize = 1;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __83__PRXCardContentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_279ACC2E0;
   v9[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v9];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v9];
 
-  v8 = [(PRXCardContentViewController *)self contentView];
-  [v8 updateTitleTextViewExclusionPathsForCardWidth:width];
+  contentView = [(PRXCardContentViewController *)self contentView];
+  [contentView updateTitleTextViewExclusionPathsForCardWidth:width];
 }
 
-- (void)setDesiredHeight:(double)a3
+- (void)setDesiredHeight:(double)height
 {
   v17[1] = *MEMORY[0x277D85DE8];
   [(PRXCardContentViewController *)self loadViewIfNeeded];
-  if (a3 == -1.0)
+  if (height == -1.0)
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 bounds];
-    a3 = v6;
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
+    height = v6;
 
     v7 = PRXIsPad();
-    v8 = fmin(a3 + -176.0, 890.0);
+    v8 = fmin(height + -176.0, 890.0);
     if (v7)
     {
-      a3 = v8;
+      height = v8;
     }
   }
 
-  self->_desiredHeight = a3;
-  v9 = [MEMORY[0x277D759A0] mainScreen];
-  [v9 bounds];
+  self->_desiredHeight = height;
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v11 = v10;
 
-  if (a3 > v11)
+  if (height > v11)
   {
-    a3 = v11;
+    height = v11;
   }
 
   v12 = MEMORY[0x277CBEB18];
-  v13 = [(PRXCardContentWrapperView *)self->_wrapperView heightAnchor];
-  v14 = [v13 constraintEqualToConstant:a3];
+  heightAnchor = [(PRXCardContentWrapperView *)self->_wrapperView heightAnchor];
+  v14 = [heightAnchor constraintEqualToConstant:height];
   v17[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
   v16 = [v12 arrayWithArray:v15];
@@ -243,11 +243,11 @@
   [MEMORY[0x277CCAAD0] activateConstraints:v16];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4.receiver = self;
   v4.super_class = PRXCardContentViewController;
-  [(PRXCardContentViewController *)&v4 setTitle:a3];
+  [(PRXCardContentViewController *)&v4 setTitle:title];
   [(PRXCardContentViewController *)self _updateTitleLabel];
 }
 
@@ -255,22 +255,22 @@
 {
   if ([(PRXCardContentViewController *)self isViewLoaded])
   {
-    v7 = [(PRXCardContentViewController *)self title];
-    v3 = [v7 length];
+    title = [(PRXCardContentViewController *)self title];
+    v3 = [title length];
     contentView = self->_contentView;
     if (v3)
     {
-      v5 = [(PRXCardContentView *)contentView titleTextView];
+      titleTextView = [(PRXCardContentView *)contentView titleTextView];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v6 = [PRXTextView textViewWithStyle:0];
 
         [(PRXCardContentView *)self->_contentView setTitleView:v6];
-        v5 = v6;
+        titleTextView = v6;
       }
 
-      [v5 setTitleText:v7];
+      [titleTextView setTitleText:title];
     }
 
     else
@@ -278,19 +278,19 @@
       [(PRXCardContentView *)contentView setTitleView:0];
     }
 
-    [(PRXCardContentWrapperView *)self->_wrapperView setTitle:v7];
+    [(PRXCardContentWrapperView *)self->_wrapperView setTitle:title];
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   subtitle = self->_subtitle;
-  if (subtitle != v4)
+  if (subtitle != subtitleCopy)
   {
-    v9 = v4;
-    subtitle = [(NSString *)subtitle isEqualToString:v4];
-    v4 = v9;
+    v9 = subtitleCopy;
+    subtitle = [(NSString *)subtitle isEqualToString:subtitleCopy];
+    subtitleCopy = v9;
     if ((subtitle & 1) == 0)
     {
       v6 = [(NSString *)v9 copy];
@@ -309,11 +309,11 @@
 
       [(PRXCardContentViewController *)self setAttributedSubtitle:v8];
 
-      v4 = v9;
+      subtitleCopy = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](subtitle, v4);
+  MEMORY[0x2821F96F8](subtitle, subtitleCopy);
 }
 
 - (void)_updateSubtitleLabel
@@ -324,16 +324,16 @@
     contentView = self->_contentView;
     if (v3)
     {
-      v5 = [(PRXCardContentView *)contentView subtitleLabel];
-      if (!v5)
+      subtitleLabel = [(PRXCardContentView *)contentView subtitleLabel];
+      if (!subtitleLabel)
       {
         v6 = [PRXLabel labelWithStyle:1];
         [(PRXCardContentView *)self->_contentView setSubtitleLabel:v6];
-        v5 = v6;
+        subtitleLabel = v6;
       }
 
-      v7 = v5;
-      [v5 setAttributedText:self->_attributedSubtitle];
+      v7 = subtitleLabel;
+      [subtitleLabel setAttributedText:self->_attributedSubtitle];
     }
 
     else
@@ -344,15 +344,15 @@
   }
 }
 
-- (void)setAttributedSubtitle:(id)a3
+- (void)setAttributedSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   attributedSubtitle = self->_attributedSubtitle;
-  if (attributedSubtitle != v4)
+  if (attributedSubtitle != subtitleCopy)
   {
-    v8 = v4;
-    attributedSubtitle = [attributedSubtitle isEqual:v4];
-    v4 = v8;
+    v8 = subtitleCopy;
+    attributedSubtitle = [attributedSubtitle isEqual:subtitleCopy];
+    subtitleCopy = v8;
     if ((attributedSubtitle & 1) == 0)
     {
       v6 = [v8 copy];
@@ -360,91 +360,91 @@
       self->_attributedSubtitle = v6;
 
       attributedSubtitle = [(PRXCardContentViewController *)self _updateSubtitleLabel];
-      v4 = v8;
+      subtitleCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](attributedSubtitle, v4);
+  MEMORY[0x2821F96F8](attributedSubtitle, subtitleCopy);
 }
 
-- (void)setBottomTrayTitle:(id)a3
+- (void)setBottomTrayTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   [(PRXCardContentViewController *)self loadViewIfNeeded];
-  v5 = [v4 copy];
+  v5 = [titleCopy copy];
   bottomTrayTitle = self->_bottomTrayTitle;
   self->_bottomTrayTitle = v5;
 
-  v7 = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
-  [v7 setTitle:v4];
+  bottomTray = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
+  [bottomTray setTitle:titleCopy];
 }
 
-- (void)setAttributedBottomTrayTitle:(id)a3
+- (void)setAttributedBottomTrayTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   [(PRXCardContentViewController *)self loadViewIfNeeded];
-  v5 = [v4 copy];
+  v5 = [titleCopy copy];
   attributedBottomTrayTitle = self->_attributedBottomTrayTitle;
   self->_attributedBottomTrayTitle = v5;
 
-  v7 = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
-  [v7 setAttributedTitle:v4];
+  bottomTray = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
+  [bottomTray setAttributedTitle:titleCopy];
 }
 
 - (UIImageView)bottomTrayImageView
 {
-  v2 = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
-  v3 = [v2 imageView];
+  bottomTray = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
+  imageView = [bottomTray imageView];
 
-  return v3;
+  return imageView;
 }
 
-- (void)setBottomTrayImageView:(id)a3
+- (void)setBottomTrayImageView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PRXCardContentViewController *)self loadViewIfNeeded];
-  v5 = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
-  [v5 setImageView:v4];
+  bottomTray = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
+  [bottomTray setImageView:viewCopy];
 }
 
 - (void)scrollToBottom
 {
-  v3 = [(PRXCardContentViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(PRXCardContentViewController *)self view];
+  [view layoutIfNeeded];
 
   [(PRXCardContentWrapperView *)self->_wrapperView scrollToBottom];
   self->_shouldAutoScrollToBottom = 1;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PRXCardContentViewController;
-  [(PRXCardContentViewController *)&v4 traitCollectionDidChange:a3];
+  [(PRXCardContentViewController *)&v4 traitCollectionDidChange:change];
   if (self->_shouldAutoScrollToBottom)
   {
     [(PRXCardContentViewController *)self scrollToBottom];
   }
 }
 
-- (void)setDismissalType:(unint64_t)a3
+- (void)setDismissalType:(unint64_t)type
 {
-  if (self->_dismissalType != a3)
+  if (self->_dismissalType != type)
   {
-    self->_dismissalType = a3;
+    self->_dismissalType = type;
     [(PRXCardContentViewController *)self _updateDismisalControls];
   }
 }
 
-- (void)setDismissButtonAction:(id)a3
+- (void)setDismissButtonAction:(id)action
 {
-  v4 = a3;
-  if (!v4 || self->_dismissButtonAction != v4)
+  actionCopy = action;
+  if (!actionCopy || self->_dismissButtonAction != actionCopy)
   {
-    v8 = v4;
-    if (v4)
+    v8 = actionCopy;
+    if (actionCopy)
     {
-      v5 = v4;
+      v5 = actionCopy;
     }
 
     else
@@ -455,10 +455,10 @@
     dismissButtonAction = self->_dismissButtonAction;
     self->_dismissButtonAction = v5;
 
-    v7 = [(PRXCardContentView *)self->_contentView dismissButton];
-    [(PRXAction *)self->_dismissButtonAction setButton:v7];
+    dismissButton = [(PRXCardContentView *)self->_contentView dismissButton];
+    [(PRXAction *)self->_dismissButtonAction setButton:dismissButton];
 
-    v4 = v8;
+    actionCopy = v8;
   }
 }
 
@@ -482,52 +482,52 @@
   }
 }
 
-- (id)addAction:(id)a3
+- (id)addAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = [(NSArray *)self->_actions mutableCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    array = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v8 = v7;
+  v8 = array;
 
-  [v8 addObject:v4];
+  [v8 addObject:actionCopy];
   v9 = [v8 copy];
   actions = self->_actions;
   self->_actions = v9;
 
   [(PRXCardContentViewController *)self _updateActionButtons];
 
-  return v4;
+  return actionCopy;
 }
 
-- (void)removeAction:(id)a3
+- (void)removeAction:(id)action
 {
   actions = self->_actions;
-  v5 = a3;
+  actionCopy = action;
   v6 = [(NSArray *)actions mutableCopy];
   v7 = v6;
   if (v6)
   {
-    v8 = v6;
+    array = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
-  v11 = v8;
+  v11 = array;
 
-  [v11 removeObject:v5];
+  [v11 removeObject:actionCopy];
   v9 = [v11 copy];
   v10 = self->_actions;
   self->_actions = v9;
@@ -535,20 +535,20 @@
   [(PRXCardContentViewController *)self _updateActionButtons];
 }
 
-- (void)replaceAction:(id)a3 withNewAction:(id)a4
+- (void)replaceAction:(id)action withNewAction:(id)newAction
 {
-  v13 = a3;
-  v6 = a4;
+  actionCopy = action;
+  newActionCopy = newAction;
   v7 = [(NSArray *)self->_actions mutableCopy];
-  v8 = [v7 indexOfObject:v13];
+  v8 = [v7 indexOfObject:actionCopy];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v8;
-    v10 = [v13 button];
-    [v6 setButton:v10];
+    button = [actionCopy button];
+    [newActionCopy setButton:button];
 
-    [v7 setObject:v6 atIndexedSubscript:v9];
-    [v13 setButton:0];
+    [v7 setObject:newActionCopy atIndexedSubscript:v9];
+    [actionCopy setButton:0];
     v11 = [v7 copy];
     actions = self->_actions;
     self->_actions = v11;
@@ -565,7 +565,7 @@
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v15 = self;
+    selfCopy = self;
     obj = self->_actions;
     v4 = [(NSArray *)obj countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v4)
@@ -593,9 +593,9 @@
             v10 = qword_260F853D8[v9];
           }
 
-          v11 = [v8 usesLegacyStyling];
-          v12 = [v8 customColors];
-          v13 = [PRXButton buttonWithProximityType:v10 usesLegacyStyling:v11 usingCustomColors:v12];
+          usesLegacyStyling = [v8 usesLegacyStyling];
+          customColors = [v8 customColors];
+          v13 = [PRXButton buttonWithProximityType:v10 usesLegacyStyling:usesLegacyStyling usingCustomColors:customColors];
 
           [v8 setButton:v13];
           [v3 addObject:v13];
@@ -607,23 +607,23 @@
       while (v5);
     }
 
-    v14 = [(PRXCardContentWrapperView *)v15->_wrapperView bottomTray];
-    [v14 setActionButtons:v3];
+    bottomTray = [(PRXCardContentWrapperView *)selfCopy->_wrapperView bottomTray];
+    [bottomTray setActionButtons:v3];
   }
 }
 
-- (void)showActivityIndicatorWithStatus:(id)a3
+- (void)showActivityIndicatorWithStatus:(id)status
 {
-  v10 = a3;
+  statusCopy = status;
   [(PRXCardContentViewController *)self loadViewIfNeeded];
-  if ([v10 length])
+  if ([statusCopy length])
   {
     v4 = objc_alloc_init(PRXActivityStatusView);
-    v5 = [(PRXActivityStatusView *)v4 statusLabel];
-    [v5 setText:v10];
+    statusLabel = [(PRXActivityStatusView *)v4 statusLabel];
+    [statusLabel setText:statusCopy];
 
-    v6 = [(PRXActivityStatusView *)v4 activityIndicator];
-    [v6 startAnimating];
+    activityIndicator = [(PRXActivityStatusView *)v4 activityIndicator];
+    [activityIndicator startAnimating];
   }
 
   else
@@ -643,37 +643,37 @@
     [(PRXActivityStatusView *)v4 startAnimating];
   }
 
-  v9 = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
-  [v9 setActivityIndicator:v4];
+  bottomTray = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
+  [bottomTray setActivityIndicator:v4];
 }
 
 - (void)hideActivityIndicator
 {
-  v2 = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
-  [v2 setActivityIndicator:0];
+  bottomTray = [(PRXCardContentWrapperView *)self->_wrapperView bottomTray];
+  [bottomTray setActivityIndicator:0];
 }
 
-- (void)setInfoButtonAction:(id)a3
+- (void)setInfoButtonAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(PRXCardContentViewController *)self loadViewIfNeeded];
-  [(PRXCardContentWrapperView *)self->_wrapperView setAuxiliaryButtonAction:v4];
+  [(PRXCardContentWrapperView *)self->_wrapperView setAuxiliaryButtonAction:actionCopy];
 }
 
 - (PRXButton)infoButton
 {
-  v2 = [(PRXCardContentWrapperView *)self->_wrapperView auxiliaryButtonAction];
-  v3 = [v2 button];
+  auxiliaryButtonAction = [(PRXCardContentWrapperView *)self->_wrapperView auxiliaryButtonAction];
+  button = [auxiliaryButtonAction button];
 
-  return v3;
+  return button;
 }
 
-- (void)setAuxiliaryButtonWithSymbolName:(id)a3 handler:(id)a4
+- (void)setAuxiliaryButtonWithSymbolName:(id)name handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  nameCopy = name;
   [(PRXCardContentViewController *)self loadViewIfNeeded];
-  [(PRXCardContentWrapperView *)self->_wrapperView setAuxiliaryButtonWithSymbolName:v7 handler:v6];
+  [(PRXCardContentWrapperView *)self->_wrapperView setAuxiliaryButtonWithSymbolName:nameCopy handler:handlerCopy];
 }
 
 - (id)bottomTray

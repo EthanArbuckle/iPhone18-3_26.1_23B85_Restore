@@ -1,42 +1,42 @@
 @interface NavBarConversationIdentityLabel
 - (CGSize)intrinsicContentSize;
-- (_TtC7ChatKit31NavBarConversationIdentityLabel)initWithFrame:(CGRect)a3;
+- (_TtC7ChatKit31NavBarConversationIdentityLabel)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)preferredContentSizeCategoryDidChangeWithView:(id)a3 previousTraitCollection:(id)a4;
+- (void)preferredContentSizeCategoryDidChangeWithView:(id)view previousTraitCollection:(id)collection;
 @end
 
 @implementation NavBarConversationIdentityLabel
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908FA8C8(type metadata accessor for NavBarConversationIdentityLabel);
 }
 
-- (void)preferredContentSizeCategoryDidChangeWithView:(id)a3 previousTraitCollection:(id)a4
+- (void)preferredContentSizeCategoryDidChangeWithView:(id)view previousTraitCollection:(id)collection
 {
   sub_1902188FC(0, &qword_1EAD46500);
-  v6 = a3;
-  v7 = self;
+  viewCopy = view;
+  selfCopy = self;
   if (sub_190D57D90())
   {
     sub_1908F9A8C();
-    [(NavBarConversationIdentityLabel *)v7 setNeedsLayout];
-    [(NavBarConversationIdentityLabel *)v7 invalidateIntrinsicContentSize];
-    [(NavBarConversationIdentityLabel *)v7 layoutIfNeeded];
+    [(NavBarConversationIdentityLabel *)selfCopy setNeedsLayout];
+    [(NavBarConversationIdentityLabel *)selfCopy invalidateIntrinsicContentSize];
+    [(NavBarConversationIdentityLabel *)selfCopy layoutIfNeeded];
   }
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1908F9740();
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1908F9A14();
   v5 = v4;
 
@@ -47,7 +47,7 @@
   return result;
 }
 
-- (_TtC7ChatKit31NavBarConversationIdentityLabel)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit31NavBarConversationIdentityLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

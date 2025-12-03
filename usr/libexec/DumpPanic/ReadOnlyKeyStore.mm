@@ -1,18 +1,18 @@
 @interface ReadOnlyKeyStore
-- (BOOL)readKeyFile:(id)a3 :(id *)a4 :(int *)a5 :(id *)a6 :(id *)a7;
-- (ReadOnlyKeyStore)initWithKeyStorePath:(id)a3 :(id)a4;
-- (ccec_cp)getEccFormat:(int)a3;
-- (id)init:(id)a3;
+- (BOOL)readKeyFile:(id)file :(id *)a4 :(int *)a5 :(id *)a6 :(id *)a7;
+- (ReadOnlyKeyStore)initWithKeyStorePath:(id)path :(id)a4;
+- (ccec_cp)getEccFormat:(int)format;
+- (id)init:(id)init;
 @end
 
 @implementation ReadOnlyKeyStore
 
-- (BOOL)readKeyFile:(id)a3 :(id *)a4 :(int *)a5 :(id *)a6 :(id *)a7
+- (BOOL)readKeyFile:(id)file :(id *)a4 :(int *)a5 :(id *)a6 :(id *)a7
 {
-  v12 = a3;
+  fileCopy = file;
   v13 = +[NSFileManager defaultManager];
   v62 = 0;
-  v14 = [v13 attributesOfItemAtPath:v12 error:&v62];
+  v14 = [v13 attributesOfItemAtPath:fileCopy error:&v62];
   v15 = v62;
 
   if (!v14)
@@ -21,9 +21,9 @@
     if (os_log_type_enabled(log_handle, OS_LOG_TYPE_ERROR))
     {
       v20 = log_handle;
-      v21 = [v15 localizedDescription];
+      localizedDescription = [v15 localizedDescription];
       *buf = 138412290;
-      v64 = v21;
+      v64 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Failed to gather the file attributes for key file. Error: %@", buf, 0xCu);
     }
 
@@ -36,9 +36,9 @@
     *a4 = v14;
   }
 
-  v17 = [v14 fileType];
+  fileType = [v14 fileType];
 
-  if (v17 == NSFileTypeRegular)
+  if (fileType == NSFileTypeRegular)
   {
     if ([v14 fileSize] > 0x2000)
     {
@@ -53,7 +53,7 @@
     }
 
     v61 = v15;
-    v25 = [NSData dataWithContentsOfFile:v12 options:0 error:&v61];
+    v25 = [NSData dataWithContentsOfFile:fileCopy options:0 error:&v61];
     v26 = v61;
 
     if (!v25)
@@ -62,9 +62,9 @@
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         v45 = v37;
-        v46 = [v26 localizedDescription];
+        localizedDescription2 = [v26 localizedDescription];
         *buf = 138412290;
-        v64 = v46;
+        v64 = localizedDescription2;
         _os_log_error_impl(&_mh_execute_header, v45, OS_LOG_TYPE_ERROR, "Failed to read the file contents for key file. Error: %@", buf, 0xCu);
       }
 
@@ -112,10 +112,10 @@
                 }
 
                 v56 = v32;
-                v33 = [v32 intValue];
-                if (!v33 || v33 >= 2)
+                intValue = [v32 intValue];
+                if (!intValue || intValue >= 2)
                 {
-                  v50 = v33;
+                  v50 = intValue;
                   v51 = self->_log_handle;
                   if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
                   {
@@ -127,7 +127,7 @@
                   goto LABEL_67;
                 }
 
-                *a5 = v33;
+                *a5 = intValue;
                 if (a6)
                 {
                   v34 = [v28 objectForKeyedSubscript:@"public_key_hash"];
@@ -221,9 +221,9 @@ LABEL_67:
               if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
               {
                 v54 = v47;
-                v55 = [v57 intValue];
+                intValue2 = [v57 intValue];
                 *buf = 67109120;
-                LODWORD(v64) = v55;
+                LODWORD(v64) = intValue2;
                 _os_log_error_impl(&_mh_execute_header, v54, OS_LOG_TYPE_ERROR, "Unknown file version %d", buf, 8u);
               }
             }
@@ -289,9 +289,9 @@ LABEL_71:
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         v39 = v38;
-        v40 = [v59 localizedDescription];
+        localizedDescription3 = [v59 localizedDescription];
         *buf = 138412290;
-        v64 = v40;
+        v64 = localizedDescription3;
         _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "Failed to parse the file contents as JSON. Error: %@", buf, 0xCu);
 
         v27 = 0;
@@ -311,7 +311,7 @@ LABEL_73:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v64 = v12;
+    v64 = fileCopy;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Skipping non-file type '%@'", buf, 0xCu);
   }
 
@@ -322,9 +322,9 @@ LABEL_13:
   return v23;
 }
 
-- (ccec_cp)getEccFormat:(int)a3
+- (ccec_cp)getEccFormat:(int)format
 {
-  if (a3 == 1)
+  if (format == 1)
   {
 
     return ccec_cp_256(self, a2);
@@ -336,7 +336,7 @@ LABEL_13:
     if (os_log_type_enabled(log_handle, OS_LOG_TYPE_ERROR))
     {
       v6[0] = 67109120;
-      v6[1] = a3;
+      v6[1] = format;
       _os_log_error_impl(&_mh_execute_header, log_handle, OS_LOG_TYPE_ERROR, "Unknown key format %d", v6, 8u);
     }
 
@@ -344,18 +344,18 @@ LABEL_13:
   }
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v4 = a3;
+  initCopy = init;
   v5 = [NSString stringWithUTF8String:"/private/var/db/DumpPanic/Keys"];
   v6 = [(ReadOnlyKeyStore *)self initWithKeyStorePath:v5];
 
   return v6;
 }
 
-- (ReadOnlyKeyStore)initWithKeyStorePath:(id)a3 :(id)a4
+- (ReadOnlyKeyStore)initWithKeyStorePath:(id)path :(id)a4
 {
-  v7 = a3;
+  pathCopy = path;
   v8 = a4;
   v18.receiver = self;
   v18.super_class = ReadOnlyKeyStore;
@@ -371,12 +371,12 @@ LABEL_7:
   if (v8)
   {
     objc_storeStrong(&v9->_log_handle, a4);
-    v11 = v7;
+    v11 = pathCopy;
     if (v11)
     {
       v12 = v11;
 
-      objc_storeStrong(&v10->_keyStorePath, a3);
+      objc_storeStrong(&v10->_keyStorePath, path);
       v10->_isDefaultKeyStorePath = [v12 isEqualToString:@"/private/var/db/DumpPanic/Keys"];
       v17 = 0;
       v13 = +[NSFileManager defaultManager];

@@ -7,19 +7,19 @@
 - (void)_fides_objectByReplacingValue:()DESExtensions withValue:
 {
   v6 = a4;
-  if ([a3 isEqual:a1])
+  if ([a3 isEqual:self])
   {
-    v7 = v6;
+    selfCopy = v6;
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  v8 = v7;
+  v8 = selfCopy;
 
-  return v7;
+  return selfCopy;
 }
 
 @end

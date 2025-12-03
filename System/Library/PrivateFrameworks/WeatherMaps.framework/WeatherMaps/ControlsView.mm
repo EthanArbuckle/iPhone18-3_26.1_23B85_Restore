@@ -1,32 +1,32 @@
 @interface ControlsView
 - (NSArray)accessibilityElements;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setAccessibilityElements:(id)a3;
+- (void)setAccessibilityElements:(id)elements;
 @end
 
 @implementation ControlsView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220EA5DFC();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_220EA6BB4(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = sub_220EA6BB4(event, x, y);
 
   return v10;
 }
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_220EA6D78();
 
   if (v3)
@@ -42,14 +42,14 @@
   return v4;
 }
 
-- (void)setAccessibilityElements:(id)a3
+- (void)setAccessibilityElements:(id)elements
 {
-  if (a3)
+  if (elements)
   {
     sub_220FC2970();
   }
 
-  v4 = self;
+  selfCopy = self;
   j__swift_bridgeObjectRelease();
 }
 

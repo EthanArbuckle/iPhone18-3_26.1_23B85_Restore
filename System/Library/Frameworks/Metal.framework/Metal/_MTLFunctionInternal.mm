@@ -1,8 +1,8 @@
 @interface _MTLFunctionInternal
 - ($2772B1D07D29A72E8557B2574C0AE5C1)baseFunctionHash;
-- (BOOL)specializedFunctionHash:(id *)a3 requestData:(id *)a4 airScript:(id *)a5 constants:(id)a6 specializedName:(id)a7 privateFunctions:(id)a8 completionHandler:(id)a9;
+- (BOOL)specializedFunctionHash:(id *)hash requestData:(id *)data airScript:(id *)script constants:(id)constants specializedName:(id)name privateFunctions:(id)functions completionHandler:(id)handler;
 - (SpecializedFunctionTrackingData)specializedFunctionTrackingData;
-- (_MTLFunctionInternal)initWithName:(id)a3 type:(unint64_t)a4 libraryData:(void *)a5 functionData:(MTLFunctionData *)a6 inheritedLibraryPath:(id)a7 device:(id)a8;
+- (_MTLFunctionInternal)initWithName:(id)name type:(unint64_t)type libraryData:(void *)data functionData:(MTLFunctionData *)functionData inheritedLibraryPath:(id)path device:(id)device;
 - (id).cxx_construct;
 - (id)arguments;
 - (id)bitcodeDataInternal;
@@ -11,8 +11,8 @@
 - (id)functionConstantsDictionary;
 - (id)importedLibraries;
 - (id)importedSymbols;
-- (id)newFunctionWithPluginData:(id)a3 bitcodeType:(unsigned __int8)a4;
-- (id)newSpecializedFunctionWithDescriptor:(id)a3 destinationArchive:(id)a4 functionCache:(id)a5 compilerTask:(id)a6 error:(id *)a7;
+- (id)newFunctionWithPluginData:(id)data bitcodeType:(unsigned __int8)type;
+- (id)newSpecializedFunctionWithDescriptor:(id)descriptor destinationArchive:(id)archive functionCache:(id)cache compilerTask:(id)task error:(id *)error;
 - (id)reflectionData;
 - (id)returnType;
 - (id)specializationAirScript;
@@ -27,21 +27,21 @@
 - (void)initializePublicMetadata;
 - (void)initializeSourceArchive;
 - (void)initializeStitchableFunctionMetadata;
-- (void)newSpecializedFunctionWithDescriptor:(id)a3 destinationArchive:(id)a4 functionCache:(id)a5 sync:(BOOL)a6 compilerTask:(id)a7 completionHandler:(id)a8;
+- (void)newSpecializedFunctionWithDescriptor:(id)descriptor destinationArchive:(id)archive functionCache:(id)cache sync:(BOOL)sync compilerTask:(id)task completionHandler:(id)handler;
 - (void)programObject;
-- (void)setArguments:(id)a3;
-- (void)setFilePath:(id)a3;
-- (void)setFunctionConstantSpecializationHash:(id *)a3;
-- (void)setFunctionConstants:(id)a3;
-- (void)setPrecompiledOutput:(id)a3;
-- (void)setRelocations:(id)a3;
-- (void)setReturnType:(id)a3;
-- (void)setStageInputAttributes:(id)a3;
-- (void)setTrackingData:(shared_ptr<TrackingData>)a3;
-- (void)setUnpackedFilePath:(id)a3;
-- (void)setVertexAttributes:(id)a3;
+- (void)setArguments:(id)arguments;
+- (void)setFilePath:(id)path;
+- (void)setFunctionConstantSpecializationHash:(id *)hash;
+- (void)setFunctionConstants:(id)constants;
+- (void)setPrecompiledOutput:(id)output;
+- (void)setRelocations:(id)relocations;
+- (void)setReturnType:(id)type;
+- (void)setStageInputAttributes:(id)attributes;
+- (void)setTrackingData:(shared_ptr<TrackingData>)data;
+- (void)setUnpackedFilePath:(id)path;
+- (void)setVertexAttributes:(id)attributes;
 - (void)stitchedLibraryTrackingData;
-- (void)storeTrackingDataWithDescriptor:(id)a3 function:(id)a4 variantHash:(id *)a5;
+- (void)storeTrackingDataWithDescriptor:(id)descriptor function:(id)function variantHash:(id *)hash;
 @end
 
 @implementation _MTLFunctionInternal
@@ -166,28 +166,28 @@
   return 0;
 }
 
-- (_MTLFunctionInternal)initWithName:(id)a3 type:(unint64_t)a4 libraryData:(void *)a5 functionData:(MTLFunctionData *)a6 inheritedLibraryPath:(id)a7 device:(id)a8
+- (_MTLFunctionInternal)initWithName:(id)name type:(unint64_t)type libraryData:(void *)data functionData:(MTLFunctionData *)functionData inheritedLibraryPath:(id)path device:(id)device
 {
   v19.receiver = self;
   v19.super_class = _MTLFunctionInternal;
-  v10 = [(_MTLFunction *)&v19 initWithName:a3 type:a4 libraryData:a5 device:a8];
-  v10->_inheritedLibraryPath = [a7 copy];
+  v10 = [(_MTLFunction *)&v19 initWithName:name type:type libraryData:data device:device];
+  v10->_inheritedLibraryPath = [path copy];
   v10->_publicMetadataInitialized = 0;
   v10->_privateMetadataInitialized = 0;
-  v11 = *&a6->publicArgumentsOffset;
-  *&v10->_functionData.bitCodeOffset = *&a6->bitCodeOffset;
+  v11 = *&functionData->publicArgumentsOffset;
+  *&v10->_functionData.bitCodeOffset = *&functionData->bitCodeOffset;
   *&v10->_functionData.publicArgumentsOffset = v11;
-  v12 = *&a6->bitcodeHash.key[24];
-  v14 = *&a6->sourceArchiveOffset;
-  v13 = *&a6->airMajorVersion;
-  *&v10->_functionData.bitcodeHash.key[8] = *&a6->bitcodeHash.key[8];
+  v12 = *&functionData->bitcodeHash.key[24];
+  v14 = *&functionData->sourceArchiveOffset;
+  v13 = *&functionData->airMajorVersion;
+  *&v10->_functionData.bitcodeHash.key[8] = *&functionData->bitcodeHash.key[8];
   *&v10->_functionData.bitcodeHash.key[24] = v12;
   *&v10->_functionData.sourceArchiveOffset = v14;
   *&v10->_functionData.airMajorVersion = v13;
-  v15 = *&a6->baseFunctionHash.key[24];
-  v17 = *&a6->pluginData;
-  v16 = *&a6->functionInputs;
-  *&v10->_functionData.baseFunctionHash.key[8] = *&a6->baseFunctionHash.key[8];
+  v15 = *&functionData->baseFunctionHash.key[24];
+  v17 = *&functionData->pluginData;
+  v16 = *&functionData->functionInputs;
+  *&v10->_functionData.baseFunctionHash.key[8] = *&functionData->baseFunctionHash.key[8];
   *&v10->_functionData.baseFunctionHash.key[24] = v15;
   *&v10->_functionData.pluginData = v17;
   *&v10->_functionData.functionInputs = v16;
@@ -275,11 +275,11 @@
   return self;
 }
 
-- (void)setTrackingData:(shared_ptr<TrackingData>)a3
+- (void)setTrackingData:(shared_ptr<TrackingData>)data
 {
   p_trackingData = &self->_trackingData;
-  v5 = *a3.__ptr_;
-  v4 = *(a3.__ptr_ + 1);
+  v5 = *data.__ptr_;
+  v4 = *(data.__ptr_ + 1);
   if (v4)
   {
     atomic_fetch_add_explicit((v4 + 8), 1uLL, memory_order_relaxed);
@@ -388,23 +388,23 @@
   return self->super._vertexAttributes;
 }
 
-- (void)setVertexAttributes:(id)a3
+- (void)setVertexAttributes:(id)attributes
 {
   vertexAttributes = self->super._vertexAttributes;
-  if (vertexAttributes != a3)
+  if (vertexAttributes != attributes)
   {
 
-    self->super._vertexAttributes = a3;
+    self->super._vertexAttributes = attributes;
   }
 }
 
-- (void)setReturnType:(id)a3
+- (void)setReturnType:(id)type
 {
   returnType = self->super._returnType;
-  if (returnType != a3)
+  if (returnType != type)
   {
 
-    self->super._returnType = a3;
+    self->super._returnType = type;
   }
 }
 
@@ -426,13 +426,13 @@
   return self->super._returnType;
 }
 
-- (void)setArguments:(id)a3
+- (void)setArguments:(id)arguments
 {
   arguments = self->super._arguments;
-  if (arguments != a3)
+  if (arguments != arguments)
   {
 
-    self->super._arguments = a3;
+    self->super._arguments = arguments;
   }
 }
 
@@ -454,7 +454,7 @@
   return self->super._arguments;
 }
 
-- (void)setPrecompiledOutput:(id)a3
+- (void)setPrecompiledOutput:(id)output
 {
   precompiledOutput = self->super._precompiledOutput;
   if (precompiledOutput)
@@ -462,11 +462,11 @@
     dispatch_release(precompiledOutput);
   }
 
-  self->super._precompiledOutput = a3;
-  if (a3)
+  self->super._precompiledOutput = output;
+  if (output)
   {
 
-    dispatch_retain(a3);
+    dispatch_retain(output);
   }
 }
 
@@ -480,32 +480,32 @@
   return self->super._vertexAttributes;
 }
 
-- (void)setStageInputAttributes:(id)a3
+- (void)setStageInputAttributes:(id)attributes
 {
   vertexAttributes = self->super._vertexAttributes;
-  if (vertexAttributes != a3)
+  if (vertexAttributes != attributes)
   {
 
-    self->super._vertexAttributes = a3;
+    self->super._vertexAttributes = attributes;
   }
 }
 
-- (void)setFunctionConstants:(id)a3
+- (void)setFunctionConstants:(id)constants
 {
   functionConstants = self->super._functionConstants;
-  if (functionConstants != a3)
+  if (functionConstants != constants)
   {
 
-    self->super._functionConstants = a3;
+    self->super._functionConstants = constants;
   }
 }
 
-- (void)setFunctionConstantSpecializationHash:(id *)a3
+- (void)setFunctionConstantSpecializationHash:(id *)hash
 {
-  if (a3)
+  if (hash)
   {
-    v3 = *&a3->var0[16];
-    *self->super._functionConstantSpecializationHash.key = *a3->var0;
+    v3 = *&hash->var0[16];
+    *self->super._functionConstantSpecializationHash.key = *hash->var0;
     *&self->super._functionConstantSpecializationHash.key[16] = v3;
   }
 }
@@ -537,32 +537,32 @@
   return functionConstantDictionary;
 }
 
-- (BOOL)specializedFunctionHash:(id *)a3 requestData:(id *)a4 airScript:(id *)a5 constants:(id)a6 specializedName:(id)a7 privateFunctions:(id)a8 completionHandler:(id)a9
+- (BOOL)specializedFunctionHash:(id *)hash requestData:(id *)data airScript:(id *)script constants:(id)constants specializedName:(id)name privateFunctions:(id)functions completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
   size = 0;
   v24 = 0;
-  if (a6)
+  if (constants)
   {
-    v15 = a6;
-    v16 = a6;
+    constantsCopy = constants;
+    constantsCopy2 = constants;
   }
 
   else
   {
-    v15 = objc_alloc_init(MTLFunctionConstantValues);
+    constantsCopy = objc_alloc_init(MTLFunctionConstantValues);
   }
 
-  v17 = [(MTLFunctionConstantValues *)v15 serializedConstantDataForFunction:self dataSize:&size errorMessage:&v24];
+  v17 = [(MTLFunctionConstantValues *)constantsCopy serializedConstantDataForFunction:self dataSize:&size errorMessage:&v24];
   if (v17)
   {
-    *a5 = [(MTLFunctionConstantValues *)v15 newConstantScriptForFunction:self name:self->super._name specializedName:a7 errorMessage:&v24];
+    *script = [(MTLFunctionConstantValues *)constantsCopy newConstantScriptForFunction:self name:self->super._name specializedName:name errorMessage:&v24];
 
-    *a4 = dispatch_data_create(v17, size, 0, *MEMORY[0x1E69E9648]);
-    createHashForType(15, v17, size, &self->_functionData.bitcodeHash, 0, a7, a8, v25);
+    *data = dispatch_data_create(v17, size, 0, *MEMORY[0x1E69E9648]);
+    createHashForType(15, v17, size, &self->_functionData.bitcodeHash, 0, name, functions, v25);
     v18 = v25[1];
-    *a3->var0 = v25[0];
-    *&a3->var0[16] = v18;
+    *hash->var0 = v25[0];
+    *&hash->var0[16] = v18;
   }
 
   else
@@ -570,7 +570,7 @@
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObject:v24 forKey:*MEMORY[0x1E696A578]];
     v20 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"MTLLibraryErrorDomain" code:3 userInfo:v19];
 
-    (*(a9 + 2))(a9, 0, v20);
+    (*(handler + 2))(handler, 0, v20);
   }
 
   result = v17 != 0;
@@ -578,48 +578,48 @@
   return result;
 }
 
-- (void)storeTrackingDataWithDescriptor:(id)a3 function:(id)a4 variantHash:(id *)a5
+- (void)storeTrackingDataWithDescriptor:(id)descriptor function:(id)function variantHash:(id *)hash
 {
   if ([_MTLFunctionInternal storeTrackingDataWithDescriptor:function:variantHash:]::onceToken != -1)
   {
     [_MTLFunctionInternal storeTrackingDataWithDescriptor:function:variantHash:];
   }
 
-  if ((-[_MTLFunctionInternal storeTrackingDataWithDescriptor:function:variantHash:]::enableMetalScriptCollection & 1) != 0 || ([a3 options] & 2) != 0)
+  if ((-[_MTLFunctionInternal storeTrackingDataWithDescriptor:function:variantHash:]::enableMetalScriptCollection & 1) != 0 || ([descriptor options] & 2) != 0)
   {
     operator new();
   }
 
-  if ([a3 constantValues])
+  if ([descriptor constantValues])
   {
-    [a4 setFunctionConstantSpecializationHash:a5];
+    [function setFunctionConstantSpecializationHash:hash];
   }
 }
 
-- (void)newSpecializedFunctionWithDescriptor:(id)a3 destinationArchive:(id)a4 functionCache:(id)a5 sync:(BOOL)a6 compilerTask:(id)a7 completionHandler:(id)a8
+- (void)newSpecializedFunctionWithDescriptor:(id)descriptor destinationArchive:(id)archive functionCache:(id)cache sync:(BOOL)sync compilerTask:(id)task completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
   if (!self->_publicMetadataInitialized)
   {
-    [(_MTLFunctionInternal *)self initializePublicMetadata:a3];
+    [(_MTLFunctionInternal *)self initializePublicMetadata:descriptor];
   }
 
-  v11 = [a3 specializedName];
-  if ([a3 specializedName] && ((objc_msgSend(objc_msgSend(a3, "specializedName"), "isEqualToString:", self->super._name) & 1) != 0 || (objc_msgSend(objc_msgSend(a3, "specializedName"), "isEqualToString:", &stru_1EF478240) & 1) != 0))
+  specializedName = [descriptor specializedName];
+  if ([descriptor specializedName] && ((objc_msgSend(objc_msgSend(descriptor, "specializedName"), "isEqualToString:", self->super._name) & 1) != 0 || (objc_msgSend(objc_msgSend(descriptor, "specializedName"), "isEqualToString:", &stru_1EF478240) & 1) != 0))
   {
-    if (![a3 applyFunctionConstants])
+    if (![descriptor applyFunctionConstants])
     {
       goto LABEL_12;
     }
 
-    v11 = 0;
+    specializedName = 0;
     goto LABEL_9;
   }
 
-  if ([a3 applyFunctionConstants])
+  if ([descriptor applyFunctionConstants])
   {
 LABEL_9:
-    if (self->super._functionConstants | v11)
+    if (self->super._functionConstants | specializedName)
     {
       goto LABEL_15;
     }
@@ -627,28 +627,28 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v11)
+  if (specializedName)
   {
 LABEL_15:
-    MTLGetCompilerOptions(self->super._device, [a3 pipelineOptions], objc_msgSend(-[MTLDevice compiler](self->super._device, "compiler"), "compilerFlags") & 0x80, 3uLL, 0);
+    MTLGetCompilerOptions(self->super._device, [descriptor pipelineOptions], objc_msgSend(-[MTLDevice compiler](self->super._device, "compiler"), "compilerFlags") & 0x80, 3uLL, 0);
     v20 = 0;
     object = 0;
-    if (-[_MTLFunctionInternal specializedFunctionHash:requestData:airScript:constants:specializedName:privateFunctions:completionHandler:](self, "specializedFunctionHash:requestData:airScript:constants:specializedName:privateFunctions:completionHandler:", &v21, &v20, &object, [a3 constantValues], v11, objc_msgSend(a3, "privateFunctions"), a8))
+    if (-[_MTLFunctionInternal specializedFunctionHash:requestData:airScript:constants:specializedName:privateFunctions:completionHandler:](self, "specializedFunctionHash:requestData:airScript:constants:specializedName:privateFunctions:completionHandler:", &v21, &v20, &object, [descriptor constantValues], specializedName, objc_msgSend(descriptor, "privateFunctions"), handler))
     {
       v12 = _MTLGetLibrariesCache(self->super._device);
       name = self->super._name;
-      if ([a3 specializedName])
+      if ([descriptor specializedName])
       {
-        [a3 specializedName];
+        [descriptor specializedName];
       }
 
-      if (([a3 pipelineOptions] & 4) == 0 && (objc_msgSend(a3, "options") & 4) == 0)
+      if (([descriptor pipelineOptions] & 4) == 0 && (objc_msgSend(descriptor, "options") & 4) == 0)
       {
-        [a3 pipelineOptions];
+        [descriptor pipelineOptions];
       }
 
       device = self->super._device;
-      [a3 binaryArchives];
+      [descriptor binaryArchives];
       v16 = *(v12 + 32);
       MultiLevelCacheFactory::createFunctionCache();
     }
@@ -658,23 +658,23 @@ LABEL_15:
   }
 
 LABEL_12:
-  if ([a3 privateFunctions] && objc_msgSend(objc_msgSend(a3, "privateFunctions"), "count"))
+  if ([descriptor privateFunctions] && objc_msgSend(objc_msgSend(descriptor, "privateFunctions"), "count"))
   {
-    v11 = 0;
+    specializedName = 0;
     goto LABEL_15;
   }
 
-  v13 = *(a8 + 2);
+  v13 = *(handler + 2);
   v14 = *MEMORY[0x1E69E9840];
 
-  v13(a8, self, 0);
+  v13(handler, self, 0);
 }
 
-- (id)newSpecializedFunctionWithDescriptor:(id)a3 destinationArchive:(id)a4 functionCache:(id)a5 compilerTask:(id)a6 error:(id *)a7
+- (id)newSpecializedFunctionWithDescriptor:(id)descriptor destinationArchive:(id)archive functionCache:(id)cache compilerTask:(id)task error:(id *)error
 {
-  if (a7)
+  if (error)
   {
-    *a7 = 0;
+    *error = 0;
   }
 
   v22 = 0;
@@ -695,20 +695,20 @@ LABEL_12:
   v15[3] = &unk_1E6EEC118;
   v15[4] = &v22;
   v15[5] = &v16;
-  [(_MTLFunctionInternal *)self newSpecializedFunctionWithDescriptor:a3 destinationArchive:a4 functionCache:a5 sync:1 compilerTask:a6 completionHandler:v15];
+  [(_MTLFunctionInternal *)self newSpecializedFunctionWithDescriptor:descriptor destinationArchive:archive functionCache:cache sync:1 compilerTask:task completionHandler:v15];
   v9 = v23[5];
   if (v9 == self)
   {
 
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     v10 = v17[5];
-    if (a7)
+    if (error)
     {
-      *a7 = v10;
+      *error = v10;
     }
 
     else
@@ -721,21 +721,21 @@ LABEL_12:
       *(v12 + 296) = self->_functionData.bitcodeType;
       *(v23[5] + 304) = self->_functionData.pluginData;
       v13 = *(v23[5] + 304);
-      v11 = v23[5];
+      selfCopy = v23[5];
     }
 
     else
     {
-      v11 = 0;
+      selfCopy = 0;
     }
   }
 
   _Block_object_dispose(&v16, 8);
   _Block_object_dispose(&v22, 8);
-  return v11;
+  return selfCopy;
 }
 
-- (id)newFunctionWithPluginData:(id)a3 bitcodeType:(unsigned __int8)a4
+- (id)newFunctionWithPluginData:(id)data bitcodeType:(unsigned __int8)type
 {
   v23 = *MEMORY[0x1E69E9840];
   v7 = *&self->_functionData.functionInputs;
@@ -758,12 +758,12 @@ LABEL_12:
     dispatch_retain(object);
   }
 
-  *&v19 = a3;
-  BYTE8(v18) = a4;
+  *&v19 = data;
+  BYTE8(v18) = type;
   CC_SHA256_Init(&c);
   CC_SHA256_Update(&c, v17 + 8, 0x20u);
-  v12 = [v19 bytes];
-  CC_SHA256_Update(&c, v12, [v19 length]);
+  bytes = [v19 bytes];
+  CC_SHA256_Update(&c, bytes, [v19 length]);
   CC_SHA256_Final(v17 + 8, &c);
   result = [[_MTLFunctionInternal alloc] initWithName:self->super._name type:self->super._functionType libraryData:self->super._libraryData functionData:v16 device:self->super._device];
   v14 = *MEMORY[0x1E69E9840];
@@ -783,13 +783,13 @@ LABEL_12:
   os_unfair_lock_unlock(v3);
 }
 
-- (void)setFilePath:(id)a3
+- (void)setFilePath:(id)path
 {
   filePath = self->_filePath;
-  if (filePath != a3)
+  if (filePath != path)
   {
 
-    self->_filePath = [a3 copy];
+    self->_filePath = [path copy];
   }
 }
 
@@ -827,13 +827,13 @@ LABEL_12:
   os_unfair_lock_unlock(v3);
 }
 
-- (void)setUnpackedFilePath:(id)a3
+- (void)setUnpackedFilePath:(id)path
 {
   unpackedFilePath = self->super._unpackedFilePath;
-  if (unpackedFilePath != a3)
+  if (unpackedFilePath != path)
   {
 
-    self->super._unpackedFilePath = [a3 copy];
+    self->super._unpackedFilePath = [path copy];
   }
 }
 
@@ -857,13 +857,13 @@ LABEL_12:
   return self->_lineNumber;
 }
 
-- (void)setRelocations:(id)a3
+- (void)setRelocations:(id)relocations
 {
   relocations = self->super._relocations;
-  if (relocations != a3)
+  if (relocations != relocations)
   {
 
-    self->super._relocations = [a3 copy];
+    self->super._relocations = [relocations copy];
   }
 }
 

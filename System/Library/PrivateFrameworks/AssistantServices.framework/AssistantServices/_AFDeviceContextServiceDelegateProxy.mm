@@ -1,27 +1,27 @@
 @interface _AFDeviceContextServiceDelegateProxy
-- (_AFDeviceContextServiceDelegateProxy)initWithConnection:(id)a3;
-- (void)updateLocalDeviceContext:(id)a3;
+- (_AFDeviceContextServiceDelegateProxy)initWithConnection:(id)connection;
+- (void)updateLocalDeviceContext:(id)context;
 @end
 
 @implementation _AFDeviceContextServiceDelegateProxy
 
-- (void)updateLocalDeviceContext:(id)a3
+- (void)updateLocalDeviceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_connection);
-  [WeakRetained _updateLocalDeviceContext:v4];
+  [WeakRetained _updateLocalDeviceContext:contextCopy];
 }
 
-- (_AFDeviceContextServiceDelegateProxy)initWithConnection:(id)a3
+- (_AFDeviceContextServiceDelegateProxy)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v8.receiver = self;
   v8.super_class = _AFDeviceContextServiceDelegateProxy;
   v5 = [(_AFDeviceContextServiceDelegateProxy *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_connection, v4);
+    objc_storeWeak(&v5->_connection, connectionCopy);
   }
 
   return v6;

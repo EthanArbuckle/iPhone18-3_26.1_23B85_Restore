@@ -7,14 +7,14 @@
 
 - (id)_intents_indexingRepresentation
 {
-  v2 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __51__NSArray_Intents___intents_indexingRepresentation__block_invoke;
   v5[3] = &unk_1E7283780;
   v3 = v2;
   v6 = v3;
-  [a1 enumerateObjectsUsingBlock:v5];
+  [self enumerateObjectsUsingBlock:v5];
 
   return v3;
 }
@@ -44,7 +44,7 @@
   v18 = v5;
   v19 = a3;
   v9 = v5;
-  [a1 enumerateObjectsUsingBlock:&v13];
+  [self enumerateObjectsUsingBlock:&v13];
   [v8 appendFormat:@"%@"], v9, v13, v14, v15, v16);
   v10 = v18;
   v11 = v8;

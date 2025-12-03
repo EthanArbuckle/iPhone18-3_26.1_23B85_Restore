@@ -1,19 +1,19 @@
 @interface MapsSuggestionsHasBudgetCondition
-- (MapsSuggestionsHasBudgetCondition)initWithBudget:(id)a3;
+- (MapsSuggestionsHasBudgetCondition)initWithBudget:(id)budget;
 @end
 
 @implementation MapsSuggestionsHasBudgetCondition
 
-- (MapsSuggestionsHasBudgetCondition)initWithBudget:(id)a3
+- (MapsSuggestionsHasBudgetCondition)initWithBudget:(id)budget
 {
-  v5 = a3;
+  budgetCopy = budget;
   v9.receiver = self;
   v9.super_class = MapsSuggestionsHasBudgetCondition;
   v6 = [(MapsSuggestionsBaseCondition *)&v9 initWithName:@"MapsSuggestionsHasBudgetCondition"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_budget, a3);
+    objc_storeStrong(&v6->_budget, budget);
   }
 
   return v7;

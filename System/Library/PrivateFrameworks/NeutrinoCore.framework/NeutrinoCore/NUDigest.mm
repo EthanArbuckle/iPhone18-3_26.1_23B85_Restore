@@ -1,15 +1,15 @@
 @interface NUDigest
 - (NUDigest)init;
 - (id)stringValue;
-- (void)addBytes:(const void *)a3 length:(int64_t)a4;
-- (void)addCString:(const char *)a3;
-- (void)addString:(id)a3;
+- (void)addBytes:(const void *)bytes length:(int64_t)length;
+- (void)addCString:(const char *)string;
+- (void)addString:(id)string;
 - (void)finalize;
 @end
 
 @implementation NUDigest
 
-- (void)addBytes:(const void *)a3 length:(int64_t)a4
+- (void)addBytes:(const void *)bytes length:(int64_t)length
 {
   v24 = *MEMORY[0x1E69E9840];
   if (self->_stringValue)
@@ -33,8 +33,8 @@
         v12 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v13 = MEMORY[0x1E696AF00];
         v14 = v12;
-        v15 = [v13 callStackSymbols];
-        v16 = [v15 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v13 callStackSymbols];
+        v16 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v21 = 138543618;
         *&v21[4] = v12;
         v22 = 2114;
@@ -45,8 +45,8 @@
 
     else if (v9)
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v11 = [v10 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v11 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v21 = 138543362;
       *&v21[4] = v11;
       _os_log_error_impl(&dword_1C0184000, v8, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v21, 0xCu);
@@ -57,23 +57,23 @@
 
   p_context = &self->_context;
 
-  CC_MD5_Update(p_context, a3, a4);
+  CC_MD5_Update(p_context, bytes, length);
 }
 
-- (void)addCString:(const char *)a3
+- (void)addCString:(const char *)string
 {
-  v5 = strlen(a3) + 1;
+  v5 = strlen(string) + 1;
 
-  [(NUDigest *)self addBytes:a3 length:v5];
+  [(NUDigest *)self addBytes:string length:v5];
 }
 
-- (void)addString:(id)a3
+- (void)addString:(id)string
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 maximumLengthOfBytesUsingEncoding:4];
+  stringCopy = string;
+  v5 = [stringCopy maximumLengthOfBytesUsingEncoding:4];
   v6 = v7 - ((v5 + 16) & 0xFFFFFFFFFFFFFFF0);
-  [v4 getCString:v6 maxLength:v5 + 1 encoding:4];
+  [stringCopy getCString:v6 maxLength:v5 + 1 encoding:4];
 
   [(NUDigest *)self addBytes:v6 length:strlen(v6) + 1];
 }

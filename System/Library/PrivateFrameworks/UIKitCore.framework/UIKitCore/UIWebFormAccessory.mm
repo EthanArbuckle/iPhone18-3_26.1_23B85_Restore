@@ -1,44 +1,44 @@
 @interface UIWebFormAccessory
-+ (id)toolbarWithItems:(id)a3;
-- (UIWebFormAccessory)initWithInputAssistantItem:(id)a3;
++ (id)toolbarWithItems:(id)items;
+- (UIWebFormAccessory)initWithInputAssistantItem:(id)item;
 - (UIWebFormAccessoryDelegate)delegate;
 - (void)_applyTreatmentToAutoFillLabel;
-- (void)_nextTapped:(id)a3;
-- (void)_previousTapped:(id)a3;
+- (void)_nextTapped:(id)tapped;
+- (void)_previousTapped:(id)tapped;
 - (void)_refreshAutofillPresentation;
-- (void)_setRenderConfig:(id)a3;
+- (void)_setRenderConfig:(id)config;
 - (void)_updateFrame;
-- (void)autoFill:(id)a3;
-- (void)clear:(id)a3;
+- (void)autoFill:(id)fill;
+- (void)clear:(id)clear;
 - (void)dealloc;
-- (void)done:(id)a3;
+- (void)done:(id)done;
 - (void)hideAutoFillButton;
-- (void)initForUCB:(id)a3;
+- (void)initForUCB:(id)b;
 - (void)layoutSubviews;
-- (void)setClearVisible:(BOOL)a3;
-- (void)setNextPreviousItemsVisible:(BOOL)a3;
+- (void)setClearVisible:(BOOL)visible;
+- (void)setNextPreviousItemsVisible:(BOOL)visible;
 - (void)showAutoFillButton;
-- (void)showAutoFillButtonWithTitle:(id)a3;
+- (void)showAutoFillButtonWithTitle:(id)title;
 @end
 
 @implementation UIWebFormAccessory
 
-+ (id)toolbarWithItems:(id)a3
++ (id)toolbarWithItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = objc_alloc_init(UIToolbar);
   [(UIToolbar *)v4 setBarStyle:0];
   [(UIToolbar *)v4 setTranslucent:1];
   [(UIView *)v4 setAutoresizingMask:18];
-  [(UIToolbar *)v4 setItems:v3];
+  [(UIToolbar *)v4 setItems:itemsCopy];
 
   return v4;
 }
 
-- (void)initForUCB:(id)a3
+- (void)initForUCB:(id)b
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v35 = a3;
+  bCopy = b;
   v4 = [UIButton buttonWithType:1];
   [v4 addTarget:self action:sel_autoFill_ forControlEvents:64];
   [(UIView *)self bounds];
@@ -47,9 +47,9 @@
   v7 = +[UIColor labelColor];
   [v4 setTintColor:v7];
 
-  v34 = [v4 titleLabel];
-  [v34 setFrame:{0.0, 0.0, 0.0, v6}];
-  [v34 setNumberOfLines:2];
+  titleLabel = [v4 titleLabel];
+  [titleLabel setFrame:{0.0, 0.0, 0.0, v6}];
+  [titleLabel setNumberOfLines:2];
   v8 = [[UIBarButtonItem alloc] initWithCustomView:v4];
   autofill = self->_autofill;
   self->_autofill = v8;
@@ -91,29 +91,29 @@
   buttonGroupNavigation = self->_buttonGroupNavigation;
   self->_buttonGroupNavigation = v27;
 
-  v29 = v35;
-  v30 = [v29 leadingBarButtonGroups];
-  v31 = [v30 mutableCopy];
+  v29 = bCopy;
+  leadingBarButtonGroups = [v29 leadingBarButtonGroups];
+  v31 = [leadingBarButtonGroups mutableCopy];
 
   [v31 addObject:self->_buttonGroupAutoFill];
   [v29 setLeadingBarButtonGroups:v31];
-  v32 = [v29 trailingBarButtonGroups];
-  v33 = [v32 mutableCopy];
+  trailingBarButtonGroups = [v29 trailingBarButtonGroups];
+  v33 = [trailingBarButtonGroups mutableCopy];
 
   [v33 addObject:self->_buttonGroupNavigation];
   [v29 setTrailingBarButtonGroups:v33];
 }
 
-- (UIWebFormAccessory)initWithInputAssistantItem:(id)a3
+- (UIWebFormAccessory)initWithInputAssistantItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(UIView *)self init];
   if (v5)
   {
     if (UIWebCurrentUserInterfaceIdiomIsSmallScreen())
     {
       [(UIInputView *)v5 setContentRatio:1.0];
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v7 = _UISolariumEnabled();
       v8 = [UIBarButtonItem alloc];
       v9 = v8;
@@ -133,7 +133,7 @@
       }
 
       [(UIBarButtonItem *)v5->_previousItem setEnabled:0];
-      [v6 addObject:v5->_previousItem];
+      [array addObject:v5->_previousItem];
       if ((_UISolariumEnabled() & 1) == 0)
       {
         v15 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:6 target:0 action:0];
@@ -141,7 +141,7 @@
         v5->_nextPreviousSpacer = v15;
 
         [(UIBarButtonItem *)v5->_nextPreviousSpacer setWidth:6.0];
-        [v6 addObject:v5->_nextPreviousSpacer];
+        [array addObject:v5->_nextPreviousSpacer];
       }
 
       v17 = _UISolariumEnabled();
@@ -163,7 +163,7 @@
       }
 
       [(UIBarButtonItem *)v5->_nextItem setEnabled:0];
-      [v6 addObject:v5->_nextItem];
+      [array addObject:v5->_nextItem];
       v24 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:5 target:0 action:0];
       flexibleSpaceItem = v5->_flexibleSpaceItem;
       v5->_flexibleSpaceItem = v24;
@@ -197,25 +197,25 @@
         v5->_doneButton = v34;
       }
 
-      [v6 addObject:v5->_flexibleSpaceItem];
-      [v6 addObject:v5->_doneButton];
-      v35 = [UIWebFormAccessory toolbarWithItems:v6];
+      [array addObject:v5->_flexibleSpaceItem];
+      [array addObject:v5->_doneButton];
+      v35 = [UIWebFormAccessory toolbarWithItems:array];
       leftToolbar = v5->_leftToolbar;
       v5->_leftToolbar = v35;
 
-      v37 = [(UIInputView *)v5 leftContentView];
-      [v37 addSubview:v5->_leftToolbar];
+      leftContentView = [(UIInputView *)v5 leftContentView];
+      [leftContentView addSubview:v5->_leftToolbar];
 
       v38 = [UIWebFormAccessory toolbarWithItems:MEMORY[0x1E695E0F0]];
       rightToolbar = v5->_rightToolbar;
       v5->_rightToolbar = v38;
 
-      v40 = [(UIInputView *)v5 rightContentView];
-      [v40 addSubview:v5->_rightToolbar];
+      rightContentView = [(UIInputView *)v5 rightContentView];
+      [rightContentView addSubview:v5->_rightToolbar];
 
       [(UIWebFormAccessory *)v5 _updateFrame];
-      v41 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v41 addObserver:v5 selector:sel__orientationDidChange_ name:@"UIApplicationDidChangeStatusBarOrientationNotification" object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:v5 selector:sel__orientationDidChange_ name:@"UIApplicationDidChangeStatusBarOrientationNotification" object:0];
 
       v42 = v5;
     }
@@ -223,7 +223,7 @@
     else
     {
       v5->_usesUCB = 1;
-      [(UIWebFormAccessory *)v5 initForUCB:v4];
+      [(UIWebFormAccessory *)v5 initForUCB:itemCopy];
       v13 = v5;
     }
   }
@@ -233,15 +233,15 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"UIApplicationDidChangeStatusBarOrientationNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"UIApplicationDidChangeStatusBarOrientationNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = UIWebFormAccessory;
   [(UIView *)&v4 dealloc];
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
   v4 = objc_alloc(MEMORY[0x1E695DF90]);
   v5 = [off_1E70ECC18 defaultFontForTextStyle:@"UICTFontTextStyleEmphasizedSubhead"];
@@ -298,38 +298,38 @@
     {
       [(UIWebFormAccessory *)self _refreshAutofillPresentation];
       [(UIWebFormAccessory *)self _applyTreatmentToAutoFillLabel];
-      v3 = [(UIWebFormAccessory *)self _autoFillButton];
-      [v3 frame];
+      _autoFillButton = [(UIWebFormAccessory *)self _autoFillButton];
+      [_autoFillButton frame];
       [(UIBarButtonItem *)self->_autofill setWidth:v4];
     }
   }
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
   WeakRetained = objc_loadWeakRetained(&self->delegate);
   [WeakRetained accessoryDone];
 }
 
-- (void)_previousTapped:(id)a3
+- (void)_previousTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->delegate);
   [WeakRetained accessoryTab:0];
 }
 
-- (void)_nextTapped:(id)a3
+- (void)_nextTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->delegate);
   [WeakRetained accessoryTab:1];
 }
 
-- (void)autoFill:(id)a3
+- (void)autoFill:(id)fill
 {
   WeakRetained = objc_loadWeakRetained(&self->delegate);
   [WeakRetained accessoryAutoFill];
 }
 
-- (void)clear:(id)a3
+- (void)clear:(id)clear
 {
   WeakRetained = objc_loadWeakRetained(&self->delegate);
   [WeakRetained accessoryClear];
@@ -339,18 +339,18 @@
 {
   if (self->_autofill)
   {
-    v3 = [(UIInputView *)self leftContentView];
-    [v3 frame];
+    leftContentView = [(UIInputView *)self leftContentView];
+    [leftContentView frame];
     MaxX = CGRectGetMaxX(v13);
-    v5 = [(UIInputView *)self rightContentView];
-    [v5 frame];
+    rightContentView = [(UIInputView *)self rightContentView];
+    [rightContentView frame];
     MinX = CGRectGetMinX(v14);
 
-    v7 = [(UIToolbar *)self->_leftToolbar items];
-    v11 = [v7 mutableCopy];
+    items = [(UIToolbar *)self->_leftToolbar items];
+    v11 = [items mutableCopy];
 
-    v8 = [(UIToolbar *)self->_rightToolbar items];
-    v9 = [v8 mutableCopy];
+    items2 = [(UIToolbar *)self->_rightToolbar items];
+    v9 = [items2 mutableCopy];
 
     [v11 removeObject:self->_autofillSpacer];
     [v11 removeObject:self->_autofill];
@@ -376,7 +376,7 @@
 
 - (void)_applyTreatmentToAutoFillLabel
 {
-  v3 = [(UIWebFormAccessory *)self _autoFillButton];
+  _autoFillButton = [(UIWebFormAccessory *)self _autoFillButton];
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -388,7 +388,7 @@
   v21 = __52__UIWebFormAccessory__applyTreatmentToAutoFillLabel__block_invoke;
   v22 = &unk_1E70FCDA0;
   v24 = &v25;
-  v4 = v3;
+  v4 = _autoFillButton;
   v23 = v4;
   [UIView performWithoutAnimation:&v19];
   [v26[5] frame];
@@ -398,10 +398,10 @@
   v11 = otherButtonFont();
   [v26[5] setFont:v11];
 
-  v12 = [(UIView *)self traitCollection];
-  v13 = [v12 horizontalSizeClass];
+  traitCollection = [(UIView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v13 == 1)
+  if (horizontalSizeClass == 1)
   {
     v14 = 180.0;
   }
@@ -440,8 +440,8 @@ void __52__UIWebFormAccessory__applyTreatmentToAutoFillLabel__block_invoke(uint6
 {
   if (self->_autofill)
   {
-    v3 = [(UIToolbar *)self->_leftToolbar items];
-    v5 = [v3 mutableCopy];
+    items = [(UIToolbar *)self->_leftToolbar items];
+    v5 = [items mutableCopy];
 
     [v5 removeObject:self->_autofill];
     [(UIToolbar *)self->_leftToolbar setItems:v5];
@@ -458,31 +458,31 @@ void __52__UIWebFormAccessory__applyTreatmentToAutoFillLabel__block_invoke(uint6
   }
 }
 
-- (void)showAutoFillButtonWithTitle:(id)a3
+- (void)showAutoFillButtonWithTitle:(id)title
 {
-  v12 = a3;
-  v4 = [(UIBarButtonItem *)self->_autofill customView];
-  if (!v4)
+  titleCopy = title;
+  customView = [(UIBarButtonItem *)self->_autofill customView];
+  if (!customView)
   {
-    v4 = [UIButton buttonWithType:1];
-    [v4 addTarget:self action:sel_autoFill_ forControlEvents:64];
+    customView = [UIButton buttonWithType:1];
+    [customView addTarget:self action:sel_autoFill_ forControlEvents:64];
     [(UIView *)self bounds];
     v6 = v5;
-    [v4 setFrame:{0.0, 0.0, 0.0}];
-    v7 = [v4 titleLabel];
-    [v7 setFrame:{0.0, 0.0, 0.0, v6}];
-    [v7 setNumberOfLines:2];
-    v8 = [[UIBarButtonItem alloc] initWithCustomView:v4];
+    [customView setFrame:{0.0, 0.0, 0.0}];
+    titleLabel = [customView titleLabel];
+    [titleLabel setFrame:{0.0, 0.0, 0.0, v6}];
+    [titleLabel setNumberOfLines:2];
+    v8 = [[UIBarButtonItem alloc] initWithCustomView:customView];
     autofill = self->_autofill;
     self->_autofill = v8;
   }
 
-  v10 = [v4 titleForState:0];
-  v11 = [v12 isEqualToString:v10];
+  v10 = [customView titleForState:0];
+  v11 = [titleCopy isEqualToString:v10];
 
   if ((v11 & 1) == 0)
   {
-    [v4 setTitle:v12 forState:0];
+    [customView setTitle:titleCopy forState:0];
   }
 
   if (self->_usesUCB)
@@ -501,12 +501,12 @@ void __52__UIWebFormAccessory__applyTreatmentToAutoFillLabel__block_invoke(uint6
   }
 }
 
-- (void)setClearVisible:(BOOL)a3
+- (void)setClearVisible:(BOOL)visible
 {
-  if ((((self->_clearButton == 0) ^ a3) & 1) == 0)
+  if ((((self->_clearButton == 0) ^ visible) & 1) == 0)
   {
-    v4 = [(UIToolbar *)self->_leftToolbar items];
-    v10 = [v4 mutableCopy];
+    items = [(UIToolbar *)self->_leftToolbar items];
+    v10 = [items mutableCopy];
 
     if (self->_clearButton)
     {
@@ -530,30 +530,30 @@ void __52__UIWebFormAccessory__applyTreatmentToAutoFillLabel__block_invoke(uint6
   }
 }
 
-- (void)setNextPreviousItemsVisible:(BOOL)a3
+- (void)setNextPreviousItemsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   if (self->_usesUCB)
   {
     buttonGroupNavigation = self->_buttonGroupNavigation;
-    v6 = !a3;
+    v6 = !visible;
 
     [(UIBarButtonItemGroup *)buttonGroupNavigation setHidden:v6];
     return;
   }
 
-  v14 = [(UIToolbar *)self->_leftToolbar items];
-  v7 = [v14 containsObject:self->_previousItem];
-  v8 = [v14 containsObject:self->_nextPreviousSpacer];
-  v9 = [v14 containsObject:self->_nextItem];
+  items = [(UIToolbar *)self->_leftToolbar items];
+  v7 = [items containsObject:self->_previousItem];
+  v8 = [items containsObject:self->_nextPreviousSpacer];
+  v9 = [items containsObject:self->_nextItem];
   v10 = v9;
-  if (!v3 || (v7 ? (v11 = v8 == 0) : (v11 = 1), v11 || (v9 & 1) == 0))
+  if (!visibleCopy || (v7 ? (v11 = v8 == 0) : (v11 = 1), v11 || (v9 & 1) == 0))
   {
-    if ((v3 | v7 | v8 | v9))
+    if ((visibleCopy | v7 | v8 | v9))
     {
-      v12 = [v14 mutableCopy];
+      v12 = [items mutableCopy];
       v13 = v12;
-      if (v3)
+      if (visibleCopy)
       {
         if (v10)
         {

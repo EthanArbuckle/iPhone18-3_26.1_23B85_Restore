@@ -1,6 +1,6 @@
 @interface DBInstrumentClusterLayoutCoordinator
 - (_TtC9DashBoard36DBInstrumentClusterLayoutCoordinator)init;
-- (void)service:(id)a3 didReceiveLayerMetadata:(id)a4;
+- (void)service:(id)service didReceiveLayerMetadata:(id)metadata;
 @end
 
 @implementation DBInstrumentClusterLayoutCoordinator
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (void)service:(id)a3 didReceiveLayerMetadata:(id)a4
+- (void)service:(id)service didReceiveLayerMetadata:(id)metadata
 {
   v6 = sub_2483838A0();
-  v7 = a3;
-  v8 = self;
+  serviceCopy = service;
+  selfCopy = self;
   sub_248359070(v6);
 }
 

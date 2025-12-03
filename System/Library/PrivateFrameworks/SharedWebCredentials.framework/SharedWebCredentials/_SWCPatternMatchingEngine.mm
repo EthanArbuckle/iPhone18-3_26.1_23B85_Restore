@@ -1,33 +1,33 @@
 @interface _SWCPatternMatchingEngine
-- (_SWCPatternMatchingEngine)initWithPatternDictionaries:(id)a3 substitutionVariables:(id)a4;
-- (id)_evaluateURLComponents:(id)a3 auditToken:(id *)a4;
-- (id)evaluateURLComponents:(id)a3;
-- (id)evaluateURLComponents:(id)a3 auditToken:(id *)a4;
+- (_SWCPatternMatchingEngine)initWithPatternDictionaries:(id)dictionaries substitutionVariables:(id)variables;
+- (id)_evaluateURLComponents:(id)components auditToken:(id *)token;
+- (id)evaluateURLComponents:(id)components;
+- (id)evaluateURLComponents:(id)components auditToken:(id *)token;
 @end
 
 @implementation _SWCPatternMatchingEngine
 
-- (_SWCPatternMatchingEngine)initWithPatternDictionaries:(id)a3 substitutionVariables:(id)a4
+- (_SWCPatternMatchingEngine)initWithPatternDictionaries:(id)dictionaries substitutionVariables:(id)variables
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionariesCopy = dictionaries;
+  variablesCopy = variables;
   v17.receiver = self;
   v17.super_class = _SWCPatternMatchingEngine;
   v8 = [(_SWCPatternMatchingEngine *)&v17 init];
   if (v8)
   {
     v20 = @"components";
-    v21[0] = v6;
+    v21[0] = dictionariesCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
     v10 = [_SWCPatternList patternListWithDetailsDictionary:v9];
     patternList = v8->_patternList;
     v8->_patternList = v10;
 
-    if (v7)
+    if (variablesCopy)
     {
       v18 = @"substitutionVariables";
-      v19 = v7;
+      v19 = variablesCopy;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
       v13 = [_SWCSubstitutionVariableList substitutionVariableListWithDictionary:v12];
       subVarList = v8->_subVarList;
@@ -39,11 +39,11 @@
   return v8;
 }
 
-- (id)_evaluateURLComponents:(id)a3 auditToken:(id *)a4
+- (id)_evaluateURLComponents:(id)components auditToken:(id *)token
 {
-  v6 = a3;
+  componentsCopy = components;
   v10 = 0x7FFFFFFFFFFFFFFFLL;
-  v7 = [(_SWCPatternList *)self->_patternList evaluateWithURLComponents:v6 substitutionVariables:self->_subVarList auditToken:a4 matchingPattern:0 index:&v10];
+  v7 = [(_SWCPatternList *)self->_patternList evaluateWithURLComponents:componentsCopy substitutionVariables:self->_subVarList auditToken:token matchingPattern:0 index:&v10];
   if (v7)
   {
     v8 = [_SWCPatternMatchingResult alloc];
@@ -53,16 +53,16 @@
   return v7;
 }
 
-- (id)evaluateURLComponents:(id)a3
+- (id)evaluateURLComponents:(id)components
 {
-  v3 = [(_SWCPatternMatchingEngine *)self _evaluateURLComponents:a3 auditToken:0];
+  v3 = [(_SWCPatternMatchingEngine *)self _evaluateURLComponents:components auditToken:0];
 
   return v3;
 }
 
-- (id)evaluateURLComponents:(id)a3 auditToken:(id *)a4
+- (id)evaluateURLComponents:(id)components auditToken:(id *)token
 {
-  v4 = [(_SWCPatternMatchingEngine *)self _evaluateURLComponents:a3 auditToken:a4];
+  v4 = [(_SWCPatternMatchingEngine *)self _evaluateURLComponents:components auditToken:token];
 
   return v4;
 }

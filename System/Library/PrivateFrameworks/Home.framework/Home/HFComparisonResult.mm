@@ -1,40 +1,40 @@
 @interface HFComparisonResult
-+ (HFComparisonResult)resultWithDifference:(id)a3 priority:(unint64_t)a4;
++ (HFComparisonResult)resultWithDifference:(id)difference priority:(unint64_t)priority;
 - (BOOL)containsCriticalDifference;
-- (BOOL)hasNoDifferencesHigherThanPriority:(unint64_t)a3;
-- (HFComparisonResult)initWithObjectA:(id)a3 objectB:(id)a4;
+- (BOOL)hasNoDifferencesHigherThanPriority:(unint64_t)priority;
+- (HFComparisonResult)initWithObjectA:(id)a objectB:(id)b;
 - (NSArray)realDifferences;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionBuilder;
-- (id)filteredIgnoringKeys:(id)a3;
+- (id)filteredIgnoringKeys:(id)keys;
 - (id)highestPriorityDifference;
-- (id)newDifferenceWithKey:(id)a3 priority:(unint64_t)a4 block:(id)a5;
+- (id)newDifferenceWithKey:(id)key priority:(unint64_t)priority block:(id)block;
 - (id)objectA;
 - (id)objectB;
-- (void)add:(id)a3;
-- (void)addAll:(id)a3;
+- (void)add:(id)add;
+- (void)addAll:(id)all;
 @end
 
 @implementation HFComparisonResult
 
-- (HFComparisonResult)initWithObjectA:(id)a3 objectB:(id)a4
+- (HFComparisonResult)initWithObjectA:(id)a objectB:(id)b
 {
-  v6 = a3;
-  v7 = a4;
+  aCopy = a;
+  bCopy = b;
   v20.receiver = self;
   v20.super_class = HFComparisonResult;
   v8 = [(HFComparisonResult *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_objectA, v6);
-    objc_storeWeak(&v9->_objectB, v7);
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    [(HFComparisonResult *)v9 setMutableDifferences:v10];
+    objc_storeWeak(&v8->_objectA, aCopy);
+    objc_storeWeak(&v9->_objectB, bCopy);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(HFComparisonResult *)v9 setMutableDifferences:dictionary];
 
     objc_opt_class();
-    v11 = v6;
+    v11 = aCopy;
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -48,7 +48,7 @@
     v13 = v12;
 
     objc_opt_class();
-    v14 = v7;
+    v14 = bCopy;
     if (objc_opt_isKindOfClass())
     {
       v15 = v14;
@@ -103,64 +103,64 @@ LABEL_18:
   return v9;
 }
 
-+ (HFComparisonResult)resultWithDifference:(id)a3 priority:(unint64_t)a4
++ (HFComparisonResult)resultWithDifference:(id)difference priority:(unint64_t)priority
 {
-  v5 = a3;
+  differenceCopy = difference;
   v6 = [objc_alloc(objc_opt_class()) initWithObjectA:0 objectB:0];
-  v7 = [HFDifference difference:v5 priority:a4];
+  v7 = [HFDifference difference:differenceCopy priority:priority];
 
   [v6 add:v7];
 
   return v6;
 }
 
-- (id)filteredIgnoringKeys:(id)a3
+- (id)filteredIgnoringKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v5 = [(HFComparisonResult *)self copy];
-  v6 = [v5 mutableDifferences];
+  mutableDifferences = [v5 mutableDifferences];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __43__HFComparisonResult_filteredIgnoringKeys___block_invoke;
   v11[3] = &unk_277E000A8;
-  v12 = v4;
-  v7 = v4;
-  v8 = [v6 na_filter:v11];
+  v12 = keysCopy;
+  v7 = keysCopy;
+  v8 = [mutableDifferences na_filter:v11];
   v9 = [v8 mutableCopy];
   [v5 setMutableDifferences:v9];
 
   return v5;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  if (a3)
+  if (add)
   {
-    v4 = a3;
-    v5 = [(HFComparisonResult *)self mutableDifferences];
-    v6 = [v4 key];
-    [v5 setObject:v4 forKey:v6];
+    addCopy = add;
+    mutableDifferences = [(HFComparisonResult *)self mutableDifferences];
+    v6 = [addCopy key];
+    [mutableDifferences setObject:addCopy forKey:v6];
 
     realDifferences = self->_realDifferences;
     self->_realDifferences = 0;
   }
 }
 
-- (id)newDifferenceWithKey:(id)a3 priority:(unint64_t)a4 block:(id)a5
+- (id)newDifferenceWithKey:(id)key priority:(unint64_t)priority block:(id)block
 {
-  v6 = [HFDifference difference:a3 priority:a4 withBlock:a5];
+  v6 = [HFDifference difference:key priority:priority withBlock:block];
   [(HFComparisonResult *)self add:v6];
   return v6;
 }
 
-- (void)addAll:(id)a3
+- (void)addAll:(id)all
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __29__HFComparisonResult_addAll___block_invoke;
   v3[3] = &unk_277E000D0;
   v3[4] = self;
-  [a3 na_each:v3];
+  [all na_each:v3];
 }
 
 - (NSArray)realDifferences
@@ -168,9 +168,9 @@ LABEL_18:
   realDifferences = self->_realDifferences;
   if (!realDifferences)
   {
-    v4 = [(HFComparisonResult *)self differences];
-    v5 = [v4 allValues];
-    v6 = [v5 na_filter:&__block_literal_global_192];
+    differences = [(HFComparisonResult *)self differences];
+    allValues = [differences allValues];
+    v6 = [allValues na_filter:&__block_literal_global_192];
     v7 = self->_realDifferences;
     self->_realDifferences = v6;
 
@@ -182,8 +182,8 @@ LABEL_18:
 
 - (BOOL)containsCriticalDifference
 {
-  v2 = [(HFComparisonResult *)self realDifferences];
-  v3 = [v2 na_any:&__block_literal_global_6_8];
+  realDifferences = [(HFComparisonResult *)self realDifferences];
+  v3 = [realDifferences na_any:&__block_literal_global_6_8];
 
   return v3;
 }
@@ -196,13 +196,13 @@ LABEL_18:
   v9 = __Block_byref_object_copy__23;
   v10 = __Block_byref_object_dispose__23;
   v11 = 0;
-  v2 = [(HFComparisonResult *)self differences];
+  differences = [(HFComparisonResult *)self differences];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__HFComparisonResult_highestPriorityDifference__block_invoke;
   v5[3] = &unk_277E00118;
   v5[4] = &v6;
-  [v2 na_each:v5];
+  [differences na_each:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -233,13 +233,13 @@ void __47__HFComparisonResult_highestPriorityDifference__block_invoke(uint64_t a
 LABEL_6:
 }
 
-- (BOOL)hasNoDifferencesHigherThanPriority:(unint64_t)a3
+- (BOOL)hasNoDifferencesHigherThanPriority:(unint64_t)priority
 {
-  v4 = [(HFComparisonResult *)self highestPriorityDifference];
-  v5 = v4;
-  if (v4)
+  highestPriorityDifference = [(HFComparisonResult *)self highestPriorityDifference];
+  v5 = highestPriorityDifference;
+  if (highestPriorityDifference)
   {
-    v6 = [v4 priority] <= a3;
+    v6 = [highestPriorityDifference priority] <= priority;
   }
 
   else
@@ -253,34 +253,34 @@ LABEL_6:
 - (id)descriptionBuilder
 {
   v3 = [objc_alloc(MEMORY[0x277D2C8F8]) initWithObject:self];
-  v4 = [(HFComparisonResult *)self objectA];
-  v5 = [v3 appendObject:v4 withName:@"objectA" skipIfNil:1];
+  objectA = [(HFComparisonResult *)self objectA];
+  v5 = [v3 appendObject:objectA withName:@"objectA" skipIfNil:1];
 
-  v6 = [(HFComparisonResult *)self objectB];
-  v7 = [v3 appendObject:v6 withName:@"objectB" skipIfNil:1];
+  objectB = [(HFComparisonResult *)self objectB];
+  v7 = [v3 appendObject:objectB withName:@"objectB" skipIfNil:1];
 
-  v8 = [(HFComparisonResult *)self realDifferences];
-  [v3 appendArraySection:v8 withName:@"differences" skipIfEmpty:0];
+  realDifferences = [(HFComparisonResult *)self realDifferences];
+  [v3 appendArraySection:realDifferences withName:@"differences" skipIfEmpty:0];
 
   return v3;
 }
 
 - (id)description
 {
-  v2 = [(HFComparisonResult *)self descriptionBuilder];
-  v3 = [v2 build];
+  descriptionBuilder = [(HFComparisonResult *)self descriptionBuilder];
+  build = [descriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(HFComparisonResult *)self objectA];
-  [v4 setObjectA:v5];
+  objectA = [(HFComparisonResult *)self objectA];
+  [v4 setObjectA:objectA];
 
-  v6 = [(HFComparisonResult *)self objectB];
-  [v4 setObjectB:v6];
+  objectB = [(HFComparisonResult *)self objectB];
+  [v4 setObjectB:objectB];
 
   v7 = [(NSMutableDictionary *)self->_mutableDifferences copy];
   [v4 setMutableDifferences:v7];

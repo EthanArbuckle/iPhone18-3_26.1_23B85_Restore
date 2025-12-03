@@ -1,31 +1,31 @@
 @interface OKActionMotion
-+ (id)motionActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 rotationX:(double)a6 rotationY:(double)a7 rotationZ:(double)a8 context:(id)a9;
-+ (id)motionActionWithState:(unint64_t)a3 rotationX:(double)a4 rotationY:(double)a5 rotationZ:(double)a6 context:(id)a7;
-+ (void)setupJavascriptContext:(id)a3;
++ (id)motionActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count rotationX:(double)x rotationY:(double)y rotationZ:(double)z context:(id)context;
++ (id)motionActionWithState:(unint64_t)state rotationX:(double)x rotationY:(double)y rotationZ:(double)z context:(id)context;
++ (void)setupJavascriptContext:(id)context;
 - (OKActionMotion)init;
-- (OKActionMotion)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (OKActionMotion)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKActionMotion
 
-+ (id)motionActionWithState:(unint64_t)a3 rotationX:(double)a4 rotationY:(double)a5 rotationZ:(double)a6 context:(id)a7
++ (id)motionActionWithState:(unint64_t)state rotationX:(double)x rotationY:(double)y rotationZ:(double)z context:(id)context
 {
   v11 = [OKActionMotion alloc];
-  v12 = [(OKAction *)v11 initWithLocation:0 touchCount:a7 context:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
-  v12[11] = a4;
-  v12[12] = a5;
-  v12[13] = a6;
+  v12 = [(OKAction *)v11 initWithLocation:0 touchCount:context context:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+  v12[11] = x;
+  v12[12] = y;
+  v12[13] = z;
 
   return v12;
 }
 
-+ (id)motionActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 rotationX:(double)a6 rotationY:(double)a7 rotationZ:(double)a8 context:(id)a9
++ (id)motionActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count rotationX:(double)x rotationY:(double)y rotationZ:(double)z context:(id)context
 {
-  v12 = [[OKActionMotion alloc] initWithState:a3 location:a5 touchCount:a9 context:a4.x, a4.y];
-  v12->_rotationX = a6;
-  v12->_rotationY = a7;
-  v12->_rotationZ = a8;
+  v12 = [[OKActionMotion alloc] initWithState:state location:count touchCount:context context:location.x, location.y];
+  v12->_rotationX = x;
+  v12->_rotationY = y;
+  v12->_rotationZ = z;
 
   return v12;
 }
@@ -45,7 +45,7 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = OKActionMotion;
@@ -54,47 +54,47 @@
   if (rotationX != 0.0)
   {
     *&rotationX = rotationX;
-    [a3 encodeFloat:@"rotationX" forKey:rotationX];
+    [coder encodeFloat:@"rotationX" forKey:rotationX];
   }
 
   rotationY = self->_rotationY;
   if (rotationY != 0.0)
   {
     *&rotationY = rotationY;
-    [a3 encodeFloat:@"rotationY" forKey:rotationY];
+    [coder encodeFloat:@"rotationY" forKey:rotationY];
   }
 
   rotationZ = self->_rotationZ;
   if (rotationZ != 0.0)
   {
     *&rotationZ = rotationZ;
-    [a3 encodeFloat:@"rotationZ" forKey:rotationZ];
+    [coder encodeFloat:@"rotationZ" forKey:rotationZ];
   }
 }
 
-- (OKActionMotion)initWithCoder:(id)a3
+- (OKActionMotion)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = OKActionMotion;
   v4 = [(OKAction *)&v9 initWithCoder:?];
   if (v4)
   {
-    [a3 decodeFloatForKey:@"rotationX"];
+    [coder decodeFloatForKey:@"rotationX"];
     v4->_rotationX = v5;
-    [a3 decodeFloatForKey:@"rotationY"];
+    [coder decodeFloatForKey:@"rotationY"];
     v4->_rotationY = v6;
-    [a3 decodeFloatForKey:@"rotationZ"];
+    [coder decodeFloatForKey:@"rotationZ"];
     v4->_rotationZ = v7;
   }
 
   return v4;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v4 = objc_opt_class();
 
-  [a3 setObject:v4 forKeyedSubscript:@"OKActionMotion"];
+  [context setObject:v4 forKeyedSubscript:@"OKActionMotion"];
 }
 
 @end

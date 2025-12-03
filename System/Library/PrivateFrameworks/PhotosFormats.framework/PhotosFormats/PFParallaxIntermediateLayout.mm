@@ -7,15 +7,15 @@
 - (CGRect)spatialVisibleRect;
 - (CGRect)visibleRect;
 - (NSString)debugStub;
-- (PFParallaxIntermediateLayout)initWithConfiguration:(id)a3;
-- (PFParallaxIntermediateLayout)initWithVisibleRect:(CGRect)a3 inactiveRect:(CGRect)a4 zoomStrategy:(unint64_t)a5 overlapStrategy:(unint64_t)a6 parallaxStrategy:(unint64_t)a7 inactiveStrategy:(unint64_t)a8 headroomStrategy:(unint64_t)a9 cropScore:(double)a10 layoutScore:(double)a11 timeBottomOverlap:(double)a12 timeTopOverlap:(double)a13 unsafeAreaOverlap:(double)a14 uninflatedUnsafeAreaOverlap:(double)a15 hasTopEdgeContact:(BOOL)a16;
+- (PFParallaxIntermediateLayout)initWithConfiguration:(id)configuration;
+- (PFParallaxIntermediateLayout)initWithVisibleRect:(CGRect)rect inactiveRect:(CGRect)inactiveRect zoomStrategy:(unint64_t)strategy overlapStrategy:(unint64_t)overlapStrategy parallaxStrategy:(unint64_t)parallaxStrategy inactiveStrategy:(unint64_t)inactiveStrategy headroomStrategy:(unint64_t)headroomStrategy cropScore:(double)self0 layoutScore:(double)self1 timeBottomOverlap:(double)self2 timeTopOverlap:(double)self3 unsafeAreaOverlap:(double)self4 uninflatedUnsafeAreaOverlap:(double)self5 hasTopEdgeContact:(BOOL)self6;
 - (double)adaptiveHeadroom;
-- (double)clockOverlapAcceptabilityForLayoutConfiguration:(id)a3 inflated:(BOOL)a4;
-- (double)headroomUsage:(CGSize)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (double)clockOverlapAcceptabilityForLayoutConfiguration:(id)configuration inflated:(BOOL)inflated;
+- (double)headroomUsage:(CGSize)usage;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)updateWithConfiguration:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)updateWithConfiguration:(id)configuration;
 @end
 
 @implementation PFParallaxIntermediateLayout
@@ -111,9 +111,9 @@
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [PFParallaxMutableIntermediateLayout allocWithZone:a3];
+  v4 = [PFParallaxMutableIntermediateLayout allocWithZone:zone];
   if (v4)
   {
     [(PFParallaxIntermediateLayout *)self visibleRect];
@@ -160,71 +160,71 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = self;
-  v4 = [(PFParallaxIntermediateLayout *)v3 initWithVisibleRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
+  selfCopy = self;
+  v4 = [(PFParallaxIntermediateLayout *)selfCopy initWithVisibleRect:*MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24)];
   if (v4)
   {
-    [(PFParallaxIntermediateLayout *)v3 visibleRect];
+    [(PFParallaxIntermediateLayout *)selfCopy visibleRect];
     *(v4 + 144) = v5;
     *(v4 + 152) = v6;
     *(v4 + 160) = v7;
     *(v4 + 168) = v8;
-    [(PFParallaxIntermediateLayout *)v3 salientContentRect];
+    [(PFParallaxIntermediateLayout *)selfCopy salientContentRect];
     *(v4 + 176) = v9;
     *(v4 + 184) = v10;
     *(v4 + 192) = v11;
     *(v4 + 200) = v12;
-    [(PFParallaxIntermediateLayout *)v3 adaptiveVisibleRect];
+    [(PFParallaxIntermediateLayout *)selfCopy adaptiveVisibleRect];
     *(v4 + 208) = v13;
     *(v4 + 216) = v14;
     *(v4 + 224) = v15;
     *(v4 + 232) = v16;
-    [(PFParallaxIntermediateLayout *)v3 inactiveRect];
+    [(PFParallaxIntermediateLayout *)selfCopy inactiveRect];
     *(v4 + 240) = v17;
     *(v4 + 248) = v18;
     *(v4 + 256) = v19;
     *(v4 + 264) = v20;
-    [(PFParallaxIntermediateLayout *)v3 adaptiveInactiveTopRect];
+    [(PFParallaxIntermediateLayout *)selfCopy adaptiveInactiveTopRect];
     *(v4 + 272) = v21;
     *(v4 + 280) = v22;
     *(v4 + 288) = v23;
     *(v4 + 296) = v24;
-    [(PFParallaxIntermediateLayout *)v3 spatialVisibleRect];
+    [(PFParallaxIntermediateLayout *)selfCopy spatialVisibleRect];
     *(v4 + 304) = v25;
     *(v4 + 312) = v26;
     *(v4 + 320) = v27;
     *(v4 + 328) = v28;
-    [(PFParallaxIntermediateLayout *)v3 spatialAdaptiveVisibleRect];
+    [(PFParallaxIntermediateLayout *)selfCopy spatialAdaptiveVisibleRect];
     *(v4 + 336) = v29;
     *(v4 + 344) = v30;
     *(v4 + 352) = v31;
     *(v4 + 360) = v32;
-    *(v4 + 16) = [(PFParallaxIntermediateLayout *)v3 zoomStrategy];
-    *(v4 + 24) = [(PFParallaxIntermediateLayout *)v3 overlapStrategy];
-    *(v4 + 32) = [(PFParallaxIntermediateLayout *)v3 parallaxStrategy];
-    *(v4 + 40) = [(PFParallaxIntermediateLayout *)v3 inactiveStrategy];
-    *(v4 + 48) = [(PFParallaxIntermediateLayout *)v3 headroomStrategy];
-    *(v4 + 56) = [(PFParallaxIntermediateLayout *)v3 adaptiveStrategy];
-    *(v4 + 72) = [(PFParallaxIntermediateLayout *)v3 layoutVariant];
-    *(v4 + 64) = [(PFParallaxIntermediateLayout *)v3 spatialStrategy];
-    [(PFParallaxIntermediateLayout *)v3 cropScore];
+    *(v4 + 16) = [(PFParallaxIntermediateLayout *)selfCopy zoomStrategy];
+    *(v4 + 24) = [(PFParallaxIntermediateLayout *)selfCopy overlapStrategy];
+    *(v4 + 32) = [(PFParallaxIntermediateLayout *)selfCopy parallaxStrategy];
+    *(v4 + 40) = [(PFParallaxIntermediateLayout *)selfCopy inactiveStrategy];
+    *(v4 + 48) = [(PFParallaxIntermediateLayout *)selfCopy headroomStrategy];
+    *(v4 + 56) = [(PFParallaxIntermediateLayout *)selfCopy adaptiveStrategy];
+    *(v4 + 72) = [(PFParallaxIntermediateLayout *)selfCopy layoutVariant];
+    *(v4 + 64) = [(PFParallaxIntermediateLayout *)selfCopy spatialStrategy];
+    [(PFParallaxIntermediateLayout *)selfCopy cropScore];
     *(v4 + 80) = v33;
-    [(PFParallaxIntermediateLayout *)v3 layoutScore];
+    [(PFParallaxIntermediateLayout *)selfCopy layoutScore];
     *(v4 + 88) = v34;
-    [(PFParallaxIntermediateLayout *)v3 timeBottomOverlap];
+    [(PFParallaxIntermediateLayout *)selfCopy timeBottomOverlap];
     *(v4 + 96) = v35;
-    [(PFParallaxIntermediateLayout *)v3 timeTopOverlap];
+    [(PFParallaxIntermediateLayout *)selfCopy timeTopOverlap];
     *(v4 + 104) = v36;
-    [(PFParallaxIntermediateLayout *)v3 unsafeAreaOverlap];
+    [(PFParallaxIntermediateLayout *)selfCopy unsafeAreaOverlap];
     *(v4 + 112) = v37;
-    [(PFParallaxIntermediateLayout *)v3 uninflatedUnsafeAreaOverlap];
+    [(PFParallaxIntermediateLayout *)selfCopy uninflatedUnsafeAreaOverlap];
     *(v4 + 120) = v38;
-    *(v4 + 8) = [(PFParallaxIntermediateLayout *)v3 hasTopEdgeContact];
-    [(PFParallaxIntermediateLayout *)v3 maxClockShift];
+    *(v4 + 8) = [(PFParallaxIntermediateLayout *)selfCopy hasTopEdgeContact];
+    [(PFParallaxIntermediateLayout *)selfCopy maxClockShift];
     *(v4 + 128) = v39;
-    [(PFParallaxIntermediateLayout *)v3 zoomFactor];
+    [(PFParallaxIntermediateLayout *)selfCopy zoomFactor];
     *(v4 + 136) = v40;
   }
 
@@ -238,7 +238,7 @@
   v5 = ParallaxStrategyDescription([(PFParallaxIntermediateLayout *)self parallaxStrategy], 0);
   v6 = InactiveStrategyDescription([(PFParallaxIntermediateLayout *)self inactiveStrategy], 0);
   v7 = HeadroomStrategyDescription([(PFParallaxIntermediateLayout *)self headroomStrategy], 0);
-  v8 = [(PFParallaxIntermediateLayout *)self debugStub];
+  debugStub = [(PFParallaxIntermediateLayout *)self debugStub];
   v9 = MEMORY[0x1E696AEC0];
   v34.receiver = self;
   v34.super_class = PFParallaxIntermediateLayout;
@@ -264,7 +264,7 @@
   [(PFParallaxIntermediateLayout *)self uninflatedUnsafeAreaOverlap];
   v28 = v27;
   [(PFParallaxIntermediateLayout *)self maxClockShift];
-  v30 = [v9 stringWithFormat:@"%@ vis:%.0f, %.0f %.0fx%.0f stub:%@ z:%@ o:%@ p:%@ i:%@ h:%@ scores, crop:%.2f layout:%.2f bot:%.2f top:%.2f unsafe:%.2f uninfunsafe:%.2f maxClock:%.2f", v10, v33, v32, v14, v16, v8, v3, v4, v5, v6, v7, v18, v20, v22, v24, v26, v28, v29];
+  v30 = [v9 stringWithFormat:@"%@ vis:%.0f, %.0f %.0fx%.0f stub:%@ z:%@ o:%@ p:%@ i:%@ h:%@ scores, crop:%.2f layout:%.2f bot:%.2f top:%.2f unsafe:%.2f uninfunsafe:%.2f maxClock:%.2f", v10, v33, v32, v14, v16, debugStub, v3, v4, v5, v6, v7, v18, v20, v22, v24, v26, v28, v29];
 
   return v30;
 }
@@ -281,10 +281,10 @@
   return v8;
 }
 
-- (double)clockOverlapAcceptabilityForLayoutConfiguration:(id)a3 inflated:(BOOL)a4
+- (double)clockOverlapAcceptabilityForLayoutConfiguration:(id)configuration inflated:(BOOL)inflated
 {
-  v4 = a4;
-  [a3 timeOverlapCheckTop];
+  inflatedCopy = inflated;
+  [configuration timeOverlapCheckTop];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -292,7 +292,7 @@
   [(PFParallaxIntermediateLayout *)self visibleRect];
   [PFParallaxLayoutUtilities timeOverlapCheckThresholdForTopRect:0 isInteractive:v14 + v7 * v15, v16 + v9 * v17, v11 * v15, v13 * v17];
   v19 = v18;
-  if (v4)
+  if (inflatedCopy)
   {
     [(PFParallaxIntermediateLayout *)self unsafeAreaOverlap];
   }
@@ -305,12 +305,12 @@
   v21 = v20;
   if ([(PFParallaxIntermediateLayout *)self adaptiveStrategy]!= 2)
   {
-    v30 = [(PFParallaxIntermediateLayout *)self overlapStrategy];
-    if (v30 <= 5)
+    overlapStrategy = [(PFParallaxIntermediateLayout *)self overlapStrategy];
+    if (overlapStrategy <= 5)
     {
-      if (((1 << v30) & 0x1A) == 0)
+      if (((1 << overlapStrategy) & 0x1A) == 0)
       {
-        if (((1 << v30) & 0x24) == 0)
+        if (((1 << overlapStrategy) & 0x24) == 0)
         {
           return 0.0;
         }
@@ -382,9 +382,9 @@
   return v22;
 }
 
-- (double)headroomUsage:(CGSize)a3
+- (double)headroomUsage:(CGSize)usage
 {
-  height = a3.height;
+  height = usage.height;
   [(PFParallaxIntermediateLayout *)self visibleRect];
   return fmax(v4 + v5 - height, 0.0) / (height * 0.35);
 }
@@ -399,24 +399,24 @@
   return v6 / v7;
 }
 
-- (PFParallaxIntermediateLayout)initWithVisibleRect:(CGRect)a3 inactiveRect:(CGRect)a4 zoomStrategy:(unint64_t)a5 overlapStrategy:(unint64_t)a6 parallaxStrategy:(unint64_t)a7 inactiveStrategy:(unint64_t)a8 headroomStrategy:(unint64_t)a9 cropScore:(double)a10 layoutScore:(double)a11 timeBottomOverlap:(double)a12 timeTopOverlap:(double)a13 unsafeAreaOverlap:(double)a14 uninflatedUnsafeAreaOverlap:(double)a15 hasTopEdgeContact:(BOOL)a16
+- (PFParallaxIntermediateLayout)initWithVisibleRect:(CGRect)rect inactiveRect:(CGRect)inactiveRect zoomStrategy:(unint64_t)strategy overlapStrategy:(unint64_t)overlapStrategy parallaxStrategy:(unint64_t)parallaxStrategy inactiveStrategy:(unint64_t)inactiveStrategy headroomStrategy:(unint64_t)headroomStrategy cropScore:(double)self0 layoutScore:(double)self1 timeBottomOverlap:(double)self2 timeTopOverlap:(double)self3 unsafeAreaOverlap:(double)self4 uninflatedUnsafeAreaOverlap:(double)self5 hasTopEdgeContact:(BOOL)self6
 {
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __264__PFParallaxIntermediateLayout_initWithVisibleRect_inactiveRect_zoomStrategy_overlapStrategy_parallaxStrategy_inactiveStrategy_headroomStrategy_cropScore_layoutScore_timeBottomOverlap_timeTopOverlap_unsafeAreaOverlap_uninflatedUnsafeAreaOverlap_hasTopEdgeContact___block_invoke;
   v17[3] = &__block_descriptor_185_e45_v16__0__PFParallaxMutableIntermediateLayout_8l;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = *&a10;
-  v26 = *&a12;
-  v27 = a14;
-  v28 = a15;
-  v29 = a16;
+  rectCopy = rect;
+  inactiveRectCopy = inactiveRect;
+  strategyCopy = strategy;
+  overlapStrategyCopy = overlapStrategy;
+  parallaxStrategyCopy = parallaxStrategy;
+  inactiveStrategyCopy = inactiveStrategy;
+  headroomStrategyCopy = headroomStrategy;
+  v25 = *&score;
+  v26 = *&overlap;
+  areaOverlapCopy = areaOverlap;
+  unsafeAreaOverlapCopy = unsafeAreaOverlap;
+  contactCopy = contact;
   return [(PFParallaxIntermediateLayout *)self initWithConfiguration:v17];
 }
 
@@ -452,18 +452,18 @@ void __264__PFParallaxIntermediateLayout_initWithVisibleRect_inactiveRect_zoomSt
   [v11 setZoomFactor:0.0];
 }
 
-- (id)updateWithConfiguration:(id)a3
+- (id)updateWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(PFParallaxIntermediateLayout *)self mutableCopy];
-  v4[2](v4, v5);
+  configurationCopy[2](configurationCopy, v5);
 
   return v5;
 }
 
-- (PFParallaxIntermediateLayout)initWithConfiguration:(id)a3
+- (PFParallaxIntermediateLayout)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PFParallaxIntermediateLayout;
   v5 = [(PFParallaxIntermediateLayout *)&v9 init];
@@ -471,7 +471,7 @@ void __264__PFParallaxIntermediateLayout_initWithVisibleRect_inactiveRect_zoomSt
   {
     v6 = v5;
     v7 = [(PFParallaxIntermediateLayout *)v5 mutableCopy];
-    v4[2](v4, v7);
+    configurationCopy[2](configurationCopy, v7);
   }
 
   else

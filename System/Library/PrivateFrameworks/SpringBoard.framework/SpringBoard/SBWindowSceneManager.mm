@@ -3,15 +3,15 @@
 - (SBWindowScene)activeDisplayWindowScene;
 - (SBWindowScene)activeDisplayWindowSceneFollowingKeyboard;
 - (SBWindowScene)activeDisplayWindowSceneFollowingUserInteraction;
-- (SBWindowSceneManager)initWithUserInteractionCoordinator:(id)a3;
-- (id)_validateSuggestedActiveWindowScene:(id)a3 usingMethodology:(int64_t)a4;
+- (SBWindowSceneManager)initWithUserInteractionCoordinator:(id)coordinator;
+- (id)_validateSuggestedActiveWindowScene:(id)scene usingMethodology:(int64_t)methodology;
 - (id)windowSceneForAlertItems;
-- (id)windowSceneForDisplayIdentity:(id)a3;
-- (id)windowSceneForPersistentIdentifier:(id)a3;
-- (id)windowSceneForSceneHandle:(id)a3;
-- (id)windowSceneForSceneIdentifier:(id)a3;
-- (void)_sceneDidDisconnect:(id)a3;
-- (void)_sceneWillConnect:(id)a3;
+- (id)windowSceneForDisplayIdentity:(id)identity;
+- (id)windowSceneForPersistentIdentifier:(id)identifier;
+- (id)windowSceneForSceneHandle:(id)handle;
+- (id)windowSceneForSceneIdentifier:(id)identifier;
+- (void)_sceneDidDisconnect:(id)disconnect;
+- (void)_sceneWillConnect:(id)connect;
 @end
 
 @implementation SBWindowSceneManager
@@ -42,51 +42,51 @@ uint64_t __51__SBWindowSceneManager__embeddedDisplayWindowScene__block_invoke(ui
 - (SBWindowScene)activeDisplayWindowScene
 {
   v3 = +[SBExternalDisplaySettingsDomain rootSettings];
-  v4 = [v3 activeDisplayTrackingMethodology];
+  activeDisplayTrackingMethodology = [v3 activeDisplayTrackingMethodology];
 
-  if (v4 == 1)
+  if (activeDisplayTrackingMethodology == 1)
   {
-    v5 = [(SBWindowSceneManager *)self activeDisplayWindowSceneFollowingUserInteraction];
+    activeDisplayWindowSceneFollowingUserInteraction = [(SBWindowSceneManager *)self activeDisplayWindowSceneFollowingUserInteraction];
   }
 
-  else if (!v4)
+  else if (!activeDisplayTrackingMethodology)
   {
-    v5 = [(SBWindowSceneManager *)self activeDisplayWindowSceneFollowingKeyboard];
+    activeDisplayWindowSceneFollowingUserInteraction = [(SBWindowSceneManager *)self activeDisplayWindowSceneFollowingKeyboard];
   }
 
-  return v5;
+  return activeDisplayWindowSceneFollowingUserInteraction;
 }
 
 - (SBWindowScene)activeDisplayWindowSceneFollowingUserInteraction
 {
-  v3 = [(SBMultiDisplayUserInteractionCoordinator *)self->_userInteractionCoordinator activeWindowScene];
-  v4 = [(SBWindowSceneManager *)self _validateSuggestedActiveWindowScene:v3 usingMethodology:1];
+  activeWindowScene = [(SBMultiDisplayUserInteractionCoordinator *)self->_userInteractionCoordinator activeWindowScene];
+  v4 = [(SBWindowSceneManager *)self _validateSuggestedActiveWindowScene:activeWindowScene usingMethodology:1];
 
   return v4;
 }
 
 - (id)windowSceneForAlertItems
 {
-  v3 = [(SBWindowSceneManager *)self _continuityDisplayWindowScene];
-  v4 = v3;
-  if (v3)
+  _continuityDisplayWindowScene = [(SBWindowSceneManager *)self _continuityDisplayWindowScene];
+  v4 = _continuityDisplayWindowScene;
+  if (_continuityDisplayWindowScene)
   {
-    v5 = v3;
+    activeDisplayWindowScene = _continuityDisplayWindowScene;
   }
 
   else
   {
-    v5 = [(SBWindowSceneManager *)self activeDisplayWindowScene];
+    activeDisplayWindowScene = [(SBWindowSceneManager *)self activeDisplayWindowScene];
   }
 
-  v6 = v5;
+  v6 = activeDisplayWindowScene;
 
   return v6;
 }
 
-- (SBWindowSceneManager)initWithUserInteractionCoordinator:(id)a3
+- (SBWindowSceneManager)initWithUserInteractionCoordinator:(id)coordinator
 {
-  v5 = a3;
+  coordinatorCopy = coordinator;
   v12.receiver = self;
   v12.super_class = SBWindowSceneManager;
   v6 = [(SBWindowSceneManager *)&v12 init];
@@ -100,7 +100,7 @@ uint64_t __51__SBWindowSceneManager__embeddedDisplayWindowScene__block_invoke(ui
     keyboardFocusTracker = v6->_keyboardFocusTracker;
     v6->_keyboardFocusTracker = v9;
 
-    objc_storeStrong(&v6->_userInteractionCoordinator, a3);
+    objc_storeStrong(&v6->_userInteractionCoordinator, coordinator);
   }
 
   return v6;
@@ -108,18 +108,18 @@ uint64_t __51__SBWindowSceneManager__embeddedDisplayWindowScene__block_invoke(ui
 
 - (SBWindowScene)activeDisplayWindowSceneFollowingKeyboard
 {
-  v3 = [(_SBActiveDisplayKeyboardFocusTracker *)self->_keyboardFocusTracker activeWindowScene];
-  v4 = [(SBWindowSceneManager *)self _validateSuggestedActiveWindowScene:v3 usingMethodology:0];
+  activeWindowScene = [(_SBActiveDisplayKeyboardFocusTracker *)self->_keyboardFocusTracker activeWindowScene];
+  v4 = [(SBWindowSceneManager *)self _validateSuggestedActiveWindowScene:activeWindowScene usingMethodology:0];
 
   return v4;
 }
 
-- (id)windowSceneForDisplayIdentity:(id)a3
+- (id)windowSceneForDisplayIdentity:(id)identity
 {
-  v4 = a3;
-  if ([v4 expectsSecureRendering] || !objc_msgSend(v4, "sb_displayWindowingMode"))
+  identityCopy = identity;
+  if ([identityCopy expectsSecureRendering] || !objc_msgSend(identityCopy, "sb_displayWindowingMode"))
   {
-    v6 = [(SBWindowSceneManager *)self _embeddedDisplayWindowScene];
+    _embeddedDisplayWindowScene = [(SBWindowSceneManager *)self _embeddedDisplayWindowScene];
   }
 
   else
@@ -129,11 +129,11 @@ uint64_t __51__SBWindowSceneManager__embeddedDisplayWindowScene__block_invoke(ui
     v8[1] = 3221225472;
     v8[2] = __54__SBWindowSceneManager_windowSceneForDisplayIdentity___block_invoke;
     v8[3] = &unk_2783B06B8;
-    v9 = v4;
-    v6 = [(NSMutableSet *)mutableConnectedWindowScenes bs_firstObjectPassingTest:v8];
+    v9 = identityCopy;
+    _embeddedDisplayWindowScene = [(NSMutableSet *)mutableConnectedWindowScenes bs_firstObjectPassingTest:v8];
   }
 
-  return v6;
+  return _embeddedDisplayWindowScene;
 }
 
 uint64_t __54__SBWindowSceneManager_windowSceneForDisplayIdentity___block_invoke(uint64_t a1, void *a2)
@@ -144,17 +144,17 @@ uint64_t __54__SBWindowSceneManager_windowSceneForDisplayIdentity___block_invoke
   return v3;
 }
 
-- (id)windowSceneForSceneHandle:(id)a3
+- (id)windowSceneForSceneHandle:(id)handle
 {
-  v4 = [a3 displayIdentity];
-  v5 = [(SBWindowSceneManager *)self windowSceneForDisplayIdentity:v4];
+  displayIdentity = [handle displayIdentity];
+  v5 = [(SBWindowSceneManager *)self windowSceneForDisplayIdentity:displayIdentity];
 
   return v5;
 }
 
-- (id)windowSceneForSceneIdentifier:(id)a3
+- (id)windowSceneForSceneIdentifier:(id)identifier
 {
-  v4 = [MEMORY[0x277D0ADC0] identityForIdentifier:a3];
+  v4 = [MEMORY[0x277D0ADC0] identityForIdentifier:identifier];
   mutableConnectedWindowScenes = self->_mutableConnectedWindowScenes;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -194,16 +194,16 @@ uint64_t __54__SBWindowSceneManager_windowSceneForSceneIdentifier___block_invoke
   return v13;
 }
 
-- (id)windowSceneForPersistentIdentifier:(id)a3
+- (id)windowSceneForPersistentIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   mutableConnectedWindowScenes = self->_mutableConnectedWindowScenes;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __59__SBWindowSceneManager_windowSceneForPersistentIdentifier___block_invoke;
   v9[3] = &unk_2783B06B8;
-  v10 = v4;
-  v6 = v4;
+  v10 = identifierCopy;
+  v6 = identifierCopy;
   v7 = [(NSMutableSet *)mutableConnectedWindowScenes bs_firstObjectPassingTest:v9];
 
   return v7;
@@ -236,11 +236,11 @@ uint64_t __59__SBWindowSceneManager_windowSceneForPersistentIdentifier___block_i
   return v13;
 }
 
-- (void)_sceneWillConnect:(id)a3
+- (void)_sceneWillConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = objc_opt_class();
-  v8 = v4;
+  v8 = connectCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -267,11 +267,11 @@ uint64_t __59__SBWindowSceneManager_windowSceneForPersistentIdentifier___block_i
   }
 }
 
-- (void)_sceneDidDisconnect:(id)a3
+- (void)_sceneDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = objc_opt_class();
-  v8 = v4;
+  v8 = disconnectCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -298,23 +298,23 @@ uint64_t __59__SBWindowSceneManager_windowSceneForPersistentIdentifier___block_i
   }
 }
 
-- (id)_validateSuggestedActiveWindowScene:(id)a3 usingMethodology:(int64_t)a4
+- (id)_validateSuggestedActiveWindowScene:(id)scene usingMethodology:(int64_t)methodology
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 isInvalidating])
+  sceneCopy = scene;
+  if ([sceneCopy isInvalidating])
   {
     v7 = SBLogActiveDisplay();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = SBStringForActiveDisplayTrackingMethodology(a4);
-      v9 = [v6 _fbsDisplayIdentity];
+      v8 = SBStringForActiveDisplayTrackingMethodology(methodology);
+      _fbsDisplayIdentity = [sceneCopy _fbsDisplayIdentity];
       *v14 = 138543874;
       *&v14[4] = v8;
       *&v14[12] = 2048;
-      *&v14[14] = v6;
+      *&v14[14] = sceneCopy;
       *&v14[22] = 2114;
-      v15 = v9;
+      v15 = _fbsDisplayIdentity;
       v10 = "[%{public}@] focus scene <%p> on display %{public}@ is in the process of invalidating, falling back to reporting the embedded scene as the active scene";
 LABEL_7:
       _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, v10, v14, 0x20u);
@@ -325,19 +325,19 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v6 isInvalidated])
+  if ([sceneCopy isInvalidated])
   {
     v7 = SBLogKeyboardFocus();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = SBStringForActiveDisplayTrackingMethodology(a4);
-      v9 = [v6 _fbsDisplayIdentity];
+      v8 = SBStringForActiveDisplayTrackingMethodology(methodology);
+      _fbsDisplayIdentity = [sceneCopy _fbsDisplayIdentity];
       *v14 = 138543874;
       *&v14[4] = v8;
       *&v14[12] = 2048;
-      *&v14[14] = v6;
+      *&v14[14] = sceneCopy;
       *&v14[22] = 2114;
-      v15 = v9;
+      v15 = _fbsDisplayIdentity;
       v10 = "[%{public}@] focus scene <%p> on display %{public}@ is invalidated!?!?!?!?, falling back to reporting the embedded scene as the active scene";
       goto LABEL_7;
     }
@@ -349,12 +349,12 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!sceneCopy)
   {
     goto LABEL_9;
   }
 
-  v11 = v6;
+  v11 = sceneCopy;
 LABEL_10:
   v12 = v11;
 

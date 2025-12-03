@@ -1,9 +1,9 @@
 @interface HFIrrigationSystemServiceItem
 - (id)_childValveServiceFilter;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
-- (id)currentStateActionBuildersForHome:(id)a3;
-- (id)servicesToReadForCharacteristicType:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
+- (id)currentStateActionBuildersForHome:(id)home;
+- (id)servicesToReadForCharacteristicType:(id)type;
 @end
 
 @implementation HFIrrigationSystemServiceItem
@@ -17,18 +17,18 @@
   return v4;
 }
 
-- (id)servicesToReadForCharacteristicType:(id)a3
+- (id)servicesToReadForCharacteristicType:(id)type
 {
   v11.receiver = self;
   v11.super_class = HFIrrigationSystemServiceItem;
-  v4 = a3;
-  v5 = [(HFServiceItem *)&v11 servicesToReadForCharacteristicType:v4];
-  v6 = [v4 isEqualToString:{*MEMORY[0x277CCF748], v11.receiver, v11.super_class}];
+  typeCopy = type;
+  v5 = [(HFServiceItem *)&v11 servicesToReadForCharacteristicType:typeCopy];
+  v6 = [typeCopy isEqualToString:{*MEMORY[0x277CCF748], v11.receiver, v11.super_class}];
 
   if (v6)
   {
-    v7 = [(HFServiceItem *)self service];
-    v8 = [v7 hf_childServicesOfType:*MEMORY[0x277CD0F38]];
+    service = [(HFServiceItem *)self service];
+    v8 = [service hf_childServicesOfType:*MEMORY[0x277CD0F38]];
     v9 = [v5 na_setByRemovingObjectsFromSet:v8];
 
     v5 = v9;
@@ -37,19 +37,19 @@
   return v5;
 }
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
-  v4 = [(HFIrrigationSystemServiceItem *)self _childValveServiceFilter];
-  v5 = [(HFServiceItem *)self service];
-  v6 = [v4 filteredChildServicesForParentService:v5];
+  _childValveServiceFilter = [(HFIrrigationSystemServiceItem *)self _childValveServiceFilter];
+  service = [(HFServiceItem *)self service];
+  v6 = [_childValveServiceFilter filteredChildServicesForParentService:service];
   v7 = [v6 count];
 
   if (v7)
   {
     v8 = [HFChildServiceControlItem alloc];
-    v9 = [(HFServiceItem *)self valueSource];
-    v10 = [(HFServiceItem *)self service];
-    v11 = [(HFChildServiceControlItem *)v8 initWithBaseValueSource:v9 parentService:v10 childServiceFilter:v4 displayResults:0];
+    valueSource = [(HFServiceItem *)self valueSource];
+    service2 = [(HFServiceItem *)self service];
+    v11 = [(HFChildServiceControlItem *)v8 initWithBaseValueSource:valueSource parentService:service2 childServiceFilter:_childValveServiceFilter displayResults:0];
 
     v12 = [MEMORY[0x277CBEB98] setWithObject:v11];
   }
@@ -62,7 +62,7 @@
   return v12;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
@@ -71,11 +71,11 @@
   v15[1] = v5;
   v15[2] = *MEMORY[0x277CCF9F8];
   v6 = MEMORY[0x277CBEA60];
-  v7 = a3;
+  optionsCopy = options;
   v8 = [v6 arrayWithObjects:v15 count:3];
   v9 = [v4 setWithArray:v8];
 
-  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:v7];
+  v10 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v9 options:optionsCopy];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -126,7 +126,7 @@ LABEL_6:
   return v13;
 }
 
-- (id)currentStateActionBuildersForHome:(id)a3
+- (id)currentStateActionBuildersForHome:(id)home
 {
   v3 = MEMORY[0x277D2C900];
   v4 = [MEMORY[0x277CBEB98] set];

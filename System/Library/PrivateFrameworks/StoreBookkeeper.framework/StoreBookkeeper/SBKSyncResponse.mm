@@ -1,24 +1,24 @@
 @interface SBKSyncResponse
-+ (id)responseWithResponse:(id)a3 transaction:(id)a4;
-- (void)deserializeResponseBodyWithTransaction:(id)a3;
++ (id)responseWithResponse:(id)response transaction:(id)transaction;
+- (void)deserializeResponseBodyWithTransaction:(id)transaction;
 @end
 
 @implementation SBKSyncResponse
 
-+ (id)responseWithResponse:(id)a3 transaction:(id)a4
++ (id)responseWithResponse:(id)response transaction:(id)transaction
 {
-  v6 = a4;
-  v7 = [a1 responseWithResponse:a3];
-  [v7 deserializeResponseBodyWithTransaction:v6];
+  transactionCopy = transaction;
+  v7 = [self responseWithResponse:response];
+  [v7 deserializeResponseBodyWithTransaction:transactionCopy];
 
   return v7;
 }
 
-- (void)deserializeResponseBodyWithTransaction:(id)a3
+- (void)deserializeResponseBodyWithTransaction:(id)transaction
 {
-  v4 = a3;
-  v7 = [(SBKResponse *)self responseDictionary];
-  v5 = [SBKSyncResponseData deserializedResponseBodyWithTransaction:v4 responseDictionary:v7 response:self];
+  transactionCopy = transaction;
+  responseDictionary = [(SBKResponse *)self responseDictionary];
+  v5 = [SBKSyncResponseData deserializedResponseBodyWithTransaction:transactionCopy responseDictionary:responseDictionary response:self];
 
   syncResponseData = self->_syncResponseData;
   self->_syncResponseData = v5;

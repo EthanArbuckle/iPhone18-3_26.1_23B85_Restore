@@ -1,11 +1,11 @@
 @interface FKAScrollView
 - (id)_accessibilityKeyCommands;
-- (void)_scrollInXDirection:(double)a3 yDirection:(double)a4;
+- (void)_scrollInXDirection:(double)direction yDirection:(double)yDirection;
 @end
 
 @implementation FKAScrollView
 
-- (void)_scrollInXDirection:(double)a3 yDirection:(double)a4
+- (void)_scrollInXDirection:(double)direction yDirection:(double)yDirection
 {
   [(FKAScrollView *)self bounds];
   v6 = v5;
@@ -38,7 +38,7 @@
     v42.origin.y = v34;
     v42.size.width = v9;
     v42.size.height = v11;
-    v27 = v37 + a3 * 0.5 * CGRectGetWidth(v42);
+    v27 = v37 + direction * 0.5 * CGRectGetWidth(v42);
     v43.origin.x = v19;
     v43.origin.y = v21;
     v43.size.width = v22;
@@ -71,7 +71,7 @@
     v48.origin.x = v6;
     v48.origin.y = v34;
     v48.size.width = v9;
-    v30 = v35 + a4 * 0.5 * CGRectGetHeight(v48);
+    v30 = v35 + yDirection * 0.5 * CGRectGetHeight(v48);
     v49.origin.x = v19;
     v49.origin.y = v21;
     v49.size.width = v22;

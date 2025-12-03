@@ -1,29 +1,29 @@
 @interface CBSUtilities
-+ (BOOL)_currentProcessHasEntitlement:(id)a3;
++ (BOOL)_currentProcessHasEntitlement:(id)entitlement;
 + (BOOL)isCheckerBoardActive;
 + (BOOL)isSSRBootIntentSet;
 + (BOOL)rebootToCheckerBoard;
 + (id)proxyServer;
-+ (void)addShutdownTask:(id)a3 forReason:(id)a4;
-+ (void)connectToSSID:(id)a3 completion:(id)a4;
-+ (void)connectToSSID:(id)a3 password:(id)a4 completion:(id)a5;
-+ (void)connectedNetwork:(id)a3;
-+ (void)currentLocaleIdentifier:(id)a3;
-+ (void)diagnosticsRunning:(id)a3;
++ (void)addShutdownTask:(id)task forReason:(id)reason;
++ (void)connectToSSID:(id)d completion:(id)completion;
++ (void)connectToSSID:(id)d password:(id)password completion:(id)completion;
++ (void)connectedNetwork:(id)network;
++ (void)currentLocaleIdentifier:(id)identifier;
++ (void)diagnosticsRunning:(id)running;
 + (void)dimDisplay;
 + (void)disableNetworkReconnect;
 + (void)disableTouchButtonEvents;
-+ (void)displayDimmed:(id)a3;
++ (void)displayDimmed:(id)dimmed;
 + (void)enableNetworkReconnect;
 + (void)enableTouchButtonEvents;
 + (void)exitCheckerBoard;
 + (void)hideSceneStatusBar;
 + (void)launchDiagnostics;
-+ (void)networkReconnectEnabled:(id)a3;
-+ (void)networkScanWithCompletion:(id)a3;
-+ (void)removeShutdownTask:(id)a3;
-+ (void)sceneStatusBarStyle:(int64_t)a3;
-+ (void)setLocaleIdentifier:(id)a3 completion:(id)a4;
++ (void)networkReconnectEnabled:(id)enabled;
++ (void)networkScanWithCompletion:(id)completion;
++ (void)removeShutdownTask:(id)task;
++ (void)sceneStatusBarStyle:(int64_t)style;
++ (void)setLocaleIdentifier:(id)identifier completion:(id)completion;
 + (void)showSceneStatusBar;
 + (void)undimDisplay;
 @end
@@ -32,16 +32,16 @@
 
 + (BOOL)isCheckerBoardActive
 {
-  v2 = [MEMORY[0x277D0AE18] sharedService];
-  v3 = [v2 systemApplicationBundleIdentifier];
+  mEMORY[0x277D0AE18] = [MEMORY[0x277D0AE18] sharedService];
+  systemApplicationBundleIdentifier = [mEMORY[0x277D0AE18] systemApplicationBundleIdentifier];
 
-  LOBYTE(v2) = [v3 isEqualToString:@"com.apple.CheckerBoard"];
-  return v2;
+  LOBYTE(mEMORY[0x277D0AE18]) = [systemApplicationBundleIdentifier isEqualToString:@"com.apple.CheckerBoard"];
+  return mEMORY[0x277D0AE18];
 }
 
 + (BOOL)rebootToCheckerBoard
 {
-  if ([a1 _currentProcessHasEntitlement:@"com.apple.CheckerBoard.services.reboot"] && objc_msgSend(a1, "_currentProcessHasEntitlement:", @"com.apple.private.iokit.nvram-write-access") && (objc_msgSend(a1, "_currentProcessHasEntitlement:", @"com.apple.frontboard.shutdown") & 1) != 0)
+  if ([self _currentProcessHasEntitlement:@"com.apple.CheckerBoard.services.reboot"] && objc_msgSend(self, "_currentProcessHasEntitlement:", @"com.apple.private.iokit.nvram-write-access") && (objc_msgSend(self, "_currentProcessHasEntitlement:", @"com.apple.frontboard.shutdown") & 1) != 0)
   {
     v3 = CheckerBoardLogHandleForCategory(4);
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -76,8 +76,8 @@
 + (void)exitCheckerBoard
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 exitCheckerBoard];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer exitCheckerBoard];
 }
 
 + (BOOL)isSSRBootIntentSet
@@ -100,7 +100,7 @@
   v17 = 0;
   v2 = dispatch_semaphore_create(0);
   v3 = +[CBSClient defaultClient];
-  v4 = [v3 systemServicesServer];
+  systemServicesServer = [v3 systemServicesServer];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __27__CBSUtilities_proxyServer__block_invoke;
@@ -108,7 +108,7 @@
   v11 = &v12;
   v5 = v2;
   v10 = v5;
-  [v4 proxyServerWithCompletion:v9];
+  [systemServicesServer proxyServerWithCompletion:v9];
 
   v6 = dispatch_time(0, 2000000000);
   dispatch_semaphore_wait(v5, v6);
@@ -129,169 +129,169 @@ void __27__CBSUtilities_proxyServer__block_invoke(uint64_t a1, void *a2)
 + (void)showSceneStatusBar
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 showSceneStatusBar];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer showSceneStatusBar];
 }
 
 + (void)hideSceneStatusBar
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 hideSceneStatusBar];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer hideSceneStatusBar];
 }
 
-+ (void)sceneStatusBarStyle:(int64_t)a3
++ (void)sceneStatusBarStyle:(int64_t)style
 {
   v5 = +[CBSClient defaultClient];
-  v4 = [v5 systemServicesServer];
-  [v4 statusBarStyle:a3];
+  systemServicesServer = [v5 systemServicesServer];
+  [systemServicesServer statusBarStyle:style];
 }
 
 + (void)dimDisplay
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 dimDisplay];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer dimDisplay];
 }
 
 + (void)undimDisplay
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 undimDisplay];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer undimDisplay];
 }
 
 + (void)enableTouchButtonEvents
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 enableTouchButtonEvents];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer enableTouchButtonEvents];
 }
 
 + (void)disableTouchButtonEvents
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 disableTouchButtonEvents];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer disableTouchButtonEvents];
 }
 
-+ (void)addShutdownTask:(id)a3 forReason:(id)a4
++ (void)addShutdownTask:(id)task forReason:(id)reason
 {
-  v5 = a4;
-  v6 = a3;
+  reasonCopy = reason;
+  taskCopy = task;
   v8 = +[CBSClient defaultClient];
-  v7 = [v8 systemServicesServer];
-  [v7 addShutdownTask:v6 forReason:v5];
+  systemServicesServer = [v8 systemServicesServer];
+  [systemServicesServer addShutdownTask:taskCopy forReason:reasonCopy];
 }
 
-+ (void)removeShutdownTask:(id)a3
++ (void)removeShutdownTask:(id)task
 {
-  v3 = a3;
+  taskCopy = task;
   v5 = +[CBSClient defaultClient];
-  v4 = [v5 systemServicesServer];
-  [v4 removeShutdownTask:v3];
+  systemServicesServer = [v5 systemServicesServer];
+  [systemServicesServer removeShutdownTask:taskCopy];
 }
 
 + (void)disableNetworkReconnect
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 disableNetworkReconnect];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer disableNetworkReconnect];
 }
 
 + (void)enableNetworkReconnect
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 enableNetworkReconnect];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer enableNetworkReconnect];
 }
 
 + (void)launchDiagnostics
 {
   v3 = +[CBSClient defaultClient];
-  v2 = [v3 systemServicesServer];
-  [v2 launchDiagnostics];
+  systemServicesServer = [v3 systemServicesServer];
+  [systemServicesServer launchDiagnostics];
 }
 
-+ (void)diagnosticsRunning:(id)a3
++ (void)diagnosticsRunning:(id)running
 {
-  v3 = a3;
+  runningCopy = running;
   v5 = +[CBSClient defaultClient];
-  v4 = [v5 systemServicesServer];
-  [v4 diagnosticsRunning:v3];
+  systemServicesServer = [v5 systemServicesServer];
+  [systemServicesServer diagnosticsRunning:runningCopy];
 }
 
-+ (void)connectToSSID:(id)a3 completion:(id)a4
++ (void)connectToSSID:(id)d completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dCopy = d;
   v8 = +[CBSClient defaultClient];
-  v7 = [v8 systemServicesServer];
-  [v7 connectToSSID:v6 completion:v5];
+  systemServicesServer = [v8 systemServicesServer];
+  [systemServicesServer connectToSSID:dCopy completion:completionCopy];
 }
 
-+ (void)connectToSSID:(id)a3 password:(id)a4 completion:(id)a5
++ (void)connectToSSID:(id)d password:(id)password completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  passwordCopy = password;
+  dCopy = d;
   v11 = +[CBSClient defaultClient];
-  v10 = [v11 systemServicesServer];
-  [v10 connectToSSID:v9 password:v8 completion:v7];
+  systemServicesServer = [v11 systemServicesServer];
+  [systemServicesServer connectToSSID:dCopy password:passwordCopy completion:completionCopy];
 }
 
-+ (void)networkScanWithCompletion:(id)a3
++ (void)networkScanWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v5 = +[CBSClient defaultClient];
-  v4 = [v5 systemServicesServer];
-  [v4 networkScanWithCompletion:v3];
+  systemServicesServer = [v5 systemServicesServer];
+  [systemServicesServer networkScanWithCompletion:completionCopy];
 }
 
-+ (void)connectedNetwork:(id)a3
++ (void)connectedNetwork:(id)network
 {
-  v3 = a3;
+  networkCopy = network;
   v5 = +[CBSClient defaultClient];
-  v4 = [v5 systemServicesServer];
-  [v4 connectedNetwork:v3];
+  systemServicesServer = [v5 systemServicesServer];
+  [systemServicesServer connectedNetwork:networkCopy];
 }
 
-+ (void)networkReconnectEnabled:(id)a3
++ (void)networkReconnectEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = +[CBSClient defaultClient];
-  v4 = [v5 systemServicesServer];
-  [v4 networkReconnectEnabled:v3];
+  systemServicesServer = [v5 systemServicesServer];
+  [systemServicesServer networkReconnectEnabled:enabledCopy];
 }
 
-+ (void)displayDimmed:(id)a3
++ (void)displayDimmed:(id)dimmed
 {
-  v3 = a3;
+  dimmedCopy = dimmed;
   v5 = +[CBSClient defaultClient];
-  v4 = [v5 systemServicesServer];
-  [v4 displayDimmed:v3];
+  systemServicesServer = [v5 systemServicesServer];
+  [systemServicesServer displayDimmed:dimmedCopy];
 }
 
-+ (void)currentLocaleIdentifier:(id)a3
++ (void)currentLocaleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v5 = +[CBSClient defaultClient];
-  v4 = [v5 systemServicesServer];
-  [v4 currentLocaleIdentifier:v3];
+  systemServicesServer = [v5 systemServicesServer];
+  [systemServicesServer currentLocaleIdentifier:identifierCopy];
 }
 
-+ (void)setLocaleIdentifier:(id)a3 completion:(id)a4
++ (void)setLocaleIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v8 = +[CBSClient defaultClient];
-  v7 = [v8 systemServicesServer];
-  [v7 setLocaleIdentifier:v6 completion:v5];
+  systemServicesServer = [v8 systemServicesServer];
+  [systemServicesServer setLocaleIdentifier:identifierCopy completion:completionCopy];
 }
 
-+ (BOOL)_currentProcessHasEntitlement:(id)a3
++ (BOOL)_currentProcessHasEntitlement:(id)entitlement
 {
-  [a3 cStringUsingEncoding:4];
+  [entitlement cStringUsingEncoding:4];
   v3 = xpc_copy_entitlement_for_self();
   v4 = v3;
   if (v3)

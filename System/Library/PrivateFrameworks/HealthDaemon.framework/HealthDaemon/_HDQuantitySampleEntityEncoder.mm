@@ -1,7 +1,7 @@
 @interface _HDQuantitySampleEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -10,8 +10,8 @@
 - (id)orderedProperties
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v4 = [(HDEntityEncoder *)self purpose];
-  if (v4 == 1)
+  purpose = [(HDEntityEncoder *)self purpose];
+  if (purpose == 1)
   {
     v11 = @"quantity";
     v5 = &v11;
@@ -19,7 +19,7 @@
 
   else
   {
-    if (v4)
+    if (purpose)
     {
       goto LABEL_6;
     }
@@ -31,9 +31,9 @@
   v5[1] = @"original_quantity";
   v5[2] = @"unit_strings.unit_string";
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:? count:?];
-  v7 = [(HDEntityEncoder *)self superclassEncoder];
-  v8 = [v7 orderedProperties];
-  v2 = [v6 arrayByAddingObjectsFromArray:v8];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v2 = [v6 arrayByAddingObjectsFromArray:orderedProperties];
 
 LABEL_6:
   v9 = *MEMORY[0x277D85DE8];
@@ -41,10 +41,10 @@ LABEL_6:
   return v2;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -75,39 +75,39 @@ LABEL_6:
   return v10;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCD800]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCD800]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
     if (HDSQLiteColumnWithNameIsNull())
     {
       v13 = MEMORY[0x277CCD7E8];
-      v14 = [v10 quantityType];
-      [v14 canonicalUnit];
+      quantityType = [objectCopy quantityType];
+      [quantityType canonicalUnit];
     }
 
     else
     {
-      v14 = HDSQLiteColumnWithNameAsString();
+      quantityType = HDSQLiteColumnWithNameAsString();
       v13 = MEMORY[0x277CCD7E8];
-      [MEMORY[0x277CCDAB0] unitFromString:v14];
+      [MEMORY[0x277CCDAB0] unitFromString:quantityType];
     }
     v15 = ;
     HDSQLiteColumnWithNameAsDouble();
     v16 = [v13 quantityWithUnit:v15 doubleValue:?];
 
-    [v10 _setQuantity:v16];
+    [objectCopy _setQuantity:v16];
   }
 
   return v12;

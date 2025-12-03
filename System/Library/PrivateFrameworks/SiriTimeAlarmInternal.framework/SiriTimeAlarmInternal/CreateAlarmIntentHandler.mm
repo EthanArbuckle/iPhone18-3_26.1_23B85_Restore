@@ -1,16 +1,16 @@
 @interface CreateAlarmIntentHandler
-- (void)handleCreateAlarm:(id)a3 completion:(id)a4;
+- (void)handleCreateAlarm:(id)alarm completion:(id)completion;
 @end
 
 @implementation CreateAlarmIntentHandler
 
-- (void)handleCreateAlarm:(id)a3 completion:(id)a4
+- (void)handleCreateAlarm:(id)alarm completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_2692A80AC(v7, v8, v6);
+  alarmCopy = alarm;
+  selfCopy = self;
+  sub_2692A80AC(alarmCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

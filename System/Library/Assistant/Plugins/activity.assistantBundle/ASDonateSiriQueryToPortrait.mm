@@ -1,37 +1,37 @@
 @interface ASDonateSiriQueryToPortrait
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation ASDonateSiriQueryToPortrait
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ASDonateSiriQueryToPortrait *)self originalQuery];
+  completionCopy = completion;
+  originalQuery = [(ASDonateSiriQueryToPortrait *)self originalQuery];
   v6 = [(ASDonateSiriQueryToPortrait *)self qid];
-  if (v5)
+  if (originalQuery)
   {
-    v7 = [(ASDonateSiriQueryToPortrait *)self domain];
+    domain = [(ASDonateSiriQueryToPortrait *)self domain];
 
-    if (v7)
+    if (domain)
     {
       v8 = [PPSiriQueryResult alloc];
-      v9 = [(ASDonateSiriQueryToPortrait *)self domain];
+      domain2 = [(ASDonateSiriQueryToPortrait *)self domain];
       [(ASDonateSiriQueryToPortrait *)self rankerConfidence];
       v10 = [NSNumber numberWithDouble:?];
-      v11 = [v8 initWithQid:v6 domain:v9 confidence:v10];
+      v11 = [v8 initWithQid:v6 domain:domain2 confidence:v10];
 
       v20 = v11;
       v12 = [NSArray arrayWithObjects:&v20 count:1];
       v19 = 0;
-      LODWORD(v10) = [PPCustomDonation donateSiriQuery:v5 results:v12 error:&v19];
+      LODWORD(v10) = [PPCustomDonation donateSiriQuery:originalQuery results:v12 error:&v19];
       v13 = v19;
 
       if (v10)
       {
 
 LABEL_11:
-        if (!v4)
+        if (!completionCopy)
         {
           v14 = 0;
           goto LABEL_14;
@@ -42,8 +42,8 @@ LABEL_11:
         goto LABEL_13;
       }
 
-      v15 = [v13 localizedDescription];
-      v14 = [NSString stringWithFormat:@"donation failed: %@", v15];
+      localizedDescription = [v13 localizedDescription];
+      v14 = [NSString stringWithFormat:@"donation failed: %@", localizedDescription];
 
       if (!v14)
       {
@@ -66,7 +66,7 @@ LABEL_11:
   if (os_log_type_enabled(AFSiriLogContextService, OS_LOG_TYPE_ERROR))
   {
     sub_71F8(v14, v16);
-    if (!v4)
+    if (!completionCopy)
     {
       goto LABEL_14;
     }
@@ -74,13 +74,13 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if (v4)
+  if (completionCopy)
   {
 LABEL_10:
     v17 = [[SACommandFailed alloc] initWithReason:v14];
 LABEL_13:
-    v18 = [v17 dictionary];
-    v4[2](v4, v18);
+    dictionary = [v17 dictionary];
+    completionCopy[2](completionCopy, dictionary);
   }
 
 LABEL_14:

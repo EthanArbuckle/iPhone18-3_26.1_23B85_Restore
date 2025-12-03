@@ -1,7 +1,7 @@
 @interface TIAutoshiftRegularExpressionLoader
-+ (TIAutoshiftRegularExpressionLoader)loaderWithSentenceDelimiters:(id)a3 trailingChars:(id)a4 prefixChars:(id)a5;
++ (TIAutoshiftRegularExpressionLoader)loaderWithSentenceDelimiters:(id)delimiters trailingChars:(id)chars prefixChars:(id)prefixChars;
 - (NSRegularExpression)regex;
-- (TIAutoshiftRegularExpressionLoader)initWithSentenceDelimiters:(id)a3 trailingChars:(id)a4 prefixChars:(id)a5;
+- (TIAutoshiftRegularExpressionLoader)initWithSentenceDelimiters:(id)delimiters trailingChars:(id)chars prefixChars:(id)prefixChars;
 - (void)startBackgroundLoad;
 @end
 
@@ -12,10 +12,10 @@
   regex = self->_regex;
   if (!regex)
   {
-    v4 = [(TIAutoshiftRegularExpressionLoader *)self sentenceDelimitingCharacters];
-    v5 = [(TIAutoshiftRegularExpressionLoader *)self sentenceTrailingCharacters];
-    v6 = [(TIAutoshiftRegularExpressionLoader *)self nextSentencePrefixCharacters];
-    v7 = createAutoshiftRegularExpression(v4, v5, v6);
+    sentenceDelimitingCharacters = [(TIAutoshiftRegularExpressionLoader *)self sentenceDelimitingCharacters];
+    sentenceTrailingCharacters = [(TIAutoshiftRegularExpressionLoader *)self sentenceTrailingCharacters];
+    nextSentencePrefixCharacters = [(TIAutoshiftRegularExpressionLoader *)self nextSentencePrefixCharacters];
+    v7 = createAutoshiftRegularExpression(sentenceDelimitingCharacters, sentenceTrailingCharacters, nextSentencePrefixCharacters);
     v8 = self->_regex;
     self->_regex = v7;
 
@@ -43,25 +43,25 @@ void __57__TIAutoshiftRegularExpressionLoader_startBackgroundLoad__block_invoke(
   TIDispatchAsync();
 }
 
-- (TIAutoshiftRegularExpressionLoader)initWithSentenceDelimiters:(id)a3 trailingChars:(id)a4 prefixChars:(id)a5
+- (TIAutoshiftRegularExpressionLoader)initWithSentenceDelimiters:(id)delimiters trailingChars:(id)chars prefixChars:(id)prefixChars
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delimitersCopy = delimiters;
+  charsCopy = chars;
+  prefixCharsCopy = prefixChars;
   v19.receiver = self;
   v19.super_class = TIAutoshiftRegularExpressionLoader;
   v11 = [(TIAutoshiftRegularExpressionLoader *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [delimitersCopy copy];
     sentenceDelimitingCharacters = v11->_sentenceDelimitingCharacters;
     v11->_sentenceDelimitingCharacters = v12;
 
-    v14 = [v9 copy];
+    v14 = [charsCopy copy];
     sentenceTrailingCharacters = v11->_sentenceTrailingCharacters;
     v11->_sentenceTrailingCharacters = v14;
 
-    v16 = [v10 copy];
+    v16 = [prefixCharsCopy copy];
     nextSentencePrefixCharacters = v11->_nextSentencePrefixCharacters;
     v11->_nextSentencePrefixCharacters = v16;
   }
@@ -69,12 +69,12 @@ void __57__TIAutoshiftRegularExpressionLoader_startBackgroundLoad__block_invoke(
   return v11;
 }
 
-+ (TIAutoshiftRegularExpressionLoader)loaderWithSentenceDelimiters:(id)a3 trailingChars:(id)a4 prefixChars:(id)a5
++ (TIAutoshiftRegularExpressionLoader)loaderWithSentenceDelimiters:(id)delimiters trailingChars:(id)chars prefixChars:(id)prefixChars
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithSentenceDelimiters:v10 trailingChars:v9 prefixChars:v8];
+  prefixCharsCopy = prefixChars;
+  charsCopy = chars;
+  delimitersCopy = delimiters;
+  v11 = [[self alloc] initWithSentenceDelimiters:delimitersCopy trailingChars:charsCopy prefixChars:prefixCharsCopy];
 
   return v11;
 }

@@ -1,32 +1,32 @@
 @interface HKCodableStateOfMindValenceDistributionSummary
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addValenceDistributionData:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addValenceDistributionData:(id)data;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HKCodableStateOfMindValenceDistributionSummary
 
-- (void)addValenceDistributionData:(id)a3
+- (void)addValenceDistributionData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   valenceDistributionDatas = self->_valenceDistributionDatas;
-  v8 = v4;
+  v8 = dataCopy;
   if (!valenceDistributionDatas)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_valenceDistributionDatas;
     self->_valenceDistributionDatas = v6;
 
-    v4 = v8;
+    dataCopy = v8;
     valenceDistributionDatas = self->_valenceDistributionDatas;
   }
 
-  [(NSMutableArray *)valenceDistributionDatas addObject:v4];
+  [(NSMutableArray *)valenceDistributionDatas addObject:dataCopy];
 }
 
 - (id)description
@@ -35,8 +35,8 @@
   v8.receiver = self;
   v8.super_class = HKCodableStateOfMindValenceDistributionSummary;
   v4 = [(HKCodableStateOfMindValenceDistributionSummary *)&v8 description];
-  v5 = [(HKCodableStateOfMindValenceDistributionSummary *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HKCodableStateOfMindValenceDistributionSummary *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -44,12 +44,12 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   dayIndexRange = self->_dayIndexRange;
   if (dayIndexRange)
   {
-    v5 = [(HKCodableDayIndexRange *)dayIndexRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"dayIndexRange"];
+    dictionaryRepresentation = [(HKCodableDayIndexRange *)dayIndexRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"dayIndexRange"];
   }
 
   if ([(NSMutableArray *)self->_valenceDistributionDatas count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -84,16 +84,16 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"valenceDistributionData"];
+    [dictionary setObject:v6 forKey:@"valenceDistributionData"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_dayIndexRange)
   {
     PBDataWriterWriteSubmessage();
@@ -131,35 +131,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_dayIndexRange)
   {
-    [v8 setDayIndexRange:?];
+    [toCopy setDayIndexRange:?];
   }
 
   if ([(HKCodableStateOfMindValenceDistributionSummary *)self valenceDistributionDatasCount])
   {
-    [v8 clearValenceDistributionDatas];
-    v4 = [(HKCodableStateOfMindValenceDistributionSummary *)self valenceDistributionDatasCount];
-    if (v4)
+    [toCopy clearValenceDistributionDatas];
+    valenceDistributionDatasCount = [(HKCodableStateOfMindValenceDistributionSummary *)self valenceDistributionDatasCount];
+    if (valenceDistributionDatasCount)
     {
-      v5 = v4;
+      v5 = valenceDistributionDatasCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HKCodableStateOfMindValenceDistributionSummary *)self valenceDistributionDataAtIndex:i];
-        [v8 addValenceDistributionData:v7];
+        [toCopy addValenceDistributionData:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HKCodableDayIndexRange *)self->_dayIndexRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HKCodableDayIndexRange *)self->_dayIndexRange copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -183,7 +183,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addValenceDistributionData:v13];
 
         ++v12;
@@ -199,13 +199,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((dayIndexRange = self->_dayIndexRange, !(dayIndexRange | v4[1])) || -[HKCodableDayIndexRange isEqual:](dayIndexRange, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((dayIndexRange = self->_dayIndexRange, !(dayIndexRange | equalCopy[1])) || -[HKCodableDayIndexRange isEqual:](dayIndexRange, "isEqual:")))
   {
     valenceDistributionDatas = self->_valenceDistributionDatas;
-    if (valenceDistributionDatas | v4[2])
+    if (valenceDistributionDatas | equalCopy[2])
     {
       v7 = [(NSMutableArray *)valenceDistributionDatas isEqual:?];
     }
@@ -224,12 +224,12 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   dayIndexRange = self->_dayIndexRange;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (dayIndexRange)
   {
     if (v6)
@@ -247,7 +247,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

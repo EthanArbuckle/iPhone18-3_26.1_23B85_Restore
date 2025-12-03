@@ -1,24 +1,24 @@
 @interface SFDefaultBrowserInstaller
-+ (BOOL)isRestrictedToInstallBrowser:(id)a3 withAgeRating:(id)a4;
-- (BOOL)browserIsAlreadyInstalled:(id)a3;
-- (BOOL)installBrowserFromLockup:(id)a3 shouldObserveProgress:(BOOL)a4 ageRating:(id)a5;
-- (SFDefaultBrowserInstaller)initWithPresentingViewController:(id)a3;
++ (BOOL)isRestrictedToInstallBrowser:(id)browser withAgeRating:(id)rating;
+- (BOOL)browserIsAlreadyInstalled:(id)installed;
+- (BOOL)installBrowserFromLockup:(id)lockup shouldObserveProgress:(BOOL)progress ageRating:(id)rating;
+- (SFDefaultBrowserInstaller)initWithPresentingViewController:(id)controller;
 - (SFDefaultBrowserInstallerDelegate)delegate;
 - (UIViewController)presentingViewController;
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4;
+- (void)appQuery:(id)query resultsDidChange:(id)change;
 - (void)enableDaemonNotification;
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4;
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4;
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler;
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler;
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler;
 - (void)installAppStore;
 - (void)stopQuerying;
 @end
 
 @implementation SFDefaultBrowserInstaller
 
-- (SFDefaultBrowserInstaller)initWithPresentingViewController:(id)a3
+- (SFDefaultBrowserInstaller)initWithPresentingViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SFDefaultBrowserInstaller;
   v6 = [(SFDefaultBrowserInstaller *)&v12 init];
@@ -42,10 +42,10 @@
 
     v8 = v7;
     _Block_object_dispose(&v14, 8);
-    v9 = [v7 defaultCenter];
-    [v9 setDialogObserver:v6];
+    defaultCenter = [v7 defaultCenter];
+    [defaultCenter setDialogObserver:v6];
 
-    objc_storeStrong(&v6->_amsRequestPresentingViewController, a3);
+    objc_storeStrong(&v6->_amsRequestPresentingViewController, controller);
     [getASDInstallAppsClass() setShouldPostNotificationOnDefaultBrowserInstallation:0];
     v6->_lock._os_unfair_lock_opaque = 0;
     v10 = v6;
@@ -219,16 +219,16 @@ void __44__SFDefaultBrowserInstaller_installAppStore__block_invoke_4(uint64_t a1
   }
 }
 
-+ (BOOL)isRestrictedToInstallBrowser:(id)a3 withAgeRating:(id)a4
++ (BOOL)isRestrictedToInstallBrowser:(id)browser withAgeRating:(id)rating
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 bundleID];
-  v8 = [v7 isEqualToString:*MEMORY[0x1E69C8DA8]];
+  browserCopy = browser;
+  ratingCopy = rating;
+  bundleID = [browserCopy bundleID];
+  v8 = [bundleID isEqualToString:*MEMORY[0x1E69C8DA8]];
 
   if (v8)
   {
-    v9 = 0;
+    ams_isManagedAppleID = 0;
   }
 
   else
@@ -253,15 +253,15 @@ void __44__SFDefaultBrowserInstaller_installAppStore__block_invoke_4(uint64_t a1
     _Block_object_dispose(&v25, 8);
     if ([v10 isRunningInStoreDemoMode])
     {
-      v9 = 1;
+      ams_isManagedAppleID = 1;
     }
 
     else
     {
-      v12 = [MEMORY[0x1E69ADFB8] sharedConnection];
-      v13 = [v12 effectiveValueForSetting:*MEMORY[0x1E69ADED0]];
-      v14 = [v6 unsignedIntegerValue];
-      if (v14 <= [v13 unsignedIntegerValue])
+      mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+      v13 = [mEMORY[0x1E69ADFB8] effectiveValueForSetting:*MEMORY[0x1E69ADED0]];
+      unsignedIntegerValue = [ratingCopy unsignedIntegerValue];
+      if (unsignedIntegerValue <= [v13 unsignedIntegerValue])
       {
         v25 = 0;
         v26 = &v25;
@@ -281,38 +281,38 @@ void __44__SFDefaultBrowserInstaller_installAppStore__block_invoke_4(uint64_t a1
 
         v16 = v15;
         _Block_object_dispose(&v25, 8);
-        v17 = [v15 ams_sharedAccountStore];
-        v18 = [v17 ams_activeiTunesAccount];
-        v9 = [v18 ams_isManagedAppleID];
+        ams_sharedAccountStore = [v15 ams_sharedAccountStore];
+        ams_activeiTunesAccount = [ams_sharedAccountStore ams_activeiTunesAccount];
+        ams_isManagedAppleID = [ams_activeiTunesAccount ams_isManagedAppleID];
       }
 
       else
       {
-        v9 = 1;
+        ams_isManagedAppleID = 1;
       }
     }
   }
 
-  return v9;
+  return ams_isManagedAppleID;
 }
 
-- (BOOL)browserIsAlreadyInstalled:(id)a3
+- (BOOL)browserIsAlreadyInstalled:(id)installed
 {
   v3 = MEMORY[0x1E69635F8];
-  v4 = a3;
+  installedCopy = installed;
   v5 = [v3 alloc];
-  v6 = [v4 bundleID];
+  bundleID = [installedCopy bundleID];
 
-  v7 = [v5 initWithBundleIdentifier:v6 allowPlaceholder:0 error:0];
+  v7 = [v5 initWithBundleIdentifier:bundleID allowPlaceholder:0 error:0];
   LOBYTE(v5) = v7 != 0;
 
   return v5;
 }
 
-- (BOOL)installBrowserFromLockup:(id)a3 shouldObserveProgress:(BOOL)a4 ageRating:(id)a5
+- (BOOL)installBrowserFromLockup:(id)lockup shouldObserveProgress:(BOOL)progress ageRating:(id)rating
 {
-  v8 = a3;
-  if ([SFDefaultBrowserInstaller isRestrictedToInstallBrowser:v8 withAgeRating:a5]|| [(SFDefaultBrowserInstaller *)self browserIsAlreadyInstalled:v8]|| (objc_opt_respondsToSelector() & 1) == 0)
+  lockupCopy = lockup;
+  if ([SFDefaultBrowserInstaller isRestrictedToInstallBrowser:lockupCopy withAgeRating:rating]|| [(SFDefaultBrowserInstaller *)self browserIsAlreadyInstalled:lockupCopy]|| (objc_opt_respondsToSelector() & 1) == 0)
   {
     v9 = 0;
   }
@@ -324,8 +324,8 @@ void __44__SFDefaultBrowserInstaller_installAppStore__block_invoke_4(uint64_t a1
     v11[2] = __86__SFDefaultBrowserInstaller_installBrowserFromLockup_shouldObserveProgress_ageRating___block_invoke;
     v11[3] = &unk_1E8495598;
     v11[4] = self;
-    v12 = v8;
-    v13 = a4;
+    v12 = lockupCopy;
+    progressCopy = progress;
     [v12 _buyParamsWithCompletionBlock:v11];
 
     v9 = 1;
@@ -529,10 +529,10 @@ void __86__SFDefaultBrowserInstaller_installBrowserFromLockup_shouldObserveProgr
   self->_query = 0;
 }
 
-- (void)handleAuthenticateRequest:(id)a3 resultHandler:(id)a4
+- (void)handleAuthenticateRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2050000000;
@@ -551,21 +551,21 @@ void __86__SFDefaultBrowserInstaller_installBrowserFromLockup_shouldObserveProgr
 
   v9 = v8;
   _Block_object_dispose(&v15, 8);
-  v10 = [[v8 alloc] initWithRequest:v6 presentingViewController:self->_amsRequestPresentingViewController];
+  v10 = [[v8 alloc] initWithRequest:requestCopy presentingViewController:self->_amsRequestPresentingViewController];
   authenticateTask = self->_authenticateTask;
   self->_authenticateTask = v10;
 
-  v12 = [(AMSUIAuthenticateTask *)self->_authenticateTask performAuthentication];
+  performAuthentication = [(AMSUIAuthenticateTask *)self->_authenticateTask performAuthentication];
   pendingResult = self->_pendingResult;
-  self->_pendingResult = v12;
+  self->_pendingResult = performAuthentication;
 
-  [(AMSPromise *)self->_pendingResult addFinishBlock:v7];
+  [(AMSPromise *)self->_pendingResult addFinishBlock:handlerCopy];
 }
 
-- (void)handleDialogRequest:(id)a3 resultHandler:(id)a4
+- (void)handleDialogRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -584,39 +584,39 @@ void __86__SFDefaultBrowserInstaller_installBrowserFromLockup_shouldObserveProgr
 
   v9 = v8;
   _Block_object_dispose(&v14, 8);
-  v10 = [[v8 alloc] initWithRequest:v6];
+  v10 = [[v8 alloc] initWithRequest:requestCopy];
   dialogTask = self->_dialogTask;
   self->_dialogTask = v10;
 
-  v12 = [(AMSSystemAlertDialogTask *)self->_dialogTask present];
-  [v12 addFinishBlock:v7];
+  present = [(AMSSystemAlertDialogTask *)self->_dialogTask present];
+  [present addFinishBlock:handlerCopy];
 }
 
-- (void)handleEngagementRequest:(id)a3 resultHandler:(id)a4
+- (void)handleEngagementRequest:(id)request resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  requestCopy = request;
   v8 = objc_alloc(getAMSUIEngagementTaskClass());
-  v9 = [getAMSUIEngagementTaskClass() createBagForSubProfile];
-  v10 = [v8 initWithRequest:v7 bag:v9 presentingViewController:self->_amsRequestPresentingViewController];
+  createBagForSubProfile = [getAMSUIEngagementTaskClass() createBagForSubProfile];
+  v10 = [v8 initWithRequest:requestCopy bag:createBagForSubProfile presentingViewController:self->_amsRequestPresentingViewController];
 
   engagementTask = self->_engagementTask;
   self->_engagementTask = v10;
 
-  v12 = [(AMSUIEngagementTask *)self->_engagementTask presentEngagement];
-  [v12 addFinishBlock:v6];
+  presentEngagement = [(AMSUIEngagementTask *)self->_engagementTask presentEngagement];
+  [presentEngagement addFinishBlock:handlerCopy];
 }
 
-- (void)appQuery:(id)a3 resultsDidChange:(id)a4
+- (void)appQuery:(id)query resultsDidChange:(id)change
 {
-  v5 = [a4 firstObject];
+  firstObject = [change firstObject];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __55__SFDefaultBrowserInstaller_appQuery_resultsDidChange___block_invoke;
   v7[3] = &unk_1E848F548;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = firstObject;
+  v6 = firstObject;
   dispatch_async(MEMORY[0x1E69E96A0], v7);
 }
 

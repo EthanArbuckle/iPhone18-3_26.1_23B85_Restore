@@ -1,6 +1,6 @@
 @interface _DASHistogram
 - (NSDictionary)countsDictionary;
-- (_DASHistogram)initWithEvents:(id)a3;
+- (_DASHistogram)initWithEvents:(id)events;
 @end
 
 @implementation _DASHistogram
@@ -16,7 +16,7 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -38,7 +38,7 @@
 
           v11 = *(*(&v17 + 1) + 8 * i);
           v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSCountedSet countForObject:](self->_counts, "countForObject:", v11, v17)}];
-          [v5 setObject:v12 forKeyedSubscript:v11];
+          [dictionary setObject:v12 forKeyedSubscript:v11];
         }
 
         v8 = [(NSCountedSet *)v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -47,7 +47,7 @@
       while (v8);
     }
 
-    v13 = [v5 copy];
+    v13 = [dictionary copy];
     v14 = self->_countsDictionary;
     self->_countsDictionary = v13;
 
@@ -59,10 +59,10 @@
   return v4;
 }
 
-- (_DASHistogram)initWithEvents:(id)a3
+- (_DASHistogram)initWithEvents:(id)events
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventsCopy = events;
   v19.receiver = self;
   v19.super_class = _DASHistogram;
   v5 = [(_DASHistogram *)&v19 init];
@@ -76,7 +76,7 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = v4;
+    v8 = eventsCopy;
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {

@@ -1,25 +1,25 @@
 @interface NLXSchemaCDMUserAcknowledged
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaCDMUserAcknowledged)initWithDictionary:(id)a3;
-- (NLXSchemaCDMUserAcknowledged)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaCDMUserAcknowledged)initWithDictionary:(id)dictionary;
+- (NLXSchemaCDMUserAcknowledged)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaCDMUserAcknowledged
 
-- (NLXSchemaCDMUserAcknowledged)initWithDictionary:(id)a3
+- (NLXSchemaCDMUserAcknowledged)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = NLXSchemaCDMUserAcknowledged;
   v5 = [(NLXSchemaCDMUserAcknowledged *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"systemDialogActId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"systemDialogActId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,30 +33,30 @@
   return v5;
 }
 
-- (NLXSchemaCDMUserAcknowledged)initWithJSON:(id)a3
+- (NLXSchemaCDMUserAcknowledged)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaCDMUserAcknowledged *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaCDMUserAcknowledged *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaCDMUserAcknowledged *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -69,40 +69,40 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_systemDialogActId)
   {
-    v4 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    systemDialogActId = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
+    dictionaryRepresentation = [systemDialogActId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"systemDialogActId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"systemDialogActId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"systemDialogActId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"systemDialogActId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
-    v6 = [v4 systemDialogActId];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    systemDialogActId = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
+    systemDialogActId2 = [equalCopy systemDialogActId];
+    v7 = systemDialogActId2;
+    if ((systemDialogActId != 0) != (systemDialogActId2 == 0))
     {
-      v8 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
-      if (!v8)
+      systemDialogActId3 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
+      if (!systemDialogActId3)
       {
 
 LABEL_10:
@@ -110,10 +110,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
-      v11 = [v4 systemDialogActId];
-      v12 = [v10 isEqual:v11];
+      v9 = systemDialogActId3;
+      systemDialogActId4 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
+      systemDialogActId5 = [equalCopy systemDialogActId];
+      v12 = [systemDialogActId4 isEqual:systemDialogActId5];
 
       if (v12)
       {
@@ -132,29 +132,29 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
+  toCopy = to;
+  systemDialogActId = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
 
-  if (v4)
+  if (systemDialogActId)
   {
-    v5 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
+    systemDialogActId2 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = NLXSchemaCDMUserAcknowledged;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NLXSchemaCDMUserAcknowledged *)self systemDialogActId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(NLXSchemaCDMUserAcknowledged *)self deleteSystemDialogActId];
   }

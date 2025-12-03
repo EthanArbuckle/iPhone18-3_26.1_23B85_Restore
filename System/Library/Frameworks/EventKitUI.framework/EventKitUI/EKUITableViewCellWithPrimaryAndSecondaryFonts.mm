@@ -1,5 +1,5 @@
 @interface EKUITableViewCellWithPrimaryAndSecondaryFonts
-+ (id)primaryTextLabelFontForWidth:(double)a3;
++ (id)primaryTextLabelFontForWidth:(double)width;
 + (id)timeLabelsFont;
 + (void)initialize;
 - (UIEdgeInsets)layoutMargins;
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __59__EKUITableViewCellWithPrimaryAndSecondaryFonts_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken_1 != -1)
   {
     dispatch_once(&initialize_onceToken_1, block);
@@ -49,16 +49,16 @@ void __59__EKUITableViewCellWithPrimaryAndSecondaryFonts_initialize__block_invok
 - (id)primaryTextLabelFont
 {
   v3 = objc_opt_class();
-  v4 = [(EKUITableViewCellWithPrimaryAndSecondaryFonts *)self contentView];
-  [v4 frame];
+  contentView = [(EKUITableViewCellWithPrimaryAndSecondaryFonts *)self contentView];
+  [contentView frame];
   v6 = [v3 primaryTextLabelFontForWidth:v5];
 
   return v6;
 }
 
-+ (id)primaryTextLabelFontForWidth:(double)a3
++ (id)primaryTextLabelFontForWidth:(double)width
 {
-  v3 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:{*MEMORY[0x1E69DDD40], a3}];
+  v3 = [MEMORY[0x1E69DB880] preferredFontDescriptorWithTextStyle:{*MEMORY[0x1E69DDD40], width}];
   v4 = [v3 fontDescriptorWithSymbolicTraits:0x8000];
 
   v5 = [MEMORY[0x1E69DB878] fontWithDescriptor:v4 size:0.0];

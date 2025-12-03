@@ -2,16 +2,16 @@
 + (id)settingsControllerModule;
 - (_TtC5UIKit33_UIFluidNavigationTransitionsSpec)initWithDefaultValues;
 - (void)setDefaultValues;
-- (void)setParallaxSettings:(id)a3;
+- (void)setParallaxSettings:(id)settings;
 @end
 
 @implementation _UIFluidNavigationTransitionsSpec
 
-- (void)setParallaxSettings:(id)a3
+- (void)setParallaxSettings:(id)settings
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit33_UIFluidNavigationTransitionsSpec_parallaxSettings);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit33_UIFluidNavigationTransitionsSpec_parallaxSettings) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit33_UIFluidNavigationTransitionsSpec_parallaxSettings) = settings;
+  settingsCopy = settings;
 }
 
 - (void)setDefaultValues

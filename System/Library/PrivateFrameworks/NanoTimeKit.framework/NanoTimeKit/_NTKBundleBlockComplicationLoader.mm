@@ -1,15 +1,15 @@
 @interface _NTKBundleBlockComplicationLoader
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_loadClassesUsingBlock:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_loadClassesUsingBlock:(id)block;
 @end
 
 @implementation _NTKBundleBlockComplicationLoader
 
-- (void)_loadClassesUsingBlock:(id)a3
+- (void)_loadClassesUsingBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   block = self->_block;
   if (block)
   {
@@ -33,7 +33,7 @@
             objc_enumerationMutation(v6);
           }
 
-          v4[2](v4, *(*(&v11 + 1) + 8 * v10++));
+          blockCopy[2](blockCopy, *(*(&v11 + 1) + 8 * v10++));
         }
 
         while (v8 != v10);
@@ -45,10 +45,10 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -59,7 +59,7 @@
     if (objc_opt_isKindOfClass())
     {
       block = self->_block;
-      v6 = v4;
+      v6 = equalCopy;
       v7 = _Block_copy(block);
       v8 = v6->_block;
 
@@ -76,9 +76,9 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setBlock:self->_block];
   return v4;
 }

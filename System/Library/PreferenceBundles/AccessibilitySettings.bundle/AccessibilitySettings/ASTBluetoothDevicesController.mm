@@ -1,12 +1,12 @@
 @interface ASTBluetoothDevicesController
 - (ASTBluetoothDevicesController)init;
 - (AXMouseEventListener)mouseEventListener;
-- (BOOL)shouldAddClassicDevice:(id)a3;
-- (id)_customizableMouseForDevice:(id)a3;
+- (BOOL)shouldAddClassicDevice:(id)device;
+- (id)_customizableMouseForDevice:(id)device;
 - (id)allowedServices;
-- (id)detailSpecifiersForDevice:(id)a3 withTarget:(id)a4;
+- (id)detailSpecifiersForDevice:(id)device withTarget:(id)target;
 - (void)powerAlertCancelled;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation ASTBluetoothDevicesController
@@ -41,19 +41,19 @@
   return mouseEventListener;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ASTBluetoothDevicesController;
-  [(AXBluetoothDevicesController *)&v4 viewDidAppear:a3];
+  [(AXBluetoothDevicesController *)&v4 viewDidAppear:appear];
   [(AXBluetoothDevicesController *)self setScanningEnabled:1];
   [(AXBluetoothDevicesController *)self showBluetoothPowerAlert:1];
 }
 
 - (void)powerAlertCancelled
 {
-  v3 = [(ASTBluetoothDevicesController *)self rootController];
-  v2 = [v3 popViewControllerAnimated:1];
+  rootController = [(ASTBluetoothDevicesController *)self rootController];
+  v2 = [rootController popViewControllerAnimated:1];
 }
 
 - (id)allowedServices
@@ -65,21 +65,21 @@
   return v3;
 }
 
-- (id)detailSpecifiersForDevice:(id)a3 withTarget:(id)a4
+- (id)detailSpecifiersForDevice:(id)device withTarget:(id)target
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASTBluetoothDevicesController *)self _customizableMouseForDevice:v6];
+  deviceCopy = device;
+  targetCopy = target;
+  v8 = [(ASTBluetoothDevicesController *)self _customizableMouseForDevice:deviceCopy];
   if (v8)
   {
-    v9 = [(ASTBluetoothDevicesController *)self loadSpecifiersFromPlistName:@"ASTMouseDeviceConfig" target:v7];
+    v9 = [(ASTBluetoothDevicesController *)self loadSpecifiersFromPlistName:@"ASTMouseDeviceConfig" target:targetCopy];
     v10 = [NSArray arrayWithArray:v9];
 
     v11 = [v10 objectAtIndex:1];
     v15[0] = @"AX_CUSTOMIZABLE_MOUSE_KEY";
     v15[1] = @"AX_CUSTOMIZABLE_MOUSE_IS_CONNECTED_KEY";
     v16[0] = v8;
-    v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v6 connected]);
+    v12 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [deviceCopy connected]);
     v16[1] = v12;
     v13 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
     [v11 setUserInfo:v13];
@@ -93,43 +93,43 @@
   return v10;
 }
 
-- (id)_customizableMouseForDevice:(id)a3
+- (id)_customizableMouseForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
   v32 = __Block_byref_object_copy__2;
   v33 = __Block_byref_object_dispose__2;
   v34 = 0;
-  v5 = [(ASTBluetoothDevicesController *)self mouseEventListener];
-  v6 = [v5 discoveredMouseDevices];
+  mouseEventListener = [(ASTBluetoothDevicesController *)self mouseEventListener];
+  discoveredMouseDevices = [mouseEventListener discoveredMouseDevices];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = __61__ASTBluetoothDevicesController__customizableMouseForDevice___block_invoke;
   v26[3] = &unk_256820;
-  v7 = v4;
+  v7 = deviceCopy;
   v27 = v7;
   v28 = &v29;
-  [v6 enumerateObjectsUsingBlock:v26];
+  [discoveredMouseDevices enumerateObjectsUsingBlock:v26];
 
   if (!v30[5] && [v7 isClassicDevice])
   {
-    v8 = [(ASTBluetoothDevicesController *)self mouseEventListener];
-    v9 = [v8 discoveredMouseDevices];
+    mouseEventListener2 = [(ASTBluetoothDevicesController *)self mouseEventListener];
+    discoveredMouseDevices2 = [mouseEventListener2 discoveredMouseDevices];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = __61__ASTBluetoothDevicesController__customizableMouseForDevice___block_invoke_2;
     v23[3] = &unk_256820;
     v24 = v7;
     v25 = &v29;
-    [v9 enumerateObjectsUsingBlock:v23];
+    [discoveredMouseDevices2 enumerateObjectsUsingBlock:v23];
   }
 
   if (!v30[5])
   {
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 assistiveTouchMouseCustomizedClickActions];
+    assistiveTouchMouseCustomizedClickActions = [v10 assistiveTouchMouseCustomizedClickActions];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = __61__ASTBluetoothDevicesController__customizableMouseForDevice___block_invoke_3;
@@ -137,21 +137,21 @@
     v12 = v7;
     v21 = v12;
     v22 = &v29;
-    [v11 enumerateObjectsUsingBlock:v20];
+    [assistiveTouchMouseCustomizedClickActions enumerateObjectsUsingBlock:v20];
 
     if (!v30[5])
     {
       if ([v12 isClassicDevice])
       {
         v13 = +[AXSettings sharedInstance];
-        v14 = [v13 assistiveTouchMouseCustomizedClickActions];
+        assistiveTouchMouseCustomizedClickActions2 = [v13 assistiveTouchMouseCustomizedClickActions];
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = __61__ASTBluetoothDevicesController__customizableMouseForDevice___block_invoke_4;
         v17[3] = &unk_256820;
         v18 = v12;
         v19 = &v29;
-        [v14 enumerateObjectsUsingBlock:v17];
+        [assistiveTouchMouseCustomizedClickActions2 enumerateObjectsUsingBlock:v17];
       }
     }
   }
@@ -221,21 +221,21 @@ void __61__ASTBluetoothDevicesController__customizableMouseForDevice___block_inv
   }
 }
 
-- (BOOL)shouldAddClassicDevice:(id)a3
+- (BOOL)shouldAddClassicDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 isAppleHIDDevice])
+  deviceCopy = device;
+  if ([deviceCopy isAppleHIDDevice])
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 assistiveTouchMouseAllowAppleBluetoothDevicesPairing];
+    assistiveTouchMouseAllowAppleBluetoothDevicesPairing = [v4 assistiveTouchMouseAllowAppleBluetoothDevicesPairing];
 
-    if ((v5 & 1) == 0)
+    if ((assistiveTouchMouseAllowAppleBluetoothDevicesPairing & 1) == 0)
     {
       v6 = ASTLogMouse();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = deviceCopy;
 LABEL_14:
         _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Not allowing device: %@", &v11, 0xCu);
       }
@@ -246,15 +246,15 @@ LABEL_15:
     }
   }
 
-  if ([v3 type] != 25 && objc_msgSend(v3, "type") != 24)
+  if ([deviceCopy type] != 25 && objc_msgSend(deviceCopy, "type") != 24)
   {
-    if ([v3 type] != 29 || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "assistiveTouchMouseAllowAppleBluetoothDevicesPairing"), v8, !v9))
+    if ([deviceCopy type] != 29 || (+[AXSettings sharedInstance](AXSettings, "sharedInstance"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "assistiveTouchMouseAllowAppleBluetoothDevicesPairing"), v8, !v9))
     {
       v6 = ASTLogMouse();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = deviceCopy;
         goto LABEL_14;
       }
 
@@ -266,7 +266,7 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v3;
+    v12 = deviceCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Allowing device: %@", &v11, 0xCu);
   }
 

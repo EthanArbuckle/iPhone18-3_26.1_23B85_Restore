@@ -1,15 +1,15 @@
 @interface SharingScoreMessage
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
 @end
 
 @implementation SharingScoreMessage
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  SharingScoreMessage.activityViewController(_:subjectForActivityType:)(v8, v9);
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
+  SharingScoreMessage.activityViewController(_:subjectForActivityType:)(selfCopy, v9);
 
   v10 = sub_24E347CB8();
 

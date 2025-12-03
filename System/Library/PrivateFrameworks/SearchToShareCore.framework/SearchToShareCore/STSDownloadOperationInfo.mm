@@ -1,58 +1,58 @@
 @interface STSDownloadOperationInfo
 - (NSArray)completionBlocks;
 - (NSArray)progressBlocks;
-- (STSDownloadOperationInfo)initWithOperation:(id)a3 begin:(id)a4 progress:(id)a5 completion:(id)a6;
+- (STSDownloadOperationInfo)initWithOperation:(id)operation begin:(id)begin progress:(id)progress completion:(id)completion;
 - (id)beginBlocks;
-- (void)addBegin:(id)a3;
-- (void)addCompletion:(id)a3;
-- (void)addProgress:(id)a3;
+- (void)addBegin:(id)begin;
+- (void)addCompletion:(id)completion;
+- (void)addProgress:(id)progress;
 @end
 
 @implementation STSDownloadOperationInfo
 
-- (STSDownloadOperationInfo)initWithOperation:(id)a3 begin:(id)a4 progress:(id)a5 completion:(id)a6
+- (STSDownloadOperationInfo)initWithOperation:(id)operation begin:(id)begin progress:(id)progress completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  operationCopy = operation;
+  beginCopy = begin;
+  progressCopy = progress;
+  completionCopy = completion;
   v30.receiver = self;
   v30.super_class = STSDownloadOperationInfo;
   v15 = [(STSDownloadOperationInfo *)&v30 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_operation, a3);
-    v17 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v15->_operation, operation);
+    array = [MEMORY[0x277CBEB18] array];
     beginBlocks = v16->_beginBlocks;
-    v16->_beginBlocks = v17;
+    v16->_beginBlocks = array;
 
-    if (v12)
+    if (beginCopy)
     {
       v19 = v16->_beginBlocks;
-      v20 = MEMORY[0x266751FB0](v12);
+      v20 = MEMORY[0x266751FB0](beginCopy);
       [(NSMutableArray *)v19 addObject:v20];
     }
 
-    v21 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     progressBlocks = v16->_progressBlocks;
-    v16->_progressBlocks = v21;
+    v16->_progressBlocks = array2;
 
-    if (v13)
+    if (progressCopy)
     {
       v23 = v16->_progressBlocks;
-      v24 = MEMORY[0x266751FB0](v13);
+      v24 = MEMORY[0x266751FB0](progressCopy);
       [(NSMutableArray *)v23 addObject:v24];
     }
 
-    v25 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     completionBlocks = v16->_completionBlocks;
-    v16->_completionBlocks = v25;
+    v16->_completionBlocks = array3;
 
-    if (v14)
+    if (completionCopy)
     {
       v27 = v16->_completionBlocks;
-      v28 = MEMORY[0x266751FB0](v14);
+      v28 = MEMORY[0x266751FB0](completionCopy);
       [(NSMutableArray *)v27 addObject:v28];
     }
   }
@@ -81,24 +81,24 @@
   return v2;
 }
 
-- (void)addBegin:(id)a3
+- (void)addBegin:(id)begin
 {
   beginBlocks = self->_beginBlocks;
-  v4 = MEMORY[0x266751FB0](a3, a2);
+  v4 = MEMORY[0x266751FB0](begin, a2);
   [(NSMutableArray *)beginBlocks addObject:v4];
 }
 
-- (void)addProgress:(id)a3
+- (void)addProgress:(id)progress
 {
   progressBlocks = self->_progressBlocks;
-  v4 = MEMORY[0x266751FB0](a3, a2);
+  v4 = MEMORY[0x266751FB0](progress, a2);
   [(NSMutableArray *)progressBlocks addObject:v4];
 }
 
-- (void)addCompletion:(id)a3
+- (void)addCompletion:(id)completion
 {
   completionBlocks = self->_completionBlocks;
-  v4 = MEMORY[0x266751FB0](a3, a2);
+  v4 = MEMORY[0x266751FB0](completion, a2);
   [(NSMutableArray *)completionBlocks addObject:v4];
 }
 

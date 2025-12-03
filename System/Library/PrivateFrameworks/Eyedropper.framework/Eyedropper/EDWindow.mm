@@ -1,92 +1,92 @@
 @interface EDWindow
-- (EDWindow)initWithWindowScene:(id)a3;
+- (EDWindow)initWithWindowScene:(id)scene;
 - (EDWindowTrackingDelegate)trackingDelegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation EDWindow
 
-- (EDWindow)initWithWindowScene:(id)a3
+- (EDWindow)initWithWindowScene:(id)scene
 {
   v11.receiver = self;
   v11.super_class = EDWindow;
-  v3 = a3;
-  v4 = [(EDWindow *)&v11 initWithWindowScene:v3];
+  sceneCopy = scene;
+  v4 = [(EDWindow *)&v11 initWithWindowScene:sceneCopy];
   [(EDWindow *)v4 setHidden:0, v11.receiver, v11.super_class];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [(EDWindow *)v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(EDWindow *)v4 setBackgroundColor:clearColor];
 
   [(EDWindow *)v4 setWindowLevel:*MEMORY[0x277D76EB0] + -1.0];
   [(EDWindow *)v4 _setWindowControlsStatusBarOrientation:0];
-  v6 = [(EDWindow *)v4 layer];
-  [v6 setDisableUpdateMask:2];
+  layer = [(EDWindow *)v4 layer];
+  [layer setDisableUpdateMask:2];
 
   v7 = [EDWindowRootViewController alloc];
-  v8 = [v3 screen];
+  screen = [sceneCopy screen];
 
-  [v8 bounds];
+  [screen bounds];
   v9 = [(EDWindowRootViewController *)v7 initWithScreenBounds:?];
   [(EDWindow *)v4 setRootViewController:v9];
 
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(EDWindow *)self rootViewController];
-  v9 = [v8 lensView];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  rootViewController = [(EDWindow *)self rootViewController];
+  lensView = [rootViewController lensView];
 
-  [v9 convertPoint:self fromView:{x, y}];
-  if (![v9 pointInside:v7 withEvent:?] || (objc_msgSend(v9, "isHidden") & 1) != 0 || (objc_msgSend(v9, "alpha"), v10 == 0.0))
+  [lensView convertPoint:self fromView:{x, y}];
+  if (![lensView pointInside:eventCopy withEvent:?] || (objc_msgSend(lensView, "isHidden") & 1) != 0 || (objc_msgSend(lensView, "alpha"), v10 == 0.0))
   {
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = EDWindow;
-    v11 = [(EDWindow *)&v14 hitTest:v7 withEvent:x, y];
+    selfCopy = [(EDWindow *)&v14 hitTest:eventCopy withEvent:x, y];
   }
 
-  v12 = v11;
+  v12 = selfCopy;
 
   return v12;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(EDWindow *)self trackingDelegate];
-  [v6 trackedTouchesBegan:v5];
+  beganCopy = began;
+  trackingDelegate = [(EDWindow *)self trackingDelegate];
+  [trackingDelegate trackedTouchesBegan:beganCopy];
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(EDWindow *)self trackingDelegate];
-  [v6 trackedTouchesMoved:v5];
+  movedCopy = moved;
+  trackingDelegate = [(EDWindow *)self trackingDelegate];
+  [trackingDelegate trackedTouchesMoved:movedCopy];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(EDWindow *)self trackingDelegate];
-  [v6 trackedTouchesEnded:v5];
+  endedCopy = ended;
+  trackingDelegate = [(EDWindow *)self trackingDelegate];
+  [trackingDelegate trackedTouchesEnded:endedCopy];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(EDWindow *)self trackingDelegate];
-  [v6 trackedTouchesCancelled:v5];
+  cancelledCopy = cancelled;
+  trackingDelegate = [(EDWindow *)self trackingDelegate];
+  [trackingDelegate trackedTouchesCancelled:cancelledCopy];
 }
 
 - (EDWindowTrackingDelegate)trackingDelegate

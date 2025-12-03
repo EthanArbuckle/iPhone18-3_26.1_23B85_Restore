@@ -1,18 +1,18 @@
 @interface INSearchForMessagesIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INSearchForMessagesIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INSearchForMessagesIntentResponse)initWithBackingStore:(id)store;
 - (INSearchForMessagesIntentResponse)initWithCode:(INSearchForMessagesIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INSearchForMessagesIntentResponse)initWithCoder:(id)a3;
+- (INSearchForMessagesIntentResponse)initWithCoder:(id)coder;
 - (INSearchForMessagesIntentResponseCode)code;
 - (NSArray)messages;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
 - (id)_redactedDictionaryRepresentation;
-- (int64_t)_codeWithName:(id)a3;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setMessages:(NSArray *)messages;
 @end
 
@@ -27,81 +27,81 @@
 
 - (NSArray)messages
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 messages];
-  v4 = INIntentSlotValueTransformFromMessages(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  messages = [_responseMessagePBRepresentation messages];
+  v4 = INIntentSlotValueTransformFromMessages(messages);
 
   return v4;
 }
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INSearchForMessagesIntentResponse *)self code];
+  code = [(INSearchForMessagesIntentResponse *)self code];
   v3 = 5;
   v4 = 5;
   v5 = 5;
-  if (v2 != 1000)
+  if (code != 1000)
   {
     v5 = 0;
   }
 
-  if (v2 != INSearchForMessagesIntentResponseCodeFailureRequiringInAppAuthentication)
+  if (code != INSearchForMessagesIntentResponseCodeFailureRequiringInAppAuthentication)
   {
     v4 = v5;
   }
 
-  if (v2 != INSearchForMessagesIntentResponseCodeFailureMessageTooManyResults)
+  if (code != INSearchForMessagesIntentResponseCodeFailureMessageTooManyResults)
   {
     v3 = v4;
   }
 
   v6 = 6;
   v7 = 5;
-  if (v2 != INSearchForMessagesIntentResponseCodeFailureMessageServiceNotAvailable)
+  if (code != INSearchForMessagesIntentResponseCodeFailureMessageServiceNotAvailable)
   {
     v7 = 0;
   }
 
-  if (v2 != INSearchForMessagesIntentResponseCodeFailureRequiringAppLaunch)
+  if (code != INSearchForMessagesIntentResponseCodeFailureRequiringAppLaunch)
   {
     v6 = v7;
   }
 
-  if (v2 <= INSearchForMessagesIntentResponseCodeFailureMessageServiceNotAvailable)
+  if (code <= INSearchForMessagesIntentResponseCodeFailureMessageServiceNotAvailable)
   {
     v3 = v6;
   }
 
   v8 = 4;
   v9 = 5;
-  if (v2 != INSearchForMessagesIntentResponseCodeFailure)
+  if (code != INSearchForMessagesIntentResponseCodeFailure)
   {
     v9 = 0;
   }
 
-  if (v2 != INSearchForMessagesIntentResponseCodeSuccess)
+  if (code != INSearchForMessagesIntentResponseCodeSuccess)
   {
     v8 = v9;
   }
 
   v10 = 1;
   v11 = 3;
-  if (v2 != INSearchForMessagesIntentResponseCodeInProgress)
+  if (code != INSearchForMessagesIntentResponseCodeInProgress)
   {
     v11 = 0;
   }
 
-  if (v2 != INSearchForMessagesIntentResponseCodeReady)
+  if (code != INSearchForMessagesIntentResponseCodeReady)
   {
     v10 = v11;
   }
 
-  if (v2 <= INSearchForMessagesIntentResponseCodeInProgress)
+  if (code <= INSearchForMessagesIntentResponseCodeInProgress)
   {
     v8 = v10;
   }
 
-  if (v2 <= INSearchForMessagesIntentResponseCodeFailure)
+  if (code <= INSearchForMessagesIntentResponseCodeFailure)
   {
     return v8;
   }
@@ -117,24 +117,24 @@
   v11[2] = *MEMORY[0x1E69E9840];
   v10[0] = @"code";
   v3 = INSearchForMessagesIntentResponseCodeGetName([(INSearchForMessagesIntentResponse *)self code]);
-  v4 = v3;
+  null = v3;
   if (!v3)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"messages";
-  v11[0] = v4;
-  v5 = [(INSearchForMessagesIntentResponse *)self messages];
-  v6 = v5;
-  if (!v5)
+  v11[0] = null;
+  messages = [(INSearchForMessagesIntentResponse *)self messages];
+  null2 = messages;
+  if (!messages)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (!v5)
+  if (!messages)
   {
   }
 
@@ -149,8 +149,8 @@
 
 - (id)_redactedDictionaryRepresentation
 {
-  v2 = [(INSearchForMessagesIntentResponse *)self _dictionaryRepresentation];
-  v3 = [v2 mutableCopy];
+  _dictionaryRepresentation = [(INSearchForMessagesIntentResponse *)self _dictionaryRepresentation];
+  v3 = [_dictionaryRepresentation mutableCopy];
 
   [v3 setObject:@"<redacted>" forKey:@"messages"];
 
@@ -160,51 +160,51 @@
 - (void)setMessages:(NSArray *)messages
 {
   v4 = messages;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToMessages(v4);
 
-  [v5 setMessages:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setMessages:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureMessageServiceNotAvailable"])
+  if ([nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureMessageServiceNotAvailable"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureMessageTooManyResults"])
+  if ([nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureMessageTooManyResults"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureScreenTimeRestrictionEnabled"])
+  if ([nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureScreenTimeRestrictionEnabled"])
   {
     v5 = 1000;
   }
@@ -214,7 +214,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureRequiringInAppAuthentication"];
+  v6 = [nameCopy isEqualToString:@"INSearchForMessagesIntentResponseCodeFailureRequiringInAppAuthentication"];
 
   if (v6)
   {
@@ -227,32 +227,32 @@
   }
 }
 
-- (INSearchForMessagesIntentResponse)initWithCoder:(id)a3
+- (INSearchForMessagesIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INSearchForMessagesIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INSearchForMessagesIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
-- (INSearchForMessagesIntentResponse)initWithBackingStore:(id)a3
+- (INSearchForMessagesIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INSearchForMessagesIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INSearchForMessagesIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INSearchForMessagesIntentResponse)initWithCode:(INSearchForMessagesIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -283,9 +283,9 @@
   return v10;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 1000)
+  if (code == 1000)
   {
     v3 = 3;
   }
@@ -295,7 +295,7 @@
     v3 = 0x7FFFFFFF;
   }
 
-  if (a3 == 8)
+  if (code == 8)
   {
     v4 = 4;
   }
@@ -305,7 +305,7 @@
     v4 = v3;
   }
 
-  if (a3 == 7)
+  if (code == 7)
   {
     v5 = 2;
   }
@@ -315,12 +315,12 @@
     v5 = 0x7FFFFFFF;
   }
 
-  if (a3 == 6)
+  if (code == 6)
   {
     v5 = 1;
   }
 
-  if (a3 <= 7)
+  if (code <= 7)
   {
     return v5;
   }
@@ -331,12 +331,12 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
   result = 3;
-  if (a3 <= 3)
+  if (code <= 3)
   {
-    if (a3 == 3)
+    if (code == 3)
     {
       v4 = 0;
     }
@@ -346,7 +346,7 @@
       v4 = 3;
     }
 
-    if (a3 == 2)
+    if (code == 2)
     {
       v5 = 2;
     }
@@ -356,7 +356,7 @@
       v5 = v4;
     }
 
-    if (a3 == 1)
+    if (code == 1)
     {
       return 5;
     }
@@ -367,7 +367,7 @@
     }
   }
 
-  else if ((a3 - 4) < 5 || a3 == 1000)
+  else if ((code - 4) < 5 || code == 1000)
   {
     return 1;
   }
@@ -375,28 +375,28 @@
   return result;
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
-  if (a3 > 1)
+  if (type > 1)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       return 2;
     }
 
     else
     {
-      return a3 == 5;
+      return type == 5;
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      if ((a4 - 1) >= 4)
+      if ((code - 1) >= 4)
       {
-        if (a5)
+        if (requested)
         {
           return 5;
         }
@@ -409,7 +409,7 @@
 
       else
       {
-        return qword_18EE5EA40[a4 - 1];
+        return qword_18EE5EA40[code - 1];
       }
     }
 

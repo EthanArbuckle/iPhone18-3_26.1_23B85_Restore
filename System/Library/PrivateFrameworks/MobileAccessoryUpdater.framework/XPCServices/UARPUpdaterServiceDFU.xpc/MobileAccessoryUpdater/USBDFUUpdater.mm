@@ -1,26 +1,26 @@
 @interface USBDFUUpdater
-- (USBDFUUpdater)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4 serialNumber:(id)a5 dfuModeActive:(BOOL)a6 simulator:(BOOL)a7;
+- (USBDFUUpdater)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD serialNumber:(id)number dfuModeActive:(BOOL)active simulator:(BOOL)simulator;
 - (int)closeDfuDevice;
 - (int)dfuDetachToAppCmd;
-- (int)dfuDnLoadCmd:(unsigned __int16)a3 data:(void *)a4 length:(unsigned __int16)a5;
-- (int)dfuGetStateCmd:(char *)a3;
-- (int)dfuGetStatusCmd:(DFUStatus *)a3;
-- (int)dfuGetVersionCmdMajor:(unsigned int *)a3 minor:(unsigned int *)a4 release:(unsigned int *)a5 build:(unsigned int *)a6;
-- (int)dfuSetState:(unsigned __int8)a3;
-- (int)dfuSetVersionCmdMajor:(unsigned int)a3 minor:(unsigned int)a4 release:(unsigned int)a5 build:(unsigned int)a6;
+- (int)dfuDnLoadCmd:(unsigned __int16)cmd data:(void *)data length:(unsigned __int16)length;
+- (int)dfuGetStateCmd:(char *)cmd;
+- (int)dfuGetStatusCmd:(DFUStatus *)cmd;
+- (int)dfuGetVersionCmdMajor:(unsigned int *)major minor:(unsigned int *)minor release:(unsigned int *)release build:(unsigned int *)build;
+- (int)dfuSetState:(unsigned __int8)state;
+- (int)dfuSetVersionCmdMajor:(unsigned int)major minor:(unsigned int)minor release:(unsigned int)release build:(unsigned int)build;
 - (int)hvciAppDetachToDfuCmd;
 - (int)initCurrentState;
 - (int)openDfuDevice;
-- (int)sendHIDReport:(unsigned int)a3 reportID:(int)a4 report:(char *)a5 length:(int)a6;
+- (int)sendHIDReport:(unsigned int)report reportID:(int)d report:(char *)a5 length:(int)length;
 - (int)setDfuMode;
 @end
 
 @implementation USBDFUUpdater
 
-- (USBDFUUpdater)initWithVendorID:(unsigned __int16)a3 productID:(unsigned __int16)a4 serialNumber:(id)a5 dfuModeActive:(BOOL)a6 simulator:(BOOL)a7
+- (USBDFUUpdater)initWithVendorID:(unsigned __int16)d productID:(unsigned __int16)iD serialNumber:(id)number dfuModeActive:(BOOL)active simulator:(BOOL)simulator
 {
-  v8 = a6;
-  v12 = a5;
+  activeCopy = active;
+  numberCopy = number;
   v20.receiver = self;
   v20.super_class = USBDFUUpdater;
   v13 = [(USBDFUUpdater *)&v20 init];
@@ -37,19 +37,19 @@
     }
 
     v13->_dev = 0;
-    v13->_vid = a3;
-    v13->_pid = a4;
-    v17 = [[NSString alloc] initWithString:v12];
+    v13->_vid = d;
+    v13->_pid = iD;
+    v17 = [[NSString alloc] initWithString:numberCopy];
     serialNumber = v13->_serialNumber;
     v13->_serialNumber = v17;
 
-    v13->_dfuMode = v8;
-    if (v8)
+    v13->_dfuMode = activeCopy;
+    if (activeCopy)
     {
       [(USBDFUUpdater *)v13 initCurrentState];
     }
 
-    v13->_simulator = a7;
+    v13->_simulator = simulator;
   }
 
   return v13;
@@ -162,33 +162,33 @@ LABEL_12:
   return 0;
 }
 
-- (int)dfuGetStateCmd:(char *)a3
+- (int)dfuGetStateCmd:(char *)cmd
 {
   if (!self->_dev)
   {
     return -536870195;
   }
 
-  *a3 = 11;
+  *cmd = 11;
   v8 = 0;
   v10 = 0;
   v4 = 1441;
   v5 = 0;
   v6 = 1;
-  v7 = a3;
+  cmdCopy = cmd;
   v9 = 0x3E800001388;
   return ((*self->_dev)->DeviceRequestTO)(self->_dev, &v4);
 }
 
-- (int)dfuSetState:(unsigned __int8)a3
+- (int)dfuSetState:(unsigned __int8)state
 {
   if (!self->_dev)
   {
     return -536870195;
   }
 
-  v3 = a3;
-  if (a3 > 0xAu)
+  stateCopy = state;
+  if (state > 0xAu)
   {
     return -536870206;
   }
@@ -207,11 +207,11 @@ LABEL_12:
   }
 
   v4 = -536870911;
-  if (v3 <= 2)
+  if (stateCopy <= 2)
   {
-    if (v3)
+    if (stateCopy)
     {
-      if (v3 != 1)
+      if (stateCopy != 1)
       {
         bState = self->_currentStatus.bState;
         if (bState == 2)
@@ -276,17 +276,17 @@ LABEL_12:
     return v4;
   }
 
-  if (v3 > 0xA)
+  if (stateCopy > 0xA)
   {
     goto LABEL_27;
   }
 
-  if (((1 << v3) & 0x570) != 0)
+  if (((1 << stateCopy) & 0x570) != 0)
   {
     return v4;
   }
 
-  if (v3 != 7)
+  if (stateCopy != 7)
   {
 LABEL_27:
     if (self->_currentStatus.bState == 2)
@@ -309,7 +309,7 @@ LABEL_27:
   return [(USBDFUUpdater *)self dfuGetStatusCmd:&self->_currentStatus];
 }
 
-- (int)dfuGetStatusCmd:(DFUStatus *)a3
+- (int)dfuGetStatusCmd:(DFUStatus *)cmd
 {
   if (!self->_dev)
   {
@@ -319,18 +319,18 @@ LABEL_27:
   v5 = 5;
   do
   {
-    a3->usableTimeoutMs = 0;
-    *&a3->bStatus = 0;
+    cmd->usableTimeoutMs = 0;
+    *&cmd->bStatus = 0;
     v15 = 0;
     v17 = 0;
     v11 = 929;
     v12 = 0;
     v13 = 6;
-    v14 = a3;
+    cmdCopy = cmd;
     v16 = 0x3E800001388;
     v6 = ((*self->_dev)->DeviceRequestTO)(self->_dev, &v11);
-    v7 = *a3->bwPollTimeout | (a3->bwPollTimeout[2] << 16);
-    a3->usableTimeoutMs = v7;
+    v7 = *cmd->bwPollTimeout | (cmd->bwPollTimeout[2] << 16);
+    cmd->usableTimeoutMs = v7;
     if (!v6)
     {
       break;
@@ -353,7 +353,7 @@ LABEL_27:
   return v6;
 }
 
-- (int)dfuDnLoadCmd:(unsigned __int16)a3 data:(void *)a4 length:(unsigned __int16)a5
+- (int)dfuDnLoadCmd:(unsigned __int16)cmd data:(void *)data length:(unsigned __int16)length
 {
   dev = self->_dev;
   if (!dev)
@@ -364,14 +364,14 @@ LABEL_27:
   v9 = 0;
   v11 = 0;
   v7[0] = 289;
-  v7[1] = a3;
+  v7[1] = cmd;
   v7[2] = 0;
-  v7[3] = a5;
-  v8 = a4;
+  v7[3] = length;
+  dataCopy = data;
   v10 = 0x3E800001388;
-  if (!a5)
+  if (!length)
   {
-    v8 = 0;
+    dataCopy = 0;
   }
 
   return ((*dev)->DeviceRequestTO)(dev, v7);
@@ -393,7 +393,7 @@ LABEL_27:
   return ((*dev)->DeviceRequestTO)(dev, v4);
 }
 
-- (int)dfuSetVersionCmdMajor:(unsigned int)a3 minor:(unsigned int)a4 release:(unsigned int)a5 build:(unsigned int)a6
+- (int)dfuSetVersionCmdMajor:(unsigned int)major minor:(unsigned int)minor release:(unsigned int)release build:(unsigned int)build
 {
   dev = self->_dev;
   if (!dev)
@@ -404,14 +404,14 @@ LABEL_27:
   v11 = 0;
   v13 = 0;
   v8[0] = 2593;
-  v8[1] = (a3 << 12) | ((a4 & 0xF) << 8) | (16 * (a5 & 0xF)) | a6 & 0xF;
+  v8[1] = (major << 12) | ((minor & 0xF) << 8) | (16 * (release & 0xF)) | build & 0xF;
   v9 = 0;
   v10 = 0;
   v12 = 0x3E800001388;
   return ((*dev)->DeviceRequestTO)(dev, v8);
 }
 
-- (int)dfuGetVersionCmdMajor:(unsigned int *)a3 minor:(unsigned int *)a4 release:(unsigned int *)a5 build:(unsigned int *)a6
+- (int)dfuGetVersionCmdMajor:(unsigned int *)major minor:(unsigned int *)minor release:(unsigned int *)release build:(unsigned int *)build
 {
   dev = self->_dev;
   if (!dev)
@@ -419,10 +419,10 @@ LABEL_27:
     return -536870195;
   }
 
-  *a3 = 0;
-  *a4 = 0;
-  *a5 = 0;
-  *a6 = 0;
+  *major = 0;
+  *minor = 0;
+  *release = 0;
+  *build = 0;
   v17 = 0;
   v19 = 0;
   v13 = 2977;
@@ -433,18 +433,18 @@ LABEL_27:
   result = ((*dev)->DeviceRequestTO)(dev, &v13);
   if (!result)
   {
-    *a3 = v12[0];
-    *a4 = v12[1];
-    *a5 = v12[2];
-    *a6 = v12[3];
+    *major = v12[0];
+    *minor = v12[1];
+    *release = v12[2];
+    *build = v12[3];
   }
 
   return result;
 }
 
-- (int)sendHIDReport:(unsigned int)a3 reportID:(int)a4 report:(char *)a5 length:(int)a6
+- (int)sendHIDReport:(unsigned int)report reportID:(int)d report:(char *)a5 length:(int)length
 {
-  v9 = IOHIDDeviceCreate(kCFAllocatorDefault, a3);
+  v9 = IOHIDDeviceCreate(kCFAllocatorDefault, report);
   if (!v9)
   {
     return -536870212;
@@ -454,7 +454,7 @@ LABEL_27:
   v11 = IOHIDDeviceOpen(v9, 0);
   if (!v11)
   {
-    v11 = IOHIDDeviceSetReport(v10, kIOHIDReportTypeFeature, a4, a5, a6);
+    v11 = IOHIDDeviceSetReport(v10, kIOHIDReportTypeFeature, d, a5, length);
     IOHIDDeviceClose(v10, 0);
   }
 
@@ -492,8 +492,8 @@ LABEL_27:
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "%s: Change to kDFU_IDLE through HVCI_APP_DETACH_TO_DFU", &v7, 0xCu);
   }
 
-  v4 = [(USBDFUUpdater *)self hvciAppDetachToDfuCmd];
-  if (v4)
+  hvciAppDetachToDfuCmd = [(USBDFUUpdater *)self hvciAppDetachToDfuCmd];
+  if (hvciAppDetachToDfuCmd)
   {
     v5 = self->_log;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -502,7 +502,7 @@ LABEL_27:
     }
   }
 
-  return v4;
+  return hvciAppDetachToDfuCmd;
 }
 
 @end

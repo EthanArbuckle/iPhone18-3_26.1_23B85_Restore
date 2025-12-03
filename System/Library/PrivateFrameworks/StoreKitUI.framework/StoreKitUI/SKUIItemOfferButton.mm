@@ -1,43 +1,43 @@
 @interface SKUIItemOfferButton
-+ (BOOL)canOpenItemForItemState:(id)a3 clientContext:(id)a4;
-+ (CGSize)_titleSizeThatFitsForSize:(CGSize)a3 titleStyle:(int64_t)a4 mutableAttributedString:(id)a5;
-+ (SKUIItemOfferButton)itemOfferButtonWithAppearance:(id)a3;
-+ (UIEdgeInsets)_imageInsetsForProgressType:(int64_t)a3;
-+ (id)_basicAnimationWithKeyPath:(id)a3;
-+ (id)_cachedImageForAttributedTitle:(id)a3 titleStyle:(int64_t)a4 size:(CGSize)a5 fillStyle:(int64_t)a6 universal:(BOOL)a7 tintColor:(id)a8 interfaceStyle:(int64_t)a9;
++ (BOOL)canOpenItemForItemState:(id)state clientContext:(id)context;
++ (CGSize)_titleSizeThatFitsForSize:(CGSize)size titleStyle:(int64_t)style mutableAttributedString:(id)string;
++ (SKUIItemOfferButton)itemOfferButtonWithAppearance:(id)appearance;
++ (UIEdgeInsets)_imageInsetsForProgressType:(int64_t)type;
++ (id)_basicAnimationWithKeyPath:(id)path;
++ (id)_cachedImageForAttributedTitle:(id)title titleStyle:(int64_t)style size:(CGSize)size fillStyle:(int64_t)fillStyle universal:(BOOL)universal tintColor:(id)color interfaceStyle:(int64_t)interfaceStyle;
 + (id)_defaultTitleAttributes;
-+ (id)_imageForAttributedTitle:(id)a3 titleStyle:(int64_t)a4 size:(CGSize)a5 fillStyle:(int64_t)a6 universal:(BOOL)a7 tintColor:(id)a8;
-+ (id)_imageForProgressType:(int64_t)a3;
-+ (id)_universalPlusImageWithTintColor:(id)a3;
-+ (id)cloudImageWithTintColor:(id)a3 arrowTintColor:(id)a4;
-+ (id)cloudTintColorForBackgroundColor:(id)a3;
-+ (id)localizedTitleForItemState:(id)a3 clientContext:(id)a4;
-+ (id)playHighlightImageWithTintColor:(id)a3;
-+ (id)playImageWithTintColor:(id)a3;
-+ (id)playTintColorForBackgroundColor:(id)a3;
-- (BOOL)_touchInBounds:(id)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
++ (id)_imageForAttributedTitle:(id)title titleStyle:(int64_t)style size:(CGSize)size fillStyle:(int64_t)fillStyle universal:(BOOL)universal tintColor:(id)color;
++ (id)_imageForProgressType:(int64_t)type;
++ (id)_universalPlusImageWithTintColor:(id)color;
++ (id)cloudImageWithTintColor:(id)color arrowTintColor:(id)tintColor;
++ (id)cloudTintColorForBackgroundColor:(id)color;
++ (id)localizedTitleForItemState:(id)state clientContext:(id)context;
++ (id)playHighlightImageWithTintColor:(id)color;
++ (id)playImageWithTintColor:(id)color;
++ (id)playTintColorForBackgroundColor:(id)color;
+- (BOOL)_touchInBounds:(id)bounds;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)isShowingConfirmation;
-- (BOOL)setTitle:(id)a3 confirmationTitle:(id)a4 itemState:(id)a5 clientContext:(id)a6 animated:(BOOL)a7;
-- (BOOL)setValuesUsingBuyButtonDescriptor:(id)a3 itemState:(id)a4 clientContext:(id)a5 animated:(BOOL)a6;
-- (BOOL)setValuesUsingItemOffer:(id)a3 itemState:(id)a4 clientContext:(id)a5 animated:(BOOL)a6;
+- (BOOL)setTitle:(id)title confirmationTitle:(id)confirmationTitle itemState:(id)state clientContext:(id)context animated:(BOOL)animated;
+- (BOOL)setValuesUsingBuyButtonDescriptor:(id)descriptor itemState:(id)state clientContext:(id)context animated:(BOOL)animated;
+- (BOOL)setValuesUsingItemOffer:(id)offer itemState:(id)state clientContext:(id)context animated:(BOOL)animated;
 - (BOOL)supportsPlayButton;
 - (CGRect)_borderedImageViewFrame;
-- (CGSize)layoutSizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)layoutSizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)buyType;
 - (NSString)offerButtonStateDescription;
 - (SKUIBuyButtonDescriptor)buttonDescriptor;
-- (SKUIItemOfferButton)initWithFrame:(CGRect)a3;
+- (SKUIItemOfferButton)initWithFrame:(CGRect)frame;
 - (SKUIItemOfferButtonDelegate)delegate;
 - (UIImage)image;
-- (double)_horizontalInsetForTitleStyle:(int64_t)a3;
-- (id)_buttonPropertiesForState:(id)a3;
-- (id)_imageForProgressType:(int64_t)a3;
+- (double)_horizontalInsetForTitleStyle:(int64_t)style;
+- (id)_buttonPropertiesForState:(id)state;
+- (id)_imageForProgressType:(int64_t)type;
 - (int64_t)progressType;
-- (void)_adjustViewOrderingForProperties:(id)a3;
-- (void)_cancelGestureAction:(id)a3;
+- (void)_adjustViewOrderingForProperties:(id)properties;
+- (void)_cancelGestureAction:(id)action;
 - (void)_insertBorderView;
 - (void)_insertBorderedImageView;
 - (void)_insertCancelGestureRecognizer;
@@ -45,53 +45,53 @@
 - (void)_insertLabel;
 - (void)_insertProgressIndicator;
 - (void)_insertUniversalView;
-- (void)_reloadForCurrentState:(BOOL)a3;
+- (void)_reloadForCurrentState:(BOOL)state;
 - (void)_removeCancelGestureRecognizer;
 - (void)_sendDidAnimate;
 - (void)_sendWillAnimate;
-- (void)_transitionFromBorderedImage:(id)a3 toTitle:(id)a4 withDuration:(double)a5 completion:(id)a6;
-- (void)_transitionFromImage:(id)a3 toImage:(id)a4 withDuration:(double)a5 completion:(id)a6;
-- (void)_transitionFromProgress:(id)a3 toProgress:(id)a4 withDuration:(double)a5 completion:(id)a6;
-- (void)_transitionFromProgress:(id)a3 toTitleOrImage:(id)a4 withDuration:(double)a5 completion:(id)a6;
-- (void)_transitionFromTitle:(id)a3 toTitle:(id)a4 withDuration:(double)a5 completion:(id)a6;
-- (void)_transitionFromTitleOrImage:(id)a3 toProgress:(id)a4 withDuration:(double)a5 completion:(id)a6;
+- (void)_transitionFromBorderedImage:(id)image toTitle:(id)title withDuration:(double)duration completion:(id)completion;
+- (void)_transitionFromImage:(id)image toImage:(id)toImage withDuration:(double)duration completion:(id)completion;
+- (void)_transitionFromProgress:(id)progress toProgress:(id)toProgress withDuration:(double)duration completion:(id)completion;
+- (void)_transitionFromProgress:(id)progress toTitleOrImage:(id)image withDuration:(double)duration completion:(id)completion;
+- (void)_transitionFromTitle:(id)title toTitle:(id)toTitle withDuration:(double)duration completion:(id)completion;
+- (void)_transitionFromTitleOrImage:(id)image toProgress:(id)progress withDuration:(double)duration completion:(id)completion;
 - (void)_updateForChangedConfirmationTitleProperty;
 - (void)_updateForChangedTitleProperty;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)drawRect:(CGRect)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)drawRect:(CGRect)rect;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)removeButtonStateAnimations;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBorderColorAlphaMultiplier:(double)a3;
-- (void)setBorderedImage:(id)a3;
-- (void)setCloudTintColor:(id)a3;
-- (void)setColoringWithAppearance:(id)a3;
-- (void)setConfirmationTitle:(id)a3;
-- (void)setConfirmationTitleStyle:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFillStyle:(int64_t)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setImage:(id)a3;
-- (void)setProgressType:(int64_t)a3 animated:(BOOL)a4;
-- (void)setShowingConfirmation:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTitle:(id)a3;
-- (void)setTitleStyle:(int64_t)a3;
-- (void)setUniversal:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setBorderColorAlphaMultiplier:(double)multiplier;
+- (void)setBorderedImage:(id)image;
+- (void)setCloudTintColor:(id)color;
+- (void)setColoringWithAppearance:(id)appearance;
+- (void)setConfirmationTitle:(id)title;
+- (void)setConfirmationTitleStyle:(int64_t)style;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFillStyle:(int64_t)style;
+- (void)setFrame:(CGRect)frame;
+- (void)setImage:(id)image;
+- (void)setProgressType:(int64_t)type animated:(BOOL)animated;
+- (void)setShowingConfirmation:(BOOL)confirmation animated:(BOOL)animated;
+- (void)setTitle:(id)title;
+- (void)setTitleStyle:(int64_t)style;
+- (void)setUniversal:(BOOL)universal;
 - (void)showCloudImage;
 - (void)tintColorDidChange;
 @end
 
 @implementation SKUIItemOfferButton
 
-- (SKUIItemOfferButton)initWithFrame:(CGRect)a3
+- (SKUIItemOfferButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIItemOfferButton initWithFrame:];
@@ -99,24 +99,24 @@
 
   v15.receiver = self;
   v15.super_class = SKUIItemOfferButton;
-  v8 = [(SKUIItemOfferButton *)&v15 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIItemOfferButton *)&v15 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-    cloudTintColor = v8->_cloudTintColor;
-    v8->_cloudTintColor = v9;
+    cloudTintColor = height->_cloudTintColor;
+    height->_cloudTintColor = v9;
 
     v11 = [MEMORY[0x277D75348] colorWithRed:0.0980392157 green:0.670588235 blue:0.125490196 alpha:1.0];
-    confirmationColor = v8->_confirmationColor;
-    v8->_confirmationColor = v11;
+    confirmationColor = height->_confirmationColor;
+    height->_confirmationColor = v11;
 
-    v8->_fillStyle = 0;
-    v8->_borderColorAlphaMultiplier = 1.0;
-    offerButtonStateDescription = v8->_offerButtonStateDescription;
-    v8->_offerButtonStateDescription = &stru_2827FFAC8;
+    height->_fillStyle = 0;
+    height->_borderColorAlphaMultiplier = 1.0;
+    offerButtonStateDescription = height->_offerButtonStateDescription;
+    height->_offerButtonStateDescription = &stru_2827FFAC8;
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
@@ -127,10 +127,10 @@
   [(SKUIItemOfferButton *)&v3 dealloc];
 }
 
-- (CGSize)layoutSizeThatFits:(CGSize)a3
+- (CGSize)layoutSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   if ([(SKUIItemOfferButton *)self isShowingConfirmation])
   {
     v6 = [(NSMutableAttributedString *)self->_titleAttributedString mutableCopy];
@@ -206,25 +206,25 @@
 
 - (BOOL)isShowingConfirmation
 {
-  v2 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v3 = [v2 showingConfirmation];
+  buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+  showingConfirmation = [buttonDescriptor showingConfirmation];
 
-  return v3;
+  return showingConfirmation;
 }
 
 - (int64_t)progressType
 {
-  v2 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v3 = [v2 progressType];
+  buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+  progressType = [buttonDescriptor progressType];
 
-  return v3;
+  return progressType;
 }
 
 - (void)removeButtonStateAnimations
 {
-  v3 = [(UIView *)self->_borderView layer];
-  v4 = [v3 animationKeys];
-  v5 = [v4 count];
+  layer = [(UIView *)self->_borderView layer];
+  animationKeys = [layer animationKeys];
+  v5 = [animationKeys count];
 
   if (v5)
   {
@@ -235,27 +235,27 @@
   }
 }
 
-- (void)setBorderColorAlphaMultiplier:(double)a3
+- (void)setBorderColorAlphaMultiplier:(double)multiplier
 {
-  if (vabdd_f64(self->_borderColorAlphaMultiplier, a3) > 0.00000011920929)
+  if (vabdd_f64(self->_borderColorAlphaMultiplier, multiplier) > 0.00000011920929)
   {
-    self->_borderColorAlphaMultiplier = a3;
+    self->_borderColorAlphaMultiplier = multiplier;
     [(SKUIItemOfferButton *)self _reloadForCurrentState:0];
   }
 }
 
-- (void)setConfirmationTitle:(id)a3
+- (void)setConfirmationTitle:(id)title
 {
-  v9 = a3;
-  v5 = [(SKUIItemOfferButton *)self confirmationTitle];
-  v6 = v5;
-  if (v5 != v9 && ([v5 isEqualToString:v9] & 1) == 0)
+  titleCopy = title;
+  confirmationTitle = [(SKUIItemOfferButton *)self confirmationTitle];
+  v6 = confirmationTitle;
+  if (confirmationTitle != titleCopy && ([confirmationTitle isEqualToString:titleCopy] & 1) == 0)
   {
-    if (v9)
+    if (titleCopy)
     {
       v7 = objc_alloc(MEMORY[0x277CCAB48]);
-      v3 = [objc_opt_class() _defaultTitleAttributes];
-      v8 = [v7 initWithString:v9 attributes:v3];
+      _defaultTitleAttributes = [objc_opt_class() _defaultTitleAttributes];
+      v8 = [v7 initWithString:titleCopy attributes:_defaultTitleAttributes];
     }
 
     else
@@ -264,7 +264,7 @@
     }
 
     objc_storeStrong(&self->_confirmationTitleAttributedString, v8);
-    if (v9)
+    if (titleCopy)
     {
     }
 
@@ -272,100 +272,100 @@
   }
 }
 
-- (void)setConfirmationTitleStyle:(int64_t)a3
+- (void)setConfirmationTitleStyle:(int64_t)style
 {
-  if (self->_confirmationTitleStyle != a3)
+  if (self->_confirmationTitleStyle != style)
   {
-    self->_confirmationTitleStyle = a3;
+    self->_confirmationTitleStyle = style;
     [(SKUIItemOfferButton *)self _updateForChangedConfirmationTitleProperty];
   }
 }
 
-- (void)setFillStyle:(int64_t)a3
+- (void)setFillStyle:(int64_t)style
 {
-  if (self->_fillStyle != a3)
+  if (self->_fillStyle != style)
   {
-    self->_fillStyle = a3;
+    self->_fillStyle = style;
     [(SKUIItemOfferButton *)self _reloadForCurrentState:0];
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   image = self->_image;
   if (!image)
   {
     image = self->_cloudImage;
   }
 
-  if (image != v5)
+  if (image != imageCopy)
   {
     cloudImage = self->_cloudImage;
     self->_cloudImage = 0;
-    v9 = v5;
+    v9 = imageCopy;
 
     borderedImage = self->_borderedImage;
     self->_borderedImage = 0;
 
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     [(SKUIItemOfferButton *)self _reloadForCurrentState:0];
-    v5 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)setBorderedImage:(id)a3
+- (void)setBorderedImage:(id)image
 {
-  v5 = a3;
-  if (self->_borderedImage != v5)
+  imageCopy = image;
+  if (self->_borderedImage != imageCopy)
   {
     cloudImage = self->_cloudImage;
     self->_cloudImage = 0;
-    v8 = v5;
+    v8 = imageCopy;
 
     image = self->_image;
     self->_image = 0;
 
-    objc_storeStrong(&self->_borderedImage, a3);
+    objc_storeStrong(&self->_borderedImage, image);
     [(SKUIItemOfferButton *)self _reloadForCurrentState:0];
-    v5 = v8;
+    imageCopy = v8;
   }
 }
 
-- (void)setProgressType:(int64_t)a3 animated:(BOOL)a4
+- (void)setProgressType:(int64_t)type animated:(BOOL)animated
 {
-  v7 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v8 = [v7 progressType];
+  buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+  progressType = [buttonDescriptor progressType];
 
-  if (v8 != a3)
+  if (progressType != type)
   {
-    if (a4)
+    if (animated)
     {
       [(SKUIItemOfferButton *)self _reloadForCurrentState:1];
-      v9 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v10 = [v9 progressType];
+      buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      progressType2 = [buttonDescriptor2 progressType];
 
-      v11 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v12 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v11];
+      buttonDescriptor3 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      v12 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor3];
 
-      v13 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v13 setProgressType:a3];
+      buttonDescriptor4 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor4 setProgressType:type];
 
-      v14 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v14 setHighlighted:0];
+      buttonDescriptor5 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor5 setHighlighted:0];
 
-      v15 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v15 setShowingConfirmation:0];
+      buttonDescriptor6 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor6 setShowingConfirmation:0];
 
-      v16 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v17 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v16];
+      buttonDescriptor7 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      v17 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor7];
 
-      if (v10)
+      if (progressType2)
       {
-        v18 = [(SKUIItemOfferButton *)self buttonDescriptor];
-        v19 = [v18 progressType];
+        buttonDescriptor8 = [(SKUIItemOfferButton *)self buttonDescriptor];
+        progressType3 = [buttonDescriptor8 progressType];
 
-        if (v19)
+        if (progressType3)
         {
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
@@ -396,14 +396,14 @@
 
     else
     {
-      v20 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v20 setProgressType:a3];
+      buttonDescriptor9 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor9 setProgressType:type];
 
-      v21 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v21 setHighlighted:0];
+      buttonDescriptor10 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor10 setHighlighted:0];
 
-      v22 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v22 setShowingConfirmation:0];
+      buttonDescriptor11 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor11 setShowingConfirmation:0];
 
       [(SKUIItemOfferButton *)self _sendWillAnimate];
       [(SKUIItemOfferButton *)self _reloadForCurrentState:0];
@@ -443,25 +443,25 @@ uint64_t __48__SKUIItemOfferButton_setProgressType_animated___block_invoke_3(uin
   return result;
 }
 
-- (void)setShowingConfirmation:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowingConfirmation:(BOOL)confirmation animated:(BOOL)animated
 {
-  v5 = a3;
-  if ([(SKUIItemOfferButton *)self isShowingConfirmation]!= a3)
+  confirmationCopy = confirmation;
+  if ([(SKUIItemOfferButton *)self isShowingConfirmation]!= confirmation)
   {
-    if (a4)
+    if (animated)
     {
       [(SKUIItemOfferButton *)self _reloadForCurrentState:1];
-      v7 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v8 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v7];
+      buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+      v8 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor];
 
-      v9 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v9 setShowingConfirmation:v5];
+      buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor2 setShowingConfirmation:confirmationCopy];
 
-      v10 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v10 setHighlighted:0];
+      buttonDescriptor3 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor3 setHighlighted:0];
 
-      v11 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v12 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v11];
+      buttonDescriptor4 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      v12 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor4];
 
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -473,11 +473,11 @@ uint64_t __48__SKUIItemOfferButton_setProgressType_animated___block_invoke_3(uin
 
     else
     {
-      v13 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v13 setShowingConfirmation:v5];
+      buttonDescriptor5 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor5 setShowingConfirmation:confirmationCopy];
 
-      v14 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v14 setHighlighted:0];
+      buttonDescriptor6 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor6 setHighlighted:0];
 
       [(SKUIItemOfferButton *)self _reloadForCurrentState:0];
     }
@@ -494,18 +494,18 @@ uint64_t __55__SKUIItemOfferButton_setShowingConfirmation_animated___block_invok
   return result;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v9 = a3;
-  v5 = [(SKUIItemOfferButton *)self title];
-  v6 = v5;
-  if (v5 != v9 && ([v5 isEqualToString:v9] & 1) == 0)
+  titleCopy = title;
+  title = [(SKUIItemOfferButton *)self title];
+  v6 = title;
+  if (title != titleCopy && ([title isEqualToString:titleCopy] & 1) == 0)
   {
-    if (v9)
+    if (titleCopy)
     {
       v7 = objc_alloc(MEMORY[0x277CCAB48]);
-      v3 = [objc_opt_class() _defaultTitleAttributes];
-      v8 = [v7 initWithString:v9 attributes:v3];
+      _defaultTitleAttributes = [objc_opt_class() _defaultTitleAttributes];
+      v8 = [v7 initWithString:titleCopy attributes:_defaultTitleAttributes];
     }
 
     else
@@ -514,7 +514,7 @@ uint64_t __55__SKUIItemOfferButton_setShowingConfirmation_animated___block_invok
     }
 
     objc_storeStrong(&self->_titleAttributedString, v8);
-    if (v9)
+    if (titleCopy)
     {
     }
 
@@ -522,20 +522,20 @@ uint64_t __55__SKUIItemOfferButton_setShowingConfirmation_animated___block_invok
   }
 }
 
-- (void)setTitleStyle:(int64_t)a3
+- (void)setTitleStyle:(int64_t)style
 {
-  if (self->_titleStyle != a3)
+  if (self->_titleStyle != style)
   {
-    self->_titleStyle = a3;
+    self->_titleStyle = style;
     [(SKUIItemOfferButton *)self _updateForChangedTitleProperty];
   }
 }
 
-- (void)setUniversal:(BOOL)a3
+- (void)setUniversal:(BOOL)universal
 {
-  if (self->_universal != a3)
+  if (self->_universal != universal)
   {
-    self->_universal = a3;
+    self->_universal = universal;
     [(SKUIItemOfferButton *)self _reloadForCurrentState:0];
   }
 }
@@ -546,8 +546,8 @@ uint64_t __55__SKUIItemOfferButton_setShowingConfirmation_animated___block_invok
   {
     v3 = objc_opt_class();
     cloudTintColor = self->_cloudTintColor;
-    v5 = [(SKUIItemOfferButton *)self tintColor];
-    v6 = [v3 cloudImageWithTintColor:cloudTintColor arrowTintColor:v5];
+    tintColor = [(SKUIItemOfferButton *)self tintColor];
+    v6 = [v3 cloudImageWithTintColor:cloudTintColor arrowTintColor:tintColor];
     cloudImage = self->_cloudImage;
     self->_cloudImage = v6;
 
@@ -575,18 +575,18 @@ uint64_t __55__SKUIItemOfferButton_setShowingConfirmation_animated___block_invok
 
 - (NSString)buyType
 {
-  v2 = [(SKUIItemOfferButton *)self element];
-  v3 = [v2 attributes];
-  v4 = [v3 objectForKey:@"data-type"];
+  element = [(SKUIItemOfferButton *)self element];
+  attributes = [element attributes];
+  v4 = [attributes objectForKey:@"data-type"];
   v5 = [v4 copy];
 
   return v5;
 }
 
-+ (id)cloudImageWithTintColor:(id)a3 arrowTintColor:(id)a4
++ (id)cloudImageWithTintColor:(id)color arrowTintColor:(id)tintColor
 {
-  v6 = a3;
-  v7 = a4;
+  colorCopy = color;
+  tintColorCopy = tintColor;
   if (!cloudImageWithTintColor_arrowTintColor__sCloudArrowImage)
   {
     v8 = MEMORY[0x277D755B8];
@@ -608,7 +608,7 @@ uint64_t __55__SKUIItemOfferButton_setShowingConfirmation_animated___block_invok
   v16 = cloudImageWithTintColor_arrowTintColor__sTintedImage;
   if (cloudImageWithTintColor_arrowTintColor__sTintedImage)
   {
-    v17 = cloudImageWithTintColor_arrowTintColor__sLastArrowColor == v7;
+    v17 = cloudImageWithTintColor_arrowTintColor__sLastArrowColor == tintColorCopy;
   }
 
   else
@@ -616,13 +616,13 @@ uint64_t __55__SKUIItemOfferButton_setShowingConfirmation_animated___block_invok
     v17 = 0;
   }
 
-  if (v17 && cloudImageWithTintColor_arrowTintColor__sLastCloudColor == v6)
+  if (v17 && cloudImageWithTintColor_arrowTintColor__sLastCloudColor == colorCopy)
   {
     goto LABEL_18;
   }
 
-  v19 = [cloudImageWithTintColor_arrowTintColor__sCloudArrowImage _flatImageWithColor:v7];
-  v20 = [cloudImageWithTintColor_arrowTintColor__sCloudButtonImage _flatImageWithColor:v6];
+  v19 = [cloudImageWithTintColor_arrowTintColor__sCloudArrowImage _flatImageWithColor:tintColorCopy];
+  v20 = [cloudImageWithTintColor_arrowTintColor__sCloudButtonImage _flatImageWithColor:colorCopy];
   [v20 size];
   v22 = v21;
   [v19 size];
@@ -655,8 +655,8 @@ uint64_t __55__SKUIItemOfferButton_setShowingConfirmation_animated___block_invok
     cloudImageWithTintColor_arrowTintColor__sTintedImage = v31;
 
     UIGraphicsEndImageContext();
-    objc_storeStrong(&cloudImageWithTintColor_arrowTintColor__sLastArrowColor, a4);
-    objc_storeStrong(&cloudImageWithTintColor_arrowTintColor__sLastCloudColor, a3);
+    objc_storeStrong(&cloudImageWithTintColor_arrowTintColor__sLastArrowColor, tintColor);
+    objc_storeStrong(&cloudImageWithTintColor_arrowTintColor__sLastCloudColor, color);
 
     v16 = cloudImageWithTintColor_arrowTintColor__sTintedImage;
 LABEL_18:
@@ -670,9 +670,9 @@ LABEL_19:
   return v33;
 }
 
-+ (id)cloudTintColorForBackgroundColor:(id)a3
++ (id)cloudTintColorForBackgroundColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   if (!cloudTintColorForBackgroundColor__sDarkBackgroundCloudColor)
   {
     v4 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.5];
@@ -688,7 +688,7 @@ LABEL_19:
     cloudTintColorForBackgroundColor__sLightBackgroundCloudColor = v7;
   }
 
-  v9 = SKUIColorSchemeStyleForColor(v3);
+  v9 = SKUIColorSchemeStyleForColor(colorCopy);
   if (v9 <= 3)
   {
     v6 = *off_278200018[v9];
@@ -697,29 +697,29 @@ LABEL_19:
   return v6;
 }
 
-+ (SKUIItemOfferButton)itemOfferButtonWithAppearance:(id)a3
++ (SKUIItemOfferButton)itemOfferButtonWithAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setColoringWithAppearance:v4];
+  appearanceCopy = appearance;
+  v5 = objc_alloc_init(self);
+  [v5 setColoringWithAppearance:appearanceCopy];
 
   return v5;
 }
 
-+ (id)localizedTitleForItemState:(id)a3 clientContext:(id)a4
++ (id)localizedTitleForItemState:(id)state clientContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 state];
-  if ((v8 & 3) != 0)
+  stateCopy = state;
+  contextCopy = context;
+  state = [stateCopy state];
+  if ((state & 3) != 0)
   {
     goto LABEL_2;
   }
 
-  v10 = v8;
-  if (v8 & 0x20 | [v6 libraryContentFlags] & 2)
+  v10 = state;
+  if (state & 0x20 | [stateCopy libraryContentFlags] & 2)
   {
-    if (v7)
+    if (contextCopy)
     {
       v11 = @"ITEM_OFFER_BUTTON_UPDATE";
       goto LABEL_12;
@@ -733,9 +733,9 @@ LABEL_17:
 
   if ((v10 & 4) != 0)
   {
-    if ([a1 canOpenItemForItemState:v6 clientContext:v7])
+    if ([self canOpenItemForItemState:stateCopy clientContext:contextCopy])
     {
-      if (v7)
+      if (contextCopy)
       {
         v11 = @"ITEM_OFFER_BUTTON_OPEN";
         goto LABEL_12;
@@ -746,7 +746,7 @@ LABEL_17:
 
     else
     {
-      if (v7)
+      if (contextCopy)
       {
         v11 = @"ITEM_OFFER_BUTTON_INSTALLED";
         goto LABEL_12;
@@ -760,9 +760,9 @@ LABEL_17:
 
   if ((v10 & 0x40) != 0)
   {
-    if ([v6 mediaCategory] == 3)
+    if ([stateCopy mediaCategory] == 3)
     {
-      if (v7)
+      if (contextCopy)
       {
         v11 = @"ITEM_OFFER_BUTTON_READ";
         goto LABEL_12;
@@ -771,9 +771,9 @@ LABEL_17:
       v13 = @"ITEM_OFFER_BUTTON_READ";
     }
 
-    else if ([v6 mediaCategory] == 5)
+    else if ([stateCopy mediaCategory] == 5)
     {
-      if (v7)
+      if (contextCopy)
       {
         v11 = @"ITEM_OFFER_BUTTON_UNSUBSCRIBE";
         goto LABEL_12;
@@ -784,7 +784,7 @@ LABEL_17:
 
     else
     {
-      if (v7)
+      if (contextCopy)
       {
         v11 = @"ITEM_OFFER_BUTTON_PLAY";
         goto LABEL_12;
@@ -798,7 +798,7 @@ LABEL_17:
 
   if ((v10 & 0x10) != 0)
   {
-    if (v7)
+    if (contextCopy)
     {
       v11 = @"ITEM_OFFER_BUTTON_GRATIS";
       goto LABEL_12;
@@ -815,7 +815,7 @@ LABEL_2:
     goto LABEL_19;
   }
 
-  if (!v7)
+  if (!contextCopy)
   {
     v13 = @"ITEM_OFFER_BUTTON_PURCHASED";
     goto LABEL_17;
@@ -823,7 +823,7 @@ LABEL_2:
 
   v11 = @"ITEM_OFFER_BUTTON_PURCHASED";
 LABEL_12:
-  v12 = [v7 localizedStringForKey:v11];
+  v12 = [contextCopy localizedStringForKey:v11];
 LABEL_18:
   v9 = v12;
 LABEL_19:
@@ -831,85 +831,85 @@ LABEL_19:
   return v9;
 }
 
-- (void)setCloudTintColor:(id)a3
+- (void)setCloudTintColor:(id)color
 {
-  v4 = a3;
-  if (self->_cloudTintColor != v4)
+  colorCopy = color;
+  if (self->_cloudTintColor != colorCopy)
   {
-    v12 = v4;
-    v5 = [(UIColor *)v4 copy];
+    v12 = colorCopy;
+    v5 = [(UIColor *)colorCopy copy];
     cloudTintColor = self->_cloudTintColor;
     self->_cloudTintColor = v5;
 
-    v4 = v12;
+    colorCopy = v12;
     if (self->_cloudImage)
     {
       v7 = objc_opt_class();
       v8 = self->_cloudTintColor;
-      v9 = [(SKUIItemOfferButton *)self tintColor];
-      v10 = [v7 cloudImageWithTintColor:v8 arrowTintColor:v9];
+      tintColor = [(SKUIItemOfferButton *)self tintColor];
+      v10 = [v7 cloudImageWithTintColor:v8 arrowTintColor:tintColor];
       cloudImage = self->_cloudImage;
       self->_cloudImage = v10;
 
       [(SKUIItemOfferButton *)self setNeedsDisplay];
-      v4 = v12;
+      colorCopy = v12;
     }
   }
 }
 
-- (void)setColoringWithAppearance:(id)a3
+- (void)setColoringWithAppearance:(id)appearance
 {
-  v9 = a3;
-  if (v9)
+  appearanceCopy = appearance;
+  if (appearanceCopy)
   {
     v4 = [objc_opt_class() cloudTintColorForBackgroundColor:self->_backgroundColor];
     cloudTintColor = self->_cloudTintColor;
     self->_cloudTintColor = v4;
 
-    v6 = [v9 confirmationColor];
+    confirmationColor = [appearanceCopy confirmationColor];
     confirmationColor = self->_confirmationColor;
-    self->_confirmationColor = v6;
+    self->_confirmationColor = confirmationColor;
 
-    v8 = [v9 buttonColor];
-    [(SKUIItemOfferButton *)self setTintColor:v8];
+    buttonColor = [appearanceCopy buttonColor];
+    [(SKUIItemOfferButton *)self setTintColor:buttonColor];
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
-    [(SKUIItemOfferButton *)self setCloudTintColor:v8];
+    buttonColor = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.5];
+    [(SKUIItemOfferButton *)self setCloudTintColor:buttonColor];
   }
 }
 
-- (BOOL)setTitle:(id)a3 confirmationTitle:(id)a4 itemState:(id)a5 clientContext:(id)a6 animated:(BOOL)a7
+- (BOOL)setTitle:(id)title confirmationTitle:(id)confirmationTitle itemState:(id)state clientContext:(id)context animated:(BOOL)animated
 {
-  v68 = a7;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  animatedCopy = animated;
+  titleCopy = title;
+  confirmationTitleCopy = confirmationTitle;
+  stateCopy = state;
+  contextCopy = context;
   offerButtonStateDescription = self->_offerButtonStateDescription;
   self->_offerButtonStateDescription = &stru_2827FFAC8;
 
-  v16 = [v13 state];
-  v17 = [(SKUIItemOfferButton *)self supportsPlayButton];
-  v18 = v16 & 8;
-  v19 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  [v19 setShouldSuppressEnabled:0];
+  state = [stateCopy state];
+  supportsPlayButton = [(SKUIItemOfferButton *)self supportsPlayButton];
+  v18 = state & 8;
+  buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+  [buttonDescriptor setShouldSuppressEnabled:0];
 
-  v20 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  [v20 setShowsUniversal:1];
+  buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+  [buttonDescriptor2 setShowsUniversal:1];
 
   [(SKUIItemOfferButton *)self setEnabled:1];
-  v21 = v16;
-  v70 = v12;
-  v71 = v11;
-  v69 = v13;
-  v64 = v17;
-  if (v16)
+  v21 = state;
+  v70 = confirmationTitleCopy;
+  v71 = titleCopy;
+  v69 = stateCopy;
+  v64 = supportsPlayButton;
+  if (state)
   {
-    v17 = 0;
-    v63 = 0;
+    supportsPlayButton = 0;
+    isShowingConfirmation = 0;
     v66 = 0;
     v26 = 0;
     v24 = 0;
@@ -919,13 +919,13 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  if ((v16 & 2) != 0)
+  if ((state & 2) != 0)
   {
-    [v13 downloadProgress];
+    [stateCopy downloadProgress];
     [(SKUIItemOfferButton *)self setProgress:v27];
-    v21 = v16;
-    v17 = 0;
-    v63 = 0;
+    v21 = state;
+    supportsPlayButton = 0;
+    isShowingConfirmation = 0;
     v66 = 0;
     v26 = 0;
     v24 = 0;
@@ -935,16 +935,16 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  if ((v16 & 0x20) != 0)
+  if ((state & 0x20) != 0)
   {
-    v28 = v16;
-    v23 = [objc_opt_class() localizedTitleForItemState:v13 clientContext:v14];
+    v28 = state;
+    v23 = [objc_opt_class() localizedTitleForItemState:stateCopy clientContext:contextCopy];
     v29 = self->_offerButtonStateDescription;
     self->_offerButtonStateDescription = @"update";
 
     v21 = v28;
-    v17 = 0;
-    v63 = 0;
+    supportsPlayButton = 0;
+    isShowingConfirmation = 0;
     v65 = 0;
     v61 = 0;
     v26 = 0;
@@ -953,18 +953,18 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  if ((v16 & 4) != 0)
+  if ((state & 4) != 0)
   {
-    v22 = v16;
-    v23 = [objc_opt_class() localizedTitleForItemState:v13 clientContext:v14];
-    v30 = [objc_opt_class() canOpenItemForItemState:v13 clientContext:v14];
+    v22 = state;
+    v23 = [objc_opt_class() localizedTitleForItemState:stateCopy clientContext:contextCopy];
+    v30 = [objc_opt_class() canOpenItemForItemState:stateCopy clientContext:contextCopy];
     v31 = self->_offerButtonStateDescription;
     if (v30)
     {
       self->_offerButtonStateDescription = @"open";
 
-      v17 = 0;
-      v63 = 0;
+      supportsPlayButton = 0;
+      isShowingConfirmation = 0;
       v65 = 0;
       v61 = 0;
       v26 = 0;
@@ -974,17 +974,17 @@ LABEL_19:
 
     self->_offerButtonStateDescription = @"installed";
 
-    v37 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    buttonDescriptor3 = [(SKUIItemOfferButton *)self buttonDescriptor];
     v66 = 1;
-    [v37 setShouldSuppressEnabled:1];
+    [buttonDescriptor3 setShouldSuppressEnabled:1];
 
-    v38 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    [v38 setShowsUniversal:0];
+    buttonDescriptor4 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    [buttonDescriptor4 setShowsUniversal:0];
 
     [(SKUIItemOfferButton *)self setEnabled:0];
 LABEL_18:
-    v17 = 0;
-    v63 = 0;
+    supportsPlayButton = 0;
+    isShowingConfirmation = 0;
     v65 = 0;
     v61 = 0;
     v24 = 0;
@@ -992,19 +992,19 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if ((v16 & 0x40) != 0)
+  if ((state & 0x40) != 0)
   {
-    v32 = v16;
+    v32 = state;
     v33 = objc_opt_class();
     v34 = v33;
-    if (v17)
+    if (supportsPlayButton)
     {
       v35 = [objc_opt_class() playTintColorForBackgroundColor:self->_backgroundColor];
       v36 = [v34 playImageWithTintColor:v35];
       [(SKUIItemOfferButton *)self setImage:v36];
 
-      v17 = 0;
-      v63 = 0;
+      supportsPlayButton = 0;
+      isShowingConfirmation = 0;
       v65 = 0;
       v61 = 0;
       v26 = 0;
@@ -1014,8 +1014,8 @@ LABEL_18:
 
     else
     {
-      v23 = [v33 localizedTitleForItemState:v13 clientContext:v14];
-      v63 = 0;
+      v23 = [v33 localizedTitleForItemState:stateCopy clientContext:contextCopy];
+      isShowingConfirmation = 0;
       v65 = 0;
       v61 = 0;
       v26 = 0;
@@ -1027,18 +1027,18 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  if ((v16 & 8) != 0)
+  if ((state & 8) != 0)
   {
-    v22 = v16;
-    v39 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v17 = [v39 shouldSuppressCloudRestore];
+    v22 = state;
+    buttonDescriptor5 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    supportsPlayButton = [buttonDescriptor5 shouldSuppressCloudRestore];
 
-    if (!v17)
+    if (!supportsPlayButton)
     {
       v58 = self->_offerButtonStateDescription;
       self->_offerButtonStateDescription = @"download";
 
-      v63 = 0;
+      isShowingConfirmation = 0;
       v65 = 0;
       v24 = 0;
       v23 = 0;
@@ -1048,13 +1048,13 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v23 = [objc_opt_class() localizedTitleForItemState:v13 clientContext:v14];
-    v40 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    v23 = [objc_opt_class() localizedTitleForItemState:stateCopy clientContext:contextCopy];
+    buttonDescriptor6 = [(SKUIItemOfferButton *)self buttonDescriptor];
     v66 = 1;
-    [v40 setShouldSuppressEnabled:1];
+    [buttonDescriptor6 setShouldSuppressEnabled:1];
 
-    v41 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    [v41 setShowsUniversal:0];
+    buttonDescriptor7 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    [buttonDescriptor7 setShowsUniversal:0];
 
     [(SKUIItemOfferButton *)self setEnabled:0];
     v42 = self->_offerButtonStateDescription;
@@ -1063,13 +1063,13 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v22 = v16;
-  if ((v16 & 0x10) == 0)
+  v22 = state;
+  if ((state & 0x10) == 0)
   {
-    v23 = v11;
-    v24 = v12;
-    v63 = [(SKUIItemOfferButton *)self isShowingConfirmation];
-    v17 = [v24 length] != 0;
+    v23 = titleCopy;
+    v24 = confirmationTitleCopy;
+    isShowingConfirmation = [(SKUIItemOfferButton *)self isShowingConfirmation];
+    supportsPlayButton = [v24 length] != 0;
     v25 = self->_offerButtonStateDescription;
     self->_offerButtonStateDescription = @"buy";
 
@@ -1083,10 +1083,10 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v23 = [objc_opt_class() localizedTitleForItemState:v13 clientContext:v14];
-  if (v14)
+  v23 = [objc_opt_class() localizedTitleForItemState:stateCopy clientContext:contextCopy];
+  if (contextCopy)
   {
-    [v14 localizedStringForKey:@"ITEM_OFFER_BUTTON_INSTALL_APP"];
+    [contextCopy localizedStringForKey:@"ITEM_OFFER_BUTTON_INSTALL_APP"];
   }
 
   else
@@ -1097,11 +1097,11 @@ LABEL_19:
   v60 = self->_offerButtonStateDescription;
   self->_offerButtonStateDescription = @"download";
 
-  v63 = 0;
+  isShowingConfirmation = 0;
   v65 = 0;
   v61 = 0;
   v26 = 0;
-  v17 = 1;
+  supportsPlayButton = 1;
   v66 = 1;
   v21 = v22;
   v24 = v59;
@@ -1109,17 +1109,17 @@ LABEL_24:
   self->_downloadRestores = (v21 & 0x400) != 0;
   v43 = v21;
   [(SKUIItemOfferButton *)self setFillStyle:v26, v61];
-  [(SKUIItemOfferButton *)self setShowsConfirmationState:v17];
-  v44 = [(SKUIItemOfferButton *)self isShowingConfirmation];
-  v45 = [(SKUIItemOfferButton *)self progressType];
+  [(SKUIItemOfferButton *)self setShowsConfirmationState:supportsPlayButton];
+  isShowingConfirmation2 = [(SKUIItemOfferButton *)self isShowingConfirmation];
+  progressType = [(SKUIItemOfferButton *)self progressType];
   v46 = &OBJC_IVAR___SKUIItemOfferButton__titleAttributedString;
-  if (v44)
+  if (isShowingConfirmation2)
   {
     v46 = &OBJC_IVAR___SKUIItemOfferButton__confirmationTitleAttributedString;
   }
 
   v47 = *(&self->super.super.super.super.isa + *v46);
-  v48 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
   v67 = v24;
   [(SKUIItemOfferButton *)self setConfirmationTitle:v24];
   v49 = v23;
@@ -1137,36 +1137,36 @@ LABEL_24:
     }
   }
 
-  if (v65 == v45)
+  if (v65 == progressType)
   {
-    [(SKUIItemOfferButton *)self setShowingConfirmation:v63 animated:v68];
-    if (v63 != v44)
+    [(SKUIItemOfferButton *)self setShowingConfirmation:isShowingConfirmation animated:animatedCopy];
+    if (isShowingConfirmation != isShowingConfirmation2)
     {
-      LOBYTE(v50) = !v68;
+      LOBYTE(v50) = !animatedCopy;
       v51 = v71;
 LABEL_38:
       v53 = v69;
-      v52 = v12;
-      v54 = v14;
+      v52 = confirmationTitleCopy;
+      v54 = contextCopy;
       goto LABEL_48;
     }
 
-    v55 = [(UIImageView *)self->_imageView image];
+    image2 = [(UIImageView *)self->_imageView image];
 
     v51 = v71;
-    if (v55 != v48)
+    if (image2 != image)
     {
       LOBYTE(v50) = 1;
       goto LABEL_38;
     }
 
     v56 = &OBJC_IVAR___SKUIItemOfferButton__titleAttributedString;
-    if (v63)
+    if (isShowingConfirmation)
     {
       v56 = &OBJC_IVAR___SKUIItemOfferButton__confirmationTitleAttributedString;
     }
 
-    v54 = v14;
+    v54 = contextCopy;
     if (v47 == *(&self->super.super.super.super.isa + *v56))
     {
       LOBYTE(v50) = 0;
@@ -1183,17 +1183,17 @@ LABEL_38:
 
   else
   {
-    [(SKUIItemOfferButton *)self setProgressType:v65 animated:v68];
-    v52 = v12;
+    [(SKUIItemOfferButton *)self setProgressType:v65 animated:animatedCopy];
+    v52 = confirmationTitleCopy;
     v51 = v71;
-    v54 = v14;
+    v54 = contextCopy;
     v53 = v69;
-    if (v68)
+    if (animatedCopy)
     {
       LOBYTE(v50) = 0;
     }
 
-    else if (v45)
+    else if (progressType)
     {
       LOBYTE(v50) = v66;
     }
@@ -1209,111 +1209,111 @@ LABEL_48:
   return v50;
 }
 
-- (BOOL)setValuesUsingItemOffer:(id)a3 itemState:(id)a4 clientContext:(id)a5 animated:(BOOL)a6
+- (BOOL)setValuesUsingItemOffer:(id)offer itemState:(id)state clientContext:(id)context animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v10 buttonText];
-  v14 = [v10 confirmationText];
-  if (!v14)
+  animatedCopy = animated;
+  offerCopy = offer;
+  stateCopy = state;
+  contextCopy = context;
+  buttonText = [offerCopy buttonText];
+  confirmationText = [offerCopy confirmationText];
+  if (!confirmationText)
   {
-    [v10 price];
+    [offerCopy price];
     if (v15 == 0.0)
     {
-      if (v12)
+      if (contextCopy)
       {
-        [v12 localizedStringForKey:@"ITEM_OFFER_BUTTON_INSTALL_APP"];
+        [contextCopy localizedStringForKey:@"ITEM_OFFER_BUTTON_INSTALL_APP"];
       }
 
       else
       {
         [SKUIClientContext localizedStringForKey:@"ITEM_OFFER_BUTTON_INSTALL_APP" inBundles:0];
       }
-      v14 = ;
+      confirmationText = ;
     }
 
     else
     {
-      v14 = 0;
+      confirmationText = 0;
     }
   }
 
-  v16 = [(SKUIItemOfferButton *)self setTitle:v13 confirmationTitle:v14 itemState:v11 clientContext:v12 animated:v6];
+  v16 = [(SKUIItemOfferButton *)self setTitle:buttonText confirmationTitle:confirmationText itemState:stateCopy clientContext:contextCopy animated:animatedCopy];
 
   return v16;
 }
 
-- (BOOL)setValuesUsingBuyButtonDescriptor:(id)a3 itemState:(id)a4 clientContext:(id)a5 animated:(BOOL)a6
+- (BOOL)setValuesUsingBuyButtonDescriptor:(id)descriptor itemState:(id)state clientContext:(id)context animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [(SKUIItemOfferButton *)self setButtonDescriptor:v10];
-  v13 = [v10 buttonType];
-  if (v13 == 1)
+  animatedCopy = animated;
+  descriptorCopy = descriptor;
+  stateCopy = state;
+  contextCopy = context;
+  [(SKUIItemOfferButton *)self setButtonDescriptor:descriptorCopy];
+  buttonType = [descriptorCopy buttonType];
+  if (buttonType == 1)
   {
-    if (v11)
+    if (stateCopy)
     {
-      [(SKUIItemState *)v11 setState:[(SKUIItemState *)v11 state]| 8];
+      [(SKUIItemState *)stateCopy setState:[(SKUIItemState *)stateCopy state]| 8];
     }
 
     else
     {
-      v20 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:{objc_msgSend(v10, "itemIdentifier")}];
-      v11 = objc_alloc_init(SKUIItemState);
-      [(SKUIItemState *)v11 setItemIdentifier:v20];
+      v20 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:{objc_msgSend(descriptorCopy, "itemIdentifier")}];
+      stateCopy = objc_alloc_init(SKUIItemState);
+      [(SKUIItemState *)stateCopy setItemIdentifier:v20];
       v21 = [[SKUIStoreIdentifier alloc] initWithNumber:v20];
-      [(SKUIItemState *)v11 setStoreIdentifier:v21];
+      [(SKUIItemState *)stateCopy setStoreIdentifier:v21];
 
-      [(SKUIItemState *)v11 setState:8];
+      [(SKUIItemState *)stateCopy setState:8];
     }
 
     goto LABEL_15;
   }
 
-  if (!v11)
+  if (!stateCopy)
   {
 LABEL_15:
     v17 = 0;
     goto LABEL_16;
   }
 
-  v14 = v13;
-  v15 = [(SKUIItemState *)v11 state];
-  v16 = v15;
+  v14 = buttonType;
+  state = [(SKUIItemState *)stateCopy state];
+  v16 = state;
   v17 = 0;
-  if (v14 == 2 && v15)
+  if (v14 == 2 && state)
   {
-    v17 = [(SKUIItemState *)v11 activeStateIsPreview]^ 1;
+    v17 = [(SKUIItemState *)stateCopy activeStateIsPreview]^ 1;
   }
 
   v18 = v14 == 2;
-  if ((v18 ^ [(SKUIItemState *)v11 libraryContentFlags]))
+  if ((v18 ^ [(SKUIItemState *)stateCopy libraryContentFlags]))
   {
     v16 &= ~0x40uLL;
   }
 
-  if ((v18 ^ [(SKUIItemState *)v11 downloadContentFlags]))
+  if ((v18 ^ [(SKUIItemState *)stateCopy downloadContentFlags]))
   {
     v16 &= 0xFFFFFFFFFFFFFFFCLL;
   }
 
-  if ([(SKUIItemState *)v11 state]!= v16)
+  if ([(SKUIItemState *)stateCopy state]!= v16)
   {
-    v19 = [(SKUIItemState *)v11 copy];
+    v19 = [(SKUIItemState *)stateCopy copy];
     [(SKUIItemState *)v19 setState:v16];
 
-    v11 = v19;
+    stateCopy = v19;
   }
 
 LABEL_16:
   [(SKUIItemOfferButton *)self setHidden:v17];
-  v22 = [v10 buttonText];
-  v23 = [v10 confirmationText];
-  v24 = [(SKUIItemOfferButton *)self setTitle:v22 confirmationTitle:v23 itemState:v11 clientContext:v12 animated:v6];
+  buttonText = [descriptorCopy buttonText];
+  confirmationText = [descriptorCopy confirmationText];
+  v24 = [(SKUIItemOfferButton *)self setTitle:buttonText confirmationTitle:confirmationText itemState:stateCopy clientContext:contextCopy animated:animatedCopy];
 
   [(SKUIItemOfferButton *)self _reloadForCurrentState:0];
   return v24;
@@ -1321,33 +1321,33 @@ LABEL_16:
 
 - (BOOL)supportsPlayButton
 {
-  v2 = [(SKUIItemOfferButton *)self element];
-  v3 = [v2 parent];
-  v4 = [v3 attributes];
-  v5 = [v4 objectForKey:@"supportsPlayButton"];
-  v6 = [v5 BOOLValue];
+  element = [(SKUIItemOfferButton *)self element];
+  parent = [element parent];
+  attributes = [parent attributes];
+  v5 = [attributes objectForKey:@"supportsPlayButton"];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  if (![(SKUIItemOfferButton *)self isDisabledButSelectable:a3])
+  if (![(SKUIItemOfferButton *)self isDisabledButSelectable:touch])
   {
     [(SKUIItemOfferButton *)self _reloadForCurrentState:1];
-    v5 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v6 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v5];
+    buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+    v6 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor];
 
-    v7 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    [v7 setHighlighted:1];
+    buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    [buttonDescriptor2 setHighlighted:1];
 
-    v8 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v9 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v8];
+    buttonDescriptor3 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    v9 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor3];
 
-    v10 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v11 = [v10 progressType];
+    buttonDescriptor4 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    progressType = [buttonDescriptor4 progressType];
 
-    if (v11)
+    if (progressType)
     {
       [(SKUIItemOfferButton *)self _transitionFromProgress:v6 toProgress:v9 withDuration:0 completion:0.15];
     }
@@ -1371,23 +1371,23 @@ LABEL_16:
   return 1;
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   if (![(SKUIItemOfferButton *)self isDisabledButSelectable])
   {
-    v4 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v5 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v4];
+    buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+    v5 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor];
 
-    v6 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    [v6 setHighlighted:0];
+    buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    [buttonDescriptor2 setHighlighted:0];
 
-    v7 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v8 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v7];
+    buttonDescriptor3 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    v8 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor3];
 
-    v9 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v10 = [v9 progressType];
+    buttonDescriptor4 = [(SKUIItemOfferButton *)self buttonDescriptor];
+    progressType = [buttonDescriptor4 progressType];
 
-    if (v10)
+    if (progressType)
     {
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
@@ -1469,30 +1469,30 @@ uint64_t __47__SKUIItemOfferButton_cancelTrackingWithEvent___block_invoke_4(uint
   return result;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   if (![(SKUIItemOfferButton *)self isDisabledButSelectable])
   {
-    v6 = [(SKUIItemOfferButton *)self _touchInBounds:v5];
-    v7 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v8 = [v7 highlighted];
+    v6 = [(SKUIItemOfferButton *)self _touchInBounds:touchCopy];
+    buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+    highlighted = [buttonDescriptor highlighted];
 
-    if (v6 != v8)
+    if (v6 != highlighted)
     {
-      v9 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v10 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v9];
+      buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      v10 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor2];
 
-      v11 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      [v11 setHighlighted:v6];
+      buttonDescriptor3 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      [buttonDescriptor3 setHighlighted:v6];
 
-      v12 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v13 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v12];
+      buttonDescriptor4 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      v13 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor4];
 
-      v14 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v15 = [v14 progressType];
+      buttonDescriptor5 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      progressType = [buttonDescriptor5 progressType];
 
-      if (v15)
+      if (progressType)
       {
         [(SKUIItemOfferButton *)self _transitionFromProgress:v10 toProgress:v13 withDuration:0 completion:0.5];
       }
@@ -1517,22 +1517,22 @@ uint64_t __47__SKUIItemOfferButton_cancelTrackingWithEvent___block_invoke_4(uint
   return 1;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v7 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v6];
+  touchCopy = touch;
+  buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+  v7 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor];
 
-  v8 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  [v8 setHighlighted:0];
+  buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+  [buttonDescriptor2 setHighlighted:0];
 
-  v9 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v10 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v9];
+  buttonDescriptor3 = [(SKUIItemOfferButton *)self buttonDescriptor];
+  v10 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor3];
 
-  v11 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v12 = [v11 progressType];
+  buttonDescriptor4 = [(SKUIItemOfferButton *)self buttonDescriptor];
+  progressType = [buttonDescriptor4 progressType];
 
-  if (!v12 && ![(SKUIItemOfferButton *)self hasNonBorderedImage]&& ![(SKUIItemOfferButton *)self hasBorderedImage]&& ![(SKUIItemOfferButton *)self isDisabledButSelectable])
+  if (!progressType && ![(SKUIItemOfferButton *)self hasNonBorderedImage]&& ![(SKUIItemOfferButton *)self hasBorderedImage]&& ![(SKUIItemOfferButton *)self isDisabledButSelectable])
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -1542,16 +1542,16 @@ uint64_t __47__SKUIItemOfferButton_cancelTrackingWithEvent___block_invoke_4(uint
     [(SKUIItemOfferButton *)self _transitionFromTitle:v7 toTitle:v10 withDuration:v17 completion:0.25];
   }
 
-  if ([(SKUIItemOfferButton *)self _touchInBounds:v5])
+  if ([(SKUIItemOfferButton *)self _touchInBounds:touchCopy])
   {
     if ([(SKUIItemOfferButton *)self isDisabledButSelectable])
     {
-      v13 = [(SKUIItemOfferButton *)self element];
+      element = [(SKUIItemOfferButton *)self element];
 
-      if (v13)
+      if (element)
       {
-        v14 = [(SKUIItemOfferButton *)self element];
-        [v14 dispatchEvent:0x28280CC48 eventAttribute:0x28280CC68 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
+        element2 = [(SKUIItemOfferButton *)self element];
+        [element2 dispatchEvent:0x28280CC48 eventAttribute:0x28280CC68 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
       }
     }
 
@@ -1559,17 +1559,17 @@ uint64_t __47__SKUIItemOfferButton_cancelTrackingWithEvent___block_invoke_4(uint
     {
       if ([(SKUIItemOfferButton *)self progressType]|| [(SKUIItemOfferButton *)self hasNonBorderedImage]|| [(SKUIItemOfferButton *)self hasBorderedImage]|| [(SKUIItemOfferButton *)self isShowingConfirmation]|| ![(SKUIItemOfferButton *)self showsConfirmationState])
       {
-        v15 = self;
+        selfCopy2 = self;
         v16 = 0x20000;
       }
 
       else
       {
-        v15 = self;
+        selfCopy2 = self;
         v16 = 0x40000;
       }
 
-      [(SKUIItemOfferButton *)v15 sendActionsForControlEvents:v16];
+      [(SKUIItemOfferButton *)selfCopy2 sendActionsForControlEvents:v16];
     }
   }
 }
@@ -1584,28 +1584,28 @@ uint64_t __54__SKUIItemOfferButton_endTrackingWithTouch_withEvent___block_invoke
   return result;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v6 = [v5 shouldSuppressEnabled];
+  enabledCopy = enabled;
+  buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+  shouldSuppressEnabled = [buttonDescriptor shouldSuppressEnabled];
 
   v7.receiver = self;
   v7.super_class = SKUIItemOfferButton;
-  [(SKUIItemOfferButton *)&v7 setEnabled:v3 & ~v6];
+  [(SKUIItemOfferButton *)&v7 setEnabled:enabledCopy & ~shouldSuppressEnabled];
   [(SKUIItemOfferButton *)self setNeedsLayout];
 }
 
-- (BOOL)_touchInBounds:(id)a3
+- (BOOL)_touchInBounds:(id)bounds
 {
   v4 = MEMORY[0x277D75418];
-  v5 = a3;
-  v6 = [v4 currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  boundsCopy = bounds;
+  currentDevice = [v4 currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   [(SKUIItemOfferButton *)self bounds];
   v12 = -70.0;
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v12 = -25.0;
   }
@@ -1613,14 +1613,14 @@ uint64_t __54__SKUIItemOfferButton_endTrackingWithTouch_withEvent___block_invoke
   v13 = v12 + v8;
   v14 = v12 + v9;
   v15 = -140.0;
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v15 = -50.0;
   }
 
   v16 = v10 - v15;
   v17 = v11 - v15;
-  [v5 locationInView:self];
+  [boundsCopy locationInView:self];
   v19 = v18;
   v21 = v20;
 
@@ -1634,12 +1634,12 @@ uint64_t __54__SKUIItemOfferButton_endTrackingWithTouch_withEvent___block_invoke
   return CGRectContainsPoint(*&v22, *&v26);
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (self->_usesDrawRectPath)
   {
     [(SKUIItemOfferButton *)self frame];
@@ -1658,18 +1658,18 @@ uint64_t __54__SKUIItemOfferButton_endTrackingWithTouch_withEvent___block_invoke
   {
     v13.receiver = self;
     v13.super_class = SKUIItemOfferButton;
-    [(SKUIItemOfferButton *)&v13 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+    [(SKUIItemOfferButton *)&v13 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (!self->_usesDrawRectPath)
   {
     return;
   }
 
-  [(SKUIItemOfferButton *)self bounds:a3.origin.x];
+  [(SKUIItemOfferButton *)self bounds:rect.origin.x];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -1709,15 +1709,15 @@ uint64_t __54__SKUIItemOfferButton_endTrackingWithTouch_withEvent___block_invoke
       v23 = v20 * (v22 / v21);
       v24 = ceilf(v23);
       v25 = [(UIImage *)self->_borderedImage imageWithRenderingMode:2];
-      v26 = [MEMORY[0x277D759A0] mainScreen];
-      [v26 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v28 = v27;
       v45.width = v24;
       v45.height = v22;
       UIGraphicsBeginImageContextWithOptions(v45, 0, v28);
 
-      v29 = [(SKUIItemOfferButton *)self tintColor];
-      [v29 set];
+      tintColor = [(SKUIItemOfferButton *)self tintColor];
+      [tintColor set];
 
       [v25 drawInRect:{0.0, 0.0, v24, v22}];
       v30 = UIGraphicsGetImageFromCurrentImageContext();
@@ -1737,8 +1737,8 @@ uint64_t __54__SKUIItemOfferButton_endTrackingWithTouch_withEvent___block_invoke
         [MEMORY[0x277D75348] labelColor];
       }
       v40 = ;
-      v41 = [(SKUIItemOfferButton *)self traitCollection];
-      v44 = [v31 _cachedImageForAttributedTitle:0 titleStyle:titleStyle size:fillStyle fillStyle:0 universal:v40 tintColor:objc_msgSend(v41 interfaceStyle:{"userInterfaceStyle"), v11, v13}];
+      traitCollection = [(SKUIItemOfferButton *)self traitCollection];
+      v44 = [v31 _cachedImageForAttributedTitle:0 titleStyle:titleStyle size:fillStyle fillStyle:0 universal:v40 tintColor:objc_msgSend(traitCollection interfaceStyle:{"userInterfaceStyle"), v11, v13}];
 
       [(UIImage *)v44 drawAtPoint:v7, v9];
       goto LABEL_25;
@@ -1751,13 +1751,13 @@ uint64_t __54__SKUIItemOfferButton_endTrackingWithTouch_withEvent___block_invoke
     universal = self->_universal;
     if (universal)
     {
-      v3 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v39 = [v3 showsUniversal];
+      buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+      showsUniversal = [buttonDescriptor showsUniversal];
     }
 
     else
     {
-      v39 = 0;
+      showsUniversal = 0;
     }
 
     if ([(SKUIItemOfferButton *)self isEnabled])
@@ -1770,8 +1770,8 @@ uint64_t __54__SKUIItemOfferButton_endTrackingWithTouch_withEvent___block_invoke
       [MEMORY[0x277D75348] labelColor];
     }
     v42 = ;
-    v43 = [(SKUIItemOfferButton *)self traitCollection];
-    v44 = [v34 _cachedImageForAttributedTitle:titleAttributedString titleStyle:v36 size:v37 fillStyle:v39 universal:v42 tintColor:objc_msgSend(v43 interfaceStyle:{"userInterfaceStyle"), v11, v13}];
+    traitCollection2 = [(SKUIItemOfferButton *)self traitCollection];
+    v44 = [v34 _cachedImageForAttributedTitle:titleAttributedString titleStyle:v36 size:v37 fillStyle:showsUniversal universal:v42 tintColor:objc_msgSend(traitCollection2 interfaceStyle:{"userInterfaceStyle"), v11, v13}];
 
     if (universal)
     {
@@ -1788,9 +1788,9 @@ LABEL_25:
 
 - (void)didMoveToWindow
 {
-  v3 = [(SKUIItemOfferButton *)self window];
+  window = [(SKUIItemOfferButton *)self window];
 
-  if (v3)
+  if (window)
   {
     [(SKUIItemOfferButton *)self _reloadForCurrentState:0];
   }
@@ -1809,9 +1809,9 @@ LABEL_25:
   v10 = v9;
   if ([(SKUIItemOfferButton *)self isEnabled])
   {
-    v11 = [(SKUIItemOfferButton *)self isDisabledButSelectable];
+    isDisabledButSelectable = [(SKUIItemOfferButton *)self isDisabledButSelectable];
     v12 = 0.4;
-    if (!v11)
+    if (!isDisabledButSelectable)
     {
       v12 = 1.0;
     }
@@ -1846,9 +1846,9 @@ LABEL_25:
     [(UIImageView *)self->_universalImageView setFrame:3.0, 3.0];
   }
 
-  v17 = [(SKUIItemOfferButton *)self isShowingConfirmation];
+  isShowingConfirmation = [(SKUIItemOfferButton *)self isShowingConfirmation];
   v18 = &OBJC_IVAR___SKUIItemOfferButton__titleStyle;
-  if (v17)
+  if (isShowingConfirmation)
   {
     v18 = &OBJC_IVAR___SKUIItemOfferButton__confirmationTitleStyle;
   }
@@ -1874,7 +1874,7 @@ LABEL_25:
   if ([objc_opt_class() _sizeMattersForTitleStyle:v19])
   {
     v22 = &OBJC_IVAR___SKUIItemOfferButton__titleAttributedString;
-    if (v17)
+    if (isShowingConfirmation)
     {
       v22 = &OBJC_IVAR___SKUIItemOfferButton__confirmationTitleAttributedString;
     }
@@ -1902,24 +1902,24 @@ LABEL_25:
     CGRectGetHeight(v32);
     UIFloorToViewScale();
     v26 = v25;
-    v27 = [(UIView *)self->_borderView layer];
-    [v27 setCornerRadius:v26];
+    layer = [(UIView *)self->_borderView layer];
+    [layer setCornerRadius:v26];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  objc_storeStrong(&self->_backgroundColor, a3);
-  v5 = a3;
-  v6 = [MEMORY[0x277D75348] clearColor];
+  objc_storeStrong(&self->_backgroundColor, color);
+  colorCopy = color;
+  clearColor = [MEMORY[0x277D75348] clearColor];
   v7.receiver = self;
   v7.super_class = SKUIItemOfferButton;
-  [(SKUIItemOfferButton *)&v7 setBackgroundColor:v6];
+  [(SKUIItemOfferButton *)&v7 setBackgroundColor:clearColor];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   p_titleStyle = &self->_titleStyle;
   if (self->_titleStyle == 1)
   {
@@ -1931,11 +1931,11 @@ LABEL_25:
     v6 = 26.0;
   }
 
-  v7 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v8 = [v7 progressType];
+  buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+  progressType = [buttonDescriptor progressType];
 
   v9 = v6;
-  if (!v8)
+  if (!progressType)
   {
     if ([(SKUIItemOfferButton *)self hasNonBorderedImage])
     {
@@ -1961,9 +1961,9 @@ LABEL_10:
     }
 
     v13 = [(NSMutableAttributedString *)self->_titleAttributedString mutableCopy];
-    v14 = [(SKUIItemOfferButton *)self isShowingConfirmation];
+    isShowingConfirmation = [(SKUIItemOfferButton *)self isShowingConfirmation];
     p_confirmationTitleStyle = p_titleStyle;
-    if (v14)
+    if (isShowingConfirmation)
     {
       p_confirmationTitleStyle = &self->_confirmationTitleStyle;
     }
@@ -2032,17 +2032,17 @@ LABEL_33:
   v7.receiver = self;
   v7.super_class = SKUIItemOfferButton;
   [(SKUIItemOfferButton *)&v7 tintColorDidChange];
-  v3 = [(SKUIItemOfferButton *)self tintColor];
+  tintColor = [(SKUIItemOfferButton *)self tintColor];
   if (self->_cloudImage)
   {
-    v4 = [objc_opt_class() cloudImageWithTintColor:self->_cloudTintColor arrowTintColor:v3];
+    v4 = [objc_opt_class() cloudImageWithTintColor:self->_cloudTintColor arrowTintColor:tintColor];
     cloudImage = self->_cloudImage;
     self->_cloudImage = v4;
   }
 
   if (self->_universalImageView)
   {
-    v6 = [objc_opt_class() _universalPlusImageWithTintColor:v3];
+    v6 = [objc_opt_class() _universalPlusImageWithTintColor:tintColor];
     [(UIImageView *)self->_universalImageView setImage:v6];
   }
 
@@ -2050,7 +2050,7 @@ LABEL_33:
   [(SKUIItemOfferButton *)self setNeedsDisplay];
 }
 
-- (void)_cancelGestureAction:(id)a3
+- (void)_cancelGestureAction:(id)action
 {
   if ([(SKUIItemOfferButton *)self isShowingConfirmation])
   {
@@ -2060,13 +2060,13 @@ LABEL_33:
   [(SKUIItemOfferButton *)self _removeCancelGestureRecognizer];
 }
 
-+ (id)_cachedImageForAttributedTitle:(id)a3 titleStyle:(int64_t)a4 size:(CGSize)a5 fillStyle:(int64_t)a6 universal:(BOOL)a7 tintColor:(id)a8 interfaceStyle:(int64_t)a9
++ (id)_cachedImageForAttributedTitle:(id)title titleStyle:(int64_t)style size:(CGSize)size fillStyle:(int64_t)fillStyle universal:(BOOL)universal tintColor:(id)color interfaceStyle:(int64_t)interfaceStyle
 {
-  v11 = a7;
-  height = a5.height;
-  width = a5.width;
-  v16 = a3;
-  v17 = a8;
+  universalCopy = universal;
+  height = size.height;
+  width = size.width;
+  titleCopy = title;
+  colorCopy = color;
   if (!_cachedImageForAttributedTitle_titleStyle_size_fillStyle_universal_tintColor_interfaceStyle__cache)
   {
     v18 = objc_alloc_init(MEMORY[0x277CBEA78]);
@@ -2076,15 +2076,15 @@ LABEL_33:
     [_cachedImageForAttributedTitle_titleStyle_size_fillStyle_universal_tintColor_interfaceStyle__cache setCountLimit:200];
   }
 
-  v20 = [v16 hash];
-  v21 = [v17 hash];
+  v20 = [titleCopy hash];
+  v21 = [colorCopy hash];
   v22 = 1000;
-  if (!v11)
+  if (!universalCopy)
   {
     v22 = 0;
   }
 
-  v23 = height + 100000 * a4 + width + 10000 * a6 + v22 + 1000000 * a9;
+  v23 = height + 100000 * style + width + 10000 * fillStyle + v22 + 1000000 * interfaceStyle;
   v24 = v20 + v21;
   v25 = _cachedImageForAttributedTitle_titleStyle_size_fillStyle_universal_tintColor_interfaceStyle__cache;
   v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v23 + v20 + v21];
@@ -2092,7 +2092,7 @@ LABEL_33:
 
   if (!v27)
   {
-    v27 = [objc_opt_class() _imageForAttributedTitle:v16 titleStyle:a4 size:a6 fillStyle:v11 universal:v17 tintColor:{width, height}];
+    v27 = [objc_opt_class() _imageForAttributedTitle:titleCopy titleStyle:style size:fillStyle fillStyle:universalCopy universal:colorCopy tintColor:{width, height}];
     if (v27)
     {
       v28 = _cachedImageForAttributedTitle_titleStyle_size_fillStyle_universal_tintColor_interfaceStyle__cache;
@@ -2104,19 +2104,19 @@ LABEL_33:
   return v27;
 }
 
-+ (BOOL)canOpenItemForItemState:(id)a3 clientContext:(id)a4
++ (BOOL)canOpenItemForItemState:(id)state clientContext:(id)context
 {
-  if (([a3 state] & 0x1000) != 0)
+  if (([state state] & 0x1000) != 0)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCA8D8] mainBundle];
-    v5 = [v4 bundleIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v6 = [v5 isEqualToString:@"com.apple.MobileSMS"] ^ 1;
+    v6 = [bundleIdentifier isEqualToString:@"com.apple.MobileSMS"] ^ 1;
   }
 
   return v6;
@@ -2149,24 +2149,24 @@ void __46__SKUIItemOfferButton__defaultTitleAttributes__block_invoke()
   _defaultTitleAttributes_sDefaultAttributes = v2;
 }
 
-+ (id)_imageForAttributedTitle:(id)a3 titleStyle:(int64_t)a4 size:(CGSize)a5 fillStyle:(int64_t)a6 universal:(BOOL)a7 tintColor:(id)a8
++ (id)_imageForAttributedTitle:(id)title titleStyle:(int64_t)style size:(CGSize)size fillStyle:(int64_t)fillStyle universal:(BOOL)universal tintColor:(id)color
 {
-  v9 = a7;
-  height = a5.height;
-  width = a5.width;
-  v14 = a3;
-  v15 = a8;
-  v16 = [MEMORY[0x277D759A0] mainScreen];
-  [v16 scale];
+  universalCopy = universal;
+  height = size.height;
+  width = size.width;
+  titleCopy = title;
+  colorCopy = color;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v18 = v17;
   v57.width = width;
   v57.height = height;
   UIGraphicsBeginImageContextWithOptions(v57, 0, v18);
 
-  [v15 set];
-  if (a6)
+  [colorCopy set];
+  if (fillStyle)
   {
-    if (!v9)
+    if (!universalCopy)
     {
       goto LABEL_4;
     }
@@ -2183,7 +2183,7 @@ void __46__SKUIItemOfferButton__defaultTitleAttributes__block_invoke()
   [v48 setLineWidth:1.0];
   [v48 stroke];
 
-  if (v9)
+  if (universalCopy)
   {
 LABEL_3:
     v19 = MEMORY[0x277D755B8];
@@ -2203,15 +2203,15 @@ LABEL_3:
   }
 
 LABEL_4:
-  v26 = [MEMORY[0x277D759A0] mainScreen];
-  [v26 scale];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 scale];
   v28 = v27;
 
-  if (v14)
+  if (titleCopy)
   {
-    v29 = [v14 mutableCopy];
-    [v29 addAttribute:*MEMORY[0x277D740C0] value:v15 range:{0, objc_msgSend(v29, "length")}];
-    if (a4 == 2)
+    v29 = [titleCopy mutableCopy];
+    [v29 addAttribute:*MEMORY[0x277D740C0] value:colorCopy range:{0, objc_msgSend(v29, "length")}];
+    if (style == 2)
     {
       v30 = objc_alloc_init(MEMORY[0x277D74260]);
       [v30 setCachesLayout:1];
@@ -2267,7 +2267,7 @@ LABEL_4:
     }
   }
 
-  if (a6 == 1)
+  if (fillStyle == 1)
   {
     v51 = [MEMORY[0x277D75208] _bezierPathWithArcRoundedRect:0.0 cornerRadius:{0.0, width, height, 3.0}];
     [v51 setLineWidth:0.0];
@@ -2280,12 +2280,12 @@ LABEL_4:
   return v52;
 }
 
-+ (CGSize)_titleSizeThatFitsForSize:(CGSize)a3 titleStyle:(int64_t)a4 mutableAttributedString:(id)a5
++ (CGSize)_titleSizeThatFitsForSize:(CGSize)size titleStyle:(int64_t)style mutableAttributedString:(id)string
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v40[1] = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  stringCopy = string;
   if (!_titleSizeThatFitsForSize_titleStyle_mutableAttributedString__cache)
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEA78]);
@@ -2295,7 +2295,7 @@ LABEL_4:
     [_titleSizeThatFitsForSize_titleStyle_mutableAttributedString__cache setCountLimit:200];
   }
 
-  v12 = [a1 _sizeMattersForTitleStyle:a4];
+  v12 = [self _sizeMattersForTitleStyle:style];
   v13 = MEMORY[0x277CCACA8];
   if (v12)
   {
@@ -2309,29 +2309,29 @@ LABEL_4:
     v14 = &stru_2827FFAC8;
   }
 
-  v15 = [v9 string];
-  v16 = [v13 stringWithFormat:@"%@:%td%@", v14, a4, v15];
+  string = [stringCopy string];
+  v16 = [v13 stringWithFormat:@"%@:%td%@", v14, style, string];
 
   if (v12)
   {
   }
 
-  if (a4 == 2)
+  if (style == 2)
   {
     v17 = [MEMORY[0x277D74300] boldSystemFontOfSize:13.0];
     v18 = [MEMORY[0x277D74300] systemFontOfSize:11.0 weight:*MEMORY[0x277D74410]];
-    v19 = [v9 length];
+    v19 = [stringCopy length];
     v20 = *MEMORY[0x277D740A8];
     v39 = *MEMORY[0x277D740A8];
     v40[0] = v17;
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
-    [v9 addAttributes:v21 range:{0, v19}];
+    [stringCopy addAttributes:v21 range:{0, v19}];
 
     v22 = objc_alloc_init(MEMORY[0x277D74260]);
     [v22 setCachesLayout:1];
     [v22 setMaximumNumberOfLines:1];
     [v22 setWrapsForTruncationMode:0];
-    [v9 boundingRectWithSize:1 options:v22 context:{1.79769313e308, 1.79769313e308}];
+    [stringCopy boundingRectWithSize:1 options:v22 context:{1.79769313e308, 1.79769313e308}];
     if (v23 > 70.0)
     {
       [v22 setMaximumNumberOfLines:0];
@@ -2339,9 +2339,9 @@ LABEL_4:
       v37 = v20;
       v38 = v18;
       v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
-      [v9 addAttributes:v25 range:{0, v19}];
+      [stringCopy addAttributes:v25 range:{0, v19}];
 
-      [v9 boundingRectWithSize:1 options:v22 context:{45.0, 1.79769313e308}];
+      [stringCopy boundingRectWithSize:1 options:v22 context:{45.0, 1.79769313e308}];
       v27 = v26;
       v29 = v28;
       if ([v22 numberOfLineFragments] < 3)
@@ -2352,7 +2352,7 @@ LABEL_13:
       }
 
       [v22 setMaximumNumberOfLines:2];
-      [v9 boundingRectWithSize:1 options:v22 context:{95.0, 1.79769313e308}];
+      [stringCopy boundingRectWithSize:1 options:v22 context:{95.0, 1.79769313e308}];
     }
 
     v27 = v23;
@@ -2371,7 +2371,7 @@ LABEL_13:
 
   else
   {
-    [v9 size];
+    [stringCopy size];
     v27 = v33;
     v29 = v34;
     v17 = [MEMORY[0x277CCAE60] valueWithCGSize:?];
@@ -2387,14 +2387,14 @@ LABEL_17:
   return result;
 }
 
-+ (id)_universalPlusImageWithTintColor:(id)a3
++ (id)_universalPlusImageWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
+  colorCopy = color;
+  v5 = colorCopy;
   v6 = _universalPlusImageWithTintColor__sImage;
   if (_universalPlusImageWithTintColor__sImage)
   {
-    v7 = _universalPlusImageWithTintColor__sLastTintColor == v4;
+    v7 = _universalPlusImageWithTintColor__sLastTintColor == colorCopy;
   }
 
   else
@@ -2414,7 +2414,7 @@ LABEL_17:
     v13 = _universalPlusImageWithTintColor__sImage;
     _universalPlusImageWithTintColor__sImage = v12;
 
-    objc_storeStrong(&_universalPlusImageWithTintColor__sLastTintColor, a3);
+    objc_storeStrong(&_universalPlusImageWithTintColor__sLastTintColor, color);
     v6 = _universalPlusImageWithTintColor__sImage;
   }
 
@@ -2423,25 +2423,25 @@ LABEL_17:
   return v6;
 }
 
-+ (id)playTintColorForBackgroundColor:(id)a3
++ (id)playTintColorForBackgroundColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   if (!playTintColorForBackgroundColor__sDarkBackgroundCloudColor)
   {
-    v4 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
     v5 = playTintColorForBackgroundColor__sDarkBackgroundCloudColor;
-    playTintColorForBackgroundColor__sDarkBackgroundCloudColor = v4;
+    playTintColorForBackgroundColor__sDarkBackgroundCloudColor = labelColor;
   }
 
   v6 = &SKUIViewElementFontWithStyle_sTextStyleMap;
   if (!playTintColorForBackgroundColor__sLightBackgroundCloudColor)
   {
-    v7 = [MEMORY[0x277D75348] labelColor];
+    labelColor2 = [MEMORY[0x277D75348] labelColor];
     v8 = playTintColorForBackgroundColor__sLightBackgroundCloudColor;
-    playTintColorForBackgroundColor__sLightBackgroundCloudColor = v7;
+    playTintColorForBackgroundColor__sLightBackgroundCloudColor = labelColor2;
   }
 
-  v9 = SKUIColorSchemeStyleForColor(v3);
+  v9 = SKUIColorSchemeStyleForColor(colorCopy);
   if (v9 <= 3)
   {
     v6 = *off_278200038[v9];
@@ -2450,14 +2450,14 @@ LABEL_17:
   return v6;
 }
 
-+ (id)playImageWithTintColor:(id)a3
++ (id)playImageWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
+  colorCopy = color;
+  v5 = colorCopy;
   v6 = playImageWithTintColor__sUniversalPlayImage;
   if (playImageWithTintColor__sUniversalPlayImage)
   {
-    v7 = playImageWithTintColor__sLastPlayTintColor == v4;
+    v7 = playImageWithTintColor__sLastPlayTintColor == colorCopy;
   }
 
   else
@@ -2477,7 +2477,7 @@ LABEL_17:
     v13 = playImageWithTintColor__sUniversalPlayImage;
     playImageWithTintColor__sUniversalPlayImage = v12;
 
-    objc_storeStrong(&playImageWithTintColor__sLastPlayTintColor, a3);
+    objc_storeStrong(&playImageWithTintColor__sLastPlayTintColor, color);
     v6 = playImageWithTintColor__sUniversalPlayImage;
   }
 
@@ -2486,14 +2486,14 @@ LABEL_17:
   return v6;
 }
 
-+ (id)playHighlightImageWithTintColor:(id)a3
++ (id)playHighlightImageWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = v4;
+  colorCopy = color;
+  v5 = colorCopy;
   v6 = playHighlightImageWithTintColor__sUniversalPlayHighlightImage;
   if (playHighlightImageWithTintColor__sUniversalPlayHighlightImage)
   {
-    v7 = playHighlightImageWithTintColor__sLastPlayHighlightTintColor == v4;
+    v7 = playHighlightImageWithTintColor__sLastPlayHighlightTintColor == colorCopy;
   }
 
   else
@@ -2515,7 +2515,7 @@ LABEL_17:
     v15 = playHighlightImageWithTintColor__sUniversalPlayHighlightImage;
     playHighlightImageWithTintColor__sUniversalPlayHighlightImage = v14;
 
-    objc_storeStrong(&playHighlightImageWithTintColor__sLastPlayHighlightTintColor, a3);
+    objc_storeStrong(&playHighlightImageWithTintColor__sLastPlayHighlightTintColor, color);
     v6 = playHighlightImageWithTintColor__sUniversalPlayHighlightImage;
   }
 
@@ -2524,12 +2524,12 @@ LABEL_17:
   return v6;
 }
 
-+ (id)_imageForProgressType:(int64_t)a3
++ (id)_imageForProgressType:(int64_t)type
 {
   v3 = 0;
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v4 = &_imageForProgressType__sPausedImage;
       v5 = _imageForProgressType__sPausedImage;
@@ -2542,7 +2542,7 @@ LABEL_17:
 
     else
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         goto LABEL_16;
       }
@@ -2566,9 +2566,9 @@ LABEL_14:
 
   else
   {
-    if (a3 != 2)
+    if (type != 2)
     {
-      if (a3 != 3)
+      if (type != 3)
       {
         goto LABEL_16;
       }
@@ -2600,14 +2600,14 @@ LABEL_16:
   return v3;
 }
 
-+ (UIEdgeInsets)_imageInsetsForProgressType:(int64_t)a3
++ (UIEdgeInsets)_imageInsetsForProgressType:(int64_t)type
 {
-  if (a3 >= 5)
+  if (type >= 5)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
-      v9 = [MEMORY[0x277D759A0] mainScreen];
-      [v9 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       v4 = 1.0;
       v3 = 1.0 / v10;
 
@@ -2616,7 +2616,7 @@ LABEL_16:
       goto LABEL_3;
     }
 
-    if (a3 != 6)
+    if (type != 6)
     {
       goto LABEL_3;
     }
@@ -2636,9 +2636,9 @@ LABEL_3:
   return result;
 }
 
-+ (id)_basicAnimationWithKeyPath:(id)a3
++ (id)_basicAnimationWithKeyPath:(id)path
 {
-  v3 = [MEMORY[0x277CD9E10] animationWithKeyPath:a3];
+  v3 = [MEMORY[0x277CD9E10] animationWithKeyPath:path];
   [v3 setFillMode:*MEMORY[0x277CDA238]];
   [v3 setRemovedOnCompletion:0];
   UIAnimationDragCoefficient();
@@ -2648,9 +2648,9 @@ LABEL_3:
   return v3;
 }
 
-- (id)_buttonPropertiesForState:(id)a3
+- (id)_buttonPropertiesForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([(SKUIItemOfferButton *)self isEnabled])
   {
     v5 = 1.0;
@@ -2672,24 +2672,24 @@ LABEL_3:
   v59.size.width = width;
   v59.size.height = height;
   CGRectGetHeight(v59);
-  v56 = [MEMORY[0x277D75348] clearColor];
-  v10 = [(SKUIItemOfferButton *)self tintColor];
-  [v10 alphaComponent];
-  confirmationColor = [v10 colorWithAlphaComponent:v11 * self->_borderColorAlphaMultiplier];
-  v13 = [v4 progressType];
-  if (v13)
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tintColor = [(SKUIItemOfferButton *)self tintColor];
+  [tintColor alphaComponent];
+  confirmationColor = [tintColor colorWithAlphaComponent:v11 * self->_borderColorAlphaMultiplier];
+  progressType = [stateCopy progressType];
+  if (progressType)
   {
     v14 = confirmationColor;
-    v15 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v16 = [v15 progressType];
+    buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+    progressType2 = [buttonDescriptor progressType];
 
-    if (v16 == 1)
+    if (progressType2 == 1)
     {
       UIFloorToViewScale();
       v18 = v17;
       v49 = 0;
       v50 = 0;
-      v55 = 0;
+      showingConfirmation2 = 0;
       v19 = 0;
       confirmationTitleStyle = 0;
       v54 = 0;
@@ -2702,15 +2702,15 @@ LABEL_3:
 
     else
     {
-      v24 = [(SKUIItemOfferButton *)self buttonDescriptor];
-      v25 = [v24 progressType];
+      buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+      progressType3 = [buttonDescriptor2 progressType];
 
       v22 = 1.0;
-      if (v25 == 6)
+      if (progressType3 == 6)
       {
         v48 = 0;
         v49 = 0;
-        v55 = 0;
+        showingConfirmation2 = 0;
         v19 = 0;
         confirmationTitleStyle = 0;
         v54 = 0;
@@ -2725,7 +2725,7 @@ LABEL_3:
       {
         UIFloorToViewScale();
         v18 = v26;
-        v55 = 0;
+        showingConfirmation2 = 0;
         v19 = 0;
         v49 = 0x100000000;
         confirmationTitleStyle = 0;
@@ -2753,7 +2753,7 @@ LABEL_3:
     v21 = image;
     v48 = 0;
     v49 = 0;
-    v55 = 0;
+    showingConfirmation2 = 0;
     v19 = 0;
     confirmationTitleStyle = 0;
     v54 = 0;
@@ -2769,7 +2769,7 @@ LABEL_3:
     if ([(SKUIItemOfferButton *)self hasBorderedImage])
     {
       v50 = self->_borderedImage;
-      v55 = 0;
+      showingConfirmation2 = 0;
       v19 = 0;
       v48 = 0;
       confirmationTitleStyle = 0;
@@ -2783,16 +2783,16 @@ LABEL_3:
       goto LABEL_17;
     }
 
-    v37 = [v4 showingConfirmation];
+    showingConfirmation = [stateCopy showingConfirmation];
     v38 = &OBJC_IVAR___SKUIItemOfferButton__titleAttributedString;
-    if (v37)
+    if (showingConfirmation)
     {
       v38 = &OBJC_IVAR___SKUIItemOfferButton__confirmationTitleAttributedString;
     }
 
     v39 = *(&self->super.super.super.super.isa + *v38);
     v40 = confirmationColor;
-    if ([v4 showingConfirmation])
+    if ([stateCopy showingConfirmation])
     {
       confirmationColor = self->_confirmationColor;
     }
@@ -2800,8 +2800,8 @@ LABEL_3:
     v41 = confirmationColor;
 
     confirmationColor = v41;
-    v20 = ([v4 showingConfirmation] & 1) == 0 && objc_msgSend(v4, "showsUniversal") && self->_universal;
-    v55 = [v4 showingConfirmation];
+    v20 = ([stateCopy showingConfirmation] & 1) == 0 && objc_msgSend(stateCopy, "showsUniversal") && self->_universal;
+    showingConfirmation2 = [stateCopy showingConfirmation];
     titleStyle = self->_titleStyle;
     confirmationTitleStyle = self->_confirmationTitleStyle;
     fillStyle = self->_fillStyle;
@@ -2818,7 +2818,7 @@ LABEL_3:
       v50 = 0;
       LODWORD(v49) = 1;
       v22 = 0.0;
-      v56 = confirmationColor;
+      clearColor = confirmationColor;
     }
 
     else
@@ -2832,7 +2832,7 @@ LABEL_3:
       else
       {
         HIDWORD(v49) = [v39 length] != 0;
-        if ([v4 showingConfirmation])
+        if ([stateCopy showingConfirmation])
         {
           v46 = confirmationColor;
           v47 = self->_backgroundColor;
@@ -2842,7 +2842,7 @@ LABEL_3:
           v21 = 0;
           v50 = 0;
           LODWORD(v49) = 1;
-          v56 = v47;
+          clearColor = v47;
           confirmationColor = v46;
           goto LABEL_17;
         }
@@ -2857,15 +2857,15 @@ LABEL_3:
   }
 
 LABEL_17:
-  v51 = v10;
-  if ([v4 highlighted])
+  v51 = tintColor;
+  if ([stateCopy highlighted])
   {
-    if (v13 || v21 || (v27 = self->_fillStyle, v27 == 2))
+    if (progressType || v21 || (v27 = self->_fillStyle, v27 == 2))
     {
       v28 = v21;
       v29 = v20;
-      v35 = v4;
-      v36 = v56;
+      v35 = stateCopy;
+      v36 = clearColor;
       v32 = confirmationColor;
       v5 = 0.200000003;
     }
@@ -2876,7 +2876,7 @@ LABEL_17:
       v29 = v20;
       if (v27 == 1)
       {
-        SKUIColorByAdjustingBrightness(v56, -0.2);
+        SKUIColorByAdjustingBrightness(clearColor, -0.2);
         v31 = v30 = confirmationColor;
 
         v32 = v31;
@@ -2894,7 +2894,7 @@ LABEL_17:
         v19 = v42;
       }
 
-      v35 = v4;
+      v35 = stateCopy;
 
       v36 = v32;
       confirmationColor = v33;
@@ -2905,8 +2905,8 @@ LABEL_17:
   {
     v28 = v21;
     v29 = v20;
-    v35 = v4;
-    v36 = v56;
+    v35 = stateCopy;
+    v36 = clearColor;
     v32 = confirmationColor;
   }
 
@@ -2930,27 +2930,27 @@ LABEL_17:
   [(SKUIItemOfferButtonProperties *)v43 setProgressIndeterminate:HIDWORD(v48)];
   [(SKUIItemOfferButtonProperties *)v43 setProgress:self->_progress];
   [(SKUIItemOfferButtonProperties *)v43 setAlpha:v5];
-  [(SKUIItemOfferButtonProperties *)v43 setCancelRecognizer:v55];
+  [(SKUIItemOfferButtonProperties *)v43 setCancelRecognizer:showingConfirmation2];
   [(SKUIItemOfferButtonProperties *)v43 setRestores:self->_downloadRestores];
 
   return v43;
 }
 
-- (id)_imageForProgressType:(int64_t)a3
+- (id)_imageForProgressType:(int64_t)type
 {
   centerImageProvider = self->_centerImageProvider;
-  if (!centerImageProvider || (centerImageProvider[2](centerImageProvider, self, a3), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!centerImageProvider || (centerImageProvider[2](centerImageProvider, self, type), (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v6 = [objc_opt_class() _imageForProgressType:a3];
+    v6 = [objc_opt_class() _imageForProgressType:type];
   }
 
   return v6;
 }
 
-- (double)_horizontalInsetForTitleStyle:(int64_t)a3
+- (double)_horizontalInsetForTitleStyle:(int64_t)style
 {
   result = 10.0;
-  if (a3 == 2)
+  if (style == 2)
   {
     return 7.0;
   }
@@ -2958,16 +2958,16 @@ LABEL_17:
   return result;
 }
 
-- (void)_transitionFromBorderedImage:(id)a3 toTitle:(id)a4 withDuration:(double)a5 completion:(id)a6
+- (void)_transitionFromBorderedImage:(id)image toTitle:(id)title withDuration:(double)duration completion:(id)completion
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [(UIView *)self->_borderView layer];
-  v12 = [v9 borderCompositingFilter];
-  [v11 setCompositingFilter:v12];
+  titleCopy = title;
+  completionCopy = completion;
+  layer = [(UIView *)self->_borderView layer];
+  borderCompositingFilter = [titleCopy borderCompositingFilter];
+  [layer setCompositingFilter:borderCompositingFilter];
 
-  [(SKUIItemOfferButton *)self _adjustViewOrderingForProperties:v9];
-  if ([v9 universal])
+  [(SKUIItemOfferButton *)self _adjustViewOrderingForProperties:titleCopy];
+  if ([titleCopy universal])
   {
     [(SKUIItemOfferButton *)self _insertUniversalView];
   }
@@ -2985,23 +2985,23 @@ LABEL_17:
   v26[2] = __84__SKUIItemOfferButton__transitionFromBorderedImage_toTitle_withDuration_completion___block_invoke;
   v26[3] = &unk_2781F80C8;
   v26[4] = self;
-  v27 = v9;
+  v27 = titleCopy;
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __84__SKUIItemOfferButton__transitionFromBorderedImage_toTitle_withDuration_completion___block_invoke_2;
   v23 = &unk_2781FA9D8;
-  v24 = self;
-  v25 = v10;
-  v15 = v10;
-  v16 = v9;
-  [v14 animateWithDuration:7 delay:v26 options:&v20 animations:a5 completion:0.0];
-  v17 = [objc_opt_class() _basicAnimationWithKeyPath:{@"borderColor", v20, v21, v22, v23, v24}];
-  [v17 setDuration:a5];
-  v18 = [v16 borderColor];
-  [v17 setToValue:{objc_msgSend(v18, "CGColor")}];
+  selfCopy = self;
+  v25 = completionCopy;
+  v15 = completionCopy;
+  v16 = titleCopy;
+  [v14 animateWithDuration:7 delay:v26 options:&v20 animations:duration completion:0.0];
+  v17 = [objc_opt_class() _basicAnimationWithKeyPath:{@"borderColor", v20, v21, v22, v23, selfCopy}];
+  [v17 setDuration:duration];
+  borderColor = [v16 borderColor];
+  [v17 setToValue:{objc_msgSend(borderColor, "CGColor")}];
 
-  v19 = [(UIView *)self->_borderView layer];
-  [v19 addAnimation:v17 forKey:@"borderColor"];
+  layer2 = [(UIView *)self->_borderView layer];
+  [layer2 addAnimation:v17 forKey:@"borderColor"];
 }
 
 uint64_t __84__SKUIItemOfferButton__transitionFromBorderedImage_toTitle_withDuration_completion___block_invoke(uint64_t a1)
@@ -3040,20 +3040,20 @@ uint64_t __84__SKUIItemOfferButton__transitionFromBorderedImage_toTitle_withDura
   return [v3 _sendDidAnimate];
 }
 
-- (void)_transitionFromTitle:(id)a3 toTitle:(id)a4 withDuration:(double)a5 completion:(id)a6
+- (void)_transitionFromTitle:(id)title toTitle:(id)toTitle withDuration:(double)duration completion:(id)completion
 {
-  v9 = a4;
-  v10 = a6;
+  toTitleCopy = toTitle;
+  completionCopy = completion;
   titleLabel = self->_titleLabel;
-  v12 = [v9 attributedText];
-  [(UILabel *)titleLabel setAttributedText:v12];
+  attributedText = [toTitleCopy attributedText];
+  [(UILabel *)titleLabel setAttributedText:attributedText];
 
-  v13 = [(UIView *)self->_borderView layer];
-  v14 = [v9 borderCompositingFilter];
-  [v13 setCompositingFilter:v14];
+  layer = [(UIView *)self->_borderView layer];
+  borderCompositingFilter = [toTitleCopy borderCompositingFilter];
+  [layer setCompositingFilter:borderCompositingFilter];
 
-  [(SKUIItemOfferButton *)self _adjustViewOrderingForProperties:v9];
-  if ([v9 universal])
+  [(SKUIItemOfferButton *)self _adjustViewOrderingForProperties:toTitleCopy];
+  if ([toTitleCopy universal])
   {
     [(SKUIItemOfferButton *)self _insertUniversalView];
   }
@@ -3071,23 +3071,23 @@ uint64_t __84__SKUIItemOfferButton__transitionFromBorderedImage_toTitle_withDura
   v28[2] = __76__SKUIItemOfferButton__transitionFromTitle_toTitle_withDuration_completion___block_invoke;
   v28[3] = &unk_2781F80C8;
   v28[4] = self;
-  v29 = v9;
+  v29 = toTitleCopy;
   v22 = MEMORY[0x277D85DD0];
   v23 = 3221225472;
   v24 = __76__SKUIItemOfferButton__transitionFromTitle_toTitle_withDuration_completion___block_invoke_2;
   v25 = &unk_2781FA9D8;
-  v26 = self;
-  v27 = v10;
-  v17 = v10;
-  v18 = v9;
-  [v16 animateWithDuration:7 delay:v28 options:&v22 animations:a5 completion:0.0];
-  v19 = [objc_opt_class() _basicAnimationWithKeyPath:{@"borderColor", v22, v23, v24, v25, v26}];
-  [v19 setDuration:a5];
-  v20 = [v18 borderColor];
-  [v19 setToValue:{objc_msgSend(v20, "CGColor")}];
+  selfCopy = self;
+  v27 = completionCopy;
+  v17 = completionCopy;
+  v18 = toTitleCopy;
+  [v16 animateWithDuration:7 delay:v28 options:&v22 animations:duration completion:0.0];
+  v19 = [objc_opt_class() _basicAnimationWithKeyPath:{@"borderColor", v22, v23, v24, v25, selfCopy}];
+  [v19 setDuration:duration];
+  borderColor = [v18 borderColor];
+  [v19 setToValue:{objc_msgSend(borderColor, "CGColor")}];
 
-  v21 = [(UIView *)self->_borderView layer];
-  [v21 addAnimation:v19 forKey:@"borderColor"];
+  layer2 = [(UIView *)self->_borderView layer];
+  [layer2 addAnimation:v19 forKey:@"borderColor"];
 }
 
 uint64_t __76__SKUIItemOfferButton__transitionFromTitle_toTitle_withDuration_completion___block_invoke(uint64_t a1)
@@ -3121,13 +3121,13 @@ uint64_t __76__SKUIItemOfferButton__transitionFromTitle_toTitle_withDuration_com
   return [v3 _sendDidAnimate];
 }
 
-- (void)_transitionFromImage:(id)a3 toImage:(id)a4 withDuration:(double)a5 completion:(id)a6
+- (void)_transitionFromImage:(id)image toImage:(id)toImage withDuration:(double)duration completion:(id)completion
 {
-  v9 = a4;
-  v10 = a6;
+  toImageCopy = toImage;
+  completionCopy = completion;
   imageView = self->_imageView;
-  v12 = [v9 image];
-  [(UIImageView *)imageView setImage:v12];
+  image = [toImageCopy image];
+  [(UIImageView *)imageView setImage:image];
 
   v13 = MEMORY[0x277D75D18];
   v18[0] = MEMORY[0x277D85DD0];
@@ -3135,16 +3135,16 @@ uint64_t __76__SKUIItemOfferButton__transitionFromTitle_toTitle_withDuration_com
   v18[2] = __76__SKUIItemOfferButton__transitionFromImage_toImage_withDuration_completion___block_invoke;
   v18[3] = &unk_2781F80C8;
   v18[4] = self;
-  v19 = v9;
+  v19 = toImageCopy;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __76__SKUIItemOfferButton__transitionFromImage_toImage_withDuration_completion___block_invoke_2;
   v16[3] = &unk_2781FA9D8;
   v16[4] = self;
-  v17 = v10;
-  v14 = v10;
-  v15 = v9;
-  [v13 animateWithDuration:7 delay:v18 options:v16 animations:a5 completion:0.0];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  v15 = toImageCopy;
+  [v13 animateWithDuration:7 delay:v18 options:v16 animations:duration completion:0.0];
 }
 
 uint64_t __76__SKUIItemOfferButton__transitionFromImage_toImage_withDuration_completion___block_invoke(uint64_t a1)
@@ -3170,20 +3170,20 @@ uint64_t __76__SKUIItemOfferButton__transitionFromImage_toImage_withDuration_com
   return [v3 _sendDidAnimate];
 }
 
-- (void)_transitionFromProgress:(id)a3 toProgress:(id)a4 withDuration:(double)a5 completion:(id)a6
+- (void)_transitionFromProgress:(id)progress toProgress:(id)toProgress withDuration:(double)duration completion:(id)completion
 {
-  v9 = a4;
+  toProgressCopy = toProgress;
   progressIndicator = self->_progressIndicator;
-  v11 = a6;
-  [v9 progress];
+  completionCopy = completion;
+  [toProgressCopy progress];
   [(SKUICircleProgressIndicator *)progressIndicator setProgress:?];
-  -[SKUICircleProgressIndicator setIndeterminate:](self->_progressIndicator, "setIndeterminate:", [v9 progressIndeterminate]);
+  -[SKUICircleProgressIndicator setIndeterminate:](self->_progressIndicator, "setIndeterminate:", [toProgressCopy progressIndeterminate]);
   v12 = self->_progressIndicator;
-  v13 = -[SKUIItemOfferButton _imageForProgressType:](self, "_imageForProgressType:", [v9 progressType]);
+  v13 = -[SKUIItemOfferButton _imageForProgressType:](self, "_imageForProgressType:", [toProgressCopy progressType]);
   [(SKUICircleProgressIndicator *)v12 setImage:v13];
 
   v14 = self->_progressIndicator;
-  [objc_opt_class() _imageInsetsForProgressType:{objc_msgSend(v9, "progressType")}];
+  [objc_opt_class() _imageInsetsForProgressType:{objc_msgSend(toProgressCopy, "progressType")}];
   [(SKUICircleProgressIndicator *)v14 setImageInsets:?];
   v15 = MEMORY[0x277D75D18];
   v17[0] = MEMORY[0x277D85DD0];
@@ -3191,9 +3191,9 @@ uint64_t __76__SKUIItemOfferButton__transitionFromImage_toImage_withDuration_com
   v17[2] = __82__SKUIItemOfferButton__transitionFromProgress_toProgress_withDuration_completion___block_invoke;
   v17[3] = &unk_2781F80C8;
   v17[4] = self;
-  v18 = v9;
-  v16 = v9;
-  [v15 animateWithDuration:7 delay:v17 options:v11 animations:a5 completion:0.0];
+  v18 = toProgressCopy;
+  v16 = toProgressCopy;
+  [v15 animateWithDuration:7 delay:v17 options:completionCopy animations:duration completion:0.0];
 }
 
 uint64_t __82__SKUIItemOfferButton__transitionFromProgress_toProgress_withDuration_completion___block_invoke(uint64_t a1)
@@ -3206,30 +3206,30 @@ uint64_t __82__SKUIItemOfferButton__transitionFromProgress_toProgress_withDurati
   return [v3 _sendWillAnimate];
 }
 
-- (void)_transitionFromTitleOrImage:(id)a3 toProgress:(id)a4 withDuration:(double)a5 completion:(id)a6
+- (void)_transitionFromTitleOrImage:(id)image toProgress:(id)progress withDuration:(double)duration completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  imageCopy = image;
+  progressCopy = progress;
+  completionCopy = completion;
   if (!self->_borderView)
   {
     [(SKUIItemOfferButton *)self _insertBorderView];
-    v13 = [(UIView *)self->_borderView layer];
-    [v11 borderCornerRadius];
-    [v13 setCornerRadius:?];
+    layer = [(UIView *)self->_borderView layer];
+    [progressCopy borderCornerRadius];
+    [layer setCornerRadius:?];
 
-    v14 = [(UIView *)self->_borderView layer];
-    v15 = [v11 borderColor];
-    [v14 setBorderColor:{objc_msgSend(v15, "CGColor")}];
+    layer2 = [(UIView *)self->_borderView layer];
+    borderColor = [progressCopy borderColor];
+    [layer2 setBorderColor:{objc_msgSend(borderColor, "CGColor")}];
 
     borderView = self->_borderView;
-    v17 = [v11 borderBackgroundColor];
-    [(UIView *)borderView setBackgroundColor:v17];
+    borderBackgroundColor = [progressCopy borderBackgroundColor];
+    [(UIView *)borderView setBackgroundColor:borderBackgroundColor];
 
-    self->_borderCornerRadiusMatchesHalfBoundingDimension = [v11 borderCornerRadiusMatchesHalfBoundingDimension];
+    self->_borderCornerRadiusMatchesHalfBoundingDimension = [progressCopy borderCornerRadiusMatchesHalfBoundingDimension];
   }
 
-  if (([v10 hasBorderView] & 1) == 0)
+  if (([imageCopy hasBorderView] & 1) == 0)
   {
     v18 = self->_borderView;
     CGAffineTransformMakeScale(&v46, 0.0, 0.0);
@@ -3238,18 +3238,18 @@ uint64_t __82__SKUIItemOfferButton__transitionFromProgress_toProgress_withDurati
 
   [(SKUIItemOfferButton *)self _insertProgressIndicator];
   progressIndicator = self->_progressIndicator;
-  [v11 progress];
+  [progressCopy progress];
   [(SKUICircleProgressIndicator *)progressIndicator setProgress:?];
-  -[SKUICircleProgressIndicator setIndeterminate:](self->_progressIndicator, "setIndeterminate:", [v11 progressIndeterminate]);
+  -[SKUICircleProgressIndicator setIndeterminate:](self->_progressIndicator, "setIndeterminate:", [progressCopy progressIndeterminate]);
   v20 = self->_progressIndicator;
-  v21 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v22 = -[SKUIItemOfferButton _imageForProgressType:](self, "_imageForProgressType:", [v21 progressType]);
+  buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+  v22 = -[SKUIItemOfferButton _imageForProgressType:](self, "_imageForProgressType:", [buttonDescriptor progressType]);
   [(SKUICircleProgressIndicator *)v20 setImage:v22];
 
   v23 = self->_progressIndicator;
   v24 = objc_opt_class();
-  v25 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  [v24 _imageInsetsForProgressType:{objc_msgSend(v25, "progressType")}];
+  buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+  [v24 _imageInsetsForProgressType:{objc_msgSend(buttonDescriptor2, "progressType")}];
   [(SKUICircleProgressIndicator *)v23 setImageInsets:?];
 
   [(SKUICircleProgressIndicator *)self->_progressIndicator setHidden:1];
@@ -3261,49 +3261,49 @@ uint64_t __82__SKUIItemOfferButton__transitionFromProgress_toProgress_withDurati
   titleLabel = self->_titleLabel;
   self->_titleLabel = 0;
 
-  v28 = [(UIView *)self->_borderView layer];
-  [v11 borderWidth];
-  [v28 setBorderWidth:?];
+  layer3 = [(UIView *)self->_borderView layer];
+  [progressCopy borderWidth];
+  [layer3 setBorderWidth:?];
 
-  v29 = [(UIView *)self->_borderView layer];
-  v30 = [v11 borderCompositingFilter];
-  [v29 setCompositingFilter:v30];
+  layer4 = [(UIView *)self->_borderView layer];
+  borderCompositingFilter = [progressCopy borderCompositingFilter];
+  [layer4 setCompositingFilter:borderCompositingFilter];
 
-  [(SKUIItemOfferButton *)self _adjustViewOrderingForProperties:v11];
+  [(SKUIItemOfferButton *)self _adjustViewOrderingForProperties:progressCopy];
   v31 = MEMORY[0x277D75D18];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __86__SKUIItemOfferButton__transitionFromTitleOrImage_toProgress_withDuration_completion___block_invoke;
   v44[3] = &unk_2781F80C8;
   v44[4] = self;
-  v45 = v11;
+  v45 = progressCopy;
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __86__SKUIItemOfferButton__transitionFromTitleOrImage_toProgress_withDuration_completion___block_invoke_2;
   v41[3] = &unk_2781FE880;
   v41[4] = self;
   v42 = v45;
-  v43 = v12;
-  v32 = v12;
+  v43 = completionCopy;
+  v32 = completionCopy;
   v33 = v45;
-  [v31 animateWithDuration:v44 animations:v41 completion:a5];
+  [v31 animateWithDuration:v44 animations:v41 completion:duration];
   v34 = [objc_opt_class() _basicAnimationWithKeyPath:@"borderColor"];
-  [v34 setDuration:a5];
-  v35 = [v33 borderColor];
-  [v34 setToValue:{objc_msgSend(v35, "CGColor")}];
+  [v34 setDuration:duration];
+  borderColor2 = [v33 borderColor];
+  [v34 setToValue:{objc_msgSend(borderColor2, "CGColor")}];
 
-  v36 = [(UIView *)self->_borderView layer];
-  [v36 addAnimation:v34 forKey:@"borderColor"];
+  layer5 = [(UIView *)self->_borderView layer];
+  [layer5 addAnimation:v34 forKey:@"borderColor"];
 
   v37 = [objc_opt_class() _basicAnimationWithKeyPath:@"cornerRadius"];
-  [v37 setDuration:a5];
+  [v37 setDuration:duration];
   v38 = MEMORY[0x277CCABB0];
   [v33 borderCornerRadius];
   v39 = [v38 numberWithDouble:?];
   [v37 setToValue:v39];
 
-  v40 = [(UIView *)self->_borderView layer];
-  [v40 addAnimation:v37 forKey:@"cornerRadius"];
+  layer6 = [(UIView *)self->_borderView layer];
+  [layer6 addAnimation:v37 forKey:@"cornerRadius"];
 }
 
 uint64_t __86__SKUIItemOfferButton__transitionFromTitleOrImage_toProgress_withDuration_completion___block_invoke(uint64_t a1)
@@ -3350,24 +3350,24 @@ uint64_t __86__SKUIItemOfferButton__transitionFromTitleOrImage_toProgress_withDu
   return [v7 _sendDidAnimate];
 }
 
-- (void)_transitionFromProgress:(id)a3 toTitleOrImage:(id)a4 withDuration:(double)a5 completion:(id)a6
+- (void)_transitionFromProgress:(id)progress toTitleOrImage:(id)image withDuration:(double)duration completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  progressCopy = progress;
+  imageCopy = image;
+  completionCopy = completion;
   borderView = self->_borderView;
   if (!borderView)
   {
     [(SKUIItemOfferButton *)self _insertBorderView];
-    v14 = [(UIView *)self->_borderView layer];
-    [v10 borderCornerRadius];
-    [v14 setCornerRadius:?];
+    layer = [(UIView *)self->_borderView layer];
+    [progressCopy borderCornerRadius];
+    [layer setCornerRadius:?];
 
-    v15 = [(UIView *)self->_borderView layer];
-    v16 = [v10 borderColor];
-    [v15 setBorderColor:{objc_msgSend(v16, "CGColor")}];
+    layer2 = [(UIView *)self->_borderView layer];
+    borderColor = [progressCopy borderColor];
+    [layer2 setBorderColor:{objc_msgSend(borderColor, "CGColor")}];
 
-    self->_borderCornerRadiusMatchesHalfBoundingDimension = [v10 borderCornerRadiusMatchesHalfBoundingDimension];
+    self->_borderCornerRadiusMatchesHalfBoundingDimension = [progressCopy borderCornerRadiusMatchesHalfBoundingDimension];
     borderView = self->_borderView;
   }
 
@@ -3376,15 +3376,15 @@ uint64_t __86__SKUIItemOfferButton__transitionFromTitleOrImage_toProgress_withDu
   v46[1] = v17;
   v46[2] = *(MEMORY[0x277CBF2C0] + 32);
   [(UIView *)borderView setTransform:v46];
-  v18 = [v11 image];
+  image = [imageCopy image];
 
-  if (v18)
+  if (image)
   {
     [(SKUIItemOfferButton *)self _insertImageView];
     p_imageView = &self->_imageView;
     imageView = self->_imageView;
-    v21 = [v11 image];
-    [(UIImageView *)imageView setImage:v21];
+    image2 = [imageCopy image];
+    [(UIImageView *)imageView setImage:image2];
   }
 
   else
@@ -3392,62 +3392,62 @@ uint64_t __86__SKUIItemOfferButton__transitionFromTitleOrImage_toProgress_withDu
     [(SKUIItemOfferButton *)self _insertLabel];
     p_imageView = &self->_titleLabel;
     titleLabel = self->_titleLabel;
-    v23 = [v11 attributedText];
-    [(UILabel *)titleLabel setAttributedText:v23];
+    attributedText = [imageCopy attributedText];
+    [(UILabel *)titleLabel setAttributedText:attributedText];
 
     v24 = self->_titleLabel;
-    v21 = [v11 textColor];
-    [(UILabel *)v24 setTextColor:v21];
+    image2 = [imageCopy textColor];
+    [(UILabel *)v24 setTextColor:image2];
   }
 
   [*p_imageView setAlpha:0.0];
-  v25 = [(UIView *)self->_borderView layer];
-  [v11 borderWidth];
-  [v25 setBorderWidth:?];
+  layer3 = [(UIView *)self->_borderView layer];
+  [imageCopy borderWidth];
+  [layer3 setBorderWidth:?];
 
-  v26 = [(UIView *)self->_borderView layer];
-  v27 = [v11 borderCompositingFilter];
-  [v26 setCompositingFilter:v27];
+  layer4 = [(UIView *)self->_borderView layer];
+  borderCompositingFilter = [imageCopy borderCompositingFilter];
+  [layer4 setCompositingFilter:borderCompositingFilter];
 
   [(SKUICircleProgressIndicator *)self->_progressIndicator removeFromSuperview];
   progressIndicator = self->_progressIndicator;
   self->_progressIndicator = 0;
 
-  [(SKUIItemOfferButton *)self _adjustViewOrderingForProperties:v11];
+  [(SKUIItemOfferButton *)self _adjustViewOrderingForProperties:imageCopy];
   v29 = MEMORY[0x277D75D18];
   v43[0] = MEMORY[0x277D85DD0];
   v43[1] = 3221225472;
   v43[2] = __86__SKUIItemOfferButton__transitionFromProgress_toTitleOrImage_withDuration_completion___block_invoke;
   v43[3] = &unk_2781F80C8;
-  v44 = v11;
-  v45 = self;
+  v44 = imageCopy;
+  selfCopy = self;
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __86__SKUIItemOfferButton__transitionFromProgress_toTitleOrImage_withDuration_completion___block_invoke_2;
   v39[3] = &unk_2781FE880;
   v40 = v44;
-  v41 = self;
-  v42 = v12;
-  v30 = v12;
+  selfCopy2 = self;
+  v42 = completionCopy;
+  v30 = completionCopy;
   v31 = v44;
-  [v29 animateWithDuration:v43 animations:v39 completion:a5];
+  [v29 animateWithDuration:v43 animations:v39 completion:duration];
   v32 = [objc_opt_class() _basicAnimationWithKeyPath:@"borderColor"];
-  [v32 setDuration:a5];
-  v33 = [v31 borderColor];
-  [v32 setToValue:{objc_msgSend(v33, "CGColor")}];
+  [v32 setDuration:duration];
+  borderColor2 = [v31 borderColor];
+  [v32 setToValue:{objc_msgSend(borderColor2, "CGColor")}];
 
-  v34 = [(UIView *)self->_borderView layer];
-  [v34 addAnimation:v32 forKey:@"borderColor"];
+  layer5 = [(UIView *)self->_borderView layer];
+  [layer5 addAnimation:v32 forKey:@"borderColor"];
 
   v35 = [objc_opt_class() _basicAnimationWithKeyPath:@"cornerRadius"];
-  [v35 setDuration:a5];
+  [v35 setDuration:duration];
   v36 = MEMORY[0x277CCABB0];
   [v31 borderCornerRadius];
   v37 = [v36 numberWithDouble:?];
   [v35 setToValue:v37];
 
-  v38 = [(UIView *)self->_borderView layer];
-  [v38 addAnimation:v35 forKey:@"cornerRadius"];
+  layer6 = [(UIView *)self->_borderView layer];
+  [layer6 addAnimation:v35 forKey:@"cornerRadius"];
 }
 
 uint64_t __86__SKUIItemOfferButton__transitionFromProgress_toTitleOrImage_withDuration_completion___block_invoke(uint64_t a1)
@@ -3500,17 +3500,17 @@ uint64_t __86__SKUIItemOfferButton__transitionFromProgress_toTitleOrImage_withDu
   return [v7 _sendDidAnimate];
 }
 
-- (void)_adjustViewOrderingForProperties:(id)a3
+- (void)_adjustViewOrderingForProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   if (self->_borderView)
   {
     if (self->_titleLabel)
     {
-      v9 = v4;
-      v5 = [v4 borderCompositingFilter];
+      v9 = propertiesCopy;
+      borderCompositingFilter = [propertiesCopy borderCompositingFilter];
 
-      if (v5)
+      if (borderCompositingFilter)
       {
         p_titleLabel = &self->_titleLabel;
       }
@@ -3520,7 +3520,7 @@ uint64_t __86__SKUIItemOfferButton__transitionFromProgress_toTitleOrImage_withDu
         p_titleLabel = &self->_borderView;
       }
 
-      if (v5)
+      if (borderCompositingFilter)
       {
         p_borderView = &self->_borderView;
       }
@@ -3538,11 +3538,11 @@ uint64_t __86__SKUIItemOfferButton__transitionFromProgress_toTitleOrImage_withDu
         goto LABEL_16;
       }
 
-      v9 = v4;
-      v8 = [v4 borderCompositingFilter];
+      v9 = propertiesCopy;
+      borderCompositingFilter2 = [propertiesCopy borderCompositingFilter];
 
       p_borderView = &self->_borderedImageView;
-      if (v8)
+      if (borderCompositingFilter2)
       {
         p_titleLabel = &self->_borderedImageView;
       }
@@ -3552,14 +3552,14 @@ uint64_t __86__SKUIItemOfferButton__transitionFromProgress_toTitleOrImage_withDu
         p_titleLabel = &self->_borderView;
       }
 
-      if (v8)
+      if (borderCompositingFilter2)
       {
         p_borderView = &self->_borderView;
       }
     }
 
     [(SKUIItemOfferButton *)self insertSubview:*p_borderView aboveSubview:*p_titleLabel];
-    v4 = v9;
+    propertiesCopy = v9;
   }
 
 LABEL_16:
@@ -3577,8 +3577,8 @@ LABEL_16:
 
     [(SKUICircleProgressIndicator *)self->_progressIndicator setAutoresizingMask:18];
     v6 = self->_progressIndicator;
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(SKUICircleProgressIndicator *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(SKUICircleProgressIndicator *)v6 setBackgroundColor:clearColor];
 
     [(SKUICircleProgressIndicator *)self->_progressIndicator _setHidesBorderView:1];
     [(SKUICircleProgressIndicator *)self->_progressIndicator setUserInteractionEnabled:0];
@@ -3672,8 +3672,8 @@ LABEL_16:
   if (!self->_universalImageView)
   {
     v3 = objc_opt_class();
-    v4 = [(SKUIItemOfferButton *)self tintColor];
-    v7 = [v3 _universalPlusImageWithTintColor:v4];
+    tintColor = [(SKUIItemOfferButton *)self tintColor];
+    v7 = [v3 _universalPlusImageWithTintColor:tintColor];
 
     v5 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v7];
     universalImageView = self->_universalImageView;
@@ -3696,8 +3696,8 @@ LABEL_16:
     [(SKUIFocusedTouchGestureRecognizer *)self->_cancelGestureRecognizer addTarget:self action:sel__cancelGestureAction_];
   }
 
-  v5 = [(SKUIItemOfferButton *)self window];
-  [v5 addGestureRecognizer:self->_cancelGestureRecognizer];
+  window = [(SKUIItemOfferButton *)self window];
+  [window addGestureRecognizer:self->_cancelGestureRecognizer];
 }
 
 - (void)_removeCancelGestureRecognizer
@@ -3705,8 +3705,8 @@ LABEL_16:
   cancelGestureRecognizer = self->_cancelGestureRecognizer;
   if (cancelGestureRecognizer)
   {
-    v4 = [(SKUIFocusedTouchGestureRecognizer *)cancelGestureRecognizer view];
-    [v4 removeGestureRecognizer:self->_cancelGestureRecognizer];
+    view = [(SKUIFocusedTouchGestureRecognizer *)cancelGestureRecognizer view];
+    [view removeGestureRecognizer:self->_cancelGestureRecognizer];
 
     [(SKUIFocusedTouchGestureRecognizer *)self->_cancelGestureRecognizer removeTarget:self action:0];
     v5 = self->_cancelGestureRecognizer;
@@ -3714,44 +3714,44 @@ LABEL_16:
   }
 }
 
-- (void)_reloadForCurrentState:(BOOL)a3
+- (void)_reloadForCurrentState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
 LABEL_5:
     [(SKUIItemOfferButton *)self setClipsToBounds:1];
     self->_usesDrawRectPath = 0;
     [(SKUIItemOfferButton *)self setNeedsDisplay];
-    v7 = [(SKUIItemOfferButton *)self buttonDescriptor];
-    v8 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:v7];
+    buttonDescriptor = [(SKUIItemOfferButton *)self buttonDescriptor];
+    v8 = [(SKUIItemOfferButton *)self _buttonPropertiesForState:buttonDescriptor];
 
-    v9 = [v8 hasBorderView];
+    hasBorderView = [v8 hasBorderView];
     v10 = MEMORY[0x277CBF2C0];
-    if (v9)
+    if (hasBorderView)
     {
       [(SKUIItemOfferButton *)self _insertBorderView];
-      v11 = [(UIView *)self->_borderView layer];
-      [v11 removeAllAnimations];
+      layer = [(UIView *)self->_borderView layer];
+      [layer removeAllAnimations];
 
       borderView = self->_borderView;
-      v13 = [v8 borderBackgroundColor];
-      [(UIView *)borderView setBackgroundColor:v13];
+      borderBackgroundColor = [v8 borderBackgroundColor];
+      [(UIView *)borderView setBackgroundColor:borderBackgroundColor];
 
-      v14 = [(UIView *)self->_borderView layer];
-      v15 = [v8 borderColor];
-      [v14 setBorderColor:{objc_msgSend(v15, "CGColor")}];
+      layer2 = [(UIView *)self->_borderView layer];
+      borderColor = [v8 borderColor];
+      [layer2 setBorderColor:{objc_msgSend(borderColor, "CGColor")}];
 
-      v16 = [(UIView *)self->_borderView layer];
-      v17 = [v8 borderCompositingFilter];
-      [v16 setCompositingFilter:v17];
+      layer3 = [(UIView *)self->_borderView layer];
+      borderCompositingFilter = [v8 borderCompositingFilter];
+      [layer3 setCompositingFilter:borderCompositingFilter];
 
-      v18 = [(UIView *)self->_borderView layer];
+      layer4 = [(UIView *)self->_borderView layer];
       [v8 borderWidth];
-      [v18 setBorderWidth:?];
+      [layer4 setBorderWidth:?];
 
-      v19 = [(UIView *)self->_borderView layer];
+      layer5 = [(UIView *)self->_borderView layer];
       [v8 borderCornerRadius];
-      [v19 setCornerRadius:?];
+      [layer5 setCornerRadius:?];
 
       v20 = self->_borderView;
       v21 = v10[1];
@@ -3772,22 +3772,22 @@ LABEL_5:
     if ([v8 hasTitleLabel])
     {
       [(SKUIItemOfferButton *)self _insertLabel];
-      v23 = [(UILabel *)self->_titleLabel layer];
-      [v23 removeAllAnimations];
+      layer6 = [(UILabel *)self->_titleLabel layer];
+      [layer6 removeAllAnimations];
 
       titleLabel = self->_titleLabel;
-      v25 = [v8 textColor];
-      [(UILabel *)titleLabel setTextColor:v25];
+      textColor = [v8 textColor];
+      [(UILabel *)titleLabel setTextColor:textColor];
 
       v26 = self->_titleLabel;
-      v27 = [v8 attributedText];
-      [(UILabel *)v26 setAttributedText:v27];
+      attributedText = [v8 attributedText];
+      [(UILabel *)v26 setAttributedText:attributedText];
     }
 
     else
     {
       [(UILabel *)self->_titleLabel removeFromSuperview];
-      v27 = self->_titleLabel;
+      attributedText = self->_titleLabel;
       self->_titleLabel = 0;
     }
 
@@ -3804,13 +3804,13 @@ LABEL_5:
       self->_universalImageView = 0;
     }
 
-    v29 = [v8 image];
+    image = [v8 image];
 
-    if (v29)
+    if (image)
     {
       [(SKUIItemOfferButton *)self _insertImageView];
-      v30 = [(UIImageView *)self->_imageView layer];
-      [v30 removeAllAnimations];
+      layer7 = [(UIImageView *)self->_imageView layer];
+      [layer7 removeAllAnimations];
 
       image = self->_image;
       if (!image)
@@ -3828,15 +3828,15 @@ LABEL_5:
       self->_imageView = 0;
     }
 
-    v33 = [v8 borderedImage];
+    borderedImage = [v8 borderedImage];
 
-    if (v33)
+    if (borderedImage)
     {
       [(SKUIItemOfferButton *)self _insertBorderedImageView];
       [(UIImageView *)self->_borderedImageView setImage:self->_borderedImage];
       borderedImageView = self->_borderedImageView;
-      v35 = [(SKUIItemOfferButton *)self tintColor];
-      [(UIImageView *)borderedImageView setTintColor:v35];
+      tintColor = [(SKUIItemOfferButton *)self tintColor];
+      [(UIImageView *)borderedImageView setTintColor:tintColor];
 
       [(UIImageView *)self->_borderedImageView setContentMode:1];
       [(UIImageView *)self->_borderedImageView setClipsToBounds:1];
@@ -3852,8 +3852,8 @@ LABEL_5:
     if ([v8 progressType])
     {
       [(SKUIItemOfferButton *)self _insertProgressIndicator];
-      v37 = [(SKUICircleProgressIndicator *)self->_progressIndicator layer];
-      [v37 removeAllAnimations];
+      layer8 = [(SKUICircleProgressIndicator *)self->_progressIndicator layer];
+      [layer8 removeAllAnimations];
 
       progressIndicator = self->_progressIndicator;
       [v8 progress];
@@ -3892,8 +3892,8 @@ LABEL_5:
       [(SKUIItemOfferButton *)self _removeCancelGestureRecognizer];
     }
 
-    v45 = [(SKUIItemOfferButton *)self layer];
-    [v45 removeAllAnimations];
+    layer9 = [(SKUIItemOfferButton *)self layer];
+    [layer9 removeAllAnimations];
 
     [v8 alpha];
     [(SKUIItemOfferButton *)self setAlpha:?];
@@ -3901,17 +3901,17 @@ LABEL_5:
     return;
   }
 
-  v4 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  if ([v4 progressType])
+  buttonDescriptor2 = [(SKUIItemOfferButton *)self buttonDescriptor];
+  if ([buttonDescriptor2 progressType])
   {
 
     goto LABEL_5;
   }
 
-  v5 = [(SKUIItemOfferButton *)self buttonDescriptor];
-  v6 = [v5 showingConfirmation];
+  buttonDescriptor3 = [(SKUIItemOfferButton *)self buttonDescriptor];
+  showingConfirmation = [buttonDescriptor3 showingConfirmation];
 
-  if (v6)
+  if (showingConfirmation)
   {
     goto LABEL_5;
   }

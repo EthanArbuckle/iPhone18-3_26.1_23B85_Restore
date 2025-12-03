@@ -1,22 +1,22 @@
 @interface TitlebarConfiguration
 - (_TtC8Settings21TitlebarConfiguration)init;
-- (_TtC8Settings21TitlebarConfiguration)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC8Settings21TitlebarConfiguration)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TitlebarConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_21CE37220(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_21CE37220(coderCopy);
 }
 
-- (_TtC8Settings21TitlebarConfiguration)initWithCoder:(id)a3
+- (_TtC8Settings21TitlebarConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_21CE37D68(v3);
+  coderCopy = coder;
+  v4 = sub_21CE37D68(coderCopy);
 
   return v4;
 }

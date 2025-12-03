@@ -3,13 +3,13 @@
 - (MapsPowerSourceController)powerSourceController;
 - (MapsThermalPressureController)thermalPressureController;
 - (PlatformController)platformController;
-- (ThermalPressureAnalyticsTask)initWithPlatformController:(id)a3 thermalPressureController:(id)a4 navigationService:(id)a5 powerSourceController:(id)a6;
+- (ThermalPressureAnalyticsTask)initWithPlatformController:(id)controller thermalPressureController:(id)pressureController navigationService:(id)service powerSourceController:(id)sourceController;
 - (int)_chargingState;
 - (int)_mapType;
 - (void)dealloc;
-- (void)didUpdateThermalPressureLevel:(int)a3;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)powerSourceController:(id)a3 didUpdateChargingState:(int64_t)a4;
+- (void)didUpdateThermalPressureLevel:(int)level;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)powerSourceController:(id)controller didUpdateChargingState:(int64_t)state;
 @end
 
 @implementation ThermalPressureAnalyticsTask
@@ -42,52 +42,52 @@
   return WeakRetained;
 }
 
-- (void)powerSourceController:(id)a3 didUpdateChargingState:(int64_t)a4
+- (void)powerSourceController:(id)controller didUpdateChargingState:(int64_t)state
 {
-  v6 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
-  v7 = [(ThermalPressureAnalyticsTask *)self isolationQueue];
+  isolationQueue = [(ThermalPressureAnalyticsTask *)self isolationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100BC8AD8;
   block[3] = &unk_10165FBC0;
   objc_copyWeak(v9, &location);
-  v9[1] = a4;
-  dispatch_async(v7, block);
+  v9[1] = state;
+  dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v8 = a3;
+  serviceCopy = service;
   objc_initWeak(&location, self);
-  v9 = [(ThermalPressureAnalyticsTask *)self isolationQueue];
+  isolationQueue = [(ThermalPressureAnalyticsTask *)self isolationQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100BC8DA8;
   v10[3] = &unk_10164CBF8;
   objc_copyWeak(v11, &location);
-  v11[1] = a4;
-  v11[2] = a5;
-  dispatch_async(v9, v10);
+  v11[1] = state;
+  v11[2] = toState;
+  dispatch_async(isolationQueue, v10);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
 }
 
-- (void)didUpdateThermalPressureLevel:(int)a3
+- (void)didUpdateThermalPressureLevel:(int)level
 {
   objc_initWeak(&location, self);
-  v5 = [(ThermalPressureAnalyticsTask *)self isolationQueue];
+  isolationQueue = [(ThermalPressureAnalyticsTask *)self isolationQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100BC8FF4;
   block[3] = &unk_10165FB70;
   objc_copyWeak(&v7, &location);
-  v8 = a3;
-  dispatch_async(v5, block);
+  levelCopy = level;
+  dispatch_async(isolationQueue, block);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -95,12 +95,12 @@
 
 - (int)_chargingState
 {
-  v2 = [(ThermalPressureAnalyticsTask *)self powerSourceController];
-  v3 = [v2 chargingState];
+  powerSourceController = [(ThermalPressureAnalyticsTask *)self powerSourceController];
+  chargingState = [powerSourceController chargingState];
 
-  if ((v3 - 1) < 3)
+  if ((chargingState - 1) < 3)
   {
-    return v3;
+    return chargingState;
   }
 
   else
@@ -133,7 +133,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -151,12 +151,12 @@
   [(ThermalPressureAnalyticsTask *)&v7 dealloc];
 }
 
-- (ThermalPressureAnalyticsTask)initWithPlatformController:(id)a3 thermalPressureController:(id)a4 navigationService:(id)a5 powerSourceController:(id)a6
+- (ThermalPressureAnalyticsTask)initWithPlatformController:(id)controller thermalPressureController:(id)pressureController navigationService:(id)service powerSourceController:(id)sourceController
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  pressureControllerCopy = pressureController;
+  serviceCopy = service;
+  sourceControllerCopy = sourceController;
   v29.receiver = self;
   v29.super_class = ThermalPressureAnalyticsTask;
   v14 = [(ThermalPressureAnalyticsTask *)&v29 init];
@@ -176,8 +176,8 @@
     isolationQueue = v14->_isolationQueue;
     v14->_isolationQueue = v18;
 
-    objc_storeWeak(&v14->_platformController, v10);
-    objc_storeWeak(&v14->_thermalPressureController, v11);
+    objc_storeWeak(&v14->_platformController, controllerCopy);
+    objc_storeWeak(&v14->_thermalPressureController, pressureControllerCopy);
     WeakRetained = objc_loadWeakRetained(&v14->_platformController);
     LODWORD(v17) = [WeakRetained isPrimary];
 
@@ -195,14 +195,14 @@
       [v22 addThermalPressureObserver:v14];
     }
 
-    v23 = objc_storeWeak(&v14->_navigationService, v12);
-    [v12 registerObserver:v14];
+    v23 = objc_storeWeak(&v14->_navigationService, serviceCopy);
+    [serviceCopy registerObserver:v14];
 
-    objc_storeWeak(&v14->_powerSourceController, v13);
+    objc_storeWeak(&v14->_powerSourceController, sourceControllerCopy);
     v24 = objc_loadWeakRetained(&v14->_platformController);
-    v25 = [v24 isPrimary];
+    isPrimary = [v24 isPrimary];
 
-    if (v25)
+    if (isPrimary)
     {
       v26 = sub_100BC8C20();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))

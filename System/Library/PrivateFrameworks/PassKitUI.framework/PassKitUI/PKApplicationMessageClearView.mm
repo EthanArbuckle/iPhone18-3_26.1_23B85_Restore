@@ -1,49 +1,49 @@
 @interface PKApplicationMessageClearView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (id)initWithTitle:(id *)a1;
-- (void)_updateForTraitCollection:(id)a3;
+- (id)initWithTitle:(id *)title;
+- (void)_updateForTraitCollection:(id)collection;
 - (void)layoutSubviews;
 @end
 
 @implementation PKApplicationMessageClearView
 
-- (id)initWithTitle:(id *)a1
+- (id)initWithTitle:(id *)title
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (title)
   {
-    v14.receiver = a1;
+    v14.receiver = title;
     v14.super_class = PKApplicationMessageClearView;
     v4 = objc_msgSendSuper2(&v14, sel_initWithFrame_, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24));
-    a1 = v4;
+    title = v4;
     if (v4)
     {
       [v4 pkui_setMaskType:3];
-      v5 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
-      [a1 setBackgroundColor:v5];
+      secondarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+      [title setBackgroundColor:secondarySystemGroupedBackgroundColor];
 
       v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
-      v7 = a1[51];
-      a1[51] = v6;
+      v7 = title[51];
+      title[51] = v6;
 
-      v8 = a1[51];
-      v9 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [v8 setTextColor:v9];
+      v8 = title[51];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [v8 setTextColor:secondaryLabelColor];
 
-      [a1[51] setTextAlignment:1];
-      [a1[51] setText:v3];
-      [a1 addSubview:a1[51]];
-      v10 = [a1 traitCollection];
-      [a1 _updateForTraitCollection:v10];
+      [title[51] setTextAlignment:1];
+      [title[51] setText:v3];
+      [title addSubview:title[51]];
+      traitCollection = [title traitCollection];
+      [title _updateForTraitCollection:traitCollection];
 
       v15[0] = objc_opt_class();
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-      v12 = [a1 registerForTraitChanges:v11 withHandler:&__block_literal_global_164];
+      v12 = [title registerForTraitChanges:v11 withHandler:&__block_literal_global_164];
     }
   }
 
-  return a1;
+  return title;
 }
 
 void __47__PKApplicationMessageClearView_initWithTitle___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -90,9 +90,9 @@ void __47__PKApplicationMessageClearView_initWithTitle___block_invoke(uint64_t a
   return result;
 }
 
-- (void)_updateForTraitCollection:(id)a3
+- (void)_updateForTraitCollection:(id)collection
 {
-  v8 = _PKFontForDesign(a3, *MEMORY[0x1E69DB8C8], *MEMORY[0x1E69DDCF8], 0x8000, 0, 0);
+  v8 = _PKFontForDesign(collection, *MEMORY[0x1E69DB8C8], *MEMORY[0x1E69DDCF8], 0x8000, 0, 0);
   [(UILabel *)self->_title setFont:v8];
   [(UILabel *)self->_title sizeToFit];
   [(UILabel *)self->_title bounds];

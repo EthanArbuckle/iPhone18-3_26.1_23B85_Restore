@@ -1,13 +1,13 @@
 @interface FIPresentationNodeMap
-+ (id)presentationNodeForKeyNode:(id)a3;
++ (id)presentationNodeForKeyNode:(id)node;
 + (id)shared;
 + (void)finalize;
 - (FIPresentationNodeMap)init;
-- (id)presentationNodeForKeyNode:(id)a3;
-- (void)registerPresentationNode:(id)a3 forNode:(id)a4;
-- (void)registerPresentationNode:(id)a3 forNode:(id)a4 clearOlderKeyNodes:(BOOL)a5;
-- (void)unregisterAllForPresentationNode:(id)a3;
-- (void)unregisterKeyNode:(id)a3;
+- (id)presentationNodeForKeyNode:(id)node;
+- (void)registerPresentationNode:(id)node forNode:(id)forNode;
+- (void)registerPresentationNode:(id)node forNode:(id)forNode clearOlderKeyNodes:(BOOL)nodes;
+- (void)unregisterAllForPresentationNode:(id)node;
+- (void)unregisterKeyNode:(id)node;
 @end
 
 @implementation FIPresentationNodeMap
@@ -64,90 +64,90 @@
   std::mutex::unlock(&PresentationNodeMapLock(void)::sMutex);
 }
 
-- (id)presentationNodeForKeyNode:(id)a3
+- (id)presentationNodeForKeyNode:(id)node
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMapTable *)v5->_lookupTable objectForKey:v4];
-  objc_sync_exit(v5);
+  nodeCopy = node;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMapTable *)selfCopy->_lookupTable objectForKey:nodeCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-+ (id)presentationNodeForKeyNode:(id)a3
++ (id)presentationNodeForKeyNode:(id)node
 {
-  v4 = a3;
-  v5 = [a1 shared];
-  v6 = [v5 presentationNodeForKeyNode:v4];
+  nodeCopy = node;
+  shared = [self shared];
+  v6 = [shared presentationNodeForKeyNode:nodeCopy];
 
   return v6;
 }
 
-- (void)registerPresentationNode:(id)a3 forNode:(id)a4 clearOlderKeyNodes:(BOOL)a5
+- (void)registerPresentationNode:(id)node forNode:(id)forNode clearOlderKeyNodes:(BOOL)nodes
 {
-  v5 = a5;
-  v10 = a3;
-  v8 = a4;
-  v9 = self;
-  objc_sync_enter(v9);
-  if (v5)
+  nodesCopy = nodes;
+  nodeCopy = node;
+  forNodeCopy = forNode;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (nodesCopy)
   {
-    [(FIPresentationNodeMap *)v9 unregisterAllForPresentationNode:v10];
+    [(FIPresentationNodeMap *)selfCopy unregisterAllForPresentationNode:nodeCopy];
   }
 
-  [(FIPresentationNodeMap *)v9 registerPresentationNode:v10 forNode:v8];
-  objc_sync_exit(v9);
+  [(FIPresentationNodeMap *)selfCopy registerPresentationNode:nodeCopy forNode:forNodeCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)registerPresentationNode:(id)a3 forNode:(id)a4
+- (void)registerPresentationNode:(id)node forNode:(id)forNode
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  nodeCopy = node;
+  forNodeCopy = forNode;
+  v8 = forNodeCopy;
+  if (nodeCopy && forNodeCopy)
   {
-    v9 = self;
-    objc_sync_enter(v9);
-    [(NSMapTable *)v9->_lookupTable setObject:v6 forKey:v8];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMapTable *)selfCopy->_lookupTable setObject:nodeCopy forKey:v8];
     v10 = LogObj(5);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138543618;
-      v13 = v6;
+      v13 = nodeCopy;
       v14 = 2114;
       v15 = v8;
       _os_log_impl(&dword_1E5674000, v10, OS_LOG_TYPE_DEBUG, "Adding to lookup table %{public}@ for %{public}@", &v12, 0x16u);
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    v9 = LogObj(5);
-    if (os_log_type_enabled(&v9->super, OS_LOG_TYPE_ERROR))
+    selfCopy = LogObj(5);
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v12) = 0;
-      _os_log_impl(&dword_1E5674000, &v9->super, OS_LOG_TYPE_ERROR, "Trying to register a nil node", &v12, 2u);
+      _os_log_impl(&dword_1E5674000, &selfCopy->super, OS_LOG_TYPE_ERROR, "Trying to register a nil node", &v12, 2u);
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterAllForPresentationNode:(id)a3
+- (void)unregisterAllForPresentationNode:(id)node
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  nodeCopy = node;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v5->_lookupTable;
+  v6 = selfCopy->_lookupTable;
   v7 = 0;
   v8 = [(NSMapTable *)v6 countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v8)
@@ -163,8 +163,8 @@
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [(NSMapTable *)v5->_lookupTable objectForKey:v11];
-        if (v12 == v4)
+        v12 = [(NSMapTable *)selfCopy->_lookupTable objectForKey:v11];
+        if (v12 == nodeCopy)
         {
           if (!v7)
           {
@@ -199,7 +199,7 @@
           objc_enumerationMutation(v13);
         }
 
-        [(NSMapTable *)v5->_lookupTable removeObjectForKey:*(*(&v20 + 1) + 8 * j), v20];
+        [(NSMapTable *)selfCopy->_lookupTable removeObjectForKey:*(*(&v20 + 1) + 8 * j), v20];
       }
 
       v14 = [v13 countByEnumeratingWithState:&v20 objects:v32 count:16];
@@ -208,7 +208,7 @@
     while (v14);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   if (v13)
   {
     v17 = LogObj(5);
@@ -218,7 +218,7 @@
       *buf = 134218242;
       v29 = v18;
       v30 = 2112;
-      v31 = v4;
+      v31 = nodeCopy;
       _os_log_impl(&dword_1E5674000, v17, OS_LOG_TYPE_DEBUG, "Removed %ld keys for presentation node %@", buf, 0x16u);
     }
   }
@@ -226,15 +226,15 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterKeyNode:(id)a3
+- (void)unregisterKeyNode:(id)node
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  nodeCopy = node;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (IsDebugLogCategoryEnabled(5))
   {
-    v6 = [(NSMapTable *)v5->_lookupTable objectForKey:v4];
+    v6 = [(NSMapTable *)selfCopy->_lookupTable objectForKey:nodeCopy];
   }
 
   else
@@ -242,8 +242,8 @@
     v6 = 0;
   }
 
-  [(NSMapTable *)v5->_lookupTable removeObjectForKey:v4];
-  objc_sync_exit(v5);
+  [(NSMapTable *)selfCopy->_lookupTable removeObjectForKey:nodeCopy];
+  objc_sync_exit(selfCopy);
 
   if (v6)
   {
@@ -251,7 +251,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v9 = 138412546;
-      v10 = v4;
+      v10 = nodeCopy;
       v11 = 2112;
       v12 = v6;
       _os_log_impl(&dword_1E5674000, v7, OS_LOG_TYPE_DEBUG, "Removed keyNode %@ for presentation node %@", &v9, 0x16u);

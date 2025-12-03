@@ -1,40 +1,40 @@
 @interface VKCImageSubjectContext
 - (BOOL)allSubjectsSelected;
-- (BOOL)containsSubjectAtNormalizedPoint:(CGPoint)a3;
-- (BOOL)subjectIndexes:(id)a3 equivalentToIndexes:(id)a4;
+- (BOOL)containsSubjectAtNormalizedPoint:(CGPoint)point;
+- (BOOL)subjectIndexes:(id)indexes equivalentToIndexes:(id)toIndexes;
 - (CGRect)normalizedCropRect;
 - (CGSize)imageSize;
 - (NSIndexSet)activeMADSubjectIndexes;
 - (NSIndexSet)allSubjectIndexes;
 - (NSNumber)animatedStickerScore;
-- (VKCImageSubjectContext)initWithMaskResult:(id)a3;
+- (VKCImageSubjectContext)initWithMaskResult:(id)result;
 - (VKCRemoveBackgroundRequest)request;
-- (id)convertExternalIndexSetToInternal:(id)a3;
-- (id)convertIndexSetToConcreteSubjectIndexes:(id)a3;
-- (id)indexOfSubjectAtNormalizedPoint:(CGPoint)a3;
-- (id)madSubjectIndexesForVKSubjectIndexes:(id)a3;
-- (id)normalizedPathForActiveSubjectsWithContentsRect:(CGRect)a3 topLevelOnly:(BOOL)a4;
-- (id)normalizedPathForSubjectAtIndex:(id)a3 contentsRect:(CGRect)a4 topLevelOnly:(BOOL)a5;
-- (id)normalizedPathForSubjectWithIndexSet:(id)a3 contentsRect:(CGRect)a4 topLevelOnly:(BOOL)a5;
+- (id)convertExternalIndexSetToInternal:(id)internal;
+- (id)convertIndexSetToConcreteSubjectIndexes:(id)indexes;
+- (id)indexOfSubjectAtNormalizedPoint:(CGPoint)point;
+- (id)madSubjectIndexesForVKSubjectIndexes:(id)indexes;
+- (id)normalizedPathForActiveSubjectsWithContentsRect:(CGRect)rect topLevelOnly:(BOOL)only;
+- (id)normalizedPathForSubjectAtIndex:(id)index contentsRect:(CGRect)rect topLevelOnly:(BOOL)only;
+- (id)normalizedPathForSubjectWithIndexSet:(id)set contentsRect:(CGRect)rect topLevelOnly:(BOOL)only;
 - (int64_t)imageOrientation;
 - (unint64_t)subjectCount;
-- (void)prepareInstanceImagesWithCIContext:(id)a3 instance:(id)a4 image:(CGImage *)a5;
-- (void)preparePathsAndImageMaskIfNecessaryWithContext:(id)a3;
-- (void)processPathForInstance:(id)a3;
+- (void)prepareInstanceImagesWithCIContext:(id)context instance:(id)instance image:(CGImage *)image;
+- (void)preparePathsAndImageMaskIfNecessaryWithContext:(id)context;
+- (void)processPathForInstance:(id)instance;
 @end
 
 @implementation VKCImageSubjectContext
 
-- (VKCImageSubjectContext)initWithMaskResult:(id)a3
+- (VKCImageSubjectContext)initWithMaskResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = VKCImageSubjectContext;
   v6 = [(VKCImageSubjectContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_maskResult, a3);
+    objc_storeStrong(&v6->_maskResult, result);
   }
 
   return v7;
@@ -42,39 +42,39 @@
 
 - (unint64_t)subjectCount
 {
-  v2 = [(VKCImageSubjectContext *)self subjectInstances];
-  v3 = [v2 count];
+  subjectInstances = [(VKCImageSubjectContext *)self subjectInstances];
+  v3 = [subjectInstances count];
 
   return v3;
 }
 
 - (NSNumber)animatedStickerScore
 {
-  v2 = [(VKCImageSubjectContext *)self maskResult];
-  v3 = [v2 animatedStickerScore];
+  maskResult = [(VKCImageSubjectContext *)self maskResult];
+  animatedStickerScore = [maskResult animatedStickerScore];
 
-  return v3;
+  return animatedStickerScore;
 }
 
 - (BOOL)allSubjectsSelected
 {
-  v3 = [(VKCImageSubjectContext *)self activeSubjectIndexes];
-  if ([v3 count])
+  activeSubjectIndexes = [(VKCImageSubjectContext *)self activeSubjectIndexes];
+  if ([activeSubjectIndexes count])
   {
   }
 
   else
   {
-    v7 = [(VKCImageSubjectContext *)self subjectCount];
+    subjectCount = [(VKCImageSubjectContext *)self subjectCount];
 
-    if (v7)
+    if (subjectCount)
     {
       return 1;
     }
   }
 
-  v4 = [(VKCImageSubjectContext *)self activeSubjectIndexes];
-  v5 = [v4 count];
+  activeSubjectIndexes2 = [(VKCImageSubjectContext *)self activeSubjectIndexes];
+  v5 = [activeSubjectIndexes2 count];
   v6 = v5 == [(VKCImageSubjectContext *)self subjectCount];
 
   return v6;
@@ -82,8 +82,8 @@
 
 - (CGSize)imageSize
 {
-  v2 = [(VKCImageSubjectContext *)self allSubjectsInstance];
-  [v2 imageSize];
+  allSubjectsInstance = [(VKCImageSubjectContext *)self allSubjectsInstance];
+  [allSubjectsInstance imageSize];
   v4 = v3;
   v6 = v5;
 
@@ -96,24 +96,24 @@
 
 - (int64_t)imageOrientation
 {
-  v2 = [(VKCImageSubjectContext *)self maskResult];
-  v3 = [v2 imageOrientation];
+  maskResult = [(VKCImageSubjectContext *)self maskResult];
+  imageOrientation = [maskResult imageOrientation];
 
-  return v3;
+  return imageOrientation;
 }
 
 - (VKCRemoveBackgroundRequest)request
 {
-  v2 = [(VKCImageSubjectContext *)self maskResult];
-  v3 = [v2 request];
+  maskResult = [(VKCImageSubjectContext *)self maskResult];
+  request = [maskResult request];
 
-  return v3;
+  return request;
 }
 
 - (CGRect)normalizedCropRect
 {
-  v2 = [(VKCImageSubjectContext *)self maskResult];
-  [v2 normalizedCropRect];
+  maskResult = [(VKCImageSubjectContext *)self maskResult];
+  [maskResult normalizedCropRect];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -132,26 +132,26 @@
 
 - (NSIndexSet)activeMADSubjectIndexes
 {
-  v3 = [(VKCImageSubjectContext *)self activeSubjectIndexes];
-  v4 = [(VKCImageSubjectContext *)self madSubjectIndexesForVKSubjectIndexes:v3];
+  activeSubjectIndexes = [(VKCImageSubjectContext *)self activeSubjectIndexes];
+  v4 = [(VKCImageSubjectContext *)self madSubjectIndexesForVKSubjectIndexes:activeSubjectIndexes];
 
   return v4;
 }
 
-- (id)madSubjectIndexesForVKSubjectIndexes:(id)a3
+- (id)madSubjectIndexesForVKSubjectIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v5 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  v6 = [(VKCImageSubjectContext *)self subjectInstances];
+  subjectInstances = [(VKCImageSubjectContext *)self subjectInstances];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__VKCImageSubjectContext_madSubjectIndexesForVKSubjectIndexes___block_invoke;
   v12[3] = &unk_1E7BE4530;
-  v13 = v4;
+  v13 = indexesCopy;
   v7 = v5;
   v14 = v7;
-  v8 = v4;
-  [v6 enumerateObjectsUsingBlock:v12];
+  v8 = indexesCopy;
+  [subjectInstances enumerateObjectsUsingBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -171,25 +171,25 @@ void __63__VKCImageSubjectContext_madSubjectIndexesForVKSubjectIndexes___block_i
 - (NSIndexSet)allSubjectIndexes
 {
   v2 = MEMORY[0x1E696AC90];
-  v3 = [(VKCImageSubjectContext *)self subjectCount];
+  subjectCount = [(VKCImageSubjectContext *)self subjectCount];
 
-  return [v2 indexSetWithIndexesInRange:{0, v3}];
+  return [v2 indexSetWithIndexesInRange:{0, subjectCount}];
 }
 
-- (void)preparePathsAndImageMaskIfNecessaryWithContext:(id)a3
+- (void)preparePathsAndImageMaskIfNecessaryWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(VKCImageSubjectContext *)self maskResult];
-  v6 = [v5 instanceMasks];
+  contextCopy = context;
+  maskResult = [(VKCImageSubjectContext *)self maskResult];
+  instanceMasks = [maskResult instanceMasks];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __73__VKCImageSubjectContext_preparePathsAndImageMaskIfNecessaryWithContext___block_invoke;
   v20[3] = &unk_1E7BE4558;
   v20[4] = self;
-  v21 = v4;
-  v7 = v4;
-  v8 = [v6 vk_compactMap:v20];
+  v21 = contextCopy;
+  v7 = contextCopy;
+  v8 = [instanceMasks vk_compactMap:v20];
   [(VKCImageSubjectContext *)self setSubjectInstances:v8];
   v9 = objc_alloc_init(VKCImageSubjectContextInstance);
   v10 = objc_alloc_init(MEMORY[0x1E69DC728]);
@@ -247,70 +247,70 @@ void __73__VKCImageSubjectContext_preparePathsAndImageMaskIfNecessaryWithContext
   [v6 vk_appendBezierPath:v7];
 }
 
-- (void)prepareInstanceImagesWithCIContext:(id)a3 instance:(id)a4 image:(CGImage *)a5
+- (void)prepareInstanceImagesWithCIContext:(id)context instance:(id)instance image:(CGImage *)image
 {
-  v13 = a3;
-  v8 = a4;
-  Width = CGImageGetWidth(a5);
-  [v8 setImageSize:{Width, CGImageGetHeight(a5)}];
-  [v8 setMaskImage:a5];
+  contextCopy = context;
+  instanceCopy = instance;
+  Width = CGImageGetWidth(image);
+  [instanceCopy setImageSize:{Width, CGImageGetHeight(image)}];
+  [instanceCopy setMaskImage:image];
   if ([(VKCImageSubjectContext *)self imageOrientation])
   {
-    v10 = [MEMORY[0x1E695F658] imageWithCGImage:a5];
+    v10 = [MEMORY[0x1E695F658] imageWithCGImage:image];
     v11 = [v10 imageByApplyingCGOrientation:{vk_cgImagePropertyOrientationFromVKOrientation(-[VKCImageSubjectContext imageOrientation](self, "imageOrientation"))}];
 
-    [v8 imageSize];
-    v12 = [v13 createCGImage:v11 fromRect:*MEMORY[0x1E695F8A8] format:0 colorSpace:VKMRectWithSize()];
-    [v8 setOrientedMaskImage:v12];
+    [instanceCopy imageSize];
+    v12 = [contextCopy createCGImage:v11 fromRect:*MEMORY[0x1E695F8A8] format:0 colorSpace:VKMRectWithSize()];
+    [instanceCopy setOrientedMaskImage:v12];
     CGImageRelease(v12);
   }
 
   else
   {
-    [v8 setOrientedMaskImage:a5];
+    [instanceCopy setOrientedMaskImage:image];
   }
 }
 
-- (void)processPathForInstance:(id)a3
+- (void)processPathForInstance:(id)instance
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  instanceCopy = instance;
   v5 = objc_alloc_init(MEMORY[0x1E69844A8]);
   [v5 setDetectsDarkOnLight:0];
   v6 = objc_alloc(MEMORY[0x1E69845B8]);
-  v7 = [v4 orientedMaskImage];
-  v8 = [v6 initWithCGImage:v7 options:MEMORY[0x1E695E0F8]];
+  orientedMaskImage = [instanceCopy orientedMaskImage];
+  v8 = [v6 initWithCGImage:orientedMaskImage options:MEMORY[0x1E695E0F8]];
   v42[0] = v5;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
   v41 = 0;
   [v8 performRequests:v9 error:&v41];
-  v10 = v41;
+  topLevelContours = v41;
 
-  if (v10)
+  if (topLevelContours)
   {
-    v11 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    firstObject = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.RemoveBackground");
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
-      [(VKCImageSubjectContext *)v10 processPathForInstance:v11];
+      [(VKCImageSubjectContext *)topLevelContours processPathForInstance:firstObject];
     }
   }
 
   else
   {
-    v12 = [v5 results];
-    v11 = [v12 firstObject];
+    results = [v5 results];
+    firstObject = [results firstObject];
 
-    v10 = [v11 topLevelContours];
+    topLevelContours = [firstObject topLevelContours];
 
-    if (v10)
+    if (topLevelContours)
     {
-      v32 = self;
-      v33 = v4;
+      selfCopy = self;
+      v33 = instanceCopy;
       v31 = objc_alloc_init(MEMORY[0x1E69DC728]);
       v13 = objc_alloc_init(MEMORY[0x1E69DC728]);
-      if ([v11 contourCount]< 1)
+      if ([firstObject contourCount]< 1)
       {
-        v10 = 0;
+        topLevelContours = 0;
       }
 
       else
@@ -320,8 +320,8 @@ void __73__VKCImageSubjectContext_preparePathsAndImageMaskIfNecessaryWithContext
         do
         {
           v40 = v14;
-          v16 = [v11 contourAtIndex:v15 error:&v40];
-          v10 = v40;
+          v16 = [firstObject contourAtIndex:v15 error:&v40];
+          topLevelContours = v40;
 
           LODWORD(v17) = 981668463;
           v18 = [v16 polygonApproximationWithEpsilon:0 error:v17];
@@ -329,10 +329,10 @@ void __73__VKCImageSubjectContext_preparePathsAndImageMaskIfNecessaryWithContext
           [v13 vk_appendBezierPath:v19];
 
           ++v15;
-          v14 = v10;
+          v14 = topLevelContours;
         }
 
-        while (v15 < [v11 contourCount]);
+        while (v15 < [firstObject contourCount]);
       }
 
       v29 = *(MEMORY[0x1E695EFD0] + 16);
@@ -350,20 +350,20 @@ void __73__VKCImageSubjectContext_preparePathsAndImageMaskIfNecessaryWithContext
       v36 = v39;
       CGAffineTransformConcat(&t2, &v36, &t1);
       v39 = t2;
-      [(VKCImageSubjectContext *)v32 normalizedCropRect];
+      [(VKCImageSubjectContext *)selfCopy normalizedCropRect];
       VKMTransformConvertingRectToRect(&t1, 0.0, 1.0, 1.0, v20, v21, v22, v23);
       v36 = v39;
       CGAffineTransformConcat(&t2, &v36, &t1);
       v39 = t2;
       [v13 vk_applyTransform:&t2];
-      v4 = v33;
+      instanceCopy = v33;
       if (([v13 isEmpty] & 1) == 0)
       {
         v24 = [v13 copy];
         [v33 setBaseNormalizedSubjectPath:v24];
       }
 
-      v25 = [v11 topLevelContours:v28];
+      v25 = [firstObject topLevelContours:v28];
       v34[0] = MEMORY[0x1E69E9820];
       v34[1] = 3221225472;
       v34[2] = __49__VKCImageSubjectContext_processPathForInstance___block_invoke;
@@ -393,42 +393,42 @@ void __49__VKCImageSubjectContext_processPathForInstance___block_invoke(uint64_t
   [*(a1 + 32) vk_appendBezierPath:v6];
 }
 
-- (id)convertIndexSetToConcreteSubjectIndexes:(id)a3
+- (id)convertIndexSetToConcreteSubjectIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  indexesCopy = indexes;
+  v5 = indexesCopy;
+  if (indexesCopy)
   {
-    v6 = v4;
-    if (![v4 count])
+    allSubjectIndexes = indexesCopy;
+    if (![indexesCopy count])
     {
-      v6 = [(VKCImageSubjectContext *)self allSubjectIndexes];
+      allSubjectIndexes = [(VKCImageSubjectContext *)self allSubjectIndexes];
     }
   }
 
   else
   {
-    v6 = 0;
+    allSubjectIndexes = 0;
   }
 
-  return v6;
+  return allSubjectIndexes;
 }
 
-- (id)convertExternalIndexSetToInternal:(id)a3
+- (id)convertExternalIndexSetToInternal:(id)internal
 {
-  v4 = a3;
-  v5 = [(VKCImageSubjectContext *)self allSubjectIndexes];
-  if (v4)
+  internalCopy = internal;
+  allSubjectIndexes = [(VKCImageSubjectContext *)self allSubjectIndexes];
+  if (internalCopy)
   {
-    v6 = v4;
-    if ([v4 count])
+    v6 = internalCopy;
+    if ([internalCopy count])
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __60__VKCImageSubjectContext_convertExternalIndexSetToInternal___block_invoke;
       v8[3] = &unk_1E7BE45A8;
-      v9 = v5;
-      v6 = [v4 indexesPassingTest:v8];
+      v9 = allSubjectIndexes;
+      v6 = [internalCopy indexesPassingTest:v8];
     }
   }
 
@@ -440,19 +440,19 @@ void __49__VKCImageSubjectContext_processPathForInstance___block_invoke(uint64_t
   return v6;
 }
 
-- (id)normalizedPathForSubjectWithIndexSet:(id)a3 contentsRect:(CGRect)a4 topLevelOnly:(BOOL)a5
+- (id)normalizedPathForSubjectWithIndexSet:(id)set contentsRect:(CGRect)rect topLevelOnly:(BOOL)only
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  if ([v11 count])
+  onlyCopy = only;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  setCopy = set;
+  if ([setCopy count])
   {
-    v12 = [(VKCImageSubjectContext *)self convertExternalIndexSetToInternal:v11];
+    v12 = [(VKCImageSubjectContext *)self convertExternalIndexSetToInternal:setCopy];
     v13 = [v12 count];
-    if (v13 == [v11 count])
+    if (v13 == [setCopy count])
     {
 LABEL_11:
       if ([v12 count])
@@ -462,20 +462,20 @@ LABEL_11:
         v22[1] = 3221225472;
         v22[2] = __89__VKCImageSubjectContext_normalizedPathForSubjectWithIndexSet_contentsRect_topLevelOnly___block_invoke;
         v22[3] = &unk_1E7BE45D0;
-        v18 = v19;
-        v23 = v18;
-        v24 = self;
+        height = v19;
+        v23 = height;
+        selfCopy = self;
         v25 = x;
         v26 = y;
         v27 = width;
         v28 = height;
-        v29 = v5;
-        [v11 enumerateIndexesUsingBlock:v22];
+        v29 = onlyCopy;
+        [setCopy enumerateIndexesUsingBlock:v22];
       }
 
       else
       {
-        v18 = 0;
+        height = 0;
       }
 
       goto LABEL_15;
@@ -505,9 +505,9 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v18 = [(VKCImageSubjectContext *)self normalizedPathForSubjectAtIndex:0 contentsRect:v5 topLevelOnly:x, y, width, height];
+  height = [(VKCImageSubjectContext *)self normalizedPathForSubjectAtIndex:0 contentsRect:onlyCopy topLevelOnly:x, y, width, height];
 LABEL_15:
-  v20 = [v18 copy];
+  v20 = [height copy];
 
   return v20;
 }
@@ -521,72 +521,72 @@ void __89__VKCImageSubjectContext_normalizedPathForSubjectWithIndexSet_contentsR
   [v3 vk_appendBezierPath:v5];
 }
 
-- (id)normalizedPathForSubjectAtIndex:(id)a3 contentsRect:(CGRect)a4 topLevelOnly:(BOOL)a5
+- (id)normalizedPathForSubjectAtIndex:(id)index contentsRect:(CGRect)rect topLevelOnly:(BOOL)only
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  if (v11)
+  onlyCopy = only;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  indexCopy = index;
+  if (indexCopy)
   {
-    v12 = [(VKCImageSubjectContext *)self subjectInstances];
-    v13 = [v12 vk_safeObjectAtIndex:{objc_msgSend(v11, "integerValue")}];
+    subjectInstances = [(VKCImageSubjectContext *)self subjectInstances];
+    allSubjectsInstance = [subjectInstances vk_safeObjectAtIndex:{objc_msgSend(indexCopy, "integerValue")}];
 
-    if (!v13)
+    if (!allSubjectsInstance)
     {
-      +[VKAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](VKAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "instance != ((void*)0)", "-[VKCImageSubjectContext normalizedPathForSubjectAtIndex:contentsRect:topLevelOnly:]", 0, 0, @"Trying to get subject at index: %ld, but the index is out of range, returning nil", [v11 integerValue]);
-      v13 = 0;
+      +[VKAssert handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:](VKAssert, "handleFailedAssertWithCondition:functionName:simulateCrash:showAlert:format:", "instance != ((void*)0)", "-[VKCImageSubjectContext normalizedPathForSubjectAtIndex:contentsRect:topLevelOnly:]", 0, 0, @"Trying to get subject at index: %ld, but the index is out of range, returning nil", [indexCopy integerValue]);
+      allSubjectsInstance = 0;
     }
   }
 
   else
   {
-    v13 = [(VKCImageSubjectContext *)self allSubjectsInstance];
+    allSubjectsInstance = [(VKCImageSubjectContext *)self allSubjectsInstance];
   }
 
-  v14 = [v13 normalizedSubjectPathWithContentsRect:v5 topLevelOnly:{x, y, width, height}];
+  v14 = [allSubjectsInstance normalizedSubjectPathWithContentsRect:onlyCopy topLevelOnly:{x, y, width, height}];
   v15 = [v14 copy];
 
   return v15;
 }
 
-- (id)normalizedPathForActiveSubjectsWithContentsRect:(CGRect)a3 topLevelOnly:(BOOL)a4
+- (id)normalizedPathForActiveSubjectsWithContentsRect:(CGRect)rect topLevelOnly:(BOOL)only
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(VKCImageSubjectContext *)self activeSubjectIndexes];
-  v11 = [v10 count];
+  onlyCopy = only;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  activeSubjectIndexes = [(VKCImageSubjectContext *)self activeSubjectIndexes];
+  v11 = [activeSubjectIndexes count];
 
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x1E69DC728]);
-    v13 = [(VKCImageSubjectContext *)self activeSubjectIndexes];
+    activeSubjectIndexes2 = [(VKCImageSubjectContext *)self activeSubjectIndexes];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __87__VKCImageSubjectContext_normalizedPathForActiveSubjectsWithContentsRect_topLevelOnly___block_invoke;
     v17[3] = &unk_1E7BE45D0;
-    v14 = v12;
-    v18 = v14;
-    v19 = self;
+    height = v12;
+    v18 = height;
+    selfCopy = self;
     v20 = x;
     v21 = y;
     v22 = width;
     v23 = height;
-    v24 = v4;
-    [v13 enumerateIndexesUsingBlock:v17];
+    v24 = onlyCopy;
+    [activeSubjectIndexes2 enumerateIndexesUsingBlock:v17];
   }
 
   else
   {
-    v14 = [(VKCImageSubjectContext *)self normalizedPathForSubjectAtIndex:0 contentsRect:v4 topLevelOnly:x, y, width, height];
+    height = [(VKCImageSubjectContext *)self normalizedPathForSubjectAtIndex:0 contentsRect:onlyCopy topLevelOnly:x, y, width, height];
   }
 
-  v15 = [v14 copy];
+  v15 = [height copy];
 
   return v15;
 }
@@ -600,25 +600,25 @@ void __87__VKCImageSubjectContext_normalizedPathForActiveSubjectsWithContentsRec
   [v3 vk_appendBezierPath:v5];
 }
 
-- (BOOL)containsSubjectAtNormalizedPoint:(CGPoint)a3
+- (BOOL)containsSubjectAtNormalizedPoint:(CGPoint)point
 {
-  v3 = [(VKCImageSubjectContext *)self indexOfSubjectAtNormalizedPoint:a3.x, a3.y];
+  v3 = [(VKCImageSubjectContext *)self indexOfSubjectAtNormalizedPoint:point.x, point.y];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (id)indexOfSubjectAtNormalizedPoint:(CGPoint)a3
+- (id)indexOfSubjectAtNormalizedPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__1;
   v13 = __Block_byref_object_dispose__1;
   v14 = 0;
-  v5 = [(VKCImageSubjectContext *)self subjectInstances];
+  subjectInstances = [(VKCImageSubjectContext *)self subjectInstances];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__VKCImageSubjectContext_indexOfSubjectAtNormalizedPoint___block_invoke;
@@ -626,7 +626,7 @@ void __87__VKCImageSubjectContext_normalizedPathForActiveSubjectsWithContentsRec
   *&v8[5] = x;
   *&v8[6] = y;
   v8[4] = &v9;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [subjectInstances enumerateObjectsUsingBlock:v8];
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -656,14 +656,14 @@ void __58__VKCImageSubjectContext_indexOfSubjectAtNormalizedPoint___block_invoke
   }
 }
 
-- (BOOL)subjectIndexes:(id)a3 equivalentToIndexes:(id)a4
+- (BOOL)subjectIndexes:(id)indexes equivalentToIndexes:(id)toIndexes
 {
-  v6 = a4;
-  v7 = [(VKCImageSubjectContext *)self convertIndexSetToConcreteSubjectIndexes:a3];
-  v8 = [(VKCImageSubjectContext *)self convertIndexSetToConcreteSubjectIndexes:v6];
+  toIndexesCopy = toIndexes;
+  v7 = [(VKCImageSubjectContext *)self convertIndexSetToConcreteSubjectIndexes:indexes];
+  v8 = [(VKCImageSubjectContext *)self convertIndexSetToConcreteSubjectIndexes:toIndexesCopy];
 
-  LOBYTE(v6) = [v7 isEqualToIndexSet:v8];
-  return v6;
+  LOBYTE(toIndexesCopy) = [v7 isEqualToIndexSet:v8];
+  return toIndexesCopy;
 }
 
 - (void)processPathForInstance:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

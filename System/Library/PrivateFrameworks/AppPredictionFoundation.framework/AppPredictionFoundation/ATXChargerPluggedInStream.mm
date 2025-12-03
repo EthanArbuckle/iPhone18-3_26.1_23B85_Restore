@@ -1,31 +1,31 @@
 @interface ATXChargerPluggedInStream
-- (id)_chargerPluggedInPublisherWithStartDate:(id)a3 endDate:(id)a4;
-- (void)enumeratePluggedInEventsFromStartDate:(id)a3 endDate:(id)a4 filterBlock:(id)a5 limit:(unint64_t)a6 block:(id)a7;
+- (id)_chargerPluggedInPublisherWithStartDate:(id)date endDate:(id)endDate;
+- (void)enumeratePluggedInEventsFromStartDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit block:(id)a7;
 @end
 
 @implementation ATXChargerPluggedInStream
 
-- (void)enumeratePluggedInEventsFromStartDate:(id)a3 endDate:(id)a4 filterBlock:(id)a5 limit:(unint64_t)a6 block:(id)a7
+- (void)enumeratePluggedInEventsFromStartDate:(id)date endDate:(id)endDate filterBlock:(id)block limit:(unint64_t)limit block:(id)a7
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  blockCopy = block;
   v15 = a7;
-  if ([v12 compare:v13] != -1)
+  if ([dateCopy compare:endDateCopy] != -1)
   {
     [ATXChargerPluggedInStream enumeratePluggedInEventsFromStartDate:a2 endDate:self filterBlock:? limit:? block:?];
   }
 
-  v16 = [(ATXChargerPluggedInStream *)self _chargerPluggedInPublisherWithStartDate:v12 endDate:v13];
+  v16 = [(ATXChargerPluggedInStream *)self _chargerPluggedInPublisherWithStartDate:dateCopy endDate:endDateCopy];
   v17 = [MEMORY[0x277CF1A18] sessionPublisherWithStreamPublisher:v16 startingBlock:&__block_literal_global_7 sessionKeyBlock:0 options:1];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __99__ATXChargerPluggedInStream_enumeratePluggedInEventsFromStartDate_endDate_filterBlock_limit_block___block_invoke_21;
   v21[3] = &unk_278590480;
-  v22 = v14;
+  v22 = blockCopy;
   v23 = v15;
   v18 = v15;
-  v19 = v14;
+  v19 = blockCopy;
   v20 = [v17 sinkWithCompletion:&__block_literal_global_20 receiveInput:v21];
 }
 
@@ -78,15 +78,15 @@ void __99__ATXChargerPluggedInStream_enumeratePluggedInEventsFromStartDate_endDa
   }
 }
 
-- (id)_chargerPluggedInPublisherWithStartDate:(id)a3 endDate:(id)a4
+- (id)_chargerPluggedInPublisherWithStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = BiomeLibrary();
-  v8 = [v7 Device];
-  v9 = [v8 Power];
-  v10 = [v9 PluggedIn];
-  v11 = [v10 atx_publisherWithStartDate:v6 endDate:v5 maxEvents:0 lastN:0 reversed:0];
+  device = [v7 Device];
+  power = [device Power];
+  pluggedIn = [power PluggedIn];
+  v11 = [pluggedIn atx_publisherWithStartDate:dateCopy endDate:endDateCopy maxEvents:0 lastN:0 reversed:0];
 
   return v11;
 }

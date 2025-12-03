@@ -1,39 +1,39 @@
 @interface AVVideoCompositionLayerInstruction
 + (void)initialize;
 - (AVVideoCompositionLayerInstruction)init;
-- (AVVideoCompositionLayerInstruction)initWithCoder:(id)a3;
+- (AVVideoCompositionLayerInstruction)initWithCoder:(id)coder;
 - (BOOL)getCropRectangleRampForTime:(CMTime *)time startCropRectangle:(CGRect *)startCropRectangle endCropRectangle:(CGRect *)endCropRectangle timeRange:(CMTimeRange *)timeRange;
 - (BOOL)getOpacityRampForTime:(CMTime *)time startOpacity:(float *)startOpacity endOpacity:(float *)endOpacity timeRange:(CMTimeRange *)timeRange;
 - (BOOL)getTransformRampForTime:(CMTime *)time startTransform:(CGAffineTransform *)startTransform endTransform:(CGAffineTransform *)endTransform timeRange:(CMTimeRange *)timeRange;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dictionaryRepresentationWithTimeRange:(id *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_setCropRectangleRampFromStartCropRectangle:(CGRect)a3 toEndCropRectangle:(CGRect)a4 timeRange:(id *)a5 selector:(SEL)a6;
-- (void)_setCropRectangleRamps:(id)a3;
-- (void)_setOpacityRampFromStartOpacity:(float)a3 toEndOpacity:(float)a4 timeRange:(id *)a5 selector:(SEL)a6;
-- (void)_setOpacityRamps:(id)a3;
-- (void)_setTransformRampFromStartTransform:(CGAffineTransform *)a3 toEndTransform:(CGAffineTransform *)a4 timeRange:(id *)a5 selector:(SEL)a6;
-- (void)_setTransformRamps:(id)a3;
-- (void)_setValuesFromDictionary:(id)a3 timeRange:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dictionaryRepresentationWithTimeRange:(id *)range;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_setCropRectangleRampFromStartCropRectangle:(CGRect)rectangle toEndCropRectangle:(CGRect)cropRectangle timeRange:(id *)range selector:(SEL)selector;
+- (void)_setCropRectangleRamps:(id)ramps;
+- (void)_setOpacityRampFromStartOpacity:(float)opacity toEndOpacity:(float)endOpacity timeRange:(id *)range selector:(SEL)selector;
+- (void)_setOpacityRamps:(id)ramps;
+- (void)_setTransformRampFromStartTransform:(CGAffineTransform *)transform toEndTransform:(CGAffineTransform *)endTransform timeRange:(id *)range selector:(SEL)selector;
+- (void)_setTransformRamps:(id)ramps;
+- (void)_setValuesFromDictionary:(id)dictionary timeRange:(id *)range;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCropRectangle:(CGRect)a3 atTime:(id *)a4;
-- (void)setCropRectangleRampFromStartCropRectangle:(CGRect)a3 toEndCropRectangle:(CGRect)a4 timeRange:(id *)a5;
-- (void)setOpacity:(float)a3 atTime:(id *)a4;
-- (void)setOpacityRampFromStartOpacity:(float)a3 toEndOpacity:(float)a4 timeRange:(id *)a5;
-- (void)setTransform:(CGAffineTransform *)a3 atTime:(id *)a4;
-- (void)setTransformRampFromStartTransform:(CGAffineTransform *)a3 toEndTransform:(CGAffineTransform *)a4 timeRange:(id *)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCropRectangle:(CGRect)rectangle atTime:(id *)time;
+- (void)setCropRectangleRampFromStartCropRectangle:(CGRect)rectangle toEndCropRectangle:(CGRect)cropRectangle timeRange:(id *)range;
+- (void)setOpacity:(float)opacity atTime:(id *)time;
+- (void)setOpacityRampFromStartOpacity:(float)opacity toEndOpacity:(float)endOpacity timeRange:(id *)range;
+- (void)setTransform:(CGAffineTransform *)transform atTime:(id *)time;
+- (void)setTransformRampFromStartTransform:(CGAffineTransform *)transform toEndTransform:(CGAffineTransform *)endTransform timeRange:(id *)range;
 @end
 
 @implementation AVVideoCompositionLayerInstruction
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 setVersion:1];
+    [self setVersion:1];
   }
 }
 
@@ -62,7 +62,7 @@
   return v2;
 }
 
-- (AVVideoCompositionLayerInstruction)initWithCoder:(id)a3
+- (AVVideoCompositionLayerInstruction)initWithCoder:(id)coder
 {
   v23.receiver = self;
   v23.super_class = AVVideoCompositionLayerInstruction;
@@ -74,25 +74,25 @@
     if (v5)
     {
       CFRetain(v5);
-      -[AVVideoCompositionLayerInstruction setTrackID:](v4, "setTrackID:", [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"AVVideoCompositionLayerTrackID", "intValue"}]);
+      -[AVVideoCompositionLayerInstruction setTrackID:](v4, "setTrackID:", [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"AVVideoCompositionLayerTrackID", "intValue"}]);
       v6 = MEMORY[0x1E695DFD8];
       v7 = objc_opt_class();
       v8 = objc_opt_class();
       v9 = objc_opt_class();
-      v10 = [a3 decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, v9, objc_opt_class(), 0), @"AVVideoCompositionLayerTransformRamps"}];
+      v10 = [coder decodeObjectOfClasses:objc_msgSend(v6 forKey:{"setWithObjects:", v7, v8, v9, objc_opt_class(), 0), @"AVVideoCompositionLayerTransformRamps"}];
       [(AVVideoCompositionLayerInstruction *)v4 _setTransformRamps:_rampArrayWithTimeRangesAsValues(v10)];
       v11 = MEMORY[0x1E695DFD8];
       v12 = objc_opt_class();
       v13 = objc_opt_class();
       v14 = objc_opt_class();
       v15 = objc_opt_class();
-      v16 = [a3 decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, v13, v14, v15, objc_opt_class(), 0), @"AVVideoCompositionLayerOpacityRamps"}];
+      v16 = [coder decodeObjectOfClasses:objc_msgSend(v11 forKey:{"setWithObjects:", v12, v13, v14, v15, objc_opt_class(), 0), @"AVVideoCompositionLayerOpacityRamps"}];
       [(AVVideoCompositionLayerInstruction *)v4 _setOpacityRamps:_rampArrayWithTimeRangesAsValues(v16)];
       v17 = MEMORY[0x1E695DFD8];
       v18 = objc_opt_class();
       v19 = objc_opt_class();
       v20 = objc_opt_class();
-      v21 = [a3 decodeObjectOfClasses:objc_msgSend(v17 forKey:{"setWithObjects:", v18, v19, v20, objc_opt_class(), 0), @"AVVideoCompositionLayerCropRectangleRamps"}];
+      v21 = [coder decodeObjectOfClasses:objc_msgSend(v17 forKey:{"setWithObjects:", v18, v19, v20, objc_opt_class(), 0), @"AVVideoCompositionLayerCropRectangleRamps"}];
       [(AVVideoCompositionLayerInstruction *)v4 _setCropRectangleRamps:_rampArrayWithTimeRangesAsValues(v21)];
     }
 
@@ -106,17 +106,17 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", self->_layerInstruction->trackID), @"AVVideoCompositionLayerTrackID"}];
-  [a3 encodeObject:_rampArrayWithTimeRangesAsDictionaries(self->_layerInstruction->transformRamps) forKey:@"AVVideoCompositionLayerTransformRamps"];
-  [a3 encodeObject:_rampArrayWithTimeRangesAsDictionaries(self->_layerInstruction->opacityRamps) forKey:@"AVVideoCompositionLayerOpacityRamps"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", self->_layerInstruction->trackID), @"AVVideoCompositionLayerTrackID"}];
+  [coder encodeObject:_rampArrayWithTimeRangesAsDictionaries(self->_layerInstruction->transformRamps) forKey:@"AVVideoCompositionLayerTransformRamps"];
+  [coder encodeObject:_rampArrayWithTimeRangesAsDictionaries(self->_layerInstruction->opacityRamps) forKey:@"AVVideoCompositionLayerOpacityRamps"];
   v5 = _rampArrayWithTimeRangesAsDictionaries(self->_layerInstruction->cropRectangleRamps);
 
-  [a3 encodeObject:v5 forKey:@"AVVideoCompositionLayerCropRectangleRamps"];
+  [coder encodeObject:v5 forKey:@"AVVideoCompositionLayerCropRectangleRamps"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -125,14 +125,14 @@
   }
 
   trackID = self->_layerInstruction->trackID;
-  if (trackID != [a3 trackID])
+  if (trackID != [equal trackID])
   {
     goto LABEL_11;
   }
 
   layerInstruction = self->_layerInstruction;
   transformRamps = layerInstruction->transformRamps;
-  v8 = *(*(a3 + 1) + 16);
+  v8 = *(*(equal + 1) + 16);
   if (transformRamps)
   {
     LODWORD(v9) = [(NSMutableArray *)transformRamps isEqual:v8];
@@ -150,7 +150,7 @@
   }
 
   opacityRamps = layerInstruction->opacityRamps;
-  v11 = *(*(a3 + 1) + 24);
+  v11 = *(*(equal + 1) + 24);
   if (opacityRamps)
   {
     LODWORD(v9) = [(NSMutableArray *)opacityRamps isEqual:v11];
@@ -172,7 +172,7 @@ LABEL_11:
 
 LABEL_13:
   cropRectangleRamps = layerInstruction->cropRectangleRamps;
-  v13 = *(*(a3 + 1) + 32);
+  v13 = *(*(equal + 1) + 32);
   if (cropRectangleRamps)
   {
 
@@ -187,7 +187,7 @@ LABEL_13:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ([(AVVideoCompositionLayerInstruction *)self isMemberOfClass:objc_opt_class()])
   {
@@ -210,7 +210,7 @@ LABEL_13:
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(AVVideoCompositionLayerInstruction *)[AVMutableVideoCompositionLayerInstruction allocWithZone:?]];
   if (v4)
@@ -238,46 +238,46 @@ LABEL_13:
   [(AVVideoCompositionLayerInstruction *)&v4 dealloc];
 }
 
-- (void)_setTransformRamps:(id)a3
+- (void)_setTransformRamps:(id)ramps
 {
   transformRamps = self->_layerInstruction->transformRamps;
-  if (transformRamps != a3)
+  if (transformRamps != ramps)
   {
 
-    self->_layerInstruction->transformRamps = [a3 copy];
+    self->_layerInstruction->transformRamps = [ramps copy];
   }
 }
 
-- (void)_setOpacityRamps:(id)a3
+- (void)_setOpacityRamps:(id)ramps
 {
   opacityRamps = self->_layerInstruction->opacityRamps;
-  if (opacityRamps != a3)
+  if (opacityRamps != ramps)
   {
 
-    self->_layerInstruction->opacityRamps = [a3 copy];
+    self->_layerInstruction->opacityRamps = [ramps copy];
   }
 }
 
-- (void)_setCropRectangleRamps:(id)a3
+- (void)_setCropRectangleRamps:(id)ramps
 {
   cropRectangleRamps = self->_layerInstruction->cropRectangleRamps;
-  if (cropRectangleRamps != a3)
+  if (cropRectangleRamps != ramps)
   {
 
-    self->_layerInstruction->cropRectangleRamps = [a3 copy];
+    self->_layerInstruction->cropRectangleRamps = [ramps copy];
   }
 }
 
-- (void)_setTransformRampFromStartTransform:(CGAffineTransform *)a3 toEndTransform:(CGAffineTransform *)a4 timeRange:(id *)a5 selector:(SEL)a6
+- (void)_setTransformRampFromStartTransform:(CGAffineTransform *)transform toEndTransform:(CGAffineTransform *)endTransform timeRange:(id *)range selector:(SEL)selector
 {
   transformRamps = self->_layerInstruction->transformRamps;
-  v12 = *&a5->var0.var3;
-  v39 = *&a5->var0.var0;
+  v12 = *&range->var0.var3;
+  v39 = *&range->var0.var0;
   v40 = v12;
-  v41 = *&a5->var1.var1;
+  v41 = *&range->var1.var1;
   if (AVRampsIncludesRampThatOverlapsTimeRange(transformRamps, &v39))
   {
-    v31 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a6, @"The timeRange of a transform ramp must not overlap the timeRange of an existing transform ramp.", v13, v14, v15, v16, v17, v32), 0}];
+    v31 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{selector, @"The timeRange of a transform ramp must not overlap the timeRange of an existing transform ramp.", v13, v14, v15, v16, v17, v32), 0}];
     objc_exception_throw(v31);
   }
 
@@ -292,26 +292,26 @@ LABEL_13:
   v35[1] = 3221225472;
   v35[2] = __108__AVVideoCompositionLayerInstruction__setTransformRampFromStartTransform_toEndTransform_timeRange_selector___block_invoke;
   v35[3] = &__block_descriptor_80_e15_B32__0_8Q16_B24l;
-  v19 = *&a5->var0.var3;
-  v36 = *&a5->var0.var0;
+  v19 = *&range->var0.var3;
+  v36 = *&range->var0.var0;
   v37 = v19;
-  v38 = *&a5->var1.var1;
+  v38 = *&range->var1.var1;
   v20 = [(NSMutableArray *)v18 indexOfObjectPassingTest:v35];
-  v21 = *&a5->var0.var3;
-  v39 = *&a5->var0.var0;
+  v21 = *&range->var0.var3;
+  v39 = *&range->var0.var0;
   v40 = v21;
-  v41 = *&a5->var1.var1;
+  v41 = *&range->var1.var1;
   v22 = [MEMORY[0x1E696B098] valueWithCMTimeRange:&v39];
   v23 = MEMORY[0x1E695DF20];
-  v24 = *&a3->c;
-  v39 = *&a3->a;
+  v24 = *&transform->c;
+  v39 = *&transform->a;
   v40 = v24;
-  v41 = *&a3->tx;
+  v41 = *&transform->tx;
   v25 = FigCreate3x2MatrixArrayFromCGAffineTransform();
-  v26 = *&a4->c;
-  v39 = *&a4->a;
+  v26 = *&endTransform->c;
+  v39 = *&endTransform->a;
   v40 = v26;
-  v41 = *&a4->tx;
+  v41 = *&endTransform->tx;
   v27 = [v23 dictionaryWithObjectsAndKeys:{v25, @"StartTransform", FigCreate3x2MatrixArrayFromCGAffineTransform(), @"EndTransform", 0}];
   if (v20 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -339,7 +339,7 @@ LABEL_13:
 
     *&time1.value = v39;
     time1.epoch = v40;
-    time2 = a5->var0;
+    time2 = range->var0;
     v29 = CMTimeCompare(&time1, &time2);
     v30 = self->_layerInstruction->transformRamps;
     if (v29)
@@ -388,50 +388,50 @@ BOOL __108__AVVideoCompositionLayerInstruction__setTransformRampFromStartTransfo
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3 atTime:(id *)a4
+- (void)setTransform:(CGAffineTransform *)transform atTime:(id *)time
 {
-  if ((a4->var2 & 0x1D) != 1)
+  if ((time->var2 & 0x1D) != 1)
   {
-    v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The time of a transform setting must be numeric.", a4, v4, v5, v6, v7, v15), 0}];
+    v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The time of a transform setting must be numeric.", time, v4, v5, v6, v7, v15), 0}];
     objc_exception_throw(v14);
   }
 
-  *start = *a4;
+  *start = *time;
   v15 = *MEMORY[0x1E6960C88];
   *&v16 = *(MEMORY[0x1E6960C88] + 16);
   CMTimeRangeMake(&v20, start, &v15);
-  v11 = *&a3->c;
-  *start = *&a3->a;
+  v11 = *&transform->c;
+  *start = *&transform->a;
   *&start[16] = v11;
-  v13 = *&a3->a;
-  v12 = *&a3->c;
-  v19 = *&a3->tx;
+  v13 = *&transform->a;
+  v12 = *&transform->c;
+  v19 = *&transform->tx;
   v15 = v13;
   v16 = v12;
-  v17 = *&a3->tx;
+  v17 = *&transform->tx;
   [(AVVideoCompositionLayerInstruction *)self _setTransformRampFromStartTransform:start toEndTransform:&v15 timeRange:&v20 selector:a2];
 }
 
-- (void)setTransformRampFromStartTransform:(CGAffineTransform *)a3 toEndTransform:(CGAffineTransform *)a4 timeRange:(id *)a5
+- (void)setTransformRampFromStartTransform:(CGAffineTransform *)transform toEndTransform:(CGAffineTransform *)endTransform timeRange:(id *)range
 {
-  if ((a5->var0.var2 & 0x1D) != 1 || (a5->var1.var2 & 0x1D) != 1)
+  if ((range->var0.var2 & 0x1D) != 1 || (range->var1.var2 & 0x1D) != 1)
   {
-    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The timeRange of a transform ramp must have a numeric start time and a numeric duration.", a4, a5, v5, v6, v7, *&v12[0]), 0}];
+    v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The timeRange of a transform ramp must have a numeric start time and a numeric duration.", endTransform, range, v5, v6, v7, *&v12[0]), 0}];
     objc_exception_throw(v11);
   }
 
-  v8 = *&a3->c;
-  v14[0] = *&a3->a;
+  v8 = *&transform->c;
+  v14[0] = *&transform->a;
   v14[1] = v8;
-  v14[2] = *&a3->tx;
-  v9 = *&a4->c;
-  v13[0] = *&a4->a;
+  v14[2] = *&transform->tx;
+  v9 = *&endTransform->c;
+  v13[0] = *&endTransform->a;
   v13[1] = v9;
-  v13[2] = *&a4->tx;
-  v10 = *&a5->var0.var3;
-  v12[0] = *&a5->var0.var0;
+  v13[2] = *&endTransform->tx;
+  v10 = *&range->var0.var3;
+  v12[0] = *&range->var0.var0;
   v12[1] = v10;
-  v12[2] = *&a5->var1.var1;
+  v12[2] = *&range->var1.var1;
   [(AVVideoCompositionLayerInstruction *)self _setTransformRampFromStartTransform:v14 toEndTransform:v13 timeRange:v12 selector:a2];
 }
 
@@ -630,16 +630,16 @@ BOOL __100__AVVideoCompositionLayerInstruction_getTransformRampForTime_startTran
   return result;
 }
 
-- (void)_setOpacityRampFromStartOpacity:(float)a3 toEndOpacity:(float)a4 timeRange:(id *)a5 selector:(SEL)a6
+- (void)_setOpacityRampFromStartOpacity:(float)opacity toEndOpacity:(float)endOpacity timeRange:(id *)range selector:(SEL)selector
 {
   opacityRamps = self->_layerInstruction->opacityRamps;
-  v12 = *&a5->var0.var3;
-  v35 = *&a5->var0.var0;
+  v12 = *&range->var0.var3;
+  v35 = *&range->var0.var0;
   v36 = v12;
-  v37 = *&a5->var1.var1;
+  v37 = *&range->var1.var1;
   if (AVRampsIncludesRampThatOverlapsTimeRange(opacityRamps, &v35))
   {
-    v27 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a6, @"The timeRange of an opacity ramp must not overlap the timeRange of an existing opacity ramp.", v13, v14, v15, v16, v17, var0.var0), 0}];
+    v27 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{selector, @"The timeRange of an opacity ramp must not overlap the timeRange of an existing opacity ramp.", v13, v14, v15, v16, v17, var0.var0), 0}];
     objc_exception_throw(v27);
   }
 
@@ -654,18 +654,18 @@ BOOL __100__AVVideoCompositionLayerInstruction_getTransformRampForTime_startTran
   v31[1] = 3221225472;
   v31[2] = __102__AVVideoCompositionLayerInstruction__setOpacityRampFromStartOpacity_toEndOpacity_timeRange_selector___block_invoke;
   v31[3] = &__block_descriptor_80_e15_B32__0_8Q16_B24l;
-  v19 = *&a5->var0.var3;
-  v32 = *&a5->var0.var0;
+  v19 = *&range->var0.var3;
+  v32 = *&range->var0.var0;
   v33 = v19;
-  v34 = *&a5->var1.var1;
+  v34 = *&range->var1.var1;
   v20 = [(NSMutableArray *)v18 indexOfObjectPassingTest:v31];
-  v21 = *&a5->var0.var3;
-  v35 = *&a5->var0.var0;
+  v21 = *&range->var0.var3;
+  v35 = *&range->var0.var0;
   v36 = v21;
-  v37 = *&a5->var1.var1;
+  v37 = *&range->var1.var1;
   v22 = [MEMORY[0x1E696B098] valueWithCMTimeRange:&v35];
-  *v30 = a3;
-  *&v30[1] = a4;
+  *v30 = opacity;
+  *&v30[1] = endOpacity;
   v23 = [MEMORY[0x1E695DEF0] dataWithBytes:v30 length:8];
   if (v20 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -693,7 +693,7 @@ BOOL __100__AVVideoCompositionLayerInstruction_getTransformRampForTime_startTran
 
     *&time1.value = v35;
     time1.epoch = v36;
-    var0 = a5->var0;
+    var0 = range->var0;
     v25 = CMTimeCompare(&time1, &var0);
     v26 = self->_layerInstruction->opacityRamps;
     if (v25)
@@ -742,34 +742,34 @@ BOOL __102__AVVideoCompositionLayerInstruction__setOpacityRampFromStartOpacity_t
   return result;
 }
 
-- (void)setOpacity:(float)a3 atTime:(id *)a4
+- (void)setOpacity:(float)opacity atTime:(id *)time
 {
-  if ((a4->var2 & 0x1D) != 1)
+  if ((time->var2 & 0x1D) != 1)
   {
     v14 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The time of an opacity setting must be numeric.", v4, v5, v6, v7, v8, v15.value), 0}];
     objc_exception_throw(v14);
   }
 
-  start = *a4;
+  start = *time;
   v15 = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&v17, &start, &v15);
-  *&v12 = a3;
-  *&v13 = a3;
+  *&v12 = opacity;
+  *&v13 = opacity;
   [(AVVideoCompositionLayerInstruction *)self _setOpacityRampFromStartOpacity:&v17 toEndOpacity:a2 timeRange:v12 selector:v13];
 }
 
-- (void)setOpacityRampFromStartOpacity:(float)a3 toEndOpacity:(float)a4 timeRange:(id *)a5
+- (void)setOpacityRampFromStartOpacity:(float)opacity toEndOpacity:(float)endOpacity timeRange:(id *)range
 {
-  if ((a5->var0.var2 & 0x1D) != 1 || (a5->var1.var2 & 0x1D) != 1)
+  if ((range->var0.var2 & 0x1D) != 1 || (range->var1.var2 & 0x1D) != 1)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The timeRange of an opacity ramp must have a numeric start time and a numeric duration.", v5, v6, v7, v8, v9, *&v12[0]), 0}];
     objc_exception_throw(v11);
   }
 
-  v10 = *&a5->var0.var3;
-  v12[0] = *&a5->var0.var0;
+  v10 = *&range->var0.var3;
+  v12[0] = *&range->var0.var0;
   v12[1] = v10;
-  v12[2] = *&a5->var1.var1;
+  v12[2] = *&range->var1.var1;
   [AVVideoCompositionLayerInstruction _setOpacityRampFromStartOpacity:"_setOpacityRampFromStartOpacity:toEndOpacity:timeRange:selector:" toEndOpacity:v12 timeRange:a2 selector:?];
 }
 
@@ -963,24 +963,24 @@ BOOL __94__AVVideoCompositionLayerInstruction_getOpacityRampForTime_startOpacity
   return result;
 }
 
-- (void)_setCropRectangleRampFromStartCropRectangle:(CGRect)a3 toEndCropRectangle:(CGRect)a4 timeRange:(id *)a5 selector:(SEL)a6
+- (void)_setCropRectangleRampFromStartCropRectangle:(CGRect)rectangle toEndCropRectangle:(CGRect)cropRectangle timeRange:(id *)range selector:(SEL)selector
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3.size.height;
-  v13 = a3.size.width;
-  v14 = a3.origin.y;
-  v15 = a3.origin.x;
+  height = cropRectangle.size.height;
+  width = cropRectangle.size.width;
+  y = cropRectangle.origin.y;
+  x = cropRectangle.origin.x;
+  v12 = rectangle.size.height;
+  v13 = rectangle.size.width;
+  v14 = rectangle.origin.y;
+  v15 = rectangle.origin.x;
   cropRectangleRamps = self->_layerInstruction->cropRectangleRamps;
-  v18 = *&a5->var0.var3;
-  v43 = *&a5->var0.var0;
+  v18 = *&range->var0.var3;
+  v43 = *&range->var0.var0;
   v44 = v18;
-  v45 = *&a5->var1.var1;
+  v45 = *&range->var1.var1;
   if (AVRampsIncludesRampThatOverlapsTimeRange(cropRectangleRamps, &v43))
   {
-    v35 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a6, @"The timeRange of a crop rectangle ramp must not overlap the timeRange of an existing crop rectangle ramp.", v19, v20, v21, v22, v23, v36), 0}];
+    v35 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{selector, @"The timeRange of a crop rectangle ramp must not overlap the timeRange of an existing crop rectangle ramp.", v19, v20, v21, v22, v23, v36), 0}];
     objc_exception_throw(v35);
   }
 
@@ -995,15 +995,15 @@ BOOL __94__AVVideoCompositionLayerInstruction_getOpacityRampForTime_startOpacity
   v39[1] = 3221225472;
   v39[2] = __120__AVVideoCompositionLayerInstruction__setCropRectangleRampFromStartCropRectangle_toEndCropRectangle_timeRange_selector___block_invoke;
   v39[3] = &__block_descriptor_80_e15_B32__0_8Q16_B24l;
-  v25 = *&a5->var0.var3;
-  v40 = *&a5->var0.var0;
+  v25 = *&range->var0.var3;
+  v40 = *&range->var0.var0;
   v41 = v25;
-  v42 = *&a5->var1.var1;
+  v42 = *&range->var1.var1;
   v26 = [(NSMutableArray *)v24 indexOfObjectPassingTest:v39];
-  v27 = *&a5->var0.var3;
-  v43 = *&a5->var0.var0;
+  v27 = *&range->var0.var3;
+  v43 = *&range->var0.var0;
   v44 = v27;
-  v45 = *&a5->var1.var1;
+  v45 = *&range->var1.var1;
   v28 = [MEMORY[0x1E696B098] valueWithCMTimeRange:&v43];
   v29 = MEMORY[0x1E695DF20];
   v46.origin.x = v15;
@@ -1042,7 +1042,7 @@ BOOL __94__AVVideoCompositionLayerInstruction_getOpacityRampForTime_startOpacity
 
     *&time1.value = v43;
     time1.epoch = v44;
-    time2 = a5->var0;
+    time2 = range->var0;
     v33 = CMTimeCompare(&time1, &time2);
     v34 = self->_layerInstruction->cropRectangleRamps;
     if (v33)
@@ -1091,37 +1091,37 @@ BOOL __120__AVVideoCompositionLayerInstruction__setCropRectangleRampFromStartCro
   return result;
 }
 
-- (void)setCropRectangle:(CGRect)a3 atTime:(id *)a4
+- (void)setCropRectangle:(CGRect)rectangle atTime:(id *)time
 {
-  if ((a4->var2 & 0x1D) != 1)
+  if ((time->var2 & 0x1D) != 1)
   {
     v15 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The time of a crop rectangle setting must be numeric.", v4, v5, v6, v7, v8, v16.value), 0}];
     objc_exception_throw(v15);
   }
 
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  start = *a4;
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
+  start = *time;
   v16 = **&MEMORY[0x1E6960C88];
   CMTimeRangeMake(&v18, &start, &v16);
   [(AVVideoCompositionLayerInstruction *)self _setCropRectangleRampFromStartCropRectangle:&v18 toEndCropRectangle:a2 timeRange:x selector:y, width, height, x, y, width, height];
 }
 
-- (void)setCropRectangleRampFromStartCropRectangle:(CGRect)a3 toEndCropRectangle:(CGRect)a4 timeRange:(id *)a5
+- (void)setCropRectangleRampFromStartCropRectangle:(CGRect)rectangle toEndCropRectangle:(CGRect)cropRectangle timeRange:(id *)range
 {
-  if ((a5->var0.var2 & 0x1D) != 1 || (a5->var1.var2 & 0x1D) != 1)
+  if ((range->var0.var2 & 0x1D) != 1 || (range->var1.var2 & 0x1D) != 1)
   {
     v11 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"The timeRange of a crop rectangle ramp must have a numeric start time and a numeric duration.", v5, v6, v7, v8, v9, *&v12[0]), 0}];
     objc_exception_throw(v11);
   }
 
-  v10 = *&a5->var0.var3;
-  v12[0] = *&a5->var0.var0;
+  v10 = *&range->var0.var3;
+  v12[0] = *&range->var0.var0;
   v12[1] = v10;
-  v12[2] = *&a5->var1.var1;
-  [(AVVideoCompositionLayerInstruction *)self _setCropRectangleRampFromStartCropRectangle:v12 toEndCropRectangle:a2 timeRange:a3.origin.x selector:a3.origin.y, a3.size.width, a3.size.height, a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  v12[2] = *&range->var1.var1;
+  [(AVVideoCompositionLayerInstruction *)self _setCropRectangleRampFromStartCropRectangle:v12 toEndCropRectangle:a2 timeRange:rectangle.origin.x selector:rectangle.origin.y, rectangle.size.width, rectangle.size.height, cropRectangle.origin.x, cropRectangle.origin.y, cropRectangle.size.width, cropRectangle.size.height];
 }
 
 - (BOOL)getCropRectangleRampForTime:(CMTime *)time startCropRectangle:(CGRect *)startCropRectangle endCropRectangle:(CGRect *)endCropRectangle timeRange:(CMTimeRange *)timeRange
@@ -1311,12 +1311,12 @@ BOOL __112__AVVideoCompositionLayerInstruction_getCropRectangleRampForTime_start
   return result;
 }
 
-- (id)dictionaryRepresentationWithTimeRange:(id *)a3
+- (id)dictionaryRepresentationWithTimeRange:(id *)range
 {
   v188 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
-  time = *&a3->var1.var0;
-  *time_16 = a3->var1.var3;
+  time = *&range->var1.var0;
+  *time_16 = range->var1.var3;
   Seconds = CMTimeGetSeconds(&time);
   v7 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberSInt32Type, &self->_layerInstruction->trackID);
   if (v7)
@@ -1330,7 +1330,7 @@ BOOL __112__AVVideoCompositionLayerInstruction_getCropRectangleRampForTime_start
   v10 = MEMORY[0x1E6960CC0];
   v155 = Seconds;
   v143 = v5;
-  if (v9 < 2 || (v11 = v9, time = *&a3->var1.var0, *time_16 = a3->var1.var3, *&time2.a = *MEMORY[0x1E6960CC0], time2.c = *(MEMORY[0x1E6960CC0] + 16), !CMTimeCompare(&time, &time2)))
+  if (v9 < 2 || (v11 = v9, time = *&range->var1.var0, *time_16 = range->var1.var3, *&time2.a = *MEMORY[0x1E6960CC0], time2.c = *(MEMORY[0x1E6960CC0] + 16), !CMTimeCompare(&time, &time2)))
   {
     v13 = *(MEMORY[0x1E695EFD0] + 16);
     time = *MEMORY[0x1E695EFD0];
@@ -1369,8 +1369,8 @@ LABEL_8:
   {
     time = *lhs;
     *time_16 = *&lhs[16];
-    *&time2.a = *&a3->var0.var0;
-    *&time2.c = a3->var0.var3;
+    *&time2.a = *&range->var0.var0;
+    *&time2.c = range->var0.var3;
     if (!CMTimeCompare(&time, &time2))
     {
       time = *time1;
@@ -1388,11 +1388,11 @@ LABEL_8:
     }
   }
 
-  v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:3 * v166];
+  v166 = [MEMORY[0x1E695DF70] arrayWithCapacity:3 * v166];
   time = *lhs;
   *time_16 = *&lhs[16];
-  *&time2.a = *&a3->var0.var0;
-  *&time2.c = a3->var0.var3;
+  *&time2.a = *&range->var0.var0;
+  *&time2.c = range->var0.var3;
   v17 = CMTimeCompare(&time, &time2);
   v18 = MEMORY[0x1E695EFD0];
   if (v17 >= 1)
@@ -1402,18 +1402,18 @@ LABEL_8:
     *time_16 = v19;
     *&time_16[16] = *(MEMORY[0x1E695EFD0] + 32);
     v20 = FigCreate3x2MatrixArrayFromCGAffineTransform();
-    [v16 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", 0.0)}];
-    [v16 addObject:v20];
+    [v166 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", 0.0)}];
+    [v166 addObject:v20];
     v21 = MEMORY[0x1E696AD98];
     *&time2.a = *lhs;
     time2.c = *&lhs[16];
-    *&rhs.start.value = *&a3->var0.var0;
-    rhs.start.epoch = a3->var0.var3;
+    *&rhs.start.value = *&range->var0.var0;
+    rhs.start.epoch = range->var0.var3;
     CMTimeSubtract(&time, &time2, &rhs.start);
     v22 = CMTimeGetSeconds(&time) / Seconds;
     *&v22 = v22;
-    [v16 addObject:{objc_msgSend(v21, "numberWithFloat:", v22)}];
-    [v16 addObject:v20];
+    [v166 addObject:{objc_msgSend(v21, "numberWithFloat:", v22)}];
+    [v166 addObject:v20];
   }
 
   v23 = 0;
@@ -1452,20 +1452,20 @@ LABEL_8:
     *time_16 = v177[1];
     *&time_16[16] = v177[2];
     CMTimeRangeGetEnd(&time2, &time);
-    v28 = *&a3->var0.var3;
-    time = *&a3->var0.var0;
+    v28 = *&range->var0.var3;
+    time = *&range->var0.var0;
     *time_16 = v28;
-    *&time_16[16] = *&a3->var1.var1;
+    *&time_16[16] = *&range->var1.var1;
     CMTimeRangeGetEnd(&rhs.start, &time);
     if (CMTimeCompare(&time2, &rhs.start) >= 1)
     {
       time = v177[0];
       *time_16 = *&v177[1];
-      *&rhs.start.value = *&a3->var0.var0;
-      rhs.start.epoch = a3->var0.var3;
+      *&rhs.start.value = *&range->var0.var0;
+      rhs.start.epoch = range->var0.var3;
       CMTimeSubtract(&time2, &time, &rhs.start);
-      *&rhs.start.value = *&a3->var1.var0;
-      rhs.start.epoch = a3->var1.var3;
+      *&rhs.start.value = *&range->var1.var0;
+      rhs.start.epoch = range->var1.var3;
       CMTimeSubtract(&time, &rhs.start, &time2);
       *(&v177[1] + 8) = time;
       *(&v177[2] + 1) = *time_16;
@@ -1508,20 +1508,20 @@ LABEL_8:
       v171 = *time_16;
       v172 = *&time_16[16];
       CMTimeRangeGetEnd(&time2, &time);
-      v31 = *&a3->var0.var3;
-      time = *&a3->var0.var0;
+      v31 = *&range->var0.var3;
+      time = *&range->var0.var0;
       *time_16 = v31;
-      *&time_16[16] = *&a3->var1.var1;
+      *&time_16[16] = *&range->var1.var1;
       CMTimeRangeGetEnd(&rhs.start, &time);
       if (CMTimeCompare(&time2, &rhs.start) >= 1)
       {
         *&time2.a = v170;
         *&time2.c = v171;
-        *&rhs.start.value = *&a3->var0.var0;
-        rhs.start.epoch = a3->var0.var3;
+        *&rhs.start.value = *&range->var0.var0;
+        rhs.start.epoch = range->var0.var3;
         CMTimeSubtract(&time, &time2, &rhs.start);
-        *&time2.a = *&a3->var1.var0;
-        *&time2.c = a3->var1.var3;
+        *&time2.a = *&range->var1.var0;
+        *&time2.c = range->var1.var3;
         CMTimeSubtract((&v171 + 8), &time2, &time);
       }
 
@@ -1612,25 +1612,25 @@ LABEL_8:
     v41 = MEMORY[0x1E696AD98];
     *&time2.a = v177[0];
     time2.c = *&v177[1];
-    *&rhs.start.value = *&a3->var0.var0;
-    rhs.start.epoch = a3->var0.var3;
+    *&rhs.start.value = *&range->var0.var0;
+    rhs.start.epoch = range->var0.var3;
     CMTimeSubtract(&time, &time2, &rhs.start);
     v42 = CMTimeGetSeconds(&time) / Seconds;
     *&v42 = v42;
-    [v16 addObject:{objc_msgSend(v41, "numberWithFloat:", v42)}];
-    [v16 addObject:{objc_msgSend(v29, "objectForKey:", @"StartTransform"}];
+    [v166 addObject:{objc_msgSend(v41, "numberWithFloat:", v42)}];
+    [v166 addObject:{objc_msgSend(v29, "objectForKey:", @"StartTransform"}];
     v43 = MEMORY[0x1E696AD98];
     time = v177[0];
     *time_16 = v177[1];
     *&time_16[16] = v177[2];
     CMTimeRangeGetEnd(&time2, &time);
-    *&rhs.start.value = *&a3->var0.var0;
-    rhs.start.epoch = a3->var0.var3;
+    *&rhs.start.value = *&range->var0.var0;
+    rhs.start.epoch = range->var0.var3;
     CMTimeSubtract(&time, &time2, &rhs.start);
     v44 = CMTimeGetSeconds(&time) / Seconds;
     *&v44 = v44;
-    [v16 addObject:{objc_msgSend(v43, "numberWithFloat:", v44)}];
-    [v16 addObject:{objc_msgSend(v29, "objectForKey:", @"EndTransform"}];
+    [v166 addObject:{objc_msgSend(v43, "numberWithFloat:", v44)}];
+    [v166 addObject:{objc_msgSend(v29, "objectForKey:", @"EndTransform"}];
     if (v23 < v166)
     {
       time = v170;
@@ -1650,23 +1650,23 @@ LABEL_8:
           *time_16 = v177[1];
           *&time_16[16] = v177[2];
           CMTimeRangeGetEnd(&time2, &time);
-          *&rhs.start.value = *&a3->var0.var0;
-          rhs.start.epoch = a3->var0.var3;
+          *&rhs.start.value = *&range->var0.var0;
+          rhs.start.epoch = range->var0.var3;
           CMTimeSubtract(&time, &time2, &rhs.start);
           v46 = CMTimeGetSeconds(&time) / Seconds;
           *&v46 = v46;
-          [v16 addObject:{objc_msgSend(v45, "numberWithFloat:", v46)}];
-          [v16 addObject:{objc_msgSend(v29, "objectForKey:", @"EndTransform"}];
+          [v166 addObject:{objc_msgSend(v45, "numberWithFloat:", v46)}];
+          [v166 addObject:{objc_msgSend(v29, "objectForKey:", @"EndTransform"}];
           v47 = MEMORY[0x1E696AD98];
           *&time2.a = v170;
           *&time2.c = v171;
-          *&rhs.start.value = *&a3->var0.var0;
-          rhs.start.epoch = a3->var0.var3;
+          *&rhs.start.value = *&range->var0.var0;
+          rhs.start.epoch = range->var0.var3;
           CMTimeSubtract(&time, &time2, &rhs.start);
           v48 = CMTimeGetSeconds(&time) / Seconds;
           *&v48 = v48;
-          [v16 addObject:{objc_msgSend(v47, "numberWithFloat:", v48)}];
-          [v16 addObject:{objc_msgSend(v29, "objectForKey:", @"EndTransform"}];
+          [v166 addObject:{objc_msgSend(v47, "numberWithFloat:", v48)}];
+          [v166 addObject:{objc_msgSend(v29, "objectForKey:", @"EndTransform"}];
         }
       }
     }
@@ -1676,7 +1676,7 @@ LABEL_8:
 
   while (v23 != v163);
   v5 = v143;
-  [v143 setObject:v16 forKey:{@"TweenedAffineMatrix", 0.0}];
+  [v143 setObject:v166 forKey:{@"TweenedAffineMatrix", 0.0}];
   v10 = MEMORY[0x1E6960CC0];
 LABEL_51:
   v49 = [(NSMutableArray *)self->_layerInstruction->opacityRamps count];
@@ -1711,8 +1711,8 @@ LABEL_53:
   {
     *&time2.a = time;
     time2.c = *time_16;
-    *&rhs.start.value = *&a3->var0.var0;
-    rhs.start.epoch = a3->var0.var3;
+    *&rhs.start.value = *&range->var0.var0;
+    rhs.start.epoch = range->var0.var3;
     if (!CMTimeCompare(&time2, &rhs.start))
     {
       LODWORD(v50) = v177[0];
@@ -1727,8 +1727,8 @@ LABEL_53:
   v55 = [MEMORY[0x1E695DF70] arrayWithCapacity:3 * v52];
   *&time2.a = time;
   time2.c = *time_16;
-  *&rhs.start.value = *&a3->var0.var0;
-  rhs.start.epoch = a3->var0.var3;
+  *&rhs.start.value = *&range->var0.var0;
+  rhs.start.epoch = range->var0.var3;
   if (CMTimeCompare(&time2, &rhs.start) >= 1)
   {
     LODWORD(v56) = 1.0;
@@ -1738,8 +1738,8 @@ LABEL_53:
     v58 = MEMORY[0x1E696AD98];
     *&rhs.start.value = time;
     rhs.start.epoch = *time_16;
-    *&v183.a = *&a3->var0.var0;
-    *&v183.c = a3->var0.var3;
+    *&v183.a = *&range->var0.var0;
+    *&v183.c = range->var0.var3;
     CMTimeSubtract(&time2, &rhs.start, &v183);
     v59 = CMTimeGetSeconds(&time2) / Seconds;
     *&v59 = v59;
@@ -1781,20 +1781,20 @@ LABEL_53:
 
     rhs = time2;
     CMTimeRangeGetEnd(&v183, &rhs);
-    v65 = *&a3->var0.var3;
-    *&rhs.start.value = *&a3->var0.var0;
+    v65 = *&range->var0.var3;
+    *&rhs.start.value = *&range->var0.var0;
     *&rhs.start.epoch = v65;
-    *&rhs.duration.timescale = *&a3->var1.var1;
+    *&rhs.duration.timescale = *&range->var1.var1;
     CMTimeRangeGetEnd(lhs, &rhs);
     if (CMTimeCompare(&v183, lhs) >= 1)
     {
       *&rhs.start.value = *&time2.a;
       rhs.start.epoch = *&time2.c;
-      *lhs = *&a3->var0.var0;
-      *&lhs[16] = a3->var0.var3;
+      *lhs = *&range->var0.var0;
+      *&lhs[16] = range->var0.var3;
       CMTimeSubtract(&v183, &rhs.start, lhs);
-      *lhs = *&a3->var1.var0;
-      *&lhs[16] = a3->var1.var3;
+      *lhs = *&range->var1.var0;
+      *&lhs[16] = range->var1.var3;
       CMTimeSubtract(&rhs.start, lhs, &v183);
       *&time2.d = *&rhs.start.value;
       *&time2.ty = rhs.start.epoch;
@@ -1825,20 +1825,20 @@ LABEL_53:
 
       rhs = v183;
       CMTimeRangeGetEnd(time1, &v183);
-      v68 = *&a3->var0.var3;
-      *&v183.a = *&a3->var0.var0;
+      v68 = *&range->var0.var3;
+      *&v183.a = *&range->var0.var0;
       *&v183.c = v68;
-      *&v183.tx = *&a3->var1.var1;
+      *&v183.tx = *&range->var1.var1;
       CMTimeRangeGetEnd(&v178, &v183);
       if (CMTimeCompare(time1, &v178) >= 1)
       {
         *time1 = *&rhs.start.value;
         *&time1[16] = rhs.start.epoch;
-        *&v178.a = *&a3->var0.var0;
-        *&v178.c = a3->var0.var3;
+        *&v178.a = *&range->var0.var0;
+        *&v178.c = range->var0.var3;
         CMTimeSubtract(&v183, time1, &v178);
-        *time1 = *&a3->var1.var0;
-        *&time1[16] = a3->var1.var3;
+        *time1 = *&range->var1.var0;
+        *&time1[16] = range->var1.var3;
         CMTimeSubtract(&rhs.duration, time1, &v183);
       }
 
@@ -1879,8 +1879,8 @@ LABEL_53:
     v72 = MEMORY[0x1E696AD98];
     *time1 = *&time2.a;
     *&time1[16] = time2.c;
-    *&v178.a = *&a3->var0.var0;
-    *&v178.c = a3->var0.var3;
+    *&v178.a = *&range->var0.var0;
+    *&v178.c = range->var0.var3;
     CMTimeSubtract(&v183, time1, &v178);
     v73 = CMTimeGetSeconds(&v183) / Seconds;
     *&v73 = v73;
@@ -1890,8 +1890,8 @@ LABEL_53:
     v75 = MEMORY[0x1E696AD98];
     v183 = time2;
     CMTimeRangeGetEnd(time1, &v183);
-    *&v178.a = *&a3->var0.var0;
-    *&v178.c = a3->var0.var3;
+    *&v178.a = *&range->var0.var0;
+    *&v178.c = range->var0.var3;
     CMTimeSubtract(&v183, time1, &v178);
     v76 = CMTimeGetSeconds(&v183) / Seconds;
     *&v76 = v76;
@@ -1909,8 +1909,8 @@ LABEL_53:
         v78 = MEMORY[0x1E696AD98];
         v183 = time2;
         CMTimeRangeGetEnd(time1, &v183);
-        *&v178.a = *&a3->var0.var0;
-        *&v178.c = a3->var0.var3;
+        *&v178.a = *&range->var0.var0;
+        *&v178.c = range->var0.var3;
         CMTimeSubtract(&v183, time1, &v178);
         v79 = CMTimeGetSeconds(&v183) / Seconds;
         *&v79 = v79;
@@ -1920,8 +1920,8 @@ LABEL_53:
         v81 = MEMORY[0x1E696AD98];
         *time1 = *&rhs.start.value;
         *&time1[16] = rhs.start.epoch;
-        *&v178.a = *&a3->var0.var0;
-        *&v178.c = a3->var0.var3;
+        *&v178.a = *&range->var0.var0;
+        *&v178.c = range->var0.var3;
         CMTimeSubtract(&v183, time1, &v178);
         v82 = CMTimeGetSeconds(&v183) / Seconds;
         *&v82 = v82;
@@ -1943,7 +1943,7 @@ LABEL_53:
   v10 = MEMORY[0x1E6960CC0];
 LABEL_86:
   v84 = [(NSMutableArray *)self->_layerInstruction->cropRectangleRamps count];
-  if (v84 < 2 || (v85 = v84, time = *&a3->var1.var0, *time_16 = a3->var1.var3, *&time2.a = *v10, time2.c = *(v10 + 16), !CMTimeCompare(&time, &time2)))
+  if (v84 < 2 || (v85 = v84, time = *&range->var1.var0, *time_16 = range->var1.var3, *&time2.a = *v10, time2.c = *(v10 + 16), !CMTimeCompare(&time, &time2)))
   {
     v87 = CGRectCreateDictionaryRepresentation(*MEMORY[0x1E695F040]);
     v88 = @"ConstantCropRectangle";
@@ -1986,8 +1986,8 @@ LABEL_91:
     v100 = time2.d;
     *&time2.a = time;
     time2.c = *time_16;
-    *&rhs.start.value = *&a3->var0.var0;
-    rhs.start.epoch = a3->var0.var3;
+    *&rhs.start.value = *&range->var0.var0;
+    rhs.start.epoch = range->var0.var3;
     if (!CMTimeCompare(&time2, &rhs.start))
     {
       v189.origin.x = a;
@@ -2012,28 +2012,28 @@ LABEL_91:
     }
   }
 
-  v101 = [MEMORY[0x1E695DF70] arrayWithCapacity:3 * v168];
+  v168 = [MEMORY[0x1E695DF70] arrayWithCapacity:3 * v168];
   *&time2.a = time;
   time2.c = *time_16;
-  *&rhs.start.value = *&a3->var0.var0;
-  rhs.start.epoch = a3->var0.var3;
+  *&rhs.start.value = *&range->var0.var0;
+  rhs.start.epoch = range->var0.var3;
   v102 = CMTimeCompare(&time2, &rhs.start);
   v103 = MEMORY[0x1E695F040];
   if (v102 >= 1)
   {
     v104 = CGRectCreateDictionaryRepresentation(*MEMORY[0x1E695F040]);
-    [v101 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", 0.0)}];
-    [v101 addObject:v104];
+    [v168 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithFloat:", 0.0)}];
+    [v168 addObject:v104];
     v105 = MEMORY[0x1E696AD98];
     *&rhs.start.value = time;
     rhs.start.epoch = *time_16;
-    *&v183.a = *&a3->var0.var0;
-    *&v183.c = a3->var0.var3;
+    *&v183.a = *&range->var0.var0;
+    *&v183.c = range->var0.var3;
     CMTimeSubtract(&time2, &rhs.start, &v183);
     v106 = CMTimeGetSeconds(&time2) / v155;
     *&v106 = v106;
-    [v101 addObject:{objc_msgSend(v105, "numberWithFloat:", v106)}];
-    [v101 addObject:v104];
+    [v168 addObject:{objc_msgSend(v105, "numberWithFloat:", v106)}];
+    [v168 addObject:v104];
   }
 
   v147 = v103[1];
@@ -2074,20 +2074,20 @@ LABEL_91:
 
     rhs = time2;
     CMTimeRangeGetEnd(&v183, &rhs);
-    v112 = *&a3->var0.var3;
-    *&rhs.start.value = *&a3->var0.var0;
+    v112 = *&range->var0.var3;
+    *&rhs.start.value = *&range->var0.var0;
     *&rhs.start.epoch = v112;
-    *&rhs.duration.timescale = *&a3->var1.var1;
+    *&rhs.duration.timescale = *&range->var1.var1;
     CMTimeRangeGetEnd(lhs, &rhs);
     if (CMTimeCompare(&v183, lhs) >= 1)
     {
       *&rhs.start.value = *&time2.a;
       rhs.start.epoch = *&time2.c;
-      *lhs = *&a3->var0.var0;
-      *&lhs[16] = a3->var0.var3;
+      *lhs = *&range->var0.var0;
+      *&lhs[16] = range->var0.var3;
       CMTimeSubtract(&v183, &rhs.start, lhs);
-      *lhs = *&a3->var1.var0;
-      *&lhs[16] = a3->var1.var3;
+      *lhs = *&range->var1.var0;
+      *&lhs[16] = range->var1.var3;
       CMTimeSubtract(&rhs.start, lhs, &v183);
       *&time2.d = *&rhs.start.value;
       *&time2.ty = rhs.start.epoch;
@@ -2137,20 +2137,20 @@ LABEL_91:
 
       rhs = v183;
       CMTimeRangeGetEnd(time1, &v183);
-      v125 = *&a3->var0.var3;
-      *&v183.a = *&a3->var0.var0;
+      v125 = *&range->var0.var3;
+      *&v183.a = *&range->var0.var0;
       *&v183.c = v125;
-      *&v183.tx = *&a3->var1.var1;
+      *&v183.tx = *&range->var1.var1;
       CMTimeRangeGetEnd(&v178, &v183);
       if (CMTimeCompare(time1, &v178) >= 1)
       {
         *time1 = *&rhs.start.value;
         *&time1[16] = rhs.start.epoch;
-        *&v178.a = *&a3->var0.var0;
-        *&v178.c = a3->var0.var3;
+        *&v178.a = *&range->var0.var0;
+        *&v178.c = range->var0.var3;
         CMTimeSubtract(&v183, time1, &v178);
-        *time1 = *&a3->var1.var0;
-        *&time1[16] = a3->var1.var3;
+        *time1 = *&range->var1.var0;
+        *&time1[16] = range->var1.var3;
         CMTimeSubtract(&rhs.duration, time1, &v183);
       }
 
@@ -2201,23 +2201,23 @@ LABEL_91:
     v134 = MEMORY[0x1E696AD98];
     *time1 = *&time2.a;
     *&time1[16] = time2.c;
-    *&v178.a = *&a3->var0.var0;
-    *&v178.c = a3->var0.var3;
+    *&v178.a = *&range->var0.var0;
+    *&v178.c = range->var0.var3;
     CMTimeSubtract(&v183, time1, &v178);
     v135 = CMTimeGetSeconds(&v183) / v155;
     *&v135 = v135;
-    [v101 addObject:{objc_msgSend(v134, "numberWithFloat:", v135)}];
-    [v101 addObject:{objc_msgSend(v113, "objectForKey:", @"StartCropRectangle"}];
+    [v168 addObject:{objc_msgSend(v134, "numberWithFloat:", v135)}];
+    [v168 addObject:{objc_msgSend(v113, "objectForKey:", @"StartCropRectangle"}];
     v136 = MEMORY[0x1E696AD98];
     v183 = time2;
     CMTimeRangeGetEnd(time1, &v183);
-    *&v178.a = *&a3->var0.var0;
-    *&v178.c = a3->var0.var3;
+    *&v178.a = *&range->var0.var0;
+    *&v178.c = range->var0.var3;
     CMTimeSubtract(&v183, time1, &v178);
     v137 = CMTimeGetSeconds(&v183) / v155;
     *&v137 = v137;
-    [v101 addObject:{objc_msgSend(v136, "numberWithFloat:", v137)}];
-    [v101 addObject:{objc_msgSend(v113, "objectForKey:", @"EndCropRectangle"}];
+    [v168 addObject:{objc_msgSend(v136, "numberWithFloat:", v137)}];
+    [v168 addObject:{objc_msgSend(v113, "objectForKey:", @"EndCropRectangle"}];
     if (v110 < v168)
     {
       *&v183.a = *&rhs.start.value;
@@ -2239,23 +2239,23 @@ LABEL_91:
           v138 = MEMORY[0x1E696AD98];
           v183 = time2;
           CMTimeRangeGetEnd(time1, &v183);
-          *&v178.a = *&a3->var0.var0;
-          *&v178.c = a3->var0.var3;
+          *&v178.a = *&range->var0.var0;
+          *&v178.c = range->var0.var3;
           CMTimeSubtract(&v183, time1, &v178);
           v139 = CMTimeGetSeconds(&v183) / v155;
           *&v139 = v139;
-          [v101 addObject:{objc_msgSend(v138, "numberWithFloat:", v139)}];
-          [v101 addObject:{objc_msgSend(v113, "objectForKey:", @"EndCropRectangle"}];
+          [v168 addObject:{objc_msgSend(v138, "numberWithFloat:", v139)}];
+          [v168 addObject:{objc_msgSend(v113, "objectForKey:", @"EndCropRectangle"}];
           v140 = MEMORY[0x1E696AD98];
           *time1 = *&rhs.start.value;
           *&time1[16] = rhs.start.epoch;
-          *&v178.a = *&a3->var0.var0;
-          *&v178.c = a3->var0.var3;
+          *&v178.a = *&range->var0.var0;
+          *&v178.c = range->var0.var3;
           CMTimeSubtract(&v183, time1, &v178);
           v141 = CMTimeGetSeconds(&v183) / v155;
           *&v141 = v141;
-          [v101 addObject:{objc_msgSend(v140, "numberWithFloat:", v141)}];
-          [v101 addObject:{objc_msgSend(v113, "objectForKey:", @"EndCropRectangle"}];
+          [v168 addObject:{objc_msgSend(v140, "numberWithFloat:", v141)}];
+          [v168 addObject:{objc_msgSend(v113, "objectForKey:", @"EndCropRectangle"}];
         }
       }
     }
@@ -2270,20 +2270,20 @@ LABEL_91:
   v88 = @"TweenedCropRectangle";
   v5 = v143;
   v89 = v143;
-  v87 = v101;
+  v87 = v168;
 LABEL_123:
   [v89 setObject:v87 forKey:v88];
   return v5;
 }
 
-- (void)_setValuesFromDictionary:(id)a3 timeRange:(id *)a4
+- (void)_setValuesFromDictionary:(id)dictionary timeRange:(id *)range
 {
   [(AVVideoCompositionLayerInstruction *)self setTrackID:0];
   [(AVVideoCompositionLayerInstruction *)self _setTransformRamps:0];
   [(AVVideoCompositionLayerInstruction *)self _setOpacityRamps:0];
   [(AVVideoCompositionLayerInstruction *)self _setCropRectangleRamps:0];
   valuePtr = 0;
-  v7 = [a3 objectForKey:@"SourceVideoTrackID"];
+  v7 = [dictionary objectForKey:@"SourceVideoTrackID"];
   if (v7)
   {
     v8 = v7;
@@ -2297,7 +2297,7 @@ LABEL_123:
     }
   }
 
-  v10 = [a3 objectForKey:@"ConstantAffineMatrix"];
+  v10 = [dictionary objectForKey:@"ConstantAffineMatrix"];
   if (v10)
   {
     memset(&rect, 0, sizeof(rect));
@@ -2310,26 +2310,26 @@ LABEL_123:
     if (!CGAffineTransformEqualToTransform(&t1, &t2))
     {
       t1 = rect;
-      *&t2.a = *&a4->var0.var0;
-      *&t2.c = a4->var0.var3;
+      *&t2.a = *&range->var0.var0;
+      *&t2.c = range->var0.var3;
       [(AVVideoCompositionLayerInstruction *)self setTransform:&t1 atTime:&t2];
     }
   }
 
-  v12 = [a3 objectForKey:@"ConstantOpacity"];
+  v12 = [dictionary objectForKey:@"ConstantOpacity"];
   v13 = v12;
   if (v12)
   {
     [v12 floatValue];
     if (v14 != 1.0)
     {
-      *&rect.start.value = *&a4->var0.var0;
-      rect.start.epoch = a4->var0.var3;
+      *&rect.start.value = *&range->var0.var0;
+      rect.start.epoch = range->var0.var3;
       [(AVVideoCompositionLayerInstruction *)self setOpacity:&rect atTime:?];
     }
   }
 
-  v15 = [a3 objectForKey:@"ConstantCropRectangle"];
+  v15 = [dictionary objectForKey:@"ConstantCropRectangle"];
   v16 = v15;
   if (v15)
   {
@@ -2345,18 +2345,18 @@ LABEL_123:
     *&v80.size.height = rect.duration.value;
     if (!CGRectEqualToRect(v80, *MEMORY[0x1E695F040]))
     {
-      *&rect.start.value = *&a4->var0.var0;
-      rect.start.epoch = a4->var0.var3;
+      *&rect.start.value = *&range->var0.var0;
+      rect.start.epoch = range->var0.var3;
       [(AVVideoCompositionLayerInstruction *)self setCropRectangle:&rect atTime:v17, v18, v19, v20];
     }
   }
 
-  *&rect.start.value = *&a4->var1.var0;
-  rect.start.epoch = a4->var1.var3;
+  *&rect.start.value = *&range->var1.var0;
+  rect.start.epoch = range->var1.var3;
   Seconds = CMTimeGetSeconds(&rect.start);
   if (!v10)
   {
-    v22 = [a3 objectForKey:@"TweenedAffineMatrix"];
+    v22 = [dictionary objectForKey:@"TweenedAffineMatrix"];
     if (v22)
     {
       v23 = v22;
@@ -2374,14 +2374,14 @@ LABEL_123:
           memset(&var0, 0, sizeof(var0));
           if (v26 == 3)
           {
-            var0 = a4->var0;
+            var0 = range->var0;
           }
 
           else
           {
             CMTimeMakeWithSeconds(&rect.start, (v28 * Seconds), 600);
-            *&t1.a = *&a4->var0.var0;
-            *&t1.c = a4->var0.var3;
+            *&t1.a = *&range->var0.var0;
+            *&t1.c = range->var0.var3;
             CMTimeAdd(&var0, &t1, &rect.start);
           }
 
@@ -2390,11 +2390,11 @@ LABEL_123:
           {
             *&t1.a = *&var0.value;
             *&t1.c = var0.epoch;
-            *&t2.a = *&a4->var0.var0;
-            *&t2.c = a4->var0.var3;
+            *&t2.a = *&range->var0.var0;
+            *&t2.c = range->var0.var3;
             CMTimeSubtract(&rect.start, &t1, &t2);
-            *&t1.a = *&a4->var1.var0;
-            *&t1.c = a4->var1.var3;
+            *&t1.a = *&range->var1.var0;
+            *&t1.c = range->var1.var3;
             p_t1 = &t1;
             p_rect = &rect;
           }
@@ -2402,8 +2402,8 @@ LABEL_123:
           else
           {
             CMTimeMakeWithSeconds(&t1, (v30 * Seconds), 600);
-            *&t2.a = *&a4->var0.var0;
-            *&t2.c = a4->var0.var3;
+            *&t2.a = *&range->var0.var0;
+            *&t2.c = range->var0.var3;
             CMTimeAdd(&rect.start, &t2, &t1);
             *&t1.a = *&var0.value;
             *&t1.c = var0.epoch;
@@ -2435,7 +2435,7 @@ LABEL_123:
 
   if (!v13)
   {
-    v33 = [a3 objectForKey:@"TweenedOpacity"];
+    v33 = [dictionary objectForKey:@"TweenedOpacity"];
     if (v33)
     {
       v34 = v33;
@@ -2453,15 +2453,15 @@ LABEL_123:
           memset(&t1, 0, 24);
           if (v37 == 3)
           {
-            *&t1.a = *&a4->var0.var0;
-            *&t1.c = a4->var0.var3;
+            *&t1.a = *&range->var0.var0;
+            *&t1.c = range->var0.var3;
           }
 
           else
           {
             CMTimeMakeWithSeconds(&rect.start, (v39 * Seconds), 600);
-            *&t2.a = *&a4->var0.var0;
-            *&t2.c = a4->var0.var3;
+            *&t2.a = *&range->var0.var0;
+            *&t2.c = range->var0.var3;
             CMTimeAdd(&t1, &t2, &rect.start);
           }
 
@@ -2470,11 +2470,11 @@ LABEL_123:
           {
             *&start.start.value = *&t1.a;
             start.start.epoch = *&t1.c;
-            *&duration.a = *&a4->var0.var0;
-            *&duration.c = a4->var0.var3;
+            *&duration.a = *&range->var0.var0;
+            *&duration.c = range->var0.var3;
             CMTimeSubtract(&rect.start, &start.start, &duration);
-            *&start.start.value = *&a4->var1.var0;
-            start.start.epoch = a4->var1.var3;
+            *&start.start.value = *&range->var1.var0;
+            start.start.epoch = range->var1.var3;
             p_start = &start;
             v43 = &rect;
           }
@@ -2482,8 +2482,8 @@ LABEL_123:
           else
           {
             CMTimeMakeWithSeconds(&start.start, (v41 * Seconds), 600);
-            *&duration.a = *&a4->var0.var0;
-            *&duration.c = a4->var0.var3;
+            *&duration.a = *&range->var0.var0;
+            *&duration.c = range->var0.var3;
             CMTimeAdd(&rect.start, &duration, &start.start);
             *&start.start.value = *&t1.a;
             start.start.epoch = *&t1.c;
@@ -2515,7 +2515,7 @@ LABEL_123:
 
   if (!v16)
   {
-    v50 = [a3 objectForKey:@"TweenedCropRectangle"];
+    v50 = [dictionary objectForKey:@"TweenedCropRectangle"];
     if (v50)
     {
       v51 = v50;
@@ -2534,15 +2534,15 @@ LABEL_123:
           memset(&t1, 0, 24);
           if (v54 == 3)
           {
-            *&t1.a = *&a4->var0.var0;
-            *&t1.c = a4->var0.var3;
+            *&t1.a = *&range->var0.var0;
+            *&t1.c = range->var0.var3;
           }
 
           else
           {
             CMTimeMakeWithSeconds(&rect.start, (v56 * Seconds), 600);
-            *&t2.a = *&a4->var0.var0;
-            *&t2.c = a4->var0.var3;
+            *&t2.a = *&range->var0.var0;
+            *&t2.c = range->var0.var3;
             CMTimeAdd(&t1, &t2, &rect.start);
           }
 
@@ -2551,11 +2551,11 @@ LABEL_123:
           {
             *&start.start.value = *&t1.a;
             start.start.epoch = *&t1.c;
-            *&duration.a = *&a4->var0.var0;
-            *&duration.c = a4->var0.var3;
+            *&duration.a = *&range->var0.var0;
+            *&duration.c = range->var0.var3;
             CMTimeSubtract(&rect.start, &start.start, &duration);
-            *&start.start.value = *&a4->var1.var0;
-            start.start.epoch = a4->var1.var3;
+            *&start.start.value = *&range->var1.var0;
+            start.start.epoch = range->var1.var3;
             v59 = &start;
             v60 = &rect;
           }
@@ -2563,8 +2563,8 @@ LABEL_123:
           else
           {
             CMTimeMakeWithSeconds(&start.start, (v58 * Seconds), 600);
-            *&duration.a = *&a4->var0.var0;
-            *&duration.c = a4->var0.var3;
+            *&duration.a = *&range->var0.var0;
+            *&duration.c = range->var0.var3;
             CMTimeAdd(&rect.start, &duration, &start.start);
             *&start.start.value = *&t1.a;
             start.start.epoch = *&t1.c;

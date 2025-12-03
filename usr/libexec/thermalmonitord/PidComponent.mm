@@ -1,13 +1,13 @@
 @interface PidComponent
-- (id)initPIDWith:(__CFDictionary *)a3;
-- (void)applySeedToIntegratorFromControlEffort:(int)a3 currentTemperature:(float)a4;
-- (void)calculateControlEffort:(float)a3;
+- (id)initPIDWith:(__CFDictionary *)with;
+- (void)applySeedToIntegratorFromControlEffort:(int)effort currentTemperature:(float)temperature;
+- (void)calculateControlEffort:(float)effort;
 - (void)dealloc;
 @end
 
 @implementation PidComponent
 
-- (id)initPIDWith:(__CFDictionary *)a3
+- (id)initPIDWith:(__CFDictionary *)with
 {
   v7.receiver = self;
   v7.super_class = PidComponent;
@@ -15,16 +15,16 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (with)
     {
-      sub_100002A20(a3, @"kp", kCFNumberFloatType, &v4->kp);
-      sub_100002A20(a3, @"ki", kCFNumberFloatType, &v5->ki);
-      sub_100002A20(a3, @"ts", kCFNumberFloatType, &v5->ts);
-      sub_100002A20(a3, @"intMin", kCFNumberFloatType, &v5->integratorMin);
-      sub_100002A20(a3, @"intMax", kCFNumberFloatType, &v5->integratorMax);
-      sub_100002A20(a3, @"target", kCFNumberFloatType, &v5->TARGET);
+      sub_100002A20(with, @"kp", kCFNumberFloatType, &v4->kp);
+      sub_100002A20(with, @"ki", kCFNumberFloatType, &v5->ki);
+      sub_100002A20(with, @"ts", kCFNumberFloatType, &v5->ts);
+      sub_100002A20(with, @"intMin", kCFNumberFloatType, &v5->integratorMin);
+      sub_100002A20(with, @"intMax", kCFNumberFloatType, &v5->integratorMax);
+      sub_100002A20(with, @"target", kCFNumberFloatType, &v5->TARGET);
       v5->engageDelta = 0.0;
-      sub_100002A20(a3, @"engageDelta", kCFNumberFloatType, &v5->engageDelta);
+      sub_100002A20(with, @"engageDelta", kCFNumberFloatType, &v5->engageDelta);
     }
 
     v5->allowCEOverride = 0;
@@ -49,9 +49,9 @@
   [(PidComponent *)&v4 dealloc];
 }
 
-- (void)calculateControlEffort:(float)a3
+- (void)calculateControlEffort:(float)effort
 {
-  v3 = self->TARGET - a3;
+  v3 = self->TARGET - effort;
   integratorMin = self->integratorMin;
   v5 = self->integrator + ((self->ki * self->ts) * v3);
   self->integrator = v5;
@@ -85,15 +85,15 @@
   }
 }
 
-- (void)applySeedToIntegratorFromControlEffort:(int)a3 currentTemperature:(float)a4
+- (void)applySeedToIntegratorFromControlEffort:(int)effort currentTemperature:(float)temperature
 {
   boundCheckLow = self->boundCheckLow;
-  if (boundCheckLow <= a3)
+  if (boundCheckLow <= effort)
   {
-    boundCheckLow = a3;
+    boundCheckLow = effort;
   }
 
-  v5 = self->TARGET - a4;
+  v5 = self->TARGET - temperature;
   if (boundCheckLow >= self->boundCheckHigh)
   {
     boundCheckLow = self->boundCheckHigh;

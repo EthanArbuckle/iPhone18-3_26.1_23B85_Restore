@@ -1,25 +1,25 @@
 @interface SignInActionImplementation.SignInDelegate
 - (_TtCV8AppStore26SignInActionImplementationP33_C9E7F6675EBDA5331FAB461813C5261514SignInDelegate)init;
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4;
-- (void)signInControllerDidCancel:(id)a3;
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results;
+- (void)signInControllerDidCancel:(id)cancel;
 @end
 
 @implementation SignInActionImplementation.SignInDelegate
 
-- (void)signInController:(id)a3 didCompleteWithOperationsResults:(id)a4
+- (void)signInController:(id)controller didCompleteWithOperationsResults:(id)results
 {
   sub_100005744(0, &unk_10098A2C0);
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  sub_100535BA8(v7, v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_100535BA8(controllerCopy, v6);
 }
 
-- (void)signInControllerDidCancel:(id)a3
+- (void)signInControllerDidCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  sub_100535EE8(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  sub_100535EE8(cancelCopy);
 }
 
 - (_TtCV8AppStore26SignInActionImplementationP33_C9E7F6675EBDA5331FAB461813C5261514SignInDelegate)init

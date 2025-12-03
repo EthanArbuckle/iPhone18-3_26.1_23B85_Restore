@@ -1,9 +1,9 @@
 @interface _CPCardViewAppearFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_CPCardViewAppearFeedback)init;
-- (_CPCardViewAppearFeedback)initWithFacade:(id)a3;
+- (_CPCardViewAppearFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPCardViewAppearFeedback
@@ -15,34 +15,34 @@
   return v4 ^ [(NSString *)self->_fbr hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   timestamp = self->_timestamp;
-  if (timestamp != [v4 timestamp])
+  if (timestamp != [equalCopy timestamp])
   {
     goto LABEL_14;
   }
 
-  v6 = [(_CPCardViewAppearFeedback *)self card];
-  v7 = [v4 card];
-  if ((v6 != 0) == (v7 == 0))
+  card = [(_CPCardViewAppearFeedback *)self card];
+  card2 = [equalCopy card];
+  if ((card != 0) == (card2 == 0))
   {
     goto LABEL_13;
   }
 
-  v8 = [(_CPCardViewAppearFeedback *)self card];
-  if (v8)
+  card3 = [(_CPCardViewAppearFeedback *)self card];
+  if (card3)
   {
-    v9 = v8;
-    v10 = [(_CPCardViewAppearFeedback *)self card];
-    v11 = [v4 card];
-    v12 = [v10 isEqual:v11];
+    v9 = card3;
+    card4 = [(_CPCardViewAppearFeedback *)self card];
+    card5 = [equalCopy card];
+    v12 = [card4 isEqual:card5];
 
     if (!v12)
     {
@@ -55,14 +55,14 @@
   }
 
   level = self->_level;
-  if (level != [v4 level])
+  if (level != [equalCopy level])
   {
     goto LABEL_14;
   }
 
-  v6 = [(_CPCardViewAppearFeedback *)self fbr];
-  v7 = [v4 fbr];
-  if ((v6 != 0) == (v7 == 0))
+  card = [(_CPCardViewAppearFeedback *)self fbr];
+  card2 = [equalCopy fbr];
+  if ((card != 0) == (card2 == 0))
   {
 LABEL_13:
 
@@ -80,7 +80,7 @@ LABEL_17:
 
   v15 = v14;
   v16 = [(_CPCardViewAppearFeedback *)self fbr];
-  v17 = [v4 fbr];
+  v17 = [equalCopy fbr];
   v18 = [v16 isEqual:v17];
 
   if (v18)
@@ -95,20 +95,20 @@ LABEL_15:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(_CPCardViewAppearFeedback *)self timestamp])
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_CPCardViewAppearFeedback *)self card];
+  card = [(_CPCardViewAppearFeedback *)self card];
 
-  if (v5)
+  if (card)
   {
-    v6 = [(_CPCardViewAppearFeedback *)self card];
+    card2 = [(_CPCardViewAppearFeedback *)self card];
     PBDataWriterWriteSubmessage();
   }
 
@@ -120,12 +120,12 @@ LABEL_15:
 
   v8 = [(_CPCardViewAppearFeedback *)self fbr];
 
-  v9 = v11;
+  v9 = toCopy;
   if (v8)
   {
     fbr = self->_fbr;
     PBDataWriterWriteStringField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
@@ -143,31 +143,31 @@ LABEL_15:
   return v2;
 }
 
-- (_CPCardViewAppearFeedback)initWithFacade:(id)a3
+- (_CPCardViewAppearFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v14.receiver = self;
   v14.super_class = _CPCardViewAppearFeedback;
   v5 = [(_CPCardViewAppearFeedback *)&v14 init];
   if (v5)
   {
-    -[_CPCardViewAppearFeedback setTimestamp:](v5, "setTimestamp:", [v4 timestamp]);
-    v6 = [v4 card];
+    -[_CPCardViewAppearFeedback setTimestamp:](v5, "setTimestamp:", [facadeCopy timestamp]);
+    card = [facadeCopy card];
 
-    if (v6)
+    if (card)
     {
       v7 = [_CPCardForFeedback alloc];
-      v8 = [v4 card];
-      v9 = [(_CPCardForFeedback *)v7 initWithFacade:v8];
+      card2 = [facadeCopy card];
+      v9 = [(_CPCardForFeedback *)v7 initWithFacade:card2];
       [(_CPCardViewAppearFeedback *)v5 setCard:v9];
     }
 
-    -[_CPCardViewAppearFeedback setLevel:](v5, "setLevel:", [v4 level]);
-    v10 = [v4 fbr];
+    -[_CPCardViewAppearFeedback setLevel:](v5, "setLevel:", [facadeCopy level]);
+    v10 = [facadeCopy fbr];
 
     if (v10)
     {
-      v11 = [v4 fbr];
+      v11 = [facadeCopy fbr];
       [(_CPCardViewAppearFeedback *)v5 setFbr:v11];
     }
 

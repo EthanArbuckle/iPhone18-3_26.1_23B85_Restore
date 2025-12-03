@@ -1,33 +1,33 @@
 @interface NPKProtoStandaloneError
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addUserInfos:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserInfos:(id)infos;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandaloneError
 
-- (void)addUserInfos:(id)a3
+- (void)addUserInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   userInfos = self->_userInfos;
-  v8 = v4;
+  v8 = infosCopy;
   if (!userInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_userInfos;
     self->_userInfos = v6;
 
-    v4 = v8;
+    infosCopy = v8;
     userInfos = self->_userInfos;
   }
 
-  [(NSMutableArray *)userInfos addObject:v4];
+  [(NSMutableArray *)userInfos addObject:infosCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandaloneError;
   v4 = [(NPKProtoStandaloneError *)&v8 description];
-  v5 = [(NPKProtoStandaloneError *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandaloneError *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,12 +45,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   domain = self->_domain;
   if (domain)
   {
-    [v3 setObject:domain forKey:@"domain"];
+    [dictionary setObject:domain forKey:@"domain"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_code];
@@ -78,8 +78,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -96,10 +96,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_domain)
   {
     PBDataWriterWriteStringField();
@@ -142,24 +142,24 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (self->_domain)
   {
-    [v4 setDomain:?];
-    v4 = v9;
+    [toCopy setDomain:?];
+    toCopy = v9;
   }
 
-  v4[1] = self->_code;
+  toCopy[1] = self->_code;
   if ([(NPKProtoStandaloneError *)self userInfosCount])
   {
     [v9 clearUserInfos];
-    v5 = [(NPKProtoStandaloneError *)self userInfosCount];
-    if (v5)
+    userInfosCount = [(NPKProtoStandaloneError *)self userInfosCount];
+    if (userInfosCount)
     {
-      v6 = v5;
+      v6 = userInfosCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NPKProtoStandaloneError *)self userInfosAtIndex:i];
@@ -169,11 +169,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_domain copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_domain copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -198,7 +198,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{a3, v16}];
+        v13 = [*(*(&v16 + 1) + 8 * v12) copyWithZone:{zone, v16}];
         [v5 addUserInfos:v13];
 
         ++v12;
@@ -215,13 +215,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | v4[2])) || -[NSString isEqual:](domain, "isEqual:")) && self->_code == v4[1])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((domain = self->_domain, !(domain | equalCopy[2])) || -[NSString isEqual:](domain, "isEqual:")) && self->_code == equalCopy[1])
   {
     userInfos = self->_userInfos;
-    if (userInfos | v4[3])
+    if (userInfos | equalCopy[3])
     {
       v7 = [(NSMutableArray *)userInfos isEqual:?];
     }
@@ -247,21 +247,21 @@
   return v4 ^ v3 ^ [(NSMutableArray *)self->_userInfos hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(NPKProtoStandaloneError *)self setDomain:?];
   }
 
-  self->_code = *(v4 + 1);
+  self->_code = *(fromCopy + 1);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = *(v4 + 3);
+  v5 = *(fromCopy + 3);
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {

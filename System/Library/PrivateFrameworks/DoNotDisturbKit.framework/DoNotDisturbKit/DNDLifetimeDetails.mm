@@ -1,27 +1,27 @@
 @interface DNDLifetimeDetails
-+ (id)lifetimeDetailsForEvent:(id)a3 relativeToDate:(id)a4;
++ (id)lifetimeDetailsForEvent:(id)event relativeToDate:(id)date;
 + (id)lifetimeDetailsForOneHour;
-+ (id)lifetimeDetailsForPlaceInference:(id)a3;
++ (id)lifetimeDetailsForPlaceInference:(id)inference;
 + (id)lifetimeDetailsUntilEvening;
 + (id)lifetimeDetailsUntilMorning;
-- (BOOL)isEqual:(id)a3;
-- (DNDLifetimeDetails)initWithIdentifier:(id)a3 name:(id)a4 metadata:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (DNDLifetimeDetails)initWithIdentifier:(id)identifier name:(id)name metadata:(id)metadata;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation DNDLifetimeDetails
 
-+ (id)lifetimeDetailsForPlaceInference:(id)a3
++ (id)lifetimeDetailsForPlaceInference:(id)inference
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
-  v5 = [v4 localizedStringForKey:@"DND_UNTIL_I_LEAVE_LIFETIME_TITLE" value:&stru_285C22820 table:0];
+  inferenceCopy = inference;
+  dndk_localizationBundle = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
+  v5 = [dndk_localizationBundle localizedStringForKey:@"DND_UNTIL_I_LEAVE_LIFETIME_TITLE" value:&stru_285C22820 table:0];
 
-  v6 = [v3 preferredName];
-  if ([v6 length])
+  preferredName = [inferenceCopy preferredName];
+  if ([preferredName length])
   {
-    [v3 confidence];
+    [inferenceCopy confidence];
     if (v7 < 0.7)
     {
       v8 = @"DND_UNTIL_I_LEAVE_LIFETIME_WITH_LOW_CONFIDENCE_LOI_METADATA";
@@ -33,7 +33,7 @@
     }
 
     v9 = DNDLocalizedStringHelper(@"%@", v8);
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:v9, v6];
+    v10 = [MEMORY[0x277CCACA8] stringWithFormat:v9, preferredName];
   }
 
   else
@@ -46,54 +46,54 @@
   return v11;
 }
 
-+ (id)lifetimeDetailsForEvent:(id)a3 relativeToDate:(id)a4
++ (id)lifetimeDetailsForEvent:(id)event relativeToDate:(id)date
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
-  v8 = [v7 localizedStringForKey:@"DND_UNTIL_END_THIS_EVENT_TITLE" value:&stru_285C22820 table:0];
+  eventCopy = event;
+  dateCopy = date;
+  dndk_localizationBundle = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
+  v8 = [dndk_localizationBundle localizedStringForKey:@"DND_UNTIL_END_THIS_EVENT_TITLE" value:&stru_285C22820 table:0];
 
-  if (v5)
+  if (eventCopy)
   {
-    v9 = [v5 startDate];
-    v10 = [v5 endDate];
-    v27 = v6;
-    if ([v6 compare:v9] == -1)
+    startDate = [eventCopy startDate];
+    endDate = [eventCopy endDate];
+    v27 = dateCopy;
+    if ([dateCopy compare:startDate] == -1)
     {
-      v11 = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
-      v12 = [v11 localizedStringForKey:@"DND_UNTIL_END_NEXT_EVENT_TITLE" value:&stru_285C22820 table:0];
+      dndk_localizationBundle2 = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
+      v12 = [dndk_localizationBundle2 localizedStringForKey:@"DND_UNTIL_END_NEXT_EVENT_TITLE" value:&stru_285C22820 table:0];
 
       v8 = v12;
     }
 
-    v13 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v28 = 0;
     v29 = 0;
-    [v13 getHour:&v29 minute:0 second:0 nanosecond:0 fromDate:v9];
-    [v13 getHour:&v28 minute:0 second:0 nanosecond:0 fromDate:v10];
+    [currentCalendar getHour:&v29 minute:0 second:0 nanosecond:0 fromDate:startDate];
+    [currentCalendar getHour:&v28 minute:0 second:0 nanosecond:0 fromDate:endDate];
     v14 = v29 / 12;
     v15 = v28 / 12;
-    v16 = [MEMORY[0x277CF0BF0] sharedInstance];
-    v17 = v16;
+    mEMORY[0x277CF0BF0] = [MEMORY[0x277CF0BF0] sharedInstance];
+    v17 = mEMORY[0x277CF0BF0];
     v26 = v8;
     if (v14 == v15)
     {
-      [v16 formatDateAsTimeNoAMPM:v9];
+      [mEMORY[0x277CF0BF0] formatDateAsTimeNoAMPM:startDate];
     }
 
     else
     {
-      [v16 formatDateAsTimeStyle:v9];
+      [mEMORY[0x277CF0BF0] formatDateAsTimeStyle:startDate];
     }
     v19 = ;
-    v20 = [v17 formatDateAsTimeStyle:v10];
-    v21 = [v5 title];
+    v20 = [v17 formatDateAsTimeStyle:endDate];
+    title = [eventCopy title];
     v22 = DNDLocalizedStringHelper(@"%@%@%@", @"DND_UNTIL_END_EVENT_DURATION_DESCRIPTION");
-    [MEMORY[0x277CCACA8] stringWithFormat:v22, v19, v20, v21];
-    v18 = v23 = v10;
+    [MEMORY[0x277CCACA8] stringWithFormat:v22, v19, v20, title];
+    v18 = v23 = endDate;
 
     v8 = v26;
-    v6 = v27;
+    dateCopy = v27;
   }
 
   else
@@ -108,8 +108,8 @@
 
 + (id)lifetimeDetailsForOneHour
 {
-  v2 = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
-  v3 = [v2 localizedStringForKey:@"DND_ONE_HOUR_LIFETIME_TITLE" value:&stru_285C22820 table:0];
+  dndk_localizationBundle = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
+  v3 = [dndk_localizationBundle localizedStringForKey:@"DND_ONE_HOUR_LIFETIME_TITLE" value:&stru_285C22820 table:0];
 
   v4 = [[DNDLifetimeDetails alloc] initWithIdentifier:@"com.apple.donotdisturb.kit.lifetime.one-hour" name:v3 metadata:&stru_285C22820];
 
@@ -118,8 +118,8 @@
 
 + (id)lifetimeDetailsUntilEvening
 {
-  v2 = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
-  v3 = [v2 localizedStringForKey:@"DND_UNTIL_EVENING_LIFETIME_TITLE" value:&stru_285C22820 table:0];
+  dndk_localizationBundle = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
+  v3 = [dndk_localizationBundle localizedStringForKey:@"DND_UNTIL_EVENING_LIFETIME_TITLE" value:&stru_285C22820 table:0];
 
   v4 = [[DNDLifetimeDetails alloc] initWithIdentifier:@"com.apple.donotdisturb.kit.lifetime.evening" name:v3 metadata:&stru_285C22820];
 
@@ -128,33 +128,33 @@
 
 + (id)lifetimeDetailsUntilMorning
 {
-  v2 = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
-  v3 = [v2 localizedStringForKey:@"DND_UNTIL_MORNING_LIFETIME_TITLE" value:&stru_285C22820 table:0];
+  dndk_localizationBundle = [MEMORY[0x277CCA8D8] dndk_localizationBundle];
+  v3 = [dndk_localizationBundle localizedStringForKey:@"DND_UNTIL_MORNING_LIFETIME_TITLE" value:&stru_285C22820 table:0];
 
   v4 = [[DNDLifetimeDetails alloc] initWithIdentifier:@"com.apple.donotdisturb.kit.lifetime.morning" name:v3 metadata:&stru_285C22820];
 
   return v4;
 }
 
-- (DNDLifetimeDetails)initWithIdentifier:(id)a3 name:(id)a4 metadata:(id)a5
+- (DNDLifetimeDetails)initWithIdentifier:(id)identifier name:(id)name metadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  metadataCopy = metadata;
   v19.receiver = self;
   v19.super_class = DNDLifetimeDetails;
   v11 = [(DNDLifetimeDetails *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
 
-    v16 = [v10 copy];
+    v16 = [metadataCopy copy];
     metadata = v11->_metadata;
     v11->_metadata = v16;
   }
@@ -164,20 +164,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDLifetimeDetails *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(DNDLifetimeDetails *)self name];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDLifetimeDetails *)self metadata];
-  v8 = [v7 hash];
+  identifier = [(DNDLifetimeDetails *)self identifier];
+  v4 = [identifier hash];
+  name = [(DNDLifetimeDetails *)self name];
+  v6 = [name hash] ^ v4;
+  metadata = [(DNDLifetimeDetails *)self metadata];
+  v8 = [metadata hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -187,21 +187,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(DNDLifetimeDetails *)self identifier];
-      v8 = [(DNDLifetimeDetails *)v6 identifier];
-      if (v7 != v8)
+      v6 = equalCopy;
+      identifier = [(DNDLifetimeDetails *)self identifier];
+      identifier2 = [(DNDLifetimeDetails *)v6 identifier];
+      if (identifier != identifier2)
       {
-        v9 = [(DNDLifetimeDetails *)self identifier];
-        if (!v9)
+        identifier3 = [(DNDLifetimeDetails *)self identifier];
+        if (!identifier3)
         {
           v13 = 0;
           goto LABEL_37;
         }
 
-        v10 = v9;
-        v11 = [(DNDLifetimeDetails *)v6 identifier];
-        if (!v11)
+        v10 = identifier3;
+        identifier4 = [(DNDLifetimeDetails *)v6 identifier];
+        if (!identifier4)
         {
           v13 = 0;
 LABEL_36:
@@ -209,9 +209,9 @@ LABEL_36:
           goto LABEL_37;
         }
 
-        v12 = [(DNDLifetimeDetails *)self identifier];
-        v3 = [(DNDLifetimeDetails *)v6 identifier];
-        if (![v12 isEqual:v3])
+        identifier5 = [(DNDLifetimeDetails *)self identifier];
+        identifier6 = [(DNDLifetimeDetails *)v6 identifier];
+        if (![identifier5 isEqual:identifier6])
         {
           v13 = 0;
 LABEL_35:
@@ -219,36 +219,36 @@ LABEL_35:
           goto LABEL_36;
         }
 
-        v36 = v3;
-        v37 = v12;
-        v38 = v11;
+        v36 = identifier6;
+        v37 = identifier5;
+        v38 = identifier4;
         v39 = v10;
       }
 
-      v14 = [(DNDLifetimeDetails *)self name];
-      v15 = [(DNDLifetimeDetails *)v6 name];
-      if (v14 != v15)
+      name = [(DNDLifetimeDetails *)self name];
+      name2 = [(DNDLifetimeDetails *)v6 name];
+      if (name != name2)
       {
-        v16 = [(DNDLifetimeDetails *)self name];
-        if (v16)
+        name3 = [(DNDLifetimeDetails *)self name];
+        if (name3)
         {
-          v17 = v16;
-          v18 = [(DNDLifetimeDetails *)v6 name];
-          if (v18)
+          v17 = name3;
+          name4 = [(DNDLifetimeDetails *)v6 name];
+          if (name4)
           {
-            v35 = v14;
-            v19 = [(DNDLifetimeDetails *)self name];
-            v3 = [(DNDLifetimeDetails *)v6 name];
-            if ([v19 isEqual:v3])
+            v35 = name;
+            name5 = [(DNDLifetimeDetails *)self name];
+            identifier6 = [(DNDLifetimeDetails *)v6 name];
+            if ([name5 isEqual:identifier6])
             {
-              v31 = v19;
-              v32 = v18;
+              v31 = name5;
+              v32 = name4;
               v33 = v17;
 LABEL_17:
-              v20 = [(DNDLifetimeDetails *)self metadata];
-              v21 = [(DNDLifetimeDetails *)v6 metadata];
-              v22 = v21;
-              if (v20 == v21)
+              metadata = [(DNDLifetimeDetails *)self metadata];
+              metadata2 = [(DNDLifetimeDetails *)v6 metadata];
+              v22 = metadata2;
+              if (metadata == metadata2)
               {
 
                 v13 = 1;
@@ -257,20 +257,20 @@ LABEL_17:
 
               else
               {
-                v34 = v3;
-                v23 = [(DNDLifetimeDetails *)self metadata];
-                if (v23)
+                v34 = identifier6;
+                metadata3 = [(DNDLifetimeDetails *)self metadata];
+                if (metadata3)
                 {
-                  v24 = v23;
-                  v25 = [(DNDLifetimeDetails *)v6 metadata];
-                  if (v25)
+                  v24 = metadata3;
+                  metadata4 = [(DNDLifetimeDetails *)v6 metadata];
+                  if (metadata4)
                   {
-                    v30 = v25;
-                    v29 = [(DNDLifetimeDetails *)self metadata];
-                    v26 = [(DNDLifetimeDetails *)v6 metadata];
-                    v13 = [v29 isEqual:v26];
+                    v30 = metadata4;
+                    metadata5 = [(DNDLifetimeDetails *)self metadata];
+                    metadata6 = [(DNDLifetimeDetails *)v6 metadata];
+                    v13 = [metadata5 isEqual:metadata6];
 
-                    v25 = v30;
+                    metadata4 = v30;
                   }
 
                   else
@@ -285,20 +285,20 @@ LABEL_17:
                   v13 = 0;
                 }
 
-                v3 = v34;
+                identifier6 = v34;
                 v27 = v35;
               }
 
-              if (v27 != v15)
+              if (v27 != name2)
               {
               }
 
 LABEL_34:
-              v11 = v38;
+              identifier4 = v38;
               v10 = v39;
-              v3 = v36;
-              v12 = v37;
-              if (v7 != v8)
+              identifier6 = v36;
+              identifier5 = v37;
+              if (identifier != identifier2)
               {
                 goto LABEL_35;
               }
@@ -308,7 +308,7 @@ LABEL_37:
               goto LABEL_38;
             }
 
-            v14 = v35;
+            name = v35;
           }
         }
 
@@ -316,7 +316,7 @@ LABEL_37:
         goto LABEL_34;
       }
 
-      v35 = v14;
+      v35 = name;
       goto LABEL_17;
     }
 
@@ -332,10 +332,10 @@ LABEL_38:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDLifetimeDetails *)self identifier];
-  v6 = [(DNDLifetimeDetails *)self name];
-  v7 = [(DNDLifetimeDetails *)self metadata];
-  v8 = [v3 stringWithFormat:@"<%@: %p identifier: '%@'; name: '%@'; metadata: '%@'>", v4, self, v5, v6, v7];;
+  identifier = [(DNDLifetimeDetails *)self identifier];
+  name = [(DNDLifetimeDetails *)self name];
+  metadata = [(DNDLifetimeDetails *)self metadata];
+  v8 = [v3 stringWithFormat:@"<%@: %p identifier: '%@'; name: '%@'; metadata: '%@'>", v4, self, identifier, name, metadata];;
 
   return v8;
 }

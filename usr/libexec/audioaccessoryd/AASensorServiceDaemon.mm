@@ -5,8 +5,8 @@
 - (void)_aaControllerEnsureStopped;
 - (void)_activate;
 - (void)_invalidate;
-- (void)_personalTranslationMessageReceived:(id)a3 fromDeviceAddress:(id)a4;
-- (void)_sensorDataUpdated:(id)a3;
+- (void)_personalTranslationMessageReceived:(id)received fromDeviceAddress:(id)address;
+- (void)_sensorDataUpdated:(id)updated;
 - (void)activate;
 - (void)invalidate;
 @end
@@ -110,7 +110,7 @@
     v10[3] = &unk_1002B6E38;
     v6 = v5;
     v11 = v6;
-    v12 = self;
+    selfCopy = self;
     [(AAController *)v6 setPersonalTranslationMessageHandler:v10];
     if (dword_1002F6BE8 <= 30 && (dword_1002F6BE8 != -1 || _LogCategory_Initialize()))
     {
@@ -123,7 +123,7 @@
     v7[3] = &unk_1002B68A8;
     v4 = v6;
     v8 = v4;
-    v9 = self;
+    selfCopy2 = self;
     [(AAController *)v4 activateWithCompletion:v7];
   }
 }
@@ -139,28 +139,28 @@
   }
 }
 
-- (void)_personalTranslationMessageReceived:(id)a3 fromDeviceAddress:(id)a4
+- (void)_personalTranslationMessageReceived:(id)received fromDeviceAddress:(id)address
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  addressCopy = address;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10008FA84;
   block[3] = &unk_1002B6CF0;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = receivedCopy;
+  v13 = addressCopy;
+  selfCopy = self;
+  v9 = addressCopy;
+  v10 = receivedCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_sensorDataUpdated:(id)a3
+- (void)_sensorDataUpdated:(id)updated
 {
-  v3 = a3;
+  updatedCopy = updated;
   v4 = +[AAServicesDaemon sharedAAServicesDaemon];
-  [v4 reportSensorInfo:v3];
+  [v4 reportSensorInfo:updatedCopy];
 }
 
 @end

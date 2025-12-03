@@ -1,23 +1,23 @@
 @interface NLXPCSpellServerClient
 + (id)spellServerClient;
-+ (void)requestAssetsForLanguage:(id)a3;
-- (NLXPCSpellServerClient)initWithServerName:(id)a3;
++ (void)requestAssetsForLanguage:(id)language;
+- (NLXPCSpellServerClient)initWithServerName:(id)name;
 - (void)dealloc;
-- (void)sendCommand:(id)a3;
+- (void)sendCommand:(id)command;
 @end
 
 @implementation NLXPCSpellServerClient
 
-- (NLXPCSpellServerClient)initWithServerName:(id)a3
+- (NLXPCSpellServerClient)initWithServerName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = NLXPCSpellServerClient;
   v5 = [(NLXPCSpellServerClient *)&v14 init];
   if (v5)
   {
     v6 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F10DA4E8];
-    v7 = [v4 copy];
+    v7 = [nameCopy copy];
     serverName = v5->_serverName;
     v5->_serverName = v7;
 
@@ -46,9 +46,9 @@
   [(NLXPCSpellServerClient *)&v3 dealloc];
 }
 
-- (void)sendCommand:(id)a3
+- (void)sendCommand:(id)command
 {
-  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:a3 format:100 options:0 error:0];
+  v8 = [MEMORY[0x1E696AE40] dataWithPropertyList:command format:100 options:0 error:0];
   v4 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v8 encoding:4];
   v5 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_11];
   v6 = [v4 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
@@ -64,7 +64,7 @@
   block[1] = 3221225472;
   block[2] = __43__NLXPCSpellServerClient_spellServerClient__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (spellServerClient_onceToken != -1)
   {
     dispatch_once(&spellServerClient_onceToken, block);
@@ -82,20 +82,20 @@ uint64_t __43__NLXPCSpellServerClient_spellServerClient__block_invoke(uint64_t a
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)requestAssetsForLanguage:(id)a3
++ (void)requestAssetsForLanguage:(id)language
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (language)
   {
-    v4 = a3;
-    v5 = [a1 spellServerClient];
+    languageCopy = language;
+    spellServerClient = [self spellServerClient];
     v8[0] = @"Command";
     v8[1] = @"Language";
     v9[0] = @"RequestAssets";
-    v9[1] = v4;
+    v9[1] = languageCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
-    [v5 sendCommand:v6];
+    [spellServerClient sendCommand:v6];
   }
 
   v7 = *MEMORY[0x1E69E9840];

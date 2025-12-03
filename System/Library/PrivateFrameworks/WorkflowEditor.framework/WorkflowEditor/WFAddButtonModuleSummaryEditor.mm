@@ -1,18 +1,18 @@
 @interface WFAddButtonModuleSummaryEditor
-- (id)menuForSlotWithIdentifier:(id)a3 style:(unint64_t)a4;
-- (void)beginEditingNewArrayElementFromPresentationAnchor:(id)a3;
+- (id)menuForSlotWithIdentifier:(id)identifier style:(unint64_t)style;
+- (void)beginEditingNewArrayElementFromPresentationAnchor:(id)anchor;
 @end
 
 @implementation WFAddButtonModuleSummaryEditor
 
-- (void)beginEditingNewArrayElementFromPresentationAnchor:(id)a3
+- (void)beginEditingNewArrayElementFromPresentationAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = self;
+  anchorCopy = anchor;
+  selfCopy = self;
   sub_2745029E4();
 }
 
-- (id)menuForSlotWithIdentifier:(id)a3 style:(unint64_t)a4
+- (id)menuForSlotWithIdentifier:(id)identifier style:(unint64_t)style
 {
   v4 = OUTLINED_FUNCTION_1_2();
 

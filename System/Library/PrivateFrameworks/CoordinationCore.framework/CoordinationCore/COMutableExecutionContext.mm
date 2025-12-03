@@ -1,34 +1,34 @@
 @interface COMutableExecutionContext
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation COMutableExecutionContext
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  context = a3;
-  v6 = a4;
-  if (![v6 isEqualToString:@"dispatchQueue"] || (objc_msgSend(MEMORY[0x277CBEB68], "null"), v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSObject isEqual:](context, "isEqual:", v7), v7, (v8 & 1) == 0))
+  context = object;
+  keyCopy = key;
+  if (![keyCopy isEqualToString:@"dispatchQueue"] || (objc_msgSend(MEMORY[0x277CBEB68], "null"), v7 = objc_claimAutoreleasedReturnValue(), v8 = -[NSObject isEqual:](context, "isEqual:", v7), v7, (v8 & 1) == 0))
   {
-    if ([v6 isEqualToString:@"dispatchQueue"])
+    if ([keyCopy isEqualToString:@"dispatchQueue"])
     {
       dispatch_queue_set_specific(context, "queueSpecificInfo", context, 0);
     }
 
-    v9 = [(COExecutionContext *)self metadata];
-    v10 = [v9 mutableCopy];
+    metadata = [(COExecutionContext *)self metadata];
+    v10 = [metadata mutableCopy];
 
-    [v10 setObject:context forKey:v6];
+    [v10 setObject:context forKey:keyCopy];
     [(COExecutionContext *)self setMetadata:v10];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [COExecutionContext alloc];
-  v5 = [(COExecutionContext *)self metadata];
-  v6 = [(COExecutionContext *)v4 initWithMetadata:v5];
+  metadata = [(COExecutionContext *)self metadata];
+  v6 = [(COExecutionContext *)v4 initWithMetadata:metadata];
 
   return v6;
 }

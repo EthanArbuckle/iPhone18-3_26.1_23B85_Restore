@@ -1,9 +1,9 @@
 @interface AXCameraLevelingMotionAnalyzer
-+ (double)_offsetFromLevelForOrientation:(int64_t)a3 rotation:(double)a4 shift:(double)a5;
-+ (int64_t)_deviceOrientationForRotation:(double)a3 shift:(double)a4;
-+ (int64_t)_levelZoneForDeviceMotion:(id)a3 previousZone:(int64_t)a4;
-- (int64_t)updateWithDeviceMotion:(id)a3 previousZone:(int64_t)a4;
-- (void)_updateCameraStableForMotion:(id)a3 previousMotion:(id)a4;
++ (double)_offsetFromLevelForOrientation:(int64_t)orientation rotation:(double)rotation shift:(double)shift;
++ (int64_t)_deviceOrientationForRotation:(double)rotation shift:(double)shift;
++ (int64_t)_levelZoneForDeviceMotion:(id)motion previousZone:(int64_t)zone;
+- (int64_t)updateWithDeviceMotion:(id)motion previousZone:(int64_t)zone;
+- (void)_updateCameraStableForMotion:(id)motion previousMotion:(id)previousMotion;
 - (void)reset;
 @end
 
@@ -17,14 +17,14 @@
   [(AXCameraLevelingMotionAnalyzer *)self set_lastUnstableMotionTimestamp:0.0];
 }
 
-- (int64_t)updateWithDeviceMotion:(id)a3 previousZone:(int64_t)a4
+- (int64_t)updateWithDeviceMotion:(id)motion previousZone:(int64_t)zone
 {
-  v6 = a3;
-  v7 = [(AXCameraLevelingMotionAnalyzer *)self _lastDeviceMotion];
-  [(AXCameraLevelingMotionAnalyzer *)self _updateCameraStableForMotion:v6 previousMotion:v7];
+  motionCopy = motion;
+  _lastDeviceMotion = [(AXCameraLevelingMotionAnalyzer *)self _lastDeviceMotion];
+  [(AXCameraLevelingMotionAnalyzer *)self _updateCameraStableForMotion:motionCopy previousMotion:_lastDeviceMotion];
   if ([(AXCameraLevelingMotionAnalyzer *)self _cameraStableForLeveling])
   {
-    v8 = [objc_opt_class() _levelZoneForDeviceMotion:v6 previousZone:a4];
+    v8 = [objc_opt_class() _levelZoneForDeviceMotion:motionCopy previousZone:zone];
   }
 
   else
@@ -32,27 +32,27 @@
     v8 = 0;
   }
 
-  [(AXCameraLevelingMotionAnalyzer *)self set_lastDeviceMotion:v6];
+  [(AXCameraLevelingMotionAnalyzer *)self set_lastDeviceMotion:motionCopy];
 
   return v8;
 }
 
-- (void)_updateCameraStableForMotion:(id)a3 previousMotion:(id)a4
+- (void)_updateCameraStableForMotion:(id)motion previousMotion:(id)previousMotion
 {
   v33 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  motionCopy = motion;
+  previousMotionCopy = previousMotion;
+  if (previousMotionCopy)
   {
-    [v6 timestamp];
+    [motionCopy timestamp];
     v9 = v8;
-    [v7 timestamp];
+    [previousMotionCopy timestamp];
     if (v9 == v10)
     {
       v11 = AXMediaLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        [v6 timestamp];
+        [motionCopy timestamp];
         v31 = 134217984;
         v32 = v12;
         _os_log_impl(&dword_29BC67000, v11, OS_LOG_TYPE_DEFAULT, "Ignoring device motion for previously handled timestamp %f", &v31, 0xCu);
@@ -61,15 +61,15 @@
 
     else
     {
-      v13 = [v6 attitude];
-      v14 = [v13 copy];
+      attitude = [motionCopy attitude];
+      v14 = [attitude copy];
 
-      v15 = [v7 attitude];
-      [v14 multiplyByInverseOfAttitude:v15];
+      attitude2 = [previousMotionCopy attitude];
+      [v14 multiplyByInverseOfAttitude:attitude2];
 
-      [v6 timestamp];
+      [motionCopy timestamp];
       v17 = v16;
-      [v7 timestamp];
+      [previousMotionCopy timestamp];
       v19 = v17 - v18;
       [v14 pitch];
       v21 = fabs(v20 * 57.2957795) / v19;
@@ -80,11 +80,11 @@
       v26 = v21 < 30.0 || v21 < v25;
       if (!v26 || (fmax(v25, 30.0) > fabs(v23 * 57.2957795) / v19 ? (v27 = v25 > 100.0) : (v27 = 1), v27))
       {
-        [v6 timestamp];
+        [motionCopy timestamp];
         [(AXCameraLevelingMotionAnalyzer *)self set_lastUnstableMotionTimestamp:?];
       }
 
-      [v6 timestamp];
+      [motionCopy timestamp];
       v29 = v28;
       [(AXCameraLevelingMotionAnalyzer *)self _lastUnstableMotionTimestamp];
       [(AXCameraLevelingMotionAnalyzer *)self set_cameraStableForLeveling:v29 - v30 >= 0.6];
@@ -94,14 +94,14 @@
   else
   {
     [(AXCameraLevelingMotionAnalyzer *)self set_cameraStableForLeveling:0];
-    [v6 timestamp];
+    [motionCopy timestamp];
     [(AXCameraLevelingMotionAnalyzer *)self set_lastUnstableMotionTimestamp:?];
   }
 }
 
-+ (int64_t)_levelZoneForDeviceMotion:(id)a3 previousZone:(int64_t)a4
++ (int64_t)_levelZoneForDeviceMotion:(id)motion previousZone:(int64_t)zone
 {
-  [a3 gravity];
+  [motion gravity];
   v6 = v5;
   v9 = atan2(v8, -v7);
   v10 = acos(v6) + -1.57079633;
@@ -114,7 +114,7 @@
   }
 
   v16 = 2.0;
-  if (a4 == 1)
+  if (zone == 1)
   {
     v16 = 4.5;
   }
@@ -136,18 +136,18 @@
   }
 }
 
-+ (int64_t)_deviceOrientationForRotation:(double)a3 shift:(double)a4
++ (int64_t)_deviceOrientationForRotation:(double)rotation shift:(double)shift
 {
-  if (fabs(a4) <= 45.0)
+  if (fabs(shift) <= 45.0)
   {
-    v5 = fabs(a3);
+    v5 = fabs(rotation);
     if (v5 >= 45.0)
     {
       if (v5 <= 135.0)
       {
-        if (a3 <= 45.0 || a3 >= 135.0)
+        if (rotation <= 45.0 || rotation >= 135.0)
         {
-          if (a3 > -135.0 && a3 < -45.0)
+          if (rotation > -135.0 && rotation < -45.0)
           {
             return 4;
           }
@@ -176,7 +176,7 @@
     }
   }
 
-  else if (a4 <= 0.0)
+  else if (shift <= 0.0)
   {
     return 6;
   }
@@ -187,21 +187,21 @@
   }
 }
 
-+ (double)_offsetFromLevelForOrientation:(int64_t)a3 rotation:(double)a4 shift:(double)a5
++ (double)_offsetFromLevelForOrientation:(int64_t)orientation rotation:(double)rotation shift:(double)shift
 {
   v5 = 0.0;
-  if (a3 > 3)
+  if (orientation > 3)
   {
-    if (a3 != 4)
+    if (orientation != 4)
     {
-      if (a3 == 5)
+      if (orientation == 5)
       {
         v6 = -1.57079633;
       }
 
       else
       {
-        if (a3 != 6)
+        if (orientation != 6)
         {
           return v5;
         }
@@ -209,30 +209,30 @@
         v6 = 1.57079633;
       }
 
-      a4 = a5 + v6;
-      return a4 * 57.2957795;
+      rotation = shift + v6;
+      return rotation * 57.2957795;
     }
 
-    if (a4 <= 3.14159265)
+    if (rotation <= 3.14159265)
     {
-      if (a4 < -3.14159265)
+      if (rotation < -3.14159265)
       {
-        a4 = a4 + 6.28318531;
+        rotation = rotation + 6.28318531;
       }
     }
 
     else
     {
-      a4 = -(6.28318531 - a4);
+      rotation = -(6.28318531 - rotation);
     }
 
-    v7 = a4 + 2.35619449;
-    if (a4 + 2.35619449 <= 3.14159265)
+    v7 = rotation + 2.35619449;
+    if (rotation + 2.35619449 <= 3.14159265)
     {
       if (v7 >= -3.14159265)
       {
 LABEL_25:
-        v9 = a4 * 57.2957795;
+        v9 = rotation * 57.2957795;
         v10 = 90.0;
         return v9 + v10;
       }
@@ -245,35 +245,35 @@ LABEL_25:
       v8 = -6.28318531;
     }
 
-    a4 = v7 + v8 + -2.35619449;
+    rotation = v7 + v8 + -2.35619449;
     goto LABEL_25;
   }
 
-  switch(a3)
+  switch(orientation)
   {
     case 1:
-      return a4 * 57.2957795;
+      return rotation * 57.2957795;
     case 2:
-      if (a4 <= 3.14159265)
+      if (rotation <= 3.14159265)
       {
-        if (a4 < -3.14159265)
+        if (rotation < -3.14159265)
         {
-          a4 = a4 + 6.28318531;
+          rotation = rotation + 6.28318531;
         }
       }
 
       else
       {
-        a4 = -(6.28318531 - a4);
+        rotation = -(6.28318531 - rotation);
       }
 
-      v13 = a4 + -3.14159265;
-      if (a4 + -3.14159265 <= 3.14159265)
+      v13 = rotation + -3.14159265;
+      if (rotation + -3.14159265 <= 3.14159265)
       {
         if (v13 >= -3.14159265)
         {
 LABEL_41:
-          v9 = a4 * 57.2957795;
+          v9 = rotation * 57.2957795;
           v10 = -180.0;
           return v9 + v10;
         }
@@ -286,29 +286,29 @@ LABEL_41:
         v14 = -6.28318531;
       }
 
-      a4 = v13 + v14 + 3.14159265;
+      rotation = v13 + v14 + 3.14159265;
       goto LABEL_41;
     case 3:
-      if (a4 <= 3.14159265)
+      if (rotation <= 3.14159265)
       {
-        if (a4 < -3.14159265)
+        if (rotation < -3.14159265)
         {
-          a4 = a4 + 6.28318531;
+          rotation = rotation + 6.28318531;
         }
       }
 
       else
       {
-        a4 = -(6.28318531 - a4);
+        rotation = -(6.28318531 - rotation);
       }
 
-      v11 = a4 + -1.57079633;
-      if (a4 + -1.57079633 <= 3.14159265)
+      v11 = rotation + -1.57079633;
+      if (rotation + -1.57079633 <= 3.14159265)
       {
         if (v11 >= -3.14159265)
         {
 LABEL_33:
-          v9 = a4 * 57.2957795;
+          v9 = rotation * 57.2957795;
           v10 = -90.0;
           return v9 + v10;
         }
@@ -321,7 +321,7 @@ LABEL_33:
         v12 = -6.28318531;
       }
 
-      a4 = v11 + v12 + 1.57079633;
+      rotation = v11 + v12 + 1.57079633;
       goto LABEL_33;
   }
 

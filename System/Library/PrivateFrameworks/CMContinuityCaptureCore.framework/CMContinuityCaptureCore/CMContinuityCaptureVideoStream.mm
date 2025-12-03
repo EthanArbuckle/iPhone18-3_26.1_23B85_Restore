@@ -1,48 +1,48 @@
 @interface CMContinuityCaptureVideoStream
-- (BOOL)_setStreamProperties:(id)a3 error:(id *)a4;
-- (BOOL)_startStreamAndReturnError:(id *)a3;
-- (BOOL)_stopStreamAndReturnError:(id *)a3;
-- (BOOL)setStreamProperties:(id)a3 error:(id *)a4;
-- (BOOL)setupStreams:(id)a3;
-- (BOOL)startStreamAndReturnError:(id *)a3;
-- (BOOL)stopStreamAndReturnError:(id *)a3;
+- (BOOL)_setStreamProperties:(id)properties error:(id *)error;
+- (BOOL)_startStreamAndReturnError:(id *)error;
+- (BOOL)_stopStreamAndReturnError:(id *)error;
+- (BOOL)setStreamProperties:(id)properties error:(id *)error;
+- (BOOL)setupStreams:(id)streams;
+- (BOOL)startStreamAndReturnError:(id *)error;
+- (BOOL)stopStreamAndReturnError:(id *)error;
 - (CMContinuityCaptureVideoDevice)device;
-- (CMContinuityCaptureVideoStream)initWithDevice:(id)a3 streamFormats:(id)a4 deviceID:(id)a5 queue:(id)a6;
+- (CMContinuityCaptureVideoStream)initWithDevice:(id)device streamFormats:(id)formats deviceID:(id)d queue:(id)queue;
 - (NSSet)availableProperties;
 - (NSString)description;
 - (id)_availableProperties;
-- (id)_getResolvedStillCaptureConfigs:(id)a3;
-- (id)_streamPropertiesForProperties:(id)a3 error:(id *)a4;
-- (id)createFormatToPublish:(id)a3;
-- (id)streamPropertiesForProperties:(id)a3 error:(id *)a4;
+- (id)_getResolvedStillCaptureConfigs:(id)configs;
+- (id)_streamPropertiesForProperties:(id)properties error:(id *)error;
+- (id)createFormatToPublish:(id)publish;
+- (id)streamPropertiesForProperties:(id)properties error:(id *)error;
 - (void)_availableProperties;
-- (void)_disconnectClient:(id)a3;
-- (void)_setValueForControl:(id)a3 completion:(id)a4;
-- (void)captureAsyncStillImage:(int64_t)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)disconnectClient:(id)a3;
-- (void)dispatchFrame:(opaqueCMSampleBuffer *)a3 entity:(int64_t)a4 completion:(id)a5;
-- (void)enqueueReactionEffect:(id)a3 completionHandler:(id)a4;
-- (void)setValueForControl:(id)a3 completion:(id)a4;
+- (void)_disconnectClient:(id)client;
+- (void)_setValueForControl:(id)control completion:(id)completion;
+- (void)captureAsyncStillImage:(int64_t)image options:(id)options completionHandler:(id)handler;
+- (void)disconnectClient:(id)client;
+- (void)dispatchFrame:(opaqueCMSampleBuffer *)frame entity:(int64_t)entity completion:(id)completion;
+- (void)enqueueReactionEffect:(id)effect completionHandler:(id)handler;
+- (void)setValueForControl:(id)control completion:(id)completion;
 - (void)setupControls;
-- (void)terminateComplete:(id)a3;
+- (void)terminateComplete:(id)complete;
 @end
 
 @implementation CMContinuityCaptureVideoStream
 
-- (void)terminateComplete:(id)a3
+- (void)terminateComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v5 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138543618;
-    v7 = self;
+    selfCopy = self;
     v8 = 2080;
     v9 = "[CMContinuityCaptureVideoStream terminateComplete:]";
     _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_INFO, "%{public}@ %s", &v6, 0x16u);
   }
 
-  v4[2](v4);
+  completeCopy[2](completeCopy);
 }
 
 - (CMContinuityCaptureVideoDevice)device
@@ -52,19 +52,19 @@
   return WeakRetained;
 }
 
-- (void)disconnectClient:(id)a3
+- (void)disconnectClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   objc_initWeak(&location, self);
-  v5 = [(CMContinuityCaptureVideoStream *)self queue];
+  queue = [(CMContinuityCaptureVideoStream *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__CMContinuityCaptureVideoStream_disconnectClient___block_invoke;
   block[3] = &unk_278D5C0A8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = clientCopy;
+  v6 = clientCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -83,86 +83,86 @@ void __51__CMContinuityCaptureVideoStream_disconnectClient___block_invoke(uint64
 
 - (void)setupControls
 {
-  v3 = [(CMContinuityCaptureVideoStream *)self device];
-  v4 = [v3 capabilities];
-  obja = [v4 controls];
+  device = [(CMContinuityCaptureVideoStream *)self device];
+  capabilities = [device capabilities];
+  obja = [capabilities controls];
 
   self->_activeFormatIndex = 0;
   v5 = [CMContinuityCaptureControl alloc];
-  v6 = [(CMContinuityCaptureVideoStream *)self device];
-  v7 = [v6 entity];
-  v8 = [(NSArray *)self->_continuityStreamFormats firstObject];
+  device2 = [(CMContinuityCaptureVideoStream *)self device];
+  entity = [device2 entity];
+  firstObject = [(NSArray *)self->_continuityStreamFormats firstObject];
   v71 = 0;
   v72 = 0;
   v70 = 1;
-  v9 = [(CMContinuityCaptureControl *)v5 initWithName:@"ActiveFormat" attributes:0 entity:v7 minimumSupportedVersion:&v70 value:v8];
+  v9 = [(CMContinuityCaptureControl *)v5 initWithName:@"ActiveFormat" attributes:0 entity:entity minimumSupportedVersion:&v70 value:firstObject];
 
   v61 = v9;
   [(NSMutableDictionary *)self->_cmControlByName setObject:v9 forKeyedSubscript:@"ActiveFormat"];
   v10 = [(NSMutableDictionary *)self->_cmControlByName objectForKeyedSubscript:@"ActiveFormat"];
-  [v3 setValueForControl:v10 completion:0];
+  [device setValueForControl:v10 completion:0];
 
   v11 = [CMContinuityCaptureControl alloc];
-  v12 = [(CMContinuityCaptureVideoStream *)self device];
-  v13 = [v12 entity];
+  device3 = [(CMContinuityCaptureVideoStream *)self device];
+  entity2 = [device3 entity];
   v14 = MEMORY[0x277CCABB0];
   v15 = [(NSArray *)self->_continuityStreamFormats objectAtIndexedSubscript:self->_activeFormatIndex];
   v16 = [v14 numberWithUnsignedInt:{objc_msgSend(v15, "maxFrameRate")}];
   v71 = 0;
   v72 = 0;
   v70 = 1;
-  v17 = [(CMContinuityCaptureControl *)v11 initWithName:@"CMIOExtensionPropertyStreamFrameDuration" attributes:0 entity:v13 minimumSupportedVersion:&v70 value:v16];
+  v17 = [(CMContinuityCaptureControl *)v11 initWithName:@"CMIOExtensionPropertyStreamFrameDuration" attributes:0 entity:entity2 minimumSupportedVersion:&v70 value:v16];
 
   v60 = v17;
   [(NSMutableDictionary *)self->_cmControlByName setObject:v17 forKeyedSubscript:@"CMIOExtensionPropertyStreamFrameDuration"];
   v18 = [(NSMutableDictionary *)self->_cmControlByName objectForKeyedSubscript:@"CMIOExtensionPropertyStreamFrameDuration"];
-  [v3 setValueForControl:v18 completion:0];
+  [device setValueForControl:v18 completion:0];
 
   v19 = [CMContinuityCaptureControl alloc];
-  v20 = [(CMContinuityCaptureVideoStream *)self device];
-  v21 = [v20 entity];
+  device4 = [(CMContinuityCaptureVideoStream *)self device];
+  entity3 = [device4 entity];
   v22 = MEMORY[0x277CCABB0];
   v23 = [(NSArray *)self->_continuityStreamFormats objectAtIndexedSubscript:self->_activeFormatIndex];
   v24 = [v22 numberWithUnsignedInt:{objc_msgSend(v23, "minFrameRate")}];
   v71 = 0;
   v72 = 0;
   v70 = 1;
-  v25 = [(CMContinuityCaptureControl *)v19 initWithName:@"CMIOExtensionPropertyStreamMaxFrameDuration" attributes:0 entity:v21 minimumSupportedVersion:&v70 value:v24];
+  v25 = [(CMContinuityCaptureControl *)v19 initWithName:@"CMIOExtensionPropertyStreamMaxFrameDuration" attributes:0 entity:entity3 minimumSupportedVersion:&v70 value:v24];
 
   v59 = v25;
   [(NSMutableDictionary *)self->_cmControlByName setObject:v25 forKeyedSubscript:@"CMIOExtensionPropertyStreamMaxFrameDuration"];
   v26 = [(NSMutableDictionary *)self->_cmControlByName objectForKeyedSubscript:@"CMIOExtensionPropertyStreamMaxFrameDuration"];
-  v64 = v3;
-  [v3 setValueForControl:v26 completion:0];
+  v64 = device;
+  [device setValueForControl:v26 completion:0];
 
   v27 = [CMContinuityCaptureControl alloc];
-  v28 = [(CMContinuityCaptureVideoStream *)self device];
-  v29 = [v28 entity];
+  device5 = [(CMContinuityCaptureVideoStream *)self device];
+  entity4 = [device5 entity];
   v71 = 0;
   v72 = 0;
   v70 = 1;
-  v30 = [(CMContinuityCaptureControl *)v27 initWithName:@"ReactionsInProgress" attributes:0 entity:v29 minimumSupportedVersion:&v70 value:MEMORY[0x277CBEBF8]];
+  v30 = [(CMContinuityCaptureControl *)v27 initWithName:@"ReactionsInProgress" attributes:0 entity:entity4 minimumSupportedVersion:&v70 value:MEMORY[0x277CBEBF8]];
 
   v58 = v30;
   [(NSMutableDictionary *)self->_cmControlByName setObject:v30 forKeyedSubscript:@"ReactionsInProgress"];
   v31 = [CMContinuityCaptureControl alloc];
-  v32 = [(CMContinuityCaptureVideoStream *)self device];
-  v33 = [v32 entity];
+  device6 = [(CMContinuityCaptureVideoStream *)self device];
+  entity5 = [device6 entity];
   v71 = 0;
   v72 = 0;
   v70 = 1;
-  v34 = [(CMContinuityCaptureControl *)v31 initWithName:@"SuppressedGesture" attributes:0 entity:v33 minimumSupportedVersion:&v70 value:MEMORY[0x277CBEC28]];
+  v34 = [(CMContinuityCaptureControl *)v31 initWithName:@"SuppressedGesture" attributes:0 entity:entity5 minimumSupportedVersion:&v70 value:MEMORY[0x277CBEC28]];
 
   v57 = v34;
   [(NSMutableDictionary *)self->_cmControlByName setObject:v34 forKeyedSubscript:@"SuppressedGesture"];
-  v35 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   clientsRequestingBooleanControlOnByControlName = self->_clientsRequestingBooleanControlOnByControlName;
-  self->_clientsRequestingBooleanControlOnByControlName = v35;
+  self->_clientsRequestingBooleanControlOnByControlName = dictionary;
 
-  v37 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   maxPhotoQualityPrioritizationByClients = self->_maxPhotoQualityPrioritizationByClients;
-  v39 = self;
-  self->_maxPhotoQualityPrioritizationByClients = v37;
+  selfCopy = self;
+  self->_maxPhotoQualityPrioritizationByClients = dictionary2;
 
   v68 = 0u;
   v69 = 0u;
@@ -184,12 +184,12 @@ void __51__CMContinuityCaptureVideoStream_disconnectClient___block_invoke(uint64
         }
 
         v44 = *(*(&v66 + 1) + 8 * i);
-        cmControlByName = v39->_cmControlByName;
-        v46 = [v44 name];
-        [(NSMutableDictionary *)cmControlByName setObject:v44 forKeyedSubscript:v46];
+        cmControlByName = selfCopy->_cmControlByName;
+        name = [v44 name];
+        [(NSMutableDictionary *)cmControlByName setObject:v44 forKeyedSubscript:name];
 
-        v47 = [v44 name];
-        v48 = [v47 isEqualToString:@"FaceDetectionEnabled"];
+        name2 = [v44 name];
+        v48 = [name2 isEqualToString:@"FaceDetectionEnabled"];
 
         v49 = @"FaceDetectionEnabled";
         if (v48)
@@ -197,8 +197,8 @@ void __51__CMContinuityCaptureVideoStream_disconnectClient___block_invoke(uint64
           goto LABEL_10;
         }
 
-        v50 = [v44 name];
-        v51 = [v50 isEqualToString:@"AsyncStillCaptureEnabled"];
+        name3 = [v44 name];
+        v51 = [name3 isEqualToString:@"AsyncStillCaptureEnabled"];
 
         v49 = @"AsyncStillCaptureEnabled";
         if (v51)
@@ -206,15 +206,15 @@ void __51__CMContinuityCaptureVideoStream_disconnectClient___block_invoke(uint64
           goto LABEL_10;
         }
 
-        v52 = [v44 name];
+        name4 = [v44 name];
         v49 = @"HumanBodyDetectionEnabled";
-        v53 = [v52 isEqualToString:@"HumanBodyDetectionEnabled"];
+        v53 = [name4 isEqualToString:@"HumanBodyDetectionEnabled"];
 
         if ((v53 & 1) != 0 || ([v44 name], v54 = objc_claimAutoreleasedReturnValue(), v49 = @"HumanFullBodyDetectionEnabled", v55 = objc_msgSend(v54, "isEqualToString:", @"HumanFullBodyDetectionEnabled"), v54, v55))
         {
 LABEL_10:
           v56 = [MEMORY[0x277CBEB58] set];
-          [(NSMutableDictionary *)v39->_clientsRequestingBooleanControlOnByControlName setObject:v56 forKeyedSubscript:v49];
+          [(NSMutableDictionary *)selfCopy->_clientsRequestingBooleanControlOnByControlName setObject:v56 forKeyedSubscript:v49];
         }
 
         [v64 setValueForControl:v44 completion:0];
@@ -227,10 +227,10 @@ LABEL_10:
   }
 }
 
-- (BOOL)setupStreams:(id)a3
+- (BOOL)setupStreams:(id)streams
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  streamsCopy = streams;
   v6 = objc_alloc_init(v4);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13[0] = MEMORY[0x277D85DD0];
@@ -242,7 +242,7 @@ LABEL_10:
   v14 = v8;
   v9 = v7;
   v15 = v9;
-  [v5 enumerateObjectsUsingBlock:v13];
+  [streamsCopy enumerateObjectsUsingBlock:v13];
 
   objc_storeStrong(&self->_extensionStreamFormats, v6);
   objc_storeStrong(&self->_continuityStreamFormats, v7);
@@ -273,19 +273,19 @@ void __47__CMContinuityCaptureVideoStream_setupStreams___block_invoke(id *a1, vo
   }
 }
 
-- (id)createFormatToPublish:(id)a3
+- (id)createFormatToPublish:(id)publish
 {
-  v3 = a3;
-  CMTimeMake(&v15, 1, [v3 maxFrameRate]);
+  publishCopy = publish;
+  CMTimeMake(&v15, 1, [publishCopy maxFrameRate]);
   value = v15.value;
   epoch = v15.epoch;
   v6 = *&v15.timescale;
-  CMTimeMake(&v15, 1, [v3 minFrameRate]);
+  CMTimeMake(&v15, 1, [publishCopy minFrameRate]);
   v7 = v15.value;
   v8 = v15.epoch;
   v9 = *&v15.timescale;
   v10 = objc_alloc(MEMORY[0x277CC1BA8]);
-  v11 = [v3 formatDescription];
+  formatDescription = [publishCopy formatDescription];
 
   v14[2] = epoch;
   v15.value = v7;
@@ -293,14 +293,14 @@ void __47__CMContinuityCaptureVideoStream_setupStreams___block_invoke(id *a1, vo
   v15.epoch = v8;
   v14[0] = value;
   v14[1] = v6;
-  v12 = [v10 initWithFormatDescription:v11 maxFrameDuration:&v15 minFrameDuration:v14 validFrameDurations:0];
+  v12 = [v10 initWithFormatDescription:formatDescription maxFrameDuration:&v15 minFrameDuration:v14 validFrameDurations:0];
 
   return v12;
 }
 
-- (void)dispatchFrame:(opaqueCMSampleBuffer *)a3 entity:(int64_t)a4 completion:(id)a5
+- (void)dispatchFrame:(opaqueCMSampleBuffer *)frame entity:(int64_t)entity completion:(id)completion
 {
-  v5 = a4;
+  entityCopy = entity;
   if (CMContinityCaptureDebugLogEnabled())
   {
     v8 = CMContinuityCaptureLog(2);
@@ -309,28 +309,28 @@ void __47__CMContinuityCaptureVideoStream_setupStreams___block_invoke(id *a1, vo
       LODWORD(v17.value) = 138412802;
       *(&v17.value + 4) = self;
       LOWORD(v17.flags) = 2112;
-      *(&v17.flags + 2) = a3;
+      *(&v17.flags + 2) = frame;
       HIWORD(v17.epoch) = 1024;
-      v18 = v5;
+      v18 = entityCopy;
       _os_log_debug_impl(&dword_242545000, v8, OS_LOG_TYPE_DEBUG, "%@ dispatchFrame %@ entity %u", &v17, 0x1Cu);
     }
   }
 
   memset(&v17, 170, sizeof(v17));
-  CMSampleBufferGetPresentationTimeStamp(&v17, a3);
-  v9 = CMGetAttachment(a3, @"ContinuityCaptureTimeDiscontinuity", 0);
-  v10 = [v9 BOOLValue];
-  CMRemoveAttachment(a3, @"ContinuityCaptureTimeDiscontinuity");
+  CMSampleBufferGetPresentationTimeStamp(&v17, frame);
+  v9 = CMGetAttachment(frame, @"ContinuityCaptureTimeDiscontinuity", 0);
+  bOOLValue = [v9 BOOLValue];
+  CMRemoveAttachment(frame, @"ContinuityCaptureTimeDiscontinuity");
   v11 = *MEMORY[0x277CF3FC8];
-  v12 = CMGetAttachment(a3, *MEMORY[0x277CF3FC8], 0);
+  v12 = CMGetAttachment(frame, *MEMORY[0x277CF3FC8], 0);
   if (v12)
   {
     v13 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v12];
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v13];
-    CMSetAttachment(a3, v11, v14, 1u);
+    CMSetAttachment(frame, v11, v14, 1u);
   }
 
-  if (v10)
+  if (bOOLValue)
   {
     v15 = 3;
   }
@@ -341,7 +341,7 @@ void __47__CMContinuityCaptureVideoStream_setupStreams___block_invoke(id *a1, vo
   }
 
   v16 = v17;
-  [(CMIOExtensionStream *)self sendSampleBuffer:a3 discontinuity:v15 hostTimeInNanoseconds:(CMTimeGetSeconds(&v16) * 1000000000.0)];
+  [(CMIOExtensionStream *)self sendSampleBuffer:frame discontinuity:v15 hostTimeInNanoseconds:(CMTimeGetSeconds(&v16) * 1000000000.0)];
 }
 
 - (NSSet)availableProperties
@@ -382,8 +382,8 @@ uint64_t __53__CMContinuityCaptureVideoStream_availableProperties__block_invoke(
   dispatch_assert_queue_V2(self->_queue);
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
   [v3 addObject:*MEMORY[0x277CC1B68]];
-  v4 = [(NSMutableDictionary *)self->_cmControlByName allKeys];
-  [v3 addObjectsFromArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_cmControlByName allKeys];
+  [v3 addObjectsFromArray:allKeys];
 
   if ([v3 containsObject:@"ActiveFormat"])
   {
@@ -402,9 +402,9 @@ uint64_t __53__CMContinuityCaptureVideoStream_availableProperties__block_invoke(
   return v3;
 }
 
-- (id)streamPropertiesForProperties:(id)a3 error:(id *)a4
+- (id)streamPropertiesForProperties:(id)properties error:(id *)error
 {
-  v6 = a3;
+  propertiesCopy = properties;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -425,14 +425,14 @@ uint64_t __53__CMContinuityCaptureVideoStream_availableProperties__block_invoke(
   v11[3] = &unk_278D5C638;
   v13 = &v21;
   v11[4] = self;
-  v8 = v6;
+  v8 = propertiesCopy;
   v12 = v8;
   v14 = &v15;
   dispatch_async_and_wait(queue, v11);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = v22[5];
@@ -456,9 +456,9 @@ void __70__CMContinuityCaptureVideoStream_streamPropertiesForProperties_error___
   *(v6 + 40) = v5;
 }
 
-- (BOOL)setStreamProperties:(id)a3 error:(id *)a4
+- (BOOL)setStreamProperties:(id)properties error:(id *)error
 {
-  v6 = a3;
+  propertiesCopy = properties;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -469,24 +469,24 @@ void __70__CMContinuityCaptureVideoStream_streamPropertiesForProperties_error___
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v7 = [(CMContinuityCaptureVideoStream *)self queue];
-  dispatch_assert_queue_not_V2(v7);
+  queue = [(CMContinuityCaptureVideoStream *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v8 = [(CMContinuityCaptureVideoStream *)self queue];
+  queue2 = [(CMContinuityCaptureVideoStream *)self queue];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__CMContinuityCaptureVideoStream_setStreamProperties_error___block_invoke;
   v12[3] = &unk_278D5C638;
   v14 = &v16;
   v12[4] = self;
-  v9 = v6;
+  v9 = propertiesCopy;
   v13 = v9;
   v15 = &v20;
-  dispatch_async_and_wait(v8, v12);
+  dispatch_async_and_wait(queue2, v12);
 
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v10 = *(v17 + 24);
@@ -507,11 +507,11 @@ void __60__CMContinuityCaptureVideoStream_setStreamProperties_error___block_invo
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)_setStreamProperties:(id)a3 error:(id *)a4
+- (BOOL)_setStreamProperties:(id)properties error:(id *)error
 {
-  v5 = a3;
-  v6 = [(CMContinuityCaptureVideoStream *)self device];
-  if (!v6)
+  propertiesCopy = properties;
+  device = [(CMContinuityCaptureVideoStream *)self device];
+  if (!device)
   {
     v17 = 0;
     v52 = 0;
@@ -521,8 +521,8 @@ void __60__CMContinuityCaptureVideoStream_setStreamProperties_error___block_invo
 
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   dispatch_assert_queue_V2(self->_queue);
-  v8 = v5 != 0;
-  if (!v5)
+  v8 = propertiesCopy != 0;
+  if (!propertiesCopy)
   {
     v53 = 0;
     v17 = 0;
@@ -530,32 +530,32 @@ void __60__CMContinuityCaptureVideoStream_setStreamProperties_error___block_invo
     goto LABEL_100;
   }
 
-  v122 = v6;
-  v9 = [v5 propertiesDictionary];
+  v122 = device;
+  propertiesDictionary = [propertiesCopy propertiesDictionary];
   v10 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v5 propertiesDictionary];
+    propertiesDictionary2 = [propertiesCopy propertiesDictionary];
     *buf = 138412802;
     *&buf[4] = self;
     v130 = 2112;
-    *v131 = v11;
+    *v131 = propertiesDictionary2;
     *&v131[8] = 2112;
-    *&v131[10] = v5;
+    *&v131[10] = propertiesCopy;
     _os_log_impl(&dword_242545000, v10, OS_LOG_TYPE_DEFAULT, "%@ SetProperties %@ %@", buf, 0x20u);
   }
 
-  v124 = v9;
-  v120 = v5;
+  v124 = propertiesDictionary;
+  v120 = propertiesCopy;
   v121 = v7;
 
   v137 = 0u;
   v138 = 0u;
   v135 = 0u;
   v136 = 0u;
-  v125 = self;
-  v12 = [(NSMutableDictionary *)self->_cmControlByName allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v135 objects:v134 count:16];
+  selfCopy = self;
+  allKeys = [(NSMutableDictionary *)self->_cmControlByName allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v135 objects:v134 count:16];
   v15 = 0x277CCA000uLL;
   if (!v13)
   {
@@ -578,7 +578,7 @@ void __60__CMContinuityCaptureVideoStream_setStreamProperties_error___block_invo
     {
       if (*v136 != v18)
       {
-        objc_enumerationMutation(v12);
+        objc_enumerationMutation(allKeys);
       }
 
       v22 = *(*(&v135 + 1) + 8 * i);
@@ -595,30 +595,30 @@ void __60__CMContinuityCaptureVideoStream_setStreamProperties_error___block_invo
         continue;
       }
 
-      v24 = [(NSMutableDictionary *)v125->_cmControlByName objectForKeyedSubscript:v22];
+      v24 = [(NSMutableDictionary *)selfCopy->_cmControlByName objectForKeyedSubscript:v22];
 
       v127 = [v124 objectForKeyedSubscript:v22];
 
       v123 = v24;
-      v25 = [v24 value];
+      value = [v24 value];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v27 = [v127 value];
-        log = [v27 BOOLValue];
+        value2 = [v127 value];
+        log = [value2 BOOLValue];
 
-        v28 = [v120 client];
-        v29 = [(NSMutableDictionary *)v125->_clientsRequestingBooleanControlOnByControlName objectForKeyedSubscript:v22];
+        client = [v120 client];
+        v29 = [(NSMutableDictionary *)selfCopy->_clientsRequestingBooleanControlOnByControlName objectForKeyedSubscript:v22];
 
-        if (!v29 || !v28)
+        if (!v29 || !client)
         {
           goto LABEL_41;
         }
 
-        v30 = [(NSMutableDictionary *)v125->_clientsRequestingBooleanControlOnByControlName objectForKeyedSubscript:v22];
-        v31 = [v30 containsObject:v28];
+        v30 = [(NSMutableDictionary *)selfCopy->_clientsRequestingBooleanControlOnByControlName objectForKeyedSubscript:v22];
+        v31 = [v30 containsObject:client];
         if (log)
         {
           if (v31)
@@ -628,9 +628,9 @@ void __60__CMContinuityCaptureVideoStream_setStreamProperties_error___block_invo
             {
               v33 = [v30 count];
               *buf = v114;
-              *&buf[4] = v125;
+              *&buf[4] = selfCopy;
               v130 = 2112;
-              *v131 = v28;
+              *v131 = client;
               *&v131[8] = 2112;
               *&v131[10] = v22;
               v132 = 1024;
@@ -643,15 +643,15 @@ void __60__CMContinuityCaptureVideoStream_setStreamProperties_error___block_invo
 
           else
           {
-            [v30 addObject:v28];
+            [v30 addObject:client];
             v32 = CMContinuityCaptureLog(2);
             if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
             {
               v39 = [v30 count];
               *buf = v114;
-              *&buf[4] = v125;
+              *&buf[4] = selfCopy;
               v130 = 2112;
-              *v131 = v28;
+              *v131 = client;
               *&v131[8] = 2112;
               *&v131[10] = v22;
               v132 = 1024;
@@ -671,16 +671,16 @@ LABEL_41:
 
         if (v31)
         {
-          [v30 removeObject:v28];
+          [v30 removeObject:client];
           loga = CMContinuityCaptureLog(2);
           v15 = 0x277CCA000;
           if (os_log_type_enabled(loga, OS_LOG_TYPE_INFO))
           {
             v36 = [v30 count];
             *buf = v114;
-            *&buf[4] = v125;
+            *&buf[4] = selfCopy;
             v130 = 2112;
-            *v131 = v28;
+            *v131 = client;
             *&v131[8] = 2112;
             *&v131[10] = v22;
             v132 = 1024;
@@ -699,9 +699,9 @@ LABEL_41:
           {
             v40 = [v30 count];
             *buf = v114;
-            *&buf[4] = v125;
+            *&buf[4] = selfCopy;
             v130 = 2112;
-            *v131 = v28;
+            *v131 = client;
             *&v131[8] = 2112;
             *&v131[10] = v22;
             v132 = 1024;
@@ -721,7 +721,7 @@ LABEL_35:
           {
             v42 = [logb count];
             *buf = 138412802;
-            *&buf[4] = v125;
+            *&buf[4] = selfCopy;
             v130 = 1024;
             *v131 = v42;
             *&v131[4] = 2112;
@@ -739,12 +739,12 @@ LABEL_35:
 
 LABEL_42:
       [v22 isEqualToString:@"AsyncStillCaptureConfigurations"];
-      v44 = [v123 value];
+      value3 = [v123 value];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         [v123 value];
-        v45 = logc = v44;
+        v45 = logc = value3;
         [v127 value];
         v47 = v46 = v123;
         v115 = [v45 isEqualToNumber:v47];
@@ -756,7 +756,7 @@ LABEL_42:
           if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
           {
             *buf = 138412802;
-            *&buf[4] = v125;
+            *&buf[4] = selfCopy;
             v130 = 2080;
             *v131 = "[CMContinuityCaptureVideoStream _setStreamProperties:error:]";
             *&v131[8] = 2112;
@@ -778,15 +778,15 @@ LABEL_47:
         v46 = v123;
       }
 
-      v49 = [v127 value];
-      [v46 setValue:v49];
+      value4 = [v127 value];
+      [v46 setValue:value4];
 
       [v121 setObject:v127 forKeyedSubscript:v22];
       v50 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v50, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        *&buf[4] = v125;
+        *&buf[4] = selfCopy;
         v130 = 2112;
         *v131 = v46;
         _os_log_impl(&dword_242545000, v50, OS_LOG_TYPE_DEFAULT, "%@ Set Control %@", buf, 0x16u);
@@ -799,26 +799,26 @@ LABEL_47:
       v15 = 0x277CCA000;
     }
 
-    v16 = [v12 countByEnumeratingWithState:&v135 objects:v134 count:16];
+    v16 = [allKeys countByEnumeratingWithState:&v135 objects:v134 count:16];
   }
 
   while (v16);
 LABEL_58:
 
-  v5 = v120;
-  v54 = [v120 activeFormatIndex];
-  if (v54)
+  propertiesCopy = v120;
+  activeFormatIndex = [v120 activeFormatIndex];
+  if (activeFormatIndex)
   {
-    v55 = v54;
+    v55 = activeFormatIndex;
     v128 = v17;
-    v56 = [v120 activeFormatIndex];
-    v57 = [v56 unsignedIntegerValue];
-    p_isa = &v125->super.super.isa;
-    v59 = [(NSArray *)v125->_continuityStreamFormats count];
+    activeFormatIndex2 = [v120 activeFormatIndex];
+    unsignedIntegerValue = [activeFormatIndex2 unsignedIntegerValue];
+    p_isa = &selfCopy->super.super.isa;
+    v59 = [(NSArray *)selfCopy->_continuityStreamFormats count];
 
     v7 = v121;
-    v6 = v122;
-    if (v57 >= v59)
+    device = v122;
+    if (unsignedIntegerValue >= v59)
     {
       v17 = v128;
     }
@@ -828,32 +828,32 @@ LABEL_58:
       v60 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
       {
-        v61 = [v120 activeFormatIndex];
-        v62 = [v61 unsignedIntegerValue];
-        activeFormatIndex = v125->_activeFormatIndex;
+        activeFormatIndex3 = [v120 activeFormatIndex];
+        unsignedIntegerValue2 = [activeFormatIndex3 unsignedIntegerValue];
+        activeFormatIndex = selfCopy->_activeFormatIndex;
         *buf = 138412802;
-        *&buf[4] = v125;
+        *&buf[4] = selfCopy;
         v130 = 1024;
-        *v131 = v62;
+        *v131 = unsignedIntegerValue2;
         *&v131[4] = 1024;
         *&v131[6] = activeFormatIndex;
         _os_log_impl(&dword_242545000, v60, OS_LOG_TYPE_DEFAULT, " %@ set active format to %d from %d ", buf, 0x18u);
       }
 
-      v64 = [v120 activeFormatIndex];
-      v125->_activeFormatIndex = [v64 unsignedIntegerValue];
+      activeFormatIndex4 = [v120 activeFormatIndex];
+      selfCopy->_activeFormatIndex = [activeFormatIndex4 unsignedIntegerValue];
 
       v65 = MEMORY[0x277CC1B90];
-      v66 = [*(v15 + 2992) numberWithUnsignedInteger:v125->_activeFormatIndex];
+      v66 = [*(v15 + 2992) numberWithUnsignedInteger:selfCopy->_activeFormatIndex];
       v67 = [v65 propertyStateWithValue:v66];
 
       [v121 setObject:v67 forKeyedSubscript:*MEMORY[0x277CC1B68]];
-      v68 = [(NSArray *)v125->_continuityStreamFormats objectAtIndexedSubscript:v125->_activeFormatIndex];
-      v69 = [(NSMutableDictionary *)v125->_cmControlByName objectForKeyedSubscript:@"ActiveFormat"];
+      v68 = [(NSArray *)selfCopy->_continuityStreamFormats objectAtIndexedSubscript:selfCopy->_activeFormatIndex];
+      v69 = [(NSMutableDictionary *)selfCopy->_cmControlByName objectForKeyedSubscript:@"ActiveFormat"];
       [v69 setValue:v68];
 
       v15 = 0x277CCA000;
-      v70 = [(NSMutableDictionary *)v125->_cmControlByName objectForKeyedSubscript:@"ActiveFormat"];
+      v70 = [(NSMutableDictionary *)selfCopy->_cmControlByName objectForKeyedSubscript:@"ActiveFormat"];
       [v122 setValueForControl:v70 completion:0];
 
       v17 = v67;
@@ -863,18 +863,18 @@ LABEL_58:
   else
   {
     v7 = v121;
-    v6 = v122;
-    p_isa = &v125->super.super.isa;
+    device = v122;
+    p_isa = &selfCopy->super.super.isa;
   }
 
-  v71 = [v120 frameDuration];
+  frameDuration = [v120 frameDuration];
 
   v53 = v124;
-  if (v71)
+  if (frameDuration)
   {
     v72 = v17;
-    v73 = [v120 frameDuration];
-    CMTimeMakeFromDictionary(buf, v73);
+    frameDuration2 = [v120 frameDuration];
+    CMTimeMakeFromDictionary(buf, frameDuration2);
     v74 = *buf;
     v75 = *&buf[8];
 
@@ -888,7 +888,7 @@ LABEL_58:
         v78 = [*(v15 + 2992) numberWithFloat:v77];
         [v76 setValue:v78];
 
-        [v6 setValueForControl:v76 completion:0];
+        [device setValueForControl:v76 completion:0];
         v126 = v76;
       }
 
@@ -901,13 +901,13 @@ LABEL_58:
     v17 = v72;
   }
 
-  v79 = [v120 maxFrameDuration];
+  maxFrameDuration = [v120 maxFrameDuration];
 
-  if (v79)
+  if (maxFrameDuration)
   {
     v80 = v17;
-    v81 = [v120 maxFrameDuration];
-    CMTimeMakeFromDictionary(buf, v81);
+    maxFrameDuration2 = [v120 maxFrameDuration];
+    CMTimeMakeFromDictionary(buf, maxFrameDuration2);
     v82 = *buf;
     v83 = *&buf[8];
 
@@ -921,7 +921,7 @@ LABEL_58:
         v86 = [*(v15 + 2992) numberWithFloat:v85];
         [v84 setValue:v86];
 
-        [v6 setValueForControl:v84 completion:0];
+        [device setValueForControl:v84 completion:0];
         v126 = v84;
       }
 
@@ -944,14 +944,14 @@ LABEL_58:
     {
       v89 = [v124 objectForKeyedSubscript:@"PortraitEffectAperture"];
 
-      v90 = [v89 value];
+      value5 = [v89 value];
       v91 = *(v15 + 2992);
-      [v90 floatValue];
+      [value5 floatValue];
       v92 = [v91 numberWithFloat:?];
       [v88 setValue:v92];
 
       v53 = v124;
-      [v6 setValueForControl:v88 completion:0];
+      [device setValueForControl:v88 completion:0];
 
       v17 = v89;
       v126 = v88;
@@ -973,14 +973,14 @@ LABEL_58:
     {
       v95 = [v53 objectForKeyedSubscript:@"StudioLightingIntensity"];
 
-      v96 = [v95 value];
+      value6 = [v95 value];
       v97 = *(v15 + 2992);
-      [v96 floatValue];
+      [value6 floatValue];
       v98 = [v97 numberWithFloat:?];
       [v94 setValue:v98];
 
       v53 = v124;
-      [v6 setValueForControl:v94 completion:0];
+      [device setValueForControl:v94 completion:0];
 
       v17 = v95;
       v126 = v94;
@@ -1002,12 +1002,12 @@ LABEL_58:
     {
       v101 = [v53 objectForKeyedSubscript:@"GesturesEnabled"];
 
-      v102 = [v101 value];
-      v103 = [*(v15 + 2992) numberWithBool:{objc_msgSend(v102, "BOOLValue")}];
+      value7 = [v101 value];
+      v103 = [*(v15 + 2992) numberWithBool:{objc_msgSend(value7, "BOOLValue")}];
       [v100 setValue:v103];
 
       v53 = v124;
-      [v6 setValueForControl:v100 completion:0];
+      [device setValueForControl:v100 completion:0];
 
       v17 = v101;
       v126 = v100;
@@ -1029,12 +1029,12 @@ LABEL_58:
     {
       v106 = [v53 objectForKeyedSubscript:@"SuppressedGesturesEnabled"];
 
-      v107 = [v106 value];
-      v108 = [*(v15 + 2992) numberWithBool:{objc_msgSend(v107, "BOOLValue")}];
+      value8 = [v106 value];
+      v108 = [*(v15 + 2992) numberWithBool:{objc_msgSend(value8, "BOOLValue")}];
       [v105 setValue:v108];
 
       v53 = v124;
-      [v6 setValueForControl:v105 completion:0];
+      [device setValueForControl:v105 completion:0];
 
       v17 = v106;
       v52 = v105;
@@ -1061,10 +1061,10 @@ LABEL_58:
     {
       v111 = [v53 objectForKeyedSubscript:@"BackgroundReplacementPixelBuffer"];
 
-      v112 = [v111 value];
-      [v110 setValue:v112];
+      value9 = [v111 value];
+      [v110 setValue:value9];
 
-      [v6 setValueForControl:v110 completion:0];
+      [device setValueForControl:v110 completion:0];
       v17 = v111;
       v52 = v110;
     }
@@ -1087,10 +1087,10 @@ LABEL_101:
   return v8;
 }
 
-- (void)setValueForControl:(id)a3 completion:(id)a4
+- (void)setValueForControl:(id)control completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controlCopy = control;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -1098,10 +1098,10 @@ LABEL_101:
   v11[2] = __64__CMContinuityCaptureVideoStream_setValueForControl_completion___block_invoke;
   v11[3] = &unk_278D5C490;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = controlCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = controlCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -1119,31 +1119,31 @@ void __64__CMContinuityCaptureVideoStream_setValueForControl_completion___block_
   }
 }
 
-- (id)_getResolvedStillCaptureConfigs:(id)a3
+- (id)_getResolvedStillCaptureConfigs:(id)configs
 {
   queue = self->_queue;
-  v4 = a3;
+  configsCopy = configs;
   dispatch_assert_queue_V2(queue);
-  v5 = [v4 mutableCopy];
+  v5 = [configsCopy mutableCopy];
 
   return v5;
 }
 
-- (BOOL)startStreamAndReturnError:(id *)a3
+- (BOOL)startStreamAndReturnError:(id *)error
 {
   v4 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[CMContinuityCaptureVideoStream startStreamAndReturnError:]";
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v5 = [(CMContinuityCaptureVideoStream *)self device];
-  if (v5)
+  device = [(CMContinuityCaptureVideoStream *)self device];
+  if (device)
   {
     v6 = +[CMContinuityCaptureSessionStateManager sharedInstance];
     v8[0] = MEMORY[0x277D85DD0];
@@ -1151,7 +1151,7 @@ void __64__CMContinuityCaptureVideoStream_setValueForControl_completion___block_
     v8[2] = __60__CMContinuityCaptureVideoStream_startStreamAndReturnError___block_invoke;
     v8[3] = &unk_278D5C080;
     objc_copyWeak(&v9, buf);
-    [v6 startStreamForDevice:v5 startCompletion:v8 startSkippedCompletion:0];
+    [v6 startStreamForDevice:device startCompletion:v8 startSkippedCompletion:0];
 
     objc_destroyWeak(&v9);
   }
@@ -1171,14 +1171,14 @@ void __60__CMContinuityCaptureVideoStream_startStreamAndReturnError___block_invo
   }
 }
 
-- (BOOL)_startStreamAndReturnError:(id *)a3
+- (BOOL)_startStreamAndReturnError:(id *)error
 {
   objc_initWeak(&location, self);
   v4 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[CMContinuityCaptureVideoStream _startStreamAndReturnError:]";
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
@@ -1257,25 +1257,25 @@ LABEL_10:
   [v8 postEvent:@"kCMContinuityCaptureEventStartStream" entity:objc_msgSend(*(a1 + 32) data:{"entity"), 0}];
 }
 
-- (BOOL)stopStreamAndReturnError:(id *)a3
+- (BOOL)stopStreamAndReturnError:(id *)error
 {
   v4 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = "[CMContinuityCaptureVideoStream stopStreamAndReturnError:]";
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v5 = [(CMContinuityCaptureVideoStream *)self device];
-  v6 = v5;
-  if (v5)
+  device = [(CMContinuityCaptureVideoStream *)self device];
+  v6 = device;
+  if (device)
   {
-    v7 = [v5 compositeDelegate];
-    [v7 postEvent:@"kCMContinuityCaptureEventRemoteClientReconnect" entity:objc_msgSend(v6 data:{"entity"), 0}];
+    compositeDelegate = [device compositeDelegate];
+    [compositeDelegate postEvent:@"kCMContinuityCaptureEventRemoteClientReconnect" entity:objc_msgSend(v6 data:{"entity"), 0}];
 
     v8 = +[CMContinuityCaptureUserNotificationCenter sharedInstance];
     [v8 unscheduleNotification:4];
@@ -1315,23 +1315,23 @@ void __59__CMContinuityCaptureVideoStream_stopStreamAndReturnError___block_invok
   }
 }
 
-- (BOOL)_stopStreamAndReturnError:(id *)a3
+- (BOOL)_stopStreamAndReturnError:(id *)error
 {
   objc_initWeak(&location, self);
   v4 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2080;
     v15 = "[CMContinuityCaptureVideoStream _stopStreamAndReturnError:]";
     _os_log_impl(&dword_242545000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ %s", buf, 0x16u);
   }
 
-  v5 = [(CMContinuityCaptureVideoStream *)self device];
-  v6 = [v5 compositeDelegate];
-  v7 = [(CMContinuityCaptureVideoStream *)self device];
-  [v6 unregisterStreamIntentForCaptureDevice:v7];
+  device = [(CMContinuityCaptureVideoStream *)self device];
+  compositeDelegate = [device compositeDelegate];
+  device2 = [(CMContinuityCaptureVideoStream *)self device];
+  [compositeDelegate unregisterStreamIntentForCaptureDevice:device2];
 
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1363,23 +1363,23 @@ void __60__CMContinuityCaptureVideoStream__stopStreamAndReturnError___block_invo
   }
 }
 
-- (void)captureAsyncStillImage:(int64_t)a3 options:(id)a4 completionHandler:(id)a5
+- (void)captureAsyncStillImage:(int64_t)image options:(id)options completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v10 = [(CMContinuityCaptureVideoStream *)self queue];
+  queue = [(CMContinuityCaptureVideoStream *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __83__CMContinuityCaptureVideoStream_captureAsyncStillImage_options_completionHandler___block_invoke;
   block[3] = &unk_278D5C288;
   objc_copyWeak(v16, &location);
-  v16[1] = a3;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v16[1] = image;
+  v14 = optionsCopy;
+  v15 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = optionsCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(v16);
   objc_destroyWeak(&location);
@@ -1433,32 +1433,32 @@ void __83__CMContinuityCaptureVideoStream_captureAsyncStillImage_options_complet
   }
 }
 
-- (void)enqueueReactionEffect:(id)a3 completionHandler:(id)a4
+- (void)enqueueReactionEffect:(id)effect completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  effectCopy = effect;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v8 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v17 = self;
+    selfCopy = self;
     v18 = 2080;
     v19 = "[CMContinuityCaptureVideoStream enqueueReactionEffect:completionHandler:]";
     _os_log_impl(&dword_242545000, v8, OS_LOG_TYPE_DEFAULT, "%@ %s", buf, 0x16u);
   }
 
-  v9 = [(CMContinuityCaptureVideoStream *)self queue];
+  queue = [(CMContinuityCaptureVideoStream *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__CMContinuityCaptureVideoStream_enqueueReactionEffect_completionHandler___block_invoke;
   block[3] = &unk_278D5C490;
   objc_copyWeak(&v15, &location);
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = effectCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = effectCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1495,26 +1495,26 @@ void __74__CMContinuityCaptureVideoStream_enqueueReactionEffect_completionHandle
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CMContinuityCaptureVideoStream *)self device];
-  v7 = [v3 stringWithFormat:@"%@: %@ [%p]", v5, v6, self];
+  device = [(CMContinuityCaptureVideoStream *)self device];
+  v7 = [v3 stringWithFormat:@"%@: %@ [%p]", v5, device, self];
 
   return v7;
 }
 
-- (CMContinuityCaptureVideoStream)initWithDevice:(id)a3 streamFormats:(id)a4 deviceID:(id)a5 queue:(id)a6
+- (CMContinuityCaptureVideoStream)initWithDevice:(id)device streamFormats:(id)formats deviceID:(id)d queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v47 = a5;
-  v46 = a6;
-  v12 = [v10 compositeDelegate];
-  objc_storeWeak(&self->_compositeDevice, v12);
+  deviceCopy = device;
+  formatsCopy = formats;
+  dCopy = d;
+  queueCopy = queue;
+  compositeDelegate = [deviceCopy compositeDelegate];
+  objc_storeWeak(&self->_compositeDevice, compositeDelegate);
 
   v13 = MEMORY[0x277CCACA8];
   WeakRetained = objc_loadWeakRetained(&self->_compositeDevice);
-  v15 = [WeakRetained client];
-  v16 = [v15 device];
-  v44 = [v16 deviceName];
+  client = [WeakRetained client];
+  device = [client device];
+  deviceName = [device deviceName];
   v17 = [v13 stringWithFormat:@"CMContinuityCaptureVideoStream-%@"];
   v18 = objc_alloc_init(MEMORY[0x277CCAD78]);
   v52.receiver = self;
@@ -1525,18 +1525,18 @@ void __74__CMContinuityCaptureVideoStream_enqueueReactionEffect_completionHandle
   {
 LABEL_11:
     v28 = 0;
-    v25 = v47;
+    v25 = dCopy;
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v19->_queue, a6);
+  objc_storeStrong(&v19->_queue, queue);
   v20 = CMContinuityCaptureLog(2);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v49 = v19;
     v50 = 2112;
-    v51 = v11;
+    v51 = formatsCopy;
     _os_log_impl(&dword_242545000, v20, OS_LOG_TYPE_DEFAULT, " %@ setup stream for formats %@", buf, 0x16u);
   }
 
@@ -1546,13 +1546,13 @@ LABEL_11:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       HIDWORD(v49) = HIDWORD(v19);
-      OUTLINED_FUNCTION_11(&dword_242545000, v31, v32, " %@ Invalid queue", v33, v34, v35, v36, v44, v45, v46, v47, 2u);
+      OUTLINED_FUNCTION_11(&dword_242545000, v31, v32, " %@ Invalid queue", v33, v34, v35, v36, deviceName, v45, queueCopy, dCopy, 2u);
     }
 
     goto LABEL_11;
   }
 
-  objc_storeWeak(&v19->_device, v10);
+  objc_storeWeak(&v19->_device, deviceCopy);
   v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
   cmControlByName = v19->_cmControlByName;
   v19->_cmControlByName = v21;
@@ -1561,10 +1561,10 @@ LABEL_11:
   clientsRequestingBooleanControlOnByControlName = v19->_clientsRequestingBooleanControlOnByControlName;
   v19->_clientsRequestingBooleanControlOnByControlName = v23;
 
-  if ([(CMContinuityCaptureVideoStream *)v19 setupStreams:v11])
+  if ([(CMContinuityCaptureVideoStream *)v19 setupStreams:formatsCopy])
   {
-    v25 = v47;
-    v26 = [v47 copy];
+    v25 = dCopy;
+    v26 = [dCopy copy];
     deviceID = v19->_deviceID;
     v19->_deviceID = v26;
 
@@ -1575,11 +1575,11 @@ LABEL_11:
   else
   {
     v37 = CMContinuityCaptureLog(2);
-    v25 = v47;
+    v25 = dCopy;
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
       HIDWORD(v49) = HIDWORD(v19);
-      OUTLINED_FUNCTION_11(&dword_242545000, v38, v39, " %@ Failed to setup streams", v40, v41, v42, v43, v44, v45, v46, v47, 2u);
+      OUTLINED_FUNCTION_11(&dword_242545000, v38, v39, " %@ Failed to setup streams", v40, v41, v42, v43, deviceName, v45, queueCopy, dCopy, 2u);
     }
 
     v28 = 0;
@@ -1590,11 +1590,11 @@ LABEL_7:
   return v28;
 }
 
-- (void)_disconnectClient:(id)a3
+- (void)_disconnectClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   dispatch_assert_queue_V2(self->_queue);
-  v51 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_device);
 
   if (WeakRetained)
@@ -1632,11 +1632,11 @@ LABEL_7:
           }
 
           v13 = *(*(&v57 + 1) + 8 * v12);
-          v14 = [(NSMutableDictionary *)v51->_clientsRequestingBooleanControlOnByControlName objectForKeyedSubscript:v13, v47];
-          if ([v14 containsObject:v4])
+          v14 = [(NSMutableDictionary *)selfCopy->_clientsRequestingBooleanControlOnByControlName objectForKeyedSubscript:v13, v47];
+          if ([v14 containsObject:clientCopy])
           {
             v15 = v11;
-            [v14 removeObject:v4];
+            [v14 removeObject:clientCopy];
             v16 = CMContinuityCaptureLog(2);
             if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
             {
@@ -1657,7 +1657,7 @@ LABEL_7:
               {
                 v24 = [v14 count];
                 *buf = 138412802;
-                v53 = v51;
+                v53 = selfCopy;
                 v54 = 1024;
                 LODWORD(v55[0]) = v24;
                 WORD2(v55[0]) = 2112;
@@ -1672,18 +1672,18 @@ LABEL_7:
               if (v23)
               {
                 *buf = v47;
-                v53 = v51;
+                v53 = selfCopy;
                 v54 = 2112;
                 v55[0] = v13;
                 OUTLINED_FUNCTION_10();
                 _os_log_impl(v33, v34, v35, "%@ No more clients need %@ on. Turning off.", v36, 0x16u);
               }
 
-              v22 = [(NSMutableDictionary *)v51->_cmControlByName objectForKeyedSubscript:v13];
+              v22 = [(NSMutableDictionary *)selfCopy->_cmControlByName objectForKeyedSubscript:v13];
               v37 = [MEMORY[0x277CCABB0] numberWithBool:0];
               [v22 setValue:v37];
 
-              v38 = objc_loadWeakRetained(&v51->_device);
+              v38 = objc_loadWeakRetained(&selfCopy->_device);
               [v38 setValueForControl:v22 completion:0];
 
               v39 = v49;
@@ -1733,17 +1733,17 @@ LABEL_7:
       v49 = 0;
     }
 
-    v43 = [(NSMutableDictionary *)v51->_cmControlByName objectForKeyedSubscript:@"AsyncStillCaptureConfigurations"];
+    v43 = [(NSMutableDictionary *)selfCopy->_cmControlByName objectForKeyedSubscript:@"AsyncStillCaptureConfigurations"];
     v44 = v49;
     if (v43)
     {
-      [(NSMutableDictionary *)v51->_maxPhotoQualityPrioritizationByClients setObject:0 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)selfCopy->_maxPhotoQualityPrioritizationByClients setObject:0 forKeyedSubscript:clientCopy];
       v45 = CMContinuityCaptureLog(2);
       if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
       {
-        maxPhotoQualityPrioritizationByClients = v51->_maxPhotoQualityPrioritizationByClients;
+        maxPhotoQualityPrioritizationByClients = selfCopy->_maxPhotoQualityPrioritizationByClients;
         *buf = 138412546;
-        v53 = v51;
+        v53 = selfCopy;
         v54 = 2112;
         v55[0] = maxPhotoQualityPrioritizationByClients;
         _os_log_impl(&dword_242545000, v45, OS_LOG_TYPE_INFO, "%@ Updated maxPhotoQualityPrioritizationByClients to %@", buf, 0x16u);
@@ -1752,7 +1752,7 @@ LABEL_7:
 
     if (v49)
     {
-      [(CMIOExtensionStream *)v51 notifyPropertiesChanged:v49];
+      [(CMIOExtensionStream *)selfCopy notifyPropertiesChanged:v49];
     }
   }
 
@@ -1763,32 +1763,32 @@ LABEL_7:
   }
 }
 
-- (id)_streamPropertiesForProperties:(id)a3 error:(id *)a4
+- (id)_streamPropertiesForProperties:(id)properties error:(id *)error
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v5 = [MEMORY[0x277CC1BB0] streamPropertiesWithDictionary:MEMORY[0x277CBEC10]];
   v6 = v5;
   v7 = 0;
   v8 = 0;
   v9 = 0;
   v10 = 0;
-  if (!v4 || !v5)
+  if (!propertiesCopy || !v5)
   {
     goto LABEL_46;
   }
 
-  if ([v4 containsObject:*MEMORY[0x277CC1B68]])
+  if ([propertiesCopy containsObject:*MEMORY[0x277CC1B68]])
   {
     v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_activeFormatIndex];
     [v6 setActiveFormatIndex:v11];
   }
 
   v12 = *MEMORY[0x277CC1B70];
-  if ([v4 containsObject:*MEMORY[0x277CC1B70]])
+  if ([propertiesCopy containsObject:*MEMORY[0x277CC1B70]])
   {
-    v13 = [(CMContinuityCaptureVideoStream *)self device];
-    v14 = [v13 activeConfiguration];
-    CMTimeMake(&v53, 1, [v14 maxFrameRate]);
+    device = [(CMContinuityCaptureVideoStream *)self device];
+    activeConfiguration = [device activeConfiguration];
+    CMTimeMake(&v53, 1, [activeConfiguration maxFrameRate]);
 
     v15 = OUTLINED_FUNCTION_9_0();
     if (v15)
@@ -1806,11 +1806,11 @@ LABEL_7:
   v45 = *MEMORY[0x277CC1B78];
   v44 = v6;
   v42 = v15;
-  if ([v4 containsObject:*MEMORY[0x277CC1B78]])
+  if ([propertiesCopy containsObject:*MEMORY[0x277CC1B78]])
   {
-    v17 = [(CMContinuityCaptureVideoStream *)self device];
-    v18 = [v17 activeConfiguration];
-    CMTimeMake(&v53, 1, [v18 minFrameRate]);
+    device2 = [(CMContinuityCaptureVideoStream *)self device];
+    activeConfiguration2 = [device2 activeConfiguration];
+    CMTimeMake(&v53, 1, [activeConfiguration2 minFrameRate]);
 
     v19 = OUTLINED_FUNCTION_9_0();
     if (v19)
@@ -1836,8 +1836,8 @@ LABEL_7:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v20 = [(NSMutableDictionary *)self->_cmControlByName allKeys];
-  v21 = [v20 countByEnumeratingWithState:&v49 objects:v48 count:16];
+  allKeys = [(NSMutableDictionary *)self->_cmControlByName allKeys];
+  v21 = [allKeys countByEnumeratingWithState:&v49 objects:v48 count:16];
   if (!v21)
   {
     v46 = 0;
@@ -1855,22 +1855,22 @@ LABEL_7:
     {
       if (*v50 != v23)
       {
-        objc_enumerationMutation(v20);
+        objc_enumerationMutation(allKeys);
       }
 
       v25 = *(*(&v49 + 1) + 8 * i);
-      if (([v25 isEqualToString:v12] & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", v16) & 1) == 0 && objc_msgSend(v4, "containsObject:", v25))
+      if (([v25 isEqualToString:v12] & 1) == 0 && (objc_msgSend(v25, "isEqualToString:", v16) & 1) == 0 && objc_msgSend(propertiesCopy, "containsObject:", v25))
       {
-        v26 = v4;
+        v26 = propertiesCopy;
         v27 = [(NSMutableDictionary *)self->_cmControlByName objectForKeyedSubscript:v25];
 
-        v28 = [v27 name];
-        v29 = [v28 isEqualToString:@"ActiveFormat"];
+        name = [v27 name];
+        v29 = [name isEqualToString:@"ActiveFormat"];
 
         if (v29)
         {
           v9 = v27;
-          v4 = v26;
+          propertiesCopy = v26;
 LABEL_35:
           v16 = v45;
           continue;
@@ -1880,24 +1880,24 @@ LABEL_35:
         {
           if ([v25 isEqualToString:@"4cc_cfri_glob_0000"] && (objc_opt_class(), (objc_opt_respondsToSelector() & 1) != 0))
           {
-            v30 = [MEMORY[0x277CC1B88] propertyAttributesWithSharedStreamDefaultValue:0x2854ECD88 minValue:0 maxValue:0 validValues:0];
+            value2 = [MEMORY[0x277CC1B88] propertyAttributesWithSharedStreamDefaultValue:0x2854ECD88 minValue:0 maxValue:0 validValues:0];
             v31 = MEMORY[0x277CC1B90];
-            v43 = [v27 value];
-            v32 = [v31 propertyStateWithValue:v43 attributes:v30];
+            value = [v27 value];
+            v32 = [v31 propertyStateWithValue:value attributes:value2];
 
-            v33 = v43;
+            v33 = value;
           }
 
           else
           {
             v34 = MEMORY[0x277CC1B90];
-            v30 = [v27 value];
-            v32 = [v34 propertyStateWithValue:v30 attributes:0];
+            value2 = [v27 value];
+            v32 = [v34 propertyStateWithValue:value2 attributes:0];
             v33 = v46;
           }
 
           v35 = v32;
-          v4 = v26;
+          propertiesCopy = v26;
           if (v35)
           {
 LABEL_31:
@@ -1911,7 +1911,7 @@ LABEL_34:
 
         else
         {
-          v4 = v26;
+          propertiesCopy = v26;
           v35 = v46;
           if (v46)
           {
@@ -1924,7 +1924,7 @@ LABEL_34:
       }
     }
 
-    v22 = [v20 countByEnumeratingWithState:&v49 objects:v48 count:16];
+    v22 = [allKeys countByEnumeratingWithState:&v49 objects:v48 count:16];
   }
 
   while (v22);
@@ -1938,11 +1938,11 @@ LABEL_40:
     v10 = v42;
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
-      v39 = [v44 propertiesDictionary];
+      propertiesDictionary = [v44 propertiesDictionary];
       LODWORD(v53.value) = 138412546;
       *(&v53.value + 4) = self;
       LOWORD(v53.flags) = 2112;
-      *(&v53.flags + 2) = v39;
+      *(&v53.flags + 2) = propertiesDictionary;
       _os_log_debug_impl(&dword_242545000, v36, OS_LOG_TYPE_DEBUG, "%@ GetProperties %@", &v53, 0x16u);
     }
   }
@@ -1961,13 +1961,13 @@ LABEL_46:
   return v6;
 }
 
-- (void)_setValueForControl:(id)a3 completion:(id)a4
+- (void)_setValueForControl:(id)control completion:(id)completion
 {
-  v6 = a3;
+  controlCopy = control;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   dispatch_assert_queue_V2(self->_queue);
   cmControlByName = self->_cmControlByName;
-  [v6 name];
+  [controlCopy name];
   objc_claimAutoreleasedReturnValue();
   v9 = [OUTLINED_FUNCTION_2_0() objectForKeyedSubscript:?];
 
@@ -1977,16 +1977,16 @@ LABEL_46:
   }
 
   v10 = self->_cmControlByName;
-  [v6 name];
+  [controlCopy name];
   objc_claimAutoreleasedReturnValue();
   v9 = [OUTLINED_FUNCTION_2_0() objectForKeyedSubscript:?];
 
-  v11 = [v6 name];
-  v12 = [v11 isEqualToString:@"CMIOExtensionPropertyStreamFrameDuration"];
+  name = [controlCopy name];
+  v12 = [name isEqualToString:@"CMIOExtensionPropertyStreamFrameDuration"];
 
   if (v12)
   {
-    [v6 value];
+    [controlCopy value];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_2_0() setValue:?];
 
@@ -1999,12 +1999,12 @@ LABEL_46:
     goto LABEL_8;
   }
 
-  v11 = [v6 name];
-  v14 = [v11 isEqualToString:@"CMIOExtensionPropertyStreamMaxFrameDuration"];
+  name = [controlCopy name];
+  v14 = [name isEqualToString:@"CMIOExtensionPropertyStreamMaxFrameDuration"];
 
   if (v14)
   {
-    [v6 value];
+    [controlCopy value];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_2_0() setValue:?];
 
@@ -2020,16 +2020,16 @@ LABEL_7:
 
 LABEL_8:
 
-    v21 = [v9 value];
-    CMTimeMake(&v58, 1, [v21 unsignedIntValue]);
-    v22 = CMTimeCopyAsDictionary(&v58, 0);
-    if (v22)
+    value = [v9 value];
+    CMTimeMake(&v58, 1, [value unsignedIntValue]);
+    value4 = CMTimeCopyAsDictionary(&v58, 0);
+    if (value4)
     {
-      v23 = [MEMORY[0x277CC1B90] propertyStateWithValue:v22 attributes:0];
+      v23 = [MEMORY[0x277CC1B90] propertyStateWithValue:value4 attributes:0];
       if (v23)
       {
-        v24 = [v6 name];
-        [v7 setObject:v23 forKeyedSubscript:v24];
+        name2 = [controlCopy name];
+        [v7 setObject:v23 forKeyedSubscript:name2];
       }
     }
 
@@ -2041,39 +2041,39 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  v25 = [v6 name];
-  if (![v25 isEqualToString:@"4cc_cfri_glob_0000"] || (objc_msgSend(v6, "value"), (v26 = objc_claimAutoreleasedReturnValue()) == 0))
+  name3 = [controlCopy name];
+  if (![name3 isEqualToString:@"4cc_cfri_glob_0000"] || (objc_msgSend(controlCopy, "value"), (v26 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 
     goto LABEL_24;
   }
 
   v27 = v26;
-  v28 = [v6 value];
+  value2 = [controlCopy value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_24:
-    v32 = [v6 name];
-    if ([v32 isEqualToString:@"ReactionsInProgress"] && (objc_msgSend(v6, "value"), (v33 = objc_claimAutoreleasedReturnValue()) != 0))
+    name4 = [controlCopy name];
+    if ([name4 isEqualToString:@"ReactionsInProgress"] && (objc_msgSend(controlCopy, "value"), (v33 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v34 = v33;
-      v35 = [v6 value];
+      value3 = [controlCopy value];
       objc_opt_class();
       v36 = objc_opt_isKindOfClass();
 
       if (v36)
       {
-        v22 = [v9 value];
-        [v6 value];
+        value4 = [v9 value];
+        [controlCopy value];
         objc_claimAutoreleasedReturnValue();
         v37 = [OUTLINED_FUNCTION_7_0() isEqualToArray:?];
 
         if (!v37)
         {
-          [v6 value];
+          [controlCopy value];
           objc_claimAutoreleasedReturnValue();
           [OUTLINED_FUNCTION_2_0() setValue:?];
 
@@ -2100,20 +2100,20 @@ LABEL_24:
     {
     }
 
-    v39 = [v9 value];
+    value5 = [v9 value];
     objc_opt_class();
     v40 = objc_opt_isKindOfClass();
 
     if (v40)
     {
-      v22 = [v9 value];
-      [v6 value];
+      value4 = [v9 value];
+      [controlCopy value];
       objc_claimAutoreleasedReturnValue();
       v41 = [OUTLINED_FUNCTION_7_0() isEqualToNumber:?];
 
       if (!v41)
       {
-        [v6 value];
+        [controlCopy value];
         objc_claimAutoreleasedReturnValue();
         [OUTLINED_FUNCTION_2_0() setValue:?];
 
@@ -2140,8 +2140,8 @@ LABEL_37:
     goto LABEL_14;
   }
 
-  v22 = [v9 value];
-  [v6 value];
+  value4 = [v9 value];
+  [controlCopy value];
   objc_claimAutoreleasedReturnValue();
   v30 = [OUTLINED_FUNCTION_7_0() isEqualToDictionary:?];
 
@@ -2161,7 +2161,7 @@ LABEL_44:
     goto LABEL_13;
   }
 
-  [v6 value];
+  [controlCopy value];
   objc_claimAutoreleasedReturnValue();
   [OUTLINED_FUNCTION_2_0() setValue:?];
 
@@ -2179,13 +2179,13 @@ LABEL_34:
 LABEL_35:
 
   v48 = MEMORY[0x277CC1B90];
-  v49 = [v6 value];
-  v23 = [v48 propertyStateWithValue:v49 attributes:0];
+  value6 = [controlCopy value];
+  v23 = [v48 propertyStateWithValue:value6 attributes:0];
 
   if (v23)
   {
-    v22 = [v6 name];
-    [v7 setObject:v23 forKeyedSubscript:v22];
+    value4 = [controlCopy name];
+    [v7 setObject:v23 forKeyedSubscript:value4];
 LABEL_13:
   }
 
@@ -2209,7 +2209,7 @@ LABEL_14:
 - (void)_availableProperties
 {
   v3 = 138412546;
-  v4 = a1;
+  selfCopy = self;
   v5 = 2112;
   v6 = a2;
   _os_log_debug_impl(&dword_242545000, log, OS_LOG_TYPE_DEBUG, "%@ AvailableProperties %@", &v3, 0x16u);

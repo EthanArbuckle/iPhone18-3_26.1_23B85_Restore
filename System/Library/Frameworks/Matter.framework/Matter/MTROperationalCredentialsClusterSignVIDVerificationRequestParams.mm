@@ -1,8 +1,8 @@
 @interface MTROperationalCredentialsClusterSignVIDVerificationRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTROperationalCredentialsClusterSignVIDVerificationRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -19,9 +19,9 @@
     fabricIndex = v2->_fabricIndex;
     v2->_fabricIndex = &unk_284C3E4C8;
 
-    v5 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     clientChallenge = v3->_clientChallenge;
-    v3->_clientChallenge = v5;
+    v3->_clientChallenge = data;
 
     timedInvokeTimeoutMs = v3->_timedInvokeTimeoutMs;
     v3->_timedInvokeTimeoutMs = 0;
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterSignVIDVerificationRequestParams);
-  v5 = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self fabricIndex];
-  [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)v4 setFabricIndex:v5];
+  fabricIndex = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self fabricIndex];
+  [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)v4 setFabricIndex:fabricIndex];
 
-  v6 = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self clientChallenge];
-  [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)v4 setClientChallenge:v6];
+  clientChallenge = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self clientChallenge];
+  [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)v4 setClientChallenge:clientChallenge];
 
-  v7 = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self timedInvokeTimeoutMs];
-  [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self timedInvokeTimeoutMs];
+  [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self serverSideProcessingTimeout];
-  [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self serverSideProcessingTimeout];
+  [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -63,18 +63,18 @@
   return v8;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v23[0] = 0;
   v24 = 0uLL;
   v22[0] = 0;
   v22[1] = 0;
   v21 = v22;
-  v5 = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self fabricIndex];
-  v23[0] = [v5 unsignedCharValue];
+  fabricIndex = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self fabricIndex];
+  v23[0] = [fabricIndex unsignedCharValue];
 
-  v6 = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self clientChallenge];
-  sub_238DB6950(v15, [v6 bytes], objc_msgSend(v6, "length"));
+  clientChallenge = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self clientChallenge];
+  sub_238DB6950(v15, [clientChallenge bytes], objc_msgSend(clientChallenge, "length"));
 
   v24 = v15[0];
   sub_2393D9C18(0x62FuLL, 0, &v20);
@@ -96,8 +96,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v20);
-      v7 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v20);
+      v7 = sub_2393C7114(reader, 21, 256);
       v10 = v14;
       v9 = v7;
     }
@@ -125,19 +125,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTROperationalCredentialsClusterSignVIDVerificationRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -148,7 +148,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x267200000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

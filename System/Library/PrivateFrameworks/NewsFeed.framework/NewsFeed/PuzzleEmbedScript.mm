@@ -16,7 +16,7 @@
 
 - (NSString)executableScript
 {
-  v2 = self;
+  selfCopy = self;
   PuzzleEmbedScript.executableScript.getter();
   v4 = v3;
 

@@ -1,44 +1,44 @@
 @interface AWDMETRICSKCellularPowerLogProtocolStateHist
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLastSdmState:(id)a3;
+- (int)StringAsLastSdmState:(id)state;
 - (int)lastSdmState;
 - (unint64_t)hash;
-- (void)addBin:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDurationMs:(BOOL)a3;
-- (void)setHasIsDataPreferred:(BOOL)a3;
-- (void)setHasLastSdmState:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addBin:(id)bin;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDurationMs:(BOOL)ms;
+- (void)setHasIsDataPreferred:(BOOL)preferred;
+- (void)setHasLastSdmState:(BOOL)state;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMETRICSKCellularPowerLogProtocolStateHist
 
-- (void)addBin:(id)a3
+- (void)addBin:(id)bin
 {
-  v4 = a3;
+  binCopy = bin;
   bins = self->_bins;
-  v8 = v4;
+  v8 = binCopy;
   if (!bins)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_bins;
     self->_bins = v6;
 
-    v4 = v8;
+    binCopy = v8;
     bins = self->_bins;
   }
 
-  [(NSMutableArray *)bins addObject:v4];
+  [(NSMutableArray *)bins addObject:binCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 8;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDurationMs:(BOOL)a3
+- (void)setHasDurationMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIsDataPreferred:(BOOL)a3
+- (void)setHasIsDataPreferred:(BOOL)preferred
 {
-  if (a3)
+  if (preferred)
   {
     v3 = 16;
   }
@@ -94,9 +94,9 @@
   }
 }
 
-- (void)setHasLastSdmState:(BOOL)a3
+- (void)setHasLastSdmState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -109,25 +109,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsLastSdmState:(id)a3
+- (int)StringAsLastSdmState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"SDM_STATE_DISABLED"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"SDM_STATE_DISABLED"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SDM_STATE_ENABLED"])
+  else if ([stateCopy isEqualToString:@"SDM_STATE_ENABLED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SDM_STATE_DISABLED_5G_ON"])
+  else if ([stateCopy isEqualToString:@"SDM_STATE_DISABLED_5G_ON"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SDM_STATE_DISABLED_LTE_ON"])
+  else if ([stateCopy isEqualToString:@"SDM_STATE_DISABLED_LTE_ON"])
   {
     v4 = 3;
   }
@@ -146,8 +146,8 @@
   v8.receiver = self;
   v8.super_class = AWDMETRICSKCellularPowerLogProtocolStateHist;
   v4 = [(AWDMETRICSKCellularPowerLogProtocolStateHist *)&v8 description];
-  v5 = [(AWDMETRICSKCellularPowerLogProtocolStateHist *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDMETRICSKCellularPowerLogProtocolStateHist *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -155,11 +155,11 @@
 - (id)dictionaryRepresentation
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v4 forKey:@"timestamp"];
+    [dictionary setObject:v4 forKey:@"timestamp"];
   }
 
   if ([(NSMutableArray *)self->_bins count])
@@ -184,8 +184,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v20 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -194,14 +194,14 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"bin"];
+    [dictionary setObject:v5 forKey:@"bin"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_subsId];
-    [v3 setObject:v13 forKey:@"subs_id"];
+    [dictionary setObject:v13 forKey:@"subs_id"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -214,7 +214,7 @@ LABEL_14:
 
 LABEL_19:
       v15 = [MEMORY[0x277CCABB0] numberWithBool:self->_isDataPreferred];
-      [v3 setObject:v15 forKey:@"is_data_preferred"];
+      [dictionary setObject:v15 forKey:@"is_data_preferred"];
 
       if ((*&self->_has & 4) == 0)
       {
@@ -233,7 +233,7 @@ LABEL_20:
         v17 = off_27825D190[lastSdmState];
       }
 
-      [v3 setObject:v17 forKey:@"last_sdm_state"];
+      [dictionary setObject:v17 forKey:@"last_sdm_state"];
 
       goto LABEL_24;
     }
@@ -245,7 +245,7 @@ LABEL_20:
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_durationMs];
-  [v3 setObject:v14 forKey:@"duration_ms"];
+  [dictionary setObject:v14 forKey:@"duration_ms"];
 
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -262,13 +262,13 @@ LABEL_15:
 LABEL_24:
   v18 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -356,23 +356,23 @@ LABEL_15:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 40) |= 1u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if ([(AWDMETRICSKCellularPowerLogProtocolStateHist *)self binsCount])
   {
     [v10 clearBins];
-    v5 = [(AWDMETRICSKCellularPowerLogProtocolStateHist *)self binsCount];
-    if (v5)
+    binsCount = [(AWDMETRICSKCellularPowerLogProtocolStateHist *)self binsCount];
+    if (binsCount)
     {
-      v6 = v5;
+      v6 = binsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(AWDMETRICSKCellularPowerLogProtocolStateHist *)self binAtIndex:i];
@@ -431,10 +431,10 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -461,7 +461,7 @@ LABEL_12:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{a3, v16}];
+        v12 = [*(*(&v16 + 1) + 8 * i) copyWithZone:{zone, v16}];
         [v6 addBin:v12];
       }
 
@@ -523,31 +523,31 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   has = self->_has;
-  v6 = *(v4 + 40);
+  v6 = *(equalCopy + 40);
   if (has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_27;
   }
 
   bins = self->_bins;
-  if (bins | *(v4 + 2))
+  if (bins | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)bins isEqual:?])
     {
@@ -555,12 +555,12 @@ LABEL_15:
     }
 
     has = self->_has;
-    v6 = *(v4 + 40);
+    v6 = *(equalCopy + 40);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_subsId != *(v4 + 8))
+    if ((v6 & 8) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_27;
     }
@@ -573,7 +573,7 @@ LABEL_15:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_durationMs != *(v4 + 6))
+    if ((v6 & 2) == 0 || self->_durationMs != *(equalCopy + 6))
     {
       goto LABEL_27;
     }
@@ -601,16 +601,16 @@ LABEL_27:
     goto LABEL_27;
   }
 
-  v10 = *(v4 + 36);
+  v10 = *(equalCopy + 36);
   if (self->_isDataPreferred)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_27;
   }
@@ -619,7 +619,7 @@ LABEL_22:
   v8 = (v6 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_lastSdmState != *(v4 + 7))
+    if ((v6 & 4) == 0 || self->_lastSdmState != *(equalCopy + 7))
     {
       goto LABEL_27;
     }
@@ -697,14 +697,14 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 40))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 40))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -712,7 +712,7 @@ LABEL_8:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {

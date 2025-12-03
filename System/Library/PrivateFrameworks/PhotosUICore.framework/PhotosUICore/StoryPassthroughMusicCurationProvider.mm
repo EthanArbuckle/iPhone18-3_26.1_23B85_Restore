@@ -1,21 +1,21 @@
 @interface StoryPassthroughMusicCurationProvider
 - (NSArray)recentlyUsedAppleMusicSongIDs;
 - (NSArray)recentlyUsedFlexSongIDs;
-- (id)requestMusicCurationForAssetContainer:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)setRecentlyUsedAppleMusicSongIDs:(id)a3;
-- (void)setRecentlyUsedFlexSongIDs:(id)a3;
+- (id)requestMusicCurationForAssetContainer:(id)container options:(id)options resultHandler:(id)handler;
+- (void)setRecentlyUsedAppleMusicSongIDs:(id)ds;
+- (void)setRecentlyUsedFlexSongIDs:(id)ds;
 @end
 
 @implementation StoryPassthroughMusicCurationProvider
 
-- (id)requestMusicCurationForAssetContainer:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (id)requestMusicCurationForAssetContainer:(id)container options:(id)options resultHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
+  containerCopy = container;
+  optionsCopy = options;
 
-  v11 = sub_1A48D6FBC(v9, a4, self, v8);
+  v11 = sub_1A48D6FBC(containerCopy, options, self, v8);
   _Block_release(v8);
   _Block_release(v8);
 
@@ -33,9 +33,9 @@
   return 0;
 }
 
-- (void)setRecentlyUsedFlexSongIDs:(id)a3
+- (void)setRecentlyUsedFlexSongIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     v4 = sub_1A524CA34();
   }
@@ -60,9 +60,9 @@
   return 0;
 }
 
-- (void)setRecentlyUsedAppleMusicSongIDs:(id)a3
+- (void)setRecentlyUsedAppleMusicSongIDs:(id)ds
 {
-  if (a3)
+  if (ds)
   {
     v4 = sub_1A524CA34();
   }

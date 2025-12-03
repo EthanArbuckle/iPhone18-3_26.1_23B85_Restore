@@ -1,7 +1,7 @@
 @interface HalogenAudio
 - (BOOL)startAudioUnit;
 - (BOOL)stopAudioUnit;
-- (id)initAudioWithParameters:(id)a3 nInputChannels:(int)a4 nOutputChannels:(int)a5 sampleRate:(int)a6 bitDepth:(int)a7 inputFrameSizeInBytes:(int)a8 outputFrameSizeInBytes:(int)a9;
+- (id)initAudioWithParameters:(id)parameters nInputChannels:(int)channels nOutputChannels:(int)outputChannels sampleRate:(int)rate bitDepth:(int)depth inputFrameSizeInBytes:(int)bytes outputFrameSizeInBytes:(int)inBytes;
 - (void)_deinitAudioInstance;
 - (void)dealloc;
 - (void)startAudioUnit;
@@ -10,7 +10,7 @@
 
 @implementation HalogenAudio
 
-- (id)initAudioWithParameters:(id)a3 nInputChannels:(int)a4 nOutputChannels:(int)a5 sampleRate:(int)a6 bitDepth:(int)a7 inputFrameSizeInBytes:(int)a8 outputFrameSizeInBytes:(int)a9
+- (id)initAudioWithParameters:(id)parameters nInputChannels:(int)channels nOutputChannels:(int)outputChannels sampleRate:(int)rate bitDepth:(int)depth inputFrameSizeInBytes:(int)bytes outputFrameSizeInBytes:(int)inBytes
 {
   v18.receiver = self;
   v18.super_class = HalogenAudio;
@@ -18,15 +18,15 @@
   v16 = v15;
   if (v15)
   {
-    v15->_nInputChannels = a4;
-    v15->_nOutputChannels = a5;
-    v15->_sampleRate = a6;
-    v15->_bitDepth = a7;
-    v15->_inputFrameSizeInBytes = a8;
-    v15->_outputFrameSizeInBytes = a9;
-    if (a3)
+    v15->_nInputChannels = channels;
+    v15->_nOutputChannels = outputChannels;
+    v15->_sampleRate = rate;
+    v15->_bitDepth = depth;
+    v15->_inputFrameSizeInBytes = bytes;
+    v15->_outputFrameSizeInBytes = inBytes;
+    if (parameters)
     {
-      [(HalogenAudio *)v15 setHalogenUnitDelegate:a3];
+      [(HalogenAudio *)v15 setHalogenUnitDelegate:parameters];
     }
 
     else
@@ -68,7 +68,7 @@
 - (BOOL)startAudioUnit
 {
   v26 = 0xAAAAAAAAAAAAAAAALL;
-  v27 = 0xAAAAAAAAAAAAAAAALL;
+  selfCopy2 = 0xAAAAAAAAAAAAAAAALL;
   v25 = 0;
   bitDepth = self->_bitDepth;
   sampleRate = self->_sampleRate;
@@ -137,7 +137,7 @@
   }
 
   v26 = recordCallback;
-  v27 = self;
+  selfCopy2 = self;
   if (AudioUnitSetProperty(self->_audioComponentInst, 0x7D5u, 0, 1u, &v26, 0x10u))
   {
     [HalogenAudio startAudioUnit];
@@ -145,7 +145,7 @@
   }
 
   v26 = playbackCallback;
-  v27 = self;
+  selfCopy2 = self;
   if (AudioUnitSetProperty(self->_audioComponentInst, 0x17u, 0, 0, &v26, 0x10u))
   {
     [HalogenAudio startAudioUnit];
@@ -195,7 +195,7 @@
     _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "HalogenAudio:AudioComponentFindNext() failed to find kAudioUnitSubType_LDCMIO", v2, 2u);
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)stopAudioUnit

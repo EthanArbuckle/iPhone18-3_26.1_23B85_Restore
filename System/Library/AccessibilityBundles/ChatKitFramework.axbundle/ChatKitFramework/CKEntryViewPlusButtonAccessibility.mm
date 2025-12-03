@@ -16,9 +16,9 @@
 {
   v4.receiver = self;
   v4.super_class = CKEntryViewPlusButtonAccessibility;
-  v2 = [(CKEntryViewPlusButtonAccessibility *)&v4 accessibilityActivate];
+  accessibilityActivate = [(CKEntryViewPlusButtonAccessibility *)&v4 accessibilityActivate];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);
-  return v2;
+  return accessibilityActivate;
 }
 
 @end

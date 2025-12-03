@@ -6,25 +6,25 @@
 
 - (id)classification
 {
-  v3 = [(SXTwitterEmbedComponent *)self type];
-  v4 = [(SXJSONObject *)self specificationVersion];
-  v5 = [SXLegacySupport deprecatedComponentForType:v3 andVersion:v4];
+  type = [(SXTwitterEmbedComponent *)self type];
+  specificationVersion = [(SXJSONObject *)self specificationVersion];
+  v5 = [SXLegacySupport deprecatedComponentForType:type andVersion:specificationVersion];
 
-  v6 = [(SXFullscreenCaption *)v5 caption];
+  caption = [(SXFullscreenCaption *)v5 caption];
 
-  if (v6)
+  if (caption)
   {
-    v7 = [(SXFullscreenCaption *)v5 caption];
+    caption2 = [(SXFullscreenCaption *)v5 caption];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SXTwitterEmbedComponent;
-    v7 = [(SXComponent *)&v10 classification];
+    caption2 = [(SXComponent *)&v10 classification];
   }
 
-  v8 = v7;
+  v8 = caption2;
 
   return v8;
 }

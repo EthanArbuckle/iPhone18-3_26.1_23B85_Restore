@@ -1,20 +1,20 @@
 @interface MSDStoreHoursManager
 + (id)sharedInstance;
 - (BOOL)evaluateStoreStatusAgainstCurrentTime;
-- (BOOL)evaluateStoreStatusAgainstPointInTime:(id)a3;
+- (BOOL)evaluateStoreStatusAgainstPointInTime:(id)time;
 - (MSDStoreHoursManager)init;
-- (id)parseRawStoreHours:(id)a3;
+- (id)parseRawStoreHours:(id)hours;
 - (id)screenSaverShouldRunUntil;
-- (void)populateStoreHourFromDefaultSettingsForDate:(id)a3;
-- (void)populateStoreHourFromHubSuppliedSettingsForDate:(id)a3;
-- (void)setupStoreCloseTimer:(id)a3;
-- (void)setupStoreHourSettingsExpirationTimer:(id)a3;
+- (void)populateStoreHourFromDefaultSettingsForDate:(id)date;
+- (void)populateStoreHourFromHubSuppliedSettingsForDate:(id)date;
+- (void)setupStoreCloseTimer:(id)timer;
+- (void)setupStoreHourSettingsExpirationTimer:(id)timer;
 - (void)setupStoreOpenCloseTimers;
-- (void)setupStoreOpenTimer:(id)a3;
-- (void)storeCloseHandler:(id)a3;
-- (void)storeHourSettingsExpirationHandler:(id)a3;
-- (void)storeOpenHandler:(id)a3;
-- (void)updateStoreHours:(id)a3 lastSettingsUpdatedDate:(id)a4;
+- (void)setupStoreOpenTimer:(id)timer;
+- (void)storeCloseHandler:(id)handler;
+- (void)storeHourSettingsExpirationHandler:(id)handler;
+- (void)storeOpenHandler:(id)handler;
+- (void)updateStoreHours:(id)hours lastSettingsUpdatedDate:(id)date;
 @end
 
 @implementation MSDStoreHoursManager
@@ -69,11 +69,11 @@
   return v3;
 }
 
-- (void)updateStoreHours:(id)a3 lastSettingsUpdatedDate:(id)a4
+- (void)updateStoreHours:(id)hours lastSettingsUpdatedDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (+[NSDate distantPast](NSDate, "distantPast"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 isEqualToDate:v8], v8, v9))
+  hoursCopy = hours;
+  dateCopy = date;
+  if (!dateCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (+[NSDate distantPast](NSDate, "distantPast"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [dateCopy isEqualToDate:v8], v8, v9))
   {
     v10 = defaultLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -81,7 +81,7 @@
       sub_C17C();
     }
 
-    v11 = 0;
+    newDateByAddingOneWeek = 0;
 LABEL_7:
 
     [(MSDStoreHoursManager *)self setStoreHourRecords:0];
@@ -95,22 +95,22 @@ LABEL_7:
     goto LABEL_17;
   }
 
-  v13 = [v7 endOfDay];
-  v11 = [v13 newDateByAddingOneWeek];
+  endOfDay = [dateCopy endOfDay];
+  newDateByAddingOneWeek = [endOfDay newDateByAddingOneWeek];
 
-  [v11 timeIntervalSinceNow];
+  [newDateByAddingOneWeek timeIntervalSinceNow];
   if (v14 < 300.0)
   {
     v10 = defaultLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_C0E8(v11, v10);
+      sub_C0E8(newDateByAddingOneWeek, v10);
     }
 
     goto LABEL_7;
   }
 
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![v6 count])
+  if (!hoursCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ![hoursCopy count])
   {
     v10 = defaultLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -121,7 +121,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v15 = [(MSDStoreHoursManager *)self parseRawStoreHours:v6];
+  v15 = [(MSDStoreHoursManager *)self parseRawStoreHours:hoursCopy];
   if (!v15)
   {
     v10 = defaultLogHandle();
@@ -136,7 +136,7 @@ LABEL_7:
   v12 = v15;
   [(MSDStoreHoursManager *)self setStoreHourRecords:v15];
   [(MSDStoreHoursManager *)self setUseDefaultStoreHours:0];
-  [(MSDStoreHoursManager *)self setupStoreHourSettingsExpirationTimer:v11];
+  [(MSDStoreHoursManager *)self setupStoreHourSettingsExpirationTimer:newDateByAddingOneWeek];
   v16 = defaultLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -155,53 +155,53 @@ LABEL_17:
   return self;
 }
 
-- (BOOL)evaluateStoreStatusAgainstPointInTime:(id)a3
+- (BOOL)evaluateStoreStatusAgainstPointInTime:(id)time
 {
-  v4 = a3;
-  v5 = [(MSDStoreHoursManager *)self isStoreOpenNow];
-  v6 = [(MSDStoreHoursManager *)self nextStoreOpenDate];
-  v7 = [(MSDStoreHoursManager *)self nextStoreClosedDate];
-  v8 = [(MSDStoreHoursManager *)self nextContentRevertDate];
+  timeCopy = time;
+  isStoreOpenNow = [(MSDStoreHoursManager *)self isStoreOpenNow];
+  nextStoreOpenDate = [(MSDStoreHoursManager *)self nextStoreOpenDate];
+  nextStoreClosedDate = [(MSDStoreHoursManager *)self nextStoreClosedDate];
+  nextContentRevertDate = [(MSDStoreHoursManager *)self nextContentRevertDate];
   v9 = defaultLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v4 toString];
+    toString = [timeCopy toString];
     v29 = 138543362;
-    v30 = v10;
+    v30 = toString;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Evaluating store status against time: %{public}@", &v29, 0xCu);
   }
 
   if ([(MSDStoreHoursManager *)self useDefaultStoreHours])
   {
-    [(MSDStoreHoursManager *)self populateStoreHourFromDefaultSettingsForDate:v4];
+    [(MSDStoreHoursManager *)self populateStoreHourFromDefaultSettingsForDate:timeCopy];
   }
 
   else
   {
-    [(MSDStoreHoursManager *)self populateStoreHourFromHubSuppliedSettingsForDate:v4];
+    [(MSDStoreHoursManager *)self populateStoreHourFromHubSuppliedSettingsForDate:timeCopy];
   }
 
-  if (v5 != [(MSDStoreHoursManager *)self isStoreOpenNow])
+  if (isStoreOpenNow != [(MSDStoreHoursManager *)self isStoreOpenNow])
   {
     goto LABEL_15;
   }
 
-  v11 = [(MSDStoreHoursManager *)self nextStoreOpenDate];
-  if (![v11 isEqualToDate:v6])
+  nextStoreOpenDate2 = [(MSDStoreHoursManager *)self nextStoreOpenDate];
+  if (![nextStoreOpenDate2 isEqualToDate:nextStoreOpenDate])
   {
     goto LABEL_14;
   }
 
-  v12 = [(MSDStoreHoursManager *)self nextStoreClosedDate];
-  if (([v12 isEqualToDate:v7] & 1) == 0)
+  nextStoreClosedDate2 = [(MSDStoreHoursManager *)self nextStoreClosedDate];
+  if (([nextStoreClosedDate2 isEqualToDate:nextStoreClosedDate] & 1) == 0)
   {
 
 LABEL_14:
     goto LABEL_15;
   }
 
-  v13 = [(MSDStoreHoursManager *)self nextContentRevertDate];
-  v14 = [v13 isEqualToDate:v8];
+  nextContentRevertDate2 = [(MSDStoreHoursManager *)self nextContentRevertDate];
+  v14 = [nextContentRevertDate2 isEqualToDate:nextContentRevertDate];
 
   if (v14)
   {
@@ -227,39 +227,39 @@ LABEL_15:
   v18 = defaultLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(MSDStoreHoursManager *)self isStoreOpenNow];
+    isStoreOpenNow2 = [(MSDStoreHoursManager *)self isStoreOpenNow];
     v29 = 67109120;
-    LODWORD(v30) = v19;
+    LODWORD(v30) = isStoreOpenNow2;
     _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "    Is store open now: %{BOOL}d", &v29, 8u);
   }
 
   v20 = defaultLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = [(MSDStoreHoursManager *)self nextStoreOpenDate];
-    v22 = [v21 toString];
+    nextStoreOpenDate3 = [(MSDStoreHoursManager *)self nextStoreOpenDate];
+    toString2 = [nextStoreOpenDate3 toString];
     v29 = 138543362;
-    v30 = v22;
+    v30 = toString2;
     _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "    Next store open date: %{public}@", &v29, 0xCu);
   }
 
   v23 = defaultLogHandle();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = [(MSDStoreHoursManager *)self nextStoreClosedDate];
-    v25 = [v24 toString];
+    nextStoreClosedDate3 = [(MSDStoreHoursManager *)self nextStoreClosedDate];
+    toString3 = [nextStoreClosedDate3 toString];
     v29 = 138543362;
-    v30 = v25;
+    v30 = toString3;
     _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "    Next store close date: %{public}@", &v29, 0xCu);
   }
 
   v15 = defaultLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v26 = [(MSDStoreHoursManager *)self nextContentRevertDate];
-    v27 = [v26 toString];
+    nextContentRevertDate3 = [(MSDStoreHoursManager *)self nextContentRevertDate];
+    toString4 = [nextContentRevertDate3 toString];
     v29 = 138543362;
-    v30 = v27;
+    v30 = toString4;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "    Next content revert date: %{public}@", &v29, 0xCu);
   }
 
@@ -271,11 +271,11 @@ LABEL_26:
 
 - (id)screenSaverShouldRunUntil
 {
-  v3 = [(MSDStoreHoursManager *)self nextStoreOpenDate];
-  v4 = [(MSDStoreHoursManager *)self nextStoreClosedDate];
+  nextStoreOpenDate = [(MSDStoreHoursManager *)self nextStoreOpenDate];
+  nextStoreClosedDate = [(MSDStoreHoursManager *)self nextStoreClosedDate];
   if (!os_variant_has_internal_content())
   {
-    v6 = 0;
+    screenSaverIdleDelay = 0;
 LABEL_6:
     v7 = [NSNumber numberWithInteger:60];
 
@@ -283,15 +283,15 @@ LABEL_6:
   }
 
   v5 = +[MSDTestPreferences sharedInstance];
-  v6 = [v5 screenSaverIdleDelay];
+  screenSaverIdleDelay = [v5 screenSaverIdleDelay];
 
-  if (!v6)
+  if (!screenSaverIdleDelay)
   {
     goto LABEL_6;
   }
 
   objc_opt_class();
-  v7 = v6;
+  v7 = screenSaverIdleDelay;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
@@ -308,7 +308,7 @@ LABEL_7:
 
   if ([(MSDStoreHoursManager *)self isStoreOpenNow])
   {
-    v9 = v4;
+    v9 = nextStoreClosedDate;
     [v9 timeIntervalSinceNow];
     if (v10 >= (60 * [v7 integerValue]))
     {
@@ -328,7 +328,7 @@ LABEL_7:
   else
   {
     v9 = +[NSDate dateWithTimeIntervalSinceNow:](NSDate, "dateWithTimeIntervalSinceNow:", (60 * [v7 integerValue]));
-    if ([v9 compare:v3] == &dword_0 + 1)
+    if ([v9 compare:nextStoreOpenDate] == &dword_0 + 1)
     {
       v13 = defaultLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -337,7 +337,7 @@ LABEL_7:
         _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Store will be opening soon!", &v19, 2u);
       }
 
-      v14 = v4;
+      v14 = nextStoreClosedDate;
       goto LABEL_20;
     }
 
@@ -353,9 +353,9 @@ LABEL_21:
   v16 = defaultLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v9 toString];
+    toString = [v9 toString];
     v19 = 138543362;
-    v20 = v17;
+    v20 = toString;
     _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "Screen saver should run until: %{public}@", &v19, 0xCu);
   }
 
@@ -364,22 +364,22 @@ LABEL_21:
 
 - (void)setupStoreOpenCloseTimers
 {
-  v3 = [(MSDStoreHoursManager *)self nextStoreOpenDate];
-  [(MSDStoreHoursManager *)self setupStoreOpenTimer:v3];
+  nextStoreOpenDate = [(MSDStoreHoursManager *)self nextStoreOpenDate];
+  [(MSDStoreHoursManager *)self setupStoreOpenTimer:nextStoreOpenDate];
 
-  v4 = [(MSDStoreHoursManager *)self nextStoreClosedDate];
-  [(MSDStoreHoursManager *)self setupStoreCloseTimer:v4];
+  nextStoreClosedDate = [(MSDStoreHoursManager *)self nextStoreClosedDate];
+  [(MSDStoreHoursManager *)self setupStoreCloseTimer:nextStoreClosedDate];
 }
 
-- (id)parseRawStoreHours:(id)a3
+- (id)parseRawStoreHours:(id)hours
 {
-  v3 = a3;
+  hoursCopy = hours;
   v4 = +[NSMutableArray array];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = v3;
+  v5 = hoursCopy;
   v6 = [v5 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v6)
   {
@@ -473,12 +473,12 @@ LABEL_19:
   return v22;
 }
 
-- (void)populateStoreHourFromDefaultSettingsForDate:(id)a3
+- (void)populateStoreHourFromDefaultSettingsForDate:(id)date
 {
-  v14 = a3;
+  dateCopy = date;
   v4 = +[NSCalendar currentCalendar];
   v5 = objc_alloc_init(NSDateComponents);
-  v6 = [v4 startOfDayForDate:v14];
+  v6 = [v4 startOfDayForDate:dateCopy];
   [v5 setHour:8];
   [v5 setMinute:0];
   v7 = [v4 dateByAddingComponents:v5 toDate:v6 options:0];
@@ -488,7 +488,7 @@ LABEL_19:
   [v5 setHour:23];
   [v5 setMinute:0];
   v9 = [v4 dateByAddingComponents:v5 toDate:v6 options:0];
-  if ([v14 isEarlierDateThan:v7])
+  if ([dateCopy isEarlierDateThan:v7])
   {
     [(MSDStoreHoursManager *)self setIsStoreOpenNow:0];
     [(MSDStoreHoursManager *)self setNextStoreOpenDate:v8];
@@ -497,7 +497,7 @@ LABEL_19:
     goto LABEL_10;
   }
 
-  if ([v14 isEarlierDateThan:v8])
+  if ([dateCopy isEarlierDateThan:v8])
   {
     [(MSDStoreHoursManager *)self setIsStoreOpenNow:0];
     [(MSDStoreHoursManager *)self setNextStoreOpenDate:v8];
@@ -505,36 +505,36 @@ LABEL_19:
 
   else
   {
-    if (![v14 isEarlierDateThan:v9])
+    if (![dateCopy isEarlierDateThan:v9])
     {
       [(MSDStoreHoursManager *)self setIsStoreOpenNow:0];
-      v11 = [v8 newDateByAddingOneDay];
-      [(MSDStoreHoursManager *)self setNextStoreOpenDate:v11];
+      newDateByAddingOneDay = [v8 newDateByAddingOneDay];
+      [(MSDStoreHoursManager *)self setNextStoreOpenDate:newDateByAddingOneDay];
 
-      v12 = [v9 newDateByAddingOneDay];
-      [(MSDStoreHoursManager *)self setNextStoreClosedDate:v12];
+      newDateByAddingOneDay2 = [v9 newDateByAddingOneDay];
+      [(MSDStoreHoursManager *)self setNextStoreClosedDate:newDateByAddingOneDay2];
 
       goto LABEL_9;
     }
 
     [(MSDStoreHoursManager *)self setIsStoreOpenNow:1];
-    v10 = [v8 newDateByAddingOneDay];
-    [(MSDStoreHoursManager *)self setNextStoreOpenDate:v10];
+    newDateByAddingOneDay3 = [v8 newDateByAddingOneDay];
+    [(MSDStoreHoursManager *)self setNextStoreOpenDate:newDateByAddingOneDay3];
   }
 
   [(MSDStoreHoursManager *)self setNextStoreClosedDate:v9];
 LABEL_9:
-  v13 = [v7 newDateByAddingOneDay];
-  [(MSDStoreHoursManager *)self setNextContentRevertDate:v13];
+  newDateByAddingOneDay4 = [v7 newDateByAddingOneDay];
+  [(MSDStoreHoursManager *)self setNextContentRevertDate:newDateByAddingOneDay4];
 
 LABEL_10:
 }
 
-- (void)populateStoreHourFromHubSuppliedSettingsForDate:(id)a3
+- (void)populateStoreHourFromHubSuppliedSettingsForDate:(id)date
 {
-  v26 = a3;
-  v4 = [(MSDStoreHoursManager *)self storeHourRecords];
-  v5 = [v4 count];
+  dateCopy = date;
+  storeHourRecords = [(MSDStoreHoursManager *)self storeHourRecords];
+  v5 = [storeHourRecords count];
 
   if (v5)
   {
@@ -543,36 +543,36 @@ LABEL_10:
     while (1)
     {
       v8 = v6;
-      v9 = [(MSDStoreHoursManager *)self storeHourRecords];
-      v6 = [v9 objectAtIndex:v7 - 1];
+      storeHourRecords2 = [(MSDStoreHoursManager *)self storeHourRecords];
+      v6 = [storeHourRecords2 objectAtIndex:v7 - 1];
 
-      v10 = [v6 closedDate];
-      LODWORD(v8) = [v26 isLaterDateThan:v10];
+      closedDate = [v6 closedDate];
+      LODWORD(v8) = [dateCopy isLaterDateThan:closedDate];
 
       if (!v8)
       {
         [(MSDStoreHoursManager *)self setIsStoreOpenNow:1];
-        v16 = [v6 closedDate];
-        [(MSDStoreHoursManager *)self setNextStoreClosedDate:v16];
+        closedDate2 = [v6 closedDate];
+        [(MSDStoreHoursManager *)self setNextStoreClosedDate:closedDate2];
 
-        v17 = [v6 revertDate];
-        [(MSDStoreHoursManager *)self setNextContentRevertDate:v17];
+        revertDate = [v6 revertDate];
+        [(MSDStoreHoursManager *)self setNextContentRevertDate:revertDate];
 
-        v18 = [v6 openDate];
-        [(MSDStoreHoursManager *)self setNextStoreOpenDate:v18];
+        openDate = [v6 openDate];
+        [(MSDStoreHoursManager *)self setNextStoreOpenDate:openDate];
         goto LABEL_13;
       }
 
-      v11 = [v6 openDate];
-      v12 = [v26 isEarlierDateThan:v11];
+      openDate2 = [v6 openDate];
+      v12 = [dateCopy isEarlierDateThan:openDate2];
 
       if (v12)
       {
         break;
       }
 
-      v13 = [(MSDStoreHoursManager *)self storeHourRecords];
-      v14 = [v13 count];
+      storeHourRecords3 = [(MSDStoreHoursManager *)self storeHourRecords];
+      v14 = [storeHourRecords3 count];
 
       if (v7++ >= v14)
       {
@@ -580,22 +580,22 @@ LABEL_10:
       }
     }
 
-    v19 = [(MSDStoreHoursManager *)self storeHourRecords];
-    v18 = [v19 objectAtIndex:v7];
+    storeHourRecords4 = [(MSDStoreHoursManager *)self storeHourRecords];
+    openDate = [storeHourRecords4 objectAtIndex:v7];
 
     [(MSDStoreHoursManager *)self setIsStoreOpenNow:0];
-    v20 = [v18 closedDate];
-    [(MSDStoreHoursManager *)self setNextStoreClosedDate:v20];
+    closedDate3 = [openDate closedDate];
+    [(MSDStoreHoursManager *)self setNextStoreClosedDate:closedDate3];
 
-    v21 = [v6 openDate];
-    [(MSDStoreHoursManager *)self setNextStoreOpenDate:v21];
+    openDate3 = [v6 openDate];
+    [(MSDStoreHoursManager *)self setNextStoreOpenDate:openDate3];
 
-    v22 = [v6 revertDate];
-    v23 = [v26 isLaterDateThan:v22];
+    revertDate2 = [v6 revertDate];
+    v23 = [dateCopy isLaterDateThan:revertDate2];
 
     if (v23)
     {
-      v24 = v18;
+      v24 = openDate;
     }
 
     else
@@ -603,32 +603,32 @@ LABEL_10:
       v24 = v6;
     }
 
-    v25 = [v24 revertDate];
-    [(MSDStoreHoursManager *)self setNextContentRevertDate:v25];
+    revertDate3 = [v24 revertDate];
+    [(MSDStoreHoursManager *)self setNextContentRevertDate:revertDate3];
 
 LABEL_13:
 LABEL_14:
   }
 }
 
-- (void)setupStoreHourSettingsExpirationTimer:(id)a3
+- (void)setupStoreHourSettingsExpirationTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_3F28;
   block[3] = &unk_186C0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = timerCopy;
+  v5 = timerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)storeHourSettingsExpirationHandler:(id)a3
+- (void)storeHourSettingsExpirationHandler:(id)handler
 {
   v4 = defaultLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -643,24 +643,24 @@ LABEL_14:
   [v5 postNotificationName:@"com.apple.MobileStoreDemo.StoreHours.Expired" object:0 userInfo:0];
 }
 
-- (void)setupStoreOpenTimer:(id)a3
+- (void)setupStoreOpenTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_427C;
   block[3] = &unk_186C0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = timerCopy;
+  v5 = timerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)storeOpenHandler:(id)a3
+- (void)storeOpenHandler:(id)handler
 {
   v4 = defaultLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -675,24 +675,24 @@ LABEL_14:
   [v5 postNotificationName:@"com.apple.MobileStoreDemo.StoreHours.StoreOpen" object:0 userInfo:0];
 }
 
-- (void)setupStoreCloseTimer:(id)a3
+- (void)setupStoreCloseTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_4548;
   block[3] = &unk_186C0;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = timerCopy;
+  v5 = timerCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)storeCloseHandler:(id)a3
+- (void)storeCloseHandler:(id)handler
 {
   v4 = defaultLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))

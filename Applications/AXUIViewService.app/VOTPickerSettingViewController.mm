@@ -1,8 +1,8 @@
 @interface VOTPickerSettingViewController
 - (id)specifiers;
 - (void)_updateCellAccessories;
-- (void)_updateCellAccessory:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)_updateCellAccessory:(id)accessory;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation VOTPickerSettingViewController
@@ -13,7 +13,7 @@
   if (!v3)
   {
     v22 = OBJC_IVAR___PSListController__specifiers;
-    v24 = self;
+    selfCopy = self;
     v4 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"VOSSettingsItem"];
     v5 = +[NSMutableArray array];
     v6 = +[VOSSettingsHelper sharedInstance];
@@ -50,7 +50,7 @@
           v18 = +[VOSSettingsHelper sharedInstance];
           v19 = [v18 formattedValue:v17 withItem:v4];
 
-          v8 = [PSSpecifier preferenceSpecifierNamed:v19 target:v24 set:0 get:0 detail:0 cell:3 edit:0];
+          v8 = [PSSpecifier preferenceSpecifierNamed:v19 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
 
           [v8 setProperty:v17 forKey:v14];
           [v8 setProperty:v4 forKey:@"VOSSettingsItem"];
@@ -67,25 +67,25 @@
       while (v12);
     }
 
-    v20 = *&v24->PSListController_opaque[v22];
-    *&v24->PSListController_opaque[v22] = v5;
+    v20 = *&selfCopy->PSListController_opaque[v22];
+    *&selfCopy->PSListController_opaque[v22] = v5;
 
-    v3 = *&v24->PSListController_opaque[v22];
+    v3 = *&selfCopy->PSListController_opaque[v22];
   }
 
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 deselectRowAtIndexPath:v6 animated:1];
-  v12 = [v7 cellForRowAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  v12 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
-  v8 = [v12 specifier];
-  v9 = [v8 propertyForKey:PSValueKey];
-  v10 = [v8 propertyForKey:@"VOSSettingsItem"];
+  specifier = [v12 specifier];
+  v9 = [specifier propertyForKey:PSValueKey];
+  v10 = [specifier propertyForKey:@"VOSSettingsItem"];
   v11 = +[VOSSettingsHelper sharedInstance];
   [v11 setValue:v9 forSettingsItem:v10];
 
@@ -98,10 +98,10 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(VOTPickerSettingViewController *)self table];
-  v4 = [v3 visibleCells];
+  table = [(VOTPickerSettingViewController *)self table];
+  visibleCells = [table visibleCells];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -113,7 +113,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleCells);
         }
 
         [(VOTPickerSettingViewController *)self _updateCellAccessory:*(*(&v9 + 1) + 8 * v8)];
@@ -121,19 +121,19 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [visibleCells countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_updateCellAccessory:(id)a3
+- (void)_updateCellAccessory:(id)accessory
 {
-  v3 = a3;
-  v9 = [v3 specifier];
-  v4 = [v9 propertyForKey:PSValueKey];
-  v5 = [v9 propertyForKey:@"VOSSettingsItem"];
+  accessoryCopy = accessory;
+  specifier = [accessoryCopy specifier];
+  v4 = [specifier propertyForKey:PSValueKey];
+  v5 = [specifier propertyForKey:@"VOSSettingsItem"];
   v6 = +[VOSSettingsHelper sharedInstance];
   v7 = [v6 valueForSettingsItem:v5];
   if ([v4 isEqual:v7])
@@ -146,7 +146,7 @@
     v8 = 0;
   }
 
-  [v3 setAccessoryType:v8];
+  [accessoryCopy setAccessoryType:v8];
 }
 
 @end

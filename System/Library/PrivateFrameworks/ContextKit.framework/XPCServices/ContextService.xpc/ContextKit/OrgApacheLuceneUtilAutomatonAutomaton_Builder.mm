@@ -1,8 +1,8 @@
 @interface OrgApacheLuceneUtilAutomatonAutomaton_Builder
 - (id)finish;
 - (int)createState;
-- (void)copyStatesWithOrgApacheLuceneUtilAutomatonAutomaton:(id)a3;
-- (void)copy__WithOrgApacheLuceneUtilAutomatonAutomaton:(id)a3;
+- (void)copyStatesWithOrgApacheLuceneUtilAutomatonAutomaton:(id)automaton;
+- (void)copy__WithOrgApacheLuceneUtilAutomatonAutomaton:(id)automaton;
 - (void)dealloc;
 @end
 
@@ -99,31 +99,31 @@ LABEL_22:
   return nextState;
 }
 
-- (void)copy__WithOrgApacheLuceneUtilAutomatonAutomaton:(id)a3
+- (void)copy__WithOrgApacheLuceneUtilAutomatonAutomaton:(id)automaton
 {
-  v5 = [(OrgApacheLuceneUtilAutomatonAutomaton_Builder *)self getNumStates];
-  if (!a3)
+  getNumStates = [(OrgApacheLuceneUtilAutomatonAutomaton_Builder *)self getNumStates];
+  if (!automaton)
   {
     JreThrowNullPointerException();
   }
 
-  v6 = v5;
-  v7 = [a3 getNumStates];
-  [(OrgApacheLuceneUtilAutomatonAutomaton_Builder *)self copyStatesWithOrgApacheLuceneUtilAutomatonAutomaton:a3];
+  v6 = getNumStates;
+  getNumStates2 = [automaton getNumStates];
+  [(OrgApacheLuceneUtilAutomatonAutomaton_Builder *)self copyStatesWithOrgApacheLuceneUtilAutomatonAutomaton:automaton];
   v8 = new_OrgApacheLuceneUtilAutomatonTransition_init();
-  if (v7 >= 1)
+  if (getNumStates2 >= 1)
   {
     v9 = v8;
     v10 = 0;
     do
     {
-      v11 = [a3 initTransitionWithInt:v10 withOrgApacheLuceneUtilAutomatonTransition:v9];
+      v11 = [automaton initTransitionWithInt:v10 withOrgApacheLuceneUtilAutomatonTransition:v9];
       if (v11 >= 1)
       {
         v12 = v11;
         do
         {
-          [a3 getNextTransitionWithOrgApacheLuceneUtilAutomatonTransition:v9];
+          [automaton getNextTransitionWithOrgApacheLuceneUtilAutomatonTransition:v9];
           [(OrgApacheLuceneUtilAutomatonAutomaton_Builder *)self addTransitionWithInt:v10 + v6 withInt:v9->dest_ + v6 withInt:v9->min_ withInt:v9->max_];
           --v12;
         }
@@ -134,25 +134,25 @@ LABEL_22:
       v10 = (v10 + 1);
     }
 
-    while (v10 != v7);
+    while (v10 != getNumStates2);
   }
 }
 
-- (void)copyStatesWithOrgApacheLuceneUtilAutomatonAutomaton:(id)a3
+- (void)copyStatesWithOrgApacheLuceneUtilAutomatonAutomaton:(id)automaton
 {
-  if (!a3)
+  if (!automaton)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = [a3 getNumStates];
-  if (v5 >= 1)
+  getNumStates = [automaton getNumStates];
+  if (getNumStates >= 1)
   {
-    v6 = v5;
+    v6 = getNumStates;
     v7 = 0;
     do
     {
-      -[OrgApacheLuceneUtilAutomatonAutomaton_Builder setAcceptWithInt:withBoolean:](self, "setAcceptWithInt:withBoolean:", -[OrgApacheLuceneUtilAutomatonAutomaton_Builder createState](self, "createState"), [a3 isAcceptWithInt:v7]);
+      -[OrgApacheLuceneUtilAutomatonAutomaton_Builder setAcceptWithInt:withBoolean:](self, "setAcceptWithInt:withBoolean:", -[OrgApacheLuceneUtilAutomatonAutomaton_Builder createState](self, "createState"), [automaton isAcceptWithInt:v7]);
       v7 = (v7 + 1);
     }
 

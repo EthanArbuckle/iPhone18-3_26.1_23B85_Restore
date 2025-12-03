@@ -1,28 +1,28 @@
 @interface CHXUserShapes
-+ (CGPoint)readRealPoint:(_xmlNode *)a3;
-+ (float)readRealCoordinate:(_xmlNode *)a3;
-+ (id)readAbsoluteSizeAnchor:(_xmlNode *)a3 drawingState:(id)a4;
-+ (id)readDrawable:(_xmlNode *)a3 anchor:(id)a4 drawingState:(id)a5;
-+ (id)readRelativeSizeAnchor:(_xmlNode *)a3 drawingState:(id)a4;
-+ (void)readFromCharSpaceNode:(_xmlNode *)a3 state:(id)a4;
++ (CGPoint)readRealPoint:(_xmlNode *)point;
++ (float)readRealCoordinate:(_xmlNode *)coordinate;
++ (id)readAbsoluteSizeAnchor:(_xmlNode *)anchor drawingState:(id)state;
++ (id)readDrawable:(_xmlNode *)drawable anchor:(id)anchor drawingState:(id)state;
++ (id)readRelativeSizeAnchor:(_xmlNode *)anchor drawingState:(id)state;
++ (void)readFromCharSpaceNode:(_xmlNode *)node state:(id)state;
 @end
 
 @implementation CHXUserShapes
 
-+ (float)readRealCoordinate:(_xmlNode *)a3
++ (float)readRealCoordinate:(_xmlNode *)coordinate
 {
-  v3 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:a3];
+  v3 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:coordinate];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-+ (CGPoint)readRealPoint:(_xmlNode *)a3
++ (CGPoint)readRealPoint:(_xmlNode *)point
 {
-  [a1 readRealCoordinate:{OCXFirstChildNamed(a3, "x")}];
+  [self readRealCoordinate:{OCXFirstChildNamed(point, "x")}];
   v6 = v5;
-  [a1 readRealCoordinate:{OCXFirstChildNamed(a3, "y")}];
+  [self readRealCoordinate:{OCXFirstChildNamed(point, "y")}];
   v8 = v7;
   v9 = v6;
   result.y = v8;
@@ -30,27 +30,27 @@
   return result;
 }
 
-+ (id)readDrawable:(_xmlNode *)a3 anchor:(id)a4 drawingState:(id)a5
++ (id)readDrawable:(_xmlNode *)drawable anchor:(id)anchor drawingState:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 OAXChartDrawingNamespace];
-  v10 = [OAXDrawable readDrawableFromXmlNode:a3 inNamespace:v9 drawingState:v8];
+  anchorCopy = anchor;
+  stateCopy = state;
+  oAXChartDrawingNamespace = [stateCopy OAXChartDrawingNamespace];
+  v10 = [OAXDrawable readDrawableFromXmlNode:drawable inNamespace:oAXChartDrawingNamespace drawingState:stateCopy];
 
   if (v10)
   {
     v11 = objc_alloc_init(CHDOfficeArtClient);
-    [(CHDOfficeArtClient *)v11 setAnchor:v7];
+    [(CHDOfficeArtClient *)v11 setAnchor:anchorCopy];
     [v10 setClientData:v11];
   }
 
   return v10;
 }
 
-+ (id)readRelativeSizeAnchor:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readRelativeSizeAnchor:(_xmlNode *)anchor drawingState:(id)state
 {
-  v6 = a4;
-  v7 = OCXFirstChild(a3);
+  stateCopy = state;
+  v7 = OCXFirstChild(anchor);
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -76,25 +76,25 @@
 
   if (v10 && v9 && v8)
   {
-    [a1 readRealPoint:v10];
+    [self readRealPoint:v10];
     v12 = v11;
     v14 = v13;
-    [a1 readRealPoint:v9];
+    [self readRealPoint:v9];
     v16 = v15;
     v18 = v17;
     v19 = objc_alloc_init(CHDRelativeSizeAnchor);
     [(CHDRelativeSizeAnchor *)v19 setFrom:v12, v14];
     [(CHDRelativeSizeAnchor *)v19 setTo:v16, v18];
-    v7 = [a1 readDrawable:v8 anchor:v19 drawingState:v6];
+    v7 = [self readDrawable:v8 anchor:v19 drawingState:stateCopy];
   }
 
   return v7;
 }
 
-+ (id)readAbsoluteSizeAnchor:(_xmlNode *)a3 drawingState:(id)a4
++ (id)readAbsoluteSizeAnchor:(_xmlNode *)anchor drawingState:(id)state
 {
-  v6 = a4;
-  v7 = OCXFirstChild(a3);
+  stateCopy = state;
+  v7 = OCXFirstChild(anchor);
   v8 = 0;
   v9 = 0;
   v10 = 0;
@@ -120,7 +120,7 @@
 
   if (v10 && v9 && v8)
   {
-    [a1 readRealPoint:v10];
+    [self readRealPoint:v10];
     v12 = v11;
     v14 = v13;
     [OAXBaseTypes readSize2DFromXmlNode:v9];
@@ -129,31 +129,31 @@
     v19 = objc_alloc_init(CHDAbsoluteSizeAnchor);
     [(CHDAbsoluteSizeAnchor *)v19 setFrom:v12, v14];
     [(CHDAbsoluteSizeAnchor *)v19 setSize:v16, v18];
-    v7 = [a1 readDrawable:v8 anchor:v19 drawingState:v6];
+    v7 = [self readDrawable:v8 anchor:v19 drawingState:stateCopy];
   }
 
   return v7;
 }
 
-+ (void)readFromCharSpaceNode:(_xmlNode *)a3 state:(id)a4
++ (void)readFromCharSpaceNode:(_xmlNode *)node state:(id)state
 {
-  v28 = a4;
-  v6 = [v28 drawingState];
-  v7 = [v6 OAXChartNamespace];
-  v8 = OCXFindChild(a3, v7, "userShapes");
+  stateCopy = state;
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v8 = OCXFindChild(node, oAXChartNamespace, "userShapes");
 
   if (!v8)
   {
     goto LABEL_18;
   }
 
-  v9 = [v28 chartPart];
-  v10 = [v28 drawingState];
-  v11 = [v10 OCXReadRelationshipForNode:v8 packagePart:v9];
+  chartPart = [stateCopy chartPart];
+  drawingState2 = [stateCopy drawingState];
+  v11 = [drawingState2 OCXReadRelationshipForNode:v8 packagePart:chartPart];
 
-  v12 = [v9 package];
-  v13 = [v11 targetLocation];
-  v14 = [v12 partForLocation:v13];
+  package = [chartPart package];
+  targetLocation = [v11 targetLocation];
+  v14 = [package partForLocation:targetLocation];
 
   if (!v14)
   {
@@ -164,27 +164,27 @@
   v16 = v15;
   if (!v15 || !xmlStrEqual(v15->name, "userShapes"))
   {
-    v17 = [v9 package];
-    v26 = [v11 targetLocation];
-    [(CHXDrawingState *)v17 resetPartForLocation:v26];
+    package2 = [chartPart package];
+    targetLocation2 = [v11 targetLocation];
+    [(CHXDrawingState *)package2 resetPartForLocation:targetLocation2];
     goto LABEL_16;
   }
 
-  v17 = [[CHXDrawingState alloc] initWithCHXState:v28];
-  [(OAXDrawingState *)v17 setPackagePart:v14];
-  v18 = [v28 drawingState];
-  v19 = [v18 styleMatrix];
-  [(OAXDrawingState *)v17 setStyleMatrix:v19];
+  package2 = [[CHXDrawingState alloc] initWithCHXState:stateCopy];
+  [(OAXDrawingState *)package2 setPackagePart:v14];
+  drawingState3 = [stateCopy drawingState];
+  styleMatrix = [drawingState3 styleMatrix];
+  [(OAXDrawingState *)package2 setStyleMatrix:styleMatrix];
 
-  v20 = [v28 drawingState];
-  v21 = [v20 targetBlipCollection];
-  [(OAXDrawingState *)v17 setTargetBlipCollection:v21];
+  drawingState4 = [stateCopy drawingState];
+  targetBlipCollection = [drawingState4 targetBlipCollection];
+  [(OAXDrawingState *)package2 setTargetBlipCollection:targetBlipCollection];
 
   for (i = OCXFirstChild(v16); i; i = OCXNextSibling(i))
   {
     if (xmlStrEqual(i->name, "relSizeAnchor"))
     {
-      v23 = [a1 readRelativeSizeAnchor:i drawingState:v17];
+      v23 = [self readRelativeSizeAnchor:i drawingState:package2];
     }
 
     else
@@ -194,20 +194,20 @@
         continue;
       }
 
-      v23 = [a1 readAbsoluteSizeAnchor:i drawingState:v17];
+      v23 = [self readAbsoluteSizeAnchor:i drawingState:package2];
     }
 
     v24 = v23;
     if (v23)
     {
-      v25 = [v28 chart];
-      [v25 addChild:v24];
+      chart = [stateCopy chart];
+      [chart addChild:v24];
     }
   }
 
-  v26 = [v9 package];
-  v27 = [v11 targetLocation];
-  [v26 resetPartForLocation:v27];
+  targetLocation2 = [chartPart package];
+  targetLocation3 = [v11 targetLocation];
+  [targetLocation2 resetPartForLocation:targetLocation3];
 
 LABEL_16:
 LABEL_17:

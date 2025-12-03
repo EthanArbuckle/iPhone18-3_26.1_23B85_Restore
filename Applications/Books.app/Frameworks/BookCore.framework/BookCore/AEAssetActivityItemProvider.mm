@@ -1,9 +1,9 @@
 @interface AEAssetActivityItemProvider
 - (AEAnnotationPaginationDataSource)paginationDataSource;
-- (AEAssetActivityItemProvider)initWithAnnotation:(id)a3 propertySource:(id)a4;
-- (AEAssetActivityItemProvider)initWithAnnotations:(id)a3 propertySource:(id)a4;
-- (AEAssetActivityItemProvider)initWithPropertySource:(id)a3;
-- (BOOL)itemProviderSource:(id)a3 shouldShareActivityType:(id)a4;
+- (AEAssetActivityItemProvider)initWithAnnotation:(id)annotation propertySource:(id)source;
+- (AEAssetActivityItemProvider)initWithAnnotations:(id)annotations propertySource:(id)source;
+- (AEAssetActivityItemProvider)initWithPropertySource:(id)source;
+- (BOOL)itemProviderSource:(id)source shouldShareActivityType:(id)type;
 - (id)expandedItemProviders;
 - (id)pasteboardString;
 - (void)dealloc;
@@ -11,11 +11,11 @@
 
 @implementation AEAssetActivityItemProvider
 
-- (AEAssetActivityItemProvider)initWithAnnotation:(id)a3 propertySource:(id)a4
+- (AEAssetActivityItemProvider)initWithAnnotation:(id)annotation propertySource:(id)source
 {
-  v6 = a4;
-  v7 = [NSArray arrayWithObject:a3];
-  v8 = [(AEAssetActivityItemProvider *)self initWithAnnotations:v7 propertySource:v6];
+  sourceCopy = source;
+  v7 = [NSArray arrayWithObject:annotation];
+  v8 = [(AEAssetActivityItemProvider *)self initWithAnnotations:v7 propertySource:sourceCopy];
 
   if (v8)
   {
@@ -25,27 +25,27 @@
   return v8;
 }
 
-- (AEAssetActivityItemProvider)initWithAnnotations:(id)a3 propertySource:(id)a4
+- (AEAssetActivityItemProvider)initWithAnnotations:(id)annotations propertySource:(id)source
 {
-  v7 = a3;
-  v8 = [(AEAssetActivityItemProvider *)self initWithPropertySource:a4];
+  annotationsCopy = annotations;
+  v8 = [(AEAssetActivityItemProvider *)self initWithPropertySource:source];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_annotations, a3);
+    objc_storeStrong(&v8->_annotations, annotations);
     v9->_shareType = 1;
   }
 
   return v9;
 }
 
-- (AEAssetActivityItemProvider)initWithPropertySource:(id)a3
+- (AEAssetActivityItemProvider)initWithPropertySource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [(AEAssetActivityItemProvider *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [sourceCopy copy];
     propertySource = v5->_propertySource;
     v5->_propertySource = v6;
 
@@ -68,30 +68,30 @@
 
 - (id)pasteboardString
 {
-  v3 = [(AEAssetActivityItemProvider *)self shareType];
-  if (v3 == 2)
+  shareType = [(AEAssetActivityItemProvider *)self shareType];
+  if (shareType == 2)
   {
-    v6 = [(AEAssetActivityItemProvider *)self propertySource];
-    v8 = [AEAssetTextActivityItemProvider textItemWithPropertySource:v6];
+    propertySource = [(AEAssetActivityItemProvider *)self propertySource];
+    v8 = [AEAssetTextActivityItemProvider textItemWithPropertySource:propertySource];
   }
 
   else
   {
-    if (v3 || ![(AEAssetActivityItemProvider *)self areCitationsAllowed])
+    if (shareType || ![(AEAssetActivityItemProvider *)self areCitationsAllowed])
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    v4 = [(AEAssetActivityItemProvider *)self annotations];
-    v5 = [(AEAssetActivityItemProvider *)self propertySource];
-    v6 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationTextActivityItemProvider activityItemProviderSourceWithAnnotations:v4 propertySource:v5];
+    annotations = [(AEAssetActivityItemProvider *)self annotations];
+    propertySource2 = [(AEAssetActivityItemProvider *)self propertySource];
+    propertySource = [(AEAnnotationActivityItemProviderSource *)AEAnnotationTextActivityItemProvider activityItemProviderSourceWithAnnotations:annotations propertySource:propertySource2];
 
-    [v6 setCitationsAllowed:1];
-    v7 = [(AEAssetActivityItemProvider *)self paginationDataSource];
-    [v6 setPaginationDataSource:v7];
+    [propertySource setCitationsAllowed:1];
+    paginationDataSource = [(AEAssetActivityItemProvider *)self paginationDataSource];
+    [propertySource setPaginationDataSource:paginationDataSource];
 
-    v8 = [v6 activityViewController:0 itemForActivityType:UIActivityTypeCopyToPasteboard];
+    v8 = [propertySource activityViewController:0 itemForActivityType:UIActivityTypeCopyToPasteboard];
   }
 
   v9 = v8;
@@ -103,29 +103,29 @@ LABEL_8:
 
 - (id)expandedItemProviders
 {
-  v3 = [(AEAssetActivityItemProvider *)self areCitationsAllowed];
-  v4 = [(AEAssetActivityItemProvider *)self propertySource];
-  v5 = [(AEAssetActivityItemProvider *)self paginationDataSource];
-  v6 = [(AEAssetActivityItemProvider *)self shareType];
-  if (v6 == 2)
+  areCitationsAllowed = [(AEAssetActivityItemProvider *)self areCitationsAllowed];
+  propertySource = [(AEAssetActivityItemProvider *)self propertySource];
+  paginationDataSource = [(AEAssetActivityItemProvider *)self paginationDataSource];
+  shareType = [(AEAssetActivityItemProvider *)self shareType];
+  if (shareType == 2)
   {
-    v14 = [[AEAssetTextActivityItemProvider alloc] initWithDelegate:self propertySource:v4];
+    v14 = [[AEAssetTextActivityItemProvider alloc] initWithDelegate:self propertySource:propertySource];
     [(AEAssetActivityItemProvider *)self setTextProvider:v14];
 
-    v15 = [[AEAssetNotesActivityItemProvider alloc] initWithDelegate:self propertySource:v4];
+    v15 = [[AEAssetNotesActivityItemProvider alloc] initWithDelegate:self propertySource:propertySource];
     [(AEAssetActivityItemProvider *)self setNotesProvider:v15];
 
-    v7 = [[AEAssetLinkPresentationActivityItemProvider alloc] initWithDelegate:self propertySource:v4];
-    v16 = [(AEAssetActivityItemProvider *)self textProvider];
-    v28[0] = v16;
-    v17 = [(AEAssetActivityItemProvider *)self notesProvider];
-    v28[1] = v17;
-    v28[2] = v7;
+    annotations = [[AEAssetLinkPresentationActivityItemProvider alloc] initWithDelegate:self propertySource:propertySource];
+    textProvider = [(AEAssetActivityItemProvider *)self textProvider];
+    v28[0] = textProvider;
+    notesProvider = [(AEAssetActivityItemProvider *)self notesProvider];
+    v28[1] = notesProvider;
+    v28[2] = annotations;
     v11 = [NSArray arrayWithObjects:v28 count:3];
 
-    v12 = [[AEAssetURLActivityItemProvider alloc] initWithDelegate:self propertySource:v4];
-    v18 = [(AEAssetBaseActivityItemProvider *)v12 propertyProvider];
-    if ([v18 isStoreAsset])
+    v12 = [[AEAssetURLActivityItemProvider alloc] initWithDelegate:self propertySource:propertySource];
+    propertyProvider = [(AEAssetBaseActivityItemProvider *)v12 propertyProvider];
+    if ([propertyProvider isStoreAsset])
     {
     }
 
@@ -146,13 +146,13 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  if (v6 == 1)
+  if (shareType == 1)
   {
-    v7 = [(AEAssetActivityItemProvider *)self annotations];
-    v12 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationGroupHTMLActivityItemProvider activityItemProviderSourceWithAnnotations:v7 propertySource:v4];
-    [(AEAssetURLActivityItemProvider *)v12 setCitationsAllowed:v3];
-    [(AEAssetURLActivityItemProvider *)v12 setPaginationDataSource:v5];
-    v11 = [(AEAnnotationActivityItemProviderSource *)[AEAnnotationLinkPresentationItemProvider alloc] initWithAnnotations:v7 propertySource:v4];
+    annotations = [(AEAssetActivityItemProvider *)self annotations];
+    v12 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationGroupHTMLActivityItemProvider activityItemProviderSourceWithAnnotations:annotations propertySource:propertySource];
+    [(AEAssetURLActivityItemProvider *)v12 setCitationsAllowed:areCitationsAllowed];
+    [(AEAssetURLActivityItemProvider *)v12 setPaginationDataSource:paginationDataSource];
+    v11 = [(AEAnnotationActivityItemProviderSource *)[AEAnnotationLinkPresentationItemProvider alloc] initWithAnnotations:annotations propertySource:propertySource];
     v29[0] = v12;
     v29[1] = v11;
     v13 = [NSArray arrayWithObjects:v29 count:2];
@@ -164,25 +164,25 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (v6)
+  if (shareType)
   {
     v11 = &__NSArray0__struct;
     goto LABEL_19;
   }
 
-  v7 = [(AEAssetActivityItemProvider *)self annotations];
-  v8 = [(AEAssetLinkPresentationActivityItemProvider *)v7 objectAtIndexedSubscript:0];
-  v9 = [v8 annotationHasNote];
+  annotations = [(AEAssetActivityItemProvider *)self annotations];
+  v8 = [(AEAssetLinkPresentationActivityItemProvider *)annotations objectAtIndexedSubscript:0];
+  annotationHasNote = [v8 annotationHasNote];
 
-  if (v3 | v9)
+  if (areCitationsAllowed | annotationHasNote)
   {
-    v10 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationGroupHTMLActivityItemProvider activityItemProviderSourceWithAnnotations:v7 propertySource:v4];
-    [v10 setCitationsAllowed:v3];
-    [v10 setPaginationDataSource:v5];
+    v10 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationGroupHTMLActivityItemProvider activityItemProviderSourceWithAnnotations:annotations propertySource:propertySource];
+    [v10 setCitationsAllowed:areCitationsAllowed];
+    [v10 setPaginationDataSource:paginationDataSource];
     v31 = v10;
     v11 = [NSArray arrayWithObjects:&v31 count:1];
 
-    if (!v3)
+    if (!areCitationsAllowed)
     {
       goto LABEL_18;
     }
@@ -191,25 +191,25 @@ LABEL_16:
   }
 
   v11 = &__NSArray0__struct;
-  if (v3)
+  if (areCitationsAllowed)
   {
 LABEL_15:
-    v12 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationFacebookActivityItemProvider activityItemProviderSourceWithAnnotations:v7 propertySource:v4];
-    v21 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationTwitterWeiboActivityItemProvider activityItemProviderSourceWithAnnotations:v7 propertySource:v4];
-    v22 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationTextActivityItemProvider activityItemProviderSourceWithAnnotations:v7 propertySource:v4];
-    v23 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationAirDropTextActivityItemProvider activityItemProviderSourceWithAnnotations:v7 propertySource:v4];
-    v24 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationGenericTextActivityItemProvider activityItemProviderSourceWithAnnotations:v7 propertySource:v4];
+    v12 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationFacebookActivityItemProvider activityItemProviderSourceWithAnnotations:annotations propertySource:propertySource];
+    v21 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationTwitterWeiboActivityItemProvider activityItemProviderSourceWithAnnotations:annotations propertySource:propertySource];
+    v22 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationTextActivityItemProvider activityItemProviderSourceWithAnnotations:annotations propertySource:propertySource];
+    v23 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationAirDropTextActivityItemProvider activityItemProviderSourceWithAnnotations:annotations propertySource:propertySource];
+    v24 = [(AEAnnotationActivityItemProviderSource *)AEAnnotationGenericTextActivityItemProvider activityItemProviderSourceWithAnnotations:annotations propertySource:propertySource];
     [(AEAssetURLActivityItemProvider *)v12 setCitationsAllowed:1];
     [(AEAnnotationActivityItemProviderSource *)v21 setCitationsAllowed:1];
     [v22 setCitationsAllowed:1];
     [v23 setCitationsAllowed:1];
     [v24 setCitationsAllowed:1];
-    [(AEAssetURLActivityItemProvider *)v12 setPaginationDataSource:v5];
+    [(AEAssetURLActivityItemProvider *)v12 setPaginationDataSource:paginationDataSource];
     v27 = v21;
-    [(AEAnnotationActivityItemProviderSource *)v21 setPaginationDataSource:v5];
-    [v22 setPaginationDataSource:v5];
-    [v23 setPaginationDataSource:v5];
-    [v24 setPaginationDataSource:v5];
+    [(AEAnnotationActivityItemProviderSource *)v21 setPaginationDataSource:paginationDataSource];
+    [v22 setPaginationDataSource:paginationDataSource];
+    [v23 setPaginationDataSource:paginationDataSource];
+    [v24 setPaginationDataSource:paginationDataSource];
     v30[0] = v12;
     v30[1] = v21;
     v30[2] = v22;
@@ -229,25 +229,25 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)itemProviderSource:(id)a3 shouldShareActivityType:(id)a4
+- (BOOL)itemProviderSource:(id)source shouldShareActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AEAssetActivityItemProvider *)self notesProvider];
-  v9 = [v8 supportsActivityType:v7];
+  sourceCopy = source;
+  typeCopy = type;
+  notesProvider = [(AEAssetActivityItemProvider *)self notesProvider];
+  v9 = [notesProvider supportsActivityType:typeCopy];
 
-  v10 = [v6 propertyProvider];
-  v11 = [v10 isStoreAsset];
+  propertyProvider = [sourceCopy propertyProvider];
+  isStoreAsset = [propertyProvider isStoreAsset];
 
-  v12 = sub_12148(v6, v7);
-  v13 = [(AEAssetActivityItemProvider *)self textProvider];
+  v12 = sub_12148(sourceCopy, typeCopy);
+  textProvider = [(AEAssetActivityItemProvider *)self textProvider];
 
-  if (v13 == v6)
+  if (textProvider == sourceCopy)
   {
-    if ((v11 | v12))
+    if ((isStoreAsset | v12))
     {
-      v18 = [(AEAssetActivityItemProvider *)self urlProvider];
-      v17 = v18 == 0;
+      urlProvider = [(AEAssetActivityItemProvider *)self urlProvider];
+      v17 = urlProvider == 0;
     }
 
     else
@@ -258,9 +258,9 @@ LABEL_19:
 
   else
   {
-    v14 = [(AEAssetActivityItemProvider *)self urlProvider];
+    urlProvider2 = [(AEAssetActivityItemProvider *)self urlProvider];
 
-    if (v14 == v6)
+    if (urlProvider2 == sourceCopy)
     {
       if (v9)
       {
@@ -269,16 +269,16 @@ LABEL_19:
 
       else
       {
-        v17 = v11 | v12;
+        v17 = isStoreAsset | v12;
       }
     }
 
     else
     {
-      v15 = [(AEAssetActivityItemProvider *)self notesProvider];
-      v16 = v15 == v6;
+      notesProvider2 = [(AEAssetActivityItemProvider *)self notesProvider];
+      v16 = notesProvider2 == sourceCopy;
 
-      v17 = v16 & v9 & v11;
+      v17 = v16 & v9 & isStoreAsset;
     }
   }
 

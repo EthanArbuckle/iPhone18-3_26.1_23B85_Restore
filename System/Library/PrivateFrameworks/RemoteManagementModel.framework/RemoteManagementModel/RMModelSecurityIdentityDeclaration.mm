@@ -1,12 +1,12 @@
 @interface RMModelSecurityIdentityDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 credentialAssetReference:(id)a4;
-+ (id)buildWithIdentifier:(id)a3 credentialAssetReference:(id)a4 allowAllAppsAccess:(id)a5 keyIsExtractable:(id)a6;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier credentialAssetReference:(id)reference;
++ (id)buildWithIdentifier:(id)identifier credentialAssetReference:(id)reference allowAllAppsAccess:(id)access keyIsExtractable:(id)extractable;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelSecurityIdentityDeclaration
@@ -50,31 +50,31 @@ void __53__RMModelSecurityIdentityDeclaration_assetReferences__block_invoke()
   v3 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 credentialAssetReference:(id)a4 allowAllAppsAccess:(id)a5 keyIsExtractable:(id)a6
++ (id)buildWithIdentifier:(id)identifier credentialAssetReference:(id)reference allowAllAppsAccess:(id)access keyIsExtractable:(id)extractable
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  identifierCopy = identifier;
+  extractableCopy = extractable;
+  accessCopy = access;
+  referenceCopy = reference;
   v13 = objc_opt_new();
   [v13 setDeclarationType:@"com.apple.configuration.security.identity"];
-  if (v9)
+  if (identifierCopy)
   {
-    [v13 setDeclarationIdentifier:v9];
+    [v13 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v14 = [MEMORY[0x277CCAD78] UUID];
-    v15 = [v14 UUIDString];
-    [v13 setDeclarationIdentifier:v15];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v13 setDeclarationIdentifier:uUIDString];
   }
 
-  [v13 setPayloadCredentialAssetReference:v12];
+  [v13 setPayloadCredentialAssetReference:referenceCopy];
 
-  if (v11)
+  if (accessCopy)
   {
-    v16 = v11;
+    v16 = accessCopy;
   }
 
   else
@@ -84,9 +84,9 @@ void __53__RMModelSecurityIdentityDeclaration_assetReferences__block_invoke()
 
   [v13 setPayloadAllowAllAppsAccess:v16];
 
-  if (v10)
+  if (extractableCopy)
   {
-    v17 = v10;
+    v17 = extractableCopy;
   }
 
   else
@@ -101,25 +101,25 @@ void __53__RMModelSecurityIdentityDeclaration_assetReferences__block_invoke()
   return v13;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 credentialAssetReference:(id)a4
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier credentialAssetReference:(id)reference
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  referenceCopy = reference;
   v7 = objc_opt_new();
   [v7 setDeclarationType:@"com.apple.configuration.security.identity"];
-  if (v5)
+  if (identifierCopy)
   {
-    [v7 setDeclarationIdentifier:v5];
+    [v7 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v8 = [MEMORY[0x277CCAD78] UUID];
-    v9 = [v8 UUIDString];
-    [v7 setDeclarationIdentifier:v9];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v7 setDeclarationIdentifier:uUIDString];
   }
 
-  [v7 setPayloadCredentialAssetReference:v6];
+  [v7 setPayloadCredentialAssetReference:referenceCopy];
 
   [v7 updateServerToken];
 
@@ -178,12 +178,12 @@ void __53__RMModelSecurityIdentityDeclaration_assetReferences__block_invoke()
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelSecurityIdentityDeclaration allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -191,32 +191,32 @@ void __53__RMModelSecurityIdentityDeclaration_assetReferences__block_invoke()
   v12 = [v10 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
-  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:v7 usingKey:@"CredentialAssetReference" forKeyPath:@"payloadCredentialAssetReference" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"AllowAllAppsAccess" forKeyPath:@"payloadAllowAllAppsAccess" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"KeyIsExtractable" forKeyPath:@"payloadKeyIsExtractable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5];
+  v13 = [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"CredentialAssetReference" forKeyPath:@"payloadCredentialAssetReference" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"AllowAllAppsAccess" forKeyPath:@"payloadAllowAllAppsAccess" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"KeyIsExtractable" forKeyPath:@"payloadKeyIsExtractable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error];
   return v13;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelSecurityIdentityDeclaration *)self payloadCredentialAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CredentialAssetReference" value:v5 isRequired:1 defaultValue:0];
+  payloadCredentialAssetReference = [(RMModelSecurityIdentityDeclaration *)self payloadCredentialAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v4 usingKey:@"CredentialAssetReference" value:payloadCredentialAssetReference isRequired:1 defaultValue:0];
 
-  v6 = [(RMModelSecurityIdentityDeclaration *)self payloadAllowAllAppsAccess];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"AllowAllAppsAccess" value:v6 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  payloadAllowAllAppsAccess = [(RMModelSecurityIdentityDeclaration *)self payloadAllowAllAppsAccess];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"AllowAllAppsAccess" value:payloadAllowAllAppsAccess isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v7 = [(RMModelSecurityIdentityDeclaration *)self payloadKeyIsExtractable];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"KeyIsExtractable" value:v7 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  payloadKeyIsExtractable = [(RMModelSecurityIdentityDeclaration *)self payloadKeyIsExtractable];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"KeyIsExtractable" value:payloadKeyIsExtractable isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelSecurityIdentityDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v12 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadCredentialAssetReference copy];
   v6 = v4[6];
   v4[6] = v5;

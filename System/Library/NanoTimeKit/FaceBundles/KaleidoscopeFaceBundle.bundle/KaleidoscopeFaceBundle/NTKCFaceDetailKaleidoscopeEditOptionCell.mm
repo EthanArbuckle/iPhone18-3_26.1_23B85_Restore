@@ -1,10 +1,10 @@
 @interface NTKCFaceDetailKaleidoscopeEditOptionCell
 - (NTKCFaceDetailKaleidoscopeEditOptionCellDelegate)delegate;
 - (void)_setupFromCollection;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)selectUserOption;
-- (void)setUserOptionIndex:(int64_t)a3;
+- (void)setUserOptionIndex:(int64_t)index;
 @end
 
 @implementation NTKCFaceDetailKaleidoscopeEditOptionCell
@@ -17,51 +17,51 @@
   [(NTKCFaceDetailKaleidoscopeEditOptionCell *)&v3 _setupFromCollection];
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   v11.receiver = self;
   v11.super_class = NTKCFaceDetailKaleidoscopeEditOptionCell;
-  v9 = a5;
-  [(NTKCFaceDetailKaleidoscopeEditOptionCell *)&v11 collectionView:a3 willDisplayCell:v8 forItemAtIndexPath:v9];
-  v10 = [v9 row];
+  pathCopy = path;
+  [(NTKCFaceDetailKaleidoscopeEditOptionCell *)&v11 collectionView:view willDisplayCell:cellCopy forItemAtIndexPath:pathCopy];
+  v10 = [pathCopy row];
 
   if (v10 == self->_userOptionIndex)
   {
-    [v8 setActive:0 animated:0];
+    [cellCopy setActive:0 animated:0];
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 row] == self->_userOptionIndex)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy row] == self->_userOptionIndex)
   {
-    v8 = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self delegate];
-    [v8 kaleidoscopeEditOptionCellDidSelectUserOption:self];
+    delegate = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self delegate];
+    [delegate kaleidoscopeEditOptionCellDidSelectUserOption:self];
 
-    [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self _ensureIndexPathVisible:v7 animated:1];
+    [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self _ensureIndexPathVisible:pathCopy animated:1];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = NTKCFaceDetailKaleidoscopeEditOptionCell;
-    [(NTKCFaceDetailKaleidoscopeEditOptionCell *)&v9 collectionView:v6 didSelectItemAtIndexPath:v7];
+    [(NTKCFaceDetailKaleidoscopeEditOptionCell *)&v9 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
   }
 }
 
-- (void)setUserOptionIndex:(int64_t)a3
+- (void)setUserOptionIndex:(int64_t)index
 {
-  if (self->_userOptionIndex != a3)
+  if (self->_userOptionIndex != index)
   {
-    self->_userOptionIndex = a3;
-    if (a3 != 0x7FFFFFFFFFFFFFFFLL)
+    self->_userOptionIndex = index;
+    if (index != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v4 = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self collectionView];
+      collectionView = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self collectionView];
       v5 = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self _indexPathForEditOptionIndex:self->_userOptionIndex];
-      v6 = [v4 cellForItemAtIndexPath:v5];
+      v6 = [collectionView cellForItemAtIndexPath:v5];
 
       [v6 setActive:0 animated:0];
     }
@@ -73,16 +73,16 @@
   v3 = +[CLKDevice currentDevice];
   v4 = [(NTKKaleidoscopeAssetOption *)NTKKaleidoscopeCustomAssetOption optionWithAsset:1000 forDevice:v3];
 
-  v5 = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self collection];
-  v6 = [v5 options];
-  v7 = [v6 indexOfObject:v4];
+  collection = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self collection];
+  options = [collection options];
+  v7 = [options indexOfObject:v4];
 
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self _indexPathForEditOptionIndex:v7];
-    v9 = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self collectionView];
-    v10 = [v9 indexPathsForVisibleItems];
-    v11 = [v10 containsObject:v8];
+    collectionView = [(NTKCFaceDetailKaleidoscopeEditOptionCell *)self collectionView];
+    indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+    v11 = [indexPathsForVisibleItems containsObject:v8];
 
     if (v11)
     {
@@ -90,7 +90,7 @@
       v14 = 3221225472;
       v15 = sub_77E0;
       v16 = &unk_249B0;
-      v17 = self;
+      selfCopy = self;
       v18 = v8;
       [UIView performWithoutAnimation:&v13];
     }

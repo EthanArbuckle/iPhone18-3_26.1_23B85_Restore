@@ -3,14 +3,14 @@
 - (NTKFoghornCompassDataSource)init;
 - (double)heading;
 - (unint64_t)_referenceFrameForDeviceMotion;
-- (void)_queue_motionError:(id)a3;
+- (void)_queue_motionError:(id)error;
 - (void)_restartUpdates;
-- (void)_setUsesTrueNorth:(BOOL)a3;
+- (void)_setUsesTrueNorth:(BOOL)north;
 - (void)_startCompassUpdates;
 - (void)_stopClockTimer;
 - (void)_stopCompassUpdates;
 - (void)dealloc;
-- (void)setUpdateMode:(unint64_t)a3;
+- (void)setUpdateMode:(unint64_t)mode;
 - (void)start;
 - (void)stop;
 @end
@@ -53,18 +53,18 @@
   [(NTKFoghornCompassDataSource *)&v8 dealloc];
 }
 
-- (void)_setUsesTrueNorth:(BOOL)a3
+- (void)_setUsesTrueNorth:(BOOL)north
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_usesTrueNorth != a3)
+  if (self->_usesTrueNorth != north)
   {
-    v3 = a3;
-    self->_usesTrueNorth = a3;
+    northCopy = north;
+    self->_usesTrueNorth = north;
     v5 = NTKFoghornFaceBundleLogObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (northCopy)
       {
         v6 = @"YES";
       }
@@ -149,21 +149,21 @@
   }
 }
 
-- (void)_queue_motionError:(id)a3
+- (void)_queue_motionError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    sub_23BEE6F20(v4, v5);
+    sub_23BEE6F20(errorCopy, v5);
   }
 
-  v8 = objc_msgSend_domain(v4, v6, v7);
+  v8 = objc_msgSend_domain(errorCopy, v6, v7);
   v9 = *MEMORY[0x277CC1BC0];
 
   if (v8 == v9)
   {
-    v12 = objc_msgSend_code(v4, v10, v11);
+    v12 = objc_msgSend_code(errorCopy, v10, v11);
     if (v12 == 101)
     {
       v25 = NTKFoghornFaceBundleLogObject();
@@ -264,11 +264,11 @@
   objc_msgSend__restartUpdates(self, v3, v4);
 }
 
-- (void)setUpdateMode:(unint64_t)a3
+- (void)setUpdateMode:(unint64_t)mode
 {
   v6.receiver = self;
   v6.super_class = NTKFoghornCompassDataSource;
-  [(NTKFoghornDataSource *)&v6 setUpdateMode:a3];
+  [(NTKFoghornDataSource *)&v6 setUpdateMode:mode];
   if (self->_receivingCompassUpdates)
   {
     objc_msgSend__restartUpdates(self, v4, v5);

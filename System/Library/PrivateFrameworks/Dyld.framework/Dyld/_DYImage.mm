@@ -6,15 +6,15 @@
 - (unint64_t)address;
 - (unint64_t)pointerSize;
 - (unint64_t)preferredLoadAddress;
-- (void)getFastPathData:(_DYImageFastPathData *)a3;
+- (void)getFastPathData:(_DYImageFastPathData *)data;
 @end
 
 @implementation _DYImage
 
-- (void)getFastPathData:(_DYImageFastPathData *)a3
+- (void)getFastPathData:(_DYImageFastPathData *)data
 {
-  v4 = self;
-  sub_1AE4B82C4(a3);
+  selfCopy = self;
+  sub_1AE4B82C4(data);
 }
 
 - (NSUUID)uuid
@@ -29,7 +29,7 @@
   v11 = &v18 - v10;
   if (*(&self->super.isa + OBJC_IVAR____DYImage_impl))
   {
-    v12 = self;
+    selfCopy = self;
 
     sub_1AE4B55F8(v6);
 
@@ -61,7 +61,7 @@
 {
   if (*(self + OBJC_IVAR____DYImage_impl))
   {
-    v2 = self;
+    selfCopy = self;
 
     v3 = sub_1AE4BA6DC();
 
@@ -96,7 +96,7 @@
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   if (*(&self->super.isa + OBJC_IVAR____DYImage_impl))
   {
-    v8 = self;
+    selfCopy = self;
 
     sub_1AE4B55F8(v7);
 
@@ -125,7 +125,7 @@
 
 - (_DYSharedCache)sharedCache
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AE4E24FC();
   v4 = v3;
 
@@ -134,7 +134,7 @@
 
 - (NSArray)segments
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AE4E2604();
 
   type metadata accessor for _DYSegment(v3);

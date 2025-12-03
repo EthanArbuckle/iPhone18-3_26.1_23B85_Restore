@@ -1,25 +1,25 @@
 @interface SearchUIAsyncWatchNowSectionLoader
-+ (BOOL)supportsSectionModel:(id)a3;
-- (SearchUIAsyncWatchNowSectionLoader)initWithSectionModel:(id)a3 result:(id)a4 queryId:(unint64_t)a5;
++ (BOOL)supportsSectionModel:(id)model;
+- (SearchUIAsyncWatchNowSectionLoader)initWithSectionModel:(id)model result:(id)result queryId:(unint64_t)id;
 - (id)cacheIdentifier;
 - (id)placeholderCardSections;
-- (void)fetchCardSectionsWithCompletionHandler:(id)a3;
+- (void)fetchCardSectionsWithCompletionHandler:(id)handler;
 @end
 
 @implementation SearchUIAsyncWatchNowSectionLoader
 
-+ (BOOL)supportsSectionModel:(id)a3
++ (BOOL)supportsSectionModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 rowModels];
-    if ([v4 count] == 1)
+    rowModels = [modelCopy rowModels];
+    if ([rowModels count] == 1)
     {
-      v5 = [v3 rowModels];
-      v6 = [v5 firstObject];
-      v7 = [v6 cardSection];
+      rowModels2 = [modelCopy rowModels];
+      firstObject = [rowModels2 firstObject];
+      cardSection = [firstObject cardSection];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
     }
@@ -38,25 +38,25 @@
   return isKindOfClass & 1;
 }
 
-- (SearchUIAsyncWatchNowSectionLoader)initWithSectionModel:(id)a3 result:(id)a4 queryId:(unint64_t)a5
+- (SearchUIAsyncWatchNowSectionLoader)initWithSectionModel:(id)model result:(id)result queryId:(unint64_t)id
 {
-  v8 = a3;
+  modelCopy = model;
   v18.receiver = self;
   v18.super_class = SearchUIAsyncWatchNowSectionLoader;
-  v9 = [(SearchUIAsyncSectionLoader *)&v18 initWithSectionModel:v8 result:a4 queryId:a5];
+  v9 = [(SearchUIAsyncSectionLoader *)&v18 initWithSectionModel:modelCopy result:result queryId:id];
   if (v9)
   {
-    v10 = [v8 rowModels];
-    v11 = [v10 firstObject];
-    v12 = [v11 cardSection];
+    rowModels = [modelCopy rowModels];
+    firstObject = [rowModels firstObject];
+    cardSection = [firstObject cardSection];
 
-    v13 = [v12 watchListItem];
+    watchListItem = [cardSection watchListItem];
     watchListItem = v9->_watchListItem;
-    v9->_watchListItem = v13;
+    v9->_watchListItem = watchListItem;
 
-    v15 = [v12 cardSectionId];
+    cardSectionId = [cardSection cardSectionId];
     cardSectionId = v9->_cardSectionId;
-    v9->_cardSectionId = v15;
+    v9->_cardSectionId = cardSectionId;
   }
 
   return v9;
@@ -64,38 +64,38 @@
 
 - (id)cacheIdentifier
 {
-  v2 = [(SearchUIAsyncWatchNowSectionLoader *)self watchListItem];
-  v3 = [v2 watchListIdentifier];
+  watchListItem = [(SearchUIAsyncWatchNowSectionLoader *)self watchListItem];
+  watchListIdentifier = [watchListItem watchListIdentifier];
 
-  return v3;
+  return watchListIdentifier;
 }
 
 - (id)placeholderCardSections
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [(SearchUIAsyncWatchNowSectionLoader *)self watchListItem];
-  v3 = +[SearchUIWatchNowCardSection placeholderCardForMediaContainer:](SearchUIWatchNowCardSection, "placeholderCardForMediaContainer:", [v2 isMediaContainer]);
+  watchListItem = [(SearchUIAsyncWatchNowSectionLoader *)self watchListItem];
+  v3 = +[SearchUIWatchNowCardSection placeholderCardForMediaContainer:](SearchUIWatchNowCardSection, "placeholderCardForMediaContainer:", [watchListItem isMediaContainer]);
   v6[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
   return v4;
 }
 
-- (void)fetchCardSectionsWithCompletionHandler:(id)a3
+- (void)fetchCardSectionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v5 = [(SearchUIAsyncWatchNowSectionLoader *)self watchListItem];
-  v6 = +[SearchUIWatchListUtilities watchListTypeForType:isMediaContainer:](SearchUIWatchListUtilities, "watchListTypeForType:isMediaContainer:", [v5 type], objc_msgSend(v5, "isMediaContainer"));
-  v7 = [v5 watchListIdentifier];
+  watchListItem = [(SearchUIAsyncWatchNowSectionLoader *)self watchListItem];
+  v6 = +[SearchUIWatchListUtilities watchListTypeForType:isMediaContainer:](SearchUIWatchListUtilities, "watchListTypeForType:isMediaContainer:", [watchListItem type], objc_msgSend(watchListItem, "isMediaContainer"));
+  watchListIdentifier = [watchListItem watchListIdentifier];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __77__SearchUIAsyncWatchNowSectionLoader_fetchCardSectionsWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E85B4270;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = handlerCopy;
   v10 = v8;
-  [SearchUIWatchListUtilities fetchButtonsForWatchListIdentifier:v7 type:v6 isHorizontallySrollingStyle:1 completion:v9];
+  [SearchUIWatchListUtilities fetchButtonsForWatchListIdentifier:watchListIdentifier type:v6 isHorizontallySrollingStyle:1 completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

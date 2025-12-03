@@ -1,23 +1,23 @@
 @interface LPCSSResolver
-- (LPCSSResolver)initWithTheme:(id)a3;
-- (id)resolveCSSValue:(id)a3;
-- (id)ruleDictionaryForStyle:(id)a3 forComponentClass:(Class)a4;
-- (void)addStyle:(id)a3 toElement:(id)a4 inComponent:(id)a5;
-- (void)enumerateResolvedRulesFromRuleDictionary:(id)a3 withBlock:(id)a4;
+- (LPCSSResolver)initWithTheme:(id)theme;
+- (id)resolveCSSValue:(id)value;
+- (id)ruleDictionaryForStyle:(id)style forComponentClass:(Class)class;
+- (void)addStyle:(id)style toElement:(id)element inComponent:(id)component;
+- (void)enumerateResolvedRulesFromRuleDictionary:(id)dictionary withBlock:(id)block;
 @end
 
 @implementation LPCSSResolver
 
-- (LPCSSResolver)initWithTheme:(id)a3
+- (LPCSSResolver)initWithTheme:(id)theme
 {
-  v5 = a3;
+  themeCopy = theme;
   v12.receiver = self;
   v12.super_class = LPCSSResolver;
   v6 = [(LPCSSResolver *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_theme, a3);
+    objc_storeStrong(&v6->_theme, theme);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     localVariables = v7->_localVariables;
     v7->_localVariables = v8;
@@ -28,15 +28,15 @@
   return v7;
 }
 
-- (id)resolveCSSValue:(id)a3
+- (id)resolveCSSValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 name];
-    v6 = [(LPTheme *)self->_theme CSSTextForThemeProperty:v5];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    name = [valueCopy name];
+    v6 = [(LPTheme *)self->_theme CSSTextForThemeProperty:name];
+    v7 = [v6 objectForKeyedSubscript:name];
     v8 = v7;
     if (v7)
     {
@@ -45,7 +45,7 @@
 
     else
     {
-      v11 = [(NSMutableDictionary *)self->_localVariables objectForKeyedSubscript:v5];
+      v11 = [(NSMutableDictionary *)self->_localVariables objectForKeyedSubscript:name];
       if (v11)
       {
         v9 = [(LPCSSResolver *)self resolveCSSValue:v11];
@@ -63,31 +63,31 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v4;
+      _lp_CSSText = valueCopy;
     }
 
     else
     {
-      v10 = [v4 _lp_CSSText];
+      _lp_CSSText = [valueCopy _lp_CSSText];
     }
 
-    v9 = v10;
+    v9 = _lp_CSSText;
   }
 
   return v9;
 }
 
-- (void)enumerateResolvedRulesFromRuleDictionary:(id)a3 withBlock:(id)a4
+- (void)enumerateResolvedRulesFromRuleDictionary:(id)dictionary withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__LPCSSResolver_enumerateResolvedRulesFromRuleDictionary_withBlock___block_invoke;
   v8[3] = &unk_1E7A353B0;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [a3 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [dictionary enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __68__LPCSSResolver_enumerateResolvedRulesFromRuleDictionary_withBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -100,13 +100,13 @@ void __68__LPCSSResolver_enumerateResolvedRulesFromRuleDictionary_withBlock___bl
   }
 }
 
-- (id)ruleDictionaryForStyle:(id)a3 forComponentClass:(Class)a4
+- (id)ruleDictionaryForStyle:(id)style forComponentClass:(Class)class
 {
-  v5 = a3;
-  v6 = [(objc_class *)a4 ruleDictionaryForStyle:v5];
+  styleCopy = style;
+  v6 = [(objc_class *)class ruleDictionaryForStyle:styleCopy];
   if (v6)
   {
-    v7 = [v5 stringByReplacingOccurrencesOfString:@"lp-rich-link-" withString:&stru_1F2447CF0];
+    v7 = [styleCopy stringByReplacingOccurrencesOfString:@"lp-rich-link-" withString:&stru_1F2447CF0];
     v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
@@ -148,13 +148,13 @@ void __58__LPCSSResolver_ruleDictionaryForStyle_forComponentClass___block_invoke
   }
 }
 
-- (void)addStyle:(id)a3 toElement:(id)a4 inComponent:(id)a5
+- (void)addStyle:(id)style toElement:(id)element inComponent:(id)component
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  styleCopy = style;
+  elementCopy = element;
+  componentCopy = component;
   LPWebLock();
-  v11 = [(LPCSSResolver *)self ruleDictionaryForStyle:v8 forComponentClass:objc_opt_class()];
+  v11 = [(LPCSSResolver *)self ruleDictionaryForStyle:styleCopy forComponentClass:objc_opt_class()];
   v12 = objc_alloc_init(MEMORY[0x1E696AD60]);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -165,15 +165,15 @@ void __58__LPCSSResolver_ruleDictionaryForStyle_forComponentClass___block_invoke
   [(LPCSSResolver *)self enumerateResolvedRulesFromRuleDictionary:v11 withBlock:v14];
   if ([v13 length])
   {
-    [v9 setAttribute:@"style" value:v13];
+    [elementCopy setAttribute:@"style" value:v13];
   }
 
   else
   {
-    [v9 removeAttribute:@"style"];
+    [elementCopy removeAttribute:@"style"];
   }
 
-  [v9 setClassName:v8];
+  [elementCopy setClassName:styleCopy];
 }
 
 void __48__LPCSSResolver_addStyle_toElement_inComponent___block_invoke(uint64_t a1, void *a2, void *a3)

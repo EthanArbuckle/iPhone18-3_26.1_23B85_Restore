@@ -1,14 +1,14 @@
 @interface MKTableRow
-+ (id)rowWithCells:(id)a3;
-+ (id)rowWithTitle:(id)a3;
++ (id)rowWithCells:(id)cells;
++ (id)rowWithTitle:(id)title;
 + (id)separatorRow;
 - (MKTableRow)init;
-- (id)asciiRepresentationUsingColumns:(id)a3;
+- (id)asciiRepresentationUsingColumns:(id)columns;
 - (id)csvRepresentation;
-- (id)csvSafeValueForCell:(id)a3;
-- (id)formattedValueForCell:(id)a3;
-- (int)totalWidthOfColumns:(id)a3;
-- (void)adjustColumnsToFit:(id)a3;
+- (id)csvSafeValueForCell:(id)cell;
+- (id)formattedValueForCell:(id)cell;
+- (int)totalWidthOfColumns:(id)columns;
+- (void)adjustColumnsToFit:(id)fit;
 @end
 
 @implementation MKTableRow
@@ -27,29 +27,29 @@
   return v3;
 }
 
-+ (id)rowWithTitle:(id)a3
++ (id)rowWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[MKTableTitleRow alloc] initWithTitle:v3];
+  titleCopy = title;
+  v4 = [[MKTableTitleRow alloc] initWithTitle:titleCopy];
 
   return v4;
 }
 
-+ (id)rowWithCells:(id)a3
++ (id)rowWithCells:(id)cells
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  cellsCopy = cells;
   v4 = objc_alloc_init(MKTableRow);
   v5 = v4;
   if (v4)
   {
-    [(MKTableRow *)v4 setCells:v3];
+    [(MKTableRow *)v4 setCells:cellsCopy];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(MKTableRow *)v5 cells];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    cells = [(MKTableRow *)v5 cells];
+    v7 = [cells countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -60,13 +60,13 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(cells);
           }
 
           -[MKTableRow setTotalColumns:](v5, "setTotalColumns:", -[MKTableRow totalColumns](v5, "totalColumns") + [*(*(&v13 + 1) + 8 * i) columnSpan]);
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [cells countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -85,10 +85,10 @@
   return v2;
 }
 
-- (void)adjustColumnsToFit:(id)a3
+- (void)adjustColumnsToFit:(id)fit
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fitCopy = fit;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -101,7 +101,7 @@
     v7 = 0;
     v8 = *v27;
     v22 = *v27;
-    v23 = v4;
+    v23 = fitCopy;
     do
     {
       v9 = 0;
@@ -119,13 +119,13 @@
 
         if ([v10 columnSpan] == 1)
         {
-          v13 = [v4 objectAtIndexedSubscript:v7];
+          v13 = [fitCopy objectAtIndexedSubscript:v7];
           [v13 adjustWidthToFit:v12];
         }
 
         else
         {
-          v13 = [v4 subarrayWithRange:{v7, objc_msgSend(v10, "columnSpan")}];
+          v13 = [fitCopy subarrayWithRange:{v7, objc_msgSend(v10, "columnSpan")}];
           v14 = [v13 count];
           if (v12 >= 1)
           {
@@ -146,15 +146,15 @@
               }
 
               [v17 adjustWidthToFit:v19];
-              v20 = [(MKTableRow *)self divider];
-              LODWORD(v12) = v12 - v16 - [v20 length];
+              divider = [(MKTableRow *)self divider];
+              LODWORD(v12) = v12 - v16 - [divider length];
 
               ++v15;
             }
 
             while (v12 > 0);
             v8 = v22;
-            v4 = v23;
+            fitCopy = v23;
             v6 = v24;
           }
         }
@@ -173,22 +173,22 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)formattedValueForCell:(id)a3
+- (id)formattedValueForCell:(id)cell
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [a3 formattedValue];
-  v5 = [v3 stringWithFormat:@" %@ ", v4];
+  formattedValue = [cell formattedValue];
+  v5 = [v3 stringWithFormat:@" %@ ", formattedValue];
 
   return v5;
 }
 
-- (id)asciiRepresentationUsingColumns:(id)a3
+- (id)asciiRepresentationUsingColumns:(id)columns
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  columnsCopy = columns;
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v6 = [(MKTableRow *)self cells];
-  v32 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  cells = [(MKTableRow *)self cells];
+  v32 = [v5 initWithCapacity:{objc_msgSend(cells, "count")}];
 
   v35 = 0u;
   v36 = 0u;
@@ -223,7 +223,7 @@
           v14 = v9;
           do
           {
-            v15 = [v4 objectAtIndexedSubscript:v14];
+            v15 = [columnsCopy objectAtIndexedSubscript:v14];
             v13 += [v15 width];
 
             ++v12;
@@ -234,21 +234,21 @@
         }
 
         v16 = [v11 columnSpan] - 1;
-        v17 = [(MKTableRow *)self divider];
-        v18 = v13 + v16 * [v17 length];
+        divider = [(MKTableRow *)self divider];
+        v18 = v13 + v16 * [divider length];
 
         v19 = [(MKTableRow *)self formattedValueForCell:v11];
-        v20 = [v11 alignment];
-        if (v20)
+        alignment = [v11 alignment];
+        if (alignment)
         {
-          if (v20 == 1)
+          if (alignment == 1)
           {
             v21 = [v19 padToLength:v18 withString:@" "];
           }
 
           else
           {
-            if (v20 != 2)
+            if (alignment != 2)
             {
               goto LABEL_18;
             }
@@ -277,15 +277,15 @@ LABEL_18:
   }
 
   v23 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v24 = [(MKTableRow *)self divider];
-  [v23 appendString:v24];
+  divider2 = [(MKTableRow *)self divider];
+  [v23 appendString:divider2];
 
-  v25 = [(MKTableRow *)self divider];
-  v26 = [v32 componentsJoinedByString:v25];
+  divider3 = [(MKTableRow *)self divider];
+  v26 = [v32 componentsJoinedByString:divider3];
   [v23 appendString:v26];
 
-  v27 = [(MKTableRow *)self divider];
-  [v23 appendString:v27];
+  divider4 = [(MKTableRow *)self divider];
+  [v23 appendString:divider4];
 
   v28 = *MEMORY[0x277D85DE8];
 
@@ -296,15 +296,15 @@ LABEL_18:
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  v4 = [(MKTableRow *)self cells];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  cells = [(MKTableRow *)self cells];
+  v5 = [v3 initWithCapacity:{objc_msgSend(cells, "count")}];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(MKTableRow *)self cells];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  cells2 = [(MKTableRow *)self cells];
+  v7 = [cells2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -315,7 +315,7 @@ LABEL_18:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(cells2);
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
@@ -327,8 +327,8 @@ LABEL_18:
           v13 = 1;
           do
           {
-            v14 = [MEMORY[0x277CCACA8] string];
-            [v5 addObject:v14];
+            string = [MEMORY[0x277CCACA8] string];
+            [v5 addObject:string];
 
             ++v13;
           }
@@ -337,7 +337,7 @@ LABEL_18:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [cells2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
@@ -350,13 +350,13 @@ LABEL_18:
   return v15;
 }
 
-- (id)csvSafeValueForCell:(id)a3
+- (id)csvSafeValueForCell:(id)cell
 {
-  v3 = [a3 value];
+  value = [cell value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@" withString:@"];
+    v4 = [value stringByReplacingOccurrencesOfString:@" withString:@"];
     v5 = [v4 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 
     if ([v5 containsString:{@", "}])
@@ -369,21 +369,21 @@ LABEL_18:
 
   else
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v3];
+    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", value];
   }
 
   return v5;
 }
 
-- (int)totalWidthOfColumns:(id)a3
+- (int)totalWidthOfColumns:(id)columns
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  columnsCopy = columns;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [columnsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -395,13 +395,13 @@ LABEL_18:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(columnsCopy);
         }
 
         v7 += [*(*(&v15 + 1) + 8 * i) width];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [columnsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -412,9 +412,9 @@ LABEL_18:
     v7 = 0;
   }
 
-  v10 = [v4 count];
-  v11 = [(MKTableRow *)self divider];
-  v12 = [v11 length];
+  v10 = [columnsCopy count];
+  divider = [(MKTableRow *)self divider];
+  v12 = [divider length];
 
   v13 = *MEMORY[0x277D85DE8];
   return v7 + v12 + v12 * v10;

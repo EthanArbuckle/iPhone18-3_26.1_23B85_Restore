@@ -1,14 +1,14 @@
 @interface ListPickerTableViewCell
-- (_TtC8Business23ListPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC8Business23ListPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation ListPickerTableViewCell
 
-- (_TtC8Business23ListPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC8Business23ListPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_1000AC06C();
+    identifier = sub_1000AC06C();
     v6 = v5;
   }
 
@@ -17,7 +17,7 @@
     v6 = 0;
   }
 
-  return sub_100013AC0(a3, a4, v6);
+  return sub_100013AC0(style, identifier, v6);
 }
 
 @end

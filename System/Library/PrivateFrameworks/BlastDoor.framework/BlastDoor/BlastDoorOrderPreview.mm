@@ -21,7 +21,7 @@
 
 - (BlastDoorOrderPreview_OrderImage)headerImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21456C9E4();
 
   return v3;

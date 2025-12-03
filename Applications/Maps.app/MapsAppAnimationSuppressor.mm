@@ -1,38 +1,38 @@
 @interface MapsAppAnimationSuppressor
-+ (id)acquireAnimationSuppressionTokenForReason:(id)a3;
++ (id)acquireAnimationSuppressionTokenForReason:(id)reason;
 + (id)sharedInstance;
 - (MapsAppAnimationSuppressor)init;
 - (void)_refreshAnimationSuppression;
-- (void)decrementForToken:(id)a3;
-- (void)incrementForToken:(id)a3;
+- (void)decrementForToken:(id)token;
+- (void)incrementForToken:(id)token;
 @end
 
 @implementation MapsAppAnimationSuppressor
 
-- (void)decrementForToken:(id)a3
+- (void)decrementForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = sub_100E12050();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 reason];
+    reason = [tokenCopy reason];
     v7 = 138543362;
-    v8 = v6;
+    v8 = reason;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Removing token for reason: %{public}@", &v7, 0xCu);
   }
 
   [(MapsAppAnimationSuppressor *)self _refreshAnimationSuppression];
 }
 
-- (void)incrementForToken:(id)a3
+- (void)incrementForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v5 = sub_100E12050();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 reason];
+    reason = [tokenCopy reason];
     v7 = 138543362;
-    v8 = v6;
+    v8 = reason;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "Adding token for reason: %{public}@", &v7, 0xCu);
   }
 
@@ -48,11 +48,11 @@
   {
     if (v5)
     {
-      v6 = [(MapsTokenStorage *)self->_tokens allTokenReasons];
+      allTokenReasons = [(MapsTokenStorage *)self->_tokens allTokenReasons];
       v11 = 134218242;
       v12 = v3;
       v13 = 2112;
-      v14 = v6;
+      v14 = allTokenReasons;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Suppressing animations for %lu reasons: %@", &v11, 0x16u);
     }
 
@@ -100,11 +100,11 @@
   return v2;
 }
 
-+ (id)acquireAnimationSuppressionTokenForReason:(id)a3
++ (id)acquireAnimationSuppressionTokenForReason:(id)reason
 {
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  v6 = [v5 _acquireAnimationSuppressionTokenForReason:v4];
+  reasonCopy = reason;
+  sharedInstance = [self sharedInstance];
+  v6 = [sharedInstance _acquireAnimationSuppressionTokenForReason:reasonCopy];
 
   return v6;
 }
@@ -115,7 +115,7 @@
   block[1] = 3221225472;
   block[2] = sub_100E12554;
   block[3] = &unk_1016611D0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10195F2E8 != -1)
   {
     dispatch_once(&qword_10195F2E8, block);

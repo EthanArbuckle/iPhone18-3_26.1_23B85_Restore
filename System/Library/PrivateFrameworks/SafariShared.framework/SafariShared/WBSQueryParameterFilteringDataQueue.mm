@@ -3,18 +3,18 @@
 - (void)_cancelMergingPendingData;
 - (void)_mergePendingData;
 - (void)_mergePendingDataSoon;
-- (void)addPendingDataWithAdjustedURL:(id)a3 originalURL:(id)a4;
+- (void)addPendingDataWithAdjustedURL:(id)l originalURL:(id)rL;
 - (void)clearPendingData;
 - (void)commitPendingData;
-- (void)transferPendingDataToQueue:(id)a3;
+- (void)transferPendingDataToQueue:(id)queue;
 @end
 
 @implementation WBSQueryParameterFilteringDataQueue
 
-- (void)addPendingDataWithAdjustedURL:(id)a3 originalURL:(id)a4
+- (void)addPendingDataWithAdjustedURL:(id)l originalURL:(id)rL
 {
-  v10 = a3;
-  v6 = a4;
+  lCopy = l;
+  rLCopy = rL;
   pendingData = self->_pendingData;
   if (!pendingData)
   {
@@ -25,7 +25,7 @@
     pendingData = self->_pendingData;
   }
 
-  [(WBSQueryParameterFilteringData *)pendingData addAdjustedURL:v10 originalURL:v6];
+  [(WBSQueryParameterFilteringData *)pendingData addAdjustedURL:lCopy originalURL:rLCopy];
   [(WBSQueryParameterFilteringDataQueue *)self _mergePendingDataSoon];
 }
 
@@ -46,9 +46,9 @@
   [(WBSQueryParameterFilteringDataQueue *)self _cancelMergingPendingData];
 }
 
-- (void)transferPendingDataToQueue:(id)a3
+- (void)transferPendingDataToQueue:(id)queue
 {
-  objc_storeStrong(a3 + 1, self->_pendingData);
+  objc_storeStrong(queue + 1, self->_pendingData);
   pendingData = self->_pendingData;
   self->_pendingData = 0;
 
@@ -99,8 +99,8 @@
   mergePendingDataTimer = self->_mergePendingDataTimer;
   self->_mergePendingDataTimer = v4;
 
-  v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v6 addTimer:self->_mergePendingDataTimer forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [mainRunLoop addTimer:self->_mergePendingDataTimer forMode:*MEMORY[0x1E695DA28]];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

@@ -1,34 +1,34 @@
 @interface ANAudioSessionManager
-- (ANAudioSessionManager)initWithAudioSession:(id)a3 queue:(id)a4 endpointID:(id)a5;
-- (BOOL)activateAudioSessionWithError:(id *)a3;
+- (ANAudioSessionManager)initWithAudioSession:(id)session queue:(id)queue endpointID:(id)d;
+- (BOOL)activateAudioSessionWithError:(id *)error;
 - (id)makeTimerIdentifier;
-- (void)_activateAudioSessionWithCompletionHandler:(id)a3;
+- (void)_activateAudioSessionWithCompletionHandler:(id)handler;
 - (void)_deactivateAudioSession;
-- (void)activateAudioSessionWithCompletionHandler:(id)a3;
-- (void)deactivateAudioSessionAfterDelay:(double)a3;
+- (void)activateAudioSessionWithCompletionHandler:(id)handler;
+- (void)deactivateAudioSessionAfterDelay:(double)delay;
 - (void)dealloc;
-- (void)observer:(id)a3 didUpdateActiveCallStatus:(BOOL)a4;
-- (void)setWaitForCallEndCompletion:(id)a3;
+- (void)observer:(id)observer didUpdateActiveCallStatus:(BOOL)status;
+- (void)setWaitForCallEndCompletion:(id)completion;
 - (void)startCallEndTimer;
 @end
 
 @implementation ANAudioSessionManager
 
-- (ANAudioSessionManager)initWithAudioSession:(id)a3 queue:(id)a4 endpointID:(id)a5
+- (ANAudioSessionManager)initWithAudioSession:(id)session queue:(id)queue endpointID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  queueCopy = queue;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = ANAudioSessionManager;
   v12 = [(ANAudioSessionManager *)&v25 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_audioSession, a3);
-    if (v10)
+    objc_storeStrong(&v12->_audioSession, session);
+    if (queueCopy)
     {
-      v14 = v10;
+      v14 = queueCopy;
       queue = v13->_queue;
       v13->_queue = v14;
     }
@@ -46,7 +46,7 @@
     log = v13->_log;
     v13->_log = v18;
 
-    objc_storeStrong(&v13->_endpointUUID, a5);
+    objc_storeStrong(&v13->_endpointUUID, d);
     v20 = [[ANTelephonyObserver alloc] initWithQueue:v13->_queue];
     telephonyObserver = v13->_telephonyObserver;
     v13->_telephonyObserver = v20;
@@ -69,12 +69,12 @@
     [(ANAudioSessionManager *)v3 dealloc];
   }
 
-  v4 = [(ANAudioSessionManager *)self deactivationTimer];
+  deactivationTimer = [(ANAudioSessionManager *)self deactivationTimer];
 
-  if (v4)
+  if (deactivationTimer)
   {
-    v5 = [(ANAudioSessionManager *)self deactivationTimer];
-    [v5 cancel];
+    deactivationTimer2 = [(ANAudioSessionManager *)self deactivationTimer];
+    [deactivationTimer2 cancel];
 
     v6 = [(ANAudioSessionManager *)self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -85,12 +85,12 @@
   }
 
   [(ANAudioSessionManager *)self _deactivateAudioSession];
-  v7 = [(ANAudioSessionManager *)self callEndTimer];
+  callEndTimer = [(ANAudioSessionManager *)self callEndTimer];
 
-  if (v7)
+  if (callEndTimer)
   {
-    v8 = [(ANAudioSessionManager *)self callEndTimer];
-    [v8 cancel];
+    callEndTimer2 = [(ANAudioSessionManager *)self callEndTimer];
+    [callEndTimer2 cancel];
 
     v9 = [(ANAudioSessionManager *)self log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -100,9 +100,9 @@
     }
   }
 
-  v10 = [(ANAudioSessionManager *)self waitForCallEndCompletion];
+  waitForCallEndCompletion = [(ANAudioSessionManager *)self waitForCallEndCompletion];
 
-  if (v10)
+  if (waitForCallEndCompletion)
   {
     waitForCallEndCompletion = self->_waitForCallEndCompletion;
     v12 = [MEMORY[0x277CCA9B8] an_errorWithCode:1018];
@@ -121,15 +121,15 @@
   [(ANAudioSessionManager *)&v14 dealloc];
 }
 
-- (BOOL)activateAudioSessionWithError:(id *)a3
+- (BOOL)activateAudioSessionWithError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [(ANAudioSessionManager *)self deactivationTimer];
+  deactivationTimer = [(ANAudioSessionManager *)self deactivationTimer];
 
-  if (v5)
+  if (deactivationTimer)
   {
-    v6 = [(ANAudioSessionManager *)self deactivationTimer];
-    [v6 cancel];
+    deactivationTimer2 = [(ANAudioSessionManager *)self deactivationTimer];
+    [deactivationTimer2 cancel];
 
     [(ANAudioSessionManager *)self setActivationRetryTimer:0];
     v7 = [(ANAudioSessionManager *)self log];
@@ -140,8 +140,8 @@
     }
   }
 
-  v8 = [(ANAudioSessionManager *)self audioSession];
-  v9 = [v8 setActive:1 error:a3];
+  audioSession = [(ANAudioSessionManager *)self audioSession];
+  v9 = [audioSession setActive:1 error:error];
 
   v10 = [(ANAudioSessionManager *)self log];
   v11 = v10;
@@ -149,34 +149,34 @@
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(ANAudioSessionManager *)self audioSession];
+      audioSession2 = [(ANAudioSessionManager *)self audioSession];
       v21 = 138412290;
-      v22 = v12;
+      v22 = audioSession2;
       _os_log_impl(&dword_23F525000, v11, OS_LOG_TYPE_DEFAULT, "Activated Audio Session %@", &v21, 0xCu);
     }
   }
 
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [(ANAudioSessionManager *)a3 activateAudioSessionWithError:v11, v13, v14, v15, v16, v17, v18];
+    [(ANAudioSessionManager *)error activateAudioSessionWithError:v11, v13, v14, v15, v16, v17, v18];
   }
 
   v19 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (void)activateAudioSessionWithCompletionHandler:(id)a3
+- (void)activateAudioSessionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ANAudioSessionManager *)self queue];
+  handlerCopy = handler;
+  queue = [(ANAudioSessionManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__ANAudioSessionManager_activateAudioSessionWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C86840;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
 uint64_t __67__ANAudioSessionManager_activateAudioSessionWithCompletionHandler___block_invoke(uint64_t a1)
@@ -188,12 +188,12 @@ uint64_t __67__ANAudioSessionManager_activateAudioSessionWithCompletionHandler__
   return [v2 _activateAudioSessionWithCompletionHandler:v3];
 }
 
-- (void)deactivateAudioSessionAfterDelay:(double)a3
+- (void)deactivateAudioSessionAfterDelay:(double)delay
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [(ANAudioSessionManager *)self deactivationTimer];
+  deactivationTimer = [(ANAudioSessionManager *)self deactivationTimer];
 
-  if (v5)
+  if (deactivationTimer)
   {
     v6 = [(ANAudioSessionManager *)self log];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -207,7 +207,7 @@ uint64_t __67__ANAudioSessionManager_activateAudioSessionWithCompletionHandler__
   {
     v7 = [(ANAudioSessionManager *)self log];
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-    if (a3 <= 0.0)
+    if (delay <= 0.0)
     {
       if (v8)
       {
@@ -222,26 +222,26 @@ uint64_t __67__ANAudioSessionManager_activateAudioSessionWithCompletionHandler__
     {
       if (v8)
       {
-        v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+        v9 = [MEMORY[0x277CCABB0] numberWithDouble:delay];
         *buf = 138412290;
         v19 = v9;
         _os_log_impl(&dword_23F525000, v7, OS_LOG_TYPE_DEFAULT, "Will deactivate audio session in (%@) seconds", buf, 0xCu);
       }
 
       v10 = MEMORY[0x277CEABD8];
-      v11 = [(ANAudioSessionManager *)self makeTimerIdentifier];
-      v12 = [v10 timerWithLabel:@"AudioSessionDeactivation" identifier:v11];
+      makeTimerIdentifier = [(ANAudioSessionManager *)self makeTimerIdentifier];
+      v12 = [v10 timerWithLabel:@"AudioSessionDeactivation" identifier:makeTimerIdentifier];
       [(ANAudioSessionManager *)self setDeactivationTimer:v12];
 
       objc_initWeak(buf, self);
-      v13 = [(ANAudioSessionManager *)self deactivationTimer];
-      v14 = [(ANAudioSessionManager *)self queue];
+      deactivationTimer2 = [(ANAudioSessionManager *)self deactivationTimer];
+      queue = [(ANAudioSessionManager *)self queue];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __58__ANAudioSessionManager_deactivateAudioSessionAfterDelay___block_invoke;
       v16[3] = &unk_278C86580;
       objc_copyWeak(&v17, buf);
-      [v13 startWithValue:v14 queue:v16 handler:a3];
+      [deactivationTimer2 startWithValue:queue queue:v16 handler:delay];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(buf);
@@ -263,57 +263,57 @@ void __58__ANAudioSessionManager_deactivateAudioSessionAfterDelay___block_invoke
 
 - (id)makeTimerIdentifier
 {
-  v2 = [(ANAudioSessionManager *)self endpointUUID];
-  v3 = v2;
-  if (v2)
+  endpointUUID = [(ANAudioSessionManager *)self endpointUUID];
+  v3 = endpointUUID;
+  if (endpointUUID)
   {
-    v4 = v2;
+    uUID = endpointUUID;
   }
 
   else
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
   }
 
-  v5 = v4;
+  v5 = uUID;
 
   return v5;
 }
 
-- (void)_activateAudioSessionWithCompletionHandler:(id)a3
+- (void)_activateAudioSessionWithCompletionHandler:(id)handler
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ANAudioSessionManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(ANAudioSessionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ANAudioSessionManager *)self endpointUUID];
-  if (v6)
+  endpointUUID = [(ANAudioSessionManager *)self endpointUUID];
+  if (endpointUUID)
   {
-    v7 = [(ANAudioSessionManager *)self endpointUUID];
-    v8 = [v7 an_isLocalDevice];
+    endpointUUID2 = [(ANAudioSessionManager *)self endpointUUID];
+    an_isLocalDevice = [endpointUUID2 an_isLocalDevice];
 
-    if (!v8)
+    if (!an_isLocalDevice)
     {
       goto LABEL_7;
     }
   }
 
-  v9 = [(ANAudioSessionManager *)self telephonyObserver];
-  v10 = [v9 hasCalls];
+  telephonyObserver = [(ANAudioSessionManager *)self telephonyObserver];
+  hasCalls = [telephonyObserver hasCalls];
 
-  if (v10)
+  if (hasCalls)
   {
     v11 = [(ANAudioSessionManager *)self log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = _Block_copy(v4);
+      v12 = _Block_copy(handlerCopy);
       *buf = 138412290;
       v38 = v12;
       _os_log_impl(&dword_23F525000, v11, OS_LOG_TYPE_DEFAULT, "There is an active call, wait for call to end then call completion handler: %@", buf, 0xCu);
     }
 
-    [(ANAudioSessionManager *)self setWaitForCallEndCompletion:v4];
+    [(ANAudioSessionManager *)self setWaitForCallEndCompletion:handlerCopy];
   }
 
   else
@@ -324,8 +324,8 @@ LABEL_7:
     v13 = v36;
     if ([v13 code] == 561017449 && -[ANAudioSessionManager canRetryAudioSessionActivation](self, "canRetryAudioSessionActivation"))
     {
-      v14 = [MEMORY[0x277CEAB80] sharedInstance];
-      v15 = [v14 numberForDefault:*MEMORY[0x277CEA880]];
+      mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+      v15 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA880]];
       [v15 doubleValue];
       v17 = v16;
 
@@ -335,25 +335,25 @@ LABEL_7:
         [(ANAudioSessionManager *)v18 _activateAudioSessionWithCompletionHandler:v19, v20, v21, v22, v23, v24, v25];
       }
 
-      v26 = [(ANAudioSessionManager *)self activationRetryTimer];
-      [v26 cancel];
+      activationRetryTimer = [(ANAudioSessionManager *)self activationRetryTimer];
+      [activationRetryTimer cancel];
 
       [(ANAudioSessionManager *)self setCanRetryAudioSessionActivation:0];
       v27 = MEMORY[0x277CEABD8];
-      v28 = [(ANAudioSessionManager *)self makeTimerIdentifier];
-      v29 = [v27 timerWithLabel:@"AudioSessionActivationRetry" identifier:v28];
+      makeTimerIdentifier = [(ANAudioSessionManager *)self makeTimerIdentifier];
+      v29 = [v27 timerWithLabel:@"AudioSessionActivationRetry" identifier:makeTimerIdentifier];
       [(ANAudioSessionManager *)self setActivationRetryTimer:v29];
 
       objc_initWeak(buf, self);
-      v30 = [(ANAudioSessionManager *)self activationRetryTimer];
-      v31 = [(ANAudioSessionManager *)self queue];
+      activationRetryTimer2 = [(ANAudioSessionManager *)self activationRetryTimer];
+      queue2 = [(ANAudioSessionManager *)self queue];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __68__ANAudioSessionManager__activateAudioSessionWithCompletionHandler___block_invoke;
       v33[3] = &unk_278C86868;
       objc_copyWeak(&v35, buf);
-      v34 = v4;
-      [v30 startWithValue:v31 queue:v33 handler:v17];
+      v34 = handlerCopy;
+      [activationRetryTimer2 startWithValue:queue2 queue:v33 handler:v17];
 
       objc_destroyWeak(&v35);
       objc_destroyWeak(buf);
@@ -361,7 +361,7 @@ LABEL_7:
 
     else
     {
-      (*(v4 + 2))(v4, v13);
+      (*(handlerCopy + 2))(handlerCopy, v13);
     }
   }
 
@@ -383,18 +383,18 @@ void __68__ANAudioSessionManager__activateAudioSessionWithCompletionHandler___bl
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setWaitForCallEndCompletion:(id)a3
+- (void)setWaitForCallEndCompletion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ANAudioSessionManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  queue = [(ANAudioSessionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = [(ANAudioSessionManager *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = _Block_copy(self->_waitForCallEndCompletion);
-    v8 = _Block_copy(v4);
+    v8 = _Block_copy(completionCopy);
     v20 = 138412546;
     v21 = v7;
     v22 = 2112;
@@ -415,7 +415,7 @@ void __68__ANAudioSessionManager__activateAudioSessionWithCompletionHandler___bl
   self->_callEndTimer = 0;
 
   waitForCallEndCompletion = self->_waitForCallEndCompletion;
-  if (v4)
+  if (completionCopy)
   {
     if (waitForCallEndCompletion)
     {
@@ -423,7 +423,7 @@ void __68__ANAudioSessionManager__activateAudioSessionWithCompletionHandler___bl
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v14 = _Block_copy(self->_waitForCallEndCompletion);
-        v15 = _Block_copy(v4);
+        v15 = _Block_copy(completionCopy);
         v20 = 138412546;
         v21 = v14;
         v22 = 2112;
@@ -437,7 +437,7 @@ void __68__ANAudioSessionManager__activateAudioSessionWithCompletionHandler___bl
     }
 
     [(ANAudioSessionManager *)self startCallEndTimer];
-    v18 = _Block_copy(v4);
+    v18 = _Block_copy(completionCopy);
     waitForCallEndCompletion = self->_waitForCallEndCompletion;
   }
 
@@ -454,38 +454,38 @@ void __68__ANAudioSessionManager__activateAudioSessionWithCompletionHandler___bl
 - (void)startCallEndTimer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(ANAudioSessionManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ANAudioSessionManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = MEMORY[0x277CEABD8];
-  v5 = [(ANAudioSessionManager *)self makeTimerIdentifier];
-  v6 = [v4 timerWithLabel:@"CallEndTimer" identifier:v5];
+  makeTimerIdentifier = [(ANAudioSessionManager *)self makeTimerIdentifier];
+  v6 = [v4 timerWithLabel:@"CallEndTimer" identifier:makeTimerIdentifier];
   callEndTimer = self->_callEndTimer;
   self->_callEndTimer = v6;
 
   v8 = [(ANAudioSessionManager *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ANAudioSessionManager *)self callEndTimer];
+    callEndTimer = [(ANAudioSessionManager *)self callEndTimer];
     *buf = 138412290;
-    v20 = v9;
+    v20 = callEndTimer;
     _os_log_impl(&dword_23F525000, v8, OS_LOG_TYPE_DEFAULT, "Call End Timer Created [%@]", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v10 = [MEMORY[0x277CEAB80] sharedInstance];
-  v11 = [v10 numberForDefault:*MEMORY[0x277CEA898]];
+  mEMORY[0x277CEAB80] = [MEMORY[0x277CEAB80] sharedInstance];
+  v11 = [mEMORY[0x277CEAB80] numberForDefault:*MEMORY[0x277CEA898]];
   [v11 doubleValue];
   v13 = v12;
 
   v14 = self->_callEndTimer;
-  v15 = [(ANAudioSessionManager *)self queue];
+  queue2 = [(ANAudioSessionManager *)self queue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __42__ANAudioSessionManager_startCallEndTimer__block_invoke;
   v17[3] = &unk_278C86580;
   objc_copyWeak(&v18, buf);
-  [(ANTimer *)v14 startWithValue:v15 queue:v17 handler:v13];
+  [(ANTimer *)v14 startWithValue:queue2 queue:v17 handler:v13];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(buf);
@@ -521,27 +521,27 @@ void __42__ANAudioSessionManager_startCallEndTimer__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observer:(id)a3 didUpdateActiveCallStatus:(BOOL)a4
+- (void)observer:(id)observer didUpdateActiveCallStatus:(BOOL)status
 {
-  v4 = a4;
+  statusCopy = status;
   v14 = *MEMORY[0x277D85DE8];
   v6 = [(ANAudioSessionManager *)self log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v13 = v4;
+    v13 = statusCopy;
     _os_log_impl(&dword_23F525000, v6, OS_LOG_TYPE_DEFAULT, "CallIsActive changed to %d", buf, 8u);
   }
 
-  v7 = [(ANAudioSessionManager *)self waitForCallEndCompletion];
+  waitForCallEndCompletion = [(ANAudioSessionManager *)self waitForCallEndCompletion];
 
-  if (v7 && !v4)
+  if (waitForCallEndCompletion && !statusCopy)
   {
     v11 = 0;
     [(ANAudioSessionManager *)self activateAudioSessionWithError:&v11];
     v8 = v11;
-    v9 = [(ANAudioSessionManager *)self waitForCallEndCompletion];
-    (v9)[2](v9, v8);
+    waitForCallEndCompletion2 = [(ANAudioSessionManager *)self waitForCallEndCompletion];
+    (waitForCallEndCompletion2)[2](waitForCallEndCompletion2, v8);
 
     [(ANAudioSessionManager *)self setWaitForCallEndCompletion:0];
   }

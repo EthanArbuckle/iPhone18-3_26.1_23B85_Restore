@@ -1,24 +1,24 @@
 @interface KCellularGsmIdleScellMeasurement
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCurrentAntenna:(BOOL)a3;
-- (void)setHasIdleRxlevDBm:(BOOL)a3;
-- (void)setHasScellArfcn:(BOOL)a3;
-- (void)setHasSimplifiedL1State:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCurrentAntenna:(BOOL)antenna;
+- (void)setHasIdleRxlevDBm:(BOOL)bm;
+- (void)setHasScellArfcn:(BOOL)arfcn;
+- (void)setHasSimplifiedL1State:(BOOL)state;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularGsmIdleScellMeasurement
 
-- (void)setHasScellArfcn:(BOOL)a3
+- (void)setHasScellArfcn:(BOOL)arfcn
 {
-  if (a3)
+  if (arfcn)
   {
     v3 = 8;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSimplifiedL1State:(BOOL)a3
+- (void)setHasSimplifiedL1State:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 16;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasCurrentAntenna:(BOOL)a3
+- (void)setHasCurrentAntenna:(BOOL)antenna
 {
-  if (a3)
+  if (antenna)
   {
     v3 = 2;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIdleRxlevDBm:(BOOL)a3
+- (void)setHasIdleRxlevDBm:(BOOL)bm
 {
-  if (a3)
+  if (bm)
   {
     v3 = 4;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 32;
   }
@@ -96,8 +96,8 @@
   v7.receiver = self;
   v7.super_class = KCellularGsmIdleScellMeasurement;
   v3 = [(KCellularGsmIdleScellMeasurement *)&v7 description];
-  v4 = [(KCellularGsmIdleScellMeasurement *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularGsmIdleScellMeasurement *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -192,9 +192,9 @@ LABEL_8:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -275,14 +275,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -301,8 +301,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_scellArfcn;
-  *(v4 + 36) |= 8u;
+  *(toCopy + 6) = self->_scellArfcn;
+  *(toCopy + 36) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -316,8 +316,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  *(v4 + 7) = self->_simplifiedL1State;
-  *(v4 + 36) |= 0x10u;
+  *(toCopy + 7) = self->_simplifiedL1State;
+  *(toCopy + 36) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -331,8 +331,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  *(v4 + 4) = self->_currentAntenna;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 4) = self->_currentAntenna;
+  *(toCopy + 36) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -346,21 +346,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  *(v4 + 5) = self->_idleRxlevDBm;
-  *(v4 + 36) |= 4u;
+  *(toCopy + 5) = self->_idleRxlevDBm;
+  *(toCopy + 36) |= 4u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
-    *(v4 + 8) = self->_subsId;
-    *(v4 + 36) |= 0x20u;
+    *(toCopy + 8) = self->_subsId;
+    *(toCopy + 36) |= 0x20u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -442,23 +442,23 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_31:
     v5 = 0;
@@ -467,60 +467,60 @@ LABEL_31:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_scellArfcn != *(v4 + 6))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_scellArfcn != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_simplifiedL1State != *(v4 + 7))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_simplifiedL1State != *(equalCopy + 7))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_currentAntenna != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_currentAntenna != *(equalCopy + 4))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_idleRxlevDBm != *(v4 + 5))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_idleRxlevDBm != *(equalCopy + 5))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_31;
   }
 
-  v5 = (*(v4 + 36) & 0x20) == 0;
+  v5 = (*(equalCopy + 36) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0 || self->_subsId != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x20) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_31;
     }
@@ -615,15 +615,15 @@ LABEL_7:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -636,14 +636,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 8) == 0)
+  else if ((*(fromCopy + 36) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_scellArfcn = *(v4 + 6);
+  self->_scellArfcn = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -656,9 +656,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_simplifiedL1State = *(v4 + 7);
+  self->_simplifiedL1State = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -671,9 +671,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_currentAntenna = *(v4 + 4);
+  self->_currentAntenna = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 4) == 0)
   {
 LABEL_6:
@@ -686,12 +686,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_idleRxlevDBm = *(v4 + 5);
+  self->_idleRxlevDBm = *(fromCopy + 5);
   *&self->_has |= 4u;
-  if ((*(v4 + 36) & 0x20) != 0)
+  if ((*(fromCopy + 36) & 0x20) != 0)
   {
 LABEL_7:
-    self->_subsId = *(v4 + 8);
+    self->_subsId = *(fromCopy + 8);
     *&self->_has |= 0x20u;
   }
 

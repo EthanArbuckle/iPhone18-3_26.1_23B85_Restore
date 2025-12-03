@@ -1,21 +1,21 @@
 @interface TTRIPermissionsWarmingSheetViewController
 - (NSString)title;
-- (_TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation TTRIPermissionsWarmingSheetViewController
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21DABB398();
   v4 = sub_21D847A30();
 
-  v5 = [v4 text];
-  if (v5)
+  text = [v4 text];
+  if (text)
   {
     sub_21DBFA16C();
 
@@ -31,9 +31,9 @@
   return v6;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     sub_21DBFA16C();
     v5 = v4;
@@ -44,7 +44,7 @@
     v5 = 0;
   }
 
-  v9 = self;
+  selfCopy = self;
   v6 = sub_21DABB398();
   v7 = sub_21D847A30();
 
@@ -63,43 +63,43 @@
 
 - (void)loadView
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_21DABB398();
-  [(TTRIPermissionsWarmingSheetViewController *)v3 setView:v2];
+  [(TTRIPermissionsWarmingSheetViewController *)selfCopy setView:v2];
 }
 
-- (_TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     sub_21DBFA16C();
     *(&self->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController____lazy_storage___permissionsPromptView) = 0;
-    v8 = a4;
-    a3 = sub_21DBFA12C();
+    bundleCopy = bundle;
+    name = sub_21DBFA12C();
   }
 
   else
   {
     *(&self->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController____lazy_storage___permissionsPromptView) = 0;
-    v9 = a4;
+    bundleCopy2 = bundle;
   }
 
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(TTRIPermissionsWarmingSheetViewController *)&v12 initWithNibName:a3 bundle:a4];
+  v10 = [(TTRIPermissionsWarmingSheetViewController *)&v12 initWithNibName:name bundle:bundle];
 
   return v10;
 }
 
-- (_TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController)initWithCoder:(id)a3
+- (_TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore41TTRIPermissionsWarmingSheetViewController____lazy_storage___permissionsPromptView) = 0;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(TTRIPermissionsWarmingSheetViewController *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(TTRIPermissionsWarmingSheetViewController *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

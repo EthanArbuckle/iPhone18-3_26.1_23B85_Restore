@@ -1,24 +1,24 @@
 @interface _LTDLanguageAssetCache
-+ (id)_normalizeAndSortUpdatesFromObservations:(id)a3 toObservations:(id)a4;
++ (id)_normalizeAndSortUpdatesFromObservations:(id)observations toObservations:(id)toObservations;
 + (id)shared;
-- (BOOL)applyProgressUpdateForAsset:(id)a3;
-- (BOOL)isReadyForFilter:(unint64_t)a3;
+- (BOOL)applyProgressUpdateForAsset:(id)asset;
+- (BOOL)isReadyForFilter:(unint64_t)filter;
 - (_LTDLanguageAssetCache)init;
 - (_LTObservationFilteringConditions)observationFilterConditions;
 - (id)_availableIdentifiers;
 - (id)_readAllAssets;
-- (id)assetForIdentifier:(id)a3;
-- (id)assetsFilteredUsing:(unint64_t)a3;
-- (id)preheatWithLanguages:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applyAssetUpdates:(id)a3;
-- (void)markReadyForFilter:(unint64_t)a3;
+- (id)assetForIdentifier:(id)identifier;
+- (id)assetsFilteredUsing:(unint64_t)using;
+- (id)preheatWithLanguages:(id)languages;
+- (void)addObserver:(id)observer;
+- (void)applyAssetUpdates:(id)updates;
+- (void)markReadyForFilter:(unint64_t)filter;
 - (void)multicastObservers;
-- (void)notify:(id)a3 ofObservations:(id)a4;
-- (void)removeObserverForID:(id)a3;
+- (void)notify:(id)notify ofObservations:(id)observations;
+- (void)removeObserverForID:(id)d;
 - (void)reset;
-- (void)setInitialObservationsForIdentifiers:(id)a3;
-- (void)setRequiredAssets:(id)a3 localeRanks:(id)a4;
+- (void)setInitialObservationsForIdentifiers:(id)identifiers;
+- (void)setRequiredAssets:(id)assets localeRanks:(id)ranks;
 @end
 
 @implementation _LTDLanguageAssetCache
@@ -38,8 +38,8 @@
 - (id)_readAllAssets
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_cache allValues];
-  v4 = [v3 copy];
+  allValues = [(NSMutableDictionary *)self->_cache allValues];
+  v4 = [allValues copy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -84,16 +84,16 @@
 - (id)_availableIdentifiers
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_cache allKeys];
+  allKeys = [(NSMutableDictionary *)self->_cache allKeys];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return allKeys;
 }
 
-- (void)markReadyForFilter:(unint64_t)a3
+- (void)markReadyForFilter:(unint64_t)filter
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = __ROR8__(a3, 4);
+  v5 = __ROR8__(filter, 4);
   if (v5 > 1)
   {
     if (v5 == 2)
@@ -128,7 +128,7 @@ LABEL_11:
   v7 = _LTOSLogAssets();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(_LTDLanguageAssetCache *)a3 markReadyForFilter:v7];
+    [(_LTDLanguageAssetCache *)filter markReadyForFilter:v7];
   }
 
 LABEL_12:
@@ -136,26 +136,26 @@ LABEL_12:
   [(_LTDLanguageAssetCache *)self multicastObservers];
 }
 
-- (BOOL)isReadyForFilter:(unint64_t)a3
+- (BOOL)isReadyForFilter:(unint64_t)filter
 {
   os_unfair_lock_lock(&self->_lock);
   readyFilterSet = self->_readyFilterSet;
   os_unfair_lock_unlock(&self->_lock);
-  return (a3 & ~readyFilterSet) == 0;
+  return (filter & ~readyFilterSet) == 0;
 }
 
-- (id)preheatWithLanguages:(id)a3
+- (id)preheatWithLanguages:(id)languages
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  languagesCopy = languages;
   v43 = +[_LTDLanguageAssetService _selectedIdentifiers];
-  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
-  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v3, "count")}];
+  v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(languagesCopy, "count")}];
+  v5 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(languagesCopy, "count")}];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v3;
+  obj = languagesCopy;
   v6 = [obj countByEnumeratingWithState:&v59 objects:v64 count:16];
   if (v6)
   {
@@ -171,11 +171,11 @@ LABEL_12:
         }
 
         v10 = *(*(&v59 + 1) + 8 * i);
-        v11 = [v10 locale];
-        [v4 addObject:v11];
+        locale = [v10 locale];
+        [v4 addObject:locale];
 
-        v12 = [v10 ltIdentifier];
-        [v5 addObject:v12];
+        ltIdentifier = [v10 ltIdentifier];
+        [v5 addObject:ltIdentifier];
       }
 
       v7 = [obj countByEnumeratingWithState:&v59 objects:v64 count:16];
@@ -192,9 +192,9 @@ LABEL_12:
   }
 
   v14 = MEMORY[0x277CBEB58];
-  v15 = self;
-  v16 = [(_LTDLanguageAssetCache *)self _availableIdentifiers];
-  v17 = [v14 setWithArray:v16];
+  selfCopy2 = self;
+  _availableIdentifiers = [(_LTDLanguageAssetCache *)self _availableIdentifiers];
+  v17 = [v14 setWithArray:_availableIdentifiers];
 
   [v17 unionSet:v43];
   [v17 unionSet:v5];
@@ -219,14 +219,14 @@ LABEL_12:
         }
 
         v22 = *(*(&v55 + 1) + 8 * j);
-        v23 = [(_LTDLanguageAssetCache *)v15 assetForIdentifier:v22];
+        v23 = [(_LTDLanguageAssetCache *)selfCopy2 assetForIdentifier:v22];
         if (![v5 containsObject:v22])
         {
-          v25 = [v23 progress];
-          [v25 removeAllComponents];
+          progress = [v23 progress];
+          [progress removeAllComponents];
 
-          v26 = [v23 progress];
-          [v26 setOfflineState:0];
+          progress2 = [v23 progress];
+          [progress2 setOfflineState:0];
 LABEL_42:
 
           goto LABEL_43;
@@ -239,8 +239,8 @@ LABEL_42:
             goto LABEL_43;
           }
 
-          v24 = [v23 progress];
-          [v24 setComponentFilter:@"ASR"];
+          progress3 = [v23 progress];
+          [progress3 setComponentFilter:@"ASR"];
         }
 
         else
@@ -253,8 +253,8 @@ LABEL_42:
               [(_LTDLanguageAssetCache *)&v53 preheatWithLanguages:v54];
             }
 
-            v24 = [v23 progress];
-            if ([v24 isFinished])
+            progress3 = [v23 progress];
+            if ([progress3 isFinished])
             {
               v28 = @"ASR";
             }
@@ -275,16 +275,16 @@ LABEL_42:
                 [(_LTDLanguageAssetCache *)&v51 preheatWithLanguages:v52];
               }
 
-              v24 = [v23 progress];
-              v30 = [v24 isFinished] == 0;
+              progress3 = [v23 progress];
+              v30 = [progress3 isFinished] == 0;
               v31 = @"PB|MT";
               v32 = @"PB";
             }
 
             else
             {
-              v24 = [v23 progress];
-              v30 = [v24 isFinished] == 0;
+              progress3 = [v23 progress];
+              v30 = [progress3 isFinished] == 0;
               v31 = @"ASR|PB|MT";
               v32 = @"ASR|PB";
             }
@@ -300,8 +300,8 @@ LABEL_42:
             }
           }
 
-          v33 = [v23 progress];
-          [v33 setComponentFilter:v28];
+          progress4 = [v23 progress];
+          [progress4 setComponentFilter:v28];
         }
 
         if (+[_LTDAssetService _awaitDownloadOfTTSAssets])
@@ -309,14 +309,14 @@ LABEL_42:
           v34 = v20;
           v35 = v4;
           v36 = v18;
-          v26 = [v23 progress];
-          v37 = [v26 componentFilter];
-          v38 = [v37 length];
+          progress2 = [v23 progress];
+          componentFilter = [progress2 componentFilter];
+          v38 = [componentFilter length];
           if (v38)
           {
-            v48 = [v23 progress];
-            v47 = [v48 componentFilter];
-            v39 = [v47 stringByAppendingString:@"|TTS"];
+            progress5 = [v23 progress];
+            componentFilter2 = [progress5 componentFilter];
+            v39 = [componentFilter2 stringByAppendingString:@"|TTS"];
             v46 = v39;
           }
 
@@ -325,8 +325,8 @@ LABEL_42:
             v39 = @"TTS";
           }
 
-          v40 = [v23 progress];
-          [v40 setComponentFilter:v39];
+          progress6 = [v23 progress];
+          [progress6 setComponentFilter:v39];
 
           if (v38)
           {
@@ -336,7 +336,7 @@ LABEL_42:
           v4 = v35;
           v20 = v34;
           v5 = v44;
-          v15 = self;
+          selfCopy2 = self;
           goto LABEL_42;
         }
 
@@ -354,16 +354,16 @@ LABEL_43:
   return v4;
 }
 
-- (void)applyAssetUpdates:(id)a3
+- (void)applyAssetUpdates:(id)updates
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatesCopy = updates;
   v21 = +[_LTDLanguageAssetService _selectedIdentifiers];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = updatesCopy;
   v22 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v22)
   {
@@ -379,8 +379,8 @@ LABEL_43:
 
         v6 = *(*(&v27 + 1) + 8 * i);
         v7 = MEMORY[0x277CBEB58];
-        v8 = [v6 localeIdentifiers];
-        v9 = [v7 setWithArray:v8];
+        localeIdentifiers = [v6 localeIdentifiers];
+        v9 = [v7 setWithArray:localeIdentifiers];
 
         [v9 intersectSet:v21];
         v25 = 0u;
@@ -403,9 +403,9 @@ LABEL_43:
               }
 
               v15 = [(_LTDLanguageAssetCache *)self assetForIdentifier:*(*(&v23 + 1) + 8 * j)];
-              v16 = [v15 progress];
-              v17 = [v6 progress];
-              [v16 addComponent:v17];
+              progress = [v15 progress];
+              progress2 = [v6 progress];
+              [progress addComponent:progress2];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -425,67 +425,67 @@ LABEL_43:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRequiredAssets:(id)a3 localeRanks:(id)a4
+- (void)setRequiredAssets:(id)assets localeRanks:(id)ranks
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [v7 _ltCompactMap:&__block_literal_global_36];
+  ranksCopy = ranks;
+  assetsCopy = assets;
+  v11 = [assetsCopy _ltCompactMap:&__block_literal_global_36];
   os_unfair_lock_lock(&self->_lock);
   v8 = [MEMORY[0x277CBEB98] setWithArray:v11];
   requiredAssetIdentifiers = self->_requiredAssetIdentifiers;
   self->_requiredAssetIdentifiers = v8;
 
   localeRanks = self->_localeRanks;
-  self->_localeRanks = v6;
+  self->_localeRanks = ranksCopy;
 
   os_unfair_lock_unlock(&self->_lock);
-  [(_LTDLanguageAssetCache *)self applyAssetUpdates:v7];
+  [(_LTDLanguageAssetCache *)self applyAssetUpdates:assetsCopy];
 }
 
-- (BOOL)applyProgressUpdateForAsset:(id)a3
+- (BOOL)applyProgressUpdateForAsset:(id)asset
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   os_unfair_lock_lock(&self->_lock);
   requiredAssetIdentifiers = self->_requiredAssetIdentifiers;
-  v6 = [v4 identifier];
-  v7 = [(NSSet *)requiredAssetIdentifiers containsObject:v6];
+  identifier = [assetCopy identifier];
+  v7 = [(NSSet *)requiredAssetIdentifiers containsObject:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v7)
   {
-    v8 = 0;
+    shouldPurgeWithLocale = 0;
   }
 
   else
   {
-    v8 = [v4 shouldPurgeWithLocale];
+    shouldPurgeWithLocale = [assetCopy shouldPurgeWithLocale];
   }
 
   v9 = _LTOSLogAssets();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v26 = v9;
-    v27 = [v4 identifier];
-    v28 = [v4 progress];
-    [v28 fractionCompleted];
+    identifier2 = [assetCopy identifier];
+    progress = [assetCopy progress];
+    [progress fractionCompleted];
     *buf = 138544130;
-    v42 = v27;
+    v42 = identifier2;
     v43 = 2048;
     v44 = v29;
     v45 = 1024;
     v46 = v7;
     v47 = 1024;
-    v48 = v8;
+    v48 = shouldPurgeWithLocale;
     _os_log_debug_impl(&dword_232E53000, v26, OS_LOG_TYPE_DEBUG, "Cache progress update: %{public}@ [%f] required: %{BOOL}i cancelled: %{BOOL}i", buf, 0x22u);
 
-    if (!v8)
+    if (!shouldPurgeWithLocale)
     {
       goto LABEL_22;
     }
   }
 
-  else if (!v8)
+  else if (!shouldPurgeWithLocale)
   {
     goto LABEL_22;
   }
@@ -494,8 +494,8 @@ LABEL_43:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = [v4 components];
-  v11 = [v10 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  components = [assetCopy components];
+  v11 = [components countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v11)
   {
     v12 = v11;
@@ -507,30 +507,30 @@ LABEL_43:
       {
         if (*v35 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(components);
         }
 
-        v15 = [*(*(&v34 + 1) + 8 * v14) progress];
-        [v15 cancel];
+        progress2 = [*(*(&v34 + 1) + 8 * v14) progress];
+        [progress2 cancel];
 
         ++v14;
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v34 objects:v40 count:16];
+      v12 = [components countByEnumeratingWithState:&v34 objects:v40 count:16];
     }
 
     while (v12);
   }
 
-  if ([v4 isMultiLocaleAsset])
+  if ([assetCopy isMultiLocaleAsset])
   {
-    v16 = [(_LTDLanguageAssetCache *)self _readAllAssets];
+    _readAllAssets = [(_LTDLanguageAssetCache *)self _readAllAssets];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v17 = [v16 countByEnumeratingWithState:&v30 objects:v39 count:16];
+    v17 = [_readAllAssets countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v17)
     {
       v18 = v17;
@@ -542,18 +542,18 @@ LABEL_43:
         {
           if (*v31 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(_readAllAssets);
           }
 
-          v21 = [*(*(&v30 + 1) + 8 * v20) progress];
-          v22 = [v4 progress];
-          [v21 removeComponent:v22];
+          progress3 = [*(*(&v30 + 1) + 8 * v20) progress];
+          progress4 = [assetCopy progress];
+          [progress3 removeComponent:progress4];
 
           ++v20;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        v18 = [_readAllAssets countByEnumeratingWithState:&v30 objects:v39 count:16];
       }
 
       while (v18);
@@ -563,27 +563,27 @@ LABEL_43:
 LABEL_22:
   if (v7)
   {
-    v38 = v4;
+    v38 = assetCopy;
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
     [(_LTDLanguageAssetCache *)self applyAssetUpdates:v23];
   }
 
   v24 = *MEMORY[0x277D85DE8];
-  return v8 ^ 1;
+  return shouldPurgeWithLocale ^ 1;
 }
 
-- (id)assetForIdentifier:(id)a3
+- (id)assetForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_cache objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v4];
+    v6 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:identifierCopy];
     v5 = [objc_alloc(MEMORY[0x277CE1B00]) initWithLocale:v6 state:3];
     cache = self->_cache;
-    v8 = [v5 ltIdentifier];
-    [(NSMutableDictionary *)cache setObject:v5 forKeyedSubscript:v8];
+    ltIdentifier = [v5 ltIdentifier];
+    [(NSMutableDictionary *)cache setObject:v5 forKeyedSubscript:ltIdentifier];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -591,7 +591,7 @@ LABEL_22:
   return v5;
 }
 
-- (id)assetsFilteredUsing:(unint64_t)a3
+- (id)assetsFilteredUsing:(unint64_t)using
 {
   v31 = *MEMORY[0x277D85DE8];
   if (![(_LTDLanguageAssetCache *)self isReadyForFilter:?])
@@ -600,11 +600,11 @@ LABEL_22:
     goto LABEL_26;
   }
 
-  v5 = [(_LTDLanguageAssetCache *)self _readAllAssets];
+  _readAllAssets = [(_LTDLanguageAssetCache *)self _readAllAssets];
   v6 = +[_LTDLanguageAssetService _selectedIdentifiers];
   v7 = v6;
   v8 = 0;
-  v9 = __ROR8__(a3, 4);
+  v9 = __ROR8__(using, 4);
   if (v9 <= 1)
   {
     if (v9)
@@ -615,7 +615,7 @@ LABEL_22:
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = v5;
+        v10 = _readAllAssets;
         v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (!v11)
         {
@@ -634,18 +634,18 @@ LABEL_22:
             }
 
             v15 = *(*(&v22 + 1) + 8 * i);
-            v16 = [v15 ltIdentifier];
-            if (([v7 containsObject:v16] & 1) == 0)
+            ltIdentifier = [v15 ltIdentifier];
+            if (([v7 containsObject:ltIdentifier] & 1) == 0)
             {
-              v17 = [v15 state];
+              state = [v15 state];
 
-              if (!v17)
+              if (!state)
               {
                 continue;
               }
 
-              v16 = [v15 progress];
-              [v16 setOfflineState:0];
+              ltIdentifier = [v15 progress];
+              [ltIdentifier setOfflineState:0];
             }
           }
 
@@ -663,7 +663,7 @@ LABEL_16:
 
     else
     {
-      v18 = v5;
+      v18 = _readAllAssets;
 LABEL_22:
       v8 = v18;
     }
@@ -678,7 +678,7 @@ LABEL_22:
     v26[2] = __46___LTDLanguageAssetCache_assetsFilteredUsing___block_invoke_2;
     v26[3] = &unk_2789B6108;
     v27 = v6;
-    v8 = [v5 lt_filterUsingBlock:v26];
+    v8 = [_readAllAssets lt_filterUsingBlock:v26];
     v19 = v27;
     goto LABEL_24;
   }
@@ -690,7 +690,7 @@ LABEL_22:
     v28[2] = __46___LTDLanguageAssetCache_assetsFilteredUsing___block_invoke;
     v28[3] = &unk_2789B6108;
     v29 = v6;
-    v8 = [v5 lt_filterUsingBlock:v28];
+    v8 = [_readAllAssets lt_filterUsingBlock:v28];
     v19 = v29;
 LABEL_24:
   }
@@ -712,17 +712,17 @@ LABEL_26:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
   observers = self->_observers;
-  v6 = [v4 observerId];
-  [(NSMutableDictionary *)observers setObject:v4 forKeyedSubscript:v6];
+  observerId = [observerCopy observerId];
+  [(NSMutableDictionary *)observers setObject:observerCopy forKeyedSubscript:observerId];
 
-  v7 = [v4 isIndeterminate];
+  isIndeterminate = [observerCopy isIndeterminate];
   v8 = 24;
-  if (v7)
+  if (isIndeterminate)
   {
     v8 = 32;
   }
@@ -740,7 +740,7 @@ LABEL_26:
       _os_log_impl(&dword_232E53000, v11, OS_LOG_TYPE_INFO, "Using lastObservations", buf, 2u);
     }
 
-    [(_LTDLanguageAssetCache *)self notify:v4 ofObservations:v9];
+    [(_LTDLanguageAssetCache *)self notify:observerCopy ofObservations:v9];
   }
 
   else if (v12)
@@ -750,35 +750,35 @@ LABEL_26:
   }
 }
 
-- (void)removeObserverForID:(id)a3
+- (void)removeObserverForID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_observers setObject:0 forKeyedSubscript:v4];
+  v7 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:dCopy];
+  [(NSMutableDictionary *)self->_observers setObject:0 forKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   v5 = v7;
   if (v7)
   {
-    v6 = [v7 completion];
-    v6[2](v6, 0);
+    completion = [v7 completion];
+    completion[2](completion, 0);
 
     v5 = v7;
   }
 }
 
-+ (id)_normalizeAndSortUpdatesFromObservations:(id)a3 toObservations:(id)a4
++ (id)_normalizeAndSortUpdatesFromObservations:(id)observations toObservations:(id)toObservations
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
+  observationsCopy = observations;
+  toObservationsCopy = toObservations;
+  v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(toObservationsCopy, "count")}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = v6;
+  v8 = toObservationsCopy;
   v9 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v9)
   {
@@ -794,9 +794,9 @@ LABEL_26:
         }
 
         v13 = *(*(&v36 + 1) + 8 * i);
-        v14 = [v13 locale];
-        v15 = [v14 _ltLocaleIdentifier];
-        [v7 setObject:v13 forKeyedSubscript:v15];
+        locale = [v13 locale];
+        _ltLocaleIdentifier = [locale _ltLocaleIdentifier];
+        [v7 setObject:v13 forKeyedSubscript:_ltLocaleIdentifier];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -809,7 +809,7 @@ LABEL_26:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = v5;
+  v16 = observationsCopy;
   v17 = [v16 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v17)
   {
@@ -825,10 +825,10 @@ LABEL_26:
         }
 
         v21 = *(*(&v32 + 1) + 8 * j);
-        v22 = [v21 locale];
-        v23 = [v22 _ltLocaleIdentifier];
+        locale2 = [v21 locale];
+        _ltLocaleIdentifier2 = [locale2 _ltLocaleIdentifier];
 
-        v24 = [v7 objectForKeyedSubscript:v23];
+        v24 = [v7 objectForKeyedSubscript:_ltLocaleIdentifier2];
         if ([v21 status] != 1 || objc_msgSend(v24, "status") != 1 || (objc_msgSend(v21, "progress"), v26 = v25, objc_msgSend(v24, "progress"), v26 <= v27))
         {
           if (v24)
@@ -837,7 +837,7 @@ LABEL_26:
           }
         }
 
-        [v7 setObject:v21 forKeyedSubscript:v23];
+        [v7 setObject:v21 forKeyedSubscript:_ltLocaleIdentifier2];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -846,8 +846,8 @@ LABEL_26:
     while (v18);
   }
 
-  v28 = [v7 allValues];
-  v29 = [v28 sortedArrayUsingSelector:sel_compare_];
+  allValues = [v7 allValues];
+  v29 = [allValues sortedArrayUsingSelector:sel_compare_];
 
   v30 = *MEMORY[0x277D85DE8];
 
@@ -859,8 +859,8 @@ LABEL_26:
   v48 = *MEMORY[0x277D85DE8];
   if ([(_LTDLanguageAssetCache *)self _isReadyForObservers])
   {
-    v3 = [(_LTDLanguageAssetCache *)self _readAllAssets];
-    if ([v3 count])
+    _readAllAssets = [(_LTDLanguageAssetCache *)self _readAllAssets];
+    if ([_readAllAssets count])
     {
       os_unfair_lock_lock(&self->_lock);
       v4 = [(NSDictionary *)self->_localeRanks copy];
@@ -871,7 +871,7 @@ LABEL_26:
       v43[3] = &unk_2789B6130;
       v5 = v4;
       v44 = v5;
-      v6 = [v3 _ltCompactMap:v43];
+      v6 = [_readAllAssets _ltCompactMap:v43];
       os_unfair_lock_lock(&self->_lock);
       v7 = [objc_opt_class() _normalizeAndSortUpdatesFromObservations:self->_lastObservationsSorted toObservations:v6];
       if ([v7 isEqualToArray:self->_lastObservationsSorted])
@@ -888,8 +888,8 @@ LABEL_26:
       {
         v33 = v6;
         v34 = v5;
-        v35 = v3;
-        v11 = [(NSMutableDictionary *)self->_observers allValues];
+        v35 = _readAllAssets;
+        allValues = [(NSMutableDictionary *)self->_observers allValues];
         v12 = [v7 copy];
         lastObservationsSorted = self->_lastObservationsSorted;
         self->_lastObservationsSorted = v12;
@@ -908,7 +908,7 @@ LABEL_26:
           self->_lastIndeterminateObservationsSorted = v15;
         }
 
-        v17 = self;
+        selfCopy = self;
         os_unfair_lock_unlock(&self->_lock);
         v18 = _LTOSLogAssets();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -925,7 +925,7 @@ LABEL_26:
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v22 = v11;
+        v22 = allValues;
         v23 = [v22 countByEnumeratingWithState:&v38 objects:v45 count:16];
         if (v23)
         {
@@ -970,7 +970,7 @@ LABEL_26:
                   v31 = v7;
                 }
 
-                [(_LTDLanguageAssetCache *)v17 notify:v27 ofObservations:v31];
+                [(_LTDLanguageAssetCache *)selfCopy notify:v27 ofObservations:v31];
               }
             }
 
@@ -981,7 +981,7 @@ LABEL_26:
         }
 
         v5 = v34;
-        v3 = v35;
+        _readAllAssets = v35;
         v6 = v33;
       }
     }
@@ -1009,14 +1009,14 @@ LABEL_26:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notify:(id)a3 ofObservations:(id)a4
+- (void)notify:(id)notify ofObservations:(id)observations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_LTDLanguageAssetCache *)self observationFilterConditions];
-  v9 = [v8 supportedLocalesSubsetForTask:{objc_msgSend(v6, "taskHint")}];
+  notifyCopy = notify;
+  observationsCopy = observations;
+  observationFilterConditions = [(_LTDLanguageAssetCache *)self observationFilterConditions];
+  v9 = [observationFilterConditions supportedLocalesSubsetForTask:{objc_msgSend(notifyCopy, "taskHint")}];
 
-  v10 = v7;
+  v10 = observationsCopy;
   v11 = v10;
   if ([v9 count])
   {
@@ -1028,20 +1028,20 @@ LABEL_26:
     v11 = [v10 lt_filterUsingBlock:v13];
   }
 
-  v12 = [v6 observations];
-  (v12)[2](v12, v11);
+  observations = [notifyCopy observations];
+  (observations)[2](observations, v11);
 }
 
-- (void)setInitialObservationsForIdentifiers:(id)a3
+- (void)setInitialObservationsForIdentifiers:(id)identifiers
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   os_unfair_lock_lock(&self->_lock);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v4;
+  v5 = identifiersCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -1063,8 +1063,8 @@ LABEL_26:
           v12 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:v10];
           v11 = [objc_alloc(MEMORY[0x277CE1B00]) initWithLocale:v12 state:3];
           cache = self->_cache;
-          v14 = [v11 ltIdentifier];
-          [(NSMutableDictionary *)cache setObject:v11 forKeyedSubscript:v14];
+          ltIdentifier = [v11 ltIdentifier];
+          [(NSMutableDictionary *)cache setObject:v11 forKeyedSubscript:ltIdentifier];
         }
       }
 

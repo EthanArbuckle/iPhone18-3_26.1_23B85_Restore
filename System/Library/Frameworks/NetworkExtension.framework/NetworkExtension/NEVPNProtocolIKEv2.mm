@@ -1,14 +1,14 @@
 @interface NEVPNProtocolIKEv2
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
 - (BOOL)needToUpdateKeychain;
-- (NEVPNProtocolIKEv2)initWithCoder:(id)a3;
+- (NEVPNProtocolIKEv2)initWithCoder:(id)coder;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithPluginType:(void *)a1;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithPluginType:(void *)type;
 - (void)setDefaultsForUIConfiguration;
-- (void)setPluginType:(void *)a1;
-- (void)syncWithKeychainInDomain:(int64_t)a3 configuration:(id)a4 suffix:(id)a5;
+- (void)setPluginType:(void *)type;
+- (void)syncWithKeychainInDomain:(int64_t)domain configuration:(id)configuration suffix:(id)suffix;
 @end
 
 @implementation NEVPNProtocolIKEv2
@@ -33,8 +33,8 @@
 
   if (v7)
   {
-    v8 = [v7 data];
-    v3 = [v8 length] != 0;
+    data = [v7 data];
+    v3 = [data length] != 0;
   }
 
   else
@@ -45,13 +45,13 @@
   return v3;
 }
 
-- (void)syncWithKeychainInDomain:(int64_t)a3 configuration:(id)a4 suffix:(id)a5
+- (void)syncWithKeychainInDomain:(int64_t)domain configuration:(id)configuration suffix:(id)suffix
 {
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  suffixCopy = suffix;
   v17.receiver = self;
   v17.super_class = NEVPNProtocolIKEv2;
-  [(NEVPNProtocolIPSec *)&v17 syncWithKeychainInDomain:a3 configuration:v8 suffix:v9];
+  [(NEVPNProtocolIPSec *)&v17 syncWithKeychainInDomain:domain configuration:configurationCopy suffix:suffixCopy];
   Property = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
   v12 = Property;
   if (Property)
@@ -61,11 +61,11 @@
 
   v13 = Property;
 
-  if (v13 && [v13 domain] == a3)
+  if (v13 && [v13 domain] == domain)
   {
-    if (v9)
+    if (suffixCopy)
     {
-      v14 = [v9 stringByAppendingString:@".PPK"];
+      v14 = [suffixCopy stringByAppendingString:@".PPK"];
     }
 
     else
@@ -73,9 +73,9 @@
       v14 = @"PPK";
     }
 
-    v15 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-    v16 = [v15 identifier];
-    [v13 syncUsingConfiguration:v8 accountName:v16 passwordType:2 identifierSuffix:v14];
+    ppkConfiguration = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+    identifier = [ppkConfiguration identifier];
+    [v13 syncUsingConfiguration:configurationCopy accountName:identifier passwordType:2 identifierSuffix:v14];
   }
 }
 
@@ -83,10 +83,10 @@
 {
   v50.receiver = self;
   v50.super_class = NEVPNProtocolIKEv2;
-  v3 = [(NEVPNProtocolIPSec *)&v50 copyLegacyDictionary];
-  if (!v3)
+  copyLegacyDictionary = [(NEVPNProtocolIPSec *)&v50 copyLegacyDictionary];
+  if (!copyLegacyDictionary)
   {
-    return v3;
+    return copyLegacyDictionary;
   }
 
   if ([(NEVPNProtocolIKEv2 *)self deadPeerDetectionRate])
@@ -117,31 +117,31 @@
     v4 = kNEIKEv2DeadPeerDetectionRateNoneValue;
   }
 
-  [v3 setObject:*v4 forKeyedSubscript:@"DeadPeerDetectionRate"];
+  [copyLegacyDictionary setObject:*v4 forKeyedSubscript:@"DeadPeerDetectionRate"];
 LABEL_11:
-  v5 = [(NEVPNProtocolIKEv2 *)self serverCertificateIssuerCommonName];
+  serverCertificateIssuerCommonName = [(NEVPNProtocolIKEv2 *)self serverCertificateIssuerCommonName];
 
-  if (v5)
+  if (serverCertificateIssuerCommonName)
   {
-    v6 = [(NEVPNProtocolIKEv2 *)self serverCertificateIssuerCommonName];
-    [v3 setObject:v6 forKeyedSubscript:@"ServerCertificateIssuerCommonName"];
+    serverCertificateIssuerCommonName2 = [(NEVPNProtocolIKEv2 *)self serverCertificateIssuerCommonName];
+    [copyLegacyDictionary setObject:serverCertificateIssuerCommonName2 forKeyedSubscript:@"ServerCertificateIssuerCommonName"];
   }
 
-  v7 = [(NEVPNProtocolIKEv2 *)self serverCertificateCommonName];
+  serverCertificateCommonName = [(NEVPNProtocolIKEv2 *)self serverCertificateCommonName];
 
-  if (v7)
+  if (serverCertificateCommonName)
   {
-    v8 = [(NEVPNProtocolIKEv2 *)self serverCertificateCommonName];
-    [v3 setObject:v8 forKeyedSubscript:@"ServerCertificateCommonName"];
+    serverCertificateCommonName2 = [(NEVPNProtocolIKEv2 *)self serverCertificateCommonName];
+    [copyLegacyDictionary setObject:serverCertificateCommonName2 forKeyedSubscript:@"ServerCertificateCommonName"];
   }
 
-  v9 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
-  v10 = [(NEVPNIKEv2SecurityAssociationParameters *)v9 copyDictionary];
-  [v3 setObject:v10 forKeyedSubscript:@"IKESecurityAssociationParameters"];
+  iKESecurityAssociationParameters = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
+  copyDictionary = [(NEVPNIKEv2SecurityAssociationParameters *)iKESecurityAssociationParameters copyDictionary];
+  [copyLegacyDictionary setObject:copyDictionary forKeyedSubscript:@"IKESecurityAssociationParameters"];
 
-  v11 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
-  v12 = [(NEVPNIKEv2SecurityAssociationParameters *)v11 copyDictionary];
-  [v3 setObject:v12 forKeyedSubscript:@"ChildSecurityAssociationParameters"];
+  childSecurityAssociationParameters = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
+  copyDictionary2 = [(NEVPNIKEv2SecurityAssociationParameters *)childSecurityAssociationParameters copyDictionary];
+  [copyLegacyDictionary setObject:copyDictionary2 forKeyedSubscript:@"ChildSecurityAssociationParameters"];
 
   if ([(NEVPNProtocolIKEv2 *)self certificateType]== NEVPNIKEv2CertificateTypeRSA)
   {
@@ -173,7 +173,7 @@ LABEL_11:
     v13 = kNEIKEv2CertificateTypeEd25519Value;
   }
 
-  [v3 setObject:*v13 forKeyedSubscript:@"CertificateType"];
+  [copyLegacyDictionary setObject:*v13 forKeyedSubscript:@"CertificateType"];
 LABEL_26:
   if ([(NEVPNProtocolIPSec *)self useExtendedAuthentication])
   {
@@ -185,58 +185,58 @@ LABEL_26:
     v14 = &unk_1F38BA700;
   }
 
-  [v3 setObject:v14 forKeyedSubscript:@"ExtendedAuthEnabled"];
+  [copyLegacyDictionary setObject:v14 forKeyedSubscript:@"ExtendedAuthEnabled"];
   if ([(NEVPNProtocolIKEv2 *)self useConfigurationAttributeInternalIPSubnet])
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPNProtocolIKEv2 useConfigurationAttributeInternalIPSubnet](self, "useConfigurationAttributeInternalIPSubnet")}];
-    [v3 setObject:v15 forKeyedSubscript:@"UseConfigurationAttributeInternalIPSubnet"];
+    [copyLegacyDictionary setObject:v15 forKeyedSubscript:@"UseConfigurationAttributeInternalIPSubnet"];
   }
 
   if ([(NEVPNProtocolIKEv2 *)self disableMOBIKE])
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPNProtocolIKEv2 disableMOBIKE](self, "disableMOBIKE")}];
-    [v3 setObject:v16 forKeyedSubscript:@"DisableMOBIKE"];
+    [copyLegacyDictionary setObject:v16 forKeyedSubscript:@"DisableMOBIKE"];
   }
 
   if ([(NEVPNProtocolIKEv2 *)self disableRedirect])
   {
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPNProtocolIKEv2 disableRedirect](self, "disableRedirect")}];
-    [v3 setObject:v17 forKeyedSubscript:@"DisableRedirect"];
+    [copyLegacyDictionary setObject:v17 forKeyedSubscript:@"DisableRedirect"];
   }
 
   if ([(NEVPNProtocolIKEv2 *)self enablePFS])
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPNProtocolIKEv2 enablePFS](self, "enablePFS")}];
-    [v3 setObject:v18 forKeyedSubscript:@"EnablePFS"];
+    [copyLegacyDictionary setObject:v18 forKeyedSubscript:@"EnablePFS"];
   }
 
   v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPNProtocolIKEv2 allowPostQuantumKeyExchangeFallback](self, "allowPostQuantumKeyExchangeFallback")}];
-  [v3 setObject:v19 forKeyedSubscript:@"AllowPostQuantumKeyExchangeFallback"];
+  [copyLegacyDictionary setObject:v19 forKeyedSubscript:@"AllowPostQuantumKeyExchangeFallback"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithInt:{-[NEVPNProtocolIKEv2 natKeepAliveOffloadEnable](self, "natKeepAliveOffloadEnable")}];
-  [v3 setObject:v20 forKeyedSubscript:@"NATKeepAliveOffloadEnable"];
+  [copyLegacyDictionary setObject:v20 forKeyedSubscript:@"NATKeepAliveOffloadEnable"];
 
   if ([(NEVPNProtocolIKEv2 *)self natKeepAliveOffloadInterval])
   {
     v21 = [MEMORY[0x1E696AD98] numberWithInt:{-[NEVPNProtocolIKEv2 natKeepAliveOffloadInterval](self, "natKeepAliveOffloadInterval")}];
-    [v3 setObject:v21 forKeyedSubscript:@"NATKeepAliveInterval"];
+    [copyLegacyDictionary setObject:v21 forKeyedSubscript:@"NATKeepAliveInterval"];
   }
 
   if ([(NEVPNProtocolIKEv2 *)self disableMOBIKERetryOnWake])
   {
     v22 = [MEMORY[0x1E696AD98] numberWithInt:{-[NEVPNProtocolIKEv2 disableMOBIKERetryOnWake](self, "disableMOBIKERetryOnWake")}];
-    [v3 setObject:v22 forKeyedSubscript:@"DisableMOBIKERetryOnWake"];
+    [copyLegacyDictionary setObject:v22 forKeyedSubscript:@"DisableMOBIKERetryOnWake"];
   }
 
   if ([(NEVPNProtocolIKEv2 *)self enableRevocationCheck])
   {
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPNProtocolIKEv2 enableRevocationCheck](self, "enableRevocationCheck")}];
-    [v3 setObject:v23 forKeyedSubscript:@"EnableCertificateRevocationCheck"];
+    [copyLegacyDictionary setObject:v23 forKeyedSubscript:@"EnableCertificateRevocationCheck"];
 
     if ([(NEVPNProtocolIKEv2 *)self strictRevocationCheck])
     {
       v24 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPNProtocolIKEv2 strictRevocationCheck](self, "strictRevocationCheck")}];
-      [v3 setObject:v24 forKeyedSubscript:@"StrictCertificateRevocationCheck"];
+      [copyLegacyDictionary setObject:v24 forKeyedSubscript:@"StrictCertificateRevocationCheck"];
     }
   }
 
@@ -260,13 +260,13 @@ LABEL_26:
     v25 = kNEIKEv2TLSVersion1_2Value;
   }
 
-  [v3 setObject:*v25 forKeyedSubscript:@"TLSMinimumVersion"];
+  [copyLegacyDictionary setObject:*v25 forKeyedSubscript:@"TLSMinimumVersion"];
 LABEL_51:
   if ([(NEVPNProtocolIKEv2 *)self maximumTLSVersion]== NEVPNIKEv2TLSVersion1_0)
   {
     v26 = kNEIKEv2TLSVersion1_0Value;
 LABEL_57:
-    [v3 setObject:*v26 forKeyedSubscript:@"TLSMaximumVersion"];
+    [copyLegacyDictionary setObject:*v26 forKeyedSubscript:@"TLSMaximumVersion"];
     goto LABEL_58;
   }
 
@@ -286,18 +286,18 @@ LABEL_58:
   if ([(NEVPNProtocolIKEv2 *)self enableFallback])
   {
     v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[NEVPNProtocolIKEv2 enableFallback](self, "enableFallback")}];
-    [v3 setObject:v27 forKeyedSubscript:@"EnableFallback"];
+    [copyLegacyDictionary setObject:v27 forKeyedSubscript:@"EnableFallback"];
   }
 
   if ([(NEVPNProtocolIKEv2 *)self mtu])
   {
     v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NEVPNProtocolIKEv2 mtu](self, "mtu")}];
-    [v3 setObject:v28 forKeyedSubscript:@"MTU"];
+    [copyLegacyDictionary setObject:v28 forKeyedSubscript:@"MTU"];
   }
 
-  v29 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+  ppkConfiguration = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
 
-  if (v29)
+  if (ppkConfiguration)
   {
     Property = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
     v32 = Property;
@@ -306,44 +306,44 @@ LABEL_58:
       Property = objc_getProperty(Property, v31, 32, 1);
     }
 
-    v33 = [Property data];
+    data = [Property data];
 
-    if (v33)
+    if (data)
     {
-      v34 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-      v36 = v34;
-      if (v34)
+      ppkConfiguration2 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+      v36 = ppkConfiguration2;
+      if (ppkConfiguration2)
       {
-        v34 = objc_getProperty(v34, v35, 32, 1);
+        ppkConfiguration2 = objc_getProperty(ppkConfiguration2, v35, 32, 1);
       }
 
-      v37 = [v34 data];
-      [v3 setObject:v37 forKeyedSubscript:@"PPK"];
+      data2 = [ppkConfiguration2 data];
+      [copyLegacyDictionary setObject:data2 forKeyedSubscript:@"PPK"];
     }
 
-    v38 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-    v39 = [v38 identifier];
-    v40 = [v39 copy];
-    [v3 setObject:v40 forKeyedSubscript:@"PPKIdentifier"];
+    ppkConfiguration3 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+    identifier = [ppkConfiguration3 identifier];
+    v40 = [identifier copy];
+    [copyLegacyDictionary setObject:v40 forKeyedSubscript:@"PPKIdentifier"];
 
     v41 = MEMORY[0x1E696AD98];
-    v42 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-    v43 = [v41 numberWithBool:{objc_msgSend(v42, "isMandatory")}];
-    [v3 setObject:v43 forKeyedSubscript:@"PPKMandatory"];
+    ppkConfiguration4 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+    v43 = [v41 numberWithBool:{objc_msgSend(ppkConfiguration4, "isMandatory")}];
+    [copyLegacyDictionary setObject:v43 forKeyedSubscript:@"PPKMandatory"];
 
-    v44 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-    v45 = [v44 keychainReference];
+    ppkConfiguration5 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+    keychainReference = [ppkConfiguration5 keychainReference];
 
-    if (v45)
+    if (keychainReference)
     {
-      v46 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-      v47 = [v46 keychainReference];
-      v48 = [v47 copy];
-      [v3 setObject:v48 forKeyedSubscript:@"PPKReference"];
+      ppkConfiguration6 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+      keychainReference2 = [ppkConfiguration6 keychainReference];
+      v48 = [keychainReference2 copy];
+      [copyLegacyDictionary setObject:v48 forKeyedSubscript:@"PPKReference"];
     }
   }
 
-  return v3;
+  return copyLegacyDictionary;
 }
 
 - (void)setDefaultsForUIConfiguration
@@ -408,15 +408,15 @@ LABEL_58:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v52 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorsCopy = errors;
   v49.receiver = self;
   v49.super_class = NEVPNProtocolIKEv2;
-  v5 = [(NEVPNProtocolIPSec *)&v49 checkValidityAndCollectErrors:v4];
-  v6 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
-  v7 = [v6 count];
+  v5 = [(NEVPNProtocolIPSec *)&v49 checkValidityAndCollectErrors:errorsCopy];
+  iKESecurityAssociationParametersArray = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
+  v7 = [iKESecurityAssociationParametersArray count];
 
   if (v7)
   {
@@ -424,8 +424,8 @@ LABEL_58:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v8 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
-    v9 = [v8 countByEnumeratingWithState:&v45 objects:v51 count:16];
+    iKESecurityAssociationParametersArray2 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
+    v9 = [iKESecurityAssociationParametersArray2 countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v9)
     {
       v10 = v9;
@@ -436,13 +436,13 @@ LABEL_58:
         {
           if (*v46 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(iKESecurityAssociationParametersArray2);
           }
 
-          v5 &= [*(*(&v45 + 1) + 8 * i) checkValidityAndCollectErrors:v4];
+          v5 &= [*(*(&v45 + 1) + 8 * i) checkValidityAndCollectErrors:errorsCopy];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v45 objects:v51 count:16];
+        v10 = [iKESecurityAssociationParametersArray2 countByEnumeratingWithState:&v45 objects:v51 count:16];
       }
 
       while (v10);
@@ -451,14 +451,14 @@ LABEL_58:
 
   else
   {
-    v13 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
-    v14 = [v13 checkValidityAndCollectErrors:v4];
+    iKESecurityAssociationParameters = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
+    v14 = [iKESecurityAssociationParameters checkValidityAndCollectErrors:errorsCopy];
 
     v5 &= v14;
   }
 
-  v15 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
-  v16 = [v15 count];
+  childSecurityAssociationParametersArray = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
+  v16 = [childSecurityAssociationParametersArray count];
 
   if (v16)
   {
@@ -466,8 +466,8 @@ LABEL_58:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v17 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
-    v18 = [v17 countByEnumeratingWithState:&v41 objects:v50 count:16];
+    childSecurityAssociationParametersArray2 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
+    v18 = [childSecurityAssociationParametersArray2 countByEnumeratingWithState:&v41 objects:v50 count:16];
     if (v18)
     {
       v19 = v18;
@@ -478,13 +478,13 @@ LABEL_58:
         {
           if (*v42 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(childSecurityAssociationParametersArray2);
           }
 
-          v5 &= [*(*(&v41 + 1) + 8 * j) checkValidityAndCollectErrors:v4];
+          v5 &= [*(*(&v41 + 1) + 8 * j) checkValidityAndCollectErrors:errorsCopy];
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v41 objects:v50 count:16];
+        v19 = [childSecurityAssociationParametersArray2 countByEnumeratingWithState:&v41 objects:v50 count:16];
       }
 
       while (v19);
@@ -493,13 +493,13 @@ LABEL_58:
 
   else
   {
-    v22 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
-    v23 = [v22 checkValidityAndCollectErrors:v4];
+    childSecurityAssociationParameters = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
+    v23 = [childSecurityAssociationParameters checkValidityAndCollectErrors:errorsCopy];
 
     LOBYTE(v5) = v23 & v5;
   }
 
-  v24 = v4;
+  v24 = errorsCopy;
   if (self)
   {
     if (!self->_strictAlgorithmSelection)
@@ -507,22 +507,22 @@ LABEL_58:
       goto LABEL_32;
     }
 
-    v25 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
-    v26 = [v25 encryptionAlgorithm];
+    iKESecurityAssociationParameters2 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
+    encryptionAlgorithm = [iKESecurityAssociationParameters2 encryptionAlgorithm];
 
-    v27 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
-    v28 = [v27 encryptionAlgorithm];
+    childSecurityAssociationParameters2 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
+    encryptionAlgorithm2 = [childSecurityAssociationParameters2 encryptionAlgorithm];
 
-    v29 = (v26 - 2) > 5 ? 0 : qword_1BAA4FB98[v26 - 2];
-    v30 = (v28 - 2) > 5 ? 0 : qword_1BAA4FB98[v28 - 2];
+    v29 = (encryptionAlgorithm - 2) > 5 ? 0 : qword_1BAA4FB98[encryptionAlgorithm - 2];
+    v30 = (encryptionAlgorithm2 - 2) > 5 ? 0 : qword_1BAA4FB98[encryptionAlgorithm2 - 2];
     if (v29 >= v30)
     {
       goto LABEL_32;
     }
 
     v31 = MEMORY[0x1E696AEC0];
-    StringFromIKEv2EncryptionAlgorithm = createStringFromIKEv2EncryptionAlgorithm(v26);
-    v33 = createStringFromIKEv2EncryptionAlgorithm(v28);
+    StringFromIKEv2EncryptionAlgorithm = createStringFromIKEv2EncryptionAlgorithm(encryptionAlgorithm);
+    v33 = createStringFromIKEv2EncryptionAlgorithm(encryptionAlgorithm2);
     v34 = [v31 stringWithFormat:@"IKE SA encryption algorithm (%@) is weaker than Child SA encryption algorithm (%@)", StringFromIKEv2EncryptionAlgorithm, v33];
     [NEConfiguration addError:v34 toList:v24];
   }
@@ -530,12 +530,12 @@ LABEL_58:
   LOBYTE(v5) = 0;
 LABEL_32:
 
-  v35 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-  if (v35)
+  ppkConfiguration = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+  if (ppkConfiguration)
   {
-    v36 = v35;
-    v37 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-    v38 = [v37 checkValidityAndCollectErrors:v24];
+    v36 = ppkConfiguration;
+    ppkConfiguration2 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+    v38 = [ppkConfiguration2 checkValidityAndCollectErrors:v24];
 
     LOBYTE(v5) = v38 & v5;
   }
@@ -544,49 +544,49 @@ LABEL_32:
   return v5 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31.receiver = self;
   v31.super_class = NEVPNProtocolIKEv2;
-  v4 = [(NEVPNProtocolIPSec *)&v31 copyWithZone:a3];
-  v5 = [(NEVPNProtocolIKEv2 *)self pluginType];
-  [(NEVPNProtocolIKEv2 *)v4 setPluginType:v5];
+  v4 = [(NEVPNProtocolIPSec *)&v31 copyWithZone:zone];
+  pluginType = [(NEVPNProtocolIKEv2 *)self pluginType];
+  [(NEVPNProtocolIKEv2 *)v4 setPluginType:pluginType];
 
   [v4 setDeadPeerDetectionRate:{-[NEVPNProtocolIKEv2 deadPeerDetectionRate](self, "deadPeerDetectionRate")}];
-  v6 = [(NEVPNProtocolIKEv2 *)self serverCertificateIssuerCommonName];
-  [v4 setServerCertificateIssuerCommonName:v6];
+  serverCertificateIssuerCommonName = [(NEVPNProtocolIKEv2 *)self serverCertificateIssuerCommonName];
+  [v4 setServerCertificateIssuerCommonName:serverCertificateIssuerCommonName];
 
-  v7 = [(NEVPNProtocolIKEv2 *)self serverCertificateCommonName];
-  [v4 setServerCertificateCommonName:v7];
+  serverCertificateCommonName = [(NEVPNProtocolIKEv2 *)self serverCertificateCommonName];
+  [v4 setServerCertificateCommonName:serverCertificateCommonName];
 
-  v8 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
-  v9 = [v8 copy];
+  iKESecurityAssociationParameters = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
+  v9 = [iKESecurityAssociationParameters copy];
   v10 = v4[37];
   v4[37] = v9;
 
-  v11 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
-  v12 = [v11 copy];
+  childSecurityAssociationParameters = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
+  v12 = [childSecurityAssociationParameters copy];
   v13 = v4[38];
   v4[38] = v12;
 
-  v14 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
+  iKESecurityAssociationParametersArray = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
 
-  if (v14)
+  if (iKESecurityAssociationParametersArray)
   {
     v15 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v16 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
-    v17 = [v15 initWithArray:v16 copyItems:1];
+    iKESecurityAssociationParametersArray2 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
+    v17 = [v15 initWithArray:iKESecurityAssociationParametersArray2 copyItems:1];
     v18 = v4[44];
     v4[44] = v17;
   }
 
-  v19 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
+  childSecurityAssociationParametersArray = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
 
-  if (v19)
+  if (childSecurityAssociationParametersArray)
   {
     v20 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v21 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
-    v22 = [v20 initWithArray:v21 copyItems:1];
+    childSecurityAssociationParametersArray2 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
+    v22 = [v20 initWithArray:childSecurityAssociationParametersArray2 copyItems:1];
     v23 = v4[45];
     v4[45] = v22;
   }
@@ -614,9 +614,9 @@ LABEL_32:
   *(v4 + 63) = [(NEVPNProtocolIKEv2 *)self natKeepAliveOffloadEnable];
   *(v4 + 64) = [(NEVPNProtocolIKEv2 *)self natKeepAliveOffloadInterval];
   *(v4 + 65) = [(NEVPNProtocolIKEv2 *)self disableMOBIKERetryOnWake];
-  v25 = [(NEVPNProtocolIKEv2 *)self providerBundleIdentifier];
+  providerBundleIdentifier = [(NEVPNProtocolIKEv2 *)self providerBundleIdentifier];
   v26 = v4[46];
-  v4[46] = v25;
+  v4[46] = providerBundleIdentifier;
 
   *(v4 + 245) = [(NEVPNProtocolIKEv2 *)self enableRevocationCheck];
   *(v4 + 246) = [(NEVPNProtocolIKEv2 *)self strictRevocationCheck];
@@ -626,156 +626,156 @@ LABEL_32:
   *(v4 + 251) = [(NEVPNProtocolIKEv2 *)self disableInitialContact];
   *(v4 + 247) = [(NEVPNProtocolIKEv2 *)self enableFallback];
   v4[41] = [(NEVPNProtocolIKEv2 *)self mtu];
-  v27 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-  v28 = [v27 copy];
+  ppkConfiguration = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+  v28 = [ppkConfiguration copy];
   v29 = v4[42];
   v4[42] = v28;
 
   return v4;
 }
 
-- (void)setPluginType:(void *)a1
+- (void)setPluginType:(void *)type
 {
   v3 = a2;
-  if (a1)
+  if (type)
   {
     v14 = v3;
     v4 = [v3 copy];
-    v5 = a1[43];
-    a1[43] = v4;
+    v5 = type[43];
+    type[43] = v4;
 
-    v7 = a1[10];
+    v7 = type[10];
     if (v14)
     {
       if (v7 != 1)
       {
-        a1[10] = 1;
-        v8 = objc_getProperty(a1, v6, 96, 1);
+        type[10] = 1;
+        v8 = objc_getProperty(type, v6, 96, 1);
         [v8 setDomain:1];
 
-        v9 = [a1 passwordKeychainItem];
-        [v9 setDomain:1];
+        passwordKeychainItem = [type passwordKeychainItem];
+        [passwordKeychainItem setDomain:1];
       }
 
       v10 = @"com.apple.managed.vpn.shared";
-      v11 = a1;
+      typeCopy2 = type;
     }
 
     else
     {
       if (v7)
       {
-        a1[10] = 0;
-        v12 = objc_getProperty(a1, v6, 96, 1);
+        type[10] = 0;
+        v12 = objc_getProperty(type, v6, 96, 1);
         [v12 setDomain:0];
 
-        v13 = [a1 passwordKeychainItem];
-        [v13 setDomain:0];
+        passwordKeychainItem2 = [type passwordKeychainItem];
+        [passwordKeychainItem2 setDomain:0];
       }
 
-      v11 = a1;
+      typeCopy2 = type;
       v10 = 0;
     }
 
-    objc_setProperty_atomic(v11, v6, v10, 88);
+    objc_setProperty_atomic(typeCopy2, v6, v10, 88);
     v3 = v14;
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = NEVPNProtocolIKEv2;
-  [(NEVPNProtocolIPSec *)&v15 encodeWithCoder:v4];
-  [v4 encodeInt32:-[NEVPNProtocolIKEv2 deadPeerDetectionRate](self forKey:{"deadPeerDetectionRate"), @"DeadPeerDetectionRate"}];
-  v5 = [(NEVPNProtocolIKEv2 *)self serverCertificateIssuerCommonName];
-  [v4 encodeObject:v5 forKey:@"ServerCertificateIssuer"];
+  [(NEVPNProtocolIPSec *)&v15 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:-[NEVPNProtocolIKEv2 deadPeerDetectionRate](self forKey:{"deadPeerDetectionRate"), @"DeadPeerDetectionRate"}];
+  serverCertificateIssuerCommonName = [(NEVPNProtocolIKEv2 *)self serverCertificateIssuerCommonName];
+  [coderCopy encodeObject:serverCertificateIssuerCommonName forKey:@"ServerCertificateIssuer"];
 
-  v6 = [(NEVPNProtocolIKEv2 *)self serverCertificateCommonName];
-  [v4 encodeObject:v6 forKey:@"ServerCertificateCommonName"];
+  serverCertificateCommonName = [(NEVPNProtocolIKEv2 *)self serverCertificateCommonName];
+  [coderCopy encodeObject:serverCertificateCommonName forKey:@"ServerCertificateCommonName"];
 
-  v7 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
-  [v4 encodeObject:v7 forKey:@"IKESAParameters"];
+  iKESecurityAssociationParameters = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParameters];
+  [coderCopy encodeObject:iKESecurityAssociationParameters forKey:@"IKESAParameters"];
 
-  v8 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
-  [v4 encodeObject:v8 forKey:@"ChildSAParameters"];
+  childSecurityAssociationParameters = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParameters];
+  [coderCopy encodeObject:childSecurityAssociationParameters forKey:@"ChildSAParameters"];
 
-  v9 = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
-  [v4 encodeObject:v9 forKey:@"IKESAParametersArray"];
+  iKESecurityAssociationParametersArray = [(NEVPNProtocolIKEv2 *)self IKESecurityAssociationParametersArray];
+  [coderCopy encodeObject:iKESecurityAssociationParametersArray forKey:@"IKESAParametersArray"];
 
-  v10 = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
-  [v4 encodeObject:v10 forKey:@"ChildSAParametersArray"];
+  childSecurityAssociationParametersArray = [(NEVPNProtocolIKEv2 *)self childSecurityAssociationParametersArray];
+  [coderCopy encodeObject:childSecurityAssociationParametersArray forKey:@"ChildSAParametersArray"];
 
   if (self)
   {
-    [v4 encodeBool:self->_strictAlgorithmSelection forKey:@"StrictAlgorithmSelection"];
+    [coderCopy encodeBool:self->_strictAlgorithmSelection forKey:@"StrictAlgorithmSelection"];
     wakeForRekey = self->_wakeForRekey;
   }
 
   else
   {
-    [v4 encodeBool:0 forKey:@"StrictAlgorithmSelection"];
+    [coderCopy encodeBool:0 forKey:@"StrictAlgorithmSelection"];
     wakeForRekey = 0;
   }
 
-  [v4 encodeBool:wakeForRekey forKey:@"WakeForRekey"];
-  [v4 encodeInt32:-[NEVPNProtocolIKEv2 certificateType](self forKey:{"certificateType"), @"CertificateType"}];
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 useConfigurationAttributeInternalIPSubnet](self forKey:{"useConfigurationAttributeInternalIPSubnet"), @"UseConfigurationAttributeInternalIPSubnet"}];
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 disableMOBIKE](self forKey:{"disableMOBIKE"), @"DisableMOBIKE"}];
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 disableRedirect](self forKey:{"disableRedirect"), @"DisableRedirect"}];
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 enablePFS](self forKey:{"enablePFS"), @"EnablePFS"}];
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 allowPostQuantumKeyExchangeFallback](self forKey:{"allowPostQuantumKeyExchangeFallback"), @"AllowPostQuantumKeyExchangeMethodFallback"}];
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 opportunisticPFS](self forKey:{"opportunisticPFS"), @"OpportunisticPFS"}];
-  [v4 encodeInt32:-[NEVPNProtocolIKEv2 natKeepAliveOffloadEnable](self forKey:{"natKeepAliveOffloadEnable"), @"NATKeepAliveOffloadEnable"}];
-  [v4 encodeInt32:-[NEVPNProtocolIKEv2 natKeepAliveOffloadInterval](self forKey:{"natKeepAliveOffloadInterval"), @"NATKeepAliveOffloadInterval"}];
-  [v4 encodeInt32:-[NEVPNProtocolIKEv2 disableMOBIKERetryOnWake](self forKey:{"disableMOBIKERetryOnWake"), @"DisableMOBIKERetryOnWake"}];
-  v12 = [(NEVPNProtocolIKEv2 *)self providerBundleIdentifier];
-  [v4 encodeObject:v12 forKey:@"ProviderBundleIdentifier"];
+  [coderCopy encodeBool:wakeForRekey forKey:@"WakeForRekey"];
+  [coderCopy encodeInt32:-[NEVPNProtocolIKEv2 certificateType](self forKey:{"certificateType"), @"CertificateType"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 useConfigurationAttributeInternalIPSubnet](self forKey:{"useConfigurationAttributeInternalIPSubnet"), @"UseConfigurationAttributeInternalIPSubnet"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 disableMOBIKE](self forKey:{"disableMOBIKE"), @"DisableMOBIKE"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 disableRedirect](self forKey:{"disableRedirect"), @"DisableRedirect"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 enablePFS](self forKey:{"enablePFS"), @"EnablePFS"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 allowPostQuantumKeyExchangeFallback](self forKey:{"allowPostQuantumKeyExchangeFallback"), @"AllowPostQuantumKeyExchangeMethodFallback"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 opportunisticPFS](self forKey:{"opportunisticPFS"), @"OpportunisticPFS"}];
+  [coderCopy encodeInt32:-[NEVPNProtocolIKEv2 natKeepAliveOffloadEnable](self forKey:{"natKeepAliveOffloadEnable"), @"NATKeepAliveOffloadEnable"}];
+  [coderCopy encodeInt32:-[NEVPNProtocolIKEv2 natKeepAliveOffloadInterval](self forKey:{"natKeepAliveOffloadInterval"), @"NATKeepAliveOffloadInterval"}];
+  [coderCopy encodeInt32:-[NEVPNProtocolIKEv2 disableMOBIKERetryOnWake](self forKey:{"disableMOBIKERetryOnWake"), @"DisableMOBIKERetryOnWake"}];
+  providerBundleIdentifier = [(NEVPNProtocolIKEv2 *)self providerBundleIdentifier];
+  [coderCopy encodeObject:providerBundleIdentifier forKey:@"ProviderBundleIdentifier"];
 
-  v13 = [(NEVPNProtocolIKEv2 *)self pluginType];
-  [v4 encodeObject:v13 forKey:@"PluginType"];
+  pluginType = [(NEVPNProtocolIKEv2 *)self pluginType];
+  [coderCopy encodeObject:pluginType forKey:@"PluginType"];
 
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 enableRevocationCheck](self forKey:{"enableRevocationCheck"), @"EnableRevocationCheck"}];
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 strictRevocationCheck](self forKey:{"strictRevocationCheck"), @"StrictRevocationCheck"}];
-  [v4 encodeInt32:-[NEVPNProtocolIKEv2 minimumTLSVersion](self forKey:{"minimumTLSVersion"), @"MinimumTLSVersion"}];
-  [v4 encodeInt32:-[NEVPNProtocolIKEv2 maximumTLSVersion](self forKey:{"maximumTLSVersion"), @"MaximumTLSVersion"}];
-  [v4 encodeInt32:-[NEVPNProtocolIKEv2 tunnelKind](self forKey:{"tunnelKind"), @"TunnelType"}];
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 disableInitialContact](self forKey:{"disableInitialContact"), @"DisableInitialContact"}];
-  [v4 encodeBool:-[NEVPNProtocolIKEv2 enableFallback](self forKey:{"enableFallback"), @"EnableFallback"}];
-  [v4 encodeInt32:-[NEVPNProtocolIKEv2 mtu](self forKey:{"mtu"), @"MTU"}];
-  v14 = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
-  [v4 encodeObject:v14 forKey:@"PPKConfiguration"];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 enableRevocationCheck](self forKey:{"enableRevocationCheck"), @"EnableRevocationCheck"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 strictRevocationCheck](self forKey:{"strictRevocationCheck"), @"StrictRevocationCheck"}];
+  [coderCopy encodeInt32:-[NEVPNProtocolIKEv2 minimumTLSVersion](self forKey:{"minimumTLSVersion"), @"MinimumTLSVersion"}];
+  [coderCopy encodeInt32:-[NEVPNProtocolIKEv2 maximumTLSVersion](self forKey:{"maximumTLSVersion"), @"MaximumTLSVersion"}];
+  [coderCopy encodeInt32:-[NEVPNProtocolIKEv2 tunnelKind](self forKey:{"tunnelKind"), @"TunnelType"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 disableInitialContact](self forKey:{"disableInitialContact"), @"DisableInitialContact"}];
+  [coderCopy encodeBool:-[NEVPNProtocolIKEv2 enableFallback](self forKey:{"enableFallback"), @"EnableFallback"}];
+  [coderCopy encodeInt32:-[NEVPNProtocolIKEv2 mtu](self forKey:{"mtu"), @"MTU"}];
+  ppkConfiguration = [(NEVPNProtocolIKEv2 *)self ppkConfiguration];
+  [coderCopy encodeObject:ppkConfiguration forKey:@"PPKConfiguration"];
 }
 
-- (NEVPNProtocolIKEv2)initWithCoder:(id)a3
+- (NEVPNProtocolIKEv2)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = NEVPNProtocolIKEv2;
-  v5 = [(NEVPNProtocolIPSec *)&v31 initWithCoder:v4];
+  v5 = [(NEVPNProtocolIPSec *)&v31 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_deadPeerDetectionRate = [v4 decodeInt32ForKey:@"DeadPeerDetectionRate"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ServerCertificateIssuer"];
+    v5->_deadPeerDetectionRate = [coderCopy decodeInt32ForKey:@"DeadPeerDetectionRate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ServerCertificateIssuer"];
     serverCertificateIssuerCommonName = v5->_serverCertificateIssuerCommonName;
     v5->_serverCertificateIssuerCommonName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ServerCertificateCommonName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ServerCertificateCommonName"];
     serverCertificateCommonName = v5->_serverCertificateCommonName;
     v5->_serverCertificateCommonName = v8;
 
     v10 = MEMORY[0x1E695DFD8];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"IKESAParametersArray"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"IKESAParametersArray"];
     IKESecurityAssociationParametersArray = v5->_IKESecurityAssociationParametersArray;
     v5->_IKESecurityAssociationParametersArray = v13;
 
     v15 = 0;
     if (!v5->_IKESecurityAssociationParametersArray)
     {
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IKESAParameters"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IKESAParameters"];
     }
 
     IKESecurityAssociationParameters = v5->_IKESecurityAssociationParameters;
@@ -784,48 +784,48 @@ LABEL_32:
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"ChildSAParametersArray"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"ChildSAParametersArray"];
     childSecurityAssociationParametersArray = v5->_childSecurityAssociationParametersArray;
     v5->_childSecurityAssociationParametersArray = v20;
 
     v22 = 0;
     if (!v5->_childSecurityAssociationParametersArray)
     {
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ChildSAParameters"];
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ChildSAParameters"];
     }
 
     childSecurityAssociationParameters = v5->_childSecurityAssociationParameters;
     v5->_childSecurityAssociationParameters = v22;
 
-    v5->_strictAlgorithmSelection = [v4 decodeBoolForKey:@"StrictAlgorithmSelection"];
-    v5->_wakeForRekey = [v4 decodeBoolForKey:@"WakeForRekey"];
-    v5->_certificateType = [v4 decodeInt32ForKey:@"CertificateType"];
-    v5->_useConfigurationAttributeInternalIPSubnet = [v4 decodeBoolForKey:@"UseConfigurationAttributeInternalIPSubnet"];
-    v5->_disableMOBIKE = [v4 decodeBoolForKey:@"DisableMOBIKE"];
-    v5->_disableRedirect = [v4 decodeBoolForKey:@"DisableRedirect"];
-    v5->_enablePFS = [v4 decodeBoolForKey:@"EnablePFS"];
-    v5->_allowPostQuantumKeyExchangeFallback = [v4 decodeBoolForKey:@"AllowPostQuantumKeyExchangeMethodFallback"];
-    v5->_opportunisticPFS = [v4 decodeBoolForKey:@"OpportunisticPFS"];
-    v5->_natKeepAliveOffloadEnable = [v4 decodeInt32ForKey:@"NATKeepAliveOffloadEnable"];
-    v5->_natKeepAliveOffloadInterval = [v4 decodeInt32ForKey:@"NATKeepAliveOffloadInterval"];
-    v5->_disableMOBIKERetryOnWake = [v4 decodeInt32ForKey:@"DisableMOBIKERetryOnWake"];
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProviderBundleIdentifier"];
+    v5->_strictAlgorithmSelection = [coderCopy decodeBoolForKey:@"StrictAlgorithmSelection"];
+    v5->_wakeForRekey = [coderCopy decodeBoolForKey:@"WakeForRekey"];
+    v5->_certificateType = [coderCopy decodeInt32ForKey:@"CertificateType"];
+    v5->_useConfigurationAttributeInternalIPSubnet = [coderCopy decodeBoolForKey:@"UseConfigurationAttributeInternalIPSubnet"];
+    v5->_disableMOBIKE = [coderCopy decodeBoolForKey:@"DisableMOBIKE"];
+    v5->_disableRedirect = [coderCopy decodeBoolForKey:@"DisableRedirect"];
+    v5->_enablePFS = [coderCopy decodeBoolForKey:@"EnablePFS"];
+    v5->_allowPostQuantumKeyExchangeFallback = [coderCopy decodeBoolForKey:@"AllowPostQuantumKeyExchangeMethodFallback"];
+    v5->_opportunisticPFS = [coderCopy decodeBoolForKey:@"OpportunisticPFS"];
+    v5->_natKeepAliveOffloadEnable = [coderCopy decodeInt32ForKey:@"NATKeepAliveOffloadEnable"];
+    v5->_natKeepAliveOffloadInterval = [coderCopy decodeInt32ForKey:@"NATKeepAliveOffloadInterval"];
+    v5->_disableMOBIKERetryOnWake = [coderCopy decodeInt32ForKey:@"DisableMOBIKERetryOnWake"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProviderBundleIdentifier"];
     providerBundleIdentifier = v5->_providerBundleIdentifier;
     v5->_providerBundleIdentifier = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
     pluginType = v5->_pluginType;
     v5->_pluginType = v26;
 
-    v5->_enableRevocationCheck = [v4 decodeBoolForKey:@"EnableRevocationCheck"];
-    v5->_strictRevocationCheck = [v4 decodeBoolForKey:@"StrictRevocationCheck"];
-    v5->_minimumTLSVersion = [v4 decodeInt32ForKey:@"MinimumTLSVersion"];
-    v5->_maximumTLSVersion = [v4 decodeInt32ForKey:@"MaximumTLSVersion"];
-    v5->_tunnelKind = [v4 decodeInt32ForKey:@"TunnelType"];
-    v5->_disableInitialContact = [v4 decodeBoolForKey:@"DisableInitialContact"];
-    v5->_enableFallback = [v4 decodeBoolForKey:@"EnableFallback"];
-    v5->_mtu = [v4 decodeInt32ForKey:@"MTU"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PPKConfiguration"];
+    v5->_enableRevocationCheck = [coderCopy decodeBoolForKey:@"EnableRevocationCheck"];
+    v5->_strictRevocationCheck = [coderCopy decodeBoolForKey:@"StrictRevocationCheck"];
+    v5->_minimumTLSVersion = [coderCopy decodeInt32ForKey:@"MinimumTLSVersion"];
+    v5->_maximumTLSVersion = [coderCopy decodeInt32ForKey:@"MaximumTLSVersion"];
+    v5->_tunnelKind = [coderCopy decodeInt32ForKey:@"TunnelType"];
+    v5->_disableInitialContact = [coderCopy decodeBoolForKey:@"DisableInitialContact"];
+    v5->_enableFallback = [coderCopy decodeBoolForKey:@"EnableFallback"];
+    v5->_mtu = [coderCopy decodeInt32ForKey:@"MTU"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PPKConfiguration"];
     ppkConfiguration = v5->_ppkConfiguration;
     v5->_ppkConfiguration = v28;
   }
@@ -833,53 +833,53 @@ LABEL_32:
   return v5;
 }
 
-- (void)initWithPluginType:(void *)a1
+- (void)initWithPluginType:(void *)type
 {
   v3 = a2;
-  if (a1)
+  if (type)
   {
-    v11.receiver = a1;
+    v11.receiver = type;
     v11.super_class = NEVPNProtocolIKEv2;
     v4 = objc_msgSendSuper2(&v11, sel_initWithType_, 5);
-    a1 = v4;
+    type = v4;
     if (v4)
     {
       [(NEVPNProtocolIKEv2 *)v4 setPluginType:v3];
-      a1[33] = 2;
+      type[33] = 2;
       v5 = objc_alloc_init(NEVPNIKEv2SecurityAssociationParameters);
-      v6 = a1[37];
-      a1[37] = v5;
+      v6 = type[37];
+      type[37] = v5;
 
       v7 = objc_alloc_init(NEVPNIKEv2SecurityAssociationParameters);
-      v8 = a1[38];
-      a1[38] = v7;
+      v8 = type[38];
+      type[38] = v7;
 
-      [a1[37] setLifetimeMinutes:60];
-      [a1[38] setLifetimeMinutes:30];
-      *(a1 + 249) = 0;
-      *(a1 + 248) = 0;
-      a1[36] = 1;
-      *(a1 + 240) = 0;
-      *(a1 + 241) = 0;
-      *(a1 + 242) = 0;
-      *(a1 + 243) = 0;
-      *(a1 + 244) = 0;
-      *(a1 + 250) = 0;
-      *(a1 + 63) = 0;
-      *(a1 + 64) = 0;
-      v9 = a1[46];
-      a1[46] = 0;
+      [type[37] setLifetimeMinutes:60];
+      [type[38] setLifetimeMinutes:30];
+      *(type + 249) = 0;
+      *(type + 248) = 0;
+      type[36] = 1;
+      *(type + 240) = 0;
+      *(type + 241) = 0;
+      *(type + 242) = 0;
+      *(type + 243) = 0;
+      *(type + 244) = 0;
+      *(type + 250) = 0;
+      *(type + 63) = 0;
+      *(type + 64) = 0;
+      v9 = type[46];
+      type[46] = 0;
 
-      *(a1 + 65) = 0;
-      [a1 setDisconnectOnWake:0];
-      [a1 setUseExtendedAuthentication:0];
-      a1[47] = 1;
-      *(a1 + 251) = 0;
-      *(a1 + 247) = 0;
+      *(type + 65) = 0;
+      [type setDisconnectOnWake:0];
+      [type setUseExtendedAuthentication:0];
+      type[47] = 1;
+      *(type + 251) = 0;
+      *(type + 247) = 0;
     }
   }
 
-  return a1;
+  return type;
 }
 
 @end

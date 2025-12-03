@@ -1,16 +1,16 @@
 @interface KNBuildWebVideoStart
-+ (id)localizedMenuString:(int64_t)a3;
-+ (id)thumbnailImageNameForType:(int64_t)a3;
-- (void)addAnimationsTo:(id)a3 context:(id)a4;
++ (id)localizedMenuString:(int64_t)string;
++ (id)thumbnailImageNameForType:(int64_t)type;
+- (void)addAnimationsTo:(id)to context:(id)context;
 @end
 
 @implementation KNBuildWebVideoStart
 
-+ (id)localizedMenuString:(int64_t)a3
++ (id)localizedMenuString:(int64_t)string
 {
   v4 = sub_275DC204C();
   v6 = v4;
-  if (a3 == 1)
+  if (string == 1)
   {
     objc_msgSend_localizedStringForKey_value_table_(v4, v5, @"Load Video *BuildStartWebVideo*", @"Load Video", @"Keynote");
   }
@@ -24,9 +24,9 @@
   return v7;
 }
 
-+ (id)thumbnailImageNameForType:(int64_t)a3
++ (id)thumbnailImageNameForType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     return @"anim-icons-startMovie";
   }
@@ -37,13 +37,13 @@
   }
 }
 
-- (void)addAnimationsTo:(id)a3 context:(id)a4
+- (void)addAnimationsTo:(id)to context:(id)context
 {
   v55[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_textures(v6, v7, v8);
-  v12 = objc_msgSend_animatedBuild(v6, v10, v11);
+  toCopy = to;
+  contextCopy = context;
+  v9 = objc_msgSend_textures(contextCopy, v7, v8);
+  v12 = objc_msgSend_animatedBuild(contextCopy, v10, v11);
   objc_msgSend_duration(v12, v13, v14);
   v16 = v15;
 
@@ -58,7 +58,7 @@
   objc_msgSend_setToValue_(v25, v28, v26);
   objc_msgSend_setDuration_(v25, v29, v30, v16);
   v31 = objc_opt_new();
-  if (objc_msgSend_isMetalRenderer(v6, v32, v33))
+  if (objc_msgSend_isMetalRenderer(contextCopy, v32, v33))
   {
     v55[0] = v18;
     objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v34, v55, 1);
@@ -95,7 +95,7 @@
         }
 
         v47 = objc_msgSend_layer(*(*(&v49 + 1) + 8 * v46), v42, v43, v49);
-        objc_msgSend_setObject_forKey_(v5, v48, v31, v47);
+        objc_msgSend_setObject_forKey_(toCopy, v48, v31, v47);
 
         ++v46;
       }

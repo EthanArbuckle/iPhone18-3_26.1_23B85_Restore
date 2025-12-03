@@ -1,12 +1,12 @@
 @interface CLSVisualUnderstandingServiceClient
 - (CLSVisualUnderstandingServiceClient)init;
-- (CLSVisualUnderstandingServiceClient)initWithVisionCacheURL:(id)a3 error:(id *)a4;
-- (id)deviceOwnerPersonUUIDWithIgnoreContactsLinking:(BOOL)a3;
+- (CLSVisualUnderstandingServiceClient)initWithVisionCacheURL:(id)l error:(id *)error;
+- (id)deviceOwnerPersonUUIDWithIgnoreContactsLinking:(BOOL)linking;
 @end
 
 @implementation CLSVisualUnderstandingServiceClient
 
-- (CLSVisualUnderstandingServiceClient)initWithVisionCacheURL:(id)a3 error:(id *)a4
+- (CLSVisualUnderstandingServiceClient)initWithVisionCacheURL:(id)l error:(id *)error
 {
   v4 = sub_22F989450();
   MEMORY[0x28223BE20](v4 - 8);
@@ -15,13 +15,13 @@
   return CLSVisualUnderstandingServiceClient.init(visionCacheURL:)(v6);
 }
 
-- (id)deviceOwnerPersonUUIDWithIgnoreContactsLinking:(BOOL)a3
+- (id)deviceOwnerPersonUUIDWithIgnoreContactsLinking:(BOOL)linking
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAD1DE8);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v15 - v6;
-  v8 = self;
-  sub_22F91E270(a3, v7);
+  selfCopy = self;
+  sub_22F91E270(linking, v7);
 
   v9 = sub_22F9894F0();
   v10 = *(v9 - 8);

@@ -1,30 +1,30 @@
 @interface JavaLangStringBuilder
-- (JavaLangStringBuilder)initWithJavaLangCharSequence:(id)a3;
-- (id)appendWithBoolean:(BOOL)a3;
-- (id)appendWithId:(id)a3;
-- (id)appendWithJavaLangCharSequence:(id)a3;
-- (id)appendWithJavaLangStringBuffer:(id)a3;
+- (JavaLangStringBuilder)initWithJavaLangCharSequence:(id)sequence;
+- (id)appendWithBoolean:(BOOL)boolean;
+- (id)appendWithId:(id)id;
+- (id)appendWithJavaLangCharSequence:(id)sequence;
+- (id)appendWithJavaLangStringBuffer:(id)buffer;
 - (int)length;
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3;
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3;
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream;
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream;
 @end
 
 @implementation JavaLangStringBuilder
 
-- (JavaLangStringBuilder)initWithJavaLangCharSequence:(id)a3
+- (JavaLangStringBuilder)initWithJavaLangCharSequence:(id)sequence
 {
-  if (!a3)
+  if (!sequence)
   {
     JreThrowNullPointerException();
   }
 
-  JavaLangStringBuilder_initWithNSString_(self, [a3 description]);
+  JavaLangStringBuilder_initWithNSString_(self, [sequence description]);
   return self;
 }
 
-- (id)appendWithBoolean:(BOOL)a3
+- (id)appendWithBoolean:(BOOL)boolean
 {
-  if (a3)
+  if (boolean)
   {
     v4 = @"true";
   }
@@ -38,11 +38,11 @@
   return self;
 }
 
-- (id)appendWithId:(id)a3
+- (id)appendWithId:(id)id
 {
-  if (a3)
+  if (id)
   {
-    JreStringBuilder_appendString(&self->super.delegate_, [a3 description]);
+    JreStringBuilder_appendString(&self->super.delegate_, [id description]);
   }
 
   else
@@ -53,11 +53,11 @@
   return self;
 }
 
-- (id)appendWithJavaLangStringBuffer:(id)a3
+- (id)appendWithJavaLangStringBuffer:(id)buffer
 {
-  if (a3)
+  if (buffer)
   {
-    JreStringBuilder_appendBuffer(&self->super.delegate_, *(a3 + 1), *(a3 + 5));
+    JreStringBuilder_appendBuffer(&self->super.delegate_, *(buffer + 1), *(buffer + 5));
   }
 
   else
@@ -68,11 +68,11 @@
   return self;
 }
 
-- (id)appendWithJavaLangCharSequence:(id)a3
+- (id)appendWithJavaLangCharSequence:(id)sequence
 {
-  if (a3)
+  if (sequence)
   {
-    JreStringBuilder_appendCharSequence(&self->super.delegate_, a3, 0, [a3 length]);
+    JreStringBuilder_appendCharSequence(&self->super.delegate_, sequence, 0, [sequence length]);
   }
 
   else
@@ -90,37 +90,37 @@
   return [(JavaLangAbstractStringBuilder *)&v3 length];
 }
 
-- (void)readObjectWithJavaIoObjectInputStream:(id)a3
+- (void)readObjectWithJavaIoObjectInputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultReadObject];
-  v5 = [a3 readInt];
-  v6 = [a3 readObject];
+  [stream defaultReadObject];
+  readInt = [stream readInt];
+  readObject = [stream readObject];
   objc_opt_class();
-  if (v6 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (readObject && (objc_opt_isKindOfClass() & 1) == 0)
   {
     JreThrowClassCastException();
   }
 
-  [(JavaLangAbstractStringBuilder *)self setWithCharArray:v6 withInt:v5];
+  [(JavaLangAbstractStringBuilder *)self setWithCharArray:readObject withInt:readInt];
 }
 
-- (void)writeObjectWithJavaIoObjectOutputStream:(id)a3
+- (void)writeObjectWithJavaIoObjectOutputStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 defaultWriteObject];
-  [a3 writeIntWithInt:{-[JavaLangStringBuilder length](self, "length")}];
-  v5 = [(JavaLangAbstractStringBuilder *)self getValue];
+  [stream defaultWriteObject];
+  [stream writeIntWithInt:{-[JavaLangStringBuilder length](self, "length")}];
+  getValue = [(JavaLangAbstractStringBuilder *)self getValue];
 
-  [a3 writeObjectWithId:v5];
+  [stream writeObjectWithId:getValue];
 }
 
 @end

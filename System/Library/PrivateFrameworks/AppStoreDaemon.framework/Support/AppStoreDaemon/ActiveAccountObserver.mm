@@ -3,10 +3,10 @@
 + (ACAccount)activeSandboxAccount;
 + (id)sharedInstance;
 - (ActiveAccountObserver)init;
-- (id)oneAccountDSIDWithLogKey:(id)a3 refetchIfNeeded:(BOOL)a4;
-- (void)handleAccountStoreDidChangeNotification:(id)a3;
-- (void)handleSandboxAccountDidChangeNotification:(id)a3;
-- (void)handleStorefrontChangedNotification:(id)a3;
+- (id)oneAccountDSIDWithLogKey:(id)key refetchIfNeeded:(BOOL)needed;
+- (void)handleAccountStoreDidChangeNotification:(id)notification;
+- (void)handleSandboxAccountDidChangeNotification:(id)notification;
+- (void)handleStorefrontChangedNotification:(id)notification;
 @end
 
 @implementation ActiveAccountObserver
@@ -14,9 +14,9 @@
 + (ACAccount)activeAccount
 {
   v2 = +[ACAccountStore ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v2 ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
 + (id)sharedInstance
@@ -44,13 +44,13 @@
     v2->_dispatchQueue = v4;
 
     v6 = +[ACAccountStore ams_sharedAccountStore];
-    v7 = [v6 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v6 ams_activeiTunesAccount];
     account = v2->_account;
-    v2->_account = v7;
+    v2->_account = ams_activeiTunesAccount;
 
-    v9 = [(ACAccount *)v2->_account ams_storefront];
+    ams_storefront = [(ACAccount *)v2->_account ams_storefront];
     cachedStoreFront = v2->_cachedStoreFront;
-    v2->_cachedStoreFront = v9;
+    v2->_cachedStoreFront = ams_storefront;
 
     v11 = objc_alloc_init(UnfairLock);
     lock = v2->_lock;
@@ -62,11 +62,11 @@
       v14 = objc_opt_class();
       v15 = v2->_account;
       v16 = v14;
-      v17 = [(ACAccount *)v15 ams_DSID];
+      ams_DSID = [(ACAccount *)v15 ams_DSID];
       *buf = 138543618;
       v22 = v14;
       v23 = 2114;
-      v24 = v17;
+      v24 = ams_DSID;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Intialized with account account: %{public}@", buf, 0x16u);
     }
 
@@ -82,15 +82,15 @@
 + (ACAccount)activeSandboxAccount
 {
   v2 = [ACAccountStore ams_sharedAccountStoreForMediaType:AMSAccountMediaTypeAppStoreSandbox];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v2 ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
-- (id)oneAccountDSIDWithLogKey:(id)a3 refetchIfNeeded:(BOOL)a4
+- (id)oneAccountDSIDWithLogKey:(id)key refetchIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
+  neededCopy = needed;
+  keyCopy = key;
   if (!self->_account)
   {
     v9 = 0;
@@ -112,9 +112,9 @@
   v24[5] = &v25;
   sub_100379C5C(lock, v24);
   v8 = v26[5];
-  if (!v8 || v4)
+  if (!v8 || neededCopy)
   {
-    if (!v8 || !v4 || ([v8 isEqualToNumber:&off_100547548] & 1) != 0)
+    if (!v8 || !neededCopy || ([v8 isEqualToNumber:&off_100547548] & 1) != 0)
     {
       v10 = dispatch_semaphore_create(0);
       v11 = +[AMSAccountCachedServerData sharedInstance];
@@ -123,7 +123,7 @@
       v20[1] = 3221225472;
       v20[2] = sub_100259C0C;
       v20[3] = &unk_10051EEC8;
-      v21 = v6;
+      v21 = keyCopy;
       v23 = &v25;
       v13 = v10;
       v22 = v13;
@@ -169,9 +169,9 @@ LABEL_16:
   return v9;
 }
 
-- (void)handleSandboxAccountDidChangeNotification:(id)a3
+- (void)handleSandboxAccountDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -186,27 +186,27 @@ LABEL_16:
   v9[1] = 3221225472;
   v9[2] = sub_100259E4C;
   v9[3] = &unk_10051B570;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = notificationCopy;
+  selfCopy = self;
+  v8 = notificationCopy;
   dispatch_async(dispatchQueue, v9);
 }
 
-- (void)handleAccountStoreDidChangeNotification:(id)a3
+- (void)handleAccountStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10025A0C4;
   v7[3] = &unk_10051B570;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)handleStorefrontChangedNotification:(id)a3
+- (void)handleStorefrontChangedNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;

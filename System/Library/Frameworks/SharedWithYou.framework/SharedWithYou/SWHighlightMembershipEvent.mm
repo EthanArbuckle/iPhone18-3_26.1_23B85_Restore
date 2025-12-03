@@ -1,24 +1,24 @@
 @interface SWHighlightMembershipEvent
-- (SWHighlightMembershipEvent)initWithCoder:(id)a3;
+- (SWHighlightMembershipEvent)initWithCoder:(id)coder;
 - (SWHighlightMembershipEvent)initWithHighlight:(SWHighlight *)highlight trigger:(SWHighlightMembershipEventTrigger)trigger;
-- (SWHighlightMembershipEvent)initWithHighlightURL:(id)a3 type:(int64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SWHighlightMembershipEvent)initWithHighlightURL:(id)l type:(int64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SWHighlightMembershipEvent
 
-- (SWHighlightMembershipEvent)initWithHighlightURL:(id)a3 type:(int64_t)a4
+- (SWHighlightMembershipEvent)initWithHighlightURL:(id)l type:(int64_t)type
 {
-  v7 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = SWHighlightMembershipEvent;
   v8 = [(SWHighlightMembershipEvent *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_highlightURL, a3);
-    v9->_membershipEventType = a4;
+    objc_storeStrong(&v8->_highlightURL, l);
+    v9->_membershipEventType = type;
   }
 
   return v9;
@@ -32,32 +32,32 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SWHighlightMembershipEvent *)self highlightURL];
+  coderCopy = coder;
+  highlightURL = [(SWHighlightMembershipEvent *)self highlightURL];
   v6 = NSStringFromSelector(sel_highlightURL);
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:highlightURL forKey:v6];
 
-  v7 = [(SWHighlightMembershipEvent *)self membershipEventType];
+  membershipEventType = [(SWHighlightMembershipEvent *)self membershipEventType];
   v8 = NSStringFromSelector(sel_membershipEventType);
-  [v4 encodeInteger:v7 forKey:v8];
+  [coderCopy encodeInteger:membershipEventType forKey:v8];
 }
 
-- (SWHighlightMembershipEvent)initWithCoder:(id)a3
+- (SWHighlightMembershipEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_highlightURL);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = NSStringFromSelector(sel_membershipEventType);
-  v9 = [v4 decodeIntegerForKey:v8];
+  v9 = [coderCopy decodeIntegerForKey:v8];
 
   if (v7)
   {
     self = [(SWHighlightMembershipEvent *)self initWithHighlightURL:v7 type:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -68,17 +68,17 @@
       [SWHighlightMembershipEvent initWithCoder:v11];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(SWHighlightMembershipEvent *)self highlightURL];
-  v6 = [v4 initWithHighlightURL:v5 type:{-[SWHighlightMembershipEvent membershipEventType](self, "membershipEventType")}];
+  highlightURL = [(SWHighlightMembershipEvent *)self highlightURL];
+  v6 = [v4 initWithHighlightURL:highlightURL type:{-[SWHighlightMembershipEvent membershipEventType](self, "membershipEventType")}];
 
   return v6;
 }

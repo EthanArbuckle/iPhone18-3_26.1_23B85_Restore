@@ -1,37 +1,37 @@
 @interface NTKSeltzerDialView
 - (CGPoint)_keystoneDateLabelCenter;
 - (CGPoint)_keystoneMoonPhaseImageViewCenter;
-- (NTKSeltzerDialView)initWithFrame:(CGRect)a3 device:(id)a4 calendar:(unint64_t)a5 palette:(id)a6;
-- (id)_animationFromPath:(id)a3 toPath:(id)a4;
-- (id)_calendarIdentifierForCalendar:(unint64_t)a3;
+- (NTKSeltzerDialView)initWithFrame:(CGRect)frame device:(id)device calendar:(unint64_t)calendar palette:(id)palette;
+- (id)_animationFromPath:(id)path toPath:(id)toPath;
+- (id)_calendarIdentifierForCalendar:(unint64_t)calendar;
 - (id)_createDateLabel;
 - (id)_currentDate;
-- (id)_dateForDayOffset:(int64_t)a3;
-- (id)_dateForIndex:(unint64_t)a3;
+- (id)_dateForDayOffset:(int64_t)offset;
+- (id)_dateForIndex:(unint64_t)index;
 - (id)_dateLabelFont;
 - (id)_keystoneAXDateLabel;
 - (id)_keystoneAXMoonPhaseImageLabel;
 - (id)_keystoneDateLabelText;
 - (id)_keystoneMoonPhaseImage;
 - (id)_lunarCalendar;
-- (id)_lunarDateLabelTextForDate:(id)a3;
-- (id)_lunarStringWithDate:(id)a3;
+- (id)_lunarDateLabelTextForDate:(id)date;
+- (id)_lunarStringWithDate:(id)date;
 - (id)_monospacedDateLabelFont;
-- (id)_moonPhaseImageForDate:(id)a3;
-- (id)_moonPhaseImageForDate:(id)a3 foregroundColor:(id)a4 backgroundColor:(id)a5;
+- (id)_moonPhaseImageForDate:(id)date;
+- (id)_moonPhaseImageForDate:(id)date foregroundColor:(id)color backgroundColor:(id)backgroundColor;
 - (id)_overlayCalendar;
 - (int64_t)_keystoneIndex;
-- (unint64_t)_timeTravelIndexForFuture:(BOOL)a3;
-- (void)_addDialOutlineWithPath:(id)a3;
-- (void)_animateDateCardFromPath:(id)a3 toPath:(id)a4;
-- (void)_animateKeystoneFromPath:(id)a3 toPath:(id)a4;
-- (void)_applyRTLCorrectionIfNeeded:(int64_t *)a3;
+- (unint64_t)_timeTravelIndexForFuture:(BOOL)future;
+- (void)_addDialOutlineWithPath:(id)path;
+- (void)_animateDateCardFromPath:(id)path toPath:(id)toPath;
+- (void)_animateKeystoneFromPath:(id)path toPath:(id)toPath;
+- (void)_applyRTLCorrectionIfNeeded:(int64_t *)needed;
 - (void)_drawDateCardOutline;
 - (void)_drawDialMaskOutline;
 - (void)_drawDialOutlines;
 - (void)_drawKeystoneOutline;
 - (void)_drawOutlines;
-- (void)_layoutCurvedLabel:(id)a3;
+- (void)_layoutCurvedLabel:(id)label;
 - (void)_loadContainerViews;
 - (void)_loadDateLabels;
 - (void)_loadKeystone;
@@ -39,45 +39,45 @@
 - (void)_loadMoonPhaseDial;
 - (void)_loadMoonPhaseSeparatorDial;
 - (void)_updateDateLabels;
-- (void)_updateDialOffset:(double)a3 skipTimeTravel:(BOOL)a4;
-- (void)_updateGregorianLabelWithDate:(id)a3;
+- (void)_updateDialOffset:(double)offset skipTimeTravel:(BOOL)travel;
+- (void)_updateGregorianLabelWithDate:(id)date;
 - (void)_updateKeystone;
 - (void)_updateLunarCalendarUI;
-- (void)_updateLunarLabelWithDate:(id)a3;
-- (void)applyInteractiveModeProgress:(double)a3;
-- (void)applyTransitionFraction:(double)a3 fromCalendar:(unint64_t)a4 toCalendar:(unint64_t)a5;
-- (void)enterInteractiveModeAnimated:(BOOL)a3;
-- (void)exitInteractiveModeAnimated:(BOOL)a3;
+- (void)_updateLunarLabelWithDate:(id)date;
+- (void)applyInteractiveModeProgress:(double)progress;
+- (void)applyTransitionFraction:(double)fraction fromCalendar:(unint64_t)calendar toCalendar:(unint64_t)toCalendar;
+- (void)enterInteractiveModeAnimated:(BOOL)animated;
+- (void)exitInteractiveModeAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setCalendar:(unint64_t)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateAngleOffset:(double)a3 animated:(BOOL)a4;
+- (void)setCalendar:(unint64_t)calendar;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateAngleOffset:(double)offset animated:(BOOL)animated;
 - (void)updateDialUI;
 @end
 
 @implementation NTKSeltzerDialView
 
-- (NTKSeltzerDialView)initWithFrame:(CGRect)a3 device:(id)a4 calendar:(unint64_t)a5 palette:(id)a6
+- (NTKSeltzerDialView)initWithFrame:(CGRect)frame device:(id)device calendar:(unint64_t)calendar palette:(id)palette
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
+  paletteCopy = palette;
   v25.receiver = self;
   v25.super_class = NTKSeltzerDialView;
-  v16 = [(NTKSeltzerDialView *)&v25 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(NTKSeltzerDialView *)&v25 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    objc_storeStrong(&v16->_device, a4);
-    v17->_calendar = a5;
-    objc_storeStrong(&v17->_palette, a6);
+    objc_storeStrong(&height->_device, device);
+    v17->_calendar = calendar;
+    objc_storeStrong(&v17->_palette, palette);
     v18 = +[NTKLocationManager sharedLocationManager];
-    v19 = [v18 anyLocation];
-    [v19 coordinate];
+    anyLocation = [v18 anyLocation];
+    [anyLocation coordinate];
     v17->_currentCoordinate.latitude = v20;
     v17->_currentCoordinate.longitude = v21;
 
@@ -130,17 +130,17 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v12.receiver = self;
   v12.super_class = NTKSeltzerDialView;
-  v4 = a3;
-  [(NTKSeltzerDialView *)&v12 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(NTKSeltzerDialView *)&v12 traitCollectionDidChange:changeCopy];
   v5 = [(NTKSeltzerDialView *)self traitCollection:v12.receiver];
-  v6 = [v5 legibilityWeight];
-  v7 = [v4 legibilityWeight];
+  legibilityWeight = [v5 legibilityWeight];
+  legibilityWeight2 = [changeCopy legibilityWeight];
 
-  if (v6 != v7)
+  if (legibilityWeight != legibilityWeight2)
   {
     dateLabelFont = self->_dateLabelFont;
     self->_dateLabelFont = 0;
@@ -149,51 +149,51 @@
     self->_monospacedDateLabelFont = 0;
 
     [(NTKDialView *)self->_calendarDialView reloadMarkers];
-    v10 = [(NTKSeltzerDialView *)self _dateLabelFont];
-    v11 = [(NTKSeltzerDialView *)self _monospacedDateLabelFont];
-    [(UILabel *)self->_keystoneDateLabel setFont:v10];
-    [(CLKUICurvedColoringLabel *)self->_gregorianDateLabel setFont:v11];
-    [(CLKUICurvedColoringLabel *)self->_lunarDateLabel setFont:v11];
+    _dateLabelFont = [(NTKSeltzerDialView *)self _dateLabelFont];
+    _monospacedDateLabelFont = [(NTKSeltzerDialView *)self _monospacedDateLabelFont];
+    [(UILabel *)self->_keystoneDateLabel setFont:_dateLabelFont];
+    [(CLKUICurvedColoringLabel *)self->_gregorianDateLabel setFont:_monospacedDateLabelFont];
+    [(CLKUICurvedColoringLabel *)self->_lunarDateLabel setFont:_monospacedDateLabelFont];
     [(UILabel *)self->_keystoneDateLabel sizeToFit];
     [(NTKSeltzerDialView *)self _layoutCurvedLabel:self->_gregorianDateLabel];
     [(NTKSeltzerDialView *)self _layoutCurvedLabel:self->_lunarDateLabel];
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  objc_storeStrong(&self->_overrideDate, a3);
+  objc_storeStrong(&self->_overrideDate, date);
 
   [(NTKSeltzerDialView *)self updateDialUI];
 }
 
-- (void)setCalendar:(unint64_t)a3
+- (void)setCalendar:(unint64_t)calendar
 {
-  if (self->_calendar != a3)
+  if (self->_calendar != calendar)
   {
-    self->_calendar = a3;
+    self->_calendar = calendar;
     [(NTKSeltzerDialView *)self _updateLunarCalendarUI];
   }
 }
 
-- (void)applyTransitionFraction:(double)a3 fromCalendar:(unint64_t)a4 toCalendar:(unint64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromCalendar:(unint64_t)calendar toCalendar:(unint64_t)toCalendar
 {
-  if (a4 != a5)
+  if (calendar != toCalendar)
   {
     v18 = v8;
     v19 = v7;
     v20 = v5;
     v21 = v6;
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
       CLKMapFractionIntoRange();
       v12 = v14;
-      v10 = a5;
+      calendarCopy = toCalendar;
     }
 
     else
     {
-      v10 = a4;
+      calendarCopy = calendar;
       CLKMapFractionIntoRange();
       v12 = v11;
     }
@@ -201,7 +201,7 @@
     CLKMapFractionIntoRange();
     memset(&v17, 0, sizeof(v17));
     CGAffineTransformMakeScale(&v17, v15, v15);
-    [(NTKSeltzerDialView *)self setCalendar:v10];
+    [(NTKSeltzerDialView *)self setCalendar:calendarCopy];
     [(UIView *)self->_keystoneDateLabelContainerView setAlpha:v12];
     v16 = v17;
     [(UIView *)self->_keystoneDateLabelContainerView setTransform:&v16];
@@ -305,8 +305,8 @@
   sub_82A8(self->_device, v10);
   v4 = *(&v11 + 1);
   v3 = v12;
-  v5 = [(NTKSeltzerColorPalette *)self->_palette dialStroke];
-  v6 = [v5 CGColor];
+  dialStroke = [(NTKSeltzerColorPalette *)self->_palette dialStroke];
+  cGColor = [dialStroke CGColor];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -316,7 +316,7 @@
   v9[5] = 0;
   v9[6] = v3;
   v9[7] = v4;
-  v9[8] = v6;
+  v9[8] = cGColor;
   v7 = [[NTKDialView alloc] initWithNumberOfMarkers:30 markersFactory:v9];
   moonPhaseSeparatorDialView = self->_moonPhaseSeparatorDialView;
   self->_moonPhaseSeparatorDialView = v7;
@@ -329,8 +329,8 @@
 
 - (void)_updateLunarCalendarUI
 {
-  v3 = [(NTKSeltzerDialView *)self _currentDate];
-  [(NTKSeltzerDialView *)self _updateLunarLabelWithDate:v3];
+  _currentDate = [(NTKSeltzerDialView *)self _currentDate];
+  [(NTKSeltzerDialView *)self _updateLunarLabelWithDate:_currentDate];
 
   calendarDialView = self->_calendarDialView;
   v5[0] = _NSConcreteStackBlock;
@@ -344,14 +344,14 @@
 
 - (void)updateDialUI
 {
-  v3 = [(NTKSeltzerDialView *)self _currentDate];
-  if (!self->_previousDate || (+[NSCalendar currentCalendar](NSCalendar, "currentCalendar"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isDate:self->_previousDate inSameDayAsDate:v3], v4, (v5 & 1) == 0))
+  _currentDate = [(NTKSeltzerDialView *)self _currentDate];
+  if (!self->_previousDate || (+[NSCalendar currentCalendar](NSCalendar, "currentCalendar"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isDate:self->_previousDate inSameDayAsDate:_currentDate], v4, (v5 & 1) == 0))
   {
-    objc_storeStrong(&self->_previousDate, v3);
+    objc_storeStrong(&self->_previousDate, _currentDate);
     self->_nextDayAngleOffset = -12.0;
     self->_previousDayAngleOffset = 12.0;
     [(NTKSeltzerDialView *)self _updateLunarCalendarUI];
-    [(NTKSeltzerDialView *)self _updateGregorianLabelWithDate:v3];
+    [(NTKSeltzerDialView *)self _updateGregorianLabelWithDate:_currentDate];
     moonPhaseDialView = self->_moonPhaseDialView;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
@@ -362,47 +362,47 @@
   }
 }
 
-- (id)_dateForIndex:(unint64_t)a3
+- (id)_dateForIndex:(unint64_t)index
 {
-  v4 = a3 - 30;
-  if (a3 < 0xF)
+  indexCopy = index - 30;
+  if (index < 0xF)
   {
-    v4 = a3;
+    indexCopy = index;
   }
 
-  v7 = v4;
+  v7 = indexCopy;
   [(NTKSeltzerDialView *)self _applyRTLCorrectionIfNeeded:&v7];
   v5 = [(NTKSeltzerDialView *)self _dateForDayOffset:v7];
 
   return v5;
 }
 
-- (id)_lunarDateLabelTextForDate:(id)a3
+- (id)_lunarDateLabelTextForDate:(id)date
 {
-  v4 = a3;
-  v5 = [(NTKSeltzerDialView *)self _lunarCalendar];
-  v6 = [v5 component:16 fromDate:v4];
+  dateCopy = date;
+  _lunarCalendar = [(NTKSeltzerDialView *)self _lunarCalendar];
+  v6 = [_lunarCalendar component:16 fromDate:dateCopy];
 
   return [NSString localizedStringWithFormat:@"%02lu", v6];
 }
 
-- (id)_moonPhaseImageForDate:(id)a3
+- (id)_moonPhaseImageForDate:(id)date
 {
   palette = self->_palette;
-  v5 = a3;
-  v6 = [(NTKSeltzerColorPalette *)palette moonForeground];
-  v7 = [(NTKSeltzerColorPalette *)self->_palette moonBackground];
-  v8 = [(NTKSeltzerDialView *)self _moonPhaseImageForDate:v5 foregroundColor:v6 backgroundColor:v7];
+  dateCopy = date;
+  moonForeground = [(NTKSeltzerColorPalette *)palette moonForeground];
+  moonBackground = [(NTKSeltzerColorPalette *)self->_palette moonBackground];
+  v8 = [(NTKSeltzerDialView *)self _moonPhaseImageForDate:dateCopy foregroundColor:moonForeground backgroundColor:moonBackground];
 
   return v8;
 }
 
-- (id)_moonPhaseImageForDate:(id)a3 foregroundColor:(id)a4 backgroundColor:(id)a5
+- (id)_moonPhaseImageForDate:(id)date foregroundColor:(id)color backgroundColor:(id)backgroundColor
 {
   latitude = self->_currentCoordinate.latitude;
   longitude = self->_currentCoordinate.longitude;
-  v9 = a5;
-  v10 = a4;
+  backgroundColorCopy = backgroundColor;
+  colorCopy = color;
   NUNIMoonPhaseNumber();
   sub_82A8(self->_device, v13);
   v11 = NUNIRenderedMoonImage();
@@ -432,11 +432,11 @@
   keystoneDateLabel = self->_keystoneDateLabel;
   self->_keystoneDateLabel = v3;
 
-  v5 = [(NTKSeltzerColorPalette *)self->_palette keystoneDateLabel];
-  [(UILabel *)self->_keystoneDateLabel setTextColor:v5];
+  keystoneDateLabel = [(NTKSeltzerColorPalette *)self->_palette keystoneDateLabel];
+  [(UILabel *)self->_keystoneDateLabel setTextColor:keystoneDateLabel];
 
-  v6 = [(NTKSeltzerDialView *)self _dateLabelFont];
-  [(UILabel *)self->_keystoneDateLabel setFont:v6];
+  _dateLabelFont = [(NTKSeltzerDialView *)self _dateLabelFont];
+  [(UILabel *)self->_keystoneDateLabel setFont:_dateLabelFont];
 
   [(UIView *)self->_keystoneDateLabelContainerView addSubview:self->_keystoneDateLabel];
   sub_82A8(self->_device, v9);
@@ -451,12 +451,12 @@
 
 - (void)_updateKeystone
 {
-  v3 = [(NTKSeltzerDialView *)self _keystoneDateLabelText];
-  [(UILabel *)self->_keystoneDateLabel setText:v3];
+  _keystoneDateLabelText = [(NTKSeltzerDialView *)self _keystoneDateLabelText];
+  [(UILabel *)self->_keystoneDateLabel setText:_keystoneDateLabelText];
 
   [(UILabel *)self->_keystoneDateLabel sizeToFit];
-  v4 = [(NTKSeltzerDialView *)self _keystoneMoonPhaseImage];
-  [(UIImageView *)self->_keystoneMoonPhaseImageView setImage:v4];
+  _keystoneMoonPhaseImage = [(NTKSeltzerDialView *)self _keystoneMoonPhaseImage];
+  [(UIImageView *)self->_keystoneMoonPhaseImageView setImage:_keystoneMoonPhaseImage];
 
   [(NTKSeltzerDialView *)self setNeedsLayout];
 }
@@ -464,27 +464,27 @@
 - (id)_keystoneDateLabelText
 {
   v2 = [(NTKDialView *)self->_calendarDialView markerAtIndex:[(NTKSeltzerDialView *)self _keystoneIndex]];
-  v3 = [v2 text];
+  text = [v2 text];
 
-  return v3;
+  return text;
 }
 
 - (id)_keystoneAXDateLabel
 {
   v2 = [(NTKDialView *)self->_calendarDialView markerAtIndex:[(NTKSeltzerDialView *)self _keystoneIndex]];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)_keystoneMoonPhaseImage
 {
-  v8 = [(NTKSeltzerDialView *)self _dayOffset];
-  [(NTKSeltzerDialView *)self _applyRTLCorrectionIfNeeded:&v8];
-  v3 = [(NTKSeltzerDialView *)self _dateForDayOffset:v8];
-  v4 = [(NTKSeltzerColorPalette *)self->_palette keystoneMoonForeground];
-  v5 = [(NTKSeltzerColorPalette *)self->_palette keystoneMoonBackground];
-  v6 = [(NTKSeltzerDialView *)self _moonPhaseImageForDate:v3 foregroundColor:v4 backgroundColor:v5];
+  _dayOffset = [(NTKSeltzerDialView *)self _dayOffset];
+  [(NTKSeltzerDialView *)self _applyRTLCorrectionIfNeeded:&_dayOffset];
+  v3 = [(NTKSeltzerDialView *)self _dateForDayOffset:_dayOffset];
+  keystoneMoonForeground = [(NTKSeltzerColorPalette *)self->_palette keystoneMoonForeground];
+  keystoneMoonBackground = [(NTKSeltzerColorPalette *)self->_palette keystoneMoonBackground];
+  v6 = [(NTKSeltzerDialView *)self _moonPhaseImageForDate:v3 foregroundColor:keystoneMoonForeground backgroundColor:keystoneMoonBackground];
 
   return v6;
 }
@@ -492,22 +492,22 @@
 - (id)_keystoneAXMoonPhaseImageLabel
 {
   v2 = [(NTKDialView *)self->_moonPhaseDialView markerAtIndex:[(NTKSeltzerDialView *)self _keystoneIndex]];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (int64_t)_keystoneIndex
 {
-  v2 = [(NTKSeltzerDialView *)self _dayOffset];
-  if (v2 % 30 >= 0)
+  _dayOffset = [(NTKSeltzerDialView *)self _dayOffset];
+  if (_dayOffset % 30 >= 0)
   {
-    return v2 % 30;
+    return _dayOffset % 30;
   }
 
   else
   {
-    return v2 % 30 + 30;
+    return _dayOffset % 30 + 30;
   }
 }
 
@@ -565,15 +565,15 @@
   v10 = 0u;
   memset(v9, 0, sizeof(v9));
   sub_82A8(self->_device, v9);
-  v3 = [(NTKSeltzerDialView *)self _createDateLabel];
+  _createDateLabel = [(NTKSeltzerDialView *)self _createDateLabel];
   gregorianDateLabel = self->_gregorianDateLabel;
-  self->_gregorianDateLabel = v3;
+  self->_gregorianDateLabel = _createDateLabel;
 
   [(CLKUICurvedColoringLabel *)self->_gregorianDateLabel setCircleRadius:*(&v10 + 1)];
   [(UIView *)self->_upperContainerView addSubview:self->_gregorianDateLabel];
-  v5 = [(NTKSeltzerDialView *)self _createDateLabel];
+  _createDateLabel2 = [(NTKSeltzerDialView *)self _createDateLabel];
   lunarDateLabel = self->_lunarDateLabel;
-  self->_lunarDateLabel = v5;
+  self->_lunarDateLabel = _createDateLabel2;
 
   [(CLKUICurvedColoringLabel *)self->_lunarDateLabel setCircleRadius:*&v11];
   lunarDateLabelContainerView = self->_lunarDateLabelContainerView;
@@ -586,13 +586,13 @@
 {
   v3 = objc_alloc_init(CLKUICurvedColoringLabel);
   [v3 setInterior:1];
-  v4 = [(NTKSeltzerColorPalette *)self->_palette heroDateLabel];
-  [v3 setTextColor:v4];
+  heroDateLabel = [(NTKSeltzerColorPalette *)self->_palette heroDateLabel];
+  [v3 setTextColor:heroDateLabel];
 
   sub_82A8(self->_device, v7);
   [v3 setTracking:v8];
-  v5 = [(NTKSeltzerDialView *)self _monospacedDateLabelFont];
-  [v3 setFont:v5];
+  _monospacedDateLabelFont = [(NTKSeltzerDialView *)self _monospacedDateLabelFont];
+  [v3 setFont:_monospacedDateLabelFont];
 
   return v3;
 }
@@ -618,10 +618,10 @@
   monospacedDateLabelFont = self->_monospacedDateLabelFont;
   if (!monospacedDateLabelFont)
   {
-    v4 = [(NTKSeltzerDialView *)self _dateLabelFont];
-    v5 = [v4 CLKFontWithMonospacedNumbers];
+    _dateLabelFont = [(NTKSeltzerDialView *)self _dateLabelFont];
+    cLKFontWithMonospacedNumbers = [_dateLabelFont CLKFontWithMonospacedNumbers];
     v6 = self->_monospacedDateLabelFont;
-    self->_monospacedDateLabelFont = v5;
+    self->_monospacedDateLabelFont = cLKFontWithMonospacedNumbers;
 
     monospacedDateLabelFont = self->_monospacedDateLabelFont;
   }
@@ -629,40 +629,40 @@
   return monospacedDateLabelFont;
 }
 
-- (void)_layoutCurvedLabel:(id)a3
+- (void)_layoutCurvedLabel:(id)label
 {
   v4 = *&CGAffineTransformIdentity.c;
   *&v16.a = *&CGAffineTransformIdentity.a;
   *&v16.c = v4;
   *&v16.tx = *&CGAffineTransformIdentity.tx;
-  v5 = a3;
-  [v5 setTransform:&v16];
-  [v5 frame];
-  [v5 sizeThatFits:{v6, v7}];
-  [v5 setFrame:{0.0, 0.0, v8, v9}];
+  labelCopy = label;
+  [labelCopy setTransform:&v16];
+  [labelCopy frame];
+  [labelCopy sizeThatFits:{v6, v7}];
+  [labelCopy setFrame:{0.0, 0.0, v8, v9}];
   [(NTKSeltzerDialView *)self bounds];
   CLKRectGetCenter();
   v11 = v10;
   v13 = v12;
   v15 = CGPointZero;
-  [v5 getTextCenter:&v15 startAngle:0 endAngle:0];
+  [labelCopy getTextCenter:&v15 startAngle:0 endAngle:0];
   CGAffineTransformMakeTranslation(&v14, v11 - v15.x, v13 - v15.y);
   v16 = v14;
-  [v5 setTransform:&v16];
+  [labelCopy setTransform:&v16];
 }
 
 - (void)_updateDateLabels
 {
-  v4 = [(NTKSeltzerDialView *)self _dayOffset];
-  [(NTKSeltzerDialView *)self _applyRTLCorrectionIfNeeded:&v4];
-  v3 = [(NTKSeltzerDialView *)self _dateForDayOffset:v4];
+  _dayOffset = [(NTKSeltzerDialView *)self _dayOffset];
+  [(NTKSeltzerDialView *)self _applyRTLCorrectionIfNeeded:&_dayOffset];
+  v3 = [(NTKSeltzerDialView *)self _dateForDayOffset:_dayOffset];
   [(NTKSeltzerDialView *)self _updateGregorianLabelWithDate:v3];
   [(NTKSeltzerDialView *)self _updateLunarLabelWithDate:v3];
 }
 
-- (void)_updateGregorianLabelWithDate:(id)a3
+- (void)_updateGregorianLabelWithDate:(id)date
 {
-  v7 = [(NSDateFormatter *)self->_gregorianDateFormatter stringFromDate:a3];
+  v7 = [(NSDateFormatter *)self->_gregorianDateFormatter stringFromDate:date];
   if (NTKSeltzerUseAllUppercaseText())
   {
     v4 = +[NSLocale currentLocale];
@@ -681,11 +681,11 @@
   [(NTKSeltzerDialView *)self _layoutCurvedLabel:self->_gregorianDateLabel];
 }
 
-- (id)_lunarStringWithDate:(id)a3
+- (id)_lunarStringWithDate:(id)date
 {
-  v4 = a3;
-  v5 = [(NTKSeltzerDialView *)self _overlayCalendar];
-  v6 = [CUIKDateStrings monthDayStringForDate:v4 inCalendar:v5];
+  dateCopy = date;
+  _overlayCalendar = [(NTKSeltzerDialView *)self _overlayCalendar];
+  v6 = [CUIKDateStrings monthDayStringForDate:dateCopy inCalendar:_overlayCalendar];
 
   if (NTKSeltzerUseAllUppercaseText())
   {
@@ -698,9 +698,9 @@
   return v6;
 }
 
-- (void)_updateLunarLabelWithDate:(id)a3
+- (void)_updateLunarLabelWithDate:(id)date
 {
-  v4 = [(NTKSeltzerDialView *)self _lunarStringWithDate:a3];
+  v4 = [(NTKSeltzerDialView *)self _lunarStringWithDate:date];
   [(CLKUICurvedColoringLabel *)self->_lunarDateLabel setText:v4];
 
   lunarDateLabel = self->_lunarDateLabel;
@@ -766,21 +766,21 @@
   [(NTKSeltzerDialView *)self _addDialOutlineWithPath:v24];
 }
 
-- (void)_addDialOutlineWithPath:(id)a3
+- (void)_addDialOutlineWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v8 = +[CAShapeLayer layer];
-  v5 = [v4 CGPath];
+  cGPath = [pathCopy CGPath];
 
-  [v8 setPath:v5];
-  v6 = [(NTKSeltzerColorPalette *)self->_palette dialStroke];
-  [v8 setStrokeColor:{objc_msgSend(v6, "CGColor")}];
+  [v8 setPath:cGPath];
+  dialStroke = [(NTKSeltzerColorPalette *)self->_palette dialStroke];
+  [v8 setStrokeColor:{objc_msgSend(dialStroke, "CGColor")}];
 
   [v8 setFillColor:0];
   sub_82A8(self->_device, v9);
   [v8 setLineWidth:v10];
-  v7 = [(NTKSeltzerDialView *)self layer];
-  [v7 addSublayer:v8];
+  layer = [(NTKSeltzerDialView *)self layer];
+  [layer addSublayer:v8];
 }
 
 - (void)_drawKeystoneOutline
@@ -804,8 +804,8 @@
   keystoneLayer = self->_keystoneLayer;
   self->_keystoneLayer = v7;
 
-  v9 = [(NTKSeltzerColorPalette *)self->_palette dialStroke];
-  -[CAShapeLayer setStrokeColor:](self->_keystoneLayer, "setStrokeColor:", [v9 CGColor]);
+  dialStroke = [(NTKSeltzerColorPalette *)self->_palette dialStroke];
+  -[CAShapeLayer setStrokeColor:](self->_keystoneLayer, "setStrokeColor:", [dialStroke CGColor]);
 
   [(CAShapeLayer *)self->_keystoneLayer setFillColor:0];
   [(CAShapeLayer *)self->_keystoneLayer setLineWidth:*&v37];
@@ -826,8 +826,8 @@
   v29 = v18;
 
   [(CAShapeLayer *)self->_keystoneLayer setPath:[(UIBezierPath *)self->_defaultKeystonePath CGPath]];
-  v20 = [(NTKSeltzerDialView *)self layer];
-  [v20 addSublayer:self->_keystoneLayer];
+  layer = [(NTKSeltzerDialView *)self layer];
+  [layer addSublayer:self->_keystoneLayer];
 
   v21 = *&v32;
   v22 = [UIBezierPath bezierPathWithArcCenter:1 radius:v4 startAngle:v6 endAngle:*&v32 clockwise:v11, v11];
@@ -891,8 +891,8 @@
   [v26 addArcWithCenter:0 radius:v4 startAngle:v6 endAngle:v9 clockwise:{v19, v25}];
   [v26 closePath];
   [v8 setPath:{objc_msgSend(v26, "CGPath")}];
-  v27 = [(UIView *)self->_dialContainerView layer];
-  [v27 setMask:v28];
+  layer = [(UIView *)self->_dialContainerView layer];
+  [layer setMask:v28];
 }
 
 - (void)_drawDateCardOutline
@@ -916,8 +916,8 @@
   dateCardLayer = self->_dateCardLayer;
   self->_dateCardLayer = v7;
 
-  v9 = [(NTKSeltzerColorPalette *)self->_palette dialStroke];
-  -[CAShapeLayer setStrokeColor:](self->_dateCardLayer, "setStrokeColor:", [v9 CGColor]);
+  dialStroke = [(NTKSeltzerColorPalette *)self->_palette dialStroke];
+  -[CAShapeLayer setStrokeColor:](self->_dateCardLayer, "setStrokeColor:", [dialStroke CGColor]);
 
   [(CAShapeLayer *)self->_dateCardLayer setFillColor:0];
   [(CAShapeLayer *)self->_dateCardLayer setLineWidth:*&v37];
@@ -938,8 +938,8 @@
   v29 = v18;
 
   [(CAShapeLayer *)self->_dateCardLayer setPath:[(UIBezierPath *)self->_defaultDateCardPath CGPath]];
-  v20 = [(NTKSeltzerDialView *)self layer];
-  [v20 addSublayer:self->_dateCardLayer];
+  layer = [(NTKSeltzerDialView *)self layer];
+  [layer addSublayer:self->_dateCardLayer];
 
   v21 = *(&v31 + 1);
   v22 = [UIBezierPath bezierPathWithArcCenter:1 radius:v4 startAngle:v6 endAngle:*(&v31 + 1) clockwise:v11, v11];
@@ -955,26 +955,26 @@
   self->_interactiveDateCardPath = v27;
 }
 
-- (void)updateAngleOffset:(double)a3 animated:(BOOL)a4
+- (void)updateAngleOffset:(double)offset animated:(BOOL)animated
 {
-  if (!a4)
+  if (!animated)
   {
-    [(NTKSeltzerDialView *)self _updateDialOffset:a3];
+    [(NTKSeltzerDialView *)self _updateDialOffset:offset];
     [(NTKSeltzerDialView *)self _updateKeystone];
 
     [(NTKSeltzerDialView *)self _updateDateLabels];
   }
 }
 
-- (void)_updateDialOffset:(double)a3 skipTimeTravel:(BOOL)a4
+- (void)_updateDialOffset:(double)offset skipTimeTravel:(BOOL)travel
 {
   [(NTKDialView *)self->_calendarDialView setAngleOffset:?];
-  [(NTKDialView *)self->_moonPhaseDialView setAngleOffset:a3];
-  [(NTKDialView *)self->_moonPhaseSeparatorDialView setAngleOffset:a3 + 6.0];
-  if (!a4)
+  [(NTKDialView *)self->_moonPhaseDialView setAngleOffset:offset];
+  [(NTKDialView *)self->_moonPhaseSeparatorDialView setAngleOffset:offset + 6.0];
+  if (!travel)
   {
     nextDayAngleOffset = self->_nextDayAngleOffset;
-    if (self->_previousDayAngleOffset <= a3)
+    if (self->_previousDayAngleOffset <= offset)
     {
       self->_nextDayAngleOffset = nextDayAngleOffset + 12.0;
       self->_previousDayAngleOffset = self->_previousDayAngleOffset + 12.0;
@@ -989,7 +989,7 @@
       goto LABEL_8;
     }
 
-    if (nextDayAngleOffset >= a3)
+    if (nextDayAngleOffset >= offset)
     {
       self->_nextDayAngleOffset = nextDayAngleOffset + -12.0;
       self->_previousDayAngleOffset = self->_previousDayAngleOffset + -12.0;
@@ -1015,9 +1015,9 @@ LABEL_8:
   }
 }
 
-- (unint64_t)_timeTravelIndexForFuture:(BOOL)a3
+- (unint64_t)_timeTravelIndexForFuture:(BOOL)future
 {
-  if (a3)
+  if (future)
   {
     v3 = 14;
   }
@@ -1027,11 +1027,11 @@ LABEL_8:
     v3 = 15;
   }
 
-  v4 = [(NTKSeltzerDialView *)self _dayOffset];
-  v5 = (v4 + v3) % 30;
+  _dayOffset = [(NTKSeltzerDialView *)self _dayOffset];
+  v5 = (_dayOffset + v3) % 30;
   if (v5 >= 0)
   {
-    return (v4 + v3) % 30;
+    return (_dayOffset + v3) % 30;
   }
 
   else
@@ -1040,25 +1040,25 @@ LABEL_8:
   }
 }
 
-- (void)_applyRTLCorrectionIfNeeded:(int64_t *)a3
+- (void)_applyRTLCorrectionIfNeeded:(int64_t *)needed
 {
   if (CLKLayoutIsRTL())
   {
-    *a3 = -*a3;
+    *needed = -*needed;
   }
 }
 
-- (id)_dateForDayOffset:(int64_t)a3
+- (id)_dateForDayOffset:(int64_t)offset
 {
-  v3 = [(NTKSeltzerDialView *)self _currentDate];
+  _currentDate = [(NTKSeltzerDialView *)self _currentDate];
   v4 = NTKAddDaysToDate();
 
   return v4;
 }
 
-- (void)enterInteractiveModeAnimated:(BOOL)a3
+- (void)enterInteractiveModeAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
     [(NTKSeltzerDialView *)self _animateKeystoneFromPath:self->_defaultKeystonePath toPath:self->_interactiveKeystonePath];
     defaultDateCardPath = self->_defaultDateCardPath;
@@ -1070,18 +1070,18 @@ LABEL_8:
   else
   {
     [(CAShapeLayer *)self->_keystoneLayer setPath:[(UIBezierPath *)self->_interactiveKeystonePath CGPath]];
-    v6 = [(UIBezierPath *)self->_interactiveDateCardPath CGPath];
+    cGPath = [(UIBezierPath *)self->_interactiveDateCardPath CGPath];
     dateCardLayer = self->_dateCardLayer;
 
-    [(CAShapeLayer *)dateCardLayer setPath:v6];
+    [(CAShapeLayer *)dateCardLayer setPath:cGPath];
   }
 }
 
-- (void)exitInteractiveModeAnimated:(BOOL)a3
+- (void)exitInteractiveModeAnimated:(BOOL)animated
 {
   [(NTKSeltzerDialView *)self angleOffset];
   v6 = fabs(v5);
-  if (!a3)
+  if (!animated)
   {
     [(NTKSeltzerDialView *)self _updateDialOffset:1 skipTimeTravel:0.0];
     [(CAShapeLayer *)self->_keystoneLayer removeAllAnimations];
@@ -1100,7 +1100,7 @@ LABEL_8:
   }
 }
 
-- (void)applyInteractiveModeProgress:(double)a3
+- (void)applyInteractiveModeProgress:(double)progress
 {
   sub_82A8(self->_device, v13);
   v4 = v14;
@@ -1119,33 +1119,33 @@ LABEL_8:
   [(UIView *)lowerContainerView setTransform:&v11];
 }
 
-- (void)_animateKeystoneFromPath:(id)a3 toPath:(id)a4
+- (void)_animateKeystoneFromPath:(id)path toPath:(id)toPath
 {
-  v7 = [(NTKSeltzerDialView *)self _animationFromPath:a3 toPath:a4];
+  v7 = [(NTKSeltzerDialView *)self _animationFromPath:path toPath:toPath];
   keystoneLayer = self->_keystoneLayer;
-  v6 = [v7 keyPath];
-  [(CAShapeLayer *)keystoneLayer addAnimation:v7 forKey:v6];
+  keyPath = [v7 keyPath];
+  [(CAShapeLayer *)keystoneLayer addAnimation:v7 forKey:keyPath];
 }
 
-- (void)_animateDateCardFromPath:(id)a3 toPath:(id)a4
+- (void)_animateDateCardFromPath:(id)path toPath:(id)toPath
 {
-  v7 = [(NTKSeltzerDialView *)self _animationFromPath:a3 toPath:a4];
+  v7 = [(NTKSeltzerDialView *)self _animationFromPath:path toPath:toPath];
   dateCardLayer = self->_dateCardLayer;
-  v6 = [v7 keyPath];
-  [(CAShapeLayer *)dateCardLayer addAnimation:v7 forKey:v6];
+  keyPath = [v7 keyPath];
+  [(CAShapeLayer *)dateCardLayer addAnimation:v7 forKey:keyPath];
 }
 
-- (id)_animationFromPath:(id)a3 toPath:(id)a4
+- (id)_animationFromPath:(id)path toPath:(id)toPath
 {
-  v5 = a4;
-  v6 = a3;
+  toPathCopy = toPath;
+  pathCopy = path;
   v7 = [CABasicAnimation animationWithKeyPath:@"path"];
-  v8 = [v6 CGPath];
+  cGPath = [pathCopy CGPath];
 
-  [v7 setFromValue:v8];
-  v9 = [v5 CGPath];
+  [v7 setFromValue:cGPath];
+  cGPath2 = [toPathCopy CGPath];
 
-  [v7 setToValue:v9];
+  [v7 setToValue:cGPath2];
   [v7 setDuration:0.4];
   v10 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
   [v7 setTimingFunction:v10];
@@ -1164,11 +1164,11 @@ LABEL_8:
   return v3;
 }
 
-- (id)_calendarIdentifierForCalendar:(unint64_t)a3
+- (id)_calendarIdentifierForCalendar:(unint64_t)calendar
 {
-  if (a3 <= 9)
+  if (calendar <= 9)
   {
-    self = **(&off_105C8 + a3);
+    self = **(&off_105C8 + calendar);
   }
 
   return self;

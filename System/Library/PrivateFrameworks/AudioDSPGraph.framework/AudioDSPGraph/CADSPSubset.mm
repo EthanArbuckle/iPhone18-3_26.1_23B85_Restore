@@ -1,8 +1,8 @@
 @interface CADSPSubset
-- (BOOL)loadStrip:(id)a3 type:(unsigned int)a4 withResourcePath:(id)a5 error:(id *)a6;
-- (CADSPSubset)initWithSubset:(shared_ptr<AudioDSPGraph:(id)a4 :(id)a5 Subset>)a3 model:boxes:;
+- (BOOL)loadStrip:(id)strip type:(unsigned int)type withResourcePath:(id)path error:(id *)error;
+- (CADSPSubset)initWithSubset:(shared_ptr<AudioDSPGraph:(id)subset :(id)a5 Subset>)a3 model:boxes:;
 - (id).cxx_construct;
-- (id)saveStrip:(unsigned int)a3 error:(id *)a4;
+- (id)saveStrip:(unsigned int)strip error:(id *)error;
 @end
 
 @implementation CADSPSubset
@@ -14,21 +14,21 @@
   return self;
 }
 
-- (id)saveStrip:(unsigned int)a3 error:(id *)a4
+- (id)saveStrip:(unsigned int)strip error:(id *)error
 {
-  if (a3 == 1)
+  if (strip == 1)
   {
-    if (a4)
+    if (error)
     {
       v11 = 0;
-      *a4 = [CADSPError errorWithCode:1853060464 descriptionFormat:@"subset cannot save property strip(s)"];
+      *error = [CADSPError errorWithCode:1853060464 descriptionFormat:@"subset cannot save property strip(s)"];
       return v11;
     }
 
     return 0;
   }
 
-  if (a3)
+  if (strip)
   {
     return 0;
   }
@@ -84,18 +84,18 @@
   return v11;
 }
 
-- (BOOL)loadStrip:(id)a3 type:(unsigned int)a4 withResourcePath:(id)a5 error:(id *)a6
+- (BOOL)loadStrip:(id)strip type:(unsigned int)type withResourcePath:(id)path error:(id *)error
 {
-  v11 = a3;
-  v12 = a5;
-  if (a4 == 1)
+  stripCopy = strip;
+  pathCopy = path;
+  if (type == 1)
   {
-    if (a6)
+    if (error)
     {
       v13 = [CADSPError errorWithCode:1853060464 descriptionFormat:@"subset cannot load property strip(s)"];
       v14 = v13;
       v6 = 0;
-      *a6 = v13;
+      *error = v13;
     }
 
     else
@@ -104,21 +104,21 @@
     }
   }
 
-  else if (!a4)
+  else if (!type)
   {
-    AudioDSPGraph::Graph::setAUStrip(*self->_this.__ptr_, v11);
+    AudioDSPGraph::Graph::setAUStrip(*self->_this.__ptr_, stripCopy);
     v6 = 1;
   }
 
   return v6 & 1;
 }
 
-- (CADSPSubset)initWithSubset:(shared_ptr<AudioDSPGraph:(id)a4 :(id)a5 Subset>)a3 model:boxes:
+- (CADSPSubset)initWithSubset:(shared_ptr<AudioDSPGraph:(id)subset :(id)a5 Subset>)a3 model:boxes:
 {
   ptr = a3.__ptr_;
   v30 = *MEMORY[0x1E69E9840];
   v8 = a3.__cntrl_;
-  v9 = a4;
+  subsetCopy = subset;
   if (!*ptr)
   {
     v22 = 0;
@@ -160,7 +160,7 @@
     model = v11->_model;
     v11->_model = v15;
 
-    v17 = [v9 copy];
+    v17 = [subsetCopy copy];
     boxes = v11->_boxes;
     v11->_boxes = v17;
   }

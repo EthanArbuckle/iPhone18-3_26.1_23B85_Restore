@@ -2,30 +2,30 @@
 - (CDMClientInterface)client;
 - (OS_dispatch_source_timer)idleTimer;
 - (id)sandboxToken;
-- (void)areAssetsAvailableWithLocale:(id)a3 completionHandler:(id)a4;
-- (void)setClient:(id)a3;
-- (void)setIdleTimer:(id)a3;
-- (void)setupWithConfig:(id)a3 completionHandler:(id)a4;
-- (void)waitForDataDispatcherCompletionWithCompletionHandler:(id)a3;
+- (void)areAssetsAvailableWithLocale:(id)locale completionHandler:(id)handler;
+- (void)setClient:(id)client;
+- (void)setIdleTimer:(id)timer;
+- (void)setupWithConfig:(id)config completionHandler:(id)handler;
+- (void)waitForDataDispatcherCompletionWithCompletionHandler:(id)handler;
 - (void)wake;
-- (void)warmupWithCompletionHandler:(id)a3;
+- (void)warmupWithCompletionHandler:(id)handler;
 @end
 
 @implementation CDMXPCService
 
 - (void)wake
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000037F4();
 }
 
-- (void)setupWithConfig:(id)a3 completionHandler:(id)a4
+- (void)setupWithConfig:(id)config completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_100003944(v7, v8, v6);
+  configCopy = config;
+  selfCopy = self;
+  sub_100003944(configCopy, selfCopy, v6);
   _Block_release(v6);
 }
 
@@ -36,11 +36,11 @@
   return v2;
 }
 
-- (void)setClient:(id)a3
+- (void)setClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
-  sub_100005CF0(v4);
+  clientCopy = client;
+  selfCopy = self;
+  sub_100005CF0(clientCopy);
 }
 
 - (OS_dispatch_source_timer)idleTimer
@@ -50,11 +50,11 @@
   return v2;
 }
 
-- (void)setIdleTimer:(id)a3
+- (void)setIdleTimer:(id)timer
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_100005E58(a3);
+  selfCopy = self;
+  sub_100005E58(timer);
 }
 
 - (id)sandboxToken
@@ -73,17 +73,17 @@
   return v3;
 }
 
-- (void)warmupWithCompletionHandler:(id)a3
+- (void)warmupWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   sub_10000407C();
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_10000673C(sub_100004020, v5);
 }
 
-- (void)areAssetsAvailableWithLocale:(id)a3 completionHandler:(id)a4
+- (void)areAssetsAvailableWithLocale:(id)locale completionHandler:(id)handler
 {
   v7 = type metadata accessor for Locale();
   v8 = sub_100003420(v7);
@@ -92,22 +92,22 @@
   __chkstk_darwin(v8);
   sub_100003330();
   sub_1000032F8();
-  v13 = _Block_copy(a4);
+  v13 = _Block_copy(handler);
   static Locale._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v13);
-  v14 = self;
-  sub_100006E40(v4, v14, v13);
+  selfCopy = self;
+  sub_100006E40(v4, selfCopy, v13);
   _Block_release(v13);
 
   (*(v10 + 8))(v4, v7);
 }
 
-- (void)waitForDataDispatcherCompletionWithCompletionHandler:(id)a3
+- (void)waitForDataDispatcherCompletionWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_100007408(v5, v4);
+  selfCopy = self;
+  sub_100007408(selfCopy, v4);
   _Block_release(v4);
 }
 

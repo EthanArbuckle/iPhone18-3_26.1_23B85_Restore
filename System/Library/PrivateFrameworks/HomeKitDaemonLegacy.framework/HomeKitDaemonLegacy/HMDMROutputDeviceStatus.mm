@@ -1,7 +1,7 @@
 @interface HMDMROutputDeviceStatus
-- (BOOL)isEqual:(id)a3;
-- (HMDMROutputDeviceStatus)initWithOutputEndpoint:(id)a3 error:(id)a4;
-- (HMDMROutputDeviceStatus)initWithOutputUID:(id)a3 error:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDMROutputDeviceStatus)initWithOutputEndpoint:(id)endpoint error:(id)error;
+- (HMDMROutputDeviceStatus)initWithOutputUID:(id)d error:(id)error;
 - (unint64_t)hash;
 @end
 
@@ -9,18 +9,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDMROutputDeviceStatus *)self outputUID];
-  v4 = [v3 hash];
-  v5 = [(HMDMROutputDeviceStatus *)self outputEndpoint];
-  v6 = [v5 hash];
+  outputUID = [(HMDMROutputDeviceStatus *)self outputUID];
+  v4 = [outputUID hash];
+  outputEndpoint = [(HMDMROutputDeviceStatus *)self outputEndpoint];
+  v6 = [outputEndpoint hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -30,15 +30,15 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HMDMROutputDeviceStatus *)self outputUID];
-      v7 = [(HMDMROutputDeviceStatus *)v5 outputUID];
+      v5 = equalCopy;
+      outputUID = [(HMDMROutputDeviceStatus *)self outputUID];
+      outputUID2 = [(HMDMROutputDeviceStatus *)v5 outputUID];
       v8 = HMFEqualObjects();
 
       if (v8 && ([(HMDMROutputDeviceStatus *)self outputEndpoint], v9 = objc_claimAutoreleasedReturnValue(), [(HMDMROutputDeviceStatus *)v5 outputEndpoint], v10 = objc_claimAutoreleasedReturnValue(), v11 = HMFEqualObjects(), v10, v9, v11))
       {
-        v12 = [(HMDMROutputDeviceStatus *)self error];
-        v13 = [(HMDMROutputDeviceStatus *)v5 error];
+        error = [(HMDMROutputDeviceStatus *)self error];
+        error2 = [(HMDMROutputDeviceStatus *)v5 error];
         v14 = HMFEqualObjects();
       }
 
@@ -57,35 +57,35 @@
   return v14;
 }
 
-- (HMDMROutputDeviceStatus)initWithOutputEndpoint:(id)a3 error:(id)a4
+- (HMDMROutputDeviceStatus)initWithOutputEndpoint:(id)endpoint error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  endpointCopy = endpoint;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = HMDMROutputDeviceStatus;
   v9 = [(HMDMROutputDeviceStatus *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_error, a4);
-    objc_storeStrong(&v10->_outputEndpoint, a3);
+    objc_storeStrong(&v9->_error, error);
+    objc_storeStrong(&v10->_outputEndpoint, endpoint);
   }
 
   return v10;
 }
 
-- (HMDMROutputDeviceStatus)initWithOutputUID:(id)a3 error:(id)a4
+- (HMDMROutputDeviceStatus)initWithOutputUID:(id)d error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = HMDMROutputDeviceStatus;
   v9 = [(HMDMROutputDeviceStatus *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_error, a4);
-    objc_storeStrong(&v10->_outputUID, a3);
+    objc_storeStrong(&v9->_error, error);
+    objc_storeStrong(&v10->_outputUID, d);
   }
 
   return v10;

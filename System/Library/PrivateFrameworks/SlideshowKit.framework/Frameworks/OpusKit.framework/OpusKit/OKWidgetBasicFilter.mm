@@ -1,21 +1,21 @@
 @interface OKWidgetBasicFilter
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
-- (OKWidgetBasicFilter)initWithSettings:(id)a3;
++ (void)setupJavascriptContext:(id)context;
+- (OKWidgetBasicFilter)initWithSettings:(id)settings;
 - (id)outputImage;
 - (void)dealloc;
 @end
 
 @implementation OKWidgetBasicFilter
 
-- (OKWidgetBasicFilter)initWithSettings:(id)a3
+- (OKWidgetBasicFilter)initWithSettings:(id)settings
 {
   v6.receiver = self;
   v6.super_class = OKWidgetBasicFilter;
   v4 = [(OKWidgetBasicFilter *)&v6 init];
   if (v4)
   {
-    [OKSettings applySettings:a3 toObject:v4 withResolution:0];
+    [OKSettings applySettings:settings toObject:v4 withResolution:0];
   }
 
   return v4;
@@ -37,9 +37,9 @@
 
 + (id)supportedSettings
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
-  [v2 addEntriesFromDictionary:MEMORY[0x277CBEC10]];
-  return v2;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary addEntriesFromDictionary:MEMORY[0x277CBEC10]];
+  return dictionary;
 }
 
 - (id)outputImage
@@ -52,12 +52,12 @@
   return 0;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetBasicFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetBasicFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 @end

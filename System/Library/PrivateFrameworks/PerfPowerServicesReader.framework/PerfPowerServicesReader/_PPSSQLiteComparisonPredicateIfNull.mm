@@ -1,31 +1,31 @@
 @interface _PPSSQLiteComparisonPredicateIfNull
-- (BOOL)isEqual:(id)a3;
-- (_PPSSQLiteComparisonPredicateIfNull)initWithProperty:(id)a3 ifPropertyIsNullValue:(id)a4 value:(id)a5 comparisonType:(int64_t)a6;
+- (BOOL)isEqual:(id)equal;
+- (_PPSSQLiteComparisonPredicateIfNull)initWithProperty:(id)property ifPropertyIsNullValue:(id)value value:(id)a5 comparisonType:(int64_t)type;
 - (id)description;
-- (id)sqlForEntity:(id)a3;
+- (id)sqlForEntity:(id)entity;
 - (unint64_t)hash;
 @end
 
 @implementation _PPSSQLiteComparisonPredicateIfNull
 
-- (_PPSSQLiteComparisonPredicateIfNull)initWithProperty:(id)a3 ifPropertyIsNullValue:(id)a4 value:(id)a5 comparisonType:(int64_t)a6
+- (_PPSSQLiteComparisonPredicateIfNull)initWithProperty:(id)property ifPropertyIsNullValue:(id)value value:(id)a5 comparisonType:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
+  propertyCopy = property;
+  valueCopy = value;
   v12 = a5;
   v17.receiver = self;
   v17.super_class = _PPSSQLiteComparisonPredicateIfNull;
-  v13 = [(PPSSQLiteComparisonPredicate *)&v17 initWithProperty:v10 value:v12 comparisonType:a6];
+  v13 = [(PPSSQLiteComparisonPredicate *)&v17 initWithProperty:propertyCopy value:v12 comparisonType:type];
   if (v13)
   {
-    if ([v11 conformsToProtocol:&unk_2870198A8])
+    if ([valueCopy conformsToProtocol:&unk_2870198A8])
     {
-      v14 = [v11 copy];
+      v14 = [valueCopy copy];
     }
 
     else
     {
-      v14 = v11;
+      v14 = valueCopy;
     }
 
     ifPropertyIsNullValue = v13->_ifPropertyIsNullValue;
@@ -40,21 +40,21 @@
   v7.receiver = self;
   v7.super_class = _PPSSQLiteComparisonPredicateIfNull;
   v3 = [(PPSSQLiteComparisonPredicate *)&v7 hash];
-  v4 = [(_PPSSQLiteComparisonPredicateIfNull *)self ifPropertyIsNullValue];
-  v5 = [v4 hash];
+  ifPropertyIsNullValue = [(_PPSSQLiteComparisonPredicateIfNull *)self ifPropertyIsNullValue];
+  v5 = [ifPropertyIsNullValue hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = _PPSSQLiteComparisonPredicateIfNull;
-  if ([(PPSSQLiteComparisonPredicate *)&v8 isEqual:v4])
+  if ([(PPSSQLiteComparisonPredicate *)&v8 isEqual:equalCopy])
   {
     ifPropertyIsNullValue = self->_ifPropertyIsNullValue;
-    if (ifPropertyIsNullValue == v4[4])
+    if (ifPropertyIsNullValue == equalCopy[4])
     {
       v6 = 1;
     }
@@ -73,15 +73,15 @@
   return v6;
 }
 
-- (id)sqlForEntity:(id)a3
+- (id)sqlForEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [(PPSSQLitePropertyPredicate *)self property];
-  v6 = [v4 disambiguatedSQLForProperty:v5 shouldEscape:1];
+  entityCopy = entity;
+  property = [(PPSSQLitePropertyPredicate *)self property];
+  v6 = [entityCopy disambiguatedSQLForProperty:property shouldEscape:1];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(PPSSQLiteComparisonPredicate *)self _comparisonTypeString];
-  v9 = [v7 stringWithFormat:@"(IFNULL(%@, ?) %@ ?)", v6, v8];
+  _comparisonTypeString = [(PPSSQLiteComparisonPredicate *)self _comparisonTypeString];
+  v9 = [v7 stringWithFormat:@"(IFNULL(%@, ?) %@ ?)", v6, _comparisonTypeString];
 
   return v9;
 }
@@ -89,11 +89,11 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PPSSQLitePropertyPredicate *)self property];
+  property = [(PPSSQLitePropertyPredicate *)self property];
   ifPropertyIsNullValue = self->_ifPropertyIsNullValue;
-  v6 = [(PPSSQLiteComparisonPredicate *)self _comparisonTypeString];
-  v7 = [(PPSSQLiteComparisonPredicate *)self value];
-  v8 = [v3 stringWithFormat:@"'(%@, %@)' %@ %@", v4, ifPropertyIsNullValue, v6, v7];
+  _comparisonTypeString = [(PPSSQLiteComparisonPredicate *)self _comparisonTypeString];
+  value = [(PPSSQLiteComparisonPredicate *)self value];
+  v8 = [v3 stringWithFormat:@"'(%@, %@)' %@ %@", property, ifPropertyIsNullValue, _comparisonTypeString, value];
 
   return v8;
 }

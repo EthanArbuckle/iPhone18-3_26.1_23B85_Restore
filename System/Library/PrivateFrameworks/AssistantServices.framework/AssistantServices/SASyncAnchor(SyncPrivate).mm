@@ -9,18 +9,18 @@
 - (uint64_t)_af_isValid
 {
   v23 = *MEMORY[0x1E69E9840];
-  v2 = [a1 key];
+  v2 = [self key];
   if ([v2 length])
   {
-    v3 = [a1 appMetaData];
-    v4 = [v3 appIdentifyingInfo];
-    v5 = [v4 bundleId];
-    v6 = [v4 clientIdentifier];
+    appMetaData = [self appMetaData];
+    appIdentifyingInfo = [appMetaData appIdentifyingInfo];
+    bundleId = [appIdentifyingInfo bundleId];
+    clientIdentifier = [appIdentifyingInfo clientIdentifier];
     if ([v2 isEqualToString:@"com.apple.siri.appIntentSupportPolicyAndVocab"])
     {
-      if ([v5 length])
+      if ([bundleId length])
       {
-        v7 = v5;
+        v7 = bundleId;
         v8 = v7;
         if (v7 == @"com.apple.ShortcutsActions" || v7 && (v9 = [@"com.apple.ShortcutsActions" isEqual:v7], v8, v9))
         {
@@ -62,12 +62,12 @@ LABEL_22:
         goto LABEL_15;
       }
 
-      v13 = [v3 syncSlots];
-      v14 = [v13 count];
+      syncSlots = [appMetaData syncSlots];
+      v14 = [syncSlots count];
 
       if (v14 == 1)
       {
-        if ([v6 length])
+        if ([clientIdentifier length])
         {
           goto LABEL_15;
         }
@@ -117,14 +117,14 @@ LABEL_25:
 
 - (id)_af_normalizedKey
 {
-  v2 = [a1 appMetaData];
-  v3 = [v2 _af_preferredBundleID];
-  v4 = [v2 syncSlots];
-  v5 = [v4 firstObject];
+  appMetaData = [self appMetaData];
+  _af_preferredBundleID = [appMetaData _af_preferredBundleID];
+  syncSlots = [appMetaData syncSlots];
+  firstObject = [syncSlots firstObject];
 
   v6 = objc_opt_class();
-  v7 = [a1 key];
-  v8 = [v6 _af_normalizedKeyForKey:v7 appBundleID:v3 syncSlotName:v5];
+  v7 = [self key];
+  v8 = [v6 _af_normalizedKeyForKey:v7 appBundleID:_af_preferredBundleID syncSlotName:firstObject];
 
   return v8;
 }

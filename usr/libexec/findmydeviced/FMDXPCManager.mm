@@ -1,6 +1,6 @@
 @interface FMDXPCManager
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (FMDXPCManager)init;
 - (id)initSingleton;
 - (void)dealloc;
@@ -92,44 +92,44 @@
   [v5 start];
   [(FMDXPCManager *)self setProtectedIDSManager:v5];
   v6 = [NSXPCListener alloc];
-  v7 = [v4 serviceName];
-  v8 = [v6 initWithMachServiceName:v7];
+  serviceName = [v4 serviceName];
+  v8 = [v6 initWithMachServiceName:serviceName];
   [(FMDXPCManager *)self setFmdXPCListener:v8];
 
-  v9 = [(FMDXPCManager *)self fmdXPCListener];
-  [v9 setDelegate:self];
+  fmdXPCListener = [(FMDXPCManager *)self fmdXPCListener];
+  [fmdXPCListener setDelegate:self];
 
-  v10 = [(FMDXPCManager *)self fmdXPCListener];
-  [v10 resume];
+  fmdXPCListener2 = [(FMDXPCManager *)self fmdXPCListener];
+  [fmdXPCListener2 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
+  connectionCopy = connection;
+  listenerCopy = listener;
   v8 = sub_100002880();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v6;
+    v15 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received new XPC connection %@", &v14, 0xCu);
   }
 
-  v9 = [(FMDXPCManager *)self fmdXPCListener];
+  fmdXPCListener = [(FMDXPCManager *)self fmdXPCListener];
 
-  if (v9 == v7)
+  if (fmdXPCListener == listenerCopy)
   {
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FMDFMIPProtocol];
-    [v6 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
     v11 = objc_opt_new();
-    v12 = [(FMDXPCManager *)self protectedIDSManager];
-    [v11 setProtectedIDSManager:v12];
+    protectedIDSManager = [(FMDXPCManager *)self protectedIDSManager];
+    [v11 setProtectedIDSManager:protectedIDSManager];
 
-    [v6 setExportedObject:v11];
+    [connectionCopy setExportedObject:v11];
   }
 
-  [v6 resume];
+  [connectionCopy resume];
 
   return 1;
 }

@@ -11,10 +11,10 @@
 - (void)__migrateHomePreferences;
 - (void)__registerForKeychainChangeNotifications;
 - (void)__synchronize;
-- (void)_notifyClientsOfUpdatedHomeState:(BOOL)a3 userInitiated:(BOOL)a4;
-- (void)handleManateeAvailabilityNotification:(id)a3;
+- (void)_notifyClientsOfUpdatedHomeState:(BOOL)state userInitiated:(BOOL)initiated;
+- (void)handleManateeAvailabilityNotification:(id)notification;
 - (void)synchronize;
-- (void)updateHomeEnabled:(BOOL)a3 completionHandler:(id)a4;
+- (void)updateHomeEnabled:(BOOL)enabled completionHandler:(id)handler;
 @end
 
 @implementation HMDAppleAccountSettings
@@ -69,15 +69,15 @@ uint64_t __46__HMDAppleAccountSettings_Common__logCategory__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)handleManateeAvailabilityNotification:(id)a3
+- (void)handleManateeAvailabilityNotification:(id)notification
 {
-  v4 = [(HMDAppleAccountSettings *)self clientQueue];
+  clientQueue = [(HMDAppleAccountSettings *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__HMDAppleAccountSettings_handleManateeAvailabilityNotification___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(clientQueue, block);
 }
 
 uint64_t __65__HMDAppleAccountSettings_handleManateeAvailabilityNotification___block_invoke(uint64_t a1)
@@ -138,19 +138,19 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateHomeEnabled:(BOOL)a3 completionHandler:(id)a4
+- (void)updateHomeEnabled:(BOOL)enabled completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(HMDAppleAccountSettings *)self clientQueue];
+  handlerCopy = handler;
+  clientQueue = [(HMDAppleAccountSettings *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HMDAppleAccountSettings_updateHomeEnabled_completionHandler___block_invoke;
   block[3] = &unk_279733DB0;
-  v11 = a3;
+  enabledCopy = enabled;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = handlerCopy;
+  v8 = handlerCopy;
+  dispatch_async(clientQueue, block);
 }
 
 - (void)__migrateHomePreferences
@@ -196,9 +196,9 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
 
 - (void)__registerForKeychainChangeNotifications
 {
-  v4 = [MEMORY[0x277CCA9A0] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277CFD408]];
-  [v4 addObserver:self selector:sel_handleManateeAvailabilityNotification_ name:v3 object:0];
+  [defaultCenter addObserver:self selector:sel_handleManateeAvailabilityNotification_ name:v3 object:0];
 }
 
 - (void)__synchronize
@@ -209,16 +209,16 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
     os_unfair_lock_lock_with_options();
     context = objc_autoreleasePoolPush();
     v3 = +[HMDAppleAccountManager sharedManager];
-    v4 = [v3 accountStore];
-    v36 = [v4 aa_primaryAppleAccount];
+    accountStore = [v3 accountStore];
+    aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-    v5 = [v36 isEnabledForDataclass:*MEMORY[0x277CB9138]];
+    v5 = [aa_primaryAppleAccount isEnabledForDataclass:*MEMORY[0x277CB9138]];
     homeEnabled = self->_homeEnabled;
     v7 = homeEnabled != v5;
     if (homeEnabled != v5)
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -232,7 +232,7 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
 
       objc_autoreleasePoolPop(v8);
       self->_homeEnabled = v5;
-      [(HMDAppleAccountSettings *)v9 _notifyClientsOfUpdatedHomeState:v5 userInitiated:0];
+      [(HMDAppleAccountSettings *)selfCopy _notifyClientsOfUpdatedHomeState:v5 userInitiated:0];
     }
 
     if (![(HMDAppleAccountSettings *)self migrated])
@@ -247,7 +247,7 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
     if ((v13 & 1) == 0)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -265,7 +265,7 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
     if (self->_keychainSyncEnabled != v13)
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy3 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -279,15 +279,15 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
 
       objc_autoreleasePoolPop(v19);
       self->_keychainSyncEnabled = v13;
-      [(HMDAppleAccountSettings *)v20 _notifyClientsOfUpdatedKeychainSyncState:v13];
+      [(HMDAppleAccountSettings *)selfCopy3 _notifyClientsOfUpdatedKeychainSyncState:v13];
       v7 = 1;
     }
 
-    v23 = [v36 aa_isManagedAppleID];
-    if (self->_managed != v23)
+    aa_isManagedAppleID = [aa_primaryAppleAccount aa_isManagedAppleID];
+    if (self->_managed != aa_isManagedAppleID)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy4 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
@@ -295,22 +295,22 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
         *buf = 138543618;
         v39 = v27;
         v40 = 1024;
-        LODWORD(v41) = v23;
+        LODWORD(v41) = aa_isManagedAppleID;
         _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_INFO, "%{public}@Updating isManaged to %{BOOL}d", buf, 0x12u);
       }
 
       objc_autoreleasePoolPop(v24);
-      self->_managed = v23;
+      self->_managed = aa_isManagedAppleID;
       v7 = 1;
     }
 
-    v28 = [MEMORY[0x277D77BF8] sharedManager];
-    v29 = [v28 isMultiUser];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    isMultiUser = [mEMORY[0x277D77BF8] isMultiUser];
 
-    if (self->_multiUser != v29)
+    if (self->_multiUser != isMultiUser)
     {
       v30 = objc_autoreleasePoolPush();
-      v31 = self;
+      selfCopy5 = self;
       v32 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
@@ -318,12 +318,12 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
         *buf = 138543618;
         v39 = v33;
         v40 = 1024;
-        LODWORD(v41) = v29;
+        LODWORD(v41) = isMultiUser;
         _os_log_impl(&dword_2531F8000, v32, OS_LOG_TYPE_INFO, "%{public}@Updating isMultiUser to %{BOOL}d", buf, 0x12u);
       }
 
       objc_autoreleasePoolPop(v30);
-      self->_multiUser = v29;
+      self->_multiUser = isMultiUser;
       v7 = 1;
     }
 
@@ -342,13 +342,13 @@ void __79__HMDAppleAccountSettings___updateHomeEnabled_userInitiated_completionH
 {
   if (+[HMDAppleAccountSettings supportsCloudSettings])
   {
-    v3 = [(HMDAppleAccountSettings *)self clientQueue];
+    clientQueue = [(HMDAppleAccountSettings *)self clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __38__HMDAppleAccountSettings_synchronize__block_invoke;
     block[3] = &unk_279735D00;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -402,17 +402,17 @@ void __68__HMDAppleAccountSettings__notifyClientsOfUpdatedKeychainSyncState___bl
   return keychainSyncEnabled;
 }
 
-- (void)_notifyClientsOfUpdatedHomeState:(BOOL)a3 userInitiated:(BOOL)a4
+- (void)_notifyClientsOfUpdatedHomeState:(BOOL)state userInitiated:(BOOL)initiated
 {
-  v7 = [(HMDAppleAccountSettings *)self clientQueue];
+  clientQueue = [(HMDAppleAccountSettings *)self clientQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __74__HMDAppleAccountSettings__notifyClientsOfUpdatedHomeState_userInitiated___block_invoke;
   v8[3] = &unk_27972C680;
   v8[4] = self;
-  v9 = a3;
-  v10 = a4;
-  dispatch_async(v7, v8);
+  stateCopy = state;
+  initiatedCopy = initiated;
+  dispatch_async(clientQueue, v8);
 }
 
 void __74__HMDAppleAccountSettings__notifyClientsOfUpdatedHomeState_userInitiated___block_invoke(uint64_t a1)
@@ -462,9 +462,9 @@ void __74__HMDAppleAccountSettings__notifyClientsOfUpdatedHomeState_userInitiate
   {
     v2->_lock.lock._os_unfair_lock_opaque = 0;
     v4 = HMDispatchQueueNameString();
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     clientQueue = v3->_clientQueue;
     v3->_clientQueue = v7;
 
@@ -478,20 +478,20 @@ void __74__HMDAppleAccountSettings__notifyClientsOfUpdatedHomeState_userInitiate
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMDAppleAccountSettings *)v10 isHomeEnabled];
-      v14 = [(HMDAppleAccountSettings *)v10 isKeychainSyncEnabled];
-      v15 = [(HMDAppleAccountSettings *)v10 isManaged];
-      v16 = [(HMDAppleAccountSettings *)v10 isMultiUser];
+      isHomeEnabled = [(HMDAppleAccountSettings *)v10 isHomeEnabled];
+      isKeychainSyncEnabled = [(HMDAppleAccountSettings *)v10 isKeychainSyncEnabled];
+      isManaged = [(HMDAppleAccountSettings *)v10 isManaged];
+      isMultiUser = [(HMDAppleAccountSettings *)v10 isMultiUser];
       *buf = 138544386;
       v21 = v12;
       v22 = 1024;
-      v23 = v13;
+      v23 = isHomeEnabled;
       v24 = 1024;
-      v25 = v14;
+      v25 = isKeychainSyncEnabled;
       v26 = 1024;
-      v27 = v15;
+      v27 = isManaged;
       v28 = 1024;
-      v29 = v16;
+      v29 = isMultiUser;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Initialized Apple account settings with isHomeEnabled: %{BOOL}d, isKeychainSyncEnabled: %{BOOL}d, isManaged: %{BOOL}d, isMultiUser: %{BOOL}d", buf, 0x24u);
     }
 
@@ -504,10 +504,10 @@ void __74__HMDAppleAccountSettings__notifyClientsOfUpdatedHomeState_userInitiate
 
 + (BOOL)supportsCloudSettings
 {
-  v2 = [MEMORY[0x277D0F8E8] productInfo];
-  v3 = [v2 productPlatform];
+  productInfo = [MEMORY[0x277D0F8E8] productInfo];
+  productPlatform = [productInfo productPlatform];
 
-  return (v3 < 6) & (0x26u >> v3);
+  return (productPlatform < 6) & (0x26u >> productPlatform);
 }
 
 + (id)sharedSettings

@@ -5,11 +5,11 @@
 - (BOOL)isEnabled;
 - (BOOL)isStateKnown;
 - (BOOL)shouldEnable;
-- (void)_updateStateAndNotify:(BOOL)a3 completion:(id)a4;
-- (void)disableInContext:(unint64_t)a3 withWipeToken:(id)a4 completion:(id)a5;
-- (void)enableInContext:(unint64_t)a3 completion:(id)a4;
-- (void)refreshCurrentState:(id)a3;
-- (void)setShouldEnable:(BOOL)a3;
+- (void)_updateStateAndNotify:(BOOL)notify completion:(id)completion;
+- (void)disableInContext:(unint64_t)context withWipeToken:(id)token completion:(id)completion;
+- (void)enableInContext:(unint64_t)context completion:(id)completion;
+- (void)refreshCurrentState:(id)state;
+- (void)setShouldEnable:(BOOL)enable;
 @end
 
 @implementation AAUIDeviceLocatorService
@@ -59,65 +59,65 @@ void __42__AAUIDeviceLocatorService_sharedInstance__block_invoke()
 
 - (BOOL)isEnabled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_hasAttemptedToFetchState)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_hasAttemptedToFetchState)
   {
-    v3 = v2->_lastKnownState - 1 < 2;
+    v3 = selfCopy->_lastKnownState - 1 < 2;
   }
 
   else
   {
-    [(AAUIDeviceLocatorService *)v2 _updateStateAndNotify:1 completion:0];
+    [(AAUIDeviceLocatorService *)selfCopy _updateStateAndNotify:1 completion:0];
     v3 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isChangingState
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_hasAttemptedToFetchState)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_hasAttemptedToFetchState)
   {
-    v3 = (v2->_lastKnownState & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    v3 = (selfCopy->_lastKnownState & 0xFFFFFFFFFFFFFFFDLL) == 0;
   }
 
   else
   {
     v3 = 1;
-    [(AAUIDeviceLocatorService *)v2 _updateStateAndNotify:1 completion:0];
+    [(AAUIDeviceLocatorService *)selfCopy _updateStateAndNotify:1 completion:0];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)isStateKnown
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lastKnownState != 4;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lastKnownState != 4;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_updateStateAndNotify:(BOOL)a3 completion:(id)a4
+- (void)_updateStateAndNotify:(BOOL)notify completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__AAUIDeviceLocatorService__updateStateAndNotify_completion___block_invoke;
   aBlock[3] = &unk_1E820C028;
-  v15 = a3;
+  notifyCopy = notify;
   aBlock[4] = self;
-  v14 = v6;
-  v7 = v6;
+  v14 = completionCopy;
+  v7 = completionCopy;
   v8 = _Block_copy(aBlock);
   stateUpdateQueue = self->_stateUpdateQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -190,30 +190,30 @@ void __61__AAUIDeviceLocatorService__updateStateAndNotify_completion___block_inv
   dispatch_resume(*(*(a1 + 32) + 24));
 }
 
-- (void)refreshCurrentState:(id)a3
+- (void)refreshCurrentState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __48__AAUIDeviceLocatorService_refreshCurrentState___block_invoke;
   v6[3] = &unk_1E820C078;
-  v7 = v4;
-  v5 = v4;
+  v7 = stateCopy;
+  v5 = stateCopy;
   [(AAUIDeviceLocatorService *)self _updateStateAndNotify:1 completion:v6];
 }
 
-- (void)enableInContext:(unint64_t)a3 completion:(id)a4
+- (void)enableInContext:(unint64_t)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   stateUpdateQueue = self->_stateUpdateQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__AAUIDeviceLocatorService_enableInContext_completion___block_invoke;
   block[3] = &unk_1E820BCC8;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  contextCopy = context;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(stateUpdateQueue, block);
 }
 
@@ -248,11 +248,11 @@ void __55__AAUIDeviceLocatorService_enableInContext_completion___block_invoke(vo
   }
 }
 
-- (void)disableInContext:(unint64_t)a3 withWipeToken:(id)a4 completion:(id)a5
+- (void)disableInContext:(unint64_t)context withWipeToken:(id)token completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if (![v8 length])
+  tokenCopy = token;
+  completionCopy = completion;
+  if (![tokenCopy length])
   {
     v10 = _AAUILogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -267,11 +267,11 @@ void __55__AAUIDeviceLocatorService_enableInContext_completion___block_invoke(vo
   block[1] = 3221225472;
   block[2] = __70__AAUIDeviceLocatorService_disableInContext_withWipeToken_completion___block_invoke;
   block[3] = &unk_1E820BCC8;
-  v16 = v9;
-  v17 = a3;
-  v15 = v8;
-  v12 = v9;
-  v13 = v8;
+  v16 = completionCopy;
+  contextCopy = context;
+  v15 = tokenCopy;
+  v12 = completionCopy;
+  v13 = tokenCopy;
   dispatch_async(stateUpdateQueue, block);
 }
 
@@ -317,20 +317,20 @@ void __70__AAUIDeviceLocatorService_disableInContext_withWipeToken_completion___
   }
 }
 
-- (void)setShouldEnable:(BOOL)a3
+- (void)setShouldEnable:(BOOL)enable
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_wantsToEnable = a3;
+  obj->_wantsToEnable = enable;
   objc_sync_exit(obj);
 }
 
 - (BOOL)shouldEnable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  wantsToEnable = v2->_wantsToEnable;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  wantsToEnable = selfCopy->_wantsToEnable;
+  objc_sync_exit(selfCopy);
 
   return wantsToEnable;
 }

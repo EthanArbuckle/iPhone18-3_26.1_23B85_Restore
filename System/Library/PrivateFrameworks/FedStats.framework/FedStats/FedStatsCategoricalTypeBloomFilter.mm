@@ -1,40 +1,40 @@
 @interface FedStatsCategoricalTypeBloomFilter
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4;
-- (FedStatsCategoricalTypeBloomFilter)initWithBloomFilter:(id)a3 transformVariant:(id)a4;
-- (id)filter:(id)a3;
++ (id)instanceWithParameters:(id)parameters error:(id *)error;
+- (FedStatsCategoricalTypeBloomFilter)initWithBloomFilter:(id)filter transformVariant:(id)variant;
+- (id)filter:(id)filter;
 @end
 
 @implementation FedStatsCategoricalTypeBloomFilter
 
-- (FedStatsCategoricalTypeBloomFilter)initWithBloomFilter:(id)a3 transformVariant:(id)a4
+- (FedStatsCategoricalTypeBloomFilter)initWithBloomFilter:(id)filter transformVariant:(id)variant
 {
-  v7 = a3;
-  v8 = a4;
+  filterCopy = filter;
+  variantCopy = variant;
   v12.receiver = self;
   v12.super_class = FedStatsCategoricalTypeBloomFilter;
   v9 = [(FedStatsCategoricalTypeBloomFilter *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bloomFilter, a3);
-    objc_storeStrong(&v10->_transformVariant, a4);
+    objc_storeStrong(&v9->_bloomFilter, filter);
+    objc_storeStrong(&v10->_transformVariant, variant);
   }
 
   return v10;
 }
 
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4
++ (id)instanceWithParameters:(id)parameters error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 objectForKey:@"fileName"];
+  parametersCopy = parameters;
+  v6 = [parametersCopy objectForKey:@"fileName"];
   if (!v6)
   {
-    if (a4)
+    if (error)
       v10 = {;
       v13 = 100;
 LABEL_11:
       [FedStatsError errorWithCode:v13 description:v10];
-      *a4 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_19;
     }
 
@@ -46,7 +46,7 @@ LABEL_12:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    if (a4)
+    if (error)
       v10 = {;
       v13 = 101;
       goto LABEL_11;
@@ -56,18 +56,18 @@ LABEL_12:
   }
 
   v7 = MEMORY[0x277D42540];
-  v8 = [v6 filePathURL];
-  v9 = [v8 path];
-  v10 = [v7 bloomFilterWithPathToFile:v9];
+  filePathURL = [v6 filePathURL];
+  path = [filePathURL path];
+  v10 = [v7 bloomFilterWithPathToFile:path];
 
   if (v10)
   {
-    v11 = [v5 objectForKey:@"transformVariant"];
+    v11 = [parametersCopy objectForKey:@"transformVariant"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      if (a4)
+      if (error)
         v14 = {;
-        *a4 = [FedStatsError errorWithCode:101 description:v14];
+        *error = [FedStatsError errorWithCode:101 description:v14];
       }
 
       v12 = 0;
@@ -81,7 +81,7 @@ LABEL_12:
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v12 = 0;
       goto LABEL_19;
@@ -89,7 +89,7 @@ LABEL_12:
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot load Bloom filter at '%@'", v6];
     [FedStatsError errorWithCode:101 description:v11];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
 LABEL_19:
@@ -98,38 +98,38 @@ LABEL_20:
   return v12;
 }
 
-- (id)filter:(id)a3
+- (id)filter:(id)filter
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  filterCopy = filter;
+  if (!filterCopy)
   {
     v14 = 0;
     goto LABEL_24;
   }
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v4];
-  v6 = [(FedStatsCategoricalTypeBloomFilter *)self transformVariant];
-  v7 = [v6 isEqualToString:@"extractHost"];
+  filterCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", filterCopy];
+  transformVariant = [(FedStatsCategoricalTypeBloomFilter *)self transformVariant];
+  v7 = [transformVariant isEqualToString:@"extractHost"];
 
   if (v7)
   {
-    v8 = [MEMORY[0x277CBEBC0] URLWithString:v5];
+    v8 = [MEMORY[0x277CBEBC0] URLWithString:filterCopy];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 host];
-      v11 = [v9 host];
-      v12 = [v11 length];
+      host = [v8 host];
+      host2 = [v9 host];
+      v12 = [host2 length];
 
-      if (v10)
+      if (host)
       {
         if (v12)
         {
-          v13 = [v9 host];
+          host3 = [v9 host];
 LABEL_13:
 
-          v5 = v13;
+          filterCopy = host3;
           goto LABEL_14;
         }
       }
@@ -138,13 +138,13 @@ LABEL_13:
 
   else
   {
-    v15 = [(FedStatsCategoricalTypeBloomFilter *)self transformVariant];
-    v16 = [v15 isEqualToString:@"extractDomain"];
+    transformVariant2 = [(FedStatsCategoricalTypeBloomFilter *)self transformVariant];
+    v16 = [transformVariant2 isEqualToString:@"extractDomain"];
 
     if (!v16)
     {
 LABEL_14:
-      v22 = [v5 dataUsingEncoding:4];
+      v22 = [filterCopy dataUsingEncoding:4];
       v23 = v22;
       if (v22)
       {
@@ -157,16 +157,16 @@ LABEL_14:
 
         v31 = v24;
         v25 = [MEMORY[0x277CBEA90] dataWithBytes:&v31 length:8];
-        v26 = [(FedStatsCategoricalTypeBloomFilter *)self bloomFilter];
-        v27 = [v26 computeHashesWithSeed:1 forData:v25 reuse:0];
+        bloomFilter = [(FedStatsCategoricalTypeBloomFilter *)self bloomFilter];
+        v27 = [bloomFilter computeHashesWithSeed:1 forData:v25 reuse:0];
 
-        v28 = [(FedStatsCategoricalTypeBloomFilter *)self bloomFilter];
-        LOBYTE(v26) = [v28 getWithHashes:v27];
+        bloomFilter2 = [(FedStatsCategoricalTypeBloomFilter *)self bloomFilter];
+        LOBYTE(bloomFilter) = [bloomFilter2 getWithHashes:v27];
 
         v14 = 0;
-        if ((v26 & 1) == 0)
+        if ((bloomFilter & 1) == 0)
         {
-          v14 = v4;
+          v14 = filterCopy;
         }
       }
 
@@ -178,22 +178,22 @@ LABEL_14:
       goto LABEL_23;
     }
 
-    v17 = [MEMORY[0x277CBEBC0] URLWithString:v5];
+    v17 = [MEMORY[0x277CBEBC0] URLWithString:filterCopy];
     v9 = v17;
     if (v17)
     {
-      v18 = [v17 host];
-      v19 = [v9 host];
-      v20 = [v19 length];
+      host4 = [v17 host];
+      host5 = [v9 host];
+      v20 = [host5 length];
 
-      if (v18)
+      if (host4)
       {
         if (v20)
         {
-          v21 = [v9 host];
-          v13 = [v21 safari_highLevelDomainFromHost];
+          host6 = [v9 host];
+          host3 = [host6 safari_highLevelDomainFromHost];
 
-          v5 = v21;
+          filterCopy = host6;
           goto LABEL_13;
         }
       }

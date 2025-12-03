@@ -1,17 +1,17 @@
 @interface WFCompactActionGroupView
-- (WFCompactActionGroupView)initWithActions:(id)a3 appearanceProvider:(id)a4;
+- (WFCompactActionGroupView)initWithActions:(id)actions appearanceProvider:(id)provider;
 - (void)layoutSubviews;
-- (void)setAppearanceProvider:(id)a3;
+- (void)setAppearanceProvider:(id)provider;
 - (void)tintColorDidChange;
 @end
 
 @implementation WFCompactActionGroupView
 
-- (void)setAppearanceProvider:(id)a3
+- (void)setAppearanceProvider:(id)provider
 {
-  objc_storeStrong(&self->_appearanceProvider, a3);
-  v5 = a3;
-  [v5 configureActionGroupView:self];
+  objc_storeStrong(&self->_appearanceProvider, provider);
+  providerCopy = provider;
+  [providerCopy configureActionGroupView:self];
 }
 
 - (void)tintColorDidChange
@@ -21,8 +21,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(WFCompactActionGroupView *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  actions = [(WFCompactActionGroupView *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -33,22 +33,22 @@
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 dialogButton];
-        v10 = [v9 style];
+        dialogButton = [v8 dialogButton];
+        style = [dialogButton style];
 
-        if (!v10)
+        if (!style)
         {
-          v11 = [(WFCompactActionGroupView *)self tintColor];
-          v12 = [v8 uiButton];
-          [v12 setBackgroundColor:v11];
+          tintColor = [(WFCompactActionGroupView *)self tintColor];
+          uiButton = [v8 uiButton];
+          [uiButton setBackgroundColor:tintColor];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [actions countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
@@ -61,8 +61,8 @@
   v22.receiver = self;
   v22.super_class = WFCompactActionGroupView;
   [(WFCompactActionGroupView *)&v22 layoutSubviews];
-  v3 = [(WFCompactActionGroupView *)self actions];
-  v4 = [v3 count];
+  actions = [(WFCompactActionGroupView *)self actions];
+  v4 = [actions count];
 
   if (v4 == 2)
   {
@@ -70,8 +70,8 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [(WFCompactActionGroupView *)self actions];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    actions2 = [(WFCompactActionGroupView *)self actions];
+    v6 = [actions2 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v6)
     {
       v7 = v6;
@@ -83,12 +83,12 @@
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(actions2);
           }
 
-          v11 = [*(*(&v18 + 1) + 8 * i) uiButton];
-          v12 = [v11 titleLabel];
-          [v12 intrinsicContentSize];
+          uiButton = [*(*(&v18 + 1) + 8 * i) uiButton];
+          titleLabel = [uiButton titleLabel];
+          [titleLabel intrinsicContentSize];
           v14 = v13 + 4.0;
           [(WFCompactActionGroupView *)self frame];
           v16 = v14 < v15 * 0.5 + -22.5;
@@ -96,7 +96,7 @@
           v9 &= v16;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v23 count:16];
+        v7 = [actions2 countByEnumeratingWithState:&v18 objects:v23 count:16];
       }
 
       while (v7);
@@ -121,26 +121,26 @@ LABEL_13:
   [(WFCompactActionGroupView *)self setAxis:v17];
 }
 
-- (WFCompactActionGroupView)initWithActions:(id)a3 appearanceProvider:(id)a4
+- (WFCompactActionGroupView)initWithActions:(id)actions appearanceProvider:(id)provider
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  actionsCopy = actions;
+  providerCopy = provider;
   v51.receiver = self;
   v51.super_class = WFCompactActionGroupView;
   v8 = [(WFCompactActionGroupView *)&v51 init];
   v9 = v8;
   if (v8)
   {
-    v40 = v7;
-    [(WFCompactActionGroupView *)v8 setAppearanceProvider:v7];
-    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v40 = providerCopy;
+    [(WFCompactActionGroupView *)v8 setAppearanceProvider:providerCopy];
+    v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(actionsCopy, "count")}];
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v41 = v6;
-    v11 = v6;
+    v41 = actionsCopy;
+    v11 = actionsCopy;
     v12 = [v11 countByEnumeratingWithState:&v47 objects:v53 count:16];
     if (v12)
     {
@@ -156,10 +156,10 @@ LABEL_13:
           }
 
           v16 = *(*(&v47 + 1) + 8 * i);
-          v17 = [v16 dialogButton];
-          v18 = [v17 style];
+          dialogButton = [v16 dialogButton];
+          style = [dialogButton style];
 
-          if (v18 == 1)
+          if (style == 1)
           {
             [v10 insertObject:v16 atIndex:0];
           }
@@ -207,34 +207,34 @@ LABEL_13:
           }
 
           v26 = *(*(&v43 + 1) + 8 * j);
-          v27 = [(WFCompactActionGroupView *)v9 appearanceProvider];
-          [v26 setAppearanceProvider:v27];
+          appearanceProvider = [(WFCompactActionGroupView *)v9 appearanceProvider];
+          [v26 setAppearanceProvider:appearanceProvider];
 
-          v28 = [v26 uiButton];
-          [(WFCompactActionGroupView *)v9 addArrangedSubview:v28];
-          v29 = [(WFCompactActionGroupView *)v9 traitCollection];
-          v30 = [v29 preferredContentSizeCategory];
+          uiButton = [v26 uiButton];
+          [(WFCompactActionGroupView *)v9 addArrangedSubview:uiButton];
+          traitCollection = [(WFCompactActionGroupView *)v9 traitCollection];
+          preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-          v31 = [v28 heightAnchor];
-          if (v30 >= v24)
+          heightAnchor = [uiButton heightAnchor];
+          if (preferredContentSizeCategory >= v24)
           {
-            v34 = [v28 titleLabel];
-            v35 = [v34 heightAnchor];
-            v36 = [v31 constraintEqualToAnchor:v35 constant:25.0];
+            titleLabel = [uiButton titleLabel];
+            heightAnchor2 = [titleLabel heightAnchor];
+            v36 = [heightAnchor constraintEqualToAnchor:heightAnchor2 constant:25.0];
             [v36 setActive:1];
           }
 
           else
           {
-            v32 = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
+            universalPreviewsEnabled = [MEMORY[0x277CBEBD0] universalPreviewsEnabled];
             v33 = 50.0;
-            if (v32)
+            if (universalPreviewsEnabled)
             {
               v33 = 54.0;
             }
 
-            v34 = [v31 constraintEqualToConstant:v33];
-            [v34 setActive:1];
+            titleLabel = [heightAnchor constraintEqualToConstant:v33];
+            [titleLabel setActive:1];
           }
         }
 
@@ -245,8 +245,8 @@ LABEL_13:
     }
 
     v37 = v9;
-    v7 = v40;
-    v6 = v41;
+    providerCopy = v40;
+    actionsCopy = v41;
   }
 
   return v9;

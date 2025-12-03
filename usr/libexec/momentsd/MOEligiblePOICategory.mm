@@ -1,27 +1,27 @@
 @interface MOEligiblePOICategory
-- (BOOL)isEqual:(id)a3;
-- (MOEligiblePOICategory)initWithCoder:(id)a3;
-- (MOEligiblePOICategory)initWithIdentifier:(id)a3 category:(id)a4;
-- (MOEligiblePOICategory)initWithPOICategoryMO:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MOEligiblePOICategory)initWithCoder:(id)coder;
+- (MOEligiblePOICategory)initWithIdentifier:(id)identifier category:(id)category;
+- (MOEligiblePOICategory)initWithPOICategoryMO:(id)o;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOEligiblePOICategory
 
-- (MOEligiblePOICategory)initWithIdentifier:(id)a3 category:(id)a4
+- (MOEligiblePOICategory)initWithIdentifier:(id)identifier category:(id)category
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  categoryCopy = category;
   v12.receiver = self;
   v12.super_class = MOEligiblePOICategory;
   v9 = [(MOEligiblePOICategory *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_category, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_category, category);
   }
 
   return v10;
@@ -29,45 +29,45 @@
 
 - (id)description
 {
-  v3 = [(MOEligiblePOICategory *)self identifier];
-  v4 = [(MOEligiblePOICategory *)self category];
-  v5 = [NSString stringWithFormat:@"<Eligible poi category ID, %@, category, %@>", v3, v4];
+  identifier = [(MOEligiblePOICategory *)self identifier];
+  category = [(MOEligiblePOICategory *)self category];
+  v5 = [NSString stringWithFormat:@"<Eligible poi category ID, %@, category, %@>", identifier, category];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_category forKey:@"category"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_category forKey:@"category"];
 }
 
-- (MOEligiblePOICategory)initWithCoder:(id)a3
+- (MOEligiblePOICategory)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
 
   v7 = [(MOEligiblePOICategory *)self initWithIdentifier:v5 category:v6];
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [MOEligiblePOICategory alloc];
-  v5 = [(MOEligiblePOICategory *)self identifier];
-  v6 = [(MOEligiblePOICategory *)self category];
-  v7 = [(MOEligiblePOICategory *)v4 initWithIdentifier:v5 category:v6];
+  identifier = [(MOEligiblePOICategory *)self identifier];
+  category = [(MOEligiblePOICategory *)self category];
+  v7 = [(MOEligiblePOICategory *)v4 initWithIdentifier:identifier category:category];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -77,11 +77,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MOEligiblePOICategory *)self category];
-      v7 = [(MOEligiblePOICategory *)v5 category];
+      v5 = equalCopy;
+      category = [(MOEligiblePOICategory *)self category];
+      category2 = [(MOEligiblePOICategory *)v5 category];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [category isEqual:category2];
     }
 
     else
@@ -93,24 +93,24 @@
   return v8;
 }
 
-- (MOEligiblePOICategory)initWithPOICategoryMO:(id)a3
+- (MOEligiblePOICategory)initWithPOICategoryMO:(id)o
 {
-  if (a3)
+  if (o)
   {
-    v4 = a3;
-    v5 = [v4 identifier];
-    v6 = [v4 category];
+    oCopy = o;
+    identifier = [oCopy identifier];
+    category = [oCopy category];
 
-    self = [(MOEligiblePOICategory *)self initWithIdentifier:v5 category:v6];
-    v7 = self;
+    self = [(MOEligiblePOICategory *)self initWithIdentifier:identifier category:category];
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

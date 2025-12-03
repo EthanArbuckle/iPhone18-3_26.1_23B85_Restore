@@ -1,17 +1,17 @@
 @interface GAX_UIStatusBarActionOverride
-- (void)performWithStatusBar:(id)a3 completionHandler:(id)a4;
+- (void)performWithStatusBar:(id)bar completionHandler:(id)handler;
 @end
 
 @implementation GAX_UIStatusBarActionOverride
 
-- (void)performWithStatusBar:(id)a3 completionHandler:(id)a4
+- (void)performWithStatusBar:(id)bar completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  barCopy = bar;
+  handlerCopy = handler;
   v8 = +[GAXClient sharedInstance];
-  v9 = [v8 isActive];
+  isActive = [v8 isActive];
 
-  if (v9)
+  if (isActive)
   {
     v10 = GAXLogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -20,9 +20,9 @@
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Guided Access active. disallowing status bar actions", buf, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -30,7 +30,7 @@
   {
     v11.receiver = self;
     v11.super_class = GAX_UIStatusBarActionOverride;
-    [(GAX_UIStatusBarActionOverride *)&v11 performWithStatusBar:v6 completionHandler:v7];
+    [(GAX_UIStatusBarActionOverride *)&v11 performWithStatusBar:barCopy completionHandler:handlerCopy];
   }
 }
 

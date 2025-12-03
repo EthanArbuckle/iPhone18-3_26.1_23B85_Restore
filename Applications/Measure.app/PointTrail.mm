@@ -1,11 +1,11 @@
 @interface PointTrail
 - (_TtC7Measure10PointTrail)init;
-- (_TtC7Measure10PointTrail)initWithCoder:(id)a3;
+- (_TtC7Measure10PointTrail)initWithCoder:(id)coder;
 @end
 
 @implementation PointTrail
 
-- (_TtC7Measure10PointTrail)initWithCoder:(id)a3
+- (_TtC7Measure10PointTrail)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7Measure10PointTrail_pointNodes) = _swiftEmptyArrayStorage;
   *(&self->super.super.isa + OBJC_IVAR____TtC7Measure10PointTrail_minDistance) = 0;

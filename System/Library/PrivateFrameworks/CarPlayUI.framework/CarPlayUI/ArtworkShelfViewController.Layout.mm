@@ -1,18 +1,18 @@
 @interface ArtworkShelfViewController.Layout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (_TtCC9CarPlayUI26ArtworkShelfViewControllerP33_0605145B83C8F0D0362F9ABD7B0C16D96Layout)init;
-- (_TtCC9CarPlayUI26ArtworkShelfViewControllerP33_0605145B83C8F0D0362F9ABD7B0C16D96Layout)initWithCoder:(id)a3;
+- (_TtCC9CarPlayUI26ArtworkShelfViewControllerP33_0605145B83C8F0D0362F9ABD7B0C16D96Layout)initWithCoder:(id)coder;
 @end
 
 @implementation ArtworkShelfViewController.Layout
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v8 = self;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
+  selfCopy = self;
   v9 = ArtworkShelfViewController.Layout.targetContentOffset(forProposedContentOffset:withScrollingVelocity:)(v7, v6, x, y);
   v11 = v10;
 
@@ -30,12 +30,12 @@
   return [(UICollectionViewFlowLayout *)&v3 init];
 }
 
-- (_TtCC9CarPlayUI26ArtworkShelfViewControllerP33_0605145B83C8F0D0362F9ABD7B0C16D96Layout)initWithCoder:(id)a3
+- (_TtCC9CarPlayUI26ArtworkShelfViewControllerP33_0605145B83C8F0D0362F9ABD7B0C16D96Layout)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ArtworkShelfViewController.Layout();
-  v4 = a3;
-  v5 = [(UICollectionViewFlowLayout *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(UICollectionViewFlowLayout *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

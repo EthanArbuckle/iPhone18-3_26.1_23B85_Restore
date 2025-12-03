@@ -1,11 +1,11 @@
 @interface AFMetrics
-- (AFMetrics)initWithCoder:(id)a3;
-- (AFMetrics)initWithOriginalCommandId:(id)a3 category:(int64_t)a4 eventInfo:(id)a5 duration:(id)a6;
-- (double)_roundDouble:(double)a3 toSignificantDigits:(unint64_t)a4;
+- (AFMetrics)initWithCoder:(id)coder;
+- (AFMetrics)initWithOriginalCommandId:(id)id category:(int64_t)category eventInfo:(id)info duration:(id)duration;
+- (double)_roundDouble:(double)double toSignificantDigits:(unint64_t)digits;
 - (id)aceMetrics;
 - (id)categoryString;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFMetrics
@@ -16,11 +16,11 @@
   v11.receiver = self;
   v11.super_class = AFMetrics;
   v4 = [(AFMetrics *)&v11 description];
-  v5 = [(AFMetrics *)self originalCommandId];
-  v6 = [(AFMetrics *)self categoryString];
-  v7 = [(AFMetrics *)self duration];
-  v8 = [(AFMetrics *)self eventInfo];
-  v9 = [v3 stringWithFormat:@"%@ - originalCommandId: %@, category: %@, duration: %@, eventInfo: %@", v4, v5, v6, v7, v8];
+  originalCommandId = [(AFMetrics *)self originalCommandId];
+  categoryString = [(AFMetrics *)self categoryString];
+  duration = [(AFMetrics *)self duration];
+  eventInfo = [(AFMetrics *)self eventInfo];
+  v9 = [v3 stringWithFormat:@"%@ - originalCommandId: %@, category: %@, duration: %@, eventInfo: %@", v4, originalCommandId, categoryString, duration, eventInfo];
 
   return v9;
 }
@@ -54,14 +54,14 @@
   return v4;
 }
 
-- (double)_roundDouble:(double)a3 toSignificantDigits:(unint64_t)a4
+- (double)_roundDouble:(double)double toSignificantDigits:(unint64_t)digits
 {
   result = 0.0;
-  if (a3 != 0.0 && a4 != 0)
+  if (double != 0.0 && digits != 0)
   {
-    v8 = log10(fabs(a3));
-    v9 = __exp10((a4 - vcvtpd_s64_f64(v8)));
-    return round(v9 * a3) / v9;
+    v8 = log10(fabs(double));
+    v9 = __exp10((digits - vcvtpd_s64_f64(v8)));
+    return round(v9 * double) / v9;
   }
 
   return result;
@@ -71,20 +71,20 @@
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69C7910]);
-  v4 = [(AFMetrics *)self originalCommandId];
-  [v3 setOriginalCommandId:v4];
+  originalCommandId = [(AFMetrics *)self originalCommandId];
+  [v3 setOriginalCommandId:originalCommandId];
 
-  v5 = [(AFMetrics *)self categoryString];
-  [v3 setCategory:v5];
+  categoryString = [(AFMetrics *)self categoryString];
+  [v3 setCategory:categoryString];
 
-  v6 = [(AFMetrics *)self eventInfo];
-  [v3 setEventInformation:v6];
+  eventInfo = [(AFMetrics *)self eventInfo];
+  [v3 setEventInformation:eventInfo];
 
-  v7 = [(AFMetrics *)self duration];
-  v8 = v7;
-  if (v7)
+  duration = [(AFMetrics *)self duration];
+  v8 = duration;
+  if (duration)
   {
-    [v7 doubleValue];
+    [duration doubleValue];
     [(AFMetrics *)self _roundDouble:2 toSignificantDigits:?];
     v14 = @"Duration";
     v10 = [MEMORY[0x1E696AD98] numberWithDouble:{fmin(v9, 3600.0)}];
@@ -104,31 +104,31 @@
   return v3;
 }
 
-- (AFMetrics)initWithCoder:(id)a3
+- (AFMetrics)initWithCoder:(id)coder
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = AFMetrics;
   v5 = [(AFMetrics *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_originalCommandId"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_originalCommandId"];
     originalCommandId = v5->_originalCommandId;
     v5->_originalCommandId = v6;
 
-    v5->_category = [v4 decodeIntegerForKey:@"_category"];
+    v5->_category = [coderCopy decodeIntegerForKey:@"_category"];
     v8 = MEMORY[0x1E695DFD8];
     v18[0] = objc_opt_class();
     v18[1] = objc_opt_class();
     v18[2] = objc_opt_class();
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:3];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"_eventInfo"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"_eventInfo"];
     eventInfo = v5->_eventInfo;
     v5->_eventInfo = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_duration"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_duration"];
     duration = v5->_duration;
     v5->_duration = v13;
   }
@@ -137,36 +137,36 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originalCommandId = self->_originalCommandId;
-  v5 = a3;
-  [v5 encodeObject:originalCommandId forKey:@"_originalCommandId"];
-  [v5 encodeInteger:self->_category forKey:@"_category"];
-  [v5 encodeObject:self->_eventInfo forKey:@"_eventInfo"];
-  [v5 encodeObject:self->_duration forKey:@"_duration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originalCommandId forKey:@"_originalCommandId"];
+  [coderCopy encodeInteger:self->_category forKey:@"_category"];
+  [coderCopy encodeObject:self->_eventInfo forKey:@"_eventInfo"];
+  [coderCopy encodeObject:self->_duration forKey:@"_duration"];
 }
 
-- (AFMetrics)initWithOriginalCommandId:(id)a3 category:(int64_t)a4 eventInfo:(id)a5 duration:(id)a6
+- (AFMetrics)initWithOriginalCommandId:(id)id category:(int64_t)category eventInfo:(id)info duration:(id)duration
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  idCopy = id;
+  infoCopy = info;
+  durationCopy = duration;
   v19.receiver = self;
   v19.super_class = AFMetrics;
   v13 = [(AFMetrics *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [idCopy copy];
     originalCommandId = v13->_originalCommandId;
     v13->_originalCommandId = v14;
 
-    v13->_category = a4;
-    v16 = [v11 copy];
+    v13->_category = category;
+    v16 = [infoCopy copy];
     eventInfo = v13->_eventInfo;
     v13->_eventInfo = v16;
 
-    objc_storeStrong(&v13->_duration, a6);
+    objc_storeStrong(&v13->_duration, duration);
   }
 
   return v13;

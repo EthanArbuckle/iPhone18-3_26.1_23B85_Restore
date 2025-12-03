@@ -5,7 +5,7 @@
 - (id)mailboxesDidFinish;
 - (id)mailboxesDidFinishAll;
 - (id)mailboxesDidStart;
-- (id)update:(int64_t)a3;
+- (id)update:(int64_t)update;
 - (int64_t)currentStage;
 @end
 
@@ -23,9 +23,9 @@
 
 - (id)accountDidStart
 {
-  v3 = [(AutoFetchState *)self currentStage];
+  currentStage = [(AutoFetchState *)self currentStage];
   [(AutoFetchState *)self setActiveAccountSyncCount:[(AutoFetchState *)self activeAccountSyncCount]+ 1];
-  if (v3 == 1)
+  if (currentStage == 1)
   {
     v4 = &__NSArray0__struct;
   }
@@ -41,9 +41,9 @@
 
 - (id)mailboxesDidStart
 {
-  v3 = [(AutoFetchState *)self currentStage];
+  currentStage = [(AutoFetchState *)self currentStage];
   [(AutoFetchState *)self setMailboxesStage:1];
-  if (v3 == 1)
+  if (currentStage == 1)
   {
     v4 = &__NSArray0__struct;
   }
@@ -68,11 +68,11 @@
     }
   }
 
-  v11 = [(AutoFetchState *)self currentStage];
+  currentStage = [(AutoFetchState *)self currentStage];
   [(AutoFetchState *)self setMailboxesStage:2];
   if ([(AutoFetchState *)self currentStage]== 2)
   {
-    if (v11 == 1)
+    if (currentStage == 1)
     {
       v16 = @"AutoFetchProcessFinishedNotification";
       v12 = &v16;
@@ -140,45 +140,45 @@ LABEL_8:
   return result;
 }
 
-- (id)update:(int64_t)a3
+- (id)update:(int64_t)update
 {
-  if (a3 <= 1)
+  if (update <= 1)
   {
-    if (a3)
+    if (update)
     {
-      if (a3 != 1)
+      if (update != 1)
       {
         goto LABEL_13;
       }
 
-      v3 = [(AutoFetchState *)self accountDidFinish];
+      accountDidFinish = [(AutoFetchState *)self accountDidFinish];
     }
 
     else
     {
-      v3 = [(AutoFetchState *)self accountDidStart];
+      accountDidFinish = [(AutoFetchState *)self accountDidStart];
     }
   }
 
   else
   {
-    switch(a3)
+    switch(update)
     {
       case 2:
-        v3 = [(AutoFetchState *)self mailboxesDidStart];
+        accountDidFinish = [(AutoFetchState *)self mailboxesDidStart];
         break;
       case 3:
-        v3 = [(AutoFetchState *)self mailboxesDidFinish];
+        accountDidFinish = [(AutoFetchState *)self mailboxesDidFinish];
         break;
       case 4:
-        v3 = [(AutoFetchState *)self mailboxesDidFinishAll];
+        accountDidFinish = [(AutoFetchState *)self mailboxesDidFinishAll];
         break;
       default:
         goto LABEL_13;
     }
   }
 
-  a2 = v3;
+  a2 = accountDidFinish;
 LABEL_13:
 
   return a2;
@@ -198,8 +198,8 @@ LABEL_13:
   }
 
   [(AutoFetchState *)self setActiveAccountSyncCount:[(AutoFetchState *)self activeAccountSyncCount]- 1];
-  v3 = [(AutoFetchState *)self currentStage];
-  if (v3 == 2)
+  currentStage = [(AutoFetchState *)self currentStage];
+  if (currentStage == 2)
   {
     v16 = @"AutoFetchProcessFinishedNotification";
     v4 = &v16;
@@ -207,7 +207,7 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  if (v3)
+  if (currentStage)
   {
 LABEL_8:
     v14 = &__NSArray0__struct;

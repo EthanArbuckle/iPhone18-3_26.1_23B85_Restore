@@ -1,20 +1,20 @@
 @interface HUServiceDetailsSectionFactory
-- (id)_serviceDetailsItemComparatorForSectionIdentifier:(id)a3;
-- (id)buildServiceDetailsItemSectionForSourceItem:(id)a3 sectionIdentifier:(id)a4 items:(id)a5;
+- (id)_serviceDetailsItemComparatorForSectionIdentifier:(id)identifier;
+- (id)buildServiceDetailsItemSectionForSourceItem:(id)item sectionIdentifier:(id)identifier items:(id)items;
 @end
 
 @implementation HUServiceDetailsSectionFactory
 
-- (id)buildServiceDetailsItemSectionForSourceItem:(id)a3 sectionIdentifier:(id)a4 items:(id)a5
+- (id)buildServiceDetailsItemSectionForSourceItem:(id)item sectionIdentifier:(id)identifier items:(id)items
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  identifierCopy = identifier;
+  itemsCopy = items;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v11 = v8;
+    v11 = itemCopy;
     if (objc_opt_isKindOfClass())
     {
       v12 = v11;
@@ -27,26 +27,26 @@
 
     v13 = v12;
 
-    v14 = [v13 accessory];
-    v15 = [v14 hf_isVisibleAsBridge];
+    accessory = [v13 accessory];
+    hf_isVisibleAsBridge = [accessory hf_isVisibleAsBridge];
   }
 
   else
   {
-    v15 = 0;
+    hf_isVisibleAsBridge = 0;
   }
 
-  v16 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:v9];
-  if (![v9 isEqualToString:@"HUServiceDetailsGroupSectionIdentifier"])
+  v16 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:identifierCopy];
+  if (![identifierCopy isEqualToString:@"HUServiceDetailsGroupSectionIdentifier"])
   {
-    if ([v9 isEqualToString:@"HUServiceDetailsIdentifyHomePodSectionIdentifier"])
+    if ([identifierCopy isEqualToString:@"HUServiceDetailsIdentifyHomePodSectionIdentifier"])
     {
-      v23 = [v10 na_firstObjectPassingTest:&__block_literal_global_71_0];
+      v23 = [itemsCopy na_firstObjectPassingTest:&__block_literal_global_71_0];
       v24 = v23;
       if (v23)
       {
-        v25 = [v23 latestResults];
-        v22 = [v25 objectForKeyedSubscript:@"HUServiceDetailsIdentifyHomePodFooterResultKey"];
+        latestResults = [v23 latestResults];
+        v22 = [latestResults objectForKeyedSubscript:@"HUServiceDetailsIdentifyHomePodFooterResultKey"];
       }
 
       else
@@ -57,14 +57,14 @@
 
     else
     {
-      if ([v9 isEqualToString:@"HUServiceDetailsLinkedApplicationSectionIdentifier"])
+      if ([identifierCopy isEqualToString:@"HUServiceDetailsLinkedApplicationSectionIdentifier"])
       {
         v20 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsManufacturerTitle", @"HUServiceDetailsManufacturerTitle", 1);
         v22 = 0;
         goto LABEL_24;
       }
 
-      if (([v9 isEqualToString:@"HUServiceDetailsRemoveSectionIdentifier"] & v15) == 1)
+      if (([identifierCopy isEqualToString:@"HUServiceDetailsRemoveSectionIdentifier"] & hf_isVisibleAsBridge) == 1)
       {
         v22 = _HULocalizedStringWithDefaultValue(@"HUServiceDetailsRemoveBridgeFooter", @"HUServiceDetailsRemoveBridgeFooter", 1);
       }
@@ -79,15 +79,15 @@
     goto LABEL_24;
   }
 
-  v17 = [v10 na_firstObjectPassingTest:&__block_literal_global_151];
+  v17 = [itemsCopy na_firstObjectPassingTest:&__block_literal_global_151];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 latestResults];
-    v20 = [v19 objectForKeyedSubscript:@"HUServiceDetailsAddGroupSectionHeaderResultKey"];
+    latestResults2 = [v17 latestResults];
+    v20 = [latestResults2 objectForKeyedSubscript:@"HUServiceDetailsAddGroupSectionHeaderResultKey"];
 
-    v21 = [v18 latestResults];
-    v22 = [v21 objectForKeyedSubscript:@"HUServiceDetailsAddGroupSectionFooterResultKey"];
+    latestResults3 = [v18 latestResults];
+    v22 = [latestResults3 objectForKeyedSubscript:@"HUServiceDetailsAddGroupSectionFooterResultKey"];
   }
 
   else
@@ -96,38 +96,38 @@
     v20 = 0;
   }
 
-  v26 = [v10 na_firstObjectPassingTest:&__block_literal_global_68];
+  v26 = [itemsCopy na_firstObjectPassingTest:&__block_literal_global_68];
   v27 = v26;
   if (v26)
   {
     [v26 latestResults];
-    v51 = v9;
+    v51 = identifierCopy;
     v28 = v20;
     v29 = v16;
-    v30 = v10;
-    v31 = self;
-    v33 = v32 = v8;
+    v30 = itemsCopy;
+    selfCopy = self;
+    v33 = v32 = itemCopy;
     v34 = [v33 objectForKeyedSubscript:@"HUServiceDetailsSeparateTileSectionFooterResultKey"];
 
-    v8 = v32;
-    self = v31;
-    v10 = v30;
+    itemCopy = v32;
+    self = selfCopy;
+    itemsCopy = v30;
     v16 = v29;
     v20 = v28;
-    v9 = v51;
+    identifierCopy = v51;
     v22 = v34;
   }
 
 LABEL_24:
-  if ([v9 isEqualToString:@"HUServiceDetailsPrimaryInfoSectionIdentifier"])
+  if ([identifierCopy isEqualToString:@"HUServiceDetailsPrimaryInfoSectionIdentifier"])
   {
-    v35 = v8;
+    v35 = itemCopy;
     v36 = [v35 conformsToProtocol:&unk_28251AC90] ? v35 : 0;
     v37 = v36;
 
-    v38 = [v37 accessoryRepresentableObject];
+    accessoryRepresentableObject = [v37 accessoryRepresentableObject];
 
-    v39 = [v38 conformsToProtocol:&unk_2825BD960] ? v38 : 0;
+    v39 = [accessoryRepresentableObject conformsToProtocol:&unk_2825BD960] ? accessoryRepresentableObject : 0;
     v40 = v39;
 
     v41 = [v40 hf_shouldHideForContextType:2];
@@ -171,12 +171,12 @@ LABEL_24:
     [v16 setFooterTitle:v22];
   }
 
-  v46 = [(HUServiceDetailsSectionFactory *)self _serviceDetailsItemComparatorForSectionIdentifier:v9];
-  v47 = [v10 allObjects];
-  v48 = v47;
+  v46 = [(HUServiceDetailsSectionFactory *)self _serviceDetailsItemComparatorForSectionIdentifier:identifierCopy];
+  allObjects = [itemsCopy allObjects];
+  v48 = allObjects;
   if (v46)
   {
-    v49 = [v47 mutableCopy];
+    v49 = [allObjects mutableCopy];
 
     [v49 sortUsingComparator:v46];
     v48 = v49;
@@ -214,38 +214,38 @@ uint64_t __102__HUServiceDetailsSectionFactory_buildServiceDetailsItemSectionFor
   return isKindOfClass & 1;
 }
 
-- (id)_serviceDetailsItemComparatorForSectionIdentifier:(id)a3
+- (id)_serviceDetailsItemComparatorForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"HUServiceDetailsFirmwareUpdateSectionPromptIdentifier"] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", @"HUServiceDetailsFirmwareUpdateAppStoreSectionIdentifier"))
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"HUServiceDetailsFirmwareUpdateSectionPromptIdentifier"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"HUServiceDetailsFirmwareUpdateAppStoreSectionIdentifier"))
   {
-    v5 = +[HUFirmwareUpdateItemProvider itemComparator];
+    accessoryInfoServiceDetailComparator = +[HUFirmwareUpdateItemProvider itemComparator];
   }
 
   else
   {
-    if (![v4 isEqualToString:@"HUServiceDetailsAccessoryInfoSectionIdentifier"])
+    if (![identifierCopy isEqualToString:@"HUServiceDetailsAccessoryInfoSectionIdentifier"])
     {
-      v8 = [(HUServiceDetailsSectionFactory *)self customComparator];
-      v9 = v8;
-      if (v8)
+      customComparator = [(HUServiceDetailsSectionFactory *)self customComparator];
+      v9 = customComparator;
+      if (customComparator)
       {
-        v6 = _Block_copy(v8);
+        v6 = _Block_copy(customComparator);
       }
 
       else
       {
-        v10 = [MEMORY[0x277D14778] defaultItemComparator];
-        v6 = _Block_copy(v10);
+        defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+        v6 = _Block_copy(defaultItemComparator);
       }
 
       goto LABEL_5;
     }
 
-    v5 = [MEMORY[0x277D142D0] accessoryInfoServiceDetailComparator];
+    accessoryInfoServiceDetailComparator = [MEMORY[0x277D142D0] accessoryInfoServiceDetailComparator];
   }
 
-  v6 = v5;
+  v6 = accessoryInfoServiceDetailComparator;
 LABEL_5:
 
   return v6;

@@ -1,6 +1,6 @@
 @interface MessageDeliveryInfo
 - (MessageDeliveryInfo)init;
-- (MessageDeliveryInfo)initWithJSON:(id)a3;
+- (MessageDeliveryInfo)initWithJSON:(id)n;
 - (id)description;
 - (id)encodedAsJSON;
 @end
@@ -25,8 +25,8 @@
 - (id)encodedAsJSON
 {
   v17[0] = @"created";
-  v3 = [(MessageDeliveryInfo *)self created];
-  [v3 timeIntervalSinceReferenceDate];
+  created = [(MessageDeliveryInfo *)self created];
+  [created timeIntervalSinceReferenceDate];
   v4 = [NSNumber numberWithDouble:?];
   v18[0] = v4;
   v17[1] = @"numberOfFailures";
@@ -44,12 +44,12 @@
   v9 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:5];
   v10 = [v9 mutableCopy];
 
-  v11 = [(MessageDeliveryInfo *)self lastAttempt];
+  lastAttempt = [(MessageDeliveryInfo *)self lastAttempt];
 
-  if (v11)
+  if (lastAttempt)
   {
-    v12 = [(MessageDeliveryInfo *)self lastAttempt];
-    [v12 timeIntervalSinceReferenceDate];
+    lastAttempt2 = [(MessageDeliveryInfo *)self lastAttempt];
+    [lastAttempt2 timeIntervalSinceReferenceDate];
     v13 = [NSNumber numberWithDouble:?];
     [v10 setObject:v13 forKeyedSubscript:@"lastAttempt"];
   }
@@ -68,13 +68,13 @@
   return v15;
 }
 
-- (MessageDeliveryInfo)initWithJSON:(id)a3
+- (MessageDeliveryInfo)initWithJSON:(id)n
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nCopy = n;
+  v5 = nCopy;
+  if (nCopy)
   {
-    v6 = [v4 dataUsingEncoding:4];
+    v6 = [nCopy dataUsingEncoding:4];
     v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:0];
 
     objc_opt_class();
@@ -115,31 +115,31 @@
       }
 
       self = v8;
-      v19 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v19 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v3 = [(MessageDeliveryInfo *)self numberOfFailures];
-  v4 = [(MessageDeliveryInfo *)self failedCellularAttempts];
+  numberOfFailures = [(MessageDeliveryInfo *)self numberOfFailures];
+  failedCellularAttempts = [(MessageDeliveryInfo *)self failedCellularAttempts];
   [(MessageDeliveryInfo *)self lastStatus];
   v5 = MFMessageDeliveryStatusString();
-  v6 = [(MessageDeliveryInfo *)self lastAttempt];
-  v7 = [NSString stringWithFormat:@"numberOfFailures: %d, failedCellularAttempts: %d, lastStatus: %@, lastAttempt: %@, message size: %d bytes", v3, v4, v5, v6, [(MessageDeliveryInfo *)self messageSize]];
+  lastAttempt = [(MessageDeliveryInfo *)self lastAttempt];
+  v7 = [NSString stringWithFormat:@"numberOfFailures: %d, failedCellularAttempts: %d, lastStatus: %@, lastAttempt: %@, message size: %d bytes", numberOfFailures, failedCellularAttempts, v5, lastAttempt, [(MessageDeliveryInfo *)self messageSize]];
 
   return v7;
 }

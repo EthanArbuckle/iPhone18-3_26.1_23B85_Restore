@@ -1,11 +1,11 @@
 @interface NDOUniversalLinkConverter
-+ (id)convertUrl:(id)a3;
++ (id)convertUrl:(id)url;
 - (NDOUniversalLinkConverter)init;
 @end
 
 @implementation NDOUniversalLinkConverter
 
-+ (id)convertUrl:(id)a3
++ (id)convertUrl:(id)url
 {
   v3 = sub_25BD79678();
   v4 = *(v3 - 8);

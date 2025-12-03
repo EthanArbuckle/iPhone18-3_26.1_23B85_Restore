@@ -1,13 +1,13 @@
 @interface HKAllergyRecord
-+ (id)_newAllergyRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 allergyCodingCollection:(id)a15 onsetDate:(id)a16 asserter:(id)a17 reactions:(id)a18 criticalityCoding:(id)a19 lastOccurrenceDate:(id)a20 recordedDate:(id)a21 verificationStatusCoding:(id)a22 clinicalStatusCoding:(id)a23 allergyTypeCoding:(id)a24 categoryCoding:(id)a25 config:(id)a26;
-+ (id)allergyRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 allergyCodingCollection:(id)a14 onsetDate:(id)a15 asserter:(id)a16 reactions:(id)a17 criticalityCoding:(id)a18 lastOccurrenceDate:(id)a19 recordedDate:(id)a20 verificationStatusCoding:(id)a21 clinicalStatusCoding:(id)a22 allergyTypeCoding:(id)a23 categoryCoding:(id)a24;
++ (id)_newAllergyRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 allergyCodingCollection:(id)self5 onsetDate:(id)self6 asserter:(id)self7 reactions:(id)self8 criticalityCoding:(id)self9 lastOccurrenceDate:(id)occurrenceDate recordedDate:(id)recordedDate verificationStatusCoding:(id)statusCoding clinicalStatusCoding:(id)clinicalStatusCoding allergyTypeCoding:(id)typeCoding categoryCoding:(id)categoryCoding config:(id)config;
++ (id)allergyRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 allergyCodingCollection:(id)self4 onsetDate:(id)self5 asserter:(id)self6 reactions:(id)self7 criticalityCoding:(id)self8 lastOccurrenceDate:(id)self9 recordedDate:(id)recordedDate verificationStatusCoding:(id)statusCoding clinicalStatusCoding:(id)clinicalStatusCoding allergyTypeCoding:(id)typeCoding categoryCoding:(id)categoryCoding;
 + (id)cachedConceptRelationshipKeyPaths;
 + (id)defaultDisplayString;
 + (id)indexableConceptKeyPaths;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEquivalent:(id)a3;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKAllergyRecord)init;
-- (HKAllergyRecord)initWithCoder:(id)a3;
+- (HKAllergyRecord)initWithCoder:(id)coder;
 - (HKConcept)allergy;
 - (HKConcept)allergyType;
 - (HKConcept)category;
@@ -15,42 +15,42 @@
 - (HKConcept)criticality;
 - (HKConcept)verificationStatus;
 - (NSString)description;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)allergyTypeCodingCollection;
 - (id)categoryCodingCollection;
 - (id)clinicalStatusCodingCollection;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (id)criticalityCodingCollection;
 - (id)medicalRecordCodings;
 - (id)verificationStatusCodingCollection;
-- (void)_setAllergy:(id)a3;
-- (void)_setAllergyCodingCollection:(id)a3;
-- (void)_setAllergyType:(id)a3;
-- (void)_setAllergyTypeCoding:(id)a3;
-- (void)_setAsserter:(id)a3;
-- (void)_setCategory:(id)a3;
-- (void)_setCategoryCoding:(id)a3;
-- (void)_setClinicalStatus:(id)a3;
-- (void)_setClinicalStatusCoding:(id)a3;
-- (void)_setCriticality:(id)a3;
-- (void)_setCriticalityCoding:(id)a3;
-- (void)_setLastOccurrenceDate:(id)a3;
-- (void)_setOnsetDate:(id)a3;
-- (void)_setReactions:(id)a3;
-- (void)_setRecordedDate:(id)a3;
-- (void)_setVerificationStatus:(id)a3;
-- (void)_setVerificationStatusCoding:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setAllergy:(id)allergy;
+- (void)_setAllergyCodingCollection:(id)collection;
+- (void)_setAllergyType:(id)type;
+- (void)_setAllergyTypeCoding:(id)coding;
+- (void)_setAsserter:(id)asserter;
+- (void)_setCategory:(id)category;
+- (void)_setCategoryCoding:(id)coding;
+- (void)_setClinicalStatus:(id)status;
+- (void)_setClinicalStatusCoding:(id)coding;
+- (void)_setCriticality:(id)criticality;
+- (void)_setCriticalityCoding:(id)coding;
+- (void)_setLastOccurrenceDate:(id)date;
+- (void)_setOnsetDate:(id)date;
+- (void)_setReactions:(id)reactions;
+- (void)_setRecordedDate:(id)date;
+- (void)_setVerificationStatus:(id)status;
+- (void)_setVerificationStatusCoding:(id)coding;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKAllergyRecord
 
 - (id)medicalRecordCodings
 {
-  v2 = [(HKAllergyRecord *)self allergyCodingCollection];
-  v3 = [v2 codings];
+  allergyCodingCollection = [(HKAllergyRecord *)self allergyCodingCollection];
+  codings = [allergyCodingCollection codings];
 
-  return v3;
+  return codings;
 }
 
 + (id)defaultDisplayString
@@ -61,37 +61,37 @@
   return v3;
 }
 
-+ (id)allergyRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 allergyCodingCollection:(id)a14 onsetDate:(id)a15 asserter:(id)a16 reactions:(id)a17 criticalityCoding:(id)a18 lastOccurrenceDate:(id)a19 recordedDate:(id)a20 verificationStatusCoding:(id)a21 clinicalStatusCoding:(id)a22 allergyTypeCoding:(id)a23 categoryCoding:(id)a24
++ (id)allergyRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 allergyCodingCollection:(id)self4 onsetDate:(id)self5 asserter:(id)self6 reactions:(id)self7 criticalityCoding:(id)self8 lastOccurrenceDate:(id)self9 recordedDate:(id)recordedDate verificationStatusCoding:(id)statusCoding clinicalStatusCoding:(id)clinicalStatusCoding allergyTypeCoding:(id)typeCoding categoryCoding:(id)categoryCoding
 {
-  v49 = a5;
-  v59 = a3;
-  v58 = a4;
-  v28 = a6;
-  v57 = a7;
-  v51 = a8;
-  v55 = a10;
-  v56 = a11;
-  v54 = a12;
-  v53 = a14;
-  v60 = a15;
-  v52 = a16;
-  v48 = a17;
-  v29 = a18;
-  v30 = a19;
-  v31 = a20;
-  v47 = a21;
-  v46 = a22;
-  v32 = a23;
-  v45 = a24;
+  errorCopy = error;
+  typeCopy = type;
+  noteCopy = note;
+  dateCopy = date;
+  identifierCopy = identifier;
+  localeCopy = locale;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  countryCopy = country;
+  collectionCopy = collection;
+  onsetDateCopy = onsetDate;
+  asserterCopy = asserter;
+  reactionsCopy = reactions;
+  codingCopy = coding;
+  occurrenceDateCopy = occurrenceDate;
+  recordedDateCopy = recordedDate;
+  statusCodingCopy = statusCoding;
+  clinicalStatusCodingCopy = clinicalStatusCoding;
+  typeCodingCopy = typeCoding;
+  categoryCodingCopy = categoryCoding;
   v33 = @"modifiedDate";
-  v34 = v28;
+  v34 = dateCopy;
   v35 = v34;
-  if (v30)
+  if (occurrenceDateCopy)
   {
     v36 = @"lastOccurrenceDate";
 
-    v37 = v30;
-    v38 = [v30 dateForUTC];
+    v37 = occurrenceDateCopy;
+    dateForUTC = [occurrenceDateCopy dateForUTC];
 
     v33 = v36;
   }
@@ -99,38 +99,38 @@
   else
   {
     v37 = 0;
-    v38 = v34;
+    dateForUTC = v34;
   }
 
-  if (v60)
+  if (onsetDateCopy)
   {
     v39 = @"onsetDate";
 
-    v40 = [v60 dateForUTC];
+    dateForUTC2 = [onsetDateCopy dateForUTC];
 
-    v38 = v40;
+    dateForUTC = dateForUTC2;
     v33 = v39;
   }
 
-  if (v31)
+  if (recordedDateCopy)
   {
     v41 = @"recordedDate";
 
-    v42 = [v31 dateForUTC];
+    dateForUTC3 = [recordedDateCopy dateForUTC];
 
-    v38 = v42;
+    dateForUTC = dateForUTC3;
     v33 = v41;
   }
 
-  v43 = [HKSemanticDate semanticDateWithKeyPath:v33 date:v38];
-  v50 = [HKAllergyRecord allergyRecordWithType:v59 note:v58 enteredInError:v49 modifiedDate:v35 originIdentifier:v57 locale:v51 extractionVersion:a9 device:v55 metadata:v56 sortDate:v43 country:v54 state:a13 allergyCodingCollection:v53 onsetDate:v60 asserter:v52 reactions:v48 criticalityCoding:v29 lastOccurrenceDate:v37 recordedDate:v31 verificationStatusCoding:v47 clinicalStatusCoding:v46 allergyTypeCoding:v32 categoryCoding:v45];
+  v43 = [HKSemanticDate semanticDateWithKeyPath:v33 date:dateForUTC];
+  v50 = [HKAllergyRecord allergyRecordWithType:typeCopy note:noteCopy enteredInError:errorCopy modifiedDate:v35 originIdentifier:identifierCopy locale:localeCopy extractionVersion:version device:deviceCopy metadata:metadataCopy sortDate:v43 country:countryCopy state:state allergyCodingCollection:collectionCopy onsetDate:onsetDateCopy asserter:asserterCopy reactions:reactionsCopy criticalityCoding:codingCopy lastOccurrenceDate:v37 recordedDate:recordedDateCopy verificationStatusCoding:statusCodingCopy clinicalStatusCoding:clinicalStatusCodingCopy allergyTypeCoding:typeCodingCopy categoryCoding:categoryCodingCopy];
 
   return v50;
 }
 
 + (id)indexableConceptKeyPaths
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKAllergyRecord;
   v2 = objc_msgSendSuper2(&v6, sel_indexableConceptKeyPaths);
   v3 = [v2 mutableCopy];
@@ -150,18 +150,18 @@
 
 + (id)cachedConceptRelationshipKeyPaths
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___HKAllergyRecord;
   v2 = objc_msgSendSuper2(&v4, sel_cachedConceptRelationshipKeyPaths);
 
   return v2;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v8 = v7;
   if (!v7)
   {
@@ -171,8 +171,8 @@
 
   if ([v7 isEqualToString:@"allergy"])
   {
-    v9 = [(HKAllergyRecord *)self allergyCodingCollection];
-    v10 = [HKIndexableObject indexableObjectWithObject:v9];
+    allergyCodingCollection = [(HKAllergyRecord *)self allergyCodingCollection];
+    v10 = [HKIndexableObject indexableObjectWithObject:allergyCodingCollection];
     v32[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
 
@@ -182,15 +182,15 @@ LABEL_4:
 
   if ([v8 isEqualToString:@"reactions"])
   {
-    v12 = [(HKAllergyRecord *)self reactions];
+    reactions = [(HKAllergyRecord *)self reactions];
 
-    if (v12)
+    if (reactions)
     {
-      v9 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v6 error:a4];
-      if (v9)
+      allergyCodingCollection = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
+      if (allergyCodingCollection)
       {
-        v13 = [(HKAllergyRecord *)self reactions];
-        v11 = [v13 codingsForKeyPath:v9 error:a4];
+        reactions2 = [(HKAllergyRecord *)self reactions];
+        v11 = [reactions2 codingsForKeyPath:allergyCodingCollection error:error];
       }
 
       else
@@ -206,12 +206,12 @@ LABEL_4:
 
   if ([v8 isEqualToString:@"criticality"])
   {
-    v14 = [(HKAllergyRecord *)self criticalityCoding];
+    criticalityCoding = [(HKAllergyRecord *)self criticalityCoding];
 
-    if (v14)
+    if (criticalityCoding)
     {
-      v15 = [(HKAllergyRecord *)self criticalityCoding];
-      v16 = [HKMedicalCodingCollection collectionWithCoding:v15];
+      criticalityCoding2 = [(HKAllergyRecord *)self criticalityCoding];
+      v16 = [HKMedicalCodingCollection collectionWithCoding:criticalityCoding2];
       v17 = [HKIndexableObject indexableObjectWithObject:v16];
       v31 = v17;
       v18 = MEMORY[0x1E695DEC8];
@@ -227,12 +227,12 @@ LABEL_26:
 
   if ([v8 isEqualToString:@"verificationStatus"])
   {
-    v20 = [(HKAllergyRecord *)self verificationStatusCoding];
+    verificationStatusCoding = [(HKAllergyRecord *)self verificationStatusCoding];
 
-    if (v20)
+    if (verificationStatusCoding)
     {
-      v15 = [(HKAllergyRecord *)self verificationStatusCoding];
-      v16 = [HKMedicalCodingCollection collectionWithCoding:v15];
+      criticalityCoding2 = [(HKAllergyRecord *)self verificationStatusCoding];
+      v16 = [HKMedicalCodingCollection collectionWithCoding:criticalityCoding2];
       v17 = [HKIndexableObject indexableObjectWithObject:v16];
       v30 = v17;
       v18 = MEMORY[0x1E695DEC8];
@@ -247,12 +247,12 @@ LABEL_27:
 
   if ([v8 isEqualToString:@"clinicalStatus"])
   {
-    v21 = [(HKAllergyRecord *)self clinicalStatusCoding];
+    clinicalStatusCoding = [(HKAllergyRecord *)self clinicalStatusCoding];
 
-    if (v21)
+    if (clinicalStatusCoding)
     {
-      v15 = [(HKAllergyRecord *)self clinicalStatusCoding];
-      v16 = [HKMedicalCodingCollection collectionWithCoding:v15];
+      criticalityCoding2 = [(HKAllergyRecord *)self clinicalStatusCoding];
+      v16 = [HKMedicalCodingCollection collectionWithCoding:criticalityCoding2];
       v17 = [HKIndexableObject indexableObjectWithObject:v16];
       v29 = v17;
       v18 = MEMORY[0x1E695DEC8];
@@ -265,12 +265,12 @@ LABEL_27:
 
   if ([v8 isEqualToString:@"allergyType"])
   {
-    v22 = [(HKAllergyRecord *)self allergyTypeCoding];
+    allergyTypeCoding = [(HKAllergyRecord *)self allergyTypeCoding];
 
-    if (v22)
+    if (allergyTypeCoding)
     {
-      v15 = [(HKAllergyRecord *)self allergyTypeCoding];
-      v16 = [HKMedicalCodingCollection collectionWithCoding:v15];
+      criticalityCoding2 = [(HKAllergyRecord *)self allergyTypeCoding];
+      v16 = [HKMedicalCodingCollection collectionWithCoding:criticalityCoding2];
       v17 = [HKIndexableObject indexableObjectWithObject:v16];
       v28 = v17;
       v18 = MEMORY[0x1E695DEC8];
@@ -283,12 +283,12 @@ LABEL_27:
 
   if ([v8 isEqualToString:@"category"])
   {
-    v23 = [(HKAllergyRecord *)self categoryCoding];
+    categoryCoding = [(HKAllergyRecord *)self categoryCoding];
 
-    if (v23)
+    if (categoryCoding)
     {
-      v15 = [(HKAllergyRecord *)self categoryCoding];
-      v16 = [HKMedicalCodingCollection collectionWithCoding:v15];
+      criticalityCoding2 = [(HKAllergyRecord *)self categoryCoding];
+      v16 = [HKMedicalCodingCollection collectionWithCoding:criticalityCoding2];
       v17 = [HKIndexableObject indexableObjectWithObject:v16];
       v27 = v17;
       v18 = MEMORY[0x1E695DEC8];
@@ -301,7 +301,7 @@ LABEL_27:
 
   v26.receiver = self;
   v26.super_class = HKAllergyRecord;
-  v11 = [(HKMedicalRecord *)&v26 codingsForKeyPath:v6 error:a4];
+  v11 = [(HKMedicalRecord *)&v26 codingsForKeyPath:pathCopy error:error];
 LABEL_28:
 
   v24 = *MEMORY[0x1E69E9840];
@@ -309,11 +309,11 @@ LABEL_28:
   return v11;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:v9 error:a5];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v11 = v10;
   if (!v10)
   {
@@ -322,11 +322,11 @@ LABEL_28:
 
   if ([v10 isEqualToString:@"allergy"])
   {
-    if (HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 1, v9, a5))
+    if (HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 1, pathCopy, error))
     {
-      v12 = [v8 firstObject];
-      v13 = [v12 object];
-      [(HKAllergyRecord *)self _setAllergy:v13];
+      firstObject = [conceptsCopy firstObject];
+      object = [firstObject object];
+      [(HKAllergyRecord *)self _setAllergy:object];
 LABEL_5:
 
       v14 = 1;
@@ -340,60 +340,60 @@ LABEL_5:
   {
     if ([v11 isEqualToString:@"criticality"])
     {
-      v18 = [v8 count];
-      v19 = [(HKAllergyRecord *)self criticalityCoding];
-      v20 = HKIndexableObjectCheckCardinalityForIndexRestore(v18, v19 != 0, v9, a5);
+      v18 = [conceptsCopy count];
+      criticalityCoding = [(HKAllergyRecord *)self criticalityCoding];
+      v20 = HKIndexableObjectCheckCardinalityForIndexRestore(v18, criticalityCoding != 0, pathCopy, error);
 
       if (v20)
       {
-        v12 = [v8 firstObject];
-        v13 = [v12 object];
-        [(HKAllergyRecord *)self _setCriticality:v13];
+        firstObject = [conceptsCopy firstObject];
+        object = [firstObject object];
+        [(HKAllergyRecord *)self _setCriticality:object];
         goto LABEL_5;
       }
     }
 
     else if ([v11 isEqualToString:@"verificationStatus"])
     {
-      v21 = [v8 count];
-      v22 = [(HKAllergyRecord *)self verificationStatusCoding];
-      v23 = HKIndexableObjectCheckCardinalityForIndexRestore(v21, v22 != 0, v9, a5);
+      v21 = [conceptsCopy count];
+      verificationStatusCoding = [(HKAllergyRecord *)self verificationStatusCoding];
+      v23 = HKIndexableObjectCheckCardinalityForIndexRestore(v21, verificationStatusCoding != 0, pathCopy, error);
 
       if (v23)
       {
-        v12 = [v8 firstObject];
-        v13 = [v12 object];
-        [(HKAllergyRecord *)self _setVerificationStatus:v13];
+        firstObject = [conceptsCopy firstObject];
+        object = [firstObject object];
+        [(HKAllergyRecord *)self _setVerificationStatus:object];
         goto LABEL_5;
       }
     }
 
     else if ([v11 isEqualToString:@"clinicalStatus"])
     {
-      v24 = [v8 count];
-      v25 = [(HKAllergyRecord *)self clinicalStatusCoding];
-      v26 = HKIndexableObjectCheckCardinalityForIndexRestore(v24, v25 != 0, v9, a5);
+      v24 = [conceptsCopy count];
+      clinicalStatusCoding = [(HKAllergyRecord *)self clinicalStatusCoding];
+      v26 = HKIndexableObjectCheckCardinalityForIndexRestore(v24, clinicalStatusCoding != 0, pathCopy, error);
 
       if (v26)
       {
-        v12 = [v8 firstObject];
-        v13 = [v12 object];
-        [(HKAllergyRecord *)self _setClinicalStatus:v13];
+        firstObject = [conceptsCopy firstObject];
+        object = [firstObject object];
+        [(HKAllergyRecord *)self _setClinicalStatus:object];
         goto LABEL_5;
       }
     }
 
     else if ([v11 isEqualToString:@"allergyType"])
     {
-      v27 = [v8 count];
-      v28 = [(HKAllergyRecord *)self allergyTypeCoding];
-      v29 = HKIndexableObjectCheckCardinalityForIndexRestore(v27, v28 != 0, v9, a5);
+      v27 = [conceptsCopy count];
+      allergyTypeCoding = [(HKAllergyRecord *)self allergyTypeCoding];
+      v29 = HKIndexableObjectCheckCardinalityForIndexRestore(v27, allergyTypeCoding != 0, pathCopy, error);
 
       if (v29)
       {
-        v12 = [v8 firstObject];
-        v13 = [v12 object];
-        [(HKAllergyRecord *)self _setAllergyType:v13];
+        firstObject = [conceptsCopy firstObject];
+        object = [firstObject object];
+        [(HKAllergyRecord *)self _setAllergyType:object];
         goto LABEL_5;
       }
     }
@@ -404,19 +404,19 @@ LABEL_5:
       {
         v34.receiver = self;
         v34.super_class = HKAllergyRecord;
-        v14 = [(HKMedicalRecord *)&v34 applyConcepts:v8 forKeyPath:v9 error:a5];
+        v14 = [(HKMedicalRecord *)&v34 applyConcepts:conceptsCopy forKeyPath:pathCopy error:error];
         goto LABEL_29;
       }
 
-      v30 = [v8 count];
-      v31 = [(HKAllergyRecord *)self categoryCoding];
-      v32 = HKIndexableObjectCheckCardinalityForIndexRestore(v30, v31 != 0, v9, a5);
+      v30 = [conceptsCopy count];
+      categoryCoding = [(HKAllergyRecord *)self categoryCoding];
+      v32 = HKIndexableObjectCheckCardinalityForIndexRestore(v30, categoryCoding != 0, pathCopy, error);
 
       if (v32)
       {
-        v12 = [v8 firstObject];
-        v13 = [v12 object];
-        [(HKAllergyRecord *)self _setCategory:v13];
+        firstObject = [conceptsCopy firstObject];
+        object = [firstObject object];
+        [(HKAllergyRecord *)self _setCategory:object];
         goto LABEL_5;
       }
     }
@@ -426,20 +426,20 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v15 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v9 error:a5];
+  v15 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
   if (v15)
   {
-    v16 = [(HKAllergyRecord *)self reactions];
+    reactions = [(HKAllergyRecord *)self reactions];
 
-    if (v16)
+    if (reactions)
     {
-      v17 = [(HKAllergyRecord *)self reactions];
-      v14 = [v17 applyConcepts:v8 forKeyPath:v15 error:a5];
+      reactions2 = [(HKAllergyRecord *)self reactions];
+      v14 = [reactions2 applyConcepts:conceptsCopy forKeyPath:v15 error:error];
     }
 
     else
     {
-      v14 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 0, v9, a5);
+      v14 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 0, pathCopy, error);
     }
   }
 
@@ -452,62 +452,62 @@ LABEL_29:
   return v14;
 }
 
-+ (id)_newAllergyRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 allergyCodingCollection:(id)a15 onsetDate:(id)a16 asserter:(id)a17 reactions:(id)a18 criticalityCoding:(id)a19 lastOccurrenceDate:(id)a20 recordedDate:(id)a21 verificationStatusCoding:(id)a22 clinicalStatusCoding:(id)a23 allergyTypeCoding:(id)a24 categoryCoding:(id)a25 config:(id)a26
++ (id)_newAllergyRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 allergyCodingCollection:(id)self5 onsetDate:(id)self6 asserter:(id)self7 reactions:(id)self8 criticalityCoding:(id)self9 lastOccurrenceDate:(id)occurrenceDate recordedDate:(id)recordedDate verificationStatusCoding:(id)statusCoding clinicalStatusCoding:(id)clinicalStatusCoding allergyTypeCoding:(id)typeCoding categoryCoding:(id)categoryCoding config:(id)config
 {
-  v65 = a5;
-  v67 = a15;
-  v26 = a16;
-  v49 = a17;
-  v51 = a18;
-  v53 = a19;
-  v55 = a20;
-  v57 = a21;
-  v59 = a22;
-  v27 = a23;
-  v28 = a24;
-  v29 = a25;
-  v30 = a26;
+  errorCopy = error;
+  collectionCopy = collection;
+  onsetDateCopy = onsetDate;
+  asserterCopy = asserter;
+  reactionsCopy = reactions;
+  codingCopy = coding;
+  occurrenceDateCopy = occurrenceDate;
+  recordedDateCopy = recordedDate;
+  statusCodingCopy = statusCoding;
+  clinicalStatusCodingCopy = clinicalStatusCoding;
+  typeCodingCopy = typeCoding;
+  categoryCodingCopy = categoryCoding;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_allergyCodingCollection_onsetDate_asserter_reactions_criticalityCoding_lastOccurrenceDate_recordedDate_verificationStatusCoding_clinicalStatusCoding_allergyTypeCoding_categoryCoding_config___block_invoke;
   aBlock[3] = &unk_1E7385128;
-  v71 = v67;
-  v72 = v26;
-  v73 = v49;
-  v74 = v51;
-  v75 = v53;
-  v76 = v55;
-  v77 = v57;
-  v78 = v59;
-  v79 = v27;
-  v80 = v28;
-  v81 = v29;
-  v82 = v30;
-  v64 = v30;
-  v63 = v29;
-  v62 = v28;
-  v61 = v27;
-  v60 = v59;
-  v58 = v57;
-  v56 = v55;
-  v54 = v53;
-  v52 = v51;
-  v50 = v49;
-  v48 = v26;
-  v68 = v67;
-  v31 = a13;
-  v32 = a12;
-  v33 = a11;
-  v34 = a10;
-  v35 = a8;
-  v36 = a7;
-  v37 = a6;
-  v38 = a4;
-  v39 = a3;
+  v71 = collectionCopy;
+  v72 = onsetDateCopy;
+  v73 = asserterCopy;
+  v74 = reactionsCopy;
+  v75 = codingCopy;
+  v76 = occurrenceDateCopy;
+  v77 = recordedDateCopy;
+  v78 = statusCodingCopy;
+  v79 = clinicalStatusCodingCopy;
+  v80 = typeCodingCopy;
+  v81 = categoryCodingCopy;
+  v82 = configCopy;
+  v64 = configCopy;
+  v63 = categoryCodingCopy;
+  v62 = typeCodingCopy;
+  v61 = clinicalStatusCodingCopy;
+  v60 = statusCodingCopy;
+  v58 = recordedDateCopy;
+  v56 = occurrenceDateCopy;
+  v54 = codingCopy;
+  v52 = reactionsCopy;
+  v50 = asserterCopy;
+  v48 = onsetDateCopy;
+  v68 = collectionCopy;
+  countryCopy = country;
+  sortDateCopy = sortDate;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  dateCopy = date;
+  noteCopy = note;
+  typeCopy = type;
   v40 = _Block_copy(aBlock);
-  v69.receiver = a1;
+  v69.receiver = self;
   v69.super_class = &OBJC_METACLASS___HKAllergyRecord;
-  v66 = objc_msgSendSuper2(&v69, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, v39, v38, v65, v37, v36, v35, a9, v34, v33, v32, v31, a14, v40);
+  v66 = objc_msgSendSuper2(&v69, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, typeCopy, noteCopy, errorCopy, dateCopy, identifierCopy, localeCopy, version, deviceCopy, metadataCopy, sortDateCopy, countryCopy, state, v40);
 
   return v66;
 }
@@ -590,105 +590,105 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKAllergyRecord;
-  v4 = a3;
-  [(HKMedicalRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_allergyCodingCollection forKey:{@"AllergyCodingCollection", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_onsetDate forKey:@"OnsetDate"];
-  [v4 encodeObject:self->_asserter forKey:@"Asserter"];
-  [v4 encodeObject:self->_reactions forKey:@"Reactions"];
-  [v4 encodeObject:self->_criticalityCoding forKey:@"CriticalityCoding"];
-  [v4 encodeObject:self->_lastOccurrenceDate forKey:@"LastOccurrenceDate"];
-  [v4 encodeObject:self->_recordedDate forKey:@"RecordedDate"];
-  [v4 encodeObject:self->_verificationStatusCoding forKey:@"VerificationStatusCoding"];
-  [v4 encodeObject:self->_clinicalStatusCoding forKey:@"ClinicalStatusCoding"];
-  [v4 encodeObject:self->_allergyTypeCoding forKey:@"AllergyTypeCoding"];
-  [v4 encodeObject:self->_categoryCoding forKey:@"CategoryCoding"];
-  [v4 encodeObject:self->_allergy forKey:@"Allergy"];
-  [v4 encodeObject:self->_criticality forKey:@"Criticality"];
-  [v4 encodeObject:self->_verificationStatus forKey:@"VerificationStatus"];
-  [v4 encodeObject:self->_clinicalStatus forKey:@"ClinicalStatus"];
-  [v4 encodeObject:self->_allergyType forKey:@"AllergyType"];
-  [v4 encodeObject:self->_category forKey:@"Category"];
+  coderCopy = coder;
+  [(HKMedicalRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_allergyCodingCollection forKey:{@"AllergyCodingCollection", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_onsetDate forKey:@"OnsetDate"];
+  [coderCopy encodeObject:self->_asserter forKey:@"Asserter"];
+  [coderCopy encodeObject:self->_reactions forKey:@"Reactions"];
+  [coderCopy encodeObject:self->_criticalityCoding forKey:@"CriticalityCoding"];
+  [coderCopy encodeObject:self->_lastOccurrenceDate forKey:@"LastOccurrenceDate"];
+  [coderCopy encodeObject:self->_recordedDate forKey:@"RecordedDate"];
+  [coderCopy encodeObject:self->_verificationStatusCoding forKey:@"VerificationStatusCoding"];
+  [coderCopy encodeObject:self->_clinicalStatusCoding forKey:@"ClinicalStatusCoding"];
+  [coderCopy encodeObject:self->_allergyTypeCoding forKey:@"AllergyTypeCoding"];
+  [coderCopy encodeObject:self->_categoryCoding forKey:@"CategoryCoding"];
+  [coderCopy encodeObject:self->_allergy forKey:@"Allergy"];
+  [coderCopy encodeObject:self->_criticality forKey:@"Criticality"];
+  [coderCopy encodeObject:self->_verificationStatus forKey:@"VerificationStatus"];
+  [coderCopy encodeObject:self->_clinicalStatus forKey:@"ClinicalStatus"];
+  [coderCopy encodeObject:self->_allergyType forKey:@"AllergyType"];
+  [coderCopy encodeObject:self->_category forKey:@"Category"];
 }
 
-- (HKAllergyRecord)initWithCoder:(id)a3
+- (HKAllergyRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = HKAllergyRecord;
-  v5 = [(HKMedicalRecord *)&v42 initWithCoder:v4];
+  v5 = [(HKMedicalRecord *)&v42 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AllergyCodingCollection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AllergyCodingCollection"];
     allergyCodingCollection = v5->_allergyCodingCollection;
     v5->_allergyCodingCollection = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OnsetDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OnsetDate"];
     onsetDate = v5->_onsetDate;
     v5->_onsetDate = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Asserter"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Asserter"];
     asserter = v5->_asserter;
     v5->_asserter = v10;
 
     v12 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"Reactions"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"Reactions"];
     reactions = v5->_reactions;
     v5->_reactions = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CriticalityCoding"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CriticalityCoding"];
     criticalityCoding = v5->_criticalityCoding;
     v5->_criticalityCoding = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastOccurrenceDate"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastOccurrenceDate"];
     lastOccurrenceDate = v5->_lastOccurrenceDate;
     v5->_lastOccurrenceDate = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RecordedDate"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RecordedDate"];
     recordedDate = v5->_recordedDate;
     v5->_recordedDate = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VerificationStatusCoding"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VerificationStatusCoding"];
     verificationStatusCoding = v5->_verificationStatusCoding;
     v5->_verificationStatusCoding = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalStatusCoding"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalStatusCoding"];
     clinicalStatusCoding = v5->_clinicalStatusCoding;
     v5->_clinicalStatusCoding = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AllergyTypeCoding"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AllergyTypeCoding"];
     allergyTypeCoding = v5->_allergyTypeCoding;
     v5->_allergyTypeCoding = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CategoryCoding"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CategoryCoding"];
     categoryCoding = v5->_categoryCoding;
     v5->_categoryCoding = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Allergy"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Allergy"];
     allergy = v5->_allergy;
     v5->_allergy = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Criticality"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Criticality"];
     criticality = v5->_criticality;
     v5->_criticality = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VerificationStatus"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VerificationStatus"];
     verificationStatus = v5->_verificationStatus;
     v5->_verificationStatus = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalStatus"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalStatus"];
     clinicalStatus = v5->_clinicalStatus;
     v5->_clinicalStatus = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AllergyType"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AllergyType"];
     allergyType = v5->_allergyType;
     v5->_allergyType = v37;
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Category"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Category"];
     category = v5->_category;
     v5->_category = v39;
   }
@@ -696,13 +696,13 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v112.receiver = self;
     v112.super_class = HKAllergyRecord;
     if (![(HKMedicalRecord *)&v112 isEquivalent:v5])
@@ -710,25 +710,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       goto LABEL_89;
     }
 
-    v6 = [(HKAllergyRecord *)self allergyCodingCollection];
-    v7 = [v5 allergyCodingCollection];
-    v8 = v7;
-    if (v6 == v7)
+    allergyCodingCollection = [(HKAllergyRecord *)self allergyCodingCollection];
+    allergyCodingCollection2 = [v5 allergyCodingCollection];
+    v8 = allergyCodingCollection2;
+    if (allergyCodingCollection == allergyCodingCollection2)
     {
     }
 
     else
     {
-      v9 = [v5 allergyCodingCollection];
-      if (!v9)
+      allergyCodingCollection3 = [v5 allergyCodingCollection];
+      if (!allergyCodingCollection3)
       {
         goto LABEL_88;
       }
 
-      v10 = v9;
-      v11 = [(HKAllergyRecord *)self allergyCodingCollection];
-      v12 = [v5 allergyCodingCollection];
-      v13 = [v11 isEqual:v12];
+      v10 = allergyCodingCollection3;
+      allergyCodingCollection4 = [(HKAllergyRecord *)self allergyCodingCollection];
+      allergyCodingCollection5 = [v5 allergyCodingCollection];
+      v13 = [allergyCodingCollection4 isEqual:allergyCodingCollection5];
 
       if (!v13)
       {
@@ -736,25 +736,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self onsetDate];
-    v15 = [v5 onsetDate];
-    v8 = v15;
-    if (v6 == v15)
+    allergyCodingCollection = [(HKAllergyRecord *)self onsetDate];
+    onsetDate = [v5 onsetDate];
+    v8 = onsetDate;
+    if (allergyCodingCollection == onsetDate)
     {
     }
 
     else
     {
-      v16 = [v5 onsetDate];
-      if (!v16)
+      onsetDate2 = [v5 onsetDate];
+      if (!onsetDate2)
       {
         goto LABEL_88;
       }
 
-      v17 = v16;
-      v18 = [(HKAllergyRecord *)self onsetDate];
-      v19 = [v5 onsetDate];
-      v20 = [v18 isEqual:v19];
+      v17 = onsetDate2;
+      onsetDate3 = [(HKAllergyRecord *)self onsetDate];
+      onsetDate4 = [v5 onsetDate];
+      v20 = [onsetDate3 isEqual:onsetDate4];
 
       if (!v20)
       {
@@ -762,25 +762,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self asserter];
-    v21 = [v5 asserter];
-    v8 = v21;
-    if (v6 == v21)
+    allergyCodingCollection = [(HKAllergyRecord *)self asserter];
+    asserter = [v5 asserter];
+    v8 = asserter;
+    if (allergyCodingCollection == asserter)
     {
     }
 
     else
     {
-      v22 = [v5 asserter];
-      if (!v22)
+      asserter2 = [v5 asserter];
+      if (!asserter2)
       {
         goto LABEL_88;
       }
 
-      v23 = v22;
-      v24 = [(HKAllergyRecord *)self asserter];
-      v25 = [v5 asserter];
-      v26 = [v24 isEqualToString:v25];
+      v23 = asserter2;
+      asserter3 = [(HKAllergyRecord *)self asserter];
+      asserter4 = [v5 asserter];
+      v26 = [asserter3 isEqualToString:asserter4];
 
       if (!v26)
       {
@@ -788,25 +788,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self reactions];
-    v27 = [v5 reactions];
-    v8 = v27;
-    if (v6 == v27)
+    allergyCodingCollection = [(HKAllergyRecord *)self reactions];
+    reactions = [v5 reactions];
+    v8 = reactions;
+    if (allergyCodingCollection == reactions)
     {
     }
 
     else
     {
-      v28 = [v5 reactions];
-      if (!v28)
+      reactions2 = [v5 reactions];
+      if (!reactions2)
       {
         goto LABEL_88;
       }
 
-      v29 = v28;
-      v30 = [(HKAllergyRecord *)self reactions];
-      v31 = [v5 reactions];
-      v32 = [v30 isEqualToArray:v31];
+      v29 = reactions2;
+      reactions3 = [(HKAllergyRecord *)self reactions];
+      reactions4 = [v5 reactions];
+      v32 = [reactions3 isEqualToArray:reactions4];
 
       if (!v32)
       {
@@ -814,25 +814,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self criticalityCoding];
-    v33 = [v5 criticalityCoding];
-    v8 = v33;
-    if (v6 == v33)
+    allergyCodingCollection = [(HKAllergyRecord *)self criticalityCoding];
+    criticalityCoding = [v5 criticalityCoding];
+    v8 = criticalityCoding;
+    if (allergyCodingCollection == criticalityCoding)
     {
     }
 
     else
     {
-      v34 = [v5 criticalityCoding];
-      if (!v34)
+      criticalityCoding2 = [v5 criticalityCoding];
+      if (!criticalityCoding2)
       {
         goto LABEL_88;
       }
 
-      v35 = v34;
-      v36 = [(HKAllergyRecord *)self criticalityCoding];
-      v37 = [v5 criticalityCoding];
-      v38 = [v36 isEqual:v37];
+      v35 = criticalityCoding2;
+      criticalityCoding3 = [(HKAllergyRecord *)self criticalityCoding];
+      criticalityCoding4 = [v5 criticalityCoding];
+      v38 = [criticalityCoding3 isEqual:criticalityCoding4];
 
       if (!v38)
       {
@@ -840,25 +840,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self lastOccurrenceDate];
-    v39 = [v5 lastOccurrenceDate];
-    v8 = v39;
-    if (v6 == v39)
+    allergyCodingCollection = [(HKAllergyRecord *)self lastOccurrenceDate];
+    lastOccurrenceDate = [v5 lastOccurrenceDate];
+    v8 = lastOccurrenceDate;
+    if (allergyCodingCollection == lastOccurrenceDate)
     {
     }
 
     else
     {
-      v40 = [v5 lastOccurrenceDate];
-      if (!v40)
+      lastOccurrenceDate2 = [v5 lastOccurrenceDate];
+      if (!lastOccurrenceDate2)
       {
         goto LABEL_88;
       }
 
-      v41 = v40;
-      v42 = [(HKAllergyRecord *)self lastOccurrenceDate];
-      v43 = [v5 lastOccurrenceDate];
-      v44 = [v42 isEqual:v43];
+      v41 = lastOccurrenceDate2;
+      lastOccurrenceDate3 = [(HKAllergyRecord *)self lastOccurrenceDate];
+      lastOccurrenceDate4 = [v5 lastOccurrenceDate];
+      v44 = [lastOccurrenceDate3 isEqual:lastOccurrenceDate4];
 
       if (!v44)
       {
@@ -866,25 +866,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self recordedDate];
-    v45 = [v5 recordedDate];
-    v8 = v45;
-    if (v6 == v45)
+    allergyCodingCollection = [(HKAllergyRecord *)self recordedDate];
+    recordedDate = [v5 recordedDate];
+    v8 = recordedDate;
+    if (allergyCodingCollection == recordedDate)
     {
     }
 
     else
     {
-      v46 = [v5 recordedDate];
-      if (!v46)
+      recordedDate2 = [v5 recordedDate];
+      if (!recordedDate2)
       {
         goto LABEL_88;
       }
 
-      v47 = v46;
-      v48 = [(HKAllergyRecord *)self recordedDate];
-      v49 = [v5 recordedDate];
-      v50 = [v48 isEqual:v49];
+      v47 = recordedDate2;
+      recordedDate3 = [(HKAllergyRecord *)self recordedDate];
+      recordedDate4 = [v5 recordedDate];
+      v50 = [recordedDate3 isEqual:recordedDate4];
 
       if (!v50)
       {
@@ -892,25 +892,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self verificationStatusCoding];
-    v51 = [v5 verificationStatusCoding];
-    v8 = v51;
-    if (v6 == v51)
+    allergyCodingCollection = [(HKAllergyRecord *)self verificationStatusCoding];
+    verificationStatusCoding = [v5 verificationStatusCoding];
+    v8 = verificationStatusCoding;
+    if (allergyCodingCollection == verificationStatusCoding)
     {
     }
 
     else
     {
-      v52 = [v5 verificationStatusCoding];
-      if (!v52)
+      verificationStatusCoding2 = [v5 verificationStatusCoding];
+      if (!verificationStatusCoding2)
       {
         goto LABEL_88;
       }
 
-      v53 = v52;
-      v54 = [(HKAllergyRecord *)self verificationStatusCoding];
-      v55 = [v5 verificationStatusCoding];
-      v56 = [v54 isEqual:v55];
+      v53 = verificationStatusCoding2;
+      verificationStatusCoding3 = [(HKAllergyRecord *)self verificationStatusCoding];
+      verificationStatusCoding4 = [v5 verificationStatusCoding];
+      v56 = [verificationStatusCoding3 isEqual:verificationStatusCoding4];
 
       if (!v56)
       {
@@ -918,25 +918,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self clinicalStatusCoding];
-    v57 = [v5 clinicalStatusCoding];
-    v8 = v57;
-    if (v6 == v57)
+    allergyCodingCollection = [(HKAllergyRecord *)self clinicalStatusCoding];
+    clinicalStatusCoding = [v5 clinicalStatusCoding];
+    v8 = clinicalStatusCoding;
+    if (allergyCodingCollection == clinicalStatusCoding)
     {
     }
 
     else
     {
-      v58 = [v5 clinicalStatusCoding];
-      if (!v58)
+      clinicalStatusCoding2 = [v5 clinicalStatusCoding];
+      if (!clinicalStatusCoding2)
       {
         goto LABEL_88;
       }
 
-      v59 = v58;
-      v60 = [(HKAllergyRecord *)self clinicalStatusCoding];
-      v61 = [v5 clinicalStatusCoding];
-      v62 = [v60 isEqual:v61];
+      v59 = clinicalStatusCoding2;
+      clinicalStatusCoding3 = [(HKAllergyRecord *)self clinicalStatusCoding];
+      clinicalStatusCoding4 = [v5 clinicalStatusCoding];
+      v62 = [clinicalStatusCoding3 isEqual:clinicalStatusCoding4];
 
       if (!v62)
       {
@@ -944,25 +944,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self allergyTypeCoding];
-    v63 = [v5 allergyTypeCoding];
-    v8 = v63;
-    if (v6 == v63)
+    allergyCodingCollection = [(HKAllergyRecord *)self allergyTypeCoding];
+    allergyTypeCoding = [v5 allergyTypeCoding];
+    v8 = allergyTypeCoding;
+    if (allergyCodingCollection == allergyTypeCoding)
     {
     }
 
     else
     {
-      v64 = [v5 allergyTypeCoding];
-      if (!v64)
+      allergyTypeCoding2 = [v5 allergyTypeCoding];
+      if (!allergyTypeCoding2)
       {
         goto LABEL_88;
       }
 
-      v65 = v64;
-      v66 = [(HKAllergyRecord *)self allergyTypeCoding];
-      v67 = [v5 allergyTypeCoding];
-      v68 = [v66 isEqual:v67];
+      v65 = allergyTypeCoding2;
+      allergyTypeCoding3 = [(HKAllergyRecord *)self allergyTypeCoding];
+      allergyTypeCoding4 = [v5 allergyTypeCoding];
+      v68 = [allergyTypeCoding3 isEqual:allergyTypeCoding4];
 
       if (!v68)
       {
@@ -970,25 +970,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self categoryCoding];
-    v69 = [v5 categoryCoding];
-    v8 = v69;
-    if (v6 == v69)
+    allergyCodingCollection = [(HKAllergyRecord *)self categoryCoding];
+    categoryCoding = [v5 categoryCoding];
+    v8 = categoryCoding;
+    if (allergyCodingCollection == categoryCoding)
     {
     }
 
     else
     {
-      v70 = [v5 categoryCoding];
-      if (!v70)
+      categoryCoding2 = [v5 categoryCoding];
+      if (!categoryCoding2)
       {
         goto LABEL_88;
       }
 
-      v71 = v70;
-      v72 = [(HKAllergyRecord *)self categoryCoding];
-      v73 = [v5 categoryCoding];
-      v74 = [v72 isEqual:v73];
+      v71 = categoryCoding2;
+      categoryCoding3 = [(HKAllergyRecord *)self categoryCoding];
+      categoryCoding4 = [v5 categoryCoding];
+      v74 = [categoryCoding3 isEqual:categoryCoding4];
 
       if (!v74)
       {
@@ -996,25 +996,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self allergy];
-    v75 = [v5 allergy];
-    v8 = v75;
-    if (v6 == v75)
+    allergyCodingCollection = [(HKAllergyRecord *)self allergy];
+    allergy = [v5 allergy];
+    v8 = allergy;
+    if (allergyCodingCollection == allergy)
     {
     }
 
     else
     {
-      v76 = [v5 allergy];
-      if (!v76)
+      allergy2 = [v5 allergy];
+      if (!allergy2)
       {
         goto LABEL_88;
       }
 
-      v77 = v76;
-      v78 = [(HKAllergyRecord *)self allergy];
-      v79 = [v5 allergy];
-      v80 = [v78 isEqual:v79];
+      v77 = allergy2;
+      allergy3 = [(HKAllergyRecord *)self allergy];
+      allergy4 = [v5 allergy];
+      v80 = [allergy3 isEqual:allergy4];
 
       if (!v80)
       {
@@ -1022,25 +1022,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self criticality];
-    v81 = [v5 criticality];
-    v8 = v81;
-    if (v6 == v81)
+    allergyCodingCollection = [(HKAllergyRecord *)self criticality];
+    criticality = [v5 criticality];
+    v8 = criticality;
+    if (allergyCodingCollection == criticality)
     {
     }
 
     else
     {
-      v82 = [v5 criticality];
-      if (!v82)
+      criticality2 = [v5 criticality];
+      if (!criticality2)
       {
         goto LABEL_88;
       }
 
-      v83 = v82;
-      v84 = [(HKAllergyRecord *)self criticality];
-      v85 = [v5 criticality];
-      v86 = [v84 isEqual:v85];
+      v83 = criticality2;
+      criticality3 = [(HKAllergyRecord *)self criticality];
+      criticality4 = [v5 criticality];
+      v86 = [criticality3 isEqual:criticality4];
 
       if (!v86)
       {
@@ -1048,25 +1048,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self verificationStatus];
-    v87 = [v5 verificationStatus];
-    v8 = v87;
-    if (v6 == v87)
+    allergyCodingCollection = [(HKAllergyRecord *)self verificationStatus];
+    verificationStatus = [v5 verificationStatus];
+    v8 = verificationStatus;
+    if (allergyCodingCollection == verificationStatus)
     {
     }
 
     else
     {
-      v88 = [v5 verificationStatus];
-      if (!v88)
+      verificationStatus2 = [v5 verificationStatus];
+      if (!verificationStatus2)
       {
         goto LABEL_88;
       }
 
-      v89 = v88;
-      v90 = [(HKAllergyRecord *)self verificationStatus];
-      v91 = [v5 verificationStatus];
-      v92 = [v90 isEqual:v91];
+      v89 = verificationStatus2;
+      verificationStatus3 = [(HKAllergyRecord *)self verificationStatus];
+      verificationStatus4 = [v5 verificationStatus];
+      v92 = [verificationStatus3 isEqual:verificationStatus4];
 
       if (!v92)
       {
@@ -1074,25 +1074,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self clinicalStatus];
-    v93 = [v5 clinicalStatus];
-    v8 = v93;
-    if (v6 == v93)
+    allergyCodingCollection = [(HKAllergyRecord *)self clinicalStatus];
+    clinicalStatus = [v5 clinicalStatus];
+    v8 = clinicalStatus;
+    if (allergyCodingCollection == clinicalStatus)
     {
     }
 
     else
     {
-      v94 = [v5 clinicalStatus];
-      if (!v94)
+      clinicalStatus2 = [v5 clinicalStatus];
+      if (!clinicalStatus2)
       {
         goto LABEL_88;
       }
 
-      v95 = v94;
-      v96 = [(HKAllergyRecord *)self clinicalStatus];
-      v97 = [v5 clinicalStatus];
-      v98 = [v96 isEqual:v97];
+      v95 = clinicalStatus2;
+      clinicalStatus3 = [(HKAllergyRecord *)self clinicalStatus];
+      clinicalStatus4 = [v5 clinicalStatus];
+      v98 = [clinicalStatus3 isEqual:clinicalStatus4];
 
       if (!v98)
       {
@@ -1100,25 +1100,25 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self allergyType];
-    v99 = [v5 allergyType];
-    v8 = v99;
-    if (v6 == v99)
+    allergyCodingCollection = [(HKAllergyRecord *)self allergyType];
+    allergyType = [v5 allergyType];
+    v8 = allergyType;
+    if (allergyCodingCollection == allergyType)
     {
     }
 
     else
     {
-      v100 = [v5 allergyType];
-      if (!v100)
+      allergyType2 = [v5 allergyType];
+      if (!allergyType2)
       {
         goto LABEL_88;
       }
 
-      v101 = v100;
-      v102 = [(HKAllergyRecord *)self allergyType];
-      v103 = [v5 allergyType];
-      v104 = [v102 isEqual:v103];
+      v101 = allergyType2;
+      allergyType3 = [(HKAllergyRecord *)self allergyType];
+      allergyType4 = [v5 allergyType];
+      v104 = [allergyType3 isEqual:allergyType4];
 
       if (!v104)
       {
@@ -1126,10 +1126,10 @@ void __348__HKAllergyRecord__newAllergyRecordWithType_note_enteredInError_modifi
       }
     }
 
-    v6 = [(HKAllergyRecord *)self category];
-    v105 = [v5 category];
-    v8 = v105;
-    if (v6 == v105)
+    allergyCodingCollection = [(HKAllergyRecord *)self category];
+    category = [v5 category];
+    v8 = category;
+    if (allergyCodingCollection == category)
     {
 
 LABEL_93:
@@ -1137,13 +1137,13 @@ LABEL_93:
       goto LABEL_90;
     }
 
-    v106 = [v5 category];
-    if (v106)
+    category2 = [v5 category];
+    if (category2)
     {
-      v107 = v106;
-      v108 = [(HKAllergyRecord *)self category];
-      v109 = [v5 category];
-      v110 = [v108 isEqual:v109];
+      v107 = category2;
+      category3 = [(HKAllergyRecord *)self category];
+      category4 = [v5 category];
+      v110 = [category3 isEqual:category4];
 
       if (v110)
       {
@@ -1170,12 +1170,12 @@ LABEL_91:
 
 - (id)criticalityCodingCollection
 {
-  v3 = [(HKAllergyRecord *)self criticalityCoding];
+  criticalityCoding = [(HKAllergyRecord *)self criticalityCoding];
 
-  if (v3)
+  if (criticalityCoding)
   {
-    v4 = [(HKAllergyRecord *)self criticalityCoding];
-    v5 = [HKMedicalCodingCollection collectionWithCoding:v4];
+    criticalityCoding2 = [(HKAllergyRecord *)self criticalityCoding];
+    v5 = [HKMedicalCodingCollection collectionWithCoding:criticalityCoding2];
   }
 
   else
@@ -1188,12 +1188,12 @@ LABEL_91:
 
 - (id)verificationStatusCodingCollection
 {
-  v3 = [(HKAllergyRecord *)self verificationStatusCoding];
+  verificationStatusCoding = [(HKAllergyRecord *)self verificationStatusCoding];
 
-  if (v3)
+  if (verificationStatusCoding)
   {
-    v4 = [(HKAllergyRecord *)self verificationStatusCoding];
-    v5 = [HKMedicalCodingCollection collectionWithCoding:v4];
+    verificationStatusCoding2 = [(HKAllergyRecord *)self verificationStatusCoding];
+    v5 = [HKMedicalCodingCollection collectionWithCoding:verificationStatusCoding2];
   }
 
   else
@@ -1206,12 +1206,12 @@ LABEL_91:
 
 - (id)clinicalStatusCodingCollection
 {
-  v3 = [(HKAllergyRecord *)self clinicalStatusCoding];
+  clinicalStatusCoding = [(HKAllergyRecord *)self clinicalStatusCoding];
 
-  if (v3)
+  if (clinicalStatusCoding)
   {
-    v4 = [(HKAllergyRecord *)self clinicalStatusCoding];
-    v5 = [HKMedicalCodingCollection collectionWithCoding:v4];
+    clinicalStatusCoding2 = [(HKAllergyRecord *)self clinicalStatusCoding];
+    v5 = [HKMedicalCodingCollection collectionWithCoding:clinicalStatusCoding2];
   }
 
   else
@@ -1224,12 +1224,12 @@ LABEL_91:
 
 - (id)allergyTypeCodingCollection
 {
-  v3 = [(HKAllergyRecord *)self allergyTypeCoding];
+  allergyTypeCoding = [(HKAllergyRecord *)self allergyTypeCoding];
 
-  if (v3)
+  if (allergyTypeCoding)
   {
-    v4 = [(HKAllergyRecord *)self allergyTypeCoding];
-    v5 = [HKMedicalCodingCollection collectionWithCoding:v4];
+    allergyTypeCoding2 = [(HKAllergyRecord *)self allergyTypeCoding];
+    v5 = [HKMedicalCodingCollection collectionWithCoding:allergyTypeCoding2];
   }
 
   else
@@ -1242,12 +1242,12 @@ LABEL_91:
 
 - (id)categoryCodingCollection
 {
-  v3 = [(HKAllergyRecord *)self categoryCoding];
+  categoryCoding = [(HKAllergyRecord *)self categoryCoding];
 
-  if (v3)
+  if (categoryCoding)
   {
-    v4 = [(HKAllergyRecord *)self categoryCoding];
-    v5 = [HKMedicalCodingCollection collectionWithCoding:v4];
+    categoryCoding2 = [(HKAllergyRecord *)self categoryCoding];
+    v5 = [HKMedicalCodingCollection collectionWithCoding:categoryCoding2];
   }
 
   else
@@ -1258,59 +1258,59 @@ LABEL_91:
   return v5;
 }
 
-- (void)_setAllergyCodingCollection:(id)a3
+- (void)_setAllergyCodingCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   allergyCodingCollection = self->_allergyCodingCollection;
   self->_allergyCodingCollection = v4;
 
-  v8 = [(HKAllergyRecord *)self allergyCodingCollection];
-  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v8];
+  allergyCodingCollection = [(HKAllergyRecord *)self allergyCodingCollection];
+  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:allergyCodingCollection];
   allergy = self->_allergy;
   self->_allergy = v6;
 }
 
-- (void)_setOnsetDate:(id)a3
+- (void)_setOnsetDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   onsetDate = self->_onsetDate;
   self->_onsetDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, onsetDate);
 }
 
-- (void)_setAsserter:(id)a3
+- (void)_setAsserter:(id)asserter
 {
-  v4 = [a3 copy];
+  v4 = [asserter copy];
   asserter = self->_asserter;
   self->_asserter = v4;
 
   MEMORY[0x1EEE66BB8](v4, asserter);
 }
 
-- (void)_setReactions:(id)a3
+- (void)_setReactions:(id)reactions
 {
-  v4 = [a3 copy];
+  v4 = [reactions copy];
   reactions = self->_reactions;
   self->_reactions = v4;
 
   MEMORY[0x1EEE66BB8](v4, reactions);
 }
 
-- (void)_setCriticalityCoding:(id)a3
+- (void)_setCriticalityCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   criticalityCoding = self->_criticalityCoding;
   self->_criticalityCoding = v4;
 
   if (self->_criticalityCoding)
   {
-    v9 = [(HKAllergyRecord *)self criticalityCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    criticalityCodingCollection = [(HKAllergyRecord *)self criticalityCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:criticalityCodingCollection];
     criticality = self->_criticality;
     self->_criticality = v6;
 
-    v8 = v9;
+    v8 = criticalityCodingCollection;
   }
 
   else
@@ -1320,38 +1320,38 @@ LABEL_91:
   }
 }
 
-- (void)_setLastOccurrenceDate:(id)a3
+- (void)_setLastOccurrenceDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   lastOccurrenceDate = self->_lastOccurrenceDate;
   self->_lastOccurrenceDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, lastOccurrenceDate);
 }
 
-- (void)_setRecordedDate:(id)a3
+- (void)_setRecordedDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   recordedDate = self->_recordedDate;
   self->_recordedDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, recordedDate);
 }
 
-- (void)_setVerificationStatusCoding:(id)a3
+- (void)_setVerificationStatusCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   verificationStatusCoding = self->_verificationStatusCoding;
   self->_verificationStatusCoding = v4;
 
   if (self->_verificationStatusCoding)
   {
-    v9 = [(HKAllergyRecord *)self verificationStatusCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    verificationStatusCodingCollection = [(HKAllergyRecord *)self verificationStatusCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:verificationStatusCodingCollection];
     verificationStatus = self->_verificationStatus;
     self->_verificationStatus = v6;
 
-    v8 = v9;
+    v8 = verificationStatusCodingCollection;
   }
 
   else
@@ -1361,20 +1361,20 @@ LABEL_91:
   }
 }
 
-- (void)_setClinicalStatusCoding:(id)a3
+- (void)_setClinicalStatusCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   clinicalStatusCoding = self->_clinicalStatusCoding;
   self->_clinicalStatusCoding = v4;
 
   if (self->_clinicalStatusCoding)
   {
-    v9 = [(HKAllergyRecord *)self clinicalStatusCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    clinicalStatusCodingCollection = [(HKAllergyRecord *)self clinicalStatusCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:clinicalStatusCodingCollection];
     clinicalStatus = self->_clinicalStatus;
     self->_clinicalStatus = v6;
 
-    v8 = v9;
+    v8 = clinicalStatusCodingCollection;
   }
 
   else
@@ -1384,20 +1384,20 @@ LABEL_91:
   }
 }
 
-- (void)_setAllergyTypeCoding:(id)a3
+- (void)_setAllergyTypeCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   allergyTypeCoding = self->_allergyTypeCoding;
   self->_allergyTypeCoding = v4;
 
   if (self->_allergyTypeCoding)
   {
-    v9 = [(HKAllergyRecord *)self allergyTypeCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    allergyTypeCodingCollection = [(HKAllergyRecord *)self allergyTypeCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:allergyTypeCodingCollection];
     allergyType = self->_allergyType;
     self->_allergyType = v6;
 
-    v8 = v9;
+    v8 = allergyTypeCodingCollection;
   }
 
   else
@@ -1407,20 +1407,20 @@ LABEL_91:
   }
 }
 
-- (void)_setCategoryCoding:(id)a3
+- (void)_setCategoryCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   categoryCoding = self->_categoryCoding;
   self->_categoryCoding = v4;
 
   if (self->_categoryCoding)
   {
-    v9 = [(HKAllergyRecord *)self categoryCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    categoryCodingCollection = [(HKAllergyRecord *)self categoryCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:categoryCodingCollection];
     category = self->_category;
     self->_category = v6;
 
-    v8 = v9;
+    v8 = categoryCodingCollection;
   }
 
   else
@@ -1440,17 +1440,17 @@ LABEL_91:
 
   else
   {
-    v4 = [(HKAllergyRecord *)self allergyCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    allergyCodingCollection = [(HKAllergyRecord *)self allergyCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:allergyCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setAllergy:(id)a3
+- (void)_setAllergy:(id)allergy
 {
-  v4 = a3;
-  if (!v4)
+  allergyCopy = allergy;
+  if (!allergyCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -1460,7 +1460,7 @@ LABEL_91:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [allergyCopy copy];
   allergy = self->_allergy;
   self->_allergy = v6;
 }
@@ -1477,8 +1477,8 @@ LABEL_91:
 
     else
     {
-      v4 = [(HKAllergyRecord *)self criticalityCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      criticalityCodingCollection = [(HKAllergyRecord *)self criticalityCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:criticalityCodingCollection];
     }
   }
 
@@ -1490,9 +1490,9 @@ LABEL_91:
   return v3;
 }
 
-- (void)_setCriticality:(id)a3
+- (void)_setCriticality:(id)criticality
 {
-  v4 = [a3 copy];
+  v4 = [criticality copy];
   criticality = self->_criticality;
   self->_criticality = v4;
 
@@ -1511,8 +1511,8 @@ LABEL_91:
 
     else
     {
-      v4 = [(HKAllergyRecord *)self verificationStatusCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      verificationStatusCodingCollection = [(HKAllergyRecord *)self verificationStatusCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:verificationStatusCodingCollection];
     }
   }
 
@@ -1524,9 +1524,9 @@ LABEL_91:
   return v3;
 }
 
-- (void)_setVerificationStatus:(id)a3
+- (void)_setVerificationStatus:(id)status
 {
-  v4 = [a3 copy];
+  v4 = [status copy];
   verificationStatus = self->_verificationStatus;
   self->_verificationStatus = v4;
 
@@ -1545,8 +1545,8 @@ LABEL_91:
 
     else
     {
-      v4 = [(HKAllergyRecord *)self clinicalStatusCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      clinicalStatusCodingCollection = [(HKAllergyRecord *)self clinicalStatusCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:clinicalStatusCodingCollection];
     }
   }
 
@@ -1558,9 +1558,9 @@ LABEL_91:
   return v3;
 }
 
-- (void)_setClinicalStatus:(id)a3
+- (void)_setClinicalStatus:(id)status
 {
-  v4 = [a3 copy];
+  v4 = [status copy];
   clinicalStatus = self->_clinicalStatus;
   self->_clinicalStatus = v4;
 
@@ -1579,8 +1579,8 @@ LABEL_91:
 
     else
     {
-      v4 = [(HKAllergyRecord *)self allergyTypeCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      allergyTypeCodingCollection = [(HKAllergyRecord *)self allergyTypeCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:allergyTypeCodingCollection];
     }
   }
 
@@ -1592,9 +1592,9 @@ LABEL_91:
   return v3;
 }
 
-- (void)_setAllergyType:(id)a3
+- (void)_setAllergyType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   allergyType = self->_allergyType;
   self->_allergyType = v4;
 
@@ -1613,8 +1613,8 @@ LABEL_91:
 
     else
     {
-      v4 = [(HKAllergyRecord *)self categoryCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      categoryCodingCollection = [(HKAllergyRecord *)self categoryCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:categoryCodingCollection];
     }
   }
 
@@ -1626,20 +1626,20 @@ LABEL_91:
   return v3;
 }
 
-- (void)_setCategory:(id)a3
+- (void)_setCategory:(id)category
 {
-  v4 = [a3 copy];
+  v4 = [category copy];
   category = self->_category;
   self->_category = v4;
 
   MEMORY[0x1EEE66BB8](v4, category);
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v10.receiver = self;
   v10.super_class = HKAllergyRecord;
-  v5 = [(HKMedicalRecord *)&v10 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKMedicalRecord *)&v10 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {

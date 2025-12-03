@@ -39,7 +39,7 @@
 + (id)localizedLocalAccountNameMidSentence:()UI
 {
   v8 = a4 & 1;
-  Helper_x8__OBJC_CLASS___ACUILocalization = gotLoadHelper_x8__OBJC_CLASS___ACUILocalization(a1);
+  Helper_x8__OBJC_CLASS___ACUILocalization = gotLoadHelper_x8__OBJC_CLASS___ACUILocalization(self);
   v6 = [*(v5 + 2272) localizedTitleForLocalSourceOfDataclass:*MEMORY[0x1E69596C0] usedAtBeginningOfSentence:{(v8 & 1) == 0, Helper_x8__OBJC_CLASS___ACUILocalization}];
 
   return v6;
@@ -63,7 +63,7 @@
   block[1] = 3221225472;
   block[2] = __60__ICAccount_UI__globalVirtualRecentlyDeletedMathNotesFolder__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (globalVirtualRecentlyDeletedMathNotesFolder_once != -1)
   {
     dispatch_once(&globalVirtualRecentlyDeletedMathNotesFolder_once, block);
@@ -88,15 +88,15 @@
 
 - (ICVirtualSmartFolderItemIdentifier)virtualSystemPaperFolder
 {
-  v2 = objc_getAssociatedObject(a1, &ICAccountVirtualSystemPaperFolderIdentifier);
+  v2 = objc_getAssociatedObject(self, &ICAccountVirtualSystemPaperFolderIdentifier);
   if (!v2)
   {
     v3 = [ICVirtualSmartFolderItemIdentifier alloc];
     v4 = +[ICFolderListSectionIdentifier systemSectionIdentifier];
-    v5 = [a1 objectID];
-    v2 = [(ICVirtualSmartFolderItemIdentifier *)v3 initWithType:@"ICVirtualSmartFolderItemIdentifierTypeSystemPaper" parentIdentifier:v4 accountObjectID:v5];
+    objectID = [self objectID];
+    v2 = [(ICVirtualSmartFolderItemIdentifier *)v3 initWithType:@"ICVirtualSmartFolderItemIdentifierTypeSystemPaper" parentIdentifier:v4 accountObjectID:objectID];
 
-    objc_setAssociatedObject(a1, &ICAccountVirtualSystemPaperFolderIdentifier, v2, 1);
+    objc_setAssociatedObject(self, &ICAccountVirtualSystemPaperFolderIdentifier, v2, 1);
   }
 
   return v2;
@@ -104,15 +104,15 @@
 
 - (ICVirtualSmartFolderItemIdentifier)virtualMathNotesFolder
 {
-  v2 = objc_getAssociatedObject(a1, &ICAccountVirtualMathNotesFolderIdentifier);
+  v2 = objc_getAssociatedObject(self, &ICAccountVirtualMathNotesFolderIdentifier);
   if (!v2)
   {
     v3 = [ICVirtualSmartFolderItemIdentifier alloc];
     v4 = +[ICFolderListSectionIdentifier systemSectionIdentifier];
-    v5 = [a1 objectID];
-    v2 = [(ICVirtualSmartFolderItemIdentifier *)v3 initWithType:@"ICVirtualSmartFolderItemIdentifierTypeMathNotes" parentIdentifier:v4 accountObjectID:v5];
+    objectID = [self objectID];
+    v2 = [(ICVirtualSmartFolderItemIdentifier *)v3 initWithType:@"ICVirtualSmartFolderItemIdentifierTypeMathNotes" parentIdentifier:v4 accountObjectID:objectID];
 
-    objc_setAssociatedObject(a1, &ICAccountVirtualMathNotesFolderIdentifier, v2, 1);
+    objc_setAssociatedObject(self, &ICAccountVirtualMathNotesFolderIdentifier, v2, 1);
   }
 
   return v2;
@@ -120,15 +120,15 @@
 
 - (ICVirtualSmartFolderItemIdentifier)virtualCallNotesFolder
 {
-  v2 = objc_getAssociatedObject(a1, &ICAccountVirtualCallNotesFolderIdentifier);
+  v2 = objc_getAssociatedObject(self, &ICAccountVirtualCallNotesFolderIdentifier);
   if (!v2)
   {
     v3 = [ICVirtualSmartFolderItemIdentifier alloc];
     v4 = +[ICFolderListSectionIdentifier systemSectionIdentifier];
-    v5 = [a1 objectID];
-    v2 = [(ICVirtualSmartFolderItemIdentifier *)v3 initWithType:@"ICVirtualSmartFolderItemIdentifierTypeCallNotes" parentIdentifier:v4 accountObjectID:v5];
+    objectID = [self objectID];
+    v2 = [(ICVirtualSmartFolderItemIdentifier *)v3 initWithType:@"ICVirtualSmartFolderItemIdentifierTypeCallNotes" parentIdentifier:v4 accountObjectID:objectID];
 
-    objc_setAssociatedObject(a1, &ICAccountVirtualCallNotesFolderIdentifier, v2, 1);
+    objc_setAssociatedObject(self, &ICAccountVirtualCallNotesFolderIdentifier, v2, 1);
   }
 
   return v2;

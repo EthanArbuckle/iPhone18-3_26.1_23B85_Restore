@@ -1,13 +1,13 @@
 @interface NLSessionActivityFactory
-+ (id)makeWithConfiguration:(id)a3 uuid:(id)a4 formattingManager:(id)a5 elevationUnit:(id)a6 healthStore:(id)a7 builder:(id)a8 experienceType:(int64_t)a9;
++ (id)makeWithConfiguration:(id)configuration uuid:(id)uuid formattingManager:(id)manager elevationUnit:(id)unit healthStore:(id)store builder:(id)builder experienceType:(int64_t)type;
 - (NLSessionActivityFactory)init;
 @end
 
 @implementation NLSessionActivityFactory
 
-+ (id)makeWithConfiguration:(id)a3 uuid:(id)a4 formattingManager:(id)a5 elevationUnit:(id)a6 healthStore:(id)a7 builder:(id)a8 experienceType:(int64_t)a9
++ (id)makeWithConfiguration:(id)configuration uuid:(id)uuid formattingManager:(id)manager elevationUnit:(id)unit healthStore:(id)store builder:(id)builder experienceType:(int64_t)type
 {
-  v29 = a9;
+  typeCopy = type;
   v14 = type metadata accessor for UUID();
   v15 = *(v14 - 8);
   v16 = *(v15 + 64);
@@ -15,13 +15,13 @@
   v18 = &v28 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
   v19 = objc_allocWithZone(NLSessionActivity);
-  v20 = a3;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a8;
+  configurationCopy = configuration;
+  managerCopy = manager;
+  unitCopy = unit;
+  storeCopy = store;
+  builderCopy = builder;
   isa = UUID._bridgeToObjectiveC()().super.isa;
-  v26 = [v19 initWithConfiguration:v20 UUID:isa formattingManager:v21 elevationUnit:v22 healthStore:v23 builder:v24 experienceType:v29];
+  v26 = [v19 initWithConfiguration:configurationCopy UUID:isa formattingManager:managerCopy elevationUnit:unitCopy healthStore:storeCopy builder:builderCopy experienceType:typeCopy];
 
   (*(v15 + 8))(v18, v14);
 

@@ -1,28 +1,28 @@
 @interface HUUtilityOnboardingConnectionViewController
 - (HUConfigurationViewControllerDelegate)delegate;
-- (HUUtilityOnboardingConnectionViewController)initWithContext:(id)a3;
+- (HUUtilityOnboardingConnectionViewController)initWithContext:(id)context;
 - (void)_startAutoDismissTimer;
 - (void)sendNotification;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation HUUtilityOnboardingConnectionViewController
 
-- (HUUtilityOnboardingConnectionViewController)initWithContext:(id)a3
+- (HUUtilityOnboardingConnectionViewController)initWithContext:(id)context
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = [HUUtilityOnboardingConnectionItemManager alloc];
   v21[0] = @"utilityName";
-  v6 = [v4 config];
-  v7 = [v6 name];
+  config = [contextCopy config];
+  name = [config name];
   v21[1] = @"homeName";
-  v22[0] = v7;
-  v8 = [v4 home];
-  v9 = [v8 name];
-  v22[1] = v9;
+  v22[0] = name;
+  home = [contextCopy home];
+  name2 = [home name];
+  v22[1] = name2;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
   v11 = [(HUUtilityOnboardingConnectionItemManager *)v5 initWithDelegate:self data:v10];
 
@@ -30,17 +30,17 @@
   [(HUUtilityOnboardingConnectionViewController *)self setTableView:v12];
 
   v13 = _HULocalizedStringWithDefaultValue(@"HUUtilityDiscoveryUtilityConnection_Title", @"HUUtilityDiscoveryUtilityConnection_Title", 1);
-  v14 = [(HUUtilityOnboardingConnectionViewController *)self tableView];
+  tableView = [(HUUtilityOnboardingConnectionViewController *)self tableView];
   v20.receiver = self;
   v20.super_class = HUUtilityOnboardingConnectionViewController;
-  v15 = [(HUItemTableOBWelcomeController *)&v20 initWithTitle:v13 detailText:0 icon:0 contentLayout:2 itemTableViewController:v14];
+  v15 = [(HUItemTableOBWelcomeController *)&v20 initWithTitle:v13 detailText:0 icon:0 contentLayout:2 itemTableViewController:tableView];
 
-  [(HUUtilityOnboardingConnectionViewController *)v15 setOnboardingContext:v4];
-  v16 = [v4 utilityID];
-  v17 = [v4 onboardingMethod];
-  v18 = [v4 didAttemptPasswordlessMethod];
+  [(HUUtilityOnboardingConnectionViewController *)v15 setOnboardingContext:contextCopy];
+  utilityID = [contextCopy utilityID];
+  onboardingMethod = [contextCopy onboardingMethod];
+  didAttemptPasswordlessMethod = [contextCopy didAttemptPasswordlessMethod];
 
-  [HUHomeEnergyAnalyticsHelper sendUtilityOnboardingCompletedEventWithUtilityID:v16 onboardingMethod:v17 didAttemptPasswordless:v18];
+  [HUHomeEnergyAnalyticsHelper sendUtilityOnboardingCompletedEventWithUtilityID:utilityID onboardingMethod:onboardingMethod didAttemptPasswordless:didAttemptPasswordlessMethod];
   return v15;
 }
 
@@ -49,35 +49,35 @@
   v10.receiver = self;
   v10.super_class = HUUtilityOnboardingConnectionViewController;
   [(HUItemTableOBWelcomeController *)&v10 viewDidLoad];
-  v3 = [(OBBaseWelcomeController *)self navigationItem];
-  [v3 setHidesBackButton:1 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 
-  v4 = [(HUUtilityOnboardingConnectionViewController *)self headerView];
-  v5 = [v4 subviews];
-  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:v5 withIDDictionary:&unk_282492FB8];
+  headerView = [(HUUtilityOnboardingConnectionViewController *)self headerView];
+  subviews = [headerView subviews];
+  [HUAccessibilityIdentifierUtilities setAccessibilityIDForViews:subviews withIDDictionary:&unk_282492FB8];
 
-  v6 = [(HUUtilityOnboardingConnectionViewController *)self onboardingContext];
-  v7 = [(HUUtilityOnboardingConnectionViewController *)self headerView];
-  [v6 updateIconWithHeaderView:v7 axID:@"Home.OnboardingView.Utility.SubscriptionInfo.Icon"];
+  onboardingContext = [(HUUtilityOnboardingConnectionViewController *)self onboardingContext];
+  headerView2 = [(HUUtilityOnboardingConnectionViewController *)self headerView];
+  [onboardingContext updateIconWithHeaderView:headerView2 axID:@"Home.OnboardingView.Utility.SubscriptionInfo.Icon"];
 
-  v8 = [(HUUtilityOnboardingConnectionViewController *)self tableView];
-  v9 = [v8 tableView];
-  [v9 setAllowsSelection:0];
+  tableView = [(HUUtilityOnboardingConnectionViewController *)self tableView];
+  v8TableView = [tableView tableView];
+  [v8TableView setAllowsSelection:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = HUUtilityOnboardingConnectionViewController;
-  [(OBBaseWelcomeController *)&v4 viewDidAppear:a3];
+  [(OBBaseWelcomeController *)&v4 viewDidAppear:appear];
   [(HUUtilityOnboardingConnectionViewController *)self _startAutoDismissTimer];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = HUUtilityOnboardingConnectionViewController;
-  [(OBBaseWelcomeController *)&v4 viewDidDisappear:a3];
+  [(OBBaseWelcomeController *)&v4 viewDidDisappear:disappear];
   [(HUUtilityOnboardingConnectionViewController *)self sendNotification];
 }
 
@@ -88,18 +88,18 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[HUUtilityOnboardingConnectionViewController sendNotification]";
     _os_log_impl(&dword_20CEB6000, v3, OS_LOG_TYPE_DEFAULT, "%@:%s Sending onboarding notification", buf, 0x16u);
   }
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = [(HUUtilityOnboardingConnectionViewController *)self onboardingContext];
-  v6 = [v5 home];
-  v9 = v6;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  onboardingContext = [(HUUtilityOnboardingConnectionViewController *)self onboardingContext];
+  home = [onboardingContext home];
+  v9 = home;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v9 forKeys:&v8 count:1];
-  [v4 postNotificationName:@"CompletedUtilityOnboarding" object:0 userInfo:v7];
+  [defaultCenter postNotificationName:@"CompletedUtilityOnboarding" object:0 userInfo:v7];
 }
 
 - (void)_startAutoDismissTimer

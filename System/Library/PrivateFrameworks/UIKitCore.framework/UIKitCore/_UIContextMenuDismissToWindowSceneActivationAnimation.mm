@@ -1,56 +1,56 @@
 @interface _UIContextMenuDismissToWindowSceneActivationAnimation
-+ (id)animationWithUIController:(id)a3;
-- (void)animateAlongsideScenePlatter:(id)a3;
++ (id)animationWithUIController:(id)controller;
+- (void)animateAlongsideScenePlatter:(id)platter;
 @end
 
 @implementation _UIContextMenuDismissToWindowSceneActivationAnimation
 
-+ (id)animationWithUIController:(id)a3
++ (id)animationWithUIController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = objc_opt_new();
-  [v4 setMenuUIController:v3];
+  [v4 setMenuUIController:controllerCopy];
 
   return v4;
 }
 
-- (void)animateAlongsideScenePlatter:(id)a3
+- (void)animateAlongsideScenePlatter:(id)platter
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
-  v6 = [v5 platterContainerView];
-  [v6 setUserInteractionEnabled:0];
+  platterCopy = platter;
+  menuUIController = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
+  platterContainerView = [menuUIController platterContainerView];
+  [platterContainerView setUserInteractionEnabled:0];
 
-  v7 = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
-  v8 = [v7 contentPlatterView];
+  menuUIController2 = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
+  contentPlatterView = [menuUIController2 contentPlatterView];
 
-  v9 = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
-  v10 = [v9 menuView];
+  menuUIController3 = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
+  menuView = [menuUIController3 menuView];
 
-  if (v8)
+  if (contentPlatterView)
   {
     v70[0] = MEMORY[0x1E69E9820];
     v70[1] = 3221225472;
     v70[2] = __86___UIContextMenuDismissToWindowSceneActivationAnimation_animateAlongsideScenePlatter___block_invoke;
     v70[3] = &unk_1E70F3590;
-    v11 = v8;
+    v11 = contentPlatterView;
     v71 = v11;
     [UIView performWithoutAnimation:v70];
-    v12 = [v4 _velocityForKey:@"position"];
+    v12 = [platterCopy _velocityForKey:@"position"];
     if (v12)
     {
-      [v10 _setVelocity:v12 forKey:@"position"];
+      [menuView _setVelocity:v12 forKey:@"position"];
     }
 
     v69 = 0;
     v67 = 0u;
     v68 = 0u;
-    v13 = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
-    v14 = [v13 currentLayout];
-    v15 = v14;
-    if (v14)
+    menuUIController4 = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
+    currentLayout = [menuUIController4 currentLayout];
+    v15 = currentLayout;
+    if (currentLayout)
     {
-      [v14 anchor];
+      [currentLayout anchor];
     }
 
     else
@@ -60,14 +60,14 @@
       v68 = 0u;
     }
 
-    v16 = [v10 superview];
-    [v4 frame];
+    superview = [menuView superview];
+    [platterCopy frame];
     v18 = v17;
     v20 = v19;
     v22 = v21;
     v24 = v23;
-    v25 = [v4 superview];
-    [v16 convertRect:v25 fromView:{v18, v20, v22, v24}];
+    superview2 = [platterCopy superview];
+    [superview convertRect:superview2 fromView:{v18, v20, v22, v24}];
     v63 = v27;
     v64 = v26;
     v61 = v29;
@@ -166,9 +166,9 @@
     v75.size.width = width;
     v75.size.height = height;
     v45 = MinY + v36 * CGRectGetHeight(v75);
-    [v10 center];
+    [menuView center];
     v47 = v46 - v43;
-    [v10 center];
+    [menuView center];
     v49 = v48 - v45;
     v76.origin.x = v64;
     v76.origin.y = v63;
@@ -189,23 +189,23 @@
     v79.origin.y = v63;
     v79.size.width = v62;
     v79.size.height = v61;
-    [v10 setCenter:{v51, v49 + v52 + v60 * CGRectGetHeight(v79)}];
+    [menuView setCenter:{v51, v49 + v52 + v60 * CGRectGetHeight(v79)}];
   }
 
   v53 = +[_UIWindowSceneActivationSettingsDomain rootSettings];
-  v54 = [v53 morphMenuDismissal];
-  v55 = [v54 springAnimationBehavior];
+  morphMenuDismissal = [v53 morphMenuDismissal];
+  springAnimationBehavior = [morphMenuDismissal springAnimationBehavior];
   v65[0] = MEMORY[0x1E69E9820];
   v65[1] = 3221225472;
   v65[2] = __86___UIContextMenuDismissToWindowSceneActivationAnimation_animateAlongsideScenePlatter___block_invoke_2;
   v65[3] = &unk_1E70F3590;
-  v66 = v10;
-  v56 = v10;
-  [UIView _animateUsingSpringBehavior:v55 tracking:0 animations:v65 completion:0];
+  v66 = menuView;
+  v56 = menuView;
+  [UIView _animateUsingSpringBehavior:springAnimationBehavior tracking:0 animations:v65 completion:0];
 
-  v57 = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
-  v58 = [v57 backgroundEffectView];
-  [v58 setAlpha:0.0];
+  menuUIController5 = [(_UIContextMenuDismissToWindowSceneActivationAnimation *)self menuUIController];
+  backgroundEffectView = [menuUIController5 backgroundEffectView];
+  [backgroundEffectView setAlpha:0.0];
 }
 
 @end

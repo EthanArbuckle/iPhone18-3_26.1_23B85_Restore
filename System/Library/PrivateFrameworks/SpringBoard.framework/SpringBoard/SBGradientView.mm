@@ -3,48 +3,48 @@
 - (CGPoint)startPoint;
 - (NSArray)colors;
 - (NSArray)locations;
-- (void)setColors:(id)a3;
-- (void)setEndPoint:(CGPoint)a3;
-- (void)setLocations:(id)a3;
-- (void)setStartPoint:(CGPoint)a3;
+- (void)setColors:(id)colors;
+- (void)setEndPoint:(CGPoint)point;
+- (void)setLocations:(id)locations;
+- (void)setStartPoint:(CGPoint)point;
 @end
 
 @implementation SBGradientView
 
 - (NSArray)colors
 {
-  v2 = [(SBGradientView *)self layer];
-  v3 = [v2 colors];
+  layer = [(SBGradientView *)self layer];
+  colors = [layer colors];
 
-  return v3;
+  return colors;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v4 = a3;
-  v5 = [(SBGradientView *)self layer];
-  [v5 setColors:v4];
+  colorsCopy = colors;
+  layer = [(SBGradientView *)self layer];
+  [layer setColors:colorsCopy];
 }
 
 - (NSArray)locations
 {
-  v2 = [(SBGradientView *)self layer];
-  v3 = [v2 locations];
+  layer = [(SBGradientView *)self layer];
+  locations = [layer locations];
 
-  return v3;
+  return locations;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(SBGradientView *)self layer];
-  [v5 setLocations:v4];
+  locationsCopy = locations;
+  layer = [(SBGradientView *)self layer];
+  [layer setLocations:locationsCopy];
 }
 
 - (CGPoint)startPoint
 {
-  v2 = [(SBGradientView *)self layer];
-  [v2 startPoint];
+  layer = [(SBGradientView *)self layer];
+  [layer startPoint];
   v4 = v3;
   v6 = v5;
 
@@ -55,18 +55,18 @@
   return result;
 }
 
-- (void)setStartPoint:(CGPoint)a3
+- (void)setStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SBGradientView *)self layer];
-  [v5 setStartPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(SBGradientView *)self layer];
+  [layer setStartPoint:{x, y}];
 }
 
 - (CGPoint)endPoint
 {
-  v2 = [(SBGradientView *)self layer];
-  [v2 endPoint];
+  layer = [(SBGradientView *)self layer];
+  [layer endPoint];
   v4 = v3;
   v6 = v5;
 
@@ -77,12 +77,12 @@
   return result;
 }
 
-- (void)setEndPoint:(CGPoint)a3
+- (void)setEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(SBGradientView *)self layer];
-  [v5 setEndPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(SBGradientView *)self layer];
+  [layer setEndPoint:{x, y}];
 }
 
 @end

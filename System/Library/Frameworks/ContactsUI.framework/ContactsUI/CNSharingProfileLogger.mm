@@ -1,32 +1,32 @@
 @interface CNSharingProfileLogger
 + (id)log;
 - (CNSharingProfileLogger)init;
-- (void)logErrorGeneratingAvatarForPhotoPickerWithDescription:(id)a3;
+- (void)logErrorGeneratingAvatarForPhotoPickerWithDescription:(id)description;
 - (void)logOnboardingAddingContact;
-- (void)logOnboardingAvatarCarouselErrorCreatingContactImageWithDescription:(id)a3;
-- (void)logOnboardingErrorSavingContactWithDescription:(id)a3;
-- (void)logOnboardingErrorSavingMeCardImageToRecentsWithDescription:(id)a3;
-- (void)logOnboardingErrorSavingMeCardPosterToRecentsWithDescription:(id)a3;
-- (void)logOnboardingErrorSettingMeContactWithDescription:(id)a3;
+- (void)logOnboardingAvatarCarouselErrorCreatingContactImageWithDescription:(id)description;
+- (void)logOnboardingErrorSavingContactWithDescription:(id)description;
+- (void)logOnboardingErrorSavingMeCardImageToRecentsWithDescription:(id)description;
+- (void)logOnboardingErrorSavingMeCardPosterToRecentsWithDescription:(id)description;
+- (void)logOnboardingErrorSettingMeContactWithDescription:(id)description;
 - (void)logOnboardingReturningDefaultMonogram;
 - (void)logOnboardingReturningEmptyImage;
 - (void)logOnboardingReturningNonAnimojiItem;
-- (void)logOnboardingReturningSharingResultWithDescription:(id)a3;
-- (void)logOnboardingSavingContact:(id)a3;
-- (void)logOnboardingSavingMeCardImageToRecentsForIdentifier:(id)a3;
-- (void)logOnboardingSavingMeCardPosterToRecentsForIdentifier:(id)a3;
+- (void)logOnboardingReturningSharingResultWithDescription:(id)description;
+- (void)logOnboardingSavingContact:(id)contact;
+- (void)logOnboardingSavingMeCardImageToRecentsForIdentifier:(id)identifier;
+- (void)logOnboardingSavingMeCardPosterToRecentsForIdentifier:(id)identifier;
 - (void)logOnboardingSettingMeContact;
 - (void)logOnboardingSuccessSavingContact;
 - (void)logOnboardingSuccessSavingMeCardImageToRecents;
 - (void)logOnboardingSuccessSavingMeCardPosterToRecents;
-- (void)logOnboardingUpdatingContactWithIdentifier:(id)a3;
-- (void)logSettingsErrorSavingContactWithDescription:(id)a3;
-- (void)logSettingsErrorSettingMeContactWithDescription:(id)a3;
+- (void)logOnboardingUpdatingContactWithIdentifier:(id)identifier;
+- (void)logSettingsErrorSavingContactWithDescription:(id)description;
+- (void)logSettingsErrorSettingMeContactWithDescription:(id)description;
 - (void)logSettingsReturningDefaultMonogram;
 - (void)logSettingsReturningEmptyImage;
 - (void)logSettingsReturningEmptyImageForNoChange;
-- (void)logSettingsReturningSharingResultWithDescription:(id)a3;
-- (void)logSettingsSavingContact:(id)a3;
+- (void)logSettingsReturningSharingResultWithDescription:(id)description;
+- (void)logSettingsSavingContact:(id)contact;
 - (void)logSettingsSettingMeContact;
 - (void)logSettingsSuccessSavingContact;
 @end
@@ -63,28 +63,28 @@
   }
 }
 
-- (void)logSettingsReturningSharingResultWithDescription:(id)a3
+- (void)logSettingsReturningSharingResultWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Settings] Returning sharing result with description: %@", &v6, 0xCu);
   }
 }
 
-- (void)logErrorGeneratingAvatarForPhotoPickerWithDescription:(id)a3
+- (void)logErrorGeneratingAvatarForPhotoPickerWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Settings] Error generating avatar image prior to presenting photo picker: %@", &v6, 0xCu);
   }
 }
@@ -99,15 +99,15 @@
   }
 }
 
-- (void)logSettingsErrorSettingMeContactWithDescription:(id)a3
+- (void)logSettingsErrorSettingMeContactWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_error_impl(&dword_199A75000, log, OS_LOG_TYPE_ERROR, "[Settings] Error setting me contact: %@", &v6, 0xCu);
   }
 }
@@ -122,28 +122,28 @@
   }
 }
 
-- (void)logSettingsErrorSavingContactWithDescription:(id)a3
+- (void)logSettingsErrorSavingContactWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_error_impl(&dword_199A75000, log, OS_LOG_TYPE_ERROR, "[Settings] Error saving contact: %@", &v6, 0xCu);
   }
 }
 
-- (void)logSettingsSavingContact:(id)a3
+- (void)logSettingsSavingContact:(id)contact
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = contactCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Settings] Saving contact with identifier %{public}@", &v6, 0xCu);
   }
 }
@@ -178,28 +178,28 @@
   }
 }
 
-- (void)logOnboardingReturningSharingResultWithDescription:(id)a3
+- (void)logOnboardingReturningSharingResultWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Onboarding] Returning sharing result with description: %@", &v6, 0xCu);
   }
 }
 
-- (void)logOnboardingAvatarCarouselErrorCreatingContactImageWithDescription:(id)a3
+- (void)logOnboardingAvatarCarouselErrorCreatingContactImageWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_error_impl(&dword_199A75000, log, OS_LOG_TYPE_ERROR, "[Onboarding] Error generating contact image: %@", &v6, 0xCu);
   }
 }
@@ -214,15 +214,15 @@
   }
 }
 
-- (void)logOnboardingErrorSettingMeContactWithDescription:(id)a3
+- (void)logOnboardingErrorSettingMeContactWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_error_impl(&dword_199A75000, log, OS_LOG_TYPE_ERROR, "[Onboarding] Error setting contact as me card: %{public}@", &v6, 0xCu);
   }
 }
@@ -237,28 +237,28 @@
   }
 }
 
-- (void)logOnboardingErrorSavingContactWithDescription:(id)a3
+- (void)logOnboardingErrorSavingContactWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_error_impl(&dword_199A75000, log, OS_LOG_TYPE_ERROR, "[Onboarding] Error saving contact: %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)logOnboardingUpdatingContactWithIdentifier:(id)a3
+- (void)logOnboardingUpdatingContactWithIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = identifierCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Onboarding] Updating contact with identifier %{public}@", &v6, 0xCu);
   }
 }
@@ -273,41 +273,41 @@
   }
 }
 
-- (void)logOnboardingSavingContact:(id)a3
+- (void)logOnboardingSavingContact:(id)contact
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contactCopy = contact;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = contactCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Onboarding] Saving contact with identifier %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)logOnboardingErrorSavingMeCardPosterToRecentsWithDescription:(id)a3
+- (void)logOnboardingErrorSavingMeCardPosterToRecentsWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Onboarding] Error saving contact poster to recents: %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)logOnboardingErrorSavingMeCardImageToRecentsWithDescription:(id)a3
+- (void)logOnboardingErrorSavingMeCardImageToRecentsWithDescription:(id)description
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  descriptionCopy = description;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = descriptionCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Onboarding] Error saving contact image to recents: %{public}@", &v6, 0xCu);
   }
 }
@@ -332,28 +332,28 @@
   }
 }
 
-- (void)logOnboardingSavingMeCardPosterToRecentsForIdentifier:(id)a3
+- (void)logOnboardingSavingMeCardPosterToRecentsForIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = identifierCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Onboarding] Saving contact poster to recents for contact with identifier %{public}@", &v6, 0xCu);
   }
 }
 
-- (void)logOnboardingSavingMeCardImageToRecentsForIdentifier:(id)a3
+- (void)logOnboardingSavingMeCardImageToRecentsForIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = identifierCopy;
     _os_log_impl(&dword_199A75000, log, OS_LOG_TYPE_DEFAULT, "[Onboarding] Saving contact image to recents for contact with identifier %{public}@", &v6, 0xCu);
   }
 }

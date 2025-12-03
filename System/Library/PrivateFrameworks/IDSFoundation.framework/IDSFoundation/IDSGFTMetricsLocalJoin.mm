@@ -1,42 +1,42 @@
 @interface IDSGFTMetricsLocalJoin
-- (void)allocbindResponseForProtocolStack:(id)a3;
-- (void)allocbindResponseFromInterface:(id)a3;
-- (void)endWithReason:(unsigned int)a3;
-- (void)linkConnectedWithH2FallbackEnabled:(BOOL)a3;
-- (void)selectedLocalInterface:(id)a3;
-- (void)sendMKMToAVC:(id)a3 isGeneratedLocally:(BOOL)a4;
-- (void)willSendAllocbindRequestThroughInterface:(id)a3;
+- (void)allocbindResponseForProtocolStack:(id)stack;
+- (void)allocbindResponseFromInterface:(id)interface;
+- (void)endWithReason:(unsigned int)reason;
+- (void)linkConnectedWithH2FallbackEnabled:(BOOL)enabled;
+- (void)selectedLocalInterface:(id)interface;
+- (void)sendMKMToAVC:(id)c isGeneratedLocally:(BOOL)locally;
+- (void)willSendAllocbindRequestThroughInterface:(id)interface;
 @end
 
 @implementation IDSGFTMetricsLocalJoin
 
-- (void)selectedLocalInterface:(id)a3
+- (void)selectedLocalInterface:(id)interface
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"slif-%@", a3];
-  [(IDSGFTMetricsReferencePoint *)self event:v4];
+  interface = [MEMORY[0x1E696AEC0] stringWithFormat:@"slif-%@", interface];
+  [(IDSGFTMetricsReferencePoint *)self event:interface];
 }
 
-- (void)willSendAllocbindRequestThroughInterface:(id)a3
+- (void)willSendAllocbindRequestThroughInterface:(id)interface
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"will-abreq-lif-%@", a3];
-  [(IDSGFTMetricsReferencePoint *)self event:v4];
+  interface = [MEMORY[0x1E696AEC0] stringWithFormat:@"will-abreq-lif-%@", interface];
+  [(IDSGFTMetricsReferencePoint *)self event:interface];
 }
 
-- (void)allocbindResponseFromInterface:(id)a3
+- (void)allocbindResponseFromInterface:(id)interface
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"abrsp-lif-%@", a3];
-  [(IDSGFTMetricsReferencePoint *)self event:v4];
+  interface = [MEMORY[0x1E696AEC0] stringWithFormat:@"abrsp-lif-%@", interface];
+  [(IDSGFTMetricsReferencePoint *)self event:interface];
 }
 
-- (void)allocbindResponseForProtocolStack:(id)a3
+- (void)allocbindResponseForProtocolStack:(id)stack
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"abrsp-%@", a3];
-  [(IDSGFTMetricsReferencePoint *)self event:v4];
+  stack = [MEMORY[0x1E696AEC0] stringWithFormat:@"abrsp-%@", stack];
+  [(IDSGFTMetricsReferencePoint *)self event:stack];
 }
 
-- (void)linkConnectedWithH2FallbackEnabled:(BOOL)a3
+- (void)linkConnectedWithH2FallbackEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = @"cl-h2e";
   }
@@ -49,9 +49,9 @@
   [(IDSGFTMetricsReferencePoint *)self event:v3];
 }
 
-- (void)sendMKMToAVC:(id)a3 isGeneratedLocally:(BOOL)a4
+- (void)sendMKMToAVC:(id)c isGeneratedLocally:(BOOL)locally
 {
-  if (a4)
+  if (locally)
   {
     v4 = @"lmkm-avc";
   }
@@ -64,9 +64,9 @@
   [(IDSGFTMetricsReferencePoint *)self event:v4];
 }
 
-- (void)endWithReason:(unsigned int)a3
+- (void)endWithReason:(unsigned int)reason
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"end-reason-%u", *&a3];
+  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"end-reason-%u", *&reason];
   [(IDSGFTMetricsReferencePoint *)self event:v4];
 }
 

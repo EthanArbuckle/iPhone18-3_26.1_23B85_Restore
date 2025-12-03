@@ -1,6 +1,6 @@
 @interface PNDetailsViewAssetFetcherOptions
 - (PHFetchOptions)fetchOptions;
-- (void)setFetchOptions:(id)a3;
+- (void)setFetchOptions:(id)options;
 @end
 
 @implementation PNDetailsViewAssetFetcherOptions
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)setFetchOptions:(id)a3
+- (void)setFetchOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C72CE9B4(v4);
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1C72CE9B4(optionsCopy);
 }
 
 @end

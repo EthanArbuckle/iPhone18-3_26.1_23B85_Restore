@@ -1,17 +1,17 @@
 @interface CEKSliderDotView
-- (CEKSliderDotView)initWithFrame:(CGRect)a3;
+- (CEKSliderDotView)initWithFrame:(CGRect)frame;
 - (id)dotCircleColor;
-- (void)drawRect:(CGRect)a3;
-- (void)setUseLegibilityShadow:(BOOL)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setUseLegibilityShadow:(BOOL)shadow;
 @end
 
 @implementation CEKSliderDotView
 
-- (CEKSliderDotView)initWithFrame:(CGRect)a3
+- (CEKSliderDotView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CEKSliderDotView;
-  v3 = [(CEKSliderDotView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKSliderDotView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,21 +21,21 @@
   return v4;
 }
 
-- (void)setUseLegibilityShadow:(BOOL)a3
+- (void)setUseLegibilityShadow:(BOOL)shadow
 {
-  if (self->_useLegibilityShadow != a3)
+  if (self->_useLegibilityShadow != shadow)
   {
-    self->_useLegibilityShadow = a3;
+    self->_useLegibilityShadow = shadow;
     [(CEKSliderDotView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   [(CEKSliderDotView *)self bounds];
   CGContextClearRect(CurrentContext, v21);
@@ -86,19 +86,19 @@
 
 - (id)dotCircleColor
 {
-  v2 = [(CEKSliderDotView *)self dotColor];
-  v3 = v2;
-  if (v2)
+  dotColor = [(CEKSliderDotView *)self dotColor];
+  v3 = dotColor;
+  if (dotColor)
   {
-    v4 = v2;
+    labelColor = dotColor;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  v5 = v4;
+  v5 = labelColor;
 
   return v5;
 }

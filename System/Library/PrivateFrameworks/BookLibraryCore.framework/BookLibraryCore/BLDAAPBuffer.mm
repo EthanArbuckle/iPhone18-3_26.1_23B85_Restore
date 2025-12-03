@@ -1,7 +1,7 @@
 @interface BLDAAPBuffer
 - (BLDAAPBuffer)init;
 - (NSData)data;
-- (int64_t)appendHeader:(unsigned int)a3 size:(unsigned int)a4;
+- (int64_t)appendHeader:(unsigned int)header size:(unsigned int)size;
 @end
 
 @implementation BLDAAPBuffer
@@ -21,13 +21,13 @@
   return v2;
 }
 
-- (int64_t)appendHeader:(unsigned int)a3 size:(unsigned int)a4
+- (int64_t)appendHeader:(unsigned int)header size:(unsigned int)size
 {
   v11 = *MEMORY[0x277D85DE8];
   v6 = self->_data;
   v7 = [(NSData *)v6 length];
-  v10[0] = bswap32(a3);
-  v10[1] = bswap32(a4);
+  v10[0] = bswap32(header);
+  v10[1] = bswap32(size);
   [(NSData *)v6 appendBytes:v10 length:8];
 
   v8 = *MEMORY[0x277D85DE8];

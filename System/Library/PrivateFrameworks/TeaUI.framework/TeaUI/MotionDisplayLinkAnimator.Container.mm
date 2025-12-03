@@ -1,12 +1,12 @@
 @interface MotionDisplayLinkAnimator.Container
-- (void)updateWithDisplayLink:(id)a3;
+- (void)updateWithDisplayLink:(id)link;
 @end
 
 @implementation MotionDisplayLinkAnimator.Container
 
-- (void)updateWithDisplayLink:(id)a3
+- (void)updateWithDisplayLink:(id)link
 {
-  v3 = a3;
+  linkCopy = link;
 
   sub_1D81584BC();
 }

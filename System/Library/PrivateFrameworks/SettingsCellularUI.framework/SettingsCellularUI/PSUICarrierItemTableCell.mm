@@ -1,28 +1,28 @@
 @interface PSUICarrierItemTableCell
-- (PSUICarrierItemTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_setTitle:(id)a3;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (PSUICarrierItemTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_setTitle:(id)title;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSUICarrierItemTableCell
 
-- (PSUICarrierItemTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PSUICarrierItemTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v31.receiver = self;
   v31.super_class = PSUICarrierItemTableCell;
-  v4 = [(PSTableCell *)&v31 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v31 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     v30.receiver = v4;
     v30.super_class = PSUICarrierItemTableCell;
-    v6 = [(PSUICarrierItemTableCell *)&v30 textLabel];
-    [v6 removeFromSuperview];
+    textLabel = [(PSUICarrierItemTableCell *)&v30 textLabel];
+    [textLabel removeFromSuperview];
 
     v29.receiver = v5;
     v29.super_class = PSUICarrierItemTableCell;
-    v7 = [(PSUICarrierItemTableCell *)&v29 detailTextLabel];
-    [v7 removeFromSuperview];
+    detailTextLabel = [(PSUICarrierItemTableCell *)&v29 detailTextLabel];
+    [detailTextLabel removeFromSuperview];
 
     v8 = objc_alloc_init(MEMORY[0x277D756B8]);
     titleLabel = v5->_titleLabel;
@@ -34,27 +34,27 @@
     [(UILabel *)v5->_titleLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v5->_titleLabel setNumberOfLines:0];
     [(UILabel *)v5->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(PSUICarrierItemTableCell *)v5 contentView];
-    [v11 addSubview:v5->_titleLabel];
+    contentView = [(PSUICarrierItemTableCell *)v5 contentView];
+    [contentView addSubview:v5->_titleLabel];
 
-    v12 = [(UILabel *)v5->_titleLabel centerYAnchor];
-    v13 = [(PSUICarrierItemTableCell *)v5 contentView];
-    v14 = [v13 centerYAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    centerYAnchor = [(UILabel *)v5->_titleLabel centerYAnchor];
+    contentView2 = [(PSUICarrierItemTableCell *)v5 contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v15 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v15 setActive:1];
 
-    v16 = [(UILabel *)v5->_titleLabel leadingAnchor];
-    v17 = [(PSUICarrierItemTableCell *)v5 contentView];
-    v18 = [v17 layoutMarginsGuide];
-    v19 = [v18 leadingAnchor];
-    v20 = [v16 constraintEqualToAnchor:v19];
+    leadingAnchor = [(UILabel *)v5->_titleLabel leadingAnchor];
+    contentView3 = [(PSUICarrierItemTableCell *)v5 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v20 setActive:1];
 
-    v21 = [(UILabel *)v5->_titleLabel widthAnchor];
-    v22 = [(PSUICarrierItemTableCell *)v5 contentView];
-    v23 = [v22 layoutMarginsGuide];
-    v24 = [v23 widthAnchor];
-    v25 = [v21 constraintEqualToAnchor:v24 multiplier:0.6];
+    widthAnchor = [(UILabel *)v5->_titleLabel widthAnchor];
+    contentView4 = [(PSUICarrierItemTableCell *)v5 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    widthAnchor2 = [layoutMarginsGuide2 widthAnchor];
+    v25 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.6];
     [v25 setActive:1];
 
     v26 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
@@ -69,23 +69,23 @@
   return v5;
 }
 
-- (void)_setTitle:(id)a3
+- (void)_setTitle:(id)title
 {
   titleLabel = self->_titleLabel;
-  v5 = a3;
+  titleCopy = title;
   [(UILabel *)titleLabel setHidden:0];
-  [(UILabel *)self->_titleLabel setText:v5];
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
   v6 = self->_titleLabel;
 
   [(UILabel *)v6 setEnabled:0];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v6.receiver = self;
   v6.super_class = PSUICarrierItemTableCell;
-  [(PSTableCell *)&v6 refreshCellContentsWithSpecifier:a3];
+  [(PSTableCell *)&v6 refreshCellContentsWithSpecifier:specifier];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CARRIER_ITEM" value:&stru_287733598 table:@"Cellular"];
   [(PSUICarrierItemTableCell *)self _setTitle:v5];

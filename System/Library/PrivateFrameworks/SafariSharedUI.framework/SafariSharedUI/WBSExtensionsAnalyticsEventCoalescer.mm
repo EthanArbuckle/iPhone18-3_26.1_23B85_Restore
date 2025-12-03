@@ -1,11 +1,11 @@
 @interface WBSExtensionsAnalyticsEventCoalescer
-- (BOOL)didInjectScriptForExtensionWithIdentifier:(id)a3;
-- (BOOL)didInvokeToolbarButtonForExtensionWithIdentifier:(id)a3;
+- (BOOL)didInjectScriptForExtensionWithIdentifier:(id)identifier;
+- (BOOL)didInvokeToolbarButtonForExtensionWithIdentifier:(id)identifier;
 - (WBSExtensionsAnalyticsEventCoalescer)init;
 - (WBSExtensionsAnalyticsEventCoalescerDelegate)delegate;
 - (void)_configureResetTimer;
-- (void)extensionAnalyticsEventCoalescer:(id)a3 didInjectScriptForExtensionWithIdentifier:(id)a4;
-- (void)extensionAnalyticsEventCoalescer:(id)a3 didInvokeToolbarButtonForExtensionWithIdentifier:(id)a4;
+- (void)extensionAnalyticsEventCoalescer:(id)coalescer didInjectScriptForExtensionWithIdentifier:(id)identifier;
+- (void)extensionAnalyticsEventCoalescer:(id)coalescer didInvokeToolbarButtonForExtensionWithIdentifier:(id)identifier;
 @end
 
 @implementation WBSExtensionsAnalyticsEventCoalescer
@@ -56,13 +56,13 @@
   objc_destroyWeak(&location);
 }
 
-- (BOOL)didInjectScriptForExtensionWithIdentifier:(id)a3
+- (BOOL)didInjectScriptForExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableSet *)self->_injectedScriptExtensions containsObject:v4];
+  v5 = [(NSMutableSet *)self->_injectedScriptExtensions containsObject:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (identifierCopy)
   {
     v6 = v5;
   }
@@ -78,8 +78,8 @@
     v11 = 3221225472;
     v12 = __82__WBSExtensionsAnalyticsEventCoalescer_didInjectScriptForExtensionWithIdentifier___block_invoke;
     v13 = &unk_1E82834A0;
-    v14 = self;
-    v7 = v4;
+    selfCopy = self;
+    v7 = identifierCopy;
     v15 = v7;
     os_unfair_lock_lock(&self->_lock);
     __82__WBSExtensionsAnalyticsEventCoalescer_didInjectScriptForExtensionWithIdentifier___block_invoke(&v10);
@@ -101,13 +101,13 @@ void __82__WBSExtensionsAnalyticsEventCoalescer_didInjectScriptForExtensionWithI
   [v1 addObject:v2];
 }
 
-- (BOOL)didInvokeToolbarButtonForExtensionWithIdentifier:(id)a3
+- (BOOL)didInvokeToolbarButtonForExtensionWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableSet *)self->_buttonInvokedExtensions containsObject:v4];
+  v5 = [(NSMutableSet *)self->_buttonInvokedExtensions containsObject:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
-  if (v4)
+  if (identifierCopy)
   {
     v6 = v5;
   }
@@ -123,8 +123,8 @@ void __82__WBSExtensionsAnalyticsEventCoalescer_didInjectScriptForExtensionWithI
     v11 = 3221225472;
     v12 = __89__WBSExtensionsAnalyticsEventCoalescer_didInvokeToolbarButtonForExtensionWithIdentifier___block_invoke;
     v13 = &unk_1E82834A0;
-    v14 = self;
-    v7 = v4;
+    selfCopy = self;
+    v7 = identifierCopy;
     v15 = v7;
     os_unfair_lock_lock(&self->_lock);
     __89__WBSExtensionsAnalyticsEventCoalescer_didInvokeToolbarButtonForExtensionWithIdentifier___block_invoke(&v10);
@@ -176,20 +176,20 @@ uint64_t __60__WBSExtensionsAnalyticsEventCoalescer__configureResetTimer__block_
   return [v2 removeAllObjects];
 }
 
-- (void)extensionAnalyticsEventCoalescer:(id)a3 didInjectScriptForExtensionWithIdentifier:(id)a4
+- (void)extensionAnalyticsEventCoalescer:(id)coalescer didInjectScriptForExtensionWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69C8810];
-  v5 = a4;
-  v6 = [v4 sharedLogger];
-  [v6 didInjectScriptForExtensionWithIdentifier:v5];
+  identifierCopy = identifier;
+  sharedLogger = [v4 sharedLogger];
+  [sharedLogger didInjectScriptForExtensionWithIdentifier:identifierCopy];
 }
 
-- (void)extensionAnalyticsEventCoalescer:(id)a3 didInvokeToolbarButtonForExtensionWithIdentifier:(id)a4
+- (void)extensionAnalyticsEventCoalescer:(id)coalescer didInvokeToolbarButtonForExtensionWithIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E69C8810];
-  v5 = a4;
-  v6 = [v4 sharedLogger];
-  [v6 didInvokeToolbarButtonForExtensionWithIdentifier:v5];
+  identifierCopy = identifier;
+  sharedLogger = [v4 sharedLogger];
+  [sharedLogger didInvokeToolbarButtonForExtensionWithIdentifier:identifierCopy];
 }
 
 - (WBSExtensionsAnalyticsEventCoalescerDelegate)delegate

@@ -1,17 +1,17 @@
 @interface SKGActivityJournalDecoder
-+ (void)SKGActivityJournalPlayback:(const char *)a3 block:(id)a4;
-+ (void)_SKGActivityDump:(id)a3 format:(unint64_t)a4 dst:(__sFILE *)a5;
-+ (void)_SKGEmbeddingTimeline:(id)a3 includePerf:(BOOL)a4 block:(id)a5;
-+ (void)_SKGEmbeddingXPCTimeline:(id)a3 updater:(id)a4 block:(id)a5;
-+ (void)_dumpNDJSONForDictionary:(id)a3 dst:(__sFILE *)a4;
++ (void)SKGActivityJournalPlayback:(const char *)playback block:(id)block;
++ (void)_SKGActivityDump:(id)dump format:(unint64_t)format dst:(__sFILE *)dst;
++ (void)_SKGEmbeddingTimeline:(id)timeline includePerf:(BOOL)perf block:(id)block;
++ (void)_SKGEmbeddingXPCTimeline:(id)timeline updater:(id)updater block:(id)block;
++ (void)_dumpNDJSONForDictionary:(id)dictionary dst:(__sFILE *)dst;
 @end
 
 @implementation SKGActivityJournalDecoder
 
-+ (void)SKGActivityJournalPlayback:(const char *)a3 block:(id)a4
++ (void)SKGActivityJournalPlayback:(const char *)playback block:(id)block
 {
-  v5 = a4;
-  v6 = open(a3, 0);
+  blockCopy = block;
+  v6 = open(playback, 0);
   if (v6 == -1)
   {
     fwrite("### file open failed", 0x14uLL, 1uLL, *MEMORY[0x277D85DF8]);
@@ -23,8 +23,8 @@
     v43 = 0;
     if (read(v6, &v43, 4uLL) == 4 && v43 == -559038737)
     {
-      v33 = v5 + 16;
-      v34 = v5;
+      v33 = blockCopy + 16;
+      v34 = blockCopy;
       v8 = 0x277CBE000uLL;
       while (1)
       {
@@ -35,8 +35,8 @@
         }
 
         v9 = [*(v8 + 2856) dataWithLength:v42];
-        v10 = [v9 mutableBytes];
-        v11 = read(v7, v10, v42);
+        mutableBytes = [v9 mutableBytes];
+        v11 = read(v7, mutableBytes, v42);
         if (v11 != v42)
         {
           break;
@@ -48,42 +48,42 @@
           break;
         }
 
-        v12 = [v9 bytes];
-        v13 = crc32(0, v12, v42);
+        bytes = [v9 bytes];
+        v13 = crc32(0, bytes, v42);
         if (v41 == v13)
         {
-          v14 = [v9 bytes];
-          v36 = *v14;
-          v35 = *(v14 + 1);
-          v15 = [MEMORY[0x277CBEB38] dictionary];
+          bytes2 = [v9 bytes];
+          v36 = *bytes2;
+          v35 = *(bytes2 + 1);
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
           if (v42 >= 0xA)
           {
             v17 = 9;
             do
             {
-              v18 = *(v14 + v17);
+              v18 = *(bytes2 + v17);
               v19 = v17 + 4;
-              DataTypeForParamType = getDataTypeForParamType(*(v14 + v17));
+              DataTypeForParamType = getDataTypeForParamType(*(bytes2 + v17));
               if (DataTypeForParamType <= 2)
               {
                 if (DataTypeForParamType == 1)
                 {
-                  v28 = *(v14 + v19);
+                  v28 = *(bytes2 + v19);
                   v19 = v17 + 8;
                   v25 = [MEMORY[0x277CCABB0] numberWithInt:v28];
 LABEL_22:
                   v23 = v25;
 LABEL_23:
                   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{v18, v33}];
-                  [v15 setObject:v23 forKeyedSubscript:v29];
+                  [dictionary setObject:v23 forKeyedSubscript:v29];
 
                   goto LABEL_24;
                 }
 
                 if (DataTypeForParamType == 2)
                 {
-                  v24 = *(v14 + v19);
+                  v24 = *(bytes2 + v19);
                   v19 = v17 + 12;
                   v25 = [MEMORY[0x277CCABB0] numberWithLongLong:v24];
                   goto LABEL_22;
@@ -95,19 +95,19 @@ LABEL_23:
                 switch(DataTypeForParamType)
                 {
                   case 3:
-                    v26 = *(v14 + v19);
+                    v26 = *(bytes2 + v19);
                     v19 = v17 + 8;
                     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v26];
                     goto LABEL_22;
                   case 4:
-                    v27 = *(v14 + v19);
+                    v27 = *(bytes2 + v19);
                     v19 = v17 + 12;
                     v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v27];
                     goto LABEL_22;
                   case 5:
-                    v21 = *(v14 + v19);
+                    v21 = *(bytes2 + v19);
                     v22 = v17 + 8;
-                    v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:v14 + v17 + 8 length:v21 encoding:4];
+                    v23 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:bytes2 + v17 + 8 length:v21 encoding:4];
                     v19 = v22 + v21;
                     goto LABEL_23;
                 }
@@ -127,8 +127,8 @@ LABEL_24:
           v40 = 0;
           v37[0] = v36;
           v38 = v35;
-          v31 = [v15 copy];
-          v5 = v34;
+          v31 = [dictionary copy];
+          blockCopy = v34;
           v32 = v39;
           v39 = v31;
 
@@ -158,11 +158,11 @@ LABEL_24:
 LABEL_34:
 }
 
-+ (void)_SKGEmbeddingTimeline:(id)a3 includePerf:(BOOL)a4 block:(id)a5
++ (void)_SKGEmbeddingTimeline:(id)timeline includePerf:(BOOL)perf block:(id)block
 {
   v88 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  timelineCopy = timeline;
+  blockCopy = block;
   v77 = 0;
   v78 = &v77;
   v79 = 0x7810000000;
@@ -208,10 +208,10 @@ LABEL_34:
   v48 = &v47;
   v49 = 0x2020000000;
   v50 = 1;
-  v14 = (v9 + 16);
-  (*(v9 + 2))(v9, "Type, from_date_time, to_date_time, elapsed_time_secs, handled, skipped, processed, indexed, index_error, index_timeout, efficiency(max 36k/h), cancelFlag");
-  v15 = v8;
-  v16 = [v8 UTF8String];
+  v14 = (blockCopy + 16);
+  (*(blockCopy + 2))(blockCopy, "Type, from_date_time, to_date_time, elapsed_time_secs, handled, skipped, processed, indexed, index_error, index_timeout, efficiency(max 36k/h), cancelFlag");
+  v15 = timelineCopy;
+  uTF8String = [timelineCopy UTF8String];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __69__SKGActivityJournalDecoder__SKGEmbeddingTimeline_includePerf_block___block_invoke;
@@ -222,9 +222,9 @@ LABEL_34:
   v34 = v17;
   v41 = &v59;
   v42 = &v63;
-  v18 = v9;
+  v18 = blockCopy;
   v38 = v18;
-  v46 = a4;
+  perfCopy = perf;
   v19 = v12;
   v35 = v19;
   v43 = &v47;
@@ -234,7 +234,7 @@ LABEL_34:
   v45 = &v55;
   v21 = v13;
   v37 = v21;
-  [a1 SKGActivityJournalPlayback:v16 block:v33];
+  [self SKGActivityJournalPlayback:uTF8String block:v33];
   if ((v48[3] & 1) == 0)
   {
     bzero(v87, 0x400uLL);
@@ -244,8 +244,8 @@ LABEL_34:
     (*v14)(v18, v87);
   }
 
-  v22 = [(EventCollector *)v19 collectedData];
-  v23 = [v22 count] == 0;
+  collectedData = [(EventCollector *)v19 collectedData];
+  v23 = [collectedData count] == 0;
 
   if (!v23)
   {
@@ -255,8 +255,8 @@ LABEL_34:
   }
 
   (*v14)(v18, "");
-  v24 = [(EventCollector *)v21 collectedData];
-  v25 = [v24 count] == 0;
+  collectedData2 = [(EventCollector *)v21 collectedData];
+  v25 = [collectedData2 count] == 0;
 
   if (!v25)
   {
@@ -537,38 +537,38 @@ LABEL_44:
   }
 }
 
-+ (void)_SKGEmbeddingXPCTimeline:(id)a3 updater:(id)a4 block:(id)a5
++ (void)_SKGEmbeddingXPCTimeline:(id)timeline updater:(id)updater block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  timelineCopy = timeline;
+  updaterCopy = updater;
+  blockCopy = block;
   Calendar = getCalendar();
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
   v26 = 1;
-  v12 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%20s %10s %10s %10s %10s %10s", "timestamp", "cp_a", "cp_b", "cp_c", "cp_cx", "Priority"];
-  v10[2](v10, v13);
+  blockCopy[2](blockCopy, v13);
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
   v23[3] = __Block_byref_object_copy__14;
   v23[4] = __Block_byref_object_dispose__14;
   v24 = 0;
-  v14 = [v8 UTF8String];
+  uTF8String = [timelineCopy UTF8String];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __68__SKGActivityJournalDecoder__SKGEmbeddingXPCTimeline_updater_block___block_invoke;
   v17[3] = &unk_27893E4B0;
   v22 = Calendar;
-  v15 = v12;
+  v15 = dictionary;
   v18 = v15;
   v20 = v23;
-  v16 = v10;
+  v16 = blockCopy;
   v19 = v16;
   v21 = v25;
-  [a1 SKGActivityJournalPlayback:v14 block:v17];
+  [self SKGActivityJournalPlayback:uTF8String block:v17];
 
   _Block_object_dispose(v23, 8);
   _Block_object_dispose(v25, 8);
@@ -652,14 +652,14 @@ uint64_t __71__SKGActivityJournalDecoder__SKGEmbeddingTimelineDump_includePerf_d
   return fputc(10, v6);
 }
 
-+ (void)_SKGActivityDump:(id)a3 format:(unint64_t)a4 dst:(__sFILE *)a5
++ (void)_SKGActivityDump:(id)dump format:(unint64_t)format dst:(__sFILE *)dst
 {
   v43[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  dumpCopy = dump;
   Calendar = getCalendar();
   v10 = objc_alloc_init(MEMORY[0x277CCAA68]);
-  v11 = [MEMORY[0x277CBEBB0] systemTimeZone];
-  [v10 setTimeZone:v11];
+  systemTimeZone = [MEMORY[0x277CBEBB0] systemTimeZone];
+  [v10 setTimeZone:systemTimeZone];
 
   v38 = 0;
   v39 = &v38;
@@ -673,25 +673,25 @@ uint64_t __71__SKGActivityJournalDecoder__SKGEmbeddingTimelineDump_includePerf_d
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v12 = v8;
-  v13 = [v8 UTF8String];
+  v12 = dumpCopy;
+  uTF8String = [dumpCopy UTF8String];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __57__SKGActivityJournalDecoder__SKGActivityDump_format_dst___block_invoke;
   v21[3] = &unk_27893E518;
-  v26 = a4;
+  formatCopy = format;
   v27 = Calendar;
-  v28 = a5;
+  dstCopy = dst;
   v14 = v10;
-  v29 = a1;
+  selfCopy = self;
   v22 = v14;
   v23 = &v38;
   v24 = &v30;
   v25 = &v34;
-  [a1 SKGActivityJournalPlayback:v13 block:v21];
-  if (a4)
+  [self SKGActivityJournalPlayback:uTF8String block:v21];
+  if (format)
   {
-    if (a4 == 1)
+    if (format == 1)
     {
       v43[0] = @"totals";
       v42[0] = @"type";
@@ -706,14 +706,14 @@ uint64_t __71__SKGActivityJournalDecoder__SKGEmbeddingTimelineDump_includePerf_d
       v43[3] = v17;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:4];
 
-      [a1 _dumpNDJSONForDictionary:v18 dst:a5];
+      [self _dumpNDJSONForDictionary:v18 dst:dst];
     }
   }
 
   else
   {
     v19 = v35[3];
-    fprintf(a5, "Total: embCountFromPriorityUpdater:%llu priorityCountFromPriorityUpdater:%llu skipCountFromPriorityUpdater:%llu \n", v39[3], v19, v31[3]);
+    fprintf(dst, "Total: embCountFromPriorityUpdater:%llu priorityCountFromPriorityUpdater:%llu skipCountFromPriorityUpdater:%llu \n", v39[3], v19, v31[3]);
   }
 
   _Block_object_dispose(&v30, 8);
@@ -865,15 +865,15 @@ LABEL_29:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_dumpNDJSONForDictionary:(id)a3 dst:(__sFILE *)a4
++ (void)_dumpNDJSONForDictionary:(id)dictionary dst:(__sFILE *)dst
 {
   v8 = 0;
-  v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:0 error:&v8];
+  v5 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary options:0 error:&v8];
   v6 = v8;
   if (v5)
   {
-    fwrite([v5 bytes], objc_msgSend(v5, "length"), 1uLL, a4);
-    fputs("\n", a4);
+    fwrite([v5 bytes], objc_msgSend(v5, "length"), 1uLL, dst);
+    fputs("\n", dst);
   }
 
   else if (SKGLogGetCurrentLoggingLevel() >= 2)

@@ -1,7 +1,7 @@
 @interface NACEndpointObserver
 + (NACEndpointObserver)sharedObserver;
 - (NACEndpointObserver)init;
-- (void)fetchRouteForOriginIdentifier:(id)a3 completion:(id)a4;
+- (void)fetchRouteForOriginIdentifier:(id)identifier completion:(id)completion;
 - (void)invalidateDiscoverySession;
 @end
 
@@ -38,8 +38,8 @@ uint64_t __37__NACEndpointObserver_sharedObserver__block_invoke()
     serialQueue = v2->_serialQueue;
     v2->_serialQueue = v4;
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_invalidateDiscoverySession name:*MEMORY[0x277CD6128] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_invalidateDiscoverySession name:*MEMORY[0x277CD6128] object:0];
   }
 
   return v2;
@@ -78,20 +78,20 @@ void __49__NACEndpointObserver_invalidateDiscoverySession__block_invoke(uint64_t
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchRouteForOriginIdentifier:(id)a3 completion:(id)a4
+- (void)fetchRouteForOriginIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__NACEndpointObserver_fetchRouteForOriginIdentifier_completion___block_invoke;
   block[3] = &unk_27992B538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(serialQueue, block);
 }
 

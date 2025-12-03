@@ -1,16 +1,16 @@
 @interface ATXHomeScreenCachedSuggestions
-- (ATXHomeScreenCachedSuggestions)initWithCoder:(id)a3;
-- (ATXHomeScreenCachedSuggestions)initWithProto:(id)a3;
-- (ATXHomeScreenCachedSuggestions)initWithProtoData:(id)a3;
-- (ATXHomeScreenCachedSuggestions)initWithUUID:(id)a3 suggestionWidgetLayouts:(id)a4 appPredictionPanelLayouts:(id)a5 topOfStackLayouts:(id)a6 suggestedWidgetLayouts:(id)a7 fallbackSuggestions:(id)a8;
-- (BOOL)isEqual:(id)a3;
+- (ATXHomeScreenCachedSuggestions)initWithCoder:(id)coder;
+- (ATXHomeScreenCachedSuggestions)initWithProto:(id)proto;
+- (ATXHomeScreenCachedSuggestions)initWithProtoData:(id)data;
+- (ATXHomeScreenCachedSuggestions)initWithUUID:(id)d suggestionWidgetLayouts:(id)layouts appPredictionPanelLayouts:(id)panelLayouts topOfStackLayouts:(id)stackLayouts suggestedWidgetLayouts:(id)widgetLayouts fallbackSuggestions:(id)suggestions;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_jsonRawDataForLayoutListMapping:(id)a3;
-- (id)_jsonRawDataForWidgetLayoutMapping:(id)a3;
-- (id)_layoutDictionaryWithKeys:(id)a3 protoLayouts:(id)a4;
-- (id)_layoutListDictionaryWithKeys:(id)a3 protoLayoutLists:(id)a4;
-- (id)_protoLayoutListsFromLayoutListDictionary:(id)a3 orderedByKeys:(id)a4;
-- (id)_protoLayoutsFromLayoutDictionary:(id)a3 orderedByKeys:(id)a4;
+- (id)_jsonRawDataForLayoutListMapping:(id)mapping;
+- (id)_jsonRawDataForWidgetLayoutMapping:(id)mapping;
+- (id)_layoutDictionaryWithKeys:(id)keys protoLayouts:(id)layouts;
+- (id)_layoutListDictionaryWithKeys:(id)keys protoLayoutLists:(id)lists;
+- (id)_protoLayoutListsFromLayoutListDictionary:(id)dictionary orderedByKeys:(id)keys;
+- (id)_protoLayoutsFromLayoutDictionary:(id)dictionary orderedByKeys:(id)keys;
 - (id)allSuggestionsInCachedSuggestions;
 - (id)compactDescription;
 - (id)descriptionWithoutPreviews;
@@ -19,45 +19,45 @@
 - (id)minSuggestionsInCachedSuggestionsWithoutPreviewsOrFallbacks;
 - (id)proto;
 - (id)protoForBiome;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXHomeScreenCachedSuggestions
 
-- (ATXHomeScreenCachedSuggestions)initWithUUID:(id)a3 suggestionWidgetLayouts:(id)a4 appPredictionPanelLayouts:(id)a5 topOfStackLayouts:(id)a6 suggestedWidgetLayouts:(id)a7 fallbackSuggestions:(id)a8
+- (ATXHomeScreenCachedSuggestions)initWithUUID:(id)d suggestionWidgetLayouts:(id)layouts appPredictionPanelLayouts:(id)panelLayouts topOfStackLayouts:(id)stackLayouts suggestedWidgetLayouts:(id)widgetLayouts fallbackSuggestions:(id)suggestions
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  dCopy = d;
+  layoutsCopy = layouts;
+  panelLayoutsCopy = panelLayouts;
+  stackLayoutsCopy = stackLayouts;
+  widgetLayoutsCopy = widgetLayouts;
+  suggestionsCopy = suggestions;
   v34.receiver = self;
   v34.super_class = ATXHomeScreenCachedSuggestions;
   v20 = [(ATXHomeScreenCachedSuggestions *)&v34 init];
   if (v20)
   {
-    v21 = [v14 copy];
+    v21 = [dCopy copy];
     uuid = v20->_uuid;
     v20->_uuid = v21;
 
-    v23 = [v15 copy];
+    v23 = [layoutsCopy copy];
     cachedSuggestionWidgetLayouts = v20->_cachedSuggestionWidgetLayouts;
     v20->_cachedSuggestionWidgetLayouts = v23;
 
-    v25 = [v16 copy];
+    v25 = [panelLayoutsCopy copy];
     cachedAppPredictionPanelLayouts = v20->_cachedAppPredictionPanelLayouts;
     v20->_cachedAppPredictionPanelLayouts = v25;
 
-    v27 = [v17 copy];
+    v27 = [stackLayoutsCopy copy];
     cachedTopOfStackLayouts = v20->_cachedTopOfStackLayouts;
     v20->_cachedTopOfStackLayouts = v27;
 
-    v29 = [v18 copy];
+    v29 = [widgetLayoutsCopy copy];
     cachedSuggestedWidgetsLayouts = v20->_cachedSuggestedWidgetsLayouts;
     v20->_cachedSuggestedWidgetsLayouts = v29;
 
-    v31 = [v19 copy];
+    v31 = [suggestionsCopy copy];
     fallbackSuggestions = v20->_fallbackSuggestions;
     v20->_fallbackSuggestions = v31;
   }
@@ -277,10 +277,10 @@ void __93__ATXHomeScreenCachedSuggestions_minSuggestionsInCachedSuggestionsWitho
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -290,11 +290,11 @@ void __93__ATXHomeScreenCachedSuggestions_minSuggestionsInCachedSuggestionsWitho
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ATXHomeScreenCachedSuggestions *)self uuid];
-      v7 = [(ATXHomeScreenCachedSuggestions *)v5 uuid];
+      v5 = equalCopy;
+      uuid = [(ATXHomeScreenCachedSuggestions *)self uuid];
+      uuid2 = [(ATXHomeScreenCachedSuggestions *)v5 uuid];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [uuid isEqual:uuid2];
     }
 
     else
@@ -317,8 +317,8 @@ void __93__ATXHomeScreenCachedSuggestions_minSuggestionsInCachedSuggestionsWitho
 {
   v45 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [v3 appendFormat:@"\n\n=== HomeScreenCachedSuggestions (ID: %@) ===\n", v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [v3 appendFormat:@"\n\n=== HomeScreenCachedSuggestions (ID: %@) ===\n", uUIDString];
 
   [v3 appendString:@"\n1. Layouts For Suggestion Widgets\n"]);
   cachedSuggestionWidgetLayouts = self->_cachedSuggestionWidgetLayouts;
@@ -451,8 +451,8 @@ void __45__ATXHomeScreenCachedSuggestions_description__block_invoke_3(uint64_t a
 {
   v45 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [v3 appendFormat:@"\n\n=== HomeScreenCachedSuggestions (ID: %@) ===\n", v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [v3 appendFormat:@"\n\n=== HomeScreenCachedSuggestions (ID: %@) ===\n", uUIDString];
 
   [v3 appendString:@"\n1. Layouts For Suggestion Widgets\n"]);
   cachedSuggestionWidgetLayouts = self->_cachedSuggestionWidgetLayouts;
@@ -585,56 +585,56 @@ void __60__ATXHomeScreenCachedSuggestions_descriptionWithoutPreviews__block_invo
   [v2 appendString:v3];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXHomeScreenCachedSuggestions *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXHomeScreenCachedSuggestions *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXHomeScreenCachedSuggestions)initWithCoder:(id)a3
+- (ATXHomeScreenCachedSuggestions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXHomeScreenCachedSuggestions *)self initWithProtoData:v5];
   return v6;
 }
 
-- (ATXHomeScreenCachedSuggestions)initWithProtoData:(id)a3
+- (ATXHomeScreenCachedSuggestions)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBHomeScreenCachedSuggestion alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBHomeScreenCachedSuggestion alloc] initWithData:dataCopy];
 
     self = [(ATXHomeScreenCachedSuggestions *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXHomeScreenCachedSuggestions *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXHomeScreenCachedSuggestions *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXHomeScreenCachedSuggestions)initWithProto:(id)a3
+- (ATXHomeScreenCachedSuggestions)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_9:
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -650,9 +650,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v5 = v4;
-  v6 = [(ATXPBHomeScreenCachedSuggestion *)v5 fallbackSuggestions];
-  v7 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:v6];
+  v5 = protoCopy;
+  fallbackSuggestions = [(ATXPBHomeScreenCachedSuggestion *)v5 fallbackSuggestions];
+  v7 = [ATXProactiveSuggestion suggestionsFromProtoSuggestions:fallbackSuggestions];
   v8 = v7;
   v9 = MEMORY[0x1E695E0F0];
   if (v7)
@@ -663,73 +663,73 @@ LABEL_9:
   v26 = v9;
 
   v10 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v29 = [(ATXPBHomeScreenCachedSuggestion *)v5 uuidString];
-  v23 = [v10 initWithUUIDString:v29];
-  v28 = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedSuggestionWidgetIds];
-  v27 = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedSuggestionWidgetLayouts];
-  v11 = [(ATXHomeScreenCachedSuggestions *)self _layoutDictionaryWithKeys:v28 protoLayouts:v27];
-  v25 = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedAppPredictionPanelIds];
-  v24 = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedAppPredictionPanelLayouts];
-  v12 = [(ATXHomeScreenCachedSuggestions *)self _layoutDictionaryWithKeys:v25 protoLayouts:v24];
-  v22 = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedTopOfStackLayoutKeys];
-  v13 = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedTopOfStackLayouts];
-  v14 = [(ATXHomeScreenCachedSuggestions *)self _layoutDictionaryWithKeys:v22 protoLayouts:v13];
-  v15 = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedSuggestedWidgetLayoutListKeys];
-  v16 = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedSuggestedWidgetLayoutLists];
+  uuidString = [(ATXPBHomeScreenCachedSuggestion *)v5 uuidString];
+  v23 = [v10 initWithUUIDString:uuidString];
+  cachedSuggestionWidgetIds = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedSuggestionWidgetIds];
+  cachedSuggestionWidgetLayouts = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedSuggestionWidgetLayouts];
+  v11 = [(ATXHomeScreenCachedSuggestions *)self _layoutDictionaryWithKeys:cachedSuggestionWidgetIds protoLayouts:cachedSuggestionWidgetLayouts];
+  cachedAppPredictionPanelIds = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedAppPredictionPanelIds];
+  cachedAppPredictionPanelLayouts = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedAppPredictionPanelLayouts];
+  v12 = [(ATXHomeScreenCachedSuggestions *)self _layoutDictionaryWithKeys:cachedAppPredictionPanelIds protoLayouts:cachedAppPredictionPanelLayouts];
+  cachedTopOfStackLayoutKeys = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedTopOfStackLayoutKeys];
+  cachedTopOfStackLayouts = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedTopOfStackLayouts];
+  v14 = [(ATXHomeScreenCachedSuggestions *)self _layoutDictionaryWithKeys:cachedTopOfStackLayoutKeys protoLayouts:cachedTopOfStackLayouts];
+  cachedSuggestedWidgetLayoutListKeys = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedSuggestedWidgetLayoutListKeys];
+  cachedSuggestedWidgetLayoutLists = [(ATXPBHomeScreenCachedSuggestion *)v5 cachedSuggestedWidgetLayoutLists];
 
-  v17 = [(ATXHomeScreenCachedSuggestions *)self _layoutListDictionaryWithKeys:v15 protoLayoutLists:v16];
+  v17 = [(ATXHomeScreenCachedSuggestions *)self _layoutListDictionaryWithKeys:cachedSuggestedWidgetLayoutListKeys protoLayoutLists:cachedSuggestedWidgetLayoutLists];
   v18 = [(ATXHomeScreenCachedSuggestions *)self initWithUUID:v23 suggestionWidgetLayouts:v11 appPredictionPanelLayouts:v12 topOfStackLayouts:v14 suggestedWidgetLayouts:v17 fallbackSuggestions:v26];
 
   self = v18;
-  v19 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v19;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [(ATXPBHomeScreenCachedSuggestion *)v3 setUuidString:v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [(ATXPBHomeScreenCachedSuggestion *)v3 setUuidString:uUIDString];
 
-  v5 = [(NSDictionary *)self->_cachedSuggestionWidgetLayouts allKeys];
-  v6 = [v5 mutableCopy];
+  allKeys = [(NSDictionary *)self->_cachedSuggestionWidgetLayouts allKeys];
+  v6 = [allKeys mutableCopy];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedSuggestionWidgetIds:v6];
 
   cachedSuggestionWidgetLayouts = self->_cachedSuggestionWidgetLayouts;
-  v8 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetIds];
-  v9 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedSuggestionWidgetLayouts orderedByKeys:v8];
+  cachedSuggestionWidgetIds = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetIds];
+  v9 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedSuggestionWidgetLayouts orderedByKeys:cachedSuggestionWidgetIds];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedSuggestionWidgetLayouts:v9];
 
-  v10 = [(NSDictionary *)self->_cachedTopOfStackLayouts allKeys];
-  v11 = [v10 mutableCopy];
+  allKeys2 = [(NSDictionary *)self->_cachedTopOfStackLayouts allKeys];
+  v11 = [allKeys2 mutableCopy];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedTopOfStackLayoutKeys:v11];
 
   cachedTopOfStackLayouts = self->_cachedTopOfStackLayouts;
-  v13 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedTopOfStackLayoutKeys];
-  v14 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedTopOfStackLayouts orderedByKeys:v13];
+  cachedTopOfStackLayoutKeys = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedTopOfStackLayoutKeys];
+  v14 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedTopOfStackLayouts orderedByKeys:cachedTopOfStackLayoutKeys];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedTopOfStackLayouts:v14];
 
   v15 = [ATXProactiveSuggestion protoSuggestionsFromSuggestions:self->_fallbackSuggestions];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setFallbackSuggestions:v15];
 
-  v16 = [(NSDictionary *)self->_cachedAppPredictionPanelLayouts allKeys];
-  v17 = [v16 mutableCopy];
+  allKeys3 = [(NSDictionary *)self->_cachedAppPredictionPanelLayouts allKeys];
+  v17 = [allKeys3 mutableCopy];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedAppPredictionPanelIds:v17];
 
   cachedAppPredictionPanelLayouts = self->_cachedAppPredictionPanelLayouts;
-  v19 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelIds];
-  v20 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedAppPredictionPanelLayouts orderedByKeys:v19];
+  cachedAppPredictionPanelIds = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelIds];
+  v20 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedAppPredictionPanelLayouts orderedByKeys:cachedAppPredictionPanelIds];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedAppPredictionPanelLayouts:v20];
 
-  v21 = [(NSDictionary *)self->_cachedSuggestedWidgetsLayouts allKeys];
-  v22 = [v21 mutableCopy];
+  allKeys4 = [(NSDictionary *)self->_cachedSuggestedWidgetsLayouts allKeys];
+  v22 = [allKeys4 mutableCopy];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedSuggestedWidgetLayoutListKeys:v22];
 
   cachedSuggestedWidgetsLayouts = self->_cachedSuggestedWidgetsLayouts;
-  v24 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestedWidgetLayoutListKeys];
-  v25 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutListsFromLayoutListDictionary:cachedSuggestedWidgetsLayouts orderedByKeys:v24];
+  cachedSuggestedWidgetLayoutListKeys = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestedWidgetLayoutListKeys];
+  v25 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutListsFromLayoutListDictionary:cachedSuggestedWidgetsLayouts orderedByKeys:cachedSuggestedWidgetLayoutListKeys];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedSuggestedWidgetLayoutLists:v25];
 
   return v3;
@@ -738,79 +738,79 @@ LABEL_10:
 - (id)protoForBiome
 {
   v3 = objc_opt_new();
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  [(ATXPBHomeScreenCachedSuggestion *)v3 setUuidString:v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  [(ATXPBHomeScreenCachedSuggestion *)v3 setUuidString:uUIDString];
 
-  v5 = [(NSDictionary *)self->_cachedSuggestionWidgetLayouts allKeys];
-  v6 = [v5 mutableCopy];
+  allKeys = [(NSDictionary *)self->_cachedSuggestionWidgetLayouts allKeys];
+  v6 = [allKeys mutableCopy];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedSuggestionWidgetIds:v6];
 
   cachedSuggestionWidgetLayouts = self->_cachedSuggestionWidgetLayouts;
-  v8 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetIds];
-  v9 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedSuggestionWidgetLayouts orderedByKeys:v8];
+  cachedSuggestionWidgetIds = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetIds];
+  v9 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedSuggestionWidgetLayouts orderedByKeys:cachedSuggestionWidgetIds];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedSuggestionWidgetLayouts:v9];
 
   v10 = objc_opt_new();
-  v11 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetIds];
+  cachedSuggestionWidgetIds2 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetIds];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __47__ATXHomeScreenCachedSuggestions_protoForBiome__block_invoke;
   v42[3] = &unk_1E86A4798;
   v43 = v10;
   v12 = v10;
-  [v11 enumerateObjectsUsingBlock:v42];
+  [cachedSuggestionWidgetIds2 enumerateObjectsUsingBlock:v42];
 
-  v13 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetIds];
-  [v13 removeObjectsAtIndexes:v12];
+  cachedSuggestionWidgetIds3 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetIds];
+  [cachedSuggestionWidgetIds3 removeObjectsAtIndexes:v12];
 
-  v14 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetLayouts];
-  [v14 removeObjectsAtIndexes:v12];
+  cachedSuggestionWidgetLayouts = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestionWidgetLayouts];
+  [cachedSuggestionWidgetLayouts removeObjectsAtIndexes:v12];
 
-  v15 = [(NSDictionary *)self->_cachedTopOfStackLayouts allKeys];
-  v16 = [v15 mutableCopy];
+  allKeys2 = [(NSDictionary *)self->_cachedTopOfStackLayouts allKeys];
+  v16 = [allKeys2 mutableCopy];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedTopOfStackLayoutKeys:v16];
 
   cachedTopOfStackLayouts = self->_cachedTopOfStackLayouts;
-  v18 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedTopOfStackLayoutKeys];
-  v19 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedTopOfStackLayouts orderedByKeys:v18];
+  cachedTopOfStackLayoutKeys = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedTopOfStackLayoutKeys];
+  v19 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedTopOfStackLayouts orderedByKeys:cachedTopOfStackLayoutKeys];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedTopOfStackLayouts:v19];
 
-  v20 = [(NSDictionary *)self->_cachedSuggestedWidgetsLayouts allKeys];
-  v21 = [v20 mutableCopy];
+  allKeys3 = [(NSDictionary *)self->_cachedSuggestedWidgetsLayouts allKeys];
+  v21 = [allKeys3 mutableCopy];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedSuggestedWidgetLayoutListKeys:v21];
 
   cachedSuggestedWidgetsLayouts = self->_cachedSuggestedWidgetsLayouts;
-  v23 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestedWidgetLayoutListKeys];
-  v24 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutListsFromLayoutListDictionary:cachedSuggestedWidgetsLayouts orderedByKeys:v23];
+  cachedSuggestedWidgetLayoutListKeys = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedSuggestedWidgetLayoutListKeys];
+  v24 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutListsFromLayoutListDictionary:cachedSuggestedWidgetsLayouts orderedByKeys:cachedSuggestedWidgetLayoutListKeys];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedSuggestedWidgetLayoutLists:v24];
 
   v25 = [ATXProactiveSuggestion protoSuggestionsFromSuggestions:self->_fallbackSuggestions];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setFallbackSuggestions:v25];
 
   v26 = objc_opt_new();
-  v27 = [(NSDictionary *)self->_cachedAppPredictionPanelLayouts allKeys];
-  v28 = [v27 mutableCopy];
+  allKeys4 = [(NSDictionary *)self->_cachedAppPredictionPanelLayouts allKeys];
+  v28 = [allKeys4 mutableCopy];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedAppPredictionPanelIds:v28];
 
   cachedAppPredictionPanelLayouts = self->_cachedAppPredictionPanelLayouts;
-  v30 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelIds];
-  v31 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedAppPredictionPanelLayouts orderedByKeys:v30];
+  cachedAppPredictionPanelIds = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelIds];
+  v31 = [(ATXHomeScreenCachedSuggestions *)self _protoLayoutsFromLayoutDictionary:cachedAppPredictionPanelLayouts orderedByKeys:cachedAppPredictionPanelIds];
   [(ATXPBHomeScreenCachedSuggestion *)v3 setCachedAppPredictionPanelLayouts:v31];
 
-  v32 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelIds];
+  cachedAppPredictionPanelIds2 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelIds];
   v37 = MEMORY[0x1E69E9820];
   v38 = 3221225472;
   v39 = __47__ATXHomeScreenCachedSuggestions_protoForBiome__block_invoke_2;
   v40 = &unk_1E86A4798;
   v41 = v26;
   v33 = v26;
-  [v32 enumerateObjectsUsingBlock:&v37];
+  [cachedAppPredictionPanelIds2 enumerateObjectsUsingBlock:&v37];
 
-  v34 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelIds];
-  [v34 removeObjectsAtIndexes:{v33, v37, v38, v39, v40}];
+  cachedAppPredictionPanelIds3 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelIds];
+  [cachedAppPredictionPanelIds3 removeObjectsAtIndexes:{v33, v37, v38, v39, v40}];
 
-  v35 = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelLayouts];
-  [v35 removeObjectsAtIndexes:v33];
+  cachedAppPredictionPanelLayouts = [(ATXPBHomeScreenCachedSuggestion *)v3 cachedAppPredictionPanelLayouts];
+  [cachedAppPredictionPanelLayouts removeObjectsAtIndexes:v33];
 
   return v3;
 }
@@ -837,21 +837,21 @@ uint64_t __47__ATXHomeScreenCachedSuggestions_protoForBiome__block_invoke_2(uint
   return result;
 }
 
-- (id)_layoutDictionaryWithKeys:(id)a3 protoLayouts:(id)a4
+- (id)_layoutDictionaryWithKeys:(id)keys protoLayouts:(id)layouts
 {
-  v5 = a4;
+  layoutsCopy = layouts;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  keysCopy = keys;
+  v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __73__ATXHomeScreenCachedSuggestions__layoutDictionaryWithKeys_protoLayouts___block_invoke;
   v14[3] = &unk_1E86A47C0;
-  v15 = v5;
+  v15 = layoutsCopy;
   v9 = v8;
   v16 = v9;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:v14];
+  v10 = layoutsCopy;
+  [keysCopy enumerateObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -881,21 +881,21 @@ void __73__ATXHomeScreenCachedSuggestions__layoutDictionaryWithKeys_protoLayouts
   }
 }
 
-- (id)_protoLayoutsFromLayoutDictionary:(id)a3 orderedByKeys:(id)a4
+- (id)_protoLayoutsFromLayoutDictionary:(id)dictionary orderedByKeys:(id)keys
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  keysCopy = keys;
+  v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__ATXHomeScreenCachedSuggestions__protoLayoutsFromLayoutDictionary_orderedByKeys___block_invoke;
   v14[3] = &unk_1E86A47C0;
-  v15 = v5;
+  v15 = dictionaryCopy;
   v9 = v8;
   v16 = v9;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:v14];
+  v10 = dictionaryCopy;
+  [keysCopy enumerateObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -923,21 +923,21 @@ void __82__ATXHomeScreenCachedSuggestions__protoLayoutsFromLayoutDictionary_orde
   }
 }
 
-- (id)_layoutListDictionaryWithKeys:(id)a3 protoLayoutLists:(id)a4
+- (id)_layoutListDictionaryWithKeys:(id)keys protoLayoutLists:(id)lists
 {
-  v5 = a4;
+  listsCopy = lists;
   v6 = MEMORY[0x1E695DF90];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  keysCopy = keys;
+  v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__ATXHomeScreenCachedSuggestions__layoutListDictionaryWithKeys_protoLayoutLists___block_invoke;
   v14[3] = &unk_1E86A47C0;
-  v15 = v5;
+  v15 = listsCopy;
   v9 = v8;
   v16 = v9;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:v14];
+  v10 = listsCopy;
+  [keysCopy enumerateObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -1000,21 +1000,21 @@ void __81__ATXHomeScreenCachedSuggestions__layoutListDictionaryWithKeys_protoLay
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_protoLayoutListsFromLayoutListDictionary:(id)a3 orderedByKeys:(id)a4
+- (id)_protoLayoutListsFromLayoutListDictionary:(id)dictionary orderedByKeys:(id)keys
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  keysCopy = keys;
+  v8 = [[v6 alloc] initWithCapacity:{objc_msgSend(keysCopy, "count")}];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __90__ATXHomeScreenCachedSuggestions__protoLayoutListsFromLayoutListDictionary_orderedByKeys___block_invoke;
   v14[3] = &unk_1E86A47C0;
-  v15 = v5;
+  v15 = dictionaryCopy;
   v9 = v8;
   v16 = v9;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:v14];
+  v10 = dictionaryCopy;
+  [keysCopy enumerateObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -1076,11 +1076,11 @@ void __90__ATXHomeScreenCachedSuggestions__protoLayoutListsFromLayoutListDiction
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_jsonRawDataForWidgetLayoutMapping:(id)a3
+- (id)_jsonRawDataForWidgetLayoutMapping:(id)mapping
 {
   v20[4] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  mappingCopy = mapping;
   v5 = [v3 alloc];
   v6 = *MEMORY[0x1E698AFD0];
   v20[0] = *MEMORY[0x1E698AFC8];
@@ -1100,7 +1100,7 @@ void __90__ATXHomeScreenCachedSuggestions__protoLayoutListsFromLayoutListDiction
   v11 = v10;
   v19 = v11;
   v12 = v9;
-  [v4 enumerateKeysAndObjectsUsingBlock:v17];
+  [mappingCopy enumerateKeysAndObjectsUsingBlock:v17];
 
   v13 = v19;
   v14 = v11;
@@ -1120,9 +1120,9 @@ void __69__ATXHomeScreenCachedSuggestions__jsonRawDataForWidgetLayoutMapping___b
   }
 }
 
-- (id)_jsonRawDataForLayoutListMapping:(id)a3
+- (id)_jsonRawDataForLayoutListMapping:(id)mapping
 {
-  v3 = a3;
+  mappingCopy = mapping;
   v4 = objc_opt_new();
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -1130,7 +1130,7 @@ void __69__ATXHomeScreenCachedSuggestions__jsonRawDataForWidgetLayoutMapping___b
   v7[3] = &unk_1E86A4748;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [mappingCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -1146,8 +1146,8 @@ void __67__ATXHomeScreenCachedSuggestions__jsonRawDataForLayoutListMapping___blo
 {
   v13[6] = *MEMORY[0x1E69E9840];
   v12[0] = @"uuid";
-  v3 = [(NSUUID *)self->_uuid UUIDString];
-  v13[0] = v3;
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v13[0] = uUIDString;
   v12[1] = @"cachedSuggestionWidgetLayouts";
   v4 = [(ATXHomeScreenCachedSuggestions *)self _jsonRawDataForWidgetLayoutMapping:self->_cachedSuggestionWidgetLayouts];
   v13[1] = v4;

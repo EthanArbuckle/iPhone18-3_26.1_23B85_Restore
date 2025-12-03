@@ -1,16 +1,16 @@
 @interface UIActivityActionHorizontalCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)automationElements;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation UIActivityActionHorizontalCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIActivityActionHorizontalCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIActivityActionHorizontalCell" isKindOfClass:@"UICollectionViewCell"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIActivityActionHorizontalCell" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIActivityActionHorizontalCell" isKindOfClass:@"UICollectionViewCell"];
 }
 
 - (unint64_t)accessibilityTraits
@@ -24,9 +24,9 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 subviews];
+  subviews = [v2 subviews];
 
-  return v3;
+  return subviews;
 }
 
 @end

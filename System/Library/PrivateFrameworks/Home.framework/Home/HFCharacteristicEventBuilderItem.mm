@@ -1,18 +1,18 @@
 @interface HFCharacteristicEventBuilderItem
-- (BOOL)wouldFireForCharacteristic:(id)a3 value:(id)a4;
+- (BOOL)wouldFireForCharacteristic:(id)characteristic value:(id)value;
 - (NSSet)characteristics;
-- (id)_characteristicEventBuilderForCharacteristic:(id)a3 triggerValue:(id)a4;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)setCharacteristics:(id)a3 triggerValue:(id)a4;
+- (id)_characteristicEventBuilderForCharacteristic:(id)characteristic triggerValue:(id)value;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)setCharacteristics:(id)characteristics triggerValue:(id)value;
 @end
 
 @implementation HFCharacteristicEventBuilderItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = HFCharacteristicEventBuilderItem;
-  v4 = [(HFEventBuilderItem *)&v8 _subclass_updateWithOptions:a3];
+  v4 = [(HFEventBuilderItem *)&v8 _subclass_updateWithOptions:options];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64__HFCharacteristicEventBuilderItem__subclass_updateWithOptions___block_invoke;
@@ -71,18 +71,18 @@ uint64_t __64__HFCharacteristicEventBuilderItem__subclass_updateWithOptions___bl
 
 - (NSSet)characteristics
 {
-  v2 = [(HFEventBuilderItem *)self eventBuilders];
-  v3 = [v2 na_map:&__block_literal_global_47_3];
+  eventBuilders = [(HFEventBuilderItem *)self eventBuilders];
+  v3 = [eventBuilders na_map:&__block_literal_global_47_3];
 
   return v3;
 }
 
-- (id)setCharacteristics:(id)a3 triggerValue:(id)a4
+- (id)setCharacteristics:(id)characteristics triggerValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HFEventBuilderItem *)self eventBuilders];
-  v9 = [v8 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_50_4];
+  valueCopy = value;
+  characteristicsCopy = characteristics;
+  eventBuilders = [(HFEventBuilderItem *)self eventBuilders];
+  v9 = [eventBuilders na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_50_4];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -90,36 +90,36 @@ uint64_t __64__HFCharacteristicEventBuilderItem__subclass_updateWithOptions___bl
   v27[3] = &unk_277E00D88;
   v10 = v9;
   v28 = v10;
-  v29 = self;
-  v11 = v6;
+  selfCopy = self;
+  v11 = valueCopy;
   v30 = v11;
-  v12 = [v7 na_map:v27];
+  v12 = [characteristicsCopy na_map:v27];
 
-  v13 = [(HFEventBuilderItem *)self eventBuilders];
-  v14 = [(HFEventBuilderItem *)self representativeEventBuilder];
-  v15 = [v13 containsObject:v14];
+  eventBuilders2 = [(HFEventBuilderItem *)self eventBuilders];
+  representativeEventBuilder = [(HFEventBuilderItem *)self representativeEventBuilder];
+  v15 = [eventBuilders2 containsObject:representativeEventBuilder];
 
-  v16 = [(HFEventBuilderItem *)self eventBuilders];
-  v17 = [HFSetDiff diffFromSet:v16 toSet:v12];
+  eventBuilders3 = [(HFEventBuilderItem *)self eventBuilders];
+  v17 = [HFSetDiff diffFromSet:eventBuilders3 toSet:v12];
 
   v18 = [v12 copy];
   [(HFEventBuilderItem *)self setEventBuilders:v18];
 
-  v19 = [(HFEventBuilderItem *)self eventBuilders];
-  v20 = [v19 count];
+  eventBuilders4 = [(HFEventBuilderItem *)self eventBuilders];
+  v20 = [eventBuilders4 count];
 
   if (v20 == 1)
   {
-    v21 = [(HFEventBuilderItem *)self eventBuilders];
-    v22 = [v21 anyObject];
-    [(HFEventBuilderItem *)self setRepresentativeEventBuilder:v22];
+    eventBuilders5 = [(HFEventBuilderItem *)self eventBuilders];
+    anyObject = [eventBuilders5 anyObject];
+    [(HFEventBuilderItem *)self setRepresentativeEventBuilder:anyObject];
   }
 
   else if (v15)
   {
-    v23 = [(HFEventBuilderItem *)self eventBuilders];
-    v24 = [(HFEventBuilderItem *)self representativeEventBuilder];
-    v25 = [v23 containsObject:v24];
+    eventBuilders6 = [(HFEventBuilderItem *)self eventBuilders];
+    representativeEventBuilder2 = [(HFEventBuilderItem *)self representativeEventBuilder];
+    v25 = [eventBuilders6 containsObject:representativeEventBuilder2];
 
     if ((v25 & 1) == 0)
     {
@@ -190,30 +190,30 @@ uint64_t __68__HFCharacteristicEventBuilderItem_setCharacteristics_triggerValue_
   return [v2 isEqual:v4];
 }
 
-- (BOOL)wouldFireForCharacteristic:(id)a3 value:(id)a4
+- (BOOL)wouldFireForCharacteristic:(id)characteristic value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HFEventBuilderItem *)self eventBuilders];
+  characteristicCopy = characteristic;
+  valueCopy = value;
+  eventBuilders = [(HFEventBuilderItem *)self eventBuilders];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__HFCharacteristicEventBuilderItem_wouldFireForCharacteristic_value___block_invoke;
   v12[3] = &unk_277E00DB0;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  LOBYTE(v7) = [v8 na_any:v12];
+  v13 = characteristicCopy;
+  v14 = valueCopy;
+  v9 = valueCopy;
+  v10 = characteristicCopy;
+  LOBYTE(valueCopy) = [eventBuilders na_any:v12];
 
-  return v7;
+  return valueCopy;
 }
 
-- (id)_characteristicEventBuilderForCharacteristic:(id)a3 triggerValue:(id)a4
+- (id)_characteristicEventBuilderForCharacteristic:(id)characteristic triggerValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
+  characteristicCopy = characteristic;
+  valueCopy = value;
   objc_opt_class();
-  v7 = v6;
+  v7 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -228,30 +228,30 @@ uint64_t __68__HFCharacteristicEventBuilderItem_setCharacteristics_triggerValue_
 
   if (v9)
   {
-    v10 = [[HFCharacteristicThresholdRangeEventBuilder alloc] initWithCharacteristic:v5 thresholdRange:v9];
+    v10 = [[HFCharacteristicThresholdRangeEventBuilder alloc] initWithCharacteristic:characteristicCopy thresholdRange:v9];
   }
 
   else
   {
     if (v7)
     {
-      v12 = [MEMORY[0x277CD19F8] hf_allTriggerValuesForCharacteristic:v5 similarToValue:v7];
+      v12 = [MEMORY[0x277CD19F8] hf_allTriggerValuesForCharacteristic:characteristicCopy similarToValue:v7];
       if ([v12 count] == 1)
       {
         v13 = [HFCharacteristicValueEventBuilder alloc];
-        v14 = [v12 anyObject];
-        v11 = [(HFCharacteristicValueEventBuilder *)v13 initWithCharacteristic:v5 triggerValue:v14];
+        anyObject = [v12 anyObject];
+        v11 = [(HFCharacteristicValueEventBuilder *)v13 initWithCharacteristic:characteristicCopy triggerValue:anyObject];
       }
 
       else
       {
-        v11 = [[HFCharacteristicMultiValueEventBuilder alloc] initWithCharacteristic:v5 values:v12];
+        v11 = [[HFCharacteristicMultiValueEventBuilder alloc] initWithCharacteristic:characteristicCopy values:v12];
       }
 
       goto LABEL_13;
     }
 
-    v10 = [[HFCharacteristicValueEventBuilder alloc] initWithCharacteristic:v5 triggerValue:0];
+    v10 = [[HFCharacteristicValueEventBuilder alloc] initWithCharacteristic:characteristicCopy triggerValue:0];
   }
 
   v11 = v10;

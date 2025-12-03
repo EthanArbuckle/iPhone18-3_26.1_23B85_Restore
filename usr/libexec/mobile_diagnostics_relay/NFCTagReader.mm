@@ -1,13 +1,13 @@
 @interface NFCTagReader
 + (id)sharedInstance;
-- (BOOL)registerReadTagCallback:(id)a3;
+- (BOOL)registerReadTagCallback:(id)callback;
 - (NFCTagReader)init;
 - (void)startReading;
 - (void)stopReading;
-- (void)tagReaderSession:(id)a3 didDetectTags:(id)a4;
-- (void)tagReaderSession:(id)a3 didInvalidateWithError:(id)a4;
-- (void)tagReaderSessionDidBecomeActive:(id)a3;
-- (void)tryReadAgain:(id)a3;
+- (void)tagReaderSession:(id)session didDetectTags:(id)tags;
+- (void)tagReaderSession:(id)session didInvalidateWithError:(id)error;
+- (void)tagReaderSessionDidBecomeActive:(id)active;
+- (void)tryReadAgain:(id)again;
 - (void)unregisterAll;
 @end
 
@@ -47,32 +47,32 @@
   return v3;
 }
 
-- (BOOL)registerReadTagCallback:(id)a3
+- (BOOL)registerReadTagCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = +[NFCNDEFReaderSession readingAvailable];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(callbackCopy);
     callback = self->_callback;
     self->_callback = v6;
 
     [(NFCTagReader *)self startReading];
     v8 = [NSString stringWithFormat:@"Read tag callback is registered"];
-    v9 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
       v12 = v8;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@", &v11, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v11, 0xCu);
     }
   }
 
   else
   {
     v8 = [NSString stringWithFormat:@"NFC reading is not available on this device."];
-    v9 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
       sub_1000134D4();
     }
@@ -88,12 +88,12 @@
 
   [(NFCTagReader *)self stopReading];
   v4 = [NSString stringWithFormat:@"Read tag callback is unregistered"];
-  v5 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
     v7 = v4;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", &v6, 0xCu);
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", &v6, 0xCu);
   }
 }
 
@@ -119,109 +119,109 @@
   dispatch_async(readerQ, block);
 }
 
-- (void)tryReadAgain:(id)a3
+- (void)tryReadAgain:(id)again
 {
-  v4 = a3;
-  if (self->_session == v4)
+  againCopy = again;
+  if (self->_session == againCopy)
   {
     sleep(2u);
-    v7 = [NSString stringWithFormat:@"Session %@ | Restart polling", v4];
-    v8 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    againCopy = [NSString stringWithFormat:@"Session %@ | Restart polling", againCopy];
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = v7;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      v10 = againCopy;
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
-    [(NFCTagReaderSession *)v4 restartPolling];
+    [(NFCTagReaderSession *)againCopy restartPolling];
   }
 
   else
   {
-    v5 = [NSString stringWithFormat:@"Session %@ | tryReadAgain: possibly an old session, ignore it", v4];
-    v6 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    againCopy2 = [NSString stringWithFormat:@"Session %@ | tryReadAgain: possibly an old session, ignore it", againCopy];
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v10 = v5;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      v10 = againCopy2;
+      _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)tagReaderSessionDidBecomeActive:(id)a3
+- (void)tagReaderSessionDidBecomeActive:(id)active
 {
-  v4 = [NSString stringWithFormat:@"Session %@ | Became active", a3];
-  v5 = [(MDRBaseObject *)self logger];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  active = [NSString stringWithFormat:@"Session %@ | Became active", active];
+  logger = [(MDRBaseObject *)self logger];
+  if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = v4;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+    v7 = active;
+    _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
   }
 }
 
-- (void)tagReaderSession:(id)a3 didDetectTags:(id)a4
+- (void)tagReaderSession:(id)session didDetectTags:(id)tags
 {
-  v6 = a3;
-  if (self->_session == v6)
+  sessionCopy = session;
+  if (self->_session == sessionCopy)
   {
-    v9 = [a4 firstObject];
-    v10 = [NSString stringWithFormat:@"Session %@ | Detected NFC tag(s): %@", v6, v9];
-    v11 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    firstObject = [tags firstObject];
+    v10 = [NSString stringWithFormat:@"Session %@ | Detected NFC tag(s): %@", sessionCopy, firstObject];
+    logger = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
       v17 = v10;
-      _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100007C3C;
     v12[3] = &unk_100020A38;
-    v13 = v6;
-    v14 = self;
-    v15 = v9;
-    v7 = v9;
-    [(NFCTagReaderSession *)v13 connectToTag:v7 completionHandler:v12];
+    v13 = sessionCopy;
+    selfCopy = self;
+    v15 = firstObject;
+    sessionCopy = firstObject;
+    [(NFCTagReaderSession *)v13 connectToTag:sessionCopy completionHandler:v12];
 
     p_super = &v13->super.super;
   }
 
   else
   {
-    v7 = [NSString stringWithFormat:@"Session %@ | didDetectTags: possibly an old session, ignore it", v6];
+    sessionCopy = [NSString stringWithFormat:@"Session %@ | didDetectTags: possibly an old session, ignore it", sessionCopy];
     p_super = [(MDRBaseObject *)self logger];
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v17 = v7;
+      v17 = sessionCopy;
       _os_log_impl(&_mh_execute_header, p_super, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
   }
 }
 
-- (void)tagReaderSession:(id)a3 didInvalidateWithError:(id)a4
+- (void)tagReaderSession:(id)session didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (self->_session == v6)
+  sessionCopy = session;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (self->_session == sessionCopy)
   {
-    if ([v7 code] != 200)
+    if ([errorCopy code] != 200)
     {
-      v11 = [v8 code];
-      v12 = [v8 localizedDescription];
-      v13 = [NSString stringWithFormat:@"Session %@ | invalidated due to code %ld: %@", v6, v11, v12];
+      code = [v8 code];
+      localizedDescription = [v8 localizedDescription];
+      v13 = [NSString stringWithFormat:@"Session %@ | invalidated due to code %ld: %@", sessionCopy, code, localizedDescription];
 
-      v14 = [(MDRBaseObject *)self logger];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      logger = [(MDRBaseObject *)self logger];
+      if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
         v16 = v13;
-        _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, logger, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
       }
 
       [(NFCTagReader *)self startReading];
@@ -230,13 +230,13 @@
 
   else
   {
-    v9 = [NSString stringWithFormat:@"Session %@ | didDetectTags: possibly an old session, ignore it", v6];
-    v10 = [(MDRBaseObject *)self logger];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    sessionCopy = [NSString stringWithFormat:@"Session %@ | didDetectTags: possibly an old session, ignore it", sessionCopy];
+    logger2 = [(MDRBaseObject *)self logger];
+    if (os_log_type_enabled(logger2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v16 = v9;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
+      v16 = sessionCopy;
+      _os_log_impl(&_mh_execute_header, logger2, OS_LOG_TYPE_DEFAULT, "%{public}@", buf, 0xCu);
     }
   }
 }

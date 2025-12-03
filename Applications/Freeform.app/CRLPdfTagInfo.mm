@@ -1,46 +1,46 @@
 @interface CRLPdfTagInfo
-+ (id)tagPropertiesWithActualText:(id)a3 alternativeText:(id)a4 titleText:(id)a5;
-- (CRLPdfTagInfo)initWithTagType:(int)a3 tagProperties:(id)a4;
++ (id)tagPropertiesWithActualText:(id)text alternativeText:(id)alternativeText titleText:(id)titleText;
+- (CRLPdfTagInfo)initWithTagType:(int)type tagProperties:(id)properties;
 @end
 
 @implementation CRLPdfTagInfo
 
-- (CRLPdfTagInfo)initWithTagType:(int)a3 tagProperties:(id)a4
+- (CRLPdfTagInfo)initWithTagType:(int)type tagProperties:(id)properties
 {
-  v7 = a4;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = CRLPdfTagInfo;
   v8 = [(CRLPdfTagInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_tagType = a3;
-    objc_storeStrong(&v8->_tagProperties, a4);
+    v8->_tagType = type;
+    objc_storeStrong(&v8->_tagProperties, properties);
   }
 
   return v9;
 }
 
-+ (id)tagPropertiesWithActualText:(id)a3 alternativeText:(id)a4 titleText:(id)a5
++ (id)tagPropertiesWithActualText:(id)text alternativeText:(id)alternativeText titleText:(id)titleText
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  alternativeTextCopy = alternativeText;
+  titleTextCopy = titleText;
   v10 = objc_opt_new();
   v11 = v10;
-  if (v7)
+  if (textCopy)
   {
-    [v10 setObject:v7 forKeyedSubscript:kCGPDFTagPropertyActualText];
+    [v10 setObject:textCopy forKeyedSubscript:kCGPDFTagPropertyActualText];
   }
 
-  if (v8)
+  if (alternativeTextCopy)
   {
-    [v11 setObject:v8 forKeyedSubscript:kCGPDFTagPropertyAlternativeText];
+    [v11 setObject:alternativeTextCopy forKeyedSubscript:kCGPDFTagPropertyAlternativeText];
   }
 
-  if (v9)
+  if (titleTextCopy)
   {
-    [v11 setObject:v9 forKeyedSubscript:kCGPDFTagPropertyTitleText];
+    [v11 setObject:titleTextCopy forKeyedSubscript:kCGPDFTagPropertyTitleText];
   }
 
   return v11;

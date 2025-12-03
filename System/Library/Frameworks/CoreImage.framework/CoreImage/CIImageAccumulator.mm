@@ -1,11 +1,11 @@
 @interface CIImageAccumulator
-+ (CIImageAccumulator)imageAccumulatorWithExtent:(CGRect)a3 format:(int)a4 options:(id)a5;
 + (CIImageAccumulator)imageAccumulatorWithExtent:(CGRect)extent format:(CIFormat)format;
 + (CIImageAccumulator)imageAccumulatorWithExtent:(CGRect)extent format:(CIFormat)format colorSpace:(CGColorSpaceRef)colorSpace;
++ (CIImageAccumulator)imageAccumulatorWithExtent:(CGRect)extent format:(int)format options:(id)options;
 - (CGRect)extent;
 - (CIImageAccumulator)init;
-- (CIImageAccumulator)initWithExtent:(CGRect)a3 format:(int)a4 options:(id)a5;
 - (CIImageAccumulator)initWithExtent:(CGRect)extent format:(CIFormat)format colorSpace:(CGColorSpaceRef)colorSpace;
+- (CIImageAccumulator)initWithExtent:(CGRect)extent format:(int)format options:(id)options;
 - (id)description;
 - (void)clear;
 - (void)dealloc;
@@ -25,23 +25,23 @@
   return 0;
 }
 
-+ (CIImageAccumulator)imageAccumulatorWithExtent:(CGRect)a3 format:(int)a4 options:(id)a5
++ (CIImageAccumulator)imageAccumulatorWithExtent:(CGRect)extent format:(int)format options:(id)options
 {
-  v5 = [[a1 alloc] initWithExtent:*&a4 format:a5 options:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v5 = [[self alloc] initWithExtent:*&format format:options options:{extent.origin.x, extent.origin.y, extent.size.width, extent.size.height}];
 
   return v5;
 }
 
 + (CIImageAccumulator)imageAccumulatorWithExtent:(CGRect)extent format:(CIFormat)format
 {
-  v4 = [[a1 alloc] initWithExtent:*&format format:{extent.origin.x, extent.origin.y, extent.size.width, extent.size.height}];
+  v4 = [[self alloc] initWithExtent:*&format format:{extent.origin.x, extent.origin.y, extent.size.width, extent.size.height}];
 
   return v4;
 }
 
 + (CIImageAccumulator)imageAccumulatorWithExtent:(CGRect)extent format:(CIFormat)format colorSpace:(CGColorSpaceRef)colorSpace
 {
-  v5 = [[a1 alloc] initWithExtent:*&format format:colorSpace colorSpace:{extent.origin.x, extent.origin.y, extent.size.width, extent.size.height}];
+  v5 = [[self alloc] initWithExtent:*&format format:colorSpace colorSpace:{extent.origin.x, extent.origin.y, extent.size.width, extent.size.height}];
 
   return v5;
 }
@@ -64,19 +64,19 @@
   return [(CIImageAccumulator *)self initWithExtent:v5 format:colorSpace options:x, y, width, height];
 }
 
-- (CIImageAccumulator)initWithExtent:(CGRect)a3 format:(int)a4 options:(id)a5
+- (CIImageAccumulator)initWithExtent:(CGRect)extent format:(int)format options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = extent.size.height;
+  width = extent.size.width;
+  y = extent.origin.y;
+  x = extent.origin.x;
   v40 = *MEMORY[0x1E69E9840];
   v37.receiver = self;
   v37.super_class = CIImageAccumulator;
   v11 = [(CIImageAccumulator *)&v37 init];
   if (v11)
   {
-    v12 = [a5 objectForKey:@"color_space"];
+    v12 = [options objectForKey:@"color_space"];
     v41.origin.x = x;
     v41.origin.y = y;
     v41.size.width = width;
@@ -92,41 +92,41 @@
 
     else
     {
-      if (a4 == 267 || a4 == 265 || a4 == 264)
+      if (format == 267 || format == 265 || format == 264)
       {
-        v16 = 266;
+        formatCopy = 266;
       }
 
       else
       {
-        v16 = a4;
+        formatCopy = format;
       }
 
-      if (v16 == 1800)
+      if (formatCopy == 1800)
       {
-        v16 = 2056;
+        formatCopy = 2056;
       }
 
-      if (v16 == 2824)
+      if (formatCopy == 2824)
       {
         v17 = 2056;
       }
 
       else
       {
-        v17 = v16;
+        v17 = formatCopy;
       }
 
       if (v17 == 2312 || v17 == 2056 || v17 == 266)
       {
-        v20 = [MEMORY[0x1E695DF90] dictionary];
-        [v20 setObject:MEMORY[0x1E695E110] forKey:@"kCIContextEnableBlending"];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
+        [dictionary setObject:MEMORY[0x1E695E110] forKey:@"kCIContextEnableBlending"];
         if (!v12)
         {
-          [v20 setObject:objc_msgSend(MEMORY[0x1E695DFB0] forKey:{"null"), @"working_color_space"}];
+          [dictionary setObject:objc_msgSend(MEMORY[0x1E695DFB0] forKey:{"null"), @"working_color_space"}];
         }
 
-        [v20 setObject:@"CIImageAccumulator" forKey:@"kCIContextName"];
+        [dictionary setObject:@"CIImageAccumulator" forKey:@"kCIContextName"];
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
@@ -153,9 +153,9 @@
               }
 
               v25 = *(*(&v33 + 1) + 8 * i);
-              if ([a5 valueForKey:v25])
+              if ([options valueForKey:v25])
               {
-                [v20 setObject:objc_msgSend(a5 forKey:{"valueForKey:", v25), v25}];
+                [dictionary setObject:objc_msgSend(options forKey:{"valueForKey:", v25), v25}];
               }
             }
 
@@ -165,9 +165,9 @@
           while (v22);
         }
 
-        if ([CIContext contextWithOptions:v20])
+        if ([CIContext contextWithOptions:dictionary])
         {
-          v26 = [a5 objectForKey:@"blend_kernel"];
+          v26 = [options objectForKey:@"blend_kernel"];
           if (v26)
           {
             if (([v26 isMemberOfClass:objc_opt_class()] & 1) == 0)
@@ -361,8 +361,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CIImageAccumulator *)self format];
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"<CIImageAccumulator: %p extent [%g %g %g %g] format %s>", self, v4, v6, v8, v10, CI::name_for_format(v11)];
+  format = [(CIImageAccumulator *)self format];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"<CIImageAccumulator: %p extent [%g %g %g %g] format %s>", self, v4, v6, v8, v10, CI::name_for_format(format)];
 }
 
 - (void)initWithExtent:format:options:.cold.1()

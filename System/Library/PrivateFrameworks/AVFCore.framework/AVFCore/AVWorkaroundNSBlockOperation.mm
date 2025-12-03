@@ -11,8 +11,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(AVWorkaroundNSBlockOperation *)self dependencies];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  dependencies = [(AVWorkaroundNSBlockOperation *)self dependencies];
+  v3 = [dependencies countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -23,18 +23,18 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(dependencies);
       }
 
-      v7 = [*(*(&v9 + 1) + 8 * v6) isFinished];
-      if (!v7)
+      isFinished = [*(*(&v9 + 1) + 8 * v6) isFinished];
+      if (!isFinished)
       {
         break;
       }
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [dependencies countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -48,10 +48,10 @@ LABEL_3:
   else
   {
 LABEL_9:
-    LOBYTE(v7) = 1;
+    LOBYTE(isFinished) = 1;
   }
 
-  return v7;
+  return isFinished;
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface HAPMetricsPairVerifyEvent
-- (HAPMetricsPairVerifyEvent)initWithAccessory:(id)a3 forLinkType:(id)a4 durationInMS:(unint64_t)a5 reason:(id)a6 pvError:(id)a7;
+- (HAPMetricsPairVerifyEvent)initWithAccessory:(id)accessory forLinkType:(id)type durationInMS:(unint64_t)s reason:(id)reason pvError:(id)error;
 - (id)description;
 - (id)serializedEvent;
 @end
 
 @implementation HAPMetricsPairVerifyEvent
 
-- (HAPMetricsPairVerifyEvent)initWithAccessory:(id)a3 forLinkType:(id)a4 durationInMS:(unint64_t)a5 reason:(id)a6 pvError:(id)a7
+- (HAPMetricsPairVerifyEvent)initWithAccessory:(id)accessory forLinkType:(id)type durationInMS:(unint64_t)s reason:(id)reason pvError:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  accessoryCopy = accessory;
+  typeCopy = type;
+  reasonCopy = reason;
+  errorCopy = error;
   v20.receiver = self;
   v20.super_class = HAPMetricsPairVerifyEvent;
   v16 = [(DKMLogEvent *)&v20 init];
   if (v16)
   {
-    v17 = [v12 identifier];
+    identifier = [accessoryCopy identifier];
     accessoryIdentifier = v16->_accessoryIdentifier;
-    v16->_accessoryIdentifier = v17;
+    v16->_accessoryIdentifier = identifier;
 
-    objc_storeStrong(&v16->_linkType, a4);
-    v16->_durationInMS = a5;
-    objc_storeStrong(&v16->_reason, a6);
-    [(DKMLogEvent *)v16 setError:v15];
+    objc_storeStrong(&v16->_linkType, type);
+    v16->_durationInMS = s;
+    objc_storeStrong(&v16->_reason, reason);
+    [(DKMLogEvent *)v16 setError:errorCopy];
   }
 
   return v16;
@@ -32,12 +32,12 @@
 
 - (id)description
 {
-  v3 = [(HAPMetricsPairVerifyEvent *)self accessoryIdentifier];
-  v4 = [(HAPMetricsPairVerifyEvent *)self linkType];
-  v5 = [(HAPMetricsPairVerifyEvent *)self durationInMS];
-  v6 = [(HAPMetricsPairVerifyEvent *)self reason];
-  v7 = [(DKMLogEvent *)self error];
-  v8 = [NSString stringWithFormat:@"HAPMetricsPairVerifyEvent - Accessory Identifier: %@, linkType: %@, duration: %lu ms, reason: %@, error: %@", v3, v4, v5, v6, v7];
+  accessoryIdentifier = [(HAPMetricsPairVerifyEvent *)self accessoryIdentifier];
+  linkType = [(HAPMetricsPairVerifyEvent *)self linkType];
+  durationInMS = [(HAPMetricsPairVerifyEvent *)self durationInMS];
+  reason = [(HAPMetricsPairVerifyEvent *)self reason];
+  error = [(DKMLogEvent *)self error];
+  v8 = [NSString stringWithFormat:@"HAPMetricsPairVerifyEvent - Accessory Identifier: %@, linkType: %@, duration: %lu ms, reason: %@, error: %@", accessoryIdentifier, linkType, durationInMS, reason, error];
 
   return v8;
 }
@@ -45,17 +45,17 @@
 - (id)serializedEvent
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [NSNumber numberWithUnsignedInteger:[(HAPMetricsPairVerifyEvent *)self durationInMS]/ 0x3E8];
-  [v3 setObject:v4 forKeyedSubscript:@"duration"];
+  0x3E8 = [NSNumber numberWithUnsignedInteger:[(HAPMetricsPairVerifyEvent *)self durationInMS]/ 0x3E8];
+  [v3 setObject:0x3E8 forKeyedSubscript:@"duration"];
 
   v5 = [NSNumber numberWithUnsignedInteger:[(HAPMetricsPairVerifyEvent *)self durationInMS]];
   [v3 setObject:v5 forKeyedSubscript:@"durationInMS"];
 
-  v6 = [(HAPMetricsPairVerifyEvent *)self linkType];
-  [v3 setObject:v6 forKeyedSubscript:@"linkType"];
+  linkType = [(HAPMetricsPairVerifyEvent *)self linkType];
+  [v3 setObject:linkType forKeyedSubscript:@"linkType"];
 
-  v7 = [(HAPMetricsPairVerifyEvent *)self reason];
-  [v3 setObject:v7 forKeyedSubscript:@"reason"];
+  reason = [(HAPMetricsPairVerifyEvent *)self reason];
+  [v3 setObject:reason forKeyedSubscript:@"reason"];
 
   v8 = [v3 copy];
 

@@ -1,25 +1,25 @@
 @interface UIAnimatablePropertyWrapper
-+ (id)makeSwiftFloatAnimatablePropertyWithView:(id)a3;
-+ (id)makeSwiftVectorAnimatablePropertyWithView:(id)a3;
++ (id)makeSwiftFloatAnimatablePropertyWithView:(id)view;
++ (id)makeSwiftVectorAnimatablePropertyWithView:(id)view;
 - (BOOL)isInvalidated;
 - (BOOL)isVelocityUsableForVFD;
-- (UIAnimatablePropertyWrapper)initWithAnimatableProperty:(id)a3;
+- (UIAnimatablePropertyWrapper)initWithAnimatableProperty:(id)property;
 - (id)__swiftTransformer;
 - (id)view;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setVelocityUsableForVFD:(BOOL)a3;
-- (void)set__swiftTransformer:(id)a3;
+- (void)setVelocityUsableForVFD:(BOOL)d;
+- (void)set__swiftTransformer:(id)transformer;
 @end
 
 @implementation UIAnimatablePropertyWrapper
 
-+ (id)makeSwiftFloatAnimatablePropertyWithView:(id)a3
++ (id)makeSwiftFloatAnimatablePropertyWithView:(id)view
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA940D60);
   swift_allocObject();
-  v4 = a3;
-  v5 = sub_188A6DB3C(a3, signpost_c2_entryLock_start, 0, &qword_1EA940D70, 0.0, &unk_18A676BA8, &qword_1EA940D78, &unk_18A676BB0);
+  viewCopy = view;
+  v5 = sub_188A6DB3C(view, signpost_c2_entryLock_start, 0, &qword_1EA940D70, 0.0, &unk_18A676BA8, &qword_1EA940D78, &unk_18A676BB0);
   v6 = sub_188A5EB48(&qword_1ED48FC50, &unk_1EA940D60);
   v7 = type metadata accessor for BridgedProperty();
   v8 = objc_allocWithZone(v7);
@@ -35,26 +35,26 @@
 
 - (void)invalidate
 {
-  v2 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  [v2 invalidateAndStopImmediately:1];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  [animatableProperty invalidateAndStopImmediately:1];
 }
 
 - (void)dealloc
 {
-  v3 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  [v3 invalidateAndStopImmediately:0];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  [animatableProperty invalidateAndStopImmediately:0];
 
   v4.receiver = self;
   v4.super_class = UIAnimatablePropertyWrapper;
   [(UIAnimatablePropertyWrapper *)&v4 dealloc];
 }
 
-+ (id)makeSwiftVectorAnimatablePropertyWithView:(id)a3
++ (id)makeSwiftVectorAnimatablePropertyWithView:(id)view
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EA940D80);
   swift_allocObject();
-  v4 = a3;
-  v5 = sub_188C84FFC(MEMORY[0x1E69E7CC0], a3, signpost_c2_entryLock_start, 0);
+  viewCopy = view;
+  v5 = sub_188C84FFC(MEMORY[0x1E69E7CC0], view, signpost_c2_entryLock_start, 0);
   v6 = sub_188A5EB48(&qword_1EA930FF8, &unk_1EA940D80);
   v7 = type metadata accessor for BridgedProperty();
   v8 = objc_allocWithZone(v7);
@@ -70,22 +70,22 @@
 
 - (BOOL)isInvalidated
 {
-  v2 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  v3 = [v2 isInvalidated];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  isInvalidated = [animatableProperty isInvalidated];
 
-  return v3;
+  return isInvalidated;
 }
 
-- (UIAnimatablePropertyWrapper)initWithAnimatableProperty:(id)a3
+- (UIAnimatablePropertyWrapper)initWithAnimatableProperty:(id)property
 {
-  v5 = a3;
+  propertyCopy = property;
   v9.receiver = self;
   v9.super_class = UIAnimatablePropertyWrapper;
   v6 = [(UIAnimatablePropertyWrapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_animatableProperty, a3);
+    objc_storeStrong(&v6->_animatableProperty, property);
   }
 
   return v7;
@@ -93,40 +93,40 @@
 
 - (id)view
 {
-  v2 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  v3 = [v2 view];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  view = [animatableProperty view];
 
-  return v3;
+  return view;
 }
 
-- (void)set__swiftTransformer:(id)a3
+- (void)set__swiftTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  [v5 setTransformer:v4];
+  transformerCopy = transformer;
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  [animatableProperty setTransformer:transformerCopy];
 }
 
 - (id)__swiftTransformer
 {
-  v2 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  v3 = [v2 transformer];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  transformer = [animatableProperty transformer];
 
-  return v3;
+  return transformer;
 }
 
 - (BOOL)isVelocityUsableForVFD
 {
-  v2 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  v3 = [v2 isVelocityUsableForVFD];
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  isVelocityUsableForVFD = [animatableProperty isVelocityUsableForVFD];
 
-  return v3;
+  return isVelocityUsableForVFD;
 }
 
-- (void)setVelocityUsableForVFD:(BOOL)a3
+- (void)setVelocityUsableForVFD:(BOOL)d
 {
-  v3 = a3;
-  v4 = [(UIAnimatablePropertyWrapper *)self animatableProperty];
-  [v4 setIsVelocityUsableForVFD:v3];
+  dCopy = d;
+  animatableProperty = [(UIAnimatablePropertyWrapper *)self animatableProperty];
+  [animatableProperty setIsVelocityUsableForVFD:dCopy];
 }
 
 @end

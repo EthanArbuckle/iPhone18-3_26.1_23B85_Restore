@@ -6,24 +6,24 @@
 
 - (BOOL)isRATModeSpecifier
 {
-  v2 = [a1 identifier];
-  if (v2 == @"VoLTESwitchSpecifierKey")
+  identifier = [self identifier];
+  if (identifier == @"VoLTESwitchSpecifierKey")
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = [a1 identifier];
-    if (v3 == @"SASwitchSpecifierKey")
+    identifier2 = [self identifier];
+    if (identifier2 == @"SASwitchSpecifierKey")
     {
       v5 = 0;
     }
 
     else
     {
-      v4 = [a1 identifier];
-      v5 = v4 != @"VoNRSwitchSpecifierKey";
+      identifier3 = [self identifier];
+      v5 = identifier3 != @"VoNRSwitchSpecifierKey";
     }
   }
 

@@ -1,9 +1,9 @@
 @interface TCCDRequestResult
-+ (void)populateReplyMessageToDeny:(id)a3 withError:(id)a4;
++ (void)populateReplyMessageToDeny:(id)deny withError:(id)error;
 - (TCCDRequestResult)init;
-- (id)descriptionWithRespectToService:(id)a3;
-- (void)denyAuthorizationWithErrorCode:(int64_t)a3 format:(id)a4;
-- (void)populateReplyMessage:(id)a3;
+- (id)descriptionWithRespectToService:(id)service;
+- (void)denyAuthorizationWithErrorCode:(int64_t)code format:(id)format;
+- (void)populateReplyMessage:(id)message;
 @end
 
 @implementation TCCDRequestResult
@@ -22,45 +22,45 @@
   return v3;
 }
 
-+ (void)populateReplyMessageToDeny:(id)a3 withError:(id)a4
++ (void)populateReplyMessageToDeny:(id)deny withError:(id)error
 {
-  v5 = a4;
-  xdict = a3;
+  errorCopy = error;
+  xdict = deny;
   xpc_dictionary_set_BOOL(xdict, "result", 0);
   xpc_dictionary_set_uint64(xdict, "auth_value", 0);
   xpc_dictionary_set_uint64(xdict, "auth_reason", 1uLL);
-  v6 = [v5 localizedDescription];
-  xpc_dictionary_set_string(xdict, "auth_error_string", [v6 UTF8String]);
+  localizedDescription = [errorCopy localizedDescription];
+  xpc_dictionary_set_string(xdict, "auth_error_string", [localizedDescription UTF8String]);
 
-  v7 = [v5 code];
-  xpc_dictionary_set_uint64(xdict, "auth_error_code", v7);
+  code = [errorCopy code];
+  xpc_dictionary_set_uint64(xdict, "auth_error_code", code);
 }
 
-- (void)denyAuthorizationWithErrorCode:(int64_t)a3 format:(id)a4
+- (void)denyAuthorizationWithErrorCode:(int64_t)code format:(id)format
 {
-  v6 = a4;
+  formatCopy = format;
   [(TCCDRequestResult *)self setAuthorizationValue:0];
   [(TCCDRequestResult *)self setAuthorizationReason:1];
   [(TCCDRequestResult *)self setDatabaseAction:0];
-  v7 = [TCCDServer newErrorWithCode:a3 format:v6 arguments:&v11];
+  v7 = [TCCDServer newErrorWithCode:code format:formatCopy arguments:&v11];
 
   [(TCCDRequestResult *)self setError:v7];
   v8 = +[TCCDPlatform currentPlatform];
-  v9 = [v8 server];
-  v10 = [v9 logHandle];
+  server = [v8 server];
+  logHandle = [server logHandle];
 
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
   {
-    sub_100057720(self, v10);
+    sub_100057720(self, logHandle);
   }
 }
 
-- (id)descriptionWithRespectToService:(id)a3
+- (id)descriptionWithRespectToService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = objc_alloc_init(NSMutableString);
   objc_msgSend(v5, "appendString:", @"ReqResult(");
-  if (v4 && ([v4 authorizationRightStateForValue:-[TCCDRequestResult authorizationValue](self reason:{"authorizationValue"), -[TCCDRequestResult authorizationReason](self, "authorizationReason")}], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (serviceCopy && ([serviceCopy authorizationRightStateForValue:-[TCCDRequestResult authorizationValue](self reason:{"authorizationValue"), -[TCCDRequestResult authorizationReason](self, "authorizationReason")}], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = [v6 description];
@@ -74,13 +74,13 @@
 
   [v5 appendString:{@", "}];
   [v5 appendFormat:@"promptType: %lu, ", -[TCCDRequestResult promptType](self, "promptType")];
-  v9 = [(TCCDRequestResult *)self error];
+  error = [(TCCDRequestResult *)self error];
 
-  if (v9)
+  if (error)
   {
-    v10 = [(TCCDRequestResult *)self error];
-    v11 = [v10 localizedDescription];
-    [v5 appendFormat:@"error: %@, ", v11];
+    error2 = [(TCCDRequestResult *)self error];
+    localizedDescription = [error2 localizedDescription];
+    [v5 appendFormat:@"error: %@, ", localizedDescription];
   }
 
   [v5 appendString:@"DB Action:"];
@@ -120,9 +120,9 @@ LABEL_14:
   return v13;
 }
 
-- (void)populateReplyMessage:(id)a3
+- (void)populateReplyMessage:(id)message
 {
-  xdict = a3;
+  xdict = message;
   v4 = [(TCCDRequestResult *)self authorizationValue]== 1;
   v5 = xdict;
   if (v4)
@@ -157,11 +157,11 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v14 = [(TCCDRequestResult *)self servicePolicyActionDescription];
-  xpc_dictionary_set_string(xdict, "abort", [v14 UTF8String]);
+  servicePolicyActionDescription = [(TCCDRequestResult *)self servicePolicyActionDescription];
+  xpc_dictionary_set_string(xdict, "abort", [servicePolicyActionDescription UTF8String]);
 
-  v15 = [(TCCDRequestResult *)self servicePolicyActionKeyName];
-  xpc_dictionary_set_string(xdict, "problem_key", [v15 UTF8String]);
+  servicePolicyActionKeyName = [(TCCDRequestResult *)self servicePolicyActionKeyName];
+  xpc_dictionary_set_string(xdict, "problem_key", [servicePolicyActionKeyName UTF8String]);
 
 LABEL_11:
   if ([(TCCDRequestResult *)self replyNoCacheAuthorization])
@@ -178,24 +178,24 @@ LABEL_11:
     xpc_dictionary_set_BOOL(xdict, "has_prompted_for_allow", ([(TCCDRequestResult *)self databaseFlags]& 0x10) != 0);
   }
 
-  v8 = [(TCCDRequestResult *)self error];
+  error = [(TCCDRequestResult *)self error];
 
-  if (v8)
+  if (error)
   {
-    v9 = [(TCCDRequestResult *)self error];
-    v10 = [v9 localizedDescription];
-    xpc_dictionary_set_string(xdict, "auth_error_string", [v10 UTF8String]);
+    error2 = [(TCCDRequestResult *)self error];
+    localizedDescription = [error2 localizedDescription];
+    xpc_dictionary_set_string(xdict, "auth_error_string", [localizedDescription UTF8String]);
 
-    v11 = [(TCCDRequestResult *)self error];
-    xpc_dictionary_set_uint64(xdict, "auth_error_code", [v11 code]);
+    error3 = [(TCCDRequestResult *)self error];
+    xpc_dictionary_set_uint64(xdict, "auth_error_code", [error3 code]);
 
     if ([(TCCDRequestResult *)self authorizationReason]== 8 && [(TCCDRequestResult *)self servicePolicyAction]== 1)
     {
-      v12 = [(TCCDRequestResult *)self servicePolicyActionDescription];
-      xpc_dictionary_set_string(xdict, "auth_abort_description", [v12 UTF8String]);
+      servicePolicyActionDescription2 = [(TCCDRequestResult *)self servicePolicyActionDescription];
+      xpc_dictionary_set_string(xdict, "auth_abort_description", [servicePolicyActionDescription2 UTF8String]);
 
-      v13 = [(TCCDRequestResult *)self servicePolicyActionKeyName];
-      xpc_dictionary_set_string(xdict, "auth_abort_key", [v13 UTF8String]);
+      servicePolicyActionKeyName2 = [(TCCDRequestResult *)self servicePolicyActionKeyName];
+      xpc_dictionary_set_string(xdict, "auth_abort_key", [servicePolicyActionKeyName2 UTF8String]);
     }
   }
 }

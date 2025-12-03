@@ -1,29 +1,29 @@
 @interface LSOpenStagingDirectoryManager
 + (id)sharedServerInstance;
-- (LSOpenStagingDirectoryManager)initWithIOPersonality:(id)a3;
+- (LSOpenStagingDirectoryManager)initWithIOPersonality:(id)personality;
 - (id).cxx_construct;
-- (id)_locked_stagingDirectoryForKey:(unint64_t)a3;
-- (id)_stagingDirectoryForKeyRefreshingIfNecessary:(unint64_t)a3;
-- (id)mainDataVolumeStagingURLWithError:(id *)a3;
-- (id)stagingDirectoryForCloningFileHandle:(id)a3 error:(id *)a4;
-- (id)stagingDirectoryForCloningURL:(id)a3 error:(id *)a4;
-- (optional<unsigned)bootstrapBaseStagingDirectoryNode:(id)a3 error:(id *)a4;
+- (id)_locked_stagingDirectoryForKey:(unint64_t)key;
+- (id)_stagingDirectoryForKeyRefreshingIfNecessary:(unint64_t)necessary;
+- (id)mainDataVolumeStagingURLWithError:(id *)error;
+- (id)stagingDirectoryForCloningFileHandle:(id)handle error:(id *)error;
+- (id)stagingDirectoryForCloningURL:(id)l error:(id *)error;
+- (optional<unsigned)bootstrapBaseStagingDirectoryNode:(id)node error:(id *)error;
 - (void)_locked_updatePersonaStagingDirectories;
 @end
 
 @implementation LSOpenStagingDirectoryManager
 
-- (optional<unsigned)bootstrapBaseStagingDirectoryNode:(id)a3 error:(id *)a4
+- (optional<unsigned)bootstrapBaseStagingDirectoryNode:(id)node error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nodeCopy = node;
   LOBYTE(v20) = 0;
   LOBYTE(v21) = 0;
-  v20 = [(LSOpenStagingDirectoryManagerIOPersonality *)self->_ioPersonality stagingDirectoryKeyForNode:v6 error:a4];
+  v20 = [(LSOpenStagingDirectoryManagerIOPersonality *)self->_ioPersonality stagingDirectoryKeyForNode:nodeCopy error:error];
   LOBYTE(v21) = v7;
   if (v7)
   {
-    v8 = v6;
+    v8 = nodeCopy;
     *buf = 0;
     *&buf[8] = v8;
     *&buf[16] = -1;
@@ -69,16 +69,16 @@
   return result;
 }
 
-- (LSOpenStagingDirectoryManager)initWithIOPersonality:(id)a3
+- (LSOpenStagingDirectoryManager)initWithIOPersonality:(id)personality
 {
-  v5 = a3;
+  personalityCopy = personality;
   v33.receiver = self;
   v33.super_class = LSOpenStagingDirectoryManager;
   v6 = [(LSOpenStagingDirectoryManager *)&v33 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_ioPersonality, a3);
+    objc_storeStrong(&v6->_ioPersonality, personality);
     v7->_personaGeneration = 0;
     if (v7->_mainStagingDirectoryKey.__engaged_)
     {
@@ -88,8 +88,8 @@
     ioPersonality = v7->_ioPersonality;
     v32 = 0;
     v9 = ioPersonality;
-    v10 = [(LSOpenStagingDirectoryManagerIOPersonality *)v9 mainUserContainerURL];
-    v11 = [(LSOpenStagingDirectoryManagerIOPersonality *)v9 makeStagingDirectoryNodeInContainer:v10 error:&v32];
+    mainUserContainerURL = [(LSOpenStagingDirectoryManagerIOPersonality *)v9 mainUserContainerURL];
+    v11 = [(LSOpenStagingDirectoryManagerIOPersonality *)v9 makeStagingDirectoryNodeInContainer:mainUserContainerURL error:&v32];
 
     v12 = v32;
     v13 = v12;
@@ -129,8 +129,8 @@ LABEL_12:
     v19 = v7->_ioPersonality;
     v30 = v17;
     v20 = v19;
-    v21 = [(LSOpenStagingDirectoryManagerIOPersonality *)v20 mainSystemContainerURL];
-    v22 = [(LSOpenStagingDirectoryManagerIOPersonality *)v20 makeStagingDirectoryNodeInContainer:v21 error:&v30];
+    mainSystemContainerURL = [(LSOpenStagingDirectoryManagerIOPersonality *)v20 mainSystemContainerURL];
+    v22 = [(LSOpenStagingDirectoryManagerIOPersonality *)v20 makeStagingDirectoryNodeInContainer:mainSystemContainerURL error:&v30];
 
     v23 = v30;
     if (v22)
@@ -181,7 +181,7 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = __53__LSOpenStagingDirectoryManager_sharedServerInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[LSOpenStagingDirectoryManager sharedServerInstance]::onceToken != -1)
   {
     dispatch_once(&+[LSOpenStagingDirectoryManager sharedServerInstance]::onceToken, block);
@@ -203,16 +203,16 @@ void __53__LSOpenStagingDirectoryManager_sharedServerInstance__block_invoke(uint
 
 - (void)_locked_updatePersonaStagingDirectories
 {
-  OUTLINED_FUNCTION_17(a1, *MEMORY[0x1E69E9840]);
+  OUTLINED_FUNCTION_17(self, *MEMORY[0x1E69E9840]);
   OUTLINED_FUNCTION_8();
   _os_log_debug_impl(&dword_18162D000, v1, OS_LOG_TYPE_DEBUG, "Persona generation %llu of staging directory manager is current.", v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_locked_stagingDirectoryForKey:(unint64_t)a3
+- (id)_locked_stagingDirectoryForKey:(unint64_t)key
 {
-  v5 = a3;
-  v3 = std::__hash_table<std::__hash_value_type<unsigned long long,LaunchServices::OpenStaging::StagingDirectoryInfo>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,LaunchServices::OpenStaging::StagingDirectoryInfo>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,LaunchServices::OpenStaging::StagingDirectoryInfo>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,LaunchServices::OpenStaging::StagingDirectoryInfo>>>::find<unsigned long long>(&self->_stagingDirectoryInfoMap.__table_.__bucket_list_.__ptr_, &v5);
+  keyCopy = key;
+  v3 = std::__hash_table<std::__hash_value_type<unsigned long long,LaunchServices::OpenStaging::StagingDirectoryInfo>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,LaunchServices::OpenStaging::StagingDirectoryInfo>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,LaunchServices::OpenStaging::StagingDirectoryInfo>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,LaunchServices::OpenStaging::StagingDirectoryInfo>>>::find<unsigned long long>(&self->_stagingDirectoryInfoMap.__table_.__bucket_list_.__ptr_, &keyCopy);
   if (v3)
   {
     v3 = [v3[4] URL];
@@ -221,22 +221,22 @@ void __53__LSOpenStagingDirectoryManager_sharedServerInstance__block_invoke(uint
   return v3;
 }
 
-- (id)_stagingDirectoryForKeyRefreshingIfNecessary:(unint64_t)a3
+- (id)_stagingDirectoryForKeyRefreshingIfNecessary:(unint64_t)necessary
 {
   os_unfair_lock_lock(&self->_mutex);
   [(LSOpenStagingDirectoryManager *)self _locked_updatePersonaStagingDirectories];
-  v5 = [(LSOpenStagingDirectoryManager *)self _locked_stagingDirectoryForKey:a3];
+  v5 = [(LSOpenStagingDirectoryManager *)self _locked_stagingDirectoryForKey:necessary];
   os_unfair_lock_unlock(&self->_mutex);
 
   return v5;
 }
 
-- (id)stagingDirectoryForCloningURL:(id)a3 error:(id *)a4
+- (id)stagingDirectoryForCloningURL:(id)l error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [[FSNode alloc] initWithURL:v6 flags:0 error:a4];
-  v8 = [(LSOpenStagingDirectoryManagerIOPersonality *)self->_ioPersonality stagingDirectoryKeyForNode:v7 error:a4];
+  lCopy = l;
+  v7 = [[FSNode alloc] initWithURL:lCopy flags:0 error:error];
+  v8 = [(LSOpenStagingDirectoryManagerIOPersonality *)self->_ioPersonality stagingDirectoryKeyForNode:v7 error:error];
   if (v9)
   {
     v10 = [(LSOpenStagingDirectoryManager *)self _stagingDirectoryForKeyRefreshingIfNecessary:v8];
@@ -245,14 +245,14 @@ void __53__LSOpenStagingDirectoryManager_sharedServerInstance__block_invoke(uint
       goto LABEL_7;
     }
 
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not find open staging directory for URL %@", v6];
-    v12 = v11;
-    if (a4)
+    lCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not find open staging directory for URL %@", lCopy];
+    v12 = lCopy;
+    if (error)
     {
       v16 = *MEMORY[0x1E696A278];
-      v17[0] = v11;
+      v17[0] = lCopy;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-      *a4 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 2, v13, "[LSOpenStagingDirectoryManager stagingDirectoryForCloningURL:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSOpenStagingDirectoryManager.mm", 398);
+      *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 2, v13, "[LSOpenStagingDirectoryManager stagingDirectoryForCloningURL:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSOpenStagingDirectoryManager.mm", 398);
     }
   }
 
@@ -264,18 +264,18 @@ LABEL_7:
   return v10;
 }
 
-- (id)stagingDirectoryForCloningFileHandle:(id)a3 error:(id *)a4
+- (id)stagingDirectoryForCloningFileHandle:(id)handle error:(id *)error
 {
-  v6 = a3;
-  v7 = [(LSOpenStagingDirectoryManagerIOPersonality *)self->_ioPersonality stagingDirectoryKeyForFileHandle:v6 error:a4];
+  handleCopy = handle;
+  v7 = [(LSOpenStagingDirectoryManagerIOPersonality *)self->_ioPersonality stagingDirectoryKeyForFileHandle:handleCopy error:error];
   if (v8)
   {
     v9 = [(LSOpenStagingDirectoryManager *)self _stagingDirectoryForKeyRefreshingIfNecessary:v7];
     v10 = v9;
-    if (a4 && !v9)
+    if (error && !v9)
     {
       _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 2, 0, "[LSOpenStagingDirectoryManager stagingDirectoryForCloningFileHandle:error:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSOpenStagingDirectoryManager.mm", 410);
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
   }
 
@@ -287,14 +287,14 @@ LABEL_7:
   return v10;
 }
 
-- (id)mainDataVolumeStagingURLWithError:(id *)a3
+- (id)mainDataVolumeStagingURLWithError:(id *)error
 {
   v10[1] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_mutex);
   if (!self->_mainStagingDirectoryKey.__engaged_)
   {
     os_unfair_lock_unlock(&self->_mutex);
-    if (!a3)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -303,7 +303,7 @@ LABEL_6:
     v9 = *MEMORY[0x1E696A278];
     v10[0] = @"Could not find open staging directory for main data volume?";
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    *a3 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 2, v6, "[LSOpenStagingDirectoryManager mainDataVolumeStagingURLWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSOpenStagingDirectoryManager.mm", 428);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A798], 2, v6, "[LSOpenStagingDirectoryManager mainDataVolumeStagingURLWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Workspace/LSOpenStagingDirectoryManager.mm", 428);
 
     goto LABEL_7;
   }
@@ -315,7 +315,7 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  if (a3)
+  if (error)
   {
     goto LABEL_6;
   }

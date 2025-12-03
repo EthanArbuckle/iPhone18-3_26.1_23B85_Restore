@@ -4,51 +4,51 @@
 - (CGRect)backgroundViewFrame;
 - (CGRect)contentFrame;
 - (CGRect)originalFrame;
-- (CGRect)originalFrameForContentView:(id)a3 behavior:(id)a4;
+- (CGRect)originalFrameForContentView:(id)view behavior:(id)behavior;
 - (CGRect)presentationFrame;
 - (CGRect)transitionContainerFrame;
 - (CGRect)transitionContentFrame;
 - (CGRect)transitionVisibleFrame;
 - (NSString)description;
 - (SXComponentHosting)componentHost;
-- (SXComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6;
+- (SXComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory;
 - (SXFillView)fillView;
 - (SXPresentationDelegate)presentationDelegate;
 - (UIEdgeInsets)borderInsets;
 - (UIEdgeInsets)componentLayoutMargins;
 - (id)classification;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)assistiveTechnologyStatusDidChange;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)didReceiveMemoryWarning;
 - (void)invalidateComponentStyle;
-- (void)loadComponent:(id)a3;
-- (void)prepareForTransitionType:(unint64_t)a3;
-- (void)presentComponentWithChanges:(id)a3;
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4;
+- (void)loadComponent:(id)component;
+- (void)prepareForTransitionType:(unint64_t)type;
+- (void)presentComponentWithChanges:(id)changes;
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier;
 - (void)renderComponentStyle;
 - (void)renderContentsIfNeeded;
 - (void)restoreBehavior;
-- (void)setAbsoluteFrame:(CGRect)a3;
-- (void)setAnimationsAndBehaviorsEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setRequiresThoroughFrameCalculations:(BOOL)a3;
-- (void)setVisibilityState:(int64_t)a3;
-- (void)setupComponentStyleRendererForStyle:(id)a3;
-- (void)updateAllowHierarchyRemovalWithComponent:(id)a3 componentStyle:(id)a4;
-- (void)visibilityStateDidChangeFromState:(int64_t)a3;
-- (void)willPresentComponentWithChanges:(id)a3;
+- (void)setAbsoluteFrame:(CGRect)frame;
+- (void)setAnimationsAndBehaviorsEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setRequiresThoroughFrameCalculations:(BOOL)calculations;
+- (void)setVisibilityState:(int64_t)state;
+- (void)setupComponentStyleRendererForStyle:(id)style;
+- (void)updateAllowHierarchyRemovalWithComponent:(id)component componentStyle:(id)style;
+- (void)visibilityStateDidChangeFromState:(int64_t)state;
+- (void)willPresentComponentWithChanges:(id)changes;
 @end
 
 @implementation SXComponentView
 
-- (SXComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6
+- (SXComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  viewportCopy = viewport;
+  delegateCopy = delegate;
+  factoryCopy = factory;
   v30.receiver = self;
   v30.super_class = SXComponentView;
   v15 = *MEMORY[0x1E695F058];
@@ -59,10 +59,10 @@
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_DOMObjectProvider, a3);
-    objc_storeStrong(&v20->_viewport, a4);
-    objc_storeWeak(&v20->_presentationDelegate, v13);
-    objc_storeStrong(&v20->_componentStyleRendererFactory, a6);
+    objc_storeStrong(&v19->_DOMObjectProvider, provider);
+    objc_storeStrong(&v20->_viewport, viewport);
+    objc_storeWeak(&v20->_presentationDelegate, delegateCopy);
+    objc_storeStrong(&v20->_componentStyleRendererFactory, factory);
     v21 = objc_opt_new();
     state = v20->_state;
     v20->_state = v21;
@@ -77,11 +77,11 @@
 
     [(UIView *)v20->_backgroundView addSubview:v20->_contentView];
     [(SXComponentView *)v20 addSubview:v20->_backgroundView];
-    v27 = [(SXComponentView *)v20 layer];
-    [v27 setAllowsGroupOpacity:0];
+    layer = [(SXComponentView *)v20 layer];
+    [layer setAllowsGroupOpacity:0];
 
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v20 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v20 selector:sel_didReceiveMemoryWarning name:*MEMORY[0x1E69DDAD8] object:0];
   }
 
   return v20;
@@ -100,17 +100,17 @@
   }
 }
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
-  objc_storeStrong(&self->_component, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_component, component);
+  componentCopy = component;
   self->_animationsAndBehaviorsEnabled = 1;
-  v6 = [v5 behaviors];
-  self->_hasBehaviors = [v6 count] != 0;
+  behaviors = [componentCopy behaviors];
+  self->_hasBehaviors = [behaviors count] != 0;
 
-  v7 = [v5 animation];
+  animation = [componentCopy animation];
 
-  self->_hasAnimation = v7 != 0;
+  self->_hasAnimation = animation != 0;
 }
 
 - (void)didMoveToWindow
@@ -118,9 +118,9 @@
   v4.receiver = self;
   v4.super_class = SXComponentView;
   [(SXComponentView *)&v4 didMoveToWindow];
-  v3 = [(SXComponentView *)self window];
+  window = [(SXComponentView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     [(SXComponentView *)self setPresentationFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
@@ -128,16 +128,16 @@
 
 - (void)dealloc
 {
-  v3 = [(SXComponentView *)self presentationDelegate];
-  v4 = [v3 behaviorController];
-  [v4 unregisterComponentView:self];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  behaviorController = [presentationDelegate behaviorController];
+  [behaviorController unregisterComponentView:self];
 
-  v5 = [(SXComponentView *)self presentationDelegate];
-  v6 = [v5 animationController];
-  [v6 unregisterComponentView:self];
+  presentationDelegate2 = [(SXComponentView *)self presentationDelegate];
+  animationController = [presentationDelegate2 animationController];
+  [animationController unregisterComponentView:self];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DDAD8] object:0];
 
   v8.receiver = self;
   v8.super_class = SXComponentView;
@@ -164,30 +164,30 @@
   }
 }
 
-- (void)willPresentComponentWithChanges:(id)a3
+- (void)willPresentComponentWithChanges:(id)changes
 {
-  if ((*&a3.var0 & 0x100) != 0 || a3.var0)
+  if ((*&changes.var0 & 0x100) != 0 || changes.var0)
   {
     self->_hasRenderedComponentStyle = 0;
   }
 
-  v4 = [(SXComponentView *)self DOMObjectProvider];
-  v5 = [(SXComponentView *)self component];
-  v12 = [v4 componentStyleForComponent:v5];
+  dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+  component = [(SXComponentView *)self component];
+  v12 = [dOMObjectProvider componentStyleForComponent:component];
 
   [(SXComponentView *)self setupComponentStyleRendererForStyle:v12];
-  v6 = [(SXComponentView *)self DOMObjectProvider];
-  v7 = [(SXComponentView *)self component];
-  v8 = [v7 layout];
-  v9 = [v6 componentLayoutForIdentifier:v8];
+  dOMObjectProvider2 = [(SXComponentView *)self DOMObjectProvider];
+  component2 = [(SXComponentView *)self component];
+  layout = [component2 layout];
+  v9 = [dOMObjectProvider2 componentLayoutForIdentifier:layout];
   componentLayout = self->_componentLayout;
   self->_componentLayout = v9;
 
-  v11 = [(SXComponentView *)self component];
-  [(SXComponentView *)self updateAllowHierarchyRemovalWithComponent:v11 componentStyle:v12];
+  component3 = [(SXComponentView *)self component];
+  [(SXComponentView *)self updateAllowHierarchyRemovalWithComponent:component3 componentStyle:v12];
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v24 = *MEMORY[0x1E69E9840];
   [(SXComponentView *)self frame];
@@ -195,18 +195,18 @@
   [(SXComponentView *)self prepareComponentStyleRendererForStyle:self->_componentStyle];
   if ([(SXComponentView *)self hasAnimation]&& [(SXComponentView *)self animationsAndBehaviorsEnabled])
   {
-    v4 = [(SXComponentView *)self presentationDelegate];
-    v5 = [v4 animationController];
-    v6 = [(SXComponentView *)self component];
-    v7 = [v6 animation];
-    [v5 registerComponentView:self animation:v7];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    animationController = [presentationDelegate animationController];
+    component = [(SXComponentView *)self component];
+    animation = [component animation];
+    [animationController registerComponentView:self animation:animation];
   }
 
   else
   {
-    v4 = [(SXComponentView *)self presentationDelegate];
-    v5 = [v4 animationController];
-    [v5 unregisterComponentView:self];
+    presentationDelegate = [(SXComponentView *)self presentationDelegate];
+    animationController = [presentationDelegate animationController];
+    [animationController unregisterComponentView:self];
   }
 
   if ([(SXComponentView *)self hasBehaviors]&& [(SXComponentView *)self animationsAndBehaviorsEnabled])
@@ -215,10 +215,10 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [(SXComponentView *)self component];
-    v9 = [v8 behaviors];
+    component2 = [(SXComponentView *)self component];
+    behaviors = [component2 behaviors];
 
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v10 = [behaviors countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
     {
       v11 = v10;
@@ -229,16 +229,16 @@
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(behaviors);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [(SXComponentView *)self presentationDelegate];
-          v16 = [v15 behaviorController];
-          [v16 registerComponentView:self behavior:v14];
+          presentationDelegate2 = [(SXComponentView *)self presentationDelegate];
+          behaviorController = [presentationDelegate2 behaviorController];
+          [behaviorController registerComponentView:self behavior:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v11 = [behaviors countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v11);
@@ -247,60 +247,60 @@
 
   else
   {
-    v18 = [(SXComponentView *)self presentationDelegate];
-    v17 = [v18 behaviorController];
-    [v17 unregisterComponentView:self];
+    presentationDelegate3 = [(SXComponentView *)self presentationDelegate];
+    behaviorController2 = [presentationDelegate3 behaviorController];
+    [behaviorController2 unregisterComponentView:self];
   }
 }
 
-- (void)setVisibilityState:(int64_t)a3
+- (void)setVisibilityState:(int64_t)state
 {
   visibilityState = self->_visibilityState;
-  if (visibilityState != a3)
+  if (visibilityState != state)
   {
-    self->_visibilityState = a3;
+    self->_visibilityState = state;
     [(SXComponentView *)self visibilityStateDidChangeFromState:visibilityState];
   }
 }
 
-- (void)visibilityStateDidChangeFromState:(int64_t)a3
+- (void)visibilityStateDidChangeFromState:(int64_t)state
 {
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 animation];
+  component = [(SXComponentView *)self component];
+  animation = [component animation];
 
-  if (v6)
+  if (animation)
   {
     if ([(SXComponentView *)self visibilityState]== 1 && [(SXComponentView *)self animationsAndBehaviorsEnabled])
     {
-      v7 = [(SXComponentView *)self presentationDelegate];
-      v8 = [v7 animationController];
-      [v8 startUpdatingAnimationForComponentView:self];
+      presentationDelegate = [(SXComponentView *)self presentationDelegate];
+      animationController = [presentationDelegate animationController];
+      [animationController startUpdatingAnimationForComponentView:self];
 LABEL_8:
 
       goto LABEL_9;
     }
 
-    v9 = [(SXComponentView *)self visibilityState];
-    if (a3 == 1 && v9 == 2)
+    visibilityState = [(SXComponentView *)self visibilityState];
+    if (state == 1 && visibilityState == 2)
     {
-      v7 = [(SXComponentView *)self presentationDelegate];
-      v8 = [v7 animationController];
-      [v8 stopUpdatingAnimationForComponentView:self];
+      presentationDelegate = [(SXComponentView *)self presentationDelegate];
+      animationController = [presentationDelegate animationController];
+      [animationController stopUpdatingAnimationForComponentView:self];
       goto LABEL_8;
     }
   }
 
 LABEL_9:
-  v10 = [(SXComponentView *)self componentStyleRenderer];
-  [v10 componentVisiblityStateDidChange:a3];
+  componentStyleRenderer = [(SXComponentView *)self componentStyleRenderer];
+  [componentStyleRenderer componentVisiblityStateDidChange:state];
 }
 
-- (CGRect)originalFrameForContentView:(id)a3 behavior:(id)a4
+- (CGRect)originalFrameForContentView:(id)view behavior:(id)behavior
 {
-  v5 = a3;
-  v6 = [(SXComponentView *)self fillView];
+  viewCopy = view;
+  fillView = [(SXComponentView *)self fillView];
 
-  if (v6 == v5)
+  if (fillView == viewCopy)
   {
     [(SXComponentView *)self contentFrame];
   }
@@ -319,23 +319,23 @@ LABEL_9:
 
 - (void)restoreBehavior
 {
-  v3 = [(SXComponentView *)self presentationDelegate];
-  [v3 updateBehaviorForComponentView:self];
+  presentationDelegate = [(SXComponentView *)self presentationDelegate];
+  [presentationDelegate updateBehaviorForComponentView:self];
 }
 
-- (void)updateAllowHierarchyRemovalWithComponent:(id)a3 componentStyle:(id)a4
+- (void)updateAllowHierarchyRemovalWithComponent:(id)component componentStyle:(id)style
 {
-  v6 = a4;
-  v7 = a3;
+  styleCopy = style;
+  componentCopy = component;
   v8 = !UIAccessibilityIsVoiceOverRunning() && !UIAccessibilityIsSwitchControlRunning();
-  v9 = [v7 animation];
+  animation = [componentCopy animation];
 
-  v10 = [v7 behaviors];
+  behaviors = [componentCopy behaviors];
 
-  v11 = [v10 count];
-  v12 = [v6 fill];
+  v11 = [behaviors count];
+  fill = [styleCopy fill];
 
-  v13 = [v12 attachment];
+  attachment = [fill attachment];
   if (v11)
   {
     v14 = 1;
@@ -343,11 +343,11 @@ LABEL_9:
 
   else
   {
-    v14 = v13 == 1;
+    v14 = attachment == 1;
   }
 
   v15 = !v14;
-  if (v9)
+  if (animation)
   {
     v15 = 0;
   }
@@ -360,21 +360,21 @@ LABEL_9:
   self->_allowViewHierarchyRemoval = v15;
 }
 
-- (void)setRequiresThoroughFrameCalculations:(BOOL)a3
+- (void)setRequiresThoroughFrameCalculations:(BOOL)calculations
 {
-  self->_requiresThoroughFrameCalculations = a3;
-  if (!a3)
+  self->_requiresThoroughFrameCalculations = calculations;
+  if (!calculations)
   {
     [(SXComponentView *)self setPresentationFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(SXComponentView *)self highlightView];
-  v6 = v5;
-  if (v3)
+  highlightedCopy = highlighted;
+  highlightView = [(SXComponentView *)self highlightView];
+  v6 = highlightView;
+  if (highlightedCopy)
   {
 
     if (!v6)
@@ -383,10 +383,10 @@ LABEL_9:
       highlightView = self->_highlightView;
       self->_highlightView = v7;
 
-      v9 = [(SXComponentView *)self highlightView];
-      v10 = [MEMORY[0x1E69DC888] blackColor];
-      v11 = [v10 colorWithAlphaComponent:0.1];
-      [v9 setBackgroundColor:v11];
+      highlightView2 = [(SXComponentView *)self highlightView];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      v11 = [blackColor colorWithAlphaComponent:0.1];
+      [highlightView2 setBackgroundColor:v11];
     }
 
     v15[0] = MEMORY[0x1E69E9820];
@@ -395,23 +395,23 @@ LABEL_9:
     v15[3] = &unk_1E84FED18;
     v15[4] = self;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v15];
-    v12 = [(SXComponentView *)self contentView];
-    v13 = [(SXComponentView *)self highlightView];
-    [v12 addSubview:v13];
+    contentView = [(SXComponentView *)self contentView];
+    highlightView3 = [(SXComponentView *)self highlightView];
+    [contentView addSubview:highlightView3];
 
-    v14 = [(SXComponentView *)self highlightView];
-    [v14 setAlpha:1.0];
+    highlightView4 = [(SXComponentView *)self highlightView];
+    [highlightView4 setAlpha:1.0];
   }
 
   else
   {
-    [v5 setAlpha:0.0];
+    [highlightView setAlpha:0.0];
 
-    v14 = [(SXComponentView *)self highlightView];
-    [v14 removeFromSuperview];
+    highlightView4 = [(SXComponentView *)self highlightView];
+    [highlightView4 removeFromSuperview];
   }
 
-  self->_highlighted = v3;
+  self->_highlighted = highlightedCopy;
 }
 
 void __34__SXComponentView_setHighlighted___block_invoke(uint64_t a1)
@@ -425,13 +425,13 @@ void __34__SXComponentView_setHighlighted___block_invoke(uint64_t a1)
   [v4 setFrame:?];
 }
 
-- (void)setupComponentStyleRendererForStyle:(id)a3
+- (void)setupComponentStyleRendererForStyle:(id)style
 {
-  v7 = a3;
-  if (!self->_componentStyleRenderer || ![(SXJSONObject *)self->_componentStyle isEqual:v7])
+  styleCopy = style;
+  if (!self->_componentStyleRenderer || ![(SXJSONObject *)self->_componentStyle isEqual:styleCopy])
   {
-    objc_storeStrong(&self->_componentStyle, a3);
-    v5 = [(SXComponentStyleRendererFactory *)self->_componentStyleRendererFactory componentStyleRendererForComponentStyle:v7];
+    objc_storeStrong(&self->_componentStyle, style);
+    v5 = [(SXComponentStyleRendererFactory *)self->_componentStyleRendererFactory componentStyleRendererForComponentStyle:styleCopy];
     componentStyleRenderer = self->_componentStyleRenderer;
     self->_componentStyleRenderer = v5;
 
@@ -476,8 +476,8 @@ void __34__SXComponentView_setHighlighted___block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SXComponentView *)self viewport];
-  [v11 dynamicBounds];
+  viewport = [(SXComponentView *)self viewport];
+  [viewport dynamicBounds];
   v19.origin.x = v12;
   v19.origin.y = v13;
   v19.size.width = v14;
@@ -519,14 +519,14 @@ void __34__SXComponentView_setHighlighted___block_invoke(uint64_t a1)
 
 - (CGRect)transitionContainerFrame
 {
-  v3 = [(SXComponentView *)self viewport];
+  viewport = [(SXComponentView *)self viewport];
   [(SXComponentView *)self frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SXComponentView *)self superview];
-  [v3 convertRect:v12 fromView:{v5, v7, v9, v11}];
+  superview = [(SXComponentView *)self superview];
+  [viewport convertRect:superview fromView:{v5, v7, v9, v11}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -543,62 +543,62 @@ void __34__SXComponentView_setHighlighted___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)prepareForTransitionType:(unint64_t)a3
+- (void)prepareForTransitionType:(unint64_t)type
 {
-  v10 = [(SXComponentView *)self component];
-  v4 = [v10 animation];
-  if (v4)
+  component = [(SXComponentView *)self component];
+  animation = [component animation];
+  if (animation)
   {
-    v5 = v4;
-    v6 = [(SXComponentView *)self component];
-    v7 = [v6 animation];
-    v8 = [v7 transitionBehavior];
+    v5 = animation;
+    component2 = [(SXComponentView *)self component];
+    animation2 = [component2 animation];
+    transitionBehavior = [animation2 transitionBehavior];
 
-    if (v8 != 1)
+    if (transitionBehavior != 1)
     {
       return;
     }
 
-    v10 = [(SXComponentView *)self presentationDelegate];
-    v9 = [v10 animationController];
-    [v9 stopUpdatingAnimationForComponentView:self finishAnimation:1];
+    component = [(SXComponentView *)self presentationDelegate];
+    animationController = [component animationController];
+    [animationController stopUpdatingAnimationForComponentView:self finishAnimation:1];
   }
 }
 
-- (void)setAnimationsAndBehaviorsEnabled:(BOOL)a3
+- (void)setAnimationsAndBehaviorsEnabled:(BOOL)enabled
 {
-  self->_animationsAndBehaviorsEnabled = a3;
-  if (!a3)
+  self->_animationsAndBehaviorsEnabled = enabled;
+  if (!enabled)
   {
-    v5 = [(SXComponentView *)self component];
-    v6 = [v5 animation];
+    component = [(SXComponentView *)self component];
+    animation = [component animation];
 
-    if (v6)
+    if (animation)
     {
-      v7 = [(SXComponentView *)self presentationDelegate];
-      v8 = [v7 animationController];
-      [v8 stopUpdatingAnimationForComponentView:self finishAnimation:1];
+      presentationDelegate = [(SXComponentView *)self presentationDelegate];
+      animationController = [presentationDelegate animationController];
+      [animationController stopUpdatingAnimationForComponentView:self finishAnimation:1];
     }
 
-    v9 = [(SXComponentView *)self component];
-    v10 = [v9 behaviors];
-    v13 = [v10 firstObject];
+    component2 = [(SXComponentView *)self component];
+    behaviors = [component2 behaviors];
+    firstObject = [behaviors firstObject];
 
-    if (v13)
+    if (firstObject)
     {
-      v11 = [(SXComponentView *)self presentationDelegate];
-      v12 = [v11 behaviorController];
-      [v12 unregisterComponentView:self];
+      presentationDelegate2 = [(SXComponentView *)self presentationDelegate];
+      behaviorController = [presentationDelegate2 behaviorController];
+      [behaviorController unregisterComponentView:self];
     }
   }
 }
 
-- (void)receivedInfo:(id)a3 fromLayoutingPhaseWithIdentifier:(id)a4
+- (void)receivedInfo:(id)info fromLayoutingPhaseWithIdentifier:(id)identifier
 {
-  v7 = a3;
-  if ([a4 isEqualToString:@"unitConverter"])
+  infoCopy = info;
+  if ([identifier isEqualToString:@"unitConverter"])
   {
-    objc_storeStrong(&self->_unitConverter, a3);
+    objc_storeStrong(&self->_unitConverter, info);
   }
 }
 
@@ -632,12 +632,12 @@ void __34__SXComponentView_setHighlighted___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setAbsoluteFrame:(CGRect)a3
+- (void)setAbsoluteFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SXComponentView *)self setPresentationFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   self->_absoluteFrame.origin.x = x;
   self->_absoluteFrame.origin.y = y;
@@ -647,49 +647,49 @@ void __34__SXComponentView_setHighlighted___block_invoke(uint64_t a1)
 
 - (id)classification
 {
-  v2 = [(SXComponentView *)self component];
-  v3 = [v2 classification];
+  component = [(SXComponentView *)self component];
+  classification = [component classification];
 
-  return v3;
+  return classification;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 identifier];
+  component = [(SXComponentView *)self component];
+  identifier = [component identifier];
   [(SXComponentView *)self contentFrame];
   v7 = NSStringFromCGRect(v11);
-  v8 = [v3 stringWithFormat:@"<%@: %p identifier: '%@', contentFrame: %@>", v4, self, v6, v7];;
+  v8 = [v3 stringWithFormat:@"<%@: %p identifier: '%@', contentFrame: %@>", v4, self, identifier, v7];;
 
   return v8;
 }
 
 - (void)assistiveTechnologyStatusDidChange
 {
-  v4 = [(SXComponentView *)self component];
-  v3 = [(SXComponentView *)self componentStyle];
-  [(SXComponentView *)self updateAllowHierarchyRemovalWithComponent:v4 componentStyle:v3];
+  component = [(SXComponentView *)self component];
+  componentStyle = [(SXComponentView *)self componentStyle];
+  [(SXComponentView *)self updateAllowHierarchyRemovalWithComponent:component componentStyle:componentStyle];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v11.receiver = self;
   v11.super_class = SXComponentView;
-  v5 = [(SXComponentView *)&v11 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SXComponentView *)&v11 hitTest:event withEvent:test.x, test.y];
   if (v5 != self)
   {
-    v6 = [(SXComponentView *)self contentView];
-    if (v5 != v6)
+    contentView = [(SXComponentView *)self contentView];
+    if (v5 != contentView)
     {
-      v7 = [(SXComponentView *)self backgroundView];
-      v8 = v7;
-      if (v5 != v7)
+      backgroundView = [(SXComponentView *)self backgroundView];
+      v8 = backgroundView;
+      if (v5 != backgroundView)
       {
-        v9 = [(SXComponentView *)self fillView];
+        fillView = [(SXComponentView *)self fillView];
 
-        if (v5 != v9)
+        if (v5 != fillView)
         {
           goto LABEL_9;
         }

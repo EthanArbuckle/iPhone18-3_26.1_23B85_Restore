@@ -1,26 +1,26 @@
 @interface _EFProtectedFile
 - (NSString)ef_publicDescription;
-- (id)initWithFilePath:(char)a3 isSensitive:(void *)a4 protectionType:;
-- (uint64_t)fileDescriptorWithError:(uint64_t)a1;
+- (id)initWithFilePath:(char)path isSensitive:(void *)sensitive protectionType:;
+- (uint64_t)fileDescriptorWithError:(uint64_t)error;
 @end
 
 @implementation _EFProtectedFile
 
-- (id)initWithFilePath:(char)a3 isSensitive:(void *)a4 protectionType:
+- (id)initWithFilePath:(char)path isSensitive:(void *)sensitive protectionType:
 {
   v8 = a2;
-  v9 = a4;
-  if (a1)
+  sensitiveCopy = sensitive;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = _EFProtectedFile;
     v10 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 3, a2);
-      *(a1 + 16) = a3;
-      v11 = v9;
+      *(self + 16) = path;
+      v11 = sensitiveCopy;
       if ([v11 isEqualToString:*MEMORY[0x1E696A378]])
       {
         v12 = 1;
@@ -51,29 +51,29 @@
         v12 = -1;
       }
 
-      *(a1 + 5) = v12;
-      *(a1 + 3) = 0;
+      *(self + 5) = v12;
+      *(self + 3) = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (uint64_t)fileDescriptorWithError:(uint64_t)a1
+- (uint64_t)fileDescriptorWithError:(uint64_t)error
 {
-  if (!a1)
+  if (!error)
   {
     return 0;
   }
 
-  os_unfair_lock_lock((a1 + 12));
-  v4 = *(a1 + 8);
-  if (!v4 && (v5 = *(a1 + 24), *(a1 + 8) = open_dprotected_np([v5 UTF8String], 0, *(a1 + 20), 0, 384), v5, v4 = *(a1 + 8), v4 == -1))
+  os_unfair_lock_lock((error + 12));
+  v4 = *(error + 8);
+  if (!v4 && (v5 = *(error + 24), *(error + 8) = open_dprotected_np([v5 UTF8String], 0, *(error + 20), 0, 384), v5, v4 = *(error + 8), v4 == -1))
   {
-    *(a1 + 8) = 0;
+    *(error + 8) = 0;
     v9 = objc_alloc(MEMORY[0x1E696ABC0]);
     v6 = [v9 initWithDomain:*MEMORY[0x1E696A798] code:*__error() userInfo:0];
-    v4 = *(a1 + 8);
+    v4 = *(error + 8);
   }
 
   else
@@ -81,7 +81,7 @@
     v6 = 0;
   }
 
-  os_unfair_lock_unlock((a1 + 12));
+  os_unfair_lock_unlock((error + 12));
   if (a2)
   {
     v7 = v6;
@@ -95,30 +95,30 @@
 {
   if (self && (filePathIsSensitive = self->_filePathIsSensitive, self = self->_filePath, filePathIsSensitive))
   {
-    v3 = [(_EFProtectedFile *)self pathComponents];
+    pathComponents = [(_EFProtectedFile *)self pathComponents];
     v4 = +[EFDevice currentDevice];
     if ([v4 isInternal])
     {
-      v5 = [v3 lastObject];
-      [EFPrivacy partiallyRedactedStringForString:v5];
+      lastObject = [pathComponents lastObject];
+      [EFPrivacy partiallyRedactedStringForString:lastObject];
     }
 
     else
     {
-      v5 = [v3 lastObject];
-      [EFPrivacy fullyRedactedStringForString:v5];
+      lastObject = [pathComponents lastObject];
+      [EFPrivacy fullyRedactedStringForString:lastObject];
     }
     v7 = ;
 
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<depth=%lu>/%@", objc_msgSend(v3, "count") - 1, v7];
+    selfCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"<depth=%lu>/%@", objc_msgSend(pathComponents, "count") - 1, v7];
   }
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 @end

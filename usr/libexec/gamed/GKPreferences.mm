@@ -1,20 +1,20 @@
 @interface GKPreferences
 + (void)setupForGameDaemon;
-- (BOOL)hasConsumedArcadeSubscription:(id)a3 arcadeFamilyId:(id)a4;
-- (void)updateArcadeSubscriptionState:(id)a3 completionHandler:(id)a4;
+- (BOOL)hasConsumedArcadeSubscription:(id)subscription arcadeFamilyId:(id)id;
+- (void)updateArcadeSubscriptionState:(id)state completionHandler:(id)handler;
 @end
 
 @implementation GKPreferences
 
-- (BOOL)hasConsumedArcadeSubscription:(id)a3 arcadeFamilyId:(id)a4
+- (BOOL)hasConsumedArcadeSubscription:(id)subscription arcadeFamilyId:(id)id
 {
-  v5 = a3;
-  v6 = a4;
+  subscriptionCopy = subscription;
+  idCopy = id;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v5;
+  v7 = subscriptionCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -28,8 +28,8 @@
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) stringValue];
-        v12 = [v11 isEqualToString:v6];
+        stringValue = [*(*(&v14 + 1) + 8 * i) stringValue];
+        v12 = [stringValue isEqualToString:idCopy];
 
         if (v12)
         {
@@ -53,27 +53,27 @@ LABEL_11:
   return v8;
 }
 
-- (void)updateArcadeSubscriptionState:(id)a3 completionHandler:(id)a4
+- (void)updateArcadeSubscriptionState:(id)state completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  handlerCopy = handler;
   v8 = +[ASDSubscriptionEntitlements sharedInstance];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10011E6B8;
   v11[3] = &unk_100367690;
-  v12 = v6;
-  v13 = v7;
+  v12 = stateCopy;
+  v13 = handlerCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = stateCopy;
+  v10 = handlerCopy;
   [v8 getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler:v11];
 }
 
 + (void)setupForGameDaemon
 {
   v3 = objc_alloc_init(GKDaemonPreferencesSupport);
-  [a1 configureWithSupport:v3];
+  [self configureWithSupport:v3];
 }
 
 @end

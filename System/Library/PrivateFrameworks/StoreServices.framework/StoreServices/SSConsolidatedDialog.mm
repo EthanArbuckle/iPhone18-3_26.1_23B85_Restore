@@ -1,23 +1,23 @@
 @interface SSConsolidatedDialog
-- (SSConsolidatedDialog)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSConsolidatedDialog)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 @end
 
 @implementation SSConsolidatedDialog
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(SSConsolidatedDialog);
-  v6 = [(NSString *)self->_cancelLabel copyWithZone:a3];
+  v6 = [(NSString *)self->_cancelLabel copyWithZone:zone];
   cancelLabel = v5->_cancelLabel;
   v5->_cancelLabel = v6;
 
-  v8 = [(NSString *)self->_reason copyWithZone:a3];
+  v8 = [(NSString *)self->_reason copyWithZone:zone];
   reason = v5->_reason;
   v5->_reason = v8;
 
-  v10 = [(NSString *)self->_title copyWithZone:a3];
+  v10 = [(NSString *)self->_title copyWithZone:zone];
   title = v5->_title;
   v5->_title = v10;
 
@@ -33,11 +33,11 @@
   return v3;
 }
 
-- (SSConsolidatedDialog)initWithXPCEncoding:(id)a3
+- (SSConsolidatedDialog)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v17.receiver = self;
     v17.super_class = SSConsolidatedDialog;

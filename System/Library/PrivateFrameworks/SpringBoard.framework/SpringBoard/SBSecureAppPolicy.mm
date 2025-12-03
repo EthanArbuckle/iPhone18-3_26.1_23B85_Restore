@@ -1,22 +1,22 @@
 @interface SBSecureAppPolicy
-+ (BOOL)shouldAlwaysShowSecureSceneForApp:(id)a3;
++ (BOOL)shouldAlwaysShowSecureSceneForApp:(id)app;
 @end
 
 @implementation SBSecureAppPolicy
 
-+ (BOOL)shouldAlwaysShowSecureSceneForApp:(id)a3
++ (BOOL)shouldAlwaysShowSecureSceneForApp:(id)app
 {
   v3 = shouldAlwaysShowSecureSceneForApp__onceToken;
-  v4 = a3;
+  appCopy = app;
   if (v3 != -1)
   {
     +[SBSecureAppPolicy shouldAlwaysShowSecureSceneForApp:];
   }
 
   v5 = shouldAlwaysShowSecureSceneForApp__bundleIDsOfAppsToShowSecureScene;
-  v6 = [v4 bundleIdentifier];
+  bundleIdentifier = [appCopy bundleIdentifier];
 
-  v7 = [v5 containsObject:v6];
+  v7 = [v5 containsObject:bundleIdentifier];
   return v7;
 }
 

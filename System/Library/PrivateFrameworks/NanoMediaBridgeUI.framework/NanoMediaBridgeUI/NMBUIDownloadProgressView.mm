@@ -1,20 +1,20 @@
 @interface NMBUIDownloadProgressView
 - (CGRect)_contentFrame;
 - (CGSize)intrinsicContentSize;
-- (NMBUIDownloadProgressView)initWithFrame:(CGRect)a3;
+- (NMBUIDownloadProgressView)initWithFrame:(CGRect)frame;
 - (void)_updateDownloadingRingProgressLayerStrokeEnd;
 - (void)layoutSubviews;
-- (void)setProgress:(float)a3;
-- (void)setState:(unint64_t)a3;
+- (void)setProgress:(float)progress;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation NMBUIDownloadProgressView
 
-- (NMBUIDownloadProgressView)initWithFrame:(CGRect)a3
+- (NMBUIDownloadProgressView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = NMBUIDownloadProgressView;
-  result = [(NMBUIDownloadProgressView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(NMBUIDownloadProgressView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_state = 5;
@@ -42,11 +42,11 @@
   [(NMBUIDownloadProgressView *)self _updateDownloadingRingProgressLayerStrokeEnd];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(UIButton *)self->_errorIconButton removeFromSuperview];
     [(UIImageView *)self->_downloadableIconView removeFromSuperview];
     [(CAShapeLayer *)self->_waitingRingLayer removeFromSuperlayer];
@@ -71,8 +71,8 @@ LABEL_20:
           v14 = self->_errorIconButton;
           self->_errorIconButton = v13;
 
-          v15 = [MEMORY[0x277D75348] systemYellowColor];
-          [(UIButton *)self->_errorIconButton setTintColor:v15];
+          systemYellowColor = [MEMORY[0x277D75348] systemYellowColor];
+          [(UIButton *)self->_errorIconButton setTintColor:systemYellowColor];
 
           [(UIButton *)self->_errorIconButton setUserInteractionEnabled:0];
           errorIconButton = self->_errorIconButton;
@@ -85,22 +85,22 @@ LABEL_10:
 
       if (!self->_downloadingRingTrackLayer && !self->_downloadingRingProgressLayer)
       {
-        v24 = [(NMBUIDownloadProgressView *)self _ringPath];
-        v25 = [MEMORY[0x277CD9F90] layer];
+        _ringPath = [(NMBUIDownloadProgressView *)self _ringPath];
+        layer = [MEMORY[0x277CD9F90] layer];
         downloadingRingTrackLayer = self->_downloadingRingTrackLayer;
-        self->_downloadingRingTrackLayer = v25;
+        self->_downloadingRingTrackLayer = layer;
 
-        -[CAShapeLayer setPath:](self->_downloadingRingTrackLayer, "setPath:", [v24 CGPath]);
+        -[CAShapeLayer setPath:](self->_downloadingRingTrackLayer, "setPath:", [_ringPath CGPath]);
         [(CAShapeLayer *)self->_downloadingRingTrackLayer setFillColor:0];
         v27 = BPSProgressBarTrackTintColor();
         -[CAShapeLayer setStrokeColor:](self->_downloadingRingTrackLayer, "setStrokeColor:", [v27 CGColor]);
 
         [(CAShapeLayer *)self->_downloadingRingTrackLayer setLineWidth:3.0];
-        v28 = [MEMORY[0x277CD9F90] layer];
+        layer2 = [MEMORY[0x277CD9F90] layer];
         downloadingRingProgressLayer = self->_downloadingRingProgressLayer;
-        self->_downloadingRingProgressLayer = v28;
+        self->_downloadingRingProgressLayer = layer2;
 
-        -[CAShapeLayer setPath:](self->_downloadingRingProgressLayer, "setPath:", [v24 CGPath]);
+        -[CAShapeLayer setPath:](self->_downloadingRingProgressLayer, "setPath:", [_ringPath CGPath]);
         [(CAShapeLayer *)self->_downloadingRingProgressLayer setFillColor:0];
         v30 = BPSProgressBarTintColor();
         -[CAShapeLayer setStrokeColor:](self->_downloadingRingProgressLayer, "setStrokeColor:", [v30 CGColor]);
@@ -114,11 +114,11 @@ LABEL_10:
         [(NMBUIDownloadProgressView *)self _updateDownloadingRingProgressLayerStrokeEnd];
       }
 
-      v32 = [(NMBUIDownloadProgressView *)self layer];
-      [v32 addSublayer:self->_downloadingRingTrackLayer];
+      layer3 = [(NMBUIDownloadProgressView *)self layer];
+      [layer3 addSublayer:self->_downloadingRingTrackLayer];
 
-      v22 = [(NMBUIDownloadProgressView *)self layer];
-      [v22 addSublayer:self->_downloadingRingProgressLayer];
+      layer4 = [(NMBUIDownloadProgressView *)self layer];
+      [layer4 addSublayer:self->_downloadingRingProgressLayer];
     }
 
     else
@@ -153,12 +153,12 @@ LABEL_10:
 
       if (!self->_waitingRingLayer)
       {
-        v16 = [(NMBUIDownloadProgressView *)self _ringPath];
-        v17 = [MEMORY[0x277CD9F90] layer];
+        _ringPath2 = [(NMBUIDownloadProgressView *)self _ringPath];
+        layer5 = [MEMORY[0x277CD9F90] layer];
         waitingRingLayer = self->_waitingRingLayer;
-        self->_waitingRingLayer = v17;
+        self->_waitingRingLayer = layer5;
 
-        -[CAShapeLayer setPath:](self->_waitingRingLayer, "setPath:", [v16 CGPath]);
+        -[CAShapeLayer setPath:](self->_waitingRingLayer, "setPath:", [_ringPath2 CGPath]);
         [(CAShapeLayer *)self->_waitingRingLayer setFillColor:0];
         v19 = BPSProgressBarTintColor();
         -[CAShapeLayer setStrokeColor:](self->_waitingRingLayer, "setStrokeColor:", [v19 CGColor]);
@@ -172,30 +172,30 @@ LABEL_10:
         [(CAShapeLayer *)self->_waitingRingLayer setStrokeEnd:0.8];
       }
 
-      v21 = [(NMBUIDownloadProgressView *)self layer];
-      [v21 addSublayer:self->_waitingRingLayer];
+      layer6 = [(NMBUIDownloadProgressView *)self layer];
+      [layer6 addSublayer:self->_waitingRingLayer];
 
-      v22 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.z"];
-      [v22 setFromValue:&unk_286C82860];
-      [v22 setToValue:&unk_286C82878];
-      [v22 setBeginTime:(CACurrentMediaTime() % 0x1E)];
-      [v22 setRemovedOnCompletion:0];
+      layer4 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.z"];
+      [layer4 setFromValue:&unk_286C82860];
+      [layer4 setToValue:&unk_286C82878];
+      [layer4 setBeginTime:(CACurrentMediaTime() % 0x1E)];
+      [layer4 setRemovedOnCompletion:0];
       LODWORD(v23) = 2139095040;
-      [v22 setRepeatCount:v23];
-      [v22 setFrameInterval:0.0333333333];
-      [v22 setDuration:1.0];
-      [(CAShapeLayer *)self->_waitingRingLayer addAnimation:v22 forKey:@"waiting"];
+      [layer4 setRepeatCount:v23];
+      [layer4 setFrameInterval:0.0333333333];
+      [layer4 setDuration:1.0];
+      [(CAShapeLayer *)self->_waitingRingLayer addAnimation:layer4 forKey:@"waiting"];
     }
 
     goto LABEL_20;
   }
 }
 
-- (void)setProgress:(float)a3
+- (void)setProgress:(float)progress
 {
-  if (self->_progress != a3)
+  if (self->_progress != progress)
   {
-    self->_progress = a3;
+    self->_progress = progress;
     [(NMBUIDownloadProgressView *)self _updateDownloadingRingProgressLayerStrokeEnd];
   }
 }

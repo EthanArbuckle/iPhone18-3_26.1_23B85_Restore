@@ -1,8 +1,8 @@
 @interface PLKLegibilityContentDataSource
 + (id)attributedStringContentDataSource;
-+ (id)attributedStringContentDataSourceForScale:(double)a3 metricsProvider:(id)a4;
-- (PLKLegibilityContentDataSource)initWithContentGenerator:(id)a3 legibilityGenerator:(id)a4;
-- (id)legibilityContentForObject:(id)a3 legibilityDescriptor:(id)a4;
++ (id)attributedStringContentDataSourceForScale:(double)scale metricsProvider:(id)provider;
+- (PLKLegibilityContentDataSource)initWithContentGenerator:(id)generator legibilityGenerator:(id)legibilityGenerator;
+- (id)legibilityContentForObject:(id)object legibilityDescriptor:(id)descriptor;
 - (void)invalidate;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __67__PLKLegibilityContentDataSource_attributedStringContentDataSource__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (attributedStringContentDataSource_onceToken != -1)
   {
     dispatch_once(&attributedStringContentDataSource_onceToken, block);
@@ -32,25 +32,25 @@ uint64_t __67__PLKLegibilityContentDataSource_attributedStringContentDataSource_
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)attributedStringContentDataSourceForScale:(double)a3 metricsProvider:(id)a4
++ (id)attributedStringContentDataSourceForScale:(double)scale metricsProvider:(id)provider
 {
-  v5 = a4;
-  if (!v5)
+  providerCopy = provider;
+  if (!providerCopy)
   {
-    v5 = objc_opt_new();
+    providerCopy = objc_opt_new();
   }
 
-  v6 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+  weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __92__PLKLegibilityContentDataSource_attributedStringContentDataSourceForScale_metricsProvider___block_invoke;
   v30[3] = &unk_27835B298;
-  v31 = v6;
-  v32 = v5;
-  v7 = v5;
-  v8 = v6;
+  v31 = weakToStrongObjectsMapTable;
+  v32 = providerCopy;
+  v7 = providerCopy;
+  v8 = weakToStrongObjectsMapTable;
   v9 = MEMORY[0x223D5FAC0](v30);
-  v10 = [PLKImageRendererFormat formatForContextType:0 scale:a3];
+  v10 = [PLKImageRendererFormat formatForContextType:0 scale:scale];
   v11 = [PLKImageGenerator alloc];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
@@ -61,7 +61,7 @@ uint64_t __67__PLKLegibilityContentDataSource_attributedStringContentDataSource_
   v13 = v10;
   v28 = v13;
   v14 = [(PLKImageGenerator *)v11 initWithImageGenerator:v27];
-  v15 = [PLKImageRendererFormat formatForContextType:4 scale:a3];
+  v15 = [PLKImageRendererFormat formatForContextType:4 scale:scale];
   v16 = [PLKImageGenerator alloc];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -134,17 +134,17 @@ id __92__PLKLegibilityContentDataSource_attributedStringContentDataSourceForScal
   return v21;
 }
 
-- (PLKLegibilityContentDataSource)initWithContentGenerator:(id)a3 legibilityGenerator:(id)a4
+- (PLKLegibilityContentDataSource)initWithContentGenerator:(id)generator legibilityGenerator:(id)legibilityGenerator
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  generatorCopy = generator;
+  legibilityGeneratorCopy = legibilityGenerator;
+  if (!generatorCopy)
   {
     [PLKLegibilityContentDataSource initWithContentGenerator:a2 legibilityGenerator:self];
   }
 
-  v10 = v9;
+  v10 = legibilityGeneratorCopy;
   v17.receiver = self;
   v17.super_class = PLKLegibilityContentDataSource;
   v11 = [(PLKLegibilityContentDataSource *)&v17 init];
@@ -162,20 +162,20 @@ id __92__PLKLegibilityContentDataSource_attributedStringContentDataSourceForScal
       _os_log_impl(&dword_21E5D5000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p initWithContentGenerator:legibilityGenerator:>", buf, 0x16u);
     }
 
-    objc_storeStrong(&v11->_contentGenerator, a3);
-    objc_storeStrong(&v11->_legibilityGenerator, a4);
+    objc_storeStrong(&v11->_contentGenerator, generator);
+    objc_storeStrong(&v11->_legibilityGenerator, legibilityGenerator);
   }
 
   v15 = *MEMORY[0x277D85DE8];
   return v11;
 }
 
-- (id)legibilityContentForObject:(id)a3 legibilityDescriptor:(id)a4
+- (id)legibilityContentForObject:(id)object legibilityDescriptor:(id)descriptor
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6 && ![(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
+  objectCopy = object;
+  descriptorCopy = descriptor;
+  if (objectCopy && ![(BSAtomicSignal *)self->_invalidationSignal hasBeenSignalled])
   {
     v9 = PLKLogRendering();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -190,33 +190,33 @@ id __92__PLKLegibilityContentDataSource_attributedStringContentDataSourceForScal
         *buf = 138544130;
         v39 = v27;
         v40 = 2048;
-        v41 = self;
+        selfCopy = self;
         v42 = 2112;
-        v43 = v6;
+        v43 = objectCopy;
         v44 = 2048;
-        v45 = v7;
+        v45 = descriptorCopy;
         _os_log_debug_impl(&dword_21E5D5000, v11, OS_LOG_TYPE_DEBUG, "<%{public}@:%p legibilityContentForObject:%@ legibilityDescriptor:%p>", buf, 0x2Au);
       }
     }
 
-    v12 = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
+    legibilityGenerator = [(PLKLegibilityContentDataSource *)self legibilityGenerator];
     v13 = _os_activity_create(&dword_21E5D5000, "<PLKLegibilityContentDataSource legibilityContentForObject:legibilityDescriptor:>", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
     v14 = [MEMORY[0x277D3EC38] activityWrapping:v13];
 
-    v15 = [v14 track];
+    track = [v14 track];
 
-    v16 = [(PLKLegibilityContentDataSource *)self contentGenerator];
-    v17 = [v16 imageFutureForObject:v6 context:v7];
+    contentGenerator = [(PLKLegibilityContentDataSource *)self contentGenerator];
+    v17 = [contentGenerator imageFutureForObject:objectCopy context:descriptorCopy];
 
-    if (!v12 || ([v12 imageFutureForObject:v6 context:v7], (v18 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!legibilityGenerator || ([legibilityGenerator imageFutureForObject:objectCopy context:descriptorCopy], (v18 = objc_claimAutoreleasedReturnValue()) == 0))
     {
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __82__PLKLegibilityContentDataSource_legibilityContentForObject_legibilityDescriptor___block_invoke;
       v33[3] = &unk_27835B338;
-      v34 = v12;
-      v35 = v6;
-      v36 = v7;
+      v34 = legibilityGenerator;
+      v35 = objectCopy;
+      v36 = descriptorCopy;
       v18 = [v17 flatMap:v33];
     }
 
@@ -229,13 +229,13 @@ id __92__PLKLegibilityContentDataSource_attributedStringContentDataSourceForScal
     v29 = 3221225472;
     v30 = __82__PLKLegibilityContentDataSource_legibilityContentForObject_legibilityDescriptor___block_invoke_3;
     v31 = &unk_27835B360;
-    v32 = v15;
-    v22 = v15;
+    v32 = track;
+    v22 = track;
     [v21 addCompletionBlock:&v28];
 
     v23 = [PLKLegibilityContent alloc];
-    v8 = [(PLKLegibilityContent *)v23 initWithContentImageFuture:v17 legibilityImageFuture:v18 legibilityDescriptor:v7, v28, v29, v30, v31];
-    [(PLKLegibilityContent *)v8 setContent:v6];
+    v8 = [(PLKLegibilityContent *)v23 initWithContentImageFuture:v17 legibilityImageFuture:v18 legibilityDescriptor:descriptorCopy, v28, v29, v30, v31];
+    [(PLKLegibilityContent *)v8 setContent:objectCopy];
     [(PLKLegibilityContent *)v8 setDataSource:self];
   }
 
@@ -304,7 +304,7 @@ id __82__PLKLegibilityContentDataSource_legibilityContentForObject_legibilityDes
       v9 = 138543618;
       v10 = v5;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21E5D5000, v3, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p invalidate>", &v9, 0x16u);
     }
 

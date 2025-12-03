@@ -136,7 +136,7 @@
 {
   v11.receiver = self;
   v11.super_class = ACCFeaturePluginManager;
-  v3 = [(ACCPluginManager *)&v11 initAllPlugIns];
+  initAllPlugIns = [(ACCPluginManager *)&v11 initAllPlugIns];
   if (gLogObjects)
   {
     v4 = gNumLogObjects < 4;
@@ -166,7 +166,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v13 = v3;
+    v13 = initAllPlugIns;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Initialized %lu feature plugin(s)", buf, 0xCu);
   }
 
@@ -191,14 +191,14 @@
     [(ACCFeaturePluginManager *)self initAllPlugIns];
   }
 
-  return v3;
+  return initAllPlugIns;
 }
 
 - (unint64_t)startAllPlugIns
 {
   v7.receiver = self;
   v7.super_class = ACCFeaturePluginManager;
-  v2 = [(ACCPluginManager *)&v7 startAllPlugIns];
+  startAllPlugIns = [(ACCPluginManager *)&v7 startAllPlugIns];
   if (gLogObjects)
   {
     v3 = gNumLogObjects < 4;
@@ -228,18 +228,18 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v9 = v2;
+    v9 = startAllPlugIns;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Started %lu feature plugin(s)", buf, 0xCu);
   }
 
-  return v2;
+  return startAllPlugIns;
 }
 
 - (unint64_t)stopAllPlugIns
 {
   v7.receiver = self;
   v7.super_class = ACCFeaturePluginManager;
-  v2 = [(ACCPluginManager *)&v7 stopAllPlugIns];
+  stopAllPlugIns = [(ACCPluginManager *)&v7 stopAllPlugIns];
   if (gLogObjects)
   {
     v3 = gNumLogObjects < 4;
@@ -269,11 +269,11 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v9 = v2;
+    v9 = stopAllPlugIns;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Stopped %lu feature plugin(s)", buf, 0xCu);
   }
 
-  return v2;
+  return stopAllPlugIns;
 }
 
 + (id)sharedManager
@@ -282,7 +282,7 @@
   block[1] = 3221225472;
   block[2] = __40__ACCFeaturePluginManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_once_4 != -1)
   {
     dispatch_once(&sharedManager_once_4, block);
@@ -302,17 +302,17 @@ uint64_t __40__ACCFeaturePluginManager_sharedManager__block_invoke(uint64_t a1)
 
 - (void)loadAllBundles
 {
-  a2->receiver = a1;
+  a2->receiver = self;
   a2->super_class = ACCFeaturePluginManager;
-  v2 = [(objc_super *)a2 pluginBundles];
+  pluginBundles = [(objc_super *)a2 pluginBundles];
   OUTLINED_FUNCTION_6_8(&_mh_execute_header, v3, v4, "ACCFeaturePluginManager.pluginBundles: %@", v5, v6, v7, v8, 2u);
 }
 
 - (void)initAllPlugIns
 {
-  a2->receiver = a1;
+  a2->receiver = self;
   a2->super_class = ACCFeaturePluginManager;
-  v2 = [(objc_super *)a2 pluginInstances];
+  pluginInstances = [(objc_super *)a2 pluginInstances];
   OUTLINED_FUNCTION_6_8(&_mh_execute_header, v3, v4, "ACCFeaturePluginManager.pluginInstances: %@", v5, v6, v7, v8, 2u);
 }
 

@@ -1,18 +1,18 @@
 @interface MusicInterstellarContentViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 @end
 
 @implementation MusicInterstellarContentViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicInterstellarContentView" hasInstanceMethod:@"pill" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicInterstellarContentView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicInterstellarContentView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MusicInterstellarContentView" hasInstanceMethod:@"badgeView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicInterstellarContentView" hasInstanceMethod:@"pill" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicInterstellarContentView" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicInterstellarContentView" hasInstanceMethod:@"subtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MusicInterstellarContentView" hasInstanceMethod:@"badgeView" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -26,9 +26,9 @@
   v6 = __UIAccessibilityCastAsClass();
 
   v7 = [(MusicInterstellarContentViewAccessibility *)self safeUIViewForKey:@"badgeView"];
-  v8 = [v4 accessibilityLabel];
-  v9 = [v6 accessibilityLabel];
-  v12 = [v7 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
+  accessibilityLabel2 = [v6 accessibilityLabel];
+  accessibilityLabel3 = [v7 accessibilityLabel];
   v10 = __AXStringForVariables();
 
   return v10;

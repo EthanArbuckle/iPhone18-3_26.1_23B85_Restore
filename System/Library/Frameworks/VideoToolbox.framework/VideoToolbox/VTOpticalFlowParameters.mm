@@ -1,11 +1,11 @@
 @interface VTOpticalFlowParameters
-- (VTOpticalFlowParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 submissionMode:(int64_t)a5 destinationOpticalFlow:(id)a6;
+- (VTOpticalFlowParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame submissionMode:(int64_t)mode destinationOpticalFlow:(id)flow;
 - (void)dealloc;
 @end
 
 @implementation VTOpticalFlowParameters
 
-- (VTOpticalFlowParameters)initWithSourceFrame:(id)a3 nextFrame:(id)a4 submissionMode:(int64_t)a5 destinationOpticalFlow:(id)a6
+- (VTOpticalFlowParameters)initWithSourceFrame:(id)frame nextFrame:(id)nextFrame submissionMode:(int64_t)mode destinationOpticalFlow:(id)flow
 {
   if (loadVEFrameworkOnce())
   {
@@ -15,11 +15,11 @@
     if (v11)
     {
       v12 = NSClassFromString(&cfstr_Veopticalflowp.isa);
-      v11->_sourceFrame = a3;
-      v11->_nextFrame = a4;
-      v13 = a6;
-      v11->_submissionMode = a5;
-      v11->_destinationOpticalFlow = v13;
+      v11->_sourceFrame = frame;
+      v11->_nextFrame = nextFrame;
+      flowCopy = flow;
+      v11->_submissionMode = mode;
+      v11->_destinationOpticalFlow = flowCopy;
       v11->_veParameters = [[v12 alloc] initWithSourceFrame:-[VTFrameProcessorFrame veFrame](v11->_sourceFrame nextFrame:"veFrame") submissionMode:-[VTFrameProcessorFrame veFrame](v11->_nextFrame opticalFlow:{"veFrame"), v11->_submissionMode, -[VTFrameProcessorOpticalFlow veFrameOpticalFlow](v11->_destinationOpticalFlow, "veFrameOpticalFlow")}];
     }
 

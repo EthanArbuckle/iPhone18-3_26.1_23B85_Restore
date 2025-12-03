@@ -1,62 +1,62 @@
 @interface SHLyricLine
-+ (id)lyricLineWithText:(id)a3 offset:(double)a4;
-- (SHLyricLine)initWithCoder:(id)a3;
-- (SHLyricLine)initWithLineWithText:(id)a3 offset:(double)a4;
++ (id)lyricLineWithText:(id)text offset:(double)offset;
+- (SHLyricLine)initWithCoder:(id)coder;
+- (SHLyricLine)initWithLineWithText:(id)text offset:(double)offset;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SHLyricLine
 
-+ (id)lyricLineWithText:(id)a3 offset:(double)a4
++ (id)lyricLineWithText:(id)text offset:(double)offset
 {
-  v5 = a3;
-  v6 = [[SHLyricLine alloc] initWithLineWithText:v5 offset:a4];
+  textCopy = text;
+  v6 = [[SHLyricLine alloc] initWithLineWithText:textCopy offset:offset];
 
   return v6;
 }
 
-- (SHLyricLine)initWithLineWithText:(id)a3 offset:(double)a4
+- (SHLyricLine)initWithLineWithText:(id)text offset:(double)offset
 {
-  v7 = a3;
+  textCopy = text;
   v11.receiver = self;
   v11.super_class = SHLyricLine;
   v8 = [(SHLyricLine *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_text, a3);
-    v9->_offset = a4;
+    objc_storeStrong(&v8->_text, text);
+    v9->_offset = offset;
   }
 
   return v9;
 }
 
-- (SHLyricLine)initWithCoder:(id)a3
+- (SHLyricLine)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
-  [v4 decodeDoubleForKey:@"offset"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+  [coderCopy decodeDoubleForKey:@"offset"];
   v7 = v6;
 
   v8 = [(SHLyricLine *)self initWithLineWithText:v5 offset:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
-  [v5 encodeDouble:@"offset" forKey:self->_offset];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
+  [coderCopy encodeDouble:@"offset" forKey:self->_offset];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SHLyricLine *)self text];
+  text = [(SHLyricLine *)self text];
   [(SHLyricLine *)self offset];
-  v6 = [v3 stringWithFormat:@"%@ : %f", v4, v5];
+  v6 = [v3 stringWithFormat:@"%@ : %f", text, v5];
 
   return v6;
 }

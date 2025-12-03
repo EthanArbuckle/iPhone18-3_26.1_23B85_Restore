@@ -1,342 +1,342 @@
 @interface MTLCountersTraceBlitCommandEncoder
-- (id)init:(BinaryBuffer *)a3;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12;
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10;
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4;
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 pattern4:(unsigned int)a5;
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 value:(unsigned __int8)a5;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8;
-- (void)generateMipmapsForTexture:(id)a3;
-- (void)getTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6 resetCounters:(BOOL)a7 countersBuffer:(id)a8 countersBufferOffset:(unint64_t)a9;
-- (void)optimizeContentsForCPUAccess:(id)a3;
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)optimizeContentsForGPUAccess:(id)a3;
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6;
-- (void)synchronizeResource:(id)a3;
-- (void)synchronizeTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5;
-- (void)updateFence:(id)a3;
-- (void)waitForFence:(id)a3;
+- (id)init:(BinaryBuffer *)init;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0;
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture;
+- (void)fillBuffer:(id)buffer range:(_NSRange)range pattern4:(unsigned int)pattern4;
+- (void)fillBuffer:(id)buffer range:(_NSRange)range value:(unsigned __int8)value;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format;
+- (void)generateMipmapsForTexture:(id)texture;
+- (void)getTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice resetCounters:(BOOL)resetCounters countersBuffer:(id)buffer countersBufferOffset:(unint64_t)offset;
+- (void)optimizeContentsForCPUAccess:(id)access;
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)optimizeContentsForGPUAccess:(id)access;
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level;
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)synchronizeResource:(id)resource;
+- (void)synchronizeTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level;
+- (void)updateFence:(id)fence;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation MTLCountersTraceBlitCommandEncoder
 
-- (id)init:(BinaryBuffer *)a3
+- (id)init:(BinaryBuffer *)init
 {
   v4.receiver = self;
   v4.super_class = MTLCountersTraceBlitCommandEncoder;
-  return [(MTLCountersTraceCommandEncoder *)&v4 init:a3 flags:1];
+  return [(MTLCountersTraceCommandEncoder *)&v4 init:init flags:1];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 toBuffer:(id)a5 destinationOffset:(unint64_t)a6 size:(unint64_t)a7
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset toBuffer:(id)toBuffer destinationOffset:(unint64_t)destinationOffset size:(unint64_t)size
 {
   v22[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v22[1] = v22;
   __src = 1;
   v10 = 109;
-  v11 = a3;
+  bufferCopy = buffer;
   v12 = 100;
-  v13 = a4;
+  offsetCopy = offset;
   v14 = 109;
-  v15 = a5;
+  toBufferCopy = toBuffer;
   v16 = 100;
-  v17 = a6;
+  destinationOffsetCopy = destinationOffset;
   v18 = 100;
-  v19 = a7;
+  sizeCopy = size;
   v20 = 16;
   v22[0] = &v21;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0x30uLL);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v14 = a4;
-  v15 = a3;
-  v13 = a5;
-  v11 = a8;
-  v12 = a6;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long,unsigned long,MTLSize,objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin>(self->super._stream, 1, &v15, &v14, &v13, &v12, a7, &v11, &a9, &a10, a11);
+  offsetCopy = offset;
+  bufferCopy = buffer;
+  rowCopy = row;
+  textureCopy = texture;
+  imageCopy = image;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long,unsigned long,MTLSize,objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin>(self->super._stream, 1, &bufferCopy, &offsetCopy, &rowCopy, &imageCopy, size, &textureCopy, &slice, &level, origin);
 }
 
-- (void)copyFromBuffer:(id)a3 sourceOffset:(unint64_t)a4 sourceBytesPerRow:(unint64_t)a5 sourceBytesPerImage:(unint64_t)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromBuffer:(id)buffer sourceOffset:(unint64_t)offset sourceBytesPerRow:(unint64_t)row sourceBytesPerImage:(unint64_t)image sourceSize:(id *)size toTexture:(id)texture destinationSlice:(unint64_t)slice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  v15 = a4;
-  v16 = a3;
-  v13 = a6;
-  v14 = a5;
-  v12 = a8;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long,unsigned long,MTLSize,objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,unsigned long>(self->super._stream, 2, &v16, &v15, &v14, &v13, a7, &v12, &a9, &a10, a11, &a12);
+  offsetCopy = offset;
+  bufferCopy = buffer;
+  imageCopy = image;
+  rowCopy = row;
+  textureCopy = texture;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long,unsigned long,MTLSize,objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,unsigned long>(self->super._stream, 2, &bufferCopy, &offsetCopy, &rowCopy, &imageCopy, size, &textureCopy, &slice, &level, origin, &options);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
-  v13 = a4;
-  v14 = a3;
-  v12 = a5;
-  v11 = a8;
-  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,MTLSize,objc_object  {objcproto10MTLTexture},unsigned long,unsigned long,objc_object  {objcproto10MTLTexture}*>(self->super._stream, 5, &v14, &v13, &v12, a6, a7, &v11, &a9, &a10, a11);
+  sliceCopy = slice;
+  textureCopy = texture;
+  levelCopy = level;
+  toTextureCopy = toTexture;
+  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,MTLSize,objc_object  {objcproto10MTLTexture},unsigned long,unsigned long,objc_object  {objcproto10MTLTexture}*>(self->super._stream, 5, &textureCopy, &sliceCopy, &levelCopy, origin, size, &toTextureCopy, &destinationSlice, &destinationLevel, destinationOrigin);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1 options:(unint64_t)self2
 {
-  v15 = a4;
-  v16 = a3;
-  v14 = a5;
+  sliceCopy = slice;
+  textureCopy = texture;
+  levelCopy = level;
   stream = self->super._stream;
-  v13 = a8;
-  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,MTLSize,objc_object  {objcproto10MTLTexture},unsigned long,unsigned long,objc_object  {objcproto10MTLTexture}*,unsigned long>(stream, 6, &v16, &v15, &v14, a6, a7, &v13, &a9, &a10, a11, &a12);
+  toTextureCopy = toTexture;
+  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,MTLSize,objc_object  {objcproto10MTLTexture},unsigned long,unsigned long,objc_object  {objcproto10MTLTexture}*,unsigned long>(stream, 6, &textureCopy, &sliceCopy, &levelCopy, origin, size, &toTextureCopy, &destinationSlice, &destinationLevel, destinationOrigin, &options);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1
 {
-  v13 = a4;
-  v14 = a3;
-  v12 = a5;
-  v11 = a8;
-  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,MTLSize,objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long,unsigned long>(self->super._stream, 3, &v14, &v13, &v12, a6, a7, &v11, &a9, &a10, &a11);
+  sliceCopy = slice;
+  textureCopy = texture;
+  levelCopy = level;
+  bufferCopy = buffer;
+  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,MTLSize,objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long,unsigned long>(self->super._stream, 3, &textureCopy, &sliceCopy, &levelCopy, origin, size, &bufferCopy, &offset, &row, &image);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toBuffer:(id)a8 destinationOffset:(unint64_t)a9 destinationBytesPerRow:(unint64_t)a10 destinationBytesPerImage:(unint64_t)a11 options:(unint64_t)a12
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toBuffer:(id)buffer destinationOffset:(unint64_t)offset destinationBytesPerRow:(unint64_t)self0 destinationBytesPerImage:(unint64_t)self1 options:(unint64_t)self2
 {
-  v15 = a4;
-  v16 = a3;
-  v14 = a5;
+  sliceCopy = slice;
+  textureCopy = texture;
+  levelCopy = level;
   stream = self->super._stream;
-  v13 = a8;
-  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,MTLSize,objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long,unsigned long,unsigned long>(stream, 4, &v16, &v15, &v14, a6, a7, &v13, &a9, &a10, &a11, &a12);
+  bufferCopy = buffer;
+  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLOrigin,MTLSize,objc_object  {objcproto9MTLBuffer}*,unsigned long,unsigned long,unsigned long,unsigned long>(stream, 4, &textureCopy, &sliceCopy, &levelCopy, origin, size, &bufferCopy, &offset, &row, &image, &options);
 }
 
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 value:(unsigned __int8)a5
+- (void)fillBuffer:(id)buffer range:(_NSRange)range value:(unsigned __int8)value
 {
-  v7 = a4;
-  v6 = a3;
-  v5 = a5;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,_NSRange,unsigned char>(self->super._stream, 7, &v6, &v7, &v5);
+  rangeCopy = range;
+  bufferCopy = buffer;
+  valueCopy = value;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,_NSRange,unsigned char>(self->super._stream, 7, &bufferCopy, &rangeCopy, &valueCopy);
 }
 
-- (void)fillBuffer:(id)a3 range:(_NSRange)a4 pattern4:(unsigned int)a5
+- (void)fillBuffer:(id)buffer range:(_NSRange)range pattern4:(unsigned int)pattern4
 {
-  v7 = a4;
-  v6 = a3;
-  v5 = a5;
-  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,_NSRange,unsigned int>(self->super._stream, 8, &v6, &v7, &v5);
+  rangeCopy = range;
+  bufferCopy = buffer;
+  pattern4Copy = pattern4;
+  BinaryBuffer::Append<objc_object  {objcproto9MTLBuffer}*,_NSRange,unsigned int>(self->super._stream, 8, &bufferCopy, &rangeCopy, &pattern4Copy);
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 bytes:(const void *)a7 length:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region bytes:(const void *)bytes length:(unint64_t)length
 {
-  v11 = a4;
-  v12 = a3;
-  v9 = a7;
-  v10 = a5;
-  v8 = a8;
-  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLRegion,void const*,unsigned long>(self->super._stream, 9, &v12, &v11, &v10, a6, &v9, &v8);
+  levelCopy = level;
+  textureCopy = texture;
+  bytesCopy = bytes;
+  sliceCopy = slice;
+  lengthCopy = length;
+  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLRegion,void const*,unsigned long>(self->super._stream, 9, &textureCopy, &levelCopy, &sliceCopy, region, &bytesCopy, &lengthCopy);
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color
 {
-  v10 = a7;
-  v8 = a4;
-  v9 = a3;
-  v7 = a5;
-  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLRegion,MTLClearColor>(self->super._stream, 10, &v9, &v8, &v7, a6, &v10);
+  colorCopy = color;
+  levelCopy = level;
+  textureCopy = texture;
+  sliceCopy = slice;
+  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLRegion,MTLClearColor>(self->super._stream, 10, &textureCopy, &levelCopy, &sliceCopy, region, &colorCopy);
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format
 {
-  v12 = a7;
-  v10 = a4;
-  v11 = a3;
-  v8 = a8;
-  v9 = a5;
-  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLRegion,MTLClearColor,MTLPixelFormat>(self->super._stream, 11, &v11, &v10, &v9, a6, &v12, &v8);
+  colorCopy = color;
+  levelCopy = level;
+  textureCopy = texture;
+  formatCopy = format;
+  sliceCopy = slice;
+  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,MTLRegion,MTLClearColor,MTLPixelFormat>(self->super._stream, 11, &textureCopy, &levelCopy, &sliceCopy, region, &colorCopy, &formatCopy);
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0
 {
-  v15 = a4;
-  v16 = a3;
-  v14 = a5;
-  v12 = a7;
-  v13 = a6;
+  sliceCopy = slice;
+  textureCopy = texture;
+  levelCopy = level;
+  destinationSliceCopy = destinationSlice;
+  toTextureCopy = toTexture;
   stream = self->super._stream;
-  v11 = a8;
-  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,objc_object  {objcproto10MTLTexture},unsigned long,unsigned long,unsigned long,unsigned long>(stream, 12, &v16, &v15, &v14, &v13, &v12, &v11, &a9, &a10);
+  destinationLevelCopy = destinationLevel;
+  BinaryBuffer::Append<objc_object  {objcproto10MTLTexture}*,unsigned long,unsigned long,objc_object  {objcproto10MTLTexture},unsigned long,unsigned long,unsigned long,unsigned long>(stream, 12, &textureCopy, &sliceCopy, &levelCopy, &toTextureCopy, &destinationSliceCopy, &destinationLevelCopy, &count, &levelCount);
 }
 
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture
 {
   v13[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v13[1] = v13;
   __src = 3329;
   v7 = 109;
-  v8 = a3;
+  textureCopy = texture;
   v9 = 109;
-  v10 = a4;
+  toTextureCopy = toTexture;
   v11 = 16;
   v13[0] = v12;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0x15uLL);
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateMipmapsForTexture:(id)a3
+- (void)generateMipmapsForTexture:(id)texture
 {
   v10[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v10[1] = v10;
   __src = 3585;
   v6 = 109;
-  v7 = a3;
+  textureCopy = texture;
   v8 = 16;
   v10[0] = &v9;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0xCuLL);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)synchronizeResource:(id)a3
+- (void)synchronizeResource:(id)resource
 {
   v10[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v10[1] = v10;
   __src = 3841;
   v6 = 109;
-  v7 = a3;
+  resourceCopy = resource;
   v8 = 16;
   v10[0] = &v9;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0xCuLL);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)synchronizeTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)synchronizeTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level
 {
   v16[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v16[1] = v16;
   __src = 4097;
   v8 = 109;
-  v9 = a3;
+  textureCopy = texture;
   v10 = 100;
-  v11 = a4;
+  sliceCopy = slice;
   v12 = 100;
-  v13 = a5;
+  levelCopy = level;
   v14 = 16;
   v16[0] = &v15;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0x1EuLL);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
   v10[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v10[1] = v10;
   __src = 29697;
   v6 = 109;
-  v7 = a3;
+  fenceCopy = fence;
   v8 = 16;
   v10[0] = &v9;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0xCuLL);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
   v10[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v10[1] = v10;
   __src = 32257;
   v6 = 109;
-  v7 = a3;
+  fenceCopy = fence;
   v8 = 16;
   v10[0] = &v9;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0xCuLL);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3
+- (void)optimizeContentsForGPUAccess:(id)access
 {
   v10[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v10[1] = v10;
   __src = 4353;
   v6 = 109;
-  v7 = a3;
+  accessCopy = access;
   v8 = 16;
   v10[0] = &v9;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0xCuLL);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)optimizeContentsForGPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForGPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
   v16[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v16[1] = v16;
   __src = 4609;
   v8 = 109;
-  v9 = a3;
+  accessCopy = access;
   v10 = 100;
-  v11 = a4;
+  sliceCopy = slice;
   v12 = 100;
-  v13 = a5;
+  levelCopy = level;
   v14 = 16;
   v16[0] = &v15;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0x1EuLL);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3
+- (void)optimizeContentsForCPUAccess:(id)access
 {
   v10[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v10[1] = v10;
   __src = 4865;
   v6 = 109;
-  v7 = a3;
+  accessCopy = access;
   v8 = 16;
   v10[0] = &v9;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0xCuLL);
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)optimizeContentsForCPUAccess:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5
+- (void)optimizeContentsForCPUAccess:(id)access slice:(unint64_t)slice level:(unint64_t)level
 {
   v16[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;
   v16[1] = v16;
   __src = 5121;
   v8 = 109;
-  v9 = a3;
+  accessCopy = access;
   v10 = 100;
-  v11 = a4;
+  sliceCopy = slice;
   v12 = 100;
-  v13 = a5;
+  levelCopy = level;
   v14 = 16;
   v16[0] = &v15;
   AppendBuffer::WriteBytes(stream, &stream->stream, &__src, 0x1EuLL);
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6 resetCounters:(BOOL)a7 countersBuffer:(id)a8 countersBufferOffset:(unint64_t)a9
+- (void)getTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice resetCounters:(BOOL)resetCounters countersBuffer:(id)buffer countersBufferOffset:(unint64_t)offset
 {
-  v12 = a5;
-  v11 = a6;
-  v10 = a7;
-  v9 = a8;
-  BinaryBuffer::Append<MTLRegion,unsigned long,unsigned long,BOOL,objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 21, a4, &v12, &v11, &v10, &v9, &a9);
+  levelCopy = level;
+  sliceCopy = slice;
+  resetCountersCopy = resetCounters;
+  bufferCopy = buffer;
+  BinaryBuffer::Append<MTLRegion,unsigned long,unsigned long,BOOL,objc_object  {objcproto9MTLBuffer}*,unsigned long>(self->super._stream, 21, region, &levelCopy, &sliceCopy, &resetCountersCopy, &bufferCopy, &offset);
 }
 
-- (void)resetTextureAccessCounters:(id)a3 region:(id *)a4 mipLevel:(unint64_t)a5 slice:(unint64_t)a6
+- (void)resetTextureAccessCounters:(id)counters region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice
 {
   v11[2] = *MEMORY[0x277D85DE8];
   stream = self->super._stream;

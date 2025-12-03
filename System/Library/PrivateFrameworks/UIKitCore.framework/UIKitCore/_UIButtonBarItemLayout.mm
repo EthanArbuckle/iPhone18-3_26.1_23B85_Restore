@@ -1,18 +1,18 @@
 @interface _UIButtonBarItemLayout
 - (BOOL)_shouldBeDirty;
-- (BOOL)shouldHorizontallyCenterView:(id)a3;
-- (_UIButtonBarItemLayout)initWithLayoutMetrics:(id)a3;
-- (_UIButtonBarItemLayout)initWithLayoutMetrics:(id)a3 barButtonItem:(id)a4;
-- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)a3;
+- (BOOL)shouldHorizontallyCenterView:(id)view;
+- (_UIButtonBarItemLayout)initWithLayoutMetrics:(id)metrics;
+- (_UIButtonBarItemLayout)initWithLayoutMetrics:(id)metrics barButtonItem:(id)item;
+- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)width;
 - (id)description;
-- (void)_addConstraintsToActivate:(id)a3 toDeactivate:(id)a4;
-- (void)_addLayoutViews:(id)a3;
+- (void)_addConstraintsToActivate:(id)activate toDeactivate:(id)deactivate;
+- (void)_addLayoutViews:(id)views;
 - (void)_configure;
 - (void)_updateCustomView;
 - (void)_updateItemView;
 - (void)_updateItemViewSizing;
-- (void)dirtyLayoutForPlainAppearanceChange:(BOOL)a3 doneAppearanceChanged:(BOOL)a4;
-- (void)setUseGroupSizing:(BOOL)a3;
+- (void)dirtyLayoutForPlainAppearanceChange:(BOOL)change doneAppearanceChanged:(BOOL)changed;
+- (void)setUseGroupSizing:(BOOL)sizing;
 @end
 
 @implementation _UIButtonBarItemLayout
@@ -23,16 +23,16 @@
   [(UIBarButtonItem *)self->_item setView:self->_itemView];
   if (!self->_itemView)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIButtonBarLayout.m" lineNumber:555 description:@"cannot configure an item layout for a nil view"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIButtonBarLayout.m" lineNumber:555 description:@"cannot configure an item layout for a nil view"];
   }
 
   [(_UIButtonBarItemLayout *)self _updateItemViewSizing];
   if (self->_useGroupSizing && !self->_groupSameSize)
   {
-    v4 = [(UIView *)self->_itemView widthAnchor];
-    v5 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics groupSizeGuide];
-    v6 = [v4 constraintEqualToAnchor:v5];
+    widthAnchor = [(UIView *)self->_itemView widthAnchor];
+    groupSizeGuide = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics groupSizeGuide];
+    v6 = [widthAnchor constraintEqualToAnchor:groupSizeGuide];
     groupSameSize = self->_groupSameSize;
     self->_groupSameSize = v6;
 
@@ -52,11 +52,11 @@
   obj = (*(self->_itemViewGenerator + 2))();
   if (obj != self->_itemView)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = v3;
+    array = [MEMORY[0x1E695DF70] array];
+    v4 = array;
     if (self->_requestedSize)
     {
-      [v3 addObject:?];
+      [array addObject:?];
     }
 
     if (self->_maximumAlignmentSize)
@@ -126,8 +126,8 @@
   if (!requestedSize || ([(NSLayoutConstraint *)requestedSize firstItem], v7 = objc_claimAutoreleasedReturnValue(), v7, requestedSize = self->_requestedSize, v18 != v7))
   {
     [(NSLayoutConstraint *)requestedSize setActive:0];
-    v8 = [(UIView *)v18 widthAnchor];
-    v9 = [v8 constraintEqualToConstant:v5];
+    widthAnchor = [(UIView *)v18 widthAnchor];
+    v9 = [widthAnchor constraintEqualToConstant:v5];
     v10 = self->_requestedSize;
     self->_requestedSize = v9;
 
@@ -148,11 +148,11 @@ LABEL_6:
   }
 
 LABEL_7:
-  v13 = [(UIView *)v12 heightAnchor];
+  heightAnchor = [(UIView *)v12 heightAnchor];
   if ((![(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics allowsViewWrappers]|| ![(UIBarButtonItem *)self->_item isCustomViewItem]) && !self->_maximumAlignmentSize)
   {
-    v14 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics verticalSizeGuide];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    verticalSizeGuide = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics verticalSizeGuide];
+    v15 = [heightAnchor constraintEqualToAnchor:verticalSizeGuide];
     maximumAlignmentSize = self->_maximumAlignmentSize;
     self->_maximumAlignmentSize = v15;
   }
@@ -160,61 +160,61 @@ LABEL_7:
 
 - (BOOL)_shouldBeDirty
 {
-  v2 = self;
-  v3 = [(UIBarButtonItem *)self->_item view];
-  LOBYTE(v2) = v3 != v2->_itemView;
+  selfCopy = self;
+  view = [(UIBarButtonItem *)self->_item view];
+  LOBYTE(selfCopy) = view != selfCopy->_itemView;
 
-  return v2;
+  return selfCopy;
 }
 
-- (_UIButtonBarItemLayout)initWithLayoutMetrics:(id)a3
+- (_UIButtonBarItemLayout)initWithLayoutMetrics:(id)metrics
 {
   [(_UIButtonBarItemLayout *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (_UIButtonBarItemLayout)initWithLayoutMetrics:(id)a3 barButtonItem:(id)a4
+- (_UIButtonBarItemLayout)initWithLayoutMetrics:(id)metrics barButtonItem:(id)item
 {
-  v7 = a4;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = _UIButtonBarItemLayout;
-  v8 = [(_UIButtonBarLayout *)&v13 initWithLayoutMetrics:a3];
+  v8 = [(_UIButtonBarLayout *)&v13 initWithLayoutMetrics:metrics];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_item, a4);
-    v10 = [(UIBarButtonItem *)v9->_item view];
+    objc_storeStrong(&v8->_item, item);
+    view = [(UIBarButtonItem *)v9->_item view];
     itemView = v9->_itemView;
-    v9->_itemView = v10;
+    v9->_itemView = view;
   }
 
   return v9;
 }
 
-- (void)dirtyLayoutForPlainAppearanceChange:(BOOL)a3 doneAppearanceChanged:(BOOL)a4
+- (void)dirtyLayoutForPlainAppearanceChange:(BOOL)change doneAppearanceChanged:(BOOL)changed
 {
-  v4 = a4;
-  v7 = [(UIBarButtonItem *)self->_item style];
-  if (v7)
+  changedCopy = changed;
+  style = [(UIBarButtonItem *)self->_item style];
+  if (style)
   {
-    v8 = 0;
+    changeCopy = 0;
   }
 
   else
   {
-    v8 = a3;
+    changeCopy = change;
   }
 
-  v9 = v7 == UIBarButtonItemStyleDone && v4;
-  if (v8 || v9)
+  v9 = style == UIBarButtonItemStyleDone && changedCopy;
+  if (changeCopy || v9)
   {
 
     [(_UIButtonBarLayout *)self setDirty:1];
   }
 }
 
-- (BOOL)shouldHorizontallyCenterView:(id)a3
+- (BOOL)shouldHorizontallyCenterView:(id)view
 {
   itemViewWrapper = self->_itemViewWrapper;
   if (!itemViewWrapper)
@@ -222,10 +222,10 @@ LABEL_7:
     itemViewWrapper = self->_itemView;
   }
 
-  return itemViewWrapper == a3 && [(UIBarButtonItem *)self->_item _wantsThreeUp];
+  return itemViewWrapper == view && [(UIBarButtonItem *)self->_item _wantsThreeUp];
 }
 
-- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)a3
+- (double)minimumLayoutWidthGivenMinimumSpaceWidth:(double)width
 {
   [(_UIButtonBarItemLayout *)self _updateItemView];
   itemViewWrapper = self->_itemViewWrapper;
@@ -251,11 +251,11 @@ LABEL_7:
   }
 }
 
-- (void)setUseGroupSizing:(BOOL)a3
+- (void)setUseGroupSizing:(BOOL)sizing
 {
-  if (self->_useGroupSizing != a3)
+  if (self->_useGroupSizing != sizing)
   {
-    self->_useGroupSizing = a3;
+    self->_useGroupSizing = sizing;
     [(_UIButtonBarLayout *)self setDirty:1];
   }
 }
@@ -264,14 +264,14 @@ LABEL_7:
 {
   if ([(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics allowsViewWrappers]&& [_UITAMICAdaptorView shouldWrapView:self->_itemView])
   {
-    v3 = [(_UITAMICAdaptorView *)self->_itemViewWrapper view];
+    view = [(_UITAMICAdaptorView *)self->_itemViewWrapper view];
     itemView = self->_itemView;
-    if (v3 == itemView)
+    if (view == itemView)
     {
-      v6 = [(UIView *)itemView superview];
+      superview = [(UIView *)itemView superview];
       itemViewWrapper = self->_itemViewWrapper;
 
-      if (v6 == itemViewWrapper)
+      if (superview == itemViewWrapper)
       {
         goto LABEL_10;
       }
@@ -302,7 +302,7 @@ LABEL_10:
   self->_itemViewWrapper = 0;
 }
 
-- (void)_addLayoutViews:(id)a3
+- (void)_addLayoutViews:(id)views
 {
   itemViewWrapper = self->_itemViewWrapper;
   if (!itemViewWrapper)
@@ -310,34 +310,34 @@ LABEL_10:
     itemViewWrapper = self->_itemView;
   }
 
-  [a3 addObject:itemViewWrapper];
+  [views addObject:itemViewWrapper];
 }
 
-- (void)_addConstraintsToActivate:(id)a3 toDeactivate:(id)a4
+- (void)_addConstraintsToActivate:(id)activate toDeactivate:(id)deactivate
 {
-  v13 = a3;
-  v6 = a4;
+  activateCopy = activate;
+  deactivateCopy = deactivate;
   [(UIBarButtonItem *)self->_item _width];
   v8 = v7;
-  v9 = v13;
+  v9 = activateCopy;
   if (v7 <= 0.0)
   {
-    if (![(UIBarButtonItem *)self->_item isCustomViewItem]|| (v10 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics allowsViewWrappers], v9 = v13, (v10 & 1) == 0))
+    if (![(UIBarButtonItem *)self->_item isCustomViewItem]|| (v10 = [(_UIButtonBarLayoutMetricsData *)self->super._layoutMetrics allowsViewWrappers], v9 = activateCopy, (v10 & 1) == 0))
     {
-      v9 = v6;
+      v9 = deactivateCopy;
     }
   }
 
   [v9 addObject:self->_requestedSize];
   if (self->_maximumAlignmentSize)
   {
-    [v13 addObject:?];
+    [activateCopy addObject:?];
   }
 
   if (v8 <= 0.0 && self->_useGroupSizing && ![(UIBarButtonItem *)self->_item isCustomViewItem])
   {
     groupSameSize = self->_groupSameSize;
-    v12 = v13;
+    v12 = activateCopy;
   }
 
   else
@@ -348,7 +348,7 @@ LABEL_10:
       goto LABEL_14;
     }
 
-    v12 = v6;
+    v12 = deactivateCopy;
   }
 
   [v12 addObject:groupSameSize];
@@ -368,8 +368,8 @@ LABEL_14:
   }
 
   item = self->_item;
-  v6 = [(UIBarButtonItem *)item view];
-  [v4 appendFormat:@" item=%p view=%p requestedSize=%p maximumAlignmentSize=%p groupSameSize=%p", item, v6, self->_requestedSize, self->_maximumAlignmentSize, self->_groupSameSize];
+  view = [(UIBarButtonItem *)item view];
+  [v4 appendFormat:@" item=%p view=%p requestedSize=%p maximumAlignmentSize=%p groupSameSize=%p", item, view, self->_requestedSize, self->_maximumAlignmentSize, self->_groupSameSize];
 
   return v4;
 }

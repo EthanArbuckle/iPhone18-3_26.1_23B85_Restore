@@ -1,19 +1,19 @@
 @interface UIMotionEffectGroup
-- (UIMotionEffectGroup)initWithCoder:(id)a3;
-- (id)_keyPathsAndRelativeValuesForPose:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIMotionEffectGroup)initWithCoder:(id)coder;
+- (id)_keyPathsAndRelativeValuesForPose:(id)pose;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)a3;
+- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)offset;
 @end
 
 @implementation UIMotionEffectGroup
 
-- (id)_keyPathsAndRelativeValuesForPose:(id)a3
+- (id)_keyPathsAndRelativeValuesForPose:(id)pose
 {
   v31 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  poseCopy = pose;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -32,7 +32,7 @@
           objc_enumerationMutation(obj);
         }
 
-        v6 = [*(*(&v25 + 1) + 8 * i) _keyPathsAndRelativeValuesForPose:v19];
+        v6 = [*(*(&v25 + 1) + 8 * i) _keyPathsAndRelativeValuesForPose:poseCopy];
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
@@ -53,7 +53,7 @@
 
               v11 = *(*(&v21 + 1) + 8 * j);
               v12 = [v6 objectForKeyedSubscript:v11];
-              v13 = [v4 objectForKey:v11];
+              v13 = [dictionary objectForKey:v11];
               v14 = v13;
               if (v13)
               {
@@ -64,7 +64,7 @@
 
               if (v12)
               {
-                [v4 setObject:v12 forKey:v11];
+                [dictionary setObject:v12 forKey:v11];
               }
             }
 
@@ -81,13 +81,13 @@
     while (v20);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)a3
+- (id)keyPathsAndRelativeValuesForViewerOffset:(UIOffset)offset
 {
-  vertical = a3.vertical;
-  horizontal = a3.horizontal;
+  vertical = offset.vertical;
+  horizontal = offset.horizontal;
   v6 = objc_alloc_init(_UIViewerRelativeDevicePose);
   [(_UIViewerRelativeDevicePose *)v6 setViewerOffset:horizontal, vertical];
   v7 = [(UIMotionEffectGroup *)self _keyPathsAndRelativeValuesForPose:v6];
@@ -95,22 +95,22 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(UIMotionEffectGroup);
   objc_storeStrong(&v4->_motionEffects, self->_motionEffects);
   return v4;
 }
 
-- (UIMotionEffectGroup)initWithCoder:(id)a3
+- (UIMotionEffectGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UIMotionEffectGroup;
-  v5 = [(UIMotionEffect *)&v10 initWithCoder:v4];
+  v5 = [(UIMotionEffect *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"_motionEffects"];
+    v6 = [coderCopy decodeObjectForKey:@"_motionEffects"];
     motionEffects = v5->_motionEffects;
     v5->_motionEffects = v6;
 

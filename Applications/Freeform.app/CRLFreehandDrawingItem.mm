@@ -1,15 +1,15 @@
 @interface CRLFreehandDrawingItem
-+ (id)makePKDrawingFrom:(id)a3;
++ (id)makePKDrawingFrom:(id)from;
 - (BOOL)canMakeEquivalentPKDrawing;
-- (BOOL)isItemAllowed:(id)a3;
+- (BOOL)isItemAllowed:(id)allowed;
 - (BOOL)prohibitsClustering;
 - (BOOL)shouldBeTreatedAsBoxForConnectionLinesForPerf;
 - (Class)editorClass;
 - (Class)layoutClass;
 - (Class)repClass;
-- (_TtC8Freeform22CRLFreehandDrawingItem)initWithStore:(id)a3 parentContainerUUID:(id)a4 geometry:(id)a5;
-- (id)_duplicateEmptyWithNewParentContainerUUID:(id)a3 uuidRemapHelper:(id)a4 error:(id *)a5;
-- (void)setProhibitsClustering:(BOOL)a3;
+- (_TtC8Freeform22CRLFreehandDrawingItem)initWithStore:(id)store parentContainerUUID:(id)d geometry:(id)geometry;
+- (id)_duplicateEmptyWithNewParentContainerUUID:(id)d uuidRemapHelper:(id)helper error:(id *)error;
+- (void)setProhibitsClustering:(BOOL)clustering;
 @end
 
 @implementation CRLFreehandDrawingItem
@@ -30,10 +30,10 @@
   return v8[7];
 }
 
-- (void)setProhibitsClustering:(BOOL)a3
+- (void)setProhibitsClustering:(BOOL)clustering
 {
-  v3 = self;
-  if (sub_1011255D0(v3))
+  selfCopy = self;
+  if (sub_1011255D0(selfCopy))
   {
     type metadata accessor for CRLFreehandItemData(0);
     swift_dynamicCastClassUnconditional();
@@ -54,7 +54,7 @@
 {
   v3 = OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems;
   v4 = *&self->super._TtC8Freeform16CRLContainerItem_opaque[OBJC_IVAR____TtC8Freeform16CRLContainerItem__cachedOrderedItems];
-  v5 = self;
+  selfCopy = self;
   if (!v4)
   {
     sub_10096C7D4();
@@ -86,13 +86,13 @@
 
 - (BOOL)canMakeEquivalentPKDrawing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100B433C0();
 
   return v3 & 1;
 }
 
-+ (id)makePKDrawingFrom:(id)a3
++ (id)makePKDrawingFrom:(id)from
 {
   v3 = type metadata accessor for PKDrawing();
   v4 = *(v3 - 8);
@@ -129,7 +129,7 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)_duplicateEmptyWithNewParentContainerUUID:(id)a3 uuidRemapHelper:(id)a4 error:(id *)a5
+- (id)_duplicateEmptyWithNewParentContainerUUID:(id)d uuidRemapHelper:(id)helper error:(id *)error
 {
   v8 = type metadata accessor for UUID();
   v9 = *(v8 - 8);
@@ -138,7 +138,7 @@
   v12 = sub_1005B981C(&qword_1019F6990);
   __chkstk_darwin(v12 - 8);
   v14 = &v19[-v13];
-  if (a3)
+  if (d)
   {
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
     (*(v9 + 32))(v14, v11, v8);
@@ -150,32 +150,32 @@
     (*(v9 + 56))(v14, 1, 1, v8);
   }
 
-  v15 = a4;
-  v16 = self;
-  v17 = sub_100B43C84(v14, v15);
+  helperCopy = helper;
+  selfCopy = self;
+  v17 = sub_100B43C84(v14, helperCopy);
   sub_10000CAAC(v14, &qword_1019F6990);
 
   return v17;
 }
 
-- (BOOL)isItemAllowed:(id)a3
+- (BOOL)isItemAllowed:(id)allowed
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_100B47B18(v4);
+  allowedCopy = allowed;
+  selfCopy = self;
+  v6 = sub_100B47B18(allowedCopy);
 
   return v6 & 1;
 }
 
-- (_TtC8Freeform22CRLFreehandDrawingItem)initWithStore:(id)a3 parentContainerUUID:(id)a4 geometry:(id)a5
+- (_TtC8Freeform22CRLFreehandDrawingItem)initWithStore:(id)store parentContainerUUID:(id)d geometry:(id)geometry
 {
   v7 = type metadata accessor for UUID();
   __chkstk_darwin(v7 - 8);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = a5;
-  return sub_100B46D4C(v10, v9, a5);
+  storeCopy = store;
+  geometryCopy = geometry;
+  return sub_100B46D4C(storeCopy, v9, geometry);
 }
 
 @end

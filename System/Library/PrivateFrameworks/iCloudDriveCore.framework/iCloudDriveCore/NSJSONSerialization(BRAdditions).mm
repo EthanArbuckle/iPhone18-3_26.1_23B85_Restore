@@ -32,7 +32,7 @@ LABEL_5:
     v14[3] = &unk_278504B98;
     v6 = v7;
     v15 = v6;
-    v16 = a1;
+    selfCopy = self;
     [v4 enumerateKeysAndObjectsUsingBlock:v14];
     v8 = v15;
   }
@@ -53,7 +53,7 @@ LABEL_5:
     v11[3] = &unk_278504BC0;
     v6 = v9;
     v12 = v6;
-    v13 = a1;
+    selfCopy2 = self;
     [v4 enumerateObjectsUsingBlock:v11];
     v8 = v12;
   }
@@ -65,7 +65,7 @@ LABEL_11:
 
 + (id)jsonStringFromDictionary:()BRAdditions options:error:
 {
-  v7 = [a1 _jsonifyObject:?];
+  v7 = [self _jsonifyObject:?];
   v14 = 0;
   v8 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v7 options:a4 error:&v14];
   v9 = v14;

@@ -1,26 +1,26 @@
 @interface WLDUTSPushHandler
-- (BOOL)shouldHandleNotification:(id)a3;
-- (id)_debugDescriptionForNotificationType:(int64_t)a3;
-- (void)_handlePayload:(id)a3 forNotificationType:(int64_t)a4;
-- (void)_handlePayloadExpiredForNotificationType:(int64_t)a3;
-- (void)_handlePayloadInvalidatedForNotificationType:(int64_t)a3;
-- (void)_reportMetrics:(id)a3;
-- (void)handleNotification:(id)a3;
+- (BOOL)shouldHandleNotification:(id)notification;
+- (id)_debugDescriptionForNotificationType:(int64_t)type;
+- (void)_handlePayload:(id)payload forNotificationType:(int64_t)type;
+- (void)_handlePayloadExpiredForNotificationType:(int64_t)type;
+- (void)_handlePayloadInvalidatedForNotificationType:(int64_t)type;
+- (void)_reportMetrics:(id)metrics;
+- (void)handleNotification:(id)notification;
 @end
 
 @implementation WLDUTSPushHandler
 
-- (BOOL)shouldHandleNotification:(id)a3
+- (BOOL)shouldHandleNotification:(id)notification
 {
-  v3 = a3;
-  if ([WLDPushParsing actionTypeForNotification:v3]- 34 > 4)
+  notificationCopy = notification;
+  if ([WLDPushParsing actionTypeForNotification:notificationCopy]- 34 > 4)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = [v3 wlk_dictionaryForKey:@"payload"];
+    v4 = [notificationCopy wlk_dictionaryForKey:@"payload"];
     v5 = [v4 wlk_stringForKey:@"type"];
     v6 = ([v5 isEqualToString:@"upNextChanges"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"favoriteTeamsChanges") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"favoritesSyncSettings") & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"favoriteLeaguesChanges") & 1) != 0 || objc_msgSend(v5, "isEqualToString:", @"favoriteSportingEventsChanges");
   }
@@ -28,10 +28,10 @@
   return v6;
 }
 
-- (void)handleNotification:(id)a3
+- (void)handleNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [WLDPushParsing actionTypeForNotification:v4];
+  notificationCopy = notification;
+  v5 = [WLDPushParsing actionTypeForNotification:notificationCopy];
   v6 = WLKPushNotificationsLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -41,7 +41,7 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "WLDUTSPushHandler - Handling %@ notification", &v16, 0xCu);
   }
 
-  v8 = [v4 wlk_dictionaryForKey:@"payload"];
+  v8 = [notificationCopy wlk_dictionaryForKey:@"payload"];
 
   if (v8)
   {
@@ -98,24 +98,24 @@
   }
 }
 
-- (id)_debugDescriptionForNotificationType:(int64_t)a3
+- (id)_debugDescriptionForNotificationType:(int64_t)type
 {
-  if ((a3 - 34) > 4)
+  if ((type - 34) > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_100045228[a3 - 34];
+    return off_100045228[type - 34];
   }
 }
 
-- (void)_handlePayloadExpiredForNotificationType:(int64_t)a3
+- (void)_handlePayloadExpiredForNotificationType:(int64_t)type
 {
-  if (a3 > 36)
+  if (type > 36)
   {
-    if ((a3 - 37) >= 2)
+    if ((type - 37) >= 2)
     {
       return;
     }
@@ -123,11 +123,11 @@
     goto LABEL_12;
   }
 
-  if (a3 != 34)
+  if (type != 34)
   {
-    if (a3 != 35)
+    if (type != 35)
     {
-      if (a3 != 36)
+      if (type != 36)
       {
         return;
       }
@@ -161,11 +161,11 @@ void __62__WLDUTSPushHandler__handlePayloadExpiredForNotificationType___block_in
   +[WLKUpNextWidgetCacheManager requestReload];
 }
 
-- (void)_handlePayloadInvalidatedForNotificationType:(int64_t)a3
+- (void)_handlePayloadInvalidatedForNotificationType:(int64_t)type
 {
-  if (a3 > 36)
+  if (type > 36)
   {
-    if ((a3 - 37) >= 2)
+    if ((type - 37) >= 2)
     {
       return;
     }
@@ -173,11 +173,11 @@ void __62__WLDUTSPushHandler__handlePayloadExpiredForNotificationType___block_in
     goto LABEL_12;
   }
 
-  if (a3 != 34)
+  if (type != 34)
   {
-    if (a3 != 35)
+    if (type != 35)
     {
-      if (a3 != 36)
+      if (type != 36)
       {
         return;
       }
@@ -211,12 +211,12 @@ void __66__WLDUTSPushHandler__handlePayloadInvalidatedForNotificationType___bloc
   +[WLKUpNextWidgetCacheManager requestReload];
 }
 
-- (void)_handlePayload:(id)a3 forNotificationType:(int64_t)a4
+- (void)_handlePayload:(id)payload forNotificationType:(int64_t)type
 {
-  v5 = a3;
-  if (a4 > 36)
+  payloadCopy = payload;
+  if (type > 36)
   {
-    if ((a4 - 37) >= 2)
+    if ((type - 37) >= 2)
     {
       goto LABEL_16;
     }
@@ -224,18 +224,18 @@ void __66__WLDUTSPushHandler__handlePayloadInvalidatedForNotificationType___bloc
     goto LABEL_14;
   }
 
-  switch(a4)
+  switch(type)
   {
     case '""':
-      v8 = [[WLKUpNextDelta alloc] initWithDictionary:v5];
+      v8 = [[WLKUpNextDelta alloc] initWithDictionary:payloadCopy];
       if (v8)
       {
         v9 = WLKPushNotificationsLogObject();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 items];
+          items = [v8 items];
           v13 = 134217984;
-          v14 = [v10 count];
+          v14 = [items count];
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "WLDUTSPushHandler - Processed Up Next delta with %lu items", &v13, 0xCu);
         }
 
@@ -292,9 +292,9 @@ void __56__WLDUTSPushHandler__handlePayload_forNotificationType___block_invoke(i
   }
 }
 
-- (void)_reportMetrics:(id)a3
+- (void)_reportMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v5 = WLKPushNotificationsLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -306,11 +306,11 @@ void __56__WLDUTSPushHandler__handlePayload_forNotificationType___block_invoke(i
   v7 = v6;
   if (v6)
   {
-    [v6 addPropertiesWithDictionary:v4];
+    [v6 addPropertiesWithDictionary:metricsCopy];
     v11 = v7;
     v8 = [NSArray arrayWithObjects:&v11 count:1];
-    v9 = [(WLDUTSPushHandler *)self metricsController];
-    [WLDMetricsUtilities sendMetricsEvents:v8 metricsController:v9];
+    metricsController = [(WLDUTSPushHandler *)self metricsController];
+    [WLDMetricsUtilities sendMetricsEvents:v8 metricsController:metricsController];
   }
 }
 

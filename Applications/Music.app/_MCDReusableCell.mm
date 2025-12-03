@@ -1,59 +1,59 @@
 @interface _MCDReusableCell
-+ (id)cellForTableView:(id)a3 indexPath:(id)a4;
++ (id)cellForTableView:(id)view indexPath:(id)path;
 + (id)reuseIdentifier;
 - (CGSize)sizeForArtwork;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_MCDReusableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_MCDReusableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_updateArtworkImageViewTintColor;
-- (void)layoutBadges:(id)a3;
-- (void)setArtworkRadiusKind:(unint64_t)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPlaceholderHighlightedTintColor:(id)a3;
-- (void)setPlaceholderTintColor:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)layoutBadges:(id)badges;
+- (void)setArtworkRadiusKind:(unint64_t)kind;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setPlaceholderHighlightedTintColor:(id)color;
+- (void)setPlaceholderTintColor:(id)color;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation _MCDReusableCell
 
 - (void)_updateArtworkImageViewTintColor
 {
-  v5 = [(_MCDReusableCell *)self artworkImageView];
+  artworkImageView = [(_MCDReusableCell *)self artworkImageView];
   if (([(_MCDReusableCell *)self isHighlighted]& 1) != 0 || ([(_MCDReusableCell *)self isSelected]& 1) != 0)
   {
-    v3 = [(_MCDReusableCell *)self placeholderHighlightedTintColor];
+    placeholderHighlightedTintColor = [(_MCDReusableCell *)self placeholderHighlightedTintColor];
   }
 
   else
   {
-    v3 = [(_MCDReusableCell *)self placeholderTintColor];
+    placeholderHighlightedTintColor = [(_MCDReusableCell *)self placeholderTintColor];
   }
 
-  v4 = v3;
-  [v5 setTintColor:v3];
+  v4 = placeholderHighlightedTintColor;
+  [artworkImageView setTintColor:placeholderHighlightedTintColor];
 }
 
-- (_MCDReusableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_MCDReusableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = _MCDReusableCell;
-  v4 = [(_MCDReusableCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(_MCDReusableCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(_MCDReusableCell *)v4 setAccessibilityIdentifier:@"CPListItem"];
-    v6 = [(_MCDReusableCell *)v5 textLabel];
-    [v6 setAccessibilityIdentifier:@"CPListItemTitle"];
+    textLabel = [(_MCDReusableCell *)v5 textLabel];
+    [textLabel setAccessibilityIdentifier:@"CPListItemTitle"];
   }
 
   return v5;
 }
 
-+ (id)cellForTableView:(id)a3 indexPath:(id)a4
++ (id)cellForTableView:(id)view indexPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() reuseIdentifier];
-  v8 = [v6 dequeueReusableCellWithIdentifier:v7 forIndexPath:v5];
+  pathCopy = path;
+  viewCopy = view;
+  reuseIdentifier = [objc_opt_class() reuseIdentifier];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:pathCopy];
 
   return v8;
 }
@@ -74,70 +74,70 @@
   return result;
 }
 
-- (void)setPlaceholderTintColor:(id)a3
+- (void)setPlaceholderTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_placeholderTintColor != v5)
+  colorCopy = color;
+  if (self->_placeholderTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_placeholderTintColor, color);
     [(_MCDReusableCell *)self _updateArtworkImageViewTintColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setPlaceholderHighlightedTintColor:(id)a3
+- (void)setPlaceholderHighlightedTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_placeholderHighlightedTintColor != v5)
+  colorCopy = color;
+  if (self->_placeholderHighlightedTintColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_placeholderHighlightedTintColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_placeholderHighlightedTintColor, color);
     [(_MCDReusableCell *)self _updateArtworkImageViewTintColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = _MCDReusableCell;
-  [(_MCDReusableCell *)&v5 setHighlighted:a3 animated:a4];
+  [(_MCDReusableCell *)&v5 setHighlighted:highlighted animated:animated];
   [(_MCDReusableCell *)self _updateArtworkImageViewTintColor];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = _MCDReusableCell;
-  [(_MCDReusableCell *)&v5 setSelected:a3 animated:a4];
+  [(_MCDReusableCell *)&v5 setSelected:selected animated:animated];
   [(_MCDReusableCell *)self _updateArtworkImageViewTintColor];
 }
 
-- (void)setArtworkRadiusKind:(unint64_t)a3
+- (void)setArtworkRadiusKind:(unint64_t)kind
 {
-  if (self->_artworkRadiusKind != a3)
+  if (self->_artworkRadiusKind != kind)
   {
-    self->_artworkRadiusKind = a3;
+    self->_artworkRadiusKind = kind;
     [(_MCDReusableCell *)self setNeedsLayout];
   }
 }
 
-- (void)layoutBadges:(id)a3
+- (void)layoutBadges:(id)badges
 {
-  v4 = a3;
+  badgesCopy = badges;
   [(_MCDReusableCell *)self horizontalMargin];
   v6 = v5;
-  if ([v4 count])
+  if ([badgesCopy count])
   {
-    v6 = v6 + (2 * [v4 count] + 2);
+    v6 = v6 + (2 * [badgesCopy count] + 2);
   }
 
   v95 = 0u;
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v7 = v4;
+  v7 = badgesCopy;
   v8 = [v7 countByEnumeratingWithState:&v93 objects:v98 count:16];
   if (v8)
   {
@@ -164,29 +164,29 @@
     while (v9);
   }
 
-  v14 = [(_MCDReusableCell *)self effectiveUserInterfaceLayoutDirection];
-  v15 = [(_MCDReusableCell *)self textLabel];
-  [v15 frame];
+  effectiveUserInterfaceLayoutDirection = [(_MCDReusableCell *)self effectiveUserInterfaceLayoutDirection];
+  textLabel = [(_MCDReusableCell *)self textLabel];
+  [textLabel frame];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(_MCDReusableCell *)self contentView];
-  [v24 bounds];
-  v29 = sub_1000FCF00(v14, v17, v19, v21, v23, v25, v26, v27, v28);
+  contentView = [(_MCDReusableCell *)self contentView];
+  [contentView bounds];
+  v29 = sub_1000FCF00(effectiveUserInterfaceLayoutDirection, v17, v19, v21, v23, v25, v26, v27, v28);
   v31 = v30;
   v88 = v32;
 
-  v33 = [(_MCDReusableCell *)self effectiveUserInterfaceLayoutDirection];
-  v34 = [(_MCDReusableCell *)self contentView];
-  [v34 frame];
+  effectiveUserInterfaceLayoutDirection2 = [(_MCDReusableCell *)self effectiveUserInterfaceLayoutDirection];
+  contentView2 = [(_MCDReusableCell *)self contentView];
+  [contentView2 frame];
   v36 = v35;
   v38 = v37;
   v40 = v39;
   v42 = v41;
-  v43 = [(_MCDReusableCell *)self contentView];
-  [v43 bounds];
-  v48 = sub_1000FCF00(v33, v36, v38, v40, v42, v44, v45, v46, v47);
+  contentView3 = [(_MCDReusableCell *)self contentView];
+  [contentView3 bounds];
+  v48 = sub_1000FCF00(effectiveUserInterfaceLayoutDirection2, v36, v38, v40, v42, v44, v45, v46, v47);
   v50 = v49;
   v52 = v51;
   v54 = v53;
@@ -196,8 +196,8 @@
   v99.size.width = v52;
   v99.size.height = v54;
   v55 = CGRectGetMaxX(v99) - v29;
-  v56 = [(_MCDReusableCell *)self textLabel];
-  [v56 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
+  textLabel2 = [(_MCDReusableCell *)self textLabel];
+  [textLabel2 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
   v58 = v57;
 
   if (v6 + v58 >= v55)
@@ -215,8 +215,8 @@
   v63 = v62;
   v65 = v64;
   v67 = v66;
-  v68 = [(_MCDReusableCell *)self textLabel];
-  [v68 setFrame:{v61, v63, v65, v67}];
+  textLabel3 = [(_MCDReusableCell *)self textLabel];
+  [textLabel3 setFrame:{v61, v63, v65, v67}];
 
   *rect = v29;
   v100.origin.x = v29;
@@ -260,8 +260,8 @@
         v102.size.width = v82;
         v102.size.height = v84;
         v86 = MidY + CGRectGetHeight(v102) * -0.5;
-        v87 = [(_MCDReusableCell *)self contentView];
-        [v78 setFrame:{sub_1000FCFE0(v87, v75, v86, v82, v84)}];
+        contentView4 = [(_MCDReusableCell *)self contentView];
+        [v78 setFrame:{sub_1000FCFE0(contentView4, v75, v86, v82, v84)}];
 
         v103.origin.x = v75;
         v103.origin.y = v86;
@@ -277,20 +277,20 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(_MCDReusableCell *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
+    traitCollection = [(_MCDReusableCell *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-    if ([v6 isEqualToString:UIContentSizeCategoryExtraExtraLarge])
+    if ([preferredContentSizeCategory isEqualToString:UIContentSizeCategoryExtraExtraLarge])
     {
       v7 = 48.0;
     }
 
-    else if ([v6 isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge])
+    else if ([preferredContentSizeCategory isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge])
     {
       v7 = 52.0;
     }

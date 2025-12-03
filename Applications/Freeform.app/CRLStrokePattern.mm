@@ -1,30 +1,30 @@
 @interface CRLStrokePattern
-+ (CRLStrokePattern)strokePatternWithPattern:(const double *)a3 count:(unint64_t)a4 phase:(double)a5;
-+ (id)dashPatternWithSpacing:(double)a3;
++ (CRLStrokePattern)strokePatternWithPattern:(const double *)pattern count:(unint64_t)count phase:(double)phase;
++ (id)dashPatternWithSpacing:(double)spacing;
 + (id)emptyPattern;
 + (id)longDashPattern;
 + (id)mediumDashPattern;
 + (id)roundDashPattern;
-+ (id)roundDashPatternWithSpacing:(double)a3;
++ (id)roundDashPatternWithSpacing:(double)spacing;
 + (id)shortDashPattern;
 + (id)solidPattern;
 - (BOOL)isDash;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRoundDash;
-- (CRLStrokePattern)initWithPatternType:(int64_t)a3 pattern:(const double *)a4 count:(unint64_t)a5 phase:(double)a6;
-- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)a3 withinAvailableLength:(double)a4;
+- (CRLStrokePattern)initWithPatternType:(int64_t)type pattern:(const double *)pattern count:(unint64_t)count phase:(double)phase;
+- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)width withinAvailableLength:(double)length;
 - (id)description;
 - (id)p_patternString;
 - (id)p_typeString;
 - (unint64_t)hash;
-- (void)applyToShapeRenderable:(id)a3;
-- (void)i_applyToContext:(CGContext *)a3 lineWidth:(double)a4 capStyle:(unint64_t *)a5;
-- (void)p_applyToShapeRenderable:(id)a3 lineWidth:(double)a4;
+- (void)applyToShapeRenderable:(id)renderable;
+- (void)i_applyToContext:(CGContext *)context lineWidth:(double)width capStyle:(unint64_t *)style;
+- (void)p_applyToShapeRenderable:(id)renderable lineWidth:(double)width;
 @end
 
 @implementation CRLStrokePattern
 
-- (CRLStrokePattern)initWithPatternType:(int64_t)a3 pattern:(const double *)a4 count:(unint64_t)a5 phase:(double)a6
+- (CRLStrokePattern)initWithPatternType:(int64_t)type pattern:(const double *)pattern count:(unint64_t)count phase:(double)phase
 {
   v16.receiver = self;
   v16.super_class = CRLStrokePattern;
@@ -32,8 +32,8 @@
   v10 = v9;
   if (v9)
   {
-    v9->_type = a3;
-    if (a5 >= 7)
+    v9->_type = type;
+    if (count >= 7)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -62,16 +62,16 @@
       [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:46 isFatal:0 description:"Pattern should have no more than CRL_MAX_STROKE_PATTERN (%d) elements", 6];
     }
 
-    v14 = 6;
-    if (a5 < 6)
+    countCopy = 6;
+    if (count < 6)
     {
-      v14 = a5;
+      countCopy = count;
     }
 
-    v10->_count = v14;
-    if (a4)
+    v10->_count = countCopy;
+    if (pattern)
     {
-      memcpy(v10->_pattern, a4, 8 * v14);
+      memcpy(v10->_pattern, pattern, 8 * countCopy);
     }
   }
 
@@ -150,42 +150,42 @@
   return v3;
 }
 
-+ (id)roundDashPatternWithSpacing:(double)a3
++ (id)roundDashPatternWithSpacing:(double)spacing
 {
   v5[0] = 0x3F50624DD2F1A9FCLL;
-  *&v5[1] = a3;
+  *&v5[1] = spacing;
   v3 = [CRLStrokePattern strokePatternWithPattern:v5 count:2 phase:0.0];
 
   return v3;
 }
 
-+ (id)dashPatternWithSpacing:(double)a3
++ (id)dashPatternWithSpacing:(double)spacing
 {
-  *v5 = a3;
-  *&v5[1] = a3;
+  *v5 = spacing;
+  *&v5[1] = spacing;
   v3 = [CRLStrokePattern strokePatternWithPattern:v5 count:2 phase:0.0];
 
   return v3;
 }
 
-+ (CRLStrokePattern)strokePatternWithPattern:(const double *)a3 count:(unint64_t)a4 phase:(double)a5
++ (CRLStrokePattern)strokePatternWithPattern:(const double *)pattern count:(unint64_t)count phase:(double)phase
 {
-  v5 = [[CRLStrokePattern alloc] initWithPattern:a3 count:a4 phase:a5];
+  v5 = [[CRLStrokePattern alloc] initWithPattern:pattern count:count phase:phase];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
-  if (!v4)
+  v6 = sub_100014370(v5, equalCopy);
+  if (!equalCopy)
   {
     goto LABEL_22;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
 LABEL_23:
     LOBYTE(v22) = 1;
@@ -211,7 +211,7 @@ LABEL_22:
     v14 = v12;
   }
 
-  v15 = [v6 pattern];
+  pattern = [v6 pattern];
   if (!v13)
   {
     goto LABEL_23;
@@ -223,7 +223,7 @@ LABEL_22:
   {
     v18 = *pattern++;
     v19 = v18;
-    v20 = *v15++;
+    v20 = *pattern++;
     v21 = v19 == v20;
     v22 = vabdd_f64(v19, v20) < 0.00999999978 || v21;
     v24 = v17-- != 0;
@@ -244,11 +244,11 @@ LABEL_24:
 
 - (id)description
 {
-  v3 = [(CRLStrokePattern *)self p_patternString];
-  v4 = [(CRLStrokePattern *)self p_typeString];
+  p_patternString = [(CRLStrokePattern *)self p_patternString];
+  p_typeString = [(CRLStrokePattern *)self p_typeString];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [NSString stringWithFormat:@"%@ (%p) pattern: %@ count: %ld phase: %f type: %@", v6, self, v3, self->_count, *&self->_phase, v4];
+  v7 = [NSString stringWithFormat:@"%@ (%p) pattern: %@ count: %ld phase: %f type: %@", v6, self, p_patternString, self->_count, *&self->_phase, p_typeString];
 
   return v7;
 }
@@ -342,20 +342,20 @@ LABEL_24:
   return result;
 }
 
-- (void)i_applyToContext:(CGContext *)a3 lineWidth:(double)a4 capStyle:(unint64_t *)a5
+- (void)i_applyToContext:(CGContext *)context lineWidth:(double)width capStyle:(unint64_t *)style
 {
   v19 = 0u;
   v20 = 0u;
   *lengths = 0u;
-  v9 = [(CRLStrokePattern *)self pattern];
+  pattern = [(CRLStrokePattern *)self pattern];
   count = self->_count;
   if (count)
   {
     v11 = lengths;
     do
     {
-      v12 = *v9++;
-      *v11++ = v12 * a4;
+      v12 = *pattern++;
+      *v11++ = v12 * width;
       --count;
     }
 
@@ -366,43 +366,43 @@ LABEL_24:
   if ([(CRLStrokePattern *)self isRoundDash])
   {
     memset(&v17, 0, sizeof(v17));
-    CGContextGetCTM(&v17, a3);
+    CGContextGetCTM(&v17, context);
     v16 = v17;
     v14 = sub_100139A00(&v16.a);
-    if (a5 && *a5 == 1 && v14 * a4 <= 2.0)
+    if (style && *style == 1 && v14 * width <= 2.0)
     {
-      lengths[0] = a4;
-      *a5 = 0;
+      lengths[0] = width;
+      *style = 0;
       v15 = 0.0;
     }
 
     else
     {
-      lengths[1] = lengths[1] + a4;
+      lengths[1] = lengths[1] + width;
       v15 = 0.5;
     }
   }
 
   else
   {
-    v15 = phase * a4;
+    v15 = phase * width;
   }
 
-  CGContextSetLineDash(a3, v15, lengths, self->_count);
+  CGContextSetLineDash(context, v15, lengths, self->_count);
 }
 
-- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)a3 withinAvailableLength:(double)a4
+- (double)p_renderableLengthForUnclippedPatternWithLineWidth:(double)width withinAvailableLength:(double)length
 {
   if ([(CRLStrokePattern *)self count]== 2)
   {
-    v7 = *[(CRLStrokePattern *)self pattern]* a3;
-    v8 = [(CRLStrokePattern *)self pattern][1] * a3;
+    v7 = *[(CRLStrokePattern *)self pattern]* width;
+    v8 = [(CRLStrokePattern *)self pattern][1] * width;
     [(CRLStrokePattern *)self phase];
-    v10 = v9 * a3;
-    v11 = [(CRLStrokePattern *)self isRoundDash];
-    if (v11)
+    v10 = v9 * width;
+    isRoundDash = [(CRLStrokePattern *)self isRoundDash];
+    if (isRoundDash)
     {
-      v12 = v7 + a3;
+      v12 = v7 + width;
     }
 
     else
@@ -411,32 +411,32 @@ LABEL_24:
     }
 
     v13 = 0.5;
-    if (!v11)
+    if (!isRoundDash)
     {
       v13 = v10;
     }
 
-    v14 = a4 - (v8 + v12 - v13);
+    v14 = length - (v8 + v12 - v13);
     v15 = v8 + v12;
     v16 = fmodf(v14, v15);
     v17 = v16;
     if (v16 > 0.0 && v16 < 5.0 && v12 > v17)
     {
-      a4 = a4 - v17;
+      length = length - v17;
       if ([(CRLStrokePattern *)self isRoundDash])
       {
-        return a4 + v8 * -0.5;
+        return length + v8 * -0.5;
       }
     }
   }
 
-  return a4;
+  return length;
 }
 
-- (void)applyToShapeRenderable:(id)a3
+- (void)applyToShapeRenderable:(id)renderable
 {
-  v4 = a3;
-  if (!v4)
+  renderableCopy = renderable;
+  if (!renderableCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -465,34 +465,34 @@ LABEL_24:
     [CRLAssertionHandler handleFailureInFunction:v6 file:v7 lineNumber:324 isFatal:0 description:"invalid nil value for '%{public}s'", "shapeRenderable"];
   }
 
-  [v4 lineWidth];
-  [(CRLStrokePattern *)self p_applyToShapeRenderable:v4 lineWidth:?];
+  [renderableCopy lineWidth];
+  [(CRLStrokePattern *)self p_applyToShapeRenderable:renderableCopy lineWidth:?];
 }
 
-- (void)p_applyToShapeRenderable:(id)a3 lineWidth:(double)a4
+- (void)p_applyToShapeRenderable:(id)renderable lineWidth:(double)width
 {
-  v12 = a3;
+  renderableCopy = renderable;
   if ([(CRLStrokePattern *)self patternType]== 1)
   {
-    [v12 setLineDashPattern:0];
+    [renderableCopy setLineDashPattern:0];
   }
 
   else if (![(CRLStrokePattern *)self patternType])
   {
-    [v12 setLineDashPhase:self->_phase * a4];
+    [renderableCopy setLineDashPhase:self->_phase * width];
     v6 = objc_alloc_init(NSMutableArray);
-    v7 = [(CRLStrokePattern *)self pattern];
+    pattern = [(CRLStrokePattern *)self pattern];
     if (self->_count)
     {
-      v8 = v7;
+      v8 = pattern;
       v9 = 0;
       do
       {
-        v10 = v8[v9] * a4;
+        v10 = v8[v9] * width;
         if (v9 == 1 && [(CRLStrokePattern *)self isRoundDash])
         {
-          [v12 setLineDashPhase:0.5];
-          v10 = v10 + a4;
+          [renderableCopy setLineDashPhase:0.5];
+          v10 = v10 + width;
         }
 
         v11 = [NSNumber numberWithDouble:v10];
@@ -504,7 +504,7 @@ LABEL_24:
       while (v9 < self->_count);
     }
 
-    [v12 setLineDashPattern:v6];
+    [renderableCopy setLineDashPattern:v6];
   }
 }
 

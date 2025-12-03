@@ -1,44 +1,44 @@
 @interface MPModelLibraryPlaylistEditChangeDetails
-- (id)_descriptionForType:(int64_t)a3;
-- (id)_initWithType:(int64_t)a3 itemIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_descriptionForType:(int64_t)type;
+- (id)_initWithType:(int64_t)type itemIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation MPModelLibraryPlaylistEditChangeDetails
 
-- (id)_descriptionForType:(int64_t)a3
+- (id)_descriptionForType:(int64_t)type
 {
-  if ((a3 - 1) > 5)
+  if ((type - 1) > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E767BF58[a3 - 1];
+    return off_1E767BF58[type - 1];
   }
 }
 
-- (id)_initWithType:(int64_t)a3 itemIdentifier:(id)a4
+- (id)_initWithType:(int64_t)type itemIdentifier:(id)identifier
 {
-  v7 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MPModelLibraryPlaylistEditChangeDetails;
   v8 = [(MPModelLibraryPlaylistEditChangeDetails *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_itemIdentifier, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_itemIdentifier, identifier);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {

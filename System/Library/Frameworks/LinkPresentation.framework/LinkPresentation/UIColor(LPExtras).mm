@@ -25,7 +25,7 @@
 
 + (id)_lp_colorWithDynamicProvider:()LPExtras
 {
-  v3 = [a1 _lp_colorWithDynamicProvider:a3 name:0];
+  v3 = [self _lp_colorWithDynamicProvider:a3 name:0];
 
   return v3;
 }
@@ -36,7 +36,7 @@
   v17 = 0.0;
   v14 = 0;
   v15 = 0.0;
-  v1 = [a1 _lp_colorForcingUserInterfaceStyle:?];
+  v1 = [self _lp_colorForcingUserInterfaceStyle:?];
   [v1 getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
 
   v2 = v17 * 255.0;
@@ -75,7 +75,7 @@
   v20 = 0.0;
   v17 = 0.0;
   v18 = 0.0;
-  v1 = [a1 _lp_colorForcingUserInterfaceStyle:?];
+  v1 = [self _lp_colorForcingUserInterfaceStyle:?];
   [v1 getRed:&v20 green:&v19 blue:&v18 alpha:&v17];
 
   v3 = v19;
@@ -131,14 +131,14 @@
   }
 
   v5 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:v4];
-  v6 = [a1 resolvedColorWithTraitCollection:v5];
+  v6 = [self resolvedColorWithTraitCollection:v5];
 
   return v6;
 }
 
 - (id)_lp_colorBlendedWithColor:()LPExtras
 {
-  v1 = [a1 _colorBlendedWithColor:?];
+  v1 = [self _colorBlendedWithColor:?];
 
   return v1;
 }
@@ -146,7 +146,7 @@
 - (id)_lp_colorBlendedWithColor:()LPExtras withFraction:
 {
   v6 = a4;
-  v7 = [a1 colorWithAlphaComponent:1.0 - a2];
+  v7 = [self colorWithAlphaComponent:1.0 - a2];
   v8 = [v7 _lp_colorBlendedWithColor:v6];
 
   return v8;
@@ -154,8 +154,8 @@
 
 - (uint64_t)_lp_isDynamicColor
 {
-  v2 = [a1 _lp_colorForcingUserInterfaceStyle:0];
-  v3 = [a1 _lp_colorForcingUserInterfaceStyle:1];
+  v2 = [self _lp_colorForcingUserInterfaceStyle:0];
+  v3 = [self _lp_colorForcingUserInterfaceStyle:1];
   v4 = [v2 isEqual:v3];
 
   return v4 ^ 1u;

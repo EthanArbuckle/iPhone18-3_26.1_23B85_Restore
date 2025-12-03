@@ -1,27 +1,27 @@
 @interface PLAssetsdCloudService
-- (PLAssetsdCloudService)initWithLibraryServicesManager:(id)a3 lazyResourceDownloader:(id)a4;
-- (void)asynchronousStartPreheatingCPLDownloadForAssets:(id)a3 doneTokens:(id)a4 format:(unint64_t)a5 reply:(id)a6;
-- (void)asynchronousStopPreheatingCPLDownloadForAssetsWithTaskIdentifiers:(id)a3 reply:(id)a4;
-- (void)cancelCPLDownloadTaskWithIdentifier:(id)a3 reply:(id)a4;
-- (void)computeStableHashesOfAssetWithObjectURI:(id)a3 synchronously:(BOOL)a4 reply:(id)a5;
-- (void)downloadCloudPhotoLibraryAssetWithObjectURI:(id)a3 taskIdentifier:(id)a4 resourceType:(unint64_t)a5 HighPriority:(BOOL)a6 trackCPLDownload:(BOOL)a7 downloadIsTransient:(BOOL)a8 reply:(id)a9;
-- (void)requestVideoPlaybackURLForCloudSharedAsset:(id)a3 mediaAssetType:(unint64_t)a4 reply:(id)a5;
+- (PLAssetsdCloudService)initWithLibraryServicesManager:(id)manager lazyResourceDownloader:(id)downloader;
+- (void)asynchronousStartPreheatingCPLDownloadForAssets:(id)assets doneTokens:(id)tokens format:(unint64_t)format reply:(id)reply;
+- (void)asynchronousStopPreheatingCPLDownloadForAssetsWithTaskIdentifiers:(id)identifiers reply:(id)reply;
+- (void)cancelCPLDownloadTaskWithIdentifier:(id)identifier reply:(id)reply;
+- (void)computeStableHashesOfAssetWithObjectURI:(id)i synchronously:(BOOL)synchronously reply:(id)reply;
+- (void)downloadCloudPhotoLibraryAssetWithObjectURI:(id)i taskIdentifier:(id)identifier resourceType:(unint64_t)type HighPriority:(BOOL)priority trackCPLDownload:(BOOL)download downloadIsTransient:(BOOL)transient reply:(id)reply;
+- (void)requestVideoPlaybackURLForCloudSharedAsset:(id)asset mediaAssetType:(unint64_t)type reply:(id)reply;
 @end
 
 @implementation PLAssetsdCloudService
 
-- (void)computeStableHashesOfAssetWithObjectURI:(id)a3 synchronously:(BOOL)a4 reply:(id)a5
+- (void)computeStableHashesOfAssetWithObjectURI:(id)i synchronously:(BOOL)synchronously reply:(id)reply
 {
-  v6 = a4;
+  synchronouslyCopy = synchronously;
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  iCopy = i;
+  replyCopy = reply;
   v32 = 0u;
   *sel = 0u;
   v31 = 0u;
-  v10 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v31) = v10;
-  if (v10)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v31) = enabled;
+  if (enabled)
   {
     v11 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: computeStableHashesOfAssetWithObjectURI:synchronously:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v12 = *(&v31 + 1);
@@ -30,13 +30,13 @@
     os_activity_scope_enter(v11, (&v32 + 8));
   }
 
-  v13 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v14 = [v13 databaseContext];
-  v15 = [v14 newShortLivedLibraryWithName:"-[PLAssetsdCloudService computeStableHashesOfAssetWithObjectURI:synchronously:reply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v15 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdCloudService computeStableHashesOfAssetWithObjectURI:synchronously:reply:]"];
 
-  v16 = [v15 managedObjectContext];
-  v17 = [v16 persistentStoreCoordinator];
-  v18 = [v17 managedObjectIDForURIRepresentation:v8];
+  managedObjectContext = [v15 managedObjectContext];
+  persistentStoreCoordinator = [managedObjectContext persistentStoreCoordinator];
+  v18 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:iCopy];
 
   if (v18)
   {
@@ -44,11 +44,11 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __85__PLAssetsdCloudService_computeStableHashesOfAssetWithObjectURI_synchronously_reply___block_invoke;
     aBlock[3] = &unk_1E7576F38;
-    v28 = v16;
+    v28 = managedObjectContext;
     v29 = v18;
-    v30 = v9;
+    v30 = replyCopy;
     v19 = _Block_copy(aBlock);
-    if (v6)
+    if (synchronouslyCopy)
     {
       [v15 performBlockAndWait:v19];
     }
@@ -69,7 +69,7 @@
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
     v22 = [v20 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:v21];
 
-    (*(v9 + 2))(v9, 0, 0, v22);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v22);
   }
 
   if (v31 == 1)
@@ -120,25 +120,25 @@ void __85__PLAssetsdCloudService_computeStableHashesOfAssetWithObjectURI_synchro
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)asynchronousStopPreheatingCPLDownloadForAssetsWithTaskIdentifiers:(id)a3 reply:(id)a4
+- (void)asynchronousStopPreheatingCPLDownloadForAssetsWithTaskIdentifiers:(id)identifiers reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
   v15 = 0u;
   *sel = 0u;
   v13 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v13) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v13) = enabled;
+  if (enabled)
   {
     *(&v13 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: asynchronousStopPreheatingCPLDownloadForAssetsWithTaskIdentifiers:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v13 + 1), (&v15 + 8));
   }
 
-  v9 = [(PLAssetsdCloudService *)self resourceDownloader];
-  [v9 cancelCPLDownloadTasks:v6 completionHandler:v7];
+  resourceDownloader = [(PLAssetsdCloudService *)self resourceDownloader];
+  [resourceDownloader cancelCPLDownloadTasks:identifiersCopy completionHandler:replyCopy];
 
   if (v14 == 1)
   {
@@ -159,19 +159,19 @@ void __85__PLAssetsdCloudService_computeStableHashesOfAssetWithObjectURI_synchro
   }
 }
 
-- (void)asynchronousStartPreheatingCPLDownloadForAssets:(id)a3 doneTokens:(id)a4 format:(unint64_t)a5 reply:(id)a6
+- (void)asynchronousStartPreheatingCPLDownloadForAssets:(id)assets doneTokens:(id)tokens format:(unint64_t)format reply:(id)reply
 {
-  v7 = a5;
+  formatCopy = format;
   v49 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  assetsCopy = assets;
+  tokensCopy = tokens;
+  replyCopy = reply;
   v43 = 0u;
   *sel = 0u;
   v42 = 0u;
-  v13 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v42) = v13;
-  if (v13)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v42) = enabled;
+  if (enabled)
   {
     v14 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: asynchronousStartPreheatingCPLDownloadForAssets:doneTokens:format:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v15 = *(&v42 + 1);
@@ -180,11 +180,11 @@ void __85__PLAssetsdCloudService_computeStableHashesOfAssetWithObjectURI_synchro
     os_activity_scope_enter(v14, (&v43 + 8));
   }
 
-  v16 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v17 = [v16 isCloudPhotoLibraryEnabled];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  isCloudPhotoLibraryEnabled = [libraryServicesManager isCloudPhotoLibraryEnabled];
 
-  v18 = [v10 count];
-  if (v18 == [v11 count])
+  v18 = [assetsCopy count];
+  if (v18 == [tokensCopy count])
   {
     v19 = [MEMORY[0x1E695DF70] arrayWithCapacity:v18];
     if (v18)
@@ -199,34 +199,34 @@ void __85__PLAssetsdCloudService_computeStableHashesOfAssetWithObjectURI_synchro
       while (v20);
     }
 
-    if ((v17 & 1) == 0)
+    if ((isCloudPhotoLibraryEnabled & 1) == 0)
     {
-      v12[2](v12, 1, v19, 0);
+      replyCopy[2](replyCopy, 1, v19, 0);
     }
 
-    v21 = [MEMORY[0x1E69BF260] formatWithID:v7];
+    v21 = [MEMORY[0x1E69BF260] formatWithID:formatCopy];
     v22 = [(PLAbstractLibraryServicesManagerService *)self newShortLivedLibraryWithName:"[PLAssetsdCloudService asynchronousStartPreheatingCPLDownloadForAssets:doneTokens:format:reply:]"];
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __97__PLAssetsdCloudService_asynchronousStartPreheatingCPLDownloadForAssets_doneTokens_format_reply___block_invoke;
     v33[3] = &unk_1E756AD38;
     v41 = v18;
-    v34 = v10;
-    v35 = v11;
+    v34 = assetsCopy;
+    v35 = tokensCopy;
     v23 = v22;
     v36 = v23;
     v24 = v21;
     v37 = v24;
-    v38 = self;
+    selfCopy = self;
     v25 = v19;
     v39 = v25;
-    v40 = v12;
+    v40 = replyCopy;
     [v23 performBlock:v33 withPriority:1];
   }
 
   else
   {
-    v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mismatch between the number of asset uuids and tokens, assetUUIDs count: %tu, doneTokens count: %tu", v18, objc_msgSend(v11, "count")];
+    v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Mismatch between the number of asset uuids and tokens, assetUUIDs count: %tu, doneTokens count: %tu", v18, objc_msgSend(tokensCopy, "count")];
     v26 = PLImageManagerGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -241,7 +241,7 @@ void __85__PLAssetsdCloudService_computeStableHashesOfAssetWithObjectURI_synchro
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v46 forKeys:&v45 count:1];
     v24 = [v27 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:v28];
 
-    (v12)[2](v12, 0, 0, v24);
+    (replyCopy)[2](replyCopy, 0, 0, v24);
   }
 
   if (v42 == 1)
@@ -370,18 +370,18 @@ LABEL_18:
   return (*(*(a1 + 80) + 16))();
 }
 
-- (void)downloadCloudPhotoLibraryAssetWithObjectURI:(id)a3 taskIdentifier:(id)a4 resourceType:(unint64_t)a5 HighPriority:(BOOL)a6 trackCPLDownload:(BOOL)a7 downloadIsTransient:(BOOL)a8 reply:(id)a9
+- (void)downloadCloudPhotoLibraryAssetWithObjectURI:(id)i taskIdentifier:(id)identifier resourceType:(unint64_t)type HighPriority:(BOOL)priority trackCPLDownload:(BOOL)download downloadIsTransient:(BOOL)transient reply:(id)reply
 {
   v51 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v32 = a4;
-  v16 = a9;
+  iCopy = i;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v45 = 0u;
   *sel = 0u;
   v44 = 0u;
-  v17 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v44) = v17;
-  if (v17)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v44) = enabled;
+  if (enabled)
   {
     v18 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: downloadCloudPhotoLibraryAssetWithObjectURI:taskIdentifier:resourceType:HighPriority:trackCPLDownload:downloadIsTransient:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v19 = *(&v44 + 1);
@@ -390,10 +390,10 @@ LABEL_18:
     os_activity_scope_enter(v18, (&v45 + 8));
   }
 
-  v20 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v21 = [v20 persistentStoreCoordinator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  persistentStoreCoordinator = [libraryServicesManager persistentStoreCoordinator];
 
-  v22 = [v21 managedObjectIDForURIRepresentation:v15];
+  v22 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:iCopy];
   v23 = v22;
   if (v22 && ([v22 isTemporaryID] & 1) == 0)
   {
@@ -405,13 +405,13 @@ LABEL_18:
     v35 = v23;
     v26 = v27;
     v36 = v26;
-    v37 = self;
-    v40 = a5;
-    v41 = a6;
-    v42 = a7;
-    v43 = a8;
+    selfCopy = self;
+    typeCopy = type;
+    priorityCopy = priority;
+    downloadCopy = download;
+    transientCopy = transient;
     v38 = v33;
-    v39 = v16;
+    v39 = replyCopy;
     [v26 performBlock:v34 withPriority:1];
   }
 
@@ -423,7 +423,7 @@ LABEL_18:
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v48 forKeys:&v47 count:1];
     v26 = [v24 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:v25];
 
-    (*(v16 + 2))(v16, 0, 0, 0, v26);
+    (*(replyCopy + 2))(replyCopy, 0, 0, 0, v26);
   }
 
   if (v44 == 1)
@@ -489,25 +489,25 @@ void __153__PLAssetsdCloudService_downloadCloudPhotoLibraryAssetWithObjectURI_ta
   }
 }
 
-- (void)cancelCPLDownloadTaskWithIdentifier:(id)a3 reply:(id)a4
+- (void)cancelCPLDownloadTaskWithIdentifier:(id)identifier reply:(id)reply
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   v15 = 0u;
   *sel = 0u;
   v13 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v13) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v13) = enabled;
+  if (enabled)
   {
     *(&v13 + 1) = _os_activity_create(&dword_19BF1F000, "PLXPC Service: cancelCPLDownloadTaskWithIdentifier:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
 
     os_activity_scope_enter(*(&v13 + 1), (&v15 + 8));
   }
 
-  v9 = [(PLAssetsdCloudService *)self resourceDownloader];
-  [v9 cancelCPLDownloadTaskWithIdentifier:v6 completionHandler:v7];
+  resourceDownloader = [(PLAssetsdCloudService *)self resourceDownloader];
+  [resourceDownloader cancelCPLDownloadTaskWithIdentifier:identifierCopy completionHandler:replyCopy];
 
   if (v14 == 1)
   {
@@ -528,17 +528,17 @@ void __153__PLAssetsdCloudService_downloadCloudPhotoLibraryAssetWithObjectURI_ta
   }
 }
 
-- (void)requestVideoPlaybackURLForCloudSharedAsset:(id)a3 mediaAssetType:(unint64_t)a4 reply:(id)a5
+- (void)requestVideoPlaybackURLForCloudSharedAsset:(id)asset mediaAssetType:(unint64_t)type reply:(id)reply
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  assetCopy = asset;
+  replyCopy = reply;
   v33 = 0u;
   *sel = 0u;
   v32 = 0u;
-  v11 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v32) = v11;
-  if (v11)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v32) = enabled;
+  if (enabled)
   {
     v12 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: requestVideoPlaybackURLForCloudSharedAsset:mediaAssetType:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v13 = *(&v32 + 1);
@@ -547,16 +547,16 @@ void __153__PLAssetsdCloudService_downloadCloudPhotoLibraryAssetWithObjectURI_ta
     os_activity_scope_enter(v12, (&v33 + 8));
   }
 
-  if (!v9)
+  if (!assetCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudService.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"objectURI"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCloudService.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"objectURI"}];
   }
 
-  v14 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v15 = [v14 persistentStoreCoordinator];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  persistentStoreCoordinator = [libraryServicesManager persistentStoreCoordinator];
 
-  v16 = [v15 managedObjectIDForURIRepresentation:v9];
+  v16 = [persistentStoreCoordinator managedObjectIDForURIRepresentation:assetCopy];
   v17 = v16;
   if (v16 && ([v16 isTemporaryID] & 1) == 0)
   {
@@ -568,8 +568,8 @@ void __153__PLAssetsdCloudService_downloadCloudPhotoLibraryAssetWithObjectURI_ta
     v28 = v17;
     v20 = v21;
     v29 = v20;
-    v31 = a4;
-    v30 = v10;
+    typeCopy = type;
+    v30 = replyCopy;
     [v20 performBlockAndWait:v27];
   }
 
@@ -581,7 +581,7 @@ void __153__PLAssetsdCloudService_downloadCloudPhotoLibraryAssetWithObjectURI_ta
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
     v20 = [v18 errorWithDomain:*MEMORY[0x1E69BFF48] code:41008 userInfo:v19];
 
-    (*(v10 + 2))(v10, 0, 0, v20);
+    (*(replyCopy + 2))(replyCopy, 0, 0, v20);
   }
 
   if (v32 == 1)
@@ -643,16 +643,16 @@ void __89__PLAssetsdCloudService_requestVideoPlaybackURLForCloudSharedAsset_medi
   (*(*(a1 + 40) + 16))(*(a1 + 40), v2 == 0, v3, v2);
 }
 
-- (PLAssetsdCloudService)initWithLibraryServicesManager:(id)a3 lazyResourceDownloader:(id)a4
+- (PLAssetsdCloudService)initWithLibraryServicesManager:(id)manager lazyResourceDownloader:(id)downloader
 {
-  v7 = a4;
+  downloaderCopy = downloader;
   v11.receiver = self;
   v11.super_class = PLAssetsdCloudService;
-  v8 = [(PLAbstractLibraryServicesManagerService *)&v11 initWithLibraryServicesManager:a3];
+  v8 = [(PLAbstractLibraryServicesManagerService *)&v11 initWithLibraryServicesManager:manager];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_lazyResourceDownloader, a4);
+    objc_storeStrong(&v8->_lazyResourceDownloader, downloader);
   }
 
   return v9;

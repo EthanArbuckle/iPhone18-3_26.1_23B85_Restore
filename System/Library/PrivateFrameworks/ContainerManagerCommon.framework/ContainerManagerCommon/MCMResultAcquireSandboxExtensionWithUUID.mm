@@ -1,6 +1,6 @@
 @interface MCMResultAcquireSandboxExtensionWithUUID
-- (BOOL)encodeResultOntoReply:(id)a3;
-- (MCMResultAcquireSandboxExtensionWithUUID)initWithSandboxToken:(id)a3 personaUniqueString:(id)a4 url:(id)a5;
+- (BOOL)encodeResultOntoReply:(id)reply;
+- (MCMResultAcquireSandboxExtensionWithUUID)initWithSandboxToken:(id)token personaUniqueString:(id)string url:(id)url;
 - (NSString)personaUniqueString;
 - (NSString)sandboxToken;
 - (NSURL)url;
@@ -32,29 +32,29 @@
   return result;
 }
 
-- (BOOL)encodeResultOntoReply:(id)a3
+- (BOOL)encodeResultOntoReply:(id)reply
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v12.receiver = self;
   v12.super_class = MCMResultAcquireSandboxExtensionWithUUID;
-  v5 = [(MCMResultBase *)&v12 encodeResultOntoReply:v4];
+  v5 = [(MCMResultBase *)&v12 encodeResultOntoReply:replyCopy];
   if (v5)
   {
-    v6 = [(MCMResultBase *)self error];
+    error = [(MCMResultBase *)self error];
 
-    if (!v6)
+    if (!error)
     {
-      v7 = [(MCMResultAcquireSandboxExtensionWithUUID *)self personaUniqueString];
+      personaUniqueString = [(MCMResultAcquireSandboxExtensionWithUUID *)self personaUniqueString];
 
-      if (v7)
+      if (personaUniqueString)
       {
-        v8 = [(MCMResultAcquireSandboxExtensionWithUUID *)self personaUniqueString];
-        xpc_dictionary_set_string(v4, "ReplyPersonaUniqueString", [v8 UTF8String]);
+        personaUniqueString2 = [(MCMResultAcquireSandboxExtensionWithUUID *)self personaUniqueString];
+        xpc_dictionary_set_string(replyCopy, "ReplyPersonaUniqueString", [personaUniqueString2 UTF8String]);
       }
 
-      v9 = [(MCMResultAcquireSandboxExtensionWithUUID *)self sandboxToken];
-      xpc_dictionary_set_string(v4, "ReplySandboxToken", [v9 UTF8String]);
+      sandboxToken = [(MCMResultAcquireSandboxExtensionWithUUID *)self sandboxToken];
+      xpc_dictionary_set_string(replyCopy, "ReplySandboxToken", [sandboxToken UTF8String]);
     }
   }
 
@@ -62,27 +62,27 @@
   return v5;
 }
 
-- (MCMResultAcquireSandboxExtensionWithUUID)initWithSandboxToken:(id)a3 personaUniqueString:(id)a4 url:(id)a5
+- (MCMResultAcquireSandboxExtensionWithUUID)initWithSandboxToken:(id)token personaUniqueString:(id)string url:(id)url
 {
   v18 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tokenCopy = token;
+  stringCopy = string;
+  urlCopy = url;
   v17.receiver = self;
   v17.super_class = MCMResultAcquireSandboxExtensionWithUUID;
   v12 = [(MCMResultBase *)&v17 init];
   p_isa = &v12->super.super.isa;
   if (v12)
   {
-    if (!v9)
+    if (!tokenCopy)
     {
       v14 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v12->_sandboxToken, a3);
-    objc_storeStrong(p_isa + 6, a4);
-    objc_storeStrong(p_isa + 5, a5);
+    objc_storeStrong(&v12->_sandboxToken, token);
+    objc_storeStrong(p_isa + 6, string);
+    objc_storeStrong(p_isa + 5, url);
   }
 
   v14 = p_isa;

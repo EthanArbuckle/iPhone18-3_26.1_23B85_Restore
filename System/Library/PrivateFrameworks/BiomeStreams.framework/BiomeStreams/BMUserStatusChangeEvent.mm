@@ -1,10 +1,10 @@
 @interface BMUserStatusChangeEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMUserStatusChangeEvent)initWithIDSHandle:(id)a3 statusChangeType:(id)a4;
-- (BMUserStatusChangeEvent)initWithIDSHandles:(id)a3 statusChangeType:(id)a4;
-- (BMUserStatusChangeEvent)initWithProto:(id)a3;
-- (BMUserStatusChangeEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMUserStatusChangeEvent)initWithIDSHandle:(id)handle statusChangeType:(id)type;
+- (BMUserStatusChangeEvent)initWithIDSHandles:(id)handles statusChangeType:(id)type;
+- (BMUserStatusChangeEvent)initWithProto:(id)proto;
+- (BMUserStatusChangeEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,34 +12,34 @@
 
 @implementation BMUserStatusChangeEvent
 
-- (BMUserStatusChangeEvent)initWithIDSHandle:(id)a3 statusChangeType:(id)a4
+- (BMUserStatusChangeEvent)initWithIDSHandle:(id)handle statusChangeType:(id)type
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  objc_storeStrong(&self->_idsHandle, a3);
-  v7 = a3;
-  v8 = a4;
-  v13[0] = v7;
+  objc_storeStrong(&self->_idsHandle, handle);
+  handleCopy = handle;
+  typeCopy = type;
+  v13[0] = handleCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
 
-  v10 = [(BMUserStatusChangeEvent *)self initWithIDSHandles:v9 statusChangeType:v8];
+  v10 = [(BMUserStatusChangeEvent *)self initWithIDSHandles:v9 statusChangeType:typeCopy];
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (BMUserStatusChangeEvent)initWithIDSHandles:(id)a3 statusChangeType:(id)a4
+- (BMUserStatusChangeEvent)initWithIDSHandles:(id)handles statusChangeType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  handlesCopy = handles;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = BMUserStatusChangeEvent;
   v8 = [(BMEventBase *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [handlesCopy copy];
     idsHandles = v8->_idsHandles;
     v8->_idsHandles = v9;
 
-    objc_storeStrong(&v8->_statusChangeType, a4);
+    objc_storeStrong(&v8->_statusChangeType, type);
   }
 
   return v8;
@@ -54,15 +54,15 @@
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
     v7 = __biome_log_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [BMUserStatusChangeEvent eventWithData:a4 dataVersion:v7];
+      [BMUserStatusChangeEvent eventWithData:version dataVersion:v7];
     }
 
     v8 = 0;
@@ -70,7 +70,7 @@
 
   else
   {
-    v8 = [[a1 alloc] initWithProtoData:v6];
+    v8 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   return v8;
@@ -78,19 +78,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMUserStatusChangeEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMUserStatusChangeEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMUserStatusChangeEvent)initWithProto:(id)a3
+- (BMUserStatusChangeEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -106,63 +106,63 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v5 idsHandles];
-  v7 = [v5 statusChangeType];
+  v5 = protoCopy;
+  idsHandles = [v5 idsHandles];
+  statusChangeType = [v5 statusChangeType];
 
-  self = [(BMUserStatusChangeEvent *)self initWithIDSHandles:v6 statusChangeType:v7];
-  v8 = self;
+  self = [(BMUserStatusChangeEvent *)self initWithIDSHandles:idsHandles statusChangeType:statusChangeType];
+  selfCopy = self;
 LABEL_8:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BMUserStatusChangeEvent)initWithProtoData:(id)a3
+- (BMUserStatusChangeEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBUserStatusChangeEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBUserStatusChangeEvent alloc] initWithData:dataCopy];
 
     self = [(BMUserStatusChangeEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMUserStatusChangeEvent *)self idsHandles];
-  v5 = [v4 mutableCopy];
+  idsHandles = [(BMUserStatusChangeEvent *)self idsHandles];
+  v5 = [idsHandles mutableCopy];
   [v3 setIdsHandles:v5];
 
-  v6 = [(BMUserStatusChangeEvent *)self statusChangeType];
-  [v3 setStatusChangeType:v6];
+  statusChangeType = [(BMUserStatusChangeEvent *)self statusChangeType];
+  [v3 setStatusChangeType:statusChangeType];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     idsHandles = self->_idsHandles;
-    v7 = [v5 idsHandles];
-    if ([(NSArray *)idsHandles isEqual:v7])
+    idsHandles = [v5 idsHandles];
+    if ([(NSArray *)idsHandles isEqual:idsHandles])
     {
       statusChangeType = self->_statusChangeType;
-      v9 = [v5 statusChangeType];
-      v10 = [(NSString *)statusChangeType isEqualToString:v9];
+      statusChangeType = [v5 statusChangeType];
+      v10 = [(NSString *)statusChangeType isEqualToString:statusChangeType];
     }
 
     else

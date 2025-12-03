@@ -1,15 +1,15 @@
 @interface SectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation SectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SectionHeaderView" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MKVibrantLabel" hasInstanceVariable:@"_label" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SectionHeaderView" hasInstanceMethod:@"label" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MKVibrantLabel" hasInstanceVariable:@"_label" withType:"UILabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

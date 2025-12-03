@@ -1,7 +1,7 @@
 @interface ASCPresenterContext
 + (ASCPresenterContext)sharedContext;
-- (ASCPresenterContext)initWithArtworkFetcher:(id)a3 lockupFetcher:(id)a4 appOfferStateCenter:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (ASCPresenterContext)initWithArtworkFetcher:(id)fetcher lockupFetcher:(id)lockupFetcher appOfferStateCenter:(id)center;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -31,20 +31,20 @@ void __36__ASCPresenterContext_sharedContext__block_invoke()
   sharedContext_sharedContext = v3;
 }
 
-- (ASCPresenterContext)initWithArtworkFetcher:(id)a3 lockupFetcher:(id)a4 appOfferStateCenter:(id)a5
+- (ASCPresenterContext)initWithArtworkFetcher:(id)fetcher lockupFetcher:(id)lockupFetcher appOfferStateCenter:(id)center
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fetcherCopy = fetcher;
+  lockupFetcherCopy = lockupFetcher;
+  centerCopy = center;
   v15.receiver = self;
   v15.super_class = ASCPresenterContext;
   v12 = [(ASCPresenterContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_artworkFetcher, a3);
-    objc_storeStrong(&v13->_lockupFetcher, a4);
-    objc_storeStrong(&v13->_appOfferStateCenter, a5);
+    objc_storeStrong(&v12->_artworkFetcher, fetcher);
+    objc_storeStrong(&v13->_lockupFetcher, lockupFetcher);
+    objc_storeStrong(&v13->_appOfferStateCenter, center);
   }
 
   return v13;
@@ -53,24 +53,24 @@ void __36__ASCPresenterContext_sharedContext__block_invoke()
 - (unint64_t)hash
 {
   v3 = objc_alloc_init(ASCHasher);
-  v4 = [(ASCPresenterContext *)self artworkFetcher];
-  [(ASCHasher *)v3 combineObject:v4];
+  artworkFetcher = [(ASCPresenterContext *)self artworkFetcher];
+  [(ASCHasher *)v3 combineObject:artworkFetcher];
 
-  v5 = [(ASCPresenterContext *)self lockupFetcher];
-  [(ASCHasher *)v3 combineObject:v5];
+  lockupFetcher = [(ASCPresenterContext *)self lockupFetcher];
+  [(ASCHasher *)v3 combineObject:lockupFetcher];
 
-  v6 = [(ASCPresenterContext *)self appOfferStateCenter];
-  [(ASCHasher *)v3 combineObject:v6];
+  appOfferStateCenter = [(ASCPresenterContext *)self appOfferStateCenter];
+  [(ASCHasher *)v3 combineObject:appOfferStateCenter];
 
-  v7 = [(ASCHasher *)v3 finalizeHash];
-  return v7;
+  finalizeHash = [(ASCHasher *)v3 finalizeHash];
+  return finalizeHash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -93,39 +93,39 @@ void __36__ASCPresenterContext_sharedContext__block_invoke()
 
   if (v7)
   {
-    v8 = [(ASCPresenterContext *)self artworkFetcher];
-    v9 = [v7 artworkFetcher];
-    v10 = v9;
-    if (v8 && v9)
+    artworkFetcher = [(ASCPresenterContext *)self artworkFetcher];
+    artworkFetcher2 = [v7 artworkFetcher];
+    v10 = artworkFetcher2;
+    if (artworkFetcher && artworkFetcher2)
     {
-      if ([v8 isEqual:v9])
+      if ([artworkFetcher isEqual:artworkFetcher2])
       {
 LABEL_10:
-        v11 = [(ASCPresenterContext *)self lockupFetcher];
-        v12 = [v7 lockupFetcher];
-        v13 = v12;
-        if (v11 && v12)
+        lockupFetcher = [(ASCPresenterContext *)self lockupFetcher];
+        lockupFetcher2 = [v7 lockupFetcher];
+        v13 = lockupFetcher2;
+        if (lockupFetcher && lockupFetcher2)
         {
-          if ([v11 isEqual:v12])
+          if ([lockupFetcher isEqual:lockupFetcher2])
           {
             goto LABEL_13;
           }
         }
 
-        else if (v11 == v12)
+        else if (lockupFetcher == lockupFetcher2)
         {
 LABEL_13:
-          v14 = [(ASCPresenterContext *)self appOfferStateCenter];
-          v15 = [v7 appOfferStateCenter];
-          v16 = v15;
-          if (v14 && v15)
+          appOfferStateCenter = [(ASCPresenterContext *)self appOfferStateCenter];
+          appOfferStateCenter2 = [v7 appOfferStateCenter];
+          v16 = appOfferStateCenter2;
+          if (appOfferStateCenter && appOfferStateCenter2)
           {
-            v17 = [v14 isEqual:v15];
+            v17 = [appOfferStateCenter isEqual:appOfferStateCenter2];
           }
 
           else
           {
-            v17 = v14 == v15;
+            v17 = appOfferStateCenter == appOfferStateCenter2;
           }
 
           goto LABEL_23;
@@ -138,7 +138,7 @@ LABEL_23:
       }
     }
 
-    else if (v8 == v9)
+    else if (artworkFetcher == artworkFetcher2)
     {
       goto LABEL_10;
     }
@@ -158,18 +158,18 @@ LABEL_25:
 - (id)description
 {
   v3 = [[ASCDescriber alloc] initWithObject:self];
-  v4 = [(ASCPresenterContext *)self artworkFetcher];
-  [(ASCDescriber *)v3 addObject:v4 withName:@"artworkFetcher"];
+  artworkFetcher = [(ASCPresenterContext *)self artworkFetcher];
+  [(ASCDescriber *)v3 addObject:artworkFetcher withName:@"artworkFetcher"];
 
-  v5 = [(ASCPresenterContext *)self lockupFetcher];
-  [(ASCDescriber *)v3 addObject:v5 withName:@"lockupFetcher"];
+  lockupFetcher = [(ASCPresenterContext *)self lockupFetcher];
+  [(ASCDescriber *)v3 addObject:lockupFetcher withName:@"lockupFetcher"];
 
-  v6 = [(ASCPresenterContext *)self appOfferStateCenter];
-  [(ASCDescriber *)v3 addObject:v6 withName:@"appOfferStateCenter"];
+  appOfferStateCenter = [(ASCPresenterContext *)self appOfferStateCenter];
+  [(ASCDescriber *)v3 addObject:appOfferStateCenter withName:@"appOfferStateCenter"];
 
-  v7 = [(ASCDescriber *)v3 finalizeDescription];
+  finalizeDescription = [(ASCDescriber *)v3 finalizeDescription];
 
-  return v7;
+  return finalizeDescription;
 }
 
 @end

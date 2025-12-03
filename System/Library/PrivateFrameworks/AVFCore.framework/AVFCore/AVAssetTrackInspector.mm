@@ -1,40 +1,40 @@
 @interface AVAssetTrackInspector
-+ (AVAssetTrackInspector)assetTrackInspectorWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5;
++ (AVAssetTrackInspector)assetTrackInspectorWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index;
 - ($2FE3C3292E52C4A5B67D27538456EAD9)gaplessSourceTimeRange;
 - ($2FE3C3292E52C4A5B67D27538456EAD9)mediaDecodeTimeRange;
 - ($2FE3C3292E52C4A5B67D27538456EAD9)mediaPresentationTimeRange;
 - ($2FE3C3292E52C4A5B67D27538456EAD9)timeRange;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)samplePresentationTimeForTrackTime:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)samplePresentationTimeForTrackTime:(SEL)time;
 - (BOOL)hasProtectedContent;
 - (CGAffineTransform)preferredTransform;
 - (CGSize)dimensions;
 - (CGSize)naturalSize;
 - (NSArray)mediaCharacteristics;
 - (NSLocale)locale;
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5;
-- (id)_segmentsForSegmentData:(id)a3;
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index;
+- (id)_segmentsForSegmentData:(id)data;
 - (id)makeSampleCursorAtFirstSampleInDecodeOrder;
 - (id)makeSampleCursorAtLastSampleInDecodeOrder;
-- (id)segmentForTrackTime:(id *)a3;
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4;
+- (id)segmentForTrackTime:(id *)time;
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error;
 - (void)dealloc;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
 @end
 
 @implementation AVAssetTrackInspector
 
-+ (AVAssetTrackInspector)assetTrackInspectorWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5
++ (AVAssetTrackInspector)assetTrackInspectorWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index
 {
-  v5 = [objc_alloc(objc_msgSend(a3 "_classForTrackInspectors"))];
+  v5 = [objc_alloc(objc_msgSend(asset "_classForTrackInspectors"))];
 
   return v5;
 }
 
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index
 {
   v7.receiver = self;
   v7.super_class = AVAssetTrackInspector;
-  v5 = [(AVAssetTrackInspector *)&v7 init:a3];
+  v5 = [(AVAssetTrackInspector *)&v7 init:asset];
   if (v5)
   {
     v5->_weakReference = [[AVWeakReference alloc] initWithReferencedObject:v5];
@@ -51,21 +51,21 @@
   [(AVAssetTrackInspector *)&v3 dealloc];
 }
 
-- (int64_t)statusOfValueForKey:(id)a3 error:(id *)a4
+- (int64_t)statusOfValueForKey:(id)key error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 2;
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
@@ -120,13 +120,13 @@ void *__45__AVAssetTrackInspector_mediaCharacteristics__block_invoke(uint64_t a1
 
 - (NSLocale)locale
 {
-  v3 = [(AVAssetTrackInspector *)self extendedLanguageTag];
-  if (v3 || (v3 = [(AVAssetTrackInspector *)self languageCode]) != 0)
+  extendedLanguageTag = [(AVAssetTrackInspector *)self extendedLanguageTag];
+  if (extendedLanguageTag || (extendedLanguageTag = [(AVAssetTrackInspector *)self languageCode]) != 0)
   {
-    v3 = CFLocaleCreate(*MEMORY[0x1E695E480], v3);
+    extendedLanguageTag = CFLocaleCreate(*MEMORY[0x1E695E480], extendedLanguageTag);
   }
 
-  return v3;
+  return extendedLanguageTag;
 }
 
 - (CGSize)naturalSize
@@ -157,32 +157,32 @@ void *__45__AVAssetTrackInspector_mediaCharacteristics__block_invoke(uint64_t a1
   return self;
 }
 
-- (id)_segmentsForSegmentData:(id)a3
+- (id)_segmentsForSegmentData:(id)data
 {
-  v4 = [a3 length];
+  v4 = [data length];
   if (v4 < 0x60)
   {
     return [MEMORY[0x1E695DEC8] array];
   }
 
   v5 = v4 / 0x60;
-  v6 = [a3 bytes];
+  bytes = [data bytes];
   v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:v5];
   do
   {
     v8 = [AVAssetTrackSegment alloc];
-    v9 = v6[1];
-    v14[0] = *v6;
+    v9 = bytes[1];
+    v14[0] = *bytes;
     v14[1] = v9;
-    v10 = v6[2];
-    v11 = v6[3];
-    v12 = v6[5];
-    v14[4] = v6[4];
+    v10 = bytes[2];
+    v11 = bytes[3];
+    v12 = bytes[5];
+    v14[4] = bytes[4];
     v14[5] = v12;
     v14[2] = v10;
     v14[3] = v11;
     [v7 addObject:{-[AVAssetTrackSegment _initWithTimeMapping:](v8, "_initWithTimeMapping:", v14)}];
-    v6 += 6;
+    bytes += 6;
     --v5;
   }
 
@@ -205,15 +205,15 @@ void *__45__AVAssetTrackInspector_mediaCharacteristics__block_invoke(uint64_t a1
   return self;
 }
 
-- (id)segmentForTrackTime:(id *)a3
+- (id)segmentForTrackTime:(id *)time
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = [(AVAssetTrackInspector *)self segments];
+  segments = [(AVAssetTrackInspector *)self segments];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v5 = [(NSArray *)segments countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v5)
   {
     goto LABEL_26;
@@ -228,7 +228,7 @@ void *__45__AVAssetTrackInspector_mediaCharacteristics__block_invoke(uint64_t a1
     {
       if (*v25 != v8)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(segments);
       }
 
       v10 = *(*(&v24 + 1) + 8 * i);
@@ -246,30 +246,30 @@ void *__45__AVAssetTrackInspector_mediaCharacteristics__block_invoke(uint64_t a1
       }
 
       range = v23;
-      time = *a3;
+      time = *time;
       if (CMTimeRangeContainsTime(&range, &time))
       {
         v7 = v10;
       }
     }
 
-    v6 = [(NSArray *)v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v6 = [(NSArray *)segments countByEnumeratingWithState:&v24 objects:v28 count:16];
   }
 
   while (v6);
   if (!v7)
   {
 LABEL_26:
-    if ([(NSArray *)v4 count])
+    if ([(NSArray *)segments count])
     {
       v17 = 0u;
       v18 = 0u;
       v16 = 0u;
       memset(&range, 0, sizeof(range));
-      v11 = [(NSArray *)v4 firstObject];
-      if (v11)
+      firstObject = [(NSArray *)segments firstObject];
+      if (firstObject)
       {
-        [v11 timeMapping];
+        [firstObject timeMapping];
       }
 
       else
@@ -280,17 +280,17 @@ LABEL_26:
         memset(&range, 0, sizeof(range));
       }
 
-      time = *a3;
+      time = *time;
       *&v14.value = v16;
       v14.epoch = v17;
       if (CMTimeCompare(&time, &v14) < 0)
       {
-        return [(NSArray *)v4 firstObject];
+        return [(NSArray *)segments firstObject];
       }
 
       else
       {
-        return [(NSArray *)v4 lastObject];
+        return [(NSArray *)segments lastObject];
       }
     }
 
@@ -303,7 +303,7 @@ LABEL_26:
   return v7;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)samplePresentationTimeForTrackTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)samplePresentationTimeForTrackTime:(SEL)time
 {
   v14[0] = *a4;
   result = [(AVAssetTrackInspector *)self segmentForTrackTime:v14];
@@ -326,15 +326,15 @@ LABEL_26:
 
 - (BOOL)hasProtectedContent
 {
-  v2 = [(AVAssetTrackInspector *)self formatDescriptions];
-  if (v2)
+  formatDescriptions = [(AVAssetTrackInspector *)self formatDescriptions];
+  if (formatDescriptions)
   {
-    v3 = v2;
-    Count = CFArrayGetCount(v2);
+    v3 = formatDescriptions;
+    Count = CFArrayGetCount(formatDescriptions);
     v5 = Count - 1;
     if (Count < 1)
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(formatDescriptions) = 0;
     }
 
     else
@@ -344,7 +344,7 @@ LABEL_26:
       {
         CFArrayGetValueAtIndex(v3, v6);
         v7 = FigCPEIsSupportedFormatDescription();
-        LOBYTE(v2) = v7 != 0;
+        LOBYTE(formatDescriptions) = v7 != 0;
         if (v7)
         {
           break;
@@ -355,7 +355,7 @@ LABEL_26:
     }
   }
 
-  return v2;
+  return formatDescriptions;
 }
 
 - (id)makeSampleCursorAtFirstSampleInDecodeOrder

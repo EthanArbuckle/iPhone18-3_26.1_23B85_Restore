@@ -1,51 +1,51 @@
 @interface AMSFraudReportResponse
 - (AMSFraudReportResponse)init;
-- (AMSFraudReportResponse)initWithCoder:(id)a3;
-- (AMSFraudReportResponse)initWithNamespace:(id)a3 reportedScore:(unsigned __int8)a4 newScore:(unsigned __int8)a5 evaluatedElementData:(id)a6 proofData:(id)a7 keyID:(id)a8;
-- (AMSFraudReportResponse)initWithResponseDictionary:(id)a3 expectedNamespace:(id)a4 expectedReportedScore:(unsigned __int8)a5 keyID:(id)a6 error:(id *)a7;
-- (AMSFraudReportResponse)initWithURLResult:(id)a3 keyID:(id)a4;
-- (void)_setFinalizedElement:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEvaluatedElement:(id)a3;
-- (void)setFinalizedElement:(id)a3;
-- (void)setKeyID:(id)a3;
-- (void)setNameSpace:(id)a3;
-- (void)setProof:(id)a3;
+- (AMSFraudReportResponse)initWithCoder:(id)coder;
+- (AMSFraudReportResponse)initWithNamespace:(id)namespace reportedScore:(unsigned __int8)score newScore:(unsigned __int8)newScore evaluatedElementData:(id)data proofData:(id)proofData keyID:(id)d;
+- (AMSFraudReportResponse)initWithResponseDictionary:(id)dictionary expectedNamespace:(id)namespace expectedReportedScore:(unsigned __int8)score keyID:(id)d error:(id *)error;
+- (AMSFraudReportResponse)initWithURLResult:(id)result keyID:(id)d;
+- (void)_setFinalizedElement:(id)element;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEvaluatedElement:(id)element;
+- (void)setFinalizedElement:(id)element;
+- (void)setKeyID:(id)d;
+- (void)setNameSpace:(id)space;
+- (void)setProof:(id)proof;
 @end
 
 @implementation AMSFraudReportResponse
 
-- (AMSFraudReportResponse)initWithNamespace:(id)a3 reportedScore:(unsigned __int8)a4 newScore:(unsigned __int8)a5 evaluatedElementData:(id)a6 proofData:(id)a7 keyID:(id)a8
+- (AMSFraudReportResponse)initWithNamespace:(id)namespace reportedScore:(unsigned __int8)score newScore:(unsigned __int8)newScore evaluatedElementData:(id)data proofData:(id)proofData keyID:(id)d
 {
-  v11 = a5;
-  v12 = a4;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (!v14 || !v15 || !v16)
+  newScoreCopy = newScore;
+  scoreCopy = score;
+  namespaceCopy = namespace;
+  dataCopy = data;
+  proofDataCopy = proofData;
+  dCopy = d;
+  if (!namespaceCopy || !dataCopy || !proofDataCopy)
   {
     v29 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"nameSpace userInfo:{evaluatedElementData and proofData must all be non-nil", 0}];
     objc_exception_throw(v29);
   }
 
-  v18 = v17;
+  v18 = dCopy;
   v30.receiver = self;
   v30.super_class = AMSFraudReportResponse;
   v19 = [(AMSFraudReportResponse *)&v30 init];
   if (v19)
   {
-    v20 = [v14 copy];
+    v20 = [namespaceCopy copy];
     nameSpace = v19->_nameSpace;
     v19->_nameSpace = v20;
 
-    v19->_reportedScore = v12;
-    v19->_newScore = v11;
-    v22 = [v15 copy];
+    v19->_reportedScore = scoreCopy;
+    v19->_newScore = newScoreCopy;
+    v22 = [dataCopy copy];
     evaluatedElementData = v19->_evaluatedElementData;
     v19->_evaluatedElementData = v22;
 
-    v24 = [v16 copy];
+    v24 = [proofDataCopy copy];
     proofData = v19->_proofData;
     v19->_proofData = v24;
 
@@ -57,20 +57,20 @@
   return v19;
 }
 
-- (AMSFraudReportResponse)initWithResponseDictionary:(id)a3 expectedNamespace:(id)a4 expectedReportedScore:(unsigned __int8)a5 keyID:(id)a6 error:(id *)a7
+- (AMSFraudReportResponse)initWithResponseDictionary:(id)dictionary expectedNamespace:(id)namespace expectedReportedScore:(unsigned __int8)score keyID:(id)d error:(id *)error
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (!v12 || !v13)
+  scoreCopy = score;
+  dictionaryCopy = dictionary;
+  namespaceCopy = namespace;
+  dCopy = d;
+  if (!dictionaryCopy || !namespaceCopy)
   {
     v43 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"dictionary and expectedNamespace must all be non-nil" userInfo:0];
     objc_exception_throw(v43);
   }
 
-  v15 = v14;
-  v16 = [v12 objectForKeyedSubscript:@"namespace"];
+  v15 = dCopy;
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"namespace"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -78,9 +78,9 @@
 
     if (v17)
     {
-      if (!_os_feature_enabled_impl() || ([v17 isEqualToString:v13] & 1) != 0)
+      if (!_os_feature_enabled_impl() || ([v17 isEqualToString:namespaceCopy] & 1) != 0)
       {
-        v18 = [v12 objectForKeyedSubscript:@"rs"];
+        v18 = [dictionaryCopy objectForKeyedSubscript:@"rs"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -89,17 +89,17 @@
           if (v19)
           {
             v48 = v19;
-            v20 = [v19 unsignedLongLongValue];
+            unsignedLongLongValue = [v19 unsignedLongLongValue];
             if (_os_feature_enabled_impl())
             {
-              if (v20 >= 0x100)
+              if (unsignedLongLongValue >= 0x100)
               {
-                if (a7)
+                if (error)
                 {
                   v21 = @"Rs value in fraud score report response body is out of permitted range";
 LABEL_42:
                   AMSError(4, v21, 0, 0);
-                  *a7 = v23 = 0;
+                  *error = v23 = 0;
 LABEL_44:
                   v24 = v48;
                   goto LABEL_45;
@@ -108,9 +108,9 @@ LABEL_44:
                 goto LABEL_43;
               }
 
-              if (v20 != v9)
+              if (unsignedLongLongValue != scoreCopy)
               {
-                if (a7)
+                if (error)
                 {
                   v21 = @"Rs value in fraud score report response body differs from sent rs value";
                   goto LABEL_42;
@@ -122,7 +122,7 @@ LABEL_43:
               }
             }
 
-            v25 = [v12 objectForKeyedSubscript:@"ns"];
+            v25 = [dictionaryCopy objectForKeyedSubscript:@"ns"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -130,15 +130,15 @@ LABEL_43:
 
               if (v26)
               {
-                v27 = [v26 unsignedLongLongValue];
-                if (_os_feature_enabled_impl() && v27 >= 0x100)
+                unsignedLongLongValue2 = [v26 unsignedLongLongValue];
+                if (_os_feature_enabled_impl() && unsignedLongLongValue2 >= 0x100)
                 {
-                  if (a7)
+                  if (error)
                   {
                     v28 = AMSError(4, @"Ns value in fraud score report response body is out of permitted range", 0, 0);
 LABEL_35:
                     v23 = 0;
-                    *a7 = v28;
+                    *error = v28;
 LABEL_38:
                     v24 = v48;
 LABEL_39:
@@ -151,7 +151,7 @@ LABEL_45:
                 }
 
                 v47 = v26;
-                v30 = [v12 objectForKeyedSubscript:@"evaluatedElement"];
+                v30 = [dictionaryCopy objectForKeyedSubscript:@"evaluatedElement"];
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
@@ -164,10 +164,10 @@ LABEL_45:
                     if (!v32)
                     {
                       v24 = v48;
-                      if (a7)
+                      if (error)
                       {
                         AMSError(4, @"Failed to decode evaluated element string in fraud score report response body", 0, 0);
-                        *a7 = v23 = 0;
+                        *error = v23 = 0;
                         v32 = 0;
                       }
 
@@ -182,7 +182,7 @@ LABEL_45:
                     }
 
                     v45 = v32;
-                    v33 = [v12 objectForKeyedSubscript:@"proof"];
+                    v33 = [dictionaryCopy objectForKeyedSubscript:@"proof"];
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
@@ -196,20 +196,20 @@ LABEL_45:
                         v26 = v47;
                         if (v36)
                         {
-                          v37 = self;
+                          selfCopy = self;
                           v38 = v36;
-                          v39 = [(AMSFraudReportResponse *)v37 initWithNamespace:v17 reportedScore:v20 newScore:v27 evaluatedElementData:v45 proofData:v36 keyID:v15];
+                          v39 = [(AMSFraudReportResponse *)selfCopy initWithNamespace:v17 reportedScore:unsignedLongLongValue newScore:unsignedLongLongValue2 evaluatedElementData:v45 proofData:v36 keyID:v15];
                           v36 = v38;
                           self = v39;
                           v23 = v39;
                         }
 
-                        else if (a7)
+                        else if (error)
                         {
                           v42 = AMSError(4, @"Failed to decode proof string in fraud score report response body", 0, 0);
                           v36 = 0;
                           v23 = 0;
-                          *a7 = v42;
+                          *error = v42;
                         }
 
                         else
@@ -237,12 +237,12 @@ LABEL_74:
                     }
 
                     v26 = v47;
-                    if (a7)
+                    if (error)
                     {
                       v40 = AMSError(7, @"No proof in fraud score report response body", 0, 0);
                       v41 = 0;
                       v23 = 0;
-                      *a7 = v40;
+                      *error = v40;
                     }
 
                     else
@@ -261,11 +261,11 @@ LABEL_74:
                 }
 
                 v26 = v47;
-                if (a7)
+                if (error)
                 {
                   AMSError(7, @"No evaluated element in fraud score report response body", 0, 0);
                   v35 = 0;
-                  *a7 = v23 = 0;
+                  *error = v23 = 0;
                 }
 
                 else
@@ -283,7 +283,7 @@ LABEL_74:
             {
             }
 
-            if (a7)
+            if (error)
             {
               v28 = AMSError(7, @"No ns in fraud score report response body", 0, 0);
               v26 = 0;
@@ -301,11 +301,11 @@ LABEL_37:
         {
         }
 
-        if (a7)
+        if (error)
         {
           AMSError(7, @"No rs in fraud score report response body", 0, 0);
           v24 = 0;
-          *a7 = v23 = 0;
+          *error = v23 = 0;
         }
 
         else
@@ -317,7 +317,7 @@ LABEL_37:
         goto LABEL_45;
       }
 
-      if (a7)
+      if (error)
       {
         v22 = AMSError(4, @"Namespace in fraud score report response body differs from sent namespace", 0, 0);
         goto LABEL_16;
@@ -333,7 +333,7 @@ LABEL_18:
   {
   }
 
-  if (!a7)
+  if (!error)
   {
     v17 = 0;
     goto LABEL_18;
@@ -343,35 +343,35 @@ LABEL_18:
   v17 = 0;
 LABEL_16:
   v23 = 0;
-  *a7 = v22;
+  *error = v22;
 LABEL_46:
 
   return v23;
 }
 
-- (void)_setFinalizedElement:(id)a3
+- (void)_setFinalizedElement:(id)element
 {
-  self->_finalizedElement = [a3 copy];
+  self->_finalizedElement = [element copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   nameSpace = self->_nameSpace;
-  v5 = a3;
-  [v5 encodeObject:nameSpace forKey:@"namespace"];
-  [v5 encodeInteger:self->_reportedScore forKey:@"rs"];
-  [v5 encodeInteger:self->_newScore forKey:@"ns"];
-  [v5 encodeObject:self->_evaluatedElementData forKey:@"evaluatedElement"];
-  [v5 encodeObject:self->_finalizedElement forKey:@"finalizedElement"];
-  [v5 encodeObject:self->_proofData forKey:@"proof"];
-  [v5 encodeObject:self->_keyID forKey:@"keyID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:nameSpace forKey:@"namespace"];
+  [coderCopy encodeInteger:self->_reportedScore forKey:@"rs"];
+  [coderCopy encodeInteger:self->_newScore forKey:@"ns"];
+  [coderCopy encodeObject:self->_evaluatedElementData forKey:@"evaluatedElement"];
+  [coderCopy encodeObject:self->_finalizedElement forKey:@"finalizedElement"];
+  [coderCopy encodeObject:self->_proofData forKey:@"proof"];
+  [coderCopy encodeObject:self->_keyID forKey:@"keyID"];
 }
 
-- (AMSFraudReportResponse)initWithCoder:(id)a3
+- (AMSFraudReportResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = AMSFraudReportResponse;
   v5 = [(AMSFraudReportResponse *)&v22 init];
@@ -380,8 +380,8 @@ LABEL_46:
     goto LABEL_8;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"namespace"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"finalizedElement"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"namespace"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"finalizedElement"];
   v8 = v7;
   if (v6)
   {
@@ -403,17 +403,17 @@ LABEL_46:
     v5->_finalizedElement = v8;
     v14 = v8;
 
-    v5->_reportedScore = [v4 decodeIntegerForKey:@"rs"];
-    v5->_newScore = [v4 decodeIntegerForKey:@"ns"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"evaluatedElement"];
+    v5->_reportedScore = [coderCopy decodeIntegerForKey:@"rs"];
+    v5->_newScore = [coderCopy decodeIntegerForKey:@"ns"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"evaluatedElement"];
     evaluatedElementData = v5->_evaluatedElementData;
     v5->_evaluatedElementData = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"proof"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proof"];
     proofData = v5->_proofData;
     v5->_proofData = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyID"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyID"];
     keyID = v5->_keyID;
     v5->_keyID = v19;
 
@@ -435,14 +435,14 @@ LABEL_9:
   return [(AMSFraudReportResponse *)&v3 init];
 }
 
-- (AMSFraudReportResponse)initWithURLResult:(id)a3 keyID:(id)a4
+- (AMSFraudReportResponse)initWithURLResult:(id)result keyID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 object];
+  dCopy = d;
+  object = [result object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = object;
   }
 
   else
@@ -532,7 +532,7 @@ LABEL_24:
         proofData = v9->_proofData;
         v9->_proofData = v23;
 
-        v25 = [v6 copy];
+        v25 = [dCopy copy];
         keyID = v9->_keyID;
         v9->_keyID = v25;
 
@@ -555,49 +555,49 @@ LABEL_25:
   return v9;
 }
 
-- (void)setNameSpace:(id)a3
+- (void)setNameSpace:(id)space
 {
-  self->_nameSpace = [a3 copy];
+  self->_nameSpace = [space copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setProof:(id)a3
+- (void)setProof:(id)proof
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  proofCopy = proof;
+  v6 = proofCopy;
+  if (proofCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v4 options:0];
+    proofCopy = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:proofCopy options:0];
   }
 
   proofData = self->_proofData;
-  self->_proofData = v4;
+  self->_proofData = proofCopy;
 }
 
-- (void)setEvaluatedElement:(id)a3
+- (void)setEvaluatedElement:(id)element
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  elementCopy = element;
+  v6 = elementCopy;
+  if (elementCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v4 options:0];
+    elementCopy = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:elementCopy options:0];
   }
 
   evaluatedElementData = self->_evaluatedElementData;
-  self->_evaluatedElementData = v4;
+  self->_evaluatedElementData = elementCopy;
 }
 
-- (void)setFinalizedElement:(id)a3
+- (void)setFinalizedElement:(id)element
 {
-  self->_finalizedElement = [a3 copy];
+  self->_finalizedElement = [element copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setKeyID:(id)a3
+- (void)setKeyID:(id)d
 {
-  self->_keyID = [a3 copy];
+  self->_keyID = [d copy];
 
   MEMORY[0x1EEE66BB8]();
 }

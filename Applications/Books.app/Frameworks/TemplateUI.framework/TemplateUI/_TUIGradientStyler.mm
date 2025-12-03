@@ -1,87 +1,87 @@
 @interface _TUIGradientStyler
-- (BOOL)isEqualToStyle:(id)a3;
+- (BOOL)isEqualToStyle:(id)style;
 - (CAFilter)compositingFilter;
-- (CGImage)maskImageWithStartPoint:(double)a3 endPoint:(double)a4 offset:(double)a5 startColor:(id)a6 endColor:(id)a7 direction:(unint64_t)a8 containerBounds:(CGRect)a9;
-- (_TUIGradientStyler)initWithLayout:(id)a3;
-- (void)applyStylingToLayer:(id)a3;
-- (void)applyStylingToView:(id)a3;
-- (void)removeStylingFromLayer:(id)a3;
-- (void)removeStylingFromView:(id)a3;
+- (CGImage)maskImageWithStartPoint:(double)point endPoint:(double)endPoint offset:(double)offset startColor:(id)color endColor:(id)endColor direction:(unint64_t)direction containerBounds:(CGRect)bounds;
+- (_TUIGradientStyler)initWithLayout:(id)layout;
+- (void)applyStylingToLayer:(id)layer;
+- (void)applyStylingToView:(id)view;
+- (void)removeStylingFromLayer:(id)layer;
+- (void)removeStylingFromView:(id)view;
 @end
 
 @implementation _TUIGradientStyler
 
-- (_TUIGradientStyler)initWithLayout:(id)a3
+- (_TUIGradientStyler)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v37.receiver = self;
   v37.super_class = _TUIGradientStyler;
   v5 = [(_TUIGradientStyler *)&v37 init];
   if (v5)
   {
-    v6 = [v4 box];
-    v7 = [v6 gradientStartColor];
+    v6 = [layoutCopy box];
+    gradientStartColor = [v6 gradientStartColor];
     startColor = v5->_startColor;
-    v5->_startColor = v7;
+    v5->_startColor = gradientStartColor;
 
-    v9 = [v4 box];
-    v10 = [v9 gradientEndColor];
+    v9 = [layoutCopy box];
+    gradientEndColor = [v9 gradientEndColor];
     endColor = v5->_endColor;
-    v5->_endColor = v10;
+    v5->_endColor = gradientEndColor;
 
-    v12 = [v4 box];
+    v12 = [layoutCopy box];
     [v12 gradientStartPosition];
     v5->_startPosition = v13;
 
-    v14 = [v4 box];
+    v14 = [layoutCopy box];
     [v14 gradientEndPosition];
     v5->_endPosition = v15;
 
-    v16 = [v4 box];
+    v16 = [layoutCopy box];
     v5->_direction = [v16 gradientDirection];
 
     v17 = objc_opt_class();
-    v18 = [v4 layoutAncestor];
-    v19 = [v18 box];
+    layoutAncestor = [layoutCopy layoutAncestor];
+    v19 = [layoutAncestor box];
     v20 = TUIDynamicCast(v17, v19);
     [v20 cornerRadius];
     v5->_cornerRadius = v21;
 
-    v22 = [v4 box];
+    v22 = [layoutCopy box];
     v5->_continuousCorners = [v22 continuousCorners];
 
-    v23 = [v4 box];
-    v24 = [v23 blendMode];
-    v25 = [v24 copy];
+    v23 = [layoutCopy box];
+    blendMode = [v23 blendMode];
+    v25 = [blendMode copy];
     blendMode = v5->_blendMode;
     v5->_blendMode = v25;
 
-    v27 = [v4 box];
+    v27 = [layoutCopy box];
     [v27 gradientBlurRadius];
     v5->_blurRadius = v28;
 
-    v29 = [v4 box];
+    v29 = [layoutCopy box];
     [v29 gradientBlurOffset];
     v5->_blurOffset = v30;
 
-    v31 = [v4 box];
+    v31 = [layoutCopy box];
     [v31 opacity];
     v5->_opacity = v32;
 
-    v33 = [v4 box];
-    v34 = [v33 opacityTriggers];
+    v33 = [layoutCopy box];
+    opacityTriggers = [v33 opacityTriggers];
     opacityTriggers = v5->_opacityTriggers;
-    v5->_opacityTriggers = v34;
+    v5->_opacityTriggers = opacityTriggers;
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToStyle:(id)a3
+- (BOOL)isEqualToStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = objc_opt_class();
-  v6 = TUIDynamicCast(v5, v4);
+  v6 = TUIDynamicCast(v5, styleCopy);
 
   if (v6 == self)
   {
@@ -108,9 +108,9 @@ LABEL_21:
   return v11;
 }
 
-- (void)applyStylingToLayer:(id)a3
+- (void)applyStylingToLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v5 = kCAFilterVariableBlur;
   if ([(NSString *)self->_blendMode isEqualToString:kCAFilterVariableBlur])
   {
@@ -122,12 +122,12 @@ LABEL_21:
     v8 = [NSNumber numberWithDouble:self->_blurRadius];
     [v7 setValue:v8 forKey:@"inputRadius"];
 
-    [v4 setAllowsHitTesting:0];
+    [layerCopy setAllowsHitTesting:0];
     v30 = v7;
     v9 = [NSArray arrayWithObjects:&v30 count:1];
-    [v4 setFilters:v9];
+    [layerCopy setFilters:v9];
 
-    [v4 setMasksToBounds:1];
+    [layerCopy setMasksToBounds:1];
   }
 
   else
@@ -141,33 +141,33 @@ LABEL_21:
       v11 = [NSNumber numberWithDouble:self->_blurRadius];
       [v7 setValue:v11 forKey:@"inputRadius"];
 
-      v12 = +[CAGradientLayer layer];
+      compositingFilter = +[CAGradientLayer layer];
       v29[0] = [(UIColor *)self->_startColor CGColor];
       v29[1] = [(UIColor *)self->_endColor CGColor];
       v13 = [NSArray arrayWithObjects:v29 count:2];
-      [v12 setColors:v13];
+      [compositingFilter setColors:v13];
 
       v14 = [NSNumber numberWithDouble:self->_startPosition];
       v28[0] = v14;
       v15 = [NSNumber numberWithDouble:self->_endPosition];
       v28[1] = v15;
       v16 = [NSArray arrayWithObjects:v28 count:2];
-      [v12 setLocations:v16];
+      [compositingFilter setLocations:v16];
 
-      [v4 bounds];
-      [v12 setFrame:?];
-      [v4 setAllowsHitTesting:0];
+      [layerCopy bounds];
+      [compositingFilter setFrame:?];
+      [layerCopy setAllowsHitTesting:0];
       v27 = v7;
       v17 = [NSArray arrayWithObjects:&v27 count:1];
-      [v4 setFilters:v17];
+      [layerCopy setFilters:v17];
 
-      [v4 setMasksToBounds:1];
-      [v4 setMask:v12];
+      [layerCopy setMasksToBounds:1];
+      [layerCopy setMask:compositingFilter];
     }
 
     else
     {
-      v7 = v4;
+      v7 = layerCopy;
       startColor = self->_startColor;
       if (startColor && self->_endColor)
       {
@@ -200,41 +200,41 @@ LABEL_21:
 
       [v7 setCornerCurve:*v22];
       [v7 setCornerRadius:self->_cornerRadius];
-      v12 = [(_TUIGradientStyler *)self compositingFilter];
-      [v7 setCompositingFilter:v12];
+      compositingFilter = [(_TUIGradientStyler *)self compositingFilter];
+      [v7 setCompositingFilter:compositingFilter];
     }
   }
 
   v23 = objc_opt_class();
-  v24 = TUIDynamicCast(v23, v4);
+  v24 = TUIDynamicCast(v23, layerCopy);
   [v24 setOpacityTriggers:self->_opacityTriggers];
   if (!self->_opacityTriggers)
   {
     opacity = self->_opacity;
     *&opacity = opacity;
-    [v4 setOpacity:opacity];
+    [layerCopy setOpacity:opacity];
   }
 }
 
-- (void)applyStylingToView:(id)a3
+- (void)applyStylingToView:(id)view
 {
-  v4 = [a3 layer];
-  [(_TUIGradientStyler *)self applyStylingToLayer:v4];
+  layer = [view layer];
+  [(_TUIGradientStyler *)self applyStylingToLayer:layer];
 }
 
-- (void)removeStylingFromLayer:(id)a3
+- (void)removeStylingFromLayer:(id)layer
 {
-  v3 = a3;
+  layerCopy = layer;
   v4 = objc_opt_class();
-  v5 = TUIDynamicCast(v4, v3);
+  v5 = TUIDynamicCast(v4, layerCopy);
 
   [v5 setOpacityTriggers:0];
 }
 
-- (void)removeStylingFromView:(id)a3
+- (void)removeStylingFromView:(id)view
 {
-  v4 = [a3 layer];
-  [(_TUIGradientStyler *)self removeStylingFromLayer:v4];
+  layer = [view layer];
+  [(_TUIGradientStyler *)self removeStylingFromLayer:layer];
 }
 
 - (CAFilter)compositingFilter
@@ -252,14 +252,14 @@ LABEL_21:
   return v3;
 }
 
-- (CGImage)maskImageWithStartPoint:(double)a3 endPoint:(double)a4 offset:(double)a5 startColor:(id)a6 endColor:(id)a7 direction:(unint64_t)a8 containerBounds:(CGRect)a9
+- (CGImage)maskImageWithStartPoint:(double)point endPoint:(double)endPoint offset:(double)offset startColor:(id)color endColor:(id)endColor direction:(unint64_t)direction containerBounds:(CGRect)bounds
 {
-  height = a9.size.height;
-  width = a9.size.width;
-  y = a9.origin.y;
-  x = a9.origin.x;
-  v18 = a6;
-  v19 = a7;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  colorCopy = color;
+  endColorCopy = endColor;
   v20 = +[UIGraphicsImageRendererFormat preferredFormat];
   [v20 setPreferredRange:2];
   v21 = [[UIGraphicsImageRenderer alloc] initWithBounds:v20 format:{x, y, width, height}];
@@ -271,19 +271,19 @@ LABEL_21:
   v35 = y;
   v36 = width;
   v37 = height;
-  v32 = v18;
-  v33 = v19;
-  v38 = a5;
-  v39 = a8;
-  v40 = a3;
-  v41 = a4;
-  v22 = v19;
-  v23 = v18;
+  v32 = colorCopy;
+  v33 = endColorCopy;
+  offsetCopy = offset;
+  directionCopy = direction;
+  pointCopy = point;
+  endPointCopy = endPoint;
+  v22 = endColorCopy;
+  v23 = colorCopy;
   v24 = [v21 imageWithActions:&v28];
   v25 = v24;
-  v26 = [v25 CGImage];
+  cGImage = [v25 CGImage];
 
-  return v26;
+  return cGImage;
 }
 
 @end

@@ -12,7 +12,7 @@
 {
   if (+[SPUISUtilities isMacOS])
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___SPUISSearchInAppSectionBuilder;
     v3 = objc_msgSendSuper2(&v5, sel_supportedBundleId);
   }
@@ -36,9 +36,9 @@
   else
   {
     v4 = objc_opt_new();
-    v5 = [(SPUISSearchInAppSectionBuilder *)self bundleIdentifiersForHiddenSections];
-    v6 = [(SPUISSearchInAppSectionBuilder *)self searchInAppInfo];
-    v7 = [v6 mutableCopy];
+    bundleIdentifiersForHiddenSections = [(SPUISSearchInAppSectionBuilder *)self bundleIdentifiersForHiddenSections];
+    searchInAppInfo = [(SPUISSearchInAppSectionBuilder *)self searchInAppInfo];
+    v7 = [searchInAppInfo mutableCopy];
     v8 = v7;
     if (v7)
     {
@@ -52,8 +52,8 @@
 
     v10 = v9;
 
-    v11 = [(SPUISSectionBuilder *)self queryContext];
-    v12 = [v11 searchString];
+    queryContext = [(SPUISSectionBuilder *)self queryContext];
+    searchString = [queryContext searchString];
 
     if ([v10 count])
     {
@@ -68,9 +68,9 @@
         v14 = [v10 objectAtIndexedSubscript:v13];
         v15 = v13 + 1;
         v16 = [v10 objectAtIndexedSubscript:v15];
-        if ([v5 containsObject:v14] && (SSScreenTimeStatusForBundleIDWithCompletionHandler() & 1) == 0)
+        if ([bundleIdentifiersForHiddenSections containsObject:v14] && (SSScreenTimeStatusForBundleIDWithCompletionHandler() & 1) == 0)
         {
-          v17 = [SPUISSearchInAppResultBuilder buildResultWithAppName:v16 appBundleId:v14 searchString:v12 searchInAppType:0];
+          v17 = [SPUISSearchInAppResultBuilder buildResultWithAppName:v16 appBundleId:v14 searchString:searchString searchInAppType:0];
           [v4 addObject:v17];
         }
 
@@ -80,26 +80,26 @@
       while ([v10 count] > v13);
     }
 
-    v18 = [objc_opt_class() cachedPreferredStoreBundleIdentifier];
-    if (v18 && (SSScreenTimeStatusForBundleIDWithCompletionHandler() & 1) == 0)
+    cachedPreferredStoreBundleIdentifier = [objc_opt_class() cachedPreferredStoreBundleIdentifier];
+    if (cachedPreferredStoreBundleIdentifier && (SSScreenTimeStatusForBundleIDWithCompletionHandler() & 1) == 0)
     {
-      v19 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v18 allowPlaceholder:1 error:0];
-      v20 = [v19 localizedName];
+      v19 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:cachedPreferredStoreBundleIdentifier allowPlaceholder:1 error:0];
+      localizedName = [v19 localizedName];
 
-      v21 = +[SPUISSearchInAppResultBuilder buildResultWithAppName:appBundleId:searchString:searchInAppType:](SPUISSearchInAppResultBuilder, "buildResultWithAppName:appBundleId:searchString:searchInAppType:", v20, v18, v12, [v18 isEqual:@"com.apple.AppStore"] ^ 1);
+      v21 = +[SPUISSearchInAppResultBuilder buildResultWithAppName:appBundleId:searchString:searchInAppType:](SPUISSearchInAppResultBuilder, "buildResultWithAppName:appBundleId:searchString:searchInAppType:", localizedName, cachedPreferredStoreBundleIdentifier, searchString, [cachedPreferredStoreBundleIdentifier isEqual:@"com.apple.AppStore"] ^ 1);
       [v4 addObject:v21];
     }
 
-    v36 = v12;
+    v36 = searchString;
     if (buildSection_onceToken != -1)
     {
       [SPUISSearchInAppSectionBuilder buildSection];
     }
 
-    v35 = v18;
+    v35 = cachedPreferredStoreBundleIdentifier;
     if (buildSection_localizedMapsName && (SSScreenTimeStatusForBundleIDWithCompletionHandler() & 1) == 0)
     {
-      v22 = [SPUISSearchInAppResultBuilder buildResultWithAppName:buildSection_localizedMapsName appBundleId:@"com.apple.Maps" searchString:v12 searchInAppType:0, v18];
+      v22 = [SPUISSearchInAppResultBuilder buildResultWithAppName:buildSection_localizedMapsName appBundleId:@"com.apple.Maps" searchString:searchString searchInAppType:0, cachedPreferredStoreBundleIdentifier];
       [v4 addObject:v22];
     }
 
@@ -123,8 +123,8 @@
           }
 
           v28 = *(*(&v37 + 1) + 8 * i);
-          v29 = [(SPUISSectionBuilder *)self queryContext];
-          [v28 setQueryId:{objc_msgSend(v29, "queryIdent")}];
+          queryContext2 = [(SPUISSectionBuilder *)self queryContext];
+          [v28 setQueryId:{objc_msgSend(queryContext2, "queryIdent")}];
 
           [v28 setSectionBundleIdentifier:@"com.apple.searchd.searchThroughSuggestions"];
         }
@@ -138,9 +138,9 @@
     if ([v23 count])
     {
       v3 = objc_opt_new();
-      v30 = [MEMORY[0x277CCAD78] UUID];
-      v31 = [v30 UUIDString];
-      [v3 setIdentifier:v31];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      [v3 setIdentifier:uUIDString];
 
       [v3 setBundleIdentifier:@"com.apple.searchd.searchThroughSuggestions"];
       [v3 setResults:v23];
@@ -169,14 +169,14 @@ void __46__SPUISSearchInAppSectionBuilder_buildSection__block_invoke()
 
 + (id)cachedPreferredStoreBundleIdentifier
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = s_cachedPreferredStoreBundleID;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (!v3)
   {
-    [v2 updateCachedPreferredStoreBundleID];
+    [selfCopy updateCachedPreferredStoreBundleID];
   }
 
   return v3;
@@ -188,7 +188,7 @@ void __46__SPUISSearchInAppSectionBuilder_buildSection__block_invoke()
   block[1] = 3221225472;
   block[2] = __68__SPUISSearchInAppSectionBuilder_updateCachedPreferredStoreBundleID__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (updateCachedPreferredStoreBundleID_onceToken != -1)
   {
     dispatch_once(&updateCachedPreferredStoreBundleID_onceToken, block);
@@ -198,7 +198,7 @@ void __46__SPUISSearchInAppSectionBuilder_buildSection__block_invoke()
   v3[1] = 3221225472;
   v3[2] = __68__SPUISSearchInAppSectionBuilder_updateCachedPreferredStoreBundleID__block_invoke_3;
   v3[3] = &__block_descriptor_40_e5_v8__0l;
-  v3[4] = a1;
+  v3[4] = self;
   dispatch_async(updateCachedPreferredStoreBundleID_queue, v3);
 }
 
@@ -256,16 +256,16 @@ void __68__SPUISSearchInAppSectionBuilder_updateCachedPreferredStoreBundleID__bl
 
 - (BOOL)shouldSkipSection
 {
-  v3 = [(SPUISSectionBuilder *)self queryContext];
-  v4 = [v3 searchEntities];
-  v5 = [v4 count];
+  queryContext = [(SPUISSectionBuilder *)self queryContext];
+  searchEntities = [queryContext searchEntities];
+  v5 = [searchEntities count];
 
   if (!v5)
   {
     v6 = SSDefaultsGetResources();
     v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"9fb9d89e-6213-484c-9123-fbe1626207a7"];
-    v8 = [(SPUISSectionBuilder *)self queryContext];
-    [v6 logForTrigger:v7 queryID:{objc_msgSend(v8, "queryIdent")}];
+    queryContext2 = [(SPUISSectionBuilder *)self queryContext];
+    [v6 logForTrigger:v7 queryID:{objc_msgSend(queryContext2, "queryIdent")}];
   }
 
   v9 = SSShowSearchInApps() ^ 1;

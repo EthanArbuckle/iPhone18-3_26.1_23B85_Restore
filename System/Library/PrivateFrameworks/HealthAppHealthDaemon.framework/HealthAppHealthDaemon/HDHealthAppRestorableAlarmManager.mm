@@ -1,30 +1,30 @@
 @interface HDHealthAppRestorableAlarmManager
-- (BOOL)removeAlarmEventWithIdentifier:(id)a3 error:(id *)a4;
+- (BOOL)removeAlarmEventWithIdentifier:(id)identifier error:(id *)error;
 - (HDDaemon)daemon;
-- (HDHealthAppRestorableAlarmManager)initWithDaemon:(id)a3;
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4;
-- (void)_queue_removeAlarmEvent:(id)a3;
-- (void)_queue_scheduleAlarmEvent:(id)a3 completion:(id)a4;
-- (void)_rescheduleAlarmEvent:(id)a3 dueDate:(id)a4 completion:(id)a5;
-- (void)_scheduleAlarmEventWithHandler:(id)a3 dueDate:(id)a4 eventOptions:(unint64_t)a5 completion:(id)a6;
-- (void)daemonReady:(id)a3;
-- (void)removeAlarmEvent:(id)a3;
-- (void)scheduleAlarmEvent:(id)a3 completion:(id)a4;
-- (void)setHandlerForAlarmEvent:(id)a3 handler:(id)a4;
+- (HDHealthAppRestorableAlarmManager)initWithDaemon:(id)daemon;
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events;
+- (void)_queue_removeAlarmEvent:(id)event;
+- (void)_queue_scheduleAlarmEvent:(id)event completion:(id)completion;
+- (void)_rescheduleAlarmEvent:(id)event dueDate:(id)date completion:(id)completion;
+- (void)_scheduleAlarmEventWithHandler:(id)handler dueDate:(id)date eventOptions:(unint64_t)options completion:(id)completion;
+- (void)daemonReady:(id)ready;
+- (void)removeAlarmEvent:(id)event;
+- (void)scheduleAlarmEvent:(id)event completion:(id)completion;
+- (void)setHandlerForAlarmEvent:(id)event handler:(id)handler;
 @end
 
 @implementation HDHealthAppRestorableAlarmManager
 
-- (HDHealthAppRestorableAlarmManager)initWithDaemon:(id)a3
+- (HDHealthAppRestorableAlarmManager)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v17.receiver = self;
   v17.super_class = HDHealthAppRestorableAlarmManager;
   v5 = [(HDHealthAppRestorableAlarmManager *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_daemon, v4);
+    objc_storeWeak(&v5->_daemon, daemonCopy);
     v7 = objc_alloc_init(MEMORY[0x277CCDE48]);
     alarmHandlers = v6->_alarmHandlers;
     v6->_alarmHandlers = v7;
@@ -34,8 +34,8 @@
     v6->_queue = v9;
 
     v11 = objc_alloc(MEMORY[0x277D10838]);
-    v12 = [v4 primaryProfile];
-    v13 = [v11 initWithProfile:v12 clientIdentifier:@"HDHealthAppDaemonExtension" eventHandlerQueue:v6->_queue];
+    primaryProfile = [daemonCopy primaryProfile];
+    v13 = [v11 initWithProfile:primaryProfile clientIdentifier:@"HDHealthAppDaemonExtension" eventHandlerQueue:v6->_queue];
     scheduler = v6->_scheduler;
     v6->_scheduler = v13;
 
@@ -46,10 +46,10 @@
   return v6;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   _HKInitializeLogging();
   v5 = HKLogWellnessDashboard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -82,32 +82,32 @@ void __49__HDHealthAppRestorableAlarmManager_daemonReady___block_invoke(uint64_t
   [WeakRetained _queue_alarm:v6 didReceiveDueEvents:v5];
 }
 
-- (void)_scheduleAlarmEventWithHandler:(id)a3 dueDate:(id)a4 eventOptions:(unint64_t)a5 completion:(id)a6
+- (void)_scheduleAlarmEventWithHandler:(id)handler dueDate:(id)date eventOptions:(unint64_t)options completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v14 = [v12 eventIdentifier];
-  v13 = [(HDHealthAppRestorableAlarmManager *)self createAlarmEventWithIdentifier:v14 dueDate:v11 eventOptions:a5];
+  completionCopy = completion;
+  dateCopy = date;
+  handlerCopy = handler;
+  eventIdentifier = [handlerCopy eventIdentifier];
+  v13 = [(HDHealthAppRestorableAlarmManager *)self createAlarmEventWithIdentifier:eventIdentifier dueDate:dateCopy eventOptions:options];
 
-  [(HDHealthAppRestorableAlarmManager *)self setHandlerForAlarmEvent:v13 handler:v12];
-  [(HDHealthAppRestorableAlarmManager *)self scheduleAlarmEvent:v13 completion:v10];
+  [(HDHealthAppRestorableAlarmManager *)self setHandlerForAlarmEvent:v13 handler:handlerCopy];
+  [(HDHealthAppRestorableAlarmManager *)self scheduleAlarmEvent:v13 completion:completionCopy];
 }
 
-- (void)setHandlerForAlarmEvent:(id)a3 handler:(id)a4
+- (void)setHandlerForAlarmEvent:(id)event handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__HDHealthAppRestorableAlarmManager_setHandlerForAlarmEvent_handler___block_invoke;
   block[3] = &unk_278658510;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = handlerCopy;
+  v13 = eventCopy;
+  v9 = eventCopy;
+  v10 = handlerCopy;
   dispatch_async(queue, block);
 }
 
@@ -121,40 +121,40 @@ void __69__HDHealthAppRestorableAlarmManager_setHandlerForAlarmEvent_handler___b
   [v3 addObserver:v2 queue:v4 forKey:v5];
 }
 
-- (void)scheduleAlarmEvent:(id)a3 completion:(id)a4
+- (void)scheduleAlarmEvent:(id)event completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__HDHealthAppRestorableAlarmManager_scheduleAlarmEvent_completion___block_invoke;
   block[3] = &unk_278658538;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = eventCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_rescheduleAlarmEvent:(id)a3 dueDate:(id)a4 completion:(id)a5
+- (void)_rescheduleAlarmEvent:(id)event dueDate:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  dateCopy = date;
+  completionCopy = completion;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __78__HDHealthAppRestorableAlarmManager__rescheduleAlarmEvent_dueDate_completion___block_invoke;
   v15[3] = &unk_278658560;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = eventCopy;
+  v17 = dateCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = dateCopy;
+  v14 = eventCopy;
   dispatch_async(queue, v15);
 }
 
@@ -168,10 +168,10 @@ void __78__HDHealthAppRestorableAlarmManager__rescheduleAlarmEvent_dueDate_compl
   [*(a1 + 32) _queue_scheduleAlarmEvent:v4 completion:*(a1 + 56)];
 }
 
-- (BOOL)removeAlarmEventWithIdentifier:(id)a3 error:(id *)a4
+- (BOOL)removeAlarmEventWithIdentifier:(id)identifier error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   scheduler = self->_scheduler;
   v31 = 0;
   v8 = [(HDRestorableAlarm *)scheduler allScheduledEventsWithError:&v31];
@@ -192,10 +192,10 @@ void __78__HDHealthAppRestorableAlarmManager__rescheduleAlarmEvent_dueDate_compl
     v12 = v9;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v13 = v12;
-        *a4 = v12;
+        *error = v12;
       }
 
       else
@@ -207,8 +207,8 @@ void __78__HDHealthAppRestorableAlarmManager__rescheduleAlarmEvent_dueDate_compl
 
   else
   {
-    v25 = a4;
-    v26 = self;
+    errorCopy = error;
+    selfCopy = self;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
@@ -229,12 +229,12 @@ void __78__HDHealthAppRestorableAlarmManager__rescheduleAlarmEvent_dueDate_compl
           }
 
           v19 = *(*(&v27 + 1) + 8 * i);
-          v20 = [v19 eventIdentifier];
-          v21 = [v20 isEqualToString:v6];
+          eventIdentifier = [v19 eventIdentifier];
+          v21 = [eventIdentifier isEqualToString:identifierCopy];
 
           if (v21)
           {
-            [(HDHealthAppRestorableAlarmManager *)v26 removeAlarmEvent:v19];
+            [(HDHealthAppRestorableAlarmManager *)selfCopy removeAlarmEvent:v19];
 
             v22 = 1;
             goto LABEL_22;
@@ -251,7 +251,7 @@ void __78__HDHealthAppRestorableAlarmManager__rescheduleAlarmEvent_dueDate_compl
       }
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:v25 code:118 description:@"Scheduled alarm event does not exist"];
+    [MEMORY[0x277CCA9B8] hk_assignError:errorCopy code:118 description:@"Scheduled alarm event does not exist"];
   }
 
   v22 = 0;
@@ -261,30 +261,30 @@ LABEL_22:
   return v22;
 }
 
-- (void)removeAlarmEvent:(id)a3
+- (void)removeAlarmEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__HDHealthAppRestorableAlarmManager_removeAlarmEvent___block_invoke;
   v7[3] = &unk_278658588;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  eventsCopy = events;
   dispatch_assert_queue_V2(self->_queue);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  obj = v5;
+  obj = eventsCopy;
   v6 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -301,14 +301,14 @@ LABEL_22:
 
         v10 = *(*(&v16 + 1) + 8 * i);
         alarmHandlers = self->_alarmHandlers;
-        v12 = [v10 eventIdentifier];
+        eventIdentifier = [v10 eventIdentifier];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __70__HDHealthAppRestorableAlarmManager__queue_alarm_didReceiveDueEvents___block_invoke;
         v15[3] = &unk_2786585D8;
         v15[4] = v10;
         v15[5] = self;
-        [(_HKWeakObserversMap *)alarmHandlers notifyObserversOfKey:v12 handler:v15];
+        [(_HKWeakObserversMap *)alarmHandlers notifyObserversOfKey:eventIdentifier handler:v15];
       }
 
       v7 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -352,14 +352,14 @@ void __70__HDHealthAppRestorableAlarmManager__queue_alarm_didReceiveDueEvents___
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_scheduleAlarmEvent:(id)a3 completion:(id)a4
+- (void)_queue_scheduleAlarmEvent:(id)event completion:(id)completion
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   scheduler = self->_scheduler;
-  v26[0] = v6;
+  v26[0] = eventCopy;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
   v19 = 0;
   v10 = [(HDRestorableAlarm *)scheduler scheduleEvents:v9 error:&v19];
@@ -377,11 +377,11 @@ void __70__HDHealthAppRestorableAlarmManager__queue_alarm_didReceiveDueEvents___
 
     v14 = objc_opt_class();
     v15 = v14;
-    v16 = [v6 description];
+    eventIdentifier = [eventCopy description];
     *buf = 138543618;
     v21 = v14;
     v22 = 2114;
-    v23 = v16;
+    v23 = eventIdentifier;
     _os_log_impl(&dword_22939E000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] Scheduled next alarm %{public}@", buf, 0x16u);
     goto LABEL_4;
   }
@@ -390,11 +390,11 @@ void __70__HDHealthAppRestorableAlarmManager__queue_alarm_didReceiveDueEvents___
   {
     v18 = objc_opt_class();
     v15 = v18;
-    v16 = [v6 eventIdentifier];
+    eventIdentifier = [eventCopy eventIdentifier];
     *buf = 138543874;
     v21 = v18;
     v22 = 2114;
-    v23 = v16;
+    v23 = eventIdentifier;
     v24 = 2114;
     v25 = v11;
     _os_log_error_impl(&dword_22939E000, v13, OS_LOG_TYPE_ERROR, "[%{public}@] Error scheduling next alarm %{public}@: %{public}@", buf, 0x20u);
@@ -403,21 +403,21 @@ LABEL_4:
 
 LABEL_6:
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_removeAlarmEvent:(id)a3
+- (void)_queue_removeAlarmEvent:(id)event
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
   scheduler = self->_scheduler;
-  v23[0] = v4;
+  v23[0] = eventCopy;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   v16 = 0;
   v7 = [(HDRestorableAlarm *)scheduler removeEvents:v6 error:&v16];
@@ -435,11 +435,11 @@ LABEL_6:
 
     v15 = objc_opt_class();
     v12 = v15;
-    v13 = [v4 eventIdentifier];
+    eventIdentifier = [eventCopy eventIdentifier];
     *buf = 138543874;
     v18 = v15;
     v19 = 2114;
-    v20 = v13;
+    v20 = eventIdentifier;
     v21 = 2114;
     v22 = v8;
     _os_log_error_impl(&dword_22939E000, v10, OS_LOG_TYPE_ERROR, "[%{public}@] Error removing alarm %{public}@: %{public}@", buf, 0x20u);
@@ -450,11 +450,11 @@ LABEL_6:
   {
     v11 = objc_opt_class();
     v12 = v11;
-    v13 = [v4 description];
+    eventIdentifier = [eventCopy description];
     *buf = 138543618;
     v18 = v11;
     v19 = 2114;
-    v20 = v13;
+    v20 = eventIdentifier;
     _os_log_impl(&dword_22939E000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Removed alarm %{public}@", buf, 0x16u);
 LABEL_4:
   }

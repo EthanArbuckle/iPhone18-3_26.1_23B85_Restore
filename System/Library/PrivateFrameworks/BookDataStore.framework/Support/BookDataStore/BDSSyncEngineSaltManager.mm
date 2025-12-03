@@ -1,32 +1,32 @@
 @interface BDSSyncEngineSaltManager
-- (BDSSyncEngineSaltManager)initWithDatabase:(id)a3 observer:(id)a4;
+- (BDSSyncEngineSaltManager)initWithDatabase:(id)database observer:(id)observer;
 - (BDSSyncEngineSaltManagerObserver)observer;
 - (BOOL)establishedSalt;
 - (NSString)establishedSaltVersionIdentifier;
-- (id)_wq_saltedAndHashedIDFromLocalID:(id)a3;
-- (id)recordNameFromRecordType:(id)a3 identifier:(id)a4;
+- (id)_wq_saltedAndHashedIDFromLocalID:(id)d;
+- (id)recordNameFromRecordType:(id)type identifier:(id)identifier;
 - (void)_updatedReachability;
 - (void)invalidateSalt;
-- (void)refreshSalt:(id)a3;
-- (void)refreshSaltIfNeeded:(id)a3;
+- (void)refreshSalt:(id)salt;
+- (void)refreshSaltIfNeeded:(id)needed;
 - (void)wq_invalidateSalt;
-- (void)wq_refreshSalt:(id)a3;
+- (void)wq_refreshSalt:(id)salt;
 @end
 
 @implementation BDSSyncEngineSaltManager
 
-- (BDSSyncEngineSaltManager)initWithDatabase:(id)a3 observer:(id)a4
+- (BDSSyncEngineSaltManager)initWithDatabase:(id)database observer:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  observerCopy = observer;
   v16.receiver = self;
   v16.super_class = BDSSyncEngineSaltManager;
   v9 = [(BDSSyncEngineSaltManager *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_database, a3);
-    objc_storeWeak(&v10->_observer, v8);
+    objc_storeStrong(&v9->_database, database);
+    objc_storeWeak(&v10->_observer, observerCopy);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.BDSSyncEngineSaltManager.workQueue", v11);
     workQueue = v10->_workQueue;
@@ -47,14 +47,14 @@
   v10 = sub_10005B674;
   v11 = sub_10005B684;
   v12 = 0;
-  v3 = [(BDSSyncEngineSaltManager *)self workQueue];
+  workQueue = [(BDSSyncEngineSaltManager *)self workQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10005B68C;
   v6[3] = &unk_10023F910;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(workQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -62,45 +62,45 @@
   return v4;
 }
 
-- (void)refreshSalt:(id)a3
+- (void)refreshSalt:(id)salt
 {
-  v4 = a3;
+  saltCopy = salt;
   objc_initWeak(&location, self);
-  v5 = [(BDSSyncEngineSaltManager *)self workQueue];
+  workQueue = [(BDSSyncEngineSaltManager *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005B7C8;
   block[3] = &unk_10023FE48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = saltCopy;
+  v6 = saltCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)refreshSaltIfNeeded:(id)a3
+- (void)refreshSaltIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   objc_initWeak(&location, self);
-  v5 = [(BDSSyncEngineSaltManager *)self workQueue];
+  workQueue = [(BDSSyncEngineSaltManager *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005B908;
   block[3] = &unk_10023FE48;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = neededCopy;
+  v6 = neededCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)wq_refreshSalt:(id)a3
+- (void)wq_refreshSalt:(id)salt
 {
-  v4 = a3;
+  saltCopy = salt;
   if ([(BDSSyncEngineSaltManager *)self isSaltRefreshInProgress])
   {
     v5 = sub_100002660();
@@ -124,14 +124,14 @@
 
     v5 = [[CKRecordID alloc] initWithRecordName:@"recordIDSalt"];
     objc_initWeak(buf, self);
-    v7 = [(BDSSyncEngineSaltManager *)self database];
+    database = [(BDSSyncEngineSaltManager *)self database];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_10005BBE4;
     v8[3] = &unk_100241700;
     objc_copyWeak(&v10, buf);
-    v9 = v4;
-    [v7 fetchRecordWithID:v5 completionHandler:v8];
+    v9 = saltCopy;
+    [database fetchRecordWithID:v5 completionHandler:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
@@ -141,13 +141,13 @@
 - (void)invalidateSalt
 {
   objc_initWeak(&location, self);
-  v3 = [(BDSSyncEngineSaltManager *)self workQueue];
+  workQueue = [(BDSSyncEngineSaltManager *)self workQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005C968;
   v4[3] = &unk_100240058;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(workQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -168,47 +168,47 @@
 
 - (BOOL)establishedSalt
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(BDSSyncEngineSaltManager *)self workQueue];
+  workQueue = [(BDSSyncEngineSaltManager *)self workQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10005CB04;
   v5[3] = &unk_10023F910;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(workQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (id)recordNameFromRecordType:(id)a3 identifier:(id)a4
+- (id)recordNameFromRecordType:(id)type identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  identifierCopy = identifier;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_10005B674;
   v22 = sub_10005B684;
   v23 = 0;
-  v8 = [(BDSSyncEngineSaltManager *)self workQueue];
+  workQueue = [(BDSSyncEngineSaltManager *)self workQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10005CCC0;
   v13[3] = &unk_100241728;
-  v14 = v7;
-  v15 = self;
-  v16 = v6;
+  v14 = identifierCopy;
+  selfCopy = self;
+  v16 = typeCopy;
   v17 = &v18;
-  v9 = v6;
-  v10 = v7;
-  dispatch_sync(v8, v13);
+  v9 = typeCopy;
+  v10 = identifierCopy;
+  dispatch_sync(workQueue, v13);
 
   v11 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -216,21 +216,21 @@
   return v11;
 }
 
-- (id)_wq_saltedAndHashedIDFromLocalID:(id)a3
+- (id)_wq_saltedAndHashedIDFromLocalID:(id)d
 {
-  v4 = a3;
-  v5 = [(BDSSyncEngineSaltManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(BDSSyncEngineSaltManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(BDSSyncEngineSaltManager *)self currentSalt];
-  v7 = v6;
-  if (v6)
+  currentSalt = [(BDSSyncEngineSaltManager *)self currentSalt];
+  v7 = currentSalt;
+  if (currentSalt)
   {
     memset(&v14, 0, sizeof(v14));
-    CCHmacInit(&v14, 0, [v6 bytes], objc_msgSend(v6, "length"));
-    v8 = [v4 UTF8String];
-    v9 = strlen(v8);
-    CCHmacUpdate(&v14, v8, v9);
+    CCHmacInit(&v14, 0, [currentSalt bytes], objc_msgSend(currentSalt, "length"));
+    uTF8String = [dCopy UTF8String];
+    v9 = strlen(uTF8String);
+    CCHmacUpdate(&v14, uTF8String, v9);
     macOut[0] = 0;
     macOut[1] = 0;
     v16 = 0;

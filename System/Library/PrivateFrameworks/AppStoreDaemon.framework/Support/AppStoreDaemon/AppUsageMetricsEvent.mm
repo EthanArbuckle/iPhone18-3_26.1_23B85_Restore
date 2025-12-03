@@ -6,8 +6,8 @@
 
 - (id)description
 {
-  v2 = [(AppUsageMetricsEvent *)self underlyingDictionary];
-  v3 = [NSString stringWithFormat:@"<AppUsageMetricsEvent: %@>", v2];
+  underlyingDictionary = [(AppUsageMetricsEvent *)self underlyingDictionary];
+  v3 = [NSString stringWithFormat:@"<AppUsageMetricsEvent: %@>", underlyingDictionary];
 
   return v3;
 }

@@ -1,22 +1,22 @@
 @interface APDBAdSignalTrackRow
-- (APDBAdSignalTrackRow)initWithTriggerRowId:(id)a3 impressionId:(id)a4 updateTimestamp:(id)a5 table:(id)a6;
+- (APDBAdSignalTrackRow)initWithTriggerRowId:(id)id impressionId:(id)impressionId updateTimestamp:(id)timestamp table:(id)table;
 @end
 
 @implementation APDBAdSignalTrackRow
 
-- (APDBAdSignalTrackRow)initWithTriggerRowId:(id)a3 impressionId:(id)a4 updateTimestamp:(id)a5 table:(id)a6
+- (APDBAdSignalTrackRow)initWithTriggerRowId:(id)id impressionId:(id)impressionId updateTimestamp:(id)timestamp table:(id)table
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  idCopy = id;
+  impressionIdCopy = impressionId;
+  timestampCopy = timestamp;
   v26.receiver = self;
   v26.super_class = APDBAdSignalTrackRow;
-  v13 = [(APDBAdSignalTrackRow *)&v26 initAsNewObjectWithTable:a6];
+  v13 = [(APDBAdSignalTrackRow *)&v26 initAsNewObjectWithTable:table];
   v14 = v13;
   if (v13)
   {
-    [(APDBAdSignalTrackRow *)v13 setValue:v11 forColumnName:@"impressionId"];
-    [(APDBAdSignalTrackRow *)v14 setValue:v10 forColumnName:@"triggerRowId"];
+    [(APDBAdSignalTrackRow *)v13 setValue:impressionIdCopy forColumnName:@"impressionId"];
+    [(APDBAdSignalTrackRow *)v14 setValue:idCopy forColumnName:@"triggerRowId"];
     v15 = [NSNumber numberWithBool:0];
     [(APDBAdSignalTrackRow *)v14 setValue:v15 forColumnName:@"slotVisibleAd"];
 
@@ -47,7 +47,7 @@
     v24 = [NSNumber numberWithBool:0];
     [(APDBAdSignalTrackRow *)v14 setValue:v24 forColumnName:@"viewPreorderPlaced"];
 
-    [(APDBAdSignalTrackRow *)v14 setValue:v12 forColumnName:@"updateTimestamp"];
+    [(APDBAdSignalTrackRow *)v14 setValue:timestampCopy forColumnName:@"updateTimestamp"];
   }
 
   return v14;

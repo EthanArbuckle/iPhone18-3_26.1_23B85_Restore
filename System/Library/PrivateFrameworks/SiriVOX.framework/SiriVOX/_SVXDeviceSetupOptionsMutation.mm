@@ -1,5 +1,5 @@
 @interface _SVXDeviceSetupOptionsMutation
-- (_SVXDeviceSetupOptionsMutation)initWithBaseModel:(id)a3;
+- (_SVXDeviceSetupOptionsMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
@@ -24,15 +24,15 @@ LABEL_5:
 
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v6 = self->_languageCode;
+    languageCode = self->_languageCode;
   }
 
   else
   {
-    v6 = [(SVXDeviceSetupOptions *)baseModel languageCode];
+    languageCode = [(SVXDeviceSetupOptions *)baseModel languageCode];
   }
 
-  v7 = v6;
+  v7 = languageCode;
   mutationFlags = self->_mutationFlags;
   if ((mutationFlags & 4) == 0)
   {
@@ -78,16 +78,16 @@ LABEL_17:
   return v5;
 }
 
-- (_SVXDeviceSetupOptionsMutation)initWithBaseModel:(id)a3
+- (_SVXDeviceSetupOptionsMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SVXDeviceSetupOptionsMutation;
   v6 = [(_SVXDeviceSetupOptionsMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;

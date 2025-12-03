@@ -1,13 +1,13 @@
 @interface TSPResourceContext
 - (NSSet)resourceRequests;
 - (TSPResourceContext)init;
-- (TSPResourceContext)initWithDocumentResourceCache:(id)a3 documentResourceRegistry:(id)a4 sageDocumentResourceLegacyRegistry:(id)a5 tangierDocumentResourceLegacyRegistry:(id)a6;
-- (id)newDataStorageForDocumentResourceInfo:(id)a3 createResourceRequestIfNeeded:(BOOL)a4 error:(id *)a5;
-- (id)performResourceAccessUsingQueue:(id)a3 block:(id)a4;
-- (void)accessQueue_addResourceRequest:(id)a3;
-- (void)addResourceRequests:(id)a3;
-- (void)conditionallyBeginAccessingResourcesWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)removeResourceRequests:(id)a3;
+- (TSPResourceContext)initWithDocumentResourceCache:(id)cache documentResourceRegistry:(id)registry sageDocumentResourceLegacyRegistry:(id)legacyRegistry tangierDocumentResourceLegacyRegistry:(id)resourceLegacyRegistry;
+- (id)newDataStorageForDocumentResourceInfo:(id)info createResourceRequestIfNeeded:(BOOL)needed error:(id *)error;
+- (id)performResourceAccessUsingQueue:(id)queue block:(id)block;
+- (void)accessQueue_addResourceRequest:(id)request;
+- (void)addResourceRequests:(id)requests;
+- (void)conditionallyBeginAccessingResourcesWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)removeResourceRequests:(id)requests;
 @end
 
 @implementation TSPResourceContext
@@ -23,12 +23,12 @@
   return v15;
 }
 
-- (TSPResourceContext)initWithDocumentResourceCache:(id)a3 documentResourceRegistry:(id)a4 sageDocumentResourceLegacyRegistry:(id)a5 tangierDocumentResourceLegacyRegistry:(id)a6
+- (TSPResourceContext)initWithDocumentResourceCache:(id)cache documentResourceRegistry:(id)registry sageDocumentResourceLegacyRegistry:(id)legacyRegistry tangierDocumentResourceLegacyRegistry:(id)resourceLegacyRegistry
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  cacheCopy = cache;
+  registryCopy = registry;
+  legacyRegistryCopy = legacyRegistry;
+  resourceLegacyRegistryCopy = resourceLegacyRegistry;
   v23.receiver = self;
   v23.super_class = TSPResourceContext;
   v15 = [(TSPResourceContext *)&v23 init];
@@ -44,10 +44,10 @@
     progressAggregationQueue = v15->_progressAggregationQueue;
     v15->_progressAggregationQueue = v20;
 
-    objc_storeStrong(&v15->_documentResourceCache, a3);
-    objc_storeStrong(&v15->_documentResourceRegistry, a4);
-    objc_storeStrong(&v15->_sageDocumentResourceLegacyRegistry, a5);
-    objc_storeStrong(&v15->_tangierDocumentResourceLegacyRegistry, a6);
+    objc_storeStrong(&v15->_documentResourceCache, cache);
+    objc_storeStrong(&v15->_documentResourceRegistry, registry);
+    objc_storeStrong(&v15->_sageDocumentResourceLegacyRegistry, legacyRegistry);
+    objc_storeStrong(&v15->_tangierDocumentResourceLegacyRegistry, resourceLegacyRegistry);
   }
 
   return v15;
@@ -75,10 +75,10 @@
   return v5;
 }
 
-- (void)addResourceRequests:(id)a3
+- (void)addResourceRequests:(id)requests
 {
-  v4 = a3;
-  v7 = objc_msgSend_count(v4, v5, v6);
+  requestsCopy = requests;
+  v7 = objc_msgSend_count(requestsCopy, v5, v6);
   if (v7)
   {
     accessQueue = self->_accessQueue;
@@ -88,16 +88,16 @@
     block[3] = &unk_27A6E2C50;
     block[4] = self;
     v11 = v7;
-    v10 = v4;
+    v10 = requestsCopy;
     dispatch_async(accessQueue, block);
   }
 }
 
-- (void)accessQueue_addResourceRequest:(id)a3
+- (void)accessQueue_addResourceRequest:(id)request
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_tags(v4, v5, v6);
+  requestCopy = request;
+  v7 = objc_msgSend_tags(requestCopy, v5, v6);
   if (!objc_msgSend_count(v7, v8, v9))
   {
     goto LABEL_12;
@@ -132,7 +132,7 @@
 
       if (v22)
       {
-        objc_msgSend_setObject_forKey_(self->_accessQueue_resourceRequestTable, v13, v4, v19);
+        objc_msgSend_setObject_forKey_(self->_accessQueue_resourceRequestTable, v13, requestCopy, v19);
         v16 = 1;
       }
     }
@@ -145,7 +145,7 @@
   if (v16)
   {
 LABEL_12:
-    objc_msgSend_addObject_(self->_accessQueue_resourceRequests, v10, v4);
+    objc_msgSend_addObject_(self->_accessQueue_resourceRequests, v10, requestCopy);
   }
 
 LABEL_14:
@@ -153,43 +153,43 @@ LABEL_14:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeResourceRequests:(id)a3
+- (void)removeResourceRequests:(id)requests
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  requestsCopy = requests;
+  if (objc_msgSend_count(requestsCopy, v5, v6))
   {
     accessQueue = self->_accessQueue;
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_276AEDAA4;
     v8[3] = &unk_27A6E2898;
-    v9 = v4;
-    v10 = self;
+    v9 = requestsCopy;
+    selfCopy = self;
     dispatch_async(accessQueue, v8);
   }
 }
 
-- (void)conditionallyBeginAccessingResourcesWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)conditionallyBeginAccessingResourcesWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_276AEDCC0;
   block[3] = &unk_27A6E55B0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = queueCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = queueCopy;
   dispatch_async(accessQueue, block);
 }
 
-- (id)performResourceAccessUsingQueue:(id)a3 block:(id)a4
+- (id)performResourceAccessUsingQueue:(id)queue block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   v9 = objc_msgSend_discreteProgressWithTotalUnitCount_(MEMORY[0x277CCAC48], v8, -1);
   objc_msgSend_setKind_(v9, v10, *MEMORY[0x277CCA648]);
   objc_msgSend_setFileOperationKind_(v9, v11, *MEMORY[0x277CCA620]);
@@ -198,12 +198,12 @@ LABEL_14:
   v18[1] = 3221225472;
   v18[2] = sub_276AEE170;
   v18[3] = &unk_27A6E39F8;
-  v19 = v6;
-  v20 = self;
+  v19 = queueCopy;
+  selfCopy = self;
   v21 = v9;
-  v22 = v7;
-  v13 = v7;
-  v14 = v6;
+  v22 = blockCopy;
+  v13 = blockCopy;
+  v14 = queueCopy;
   dispatch_async(accessQueue, v18);
   v15 = v22;
   v16 = v9;
@@ -211,10 +211,10 @@ LABEL_14:
   return v9;
 }
 
-- (id)newDataStorageForDocumentResourceInfo:(id)a3 createResourceRequestIfNeeded:(BOOL)a4 error:(id *)a5
+- (id)newDataStorageForDocumentResourceInfo:(id)info createResourceRequestIfNeeded:(BOOL)needed error:(id *)error
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  infoCopy = info;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -226,11 +226,11 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = sub_276AEF2EC;
   block[3] = &unk_27A6E4158;
-  v10 = v8;
-  v37 = self;
+  v10 = infoCopy;
+  selfCopy = self;
   v38 = &v40;
   v36 = v10;
-  v39 = a4;
+  neededCopy = needed;
   dispatch_sync(accessQueue, block);
   v12 = v41[5];
   if (v12)
@@ -274,9 +274,9 @@ LABEL_8:
   }
 
   v17 = 0;
-  if (a5 && v18)
+  if (error && v18)
   {
-    if (*a5)
+    if (*error)
     {
       v17 = 0;
     }
@@ -285,7 +285,7 @@ LABEL_8:
     {
       v32 = v18;
       v17 = 0;
-      *a5 = v18;
+      *error = v18;
     }
   }
 

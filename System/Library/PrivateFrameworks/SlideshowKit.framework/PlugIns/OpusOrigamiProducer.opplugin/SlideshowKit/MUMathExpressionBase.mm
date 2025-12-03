@@ -1,9 +1,9 @@
 @interface MUMathExpressionBase
-+ (id)parserErrorToString:(id *)a3;
++ (id)parserErrorToString:(id *)string;
 - (MUMathExpressionBase)init;
 - (void)_cleanup;
 - (void)dealloc;
-- (void)setLastError:(id *)a3;
+- (void)setLastError:(id *)error;
 @end
 
 @implementation MUMathExpressionBase
@@ -35,9 +35,9 @@
   [(MUMathExpressionBase *)&v3 dealloc];
 }
 
-+ (id)parserErrorToString:(id *)a3
++ (id)parserErrorToString:(id *)string
 {
-  v3 = a3->var0 - 1;
+  v3 = string->var0 - 1;
   if (v3 > 0x1B)
   {
     return @"Unknown Parser Error Type!";
@@ -49,10 +49,10 @@
   }
 }
 
-- (void)setLastError:(id *)a3
+- (void)setLastError:(id *)error
 {
-  v5 = [NSDictionary dictionaryWithObjectsAndKeys:[MUMathExpressionBase parserErrorToString:a3], NSLocalizedDescriptionKey, [NSNumber numberWithInteger:a3->var0], @"kMUMathParserErrorCode", [NSNumber numberWithLong:a3->var1], @"kMUMathParserErrorStartOffset", [NSNumber numberWithLong:a3->var2], @"kMUMathParserErrorEndOffset", 0];
-  self->_lastError = [NSError errorWithDomain:@"kMUMathParserErrorDomain" code:a3->var0 userInfo:v5];
+  v5 = [NSDictionary dictionaryWithObjectsAndKeys:[MUMathExpressionBase parserErrorToString:error], NSLocalizedDescriptionKey, [NSNumber numberWithInteger:error->var0], @"kMUMathParserErrorCode", [NSNumber numberWithLong:error->var1], @"kMUMathParserErrorStartOffset", [NSNumber numberWithLong:error->var2], @"kMUMathParserErrorEndOffset", 0];
+  self->_lastError = [NSError errorWithDomain:@"kMUMathParserErrorDomain" code:error->var0 userInfo:v5];
   NSLog(@"MathExpression ParserError :\n %@\n", v5);
 }
 

@@ -1,17 +1,17 @@
 @interface SSMetricsEventController
-- (BOOL)deleteEventsInsertedBefore:(int64_t)a3;
+- (BOOL)deleteEventsInsertedBefore:(int64_t)before;
 - (BOOL)deleteReportedEvents;
-- (BOOL)insertEventSummaries:(id)a3 error:(id *)a4;
-- (BOOL)markEventsAsReported:(id)a3;
+- (BOOL)insertEventSummaries:(id)summaries error:(id *)error;
+- (BOOL)markEventsAsReported:(id)reported;
 - (SSMetricsEventController)init;
-- (id)_collectUnreportedEventsFromDatabase:(id)a3 since:(int64_t)a4;
-- (id)_collectUnreportedPIDsFromDatabase:(id)a3 matchingReportURLString:(id)a4 since:(int64_t)a5 suppressUserInfo:(BOOL)a6;
-- (id)unreportedEventURLsSince:(int64_t)a3;
-- (id)unreportedEventsForURL:(id)a3 since:(int64_t)a4 suppressUserInfo:(BOOL)a5;
-- (id)unreportedEventsSince:(int64_t)a3;
-- (int64_t)countUnreportedEventsBefore:(int64_t)a3;
-- (void)_serialQueueInsertEvents:(id)a3 withCompletionHandler:(id)a4;
-- (void)flushUnreportedEventsWithCompletionHandler:(id)a3;
+- (id)_collectUnreportedEventsFromDatabase:(id)database since:(int64_t)since;
+- (id)_collectUnreportedPIDsFromDatabase:(id)database matchingReportURLString:(id)string since:(int64_t)since suppressUserInfo:(BOOL)info;
+- (id)unreportedEventURLsSince:(int64_t)since;
+- (id)unreportedEventsForURL:(id)l since:(int64_t)since suppressUserInfo:(BOOL)info;
+- (id)unreportedEventsSince:(int64_t)since;
+- (int64_t)countUnreportedEventsBefore:(int64_t)before;
+- (void)_serialQueueInsertEvents:(id)events withCompletionHandler:(id)handler;
+- (void)flushUnreportedEventsWithCompletionHandler:(id)handler;
 @end
 
 @implementation SSMetricsEventController
@@ -31,13 +31,13 @@
   return v2;
 }
 
-- (void)_serialQueueInsertEvents:(id)a3 withCompletionHandler:(id)a4
+- (void)_serialQueueInsertEvents:(id)events withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SSMetricsController *)self configuration];
-  v9 = [v8 reportingURLString];
-  v10 = [(SSMetricsController *)self _cookieValuesForConfiguration:v8];
+  eventsCopy = events;
+  handlerCopy = handler;
+  configuration = [(SSMetricsController *)self configuration];
+  reportingURLString = [configuration reportingURLString];
+  v10 = [(SSMetricsController *)self _cookieValuesForConfiguration:configuration];
   if ([v10 count])
   {
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v10, @"cookies", 0}];
@@ -53,19 +53,19 @@
   v17[1] = 3221225472;
   v17[2] = __75__SSMetricsEventController__serialQueueInsertEvents_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E84B3828;
-  v18 = v6;
-  v19 = v8;
+  v18 = eventsCopy;
+  v19 = configuration;
   v20 = v11;
-  v21 = v9;
-  v22 = self;
-  v13 = v9;
+  v21 = reportingURLString;
+  selfCopy = self;
+  v13 = reportingURLString;
   v14 = v11;
-  v15 = v8;
-  v16 = v6;
+  v15 = configuration;
+  v16 = eventsCopy;
   [(SSMetricsEventTable *)table performTransactionWithBlock:v17];
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
@@ -378,21 +378,21 @@ uint64_t __75__SSMetricsEventController__serialQueueInsertEvents_withCompletionH
   return result;
 }
 
-- (int64_t)countUnreportedEventsBefore:(int64_t)a3
+- (int64_t)countUnreportedEventsBefore:(int64_t)before
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
   v12 = 0;
-  v5 = [(SSMetricsController *)self serialQueue];
+  serialQueue = [(SSMetricsController *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__SSMetricsEventController_countUnreportedEventsBefore___block_invoke;
   block[3] = &unk_1E84AD6B8;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = before;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(serialQueue, block);
 
   v6 = v10[3];
   _Block_object_dispose(&v9, 8);
@@ -439,29 +439,29 @@ void __56__SSMetricsEventController_countUnreportedEventsBefore___block_invoke_3
   }
 }
 
-- (BOOL)deleteEventsInsertedBefore:(int64_t)a3
+- (BOOL)deleteEventsInsertedBefore:(int64_t)before
 {
   v5 = +[SSMetricsEventTableEntity databaseTable];
-  v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"DELETE FROM %@ WHERE %@ < %lld;", v5, @"timestampInserted", a3];
+  before = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"DELETE FROM %@ WHERE %@ < %lld;", v5, @"timestampInserted", before];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v7 = [(SSMetricsController *)self serialQueue];
+  serialQueue = [(SSMetricsController *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__SSMetricsEventController_deleteEventsInsertedBefore___block_invoke;
   block[3] = &unk_1E84B38A0;
-  v11 = v6;
+  v11 = before;
   v12 = &v13;
   block[4] = self;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v8 = before;
+  dispatch_sync(serialQueue, block);
 
-  LOBYTE(v6) = *(v14 + 24);
+  LOBYTE(before) = *(v14 + 24);
   _Block_object_dispose(&v13, 8);
 
-  return v6;
+  return before;
 }
 
 void __55__SSMetricsEventController_deleteEventsInsertedBefore___block_invoke(void *a1)
@@ -547,7 +547,7 @@ LABEL_11:
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(SSMetricsController *)self serialQueue];
+  serialQueue = [(SSMetricsController *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__SSMetricsEventController_deleteReportedEvents__block_invoke;
@@ -556,7 +556,7 @@ LABEL_11:
   v10 = &v11;
   block[4] = self;
   v6 = v4;
-  dispatch_sync(v5, block);
+  dispatch_sync(serialQueue, block);
 
   LOBYTE(v4) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
@@ -639,29 +639,29 @@ LABEL_11:
   return *(*(*(a1 + 48) + 8) + 24);
 }
 
-- (void)flushUnreportedEventsWithCompletionHandler:(id)a3
+- (void)flushUnreportedEventsWithCompletionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[SSLogConfig sharedStoreServicesConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
     v7 &= 2u;
   }
@@ -679,21 +679,21 @@ LABEL_11:
 
   if (v10)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v19, v17}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v10 encoding:{4, &v19, v17}];
     free(v10);
-    SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, v8);
+    SSFileLog(v5, @"%@", v11, v12, v13, v14, v15, v16, oSLogObject);
 LABEL_11:
   }
 
   v18.receiver = self;
   v18.super_class = SSMetricsEventController;
-  [(SSMetricsController *)&v18 flushUnreportedEventsWithCompletionHandler:v4];
+  [(SSMetricsController *)&v18 flushUnreportedEventsWithCompletionHandler:handlerCopy];
 }
 
-- (BOOL)insertEventSummaries:(id)a3 error:(id *)a4
+- (BOOL)insertEventSummaries:(id)summaries error:(id *)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  summariesCopy = summaries;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -704,18 +704,18 @@ LABEL_11:
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 1;
-  if ([v6 count])
+  if ([summariesCopy count])
   {
-    v7 = [(SSMetricsController *)self serialQueue];
+    serialQueue = [(SSMetricsController *)self serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__SSMetricsEventController_insertEventSummaries_error___block_invoke;
     block[3] = &unk_1E84B3918;
     block[4] = self;
-    v26 = v6;
+    v26 = summariesCopy;
     v27 = &v33;
     v28 = &v29;
-    dispatch_sync(v7, block);
+    dispatch_sync(serialQueue, block);
 
     goto LABEL_14;
   }
@@ -726,21 +726,21 @@ LABEL_11:
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
-  v10 = [v8 shouldLogToDisk];
-  v11 = [v8 OSLogObject];
-  v12 = v11;
-  if (v10)
+  shouldLog = [v8 shouldLog];
+  shouldLogToDisk = [v8 shouldLogToDisk];
+  oSLogObject = [v8 OSLogObject];
+  v12 = oSLogObject;
+  if (shouldLogToDisk)
   {
-    v9 |= 2u;
+    shouldLog |= 2u;
   }
 
-  if (!os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
-    v9 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v9)
+  if (!shouldLog)
   {
     goto LABEL_12;
   }
@@ -761,9 +761,9 @@ LABEL_12:
   }
 
 LABEL_14:
-  if (a4)
+  if (error)
   {
-    *a4 = v34[5];
+    *error = v34[5];
   }
 
   v22 = *(v30 + 24);
@@ -1102,19 +1102,19 @@ LABEL_20:
   }
 }
 
-- (BOOL)markEventsAsReported:(id)a3
+- (BOOL)markEventsAsReported:(id)reported
 {
-  v4 = a3;
+  reportedCopy = reported;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v6 = v5;
   v7 = +[SSMetricsEventTableEntity databaseTable];
-  v8 = [v4 componentsJoinedByString:{@", "}];
+  v8 = [reportedCopy componentsJoinedByString:{@", "}];
   v9 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"UPDATE %@ SET %@ = %lld WHERE (%@ IN (%@)) AND %@ = 0;", v7, @"timestampReported", v6, @"pid", v8, @"timestampReported"];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v10 = [(SSMetricsController *)self serialQueue];
+  serialQueue = [(SSMetricsController *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__SSMetricsEventController_markEventsAsReported___block_invoke;
@@ -1123,7 +1123,7 @@ LABEL_20:
   v15 = &v16;
   block[4] = self;
   v11 = v9;
-  dispatch_sync(v10, block);
+  dispatch_sync(serialQueue, block);
 
   LOBYTE(v9) = *(v17 + 24);
   _Block_object_dispose(&v16, 8);
@@ -1144,23 +1144,23 @@ void __49__SSMetricsEventController_markEventsAsReported___block_invoke(uint64_t
   [v1 performTransactionWithBlock:v4];
 }
 
-- (id)unreportedEventsForURL:(id)a3 since:(int64_t)a4 suppressUserInfo:(BOOL)a5
+- (id)unreportedEventsForURL:(id)l since:(int64_t)since suppressUserInfo:(BOOL)info
 {
-  v8 = a3;
+  lCopy = l;
   v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[SSMetricsEventController _maximumUnreportedToSelect](self, "_maximumUnreportedToSelect")}];
-  v10 = [(SSMetricsController *)self serialQueue];
+  serialQueue = [(SSMetricsController *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__SSMetricsEventController_unreportedEventsForURL_since_suppressUserInfo___block_invoke;
   block[3] = &unk_1E84B3990;
   block[4] = self;
-  v17 = v8;
-  v19 = a4;
-  v20 = a5;
+  v17 = lCopy;
+  sinceCopy = since;
+  infoCopy = info;
   v11 = v9;
   v18 = v11;
-  v12 = v8;
-  dispatch_sync(v10, block);
+  v12 = lCopy;
+  dispatch_sync(serialQueue, block);
 
   v13 = v18;
   v14 = v11;
@@ -1236,7 +1236,7 @@ uint64_t __74__SSMetricsEventController_unreportedEventsForURL_since_suppressUse
   return 1;
 }
 
-- (id)unreportedEventsSince:(int64_t)a3
+- (id)unreportedEventsSince:(int64_t)since
 {
   v9 = 0;
   v10 = &v9;
@@ -1244,15 +1244,15 @@ uint64_t __74__SSMetricsEventController_unreportedEventsForURL_since_suppressUse
   v12 = __Block_byref_object_copy__82;
   v13 = __Block_byref_object_dispose__82;
   v14 = 0;
-  v5 = [(SSMetricsController *)self serialQueue];
+  serialQueue = [(SSMetricsController *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__SSMetricsEventController_unreportedEventsSince___block_invoke;
   block[3] = &unk_1E84AD6B8;
   block[4] = self;
   block[5] = &v9;
-  block[6] = a3;
-  dispatch_sync(v5, block);
+  block[6] = since;
+  dispatch_sync(serialQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1286,19 +1286,19 @@ uint64_t __50__SSMetricsEventController_unreportedEventsSince___block_invoke_2(u
   return 1;
 }
 
-- (id)unreportedEventURLsSince:(int64_t)a3
+- (id)unreportedEventURLsSince:(int64_t)since
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(SSMetricsController *)self serialQueue];
+  serialQueue = [(SSMetricsController *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__SSMetricsEventController_unreportedEventURLsSince___block_invoke;
   block[3] = &unk_1E84AD6E0;
   block[4] = self;
-  v13 = a3;
+  sinceCopy = since;
   v7 = v5;
   v12 = v7;
-  dispatch_sync(v6, block);
+  dispatch_sync(serialQueue, block);
 
   v8 = v12;
   v9 = v7;
@@ -1366,21 +1366,21 @@ void __53__SSMetricsEventController_unreportedEventURLsSince___block_invoke_3(ui
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)_collectUnreportedEventsFromDatabase:(id)a3 since:(int64_t)a4
+- (id)_collectUnreportedEventsFromDatabase:(id)database since:(int64_t)since
 {
-  v6 = a3;
+  databaseCopy = database;
   v7 = +[SSMetricsEventTableEntity databaseTable];
-  v8 = [(SSMetricsEventController *)self _maximumUnreportedToSelect];
-  v9 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"SELECT %@ FROM %@ WHERE %@ = 0 AND %@ <= %lld ORDER BY %@ ASC LIMIT %d", @"pid", v7, @"timestampReported", @"timestampInserted", a4, @"timestampInserted", v8];
-  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:v8];
+  _maximumUnreportedToSelect = [(SSMetricsEventController *)self _maximumUnreportedToSelect];
+  v9 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"SELECT %@ FROM %@ WHERE %@ = 0 AND %@ <= %lld ORDER BY %@ ASC LIMIT %d", @"pid", v7, @"timestampReported", @"timestampInserted", since, @"timestampInserted", _maximumUnreportedToSelect];
+  v10 = [MEMORY[0x1E695DF70] arrayWithCapacity:_maximumUnreportedToSelect];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __71__SSMetricsEventController__collectUnreportedEventsFromDatabase_since___block_invoke;
   v16[3] = &unk_1E84B3388;
-  v17 = v6;
+  v17 = databaseCopy;
   v11 = v10;
   v18 = v11;
-  v12 = v6;
+  v12 = databaseCopy;
   [v12 prepareStatementForSQL:v9 cache:0 usingBlock:v16];
   v13 = v18;
   v14 = v11;
@@ -1408,31 +1408,31 @@ void __71__SSMetricsEventController__collectUnreportedEventsFromDatabase_since__
   objc_autoreleasePoolPop(v4);
 }
 
-- (id)_collectUnreportedPIDsFromDatabase:(id)a3 matchingReportURLString:(id)a4 since:(int64_t)a5 suppressUserInfo:(BOOL)a6
+- (id)_collectUnreportedPIDsFromDatabase:(id)database matchingReportURLString:(id)string since:(int64_t)since suppressUserInfo:(BOOL)info
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  infoCopy = info;
+  databaseCopy = database;
+  stringCopy = string;
   v12 = +[SSMetricsEventTableEntity databaseTable];
-  v13 = [(SSMetricsEventController *)self _maximumUnreportedToSelect];
+  _maximumUnreportedToSelect = [(SSMetricsEventController *)self _maximumUnreportedToSelect];
   v14 = objc_alloc(MEMORY[0x1E696AD60]);
   v15 = @"0";
-  if (v6)
+  if (infoCopy)
   {
     v15 = @"1";
   }
 
-  v16 = [v14 initWithFormat:@"SELECT %@ FROM %@ WHERE %@ = '%@' AND %@ = 0 AND %@ <= %lld AND %@ = %@ ORDER BY %@ ASC LIMIT %d", @"pid", v12, @"report_url", v11, @"timestampReported", @"timestampInserted", a5, @"supressDsid", v15, @"timestampInserted", v13];
+  v16 = [v14 initWithFormat:@"SELECT %@ FROM %@ WHERE %@ = '%@' AND %@ = 0 AND %@ <= %lld AND %@ = %@ ORDER BY %@ ASC LIMIT %d", @"pid", v12, @"report_url", stringCopy, @"timestampReported", @"timestampInserted", since, @"supressDsid", v15, @"timestampInserted", _maximumUnreportedToSelect];
 
-  v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:v13];
+  v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:_maximumUnreportedToSelect];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __110__SSMetricsEventController__collectUnreportedPIDsFromDatabase_matchingReportURLString_since_suppressUserInfo___block_invoke;
   v23[3] = &unk_1E84B3388;
-  v24 = v10;
+  v24 = databaseCopy;
   v18 = v17;
   v25 = v18;
-  v19 = v10;
+  v19 = databaseCopy;
   [v19 prepareStatementForSQL:v16 cache:0 usingBlock:v23];
   v20 = v25;
   v21 = v18;

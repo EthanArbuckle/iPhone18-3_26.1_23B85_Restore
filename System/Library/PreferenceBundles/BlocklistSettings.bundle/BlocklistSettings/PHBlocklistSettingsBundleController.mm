@@ -1,9 +1,9 @@
 @interface PHBlocklistSettingsBundleController
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3;
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller;
 - (PSListController)parentListController;
-- (id)specifiersWithSpecifier:(id)a3;
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4;
-- (void)performButtonActionForSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller;
+- (void)performButtonActionForSpecifier:(id)specifier;
 @end
 
 @implementation PHBlocklistSettingsBundleController
@@ -15,16 +15,16 @@
   return WeakRetained;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
-  v4 = [(PHBlocklistSettingsBundleController *)self specifiersArray];
+  specifiersArray = [(PHBlocklistSettingsBundleController *)self specifiersArray];
 
-  if (!v4)
+  if (!specifiersArray)
   {
     v5 = +[NSMutableArray array];
     v6 = [PHBlocklistSettingsStrings localizedStringForKey:@"BLOCKLIST_MAIN_SPECIFIER_TITLE"];
-    v7 = [(PHBlocklistSettingsBundleController *)self parentListController];
-    v8 = [(PHBlocklistSettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:v7];
+    parentListController = [(PHBlocklistSettingsBundleController *)self parentListController];
+    v8 = [(PHBlocklistSettingsBundleController *)self isStateDrivenNavigationPossibleWithParentController:parentListController];
 
     if (v8)
     {
@@ -56,30 +56,30 @@
   return [(PHBlocklistSettingsBundleController *)self specifiersArray];
 }
 
-- (void)performButtonActionForSpecifier:(id)a3
+- (void)performButtonActionForSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(PHBlocklistSettingsBundleController *)self parentListController];
-  [(PHBlocklistSettingsBundleController *)self handleUserDidTapOnMainSpecifier:v4 parentController:v5];
+  specifierCopy = specifier;
+  parentListController = [(PHBlocklistSettingsBundleController *)self parentListController];
+  [(PHBlocklistSettingsBundleController *)self handleUserDidTapOnMainSpecifier:specifierCopy parentController:parentListController];
 }
 
-- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)a3
+- (BOOL)isStateDrivenNavigationPossibleWithParentController:(id)controller
 {
   v4 = sub_EB10();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   __chkstk_darwin(v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = [v9 traitCollection];
+  controllerCopy = controller;
+  traitCollection = [controllerCopy traitCollection];
   sub_EC60();
 
-  LOBYTE(v10) = sub_EAF0();
+  LOBYTE(traitCollection) = sub_EAF0();
   (*(v5 + 8))(v8, v4);
-  return v10 & 1;
+  return traitCollection & 1;
 }
 
-- (void)handleUserDidTapOnMainSpecifier:(id)a3 parentController:(id)a4
+- (void)handleUserDidTapOnMainSpecifier:(id)specifier parentController:(id)controller
 {
   v5 = sub_EB10();
   v6 = *(v5 - 8);
@@ -94,10 +94,10 @@
   v14 = *(v13 + 64);
   __chkstk_darwin(v12);
   v16 = &v19 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v17 = a4;
+  controllerCopy = controller;
   sub_EC70();
   sub_EAD0();
-  v18 = [v17 traitCollection];
+  traitCollection = [controllerCopy traitCollection];
   sub_EC60();
 
   sub_E4B0();

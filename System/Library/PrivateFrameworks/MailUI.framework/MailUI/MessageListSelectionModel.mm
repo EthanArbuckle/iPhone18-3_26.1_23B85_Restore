@@ -1,36 +1,36 @@
 @interface MessageListSelectionModel
-- (BOOL)_allChildrenSelected:(id)a3;
-- (BOOL)_trackItemIDs:(id)a3 updateCount:(BOOL)a4;
-- (BOOL)_untrackItemIDs:(id)a3 updateCount:(BOOL)a4;
-- (BOOL)isSelectedItemID:(id)a3;
+- (BOOL)_allChildrenSelected:(id)selected;
+- (BOOL)_trackItemIDs:(id)ds updateCount:(BOOL)count;
+- (BOOL)_untrackItemIDs:(id)ds updateCount:(BOOL)count;
+- (BOOL)isSelectedItemID:(id)d;
 - (BOOL)isSelectionValid;
 - (EMMailbox)predictedMoveMailbox;
-- (MessageListSelectionModel)initWithDataSource:(id)a3 delegate:(id)a4;
+- (MessageListSelectionModel)initWithDataSource:(id)source delegate:(id)delegate;
 - (MessageListSelectionModelDataSource)dataSource;
 - (MessageListSelectionModelDelegate)delegate;
 - (NSString)ef_publicDescription;
-- (id)cascadedItemIDsForItemID:(id)a3 isSelecting:(BOOL)a4;
+- (id)cascadedItemIDsForItemID:(id)d isSelecting:(BOOL)selecting;
 - (id)currentMessageListItemSelection;
-- (id)deselectItemWithItemID:(id)a3;
+- (id)deselectItemWithItemID:(id)d;
 - (id)itemIDs;
-- (id)itemIDsToUnselectForItemID:(id)a3;
-- (id)selectItemWithItemID:(id)a3;
-- (id)selectionWithMessageListItems:(id)a3 mailboxes:(id)a4;
+- (id)itemIDsToUnselectForItemID:(id)d;
+- (id)selectItemWithItemID:(id)d;
+- (id)selectionWithMessageListItems:(id)items mailboxes:(id)mailboxes;
 - (int64_t)count;
 - (unint64_t)deleteSelectionState;
-- (void)__updatePredictionWithSelection:(id)a3;
+- (void)__updatePredictionWithSelection:(id)selection;
 - (void)_fetchMissingMessageListItems;
 - (void)_scheduleMailboxPredictionUpdate;
 - (void)_untrackAllItemIDs;
-- (void)configureSelectionForItemID:(id)a3;
-- (void)didExpandThreadItemID:(id)a3 addedItemIDs:(id)a4;
+- (void)configureSelectionForItemID:(id)d;
+- (void)didExpandThreadItemID:(id)d addedItemIDs:(id)ds;
 - (void)disableSelectAll;
-- (void)enableSelectAllWithMailboxes:(id)a3;
+- (void)enableSelectAllWithMailboxes:(id)mailboxes;
 - (void)preserveSelection;
-- (void)setMailboxPredictionFuture:(id)a3;
-- (void)setMultipleSelectionActive:(BOOL)a3;
-- (void)setPerformingDataSourceUpdates:(BOOL)a3;
-- (void)willCollapseThreadItemID:(id)a3;
+- (void)setMailboxPredictionFuture:(id)future;
+- (void)setMultipleSelectionActive:(BOOL)active;
+- (void)setPerformingDataSourceUpdates:(BOOL)updates;
+- (void)willCollapseThreadItemID:(id)d;
 @end
 
 @implementation MessageListSelectionModel
@@ -44,18 +44,18 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (MessageListSelectionModel)initWithDataSource:(id)a3 delegate:(id)a4
+- (MessageListSelectionModel)initWithDataSource:(id)source delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = MessageListSelectionModel;
   v8 = [(MessageListSelectionModel *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     v10 = objc_alloc_init(TrackedMessageListItems);
     trackedItems = v9->_trackedItems;
     v9->_trackedItems = v10;
@@ -86,26 +86,26 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
 
 - (id)itemIDs
 {
-  v3 = [(MessageListSelectionModel *)self isSelectAll];
-  v4 = [(MessageListSelectionModel *)self trackedItems];
-  v5 = [v4 itemIDs];
+  isSelectAll = [(MessageListSelectionModel *)self isSelectAll];
+  trackedItems = [(MessageListSelectionModel *)self trackedItems];
+  itemIDs = [trackedItems itemIDs];
 
-  if (v3)
+  if (isSelectAll)
   {
-    v6 = [(MessageListSelectionModel *)self dataSource];
+    dataSource = [(MessageListSelectionModel *)self dataSource];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __36__MessageListSelectionModel_itemIDs__block_invoke;
     v10[3] = &unk_2781896E8;
-    v11 = v6;
-    v12 = self;
-    v7 = v6;
-    v8 = [v5 ef_filter:v10];
+    v11 = dataSource;
+    selfCopy = self;
+    v7 = dataSource;
+    v8 = [itemIDs ef_filter:v10];
 
-    v5 = v8;
+    itemIDs = v8;
   }
 
-  return v5;
+  return itemIDs;
 }
 
 - (BOOL)isSelectionValid
@@ -115,8 +115,8 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
     return 1;
   }
 
-  v4 = [(MessageListSelectionModel *)self itemIDs];
-  v3 = [v4 count] != 0;
+  itemIDs = [(MessageListSelectionModel *)self itemIDs];
+  v3 = [itemIDs count] != 0;
 
   return v3;
 }
@@ -124,49 +124,49 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
 - (id)currentMessageListItemSelection
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(MessageListSelectionModel *)self trackedItems];
-  v4 = [v3 messageListItems];
-  v5 = [v4 count];
-  if (v5 != [v3 count])
+  trackedItems = [(MessageListSelectionModel *)self trackedItems];
+  messageListItems = [trackedItems messageListItems];
+  v5 = [messageListItems count];
+  if (v5 != [trackedItems count])
   {
     v6 = _ef_log_MessageListSelectionModel();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v3 count];
+      v12 = [trackedItems count];
       v13 = 138543874;
       v14 = v11;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
-      v18 = v12 - [v4 count];
+      v18 = v12 - [messageListItems count];
       _os_log_error_impl(&dword_214A5E000, v6, OS_LOG_TYPE_ERROR, "<%{public}@: %p> Message list selection is missing %lu items", &v13, 0x20u);
     }
   }
 
-  v7 = [(MessageListSelectionModel *)self trackedMailboxes];
-  v8 = [(MessageListSelectionModel *)self selectionWithMessageListItems:v4 mailboxes:v7];
+  trackedMailboxes = [(MessageListSelectionModel *)self trackedMailboxes];
+  v8 = [(MessageListSelectionModel *)self selectionWithMessageListItems:messageListItems mailboxes:trackedMailboxes];
 
   return v8;
 }
 
-- (id)selectionWithMessageListItems:(id)a3 mailboxes:(id)a4
+- (id)selectionWithMessageListItems:(id)items mailboxes:(id)mailboxes
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[MessageListSelectionModel isSelectionValid](self, "isSelectionValid") && ([v6 count] || -[MessageListSelectionModel isSelectAll](self, "isSelectAll")) && (objc_msgSend(v7, "count") || !-[MessageListSelectionModel isSelectAll](self, "isSelectAll")))
+  itemsCopy = items;
+  mailboxesCopy = mailboxes;
+  if (-[MessageListSelectionModel isSelectionValid](self, "isSelectionValid") && ([itemsCopy count] || -[MessageListSelectionModel isSelectAll](self, "isSelectAll")) && (objc_msgSend(mailboxesCopy, "count") || !-[MessageListSelectionModel isSelectAll](self, "isSelectAll")))
   {
-    v9 = [(MessageListSelectionModel *)self isSelectAll];
+    isSelectAll = [(MessageListSelectionModel *)self isSelectAll];
     v10 = objc_alloc(MEMORY[0x277D25998]);
-    if (v9)
+    if (isSelectAll)
     {
-      v11 = [v10 initWithMailboxes:v7 excludedMessageListItems:v6];
+      v11 = [v10 initWithMailboxes:mailboxesCopy excludedMessageListItems:itemsCopy];
     }
 
     else
     {
-      v11 = [v10 initWithMessageListItems:v6];
+      v11 = [v10 initWithMessageListItems:itemsCopy];
     }
 
     v8 = v11;
@@ -196,15 +196,15 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
   return result;
 }
 
-- (id)cascadedItemIDsForItemID:(id)a3 isSelecting:(BOOL)a4
+- (id)cascadedItemIDsForItemID:(id)d isSelecting:(BOOL)selecting
 {
-  v4 = a4;
+  selectingCopy = selecting;
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(MessageListSelectionModel *)self dataSource];
-  if ([v8 selectionModel:self isThreadedItemID:v7])
+  dCopy = d;
+  dataSource = [(MessageListSelectionModel *)self dataSource];
+  if ([dataSource selectionModel:self isThreadedItemID:dCopy])
   {
-    v9 = [v8 selectionModel:self isItemIDExpandedThread:v7];
+    v9 = [dataSource selectionModel:self isItemIDExpandedThread:dCopy];
     v10 = _ef_log_MessageListSelectionModel();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -212,9 +212,9 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
       v21 = 138544386;
       v22 = v11;
       v23 = 2114;
-      v24 = v7;
+      v24 = dCopy;
       v25 = 1024;
-      v26 = v4;
+      v26 = selectingCopy;
       v27 = 1024;
       v28 = 1;
       v29 = 1024;
@@ -224,7 +224,7 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
 
     if (v9)
     {
-      v12 = [v8 selectionModel:self itemIDsInExpandedThread:v7];
+      v12 = [dataSource selectionModel:self itemIDsInExpandedThread:dCopy];
     }
 
     else
@@ -235,11 +235,11 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
 
   else
   {
-    v13 = [v8 selectionModel:self threadItemIDForItemInExpandedThread:v7];
+    v13 = [dataSource selectionModel:self threadItemIDForItemInExpandedThread:dCopy];
     if (v13)
     {
       v14 = MEMORY[0x277CBEB98];
-      v15 = [v8 selectionModel:self itemIDsInExpandedThread:v13];
+      v15 = [dataSource selectionModel:self itemIDsInExpandedThread:v13];
       v16 = [v14 setWithArray:v15];
 
       v17 = [(MessageListSelectionModel *)self _allChildrenSelected:v16];
@@ -250,9 +250,9 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
         v21 = 138544642;
         v22 = v19;
         v23 = 2114;
-        v24 = v7;
+        v24 = dCopy;
         v25 = 1024;
-        v26 = v4;
+        v26 = selectingCopy;
         v27 = 1024;
         v28 = v17;
         v29 = 2114;
@@ -262,7 +262,7 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
         _os_log_impl(&dword_214A5E000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ - itemID: %{public}@, isSelecting: %{BOOL}d, allChildrenSelected: %{BOOL}d, parent: %{public}@, children: %{public}@", &v21, 0x36u);
       }
 
-      if (v17 == v4)
+      if (v17 == selectingCopy)
       {
         v12 = [MEMORY[0x277CBEBF8] arrayByAddingObject:v13];
       }
@@ -282,13 +282,13 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
   return v12;
 }
 
-- (id)itemIDsToUnselectForItemID:(id)a3
+- (id)itemIDsToUnselectForItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(MessageListSelectionModel *)self dataSource];
-  if ([v5 selectionModel:self isThreadedItemID:v4] && objc_msgSend(v5, "selectionModel:isItemIDExpandedThread:", self, v4))
+  dCopy = d;
+  dataSource = [(MessageListSelectionModel *)self dataSource];
+  if ([dataSource selectionModel:self isThreadedItemID:dCopy] && objc_msgSend(dataSource, "selectionModel:isItemIDExpandedThread:", self, dCopy))
   {
-    v6 = [v5 selectionModel:self itemIDsInExpandedThread:v4];
+    v6 = [dataSource selectionModel:self itemIDsInExpandedThread:dCopy];
   }
 
   else
@@ -299,17 +299,17 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
   return v6;
 }
 
-- (BOOL)_allChildrenSelected:(id)a3
+- (BOOL)_allChildrenSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [(MessageListSelectionModel *)self trackedItems];
-  v6 = [v5 itemIDsSet];
+  selectedCopy = selected;
+  trackedItems = [(MessageListSelectionModel *)self trackedItems];
+  itemIDsSet = [trackedItems itemIDsSet];
 
   if ([(MessageListSelectionModel *)self isSelectAll])
   {
-    if ([v6 count])
+    if ([itemIDsSet count])
     {
-      v7 = [v6 intersectsSet:v4] ^ 1;
+      v7 = [itemIDsSet intersectsSet:selectedCopy] ^ 1;
     }
 
     else
@@ -320,7 +320,7 @@ uint64_t ___ef_log_MessageListSelectionModel_block_invoke()
 
   else
   {
-    LOBYTE(v7) = [v4 isSubsetOfSet:v6];
+    LOBYTE(v7) = [selectedCopy isSubsetOfSet:itemIDsSet];
   }
 
   return v7;
@@ -336,23 +336,23 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
   }
 }
 
-- (BOOL)_trackItemIDs:(id)a3 updateCount:(BOOL)a4
+- (BOOL)_trackItemIDs:(id)ds updateCount:(BOOL)count
 {
-  v4 = a4;
+  countCopy = count;
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([v6 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v7 = [(MessageListSelectionModel *)self trackedItems];
-    v8 = [v7 itemIDsSet];
-    v9 = [MEMORY[0x277CBEB58] setWithArray:v6];
-    [v9 minusSet:v8];
+    trackedItems = [(MessageListSelectionModel *)self trackedItems];
+    itemIDsSet = [trackedItems itemIDsSet];
+    v9 = [MEMORY[0x277CBEB58] setWithArray:dsCopy];
+    [v9 minusSet:itemIDsSet];
     if ([v9 count])
     {
-      v10 = [v9 allObjects];
-      v11 = [(MessageListSelectionModel *)self dataSource];
-      v40 = v11;
-      v41 = v10;
+      allObjects = [v9 allObjects];
+      dataSource = [(MessageListSelectionModel *)self dataSource];
+      v40 = dataSource;
+      v41 = allObjects;
       if ([(MessageListSelectionModel *)self isPerformingDataSourceUpdates])
       {
         v12 = _ef_log_MessageListSelectionModel();
@@ -363,22 +363,22 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
           *buf = 138544130;
           v53 = v14;
           v54 = 2048;
-          v55 = self;
+          selfCopy2 = self;
           v56 = 2048;
-          v57 = [v10 count];
+          v57 = [allObjects count];
           v58 = 2114;
-          v59 = v10;
+          v59 = allObjects;
           _os_log_impl(&dword_214A5E000, v12, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Data source is performing updates, load message list items (%lu) once completed: %{public}@", buf, 0x2Au);
         }
 
-        v15 = [(MessageListSelectionModel *)self itemIDsMissingMessageListItem];
-        [v15 addObjectsFromArray:v10];
+        itemIDsMissingMessageListItem = [(MessageListSelectionModel *)self itemIDsMissingMessageListItem];
+        [itemIDsMissingMessageListItem addObjectsFromArray:allObjects];
 
         v48 = 0u;
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v16 = v10;
+        v16 = allObjects;
         v17 = [v16 countByEnumeratingWithState:&v46 objects:v51 count:16];
         if (v17)
         {
@@ -393,7 +393,7 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
                 objc_enumerationMutation(v16);
               }
 
-              [v7 trackMessageListItemWithItemID:*(*(&v46 + 1) + 8 * i)];
+              [trackedItems trackMessageListItemWithItemID:*(*(&v46 + 1) + 8 * i)];
             }
 
             v18 = [v16 countByEnumeratingWithState:&v46 objects:v51 count:16];
@@ -406,9 +406,9 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
       else
       {
         v37 = v9;
-        v38 = v6;
-        v39 = v4;
-        v21 = [v11 selectionModel:self messageListItemsForItemIDs:v10];
+        v38 = dsCopy;
+        v39 = countCopy;
+        v21 = [dataSource selectionModel:self messageListItemsForItemIDs:allObjects];
         v22 = [v21 ef_map:&__block_literal_global_48];
 
         v44 = 0u;
@@ -434,7 +434,7 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
               v28 = *(*(&v42 + 1) + 8 * j);
               if ((*(v26 + 16))(v26, v28))
               {
-                [v7 trackmessageListItem:v28];
+                [trackedItems trackmessageListItem:v28];
               }
 
               else
@@ -447,7 +447,7 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
                   *buf = 138543618;
                   v53 = v31;
                   v54 = 2048;
-                  v55 = self;
+                  selfCopy2 = self;
                   _os_log_error_impl(&dword_214A5E000, v29, OS_LOG_TYPE_ERROR, "<%{public}@: %p> Skip tracking message -- message is null", buf, 0x16u);
                 }
               }
@@ -459,24 +459,24 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
           while (v24);
         }
 
-        v4 = v39;
-        v6 = v38;
+        countCopy = v39;
+        dsCopy = v38;
         v9 = v37;
       }
 
-      if (v4)
+      if (countCopy)
       {
-        v32 = [v9 allObjects];
-        -[MessageListSelectionModel setTrackedItemsCount:](self, "setTrackedItemsCount:", -[MessageListSelectionModel trackedItemsCount](self, "trackedItemsCount") + [v40 selectionModel:self countForItemIDs:v32]);
+        allObjects2 = [v9 allObjects];
+        -[MessageListSelectionModel setTrackedItemsCount:](self, "setTrackedItemsCount:", -[MessageListSelectionModel trackedItemsCount](self, "trackedItemsCount") + [v40 selectionModel:self countForItemIDs:allObjects2]);
 
-        v33 = [v9 allObjects];
-        -[MessageListSelectionModel setTrackedItemsWillMoveToTrash:](self, "setTrackedItemsWillMoveToTrash:", -[MessageListSelectionModel trackedItemsWillMoveToTrash](self, "trackedItemsWillMoveToTrash") + [v40 selectionModel:self countDeleteMovesToTrashForItemIDs:v33]);
+        allObjects3 = [v9 allObjects];
+        -[MessageListSelectionModel setTrackedItemsWillMoveToTrash:](self, "setTrackedItemsWillMoveToTrash:", -[MessageListSelectionModel trackedItemsWillMoveToTrash](self, "trackedItemsWillMoveToTrash") + [v40 selectionModel:self countDeleteMovesToTrashForItemIDs:allObjects3]);
 
-        v34 = [v9 allObjects];
-        -[MessageListSelectionModel setTrackedItemsSupportArchiving:](self, "setTrackedItemsSupportArchiving:", -[MessageListSelectionModel trackedItemsSupportArchiving](self, "trackedItemsSupportArchiving") + [v40 selectionModel:self countSupportsArchivingForItemIDs:v34]);
+        allObjects4 = [v9 allObjects];
+        -[MessageListSelectionModel setTrackedItemsSupportArchiving:](self, "setTrackedItemsSupportArchiving:", -[MessageListSelectionModel trackedItemsSupportArchiving](self, "trackedItemsSupportArchiving") + [v40 selectionModel:self countSupportsArchivingForItemIDs:allObjects4]);
 
-        v35 = [v9 allObjects];
-        -[MessageListSelectionModel setTrackedItemsArchiveByDefault:](self, "setTrackedItemsArchiveByDefault:", -[MessageListSelectionModel trackedItemsArchiveByDefault](self, "trackedItemsArchiveByDefault") + [v40 selectionModel:self countShouldArchiveByDefaultForItemIDs:v35]);
+        allObjects5 = [v9 allObjects];
+        -[MessageListSelectionModel setTrackedItemsArchiveByDefault:](self, "setTrackedItemsArchiveByDefault:", -[MessageListSelectionModel trackedItemsArchiveByDefault](self, "trackedItemsArchiveByDefault") + [v40 selectionModel:self countShouldArchiveByDefaultForItemIDs:allObjects5]);
       }
 
       [(MessageListSelectionModel *)self _scheduleMailboxPredictionUpdate];
@@ -484,47 +484,47 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(countCopy) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(countCopy) = 0;
   }
 
-  return v4;
+  return countCopy;
 }
 
-- (BOOL)_untrackItemIDs:(id)a3 updateCount:(BOOL)a4
+- (BOOL)_untrackItemIDs:(id)ds updateCount:(BOOL)count
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 count])
+  countCopy = count;
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v7 = [MEMORY[0x277CBEB58] setWithArray:v6];
-    v8 = [(MessageListSelectionModel *)self trackedItems];
-    v9 = [v8 itemIDsSet];
-    [v7 intersectSet:v9];
+    v7 = [MEMORY[0x277CBEB58] setWithArray:dsCopy];
+    trackedItems = [(MessageListSelectionModel *)self trackedItems];
+    itemIDsSet = [trackedItems itemIDsSet];
+    [v7 intersectSet:itemIDsSet];
     if ([v7 count])
     {
-      v10 = [v7 allObjects];
-      [v8 untrackMessageListItemsWithItemIDs:v10];
+      allObjects = [v7 allObjects];
+      [trackedItems untrackMessageListItemsWithItemIDs:allObjects];
 
-      if (v4)
+      if (countCopy)
       {
-        v11 = [(MessageListSelectionModel *)self dataSource];
-        v12 = [v7 allObjects];
-        -[MessageListSelectionModel setTrackedItemsCount:](self, "setTrackedItemsCount:", -[MessageListSelectionModel trackedItemsCount](self, "trackedItemsCount") - [v11 selectionModel:self countForItemIDs:v12]);
+        dataSource = [(MessageListSelectionModel *)self dataSource];
+        allObjects2 = [v7 allObjects];
+        -[MessageListSelectionModel setTrackedItemsCount:](self, "setTrackedItemsCount:", -[MessageListSelectionModel trackedItemsCount](self, "trackedItemsCount") - [dataSource selectionModel:self countForItemIDs:allObjects2]);
 
-        v13 = [v7 allObjects];
-        -[MessageListSelectionModel setTrackedItemsWillMoveToTrash:](self, "setTrackedItemsWillMoveToTrash:", -[MessageListSelectionModel trackedItemsWillMoveToTrash](self, "trackedItemsWillMoveToTrash") - [v11 selectionModel:self countDeleteMovesToTrashForItemIDs:v13]);
+        allObjects3 = [v7 allObjects];
+        -[MessageListSelectionModel setTrackedItemsWillMoveToTrash:](self, "setTrackedItemsWillMoveToTrash:", -[MessageListSelectionModel trackedItemsWillMoveToTrash](self, "trackedItemsWillMoveToTrash") - [dataSource selectionModel:self countDeleteMovesToTrashForItemIDs:allObjects3]);
 
-        v14 = [v7 allObjects];
-        -[MessageListSelectionModel setTrackedItemsSupportArchiving:](self, "setTrackedItemsSupportArchiving:", -[MessageListSelectionModel trackedItemsSupportArchiving](self, "trackedItemsSupportArchiving") - [v11 selectionModel:self countSupportsArchivingForItemIDs:v14]);
+        allObjects4 = [v7 allObjects];
+        -[MessageListSelectionModel setTrackedItemsSupportArchiving:](self, "setTrackedItemsSupportArchiving:", -[MessageListSelectionModel trackedItemsSupportArchiving](self, "trackedItemsSupportArchiving") - [dataSource selectionModel:self countSupportsArchivingForItemIDs:allObjects4]);
 
-        v15 = [v7 allObjects];
-        -[MessageListSelectionModel setTrackedItemsArchiveByDefault:](self, "setTrackedItemsArchiveByDefault:", -[MessageListSelectionModel trackedItemsArchiveByDefault](self, "trackedItemsArchiveByDefault") - [v11 selectionModel:self countShouldArchiveByDefaultForItemIDs:v15]);
+        allObjects5 = [v7 allObjects];
+        -[MessageListSelectionModel setTrackedItemsArchiveByDefault:](self, "setTrackedItemsArchiveByDefault:", -[MessageListSelectionModel trackedItemsArchiveByDefault](self, "trackedItemsArchiveByDefault") - [dataSource selectionModel:self countShouldArchiveByDefaultForItemIDs:allObjects5]);
       }
 
       [(MessageListSelectionModel *)self _scheduleMailboxPredictionUpdate];
@@ -532,22 +532,22 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
 
     else
     {
-      LOBYTE(v4) = 0;
+      LOBYTE(countCopy) = 0;
     }
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(countCopy) = 0;
   }
 
-  return v4;
+  return countCopy;
 }
 
 - (void)_untrackAllItemIDs
 {
-  v3 = [(MessageListSelectionModel *)self trackedItems];
-  [v3 untrackAllMessageListItems];
+  trackedItems = [(MessageListSelectionModel *)self trackedItems];
+  [trackedItems untrackAllMessageListItems];
 
   [(MessageListSelectionModel *)self setTrackedItemsCount:0];
   [(MessageListSelectionModel *)self setTrackedItemsWillMoveToTrash:0];
@@ -557,33 +557,33 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
   [(MessageListSelectionModel *)self _scheduleMailboxPredictionUpdate];
 }
 
-- (id)selectItemWithItemID:(id)a3
+- (id)selectItemWithItemID:(id)d
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(MessageListSelectionModel *)self isSelectAll];
-    v6 = [(MessageListSelectionModel *)self itemIDsToUnselectForItemID:v4];
-    if (v5)
+    isSelectAll = [(MessageListSelectionModel *)self isSelectAll];
+    v6 = [(MessageListSelectionModel *)self itemIDsToUnselectForItemID:dCopy];
+    if (isSelectAll)
     {
       [(MessageListSelectionModel *)self _trackItemIDs:v6 updateCount:1];
-      v14[0] = v4;
+      v14[0] = dCopy;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
       v8 = [(MessageListSelectionModel *)self _untrackItemIDs:v7 updateCount:1];
 
-      v9 = [(MessageListSelectionModel *)self cascadedItemIDsForItemID:v4 isSelecting:1];
+      v9 = [(MessageListSelectionModel *)self cascadedItemIDsForItemID:dCopy isSelecting:1];
       [(MessageListSelectionModel *)self _untrackItemIDs:v9 updateCount:!v8];
     }
 
     else
     {
       [(MessageListSelectionModel *)self _untrackItemIDs:v6 updateCount:1];
-      v13 = v4;
+      v13 = dCopy;
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
       v11 = [(MessageListSelectionModel *)self _trackItemIDs:v10 updateCount:1];
 
-      v9 = [(MessageListSelectionModel *)self cascadedItemIDsForItemID:v4 isSelecting:1];
+      v9 = [(MessageListSelectionModel *)self cascadedItemIDsForItemID:dCopy isSelecting:1];
       [(MessageListSelectionModel *)self _trackItemIDs:v9 updateCount:!v11];
     }
   }
@@ -596,29 +596,29 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
   return v9;
 }
 
-- (id)deselectItemWithItemID:(id)a3
+- (id)deselectItemWithItemID:(id)d
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     if ([(MessageListSelectionModel *)self isSelectAll])
     {
-      v12[0] = v4;
+      v12[0] = dCopy;
       v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
       v6 = [(MessageListSelectionModel *)self _trackItemIDs:v5 updateCount:1];
 
-      v7 = [(MessageListSelectionModel *)self cascadedItemIDsForItemID:v4 isSelecting:0];
+      v7 = [(MessageListSelectionModel *)self cascadedItemIDsForItemID:dCopy isSelecting:0];
       [(MessageListSelectionModel *)self _trackItemIDs:v7 updateCount:!v6];
     }
 
     else
     {
-      v11 = v4;
+      v11 = dCopy;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:&v11 count:1];
       v9 = [(MessageListSelectionModel *)self _untrackItemIDs:v8 updateCount:1];
 
-      v7 = [(MessageListSelectionModel *)self cascadedItemIDsForItemID:v4 isSelecting:0];
+      v7 = [(MessageListSelectionModel *)self cascadedItemIDsForItemID:dCopy isSelecting:0];
       [(MessageListSelectionModel *)self _untrackItemIDs:v7 updateCount:!v9];
     }
   }
@@ -631,93 +631,93 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
   return v7;
 }
 
-- (void)willCollapseThreadItemID:(id)a3
+- (void)willCollapseThreadItemID:(id)d
 {
-  v8 = a3;
+  dCopy = d;
   v4 = [MessageListSelectionModel cascadedItemIDsForItemID:"cascadedItemIDsForItemID:isSelecting:" isSelecting:?];
   v5 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v4];
   if (![(MessageListSelectionModel *)self _allChildrenSelected:v5])
   {
-    v6 = [(MessageListSelectionModel *)self deselectItemWithItemID:v8];
-    v7 = [(MessageListSelectionModel *)self delegate];
-    [v7 selectionModel:self deselectItemID:v8];
+    v6 = [(MessageListSelectionModel *)self deselectItemWithItemID:dCopy];
+    delegate = [(MessageListSelectionModel *)self delegate];
+    [delegate selectionModel:self deselectItemID:dCopy];
   }
 
   [(MessageListSelectionModel *)self _untrackItemIDs:v4 updateCount:0];
 }
 
-- (void)didExpandThreadItemID:(id)a3 addedItemIDs:(id)a4
+- (void)didExpandThreadItemID:(id)d addedItemIDs:(id)ds
 {
-  v6 = a4;
-  if ([(MessageListSelectionModel *)self isSelectedItemID:a3])
+  dsCopy = ds;
+  if ([(MessageListSelectionModel *)self isSelectedItemID:d])
   {
     if ([(MessageListSelectionModel *)self isSelectAll])
     {
-      [(MessageListSelectionModel *)self _untrackItemIDs:v6 updateCount:0];
+      [(MessageListSelectionModel *)self _untrackItemIDs:dsCopy updateCount:0];
     }
 
     else
     {
-      [(MessageListSelectionModel *)self _trackItemIDs:v6 updateCount:0];
+      [(MessageListSelectionModel *)self _trackItemIDs:dsCopy updateCount:0];
     }
   }
 }
 
-- (BOOL)isSelectedItemID:(id)a3
+- (BOOL)isSelectedItemID:(id)d
 {
-  v4 = a3;
-  v5 = [(MessageListSelectionModel *)self trackedItems];
-  v6 = [v5 hasMessageListItemForItemID:v4];
+  dCopy = d;
+  trackedItems = [(MessageListSelectionModel *)self trackedItems];
+  v6 = [trackedItems hasMessageListItemForItemID:dCopy];
 
   return v6 ^ [(MessageListSelectionModel *)self isSelectAll];
 }
 
-- (void)configureSelectionForItemID:(id)a3
+- (void)configureSelectionForItemID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   if ([(MessageListSelectionModel *)self isPerformingDataSourceUpdates])
   {
-    v4 = [(MessageListSelectionModel *)self itemIDsPendingConfiguration];
-    [v4 addObject:v6];
+    itemIDsPendingConfiguration = [(MessageListSelectionModel *)self itemIDsPendingConfiguration];
+    [itemIDsPendingConfiguration addObject:dCopy];
   }
 
   else
   {
-    v4 = [(MessageListSelectionModel *)self delegate];
-    if ([(MessageListSelectionModel *)self isSelectedItemID:v6])
+    itemIDsPendingConfiguration = [(MessageListSelectionModel *)self delegate];
+    if ([(MessageListSelectionModel *)self isSelectedItemID:dCopy])
     {
-      [v4 selectionModel:self selectItemID:v6];
+      [itemIDsPendingConfiguration selectionModel:self selectItemID:dCopy];
     }
 
     else
     {
-      [v4 selectionModel:self deselectItemID:v6];
+      [itemIDsPendingConfiguration selectionModel:self deselectItemID:dCopy];
     }
 
-    v5 = [(MessageListSelectionModel *)self itemIDsPendingConfiguration];
-    [v5 removeObject:v6];
+    itemIDsPendingConfiguration2 = [(MessageListSelectionModel *)self itemIDsPendingConfiguration];
+    [itemIDsPendingConfiguration2 removeObject:dCopy];
   }
 }
 
-- (void)setPerformingDataSourceUpdates:(BOOL)a3
+- (void)setPerformingDataSourceUpdates:(BOOL)updates
 {
   v5 = *MEMORY[0x277D85DE8];
-  if (self->_performingDataSourceUpdates != a3)
+  if (self->_performingDataSourceUpdates != updates)
   {
-    self->_performingDataSourceUpdates = a3;
-    if (!a3)
+    self->_performingDataSourceUpdates = updates;
+    if (!updates)
     {
       [(MessageListSelectionModel *)self setPerformingDataSourceUpdates:v3, v4];
     }
   }
 }
 
-- (void)setMultipleSelectionActive:(BOOL)a3
+- (void)setMultipleSelectionActive:(BOOL)active
 {
-  if (self->_multipleSelectionActive != a3)
+  if (self->_multipleSelectionActive != active)
   {
-    self->_multipleSelectionActive = a3;
-    if (a3)
+    self->_multipleSelectionActive = active;
+    if (active)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
     }
@@ -738,16 +738,16 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
 {
   if ([(MessageListSelectionModel *)self type])
   {
-    v3 = 0;
+    resultIfAvailable = 0;
   }
 
   else
   {
-    v4 = [(MessageListSelectionModel *)self mailboxPredictionFuture];
-    v3 = [v4 resultIfAvailable];
+    mailboxPredictionFuture = [(MessageListSelectionModel *)self mailboxPredictionFuture];
+    resultIfAvailable = [mailboxPredictionFuture resultIfAvailable];
   }
 
-  return v3;
+  return resultIfAvailable;
 }
 
 - (void)_scheduleMailboxPredictionUpdate
@@ -760,30 +760,30 @@ void __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke
 
   else
   {
-    v5 = [(MessageListSelectionModel *)self predictionDebouncer];
+    predictionDebouncer = [(MessageListSelectionModel *)self predictionDebouncer];
 
-    if (!v5)
+    if (!predictionDebouncer)
     {
       objc_initWeak(&location, self);
       v6 = objc_alloc(MEMORY[0x277D07140]);
-      v7 = [MEMORY[0x277D071B8] mainThreadScheduler];
+      mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
       v12 = MEMORY[0x277D85DD0];
       v13 = 3221225472;
       v14 = __61__MessageListSelectionModel__scheduleMailboxPredictionUpdate__block_invoke;
       v15 = &unk_278189760;
       objc_copyWeak(&v16, &location);
-      v8 = [v6 initWithTimeInterval:v7 scheduler:0 startAfter:&v12 block:0.25];
+      v8 = [v6 initWithTimeInterval:mainThreadScheduler scheduler:0 startAfter:&v12 block:0.25];
       [(MessageListSelectionModel *)self setPredictionDebouncer:v8, v12, v13, v14, v15];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
     }
 
-    v9 = [(MessageListSelectionModel *)self trackedItems];
-    v10 = [v9 itemIDs];
+    trackedItems = [(MessageListSelectionModel *)self trackedItems];
+    itemIDs = [trackedItems itemIDs];
 
-    v11 = [(MessageListSelectionModel *)self predictionDebouncer];
-    [v11 debounceResult:v10];
+    predictionDebouncer2 = [(MessageListSelectionModel *)self predictionDebouncer];
+    [predictionDebouncer2 debounceResult:itemIDs];
   }
 }
 
@@ -794,29 +794,29 @@ void __61__MessageListSelectionModel__scheduleMailboxPredictionUpdate__block_inv
   [WeakRetained __updatePredictionWithSelection:v3];
 }
 
-- (void)__updatePredictionWithSelection:(id)a3
+- (void)__updatePredictionWithSelection:(id)selection
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MessageListSelectionModel *)self dataSource];
-  v6 = [v5 selectionModel:self objectIDsForItemIDs:v4];
-  v7 = [MEMORY[0x277CCACA8] ef_UUID];
+  selectionCopy = selection;
+  dataSource = [(MessageListSelectionModel *)self dataSource];
+  v6 = [dataSource selectionModel:self objectIDsForItemIDs:selectionCopy];
+  ef_UUID = [MEMORY[0x277CCACA8] ef_UUID];
   v8 = _ef_log_MessageListSelectionModel();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v20 = [v4 count];
+    v20 = [selectionCopy count];
     v21 = 2114;
-    v22 = v7;
+    v22 = ef_UUID;
     _os_log_impl(&dword_214A5E000, v8, OS_LOG_TYPE_INFO, "Requesting predicted mailbox for %lu messages. predictionID=%{public}@", buf, 0x16u);
   }
 
-  v9 = [v5 selectionModel:self predictMailboxForMovingMessagesWithIDs:v6];
+  v9 = [dataSource selectionModel:self predictMailboxForMovingMessagesWithIDs:v6];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __61__MessageListSelectionModel___updatePredictionWithSelection___block_invoke;
   v17[3] = &unk_278189788;
-  v10 = v7;
+  v10 = ef_UUID;
   v18 = v10;
   [v9 addSuccessBlock:v17];
   v12 = MEMORY[0x277D85DD0];
@@ -894,33 +894,33 @@ LABEL_7:
   }
 }
 
-- (void)setMailboxPredictionFuture:(id)a3
+- (void)setMailboxPredictionFuture:(id)future
 {
-  v4 = a3;
+  futureCopy = future;
   [(EFFuture *)self->_mailboxPredictionFuture cancel];
   mailboxPredictionFuture = self->_mailboxPredictionFuture;
-  self->_mailboxPredictionFuture = v4;
+  self->_mailboxPredictionFuture = futureCopy;
 }
 
 - (void)preserveSelection
 {
-  v3 = [(MessageListSelectionModel *)self restoreSelectionCancelable];
-  v4 = v3;
-  if (v3)
+  restoreSelectionCancelable = [(MessageListSelectionModel *)self restoreSelectionCancelable];
+  v4 = restoreSelectionCancelable;
+  if (restoreSelectionCancelable)
   {
-    [v3 cancel];
+    [restoreSelectionCancelable cancel];
   }
 
   [(MessageListSelectionModel *)self setShouldRestoreSelection:1];
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277D071B8] mainThreadScheduler];
-  v6 = [(MessageListSelectionModel *)self preserveSelectionTimeout];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
+  preserveSelectionTimeout = [(MessageListSelectionModel *)self preserveSelectionTimeout];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __46__MessageListSelectionModel_preserveSelection__block_invoke;
   v11 = &unk_278188CD0;
   objc_copyWeak(&v12, &location);
-  v7 = [v5 afterDelay:&v8 performBlock:v6];
+  v7 = [mainThreadScheduler afterDelay:&v8 performBlock:preserveSelectionTimeout];
   [(MessageListSelectionModel *)self setRestoreSelectionCancelable:v7, v8, v9, v10, v11];
 
   objc_destroyWeak(&v12);
@@ -933,11 +933,11 @@ void __46__MessageListSelectionModel_preserveSelection__block_invoke(uint64_t a1
   [WeakRetained setShouldRestoreSelection:0];
 }
 
-- (void)enableSelectAllWithMailboxes:(id)a3
+- (void)enableSelectAllWithMailboxes:(id)mailboxes
 {
-  v4 = a3;
+  mailboxesCopy = mailboxes;
   [(MessageListSelectionModel *)self clearAll];
-  v5 = [v4 copy];
+  v5 = [mailboxesCopy copy];
 
   [(MessageListSelectionModel *)self setTrackedMailboxes:v5];
 
@@ -957,12 +957,12 @@ void __46__MessageListSelectionModel_preserveSelection__block_invoke(uint64_t a1
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MessageListSelectionModel *)self trackedItems];
-  v7 = [v6 count];
-  v8 = [(MessageListSelectionModel *)self trackedItems];
-  v9 = [v8 count];
-  v10 = [(MessageListSelectionModel *)self trackedMailboxes];
-  v11 = [v3 stringWithFormat:@"<%@: %p> itemIDs:%ld, messageListItems:%ld, mailboxes:%ld, isSelectAll:%d", v5, self, v7, v9, objc_msgSend(v10, "count"), -[MessageListSelectionModel isSelectAll](self, "isSelectAll")];
+  trackedItems = [(MessageListSelectionModel *)self trackedItems];
+  v7 = [trackedItems count];
+  trackedItems2 = [(MessageListSelectionModel *)self trackedItems];
+  v9 = [trackedItems2 count];
+  trackedMailboxes = [(MessageListSelectionModel *)self trackedMailboxes];
+  v11 = [v3 stringWithFormat:@"<%@: %p> itemIDs:%ld, messageListItems:%ld, mailboxes:%ld, isSelectAll:%d", v5, self, v7, v9, objc_msgSend(trackedMailboxes, "count"), -[MessageListSelectionModel isSelectAll](self, "isSelectAll")];
 
   return v11;
 }
@@ -984,12 +984,12 @@ void __46__MessageListSelectionModel_preserveSelection__block_invoke(uint64_t a1
 - (void)_fetchMissingMessageListItems
 {
   v36 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 itemIDsMissingMessageListItem];
-    v3 = [v2 allObjects];
+    itemIDsMissingMessageListItem = [self itemIDsMissingMessageListItem];
+    allObjects = [itemIDsMissingMessageListItem allObjects];
 
-    if ([v3 count])
+    if ([allObjects count])
     {
       v4 = _ef_log_MessageListSelectionModel();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -999,21 +999,21 @@ void __46__MessageListSelectionModel_preserveSelection__block_invoke(uint64_t a1
         *buf = 138544130;
         v29 = v6;
         v30 = 2048;
-        v31 = a1;
+        selfCopy = self;
         v32 = 2048;
-        v33 = [v3 count];
+        v33 = [allObjects count];
         v34 = 2114;
-        v35 = v3;
+        v35 = allObjects;
         _os_log_impl(&dword_214A5E000, v4, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Fetch message list items for item ids (%lu): %{public}@", buf, 0x2Au);
       }
 
-      v7 = [a1 itemIDsMissingMessageListItem];
-      [v7 removeAllObjects];
+      itemIDsMissingMessageListItem2 = [self itemIDsMissingMessageListItem];
+      [itemIDsMissingMessageListItem2 removeAllObjects];
 
-      v8 = [a1 trackedItems];
-      v9 = [a1 dataSource];
-      v10 = a1;
-      v11 = [v9 selectionModel:a1 messageListItemsForItemIDs:v3];
+      trackedItems = [self trackedItems];
+      dataSource = [self dataSource];
+      selfCopy2 = self;
+      v11 = [dataSource selectionModel:self messageListItemsForItemIDs:allObjects];
 
       v25 = 0u;
       v26 = 0u;
@@ -1035,21 +1035,21 @@ void __46__MessageListSelectionModel_preserveSelection__block_invoke(uint64_t a1
             }
 
             v16 = *(*(&v23 + 1) + 8 * i);
-            v17 = [MEMORY[0x277D071B8] mainThreadScheduler];
+            mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
             v21[0] = MEMORY[0x277D85DD0];
             v21[1] = 3221225472;
             v21[2] = __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke;
             v21[3] = &unk_278189710;
-            v22 = v8;
-            [v16 onScheduler:v17 addSuccessBlock:v21];
+            v22 = trackedItems;
+            [v16 onScheduler:mainThreadScheduler addSuccessBlock:v21];
 
-            v18 = [MEMORY[0x277D071B8] mainThreadScheduler];
+            mainThreadScheduler2 = [MEMORY[0x277D071B8] mainThreadScheduler];
             v20[0] = MEMORY[0x277D85DD0];
             v20[1] = 3221225472;
             v20[2] = __58__MessageListSelectionModel__fetchMissingMessageListItems__block_invoke_2;
             v20[3] = &unk_278189738;
-            v20[4] = v10;
-            [v16 onScheduler:v18 addFailureBlock:v20];
+            v20[4] = selfCopy2;
+            [v16 onScheduler:mainThreadScheduler2 addFailureBlock:v20];
           }
 
           v13 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];

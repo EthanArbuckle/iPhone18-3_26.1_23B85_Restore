@@ -1,16 +1,16 @@
 @interface CPSearchMatcher
-- (BOOL)matches:(id)a3;
-- (BOOL)matchesASCIIString:(const char *)a3 matchType:(int)a4;
-- (BOOL)matchesUTF8String:(const char *)a3 matchType:(int)a4 matchOptions:(int)a5;
+- (BOOL)matches:(id)matches;
+- (BOOL)matchesASCIIString:(const char *)string matchType:(int)type;
+- (BOOL)matchesUTF8String:(const char *)string matchType:(int)type matchOptions:(int)options;
 - (void)dealloc;
 @end
 
 @implementation CPSearchMatcher
 
-- (BOOL)matchesASCIIString:(const char *)a3 matchType:(int)a4
+- (BOOL)matchesASCIIString:(const char *)string matchType:(int)type
 {
   v60 = *MEMORY[0x1E69E9840];
-  v7 = [(NSData *)self->_wholeSearchStringData bytes];
+  bytes = [(NSData *)self->_wholeSearchStringData bytes];
   v8 = [(NSData *)self->_wholeSearchStringData length];
   if ((self->_options & 2) != 0)
   {
@@ -30,13 +30,13 @@
 
   v40 = v10;
   v41 = v9;
-  v38 = a4;
-  if (a4 == 4)
+  typeCopy = type;
+  if (type == 4)
   {
     v11 = v8;
-    if (strlen(a3) == v8)
+    if (strlen(string) == v8)
     {
-      LOBYTE(v12) = v41(a3, v7, v11) == 0;
+      LOBYTE(v12) = v41(string, bytes, v11) == 0;
       goto LABEL_47;
     }
 
@@ -66,8 +66,8 @@ LABEL_12:
   }
 
   v14 = *(*(&v54 + 1) + 8 * v13);
-  v15 = [v14 bytes];
-  v12 = v40(a3, v15);
+  bytes2 = [v14 bytes];
+  v12 = v40(string, bytes2);
   if (v12)
   {
     v50 = 0;
@@ -79,27 +79,27 @@ LABEL_12:
     v42[1] = 3221225472;
     v43 = __48__CPSearchMatcher_matchesASCIIString_matchType___block_invoke;
     v44 = &unk_1E7450D70;
-    v49 = v38;
+    v49 = typeCopy;
     v47 = v41;
-    v48 = v15;
+    v48 = bytes2;
     v45 = &v50;
     v46 = v16 - 1;
     v58 = 0;
-    if (!a3)
+    if (!string)
     {
       goto LABEL_42;
     }
 
-    v17 = *a3;
-    if (!*a3)
+    v17 = *string;
+    if (!*string)
     {
       goto LABEL_42;
     }
 
     v18 = 0;
     v19 = 1;
-    v20 = a3;
-    v21 = a3;
+    stringCopy = string;
+    stringCopy2 = string;
     v22 = 1;
     while (1)
     {
@@ -163,7 +163,7 @@ LABEL_26:
 
       if ((v29 & 1) != 0 && v18)
       {
-        v43(v42, v18, &v21[-v18], &v58);
+        v43(v42, v18, &stringCopy2[-v18], &v58);
         if (v58)
         {
           goto LABEL_42;
@@ -174,17 +174,17 @@ LABEL_26:
 
       if (v31)
       {
-        v18 = v20;
+        v18 = stringCopy;
       }
 
-      v32 = *++v20;
+      v32 = *++stringCopy;
       v17 = v32;
-      ++v21;
+      ++stringCopy2;
       if (!v32)
       {
         if (v18)
         {
-          v43(v42, v18, &v21[-v18], &v58);
+          v43(v42, v18, &stringCopy2[-v18], &v58);
         }
 
 LABEL_42:
@@ -249,22 +249,22 @@ uint64_t __48__CPSearchMatcher_matchesASCIIString_matchType___block_invoke(uint6
   return result;
 }
 
-- (BOOL)matchesUTF8String:(const char *)a3 matchType:(int)a4 matchOptions:(int)a5
+- (BOOL)matchesUTF8String:(const char *)string matchType:(int)type matchOptions:(int)options
 {
   v31 = *MEMORY[0x1E69E9840];
-  if ((a4 & 0xFFFFFFFD) == 4)
+  if ((type & 0xFFFFFFFD) == 4)
   {
-    v8 = a4;
+    typeCopy = type;
   }
 
   else
   {
-    v8 = 5;
+    typeCopy = 5;
   }
 
-  if (a3 && self->_asciiComponents)
+  if (string && self->_asciiComponents)
   {
-    for (i = a3; ; ++i)
+    for (i = string; ; ++i)
     {
       v10 = *i;
       if (v10 < 0)
@@ -281,7 +281,7 @@ uint64_t __48__CPSearchMatcher_matchesASCIIString_matchType___block_invoke(uint6
     }
   }
 
-  if (v8 != 4)
+  if (typeCopy != 4)
   {
     v18 = [(NSArray *)self->_components count]!= 0;
     v26 = 0u;
@@ -303,10 +303,10 @@ uint64_t __48__CPSearchMatcher_matchesASCIIString_matchType___block_invoke(uint6
             objc_enumerationMutation(obj);
           }
 
-          v23 = _ICUSQLiteMatch(a3, [*(*(&v26 + 1) + 8 * j) bytes], objc_msgSend(*(*(&v26 + 1) + 8 * j), "length"), v8, -[NSData bytes](self->_context, "bytes"));
-          if ((a5 == 0) == v23)
+          v23 = _ICUSQLiteMatch(string, [*(*(&v26 + 1) + 8 * j) bytes], objc_msgSend(*(*(&v26 + 1) + 8 * j), "length"), typeCopy, -[NSData bytes](self->_context, "bytes"));
+          if ((options == 0) == v23)
           {
-            v18 = a5 == 0;
+            v18 = options == 0;
             goto LABEL_28;
           }
         }
@@ -335,18 +335,18 @@ LABEL_28:
     return v18;
   }
 
-  v15 = [(NSData *)wholeSearchStringData bytes];
-  v16 = [(NSData *)self->_context bytes];
+  bytes = [(NSData *)wholeSearchStringData bytes];
+  bytes2 = [(NSData *)self->_context bytes];
   v17 = *MEMORY[0x1E69E9840];
 
-  return _ICUSQLiteMatch(a3, v15, v13, 4, v16);
+  return _ICUSQLiteMatch(string, bytes, v13, 4, bytes2);
 }
 
-- (BOOL)matches:(id)a3
+- (BOOL)matches:(id)matches
 {
-  v4 = [a3 UTF8String];
+  uTF8String = [matches UTF8String];
 
-  return [(CPSearchMatcher *)self matchesUTF8String:v4];
+  return [(CPSearchMatcher *)self matchesUTF8String:uTF8String];
 }
 
 - (void)dealloc

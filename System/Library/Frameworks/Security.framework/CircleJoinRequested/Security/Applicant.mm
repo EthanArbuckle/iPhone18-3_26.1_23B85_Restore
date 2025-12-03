@@ -1,5 +1,5 @@
 @interface Applicant
-- (Applicant)initWithPeerInfo:(__OpaqueSOSPeerInfo *)a3;
+- (Applicant)initWithPeerInfo:(__OpaqueSOSPeerInfo *)info;
 - (NSString)applicantUIStateName;
 - (NSString)deviceType;
 - (NSString)idString;
@@ -12,15 +12,15 @@
 
 - (NSString)applicantUIStateName
 {
-  v3 = [(Applicant *)self applicantUIState];
-  if (v3 >= 4)
+  applicantUIState = [(Applicant *)self applicantUIState];
+  if (applicantUIState >= 4)
   {
     v4 = [NSString stringWithFormat:@"UnknownState#%d", [(Applicant *)self applicantUIState]];
   }
 
   else
   {
-    v4 = *(&off_10000C448 + v3);
+    v4 = *(&off_10000C448 + applicantUIState);
   }
 
   return v4;
@@ -28,16 +28,16 @@
 
 - (NSString)deviceType
 {
-  v2 = [(Applicant *)self rawPeerInfo];
+  rawPeerInfo = [(Applicant *)self rawPeerInfo];
 
-  return _SOSPeerInfoGetPeerDeviceType(v2);
+  return _SOSPeerInfoGetPeerDeviceType(rawPeerInfo);
 }
 
 - (id)description
 {
-  v3 = [(Applicant *)self rawPeerInfo];
-  v4 = [(Applicant *)self applicantUIStateName];
-  v5 = [NSString stringWithFormat:@"%@=%@", v3, v4];
+  rawPeerInfo = [(Applicant *)self rawPeerInfo];
+  applicantUIStateName = [(Applicant *)self applicantUIStateName];
+  v5 = [NSString stringWithFormat:@"%@=%@", rawPeerInfo, applicantUIStateName];
 
   return v5;
 }
@@ -57,31 +57,31 @@
 
 - (NSString)name
 {
-  v2 = [(Applicant *)self rawPeerInfo];
+  rawPeerInfo = [(Applicant *)self rawPeerInfo];
 
-  return _SOSPeerInfoGetPeerName(v2);
+  return _SOSPeerInfoGetPeerName(rawPeerInfo);
 }
 
 - (NSString)idString
 {
-  v2 = [(Applicant *)self rawPeerInfo];
+  rawPeerInfo = [(Applicant *)self rawPeerInfo];
 
-  return _SOSPeerInfoGetPeerID(v2);
+  return _SOSPeerInfoGetPeerID(rawPeerInfo);
 }
 
-- (Applicant)initWithPeerInfo:(__OpaqueSOSPeerInfo *)a3
+- (Applicant)initWithPeerInfo:(__OpaqueSOSPeerInfo *)info
 {
   v6.receiver = self;
   v6.super_class = Applicant;
   v4 = [(Applicant *)&v6 init];
   if (v4)
   {
-    if (a3)
+    if (info)
     {
-      CFRetain(a3);
+      CFRetain(info);
     }
 
-    [(Applicant *)v4 setRawPeerInfo:a3];
+    [(Applicant *)v4 setRawPeerInfo:info];
     [(Applicant *)v4 setApplicantUIState:0];
   }
 

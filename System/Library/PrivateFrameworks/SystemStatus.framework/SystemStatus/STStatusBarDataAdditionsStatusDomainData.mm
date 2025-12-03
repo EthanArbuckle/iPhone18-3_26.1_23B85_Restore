@@ -1,9 +1,9 @@
 @interface STStatusBarDataAdditionsStatusDomainData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (STStatusBarDataActivityEntry)activityEntry;
 - (STStatusBarDataAdditionsStatusDomainData)init;
-- (STStatusBarDataAdditionsStatusDomainData)initWithCoder:(id)a3;
-- (STStatusBarDataAdditionsStatusDomainData)initWithEntryDictionaryData:(id)a3;
+- (STStatusBarDataAdditionsStatusDomainData)initWithCoder:(id)coder;
+- (STStatusBarDataAdditionsStatusDomainData)initWithEntryDictionaryData:(id)data;
 - (STStatusBarDataBluetoothEntry)bluetoothEntry;
 - (STStatusBarDataBoolEntry)ringerSilenceEntry;
 - (STStatusBarDataLockEntry)lockEntry;
@@ -12,18 +12,18 @@
 - (STStatusBarDataStringEntry)personNameEntry;
 - (STStatusBarDataTetheringEntry)tetheringEntry;
 - (STStatusBarDataThermalEntry)thermalEntry;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)_expectedClassForKey:(id)a1;
-- (id)_initWithEntryDictionaryData:(id *)a1;
-- (id)dataByApplyingDiff:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffFromData:(id)a3;
-- (id)initWithData:(void *)a1;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)_expectedClassForKey:(id)key;
+- (id)_initWithEntryDictionaryData:(id *)data;
+- (id)dataByApplyingDiff:(id)diff;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffFromData:(id)data;
+- (id)initWithData:(void *)data;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STStatusBarDataAdditionsStatusDomainData
@@ -36,181 +36,181 @@
   return v4;
 }
 
-- (id)initWithData:(void *)a1
+- (id)initWithData:(void *)data
 {
-  v2 = a1;
-  if (a1)
+  dataCopy = data;
+  if (data)
   {
-    v3 = [a2 entryDictionaryData];
-    v2 = [v2 initWithEntryDictionaryData:v3];
+    entryDictionaryData = [a2 entryDictionaryData];
+    dataCopy = [dataCopy initWithEntryDictionaryData:entryDictionaryData];
   }
 
-  return v2;
+  return dataCopy;
 }
 
-- (STStatusBarDataAdditionsStatusDomainData)initWithEntryDictionaryData:(id)a3
+- (STStatusBarDataAdditionsStatusDomainData)initWithEntryDictionaryData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   v5 = [(STStatusBarDataAdditionsStatusDomainData *)&self->super.isa _initWithEntryDictionaryData:v4];
 
   return v5;
 }
 
-- (id)_initWithEntryDictionaryData:(id *)a1
+- (id)_initWithEntryDictionaryData:(id *)data
 {
   v4 = a2;
-  if (a1)
+  if (data)
   {
-    v7.receiver = a1;
+    v7.receiver = data;
     v7.super_class = STStatusBarDataAdditionsStatusDomainData;
     v5 = objc_msgSendSuper2(&v7, sel_init);
-    a1 = v5;
+    data = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return data;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
-  v6 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __52__STStatusBarDataAdditionsStatusDomainData_isEqual___block_invoke;
   v10[3] = &unk_1E85DDCD8;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v5 appendObject:v6 counterpart:v10];
+  v11 = equalCopy;
+  v7 = equalCopy;
+  v8 = [v5 appendObject:entryDictionaryData counterpart:v10];
 
-  LOBYTE(v6) = [v5 isEqual];
-  return v6;
+  LOBYTE(entryDictionaryData) = [v5 isEqual];
+  return entryDictionaryData;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  v5 = [v3 appendObject:v4];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  v5 = [builder appendObject:entryDictionaryData];
 
-  v6 = [v3 hash];
+  v6 = [builder hash];
   return v6;
 }
 
 - (STStatusBarDataStringEntry)personNameEntry
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  v3 = [v2 objectForKey:@"personNameEntry"];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  v3 = [entryDictionaryData objectForKey:@"personNameEntry"];
 
   return v3;
 }
 
 - (STStatusBarDataBluetoothEntry)bluetoothEntry
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  v3 = [v2 objectForKey:@"bluetoothEntry"];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  v3 = [entryDictionaryData objectForKey:@"bluetoothEntry"];
 
   return v3;
 }
 
 - (STStatusBarDataThermalEntry)thermalEntry
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  v3 = [v2 objectForKey:@"thermalEntry"];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  v3 = [entryDictionaryData objectForKey:@"thermalEntry"];
 
   return v3;
 }
 
 - (STStatusBarDataActivityEntry)activityEntry
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  v3 = [v2 objectForKey:@"activityEntry"];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  v3 = [entryDictionaryData objectForKey:@"activityEntry"];
 
   return v3;
 }
 
 - (STStatusBarDataTetheringEntry)tetheringEntry
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  v3 = [v2 objectForKey:@"tetheringEntry"];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  v3 = [entryDictionaryData objectForKey:@"tetheringEntry"];
 
   return v3;
 }
 
 - (STStatusBarDataLockEntry)lockEntry
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  v3 = [v2 objectForKey:@"lockEntry"];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  v3 = [entryDictionaryData objectForKey:@"lockEntry"];
 
   return v3;
 }
 
 - (STStatusBarDataQuietModeEntry)focusModeEntry
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  v3 = [v2 objectForKey:@"focusModeEntry"];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  v3 = [entryDictionaryData objectForKey:@"focusModeEntry"];
 
   return v3;
 }
 
 - (STStatusBarDataBoolEntry)ringerSilenceEntry
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  v3 = [v2 objectForKey:@"ringerSilenceEntry"];
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  v3 = [entryDictionaryData objectForKey:@"ringerSilenceEntry"];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [STMutableStatusBarDataAdditionsStatusDomainData allocWithZone:a3];
+  v4 = [STMutableStatusBarDataAdditionsStatusDomainData allocWithZone:zone];
 
   return [(STStatusBarDataAdditionsStatusDomainData *)v4 initWithData:?];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STStatusBarDataAdditionsStatusDomainData *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarDataAdditionsStatusDomainData *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STStatusBarDataAdditionsStatusDomainData *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STStatusBarDataAdditionsStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STStatusBarDataAdditionsStatusDomainData *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __92__STStatusBarDataAdditionsStatusDomainData__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;
@@ -231,13 +231,13 @@ void __92__STStatusBarDataAdditionsStatusDomainData__descriptionBuilderWithMulti
   v2 = [v1 appendObject:v3 withName:0 skipIfNil:1];
 }
 
-- (id)diffFromData:(id)a3
+- (id)diffFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [STStatusBarDataAdditionsStatusDomainDataDiff diffFromData:v4 toData:self];
+    v5 = [STStatusBarDataAdditionsStatusDomainDataDiff diffFromData:dataCopy toData:self];
   }
 
   else
@@ -248,13 +248,13 @@ void __92__STStatusBarDataAdditionsStatusDomainData__descriptionBuilderWithMulti
   return v5;
 }
 
-- (id)dataByApplyingDiff:(id)a3
+- (id)dataByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v4 isEmpty])
+    if ([diffCopy isEmpty])
     {
       v5 = [(STStatusBarDataAdditionsStatusDomainData *)self copy];
     }
@@ -262,7 +262,7 @@ void __92__STStatusBarDataAdditionsStatusDomainData__descriptionBuilderWithMulti
     else
     {
       v5 = [(STStatusBarDataAdditionsStatusDomainData *)self mutableCopy];
-      [v4 applyToMutableData:v5];
+      [diffCopy applyToMutableData:v5];
     }
   }
 
@@ -274,17 +274,17 @@ void __92__STStatusBarDataAdditionsStatusDomainData__descriptionBuilderWithMulti
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
-  [v4 encodeObject:v5 forKey:@"entryDictionaryData"];
+  coderCopy = coder;
+  entryDictionaryData = [(STStatusBarDataAdditionsStatusDomainData *)self entryDictionaryData];
+  [coderCopy encodeObject:entryDictionaryData forKey:@"entryDictionaryData"];
 }
 
-- (id)_expectedClassForKey:(id)a1
+- (id)_expectedClassForKey:(id)key
 {
   v3 = a2;
-  if (a1)
+  if (key)
   {
     if (_MergedGlobals_8 != -1)
     {
@@ -297,10 +297,10 @@ void __92__STStatusBarDataAdditionsStatusDomainData__descriptionBuilderWithMulti
       v4 = objc_opt_class();
     }
 
-    a1 = v4;
+    key = v4;
   }
 
-  return a1;
+  return key;
 }
 
 void __65__STStatusBarDataAdditionsStatusDomainData__expectedClassForKey___block_invoke()
@@ -329,24 +329,24 @@ void __65__STStatusBarDataAdditionsStatusDomainData__expectedClassForKey___block
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (STStatusBarDataAdditionsStatusDomainData)initWithCoder:(id)a3
+- (STStatusBarDataAdditionsStatusDomainData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entryDictionaryData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entryDictionaryData"];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__STStatusBarDataAdditionsStatusDomainData_initWithCoder___block_invoke;
   v13[3] = &unk_1E85DE7C8;
-  v6 = self;
-  v14 = v6;
+  selfCopy = self;
+  v14 = selfCopy;
   v7 = MEMORY[0x1E1274600](v13);
   v8 = (v7)[2](v7, v5);
 
   if (v8)
   {
-    v6 = [(STStatusBarDataAdditionsStatusDomainData *)v6 initWithEntryDictionaryData:v8];
-    v9 = v6;
+    selfCopy = [(STStatusBarDataAdditionsStatusDomainData *)selfCopy initWithEntryDictionaryData:v8];
+    v9 = selfCopy;
   }
 
   else
@@ -406,10 +406,10 @@ void __58__STStatusBarDataAdditionsStatusDomainData_initWithCoder___block_invoke
 
 - (STStatusBarDataPersonNameEntry)avatarEntry
 {
-  v2 = [(STStatusBarDataAdditionsStatusDomainData *)self personNameEntry];
+  personNameEntry = [(STStatusBarDataAdditionsStatusDomainData *)self personNameEntry];
   if (objc_opt_respondsToSelector())
   {
-    v3 = v2;
+    v3 = personNameEntry;
   }
 
   else

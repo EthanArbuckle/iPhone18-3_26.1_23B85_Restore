@@ -1,19 +1,19 @@
 @interface MLSyncClientEnvironmentPolicyChangeHandler
 + (id)sharedInstance;
-- (id)_atAssetTypeForRemovedMediaApp:(int64_t)a3;
+- (id)_atAssetTypeForRemovedMediaApp:(int64_t)app;
 - (id)_init;
 - (id)_observers;
-- (void)_cancelDownloadsMatchingPredicate:(id)a3 excludeActiveDownloads:(BOOL)a4 error:(id)a5;
+- (void)_cancelDownloadsMatchingPredicate:(id)predicate excludeActiveDownloads:(BOOL)downloads error:(id)error;
 - (void)_handleNetworkConditionsOrCellularDataPolicyChanged;
-- (void)_notifyAppRemoved:(int64_t)a3;
-- (void)_notifyPowerStateChangedInitiateSyncOrKeepLocalSessionWithOptions:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)assetLinkControllerDidProcessAllTrackAssets:(id)a3;
-- (void)environmentMonitorDidChangeBatteryLevel:(id)a3;
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3;
-- (void)environmentMonitorDidChangePower:(id)a3;
-- (void)environmentMonitorDidChangeThermalLevel:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)_notifyAppRemoved:(int64_t)removed;
+- (void)_notifyPowerStateChangedInitiateSyncOrKeepLocalSessionWithOptions:(id)options;
+- (void)addObserver:(id)observer;
+- (void)assetLinkControllerDidProcessAllTrackAssets:(id)assets;
+- (void)environmentMonitorDidChangeBatteryLevel:(id)level;
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability;
+- (void)environmentMonitorDidChangePower:(id)power;
+- (void)environmentMonitorDidChangeThermalLevel:(id)level;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation MLSyncClientEnvironmentPolicyChangeHandler
@@ -23,10 +23,10 @@
   v3 = +[ICEnvironmentMonitor sharedMonitor];
   v4 = sub_724F4(8);
   v5 = sub_724F4(4);
-  v6 = [v3 isNetworkConstrained];
+  isNetworkConstrained = [v3 isNetworkConstrained];
   [v3 networkType];
   IsCellular = ICEnvironmentNetworkTypeIsCellular();
-  v8 = [v3 isCurrentNetworkLinkHighQuality];
+  isCurrentNetworkLinkHighQuality = [v3 isCurrentNetworkLinkHighQuality];
   [v3 lastKnownNetworkType];
   v9 = ICEnvironmentNetworkTypeIsCellular();
   v10 = _ATLogCategorySyncBundle();
@@ -37,7 +37,7 @@
     v41 = 1024;
     v42 = v5;
     v43 = 1024;
-    v44 = v6;
+    v44 = isNetworkConstrained;
     v45 = 1024;
     v46 = IsCellular;
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "handling network reachability or cellular policy changed notification. musicDownloadsAllowed=%{BOOL}u, podcastsDownloadsAllowed=%{BOOL}u, isNetworkConstrained=%{BOOL}u, networkTypeIsCellular=%{BOOL}u", buf, 0x1Au);
@@ -80,12 +80,12 @@
     [(MLSyncClientEnvironmentPolicyChangeHandler *)self _cancelDownloadsMatchingPredicate:v17 excludeActiveDownloads:0 error:v16];
   }
 
-  if (v6)
+  if (isNetworkConstrained)
   {
     v18 = +[ICDeviceInfo currentDeviceInfo];
-    v19 = [v18 isWatch];
+    isWatch = [v18 isWatch];
 
-    if (v19)
+    if (isWatch)
     {
       v20 = [NSError errorWithDomain:@"ATError" code:34 userInfo:0];
       v21 = [NSPredicate predicateWithFormat:@"allowDownloadOnConstrainedNetwork=%d", 0];
@@ -96,7 +96,7 @@
   v22 = +[ICDeviceInfo currentDeviceInfo];
   v23 = [v22 isWatch] & v9;
 
-  if (!(v8 & 1 | ((v23 & 1) == 0)))
+  if (!(isCurrentNetworkLinkHighQuality & 1 | ((v23 & 1) == 0)))
   {
     v31 = v4;
     v24 = [NSError errorWithDomain:@"ATError" code:35 userInfo:0];
@@ -140,39 +140,39 @@
   }
 }
 
-- (id)_atAssetTypeForRemovedMediaApp:(int64_t)a3
+- (id)_atAssetTypeForRemovedMediaApp:(int64_t)app
 {
-  if (a3 > 3)
+  if (app > 3)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_9EAE0 + a3);
+    return *(&off_9EAE0 + app);
   }
 }
 
-- (void)_cancelDownloadsMatchingPredicate:(id)a3 excludeActiveDownloads:(BOOL)a4 error:(id)a5
+- (void)_cancelDownloadsMatchingPredicate:(id)predicate excludeActiveDownloads:(BOOL)downloads error:(id)error
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
+  downloadsCopy = downloads;
+  errorCopy = error;
+  predicateCopy = predicate;
   v9 = +[ATAssetLinkController sharedInstance];
-  [v9 cancelAllAssetsMatchingPredicate:v8 excludeActiveDownloads:v5 withError:v7 completion:0];
+  [v9 cancelAllAssetsMatchingPredicate:predicateCopy excludeActiveDownloads:downloadsCopy withError:errorCopy completion:0];
 }
 
-- (void)_notifyAppRemoved:(int64_t)a3
+- (void)_notifyAppRemoved:(int64_t)removed
 {
   v5 = _ATLogCategorySyncBundle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    LODWORD(v11) = a3;
+    LODWORD(v11) = removed;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Media App %d removed", buf, 8u);
   }
 
-  v6 = [(MLSyncClientEnvironmentPolicyChangeHandler *)self _atAssetTypeForRemovedMediaApp:a3];
+  v6 = [(MLSyncClientEnvironmentPolicyChangeHandler *)self _atAssetTypeForRemovedMediaApp:removed];
   if (v6)
   {
     v7 = _ATLogCategorySyncBundle();
@@ -191,15 +191,15 @@
   }
 }
 
-- (void)_notifyPowerStateChangedInitiateSyncOrKeepLocalSessionWithOptions:(id)a3
+- (void)_notifyPowerStateChangedInitiateSyncOrKeepLocalSessionWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(MLSyncClientEnvironmentPolicyChangeHandler *)self _observers];
+  optionsCopy = options;
+  _observers = [(MLSyncClientEnvironmentPolicyChangeHandler *)self _observers];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [_observers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -211,7 +211,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_observers);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
@@ -223,7 +223,7 @@
           v12[2] = sub_61AA0;
           v12[3] = &unk_9EC30;
           v12[4] = v10;
-          v13 = v4;
+          v13 = optionsCopy;
           dispatch_async(calloutQueue, v12);
         }
 
@@ -231,7 +231,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [_observers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -247,7 +247,7 @@
   return v3;
 }
 
-- (void)assetLinkControllerDidProcessAllTrackAssets:(id)a3
+- (void)assetLinkControllerDidProcessAllTrackAssets:(id)assets
 {
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
@@ -258,49 +258,49 @@
   dispatch_async(accessQueue, block);
 }
 
-- (void)environmentMonitorDidChangeBatteryLevel:(id)a3
+- (void)environmentMonitorDidChangeBatteryLevel:(id)level
 {
-  v4 = a3;
+  levelCopy = level;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_61D04;
   v7[3] = &unk_9EC30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = levelCopy;
+  v6 = levelCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (void)environmentMonitorDidChangeThermalLevel:(id)a3
+- (void)environmentMonitorDidChangeThermalLevel:(id)level
 {
-  v4 = a3;
+  levelCopy = level;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_61F80;
   v7[3] = &unk_9EC30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = levelCopy;
+  v6 = levelCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (void)environmentMonitorDidChangePower:(id)a3
+- (void)environmentMonitorDidChangePower:(id)power
 {
-  v4 = a3;
+  powerCopy = power;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_62280;
   v7[3] = &unk_9EC30;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = powerCopy;
+  selfCopy = self;
+  v6 = powerCopy;
   dispatch_async(accessQueue, v7);
 }
 
-- (void)environmentMonitorDidChangeNetworkReachability:(id)a3
+- (void)environmentMonitorDidChangeNetworkReachability:(id)reachability
 {
   accessQueue = self->_accessQueue;
   block[0] = _NSConcreteStackBlock;
@@ -311,25 +311,25 @@
   dispatch_async(accessQueue, block);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_recursive_lock_lock_with_options();
-    [(NSHashTable *)self->_observers removeObject:v4];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
 
     os_unfair_recursive_lock_unlock();
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
-    v4 = a3;
+    observerCopy = observer;
     os_unfair_recursive_lock_lock_with_options();
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
 
     os_unfair_recursive_lock_unlock();
   }
@@ -373,9 +373,9 @@
     DistributedCenter = CFNotificationCenterGetDistributedCenter();
     CFNotificationCenterAddObserver(DistributedCenter, v2, sub_628DC, @"com.apple.LaunchServices.applicationUnregistered", 0, CFNotificationSuspensionBehaviorCoalesce);
     v16 = +[ICDeviceInfo currentDeviceInfo];
-    v17 = [v16 isWatch];
+    isWatch = [v16 isWatch];
 
-    if (v17)
+    if (isWatch)
     {
       v18 = [ICStoreRequestContext alloc];
       v19 = +[ICUserIdentity activeAccount];

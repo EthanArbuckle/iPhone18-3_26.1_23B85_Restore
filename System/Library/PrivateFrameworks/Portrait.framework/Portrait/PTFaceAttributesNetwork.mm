@@ -1,7 +1,7 @@
 @interface PTFaceAttributesNetwork
 - (PTFaceAttributesNetwork)init;
 - (id)createRequest;
-- (id)faceLandmarksInPixelBuffer:(__CVBuffer *)a3 faceRects:(id)a4 orientation:(unsigned int)a5;
+- (id)faceLandmarksInPixelBuffer:(__CVBuffer *)buffer faceRects:(id)rects orientation:(unsigned int)orientation;
 @end
 
 @implementation PTFaceAttributesNetwork
@@ -18,12 +18,12 @@
     session = v2->_session;
     v2->_session = v3;
 
-    v5 = [(PTFaceAttributesNetwork *)v2 createRequest];
-    v6 = v5;
-    if (v5)
+    createRequest = [(PTFaceAttributesNetwork *)v2 createRequest];
+    v6 = createRequest;
+    if (createRequest)
     {
       v7 = v2->_session;
-      v21[0] = v5;
+      v21[0] = createRequest;
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
       v19 = 0;
       LOBYTE(v7) = [(VNSession *)v7 prepareForPerformingRequests:v8 error:&v19];
@@ -123,8 +123,8 @@ uint64_t __31__PTFaceAttributesNetwork_init__block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  v8 = [MEMORY[0x277CE2DA0] defaultANEDevice];
-  if (v8)
+  defaultANEDevice = [MEMORY[0x277CE2DA0] defaultANEDevice];
+  if (defaultANEDevice)
   {
     [v3 setComputeDevice:self->_aneDevice forComputeStage:*MEMORY[0x277CE2EB0]];
     [v3 setComputeDevice:self->_aneDevice forComputeStage:*MEMORY[0x277CE2EB8]];
@@ -142,25 +142,25 @@ uint64_t __31__PTFaceAttributesNetwork_init__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)faceLandmarksInPixelBuffer:(__CVBuffer *)a3 faceRects:(id)a4 orientation:(unsigned int)a5
+- (id)faceLandmarksInPixelBuffer:(__CVBuffer *)buffer faceRects:(id)rects orientation:(unsigned int)orientation
 {
-  v5 = *&a5;
+  v5 = *&orientation;
   v18[1] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(PTFaceAttributesNetwork *)self createRequest];
-  [v9 setInputFaceObservations:v8];
-  if (v9)
+  rectsCopy = rects;
+  createRequest = [(PTFaceAttributesNetwork *)self createRequest];
+  [createRequest setInputFaceObservations:rectsCopy];
+  if (createRequest)
   {
     handler = self->_handler;
-    v18[0] = v9;
+    v18[0] = createRequest;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
     v17 = 0;
-    v12 = [(VNSequenceRequestHandler *)handler performRequests:v11 onCVPixelBuffer:a3 orientation:v5 error:&v17];
+    v12 = [(VNSequenceRequestHandler *)handler performRequests:v11 onCVPixelBuffer:buffer orientation:v5 error:&v17];
     v13 = v17;
 
     if (v12)
     {
-      v14 = [v9 results];
+      results = [createRequest results];
       goto LABEL_8;
     }
   }
@@ -176,10 +176,10 @@ uint64_t __31__PTFaceAttributesNetwork_init__block_invoke(uint64_t a1, void *a2)
     v13 = 0;
   }
 
-  v14 = 0;
+  results = 0;
 LABEL_8:
 
-  return v14;
+  return results;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface OptInOut
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (IdsMutation)idsMutation;
 - (OptInOut)init;
 - (id)data;
@@ -34,31 +34,31 @@
   return v4;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  bytes2 = [dataCopy bytes];
+  v8 = [dataCopy length];
   v9 = objc_alloc_init(objc_opt_class());
   v20 = 0;
-  v10 = [v9 parseBool:v6 end:&v8[v7] result:&v20];
+  v10 = [v9 parseBool:bytes end:&v8[bytes2] result:&v20];
   if (v10)
   {
     v11 = v10;
     [v9 setOptIn:v20];
     v19 = 0;
-    v12 = [v9 parseUint64:v11 end:&v8[v7] result:&v19];
+    v12 = [v9 parseUint64:v11 end:&v8[bytes2] result:&v19];
     if (v12)
     {
       v13 = v12;
       [v9 setTimestampMs:v19];
-      [v9 setParsedLength:{v13 - objc_msgSend(v5, "bytes")}];
+      [v9 setParsedLength:{v13 - objc_msgSend(dataCopy, "bytes")}];
       v14 = v9;
       goto LABEL_10;
     }
 
-    if (a4)
+    if (error)
     {
       v15 = kTransparencyErrorDecode;
       v16 = @"failed to parse timestampMs from OptInOut";
@@ -67,14 +67,14 @@
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     v15 = kTransparencyErrorDecode;
     v16 = @"failed to parse optIn BOOLean from OptInOut";
     v17 = -274;
 LABEL_8:
     [TransparencyError errorWithDomain:v15 code:v17 description:v16];
-    *a4 = v14 = 0;
+    *error = v14 = 0;
     goto LABEL_10;
   }
 
@@ -114,10 +114,10 @@ LABEL_10:
   return [NSString stringWithFormat:@"optIn:%@; timestampMs:%llu", v3, [(OptInOut *)self timestampMs]];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -127,11 +127,11 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(OptInOut *)self data];
-      v7 = [(OptInOut *)v5 data];
+      v5 = equalCopy;
+      data = [(OptInOut *)self data];
+      data2 = [(OptInOut *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else
@@ -157,12 +157,12 @@ LABEL_10:
   v11[0] = v3;
   v10[1] = @"timestamp";
   v4 = [NSDate dateWithTimeIntervalSince1970:([(OptInOut *)self timestampMs]/ 0x3E8)];
-  v5 = [v4 kt_dateToString];
-  v11[1] = v5;
+  kt_dateToString = [v4 kt_dateToString];
+  v11[1] = kt_dateToString;
   v10[2] = @"timestampReadable";
   v6 = [NSDate dateWithTimeIntervalSince1970:([(OptInOut *)self timestampMs]/ 0x3E8)];
-  v7 = [v6 kt_toISO_8601_UTCString];
-  v11[2] = v7;
+  kt_toISO_8601_UTCString = [v6 kt_toISO_8601_UTCString];
+  v11[2] = kt_toISO_8601_UTCString;
   v8 = [NSDictionary dictionaryWithObjects:v11 forKeys:v10 count:3];
 
   return v8;

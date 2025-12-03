@@ -1,12 +1,12 @@
 @interface OKProducerSettings
 - (NSArray)audioURLs;
 - (void)dealloc;
-- (void)setAudioURLs:(id)a3;
+- (void)setAudioURLs:(id)ls;
 @end
 
 @implementation OKProducerSettings
 
-- (void)setAudioURLs:(id)a3
+- (void)setAudioURLs:(id)ls
 {
   audioURLs = self->_audioURLs;
   if (audioURLs)
@@ -15,7 +15,7 @@
     self->_audioURLs = 0;
   }
 
-  self->_audioURLs = a3;
+  self->_audioURLs = ls;
 }
 
 - (NSArray)audioURLs

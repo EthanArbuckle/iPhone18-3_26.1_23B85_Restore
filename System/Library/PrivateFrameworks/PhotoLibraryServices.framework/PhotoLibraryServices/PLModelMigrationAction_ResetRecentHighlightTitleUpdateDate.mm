@@ -1,23 +1,23 @@
 @interface PLModelMigrationAction_ResetRecentHighlightTitleUpdateDate
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetRecentHighlightTitleUpdateDate
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = [PLPhotosHighlightGenerator lastHighlightTitlesUpdateDay:a3];
-  v6 = [MEMORY[0x1E695DF00] distantPast];
-  [PLPhotosHighlightGenerator setLastHighlightTitlesUpdateDay:v6];
+  v5 = [PLPhotosHighlightGenerator lastHighlightTitlesUpdateDay:context];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [PLPhotosHighlightGenerator setLastHighlightTitlesUpdateDay:distantPast];
   v7 = PLMigrationGetLog();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
   if (v8)
   {
-    v9 = [(PLModelMigrationActionCore *)self logger];
+    logger = [(PLModelMigrationActionCore *)self logger];
 
-    if (v9)
+    if (logger)
     {
       v49 = 0u;
       v50 = 0u;
@@ -55,7 +55,7 @@
       v16 = 138412546;
       v17 = v5;
       v18 = 2112;
-      v19 = v6;
+      v19 = distantPast;
       LODWORD(v15) = 22;
       v11 = _os_log_send_and_compose_impl();
 
@@ -76,7 +76,7 @@
         *buf = 138412546;
         *&buf[4] = v5;
         *&buf[12] = 2112;
-        *&buf[14] = v6;
+        *&buf[14] = distantPast;
         _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Reset Recent Highlight Title Update Date from %@ to %@", buf, 0x16u);
       }
     }

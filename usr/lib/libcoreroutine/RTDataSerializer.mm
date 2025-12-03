@@ -1,35 +1,35 @@
 @interface RTDataSerializer
 + (id)stringFromDateWithFormat;
-- (BOOL)archiveSavedDataToPath:(id)a3 error:(id *)a4;
-- (BOOL)fileExceedsSizeLimit:(id)a3;
-- (BOOL)pruneWithError:(id *)a3;
-- (BOOL)purgeWithError:(id *)a3;
-- (BOOL)saveData:(id)a3 error:(id *)a4;
+- (BOOL)archiveSavedDataToPath:(id)path error:(id *)error;
+- (BOOL)fileExceedsSizeLimit:(id)limit;
+- (BOOL)pruneWithError:(id *)error;
+- (BOOL)purgeWithError:(id *)error;
+- (BOOL)saveData:(id)data error:(id *)error;
 - (NSOutputStream)outputStream;
-- (RTDataSerializer)initWithContainerPath:(id)a3 outputPrefix:(id)a4;
-- (id)encodeVarint32WithValue:(unsigned int)a3;
+- (RTDataSerializer)initWithContainerPath:(id)path outputPrefix:(id)prefix;
+- (id)encodeVarint32WithValue:(unsigned int)value;
 - (id)mostRecentOutputPath;
 - (id)newOutputPath;
 - (id)sentinelAndVersionPrefix;
-- (unsigned)adler32ChecksumWithData:(id)a3;
+- (unsigned)adler32ChecksumWithData:(id)data;
 - (void)closeOutputStream;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation RTDataSerializer
 
-- (RTDataSerializer)initWithContainerPath:(id)a3 outputPrefix:(id)a4
+- (RTDataSerializer)initWithContainerPath:(id)path outputPrefix:(id)prefix
 {
-  v7 = a3;
-  v8 = a4;
+  pathCopy = path;
+  prefixCopy = prefix;
   v12.receiver = self;
   v12.super_class = RTDataSerializer;
   v9 = [(RTDataSerializer *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_containerPath, a3);
-    objc_storeStrong(&v10->_outputPrefix, a4);
+    objc_storeStrong(&v9->_containerPath, path);
+    objc_storeStrong(&v10->_outputPrefix, prefix);
   }
 
   return v10;
@@ -44,16 +44,16 @@
   return v2;
 }
 
-- (BOOL)fileExceedsSizeLimit:(id)a3
+- (BOOL)fileExceedsSizeLimit:(id)limit
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
+  limitCopy = limit;
+  defaultManager = [v3 defaultManager];
   v8 = 0;
-  v6 = [v5 attributesOfItemAtPath:v4 error:&v8];
+  v6 = [defaultManager attributesOfItemAtPath:limitCopy error:&v8];
 
-  LOBYTE(v4) = [v6 fileSize] >> 20 > 0xE;
-  return v4;
+  LOBYTE(limitCopy) = [v6 fileSize] >> 20 > 0xE;
+  return limitCopy;
 }
 
 - (NSOutputStream)outputStream
@@ -65,31 +65,31 @@
     goto LABEL_21;
   }
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(RTDataSerializer *)self mostRecentOutputPath];
-  if (!v6)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  mostRecentOutputPath = [(RTDataSerializer *)self mostRecentOutputPath];
+  if (!mostRecentOutputPath)
   {
     goto LABEL_5;
   }
 
-  v7 = v6;
-  if ([(RTDataSerializer *)self fileExceedsSizeLimit:v6])
+  newOutputPath = mostRecentOutputPath;
+  if ([(RTDataSerializer *)self fileExceedsSizeLimit:mostRecentOutputPath])
   {
 
 LABEL_5:
-    v7 = [(RTDataSerializer *)self newOutputPath];
+    newOutputPath = [(RTDataSerializer *)self newOutputPath];
   }
 
-  if (([v5 fileExistsAtPath:v7] & 1) == 0)
+  if (([defaultManager fileExistsAtPath:newOutputPath] & 1) == 0)
   {
-    v8 = [(RTDataSerializer *)self containerPath];
-    v9 = [v5 fileExistsAtPath:v8];
+    containerPath = [(RTDataSerializer *)self containerPath];
+    v9 = [defaultManager fileExistsAtPath:containerPath];
 
     if ((v9 & 1) == 0)
     {
-      v10 = [(RTDataSerializer *)self containerPath];
+      containerPath2 = [(RTDataSerializer *)self containerPath];
       v29 = 0;
-      v11 = [v5 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v29];
+      v11 = [defaultManager createDirectoryAtPath:containerPath2 withIntermediateDirectories:1 attributes:0 error:&v29];
       v12 = v29;
 
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -98,8 +98,8 @@ LABEL_5:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
         {
           v25 = NSStringFromSelector(a2);
-          v26 = [(RTDataSerializer *)self containerPath];
-          v27 = v26;
+          containerPath3 = [(RTDataSerializer *)self containerPath];
+          v27 = containerPath3;
           v28 = @"NO";
           *buf = 138413058;
           v33 = v25;
@@ -109,7 +109,7 @@ LABEL_5:
             v28 = @"YES";
           }
 
-          v35 = v26;
+          v35 = containerPath3;
           v36 = 2112;
           v37 = v28;
           v38 = 2112;
@@ -122,8 +122,8 @@ LABEL_5:
     v30 = *MEMORY[0x277CCA1B0];
     v31 = *MEMORY[0x277CCA1A0];
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v31 forKeys:&v30 count:1];
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
-    v16 = [v15 createFileAtPath:v7 contents:0 attributes:v14];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    v16 = [defaultManager2 createFileAtPath:newOutputPath contents:0 attributes:v14];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -140,7 +140,7 @@ LABEL_5:
           v24 = @"YES";
         }
 
-        v35 = v7;
+        v35 = newOutputPath;
         v36 = 2112;
         v37 = v24;
         _os_log_debug_impl(&dword_2304B3000, v17, OS_LOG_TYPE_DEBUG, "%@, createFileAtPath, %@, success, %@", buf, 0x20u);
@@ -157,12 +157,12 @@ LABEL_5:
       *buf = 138412546;
       v33 = v22;
       v34 = 2112;
-      v35 = v7;
+      v35 = newOutputPath;
       _os_log_debug_impl(&dword_2304B3000, v18, OS_LOG_TYPE_DEBUG, "%@, outputPath, %@", buf, 0x16u);
     }
   }
 
-  v19 = [objc_alloc(MEMORY[0x277CBEB78]) initToFileAtPath:v7 append:1];
+  v19 = [objc_alloc(MEMORY[0x277CBEB78]) initToFileAtPath:newOutputPath append:1];
   v20 = self->_outputStream;
   self->_outputStream = v19;
 
@@ -179,8 +179,8 @@ LABEL_21:
 {
   v3 = MEMORY[0x277CCACA8];
   outputPrefix = self->_outputPrefix;
-  v5 = [objc_opt_class() stringFromDateWithFormat];
-  v6 = [v3 stringWithFormat:@"%@-%@.bin", outputPrefix, v5];
+  stringFromDateWithFormat = [objc_opt_class() stringFromDateWithFormat];
+  v6 = [v3 stringWithFormat:@"%@-%@.bin", outputPrefix, stringFromDateWithFormat];
 
   v7 = [(NSString *)self->_containerPath stringByAppendingPathComponent:v6];
 
@@ -189,7 +189,7 @@ LABEL_21:
 
 - (id)mostRecentOutputPath
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -198,20 +198,20 @@ LABEL_21:
   v22 = 0;
   containerPath = self->_containerPath;
   v16 = 0;
-  v5 = [v3 contentsOfDirectoryAtPath:containerPath error:&v16];
+  v5 = [defaultManager contentsOfDirectoryAtPath:containerPath error:&v16];
   v6 = v16;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3032000000;
   v14[3] = __Block_byref_object_copy__114;
   v14[4] = __Block_byref_object_dispose__114;
-  v15 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__RTDataSerializer_mostRecentOutputPath__block_invoke;
   v10[3] = &unk_2788CE640;
   v10[4] = self;
-  v7 = v3;
+  v7 = defaultManager;
   v11 = v7;
   v12 = v14;
   v13 = &v17;
@@ -242,46 +242,46 @@ void __40__RTDataSerializer_mostRecentOutputPath__block_invoke(void *a1, uint64_
   }
 }
 
-- (id)encodeVarint32WithValue:(unsigned int)a3
+- (id)encodeVarint32WithValue:(unsigned int)value
 {
-  v4 = [MEMORY[0x277CBEB28] data];
-  if (a3 < 0x80)
+  data = [MEMORY[0x277CBEB28] data];
+  if (value < 0x80)
   {
-    LOBYTE(v5) = a3;
+    LOBYTE(v5) = value;
   }
 
   else
   {
     do
     {
-      v9 = a3 | 0x80;
-      [v4 appendBytes:&v9 length:1];
-      v5 = a3 >> 7;
-      v6 = a3 >> 14;
-      a3 >>= 7;
+      v9 = value | 0x80;
+      [data appendBytes:&v9 length:1];
+      v5 = value >> 7;
+      v6 = value >> 14;
+      value >>= 7;
     }
 
     while (v6);
   }
 
   v8 = v5;
-  [v4 appendBytes:&v8 length:1];
+  [data appendBytes:&v8 length:1];
 
-  return v4;
+  return data;
 }
 
-- (unsigned)adler32ChecksumWithData:(id)a3
+- (unsigned)adler32ChecksumWithData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
   if (v5)
   {
     v6 = 0;
     v7 = 1;
     do
     {
-      v8 = *v4++;
+      v8 = *bytes++;
       v7 = (v7 + v8) % 0xFFF1;
       v6 = (v7 + v6) % 0xFFF1;
       --v5;
@@ -299,16 +299,16 @@ void __40__RTDataSerializer_mostRecentOutputPath__block_invoke(void *a1, uint64_
   return v9;
 }
 
-- (BOOL)pruneWithError:(id *)a3
+- (BOOL)pruneWithError:(id *)error
 {
   v43[1] = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v5 fileExistsAtPath:self->_containerPath])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:self->_containerPath])
   {
     containerPath = self->_containerPath;
     v40 = 0;
-    v7 = [v5 contentsOfDirectoryAtPath:containerPath error:&v40];
+    v7 = [defaultManager contentsOfDirectoryAtPath:containerPath error:&v40];
     v8 = v40;
     if (v8)
     {
@@ -324,7 +324,7 @@ void __40__RTDataSerializer_mostRecentOutputPath__block_invoke(void *a1, uint64_
       v36[2] = __35__RTDataSerializer_pruneWithError___block_invoke;
       v36[3] = &unk_2788CE668;
       v36[4] = self;
-      v9 = v5;
+      v9 = defaultManager;
       v37 = v9;
       v10 = v4;
       v38 = v10;
@@ -367,11 +367,11 @@ void __40__RTDataSerializer_mostRecentOutputPath__block_invoke(void *a1, uint64_
       _Block_object_dispose(buf, 8);
     }
 
-    if (a3)
+    if (error)
     {
       v21 = 1;
       v16 = _RTSafeArray();
-      *a3 = _RTMultiErrorCreate();
+      *error = _RTMultiErrorCreate();
     }
 
     v17 = [v4 count] == 0;
@@ -476,16 +476,16 @@ void __35__RTDataSerializer_pruneWithError___block_invoke_3(uint64_t a1, void *a
   }
 }
 
-- (BOOL)purgeWithError:(id *)a3
+- (BOOL)purgeWithError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
   v6 = objc_opt_new();
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v7 fileExistsAtPath:self->_containerPath])
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:self->_containerPath])
   {
     containerPath = self->_containerPath;
     v25 = 0;
-    v9 = [v7 contentsOfDirectoryAtPath:containerPath error:&v25];
+    v9 = [defaultManager contentsOfDirectoryAtPath:containerPath error:&v25];
     v10 = v25;
     if (v10)
     {
@@ -498,18 +498,18 @@ void __35__RTDataSerializer_pruneWithError___block_invoke_3(uint64_t a1, void *a
       v18 = 3221225472;
       v19 = __35__RTDataSerializer_purgeWithError___block_invoke;
       v20 = &unk_2788CE6B8;
-      v21 = self;
+      selfCopy = self;
       v24 = a2;
-      v22 = v7;
+      v22 = defaultManager;
       v23 = v6;
       [v9 enumerateObjectsUsingBlock:&v17];
     }
 
-    if (a3)
+    if (error)
     {
       v16 = 1;
       v11 = _RTSafeArray();
-      *a3 = _RTMultiErrorCreate();
+      *error = _RTMultiErrorCreate();
     }
 
     v12 = [v6 count] == 0;
@@ -578,38 +578,38 @@ void __35__RTDataSerializer_purgeWithError___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (BOOL)saveData:(id)a3 error:(id *)a4
+- (BOOL)saveData:(id)data error:(id *)error
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(RTDataSerializer *)self outputStream];
+  dataCopy = data;
+  outputStream = [(RTDataSerializer *)self outputStream];
 
-  if (v7)
+  if (outputStream)
   {
     v20 = 0;
-    v8 = [objc_opt_class() convertData:v6 error:&v20];
+    v8 = [objc_opt_class() convertData:dataCopy error:&v20];
     v9 = v20;
     v10 = v9 == 0;
     if (v9)
     {
-      if (a4)
+      if (error)
       {
         v11 = MEMORY[0x277CCA9B8];
         v12 = *MEMORY[0x277D01448];
         v21 = *MEMORY[0x277CCA450];
         v22 = @"pcProtobufWriter data convert failed";
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-        *a4 = [v11 errorWithDomain:v12 code:5 userInfo:v13];
+        *error = [v11 errorWithDomain:v12 code:5 userInfo:v13];
       }
     }
 
     else
     {
-      v16 = [(RTDataSerializer *)self outputStream];
-      [v16 write:objc_msgSend(v8 maxLength:{"bytes"), objc_msgSend(v8, "length")}];
+      outputStream2 = [(RTDataSerializer *)self outputStream];
+      [outputStream2 write:objc_msgSend(v8 maxLength:{"bytes"), objc_msgSend(v8, "length")}];
 
-      v17 = [(RTDataSerializer *)self mostRecentOutputPath];
-      v18 = [(RTDataSerializer *)self fileExceedsSizeLimit:v17];
+      mostRecentOutputPath = [(RTDataSerializer *)self mostRecentOutputPath];
+      v18 = [(RTDataSerializer *)self fileExceedsSizeLimit:mostRecentOutputPath];
 
       if (v18)
       {
@@ -620,7 +620,7 @@ void __35__RTDataSerializer_purgeWithError___block_invoke(uint64_t a1, uint64_t 
 
   else
   {
-    if (!a4)
+    if (!error)
     {
       v10 = 0;
       goto LABEL_11;
@@ -632,7 +632,7 @@ void __35__RTDataSerializer_purgeWithError___block_invoke(uint64_t a1, uint64_t 
     v24[0] = @"Output stream is nil";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     [v14 errorWithDomain:v15 code:5 userInfo:v9];
-    *a4 = v10 = 0;
+    *error = v10 = 0;
   }
 
 LABEL_11:
@@ -643,29 +643,29 @@ LABEL_11:
 {
   v2 = objc_opt_new();
   [v2 setDateFormat:@"YYYY-MM-dd-HHmmss-SS"];
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v2 stringFromDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [v2 stringFromDate:date];
 
   return v4;
 }
 
-- (BOOL)archiveSavedDataToPath:(id)a3 error:(id *)a4
+- (BOOL)archiveSavedDataToPath:(id)path error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  pathCopy = path;
+  if (pathCopy)
   {
     v7 = MEMORY[0x277CCACA8];
     outputPrefix = self->_outputPrefix;
-    v9 = [objc_opt_class() stringFromDateWithFormat];
-    v10 = [v7 stringWithFormat:@"%@-%@.tar.gz", outputPrefix, v9];
+    stringFromDateWithFormat = [objc_opt_class() stringFromDateWithFormat];
+    v10 = [v7 stringWithFormat:@"%@-%@.tar.gz", outputPrefix, stringFromDateWithFormat];
 
-    v11 = [MEMORY[0x277CBEBC0] URLWithString:v6];
+    v11 = [MEMORY[0x277CBEBC0] URLWithString:pathCopy];
     v12 = [v11 URLByAppendingPathComponent:v10];
 
     v13 = [[RTArchiver alloc] initWithOutputURL:v12 compress:1];
     v14 = MEMORY[0x277CBEBC0];
-    v15 = [(RTDataSerializer *)self containerPath];
-    v16 = [v14 URLWithString:v15];
+    containerPath = [(RTDataSerializer *)self containerPath];
+    v16 = [v14 URLWithString:containerPath];
     [(RTArchiver *)v13 addDirectoryToArchive:v16];
 
     [(RTArchiver *)v13 closeArchive];
@@ -680,27 +680,27 @@ LABEL_11:
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: path", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = _RTErrorInvalidParameterCreate(@"path");
+      *error = _RTErrorInvalidParameterCreate(@"path");
     }
   }
 
-  return v6 != 0;
+  return pathCopy != 0;
 }
 
 - (void)closeOutputStream
 {
-  v3 = [(RTDataSerializer *)self outputStream];
-  [v3 close];
+  outputStream = [(RTDataSerializer *)self outputStream];
+  [outputStream close];
 
   [(RTDataSerializer *)self setOutputStream:0];
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  streamCopy = stream;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -710,9 +710,9 @@ LABEL_11:
       v9 = 138412802;
       v10 = v8;
       v11 = 2112;
-      v12 = v6;
+      v12 = streamCopy;
       v13 = 2048;
-      v14 = a4;
+      eventCopy = event;
       _os_log_impl(&dword_2304B3000, v7, OS_LOG_TYPE_INFO, "%@, stream, %@, eventCode, %lu", &v9, 0x20u);
     }
   }

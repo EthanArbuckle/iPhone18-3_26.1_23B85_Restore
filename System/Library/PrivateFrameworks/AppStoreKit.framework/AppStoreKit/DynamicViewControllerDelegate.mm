@@ -1,12 +1,12 @@
 @interface DynamicViewControllerDelegate
 - (_TtC11AppStoreKit29DynamicViewControllerDelegate)init;
-- (id)dynamicViewController:(id)a3 contentViewWithDictionary:(id)a4 frame:(CGRect)a5;
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5;
+- (id)dynamicViewController:(id)controller contentViewWithDictionary:(id)dictionary frame:(CGRect)frame;
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error;
 @end
 
 @implementation DynamicViewControllerDelegate
 
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit29DynamicViewControllerDelegate_didDismissHandler);
   if (v5)
@@ -16,7 +16,7 @@
 
   else
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   if (qword_1EE1D63A0 != -1)
@@ -32,18 +32,18 @@
   sub_1E1AF548C();
 }
 
-- (id)dynamicViewController:(id)a3 contentViewWithDictionary:(id)a4 frame:(CGRect)a5
+- (id)dynamicViewController:(id)controller contentViewWithDictionary:(id)dictionary frame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10 = sub_1E1AF5C7C();
   v11 = *(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit29DynamicViewControllerDelegate_contentViewConstructor);
   if (v11)
   {
     v12 = v10;
-    v13 = self;
+    selfCopy = self;
     v14 = v11(v12, x, y, width, height);
   }
 

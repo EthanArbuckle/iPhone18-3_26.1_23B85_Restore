@@ -58,7 +58,7 @@
   __p = 0;
   v23 = 0;
   v24 = 0;
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v6 = *(self->_cQuadTree + 1);
   while (1)
   {
@@ -114,7 +114,7 @@
     {
       do
       {
-        [v5 addObject:*v16++];
+        [array addObject:*v16++];
       }
 
       while (v16 != v23);
@@ -142,7 +142,7 @@ LABEL_16:
     operator delete(v19);
   }
 
-  return v5;
+  return array;
 }
 
 - (NSArray)elementsInQuad:(GKQuad)quad
@@ -154,7 +154,7 @@ LABEL_16:
   __p = 0;
   v16 = 0;
   v17 = 0;
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   cQuadTree = self->_cQuadTree;
   v14 = vsub_f32(quadMax, quadMin);
   GKCQuadTreeNode<NSObject>::queryQuad(cQuadTree[1], v18, &v14, &__p);
@@ -163,7 +163,7 @@ LABEL_16:
   {
     do
     {
-      [v6 addObject:*v8++];
+      [array addObject:*v8++];
     }
 
     while (v8 != v16);
@@ -189,18 +189,18 @@ LABEL_16:
     operator delete(v11);
   }
 
-  return v6;
+  return array;
 }
 
 - (BOOL)removeElement:(id)data withNode:(GKQuadtreeNode *)node
 {
   v5 = data;
   v6 = node;
-  v7 = [(GKQuadtreeNode *)v6 cQuadTreeNode];
+  cQuadTreeNode = [(GKQuadtreeNode *)v6 cQuadTreeNode];
   v8 = v5;
   v9 = v8;
-  v11 = *(v7 + 88);
-  v10 = *(v7 + 96);
+  v11 = *(cQuadTreeNode + 88);
+  v10 = *(cQuadTreeNode + 96);
   if (v11 == v10)
   {
 LABEL_4:
@@ -231,7 +231,7 @@ LABEL_4:
       }
 
       while (v11 + 1 != v10);
-      v10 = *(v7 + 96);
+      v10 = *(cQuadTreeNode + 96);
     }
 
     while (v10 != v11)
@@ -239,7 +239,7 @@ LABEL_4:
       v15 = *--v10;
     }
 
-    *(v7 + 96) = v11;
+    *(cQuadTreeNode + 96) = v11;
     v12 = 1;
   }
 

@@ -1,25 +1,25 @@
 @interface REMReminderExtractionOutput
-- (BOOL)isEqual:(id)a3;
-- (REMReminderExtractionOutput)initWithCoder:(id)a3;
-- (REMReminderExtractionOutput)initWithSuggestedTitles:(id)a3 isClassifiedAsRecipe:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMReminderExtractionOutput)initWithCoder:(id)coder;
+- (REMReminderExtractionOutput)initWithSuggestedTitles:(id)titles isClassifiedAsRecipe:(BOOL)recipe;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMReminderExtractionOutput
 
-- (REMReminderExtractionOutput)initWithSuggestedTitles:(id)a3 isClassifiedAsRecipe:(BOOL)a4
+- (REMReminderExtractionOutput)initWithSuggestedTitles:(id)titles isClassifiedAsRecipe:(BOOL)recipe
 {
-  v7 = a3;
+  titlesCopy = titles;
   v11.receiver = self;
   v11.super_class = REMReminderExtractionOutput;
   v8 = [(REMReminderExtractionOutput *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_suggestedTitles, a3);
-    v9->_isClassifiedAsRecipe = a4;
+    objc_storeStrong(&v8->_suggestedTitles, titles);
+    v9->_isClassifiedAsRecipe = recipe;
   }
 
   return v9;
@@ -29,32 +29,32 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMReminderExtractionOutput *)self suggestedTitles];
-  v6 = [v3 stringWithFormat:@"<%@: %p suggestedTitles: %@, isClassifiedAsRecipe: %i>", v4, self, v5, -[REMReminderExtractionOutput isClassifiedAsRecipe](self, "isClassifiedAsRecipe")];
+  suggestedTitles = [(REMReminderExtractionOutput *)self suggestedTitles];
+  v6 = [v3 stringWithFormat:@"<%@: %p suggestedTitles: %@, isClassifiedAsRecipe: %i>", v4, self, suggestedTitles, -[REMReminderExtractionOutput isClassifiedAsRecipe](self, "isClassifiedAsRecipe")];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     v5 = objc_opt_class();
-    v6 = REMDynamicCast(v5, v4);
+    v6 = REMDynamicCast(v5, equalCopy);
 
-    v7 = [(REMReminderExtractionOutput *)self suggestedTitles];
-    v8 = [v6 suggestedTitles];
-    v9 = v8;
-    if (v7 == v8)
+    suggestedTitles = [(REMReminderExtractionOutput *)self suggestedTitles];
+    suggestedTitles2 = [v6 suggestedTitles];
+    v9 = suggestedTitles2;
+    if (suggestedTitles == suggestedTitles2)
     {
     }
 
     else
     {
-      v10 = [(REMReminderExtractionOutput *)self suggestedTitles];
-      v11 = [v6 suggestedTitles];
-      v12 = [v10 isEqual:v11];
+      suggestedTitles3 = [(REMReminderExtractionOutput *)self suggestedTitles];
+      suggestedTitles4 = [v6 suggestedTitles];
+      v12 = [suggestedTitles3 isEqual:suggestedTitles4];
 
       if (!v12)
       {
@@ -65,8 +65,8 @@ LABEL_8:
       }
     }
 
-    v14 = [(REMReminderExtractionOutput *)self isClassifiedAsRecipe];
-    v13 = v14 ^ [v6 isClassifiedAsRecipe] ^ 1;
+    isClassifiedAsRecipe = [(REMReminderExtractionOutput *)self isClassifiedAsRecipe];
+    v13 = isClassifiedAsRecipe ^ [v6 isClassifiedAsRecipe] ^ 1;
     goto LABEL_8;
   }
 
@@ -74,30 +74,30 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(REMReminderExtractionOutput *)self suggestedTitles];
-  v7 = [v6 copyWithZone:a3];
+  suggestedTitles = [(REMReminderExtractionOutput *)self suggestedTitles];
+  v7 = [suggestedTitles copyWithZone:zone];
   v8 = [v5 initWithSuggestedTitles:v7 isClassifiedAsRecipe:{-[REMReminderExtractionOutput isClassifiedAsRecipe](self, "isClassifiedAsRecipe")}];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(REMReminderExtractionOutput *)self suggestedTitles];
-  [v5 encodeObject:v4 forKey:@"suggestedTitles"];
+  coderCopy = coder;
+  suggestedTitles = [(REMReminderExtractionOutput *)self suggestedTitles];
+  [coderCopy encodeObject:suggestedTitles forKey:@"suggestedTitles"];
 
-  [v5 encodeBool:-[REMReminderExtractionOutput isClassifiedAsRecipe](self forKey:{"isClassifiedAsRecipe"), @"isClassifiedAsRecipe"}];
+  [coderCopy encodeBool:-[REMReminderExtractionOutput isClassifiedAsRecipe](self forKey:{"isClassifiedAsRecipe"), @"isClassifiedAsRecipe"}];
 }
 
-- (REMReminderExtractionOutput)initWithCoder:(id)a3
+- (REMReminderExtractionOutput)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"suggestedTitles"];
-  v6 = [v4 decodeBoolForKey:@"isClassifiedAsRecipe"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"suggestedTitles"];
+  v6 = [coderCopy decodeBoolForKey:@"isClassifiedAsRecipe"];
 
   v7 = [objc_alloc(objc_opt_class()) initWithSuggestedTitles:v5 isClassifiedAsRecipe:v6];
   return v7;

@@ -1,18 +1,18 @@
 @interface PKGSVWalletHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKGSVWalletHeaderView)initWithPassType:(unint64_t)a3 state:(id *)a4 delegate:(id)a5;
-- (double)_layoutSubviewsInBounds:(double)a3 withCommitMode:(double)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKGSVWalletHeaderView)initWithPassType:(unint64_t)type state:(id *)state delegate:(id)delegate;
+- (double)_layoutSubviewsInBounds:(double)bounds withCommitMode:(double)mode;
 - (void)layoutSubviews;
-- (void)setShowBackgroundProvisioningHint:(BOOL)a3 animated:(BOOL)a4;
+- (void)setShowBackgroundProvisioningHint:(BOOL)hint animated:(BOOL)animated;
 @end
 
 @implementation PKGSVWalletHeaderView
 
-- (PKGSVWalletHeaderView)initWithPassType:(unint64_t)a3 state:(id *)a4 delegate:(id)a5
+- (PKGSVWalletHeaderView)initWithPassType:(unint64_t)type state:(id *)state delegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = PKGSVWalletHeaderView;
-  v5 = [(PKGSVWalletHeaderView *)&v8 initWithFrame:a3, a4, a5, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  v5 = [(PKGSVWalletHeaderView *)&v8 initWithFrame:type, state, delegate, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v6 = v5;
   if (v5)
   {
@@ -23,31 +23,31 @@
   return v6;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(PKGSVWalletHeaderView *)self _layoutSubviewsInBounds:*MEMORY[0x1E695EFF8] withCommitMode:*(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  v3 = [(PKGSVWalletHeaderView *)self _layoutSubviewsInBounds:*MEMORY[0x1E695EFF8] withCommitMode:*(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (double)_layoutSubviewsInBounds:(double)a3 withCommitMode:(double)a4
+- (double)_layoutSubviewsInBounds:(double)bounds withCommitMode:(double)mode
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v12 = [a1 _shouldReverseLayoutDirection];
-  v13 = *(a1 + 416);
-  v14 = *(a1 + 424);
-  v15 = *(a1 + 432);
-  v16 = *(a1 + 440);
-  v17 = a4 + v13;
+  _shouldReverseLayoutDirection = [self _shouldReverseLayoutDirection];
+  v13 = *(self + 416);
+  v14 = *(self + 424);
+  v15 = *(self + 432);
+  v16 = *(self + 440);
+  v17 = mode + v13;
   memset(&slice, 0, sizeof(slice));
-  if (*(a1 + 456))
+  if (*(self + 456))
   {
-    if (v12)
+    if (_shouldReverseLayoutDirection)
     {
       v18 = v16;
     }
@@ -57,7 +57,7 @@
       v18 = v14;
     }
 
-    v23.origin.x = a3 + v18;
+    v23.origin.x = bounds + v18;
     v23.size.width = a5 - (v14 + v16);
     v23.size.height = a6 - (v13 + v15);
     v21.origin.x = v23.origin.x;
@@ -66,12 +66,12 @@
     v21.size.height = v23.size.height;
     v23.origin.y = v17;
     CGRectDivide(v23, &slice, &v21, v17 - v17, CGRectMinYEdge);
-    [*(a1 + 456) sizeThatFits:{v21.size.width, 1.79769313e308}];
+    [*(self + 456) sizeThatFits:{v21.size.width, 1.79769313e308}];
     CGRectDivide(v21, &slice, &v21, v19, CGRectMinYEdge);
     PKSizeAlignedInRect();
     if (a2)
     {
-      [*(a1 + 456) setFrame:?];
+      [*(self + 456) setFrame:?];
     }
   }
 
@@ -94,20 +94,20 @@ void __42__PKGSVWalletHeaderView__setSizeMayChange__block_invoke(uint64_t a1)
   [(PKGSVWalletHeaderView *)self _layoutSubviewsInBounds:v3 withCommitMode:v4, v5, v6];
 }
 
-- (void)setShowBackgroundProvisioningHint:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowBackgroundProvisioningHint:(BOOL)hint animated:(BOOL)animated
 {
   v34[2] = *MEMORY[0x1E69E9840];
   backgroundProvisioningHintView = self->_backgroundProvisioningHintView;
-  if ((backgroundProvisioningHintView != 0) != a3)
+  if ((backgroundProvisioningHintView != 0) != hint)
   {
-    v5 = a4;
+    animatedCopy = animated;
     if (backgroundProvisioningHintView)
     {
       v7 = backgroundProvisioningHintView;
       v8 = self->_backgroundProvisioningHintView;
       self->_backgroundProvisioningHintView = 0;
 
-      if (v5)
+      if (animatedCopy)
       {
         v25 = MEMORY[0x1E69E9820];
         v26 = 3221225472;
@@ -151,8 +151,8 @@ void __42__PKGSVWalletHeaderView__setSizeMayChange__block_invoke(uint64_t a1)
           v9->_label = v13;
 
           v15 = v9->_label;
-          v16 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-          [(UILabel *)v15 setTextColor:v16];
+          secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+          [(UILabel *)v15 setTextColor:secondaryLabelColor];
 
           [(UILabel *)v9->_label setNumberOfLines:0];
           [(UILabel *)v9->_label setTextAlignment:1];
@@ -180,7 +180,7 @@ void __42__PKGSVWalletHeaderView__setSizeMayChange__block_invoke(uint64_t a1)
       self->_backgroundProvisioningHintView = v9;
 
       [(PKGSVWalletHeaderView *)self addSubview:self->_backgroundProvisioningHintView];
-      if (v5)
+      if (animatedCopy)
       {
         [(UIView *)self->_backgroundProvisioningHintView pkui_setAlpha:0 animated:0.0];
         [(UIView *)self->_backgroundProvisioningHintView pkui_setAlpha:1 animated:1.0];

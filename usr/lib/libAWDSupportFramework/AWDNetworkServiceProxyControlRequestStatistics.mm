@@ -1,32 +1,32 @@
 @interface AWDNetworkServiceProxyControlRequestStatistics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsInterfaceType:(id)a3;
-- (int)StringAsProtocolType:(id)a3;
-- (int)StringAsRequestType:(id)a3;
+- (int)StringAsInterfaceType:(id)type;
+- (int)StringAsProtocolType:(id)type;
+- (int)StringAsRequestType:(id)type;
 - (int)interfaceType;
 - (int)protocolType;
 - (int)requestType;
 - (unint64_t)hash;
-- (unsigned)responseTimeBucketsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)responseTimeBucketsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasInterfaceType:(BOOL)a3;
-- (void)setHasProtocolType:(BOOL)a3;
-- (void)setHasRequestType:(BOOL)a3;
-- (void)setHasResultCertificateFailureCount:(BOOL)a3;
-- (void)setHasResultConnectionResetCount:(BOOL)a3;
-- (void)setHasResultNetworkUnavailableCount:(BOOL)a3;
-- (void)setHasResultResponseTimeoutCount:(BOOL)a3;
-- (void)setHasResultSendFailureCount:(BOOL)a3;
-- (void)setHasResultServerUnreachableCount:(BOOL)a3;
-- (void)setHasResultSuccessCount:(BOOL)a3;
-- (void)setHasResultUnknownErrorCount:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasInterfaceType:(BOOL)type;
+- (void)setHasProtocolType:(BOOL)type;
+- (void)setHasRequestType:(BOOL)type;
+- (void)setHasResultCertificateFailureCount:(BOOL)count;
+- (void)setHasResultConnectionResetCount:(BOOL)count;
+- (void)setHasResultNetworkUnavailableCount:(BOOL)count;
+- (void)setHasResultResponseTimeoutCount:(BOOL)count;
+- (void)setHasResultSendFailureCount:(BOOL)count;
+- (void)setHasResultServerUnreachableCount:(BOOL)count;
+- (void)setHasResultSuccessCount:(BOOL)count;
+- (void)setHasResultUnknownErrorCount:(BOOL)count;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDNetworkServiceProxyControlRequestStatistics
@@ -39,9 +39,9 @@
   [(AWDNetworkServiceProxyControlRequestStatistics *)&v3 dealloc];
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 512;
   }
@@ -67,9 +67,9 @@
   }
 }
 
-- (void)setHasInterfaceType:(BOOL)a3
+- (void)setHasInterfaceType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 1024;
   }
@@ -82,24 +82,24 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (int)StringAsInterfaceType:(id)a3
+- (int)StringAsInterfaceType:(id)type
 {
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_WIFI"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_WIFI"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_CELLULAR"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_CELLULAR"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_WIRED"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_WIRED"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyInterfaceType_VIRTUAL"])
+  if ([type isEqualToString:@"NetworkServiceProxyInterfaceType_VIRTUAL"])
   {
     return 4;
   }
@@ -120,9 +120,9 @@
   }
 }
 
-- (void)setHasRequestType:(BOOL)a3
+- (void)setHasRequestType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4096;
   }
@@ -135,12 +135,12 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (int)StringAsRequestType:(id)a3
+- (int)StringAsRequestType:(id)type
 {
   v4 = 1;
-  if (([a3 isEqualToString:@"NetworkServiceProxyControlRequestType_WALDO_REFRESH"] & 1) == 0)
+  if (([type isEqualToString:@"NetworkServiceProxyControlRequestType_WALDO_REFRESH"] & 1) == 0)
   {
-    if ([a3 isEqualToString:@"NetworkServiceProxyControlRequestType_DAYPASS_REQUEST"])
+    if ([type isEqualToString:@"NetworkServiceProxyControlRequestType_DAYPASS_REQUEST"])
     {
       return 2;
     }
@@ -154,9 +154,9 @@
   return v4;
 }
 
-- (void)setHasResultSuccessCount:(BOOL)a3
+- (void)setHasResultSuccessCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 128;
   }
@@ -169,9 +169,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasResultNetworkUnavailableCount:(BOOL)a3
+- (void)setHasResultNetworkUnavailableCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 8;
   }
@@ -184,9 +184,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasResultServerUnreachableCount:(BOOL)a3
+- (void)setHasResultServerUnreachableCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 64;
   }
@@ -199,9 +199,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasResultSendFailureCount:(BOOL)a3
+- (void)setHasResultSendFailureCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 32;
   }
@@ -214,9 +214,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasResultResponseTimeoutCount:(BOOL)a3
+- (void)setHasResultResponseTimeoutCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 16;
   }
@@ -229,9 +229,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasResultConnectionResetCount:(BOOL)a3
+- (void)setHasResultConnectionResetCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -244,9 +244,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasResultCertificateFailureCount:(BOOL)a3
+- (void)setHasResultCertificateFailureCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -259,9 +259,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasResultUnknownErrorCount:(BOOL)a3
+- (void)setHasResultUnknownErrorCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 256;
   }
@@ -274,16 +274,16 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (unsigned)responseTimeBucketsAtIndex:(unint64_t)a3
+- (unsigned)responseTimeBucketsAtIndex:(unint64_t)index
 {
   p_responseTimeBuckets = &self->_responseTimeBuckets;
   count = self->_responseTimeBuckets.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_responseTimeBuckets->list[a3];
+  return p_responseTimeBuckets->list[index];
 }
 
 - (int)protocolType
@@ -299,9 +299,9 @@
   }
 }
 
-- (void)setHasProtocolType:(BOOL)a3
+- (void)setHasProtocolType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2048;
   }
@@ -314,19 +314,19 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (int)StringAsProtocolType:(id)a3
+- (int)StringAsProtocolType:(id)type
 {
-  if ([a3 isEqualToString:@"NetworkServiceProxyProtocolType_IPv4"])
+  if ([type isEqualToString:@"NetworkServiceProxyProtocolType_IPv4"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyProtocolType_IPv6"])
+  if ([type isEqualToString:@"NetworkServiceProxyProtocolType_IPv6"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"NetworkServiceProxyProtocolType_NAT64"])
+  if ([type isEqualToString:@"NetworkServiceProxyProtocolType_NAT64"])
   {
     return 3;
   }
@@ -343,11 +343,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -377,7 +377,7 @@ LABEL_3:
     v8 = off_29EE32A80[v7];
   }
 
-  [v3 setObject:v8 forKey:@"interface_type"];
+  [dictionary setObject:v8 forKey:@"interface_type"];
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -407,7 +407,7 @@ LABEL_25:
     v11 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"(unknown: %i)", self->_requestType];
   }
 
-  [v3 setObject:v11 forKey:@"request_type"];
+  [dictionary setObject:v11 forKey:@"request_type"];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -421,7 +421,7 @@ LABEL_5:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestCount), @"request_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_requestCount), @"request_count"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -435,7 +435,7 @@ LABEL_6:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultSuccessCount), @"result_success_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultSuccessCount), @"result_success_count"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -449,7 +449,7 @@ LABEL_7:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultNetworkUnavailableCount), @"result_network_unavailable_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultNetworkUnavailableCount), @"result_network_unavailable_count"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -463,7 +463,7 @@ LABEL_8:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultServerUnreachableCount), @"result_server_unreachable_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultServerUnreachableCount), @"result_server_unreachable_count"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -477,7 +477,7 @@ LABEL_9:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultSendFailureCount), @"result_send_failure_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultSendFailureCount), @"result_send_failure_count"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -491,7 +491,7 @@ LABEL_10:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultResponseTimeoutCount), @"result_response_timeout_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultResponseTimeoutCount), @"result_response_timeout_count"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -505,7 +505,7 @@ LABEL_11:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultConnectionResetCount), @"result_connection_reset_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultConnectionResetCount), @"result_connection_reset_count"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -519,15 +519,15 @@ LABEL_12:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultCertificateFailureCount), @"result_certificate_failure_count"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultCertificateFailureCount), @"result_certificate_failure_count"}];
   if ((*&self->_has & 0x100) != 0)
   {
 LABEL_13:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultUnknownErrorCount), @"result_unknown_error_count"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_resultUnknownErrorCount), @"result_unknown_error_count"}];
   }
 
 LABEL_14:
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"response_time_buckets"];
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"response_time_buckets"];
   if ((*&self->_has & 0x800) != 0)
   {
     v5 = self->_protocolType - 1;
@@ -541,13 +541,13 @@ LABEL_14:
       v6 = off_29EE32AA0[v5];
     }
 
-    [v3 setObject:v6 forKey:@"protocol_type"];
+    [dictionary setObject:v6 forKey:@"protocol_type"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x200) != 0)
@@ -738,13 +738,13 @@ LABEL_14:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    *(a3 + 13) = self->_timestamp;
-    *(a3 + 62) |= 0x200u;
+    *(to + 13) = self->_timestamp;
+    *(to + 62) |= 0x200u;
     has = self->_has;
     if ((has & 0x400) == 0)
     {
@@ -763,8 +763,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 28) = self->_interfaceType;
-  *(a3 + 62) |= 0x400u;
+  *(to + 28) = self->_interfaceType;
+  *(to + 62) |= 0x400u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -778,8 +778,8 @@ LABEL_4:
   }
 
 LABEL_23:
-  *(a3 + 30) = self->_requestType;
-  *(a3 + 62) |= 0x1000u;
+  *(to + 30) = self->_requestType;
+  *(to + 62) |= 0x1000u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -793,8 +793,8 @@ LABEL_5:
   }
 
 LABEL_24:
-  *(a3 + 4) = self->_requestCount;
-  *(a3 + 62) |= 1u;
+  *(to + 4) = self->_requestCount;
+  *(to + 62) |= 1u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -808,8 +808,8 @@ LABEL_6:
   }
 
 LABEL_25:
-  *(a3 + 11) = self->_resultSuccessCount;
-  *(a3 + 62) |= 0x80u;
+  *(to + 11) = self->_resultSuccessCount;
+  *(to + 62) |= 0x80u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -823,8 +823,8 @@ LABEL_7:
   }
 
 LABEL_26:
-  *(a3 + 7) = self->_resultNetworkUnavailableCount;
-  *(a3 + 62) |= 8u;
+  *(to + 7) = self->_resultNetworkUnavailableCount;
+  *(to + 62) |= 8u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -838,8 +838,8 @@ LABEL_8:
   }
 
 LABEL_27:
-  *(a3 + 10) = self->_resultServerUnreachableCount;
-  *(a3 + 62) |= 0x40u;
+  *(to + 10) = self->_resultServerUnreachableCount;
+  *(to + 62) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -853,8 +853,8 @@ LABEL_9:
   }
 
 LABEL_28:
-  *(a3 + 9) = self->_resultSendFailureCount;
-  *(a3 + 62) |= 0x20u;
+  *(to + 9) = self->_resultSendFailureCount;
+  *(to + 62) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -868,8 +868,8 @@ LABEL_10:
   }
 
 LABEL_29:
-  *(a3 + 8) = self->_resultResponseTimeoutCount;
-  *(a3 + 62) |= 0x10u;
+  *(to + 8) = self->_resultResponseTimeoutCount;
+  *(to + 62) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -880,8 +880,8 @@ LABEL_11:
     }
 
 LABEL_31:
-    *(a3 + 5) = self->_resultCertificateFailureCount;
-    *(a3 + 62) |= 2u;
+    *(to + 5) = self->_resultCertificateFailureCount;
+    *(to + 62) |= 2u;
     if ((*&self->_has & 0x100) == 0)
     {
       goto LABEL_14;
@@ -891,8 +891,8 @@ LABEL_31:
   }
 
 LABEL_30:
-  *(a3 + 6) = self->_resultConnectionResetCount;
-  *(a3 + 62) |= 4u;
+  *(to + 6) = self->_resultConnectionResetCount;
+  *(to + 62) |= 4u;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -903,35 +903,35 @@ LABEL_12:
   if ((has & 0x100) != 0)
   {
 LABEL_13:
-    *(a3 + 12) = self->_resultUnknownErrorCount;
-    *(a3 + 62) |= 0x100u;
+    *(to + 12) = self->_resultUnknownErrorCount;
+    *(to + 62) |= 0x100u;
   }
 
 LABEL_14:
   if ([(AWDNetworkServiceProxyControlRequestStatistics *)self responseTimeBucketsCount])
   {
-    [a3 clearResponseTimeBuckets];
-    v6 = [(AWDNetworkServiceProxyControlRequestStatistics *)self responseTimeBucketsCount];
-    if (v6)
+    [to clearResponseTimeBuckets];
+    responseTimeBucketsCount = [(AWDNetworkServiceProxyControlRequestStatistics *)self responseTimeBucketsCount];
+    if (responseTimeBucketsCount)
     {
-      v7 = v6;
+      v7 = responseTimeBucketsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addResponseTimeBuckets:{-[AWDNetworkServiceProxyControlRequestStatistics responseTimeBucketsAtIndex:](self, "responseTimeBucketsAtIndex:", i)}];
+        [to addResponseTimeBuckets:{-[AWDNetworkServiceProxyControlRequestStatistics responseTimeBucketsAtIndex:](self, "responseTimeBucketsAtIndex:", i)}];
       }
     }
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    *(a3 + 29) = self->_protocolType;
-    *(a3 + 62) |= 0x800u;
+    *(to + 29) = self->_protocolType;
+    *(to + 62) |= 0x800u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   has = self->_has;
   if ((has & 0x200) != 0)
@@ -1111,22 +1111,22 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
     has = self->_has;
-    v7 = *(a3 + 62);
+    v7 = *(equal + 62);
     if ((has & 0x200) != 0)
     {
-      if ((*(a3 + 62) & 0x200) == 0 || self->_timestamp != *(a3 + 13))
+      if ((*(equal + 62) & 0x200) == 0 || self->_timestamp != *(equal + 13))
       {
         goto LABEL_67;
       }
     }
 
-    else if ((*(a3 + 62) & 0x200) != 0)
+    else if ((*(equal + 62) & 0x200) != 0)
     {
 LABEL_67:
       LOBYTE(IsEqual) = 0;
@@ -1135,33 +1135,33 @@ LABEL_67:
 
     if ((*&self->_has & 0x400) != 0)
     {
-      if ((*(a3 + 62) & 0x400) == 0 || self->_interfaceType != *(a3 + 28))
+      if ((*(equal + 62) & 0x400) == 0 || self->_interfaceType != *(equal + 28))
       {
         goto LABEL_67;
       }
     }
 
-    else if ((*(a3 + 62) & 0x400) != 0)
+    else if ((*(equal + 62) & 0x400) != 0)
     {
       goto LABEL_67;
     }
 
     if ((*&self->_has & 0x1000) != 0)
     {
-      if ((*(a3 + 62) & 0x1000) == 0 || self->_requestType != *(a3 + 30))
+      if ((*(equal + 62) & 0x1000) == 0 || self->_requestType != *(equal + 30))
       {
         goto LABEL_67;
       }
     }
 
-    else if ((*(a3 + 62) & 0x1000) != 0)
+    else if ((*(equal + 62) & 0x1000) != 0)
     {
       goto LABEL_67;
     }
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_requestCount != *(a3 + 4))
+      if ((v7 & 1) == 0 || self->_requestCount != *(equal + 4))
       {
         goto LABEL_67;
       }
@@ -1174,7 +1174,7 @@ LABEL_67:
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_resultSuccessCount != *(a3 + 11))
+      if ((v7 & 0x80) == 0 || self->_resultSuccessCount != *(equal + 11))
       {
         goto LABEL_67;
       }
@@ -1187,7 +1187,7 @@ LABEL_67:
 
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_resultNetworkUnavailableCount != *(a3 + 7))
+      if ((v7 & 8) == 0 || self->_resultNetworkUnavailableCount != *(equal + 7))
       {
         goto LABEL_67;
       }
@@ -1200,7 +1200,7 @@ LABEL_67:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_resultServerUnreachableCount != *(a3 + 10))
+      if ((v7 & 0x40) == 0 || self->_resultServerUnreachableCount != *(equal + 10))
       {
         goto LABEL_67;
       }
@@ -1213,7 +1213,7 @@ LABEL_67:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_resultSendFailureCount != *(a3 + 9))
+      if ((v7 & 0x20) == 0 || self->_resultSendFailureCount != *(equal + 9))
       {
         goto LABEL_67;
       }
@@ -1226,7 +1226,7 @@ LABEL_67:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_resultResponseTimeoutCount != *(a3 + 8))
+      if ((v7 & 0x10) == 0 || self->_resultResponseTimeoutCount != *(equal + 8))
       {
         goto LABEL_67;
       }
@@ -1239,7 +1239,7 @@ LABEL_67:
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_resultConnectionResetCount != *(a3 + 6))
+      if ((v7 & 4) == 0 || self->_resultConnectionResetCount != *(equal + 6))
       {
         goto LABEL_67;
       }
@@ -1252,7 +1252,7 @@ LABEL_67:
 
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_resultCertificateFailureCount != *(a3 + 5))
+      if ((v7 & 2) == 0 || self->_resultCertificateFailureCount != *(equal + 5))
       {
         goto LABEL_67;
       }
@@ -1265,13 +1265,13 @@ LABEL_67:
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 62) & 0x100) == 0 || self->_resultUnknownErrorCount != *(a3 + 12))
+      if ((*(equal + 62) & 0x100) == 0 || self->_resultUnknownErrorCount != *(equal + 12))
       {
         goto LABEL_67;
       }
     }
 
-    else if ((*(a3 + 62) & 0x100) != 0)
+    else if ((*(equal + 62) & 0x100) != 0)
     {
       goto LABEL_67;
     }
@@ -1279,10 +1279,10 @@ LABEL_67:
     IsEqual = PBRepeatedUInt32IsEqual();
     if (IsEqual)
     {
-      LOBYTE(IsEqual) = (*(a3 + 62) & 0x800) == 0;
+      LOBYTE(IsEqual) = (*(equal + 62) & 0x800) == 0;
       if ((*&self->_has & 0x800) != 0)
       {
-        if ((*(a3 + 62) & 0x800) == 0 || self->_protocolType != *(a3 + 29))
+        if ((*(equal + 62) & 0x800) == 0 || self->_protocolType != *(equal + 29))
         {
           goto LABEL_67;
         }
@@ -1474,14 +1474,14 @@ LABEL_26:
   return v17 ^ v18 ^ v16 ^ v15 ^ v14 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v12 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 0x200) != 0)
   {
-    self->_timestamp = *(a3 + 13);
+    self->_timestamp = *(from + 13);
     *&self->_has |= 0x200u;
-    v5 = *(a3 + 62);
+    v5 = *(from + 62);
     if ((v5 & 0x400) == 0)
     {
 LABEL_3:
@@ -1494,14 +1494,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 62) & 0x400) == 0)
+  else if ((*(from + 62) & 0x400) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_interfaceType = *(a3 + 28);
+  self->_interfaceType = *(from + 28);
   *&self->_has |= 0x400u;
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_4:
@@ -1514,9 +1514,9 @@ LABEL_4:
   }
 
 LABEL_22:
-  self->_requestType = *(a3 + 30);
+  self->_requestType = *(from + 30);
   *&self->_has |= 0x1000u;
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -1529,9 +1529,9 @@ LABEL_5:
   }
 
 LABEL_23:
-  self->_requestCount = *(a3 + 4);
+  self->_requestCount = *(from + 4);
   *&self->_has |= 1u;
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 0x80) == 0)
   {
 LABEL_6:
@@ -1544,9 +1544,9 @@ LABEL_6:
   }
 
 LABEL_24:
-  self->_resultSuccessCount = *(a3 + 11);
+  self->_resultSuccessCount = *(from + 11);
   *&self->_has |= 0x80u;
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -1559,9 +1559,9 @@ LABEL_7:
   }
 
 LABEL_25:
-  self->_resultNetworkUnavailableCount = *(a3 + 7);
+  self->_resultNetworkUnavailableCount = *(from + 7);
   *&self->_has |= 8u;
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 0x40) == 0)
   {
 LABEL_8:
@@ -1574,9 +1574,9 @@ LABEL_8:
   }
 
 LABEL_26:
-  self->_resultServerUnreachableCount = *(a3 + 10);
+  self->_resultServerUnreachableCount = *(from + 10);
   *&self->_has |= 0x40u;
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -1589,9 +1589,9 @@ LABEL_9:
   }
 
 LABEL_27:
-  self->_resultSendFailureCount = *(a3 + 9);
+  self->_resultSendFailureCount = *(from + 9);
   *&self->_has |= 0x20u;
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 0x10) == 0)
   {
 LABEL_10:
@@ -1604,9 +1604,9 @@ LABEL_10:
   }
 
 LABEL_28:
-  self->_resultResponseTimeoutCount = *(a3 + 8);
+  self->_resultResponseTimeoutCount = *(from + 8);
   *&self->_has |= 0x10u;
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 4) == 0)
   {
 LABEL_11:
@@ -1619,9 +1619,9 @@ LABEL_11:
   }
 
 LABEL_29:
-  self->_resultConnectionResetCount = *(a3 + 6);
+  self->_resultConnectionResetCount = *(from + 6);
   *&self->_has |= 4u;
-  v5 = *(a3 + 62);
+  v5 = *(from + 62);
   if ((v5 & 2) == 0)
   {
 LABEL_12:
@@ -1634,29 +1634,29 @@ LABEL_12:
   }
 
 LABEL_30:
-  self->_resultCertificateFailureCount = *(a3 + 5);
+  self->_resultCertificateFailureCount = *(from + 5);
   *&self->_has |= 2u;
-  if ((*(a3 + 62) & 0x100) != 0)
+  if ((*(from + 62) & 0x100) != 0)
   {
 LABEL_13:
-    self->_resultUnknownErrorCount = *(a3 + 12);
+    self->_resultUnknownErrorCount = *(from + 12);
     *&self->_has |= 0x100u;
   }
 
 LABEL_14:
-  v6 = [a3 responseTimeBucketsCount];
-  if (v6)
+  responseTimeBucketsCount = [from responseTimeBucketsCount];
+  if (responseTimeBucketsCount)
   {
-    v7 = v6;
+    v7 = responseTimeBucketsCount;
     for (i = 0; i != v7; ++i)
     {
-      -[AWDNetworkServiceProxyControlRequestStatistics addResponseTimeBuckets:](self, "addResponseTimeBuckets:", [a3 responseTimeBucketsAtIndex:i]);
+      -[AWDNetworkServiceProxyControlRequestStatistics addResponseTimeBuckets:](self, "addResponseTimeBuckets:", [from responseTimeBucketsAtIndex:i]);
     }
   }
 
-  if ((*(a3 + 62) & 0x800) != 0)
+  if ((*(from + 62) & 0x800) != 0)
   {
-    self->_protocolType = *(a3 + 29);
+    self->_protocolType = *(from + 29);
     *&self->_has |= 0x800u;
   }
 }

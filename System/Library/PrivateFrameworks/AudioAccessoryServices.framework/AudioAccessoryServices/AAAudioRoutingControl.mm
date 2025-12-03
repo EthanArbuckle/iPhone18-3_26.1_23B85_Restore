@@ -1,19 +1,19 @@
 @interface AAAudioRoutingControl
 - (AAAudioRoutingControl)init;
-- (AAAudioRoutingControl)initWithCoder:(id)a3;
+- (AAAudioRoutingControl)initWithCoder:(id)coder;
 - (id)_ensureXPCStarted;
 - (id)description;
 - (void)_activate;
-- (void)_activateDirect:(id)a3;
-- (void)_activateXPC:(id)a3;
+- (void)_activateDirect:(id)direct;
+- (void)_activateXPC:(id)c;
 - (void)_handleServerDied;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)areHeadphonesNearbyAndEligibleToPlay:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)hrmSessionStateChanged:(BOOL)a3 completion:(id)a4;
+- (void)_reportError:(id)error;
+- (void)activateWithCompletion:(id)completion;
+- (void)areHeadphonesNearbyAndEligibleToPlay:(id)play;
+- (void)encodeWithCoder:(id)coder;
+- (void)hrmSessionStateChanged:(BOOL)changed completion:(id)completion;
 - (void)invalidate;
 - (void)prewarmAudioAccessoriesForFitnessWorkout;
 @end
@@ -35,13 +35,13 @@
   return v2;
 }
 
-- (AAAudioRoutingControl)initWithCoder:(id)a3
+- (AAAudioRoutingControl)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AAAudioRoutingControl *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -60,29 +60,29 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   appBundleID = self->_appBundleID;
-  v8 = v4;
+  v8 = coderCopy;
   if (appBundleID)
   {
-    [v4 encodeObject:appBundleID forKey:@"aid"];
-    v4 = v8;
+    [coderCopy encodeObject:appBundleID forKey:@"aid"];
+    coderCopy = v8;
   }
 
   clientID = self->_clientID;
   if (clientID)
   {
     [v8 encodeInt64:clientID forKey:@"cid"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   deviceAddress = self->_deviceAddress;
   if (deviceAddress)
   {
     [v8 encodeObject:deviceAddress forKey:@"dAdr"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
@@ -96,10 +96,10 @@
   return 0;
 }
 
-- (void)areHeadphonesNearbyAndEligibleToPlay:(id)a3
+- (void)areHeadphonesNearbyAndEligibleToPlay:(id)play
 {
-  v4 = a3;
-  v5 = v4;
+  playCopy = play;
+  v5 = playCopy;
   if (self->_activateCalled)
   {
     dispatchQueue = self->_dispatchQueue;
@@ -108,7 +108,7 @@
     block[2] = __62__AAAudioRoutingControl_areHeadphonesNearbyAndEligibleToPlay___block_invoke;
     block[3] = &unk_278CDE238;
     block[4] = self;
-    v8 = v4;
+    v8 = playCopy;
     v9 = 4;
     dispatch_async(dispatchQueue, block);
   }
@@ -143,10 +143,10 @@ void __62__AAAudioRoutingControl_areHeadphonesNearbyAndEligibleToPlay___block_in
   }
 }
 
-- (void)hrmSessionStateChanged:(BOOL)a3 completion:(id)a4
+- (void)hrmSessionStateChanged:(BOOL)changed completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
+  completionCopy = completion;
+  v7 = completionCopy;
   if (self->_activateCalled)
   {
     dispatchQueue = self->_dispatchQueue;
@@ -155,8 +155,8 @@ void __62__AAAudioRoutingControl_areHeadphonesNearbyAndEligibleToPlay___block_in
     block[2] = __59__AAAudioRoutingControl_hrmSessionStateChanged_completion___block_invoke;
     block[3] = &unk_278CDE238;
     block[4] = self;
-    v10 = v6;
-    v11 = a3;
+    v10 = completionCopy;
+    changedCopy = changed;
     dispatch_async(dispatchQueue, block);
   }
 }
@@ -189,17 +189,17 @@ void __59__AAAudioRoutingControl_hrmSessionStateChanged_completion___block_invok
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__AAAudioRoutingControl_activateWithCompletion___block_invoke;
   v7[3] = &unk_278CDD638;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -328,9 +328,9 @@ void __34__AAAudioRoutingControl__activate__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_activateDirect:(id)a3
+- (void)_activateDirect:(id)direct
 {
-  v4 = a3;
+  directCopy = direct;
   if (gLogCategory_AAAudioRoutingControl <= 30 && (gLogCategory_AAAudioRoutingControl != -1 || _LogCategory_Initialize()))
   {
     [AAAudioRoutingControl _activateDirect:?];
@@ -342,8 +342,8 @@ void __34__AAAudioRoutingControl__activate__block_invoke(uint64_t a1, void *a2)
   v7[2] = __41__AAAudioRoutingControl__activateDirect___block_invoke;
   v7[3] = &unk_278CDD6B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = directCopy;
+  v6 = directCopy;
   [v5 activateAudioRoutingControl:self completion:v7];
 }
 
@@ -373,18 +373,18 @@ uint64_t __41__AAAudioRoutingControl__activateDirect___block_invoke_2(uint64_t a
   return result;
 }
 
-- (void)_activateXPC:(id)a3
+- (void)_activateXPC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   if (gLogCategory_AAAudioRoutingControl <= 30 && (gLogCategory_AAAudioRoutingControl != -1 || _LogCategory_Initialize()))
   {
     [AAAudioRoutingControl _activateXPC:?];
   }
 
-  v5 = [(AAAudioRoutingControl *)self _ensureXPCStarted];
-  if (v5)
+  _ensureXPCStarted = [(AAAudioRoutingControl *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    v4[2](v4, v5);
+    cCopy[2](cCopy, _ensureXPCStarted);
   }
 
   else
@@ -394,7 +394,7 @@ uint64_t __41__AAAudioRoutingControl__activateDirect___block_invoke_2(uint64_t a
     v11[1] = 3221225472;
     v11[2] = __38__AAAudioRoutingControl__activateXPC___block_invoke;
     v11[3] = &unk_278CDD700;
-    v7 = v4;
+    v7 = cCopy;
     v12 = v7;
     v8 = [(NSXPCConnection *)xpcCnx remoteObjectProxyWithErrorHandler:v11];
     v9[0] = MEMORY[0x277D85DD0];
@@ -716,9 +716,9 @@ void __42__AAAudioRoutingControl__invalidateDirect__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v6 = a3;
+  errorCopy = error;
   if (gLogCategory_AAAudioRoutingControl <= 90 && (gLogCategory_AAAudioRoutingControl != -1 || _LogCategory_Initialize()))
   {
     [AAAudioRoutingControl _reportError:];
@@ -730,7 +730,7 @@ void __42__AAAudioRoutingControl__invalidateDirect__block_invoke(uint64_t a1)
 
   if (v4)
   {
-    (v4)[2](v4, v6);
+    (v4)[2](v4, errorCopy);
   }
 }
 

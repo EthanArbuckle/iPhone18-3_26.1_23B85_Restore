@@ -2,83 +2,83 @@
 - (BOOL)_hasEnoughContentToScroll;
 - (BOOL)headerVisible;
 - (BOOL)shouldAnimateFirstTwoViewsAsOne;
-- (CGRect)_cellFrameInScrollBoundsForCell:(id)a3;
+- (CGRect)_cellFrameInScrollBoundsForCell:(id)cell;
 - (NSMutableDictionary)catchupTimers;
-- (WGCarouselListViewController)initWithWidgetDiscoveryController:(id)a3 listSettings:(WGWidgetListSettings)a4;
+- (WGCarouselListViewController)initWithWidgetDiscoveryController:(id)controller listSettings:(WGWidgetListSettings)settings;
 - (WGWidgetListSettings)listSettings;
-- (double)easedOutValueForValue:(double)a3;
+- (double)easedOutValueForValue:(double)value;
 - (id)_animatablePropertiesForStackViewUpdate;
-- (id)_identifierForCell:(id)a3;
-- (id)_newCatchupPropertyForCell:(id)a3;
-- (id)_thresholdsForCell:(id)a3;
+- (id)_identifierForCell:(id)cell;
+- (id)_newCatchupPropertyForCell:(id)cell;
+- (id)_thresholdsForCell:(id)cell;
 - (id)extraViews;
-- (unint64_t)_indexForNextCellAfterContentOffset:(double)a3;
+- (unint64_t)_indexForNextCellAfterContentOffset:(double)offset;
 - (unint64_t)_indexOfFirstNonFavoritedWidgetInStackView;
-- (unint64_t)_insertionIndexofListItem:(id)a3 intoWidgetViews:(id)a4 withOrderedIdentifiers:(id)a5;
+- (unint64_t)_insertionIndexofListItem:(id)item intoWidgetViews:(id)views withOrderedIdentifiers:(id)identifiers;
 - (void)_animatablePropertiesForStackViewUpdate;
 - (void)_createPropertiesForStackViewUpdate;
-- (void)_repopulateStackViewWithWidgetIdentifiers:(id)a3;
+- (void)_repopulateStackViewWithWidgetIdentifiers:(id)identifiers;
 - (void)_stackViewArrangedSubviewsTransformPresentationValueChanged;
-- (void)_styleCroppedAndScaledCellForBottomEdge:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5 thresholds:(id)a6;
-- (void)_styleCroppedAndScaledCellForTopEdge:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 thresholds:(id)a5;
-- (void)_styleCroppedCellForBottomEdge:(id)a3 intersectionRect:(CGRect)a4 thresholds:(id)a5;
-- (void)_styleCroppedCellForTopEdge:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5 thresholds:(id)a6;
-- (void)_styleDisapearingCellForBottomEdge:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 previousCellFrameInContainerView:(CGRect)a5 thresholds:(id)a6;
-- (void)_styleFooterView:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5 containerHeight:(double)a6;
-- (void)_styleFullyInvisibleBottomCell:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 thresholds:(id)a5;
-- (void)_styleFullyInvisibleTopCell:(id)a3;
-- (void)_styleFullyVisibleCell:(id)a3;
-- (void)_styleHeaderView:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5;
-- (void)_styleTeachingView:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5;
+- (void)_styleCroppedAndScaledCellForBottomEdge:(id)edge withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect thresholds:(id)thresholds;
+- (void)_styleCroppedAndScaledCellForTopEdge:(id)edge withCellFrameInScrollViewBounds:(CGRect)bounds thresholds:(id)thresholds;
+- (void)_styleCroppedCellForBottomEdge:(id)edge intersectionRect:(CGRect)rect thresholds:(id)thresholds;
+- (void)_styleCroppedCellForTopEdge:(id)edge withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect thresholds:(id)thresholds;
+- (void)_styleDisapearingCellForBottomEdge:(id)edge withCellFrameInScrollViewBounds:(CGRect)bounds previousCellFrameInContainerView:(CGRect)view thresholds:(id)thresholds;
+- (void)_styleFooterView:(id)view withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect containerHeight:(double)height;
+- (void)_styleFullyInvisibleBottomCell:(id)cell withCellFrameInScrollViewBounds:(CGRect)bounds thresholds:(id)thresholds;
+- (void)_styleFullyInvisibleTopCell:(id)cell;
+- (void)_styleFullyVisibleCell:(id)cell;
+- (void)_styleHeaderView:(id)view withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect;
+- (void)_styleTeachingView:(id)view withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect;
 - (void)_updateCarouselEffect;
 - (void)_updateRevealState;
 - (void)_updateScrollViewContentSize;
-- (void)_updateTeachingViewVisibilityAnimated:(BOOL)a3 withCompletion:(id)a4;
+- (void)_updateTeachingViewVisibilityAnimated:(BOOL)animated withCompletion:(id)completion;
 - (void)dealloc;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setContainerView:(id)a3;
-- (void)setEditingIcons:(BOOL)a3;
-- (void)setFooterVisible:(BOOL)a3;
-- (void)setHeaderVisible:(BOOL)a3;
-- (void)setListSettings:(WGWidgetListSettings)a3;
-- (void)setRevealed:(BOOL)a3;
-- (void)setVisuallyRevealed:(BOOL)a3 withSlowAnimation:(BOOL)a4;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setContainerView:(id)view;
+- (void)setEditingIcons:(BOOL)icons;
+- (void)setFooterVisible:(BOOL)visible;
+- (void)setHeaderVisible:(BOOL)visible;
+- (void)setListSettings:(WGWidgetListSettings)settings;
+- (void)setRevealed:(BOOL)revealed;
+- (void)setVisuallyRevealed:(BOOL)revealed withSlowAnimation:(BOOL)animation;
 - (void)updateCarouselAndRevealState;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)widgetPinningTeachingViewDidSelectNo:(id)a3;
-- (void)widgetPinningTeachingViewDidSelectYes:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)widgetPinningTeachingViewDidSelectNo:(id)no;
+- (void)widgetPinningTeachingViewDidSelectYes:(id)yes;
 @end
 
 @implementation WGCarouselListViewController
 
-- (WGCarouselListViewController)initWithWidgetDiscoveryController:(id)a3 listSettings:(WGWidgetListSettings)a4
+- (WGCarouselListViewController)initWithWidgetDiscoveryController:(id)controller listSettings:(WGWidgetListSettings)settings
 {
-  v4 = *&a4.useFavorites;
-  carouselEdges = a4.carouselEdges;
-  v7 = a3;
+  v4 = *&settings.useFavorites;
+  carouselEdges = settings.carouselEdges;
+  controllerCopy = controller;
   v20.receiver = self;
   v20.super_class = WGCarouselListViewController;
-  v8 = [(WGWidgetListViewController *)&v20 initWithWidgetDiscoveryController:v7];
+  v8 = [(WGWidgetListViewController *)&v20 initWithWidgetDiscoveryController:controllerCopy];
   v9 = v8;
   if (v8)
   {
     v8->_listSettings.carouselEdges = carouselEdges;
     *&v8->_listSettings.useFavorites = v4;
     objc_initWeak(&location, v8);
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    v11 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v12 = *MEMORY[0x277D76810];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSettings___block_invoke;
     v17[3] = &unk_279ED1060;
     objc_copyWeak(&v18, &location);
-    v13 = [v10 addObserverForName:v12 object:0 queue:v11 usingBlock:v17];
+    v13 = [defaultCenter addObserverForName:v12 object:0 queue:mainQueue usingBlock:v17];
     sizeChangeObserver = v9->_sizeChangeObserver;
     v9->_sizeChangeObserver = v13;
 
@@ -98,21 +98,21 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self->_sizeChangeObserver];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self->_sizeChangeObserver];
 
   v4.receiver = self;
   v4.super_class = WGCarouselListViewController;
   [(WGWidgetListViewController *)&v4 dealloc];
 }
 
-- (void)_repopulateStackViewWithWidgetIdentifiers:(id)a3
+- (void)_repopulateStackViewWithWidgetIdentifiers:(id)identifiers
 {
   v6.receiver = self;
   v6.super_class = WGCarouselListViewController;
-  [(WGMajorListViewController *)&v6 _repopulateStackViewWithWidgetIdentifiers:a3];
-  v4 = [(UIStackView *)self->super.super._stackView arrangedSubviews];
-  v5 = [v4 count];
+  [(WGMajorListViewController *)&v6 _repopulateStackViewWithWidgetIdentifiers:identifiers];
+  arrangedSubviews = [(UIStackView *)self->super.super._stackView arrangedSubviews];
+  v5 = [arrangedSubviews count];
 
   if (v5)
   {
@@ -122,16 +122,16 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
   [(WGWidgetListViewController *)self _didUpdateStackViewArrangedSubviews];
 }
 
-- (unint64_t)_insertionIndexofListItem:(id)a3 intoWidgetViews:(id)a4 withOrderedIdentifiers:(id)a5
+- (unint64_t)_insertionIndexofListItem:(id)item intoWidgetViews:(id)views withOrderedIdentifiers:(id)identifiers
 {
   v11.receiver = self;
   v11.super_class = WGCarouselListViewController;
-  v6 = [(WGMajorListViewController *)&v11 _insertionIndexofListItem:a3 intoWidgetViews:a4 withOrderedIdentifiers:a5];
-  v7 = [(UIStackView *)self->super.super._stackView arrangedSubviews];
-  v8 = v7;
+  v6 = [(WGMajorListViewController *)&v11 _insertionIndexofListItem:item intoWidgetViews:views withOrderedIdentifiers:identifiers];
+  arrangedSubviews = [(UIStackView *)self->super.super._stackView arrangedSubviews];
+  v8 = arrangedSubviews;
   if (self->_teachingView)
   {
-    if ([v7 containsObject:?])
+    if ([arrangedSubviews containsObject:?])
     {
       v9 = v6 == 1;
     }
@@ -177,15 +177,15 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
 {
   v12.receiver = self;
   v12.super_class = WGCarouselListViewController;
-  v3 = [(WGMajorListViewController *)&v12 extraViews];
+  extraViews = [(WGMajorListViewController *)&v12 extraViews];
   teachingView = self->_teachingView;
   if (teachingView && (-[WGWidgetPinningTeachingView contentView](teachingView, "contentView"), v5 = objc_claimAutoreleasedReturnValue(), [v5 alpha], IsZero = BSFloatIsZero(), v5, (IsZero & 1) == 0))
   {
-    v7 = [v3 mutableCopy];
+    v7 = [extraViews mutableCopy];
     v10 = 0;
-    if ([v3 count])
+    if ([extraViews count])
     {
-      v8 = [v7 firstObject];
+      firstObject = [v7 firstObject];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -200,7 +200,7 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
 
   else
   {
-    v7 = v3;
+    v7 = extraViews;
   }
 
   return v7;
@@ -220,12 +220,12 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
     teachingView = self->_teachingView;
     if (teachingView)
     {
-      v5 = [(WGCarouselListViewController *)self extraViews];
-      v6 = [v5 firstObject];
-      if (teachingView == v6)
+      extraViews = [(WGCarouselListViewController *)self extraViews];
+      firstObject = [extraViews firstObject];
+      if (teachingView == firstObject)
       {
-        v7 = [(WGWidgetPinningTeachingView *)self->_teachingView contentView];
-        [v7 alpha];
+        contentView = [(WGWidgetPinningTeachingView *)self->_teachingView contentView];
+        [contentView alpha];
         v3 = BSFloatIsOne() ^ 1;
       }
 
@@ -250,45 +250,45 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
   v5.super_class = WGCarouselListViewController;
   [(WGWidgetListViewController *)&v5 viewDidLoad];
   [(WGCarouselListViewController *)self _updateTeachingViewVisibilityAnimated:0 withCompletion:0];
-  v3 = 0;
+  alwaysShowsFavoriteWidgets = 0;
   if (self->_listSettings.useFavorites)
   {
-    v3 = [(WGWidgetDiscoveryController *)self->super.super._discoveryController areWidgetsPinned]|| [(WGWidgetDiscoveryController *)self->super.super._discoveryController alwaysShowsFavoriteWidgets];
+    alwaysShowsFavoriteWidgets = [(WGWidgetDiscoveryController *)self->super.super._discoveryController areWidgetsPinned]|| [(WGWidgetDiscoveryController *)self->super.super._discoveryController alwaysShowsFavoriteWidgets];
   }
 
-  [(WGCarouselListViewController *)self setRevealed:v3];
-  [(WGCarouselListViewController *)self setRevealed:v3 ^ 1];
-  [(WGCarouselListViewController *)self setVisuallyRevealed:v3];
-  [(WGCarouselListViewController *)self setVisuallyRevealed:v3 ^ 1];
+  [(WGCarouselListViewController *)self setRevealed:alwaysShowsFavoriteWidgets];
+  [(WGCarouselListViewController *)self setRevealed:alwaysShowsFavoriteWidgets ^ 1];
+  [(WGCarouselListViewController *)self setVisuallyRevealed:alwaysShowsFavoriteWidgets];
+  [(WGCarouselListViewController *)self setVisuallyRevealed:alwaysShowsFavoriteWidgets ^ 1];
   if ((self->_listSettings.carouselEdges & 4) != 0)
   {
-    v4 = [(WGMajorListViewController *)self footerView];
-    [v4 setShouldSizeContent:0];
+    footerView = [(WGMajorListViewController *)self footerView];
+    [footerView setShouldSizeContent:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WGCarouselListViewController;
-  [(WGMajorListViewController *)&v4 viewWillAppear:a3];
+  [(WGMajorListViewController *)&v4 viewWillAppear:appear];
   [(WGCarouselListViewController *)self setCachedThresholds:0];
   [(WGCarouselListViewController *)self updateCarouselAndRevealState];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = WGCarouselListViewController;
-  [(WGMajorListViewController *)&v4 viewDidAppear:a3];
+  [(WGMajorListViewController *)&v4 viewDidAppear:appear];
   [(WGWidgetPinningTeachingView *)self->_teachingView startAnimating];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = WGCarouselListViewController;
-  [(WGMajorListViewController *)&v4 viewDidDisappear:a3];
+  [(WGMajorListViewController *)&v4 viewDidDisappear:disappear];
   [(WGWidgetPinningTeachingView *)self->_teachingView stopAnimating];
 }
 
@@ -304,12 +304,12 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
   }
 }
 
-- (void)setListSettings:(WGWidgetListSettings)a3
+- (void)setListSettings:(WGWidgetListSettings)settings
 {
-  v3 = *&a3.useFavorites;
-  carouselEdges = a3.carouselEdges;
+  v3 = *&settings.useFavorites;
+  carouselEdges = settings.carouselEdges;
   p_listSettings = &self->_listSettings;
-  if (!WGWidgetListSettingsEqualsToWidgetListSettings(self->_listSettings.carouselEdges, *&self->_listSettings.useFavorites, a3.carouselEdges, *&a3.useFavorites))
+  if (!WGWidgetListSettingsEqualsToWidgetListSettings(self->_listSettings.carouselEdges, *&self->_listSettings.useFavorites, settings.carouselEdges, *&settings.useFavorites))
   {
     p_listSettings->carouselEdges = carouselEdges;
     *&p_listSettings->useFavorites = v3;
@@ -318,20 +318,20 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
   }
 }
 
-- (void)setRevealed:(BOOL)a3
+- (void)setRevealed:(BOOL)revealed
 {
-  if (self->_revealed != a3)
+  if (self->_revealed != revealed)
   {
-    v3 = a3;
+    revealedCopy = revealed;
     v5 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
     {
-      [(WGCarouselListViewController *)v3 setRevealed:v5, v6, v7, v8, v9, v10, v11];
+      [(WGCarouselListViewController *)revealedCopy setRevealed:v5, v6, v7, v8, v9, v10, v11];
     }
 
-    self->_revealed = v3;
-    v12 = [(WGWidgetListViewController *)self widgetListView];
-    [v12 bounds];
+    self->_revealed = revealedCopy;
+    widgetListView = [(WGWidgetListViewController *)self widgetListView];
+    [widgetListView bounds];
     v14 = v13;
     v16 = v15;
     v17 = *MEMORY[0x277CBF3A8];
@@ -344,19 +344,19 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
   }
 }
 
-- (void)setVisuallyRevealed:(BOOL)a3 withSlowAnimation:(BOOL)a4
+- (void)setVisuallyRevealed:(BOOL)revealed withSlowAnimation:(BOOL)animation
 {
   v50 = *MEMORY[0x277D85DE8];
-  if (self->_visuallyRevealed != a3)
+  if (self->_visuallyRevealed != revealed)
   {
-    self->_visuallyRevealed = a3;
+    self->_visuallyRevealed = revealed;
     v5 = WGLogWidgets;
     if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
     {
       [(WGCarouselListViewController *)&self->_visuallyRevealed setVisuallyRevealed:v5 withSlowAnimation:v6, v7, v8, v9, v10, v11];
     }
 
-    v38 = [(WGCarouselListViewController *)self _indexOfFirstNonFavoritedWidgetInStackView];
+    _indexOfFirstNonFavoritedWidgetInStackView = [(WGCarouselListViewController *)self _indexOfFirstNonFavoritedWidgetInStackView];
     [(UIStackView *)self->super.super._stackView arrangedSubviews];
     v45 = 0u;
     v46 = 0u;
@@ -386,17 +386,17 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
           if (isKindOfClass & 1) != 0 || (v18)
           {
             v19 = [(WGCarouselListViewController *)self _identifierForCell:v16, v36, v37];
-            v20 = [(WGCarouselListViewController *)self catchupTimers];
-            v21 = [v20 objectForKey:v19];
+            catchupTimers = [(WGCarouselListViewController *)self catchupTimers];
+            v21 = [catchupTimers objectForKey:v19];
 
             [v21 invalidate];
-            v22 = [(WGCarouselListViewController *)self catchupTimers];
-            [v22 removeObjectForKey:v19];
+            catchupTimers2 = [(WGCarouselListViewController *)self catchupTimers];
+            [catchupTimers2 removeObjectForKey:v19];
 
-            v23 = [(UIStackView *)self->super.super._stackView arrangedSubviews];
-            v24 = [v23 indexOfObject:v16];
+            arrangedSubviews = [(UIStackView *)self->super.super._stackView arrangedSubviews];
+            v24 = [arrangedSubviews indexOfObject:v16];
 
-            v25 = (v24 - v38);
+            v25 = (v24 - _indexOfFirstNonFavoritedWidgetInStackView);
             v26 = pow(0.9, v25);
             visuallyRevealed = self->_visuallyRevealed;
             v28 = MEMORY[0x277CBEBB8];
@@ -415,16 +415,16 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
             v41[1] = 3221225472;
             v42[0] = __70__WGCarouselListViewController_setVisuallyRevealed_withSlowAnimation___block_invoke;
             v42[1] = &unk_279ED10B0;
-            v44 = a4;
+            animationCopy = animation;
             v42[2] = self;
             v43 = v19;
             v31 = v19;
             v32 = [v28 timerWithTimeInterval:0 repeats:v41 block:v30];
-            v33 = [(WGCarouselListViewController *)self catchupTimers];
-            [v33 setObject:v32 forKey:v31];
+            catchupTimers3 = [(WGCarouselListViewController *)self catchupTimers];
+            [catchupTimers3 setObject:v32 forKey:v31];
 
-            v34 = [MEMORY[0x277CBEB88] mainRunLoop];
-            [v34 addTimer:v32 forMode:v36];
+            mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+            [mainRunLoop addTimer:v32 forMode:v36];
           }
         }
 
@@ -437,8 +437,8 @@ void __79__WGCarouselListViewController_initWithWidgetDiscoveryController_listSe
     [(WGCarouselListViewController *)self _updateScrollViewContentSize];
   }
 
-  v35 = [(WGWidgetListViewController *)self widgetListView];
-  if (([v35 isTracking] & 1) == 0)
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  if (([widgetListView isTracking] & 1) == 0)
   {
     [(WGCarouselListViewController *)self setRevealed:self->_visuallyRevealed];
   }
@@ -508,43 +508,43 @@ void __70__WGCarouselListViewController_setVisuallyRevealed_withSlowAnimation___
 {
   if ([(WGWidgetListViewController *)self shouldIncludeScrollView])
   {
-    v8 = [(WGWidgetListViewController *)self widgetListView];
-    [v8 _setAutomaticContentOffsetAdjustmentEnabled:0];
+    widgetListView = [(WGWidgetListViewController *)self widgetListView];
+    [widgetListView _setAutomaticContentOffsetAdjustmentEnabled:0];
     visuallyRevealed = self->_visuallyRevealed;
-    v4 = [(WGWidgetListViewController *)self stackViewBottomConstraint];
-    v5 = v4;
+    stackViewBottomConstraint = [(WGWidgetListViewController *)self stackViewBottomConstraint];
+    v5 = stackViewBottomConstraint;
     if (visuallyRevealed)
     {
-      [v4 setActive:1];
+      [stackViewBottomConstraint setActive:1];
 
       [(UIStackView *)self->super.super._stackView layoutIfNeeded];
     }
 
     else
     {
-      [v4 setActive:0];
+      [stackViewBottomConstraint setActive:0];
 
-      [v8 frame];
-      [v8 setContentSize:{v6, v7}];
+      [widgetListView frame];
+      [widgetListView setContentSize:{v6, v7}];
     }
   }
 
   else
   {
-    v8 = [(WGWidgetListViewController *)self stackViewBottomConstraint];
-    [v8 setActive:1];
+    widgetListView = [(WGWidgetListViewController *)self stackViewBottomConstraint];
+    [widgetListView setActive:1];
   }
 }
 
-- (void)setContainerView:(id)a3
+- (void)setContainerView:(id)view
 {
-  v4 = a3;
-  v5 = [(WGMajorListViewController *)self containerView];
+  viewCopy = view;
+  containerView = [(WGMajorListViewController *)self containerView];
   v6.receiver = self;
   v6.super_class = WGCarouselListViewController;
-  [(WGMajorListViewController *)&v6 setContainerView:v4];
+  [(WGMajorListViewController *)&v6 setContainerView:viewCopy];
 
-  if (v5 != v4)
+  if (containerView != viewCopy)
   {
     [(WGCarouselListViewController *)self setCachedThresholds:0];
   }
@@ -552,33 +552,33 @@ void __70__WGCarouselListViewController_setVisuallyRevealed_withSlowAnimation___
 
 - (BOOL)headerVisible
 {
-  v2 = [(WGMajorListViewController *)self headerView];
-  v3 = [v2 contentView];
-  [v3 alpha];
+  headerView = [(WGMajorListViewController *)self headerView];
+  contentView = [headerView contentView];
+  [contentView alpha];
   IsZero = BSFloatIsZero();
 
   return IsZero ^ 1;
 }
 
-- (void)setHeaderVisible:(BOOL)a3
+- (void)setHeaderVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(WGMajorListViewController *)self headerView];
-  v6 = [v5 contentView];
+  visibleCopy = visible;
+  headerView = [(WGMajorListViewController *)self headerView];
+  contentView = [headerView contentView];
 
-  LODWORD(v5) = [(WGCarouselListViewController *)self headerVisible];
+  LODWORD(headerView) = [(WGCarouselListViewController *)self headerVisible];
   v11.receiver = self;
   v11.super_class = WGCarouselListViewController;
-  [(WGMajorListViewController *)&v11 setHeaderVisible:v3];
-  if (v5 != v3)
+  [(WGMajorListViewController *)&v11 setHeaderVisible:visibleCopy];
+  if (headerView != visibleCopy)
   {
     v7 = MEMORY[0x277D75D18];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __49__WGCarouselListViewController_setHeaderVisible___block_invoke;
     v8[3] = &unk_279ED10D8;
-    v9 = v6;
-    v10 = v3;
+    v9 = contentView;
+    v10 = visibleCopy;
     [v7 animateWithDuration:4 delay:v8 options:0 animations:0.3 completion:0.0];
   }
 }
@@ -594,19 +594,19 @@ uint64_t __49__WGCarouselListViewController_setHeaderVisible___block_invoke(uint
   return [*(a1 + 32) setAlpha:v1];
 }
 
-- (void)setFooterVisible:(BOOL)a3
+- (void)setFooterVisible:(BOOL)visible
 {
-  if (self->_footerVisible != a3)
+  if (self->_footerVisible != visible)
   {
     v7 = v3;
     v8 = v4;
-    self->_footerVisible = a3;
+    self->_footerVisible = visible;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __49__WGCarouselListViewController_setFooterVisible___block_invoke;
     v5[3] = &unk_279ED10D8;
     v5[4] = self;
-    v6 = a3;
+    visibleCopy = visible;
     [MEMORY[0x277D75D18] animateWithDuration:4 delay:v5 options:0 animations:0.3 completion:0.0];
   }
 }
@@ -625,20 +625,20 @@ void __49__WGCarouselListViewController_setFooterVisible___block_invoke(uint64_t
   [v2 setAlpha:v4];
 }
 
-- (void)setEditingIcons:(BOOL)a3
+- (void)setEditingIcons:(BOOL)icons
 {
-  v3 = a3;
-  if ([(WGWidgetListViewController *)self isEditingIcons]!= a3)
+  iconsCopy = icons;
+  if ([(WGWidgetListViewController *)self isEditingIcons]!= icons)
   {
-    if (v3)
+    if (iconsCopy)
     {
       [(WGCarouselListViewController *)self setVisuallyRevealedPriorToEditingIcons:[(WGCarouselListViewController *)self isVisuallyRevealed]];
     }
 
     else if (![(WGCarouselListViewController *)self visuallyRevealedPriorToEditingIcons])
     {
-      v6 = [(WGWidgetListViewController *)self widgetListView];
-      [v6 setContentOffset:1 animated:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
+      widgetListView = [(WGWidgetListViewController *)self widgetListView];
+      [widgetListView setContentOffset:1 animated:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)}];
 
       v5 = 0;
       goto LABEL_7;
@@ -649,15 +649,15 @@ LABEL_7:
     [(WGCarouselListViewController *)self setVisuallyRevealed:v5];
     v7.receiver = self;
     v7.super_class = WGCarouselListViewController;
-    [(WGMajorListViewController *)&v7 setEditingIcons:v3];
+    [(WGMajorListViewController *)&v7 setEditingIcons:iconsCopy];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4.receiver = self;
   v4.super_class = WGCarouselListViewController;
-  [(WGMajorListViewController *)&v4 scrollViewDidScroll:a3];
+  [(WGMajorListViewController *)&v4 scrollViewDidScroll:scroll];
   [(WGCarouselListViewController *)self updateCarouselAndRevealState];
 }
 
@@ -671,25 +671,25 @@ LABEL_7:
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = velocity.y;
+  x = velocity.x;
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  draggingCopy = dragging;
   v40.receiver = self;
   v40.super_class = WGCarouselListViewController;
-  [(WGWidgetListViewController *)&v40 scrollViewWillEndDragging:v9 withVelocity:a5 targetContentOffset:x, y];
+  [(WGWidgetListViewController *)&v40 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:x, y];
   v10 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [(WGCarouselListViewController *)self isRevealed];
-    v13 = [(WGCarouselListViewController *)self isVisuallyRevealed];
+    isRevealed = [(WGCarouselListViewController *)self isRevealed];
+    isVisuallyRevealed = [(WGCarouselListViewController *)self isVisuallyRevealed];
     *buf = 67109376;
-    *&buf[4] = v12;
+    *&buf[4] = isRevealed;
     *&buf[8] = 1024;
-    *&buf[10] = v13;
+    *&buf[10] = isVisuallyRevealed;
     _os_log_impl(&dword_27425E000, v11, OS_LOG_TYPE_DEFAULT, "Carousel scrollview will end dragging isRevealed: %{BOOL}d isVisuallyRevealed: %{BOOL}d", buf, 0xEu);
   }
 
@@ -706,24 +706,24 @@ LABEL_7:
     [(WGCarouselListViewController *)self setRevealed:1];
     if ([(WGCarouselListViewController *)self _hasEnoughContentToScroll])
     {
-      [v9 contentOffset];
+      [draggingCopy contentOffset];
       v15 = [(WGCarouselListViewController *)self _indexForNextCellAfterContentOffset:v14];
-      v16 = [(WGCarouselListViewController *)self _indexForNextCellAfterContentOffset:a5->y];
-      v17 = [v9 panGestureRecognizer];
-      [v17 velocityInView:v9];
+      v16 = [(WGCarouselListViewController *)self _indexForNextCellAfterContentOffset:offset->y];
+      panGestureRecognizer = [draggingCopy panGestureRecognizer];
+      [panGestureRecognizer velocityInView:draggingCopy];
       v19 = v18;
 
       v20 = fmin(fmax(v19 / -15000.0, 0.0), 1.0);
       v21 = vcvtad_u64_f64(pow(v20, 3.0) * (v16 - v15) + v15);
-      v22 = [(UIStackView *)self->super.super._stackView arrangedSubviews];
-      if ([v22 count] <= v21)
+      arrangedSubviews = [(UIStackView *)self->super.super._stackView arrangedSubviews];
+      if ([arrangedSubviews count] <= v21)
       {
         v23 = 0;
       }
 
       else
       {
-        v23 = [v22 objectAtIndex:v21];
+        v23 = [arrangedSubviews objectAtIndex:v21];
       }
 
       v24 = WGLogWidgets;
@@ -754,17 +754,17 @@ LABEL_14:
           [v23 frame];
           v27 = v26;
           v29 = v28;
-          [v9 contentSize];
+          [draggingCopy contentSize];
           v31 = v30;
-          [v9 bounds];
+          [draggingCopy bounds];
           if (v19 < 0.0 && v29 < v31 - v32)
           {
-            [v9 contentOffset];
-            a5->x = v33;
-            a5->y = v34;
-            [v9 contentOffset];
+            [draggingCopy contentOffset];
+            offset->x = v33;
+            offset->y = v34;
+            [draggingCopy contentOffset];
             v36 = smoothDecelerationAnimation(fmin(-v19 / (v29 - v35), 15.0));
-            [v9 _setContentOffset:1 animated:3 animationCurve:0 animationAdjustsForContentOffsetDelta:v36 animation:{v27, v29}];
+            [draggingCopy _setContentOffset:1 animated:3 animationCurve:0 animationAdjustsForContentOffsetDelta:v36 animation:{v27, v29}];
           }
 
           v37 = *buf;
@@ -782,12 +782,12 @@ LABEL_14:
   }
 }
 
-- (id)_newCatchupPropertyForCell:(id)a3
+- (id)_newCatchupPropertyForCell:(id)cell
 {
   v4 = objc_alloc_init(MEMORY[0x277D75D38]);
-  v5 = [(WGCarouselListViewController *)self isRevealed];
+  isRevealed = [(WGCarouselListViewController *)self isRevealed];
   v6 = 1.0;
-  if (v5)
+  if (isRevealed)
   {
     v6 = 0.0;
   }
@@ -810,8 +810,8 @@ LABEL_14:
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v3 = [(NSMutableDictionary *)self->_catchupProperties allValues];
-      v4 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      allValues = [(NSMutableDictionary *)self->_catchupProperties allValues];
+      v4 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
       if (v4)
       {
         v5 = v4;
@@ -823,14 +823,14 @@ LABEL_14:
           {
             if (*v12 != v6)
             {
-              objc_enumerationMutation(v3);
+              objc_enumerationMutation(allValues);
             }
 
             [*(*(&v11 + 1) + 8 * v7++) invalidate];
           }
 
           while (v5 != v7);
-          v5 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+          v5 = [allValues countByEnumeratingWithState:&v11 objects:v16 count:16];
         }
 
         while (v5);
@@ -854,10 +854,10 @@ LABEL_14:
   v3 = MEMORY[0x277CBEB18];
   v14.receiver = self;
   v14.super_class = WGCarouselListViewController;
-  v4 = [(WGWidgetListViewController *)&v14 _animatablePropertiesForStackViewUpdate];
-  v5 = [v3 arrayWithArray:v4];
+  _animatablePropertiesForStackViewUpdate = [(WGWidgetListViewController *)&v14 _animatablePropertiesForStackViewUpdate];
+  v5 = [v3 arrayWithArray:_animatablePropertiesForStackViewUpdate];
 
-  v6 = [(UIStackView *)self->super.super._stackView arrangedSubviews];
+  arrangedSubviews = [(UIStackView *)self->super.super._stackView arrangedSubviews];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate__block_invoke;
@@ -865,7 +865,7 @@ LABEL_14:
   v12[4] = self;
   v7 = v5;
   v13 = v7;
-  [v6 enumerateObjectsUsingBlock:v12];
+  [arrangedSubviews enumerateObjectsUsingBlock:v12];
   v8 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
   {
@@ -900,12 +900,12 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
 - (void)_stackViewArrangedSubviewsTransformPresentationValueChanged
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(UIStackView *)self->super.super._stackView arrangedSubviews];
+  arrangedSubviews = [(UIStackView *)self->super.super._stackView arrangedSubviews];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v4 = [arrangedSubviews countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v4)
   {
     v5 = v4;
@@ -920,7 +920,7 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
       {
         if (*v28 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v10 = *(*(&v27 + 1) + 8 * v9);
@@ -932,7 +932,7 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
         {
           if (p_responderFlags[304] == 1)
           {
-            if ((isKindOfClass & 1) != 0 && ([v10 platterView], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "listItem"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "widgetIdentifier"), v15 = v6, v16 = v8, v17 = p_responderFlags, v18 = v3, v19 = objc_claimAutoreleasedReturnValue(), v14, v13, LODWORD(v13) = -[WGWidgetDiscoveryController isElementWithIdentifierFavorited:](self->super.super._discoveryController, "isElementWithIdentifierFavorited:", v19), v19, v3 = v18, p_responderFlags = v17, v8 = v16, v6 = v15, v5 = v24, v13))
+            if ((isKindOfClass & 1) != 0 && ([v10 platterView], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "listItem"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "widgetIdentifier"), v15 = v6, v16 = v8, v17 = p_responderFlags, v18 = arrangedSubviews, v19 = objc_claimAutoreleasedReturnValue(), v14, v13, LODWORD(v13) = -[WGWidgetDiscoveryController isElementWithIdentifierFavorited:](self->super.super._discoveryController, "isElementWithIdentifierFavorited:", v19), v19, arrangedSubviews = v18, p_responderFlags = v17, v8 = v16, v6 = v15, v5 = v24, v13))
             {
               v20 = *(MEMORY[0x277CBF2C0] + 16);
               *&v26.a = *MEMORY[0x277CBF2C0];
@@ -960,7 +960,7 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
       }
 
       while (v5 != v9);
-      v5 = [v3 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v5 = [arrangedSubviews countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v5);
@@ -980,10 +980,10 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
 - (void)_updateRevealState
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(WGWidgetListViewController *)self widgetListView];
-  [v3 contentOffset];
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  [widgetListView contentOffset];
   [(WGCarouselListViewController *)self setRevealProgress:fmin(fmax(v4 / 60.0, 0.0), 1.0)];
-  [v3 contentOffset];
+  [widgetListView contentOffset];
   v6 = fmax(v5 / 60.0, -1.0);
   if (v6 >= 0.0)
   {
@@ -996,9 +996,9 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
   }
 
   [(WGCarouselListViewController *)self setDismissProgress:v7];
-  v8 = [(WGCarouselListViewController *)self isRevealed];
+  isRevealed = [(WGCarouselListViewController *)self isRevealed];
   visuallyRevealed = self->_visuallyRevealed;
-  if (v8)
+  if (isRevealed)
   {
     IsOne = 0;
   }
@@ -1009,12 +1009,12 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
   }
 
   v11 = BSFloatIsOne();
-  v12 = [v3 isDecelerating];
+  isDecelerating = [widgetListView isDecelerating];
   v13 = WGLogWidgets;
   if (os_log_type_enabled(WGLogWidgets, OS_LOG_TYPE_DEBUG))
   {
     v15[0] = 67110144;
-    v15[1] = v8;
+    v15[1] = isRevealed;
     v16 = 1024;
     v17 = visuallyRevealed;
     v18 = 1024;
@@ -1022,23 +1022,23 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
     v20 = 1024;
     v21 = v11;
     v22 = 1024;
-    v23 = v12;
+    v23 = isDecelerating;
     _os_log_debug_impl(&dword_27425E000, v13, OS_LOG_TYPE_DEBUG, "revealed: %{BOOL}u, wasVisuallyRevealed: %{BOOL}u, nowRevealed, %{BOOL}u, nowDismissed: %{BOOL}u, isDecelerating: %{BOOL}u", v15, 0x20u);
   }
 
-  v14 = 1;
-  if (self->_listSettings.pinned && ((!v8 | v11) & 1) != 0 && (!(v12 & 1 | ((v8 & v11 & 1) == 0)) || (v8 & v12 & 1) == 0 && ((v12 & 1) != 0 || (IsOne & 1) == 0 && ((!visuallyRevealed | v11) & 1) != 0)))
+  isEditingIcons = 1;
+  if (self->_listSettings.pinned && ((!isRevealed | v11) & 1) != 0 && (!(isDecelerating & 1 | ((isRevealed & v11 & 1) == 0)) || (isRevealed & isDecelerating & 1) == 0 && ((isDecelerating & 1) != 0 || (IsOne & 1) == 0 && ((!visuallyRevealed | v11) & 1) != 0)))
   {
-    v14 = [(WGWidgetListViewController *)self isEditingIcons];
+    isEditingIcons = [(WGWidgetListViewController *)self isEditingIcons];
   }
 
-  [(WGCarouselListViewController *)self setVisuallyRevealed:v14];
+  [(WGCarouselListViewController *)self setVisuallyRevealed:isEditingIcons];
 }
 
-- (double)easedOutValueForValue:(double)a3
+- (double)easedOutValueForValue:(double)value
 {
   v4 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
-  *&v5 = a3;
+  *&v5 = value;
   [v4 _solveForInput:v5];
   v7 = v6;
 
@@ -1053,8 +1053,8 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
   v15 = __Block_byref_object_copy__2;
   v16 = __Block_byref_object_dispose__2;
   v17 = 0;
-  v3 = [(WGWidgetListViewController *)self visibleWidgetIdentifiers];
-  v4 = [v3 copy];
+  visibleWidgetIdentifiers = [(WGWidgetListViewController *)self visibleWidgetIdentifiers];
+  v4 = [visibleWidgetIdentifiers copy];
 
   for (i = 0; i < [v4 count]; ++i)
   {
@@ -1068,13 +1068,13 @@ void __71__WGCarouselListViewController__animatablePropertiesForStackViewUpdate_
     }
   }
 
-  v8 = [(UIStackView *)self->super.super._stackView arrangedSubviews];
+  arrangedSubviews = [(UIStackView *)self->super.super._stackView arrangedSubviews];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__WGCarouselListViewController__indexOfFirstNonFavoritedWidgetInStackView__block_invoke;
   v11[3] = &unk_279ED1170;
   v11[4] = &v12;
-  v9 = [v8 indexOfObjectPassingTest:v11];
+  v9 = [arrangedSubviews indexOfObjectPassingTest:v11];
 
   _Block_object_dispose(&v12, 8);
   return v9;
@@ -1114,17 +1114,17 @@ uint64_t __74__WGCarouselListViewController__indexOfFirstNonFavoritedWidgetInSta
   return v11;
 }
 
-- (unint64_t)_indexForNextCellAfterContentOffset:(double)a3
+- (unint64_t)_indexForNextCellAfterContentOffset:(double)offset
 {
-  v5 = [(UIStackView *)self->super.super._stackView arrangedSubviews];
-  v6 = [v5 copy];
+  arrangedSubviews = [(UIStackView *)self->super.super._stackView arrangedSubviews];
+  v6 = [arrangedSubviews copy];
 
   v7 = [v6 count];
-  v8 = [(WGCarouselListViewController *)self _indexOfFirstNonFavoritedWidgetInStackView];
+  _indexOfFirstNonFavoritedWidgetInStackView = [(WGCarouselListViewController *)self _indexOfFirstNonFavoritedWidgetInStackView];
   v9 = 0;
-  if (v7 <= v8)
+  if (v7 <= _indexOfFirstNonFavoritedWidgetInStackView)
   {
-    v10 = v8;
+    v10 = _indexOfFirstNonFavoritedWidgetInStackView;
   }
 
   else
@@ -1134,18 +1134,18 @@ uint64_t __74__WGCarouselListViewController__indexOfFirstNonFavoritedWidgetInSta
 
   while (1)
   {
-    v11 = v8;
-    if (v10 == v8)
+    v11 = _indexOfFirstNonFavoritedWidgetInStackView;
+    if (v10 == _indexOfFirstNonFavoritedWidgetInStackView)
     {
       break;
     }
 
-    v12 = [v6 objectAtIndex:v8];
+    v12 = [v6 objectAtIndex:_indexOfFirstNonFavoritedWidgetInStackView];
 
     [v12 frame];
-    v8 = v11 + 1;
+    _indexOfFirstNonFavoritedWidgetInStackView = v11 + 1;
     v9 = v12;
-    if (v13 >= a3)
+    if (v13 >= offset)
     {
       goto LABEL_8;
     }
@@ -1157,10 +1157,10 @@ LABEL_8:
   return v11;
 }
 
-- (id)_identifierForCell:(id)a3
+- (id)_identifierForCell:(id)cell
 {
-  v5 = a3;
-  if (!v5)
+  cellCopy = cell;
+  if (!cellCopy)
   {
     goto LABEL_13;
   }
@@ -1169,7 +1169,7 @@ LABEL_8:
   if (objc_opt_isKindOfClass())
   {
     v6 = objc_opt_class();
-    v7 = v5;
+    v7 = cellCopy;
     if (v6)
     {
       if (objc_opt_isKindOfClass())
@@ -1190,12 +1190,12 @@ LABEL_8:
 
     v11 = v8;
 
-    v12 = [v11 platterView];
+    platterView = [v11 platterView];
 
-    v13 = [v12 listItem];
-    v10 = [v13 widgetIdentifier];
+    listItem = [platterView listItem];
+    widgetIdentifier = [listItem widgetIdentifier];
 
-    if (v10)
+    if (widgetIdentifier)
     {
       goto LABEL_14;
     }
@@ -1204,34 +1204,34 @@ LABEL_8:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v9 = objc_opt_class(), NSStringFromClass(v9), (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v9 = objc_opt_class(), NSStringFromClass(v9), (widgetIdentifier = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_12:
-    [(WGCarouselListViewController *)v5 _identifierForCell:a2, self];
+    [(WGCarouselListViewController *)cellCopy _identifierForCell:a2, self];
 LABEL_13:
-    v10 = 0;
+    widgetIdentifier = 0;
   }
 
 LABEL_14:
 
-  return v10;
+  return widgetIdentifier;
 }
 
 - (BOOL)_hasEnoughContentToScroll
 {
-  v3 = [(WGWidgetListViewController *)self widgetListView];
-  [v3 contentSize];
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  [widgetListView contentSize];
   v5 = v4;
-  v6 = [(WGMajorListViewController *)self containerView];
-  [v6 bounds];
+  containerView = [(WGMajorListViewController *)self containerView];
+  [containerView bounds];
   v8 = v5 > v7;
 
   return v8;
 }
 
-- (void)_updateTeachingViewVisibilityAnimated:(BOOL)a3 withCompletion:(id)a4
+- (void)_updateTeachingViewVisibilityAnimated:(BOOL)animated withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   if (self->_listSettings.useFavorites && [(WGCarouselListViewController *)self shouldShowTeachingView])
   {
     if (!self->_teachingView)
@@ -1241,9 +1241,9 @@ LABEL_14:
       self->_teachingView = v6;
 
       [(WGWidgetPinningTeachingView *)self->_teachingView setDelegate:self];
-      v8 = [(UIStackView *)self->super.super._stackView arrangedSubviews];
-      v9 = [(WGMajorListViewController *)self headerView];
-      v10 = [v8 indexOfObject:v9];
+      arrangedSubviews = [(UIStackView *)self->super.super._stackView arrangedSubviews];
+      headerView = [(WGMajorListViewController *)self headerView];
+      v10 = [arrangedSubviews indexOfObject:headerView];
 
       if (v10 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -1256,9 +1256,9 @@ LABEL_14:
       }
 
       [(UIStackView *)self->super.super._stackView insertArrangedSubview:self->_teachingView atIndex:v11];
-      if (v5)
+      if (completionCopy)
       {
-        v5[2](v5);
+        completionCopy[2](completionCopy);
       }
     }
   }
@@ -1277,7 +1277,7 @@ LABEL_14:
     v13[2] = __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_withCompletion___block_invoke_2;
     v13[3] = &unk_279ED1198;
     objc_copyWeak(&v15, &location);
-    v14 = v5;
+    v14 = completionCopy;
     [v12 animateWithDuration:0 delay:v16 usingSpringWithDamping:v13 initialSpringVelocity:0.5 options:0.15 animations:1.0 completion:0.0];
 
     objc_destroyWeak(&v15);
@@ -1306,33 +1306,33 @@ void __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_wi
   }
 }
 
-- (CGRect)_cellFrameInScrollBoundsForCell:(id)a3
+- (CGRect)_cellFrameInScrollBoundsForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(WGWidgetListViewController *)self widgetListView];
-  v6 = [(UIStackView *)self->super.super._stackView superview];
+  cellCopy = cell;
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  superview = [(UIStackView *)self->super.super._stackView superview];
 
-  if (v6 == v5)
+  if (superview == widgetListView)
   {
-    [v4 frame];
+    [cellCopy frame];
     v19 = v18;
-    [v5 contentOffset];
+    [widgetListView contentOffset];
     v17 = v19 - v20;
   }
 
   else
   {
-    [v4 bounds];
+    [cellCopy bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(WGMajorListViewController *)self containerView];
-    [v4 convertRect:v15 toView:{v8, v10, v12, v14}];
+    containerView = [(WGMajorListViewController *)self containerView];
+    [cellCopy convertRect:containerView toView:{v8, v10, v12, v14}];
     v17 = v16;
   }
 
-  [v4 frame];
+  [cellCopy frame];
   v22 = v21;
   v24 = v23;
 
@@ -1347,71 +1347,71 @@ void __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_wi
   return result;
 }
 
-- (void)_styleFullyInvisibleTopCell:(id)a3
+- (void)_styleFullyInvisibleTopCell:(id)cell
 {
-  v3 = a3;
-  v4 = [v3 platterView];
-  [v4 setClippingEdge:1];
+  cellCopy = cell;
+  platterView = [cellCopy platterView];
+  [platterView setClippingEdge:1];
 
-  v5 = [v3 contentView];
+  contentView = [cellCopy contentView];
   v6 = *(MEMORY[0x277CBF2C0] + 16);
   v11[0] = *MEMORY[0x277CBF2C0];
   v11[1] = v6;
   v11[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [v5 setTransform:v11];
+  [contentView setTransform:v11];
 
-  v7 = [v3 contentView];
-  v8 = [v7 layer];
-  [v8 setAnchorPoint:{0.5, 0.5}];
+  contentView2 = [cellCopy contentView];
+  layer = [contentView2 layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 
-  v9 = [v3 contentView];
-  [v3 bounds];
-  [v9 setFrame:?];
+  contentView3 = [cellCopy contentView];
+  [cellCopy bounds];
+  [contentView3 setFrame:?];
 
-  [v3 setTopMarginForLayout:0.0];
-  v10 = [v3 contentView];
+  [cellCopy setTopMarginForLayout:0.0];
+  contentView4 = [cellCopy contentView];
 
-  [v10 setAlpha:0.0];
+  [contentView4 setAlpha:0.0];
 }
 
-- (void)_styleCroppedAndScaledCellForTopEdge:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 thresholds:(id)a5
+- (void)_styleCroppedAndScaledCellForTopEdge:(id)edge withCellFrameInScrollViewBounds:(CGRect)bounds thresholds:(id)thresholds
 {
-  rect = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 platterView];
-  [v12 setClippingEdge:1];
+  rect = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  thresholdsCopy = thresholds;
+  edgeCopy = edge;
+  platterView = [edgeCopy platterView];
+  [platterView setClippingEdge:1];
 
-  v13 = [v11 contentView];
+  contentView = [edgeCopy contentView];
   v14 = *(MEMORY[0x277CBF2C0] + 16);
   *&v30.a = *MEMORY[0x277CBF2C0];
   *&v30.c = v14;
   *&v30.tx = *(MEMORY[0x277CBF2C0] + 32);
-  [v13 setTransform:&v30];
-  v15 = [v13 layer];
-  [v15 setAnchorPoint:{0.5, 0.0}];
+  [contentView setTransform:&v30];
+  layer = [contentView layer];
+  [layer setAnchorPoint:{0.5, 0.0}];
 
-  v16 = [(WGWidgetListViewController *)self widgetListView];
-  [v11 frame];
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  [edgeCopy frame];
   v18 = v17;
-  v19 = v10[1];
-  [v16 contentInset];
+  v19 = thresholdsCopy[1];
+  [widgetListView contentInset];
   v21 = v20 + 0.0;
   v23 = v22 - y;
-  [v13 setBounds:{0.0, -y, v18, v19}];
-  [v13 setOrigin:{v21, v23}];
-  [v11 setTopMarginForLayout:v23];
+  [contentView setBounds:{0.0, -y, v18, v19}];
+  [contentView setOrigin:{v21, v23}];
+  [edgeCopy setTopMarginForLayout:v23];
 
   v31.origin.x = x;
   v31.origin.y = y;
   v31.size.width = width;
   v31.size.height = rect;
   MaxY = CGRectGetMaxY(v31);
-  v25 = v10[2];
-  v26 = v10[3];
+  v25 = thresholdsCopy[2];
+  v26 = thresholdsCopy[3];
   v27 = MaxY - v25;
 
   *&v30.a = 0u;
@@ -1420,34 +1420,34 @@ void __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_wi
   *&v30.d = 1;
   BSIntervalMap();
   CGAffineTransformMakeScale(&v30, v28, v28);
-  [v13 setTransform:&v30];
+  [contentView setTransform:&v30];
   [(WGCarouselListViewController *)self easedOutValueForValue:1.0 - v27 / (v26 - v25)];
-  [v13 setAlpha:?];
+  [contentView setAlpha:?];
 }
 
-- (void)_styleCroppedCellForTopEdge:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5 thresholds:(id)a6
+- (void)_styleCroppedCellForTopEdge:(id)edge withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect thresholds:(id)thresholds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a4.origin.y;
-  v10 = *(a6 + 1);
-  v11 = a3;
-  v12 = [v11 platterView];
-  [v12 setClippingEdge:1];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = bounds.origin.y;
+  v10 = *(thresholds + 1);
+  edgeCopy = edge;
+  platterView = [edgeCopy platterView];
+  [platterView setClippingEdge:1];
 
-  v13 = [v11 contentView];
+  contentView = [edgeCopy contentView];
   v14 = *(MEMORY[0x277CBF2C0] + 16);
   v24[0] = *MEMORY[0x277CBF2C0];
   v24[1] = v14;
   v24[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [v13 setTransform:v24];
+  [contentView setTransform:v24];
 
-  v15 = [v11 contentView];
-  v16 = [v15 layer];
-  [v16 setAnchorPoint:{0.5, 0.5}];
+  contentView2 = [edgeCopy contentView];
+  layer = [contentView2 layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 
-  v17 = [(WGWidgetListViewController *)self widgetListView];
-  [v17 contentInset];
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  [widgetListView contentInset];
   v19 = v18 + 0.0;
   v21 = v20 - y;
   if (height < v10)
@@ -1455,114 +1455,114 @@ void __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_wi
     height = v10;
   }
 
-  v22 = [v11 contentView];
-  [v22 setFrame:{v19, v21, width, height}];
+  contentView3 = [edgeCopy contentView];
+  [contentView3 setFrame:{v19, v21, width, height}];
 
-  [v11 setTopMarginForLayout:v21];
-  v23 = [v11 contentView];
+  [edgeCopy setTopMarginForLayout:v21];
+  contentView4 = [edgeCopy contentView];
 
-  [v23 setAlpha:1.0];
+  [contentView4 setAlpha:1.0];
 }
 
-- (void)_styleFullyVisibleCell:(id)a3
+- (void)_styleFullyVisibleCell:(id)cell
 {
-  v3 = a3;
-  v4 = [v3 platterView];
-  [v4 setClippingEdge:4];
+  cellCopy = cell;
+  platterView = [cellCopy platterView];
+  [platterView setClippingEdge:4];
 
-  v5 = [v3 contentView];
+  contentView = [cellCopy contentView];
   v6 = *(MEMORY[0x277CBF2C0] + 16);
   v11[0] = *MEMORY[0x277CBF2C0];
   v11[1] = v6;
   v11[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [v5 setTransform:v11];
+  [contentView setTransform:v11];
 
-  v7 = [v3 contentView];
-  v8 = [v7 layer];
-  [v8 setAnchorPoint:{0.5, 0.5}];
+  contentView2 = [cellCopy contentView];
+  layer = [contentView2 layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 
-  v9 = [v3 contentView];
-  [v3 bounds];
-  [v9 setFrame:?];
+  contentView3 = [cellCopy contentView];
+  [cellCopy bounds];
+  [contentView3 setFrame:?];
 
-  [v3 setTopMarginForLayout:0.0];
-  v10 = [v3 contentView];
+  [cellCopy setTopMarginForLayout:0.0];
+  contentView4 = [cellCopy contentView];
 
-  [v10 setAlpha:1.0];
+  [contentView4 setAlpha:1.0];
 }
 
-- (void)_styleCroppedCellForBottomEdge:(id)a3 intersectionRect:(CGRect)a4 thresholds:(id)a5
+- (void)_styleCroppedCellForBottomEdge:(id)edge intersectionRect:(CGRect)rect thresholds:(id)thresholds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v7 = *(a5 + 1);
-  v8 = a3;
-  v9 = [v8 platterView];
-  [v9 setClippingEdge:4];
+  height = rect.size.height;
+  width = rect.size.width;
+  v7 = *(thresholds + 1);
+  edgeCopy = edge;
+  platterView = [edgeCopy platterView];
+  [platterView setClippingEdge:4];
 
-  v10 = [v8 contentView];
+  contentView = [edgeCopy contentView];
   v11 = *(MEMORY[0x277CBF2C0] + 16);
   v16[0] = *MEMORY[0x277CBF2C0];
   v16[1] = v11;
   v16[2] = *(MEMORY[0x277CBF2C0] + 32);
-  [v10 setTransform:v16];
+  [contentView setTransform:v16];
 
-  v12 = [v8 contentView];
-  v13 = [v12 layer];
-  [v13 setAnchorPoint:{0.5, 0.5}];
+  contentView2 = [edgeCopy contentView];
+  layer = [contentView2 layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 
   if (height < v7)
   {
     height = v7;
   }
 
-  v14 = [v8 contentView];
-  [v14 setFrame:{0.0, 0.0, width, height}];
+  contentView3 = [edgeCopy contentView];
+  [contentView3 setFrame:{0.0, 0.0, width, height}];
 
-  [v8 setTopMarginForLayout:0.0];
-  v15 = [v8 contentView];
+  [edgeCopy setTopMarginForLayout:0.0];
+  contentView4 = [edgeCopy contentView];
 
-  [v15 setAlpha:1.0];
+  [contentView4 setAlpha:1.0];
 }
 
-- (void)_styleCroppedAndScaledCellForBottomEdge:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5 thresholds:(id)a6
+- (void)_styleCroppedAndScaledCellForBottomEdge:(id)edge withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect thresholds:(id)thresholds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = *(a6 + 1);
-  v13 = a6;
-  v14 = a3;
-  v15 = [v14 platterView];
-  [v15 setClippingEdge:4];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v12 = *(thresholds + 1);
+  thresholdsCopy = thresholds;
+  edgeCopy = edge;
+  platterView = [edgeCopy platterView];
+  [platterView setClippingEdge:4];
 
-  v16 = [v14 contentView];
+  contentView = [edgeCopy contentView];
   v17 = *(MEMORY[0x277CBF2C0] + 16);
   *&v29.a = *MEMORY[0x277CBF2C0];
   *&v29.c = v17;
   *&v29.tx = *(MEMORY[0x277CBF2C0] + 32);
-  [v16 setTransform:&v29];
-  v18 = [v16 layer];
-  [v18 setAnchorPoint:{0.5, 1.0}];
+  [contentView setTransform:&v29];
+  layer = [contentView layer];
+  [layer setAnchorPoint:{0.5, 1.0}];
 
   v30.origin.x = x;
   v30.origin.y = y;
   v30.size.width = width;
   v30.size.height = height;
   MinY = CGRectGetMinY(v30);
-  v20 = v13[5];
-  v21 = v13[6];
+  v20 = thresholdsCopy[5];
+  v21 = thresholdsCopy[6];
   v22 = MinY - v20;
 
   v23 = fmin(fmax(v22 / (v21 - v20), 0.0), 1.0);
-  v24 = [(WGMajorListViewController *)self containerView];
-  [v24 bounds];
+  containerView = [(WGMajorListViewController *)self containerView];
+  [containerView bounds];
   v26 = v25 - v12 + -10.0 - y + v23 * 10.0;
-  [v14 frame];
-  [v16 setBounds:{0.0, v26}];
-  [v16 setOrigin:{0.0, v26}];
-  [v14 setTopMarginForLayout:v26];
+  [edgeCopy frame];
+  [contentView setBounds:{0.0, v26}];
+  [contentView setOrigin:{0.0, v26}];
+  [edgeCopy setTopMarginForLayout:v26];
 
   *&v29.a = 0u;
   v29.c = 1.0;
@@ -1570,127 +1570,127 @@ void __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_wi
   *&v29.d = 1;
   BSIntervalMap();
   CGAffineTransformMakeScale(&v29, v27, v27);
-  [v16 setTransform:{&v29, 0x3FECCCCCCCCCCCCDLL, 1, 0x3FF0000000000000, 1}];
+  [contentView setTransform:{&v29, 0x3FECCCCCCCCCCCCDLL, 1, 0x3FF0000000000000, 1}];
   [(WGCarouselListViewController *)self easedOutValueForValue:1.0 - v23];
-  [v16 setAlpha:v28 * 0.3 + 0.7];
+  [contentView setAlpha:v28 * 0.3 + 0.7];
 }
 
-- (void)_styleDisapearingCellForBottomEdge:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 previousCellFrameInContainerView:(CGRect)a5 thresholds:(id)a6
+- (void)_styleDisapearingCellForBottomEdge:(id)edge withCellFrameInScrollViewBounds:(CGRect)bounds previousCellFrameInContainerView:(CGRect)view thresholds:(id)thresholds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4.origin.y;
-  v13 = *(a6 + 1);
-  v14 = a6;
-  v15 = a3;
-  v16 = [v15 platterView];
-  [v16 setClippingEdge:4];
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
+  v10 = bounds.origin.y;
+  v13 = *(thresholds + 1);
+  thresholdsCopy = thresholds;
+  edgeCopy = edge;
+  platterView = [edgeCopy platterView];
+  [platterView setClippingEdge:4];
 
-  v17 = [v15 contentView];
+  contentView = [edgeCopy contentView];
   v18 = *(MEMORY[0x277CBF2C0] + 16);
   *&v28.a = *MEMORY[0x277CBF2C0];
   *&v28.c = v18;
   *&v28.tx = *(MEMORY[0x277CBF2C0] + 32);
-  [v17 setTransform:&v28];
-  v19 = [v17 layer];
-  [v19 setAnchorPoint:{0.5, 1.0}];
+  [contentView setTransform:&v28];
+  layer = [contentView layer];
+  [layer setAnchorPoint:{0.5, 1.0}];
 
   v29.origin.x = x;
   v29.origin.y = y;
   v29.size.width = width;
   v29.size.height = height;
   MinY = CGRectGetMinY(v29);
-  v21 = v14[7];
-  v22 = v14[8];
+  v21 = thresholdsCopy[7];
+  v22 = thresholdsCopy[8];
   v23 = MinY - v21;
 
   v24 = fmin(fmax(v23 / (v22 - v21), 0.0), 1.0);
-  v25 = [(WGMajorListViewController *)self containerView];
-  [v25 bounds];
+  containerView = [(WGMajorListViewController *)self containerView];
+  [containerView bounds];
   v27 = v26 - v13 - v10 + v24 * 6.0;
-  [v15 frame];
-  [v17 setBounds:{0.0, v27}];
-  [v17 setOrigin:{0.0, v27}];
-  [v15 setTopMarginForLayout:v27];
+  [edgeCopy frame];
+  [contentView setBounds:{0.0, v27}];
+  [contentView setOrigin:{0.0, v27}];
+  [edgeCopy setTopMarginForLayout:v27];
 
   CGAffineTransformMakeScale(&v28, 0.9, 0.9);
-  [v17 setTransform:&v28];
-  [v17 setAlpha:{fmin(fmax((v24 * -2.0 + 1.0) * 0.7, 0.0), 1.0)}];
+  [contentView setTransform:&v28];
+  [contentView setAlpha:{fmin(fmax((v24 * -2.0 + 1.0) * 0.7, 0.0), 1.0)}];
 }
 
-- (void)_styleFullyInvisibleBottomCell:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 thresholds:(id)a5
+- (void)_styleFullyInvisibleBottomCell:(id)cell withCellFrameInScrollViewBounds:(CGRect)bounds thresholds:(id)thresholds
 {
-  y = a4.origin.y;
-  v7 = *(a5 + 1);
-  v8 = a3;
-  v9 = [(WGMajorListViewController *)self containerView];
-  [v9 bounds];
-  v10 = [v8 platterView];
-  [v10 setClippingEdge:4];
+  y = bounds.origin.y;
+  v7 = *(thresholds + 1);
+  cellCopy = cell;
+  containerView = [(WGMajorListViewController *)self containerView];
+  [containerView bounds];
+  platterView = [cellCopy platterView];
+  [platterView setClippingEdge:4];
 
-  v11 = [v8 contentView];
+  contentView = [cellCopy contentView];
   v12 = *(MEMORY[0x277CBF2C0] + 16);
   *&v16.a = *MEMORY[0x277CBF2C0];
   *&v16.c = v12;
   *&v16.tx = *(MEMORY[0x277CBF2C0] + 32);
-  [v11 setTransform:&v16];
-  v13 = [v11 layer];
-  [v13 setAnchorPoint:{0.5, 1.0}];
+  [contentView setTransform:&v16];
+  layer = [contentView layer];
+  [layer setAnchorPoint:{0.5, 1.0}];
 
-  [v9 bounds];
+  [containerView bounds];
   v15 = v14 - v7 - y;
-  [v8 frame];
-  [v11 setBounds:{0.0, v15}];
-  [v11 setOrigin:{0.0, v15}];
-  [v8 setTopMarginForLayout:v15];
+  [cellCopy frame];
+  [contentView setBounds:{0.0, v15}];
+  [contentView setOrigin:{0.0, v15}];
+  [cellCopy setTopMarginForLayout:v15];
 
   CGAffineTransformMakeScale(&v16, 0.9, 0.9);
-  [v11 setTransform:&v16];
-  [v11 setAlpha:0.0];
+  [contentView setTransform:&v16];
+  [contentView setAlpha:0.0];
 }
 
-- (void)_styleFooterView:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5 containerHeight:(double)a6
+- (void)_styleFooterView:(id)view withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect containerHeight:(double)height
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  v11 = [v10 contentView];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
+  contentView = [viewCopy contentView];
   v26.origin.x = x;
   v26.origin.y = y;
   v26.size.width = width;
   v26.size.height = height;
-  v12 = (CGRectGetMaxY(v26) - (a6 + 10.0)) / (height + a6 + 10.0 - (a6 + 10.0)) + 0.0;
+  v12 = (CGRectGetMaxY(v26) - (height + 10.0)) / (height + height + 10.0 - (height + 10.0)) + 0.0;
   v13 = *(MEMORY[0x277CBF2C0] + 16);
   *&v25.a = *MEMORY[0x277CBF2C0];
   *&v25.c = v13;
   *&v25.tx = *(MEMORY[0x277CBF2C0] + 32);
-  [v11 setTransform:&v25];
-  v14 = [v11 layer];
-  [v14 setAnchorPoint:{0.5, 0.5}];
+  [contentView setTransform:&v25];
+  layer = [contentView layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 
-  [v10 bounds];
+  [viewCopy bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  [v11 setFrame:{v16, v18, v20, v22}];
+  [contentView setFrame:{v16, v18, v20, v22}];
   v23 = *(MEMORY[0x277CF0B28] + 16);
   *&v25.a = *MEMORY[0x277CF0B28];
   *&v25.c = v23;
   BSUIConstrainValueToIntervalWithRubberBand();
   CGAffineTransformMakeScale(&v25, v24, v24);
-  [v11 setTransform:&v25];
-  [v11 setAlpha:{fmin(fmax(1.0 - v12, 0.0), 1.0)}];
+  [contentView setTransform:&v25];
+  [contentView setAlpha:{fmin(fmax(1.0 - v12, 0.0), 1.0)}];
 }
 
-- (void)_styleHeaderView:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5
+- (void)_styleHeaderView:(id)view withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect
 {
-  CGRectGetMinY(a4);
+  CGRectGetMinY(bounds);
   *&v10.a = 0u;
   v10.c = 1.0;
   LOBYTE(v10.b) = 1;
@@ -1698,31 +1698,31 @@ void __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_wi
   BSUIConstrainValueToIntervalWithRubberBand();
   v7 = fmin(fmax(v6, 0.75), 1.25);
   v8 = [(WGMajorListViewController *)self headerView:*&v10.a];
-  v9 = [v8 contentView];
+  contentView = [v8 contentView];
   CGAffineTransformMakeScale(&v10, v7, v7);
-  [v9 setTransform:&v10];
+  [contentView setTransform:&v10];
 }
 
-- (void)_styleTeachingView:(id)a3 withCellFrameInScrollViewBounds:(CGRect)a4 intersectionRect:(CGRect)a5
+- (void)_styleTeachingView:(id)view withCellFrameInScrollViewBounds:(CGRect)bounds intersectionRect:(CGRect)rect
 {
-  height = a4.size.height;
-  rect = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [v9 contentView];
+  height = bounds.size.height;
+  rect = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
+  contentView = [viewCopy contentView];
   v11 = *(MEMORY[0x277CBF2C0] + 16);
   *&v25.a = *MEMORY[0x277CBF2C0];
   *&v25.c = v11;
   *&v25.tx = *(MEMORY[0x277CBF2C0] + 32);
-  [v10 setTransform:&v25];
-  v12 = [v10 layer];
-  [v12 setAnchorPoint:{0.5, 0.5}];
+  [contentView setTransform:&v25];
+  layer = [contentView layer];
+  [layer setAnchorPoint:{0.5, 0.5}];
 
-  v13 = [(WGWidgetListViewController *)self widgetListView];
-  [v9 frame];
+  widgetListView = [(WGWidgetListViewController *)self widgetListView];
+  [viewCopy frame];
 
-  [v13 contentInset];
+  [widgetListView contentInset];
   v15 = v14;
   v17 = v16;
   IsZero = BSFloatIsZero();
@@ -1754,22 +1754,22 @@ void __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_wi
 
   if (v22 < 1.0)
   {
-    v23 = [v10 layer];
-    [v23 setAnchorPoint:{0.5, 0.0}];
+    layer2 = [contentView layer];
+    [layer2 setAnchorPoint:{0.5, 0.0}];
   }
 
-  [v10 setBounds:0.0];
-  [v10 setOrigin:{v17 + 0.0, fmax(v15 - y, 0.0)}];
+  [contentView setBounds:0.0];
+  [contentView setOrigin:{v17 + 0.0, fmax(v15 - y, 0.0)}];
   CGAffineTransformMakeScale(&v25, v22, v22);
-  [v10 setTransform:&v25];
+  [contentView setTransform:&v25];
   [(WGCarouselListViewController *)self easedOutValueForValue:v20];
-  [v10 setAlpha:?];
+  [contentView setAlpha:?];
 }
 
-- (id)_thresholdsForCell:(id)a3
+- (id)_thresholdsForCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(WGCarouselListViewController *)self _identifierForCell:v4];
+  cellCopy = cell;
+  v5 = [(WGCarouselListViewController *)self _identifierForCell:cellCopy];
   cachedThresholds = self->_cachedThresholds;
   if (!cachedThresholds)
   {
@@ -1784,22 +1784,22 @@ void __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_wi
   if (!v9)
   {
     v9 = objc_alloc_init(WGCarouselCellThresholds);
-    v10 = [(WGMajorListViewController *)self containerView];
-    [v10 bounds];
+    containerView = [(WGMajorListViewController *)self containerView];
+    [containerView bounds];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17 + -10.0;
-    v19 = [(WGWidgetListViewController *)self widgetListView];
-    [v19 contentInset];
+    widgetListView = [(WGWidgetListViewController *)self widgetListView];
+    [widgetListView contentInset];
     v21 = v20;
 
-    v22 = [v4 platterView];
+    platterView = [cellCopy platterView];
     v28.origin.x = v12;
     v28.origin.y = v14;
     v28.size.width = v16;
     v28.size.height = v18;
-    [v22 minimumSizeThatFits:{CGRectGetWidth(v28), 0.0}];
+    [platterView minimumSizeThatFits:{CGRectGetWidth(v28), 0.0}];
     v9->_headerHeight = v23;
 
     v9->_threshold1 = v21 + v9->_headerHeight;
@@ -1817,7 +1817,7 @@ void __85__WGCarouselListViewController__updateTeachingViewVisibilityAnimated_wi
   return v9;
 }
 
-- (void)widgetPinningTeachingViewDidSelectYes:(id)a3
+- (void)widgetPinningTeachingViewDidSelectYes:(id)yes
 {
   [(WGWidgetDiscoveryController *)self->super.super._discoveryController noteWidgetsPinningViewControllerDidDismiss:1];
   v4 = dispatch_time(0, 500000000);
@@ -1840,7 +1840,7 @@ uint64_t __70__WGCarouselListViewController_widgetPinningTeachingViewDidSelectYe
   return [v1 _updateTeachingViewVisibilityAnimated:1 withCompletion:v3];
 }
 
-- (void)widgetPinningTeachingViewDidSelectNo:(id)a3
+- (void)widgetPinningTeachingViewDidSelectNo:(id)no
 {
   [(WGWidgetDiscoveryController *)self->super.super._discoveryController noteWidgetsPinningViewControllerDidDismiss:0];
 
@@ -1862,7 +1862,7 @@ uint64_t __70__WGCarouselListViewController_widgetPinningTeachingViewDidSelectYe
 - (void)_animatablePropertiesForStackViewUpdate
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *(a1 + 1184);
+  v2 = *(self + 1184);
   v3 = 138412290;
   v4 = v2;
   _os_log_debug_impl(&dword_27425E000, a2, OS_LOG_TYPE_DEBUG, "Created catchup properties: %@", &v3, 0xCu);

@@ -1,26 +1,26 @@
 @interface PFARepackagingExecution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PFARepackagingExecution)initWithDictionary:(id)a3;
-- (PFARepackagingExecution)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PFARepackagingExecution)initWithDictionary:(id)dictionary;
+- (PFARepackagingExecution)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PFARepackagingExecution
 
-- (PFARepackagingExecution)initWithDictionary:(id)a3
+- (PFARepackagingExecution)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = PFARepackagingExecution;
   v5 = [(PFARepackagingExecution *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"clockIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"clockIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PFARepackagingExecution *)v5 setClockIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"envelopeStatistics"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"envelopeStatistics"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PFARepackagingExecution *)v5 setEnvelopeStatistics:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"result"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"result"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -50,30 +50,30 @@
   return v5;
 }
 
-- (PFARepackagingExecution)initWithJSON:(id)a3
+- (PFARepackagingExecution)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PFARepackagingExecution *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PFARepackagingExecution *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PFARepackagingExecution *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -86,58 +86,58 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_clockIdentifier)
   {
-    v4 = [(PFARepackagingExecution *)self clockIdentifier];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    clockIdentifier = [(PFARepackagingExecution *)self clockIdentifier];
+    dictionaryRepresentation = [clockIdentifier dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"clockIdentifier"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"clockIdentifier"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"clockIdentifier"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"clockIdentifier"];
     }
   }
 
   if (self->_envelopeStatistics)
   {
-    v7 = [(PFARepackagingExecution *)self envelopeStatistics];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    envelopeStatistics = [(PFARepackagingExecution *)self envelopeStatistics];
+    dictionaryRepresentation2 = [envelopeStatistics dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"envelopeStatistics"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"envelopeStatistics"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"envelopeStatistics"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"envelopeStatistics"];
     }
   }
 
   if (self->_result)
   {
-    v10 = [(PFARepackagingExecution *)self result];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    result = [(PFARepackagingExecution *)self result];
+    dictionaryRepresentation3 = [result dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"result"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"result"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"result"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"result"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -147,28 +147,28 @@
   return v4 ^ [(PFARepackagingExecutionResult *)self->_result hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(PFARepackagingExecution *)self clockIdentifier];
-  v6 = [v4 clockIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  clockIdentifier = [(PFARepackagingExecution *)self clockIdentifier];
+  clockIdentifier2 = [equalCopy clockIdentifier];
+  if ((clockIdentifier != 0) == (clockIdentifier2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(PFARepackagingExecution *)self clockIdentifier];
-  if (v7)
+  clockIdentifier3 = [(PFARepackagingExecution *)self clockIdentifier];
+  if (clockIdentifier3)
   {
-    v8 = v7;
-    v9 = [(PFARepackagingExecution *)self clockIdentifier];
-    v10 = [v4 clockIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = clockIdentifier3;
+    clockIdentifier4 = [(PFARepackagingExecution *)self clockIdentifier];
+    clockIdentifier5 = [equalCopy clockIdentifier];
+    v11 = [clockIdentifier4 isEqual:clockIdentifier5];
 
     if (!v11)
     {
@@ -180,20 +180,20 @@
   {
   }
 
-  v5 = [(PFARepackagingExecution *)self envelopeStatistics];
-  v6 = [v4 envelopeStatistics];
-  if ((v5 != 0) == (v6 == 0))
+  clockIdentifier = [(PFARepackagingExecution *)self envelopeStatistics];
+  clockIdentifier2 = [equalCopy envelopeStatistics];
+  if ((clockIdentifier != 0) == (clockIdentifier2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(PFARepackagingExecution *)self envelopeStatistics];
-  if (v12)
+  envelopeStatistics = [(PFARepackagingExecution *)self envelopeStatistics];
+  if (envelopeStatistics)
   {
-    v13 = v12;
-    v14 = [(PFARepackagingExecution *)self envelopeStatistics];
-    v15 = [v4 envelopeStatistics];
-    v16 = [v14 isEqual:v15];
+    v13 = envelopeStatistics;
+    envelopeStatistics2 = [(PFARepackagingExecution *)self envelopeStatistics];
+    envelopeStatistics3 = [equalCopy envelopeStatistics];
+    v16 = [envelopeStatistics2 isEqual:envelopeStatistics3];
 
     if (!v16)
     {
@@ -205,12 +205,12 @@
   {
   }
 
-  v5 = [(PFARepackagingExecution *)self result];
-  v6 = [v4 result];
-  if ((v5 != 0) != (v6 == 0))
+  clockIdentifier = [(PFARepackagingExecution *)self result];
+  clockIdentifier2 = [equalCopy result];
+  if ((clockIdentifier != 0) != (clockIdentifier2 == 0))
   {
-    v17 = [(PFARepackagingExecution *)self result];
-    if (!v17)
+    result = [(PFARepackagingExecution *)self result];
+    if (!result)
     {
 
 LABEL_20:
@@ -218,10 +218,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(PFARepackagingExecution *)self result];
-    v20 = [v4 result];
-    v21 = [v19 isEqual:v20];
+    v18 = result;
+    result2 = [(PFARepackagingExecution *)self result];
+    result3 = [equalCopy result];
+    v21 = [result2 isEqual:result3];
 
     if (v21)
     {
@@ -241,66 +241,66 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
-  v4 = [(PFARepackagingExecution *)self clockIdentifier];
+  toCopy = to;
+  clockIdentifier = [(PFARepackagingExecution *)self clockIdentifier];
 
-  if (v4)
+  if (clockIdentifier)
   {
-    v5 = [(PFARepackagingExecution *)self clockIdentifier];
+    clockIdentifier2 = [(PFARepackagingExecution *)self clockIdentifier];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PFARepackagingExecution *)self envelopeStatistics];
+  envelopeStatistics = [(PFARepackagingExecution *)self envelopeStatistics];
 
-  if (v6)
+  if (envelopeStatistics)
   {
-    v7 = [(PFARepackagingExecution *)self envelopeStatistics];
+    envelopeStatistics2 = [(PFARepackagingExecution *)self envelopeStatistics];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PFARepackagingExecution *)self result];
+  result = [(PFARepackagingExecution *)self result];
 
-  v9 = v11;
-  if (v8)
+  v9 = toCopy;
+  if (result)
   {
-    v10 = [(PFARepackagingExecution *)self result];
+    result2 = [(PFARepackagingExecution *)self result];
     PBDataWriterWriteSubmessage();
 
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v16.receiver = self;
   v16.super_class = PFARepackagingExecution;
-  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:v4];
-  v6 = [(PFARepackagingExecution *)self clockIdentifier];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v16 applySensitiveConditionsPolicy:policyCopy];
+  clockIdentifier = [(PFARepackagingExecution *)self clockIdentifier];
+  v7 = [clockIdentifier applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PFARepackagingExecution *)self deleteClockIdentifier];
   }
 
-  v9 = [(PFARepackagingExecution *)self envelopeStatistics];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  envelopeStatistics = [(PFARepackagingExecution *)self envelopeStatistics];
+  v10 = [envelopeStatistics applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PFARepackagingExecution *)self deleteEnvelopeStatistics];
   }
 
-  v12 = [(PFARepackagingExecution *)self result];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  result = [(PFARepackagingExecution *)self result];
+  v13 = [result applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PFARepackagingExecution *)self deleteResult];
   }

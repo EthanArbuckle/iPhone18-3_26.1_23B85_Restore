@@ -1,11 +1,11 @@
 @interface RMModelStatusServicesBackgroundTask
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 uid:(id)a4 path:(id)a5 state:(id)a6 type:(id)a7;
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 codeSignature:(id)a5 uid:(id)a6 path:(id)a7 state:(id)a8 type:(id)a9 launchd:(id)a10;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier uid:(id)uid path:(id)path state:(id)state type:(id)type;
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed codeSignature:(id)signature uid:(id)uid path:(id)path state:(id)state type:(id)type launchd:(id)self0;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusServicesBackgroundTask
@@ -30,22 +30,22 @@
   return v4;
 }
 
-+ (id)buildWithIdentifier:(id)a3 removed:(id)a4 codeSignature:(id)a5 uid:(id)a6 path:(id)a7 state:(id)a8 type:(id)a9 launchd:(id)a10
++ (id)buildWithIdentifier:(id)identifier removed:(id)removed codeSignature:(id)signature uid:(id)uid path:(id)path state:(id)state type:(id)type launchd:(id)self0
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
+  launchdCopy = launchd;
+  typeCopy = type;
+  stateCopy = state;
+  pathCopy = path;
+  uidCopy = uid;
+  signatureCopy = signature;
+  removedCopy = removed;
+  identifierCopy = identifier;
   v24 = objc_opt_new();
-  [v24 setStatusIdentifier:v23];
+  [v24 setStatusIdentifier:identifierCopy];
 
-  if (v22)
+  if (removedCopy)
   {
-    v25 = v22;
+    v25 = removedCopy;
   }
 
   else
@@ -55,33 +55,33 @@
 
   [v24 setStatusRemoved:v25];
 
-  [v24 setStatusCodeSignature:v21];
-  [v24 setStatusUid:v20];
+  [v24 setStatusCodeSignature:signatureCopy];
+  [v24 setStatusUid:uidCopy];
 
-  [v24 setStatusPath:v19];
-  [v24 setStatusState:v18];
+  [v24 setStatusPath:pathCopy];
+  [v24 setStatusState:stateCopy];
 
-  [v24 setStatusType:v17];
-  [v24 setStatusLaunchd:v16];
+  [v24 setStatusType:typeCopy];
+  [v24 setStatusLaunchd:launchdCopy];
 
   return v24;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 uid:(id)a4 path:(id)a5 state:(id)a6 type:(id)a7
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier uid:(id)uid path:(id)path state:(id)state type:(id)type
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  typeCopy = type;
+  stateCopy = state;
+  pathCopy = path;
+  uidCopy = uid;
+  identifierCopy = identifier;
   v16 = objc_opt_new();
-  [v16 setStatusIdentifier:v15];
+  [v16 setStatusIdentifier:identifierCopy];
 
-  [v16 setStatusUid:v14];
-  [v16 setStatusPath:v13];
+  [v16 setStatusUid:uidCopy];
+  [v16 setStatusPath:pathCopy];
 
-  [v16 setStatusState:v12];
-  [v16 setStatusType:v11];
+  [v16 setStatusState:stateCopy];
+  [v16 setStatusType:typeCopy];
 
   return v16;
 }
@@ -103,12 +103,12 @@
   return v5;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelStatusServicesBackgroundTask allowedStatusKeys];
   [v11 minusSet:v12];
@@ -116,10 +116,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:v8 usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"code-signature" forKeyPath:@"statusCodeSignature" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:v8 usingKey:@"uid" forKeyPath:@"statusUid" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"path" forKeyPath:@"statusPath" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"state" forKeyPath:@"statusState" isRequired:1 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"type" forKeyPath:@"statusType" isRequired:1 defaultValue:0 error:a5])
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"identifier" forKeyPath:@"statusIdentifier" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"_removed" forKeyPath:@"statusRemoved" isRequired:0 defaultValue:MEMORY[0x277CBEC28] error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"code-signature" forKeyPath:@"statusCodeSignature" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadIntegerFromDictionary:dictionaryCopy usingKey:@"uid" forKeyPath:@"statusUid" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"path" forKeyPath:@"statusPath" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"state" forKeyPath:@"statusState" isRequired:1 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"type" forKeyPath:@"statusType" isRequired:1 defaultValue:0 error:error])
   {
-    LOWORD(v16) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"launchd" forKeyPath:@"statusLaunchd" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:a5];
+    LOWORD(v16) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"launchd" forKeyPath:@"statusLaunchd" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v16 error:error];
   }
 
   else
@@ -130,48 +130,48 @@
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelStatusServicesBackgroundTask *)self statusIdentifier];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"identifier" value:v6 isRequired:1 defaultValue:0];
+  statusIdentifier = [(RMModelStatusServicesBackgroundTask *)self statusIdentifier];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"identifier" value:statusIdentifier isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelStatusServicesBackgroundTask *)self statusRemoved];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"_removed" value:v7 isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
+  statusRemoved = [(RMModelStatusServicesBackgroundTask *)self statusRemoved];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v5 usingKey:@"_removed" value:statusRemoved isRequired:0 defaultValue:MEMORY[0x277CBEC28]];
 
-  v8 = [(RMModelStatusServicesBackgroundTask *)self statusCodeSignature];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"code-signature" value:v8 isRequired:0 defaultValue:0];
+  statusCodeSignature = [(RMModelStatusServicesBackgroundTask *)self statusCodeSignature];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"code-signature" value:statusCodeSignature isRequired:0 defaultValue:0];
 
-  v9 = [(RMModelStatusServicesBackgroundTask *)self statusUid];
-  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"uid" value:v9 isRequired:1 defaultValue:0];
+  statusUid = [(RMModelStatusServicesBackgroundTask *)self statusUid];
+  [(RMModelPayloadBase *)self serializeIntegerIntoDictionary:v5 usingKey:@"uid" value:statusUid isRequired:1 defaultValue:0];
 
-  v10 = [(RMModelStatusServicesBackgroundTask *)self statusPath];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"path" value:v10 isRequired:1 defaultValue:0];
+  statusPath = [(RMModelStatusServicesBackgroundTask *)self statusPath];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"path" value:statusPath isRequired:1 defaultValue:0];
 
-  v11 = [(RMModelStatusServicesBackgroundTask *)self statusState];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"state" value:v11 isRequired:1 defaultValue:0];
+  statusState = [(RMModelStatusServicesBackgroundTask *)self statusState];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"state" value:statusState isRequired:1 defaultValue:0];
 
-  v12 = [(RMModelStatusServicesBackgroundTask *)self statusType];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"type" value:v12 isRequired:1 defaultValue:0];
+  statusType = [(RMModelStatusServicesBackgroundTask *)self statusType];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"type" value:statusType isRequired:1 defaultValue:0];
 
-  v13 = [(RMModelStatusServicesBackgroundTask *)self statusLaunchd];
+  statusLaunchd = [(RMModelStatusServicesBackgroundTask *)self statusLaunchd];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__RMModelStatusServicesBackgroundTask_serializePayloadWithType___block_invoke;
   v16[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v17 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"launchd" value:v13 dictSerializer:v16 isRequired:0 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"launchd" value:statusLaunchd dictSerializer:v16 isRequired:0 defaultValue:0];
 
   v14 = [v5 copy];
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v22.receiver = self;
   v22.super_class = RMModelStatusServicesBackgroundTask;
-  v4 = [(RMModelPayloadBase *)&v22 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v22 copyWithZone:zone];
   v5 = [(NSString *)self->_statusIdentifier copy];
   v6 = v4[2];
   v4[2] = v5;

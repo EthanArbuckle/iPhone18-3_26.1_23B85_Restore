@@ -1,20 +1,20 @@
 @interface CSStingrayRecordClientMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPasswordIterations:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPasswordIterations:(BOOL)iterations;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSStingrayRecordClientMetadata
 
-- (void)setHasPasswordIterations:(BOOL)a3
+- (void)setHasPasswordIterations:(BOOL)iterations
 {
-  if (a3)
+  if (iterations)
   {
     v3 = 2;
   }
@@ -93,32 +93,32 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_icdp)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_keyRegistry)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_stableMetadata)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_icloudIdentityPublicData)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -126,7 +126,7 @@
   {
     passwordGeneration = self->_passwordGeneration;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -134,88 +134,88 @@
   {
     passwordIterations = self->_passwordIterations;
     PBDataWriterWriteInt64Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_passwordProtocol)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   icdp = self->_icdp;
-  v12 = v4;
+  v12 = toCopy;
   if (icdp)
   {
-    objc_msgSend_setIcdp_(v4, v5, icdp);
-    v4 = v12;
+    objc_msgSend_setIcdp_(toCopy, v5, icdp);
+    toCopy = v12;
   }
 
   keyRegistry = self->_keyRegistry;
   if (keyRegistry)
   {
     objc_msgSend_setKeyRegistry_(v12, v5, keyRegistry);
-    v4 = v12;
+    toCopy = v12;
   }
 
   stableMetadata = self->_stableMetadata;
   if (stableMetadata)
   {
     objc_msgSend_setStableMetadata_(v12, v5, stableMetadata);
-    v4 = v12;
+    toCopy = v12;
   }
 
   icloudIdentityPublicData = self->_icloudIdentityPublicData;
   if (icloudIdentityPublicData)
   {
     objc_msgSend_setIcloudIdentityPublicData_(v12, v5, icloudIdentityPublicData);
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_passwordGeneration;
-    *(v4 + 64) |= 1u;
+    *(toCopy + 1) = self->_passwordGeneration;
+    *(toCopy + 64) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = self->_passwordIterations;
-    *(v4 + 64) |= 2u;
+    *(toCopy + 2) = self->_passwordIterations;
+    *(toCopy + 64) |= 2u;
   }
 
   passwordProtocol = self->_passwordProtocol;
   if (passwordProtocol)
   {
     objc_msgSend_setPasswordProtocol_(v12, v5, passwordProtocol);
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_icdp, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_icdp, v11, zone);
   v13 = *(v10 + 24);
   *(v10 + 24) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_keyRegistry, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_keyRegistry, v14, zone);
   v16 = *(v10 + 40);
   *(v10 + 40) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_stableMetadata, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_stableMetadata, v17, zone);
   v19 = *(v10 + 56);
   *(v10 + 56) = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_icloudIdentityPublicData, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_icloudIdentityPublicData, v20, zone);
   v22 = *(v10 + 32);
   *(v10 + 32) = v21;
 
@@ -233,24 +233,24 @@
     *(v10 + 64) |= 2u;
   }
 
-  v25 = objc_msgSend_copyWithZone_(self->_passwordProtocol, v23, a3);
+  v25 = objc_msgSend_copyWithZone_(self->_passwordProtocol, v23, zone);
   v26 = *(v10 + 48);
   *(v10 + 48) = v25;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_22;
   }
 
   icdp = self->_icdp;
-  v9 = v4[3];
+  v9 = equalCopy[3];
   if (icdp | v9)
   {
     if (!objc_msgSend_isEqual_(icdp, v7, v9))
@@ -260,7 +260,7 @@
   }
 
   keyRegistry = self->_keyRegistry;
-  v11 = v4[5];
+  v11 = equalCopy[5];
   if (keyRegistry | v11)
   {
     if (!objc_msgSend_isEqual_(keyRegistry, v7, v11))
@@ -270,7 +270,7 @@
   }
 
   stableMetadata = self->_stableMetadata;
-  v13 = v4[7];
+  v13 = equalCopy[7];
   if (stableMetadata | v13)
   {
     if (!objc_msgSend_isEqual_(stableMetadata, v7, v13))
@@ -280,7 +280,7 @@
   }
 
   icloudIdentityPublicData = self->_icloudIdentityPublicData;
-  v15 = v4[4];
+  v15 = equalCopy[4];
   if (icloudIdentityPublicData | v15)
   {
     if (!objc_msgSend_isEqual_(icloudIdentityPublicData, v7, v15))
@@ -289,16 +289,16 @@
     }
   }
 
-  v16 = *(v4 + 64);
+  v16 = *(equalCopy + 64);
   if (*&self->_has)
   {
-    if ((v4[8] & 1) == 0 || self->_passwordGeneration != v4[1])
+    if ((equalCopy[8] & 1) == 0 || self->_passwordGeneration != equalCopy[1])
     {
       goto LABEL_22;
     }
   }
 
-  else if (v4[8])
+  else if (equalCopy[8])
   {
 LABEL_22:
     isEqual = 0;
@@ -307,19 +307,19 @@ LABEL_22:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[8] & 2) == 0 || self->_passwordIterations != v4[2])
+    if ((equalCopy[8] & 2) == 0 || self->_passwordIterations != equalCopy[2])
     {
       goto LABEL_22;
     }
   }
 
-  else if ((v4[8] & 2) != 0)
+  else if ((equalCopy[8] & 2) != 0)
   {
     goto LABEL_22;
   }
 
   passwordProtocol = self->_passwordProtocol;
-  v18 = v4[6];
+  v18 = equalCopy[6];
   if (passwordProtocol | v18)
   {
     isEqual = objc_msgSend_isEqual_(passwordProtocol, v7, v18);
@@ -365,12 +365,12 @@ LABEL_3:
   return v7 ^ v4 ^ v10 ^ v13 ^ v16 ^ v17 ^ objc_msgSend_hash(self->_passwordProtocol, v14, v15);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   icdp = self->_icdp;
-  v6 = v4[3];
-  v14 = v4;
+  v6 = fromCopy[3];
+  v14 = fromCopy;
   if (icdp)
   {
     if (!v6)
@@ -378,7 +378,7 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(icdp, v4, v6);
+    objc_msgSend_mergeFrom_(icdp, fromCopy, v6);
   }
 
   else
@@ -388,13 +388,13 @@ LABEL_3:
       goto LABEL_7;
     }
 
-    objc_msgSend_setIcdp_(self, v4, v6);
+    objc_msgSend_setIcdp_(self, fromCopy, v6);
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_7:
   keyRegistry = self->_keyRegistry;
-  v8 = v4[5];
+  v8 = fromCopy[5];
   if (keyRegistry)
   {
     if (!v8)
@@ -402,7 +402,7 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    objc_msgSend_mergeFrom_(keyRegistry, v4, v8);
+    objc_msgSend_mergeFrom_(keyRegistry, fromCopy, v8);
   }
 
   else
@@ -412,13 +412,13 @@ LABEL_7:
       goto LABEL_13;
     }
 
-    objc_msgSend_setKeyRegistry_(self, v4, v8);
+    objc_msgSend_setKeyRegistry_(self, fromCopy, v8);
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_13:
   stableMetadata = self->_stableMetadata;
-  v10 = v4[7];
+  v10 = fromCopy[7];
   if (stableMetadata)
   {
     if (!v10)
@@ -426,7 +426,7 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    objc_msgSend_mergeFrom_(stableMetadata, v4, v10);
+    objc_msgSend_mergeFrom_(stableMetadata, fromCopy, v10);
   }
 
   else
@@ -436,36 +436,36 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    objc_msgSend_setStableMetadata_(self, v4, v10);
+    objc_msgSend_setStableMetadata_(self, fromCopy, v10);
   }
 
-  v4 = v14;
+  fromCopy = v14;
 LABEL_19:
-  v11 = v4[4];
+  v11 = fromCopy[4];
   if (v11)
   {
-    objc_msgSend_setIcloudIdentityPublicData_(self, v4, v11);
-    v4 = v14;
+    objc_msgSend_setIcloudIdentityPublicData_(self, fromCopy, v11);
+    fromCopy = v14;
   }
 
-  v12 = *(v4 + 64);
+  v12 = *(fromCopy + 64);
   if (v12)
   {
-    self->_passwordGeneration = v4[1];
+    self->_passwordGeneration = fromCopy[1];
     *&self->_has |= 1u;
-    v12 = *(v4 + 64);
+    v12 = *(fromCopy + 64);
   }
 
   if ((v12 & 2) != 0)
   {
-    self->_passwordIterations = v4[2];
+    self->_passwordIterations = fromCopy[2];
     *&self->_has |= 2u;
   }
 
-  v13 = v4[6];
+  v13 = fromCopy[6];
   if (v13)
   {
-    objc_msgSend_setPasswordProtocol_(self, v4, v13);
+    objc_msgSend_setPasswordProtocol_(self, fromCopy, v13);
   }
 
   MEMORY[0x2821F96F8]();

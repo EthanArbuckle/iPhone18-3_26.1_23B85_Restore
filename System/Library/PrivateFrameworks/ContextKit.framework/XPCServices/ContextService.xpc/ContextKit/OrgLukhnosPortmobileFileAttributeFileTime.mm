@@ -1,20 +1,20 @@
 @interface OrgLukhnosPortmobileFileAttributeFileTime
-+ (id)fromMillisWithLong:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (int)compareToWithId:(id)a3;
++ (id)fromMillisWithLong:(int64_t)long;
+- (BOOL)isEqual:(id)equal;
+- (int)compareToWithId:(id)id;
 @end
 
 @implementation OrgLukhnosPortmobileFileAttributeFileTime
 
-+ (id)fromMillisWithLong:(int64_t)a3
++ (id)fromMillisWithLong:(int64_t)long
 {
   v4 = [OrgLukhnosPortmobileFileAttributeFileTime alloc];
-  v4->time_ = a3;
+  v4->time_ = long;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -23,7 +23,7 @@
   }
 
   objc_opt_class();
-  if (a3)
+  if (equal)
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -31,13 +31,13 @@
     }
   }
 
-  return [(OrgLukhnosPortmobileFileAttributeFileTime *)self compareToWithId:a3]== 0;
+  return [(OrgLukhnosPortmobileFileAttributeFileTime *)self compareToWithId:equal]== 0;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
@@ -47,7 +47,7 @@
     JreThrowClassCastException();
   }
 
-  v5 = *(a3 + 1);
+  v5 = *(id + 1);
   time = self->time_;
   v7 = v5 < time;
   v8 = v5 != time;

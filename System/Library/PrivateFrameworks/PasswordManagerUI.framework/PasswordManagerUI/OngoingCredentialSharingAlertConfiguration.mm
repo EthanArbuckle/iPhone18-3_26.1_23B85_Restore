@@ -6,38 +6,38 @@
 + (NSString)alertTitleForUnavailableGroup;
 + (NSString)groupDeletionConfirmationAlertTitle;
 + (NSString)leaveGroupConfirmationAlertTitle;
-+ (id)alertSubtitleForFailingToMoveSavedAccounts:(id)a3 toGroupWithName:(id)a4;
-+ (id)alertTitleAndSubtitleForMovingSavedAccounts:(id)a3 toGroupWithName:(id)a4 isDragAndDropOperation:(BOOL)a5;
-+ (id)alertTitleForFailingToAcceptInvitationWithError:(id)a3;
-+ (id)alertTitleForFailingToAddGroupMemberWithError:(id)a3;
-+ (id)alertTitleForFailingToCreateGroupWithError:(id)a3;
-+ (id)alertTitleForFailingToDeclineInvitationWithError:(id)a3;
-+ (id)alertTitleForFailingToDeleteGroupWithError:(id)a3;
-+ (id)alertTitleForFailingToLeaveGroupWithError:(id)a3;
-+ (id)alertTitleForFailingToRemoveGroupMemberWithError:(id)a3;
-+ (id)alertTitleForFailingToUpdateGroupWithError:(id)a3;
-+ (id)alertTitleForMovingSavedAccount:(id)a3 toGroupWithName:(id)a4;
-+ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)a3 fromGroupWithName:(id)a4;
-+ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)a3 fromMyPasswordstoGroupWithName:(id)a4;
-+ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)a3 toMyPasswordsFromGroup:(id)a4;
-+ (id)confirmationAlertSubtitleForRemovingGroupMemberWithName:(id)a3;
-+ (id)confirmationAlertTitleForRemovingGroupMemberWithName:(id)a3;
-+ (id)declineGroupInvitationAlertTitleForGroupWithName:(id)a3 fromKnownSender:(BOOL)a4;
-+ (id)groupExitWarningAlertTitleWithGroupMemberNames:(id)a3;
-+ (id)warningAlertMessageForMovingNumberOfReusedPasswords:(int64_t)a3 withTotalNumberOfAccountsSelected:(int64_t)a4;
-+ (id)warningAlertSubtitleTellingUserThatRemovedGroupMemberMightStillHaveAccessToAccountsAfterRemovalWithName:(id)a3;
-+ (id)warningAlertTitleForMovingNumberOfReusedPasswords:(int64_t)a3 withTotalNumberOfAccountsSelected:(int64_t)a4;
-+ (id)warningAlertTitleTellingUserThatRemovedGroupMemberMightStillHaveAccessToAccountsAfterRemovalWithName:(id)a3;
++ (id)alertSubtitleForFailingToMoveSavedAccounts:(id)accounts toGroupWithName:(id)name;
++ (id)alertTitleAndSubtitleForMovingSavedAccounts:(id)accounts toGroupWithName:(id)name isDragAndDropOperation:(BOOL)operation;
++ (id)alertTitleForFailingToAcceptInvitationWithError:(id)error;
++ (id)alertTitleForFailingToAddGroupMemberWithError:(id)error;
++ (id)alertTitleForFailingToCreateGroupWithError:(id)error;
++ (id)alertTitleForFailingToDeclineInvitationWithError:(id)error;
++ (id)alertTitleForFailingToDeleteGroupWithError:(id)error;
++ (id)alertTitleForFailingToLeaveGroupWithError:(id)error;
++ (id)alertTitleForFailingToRemoveGroupMemberWithError:(id)error;
++ (id)alertTitleForFailingToUpdateGroupWithError:(id)error;
++ (id)alertTitleForMovingSavedAccount:(id)account toGroupWithName:(id)name;
++ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)account fromGroupWithName:(id)name;
++ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)account fromMyPasswordstoGroupWithName:(id)name;
++ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)account toMyPasswordsFromGroup:(id)group;
++ (id)confirmationAlertSubtitleForRemovingGroupMemberWithName:(id)name;
++ (id)confirmationAlertTitleForRemovingGroupMemberWithName:(id)name;
++ (id)declineGroupInvitationAlertTitleForGroupWithName:(id)name fromKnownSender:(BOOL)sender;
++ (id)groupExitWarningAlertTitleWithGroupMemberNames:(id)names;
++ (id)warningAlertMessageForMovingNumberOfReusedPasswords:(int64_t)passwords withTotalNumberOfAccountsSelected:(int64_t)selected;
++ (id)warningAlertSubtitleTellingUserThatRemovedGroupMemberMightStillHaveAccessToAccountsAfterRemovalWithName:(id)name;
++ (id)warningAlertTitleForMovingNumberOfReusedPasswords:(int64_t)passwords withTotalNumberOfAccountsSelected:(int64_t)selected;
++ (id)warningAlertTitleTellingUserThatRemovedGroupMemberMightStillHaveAccessToAccountsAfterRemovalWithName:(id)name;
 - (_TtC17PasswordManagerUI42OngoingCredentialSharingAlertConfiguration)init;
 @end
 
 @implementation OngoingCredentialSharingAlertConfiguration
 
-+ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)a3 toMyPasswordsFromGroup:(id)a4
++ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)account toMyPasswordsFromGroup:(id)group
 {
-  v5 = a3;
-  v6 = a4;
-  sub_21C7BD554(v5, v6);
+  accountCopy = account;
+  groupCopy = group;
+  sub_21C7BD554(accountCopy, groupCopy);
   v8 = v7;
 
   if (v8)
@@ -53,29 +53,29 @@
   return v9;
 }
 
-+ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)a3 fromMyPasswordstoGroupWithName:(id)a4
++ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)account fromMyPasswordstoGroupWithName:(id)name
 {
-  v4 = a3;
-  sub_21C7BFCA4(v4);
+  accountCopy = account;
+  sub_21C7BFCA4(accountCopy);
 
   v5 = sub_21CB85584();
 
   return v5;
 }
 
-+ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)a3 fromGroupWithName:(id)a4
++ (id)confirmationAlertSubtitleForMovingSavedAccount:(id)account fromGroupWithName:(id)name
 {
   v5 = sub_21CB855C4();
   v7 = v6;
-  v8 = a3;
-  sub_21C7BFE38(v8, v5, v7);
+  accountCopy = account;
+  sub_21C7BFE38(accountCopy, v5, v7);
 
   v9 = sub_21CB85584();
 
   return v9;
 }
 
-+ (id)confirmationAlertTitleForRemovingGroupMemberWithName:(id)a3
++ (id)confirmationAlertTitleForRemovingGroupMemberWithName:(id)name
 {
   v3 = sub_21CB81024();
   v4 = *(v3 - 8);
@@ -101,7 +101,7 @@
   return v12;
 }
 
-+ (id)confirmationAlertSubtitleForRemovingGroupMemberWithName:(id)a3
++ (id)confirmationAlertSubtitleForRemovingGroupMemberWithName:(id)name
 {
   v3 = sub_21CB81024();
   v4 = *(v3 - 8);
@@ -127,7 +127,7 @@
   return v12;
 }
 
-+ (id)warningAlertTitleTellingUserThatRemovedGroupMemberMightStillHaveAccessToAccountsAfterRemovalWithName:(id)a3
++ (id)warningAlertTitleTellingUserThatRemovedGroupMemberMightStillHaveAccessToAccountsAfterRemovalWithName:(id)name
 {
   v3 = sub_21CB855C4();
   sub_21C7C00A4(v3, v4);
@@ -137,7 +137,7 @@
   return v5;
 }
 
-+ (id)warningAlertSubtitleTellingUserThatRemovedGroupMemberMightStillHaveAccessToAccountsAfterRemovalWithName:(id)a3
++ (id)warningAlertSubtitleTellingUserThatRemovedGroupMemberMightStillHaveAccessToAccountsAfterRemovalWithName:(id)name
 {
   v3 = sub_21CB81024();
   v4 = *(v3 - 8);
@@ -163,14 +163,14 @@
   return v12;
 }
 
-+ (id)alertTitleAndSubtitleForMovingSavedAccounts:(id)a3 toGroupWithName:(id)a4 isDragAndDropOperation:(BOOL)a5
++ (id)alertTitleAndSubtitleForMovingSavedAccounts:(id)accounts toGroupWithName:(id)name isDragAndDropOperation:(BOOL)operation
 {
   sub_21C6E8F4C(0, &qword_27CDF76E0, 0x277D49B20);
   v7 = sub_21CB85824();
-  if (a4)
+  if (name)
   {
     v8 = sub_21CB855C4();
-    a4 = v9;
+    name = v9;
   }
 
   else
@@ -178,7 +178,7 @@
     v8 = 0;
   }
 
-  v10 = sub_21C7C15C0(v7, v8, a4, a5);
+  v10 = sub_21C7C15C0(v7, v8, name, operation);
 
   return v10;
 }
@@ -198,14 +198,14 @@
   return v7;
 }
 
-+ (id)alertSubtitleForFailingToMoveSavedAccounts:(id)a3 toGroupWithName:(id)a4
++ (id)alertSubtitleForFailingToMoveSavedAccounts:(id)accounts toGroupWithName:(id)name
 {
   sub_21C6E8F4C(0, &qword_27CDF76E0, 0x277D49B20);
   v5 = sub_21CB85824();
-  if (a4)
+  if (name)
   {
     v6 = sub_21CB855C4();
-    a4 = v7;
+    name = v7;
   }
 
   else
@@ -213,14 +213,14 @@
     v6 = 0;
   }
 
-  sub_21C7C1BFC(v5, v6, a4);
+  sub_21C7C1BFC(v5, v6, name);
 
   v8 = sub_21CB85584();
 
   return v8;
 }
 
-+ (id)warningAlertTitleForMovingNumberOfReusedPasswords:(int64_t)a3 withTotalNumberOfAccountsSelected:(int64_t)a4
++ (id)warningAlertTitleForMovingNumberOfReusedPasswords:(int64_t)passwords withTotalNumberOfAccountsSelected:(int64_t)selected
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
@@ -235,7 +235,7 @@
   return v9;
 }
 
-+ (id)warningAlertMessageForMovingNumberOfReusedPasswords:(int64_t)a3 withTotalNumberOfAccountsSelected:(int64_t)a4
++ (id)warningAlertMessageForMovingNumberOfReusedPasswords:(int64_t)passwords withTotalNumberOfAccountsSelected:(int64_t)selected
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
@@ -250,9 +250,9 @@
   return v9;
 }
 
-+ (id)alertTitleForMovingSavedAccount:(id)a3 toGroupWithName:(id)a4
++ (id)alertTitleForMovingSavedAccount:(id)account toGroupWithName:(id)name
 {
-  if (a4)
+  if (name)
   {
     v5 = sub_21CB855C4();
     v7 = v6;
@@ -264,8 +264,8 @@
     v7 = 0;
   }
 
-  v8 = a3;
-  sub_21C7C1D78(v8, v5, v7);
+  accountCopy = account;
+  sub_21C7C1D78(accountCopy, v5, v7);
 
   v9 = sub_21CB85584();
 
@@ -302,7 +302,7 @@
   return v7;
 }
 
-+ (id)groupExitWarningAlertTitleWithGroupMemberNames:(id)a3
++ (id)groupExitWarningAlertTitleWithGroupMemberNames:(id)names
 {
   v3 = sub_21CB85824();
   sub_21C7C2A6C(v3);
@@ -372,19 +372,19 @@
   return v7;
 }
 
-+ (id)alertTitleForFailingToCreateGroupWithError:(id)a3
++ (id)alertTitleForFailingToCreateGroupWithError:(id)error
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (error)
   {
-    v9 = a3;
-    if ([v9 safari_isOrContainsNetworkUnavailableError])
+    errorCopy = error;
+    if ([errorCopy safari_isOrContainsNetworkUnavailableError])
     {
-      a3 = v9;
+      error = errorCopy;
     }
   }
 
@@ -397,19 +397,19 @@
   return v10;
 }
 
-+ (id)alertTitleForFailingToDeleteGroupWithError:(id)a3
++ (id)alertTitleForFailingToDeleteGroupWithError:(id)error
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (error)
   {
-    v9 = a3;
-    if ([v9 safari_isOrContainsNetworkUnavailableError])
+    errorCopy = error;
+    if ([errorCopy safari_isOrContainsNetworkUnavailableError])
     {
-      a3 = v9;
+      error = errorCopy;
     }
   }
 
@@ -422,19 +422,19 @@
   return v10;
 }
 
-+ (id)alertTitleForFailingToLeaveGroupWithError:(id)a3
++ (id)alertTitleForFailingToLeaveGroupWithError:(id)error
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (error)
   {
-    v9 = a3;
-    if ([v9 safari_isOrContainsNetworkUnavailableError])
+    errorCopy = error;
+    if ([errorCopy safari_isOrContainsNetworkUnavailableError])
     {
-      a3 = v9;
+      error = errorCopy;
     }
   }
 
@@ -447,19 +447,19 @@
   return v10;
 }
 
-+ (id)alertTitleForFailingToAddGroupMemberWithError:(id)a3
++ (id)alertTitleForFailingToAddGroupMemberWithError:(id)error
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (error)
   {
-    v9 = a3;
-    if ([v9 safari_isOrContainsNetworkUnavailableError])
+    errorCopy = error;
+    if ([errorCopy safari_isOrContainsNetworkUnavailableError])
     {
-      a3 = v9;
+      error = errorCopy;
     }
   }
 
@@ -472,19 +472,19 @@
   return v10;
 }
 
-+ (id)alertTitleForFailingToRemoveGroupMemberWithError:(id)a3
++ (id)alertTitleForFailingToRemoveGroupMemberWithError:(id)error
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (error)
   {
-    v9 = a3;
-    if ([v9 safari_isOrContainsNetworkUnavailableError])
+    errorCopy = error;
+    if ([errorCopy safari_isOrContainsNetworkUnavailableError])
     {
-      a3 = v9;
+      error = errorCopy;
     }
   }
 
@@ -497,19 +497,19 @@
   return v10;
 }
 
-+ (id)alertTitleForFailingToUpdateGroupWithError:(id)a3
++ (id)alertTitleForFailingToUpdateGroupWithError:(id)error
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (error)
   {
-    v9 = a3;
-    if ([v9 safari_isOrContainsNetworkUnavailableError])
+    errorCopy = error;
+    if ([errorCopy safari_isOrContainsNetworkUnavailableError])
     {
-      a3 = v9;
+      error = errorCopy;
     }
   }
 
@@ -522,19 +522,19 @@
   return v10;
 }
 
-+ (id)alertTitleForFailingToAcceptInvitationWithError:(id)a3
++ (id)alertTitleForFailingToAcceptInvitationWithError:(id)error
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (error)
   {
-    v9 = a3;
-    if ([v9 safari_isOrContainsNetworkUnavailableError])
+    errorCopy = error;
+    if ([errorCopy safari_isOrContainsNetworkUnavailableError])
     {
-      a3 = v9;
+      error = errorCopy;
     }
   }
 
@@ -547,19 +547,19 @@
   return v10;
 }
 
-+ (id)alertTitleForFailingToDeclineInvitationWithError:(id)a3
++ (id)alertTitleForFailingToDeclineInvitationWithError:(id)error
 {
   v4 = sub_21CB81024();
   v5 = *(v4 - 8);
   v6 = *(v5 + 64);
   MEMORY[0x28223BE20](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (a3)
+  if (error)
   {
-    v9 = a3;
-    if ([v9 safari_isOrContainsNetworkUnavailableError])
+    errorCopy = error;
+    if ([errorCopy safari_isOrContainsNetworkUnavailableError])
     {
-      a3 = v9;
+      error = errorCopy;
     }
   }
 
@@ -572,10 +572,10 @@
   return v10;
 }
 
-+ (id)declineGroupInvitationAlertTitleForGroupWithName:(id)a3 fromKnownSender:(BOOL)a4
++ (id)declineGroupInvitationAlertTitleForGroupWithName:(id)name fromKnownSender:(BOOL)sender
 {
   v5 = sub_21CB855C4();
-  sub_21C7C2FB4(v5, v6, a4);
+  sub_21C7C2FB4(v5, v6, sender);
 
   v7 = sub_21CB85584();
 

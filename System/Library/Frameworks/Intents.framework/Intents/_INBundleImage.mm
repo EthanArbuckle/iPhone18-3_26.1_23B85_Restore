@@ -1,33 +1,33 @@
 @interface _INBundleImage
 - (BOOL)_isSystem;
-- (_INBundleImage)initWithCoder:(id)a3;
-- (_INBundleImage)initWithStringRepresentation:(id)a3;
+- (_INBundleImage)initWithCoder:(id)coder;
+- (_INBundleImage)initWithStringRepresentation:(id)representation;
 - (id)_URLRepresentation;
 - (id)_bundleIdentifier;
 - (id)_bundlePath;
-- (id)_copyWithSubclass:(Class)a3;
+- (id)_copyWithSubclass:(Class)subclass;
 - (id)_dictionaryRepresentation;
-- (id)_initWithURLRepresentation:(id)a3;
+- (id)_initWithURLRepresentation:(id)representation;
 - (id)stringRepresentation;
-- (void)_loadImageDataAndSizeWithHelper:(id)a3 accessSpecifier:(id)a4 completion:(id)a5;
-- (void)_setBundleIdentifier:(id)a3;
-- (void)_setBundlePath:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_loadImageDataAndSizeWithHelper:(id)helper accessSpecifier:(id)specifier completion:(id)completion;
+- (void)_setBundleIdentifier:(id)identifier;
+- (void)_setBundlePath:(id)path;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _INBundleImage
 
 - (id)stringRepresentation
 {
-  v3 = [(_INBundleImage *)self imageBundle];
-  v4 = [v3 bundlePath];
+  imageBundle = [(_INBundleImage *)self imageBundle];
+  bundlePath = [imageBundle bundlePath];
 
-  if (v4)
+  if (bundlePath)
   {
-    v5 = [(_INBundleImage *)self imageBundle];
-    v6 = [v5 bundlePath];
-    v7 = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
-    v8 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v7];
+    imageBundle2 = [(_INBundleImage *)self imageBundle];
+    bundlePath2 = [imageBundle2 bundlePath];
+    uRLPathAllowedCharacterSet = [MEMORY[0x1E696AB08] URLPathAllowedCharacterSet];
+    v8 = [bundlePath2 stringByAddingPercentEncodingWithAllowedCharacters:uRLPathAllowedCharacterSet];
   }
 
   else
@@ -35,27 +35,27 @@
     v8 = &stru_1F01E0850;
   }
 
-  v9 = [(_INBundleImage *)self imageBundle];
-  v10 = [v9 bundleType];
+  imageBundle3 = [(_INBundleImage *)self imageBundle];
+  bundleType = [imageBundle3 bundleType];
 
-  if (v10 > 2)
+  if (bundleType > 2)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = off_1E7283E30[v10];
+    v11 = off_1E7283E30[bundleType];
   }
 
   v12 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v13 = [(_INBundleImage *)self imageName];
-  v14 = [(_INBundleImage *)self imageBundle];
-  v15 = [v14 bundleIdentifier];
-  v16 = v15;
-  if (v15)
+  imageName = [(_INBundleImage *)self imageName];
+  imageBundle4 = [(_INBundleImage *)self imageBundle];
+  bundleIdentifier = [imageBundle4 bundleIdentifier];
+  v16 = bundleIdentifier;
+  if (bundleIdentifier)
   {
-    v17 = v15;
+    v17 = bundleIdentifier;
   }
 
   else
@@ -63,28 +63,28 @@
     v17 = &stru_1F01E0850;
   }
 
-  v18 = [v12 initWithFormat:@"%@://%@/?%@=%@&%@=%@&%@=%@", @"siri-client-cache", v8, @"bundleType", v11, @"imageName", v13, @"bundleIdentifier", v17];
+  v18 = [v12 initWithFormat:@"%@://%@/?%@=%@&%@=%@&%@=%@", @"siri-client-cache", v8, @"bundleType", v11, @"imageName", imageName, @"bundleIdentifier", v17];
 
   return v18;
 }
 
 - (BOOL)_isSystem
 {
-  v2 = [(_INBundleImage *)self imageBundle];
-  v3 = [v2 bundleType] == 2;
+  imageBundle = [(_INBundleImage *)self imageBundle];
+  v3 = [imageBundle bundleType] == 2;
 
   return v3;
 }
 
-- (void)_loadImageDataAndSizeWithHelper:(id)a3 accessSpecifier:(id)a4 completion:(id)a5
+- (void)_loadImageDataAndSizeWithHelper:(id)helper accessSpecifier:(id)specifier completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  helperCopy = helper;
+  specifierCopy = specifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (helperCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v11 = INSiriLogContextIntents;
       if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
@@ -92,43 +92,43 @@
         *buf = 136315394;
         v20 = "[_INBundleImage(INPortableImageLoader) _loadImageDataAndSizeWithHelper:accessSpecifier:completion:]";
         v21 = 2112;
-        v22 = v8;
+        v22 = helperCopy;
         _os_log_impl(&dword_18E991000, v11, OS_LOG_TYPE_INFO, "%s Attempting bundle image loading strategy with helper: %@", buf, 0x16u);
       }
 
-      v12 = [(_INBundleImage *)self imageBundle];
-      v13 = [(_INBundleImage *)self imageName];
-      [v8 loadImageDataFromBundle:v12 withImageName:v13 accessSpecifier:v9 completion:v10];
+      imageBundle = [(_INBundleImage *)self imageBundle];
+      imageName = [(_INBundleImage *)self imageName];
+      [helperCopy loadImageDataFromBundle:imageBundle withImageName:imageName accessSpecifier:specifierCopy completion:completionCopy];
     }
 
     else
     {
       v14 = MEMORY[0x1E696ABC0];
       v17 = *MEMORY[0x1E696A578];
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"No helper to use which can load image %@ from bundle", self];
-      v18 = v12;
-      v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-      v15 = [v14 errorWithDomain:@"IntentsErrorDomain" code:6003 userInfo:v13];
-      (*(v10 + 2))(v10, 0, 0, v15, 0.0, 0.0);
+      imageBundle = [MEMORY[0x1E696AEC0] stringWithFormat:@"No helper to use which can load image %@ from bundle", self];
+      v18 = imageBundle;
+      imageName = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
+      v15 = [v14 errorWithDomain:@"IntentsErrorDomain" code:6003 userInfo:imageName];
+      (*(completionCopy + 2))(completionCopy, 0, 0, v15, 0.0, 0.0);
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (_INBundleImage)initWithCoder:(id)a3
+- (_INBundleImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = _INBundleImage;
-  v5 = [(INImage *)&v11 initWithCoder:v4];
+  v5 = [(INImage *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
     imageName = v5->_imageName;
     v5->_imageName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageBundle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageBundle"];
     imageBundle = v5->_imageBundle;
     v5->_imageBundle = v8;
   }
@@ -136,60 +136,60 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _INBundleImage;
-  v4 = a3;
-  [(INImage *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_imageName forKey:{@"imageName", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_imageBundle forKey:@"imageBundle"];
+  coderCopy = coder;
+  [(INImage *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_imageName forKey:{@"imageName", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_imageBundle forKey:@"imageBundle"];
 }
 
-- (void)_setBundleIdentifier:(id)a3
+- (void)_setBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_INBundleImage *)self imageBundle];
-  [v5 setBundleIdentifier:v4];
+  identifierCopy = identifier;
+  imageBundle = [(_INBundleImage *)self imageBundle];
+  [imageBundle setBundleIdentifier:identifierCopy];
 }
 
 - (id)_bundleIdentifier
 {
-  v2 = [(_INBundleImage *)self imageBundle];
-  v3 = [v2 bundleIdentifier];
+  imageBundle = [(_INBundleImage *)self imageBundle];
+  bundleIdentifier = [imageBundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
-- (void)_setBundlePath:(id)a3
+- (void)_setBundlePath:(id)path
 {
-  v4 = a3;
-  v5 = [(_INBundleImage *)self imageBundle];
-  [v5 setBundlePath:v4];
+  pathCopy = path;
+  imageBundle = [(_INBundleImage *)self imageBundle];
+  [imageBundle setBundlePath:pathCopy];
 }
 
 - (id)_bundlePath
 {
-  v2 = [(_INBundleImage *)self imageBundle];
-  v3 = [v2 bundlePath];
+  imageBundle = [(_INBundleImage *)self imageBundle];
+  bundlePath = [imageBundle bundlePath];
 
-  return v3;
+  return bundlePath;
 }
 
-- (id)_copyWithSubclass:(Class)a3
+- (id)_copyWithSubclass:(Class)subclass
 {
   v11.receiver = self;
   v11.super_class = _INBundleImage;
-  v4 = [(INImage *)&v11 _copyWithSubclass:a3];
+  v4 = [(INImage *)&v11 _copyWithSubclass:subclass];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [(_INBundleImage *)self imageName];
-    [v5 setImageName:v6];
+    imageName = [(_INBundleImage *)self imageName];
+    [v5 setImageName:imageName];
 
-    v7 = [(_INBundleImage *)self imageBundle];
-    [v5 setImageBundle:v7];
+    imageBundle = [(_INBundleImage *)self imageBundle];
+    [v5 setImageBundle:imageBundle];
   }
 
   else
@@ -217,18 +217,18 @@
   v12[1] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = _INBundleImage;
-  v3 = [(INImage *)&v10 _dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  _dictionaryRepresentation = [(INImage *)&v10 _dictionaryRepresentation];
+  v4 = [_dictionaryRepresentation mutableCopy];
 
   v11 = @"imageName";
   imageName = self->_imageName;
-  v6 = imageName;
+  null = imageName;
   if (!imageName)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[0] = v6;
+  v12[0] = null;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   [v4 addEntriesFromDictionary:v7];
 
@@ -241,9 +241,9 @@
   return v4;
 }
 
-- (_INBundleImage)initWithStringRepresentation:(id)a3
+- (_INBundleImage)initWithStringRepresentation:(id)representation
 {
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:representation];
   v5 = [(_INBundleImage *)self _initWithURLRepresentation:v4];
 
   return v5;
@@ -252,17 +252,17 @@
 - (id)_URLRepresentation
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(_INBundleImage *)self stringRepresentation];
-  v4 = [v2 URLWithString:v3];
+  stringRepresentation = [(_INBundleImage *)self stringRepresentation];
+  v4 = [v2 URLWithString:stringRepresentation];
 
   return v4;
 }
 
-- (id)_initWithURLRepresentation:(id)a3
+- (id)_initWithURLRepresentation:(id)representation
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  representationCopy = representation;
+  if (representationCopy)
   {
     v44.receiver = self;
     v44.super_class = _INBundleImage;
@@ -271,33 +271,33 @@
     {
 LABEL_31:
       self = self;
-      v32 = self;
+      selfCopy = self;
       goto LABEL_32;
     }
 
-    v5 = [MEMORY[0x1E696AF20] componentsWithURL:v4 resolvingAgainstBaseURL:0];
-    v6 = [v5 scheme];
-    v7 = [v6 isEqualToString:@"siri-client-cache"];
+    v5 = [MEMORY[0x1E696AF20] componentsWithURL:representationCopy resolvingAgainstBaseURL:0];
+    scheme = [v5 scheme];
+    v7 = [scheme isEqualToString:@"siri-client-cache"];
 
     if (v7)
     {
-      v8 = [v5 path];
+      path = [v5 path];
       v9 = objc_alloc_init(INImageBundle);
-      if (([v8 isEqualToString:@"/"] & 1) == 0)
+      if (([path isEqualToString:@"/"] & 1) == 0)
       {
-        v10 = [v8 stringByRemovingPercentEncoding];
-        [(INImageBundle *)v9 setBundlePath:v10];
+        stringByRemovingPercentEncoding = [path stringByRemovingPercentEncoding];
+        [(INImageBundle *)v9 setBundlePath:stringByRemovingPercentEncoding];
       }
 
-      v36 = v8;
-      v38 = v4;
+      v36 = path;
+      v38 = representationCopy;
       v37 = v5;
-      v11 = [v5 queryItems];
+      queryItems = [v5 queryItems];
       v40 = 0u;
       v41 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v12 = [v11 countByEnumeratingWithState:&v40 objects:v45 count:16];
+      v12 = [queryItems countByEnumeratingWithState:&v40 objects:v45 count:16];
       if (v12)
       {
         v13 = v12;
@@ -311,17 +311,17 @@ LABEL_31:
           {
             if (*v41 != v15)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(queryItems);
             }
 
             v18 = *(*(&v40 + 1) + 8 * i);
-            v19 = [v18 name];
-            v20 = [v19 isEqualToString:@"bundleType"];
+            name = [v18 name];
+            v20 = [name isEqualToString:@"bundleType"];
 
             if (v20)
             {
-              v21 = [v18 value];
-              v22 = [v21 isEqualToString:@"a"];
+              value = [v18 value];
+              v22 = [value isEqualToString:@"a"];
 
               if (v22)
               {
@@ -330,8 +330,8 @@ LABEL_31:
 
               else
               {
-                v26 = [v18 value];
-                v27 = [v26 isEqualToString:@"s"];
+                value2 = [v18 value];
+                v27 = [value2 isEqualToString:@"s"];
 
                 if (v27)
                 {
@@ -342,41 +342,41 @@ LABEL_31:
 
             else
             {
-              v23 = [v18 name];
-              v24 = [v23 isEqualToString:@"imageName"];
+              name2 = [v18 name];
+              v24 = [name2 isEqualToString:@"imageName"];
 
               if (v24)
               {
-                v25 = [v18 value];
+                value3 = [v18 value];
 
-                v14 = v25;
+                v14 = value3;
               }
 
               else
               {
-                v28 = [v18 name];
-                v29 = [v28 isEqualToString:@"bundleIdentifier"];
+                name3 = [v18 name];
+                v29 = [name3 isEqualToString:@"bundleIdentifier"];
 
                 if (v29)
                 {
-                  v30 = [v18 value];
-                  if ([v30 length])
+                  value4 = [v18 value];
+                  if ([value4 length])
                   {
-                    v31 = [v18 value];
+                    value5 = [v18 value];
                   }
 
                   else
                   {
-                    v31 = 0;
+                    value5 = 0;
                   }
 
-                  v39 = v31;
+                  v39 = value5;
                 }
               }
             }
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v40 objects:v45 count:16];
+          v13 = [queryItems countByEnumeratingWithState:&v40 objects:v45 count:16];
         }
 
         while (v13);
@@ -394,16 +394,16 @@ LABEL_31:
       [(_INBundleImage *)self setImageBundle:v35];
       [(_INBundleImage *)self setImageName:v14];
 
-      v4 = v38;
+      representationCopy = v38;
       goto LABEL_31;
     }
   }
 
-  v32 = 0;
+  selfCopy = 0;
 LABEL_32:
 
   v33 = *MEMORY[0x1E69E9840];
-  return v32;
+  return selfCopy;
 }
 
 @end

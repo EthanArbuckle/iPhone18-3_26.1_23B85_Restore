@@ -1,31 +1,31 @@
 @interface HMDHouseholdActivityLogEventContributor
 + (id)logCategory;
-- (HMDHouseholdActivityLogEventContributor)initWithHouseholdGroupName:(id)a3 countersManager:(id)a4 dateProvider:(id)a5;
-- (id)householdGroupForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
-- (id)householdGroupForLogEvent:(id)a3;
-- (void)coalesceLogEvent:(id)a3 fromSourceEvent:(id)a4;
-- (void)contributeLogEvent:(id)a3 toCoreAnalyticsEvent:(id)a4;
-- (void)contributeLogEvent:(id)a3 toSerializedMetric:(id)a4;
-- (void)deleteCountersAfterDate:(id)a3;
-- (void)deleteCountersBeforeDate:(id)a3;
-- (void)deserializeLogEvent:(id)a3 fromSerializedMetric:(id)a4;
-- (void)populateLogEvent:(id)a3 forHomeWithUUID:(id)a4 associatedToDate:(id)a5;
+- (HMDHouseholdActivityLogEventContributor)initWithHouseholdGroupName:(id)name countersManager:(id)manager dateProvider:(id)provider;
+- (id)householdGroupForHomeWithUUID:(id)d associatedWithDate:(id)date;
+- (id)householdGroupForLogEvent:(id)event;
+- (void)coalesceLogEvent:(id)event fromSourceEvent:(id)sourceEvent;
+- (void)contributeLogEvent:(id)event toCoreAnalyticsEvent:(id)analyticsEvent;
+- (void)contributeLogEvent:(id)event toSerializedMetric:(id)metric;
+- (void)deleteCountersAfterDate:(id)date;
+- (void)deleteCountersBeforeDate:(id)date;
+- (void)deserializeLogEvent:(id)event fromSerializedMetric:(id)metric;
+- (void)populateLogEvent:(id)event forHomeWithUUID:(id)d associatedToDate:(id)date;
 @end
 
 @implementation HMDHouseholdActivityLogEventContributor
 
-- (void)deleteCountersAfterDate:(id)a3
+- (void)deleteCountersAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDHouseholdActivityLogEventContributor *)self countersManager];
+  dateCopy = date;
+  countersManager = [(HMDHouseholdActivityLogEventContributor *)self countersManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HMDHouseholdActivityLogEventContributor_deleteCountersAfterDate___block_invoke;
   v7[3] = &unk_27972E328;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 removeCounterGroupsBasedOnPredicate:v7];
+  v8 = dateCopy;
+  v6 = dateCopy;
+  [countersManager removeCounterGroupsBasedOnPredicate:v7];
 }
 
 BOOL __67__HMDHouseholdActivityLogEventContributor_deleteCountersAfterDate___block_invoke(uint64_t a1, void *a2)
@@ -68,18 +68,18 @@ BOOL __67__HMDHouseholdActivityLogEventContributor_deleteCountersAfterDate___blo
   return v10;
 }
 
-- (void)deleteCountersBeforeDate:(id)a3
+- (void)deleteCountersBeforeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDHouseholdActivityLogEventContributor *)self countersManager];
+  dateCopy = date;
+  countersManager = [(HMDHouseholdActivityLogEventContributor *)self countersManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__HMDHouseholdActivityLogEventContributor_deleteCountersBeforeDate___block_invoke;
   v7[3] = &unk_27972E328;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 removeCounterGroupsBasedOnPredicate:v7];
+  v8 = dateCopy;
+  v6 = dateCopy;
+  [countersManager removeCounterGroupsBasedOnPredicate:v7];
 }
 
 BOOL __68__HMDHouseholdActivityLogEventContributor_deleteCountersBeforeDate___block_invoke(uint64_t a1, void *a2)
@@ -122,10 +122,10 @@ BOOL __68__HMDHouseholdActivityLogEventContributor_deleteCountersBeforeDate___bl
   return v10;
 }
 
-- (void)coalesceLogEvent:(id)a3 fromSourceEvent:(id)a4
+- (void)coalesceLogEvent:(id)event fromSourceEvent:(id)sourceEvent
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  sourceEventCopy = sourceEvent;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -137,10 +137,10 @@ BOOL __68__HMDHouseholdActivityLogEventContributor_deleteCountersBeforeDate___bl
   objc_exception_throw(v13);
 }
 
-- (void)contributeLogEvent:(id)a3 toCoreAnalyticsEvent:(id)a4
+- (void)contributeLogEvent:(id)event toCoreAnalyticsEvent:(id)analyticsEvent
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  analyticsEventCopy = analyticsEvent;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -152,10 +152,10 @@ BOOL __68__HMDHouseholdActivityLogEventContributor_deleteCountersBeforeDate___bl
   objc_exception_throw(v13);
 }
 
-- (void)deserializeLogEvent:(id)a3 fromSerializedMetric:(id)a4
+- (void)deserializeLogEvent:(id)event fromSerializedMetric:(id)metric
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  metricCopy = metric;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -167,10 +167,10 @@ BOOL __68__HMDHouseholdActivityLogEventContributor_deleteCountersBeforeDate___bl
   objc_exception_throw(v13);
 }
 
-- (void)contributeLogEvent:(id)a3 toSerializedMetric:(id)a4
+- (void)contributeLogEvent:(id)event toSerializedMetric:(id)metric
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  metricCopy = metric;
   v8 = MEMORY[0x277CBEAD8];
   v9 = *MEMORY[0x277CBE658];
   v10 = MEMORY[0x277CCACA8];
@@ -182,11 +182,11 @@ BOOL __68__HMDHouseholdActivityLogEventContributor_deleteCountersBeforeDate___bl
   objc_exception_throw(v13);
 }
 
-- (void)populateLogEvent:(id)a3 forHomeWithUUID:(id)a4 associatedToDate:(id)a5
+- (void)populateLogEvent:(id)event forHomeWithUUID:(id)d associatedToDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  dCopy = d;
+  dateCopy = date;
   v11 = MEMORY[0x277CBEAD8];
   v12 = *MEMORY[0x277CBE658];
   v13 = MEMORY[0x277CCACA8];
@@ -198,14 +198,14 @@ BOOL __68__HMDHouseholdActivityLogEventContributor_deleteCountersBeforeDate___bl
   objc_exception_throw(v16);
 }
 
-- (id)householdGroupForLogEvent:(id)a3
+- (id)householdGroupForLogEvent:(id)event
 {
   v4 = HMMSafeHomeUUIDFromLogEvent();
   if (v4)
   {
-    v5 = [(HMDHouseholdActivityLogEventContributor *)self dateProvider];
-    v6 = [v5 startOfCurrentDay];
-    v7 = [(HMDHouseholdActivityLogEventContributor *)self householdGroupForHomeWithUUID:v4 associatedWithDate:v6];
+    dateProvider = [(HMDHouseholdActivityLogEventContributor *)self dateProvider];
+    startOfCurrentDay = [dateProvider startOfCurrentDay];
+    v7 = [(HMDHouseholdActivityLogEventContributor *)self householdGroupForHomeWithUUID:v4 associatedWithDate:startOfCurrentDay];
   }
 
   else
@@ -216,33 +216,33 @@ BOOL __68__HMDHouseholdActivityLogEventContributor_deleteCountersBeforeDate___bl
   return v7;
 }
 
-- (id)householdGroupForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)householdGroupForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDHouseholdActivityLogEventContributor *)self countersManager];
-  v9 = [(HMDHouseholdActivityLogEventContributor *)self householdGroupName];
-  v10 = [HMDHouseholdDataEventCounterGroupSpecifier specifierWithGroupName:v9 homeUUID:v7 date:v6];
+  dateCopy = date;
+  dCopy = d;
+  countersManager = [(HMDHouseholdActivityLogEventContributor *)self countersManager];
+  householdGroupName = [(HMDHouseholdActivityLogEventContributor *)self householdGroupName];
+  v10 = [HMDHouseholdDataEventCounterGroupSpecifier specifierWithGroupName:householdGroupName homeUUID:dCopy date:dateCopy];
 
-  v11 = [v8 objectForKeyedSubscript:v10];
+  v11 = [countersManager objectForKeyedSubscript:v10];
 
   return v11;
 }
 
-- (HMDHouseholdActivityLogEventContributor)initWithHouseholdGroupName:(id)a3 countersManager:(id)a4 dateProvider:(id)a5
+- (HMDHouseholdActivityLogEventContributor)initWithHouseholdGroupName:(id)name countersManager:(id)manager dateProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  managerCopy = manager;
+  providerCopy = provider;
   v15.receiver = self;
   v15.super_class = HMDHouseholdActivityLogEventContributor;
   v12 = [(HMDHouseholdActivityLogEventContributor *)&v15 init];
   v13 = v12;
   if (v12 == self)
   {
-    objc_storeStrong(&v12->_householdGroupName, a3);
-    objc_storeStrong(&v13->_countersManager, a4);
-    objc_storeStrong(&v13->_dateProvider, a5);
+    objc_storeStrong(&v12->_householdGroupName, name);
+    objc_storeStrong(&v13->_countersManager, manager);
+    objc_storeStrong(&v13->_dateProvider, provider);
   }
 
   return v13;

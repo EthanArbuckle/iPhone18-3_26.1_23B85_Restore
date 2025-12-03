@@ -3,68 +3,68 @@
 - (BOOL)_isRegisteredForAllExpressTransactionNotifications;
 - (BOOL)_shouldDisplayPrimaryView;
 - (BOOL)_shouldDisplaySecondaryView;
-- (PKPassPaymentConfirmationView)initWithPass:(id)a3 passStateProvider:(id)a4 context:(id)a5;
+- (PKPassPaymentConfirmationView)initWithPass:(id)pass passStateProvider:(id)provider context:(id)context;
 - (id)_expressNotificationNames;
 - (id)_findOrCreatePrimaryAdjustableSingleCellView;
 - (id)_findOrCreatePrimaryFusedDoubleCellView;
 - (id)_findOrCreateSecondaryView;
-- (id)_groupTileForTiles:(id)a3;
+- (id)_groupTileForTiles:(id)tiles;
 - (void)_beginResolution;
 - (void)_disableActivityTimer;
-- (void)_handleExpressNotification:(id)a3;
+- (void)_handleExpressNotification:(id)notification;
 - (void)_presentCheckmarkIfNecessary;
-- (void)_registerForExpressTransactionNotifications:(BOOL)a3;
-- (void)_registerObserverForNotificationName:(id)a3 center:(id)a4 handler:(id)a5;
+- (void)_registerForExpressTransactionNotifications:(BOOL)notifications;
+- (void)_registerObserverForNotificationName:(id)name center:(id)center handler:(id)handler;
 - (void)_reloadTiles;
 - (void)_resolveActivityIfNecessary;
 - (void)_resolveActivityIfNecessaryWithDelay;
 - (void)_updateContentPrimaryView;
 - (void)_updateContentSecondaryView;
 - (void)dealloc;
-- (void)didBecomeHiddenAnimated:(BOOL)a3;
-- (void)didBecomeVisibleAnimated:(BOOL)a3;
-- (void)layoutIfNeededAnimated:(BOOL)a3;
+- (void)didBecomeHiddenAnimated:(BOOL)animated;
+- (void)didBecomeVisibleAnimated:(BOOL)animated;
+- (void)layoutIfNeededAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4;
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5;
-- (void)payStateView:(id)a3 revealingCheckmark:(BOOL)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceivePlanUpdate:(id)a4;
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4;
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4;
-- (void)willBecomeHiddenAnimated:(BOOL)a3;
-- (void)willBecomeVisibleAnimated:(BOOL)a3;
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state;
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context;
+- (void)payStateView:(id)view revealingCheckmark:(BOOL)checkmark;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceivePlanUpdate:(id)update;
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties;
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction;
+- (void)willBecomeHiddenAnimated:(BOOL)animated;
+- (void)willBecomeVisibleAnimated:(BOOL)animated;
 @end
 
 @implementation PKPassPaymentConfirmationView
 
-- (PKPassPaymentConfirmationView)initWithPass:(id)a3 passStateProvider:(id)a4 context:(id)a5
+- (PKPassPaymentConfirmationView)initWithPass:(id)pass passStateProvider:(id)provider context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passCopy = pass;
+  providerCopy = provider;
+  contextCopy = context;
   v72.receiver = self;
   v72.super_class = PKPassPaymentConfirmationView;
-  v11 = [(PKPassFooterContentView *)&v72 initWithPass:v8 presentationContext:v10];
+  v11 = [(PKPassFooterContentView *)&v72 initWithPass:passCopy presentationContext:contextCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_passStateProvider, a4);
-    [v9 addPassStateObserver:v12];
-    v13 = [MEMORY[0x1E69B8DB8] paymentService];
+    objc_storeStrong(&v11->_passStateProvider, provider);
+    [providerCopy addPassStateObserver:v12];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v12->_paymentService;
-    v12->_paymentService = v13;
+    v12->_paymentService = paymentService;
 
     [(PKPaymentService *)v12->_paymentService registerObserver:v12];
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
     registeredExpressObservers = v12->_registeredExpressObservers;
     v12->_registeredExpressObservers = v15;
 
-    v12->_transactionType = [v10 standaloneTransactionType];
+    v12->_transactionType = [contextCopy standaloneTransactionType];
     [(PKPassPaymentConfirmationView *)v12 _registerForExpressTransactionNotifications:1];
-    v17 = [(PKPaymentService *)v12->_paymentService outstandingExpressTransactionState];
+    outstandingExpressTransactionState = [(PKPaymentService *)v12->_paymentService outstandingExpressTransactionState];
     expressState = v12->_expressState;
-    v12->_expressState = v17;
+    v12->_expressState = outstandingExpressTransactionState;
 
     if (![(PKPassPaymentConfirmationView *)v12 _isExpressOutstanding]|| ![(PKPassPaymentConfirmationView *)v12 _isRegisteredForAllExpressTransactionNotifications])
     {
@@ -72,9 +72,9 @@
       v19 = v12->_expressState;
       if (!v19)
       {
-        v20 = [MEMORY[0x1E69B8860] create];
+        create = [MEMORY[0x1E69B8860] create];
         v21 = v12->_expressState;
-        v12->_expressState = v20;
+        v12->_expressState = create;
 
         v19 = v12->_expressState;
       }
@@ -85,24 +85,24 @@
       }
     }
 
-    v22 = [v8 paymentPass];
-    v23 = [objc_alloc(MEMORY[0x1E69B9308]) initWithPass:v22];
+    paymentPass = [passCopy paymentPass];
+    v23 = [objc_alloc(MEMORY[0x1E69B9308]) initWithPass:paymentPass];
     transitBalanceModel = v12->_transitBalanceModel;
     v12->_transitBalanceModel = v23;
 
-    v45 = [v22 devicePrimaryPaymentApplication];
-    v44 = v8;
+    devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+    v44 = passCopy;
     if (([(PKPassFooterContentView *)v12 style]- 1) >= 3)
     {
-      v25 = [v22 isStoredValuePass];
+      isStoredValuePass = [paymentPass isStoredValuePass];
     }
 
     else
     {
-      v25 = 0;
+      isStoredValuePass = 0;
     }
 
-    v26 = [v22 uniqueID];
+    uniqueID = [paymentPass uniqueID];
     v70[0] = 0;
     v70[1] = v70;
     v70[2] = 0x3032000000;
@@ -130,7 +130,7 @@
     objc_initWeak(&location, v12);
     v27 = dispatch_group_create();
     v28 = v27;
-    if (v25)
+    if (isStoredValuePass)
     {
       dispatch_group_enter(v27);
       v29 = v12->_paymentService;
@@ -139,11 +139,11 @@
       v58[2] = __72__PKPassPaymentConfirmationView_initWithPass_passStateProvider_context___block_invoke;
       v58[3] = &unk_1E8016A48;
       v62 = v68;
-      v59 = v45;
-      v60 = v22;
+      v59 = devicePrimaryPaymentApplication;
+      v60 = paymentPass;
       v30 = v28;
       v61 = v30;
-      [(PKPaymentService *)v29 transitStateWithPassUniqueIdentifier:v26 paymentApplication:v59 completion:v58];
+      [(PKPaymentService *)v29 transitStateWithPassUniqueIdentifier:uniqueID paymentApplication:v59 completion:v58];
       dispatch_group_enter(v30);
       v31 = v12->_paymentService;
       v55[0] = MEMORY[0x1E69E9820];
@@ -153,7 +153,7 @@
       v57 = v66;
       v32 = v30;
       v56 = v32;
-      [(PKPaymentService *)v31 balancesForPaymentPassWithUniqueIdentifier:v26 completion:v55];
+      [(PKPaymentService *)v31 balancesForPaymentPassWithUniqueIdentifier:uniqueID completion:v55];
       dispatch_group_enter(v32);
       v33 = v12->_paymentService;
       v52[0] = MEMORY[0x1E69E9820];
@@ -162,7 +162,7 @@
       v52[3] = &unk_1E8012BB0;
       v54 = v64;
       v53 = v32;
-      [(PKPaymentService *)v33 plansForPaymentPassWithUniqueIdentifier:v26 completion:v52];
+      [(PKPaymentService *)v33 plansForPaymentPassWithUniqueIdentifier:uniqueID completion:v52];
     }
 
     dispatch_group_enter(v28);
@@ -175,7 +175,7 @@
     objc_copyWeak(&v51, &location);
     v35 = v28;
     v49 = v35;
-    [(PKPaymentService *)v34 tilesForPassWithUniqueIdentifier:v26 context:1 completion:v48];
+    [(PKPaymentService *)v34 tilesForPassWithUniqueIdentifier:uniqueID context:1 completion:v48];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__PKPassPaymentConfirmationView_initWithPass_passStateProvider_context___block_invoke_5;
@@ -190,12 +190,12 @@
     payStateView = v12->_payStateView;
     v12->_payStateView = v36;
 
-    v38 = [v22 isAccessPass];
-    [(PKPassPaymentPayStateView *)v12->_payStateView setAccessPass:v38];
+    isAccessPass = [paymentPass isAccessPass];
+    [(PKPassPaymentPayStateView *)v12->_payStateView setAccessPass:isAccessPass];
     v39 = v12->_payStateView;
-    if (v38)
+    if (isAccessPass)
     {
-      v40 = [v22 accessType] == 3;
+      v40 = [paymentPass accessType] == 3;
     }
 
     else
@@ -204,15 +204,15 @@
     }
 
     [(PKPassPaymentPayStateView *)v39 setHomeKeyPass:v40];
-    -[PKPassPaymentPayStateView setIdentityPass:](v12->_payStateView, "setIdentityPass:", [v22 isIdentityPass]);
+    -[PKPassPaymentPayStateView setIdentityPass:](v12->_payStateView, "setIdentityPass:", [paymentPass isIdentityPass]);
     [(PKPassPaymentPayStateView *)v12->_payStateView setDelegate:v12];
     [(PKPassPaymentPayStateView *)v12->_payStateView setAlpha:1.0];
-    v41 = [(PKPassPaymentPayStateView *)v12->_payStateView glyph];
-    [v41 setState:6 animated:0 completionHandler:0];
+    glyph = [(PKPassPaymentPayStateView *)v12->_payStateView glyph];
+    [glyph setState:6 animated:0 completionHandler:0];
 
     [(PKPassPaymentConfirmationView *)v12 addSubview:v12->_payStateView];
-    v42 = [(PKPassFooterContentView *)v12 bottomRule];
-    [v42 setAlpha:0.0];
+    bottomRule = [(PKPassFooterContentView *)v12 bottomRule];
+    [bottomRule setAlpha:0.0];
 
     [(PKPassFooterContentView *)v12 setInfoButtonAlpha:0.0];
     objc_destroyWeak(&v47);
@@ -225,7 +225,7 @@
     _Block_object_dispose(v68, 8);
 
     _Block_object_dispose(v70, 8);
-    v8 = v44;
+    passCopy = v44;
   }
 
   return v12;
@@ -291,28 +291,28 @@ void __72__PKPassPaymentConfirmationView_initWithPass_passStateProvider_context_
   }
 }
 
-- (id)_groupTileForTiles:(id)a3
+- (id)_groupTileForTiles:(id)tiles
 {
-  v3 = a3;
-  if ([v3 count])
+  tilesCopy = tiles;
+  if ([tilesCopy count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [v4 metadata];
-    if ([v5 isGroupType])
+    v4 = [tilesCopy objectAtIndexedSubscript:0];
+    metadata = [v4 metadata];
+    if ([metadata isGroupType])
     {
-      [v3 pk_firstObjectPassingTest:&__block_literal_global_212];
+      [tilesCopy pk_firstObjectPassingTest:&__block_literal_global_212];
     }
 
     else
     {
-      [MEMORY[0x1E69B8A90] _createDefaultDashboardGroupTileWithChildTiles:v3];
+      [MEMORY[0x1E69B8A90] _createDefaultDashboardGroupTileWithChildTiles:tilesCopy];
     }
     v6 = ;
   }
 
   else
   {
-    v6 = [v3 pk_firstObjectPassingTest:&__block_literal_global_212];
+    v6 = [tilesCopy pk_firstObjectPassingTest:&__block_literal_global_212];
   }
 
   return v6;
@@ -330,15 +330,15 @@ BOOL __52__PKPassPaymentConfirmationView__groupTileForTiles___block_invoke(uint6
 {
   objc_initWeak(&location, self);
   paymentService = self->_paymentService;
-  v4 = [(PKPassFooterContentView *)self paymentPass];
-  v5 = [v4 uniqueID];
+  paymentPass = [(PKPassFooterContentView *)self paymentPass];
+  uniqueID = [paymentPass uniqueID];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__PKPassPaymentConfirmationView__reloadTiles__block_invoke;
   v6[3] = &unk_1E8011850;
   objc_copyWeak(&v7, &location);
   v6[4] = self;
-  [(PKPaymentService *)paymentService tilesForPassWithUniqueIdentifier:v5 context:1 completion:v6];
+  [(PKPaymentService *)paymentService tilesForPassWithUniqueIdentifier:uniqueID context:1 completion:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -429,12 +429,12 @@ uint64_t __45__PKPassPaymentConfirmationView__reloadTiles__block_invoke_2(uint64
 {
   if (([(PKPassFooterContentView *)self style]- 1) >= 3)
   {
-    v3 = [(PKPassFooterContentView *)self paymentPass];
-    if ([v3 isStoredValuePass])
+    paymentPass = [(PKPassFooterContentView *)self paymentPass];
+    if ([paymentPass isStoredValuePass])
     {
-      v4 = [(PKTransitBalanceModel *)self->_transitBalanceModel hasBalanceContent];
+      hasBalanceContent = [(PKTransitBalanceModel *)self->_transitBalanceModel hasBalanceContent];
 
-      if (v4)
+      if (hasBalanceContent)
       {
         return 1;
       }
@@ -450,18 +450,18 @@ uint64_t __45__PKPassPaymentConfirmationView__reloadTiles__block_invoke_2(uint64
 
 - (BOOL)_shouldDisplaySecondaryView
 {
-  v3 = [(PKPassPaymentConfirmationView *)self _canDisplaySecondaryView];
-  if (v3)
+  _canDisplaySecondaryView = [(PKPassPaymentConfirmationView *)self _canDisplaySecondaryView];
+  if (_canDisplaySecondaryView)
   {
-    v4 = [(PKPassFooterContentView *)self paymentPass];
-    if ([v4 isTransitPass])
+    paymentPass = [(PKPassFooterContentView *)self paymentPass];
+    if ([paymentPass isTransitPass])
     {
-      v5 = [(PKTransitBalanceModel *)self->_transitBalanceModel hasCommutePlanContent];
+      hasCommutePlanContent = [(PKTransitBalanceModel *)self->_transitBalanceModel hasCommutePlanContent];
 
-      if (v5)
+      if (hasCommutePlanContent)
       {
-        LOBYTE(v3) = 1;
-        return v3;
+        LOBYTE(_canDisplaySecondaryView) = 1;
+        return _canDisplaySecondaryView;
       }
     }
 
@@ -469,22 +469,22 @@ uint64_t __45__PKPassPaymentConfirmationView__reloadTiles__block_invoke_2(uint64
     {
     }
 
-    LOBYTE(v3) = 0;
+    LOBYTE(_canDisplaySecondaryView) = 0;
   }
 
-  return v3;
+  return _canDisplaySecondaryView;
 }
 
 - (void)_updateContentPrimaryView
 {
   if ([(PKTransitBalanceModel *)self->_transitBalanceModel hasBalanceContent])
   {
-    v39 = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableBalances];
-    v3 = [(UIView *)v39 count];
+    displayableBalances = [(PKTransitBalanceModel *)self->_transitBalanceModel displayableBalances];
+    v3 = [(UIView *)displayableBalances count];
     v4 = v3;
     if (v3 == 1)
     {
-      v5 = [(PKPassPaymentConfirmationView *)self _findOrCreatePrimaryAdjustableSingleCellView];
+      _findOrCreatePrimaryAdjustableSingleCellView = [(PKPassPaymentConfirmationView *)self _findOrCreatePrimaryAdjustableSingleCellView];
     }
 
     else
@@ -492,32 +492,32 @@ uint64_t __45__PKPassPaymentConfirmationView__reloadTiles__block_invoke_2(uint64
       if (!v3)
       {
 LABEL_11:
-        v10 = [(UIView *)self->_displayedCellPrimary layer];
-        v11 = [v10 presentationLayer];
-        v12 = v11;
-        if (!v11)
+        layer = [(UIView *)self->_displayedCellPrimary layer];
+        presentationLayer = [layer presentationLayer];
+        v12 = presentationLayer;
+        if (!presentationLayer)
         {
-          v11 = v10;
+          presentationLayer = layer;
         }
 
-        [v11 opacity];
+        [presentationLayer opacity];
         v15 = v14;
 
         v16 = v4 - 1;
         if (v4 == 1)
         {
-          v17 = [(UIView *)v39 objectAtIndexedSubscript:0];
+          v17 = [(UIView *)displayableBalances objectAtIndexedSubscript:0];
           v18 = self->_displayedCellPrimary;
           [(UIView *)v18 setAlpha:1.0];
           [(UIView *)v18 beginUpdates];
           [(UIView *)v18 setEnableDisclosure:0];
-          v19 = [(PKPassFooterContentView *)self paymentPass];
-          [(UIView *)v18 setPass:v19];
+          paymentPass = [(PKPassFooterContentView *)self paymentPass];
+          [(UIView *)v18 setPass:paymentPass];
 
-          v20 = [(UIView *)v17 localizedTitle];
-          if (v20)
+          localizedTitle = [(UIView *)v17 localizedTitle];
+          if (localizedTitle)
           {
-            [(UIView *)v18 setTitle:v20];
+            [(UIView *)v18 setTitle:localizedTitle];
           }
 
           else
@@ -528,8 +528,8 @@ LABEL_11:
 
           v24 = v15 > 0.0;
 
-          v25 = [(UIView *)v17 formattedValue];
-          [(UIView *)v18 setDetail:v25];
+          formattedValue = [(UIView *)v17 formattedValue];
+          [(UIView *)v18 setDetail:formattedValue];
 
           [(UIView *)v18 setSubDetail:0];
           v26 = v18;
@@ -542,11 +542,11 @@ LABEL_11:
             v17 = self->_displayedCellPrimary;
             [(UIView *)v17 setAlpha:1.0];
             [(UIView *)v17 beginUpdates];
-            v18 = [(UIView *)v39 objectAtIndexedSubscript:0];
-            v21 = [(UIView *)v18 localizedTitle];
-            if (v21)
+            v18 = [(UIView *)displayableBalances objectAtIndexedSubscript:0];
+            localizedTitle2 = [(UIView *)v18 localizedTitle];
+            if (localizedTitle2)
             {
-              [(UIView *)v17 setLeftTitle:v21];
+              [(UIView *)v17 setLeftTitle:localizedTitle2];
             }
 
             else
@@ -555,15 +555,15 @@ LABEL_11:
               [(UIView *)v17 setLeftTitle:v27];
             }
 
-            v28 = [(UIView *)v18 formattedValue];
-            [(UIView *)v17 setLeftDetail:v28];
+            formattedValue2 = [(UIView *)v18 formattedValue];
+            [(UIView *)v17 setLeftDetail:formattedValue2];
 
             [(UIView *)v17 setLeftSubDetail:0];
-            v29 = [(UIView *)v39 objectAtIndexedSubscript:1];
-            v30 = [v29 localizedTitle];
-            if (v30)
+            v29 = [(UIView *)displayableBalances objectAtIndexedSubscript:1];
+            localizedTitle3 = [v29 localizedTitle];
+            if (localizedTitle3)
             {
-              [(UIView *)v17 setRightTitle:v30];
+              [(UIView *)v17 setRightTitle:localizedTitle3];
             }
 
             else
@@ -572,12 +572,12 @@ LABEL_11:
               [(UIView *)v17 setRightTitle:v31];
             }
 
-            v32 = [v29 formattedValue];
-            [(UIView *)v17 setRightDetail:v32];
+            formattedValue3 = [v29 formattedValue];
+            [(UIView *)v17 setRightDetail:formattedValue3];
 
             [(UIView *)v17 setRightSubDetail:0];
-            v33 = [(PKPassFooterContentView *)self paymentPass];
-            [(UIView *)v17 setPass:v33];
+            paymentPass2 = [(PKPassFooterContentView *)self paymentPass];
+            [(UIView *)v17 setPass:paymentPass2];
 
             [(UIView *)v17 setEnableDisclosure:0];
             [(UIView *)v17 endUpdates:v15 > 0.0];
@@ -588,18 +588,18 @@ LABEL_11:
           if (v4 < 3)
           {
 LABEL_34:
-            v13 = v39;
+            v13 = displayableBalances;
             goto LABEL_35;
           }
 
           v17 = self->_displayedCellPrimary;
           [(UIView *)v17 setAlpha:1.0];
           [(UIView *)v17 beginUpdates];
-          v18 = [(UIView *)v39 objectAtIndexedSubscript:0];
-          v22 = [(UIView *)v18 localizedTitle];
-          if (v22)
+          v18 = [(UIView *)displayableBalances objectAtIndexedSubscript:0];
+          localizedTitle4 = [(UIView *)v18 localizedTitle];
+          if (localizedTitle4)
           {
-            [(UIView *)v17 setLeftTitle:v22];
+            [(UIView *)v17 setLeftTitle:localizedTitle4];
           }
 
           else
@@ -610,8 +610,8 @@ LABEL_34:
 
           v24 = v15 > 0.0;
 
-          v35 = [(UIView *)v18 formattedValue];
-          [(UIView *)v17 setLeftDetail:v35];
+          formattedValue4 = [(UIView *)v18 formattedValue];
+          [(UIView *)v17 setLeftDetail:formattedValue4];
 
           [(UIView *)v17 setLeftSubDetail:0];
           v36 = PKLocalizedPaymentString(&cfstr_PropertySummar_0.isa);
@@ -621,8 +621,8 @@ LABEL_34:
           [(UIView *)v17 setRightDetail:v37];
 
           [(UIView *)v17 setRightSubDetail:0];
-          v38 = [(PKPassFooterContentView *)self paymentPass];
-          [(UIView *)v17 setPass:v38];
+          paymentPass3 = [(PKPassFooterContentView *)self paymentPass];
+          [(UIView *)v17 setPass:paymentPass3];
 
           [(UIView *)v17 setEnableDisclosure:0];
           v26 = v17;
@@ -634,11 +634,11 @@ LABEL_33:
         goto LABEL_34;
       }
 
-      v5 = [(PKPassPaymentConfirmationView *)self _findOrCreatePrimaryFusedDoubleCellView];
+      _findOrCreatePrimaryAdjustableSingleCellView = [(PKPassPaymentConfirmationView *)self _findOrCreatePrimaryFusedDoubleCellView];
     }
 
     displayedCellPrimary = self->_displayedCellPrimary;
-    self->_displayedCellPrimary = v5;
+    self->_displayedCellPrimary = _findOrCreatePrimaryAdjustableSingleCellView;
 
     goto LABEL_11;
   }
@@ -708,26 +708,26 @@ void __58__PKPassPaymentConfirmationView__updateContentPrimaryView__block_invoke
 {
   if ([(PKTransitBalanceModel *)self->_transitBalanceModel hasCommutePlanContent])
   {
-    v3 = [(PKPaymentDashboardCellActionHandleable *)self->_singleValueCellSecondary layer];
-    v4 = [v3 presentationLayer];
-    v5 = v4;
-    if (!v4)
+    layer = [(PKPaymentDashboardCellActionHandleable *)self->_singleValueCellSecondary layer];
+    presentationLayer = [layer presentationLayer];
+    v5 = presentationLayer;
+    if (!presentationLayer)
     {
-      v4 = v3;
+      presentationLayer = layer;
     }
 
-    [v4 opacity];
+    [presentationLayer opacity];
     v7 = v6;
 
-    v8 = [(PKPassPaymentConfirmationView *)self _findOrCreateSecondaryView];
+    _findOrCreateSecondaryView = [(PKPassPaymentConfirmationView *)self _findOrCreateSecondaryView];
     singleValueCellSecondary = self->_singleValueCellSecondary;
-    self->_singleValueCellSecondary = v8;
+    self->_singleValueCellSecondary = _findOrCreateSecondaryView;
 
     v10 = self->_singleValueCellSecondary;
     [(PKPaymentDashboardCellActionHandleable *)v10 setAlpha:1.0];
     [(PKPaymentDashboardCellActionHandleable *)v10 beginUpdates];
-    v11 = [(PKPassFooterContentView *)self paymentPass];
-    [(PKPaymentDashboardCellActionHandleable *)v10 setPass:v11];
+    paymentPass = [(PKPassFooterContentView *)self paymentPass];
+    [(PKPaymentDashboardCellActionHandleable *)v10 setPass:paymentPass];
     [(PKPaymentDashboardCellActionHandleable *)v10 setEnableDisclosure:0];
     transitBalanceModel = self->_transitBalanceModel;
     v22 = 0;
@@ -775,9 +775,9 @@ void __58__PKPassPaymentConfirmationView__updateContentPrimaryView__block_invoke
   [(PKPassFooterContentView *)&v3 dealloc];
 }
 
-- (void)layoutIfNeededAnimated:(BOOL)a3
+- (void)layoutIfNeededAnimated:(BOOL)animated
 {
-  self->_animated = a3;
+  self->_animated = animated;
   [(PKPassPaymentConfirmationView *)self layoutIfNeeded];
   self->_animated = 0;
 }
@@ -849,35 +849,35 @@ void __58__PKPassPaymentConfirmationView__updateContentPrimaryView__block_invoke
   [(UIView *)self->_payStateView pkui_setFrame:self->_animated animated:remainder.origin.x, remainder.origin.y, remainder.size.width, remainder.size.height];
 }
 
-- (void)willBecomeVisibleAnimated:(BOOL)a3
+- (void)willBecomeVisibleAnimated:(BOOL)animated
 {
   v6.receiver = self;
   v6.super_class = PKPassPaymentConfirmationView;
-  [(PKPassFooterContentView *)&v6 willBecomeVisibleAnimated:a3];
-  v4 = [MEMORY[0x1E695DF00] date];
+  [(PKPassFooterContentView *)&v6 willBecomeVisibleAnimated:animated];
+  date = [MEMORY[0x1E695DF00] date];
   visibleDate = self->_visibleDate;
-  self->_visibleDate = v4;
+  self->_visibleDate = date;
 }
 
-- (void)didBecomeVisibleAnimated:(BOOL)a3
+- (void)didBecomeVisibleAnimated:(BOOL)animated
 {
   v8.receiver = self;
   v8.super_class = PKPassPaymentConfirmationView;
-  [(PKPassFooterContentView *)&v8 didBecomeVisibleAnimated:a3];
+  [(PKPassFooterContentView *)&v8 didBecomeVisibleAnimated:animated];
   self->_needsResolution = 1;
   if (![(PKPassPaymentConfirmationView *)self _isExpressOutstanding])
   {
     goto LABEL_9;
   }
 
-  v4 = [(PKPaymentService *)self->_paymentService outstandingExpressTransactionState];
+  outstandingExpressTransactionState = [(PKPaymentService *)self->_paymentService outstandingExpressTransactionState];
   expressState = self->_expressState;
-  if (!v4)
+  if (!outstandingExpressTransactionState)
   {
     goto LABEL_5;
   }
 
-  if (([(PKExpressTransactionState *)expressState mergeState:v4]& 1) == 0)
+  if (([(PKExpressTransactionState *)expressState mergeState:outstandingExpressTransactionState]& 1) == 0)
   {
     expressState = self->_expressState;
 LABEL_5:
@@ -909,19 +909,19 @@ LABEL_9:
   [MEMORY[0x1E69DD250] pkui_animateUsingOptions:4 animations:v7 completion:0];
 }
 
-- (void)willBecomeHiddenAnimated:(BOOL)a3
+- (void)willBecomeHiddenAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = PKPassPaymentConfirmationView;
-  [(PKPassFooterContentView *)&v4 willBecomeHiddenAnimated:a3];
+  [(PKPassFooterContentView *)&v4 willBecomeHiddenAnimated:animated];
   [(PKPaymentService *)self->_paymentService unregisterObserver:self];
 }
 
-- (void)didBecomeHiddenAnimated:(BOOL)a3
+- (void)didBecomeHiddenAnimated:(BOOL)animated
 {
   v3.receiver = self;
   v3.super_class = PKPassPaymentConfirmationView;
-  [(PKPassFooterContentView *)&v3 didBecomeHiddenAnimated:a3];
+  [(PKPassFooterContentView *)&v3 didBecomeHiddenAnimated:animated];
 }
 
 - (void)_presentCheckmarkIfNecessary
@@ -931,8 +931,8 @@ LABEL_9:
     return;
   }
 
-  v3 = [(PKExpressTransactionState *)self->_expressState status];
-  v4 = v3 == 1;
+  status = [(PKExpressTransactionState *)self->_expressState status];
+  v4 = status == 1;
   if (!self->_showingResolution)
   {
     v5 = 0;
@@ -941,7 +941,7 @@ LABEL_9:
     self->_showingResolution = 1;
     self->_showingSuccessResolution = v4;
     self->_animatingResolution = 1;
-    if (v3 == 1)
+    if (status == 1)
     {
       v7 = 8;
     }
@@ -951,11 +951,11 @@ LABEL_9:
       v7 = 9;
     }
 
-    if (v3 > 1)
+    if (status > 1)
     {
-      if (v3 != 2)
+      if (status != 2)
       {
-        if (v3 != 3)
+        if (status != 3)
         {
 LABEL_28:
           objc_initWeak(&location, self);
@@ -978,9 +978,9 @@ LABEL_28:
       }
     }
 
-    else if (v3)
+    else if (status)
     {
-      if (v3 != 1)
+      if (status != 1)
       {
         goto LABEL_28;
       }
@@ -996,7 +996,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  if (v3 == 1 && !self->_showingSuccessResolution)
+  if (status == 1 && !self->_showingSuccessResolution)
   {
     v6 = (self->_resolutionCounter + 1);
     self->_resolutionCounter = v6;
@@ -1005,15 +1005,15 @@ LABEL_27:
     self->_animatingResolution = 1;
     v7 = 8;
 LABEL_22:
-    v10 = [(PKExpressTransactionState *)self->_expressState standaloneTransactionType];
-    if (v10 == 2)
+    standaloneTransactionType = [(PKExpressTransactionState *)self->_expressState standaloneTransactionType];
+    if (standaloneTransactionType == 2)
     {
       v11 = @"TRANSACTION_UNLOCKED";
     }
 
     else
     {
-      if (v10 != 1)
+      if (standaloneTransactionType != 1)
       {
         v5 = 0;
         goto LABEL_28;
@@ -1071,8 +1071,8 @@ void __61__PKPassPaymentConfirmationView__presentCheckmarkIfNecessary__block_inv
   {
     if (!self->_showingSuccessResolution && -[PKExpressTransactionState status](self->_expressState, "status") == 3 && (-[PKPassFooterContentView pass](self, "pass"), v3 = objc_claimAutoreleasedReturnValue(), [v3 paymentPass], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isTransitPass"), v4, v3, v5))
     {
-      v6 = [(UIView *)self pkui_viewControllerFromResponderChain];
-      if (v6)
+      pkui_viewControllerFromResponderChain = [(UIView *)self pkui_viewControllerFromResponderChain];
+      if (pkui_viewControllerFromResponderChain)
       {
         self->_showingAlert = 1;
         [(PKPassPaymentConfirmationView *)self _disableActivityTimer];
@@ -1090,7 +1090,7 @@ void __61__PKPassPaymentConfirmationView__presentCheckmarkIfNecessary__block_inv
         v12 = [v10 actionWithTitle:v11 style:0 handler:&v13];
         [v9 addAction:{v12, v13, v14, v15, v16}];
 
-        [v6 presentViewController:v9 animated:1 completion:0];
+        [pkui_viewControllerFromResponderChain presentViewController:v9 animated:1 completion:0];
         objc_destroyWeak(&v17);
 
         objc_destroyWeak(&location);
@@ -1190,21 +1190,21 @@ void __69__PKPassPaymentConfirmationView__resolveActivityIfNecessaryWithDelay__b
   v10[1] = *MEMORY[0x1E69E9840];
   if (self->_needsResolution)
   {
-    v3 = [(PKPassFooterContentView *)self delegate];
-    v4 = [v3 isPassFooterContentViewInGroup:self];
+    delegate = [(PKPassFooterContentView *)self delegate];
+    v4 = [delegate isPassFooterContentViewInGroup:self];
 
     self->_needsResolution = 0;
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = *MEMORY[0x1E69BC068];
     v9 = *MEMORY[0x1E69BC070];
     v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
     v10[0] = v7;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
-    [v5 postNotificationName:v6 object:self userInfo:v8];
+    [defaultCenter postNotificationName:v6 object:self userInfo:v8];
   }
 }
 
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1214,14 +1214,14 @@ void __69__PKPassPaymentConfirmationView__resolveActivityIfNecessaryWithDelay__b
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)payStateView:(id)a3 revealingCheckmark:(BOOL)a4
+- (void)payStateView:(id)view revealingCheckmark:(BOOL)checkmark
 {
-  v5 = a3;
+  viewCopy = view;
   kdebug_trace();
-  v6 = [(PKPassFooterContentView *)self delegate];
-  [v6 passFooterContentViewDidTransact:self success:1];
+  delegate = [(PKPassFooterContentView *)self delegate];
+  [delegate passFooterContentViewDidTransact:self success:1];
 
-  LODWORD(self) = [v5 accessPass];
+  LODWORD(self) = [viewCopy accessPass];
   if (self)
   {
     v7 = 1163;
@@ -1235,19 +1235,19 @@ void __69__PKPassPaymentConfirmationView__resolveActivityIfNecessaryWithDelay__b
   AudioServicesPlaySystemSound(v7);
 }
 
-- (void)transactionSourceIdentifier:(id)a3 didReceiveTransaction:(id)a4
+- (void)transactionSourceIdentifier:(id)identifier didReceiveTransaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__PKPassPaymentConfirmationView_transactionSourceIdentifier_didReceiveTransaction___block_invoke;
   block[3] = &unk_1E8010A88;
-  v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = transactionCopy;
+  selfCopy = self;
+  v13 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = transactionCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1293,19 +1293,19 @@ void __83__PKPassPaymentConfirmationView_transactionSourceIdentifier_didReceiveT
 LABEL_11:
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didUpdateWithTransitPassProperties:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didUpdateWithTransitPassProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  propertiesCopy = properties;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__PKPassPaymentConfirmationView_paymentPassWithUniqueIdentifier_didUpdateWithTransitPassProperties___block_invoke;
   block[3] = &unk_1E8010A88;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = propertiesCopy;
+  v8 = propertiesCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1325,29 +1325,29 @@ void __100__PKPassPaymentConfirmationView_paymentPassWithUniqueIdentifier_didUpd
   }
 }
 
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 == 1)
+  identifierCopy = identifier;
+  tilesCopy = tiles;
+  if (context == 1)
   {
-    v10 = [(PKPassFooterContentView *)self paymentPass];
-    v11 = [v10 uniqueID];
-    v12 = v8;
+    paymentPass = [(PKPassFooterContentView *)self paymentPass];
+    uniqueID = [paymentPass uniqueID];
+    v12 = identifierCopy;
     v13 = v12;
-    if (v11 == v12)
+    if (uniqueID == v12)
     {
     }
 
     else
     {
-      if (!v12 || !v11)
+      if (!v12 || !uniqueID)
       {
 
         goto LABEL_10;
       }
 
-      v14 = [v11 isEqualToString:v12];
+      v14 = [uniqueID isEqualToString:v12];
 
       if ((v14 & 1) == 0)
       {
@@ -1355,7 +1355,7 @@ void __100__PKPassPaymentConfirmationView_paymentPassWithUniqueIdentifier_didUpd
       }
     }
 
-    v15 = [(PKPassPaymentConfirmationView *)self _groupTileForTiles:v9];
+    v15 = [(PKPassPaymentConfirmationView *)self _groupTileForTiles:tilesCopy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __84__PKPassPaymentConfirmationView_passWithUniqueIdentifier_didUpdateTiles_forContext___block_invoke;
@@ -1377,19 +1377,19 @@ uint64_t __84__PKPassPaymentConfirmationView_passWithUniqueIdentifier_didUpdateT
   return [v2 _updateContentPrimaryView];
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceiveBalanceUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceiveBalanceUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  updateCopy = update;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __89__PKPassPaymentConfirmationView_paymentPassWithUniqueIdentifier_didReceiveBalanceUpdate___block_invoke;
   block[3] = &unk_1E8010A88;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = updateCopy;
+  v8 = updateCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1409,19 +1409,19 @@ void __89__PKPassPaymentConfirmationView_paymentPassWithUniqueIdentifier_didRece
   }
 }
 
-- (void)paymentPassWithUniqueIdentifier:(id)a3 didReceivePlanUpdate:(id)a4
+- (void)paymentPassWithUniqueIdentifier:(id)identifier didReceivePlanUpdate:(id)update
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  updateCopy = update;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __86__PKPassPaymentConfirmationView_paymentPassWithUniqueIdentifier_didReceivePlanUpdate___block_invoke;
   block[3] = &unk_1E8010A88;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = identifierCopy;
+  v12 = updateCopy;
+  v8 = updateCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -1465,8 +1465,8 @@ void __86__PKPassPaymentConfirmationView_paymentPassWithUniqueIdentifier_didRece
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PKPassPaymentConfirmationView *)self _expressNotificationNames];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _expressNotificationNames = [(PKPassPaymentConfirmationView *)self _expressNotificationNames];
+  v4 = [_expressNotificationNames countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1477,7 +1477,7 @@ void __86__PKPassPaymentConfirmationView_paymentPassWithUniqueIdentifier_didRece
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_expressNotificationNames);
         }
 
         v8 = [(NSMutableDictionary *)self->_registeredExpressObservers objectForKeyedSubscript:*(*(&v11 + 1) + 8 * i)];
@@ -1489,7 +1489,7 @@ void __86__PKPassPaymentConfirmationView_paymentPassWithUniqueIdentifier_didRece
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [_expressNotificationNames countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -1505,26 +1505,26 @@ LABEL_11:
   return v9;
 }
 
-- (void)_registerObserverForNotificationName:(id)a3 center:(id)a4 handler:(id)a5
+- (void)_registerObserverForNotificationName:(id)name center:(id)center handler:(id)handler
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(NSMutableDictionary *)self->_registeredExpressObservers objectForKeyedSubscript:v11];
+  nameCopy = name;
+  centerCopy = center;
+  handlerCopy = handler;
+  v10 = [(NSMutableDictionary *)self->_registeredExpressObservers objectForKeyedSubscript:nameCopy];
   if (!v10)
   {
-    v10 = [v8 addObserverForName:v11 object:0 queue:0 usingBlock:v9];
+    v10 = [centerCopy addObserverForName:nameCopy object:0 queue:0 usingBlock:handlerCopy];
     if (v10)
     {
-      [(NSMutableDictionary *)self->_registeredExpressObservers setObject:v10 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)self->_registeredExpressObservers setObject:v10 forKeyedSubscript:nameCopy];
     }
   }
 }
 
-- (void)_registerForExpressTransactionNotifications:(BOOL)a3
+- (void)_registerForExpressTransactionNotifications:(BOOL)notifications
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notifications)
   {
     if (![(PKPassPaymentConfirmationView *)self _isRegisteredForAllExpressTransactionNotifications])
     {
@@ -1535,13 +1535,13 @@ LABEL_11:
       aBlock[3] = &unk_1E801CB50;
       objc_copyWeak(&v26, &location);
       v4 = _Block_copy(aBlock);
-      v5 = [MEMORY[0x1E696ABB0] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
       v23 = 0u;
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v6 = [(PKPassPaymentConfirmationView *)self _expressNotificationNames];
-      v7 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+      _expressNotificationNames = [(PKPassPaymentConfirmationView *)self _expressNotificationNames];
+      v7 = [_expressNotificationNames countByEnumeratingWithState:&v21 objects:v29 count:16];
       if (v7)
       {
         v8 = *v22;
@@ -1551,13 +1551,13 @@ LABEL_11:
           {
             if (*v22 != v8)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(_expressNotificationNames);
             }
 
-            [(PKPassPaymentConfirmationView *)self _registerObserverForNotificationName:*(*(&v21 + 1) + 8 * i) center:v5 handler:v4];
+            [(PKPassPaymentConfirmationView *)self _registerObserverForNotificationName:*(*(&v21 + 1) + 8 * i) center:defaultCenter handler:v4];
           }
 
-          v7 = [v6 countByEnumeratingWithState:&v21 objects:v29 count:16];
+          v7 = [_expressNotificationNames countByEnumeratingWithState:&v21 objects:v29 count:16];
         }
 
         while (v7);
@@ -1570,13 +1570,13 @@ LABEL_11:
 
   else if ([(PKPassPaymentConfirmationView *)self _isRegisteredForAnyExpressTransactionNotifications])
   {
-    v10 = [MEMORY[0x1E696ABB0] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v11 = [(PKPassPaymentConfirmationView *)self _expressNotificationNames];
-    v12 = [v11 countByEnumeratingWithState:&v17 objects:v28 count:16];
+    _expressNotificationNames2 = [(PKPassPaymentConfirmationView *)self _expressNotificationNames];
+    v12 = [_expressNotificationNames2 countByEnumeratingWithState:&v17 objects:v28 count:16];
     if (v12)
     {
       v13 = *v18;
@@ -1586,19 +1586,19 @@ LABEL_11:
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(_expressNotificationNames2);
           }
 
           v15 = *(*(&v17 + 1) + 8 * j);
           v16 = [(NSMutableDictionary *)self->_registeredExpressObservers objectForKeyedSubscript:v15];
           if (v16)
           {
-            [v10 removeObserver:v16];
+            [defaultCenter2 removeObserver:v16];
             [(NSMutableDictionary *)self->_registeredExpressObservers removeObjectForKey:v15];
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v17 objects:v28 count:16];
+        v12 = [_expressNotificationNames2 countByEnumeratingWithState:&v17 objects:v28 count:16];
       }
 
       while (v12);
@@ -1627,14 +1627,14 @@ void __77__PKPassPaymentConfirmationView__registerForExpressTransactionNotificat
   [WeakRetained _handleExpressNotification:*(a1 + 32)];
 }
 
-- (void)_handleExpressNotification:(id)a3
+- (void)_handleExpressNotification:(id)notification
 {
-  v10 = a3;
-  v4 = [(PKExpressTransactionState *)self->_expressState isProcessing];
-  v5 = v10;
-  if (v4)
+  notificationCopy = notification;
+  isProcessing = [(PKExpressTransactionState *)self->_expressState isProcessing];
+  v5 = notificationCopy;
+  if (isProcessing)
   {
-    v6 = [v10 name];
+    name = [notificationCopy name];
     if (PKEqualObjects())
     {
       [(PKExpressTransactionState *)self->_expressState receiveEvents:1];
@@ -1706,7 +1706,7 @@ LABEL_7:
     [(PKPassPaymentPayStateView *)payStateView updateDebugLabel:v8 isErrorState:v9];
 LABEL_8:
 
-    v5 = v10;
+    v5 = notificationCopy;
   }
 }
 

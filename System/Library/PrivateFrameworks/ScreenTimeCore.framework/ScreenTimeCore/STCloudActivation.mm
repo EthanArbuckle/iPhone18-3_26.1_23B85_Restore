@@ -1,42 +1,42 @@
 @interface STCloudActivation
-- (BOOL)updateWithDictionaryRepresentation:(id)a3;
+- (BOOL)updateWithDictionaryRepresentation:(id)representation;
 - (id)computeUniqueIdentifier;
 - (id)dictionaryRepresentation;
 - (void)computeUniqueIdentifier;
 - (void)dictionaryRepresentation;
-- (void)didChangeValueForKey:(id)a3;
+- (void)didChangeValueForKey:(id)key;
 @end
 
 @implementation STCloudActivation
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"activationPlist"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"activationPlist"])
   {
     [(STUniquedManagedObject *)self updateUniqueIdentifier];
   }
 
   v5.receiver = self;
   v5.super_class = STCloudActivation;
-  [(STCloudActivation *)&v5 didChangeValueForKey:v4];
+  [(STCloudActivation *)&v5 didChangeValueForKey:keyCopy];
 }
 
 - (id)computeUniqueIdentifier
 {
-  v3 = [(STCloudActivation *)self activationPlist];
+  activationPlist = [(STCloudActivation *)self activationPlist];
 
-  if (v3)
+  if (activationPlist)
   {
     v4 = MEMORY[0x1E696AE40];
-    v5 = [(STCloudActivation *)self activationPlist];
+    activationPlist2 = [(STCloudActivation *)self activationPlist];
     v13 = 0;
-    v6 = [v4 propertyListWithData:v5 options:0 format:0 error:&v13];
+    v6 = [v4 propertyListWithData:activationPlist2 options:0 format:0 error:&v13];
     v7 = v13;
 
     if (v6)
     {
-      v8 = [v6 objectForKeyedSubscript:@"uniqueIdentifier"];
+      identifier = [v6 objectForKeyedSubscript:@"uniqueIdentifier"];
     }
 
     else
@@ -47,10 +47,10 @@
         [STCloudActivation computeUniqueIdentifier];
       }
 
-      v8 = [(STCloudActivation *)self identifier];
+      identifier = [(STCloudActivation *)self identifier];
     }
 
-    v10 = v8;
+    identifier2 = identifier;
   }
 
   else
@@ -61,17 +61,17 @@
       [STCloudActivation computeUniqueIdentifier];
     }
 
-    v10 = [(STCloudActivation *)self identifier];
+    identifier2 = [(STCloudActivation *)self identifier];
   }
 
-  return v10;
+  return identifier2;
 }
 
-- (BOOL)updateWithDictionaryRepresentation:(id)a3
+- (BOOL)updateWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9 = 0;
-  v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:v4 format:200 options:0 error:&v9];
+  v5 = [MEMORY[0x1E696AE40] dataWithPropertyList:representationCopy format:200 options:0 error:&v9];
   v6 = v9;
   if (v5)
   {
@@ -83,7 +83,7 @@
     v7 = +[STLog cloudkit];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
     {
-      [(STCloudActivation *)v4 updateWithDictionaryRepresentation:v6, v7];
+      [(STCloudActivation *)representationCopy updateWithDictionaryRepresentation:v6, v7];
     }
   }
 
@@ -92,13 +92,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [(STCloudActivation *)self activationPlist];
-  if (v3)
+  activationPlist = [(STCloudActivation *)self activationPlist];
+  if (activationPlist)
   {
     v4 = MEMORY[0x1E696AE40];
-    v5 = [(STCloudActivation *)self activationPlist];
+    activationPlist2 = [(STCloudActivation *)self activationPlist];
     v11 = 0;
-    v6 = [v4 propertyListWithData:v5 options:0 format:0 error:&v11];
+    v6 = [v4 propertyListWithData:activationPlist2 options:0 format:0 error:&v11];
     v7 = v11;
 
     if (v6)

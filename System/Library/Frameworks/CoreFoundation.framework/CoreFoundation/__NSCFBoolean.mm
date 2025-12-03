@@ -1,14 +1,14 @@
 @interface __NSCFBoolean
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (__NSCFBoolean)retain;
 - (double)doubleValue;
 - (float)floatValue;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLocale:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLocale:(id)locale;
 - (int64_t)_cfNumberType;
-- (int64_t)_reverseCompare:(id)a3;
-- (int64_t)compare:(id)a3;
-- (unsigned)_getValue:(void *)a3 forType:(int64_t)a4;
+- (int64_t)_reverseCompare:(id)compare;
+- (int64_t)compare:(id)compare;
+- (unsigned)_getValue:(void *)value forType:(int64_t)type;
 - (void)release;
 @end
 
@@ -167,22 +167,22 @@ LABEL_32:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    if (self == a3)
+    if (self == equal)
     {
       LOBYTE(v5) = 1;
     }
 
     else
     {
-      v5 = _NSIsNSNumber(a3);
+      v5 = _NSIsNSNumber(equal);
       if (v5)
       {
 
-        LOBYTE(v5) = [(__NSCFBoolean *)self isEqualToNumber:a3];
+        LOBYTE(v5) = [(__NSCFBoolean *)self isEqualToNumber:equal];
       }
     }
   }
@@ -195,7 +195,7 @@ LABEL_32:
   return v5;
 }
 
-- (id)descriptionWithLocale:(id)a3
+- (id)descriptionWithLocale:(id)locale
 {
   if ([(__NSCFBoolean *)self BOOLValue])
   {
@@ -208,7 +208,7 @@ LABEL_32:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if ((self & 0x8000000000000000) == 0)
   {
@@ -218,38 +218,38 @@ LABEL_32:
   return self;
 }
 
-- (unsigned)_getValue:(void *)a3 forType:(int64_t)a4
+- (unsigned)_getValue:(void *)value forType:(int64_t)type
 {
-  if (a4 > 3)
+  if (type > 3)
   {
-    if (a4 <= 5)
+    if (type <= 5)
     {
-      if (a4 == 4)
+      if (type == 4)
       {
-        *a3 = [(__NSCFBoolean *)self longLongValue];
+        *value = [(__NSCFBoolean *)self longLongValue];
       }
 
       else
       {
         [(__NSCFBoolean *)self floatValue];
-        *a3 = v5;
+        *value = v5;
       }
 
       goto LABEL_16;
     }
 
-    if (a4 == 6)
+    if (type == 6)
     {
       [(__NSCFBoolean *)self doubleValue];
-      *a3 = v7;
+      *value = v7;
       goto LABEL_16;
     }
 
-    if (a4 == 17)
+    if (type == 17)
     {
-      v6 = [(__NSCFBoolean *)self longLongValue];
-      *a3 = v6 >> 63;
-      *(a3 + 1) = v6;
+      longLongValue = [(__NSCFBoolean *)self longLongValue];
+      *value = longLongValue >> 63;
+      *(value + 1) = longLongValue;
       goto LABEL_16;
     }
 
@@ -258,32 +258,32 @@ LABEL_17:
     return self;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    *a3 = [(__NSCFBoolean *)self charValue];
+    *value = [(__NSCFBoolean *)self charValue];
     goto LABEL_16;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
-    *a3 = [(__NSCFBoolean *)self shortValue];
+    *value = [(__NSCFBoolean *)self shortValue];
     goto LABEL_16;
   }
 
-  if (a4 != 3)
+  if (type != 3)
   {
     goto LABEL_17;
   }
 
-  *a3 = [(__NSCFBoolean *)self intValue];
+  *value = [(__NSCFBoolean *)self intValue];
 LABEL_16:
   LOBYTE(self) = 1;
   return self;
 }
 
-- (int64_t)_reverseCompare:(id)a3
+- (int64_t)_reverseCompare:(id)compare
 {
-  v3 = [(__NSCFBoolean *)self compare:a3];
+  v3 = [(__NSCFBoolean *)self compare:compare];
   if (v3 == 1)
   {
     v4 = -1;
@@ -305,25 +305,25 @@ LABEL_16:
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  if (!a3)
+  if (!compare)
   {
     [(__NSCFBoolean *)self compare:a2];
   }
 
-  if (self == a3)
+  if (self == compare)
   {
     return 0;
   }
 
-  v5 = *[a3 objCType];
-  v6 = [(__NSCFBoolean *)self objCType];
-  if ((v5 & 0xFFFFFFFD) == 0x64 || (v7 = *v6, (v7 & 0xFFFFFFFD) == 0x64))
+  v5 = *[compare objCType];
+  objCType = [(__NSCFBoolean *)self objCType];
+  if ((v5 & 0xFFFFFFFD) == 0x64 || (v7 = *objCType, (v7 & 0xFFFFFFFD) == 0x64))
   {
     [(__NSCFBoolean *)self doubleValue];
     v13 = v12;
-    [a3 doubleValue];
+    [compare doubleValue];
     if (v13 >= v14)
     {
       return v14 < v13;
@@ -334,9 +334,9 @@ LABEL_16:
 
   if (v5 == 81 && v7 == 81)
   {
-    v8 = [(__NSCFBoolean *)self unsignedLongLongValue];
-    v9 = [a3 unsignedLongLongValue];
-    if (v8 >= v9)
+    unsignedLongLongValue = [(__NSCFBoolean *)self unsignedLongLongValue];
+    unsignedLongLongValue2 = [compare unsignedLongLongValue];
+    if (unsignedLongLongValue >= unsignedLongLongValue2)
     {
       v10 = 0;
     }
@@ -346,7 +346,7 @@ LABEL_16:
       v10 = -1;
     }
 
-    if (v8 > v9)
+    if (unsignedLongLongValue > unsignedLongLongValue2)
     {
       return 1;
     }
@@ -362,14 +362,14 @@ LABEL_16:
     return 1;
   }
 
-  if (v5 == 81 && [a3 unsignedLongLongValue] < 0)
+  if (v5 == 81 && [compare unsignedLongLongValue] < 0)
   {
     return -1;
   }
 
-  v15 = [(__NSCFBoolean *)self longLongValue];
-  v16 = [a3 longLongValue];
-  if (v15 >= v16)
+  longLongValue = [(__NSCFBoolean *)self longLongValue];
+  longLongValue2 = [compare longLongValue];
+  if (longLongValue >= longLongValue2)
   {
     v17 = 0;
   }
@@ -379,7 +379,7 @@ LABEL_16:
     v17 = -1;
   }
 
-  if (v15 > v16)
+  if (longLongValue > longLongValue2)
   {
     return 1;
   }

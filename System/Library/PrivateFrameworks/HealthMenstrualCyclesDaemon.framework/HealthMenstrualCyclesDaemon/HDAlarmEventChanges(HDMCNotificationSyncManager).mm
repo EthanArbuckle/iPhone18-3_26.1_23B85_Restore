@@ -11,23 +11,23 @@
   v7 = a4;
   if (v6)
   {
-    v8 = [v6 isDeleted];
+    isDeleted = [v6 isDeleted];
     v9 = 0x277D107A0;
-    if (!v8)
+    if (!isDeleted)
     {
       v9 = 0x277D107A8;
     }
 
     v10 = objc_alloc(*v9);
-    v11 = [v6 UUID];
-    v12 = [v10 initWithUUID:v11];
+    uUID = [v6 UUID];
+    v12 = [v10 initWithUUID:uUID];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [a1 removedEvents];
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    removedEvents = [self removedEvents];
+    v14 = [removedEvents countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
       v15 = v14;
@@ -39,17 +39,17 @@
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(removedEvents);
           }
 
-          v18 = [*(*(&v20 + 1) + 8 * v17) hdmc_notificationHoldInstruction];
-          v7[2](v7, v18, v12);
+          hdmc_notificationHoldInstruction = [*(*(&v20 + 1) + 8 * v17) hdmc_notificationHoldInstruction];
+          v7[2](v7, hdmc_notificationHoldInstruction, v12);
 
           ++v17;
         }
 
         while (v15 != v17);
-        v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v15 = [removedEvents countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v15);

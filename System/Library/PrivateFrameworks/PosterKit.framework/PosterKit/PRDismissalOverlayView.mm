@@ -1,21 +1,21 @@
 @interface PRDismissalOverlayView
 - (CGRect)touchPassthroughRect;
-- (PRDismissalOverlayView)initWithFrame:(CGRect)a3;
+- (PRDismissalOverlayView)initWithFrame:(CGRect)frame;
 - (PRDismissalOverlayViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_tapGestureRecognized:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_tapGestureRecognized:(id)recognized;
 - (void)layoutSubviews;
-- (void)setTouchPassthroughRect:(CGRect)a3;
+- (void)setTouchPassthroughRect:(CGRect)rect;
 @end
 
 @implementation PRDismissalOverlayView
 
-- (PRDismissalOverlayView)initWithFrame:(CGRect)a3
+- (PRDismissalOverlayView)initWithFrame:(CGRect)frame
 {
   v30 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
   v27.super_class = PRDismissalOverlayView;
-  v3 = [(PRDismissalOverlayView *)&v27 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PRDismissalOverlayView *)&v27 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -62,8 +62,8 @@
           }
 
           v19 = *(*(&v23 + 1) + 8 * i);
-          v20 = [v19 layer];
-          [v20 setHitTestsAsOpaque:1];
+          layer = [v19 layer];
+          [layer setHitTestsAsOpaque:1];
 
           v21 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel__tapGestureRecognized_];
           [v19 addGestureRecognizer:v21];
@@ -80,11 +80,11 @@
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v12.x = x;
   v12.y = y;
   if (CGRectContainsPoint(self->_touchPassthroughRect, v12))
@@ -96,20 +96,20 @@
   {
     v10.receiver = self;
     v10.super_class = PRDismissalOverlayView;
-    v8 = [(PRDismissalOverlayView *)&v10 hitTest:v7 withEvent:x, y];
+    v8 = [(PRDismissalOverlayView *)&v10 hitTest:eventCopy withEvent:x, y];
   }
 
   return v8;
 }
 
-- (void)setTouchPassthroughRect:(CGRect)a3
+- (void)setTouchPassthroughRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_touchPassthroughRect = &self->_touchPassthroughRect;
-  if (!CGRectEqualToRect(a3, self->_touchPassthroughRect))
+  if (!CGRectEqualToRect(rect, self->_touchPassthroughRect))
   {
     p_touchPassthroughRect->origin.x = x;
     p_touchPassthroughRect->origin.y = y;
@@ -188,7 +188,7 @@
   }
 }
 
-- (void)_tapGestureRecognized:(id)a3
+- (void)_tapGestureRecognized:(id)recognized
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained dismissalOverlayViewDidDismiss:self];

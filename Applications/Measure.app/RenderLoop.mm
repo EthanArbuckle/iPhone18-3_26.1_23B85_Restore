@@ -1,20 +1,20 @@
 @interface RenderLoop
-- (id)renderer:(id)a3 nodeForAnchor:(id)a4;
-- (void)renderer:(id)a3 didRemoveNode:(id)a4 forAnchor:(id)a5;
-- (void)renderer:(id)a3 updateAtTime:(double)a4;
+- (id)renderer:(id)renderer nodeForAnchor:(id)anchor;
+- (void)renderer:(id)renderer didRemoveNode:(id)node forAnchor:(id)anchor;
+- (void)renderer:(id)renderer updateAtTime:(double)time;
 @end
 
 @implementation RenderLoop
 
-- (void)renderer:(id)a3 updateAtTime:(double)a4
+- (void)renderer:(id)renderer updateAtTime:(double)time
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100170144(a3, a4);
+  selfCopy = self;
+  sub_100170144(renderer, time);
   swift_unknownObjectRelease();
 }
 
-- (id)renderer:(id)a3 nodeForAnchor:(id)a4
+- (id)renderer:(id)renderer nodeForAnchor:(id)anchor
 {
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
@@ -26,12 +26,12 @@
   {
     v10 = v9;
     v11 = objc_allocWithZone(SCNNode);
-    v12 = a4;
+    anchorCopy = anchor;
     v13 = [v11 init];
     strcpy(v21, "arkit_plane_");
     BYTE5(v21[1]) = 0;
     HIWORD(v21[1]) = -5120;
-    v14 = [v10 identifier];
+    identifier = [v10 identifier];
     static UUID._unconditionallyBridgeFromObjectiveC(_:)();
 
     v15 = UUID.uuidString.getter();
@@ -54,13 +54,13 @@
   return v13;
 }
 
-- (void)renderer:(id)a3 didRemoveNode:(id)a4 forAnchor:(id)a5
+- (void)renderer:(id)renderer didRemoveNode:(id)node forAnchor:(id)anchor
 {
   swift_unknownObjectRetain();
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  sub_1001719E8(v9);
+  nodeCopy = node;
+  anchorCopy = anchor;
+  selfCopy = self;
+  sub_1001719E8(anchorCopy);
   swift_unknownObjectRelease();
 }
 

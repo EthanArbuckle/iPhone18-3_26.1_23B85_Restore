@@ -1,13 +1,13 @@
 @interface SFBrowserMenuKeyCommandParameters
 - (unint64_t)property;
-- (void)setProperty:(unint64_t)a3;
+- (void)setProperty:(unint64_t)property;
 @end
 
 @implementation SFBrowserMenuKeyCommandParameters
 
-- (void)setProperty:(unint64_t)a3
+- (void)setProperty:(unint64_t)property
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:property];
   propertyList = self->_propertyList;
   self->_propertyList = v4;
 }

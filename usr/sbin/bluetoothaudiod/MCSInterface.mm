@@ -1,5 +1,5 @@
 @interface MCSInterface
-- (MCSInterface)initWithPeripheral:(id)a3 service:(id)a4;
+- (MCSInterface)initWithPeripheral:(id)peripheral service:(id)service;
 - (id)extractMediaControlPointOpcodesSupported;
 - (id)extractMediaPlayerName;
 - (id)extractTrackDuration;
@@ -13,27 +13,27 @@
 - (void)didRequestMediaStateRead;
 - (void)didRequestTrackDurationRead;
 - (void)didRequestTrackPositionRead;
-- (void)didRequestTrackPositionWrite:(id)a3;
+- (void)didRequestTrackPositionWrite:(id)write;
 - (void)didRequestTrackTitleRead;
 - (void)extractPlayingOrder;
 - (void)extractPlayingOrdersSupported;
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5;
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5;
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error;
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error;
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error;
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MCSInterface
 
-- (MCSInterface)initWithPeripheral:(id)a3 service:(id)a4
+- (MCSInterface)initWithPeripheral:(id)peripheral service:(id)service
 {
   v7.receiver = self;
   v7.super_class = MCSInterface;
-  v4 = [(ServiceInterface *)&v7 initWithPeripheral:a3 service:a4];
+  v4 = [(ServiceInterface *)&v7 initWithPeripheral:peripheral service:service];
   v5 = v4;
   if (v4)
   {
@@ -73,9 +73,9 @@
   v18[10] = v10;
   v11 = [NSArray arrayWithObjects:v18 count:11];
 
-  v12 = [(ServiceInterface *)self peripheral];
-  v13 = [(ServiceInterface *)self service];
-  [v12 discoverCharacteristics:v11 forService:v13];
+  peripheral = [(ServiceInterface *)self peripheral];
+  service = [(ServiceInterface *)self service];
+  [peripheral discoverCharacteristics:v11 forService:service];
 }
 
 - (void)stop
@@ -85,16 +85,16 @@
   [(ServiceInterface *)&v2 stop];
 }
 
-- (void)peripheral:(id)a3 didDiscoverCharacteristicsForService:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverCharacteristicsForService:(id)service error:(id)error
 {
-  v8 = a3;
-  if (!a5)
+  peripheralCopy = peripheral;
+  if (!error)
   {
     v72 = 0u;
     v73 = 0u;
     v70 = 0u;
     v71 = 0u;
-    obj = [a4 characteristics];
+    obj = [service characteristics];
     v9 = [obj countByEnumeratingWithState:&v70 objects:v74 count:16];
     if (!v9)
     {
@@ -125,16 +125,16 @@
         }
 
         v13 = *(*(&v70 + 1) + 8 * v12);
-        v14 = [(MCSInterface *)self mediaPlayerNameCharacteristic];
-        if (v14)
+        mediaPlayerNameCharacteristic = [(MCSInterface *)self mediaPlayerNameCharacteristic];
+        if (mediaPlayerNameCharacteristic)
         {
         }
 
         else
         {
-          v15 = [v13 UUID];
+          uUID = [v13 UUID];
           v16 = [CBUUID UUIDWithString:v68];
-          v17 = [v15 isEqual:v16];
+          v17 = [uUID isEqual:v16];
 
           if (v17)
           {
@@ -143,36 +143,36 @@
           }
         }
 
-        v18 = [(MCSInterface *)self trackChangedCharacteristic];
-        if (v18)
+        trackChangedCharacteristic = [(MCSInterface *)self trackChangedCharacteristic];
+        if (trackChangedCharacteristic)
         {
         }
 
         else
         {
-          v19 = [v13 UUID];
+          uUID2 = [v13 UUID];
           v20 = [CBUUID UUIDWithString:v67];
-          v21 = [v19 isEqual:v20];
+          v21 = [uUID2 isEqual:v20];
 
           if (v21)
           {
             [(MCSInterface *)self setTrackChangedCharacteristic:v13];
 LABEL_15:
-            [v8 setNotifyValue:1 forCharacteristic:v13];
+            [peripheralCopy setNotifyValue:1 forCharacteristic:v13];
             goto LABEL_56;
           }
         }
 
-        v22 = [(MCSInterface *)self trackTitleCharacteristic];
-        if (v22)
+        trackTitleCharacteristic = [(MCSInterface *)self trackTitleCharacteristic];
+        if (trackTitleCharacteristic)
         {
         }
 
         else
         {
-          v23 = [v13 UUID];
+          uUID3 = [v13 UUID];
           v24 = [CBUUID UUIDWithString:v66];
-          v25 = [v23 isEqual:v24];
+          v25 = [uUID3 isEqual:v24];
 
           if (v25)
           {
@@ -181,16 +181,16 @@ LABEL_15:
           }
         }
 
-        v26 = [(MCSInterface *)self trackDurationCharacteristic];
-        if (v26)
+        trackDurationCharacteristic = [(MCSInterface *)self trackDurationCharacteristic];
+        if (trackDurationCharacteristic)
         {
         }
 
         else
         {
-          v27 = [v13 UUID];
+          uUID4 = [v13 UUID];
           v28 = [CBUUID UUIDWithString:v65];
-          v29 = [v27 isEqual:v28];
+          v29 = [uUID4 isEqual:v28];
 
           if (v29)
           {
@@ -199,16 +199,16 @@ LABEL_15:
           }
         }
 
-        v30 = [(MCSInterface *)self trackPositionCharacteristic];
-        if (v30)
+        trackPositionCharacteristic = [(MCSInterface *)self trackPositionCharacteristic];
+        if (trackPositionCharacteristic)
         {
         }
 
         else
         {
-          v31 = [v13 UUID];
+          uUID5 = [v13 UUID];
           v32 = [CBUUID UUIDWithString:v64];
-          v33 = [v31 isEqual:v32];
+          v33 = [uUID5 isEqual:v32];
 
           if (v33)
           {
@@ -217,16 +217,16 @@ LABEL_15:
           }
         }
 
-        v34 = [(MCSInterface *)self playingOrderCharacteristic];
-        if (v34)
+        playingOrderCharacteristic = [(MCSInterface *)self playingOrderCharacteristic];
+        if (playingOrderCharacteristic)
         {
         }
 
         else
         {
-          v35 = [v13 UUID];
+          uUID6 = [v13 UUID];
           v36 = [CBUUID UUIDWithString:v63];
-          v37 = [v35 isEqual:v36];
+          v37 = [uUID6 isEqual:v36];
 
           if (v37)
           {
@@ -234,43 +234,43 @@ LABEL_15:
 LABEL_53:
             if (([v13 properties] & 0x10) != 0)
             {
-              [v8 setNotifyValue:1 forCharacteristic:v13];
+              [peripheralCopy setNotifyValue:1 forCharacteristic:v13];
             }
 
             goto LABEL_55;
           }
         }
 
-        v38 = [(MCSInterface *)self playingOrdersSupportedCharacteristic];
-        if (v38)
+        playingOrdersSupportedCharacteristic = [(MCSInterface *)self playingOrdersSupportedCharacteristic];
+        if (playingOrdersSupportedCharacteristic)
         {
         }
 
         else
         {
-          v39 = [v13 UUID];
+          uUID7 = [v13 UUID];
           v40 = [CBUUID UUIDWithString:v62];
-          v41 = [v39 isEqual:v40];
+          v41 = [uUID7 isEqual:v40];
 
           if (v41)
           {
             [(MCSInterface *)self setPlayingOrdersSupportedCharacteristic:v13];
 LABEL_55:
-            [v8 readValueForCharacteristic:v13];
+            [peripheralCopy readValueForCharacteristic:v13];
             goto LABEL_56;
           }
         }
 
-        v42 = [(MCSInterface *)self mediaStateCharacteristic];
-        if (v42)
+        mediaStateCharacteristic = [(MCSInterface *)self mediaStateCharacteristic];
+        if (mediaStateCharacteristic)
         {
         }
 
         else
         {
-          v43 = [v13 UUID];
+          uUID8 = [v13 UUID];
           v44 = [CBUUID UUIDWithString:v61];
-          v45 = [v43 isEqual:v44];
+          v45 = [uUID8 isEqual:v44];
 
           if (v45)
           {
@@ -279,16 +279,16 @@ LABEL_55:
           }
         }
 
-        v46 = [(MCSInterface *)self mediaControlPointCharacteristic];
-        if (v46)
+        mediaControlPointCharacteristic = [(MCSInterface *)self mediaControlPointCharacteristic];
+        if (mediaControlPointCharacteristic)
         {
         }
 
         else
         {
-          v47 = [v13 UUID];
+          uUID9 = [v13 UUID];
           v48 = [CBUUID UUIDWithString:v60];
-          v49 = [v47 isEqual:v48];
+          v49 = [uUID9 isEqual:v48];
 
           if (v49)
           {
@@ -302,16 +302,16 @@ LABEL_55:
           }
         }
 
-        v50 = [(MCSInterface *)self mediaControlPointOpcodesSupportedCharacteristic];
-        if (v50)
+        mediaControlPointOpcodesSupportedCharacteristic = [(MCSInterface *)self mediaControlPointOpcodesSupportedCharacteristic];
+        if (mediaControlPointOpcodesSupportedCharacteristic)
         {
         }
 
         else
         {
-          v51 = [v13 UUID];
+          uUID10 = [v13 UUID];
           v52 = [CBUUID UUIDWithString:v59];
-          v53 = [v51 isEqual:v52];
+          v53 = [uUID10 isEqual:v52];
 
           if (v53)
           {
@@ -320,16 +320,16 @@ LABEL_55:
           }
         }
 
-        v54 = [(MCSInterface *)self contentControlIdCharacteristic];
-        if (v54)
+        contentControlIdCharacteristic = [(MCSInterface *)self contentControlIdCharacteristic];
+        if (contentControlIdCharacteristic)
         {
 
           goto LABEL_56;
         }
 
-        v55 = [v13 UUID];
+        uUID11 = [v13 UUID];
         v56 = [CBUUID UUIDWithString:v58];
-        v57 = [v55 isEqual:v56];
+        v57 = [uUID11 isEqual:v56];
 
         if (v57)
         {
@@ -353,66 +353,66 @@ LABEL_58:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForCharacteristic:(id)characteristic error:(id)error
 {
-  v7 = a4;
-  if (!a5)
+  characteristicCopy = characteristic;
+  if (!error)
   {
-    v8 = [(MCSInterface *)self mediaPlayerNameCharacteristic];
+    mediaPlayerNameCharacteristic = [(MCSInterface *)self mediaPlayerNameCharacteristic];
 
-    if (v8 == v7)
+    if (mediaPlayerNameCharacteristic == characteristicCopy)
     {
-      v22 = [(MCSInterface *)self extractMediaPlayerName];
+      extractMediaPlayerName = [(MCSInterface *)self extractMediaPlayerName];
       goto LABEL_2;
     }
 
-    v9 = [(MCSInterface *)self trackChangedCharacteristic];
+    trackChangedCharacteristic = [(MCSInterface *)self trackChangedCharacteristic];
 
-    if (v9 != v7)
+    if (trackChangedCharacteristic != characteristicCopy)
     {
-      v10 = [(MCSInterface *)self trackTitleCharacteristic];
+      trackTitleCharacteristic = [(MCSInterface *)self trackTitleCharacteristic];
 
-      if (v10 == v7)
+      if (trackTitleCharacteristic == characteristicCopy)
       {
-        v23 = [(MCSInterface *)self extractTrackTitle];
+        extractTrackTitle = [(MCSInterface *)self extractTrackTitle];
         goto LABEL_2;
       }
 
-      v11 = [(MCSInterface *)self trackDurationCharacteristic];
+      trackDurationCharacteristic = [(MCSInterface *)self trackDurationCharacteristic];
 
-      if (v11 == v7)
+      if (trackDurationCharacteristic == characteristicCopy)
       {
-        v24 = [(MCSInterface *)self extractTrackDuration];
+        extractTrackDuration = [(MCSInterface *)self extractTrackDuration];
         goto LABEL_2;
       }
 
-      v12 = [(MCSInterface *)self trackPositionCharacteristic];
+      trackPositionCharacteristic = [(MCSInterface *)self trackPositionCharacteristic];
 
-      if (v12 == v7)
+      if (trackPositionCharacteristic == characteristicCopy)
       {
-        v25 = [(MCSInterface *)self extractTrackPosition];
+        extractTrackPosition = [(MCSInterface *)self extractTrackPosition];
         goto LABEL_2;
       }
 
-      v13 = [(MCSInterface *)self playingOrderCharacteristic];
+      playingOrderCharacteristic = [(MCSInterface *)self playingOrderCharacteristic];
 
-      if (v13 != v7)
+      if (playingOrderCharacteristic != characteristicCopy)
       {
-        v14 = [(MCSInterface *)self playingOrdersSupportedCharacteristic];
+        playingOrdersSupportedCharacteristic = [(MCSInterface *)self playingOrdersSupportedCharacteristic];
 
-        if (v14 != v7)
+        if (playingOrdersSupportedCharacteristic != characteristicCopy)
         {
-          v15 = [(MCSInterface *)self mediaStateCharacteristic];
+          mediaStateCharacteristic = [(MCSInterface *)self mediaStateCharacteristic];
 
-          if (v15 == v7)
+          if (mediaStateCharacteristic == characteristicCopy)
           {
             [(MCSInterface *)self extractMediaState];
             goto LABEL_2;
           }
 
-          v16 = [(MCSInterface *)self mediaControlPointCharacteristic];
+          mediaControlPointCharacteristic = [(MCSInterface *)self mediaControlPointCharacteristic];
 
-          if (v16 == v7)
+          if (mediaControlPointCharacteristic == characteristicCopy)
           {
             v19 = qword_1000A9FE0;
             if (!os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -428,17 +428,17 @@ LABEL_23:
             goto LABEL_2;
           }
 
-          v17 = [(MCSInterface *)self mediaControlPointOpcodesSupportedCharacteristic];
+          mediaControlPointOpcodesSupportedCharacteristic = [(MCSInterface *)self mediaControlPointOpcodesSupportedCharacteristic];
 
-          if (v17 == v7)
+          if (mediaControlPointOpcodesSupportedCharacteristic == characteristicCopy)
           {
-            v26 = [(MCSInterface *)self extractMediaControlPointOpcodesSupported];
+            extractMediaControlPointOpcodesSupported = [(MCSInterface *)self extractMediaControlPointOpcodesSupported];
             goto LABEL_2;
           }
 
-          v18 = [(MCSInterface *)self contentControlIdCharacteristic];
+          contentControlIdCharacteristic = [(MCSInterface *)self contentControlIdCharacteristic];
 
-          if (v18 == v7)
+          if (contentControlIdCharacteristic == characteristicCopy)
           {
             v19 = qword_1000A9FE0;
             if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -457,7 +457,7 @@ LABEL_23:
 LABEL_2:
 }
 
-- (void)peripheral:(id)a3 didWriteValueForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didWriteValueForCharacteristic:(id)characteristic error:(id)error
 {
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -467,7 +467,7 @@ LABEL_2:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateNotificationStateForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateNotificationStateForCharacteristic:(id)characteristic error:(id)error
 {
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -477,7 +477,7 @@ LABEL_2:
   }
 }
 
-- (void)peripheral:(id)a3 didDiscoverDescriptorsForCharacteristic:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didDiscoverDescriptorsForCharacteristic:(id)characteristic error:(id)error
 {
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -487,7 +487,7 @@ LABEL_2:
   }
 }
 
-- (void)peripheral:(id)a3 didUpdateValueForDescriptor:(id)a4 error:(id)a5
+- (void)peripheral:(id)peripheral didUpdateValueForDescriptor:(id)descriptor error:(id)error
 {
   v5 = qword_1000A9FE0;
   if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
@@ -499,9 +499,9 @@ LABEL_2:
 
 - (id)extractMediaPlayerName
 {
-  v2 = [(MCSInterface *)self mediaPlayerNameCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  mediaPlayerNameCharacteristic = [(MCSInterface *)self mediaPlayerNameCharacteristic];
+  value = [mediaPlayerNameCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v5 = +[NSMutableString string];
   v6 = [v4 readString:v5];
@@ -542,9 +542,9 @@ LABEL_7:
 
 - (id)extractTrackTitle
 {
-  v2 = [(MCSInterface *)self trackTitleCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  trackTitleCharacteristic = [(MCSInterface *)self trackTitleCharacteristic];
+  value = [trackTitleCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v5 = +[NSMutableString string];
   v6 = [v4 readString:v5];
@@ -585,9 +585,9 @@ LABEL_7:
 
 - (id)extractTrackDuration
 {
-  v2 = [(MCSInterface *)self trackDurationCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  trackDurationCharacteristic = [(MCSInterface *)self trackDurationCharacteristic];
+  value = [trackDurationCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v8 = -1;
   [v4 readUint32:&v8];
@@ -606,15 +606,15 @@ LABEL_7:
 
 - (void)extractPlayingOrder
 {
-  v2 = [(MCSInterface *)self playingOrderCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  playingOrderCharacteristic = [(MCSInterface *)self playingOrderCharacteristic];
+  value = [playingOrderCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v10 = 0;
-  LODWORD(v3) = [v4 readUint8:&v10];
+  LODWORD(value) = [v4 readUint8:&v10];
   v5 = qword_1000A9FE0;
   v6 = os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (value)
   {
     if (v6)
     {
@@ -640,15 +640,15 @@ LABEL_6:
 
 - (void)extractPlayingOrdersSupported
 {
-  v2 = [(MCSInterface *)self playingOrdersSupportedCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  playingOrdersSupportedCharacteristic = [(MCSInterface *)self playingOrdersSupportedCharacteristic];
+  value = [playingOrdersSupportedCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v10 = 0;
-  LODWORD(v3) = [v4 readUint16:&v10];
+  LODWORD(value) = [v4 readUint16:&v10];
   v5 = qword_1000A9FE0;
   v6 = os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (value)
   {
     if (v6)
     {
@@ -674,15 +674,15 @@ LABEL_6:
 
 - (unsigned)extractMediaState
 {
-  v2 = [(MCSInterface *)self mediaStateCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  mediaStateCharacteristic = [(MCSInterface *)self mediaStateCharacteristic];
+  value = [mediaStateCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v12 = 0;
-  LODWORD(v3) = [v4 readUint8:&v12];
+  LODWORD(value) = [v4 readUint8:&v12];
   v5 = qword_1000A9FE0;
   v6 = os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (value)
   {
     if (v6)
     {
@@ -712,9 +712,9 @@ LABEL_6:
 
 - (id)extractTrackPosition
 {
-  v2 = [(MCSInterface *)self trackPositionCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  trackPositionCharacteristic = [(MCSInterface *)self trackPositionCharacteristic];
+  value = [trackPositionCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v8 = -1;
   [v4 readUint32:&v8];
@@ -733,9 +733,9 @@ LABEL_6:
 
 - (id)extractMediaControlPointOpcodesSupported
 {
-  v2 = [(MCSInterface *)self mediaControlPointOpcodesSupportedCharacteristic];
-  v3 = [v2 value];
-  v4 = [DataInputStream inputStreamWithData:v3 byteOrder:1];
+  mediaControlPointOpcodesSupportedCharacteristic = [(MCSInterface *)self mediaControlPointOpcodesSupportedCharacteristic];
+  value = [mediaControlPointOpcodesSupportedCharacteristic value];
+  v4 = [DataInputStream inputStreamWithData:value byteOrder:1];
 
   v5 = +[NSMutableArray array];
   v30 = 0;
@@ -1077,97 +1077,97 @@ LABEL_25:
 
 - (void)didRequestMediaPlayerNameRead
 {
-  v4 = [(ServiceInterface *)self peripheral];
-  v3 = [(MCSInterface *)self mediaPlayerNameCharacteristic];
-  [v4 readValueForCharacteristic:v3];
+  peripheral = [(ServiceInterface *)self peripheral];
+  mediaPlayerNameCharacteristic = [(MCSInterface *)self mediaPlayerNameCharacteristic];
+  [peripheral readValueForCharacteristic:mediaPlayerNameCharacteristic];
 }
 
 - (void)didRequestTrackTitleRead
 {
-  v4 = [(ServiceInterface *)self peripheral];
-  v3 = [(MCSInterface *)self trackTitleCharacteristic];
-  [v4 readValueForCharacteristic:v3];
+  peripheral = [(ServiceInterface *)self peripheral];
+  trackTitleCharacteristic = [(MCSInterface *)self trackTitleCharacteristic];
+  [peripheral readValueForCharacteristic:trackTitleCharacteristic];
 }
 
 - (void)didRequestTrackDurationRead
 {
-  v4 = [(ServiceInterface *)self peripheral];
-  v3 = [(MCSInterface *)self trackDurationCharacteristic];
-  [v4 readValueForCharacteristic:v3];
+  peripheral = [(ServiceInterface *)self peripheral];
+  trackDurationCharacteristic = [(MCSInterface *)self trackDurationCharacteristic];
+  [peripheral readValueForCharacteristic:trackDurationCharacteristic];
 }
 
 - (void)didRequestTrackPositionRead
 {
-  v4 = [(ServiceInterface *)self peripheral];
-  v3 = [(MCSInterface *)self trackPositionCharacteristic];
-  [v4 readValueForCharacteristic:v3];
+  peripheral = [(ServiceInterface *)self peripheral];
+  trackPositionCharacteristic = [(MCSInterface *)self trackPositionCharacteristic];
+  [peripheral readValueForCharacteristic:trackPositionCharacteristic];
 }
 
-- (void)didRequestTrackPositionWrite:(id)a3
+- (void)didRequestTrackPositionWrite:(id)write
 {
-  v4 = a3;
-  v5 = [(MCSInterface *)self trackPositionCharacteristic];
+  writeCopy = write;
+  trackPositionCharacteristic = [(MCSInterface *)self trackPositionCharacteristic];
 
-  if (v5)
+  if (trackPositionCharacteristic)
   {
     v6 = [DataOutputStream outputStreamWithByteOrder:1];
-    [v4 doubleValue];
+    [writeCopy doubleValue];
     [v6 writeUint32:(v7 * 100.0)];
     v8 = qword_1000A9FE0;
     if (os_log_type_enabled(qword_1000A9FE0, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      [v4 doubleValue];
+      [writeCopy doubleValue];
       v14[0] = 67109120;
       v14[1] = 100 * v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Writing track position to MCS server: %d", v14, 8u);
     }
 
-    v11 = [(ServiceInterface *)self peripheral];
-    v12 = [v6 data];
-    v13 = [(MCSInterface *)self trackPositionCharacteristic];
-    [v11 writeValue:v12 forCharacteristic:v13 type:1];
+    peripheral = [(ServiceInterface *)self peripheral];
+    data = [v6 data];
+    trackPositionCharacteristic2 = [(MCSInterface *)self trackPositionCharacteristic];
+    [peripheral writeValue:data forCharacteristic:trackPositionCharacteristic2 type:1];
   }
 }
 
 - (void)didRequestMediaStateRead
 {
-  v4 = [(ServiceInterface *)self peripheral];
-  v3 = [(MCSInterface *)self mediaStateCharacteristic];
-  [v4 readValueForCharacteristic:v3];
+  peripheral = [(ServiceInterface *)self peripheral];
+  mediaStateCharacteristic = [(MCSInterface *)self mediaStateCharacteristic];
+  [peripheral readValueForCharacteristic:mediaStateCharacteristic];
 }
 
 - (void)didRequestMediaControlOpcodesSupportedRead
 {
-  v4 = [(ServiceInterface *)self peripheral];
-  v3 = [(MCSInterface *)self mediaControlPointOpcodesSupportedCharacteristic];
-  [v4 readValueForCharacteristic:v3];
+  peripheral = [(ServiceInterface *)self peripheral];
+  mediaControlPointOpcodesSupportedCharacteristic = [(MCSInterface *)self mediaControlPointOpcodesSupportedCharacteristic];
+  [peripheral readValueForCharacteristic:mediaControlPointOpcodesSupportedCharacteristic];
 }
 
 - (void)didRequestMediaPlayerInfoRead
 {
-  v3 = [(ServiceInterface *)self peripheral];
-  v4 = [(MCSInterface *)self mediaPlayerNameCharacteristic];
-  [v3 readValueForCharacteristic:v4];
+  peripheral = [(ServiceInterface *)self peripheral];
+  mediaPlayerNameCharacteristic = [(MCSInterface *)self mediaPlayerNameCharacteristic];
+  [peripheral readValueForCharacteristic:mediaPlayerNameCharacteristic];
 
-  v6 = [(ServiceInterface *)self peripheral];
-  v5 = [(MCSInterface *)self mediaStateCharacteristic];
-  [v6 readValueForCharacteristic:v5];
+  peripheral2 = [(ServiceInterface *)self peripheral];
+  mediaStateCharacteristic = [(MCSInterface *)self mediaStateCharacteristic];
+  [peripheral2 readValueForCharacteristic:mediaStateCharacteristic];
 }
 
 - (void)didRequestCurrentTrackInfoRead
 {
-  v3 = [(ServiceInterface *)self peripheral];
-  v4 = [(MCSInterface *)self trackTitleCharacteristic];
-  [v3 readValueForCharacteristic:v4];
+  peripheral = [(ServiceInterface *)self peripheral];
+  trackTitleCharacteristic = [(MCSInterface *)self trackTitleCharacteristic];
+  [peripheral readValueForCharacteristic:trackTitleCharacteristic];
 
-  v5 = [(ServiceInterface *)self peripheral];
-  v6 = [(MCSInterface *)self trackDurationCharacteristic];
-  [v5 readValueForCharacteristic:v6];
+  peripheral2 = [(ServiceInterface *)self peripheral];
+  trackDurationCharacteristic = [(MCSInterface *)self trackDurationCharacteristic];
+  [peripheral2 readValueForCharacteristic:trackDurationCharacteristic];
 
-  v8 = [(ServiceInterface *)self peripheral];
-  v7 = [(MCSInterface *)self trackPositionCharacteristic];
-  [v8 readValueForCharacteristic:v7];
+  peripheral3 = [(ServiceInterface *)self peripheral];
+  trackPositionCharacteristic = [(MCSInterface *)self trackPositionCharacteristic];
+  [peripheral3 readValueForCharacteristic:trackPositionCharacteristic];
 }
 
 @end

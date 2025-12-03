@@ -1,11 +1,11 @@
 @interface VCEmulatedNetworkAlgorithmQueueBandwidth
-- (BOOL)shouldDropPacketWithCurrentAQMBudget:(id)a3;
+- (BOOL)shouldDropPacketWithCurrentAQMBudget:(id)budget;
 - (VCEmulatedNetworkAlgorithmQueueBandwidth)init;
 - (double)computeNetworkServiceRate;
-- (int)getRemainingAQMBudgetWithPacket:(id)a3;
-- (void)addPacketToBudgetBuffer:(id)a3;
-- (void)process:(id)a3;
-- (void)updateSettingsAtTime:(double)a3 impairments:(id)a4;
+- (int)getRemainingAQMBudgetWithPacket:(id)packet;
+- (void)addPacketToBudgetBuffer:(id)buffer;
+- (void)process:(id)process;
+- (void)updateSettingsAtTime:(double)time impairments:(id)impairments;
 @end
 
 @implementation VCEmulatedNetworkAlgorithmQueueBandwidth
@@ -24,35 +24,35 @@
   return result;
 }
 
-- (void)updateSettingsAtTime:(double)a3 impairments:(id)a4
+- (void)updateSettingsAtTime:(double)time impairments:(id)impairments
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = [objc_msgSend(a4 objectForKeyedSubscript:{@"FixedBandwidth", "objectForKeyedSubscript:", @"time"}];
-  v8 = [objc_msgSend(a4 objectForKeyedSubscript:{@"FixedBandwidth", "objectForKeyedSubscript:", @"value"}];
+  v7 = [objc_msgSend(impairments objectForKeyedSubscript:{@"FixedBandwidth", "objectForKeyedSubscript:", @"time"}];
+  v8 = [objc_msgSend(impairments objectForKeyedSubscript:{@"FixedBandwidth", "objectForKeyedSubscript:", @"value"}];
   v9 = [v8 count];
   if (v9 >= 1)
   {
-    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v7, &self->_currentIndexForServiceRate, &self->_lastNetworkQueueServiceRateLoadTime, v9, a3);
+    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v7, &self->_currentIndexForServiceRate, &self->_lastNetworkQueueServiceRateLoadTime, v9, time);
     self->_networkQueueServiceRate = [objc_msgSend(v8 objectAtIndexedSubscript:{self->_currentIndexForServiceRate), "intValue"}];
   }
 
-  v10 = [objc_msgSend(a4 objectForKeyedSubscript:{@"GaussianBandwidth", "objectForKeyedSubscript:", @"time"}];
-  v11 = [objc_msgSend(a4 objectForKeyedSubscript:{@"GaussianBandwidth", "objectForKeyedSubscript:", @"mean"}];
-  v12 = [objc_msgSend(a4 objectForKeyedSubscript:{@"GaussianBandwidth", "objectForKeyedSubscript:", @"stdDev"}];
+  v10 = [objc_msgSend(impairments objectForKeyedSubscript:{@"GaussianBandwidth", "objectForKeyedSubscript:", @"time"}];
+  v11 = [objc_msgSend(impairments objectForKeyedSubscript:{@"GaussianBandwidth", "objectForKeyedSubscript:", @"mean"}];
+  v12 = [objc_msgSend(impairments objectForKeyedSubscript:{@"GaussianBandwidth", "objectForKeyedSubscript:", @"stdDev"}];
   v13 = [v11 count];
   if (v13 >= 1)
   {
-    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v10, &self->_currentIndexForServiceRateDistribution, &self->_lastNetworkQueueServiceRateDistributionLoadTime, v13, a3);
+    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v10, &self->_currentIndexForServiceRateDistribution, &self->_lastNetworkQueueServiceRateDistributionLoadTime, v13, time);
     self->_networkQueueServiceRateMean = [objc_msgSend(v11 objectAtIndexedSubscript:{self->_currentIndexForServiceRateDistribution), "intValue"}];
     self->_networkQueueServiceRateStdDev = [objc_msgSend(v12 objectAtIndexedSubscript:{self->_currentIndexForServiceRateDistribution), "intValue"}];
   }
 
-  v14 = [objc_msgSend(a4 objectForKeyedSubscript:{@"AQMBandwidth", "objectForKeyedSubscript:", @"time"}];
-  v15 = [objc_msgSend(a4 objectForKeyedSubscript:{@"AQMBandwidth", "objectForKeyedSubscript:", @"value"}];
+  v14 = [objc_msgSend(impairments objectForKeyedSubscript:{@"AQMBandwidth", "objectForKeyedSubscript:", @"time"}];
+  v15 = [objc_msgSend(impairments objectForKeyedSubscript:{@"AQMBandwidth", "objectForKeyedSubscript:", @"value"}];
   v16 = [v15 count];
   if (v16 >= 1)
   {
-    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v14, &self->_currentIndexForAQMRate, &self->_lastNetworkQueueAQMRateLoadTime, v16, a3);
+    VCEmulatedNetworkAlgorithm_UpdateIndexWithIntervalArray(v14, &self->_currentIndexForAQMRate, &self->_lastNetworkQueueAQMRateLoadTime, v16, time);
     self->_networkQueueAQMRate = [objc_msgSend(v15 objectAtIndexedSubscript:{self->_currentIndexForAQMRate), "intValue"}];
   }
 
@@ -110,37 +110,37 @@
   }
 }
 
-- (void)process:(id)a3
+- (void)process:(id)process
 {
   v48 = *MEMORY[0x1E69E9840];
   [(VCEmulatedNetworkAlgorithmQueueBandwidth *)self computeNetworkServiceRate];
   self->_networkQueueServiceRate = v5;
   v6 = 0.0;
-  if (([a3 isLost] & 1) == 0)
+  if (([process isLost] & 1) == 0)
   {
-    v7 = [a3 size];
+    v7 = [process size];
     v8 = 8.0;
     LODWORD(v8) = self->_networkQueueServiceRate;
     v6 = v7 * 8.0 / v8;
   }
 
-  [a3 networkServiceTime];
+  [process networkServiceTime];
   self->_expectedProcessEndTime = v6 + v9;
-  [a3 setDepartureTime:?];
+  [process setDepartureTime:?];
   if (self->_networkQueueAQMRate)
   {
-    [a3 setIsDroppedByAQM:{-[VCEmulatedNetworkAlgorithmQueueBandwidth shouldDropPacketWithCurrentAQMBudget:](self, "shouldDropPacketWithCurrentAQMBudget:", a3)}];
-    if ([a3 isLost])
+    [process setIsDroppedByAQM:{-[VCEmulatedNetworkAlgorithmQueueBandwidth shouldDropPacketWithCurrentAQMBudget:](self, "shouldDropPacketWithCurrentAQMBudget:", process)}];
+    if ([process isLost])
     {
-      v10 = 1;
+      isDroppedByAQM = 1;
     }
 
     else
     {
-      v10 = [a3 isDroppedByAQM];
+      isDroppedByAQM = [process isDroppedByAQM];
     }
 
-    [a3 setIsLost:v10];
+    [process setIsLost:isDroppedByAQM];
   }
 
   if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -152,13 +152,13 @@
     {
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [a3 packetID];
-        v15 = [a3 isLost];
-        v16 = [a3 size];
+        packetID = [process packetID];
+        isLost = [process isLost];
+        v16 = [process size];
         networkQueueServiceRate = self->_networkQueueServiceRate;
-        [a3 arrivalTime];
+        [process arrivalTime];
         v19 = v18;
-        [a3 departureTime];
+        [process departureTime];
         v28 = 136317442;
         v29 = v11;
         v30 = 2080;
@@ -166,9 +166,9 @@
         v32 = 1024;
         v33 = 84;
         v34 = 1024;
-        v35 = v14;
+        v35 = packetID;
         v36 = 1024;
-        v37 = v15;
+        v37 = isLost;
         v38 = 1024;
         v39 = v16;
         v40 = 1024;
@@ -185,13 +185,13 @@
 
     else if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [a3 packetID];
-      v22 = [a3 isLost];
-      v23 = [a3 size];
+      packetID2 = [process packetID];
+      isLost2 = [process isLost];
+      v23 = [process size];
       v24 = self->_networkQueueServiceRate;
-      [a3 arrivalTime];
+      [process arrivalTime];
       v26 = v25;
-      [a3 departureTime];
+      [process departureTime];
       v28 = 136317442;
       v29 = v11;
       v30 = 2080;
@@ -199,9 +199,9 @@
       v32 = 1024;
       v33 = 84;
       v34 = 1024;
-      v35 = v21;
+      v35 = packetID2;
       v36 = 1024;
-      v37 = v22;
+      v37 = isLost2;
       v38 = 1024;
       v39 = v23;
       v40 = 1024;
@@ -217,23 +217,23 @@
   }
 }
 
-- (BOOL)shouldDropPacketWithCurrentAQMBudget:(id)a3
+- (BOOL)shouldDropPacketWithCurrentAQMBudget:(id)budget
 {
-  if (([a3 isLost] & 1) == 0)
+  if (([budget isLost] & 1) == 0)
   {
-    v5 = [a3 size];
-    if (v5 > [(VCEmulatedNetworkAlgorithmQueueBandwidth *)self getRemainingAQMBudgetWithPacket:a3])
+    v5 = [budget size];
+    if (v5 > [(VCEmulatedNetworkAlgorithmQueueBandwidth *)self getRemainingAQMBudgetWithPacket:budget])
     {
       return 1;
     }
 
-    [(VCEmulatedNetworkAlgorithmQueueBandwidth *)self addPacketToBudgetBuffer:a3];
+    [(VCEmulatedNetworkAlgorithmQueueBandwidth *)self addPacketToBudgetBuffer:budget];
   }
 
   return 0;
 }
 
-- (void)addPacketToBudgetBuffer:(id)a3
+- (void)addPacketToBudgetBuffer:(id)buffer
 {
   v5 = &self->_budgetBufferPktSize[4085];
   budgetBufferSize = self->_budgetBufferSize;
@@ -258,16 +258,16 @@ LABEL_5:
     self->_budgetBufferSize = budgetBufferSize + 1;
   }
 
-  [a3 arrivalTime];
+  [buffer arrivalTime];
   self->_budgetBufferPktTime[*(v5 + 22)] = v11;
-  self->_budgetBufferPktSize[*(v5 + 22)] = [a3 size];
+  self->_budgetBufferPktSize[*(v5 + 22)] = [buffer size];
 }
 
-- (int)getRemainingAQMBudgetWithPacket:(id)a3
+- (int)getRemainingAQMBudgetWithPacket:(id)packet
 {
   v4 = &self->_budgetBufferPktSize[4085];
   v5 = vcvtd_n_f64_u32(self->_networkQueueAQMRate, 1uLL) * 0.125;
-  [a3 arrivalTime];
+  [packet arrivalTime];
   v7 = *(v4 + 23);
   result = v5;
   if (v7 >= 1)

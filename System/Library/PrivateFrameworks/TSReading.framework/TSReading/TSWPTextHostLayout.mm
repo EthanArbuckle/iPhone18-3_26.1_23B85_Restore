@@ -1,6 +1,6 @@
 @interface TSWPTextHostLayout
 - (void)dealloc;
-- (void)setEditingShape:(id)a3;
+- (void)setEditingShape:(id)shape;
 - (void)updateChildrenFromInfo;
 @end
 
@@ -20,10 +20,10 @@
 - (void)updateChildrenFromInfo
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = [(TSDLayout *)self->_editingShapeLayout info];
+  info = [(TSDLayout *)self->_editingShapeLayout info];
   editingShapeInfo = self->_editingShapeInfo;
   editingShapeLayout = self->_editingShapeLayout;
-  if (v4 == editingShapeInfo)
+  if (info == editingShapeInfo)
   {
     if (editingShapeLayout)
     {
@@ -60,14 +60,14 @@ LABEL_8:
   [v8 makeObjectsPerformSelector:a2];
 }
 
-- (void)setEditingShape:(id)a3
+- (void)setEditingShape:(id)shape
 {
   editingShapeInfo = self->_editingShapeInfo;
-  if (editingShapeInfo != a3)
+  if (editingShapeInfo != shape)
   {
     [(TSDDrawableInfo *)editingShapeInfo setParentInfo:0];
 
-    self->_editingShapeInfo = a3;
+    self->_editingShapeInfo = shape;
     [(TSDDrawableInfo *)self->_editingShapeInfo setParentInfo:[(TSDLayout *)self info]];
 
     [(TSDLayout *)self invalidateChildren];

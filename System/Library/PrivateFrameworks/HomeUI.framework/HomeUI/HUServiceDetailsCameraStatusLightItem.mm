@@ -1,11 +1,11 @@
 @interface HUServiceDetailsCameraStatusLightItem
 - (BOOL)_canReadWriteAccessModeIndicator;
 - (HUServiceDetailsCameraSettingsReaderWriter)settingsReaderWriter;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (id)cameraSettings;
 - (id)characteristicValueManager;
 - (id)itemTitle;
-- (id)updateUserSettingsWithValue:(BOOL)a3;
+- (id)updateUserSettingsWithValue:(BOOL)value;
 @end
 
 @implementation HUServiceDetailsCameraStatusLightItem
@@ -27,14 +27,14 @@
   return v6;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   if ([(HUServiceDetailsCameraStatusLightItem *)self _canReadWriteAccessModeIndicator])
   {
-    v5 = [(HUServiceDetailsCameraStatusLightItem *)self settingsReaderWriter];
-    v6 = [v5 readWithOptions:v4];
+    settingsReaderWriter = [(HUServiceDetailsCameraStatusLightItem *)self settingsReaderWriter];
+    v6 = [settingsReaderWriter readWithOptions:optionsCopy];
   }
 
   else
@@ -51,30 +51,30 @@
   return v6;
 }
 
-- (id)updateUserSettingsWithValue:(BOOL)a3
+- (id)updateUserSettingsWithValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   if ([(HUServiceDetailsCameraStatusLightItem *)self _canReadWriteAccessModeIndicator])
   {
-    v5 = [(HUServiceDetailsCameraStatusLightItem *)self settingsReaderWriter];
-    v6 = [v5 updateUserSettingsWithValue:v3];
+    settingsReaderWriter = [(HUServiceDetailsCameraStatusLightItem *)self settingsReaderWriter];
+    futureWithNoResult = [settingsReaderWriter updateUserSettingsWithValue:valueCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v6;
+  return futureWithNoResult;
 }
 
 - (BOOL)_canReadWriteAccessModeIndicator
 {
   objc_opt_class();
-  v3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceServiceItem;
   }
 
   else
@@ -86,9 +86,9 @@
 
   if (v5)
   {
-    v6 = [v5 profile];
-    v7 = [v6 userSettings];
-    v8 = ([v7 supportedFeatures] >> 4) & 1;
+    profile = [v5 profile];
+    userSettings = [profile userSettings];
+    v8 = ([userSettings supportedFeatures] >> 4) & 1;
   }
 
   else
@@ -102,10 +102,10 @@
 - (id)cameraSettings
 {
   objc_opt_class();
-  v3 = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
+  sourceServiceItem = [(HUServiceDetailsAbstractItem *)self sourceServiceItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = sourceServiceItem;
   }
 
   else
@@ -115,27 +115,27 @@
 
   v5 = v4;
 
-  v6 = [v5 profile];
+  profile = [v5 profile];
 
-  v7 = [v6 userSettings];
+  userSettings = [profile userSettings];
 
-  return v7;
+  return userSettings;
 }
 
 - (id)itemTitle
 {
-  v2 = [(HUServiceDetailsCameraStatusLightItem *)self itemTitleLocalizationKey];
-  v3 = _HULocalizedStringWithDefaultValue(v2, v2, 1);
+  itemTitleLocalizationKey = [(HUServiceDetailsCameraStatusLightItem *)self itemTitleLocalizationKey];
+  v3 = _HULocalizedStringWithDefaultValue(itemTitleLocalizationKey, itemTitleLocalizationKey, 1);
 
   return v3;
 }
 
 - (id)characteristicValueManager
 {
-  v2 = [(HUServiceDetailsAbstractItem *)self home];
-  v3 = [v2 hf_characteristicValueManager];
+  home = [(HUServiceDetailsAbstractItem *)self home];
+  hf_characteristicValueManager = [home hf_characteristicValueManager];
 
-  return v3;
+  return hf_characteristicValueManager;
 }
 
 @end

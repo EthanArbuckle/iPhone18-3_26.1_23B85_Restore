@@ -8,12 +8,12 @@
 {
   v11.receiver = self;
   v11.super_class = BKCollectionsListCellAccessibility;
-  v3 = [(BKCollectionsListCellAccessibility *)&v11 accessibilityTraits];
+  accessibilityTraits = [(BKCollectionsListCellAccessibility *)&v11 accessibilityTraits];
   v10 = 10003;
   v4 = [[NSString alloc] initWithCharacters:&v10 length:1];
-  v5 = [(BKCollectionsListCellAccessibility *)self accessoryView];
-  v6 = [v5 accessibilityLabel];
-  v7 = [v6 isEqualToString:v4];
+  accessoryView = [(BKCollectionsListCellAccessibility *)self accessoryView];
+  accessibilityLabel = [accessoryView accessibilityLabel];
+  v7 = [accessibilityLabel isEqualToString:v4];
 
   if (v7)
   {
@@ -25,7 +25,7 @@
     v8 = 0;
   }
 
-  return v8 | v3;
+  return v8 | accessibilityTraits;
 }
 
 @end

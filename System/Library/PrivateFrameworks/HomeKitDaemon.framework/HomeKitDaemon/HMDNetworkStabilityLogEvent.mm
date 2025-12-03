@@ -1,6 +1,6 @@
 @interface HMDNetworkStabilityLogEvent
-- (HMDNetworkStabilityLogEvent)initWithDictionary:(id)a3;
-- (HMDNetworkStabilityLogEvent)initWithHomeUUID:(id)a3 numWifiAssociations:(unint64_t)a4 wifiDisassociations:(unint64_t)a5 apChanges:(unint64_t)a6 gatewayChanges:(unint64_t)a7 numReadWrites:(unint64_t)a8 numReadErrors:(unint64_t)a9 numWriteErrors:(unint64_t)a10 topReadWriteError:(id)a11 topSessionError:(id)a12 numSessionErrors:(unint64_t)a13 apOUI:(id)a14 ssid:(id)a15 gatewayMACAddress:(id)a16 localHourOfDay:(int64_t)a17 collectionDurationMinutes:(unint64_t)a18;
+- (HMDNetworkStabilityLogEvent)initWithDictionary:(id)dictionary;
+- (HMDNetworkStabilityLogEvent)initWithHomeUUID:(id)d numWifiAssociations:(unint64_t)associations wifiDisassociations:(unint64_t)disassociations apChanges:(unint64_t)changes gatewayChanges:(unint64_t)gatewayChanges numReadWrites:(unint64_t)writes numReadErrors:(unint64_t)errors numWriteErrors:(unint64_t)self0 topReadWriteError:(id)self1 topSessionError:(id)self2 numSessionErrors:(unint64_t)self3 apOUI:(id)self4 ssid:(id)self5 gatewayMACAddress:(id)self6 localHourOfDay:(int64_t)self7 collectionDurationMinutes:(unint64_t)self8;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (id)serializedLogEvent;
 @end
@@ -9,56 +9,56 @@
 
 - (id)serializedLogEvent
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMMHomeLogEvent *)self homeUUIDString];
-  [v3 setObject:v4 forKeyedSubscript:@"homeUUID"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  homeUUIDString = [(HMMHomeLogEvent *)self homeUUIDString];
+  [dictionary setObject:homeUUIDString forKeyedSubscript:@"homeUUID"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numWifiAssociations](self, "numWifiAssociations")}];
-  [v3 setObject:v5 forKeyedSubscript:@"numWifiAssociations"];
+  [dictionary setObject:v5 forKeyedSubscript:@"numWifiAssociations"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numWifiDisassociations](self, "numWifiDisassociations")}];
-  [v3 setObject:v6 forKeyedSubscript:@"numWifiDisassociations"];
+  [dictionary setObject:v6 forKeyedSubscript:@"numWifiDisassociations"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numAPChanges](self, "numAPChanges")}];
-  [v3 setObject:v7 forKeyedSubscript:@"numWifiAPChanges"];
+  [dictionary setObject:v7 forKeyedSubscript:@"numWifiAPChanges"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numGatewayChanges](self, "numGatewayChanges")}];
-  [v3 setObject:v8 forKeyedSubscript:@"numGatewayChanges"];
+  [dictionary setObject:v8 forKeyedSubscript:@"numGatewayChanges"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numReadWrites](self, "numReadWrites")}];
-  [v3 setObject:v9 forKeyedSubscript:@"numReadWrites"];
+  [dictionary setObject:v9 forKeyedSubscript:@"numReadWrites"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numReadErrors](self, "numReadErrors")}];
-  [v3 setObject:v10 forKeyedSubscript:@"numReadErrors"];
+  [dictionary setObject:v10 forKeyedSubscript:@"numReadErrors"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numWriteErrors](self, "numWriteErrors")}];
-  [v3 setObject:v11 forKeyedSubscript:@"numWriteErrors"];
+  [dictionary setObject:v11 forKeyedSubscript:@"numWriteErrors"];
 
-  v12 = [(HMDNetworkStabilityLogEvent *)self topReadWriteError];
-  [v3 setObject:v12 forKeyedSubscript:@"topReadWriteError"];
+  topReadWriteError = [(HMDNetworkStabilityLogEvent *)self topReadWriteError];
+  [dictionary setObject:topReadWriteError forKeyedSubscript:@"topReadWriteError"];
 
-  v13 = [(HMDNetworkStabilityLogEvent *)self topSessionError];
-  [v3 setObject:v13 forKeyedSubscript:@"topSessionError"];
+  topSessionError = [(HMDNetworkStabilityLogEvent *)self topSessionError];
+  [dictionary setObject:topSessionError forKeyedSubscript:@"topSessionError"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numSessionErrors](self, "numSessionErrors")}];
-  [v3 setObject:v14 forKeyedSubscript:@"numSessionErrors"];
+  [dictionary setObject:v14 forKeyedSubscript:@"numSessionErrors"];
 
-  v15 = [(HMDNetworkStabilityLogEvent *)self apOUI];
-  [v3 setObject:v15 forKeyedSubscript:@"APOUI"];
+  apOUI = [(HMDNetworkStabilityLogEvent *)self apOUI];
+  [dictionary setObject:apOUI forKeyedSubscript:@"APOUI"];
 
-  v16 = [(HMDNetworkStabilityLogEvent *)self ssid];
-  [v3 setObject:v16 forKeyedSubscript:@"ssid"];
+  ssid = [(HMDNetworkStabilityLogEvent *)self ssid];
+  [dictionary setObject:ssid forKeyedSubscript:@"ssid"];
 
-  v17 = [(HMDNetworkStabilityLogEvent *)self gatewayMACAddress];
-  [v3 setObject:v17 forKeyedSubscript:@"gatewayMACAddress"];
+  gatewayMACAddress = [(HMDNetworkStabilityLogEvent *)self gatewayMACAddress];
+  [dictionary setObject:gatewayMACAddress forKeyedSubscript:@"gatewayMACAddress"];
 
   v18 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDNetworkStabilityLogEvent localHourOfDay](self, "localHourOfDay")}];
-  [v3 setObject:v18 forKeyedSubscript:@"localHourOfDay"];
+  [dictionary setObject:v18 forKeyedSubscript:@"localHourOfDay"];
 
   v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent collectionDurationMinutes](self, "collectionDurationMinutes")}];
-  [v3 setObject:v19 forKeyedSubscript:@"collectionDurationMinutes"];
+  [dictionary setObject:v19 forKeyedSubscript:@"collectionDurationMinutes"];
 
-  v20 = [v3 copy];
+  v20 = [dictionary copy];
 
   return v20;
 }
@@ -88,17 +88,17 @@
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numWriteErrors](self, "numWriteErrors")}];
   v20[6] = v5;
   v19[7] = @"topReadWriteError";
-  v6 = [(HMDNetworkStabilityLogEvent *)self topReadWriteError];
-  v20[7] = v6;
+  topReadWriteError = [(HMDNetworkStabilityLogEvent *)self topReadWriteError];
+  v20[7] = topReadWriteError;
   v19[8] = @"topSessionError";
-  v7 = [(HMDNetworkStabilityLogEvent *)self topSessionError];
-  v20[8] = v7;
+  topSessionError = [(HMDNetworkStabilityLogEvent *)self topSessionError];
+  v20[8] = topSessionError;
   v19[9] = @"numSessionErrors";
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDNetworkStabilityLogEvent numSessionErrors](self, "numSessionErrors")}];
   v20[9] = v8;
   v19[10] = @"APOUI";
-  v9 = [(HMDNetworkStabilityLogEvent *)self apOUI];
-  v20[10] = v9;
+  apOUI = [(HMDNetworkStabilityLogEvent *)self apOUI];
+  v20[10] = apOUI;
   v19[11] = @"localHourOfDay";
   v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDNetworkStabilityLogEvent localHourOfDay](self, "localHourOfDay")}];
   v20[11] = v10;
@@ -112,10 +112,10 @@
   return v12;
 }
 
-- (HMDNetworkStabilityLogEvent)initWithDictionary:(id)a3
+- (HMDNetworkStabilityLogEvent)initWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"homeUUID"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"homeUUID"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -140,7 +140,7 @@
     v74 = 0;
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"numWifiAssociations"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"numWifiAssociations"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -154,7 +154,7 @@
 
   v65 = v8;
 
-  v9 = [v3 objectForKeyedSubscript:@"numWifiDisassociations"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"numWifiDisassociations"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -168,7 +168,7 @@
 
   v64 = v10;
 
-  v11 = [v3 objectForKeyedSubscript:@"numWifiAPChanges"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"numWifiAPChanges"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -182,7 +182,7 @@
 
   v70 = v12;
 
-  v13 = [v3 objectForKeyedSubscript:@"numGatewayChanges"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"numGatewayChanges"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -196,7 +196,7 @@
 
   v69 = v14;
 
-  v15 = [v3 objectForKeyedSubscript:@"numReadWrites"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"numReadWrites"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -210,7 +210,7 @@
 
   v71 = v16;
 
-  v17 = [v3 objectForKeyedSubscript:@"numReadErrors"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"numReadErrors"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -224,7 +224,7 @@
 
   v73 = v18;
 
-  v19 = [v3 objectForKeyedSubscript:@"numWriteErrors"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"numWriteErrors"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -238,7 +238,7 @@
 
   v63 = v20;
 
-  v21 = [v3 objectForKeyedSubscript:@"topReadWriteError"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"topReadWriteError"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -252,7 +252,7 @@
 
   v68 = v22;
 
-  v23 = [v3 objectForKeyedSubscript:@"topSessionError"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"topSessionError"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -266,7 +266,7 @@
 
   v67 = v24;
 
-  v25 = [v3 objectForKeyedSubscript:@"numSessionErrors"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"numSessionErrors"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -280,7 +280,7 @@
 
   v27 = v26;
 
-  v28 = [v3 objectForKeyedSubscript:@"APOUI"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"APOUI"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -294,7 +294,7 @@
 
   v62 = v29;
 
-  v30 = [v3 objectForKeyedSubscript:@"ssid"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"ssid"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -308,7 +308,7 @@
 
   v32 = v31;
 
-  v33 = [v3 objectForKeyedSubscript:@"gatewayMACAddress"];
+  v33 = [dictionaryCopy objectForKeyedSubscript:@"gatewayMACAddress"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -322,7 +322,7 @@
 
   v35 = v34;
 
-  v36 = [v3 objectForKeyedSubscript:@"localHourOfDay"];
+  v36 = [dictionaryCopy objectForKeyedSubscript:@"localHourOfDay"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -336,7 +336,7 @@
 
   v38 = v37;
 
-  v39 = [v3 objectForKeyedSubscript:@"collectionDurationMinutes"];
+  v39 = [dictionaryCopy objectForKeyedSubscript:@"collectionDurationMinutes"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -416,52 +416,52 @@ LABEL_70:
     goto LABEL_71;
   }
 
-  v59 = [v65 unsignedIntegerValue];
-  v58 = [v64 unsignedIntegerValue];
-  v57 = [v70 unsignedIntegerValue];
-  v55 = [v69 unsignedIntegerValue];
-  v56 = [v71 unsignedIntegerValue];
-  v54 = [v73 unsignedIntegerValue];
-  v46 = [v63 unsignedIntegerValue];
-  v47 = [v43 unsignedIntegerValue];
+  unsignedIntegerValue = [v65 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v64 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v70 unsignedIntegerValue];
+  unsignedIntegerValue4 = [v69 unsignedIntegerValue];
+  unsignedIntegerValue5 = [v71 unsignedIntegerValue];
+  unsignedIntegerValue6 = [v73 unsignedIntegerValue];
+  unsignedIntegerValue7 = [v63 unsignedIntegerValue];
+  unsignedIntegerValue8 = [v43 unsignedIntegerValue];
   v32 = v60;
-  v53 = v47;
+  v53 = unsignedIntegerValue8;
   v48 = v62;
   v45 = v67;
   v44 = v68;
-  v52 = v46;
+  v52 = unsignedIntegerValue7;
   v49 = v65;
   v42 = v64;
-  v50 = -[HMDNetworkStabilityLogEvent initWithHomeUUID:numWifiAssociations:wifiDisassociations:apChanges:gatewayChanges:numReadWrites:numReadErrors:numWriteErrors:topReadWriteError:topSessionError:numSessionErrors:apOUI:ssid:gatewayMACAddress:localHourOfDay:collectionDurationMinutes:](self, "initWithHomeUUID:numWifiAssociations:wifiDisassociations:apChanges:gatewayChanges:numReadWrites:numReadErrors:numWriteErrors:topReadWriteError:topSessionError:numSessionErrors:apOUI:ssid:gatewayMACAddress:localHourOfDay:collectionDurationMinutes:", v74, v59, v58, v57, v55, v56, v54, v52, v68, v67, v53, v62, v60, v35, [v38 integerValue], objc_msgSend(v41, "unsignedIntegerValue"));
+  v50 = -[HMDNetworkStabilityLogEvent initWithHomeUUID:numWifiAssociations:wifiDisassociations:apChanges:gatewayChanges:numReadWrites:numReadErrors:numWriteErrors:topReadWriteError:topSessionError:numSessionErrors:apOUI:ssid:gatewayMACAddress:localHourOfDay:collectionDurationMinutes:](self, "initWithHomeUUID:numWifiAssociations:wifiDisassociations:apChanges:gatewayChanges:numReadWrites:numReadErrors:numWriteErrors:topReadWriteError:topSessionError:numSessionErrors:apOUI:ssid:gatewayMACAddress:localHourOfDay:collectionDurationMinutes:", v74, unsignedIntegerValue, unsignedIntegerValue2, unsignedIntegerValue3, unsignedIntegerValue4, unsignedIntegerValue5, unsignedIntegerValue6, v52, v68, v67, v53, v62, v60, v35, [v38 integerValue], objc_msgSend(v41, "unsignedIntegerValue"));
   self = v50;
 LABEL_71:
 
   return v50;
 }
 
-- (HMDNetworkStabilityLogEvent)initWithHomeUUID:(id)a3 numWifiAssociations:(unint64_t)a4 wifiDisassociations:(unint64_t)a5 apChanges:(unint64_t)a6 gatewayChanges:(unint64_t)a7 numReadWrites:(unint64_t)a8 numReadErrors:(unint64_t)a9 numWriteErrors:(unint64_t)a10 topReadWriteError:(id)a11 topSessionError:(id)a12 numSessionErrors:(unint64_t)a13 apOUI:(id)a14 ssid:(id)a15 gatewayMACAddress:(id)a16 localHourOfDay:(int64_t)a17 collectionDurationMinutes:(unint64_t)a18
+- (HMDNetworkStabilityLogEvent)initWithHomeUUID:(id)d numWifiAssociations:(unint64_t)associations wifiDisassociations:(unint64_t)disassociations apChanges:(unint64_t)changes gatewayChanges:(unint64_t)gatewayChanges numReadWrites:(unint64_t)writes numReadErrors:(unint64_t)errors numWriteErrors:(unint64_t)self0 topReadWriteError:(id)self1 topSessionError:(id)self2 numSessionErrors:(unint64_t)self3 apOUI:(id)self4 ssid:(id)self5 gatewayMACAddress:(id)self6 localHourOfDay:(int64_t)self7 collectionDurationMinutes:(unint64_t)self8
 {
-  v23 = a11;
-  v24 = a12;
-  v25 = a14;
-  v26 = a15;
-  v27 = a16;
+  errorCopy = error;
+  sessionErrorCopy = sessionError;
+  iCopy = i;
+  ssidCopy = ssid;
+  addressCopy = address;
   v40.receiver = self;
   v40.super_class = HMDNetworkStabilityLogEvent;
-  v28 = [(HMMHomeLogEvent *)&v40 initWithHomeUUID:a3];
+  v28 = [(HMMHomeLogEvent *)&v40 initWithHomeUUID:d];
   v29 = v28;
   if (v28)
   {
-    v28->_numWifiAssociations = a4;
-    v28->_numWifiDisassociations = a5;
-    v28->_numAPChanges = a6;
-    v28->_numGatewayChanges = a7;
-    v28->_numReadWrites = a8;
-    v28->_numReadErrors = a9;
-    v28->_numWriteErrors = a10;
-    if (v23)
+    v28->_numWifiAssociations = associations;
+    v28->_numWifiDisassociations = disassociations;
+    v28->_numAPChanges = changes;
+    v28->_numGatewayChanges = gatewayChanges;
+    v28->_numReadWrites = writes;
+    v28->_numReadErrors = errors;
+    v28->_numWriteErrors = writeErrors;
+    if (errorCopy)
     {
-      v30 = [v23 copy];
+      v30 = [errorCopy copy];
     }
 
     else
@@ -470,13 +470,13 @@ LABEL_71:
     }
 
     objc_storeStrong(&v29->_topReadWriteError, v30);
-    if (v23)
+    if (errorCopy)
     {
     }
 
-    if (v24)
+    if (sessionErrorCopy)
     {
-      v31 = [v24 copy];
+      v31 = [sessionErrorCopy copy];
     }
 
     else
@@ -485,14 +485,14 @@ LABEL_71:
     }
 
     objc_storeStrong(&v29->_topSessionError, v31);
-    if (v24)
+    if (sessionErrorCopy)
     {
     }
 
-    v29->_numSessionErrors = a13;
-    if (v25)
+    v29->_numSessionErrors = sessionErrors;
+    if (iCopy)
     {
-      v32 = [v25 copy];
+      v32 = [iCopy copy];
     }
 
     else
@@ -501,20 +501,20 @@ LABEL_71:
     }
 
     objc_storeStrong(&v29->_apOUI, v32);
-    if (v25)
+    if (iCopy)
     {
     }
 
-    v33 = [v26 copy];
+    v33 = [ssidCopy copy];
     ssid = v29->_ssid;
     v29->_ssid = v33;
 
-    v35 = [v27 copy];
+    v35 = [addressCopy copy];
     gatewayMACAddress = v29->_gatewayMACAddress;
     v29->_gatewayMACAddress = v35;
 
-    v29->_localHourOfDay = a17;
-    v29->_collectionDurationMinutes = a18;
+    v29->_localHourOfDay = day;
+    v29->_collectionDurationMinutes = minutes;
   }
 
   return v29;

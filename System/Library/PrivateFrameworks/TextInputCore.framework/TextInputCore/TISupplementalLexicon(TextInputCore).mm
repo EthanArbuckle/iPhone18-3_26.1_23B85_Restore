@@ -6,15 +6,15 @@
 
 - (id)core_searchPrefixSet
 {
-  if ([a1 searchPrefixes])
+  if ([self searchPrefixes])
   {
     v2 = objc_opt_new();
-    if ([a1 searchPrefixes])
+    if ([self searchPrefixes])
     {
       [v2 appendString:@"@"];
     }
 
-    if (([a1 searchPrefixes] & 2) != 0)
+    if (([self searchPrefixes] & 2) != 0)
     {
       [v2 appendString:@"#"];
     }

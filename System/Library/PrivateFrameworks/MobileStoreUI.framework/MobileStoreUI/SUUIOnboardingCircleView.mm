@@ -1,23 +1,23 @@
 @interface SUUIOnboardingCircleView
-- (SUUIOnboardingCircleView)initWithFrame:(CGRect)a3;
+- (SUUIOnboardingCircleView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)edgeInsets;
 - (UILabel)titleLabel;
 - (id)description;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setBackgroundImage:(id)a3;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setFillColor:(id)a3;
-- (void)setTitlePosition:(int64_t)a3;
+- (void)setBackgroundImage:(id)image;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setFillColor:(id)color;
+- (void)setTitlePosition:(int64_t)position;
 @end
 
 @implementation SUUIOnboardingCircleView
 
-- (SUUIOnboardingCircleView)initWithFrame:(CGRect)a3
+- (SUUIOnboardingCircleView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = SUUIOnboardingCircleView;
-  v3 = [(SUUIOnboardingCircleView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIOnboardingCircleView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D755E8]);
@@ -26,8 +26,8 @@
 
     [(UIImageView *)v3->_backgroundImageView setAlpha:0.0];
     v6 = v3->_backgroundImageView;
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(UIImageView *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIImageView *)v6 setBackgroundColor:clearColor];
 
     [(SUUIOnboardingCircleView *)v3 addSubview:v3->_backgroundImageView];
   }
@@ -35,39 +35,39 @@
   return v3;
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v6 = a3;
-  v4 = [(UIImageView *)self->_backgroundImageView image];
-  v5 = [v4 isEqual:v6];
+  imageCopy = image;
+  image = [(UIImageView *)self->_backgroundImageView image];
+  v5 = [image isEqual:imageCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(UIImageView *)self->_backgroundImageView setImage:v6];
+    [(UIImageView *)self->_backgroundImageView setImage:imageCopy];
     [(SUUIOnboardingCircleView *)self setNeedsLayout];
   }
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_edgeInsets.top), vceqq_f64(v4, *&self->_edgeInsets.bottom)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(SUUIOnboardingCircleView *)self setNeedsDisplay];
 
     [(SUUIOnboardingCircleView *)self setNeedsLayout];
   }
 }
 
-- (void)setFillColor:(id)a3
+- (void)setFillColor:(id)color
 {
-  if (self->_fillColor != a3)
+  if (self->_fillColor != color)
   {
-    v4 = [a3 copy];
+    v4 = [color copy];
     fillColor = self->_fillColor;
     self->_fillColor = v4;
 
@@ -75,11 +75,11 @@
   }
 }
 
-- (void)setTitlePosition:(int64_t)a3
+- (void)setTitlePosition:(int64_t)position
 {
-  if (self->_titlePosition != a3)
+  if (self->_titlePosition != position)
   {
-    self->_titlePosition = a3;
+    self->_titlePosition = position;
     [(SUUIOnboardingCircleView *)self setNeedsLayout];
   }
 }
@@ -94,8 +94,8 @@
     self->_titleLabel = v4;
 
     v6 = self->_titleLabel;
-    v7 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v6 setBackgroundColor:clearColor];
 
     v8 = self->_titleLabel;
     v9 = [MEMORY[0x277D74300] boldSystemFontOfSize:10.0];
@@ -104,8 +104,8 @@
     [(UILabel *)self->_titleLabel setNumberOfLines:3];
     [(UILabel *)self->_titleLabel setTextAlignment:1];
     v10 = self->_titleLabel;
-    v11 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v10 setTextColor:v11];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v10 setTextColor:whiteColor];
 
     [(SUUIOnboardingCircleView *)self addSubview:self->_titleLabel];
     titleLabel = self->_titleLabel;
@@ -120,24 +120,24 @@
   v8.receiver = self;
   v8.super_class = SUUIOnboardingCircleView;
   v4 = [(SUUIOnboardingCircleView *)&v8 description];
-  v5 = [(UILabel *)self->_titleLabel text];
-  v6 = [v3 stringWithFormat:@"%@: [%@]", v4, v5];
+  text = [(UILabel *)self->_titleLabel text];
+  v6 = [v3 stringWithFormat:@"%@: [%@]", v4, text];
 
   return v6;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v4 = MEMORY[0x277D75208];
-  [(SUUIOnboardingCircleView *)self bounds:a3.origin.x];
+  [(SUUIOnboardingCircleView *)self bounds:rect.origin.x];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
   [(SUUIOnboardingCircleView *)self edgeInsets];
   v18 = [v4 bezierPathWithOvalInRect:{v6 + v16, v8 + v13, v10 - (v16 + v14), v12 - (v13 + v15)}];
-  v17 = [(SUUIOnboardingCircleView *)self fillColor];
-  [v17 set];
+  fillColor = [(SUUIOnboardingCircleView *)self fillColor];
+  [fillColor set];
 
   [v18 fill];
 }
@@ -176,9 +176,9 @@
     v24 = (v8 - v20) * 0.5;
     v25 = floorf(v24);
     titlePosition = self->_titlePosition;
-    v27 = [(UIImageView *)self->_backgroundImageView image];
+    image = [(UIImageView *)self->_backgroundImageView image];
 
-    if (v27)
+    if (image)
     {
       v28 = titlePosition;
     }

@@ -9,11 +9,11 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSUserActivity(SYInternalExtensions) *)a2 _syFetchCurrentUserActivityWithCompletion:a1];
+    [(NSUserActivity(SYInternalExtensions) *)a2 _syFetchCurrentUserActivityWithCompletion:self];
   }
 
-  v6 = [MEMORY[0x277CC1EF0] _currentUserActivityUUID];
-  if (v6)
+  _currentUserActivityUUID = [MEMORY[0x277CC1EF0] _currentUserActivityUUID];
+  if (_currentUserActivityUUID)
   {
     v7 = MEMORY[0x277CC1EF0];
     v8[0] = MEMORY[0x277D85DD0];
@@ -21,7 +21,7 @@
     v8[2] = __82__NSUserActivity_SYInternalExtensions___syFetchCurrentUserActivityWithCompletion___block_invoke;
     v8[3] = &unk_27856BEC8;
     v9 = v5;
-    [v7 _fetchUserActivityWithUUID:v6 completionHandler:v8];
+    [v7 _fetchUserActivityWithUUID:_currentUserActivityUUID completionHandler:v8];
   }
 
   else

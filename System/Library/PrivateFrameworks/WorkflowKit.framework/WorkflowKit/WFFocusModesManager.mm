@@ -3,39 +3,39 @@
 + (id)availableModes;
 + (id)availableModesForAutomationsDisplay;
 + (id)defaultActivity;
-+ (id)enteringSymbolForSymbolName:(id)a3;
-+ (id)exitingSymbolForSymbolName:(id)a3;
++ (id)enteringSymbolForSymbolName:(id)name;
++ (id)exitingSymbolForSymbolName:(id)name;
 + (id)glyphToFilledGlyphMapping;
 @end
 
 @implementation WFFocusModesManager
 
-+ (id)exitingSymbolForSymbolName:(id)a3
++ (id)exitingSymbolForSymbolName:(id)name
 {
-  v3 = a3;
-  if ([&unk_1F4A9B818 containsObject:v3])
+  nameCopy = name;
+  if ([&unk_1F4A9B818 containsObject:nameCopy])
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.circle", v3];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.circle", nameCopy];
   }
 
   else
   {
-    if (![&unk_1F4A9B830 containsObject:v3])
+    if (![&unk_1F4A9B830 containsObject:nameCopy])
     {
-      if ([&unk_1F4A9B848 containsObject:v3] || !objc_msgSend(v3, "containsString:", @".fill"))
+      if ([&unk_1F4A9B848 containsObject:nameCopy] || !objc_msgSend(nameCopy, "containsString:", @".fill"))
       {
-        v4 = v3;
+        v4 = nameCopy;
       }
 
       else
       {
-        v4 = [v3 stringByReplacingOccurrencesOfString:@".fill" withString:&stru_1F4A1C408];
+        v4 = [nameCopy stringByReplacingOccurrencesOfString:@".fill" withString:&stru_1F4A1C408];
       }
 
       goto LABEL_6;
     }
 
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.square", v3];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.square", nameCopy];
   }
   v4 = ;
 LABEL_6:
@@ -44,11 +44,11 @@ LABEL_6:
   return v5;
 }
 
-+ (id)enteringSymbolForSymbolName:(id)a3
++ (id)enteringSymbolForSymbolName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 glyphToFilledGlyphMapping];
-  v6 = [v5 objectForKey:v4];
+  nameCopy = name;
+  glyphToFilledGlyphMapping = [self glyphToFilledGlyphMapping];
+  v6 = [glyphToFilledGlyphMapping objectForKey:nameCopy];
 
   if (v6)
   {
@@ -57,9 +57,9 @@ LABEL_6:
 
   else
   {
-    v8 = [a1 glyphToFilledGlyphMapping];
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.circle", v4];
-    v10 = [v8 objectForKey:v9];
+    glyphToFilledGlyphMapping2 = [self glyphToFilledGlyphMapping];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.circle", nameCopy];
+    v10 = [glyphToFilledGlyphMapping2 objectForKey:nameCopy];
 
     if (v10)
     {
@@ -68,9 +68,9 @@ LABEL_6:
 
     else
     {
-      v11 = [a1 glyphToFilledGlyphMapping];
-      v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.square", v4];
-      v13 = [v11 objectForKey:v12];
+      glyphToFilledGlyphMapping3 = [self glyphToFilledGlyphMapping];
+      nameCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.square", nameCopy];
+      v13 = [glyphToFilledGlyphMapping3 objectForKey:nameCopy2];
 
       if (v13)
       {
@@ -79,7 +79,7 @@ LABEL_6:
 
       else
       {
-        v14 = v4;
+        v14 = nameCopy;
       }
 
       v7 = v14;
@@ -130,16 +130,16 @@ LABEL_6:
 
 + (id)defaultActivity
 {
-  v2 = [getFCActivityManagerClass() sharedActivityManager];
-  v3 = [v2 defaultActivity];
+  sharedActivityManager = [getFCActivityManagerClass() sharedActivityManager];
+  defaultActivity = [sharedActivityManager defaultActivity];
 
-  return v3;
+  return defaultActivity;
 }
 
 + (id)availableModesForAutomationsDisplay
 {
-  v3 = [MEMORY[0x1E69E0A90] currentDevice];
-  v4 = [v3 idiom] == 0;
+  currentDevice = [MEMORY[0x1E69E0A90] currentDevice];
+  v4 = [currentDevice idiom] == 0;
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -148,14 +148,14 @@ LABEL_6:
   v13 = 1;
   v14 = v4;
   v5 = _Block_copy(aBlock);
-  v6 = [a1 availableModes];
+  availableModes = [self availableModes];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__WFFocusModesManager_availableModesForAutomationsDisplay__block_invoke_2;
   v10[3] = &unk_1E837EF68;
   v11 = v5;
   v7 = v5;
-  v8 = [v6 if_compactMap:v10];
+  v8 = [availableModes if_compactMap:v10];
 
   return v8;
 }
@@ -207,18 +207,18 @@ void *__58__WFFocusModesManager_availableModesForAutomationsDisplay__block_invok
 
 + (id)availableModes
 {
-  v2 = [getFCActivityManagerClass() sharedActivityManager];
-  v3 = [v2 availableActivities];
+  sharedActivityManager = [getFCActivityManagerClass() sharedActivityManager];
+  availableActivities = [sharedActivityManager availableActivities];
 
-  return v3;
+  return availableActivities;
 }
 
 + (id)activeMode
 {
-  v2 = [getFCActivityManagerClass() sharedActivityManager];
-  v3 = [v2 activeActivity];
+  sharedActivityManager = [getFCActivityManagerClass() sharedActivityManager];
+  activeActivity = [sharedActivityManager activeActivity];
 
-  return v3;
+  return activeActivity;
 }
 
 @end

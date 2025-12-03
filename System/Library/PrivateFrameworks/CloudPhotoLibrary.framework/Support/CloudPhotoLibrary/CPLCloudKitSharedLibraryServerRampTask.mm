@@ -1,19 +1,19 @@
 @interface CPLCloudKitSharedLibraryServerRampTask
-- (CPLCloudKitSharedLibraryServerRampTask)initWithController:(id)a3 completionHandler:(id)a4;
+- (CPLCloudKitSharedLibraryServerRampTask)initWithController:(id)controller completionHandler:(id)handler;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitSharedLibraryServerRampTask
 
-- (CPLCloudKitSharedLibraryServerRampTask)initWithController:(id)a3 completionHandler:(id)a4
+- (CPLCloudKitSharedLibraryServerRampTask)initWithController:(id)controller completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v11.receiver = self;
   v11.super_class = CPLCloudKitSharedLibraryServerRampTask;
-  v7 = [(CPLCloudKitTransportTask *)&v11 initWithController:a3];
+  v7 = [(CPLCloudKitTransportTask *)&v11 initWithController:controller];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [handlerCopy copy];
     completionHandler = v7->_completionHandler;
     v7->_completionHandler = v8;
   }

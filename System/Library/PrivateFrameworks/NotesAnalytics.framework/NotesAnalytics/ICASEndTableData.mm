@@ -1,22 +1,22 @@
 @interface ICASEndTableData
-- (ICASEndTableData)initWithEndingRowCount:(id)a3 endingColumnCount:(id)a4;
+- (ICASEndTableData)initWithEndingRowCount:(id)count endingColumnCount:(id)columnCount;
 - (id)toDict;
 @end
 
 @implementation ICASEndTableData
 
-- (ICASEndTableData)initWithEndingRowCount:(id)a3 endingColumnCount:(id)a4
+- (ICASEndTableData)initWithEndingRowCount:(id)count endingColumnCount:(id)columnCount
 {
-  v7 = a3;
-  v8 = a4;
+  countCopy = count;
+  columnCountCopy = columnCount;
   v12.receiver = self;
   v12.super_class = ICASEndTableData;
   v9 = [(ICASEndTableData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_endingRowCount, a3);
-    objc_storeStrong(&v10->_endingColumnCount, a4);
+    objc_storeStrong(&v9->_endingRowCount, count);
+    objc_storeStrong(&v10->_endingColumnCount, columnCount);
   }
 
   return v10;
@@ -26,33 +26,33 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"endingRowCount";
-  v3 = [(ICASEndTableData *)self endingRowCount];
-  if (v3)
+  endingRowCount = [(ICASEndTableData *)self endingRowCount];
+  if (endingRowCount)
   {
-    v4 = [(ICASEndTableData *)self endingRowCount];
+    endingRowCount2 = [(ICASEndTableData *)self endingRowCount];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    endingRowCount2 = objc_opt_new();
   }
 
-  v5 = v4;
+  v5 = endingRowCount2;
   v12[1] = @"endingColumnCount";
-  v13[0] = v4;
-  v6 = [(ICASEndTableData *)self endingColumnCount];
-  if (v6)
+  v13[0] = endingRowCount2;
+  endingColumnCount = [(ICASEndTableData *)self endingColumnCount];
+  if (endingColumnCount)
   {
-    v7 = [(ICASEndTableData *)self endingColumnCount];
+    endingColumnCount2 = [(ICASEndTableData *)self endingColumnCount];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    endingColumnCount2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v13[1] = v7;
+  v8 = endingColumnCount2;
+  v13[1] = endingColumnCount2;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x277D85DE8];

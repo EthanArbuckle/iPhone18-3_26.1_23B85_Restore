@@ -1,24 +1,24 @@
 @interface MFConnection
-+ (BOOL)shouldTryFallbacksAfterError:(id)a3;
++ (BOOL)shouldTryFallbacksAfterError:(id)error;
 + (id)logClasses;
 + (void)initialize;
 + (void)readLoggingDefaults;
-+ (void)setLogClasses:(id)a3;
-- (BOOL)authenticateUsingAccount:(id)a3;
-- (BOOL)authenticateUsingAccount:(id)a3 authenticator:(id)a4;
-- (BOOL)connectUsingAccount:(id)a3;
-- (BOOL)connectUsingSettings:(id)a3;
++ (void)setLogClasses:(id)classes;
+- (BOOL)authenticateUsingAccount:(id)account;
+- (BOOL)authenticateUsingAccount:(id)account authenticator:(id)authenticator;
+- (BOOL)connectUsingAccount:(id)account;
+- (BOOL)connectUsingSettings:(id)settings;
 - (BOOL)hasBytesAvailable;
 - (BOOL)isCellularConnection;
 - (BOOL)isValid;
-- (BOOL)readBytesIntoData:(id)a3 desiredLength:(unint64_t)a4;
-- (BOOL)readLineIntoData:(id)a3;
+- (BOOL)readBytesIntoData:(id)data desiredLength:(unint64_t)length;
+- (BOOL)readLineIntoData:(id)data;
 - (BOOL)startCompression;
-- (BOOL)startTLSForAccount:(id)a3;
+- (BOOL)startTLSForAccount:(id)account;
 - (BOOL)usesOpportunisticSockets;
-- (BOOL)writeBytes:(const char *)a3 length:(unint64_t)a4 dontLogBytesInRange:(_NSRange)a5;
-- (BOOL)writeData:(id)a3 dontLogBytesInRange:(_NSRange)a4;
-- (MFConnection)initWithMambaID:(const char *)a3;
+- (BOOL)writeBytes:(const char *)bytes length:(unint64_t)length dontLogBytesInRange:(_NSRange)range;
+- (BOOL)writeData:(id)data dontLogBytesInRange:(_NSRange)range;
+- (MFConnection)initWithMambaID:(const char *)d;
 - (NSArray)authenticationMechanisms;
 - (NSString)description;
 - (NSString)securityProtocol;
@@ -26,17 +26,17 @@
 - (id)copyDiagnosticInformation;
 - (id)createSocket;
 - (id)socket_rumbaID;
-- (void)abortSocket:(id)a3;
+- (void)abortSocket:(id)socket;
 - (void)dealloc;
 - (void)disconnect;
 - (void)endCompression;
-- (void)handleStreamEvent:(unint64_t)a3;
-- (void)logReadChars:(const char *)a3 length:(unint64_t)a4;
-- (void)logType:(int64_t)a3 data:(id)a4;
-- (void)performAtomicAccessorBlock:(id)a3;
+- (void)handleStreamEvent:(unint64_t)event;
+- (void)logReadChars:(const char *)chars length:(unint64_t)length;
+- (void)logType:(int64_t)type data:(id)data;
+- (void)performAtomicAccessorBlock:(id)block;
 - (void)resetSocket;
-- (void)setAllowsFallbacks:(BOOL)a3;
-- (void)setIsFetching:(BOOL)a3;
+- (void)setAllowsFallbacks:(BOOL)fallbacks;
+- (void)setIsFetching:(BOOL)fetching;
 @end
 
 @implementation MFConnection
@@ -68,7 +68,7 @@
     }
 
 LABEL_17:
-    v15 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{a1, 0}];
+    v15 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{self, 0}];
     v16 = _LogClasses;
     _LogClasses = v15;
 
@@ -81,10 +81,10 @@ LABEL_17:
   }
 
 LABEL_4:
-  v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v11 = [v10 stringArrayForKey:@"LogActivityOnPort"];
-  v12 = [v10 stringArrayForKey:@"LogActivityOnHost"];
-  if (v11 || ([v10 stringForKey:@"LogActivityOnPort"], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "componentsSeparatedByString:", @","), v11 = objc_claimAutoreleasedReturnValue(), v13, v11))
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v11 = [standardUserDefaults stringArrayForKey:@"LogActivityOnPort"];
+  v12 = [standardUserDefaults stringArrayForKey:@"LogActivityOnHost"];
+  if (v11 || ([standardUserDefaults stringForKey:@"LogActivityOnPort"], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "componentsSeparatedByString:", @","), v11 = objc_claimAutoreleasedReturnValue(), v13, v11))
   {
     if ([v11 count])
     {
@@ -92,7 +92,7 @@ LABEL_4:
     }
   }
 
-  if (v12 || ([v10 stringForKey:@"LogActivityOnHost"], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "componentsSeparatedByString:", @","), v12 = objc_claimAutoreleasedReturnValue(), v14, v12))
+  if (v12 || ([standardUserDefaults stringForKey:@"LogActivityOnHost"], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "componentsSeparatedByString:", @","), v12 = objc_claimAutoreleasedReturnValue(), v14, v12))
   {
     if ([v12 count])
     {
@@ -106,15 +106,15 @@ LABEL_4:
   }
 
 LABEL_18:
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v17 postNotificationName:@"MFReloadNetworkLoggingNotification" object:a1];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"MFReloadNetworkLoggingNotification" object:self];
 
   [_LogLock unlock];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (!_LogLock)
     {
@@ -129,7 +129,7 @@ LABEL_18:
       _MFUnlockGlobalLock();
     }
 
-    [a1 readLoggingDefaults];
+    [self readLoggingDefaults];
     if (+[MFConnection initialize]::once != -1)
     {
       +[MFConnection initialize];
@@ -145,13 +145,13 @@ void __26__MFConnection_initialize__block_invoke()
   v1 = MEMORY[0x277D85CD0];
 }
 
-- (void)logType:(int64_t)a3 data:(id)a4
+- (void)logType:(int64_t)type data:(id)data
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v28 = v6;
-  v7 = [v28 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  v28 = dataCopy;
+  bytes = [v28 bytes];
+  v8 = [dataCopy length];
   v9 = v8;
   if (v8 >= 0x400)
   {
@@ -163,23 +163,23 @@ void __26__MFConnection_initialize__block_invoke()
     v10 = v8;
   }
 
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     v11 = "CONNECTED";
   }
 
   else
   {
-    v11 = off_279E35AC0[a3 - 1];
+    v11 = off_279E35AC0[type - 1];
   }
 
   v29 = v11;
-  v12 = [(MFConnection *)self getSocket];
-  v13 = [v12 securityProtocol];
+  getSocket = [(MFConnection *)self getSocket];
+  securityProtocol = [getSocket securityProtocol];
 
-  if (v13)
+  if (securityProtocol)
   {
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@":%@", v13];
+    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@":%@", securityProtocol];
   }
 
   else
@@ -188,22 +188,22 @@ void __26__MFConnection_initialize__block_invoke()
   }
 
   v30 = v14;
-  if (!a3)
+  if (!type)
   {
     v15 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(MFConnection *)self mambaID];
-      v17 = [(MFConnection *)self rumbaID];
+      mambaID = [(MFConnection *)self mambaID];
+      rumbaID = [(MFConnection *)self rumbaID];
       v18 = objc_opt_class();
-      v19 = [(MFConnectionSettings *)self->_connectionSettings hostname];
-      v20 = [(MFConnectionSettings *)self->_connectionSettings portNumber];
+      hostname = [(MFConnectionSettings *)self->_connectionSettings hostname];
+      portNumber = [(MFConnectionSettings *)self->_connectionSettings portNumber];
       *buf = 136317442;
-      v32 = v16;
+      v32 = mambaID;
       v33 = 2080;
       v34 = " ";
       v35 = 2114;
-      v36 = v17;
+      v36 = rumbaID;
       v37 = 2080;
       v38 = " ";
       v39 = 2082;
@@ -211,11 +211,11 @@ void __26__MFConnection_initialize__block_invoke()
       v41 = 2114;
       v42 = v18;
       v43 = 2048;
-      v44 = self;
+      selfCopy2 = self;
       v45 = 2112;
-      v46 = v19;
+      v46 = hostname;
       v47 = 1024;
-      v48 = v20;
+      v48 = portNumber;
       v49 = 2114;
       v50 = v30;
       _os_log_impl(&dword_2720B1000, v15, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%sconnected: %{public}s <%{public}@:%p> [%@:%u%{public}@]", buf, 0x62u);
@@ -227,17 +227,17 @@ void __26__MFConnection_initialize__block_invoke()
     v21 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(MFConnection *)self mambaID];
-      v23 = [(MFConnection *)self rumbaID];
+      mambaID2 = [(MFConnection *)self mambaID];
+      rumbaID2 = [(MFConnection *)self rumbaID];
       v24 = objc_opt_class();
-      v25 = [(MFConnectionSettings *)self->_connectionSettings hostname];
-      v26 = [(MFConnectionSettings *)self->_connectionSettings portNumber];
+      hostname2 = [(MFConnectionSettings *)self->_connectionSettings hostname];
+      portNumber2 = [(MFConnectionSettings *)self->_connectionSettings portNumber];
       *buf = 136317954;
-      v32 = v22;
+      v32 = mambaID2;
       v33 = 2080;
       v34 = " ";
       v35 = 2114;
-      v36 = v23;
+      v36 = rumbaID2;
       v37 = 2080;
       v38 = " ";
       v39 = 2082;
@@ -245,21 +245,21 @@ void __26__MFConnection_initialize__block_invoke()
       v41 = 2114;
       v42 = v24;
       v43 = 2048;
-      v44 = self;
+      selfCopy2 = self;
       v45 = 2112;
-      v46 = v25;
+      v46 = hostname2;
       v47 = 1024;
-      v48 = v26;
+      v48 = portNumber2;
       v49 = 2114;
       v50 = v30;
       v51 = 1040;
       v52 = v10;
       v53 = 2096;
-      v54 = v7;
+      v54 = bytes;
       _os_log_impl(&dword_2720B1000, v21, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%slogging: %{public}s <%{public}@:%p> [%@:%u%{public}@] %{mobilemail:networkData}.*P", buf, 0x72u);
     }
 
-    v7 += v10;
+    bytes += v10;
     v9 -= v10;
     if (v9 >= 0x400)
     {
@@ -284,23 +284,23 @@ void __26__MFConnection_initialize__block_invoke()
   return v2;
 }
 
-+ (void)setLogClasses:(id)a3
++ (void)setLogClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   [_LogLock lock];
-  objc_storeStrong(&_LogClasses, a3);
+  objc_storeStrong(&_LogClasses, classes);
   [_LogLock unlock];
 }
 
 - (id)socket_rumbaID
 {
-  v2 = [(MFConnection *)self getSocket];
-  v3 = [v2 rumbaID];
+  getSocket = [(MFConnection *)self getSocket];
+  rumbaID = [getSocket rumbaID];
 
-  return v3;
+  return rumbaID;
 }
 
-- (MFConnection)initWithMambaID:(const char *)a3
+- (MFConnection)initWithMambaID:(const char *)d
 {
   v6 = *MEMORY[0x277D85DE8];
   v5.receiver = self;
@@ -320,29 +320,29 @@ void __26__MFConnection_initialize__block_invoke()
   v3 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(MFConnection *)self mambaID];
-    v5 = [(MFConnection *)self rumbaID];
+    mambaID = [(MFConnection *)self mambaID];
+    rumbaID = [(MFConnection *)self rumbaID];
     *buf = 136316418;
-    v22 = v4;
+    v22 = mambaID;
     v23 = 2080;
     v24 = " ";
     v25 = 2114;
-    v26 = v5;
+    v26 = rumbaID;
     v27 = 2080;
     v28 = " ";
     v29 = 2112;
     v30 = objc_opt_class();
     v31 = 2048;
-    v32 = self;
+    selfCopy2 = self;
     v6 = v30;
     _os_log_impl(&dword_2720B1000, v3, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%s<%@, %p> Connection deleting", buf, 0x3Eu);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v8 = [MEMORY[0x277D24F10] sharedController];
-  [v8 removeDiagnosticsGenerator:self];
+  mEMORY[0x277D24F10] = [MEMORY[0x277D24F10] sharedController];
+  [mEMORY[0x277D24F10] removeDiagnosticsGenerator:self];
 
   buffer = self->_buffer;
   if (buffer)
@@ -351,10 +351,10 @@ void __26__MFConnection_initialize__block_invoke()
     self->_buffer = 0;
   }
 
-  v10 = [(MFConnection *)self getSocket];
-  if (v10)
+  getSocket = [(MFConnection *)self getSocket];
+  if (getSocket)
   {
-    [(MFConnection *)self abortSocket:v10];
+    [(MFConnection *)self abortSocket:getSocket];
   }
 
   deflater = self->_deflater;
@@ -382,21 +382,21 @@ void __26__MFConnection_initialize__block_invoke()
   v14 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(MFConnection *)self mambaID];
-    v16 = [(MFConnection *)self rumbaID];
+    mambaID2 = [(MFConnection *)self mambaID];
+    rumbaID2 = [(MFConnection *)self rumbaID];
     v17 = objc_opt_class();
     *buf = 136316418;
-    v22 = v15;
+    v22 = mambaID2;
     v23 = 2080;
     v24 = " ";
     v25 = 2114;
-    v26 = v16;
+    v26 = rumbaID2;
     v27 = 2080;
     v28 = " ";
     v29 = 2112;
     v30 = v17;
     v31 = 2048;
-    v32 = self;
+    selfCopy2 = self;
     v18 = v17;
     _os_log_impl(&dword_2720B1000, v14, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%s<%@ %p> Connection deleted", buf, 0x3Eu);
   }
@@ -413,22 +413,22 @@ void __26__MFConnection_initialize__block_invoke()
   v8.receiver = self;
   v8.super_class = MFConnection;
   v4 = [(MFConnection *)&v8 description];
-  v5 = [(MFConnection *)self getSocket];
-  v6 = [v3 stringWithFormat:@"%@ socket: %p\n", v4, v5];
+  getSocket = [(MFConnection *)self getSocket];
+  v6 = [v3 stringWithFormat:@"%@ socket: %p\n", v4, getSocket];
 
   return v6;
 }
 
-- (void)performAtomicAccessorBlock:(id)a3
+- (void)performAtomicAccessorBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = v4;
+    v5 = blockCopy;
     os_unfair_lock_lock_with_options();
     v5[2]();
     os_unfair_lock_unlock(&self->lock);
-    v4 = v5;
+    blockCopy = v5;
   }
 }
 
@@ -510,21 +510,21 @@ void __27__MFConnection_resetSocket__block_invoke(uint64_t a1)
 - (BOOL)isCellularConnection
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(MFConnection *)self getSocket];
-  v4 = [v3 isCellularConnection];
+  getSocket = [(MFConnection *)self getSocket];
+  isCellularConnection = [getSocket isCellularConnection];
 
   v5 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MFConnection *)self mambaID];
-    v7 = [(MFConnection *)self rumbaID];
-    v8 = asNSStringBOOL(v4);
+    mambaID = [(MFConnection *)self mambaID];
+    rumbaID = [(MFConnection *)self rumbaID];
+    v8 = asNSStringBOOL(isCellularConnection);
     v11 = 136316162;
-    v12 = v6;
+    v12 = mambaID;
     v13 = 2080;
     v14 = " ";
     v15 = 2114;
-    v16 = v7;
+    v16 = rumbaID;
     v17 = 2080;
     v18 = " ";
     v19 = 2112;
@@ -533,23 +533,23 @@ void __27__MFConnection_resetSocket__block_invoke(uint64_t a1)
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v4;
+  return isCellularConnection;
 }
 
-- (void)handleStreamEvent:(unint64_t)a3
+- (void)handleStreamEvent:(unint64_t)event
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MFConnection *)self mambaID];
-    v6 = [(MFConnection *)self rumbaID];
+    mambaID = [(MFConnection *)self mambaID];
+    rumbaID = [(MFConnection *)self rumbaID];
     v8 = 136315906;
-    v9 = v5;
+    v9 = mambaID;
     v10 = 2080;
     v11 = " ";
     v12 = 2114;
-    v13 = v6;
+    v13 = rumbaID;
     v14 = 2080;
     v15 = " ";
     _os_log_impl(&dword_2720B1000, v4, OS_LOG_TYPE_DEFAULT, "#W %s%s%{public}@%sMFConnection::handleStreamEvent - shouldn't be here!!!!", &v8, 0x2Au);
@@ -558,72 +558,72 @@ void __27__MFConnection_resetSocket__block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setIsFetching:(BOOL)a3
+- (void)setIsFetching:(BOOL)fetching
 {
   v3 = *(self + 100);
-  if ((v3 & 1) != a3)
+  if ((v3 & 1) != fetching)
   {
-    *(self + 100) = v3 & 0xFE | a3;
+    *(self + 100) = v3 & 0xFE | fetching;
     [(MFConnection *)self enableThroughputMonitoring:?];
   }
 }
 
-- (BOOL)connectUsingSettings:(id)a3
+- (BOOL)connectUsingSettings:(id)settings
 {
   v82 = *MEMORY[0x277D85DE8];
-  v73 = a3;
-  objc_storeStrong(&self->_connectionSettings, a3);
-  v5 = [(MFConnectionSettings *)self->_connectionSettings portNumber];
-  v6 = [(MFConnection *)self getSocket];
-  if (!v6)
+  settingsCopy = settings;
+  objc_storeStrong(&self->_connectionSettings, settings);
+  portNumber = [(MFConnectionSettings *)self->_connectionSettings portNumber];
+  getSocket = [(MFConnection *)self getSocket];
+  if (!getSocket)
   {
-    v7 = [(MFConnection *)self createSocket];
+    createSocket = [(MFConnection *)self createSocket];
     v8 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(MFConnection *)self mambaID];
-      v10 = [(__CFString *)v7 rumbaID];
+      mambaID = [(MFConnection *)self mambaID];
+      rumbaID = [(__CFString *)createSocket rumbaID];
       *buf = 136315650;
-      v75 = v9;
+      v75 = mambaID;
       v76 = 2112;
-      v77 = v10;
+      v77 = rumbaID;
       v78 = 2048;
-      v79 = v7;
+      v79 = createSocket;
       _os_log_impl(&dword_2720B1000, v8, OS_LOG_TYPE_DEFAULT, "#I %s %@ socket (%p) setClosingEventHandler", buf, 0x20u);
     }
 
     v11 = MEMORY[0x277CBEAE8];
     v12 = [VMWeakConnectionDelegate forConnection:self];
     v13 = [v11 mf_invocationWithSelector:sel_handleStreamEvent_ target:v12];
-    [(__CFString *)v7 setClosingEventHandler:v13];
+    [(__CFString *)createSocket setClosingEventHandler:v13];
 
-    v6 = v7;
+    getSocket = createSocket;
   }
 
   v14 = +[MFActivityMonitor currentMonitor];
   [v14 setError:0];
 
-  [(__CFString *)v6 setSettings:self->_connectionSettings];
-  if (v5)
+  [(__CFString *)getSocket setSettings:self->_connectionSettings];
+  if (portNumber)
   {
 LABEL_6:
-    v15 = [(MFConnectionSettings *)self->_connectionSettings hostname];
-    v16 = [(__CFString *)v6 connectToHost:v15 withPort:v5];
+    hostname = [(MFConnectionSettings *)self->_connectionSettings hostname];
+    v16 = [(__CFString *)getSocket connectToHost:hostname withPort:portNumber];
 
     v17 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(__CFString *)v6 rumbaID];
+      rumbaID2 = [(__CFString *)getSocket rumbaID];
       v19 = @"failed";
       *buf = 138412802;
-      v75 = v18;
+      v75 = rumbaID2;
       if (v16)
       {
         v19 = @"succeeded";
       }
 
       v76 = 2048;
-      v77 = v6;
+      v77 = getSocket;
       v78 = 2112;
       v79 = v19;
       _os_log_impl(&dword_2720B1000, v17, OS_LOG_TYPE_DEFAULT, "#I %@ socket (%p) connectToHost %@", buf, 0x20u);
@@ -637,42 +637,42 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  v22 = [(MFConnectionSettings *)self->_connectionSettings serviceName];
-  v23 = v22;
-  v24 = getservbyname([v22 UTF8String], "tcp");
+  serviceName = [(MFConnectionSettings *)self->_connectionSettings serviceName];
+  v23 = serviceName;
+  v24 = getservbyname([serviceName UTF8String], "tcp");
 
   if (v24 && LOWORD(v24->s_port))
   {
-    v5 = __rev16(LOWORD(v24->s_port));
+    portNumber = __rev16(LOWORD(v24->s_port));
     goto LABEL_6;
   }
 
   v25 = +[MFActivityMonitor currentMonitor];
   v26 = MEMORY[0x277CCA9B8];
   v27 = MEMORY[0x277CCACA8];
-  v28 = [(MFConnectionSettings *)self->_connectionSettings serviceName];
-  v29 = [v27 stringWithFormat:@"Can’t determine port to use for the TCP/IP service “%@”.", v28];
+  serviceName2 = [(MFConnectionSettings *)self->_connectionSettings serviceName];
+  v29 = [v27 stringWithFormat:@"Can’t determine port to use for the TCP/IP service “%@”.", serviceName2];
   v30 = [v26 errorWithDomain:@"MFMessageErrorDomain" code:1031 localizedDescription:v29];
   [v25 setError:v30];
 
-  v5 = 0;
+  portNumber = 0;
 LABEL_16:
   v31 = +[MFActivityMonitor currentMonitor];
-  v32 = [v31 error];
+  error = [v31 error];
 
-  if (!v32)
+  if (!error)
   {
     goto LABEL_28;
   }
 
-  v33 = [v32 domain];
-  if (([v33 isEqualToString:*MEMORY[0x277CCA590]] & 1) == 0)
+  domain = [error domain];
+  if (([domain isEqualToString:*MEMORY[0x277CCA590]] & 1) == 0)
   {
 
     goto LABEL_28;
   }
 
-  v34 = [v32 code] == -9850;
+  v34 = [error code] == -9850;
 
   if (!v34)
   {
@@ -684,14 +684,14 @@ LABEL_28:
   v35 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
   {
-    v36 = [(MFConnection *)self mambaID];
-    v37 = [(MFConnection *)self rumbaID];
+    mambaID2 = [(MFConnection *)self mambaID];
+    rumbaID3 = [(MFConnection *)self rumbaID];
     *buf = 136315906;
-    v75 = v36;
+    v75 = mambaID2;
     v76 = 2080;
     v77 = " ";
     v78 = 2114;
-    v79 = v37;
+    v79 = rumbaID3;
     v80 = 2080;
     v81 = " ";
     _os_log_impl(&dword_2720B1000, v35, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%sDetected server with low-grade DH cipher. Re-trying with DH disabled.", buf, 0x2Au);
@@ -700,74 +700,74 @@ LABEL_28:
   v38 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = [(MFConnection *)self mambaID];
-    v40 = [(__CFString *)v6 rumbaID];
+    mambaID3 = [(MFConnection *)self mambaID];
+    rumbaID4 = [(__CFString *)getSocket rumbaID];
     *buf = 136315650;
-    v75 = v39;
+    v75 = mambaID3;
     v76 = 2112;
-    v77 = v40;
+    v77 = rumbaID4;
     v78 = 2048;
-    v79 = v6;
+    v79 = getSocket;
     _os_log_impl(&dword_2720B1000, v38, OS_LOG_TYPE_DEFAULT, "#I %s %@ socket (%p) aborting", buf, 0x20u);
   }
 
-  [(MFConnection *)self abortSocket:v6];
-  v41 = [(MFConnection *)self createSocket];
+  [(MFConnection *)self abortSocket:getSocket];
+  createSocket2 = [(MFConnection *)self createSocket];
 
   v42 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
   {
-    v43 = [(MFConnection *)self mambaID];
-    v44 = [(__CFString *)v41 rumbaID];
+    mambaID4 = [(MFConnection *)self mambaID];
+    rumbaID5 = [(__CFString *)createSocket2 rumbaID];
     *buf = 136315650;
-    v75 = v43;
+    v75 = mambaID4;
     v76 = 2112;
-    v77 = v44;
+    v77 = rumbaID5;
     v78 = 2048;
-    v79 = v41;
+    v79 = createSocket2;
     _os_log_impl(&dword_2720B1000, v42, OS_LOG_TYPE_DEFAULT, "#I %s %@ socket (%p) setClosingEventHandler, recreated", buf, 0x20u);
   }
 
   v45 = MEMORY[0x277CBEAE8];
   v46 = [VMWeakConnectionDelegate forConnection:self];
   v47 = [v45 mf_invocationWithSelector:sel_handleStreamEvent_ target:v46];
-  [(__CFString *)v41 setClosingEventHandler:v47];
+  [(__CFString *)createSocket2 setClosingEventHandler:v47];
 
-  [(__CFString *)v41 setSettings:self->_connectionSettings];
-  [(__CFString *)v41 disableEphemeralDiffieHellman];
+  [(__CFString *)createSocket2 setSettings:self->_connectionSettings];
+  [(__CFString *)createSocket2 disableEphemeralDiffieHellman];
   v48 = +[MFActivityMonitor currentMonitor];
   [v48 setError:0];
 
-  v49 = [(MFConnectionSettings *)self->_connectionSettings hostname];
-  LOBYTE(v45) = [(__CFString *)v41 connectToHost:v49 withPort:v5];
+  hostname2 = [(MFConnectionSettings *)self->_connectionSettings hostname];
+  LOBYTE(v45) = [(__CFString *)createSocket2 connectToHost:hostname2 withPort:portNumber];
 
-  v6 = v41;
+  getSocket = createSocket2;
   if ((v45 & 1) == 0)
   {
 LABEL_29:
     v72 = +[MFActivityMonitor currentMonitor];
-    v71 = [(MFConnectionSettings *)self->_connectionSettings hostname];
-    v50 = [(MFConnectionSettings *)self->_connectionSettings tryDirectSSL];
-    v21 = v6;
+    hostname3 = [(MFConnectionSettings *)self->_connectionSettings hostname];
+    tryDirectSSL = [(MFConnectionSettings *)self->_connectionSettings tryDirectSSL];
+    v21 = getSocket;
     v51 = v72;
-    v52 = v71;
-    v53 = [v51 error];
-    v54 = v53;
-    if (v53)
+    v52 = hostname3;
+    error2 = [v51 error];
+    v54 = error2;
+    if (error2)
     {
-      v55 = [(NSError *)v53 domain];
-      v56 = [*MEMORY[0x277CCA5B8] isEqualToString:v55];
+      domain2 = [(NSError *)error2 domain];
+      v56 = [*MEMORY[0x277CCA5B8] isEqualToString:domain2];
 
       if (v56)
       {
-        v57 = [(NSError *)v54 code];
-        switch(v57)
+        code = [(NSError *)v54 code];
+        switch(code)
         {
           case '<':
             v58 = @"The connection to the server “%@” on port %d timed out.";
             break;
           case '=':
-            if (v50)
+            if (tryDirectSSL)
             {
               v58 = @"Mail was unable to connect to server “%@” using SSL on port %d. Verify that this server supports SSL and that your account settings are correct.";
             }
@@ -782,7 +782,7 @@ LABEL_29:
             v58 = @"The server “%@” cannot be contacted on port %d.";
             break;
           default:
-            if (!v50)
+            if (!tryDirectSSL)
             {
               v67 = [MEMORY[0x277CCACA8] stringWithFormat:@"The mail server “%@” is not responding. Verify that you have entered the correct account info in Mail settings.", v52];
               goto LABEL_50;
@@ -792,18 +792,18 @@ LABEL_29:
             break;
         }
 
-        v67 = [MEMORY[0x277CCACA8] stringWithFormat:v58, v52, v5];
+        v67 = [MEMORY[0x277CCACA8] stringWithFormat:v58, v52, portNumber];
 LABEL_50:
-        v60 = v67;
+        localizedDescription = v67;
 LABEL_51:
         if (![(NSError *)v54 mf_isUserCancelledError])
         {
-          if (!v60)
+          if (!localizedDescription)
           {
-            v60 = [MEMORY[0x277CCACA8] stringWithFormat:@"The mail server “%@” is not responding. Verify that you have entered the correct account info in Mail settings.", v52];
+            localizedDescription = [MEMORY[0x277CCACA8] stringWithFormat:@"The mail server “%@” is not responding. Verify that you have entered the correct account info in Mail settings.", v52];
           }
 
-          v68 = [(NSError *)v54 setLocalizedDescription:v60];
+          v68 = [(NSError *)v54 setLocalizedDescription:localizedDescription];
 
           v54 = v68;
         }
@@ -811,21 +811,21 @@ LABEL_51:
         goto LABEL_55;
       }
 
-      v61 = [(NSError *)v54 domain];
-      v62 = [*MEMORY[0x277CCA670] isEqualToString:v61];
+      domain3 = [(NSError *)v54 domain];
+      v62 = [*MEMORY[0x277CCA670] isEqualToString:domain3];
 
       if (!v62)
       {
-        v60 = 0;
+        localizedDescription = 0;
         goto LABEL_51;
       }
 
-      v63 = [(__CFString *)v21 serverCertificates];
-      v64 = _setupSSLDomainError(v54, v52, v63);
+      serverCertificates = [(__CFString *)v21 serverCertificates];
+      v64 = _setupSSLDomainError(v54, v52, serverCertificates);
 
       v65 = v64;
-      v60 = [v64 localizedDescription];
-      if (v60 && ![&stru_288159858 isEqualToString:v60])
+      localizedDescription = [v64 localizedDescription];
+      if (localizedDescription && ![&stru_288159858 isEqualToString:localizedDescription])
       {
         v59 = v65;
         if (!v65)
@@ -836,10 +836,10 @@ LABEL_51:
 
       else
       {
-        v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"Mail was unable to connect to server “%@” using SSL on port %d. Verify that this server supports SSL and that your account settings are correct.", v52, v5];
+        v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"Mail was unable to connect to server “%@” using SSL on port %d. Verify that this server supports SSL and that your account settings are correct.", v52, portNumber];
 
         v59 = v65;
-        v60 = v66;
+        localizedDescription = v66;
         if (!v65)
         {
           goto LABEL_41;
@@ -850,7 +850,7 @@ LABEL_51:
     else
     {
       v59 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1030 localizedDescription:0];
-      v60 = 0;
+      localizedDescription = 0;
       if (!v59)
       {
 LABEL_41:
@@ -871,35 +871,35 @@ LABEL_55:
 LABEL_11:
   _logEvent(self, 0, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0);
   v20 = 1;
-  v21 = v6;
+  v21 = getSocket;
 LABEL_56:
 
   v69 = *MEMORY[0x277D85DE8];
   return v20;
 }
 
-- (BOOL)connectUsingAccount:(id)a3
+- (BOOL)connectUsingAccount:(id)account
 {
-  v4 = [a3 defaultConnectionSettings];
-  LOBYTE(self) = [(MFConnection *)self connectUsingSettings:v4];
+  defaultConnectionSettings = [account defaultConnectionSettings];
+  LOBYTE(self) = [(MFConnection *)self connectUsingSettings:defaultConnectionSettings];
 
   return self;
 }
 
-+ (BOOL)shouldTryFallbacksAfterError:(id)a3
++ (BOOL)shouldTryFallbacksAfterError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqual:*MEMORY[0x277CBACE8]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqual:*MEMORY[0x277CBACE8]];
 
   if (!v5)
   {
-    v7 = [v3 domain];
-    v8 = [v7 isEqual:*MEMORY[0x277CCA670]];
+    domain2 = [errorCopy domain];
+    v8 = [domain2 isEqual:*MEMORY[0x277CCA670]];
 
     if (v8)
     {
-      v6 = [v3 code] != -9829;
+      v6 = [errorCopy code] != -9829;
       goto LABEL_8;
     }
 
@@ -908,7 +908,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v3 code] != 2 && objc_msgSend(v3, "code") != 1)
+  if ([errorCopy code] != 2 && objc_msgSend(errorCopy, "code") != 1)
   {
     goto LABEL_7;
   }
@@ -919,9 +919,9 @@ LABEL_8:
   return v6;
 }
 
-- (void)setAllowsFallbacks:(BOOL)a3
+- (void)setAllowsFallbacks:(BOOL)fallbacks
 {
-  if (a3)
+  if (fallbacks)
   {
     v3 = 2;
   }
@@ -934,11 +934,11 @@ LABEL_8:
   *(self + 100) = *(self + 100) & 0xFD | v3;
 }
 
-- (BOOL)authenticateUsingAccount:(id)a3
+- (BOOL)authenticateUsingAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 preferredAuthScheme];
-  v6 = [v5 authenticatorForAccount:v4 connection:self];
+  accountCopy = account;
+  preferredAuthScheme = [accountCopy preferredAuthScheme];
+  v6 = [preferredAuthScheme authenticatorForAccount:accountCopy connection:self];
   securityLayer = self->_securityLayer;
   self->_securityLayer = 0;
 
@@ -947,14 +947,14 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [(MFConnection *)self authenticationMechanisms];
-  if (!v8 || ([v6 saslName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "indexOfObject:", v9), v9, v10 == 0x7FFFFFFFFFFFFFFFLL))
+  authenticationMechanisms = [(MFConnection *)self authenticationMechanisms];
+  if (!authenticationMechanisms || ([v6 saslName], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(authenticationMechanisms, "indexOfObject:", v9), v9, v10 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v11 = MEMORY[0x277CCACA8];
-    v12 = [objc_opt_class() accountTypeString];
-    v13 = [v4 hostname];
-    v14 = [v5 humanReadableName];
-    v15 = [v11 stringWithFormat:@"The %@ server “%@” doesn’t support %@ authentication. Please check your account settings and try again.", v12, v13, v14];
+    accountTypeString = [objc_opt_class() accountTypeString];
+    hostname = [accountCopy hostname];
+    humanReadableName = [preferredAuthScheme humanReadableName];
+    v15 = [v11 stringWithFormat:@"The %@ server “%@” doesn’t support %@ authentication. Please check your account settings and try again.", accountTypeString, hostname, humanReadableName];
 
     v16 = +[MFActivityMonitor currentMonitor];
     v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFMessageErrorDomain" code:1034 localizedDescription:v15];
@@ -965,7 +965,7 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  if (![(MFConnection *)self authenticateUsingAccount:v4 authenticator:v6])
+  if (![(MFConnection *)self authenticateUsingAccount:accountCopy authenticator:v6])
   {
 LABEL_9:
     v18 = 0;
@@ -978,9 +978,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v20 = [v6 securityLayer];
-  v8 = self->_securityLayer;
-  self->_securityLayer = v20;
+  securityLayer = [v6 securityLayer];
+  authenticationMechanisms = self->_securityLayer;
+  self->_securityLayer = securityLayer;
   v18 = 1;
 LABEL_5:
 
@@ -996,7 +996,7 @@ LABEL_10:
   v18 = 0u;
   v15 = 0u;
   v2 = v16 = 0u;
-  v3 = 0;
+  array = 0;
   v4 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
@@ -1015,14 +1015,14 @@ LABEL_10:
         if (v9 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v10 = v8;
-          if (!v3)
+          if (!array)
           {
-            v3 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
           v11 = [v7 substringFromIndex:v9 + v10];
-          v12 = [v11 uppercaseString];
-          [v3 addObject:v12];
+          uppercaseString = [v11 uppercaseString];
+          [array addObject:uppercaseString];
         }
       }
 
@@ -1034,29 +1034,29 @@ LABEL_10:
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (BOOL)usesOpportunisticSockets
 {
-  v2 = [(MFConnection *)self getSocket];
-  v3 = [v2 usesOpportunisticSocketsStatus];
+  getSocket = [(MFConnection *)self getSocket];
+  usesOpportunisticSocketsStatus = [getSocket usesOpportunisticSocketsStatus];
 
-  return v3;
+  return usesOpportunisticSocketsStatus;
 }
 
-- (BOOL)writeBytes:(const char *)a3 length:(unint64_t)a4 dontLogBytesInRange:(_NSRange)a5
+- (BOOL)writeBytes:(const char *)bytes length:(unint64_t)length dontLogBytesInRange:(_NSRange)range
 {
-  v8 = [(MFSASLSecurityLayer *)self->_securityLayer encryptionBufferSize];
-  v9 = v8;
-  v30 = a4;
-  v32 = a3;
+  encryptionBufferSize = [(MFSASLSecurityLayer *)self->_securityLayer encryptionBufferSize];
+  v9 = encryptionBufferSize;
+  lengthCopy = length;
+  bytesCopy = bytes;
   if ((*(self + 100) & 4) != 0)
   {
     v10 = objc_alloc_init(MEMORY[0x277D24F70]);
     deflater = self->_deflater;
-    deflater->avail_in = a4;
-    deflater->next_in = a3;
+    deflater->avail_in = length;
+    deflater->next_in = bytes;
     v14 = self->_deflater;
     do
     {
@@ -1074,26 +1074,26 @@ LABEL_10:
     }
 
     while (!v14->avail_out);
-    a4 = [v10 length];
-    a3 = [v10 bytes];
+    length = [v10 length];
+    bytes = [v10 bytes];
     if (v9)
     {
 LABEL_3:
       v11 = objc_allocWithZone(MEMORY[0x277D24F70]);
-      a3 = 0;
-      if (v9 >= a4)
+      bytes = 0;
+      if (v9 >= length)
       {
-        v12 = a4;
+        lengthCopy2 = length;
       }
 
       else
       {
-        v12 = v9;
+        lengthCopy2 = v9;
       }
 
-      v31 = v12;
-      v9 = [v11 initWithCapacity:v12 + 4];
-      if (!a4)
+      lengthCopy3 = lengthCopy2;
+      v9 = [v11 initWithCapacity:lengthCopy2 + 4];
+      if (!length)
       {
         goto LABEL_33;
       }
@@ -1105,24 +1105,24 @@ LABEL_3:
   else
   {
     v10 = 0;
-    if (v8)
+    if (encryptionBufferSize)
     {
       goto LABEL_3;
     }
   }
 
-  v31 = a4;
-  if (!a4)
+  lengthCopy3 = length;
+  if (!length)
   {
 LABEL_33:
     if (v9)
     {
-      _logEvent(self, 4, v32, v30, a5.location, a5.length);
+      _logEvent(self, 4, bytesCopy, lengthCopy, range.location, range.length);
     }
 
     else
     {
-      _logEvent(self, 3, v32, v30, a5.location, a5.length);
+      _logEvent(self, 3, bytesCopy, lengthCopy, range.location, range.length);
     }
 
     v26 = 1;
@@ -1130,22 +1130,22 @@ LABEL_33:
   }
 
 LABEL_13:
-  v29 = &v32[a4];
+  v29 = &bytesCopy[length];
   while (1)
   {
     if (v9)
     {
-      if (v31 >= a4)
+      if (lengthCopy3 >= length)
       {
-        v17 = a4;
+        lengthCopy4 = length;
       }
 
       else
       {
-        v17 = v31;
+        lengthCopy4 = lengthCopy3;
       }
 
-      v18 = [(MFSASLSecurityLayer *)self->_securityLayer createEncryptedDataForBytes:&v29[-a4] length:v17];
+      v18 = [(MFSASLSecurityLayer *)self->_securityLayer createEncryptedDataForBytes:&v29[-length] length:lengthCopy4];
       [v9 setLength:0];
       v19 = v18 != 0;
       if (v18)
@@ -1155,18 +1155,18 @@ LABEL_13:
         [v9 appendData:v18];
       }
 
-      a3 = [v9 bytes];
-      v20 = [v9 length];
+      bytes = [v9 bytes];
+      lengthCopy5 = [v9 length];
     }
 
     else
     {
       v19 = 1;
-      v20 = a4;
+      lengthCopy5 = length;
     }
 
-    v21 = [(MFConnection *)self getSocket];
-    if (!v21)
+    getSocket = [(MFConnection *)self getSocket];
+    if (!getSocket)
     {
       _setupWriteErrorMessage(self, 0);
       goto LABEL_36;
@@ -1177,22 +1177,22 @@ LABEL_13:
       goto LABEL_36;
     }
 
-    if (v20)
+    if (lengthCopy5)
     {
       break;
     }
 
 LABEL_29:
 
-    v25 = a4 > v31;
-    if (a4 >= v31)
+    v25 = length > lengthCopy3;
+    if (length >= lengthCopy3)
     {
-      a4 -= v31;
+      length -= lengthCopy3;
     }
 
     else
     {
-      a4 = 0;
+      length = 0;
     }
 
     if (!v25)
@@ -1201,10 +1201,10 @@ LABEL_29:
     }
   }
 
-  v22 = a3;
+  bytesCopy2 = bytes;
   while (1)
   {
-    v23 = [(_MFSocket *)v21 writeBytes:v22 length:v20];
+    v23 = [(_MFSocket *)getSocket writeBytes:bytesCopy2 length:lengthCopy5];
     if (v23 < 0)
     {
       break;
@@ -1218,17 +1218,17 @@ LABEL_29:
 
     v24 = +[MFActivityMonitor currentMonitor];
     [v24 recordBytesWritten:v23];
-    v22 += v23;
-    v20 -= v23;
+    bytesCopy2 += v23;
+    lengthCopy5 -= v23;
 
-    if (!v20)
+    if (!lengthCopy5)
     {
       goto LABEL_29;
     }
   }
 
-  _setupWriteErrorMessage(self, v21);
-  [(MFConnection *)self abortSocket:v21];
+  _setupWriteErrorMessage(self, getSocket);
+  [(MFConnection *)self abortSocket:getSocket];
 LABEL_36:
 
   v26 = 0;
@@ -1237,27 +1237,27 @@ LABEL_39:
   return v26;
 }
 
-- (BOOL)writeData:(id)a3 dontLogBytesInRange:(_NSRange)a4
+- (BOOL)writeData:(id)data dontLogBytesInRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
-  LOBYTE(length) = -[MFConnection writeBytes:length:dontLogBytesInRange:](self, "writeBytes:length:dontLogBytesInRange:", [v7 bytes], objc_msgSend(v7, "length"), location, length);
+  length = range.length;
+  location = range.location;
+  dataCopy = data;
+  LOBYTE(length) = -[MFConnection writeBytes:length:dontLogBytesInRange:](self, "writeBytes:length:dontLogBytesInRange:", [dataCopy bytes], objc_msgSend(dataCopy, "length"), location, length);
 
   return length;
 }
 
-- (void)logReadChars:(const char *)a3 length:(unint64_t)a4
+- (void)logReadChars:(const char *)chars length:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
-    self->_readBytesNotLogged -= a4;
+    self->_readBytesNotLogged -= length;
   }
 }
 
-- (BOOL)readLineIntoData:(id)a3
+- (BOOL)readLineIntoData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = 0;
   v6 = 1;
   do
@@ -1318,7 +1318,7 @@ LABEL_12:
       v13 = v9 + v10;
     }
 
-    [v4 appendBytes:&buffer[bufferStart] length:v13];
+    [dataCopy appendBytes:&buffer[bufferStart] length:v13];
     v14 = self->_bufferStart + v13;
     self->_bufferRemainingBytes -= v13;
     self->_bufferStart = v14;
@@ -1329,10 +1329,10 @@ LABEL_12:
   return v6 & 1;
 }
 
-- (BOOL)readBytesIntoData:(id)a3 desiredLength:(unint64_t)a4
+- (BOOL)readBytesIntoData:(id)data desiredLength:(unint64_t)length
 {
-  v6 = a3;
-  while (a4)
+  dataCopy = data;
+  while (length)
   {
     bufferRemainingBytes = self->_bufferRemainingBytes;
     if (!bufferRemainingBytes)
@@ -1348,21 +1348,21 @@ LABEL_12:
 
     if (bufferRemainingBytes >= 1)
     {
-      if (bufferRemainingBytes >= a4)
+      if (bufferRemainingBytes >= length)
       {
-        v8 = a4;
+        lengthCopy = length;
       }
 
       else
       {
-        v8 = bufferRemainingBytes;
+        lengthCopy = bufferRemainingBytes;
       }
 
-      [v6 appendBytes:&self->_buffer[self->_bufferStart] length:v8];
-      v9 = self->_bufferStart + v8;
-      self->_bufferRemainingBytes -= v8;
+      [dataCopy appendBytes:&self->_buffer[self->_bufferStart] length:lengthCopy];
+      v9 = self->_bufferStart + lengthCopy;
+      self->_bufferRemainingBytes -= lengthCopy;
       self->_bufferStart = v9;
-      a4 -= v8;
+      length -= lengthCopy;
     }
   }
 
@@ -1372,7 +1372,7 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)authenticateUsingAccount:(id)a3 authenticator:(id)a4
+- (BOOL)authenticateUsingAccount:(id)account authenticator:(id)authenticator
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
@@ -1387,7 +1387,7 @@ LABEL_12:
   return 0;
 }
 
-- (BOOL)startTLSForAccount:(id)a3
+- (BOOL)startTLSForAccount:(id)account
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = objc_opt_class();
@@ -1404,19 +1404,19 @@ LABEL_12:
 
 - (NSString)securityProtocol
 {
-  v2 = [(MFConnection *)self getSocket];
-  v3 = v2;
-  if (v2)
+  getSocket = [(MFConnection *)self getSocket];
+  v3 = getSocket;
+  if (getSocket)
   {
-    v4 = [v2 securityProtocol];
+    securityProtocol = [getSocket securityProtocol];
   }
 
   else
   {
-    v4 = *MEMORY[0x277CBF0A0];
+    securityProtocol = *MEMORY[0x277CBF0A0];
   }
 
-  v5 = v4;
+  v5 = securityProtocol;
 
   return v5;
 }
@@ -1441,14 +1441,14 @@ LABEL_12:
     v7 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(MFConnection *)self mambaID];
-      v9 = [(MFConnection *)self rumbaID];
+      mambaID = [(MFConnection *)self mambaID];
+      rumbaID = [(MFConnection *)self rumbaID];
       v18 = 136316162;
-      v19 = v8;
+      v19 = mambaID;
       v20 = 2080;
       v21 = " ";
       v22 = 2114;
-      v23 = v9;
+      v23 = rumbaID;
       v24 = 2080;
       v25 = " ";
       v26 = 1024;
@@ -1487,14 +1487,14 @@ LABEL_12:
     v7 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v16 = [(MFConnection *)self mambaID];
-      v17 = [(MFConnection *)self rumbaID];
+      mambaID2 = [(MFConnection *)self mambaID];
+      rumbaID2 = [(MFConnection *)self rumbaID];
       v18 = 136316162;
-      v19 = v16;
+      v19 = mambaID2;
       v20 = 2080;
       v21 = " ";
       v22 = 2114;
-      v23 = v17;
+      v23 = rumbaID2;
       v24 = 2080;
       v25 = " ";
       v26 = 1024;
@@ -1540,69 +1540,69 @@ LABEL_10:
 
 - (BOOL)isValid
 {
-  v2 = [(MFConnection *)self getSocket];
-  v3 = v2;
-  if (v2)
+  getSocket = [(MFConnection *)self getSocket];
+  v3 = getSocket;
+  if (getSocket)
   {
-    v4 = [v2 isValid];
+    isValid = [getSocket isValid];
   }
 
   else
   {
-    v4 = 0;
+    isValid = 0;
   }
 
-  return v4;
+  return isValid;
 }
 
-- (void)abortSocket:(id)a3
+- (void)abortSocket:(id)socket
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  socketCopy = socket;
   v5 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(MFConnection *)self mambaID];
-    v7 = [v4 rumbaID];
+    mambaID = [(MFConnection *)self mambaID];
+    rumbaID = [socketCopy rumbaID];
     v18 = 136315650;
-    v19 = v6;
+    v19 = mambaID;
     v20 = 2112;
-    v21 = v7;
+    v21 = rumbaID;
     v22 = 2048;
-    v23 = v4;
+    v23 = socketCopy;
     _os_log_impl(&dword_2720B1000, v5, OS_LOG_TYPE_DEFAULT, "#I %s %@ socket (%p) abort", &v18, 0x20u);
   }
 
-  v8 = [(MFConnection *)self getSocket];
-  v9 = v8 == v4;
+  getSocket = [(MFConnection *)self getSocket];
+  v9 = getSocket == socketCopy;
 
   if (!v9)
   {
     v10 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(MFConnection *)self mambaID];
-      v12 = [(MFConnection *)self rumbaID];
-      v13 = [(MFConnection *)self getSocket];
+      mambaID2 = [(MFConnection *)self mambaID];
+      rumbaID2 = [(MFConnection *)self rumbaID];
+      getSocket2 = [(MFConnection *)self getSocket];
       v18 = 136316418;
-      v19 = v11;
+      v19 = mambaID2;
       v20 = 2080;
       v21 = " ";
       v22 = 2114;
-      v23 = v12;
+      v23 = rumbaID2;
       v24 = 2080;
       v25 = " ";
       v26 = 2048;
-      v27 = v4;
+      v27 = socketCopy;
       v28 = 2048;
-      v29 = v13;
+      v29 = getSocket2;
       _os_log_impl(&dword_2720B1000, v10, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%sabortSocket: aborting invalid socket (%p), self socket (%p)", &v18, 0x3Eu);
     }
   }
 
-  if (v4)
+  if (socketCopy)
   {
-    [v4 abort];
+    [socketCopy abort];
     _logEvent(self, 5, 0, 0, 0x7FFFFFFFFFFFFFFFuLL, 0);
   }
 
@@ -1611,14 +1611,14 @@ LABEL_10:
     v14 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(MFConnection *)self mambaID];
-      v16 = [(MFConnection *)self rumbaID];
+      mambaID3 = [(MFConnection *)self mambaID];
+      rumbaID3 = [(MFConnection *)self rumbaID];
       v18 = 136315906;
-      v19 = v15;
+      v19 = mambaID3;
       v20 = 2080;
       v21 = " ";
       v22 = 2114;
-      v23 = v16;
+      v23 = rumbaID3;
       v24 = 2080;
       v25 = " ";
       _os_log_impl(&dword_2720B1000, v14, OS_LOG_TYPE_DEFAULT, "#I %s%s%{public}@%sabortSocket: aborting deleted socket", &v18, 0x2Au);
@@ -1633,24 +1633,24 @@ LABEL_10:
 - (void)disconnect
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(MFConnection *)self getSocket];
+  getSocket = [(MFConnection *)self getSocket];
   v4 = ctu::OsLogLogger::getOsLogHandle(self->logger.__ptr_);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MFConnection *)self mambaID];
-    v6 = [v3 rumbaID];
+    mambaID = [(MFConnection *)self mambaID];
+    rumbaID = [getSocket rumbaID];
     v8 = 136315650;
-    v9 = v5;
+    v9 = mambaID;
     v10 = 2112;
-    v11 = v6;
+    v11 = rumbaID;
     v12 = 2048;
-    v13 = v3;
+    v13 = getSocket;
     _os_log_impl(&dword_2720B1000, v4, OS_LOG_TYPE_DEFAULT, "#I %s %@ socket (%p) disconnect", &v8, 0x20u);
   }
 
-  if (v3)
+  if (getSocket)
   {
-    [(MFConnection *)self abortSocket:v3];
+    [(MFConnection *)self abortSocket:getSocket];
   }
 
   [(MFConnection *)self endCompression];
@@ -1665,28 +1665,28 @@ LABEL_10:
     return 1;
   }
 
-  v3 = [(MFConnection *)self getSocket];
-  v2 = [v3 isReadable];
+  getSocket = [(MFConnection *)self getSocket];
+  isReadable = [getSocket isReadable];
 
-  return v2;
+  return isReadable;
 }
 
 - (id)copyDiagnosticInformation
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [(MFConnection *)self mf_lock];
-  v4 = [(MFConnection *)self getSocket];
+  getSocket = [(MFConnection *)self getSocket];
   [v3 appendString:@"\n==== Connection State ====\n"];
-  v5 = [v4 remoteHostname];
-  [v3 appendFormat:@"    Host: %@\n", v5];
+  remoteHostname = [getSocket remoteHostname];
+  [v3 appendFormat:@"    Host: %@\n", remoteHostname];
 
-  [v3 appendFormat:@"    Port Number: %u\n", objc_msgSend(v4, "remotePortNumber")];
-  v6 = [v4 securityProtocol];
-  [v3 appendFormat:@"    SSL Version: %@\n", v6];
+  [v3 appendFormat:@"    Port Number: %u\n", objc_msgSend(getSocket, "remotePortNumber")];
+  securityProtocol = [getSocket securityProtocol];
+  [v3 appendFormat:@"    SSL Version: %@\n", securityProtocol];
 
-  [v3 appendFormat:@"    Socket: %p\n", v4];
-  v7 = [MEMORY[0x277CCACC8] currentThread];
-  [v3 appendFormat:@"    Thread: %p\n", v7];
+  [v3 appendFormat:@"    Socket: %p\n", getSocket];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  [v3 appendFormat:@"    Thread: %p\n", currentThread];
 
   [(MFConnection *)self mf_unlock];
   return v3;

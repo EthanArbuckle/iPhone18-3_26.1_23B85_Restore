@@ -1,6 +1,6 @@
 @interface MTRAudioOutputClusterOutputInfoStruct
 - (MTRAudioOutputClusterOutputInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRAudioOutputClusterOutputInfoStruct);
-  v5 = [(MTRAudioOutputClusterOutputInfoStruct *)self index];
-  [(MTRAudioOutputClusterOutputInfoStruct *)v4 setIndex:v5];
+  index = [(MTRAudioOutputClusterOutputInfoStruct *)self index];
+  [(MTRAudioOutputClusterOutputInfoStruct *)v4 setIndex:index];
 
-  v6 = [(MTRAudioOutputClusterOutputInfoStruct *)self outputType];
-  [(MTRAudioOutputClusterOutputInfoStruct *)v4 setOutputType:v6];
+  outputType = [(MTRAudioOutputClusterOutputInfoStruct *)self outputType];
+  [(MTRAudioOutputClusterOutputInfoStruct *)v4 setOutputType:outputType];
 
-  v7 = [(MTRAudioOutputClusterOutputInfoStruct *)self name];
-  [(MTRAudioOutputClusterOutputInfoStruct *)v4 setName:v7];
+  name = [(MTRAudioOutputClusterOutputInfoStruct *)self name];
+  [(MTRAudioOutputClusterOutputInfoStruct *)v4 setName:name];
 
   return v4;
 }

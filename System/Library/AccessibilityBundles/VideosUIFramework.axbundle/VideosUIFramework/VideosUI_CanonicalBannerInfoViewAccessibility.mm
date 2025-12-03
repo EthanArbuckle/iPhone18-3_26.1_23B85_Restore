@@ -1,28 +1,28 @@
 @interface VideosUI_CanonicalBannerInfoViewAccessibility
 + (id)_axHeaderElementSwiftKeys;
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation VideosUI_CanonicalBannerInfoViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"titleImageView" withSwiftType:"Optional<VUIImageView>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"badgeView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"contentTitleView" withSwiftType:"Optional<VUILabel>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"contentSubtitleView" withSwiftType:"Optional<UIView & VUILabelBaselineProtocol>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"episodeInfoTextView" withSwiftType:"Optional<VUILabel>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"promoTextView" withSwiftType:"Optional<VUILabel>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"askToBuyPromptView" withSwiftType:"Optional<VUILabel>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"descriptionTextView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"genresAndProviderTagsView" withSwiftType:"Optional<VUIMediaTagsView>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"metadataAndBadgesTagsView" withSwiftType:"Optional<VUIMediaTagsView>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"disclaimerTextView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"availabilityTextView" withSwiftType:"Optional<UIView>"];
-  [v3 validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"buttonViews" withSwiftType:"Optional<Array<UIView>>"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"titleImageView" withSwiftType:"Optional<VUIImageView>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"badgeView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"contentTitleView" withSwiftType:"Optional<VUILabel>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"contentSubtitleView" withSwiftType:"Optional<UIView & VUILabelBaselineProtocol>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"episodeInfoTextView" withSwiftType:"Optional<VUILabel>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"promoTextView" withSwiftType:"Optional<VUILabel>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"askToBuyPromptView" withSwiftType:"Optional<VUILabel>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"descriptionTextView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"genresAndProviderTagsView" withSwiftType:"Optional<VUIMediaTagsView>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"metadataAndBadgesTagsView" withSwiftType:"Optional<VUIMediaTagsView>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"disclaimerTextView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"availabilityTextView" withSwiftType:"Optional<UIView>"];
+  [validationsCopy validateClass:@"VideosUI.CanonicalBannerInfoView" hasSwiftField:@"buttonViews" withSwiftType:"Optional<Array<UIView>>"];
 }
 
 + (id)_axHeaderElementSwiftKeys
@@ -43,7 +43,7 @@
   v33.receiver = self;
   v33.super_class = VideosUI_CanonicalBannerInfoViewAccessibility;
   [(VideosUI_CanonicalBannerInfoViewAccessibility *)&v33 _accessibilityLoadAccessibilityInformation];
-  v18 = [objc_opt_class() _axHeaderElementSwiftKeys];
+  _axHeaderElementSwiftKeys = [objc_opt_class() _axHeaderElementSwiftKeys];
   objc_initWeak(&location, self);
   v30 = 0u;
   v31 = 0u;
@@ -84,7 +84,7 @@ LABEL_23:
       v26 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v7 = v18;
+      v7 = _axHeaderElementSwiftKeys;
       v8 = [v7 countByEnumeratingWithState:&v23 objects:v34 count:16];
       if (v8)
       {

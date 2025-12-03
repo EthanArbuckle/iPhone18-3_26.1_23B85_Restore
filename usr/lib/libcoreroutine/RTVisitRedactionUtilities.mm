@@ -1,8 +1,8 @@
 @interface RTVisitRedactionUtilities
 + (BOOL)shouldRedactAllVisitsForCurrentRegion;
-+ (id)obfuscatedVisitDateIntervalForEntryDate:(id)a3 previousObfuscatedVisitEntryDate:(id)a4;
-+ (id)redactVisits:(id)a3 authorizedLocations:(id)a4 bluePOICategoryDenylist:(id)a5;
-+ (id)visitStartDateRangeFromObfuscatedStartDate:(id)a3;
++ (id)obfuscatedVisitDateIntervalForEntryDate:(id)date previousObfuscatedVisitEntryDate:(id)entryDate;
++ (id)redactVisits:(id)visits authorizedLocations:(id)locations bluePOICategoryDenylist:(id)denylist;
++ (id)visitStartDateRangeFromObfuscatedStartDate:(id)date;
 @end
 
 @implementation RTVisitRedactionUtilities
@@ -10,12 +10,12 @@
 + (BOOL)shouldRedactAllVisitsForCurrentRegion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D443A8] currentEstimates];
+  currentEstimates = [MEMORY[0x277D443A8] currentEstimates];
   v3 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v2;
+    v19 = currentEstimates;
     _os_log_impl(&dword_2304B3000, v3, OS_LOG_TYPE_DEFAULT, "current estimates, %@", buf, 0xCu);
   }
 
@@ -23,7 +23,7 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = v2;
+  v4 = currentEstimates;
   v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
@@ -38,8 +38,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) countryCode];
-        v10 = [v9 isEqual:@"CN"];
+        countryCode = [*(*(&v13 + 1) + 8 * i) countryCode];
+        v10 = [countryCode isEqual:@"CN"];
 
         if (v10)
         {
@@ -64,13 +64,13 @@ LABEL_13:
   return v11;
 }
 
-+ (id)redactVisits:(id)a3 authorizedLocations:(id)a4 bluePOICategoryDenylist:(id)a5
++ (id)redactVisits:(id)visits authorizedLocations:(id)locations bluePOICategoryDenylist:(id)denylist
 {
   v110 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  visitsCopy = visits;
+  locationsCopy = locations;
+  denylistCopy = denylist;
+  if (!visitsCopy)
   {
     v10 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -90,7 +90,7 @@ LABEL_13:
   v101 = 0u;
   v102 = 0u;
   v103 = 0u;
-  v12 = v8;
+  v12 = locationsCopy;
   v13 = [v12 countByEnumeratingWithState:&v100 objects:v109 count:16];
   if (v13)
   {
@@ -105,8 +105,8 @@ LABEL_13:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v100 + 1) + 8 * i) identifier];
-        [v11 addObject:v17];
+        identifier = [*(*(&v100 + 1) + 8 * i) identifier];
+        [v11 addObject:identifier];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v100 objects:v109 count:16];
@@ -119,22 +119,22 @@ LABEL_13:
 
   v18 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v18 setDay:-28];
-  v19 = [MEMORY[0x277CBEA80] currentCalendar];
-  v20 = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
   v81 = v18;
-  v92 = [v19 dateByAddingComponents:v18 toDate:v20 options:0];
+  v92 = [currentCalendar dateByAddingComponents:v18 toDate:date options:0];
 
   v98 = 0u;
   v99 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = v7;
+  obj = visitsCopy;
   v21 = [obj countByEnumeratingWithState:&v96 objects:v108 count:16];
   if (v21)
   {
     v22 = v21;
     v23 = *v97;
-    v93 = v9;
+    v93 = denylistCopy;
     do
     {
       v24 = 0;
@@ -146,14 +146,14 @@ LABEL_13:
         }
 
         v25 = *(*(&v96 + 1) + 8 * v24);
-        v26 = [v25 placeInference];
-        if ([v26 userType] == 1)
+        placeInference = [v25 placeInference];
+        if ([placeInference userType] == 1)
         {
           goto LABEL_20;
         }
 
-        v27 = [v25 placeInference];
-        if ([v27 userType] == 2)
+        placeInference2 = [v25 placeInference];
+        if ([placeInference2 userType] == 2)
         {
 
 LABEL_20:
@@ -163,36 +163,36 @@ LABEL_21:
             v28 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
             if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
             {
-              v29 = [v25 identifier];
-              v30 = [v25 placeInference];
-              v31 = [v30 userType];
+              identifier2 = [v25 identifier];
+              placeInference3 = [v25 placeInference];
+              userType = [placeInference3 userType];
               *buf = 138412546;
-              v105 = v29;
+              v105 = identifier2;
               v106 = 2048;
-              v107 = v31;
+              v107 = userType;
               _os_log_impl(&dword_2304B3000, v28, OS_LOG_TYPE_INFO, "redacting visit, %@, due to userType, %ld", buf, 0x16u);
             }
           }
 
-          v32 = [(RTVisitRedactionDetails *)v95 visitsRedactedForPlaceType];
+          visitsRedactedForPlaceType = [(RTVisitRedactionDetails *)v95 visitsRedactedForPlaceType];
 LABEL_26:
-          v33 = v32;
-          [v32 addObject:v25];
+          lastObject = visitsRedactedForPlaceType;
+          [visitsRedactedForPlaceType addObject:v25];
           goto LABEL_27;
         }
 
-        v34 = [v25 placeInference];
-        v35 = [v34 userType];
+        placeInference4 = [v25 placeInference];
+        userType2 = [placeInference4 userType];
 
-        if (v35 == 3)
+        if (userType2 == 3)
         {
           goto LABEL_21;
         }
 
-        v36 = [v25 placeInference];
-        v37 = [v36 mapItem];
-        v38 = [v37 categoryMUID];
-        v39 = [v9 containsObject:v38];
+        placeInference5 = [v25 placeInference];
+        mapItem = [placeInference5 mapItem];
+        categoryMUID = [mapItem categoryMUID];
+        v39 = [denylistCopy containsObject:categoryMUID];
 
         if (v39)
         {
@@ -201,28 +201,28 @@ LABEL_26:
             v40 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
             if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
             {
-              v41 = [v25 identifier];
-              v42 = [v25 placeInference];
-              v43 = [v42 mapItem];
-              v44 = [v43 categoryMUID];
-              v45 = [v44 unsignedLongValue];
+              identifier3 = [v25 identifier];
+              placeInference6 = [v25 placeInference];
+              mapItem2 = [placeInference6 mapItem];
+              categoryMUID2 = [mapItem2 categoryMUID];
+              unsignedLongValue = [categoryMUID2 unsignedLongValue];
               *buf = 138412546;
-              v105 = v41;
+              v105 = identifier3;
               v106 = 2048;
-              v107 = v45;
+              v107 = unsignedLongValue;
               _os_log_impl(&dword_2304B3000, v40, OS_LOG_TYPE_INFO, "redacting visit, %@, due to categoryMUID, %ld", buf, 0x16u);
 
-              v9 = v93;
+              denylistCopy = v93;
             }
           }
 
-          v32 = [(RTVisitRedactionDetails *)v95 visitsRedactedForCategory];
+          visitsRedactedForPlaceType = [(RTVisitRedactionDetails *)v95 visitsRedactedForCategory];
           goto LABEL_26;
         }
 
-        v46 = [v25 placeInference];
-        v47 = [v46 loiIdentifier];
-        v48 = [v11 containsObject:v47];
+        placeInference7 = [v25 placeInference];
+        loiIdentifier = [placeInference7 loiIdentifier];
+        v48 = [v11 containsObject:loiIdentifier];
 
         if (v48)
         {
@@ -231,23 +231,23 @@ LABEL_26:
             v49 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
             if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
             {
-              v50 = [v25 identifier];
-              v51 = [v25 placeInference];
-              v52 = [v51 loiIdentifier];
+              identifier4 = [v25 identifier];
+              placeInference8 = [v25 placeInference];
+              loiIdentifier2 = [placeInference8 loiIdentifier];
               *buf = 138412546;
-              v105 = v50;
+              v105 = identifier4;
               v106 = 2112;
-              v107 = v52;
+              v107 = loiIdentifier2;
               _os_log_impl(&dword_2304B3000, v49, OS_LOG_TYPE_INFO, "redacting visit, %@, due to AuthorizedLocation, identifier, %@", buf, 0x16u);
             }
           }
 
-          v32 = [(RTVisitRedactionDetails *)v95 visitsRedactedForAuthorizedLocation];
+          visitsRedactedForPlaceType = [(RTVisitRedactionDetails *)v95 visitsRedactedForAuthorizedLocation];
           goto LABEL_26;
         }
 
-        v53 = [v25 date];
-        v54 = [v53 compare:v92];
+        date2 = [v25 date];
+        v54 = [date2 compare:v92];
 
         if (v54 == -1)
         {
@@ -256,74 +256,74 @@ LABEL_26:
             v65 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
             if (os_log_type_enabled(v65, OS_LOG_TYPE_INFO))
             {
-              v66 = [v25 identifier];
-              v67 = [v25 date];
+              identifier5 = [v25 identifier];
+              date3 = [v25 date];
               *buf = 138412546;
-              v105 = v66;
+              v105 = identifier5;
               v106 = 2112;
-              v107 = v67;
+              v107 = date3;
               _os_log_impl(&dword_2304B3000, v65, OS_LOG_TYPE_INFO, "redacting visit, %@, due to age, date, %@", buf, 0x16u);
             }
           }
 
-          v32 = [(RTVisitRedactionDetails *)v95 visitsRedactedForAge];
+          visitsRedactedForPlaceType = [(RTVisitRedactionDetails *)v95 visitsRedactedForAge];
           goto LABEL_26;
         }
 
-        v55 = [v25 placeInference];
-        v56 = [v55 mapItem];
-        v57 = [v56 address];
-        v58 = [v57 iso3166CountryCode];
-        v59 = [v58 isEqual:@"CN"];
+        placeInference9 = [v25 placeInference];
+        mapItem3 = [placeInference9 mapItem];
+        address = [mapItem3 address];
+        iso3166CountryCode = [address iso3166CountryCode];
+        v59 = [iso3166CountryCode isEqual:@"CN"];
 
         if (v59)
         {
-          v9 = v93;
+          denylistCopy = v93;
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
           {
             v60 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
             if (os_log_type_enabled(v60, OS_LOG_TYPE_INFO))
             {
-              v61 = [v25 identifier];
-              v90 = [v25 placeInference];
-              v62 = [v90 mapItem];
-              v63 = [v62 address];
-              v64 = [v63 iso3166CountryCode];
+              identifier6 = [v25 identifier];
+              placeInference10 = [v25 placeInference];
+              mapItem4 = [placeInference10 mapItem];
+              address2 = [mapItem4 address];
+              iso3166CountryCode2 = [address2 iso3166CountryCode];
               *buf = 138412546;
-              v105 = v61;
+              v105 = identifier6;
               v106 = 2112;
-              v107 = v64;
+              v107 = iso3166CountryCode2;
               _os_log_impl(&dword_2304B3000, v60, OS_LOG_TYPE_INFO, "redacting visit, %@, due to country code, %@", buf, 0x16u);
 
-              v9 = v93;
+              denylistCopy = v93;
             }
           }
 
-          v32 = [(RTVisitRedactionDetails *)v95 visitsRedactedForRegion];
+          visitsRedactedForPlaceType = [(RTVisitRedactionDetails *)v95 visitsRedactedForRegion];
           goto LABEL_26;
         }
 
-        v33 = [v89 lastObject];
-        v68 = [v25 entry];
-        v69 = [v33 entry];
-        v70 = [a1 obfuscatedVisitDateIntervalForEntryDate:v68 previousObfuscatedVisitEntryDate:v69];
+        lastObject = [v89 lastObject];
+        entry = [v25 entry];
+        entry2 = [lastObject entry];
+        v70 = [self obfuscatedVisitDateIntervalForEntryDate:entry previousObfuscatedVisitEntryDate:entry2];
 
         v88 = objc_alloc(MEMORY[0x277D01428]);
-        v91 = [v25 date];
-        v87 = [v25 type];
-        v71 = [v25 location];
-        v86 = [v70 startDate];
-        v72 = [v70 endDate];
-        v85 = [v25 dataPointCount];
+        date4 = [v25 date];
+        type = [v25 type];
+        location = [v25 location];
+        startDate = [v70 startDate];
+        endDate = [v70 endDate];
+        dataPointCount = [v25 dataPointCount];
         [v25 confidence];
         v74 = v73;
-        v84 = [v25 placeInference];
-        v75 = [v25 source];
-        v76 = [v25 identifier];
-        v77 = [v88 initWithDate:v91 type:v87 location:v71 entry:v86 exit:v72 dataPointCount:v85 confidence:v74 placeInference:v84 source:v75 identifier:v76];
+        placeInference11 = [v25 placeInference];
+        source = [v25 source];
+        identifier7 = [v25 identifier];
+        v77 = [v88 initWithDate:date4 type:type location:location entry:startDate exit:endDate dataPointCount:dataPointCount confidence:v74 placeInference:placeInference11 source:source identifier:identifier7];
 
         [v89 addObject:v77];
-        v9 = v93;
+        denylistCopy = v93;
 LABEL_27:
 
         ++v24;
@@ -342,47 +342,47 @@ LABEL_27:
   return v79;
 }
 
-+ (id)obfuscatedVisitDateIntervalForEntryDate:(id)a3 previousObfuscatedVisitEntryDate:(id)a4
++ (id)obfuscatedVisitDateIntervalForEntryDate:(id)date previousObfuscatedVisitEntryDate:(id)entryDate
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = [v8 components:60 fromDate:v6];
-  v10 = [v9 hour];
-  if (v10 >= 0)
+  dateCopy = date;
+  entryDateCopy = entryDate;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = [currentCalendar components:60 fromDate:dateCopy];
+  hour = [v9 hour];
+  if (hour >= 0)
   {
-    v11 = v10;
+    v11 = hour;
   }
 
   else
   {
-    v11 = v10 + 3;
+    v11 = hour + 3;
   }
 
   [v9 setHour:v11 & 0xFFFFFFFFFFFFFFFCLL];
   [v9 setMinute:0];
   [v9 setSecond:0];
-  v12 = [v8 dateFromComponents:v9];
-  if (v7)
+  v12 = [currentCalendar dateFromComponents:v9];
+  if (entryDateCopy)
   {
     aSelector = a2;
-    v13 = [v8 components:60 fromDate:v7];
-    v14 = [v13 hour];
-    if (v14 >= 0)
+    v13 = [currentCalendar components:60 fromDate:entryDateCopy];
+    hour2 = [v13 hour];
+    if (hour2 >= 0)
     {
-      v15 = v14;
+      v15 = hour2;
     }
 
     else
     {
-      v15 = v14 + 3;
+      v15 = hour2 + 3;
     }
 
     v16 = [v13 day];
     if (v16 == [v9 day] && (v17 = objc_msgSend(v13, "month"), v17 == objc_msgSend(v9, "month")) && (v18 = objc_msgSend(v13, "year"), v18 == objc_msgSend(v9, "year")) && v11 >> 2 == v15 >> 2)
     {
-      v19 = [v7 dateByAddingUnit:64 value:2];
+      v19 = [entryDateCopy dateByAddingUnit:64 value:2];
 
       if (([v19 hour] & 0xFFFFFFFFFFFFFFFCLL) != (v11 & 0xFFFFFFFFFFFFFFFCLL))
       {
@@ -397,7 +397,7 @@ LABEL_27:
           v30 = 2112;
           v31 = v26;
           v32 = 2112;
-          v33 = v6;
+          v33 = dateCopy;
           v34 = 2112;
           v35 = v19;
           _os_log_fault_impl(&dword_2304B3000, v20, OS_LOG_TYPE_FAULT, "%@, %@, obfuscated visit start date was pushed out to the next time bucket - this should not happen; original start date, %@, obfuscated start date, %@", buf, 0x2Au);
@@ -419,24 +419,24 @@ LABEL_27:
   return v22;
 }
 
-+ (id)visitStartDateRangeFromObfuscatedStartDate:(id)a3
++ (id)visitStartDateRangeFromObfuscatedStartDate:(id)date
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:60 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:60 fromDate:dateCopy];
 
-  v7 = [v6 hour];
-  v8 = v7 + 3;
-  if (v7 >= 0)
+  hour = [v6 hour];
+  v8 = hour + 3;
+  if (hour >= 0)
   {
-    v8 = v7;
+    v8 = hour;
   }
 
   [v6 setHour:v8 & 0xFFFFFFFFFFFFFFFCLL];
   [v6 setMinute:0];
   [v6 setSecond:0];
-  v9 = [v5 dateFromComponents:v6];
+  v9 = [currentCalendar dateFromComponents:v6];
   v10 = [v9 dateByAddingTimeInterval:14400.0];
   v11 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v9 endDate:v10];
 

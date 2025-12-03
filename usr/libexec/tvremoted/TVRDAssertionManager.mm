@@ -131,8 +131,8 @@ id __30__TVRDAssertionManager__setup__block_invoke_10(uint64_t a1)
 - (void)dealloc
 {
   [(TVRDAssertionManager *)self releaseLockScreenAssertion];
-  v3 = [(TVRDAssertionManager *)self systemMonitor];
-  [v3 invalidate];
+  systemMonitor = [(TVRDAssertionManager *)self systemMonitor];
+  [systemMonitor invalidate];
 
   v4.receiver = self;
   v4.super_class = TVRDAssertionManager;
@@ -141,9 +141,9 @@ id __30__TVRDAssertionManager__setup__block_invoke_10(uint64_t a1)
 
 - (void)acquireLockScreenAssertion
 {
-  v3 = [(TVRDAssertionManager *)self _newLockScreenBehaviour];
+  _newLockScreenBehaviour = [(TVRDAssertionManager *)self _newLockScreenBehaviour];
   v4 = @"SBSWakeToRemoteAlertAssertion";
-  if (v3)
+  if (_newLockScreenBehaviour)
   {
     v4 = @"SBSSecureAppAssertion";
   }
@@ -161,7 +161,7 @@ id __30__TVRDAssertionManager__setup__block_invoke_10(uint64_t a1)
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "We already have a valid %@", &v15, 0xCu);
     }
 
-    if ((v3 & 1) == 0)
+    if ((_newLockScreenBehaviour & 1) == 0)
     {
       v9 = _TVRDXPCLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -183,7 +183,7 @@ id __30__TVRDAssertionManager__setup__block_invoke_10(uint64_t a1)
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Acquiring %@", &v15, 0xCu);
     }
 
-    if (v3)
+    if (_newLockScreenBehaviour)
     {
       v10 = [SBSSecureAppAssertion acquireSecureAppAssertionWithType:13 errorHandler:&__block_literal_global_28];
       v11 = self->_assertion;
@@ -266,9 +266,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v5 = [(TVRDAssertionManager *)self assertion];
+  assertion = [(TVRDAssertionManager *)self assertion];
 
-  if (!v5)
+  if (!assertion)
   {
     v3 = _TVRDXPCLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))

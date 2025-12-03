@@ -1,29 +1,29 @@
 @interface HUExpandableTextView
 - (CGSize)intrinsicContentSize;
-- (HUExpandableTextView)initWithFrame:(CGRect)a3;
+- (HUExpandableTextView)initWithFrame:(CGRect)frame;
 - (HUExpandableTextViewDelegate)delegate;
 - (NSAttributedString)attributedText;
 - (NSString)text;
-- (double)heightForWidth:(double)a3;
+- (double)heightForWidth:(double)width;
 - (void)_resetMoreButtonLayoutConstraints;
 - (void)_updateLanguageDirection;
 - (void)layoutSubviews;
-- (void)setAttributedText:(id)a3;
-- (void)setExpanded:(BOOL)a3;
-- (void)setMoreButton:(id)a3;
-- (void)setNumberOfLines:(unint64_t)a3;
-- (void)setStringGenerator:(id)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setExpanded:(BOOL)expanded;
+- (void)setMoreButton:(id)button;
+- (void)setNumberOfLines:(unint64_t)lines;
+- (void)setStringGenerator:(id)generator;
+- (void)setText:(id)text;
 - (void)updateConstraints;
 @end
 
 @implementation HUExpandableTextView
 
-- (HUExpandableTextView)initWithFrame:(CGRect)a3
+- (HUExpandableTextView)initWithFrame:(CGRect)frame
 {
   v31.receiver = self;
   v31.super_class = HUExpandableTextView;
-  v3 = [(HUExpandableTextView *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUExpandableTextView *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,11 +38,11 @@
 
     [(UITextView *)v4->_textView setScrollEnabled:0];
     [(UITextView *)v4->_textView setEditable:0];
-    v8 = [(UITextView *)v4->_textView textContainer];
-    [v8 setLineBreakMode:4];
+    textContainer = [(UITextView *)v4->_textView textContainer];
+    [textContainer setLineBreakMode:4];
 
-    v9 = [(UITextView *)v4->_textView textContainer];
-    [v9 setLineFragmentPadding:0.0];
+    textContainer2 = [(UITextView *)v4->_textView textContainer];
+    [textContainer2 setLineFragmentPadding:0.0];
 
     v10 = *MEMORY[0x277D768C8];
     v11 = *(MEMORY[0x277D768C8] + 8);
@@ -50,8 +50,8 @@
     v13 = *(MEMORY[0x277D768C8] + 24);
     [(UITextView *)v4->_textView setTextContainerInset:*MEMORY[0x277D768C8], v11, v12, v13];
     [(UITextView *)v4->_textView setContentInset:v10, v11, v12, v13];
-    v14 = [MEMORY[0x277D75348] clearColor];
-    [(UITextView *)v4->_textView setBackgroundColor:v14];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UITextView *)v4->_textView setBackgroundColor:clearColor];
 
     [(UITextView *)v4->_textView setDataDetectorTypes:7];
     [(UITextView *)v4->_textView setTextAlignment:4];
@@ -62,24 +62,24 @@
     [(UITextView *)v4->_textView setContentHuggingPriority:1 forAxis:v16];
     [(HUExpandableTextView *)v4 addSubview:v4->_textView];
     v17 = objc_opt_new();
-    v18 = [(UITextView *)v4->_textView topAnchor];
-    v19 = [(HUExpandableTextView *)v4 topAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    topAnchor = [(UITextView *)v4->_textView topAnchor];
+    topAnchor2 = [(HUExpandableTextView *)v4 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v17 addObject:v20];
 
-    v21 = [(UITextView *)v4->_textView bottomAnchor];
-    v22 = [(HUExpandableTextView *)v4 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    bottomAnchor = [(UITextView *)v4->_textView bottomAnchor];
+    bottomAnchor2 = [(HUExpandableTextView *)v4 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v17 addObject:v23];
 
-    v24 = [(UITextView *)v4->_textView leadingAnchor];
-    v25 = [(HUExpandableTextView *)v4 leadingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    leadingAnchor = [(UITextView *)v4->_textView leadingAnchor];
+    leadingAnchor2 = [(HUExpandableTextView *)v4 leadingAnchor];
+    v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [v17 addObject:v26];
 
-    v27 = [(UITextView *)v4->_textView trailingAnchor];
-    v28 = [(HUExpandableTextView *)v4 trailingAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28];
+    trailingAnchor = [(UITextView *)v4->_textView trailingAnchor];
+    trailingAnchor2 = [(HUExpandableTextView *)v4 trailingAnchor];
+    v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [v17 addObject:v29];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v17];
@@ -90,40 +90,40 @@
 
 - (void)updateConstraints
 {
-  v3 = [(HUExpandableTextView *)self moreButtonLayoutConstraints];
+  moreButtonLayoutConstraints = [(HUExpandableTextView *)self moreButtonLayoutConstraints];
 
-  if (!v3)
+  if (!moreButtonLayoutConstraints)
   {
     v4 = objc_opt_new();
     [(UIButton *)self->_moreButton frame];
     [(UIButton *)self->_moreButton setFrame:?];
-    v5 = [(UIButton *)self->_moreButton widthAnchor];
+    widthAnchor = [(UIButton *)self->_moreButton widthAnchor];
     [(UIButton *)self->_moreButton frame];
-    v7 = [v5 constraintEqualToConstant:v6];
+    v7 = [widthAnchor constraintEqualToConstant:v6];
     [v4 addObject:v7];
 
-    v8 = [(HUExpandableTextView *)self languageDirection];
+    languageDirection = [(HUExpandableTextView *)self languageDirection];
     moreButton = self->_moreButton;
-    if (v8 == 1)
+    if (languageDirection == 1)
     {
-      v10 = [(UIButton *)moreButton leftAnchor];
+      leftAnchor = [(UIButton *)moreButton leftAnchor];
       [(HUExpandableTextView *)self rightAnchor];
     }
 
     else
     {
-      v10 = [(UIButton *)moreButton rightAnchor];
+      leftAnchor = [(UIButton *)moreButton rightAnchor];
       [(HUExpandableTextView *)self leftAnchor];
     }
     v11 = ;
     [(UIButton *)self->_moreButton frame];
-    v13 = [v10 constraintEqualToAnchor:v11 constant:-v12];
+    v13 = [leftAnchor constraintEqualToAnchor:v11 constant:-v12];
     [v4 addObject:v13];
 
-    v14 = [(UIButton *)self->_moreButton firstBaselineAnchor];
-    v15 = [(HUExpandableTextView *)self textView];
-    v16 = [v15 lastBaselineAnchor];
-    v17 = [v14 constraintEqualToAnchor:v16];
+    firstBaselineAnchor = [(UIButton *)self->_moreButton firstBaselineAnchor];
+    textView = [(HUExpandableTextView *)self textView];
+    lastBaselineAnchor = [textView lastBaselineAnchor];
+    v17 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor];
     [v4 addObject:v17];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v4];
@@ -140,31 +140,31 @@
   v26.receiver = self;
   v26.super_class = HUExpandableTextView;
   [(HUExpandableTextView *)&v26 layoutSubviews];
-  v3 = [(HUExpandableTextView *)self moreButton];
-  if (v3)
+  moreButton = [(HUExpandableTextView *)self moreButton];
+  if (moreButton)
   {
-    v4 = v3;
-    v5 = [(HUExpandableTextView *)self isExpanded];
+    v4 = moreButton;
+    isExpanded = [(HUExpandableTextView *)self isExpanded];
 
-    if (!v5)
+    if (!isExpanded)
     {
-      v6 = [(HUExpandableTextView *)self textView];
-      v7 = [v6 textContainer];
-      [v7 setMaximumNumberOfLines:0];
+      textView = [(HUExpandableTextView *)self textView];
+      textContainer = [textView textContainer];
+      [textContainer setMaximumNumberOfLines:0];
 
-      v8 = [(HUExpandableTextView *)self textView];
+      textView2 = [(HUExpandableTextView *)self textView];
       [(HUExpandableTextView *)self bounds];
-      [v8 sizeThatFits:{v9, 3.40282347e38}];
+      [textView2 sizeThatFits:{v9, 3.40282347e38}];
       v11 = v10;
 
-      v12 = [(HUExpandableTextView *)self numberOfLines];
-      v13 = [(HUExpandableTextView *)self textView];
-      v14 = [v13 textContainer];
-      [v14 setMaximumNumberOfLines:v12];
+      numberOfLines = [(HUExpandableTextView *)self numberOfLines];
+      textView3 = [(HUExpandableTextView *)self textView];
+      textContainer2 = [textView3 textContainer];
+      [textContainer2 setMaximumNumberOfLines:numberOfLines];
 
-      v15 = [(HUExpandableTextView *)self textView];
+      textView4 = [(HUExpandableTextView *)self textView];
       [(HUExpandableTextView *)self bounds];
-      [v15 sizeThatFits:{v16, 3.40282347e38}];
+      [textView4 sizeThatFits:{v16, 3.40282347e38}];
       v18 = v17;
 
       if (![(HUExpandableTextView *)self alwaysShowMoreButtonUnlessExpanded])
@@ -175,14 +175,14 @@
         {
           v21 = 1;
           [(HUExpandableTextView *)self setFitsWithinLineLimit:1];
-          v22 = 0;
+          numberOfLines2 = 0;
 LABEL_9:
-          v23 = [(HUExpandableTextView *)self textView];
-          v24 = [v23 textContainer];
-          [v24 setMaximumNumberOfLines:v22];
+          textView5 = [(HUExpandableTextView *)self textView];
+          textContainer3 = [textView5 textContainer];
+          [textContainer3 setMaximumNumberOfLines:numberOfLines2];
 
-          v25 = [(HUExpandableTextView *)self moreButton];
-          [v25 setHidden:v21];
+          moreButton2 = [(HUExpandableTextView *)self moreButton];
+          [moreButton2 setHidden:v21];
 
           return;
         }
@@ -191,7 +191,7 @@ LABEL_9:
       if ([(HUExpandableTextView *)self alwaysShowMoreButtonUnlessExpanded]|| [(HUExpandableTextView *)self fitsWithinLineLimit])
       {
         [(HUExpandableTextView *)self setFitsWithinLineLimit:0];
-        v22 = [(HUExpandableTextView *)self numberOfLines];
+        numberOfLines2 = [(HUExpandableTextView *)self numberOfLines];
         v21 = 0;
         goto LABEL_9;
       }
@@ -202,55 +202,55 @@ LABEL_9:
 - (void)_resetMoreButtonLayoutConstraints
 {
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(HUExpandableTextView *)self moreButtonLayoutConstraints];
-  [v3 deactivateConstraints:v4];
+  moreButtonLayoutConstraints = [(HUExpandableTextView *)self moreButtonLayoutConstraints];
+  [v3 deactivateConstraints:moreButtonLayoutConstraints];
 
   [(HUExpandableTextView *)self setMoreButtonLayoutConstraints:0];
 
   [(HUExpandableTextView *)self setNeedsUpdateConstraints];
 }
 
-- (void)setMoreButton:(id)a3
+- (void)setMoreButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   moreButton = self->_moreButton;
-  if (moreButton != v5)
+  if (moreButton != buttonCopy)
   {
-    v7 = v5;
+    v7 = buttonCopy;
     [(UIButton *)moreButton removeTarget:self action:sel_moreButtonTapped_ forControlEvents:64];
     [(UIButton *)self->_moreButton removeFromSuperview];
-    objc_storeStrong(&self->_moreButton, a3);
+    objc_storeStrong(&self->_moreButton, button);
     [(UIButton *)self->_moreButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(HUExpandableTextView *)self addSubview:self->_moreButton];
     [(UIButton *)self->_moreButton addTarget:self action:sel_moreButtonTapped_ forControlEvents:64];
     [(HUExpandableTextView *)self setExpanded:0];
     [(HUExpandableTextView *)self _resetMoreButtonLayoutConstraints];
-    v5 = v7;
+    buttonCopy = v7;
   }
 }
 
-- (void)setExpanded:(BOOL)a3
+- (void)setExpanded:(BOOL)expanded
 {
   expanded = self->_expanded;
-  self->_expanded = a3;
-  if (a3)
+  self->_expanded = expanded;
+  if (expanded)
   {
-    v5 = [(HUExpandableTextView *)self textView];
-    v6 = [v5 textContainer];
-    [v6 setMaximumNumberOfLines:0];
+    textView = [(HUExpandableTextView *)self textView];
+    textContainer = [textView textContainer];
+    [textContainer setMaximumNumberOfLines:0];
 
-    v7 = [(HUExpandableTextView *)self moreButton];
-    [v7 setHidden:1];
+    moreButton = [(HUExpandableTextView *)self moreButton];
+    [moreButton setHidden:1];
 
     if (!expanded)
     {
-      v8 = [(HUExpandableTextView *)self delegate];
+      delegate = [(HUExpandableTextView *)self delegate];
       v9 = objc_opt_respondsToSelector();
 
       if (v9)
       {
-        v10 = [(HUExpandableTextView *)self delegate];
-        [v10 expandableTextViewDidExpand:self];
+        delegate2 = [(HUExpandableTextView *)self delegate];
+        [delegate2 expandableTextViewDidExpand:self];
 LABEL_8:
       }
     }
@@ -258,23 +258,23 @@ LABEL_8:
 
   else
   {
-    v11 = [(HUExpandableTextView *)self numberOfLines];
-    v12 = [(HUExpandableTextView *)self textView];
-    v13 = [v12 textContainer];
-    [v13 setMaximumNumberOfLines:v11];
+    numberOfLines = [(HUExpandableTextView *)self numberOfLines];
+    textView2 = [(HUExpandableTextView *)self textView];
+    textContainer2 = [textView2 textContainer];
+    [textContainer2 setMaximumNumberOfLines:numberOfLines];
 
-    v14 = [(HUExpandableTextView *)self moreButton];
-    [v14 setHidden:0];
+    moreButton2 = [(HUExpandableTextView *)self moreButton];
+    [moreButton2 setHidden:0];
 
     if (expanded)
     {
-      v15 = [(HUExpandableTextView *)self delegate];
+      delegate3 = [(HUExpandableTextView *)self delegate];
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v10 = [(HUExpandableTextView *)self delegate];
-        [v10 expandableTextViewDidCollapse:self];
+        delegate2 = [(HUExpandableTextView *)self delegate];
+        [delegate2 expandableTextViewDidCollapse:self];
         goto LABEL_8;
       }
     }
@@ -285,18 +285,18 @@ LABEL_8:
 
 - (void)_updateLanguageDirection
 {
-  v3 = [(HUExpandableTextView *)self textView];
-  v4 = [v3 attributedText];
+  textView = [(HUExpandableTextView *)self textView];
+  attributedText = [textView attributedText];
 
-  if (v4)
+  if (attributedText)
   {
-    v5 = [(HUExpandableTextView *)self textView];
-    v6 = [v5 text];
-    v7 = [(HUExpandableTextView *)self textView];
-    v8 = [v7 text];
-    v16.length = [v8 length];
+    textView2 = [(HUExpandableTextView *)self textView];
+    text = [textView2 text];
+    textView3 = [(HUExpandableTextView *)self textView];
+    text2 = [textView3 text];
+    v16.length = [text2 length];
     v16.location = 0;
-    v9 = CFStringTokenizerCopyBestStringLanguage(v6, v16);
+    v9 = CFStringTokenizerCopyBestStringLanguage(text, v16);
 
     -[HUExpandableTextView setLanguageDirection:](self, "setLanguageDirection:", [MEMORY[0x277CBEAF8] characterDirectionForLanguage:v9]);
   }
@@ -307,10 +307,10 @@ LABEL_8:
   }
 
   objc_opt_class();
-  v10 = [(HUExpandableTextView *)self moreButton];
+  moreButton = [(HUExpandableTextView *)self moreButton];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = moreButton;
   }
 
   else
@@ -321,29 +321,29 @@ LABEL_8:
   v12 = v11;
 
   v13 = [(HUExpandableTextView *)self languageDirection]== 2;
-  v14 = [(HUExpandableTextView *)self textView];
-  [v14 setTextAlignment:2 * v13];
+  textView4 = [(HUExpandableTextView *)self textView];
+  [textView4 setTextAlignment:2 * v13];
 
   [v12 setShouldFadeRightToLeft:v13];
 
   [(HUExpandableTextView *)self _resetMoreButtonLayoutConstraints];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v12 = a3;
-  v4 = [(HUExpandableTextView *)self textView];
-  v5 = [v4 text];
-  v6 = [v12 isEqualToString:v5];
+  textCopy = text;
+  textView = [(HUExpandableTextView *)self textView];
+  text = [textView text];
+  v6 = [textCopy isEqualToString:text];
 
-  v7 = v12;
+  v7 = textCopy;
   if ((v6 & 1) == 0)
   {
-    if (v12)
+    if (textCopy)
     {
       v8 = objc_alloc(MEMORY[0x277CCA898]);
-      v4 = [(HUExpandableTextView *)self textAttributes];
-      v9 = [v8 initWithString:v12 attributes:v4];
+      textView = [(HUExpandableTextView *)self textAttributes];
+      v9 = [v8 initWithString:textCopy attributes:textView];
     }
 
     else
@@ -351,10 +351,10 @@ LABEL_8:
       v9 = 0;
     }
 
-    v10 = [(HUExpandableTextView *)self textView];
-    [v10 setAttributedText:v9];
+    textView2 = [(HUExpandableTextView *)self textView];
+    [textView2 setAttributedText:v9];
 
-    if (v12)
+    if (textCopy)
     {
     }
 
@@ -363,34 +363,34 @@ LABEL_8:
 
     [(HUExpandableTextView *)self _updateLanguageDirection];
     [(HUExpandableTextView *)self invalidateIntrinsicContentSize];
-    v7 = v12;
+    v7 = textCopy;
   }
 }
 
 - (NSString)text
 {
-  v2 = [(HUExpandableTextView *)self textView];
-  v3 = [v2 text];
+  textView = [(HUExpandableTextView *)self textView];
+  text = [textView text];
 
-  return v3;
+  return text;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v12 = a3;
-  v4 = [v12 string];
-  v5 = [(HUExpandableTextView *)self textView];
-  v6 = [v5 text];
-  v7 = [v4 isEqualToString:v6];
+  textCopy = text;
+  string = [textCopy string];
+  textView = [(HUExpandableTextView *)self textView];
+  text = [textView text];
+  v7 = [string isEqualToString:text];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [v12 mutableCopy];
-    v9 = [(HUExpandableTextView *)self textAttributes];
-    [v8 addAttributes:v9 range:{0, objc_msgSend(v8, "length")}];
+    v8 = [textCopy mutableCopy];
+    textAttributes = [(HUExpandableTextView *)self textAttributes];
+    [v8 addAttributes:textAttributes range:{0, objc_msgSend(v8, "length")}];
 
-    v10 = [(HUExpandableTextView *)self textView];
-    [v10 setAttributedText:v8];
+    textView2 = [(HUExpandableTextView *)self textView];
+    [textView2 setAttributedText:v8];
 
     stringGenerator = self->_stringGenerator;
     self->_stringGenerator = 0;
@@ -402,23 +402,23 @@ LABEL_8:
 
 - (NSAttributedString)attributedText
 {
-  v2 = [(HUExpandableTextView *)self textView];
-  v3 = [v2 attributedText];
+  textView = [(HUExpandableTextView *)self textView];
+  attributedText = [textView attributedText];
 
-  return v3;
+  return attributedText;
 }
 
-- (void)setStringGenerator:(id)a3
+- (void)setStringGenerator:(id)generator
 {
-  v3 = a3;
-  v7 = a3;
-  if (([v7 isEqual:self->_stringGenerator] & 1) == 0)
+  generatorCopy = generator;
+  generatorCopy2 = generator;
+  if (([generatorCopy2 isEqual:self->_stringGenerator] & 1) == 0)
   {
-    objc_storeStrong(&self->_stringGenerator, v3);
-    if (v7)
+    objc_storeStrong(&self->_stringGenerator, generatorCopy);
+    if (generatorCopy2)
     {
-      v3 = [(HUExpandableTextView *)self textAttributes];
-      v5 = [v7 stringWithAttributes:v3];
+      generatorCopy = [(HUExpandableTextView *)self textAttributes];
+      v5 = [generatorCopy2 stringWithAttributes:generatorCopy];
     }
 
     else
@@ -426,10 +426,10 @@ LABEL_8:
       v5 = 0;
     }
 
-    v6 = [(HUExpandableTextView *)self textView];
-    [v6 setAttributedText:v5];
+    textView = [(HUExpandableTextView *)self textView];
+    [textView setAttributedText:v5];
 
-    if (v7)
+    if (generatorCopy2)
     {
     }
 
@@ -438,23 +438,23 @@ LABEL_8:
   }
 }
 
-- (void)setNumberOfLines:(unint64_t)a3
+- (void)setNumberOfLines:(unint64_t)lines
 {
-  self->_numberOfLines = a3;
+  self->_numberOfLines = lines;
   if (![(HUExpandableTextView *)self isExpanded])
   {
-    v5 = [(HUExpandableTextView *)self textView];
-    v6 = [v5 textContainer];
-    [v6 setMaximumNumberOfLines:a3];
+    textView = [(HUExpandableTextView *)self textView];
+    textContainer = [textView textContainer];
+    [textContainer setMaximumNumberOfLines:lines];
 
     [(HUExpandableTextView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (double)heightForWidth:(double)a3
+- (double)heightForWidth:(double)width
 {
-  v4 = [(HUExpandableTextView *)self textView];
-  [v4 sizeThatFits:{a3, 3.40282347e38}];
+  textView = [(HUExpandableTextView *)self textView];
+  [textView sizeThatFits:{width, 3.40282347e38}];
   v6 = v5;
   v7 = ceilf(v6);
 

@@ -1,21 +1,21 @@
 @interface AAUIProfileSummaryCell
-- (AAUIProfileSummaryCell)initWithName:(id)a3 email:(id)a4 image:(id)a5;
+- (AAUIProfileSummaryCell)initWithName:(id)name email:(id)email image:(id)image;
 - (void)layoutSubviews;
 @end
 
 @implementation AAUIProfileSummaryCell
 
-- (AAUIProfileSummaryCell)initWithName:(id)a3 email:(id)a4 image:(id)a5
+- (AAUIProfileSummaryCell)initWithName:(id)name email:(id)email image:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  emailCopy = email;
+  imageCopy = image;
   v15.receiver = self;
   v15.super_class = AAUIProfileSummaryCell;
-  v11 = [(AAUIProfileSummaryCell *)&v15 initWithStyle:0 reuseIdentifier:v8];
+  v11 = [(AAUIProfileSummaryCell *)&v15 initWithStyle:0 reuseIdentifier:nameCopy];
   if (v11)
   {
-    v12 = [[AAUIProfileSummaryView alloc] initWithName:v8 email:v9 image:v10];
+    v12 = [[AAUIProfileSummaryView alloc] initWithName:nameCopy email:emailCopy image:imageCopy];
     contentView = v11->_contentView;
     v11->_contentView = v12;
 

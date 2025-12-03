@@ -1,16 +1,16 @@
 @interface BWPreviewRegistration
-- (BWPreviewRegistration)initWithCameraInfoByPortType:(id)a3 sensorBinningFactor:(id)a4 registrationType:(int)a5 metalCommandQueue:(id)a6 excludeStaticComponentFromAlignmentShifts:(BOOL)a7;
-- (CGPoint)computeApproximateCorrectionForWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCameraPortType:(id)a4 narrowerPixelBufferDimensions:(id)a5 widerToNarrowerCameraScale:(double)a6;
-- (CGPoint)computeCameraShiftForWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCamera:(opaqueCMSampleBuffer *)a4 widerToNarrowerCameraScale:(double)a5;
-- (void)allocateResourcesAsynchronouslyWithVideoFormat:(id)a3;
+- (BWPreviewRegistration)initWithCameraInfoByPortType:(id)type sensorBinningFactor:(id)factor registrationType:(int)registrationType metalCommandQueue:(id)queue excludeStaticComponentFromAlignmentShifts:(BOOL)shifts;
+- (CGPoint)computeApproximateCorrectionForWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCameraPortType:(id)type narrowerPixelBufferDimensions:(id)dimensions widerToNarrowerCameraScale:(double)scale;
+- (CGPoint)computeCameraShiftForWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(opaqueCMSampleBuffer *)narrowerCamera widerToNarrowerCameraScale:(double)scale;
+- (void)allocateResourcesAsynchronouslyWithVideoFormat:(id)format;
 - (void)cleanupResources;
 - (void)dealloc;
-- (void)registerWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCamera:(opaqueCMSampleBuffer *)a4 widerToNarrowerCameraScale:(double)a5 isMacroScene:(BOOL)a6 macroTransitionType:(int)a7 completionHandler:(id)a8;
+- (void)registerWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(opaqueCMSampleBuffer *)narrowerCamera widerToNarrowerCameraScale:(double)scale isMacroScene:(BOOL)scene macroTransitionType:(int)type completionHandler:(id)handler;
 @end
 
 @implementation BWPreviewRegistration
 
-- (BWPreviewRegistration)initWithCameraInfoByPortType:(id)a3 sensorBinningFactor:(id)a4 registrationType:(int)a5 metalCommandQueue:(id)a6 excludeStaticComponentFromAlignmentShifts:(BOOL)a7
+- (BWPreviewRegistration)initWithCameraInfoByPortType:(id)type sensorBinningFactor:(id)factor registrationType:(int)registrationType metalCommandQueue:(id)queue excludeStaticComponentFromAlignmentShifts:(BOOL)shifts
 {
   v17.receiver = self;
   v17.super_class = BWPreviewRegistration;
@@ -31,18 +31,18 @@ LABEL_10:
     return 0;
   }
 
-  if (a5 == 1)
+  if (registrationType == 1)
   {
-    v12->_excludeStaticComponentFromAlignmentShifts = a7;
-    v12->_registrationProvider = [[BWAdaptiveCorrectionPreviewRegistrationProvider alloc] initWithCameraInfoByPortType:a3 excludeStaticComponentFromAlignmentShifts:v12->_excludeStaticComponentFromAlignmentShifts];
+    v12->_excludeStaticComponentFromAlignmentShifts = shifts;
+    v12->_registrationProvider = [[BWAdaptiveCorrectionPreviewRegistrationProvider alloc] initWithCameraInfoByPortType:type excludeStaticComponentFromAlignmentShifts:v12->_excludeStaticComponentFromAlignmentShifts];
     v12->_previewRegistrationType = 1;
-    v12->_metalCommandQueue = a6;
+    v12->_metalCommandQueue = queue;
     registrationProvider = v12->_registrationProvider;
   }
 
   else
   {
-    registrationProvider = [[BWVisionPreviewRegistrationProvider alloc] initWithCameraInfoByPortType:a3 sensorBinningFactor:a4];
+    registrationProvider = [[BWVisionPreviewRegistrationProvider alloc] initWithCameraInfoByPortType:type sensorBinningFactor:factor];
     v12->_registrationProvider = registrationProvider;
     v12->_previewRegistrationType = 0;
   }
@@ -63,7 +63,7 @@ LABEL_10:
   [(BWPreviewRegistration *)&v3 dealloc];
 }
 
-- (void)allocateResourcesAsynchronouslyWithVideoFormat:(id)a3
+- (void)allocateResourcesAsynchronouslyWithVideoFormat:(id)format
 {
   registrationQueue = self->_registrationQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -71,7 +71,7 @@ LABEL_10:
   v4[2] = __72__BWPreviewRegistration_allocateResourcesAsynchronouslyWithVideoFormat___block_invoke;
   v4[3] = &unk_1E798F898;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = format;
   dispatch_async(registrationQueue, v4);
 }
 
@@ -118,12 +118,12 @@ void __72__BWPreviewRegistration_allocateResourcesAsynchronouslyWithVideoFormat_
   dispatch_sync(registrationQueue, block);
 }
 
-- (void)registerWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCamera:(opaqueCMSampleBuffer *)a4 widerToNarrowerCameraScale:(double)a5 isMacroScene:(BOOL)a6 macroTransitionType:(int)a7 completionHandler:(id)a8
+- (void)registerWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(opaqueCMSampleBuffer *)narrowerCamera widerToNarrowerCameraScale:(double)scale isMacroScene:(BOOL)scene macroTransitionType:(int)type completionHandler:(id)handler
 {
   sampleBufferOut = 0;
   v18 = 0;
-  BWCMSampleBufferCreateCopyIncludingMetadata(a3, &sampleBufferOut);
-  BWCMSampleBufferCreateCopyIncludingMetadata(a4, &v18);
+  BWCMSampleBufferCreateCopyIncludingMetadata(camera, &sampleBufferOut);
+  BWCMSampleBufferCreateCopyIncludingMetadata(narrowerCamera, &v18);
   registrationQueue = self->_registrationQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
@@ -131,11 +131,11 @@ void __72__BWPreviewRegistration_allocateResourcesAsynchronouslyWithVideoFormat_
   v15[3] = &unk_1E79905A0;
   v15[6] = sampleBufferOut;
   v15[7] = v18;
-  *&v15[8] = a5;
-  v17 = a6;
-  v16 = a7;
+  *&v15[8] = scale;
+  sceneCopy = scene;
+  typeCopy = type;
   v15[4] = self;
-  v15[5] = a8;
+  v15[5] = handler;
   dispatch_async(registrationQueue, v15);
 }
 
@@ -263,7 +263,7 @@ LABEL_25:
   objc_autoreleasePoolPop(v2);
 }
 
-- (CGPoint)computeCameraShiftForWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCamera:(opaqueCMSampleBuffer *)a4 widerToNarrowerCameraScale:(double)a5
+- (CGPoint)computeCameraShiftForWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(opaqueCMSampleBuffer *)narrowerCamera widerToNarrowerCameraScale:(double)scale
 {
   v9 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -271,7 +271,7 @@ LABEL_25:
     kdebug_trace();
   }
 
-  [(BWPreviewRegistrationProvider *)self->_registrationProvider computeCameraShiftForWiderCamera:a3 narrowerCamera:a4 widerToNarrowerCameraScale:a5];
+  [(BWPreviewRegistrationProvider *)self->_registrationProvider computeCameraShiftForWiderCamera:camera narrowerCamera:narrowerCamera widerToNarrowerCameraScale:scale];
   v11 = v10;
   v13 = v12;
   if (*v9 == 1)
@@ -286,11 +286,11 @@ LABEL_25:
   return result;
 }
 
-- (CGPoint)computeApproximateCorrectionForWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCameraPortType:(id)a4 narrowerPixelBufferDimensions:(id)a5 widerToNarrowerCameraScale:(double)a6
+- (CGPoint)computeApproximateCorrectionForWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCameraPortType:(id)type narrowerPixelBufferDimensions:(id)dimensions widerToNarrowerCameraScale:(double)scale
 {
   if (objc_opt_respondsToSelector())
   {
-    [(BWPreviewRegistrationProvider *)self->_registrationProvider computeApproximateCorrectionForWiderCamera:a3 narrowerCameraPortType:*off_1E798A0D8 narrowerPixelBufferDimensions:a5 widerToNarrowerCameraScale:a6];
+    [(BWPreviewRegistrationProvider *)self->_registrationProvider computeApproximateCorrectionForWiderCamera:camera narrowerCameraPortType:*off_1E798A0D8 narrowerPixelBufferDimensions:dimensions widerToNarrowerCameraScale:scale];
   }
 
   else

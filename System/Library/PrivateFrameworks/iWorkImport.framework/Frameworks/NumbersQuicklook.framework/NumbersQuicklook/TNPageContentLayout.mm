@@ -1,5 +1,5 @@
 @interface TNPageContentLayout
-- (TNPageContentLayout)initWithPageLayout:(id)a3;
+- (TNPageContentLayout)initWithPageLayout:(id)layout;
 - (TNPageLayoutContainer)pageLayout;
 - (id)computeLayoutGeometry;
 - (unint64_t)pageCount;
@@ -8,16 +8,16 @@
 
 @implementation TNPageContentLayout
 
-- (TNPageContentLayout)initWithPageLayout:(id)a3
+- (TNPageContentLayout)initWithPageLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = TNPageContentLayout;
   v5 = [(TNPageContentLayout *)&v8 initWithInfo:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_pageLayout, v4);
+    objc_storeWeak(&v5->_pageLayout, layoutCopy);
     v6->_pageNumber = 0x7FFFFFFFFFFFFFFFLL;
   }
 

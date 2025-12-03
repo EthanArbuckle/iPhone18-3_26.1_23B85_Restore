@@ -1,22 +1,22 @@
 @interface VCSessionParticipantUpdateConfig
-+ (id)unserializeCache:(id)a3;
-- (BOOL)addCachedTransitionForMediaType:(unsigned int)a3 toState:(unsigned int)a4 previousState:(unsigned int *)a5 error:(id *)a6;
++ (id)unserializeCache:(id)cache;
+- (BOOL)addCachedTransitionForMediaType:(unsigned int)type toState:(unsigned int)state previousState:(unsigned int *)previousState error:(id *)error;
 - (NSArray)cachedStateTransitions;
 - (VCSessionParticipantUpdateConfig)init;
-- (VCSessionParticipantUpdateConfig)initWithCoder:(id)a3;
-- (id)propertyWithName:(id)a3;
-- (id)serializeCacheWithError:(id *)a3;
-- (void)cleanupTransitionLoopsForMediaType:(unsigned int)a3 mediaState:(unsigned int)a4;
+- (VCSessionParticipantUpdateConfig)initWithCoder:(id)coder;
+- (id)propertyWithName:(id)name;
+- (id)serializeCacheWithError:(id *)error;
+- (void)cleanupTransitionLoopsForMediaType:(unsigned int)type mediaState:(unsigned int)state;
 - (void)dealloc;
-- (void)deserializeUInt32Property:(id)a3 withCoder:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateCachedTransitionsWithBlock:(id)a3;
+- (void)deserializeUInt32Property:(id)property withCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateCachedTransitionsWithBlock:(id)block;
 - (void)init;
-- (void)serializeCoderProperty:(id)a3 withCoder:(id)a4;
-- (void)serializeUint32Property:(id)a3 withCoder:(id)a4;
-- (void)setPositionalInfoParamWithBlock:(id)a3 forceCache:(BOOL)a4;
-- (void)setUseCache:(BOOL)a3;
-- (void)setValue:(id)a3 forPropertyName:(id)a4 forceCache:(BOOL)a5;
+- (void)serializeCoderProperty:(id)property withCoder:(id)coder;
+- (void)serializeUint32Property:(id)property withCoder:(id)coder;
+- (void)setPositionalInfoParamWithBlock:(id)block forceCache:(BOOL)cache;
+- (void)setUseCache:(BOOL)cache;
+- (void)setValue:(id)value forPropertyName:(id)name forceCache:(BOOL)cache;
 - (void)updateDescription;
 @end
 
@@ -96,66 +96,66 @@ LABEL_10:
   self->_description = v3;
 }
 
-- (id)propertyWithName:(id)a3
+- (id)propertyWithName:(id)name
 {
   result = [(NSMutableDictionary *)self->_propertiesCache objectForKeyedSubscript:?];
   if (!result)
   {
     properties = self->_properties;
 
-    return [(NSMutableDictionary *)properties objectForKeyedSubscript:a3];
+    return [(NSMutableDictionary *)properties objectForKeyedSubscript:name];
   }
 
   return result;
 }
 
-- (void)setValue:(id)a3 forPropertyName:(id)a4 forceCache:(BOOL)a5
+- (void)setValue:(id)value forPropertyName:(id)name forceCache:(BOOL)cache
 {
-  v5 = a5;
+  cacheCopy = cache;
   v19 = *MEMORY[0x1E69E9840];
-  v9 = self->_useCache || a5;
+  v9 = self->_useCache || cache;
   v10 = v9;
   properties = self->_properties;
   if (v9)
   {
-    v12 = [a3 isEqual:{-[NSMutableDictionary objectForKeyedSubscript:](properties, "objectForKeyedSubscript:", a4)}];
+    v12 = [value isEqual:{-[NSMutableDictionary objectForKeyedSubscript:](properties, "objectForKeyedSubscript:", name)}];
     propertiesCache = self->_propertiesCache;
     if (!v12)
     {
-      v14 = a3;
+      valueCopy = value;
       goto LABEL_6;
     }
   }
 
   else
   {
-    [(NSMutableDictionary *)properties setObject:a3 forKeyedSubscript:a4];
+    [(NSMutableDictionary *)properties setObject:value forKeyedSubscript:name];
     propertiesCache = self->_propertiesCache;
   }
 
-  v14 = 0;
+  valueCopy = 0;
 LABEL_6:
-  [(NSMutableDictionary *)propertiesCache setObject:v14 forKeyedSubscript:a4];
-  if ([@"visibilityIndex" isEqualToString:a4])
+  [(NSMutableDictionary *)propertiesCache setObject:valueCopy forKeyedSubscript:name];
+  if ([@"visibilityIndex" isEqualToString:name])
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __72__VCSessionParticipantUpdateConfig_setValue_forPropertyName_forceCache___block_invoke;
     v17[3] = &unk_1E85F3E90;
-    v17[4] = a3;
+    v17[4] = value;
     v18 = v10;
-    [(VCSessionParticipantUpdateConfig *)self setPositionalInfoParamWithBlock:v17 forceCache:v5];
+    [(VCSessionParticipantUpdateConfig *)self setPositionalInfoParamWithBlock:v17 forceCache:cacheCopy];
   }
 
-  if ([@"prominenceIndex" isEqualToString:a4])
+  if ([@"prominenceIndex" isEqualToString:name])
   {
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __72__VCSessionParticipantUpdateConfig_setValue_forPropertyName_forceCache___block_invoke_2;
     v15[3] = &unk_1E85F3E90;
-    v15[4] = a3;
+    v15[4] = value;
     v16 = v10;
-    [(VCSessionParticipantUpdateConfig *)self setPositionalInfoParamWithBlock:v15 forceCache:v5];
+    [(VCSessionParticipantUpdateConfig *)self setPositionalInfoParamWithBlock:v15 forceCache:cacheCopy];
   }
 
   [(VCSessionParticipantUpdateConfig *)self updateDescription];
@@ -187,16 +187,16 @@ uint64_t __72__VCSessionParticipantUpdateConfig_setValue_forPropertyName_forceCa
   return result;
 }
 
-- (void)setPositionalInfoParamWithBlock:(id)a3 forceCache:(BOOL)a4
+- (void)setPositionalInfoParamWithBlock:(id)block forceCache:(BOOL)cache
 {
   useCache = self->_useCache;
   v8 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:@"positionalInfo"];
   v9 = [(NSMutableDictionary *)self->_propertiesCache objectForKeyedSubscript:@"positionalInfo"];
   v10 = v9;
-  if (!useCache && !a4)
+  if (!useCache && !cache)
   {
     v11 = v9;
-    (*(a3 + 2))(a3, v8);
+    (*(block + 2))(block, v8);
     goto LABEL_6;
   }
 
@@ -213,18 +213,18 @@ LABEL_6:
   }
 
   v12 = v10;
-  (*(a3 + 2))(a3);
+  (*(block + 2))(block);
   if ([v8 isEqual:v12])
   {
     [(NSMutableDictionary *)self->_propertiesCache setObject:0 forKeyedSubscript:@"positionalInfo"];
   }
 }
 
-- (void)setUseCache:(BOOL)a3
+- (void)setUseCache:(BOOL)cache
 {
   v5[5] = *MEMORY[0x1E69E9840];
-  self->_useCache = a3;
-  if (!a3)
+  self->_useCache = cache;
+  if (!cache)
   {
     propertiesCache = self->_propertiesCache;
     v5[0] = MEMORY[0x1E69E9820];
@@ -246,7 +246,7 @@ uint64_t __48__VCSessionParticipantUpdateConfig_setUseCache___block_invoke(uint6
   return [v5 setObject:v4 forKeyedSubscript:a2];
 }
 
-- (void)serializeUint32Property:(id)a3 withCoder:(id)a4
+- (void)serializeUint32Property:(id)property withCoder:(id)coder
 {
   v6 = 8;
   if (self->_useCache)
@@ -257,24 +257,24 @@ uint64_t __48__VCSessionParticipantUpdateConfig_setUseCache___block_invoke(uint6
   v7 = [*(&self->super.isa + v6) objectForKeyedSubscript:?];
   if (v7)
   {
-    v8 = [v7 unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
 
-    [a4 encodeInt32:v8 forKey:a3];
+    [coder encodeInt32:unsignedIntValue forKey:property];
   }
 }
 
-- (void)deserializeUInt32Property:(id)a3 withCoder:(id)a4
+- (void)deserializeUInt32Property:(id)property withCoder:(id)coder
 {
-  if ([a4 containsValueForKey:?])
+  if ([coder containsValueForKey:?])
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(a4, "decodeInt32ForKey:", a3)}];
+    v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(coder, "decodeInt32ForKey:", property)}];
     properties = self->_properties;
 
-    [(NSMutableDictionary *)properties setObject:v7 forKeyedSubscript:a3];
+    [(NSMutableDictionary *)properties setObject:v7 forKeyedSubscript:property];
   }
 }
 
-- (void)serializeCoderProperty:(id)a3 withCoder:(id)a4
+- (void)serializeCoderProperty:(id)property withCoder:(id)coder
 {
   v5 = 8;
   if (self->_useCache)
@@ -282,15 +282,15 @@ uint64_t __48__VCSessionParticipantUpdateConfig_setUseCache___block_invoke(uint6
     v5 = 16;
   }
 
-  v6 = [*(&self->super.isa + v5) objectForKeyedSubscript:a3];
+  v6 = [*(&self->super.isa + v5) objectForKeyedSubscript:property];
   if (v6)
   {
 
-    [v6 encodeWithCoder:a4];
+    [v6 encodeWithCoder:coder];
   }
 }
 
-- (void)cleanupTransitionLoopsForMediaType:(unsigned int)a3 mediaState:(unsigned int)a4
+- (void)cleanupTransitionLoopsForMediaType:(unsigned int)type mediaState:(unsigned int)state
 {
   v7 = [(NSMutableArray *)self->_cachedMediaStateTransitions count];
   v8 = (v7 - 1);
@@ -299,7 +299,7 @@ uint64_t __48__VCSessionParticipantUpdateConfig_setUseCache___block_invoke(uint6
     while (1)
     {
       v9 = [(NSMutableArray *)self->_cachedMediaStateTransitions objectAtIndexedSubscript:v8];
-      if ([v9 mediaType] == a3 && objc_msgSend(v9, "fromState") == a4)
+      if ([v9 mediaType] == type && objc_msgSend(v9, "fromState") == state)
       {
         break;
       }
@@ -316,7 +316,7 @@ uint64_t __48__VCSessionParticipantUpdateConfig_setUseCache___block_invoke(uint6
       do
       {
         v11 = [(NSMutableArray *)self->_cachedMediaStateTransitions objectAtIndexedSubscript:v8];
-        if ([v11 mediaType] == a3)
+        if ([v11 mediaType] == type)
         {
           [(NSMutableArray *)self->_cachedMediaStateTransitions removeObject:v11];
         }
@@ -332,21 +332,21 @@ uint64_t __48__VCSessionParticipantUpdateConfig_setUseCache___block_invoke(uint6
   }
 }
 
-- (BOOL)addCachedTransitionForMediaType:(unsigned int)a3 toState:(unsigned int)a4 previousState:(unsigned int *)a5 error:(id *)a6
+- (BOOL)addCachedTransitionForMediaType:(unsigned int)type toState:(unsigned int)state previousState:(unsigned int *)previousState error:(id *)error
 {
-  v6 = a6;
+  errorCopy4 = error;
   v46 = *MEMORY[0x1E69E9840];
-  v9 = *a5;
+  toState = *previousState;
   if (self->_useCache)
   {
-    v10 = *&a4;
-    v11 = *&a3;
+    v10 = *&state;
+    v11 = *&type;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v12 = [(NSMutableArray *)self->_cachedMediaStateTransitions reverseObjectEnumerator];
-    v13 = [v12 countByEnumeratingWithState:&v32 objects:v31 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->_cachedMediaStateTransitions reverseObjectEnumerator];
+    v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v31 count:16];
     if (v13)
     {
       v14 = v13;
@@ -357,18 +357,18 @@ uint64_t __48__VCSessionParticipantUpdateConfig_setUseCache___block_invoke(uint6
         {
           if (*v33 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v17 = *(*(&v32 + 1) + 8 * i);
           if ([v17 mediaType] == v11)
           {
-            v9 = [v17 toState];
+            toState = [v17 toState];
             goto LABEL_12;
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v32 objects:v31 count:16];
+        v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v32 objects:v31 count:16];
         if (v14)
         {
           continue;
@@ -379,7 +379,7 @@ uint64_t __48__VCSessionParticipantUpdateConfig_setUseCache___block_invoke(uint6
     }
 
 LABEL_12:
-    v18 = [[VCSessionParticipantMediaTransition alloc] initWithMediaType:v11 fromState:v9 toState:v10];
+    v18 = [[VCSessionParticipantMediaTransition alloc] initWithMediaType:v11 fromState:toState toState:v10];
     if (v18)
     {
       v19 = v18;
@@ -387,14 +387,14 @@ LABEL_12:
 
       [(VCSessionParticipantUpdateConfig *)self cleanupTransitionLoopsForMediaType:v11 mediaState:v10];
       v20 = 0;
-      *a5 = v9;
+      *previousState = toState;
       return v20 == 0;
     }
 
     v20 = [MEMORY[0x1E696ABC0] AVConferenceServiceError:32015 detailCode:0 description:@"Failed to allocate the transition"];
     if (objc_opt_class() == self)
     {
-      v6 = a6;
+      errorCopy4 = error;
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
         v25 = VRTraceErrorLogLevelToCSTR();
@@ -407,7 +407,7 @@ LABEL_12:
 
     else
     {
-      v6 = a6;
+      errorCopy4 = error;
       if (objc_opt_respondsToSelector())
       {
         v23 = [(VCSessionParticipantUpdateConfig *)self performSelector:sel_logPrefix];
@@ -433,11 +433,11 @@ LABEL_12:
           v42 = 2112;
           v43 = v23;
           v44 = 2048;
-          v45 = self;
+          selfCopy2 = self;
           _os_log_error_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate the transition", buf, 0x30u);
         }
 
-        v6 = a6;
+        errorCopy4 = error;
       }
     }
   }
@@ -484,17 +484,17 @@ LABEL_12:
           v42 = 2112;
           v43 = v22;
           v44 = 2048;
-          v45 = self;
+          selfCopy2 = self;
           _os_log_error_impl(&dword_1DB56E000, v27, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Participant configuration is not in progress", buf, 0x30u);
         }
       }
     }
   }
 
-  *a5 = v9;
-  if (v6 && v20)
+  *previousState = toState;
+  if (errorCopy4 && v20)
   {
-    *v6 = v20;
+    *errorCopy4 = v20;
   }
 
   return v20 == 0;
@@ -507,7 +507,7 @@ LABEL_12:
   return v2;
 }
 
-- (void)enumerateCachedTransitionsWithBlock:(id)a3
+- (void)enumerateCachedTransitionsWithBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0u;
@@ -529,7 +529,7 @@ LABEL_12:
           objc_enumerationMutation(cachedMediaStateTransitions);
         }
 
-        (*(a3 + 2))(a3, [*(*(&v10 + 1) + 8 * i) mediaType], objc_msgSend(*(*(&v10 + 1) + 8 * i), "fromState"), objc_msgSend(*(*(&v10 + 1) + 8 * i), "toState"));
+        (*(block + 2))(block, [*(*(&v10 + 1) + 8 * i) mediaType], objc_msgSend(*(*(&v10 + 1) + 8 * i), "fromState"), objc_msgSend(*(*(&v10 + 1) + 8 * i), "toState"));
       }
 
       v6 = [(NSMutableArray *)cachedMediaStateTransitions countByEnumeratingWithState:&v10 objects:v9 count:16];
@@ -539,7 +539,7 @@ LABEL_12:
   }
 }
 
-+ (id)unserializeCache:(id)a3
++ (id)unserializeCache:(id)cache
 {
   v10[7] = *MEMORY[0x1E69E9840];
   v9 = 0;
@@ -552,7 +552,7 @@ LABEL_12:
   v10[5] = objc_opt_class();
   v10[6] = objc_opt_class();
   v5 = [v4 setWithArray:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v10, 7)}];
-  v6 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:v5 fromData:a3 error:&v9];
+  v6 = [MEMORY[0x1E696ACD0] _strictlyUnarchivedObjectOfClasses:v5 fromData:cache error:&v9];
   if (v9)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -568,14 +568,14 @@ LABEL_12:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"microphoneMuted" withCoder:a3];
-  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"prominenceIndex" withCoder:a3];
-  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"visibilityIndex" withCoder:a3];
-  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"videoQuality" withCoder:a3];
-  [(VCSessionParticipantUpdateConfig *)self serializeCoderProperty:@"positionalInfo" withCoder:a3];
-  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"isSynchronizationGroupMember" withCoder:a3];
+  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"microphoneMuted" withCoder:coder];
+  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"prominenceIndex" withCoder:coder];
+  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"visibilityIndex" withCoder:coder];
+  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"videoQuality" withCoder:coder];
+  [(VCSessionParticipantUpdateConfig *)self serializeCoderProperty:@"positionalInfo" withCoder:coder];
+  [(VCSessionParticipantUpdateConfig *)self serializeUint32Property:@"isSynchronizationGroupMember" withCoder:coder];
   v5 = [(NSMutableDictionary *)self->_propertiesCache objectForKeyedSubscript:@"synchronizationGroupUUID"];
   if (v5)
   {
@@ -591,49 +591,49 @@ LABEL_12:
       v7 = @"synchronizationGroupUUID";
     }
 
-    [a3 encodeObject:v6 forKey:v7];
+    [coder encodeObject:v6 forKey:v7];
   }
 
   cachedMediaStateTransitions = self->_cachedMediaStateTransitions;
 
-  [(NSMutableArray *)cachedMediaStateTransitions encodeWithCoder:a3];
+  [(NSMutableArray *)cachedMediaStateTransitions encodeWithCoder:coder];
 }
 
-- (VCSessionParticipantUpdateConfig)initWithCoder:(id)a3
+- (VCSessionParticipantUpdateConfig)initWithCoder:(id)coder
 {
   v4 = [(VCSessionParticipantUpdateConfig *)self init];
   v5 = v4;
   if (v4)
   {
-    [(VCSessionParticipantUpdateConfig *)v4 deserializeUInt32Property:@"microphoneMuted" withCoder:a3];
-    [(VCSessionParticipantUpdateConfig *)v5 deserializeUInt32Property:@"prominenceIndex" withCoder:a3];
-    [(VCSessionParticipantUpdateConfig *)v5 deserializeUInt32Property:@"visibilityIndex" withCoder:a3];
-    [(VCSessionParticipantUpdateConfig *)v5 deserializeUInt32Property:@"videoQuality" withCoder:a3];
-    [(VCSessionParticipantUpdateConfig *)v5 deserializeUInt32Property:@"isSynchronizationGroupMember" withCoder:a3];
-    if ([a3 containsValueForKey:@"synchronizationGroupUUID"])
+    [(VCSessionParticipantUpdateConfig *)v4 deserializeUInt32Property:@"microphoneMuted" withCoder:coder];
+    [(VCSessionParticipantUpdateConfig *)v5 deserializeUInt32Property:@"prominenceIndex" withCoder:coder];
+    [(VCSessionParticipantUpdateConfig *)v5 deserializeUInt32Property:@"visibilityIndex" withCoder:coder];
+    [(VCSessionParticipantUpdateConfig *)v5 deserializeUInt32Property:@"videoQuality" withCoder:coder];
+    [(VCSessionParticipantUpdateConfig *)v5 deserializeUInt32Property:@"isSynchronizationGroupMember" withCoder:coder];
+    if ([coder containsValueForKey:@"synchronizationGroupUUID"])
     {
-      -[NSMutableDictionary setObject:forKeyedSubscript:](v5->_properties, "setObject:forKeyedSubscript:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"synchronizationGroupUUID"], @"synchronizationGroupUUID");
+      -[NSMutableDictionary setObject:forKeyedSubscript:](v5->_properties, "setObject:forKeyedSubscript:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"synchronizationGroupUUID"], @"synchronizationGroupUUID");
     }
 
-    if ([a3 containsValueForKey:@"synchronizationGroupUUIDNull"])
+    if ([coder containsValueForKey:@"synchronizationGroupUUIDNull"])
     {
-      -[NSMutableDictionary setObject:forKeyedSubscript:](v5->_properties, "setObject:forKeyedSubscript:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"synchronizationGroupUUIDNull"], @"synchronizationGroupUUID");
+      -[NSMutableDictionary setObject:forKeyedSubscript:](v5->_properties, "setObject:forKeyedSubscript:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"synchronizationGroupUUIDNull"], @"synchronizationGroupUUID");
     }
 
-    v6 = [[VCPositionalInfo alloc] initWithCoder:a3];
+    v6 = [[VCPositionalInfo alloc] initWithCoder:coder];
     if (v6)
     {
       v7 = v6;
       [(NSMutableDictionary *)v5->_properties setObject:v6 forKeyedSubscript:@"positionalInfo"];
     }
 
-    v5->_cachedMediaStateTransitions = [objc_alloc(MEMORY[0x1E695DF70]) initWithCoder:a3];
+    v5->_cachedMediaStateTransitions = [objc_alloc(MEMORY[0x1E695DF70]) initWithCoder:coder];
   }
 
   return v5;
 }
 
-- (id)serializeCacheWithError:(id *)a3
+- (id)serializeCacheWithError:(id *)error
 {
   v14 = *MEMORY[0x1E69E9840];
   if (![(VCSessionParticipantUpdateConfig *)self hasCachedChanges])
@@ -641,8 +641,8 @@ LABEL_12:
     return 0;
   }
 
-  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:a3];
-  if ((!v5 || a3 && *a3) && VRTraceGetErrorLogLevelForModule() >= 3)
+  v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self requiringSecureCoding:1 error:error];
+  if ((!v5 || error && *error) && VRTraceGetErrorLogLevelForModule() >= 3)
   {
     v7 = VRTraceErrorLogLevelToCSTR();
     v8 = *MEMORY[0x1E6986650];

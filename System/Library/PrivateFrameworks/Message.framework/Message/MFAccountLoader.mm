@@ -1,22 +1,22 @@
 @interface MFAccountLoader
-+ (BOOL)loadBundleForAccountClassString:(id)a3 error:(id *)a4;
-+ (Class)_accountClassForString:(id)a3 error:(id *)a4;
-+ (Class)accountClassForPersistentAccount:(id)a3 error:(id *)a4;
-+ (id)_accountClassStringWithPersistentAccount:(id)a3 error:(id *)a4;
-+ (id)_bundlePathForAccountClassString:(id)a3;
-+ (id)accountWithAccountTypeIdentifier:(id)a3 error:(id *)a4;
-+ (id)accountWithPersistentAccount:(id)a3 error:(id *)a4;
++ (BOOL)loadBundleForAccountClassString:(id)string error:(id *)error;
++ (Class)_accountClassForString:(id)string error:(id *)error;
++ (Class)accountClassForPersistentAccount:(id)account error:(id *)error;
++ (id)_accountClassStringWithPersistentAccount:(id)account error:(id *)error;
++ (id)_bundlePathForAccountClassString:(id)string;
++ (id)accountWithAccountTypeIdentifier:(id)identifier error:(id *)error;
++ (id)accountWithPersistentAccount:(id)account error:(id *)error;
 @end
 
 @implementation MFAccountLoader
 
-+ (id)accountWithPersistentAccount:(id)a3 error:(id *)a4
++ (id)accountWithPersistentAccount:(id)account error:(id *)error
 {
-  v5 = a3;
-  v6 = [MFAccountLoader accountClassForPersistentAccount:v5 error:a4];
+  accountCopy = account;
+  v6 = [MFAccountLoader accountClassForPersistentAccount:accountCopy error:error];
   if (v6)
   {
-    v7 = [[v6 alloc] initWithPersistentAccount:v5];
+    v7 = [[v6 alloc] initWithPersistentAccount:accountCopy];
   }
 
   else
@@ -27,15 +27,15 @@
   return v7;
 }
 
-+ (Class)accountClassForPersistentAccount:(id)a3 error:(id *)a4
++ (Class)accountClassForPersistentAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  accountCopy = account;
+  if (accountCopy)
   {
-    v7 = [a1 _accountClassStringWithPersistentAccount:v6 error:a4];
+    v7 = [self _accountClassStringWithPersistentAccount:accountCopy error:error];
     if (v7)
     {
-      v8 = [a1 _accountClassForString:v7 error:a4];
+      v8 = [self _accountClassForString:v7 error:error];
     }
 
     else
@@ -54,18 +54,18 @@
   return v8;
 }
 
-+ (id)_accountClassStringWithPersistentAccount:(id)a3 error:(id *)a4
++ (id)_accountClassStringWithPersistentAccount:(id)account error:(id *)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  accountCopy = account;
+  v6 = accountCopy;
+  if (accountCopy)
   {
-    v7 = [v5 accountPropertyForKey:@"Class"];
+    v7 = [accountCopy accountPropertyForKey:@"Class"];
     v8 = v7;
-    if (a4 && !v7)
+    if (error && !v7)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"MFAccountLoaderErrorDomain" code:1 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
   }
 
@@ -77,25 +77,25 @@
   return v8;
 }
 
-+ (Class)_accountClassForString:(id)a3 error:(id *)a4
++ (Class)_accountClassForString:(id)string error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  stringCopy = string;
+  v7 = stringCopy;
+  if (!stringCopy)
   {
     goto LABEL_6;
   }
 
-  v8 = NSClassFromString(v6);
+  v8 = NSClassFromString(stringCopy);
   if (v8)
   {
     goto LABEL_11;
   }
 
-  if ([a1 loadBundleForAccountClassString:v7 error:a4])
+  if ([self loadBundleForAccountClassString:v7 error:error])
   {
     v8 = NSClassFromString(v7);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -105,7 +105,7 @@
   {
 LABEL_6:
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_11;
     }
@@ -113,7 +113,7 @@ LABEL_6:
 
   if (!v8)
   {
-    if (*a4)
+    if (*error)
     {
       v8 = 0;
     }
@@ -121,7 +121,7 @@ LABEL_6:
     else
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"MFAccountLoaderErrorDomain" code:2 userInfo:0];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
   }
 
@@ -131,17 +131,17 @@ LABEL_11:
   return v8;
 }
 
-+ (BOOL)loadBundleForAccountClassString:(id)a3 error:(id *)a4
++ (BOOL)loadBundleForAccountClassString:(id)string error:(id *)error
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v7 = [a1 _bundlePathForAccountClassString:v6];
+    v7 = [self _bundlePathForAccountClassString:stringCopy];
     if (v7)
     {
-      v8 = a1;
-      objc_sync_enter(v8);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       if ([0 containsObject:v7])
       {
         v9 = 1;
@@ -151,7 +151,7 @@ LABEL_11:
       {
         v10 = [MEMORY[0x1E696AAE8] bundleWithPath:v7];
         v11 = v10;
-        if (v10 && [v10 loadAndReturnError:a4])
+        if (v10 && [v10 loadAndReturnError:error])
         {
           [0 addObject:v7];
           v12 = MFLogGeneral();
@@ -171,13 +171,13 @@ LABEL_11:
         }
       }
 
-      objc_sync_exit(v8);
+      objc_sync_exit(selfCopy);
     }
 
-    else if (a4)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] errorWithDomain:@"MFAccountLoaderErrorDomain" code:3 userInfo:0];
-      *a4 = v9 = 0;
+      *error = v9 = 0;
     }
 
     else
@@ -195,18 +195,18 @@ LABEL_11:
   return v9;
 }
 
-+ (id)_bundlePathForAccountClassString:(id)a3
++ (id)_bundlePathForAccountClassString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
+  stringCopy = string;
+  v5 = stringCopy;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__MFAccountLoader__bundlePathForAccountClassString___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_bundlePathForAccountClassString__onceToken == -1)
   {
-    if (v4)
+    if (stringCopy)
     {
 LABEL_3:
       v6 = [_bundlePathForAccountClassString__sAccountClassToBundlePathMap objectForKey:v5];
@@ -343,10 +343,10 @@ void __52__MFAccountLoader__bundlePathForAccountClassString___block_invoke(uint6
   v25 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)accountWithAccountTypeIdentifier:(id)a3 error:(id *)a4
++ (id)accountWithAccountTypeIdentifier:(id)identifier error:(id *)error
 {
   v17[6] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = *MEMORY[0x1E6959868];
   v16[0] = *MEMORY[0x1E69597F0];
   v16[1] = v7;
@@ -363,8 +363,8 @@ void __52__MFAccountLoader__bundlePathForAccountClassString___block_invoke(uint6
   v17[4] = @"POPAccount";
   v17[5] = @"SMTPAccount";
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:6];
-  v11 = [v10 objectForKeyedSubscript:v6];
-  if (v11 && (v12 = [a1 _accountClassForString:v11 error:a4]) != 0)
+  v11 = [v10 objectForKeyedSubscript:identifierCopy];
+  if (v11 && (v12 = [self _accountClassForString:v11 error:error]) != 0)
   {
     v13 = objc_alloc_init(v12);
   }

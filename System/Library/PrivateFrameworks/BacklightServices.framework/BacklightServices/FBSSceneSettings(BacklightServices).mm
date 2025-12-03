@@ -15,8 +15,8 @@
 
 - (id)bls_visualState
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:200001];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:200001];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -59,24 +59,24 @@
 
 - (uint64_t)bls_hasUnrestrictedFramerateUpdates
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:200006];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:200006];
 
   return v2;
 }
 
 - (uint64_t)bls_isAlwaysOnEnabledForEnvironment
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:200003];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:200003];
 
   return v2;
 }
 
 - (id)bls_presentationDate
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:200002];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:200002];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -119,24 +119,24 @@
 
 - (uint64_t)bls_isLiveUpdating
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:200005];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:200005];
 
   return v2;
 }
 
 - (uint64_t)bls_isDelegateActive
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 BOOLForSetting:200000];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings BOOLForSetting:200000];
 
   return v2;
 }
 
 - (uint64_t)bls_renderSeed
 {
-  v1 = [a1 otherSettings];
-  v2 = [v1 objectForSetting:200004];
+  otherSettings = [self otherSettings];
+  v2 = [otherSettings objectForSetting:200004];
 
   v3 = objc_opt_class();
   v4 = v2;
@@ -162,7 +162,7 @@
 
   if (v6)
   {
-    v7 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
   }
 
   else
@@ -176,10 +176,10 @@
       }
     }
 
-    v7 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
 - (void)bls_visualState

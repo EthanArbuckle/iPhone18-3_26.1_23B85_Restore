@@ -1,20 +1,20 @@
 @interface AFMyriadGoodnessScoreEvaluator
-- (AFMyriadGoodnessScoreEvaluator)initWithDeviceInstanceContext:(id)a3 preferences:(id)a4 queue:(id)a5 instrumentation:(id)a6;
+- (AFMyriadGoodnessScoreEvaluator)initWithDeviceInstanceContext:(id)context preferences:(id)preferences queue:(id)queue instrumentation:(id)instrumentation;
 - (id)_createSettingsConnectionIfRequired;
-- (id)_readSidekickBoostsFile:(id)a3;
-- (unsigned)_getRecentBump:(double)a3 ignoreAdjustedBoost:(BOOL)a4 recentlyWonBySmallAmount:(BOOL)a5;
-- (unsigned)getMyriadAdjustedBoostForGoodnessScoreContext:(id)a3;
+- (id)_readSidekickBoostsFile:(id)file;
+- (unsigned)_getRecentBump:(double)bump ignoreAdjustedBoost:(BOOL)boost recentlyWonBySmallAmount:(BOOL)amount;
+- (unsigned)getMyriadAdjustedBoostForGoodnessScoreContext:(id)context;
 - (unsigned)getPlatformBias;
 - (void)_fetchDevicePlatformBiasIfRequired;
 - (void)_reloadTrialConfiguredBoostValues;
 - (void)_settingsConnectionDidDisconnect;
-- (void)_updateMediaPlaybackBoost:(unsigned __int8)a3;
-- (void)_updatePlatformBias:(unsigned __int8)a3;
-- (void)_updateRecentSiriBoostTrialEnabled:(BOOL)a3;
-- (void)_updateRecentSiriExponentialBoostDefined:(BOOL)a3 withSecondDegree:(double)a4 andFirstDegree:(double)a5 andIntercept:(double)a6;
-- (void)_updateSidekickBoosts:(id)a3;
+- (void)_updateMediaPlaybackBoost:(unsigned __int8)boost;
+- (void)_updatePlatformBias:(unsigned __int8)bias;
+- (void)_updateRecentSiriBoostTrialEnabled:(BOOL)enabled;
+- (void)_updateRecentSiriExponentialBoostDefined:(BOOL)defined withSecondDegree:(double)degree andFirstDegree:(double)firstDegree andIntercept:(double)intercept;
+- (void)_updateSidekickBoosts:(id)boosts;
 - (void)dealloc;
-- (void)myriadTrialBoostsUpdated:(id)a3;
+- (void)myriadTrialBoostsUpdated:(id)updated;
 - (void)preheat;
 @end
 
@@ -62,10 +62,10 @@ void __66__AFMyriadGoodnessScoreEvaluator__settingsConnectionDidDisconnect__bloc
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (unsigned)getMyriadAdjustedBoostForGoodnessScoreContext:(id)a3
+- (unsigned)getMyriadAdjustedBoostForGoodnessScoreContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
   {
@@ -75,25 +75,25 @@ void __66__AFMyriadGoodnessScoreEvaluator__settingsConnectionDidDisconnect__bloc
   }
 
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  v6 = [(AFPreferences *)self->_pref myriadShouldIgnoreAdjustedBoost];
-  v7 = [(AFPreferences *)self->_pref ignoreMyriadPlatformBias];
-  v8 = v7;
-  if (v6 && v7)
+  myriadShouldIgnoreAdjustedBoost = [(AFPreferences *)self->_pref myriadShouldIgnoreAdjustedBoost];
+  ignoreMyriadPlatformBias = [(AFPreferences *)self->_pref ignoreMyriadPlatformBias];
+  v8 = ignoreMyriadPlatformBias;
+  if (myriadShouldIgnoreAdjustedBoost && ignoreMyriadPlatformBias)
   {
-    v9 = 0;
+    getPlatformBias = 0;
   }
 
-  else if (v6)
+  else if (myriadShouldIgnoreAdjustedBoost)
   {
-    v9 = [(AFMyriadGoodnessScoreEvaluator *)self getPlatformBias];
+    getPlatformBias = [(AFMyriadGoodnessScoreEvaluator *)self getPlatformBias];
   }
 
   else
   {
-    v10 = [v4 reasons];
+    reasons = [contextCopy reasons];
     lastActivationTime = self->_lastActivationTime;
-    [v4 mediaPlaybackInterruptedTime];
-    v9 = -[AFMyriadGoodnessScoreEvaluator _bumpGoodnessScore:lastActivationTime:mediaPlaybackInterruptedTime:ignoreAdjustedBoost:recentlyWonBySmallAmount:](self, "_bumpGoodnessScore:lastActivationTime:mediaPlaybackInterruptedTime:ignoreAdjustedBoost:recentlyWonBySmallAmount:", v10, 0, [v4 recentlyWonBySmallAmount], lastActivationTime, v12);
+    [contextCopy mediaPlaybackInterruptedTime];
+    getPlatformBias = -[AFMyriadGoodnessScoreEvaluator _bumpGoodnessScore:lastActivationTime:mediaPlaybackInterruptedTime:ignoreAdjustedBoost:recentlyWonBySmallAmount:](self, "_bumpGoodnessScore:lastActivationTime:mediaPlaybackInterruptedTime:ignoreAdjustedBoost:recentlyWonBySmallAmount:", reasons, 0, [contextCopy recentlyWonBySmallAmount], lastActivationTime, v12);
 
     if (!v8)
     {
@@ -107,7 +107,7 @@ void __66__AFMyriadGoodnessScoreEvaluator__settingsConnectionDidDisconnect__bloc
         _os_log_impl(&dword_1912FE000, v13, OS_LOG_TYPE_INFO, "%s #myriad payload adjusted score: %ld", &v17, 0x16u);
       }
 
-      v9 += [(AFMyriadGoodnessScoreEvaluator *)self getPlatformBias];
+      getPlatformBias += [(AFMyriadGoodnessScoreEvaluator *)self getPlatformBias];
     }
   }
 
@@ -117,19 +117,19 @@ void __66__AFMyriadGoodnessScoreEvaluator__settingsConnectionDidDisconnect__bloc
     v17 = 136315394;
     v18 = "[AFMyriadGoodnessScoreEvaluator getMyriadAdjustedBoostForGoodnessScoreContext:]";
     v19 = 2048;
-    v20 = v9;
+    v20 = getPlatformBias;
     _os_log_impl(&dword_1912FE000, v14, OS_LOG_TYPE_INFO, "%s #myriad adjusted score: %ld", &v17, 0x16u);
   }
 
-  if (v9 >= 0xFF)
+  if (getPlatformBias >= 0xFF)
   {
-    LOBYTE(v9) = -1;
+    LOBYTE(getPlatformBias) = -1;
   }
 
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
 
   v15 = *MEMORY[0x1E69E9840];
-  return v9;
+  return getPlatformBias;
 }
 
 - (void)preheat
@@ -334,14 +334,14 @@ void __67__AFMyriadGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__blo
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_readSidekickBoostsFile:(id)a3
+- (id)_readSidekickBoostsFile:(id)file
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  fileCopy = file;
+  if (fileCopy)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    if (([v4 fileExistsAtPath:v3] & 1) == 0)
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    if (([defaultManager fileExistsAtPath:fileCopy] & 1) == 0)
     {
       v11 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -349,7 +349,7 @@ void __67__AFMyriadGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__blo
         *buf = 136315394;
         v21 = "[AFMyriadGoodnessScoreEvaluator _readSidekickBoostsFile:]";
         v22 = 2112;
-        v23 = v3;
+        v23 = fileCopy;
         _os_log_error_impl(&dword_1912FE000, v11, OS_LOG_TYPE_ERROR, "%s Unable to find sidekick boosts plist at path %@.", buf, 0x16u);
       }
 
@@ -357,7 +357,7 @@ void __67__AFMyriadGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__blo
       goto LABEL_23;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v3];
+    v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:fileCopy];
     if (!v5)
     {
       v12 = AFSiriLogContextConnection;
@@ -366,7 +366,7 @@ void __67__AFMyriadGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__blo
         *buf = 136315394;
         v21 = "[AFMyriadGoodnessScoreEvaluator _readSidekickBoostsFile:]";
         v22 = 2112;
-        v23 = v3;
+        v23 = fileCopy;
         _os_log_error_impl(&dword_1912FE000, v12, OS_LOG_TYPE_ERROR, "%s Unable to read sidekick boosts plist file at path %@.", buf, 0x16u);
       }
 
@@ -385,7 +385,7 @@ void __67__AFMyriadGoodnessScoreEvaluator__reloadTrialConfiguredBoostValues__blo
         *buf = 136315650;
         v21 = "[AFMyriadGoodnessScoreEvaluator _readSidekickBoostsFile:]";
         v22 = 2112;
-        v23 = v3;
+        v23 = fileCopy;
         v24 = 2112;
         v25 = v7;
         _os_log_error_impl(&dword_1912FE000, v8, OS_LOG_TYPE_ERROR, "%s Unable to initialize sidekick boosts from plist file at path %@ due to error %@", buf, 0x20u);
@@ -479,7 +479,7 @@ LABEL_24:
   return v6;
 }
 
-- (void)_updateSidekickBoosts:(id)a3
+- (void)_updateSidekickBoosts:(id)boosts
 {
   v7 = *MEMORY[0x1E69E9840];
   v3 = AFSiriLogContextConnection;
@@ -493,14 +493,14 @@ LABEL_24:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateRecentSiriExponentialBoostDefined:(BOOL)a3 withSecondDegree:(double)a4 andFirstDegree:(double)a5 andIntercept:(double)a6
+- (void)_updateRecentSiriExponentialBoostDefined:(BOOL)defined withSecondDegree:(double)degree andFirstDegree:(double)firstDegree andIntercept:(double)intercept
 {
   v27 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  self->_isExponentialBoostDefined = a3;
-  self->_recentSiriSecondDegreeCoefficient = a4;
-  self->_recentSiriFirstDegreeCoefficient = a5;
-  self->_recentSiriIntercept = a6;
+  self->_isExponentialBoostDefined = defined;
+  self->_recentSiriSecondDegreeCoefficient = degree;
+  self->_recentSiriFirstDegreeCoefficient = firstDegree;
+  self->_recentSiriIntercept = intercept;
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
   v11 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -525,11 +525,11 @@ LABEL_24:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateRecentSiriBoostTrialEnabled:(BOOL)a3
+- (void)_updateRecentSiriBoostTrialEnabled:(BOOL)enabled
 {
   v12 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  self->_isRecentSiriBoostTrialEnabled = a3;
+  self->_isRecentSiriBoostTrialEnabled = enabled;
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -550,11 +550,11 @@ LABEL_24:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateMediaPlaybackBoost:(unsigned __int8)a3
+- (void)_updateMediaPlaybackBoost:(unsigned __int8)boost
 {
   v12 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  self->_mediaPlaybackBoost = a3;
+  self->_mediaPlaybackBoost = boost;
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -570,12 +570,12 @@ LABEL_24:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updatePlatformBias:(unsigned __int8)a3
+- (void)_updatePlatformBias:(unsigned __int8)bias
 {
-  v3 = a3;
+  biasCopy = bias;
   v11 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_scoreEvaluationLock);
-  self->_myriadPlatformBias = v3;
+  self->_myriadPlatformBias = biasCopy;
   os_unfair_lock_unlock(&self->_scoreEvaluationLock);
   v5 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -583,7 +583,7 @@ LABEL_24:
     v7 = 136315394;
     v8 = "[AFMyriadGoodnessScoreEvaluator _updatePlatformBias:]";
     v9 = 1024;
-    v10 = v3;
+    v10 = biasCopy;
     _os_log_impl(&dword_1912FE000, v5, OS_LOG_TYPE_INFO, "%s #myriad updated platform bias to %d", &v7, 0x12u);
   }
 
@@ -618,10 +618,10 @@ LABEL_24:
   return result;
 }
 
-- (unsigned)_getRecentBump:(double)a3 ignoreAdjustedBoost:(BOOL)a4 recentlyWonBySmallAmount:(BOOL)a5
+- (unsigned)_getRecentBump:(double)bump ignoreAdjustedBoost:(BOOL)boost recentlyWonBySmallAmount:(BOOL)amount
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (boost)
   {
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -636,7 +636,7 @@ LABEL_24:
 
   else
   {
-    v7 = a5;
+    amountCopy = amount;
     if (softLinkMKBGetDeviceLockState(0) == 3 || (v10 = 0.0, !softLinkMKBGetDeviceLockState(0)))
     {
       v11 = AFSiriLogContextConnection;
@@ -664,12 +664,12 @@ LABEL_24:
       }
     }
 
-    v13 = [MEMORY[0x1E696AE30] processInfo];
-    [v13 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v15 = v14;
 
-    v16 = v15 - a3;
-    v17 = v15 - a3 + -15.0;
+    v16 = v15 - bump;
+    v17 = v15 - bump + -15.0;
     if (v17 < 0.0)
     {
       v17 = 0.0;
@@ -688,7 +688,7 @@ LABEL_24:
 
     if (self->_isRecentSiriBoostTrialEnabled && self->_isExponentialBoostDefined)
     {
-      v20 = AFMyriadGoodnessComputeExponentialBoost(a3, v15, self->_recentSiriSecondDegreeCoefficient, self->_recentSiriFirstDegreeCoefficient, self->_recentSiriIntercept);
+      v20 = AFMyriadGoodnessComputeExponentialBoost(bump, v15, self->_recentSiriSecondDegreeCoefficient, self->_recentSiriFirstDegreeCoefficient, self->_recentSiriIntercept);
       v21 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
       {
@@ -705,7 +705,7 @@ LABEL_24:
     }
 
     v22 = AFSiriLogContextConnection;
-    if (v7 && v19 > v10)
+    if (amountCopy && v19 > v10)
     {
       v23 = 0.0;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_INFO))
@@ -785,7 +785,7 @@ LABEL_24:
   return v6;
 }
 
-- (void)myriadTrialBoostsUpdated:(id)a3
+- (void)myriadTrialBoostsUpdated:(id)updated
 {
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -814,30 +814,30 @@ uint64_t __59__AFMyriadGoodnessScoreEvaluator_myriadTrialBoostsUpdated___block_i
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AFMyriadGoodnessScoreEvaluator;
   [(AFMyriadGoodnessScoreEvaluator *)&v4 dealloc];
 }
 
-- (AFMyriadGoodnessScoreEvaluator)initWithDeviceInstanceContext:(id)a3 preferences:(id)a4 queue:(id)a5 instrumentation:(id)a6
+- (AFMyriadGoodnessScoreEvaluator)initWithDeviceInstanceContext:(id)context preferences:(id)preferences queue:(id)queue instrumentation:(id)instrumentation
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  preferencesCopy = preferences;
+  queueCopy = queue;
+  instrumentationCopy = instrumentation;
   v26.receiver = self;
   v26.super_class = AFMyriadGoodnessScoreEvaluator;
   v15 = [(AFMyriadGoodnessScoreEvaluator *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deviceInstanceContext, a3);
-    if (v12)
+    objc_storeStrong(&v15->_deviceInstanceContext, context);
+    if (preferencesCopy)
     {
-      v17 = v12;
+      v17 = preferencesCopy;
     }
 
     else
@@ -849,9 +849,9 @@ uint64_t __59__AFMyriadGoodnessScoreEvaluator_myriadTrialBoostsUpdated___block_i
     v16->_pref = v17;
 
     v16->_platformBiasAcquisitionState = 0;
-    objc_storeStrong(&v16->_queue, a5);
+    objc_storeStrong(&v16->_queue, queue);
     v16->_scoreEvaluationLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v16->_myriadInstrumentation, a6);
+    objc_storeStrong(&v16->_myriadInstrumentation, instrumentation);
     v16->_mediaPlaybackBoost = 7;
     v16->_isSpeakerEndpoint = 0;
     endpointModelName = v16->_endpointModelName;
@@ -868,9 +868,9 @@ uint64_t __59__AFMyriadGoodnessScoreEvaluator_myriadTrialBoostsUpdated___block_i
     block[3] = &unk_1E73497C8;
     v21 = v16;
     v25 = v21;
-    dispatch_async(v13, block);
-    v22 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v22 addObserver:v21 selector:sel_myriadTrialBoostsUpdated_ name:@"AFMyriadTrialBoostsUpdatedNotification" object:0];
+    dispatch_async(queueCopy, block);
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter addObserver:v21 selector:sel_myriadTrialBoostsUpdated_ name:@"AFMyriadTrialBoostsUpdatedNotification" object:0];
   }
 
   return v16;

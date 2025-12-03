@@ -1,6 +1,6 @@
 @interface AXCategoricalScale
 - (AXCategoricalScale)init;
-- (AXCategoricalScale)initWithDomain:(id)a3;
+- (AXCategoricalScale)initWithDomain:(id)domain;
 @end
 
 @implementation AXCategoricalScale
@@ -16,21 +16,21 @@
   return [(AXCategoricalScale *)self initWithDomain:MEMORY[0x1E695E0F0]];
 }
 
-- (AXCategoricalScale)initWithDomain:(id)a3
+- (AXCategoricalScale)initWithDomain:(id)domain
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  domainCopy = domain;
   v20.receiver = self;
   v20.super_class = AXCategoricalScale;
   v5 = [(AXCategoricalScale *)&v20 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = v4;
+    v7 = domainCopy;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v8)
     {
@@ -47,7 +47,7 @@
           }
 
           v12 = [AXDataPointValue valueWithCategory:*(*(&v16 + 1) + 8 * v11), v16];
-          [v6 addObject:v12];
+          [array addObject:v12];
 
           ++v11;
         }
@@ -59,7 +59,7 @@
       while (v9);
     }
 
-    v13 = [v6 copy];
+    v13 = [array copy];
     [(AXScale *)v5 setDomain:v13];
   }
 

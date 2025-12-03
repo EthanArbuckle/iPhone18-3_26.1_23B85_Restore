@@ -1,11 +1,11 @@
 @interface HKSignedClinicalDataParsingResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKSignedClinicalDataParsingResult)init;
-- (HKSignedClinicalDataParsingResult)initWithCoder:(id)a3;
-- (HKSignedClinicalDataParsingResult)initWithItems:(id)a3 options:(unint64_t)a4;
-- (id)copyWithItems:(id)a3;
+- (HKSignedClinicalDataParsingResult)initWithCoder:(id)coder;
+- (HKSignedClinicalDataParsingResult)initWithItems:(id)items options:(unint64_t)options;
+- (id)copyWithItems:(id)items;
 - (id)muxed;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataParsingResult
@@ -20,19 +20,19 @@
   return 0;
 }
 
-- (HKSignedClinicalDataParsingResult)initWithItems:(id)a3 options:(unint64_t)a4
+- (HKSignedClinicalDataParsingResult)initWithItems:(id)items options:(unint64_t)options
 {
-  v6 = a3;
+  itemsCopy = items;
   v11.receiver = self;
   v11.super_class = HKSignedClinicalDataParsingResult;
   v7 = [(HKSignedClinicalDataParsingResult *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [itemsCopy copy];
     items = v7->_items;
     v7->_items = v8;
 
-    v7->_options = a4;
+    v7->_options = options;
   }
 
   return v7;
@@ -45,60 +45,60 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   items = self->_items;
-  v5 = a3;
-  [v5 encodeObject:items forKey:@"Items"];
-  [v5 encodeInteger:self->_options forKey:@"Options"];
+  coderCopy = coder;
+  [coderCopy encodeObject:items forKey:@"Items"];
+  [coderCopy encodeInteger:self->_options forKey:@"Options"];
 }
 
-- (HKSignedClinicalDataParsingResult)initWithCoder:(id)a3
+- (HKSignedClinicalDataParsingResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"Items"];
-  if (v6 && ([v4 containsValueForKey:@"Options"] & 1) != 0)
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"Items"];
+  if (v6 && ([coderCopy containsValueForKey:@"Options"] & 1) != 0)
   {
-    self = -[HKSignedClinicalDataParsingResult initWithItems:options:](self, "initWithItems:options:", v6, [v4 decodeIntegerForKey:@"Options"]);
-    v7 = self;
+    self = -[HKSignedClinicalDataParsingResult initWithItems:options:](self, "initWithItems:options:", v6, [coderCopy decodeIntegerForKey:@"Options"]);
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v7 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (id)copyWithItems:(id)a3
+- (id)copyWithItems:(id)items
 {
-  v4 = a3;
-  v5 = [[HKSignedClinicalDataParsingResult alloc] initWithItems:v4 options:self->_options];
+  itemsCopy = items;
+  v5 = [[HKSignedClinicalDataParsingResult alloc] initWithItems:itemsCopy options:self->_options];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       items = self->_items;
-      v8 = [(HKSignedClinicalDataParsingResult *)v6 items];
-      if (items == v8)
+      items = [(HKSignedClinicalDataParsingResult *)v6 items];
+      if (items == items)
       {
         options = self->_options;
         v13 = options == [(HKSignedClinicalDataParsingResult *)v6 options];
@@ -106,12 +106,12 @@
 
       else
       {
-        v9 = [(HKSignedClinicalDataParsingResult *)v6 items];
-        if (v9)
+        items2 = [(HKSignedClinicalDataParsingResult *)v6 items];
+        if (items2)
         {
           v10 = self->_items;
-          v11 = [(HKSignedClinicalDataParsingResult *)v6 items];
-          if ([(NSArray *)v10 isEqualToArray:v11])
+          items3 = [(HKSignedClinicalDataParsingResult *)v6 items];
+          if ([(NSArray *)v10 isEqualToArray:items3])
           {
             v12 = self->_options;
             v13 = v12 == [(HKSignedClinicalDataParsingResult *)v6 options];

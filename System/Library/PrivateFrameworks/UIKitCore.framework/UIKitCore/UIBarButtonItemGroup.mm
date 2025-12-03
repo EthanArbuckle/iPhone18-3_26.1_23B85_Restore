@@ -5,9 +5,9 @@
 + (UIBarButtonItemGroup)optionalGroupWithCustomizationIdentifier:(NSString *)customizationIdentifier inDefaultCustomization:(BOOL)inDefaultCustomization representativeItem:(UIBarButtonItem *)representativeItem items:(NSArray *)items;
 - (BOOL)_canCollapse;
 - (BOOL)_isHiddenForCalculation;
-- (BOOL)enumerateVisibleItems:(id)a3;
+- (BOOL)enumerateVisibleItems:(id)items;
 - (BOOL)isDisplayingRepresentativeItem;
-- (BOOL)reverseEnumerateVisibleItems:(id)a3;
+- (BOOL)reverseEnumerateVisibleItems:(id)items;
 - (NSArray)barButtonItems;
 - (UIBarButtonItemGroup)initWithBarButtonItems:(NSArray *)barButtonItems representativeItem:(UIBarButtonItem *)representativeItem;
 - (UIBarButtonItemGroup)initWithCoder:(NSCoder *)coder;
@@ -16,17 +16,17 @@
 - (_UIBarButtonItemGroupOwner)_owner;
 - (id)_synthesizedMenuElements;
 - (id)description;
-- (void)_ib_setCustomizationIdentifier:(id)a3;
-- (void)_relinquishOwnership:(id)a3;
-- (void)_removeBarButtonItem:(id)a3;
-- (void)_removeRepresentative:(id)a3;
+- (void)_ib_setCustomizationIdentifier:(id)identifier;
+- (void)_relinquishOwnership:(id)ownership;
+- (void)_removeBarButtonItem:(id)item;
+- (void)_removeRepresentative:(id)representative;
 - (void)_sendPrepareForLayout;
-- (void)_setImplicitlyGenerated:(BOOL)a3;
-- (void)_setLocked:(BOOL)a3;
-- (void)_setRequiresOwnSection:(BOOL)a3;
-- (void)_setSendActionsBeforeDismiss:(BOOL)a3;
+- (void)_setImplicitlyGenerated:(BOOL)generated;
+- (void)_setLocked:(BOOL)locked;
+- (void)_setRequiresOwnSection:(BOOL)section;
+- (void)_setSendActionsBeforeDismiss:(BOOL)dismiss;
 - (void)_validateAllItems;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAlwaysAvailable:(BOOL)alwaysAvailable;
 - (void)setBarButtonItems:(NSArray *)barButtonItems;
 - (void)setHidden:(BOOL)hidden;
@@ -84,18 +84,18 @@
   return !dyld_program_sdk_at_least() || ![(UIBarButtonItem *)self->_representativeItem isSpaceItem];
 }
 
-- (void)_removeBarButtonItem:(id)a3
+- (void)_removeBarButtonItem:(id)item
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   v6 = dyld_program_sdk_at_least();
   groupFlags = self->_groupFlags;
   if (v6)
   {
     if ((groupFlags & 2) != 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UIBarButtonItemGroup.m" lineNumber:70 description:@"Taking barButtonItems from a system owned UIBarButtonItemGroup is not expected and may result in unexpected behavior."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIBarButtonItemGroup.m" lineNumber:70 description:@"Taking barButtonItems from a system owned UIBarButtonItemGroup is not expected and may result in unexpected behavior."];
     }
   }
 
@@ -111,29 +111,29 @@
 
   if ([(NSMutableArray *)self->_barButtonItems count])
   {
-    v9 = [(NSMutableArray *)self->_barButtonItems indexOfObjectIdenticalTo:v5];
+    v9 = [(NSMutableArray *)self->_barButtonItems indexOfObjectIdenticalTo:itemCopy];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(NSMutableArray *)self->_barButtonItems removeObjectAtIndex:v9];
-      v10 = [(UIBarButtonItemGroup *)self _owner];
-      v14[0] = v5;
+      _owner = [(UIBarButtonItemGroup *)self _owner];
+      v14[0] = itemCopy;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-      [v10 _groupDidUpdateItems:self removedItems:v11];
+      [_owner _groupDidUpdateItems:self removedItems:v11];
     }
   }
 }
 
-- (void)_removeRepresentative:(id)a3
+- (void)_removeRepresentative:(id)representative
 {
-  v5 = a3;
+  representativeCopy = representative;
   v6 = dyld_program_sdk_at_least();
   groupFlags = self->_groupFlags;
   if (v6)
   {
     if ((groupFlags & 2) != 0)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"UIBarButtonItemGroup.m" lineNumber:83 description:@"Taking barButtonItems from a system owned UIBarButtonItemGroup is not expected and may result in unexpected behavior."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UIBarButtonItemGroup.m" lineNumber:83 description:@"Taking barButtonItems from a system owned UIBarButtonItemGroup is not expected and may result in unexpected behavior."];
     }
   }
 
@@ -148,13 +148,13 @@
   }
 
   representativeItem = self->_representativeItem;
-  if (representativeItem == v5)
+  if (representativeItem == representativeCopy)
   {
     self->_representativeItem = 0;
     v10 = representativeItem;
 
-    v11 = [(UIBarButtonItemGroup *)self _owner];
-    [v11 _groupDidUpdateRepresentative:self fromRepresentative:v10];
+    _owner = [(UIBarButtonItemGroup *)self _owner];
+    [_owner _groupDidUpdateRepresentative:self fromRepresentative:v10];
   }
 }
 
@@ -267,43 +267,43 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   barButtonItems = self->_barButtonItems;
-  v11 = v4;
+  v11 = coderCopy;
   if (barButtonItems)
   {
-    [v4 encodeObject:barButtonItems forKey:@"UIBarButtonItems"];
-    v4 = v11;
+    [coderCopy encodeObject:barButtonItems forKey:@"UIBarButtonItems"];
+    coderCopy = v11;
   }
 
   representativeItem = self->_representativeItem;
   if (representativeItem)
   {
     [v11 encodeObject:representativeItem forKey:@"UIRepresentativeItem"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   menuRepresentation = self->_menuRepresentation;
   if (menuRepresentation)
   {
     [v11 encodeObject:menuRepresentation forKey:@"UIMenuRepresentation"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   groupFlags = self->_groupFlags;
   if (groupFlags)
   {
     [v11 encodeBool:1 forKey:@"UIGroupHidden"];
-    v4 = v11;
+    coderCopy = v11;
     groupFlags = self->_groupFlags;
   }
 
   if ((groupFlags & 8) != 0)
   {
     [v11 encodeBool:1 forKey:@"UIShowInOverflow"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   customizationIdentifier = self->_customizationIdentifier;
@@ -311,21 +311,21 @@
   {
     [v11 encodeObject:customizationIdentifier forKey:@"UICustomizationIdentifier"];
     [v11 encodeInteger:(*&self->_groupFlags >> 4) & 3 forKey:@"UICustomizationDisposition"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   v10 = self->_groupFlags;
   if ((v10 & 0x40) != 0)
   {
     [v11 encodeBool:1 forKey:@"UIGroupImplicitlyGenerated"];
-    v4 = v11;
+    coderCopy = v11;
     v10 = self->_groupFlags;
   }
 
   if ((v10 & 0x80) != 0)
   {
     [v11 encodeBool:1 forKey:@"UIGroupRequiresOwnSection"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 
@@ -335,8 +335,8 @@
   v5 = barButtonItems;
   if ((*&self->_groupFlags & 2) != 0)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"UIBarButtonItemGroup.m" lineNumber:189 description:@"You cannot change the barButtonItems of system owned UIBarButtonItemGroups"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIBarButtonItemGroup.m" lineNumber:189 description:@"You cannot change the barButtonItems of system owned UIBarButtonItemGroups"];
   }
 
   if (![(NSArray *)v5 isEqualToArray:self->_barButtonItems])
@@ -402,16 +402,16 @@
       v11 = 0;
     }
 
-    v16 = [(UIBarButtonItemGroup *)self _owner];
-    [v16 _groupDidUpdateItems:self removedItems:v11];
+    _owner = [(UIBarButtonItemGroup *)self _owner];
+    [_owner _groupDidUpdateItems:self removedItems:v11];
   }
 }
 
 - (BOOL)isDisplayingRepresentativeItem
 {
-  v2 = [(UIBarButtonItem *)self->_representativeItem view];
-  v3 = [v2 window];
-  v4 = v3 != 0;
+  view = [(UIBarButtonItem *)self->_representativeItem view];
+  window = [view window];
+  v4 = window != 0;
 
   return v4;
 }
@@ -422,8 +422,8 @@
   if ((*&self->_groupFlags & 2) != 0)
   {
     v13 = v5;
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIBarButtonItemGroup.m" lineNumber:246 description:@"You cannot change the representativeItem of system owned UIBarButtonItemGroups"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIBarButtonItemGroup.m" lineNumber:246 description:@"You cannot change the representativeItem of system owned UIBarButtonItemGroups"];
 
     v5 = v13;
   }
@@ -440,8 +440,8 @@
     v9 = v6;
 
     _UIBarButtonGroupAssignRepresentative(self->_representativeItem, self);
-    v10 = [(UIBarButtonItemGroup *)self _owner];
-    [v10 _groupDidUpdateRepresentative:self fromRepresentative:v9];
+    _owner = [(UIBarButtonItemGroup *)self _owner];
+    [_owner _groupDidUpdateRepresentative:self fromRepresentative:v9];
 
     v5 = v12;
   }
@@ -468,8 +468,8 @@
   if ((groupFlags & 1) != hidden)
   {
     *&self->_groupFlags = groupFlags & 0xFFFE | hidden;
-    v6 = [(UIBarButtonItemGroup *)self _owner];
-    [v6 _groupDidUpdateVisibility:self];
+    _owner = [(UIBarButtonItemGroup *)self _owner];
+    [_owner _groupDidUpdateVisibility:self];
   }
 }
 
@@ -621,9 +621,9 @@ LABEL_9:
   }
 }
 
-- (void)_setLocked:(BOOL)a3
+- (void)_setLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 2;
   }
@@ -636,9 +636,9 @@ LABEL_9:
   *&self->_groupFlags = *&self->_groupFlags & 0xFFFD | v3;
 }
 
-- (void)_setSendActionsBeforeDismiss:(BOOL)a3
+- (void)_setSendActionsBeforeDismiss:(BOOL)dismiss
 {
-  if (a3)
+  if (dismiss)
   {
     v3 = 4;
   }
@@ -651,13 +651,13 @@ LABEL_9:
   *&self->_groupFlags = *&self->_groupFlags & 0xFFFB | v3;
 }
 
-- (void)_relinquishOwnership:(id)a3
+- (void)_relinquishOwnership:(id)ownership
 {
-  v4 = a3;
+  ownershipCopy = ownership;
   WeakRetained = objc_loadWeakRetained(&self->_owner);
 
   v5 = WeakRetained;
-  if (WeakRetained == v4)
+  if (WeakRetained == ownershipCopy)
   {
     objc_storeWeak(&self->_owner, 0);
     v5 = WeakRetained;
@@ -667,7 +667,7 @@ LABEL_9:
 - (id)_synthesizedMenuElements
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -690,10 +690,10 @@ LABEL_9:
         v9 = *(*(&v13 + 1) + 8 * i);
         if (([v9 isHidden] & 1) == 0)
         {
-          v10 = [v9 _effectiveMenuRepresentation];
-          if (v10)
+          _effectiveMenuRepresentation = [v9 _effectiveMenuRepresentation];
+          if (_effectiveMenuRepresentation)
           {
-            [v3 addObject:v10];
+            [orderedSet addObject:_effectiveMenuRepresentation];
           }
         }
       }
@@ -704,15 +704,15 @@ LABEL_9:
     while (v6);
   }
 
-  v11 = [v3 array];
+  array = [orderedSet array];
 
-  return v11;
+  return array;
 }
 
 - (UIMenu)_representativeItemMenu
 {
-  v2 = [(UIBarButtonItemGroup *)self _synthesizedMenuElements];
-  v3 = [UIMenu menuWithChildren:v2];
+  _synthesizedMenuElements = [(UIBarButtonItemGroup *)self _synthesizedMenuElements];
+  v3 = [UIMenu menuWithChildren:_synthesizedMenuElements];
 
   return v3;
 }
@@ -733,15 +733,15 @@ LABEL_9:
 
   else
   {
-    v6 = [(UIBarButtonItemGroup *)self _synthesizedMenuElements];
-    if ([v6 count] == 1)
+    _synthesizedMenuElements = [(UIBarButtonItemGroup *)self _synthesizedMenuElements];
+    if ([_synthesizedMenuElements count] == 1)
     {
-      [v6 firstObject];
+      [_synthesizedMenuElements firstObject];
     }
 
     else
     {
-      [UIMenu menuWithTitle:&stru_1EFB14550 image:0 identifier:0 options:1 children:v6];
+      [UIMenu menuWithTitle:&stru_1EFB14550 image:0 identifier:0 options:1 children:_synthesizedMenuElements];
     }
     v5 = ;
   }
@@ -749,10 +749,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)enumerateVisibleItems:(id)a3
+- (BOOL)enumerateVisibleItems:(id)items
 {
-  v4 = a3;
-  v5 = v4;
+  itemsCopy = items;
+  v5 = itemsCopy;
   v6 = 0;
   v12 = 0;
   v13 = &v12;
@@ -765,7 +765,7 @@ LABEL_9:
     v9[1] = 3221225472;
     v9[2] = __46__UIBarButtonItemGroup_enumerateVisibleItems___block_invoke;
     v9[3] = &unk_1E70F75D0;
-    v10 = v4;
+    v10 = itemsCopy;
     v11 = &v12;
     [(NSMutableArray *)barButtonItems enumerateObjectsUsingBlock:v9];
 
@@ -788,10 +788,10 @@ void __46__UIBarButtonItemGroup_enumerateVisibleItems___block_invoke(uint64_t a1
   }
 }
 
-- (BOOL)reverseEnumerateVisibleItems:(id)a3
+- (BOOL)reverseEnumerateVisibleItems:(id)items
 {
-  v4 = a3;
-  v5 = v4;
+  itemsCopy = items;
+  v5 = itemsCopy;
   v6 = 0;
   v12 = 0;
   v13 = &v12;
@@ -804,7 +804,7 @@ void __46__UIBarButtonItemGroup_enumerateVisibleItems___block_invoke(uint64_t a1
     v9[1] = 3221225472;
     v9[2] = __53__UIBarButtonItemGroup_reverseEnumerateVisibleItems___block_invoke;
     v9[3] = &unk_1E70F75D0;
-    v10 = v4;
+    v10 = itemsCopy;
     v11 = &v12;
     [(NSMutableArray *)barButtonItems enumerateObjectsWithOptions:2 usingBlock:v9];
 
@@ -863,9 +863,9 @@ void __53__UIBarButtonItemGroup_reverseEnumerateVisibleItems___block_invoke(uint
   [(UIBarButtonItem *)self->_representativeItem _executeValidationHandler];
 }
 
-- (void)_setImplicitlyGenerated:(BOOL)a3
+- (void)_setImplicitlyGenerated:(BOOL)generated
 {
-  if (a3)
+  if (generated)
   {
     v3 = 64;
   }
@@ -878,12 +878,12 @@ void __53__UIBarButtonItemGroup_reverseEnumerateVisibleItems___block_invoke(uint
   *&self->_groupFlags = *&self->_groupFlags & 0xFFBF | v3;
 }
 
-- (void)_setRequiresOwnSection:(BOOL)a3
+- (void)_setRequiresOwnSection:(BOOL)section
 {
   groupFlags = self->_groupFlags;
-  if (((((groupFlags & 0x80) == 0) ^ a3) & 1) == 0)
+  if (((((groupFlags & 0x80) == 0) ^ section) & 1) == 0)
   {
-    if (a3)
+    if (section)
     {
       v6 = 128;
     }
@@ -894,14 +894,14 @@ void __53__UIBarButtonItemGroup_reverseEnumerateVisibleItems___block_invoke(uint
     }
 
     *&self->_groupFlags = groupFlags & 0xFF7F | v6;
-    v7 = [(UIBarButtonItemGroup *)self _owner];
-    [v7 _groupDidUpdatePlatterizationPreference:self];
+    _owner = [(UIBarButtonItemGroup *)self _owner];
+    [_owner _groupDidUpdatePlatterizationPreference:self];
   }
 }
 
-- (void)_ib_setCustomizationIdentifier:(id)a3
+- (void)_ib_setCustomizationIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   customizationIdentifier = self->_customizationIdentifier;
   self->_customizationIdentifier = v4;
 

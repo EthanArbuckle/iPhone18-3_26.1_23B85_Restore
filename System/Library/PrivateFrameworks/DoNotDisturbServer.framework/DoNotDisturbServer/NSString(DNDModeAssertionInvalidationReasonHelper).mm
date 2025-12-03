@@ -20,42 +20,42 @@
 
 - (uint64_t)dnds_invalidationReasonValue
 {
-  if ([a1 isEqualToString:@"lifetime-expired"])
+  if ([self isEqualToString:@"lifetime-expired"])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:@"user-changed-state"])
+  if ([self isEqualToString:@"user-changed-state"])
   {
     return 2;
   }
 
-  if ([a1 isEqualToString:@"client-ended"])
+  if ([self isEqualToString:@"client-ended"])
   {
     return 3;
   }
 
-  if ([a1 isEqualToString:@"client-replaced"])
+  if ([self isEqualToString:@"client-replaced"])
   {
     return 4;
   }
 
-  if ([a1 isEqualToString:@"server-unresponsive"])
+  if ([self isEqualToString:@"server-unresponsive"])
   {
     return 5;
   }
 
-  if ([a1 isEqualToString:@"client-unresponsive"])
+  if ([self isEqualToString:@"client-unresponsive"])
   {
     return 6;
   }
 
-  if ([a1 isEqualToString:@"location-lifetime-expired"])
+  if ([self isEqualToString:@"location-lifetime-expired"])
   {
     return 7;
   }
 
-  if ([a1 isEqualToString:@"calendar-event-lifetime-expired"])
+  if ([self isEqualToString:@"calendar-event-lifetime-expired"])
   {
     return 8;
   }

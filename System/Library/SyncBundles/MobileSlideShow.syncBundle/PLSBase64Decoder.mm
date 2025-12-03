@@ -2,18 +2,18 @@
 + (id)decoder;
 + (id)decoderForPhotoUUID;
 - (PLSBase64Decoder)init;
-- (id)decodeString:(id)a3;
+- (id)decodeString:(id)string;
 - (id)initForPhotoUUID;
 @end
 
 @implementation PLSBase64Decoder
 
-- (id)decodeString:(id)a3
+- (id)decodeString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 lengthOfBytesUsingEncoding:1];
-  v6 = [v4 dataUsingEncoding:1];
-  v7 = [v6 bytes];
+  stringCopy = string;
+  v5 = [stringCopy lengthOfBytesUsingEncoding:1];
+  v6 = [stringCopy dataUsingEncoding:1];
+  bytes = [v6 bytes];
   v8 = malloc_type_malloc(v5, 0x100004077774924uLL);
   v9 = v8;
   if (!v5)
@@ -29,7 +29,7 @@
   while (1)
   {
     v11 <<= 6;
-    v14 = v12[v7];
+    v14 = v12[bytes];
     if (v14 == 61)
     {
       break;
@@ -58,7 +58,7 @@
   v16 = 1;
   if (v12 + 1 < v5)
   {
-    if (v12[v7 + 1] == 61)
+    if (v12[bytes + 1] == 61)
     {
       v16 = 2;
     }
@@ -184,9 +184,9 @@ LABEL_30:
 
 + (id)decoderForPhotoUUID
 {
-  v2 = [[PLSBase64Decoder alloc] initForPhotoUUID];
+  initForPhotoUUID = [[PLSBase64Decoder alloc] initForPhotoUUID];
 
-  return v2;
+  return initForPhotoUUID;
 }
 
 + (id)decoder

@@ -1,21 +1,21 @@
 @interface HMITorsoQuality
-+ (float)entropy:(const void *)a3 numPixels:(int)a4;
-+ (float)entropyOfLaplacianForBGRAPixelBuffer:(__CVBuffer *)a3;
-+ (float)entropyOfSaturationForBGRAPixelBuffer:(__CVBuffer *)a3;
++ (float)entropy:(const void *)entropy numPixels:(int)pixels;
++ (float)entropyOfLaplacianForBGRAPixelBuffer:(__CVBuffer *)buffer;
++ (float)entropyOfSaturationForBGRAPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation HMITorsoQuality
 
-+ (float)entropy:(const void *)a3 numPixels:(int)a4
++ (float)entropy:(const void *)entropy numPixels:(int)pixels
 {
-  v4 = *a3;
-  v5 = *(a3 + 1);
-  if (*a3 == v5)
+  v4 = *entropy;
+  v5 = *(entropy + 1);
+  if (*entropy == v5)
   {
     return 0.0;
   }
 
-  v6 = a4 + 1.0e-20;
+  v6 = pixels + 1.0e-20;
   v7 = 0.0;
   do
   {
@@ -33,25 +33,25 @@
   return v7;
 }
 
-+ (float)entropyOfLaplacianForBGRAPixelBuffer:(__CVBuffer *)a3
++ (float)entropyOfLaplacianForBGRAPixelBuffer:(__CVBuffer *)buffer
 {
-  Size = HMICVPixelBufferGetSize(a3);
+  Size = HMICVPixelBufferGetSize(buffer);
   v6 = v5;
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
   v8 = v6;
   v9 = Size;
   v10 = malloc_type_malloc(3 * Size * v6, 0x8B499A36uLL);
   v57.data = BaseAddressOfPlane;
   v57.height = v6;
   v57.width = Size;
-  v57.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
+  v57.rowBytes = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
   v56.data = v10;
   v56.height = v6;
   v56.width = Size;
   v56.rowBytes = 3 * Size;
   v11 = vImageConvert_RGBA8888toRGB888(&v57, &v56, 0);
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   if (v11)
   {
     free(v10);
@@ -254,9 +254,9 @@
   return v12;
 }
 
-+ (float)entropyOfSaturationForBGRAPixelBuffer:(__CVBuffer *)a3
++ (float)entropyOfSaturationForBGRAPixelBuffer:(__CVBuffer *)buffer
 {
-  Size = HMICVPixelBufferGetSize(a3);
+  Size = HMICVPixelBufferGetSize(buffer);
   if (!(v5 * Size))
   {
     return 1.0;
@@ -265,8 +265,8 @@
   v6 = Size;
   v7 = v5;
   std::vector<int>::vector[abi:ne200100](__p, 0x64uLL);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
   if (v7 <= 0.0)
   {
     v11 = 0;
@@ -285,7 +285,7 @@
         v13 = v9;
         do
         {
-          v14 = &v13[v10 * CVPixelBufferGetBytesPerRowOfPlane(a3, 0)];
+          v14 = &v13[v10 * CVPixelBufferGetBytesPerRowOfPlane(buffer, 0)];
           v15 = v14[2];
           v16 = v14[1];
           v17 = *v14;
@@ -340,7 +340,7 @@
     while (v7 > v10);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
   [HMITorsoQuality entropy:__p numPixels:v11];
   v23 = v24;
   if (__p[0])

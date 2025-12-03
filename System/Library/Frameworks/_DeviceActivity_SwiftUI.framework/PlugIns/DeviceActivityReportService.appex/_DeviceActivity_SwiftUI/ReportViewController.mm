@@ -1,13 +1,13 @@
 @interface ReportViewController
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (_TtC27DeviceActivityReportService20ReportViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didRefreshData:(id)a3;
-- (void)discoverClientExtensionWithConfiguration:(id)a3 :(id)a4;
-- (void)fetchActivitySegmentWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4 segmentInterval:(int64_t)a5 recordName:(id)a6 :(id)a7;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4;
-- (void)updateClientConfiguration:(id)a3 :(id)a4;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (_TtC27DeviceActivityReportService20ReportViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didRefreshData:(id)data;
+- (void)discoverClientExtensionWithConfiguration:(id)configuration :(id)a4;
+- (void)fetchActivitySegmentWithUserAltDSID:(id)d deviceIdentifier:(id)identifier segmentInterval:(int64_t)interval recordName:(id)name :(id)a7;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference;
+- (void)updateClientConfiguration:(id)configuration :(id)a4;
 - (void)viewDidLoad;
 @end
 
@@ -22,16 +22,16 @@
   v3 = sub_100010580();
   sub_10000F704(v3);
 
-  v4 = [objc_opt_self() defaultCenter];
+  defaultCenter = [objc_opt_self() defaultCenter];
   if (qword_1000291A8 != -1)
   {
     swift_once();
   }
 
-  [v4 addObserver:v2 selector:? name:? object:?];
+  [defaultCenter addObserver:v2 selector:? name:? object:?];
 }
 
-- (void)didRefreshData:(id)a3
+- (void)didRefreshData:(id)data
 {
   v4 = sub_10001A644();
   v5 = *(v4 - 8);
@@ -39,14 +39,14 @@
   __chkstk_darwin(v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_10001A634();
-  v9 = self;
-  v10 = [(ReportViewController *)v9 viewIfLoaded];
-  v11 = [v10 window];
+  selfCopy = self;
+  viewIfLoaded = [(ReportViewController *)selfCopy viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v11)
+  if (window)
   {
 
-    if (*(&v9->super.super.super.isa + OBJC_IVAR____TtC27DeviceActivityReportService20ReportViewController_isAuthorizedForLocalData) == 1)
+    if (*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC27DeviceActivityReportService20ReportViewController_isAuthorizedForLocalData) == 1)
     {
       sub_100010CC8();
     }
@@ -55,9 +55,9 @@
   (*(v5 + 8))(v8, v4);
 }
 
-- (_TtC27DeviceActivityReportService20ReportViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC27DeviceActivityReportService20ReportViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_10001AC24();
     v7 = v6;
@@ -69,15 +69,15 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_100011FD4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_100011FD4(v5, v7, bundle);
 }
 
-- (void)discoverClientExtensionWithConfiguration:(id)a3 :(id)a4
+- (void)discoverClientExtensionWithConfiguration:(id)configuration :(id)a4
 {
   v6 = _Block_copy(a4);
-  v7 = a3;
-  v8 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   v9 = sub_10001A744();
   v11 = v10;
 
@@ -87,7 +87,7 @@
   v14 = swift_allocObject();
   v14[2] = sub_100017C00;
   v14[3] = v12;
-  v14[4] = v8;
+  v14[4] = selfCopy;
   v17[4] = sub_100017C48;
   v17[5] = v14;
   v17[0] = _NSConcreteStackBlock;
@@ -95,7 +95,7 @@
   v17[2] = sub_100011D80;
   v17[3] = &unk_100025670;
   v15 = _Block_copy(v17);
-  v16 = v8;
+  v16 = selfCopy;
 
   [(ReportViewController *)v16 updateClientConfiguration:isa];
 
@@ -103,28 +103,28 @@
   _Block_release(v15);
 }
 
-- (void)updateClientConfiguration:(id)a3 :(id)a4
+- (void)updateClientConfiguration:(id)configuration :(id)a4
 {
   v6 = _Block_copy(a4);
-  v7 = a3;
-  v11 = self;
+  configurationCopy = configuration;
+  selfCopy = self;
   v8 = sub_10001A744();
   v10 = v9;
 
   _Block_copy(v6);
-  sub_1000154D0(v8, v10, v11, v6);
+  sub_1000154D0(v8, v10, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
   sub_10000BCD8(v8, v10);
 }
 
-- (void)fetchActivitySegmentWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4 segmentInterval:(int64_t)a5 recordName:(id)a6 :(id)a7
+- (void)fetchActivitySegmentWithUserAltDSID:(id)d deviceIdentifier:(id)identifier segmentInterval:(int64_t)interval recordName:(id)name :(id)a7
 {
   v10 = _Block_copy(a7);
-  if (a3)
+  if (d)
   {
     v11 = sub_10001AC24();
-    a3 = v12;
+    d = v12;
   }
 
   else
@@ -137,22 +137,22 @@
   v16 = sub_10001AC24();
   v18 = v17;
   _Block_copy(v10);
-  v19 = self;
-  sub_100016ABC(v11, a3, v13, v15, a5, v16, v18, v19, v10);
+  selfCopy = self;
+  sub_100016ABC(v11, d, v13, v15, interval, v16, v18, selfCopy, v10);
   _Block_release(v10);
   _Block_release(v10);
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  sub_100013694(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_100013694(connectionCopy);
 
   return 1;
 }
 
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference
 {
   v6 = sub_100001DFC(&qword_100029928, &unk_10001C198);
   v7 = *(v6 - 8);
@@ -161,22 +161,22 @@
   v10 = &v14 - v9;
   sub_10000FBC4(0, &qword_100029930, _EXExtensionIdentity_ptr);
   sub_10001AF14();
-  v11 = a3;
-  v12 = self;
+  updateCopy = update;
+  selfCopy = self;
   v13 = sub_100010580();
-  sub_100013D60(v11, v13);
+  sub_100013D60(updateCopy, v13);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_100014DAC(v4, v5);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_100014DAC(activateCopy, selfCopy);
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
   v5 = *(&self->super.super.super.isa + OBJC_IVAR____TtC27DeviceActivityReportService20ReportViewController_reportExtensionConnectionQueue);
   v6 = swift_allocObject();
@@ -192,7 +192,7 @@
   v10[2] = sub_100011FAC;
   v10[3] = &unk_1000251C0;
   v8 = _Block_copy(v10);
-  v9 = self;
+  selfCopy = self;
 
   dispatch_sync(v5, v8);
   _Block_release(v8);

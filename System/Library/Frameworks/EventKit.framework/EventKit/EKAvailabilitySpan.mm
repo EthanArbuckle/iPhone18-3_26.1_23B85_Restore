@@ -1,6 +1,6 @@
 @interface EKAvailabilitySpan
 - (EKAvailabilitySpan)init;
-- (EKAvailabilitySpan)initWithStartDate:(id)a3 endDate:(id)a4 type:(int64_t)a5;
+- (EKAvailabilitySpan)initWithStartDate:(id)date endDate:(id)endDate type:(int64_t)type;
 - (NSString)description;
 @end
 
@@ -12,14 +12,14 @@
   objc_exception_throw(v2);
 }
 
-- (EKAvailabilitySpan)initWithStartDate:(id)a3 endDate:(id)a4 type:(int64_t)a5
+- (EKAvailabilitySpan)initWithStartDate:(id)date endDate:(id)endDate type:(int64_t)type
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v10)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v12 = endDateCopy;
+  if (dateCopy)
   {
-    if (v11)
+    if (endDateCopy)
     {
       goto LABEL_3;
     }
@@ -36,7 +36,7 @@
 
   [EKAvailabilitySpan initWithStartDate:a2 endDate:self type:?];
 LABEL_3:
-  if ([v10 compare:v12] == 1)
+  if ([dateCopy compare:v12] == 1)
   {
     [EKAvailabilitySpan initWithStartDate:a2 endDate:self type:?];
   }
@@ -47,9 +47,9 @@ LABEL_3:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_startDate, a3);
-    objc_storeStrong(&v14->_endDate, a4);
-    v14->_type = a5;
+    objc_storeStrong(&v13->_startDate, date);
+    objc_storeStrong(&v14->_endDate, endDate);
+    v14->_type = type;
   }
 
   return v14;
@@ -61,12 +61,12 @@ LABEL_3:
   v14.receiver = self;
   v14.super_class = EKAvailabilitySpan;
   v4 = [(EKAvailabilitySpan *)&v14 description];
-  v5 = [(EKAvailabilitySpan *)self startDate];
-  v6 = [MEMORY[0x1E695DF58] currentLocale];
-  v7 = [v5 descriptionWithLocale:v6];
-  v8 = [(EKAvailabilitySpan *)self endDate];
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
-  v10 = [v8 descriptionWithLocale:v9];
+  startDate = [(EKAvailabilitySpan *)self startDate];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v7 = [startDate descriptionWithLocale:currentLocale];
+  endDate = [(EKAvailabilitySpan *)self endDate];
+  currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+  v10 = [endDate descriptionWithLocale:currentLocale2];
   v11 = EKAvailabilitySpanTypeAsString([(EKAvailabilitySpan *)self type]);
   v12 = [v3 stringWithFormat:@"[%@] startDate: [%@] endDate: [%@] type: [%@]", v4, v7, v10, v11];
 

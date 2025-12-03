@@ -1,17 +1,17 @@
 @interface SecDbKeychainMetadata
-- (SecDbKeychainMetadata)initWithCiphertext:(id)a3 wrappedKey:(id)a4 tamperCheck:(id)a5 error:(id *)a6;
-- (SecDbKeychainMetadata)initWithData:(id)a3;
+- (SecDbKeychainMetadata)initWithCiphertext:(id)ciphertext wrappedKey:(id)key tamperCheck:(id)check error:(id *)error;
+- (SecDbKeychainMetadata)initWithData:(id)data;
 - (_SFAuthenticatedCiphertext)ciphertext;
 - (_SFAuthenticatedCiphertext)wrappedKey;
 @end
 
 @implementation SecDbKeychainMetadata
 
-- (SecDbKeychainMetadata)initWithCiphertext:(id)a3 wrappedKey:(id)a4 tamperCheck:(id)a5 error:(id *)a6
+- (SecDbKeychainMetadata)initWithCiphertext:(id)ciphertext wrappedKey:(id)key tamperCheck:(id)check error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  ciphertextCopy = ciphertext;
+  keyCopy = key;
+  checkCopy = check;
   v24.receiver = self;
   v24.super_class = SecDbKeychainMetadata;
   v13 = [(SecDbKeychainMetadata *)&v24 init];
@@ -24,15 +24,15 @@
   serializedHolder = v13->_serializedHolder;
   v13->_serializedHolder = v14;
 
-  v16 = [NSKeyedArchiver archivedDataWithRootObject:v10 requiringSecureCoding:1 error:a6];
+  v16 = [NSKeyedArchiver archivedDataWithRootObject:ciphertextCopy requiringSecureCoding:1 error:error];
   [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder setCiphertext:v16];
 
-  v17 = [NSKeyedArchiver archivedDataWithRootObject:v11 requiringSecureCoding:1 error:a6];
+  v17 = [NSKeyedArchiver archivedDataWithRootObject:keyCopy requiringSecureCoding:1 error:error];
   [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder setWrappedKey:v17];
 
-  [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder setTamperCheck:v12];
-  v18 = [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder ciphertext];
-  if (!v18)
+  [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder setTamperCheck:checkCopy];
+  ciphertext = [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder ciphertext];
+  if (!ciphertext)
   {
 LABEL_7:
 
@@ -40,18 +40,18 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v19 = v18;
-  v20 = [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder wrappedKey];
-  if (!v20)
+  v19 = ciphertext;
+  wrappedKey = [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder wrappedKey];
+  if (!wrappedKey)
   {
 
     goto LABEL_7;
   }
 
-  v21 = v20;
-  v22 = [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder tamperCheck];
+  v21 = wrappedKey;
+  tamperCheck = [(SecDbKeychainSerializedMetadata *)v13->_serializedHolder tamperCheck];
 
-  if (!v22)
+  if (!tamperCheck)
   {
     goto LABEL_7;
   }
@@ -61,9 +61,9 @@ LABEL_8:
   return v13;
 }
 
-- (SecDbKeychainMetadata)initWithData:(id)a3
+- (SecDbKeychainMetadata)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v14.receiver = self;
   v14.super_class = SecDbKeychainMetadata;
   v5 = [(SecDbKeychainMetadata *)&v14 init];
@@ -72,12 +72,12 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v6 = [[SecDbKeychainSerializedMetadata alloc] initWithData:v4];
+  v6 = [[SecDbKeychainSerializedMetadata alloc] initWithData:dataCopy];
   serializedHolder = v5->_serializedHolder;
   v5->_serializedHolder = v6;
 
-  v8 = [(SecDbKeychainSerializedMetadata *)v5->_serializedHolder ciphertext];
-  if (!v8)
+  ciphertext = [(SecDbKeychainSerializedMetadata *)v5->_serializedHolder ciphertext];
+  if (!ciphertext)
   {
 LABEL_7:
 
@@ -85,18 +85,18 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = v8;
-  v10 = [(SecDbKeychainSerializedMetadata *)v5->_serializedHolder wrappedKey];
-  if (!v10)
+  v9 = ciphertext;
+  wrappedKey = [(SecDbKeychainSerializedMetadata *)v5->_serializedHolder wrappedKey];
+  if (!wrappedKey)
   {
 
     goto LABEL_7;
   }
 
-  v11 = v10;
-  v12 = [(SecDbKeychainSerializedMetadata *)v5->_serializedHolder tamperCheck];
+  v11 = wrappedKey;
+  tamperCheck = [(SecDbKeychainSerializedMetadata *)v5->_serializedHolder tamperCheck];
 
-  if (!v12)
+  if (!tamperCheck)
   {
     goto LABEL_7;
   }
@@ -109,9 +109,9 @@ LABEL_8:
 - (_SFAuthenticatedCiphertext)ciphertext
 {
   v3 = objc_opt_class();
-  v4 = [(SecDbKeychainSerializedMetadata *)self->_serializedHolder ciphertext];
+  ciphertext = [(SecDbKeychainSerializedMetadata *)self->_serializedHolder ciphertext];
   v9 = 0;
-  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:v3 fromData:v4 error:&v9];
+  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:v3 fromData:ciphertext error:&v9];
   v6 = v9;
 
   if (!v5)
@@ -131,9 +131,9 @@ LABEL_8:
 - (_SFAuthenticatedCiphertext)wrappedKey
 {
   v3 = objc_opt_class();
-  v4 = [(SecDbKeychainSerializedMetadata *)self->_serializedHolder wrappedKey];
+  wrappedKey = [(SecDbKeychainSerializedMetadata *)self->_serializedHolder wrappedKey];
   v9 = 0;
-  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:v3 fromData:v4 error:&v9];
+  v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:v3 fromData:wrappedKey error:&v9];
   v6 = v9;
 
   if (!v5)

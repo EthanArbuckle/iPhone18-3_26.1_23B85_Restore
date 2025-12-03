@@ -1,28 +1,28 @@
 @interface QDSchemaQDSpanMatchedEntity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (QDSchemaQDSpanMatchedEntity)initWithDictionary:(id)a3;
-- (QDSchemaQDSpanMatchedEntity)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (QDSchemaQDSpanMatchedEntity)initWithDictionary:(id)dictionary;
+- (QDSchemaQDSpanMatchedEntity)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addMatches:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMatches:(id)matches;
+- (void)writeTo:(id)to;
 @end
 
 @implementation QDSchemaQDSpanMatchedEntity
 
-- (QDSchemaQDSpanMatchedEntity)initWithDictionary:(id)a3
+- (QDSchemaQDSpanMatchedEntity)initWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = QDSchemaQDSpanMatchedEntity;
   v5 = [(QDSchemaQDSpanMatchedEntity *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sessionScopedUniqueId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sessionScopedUniqueId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(QDSchemaQDSpanMatchedEntity *)v5 setSessionScopedUniqueId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"valueType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"valueType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(QDSchemaQDSpanMatchedEntity *)v5 setValueType:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"matches"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"matches"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,7 +81,7 @@
       v8 = v21;
     }
 
-    v18 = [v4 objectForKeyedSubscript:{@"dataProtectionClass", v21, v22, v23}];
+    v18 = [dictionaryCopy objectForKeyedSubscript:{@"dataProtectionClass", v21, v22, v23}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,30 +94,30 @@
   return v5;
 }
 
-- (QDSchemaQDSpanMatchedEntity)initWithJSON:(id)a3
+- (QDSchemaQDSpanMatchedEntity)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(QDSchemaQDSpanMatchedEntity *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(QDSchemaQDSpanMatchedEntity *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(QDSchemaQDSpanMatchedEntity *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -131,7 +131,7 @@
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(QDSchemaQDSpanMatchedEntity *)self dataProtectionClass]- 1;
@@ -145,12 +145,12 @@
       v5 = off_1E78E1820[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"dataProtectionClass"];
+    [dictionary setObject:v5 forKeyedSubscript:@"dataProtectionClass"];
   }
 
   if ([(NSArray *)self->_matches count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -170,16 +170,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -189,44 +189,44 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"matches"];
+    [dictionary setObject:array forKeyedSubscript:@"matches"];
   }
 
   if (self->_sessionScopedUniqueId)
   {
-    v14 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    sessionScopedUniqueId = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
+    dictionaryRepresentation2 = [sessionScopedUniqueId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"sessionScopedUniqueId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"sessionScopedUniqueId"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"sessionScopedUniqueId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"sessionScopedUniqueId"];
     }
   }
 
   if (self->_valueType)
   {
-    v17 = [(QDSchemaQDSpanMatchedEntity *)self valueType];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    valueType = [(QDSchemaQDSpanMatchedEntity *)self valueType];
+    dictionaryRepresentation3 = [valueType dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"valueType"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"valueType"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"valueType"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"valueType"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v21];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v21];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -247,28 +247,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
-  v6 = [v4 sessionScopedUniqueId];
-  if ((v5 != 0) == (v6 == 0))
+  sessionScopedUniqueId = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
+  sessionScopedUniqueId2 = [equalCopy sessionScopedUniqueId];
+  if ((sessionScopedUniqueId != 0) == (sessionScopedUniqueId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
-  if (v7)
+  sessionScopedUniqueId3 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
+  if (sessionScopedUniqueId3)
   {
-    v8 = v7;
-    v9 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
-    v10 = [v4 sessionScopedUniqueId];
-    v11 = [v9 isEqual:v10];
+    v8 = sessionScopedUniqueId3;
+    sessionScopedUniqueId4 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
+    sessionScopedUniqueId5 = [equalCopy sessionScopedUniqueId];
+    v11 = [sessionScopedUniqueId4 isEqual:sessionScopedUniqueId5];
 
     if (!v11)
     {
@@ -280,20 +280,20 @@
   {
   }
 
-  v5 = [(QDSchemaQDSpanMatchedEntity *)self valueType];
-  v6 = [v4 valueType];
-  if ((v5 != 0) == (v6 == 0))
+  sessionScopedUniqueId = [(QDSchemaQDSpanMatchedEntity *)self valueType];
+  sessionScopedUniqueId2 = [equalCopy valueType];
+  if ((sessionScopedUniqueId != 0) == (sessionScopedUniqueId2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(QDSchemaQDSpanMatchedEntity *)self valueType];
-  if (v12)
+  valueType = [(QDSchemaQDSpanMatchedEntity *)self valueType];
+  if (valueType)
   {
-    v13 = v12;
-    v14 = [(QDSchemaQDSpanMatchedEntity *)self valueType];
-    v15 = [v4 valueType];
-    v16 = [v14 isEqual:v15];
+    v13 = valueType;
+    valueType2 = [(QDSchemaQDSpanMatchedEntity *)self valueType];
+    valueType3 = [equalCopy valueType];
+    v16 = [valueType2 isEqual:valueType3];
 
     if (!v16)
     {
@@ -305,22 +305,22 @@
   {
   }
 
-  v5 = [(QDSchemaQDSpanMatchedEntity *)self matches];
-  v6 = [v4 matches];
-  if ((v5 != 0) == (v6 == 0))
+  sessionScopedUniqueId = [(QDSchemaQDSpanMatchedEntity *)self matches];
+  sessionScopedUniqueId2 = [equalCopy matches];
+  if ((sessionScopedUniqueId != 0) == (sessionScopedUniqueId2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(QDSchemaQDSpanMatchedEntity *)self matches];
-  if (v17)
+  matches = [(QDSchemaQDSpanMatchedEntity *)self matches];
+  if (matches)
   {
-    v18 = v17;
-    v19 = [(QDSchemaQDSpanMatchedEntity *)self matches];
-    v20 = [v4 matches];
-    v21 = [v19 isEqual:v20];
+    v18 = matches;
+    matches2 = [(QDSchemaQDSpanMatchedEntity *)self matches];
+    matches3 = [equalCopy matches];
+    v21 = [matches2 isEqual:matches3];
 
     if (!v21)
     {
@@ -332,9 +332,9 @@ LABEL_16:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[36] & 1))
+  if ((*&self->_has & 1) == (equalCopy[36] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (dataProtectionClass = self->_dataProtectionClass, dataProtectionClass == [v4 dataProtectionClass]))
+    if ((*&self->_has & 1) == 0 || (dataProtectionClass = self->_dataProtectionClass, dataProtectionClass == [equalCopy dataProtectionClass]))
     {
       v22 = 1;
       goto LABEL_18;
@@ -348,23 +348,23 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
+  toCopy = to;
+  sessionScopedUniqueId = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
 
-  if (v5)
+  if (sessionScopedUniqueId)
   {
-    v6 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
+    sessionScopedUniqueId2 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(QDSchemaQDSpanMatchedEntity *)self valueType];
+  valueType = [(QDSchemaQDSpanMatchedEntity *)self valueType];
 
-  if (v7)
+  if (valueType)
   {
-    v8 = [(QDSchemaQDSpanMatchedEntity *)self valueType];
+    valueType2 = [(QDSchemaQDSpanMatchedEntity *)self valueType];
     PBDataWriterWriteSubmessage();
   }
 
@@ -405,50 +405,50 @@ LABEL_18:
   }
 }
 
-- (void)addMatches:(id)a3
+- (void)addMatches:(id)matches
 {
-  v4 = a3;
+  matchesCopy = matches;
   matches = self->_matches;
-  v8 = v4;
+  v8 = matchesCopy;
   if (!matches)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_matches;
-    self->_matches = v6;
+    self->_matches = array;
 
-    v4 = v8;
+    matchesCopy = v8;
     matches = self->_matches;
   }
 
-  [(NSArray *)matches addObject:v4];
+  [(NSArray *)matches addObject:matchesCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v15.receiver = self;
   v15.super_class = QDSchemaQDSpanMatchedEntity;
-  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:v4];
-  v6 = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v15 applySensitiveConditionsPolicy:policyCopy];
+  sessionScopedUniqueId = [(QDSchemaQDSpanMatchedEntity *)self sessionScopedUniqueId];
+  v7 = [sessionScopedUniqueId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(QDSchemaQDSpanMatchedEntity *)self deleteSessionScopedUniqueId];
   }
 
-  v9 = [(QDSchemaQDSpanMatchedEntity *)self valueType];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  valueType = [(QDSchemaQDSpanMatchedEntity *)self valueType];
+  v10 = [valueType applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(QDSchemaQDSpanMatchedEntity *)self deleteValueType];
   }
 
-  v12 = [(QDSchemaQDSpanMatchedEntity *)self matches];
-  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v12 underConditions:v4];
+  matches = [(QDSchemaQDSpanMatchedEntity *)self matches];
+  v13 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:matches underConditions:policyCopy];
   [(QDSchemaQDSpanMatchedEntity *)self setMatches:v13];
 
   return v5;

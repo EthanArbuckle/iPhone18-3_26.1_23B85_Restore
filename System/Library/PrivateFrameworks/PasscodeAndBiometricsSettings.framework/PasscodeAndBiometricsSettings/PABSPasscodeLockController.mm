@@ -1,6 +1,6 @@
 @interface PABSPasscodeLockController
 + (int64_t)passcodeGracePeriod;
-- (BOOL)_shouldUseLocalAuthenticationBasedPasscodeFlowForPINSheetRequest:(id)a3;
+- (BOOL)_shouldUseLocalAuthenticationBasedPasscodeFlowForPINSheetRequest:(id)request;
 - (BOOL)canBeShownFromSuspendedState;
 - (BOOL)gracePeriodPasscodeRecoveryAvailable;
 - (BOOL)isAssistantRestricted;
@@ -14,94 +14,94 @@
 - (PABSPasscodeLockController)init;
 - (id)_allowAccessWhenLockedSpecifierFooter;
 - (id)_makeWipeDeviceGroupFooter;
-- (id)assistantUnderLockEnabled:(id)a3;
-- (id)autoUnlockEnabled:(id)a3;
-- (id)enabledInLockScreen:(id)a3;
-- (id)enabledInLockScreenForUSB:(id)a3;
+- (id)assistantUnderLockEnabled:(id)enabled;
+- (id)autoUnlockEnabled:(id)enabled;
+- (id)enabledInLockScreen:(id)screen;
+- (id)enabledInLockScreenForUSB:(id)b;
 - (id)getDTOSpecifiers;
-- (id)getDTOStatusForSpecifier:(id)a3;
-- (id)getPendingVisionDeviceIdForSession:(id)a3;
-- (id)getStringLabelForPasscodeGroupFooterWithConfig:(BOOL)a3 needsAppleIDAuthWhichNeedsInternet:(BOOL)a4 isEnrolledInBiometrics:(BOOL)a5 sdpIsON:(BOOL)a6;
+- (id)getDTOStatusForSpecifier:(id)specifier;
+- (id)getPendingVisionDeviceIdForSession:(id)session;
+- (id)getStringLabelForPasscodeGroupFooterWithConfig:(BOOL)config needsAppleIDAuthWhichNeedsInternet:(BOOL)internet isEnrolledInBiometrics:(BOOL)biometrics sdpIsON:(BOOL)n;
 - (id)getTurnOffAlertDescriptionForFeatureProtectedApps;
 - (id)getTurnOffAlertDescriptionForOtherFeatures;
-- (id)graceValue:(id)a3;
-- (id)homeControlAccessAllowedWhenLocked:(id)a3;
-- (id)parseEligibleAutoUnlockDevices:(id)a3;
-- (id)parseVisionUnlockCandidateDevices:(id)a3;
+- (id)graceValue:(id)value;
+- (id)homeControlAccessAllowedWhenLocked:(id)locked;
+- (id)parseEligibleAutoUnlockDevices:(id)devices;
+- (id)parseVisionUnlockCandidateDevices:(id)devices;
 - (id)specifiers;
 - (id)turnOffPasscodeAlertMessage;
-- (id)visionUnlockEnabled:(id)a3;
-- (id)voiceDial:(id)a3;
-- (id)wallet:(id)a3;
-- (id)wipeEnabled:(id)a3;
-- (id)workoutHealthDataAllowedWhenLocked:(id)a3;
+- (id)visionUnlockEnabled:(id)enabled;
+- (id)voiceDial:(id)dial;
+- (id)wallet:(id)wallet;
+- (id)wipeEnabled:(id)enabled;
+- (id)workoutHealthDataAllowedWhenLocked:(id)locked;
 - (int64_t)fingerprintCount;
-- (void)_didUpdatePasscode:(id)a3;
-- (void)_localizeGracePeriodTitlesForSpecifier:(id)a3;
+- (void)_didUpdatePasscode:(id)passcode;
+- (void)_localizeGracePeriodTitlesForSpecifier:(id)specifier;
 - (void)_showDeleteSavedFingerprintsAlert;
-- (void)_showLocalAuthenticationPINSheet:(id)a3;
-- (void)_updateGracePeriodForSpecifier:(id)a3;
-- (void)addGracePeriodPasscodeRecoveryFooterToSpecifier:(id)a3;
+- (void)_showLocalAuthenticationPINSheet:(id)sheet;
+- (void)_updateGracePeriodForSpecifier:(id)specifier;
+- (void)addGracePeriodPasscodeRecoveryFooterToSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)devicePINController:(id)a3 didAcceptSetPIN:(id)a4;
-- (void)devicePINController:(id)a3 shouldAcceptPIN:(id)a4 withCompletion:(id)a5;
+- (void)devicePINController:(id)controller didAcceptSetPIN:(id)n;
+- (void)devicePINController:(id)controller shouldAcceptPIN:(id)n withCompletion:(id)completion;
 - (void)didAcceptRemovePIN;
-- (void)disablePasscodeRequiredSpecifiers:(id)a3;
-- (void)enableAutoUnlockForDevice:(id)a3 ofSpecifier:(id)a4;
-- (void)enableVisionUnlockForDevice:(id)a3 ofSpecifier:(id)a4;
-- (void)gracePeriodClearRecoveryPasscode:(id)a3;
+- (void)disablePasscodeRequiredSpecifiers:(id)specifiers;
+- (void)enableAutoUnlockForDevice:(id)device ofSpecifier:(id)specifier;
+- (void)enableVisionUnlockForDevice:(id)device ofSpecifier:(id)specifier;
+- (void)gracePeriodClearRecoveryPasscode:(id)passcode;
 - (void)handleDTOStatusChanged;
-- (void)homeManager:(id)a3 didUpdateAccessAllowedWhenLocked:(BOOL)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)manager:(id)a3 didDisableAuthenticationForSessionWithID:(id)a4;
-- (void)manager:(id)a3 didEnableAuthenticationForSessionWithID:(id)a4;
-- (void)manager:(id)a3 didEnableDevice:(id)a4;
-- (void)manager:(id)a3 didFailToDisableDeviceForSessionWithID:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 didFailToEnableDeviceForSessionWithID:(id)a4 error:(id)a5;
-- (void)manager:(id)a3 enablingLockedDevice:(id)a4;
-- (void)manager:(id)a3 failedToEnableDevice:(id)a4 error:(id)a5;
-- (void)navigationControllerDidPushFirstController:(id)a3;
+- (void)homeManager:(id)manager didUpdateAccessAllowedWhenLocked:(BOOL)locked;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)manager:(id)manager didDisableAuthenticationForSessionWithID:(id)d;
+- (void)manager:(id)manager didEnableAuthenticationForSessionWithID:(id)d;
+- (void)manager:(id)manager didEnableDevice:(id)device;
+- (void)manager:(id)manager didFailToDisableDeviceForSessionWithID:(id)d error:(id)error;
+- (void)manager:(id)manager didFailToEnableDeviceForSessionWithID:(id)d error:(id)error;
+- (void)manager:(id)manager enablingLockedDevice:(id)device;
+- (void)manager:(id)manager failedToEnableDevice:(id)device error:(id)error;
+- (void)navigationControllerDidPushFirstController:(id)controller;
 - (void)openGracePeriodPasscodeRecoveryHelpLink;
 - (void)presentAppleIDAuthenticationController;
-- (void)presentAutoUnlockEnableFailureAlertWithDevice:(id)a3 withError:(id)a4;
-- (void)presentVisionUnlockEnableFailureAlertWithDevice:(id)a3 withError:(id)a4;
-- (void)proceedToTurnOffPasscode:(id)a3;
-- (void)profileNotification:(id)a3;
+- (void)presentAutoUnlockEnableFailureAlertWithDevice:(id)device withError:(id)error;
+- (void)presentVisionUnlockEnableFailureAlertWithDevice:(id)device withError:(id)error;
+- (void)proceedToTurnOffPasscode:(id)passcode;
+- (void)profileNotification:(id)notification;
 - (void)provideNavigationDonations;
 - (void)registerObserverAndHandlerForDTOStatusChanges;
 - (void)reloadDTOGroup;
 - (void)reloadPasscodeGroup;
 - (void)scrollToStolenDeviceProtection;
-- (void)setAssistantUnderLockEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setAutoUnlockEnabled:(id)a3 specifier:(id)a4;
-- (void)setEnabledInLockScreen:(id)a3 specifier:(id)a4;
-- (void)setEnabledInLockScreenForUSB:(id)a3 specifier:(id)a4;
-- (void)setGraceValue:(id)a3 specifier:(id)a4;
-- (void)setHomeControlAccessAllowedWhenLocked:(id)a3 specifier:(id)a4;
-- (void)setVisionUnlockEnabled:(id)a3 specifier:(id)a4;
-- (void)setVoiceDial:(id)a3 specifier:(id)a4;
-- (void)setWallet:(id)a3 specifier:(id)a4;
-- (void)setWipeEnabled:(id)a3 specifier:(id)a4;
-- (void)setWorkoutHealthDataAllowedWhenLocked:(id)a3 specifier:(id)a4;
-- (void)setupAutoUnlockSectionWithSpecifiers:(id)a3;
+- (void)setAssistantUnderLockEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setAutoUnlockEnabled:(id)enabled specifier:(id)specifier;
+- (void)setEnabledInLockScreen:(id)screen specifier:(id)specifier;
+- (void)setEnabledInLockScreenForUSB:(id)b specifier:(id)specifier;
+- (void)setGraceValue:(id)value specifier:(id)specifier;
+- (void)setHomeControlAccessAllowedWhenLocked:(id)locked specifier:(id)specifier;
+- (void)setVisionUnlockEnabled:(id)enabled specifier:(id)specifier;
+- (void)setVoiceDial:(id)dial specifier:(id)specifier;
+- (void)setWallet:(id)wallet specifier:(id)specifier;
+- (void)setWipeEnabled:(id)enabled specifier:(id)specifier;
+- (void)setWorkoutHealthDataAllowedWhenLocked:(id)locked specifier:(id)specifier;
+- (void)setupAutoUnlockSectionWithSpecifiers:(id)specifiers;
 - (void)setupInternetAvailabilityMonitoring;
-- (void)setupPasscodeGroupSpecifier:(id)a3 onOffButtonSpecifier:(id)a4;
-- (void)showAlertForPhoneAutoUnlockEnablementOfDevice:(id)a3 ofSpecifier:(id)a4;
-- (void)showAlertForVisionUnlockEnablementOfDevice:(id)a3 ofSpecifier:(id)a4;
+- (void)setupPasscodeGroupSpecifier:(id)specifier onOffButtonSpecifier:(id)buttonSpecifier;
+- (void)showAlertForPhoneAutoUnlockEnablementOfDevice:(id)device ofSpecifier:(id)specifier;
+- (void)showAlertForVisionUnlockEnablementOfDevice:(id)device ofSpecifier:(id)specifier;
 - (void)showKeychainAlert;
-- (void)showLocalAuthenticationPasscodeChangeFlowFromPresentingController:(id)a3 title:(id)a4 passcodePrompt:(id)a5 withCompletion:(id)a6;
-- (void)showLocalAuthenticationPasscodeRemoveFlowFromPresentingController:(id)a3 title:(id)a4 passcodePrompt:(id)a5 withCompletion:(id)a6;
-- (void)showPINSheet:(id)a3;
-- (void)showPINSheet:(id)a3 allowOptionsButton:(BOOL)a4;
-- (void)showWeakWarningAlertForController:(id)a3 offerUseAnyway:(BOOL)a4 withCompletion:(id)a5;
+- (void)showLocalAuthenticationPasscodeChangeFlowFromPresentingController:(id)controller title:(id)title passcodePrompt:(id)prompt withCompletion:(id)completion;
+- (void)showLocalAuthenticationPasscodeRemoveFlowFromPresentingController:(id)controller title:(id)title passcodePrompt:(id)prompt withCompletion:(id)completion;
+- (void)showPINSheet:(id)sheet;
+- (void)showPINSheet:(id)sheet allowOptionsButton:(BOOL)button;
+- (void)showWeakWarningAlertForController:(id)controller offerUseAnyway:(BOOL)anyway withCompletion:(id)completion;
 - (void)suspend;
-- (void)togglePasscode:(id)a3;
+- (void)togglePasscode:(id)passcode;
 - (void)trmUnificationFeatureIsEnabled;
-- (void)updateAutoUnlockDevicewithDevice:(id)a3;
+- (void)updateAutoUnlockDevicewithDevice:(id)device;
 - (void)updateAutoUnlockSpecifiers;
 - (void)updateGracePeriodSpecifier;
-- (void)updatePendingVisionUnlockDeviceForSession:(id)a3 forceReload:(BOOL)a4;
-- (void)updatePhoneAutounlockSection:(BOOL)a3;
+- (void)updatePendingVisionUnlockDeviceForSession:(id)session forceReload:(BOOL)reload;
+- (void)updatePhoneAutounlockSection:(BOOL)section;
 - (void)updateVoiceDialGroup;
 @end
 
@@ -114,20 +114,20 @@
   v2 = [(PABSPasscodeLockController *)&v28 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionRestrictionChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionRestrictionChangedNotification" object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionEffectiveSettingsChangedNotification" object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionPasscodeChangedNotification" object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_profileNotification_ name:@"PSProfileConnectionPasscodeChangedNotification" object:0];
 
-    v6 = [MEMORY[0x277D07D70] sharedInstance];
-    [v6 addListenerID:@"com.apple.Preferences" forService:0];
+    mEMORY[0x277D07D70] = [MEMORY[0x277D07D70] sharedInstance];
+    [mEMORY[0x277D07D70] addListenerID:@"com.apple.Preferences" forService:0];
 
-    v7 = [MEMORY[0x277D07D70] sharedInstance];
-    [v7 addListenerID:@"com.apple.Preferences" forService:1];
+    mEMORY[0x277D07D70]2 = [MEMORY[0x277D07D70] sharedInstance];
+    [mEMORY[0x277D07D70]2 addListenerID:@"com.apple.Preferences" forService:1];
 
     v8 = +[PABSUnlockWithAppleWatchManager sharedInstance];
     v23 = MEMORY[0x277D85DD0];
@@ -166,15 +166,15 @@
     v15 = objc_opt_new();
     [(PABSPasscodeLockController *)v9 setAutoUnlockManager:v15];
 
-    v16 = [(PABSPasscodeLockController *)v9 autoUnlockManager];
-    [v16 setDelegate:v9];
+    autoUnlockManager = [(PABSPasscodeLockController *)v9 autoUnlockManager];
+    [autoUnlockManager setDelegate:v9];
 
     v17 = objc_alloc(MEMORY[0x277D54C10]);
     v18 = [v17 initWithQueue:MEMORY[0x277D85CD0]];
     [(PABSPasscodeLockController *)v9 setAuthenticationManager:v18];
 
-    v19 = [(PABSPasscodeLockController *)v9 authenticationManager];
-    [v19 setDelegate:v9];
+    authenticationManager = [(PABSPasscodeLockController *)v9 authenticationManager];
+    [authenticationManager setDelegate:v9];
 
     v20 = objc_opt_new();
     dtoController = v9->_dtoController;
@@ -189,11 +189,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D07D70] sharedInstance];
-  [v3 removeListenerID:@"com.apple.Preferences" forService:0];
+  mEMORY[0x277D07D70] = [MEMORY[0x277D07D70] sharedInstance];
+  [mEMORY[0x277D07D70] removeListenerID:@"com.apple.Preferences" forService:0];
 
-  v4 = [MEMORY[0x277D07D70] sharedInstance];
-  [v4 removeListenerID:@"com.apple.Preferences" forService:1];
+  mEMORY[0x277D07D70]2 = [MEMORY[0x277D07D70] sharedInstance];
+  [mEMORY[0x277D07D70]2 removeListenerID:@"com.apple.Preferences" forService:1];
 
   LocalCenter = CFNotificationCenterGetLocalCenter();
   CFNotificationCenterRemoveObserver(LocalCenter, self, *MEMORY[0x277CBEEB0], 0);
@@ -207,8 +207,8 @@
     _os_log_impl(&dword_25E0E9000, v7, OS_LOG_TYPE_DEFAULT, "DTO: Stopped observing status changes", buf, 2u);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   nw_path_monitor_cancel(self->_pathMonitor);
   v9.receiver = self;
@@ -300,10 +300,10 @@ void __65__PABSPasscodeLockController_setupInternetAvailabilityMonitoring__block
     v5 = @"Touch ID & Passcode";
   }
 
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v8 = [v7 bundleURL];
-  v9 = [v4 initWithKey:v5 table:0 locale:v6 bundleURL:v8];
+  bundleURL = [v7 bundleURL];
+  v9 = [v4 initWithKey:v5 table:0 locale:currentLocale bundleURL:bundleURL];
 
   if (PSIsPearlAvailable())
   {
@@ -329,10 +329,10 @@ void __65__PABSPasscodeLockController_setupInternetAvailabilityMonitoring__block
 
 - (BOOL)isPasscodeSet
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isPasscodeSet];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeSet = [mEMORY[0x277D262A0] isPasscodeSet];
 
-  return v3;
+  return isPasscodeSet;
 }
 
 - (int64_t)fingerprintCount
@@ -350,10 +350,10 @@ void __65__PABSPasscodeLockController_setupInternetAvailabilityMonitoring__block
 
 - (void)_showDeleteSavedFingerprintsAlert
 {
-  v3 = [(PABSPasscodeLockController *)self fingerprintCount];
+  fingerprintCount = [(PABSPasscodeLockController *)self fingerprintCount];
   v4 = MEMORY[0x277D75110];
-  v5 = v3 <= 1;
-  if (v3 <= 1)
+  v5 = fingerprintCount <= 1;
+  if (fingerprintCount <= 1)
   {
     v6 = @"DELETE_SAVED_FINGER_SINGULAR";
   }
@@ -510,9 +510,9 @@ void __63__PABSPasscodeLockController__showDeleteSavedFingerprintsAlert__block_i
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v3 identifier];
+    identifier = [v3 identifier];
     v8 = 138412290;
-    v9 = v6;
+    v9 = identifier;
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "%@: - Reloading -", &v8, 0xCu);
   }
 
@@ -520,15 +520,15 @@ void __63__PABSPasscodeLockController__showDeleteSavedFingerprintsAlert__block_i
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupPasscodeGroupSpecifier:(id)a3 onOffButtonSpecifier:(id)a4
+- (void)setupPasscodeGroupSpecifier:(id)specifier onOffButtonSpecifier:(id)buttonSpecifier
 {
   v57 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v6 = a4;
+  specifierCopy = specifier;
+  buttonSpecifierCopy = buttonSpecifier;
   v7 = +[PABSPasscode sharedInstance];
-  v8 = [v7 isPasscodeSet];
+  isPasscodeSet = [v7 isPasscodeSet];
 
-  if (v8)
+  if (isPasscodeSet)
   {
     v9 = @"PASSCODE_OFF";
   }
@@ -539,46 +539,46 @@ void __63__PABSPasscodeLockController__showDeleteSavedFingerprintsAlert__block_i
   }
 
   v10 = PABS_LocalizedStringForPasscodeLock(v9);
-  [v6 setName:v10];
+  [buttonSpecifierCopy setName:v10];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithInt:v8];
-  [v6 setProperty:v11 forKey:*MEMORY[0x277D401C0]];
+  v11 = [MEMORY[0x277CCABB0] numberWithInt:isPasscodeSet];
+  [buttonSpecifierCopy setProperty:v11 forKey:*MEMORY[0x277D401C0]];
 
-  if (v8)
+  if (isPasscodeSet)
   {
     v12 = ![(PABSPasscodeLockController *)self isInternetReachable]&& [(PABSPasscodeLockController *)self shouldPresentAppleIDAuthenticationForTogglingPasscode];
-    v14 = [MEMORY[0x277D262A0] sharedConnection];
-    v15 = [v14 isPasscodeRequired];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isPasscodeRequired = [mEMORY[0x277D262A0] isPasscodeRequired];
 
-    v16 = [(PABSPasscodeLockController *)self dtoController];
-    LODWORD(v17) = [v16 isRatchetEnabled];
+    dtoController = [(PABSPasscodeLockController *)self dtoController];
+    LODWORD(identifier) = [dtoController isRatchetEnabled];
 
     v18 = +[PABSBiometrics identities];
     v19 = [v18 count];
     v20 = v19 == 0;
 
-    v40 = v15;
+    v40 = isPasscodeRequired;
     v41 = v12;
-    v21 = v12 | v17 | v15;
+    v21 = v12 | identifier | isPasscodeRequired;
     v22 = [MEMORY[0x277CCABB0] numberWithInt:v20 & ~v21];
-    [v6 setProperty:v22 forKey:*MEMORY[0x277D3FF38]];
+    [buttonSpecifierCopy setProperty:v22 forKey:*MEMORY[0x277D3FF38]];
 
     v23 = PABSLogForCategory(0);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       v24 = v19 != 0;
       [MEMORY[0x277CCABB0] numberWithInt:v20 & ~v21];
-      v38 = v39 = v17;
+      v38 = v39 = identifier;
       v35 = [MEMORY[0x277CCABB0] numberWithBool:v41];
       v25 = [MEMORY[0x277CCABB0] numberWithBool:v40 & 1];
-      [MEMORY[0x277CCABB0] numberWithBool:v17 & 1];
+      [MEMORY[0x277CCABB0] numberWithBool:identifier & 1];
       v26 = v37 = v19;
       v27 = [MEMORY[0x277CCABB0] numberWithBool:v24];
-      v36 = [(PABSPasscodeLockController *)self specifier];
-      v17 = [v36 identifier];
+      specifier = [(PABSPasscodeLockController *)self specifier];
+      identifier = [specifier identifier];
       v28 = MEMORY[0x277CCABB0];
-      v34 = [(PABSPasscodeLockController *)self specifier];
-      v29 = [v34 objectForKeyedSubscript:*MEMORY[0x277D40100]];
+      specifier2 = [(PABSPasscodeLockController *)self specifier];
+      v29 = [specifier2 objectForKeyedSubscript:*MEMORY[0x277D40100]];
       v30 = [v28 numberWithInt:v29 != 0];
       *buf = 138413826;
       v44 = v38;
@@ -591,26 +591,26 @@ void __63__PABSPasscodeLockController__showDeleteSavedFingerprintsAlert__block_i
       v51 = 2112;
       v52 = v27;
       v53 = 2112;
-      v54 = v17;
+      v54 = identifier;
       v55 = 2112;
       v56 = v30;
       _os_log_impl(&dword_25E0E9000, v23, OS_LOG_TYPE_DEFAULT, "Passcode Group: Passcode On/Off enablement status [%@] | needsAppleIDAuthWhichNeedsInternet [%@] | isMC [%@] | sdpIsON [%@] | isEnrolledInBiometrics [%@] | parentSpecifier [%@] | retrievedCreds [%@]", buf, 0x48u);
 
       v19 = v37;
-      LOBYTE(v17) = v39;
+      LOBYTE(identifier) = v39;
     }
 
-    v13 = [(PABSPasscodeLockController *)self getStringLabelForPasscodeGroupFooterWithConfig:v40 & 1 needsAppleIDAuthWhichNeedsInternet:v41 isEnrolledInBiometrics:v19 != 0 sdpIsON:v17 & 1];
+    v13 = [(PABSPasscodeLockController *)self getStringLabelForPasscodeGroupFooterWithConfig:v40 & 1 needsAppleIDAuthWhichNeedsInternet:v41 isEnrolledInBiometrics:v19 != 0 sdpIsON:identifier & 1];
     if ([v13 length])
     {
       v31 = SFLocalizableWAPIStringKeyForKey();
       v32 = PABS_LocalizedStringForPasscodeLock(v31);
-      [v42 setProperty:v32 forKey:*MEMORY[0x277D3FF88]];
+      [specifierCopy setProperty:v32 forKey:*MEMORY[0x277D3FF88]];
     }
 
     else
     {
-      [v42 removePropertyForKey:*MEMORY[0x277D3FF88]];
+      [specifierCopy removePropertyForKey:*MEMORY[0x277D3FF88]];
     }
   }
 
@@ -627,14 +627,14 @@ void __63__PABSPasscodeLockController__showDeleteSavedFingerprintsAlert__block_i
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getStringLabelForPasscodeGroupFooterWithConfig:(BOOL)a3 needsAppleIDAuthWhichNeedsInternet:(BOOL)a4 isEnrolledInBiometrics:(BOOL)a5 sdpIsON:(BOOL)a6
+- (id)getStringLabelForPasscodeGroupFooterWithConfig:(BOOL)config needsAppleIDAuthWhichNeedsInternet:(BOOL)internet isEnrolledInBiometrics:(BOOL)biometrics sdpIsON:(BOOL)n
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  nCopy = n;
+  biometricsCopy = biometrics;
+  internetCopy = internet;
   v10 = [MEMORY[0x277CCAB68] stringWithString:@"PASSCODE_GROUP_FOOTER_WIFI_DEFAULT"];
   v11 = v10;
-  if (a3)
+  if (config)
   {
     v12 = @"_MANAGED";
 LABEL_12:
@@ -642,13 +642,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v8)
+  if (internetCopy)
   {
     [v10 appendString:@"_NOCONNECTIVITY"];
-    if (!v7)
+    if (!biometricsCopy)
     {
 LABEL_5:
-      if (!v6)
+      if (!nCopy)
       {
         goto LABEL_13;
       }
@@ -659,7 +659,7 @@ LABEL_11:
     }
   }
 
-  else if (!v7)
+  else if (!biometricsCopy)
   {
     goto LABEL_5;
   }
@@ -672,7 +672,7 @@ LABEL_11:
   }
 
   [v11 appendFormat:@"%@", v14];
-  if (v6)
+  if (nCopy)
   {
     goto LABEL_11;
   }
@@ -685,15 +685,15 @@ LABEL_13:
 
 - (id)turnOffPasscodeAlertMessage
 {
-  v3 = [MEMORY[0x277CCACA8] string];
-  v4 = [(PABSPasscodeLockController *)self getTurnOffAlertDescriptionForFeatureProtectedApps];
-  v5 = [(PABSPasscodeLockController *)self getTurnOffAlertDescriptionForOtherFeatures];
-  v6 = v5;
-  if (!v4)
+  string = [MEMORY[0x277CCACA8] string];
+  getTurnOffAlertDescriptionForFeatureProtectedApps = [(PABSPasscodeLockController *)self getTurnOffAlertDescriptionForFeatureProtectedApps];
+  getTurnOffAlertDescriptionForOtherFeatures = [(PABSPasscodeLockController *)self getTurnOffAlertDescriptionForOtherFeatures];
+  v6 = getTurnOffAlertDescriptionForOtherFeatures;
+  if (!getTurnOffAlertDescriptionForFeatureProtectedApps)
   {
-    if (v5)
+    if (getTurnOffAlertDescriptionForOtherFeatures)
     {
-      v8 = v5;
+      v8 = getTurnOffAlertDescriptionForOtherFeatures;
     }
 
     else
@@ -701,11 +701,11 @@ LABEL_13:
       v8 = &stru_286FD1EF8;
     }
 
-    v7 = v3;
+    v7 = string;
     goto LABEL_8;
   }
 
-  v7 = v4;
+  v7 = getTurnOffAlertDescriptionForFeatureProtectedApps;
 
   if (v6)
   {
@@ -831,45 +831,45 @@ LABEL_22:
   return v13;
 }
 
-- (void)togglePasscode:(id)a3
+- (void)togglePasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = *MEMORY[0x277D401C0];
-  v6 = [v4 propertyForKey:*MEMORY[0x277D401C0]];
+  v6 = [passcodeCopy propertyForKey:*MEMORY[0x277D401C0]];
   if ([v6 intValue])
   {
   }
 
   else
   {
-    v12 = [(PABSPasscodeLockController *)self fingerprintCount];
+    fingerprintCount = [(PABSPasscodeLockController *)self fingerprintCount];
 
-    if (v12 >= 1)
+    if (fingerprintCount >= 1)
     {
       [(PABSPasscodeLockController *)self _showDeleteSavedFingerprintsAlert];
       goto LABEL_10;
     }
   }
 
-  v7 = [v4 propertyForKey:v5];
-  v8 = [v7 intValue];
+  v7 = [passcodeCopy propertyForKey:v5];
+  intValue = [v7 intValue];
 
-  if (v8 == 1)
+  if (intValue == 1)
   {
-    v9 = [(PABSPasscodeLockController *)self dtoController];
-    v10 = [v9 isRatchetEnabled];
+    dtoController = [(PABSPasscodeLockController *)self dtoController];
+    isRatchetEnabled = [dtoController isRatchetEnabled];
 
-    if (v10)
+    if (isRatchetEnabled)
     {
       objc_initWeak(&location, self);
-      v11 = [(PABSPasscodeLockController *)self dtoController];
+      dtoController2 = [(PABSPasscodeLockController *)self dtoController];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __45__PABSPasscodeLockController_togglePasscode___block_invoke;
       v13[3] = &unk_279A03248;
       objc_copyWeak(&v15, &location);
-      v14 = v4;
-      [v11 gateWithRatchetForOperation:7 forPresentingVC:self completion:v13];
+      v14 = passcodeCopy;
+      [dtoController2 gateWithRatchetForOperation:7 forPresentingVC:self completion:v13];
 
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
@@ -877,13 +877,13 @@ LABEL_22:
 
     else
     {
-      [(PABSPasscodeLockController *)self proceedToTurnOffPasscode:v4];
+      [(PABSPasscodeLockController *)self proceedToTurnOffPasscode:passcodeCopy];
     }
   }
 
   else
   {
-    [(PABSPasscodeLockController *)self showPINSheet:v4 allowOptionsButton:1];
+    [(PABSPasscodeLockController *)self showPINSheet:passcodeCopy allowOptionsButton:1];
   }
 
 LABEL_10:
@@ -939,14 +939,14 @@ void __45__PABSPasscodeLockController_togglePasscode___block_invoke_506(uint64_t
   }
 }
 
-- (void)proceedToTurnOffPasscode:(id)a3
+- (void)proceedToTurnOffPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [(PABSPasscodeLockController *)self turnOffPasscodeAlertMessage];
+  passcodeCopy = passcode;
+  turnOffPasscodeAlertMessage = [(PABSPasscodeLockController *)self turnOffPasscodeAlertMessage];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277D75110];
   v7 = PABS_LocalizedStringForPasscodeLock(@"TURN_OFF_PASSCODE_LOCK_QUESTION");
-  v8 = [v6 alertControllerWithTitle:v7 message:v5 preferredStyle:1];
+  v8 = [v6 alertControllerWithTitle:v7 message:turnOffPasscodeAlertMessage preferredStyle:1];
 
   v9 = MEMORY[0x277D750F8];
   v10 = PABS_LocalizedStringForPasscodeLock(@"CANCEL");
@@ -1006,15 +1006,15 @@ void __55__PABSPasscodeLockController_proceedToTurnOffPasscode___block_invoke(ui
   _Block_object_dispose(&v27, 8);
   v5 = objc_alloc_init(v3);
   v6 = objc_alloc_init(MEMORY[0x277CB8F48]);
-  v7 = [v6 aa_primaryAppleAccount];
-  v8 = [v7 username];
-  [v5 setUsername:v8];
+  aa_primaryAppleAccount = [v6 aa_primaryAppleAccount];
+  username = [aa_primaryAppleAccount username];
+  [v5 setUsername:username];
 
-  v9 = [v7 aa_personID];
-  [v5 setDSID:v9];
+  aa_personID = [aa_primaryAppleAccount aa_personID];
+  [v5 setDSID:aa_personID];
 
-  v10 = [v7 aa_altDSID];
-  [v5 setAltDSID:v10];
+  aa_altDSID = [aa_primaryAppleAccount aa_altDSID];
+  [v5 setAltDSID:aa_altDSID];
 
   [v5 setAuthenticationType:2];
   [v5 setPresentingViewController:self];
@@ -1024,8 +1024,8 @@ void __55__PABSPasscodeLockController_proceedToTurnOffPasscode___block_invoke(ui
 
   v12 = MEMORY[0x277CCACA8];
   v13 = PABS_LocalizedStringForPasscodeLock(@"TURN_OFF_PASSCODE_HSA2_AUTH_PROMPT");
-  v14 = [v7 username];
-  v15 = [v12 localizedStringWithFormat:v13, v14];
+  username2 = [aa_primaryAppleAccount username];
+  v15 = [v12 localizedStringWithFormat:v13, username2];
   [v5 setReason:v15];
 
   [v5 setEnablePasscodeAuth:0];
@@ -1083,44 +1083,44 @@ void __68__PABSPasscodeLockController_presentAppleIDAuthenticationController__bl
   [v1 showPINSheet:v2];
 }
 
-- (void)showPINSheet:(id)a3
+- (void)showPINSheet:(id)sheet
 {
-  v4 = a3;
-  if ([(PABSPasscodeLockController *)self _shouldUseLocalAuthenticationBasedPasscodeFlowForPINSheetRequest:v4])
+  sheetCopy = sheet;
+  if ([(PABSPasscodeLockController *)self _shouldUseLocalAuthenticationBasedPasscodeFlowForPINSheetRequest:sheetCopy])
   {
-    [(PABSPasscodeLockController *)self _showLocalAuthenticationPINSheet:v4];
+    [(PABSPasscodeLockController *)self _showLocalAuthenticationPINSheet:sheetCopy];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = PABSPasscodeLockController;
-    [(PABSPasscodeLockController *)&v5 showPINSheet:v4 allowOptionsButton:1];
+    [(PABSPasscodeLockController *)&v5 showPINSheet:sheetCopy allowOptionsButton:1];
   }
 }
 
-- (void)showPINSheet:(id)a3 allowOptionsButton:(BOOL)a4
+- (void)showPINSheet:(id)sheet allowOptionsButton:(BOOL)button
 {
-  v5 = a3;
-  if ([(PABSPasscodeLockController *)self _shouldUseLocalAuthenticationBasedPasscodeFlowForPINSheetRequest:v5])
+  sheetCopy = sheet;
+  if ([(PABSPasscodeLockController *)self _shouldUseLocalAuthenticationBasedPasscodeFlowForPINSheetRequest:sheetCopy])
   {
-    [(PABSPasscodeLockController *)self _showLocalAuthenticationPINSheet:v5];
+    [(PABSPasscodeLockController *)self _showLocalAuthenticationPINSheet:sheetCopy];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = PABSPasscodeLockController;
-    [(PABSPasscodeLockController *)&v6 showPINSheet:v5 allowOptionsButton:1];
+    [(PABSPasscodeLockController *)&v6 showPINSheet:sheetCopy allowOptionsButton:1];
   }
 }
 
-- (void)_showLocalAuthenticationPINSheet:(id)a3
+- (void)_showLocalAuthenticationPINSheet:(id)sheet
 {
-  v4 = [a3 propertyForKey:*MEMORY[0x277D401C0]];
-  v5 = [v4 intValue];
+  v4 = [sheet propertyForKey:*MEMORY[0x277D401C0]];
+  intValue = [v4 intValue];
 
-  if (!v5)
+  if (!intValue)
   {
     v6 = @"PMSET";
 LABEL_7:
@@ -1129,9 +1129,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v5 != 1)
+  if (intValue != 1)
   {
-    if (v5 != 2)
+    if (intValue != 2)
     {
       return;
     }
@@ -1145,14 +1145,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (BOOL)_shouldUseLocalAuthenticationBasedPasscodeFlowForPINSheetRequest:(id)a3
+- (BOOL)_shouldUseLocalAuthenticationBasedPasscodeFlowForPINSheetRequest:(id)request
 {
-  v4 = [a3 propertyForKey:*MEMORY[0x277D401C0]];
-  v5 = [v4 intValue];
+  v4 = [request propertyForKey:*MEMORY[0x277D401C0]];
+  intValue = [v4 intValue];
 
-  if ((v5 & 0xFFFFFFFD) != 0)
+  if ((intValue & 0xFFFFFFFD) != 0)
   {
-    if (v5 == 1)
+    if (intValue == 1)
     {
 
       return [(PABSPasscodeLockController *)self shouldUseLocalAuthenticationBasedPasscodeFlowForRemovePasscodeRequests];
@@ -1171,12 +1171,12 @@ LABEL_8:
   }
 }
 
-- (void)showLocalAuthenticationPasscodeRemoveFlowFromPresentingController:(id)a3 title:(id)a4 passcodePrompt:(id)a5 withCompletion:(id)a6
+- (void)showLocalAuthenticationPasscodeRemoveFlowFromPresentingController:(id)controller title:(id)title passcodePrompt:(id)prompt withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  titleCopy = title;
+  promptCopy = prompt;
+  completionCopy = completion;
   v14 = objc_alloc_init(MEMORY[0x277CD4838]);
   [(PABSPasscodeLockController *)self set_passcodeRemovalService:v14];
 
@@ -1187,11 +1187,11 @@ LABEL_8:
   v28[2] = __132__PABSPasscodeLockController_showLocalAuthenticationPasscodeRemoveFlowFromPresentingController_title_passcodePrompt_withCompletion___block_invoke;
   v28[3] = &unk_279A03BD8;
   objc_copyWeak(&v32, &location);
-  v16 = v11;
+  v16 = titleCopy;
   v29 = v16;
-  v17 = v12;
+  v17 = promptCopy;
   v30 = v17;
-  v18 = v10;
+  v18 = controllerCopy;
   v31 = v18;
   v19 = [v15 lazyFutureWithBlock:v28];
   v26[0] = MEMORY[0x277D85DD0];
@@ -1205,7 +1205,7 @@ LABEL_8:
   v23[2] = __132__PABSPasscodeLockController_showLocalAuthenticationPasscodeRemoveFlowFromPresentingController_title_passcodePrompt_withCompletion___block_invoke_2;
   v23[3] = &unk_279A03C28;
   objc_copyWeak(&v25, &location);
-  v21 = v13;
+  v21 = completionCopy;
   v24 = v21;
   v22 = [v19 addCompletionBlock:v23];
 
@@ -1288,12 +1288,12 @@ void __132__PABSPasscodeLockController_showLocalAuthenticationPasscodeRemoveFlow
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showLocalAuthenticationPasscodeChangeFlowFromPresentingController:(id)a3 title:(id)a4 passcodePrompt:(id)a5 withCompletion:(id)a6
+- (void)showLocalAuthenticationPasscodeChangeFlowFromPresentingController:(id)controller title:(id)title passcodePrompt:(id)prompt withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  titleCopy = title;
+  promptCopy = prompt;
+  completionCopy = completion;
   v14 = objc_alloc_init(MEMORY[0x277CD4820]);
   [(PABSPasscodeLockController *)self set_passcodeChangeService:v14];
 
@@ -1306,9 +1306,9 @@ void __132__PABSPasscodeLockController_showLocalAuthenticationPasscodeRemoveFlow
   v40[2] = __132__PABSPasscodeLockController_showLocalAuthenticationPasscodeChangeFlowFromPresentingController_title_passcodePrompt_withCompletion___block_invoke;
   v40[3] = &unk_279A03BD8;
   objc_copyWeak(&v44, location);
-  v17 = v11;
+  v17 = titleCopy;
   v41 = v17;
-  v18 = v12;
+  v18 = promptCopy;
   v42 = v18;
   v19 = v15;
   v43 = v19;
@@ -1331,11 +1331,11 @@ void __132__PABSPasscodeLockController_showLocalAuthenticationPasscodeRemoveFlow
   v31[2] = __132__PABSPasscodeLockController_showLocalAuthenticationPasscodeChangeFlowFromPresentingController_title_passcodePrompt_withCompletion___block_invoke_553;
   v31[3] = &unk_279A03CE8;
   objc_copyWeak(&v35, location);
-  v24 = v10;
+  v24 = controllerCopy;
   v32 = v24;
   v25 = v19;
   v33 = v25;
-  v26 = v13;
+  v26 = completionCopy;
   v34 = v26;
   v27 = [v23 addCompletionBlock:v31];
   v29[0] = MEMORY[0x277D85DD0];
@@ -1598,9 +1598,9 @@ void __132__PABSPasscodeLockController_showLocalAuthenticationPasscodeChangeFlow
   }
 }
 
-- (void)navigationControllerDidPushFirstController:(id)a3
+- (void)navigationControllerDidPushFirstController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1608,33 +1608,33 @@ void __132__PABSPasscodeLockController_showLocalAuthenticationPasscodeChangeFlow
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "Passcode Change Service: Pushed first controller, ready to present", v6, 2u);
   }
 
-  [(PABSPasscodeLockController *)self presentViewController:v4 animated:1 completion:&__block_literal_global_558];
+  [(PABSPasscodeLockController *)self presentViewController:controllerCopy animated:1 completion:&__block_literal_global_558];
 }
 
 + (int64_t)passcodeGracePeriod
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveValueForSetting:*MEMORY[0x277D25FE0]];
-  v4 = [v3 integerValue];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveValueForSetting:*MEMORY[0x277D25FE0]];
+  integerValue = [v3 integerValue];
+
+  return integerValue;
+}
+
+- (id)graceValue:(id)value
+{
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v4 = [mEMORY[0x277D262A0] effectiveValueForSetting:*MEMORY[0x277D25FE0]];
 
   return v4;
 }
 
-- (id)graceValue:(id)a3
+- (void)setGraceValue:(id)value specifier:(id)specifier
 {
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [v3 effectiveValueForSetting:*MEMORY[0x277D25FE0]];
-
-  return v4;
-}
-
-- (void)setGraceValue:(id)a3 specifier:(id)a4
-{
-  v5 = a3;
-  v6 = [(PABSPasscodeLockController *)self specifier];
-  v7 = [v6 propertyForKey:*MEMORY[0x277D40100]];
+  valueCopy = value;
+  specifier = [(PABSPasscodeLockController *)self specifier];
+  v7 = [specifier propertyForKey:*MEMORY[0x277D40100]];
   v8 = v7;
-  if (v6)
+  if (specifier)
   {
     if (v7)
     {
@@ -1661,8 +1661,8 @@ LABEL_7:
   }
 
 LABEL_10:
-  v11 = [MEMORY[0x277D262A0] sharedConnection];
-  [v11 setValue:v5 forSetting:*MEMORY[0x277D25FE0] passcode:v8];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] setValue:valueCopy forSetting:*MEMORY[0x277D25FE0] passcode:v8];
 }
 
 - (void)updateGracePeriodSpecifier
@@ -1673,9 +1673,9 @@ LABEL_10:
   v4 = PABSLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 identifier];
+    identifier = [v3 identifier];
     v7 = 138412290;
-    v8 = v5;
+    v8 = identifier;
     _os_log_impl(&dword_25E0E9000, v4, OS_LOG_TYPE_DEFAULT, "%@: - Reloading -", &v7, 0xCu);
   }
 
@@ -1683,27 +1683,27 @@ LABEL_10:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateGracePeriodForSpecifier:(id)a3
+- (void)_updateGracePeriodForSpecifier:(id)specifier
 {
-  v25 = a3;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 effectiveParametersForValueSetting:*MEMORY[0x277D25FE0]];
+  specifierCopy = specifier;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [mEMORY[0x277D262A0] effectiveParametersForValueSetting:*MEMORY[0x277D25FE0]];
   v6 = [v5 objectForKey:*MEMORY[0x277D26188]];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
 
-  LOBYTE(v4) = PSSupportsMesa();
+  LOBYTE(mEMORY[0x277D262A0]) = PSSupportsMesa();
   v8 = PSIsPearlAvailable();
-  if ((v4 & 1) != 0 || v8)
+  if ((mEMORY[0x277D262A0] & 1) != 0 || v8)
   {
     v9 = +[PABSBiometrics identities];
     if ([v9 count])
     {
       v10 = +[PABSBiometrics sharedInstance];
-      v11 = [v10 isFingerprintUnlockAllowed];
+      isFingerprintUnlockAllowed = [v10 isFingerprintUnlockAllowed];
 
-      if (v11)
+      if (isFingerprintUnlockAllowed)
       {
-        v7 = 0;
+        intValue = 0;
       }
     }
 
@@ -1713,15 +1713,15 @@ LABEL_10:
   }
 
   v12 = MEMORY[0x277CBEB18];
-  v13 = [v25 propertyForKey:@"gracePeriodValues"];
+  v13 = [specifierCopy propertyForKey:@"gracePeriodValues"];
   v14 = [v12 arrayWithArray:v13];
 
   v15 = MEMORY[0x277CBEB38];
-  v16 = [v25 propertyForKey:@"gracePeriodShortTitles"];
+  v16 = [specifierCopy propertyForKey:@"gracePeriodShortTitles"];
   v17 = [v15 dictionaryWithDictionary:v16];
 
   v18 = MEMORY[0x277CBEB38];
-  v19 = [v25 propertyForKey:@"gracePeriodTitles"];
+  v19 = [specifierCopy propertyForKey:@"gracePeriodTitles"];
   v20 = [v18 dictionaryWithDictionary:v19];
 
   v21 = [v14 count];
@@ -1731,7 +1731,7 @@ LABEL_10:
     do
     {
       v23 = [v14 objectAtIndex:v22 - 2];
-      if ([v23 intValue] > v7)
+      if ([v23 intValue] > intValue)
       {
         [v17 removeObjectForKey:v23];
         [v20 removeObjectForKey:v23];
@@ -1744,27 +1744,27 @@ LABEL_10:
     while (v22 > 1);
   }
 
-  [v25 setValues:v14];
-  [v25 setTitleDictionary:v20];
-  [v25 setShortTitleDictionary:v17];
+  [specifierCopy setValues:v14];
+  [specifierCopy setTitleDictionary:v20];
+  [specifierCopy setShortTitleDictionary:v17];
   if ([v14 count] < 2)
   {
-    [v25 removePropertyForKey:*MEMORY[0x277D40118]];
+    [specifierCopy removePropertyForKey:*MEMORY[0x277D40118]];
   }
 
   else
   {
     v24 = PABS_LocalizedStringForPasscodeLock(@"SECURITY_MSG");
-    [v25 setProperty:v24 forKey:*MEMORY[0x277D40118]];
+    [specifierCopy setProperty:v24 forKey:*MEMORY[0x277D40118]];
   }
 
-  [(PABSPasscodeLockController *)self _localizeGracePeriodTitlesForSpecifier:v25];
+  [(PABSPasscodeLockController *)self _localizeGracePeriodTitlesForSpecifier:specifierCopy];
 }
 
-- (void)_localizeGracePeriodTitlesForSpecifier:(id)a3
+- (void)_localizeGracePeriodTitlesForSpecifier:(id)specifier
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   if ((_localizeGracePeriodTitlesForSpecifier__sSubscribed & 1) == 0)
   {
     LocalCenter = CFNotificationCenterGetLocalCenter();
@@ -1772,19 +1772,19 @@ LABEL_10:
     _localizeGracePeriodTitlesForSpecifier__sSubscribed = 1;
   }
 
-  v6 = [v4 values];
-  v7 = [v4 titleDictionary];
-  v35 = [v7 mutableCopy];
+  values = [specifierCopy values];
+  titleDictionary = [specifierCopy titleDictionary];
+  v35 = [titleDictionary mutableCopy];
 
-  v32 = v4;
-  v8 = [v4 shortTitleDictionary];
-  v34 = [v8 mutableCopy];
+  v32 = specifierCopy;
+  shortTitleDictionary = [specifierCopy shortTitleDictionary];
+  v34 = [shortTitleDictionary mutableCopy];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v6;
+  obj = values;
   v37 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v37)
   {
@@ -1799,13 +1799,13 @@ LABEL_10:
         }
 
         v10 = *(*(&v38 + 1) + 8 * i);
-        v11 = [v10 intValue];
-        if (v11 >= 1)
+        intValue = [v10 intValue];
+        if (intValue >= 1)
         {
-          v12 = v11 / 0x3CuLL;
-          if (v11 > 0xE0F)
+          v12 = intValue / 0x3CuLL;
+          if (intValue > 0xE0F)
           {
-            v16 = v11 / 0xE10uLL;
+            v16 = intValue / 0xE10uLL;
             if (v12 - 60 >= 0x3C)
             {
               v17 = @"%ld_HOURS";
@@ -1826,14 +1826,14 @@ LABEL_10:
               v18 = @"%ld_HOUR_SHORT";
             }
 
-            v14 = [MEMORY[0x277CCACA8] stringWithFormat:v17, v16];
+            0x3CuLL = [MEMORY[0x277CCACA8] stringWithFormat:v17, v16];
             v15 = [MEMORY[0x277CCACA8] stringWithFormat:v18, v16];
             v12 = v16;
           }
 
           else
           {
-            if (v11 - 60 >= 0x3C)
+            if (intValue - 60 >= 0x3C)
             {
               v13 = @"%ld_MINUTES";
             }
@@ -1843,12 +1843,12 @@ LABEL_10:
               v13 = @"%ld_MINUTE";
             }
 
-            v14 = [MEMORY[0x277CCACA8] stringWithFormat:v13, v11 / 0x3CuLL];
+            0x3CuLL = [MEMORY[0x277CCACA8] stringWithFormat:v13, intValue / 0x3CuLL];
             v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld_MIN", v12];
           }
 
           v19 = MEMORY[0x277CCACA8];
-          v20 = PABS_LocalizedStringForPasscodeLock(v14);
+          v20 = PABS_LocalizedStringForPasscodeLock(0x3CuLL);
           v21 = MEMORY[0x277CCABB8];
           v22 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
           v23 = [v21 localizedStringFromNumber:v22 numberStyle:1];
@@ -1879,15 +1879,15 @@ LABEL_10:
 
 - (BOOL)gracePeriodPasscodeRecoveryAvailable
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 recoveryPasscodeAvailable];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  recoveryPasscodeAvailable = [mEMORY[0x277D262A0] recoveryPasscodeAvailable];
 
-  return v3;
+  return recoveryPasscodeAvailable;
 }
 
-- (void)gracePeriodClearRecoveryPasscode:(id)a3
+- (void)gracePeriodClearRecoveryPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = MEMORY[0x277D75110];
   v6 = PABS_LocalizedStringForPasscodeLock(@"GRACE_PERIOD_CLEAR_PASSCODE_ALERT_TITLE");
   v7 = PABS_LocalizedStringForPasscodeLock(@"GRACE_PERIOD_CLEAR_PASSCODE_ALERT_MESSAGE");
@@ -1899,9 +1899,9 @@ LABEL_10:
   v17 = 3221225472;
   v18 = __63__PABSPasscodeLockController_gracePeriodClearRecoveryPasscode___block_invoke;
   v19 = &unk_279A03220;
-  v20 = v4;
-  v21 = self;
-  v11 = v4;
+  v20 = passcodeCopy;
+  selfCopy = self;
+  v11 = passcodeCopy;
   v12 = [v9 actionWithTitle:v10 style:2 handler:&v16];
   [v8 addAction:{v12, v16, v17, v18, v19}];
 
@@ -2001,11 +2001,11 @@ void __63__PABSPasscodeLockController_gracePeriodClearRecoveryPasscode___block_i
 
 - (void)openGracePeriodPasscodeRecoveryHelpLink
 {
-  v5 = [MEMORY[0x277D75128] sharedApplication];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
   v2 = MEMORY[0x277CBEBC0];
   v3 = PABS_LocalizedStringForPasscodeLock(@"PASSCODE_GRACE_PERIOD_LEARN_MORE_LINK");
   v4 = [v2 URLWithString:v3];
-  [v5 openURL:v4 withCompletionHandler:&__block_literal_global_619];
+  [mEMORY[0x277D75128] openURL:v4 withCompletionHandler:&__block_literal_global_619];
 }
 
 void __69__PABSPasscodeLockController_openGracePeriodPasscodeRecoveryHelpLink__block_invoke(uint64_t a1, char a2)
@@ -2020,22 +2020,22 @@ void __69__PABSPasscodeLockController_openGracePeriodPasscodeRecoveryHelpLink__b
   }
 }
 
-- (void)addGracePeriodPasscodeRecoveryFooterToSpecifier:(id)a3
+- (void)addGracePeriodPasscodeRecoveryFooterToSpecifier:(id)specifier
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 isPasscodeRecoverySupported];
+  specifierCopy = specifier;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isPasscodeRecoverySupported = [mEMORY[0x277D262A0] isPasscodeRecoverySupported];
 
-  if (v6)
+  if (isPasscodeRecoverySupported)
   {
-    v7 = [MEMORY[0x277D262A0] sharedConnection];
-    v8 = [v7 recoveryPasscodeExpiryDate];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    recoveryPasscodeExpiryDate = [mEMORY[0x277D262A0]2 recoveryPasscodeExpiryDate];
 
-    if (v8)
+    if (recoveryPasscodeExpiryDate)
     {
-      v9 = [MEMORY[0x277CBEAA8] date];
-      if ([v9 compare:v8]== 1)
+      date = [MEMORY[0x277CBEAA8] date];
+      if ([date compare:recoveryPasscodeExpiryDate]== 1)
       {
         v10 = PABSLogForCategory(0);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -2046,7 +2046,7 @@ void __69__PABSPasscodeLockController_openGracePeriodPasscodeRecoveryHelpLink__b
 
       else
       {
-        [v8 timeIntervalSinceNow];
+        [recoveryPasscodeExpiryDate timeIntervalSinceNow];
         v12 = v11;
         v10 = objc_alloc_init(MEMORY[0x277CCA958]);
         [v10 setUnitsStyle:5];
@@ -2057,7 +2057,7 @@ void __69__PABSPasscodeLockController_openGracePeriodPasscodeRecoveryHelpLink__b
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v28 = v8;
+          v28 = recoveryPasscodeExpiryDate;
           v29 = 2112;
           v30 = v13;
           _os_log_impl(&dword_25E0E9000, v14, OS_LOG_TYPE_DEFAULT, "Recovery Expiry date [%@] time remaining to expire [%@]", buf, 0x16u);
@@ -2068,12 +2068,12 @@ void __69__PABSPasscodeLockController_openGracePeriodPasscodeRecoveryHelpLink__b
         v26 = v13;
         v17 = [v15 stringWithFormat:v16, v13];
 
-        v18 = [MEMORY[0x277D262A0] sharedConnection];
-        LODWORD(v16) = [v18 isPasscodeRecoveryRestricted];
+        mEMORY[0x277D262A0]3 = [MEMORY[0x277D262A0] sharedConnection];
+        LODWORD(v16) = [mEMORY[0x277D262A0]3 isPasscodeRecoveryRestricted];
 
         if (v16)
         {
-          [v4 setProperty:v17 forKey:*MEMORY[0x277D3FF88]];
+          [specifierCopy setProperty:v17 forKey:*MEMORY[0x277D3FF88]];
         }
 
         else
@@ -2083,17 +2083,17 @@ void __69__PABSPasscodeLockController_openGracePeriodPasscodeRecoveryHelpLink__b
 
           v21 = objc_opt_class();
           v22 = NSStringFromClass(v21);
-          [v4 setProperty:v22 forKey:*MEMORY[0x277D3FF48]];
+          [specifierCopy setProperty:v22 forKey:*MEMORY[0x277D3FF48]];
 
-          [v4 setProperty:v20 forKey:*MEMORY[0x277D3FF70]];
+          [specifierCopy setProperty:v20 forKey:*MEMORY[0x277D3FF70]];
           v32.location = [v20 rangeOfString:v19];
           v23 = NSStringFromRange(v32);
-          [v4 setProperty:v23 forKey:*MEMORY[0x277D3FF58]];
+          [specifierCopy setProperty:v23 forKey:*MEMORY[0x277D3FF58]];
 
           v24 = [MEMORY[0x277CCAE60] valueWithNonretainedObject:self];
-          [v4 setProperty:v24 forKey:*MEMORY[0x277D3FF68]];
+          [specifierCopy setProperty:v24 forKey:*MEMORY[0x277D3FF68]];
 
-          [v4 setProperty:@"openGracePeriodPasscodeRecoveryHelpLink" forKey:*MEMORY[0x277D3FF50]];
+          [specifierCopy setProperty:@"openGracePeriodPasscodeRecoveryHelpLink" forKey:*MEMORY[0x277D3FF50]];
           v17 = v20;
         }
       }
@@ -2101,8 +2101,8 @@ void __69__PABSPasscodeLockController_openGracePeriodPasscodeRecoveryHelpLink__b
 
     else
     {
-      v9 = PABSLogForCategory(0);
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      date = PABSLogForCategory(0);
+      if (os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
       {
         [PABSPasscodeLockController addGracePeriodPasscodeRecoveryFooterToSpecifier:];
       }
@@ -2186,16 +2186,16 @@ void __52__PABSPasscodeLockController_handleDTOStatusChanged__block_invoke(uint6
 - (id)getDTOSpecifiers
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() isRatchetFeatureAvailable];
+  isRatchetFeatureAvailable = [objc_opt_class() isRatchetFeatureAvailable];
   v4 = PABSLogForCategory(0);
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (isRatchetFeatureAvailable)
   {
     if (v5)
     {
       v6 = MEMORY[0x277CCABB0];
-      v7 = [(PABSPasscodeLockController *)self dtoController];
-      v8 = [v6 numberWithBool:{objc_msgSend(v7, "isRatchetEnabled")}];
+      dtoController = [(PABSPasscodeLockController *)self dtoController];
+      v8 = [v6 numberWithBool:{objc_msgSend(dtoController, "isRatchetEnabled")}];
       *buf = 138412290;
       v17 = v8;
       _os_log_impl(&dword_25E0E9000, v4, OS_LOG_TYPE_DEFAULT, "DTO: Available [Status: %@]: Adding specifiers", buf, 0xCu);
@@ -2229,12 +2229,12 @@ void __52__PABSPasscodeLockController_handleDTOStatusChanged__block_invoke(uint6
   return v12;
 }
 
-- (id)getDTOStatusForSpecifier:(id)a3
+- (id)getDTOStatusForSpecifier:(id)specifier
 {
-  v3 = [(PABSPasscodeLockController *)self dtoController];
-  v4 = [v3 isRatchetEnabled];
+  dtoController = [(PABSPasscodeLockController *)self dtoController];
+  isRatchetEnabled = [dtoController isRatchetEnabled];
 
-  if (v4)
+  if (isRatchetEnabled)
   {
     v5 = @"DTO_STATUS_LABEL_DESCRIPTION_STATE_ON";
   }
@@ -2261,11 +2261,11 @@ void __52__PABSPasscodeLockController_handleDTOStatusChanged__block_invoke(uint6
   [(PABSPasscodeLockController *)self reloadSpecifierID:@"DTO_STATUS_LABEL_ID" animated:1];
 }
 
-- (id)voiceDial:(id)a3
+- (id)voiceDial:(id)dial
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 effectiveRestrictedBoolValueForSetting:*MEMORY[0x277D25CE8]];
+  dialCopy = dial;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [mEMORY[0x277D262A0] effectiveRestrictedBoolValueForSetting:*MEMORY[0x277D25CE8]];
 
   switch(v5)
   {
@@ -2287,43 +2287,43 @@ LABEL_8:
   return v6;
 }
 
-- (void)setVoiceDial:(id)a3 specifier:(id)a4
+- (void)setVoiceDial:(id)dial specifier:(id)specifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPasscodeLockController *)self voiceDial:v7];
+  dialCopy = dial;
+  specifierCopy = specifier;
+  v8 = [(PABSPasscodeLockController *)self voiceDial:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     v16 = 138412802;
-    v17 = v10;
+    v17 = identifier;
     v18 = 2112;
-    v19 = v6;
+    v19 = dialCopy;
     v20 = 2112;
     v21 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", &v16, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 == [v8 BOOLValue])
+  bOOLValue = [dialCopy BOOLValue];
+  if (bOOLValue == [v8 BOOLValue])
   {
-    v12 = PABSLogForCategory(0);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x277D262A0] = PABSLogForCategory(0);
+    if (os_log_type_enabled(mEMORY[0x277D262A0], OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v7 identifier];
+      identifier2 = [specifierCopy identifier];
       v16 = 138412290;
-      v17 = v14;
-      _os_log_impl(&dword_25E0E9000, v12, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", &v16, 0xCu);
+      v17 = identifier2;
+      _os_log_impl(&dword_25E0E9000, mEMORY[0x277D262A0], OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", &v16, 0xCu);
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x277D262A0] sharedConnection];
-    v13 = [v6 BOOLValue];
-    [v12 setBoolValue:v13 forSetting:*MEMORY[0x277D25CE8]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    bOOLValue2 = [dialCopy BOOLValue];
+    [mEMORY[0x277D262A0] setBoolValue:bOOLValue2 forSetting:*MEMORY[0x277D25CE8]];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2333,8 +2333,8 @@ LABEL_8:
 {
   if (MGGetBoolAnswer() && ([getAFPreferencesClass() sharedPreferences], v2 = objc_claimAutoreleasedReturnValue(), v3 = objc_msgSend(v2, "assistantIsEnabled"), v2, v3))
   {
-    v4 = [getAFPreferencesClass() sharedPreferences];
-    v5 = [v4 disableAssistantWhilePasscodeLocked] ^ 1;
+    sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+    v5 = [sharedPreferences disableAssistantWhilePasscodeLocked] ^ 1;
   }
 
   else
@@ -2347,8 +2347,8 @@ LABEL_8:
 
 - (BOOL)isVoiceDialRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25CE8]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25CE8]];
 
   return v3;
 }
@@ -2361,8 +2361,8 @@ LABEL_8:
     if (([(PABSPasscodeLockController *)self containsSpecifier:?]& 1) != 0)
     {
       v3 = [(PABSPasscodeLockController *)self containsSpecifier:self->_voiceDialSpecifier];
-      v4 = [(PABSPasscodeLockController *)self shouldShowVoiceDial];
-      if (v3 && !v4)
+      shouldShowVoiceDial = [(PABSPasscodeLockController *)self shouldShowVoiceDial];
+      if (v3 && !shouldShowVoiceDial)
       {
         voiceDialSpecifier = self->_voiceDialSpecifier;
         v12[0] = self->_voiceDialGroupSpecifier;
@@ -2377,11 +2377,11 @@ LABEL_11:
 
     else
     {
-      v4 = [(PABSPasscodeLockController *)self shouldShowVoiceDial];
+      shouldShowVoiceDial = [(PABSPasscodeLockController *)self shouldShowVoiceDial];
       LOBYTE(v3) = 0;
     }
 
-    if ((v3 & 1) == 0 && v4)
+    if ((v3 & 1) == 0 && shouldShowVoiceDial)
     {
       v7 = self->_voiceDialSpecifier;
       v8 = [MEMORY[0x277CCABB0] numberWithInt:{-[PABSPasscodeLockController isVoiceDialRestricted](self, "isVoiceDialRestricted") ^ 1}];
@@ -2400,60 +2400,60 @@ LABEL_12:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)assistantUnderLockEnabled:(id)a3
+- (id)assistantUnderLockEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [getAFPreferencesClass() sharedPreferences];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "disableAssistantWhilePasscodeLocked") ^ 1}];
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  v5 = [v3 numberWithBool:{objc_msgSend(sharedPreferences, "disableAssistantWhilePasscodeLocked") ^ 1}];
 
   return v5;
 }
 
-- (void)setAssistantUnderLockEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setAssistantUnderLockEnabled:(id)enabled forSpecifier:(id)specifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPasscodeLockController *)self assistantUnderLockEnabled:v7];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  v8 = [(PABSPasscodeLockController *)self assistantUnderLockEnabled:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     v20 = 138412802;
-    v21 = v10;
+    v21 = identifier;
     v22 = 2112;
-    v23 = v6;
+    v23 = enabledCopy;
     v24 = 2112;
     v25 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", &v20, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 == [v8 BOOLValue])
+  bOOLValue = [enabledCopy BOOLValue];
+  if (bOOLValue == [v8 BOOLValue])
   {
     v17 = PABSLogForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v7 identifier];
+      identifier2 = [specifierCopy identifier];
       v20 = 138412290;
-      v21 = v18;
+      v21 = identifier2;
       _os_log_impl(&dword_25E0E9000, v17, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", &v20, 0xCu);
     }
   }
 
   else
   {
-    v12 = [v6 BOOLValue];
-    v13 = [getAFPreferencesClass() sharedPreferences];
-    v14 = [v13 disableAssistantWhilePasscodeLocked];
+    bOOLValue2 = [enabledCopy BOOLValue];
+    sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+    disableAssistantWhilePasscodeLocked = [sharedPreferences disableAssistantWhilePasscodeLocked];
 
-    if (v12 == v14)
+    if (bOOLValue2 == disableAssistantWhilePasscodeLocked)
     {
-      v15 = [getAFPreferencesClass() sharedPreferences];
-      [v15 setDisableAssistantWhilePasscodeLocked:v12 ^ 1u];
+      sharedPreferences2 = [getAFPreferencesClass() sharedPreferences];
+      [sharedPreferences2 setDisableAssistantWhilePasscodeLocked:bOOLValue2 ^ 1u];
 
-      v16 = [getAFPreferencesClass() sharedPreferences];
-      [v16 synchronize];
+      sharedPreferences3 = [getAFPreferencesClass() sharedPreferences];
+      [sharedPreferences3 synchronize];
     }
 
     [(PABSPasscodeLockController *)self updateVoiceDialGroup];
@@ -2464,64 +2464,64 @@ LABEL_12:
 
 - (BOOL)isAssistantRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D48]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25D48]];
 
   return v3;
 }
 
-- (id)homeControlAccessAllowedWhenLocked:(id)a3
+- (id)homeControlAccessAllowedWhenLocked:(id)locked
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PABSPasscodeLockController *)self homeManager];
-  v5 = [v3 numberWithBool:{objc_msgSend(v4, "isAccessAllowedWhenLocked")}];
+  homeManager = [(PABSPasscodeLockController *)self homeManager];
+  v5 = [v3 numberWithBool:{objc_msgSend(homeManager, "isAccessAllowedWhenLocked")}];
 
   return v5;
 }
 
-- (void)setHomeControlAccessAllowedWhenLocked:(id)a3 specifier:(id)a4
+- (void)setHomeControlAccessAllowedWhenLocked:(id)locked specifier:(id)specifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPasscodeLockController *)self homeControlAccessAllowedWhenLocked:v7];
+  lockedCopy = locked;
+  specifierCopy = specifier;
+  v8 = [(PABSPasscodeLockController *)self homeControlAccessAllowedWhenLocked:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     *buf = 138412802;
-    v21 = v10;
+    v21 = identifier;
     v22 = 2112;
-    v23 = v6;
+    v23 = lockedCopy;
     v24 = 2112;
     v25 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", buf, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 == [v8 BOOLValue])
+  bOOLValue = [lockedCopy BOOLValue];
+  if (bOOLValue == [v8 BOOLValue])
   {
     v14 = PABSLogForCategory(0);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v7 identifier];
+      identifier2 = [specifierCopy identifier];
       *buf = 138412290;
-      v21 = v15;
+      v21 = identifier2;
       _os_log_impl(&dword_25E0E9000, v14, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", buf, 0xCu);
     }
   }
 
   else
   {
-    v12 = [(PABSPasscodeLockController *)self homeManager];
-    v13 = [v6 BOOLValue];
+    homeManager = [(PABSPasscodeLockController *)self homeManager];
+    bOOLValue2 = [lockedCopy BOOLValue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __78__PABSPasscodeLockController_setHomeControlAccessAllowedWhenLocked_specifier___block_invoke;
     v17[3] = &unk_279A03D60;
-    v18 = v7;
-    v19 = self;
-    [v12 updateAccessAllowedWhenLocked:v13 completionHandler:v17];
+    v18 = specifierCopy;
+    selfCopy = self;
+    [homeManager updateAccessAllowedWhenLocked:bOOLValue2 completionHandler:v17];
 
     v14 = v18;
   }
@@ -2551,7 +2551,7 @@ uint64_t __78__PABSPasscodeLockController_setHomeControlAccessAllowedWhenLocked_
   return result;
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   v4 = PABSLogForCategory(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2563,7 +2563,7 @@ uint64_t __78__PABSPasscodeLockController_setHomeControlAccessAllowedWhenLocked_
   [(PABSPasscodeLockController *)self reloadSpecifierID:@"HOME_CONTROL_SWITCH"];
 }
 
-- (void)homeManager:(id)a3 didUpdateAccessAllowedWhenLocked:(BOOL)a4
+- (void)homeManager:(id)manager didUpdateAccessAllowedWhenLocked:(BOOL)locked
 {
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2575,7 +2575,7 @@ uint64_t __78__PABSPasscodeLockController_setHomeControlAccessAllowedWhenLocked_
   [(PABSPasscodeLockController *)self reloadSpecifierID:@"HOME_CONTROL_SWITCH"];
 }
 
-- (id)workoutHealthDataAllowedWhenLocked:(id)a3
+- (id)workoutHealthDataAllowedWhenLocked:(id)locked
 {
   v3 = objc_alloc_init(MEMORY[0x277CCD4D8]);
   v4 = objc_alloc(MEMORY[0x277CCD570]);
@@ -2622,34 +2622,34 @@ uint64_t __78__PABSPasscodeLockController_setHomeControlAccessAllowedWhenLocked_
   return v10;
 }
 
-- (void)setWorkoutHealthDataAllowedWhenLocked:(id)a3 specifier:(id)a4
+- (void)setWorkoutHealthDataAllowedWhenLocked:(id)locked specifier:(id)specifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPasscodeLockController *)self workoutHealthDataAllowedWhenLocked:v7];
+  lockedCopy = locked;
+  specifierCopy = specifier;
+  v8 = [(PABSPasscodeLockController *)self workoutHealthDataAllowedWhenLocked:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     *buf = 138412802;
-    v22 = v10;
+    v22 = identifier;
     v23 = 2112;
-    v24 = v6;
+    v24 = lockedCopy;
     v25 = 2112;
     v26 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", buf, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 == [v8 BOOLValue])
+  bOOLValue = [lockedCopy BOOLValue];
+  if (bOOLValue == [v8 BOOLValue])
   {
     v12 = PABSLogForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v7 identifier];
+      identifier2 = [specifierCopy identifier];
       *buf = 138412290;
-      v22 = v16;
+      v22 = identifier2;
       _os_log_impl(&dword_25E0E9000, v12, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", buf, 0xCu);
     }
   }
@@ -2664,9 +2664,9 @@ uint64_t __78__PABSPasscodeLockController_setHomeControlAccessAllowedWhenLocked_
     v18[1] = 3221225472;
     v18[2] = __78__PABSPasscodeLockController_setWorkoutHealthDataAllowedWhenLocked_specifier___block_invoke;
     v18[3] = &unk_279A034E8;
-    v19 = v7;
-    v20 = self;
-    [v14 setNumber:v6 forKey:v15 completion:v18];
+    v19 = specifierCopy;
+    selfCopy = self;
+    [v14 setNumber:lockedCopy forKey:v15 completion:v18];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -2699,11 +2699,11 @@ void __78__PABSPasscodeLockController_setWorkoutHealthDataAllowedWhenLocked_spec
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)wallet:(id)a3
+- (id)wallet:(id)wallet
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D262A0] sharedConnection];
-  v5 = [v4 effectiveBoolValueForSetting:*MEMORY[0x277D25DC0]];
+  walletCopy = wallet;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v5 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25DC0]];
 
   switch(v5)
   {
@@ -2725,43 +2725,43 @@ LABEL_8:
   return v6;
 }
 
-- (void)setWallet:(id)a3 specifier:(id)a4
+- (void)setWallet:(id)wallet specifier:(id)specifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPasscodeLockController *)self wallet:v7];
+  walletCopy = wallet;
+  specifierCopy = specifier;
+  v8 = [(PABSPasscodeLockController *)self wallet:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     v16 = 138412802;
-    v17 = v10;
+    v17 = identifier;
     v18 = 2112;
-    v19 = v6;
+    v19 = walletCopy;
     v20 = 2112;
     v21 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", &v16, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 == [v8 BOOLValue])
+  bOOLValue = [walletCopy BOOLValue];
+  if (bOOLValue == [v8 BOOLValue])
   {
-    v12 = PABSLogForCategory(0);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x277D262A0] = PABSLogForCategory(0);
+    if (os_log_type_enabled(mEMORY[0x277D262A0], OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v7 identifier];
+      identifier2 = [specifierCopy identifier];
       v16 = 138412290;
-      v17 = v14;
-      _os_log_impl(&dword_25E0E9000, v12, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", &v16, 0xCu);
+      v17 = identifier2;
+      _os_log_impl(&dword_25E0E9000, mEMORY[0x277D262A0], OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", &v16, 0xCu);
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x277D262A0] sharedConnection];
-    v13 = [v6 BOOLValue];
-    [v12 setBoolValue:v13 forSetting:*MEMORY[0x277D25DC0]];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    bOOLValue2 = [walletCopy BOOLValue];
+    [mEMORY[0x277D262A0] setBoolValue:bOOLValue2 forSetting:*MEMORY[0x277D25DC0]];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -2769,41 +2769,41 @@ LABEL_8:
 
 - (BOOL)isWalletRestricted
 {
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25DC0]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25DC0]];
 
   return v3;
 }
 
 - (BOOL)showReplyWithMessage
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 sf_isiPhone];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sf_isiPhone = [currentDevice sf_isiPhone];
 
-  return v3;
+  return sf_isiPhone;
 }
 
-- (id)wipeEnabled:(id)a3
+- (id)wipeEnabled:(id)enabled
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  enabledCopy = enabled;
+  if (!enabledCopy)
   {
-    v4 = [(PABSPasscodeLockController *)self specifierForID:@"WIPE_DEVICE"];
+    enabledCopy = [(PABSPasscodeLockController *)self specifierForID:@"WIPE_DEVICE"];
   }
 
-  v5 = [v4 propertyForKey:*MEMORY[0x277D3FF38]];
-  v6 = [v5 BOOLValue];
+  v5 = [enabledCopy propertyForKey:*MEMORY[0x277D3FF38]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [MEMORY[0x277D3FAB8] readPreferenceValue:v4];
+    v7 = [MEMORY[0x277D3FAB8] readPreferenceValue:enabledCopy];
     v8 = PABSLogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 identifier];
+      identifier = [enabledCopy identifier];
       v15 = 138412546;
-      v16 = v9;
+      v16 = identifier;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&dword_25E0E9000, v8, OS_LOG_TYPE_DEFAULT, "%@: Get: %@", &v15, 0x16u);
@@ -2826,10 +2826,10 @@ LABEL_8:
     v8 = PABSLogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v4 identifier];
+      identifier2 = [enabledCopy identifier];
       v12 = [MEMORY[0x277CCABB0] numberWithInt:self->_policyDictatedMaxFailedAttempts];
       v15 = 138412802;
-      v16 = v11;
+      v16 = identifier2;
       v17 = 2112;
       v18 = v7;
       v19 = 2112;
@@ -2843,39 +2843,39 @@ LABEL_8:
   return v7;
 }
 
-- (void)setWipeEnabled:(id)a3 specifier:(id)a4
+- (void)setWipeEnabled:(id)enabled specifier:(id)specifier
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPasscodeLockController *)self wipeEnabled:v7];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  v8 = [(PABSPasscodeLockController *)self wipeEnabled:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     *buf = 138412802;
-    v50 = v10;
+    v50 = identifier;
     v51 = 2112;
-    v52 = v6;
+    v52 = enabledCopy;
     v53 = 2112;
     v54 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", buf, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 == [v8 BOOLValue])
+  bOOLValue = [enabledCopy BOOLValue];
+  if (bOOLValue == [v8 BOOLValue])
   {
     v35 = PABSLogForCategory(0);
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
-      v36 = [v7 identifier];
+      identifier2 = [specifierCopy identifier];
       *buf = 138412290;
-      v50 = v36;
+      v50 = identifier2;
       _os_log_impl(&dword_25E0E9000, v35, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", buf, 0xCu);
     }
   }
 
-  else if ([v6 BOOLValue])
+  else if ([enabledCopy BOOLValue])
   {
     v12 = MEMORY[0x277CCABB8];
     policyDictatedMaxFailedAttempts = self->_policyDictatedMaxFailedAttempts;
@@ -2901,25 +2901,25 @@ LABEL_8:
     v20 = PABS_LocalizedStringForPasscodeLock(@"WIPE_DEVICE_ALERT_CANCEL");
     v38 = MEMORY[0x277D75110];
     v39 = v20;
-    v21 = [MEMORY[0x277D75418] currentDevice];
-    v22 = [v21 sf_isiPad];
-    v23 = v19;
-    if (v22)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPad = [currentDevice sf_isiPad];
+    name = v19;
+    if (sf_isiPad)
     {
-      v23 = [v7 name];
+      name = [specifierCopy name];
     }
 
-    v24 = [MEMORY[0x277D75418] currentDevice];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
     v41 = v19;
-    if (![v24 sf_isiPad])
+    if (![currentDevice2 sf_isiPad])
     {
       v19 = 0;
     }
 
-    v25 = [MEMORY[0x277D75418] currentDevice];
-    v26 = [v38 alertControllerWithTitle:v23 message:v19 preferredStyle:{objc_msgSend(v25, "sf_isiPad")}];
+    currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+    v26 = [v38 alertControllerWithTitle:name message:v19 preferredStyle:{objc_msgSend(currentDevice3, "sf_isiPad")}];
 
-    if (v22)
+    if (sf_isiPad)
     {
     }
 
@@ -2928,9 +2928,9 @@ LABEL_8:
     v46[1] = 3221225472;
     v46[2] = __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invoke;
     v46[3] = &unk_279A03220;
-    v28 = v7;
+    v28 = specifierCopy;
     v47 = v28;
-    v48 = self;
+    selfCopy = self;
     v29 = [v27 actionWithTitle:v39 style:1 handler:v46];
     [v26 addAction:v29];
 
@@ -2941,16 +2941,16 @@ LABEL_8:
     v43[3] = &unk_279A03220;
     v31 = v28;
     v44 = v31;
-    v45 = self;
+    selfCopy2 = self;
     v32 = [v30 actionWithTitle:v40 style:2 handler:v43];
     [v26 addAction:v32];
 
     v33 = PABSLogForCategory(0);
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v31 identifier];
+      identifier3 = [v31 identifier];
       *buf = 138412290;
-      v50 = v34;
+      v50 = identifier3;
       _os_log_impl(&dword_25E0E9000, v33, OS_LOG_TYPE_DEFAULT, "%@: Presenting confirmation alert", buf, 0xCu);
     }
 
@@ -3020,10 +3020,10 @@ uint64_t __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invok
   v8 = PABS_LocalizedStringForPasscodeLock(@"WIPE_DEVICE_TEXT");
   v9 = [v7 stringWithFormat:v8, v6];
 
-  v10 = [MEMORY[0x277D262A0] sharedConnection];
-  v11 = [v10 isContentProtectionInEffect];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  isContentProtectionInEffect = [mEMORY[0x277D262A0] isContentProtectionInEffect];
 
-  if (v11)
+  if (isContentProtectionInEffect)
   {
     v12 = PABS_LocalizedStringForPasscodeLock(@"DATA_ENCRYPTED_TEXT");
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n\n%@\n ", v9, v12];
@@ -3037,12 +3037,12 @@ uint64_t __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invok
   return v13;
 }
 
-- (void)devicePINController:(id)a3 shouldAcceptPIN:(id)a4 withCompletion:(id)a5
+- (void)devicePINController:(id)controller shouldAcceptPIN:(id)n withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  [v8 simplePIN];
+  controllerCopy = controller;
+  completionCopy = completion;
+  nCopy = n;
+  [controllerCopy simplePIN];
   IsPasswordWeak2 = SecPasswordIsPasswordWeak2();
 
   if (IsPasswordWeak2)
@@ -3051,21 +3051,21 @@ uint64_t __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invok
     v12[1] = 3221225472;
     v12[2] = __81__PABSPasscodeLockController_devicePINController_shouldAcceptPIN_withCompletion___block_invoke;
     v12[3] = &unk_279A03AA0;
-    v13 = v9;
-    [(PABSPasscodeLockController *)self showWeakWarningAlertForController:v8 offerUseAnyway:1 withCompletion:v12];
+    v13 = completionCopy;
+    [(PABSPasscodeLockController *)self showWeakWarningAlertForController:controllerCopy offerUseAnyway:1 withCompletion:v12];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
-- (void)showWeakWarningAlertForController:(id)a3 offerUseAnyway:(BOOL)a4 withCompletion:(id)a5
+- (void)showWeakWarningAlertForController:(id)controller offerUseAnyway:(BOOL)anyway withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  anywayCopy = anyway;
+  controllerCopy = controller;
+  completionCopy = completion;
   v9 = PSUsedByHSA2Account();
   v10 = @"WEAK_PASSCODE_DETAILS";
   if (v9)
@@ -3086,12 +3086,12 @@ uint64_t __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invok
   v28[1] = 3221225472;
   v28[2] = __94__PABSPasscodeLockController_showWeakWarningAlertForController_offerUseAnyway_withCompletion___block_invoke;
   v28[3] = &unk_279A03120;
-  v18 = v8;
+  v18 = completionCopy;
   v29 = v18;
   v19 = [v16 actionWithTitle:v17 style:1 handler:v28];
   [v15 addAction:v19];
 
-  if (v6)
+  if (anywayCopy)
   {
     v20 = MEMORY[0x277D750F8];
     v21 = PABS_LocalizedStringForPasscodeLock(@"USE_WEAK_PASSCODE_ANYWAY");
@@ -3104,12 +3104,12 @@ uint64_t __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invok
     [v15 addAction:{v22, v23, v24, v25, v26}];
   }
 
-  [v7 presentViewController:v15 animated:1 completion:0];
+  [controllerCopy presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)devicePINController:(id)a3 didAcceptSetPIN:(id)a4
+- (void)devicePINController:(id)controller didAcceptSetPIN:(id)n
 {
-  [(PABSPasscodeLockController *)self _didUpdatePasscode:a4];
+  [(PABSPasscodeLockController *)self _didUpdatePasscode:n];
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3120,12 +3120,12 @@ uint64_t __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invok
   [(PABSPasscodeLockController *)self reloadSpecifiers];
 }
 
-- (void)_didUpdatePasscode:(id)a3
+- (void)_didUpdatePasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [(PABSPasscodeLockController *)self specifier];
+  passcodeCopy = passcode;
+  specifier = [(PABSPasscodeLockController *)self specifier];
 
-  if (!v5)
+  if (!specifier)
   {
     v6 = PABSLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -3136,7 +3136,7 @@ uint64_t __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invok
 
   v7 = PABSLogForCategory(0);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (passcodeCopy)
   {
     if (v8)
     {
@@ -3144,8 +3144,8 @@ uint64_t __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invok
       _os_log_impl(&dword_25E0E9000, v7, OS_LOG_TYPE_DEFAULT, "_didUpdatePasscode: Saving passcode for specifier", buf, 2u);
     }
 
-    v9 = [(PABSPasscodeLockController *)self specifier];
-    [v9 setProperty:v4 forKey:*MEMORY[0x277D40100]];
+    specifier2 = [(PABSPasscodeLockController *)self specifier];
+    [specifier2 setProperty:passcodeCopy forKey:*MEMORY[0x277D40100]];
   }
 
   else
@@ -3156,8 +3156,8 @@ uint64_t __55__PABSPasscodeLockController_setWipeEnabled_specifier___block_invok
       _os_log_impl(&dword_25E0E9000, v7, OS_LOG_TYPE_DEFAULT, "_didUpdatePasscode: Removing passcode for specifier", v10, 2u);
     }
 
-    v9 = [(PABSPasscodeLockController *)self specifier];
-    [v9 removePropertyForKey:*MEMORY[0x277D40100]];
+    specifier2 = [(PABSPasscodeLockController *)self specifier];
+    [specifier2 removePropertyForKey:*MEMORY[0x277D40100]];
   }
 }
 
@@ -3254,16 +3254,16 @@ LABEL_6:
 - (BOOL)canBeShownFromSuspendedState
 {
   v2 = +[PABSPasscode sharedInstance];
-  v3 = [v2 isPasscodeSet];
+  isPasscodeSet = [v2 isPasscodeSet];
 
-  return v3 ^ 1;
+  return isPasscodeSet ^ 1;
 }
 
 - (void)suspend
 {
-  v3 = [(PABSPasscodeLockController *)self specifier];
+  specifier = [(PABSPasscodeLockController *)self specifier];
 
-  if (!v3)
+  if (!specifier)
   {
     v4 = PABSLogForCategory(0);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -3279,21 +3279,21 @@ LABEL_6:
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "suspend: Removing passcode for specifier", buf, 2u);
   }
 
-  v6 = [(PABSPasscodeLockController *)self specifier];
-  [v6 removePropertyForKey:*MEMORY[0x277D40100]];
+  specifier2 = [(PABSPasscodeLockController *)self specifier];
+  [specifier2 removePropertyForKey:*MEMORY[0x277D40100]];
 
-  v7 = [(PABSPasscodeLockController *)self splitViewController];
-  v8 = [v7 containerNavigationController];
+  splitViewController = [(PABSPasscodeLockController *)self splitViewController];
+  containerNavigationController = [splitViewController containerNavigationController];
 
-  v9 = [v8 viewControllers];
-  v10 = [v9 firstObject];
-  v11 = [v10 specifier];
+  viewControllers = [containerNavigationController viewControllers];
+  firstObject = [viewControllers firstObject];
+  specifier3 = [firstObject specifier];
 
-  v12 = [(PABSPasscodeLockController *)self specifier];
+  specifier4 = [(PABSPasscodeLockController *)self specifier];
 
-  if (v12 == v11)
+  if (specifier4 == specifier3)
   {
-    [v8 popRecursivelyToRootController];
+    [containerNavigationController popRecursivelyToRootController];
   }
 
   v13.receiver = self;
@@ -3313,21 +3313,21 @@ LABEL_6:
     v124 = [v4 specifierForID:@"PASSCODE_GROUP"];
     v125 = v5;
     [PABSPasscodeLockController setupPasscodeGroupSpecifier:"setupPasscodeGroupSpecifier:onOffButtonSpecifier:" onOffButtonSpecifier:?];
-    v6 = [(PABSPasscodeLockController *)self getDTOSpecifiers];
-    v7 = [v6 count];
+    getDTOSpecifiers = [(PABSPasscodeLockController *)self getDTOSpecifiers];
+    v7 = [getDTOSpecifiers count];
     if (v7)
     {
       v8 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{0, v7}];
-      [v4 insertObjects:v6 atIndexes:v8];
+      [v4 insertObjects:getDTOSpecifiers atIndexes:v8];
     }
 
-    v123 = v6;
-    v9 = [MEMORY[0x277D262A0] sharedConnection];
-    v10 = [v9 recoveryPasscodeExpiryDate];
+    v123 = getDTOSpecifiers;
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    recoveryPasscodeExpiryDate = [mEMORY[0x277D262A0] recoveryPasscodeExpiryDate];
 
     v11 = MEMORY[0x277D3FF38];
-    v122 = v10;
-    if (v10)
+    v122 = recoveryPasscodeExpiryDate;
+    if (recoveryPasscodeExpiryDate)
     {
       v12 = [v4 specifierForID:@"PASSCODE_GRACE_PERIOD_GROUP"];
       [(PABSPasscodeLockController *)self addGracePeriodPasscodeRecoveryFooterToSpecifier:v12];
@@ -3365,9 +3365,9 @@ LABEL_6:
     {
       if (v18)
       {
-        v19 = [(PABSPasscodeLockController *)self shouldShowVoiceDial];
+        shouldShowVoiceDial = [(PABSPasscodeLockController *)self shouldShowVoiceDial];
         v18 = self->_voiceDialSpecifier;
-        if (!v19)
+        if (!shouldShowVoiceDial)
         {
           v134[0] = self->_voiceDialGroupSpecifier;
           v134[1] = v18;
@@ -3385,14 +3385,14 @@ LABEL_6:
 
     v132 = v4;
     v23 = [v4 specifierForID:@"ALLOW_ACCESS_WHEN_LOCKED"];
-    v24 = [(PABSPasscodeLockController *)self _allowAccessWhenLockedSpecifierFooter];
+    _allowAccessWhenLockedSpecifierFooter = [(PABSPasscodeLockController *)self _allowAccessWhenLockedSpecifierFooter];
     v120 = *MEMORY[0x277D3FF88];
     v121 = v23;
-    [v23 setProperty:v24 forKey:?];
+    [v23 setProperty:_allowAccessWhenLockedSpecifierFooter forKey:?];
 
-    v25 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
     v26 = *MEMORY[0x277D25F50];
-    v27 = [v25 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F50]];
+    v27 = [mEMORY[0x277D262A0]2 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F50]];
 
     v28 = MEMORY[0x277D3FAD8];
     v29 = PABS_LocalizedStringForPasscodeLock(@"NOTIFICATIONS_VIEW");
@@ -3404,9 +3404,9 @@ LABEL_6:
     v32 = v22;
     [v30 setProperty:v31 forKey:v22];
 
-    v33 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0]3 = [MEMORY[0x277D262A0] sharedConnection];
     v34 = *MEMORY[0x277D25F58];
-    LODWORD(v29) = [v33 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F58]];
+    LODWORD(v29) = [mEMORY[0x277D262A0]3 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F58]];
 
     v35 = MEMORY[0x277D3FAD8];
     v36 = PABS_LocalizedStringForPasscodeLock(@"TODAY_VIEW");
@@ -3417,9 +3417,9 @@ LABEL_6:
     v130 = v37;
     [v37 setProperty:v38 forKey:v32];
 
-    v39 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0]4 = [MEMORY[0x277D262A0] sharedConnection];
     v40 = *MEMORY[0x277D25F48];
-    LODWORD(v29) = [v39 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F48]];
+    LODWORD(v29) = [mEMORY[0x277D262A0]4 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D25F48]];
 
     v41 = MEMORY[0x277D3FAD8];
     v42 = PABS_LocalizedStringForPasscodeLock(@"CONTROL_CENTER");
@@ -3453,9 +3453,9 @@ LABEL_6:
     [v54 setProperty:@"showLiveActivitiesWhenPasscodeLocked" forKey:v49];
     v127 = v54;
     [v54 setProperty:v51 forKey:v50];
-    v55 = [MEMORY[0x277D262A0] sharedConnection];
+    mEMORY[0x277D262A0]5 = [MEMORY[0x277D262A0] sharedConnection];
     v56 = *MEMORY[0x277D260C0];
-    LOBYTE(v43) = [v55 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D260C0]];
+    LOBYTE(v43) = [mEMORY[0x277D262A0]5 isBoolSettingLockedDownByRestrictions:*MEMORY[0x277D260C0]];
 
     if (v43)
     {
@@ -3464,10 +3464,10 @@ LABEL_6:
 
     else
     {
-      v58 = [getLockdownModeManagerClass() shared];
-      v59 = [v58 enabled];
+      shared = [getLockdownModeManagerClass() shared];
+      enabled = [shared enabled];
 
-      v57 = v59 ^ 1u;
+      v57 = enabled ^ 1u;
     }
 
     v60 = MEMORY[0x277D3FAD8];
@@ -3494,10 +3494,10 @@ LABEL_6:
 
     if (MGGetBoolAnswer())
     {
-      v66 = [getAFPreferencesClass() sharedPreferences];
-      v67 = [v66 assistantIsEnabled];
+      sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+      assistantIsEnabled = [sharedPreferences assistantIsEnabled];
 
-      if (v67)
+      if (assistantIsEnabled)
       {
         v68 = MEMORY[0x277D3FAD8];
         v69 = PABS_LocalizedStringForPasscodeLock(@"SIRI");
@@ -3532,27 +3532,27 @@ LABEL_6:
     }
 
     v114 = v76;
-    v77 = [MEMORY[0x277D262A0] sharedConnection];
-    v78 = [v77 valueRestrictionForFeature:*MEMORY[0x277D25F78]];
+    mEMORY[0x277D262A0]6 = [MEMORY[0x277D262A0] sharedConnection];
+    v78 = [mEMORY[0x277D262A0]6 valueRestrictionForFeature:*MEMORY[0x277D25F78]];
 
     v117 = v65;
     v113 = v78;
     if (v78)
     {
-      v79 = [v78 intValue];
+      intValue = [v78 intValue];
     }
 
     else
     {
-      v79 = -1;
+      intValue = -1;
     }
 
-    self->_policyDictatedMaxFailedAttempts = v79;
+    self->_policyDictatedMaxFailedAttempts = intValue;
     v80 = [v132 specifierForID:@"WIPE_DEVICE"];
     v112 = MGCopyAnswer();
     [v80 setProperty:? forKey:?];
-    v81 = [MEMORY[0x277D262A0] sharedConnection];
-    v82 = [v81 effectiveBoolValueForSetting:*MEMORY[0x277D25E88]];
+    mEMORY[0x277D262A0]7 = [MEMORY[0x277D262A0] sharedConnection];
+    v82 = [mEMORY[0x277D262A0]7 effectiveBoolValueForSetting:*MEMORY[0x277D25E88]];
 
     if (v82 == 2)
     {
@@ -3572,35 +3572,35 @@ LABEL_6:
     }
 
     v84 = [v132 specifierForID:@"WIPE_DEVICE_TEXT"];
-    v85 = [(PABSPasscodeLockController *)self _makeWipeDeviceGroupFooter];
-    [v84 setProperty:v85 forKey:v120];
+    _makeWipeDeviceGroupFooter = [(PABSPasscodeLockController *)self _makeWipeDeviceGroupFooter];
+    [v84 setProperty:_makeWipeDeviceGroupFooter forKey:v120];
 
-    v86 = [MEMORY[0x277D07D70] sharedInstance];
-    v87 = [v86 availabilityForListenerID:@"com.apple.Preferences" forService:0] == 1;
+    mEMORY[0x277D07D70] = [MEMORY[0x277D07D70] sharedInstance];
+    v87 = [mEMORY[0x277D07D70] availabilityForListenerID:@"com.apple.Preferences" forService:0] == 1;
 
-    v88 = [MEMORY[0x277D07DB0] sharedInstance];
-    LODWORD(v86) = [v88 isTelephonyDevice];
+    mEMORY[0x277D07DB0] = [MEMORY[0x277D07DB0] sharedInstance];
+    LODWORD(mEMORY[0x277D07D70]) = [mEMORY[0x277D07DB0] isTelephonyDevice];
 
-    v89 = [MEMORY[0x277D07D70] sharedInstance];
-    v90 = [v89 availabilityForListenerID:@"com.apple.Preferences" forService:1] == 1;
+    mEMORY[0x277D07D70]2 = [MEMORY[0x277D07D70] sharedInstance];
+    v90 = [mEMORY[0x277D07D70]2 availabilityForListenerID:@"com.apple.Preferences" forService:1] == 1;
 
-    v91 = [MEMORY[0x277D07DB0] sharedInstance];
-    v92 = [v91 supportsSMS];
+    mEMORY[0x277D07DB0]2 = [MEMORY[0x277D07DB0] sharedInstance];
+    supportsSMS = [mEMORY[0x277D07DB0]2 supportsSMS];
 
-    v93 = [MEMORY[0x277D07DB0] sharedInstance];
-    v94 = [v93 deviceType];
+    mEMORY[0x277D07DB0]3 = [MEMORY[0x277D07DB0] sharedInstance];
+    deviceType = [mEMORY[0x277D07DB0]3 deviceType];
 
-    v95 = [MEMORY[0x277D07DB0] sharedInstance];
-    v96 = [v95 deviceType];
+    mEMORY[0x277D07DB0]4 = [MEMORY[0x277D07DB0] sharedInstance];
+    deviceType2 = [mEMORY[0x277D07DB0]4 deviceType];
 
     v97 = 0;
-    if ((v87 | v86))
+    if ((v87 | mEMORY[0x277D07D70]))
     {
-      v98 = v90 | v92;
+      v98 = v90 | supportsSMS;
       v99 = v118;
       if (v98)
       {
-        v97 = v94 == 3 || v96 == 2;
+        v97 = deviceType == 3 || deviceType2 == 2;
       }
     }
 
@@ -3629,14 +3629,14 @@ LABEL_6:
     }
 
     v104 = [v132 specifierForID:@"PASSCODE_REQ"];
-    v105 = [v104 values];
-    [v104 setProperty:v105 forKey:@"gracePeriodValues"];
+    values = [v104 values];
+    [v104 setProperty:values forKey:@"gracePeriodValues"];
 
-    v106 = [v104 titleDictionary];
-    [v104 setProperty:v106 forKey:@"gracePeriodTitles"];
+    titleDictionary = [v104 titleDictionary];
+    [v104 setProperty:titleDictionary forKey:@"gracePeriodTitles"];
 
-    v107 = [v104 shortTitleDictionary];
-    [v104 setProperty:v107 forKey:@"gracePeriodShortTitles"];
+    shortTitleDictionary = [v104 shortTitleDictionary];
+    [v104 setProperty:shortTitleDictionary forKey:@"gracePeriodShortTitles"];
 
     [(PABSPasscodeLockController *)self _updateGracePeriodForSpecifier:v104];
     [(PABSPasscodeLockController *)self disablePasscodeRequiredSpecifiers:v132];
@@ -3652,14 +3652,14 @@ LABEL_6:
   return v3;
 }
 
-- (id)enabledInLockScreen:(id)a3
+- (id)enabledInLockScreen:(id)screen
 {
   v3 = MEMORY[0x277D262A0];
-  v4 = a3;
-  v5 = [v3 sharedConnection];
-  v6 = [v4 propertyForKey:@"MC_FEATURE"];
+  screenCopy = screen;
+  sharedConnection = [v3 sharedConnection];
+  v6 = [screenCopy propertyForKey:@"MC_FEATURE"];
 
-  v7 = [v5 effectiveBoolValueForSetting:v6];
+  v7 = [sharedConnection effectiveBoolValueForSetting:v6];
   v8 = MEMORY[0x277CCABB0];
 
   return [v8 numberWithInt:v7 == 1];
@@ -3704,36 +3704,36 @@ LABEL_6:
   return v4;
 }
 
-- (id)enabledInLockScreenForUSB:(id)a3
+- (id)enabledInLockScreenForUSB:(id)b
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(PABSPasscodeLockController *)self enabledInLockScreen:a3];
+  v4 = [(PABSPasscodeLockController *)self enabledInLockScreen:b];
   v5 = [v3 numberWithInt:{objc_msgSend(v4, "BOOLValue") ^ 1}];
 
   return v5;
 }
 
-- (void)setEnabledInLockScreenForUSB:(id)a3 specifier:(id)a4
+- (void)setEnabledInLockScreenForUSB:(id)b specifier:(id)specifier
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPasscodeLockController *)self enabledInLockScreenForUSB:v7];
+  bCopy = b;
+  specifierCopy = specifier;
+  v8 = [(PABSPasscodeLockController *)self enabledInLockScreenForUSB:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     *buf = 138412802;
-    v46 = v10;
+    v46 = identifier;
     v47 = 2112;
-    v48 = v6;
+    v48 = bCopy;
     v49 = 2112;
     v50 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", buf, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 != [v8 BOOLValue])
+  bOOLValue = [bCopy BOOLValue];
+  if (bOOLValue != [v8 BOOLValue])
   {
     objc_initWeak(buf, self);
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -3741,17 +3741,17 @@ LABEL_6:
     aBlock[2] = __69__PABSPasscodeLockController_setEnabledInLockScreenForUSB_specifier___block_invoke;
     aBlock[3] = &unk_279A03498;
     objc_copyWeak(&v44, buf);
-    v12 = v6;
+    v12 = bCopy;
     v41 = v12;
-    v33 = v7;
+    v33 = specifierCopy;
     v42 = v33;
-    v43 = self;
+    selfCopy = self;
     v34 = _Block_copy(aBlock);
     v13 = _AXSGetUSBRMDisablers();
-    v14 = [v12 BOOLValue];
+    bOOLValue2 = [v12 BOOLValue];
     if (v13)
     {
-      v15 = v14;
+      v15 = bOOLValue2;
     }
 
     else
@@ -3793,23 +3793,23 @@ LABEL_24:
     }
 
     v19 = MEMORY[0x277D75110];
-    v20 = [MEMORY[0x277D75418] currentDevice];
-    v21 = [v20 sf_isiPad];
-    if (v21)
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPad = [currentDevice sf_isiPad];
+    if (sf_isiPad)
     {
-      v22 = [v33 name];
+      name = [v33 name];
     }
 
     else
     {
-      v22 = 0;
+      name = 0;
     }
 
     v23 = PABS_LocalizedStringForPasscodeLock(v18);
-    v24 = [MEMORY[0x277D75418] currentDevice];
-    v25 = [v19 alertControllerWithTitle:v22 message:v23 preferredStyle:{objc_msgSend(v24, "sf_isiPad")}];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    v25 = [v19 alertControllerWithTitle:name message:v23 preferredStyle:{objc_msgSend(currentDevice2, "sf_isiPad")}];
 
-    if (v21)
+    if (sf_isiPad)
     {
     }
 
@@ -3830,7 +3830,7 @@ LABEL_24:
     v35[2] = __69__PABSPasscodeLockController_setEnabledInLockScreenForUSB_specifier___block_invoke_2;
     v35[3] = &unk_279A03220;
     v36 = v33;
-    v37 = self;
+    selfCopy2 = self;
     v31 = [v29 actionWithTitle:v30 style:1 handler:v35];
     [v25 addAction:v31];
 
@@ -3841,9 +3841,9 @@ LABEL_24:
   v16 = PABSLogForCategory(0);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v7 identifier];
+    identifier2 = [specifierCopy identifier];
     *buf = 138412290;
-    v46 = v17;
+    v46 = identifier2;
     _os_log_impl(&dword_25E0E9000, v16, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", buf, 0xCu);
   }
 
@@ -3901,57 +3901,57 @@ uint64_t __69__PABSPasscodeLockController_setEnabledInLockScreenForUSB_specifier
   return result;
 }
 
-- (void)setEnabledInLockScreen:(id)a3 specifier:(id)a4
+- (void)setEnabledInLockScreen:(id)screen specifier:(id)specifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPasscodeLockController *)self enabledInLockScreen:v7];
+  screenCopy = screen;
+  specifierCopy = specifier;
+  v8 = [(PABSPasscodeLockController *)self enabledInLockScreen:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     v17 = 138412802;
-    v18 = v10;
+    v18 = identifier;
     v19 = 2112;
-    v20 = v6;
+    v20 = screenCopy;
     v21 = 2112;
     v22 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", &v17, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 == [v8 BOOLValue])
+  bOOLValue = [screenCopy BOOLValue];
+  if (bOOLValue == [v8 BOOLValue])
   {
-    v12 = PABSLogForCategory(0);
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+    mEMORY[0x277D262A0] = PABSLogForCategory(0);
+    if (os_log_type_enabled(mEMORY[0x277D262A0], OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v7 identifier];
+      identifier2 = [specifierCopy identifier];
       v17 = 138412290;
-      v18 = v15;
-      _os_log_impl(&dword_25E0E9000, v12, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", &v17, 0xCu);
+      v18 = identifier2;
+      _os_log_impl(&dword_25E0E9000, mEMORY[0x277D262A0], OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", &v17, 0xCu);
     }
   }
 
   else
   {
-    v12 = [MEMORY[0x277D262A0] sharedConnection];
-    v13 = [v6 BOOLValue];
-    v14 = [v7 propertyForKey:@"MC_FEATURE"];
-    [v12 setBoolValue:v13 forSetting:v14];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    bOOLValue2 = [screenCopy BOOLValue];
+    v14 = [specifierCopy propertyForKey:@"MC_FEATURE"];
+    [mEMORY[0x277D262A0] setBoolValue:bOOLValue2 forSetting:v14];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)disablePasscodeRequiredSpecifiers:(id)a3
+- (void)disablePasscodeRequiredSpecifiers:(id)specifiers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  specifiersCopy = specifiers;
   v4 = +[PABSPasscode sharedInstance];
-  v5 = [v4 isPasscodeSet];
+  isPasscodeSet = [v4 isPasscodeSet];
 
-  if ((v5 & 1) == 0)
+  if ((isPasscodeSet & 1) == 0)
   {
     v6 = objc_opt_new();
     [v6 addObject:@"PASSCODE_TOGGLE"];
@@ -3961,8 +3961,8 @@ uint64_t __69__PABSPasscodeLockController_setEnabledInLockScreenForUSB_specifier
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v3;
-    v7 = v3;
+    v18 = specifiersCopy;
+    v7 = specifiersCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -3980,8 +3980,8 @@ uint64_t __69__PABSPasscodeLockController_setEnabledInLockScreenForUSB_specifier
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 identifier];
-          v16 = [v6 containsObject:v15];
+          identifier = [v14 identifier];
+          v16 = [v6 containsObject:identifier];
 
           if ((v16 & 1) == 0)
           {
@@ -3995,19 +3995,19 @@ uint64_t __69__PABSPasscodeLockController_setEnabledInLockScreenForUSB_specifier
       while (v9);
     }
 
-    v3 = v18;
+    specifiersCopy = v18;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileNotification:(id)a3
+- (void)profileNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x277D26180]];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x277D26180]];
 
-  LODWORD(v4) = [v5 intValue];
-  if (v4 != getpid())
+  LODWORD(userInfo) = [v5 intValue];
+  if (userInfo != getpid())
   {
     v6 = PABSLogForCategory(0);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -4022,13 +4022,13 @@ uint64_t __69__PABSPasscodeLockController_setEnabledInLockScreenForUSB_specifier
 
 - (id)_allowAccessWhenLockedSpecifierFooter
 {
-  v3 = [getLockdownModeManagerClass() shared];
-  v4 = [v3 enabled];
+  shared = [getLockdownModeManagerClass() shared];
+  enabled = [shared enabled];
 
   IsAvailable = PKNearFieldRadioIsAvailable();
   if ([(PABSPasscodeLockController *)self shouldIncludeAccessoriesToggle]&& (PKIsUSBRestrictedModeDisabledByMobileAsset() & 1) == 0)
   {
-    if (v4)
+    if (enabled)
     {
       v8 = @"ACCESSORIES_OFF_LOCKDOWN";
     }
@@ -4066,10 +4066,10 @@ uint64_t __69__PABSPasscodeLockController_setEnabledInLockScreenForUSB_specifier
     v7 = PABS_LocalizedStringForPasscodeLock(v6);
   }
 
-  v9 = [MEMORY[0x277D37D30] shared];
-  v10 = [v9 isEffectivelyLocked];
+  mEMORY[0x277D37D30] = [MEMORY[0x277D37D30] shared];
+  isEffectivelyLocked = [mEMORY[0x277D37D30] isEffectivelyLocked];
 
-  if (v10)
+  if (isEffectivelyLocked)
   {
     if (PSIsPearlAvailable())
     {
@@ -4102,9 +4102,9 @@ LABEL_21:
   return v7;
 }
 
-- (void)updatePhoneAutounlockSection:(BOOL)a3
+- (void)updatePhoneAutounlockSection:(BOOL)section
 {
-  if (a3)
+  if (section)
   {
 
     [(PABSPasscodeLockController *)self updateAutoUnlockSpecifiers];
@@ -4112,13 +4112,13 @@ LABEL_21:
 
   else
   {
-    v4 = [(PABSPasscodeLockController *)self autoUnlockSpecifiers];
-    v5 = [v4 count];
+    autoUnlockSpecifiers = [(PABSPasscodeLockController *)self autoUnlockSpecifiers];
+    v5 = [autoUnlockSpecifiers count];
 
     if (v5)
     {
-      v6 = [(PABSPasscodeLockController *)self autoUnlockSpecifiers];
-      [(PABSPasscodeLockController *)self removeContiguousSpecifiers:v6 animated:1];
+      autoUnlockSpecifiers2 = [(PABSPasscodeLockController *)self autoUnlockSpecifiers];
+      [(PABSPasscodeLockController *)self removeContiguousSpecifiers:autoUnlockSpecifiers2 animated:1];
 
       [(PABSPasscodeLockController *)self setAutoUnlockSpecifiers:0];
     }
@@ -4128,31 +4128,31 @@ LABEL_21:
 - (void)updateAutoUnlockSpecifiers
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D54C20] autoUnlockSupported];
-  v4 = [(PABSPasscodeLockController *)self authenticationManager];
-  v5 = [v4 isSupportedForType:12];
+  autoUnlockSupported = [MEMORY[0x277D54C20] autoUnlockSupported];
+  authenticationManager = [(PABSPasscodeLockController *)self authenticationManager];
+  v5 = [authenticationManager isSupportedForType:12];
 
   v6 = +[PABSBiometrics sharedInstance];
-  v7 = [v6 isEnrolledInFaceID];
+  isEnrolledInFaceID = [v6 isEnrolledInFaceID];
 
   v8 = +[PABSPasscodeAndBiometrics_Common sharedInstance];
-  v9 = [v8 isUnlockEnabled];
+  isUnlockEnabled = [v8 isUnlockEnabled];
 
   v10 = PABSLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109888;
-    *&buf[4] = v3;
+    *&buf[4] = autoUnlockSupported;
     LOWORD(v30) = 1024;
     *(&v30 + 2) = v5;
     HIWORD(v30) = 1024;
-    LODWORD(v31) = v7;
+    LODWORD(v31) = isEnrolledInFaceID;
     WORD2(v31) = 1024;
-    *(&v31 + 6) = v9;
+    *(&v31 + 6) = isUnlockEnabled;
     _os_log_impl(&dword_25E0E9000, v10, OS_LOG_TYPE_DEFAULT, "Auto unlock supported: %d, Vision unlock supported: %d, is enrolled in faceID: %d, phone unlock enabled: %d", buf, 0x1Au);
   }
 
-  if ((v3 | v5) & v7 & v9)
+  if ((autoUnlockSupported | v5) & isEnrolledInFaceID & isUnlockEnabled)
   {
     v11 = dispatch_group_create();
     *buf = 0;
@@ -4167,8 +4167,8 @@ LABEL_21:
     v27[3] = __Block_byref_object_copy__0;
     v27[4] = __Block_byref_object_dispose__0;
     v28 = objc_opt_new();
-    v12 = [(PABSPasscodeLockController *)self authenticationManager];
-    v13 = [v12 isSupportedForType:12];
+    authenticationManager2 = [(PABSPasscodeLockController *)self authenticationManager];
+    v13 = [authenticationManager2 isSupportedForType:12];
 
     if (v13)
     {
@@ -4180,7 +4180,7 @@ LABEL_21:
         _os_log_impl(&dword_25E0E9000, v14, OS_LOG_TYPE_DEFAULT, "Querying for visionUnlockiOS", v26, 2u);
       }
 
-      v15 = [(PABSPasscodeLockController *)self authenticationManager];
+      authenticationManager3 = [(PABSPasscodeLockController *)self authenticationManager];
       v23[0] = MEMORY[0x277D85DD0];
       v23[1] = 3221225472;
       v23[2] = __56__PABSPasscodeLockController_updateAutoUnlockSpecifiers__block_invoke;
@@ -4188,7 +4188,7 @@ LABEL_21:
       v25 = v27;
       v23[4] = self;
       v24 = v11;
-      [v15 listCandidateDevicesForType:12 completionHandler:v23];
+      [authenticationManager3 listCandidateDevicesForType:12 completionHandler:v23];
     }
 
     if ([MEMORY[0x277D54C20] autoUnlockSupported])
@@ -4201,7 +4201,7 @@ LABEL_21:
         _os_log_impl(&dword_25E0E9000, v16, OS_LOG_TYPE_DEFAULT, "Querying for watchUnlockiOS", v26, 2u);
       }
 
-      v17 = [(PABSPasscodeLockController *)self autoUnlockManager];
+      autoUnlockManager = [(PABSPasscodeLockController *)self autoUnlockManager];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __56__PABSPasscodeLockController_updateAutoUnlockSpecifiers__block_invoke_864;
@@ -4209,7 +4209,7 @@ LABEL_21:
       v22 = buf;
       v20[4] = self;
       v21 = v11;
-      [v17 eligibleAutoUnlockDevicesWithCompletionHandler:v20];
+      [autoUnlockManager eligibleAutoUnlockDevicesWithCompletionHandler:v20];
     }
 
     block[0] = MEMORY[0x277D85DD0];
@@ -4322,41 +4322,41 @@ void __56__PABSPasscodeLockController_updateAutoUnlockSpecifiers__block_invoke_8
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupAutoUnlockSectionWithSpecifiers:(id)a3
+- (void)setupAutoUnlockSectionWithSpecifiers:(id)specifiers
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifiersCopy = specifiers;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = specifiersCopy;
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "All unlock specifiers: %@", buf, 0xCu);
   }
 
-  v6 = [v4 mutableCopy];
-  if ([v4 count])
+  v6 = [specifiersCopy mutableCopy];
+  if ([specifiersCopy count])
   {
     v7 = MEMORY[0x277D3FAD8];
     v8 = PABS_LocalizedStringForPasscodeLock(@"USE_APPLE_DEVICES_TO_UNLOCK");
     v9 = [v7 groupSpecifierWithID:@"AUTO_UNLOCK_DEVICES_GROUP" name:v8];
 
     [v6 insertObject:v9 atIndex:0];
-    v10 = [(PABSPasscodeLockController *)self useAlternateFooterTextForPAU];
-    v11 = [MEMORY[0x277CEF640] assistantEnabled];
+    useAlternateFooterTextForPAU = [(PABSPasscodeLockController *)self useAlternateFooterTextForPAU];
+    assistantEnabled = [MEMORY[0x277CEF640] assistantEnabled];
     v12 = @"PHONE_AUTO_UNLOCK_FOOTER_PERIOCULAR_ASSISTANT_DISABLED";
-    if (v11)
+    if (assistantEnabled)
     {
       v12 = @"PHONE_AUTO_UNLOCK_FOOTER_PERIOCULAR_ASSISTANT_ENABLED";
     }
 
     v13 = @"PHONE_NEARBY_DEVICE_AUTO_UNLOCK_FOOTER_ASSISTANT_ENABLED";
-    if (!v11)
+    if (!assistantEnabled)
     {
       v13 = @"PHONE_NEARBY_DEVICE_AUTO_UNLOCK_FOOTER_ASSISTANT_DISABLED";
     }
 
-    if (v10)
+    if (useAlternateFooterTextForPAU)
     {
       v14 = v12;
     }
@@ -4475,22 +4475,22 @@ void __67__PABSPasscodeLockController_setupAutoUnlockSectionWithSpecifiers___blo
   if (v2)
   {
     v3 = +[PABSBiometrics sharedInstance];
-    v4 = [v3 isPeriocularEnrollmentSupported];
+    isPeriocularEnrollmentSupported = [v3 isPeriocularEnrollmentSupported];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = isPeriocularEnrollmentSupported;
   }
 
   return v2;
 }
 
-- (id)parseEligibleAutoUnlockDevices:(id)a3
+- (id)parseEligibleAutoUnlockDevices:(id)devices
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(devicesCopy, "count")}];
     *buf = 138412290;
     v41 = v6;
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "Found %@ autounlock device(s)", buf, 0xCu);
@@ -4501,7 +4501,7 @@ void __67__PABSPasscodeLockController_setupAutoUnlockSectionWithSpecifiers___blo
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v4;
+  obj = devicesCopy;
   v8 = [obj countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v8)
   {
@@ -4522,8 +4522,8 @@ void __67__PABSPasscodeLockController_setupAutoUnlockSectionWithSpecifiers___blo
 
         v12 = *(*(&v36 + 1) + 8 * v11);
         v13 = MEMORY[0x277D3FAD8];
-        v14 = [v12 name];
-        v15 = [v13 preferenceSpecifierNamed:v14 target:self set:sel_setAutoUnlockEnabled_specifier_ get:sel_autoUnlockEnabled_ detail:0 cell:6 edit:0];
+        name = [v12 name];
+        v15 = [v13 preferenceSpecifierNamed:name target:self set:sel_setAutoUnlockEnabled_specifier_ get:sel_autoUnlockEnabled_ detail:0 cell:6 edit:0];
 
         v16 = PABSLogForCategory(0);
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -4532,17 +4532,17 @@ void __67__PABSPasscodeLockController_setupAutoUnlockSectionWithSpecifiers___blo
           v17 = v10;
           v18 = v7;
           v20 = v19 = self;
-          v21 = [v12 modelDescription];
-          v22 = [v12 unlockEnabled];
-          v23 = [v12 supportsApproveWithWatch];
+          modelDescription = [v12 modelDescription];
+          unlockEnabled = [v12 unlockEnabled];
+          supportsApproveWithWatch = [v12 supportsApproveWithWatch];
           *buf = 138413058;
           v41 = v20;
           v42 = 2112;
-          v43 = v21;
+          v43 = modelDescription;
           v44 = 1024;
-          v45 = v22;
+          v45 = unlockEnabled;
           v46 = 1024;
-          v47 = v23;
+          v47 = supportsApproveWithWatch;
           _os_log_impl(&dword_25E0E9000, v16, OS_LOG_TYPE_DEFAULT, "PAU device name: %@, model description: %@, unlock enabled: %d, software supported: %d", buf, 0x22u);
 
           self = v19;
@@ -4553,13 +4553,13 @@ void __67__PABSPasscodeLockController_setupAutoUnlockSectionWithSpecifiers___blo
 
         if ([v12 supportsApproveWithWatch])
         {
-          v24 = [v12 modelDescription];
-          v25 = [v24 length];
+          modelDescription2 = [v12 modelDescription];
+          v25 = [modelDescription2 length];
 
           if (v25)
           {
-            v26 = [v12 modelDescription];
-            [v15 setProperty:v26 forKey:v35];
+            modelDescription3 = [v12 modelDescription];
+            [v15 setProperty:modelDescription3 forKey:v35];
           }
         }
 
@@ -4571,8 +4571,8 @@ void __67__PABSPasscodeLockController_setupAutoUnlockSectionWithSpecifiers___blo
           [v15 setProperty:MEMORY[0x277CBEC28] forKey:v32];
         }
 
-        v28 = [v12 uniqueID];
-        [v15 setIdentifier:v28];
+        uniqueID = [v12 uniqueID];
+        [v15 setIdentifier:uniqueID];
 
         [v15 setObject:v12 forKeyedSubscript:@"PABSAutoUnlockDeviceKey"];
         [v7 addObject:v15];
@@ -4593,52 +4593,52 @@ void __67__PABSPasscodeLockController_setupAutoUnlockSectionWithSpecifiers___blo
   return v29;
 }
 
-- (id)autoUnlockEnabled:(id)a3
+- (id)autoUnlockEnabled:(id)enabled
 {
-  v3 = [a3 objectForKeyedSubscript:@"PABSAutoUnlockDeviceKey"];
+  v3 = [enabled objectForKeyedSubscript:@"PABSAutoUnlockDeviceKey"];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "unlockEnabled")}];
 
   return v4;
 }
 
-- (void)setAutoUnlockEnabled:(id)a3 specifier:(id)a4
+- (void)setAutoUnlockEnabled:(id)enabled specifier:(id)specifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PABSPasscodeLockController *)self autoUnlockEnabled:v7];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  v8 = [(PABSPasscodeLockController *)self autoUnlockEnabled:specifierCopy];
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     *buf = 138412802;
-    v21 = v10;
+    v21 = identifier;
     v22 = 2112;
-    v23 = v6;
+    v23 = enabledCopy;
     v24 = 2112;
     v25 = v8;
     _os_log_impl(&dword_25E0E9000, v9, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", buf, 0x20u);
   }
 
-  v11 = [v6 BOOLValue];
-  if (v11 == [v8 BOOLValue])
+  bOOLValue = [enabledCopy BOOLValue];
+  if (bOOLValue == [v8 BOOLValue])
   {
     v12 = PABSLogForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v7 identifier];
+      identifier2 = [specifierCopy identifier];
       *buf = 138412290;
-      v21 = v13;
+      v21 = identifier2;
       _os_log_impl(&dword_25E0E9000, v12, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", buf, 0xCu);
     }
   }
 
   else
   {
-    v12 = [v7 objectForKeyedSubscript:@"PABSAutoUnlockDeviceKey"];
-    if ([v6 BOOLValue])
+    v12 = [specifierCopy objectForKeyedSubscript:@"PABSAutoUnlockDeviceKey"];
+    if ([enabledCopy BOOLValue])
     {
-      [(PABSPasscodeLockController *)self showAlertForPhoneAutoUnlockEnablementOfDevice:v12 ofSpecifier:v7];
+      [(PABSPasscodeLockController *)self showAlertForPhoneAutoUnlockEnablementOfDevice:v12 ofSpecifier:specifierCopy];
     }
 
     else
@@ -4651,15 +4651,15 @@ void __67__PABSPasscodeLockController_setupAutoUnlockSectionWithSpecifiers___blo
         _os_log_impl(&dword_25E0E9000, v14, OS_LOG_TYPE_DEFAULT, "disabling autounlock device: %@", buf, 0xCu);
       }
 
-      v15 = [(PABSPasscodeLockController *)self autoUnlockManager];
+      autoUnlockManager = [(PABSPasscodeLockController *)self autoUnlockManager];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __61__PABSPasscodeLockController_setAutoUnlockEnabled_specifier___block_invoke;
       v17[3] = &unk_279A034E8;
       v12 = v12;
       v18 = v12;
-      v19 = self;
-      [v15 disableAutoUnlockForDevice:v12 completionHandler:v17];
+      selfCopy = self;
+      [autoUnlockManager disableAutoUnlockForDevice:v12 completionHandler:v17];
     }
   }
 
@@ -4692,16 +4692,16 @@ void __61__PABSPasscodeLockController_setAutoUnlockEnabled_specifier___block_inv
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateAutoUnlockDevicewithDevice:(id)a3
+- (void)updateAutoUnlockDevicewithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __63__PABSPasscodeLockController_updateAutoUnlockDevicewithDevice___block_invoke;
   v6[3] = &unk_279A030D0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = deviceCopy;
+  v5 = deviceCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -4733,25 +4733,25 @@ void __63__PABSPasscodeLockController_updateAutoUnlockDevicewithDevice___block_i
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showAlertForPhoneAutoUnlockEnablementOfDevice:(id)a3 ofSpecifier:(id)a4
+- (void)showAlertForPhoneAutoUnlockEnablementOfDevice:(id)device ofSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  deviceCopy = device;
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
-    v8 = [v6 uniqueID];
-    v7 = [(PABSPasscodeLockController *)self specifierForID:v8];
+    uniqueID = [deviceCopy uniqueID];
+    specifierCopy = [(PABSPasscodeLockController *)self specifierForID:uniqueID];
   }
 
   v9 = MEMORY[0x277D75110];
   v10 = MEMORY[0x277CCACA8];
   v11 = PABS_LocalizedStringForPasscodeLock(@"PHONE_AUTO_UNLOCK_ALERT_TITLE");
-  v12 = [v6 name];
-  v13 = [v10 stringWithFormat:v11, v12];
+  name = [deviceCopy name];
+  v13 = [v10 stringWithFormat:v11, name];
   v14 = MEMORY[0x277CCACA8];
   v15 = PABS_LocalizedStringForPasscodeLock(@"PHONE_AUTO_UNLOCK_ALERT_BODY");
-  v16 = [v6 name];
-  v17 = [v14 stringWithFormat:v15, v16];
+  name2 = [deviceCopy name];
+  v17 = [v14 stringWithFormat:v15, name2];
   v18 = [v9 alertControllerWithTitle:v13 message:v17 preferredStyle:1];
 
   v19 = MEMORY[0x277D750F8];
@@ -4760,11 +4760,11 @@ void __63__PABSPasscodeLockController_updateAutoUnlockDevicewithDevice___block_i
   v32[1] = 3221225472;
   v32[2] = __88__PABSPasscodeLockController_showAlertForPhoneAutoUnlockEnablementOfDevice_ofSpecifier___block_invoke;
   v32[3] = &unk_279A036A8;
-  v21 = v7;
+  v21 = specifierCopy;
   v33 = v21;
-  v22 = v6;
+  v22 = deviceCopy;
   v34 = v22;
-  v35 = self;
+  selfCopy = self;
   v23 = [v19 actionWithTitle:v20 style:1 handler:v32];
   [v18 addAction:v23];
 
@@ -4809,21 +4809,21 @@ uint64_t __88__PABSPasscodeLockController_showAlertForPhoneAutoUnlockEnablementO
   return result;
 }
 
-- (void)enableAutoUnlockForDevice:(id)a3 ofSpecifier:(id)a4
+- (void)enableAutoUnlockForDevice:(id)device ofSpecifier:(id)specifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v6 = PABSLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412290;
-    v15 = v5;
+    v15 = deviceCopy;
     _os_log_impl(&dword_25E0E9000, v6, OS_LOG_TYPE_DEFAULT, "enabling autounlock device: %@", &v14, 0xCu);
   }
 
-  v7 = [(PABSPasscodeLockController *)self specifier];
+  specifier = [(PABSPasscodeLockController *)self specifier];
 
-  if (!v7)
+  if (!specifier)
   {
     v8 = PABSLogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -4832,8 +4832,8 @@ uint64_t __88__PABSPasscodeLockController_showAlertForPhoneAutoUnlockEnablementO
     }
   }
 
-  v9 = [(PABSPasscodeLockController *)self specifier];
-  v10 = [v9 propertyForKey:*MEMORY[0x277D40100]];
+  specifier2 = [(PABSPasscodeLockController *)self specifier];
+  v10 = [specifier2 propertyForKey:*MEMORY[0x277D40100]];
 
   if (!v10)
   {
@@ -4844,25 +4844,25 @@ uint64_t __88__PABSPasscodeLockController_showAlertForPhoneAutoUnlockEnablementO
     }
   }
 
-  v12 = [(PABSPasscodeLockController *)self autoUnlockManager];
-  [v12 enableAutoUnlockWithDevice:v5 passcode:v10];
+  autoUnlockManager = [(PABSPasscodeLockController *)self autoUnlockManager];
+  [autoUnlockManager enableAutoUnlockWithDevice:deviceCopy passcode:v10];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentAutoUnlockEnableFailureAlertWithDevice:(id)a3 withError:(id)a4
+- (void)presentAutoUnlockEnableFailureAlertWithDevice:(id)device withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  errorCopy = error;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __86__PABSPasscodeLockController_presentAutoUnlockEnableFailureAlertWithDevice_withError___block_invoke;
   block[3] = &unk_279A03D38;
-  v11 = v6;
-  v12 = v7;
-  v13 = self;
-  v8 = v7;
-  v9 = v6;
+  v11 = deviceCopy;
+  v12 = errorCopy;
+  selfCopy = self;
+  v8 = errorCopy;
+  v9 = deviceCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -5009,65 +5009,65 @@ void __86__PABSPasscodeLockController_presentAutoUnlockEnableFailureAlertWithDev
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 enablingLockedDevice:(id)a4
+- (void)manager:(id)manager enablingLockedDevice:(id)device
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  deviceCopy = device;
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = deviceCopy;
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "autounlock device requires unlock: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 didEnableDevice:(id)a4
+- (void)manager:(id)manager didEnableDevice:(id)device
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  deviceCopy = device;
   v6 = PABSLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = deviceCopy;
     _os_log_impl(&dword_25E0E9000, v6, OS_LOG_TYPE_DEFAULT, "autounlock device enabled: %@", &v8, 0xCu);
   }
 
-  [(PABSPasscodeLockController *)self updateAutoUnlockDevicewithDevice:v5];
+  [(PABSPasscodeLockController *)self updateAutoUnlockDevicewithDevice:deviceCopy];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 failedToEnableDevice:(id)a4 error:(id)a5
+- (void)manager:(id)manager failedToEnableDevice:(id)device error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  deviceCopy = device;
+  errorCopy = error;
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     [PABSPasscodeLockController manager:failedToEnableDevice:error:];
   }
 
-  [(PABSPasscodeLockController *)self updateAutoUnlockDevicewithDevice:v7];
-  [(PABSPasscodeLockController *)self presentAutoUnlockEnableFailureAlertWithDevice:v7 withError:v8];
+  [(PABSPasscodeLockController *)self updateAutoUnlockDevicewithDevice:deviceCopy];
+  [(PABSPasscodeLockController *)self presentAutoUnlockEnableFailureAlertWithDevice:deviceCopy withError:errorCopy];
 }
 
-- (id)visionUnlockEnabled:(id)a3
+- (id)visionUnlockEnabled:(id)enabled
 {
-  v3 = [a3 objectForKeyedSubscript:@"PABSVisionUnlockDeviceKey"];
+  v3 = [enabled objectForKeyedSubscript:@"PABSVisionUnlockDeviceKey"];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v3, "enabledAsKey")}];
 
   return v4;
 }
 
-- (void)setVisionUnlockEnabled:(id)a3 specifier:(id)a4
+- (void)setVisionUnlockEnabled:(id)enabled specifier:(id)specifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
     v8 = PABSLogForCategory(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -5076,22 +5076,22 @@ void __86__PABSPasscodeLockController_presentAutoUnlockEnableFailureAlertWithDev
     }
   }
 
-  v9 = [(PABSPasscodeLockController *)self visionUnlockEnabled:v7];
+  v9 = [(PABSPasscodeLockController *)self visionUnlockEnabled:specifierCopy];
   v10 = PABSLogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 identifier];
+    identifier = [specifierCopy identifier];
     v21 = 138412802;
-    v22 = v11;
+    v22 = identifier;
     v23 = 2112;
-    v24 = v6;
+    v24 = enabledCopy;
     v25 = 2112;
     v26 = v9;
     _os_log_impl(&dword_25E0E9000, v10, OS_LOG_TYPE_DEFAULT, "%@: Set: %@ , current is %@", &v21, 0x20u);
   }
 
-  v12 = [v6 BOOLValue];
-  if (v12 == [v9 BOOLValue])
+  bOOLValue = [enabledCopy BOOLValue];
+  if (bOOLValue == [v9 BOOLValue])
   {
     v13 = PABSLogForCategory(0);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -5099,17 +5099,17 @@ void __86__PABSPasscodeLockController_presentAutoUnlockEnableFailureAlertWithDev
       goto LABEL_17;
     }
 
-    v14 = [v7 identifier];
+    identifier2 = [specifierCopy identifier];
     v21 = 138412290;
-    v22 = v14;
+    v22 = identifier2;
     _os_log_impl(&dword_25E0E9000, v13, OS_LOG_TYPE_DEFAULT, "%@: Set: ignoring", &v21, 0xCu);
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v13 = [v7 objectForKeyedSubscript:@"PABSVisionUnlockDeviceKey"];
-  if (![v6 BOOLValue])
+  v13 = [specifierCopy objectForKeyedSubscript:@"PABSVisionUnlockDeviceKey"];
+  if (![enabledCopy BOOLValue])
   {
     v15 = PABSLogForCategory(0);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -5119,43 +5119,43 @@ LABEL_16:
       _os_log_impl(&dword_25E0E9000, v15, OS_LOG_TYPE_DEFAULT, "disabling Vision Pro autounlock device: %@", &v21, 0xCu);
     }
 
-    v16 = [(PABSPasscodeLockController *)self authenticationManager];
-    v17 = [v13 idsDeviceID];
-    v18 = [v16 disableForType:12 withIDSDeviceID:v17];
-    [v7 setObject:v18 forKeyedSubscript:@"PABSVisionUnlockPairingSessionKey"];
+    authenticationManager = [(PABSPasscodeLockController *)self authenticationManager];
+    idsDeviceID = [v13 idsDeviceID];
+    v18 = [authenticationManager disableForType:12 withIDSDeviceID:idsDeviceID];
+    [specifierCopy setObject:v18 forKeyedSubscript:@"PABSVisionUnlockPairingSessionKey"];
 
-    v14 = PABSLogForCategory(0);
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    identifier2 = PABSLogForCategory(0);
+    if (os_log_type_enabled(identifier2, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v7 objectForKeyedSubscript:@"PABSVisionUnlockPairingSessionKey"];
+      v19 = [specifierCopy objectForKeyedSubscript:@"PABSVisionUnlockPairingSessionKey"];
       v21 = 138412290;
       v22 = v19;
-      _os_log_impl(&dword_25E0E9000, v14, OS_LOG_TYPE_DEFAULT, "SeesionID for disabling Vision Pro autounlock device: %@", &v21, 0xCu);
+      _os_log_impl(&dword_25E0E9000, identifier2, OS_LOG_TYPE_DEFAULT, "SeesionID for disabling Vision Pro autounlock device: %@", &v21, 0xCu);
     }
 
     goto LABEL_16;
   }
 
-  [(PABSPasscodeLockController *)self showAlertForVisionUnlockEnablementOfDevice:v13 ofSpecifier:v7];
+  [(PABSPasscodeLockController *)self showAlertForVisionUnlockEnablementOfDevice:v13 ofSpecifier:specifierCopy];
 LABEL_17:
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableVisionUnlockForDevice:(id)a3 ofSpecifier:(id)a4
+- (void)enableVisionUnlockForDevice:(id)device ofSpecifier:(id)specifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  specifierCopy = specifier;
   v8 = PABSLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138412290;
-    v20 = v6;
+    v20 = deviceCopy;
     _os_log_impl(&dword_25E0E9000, v8, OS_LOG_TYPE_DEFAULT, "enabling Vision Pro autounlock device: %@", &v19, 0xCu);
   }
 
-  if (!v7)
+  if (!specifierCopy)
   {
     v9 = PABSLogForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -5164,8 +5164,8 @@ LABEL_17:
     }
   }
 
-  v10 = [(PABSPasscodeLockController *)self specifier];
-  v11 = [v10 propertyForKey:*MEMORY[0x277D40100]];
+  specifier = [(PABSPasscodeLockController *)self specifier];
+  v11 = [specifier propertyForKey:*MEMORY[0x277D40100]];
 
   if (!v11)
   {
@@ -5176,15 +5176,15 @@ LABEL_17:
     }
   }
 
-  v13 = [(PABSPasscodeLockController *)self authenticationManager];
-  v14 = [v6 idsDeviceID];
-  v15 = [v13 enableForType:12 withIDSDeviceID:v14 passcode:v11];
-  [v7 setObject:v15 forKeyedSubscript:@"PABSVisionUnlockPairingSessionKey"];
+  authenticationManager = [(PABSPasscodeLockController *)self authenticationManager];
+  idsDeviceID = [deviceCopy idsDeviceID];
+  v15 = [authenticationManager enableForType:12 withIDSDeviceID:idsDeviceID passcode:v11];
+  [specifierCopy setObject:v15 forKeyedSubscript:@"PABSVisionUnlockPairingSessionKey"];
 
   v16 = PABSLogForCategory(0);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [v7 objectForKeyedSubscript:@"PABSVisionUnlockPairingSessionKey"];
+    v17 = [specifierCopy objectForKeyedSubscript:@"PABSVisionUnlockPairingSessionKey"];
     v19 = 138412290;
     v20 = v17;
     _os_log_impl(&dword_25E0E9000, v16, OS_LOG_TYPE_DEFAULT, "SeesionID for enabling Vision Pro autounlock device: %@", &v19, 0xCu);
@@ -5193,15 +5193,15 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parseVisionUnlockCandidateDevices:(id)a3
+- (id)parseVisionUnlockCandidateDevices:(id)devices
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  devicesCopy = devices;
   v4 = objc_opt_new();
   v5 = PABSLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v3, "count")}];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(devicesCopy, "count")}];
     *buf = 138412290;
     v34 = v6;
     _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "Found %@ vision unlock ios device(s)", buf, 0xCu);
@@ -5211,7 +5211,7 @@ LABEL_17:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = devicesCopy;
   v7 = [obj countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v7)
   {
@@ -5231,33 +5231,33 @@ LABEL_17:
         v12 = PABSLogForCategory(0);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v11 name];
-          v14 = [v11 modelDescription];
-          v15 = [v11 enabledAsKey];
+          name = [v11 name];
+          modelDescription = [v11 modelDescription];
+          enabledAsKey = [v11 enabledAsKey];
           *buf = 138412802;
-          v34 = v13;
+          v34 = name;
           v35 = 2112;
-          v36 = v14;
+          v36 = modelDescription;
           v37 = 1024;
-          v38 = v15;
+          v38 = enabledAsKey;
           _os_log_impl(&dword_25E0E9000, v12, OS_LOG_TYPE_DEFAULT, "PAU vision device name: %@, model description: %@, unlock enabled: %d", buf, 0x1Cu);
         }
 
         v16 = MEMORY[0x277D3FAD8];
-        v17 = [v11 name];
-        v18 = [v16 preferenceSpecifierNamed:v17 target:self set:sel_setVisionUnlockEnabled_specifier_ get:sel_visionUnlockEnabled_ detail:0 cell:6 edit:0];
+        name2 = [v11 name];
+        v18 = [v16 preferenceSpecifierNamed:name2 target:self set:sel_setVisionUnlockEnabled_specifier_ get:sel_visionUnlockEnabled_ detail:0 cell:6 edit:0];
 
-        v19 = [v11 modelDescription];
-        v20 = [v19 length];
+        modelDescription2 = [v11 modelDescription];
+        v20 = [modelDescription2 length];
 
         if (v20)
         {
-          v21 = [v11 modelDescription];
-          [v18 setProperty:v21 forKey:v27];
+          modelDescription3 = [v11 modelDescription];
+          [v18 setProperty:modelDescription3 forKey:v27];
         }
 
-        v22 = [v11 uniqueID];
-        [v18 setIdentifier:v22];
+        uniqueID = [v11 uniqueID];
+        [v18 setIdentifier:uniqueID];
 
         [v18 setObject:v11 forKeyedSubscript:@"PABSVisionUnlockDeviceKey"];
         [v4 addObject:v18];
@@ -5275,19 +5275,19 @@ LABEL_17:
   return v23;
 }
 
-- (void)updatePendingVisionUnlockDeviceForSession:(id)a3 forceReload:(BOOL)a4
+- (void)updatePendingVisionUnlockDeviceForSession:(id)session forceReload:(BOOL)reload
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  sessionCopy = session;
+  v7 = sessionCopy;
+  if (sessionCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __84__PABSPasscodeLockController_updatePendingVisionUnlockDeviceForSession_forceReload___block_invoke;
     block[3] = &unk_279A036D0;
-    v12 = a4;
-    v10 = v6;
-    v11 = self;
+    reloadCopy = reload;
+    v10 = sessionCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v8 = v10;
   }
@@ -5471,18 +5471,18 @@ uint64_t __84__PABSPasscodeLockController_updatePendingVisionUnlockDeviceForSess
   return result;
 }
 
-- (id)getPendingVisionDeviceIdForSession:(id)a3
+- (id)getPendingVisionDeviceIdForSession:(id)session
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  sessionCopy = session;
+  if (sessionCopy)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v5 = [(PABSPasscodeLockController *)self autoUnlockSpecifiers];
-    v6 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+    autoUnlockSpecifiers = [(PABSPasscodeLockController *)self autoUnlockSpecifiers];
+    v6 = [autoUnlockSpecifiers countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v6)
     {
       v7 = v6;
@@ -5493,7 +5493,7 @@ uint64_t __84__PABSPasscodeLockController_updatePendingVisionUnlockDeviceForSess
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(autoUnlockSpecifiers);
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
@@ -5506,9 +5506,9 @@ uint64_t __84__PABSPasscodeLockController_updatePendingVisionUnlockDeviceForSess
             if (v13)
             {
               v14 = [v10 objectForKeyedSubscript:@"PABSVisionUnlockPairingSessionKey"];
-              if ([v4 isEqual:v14])
+              if ([sessionCopy isEqual:v14])
               {
-                v16 = [v10 identifier];
+                identifier = [v10 identifier];
 
                 goto LABEL_19;
               }
@@ -5516,7 +5516,7 @@ uint64_t __84__PABSPasscodeLockController_updatePendingVisionUnlockDeviceForSess
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v19 objects:v25 count:16];
+        v7 = [autoUnlockSpecifiers countByEnumeratingWithState:&v19 objects:v25 count:16];
         if (v7)
         {
           continue;
@@ -5526,68 +5526,68 @@ uint64_t __84__PABSPasscodeLockController_updatePendingVisionUnlockDeviceForSess
       }
     }
 
-    v5 = PABSLogForCategory(0);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    autoUnlockSpecifiers = PABSLogForCategory(0);
+    if (os_log_type_enabled(autoUnlockSpecifiers, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v4 UUIDString];
+      uUIDString = [sessionCopy UUIDString];
       *buf = 138412290;
-      v24 = v15;
-      _os_log_impl(&dword_25E0E9000, v5, OS_LOG_TYPE_DEFAULT, "Pending vision device id not found for sessionid %@", buf, 0xCu);
+      v24 = uUIDString;
+      _os_log_impl(&dword_25E0E9000, autoUnlockSpecifiers, OS_LOG_TYPE_DEFAULT, "Pending vision device id not found for sessionid %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v5 = PABSLogForCategory(0);
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    autoUnlockSpecifiers = PABSLogForCategory(0);
+    if (os_log_type_enabled(autoUnlockSpecifiers, OS_LOG_TYPE_ERROR))
     {
       [PABSPasscodeLockController getPendingVisionDeviceIdForSession:];
     }
   }
 
-  v16 = 0;
+  identifier = 0;
 LABEL_19:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return identifier;
 }
 
-- (void)manager:(id)a3 didEnableAuthenticationForSessionWithID:(id)a4
+- (void)manager:(id)manager didEnableAuthenticationForSessionWithID:(id)d
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dCopy = d;
   v6 = PABSLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 UUIDString];
+    uUIDString = [dCopy UUIDString];
     v9 = 138412290;
-    v10 = v7;
+    v10 = uUIDString;
     _os_log_impl(&dword_25E0E9000, v6, OS_LOG_TYPE_DEFAULT, "Successfully enabled Vision Pro autounlock device SessionID: %@", &v9, 0xCu);
   }
 
-  [(PABSPasscodeLockController *)self updatePendingVisionUnlockDeviceForSession:v5 forceReload:1];
+  [(PABSPasscodeLockController *)self updatePendingVisionUnlockDeviceForSession:dCopy forceReload:1];
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 didFailToEnableDeviceForSessionWithID:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailToEnableDeviceForSessionWithID:(id)d error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  errorCopy = error;
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     [PABSPasscodeLockController manager:didFailToEnableDeviceForSessionWithID:error:];
   }
 
-  v10 = [(PABSPasscodeLockController *)self getPendingVisionDeviceIdForSession:v7];
-  [(PABSPasscodeLockController *)self updatePendingVisionUnlockDeviceForSession:v7 forceReload:0];
+  v10 = [(PABSPasscodeLockController *)self getPendingVisionDeviceIdForSession:dCopy];
+  [(PABSPasscodeLockController *)self updatePendingVisionUnlockDeviceForSession:dCopy forceReload:0];
   if (v10)
   {
     v11 = [(PABSPasscodeLockController *)self specifierForID:v10];
     if (v11)
     {
-      [(PABSPasscodeLockController *)self presentVisionUnlockEnableFailureAlertWithDevice:v11 withError:v8];
+      [(PABSPasscodeLockController *)self presentVisionUnlockEnableFailureAlertWithDevice:v11 withError:errorCopy];
     }
 
     else
@@ -5610,54 +5610,54 @@ LABEL_19:
   }
 }
 
-- (void)manager:(id)a3 didDisableAuthenticationForSessionWithID:(id)a4
+- (void)manager:(id)manager didDisableAuthenticationForSessionWithID:(id)d
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dCopy = d;
   v6 = PABSLogForCategory(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = dCopy;
     _os_log_impl(&dword_25E0E9000, v6, OS_LOG_TYPE_DEFAULT, "Successfully disabled Vision Pro autounlock device SessionID: %@", &v8, 0xCu);
   }
 
-  [(PABSPasscodeLockController *)self updatePendingVisionUnlockDeviceForSession:v5 forceReload:1];
+  [(PABSPasscodeLockController *)self updatePendingVisionUnlockDeviceForSession:dCopy forceReload:1];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)manager:(id)a3 didFailToDisableDeviceForSessionWithID:(id)a4 error:(id)a5
+- (void)manager:(id)manager didFailToDisableDeviceForSessionWithID:(id)d error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  errorCopy = error;
   v9 = PABSLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     [PABSPasscodeLockController manager:didFailToDisableDeviceForSessionWithID:error:];
   }
 
-  [(PABSPasscodeLockController *)self updatePendingVisionUnlockDeviceForSession:v7 forceReload:0];
+  [(PABSPasscodeLockController *)self updatePendingVisionUnlockDeviceForSession:dCopy forceReload:0];
 }
 
-- (void)showAlertForVisionUnlockEnablementOfDevice:(id)a3 ofSpecifier:(id)a4
+- (void)showAlertForVisionUnlockEnablementOfDevice:(id)device ofSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  deviceCopy = device;
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
-    v8 = [v6 uniqueID];
-    v7 = [(PABSPasscodeLockController *)self specifierForID:v8];
+    uniqueID = [deviceCopy uniqueID];
+    specifierCopy = [(PABSPasscodeLockController *)self specifierForID:uniqueID];
   }
 
   v9 = MEMORY[0x277D75110];
   v10 = MEMORY[0x277CCACA8];
   v11 = PABS_LocalizedStringForPasscodeLock(@"PHONE_AUTO_UNLOCK_ALERT_TITLE");
-  v12 = [v6 name];
-  v13 = [v10 stringWithFormat:v11, v12];
+  name = [deviceCopy name];
+  v13 = [v10 stringWithFormat:v11, name];
   v14 = MEMORY[0x277CCACA8];
   v15 = PABS_LocalizedStringForPasscodeLock(@"PHONE_VISION_PRO_AUTO_UNLOCK_ALERT_BODY");
-  v16 = [v6 name];
-  v17 = [v14 stringWithFormat:v15, v16];
+  name2 = [deviceCopy name];
+  v17 = [v14 stringWithFormat:v15, name2];
   v18 = [v9 alertControllerWithTitle:v13 message:v17 preferredStyle:1];
 
   v19 = MEMORY[0x277D750F8];
@@ -5666,11 +5666,11 @@ LABEL_19:
   v32[1] = 3221225472;
   v32[2] = __85__PABSPasscodeLockController_showAlertForVisionUnlockEnablementOfDevice_ofSpecifier___block_invoke;
   v32[3] = &unk_279A036A8;
-  v21 = v7;
+  v21 = specifierCopy;
   v33 = v21;
-  v22 = v6;
+  v22 = deviceCopy;
   v34 = v22;
-  v35 = self;
+  selfCopy = self;
   v23 = [v19 actionWithTitle:v20 style:1 handler:v32];
   [v18 addAction:v23];
 
@@ -5712,18 +5712,18 @@ uint64_t __85__PABSPasscodeLockController_showAlertForVisionUnlockEnablementOfDe
   return result;
 }
 
-- (void)presentVisionUnlockEnableFailureAlertWithDevice:(id)a3 withError:(id)a4
+- (void)presentVisionUnlockEnableFailureAlertWithDevice:(id)device withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  deviceCopy = device;
+  errorCopy = error;
+  if (deviceCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:@"PABSVisionUnlockDeviceKey"];
-    v9 = [v7 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D54D30]];
+    v8 = [deviceCopy objectForKeyedSubscript:@"PABSVisionUnlockDeviceKey"];
+    userInfo = [errorCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D54D30]];
 
-    v11 = [v7 userInfo];
-    v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D54D28]];
+    userInfo2 = [errorCopy userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277D54D28]];
 
     if (!v10)
     {
@@ -5737,11 +5737,11 @@ uint64_t __85__PABSPasscodeLockController_showAlertForVisionUnlockEnablementOfDe
     v17[2] = __88__PABSPasscodeLockController_presentVisionUnlockEnableFailureAlertWithDevice_withError___block_invoke;
     v17[3] = &unk_279A03E28;
     v18 = v8;
-    v19 = v7;
+    v19 = errorCopy;
     v20 = v10;
     v21 = v12;
-    v22 = v6;
-    v23 = self;
+    v22 = deviceCopy;
+    selfCopy = self;
     v14 = v12;
     v15 = v10;
     v16 = v8;

@@ -1,22 +1,22 @@
 @interface PMLEspressoDataProvider
-- (PMLEspressoDataProvider)initWithRowsData:(id)a3 labelsData:(id)a4 inputName:(id)a5 inputDim:(unint64_t)a6 trueLabelName:(id)a7;
-- (id)dataPointAtIndex:(unint64_t)a3 error:(id *)a4;
+- (PMLEspressoDataProvider)initWithRowsData:(id)data labelsData:(id)labelsData inputName:(id)name inputDim:(unint64_t)dim trueLabelName:(id)labelName;
+- (id)dataPointAtIndex:(unint64_t)index error:(id *)error;
 - (void)clearBuffers;
 @end
 
 @implementation PMLEspressoDataProvider
 
-- (id)dataPointAtIndex:(unint64_t)a3 error:(id *)a4
+- (id)dataPointAtIndex:(unint64_t)index error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  if (self->_numberOfDataPoints <= a3)
+  if (self->_numberOfDataPoints <= index)
   {
     v26 = PML_LogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       numberOfDataPoints = self->_numberOfDataPoints;
       *buf = 134218240;
-      v36 = a3;
+      indexCopy = index;
       v37 = 2048;
       v38 = numberOfDataPoints;
       _os_log_error_impl(&dword_260D68000, v26, OS_LOG_TYPE_ERROR, "Out of range index %lu requested from PMLEspressoDataProvider of size %lu", buf, 0x16u);
@@ -28,22 +28,22 @@
   else
   {
     [(PMLEspressoDataProvider *)self clearBuffers];
-    *buf = *([(NSData *)self->_labelsData bytes]+ 4 * a3);
+    *buf = *([(NSData *)self->_labelsData bytes]+ 4 * index);
     [(NSMutableData *)self->_trueLabelBuffer replaceBytesInRange:0 withBytes:4, buf];
     inputDim = self->_inputDim;
-    v6 = [(NSArray *)self->_rowsData objectAtIndexedSubscript:a3];
-    v7 = [v6 first];
-    v8 = [v7 length] >> 2;
-    v9 = [(NSArray *)self->_rowsData objectAtIndexedSubscript:a3];
-    v10 = [v9 first];
-    v11 = [v10 bytes];
-    v12 = [(NSArray *)self->_rowsData objectAtIndexedSubscript:a3];
-    v13 = [v12 second];
-    +[PMLSparseVector sparseVectorWithLength:numberOfNonZeroValues:isSparseIndexInt64:sparseIndices:sparseValues:toDenseValues:withLength:](PMLSparseVector, "sparseVectorWithLength:numberOfNonZeroValues:isSparseIndexInt64:sparseIndices:sparseValues:toDenseValues:withLength:", inputDim, v8, 0, v11, [v13 bytes], -[NSMutableData mutableBytes](self->_inputBuffer, "mutableBytes"), self->_inputDim);
+    v6 = [(NSArray *)self->_rowsData objectAtIndexedSubscript:index];
+    first = [v6 first];
+    v8 = [first length] >> 2;
+    v9 = [(NSArray *)self->_rowsData objectAtIndexedSubscript:index];
+    first2 = [v9 first];
+    bytes = [first2 bytes];
+    v12 = [(NSArray *)self->_rowsData objectAtIndexedSubscript:index];
+    second = [v12 second];
+    +[PMLSparseVector sparseVectorWithLength:numberOfNonZeroValues:isSparseIndexInt64:sparseIndices:sparseValues:toDenseValues:withLength:](PMLSparseVector, "sparseVectorWithLength:numberOfNonZeroValues:isSparseIndexInt64:sparseIndices:sparseValues:toDenseValues:withLength:", inputDim, v8, 0, bytes, [second bytes], -[NSMutableData mutableBytes](self->_inputBuffer, "mutableBytes"), self->_inputDim);
 
     v14 = objc_opt_new();
     v32 = objc_alloc(MEMORY[0x277D07758]);
-    v31 = [(NSMutableData *)self->_inputBuffer mutableBytes];
+    mutableBytes = [(NSMutableData *)self->_inputBuffer mutableBytes];
     v34[0] = &unk_287358250;
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_inputDim];
     v34[1] = v15;
@@ -58,7 +58,7 @@
     v33[2] = v19;
     v33[3] = &unk_287358250;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:4];
-    v21 = [v32 initWithData:v31 type:2 shape:v16 strides:v20];
+    v21 = [v32 initWithData:mutableBytes type:2 shape:v16 strides:v20];
     [v14 setObject:v21 forKeyedSubscript:self->_inputName];
 
     v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_inputDim];
@@ -86,41 +86,41 @@
   [(NSMutableData *)trueLabelBuffer resetBytesInRange:0, v4];
 }
 
-- (PMLEspressoDataProvider)initWithRowsData:(id)a3 labelsData:(id)a4 inputName:(id)a5 inputDim:(unint64_t)a6 trueLabelName:(id)a7
+- (PMLEspressoDataProvider)initWithRowsData:(id)data labelsData:(id)labelsData inputName:(id)name inputDim:(unint64_t)dim trueLabelName:(id)labelName
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
+  dataCopy = data;
+  labelsDataCopy = labelsData;
+  nameCopy = name;
+  labelNameCopy = labelName;
   v38.receiver = self;
   v38.super_class = PMLEspressoDataProvider;
   v17 = [(PMLEspressoDataProvider *)&v38 init];
   if (v17)
   {
-    v36 = a6;
-    v18 = [v14 length];
-    v37 = v15;
-    if ([v13 count] != v18 >> 2)
+    dimCopy = dim;
+    v18 = [labelsDataCopy length];
+    v37 = nameCopy;
+    if ([dataCopy count] != v18 >> 2)
     {
       v30 = v18 >> 2;
-      v31 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v33 = v30;
-      v15 = v37;
-      [v31 handleFailureInMethod:a2 object:v17 file:@"PMLEspressoDataProvider.m" lineNumber:45 description:{@"Number of dimensions in rows data (%lu) number of labels (%lu)", objc_msgSend(v13, "count"), v33}];
+      nameCopy = v37;
+      [currentHandler handleFailureInMethod:a2 object:v17 file:@"PMLEspressoDataProvider.m" lineNumber:45 description:{@"Number of dimensions in rows data (%lu) number of labels (%lu)", objc_msgSend(dataCopy, "count"), v33}];
     }
 
-    if ([v15 isEqualToString:v16])
+    if ([nameCopy isEqualToString:labelNameCopy])
     {
-      v32 = [MEMORY[0x277CCA890] currentHandler];
-      [v32 handleFailureInMethod:a2 object:v17 file:@"PMLEspressoDataProvider.m" lineNumber:48 description:{@"The names of the input and trueLabel can not be the same: %s", objc_msgSend(v15, "UTF8String")}];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v17 file:@"PMLEspressoDataProvider.m" lineNumber:48 description:{@"The names of the input and trueLabel can not be the same: %s", objc_msgSend(nameCopy, "UTF8String")}];
     }
 
-    v17->_numberOfDataPoints = [v13 count];
-    v19 = [v14 bytes];
+    v17->_numberOfDataPoints = [dataCopy count];
+    bytes = [labelsDataCopy bytes];
     numberOfDataPoints = v17->_numberOfDataPoints;
     if (numberOfDataPoints)
     {
-      v21 = v19;
+      v21 = bytes;
       v22 = 0;
       v23 = 0x277CCA000uLL;
       do
@@ -128,8 +128,8 @@
         v24 = *(v21 + 4 * v22);
         if (v24 < 0.0)
         {
-          v34 = [*(v23 + 2192) currentHandler];
-          [v34 handleFailureInMethod:a2 object:v17 file:@"PMLEspressoDataProvider.m" lineNumber:55 description:{@"Label value %f must be greater than 0", v24}];
+          currentHandler3 = [*(v23 + 2192) currentHandler];
+          [currentHandler3 handleFailureInMethod:a2 object:v17 file:@"PMLEspressoDataProvider.m" lineNumber:55 description:{@"Label value %f must be greater than 0", v24}];
 
           v23 = 0x277CCA000;
           numberOfDataPoints = v17->_numberOfDataPoints;
@@ -141,11 +141,11 @@
       while (numberOfDataPoints > v22);
     }
 
-    objc_storeStrong(&v17->_rowsData, a3);
-    objc_storeStrong(&v17->_labelsData, a4);
-    objc_storeStrong(&v17->_inputName, a5);
-    v17->_inputDim = v36;
-    objc_storeStrong(&v17->_trueLabelName, a7);
+    objc_storeStrong(&v17->_rowsData, data);
+    objc_storeStrong(&v17->_labelsData, labelsData);
+    objc_storeStrong(&v17->_inputName, name);
+    v17->_inputDim = dimCopy;
+    objc_storeStrong(&v17->_trueLabelName, labelName);
     v25 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:4 * v17->_inputDim];
     inputBuffer = v17->_inputBuffer;
     v17->_inputBuffer = v25;
@@ -154,7 +154,7 @@
     trueLabelBuffer = v17->_trueLabelBuffer;
     v17->_trueLabelBuffer = v27;
 
-    v15 = v37;
+    nameCopy = v37;
   }
 
   return v17;

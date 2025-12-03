@@ -1,111 +1,111 @@
 @interface PGPhotosChallengeMetricEvent
-+ (BOOL)_isHighPrecisionCityscapeAsset:(id)a3;
-+ (BOOL)_isHighPrecisionLandscapeAsset:(id)a3;
-+ (id)_isVIPStringForResult:(BOOL)a3;
-+ (id)_passedFilteringStringForResult:(BOOL)a3;
-+ (id)_passedHighPrecisionStringForResult:(BOOL)a3;
-+ (id)allMetricEventsWithGraphManager:(id)a3;
-+ (id)meaningLabelFromMeaningQuestionMetricType:(unsigned __int16)a3;
-+ (id)personActivityMeaningLabelFromMeaningQuestionMetricType:(unsigned __int16)a3;
-+ (id)questionEntityTypesFromQuestionMetricType:(unsigned __int16)a3;
-+ (id)relationshipLabelFromRelationshipQuestionMetricType:(unsigned __int16)a3;
-+ (id)stringFromQuestionMetricType:(unsigned __int16)a3;
-+ (unint64_t)algorithmVersionFromQuestionMetricType:(unsigned __int16)a3 withEventLabelingConfiguration:(id)a4;
-+ (unsigned)questionTypeFromQuestionMetricType:(unsigned __int16)a3;
-+ (unsigned)wallpaperSuggestionSubtypeForQuestionMetricType:(unsigned __int16)a3;
-- (BOOL)_relatonshipInferenceResultForPersonNode:(id)a3 questionMetricType:(unsigned __int16)a4;
-- (id)_ageCategoryInferenceResultsForAgeCategoryByPersonUUIDs:(id)a3;
-- (id)_businessInferenceResultsForBusinessIdByAssetIds:(id)a3;
-- (id)_currentPetInferenceResultsForPetUUIDs:(id)a3;
-- (id)_featuredPhotoInferenceResultsForAnswerDateByAssetIds:(id)a3 questionMetricType:(unsigned __int16)a4;
-- (id)_frequentLocationInferenceResultsForLocationByAssetIds:(id)a3 locationType:(id)a4;
-- (id)_getInferredReasonFromMatchedConditions:(id)a3 withFallbackReason:(id)a4;
-- (id)_groundTruthByAssetIdentifiersFromQuestions:(id)a3;
-- (id)_groundTruthByPersonUUIDFromQuestions:(id)a3;
-- (id)_groundTruthForAgeCategoryFromQuestions:(id)a3;
-- (id)_groundTruthForBusinessFromQuestions:(id)a3;
-- (id)_groundTruthForCurrentPetInferenceFromQuestions:(id)a3;
-- (id)_groundTruthForFeaturedPhotoFromQuestions:(id)a3;
-- (id)_groundTruthForFrequentLocationFromQuestions:(id)a3;
-- (id)_groundTruthForHolidayFromQuestions:(id)a3;
-- (id)_groundTruthForMusicQualityQuestions:(id)a3;
-- (id)_groundTruthForNamingFromQuestions:(id)a3;
-- (id)_groundTruthForPublicEventFromQuestions:(id)a3;
-- (id)_groundTruthForStoryPromptSuggestionsQuestions:(id)a3;
-- (id)_groundTruthForTitlingQuestions:(id)a3 questionType:(unsigned __int16)a4;
-- (id)_groundTruthForTripTitlingQuestions:(id)a3;
-- (id)_holidayInferenceResultByEntityIdentifierForHolidayQuestions:(id)a3;
-- (id)_inferredReasonForLocationRepresentativeAssets:(id)a3;
-- (id)_inferredResultsForLocationRepresentativeAssets:(id)a3;
-- (id)_locationRepresentativeAssetFromQuestion:(id)a3;
-- (id)_locationRepresentativeAssetsGroundTruthByAssetIdentifiersFromQuestions:(id)a3;
-- (id)_meaningInferenceResultsForMeaningLabel:(id)a3 assetIds:(id)a4;
-- (id)_meaningInferenceResultsForMeaningLabel:(id)a3 momentUUIDs:(id)a4 isEventLabelingMetricEvent:(BOOL)a5;
-- (id)_meaningLabelsOfMomentNode:(id)a3 forMeaningLabel:(id)a4 isEventLabelingMetricEvent:(BOOL)a5;
-- (id)_namingInferenceResultsForContactIdentifierByPersonUUIDs:(id)a3;
-- (id)_personActivityMeaningInferenceResultsForPersonActivityMeaningLabel:(id)a3 assetIds:(id)a4;
-- (id)_publicEventInferenceResultsForPublicEventIdByAssetIds:(id)a3;
-- (id)_reasonByAssetEntityIdentifierForHolidayQuestions:(id)a3;
-- (id)_reasonResultByAssetEntityIdentifierForMusicQualityQuestions:(id)a3;
-- (id)_reasonResultByAssetEntityIdentifierForStoryPromptSuggestionsQuestions:(id)a3;
-- (id)_reasonResultByAssetEntityIdentifierForTitlingQuestions:(id)a3 questionType:(unsigned __int16)a4;
-- (id)_reasonResultByAssetSyndicationIdentifierForQuestions:(id)a3;
-- (id)_reasonResultsForPublicEventQuestions:(id)a3;
-- (id)_reasonResultsForQuestions:(id)a3 inferenceResults:(id)a4 inferenceReasons:(id)a5;
-- (id)_relationshipInferenceResultsForQuestionMetricType:(unsigned __int16)a3 personUUIDs:(id)a4 useGraphInference:(BOOL)a5;
-- (id)_syndicatedAssetFromQuestion:(id)a3;
-- (id)_syndicatedAssetsGroundTruthByAssetIdentifiersFromQuestions:(id)a3;
-- (id)_syndicatedAssetsInferenceResultsForAssetSyndicationIdentifiers:(id)a3;
-- (id)_tripTitlingReasonResultByAssetEntityIdentifierForQuestions:(id)a3;
-- (id)_vipPersonIdentifiersWithCurationContext:(id)a3;
-- (id)_vipPetIdentifiersWithCurationContext:(id)a3;
-- (id)groundTruthByMomentUUIDFromExhaustiveMomentLabelingQuestions:(id)a3 meaningLabel:(id)a4 withMetricsCache:(id)a5;
++ (BOOL)_isHighPrecisionCityscapeAsset:(id)asset;
++ (BOOL)_isHighPrecisionLandscapeAsset:(id)asset;
++ (id)_isVIPStringForResult:(BOOL)result;
++ (id)_passedFilteringStringForResult:(BOOL)result;
++ (id)_passedHighPrecisionStringForResult:(BOOL)result;
++ (id)allMetricEventsWithGraphManager:(id)manager;
++ (id)meaningLabelFromMeaningQuestionMetricType:(unsigned __int16)type;
++ (id)personActivityMeaningLabelFromMeaningQuestionMetricType:(unsigned __int16)type;
++ (id)questionEntityTypesFromQuestionMetricType:(unsigned __int16)type;
++ (id)relationshipLabelFromRelationshipQuestionMetricType:(unsigned __int16)type;
++ (id)stringFromQuestionMetricType:(unsigned __int16)type;
++ (unint64_t)algorithmVersionFromQuestionMetricType:(unsigned __int16)type withEventLabelingConfiguration:(id)configuration;
++ (unsigned)questionTypeFromQuestionMetricType:(unsigned __int16)type;
++ (unsigned)wallpaperSuggestionSubtypeForQuestionMetricType:(unsigned __int16)type;
+- (BOOL)_relatonshipInferenceResultForPersonNode:(id)node questionMetricType:(unsigned __int16)type;
+- (id)_ageCategoryInferenceResultsForAgeCategoryByPersonUUIDs:(id)ds;
+- (id)_businessInferenceResultsForBusinessIdByAssetIds:(id)ids;
+- (id)_currentPetInferenceResultsForPetUUIDs:(id)ds;
+- (id)_featuredPhotoInferenceResultsForAnswerDateByAssetIds:(id)ids questionMetricType:(unsigned __int16)type;
+- (id)_frequentLocationInferenceResultsForLocationByAssetIds:(id)ids locationType:(id)type;
+- (id)_getInferredReasonFromMatchedConditions:(id)conditions withFallbackReason:(id)reason;
+- (id)_groundTruthByAssetIdentifiersFromQuestions:(id)questions;
+- (id)_groundTruthByPersonUUIDFromQuestions:(id)questions;
+- (id)_groundTruthForAgeCategoryFromQuestions:(id)questions;
+- (id)_groundTruthForBusinessFromQuestions:(id)questions;
+- (id)_groundTruthForCurrentPetInferenceFromQuestions:(id)questions;
+- (id)_groundTruthForFeaturedPhotoFromQuestions:(id)questions;
+- (id)_groundTruthForFrequentLocationFromQuestions:(id)questions;
+- (id)_groundTruthForHolidayFromQuestions:(id)questions;
+- (id)_groundTruthForMusicQualityQuestions:(id)questions;
+- (id)_groundTruthForNamingFromQuestions:(id)questions;
+- (id)_groundTruthForPublicEventFromQuestions:(id)questions;
+- (id)_groundTruthForStoryPromptSuggestionsQuestions:(id)questions;
+- (id)_groundTruthForTitlingQuestions:(id)questions questionType:(unsigned __int16)type;
+- (id)_groundTruthForTripTitlingQuestions:(id)questions;
+- (id)_holidayInferenceResultByEntityIdentifierForHolidayQuestions:(id)questions;
+- (id)_inferredReasonForLocationRepresentativeAssets:(id)assets;
+- (id)_inferredResultsForLocationRepresentativeAssets:(id)assets;
+- (id)_locationRepresentativeAssetFromQuestion:(id)question;
+- (id)_locationRepresentativeAssetsGroundTruthByAssetIdentifiersFromQuestions:(id)questions;
+- (id)_meaningInferenceResultsForMeaningLabel:(id)label assetIds:(id)ids;
+- (id)_meaningInferenceResultsForMeaningLabel:(id)label momentUUIDs:(id)ds isEventLabelingMetricEvent:(BOOL)event;
+- (id)_meaningLabelsOfMomentNode:(id)node forMeaningLabel:(id)label isEventLabelingMetricEvent:(BOOL)event;
+- (id)_namingInferenceResultsForContactIdentifierByPersonUUIDs:(id)ds;
+- (id)_personActivityMeaningInferenceResultsForPersonActivityMeaningLabel:(id)label assetIds:(id)ids;
+- (id)_publicEventInferenceResultsForPublicEventIdByAssetIds:(id)ids;
+- (id)_reasonByAssetEntityIdentifierForHolidayQuestions:(id)questions;
+- (id)_reasonResultByAssetEntityIdentifierForMusicQualityQuestions:(id)questions;
+- (id)_reasonResultByAssetEntityIdentifierForStoryPromptSuggestionsQuestions:(id)questions;
+- (id)_reasonResultByAssetEntityIdentifierForTitlingQuestions:(id)questions questionType:(unsigned __int16)type;
+- (id)_reasonResultByAssetSyndicationIdentifierForQuestions:(id)questions;
+- (id)_reasonResultsForPublicEventQuestions:(id)questions;
+- (id)_reasonResultsForQuestions:(id)questions inferenceResults:(id)results inferenceReasons:(id)reasons;
+- (id)_relationshipInferenceResultsForQuestionMetricType:(unsigned __int16)type personUUIDs:(id)ds useGraphInference:(BOOL)inference;
+- (id)_syndicatedAssetFromQuestion:(id)question;
+- (id)_syndicatedAssetsGroundTruthByAssetIdentifiersFromQuestions:(id)questions;
+- (id)_syndicatedAssetsInferenceResultsForAssetSyndicationIdentifiers:(id)identifiers;
+- (id)_tripTitlingReasonResultByAssetEntityIdentifierForQuestions:(id)questions;
+- (id)_vipPersonIdentifiersWithCurationContext:(id)context;
+- (id)_vipPetIdentifiersWithCurationContext:(id)context;
+- (id)groundTruthByMomentUUIDFromExhaustiveMomentLabelingQuestions:(id)questions meaningLabel:(id)label withMetricsCache:(id)cache;
 - (id)memoryCategorySubCategoryByQuestionMetricType;
 - (id)payload;
 - (id)payloadForVerification;
-- (id)preparePayloadForPrecisionRecallEval:(id)a3 withEvaluations:(id)a4;
-- (unint64_t)_relationshipTagFromQuestionMetricType:(unsigned __int16)a3;
-- (void)_deleteOutdatedPetQuestionsWithValidPetUUIDs:(id)a3;
-- (void)_gatherDeferredSuggestionInferencesForQuestions:(id)a3 momentUUIDS:(id)a4 inferenceResults:(id)a5 reasonResultByAssetIdentifier:(id)a6 progressBlock:(id)a7;
-- (void)_gatherMetricsForAgeCategoryQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForBusinessQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForCameraLibrarySwitchQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForExternalAssetRelevanceQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5;
-- (void)_gatherMetricsForFrequentLocationQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5;
-- (void)_gatherMetricsForHighlightTitlingQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForHolidayQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForLocationRepresentativeAssetQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5;
-- (void)_gatherMetricsForMemoryMusicQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForMemoryQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5;
-- (void)_gatherMetricsForNamingQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForPetKnowledgeQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForPetQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForPublicEventQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForRelationshipQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5 useGraphInference:(BOOL)a6;
-- (void)_gatherMetricsForSharedLibraryAssetsQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForSharedLibraryStartQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForStoryPromptSuggestionsQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForSyndicatedAssetsQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForTripKeyQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForTripTitlingQuestions:(id)a3 progressBlock:(id)a4;
-- (void)_gatherMetricsForWallpaperQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5;
-- (void)_gatherNearLiveSuggestionInferencesForQuestions:(id)a3 inferenceResults:(id)a4 reasonResultByAssetIdentifier:(id)a5 progressBlock:(id)a6;
-- (void)gatherMetricsWithProgressBlock:(id)a3;
+- (id)preparePayloadForPrecisionRecallEval:(id)eval withEvaluations:(id)evaluations;
+- (unint64_t)_relationshipTagFromQuestionMetricType:(unsigned __int16)type;
+- (void)_deleteOutdatedPetQuestionsWithValidPetUUIDs:(id)ds;
+- (void)_gatherDeferredSuggestionInferencesForQuestions:(id)questions momentUUIDS:(id)s inferenceResults:(id)results reasonResultByAssetIdentifier:(id)identifier progressBlock:(id)block;
+- (void)_gatherMetricsForAgeCategoryQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForBusinessQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForCameraLibrarySwitchQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForExternalAssetRelevanceQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block;
+- (void)_gatherMetricsForFrequentLocationQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block;
+- (void)_gatherMetricsForHighlightTitlingQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForHolidayQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForLocationRepresentativeAssetQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block;
+- (void)_gatherMetricsForMemoryMusicQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForMemoryQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block;
+- (void)_gatherMetricsForNamingQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForPetKnowledgeQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForPetQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForPublicEventQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForRelationshipQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block useGraphInference:(BOOL)inference;
+- (void)_gatherMetricsForSharedLibraryAssetsQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForSharedLibraryStartQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForStoryPromptSuggestionsQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForSyndicatedAssetsQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForTripKeyQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForTripTitlingQuestions:(id)questions progressBlock:(id)block;
+- (void)_gatherMetricsForWallpaperQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block;
+- (void)_gatherNearLiveSuggestionInferencesForQuestions:(id)questions inferenceResults:(id)results reasonResultByAssetIdentifier:(id)identifier progressBlock:(id)block;
+- (void)gatherMetricsWithProgressBlock:(id)block;
 @end
 
 @implementation PGPhotosChallengeMetricEvent
 
-- (id)preparePayloadForPrecisionRecallEval:(id)a3 withEvaluations:(id)a4
+- (id)preparePayloadForPrecisionRecallEval:(id)eval withEvaluations:(id)evaluations
 {
   v29 = *MEMORY[0x277D85DE8];
-  v23 = a3;
-  v5 = a4;
+  evalCopy = eval;
+  evaluationsCopy = evaluations;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = [v5 evaluationByReason];
+  obj = [evaluationsCopy evaluationByReason];
   v7 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v7)
   {
@@ -121,11 +121,11 @@
         }
 
         v11 = *(*(&v24 + 1) + 8 * i);
-        v12 = [v5 evaluationByReason];
-        v13 = [v12 objectForKeyedSubscript:v11];
+        evaluationByReason = [evaluationsCopy evaluationByReason];
+        v13 = [evaluationByReason objectForKeyedSubscript:v11];
 
-        v14 = [v23 payload];
-        v15 = [v14 mutableCopy];
+        payload = [evalCopy payload];
+        v15 = [payload mutableCopy];
 
         [v15 setObject:v11 forKeyedSubscript:@"questionInfo"];
         v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "falseNegatives")}];
@@ -309,16 +309,16 @@
   return v2;
 }
 
-- (id)_reasonResultByAssetEntityIdentifierForStoryPromptSuggestionsQuestions:(id)a3
+- (id)_reasonResultByAssetEntityIdentifierForStoryPromptSuggestionsQuestions:(id)questions
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  questionsCopy = questions;
   v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v3;
+  obj = questionsCopy;
   v40 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v40)
   {
@@ -340,18 +340,18 @@
         }
 
         v6 = *(*(&v42 + 1) + 8 * i);
-        v7 = [v6 additionalInfo];
-        v8 = [v7 objectForKeyedSubscript:v37];
-        v9 = [v7 objectForKeyedSubscript:v36];
-        v41 = [v9 integerValue];
+        additionalInfo = [v6 additionalInfo];
+        v8 = [additionalInfo objectForKeyedSubscript:v37];
+        v9 = [additionalInfo objectForKeyedSubscript:v36];
+        integerValue = [v9 integerValue];
 
-        v10 = [v7 objectForKeyedSubscript:v4];
+        v10 = [additionalInfo objectForKeyedSubscript:v4];
         if (v10)
         {
-          v11 = [v7 objectForKeyedSubscript:v4];
-          v12 = [v11 integerValue];
+          v11 = [additionalInfo objectForKeyedSubscript:v4];
+          integerValue2 = [v11 integerValue];
 
-          v13 = v12;
+          v13 = integerValue2;
         }
 
         else
@@ -359,7 +359,7 @@
           v13 = 0xFFFFFFFFLL;
         }
 
-        v14 = [v7 objectForKeyedSubscript:v34];
+        v14 = [additionalInfo objectForKeyedSubscript:v34];
         v15 = v14;
         v16 = @"no prompt text";
         if (v14)
@@ -369,7 +369,7 @@
 
         v17 = v16;
 
-        v18 = [v7 objectForKeyedSubscript:v33];
+        v18 = [additionalInfo objectForKeyedSubscript:v33];
         v19 = v18;
         v20 = @"unknown";
         if (v18)
@@ -379,8 +379,8 @@
 
         v21 = v20;
 
-        v22 = [v6 additionalInfo];
-        v23 = [v22 objectForKeyedSubscript:v32];
+        additionalInfo2 = [v6 additionalInfo];
+        v23 = [additionalInfo2 objectForKeyedSubscript:v32];
         v24 = v23;
         v25 = @"<none>";
         if (v23)
@@ -390,10 +390,10 @@
 
         v26 = v25;
 
-        v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"[source:%@]-[isValidated:%@]-[DislikeReason:%@]-[AssetCount:%d]-[MCAvailable:%d]-[PromptText:%@]", v21, v8, v26, v41, v13, v17];
+        v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"[source:%@]-[isValidated:%@]-[DislikeReason:%@]-[AssetCount:%d]-[MCAvailable:%d]-[PromptText:%@]", v21, v8, v26, integerValue, v13, v17];
 
-        v28 = [v6 entityIdentifier];
-        [v39 setObject:v27 forKeyedSubscript:v28];
+        entityIdentifier = [v6 entityIdentifier];
+        [v39 setObject:v27 forKeyedSubscript:entityIdentifier];
 
         v4 = v35;
       }
@@ -409,16 +409,16 @@
   return v39;
 }
 
-- (id)_groundTruthForStoryPromptSuggestionsQuestions:(id)a3
+- (id)_groundTruthForStoryPromptSuggestionsQuestions:(id)questions
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = questionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -447,8 +447,8 @@
         }
 
         v14 = v13;
-        v15 = [v12 entityIdentifier];
-        [v4 setObject:v14 forKeyedSubscript:v15];
+        entityIdentifier = [v12 entityIdentifier];
+        [dictionary setObject:v14 forKeyedSubscript:entityIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -459,14 +459,14 @@
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-- (void)_gatherMetricsForStoryPromptSuggestionsQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForStoryPromptSuggestionsQuestions:(id)questions progressBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (Current = CFAbsoluteTimeGetCurrent(), Current < 0.01))
   {
@@ -488,10 +488,10 @@ LABEL_4:
     v22 = &unk_27888A7E0;
     v12 = v11;
     v23 = v12;
-    [v6 enumerateObjectsUsingBlock:&v19];
+    [questionsCopy enumerateObjectsUsingBlock:&v19];
     v13 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForStoryPromptSuggestionsQuestions:v12, v19, v20, v21, v22];
-    v14 = [v13 allKeys];
-    v15 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForEntityIdentifiers:v14 withDefaultBoolValue:1];
+    allKeys = [v13 allKeys];
+    v15 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForEntityIdentifiers:allKeys withDefaultBoolValue:1];
 
     v16 = [(PGPhotosChallengeMetricEvent *)self _reasonResultByAssetEntityIdentifierForStoryPromptSuggestionsQuestions:v12];
     v17 = [[PGAssetsWithReasonPrecisionRecallEvaluation alloc] initWithIdentifier:@"storyPromptSuggestions" category:@"storyPromptSuggestions"];
@@ -543,24 +543,24 @@ void __95__PGPhotosChallengeMetricEvent__gatherMetricsForStoryPromptSuggestionsQ
   }
 }
 
-- (void)_gatherMetricsForExternalAssetRelevanceQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5
+- (void)_gatherMetricsForExternalAssetRelevanceQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a5);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
     v29 = v7;
-    v32 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     [MEMORY[0x277CBEB38] dictionary];
-    v31 = v30 = v6;
+    v31 = v30 = questionsCopy;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v10 = v6;
+    v10 = questionsCopy;
     v11 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v11)
     {
@@ -581,7 +581,7 @@ LABEL_7:
           v18 = *(*(&v33 + 1) + 8 * i);
           if ([v18 type] == 29)
           {
-            v19 = [v18 entityIdentifier];
+            entityIdentifier = [v18 entityIdentifier];
             if ([v18 state] == 2)
             {
               v20 = v16;
@@ -592,11 +592,11 @@ LABEL_7:
               v20 = v15;
             }
 
-            [v32 setObject:v20 forKeyedSubscript:v19];
-            v21 = [v18 additionalInfo];
-            v22 = [v21 objectForKeyedSubscript:v14];
+            [dictionary setObject:v20 forKeyedSubscript:entityIdentifier];
+            additionalInfo = [v18 additionalInfo];
+            v22 = [additionalInfo objectForKeyedSubscript:v14];
 
-            [v31 setObject:v22 forKeyedSubscript:v19];
+            [v31 setObject:v22 forKeyedSubscript:entityIdentifier];
           }
         }
 
@@ -626,7 +626,7 @@ LABEL_7:
             _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
           }
 
-          v6 = v30;
+          questionsCopy = v30;
 LABEL_32:
 
           goto LABEL_33;
@@ -644,10 +644,10 @@ LABEL_32:
     v25 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:@"externalAssetRelevance" category:@"externalAssetRelevance"];
     [(PGPhotosChallengeMetricEvent *)self setEvaluation:v25];
 
-    v26 = [(PGPhotosChallengeMetricEvent *)self evaluation];
-    [v26 evaluateWithGroundTruthResults:v32 andInferenceResults:v31];
+    evaluation = [(PGPhotosChallengeMetricEvent *)self evaluation];
+    [evaluation evaluateWithGroundTruthResults:dictionary andInferenceResults:v31];
 
-    v6 = v30;
+    questionsCopy = v30;
     if (v29)
     {
       if (CFAbsoluteTimeGetCurrent() - v8 >= v24[76])
@@ -693,28 +693,28 @@ LABEL_33:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_locationRepresentativeAssetFromQuestion:(id)a3
+- (id)_locationRepresentativeAssetFromQuestion:(id)question
 {
-  v4 = a3;
-  v5 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-  v6 = [v5 assetByAssetIdentifier];
-  v7 = [v4 entityIdentifier];
+  questionCopy = question;
+  metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+  assetByAssetIdentifier = [metricsCache assetByAssetIdentifier];
+  entityIdentifier = [questionCopy entityIdentifier];
 
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [assetByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
 
   return v8;
 }
 
-- (id)_locationRepresentativeAssetsGroundTruthByAssetIdentifiersFromQuestions:(id)a3
+- (id)_locationRepresentativeAssetsGroundTruthByAssetIdentifiersFromQuestions:(id)questions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  questionsCopy = questions;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = questionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -750,16 +750,16 @@ LABEL_33:
   return v13;
 }
 
-- (id)_inferredResultsForLocationRepresentativeAssets:(id)a3
+- (id)_inferredResultsForLocationRepresentativeAssets:(id)assets
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v6)
   {
@@ -775,17 +775,17 @@ LABEL_33:
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 iconicScoreProperties];
-        [v11 iconicScore];
+        iconicScoreProperties = [v10 iconicScoreProperties];
+        [iconicScoreProperties iconicScore];
         v13 = v12;
 
-        v14 = [v10 curationModel];
-        v15 = [v14 iconicScoreModel];
+        curationModel = [v10 curationModel];
+        iconicScoreModel = [curationModel iconicScoreModel];
 
-        [v15 minimumMeaningfulIconicScore];
+        [iconicScoreModel minimumMeaningfulIconicScore];
         v17 = [MEMORY[0x277CCABB0] numberWithBool:v13 >= v16];
-        v18 = [v10 uuid];
-        [v4 setObject:v17 forKeyedSubscript:v18];
+        uuid = [v10 uuid];
+        [v4 setObject:v17 forKeyedSubscript:uuid];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -799,16 +799,16 @@ LABEL_33:
   return v4;
 }
 
-- (id)_inferredReasonForLocationRepresentativeAssets:(id)a3
+- (id)_inferredReasonForLocationRepresentativeAssets:(id)assets
 {
   v47 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v3;
+  obj = assetsCopy;
   v41 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
   if (v41)
   {
@@ -827,25 +827,25 @@ LABEL_33:
 
         v7 = *(*(&v42 + 1) + 8 * i);
         v8 = objc_autoreleasePoolPush();
-        v9 = [v7 iconicScoreProperties];
-        [v9 iconicScore];
+        iconicScoreProperties = [v7 iconicScoreProperties];
+        [iconicScoreProperties iconicScore];
         v11 = v10;
 
-        v12 = [v7 curationModel];
-        v13 = [v12 iconicScoreModel];
+        curationModel = [v7 curationModel];
+        iconicScoreModel = [curationModel iconicScoreModel];
 
-        [v13 highIconicScore];
+        [iconicScoreModel highIconicScore];
         v15 = v14;
-        [v13 mediumIconicScore];
+        [iconicScoreModel mediumIconicScore];
         v17 = v16;
-        [v13 minimumMeaningfulIconicScore];
+        [iconicScoreModel minimumMeaningfulIconicScore];
         v19 = v18;
         v20 = MEMORY[0x277CD97E8];
-        v21 = [v7 location];
-        [v21 coordinate];
+        location = [v7 location];
+        [location coordinate];
         v23 = v22;
-        v24 = [v7 location];
-        [v24 coordinate];
+        location2 = [v7 location];
+        [location2 coordinate];
         v25 = [v20 poiGeoHashWithGeoHashSize:v39 latitude:v23 longitude:?];
 
         if (v11 > v15)
@@ -890,8 +890,8 @@ LABEL_15:
 
         v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@:%@", v25, v28];
 
-        v34 = [v7 uuid];
-        [v4 setObject:v5 forKeyedSubscript:v34];
+        uuid = [v7 uuid];
+        [v4 setObject:v5 forKeyedSubscript:uuid];
 
         objc_autoreleasePoolPop(v8);
       }
@@ -910,18 +910,18 @@ LABEL_15:
   return v4;
 }
 
-- (id)_reasonResultsForQuestions:(id)a3 inferenceResults:(id)a4 inferenceReasons:(id)a5
+- (id)_reasonResultsForQuestions:(id)questions inferenceResults:(id)results inferenceReasons:(id)reasons
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v35 = a4;
-  v33 = a5;
+  questionsCopy = questions;
+  resultsCopy = results;
+  reasonsCopy = reasons;
   v34 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v7;
+  obj = questionsCopy;
   v8 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v8)
   {
@@ -938,7 +938,7 @@ LABEL_15:
         }
 
         v11 = *(*(&v36 + 1) + 8 * i);
-        v12 = [v11 entityIdentifier];
+        entityIdentifier = [v11 entityIdentifier];
         if ([v11 state] == 2)
         {
           v13 = @"YES";
@@ -950,8 +950,8 @@ LABEL_15:
         }
 
         v14 = v13;
-        v15 = [v11 additionalInfo];
-        v16 = [v15 objectForKeyedSubscript:v31];
+        additionalInfo = [v11 additionalInfo];
+        v16 = [additionalInfo objectForKeyedSubscript:v31];
         v17 = v16;
         if (v16)
         {
@@ -965,7 +965,7 @@ LABEL_15:
 
         v19 = v18;
 
-        v20 = [v35 objectForKeyedSubscript:v12];
+        v20 = [resultsCopy objectForKeyedSubscript:entityIdentifier];
         if ([v20 isEqual:&unk_284484920])
         {
           v21 = @"YES";
@@ -978,7 +978,7 @@ LABEL_15:
 
         v22 = v21;
 
-        v23 = [v33 objectForKeyedSubscript:v12];
+        v23 = [reasonsCopy objectForKeyedSubscript:entityIdentifier];
         v24 = v23;
         if (v23)
         {
@@ -994,7 +994,7 @@ LABEL_15:
 
         v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@->%@]-[%@->%@]", v14, v19, v22, v26];
 
-        [v34 setObject:v27 forKeyedSubscript:v12];
+        [v34 setObject:v27 forKeyedSubscript:entityIdentifier];
       }
 
       v9 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -1008,14 +1008,14 @@ LABEL_15:
   return v34;
 }
 
-- (void)_gatherMetricsForLocationRepresentativeAssetQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5
+- (void)_gatherMetricsForLocationRepresentativeAssetQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = _Block_copy(a5);
+  questionsCopy = questions;
+  v8 = _Block_copy(block);
   if (!v8)
   {
-    v12 = [(PGPhotosChallengeMetricEvent *)self _locationRepresentativeAssetsGroundTruthByAssetIdentifiersFromQuestions:v7];
+    v12 = [(PGPhotosChallengeMetricEvent *)self _locationRepresentativeAssetsGroundTruthByAssetIdentifiersFromQuestions:questionsCopy];
     v10 = 0.0;
     goto LABEL_13;
   }
@@ -1025,7 +1025,7 @@ LABEL_15:
   if (Current < 0.01)
   {
 LABEL_8:
-    v12 = [(PGPhotosChallengeMetricEvent *)self _locationRepresentativeAssetsGroundTruthByAssetIdentifiersFromQuestions:v7];
+    v12 = [(PGPhotosChallengeMetricEvent *)self _locationRepresentativeAssetsGroundTruthByAssetIdentifiersFromQuestions:questionsCopy];
     v13 = CFAbsoluteTimeGetCurrent();
     if (v13 - v10 >= 0.01)
     {
@@ -1049,12 +1049,12 @@ LABEL_8:
     }
 
 LABEL_13:
-    v14 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-    v15 = [v14 assetByAssetIdentifier];
-    v16 = [v15 allValues];
+    metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+    assetByAssetIdentifier = [metricsCache assetByAssetIdentifier];
+    allValues = [assetByAssetIdentifier allValues];
 
-    [(CLSCurationSession *)self->_curationSession prepareAssets:v16];
-    v17 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForLocationRepresentativeAssets:v16];
+    [(CLSCurationSession *)self->_curationSession prepareAssets:allValues];
+    v17 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForLocationRepresentativeAssets:allValues];
     if (v8)
     {
       v18 = CFAbsoluteTimeGetCurrent();
@@ -1080,8 +1080,8 @@ LABEL_13:
       }
     }
 
-    v19 = [(PGPhotosChallengeMetricEvent *)self _inferredReasonForLocationRepresentativeAssets:v16];
-    v20 = [(PGPhotosChallengeMetricEvent *)self _reasonResultsForQuestions:v7 inferenceResults:v17 inferenceReasons:v19];
+    v19 = [(PGPhotosChallengeMetricEvent *)self _inferredReasonForLocationRepresentativeAssets:allValues];
+    v20 = [(PGPhotosChallengeMetricEvent *)self _reasonResultsForQuestions:questionsCopy inferenceResults:v17 inferenceReasons:v19];
     if (v8)
     {
       v21 = CFAbsoluteTimeGetCurrent();
@@ -1161,10 +1161,10 @@ LABEL_34:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_vipPetIdentifiersWithCurationContext:(id)a3
+- (id)_vipPetIdentifiersWithCurationContext:(id)context
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [PGGraphPetIdentityProcessor fetchInterestingEligiblePetsForWallpaperWithWorkingContext:self->_workingContext curationContext:a3];
+  v3 = [PGGraphPetIdentityProcessor fetchInterestingEligiblePetsForWallpaperWithWorkingContext:self->_workingContext curationContext:context];
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v13 = 0u;
   v14 = 0u;
@@ -1185,8 +1185,8 @@ LABEL_34:
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) localIdentifier];
-        [v4 addObject:v10];
+        localIdentifier = [*(*(&v13 + 1) + 8 * i) localIdentifier];
+        [v4 addObject:localIdentifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1200,25 +1200,25 @@ LABEL_34:
   return v4;
 }
 
-- (id)_vipPersonIdentifiersWithCurationContext:(id)a3
+- (id)_vipPersonIdentifiersWithCurationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__70470;
   v19 = __Block_byref_object_dispose__70471;
   v20 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v5 = [MEMORY[0x277D3C810] primaryOrientation];
+  primaryOrientation = [MEMORY[0x277D3C810] primaryOrientation];
   workingContext = self->_workingContext;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __73__PGPhotosChallengeMetricEvent__vipPersonIdentifiersWithCurationContext___block_invoke;
   v10[3] = &unk_27888A7B8;
-  v14 = v5;
-  v7 = v4;
+  v14 = primaryOrientation;
+  v7 = contextCopy;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   v13 = &v15;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v10];
   v8 = v16[5];
@@ -1270,17 +1270,17 @@ void __73__PGPhotosChallengeMetricEvent__vipPersonIdentifiersWithCurationContext
   }
 }
 
-- (void)_gatherMetricsForWallpaperQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5
+- (void)_gatherMetricsForWallpaperQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block
 {
-  v99 = a4;
+  typeCopy = type;
   v111 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = _Block_copy(v8);
+  questionsCopy = questions;
+  blockCopy = block;
+  v9 = _Block_copy(blockCopy);
   if (!v9)
   {
     v11 = 0.0;
-    if (![v7 count])
+    if (![questionsCopy count])
     {
       goto LABEL_77;
     }
@@ -1315,18 +1315,18 @@ LABEL_29:
     v11 = v12;
   }
 
-  if ([v7 count])
+  if ([questionsCopy count])
   {
 LABEL_10:
     v85 = v9;
-    v83 = v8;
+    v83 = blockCopy;
     v98 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v100 = 0u;
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
-    v84 = v7;
-    v14 = v7;
+    v84 = questionsCopy;
+    v14 = questionsCopy;
     v15 = [v14 countByEnumeratingWithState:&v100 objects:v106 count:16];
     if (v15)
     {
@@ -1342,11 +1342,11 @@ LABEL_10:
           }
 
           v19 = *(*(&v100 + 1) + 8 * i);
-          v20 = [v19 additionalInfo];
-          v21 = [v20 objectForKeyedSubscript:@"suggestionSubtype"];
-          v22 = [v21 integerValue];
+          additionalInfo = [v19 additionalInfo];
+          v21 = [additionalInfo objectForKeyedSubscript:@"suggestionSubtype"];
+          integerValue = [v21 integerValue];
 
-          if ([objc_opt_class() wallpaperSuggestionSubtypeForQuestionMetricType:v99] == v22)
+          if ([objc_opt_class() wallpaperSuggestionSubtypeForQuestionMetricType:typeCopy] == integerValue)
           {
             [v98 addObject:v19];
           }
@@ -1379,7 +1379,7 @@ LABEL_10:
             _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
           }
 
-          v8 = v83;
+          blockCopy = v83;
           goto LABEL_76;
         }
 
@@ -1390,36 +1390,36 @@ LABEL_10:
     v81 = v24;
     v92 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v91 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v26 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-    v27 = [(PGPhotosChallengeMetricEvent *)self curationContext];
-    v87 = [(PGPhotosChallengeMetricEvent *)self _vipPersonIdentifiersWithCurationContext:v27];
+    photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+    curationContext = [(PGPhotosChallengeMetricEvent *)self curationContext];
+    v87 = [(PGPhotosChallengeMetricEvent *)self _vipPersonIdentifiersWithCurationContext:curationContext];
 
-    v28 = [(PGPhotosChallengeMetricEvent *)self curationContext];
-    v86 = [(PGPhotosChallengeMetricEvent *)self _vipPetIdentifiersWithCurationContext:v28];
+    curationContext2 = [(PGPhotosChallengeMetricEvent *)self curationContext];
+    v86 = [(PGPhotosChallengeMetricEvent *)self _vipPetIdentifiersWithCurationContext:curationContext2];
 
-    v82 = v26;
-    v29 = [v26 librarySpecificFetchOptions];
+    v82 = photoLibrary;
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
     v30 = +[PGCurationManager assetPropertySetsForCuration];
-    [v29 setFetchPropertySets:v30];
+    [librarySpecificFetchOptions setFetchPropertySets:v30];
 
     if ([v98 count])
     {
       v31 = 0;
       v90 = *MEMORY[0x277D3C8B8];
-      v89 = v29;
+      v89 = librarySpecificFetchOptions;
       while (1)
       {
         v32 = objc_autoreleasePoolPush();
         v33 = [v23 objectAtIndexedSubscript:v31];
-        v34 = [v33 additionalInfo];
-        v35 = [v34 objectForKeyedSubscript:@"suggestionSubtype"];
-        v36 = [v35 integerValue];
+        additionalInfo2 = [v33 additionalInfo];
+        v35 = [additionalInfo2 objectForKeyedSubscript:@"suggestionSubtype"];
+        integerValue2 = [v35 integerValue];
 
-        v37 = [v33 entityIdentifier];
+        entityIdentifier = [v33 entityIdentifier];
         v38 = MEMORY[0x277CD97A8];
-        v105 = v37;
+        v105 = entityIdentifier;
         v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v105 count:1];
-        v40 = [v38 fetchAssetsWithUUIDs:v39 options:v29];
+        v40 = [v38 fetchAssetsWithUUIDs:v39 options:librarySpecificFetchOptions];
 
         if ([v40 count])
         {
@@ -1436,31 +1436,31 @@ LABEL_61:
       }
 
       v41 = MEMORY[0x277CD97A8];
-      v42 = [(PGPhotosChallengeMetricEvent *)self curationContext];
+      curationContext3 = [(PGPhotosChallengeMetricEvent *)self curationContext];
       v96 = v40;
-      v43 = [v41 clsAllAssetsFromFetchResult:v40 prefetchOptions:31 curationContext:v42];
-      v97 = [v43 firstObject];
+      v43 = [v41 clsAllAssetsFromFetchResult:v40 prefetchOptions:31 curationContext:curationContext3];
+      firstObject = [v43 firstObject];
 
-      v44 = [MEMORY[0x277D3C810] primaryOrientation];
-      v45 = v36;
-      if (v36 <= 0x28Du)
+      primaryOrientation = [MEMORY[0x277D3C810] primaryOrientation];
+      v45 = integerValue2;
+      if (integerValue2 <= 0x28Du)
       {
-        if (v36 == 652)
+        if (integerValue2 == 652)
         {
-          v56 = [(PGPhotosChallengeMetricEvent *)self _fetchPersonFromAsset:v97 detectionType:1];
+          v56 = [(PGPhotosChallengeMetricEvent *)self _fetchPersonFromAsset:firstObject detectionType:1];
           v23 = v98;
           v40 = v96;
           if (v56)
           {
             v57 = v56;
-            v94 = v37;
+            v94 = entityIdentifier;
             v95 = v32;
-            v58 = [(PGPhotosChallengeMetricEvent *)self curationContext];
-            v47 = [PGPeopleWallpaperSuggester passesFilteringWithAsset:v97 curationContext:v58 orientation:v44 reason:0];
+            curationContext4 = [(PGPhotosChallengeMetricEvent *)self curationContext];
+            v47 = [PGPeopleWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:curationContext4 orientation:primaryOrientation reason:0];
 
             v48 = v57;
-            v59 = [v57 localIdentifier];
-            v50 = [v87 containsObject:v59];
+            localIdentifier = [v57 localIdentifier];
+            v50 = [v87 containsObject:localIdentifier];
 
             goto LABEL_47;
           }
@@ -1470,28 +1470,28 @@ LABEL_60:
           goto LABEL_61;
         }
 
-        if (v36 == 653)
+        if (integerValue2 == 653)
         {
-          [(PGPhotosChallengeMetricEvent *)self _fetchPersonFromAsset:v97 detectionType:2];
+          [(PGPhotosChallengeMetricEvent *)self _fetchPersonFromAsset:firstObject detectionType:2];
           v23 = v98;
           v88 = v40 = v96;
           if (v88)
           {
-            v94 = v37;
+            v94 = entityIdentifier;
             v95 = v32;
-            v46 = [(PGPhotosChallengeMetricEvent *)self curationContext];
-            v47 = [PGPetWallpaperSuggester passesFilteringWithAsset:v97 curationContext:v46 orientation:v44 reason:0];
+            curationContext5 = [(PGPhotosChallengeMetricEvent *)self curationContext];
+            v47 = [PGPetWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:curationContext5 orientation:primaryOrientation reason:0];
 
             v48 = v88;
-            v49 = [v88 localIdentifier];
-            v50 = [v86 containsObject:v49];
+            localIdentifier2 = [v88 localIdentifier];
+            v50 = [v86 containsObject:localIdentifier2];
 
 LABEL_47:
             v93 = v50 & v47;
             v60 = MEMORY[0x277CCACA8];
             v61 = [objc_opt_class() _passedFilteringStringForResult:v47];
             v62 = [objc_opt_class() _isVIPStringForResult:v50];
-            v55 = [v60 stringWithFormat:@"%@|%@", v61, v62];
+            loggingConnection = [v60 stringWithFormat:@"%@|%@", v61, v62];
 
 LABEL_50:
             if ([v33 state] == 2)
@@ -1505,8 +1505,8 @@ LABEL_50:
             }
 
             v67 = v66;
-            v68 = [v33 additionalInfo];
-            v69 = [v68 objectForKeyedSubscript:v90];
+            additionalInfo3 = [v33 additionalInfo];
+            v69 = [additionalInfo3 objectForKeyedSubscript:v90];
             v70 = v69;
             v71 = @"None";
             if (v69)
@@ -1526,15 +1526,15 @@ LABEL_50:
               v73 = @"NO";
             }
 
-            v74 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@->%@]-[%@->%@]", v67, v72, v73, v55];
+            v74 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@->%@]-[%@->%@]", v67, v72, v73, loggingConnection];
 
             v75 = [MEMORY[0x277CCABB0] numberWithBool:v93];
-            v37 = v94;
+            entityIdentifier = v94;
             [v92 setObject:v75 forKeyedSubscript:v94];
 
             [v91 setObject:v74 forKeyedSubscript:v94];
             v23 = v98;
-            v29 = v89;
+            librarySpecificFetchOptions = v89;
             v32 = v95;
 LABEL_59:
             v40 = v96;
@@ -1547,45 +1547,45 @@ LABEL_59:
 
 LABEL_42:
         v54 = +[PGLogging sharedLogging];
-        v55 = [v54 loggingConnection];
+        loggingConnection = [v54 loggingConnection];
 
-        if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
-          v76 = [v33 uuid];
+          uuid = [v33 uuid];
           *buf = 67109378;
           v108 = v45;
           v109 = 2112;
-          v110 = v76;
-          _os_log_error_impl(&dword_22F0FC000, v55, OS_LOG_TYPE_ERROR, "Unsupported Wallpaper Subtype %d for question %@", buf, 0x12u);
+          v110 = uuid;
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unsupported Wallpaper Subtype %d for question %@", buf, 0x12u);
         }
 
         v23 = v98;
         goto LABEL_59;
       }
 
-      if (v36 == 654)
+      if (integerValue2 == 654)
       {
-        v94 = v37;
+        v94 = entityIdentifier;
         v95 = v32;
-        v63 = [(PGPhotosChallengeMetricEvent *)self curationContext];
-        v52 = [PGLandscapeWallpaperSuggester passesFilteringWithAsset:v97 curationContext:v63 orientation:v44 reason:0];
+        curationContext6 = [(PGPhotosChallengeMetricEvent *)self curationContext];
+        v52 = [PGLandscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:curationContext6 orientation:primaryOrientation reason:0];
 
-        v53 = [objc_opt_class() _isHighPrecisionLandscapeAsset:v97];
+        v53 = [objc_opt_class() _isHighPrecisionLandscapeAsset:firstObject];
       }
 
       else
       {
-        if (v36 != 655)
+        if (integerValue2 != 655)
         {
           goto LABEL_42;
         }
 
-        v94 = v37;
+        v94 = entityIdentifier;
         v95 = v32;
-        v51 = [(PGPhotosChallengeMetricEvent *)self curationContext];
-        v52 = [PGCityscapeWallpaperSuggester passesFilteringWithAsset:v97 curationContext:v51 orientation:v44 reason:0];
+        curationContext7 = [(PGPhotosChallengeMetricEvent *)self curationContext];
+        v52 = [PGCityscapeWallpaperSuggester passesFilteringWithAsset:firstObject curationContext:curationContext7 orientation:primaryOrientation reason:0];
 
-        v53 = [objc_opt_class() _isHighPrecisionCityscapeAsset:v97];
+        v53 = [objc_opt_class() _isHighPrecisionCityscapeAsset:firstObject];
       }
 
       v64 = v53;
@@ -1593,7 +1593,7 @@ LABEL_42:
       v65 = MEMORY[0x277CCACA8];
       v48 = [objc_opt_class() _passedFilteringStringForResult:v52];
       v61 = [objc_opt_class() _passedHighPrecisionStringForResult:v64];
-      v55 = [v65 stringWithFormat:@"%@|%@", v48, v61];
+      loggingConnection = [v65 stringWithFormat:@"%@|%@", v48, v61];
       goto LABEL_50;
     }
 
@@ -1619,8 +1619,8 @@ LABEL_62:
           }
 
 LABEL_75:
-          v8 = v83;
-          v7 = v84;
+          blockCopy = v83;
+          questionsCopy = v84;
 
 LABEL_76:
           goto LABEL_77;
@@ -1635,7 +1635,7 @@ LABEL_76:
       v24 = v81;
     }
 
-    v78 = [objc_opt_class() stringFromQuestionMetricType:v99];
+    v78 = [objc_opt_class() stringFromQuestionMetricType:typeCopy];
     v79 = [[PGAssetsWithReasonPrecisionRecallEvaluation alloc] initWithIdentifier:@"wallpaper" category:v78];
     [(PGAssetsWithReasonPrecisionRecallEvaluation *)v79 evaluateWithGroundTruthResults:v24 inferenceResults:v92 reasonResultByAssetIdentifier:v91];
     [(PGPhotosChallengeMetricEvent *)self setEvaluation:v79];
@@ -1685,27 +1685,27 @@ LABEL_77:
   v80 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gatherMetricsForCameraLibrarySwitchQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForCameraLibrarySwitchQuestions:(id)questions progressBlock:(id)block
 {
   v89 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
-    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthByAssetIdentifiersFromQuestions:v6];
+    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthByAssetIdentifiersFromQuestions:questionsCopy];
     if (![v10 count])
     {
       v13 = +[PGLogging sharedLogging];
-      v14 = [v13 loggingConnection];
+      loggingConnection = [v13 loggingConnection];
 
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v60 = [v10 count];
         *buf = 67109120;
         v86 = v60;
-        _os_log_error_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_ERROR, "Camera library switch: ground truth, %d is empty", buf, 8u);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Camera library switch: ground truth, %d is empty", buf, 8u);
       }
 
       v15 = [[PGAssetsWithReasonPrecisionRecallEvaluation alloc] initWithIdentifier:@"cameraLibrarySwitch" category:@"sharedLibraryAssets"];
@@ -1766,12 +1766,12 @@ LABEL_45:
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v16 = v6;
+    v16 = questionsCopy;
     v17 = [v16 countByEnumeratingWithState:&v78 objects:v84 count:16];
-    v61 = self;
+    selfCopy = self;
     v62 = v7;
     v63 = v10;
-    v64 = v6;
+    v64 = questionsCopy;
     if (v17)
     {
       v18 = v17;
@@ -1789,30 +1789,30 @@ LABEL_45:
           }
 
           v23 = *(*(&v78 + 1) + 8 * i);
-          v24 = [v23 additionalInfo];
-          v25 = [v24 objectForKeyedSubscript:v21];
+          additionalInfo = [v23 additionalInfo];
+          v25 = [additionalInfo objectForKeyedSubscript:v21];
 
           if (!v25)
           {
-            v26 = [v23 additionalInfo];
-            v27 = [v26 objectForKeyedSubscript:@"previousCameraLibrarySwitchState"];
+            additionalInfo2 = [v23 additionalInfo];
+            v27 = [additionalInfo2 objectForKeyedSubscript:@"previousCameraLibrarySwitchState"];
             if ([v27 isEqualToString:@"auto on"])
             {
 
 LABEL_39:
               v70 = 0;
               v16 = v72;
-              v34 = v72;
+              loggingConnection2 = v72;
               v10 = v63;
-              v6 = v64;
+              questionsCopy = v64;
               v7 = v62;
               goto LABEL_40;
             }
 
             v28 = v20;
             v29 = v21;
-            v30 = [v23 additionalInfo];
-            v31 = [v30 objectForKeyedSubscript:@"currentCameraLibrarySwitchState"];
+            additionalInfo3 = [v23 additionalInfo];
+            v31 = [additionalInfo3 objectForKeyedSubscript:@"currentCameraLibrarySwitchState"];
             v32 = [v31 isEqualToString:@"auto on"];
 
             if (v32)
@@ -1840,7 +1840,7 @@ LABEL_39:
       {
         v70 = 1;
         v10 = v63;
-        v6 = v64;
+        questionsCopy = v64;
         v7 = v62;
         if (!v62)
         {
@@ -1851,24 +1851,24 @@ LABEL_39:
       }
 
       v33 = +[PGLogging sharedLogging];
-      v34 = [v33 loggingConnection];
+      loggingConnection2 = [v33 loggingConnection];
 
       v7 = v62;
       v10 = v63;
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_22F0FC000, v34, OS_LOG_TYPE_ERROR, "Excluding questions without library scope from Camera library switch challenge evaluation", buf, 2u);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Excluding questions without library scope from Camera library switch challenge evaluation", buf, 2u);
       }
 
       v70 = 1;
-      v6 = v64;
+      questionsCopy = v64;
     }
 
     else
     {
       v70 = 1;
-      v34 = v16;
+      loggingConnection2 = v16;
     }
 
 LABEL_40:
@@ -1927,13 +1927,13 @@ LABEL_47:
           }
 
           v37 = *(*(&v74 + 1) + 8 * j);
-          v38 = [v37 additionalInfo];
-          v39 = v38;
-          if (!v70 || ([v38 objectForKeyedSubscript:@"libraryScopeUUID"], v40 = objc_claimAutoreleasedReturnValue(), v40, v40))
+          additionalInfo4 = [v37 additionalInfo];
+          v39 = additionalInfo4;
+          if (!v70 || ([additionalInfo4 objectForKeyedSubscript:@"libraryScopeUUID"], v40 = objc_claimAutoreleasedReturnValue(), v40, v40))
           {
-            v41 = [v37 state];
+            state = [v37 state];
             v42 = @"NO";
-            if (v41 == 2)
+            if (state == 2)
             {
               v42 = @"YES";
             }
@@ -1967,10 +1967,10 @@ LABEL_47:
             v52 = v73 = v48;
             v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@->%@]-[%@->%@]", v43, v47, v51, v52];
 
-            v54 = [v37 entityIdentifier];
-            [v67 setObject:v53 forKeyedSubscript:v54];
+            entityIdentifier = [v37 entityIdentifier];
+            [v67 setObject:v53 forKeyedSubscript:entityIdentifier];
             v55 = [MEMORY[0x277CCABB0] numberWithBool:v50];
-            [v68 setObject:v55 forKeyedSubscript:v54];
+            [v68 setObject:v55 forKeyedSubscript:entityIdentifier];
           }
         }
 
@@ -1985,8 +1985,8 @@ LABEL_47:
     {
       v56 = CFAbsoluteTimeGetCurrent();
       v10 = v63;
-      v6 = v64;
-      v57 = v61;
+      questionsCopy = v64;
+      v57 = selfCopy;
       if (v56 - v8 >= 0.01)
       {
         v82 = 0;
@@ -2014,8 +2014,8 @@ LABEL_78:
     else
     {
       v10 = v63;
-      v6 = v64;
-      v57 = v61;
+      questionsCopy = v64;
+      v57 = selfCopy;
     }
 
     v58 = [[PGAssetsWithReasonPrecisionRecallEvaluation alloc] initWithIdentifier:@"cameraLibrarySwitch" category:@"sharedLibraryAssets"];
@@ -2066,11 +2066,11 @@ LABEL_80:
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gatherMetricsForSharedLibraryStartQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForSharedLibraryStartQuestions:(id)questions progressBlock:(id)block
 {
   *&v36[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   if (v7)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -2100,7 +2100,7 @@ LABEL_30:
       v9 = v10;
     }
 
-    if (![v6 count])
+    if (![questionsCopy count])
     {
       if (CFAbsoluteTimeGetCurrent() - v9 >= 0.01)
       {
@@ -2127,13 +2127,13 @@ LABEL_30:
   else
   {
     v9 = 0.0;
-    if (![v6 count])
+    if (![questionsCopy count])
     {
       goto LABEL_56;
     }
   }
 
-  if ([v6 count] < 2)
+  if ([questionsCopy count] < 2)
   {
     metricsCache = self->_metricsCache;
     v33 = 0;
@@ -2142,13 +2142,13 @@ LABEL_30:
     if (v16)
     {
       v17 = +[PGLogging sharedLogging];
-      v18 = [v17 loggingConnection];
+      loggingConnection = [v17 loggingConnection];
 
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         *v36 = v16;
-        _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "Error getting startSharedLibrarySuggestion: %@", buf, 0xCu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Error getting startSharedLibrarySuggestion: %@", buf, 0xCu);
       }
 
       if (v7)
@@ -2174,11 +2174,11 @@ LABEL_30:
 
     else
     {
-      v19 = [v6 firstObject];
-      v20 = [v19 state];
+      firstObject = [questionsCopy firstObject];
+      state = [firstObject state];
       v21 = 1;
-      v22 = v20 == 2;
-      if (v20 == 3)
+      v22 = state == 2;
+      if (state == 3)
       {
         v22 = 0;
       }
@@ -2189,8 +2189,8 @@ LABEL_30:
       }
 
       v23 = 1;
-      v24 = v20 == 2;
-      if (v20 == 3)
+      v24 = state == 2;
+      if (state == 3)
       {
         v24 = 0;
       }
@@ -2251,14 +2251,14 @@ LABEL_30:
   else
   {
     v12 = +[PGLogging sharedLogging];
-    v13 = [v12 loggingConnection];
+    loggingConnection2 = [v12 loggingConnection];
 
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
-      v32 = [v6 count];
+      v32 = [questionsCopy count];
       *buf = 67109120;
       v36[0] = v32;
-      _os_log_error_impl(&dword_22F0FC000, v13, OS_LOG_TYPE_ERROR, "Expected 1 shared library start question, found %d", buf, 8u);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Expected 1 shared library start question, found %d", buf, 8u);
     }
 
     if (v7)
@@ -2288,29 +2288,29 @@ LABEL_56:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_getInferredReasonFromMatchedConditions:(id)a3 withFallbackReason:(id)a4
+- (id)_getInferredReasonFromMatchedConditions:(id)conditions withFallbackReason:(id)reason
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  conditionsCopy = conditions;
+  reasonCopy = reason;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
-  v8 = v6;
+  v7 = [conditionsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v8 = reasonCopy;
   if (v7)
   {
     v9 = v7;
     v10 = *v22;
-    v8 = v6;
+    v8 = reasonCopy;
     do
     {
       for (i = 0; i != v9; ++i)
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(conditionsCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
@@ -2321,7 +2321,7 @@ LABEL_56:
           v14 = PLLibraryScopeConditionStringFromType();
           v15 = [v13 stringByAppendingFormat:@" %@", v14];
           v16 = v15;
-          if (v8 == v6)
+          if (v8 == reasonCopy)
           {
             v17 = v15;
           }
@@ -2337,7 +2337,7 @@ LABEL_56:
         }
       }
 
-      v9 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v9 = [conditionsCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v9);
@@ -2348,15 +2348,15 @@ LABEL_56:
   return v8;
 }
 
-- (void)_gatherNearLiveSuggestionInferencesForQuestions:(id)a3 inferenceResults:(id)a4 reasonResultByAssetIdentifier:(id)a5 progressBlock:(id)a6
+- (void)_gatherNearLiveSuggestionInferencesForQuestions:(id)questions inferenceResults:(id)results reasonResultByAssetIdentifier:(id)identifier progressBlock:(id)block
 {
   v66 = *MEMORY[0x277D85DE8];
-  v40 = a3;
-  v10 = a4;
-  v39 = a5;
-  v37 = a6;
+  questionsCopy = questions;
+  resultsCopy = results;
+  identifierCopy = identifier;
+  blockCopy = block;
   v11 = 0.0;
-  v41 = _Block_copy(v37);
+  v41 = _Block_copy(blockCopy);
   if (!v41 || (v12 = CFAbsoluteTimeGetCurrent(), v12 < 0.01))
   {
 LABEL_7:
@@ -2366,19 +2366,19 @@ LABEL_7:
     v63 = __Block_byref_object_copy__70470;
     v64 = __Block_byref_object_dispose__70471;
     v65 = 0;
-    v13 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-    v14 = [v13 managedObjectContext];
+    photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+    managedObjectContext = [photoLibrary managedObjectContext];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __141__PGPhotosChallengeMetricEvent__gatherNearLiveSuggestionInferencesForQuestions_inferenceResults_reasonResultByAssetIdentifier_progressBlock___block_invoke;
     v54[3] = &unk_27888A700;
     v54[4] = self;
     v54[5] = buf;
-    [v14 performBlockAndWait:v54];
-    v38 = self;
+    [managedObjectContext performBlockAndWait:v54];
+    selfCopy = self;
 
-    v15 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-    v42 = [v15 assetByAssetIdentifier];
+    metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+    assetByAssetIdentifier = [metricsCache assetByAssetIdentifier];
 
     v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -2386,7 +2386,7 @@ LABEL_7:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v17 = v40;
+    v17 = questionsCopy;
     v18 = [v17 countByEnumeratingWithState:&v50 objects:v60 count:16];
     if (v18)
     {
@@ -2401,18 +2401,18 @@ LABEL_7:
           }
 
           v21 = *(*(&v50 + 1) + 8 * i);
-          v22 = [v21 entityIdentifier];
-          v23 = [v10 objectForKeyedSubscript:v22];
-          v24 = [v23 BOOLValue];
+          entityIdentifier = [v21 entityIdentifier];
+          v23 = [resultsCopy objectForKeyedSubscript:entityIdentifier];
+          bOOLValue = [v23 BOOLValue];
 
-          if ((v24 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
-            v25 = [v21 entityIdentifier];
-            v26 = [v42 objectForKeyedSubscript:v25];
-            v27 = [v26 objectID];
+            entityIdentifier2 = [v21 entityIdentifier];
+            v26 = [assetByAssetIdentifier objectForKeyedSubscript:entityIdentifier2];
+            objectID = [v26 objectID];
 
-            [v43 addObject:v27];
-            [v16 setObject:v21 forKeyedSubscript:v27];
+            [v43 addObject:objectID];
+            [v16 setObject:v21 forKeyedSubscript:objectID];
           }
         }
 
@@ -2458,8 +2458,8 @@ LABEL_29:
       v30 = MEMORY[0x277CCA920];
       v31 = PLManagedAssetPredicateToFetchAssetsToEvaluateSuggestionsForLibraryScope();
       v55[0] = v31;
-      v32 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K & %d) != 0", @"libraryScopeShareState", 2, v37];
-      v55[1] = v32;
+      blockCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"(%K & %d) != 0", @"libraryScopeShareState", 2, blockCopy];
+      v55[1] = blockCopy;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:2];
       v34 = [v30 orPredicateWithSubpredicates:v33];
 
@@ -2469,9 +2469,9 @@ LABEL_29:
       v44[2] = __141__PGPhotosChallengeMetricEvent__gatherNearLiveSuggestionInferencesForQuestions_inferenceResults_reasonResultByAssetIdentifier_progressBlock___block_invoke_610;
       v44[3] = &unk_27888A728;
       v45 = v16;
-      v46 = v38;
-      v47 = v10;
-      v48 = v39;
+      v46 = selfCopy;
+      v47 = resultsCopy;
+      v48 = identifierCopy;
       [v35 evaluateAssetObjectIDs:v43 simulate:1 predicateToFetchAssetsToEvaluate:v34 withResultEnumerationBlock:v44];
     }
 
@@ -2570,29 +2570,29 @@ void __141__PGPhotosChallengeMetricEvent__gatherNearLiveSuggestionInferencesForQ
   }
 }
 
-- (void)_gatherDeferredSuggestionInferencesForQuestions:(id)a3 momentUUIDS:(id)a4 inferenceResults:(id)a5 reasonResultByAssetIdentifier:(id)a6 progressBlock:(id)a7
+- (void)_gatherDeferredSuggestionInferencesForQuestions:(id)questions momentUUIDS:(id)s inferenceResults:(id)results reasonResultByAssetIdentifier:(id)identifier progressBlock:(id)block
 {
   v94 = *MEMORY[0x277D85DE8];
-  v57 = a3;
-  v58 = a4;
-  v63 = a5;
-  v62 = a6;
-  v56 = a7;
+  questionsCopy = questions;
+  sCopy = s;
+  resultsCopy = results;
+  identifierCopy = identifier;
+  blockCopy = block;
   v11 = 0.0;
-  v60 = _Block_copy(v56);
+  v60 = _Block_copy(blockCopy);
   if (!v60 || (v12 = CFAbsoluteTimeGetCurrent(), v12 < 0.01))
   {
 LABEL_7:
-    v13 = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
-    v59 = [PGSharedLibrarySuggestionsProcessor libraryScopeToUseWithPhotoLibrary:v13];
+    photoLibrary = [(PGManagerWorkingContext *)self->_workingContext photoLibrary];
+    v59 = [PGSharedLibrarySuggestionsProcessor libraryScopeToUseWithPhotoLibrary:photoLibrary];
 
     if (!v59)
     {
-      v21 = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      loggingConnection = [(PGManagerWorkingContext *)self->_workingContext loggingConnection];
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_DEFAULT, "[PGSharedLibrarySuggestionsProcessor] Cannot instanciate without a valid library scope", buf, 2u);
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "[PGSharedLibrarySuggestionsProcessor] Cannot instanciate without a valid library scope", buf, 2u);
       }
 
       goto LABEL_47;
@@ -2613,8 +2613,8 @@ LABEL_7:
     v18 = v14;
     v79 = v18;
     v84 = buf;
-    v80 = v58;
-    v81 = self;
+    v80 = sCopy;
+    selfCopy = self;
     v68 = v16;
     v82 = v68;
     v67 = v15;
@@ -2635,7 +2635,7 @@ LABEL_7:
 LABEL_46:
 
             _Block_object_dispose(buf, 8);
-            v21 = p_super;
+            loggingConnection = p_super;
 LABEL_47:
 
             goto LABEL_48;
@@ -2683,14 +2683,14 @@ LABEL_40:
       goto LABEL_45;
     }
 
-    v22 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-    v66 = [v22 momentUUIDByAssetIdentifier];
+    metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+    momentUUIDByAssetIdentifier = [metricsCache momentUUIDByAssetIdentifier];
 
     v75 = 0u;
     v76 = 0u;
     v73 = 0u;
     v74 = 0u;
-    obj = v57;
+    obj = questionsCopy;
     v23 = [obj countByEnumeratingWithState:&v73 objects:v86 count:16];
     if (!v23)
     {
@@ -2712,18 +2712,18 @@ LABEL_19:
 
       v26 = *(*(&v73 + 1) + 8 * v25);
       context = objc_autoreleasePoolPush();
-      v27 = [v26 entityIdentifier];
-      v28 = [v66 objectForKeyedSubscript:v27];
-      v29 = [v26 state];
+      entityIdentifier = [v26 entityIdentifier];
+      v28 = [momentUUIDByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
+      state = [v26 state];
       v30 = @"NO";
-      if (v29 == 2)
+      if (state == 2)
       {
         v30 = @"YES";
       }
 
       v31 = v30;
-      v32 = [v26 additionalInfo];
-      v33 = [v32 objectForKeyedSubscript:v64];
+      additionalInfo = [v26 additionalInfo];
+      v33 = [additionalInfo objectForKeyedSubscript:v64];
       v34 = v33;
       v35 = @"None";
       if (v33)
@@ -2748,9 +2748,9 @@ LABEL_19:
         break;
       }
 
-      v41 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-      v42 = [v41 assetByAssetIdentifier];
-      v43 = [v42 objectForKeyedSubscript:v27];
+      metricsCache2 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+      assetByAssetIdentifier = [metricsCache2 assetByAssetIdentifier];
+      v43 = [assetByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
 
       if (v43)
       {
@@ -2759,9 +2759,9 @@ LABEL_19:
         v45 = [MEMORY[0x277CBEA60] arrayWithObjects:&v85 count:1];
         [(CLSCurationSession *)curationSession prepareAssets:v45];
 
-        v46 = [(PGPhotosChallengeMetricEvent *)self curationContext];
+        curationContext = [(PGPhotosChallengeMetricEvent *)self curationContext];
         v72 = 0;
-        v47 = [PGSharedLibrarySuggestionsProcessor shouldIncludeAsset:v43 curationContext:v46 rejectionReason:&v72];
+        v47 = [PGSharedLibrarySuggestionsProcessor shouldIncludeAsset:v43 curationContext:curationContext rejectionReason:&v72];
         v48 = v72;
 
         if (v48)
@@ -2794,7 +2794,7 @@ LABEL_39:
     v47 = 0;
 LABEL_34:
     v50 = [MEMORY[0x277CCABB0] numberWithBool:v47];
-    [v63 setObject:v50 forKeyedSubscript:v27];
+    [resultsCopy setObject:v50 forKeyedSubscript:entityIdentifier];
 
     v51 = @"NO";
     if (v47)
@@ -2804,7 +2804,7 @@ LABEL_34:
 
     v52 = v51;
     v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@->%@]-[%@->%@]", v31, v36, v52, v40];
-    [v62 setObject:v53 forKeyedSubscript:v27];
+    [identifierCopy setObject:v53 forKeyedSubscript:entityIdentifier];
 
     goto LABEL_37;
   }
@@ -2965,30 +2965,30 @@ void __153__PGPhotosChallengeMetricEvent__gatherDeferredSuggestionInferencesForQ
   }
 }
 
-- (void)_gatherMetricsForSharedLibraryAssetsQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForSharedLibraryAssetsQuestions:(id)questions progressBlock:(id)block
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = _Block_copy(v7);
+  questionsCopy = questions;
+  blockCopy = block;
+  v8 = _Block_copy(blockCopy);
   v9 = 0.0;
   if (!v8 || (v10 = CFAbsoluteTimeGetCurrent(), v10 < 0.01))
   {
 LABEL_7:
     v44 = v8;
-    v41 = v7;
-    v43 = [(PGPhotosChallengeMetricEvent *)self _groundTruthByAssetIdentifiersFromQuestions:v6];
-    v40 = self;
-    v11 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-    v12 = [v11 momentUUIDByAssetIdentifier];
+    v41 = blockCopy;
+    v43 = [(PGPhotosChallengeMetricEvent *)self _groundTruthByAssetIdentifiersFromQuestions:questionsCopy];
+    selfCopy = self;
+    metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+    momentUUIDByAssetIdentifier = [metricsCache momentUUIDByAssetIdentifier];
 
     v45 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v42 = v6;
-    v13 = v6;
+    v42 = questionsCopy;
+    v13 = questionsCopy;
     v14 = [v13 countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v14)
     {
@@ -3004,8 +3004,8 @@ LABEL_7:
           }
 
           v18 = *(*(&v46 + 1) + 8 * i);
-          v19 = [v18 entityIdentifier];
-          v20 = [v12 objectForKeyedSubscript:v19];
+          entityIdentifier = [v18 entityIdentifier];
+          v20 = [momentUUIDByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
 
           if (v20)
           {
@@ -3015,14 +3015,14 @@ LABEL_7:
           else
           {
             v21 = +[PGLogging sharedLogging];
-            v22 = [v21 loggingConnection];
+            loggingConnection = [v21 loggingConnection];
 
-            if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
             {
-              v23 = [v18 entityIdentifier];
+              entityIdentifier2 = [v18 entityIdentifier];
               *buf = 138412290;
-              *v53 = v23;
-              _os_log_error_impl(&dword_22F0FC000, v22, OS_LOG_TYPE_ERROR, "Shared library: Failed to find moment UUID for asset uuid: %@", buf, 0xCu);
+              *v53 = entityIdentifier2;
+              _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Shared library: Failed to find moment UUID for asset uuid: %@", buf, 0xCu);
             }
           }
         }
@@ -3037,11 +3037,11 @@ LABEL_7:
     if (![v43 count] || !objc_msgSend(v45, "count"))
     {
       v27 = +[PGLogging sharedLogging];
-      v28 = [v27 loggingConnection];
+      loggingConnection2 = [v27 loggingConnection];
 
-      v7 = v41;
-      v6 = v42;
-      if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+      blockCopy = v41;
+      questionsCopy = v42;
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
       {
         v35 = [v43 count];
         v36 = [v45 count];
@@ -3049,12 +3049,12 @@ LABEL_7:
         *v53 = v35;
         *&v53[4] = 1024;
         *&v53[6] = v36;
-        _os_log_error_impl(&dword_22F0FC000, v28, OS_LOG_TYPE_ERROR, "Shared library: ground truth, %d, or moment UUIDs, %d, is empty", buf, 0xEu);
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Shared library: ground truth, %d, or moment UUIDs, %d, is empty", buf, 0xEu);
       }
 
       v29 = [[PGAssetsWithReasonPrecisionRecallEvaluation alloc] initWithIdentifier:@"sharedLibraryAssets" category:@"sharedLibraryAssets"];
       [(PGAssetsWithReasonPrecisionRecallEvaluation *)v29 evaluateWithGroundTruthResults:v43 inferenceResults:MEMORY[0x277CBEC10] reasonResultByAssetIdentifier:MEMORY[0x277CBEC10]];
-      [(PGPhotosChallengeMetricEvent *)v40 setEvaluation:v29];
+      [(PGPhotosChallengeMetricEvent *)selfCopy setEvaluation:v29];
       v8 = v44;
       if (v44)
       {
@@ -3079,13 +3079,13 @@ LABEL_7:
       goto LABEL_58;
     }
 
-    v7 = v41;
-    v6 = v42;
+    blockCopy = v41;
+    questionsCopy = v42;
     v8 = v44;
     if (v44)
     {
       Current = CFAbsoluteTimeGetCurrent();
-      p_isa = &v40->super.super.isa;
+      p_isa = &selfCopy->super.super.isa;
       if (Current - v9 >= 0.01)
       {
         v50 = 0;
@@ -3110,7 +3110,7 @@ LABEL_7:
 
     else
     {
-      p_isa = &v40->super.super.isa;
+      p_isa = &selfCopy->super.super.isa;
     }
 
     v30 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -3237,83 +3237,83 @@ LABEL_59:
 
 - (id)payloadForVerification
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [objc_opt_class() stringFromQuestionMetricType:self->_questionMetricType];
   v18 = [v4 substringToIndex:1];
-  v5 = [v18 lowercaseString];
-  v6 = [v4 stringByReplacingCharactersInRange:0 withString:{1, v5}];
+  lowercaseString = [v18 lowercaseString];
+  v6 = [v4 stringByReplacingCharactersInRange:0 withString:{1, lowercaseString}];
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_algorithmVersion];
   v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@AlgorithmVersion", v6];
-  [v3 setObject:v7 forKeyedSubscript:v8];
+  [dictionary setObject:v7 forKeyedSubscript:v8];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PGPrecisionRecallEvaluation falseNegatives](self->_evaluation, "falseNegatives")}];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@NumFalseNegatives", v6];
-  [v3 setObject:v9 forKeyedSubscript:v10];
+  [dictionary setObject:v9 forKeyedSubscript:v10];
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PGPrecisionRecallEvaluation falsePositives](self->_evaluation, "falsePositives")}];
   v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@NumFalsePositives", v6];
-  [v3 setObject:v11 forKeyedSubscript:v12];
+  [dictionary setObject:v11 forKeyedSubscript:v12];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PGPrecisionRecallEvaluation trueNegatives](self->_evaluation, "trueNegatives")}];
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@NumTrueNegatives", v6];
-  [v3 setObject:v13 forKeyedSubscript:v14];
+  [dictionary setObject:v13 forKeyedSubscript:v14];
 
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PGPrecisionRecallEvaluation truePositives](self->_evaluation, "truePositives")}];
   v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@NumTruePositives", v6];
-  [v3 setObject:v15 forKeyedSubscript:v16];
+  [dictionary setObject:v15 forKeyedSubscript:v16];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)payload
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_graphSchemaVersion];
-  [v3 setObject:v4 forKeyedSubscript:@"graphSchemaVersion"];
+  [dictionary setObject:v4 forKeyedSubscript:@"graphSchemaVersion"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_questionVersion];
-  [v3 setObject:v5 forKeyedSubscript:@"questionVersion"];
+  [dictionary setObject:v5 forKeyedSubscript:@"questionVersion"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_algorithmVersion];
-  [v3 setObject:v6 forKeyedSubscript:@"algorithmVersion"];
+  [dictionary setObject:v6 forKeyedSubscript:@"algorithmVersion"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_photosModelVersion];
-  [v3 setObject:v7 forKeyedSubscript:@"photosModelVersion"];
+  [dictionary setObject:v7 forKeyedSubscript:@"photosModelVersion"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_questionVersion];
-  [v3 setObject:v8 forKeyedSubscript:@"questionVersion"];
+  [dictionary setObject:v8 forKeyedSubscript:@"questionVersion"];
 
-  [v3 setObject:self->_questionTypeString forKeyedSubscript:@"questionType"];
-  [v3 setObject:self->_photoLibrarySize forKeyedSubscript:@"photosLibrarySize"];
+  [dictionary setObject:self->_questionTypeString forKeyedSubscript:@"questionType"];
+  [dictionary setObject:self->_photoLibrarySize forKeyedSubscript:@"photosLibrarySize"];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PGPrecisionRecallEvaluation falseNegatives](self->_evaluation, "falseNegatives")}];
-  [v3 setObject:v9 forKeyedSubscript:@"falseNegativeCount"];
+  [dictionary setObject:v9 forKeyedSubscript:@"falseNegativeCount"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PGPrecisionRecallEvaluation falsePositives](self->_evaluation, "falsePositives")}];
-  [v3 setObject:v10 forKeyedSubscript:@"falsePositiveCount"];
+  [dictionary setObject:v10 forKeyedSubscript:@"falsePositiveCount"];
 
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PGPrecisionRecallEvaluation trueNegatives](self->_evaluation, "trueNegatives")}];
-  [v3 setObject:v11 forKeyedSubscript:@"trueNegativeCount"];
+  [dictionary setObject:v11 forKeyedSubscript:@"trueNegativeCount"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PGPrecisionRecallEvaluation truePositives](self->_evaluation, "truePositives")}];
-  [v3 setObject:v12 forKeyedSubscript:@"truePositiveCount"];
+  [dictionary setObject:v12 forKeyedSubscript:@"truePositiveCount"];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)_groundTruthByPersonUUIDFromQuestions:(id)a3
+- (id)_groundTruthByPersonUUIDFromQuestions:(id)questions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __70__PGPhotosChallengeMetricEvent__groundTruthByPersonUUIDFromQuestions___block_invoke;
   v12[3] = &unk_27888A4D0;
   v12[4] = self;
-  v13 = v4;
-  v7 = v5;
+  v13 = questionsCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = questionsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -3435,16 +3435,16 @@ void __70__PGPhotosChallengeMetricEvent__groundTruthByPersonUUIDFromQuestions___
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_groundTruthByAssetIdentifiersFromQuestions:(id)a3
+- (id)_groundTruthByAssetIdentifiersFromQuestions:(id)questions
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v4;
+  obj = questionsCopy;
   v6 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v6)
   {
@@ -3453,7 +3453,7 @@ void __70__PGPhotosChallengeMetricEvent__groundTruthByPersonUUIDFromQuestions___
     *&v7 = 138412290;
     v27 = v7;
     v28 = *v32;
-    v29 = self;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -3465,10 +3465,10 @@ void __70__PGPhotosChallengeMetricEvent__groundTruthByPersonUUIDFromQuestions___
         }
 
         v11 = *(*(&v31 + 1) + 8 * v10);
-        v12 = [v11 entityIdentifier];
-        v13 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v14 = [v13 assetByAssetIdentifier];
-        v15 = [v14 objectForKeyedSubscript:v12];
+        entityIdentifier = [v11 entityIdentifier];
+        metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+        assetByAssetIdentifier = [metricsCache assetByAssetIdentifier];
+        v15 = [assetByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
         if (v15)
         {
 
@@ -3483,20 +3483,20 @@ LABEL_9:
             v21 = MEMORY[0x277CBEC28];
           }
 
-          [v5 setObject:v21 forKeyedSubscript:v12];
+          [dictionary setObject:v21 forKeyedSubscript:entityIdentifier];
           goto LABEL_13;
         }
 
         [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v17 = v16 = v5;
+        v17 = v16 = dictionary;
         [v17 assetByAssetSyndicationIdentifier];
         v19 = v18 = v8;
-        v20 = [v19 objectForKeyedSubscript:v12];
+        v20 = [v19 objectForKeyedSubscript:entityIdentifier];
 
         v8 = v18;
-        v5 = v16;
+        dictionary = v16;
         v9 = v28;
-        self = v29;
+        self = selfCopy;
 
         if (v20)
         {
@@ -3504,13 +3504,13 @@ LABEL_9:
         }
 
         v22 = +[PGLogging sharedLogging];
-        v23 = [v22 loggingConnection];
+        loggingConnection = [v22 loggingConnection];
 
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = v27;
-          v36 = v12;
-          _os_log_error_impl(&dword_22F0FC000, v23, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
+          v36 = entityIdentifier;
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
         }
 
 LABEL_13:
@@ -3527,21 +3527,21 @@ LABEL_13:
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
-- (id)groundTruthByMomentUUIDFromExhaustiveMomentLabelingQuestions:(id)a3 meaningLabel:(id)a4 withMetricsCache:(id)a5
+- (id)groundTruthByMomentUUIDFromExhaustiveMomentLabelingQuestions:(id)questions meaningLabel:(id)label withMetricsCache:(id)cache
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v31 = a4;
-  v8 = a5;
-  v30 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  labelCopy = label;
+  cacheCopy = cache;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v9 = v7;
+  v9 = questionsCopy;
   v10 = [v9 countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v10)
   {
@@ -3562,37 +3562,37 @@ LABEL_13:
         v15 = *(*(&v33 + 1) + 8 * i);
         if ([v15 state] == 2)
         {
-          v16 = [v15 entityIdentifier];
-          v17 = [v8 momentUUIDsForExhaustiveMomentLabelingQuestion];
-          v18 = [v17 containsObject:v16];
+          entityIdentifier = [v15 entityIdentifier];
+          momentUUIDsForExhaustiveMomentLabelingQuestion = [cacheCopy momentUUIDsForExhaustiveMomentLabelingQuestion];
+          v18 = [momentUUIDsForExhaustiveMomentLabelingQuestion containsObject:entityIdentifier];
 
           if (v18)
           {
-            v19 = [v15 additionalInfo];
-            v20 = [v19 objectForKeyedSubscript:v32];
+            additionalInfo = [v15 additionalInfo];
+            loggingConnection = [additionalInfo objectForKeyedSubscript:v32];
 
             v21 = MEMORY[0x277CBEB98];
-            v22 = [v20 componentsSeparatedByString:@", "];
+            v22 = [loggingConnection componentsSeparatedByString:@", "];
             v23 = [v21 setWithArray:v22];
 
             if ([v23 count])
             {
-              v24 = [v23 containsObject:v31];
+              v24 = [v23 containsObject:labelCopy];
               v25 = [MEMORY[0x277CCABB0] numberWithBool:v24];
-              [v30 setObject:v25 forKeyedSubscript:v16];
+              [dictionary setObject:v25 forKeyedSubscript:entityIdentifier];
             }
           }
 
           else
           {
             v26 = +[PGLogging sharedLogging];
-            v20 = [v26 loggingConnection];
+            loggingConnection = [v26 loggingConnection];
 
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
             {
               *buf = v29;
-              v38 = v16;
-              _os_log_error_impl(&dword_22F0FC000, v20, OS_LOG_TYPE_ERROR, "Failed to find moment with uuid in the photoLibrary: '%@'", buf, 0xCu);
+              v38 = entityIdentifier;
+              _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to find moment with uuid in the photoLibrary: '%@'", buf, 0xCu);
             }
           }
         }
@@ -3606,20 +3606,20 @@ LABEL_13:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v30;
+  return dictionary;
 }
 
-- (id)_reasonResultByAssetEntityIdentifierForTitlingQuestions:(id)a3 questionType:(unsigned __int16)a4
+- (id)_reasonResultByAssetEntityIdentifierForTitlingQuestions:(id)questions questionType:(unsigned __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  questionsCopy = questions;
   v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v5;
+  v6 = questionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -3636,23 +3636,23 @@ LABEL_13:
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        if ([v12 type] == v4)
+        if ([v12 type] == typeCopy)
         {
-          v13 = [v12 state];
+          state = [v12 state];
           v14 = @"NO";
-          if (v13 == 2)
+          if (state == 2)
           {
             v14 = @"YES";
           }
 
           v15 = v14;
-          v16 = [v12 additionalInfo];
-          v17 = [v16 objectForKeyedSubscript:v10];
+          additionalInfo = [v12 additionalInfo];
+          v17 = [additionalInfo objectForKeyedSubscript:v10];
 
           if (v17)
           {
-            v18 = [v12 additionalInfo];
-            v19 = [v18 objectForKeyedSubscript:v10];
+            additionalInfo2 = [v12 additionalInfo];
+            v19 = [additionalInfo2 objectForKeyedSubscript:v10];
           }
 
           else
@@ -3661,8 +3661,8 @@ LABEL_13:
           }
 
           v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"[New->%@]-[Legacy->%@]", v15, v19];
-          v21 = [v12 entityIdentifier];
-          [v24 setObject:v20 forKeyedSubscript:v21];
+          entityIdentifier = [v12 entityIdentifier];
+          [v24 setObject:v20 forKeyedSubscript:entityIdentifier];
         }
       }
 
@@ -3677,17 +3677,17 @@ LABEL_13:
   return v24;
 }
 
-- (id)_groundTruthForTitlingQuestions:(id)a3 questionType:(unsigned __int16)a4
+- (id)_groundTruthForTitlingQuestions:(id)questions questionType:(unsigned __int16)type
 {
-  v4 = a4;
+  typeCopy = type;
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v19 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v5;
+  v6 = questionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
@@ -3703,12 +3703,12 @@ LABEL_13:
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        if ([v11 type] == v4)
+        if ([v11 type] == typeCopy)
         {
-          v12 = [v11 entityIdentifier];
-          v13 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-          v14 = [v13 dayHighlightAssetIdentifiers];
-          v15 = [v14 containsObject:v12];
+          entityIdentifier = [v11 entityIdentifier];
+          metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+          dayHighlightAssetIdentifiers = [metricsCache dayHighlightAssetIdentifiers];
+          v15 = [dayHighlightAssetIdentifiers containsObject:entityIdentifier];
 
           if (v15)
           {
@@ -3722,7 +3722,7 @@ LABEL_13:
               v16 = MEMORY[0x277CBEC28];
             }
 
-            [v19 setObject:v16 forKeyedSubscript:v12];
+            [dictionary setObject:v16 forKeyedSubscript:entityIdentifier];
           }
         }
       }
@@ -3735,23 +3735,23 @@ LABEL_13:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v19;
+  return dictionary;
 }
 
-- (void)_gatherMetricsForHighlightTitlingQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForHighlightTitlingQuestions:(id)questions progressBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
-    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForTitlingQuestions:v6 questionType:28];
-    v11 = [v10 allKeys];
-    v12 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForEntityIdentifiers:v11 withDefaultBoolValue:1];
+    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForTitlingQuestions:questionsCopy questionType:28];
+    allKeys = [v10 allKeys];
+    v12 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForEntityIdentifiers:allKeys withDefaultBoolValue:1];
 
-    v13 = [(PGPhotosChallengeMetricEvent *)self _reasonResultByAssetEntityIdentifierForTitlingQuestions:v6 questionType:28];
+    v13 = [(PGPhotosChallengeMetricEvent *)self _reasonResultByAssetEntityIdentifierForTitlingQuestions:questionsCopy questionType:28];
     if (v7)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -3855,16 +3855,16 @@ LABEL_27:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_tripTitlingReasonResultByAssetEntityIdentifierForQuestions:(id)a3
+- (id)_tripTitlingReasonResultByAssetEntityIdentifierForQuestions:(id)questions
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  questionsCopy = questions;
   v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v4 = v3;
+  v4 = questionsCopy;
   v5 = [v4 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v5)
   {
@@ -3884,21 +3884,21 @@ LABEL_27:
         v11 = *(*(&v24 + 1) + 8 * i);
         if ([v11 type] == 26 && v8 <= objc_msgSend(v11, "questionVersion"))
         {
-          v12 = [v11 state];
+          state = [v11 state];
           v13 = @"NO";
-          if (v12 == 2)
+          if (state == 2)
           {
             v13 = @"YES";
           }
 
           v14 = v13;
-          v15 = [v11 additionalInfo];
-          v16 = [v15 objectForKeyedSubscript:v9];
+          additionalInfo = [v11 additionalInfo];
+          v16 = [additionalInfo objectForKeyedSubscript:v9];
 
           if (v16)
           {
-            v17 = [v11 additionalInfo];
-            v18 = [v17 objectForKeyedSubscript:v9];
+            additionalInfo2 = [v11 additionalInfo];
+            v18 = [additionalInfo2 objectForKeyedSubscript:v9];
           }
 
           else
@@ -3907,8 +3907,8 @@ LABEL_27:
           }
 
           v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"[New->%@]-[Legacy->%@]", v14, v18];
-          v20 = [v11 entityIdentifier];
-          [v23 setObject:v19 forKeyedSubscript:v20];
+          entityIdentifier = [v11 entityIdentifier];
+          [v23 setObject:v19 forKeyedSubscript:entityIdentifier];
         }
       }
 
@@ -3923,16 +3923,16 @@ LABEL_27:
   return v23;
 }
 
-- (id)_groundTruthForTripTitlingQuestions:(id)a3
+- (id)_groundTruthForTripTitlingQuestions:(id)questions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = questionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -3952,7 +3952,7 @@ LABEL_27:
         v12 = *(*(&v17 + 1) + 8 * i);
         if ([v12 type] == 26)
         {
-          v13 = [v12 entityIdentifier];
+          entityIdentifier = [v12 entityIdentifier];
           if ([v12 state] == 2)
           {
             v14 = v10;
@@ -3963,7 +3963,7 @@ LABEL_27:
             v14 = v9;
           }
 
-          [v4 setObject:v14 forKeyedSubscript:v13];
+          [dictionary setObject:v14 forKeyedSubscript:entityIdentifier];
         }
       }
 
@@ -3975,23 +3975,23 @@ LABEL_27:
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-- (void)_gatherMetricsForTripTitlingQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForTripTitlingQuestions:(id)questions progressBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
-    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForTripTitlingQuestions:v6];
-    v11 = [v10 allKeys];
-    v12 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForEntityIdentifiers:v11 withDefaultBoolValue:1];
+    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForTripTitlingQuestions:questionsCopy];
+    allKeys = [v10 allKeys];
+    v12 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForEntityIdentifiers:allKeys withDefaultBoolValue:1];
 
-    v13 = [(PGPhotosChallengeMetricEvent *)self _tripTitlingReasonResultByAssetEntityIdentifierForQuestions:v6];
+    v13 = [(PGPhotosChallengeMetricEvent *)self _tripTitlingReasonResultByAssetEntityIdentifierForQuestions:questionsCopy];
     if (v7)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -4095,29 +4095,29 @@ LABEL_27:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_syndicatedAssetFromQuestion:(id)a3
+- (id)_syndicatedAssetFromQuestion:(id)question
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-  v6 = [v5 assetByAssetSyndicationIdentifier];
-  v7 = [v4 entityIdentifier];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  questionCopy = question;
+  metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+  assetByAssetSyndicationIdentifier = [metricsCache assetByAssetSyndicationIdentifier];
+  entityIdentifier = [questionCopy entityIdentifier];
+  v8 = [assetByAssetSyndicationIdentifier objectForKeyedSubscript:entityIdentifier];
 
   if (!v8)
   {
     v16 = +[PGLogging sharedLogging];
-    v10 = [v16 loggingConnection];
+    loggingConnection = [v16 loggingConnection];
 
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    if (!os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_13;
     }
 
-    v14 = [v4 entityIdentifier];
+    entityIdentifier2 = [questionCopy entityIdentifier];
     v23 = 138412290;
-    v24 = v14;
-    _os_log_error_impl(&dword_22F0FC000, v10, OS_LOG_TYPE_ERROR, "Failed to find asset with syndication uuid: '%@'", &v23, 0xCu);
+    v24 = entityIdentifier2;
+    _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to find asset with syndication uuid: '%@'", &v23, 0xCu);
 LABEL_7:
 
 LABEL_13:
@@ -4125,40 +4125,40 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [v8 curationProperties];
-  v10 = [v9 syndicationIdentifier];
+  curationProperties = [v8 curationProperties];
+  loggingConnection = [curationProperties syndicationIdentifier];
 
-  if (!v10)
+  if (!loggingConnection)
   {
     v17 = +[PGLogging sharedLogging];
-    v18 = [v17 loggingConnection];
+    loggingConnection2 = [v17 loggingConnection];
 
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v8 uuid];
+      uuid = [v8 uuid];
       v23 = 138412290;
-      v24 = v22;
-      _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "Syndication identifier is nil for asset %@", &v23, 0xCu);
+      v24 = uuid;
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Syndication identifier is nil for asset %@", &v23, 0xCu);
     }
 
-    v10 = 0;
+    loggingConnection = 0;
     goto LABEL_13;
   }
 
-  v11 = [v8 mediaAnalysisProperties];
-  v12 = [v11 syndicationProcessingVersion];
+  mediaAnalysisProperties = [v8 mediaAnalysisProperties];
+  syndicationProcessingVersion = [mediaAnalysisProperties syndicationProcessingVersion];
 
-  if (v12 != *MEMORY[0x277CD9B40] && v12 != *MEMORY[0x277CD9B48])
+  if (syndicationProcessingVersion != *MEMORY[0x277CD9B40] && syndicationProcessingVersion != *MEMORY[0x277CD9B48])
   {
     v13 = +[PGLogging sharedLogging];
-    v14 = [v13 loggingConnection];
+    entityIdentifier2 = [v13 loggingConnection];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+    if (os_log_type_enabled(entityIdentifier2, OS_LOG_TYPE_INFO))
     {
-      v15 = [v8 uuid];
+      uuid2 = [v8 uuid];
       v23 = 138412290;
-      v24 = v15;
-      _os_log_impl(&dword_22F0FC000, v14, OS_LOG_TYPE_INFO, "Syndicated asset not yet inferred: %@", &v23, 0xCu);
+      v24 = uuid2;
+      _os_log_impl(&dword_22F0FC000, entityIdentifier2, OS_LOG_TYPE_INFO, "Syndicated asset not yet inferred: %@", &v23, 0xCu);
     }
 
     goto LABEL_7;
@@ -4172,10 +4172,10 @@ LABEL_14:
   return v19;
 }
 
-- (id)_reasonResultByAssetSyndicationIdentifierForQuestions:(id)a3
+- (id)_reasonResultByAssetSyndicationIdentifierForQuestions:(id)questions
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  questionsCopy = questions;
   v50 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v52 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v47 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -4183,7 +4183,7 @@ LABEL_14:
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v5 = v4;
+  v5 = questionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v57 objects:v62 count:16];
   if (v6)
   {
@@ -4203,16 +4203,16 @@ LABEL_14:
         v12 = v11;
         if (v11)
         {
-          v13 = [v11 mediaAnalysisProperties];
-          v14 = [v13 syndicationProcessingValue];
+          mediaAnalysisProperties = [v11 mediaAnalysisProperties];
+          syndicationProcessingValue = [mediaAnalysisProperties syndicationProcessingValue];
 
-          if ((v14 & 0x1000) == 0)
+          if ((syndicationProcessingValue & 0x1000) == 0)
           {
             [v52 setObject:v12 forKeyedSubscript:v10];
-            if ((v14 & 0x6EF0) == 0)
+            if ((syndicationProcessingValue & 0x6EF0) == 0)
             {
-              v15 = [v12 localIdentifier];
-              [v47 setObject:v12 forKeyedSubscript:v15];
+              localIdentifier = [v12 localIdentifier];
+              [v47 setObject:v12 forKeyedSubscript:localIdentifier];
             }
           }
         }
@@ -4224,12 +4224,12 @@ LABEL_14:
     while (v7);
   }
 
-  v16 = [v47 allValues];
-  v17 = [(PGPhotosChallengeMetricEvent *)self curationSession];
-  [v17 prepareAssets:v16];
+  allValues = [v47 allValues];
+  curationSession = [(PGPhotosChallengeMetricEvent *)self curationSession];
+  [curationSession prepareAssets:allValues];
 
-  v46 = v16;
-  [MEMORY[0x277CD97A8] prefetchScenesOnAssets:v16];
+  v46 = allValues;
+  [MEMORY[0x277CD97A8] prefetchScenesOnAssets:allValues];
   v55 = 0u;
   v56 = 0u;
   v53 = 0u;
@@ -4256,8 +4256,8 @@ LABEL_14:
         v24 = v23;
         if (v23)
         {
-          v25 = [v23 mediaAnalysisProperties];
-          v26 = [v25 syndicationProcessingValue];
+          mediaAnalysisProperties2 = [v23 mediaAnalysisProperties];
+          syndicationProcessingValue2 = [mediaAnalysisProperties2 syndicationProcessingValue];
 
           if ([v22 state] == 2)
           {
@@ -4270,8 +4270,8 @@ LABEL_14:
           }
 
           v28 = v27;
-          v29 = [v22 additionalInfo];
-          v30 = [v29 objectForKeyedSubscript:v49];
+          additionalInfo = [v22 additionalInfo];
+          v30 = [additionalInfo objectForKeyedSubscript:v49];
           v31 = v30;
           v32 = @"None";
           if (v30)
@@ -4281,8 +4281,8 @@ LABEL_14:
 
           v33 = v32;
 
-          v34 = v26 & 0x7EF0;
-          if ((v26 & 0x7EF0) != 0)
+          v34 = syndicationProcessingValue2 & 0x7EF0;
+          if ((syndicationProcessingValue2 & 0x7EF0) != 0)
           {
             v35 = @"YES";
           }
@@ -4296,9 +4296,9 @@ LABEL_14:
           v37 = PHAssetMediaAnalysisSyndicationProcessingValueDescription();
           if (!v34)
           {
-            v38 = [v24 curationModel];
+            curationModel = [v24 curationModel];
             v39 = @"Meme/Document/Screenshot";
-            if ([v38 isMemeWithAsset:v24] & 1) != 0 || (v39 = @"NSFW", (objc_msgSend(v38, "isVeryPreciselyIVSNSFWExplicitWithAsset:", v24)) || (objc_msgSend(v24, "curationScore"), v39 = @"Low curation score", v40 < v20))
+            if ([curationModel isMemeWithAsset:v24] & 1) != 0 || (v39 = @"NSFW", (objc_msgSend(curationModel, "isVeryPreciselyIVSNSFWExplicitWithAsset:", v24)) || (objc_msgSend(v24, "curationScore"), v39 = @"Low curation score", v40 < v20))
             {
 
               v37 = v39;
@@ -4306,10 +4306,10 @@ LABEL_14:
           }
 
           v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"[%@->%@]-[%@->%@]", v28, v33, v36, v37];
-          v42 = [v24 curationProperties];
-          v43 = [v42 syndicationIdentifier];
+          curationProperties = [v24 curationProperties];
+          syndicationIdentifier = [curationProperties syndicationIdentifier];
 
-          [v50 setObject:v41 forKeyedSubscript:v43];
+          [v50 setObject:v41 forKeyedSubscript:syndicationIdentifier];
         }
       }
 
@@ -4324,16 +4324,16 @@ LABEL_14:
   return v50;
 }
 
-- (id)_syndicatedAssetsInferenceResultsForAssetSyndicationIdentifiers:(id)a3
+- (id)_syndicatedAssetsInferenceResultsForAssetSyndicationIdentifiers:(id)identifiers
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = identifiersCopy;
   v6 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -4349,12 +4349,12 @@ LABEL_14:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v12 = [v11 assetByAssetSyndicationIdentifier];
-        v13 = [v12 objectForKeyedSubscript:v10];
+        metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+        assetByAssetSyndicationIdentifier = [metricsCache assetByAssetSyndicationIdentifier];
+        v13 = [assetByAssetSyndicationIdentifier objectForKeyedSubscript:v10];
 
-        v14 = [v13 mediaAnalysisProperties];
-        v15 = ([v14 syndicationProcessingValue] & 0x7EF0) != 0;
+        mediaAnalysisProperties = [v13 mediaAnalysisProperties];
+        v15 = ([mediaAnalysisProperties syndicationProcessingValue] & 0x7EF0) != 0;
 
         v16 = [MEMORY[0x277CCABB0] numberWithBool:v15];
         [v5 setObject:v16 forKeyedSubscript:v10];
@@ -4371,16 +4371,16 @@ LABEL_14:
   return v5;
 }
 
-- (id)_syndicatedAssetsGroundTruthByAssetIdentifiersFromQuestions:(id)a3
+- (id)_syndicatedAssetsGroundTruthByAssetIdentifiersFromQuestions:(id)questions
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  questionsCopy = questions;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = questionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -4416,17 +4416,17 @@ LABEL_14:
   return v13;
 }
 
-- (void)_gatherMetricsForSyndicatedAssetsQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForSyndicatedAssetsQuestions:(id)questions progressBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
-    v10 = [(PGPhotosChallengeMetricEvent *)self _syndicatedAssetsGroundTruthByAssetIdentifiersFromQuestions:v6];
-    v11 = [v10 allKeys];
+    v10 = [(PGPhotosChallengeMetricEvent *)self _syndicatedAssetsGroundTruthByAssetIdentifiersFromQuestions:questionsCopy];
+    allKeys = [v10 allKeys];
     if (v7)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -4451,7 +4451,7 @@ LABEL_7:
         v8 = Current;
       }
 
-      v13 = [(PGPhotosChallengeMetricEvent *)self _syndicatedAssetsInferenceResultsForAssetSyndicationIdentifiers:v11];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _syndicatedAssetsInferenceResultsForAssetSyndicationIdentifiers:allKeys];
       v15 = CFAbsoluteTimeGetCurrent();
       if (v15 - v8 >= 0.01)
       {
@@ -4474,7 +4474,7 @@ LABEL_7:
         v8 = v15;
       }
 
-      v14 = [(PGPhotosChallengeMetricEvent *)self _reasonResultByAssetSyndicationIdentifierForQuestions:v6];
+      v14 = [(PGPhotosChallengeMetricEvent *)self _reasonResultByAssetSyndicationIdentifierForQuestions:questionsCopy];
       v16 = CFAbsoluteTimeGetCurrent();
       if (v16 - v8 >= 0.01)
       {
@@ -4505,8 +4505,8 @@ LABEL_32:
 
     else
     {
-      v13 = [(PGPhotosChallengeMetricEvent *)self _syndicatedAssetsInferenceResultsForAssetSyndicationIdentifiers:v11];
-      v14 = [(PGPhotosChallengeMetricEvent *)self _reasonResultByAssetSyndicationIdentifierForQuestions:v6];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _syndicatedAssetsInferenceResultsForAssetSyndicationIdentifiers:allKeys];
+      v14 = [(PGPhotosChallengeMetricEvent *)self _reasonResultByAssetSyndicationIdentifierForQuestions:questionsCopy];
     }
 
     v17 = [[PGAssetsWithReasonPrecisionRecallEvaluation alloc] initWithIdentifier:@"syndicatedAssets" category:@"syndicatedAssets"];
@@ -4557,11 +4557,11 @@ LABEL_33:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_featuredPhotoInferenceResultsForAnswerDateByAssetIds:(id)a3 questionMetricType:(unsigned __int16)a4
+- (id)_featuredPhotoInferenceResultsForAnswerDateByAssetIds:(id)ids questionMetricType:(unsigned __int16)type
 {
-  v34 = a4;
+  typeCopy = type;
   v49 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idsCopy = ids;
   v6 = MEMORY[0x277CBEB98];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
@@ -4569,16 +4569,16 @@ LABEL_33:
   v10 = objc_opt_class();
   v35 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
   v11 = [PGLongTailSuggester alloc];
-  v12 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-  v13 = [v12 featuredPhotosSuggestionSession];
-  v30 = [(PGAbstractSuggester *)v11 initWithSession:v13];
+  metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+  featuredPhotosSuggestionSession = [metricsCache featuredPhotosSuggestionSession];
+  v30 = [(PGAbstractSuggester *)v11 initWithSession:featuredPhotosSuggestionSession];
 
-  v32 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v5;
+  obj = idsCopy;
   v14 = [obj countByEnumeratingWithState:&v44 objects:v48 count:16];
   if (v14)
   {
@@ -4594,13 +4594,13 @@ LABEL_33:
 
         v16 = *(*(&v44 + 1) + 8 * i);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 allKeys];
-        v19 = [v18 firstObject];
+        allKeys = [v16 allKeys];
+        firstObject = [allKeys firstObject];
 
-        v20 = [v16 objectForKeyedSubscript:v19];
-        v21 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v22 = [v21 assetByAssetIdentifier];
-        v23 = [v22 objectForKeyedSubscript:v19];
+        v20 = [v16 objectForKeyedSubscript:firstObject];
+        metricsCache2 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+        assetByAssetIdentifier = [metricsCache2 assetByAssetIdentifier];
+        v23 = [assetByAssetIdentifier objectForKeyedSubscript:firstObject];
 
         v40 = 0;
         v41 = &v40;
@@ -4617,12 +4617,12 @@ LABEL_33:
         v25 = v20;
         v38 = v25;
         [v35 enumerateObjectsUsingBlock:v36];
-        if (v34 != 119)
+        if (typeCopy != 119)
         {
           v26 = *(v41 + 24);
 LABEL_10:
           v27 = [MEMORY[0x277CCABB0] numberWithBool:v26 & 1];
-          [v32 setObject:v27 forKeyedSubscript:v16];
+          [dictionary setObject:v27 forKeyedSubscript:v16];
 
           goto LABEL_11;
         }
@@ -4647,7 +4647,7 @@ LABEL_11:
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return dictionary;
 }
 
 void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswerDateByAssetIds_questionMetricType___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -4665,16 +4665,16 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
   }
 }
 
-- (id)_groundTruthForFeaturedPhotoFromQuestions:(id)a3
+- (id)_groundTruthForFeaturedPhotoFromQuestions:(id)questions
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v25 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = questionsCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v5)
   {
@@ -4693,21 +4693,21 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 entityIdentifier];
-        v13 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v14 = [v13 assetByAssetIdentifier];
-        v15 = [v14 objectForKeyedSubscript:v12];
+        entityIdentifier = [v11 entityIdentifier];
+        metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+        assetByAssetIdentifier = [metricsCache assetByAssetIdentifier];
+        v15 = [assetByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
 
         if (v15)
         {
-          v16 = [v11 additionalInfo];
-          v17 = [v16 objectForKeyedSubscript:v9];
+          additionalInfo = [v11 additionalInfo];
+          loggingConnection2 = [additionalInfo objectForKeyedSubscript:v9];
 
-          if (v17)
+          if (loggingConnection2)
           {
-            v31 = v12;
-            v32 = v17;
-            v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+            v31 = entityIdentifier;
+            v32 = loggingConnection2;
+            loggingConnection = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
             if ([v11 state] == 2)
             {
               v19 = MEMORY[0x277CBEC38];
@@ -4718,18 +4718,18 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
               v19 = MEMORY[0x277CBEC28];
             }
 
-            [v25 setObject:v19 forKeyedSubscript:v18];
+            [dictionary setObject:v19 forKeyedSubscript:loggingConnection];
           }
 
           else
           {
             v21 = +[PGLogging sharedLogging];
-            v18 = [v21 loggingConnection];
+            loggingConnection = [v21 loggingConnection];
 
-            if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
             {
               *buf = 0;
-              _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "Featured photo question doesn't have the date when it was answered", buf, 2u);
+              _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Featured photo question doesn't have the date when it was answered", buf, 2u);
             }
           }
         }
@@ -4737,13 +4737,13 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
         else
         {
           v20 = +[PGLogging sharedLogging];
-          v17 = [v20 loggingConnection];
+          loggingConnection2 = [v20 loggingConnection];
 
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
           {
             *buf = v24;
-            v34 = v12;
-            _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
+            v34 = entityIdentifier;
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
           }
         }
       }
@@ -4756,19 +4756,19 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return dictionary;
 }
 
-- (id)_reasonResultByAssetEntityIdentifierForMusicQualityQuestions:(id)a3
+- (id)_reasonResultByAssetEntityIdentifierForMusicQualityQuestions:(id)questions
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  questionsCopy = questions;
   v32 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v3;
+  obj = questionsCopy;
   v4 = [obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v4)
   {
@@ -4790,21 +4790,21 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
         v10 = *(*(&v34 + 1) + 8 * i);
         if ([v10 type] == 15)
         {
-          v11 = [v10 state];
+          state = [v10 state];
           v12 = @"NO";
-          if (v11 == 2)
+          if (state == 2)
           {
             v12 = @"YES";
           }
 
           v13 = v12;
-          v14 = [v10 additionalInfo];
-          v15 = [v14 objectForKeyedSubscript:v7];
+          additionalInfo = [v10 additionalInfo];
+          v15 = [additionalInfo objectForKeyedSubscript:v7];
 
           if (v15)
           {
-            v16 = [v10 additionalInfo];
-            v17 = [v16 objectForKeyedSubscript:v7];
+            additionalInfo2 = [v10 additionalInfo];
+            v17 = [additionalInfo2 objectForKeyedSubscript:v7];
           }
 
           else
@@ -4812,13 +4812,13 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
             v17 = @"NA";
           }
 
-          v18 = [v10 additionalInfo];
-          v19 = [v18 objectForKeyedSubscript:v30];
+          additionalInfo3 = [v10 additionalInfo];
+          v19 = [additionalInfo3 objectForKeyedSubscript:v30];
 
           if (v19)
           {
-            v20 = [v10 additionalInfo];
-            v21 = [v20 objectForKeyedSubscript:v30];
+            additionalInfo4 = [v10 additionalInfo];
+            v21 = [additionalInfo4 objectForKeyedSubscript:v30];
           }
 
           else
@@ -4826,13 +4826,13 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
             v21 = @"0";
           }
 
-          v22 = [v10 additionalInfo];
-          v23 = [v22 objectForKeyedSubscript:v8];
+          additionalInfo5 = [v10 additionalInfo];
+          v23 = [additionalInfo5 objectForKeyedSubscript:v8];
 
           if (v23)
           {
-            v24 = [v10 additionalInfo];
-            v25 = [v24 objectForKeyedSubscript:v8];
+            additionalInfo6 = [v10 additionalInfo];
+            v25 = [additionalInfo6 objectForKeyedSubscript:v8];
           }
 
           else
@@ -4841,8 +4841,8 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
           }
 
           v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"[LikedSong:%@:%@->%@]-[Reason->%@]", v25, v21, v13, v17];
-          v27 = [v10 entityIdentifier];
-          [v32 setObject:v26 forKeyedSubscript:v27];
+          entityIdentifier = [v10 entityIdentifier];
+          [v32 setObject:v26 forKeyedSubscript:entityIdentifier];
 
           v7 = v31;
         }
@@ -4859,16 +4859,16 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
   return v32;
 }
 
-- (id)_groundTruthForMusicQualityQuestions:(id)a3
+- (id)_groundTruthForMusicQualityQuestions:(id)questions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = questionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
@@ -4888,7 +4888,7 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
         v12 = *(*(&v17 + 1) + 8 * i);
         if ([v12 type] == 15)
         {
-          v13 = [v12 entityIdentifier];
+          entityIdentifier = [v12 entityIdentifier];
           if ([v12 state] == 2)
           {
             v14 = v10;
@@ -4899,7 +4899,7 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
             v14 = v9;
           }
 
-          [v4 setObject:v14 forKeyedSubscript:v13];
+          [dictionary setObject:v14 forKeyedSubscript:entityIdentifier];
         }
       }
 
@@ -4911,23 +4911,23 @@ void __105__PGPhotosChallengeMetricEvent__featuredPhotoInferenceResultsForAnswer
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return dictionary;
 }
 
-- (void)_gatherMetricsForMemoryMusicQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForMemoryMusicQuestions:(id)questions progressBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
-    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForMusicQualityQuestions:v6];
-    v11 = [v10 allKeys];
-    v12 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForEntityIdentifiers:v11 withDefaultBoolValue:1];
+    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForMusicQualityQuestions:questionsCopy];
+    allKeys = [v10 allKeys];
+    v12 = [(PGPhotosChallengeMetricEvent *)self _inferredResultsForEntityIdentifiers:allKeys withDefaultBoolValue:1];
 
-    v13 = [(PGPhotosChallengeMetricEvent *)self _reasonResultByAssetEntityIdentifierForMusicQualityQuestions:v6];
+    v13 = [(PGPhotosChallengeMetricEvent *)self _reasonResultByAssetEntityIdentifierForMusicQualityQuestions:questionsCopy];
     if (v7)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -5031,12 +5031,12 @@ LABEL_27:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gatherMetricsForMemoryQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5
+- (void)_gatherMetricsForMemoryQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block
 {
-  v44 = a4;
+  typeCopy = type;
   v59 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = _Block_copy(a5);
+  questionsCopy = questions;
+  v8 = _Block_copy(block);
   v9 = 0.0;
   if (v8)
   {
@@ -5066,13 +5066,13 @@ LABEL_48:
     }
   }
 
-  v12 = [v7 count];
+  v12 = [questionsCopy count];
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v42 = v7;
-  obj = v7;
+  v42 = questionsCopy;
+  obj = questionsCopy;
   v13 = [obj countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v13)
   {
@@ -5084,8 +5084,8 @@ LABEL_48:
     v17 = 0.0;
     *&v14 = 67109120;
     v41 = v14;
-    v18 = v44;
-    v43 = self;
+    v18 = typeCopy;
+    selfCopy = self;
     while (2)
     {
       v19 = 0;
@@ -5117,7 +5117,7 @@ LABEL_48:
                 _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Cancelled at line %d in file %s", buf, 0x12u);
               }
 
-              v7 = v42;
+              questionsCopy = v42;
               goto LABEL_49;
             }
 
@@ -5125,10 +5125,10 @@ LABEL_48:
           }
         }
 
-        v22 = [v20 entityIdentifier];
-        v23 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v24 = [v23 memoryByMemoryIdentifier];
-        v25 = [v24 objectForKeyedSubscript:v22];
+        entityIdentifier = [v20 entityIdentifier];
+        metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+        memoryByMemoryIdentifier = [metricsCache memoryByMemoryIdentifier];
+        v25 = [memoryByMemoryIdentifier objectForKeyedSubscript:entityIdentifier];
 
         if (v25)
         {
@@ -5148,38 +5148,38 @@ LABEL_48:
           else
           {
             v28 = v8;
-            v29 = [v25 category];
-            v48 = [v25 subcategory];
-            v30 = [(PGPhotosChallengeMetricEvent *)self memoryCategorySubCategoryByQuestionMetricType];
+            category = [v25 category];
+            subcategory = [v25 subcategory];
+            memoryCategorySubCategoryByQuestionMetricType = [(PGPhotosChallengeMetricEvent *)self memoryCategorySubCategoryByQuestionMetricType];
             v31 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:v18];
-            v32 = [v30 objectForKeyedSubscript:v31];
+            v32 = [memoryCategorySubCategoryByQuestionMetricType objectForKeyedSubscript:v31];
 
             if (!v32)
             {
               v33 = +[PGLogging sharedLogging];
-              v34 = [v33 loggingConnection];
+              loggingConnection = [v33 loggingConnection];
 
-              if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
                 *buf = v41;
                 *v58 = v18;
-                _os_log_error_impl(&dword_22F0FC000, v34, OS_LOG_TYPE_ERROR, "QuestionMetricType %d has no MemoryCategory/SubCategory pairs", buf, 8u);
+                _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "QuestionMetricType %d has no MemoryCategory/SubCategory pairs", buf, 8u);
               }
             }
 
-            v35 = [v32 firstObject];
-            v36 = [v35 unsignedIntegerValue];
+            firstObject = [v32 firstObject];
+            unsignedIntegerValue = [firstObject unsignedIntegerValue];
 
-            v37 = [v32 lastObject];
-            v38 = [v37 unsignedIntegerValue];
+            lastObject = [v32 lastObject];
+            unsignedIntegerValue2 = [lastObject unsignedIntegerValue];
 
-            if (v29 == v36)
+            if (category == unsignedIntegerValue)
             {
               v8 = v28;
               v15 = v45;
-              if (v48 == v38)
+              if (subcategory == unsignedIntegerValue2)
               {
-                v18 = v44;
+                v18 = typeCopy;
                 if ([v20 state] == 2)
                 {
                   ++v46;
@@ -5193,31 +5193,31 @@ LABEL_48:
 
               else
               {
-                v18 = v44;
+                v18 = typeCopy;
               }
             }
 
             else
             {
               v8 = v28;
-              v18 = v44;
+              v18 = typeCopy;
               v15 = v45;
             }
 
-            self = v43;
+            self = selfCopy;
           }
         }
 
         else
         {
           v26 = +[PGLogging sharedLogging];
-          v27 = [v26 loggingConnection];
+          loggingConnection2 = [v26 loggingConnection];
 
-          if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            *v58 = v22;
-            _os_log_error_impl(&dword_22F0FC000, v27, OS_LOG_TYPE_ERROR, "No memory found for uuid %@ when collecting metrics for memory quality question.", buf, 0xCu);
+            *v58 = entityIdentifier;
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "No memory found for uuid %@ when collecting metrics for memory quality question.", buf, 0xCu);
           }
         }
 
@@ -5244,7 +5244,7 @@ LABEL_48:
   v39 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:@"memoryQuality" category:@"memoryQuality" truePositives:v46 falsePositives:v47 falseNegatives:0 trueNegatives:0];
   [(PGPhotosChallengeMetricEvent *)self setEvaluation:v39];
 
-  v7 = v42;
+  questionsCopy = v42;
   if (v8)
   {
     if (CFAbsoluteTimeGetCurrent() - v9 >= 0.01)
@@ -5271,11 +5271,11 @@ LABEL_49:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gatherMetricsForPetKnowledgeQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForPetKnowledgeQuestions:(id)questions progressBlock:(id)block
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (v7)
   {
@@ -5305,13 +5305,13 @@ LABEL_32:
     }
   }
 
-  v25 = self;
-  v11 = [v6 count];
+  selfCopy = self;
+  v11 = [questionsCopy count];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = v6;
+  v12 = questionsCopy;
   v13 = [v12 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v13)
   {
@@ -5385,7 +5385,7 @@ LABEL_32:
   }
 
   v23 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:@"petKnowledge" category:@"petKnowledge" truePositives:v16 falsePositives:v15 falseNegatives:0 trueNegatives:0];
-  [(PGPhotosChallengeMetricEvent *)v25 setEvaluation:v23];
+  [(PGPhotosChallengeMetricEvent *)selfCopy setEvaluation:v23];
 
   if (v7)
   {
@@ -5413,26 +5413,26 @@ LABEL_33:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteOutdatedPetQuestionsWithValidPetUUIDs:(id)a3
+- (void)_deleteOutdatedPetQuestionsWithValidPetUUIDs:(id)ds
 {
   v24[3] = *MEMORY[0x277D85DE8];
   workingContext = self->_workingContext;
-  v4 = a3;
-  v5 = [(PGManagerWorkingContext *)workingContext photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  dsCopy = ds;
+  photoLibrary = [(PGManagerWorkingContext *)workingContext photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
   v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"type", 13];
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K != %d", @"displayType", 6];
-  v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"entityIdentifier", v4];
+  dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"entityIdentifier", dsCopy];
 
   v10 = MEMORY[0x277CCA920];
   v24[0] = v7;
   v24[1] = v8;
-  v24[2] = v9;
+  v24[2] = dsCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:3];
   v12 = [v10 andPredicateWithSubpredicates:v11];
-  [v6 setPredicate:v12];
+  [librarySpecificFetchOptions setPredicate:v12];
 
-  v13 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:v6 validQuestionsOnly:0];
+  v13 = [MEMORY[0x277CD9970] fetchQuestionsWithOptions:librarySpecificFetchOptions validQuestionsOnly:0];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __77__PGPhotosChallengeMetricEvent__deleteOutdatedPetQuestionsWithValidPetUUIDs___block_invoke;
@@ -5440,37 +5440,37 @@ LABEL_33:
   v14 = v13;
   v21 = v14;
   v19 = 0;
-  [v5 performChangesAndWait:v20 error:&v19];
+  [photoLibrary performChangesAndWait:v20 error:&v19];
   v15 = v19;
   if (v15)
   {
     v16 = +[PGLogging sharedLogging];
-    v17 = [v16 loggingConnection];
+    loggingConnection = [v16 loggingConnection];
 
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v23 = v15;
-      _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "Error deleting outdated pet questions: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Error deleting outdated pet questions: %@", buf, 0xCu);
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_currentPetInferenceResultsForPetUUIDs:(id)a3
+- (id)_currentPetInferenceResultsForPetUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dsCopy = ds;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__PGPhotosChallengeMetricEvent__currentPetInferenceResultsForPetUUIDs___block_invoke;
   v12[3] = &unk_27888A638;
-  v13 = v4;
-  v7 = v5;
+  v13 = dsCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = dsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -5545,16 +5545,16 @@ void __71__PGPhotosChallengeMetricEvent__currentPetInferenceResultsForPetUUIDs__
   [v2 setObject:v3 forKeyedSubscript:v4];
 }
 
-- (id)_groundTruthForCurrentPetInferenceFromQuestions:(id)a3
+- (id)_groundTruthForCurrentPetInferenceFromQuestions:(id)questions
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  questionsCopy = questions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v3;
+  obj = questionsCopy;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
@@ -5573,12 +5573,12 @@ void __71__PGPhotosChallengeMetricEvent__currentPetInferenceResultsForPetUUIDs__
         }
 
         v12 = *(*(&v23 + 1) + 8 * i);
-        v13 = [v12 additionalInfo];
-        v14 = [v13 objectForKeyedSubscript:v8];
+        additionalInfo = [v12 additionalInfo];
+        v14 = [additionalInfo objectForKeyedSubscript:v8];
 
-        v15 = [v12 state];
+        state = [v12 state];
         v16 = v10;
-        if (v15 == 2)
+        if (state == 2)
         {
           v17 = [v14 isEqualToString:v9];
           v16 = MEMORY[0x277CBEC38];
@@ -5589,8 +5589,8 @@ void __71__PGPhotosChallengeMetricEvent__currentPetInferenceResultsForPetUUIDs__
         }
 
         v18 = v16;
-        v19 = [v12 entityIdentifier];
-        [v4 setObject:v18 forKeyedSubscript:v19];
+        entityIdentifier = [v12 entityIdentifier];
+        [v4 setObject:v18 forKeyedSubscript:entityIdentifier];
       }
 
       v6 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -5604,12 +5604,12 @@ void __71__PGPhotosChallengeMetricEvent__currentPetInferenceResultsForPetUUIDs__
   return v4;
 }
 
-- (void)_gatherMetricsForPetQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForPetQuestions:(id)questions progressBlock:(id)block
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = _Block_copy(v7);
+  questionsCopy = questions;
+  blockCopy = block;
+  v8 = _Block_copy(blockCopy);
   v9 = 0.0;
   if (!v8 || (v10 = CFAbsoluteTimeGetCurrent(), v10 < 0.01))
   {
@@ -5641,7 +5641,7 @@ LABEL_7:
     v25[4] = &v26;
     [v12 enumerateObjectsUsingBlock:v25];
     v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"entityIdentifier", v27[5]];
-    v14 = [v6 filteredArrayUsingPredicate:v13];
+    v14 = [questionsCopy filteredArrayUsingPredicate:v13];
 
     [(PGPhotosChallengeMetricEvent *)self _deleteOutdatedPetQuestionsWithValidPetUUIDs:v27[5]];
     v15 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForCurrentPetInferenceFromQuestions:v14];
@@ -5670,8 +5670,8 @@ LABEL_7:
       }
     }
 
-    v17 = [v15 allKeys];
-    v18 = [(PGPhotosChallengeMetricEvent *)self _currentPetInferenceResultsForPetUUIDs:v17];
+    allKeys = [v15 allKeys];
+    v18 = [(PGPhotosChallengeMetricEvent *)self _currentPetInferenceResultsForPetUUIDs:allKeys];
 
     if (v8)
     {
@@ -5710,8 +5710,8 @@ LABEL_24:
     v21 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:@"pet" category:@"pet"];
     [(PGPhotosChallengeMetricEvent *)self setEvaluation:v21];
 
-    v22 = [(PGPhotosChallengeMetricEvent *)self evaluation];
-    [v22 evaluateWithGroundTruthResults:v15 andInferenceResults:v18];
+    evaluation = [(PGPhotosChallengeMetricEvent *)self evaluation];
+    [evaluation evaluateWithGroundTruthResults:v15 andInferenceResults:v18];
 
     if (!v8)
     {
@@ -5777,20 +5777,20 @@ void __76__PGPhotosChallengeMetricEvent__gatherMetricsForPetQuestions_progressBl
   [v2 addObject:v3];
 }
 
-- (id)_ageCategoryInferenceResultsForAgeCategoryByPersonUUIDs:(id)a3
+- (id)_ageCategoryInferenceResultsForAgeCategoryByPersonUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dsCopy = ds;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __88__PGPhotosChallengeMetricEvent__ageCategoryInferenceResultsForAgeCategoryByPersonUUIDs___block_invoke;
   v12[3] = &unk_27888A4D0;
   v12[4] = self;
-  v13 = v4;
-  v7 = v5;
+  v13 = dsCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = dsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -5869,20 +5869,20 @@ void __88__PGPhotosChallengeMetricEvent__ageCategoryInferenceResultsForAgeCatego
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_groundTruthForAgeCategoryFromQuestions:(id)a3
+- (id)_groundTruthForAgeCategoryFromQuestions:(id)questions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __72__PGPhotosChallengeMetricEvent__groundTruthForAgeCategoryFromQuestions___block_invoke;
   v12[3] = &unk_27888A4D0;
   v12[4] = self;
-  v13 = v4;
-  v7 = v5;
+  v13 = questionsCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = questionsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -5970,17 +5970,17 @@ void __72__PGPhotosChallengeMetricEvent__groundTruthForAgeCategoryFromQuestions_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gatherMetricsForAgeCategoryQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForAgeCategoryQuestions:(id)questions progressBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
-    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForAgeCategoryFromQuestions:v6];
-    v11 = [v10 allKeys];
+    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForAgeCategoryFromQuestions:questionsCopy];
+    allKeys = [v10 allKeys];
     if (v7)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -6005,7 +6005,7 @@ LABEL_7:
         v8 = Current;
       }
 
-      v13 = [(PGPhotosChallengeMetricEvent *)self _ageCategoryInferenceResultsForAgeCategoryByPersonUUIDs:v11];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _ageCategoryInferenceResultsForAgeCategoryByPersonUUIDs:allKeys];
       v14 = CFAbsoluteTimeGetCurrent();
       if (v14 - v8 >= 0.01)
       {
@@ -6037,14 +6037,14 @@ LABEL_24:
 
     else
     {
-      v13 = [(PGPhotosChallengeMetricEvent *)self _ageCategoryInferenceResultsForAgeCategoryByPersonUUIDs:v11];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _ageCategoryInferenceResultsForAgeCategoryByPersonUUIDs:allKeys];
     }
 
     v16 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:@"ageCategory" category:@"ageCategory"];
     [(PGPhotosChallengeMetricEvent *)self setEvaluation:v16];
 
-    v17 = [(PGPhotosChallengeMetricEvent *)self evaluation];
-    [v17 evaluateWithGroundTruthResults:v10 andInferenceResults:v13];
+    evaluation = [(PGPhotosChallengeMetricEvent *)self evaluation];
+    [evaluation evaluateWithGroundTruthResults:v10 andInferenceResults:v13];
 
     if (!v7)
     {
@@ -6093,20 +6093,20 @@ LABEL_27:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_namingInferenceResultsForContactIdentifierByPersonUUIDs:(id)a3
+- (id)_namingInferenceResultsForContactIdentifierByPersonUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dsCopy = ds;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __89__PGPhotosChallengeMetricEvent__namingInferenceResultsForContactIdentifierByPersonUUIDs___block_invoke;
   v12[3] = &unk_27888A4D0;
   v12[4] = self;
-  v13 = v4;
-  v7 = v5;
+  v13 = dsCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = dsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -6214,20 +6214,20 @@ void __89__PGPhotosChallengeMetricEvent__namingInferenceResultsForContactIdentif
   *(*(*(a1 + 40) + 8) + 24) |= [v3 isEqualToString:*(a1 + 32)];
 }
 
-- (id)_groundTruthForNamingFromQuestions:(id)a3
+- (id)_groundTruthForNamingFromQuestions:(id)questions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __67__PGPhotosChallengeMetricEvent__groundTruthForNamingFromQuestions___block_invoke;
   v12[3] = &unk_27888A4D0;
   v12[4] = self;
-  v13 = v4;
-  v7 = v5;
+  v13 = questionsCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = questionsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -6320,17 +6320,17 @@ LABEL_14:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gatherMetricsForNamingQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForNamingQuestions:(id)questions progressBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
-    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForNamingFromQuestions:v6];
-    v11 = [v10 allKeys];
+    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForNamingFromQuestions:questionsCopy];
+    allKeys = [v10 allKeys];
     if (v7)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -6355,7 +6355,7 @@ LABEL_7:
         v8 = Current;
       }
 
-      v13 = [(PGPhotosChallengeMetricEvent *)self _namingInferenceResultsForContactIdentifierByPersonUUIDs:v11];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _namingInferenceResultsForContactIdentifierByPersonUUIDs:allKeys];
       v14 = CFAbsoluteTimeGetCurrent();
       if (v14 - v8 >= 0.01)
       {
@@ -6387,14 +6387,14 @@ LABEL_24:
 
     else
     {
-      v13 = [(PGPhotosChallengeMetricEvent *)self _namingInferenceResultsForContactIdentifierByPersonUUIDs:v11];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _namingInferenceResultsForContactIdentifierByPersonUUIDs:allKeys];
     }
 
     v16 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:@"naming" category:@"naming"];
     [(PGPhotosChallengeMetricEvent *)self setEvaluation:v16];
 
-    v17 = [(PGPhotosChallengeMetricEvent *)self evaluation];
-    [v17 evaluateWithGroundTruthResults:v10 andInferenceResults:v13];
+    evaluation = [(PGPhotosChallengeMetricEvent *)self evaluation];
+    [evaluation evaluateWithGroundTruthResults:v10 andInferenceResults:v13];
 
     if (!v7)
     {
@@ -6443,22 +6443,22 @@ LABEL_27:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_frequentLocationInferenceResultsForLocationByAssetIds:(id)a3 locationType:(id)a4
+- (id)_frequentLocationInferenceResultsForLocationByAssetIds:(id)ids locationType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  idsCopy = ids;
+  typeCopy = type;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__70470;
   v19 = __Block_byref_object_dispose__70471;
-  v20 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __100__PGPhotosChallengeMetricEvent__frequentLocationInferenceResultsForLocationByAssetIds_locationType___block_invoke;
   v12[3] = &unk_27888A570;
-  v9 = v6;
+  v9 = idsCopy;
   v13 = v9;
   v14 = &v15;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
@@ -6551,16 +6551,16 @@ uint64_t __100__PGPhotosChallengeMetricEvent__frequentLocationInferenceResultsFo
   return result;
 }
 
-- (id)_groundTruthForFrequentLocationFromQuestions:(id)a3
+- (id)_groundTruthForFrequentLocationFromQuestions:(id)questions
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v39 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  obj = v3;
+  obj = questionsCopy;
   v4 = [obj countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v4)
   {
@@ -6585,53 +6585,53 @@ uint64_t __100__PGPhotosChallengeMetricEvent__frequentLocationInferenceResultsFo
         v10 = *(*(&v42 + 1) + 8 * i);
         if ([v10 state] == 2)
         {
-          v11 = [v10 additionalInfo];
-          v12 = [v11 objectForKeyedSubscript:v8];
+          additionalInfo = [v10 additionalInfo];
+          v12 = [additionalInfo objectForKeyedSubscript:v8];
 
           if (v12)
           {
-            v13 = [v10 entityIdentifier];
-            v14 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-            v15 = [v14 assetByAssetIdentifier];
-            v16 = [v15 objectForKeyedSubscript:v13];
+            entityIdentifier = [v10 entityIdentifier];
+            metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+            assetByAssetIdentifier = [metricsCache assetByAssetIdentifier];
+            v16 = [assetByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
 
             if (v16)
             {
-              v17 = [v10 additionalInfo];
-              v18 = [v17 objectForKeyedSubscript:v8];
+              additionalInfo2 = [v10 additionalInfo];
+              loggingConnection = [additionalInfo2 objectForKeyedSubscript:v8];
 
-              v19 = [v10 additionalInfo];
-              v20 = [v19 objectForKeyedSubscript:v38];
+              additionalInfo3 = [v10 additionalInfo];
+              v20 = [additionalInfo3 objectForKeyedSubscript:v38];
 
-              v21 = [v10 additionalInfo];
-              v22 = [v21 objectForKeyedSubscript:v37];
+              additionalInfo4 = [v10 additionalInfo];
+              v22 = [additionalInfo4 objectForKeyedSubscript:v37];
 
               v23 = objc_alloc(MEMORY[0x277CE41F8]);
               [v20 doubleValue];
               v25 = v24;
               [v22 doubleValue];
               v27 = [v23 initWithLatitude:v25 longitude:v26];
-              v46 = v13;
+              v46 = entityIdentifier;
               v47 = v27;
               v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v47 forKeys:&v46 count:1];
-              if (([v18 isEqualToString:v36]& 1) != 0 || (v29 = [v18 isEqualToString:v35], v30 = MEMORY[0x277CBEC28], v29))
+              if (([loggingConnection isEqualToString:v36]& 1) != 0 || (v29 = [loggingConnection isEqualToString:v35], v30 = MEMORY[0x277CBEC28], v29))
               {
                 v30 = MEMORY[0x277CBEC38];
               }
 
-              [v39 setObject:v30 forKeyedSubscript:v28];
+              [dictionary setObject:v30 forKeyedSubscript:v28];
             }
 
             else
             {
               v31 = +[PGLogging sharedLogging];
-              v18 = [v31 loggingConnection];
+              loggingConnection = [v31 loggingConnection];
 
-              if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
                 *buf = v34;
-                v49 = v13;
-                _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
+                v49 = entityIdentifier;
+                _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
               }
             }
           }
@@ -6646,14 +6646,14 @@ uint64_t __100__PGPhotosChallengeMetricEvent__frequentLocationInferenceResultsFo
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v39;
+  return dictionary;
 }
 
-- (void)_gatherMetricsForFrequentLocationQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5
+- (void)_gatherMetricsForFrequentLocationQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = _Block_copy(a5);
+  questionsCopy = questions;
+  v8 = _Block_copy(block);
   if (!v8)
   {
     v10 = 0.0;
@@ -6691,8 +6691,8 @@ LABEL_12:
   if (v13 - v10 < 0.01)
   {
 LABEL_14:
-    v14 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForFrequentLocationFromQuestions:v7];
-    v15 = [v14 allKeys];
+    v14 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForFrequentLocationFromQuestions:questionsCopy];
+    allKeys = [v14 allKeys];
     if (v8)
     {
       v16 = CFAbsoluteTimeGetCurrent();
@@ -6717,7 +6717,7 @@ LABEL_14:
         v10 = v16;
       }
 
-      v17 = [(PGPhotosChallengeMetricEvent *)self _frequentLocationInferenceResultsForLocationByAssetIds:v15 locationType:0];
+      v17 = [(PGPhotosChallengeMetricEvent *)self _frequentLocationInferenceResultsForLocationByAssetIds:allKeys locationType:0];
       v18 = CFAbsoluteTimeGetCurrent();
       if (v18 - v10 >= 0.01)
       {
@@ -6749,14 +6749,14 @@ LABEL_31:
 
     else
     {
-      v17 = [(PGPhotosChallengeMetricEvent *)self _frequentLocationInferenceResultsForLocationByAssetIds:v15 locationType:0];
+      v17 = [(PGPhotosChallengeMetricEvent *)self _frequentLocationInferenceResultsForLocationByAssetIds:allKeys locationType:0];
     }
 
     v20 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:@"frequentlocation" category:@"locationType"];
     [(PGPhotosChallengeMetricEvent *)self setEvaluation:v20];
 
-    v21 = [(PGPhotosChallengeMetricEvent *)self evaluation];
-    [v21 evaluateWithGroundTruthResults:v14 andInferenceResults:v17];
+    evaluation = [(PGPhotosChallengeMetricEvent *)self evaluation];
+    [evaluation evaluateWithGroundTruthResults:v14 andInferenceResults:v17];
 
     if (!v8)
     {
@@ -6806,16 +6806,16 @@ LABEL_34:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_reasonByAssetEntityIdentifierForHolidayQuestions:(id)a3
+- (id)_reasonByAssetEntityIdentifierForHolidayQuestions:(id)questions
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  questionsCopy = questions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = questionsCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -6832,8 +6832,8 @@ LABEL_34:
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 additionalInfo];
-        v12 = [v11 objectForKeyedSubscript:v8];
+        additionalInfo = [v10 additionalInfo];
+        v12 = [additionalInfo objectForKeyedSubscript:v8];
         v13 = v12;
         v14 = @"<missing holiday name>";
         if (v12)
@@ -6845,8 +6845,8 @@ LABEL_34:
 
         v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"[holidayName:%@]", v15];
 
-        v17 = [v10 entityIdentifier];
-        [v4 setObject:v16 forKeyedSubscript:v17];
+        entityIdentifier = [v10 entityIdentifier];
+        [v4 setObject:v16 forKeyedSubscript:entityIdentifier];
       }
 
       v6 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -6860,20 +6860,20 @@ LABEL_34:
   return v4;
 }
 
-- (id)_holidayInferenceResultByEntityIdentifierForHolidayQuestions:(id)a3
+- (id)_holidayInferenceResultByEntityIdentifierForHolidayQuestions:(id)questions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __93__PGPhotosChallengeMetricEvent__holidayInferenceResultByEntityIdentifierForHolidayQuestions___block_invoke;
   v12[3] = &unk_27888A4D0;
   v12[4] = self;
-  v13 = v4;
-  v7 = v5;
+  v13 = questionsCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = questionsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -7008,16 +7008,16 @@ void __93__PGPhotosChallengeMetricEvent__holidayInferenceResultByEntityIdentifie
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_groundTruthForHolidayFromQuestions:(id)a3
+- (id)_groundTruthForHolidayFromQuestions:(id)questions
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v4;
+  obj = questionsCopy;
   v6 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (v6)
   {
@@ -7035,10 +7035,10 @@ void __93__PGPhotosChallengeMetricEvent__holidayInferenceResultByEntityIdentifie
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        v12 = [v11 entityIdentifier];
-        v13 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v14 = [v13 assetByAssetIdentifier];
-        v15 = [v14 objectForKeyedSubscript:v12];
+        entityIdentifier = [v11 entityIdentifier];
+        metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+        assetByAssetIdentifier = [metricsCache assetByAssetIdentifier];
+        v15 = [assetByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
 
         if (v15)
         {
@@ -7052,19 +7052,19 @@ void __93__PGPhotosChallengeMetricEvent__holidayInferenceResultByEntityIdentifie
             v16 = MEMORY[0x277CBEC28];
           }
 
-          [v5 setObject:v16 forKeyedSubscript:v12];
+          [dictionary setObject:v16 forKeyedSubscript:entityIdentifier];
         }
 
         else
         {
           v17 = +[PGLogging sharedLogging];
-          v18 = [v17 loggingConnection];
+          loggingConnection = [v17 loggingConnection];
 
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = v21;
-            v28 = v12;
-            _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
+            v28 = entityIdentifier;
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
           }
         }
       }
@@ -7077,19 +7077,19 @@ void __93__PGPhotosChallengeMetricEvent__holidayInferenceResultByEntityIdentifie
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
-- (void)_gatherMetricsForHolidayQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForHolidayQuestions:(id)questions progressBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   if (!v7)
   {
-    v11 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForHolidayFromQuestions:v6];
-    v12 = [(PGPhotosChallengeMetricEvent *)self _holidayInferenceResultByEntityIdentifierForHolidayQuestions:v6];
-    v13 = [(PGPhotosChallengeMetricEvent *)self _reasonByAssetEntityIdentifierForHolidayQuestions:v6];
+    v11 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForHolidayFromQuestions:questionsCopy];
+    v12 = [(PGPhotosChallengeMetricEvent *)self _holidayInferenceResultByEntityIdentifierForHolidayQuestions:questionsCopy];
+    v13 = [(PGPhotosChallengeMetricEvent *)self _reasonByAssetEntityIdentifierForHolidayQuestions:questionsCopy];
     v9 = 0.0;
     goto LABEL_23;
   }
@@ -7099,7 +7099,7 @@ void __93__PGPhotosChallengeMetricEvent__holidayInferenceResultByEntityIdentifie
   if (Current < 0.01)
   {
 LABEL_8:
-    v11 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForHolidayFromQuestions:v6];
+    v11 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForHolidayFromQuestions:questionsCopy];
     v14 = CFAbsoluteTimeGetCurrent();
     if (v14 - v9 >= 0.01)
     {
@@ -7122,7 +7122,7 @@ LABEL_8:
       v9 = v14;
     }
 
-    v12 = [(PGPhotosChallengeMetricEvent *)self _holidayInferenceResultByEntityIdentifierForHolidayQuestions:v6];
+    v12 = [(PGPhotosChallengeMetricEvent *)self _holidayInferenceResultByEntityIdentifierForHolidayQuestions:questionsCopy];
     v15 = CFAbsoluteTimeGetCurrent();
     if (v15 - v9 >= 0.01)
     {
@@ -7145,7 +7145,7 @@ LABEL_8:
       v9 = v15;
     }
 
-    v13 = [(PGPhotosChallengeMetricEvent *)self _reasonByAssetEntityIdentifierForHolidayQuestions:v6];
+    v13 = [(PGPhotosChallengeMetricEvent *)self _reasonByAssetEntityIdentifierForHolidayQuestions:questionsCopy];
     v16 = CFAbsoluteTimeGetCurrent();
     if (v16 - v9 >= 0.01)
     {
@@ -7223,11 +7223,11 @@ LABEL_32:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_gatherMetricsForTripKeyQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForTripKeyQuestions:(id)questions progressBlock:(id)block
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (v7)
   {
@@ -7257,12 +7257,12 @@ LABEL_33:
     }
   }
 
-  v11 = [v6 count];
+  v11 = [questionsCopy count];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v6;
+  obj = questionsCopy;
   v12 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v12)
   {
@@ -7271,7 +7271,7 @@ LABEL_33:
     v33 = 0;
     v14 = 1.0 / v11;
     v15 = *v36;
-    v31 = v6;
+    v31 = questionsCopy;
     v16 = 0.0;
     while (2)
     {
@@ -7302,10 +7302,10 @@ LABEL_33:
           }
         }
 
-        v20 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v21 = [v20 tripKeyAssetIdentifiers];
-        v22 = [v18 entityIdentifier];
-        v23 = [v21 containsObject:v22];
+        metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+        tripKeyAssetIdentifiers = [metricsCache tripKeyAssetIdentifiers];
+        entityIdentifier = [v18 entityIdentifier];
+        v23 = [tripKeyAssetIdentifiers containsObject:entityIdentifier];
 
         if (v23)
         {
@@ -7316,9 +7316,9 @@ LABEL_33:
 
           else
           {
-            v24 = [v18 state];
+            state = [v18 state];
             v25 = v33;
-            if (v24 == 3)
+            if (state == 3)
             {
               v25 = v33 + 1;
             }
@@ -7339,7 +7339,7 @@ LABEL_33:
 
     v26 = 0;
 LABEL_26:
-    v6 = v31;
+    questionsCopy = v31;
     v28 = v32;
     v27 = v33;
   }
@@ -7380,16 +7380,16 @@ LABEL_34:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_reasonResultsForPublicEventQuestions:(id)a3
+- (id)_reasonResultsForPublicEventQuestions:(id)questions
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  questionsCopy = questions;
   v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = questionsCopy;
   v4 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v4)
   {
@@ -7408,8 +7408,8 @@ LABEL_34:
         }
 
         v9 = *(*(&v27 + 1) + 8 * i);
-        v10 = [v9 additionalInfo];
-        v11 = [v10 objectForKeyedSubscript:v25];
+        additionalInfo = [v9 additionalInfo];
+        v11 = [additionalInfo objectForKeyedSubscript:v25];
         v12 = v11;
         if (v11)
         {
@@ -7423,29 +7423,29 @@ LABEL_34:
 
         v14 = v13;
 
-        v15 = [v9 entityIdentifier];
-        v16 = [v9 additionalInfo];
-        v17 = [v16 objectForKeyedSubscript:v7];
+        entityIdentifier = [v9 entityIdentifier];
+        additionalInfo2 = [v9 additionalInfo];
+        v17 = [additionalInfo2 objectForKeyedSubscript:v7];
 
         if (v17)
         {
-          v31 = v15;
+          v31 = entityIdentifier;
           v32 = v17;
-          v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+          loggingConnection = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
           v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"[publicEventSource:%@]", v14];
-          [v24 setObject:v19 forKeyedSubscript:v18];
+          [v24 setObject:v19 forKeyedSubscript:loggingConnection];
         }
 
         else
         {
           v20 = +[PGLogging sharedLogging];
-          v18 = [v20 loggingConnection];
+          loggingConnection = [v20 loggingConnection];
 
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412290;
-            v34 = v15;
-            _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "Unexpected missing public event identifier for question with entity identifier %@", buf, 0xCu);
+            v34 = entityIdentifier;
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Unexpected missing public event identifier for question with entity identifier %@", buf, 0xCu);
           }
         }
       }
@@ -7461,20 +7461,20 @@ LABEL_34:
   return v24;
 }
 
-- (id)_publicEventInferenceResultsForPublicEventIdByAssetIds:(id)a3
+- (id)_publicEventInferenceResultsForPublicEventIdByAssetIds:(id)ids
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  idsCopy = ids;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __87__PGPhotosChallengeMetricEvent__publicEventInferenceResultsForPublicEventIdByAssetIds___block_invoke;
   v12[3] = &unk_27888A4D0;
   v12[4] = self;
-  v13 = v4;
-  v7 = v5;
+  v13 = idsCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = idsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -7590,16 +7590,16 @@ uint64_t __87__PGPhotosChallengeMetricEvent__publicEventInferenceResultsForPubli
   return result;
 }
 
-- (id)_groundTruthForPublicEventFromQuestions:(id)a3
+- (id)_groundTruthForPublicEventFromQuestions:(id)questions
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v26 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v4;
+  obj = questionsCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v5)
   {
@@ -7617,20 +7617,20 @@ uint64_t __87__PGPhotosChallengeMetricEvent__publicEventInferenceResultsForPubli
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v10 entityIdentifier];
-        v12 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v13 = [v12 assetByAssetIdentifier];
-        v14 = [v13 objectForKeyedSubscript:v11];
+        entityIdentifier = [v10 entityIdentifier];
+        metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+        assetByAssetIdentifier = [metricsCache assetByAssetIdentifier];
+        v14 = [assetByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
 
         if (v14)
         {
           v15 = MEMORY[0x277CCABB0];
-          v16 = [v10 additionalInfo];
-          v17 = [v16 objectForKeyedSubscript:@"publicEventMUID"];
-          v18 = [v15 numberWithUnsignedInteger:{objc_msgSend(v17, "unsignedIntegerValue")}];
+          additionalInfo = [v10 additionalInfo];
+          v17 = [additionalInfo objectForKeyedSubscript:@"publicEventMUID"];
+          loggingConnection = [v15 numberWithUnsignedInteger:{objc_msgSend(v17, "unsignedIntegerValue")}];
 
-          v31 = v11;
-          v32 = v18;
+          v31 = entityIdentifier;
+          v32 = loggingConnection;
           v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
           if ([v10 state] == 2)
           {
@@ -7642,19 +7642,19 @@ uint64_t __87__PGPhotosChallengeMetricEvent__publicEventInferenceResultsForPubli
             v20 = MEMORY[0x277CBEC28];
           }
 
-          [v26 setObject:v20 forKeyedSubscript:v19];
+          [dictionary setObject:v20 forKeyedSubscript:v19];
         }
 
         else
         {
           v21 = +[PGLogging sharedLogging];
-          v18 = [v21 loggingConnection];
+          loggingConnection = [v21 loggingConnection];
 
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = v24;
-            v34 = v11;
-            _os_log_error_impl(&dword_22F0FC000, v18, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
+            v34 = entityIdentifier;
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
           }
         }
       }
@@ -7667,20 +7667,20 @@ uint64_t __87__PGPhotosChallengeMetricEvent__publicEventInferenceResultsForPubli
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return dictionary;
 }
 
-- (void)_gatherMetricsForPublicEventQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForPublicEventQuestions:(id)questions progressBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
-    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForPublicEventFromQuestions:v6];
-    v11 = [v10 allKeys];
+    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForPublicEventFromQuestions:questionsCopy];
+    allKeys = [v10 allKeys];
     if (v7)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -7705,7 +7705,7 @@ LABEL_7:
         v8 = Current;
       }
 
-      v13 = [(PGPhotosChallengeMetricEvent *)self _publicEventInferenceResultsForPublicEventIdByAssetIds:v11];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _publicEventInferenceResultsForPublicEventIdByAssetIds:allKeys];
       v15 = CFAbsoluteTimeGetCurrent();
       if (v15 - v8 >= 0.01)
       {
@@ -7728,7 +7728,7 @@ LABEL_7:
         v8 = v15;
       }
 
-      v14 = [(PGPhotosChallengeMetricEvent *)self _reasonResultsForPublicEventQuestions:v6];
+      v14 = [(PGPhotosChallengeMetricEvent *)self _reasonResultsForPublicEventQuestions:questionsCopy];
       v16 = CFAbsoluteTimeGetCurrent();
       if (v16 - v8 >= 0.01)
       {
@@ -7759,8 +7759,8 @@ LABEL_32:
 
     else
     {
-      v13 = [(PGPhotosChallengeMetricEvent *)self _publicEventInferenceResultsForPublicEventIdByAssetIds:v11];
-      v14 = [(PGPhotosChallengeMetricEvent *)self _reasonResultsForPublicEventQuestions:v6];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _publicEventInferenceResultsForPublicEventIdByAssetIds:allKeys];
+      v14 = [(PGPhotosChallengeMetricEvent *)self _reasonResultsForPublicEventQuestions:questionsCopy];
     }
 
     v17 = [[PGAssetsWithReasonPrecisionRecallEvaluation alloc] initWithIdentifier:@"publicEvent" category:@"publicEvent"];
@@ -7811,20 +7811,20 @@ LABEL_33:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_businessInferenceResultsForBusinessIdByAssetIds:(id)a3
+- (id)_businessInferenceResultsForBusinessIdByAssetIds:(id)ids
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  idsCopy = ids;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__PGPhotosChallengeMetricEvent__businessInferenceResultsForBusinessIdByAssetIds___block_invoke;
   v12[3] = &unk_27888A4D0;
   v12[4] = self;
-  v13 = v4;
-  v7 = v5;
+  v13 = idsCopy;
+  v7 = dictionary;
   v14 = v7;
-  v8 = v4;
+  v8 = idsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v12];
   v9 = v14;
   v10 = v7;
@@ -7939,16 +7939,16 @@ void __81__PGPhotosChallengeMetricEvent__businessInferenceResultsForBusinessIdBy
   }
 }
 
-- (id)_groundTruthForBusinessFromQuestions:(id)a3
+- (id)_groundTruthForBusinessFromQuestions:(id)questions
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  questionsCopy = questions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = questionsCopy;
   v6 = [obj countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v6)
   {
@@ -7966,18 +7966,18 @@ void __81__PGPhotosChallengeMetricEvent__businessInferenceResultsForBusinessIdBy
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v11 entityIdentifier];
-        v13 = [(PGPhotosChallengeMetricEvent *)self metricsCache];
-        v14 = [v13 assetByAssetIdentifier];
-        v15 = [v14 objectForKeyedSubscript:v12];
+        entityIdentifier = [v11 entityIdentifier];
+        metricsCache = [(PGPhotosChallengeMetricEvent *)self metricsCache];
+        assetByAssetIdentifier = [metricsCache assetByAssetIdentifier];
+        v15 = [assetByAssetIdentifier objectForKeyedSubscript:entityIdentifier];
 
         if (v15)
         {
-          v16 = [v11 additionalInfo];
-          v17 = [v16 objectForKeyedSubscript:@"businessUUID"];
+          additionalInfo = [v11 additionalInfo];
+          loggingConnection = [additionalInfo objectForKeyedSubscript:@"businessUUID"];
 
-          v29 = v12;
-          v30 = v17;
+          v29 = entityIdentifier;
+          v30 = loggingConnection;
           v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
           if ([v11 state] == 2)
           {
@@ -7989,19 +7989,19 @@ void __81__PGPhotosChallengeMetricEvent__businessInferenceResultsForBusinessIdBy
             v19 = MEMORY[0x277CBEC28];
           }
 
-          [v5 setObject:v19 forKeyedSubscript:v18];
+          [dictionary setObject:v19 forKeyedSubscript:v18];
         }
 
         else
         {
           v20 = +[PGLogging sharedLogging];
-          v17 = [v20 loggingConnection];
+          loggingConnection = [v20 loggingConnection];
 
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
           {
             *buf = v23;
-            v32 = v12;
-            _os_log_error_impl(&dword_22F0FC000, v17, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
+            v32 = entityIdentifier;
+            _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Failed to find asset with uuid: '%@'", buf, 0xCu);
           }
         }
       }
@@ -8014,20 +8014,20 @@ void __81__PGPhotosChallengeMetricEvent__businessInferenceResultsForBusinessIdBy
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
-- (void)_gatherMetricsForBusinessQuestions:(id)a3 progressBlock:(id)a4
+- (void)_gatherMetricsForBusinessQuestions:(id)questions progressBlock:(id)block
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  questionsCopy = questions;
+  v7 = _Block_copy(block);
   v8 = 0.0;
   if (!v7 || (v9 = CFAbsoluteTimeGetCurrent(), v9 < 0.01))
   {
 LABEL_7:
-    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForBusinessFromQuestions:v6];
-    v11 = [v10 allKeys];
+    v10 = [(PGPhotosChallengeMetricEvent *)self _groundTruthForBusinessFromQuestions:questionsCopy];
+    allKeys = [v10 allKeys];
     if (v7)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -8052,7 +8052,7 @@ LABEL_7:
         v8 = Current;
       }
 
-      v13 = [(PGPhotosChallengeMetricEvent *)self _businessInferenceResultsForBusinessIdByAssetIds:v11];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _businessInferenceResultsForBusinessIdByAssetIds:allKeys];
       v14 = CFAbsoluteTimeGetCurrent();
       if (v14 - v8 >= 0.01)
       {
@@ -8084,14 +8084,14 @@ LABEL_24:
 
     else
     {
-      v13 = [(PGPhotosChallengeMetricEvent *)self _businessInferenceResultsForBusinessIdByAssetIds:v11];
+      v13 = [(PGPhotosChallengeMetricEvent *)self _businessInferenceResultsForBusinessIdByAssetIds:allKeys];
     }
 
     v16 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:@"business" category:@"business"];
     [(PGPhotosChallengeMetricEvent *)self setEvaluation:v16];
 
-    v17 = [(PGPhotosChallengeMetricEvent *)self evaluation];
-    [v17 evaluateWithGroundTruthResults:v10 andInferenceResults:v13];
+    evaluation = [(PGPhotosChallengeMetricEvent *)self evaluation];
+    [evaluation evaluateWithGroundTruthResults:v10 andInferenceResults:v13];
 
     if (!v7)
     {
@@ -8140,22 +8140,22 @@ LABEL_27:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_relationshipInferenceResultsForQuestionMetricType:(unsigned __int16)a3 personUUIDs:(id)a4 useGraphInference:(BOOL)a5
+- (id)_relationshipInferenceResultsForQuestionMetricType:(unsigned __int16)type personUUIDs:(id)ds useGraphInference:(BOOL)inference
 {
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  dsCopy = ds;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __113__PGPhotosChallengeMetricEvent__relationshipInferenceResultsForQuestionMetricType_personUUIDs_useGraphInference___block_invoke;
   v16[3] = &unk_27888A480;
   v16[4] = self;
-  v17 = v8;
-  v19 = a3;
-  v20 = a5;
-  v11 = v9;
+  v17 = dsCopy;
+  typeCopy = type;
+  inferenceCopy = inference;
+  v11 = dictionary;
   v18 = v11;
-  v12 = v8;
+  v12 = dsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v16];
   v13 = v18;
   v14 = v11;
@@ -8237,59 +8237,59 @@ void __113__PGPhotosChallengeMetricEvent__relationshipInferenceResultsForQuestio
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_relatonshipInferenceResultForPersonNode:(id)a3 questionMetricType:(unsigned __int16)a4
+- (BOOL)_relatonshipInferenceResultForPersonNode:(id)node questionMetricType:(unsigned __int16)type
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  switch(v4)
+  typeCopy = type;
+  nodeCopy = node;
+  v6 = nodeCopy;
+  switch(typeCopy)
   {
     case 'N':
-      v7 = [v5 isInferredMemberOfMyFamily];
+      isInferredMemberOfMyFamily = [nodeCopy isInferredMemberOfMyFamily];
       goto LABEL_16;
     case 'O':
-      v7 = [v5 isMyInferredFriend];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredFriend];
       goto LABEL_16;
     case 'P':
-      v7 = [v5 isMyInferredCoworker];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredCoworker];
       goto LABEL_16;
     case 'Q':
-      v7 = [v5 isMyInferredPartner];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredPartner];
       goto LABEL_16;
     case 'R':
-      v7 = [v5 isMyInferredParent];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredParent];
       goto LABEL_16;
     case 'S':
-      v7 = [v5 isMyInferredSibling];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredSibling];
       goto LABEL_16;
     case 'T':
-      v7 = [v5 isMyInferredChild];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredChild];
       goto LABEL_16;
     case 'U':
-      v8 = [v5 graph];
-      v9 = [v8 meNodeWithFallbackInferredMeNode];
-      v10 = [v6 isEqualToNode:v9];
+      graph = [nodeCopy graph];
+      meNodeWithFallbackInferredMeNode = [graph meNodeWithFallbackInferredMeNode];
+      v10 = [v6 isEqualToNode:meNodeWithFallbackInferredMeNode];
 
       break;
     case 'V':
-      v7 = [v5 isMyInferredMother];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredMother];
       goto LABEL_16;
     case 'W':
-      v7 = [v5 isMyInferredFather];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredFather];
       goto LABEL_16;
     case 'X':
-      v7 = [v5 isMyInferredSon];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredSon];
       goto LABEL_16;
     case 'Y':
-      v7 = [v5 isMyInferredDaughter];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredDaughter];
       goto LABEL_16;
     case 'Z':
-      v7 = [v5 isMyInferredBrother];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredBrother];
       goto LABEL_16;
     case '[':
-      v7 = [v5 isMyInferredSister];
+      isInferredMemberOfMyFamily = [nodeCopy isMyInferredSister];
 LABEL_16:
-      v10 = v7;
+      v10 = isInferredMemberOfMyFamily;
       break;
     default:
       v10 = 0;
@@ -8299,32 +8299,32 @@ LABEL_16:
   return v10;
 }
 
-- (unint64_t)_relationshipTagFromQuestionMetricType:(unsigned __int16)a3
+- (unint64_t)_relationshipTagFromQuestionMetricType:(unsigned __int16)type
 {
-  if ((a3 - 93) > 0xC)
+  if ((type - 93) > 0xC)
   {
     return 0;
   }
 
   else
   {
-    return qword_22F78CEE8[(a3 - 93)];
+    return qword_22F78CEE8[(type - 93)];
   }
 }
 
-- (void)_gatherMetricsForRelationshipQuestions:(id)a3 questionMetricType:(unsigned __int16)a4 progressBlock:(id)a5 useGraphInference:(BOOL)a6
+- (void)_gatherMetricsForRelationshipQuestions:(id)questions questionMetricType:(unsigned __int16)type progressBlock:(id)block useGraphInference:(BOOL)inference
 {
-  v41 = a6;
-  v43 = a4;
+  inferenceCopy = inference;
+  typeCopy = type;
   v78 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v42 = a5;
+  questionsCopy = questions;
+  blockCopy = block;
   v7 = 0.0;
-  v46 = _Block_copy(v42);
+  v46 = _Block_copy(blockCopy);
   if (!v46 || (v8 = CFAbsoluteTimeGetCurrent(), v8 < 0.01))
   {
 LABEL_7:
-    v48 = [objc_opt_class() relationshipLabelFromRelationshipQuestionMetricType:v43];
+    v48 = [objc_opt_class() relationshipLabelFromRelationshipQuestionMetricType:typeCopy];
     if (!v48)
     {
       v19 = +[PGLogging sharedLogging];
@@ -8333,7 +8333,7 @@ LABEL_7:
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         LODWORD(buf) = 67109120;
-        HIDWORD(buf) = v43;
+        HIDWORD(buf) = typeCopy;
         _os_log_error_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_ERROR, "Unhandled Relationship Type: %d", &buf, 8u);
       }
 
@@ -8345,7 +8345,7 @@ LABEL_7:
     v67 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v9 = v44;
+    v9 = questionsCopy;
     v10 = [v9 countByEnumeratingWithState:&v64 objects:v77 count:16];
     if (v10)
     {
@@ -8361,8 +8361,8 @@ LABEL_7:
           }
 
           v14 = *(*(&v64 + 1) + 8 * i);
-          v15 = [v14 additionalInfo];
-          v16 = [v15 objectForKeyedSubscript:v12];
+          additionalInfo = [v14 additionalInfo];
+          v16 = [additionalInfo objectForKeyedSubscript:v12];
           v17 = [v16 isEqualToString:v48];
 
           if (v17)
@@ -8437,9 +8437,9 @@ LABEL_22:
       v50[3] = &unk_27888A458;
       v24 = v21;
       v51 = v24;
-      v52 = self;
-      v56 = v43;
-      v57 = v41;
+      selfCopy = self;
+      v56 = typeCopy;
+      v57 = inferenceCopy;
       v25 = v22;
       v53 = v25;
       p_buf = &buf;
@@ -8490,7 +8490,7 @@ LABEL_22:
     v30 = *(v73 + 40);
     *(v73 + 40) = v29;
 
-    v31 = [*(v73 + 40) allKeys];
+    allKeys = [*(v73 + 40) allKeys];
     if (v46)
     {
       v32 = CFAbsoluteTimeGetCurrent();
@@ -8519,7 +8519,7 @@ LABEL_59:
       }
     }
 
-    v34 = [(PGPhotosChallengeMetricEvent *)self _relationshipInferenceResultsForQuestionMetricType:v43 personUUIDs:v31 useGraphInference:v41];
+    v34 = [(PGPhotosChallengeMetricEvent *)self _relationshipInferenceResultsForQuestionMetricType:typeCopy personUUIDs:allKeys useGraphInference:inferenceCopy];
     v35 = v59[5];
     v59[5] = v34;
 
@@ -8561,17 +8561,17 @@ LABEL_62:
     v26 = v7;
 LABEL_52:
     v37 = @"relationshipTag";
-    if (v41)
+    if (inferenceCopy)
     {
       v37 = @"relationship";
     }
 
-    v31 = v37;
-    v38 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:v31 category:v48];
+    allKeys = v37;
+    v38 = [[PGPrecisionRecallEvaluation alloc] initWithIdentifier:allKeys category:v48];
     [(PGPhotosChallengeMetricEvent *)self setEvaluation:v38];
 
-    v39 = [(PGPhotosChallengeMetricEvent *)self evaluation];
-    [v39 evaluateWithGroundTruthResults:*(v73 + 40) andInferenceResults:v59[5]];
+    evaluation = [(PGPhotosChallengeMetricEvent *)self evaluation];
+    [evaluation evaluateWithGroundTruthResults:*(v73 + 40) andInferenceResults:v59[5]];
 
     if (!v46)
     {
@@ -8658,23 +8658,23 @@ void __122__PGPhotosChallengeMetricEvent__gatherMetricsForRelationshipQuestions_
   }
 }
 
-- (id)_personActivityMeaningInferenceResultsForPersonActivityMeaningLabel:(id)a3 assetIds:(id)a4
+- (id)_personActivityMeaningInferenceResultsForPersonActivityMeaningLabel:(id)label assetIds:(id)ids
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  labelCopy = label;
+  idsCopy = ids;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __109__PGPhotosChallengeMetricEvent__personActivityMeaningInferenceResultsForPersonActivityMeaningLabel_assetIds___block_invoke;
   v16[3] = &unk_27888A408;
   v16[4] = self;
-  v17 = v7;
-  v18 = v6;
-  v10 = v8;
+  v17 = idsCopy;
+  v18 = labelCopy;
+  v10 = dictionary;
   v19 = v10;
-  v11 = v6;
-  v12 = v7;
+  v11 = labelCopy;
+  v12 = idsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v16];
   v13 = v19;
   v14 = v10;
@@ -8755,23 +8755,23 @@ void __109__PGPhotosChallengeMetricEvent__personActivityMeaningInferenceResultsF
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_meaningInferenceResultsForMeaningLabel:(id)a3 assetIds:(id)a4
+- (id)_meaningInferenceResultsForMeaningLabel:(id)label assetIds:(id)ids
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  labelCopy = label;
+  idsCopy = ids;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   workingContext = self->_workingContext;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __81__PGPhotosChallengeMetricEvent__meaningInferenceResultsForMeaningLabel_assetIds___block_invoke;
   v16[3] = &unk_27888A408;
   v16[4] = self;
-  v17 = v7;
-  v18 = v6;
-  v10 = v8;
+  v17 = idsCopy;
+  v18 = labelCopy;
+  v10 = dictionary;
   v19 = v10;
-  v11 = v6;
-  v12 = v7;
+  v11 = labelCopy;
+  v12 = idsCopy;
   [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v16];
   v13 = v19;
   v14 = v10;
@@ -8847,12 +8847,12 @@ void __81__PGPhotosChallengeMetricEvent__meaningInferenceResultsForMeaningLabel_
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_meaningLabelsOfMomentNode:(id)a3 forMeaningLabel:(id)a4 isEventLabelingMetricEvent:(BOOL)a5
+- (id)_meaningLabelsOfMomentNode:(id)node forMeaningLabel:(id)label isEventLabelingMetricEvent:(BOOL)event
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (!v5)
+  eventCopy = event;
+  nodeCopy = node;
+  labelCopy = label;
+  if (!eventCopy)
   {
     if (!+[PGEventLabelingConfiguration isEventLabelingEnabled](PGEventLabelingConfiguration, "isEventLabelingEnabled") || !+[PGEventLabelingConfiguration usePrimaryMeaningDomainForEventLabelingMeanings])
     {
@@ -8862,19 +8862,19 @@ void __81__PGPhotosChallengeMetricEvent__meaningInferenceResultsForMeaningLabel_
     goto LABEL_7;
   }
 
-  if ([(PGEventLabelingConfiguration *)self->_eventLabelingConfiguration useEventLabelingToInferWithMeaningLabel:v9])
+  if ([(PGEventLabelingConfiguration *)self->_eventLabelingConfiguration useEventLabelingToInferWithMeaningLabel:labelCopy])
   {
     if (+[PGEventLabelingConfiguration usePrimaryMeaningDomainForEventLabelingMeanings])
     {
 LABEL_8:
-      v10 = [v8 meaningLabelsIncludingParents];
+      meaningLabelsIncludingParents = [nodeCopy meaningLabelsIncludingParents];
       goto LABEL_9;
     }
 
 LABEL_7:
-    v10 = [v8 alternativeMeaningLabelsIncludingParents];
+    meaningLabelsIncludingParents = [nodeCopy alternativeMeaningLabelsIncludingParents];
 LABEL_9:
-    v11 = v10;
+    v11 = meaningLabelsIncludingParents;
     goto LABEL_11;
   }
 
@@ -8884,31 +8884,31 @@ LABEL_11:
   return v11;
 }
 
-- (id)_meaningInferenceResultsForMeaningLabel:(id)a3 momentUUIDs:(id)a4 isEventLabelingMetricEvent:(BOOL)a5
+- (id)_meaningInferenceResultsForMeaningLabel:(id)label momentUUIDs:(id)ds isEventLabelingMetricEvent:(BOOL)event
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  if (!v5 || +[PGEventLabelingConfiguration isEventLabelingEnabled])
+  eventCopy = event;
+  labelCopy = label;
+  dsCopy = ds;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (!eventCopy || +[PGEventLabelingConfiguration isEventLabelingEnabled])
   {
     workingContext = self->_workingContext;
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __111__PGPhotosChallengeMetricEvent__meaningInferenceResultsForMeaningLabel_momentUUIDs_isEventLabelingMetricEvent___block_invoke;
     v16[3] = &unk_27888A3E0;
-    v17 = v9;
-    v18 = self;
-    v19 = v8;
-    v21 = v5;
-    v12 = v10;
+    v17 = dsCopy;
+    selfCopy = self;
+    v19 = labelCopy;
+    v21 = eventCopy;
+    v12 = dictionary;
     v20 = v12;
     [(PGManagerWorkingContext *)workingContext performSynchronousConcurrentGraphReadUsingBlock:v16];
     v13 = v20;
     v14 = v12;
   }
 
-  return v10;
+  return dictionary;
 }
 
 void __111__PGPhotosChallengeMetricEvent__meaningInferenceResultsForMeaningLabel_momentUUIDs_isEventLabelingMetricEvent___block_invoke(uint64_t a1, void *a2)
@@ -8981,9 +8981,9 @@ void __111__PGPhotosChallengeMetricEvent__meaningInferenceResultsForMeaningLabel
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)gatherMetricsWithProgressBlock:(id)a3
+- (void)gatherMetricsWithProgressBlock:(id)block
 {
-  v9 = a3;
+  blockCopy = block;
   v4 = [(PGPhotosChallengeMetricEventFetchHelper *)self->_metricsCache questionsForQuestionMetricType:self->_questionMetricType];
   if ([v4 count])
   {
@@ -9042,7 +9042,7 @@ void __111__PGPhotosChallengeMetricEvent__meaningInferenceResultsForMeaningLabel
       case 0x31u:
       case 0x32u:
       case 0x33u:
-        v5 = self;
+        selfCopy2 = self;
         v6 = v4;
         goto LABEL_6;
       case 0x34u:
@@ -9071,10 +9071,10 @@ void __111__PGPhotosChallengeMetricEvent__meaningInferenceResultsForMeaningLabel
       case 0x4Bu:
       case 0x4Cu:
       case 0x4Du:
-        v5 = self;
+        selfCopy2 = self;
         v6 = v4;
 LABEL_6:
-        [PGPhotosChallengeMetricEvent _gatherMetricsForExhaustiveMomentLabelingQuestions:v5 questionMetricType:"_gatherMetricsForExhaustiveMomentLabelingQuestions:questionMetricType:isEventLabelingMetricEvent:progressBlock:" isEventLabelingMetricEvent:v6 progressBlock:?];
+        [PGPhotosChallengeMetricEvent _gatherMetricsForExhaustiveMomentLabelingQuestions:selfCopy2 questionMetricType:"_gatherMetricsForExhaustiveMomentLabelingQuestions:questionMetricType:isEventLabelingMetricEvent:progressBlock:" isEventLabelingMetricEvent:v6 progressBlock:?];
         break;
       case 0x4Eu:
       case 0x4Fu:
@@ -9091,7 +9091,7 @@ LABEL_6:
       case 0x5Au:
       case 0x5Bu:
       case 0x5Cu:
-        v7 = self;
+        selfCopy4 = self;
         v8 = v4;
         goto LABEL_10;
       case 0x5Du:
@@ -9108,37 +9108,37 @@ LABEL_6:
       case 0x68u:
       case 0x69u:
       case 0x6Au:
-        v7 = self;
+        selfCopy4 = self;
         v8 = v4;
 LABEL_10:
-        [PGPhotosChallengeMetricEvent _gatherMetricsForRelationshipQuestions:v7 questionMetricType:"_gatherMetricsForRelationshipQuestions:questionMetricType:progressBlock:useGraphInference:" progressBlock:v8 useGraphInference:?];
+        [PGPhotosChallengeMetricEvent _gatherMetricsForRelationshipQuestions:selfCopy4 questionMetricType:"_gatherMetricsForRelationshipQuestions:questionMetricType:progressBlock:useGraphInference:" progressBlock:v8 useGraphInference:?];
         break;
       case 0x6Bu:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForBusinessQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForBusinessQuestions:v4 progressBlock:blockCopy];
         break;
       case 0x6Cu:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForPublicEventQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForPublicEventQuestions:v4 progressBlock:blockCopy];
         break;
       case 0x6Du:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForTripKeyQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForTripKeyQuestions:v4 progressBlock:blockCopy];
         break;
       case 0x6Eu:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForHolidayQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForHolidayQuestions:v4 progressBlock:blockCopy];
         break;
       case 0x6Fu:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForFrequentLocationQuestions:v4 questionMetricType:111 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForFrequentLocationQuestions:v4 questionMetricType:111 progressBlock:blockCopy];
         break;
       case 0x70u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForNamingQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForNamingQuestions:v4 progressBlock:blockCopy];
         break;
       case 0x71u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForAgeCategoryQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForAgeCategoryQuestions:v4 progressBlock:blockCopy];
         break;
       case 0x72u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForPetQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForPetQuestions:v4 progressBlock:blockCopy];
         break;
       case 0x73u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForPetKnowledgeQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForPetKnowledgeQuestions:v4 progressBlock:blockCopy];
         break;
       case 0x74u:
       case 0x78u:
@@ -9220,10 +9220,10 @@ LABEL_10:
         [PGPhotosChallengeMetricEvent _gatherMetricsForMemoryQuestions:"_gatherMetricsForMemoryQuestions:questionMetricType:progressBlock:" questionMetricType:v4 progressBlock:?];
         break;
       case 0x75u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForMemoryMusicQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForMemoryMusicQuestions:v4 progressBlock:blockCopy];
         break;
       case 0xC4u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForSyndicatedAssetsQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForSyndicatedAssetsQuestions:v4 progressBlock:blockCopy];
         break;
       case 0xC5u:
       case 0xC6u:
@@ -9234,13 +9234,13 @@ LABEL_10:
         [PGPhotosChallengeMetricEvent _gatherMetricsForPersonActivityMeaningQuestions:"_gatherMetricsForPersonActivityMeaningQuestions:questionMetricType:progressBlock:" questionMetricType:v4 progressBlock:?];
         break;
       case 0xCBu:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForSharedLibraryAssetsQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForSharedLibraryAssetsQuestions:v4 progressBlock:blockCopy];
         break;
       case 0xCCu:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForSharedLibraryStartQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForSharedLibraryStartQuestions:v4 progressBlock:blockCopy];
         break;
       case 0xCDu:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForCameraLibrarySwitchQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForCameraLibrarySwitchQuestions:v4 progressBlock:blockCopy];
         break;
       case 0xCEu:
       case 0xCFu:
@@ -9249,19 +9249,19 @@ LABEL_10:
         [PGPhotosChallengeMetricEvent _gatherMetricsForWallpaperQuestions:"_gatherMetricsForWallpaperQuestions:questionMetricType:progressBlock:" questionMetricType:v4 progressBlock:?];
         break;
       case 0xD2u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForTripTitlingQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForTripTitlingQuestions:v4 progressBlock:blockCopy];
         break;
       case 0xD3u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForHighlightTitlingQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForHighlightTitlingQuestions:v4 progressBlock:blockCopy];
         break;
       case 0xD4u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForLocationRepresentativeAssetQuestions:v4 questionMetricType:212 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForLocationRepresentativeAssetQuestions:v4 questionMetricType:212 progressBlock:blockCopy];
         break;
       case 0xD5u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForExternalAssetRelevanceQuestions:v4 questionMetricType:213 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForExternalAssetRelevanceQuestions:v4 questionMetricType:213 progressBlock:blockCopy];
         break;
       case 0xD6u:
-        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForStoryPromptSuggestionsQuestions:v4 progressBlock:v9];
+        [(PGPhotosChallengeMetricEvent *)self _gatherMetricsForStoryPromptSuggestionsQuestions:v4 progressBlock:blockCopy];
         break;
       default:
         break;
@@ -9278,36 +9278,36 @@ void __97__PGPhotosChallengeMetricEvent_initWithWorkingContext_questionMetricTyp
   *(v4 + 72) = v3;
 }
 
-+ (id)stringFromQuestionMetricType:(unsigned __int16)a3
++ (id)stringFromQuestionMetricType:(unsigned __int16)type
 {
-  if (a3 > 0xD7u)
+  if (type > 0xD7u)
   {
     return 0;
   }
 
   else
   {
-    return off_27888ABB8[a3];
+    return off_27888ABB8[type];
   }
 }
 
-+ (id)questionEntityTypesFromQuestionMetricType:(unsigned __int16)a3
++ (id)questionEntityTypesFromQuestionMetricType:(unsigned __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v12 = *MEMORY[0x277D85DE8];
   result = &unk_284486F30;
-  switch(a3)
+  switch(type)
   {
     case 0u:
     case 0xD7u:
       v6 = +[PGLogging sharedLogging];
-      v7 = [v6 loggingConnection];
+      loggingConnection = [v6 loggingConnection];
 
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
       {
         v10 = 67109120;
-        v11 = v3;
-        _os_log_impl(&dword_22F0FC000, v7, OS_LOG_TYPE_INFO, "Unhandled MetricType %d", &v10, 8u);
+        v11 = typeCopy;
+        _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "Unhandled MetricType %d", &v10, 8u);
       }
 
       result = &unk_284487068;
@@ -9553,13 +9553,13 @@ void __97__PGPhotosChallengeMetricEvent_initWithWorkingContext_questionMetricTyp
       break;
     default:
       v8 = +[PGLogging sharedLogging];
-      v9 = [v8 loggingConnection];
+      loggingConnection2 = [v8 loggingConnection];
 
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection2, OS_LOG_TYPE_ERROR))
       {
         v10 = 67109120;
-        v11 = v3;
-        _os_log_error_impl(&dword_22F0FC000, v9, OS_LOG_TYPE_ERROR, "Unexpected MetricType %d", &v10, 8u);
+        v11 = typeCopy;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection2, OS_LOG_TYPE_ERROR, "Unexpected MetricType %d", &v10, 8u);
       }
 
       result = &unk_284487080;
@@ -9570,25 +9570,25 @@ void __97__PGPhotosChallengeMetricEvent_initWithWorkingContext_questionMetricTyp
   return result;
 }
 
-+ (unsigned)questionTypeFromQuestionMetricType:(unsigned __int16)a3
++ (unsigned)questionTypeFromQuestionMetricType:(unsigned __int16)type
 {
-  if ((a3 - 1) > 0xD5)
+  if ((type - 1) > 0xD5)
   {
     return 0;
   }
 
   else
   {
-    return word_22F78CF50[(a3 - 1)];
+    return word_22F78CF50[(type - 1)];
   }
 }
 
-+ (unint64_t)algorithmVersionFromQuestionMetricType:(unsigned __int16)a3 withEventLabelingConfiguration:(id)a4
++ (unint64_t)algorithmVersionFromQuestionMetricType:(unsigned __int16)type withEventLabelingConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = a4;
-  v6 = v5;
-  switch(v4)
+  typeCopy = type;
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  switch(typeCopy)
   {
     case 1:
     case 2:
@@ -9642,7 +9642,7 @@ void __97__PGPhotosChallengeMetricEvent_initWithWorkingContext_questionMetricTyp
     case 50:
     case 51:
     case 210:
-      v7 = 5;
+      modelVersion = 5;
       break;
     case 52:
     case 53:
@@ -9670,7 +9670,7 @@ void __97__PGPhotosChallengeMetricEvent_initWithWorkingContext_questionMetricTyp
     case 75:
     case 76:
     case 77:
-      v7 = [v5 modelVersion];
+      modelVersion = [configurationCopy modelVersion];
       break;
     case 78:
     case 79:
@@ -9687,7 +9687,7 @@ void __97__PGPhotosChallengeMetricEvent_initWithWorkingContext_questionMetricTyp
     case 90:
     case 91:
     case 92:
-      v7 = 4;
+      modelVersion = 4;
       break;
     case 93:
     case 94:
@@ -9800,17 +9800,17 @@ void __97__PGPhotosChallengeMetricEvent_initWithWorkingContext_questionMetricTyp
     case 208:
     case 209:
     case 211:
-      v7 = 1;
+      modelVersion = 1;
       break;
     case 107:
       if (_os_feature_enabled_impl())
       {
-        v7 = 2;
+        modelVersion = 2;
       }
 
       else
       {
-        v7 = 1;
+        modelVersion = 1;
       }
 
       break;
@@ -9818,11 +9818,11 @@ void __97__PGPhotosChallengeMetricEvent_initWithWorkingContext_questionMetricTyp
     case 111:
     case 205:
     case 212:
-      v7 = 2;
+      modelVersion = 2;
       break;
     case 114:
     case 115:
-      v7 = 201;
+      modelVersion = 201;
       break;
     case 196:
       v8 = MEMORY[0x277CD9B40];
@@ -9830,77 +9830,77 @@ void __97__PGPhotosChallengeMetricEvent_initWithWorkingContext_questionMetricTyp
     case 213:
       v8 = MEMORY[0x277D3C830];
 LABEL_10:
-      v7 = *v8;
+      modelVersion = *v8;
       break;
     default:
-      v7 = 0;
+      modelVersion = 0;
       break;
   }
 
-  return v7;
+  return modelVersion;
 }
 
-+ (id)relationshipLabelFromRelationshipQuestionMetricType:(unsigned __int16)a3
++ (id)relationshipLabelFromRelationshipQuestionMetricType:(unsigned __int16)type
 {
-  if ((a3 - 78) > 0x1C)
+  if ((type - 78) > 0x1C)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_27888AAD0[(a3 - 78)];
+    v4 = *off_27888AAD0[(type - 78)];
   }
 
   return v4;
 }
 
-+ (id)personActivityMeaningLabelFromMeaningQuestionMetricType:(unsigned __int16)a3
++ (id)personActivityMeaningLabelFromMeaningQuestionMetricType:(unsigned __int16)type
 {
-  if ((a3 - 197) > 5)
+  if ((type - 197) > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_27888AAA0[(a3 - 197)];
+    v4 = *off_27888AAA0[(type - 197)];
   }
 
   return v4;
 }
 
-+ (id)meaningLabelFromMeaningQuestionMetricType:(unsigned __int16)a3
++ (id)meaningLabelFromMeaningQuestionMetricType:(unsigned __int16)type
 {
-  if ((a3 - 1) > 0x4C)
+  if ((type - 1) > 0x4C)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *off_27888A838[(a3 - 1)];
+    v4 = *off_27888A838[(type - 1)];
   }
 
   return v4;
 }
 
-+ (BOOL)_isHighPrecisionCityscapeAsset:(id)a3
++ (BOOL)_isHighPrecisionCityscapeAsset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 sceneClassifications];
+  assetCopy = asset;
+  [assetCopy sceneClassifications];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v4 = v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
-  if (v5)
+  curationModel = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (curationModel)
   {
     v6 = *v14;
     while (2)
     {
-      for (i = 0; i != v5; i = i + 1)
+      for (i = 0; i != curationModel; i = i + 1)
       {
         if (*v14 != v6)
         {
@@ -9910,18 +9910,18 @@ LABEL_10:
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([v8 extendedSceneIdentifier] == 2147481598)
         {
-          v5 = [v3 curationModel];
-          v9 = [v5 cityNatureModel];
+          curationModel = [assetCopy curationModel];
+          cityNatureModel = [curationModel cityNatureModel];
 
-          v10 = [v9 cityNode];
-          LOBYTE(v5) = [v10 passesHighPrecisionWithSignal:v8];
+          cityNode = [cityNatureModel cityNode];
+          LOBYTE(curationModel) = [cityNode passesHighPrecisionWithSignal:v8];
 
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
-      if (v5)
+      curationModel = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      if (curationModel)
       {
         continue;
       }
@@ -9933,25 +9933,25 @@ LABEL_10:
 LABEL_11:
 
   v11 = *MEMORY[0x277D85DE8];
-  return v5;
+  return curationModel;
 }
 
-+ (BOOL)_isHighPrecisionLandscapeAsset:(id)a3
++ (BOOL)_isHighPrecisionLandscapeAsset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 sceneClassifications];
+  assetCopy = asset;
+  [assetCopy sceneClassifications];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v4 = v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
-  if (v5)
+  curationModel = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (curationModel)
   {
     v6 = *v14;
     while (2)
     {
-      for (i = 0; i != v5; i = i + 1)
+      for (i = 0; i != curationModel; i = i + 1)
       {
         if (*v14 != v6)
         {
@@ -9961,18 +9961,18 @@ LABEL_11:
         v8 = *(*(&v13 + 1) + 8 * i);
         if ([v8 extendedSceneIdentifier] == 2147481597)
         {
-          v5 = [v3 curationModel];
-          v9 = [v5 cityNatureModel];
+          curationModel = [assetCopy curationModel];
+          cityNatureModel = [curationModel cityNatureModel];
 
-          v10 = [v9 natureNode];
-          LOBYTE(v5) = [v10 passesHighPrecisionWithSignal:v8];
+          natureNode = [cityNatureModel natureNode];
+          LOBYTE(curationModel) = [natureNode passesHighPrecisionWithSignal:v8];
 
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
-      if (v5)
+      curationModel = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      if (curationModel)
       {
         continue;
       }
@@ -9984,12 +9984,12 @@ LABEL_11:
 LABEL_11:
 
   v11 = *MEMORY[0x277D85DE8];
-  return v5;
+  return curationModel;
 }
 
-+ (id)_isVIPStringForResult:(BOOL)a3
++ (id)_isVIPStringForResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     return @"IsVIP";
   }
@@ -10000,9 +10000,9 @@ LABEL_11:
   }
 }
 
-+ (id)_passedFilteringStringForResult:(BOOL)a3
++ (id)_passedFilteringStringForResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     return @"PassedFiltering";
   }
@@ -10013,9 +10013,9 @@ LABEL_11:
   }
 }
 
-+ (id)_passedHighPrecisionStringForResult:(BOOL)a3
++ (id)_passedHighPrecisionStringForResult:(BOOL)result
 {
-  if (a3)
+  if (result)
   {
     return @"PassedHighPrecision";
   }
@@ -10026,24 +10026,24 @@ LABEL_11:
   }
 }
 
-+ (unsigned)wallpaperSuggestionSubtypeForQuestionMetricType:(unsigned __int16)a3
++ (unsigned)wallpaperSuggestionSubtypeForQuestionMetricType:(unsigned __int16)type
 {
-  if (((a3 - 206) & 0xFFFC) != 0)
+  if (((type - 206) & 0xFFFC) != 0)
   {
     return 0;
   }
 
   else
   {
-    return a3 + 446;
+    return type + 446;
   }
 }
 
-+ (id)allMetricEventsWithGraphManager:(id)a3
++ (id)allMetricEventsWithGraphManager:(id)manager
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [[PGPhotosChallengeMetricEventFetchHelper alloc] initWithGraphManager:v3];
+  managerCopy = manager;
+  array = [MEMORY[0x277CBEB18] array];
+  v5 = [[PGPhotosChallengeMetricEventFetchHelper alloc] initWithGraphManager:managerCopy];
   v6 = 1;
   v7 = off_27887B000;
   v8 = off_27887B000;
@@ -10066,32 +10066,32 @@ LABEL_11:
         v9 = PGPhotosChallengePrecisionRecallByReasonMetricEvent;
         goto LABEL_4;
       case -53:
-        v12 = [v3 workingContext];
+        workingContext = [managerCopy workingContext];
         v14 = v7[501];
-        v15 = [v12 photoLibrary];
-        LODWORD(v14) = [(__objc2_class *)v14 isSharedLibraryQuestionsEnabledForPhotoLibrary:v15];
+        photoLibrary = [workingContext photoLibrary];
+        LODWORD(v14) = [(__objc2_class *)v14 isSharedLibraryQuestionsEnabledForPhotoLibrary:photoLibrary];
 
         if (v14)
         {
-          v16 = [(PGPhotosChallengeMetricEvent *)[PGPhotosChallengePrecisionRecallByReasonMetricEvent alloc] initWithWorkingContext:v12 questionMetricType:v6 metricEventFetchHelper:v5];
-          [v4 addObject:v16];
-          v17 = [objc_alloc(v8[499]) initWithWorkingContext:v12 questionMetricType:v6 metricEventFetchHelper:v5];
+          v16 = [(PGPhotosChallengeMetricEvent *)[PGPhotosChallengePrecisionRecallByReasonMetricEvent alloc] initWithWorkingContext:workingContext questionMetricType:v6 metricEventFetchHelper:v5];
+          [array addObject:v16];
+          v17 = [objc_alloc(v8[499]) initWithWorkingContext:workingContext questionMetricType:v6 metricEventFetchHelper:v5];
           [(PGPhotosChallengeMetricEvent *)v16 setSubMetricEvent:v17];
-          [v4 addObject:v17];
+          [array addObject:v17];
         }
 
         v7 = off_27887B000;
         break;
       case -51:
         v18 = v7;
-        v12 = [v3 workingContext];
-        v19 = [v12 photoLibrary];
-        v20 = [PGCameraLibrarySwitchQuestionFactory isSharedLibraryQuestionsEnabledForPhotoLibrary:v19];
+        workingContext = [managerCopy workingContext];
+        photoLibrary2 = [workingContext photoLibrary];
+        v20 = [PGCameraLibrarySwitchQuestionFactory isSharedLibraryQuestionsEnabledForPhotoLibrary:photoLibrary2];
 
         if (v20)
         {
-          v21 = [(PGPhotosChallengeMetricEvent *)[PGPhotosChallengePrecisionRecallByReasonMetricEvent alloc] initWithWorkingContext:v12 questionMetricType:v6 metricEventFetchHelper:v5];
-          [v4 addObject:v21];
+          v21 = [(PGPhotosChallengeMetricEvent *)[PGPhotosChallengePrecisionRecallByReasonMetricEvent alloc] initWithWorkingContext:workingContext questionMetricType:v6 metricEventFetchHelper:v5];
+          [array addObject:v21];
         }
 
         v7 = v18;
@@ -10101,10 +10101,10 @@ LABEL_11:
         v9 = PGPhotosChallengeMetricEvent;
 LABEL_4:
         v10 = [v9 alloc];
-        v11 = [v3 workingContext];
-        v12 = [v10 initWithWorkingContext:v11 questionMetricType:v6 metricEventFetchHelper:v5];
+        workingContext2 = [managerCopy workingContext];
+        workingContext = [v10 initWithWorkingContext:workingContext2 questionMetricType:v6 metricEventFetchHelper:v5];
 
-        [v4 addObject:v12];
+        [array addObject:workingContext];
         break;
     }
 
@@ -10113,7 +10113,7 @@ LABEL_4:
 
   while (v13 < 0xD6);
 
-  return v4;
+  return array;
 }
 
 @end

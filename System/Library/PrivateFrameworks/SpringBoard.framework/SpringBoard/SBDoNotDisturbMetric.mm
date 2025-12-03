@@ -1,38 +1,38 @@
 @interface SBDoNotDisturbMetric
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4;
-- (BOOL)sendCoreAnalyticsEventWithName:(id)a3 payload:(id)a4;
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context;
+- (BOOL)sendCoreAnalyticsEventWithName:(id)name payload:(id)payload;
 - (SBDoNotDisturbMetric)init;
-- (SBDoNotDisturbMetric)initWithAnalyticsClient:(id)a3;
-- (SBDoNotDisturbMetric)initWithAnalyticsClient:(id)a3 dndStateService:(id)a4;
-- (id)_bundleIdentifierForElementWithLayoutRole:(int64_t)a3 fromContext:(id)a4;
+- (SBDoNotDisturbMetric)initWithAnalyticsClient:(id)client;
+- (SBDoNotDisturbMetric)initWithAnalyticsClient:(id)client dndStateService:(id)service;
+- (id)_bundleIdentifierForElementWithLayoutRole:(int64_t)role fromContext:(id)context;
 - (void)dealloc;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 @end
 
 @implementation SBDoNotDisturbMetric
 
-- (SBDoNotDisturbMetric)initWithAnalyticsClient:(id)a3
+- (SBDoNotDisturbMetric)initWithAnalyticsClient:(id)client
 {
   v4 = MEMORY[0x277D05AB0];
-  v5 = a3;
+  clientCopy = client;
   v6 = [v4 serviceForClientIdentifier:@"com.apple.springboard.SBDoNotDisturbMetric"];
-  v7 = [(SBDoNotDisturbMetric *)self initWithAnalyticsClient:v5 dndStateService:v6];
+  v7 = [(SBDoNotDisturbMetric *)self initWithAnalyticsClient:clientCopy dndStateService:v6];
 
   return v7;
 }
 
-- (SBDoNotDisturbMetric)initWithAnalyticsClient:(id)a3 dndStateService:(id)a4
+- (SBDoNotDisturbMetric)initWithAnalyticsClient:(id)client dndStateService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  serviceCopy = service;
   v23.receiver = self;
   v23.super_class = SBDoNotDisturbMetric;
   v9 = [(SBDoNotDisturbMetric *)&v23 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dndStateService, a4);
-    objc_storeStrong(&v10->_analyticsClient, a3);
+    objc_storeStrong(&v9->_dndStateService, service);
+    objc_storeStrong(&v10->_analyticsClient, client);
     primaryBundleIdentifier = v10->_primaryBundleIdentifier;
     v10->_location = 0;
     v10->_primaryBundleIdentifier = @"none";
@@ -122,8 +122,8 @@ uint64_t __64__SBDoNotDisturbMetric_initWithAnalyticsClient_dndStateService___bl
 
 - (SBDoNotDisturbMetric)init
 {
-  v3 = [MEMORY[0x277D65DD0] sharedInstance];
-  v4 = [(SBDoNotDisturbMetric *)self initWithAnalyticsClient:v3];
+  mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+  v4 = [(SBDoNotDisturbMetric *)self initWithAnalyticsClient:mEMORY[0x277D65DD0]];
 
   return v4;
 }
@@ -136,28 +136,28 @@ uint64_t __64__SBDoNotDisturbMetric_initWithAnalyticsClient_dndStateService___bl
   [(SBDoNotDisturbMetric *)&v3 dealloc];
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 state];
-  v7 = [v6 isActive];
-  self->_doNotDisturbActive = v7;
+  updateCopy = update;
+  state = [updateCopy state];
+  isActive = [state isActive];
+  self->_doNotDisturbActive = isActive;
   analyticsClient = self->_analyticsClient;
   v13[0] = *MEMORY[0x277D674A0];
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v7];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:isActive];
   v14[0] = v9;
   v13[1] = *MEMORY[0x277D674A8];
-  v10 = [v5 reason];
+  reason = [updateCopy reason];
 
-  if (v10 > 4)
+  if (reason > 4)
   {
     v11 = @"NotEnumerated";
   }
 
   else
   {
-    v11 = off_2783C1548[v10];
+    v11 = off_2783C1548[reason];
   }
 
   v14[1] = v11;
@@ -165,45 +165,45 @@ uint64_t __64__SBDoNotDisturbMetric_initWithAnalyticsClient_dndStateService___bl
   [(SBFAnalyticsClient *)analyticsClient emitEvent:49 withPayload:v12];
 }
 
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context
 {
   v24[5] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (a3 == 49)
+  contextCopy = context;
+  v7 = contextCopy;
+  if (event == 49)
   {
-    v14 = [v6 eventPayload];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x277D674A0]];
-    v13 = [v15 BOOLValue];
+    eventPayload = [contextCopy eventPayload];
+    v15 = [eventPayload objectForKeyedSubscript:*MEMORY[0x277D674A0]];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v13)
+    if (bOOLValue)
     {
       if ([(SBDoNotDisturbMetric *)self location]== 4)
       {
-        v16 = [(SBDoNotDisturbMetric *)self primaryBundleIdentifier];
-        v17 = [(SBDoNotDisturbMetric *)self sideBundleIdentifier];
-        v18 = [(SBDoNotDisturbMetric *)self floatingBundleIdentifier];
+        primaryBundleIdentifier = [(SBDoNotDisturbMetric *)self primaryBundleIdentifier];
+        sideBundleIdentifier = [(SBDoNotDisturbMetric *)self sideBundleIdentifier];
+        floatingBundleIdentifier = [(SBDoNotDisturbMetric *)self floatingBundleIdentifier];
       }
 
       else
       {
-        v16 = @"none";
-        v17 = @"none";
-        v18 = @"none";
+        primaryBundleIdentifier = @"none";
+        sideBundleIdentifier = @"none";
+        floatingBundleIdentifier = @"none";
       }
 
       v23[0] = @"Reason";
-      v19 = [v14 objectForKeyedSubscript:*MEMORY[0x277D674A8]];
+      v19 = [eventPayload objectForKeyedSubscript:*MEMORY[0x277D674A8]];
       v24[0] = v19;
       v23[1] = @"Location";
       v20 = NSStringFromAnalyticsLayoutLocation([(SBDoNotDisturbMetric *)self location]);
       v24[1] = v20;
-      v24[2] = v16;
+      v24[2] = primaryBundleIdentifier;
       v23[2] = @"PrimaryBundleID";
       v23[3] = @"SideBundleID";
       v23[4] = @"FloatingBundleID";
-      v24[3] = v17;
-      v24[4] = v18;
+      v24[3] = sideBundleIdentifier;
+      v24[4] = floatingBundleIdentifier;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:5];
       [(SBDoNotDisturbMetric *)self sendCoreAnalyticsEventWithName:@"com.apple.SpringBoard.Analytics.DoNotDisturbEnabled" payload:v21];
     }
@@ -211,9 +211,9 @@ uint64_t __64__SBDoNotDisturbMetric_initWithAnalyticsClient_dndStateService___bl
 
   else
   {
-    if (a3 == 5)
+    if (event == 5)
     {
-      v10 = [(SBDoNotDisturbMetric *)self _bundleIdentifierForElementWithLayoutRole:1 fromContext:v6];
+      v10 = [(SBDoNotDisturbMetric *)self _bundleIdentifierForElementWithLayoutRole:1 fromContext:contextCopy];
       v11 = [(SBDoNotDisturbMetric *)self _bundleIdentifierForElementWithLayoutRole:2 fromContext:v7];
       v12 = [(SBDoNotDisturbMetric *)self _bundleIdentifierForElementWithLayoutRole:3 fromContext:v7];
       [(SBDoNotDisturbMetric *)self setPrimaryBundleIdentifier:v10];
@@ -223,44 +223,44 @@ uint64_t __64__SBDoNotDisturbMetric_initWithAnalyticsClient_dndStateService___bl
 
     else
     {
-      if (a3 != 3)
+      if (event != 3)
       {
-        LOBYTE(v13) = 0;
+        LOBYTE(bOOLValue) = 0;
         goto LABEL_14;
       }
 
-      v8 = [v6 eventPayload];
-      v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277D67498]];
+      eventPayload2 = [contextCopy eventPayload];
+      v9 = [eventPayload2 objectForKeyedSubscript:*MEMORY[0x277D67498]];
 
       [(SBDoNotDisturbMetric *)self setLocation:SBAnalyticsLayoutLocationForDisplayLayoutElements(v9)];
     }
 
-    LOBYTE(v13) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
 LABEL_14:
 
-  return v13;
+  return bOOLValue;
 }
 
-- (BOOL)sendCoreAnalyticsEventWithName:(id)a3 payload:(id)a4
+- (BOOL)sendCoreAnalyticsEventWithName:(id)name payload:(id)payload
 {
-  v7 = a4;
-  v4 = v7;
+  payloadCopy = payload;
+  v4 = payloadCopy;
   v5 = AnalyticsSendEventLazy();
 
   return v5;
 }
 
-- (id)_bundleIdentifierForElementWithLayoutRole:(int64_t)a3 fromContext:(id)a4
+- (id)_bundleIdentifierForElementWithLayoutRole:(int64_t)role fromContext:(id)context
 {
-  v5 = [a4 eventPayload];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D67588]];
+  eventPayload = [context eventPayload];
+  v6 = [eventPayload objectForKeyedSubscript:*MEMORY[0x277D67588]];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __78__SBDoNotDisturbMetric__bundleIdentifierForElementWithLayoutRole_fromContext___block_invoke;
   v13[3] = &__block_descriptor_40_e22_B16__0__NSDictionary_8l;
-  v13[4] = a3;
+  v13[4] = role;
   v7 = [v6 bs_firstObjectPassingTest:v13];
   v8 = [v7 objectForKey:*MEMORY[0x277D67568]];
   v9 = v8;

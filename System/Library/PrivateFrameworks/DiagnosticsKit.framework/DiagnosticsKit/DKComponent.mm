@@ -1,36 +1,36 @@
 @interface DKComponent
-+ (id)componentWithIdentity:(id)a3 attributes:(id)a4;
-- (DKComponent)initWithCoder:(id)a3;
-- (DKComponent)initWithIdentity:(id)a3 attributes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)componentWithIdentity:(id)identity attributes:(id)attributes;
+- (DKComponent)initWithCoder:(id)coder;
+- (DKComponent)initWithIdentity:(id)identity attributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryForJSON;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DKComponent
 
-+ (id)componentWithIdentity:(id)a3 attributes:(id)a4
++ (id)componentWithIdentity:(id)identity attributes:(id)attributes
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdentity:v7 attributes:v6];
+  attributesCopy = attributes;
+  identityCopy = identity;
+  v8 = [[self alloc] initWithIdentity:identityCopy attributes:attributesCopy];
 
   return v8;
 }
 
-- (DKComponent)initWithIdentity:(id)a3 attributes:(id)a4
+- (DKComponent)initWithIdentity:(id)identity attributes:(id)attributes
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  attributesCopy = attributes;
   v12.receiver = self;
   v12.super_class = DKComponent;
   v9 = [(DKComponent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identity, a3);
-    objc_storeStrong(&v10->_attributes, a4);
+    objc_storeStrong(&v9->_identity, identity);
+    objc_storeStrong(&v10->_attributes, attributes);
   }
 
   return v10;
@@ -38,40 +38,40 @@
 
 - (id)dictionaryForJSON
 {
-  v3 = [(DKComponent *)self attributes];
-  v4 = [v3 mutableCopy];
+  attributes = [(DKComponent *)self attributes];
+  v4 = [attributes mutableCopy];
 
-  v5 = [(DKComponent *)self identity];
-  v6 = [v5 version];
-  v7 = [v6 string];
-  [v4 setObject:v7 forKeyedSubscript:@"version"];
+  identity = [(DKComponent *)self identity];
+  version = [identity version];
+  string = [version string];
+  [v4 setObject:string forKeyedSubscript:@"version"];
 
-  v8 = [(DKComponent *)self identity];
-  v9 = [v8 type];
-  [v4 setObject:v9 forKeyedSubscript:@"type"];
+  identity2 = [(DKComponent *)self identity];
+  type = [identity2 type];
+  [v4 setObject:type forKeyedSubscript:@"type"];
 
-  v10 = [(DKComponent *)self identity];
-  v11 = [v10 identifier];
+  identity3 = [(DKComponent *)self identity];
+  identifier = [identity3 identifier];
 
-  if (v11)
+  if (identifier)
   {
-    v12 = [(DKComponent *)self identity];
-    v13 = [v12 identifier];
-    [v4 setObject:v13 forKeyedSubscript:@"identifier"];
+    identity4 = [(DKComponent *)self identity];
+    identifier2 = [identity4 identifier];
+    [v4 setObject:identifier2 forKeyedSubscript:@"identifier"];
   }
 
   return v4;
 }
 
-- (DKComponent)initWithCoder:(id)a3
+- (DKComponent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = DKComponent;
   v5 = [(DKComponent *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identity"];
     identity = v5->_identity;
     v5->_identity = v6;
 
@@ -81,7 +81,7 @@
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v8 setWithObjects:{v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"attributes"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"attributes"];
     attributes = v5->_attributes;
     v5->_attributes = v14;
   }
@@ -89,24 +89,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DKComponent *)self identity];
-  [v4 encodeObject:v5 forKey:@"identity"];
+  coderCopy = coder;
+  identity = [(DKComponent *)self identity];
+  [coderCopy encodeObject:identity forKey:@"identity"];
 
-  v6 = [(DKComponent *)self attributes];
-  [v4 encodeObject:v6 forKey:@"attributes"];
+  attributes = [(DKComponent *)self attributes];
+  [coderCopy encodeObject:attributes forKey:@"attributes"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(DKComponentIdentity *)self->_identity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(DKComponentIdentity *)self->_identity copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSDictionary *)self->_attributes copyWithZone:a3];
+  v8 = [(NSDictionary *)self->_attributes copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 

@@ -6,17 +6,17 @@
 
 - (id)normalizedURL
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
-  v2 = [v1 scheme];
-  v3 = [v2 lowercaseString];
-  [v1 setScheme:v3];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
+  scheme = [v1 scheme];
+  lowercaseString = [scheme lowercaseString];
+  [v1 setScheme:lowercaseString];
 
-  v4 = [v1 host];
-  v5 = [v4 lowercaseString];
-  [v1 setHost:v5];
+  host = [v1 host];
+  lowercaseString2 = [host lowercaseString];
+  [v1 setHost:lowercaseString2];
 
-  v6 = [v1 path];
-  v7 = [v6 length];
+  path = [v1 path];
+  v7 = [path length];
 
   if (!v7)
   {

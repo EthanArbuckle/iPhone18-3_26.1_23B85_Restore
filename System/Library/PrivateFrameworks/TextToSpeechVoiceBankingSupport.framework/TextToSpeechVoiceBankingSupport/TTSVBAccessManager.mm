@@ -1,8 +1,8 @@
 @interface TTSVBAccessManager
-- (void)accountCredentialChanged:(id)a3;
-- (void)accountWasAdded:(id)a3;
-- (void)accountWasModified:(id)a3;
-- (void)accountWasRemoved:(id)a3;
+- (void)accountCredentialChanged:(id)changed;
+- (void)accountWasAdded:(id)added;
+- (void)accountWasModified:(id)modified;
+- (void)accountWasRemoved:(id)removed;
 - (void)dealloc;
 @end
 
@@ -13,44 +13,44 @@
   v3 = OBJC_IVAR____TtC31TextToSpeechVoiceBankingSupport18TTSVBAccessManager_tccNotifyToken;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
+  selfCopy = self;
   if (v4)
   {
     notify_cancel(v4);
     *(&self->super.isa + v3) = 0;
   }
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for TTSVBAccessManager();
   [(TTSVBAccessManager *)&v6 dealloc];
 }
 
-- (void)accountWasAdded:(id)a3
+- (void)accountWasAdded:(id)added
 {
-  v4 = a3;
-  v5 = self;
-  TTSVBAccessManager.accountWasAdded(_:)(v4);
+  addedCopy = added;
+  selfCopy = self;
+  TTSVBAccessManager.accountWasAdded(_:)(addedCopy);
 }
 
-- (void)accountWasModified:(id)a3
+- (void)accountWasModified:(id)modified
 {
-  v4 = a3;
-  v5 = self;
-  TTSVBAccessManager.accountWasModified(_:)(v4);
+  modifiedCopy = modified;
+  selfCopy = self;
+  TTSVBAccessManager.accountWasModified(_:)(modifiedCopy);
 }
 
-- (void)accountWasRemoved:(id)a3
+- (void)accountWasRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = self;
-  TTSVBAccessManager.accountWasRemoved(_:)(v4);
+  removedCopy = removed;
+  selfCopy = self;
+  TTSVBAccessManager.accountWasRemoved(_:)(removedCopy);
 }
 
-- (void)accountCredentialChanged:(id)a3
+- (void)accountCredentialChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  TTSVBAccessManager.accountCredentialChanged(_:)(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  TTSVBAccessManager.accountCredentialChanged(_:)(changedCopy);
 }
 
 @end

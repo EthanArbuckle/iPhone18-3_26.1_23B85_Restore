@@ -1,54 +1,54 @@
 @interface HMDNetworkRouterDynamicPortRule
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
 + (id)ruleForHAP;
-+ (id)ruleFromFirewallRuleLAN:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)ruleFromFirewallRuleLAN:(id)n;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterDynamicPortRule)init;
-- (HMDNetworkRouterDynamicPortRule)initWithDirection:(id)a3 lanIdentifierList:(id)a4 protocol:(id)a5 advertisementProtocol:(id)a6 flags:(id)a7 serviceType:(id)a8;
+- (HMDNetworkRouterDynamicPortRule)initWithDirection:(id)direction lanIdentifierList:(id)list protocol:(id)protocol advertisementProtocol:(id)advertisementProtocol flags:(id)flags serviceType:(id)type;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
-- (void)addTo:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
+- (void)addTo:(id)to;
 @end
 
 @implementation HMDNetworkRouterDynamicPortRule
 
-- (void)addTo:(id)a3
+- (void)addTo:(id)to
 {
-  v7 = a3;
-  v4 = [v7 dynamicPortRules];
-  v5 = v4;
-  if (v4)
+  toCopy = to;
+  dynamicPortRules = [toCopy dynamicPortRules];
+  v5 = dynamicPortRules;
+  if (dynamicPortRules)
   {
-    [v4 addObject:self];
+    [dynamicPortRules addObject:self];
   }
 
   else
   {
     v6 = [MEMORY[0x277CBEB18] arrayWithObject:self];
-    [v7 setDynamicPortRules:v6];
+    [toCopy setDynamicPortRules:v6];
   }
 }
 
-+ (id)ruleFromFirewallRuleLAN:(id)a3
++ (id)ruleFromFirewallRuleLAN:(id)n
 {
-  v3 = a3;
-  v4 = +[HMDNetworkRouterRuleDirection directionFromLANDirection:](HMDNetworkRouterRuleDirection, "directionFromLANDirection:", [v3 direction]);
-  v5 = createIdentifierListFromLANRule(v3);
-  v6 = +[HMDNetworkRouterProtocol protocolFromTransportProtocol:](HMDNetworkRouterProtocol, "protocolFromTransportProtocol:", [v3 transportProtocol]);
-  v7 = +[HMDNetworkRouterAdvertisementProtocol protocolFromFirewallRuleAdvertisingProtocol:](HMDNetworkRouterAdvertisementProtocol, "protocolFromFirewallRuleAdvertisingProtocol:", [v3 advertisingProtocol]);
-  v8 = [v3 serviceType];
+  nCopy = n;
+  v4 = +[HMDNetworkRouterRuleDirection directionFromLANDirection:](HMDNetworkRouterRuleDirection, "directionFromLANDirection:", [nCopy direction]);
+  v5 = createIdentifierListFromLANRule(nCopy);
+  v6 = +[HMDNetworkRouterProtocol protocolFromTransportProtocol:](HMDNetworkRouterProtocol, "protocolFromTransportProtocol:", [nCopy transportProtocol]);
+  v7 = +[HMDNetworkRouterAdvertisementProtocol protocolFromFirewallRuleAdvertisingProtocol:](HMDNetworkRouterAdvertisementProtocol, "protocolFromFirewallRuleAdvertisingProtocol:", [nCopy advertisingProtocol]);
+  serviceType = [nCopy serviceType];
 
-  if (v8)
+  if (serviceType)
   {
     v9 = [HMDNetworkRouterServiceType alloc];
-    v10 = [v3 serviceType];
-    v8 = [(HMDNetworkRouterServiceType *)v9 initWithName:v10];
+    serviceType2 = [nCopy serviceType];
+    serviceType = [(HMDNetworkRouterServiceType *)v9 initWithName:serviceType2];
   }
 
   v11 = objc_alloc(MEMORY[0x277CFEC98]);
-  if ([v3 isAdvertisingOnly])
+  if ([nCopy isAdvertisingOnly])
   {
     v12 = &unk_283E72830;
   }
@@ -63,7 +63,7 @@
   v15 = 0;
   if (v4 && v5 && v6 && v7 && v13)
   {
-    v15 = [[HMDNetworkRouterDynamicPortRule alloc] initWithDirection:v4 lanIdentifierList:v5 protocol:v6 advertisementProtocol:v7 flags:v13 serviceType:v8];
+    v15 = [[HMDNetworkRouterDynamicPortRule alloc] initWithDirection:v4 lanIdentifierList:v5 protocol:v6 advertisementProtocol:v7 flags:v13 serviceType:serviceType];
   }
 
   return v15;
@@ -90,21 +90,21 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterDynamicPortRule *)self direction];
-  v5 = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
-  v6 = [(HMDNetworkRouterDynamicPortRule *)self protocol];
-  v7 = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
-  v8 = [(HMDNetworkRouterDynamicPortRule *)self flags];
-  v9 = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
-  v10 = [v3 stringWithFormat:@"<HMDNetworkRouterDynamicPortRule direction=%@, lanIdentifierList=%@, protocol=%@, advertisementProtocol=%@, flags=%@, serviceType=%@>", v4, v5, v6, v7, v8, v9];
+  direction = [(HMDNetworkRouterDynamicPortRule *)self direction];
+  lanIdentifierList = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
+  protocol = [(HMDNetworkRouterDynamicPortRule *)self protocol];
+  advertisementProtocol = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
+  flags = [(HMDNetworkRouterDynamicPortRule *)self flags];
+  serviceType = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
+  v10 = [v3 stringWithFormat:@"<HMDNetworkRouterDynamicPortRule direction=%@, lanIdentifierList=%@, protocol=%@, advertisementProtocol=%@, flags=%@, serviceType=%@>", direction, lanIdentifierList, protocol, advertisementProtocol, flags, serviceType];
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -114,34 +114,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterDynamicPortRule *)self direction];
-      v8 = [(HMDNetworkRouterDynamicPortRule *)v6 direction];
-      if (v7 != v8)
+      v6 = equalCopy;
+      direction = [(HMDNetworkRouterDynamicPortRule *)self direction];
+      direction2 = [(HMDNetworkRouterDynamicPortRule *)v6 direction];
+      if (direction != direction2)
       {
-        v9 = [(HMDNetworkRouterDynamicPortRule *)self direction];
-        v55 = [(HMDNetworkRouterDynamicPortRule *)v6 direction];
-        v56 = v9;
-        if (![v9 isEqual:?])
+        direction3 = [(HMDNetworkRouterDynamicPortRule *)self direction];
+        direction4 = [(HMDNetworkRouterDynamicPortRule *)v6 direction];
+        v56 = direction3;
+        if (![direction3 isEqual:?])
         {
           v10 = 0;
           goto LABEL_37;
         }
       }
 
-      v11 = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
-      v12 = [(HMDNetworkRouterDynamicPortRule *)v6 lanIdentifierList];
-      if (v11 != v12)
+      lanIdentifierList = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
+      lanIdentifierList2 = [(HMDNetworkRouterDynamicPortRule *)v6 lanIdentifierList];
+      if (lanIdentifierList != lanIdentifierList2)
       {
-        v3 = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
-        v53 = [(HMDNetworkRouterDynamicPortRule *)v6 lanIdentifierList];
-        if (![v3 isEqual:?])
+        lanIdentifierList3 = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
+        lanIdentifierList4 = [(HMDNetworkRouterDynamicPortRule *)v6 lanIdentifierList];
+        if (![lanIdentifierList3 isEqual:?])
         {
           v10 = 0;
 LABEL_35:
 
 LABEL_36:
-          if (v7 == v8)
+          if (direction == direction2)
           {
 LABEL_38:
 
@@ -154,22 +154,22 @@ LABEL_37:
         }
       }
 
-      v13 = [(HMDNetworkRouterDynamicPortRule *)self protocol];
-      v14 = [(HMDNetworkRouterDynamicPortRule *)v6 protocol];
-      v54 = v13;
-      v15 = v13 == v14;
-      v16 = v14;
+      protocol = [(HMDNetworkRouterDynamicPortRule *)self protocol];
+      protocol2 = [(HMDNetworkRouterDynamicPortRule *)v6 protocol];
+      v54 = protocol;
+      v15 = protocol == protocol2;
+      v16 = protocol2;
       if (v15)
       {
-        v51 = v14;
+        v51 = protocol2;
       }
 
       else
       {
-        v17 = [(HMDNetworkRouterDynamicPortRule *)self protocol];
-        v47 = [(HMDNetworkRouterDynamicPortRule *)v6 protocol];
-        v48 = v17;
-        if (![v17 isEqual:?])
+        protocol3 = [(HMDNetworkRouterDynamicPortRule *)self protocol];
+        protocol4 = [(HMDNetworkRouterDynamicPortRule *)v6 protocol];
+        v48 = protocol3;
+        if (![protocol3 isEqual:?])
         {
           v10 = 0;
           v24 = v16;
@@ -177,7 +177,7 @@ LABEL_37:
 LABEL_33:
 
 LABEL_34:
-          if (v11 == v12)
+          if (lanIdentifierList == lanIdentifierList2)
           {
             goto LABEL_36;
           }
@@ -188,18 +188,18 @@ LABEL_34:
         v51 = v16;
       }
 
-      v18 = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
-      v19 = [(HMDNetworkRouterDynamicPortRule *)v6 advertisementProtocol];
-      v49 = v18;
-      v50 = v3;
-      v15 = v18 == v19;
-      v20 = v19;
+      advertisementProtocol = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
+      advertisementProtocol2 = [(HMDNetworkRouterDynamicPortRule *)v6 advertisementProtocol];
+      v49 = advertisementProtocol;
+      v50 = lanIdentifierList3;
+      v15 = advertisementProtocol == advertisementProtocol2;
+      v20 = advertisementProtocol2;
       if (!v15)
       {
-        v21 = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
-        v41 = [(HMDNetworkRouterDynamicPortRule *)v6 advertisementProtocol];
-        v42 = v21;
-        if (![v21 isEqual:?])
+        advertisementProtocol3 = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
+        advertisementProtocol4 = [(HMDNetworkRouterDynamicPortRule *)v6 advertisementProtocol];
+        v42 = advertisementProtocol3;
+        if (![advertisementProtocol3 isEqual:?])
         {
           v22 = v51;
           v10 = 0;
@@ -210,7 +210,7 @@ LABEL_32:
           v25 = v54;
           v24 = v22;
           v15 = v54 == v22;
-          v3 = v50;
+          lanIdentifierList3 = v50;
           if (v15)
           {
             goto LABEL_34;
@@ -220,39 +220,39 @@ LABEL_32:
         }
       }
 
-      v26 = [(HMDNetworkRouterDynamicPortRule *)self flags];
-      v44 = [(HMDNetworkRouterDynamicPortRule *)v6 flags];
-      v45 = v26;
+      flags = [(HMDNetworkRouterDynamicPortRule *)self flags];
+      flags2 = [(HMDNetworkRouterDynamicPortRule *)v6 flags];
+      v45 = flags;
       v46 = v20;
-      v43 = v12;
-      if (v26 == v44)
+      v43 = lanIdentifierList2;
+      if (flags == flags2)
       {
-        v40 = v11;
+        v40 = lanIdentifierList;
         v29 = v51;
       }
 
       else
       {
-        v27 = [(HMDNetworkRouterDynamicPortRule *)self flags];
-        v38 = [(HMDNetworkRouterDynamicPortRule *)v6 flags];
-        v39 = v27;
-        v28 = [v27 isEqual:?];
+        flags3 = [(HMDNetworkRouterDynamicPortRule *)self flags];
+        flags4 = [(HMDNetworkRouterDynamicPortRule *)v6 flags];
+        v39 = flags3;
+        v28 = [flags3 isEqual:?];
         v29 = v51;
         if (!v28)
         {
           v10 = 0;
-          v36 = v44;
+          v36 = flags2;
           v35 = v45;
           goto LABEL_28;
         }
 
-        v40 = v11;
+        v40 = lanIdentifierList;
       }
 
-      v30 = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
-      v31 = [(HMDNetworkRouterDynamicPortRule *)v6 serviceType];
-      v32 = v31;
-      if (v30 == v31)
+      serviceType = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
+      serviceType2 = [(HMDNetworkRouterDynamicPortRule *)v6 serviceType];
+      v32 = serviceType2;
+      if (serviceType == serviceType2)
       {
 
         v10 = 1;
@@ -262,23 +262,23 @@ LABEL_32:
       {
         [(HMDNetworkRouterDynamicPortRule *)self serviceType];
         v33 = v52 = v29;
-        v34 = [(HMDNetworkRouterDynamicPortRule *)v6 serviceType];
-        v10 = [v33 isEqual:v34];
+        serviceType3 = [(HMDNetworkRouterDynamicPortRule *)v6 serviceType];
+        v10 = [v33 isEqual:serviceType3];
 
         v29 = v52;
       }
 
-      v36 = v44;
+      v36 = flags2;
       v35 = v45;
-      v11 = v40;
-      if (v45 == v44)
+      lanIdentifierList = v40;
+      if (v45 == flags2)
       {
         v22 = v29;
 LABEL_30:
 
         v23 = v49;
         v20 = v46;
-        v12 = v43;
+        lanIdentifierList2 = v43;
         if (v49 == v46)
         {
           goto LABEL_32;
@@ -301,21 +301,21 @@ LABEL_39:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterDynamicPortRule allocWithZone:a3];
-  v5 = [(HMDNetworkRouterDynamicPortRule *)self direction];
-  v6 = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
-  v7 = [(HMDNetworkRouterDynamicPortRule *)self protocol];
-  v8 = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
-  v9 = [(HMDNetworkRouterDynamicPortRule *)self flags];
-  v10 = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
-  v11 = [(HMDNetworkRouterDynamicPortRule *)v4 initWithDirection:v5 lanIdentifierList:v6 protocol:v7 advertisementProtocol:v8 flags:v9 serviceType:v10];
+  v4 = [HMDNetworkRouterDynamicPortRule allocWithZone:zone];
+  direction = [(HMDNetworkRouterDynamicPortRule *)self direction];
+  lanIdentifierList = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
+  protocol = [(HMDNetworkRouterDynamicPortRule *)self protocol];
+  advertisementProtocol = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
+  flags = [(HMDNetworkRouterDynamicPortRule *)self flags];
+  serviceType = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
+  v11 = [(HMDNetworkRouterDynamicPortRule *)v4 initWithDirection:direction lanIdentifierList:lanIdentifierList protocol:protocol advertisementProtocol:advertisementProtocol flags:flags serviceType:serviceType];
 
   return v11;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
   v49 = 0u;
@@ -340,13 +340,13 @@ LABEL_39:
   v32 = 0u;
   v30 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterDynamicPortRule *)self direction];
+  direction = [(HMDNetworkRouterDynamicPortRule *)self direction];
 
-  if (v5)
+  if (direction)
   {
-    v6 = [(HMDNetworkRouterDynamicPortRule *)self direction];
+    direction2 = [(HMDNetworkRouterDynamicPortRule *)self direction];
     v29 = 0;
-    v7 = [v6 serializeWithError:&v29];
+    v7 = [direction2 serializeWithError:&v29];
     v8 = v29;
 
     if (v8)
@@ -362,13 +362,13 @@ LABEL_39:
     }
   }
 
-  v9 = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
+  lanIdentifierList = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
 
-  if (v9)
+  if (lanIdentifierList)
   {
-    v10 = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
+    lanIdentifierList2 = [(HMDNetworkRouterDynamicPortRule *)self lanIdentifierList];
     v28 = 0;
-    v7 = [v10 serializeWithError:&v28];
+    v7 = [lanIdentifierList2 serializeWithError:&v28];
     v8 = v28;
 
     if (v8)
@@ -384,13 +384,13 @@ LABEL_39:
     }
   }
 
-  v11 = [(HMDNetworkRouterDynamicPortRule *)self protocol];
+  protocol = [(HMDNetworkRouterDynamicPortRule *)self protocol];
 
-  if (v11)
+  if (protocol)
   {
-    v12 = [(HMDNetworkRouterDynamicPortRule *)self protocol];
+    protocol2 = [(HMDNetworkRouterDynamicPortRule *)self protocol];
     v27 = 0;
-    v7 = [v12 serializeWithError:&v27];
+    v7 = [protocol2 serializeWithError:&v27];
     v8 = v27;
 
     if (v8)
@@ -406,16 +406,16 @@ LABEL_39:
     }
   }
 
-  v13 = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
+  advertisementProtocol = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
 
-  if (!v13)
+  if (!advertisementProtocol)
   {
     goto LABEL_17;
   }
 
-  v14 = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
+  advertisementProtocol2 = [(HMDNetworkRouterDynamicPortRule *)self advertisementProtocol];
   v26 = 0;
-  v7 = [v14 serializeWithError:&v26];
+  v7 = [advertisementProtocol2 serializeWithError:&v26];
   v8 = v26;
 
   if (v8)
@@ -430,11 +430,11 @@ LABEL_39:
 LABEL_20:
 
 LABEL_21:
-    if (a3)
+    if (error)
     {
       HMErrorFromOSStatus();
       v8 = 0;
-      *a3 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_30;
     }
 
@@ -445,13 +445,13 @@ LABEL_29:
   }
 
 LABEL_17:
-  v15 = [(HMDNetworkRouterDynamicPortRule *)self flags];
+  flags = [(HMDNetworkRouterDynamicPortRule *)self flags];
 
-  if (v15)
+  if (flags)
   {
-    v16 = [(HMDNetworkRouterDynamicPortRule *)self flags];
+    flags2 = [(HMDNetworkRouterDynamicPortRule *)self flags];
     v25 = 0;
-    v7 = [v16 serializeWithError:&v25];
+    v7 = [flags2 serializeWithError:&v25];
     v8 = v25;
 
     if (v8)
@@ -467,24 +467,24 @@ LABEL_17:
     }
   }
 
-  v18 = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
+  serviceType = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
 
-  if (v18)
+  if (serviceType)
   {
-    v19 = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
+    serviceType2 = [(HMDNetworkRouterDynamicPortRule *)self serviceType];
     v24 = 0;
-    v7 = [v19 serializeWithError:&v24];
+    v7 = [serviceType2 serializeWithError:&v24];
     v8 = v24;
 
     if (v8)
     {
 LABEL_27:
 
-      if (a3)
+      if (error)
       {
         v20 = v8;
         v17 = 0;
-        *a3 = v8;
+        *error = v8;
         goto LABEL_30;
       }
 
@@ -511,16 +511,16 @@ LABEL_30:
   return v17;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -540,7 +540,7 @@ LABEL_30:
   v12 = 0;
   v26 = 0;
   v27 = 0;
-  v13 = v8 + v9;
+  v13 = bytes + v9;
   do
   {
     v40 = 0;
@@ -550,10 +550,10 @@ LABEL_30:
     v36 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus();
-        *a4 = v19 = 0;
+        *error = v19 = 0;
         goto LABEL_32;
       }
 
@@ -573,11 +573,11 @@ LABEL_31:
       }
 
 LABEL_26:
-      if (a4)
+      if (error)
       {
         v18 = v10;
         v19 = 0;
-        *a4 = v10;
+        *error = v10;
 LABEL_32:
         v21 = v28;
         v20 = v29;
@@ -684,26 +684,26 @@ LABEL_36:
   return v19;
 }
 
-- (HMDNetworkRouterDynamicPortRule)initWithDirection:(id)a3 lanIdentifierList:(id)a4 protocol:(id)a5 advertisementProtocol:(id)a6 flags:(id)a7 serviceType:(id)a8
+- (HMDNetworkRouterDynamicPortRule)initWithDirection:(id)direction lanIdentifierList:(id)list protocol:(id)protocol advertisementProtocol:(id)advertisementProtocol flags:(id)flags serviceType:(id)type
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  directionCopy = direction;
+  listCopy = list;
+  protocolCopy = protocol;
+  advertisementProtocolCopy = advertisementProtocol;
+  flagsCopy = flags;
+  typeCopy = type;
   v24.receiver = self;
   v24.super_class = HMDNetworkRouterDynamicPortRule;
   v18 = [(HMDNetworkRouterDynamicPortRule *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_direction, a3);
-    objc_storeStrong(&v19->_lanIdentifierList, a4);
-    objc_storeStrong(&v19->_protocol, a5);
-    objc_storeStrong(&v19->_advertisementProtocol, a6);
-    objc_storeStrong(&v19->_flags, a7);
-    objc_storeStrong(&v19->_serviceType, a8);
+    objc_storeStrong(&v18->_direction, direction);
+    objc_storeStrong(&v19->_lanIdentifierList, list);
+    objc_storeStrong(&v19->_protocol, protocol);
+    objc_storeStrong(&v19->_advertisementProtocol, advertisementProtocol);
+    objc_storeStrong(&v19->_flags, flags);
+    objc_storeStrong(&v19->_serviceType, type);
   }
 
   return v19;
@@ -716,24 +716,24 @@ LABEL_36:
   return [(HMDNetworkRouterDynamicPortRule *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterDynamicPortRule);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterDynamicPortRule *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterDynamicPortRule *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

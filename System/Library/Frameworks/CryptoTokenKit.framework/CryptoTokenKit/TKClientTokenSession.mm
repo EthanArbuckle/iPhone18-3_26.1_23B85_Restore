@@ -1,25 +1,25 @@
 @interface TKClientTokenSession
-- (BOOL)deleteObject:(id)a3 error:(id *)a4;
-- (BOOL)evaluateAccessControl:(id)a3 forOperation:(id)a4 error:(id *)a5;
-- (TKClientTokenSession)initWithToken:(id)a3 LAContext:(id)a4 parameters:(id)a5 error:(id *)a6;
-- (TKClientTokenSession)initWithTokenID:(id)a3 LAContext:(id)a4 error:(id *)a5;
-- (id)_initWithToken:(id)a3 LAContext:(id)a4 parameters:(id)a5 error:(id *)a6;
-- (id)createObjectWithAttributes:(id)a3 error:(id *)a4;
-- (id)processObjectCreationAttributes:(id)a3 authContext:(id *)a4 error:(id *)a5;
+- (BOOL)deleteObject:(id)object error:(id *)error;
+- (BOOL)evaluateAccessControl:(id)control forOperation:(id)operation error:(id *)error;
+- (TKClientTokenSession)initWithToken:(id)token LAContext:(id)context parameters:(id)parameters error:(id *)error;
+- (TKClientTokenSession)initWithTokenID:(id)d LAContext:(id)context error:(id *)error;
+- (id)_initWithToken:(id)token LAContext:(id)context parameters:(id)parameters error:(id *)error;
+- (id)createObjectWithAttributes:(id)attributes error:(id *)error;
+- (id)processObjectCreationAttributes:(id)attributes authContext:(id *)context error:(id *)error;
 @end
 
 @implementation TKClientTokenSession
 
-- (id)_initWithToken:(id)a3 LAContext:(id)a4 parameters:(id)a5 error:(id *)a6
+- (id)_initWithToken:(id)token LAContext:(id)context parameters:(id)parameters error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  tokenCopy = token;
+  contextCopy = context;
+  parametersCopy = parameters;
   v18.receiver = self;
   v18.super_class = TKClientTokenSession;
   v14 = [(TKClientTokenSession *)&v18 init];
   p_isa = &v14->super.isa;
-  if (v14 && (v14->_authenticateWhenNeeded = 1, objc_storeStrong(&v14->_token, a3), objc_storeStrong(p_isa + 2, a4), objc_storeStrong(p_isa + 3, a5), ![p_isa isValidWithError:a6]))
+  if (v14 && (v14->_authenticateWhenNeeded = 1, objc_storeStrong(&v14->_token, token), objc_storeStrong(p_isa + 2, context), objc_storeStrong(p_isa + 3, parameters), ![p_isa isValidWithError:error]))
   {
     v16 = 0;
   }
@@ -32,11 +32,11 @@
   return v16;
 }
 
-- (TKClientTokenSession)initWithToken:(id)a3 LAContext:(id)a4 parameters:(id)a5 error:(id *)a6
+- (TKClientTokenSession)initWithToken:(id)token LAContext:(id)context parameters:(id)parameters error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a4;
+  tokenCopy = token;
+  parametersCopy = parameters;
+  contextCopy = context;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v14 = off_1E86B6848;
@@ -45,55 +45,55 @@
     v14 = off_1E86B6838;
   }
 
-  v15 = [objc_alloc(*v14) initWithToken:v10 LAContext:v12 parameters:v11 error:a6];
+  v15 = [objc_alloc(*v14) initWithToken:tokenCopy LAContext:contextCopy parameters:parametersCopy error:error];
 
   return v15;
 }
 
-- (TKClientTokenSession)initWithTokenID:(id)a3 LAContext:(id)a4 error:(id *)a5
+- (TKClientTokenSession)initWithTokenID:(id)d LAContext:(id)context error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[TKClientToken alloc] initWithTokenID:v9];
+  contextCopy = context;
+  dCopy = d;
+  v10 = [[TKClientToken alloc] initWithTokenID:dCopy];
 
-  v11 = [(TKClientTokenSession *)self initWithToken:v10 LAContext:v8 parameters:MEMORY[0x1E695E0F8] error:a5];
+  v11 = [(TKClientTokenSession *)self initWithToken:v10 LAContext:contextCopy parameters:MEMORY[0x1E695E0F8] error:error];
   return v11;
 }
 
-- (BOOL)deleteObject:(id)a3 error:(id *)a4
+- (BOOL)deleteObject:(id)object error:(id *)error
 {
-  v5 = [(TKClientTokenSession *)self objectForObjectID:a3 error:?];
-  LOBYTE(a4) = [v5 deleteWithError:a4];
+  v5 = [(TKClientTokenSession *)self objectForObjectID:object error:?];
+  LOBYTE(error) = [v5 deleteWithError:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)evaluateAccessControl:(id)a3 forOperation:(id)a4 error:(id *)a5
+- (BOOL)evaluateAccessControl:(id)control forOperation:(id)operation error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:MEMORY[0x1E695E0F8]];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:MEMORY[0x1E695E0F8]];
   }
 
   return 0;
 }
 
-- (id)createObjectWithAttributes:(id)a3 error:(id *)a4
+- (id)createObjectWithAttributes:(id)attributes error:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:MEMORY[0x1E695E0F8]];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"CryptoTokenKit" code:-1 userInfo:MEMORY[0x1E695E0F8]];
   }
 
   return 0;
 }
 
-- (id)processObjectCreationAttributes:(id)a3 authContext:(id *)a4 error:(id *)a5
+- (id)processObjectCreationAttributes:(id)attributes authContext:(id *)context error:(id *)error
 {
-  v8 = a3;
-  v37 = a5;
+  attributesCopy = attributes;
+  errorCopy = error;
   v9 = *MEMORY[0x1E697ABC8];
-  v10 = [v8 objectForKeyedSubscript:*MEMORY[0x1E697ABC8]];
+  v10 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697ABC8]];
   if (v10)
   {
     objc_opt_class();
@@ -106,7 +106,7 @@
         v21 = TK_LOG_client_1();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
         {
-          [TKClientTokenSession processObjectCreationAttributes:v10 authContext:&v37 error:?];
+          [TKClientTokenSession processObjectCreationAttributes:v10 authContext:&errorCopy error:?];
         }
 
         goto LABEL_13;
@@ -119,17 +119,17 @@
 
     if (SecAccessControlIsBound())
     {
-      v14 = [(TKClientTokenSession *)self _testing_AuthContextUsed];
+      _testing_AuthContextUsed = [(TKClientTokenSession *)self _testing_AuthContextUsed];
 
-      if (!v14)
+      if (!_testing_AuthContextUsed)
       {
         goto LABEL_24;
       }
 
-      v15 = [(TKClientTokenSession *)self LAContext];
-      if (v15)
+      lAContext = [(TKClientTokenSession *)self LAContext];
+      if (lAContext)
       {
-        [(TKClientTokenSession *)self set_testing_AuthContextUsed:v15];
+        [(TKClientTokenSession *)self set_testing_AuthContextUsed:lAContext];
       }
 
       else
@@ -147,48 +147,48 @@ LABEL_24:
       {
         v30 = SecAccessControlCopyData();
 
-        v31 = [v8 mutableCopy];
+        v31 = [attributesCopy mutableCopy];
         [v31 setObject:v30 forKeyedSubscript:v9];
         v32 = [v31 copy];
 
         v10 = v30;
-        v8 = v32;
+        attributesCopy = v32;
       }
 
       goto LABEL_26;
     }
 
-    v17 = [(TKClientTokenSession *)self LAContext];
-    v19 = v17;
-    if (v17)
+    lAContext2 = [(TKClientTokenSession *)self LAContext];
+    v19 = lAContext2;
+    if (lAContext2)
     {
-      v20 = v17;
-      *a4 = v19;
+      v20 = lAContext2;
+      *context = v19;
     }
 
     else
     {
       gotLoadHelper_x8__OBJC_CLASS___LAContext(v18);
       v23 = objc_alloc_init(*(v22 + 3664));
-      *a4 = v23;
+      *context = v23;
     }
 
-    v24 = [(TKClientTokenSession *)self _testing_AuthContextUsed];
+    _testing_AuthContextUsed2 = [(TKClientTokenSession *)self _testing_AuthContextUsed];
 
-    if (v24)
+    if (_testing_AuthContextUsed2)
     {
-      [(TKClientTokenSession *)self set_testing_AuthContextUsed:*a4];
+      [(TKClientTokenSession *)self set_testing_AuthContextUsed:*context];
     }
 
-    v25 = [*a4 evaluateAccessControl:v10 aksOperation:&stru_1F5A7A8A8 options:MEMORY[0x1E695E0F8] error:v37];
+    v25 = [*context evaluateAccessControl:v10 aksOperation:&stru_1F5A7A8A8 options:MEMORY[0x1E695E0F8] error:errorCopy];
     if (v25)
     {
-      v15 = v25;
+      lAContext = v25;
       SecAccessControlSetBound();
       goto LABEL_23;
     }
 
-    if (!v37 || *v37)
+    if (!errorCopy || *errorCopy)
     {
 LABEL_21:
       v27 = 0;
@@ -196,7 +196,7 @@ LABEL_21:
     }
 
     Helper_x8__LAErrorDomain = gotLoadHelper_x8__LAErrorDomain(v26);
-    *v37 = [v36 errorWithDomain:**(v35 + 3632) code:-1000 userInfo:{0, Helper_x8__LAErrorDomain}];
+    *errorCopy = [v36 errorWithDomain:**(v35 + 3632) code:-1000 userInfo:{0, Helper_x8__LAErrorDomain}];
     v21 = TK_LOG_client_1();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -209,8 +209,8 @@ LABEL_13:
   }
 
 LABEL_26:
-  v8 = v8;
-  v27 = v8;
+  attributesCopy = attributesCopy;
+  v27 = attributesCopy;
 LABEL_27:
 
   return v27;

@@ -1,19 +1,19 @@
 @interface EARVoiceCommandArgument
-- (BOOL)isEqual:(id)a3;
-- (EARVoiceCommandArgument)initWithCoder:(id)a3;
-- (EARVoiceCommandArgument)initWithPresence:(char)a3 indexes:(id)a4 adpositionIndexes:(id)a5 text:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (EARVoiceCommandArgument)initWithCoder:(id)coder;
+- (EARVoiceCommandArgument)initWithPresence:(char)presence indexes:(id)indexes adpositionIndexes:(id)adpositionIndexes text:(id)text;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EARVoiceCommandArgument
 
-- (EARVoiceCommandArgument)initWithPresence:(char)a3 indexes:(id)a4 adpositionIndexes:(id)a5 text:(id)a6
+- (EARVoiceCommandArgument)initWithPresence:(char)presence indexes:(id)indexes adpositionIndexes:(id)adpositionIndexes text:(id)text
 {
-  v8 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  presenceCopy = presence;
+  indexesCopy = indexes;
+  adpositionIndexesCopy = adpositionIndexes;
+  textCopy = text;
   v23.receiver = self;
   v23.super_class = EARVoiceCommandArgument;
   v13 = [(EARVoiceCommandArgument *)&v23 init];
@@ -23,18 +23,18 @@
     goto LABEL_8;
   }
 
-  v13->_presence = v8;
-  if (v8 == 3 || v10 || v11 || v12)
+  v13->_presence = presenceCopy;
+  if (presenceCopy == 3 || indexesCopy || adpositionIndexesCopy || textCopy)
   {
-    v16 = [v10 copy];
+    v16 = [indexesCopy copy];
     indexes = v14->_indexes;
     v14->_indexes = v16;
 
-    v18 = [v11 copy];
+    v18 = [adpositionIndexesCopy copy];
     adpositionIndexes = v14->_adpositionIndexes;
     v14->_adpositionIndexes = v18;
 
-    v20 = [v12 copy];
+    v20 = [textCopy copy];
     text = v14->_text;
     v14->_text = v20;
 
@@ -49,32 +49,32 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     presence = self->_presence;
     if (presence == [(EARVoiceCommandArgument *)v6 presence])
     {
       indexes = self->_indexes;
-      v9 = [(EARVoiceCommandArgument *)v6 indexes];
-      if ([(NSIndexSet *)indexes isEqualToIndexSet:v9])
+      indexes = [(EARVoiceCommandArgument *)v6 indexes];
+      if ([(NSIndexSet *)indexes isEqualToIndexSet:indexes])
       {
         adpositionIndexes = self->_adpositionIndexes;
-        v11 = [(EARVoiceCommandArgument *)v6 adpositionIndexes];
-        if ([(NSIndexSet *)adpositionIndexes isEqualToIndexSet:v11])
+        adpositionIndexes = [(EARVoiceCommandArgument *)v6 adpositionIndexes];
+        if ([(NSIndexSet *)adpositionIndexes isEqualToIndexSet:adpositionIndexes])
         {
           text = self->_text;
-          v13 = [(EARVoiceCommandArgument *)v6 text];
-          v14 = [(NSString *)text isEqualToString:v13];
+          text = [(EARVoiceCommandArgument *)v6 text];
+          v14 = [(NSString *)text isEqualToString:text];
         }
 
         else
@@ -111,34 +111,34 @@ LABEL_9:
   return [(NSString *)self->_text hash]+ 1571 * v5 + 0x58A39626DD1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   presence = self->_presence;
-  v5 = a3;
-  [v5 encodeInt:presence forKey:@"presence"];
-  [v5 encodeObject:self->_indexes forKey:@"indexes"];
-  [v5 encodeObject:self->_adpositionIndexes forKey:@"adpositionIndexes"];
-  [v5 encodeObject:self->_text forKey:@"text"];
+  coderCopy = coder;
+  [coderCopy encodeInt:presence forKey:@"presence"];
+  [coderCopy encodeObject:self->_indexes forKey:@"indexes"];
+  [coderCopy encodeObject:self->_adpositionIndexes forKey:@"adpositionIndexes"];
+  [coderCopy encodeObject:self->_text forKey:@"text"];
 }
 
-- (EARVoiceCommandArgument)initWithCoder:(id)a3
+- (EARVoiceCommandArgument)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = EARVoiceCommandArgument;
   v5 = [(EARVoiceCommandArgument *)&v13 init];
   if (v5)
   {
-    v5->_presence = [v4 decodeIntForKey:@"presence"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"indexes"];
+    v5->_presence = [coderCopy decodeIntForKey:@"presence"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"indexes"];
     indexes = v5->_indexes;
     v5->_indexes = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"adpositionIndexes"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"adpositionIndexes"];
     adpositionIndexes = v5->_adpositionIndexes;
     v5->_adpositionIndexes = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v10;
   }

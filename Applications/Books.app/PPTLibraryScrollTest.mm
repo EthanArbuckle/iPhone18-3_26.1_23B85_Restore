@@ -1,28 +1,28 @@
 @interface PPTLibraryScrollTest
-- (PPTLibraryScrollTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6;
+- (PPTLibraryScrollTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test;
 - (void)dealloc;
 - (void)startTest;
-- (void)warmImageCache:(id)a3;
+- (void)warmImageCache:(id)cache;
 @end
 
 @implementation PPTLibraryScrollTest
 
-- (PPTLibraryScrollTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6
+- (PPTLibraryScrollTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test
 {
-  v6 = a6;
-  v10 = a5;
+  testCopy = test;
+  definitionCopy = definition;
   v16.receiver = self;
   v16.super_class = PPTLibraryScrollTest;
-  v11 = [(PPTLibraryDependentTest *)&v16 initWithName:a3 options:a4 testDefinition:v10 isMainTest:v6];
+  v11 = [(PPTLibraryDependentTest *)&v16 initWithName:name options:options testDefinition:definitionCopy isMainTest:testCopy];
   if (v11)
   {
-    v12 = [v10 objectForKeyedSubscript:@"warm-scroll"];
+    v12 = [definitionCopy objectForKeyedSubscript:@"warm-scroll"];
     v11->_cold = [v12 BOOLValue] ^ 1;
 
-    v13 = [v10 objectForKeyedSubscript:@"night-mode"];
+    v13 = [definitionCopy objectForKeyedSubscript:@"night-mode"];
     v11->_night = [v13 BOOLValue];
 
-    v14 = [v10 objectForKeyedSubscript:@"glitch-free"];
+    v14 = [definitionCopy objectForKeyedSubscript:@"glitch-free"];
     v11->_glitchFree = [v14 BOOLValue];
   }
 
@@ -40,12 +40,12 @@
   [(PPTLibraryScrollTest *)&v4 dealloc];
 }
 
-- (void)warmImageCache:(id)a3
+- (void)warmImageCache:(id)cache
 {
-  v4 = a3;
-  v5 = [(PPTLibraryScrollTest *)self timer];
+  cacheCopy = cache;
+  timer = [(PPTLibraryScrollTest *)self timer];
 
-  if (!v5)
+  if (!timer)
   {
     v6 = sub_1001E65B0();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -54,9 +54,9 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Warming the image cache", buf, 2u);
     }
 
-    v7 = [(PPTBasicTest *)self bookshelf];
-    v8 = [v7 collectionView];
-    [v8 setContentOffset:{0.0, 0.0}];
+    bookshelf = [(PPTBasicTest *)self bookshelf];
+    collectionView = [bookshelf collectionView];
+    [collectionView setContentOffset:{0.0, 0.0}];
     *buf = 0;
     v20 = buf;
     v21 = 0x2020000000;
@@ -68,15 +68,15 @@
     v13[3] = &unk_100A033F0;
     objc_copyWeak(&v17, &location);
     v16 = buf;
-    v9 = v8;
+    v9 = collectionView;
     v14 = v9;
-    v15 = v4;
+    v15 = cacheCopy;
     v10 = [NSTimer timerWithTimeInterval:1 repeats:v13 block:0.5];
     [(PPTLibraryScrollTest *)self setTimer:v10];
 
     v11 = +[NSRunLoop mainRunLoop];
-    v12 = [(PPTLibraryScrollTest *)self timer];
-    [v11 addTimer:v12 forMode:NSDefaultRunLoopMode];
+    timer2 = [(PPTLibraryScrollTest *)self timer];
+    [v11 addTimer:timer2 forMode:NSDefaultRunLoopMode];
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);

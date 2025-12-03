@@ -1,18 +1,18 @@
 @interface PLIOHIDOperatorComposition
-- (PLIOHIDOperatorComposition)initWithOperator:(id)a3 forService:(id)a4;
-- (PLIOHIDOperatorComposition)initWithOperator:(id)a3 forService:(id)a4 withBlock:(id)a5;
-- (double)doubleForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
+- (PLIOHIDOperatorComposition)initWithOperator:(id)operator forService:(id)service;
+- (PLIOHIDOperatorComposition)initWithOperator:(id)operator forService:(id)service withBlock:(id)block;
+- (double)doubleForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation PLIOHIDOperatorComposition
 
-- (PLIOHIDOperatorComposition)initWithOperator:(id)a3 forService:(id)a4
+- (PLIOHIDOperatorComposition)initWithOperator:(id)operator forService:(id)service
 {
   v58[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  operatorCopy = operator;
+  serviceCopy = service;
   v56.receiver = self;
   v56.super_class = PLIOHIDOperatorComposition;
   v9 = [(PLIOHIDOperatorComposition *)&v56 init];
@@ -28,14 +28,14 @@ LABEL_13:
     [PLIOHIDOperatorComposition initWithOperator:forService:];
   }
 
-  objc_storeStrong(&v9->_operator, a3);
-  objc_storeStrong(&v9->_serviceName, a4);
+  objc_storeStrong(&v9->_operator, operator);
+  objc_storeStrong(&v9->_serviceName, service);
   v10 = *MEMORY[0x1E695E480];
   v9->_eventSystemClient = IOHIDEventSystemClientCreate();
   v58[0] = &unk_1F5405A18;
   v57[0] = @"PrimaryUsagePage";
   v57[1] = @"PrimaryUsage";
-  v11 = [serviceIDs objectForKeyedSubscript:v8];
+  v11 = [serviceIDs objectForKeyedSubscript:serviceCopy];
   v58[1] = v11;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v58 forKeys:v57 count:2];
 
@@ -65,14 +65,14 @@ LABEL_13:
       if (initWithOperator_forService__classDebugEnabled_35 == 1)
       {
         v19 = MEMORY[0x1E696AEC0];
-        v20 = [(PLOperator *)v9->_operator className];
+        className = [(PLOperator *)v9->_operator className];
         v21 = [(NSArray *)v9->_serviceClients count];
-        v22 = [v19 stringWithFormat:@"%@: %luu clients for %@", v20, v21, v8, block, v51, v52, v53, v54];
+        v22 = [v19 stringWithFormat:@"%@: %luu clients for %@", className, v21, serviceCopy, block, v51, v52, v53, v54];
 
         v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Compositions/PLIOHIDOperatorComposition.m"];
-        v24 = [v23 lastPathComponent];
+        lastPathComponent = [v23 lastPathComponent];
         v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLIOHIDOperatorComposition initWithOperator:forService:]"];
-        [PLCoreStorage logMessage:v22 fromFile:v24 fromFunction:v25 fromLineNumber:52];
+        [PLCoreStorage logMessage:v22 fromFile:lastPathComponent fromFunction:v25 fromLineNumber:52];
 
         v26 = PLLogCommon();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -101,18 +101,18 @@ LABEL_13:
     if (initWithOperator_forService__classDebugEnabled == 1)
     {
       v35 = MEMORY[0x1E696AEC0];
-      v36 = [(PLOperator *)v9->_operator className];
-      v37 = [v35 stringWithFormat:@"%@: no clients for %@", v36, v8];
+      className2 = [(PLOperator *)v9->_operator className];
+      serviceCopy = [v35 stringWithFormat:@"%@: no clients for %@", className2, serviceCopy];
 
       v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Compositions/PLIOHIDOperatorComposition.m"];
-      v39 = [v38 lastPathComponent];
+      lastPathComponent2 = [v38 lastPathComponent];
       v40 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLIOHIDOperatorComposition initWithOperator:forService:]"];
-      [PLCoreStorage logMessage:v37 fromFile:v39 fromFunction:v40 fromLineNumber:49];
+      [PLCoreStorage logMessage:serviceCopy fromFile:lastPathComponent2 fromFunction:v40 fromLineNumber:49];
 
       v41 = PLLogCommon();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
       {
-        [(PLIOHIDOperatorComposition *)v37 initWithOperator:v41 forService:v42, v43, v44, v45, v46, v47];
+        [(PLIOHIDOperatorComposition *)serviceCopy initWithOperator:v41 forService:v42, v43, v44, v45, v46, v47];
       }
     }
   }
@@ -152,20 +152,20 @@ BOOL __58__PLIOHIDOperatorComposition_initWithOperator_forService___block_invoke
   return result;
 }
 
-- (PLIOHIDOperatorComposition)initWithOperator:(id)a3 forService:(id)a4 withBlock:(id)a5
+- (PLIOHIDOperatorComposition)initWithOperator:(id)operator forService:(id)service withBlock:(id)block
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  operatorCopy = operator;
+  serviceCopy = service;
+  blockCopy = block;
   v21.receiver = self;
   v21.super_class = PLIOHIDOperatorComposition;
   v12 = [(PLIOHIDOperatorComposition *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_operator, a3);
-    objc_storeStrong(&v13->_serviceName, a4);
-    v14 = MEMORY[0x1DA71B0D0](v11);
+    objc_storeStrong(&v12->_operator, operator);
+    objc_storeStrong(&v13->_serviceName, service);
+    v14 = MEMORY[0x1DA71B0D0](blockCopy);
     operatorBlock = v13->_operatorBlock;
     v13->_operatorBlock = v14;
 
@@ -174,7 +174,7 @@ BOOL __58__PLIOHIDOperatorComposition_initWithOperator_forService___block_invoke
     v13->_eventSystemClient = v17;
     if (v17)
     {
-      v18 = [v9 workQueue];
+      workQueue = [operatorCopy workQueue];
       IOHIDEventSystemClientScheduleWithDispatchQueue();
 
       eventSystemClient = v13->_eventSystemClient;
@@ -185,19 +185,19 @@ BOOL __58__PLIOHIDOperatorComposition_initWithOperator_forService___block_invoke
   return v13;
 }
 
-- (double)doubleForKey:(id)a3
+- (double)doubleForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PLIOHIDOperatorComposition *)self serviceName];
-  [v5 caseInsensitiveCompare:@"AmbientLightSensor"];
+  keyCopy = key;
+  serviceName = [(PLIOHIDOperatorComposition *)self serviceName];
+  [serviceName caseInsensitiveCompare:@"AmbientLightSensor"];
 
-  v6 = [(PLIOHIDOperatorComposition *)self serviceClients];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  serviceClients = [(PLIOHIDOperatorComposition *)self serviceClients];
+  v7 = [serviceClients objectAtIndexedSubscript:0];
   v8 = IOHIDServiceClientCopyEvent();
 
   if (v8)
   {
-    v9 = [serviceIDs objectForKeyedSubscript:v4];
+    v9 = [serviceIDs objectForKeyedSubscript:keyCopy];
     [v9 intValue];
     IOHIDEventGetFloatValue();
     v11 = v10;
@@ -225,9 +225,9 @@ BOOL __58__PLIOHIDOperatorComposition_initWithOperator_forService___block_invoke
       {
         v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"we have no event"];
         v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices/Operators/Compositions/PLIOHIDOperatorComposition.m"];
-        v15 = [v14 lastPathComponent];
+        lastPathComponent = [v14 lastPathComponent];
         v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PLIOHIDOperatorComposition doubleForKey:]"];
-        [PLCoreStorage logMessage:v13 fromFile:v15 fromFunction:v16 fromLineNumber:88];
+        [PLCoreStorage logMessage:v13 fromFile:lastPathComponent fromFunction:v16 fromLineNumber:88];
 
         v17 = PLLogCommon();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -248,10 +248,10 @@ BOOL __43__PLIOHIDOperatorComposition_doubleForKey___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = IOHIDEventSystemClientCopyProperty([(PLIOHIDOperatorComposition *)self eventSystemClient], v4);
+  keyCopy = key;
+  v5 = IOHIDEventSystemClientCopyProperty([(PLIOHIDOperatorComposition *)self eventSystemClient], keyCopy);
 
   if (v5)
   {

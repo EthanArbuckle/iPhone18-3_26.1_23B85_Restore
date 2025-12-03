@@ -1,17 +1,17 @@
 @interface MBDMessageToSuper_FILE_Frame
-+ (BOOL)containsEmojiImageInfoExtractedFrom:(id)a3;
-+ (BOOL)isLivePhotoAttribute:(id)a3;
-+ (id)fileAttachmentsExtractedFrom:(id)a3;
-+ (id)imageInfoExtractedFrom:(id)a3;
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8;
++ (BOOL)containsEmojiImageInfoExtractedFrom:(id)from;
++ (BOOL)isLivePhotoAttribute:(id)attribute;
++ (id)fileAttachmentsExtractedFrom:(id)from;
++ (id)imageInfoExtractedFrom:(id)from;
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation MBDMessageToSuper_FILE_Frame
 
-- (void)parser:(id)a3 context:(id)a4 didStartElement:(id)a5 namespaceURI:(id)a6 qualifiedName:(id)a7 attributes:(id)a8
+- (void)parser:(id)parser context:(id)context didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v14 = a4;
-  v9 = MBDIMCopyNormalizedAttributes(a8, 1, 0);
+  contextCopy = context;
+  v9 = MBDIMCopyNormalizedAttributes(attributes, 1, 0);
   v10 = [v9 _stringForKey:@"name"];
   if (v10 && ([objc_opt_class() isLivePhotoAttribute:v9] & 1) == 0)
   {
@@ -20,41 +20,41 @@
     v13 = [objc_opt_class() fileAttachmentsExtractedFrom:v11];
     if ([objc_opt_class() containsEmojiImageInfoExtractedFrom:v11])
     {
-      [v14 appendFailedGenmojiAttributes];
+      [contextCopy appendFailedGenmojiAttributes];
     }
 
     else
     {
-      [v14 appendFileTransferAttribute:v10 attachments:v13 imageInfo:v12];
+      [contextCopy appendFileTransferAttribute:v10 attachments:v13 imageInfo:v12];
     }
   }
 }
 
-+ (BOOL)isLivePhotoAttribute:(id)a3
++ (BOOL)isLivePhotoAttribute:(id)attribute
 {
-  v3 = [a3 _stringForKey:MBDIMFileTransferIrisKey];
+  v3 = [attribute _stringForKey:MBDIMFileTransferIrisKey];
   v4 = [v3 length] != 0;
 
   return v4;
 }
 
-+ (id)imageInfoExtractedFrom:(id)a3
++ (id)imageInfoExtractedFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 _stringForKey:@"width"];
-  v5 = [v4 integerValue];
+  fromCopy = from;
+  v4 = [fromCopy _stringForKey:@"width"];
+  integerValue = [v4 integerValue];
 
-  v6 = [v3 _stringForKey:@"height"];
-  v7 = [v6 integerValue];
+  v6 = [fromCopy _stringForKey:@"height"];
+  integerValue2 = [v6 integerValue];
 
-  [v3 removeObjectsForKeys:&off_10003EF90];
+  [fromCopy removeObjectsForKeys:&off_10003EF90];
   v8 = [[NSMutableDictionary alloc] initWithCapacity:2];
-  if (v5 >= 1 && v7 >= 1)
+  if (integerValue >= 1 && integerValue2 >= 1)
   {
-    v9 = [NSNumber numberWithInteger:v5];
+    v9 = [NSNumber numberWithInteger:integerValue];
     [v8 setObject:v9 forKey:MBDIMInlineMediaWidthAttributeName];
 
-    v10 = [NSNumber numberWithInteger:v7];
+    v10 = [NSNumber numberWithInteger:integerValue2];
     [v8 setObject:v10 forKey:MBDIMInlineMediaHeightAttributeName];
   }
 
@@ -71,9 +71,9 @@
   return v11;
 }
 
-+ (id)fileAttachmentsExtractedFrom:(id)a3
++ (id)fileAttachmentsExtractedFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = [NSMutableArray arrayWithCapacity:4];
   v5 = MBDIMFileTransferUTITypeKey;
   v63[0] = MBDIMFileTransferMimeTypeKey;
@@ -90,7 +90,7 @@
   v62[4] = MBDIMFileTransferURLKey;
   v44 = [NSArray arrayWithObjects:v62 count:5];
   v8 = MBDIMFileTransferInlineAttachmentKey;
-  v9 = [v3 objectForKey:MBDIMFileTransferInlineAttachmentKey];
+  v9 = [fromCopy objectForKey:MBDIMFileTransferInlineAttachmentKey];
 
   if (v9)
   {
@@ -120,7 +120,7 @@
           }
 
           v17 = *(*(&v57 + 1) + 8 * i);
-          v18 = [v3 objectForKey:v17];
+          v18 = [fromCopy objectForKey:v17];
           if (v18)
           {
             [v11 setObject:v18 forKey:v17];
@@ -147,7 +147,7 @@
     do
     {
       v22 = MBDIMFileTransferKeyForSizeIndex();
-      v23 = [v3 objectForKey:v22];
+      v23 = [fromCopy objectForKey:v22];
 
       if (!v23)
       {
@@ -175,7 +175,7 @@
             }
 
             v30 = *(*(&v52 + 1) + 8 * j);
-            v31 = [v3 objectForKey:{v30, v42}];
+            v31 = [fromCopy objectForKey:{v30, v42}];
             if (v31)
             {
               [v24 setObject:v31 forKey:v30];
@@ -209,11 +209,11 @@
 
             v37 = *(*(&v47 + 1) + 8 * k);
             v38 = MBDIMFileTransferKeyForSizeIndex();
-            v39 = [v3 objectForKey:v38];
+            v39 = [fromCopy objectForKey:v38];
             if (v39)
             {
               [v24 setObject:v39 forKey:v37];
-              [v3 removeObjectForKey:v38];
+              [fromCopy removeObjectForKey:v38];
             }
           }
 
@@ -231,7 +231,7 @@
     }
 
     while (v21 != 11);
-    [v3 removeObjectsForKeys:{v45, v42}];
+    [fromCopy removeObjectsForKeys:{v45, v42}];
     if ([v4 count])
     {
       v20 = [v4 copy];
@@ -246,12 +246,12 @@
   return v20;
 }
 
-+ (BOOL)containsEmojiImageInfoExtractedFrom:(id)a3
++ (BOOL)containsEmojiImageInfoExtractedFrom:(id)from
 {
   v3 = MBDIMFileTransferEmojiImageContentIdentifierKey;
-  v4 = a3;
-  v5 = [v4 objectForKey:v3];
-  v6 = [v4 objectForKey:MBDIMFileTransferEmojiImageShortDescriptionKey];
+  fromCopy = from;
+  v5 = [fromCopy objectForKey:v3];
+  v6 = [fromCopy objectForKey:MBDIMFileTransferEmojiImageShortDescriptionKey];
 
   return (v5 | v6) != 0;
 }

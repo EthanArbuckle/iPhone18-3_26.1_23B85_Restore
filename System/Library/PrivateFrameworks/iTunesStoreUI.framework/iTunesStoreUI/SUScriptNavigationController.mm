@@ -1,37 +1,37 @@
 @interface SUScriptNavigationController
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (BOOL)navigationBarHidden;
 - (SUScriptNavigationBar)navigationBar;
-- (SUScriptNavigationController)initWithRootScriptViewController:(id)a3 clientInterface:(id)a4;
+- (SUScriptNavigationController)initWithRootScriptViewController:(id)controller clientInterface:(id)interface;
 - (SUScriptViewController)topViewController;
-- (id)_copyNativeViewControllersFromScriptViewControllers:(id)a3;
+- (id)_copyNativeViewControllersFromScriptViewControllers:(id)controllers;
 - (id)_filteredViewControllers;
 - (id)_navigationController;
 - (id)newNativeViewController;
 - (id)scriptAttributeKeys;
 - (id)toolbarHidden;
 - (id)viewControllers;
-- (void)_popToRootViewControllerAnimated:(BOOL)a3;
-- (void)_popViewControllerAnimated:(BOOL)a3;
-- (void)_pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)_setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)_popToRootViewControllerAnimated:(BOOL)animated;
+- (void)_popViewControllerAnimated:(BOOL)animated;
+- (void)_pushViewController:(id)controller animated:(BOOL)animated;
+- (void)_setViewControllers:(id)controllers animated:(BOOL)animated;
 - (void)dealloc;
 - (void)didPerformBatchedInvocations;
-- (void)popToRootViewControllerAnimated:(BOOL)a3;
-- (void)popViewControllerAnimated:(BOOL)a3;
-- (void)pushViewController:(id)a3 animated:(BOOL)a4;
-- (void)setNavigationBar:(id)a3;
-- (void)setToolbarHidden:(id)a3;
-- (void)setTopViewController:(id)a3;
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4;
+- (void)popToRootViewControllerAnimated:(BOOL)animated;
+- (void)popViewControllerAnimated:(BOOL)animated;
+- (void)pushViewController:(id)controller animated:(BOOL)animated;
+- (void)setNavigationBar:(id)bar;
+- (void)setToolbarHidden:(id)hidden;
+- (void)setTopViewController:(id)controller;
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated;
 - (void)willPerformBatchedInvocations;
 @end
 
 @implementation SUScriptNavigationController
 
-- (SUScriptNavigationController)initWithRootScriptViewController:(id)a3 clientInterface:(id)a4
+- (SUScriptNavigationController)initWithRootScriptViewController:(id)controller clientInterface:(id)interface
 {
   v4 = [(SUScriptObject *)self init];
   if (v4)
@@ -126,28 +126,28 @@ void __81__SUScriptNavigationController_initWithRootScriptViewController_clientI
   [(SUScriptObject *)&v3 willPerformBatchedInvocations];
 }
 
-- (void)popToRootViewControllerAnimated:(BOOL)a3
+- (void)popToRootViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+  animatedCopy = animated;
+  webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
 
-  [v4 _popToRootViewControllerAnimated:v3];
+  [webThreadMainThreadBatchProxy _popToRootViewControllerAnimated:animatedCopy];
 }
 
-- (void)popViewControllerAnimated:(BOOL)a3
+- (void)popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+  animatedCopy = animated;
+  webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
 
-  [v4 _popViewControllerAnimated:v3];
+  [webThreadMainThreadBatchProxy _popViewControllerAnimated:animatedCopy];
 }
 
-- (void)pushViewController:(id)a3 animated:(BOOL)a4
+- (void)pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
+  animatedCopy = animated;
+  webThreadMainThreadBatchProxy = [(SUScriptObject *)self webThreadMainThreadBatchProxy];
 
-  [v6 _pushViewController:a3 animated:v4];
+  [webThreadMainThreadBatchProxy _pushViewController:controller animated:animatedCopy];
 }
 
 uint64_t __64__SUScriptNavigationController_setNavigationBarHidden_animated___block_invoke(uint64_t a1)
@@ -168,13 +168,13 @@ uint64_t __58__SUScriptNavigationController_setToolbarHidden_animated___block_in
   return [v2 setToolbarHidden:v3 animated:v4];
 }
 
-- (void)setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [a3 copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
+    v8 = [controllers copyArrayValueWithValidator:SUISAValidator context:objc_opt_class()];
     if ([v8 count])
     {
       [-[SUScriptObject webThreadMainThreadBatchProxy](self "webThreadMainThreadBatchProxy")];
@@ -206,20 +206,20 @@ uint64_t __58__SUScriptNavigationController_setToolbarHidden_animated___block_in
   v8 = 3221225472;
   v9 = __45__SUScriptNavigationController_navigationBar__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __45__SUScriptNavigationController_navigationBar__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __45__SUScriptNavigationController_navigationBar__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -265,7 +265,7 @@ uint64_t __51__SUScriptNavigationController_navigationBarHidden__block_invoke(ui
   return result;
 }
 
-- (void)setNavigationBar:(id)a3
+- (void)setNavigationBar:(id)bar
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"navigationBar"];
@@ -273,13 +273,13 @@ uint64_t __51__SUScriptNavigationController_navigationBarHidden__block_invoke(ui
   [v3 throwException:v4];
 }
 
-- (void)setToolbarHidden:(id)a3
+- (void)setToolbarHidden:(id)hidden
 {
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a3 BOOLValue];
+    bOOLValue = [hidden BOOLValue];
 
-    [(SUScriptNavigationController *)self setToolbarHidden:v5 animated:0];
+    [(SUScriptNavigationController *)self setToolbarHidden:bOOLValue animated:0];
   }
 
   else
@@ -290,7 +290,7 @@ uint64_t __51__SUScriptNavigationController_navigationBarHidden__block_invoke(ui
   }
 }
 
-- (void)setTopViewController:(id)a3
+- (void)setTopViewController:(id)controller
 {
   v3 = MEMORY[0x1E69E2F88];
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", @"topViewController"];
@@ -339,20 +339,20 @@ uint64_t __45__SUScriptNavigationController_toolbarHidden__block_invoke(uint64_t
   v8 = 3221225472;
   v9 = __49__SUScriptNavigationController_topViewController__block_invoke;
   v10 = &unk_1E81650B0;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   WebThreadRunOnMainThread();
-  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __49__SUScriptNavigationController_topViewController__block_invoke, &unk_1E81650B0, v11, &v13], (v3 = v14[5]) != 0))
+  if (v14[5] && ([(SUScriptObject *)self checkInScriptObject:v7, 3221225472, __49__SUScriptNavigationController_topViewController__block_invoke, &unk_1E81650B0, selfCopy, &v13], (v3 = v14[5]) != 0))
   {
-    v4 = v3;
+    null = v3;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v5 = v4;
+  v5 = null;
   _Block_object_dispose(&v13, 8);
   return v5;
 }
@@ -417,48 +417,48 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
   return result;
 }
 
-- (void)_popToRootViewControllerAnimated:(BOOL)a3
+- (void)_popToRootViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v4 = [MEMORY[0x1E69DD258] transitionSafePerformer:{-[SUScriptNavigationController _navigationController](self, "_navigationController")}];
 
-  [v4 popToRootViewControllerAnimated:v3];
+  [v4 popToRootViewControllerAnimated:animatedCopy];
 }
 
-- (void)_popViewControllerAnimated:(BOOL)a3
+- (void)_popViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v4 = [MEMORY[0x1E69DD258] transitionSafePerformer:{-[SUScriptNavigationController _navigationController](self, "_navigationController")}];
 
-  [v4 popViewControllerAnimated:v3];
+  [v4 popViewControllerAnimated:animatedCopy];
 }
 
-- (void)_pushViewController:(id)a3 animated:(BOOL)a4
+- (void)_pushViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v19 = *MEMORY[0x1E69E9840];
-  v7 = [a3 nativeViewController];
-  if (v7)
+  nativeViewController = [controller nativeViewController];
+  if (nativeViewController)
   {
-    v14 = [[SUNavigationContainerViewController alloc] initWithChildViewController:v7];
-    [objc_msgSend(MEMORY[0x1E69DD258] transitionSafePerformer:{-[SUScriptNavigationController _navigationController](self, "_navigationController")), "pushViewController:animated:", v14, v4}];
+    v14 = [[SUNavigationContainerViewController alloc] initWithChildViewController:nativeViewController];
+    [objc_msgSend(MEMORY[0x1E69DD258] transitionSafePerformer:{-[SUScriptNavigationController _navigationController](self, "_navigationController")), "pushViewController:animated:", v14, animatedCopy}];
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69D4938] sharedConfig];
-    v9 = [v8 shouldLog];
-    if ([v8 shouldLogToDisk])
+    mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+    shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+    if ([mEMORY[0x1E69D4938] shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
+    if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -466,9 +466,9 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
     if (v10)
     {
       v15 = 138412546;
-      v16 = [(SUScriptNavigationController *)self _className];
+      _className = [(SUScriptNavigationController *)self _className];
       v17 = 2112;
-      v18 = a3;
+      controllerCopy = controller;
       LODWORD(v13) = 22;
       v11 = _os_log_send_and_compose_impl();
       if (v11)
@@ -482,25 +482,25 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
   }
 }
 
-- (void)_setViewControllers:(id)a3 animated:(BOOL)a4
+- (void)_setViewControllers:(id)controllers animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = [(SUScriptNavigationController *)self _copyNativeViewControllersFromScriptViewControllers:a3];
+  animatedCopy = animated;
+  v8 = [(SUScriptNavigationController *)self _copyNativeViewControllersFromScriptViewControllers:controllers];
   if ([v8 count])
   {
-    v6 = [(SUScriptNavigationController *)self _navigationController];
+    _navigationController = [(SUScriptNavigationController *)self _navigationController];
     v7 = [v8 objectAtIndex:0];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v7 setSection:{objc_msgSend(v6, "section")}];
+      [v7 setSection:{objc_msgSend(_navigationController, "section")}];
     }
 
-    [objc_msgSend(MEMORY[0x1E69DD258] transitionSafePerformer:{v6), "setViewControllers:animated:", v8, v4}];
+    [objc_msgSend(MEMORY[0x1E69DD258] transitionSafePerformer:{_navigationController), "setViewControllers:animated:", v8, animatedCopy}];
   }
 }
 
-- (id)_copyNativeViewControllersFromScriptViewControllers:(id)a3
+- (id)_copyNativeViewControllersFromScriptViewControllers:(id)controllers
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -508,7 +508,7 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [controllers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -520,20 +520,20 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(controllers);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) nativeViewController];
-        if (v9)
+        nativeViewController = [*(*(&v11 + 1) + 8 * v8) nativeViewController];
+        if (nativeViewController)
         {
-          [v4 addObject:v9];
+          [v4 addObject:nativeViewController];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [controllers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -546,7 +546,7 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = [objc_msgSend(-[SUScriptNavigationController _navigationController](self "_navigationController")];
-  v14 = self;
+  selfCopy = self;
   v4 = [-[SUScriptObject invocationBatch:](self invocationBatch:{0), "copyQueuedInvocationsForObject:", self}];
   if ([v4 count])
   {
@@ -570,8 +570,8 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
 
           v9 = *(*(&v16 + 1) + 8 * i);
           v10 = [v3 count];
-          v11 = [v9 selector];
-          if (sel_isEqual(v11, sel__popToRootViewControllerAnimated_))
+          selector = [v9 selector];
+          if (sel_isEqual(selector, sel__popToRootViewControllerAnimated_))
           {
             if (v10 >= 2)
             {
@@ -579,7 +579,7 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
             }
           }
 
-          else if (sel_isEqual(v11, sel__popViewControllerAnimated_))
+          else if (sel_isEqual(selector, sel__popViewControllerAnimated_))
           {
             if (v10 >= 2)
             {
@@ -587,7 +587,7 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
             }
           }
 
-          else if (sel_isEqual(v11, sel__pushViewController_animated_))
+          else if (sel_isEqual(selector, sel__pushViewController_animated_))
           {
             v15 = 0;
             [v9 getArgument:&v15 atIndex:2];
@@ -598,14 +598,14 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
             }
           }
 
-          else if (sel_isEqual(v11, sel__setViewControllers_animated_))
+          else if (sel_isEqual(selector, sel__setViewControllers_animated_))
           {
             v15 = 0;
             [v9 getArgument:&v15 atIndex:2];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v12 = [(SUScriptNavigationController *)v14 _copyNativeViewControllersFromScriptViewControllers:v15];
+              v12 = [(SUScriptNavigationController *)selfCopy _copyNativeViewControllersFromScriptViewControllers:v15];
               [v3 setArray:v12];
             }
           }
@@ -639,27 +639,27 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
   return [(UINavigationController *)navController navigationController];
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_22 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptNavigationController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_17, 6);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_17, 6);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptNavigationController;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -669,14 +669,14 @@ uint64_t __47__SUScriptNavigationController_viewControllers__block_invoke(uint64
 {
   v4.receiver = self;
   v4.super_class = SUScriptNavigationController;
-  v2 = [(SUScriptViewController *)&v4 scriptAttributeKeys];
-  [v2 addObjectsFromArray:{objc_msgSend(__KeyMapping_22, "allKeys")}];
-  return v2;
+  scriptAttributeKeys = [(SUScriptViewController *)&v4 scriptAttributeKeys];
+  [scriptAttributeKeys addObjectsFromArray:{objc_msgSend(__KeyMapping_22, "allKeys")}];
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_17 = sel_popToRootViewControllerAnimated_;
     *algn_1EBF3ABD8 = @"popToRootViewController";

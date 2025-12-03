@@ -7,11 +7,11 @@
 - (BOOL)isPrebuddyMode;
 - (MBPrebuddyManager)init;
 - (id)dateOfLastBackup;
-- (void)extendPrebuddy:(id)a3 completion:(id)a4;
-- (void)followupAction:(id)a3;
-- (void)prebuddyBackupDeleted:(id)a3;
+- (void)extendPrebuddy:(id)prebuddy completion:(id)completion;
+- (void)followupAction:(id)action;
+- (void)prebuddyBackupDeleted:(id)deleted;
 - (void)shortenPrebuddyExpiration;
-- (void)signalPrebuddy:(id)a3;
+- (void)signalPrebuddy:(id)prebuddy;
 @end
 
 @implementation MBPrebuddyManager
@@ -51,14 +51,14 @@ uint64_t __34__MBPrebuddyManager_sharedManager__block_invoke()
   return v2;
 }
 
-- (void)signalPrebuddy:(id)a3
+- (void)signalPrebuddy:(id)prebuddy
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  prebuddyCopy = prebuddy;
+  v5 = prebuddyCopy;
+  if (prebuddyCopy)
   {
-    v9[0] = v4;
+    v9[0] = prebuddyCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
@@ -72,16 +72,16 @@ uint64_t __34__MBPrebuddyManager_sharedManager__block_invoke()
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)extendPrebuddy:(id)a3 completion:(id)a4
+- (void)extendPrebuddy:(id)prebuddy completion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = dispatch_get_global_queue(21, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __47__MBPrebuddyManager_extendPrebuddy_completion___block_invoke;
   block[3] = &unk_1E8684730;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 }
 
@@ -96,7 +96,7 @@ uint64_t __47__MBPrebuddyManager_extendPrebuddy_completion___block_invoke(uint64
   return result;
 }
 
-- (void)prebuddyBackupDeleted:(id)a3
+- (void)prebuddyBackupDeleted:(id)deleted
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MBManager);
@@ -123,15 +123,15 @@ uint64_t __47__MBPrebuddyManager_extendPrebuddy_completion___block_invoke(uint64
 + (NSString)twoDeviceImageName
 {
   v2 = MBDeviceClass();
-  v3 = [v2 lowercaseString];
+  lowercaseString = [v2 lowercaseString];
 
   v4 = MBHomeButtonType();
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  v6 = [v3 isEqualToString:@"ipad"];
+  v6 = [lowercaseString isEqualToString:@"ipad"];
   v7 = @"iPad_home";
   v8 = @"iPhone_home";
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     v7 = @"iPad";
     v8 = @"iPhone";
@@ -153,15 +153,15 @@ uint64_t __47__MBPrebuddyManager_extendPrebuddy_completion___block_invoke(uint64
 + (NSString)backupToCloudImageName
 {
   v2 = MBDeviceClass();
-  v3 = [v2 lowercaseString];
+  lowercaseString = [v2 lowercaseString];
 
   v4 = MBHomeButtonType();
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  v6 = [v3 isEqualToString:@"ipad"];
+  v6 = [lowercaseString isEqualToString:@"ipad"];
   v7 = @"cloud-arrow-up-iPad-2";
   v8 = @"cloud-arrow-up-iphone-2";
-  if (v5 == 2)
+  if (integerValue == 2)
   {
     v7 = @"cloud-arrow-up-iPad";
     v8 = @"cloud-arrow-up-iphone-1";
@@ -188,8 +188,8 @@ uint64_t __47__MBPrebuddyManager_extendPrebuddy_completion___block_invoke(uint64
   [v3 setTargetBundleIdentifier:*MEMORY[0x1E6997A88]];
   [v3 setExtensionIdentifier:@"com.apple.MobileBackup.framework.MBPrebuddyFollowUpExtension"];
   [v3 setRepresentingBundlePath:@"/System/Library/PrivateFrameworks/MobileBackup.framework/PlugIns/MBPrebuddyFollowUpExtension.appex"];
-  v4 = [a1 twoDeviceImageName];
-  [v3 setBundleIconName:v4];
+  twoDeviceImageName = [self twoDeviceImageName];
+  [v3 setBundleIconName:twoDeviceImageName];
 
   [v3 setDisplayStyle:16];
 
@@ -235,12 +235,12 @@ uint64_t __47__MBPrebuddyManager_extendPrebuddy_completion___block_invoke(uint64
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        v18 = [v17 uniqueIdentifier];
-        if ([v18 isEqualToString:@"com.apple.backupd.prebuddy"])
+        uniqueIdentifier = [v17 uniqueIdentifier];
+        if ([uniqueIdentifier isEqualToString:@"com.apple.backupd.prebuddy"])
         {
-          v19 = [v17 isExpired];
+          isExpired = [v17 isExpired];
 
-          if ((v19 & 1) == 0)
+          if ((isExpired & 1) == 0)
           {
             v20 = 1;
             goto LABEL_17;
@@ -265,11 +265,11 @@ LABEL_17:
   return v20;
 }
 
-- (void)followupAction:(id)a3
+- (void)followupAction:(id)action
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E6997AC0];
-  v4 = a3;
+  actionCopy = action;
   v5 = MBLocalizedStringFromTable(@"MB_PREBUDDY_START_TITLE", @"MobileBackup");
   v6 = [v3 actionWithLabel:v5 url:0];
 
@@ -278,24 +278,24 @@ LABEL_17:
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   [v6 setUserInfo:v7];
 
-  v4[2](v4, v6);
+  actionCopy[2](actionCopy, v6);
   v8 = *MEMORY[0x1E69E9840];
 }
 
 - (id)dateOfLastBackup
 {
-  v2 = [(MBPrebuddyManager *)self managerClient];
-  v3 = [v2 dateOfLastBackup];
+  managerClient = [(MBPrebuddyManager *)self managerClient];
+  dateOfLastBackup = [managerClient dateOfLastBackup];
 
-  return v3;
+  return dateOfLastBackup;
 }
 
 - (BOOL)isPrebuddyMode
 {
   v2 = [(MBXPCClient *)self->_managerClient _sendRequest:@"kMBMessageIsPrebuddyMode" arguments:MEMORY[0x1E695E0F0] error:0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)shortenPrebuddyExpiration
@@ -303,9 +303,9 @@ LABEL_17:
   v36 = *MEMORY[0x1E69E9840];
   if ([(MBPrebuddyManager *)self isPrebuddyMode])
   {
-    v3 = [MEMORY[0x1E695DF00] date];
-    v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v5 = [v4 dateByAddingUnit:64 value:5 toDate:v3 options:0];
+    date = [MEMORY[0x1E695DF00] date];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v5 = [currentCalendar dateByAddingUnit:64 value:5 toDate:date options:0];
 
     managerClient = self->_managerClient;
     v31 = 0;
@@ -337,11 +337,11 @@ LABEL_17:
 
   else
   {
-    v3 = MBGetDefaultLog();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+    date = MBGetDefaultLog();
+    if (os_log_type_enabled(date, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1DEB5D000, v3, OS_LOG_TYPE_DEFAULT, "Not in Prebuddy mode, so nothing to shorten.", buf, 2u);
+      _os_log_impl(&dword_1DEB5D000, date, OS_LOG_TYPE_DEFAULT, "Not in Prebuddy mode, so nothing to shorten.", buf, 2u);
       _MBLog(@"Df", "Not in Prebuddy mode, so nothing to shorten.", v17, v18, v19, v20, v21, v22, v30);
     }
   }

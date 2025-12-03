@@ -33,7 +33,7 @@
 
 - (float)vcp_scaledExposureTime
 {
-  v2 = [a1 objectForKey:*MEMORY[0x1E696D9B0]];
+  v2 = [self objectForKey:*MEMORY[0x1E696D9B0]];
   v3 = v2;
   v4 = -1.0;
   if (v2)
@@ -49,7 +49,7 @@
     }
   }
 
-  v9 = [a1 objectForKey:*MEMORY[0x1E696DE30]];
+  v9 = [self objectForKey:*MEMORY[0x1E696DE30]];
   v10 = v9;
   if (v9)
   {
@@ -57,16 +57,16 @@
     v12 = v11;
     if (v11)
     {
-      v13 = [v11 intValue];
-      if (v13 > 4370)
+      intValue = [v11 intValue];
+      if (intValue > 4370)
       {
-        if (v13 != 4627 && v13 != 4371)
+        if (intValue != 4627 && intValue != 4371)
         {
           goto LABEL_16;
         }
       }
 
-      else if (v13 != 275 && v13 != 531)
+      else if (intValue != 275 && intValue != 531)
       {
         goto LABEL_16;
       }
@@ -82,14 +82,14 @@ LABEL_16:
 
 - (uint64_t)vcp_flashFired
 {
-  v1 = [a1 objectForKey:*MEMORY[0x1E696D9B0]];
+  v1 = [self objectForKey:*MEMORY[0x1E696D9B0]];
   v2 = v1;
   if (v1 && (v3 = *MEMORY[0x1E696D9F0], [v1 objectForKey:*MEMORY[0x1E696D9F0]], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
     v5 = [v2 objectForKey:v3];
-    v6 = [v5 intValue];
+    intValue = [v5 intValue];
 
-    v7 = v6 & 1;
+    v7 = intValue & 1;
   }
 
   else
@@ -102,7 +102,7 @@ LABEL_16:
 
 - (id)vcp_captureDeviceMake
 {
-  v1 = [a1 objectForKeyedSubscript:*MEMORY[0x1E696DF28]];
+  v1 = [self objectForKeyedSubscript:*MEMORY[0x1E696DF28]];
   v2 = [v1 objectForKeyedSubscript:*MEMORY[0x1E696DF48]];
 
   return v2;
@@ -110,7 +110,7 @@ LABEL_16:
 
 - (id)vcp_captureDeviceModel
 {
-  v1 = [a1 objectForKeyedSubscript:*MEMORY[0x1E696DF28]];
+  v1 = [self objectForKeyedSubscript:*MEMORY[0x1E696DF28]];
   v2 = [v1 objectForKeyedSubscript:*MEMORY[0x1E696DF50]];
 
   return v2;
@@ -118,8 +118,8 @@ LABEL_16:
 
 - (uint64_t)vcp_isAppleCapture
 {
-  v1 = [a1 vcp_captureDeviceMake];
-  v2 = [v1 isEqualToString:@"Apple"];
+  vcp_captureDeviceMake = [self vcp_captureDeviceMake];
+  v2 = [vcp_captureDeviceMake isEqualToString:@"Apple"];
 
   return v2;
 }

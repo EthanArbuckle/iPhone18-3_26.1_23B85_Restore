@@ -1,28 +1,28 @@
 @interface PKPassShareRedemptionActivationCodeSectionController
 - (BOOL)hasValidActivationCode;
 - (BOOL)requiresActivationCode;
-- (PKPassShareRedemptionActivationCodeSectionController)initWithMode:(unint64_t)a3 delegate:(id)a4;
+- (PKPassShareRedemptionActivationCodeSectionController)initWithMode:(unint64_t)mode delegate:(id)delegate;
 - (void)_endEditing;
-- (void)decorateListCell:(id)a3 forRowItem:(id)a4;
-- (void)didSelectItem:(id)a3;
-- (void)reloadItemsAnimated:(BOOL)a3;
-- (void)setActivationOptions:(id)a3;
-- (void)textFieldDidBeginEditing:(id)a3 forListCell:(id)a4;
+- (void)decorateListCell:(id)cell forRowItem:(id)item;
+- (void)didSelectItem:(id)item;
+- (void)reloadItemsAnimated:(BOOL)animated;
+- (void)setActivationOptions:(id)options;
+- (void)textFieldDidBeginEditing:(id)editing forListCell:(id)cell;
 @end
 
 @implementation PKPassShareRedemptionActivationCodeSectionController
 
-- (PKPassShareRedemptionActivationCodeSectionController)initWithMode:(unint64_t)a3 delegate:(id)a4
+- (PKPassShareRedemptionActivationCodeSectionController)initWithMode:(unint64_t)mode delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v19.receiver = self;
   v19.super_class = PKPassShareRedemptionActivationCodeSectionController;
   v7 = [(PKPassShareSectionController *)&v19 initWithIdentifiers:&unk_1F3CC8750];
   v8 = v7;
   if (v7)
   {
-    v7->_mode = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_mode = mode;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     objc_initWeak(&location, v8);
     v9 = MEMORY[0x1E69DC800];
     v10 = objc_opt_class();
@@ -53,16 +53,16 @@ void __78__PKPassShareRedemptionActivationCodeSectionController_initWithMode_del
   }
 }
 
-- (void)setActivationOptions:(id)a3
+- (void)setActivationOptions:(id)options
 {
-  v7 = a3;
-  objc_storeStrong(&self->_activationOptions, a3);
+  optionsCopy = options;
+  objc_storeStrong(&self->_activationOptions, options);
   [(PKPassShareRedemptionActivationCodeSectionController *)self reloadItemsAnimated:0];
-  v5 = [(PKPassShareActivationOptions *)self->_activationOptions primaryOption];
-  v6 = [v5 value];
-  if (v6)
+  primaryOption = [(PKPassShareActivationOptions *)self->_activationOptions primaryOption];
+  value = [primaryOption value];
+  if (value)
   {
-    objc_storeStrong(&self->_enteredActivationCode, v6);
+    objc_storeStrong(&self->_enteredActivationCode, value);
   }
 
   [(PKPassShareRedemptionActivationCodeSectionController *)self reloadItemsAnimated:0];
@@ -70,21 +70,21 @@ void __78__PKPassShareRedemptionActivationCodeSectionController_initWithMode_del
 
 - (BOOL)requiresActivationCode
 {
-  v2 = [(PKPassShareActivationOptions *)self->_activationOptions primaryOption];
-  v3 = [v2 requiresActivationCode];
+  primaryOption = [(PKPassShareActivationOptions *)self->_activationOptions primaryOption];
+  requiresActivationCode = [primaryOption requiresActivationCode];
 
-  return v3;
+  return requiresActivationCode;
 }
 
 - (BOOL)hasValidActivationCode
 {
-  v3 = [(PKPassShareActivationOptions *)self->_activationOptions primaryOption];
-  v4 = [v3 valueLength];
+  primaryOption = [(PKPassShareActivationOptions *)self->_activationOptions primaryOption];
+  valueLength = [primaryOption valueLength];
 
   v5 = [(NSString *)self->_enteredActivationCode length];
-  if (v4)
+  if (valueLength)
   {
-    v6 = v4 == v5;
+    v6 = valueLength == v5;
   }
 
   else
@@ -97,7 +97,7 @@ void __78__PKPassShareRedemptionActivationCodeSectionController_initWithMode_del
     return 1;
   }
 
-  if (v4)
+  if (valueLength)
   {
     v7 = 1;
   }
@@ -110,14 +110,14 @@ void __78__PKPassShareRedemptionActivationCodeSectionController_initWithMode_del
   return !v7;
 }
 
-- (void)reloadItemsAnimated:(BOOL)a3
+- (void)reloadItemsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PKPassShareRedemptionActivationCodeSectionController *)self requiresActivationCode])
   {
-    v11 = [(PKPassShareActivationOptions *)self->_activationOptions primaryOption];
+    primaryOption = [(PKPassShareActivationOptions *)self->_activationOptions primaryOption];
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v11 type];
+    [primaryOption type];
     if (PKPassShareActivationOptionTypeIsActivationCode())
     {
       v6 = [[PKSharePreviewRowItem alloc] initWithIdentifier:@"EnterActivationCode"];
@@ -132,7 +132,7 @@ void __78__PKPassShareRedemptionActivationCodeSectionController_initWithMode_del
 
     [(PKPaymentSetupListSectionController *)self setItems:v5];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained reloadDataAnimated:v3];
+    [WeakRetained reloadDataAnimated:animatedCopy];
   }
 
   else
@@ -143,49 +143,49 @@ void __78__PKPassShareRedemptionActivationCodeSectionController_initWithMode_del
   }
 }
 
-- (void)decorateListCell:(id)a3 forRowItem:(id)a4
+- (void)decorateListCell:(id)cell forRowItem:(id)item
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  cellCopy = cell;
+  itemCopy = item;
   v8 = +[PKListTextFieldContentConfiguration valueCellConfiguration];
-  v9 = [v7 subtitle];
-  [v8 setPlaceholderText:v9];
+  subtitle = [itemCopy subtitle];
+  [v8 setPlaceholderText:subtitle];
 
-  v10 = [v7 title];
+  title = [itemCopy title];
 
-  [v8 setSecondaryText:v10];
+  [v8 setSecondaryText:title];
   [v8 setDirectionalLayoutMargins:{10.0, 10.0, 10.0, 0.0}];
   [v8 setKeyboardType:4];
   [v8 setReturnKeyType:9];
-  v11 = [v8 secondaryTextProperties];
+  secondaryTextProperties = [v8 secondaryTextProperties];
   v12 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC70]);
-  [v11 setFont:v12];
+  [secondaryTextProperties setFont:v12];
 
   [v8 setFocusTextField:0];
-  [v6 setContentConfiguration:v8];
-  [v6 setDelegate:self];
+  [cellCopy setContentConfiguration:v8];
+  [cellCopy setDelegate:self];
   if (_UISolariumFeatureFlagEnabled())
   {
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:5 target:0 action:0];
     [v13 addObject:v14];
 
-    v15 = [MEMORY[0x1E69DC740] pkui_createPlainMinimalButtonConfiguration];
+    pkui_createPlainMinimalButtonConfiguration = [MEMORY[0x1E69DC740] pkui_createPlainMinimalButtonConfiguration];
     v16 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"checkmark"];
-    [v15 setImage:v16];
+    [pkui_createPlainMinimalButtonConfiguration setImage:v16];
 
-    [v15 setImagePadding:8.0];
-    v17 = [MEMORY[0x1E69DC888] labelColor];
-    [v15 setBaseForegroundColor:v17];
+    [pkui_createPlainMinimalButtonConfiguration setImagePadding:8.0];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [pkui_createPlainMinimalButtonConfiguration setBaseForegroundColor:labelColor];
 
     v18 = [MEMORY[0x1E69DC738] buttonWithType:1];
-    [v18 setConfiguration:v15];
+    [v18 setConfiguration:pkui_createPlainMinimalButtonConfiguration];
     [v18 addTarget:self action:sel__endEditing forControlEvents:0x2000];
     v19 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v18];
     [v13 addObject:v19];
 
-    [v6 setToolbarItems:v13];
+    [cellCopy setToolbarItems:v13];
   }
 
   else
@@ -196,10 +196,10 @@ void __78__PKPassShareRedemptionActivationCodeSectionController_initWithMode_del
 
     v24[0] = v22;
     v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-    [v6 setToolbarItems:v23];
+    [cellCopy setToolbarItems:v23];
   }
 
-  [v6 setConfigurationUpdateHandler:&__block_literal_global_250];
+  [cellCopy setConfigurationUpdateHandler:&__block_literal_global_250];
 }
 
 void __84__PKPassShareRedemptionActivationCodeSectionController_decorateListCell_forRowItem___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -224,14 +224,14 @@ void __84__PKPassShareRedemptionActivationCodeSectionController_decorateListCell
   [v5 setBackgroundConfiguration:v6];
 }
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained deselectCells];
 
   v6 = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v6 cellForItem:v4];
+  v7 = [v6 cellForItem:itemCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -240,7 +240,7 @@ void __84__PKPassShareRedemptionActivationCodeSectionController_decorateListCell
   }
 }
 
-- (void)textFieldDidBeginEditing:(id)a3 forListCell:(id)a4
+- (void)textFieldDidBeginEditing:(id)editing forListCell:(id)cell
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained setIsEnteringActivationCode:1];
@@ -252,9 +252,9 @@ void __84__PKPassShareRedemptionActivationCodeSectionController_decorateListCell
 - (void)_endEditing
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(PKPaymentSetupListSectionController *)self items];
-  v5 = [v4 firstObject];
-  v12 = [WeakRetained cellForItem:v5];
+  items = [(PKPaymentSetupListSectionController *)self items];
+  firstObject = [items firstObject];
+  v12 = [WeakRetained cellForItem:firstObject];
 
   if (v12)
   {
@@ -263,10 +263,10 @@ void __84__PKPassShareRedemptionActivationCodeSectionController_decorateListCell
     {
       v6 = v12;
       [v6 endEditing];
-      v7 = [v6 textFieldText];
+      textFieldText = [v6 textFieldText];
 
       enteredActivationCode = self->_enteredActivationCode;
-      self->_enteredActivationCode = v7;
+      self->_enteredActivationCode = textFieldText;
     }
   }
 

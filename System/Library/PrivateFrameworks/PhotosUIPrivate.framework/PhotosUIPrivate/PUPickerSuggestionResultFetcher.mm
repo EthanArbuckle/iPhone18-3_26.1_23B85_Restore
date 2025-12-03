@@ -1,40 +1,40 @@
 @interface PUPickerSuggestionResultFetcher
 - (PUPickerSuggestion)currentSuggestion;
-- (PUPickerSuggestionResultFetcher)initWithPhotoLibrary:(id)a3 isProcessing:(BOOL)a4 isDeviceAspectRatioContentMode:(BOOL)a5 contentHasSpecialFilter:(BOOL)a6 updateHandler:(id)a7;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)setCurrentSuggestion:(id)a3;
+- (PUPickerSuggestionResultFetcher)initWithPhotoLibrary:(id)library isProcessing:(BOOL)processing isDeviceAspectRatioContentMode:(BOOL)mode contentHasSpecialFilter:(BOOL)filter updateHandler:(id)handler;
+- (void)photoLibraryDidChange:(id)change;
+- (void)setCurrentSuggestion:(id)suggestion;
 @end
 
 @implementation PUPickerSuggestionResultFetcher
 
 - (PUPickerSuggestion)currentSuggestion
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B37D4524();
 
   return v3;
 }
 
-- (void)setCurrentSuggestion:(id)a3
+- (void)setCurrentSuggestion:(id)suggestion
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1B37D46E0(a3);
+  selfCopy = self;
+  sub_1B37D46E0(suggestion);
 }
 
-- (PUPickerSuggestionResultFetcher)initWithPhotoLibrary:(id)a3 isProcessing:(BOOL)a4 isDeviceAspectRatioContentMode:(BOOL)a5 contentHasSpecialFilter:(BOOL)a6 updateHandler:(id)a7
+- (PUPickerSuggestionResultFetcher)initWithPhotoLibrary:(id)library isProcessing:(BOOL)processing isDeviceAspectRatioContentMode:(BOOL)mode contentHasSpecialFilter:(BOOL)filter updateHandler:(id)handler
 {
-  v8 = _Block_copy(a7);
+  v8 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v8;
-  v9 = a3;
+  libraryCopy = library;
   return PickerSuggestionResultFetcher.init(photoLibrary:isProcessing:isDeviceAspectRatioContentMode:contentHasSpecialFilter:updateHandler:)();
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B37D5DD4(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1B37D5DD4(changeCopy);
 }
 
 @end

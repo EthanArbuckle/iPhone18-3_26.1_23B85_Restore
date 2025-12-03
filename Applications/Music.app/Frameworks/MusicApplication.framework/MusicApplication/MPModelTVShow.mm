@@ -6,8 +6,8 @@
 
 - (NSString)shortDescription
 {
-  v2 = self;
-  v3 = [(MPModelTVShow *)v2 title:0x22203A656C746954];
+  selfCopy = self;
+  v3 = [(MPModelTVShow *)selfCopy title:0x22203A656C746954];
   if (v3)
   {
     v4 = v3;

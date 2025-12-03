@@ -1,5 +1,5 @@
 @interface SBTransientOverlayWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsInWidgetStack;
 - (BOOL)accessibilityPerformEscape;
 - (id)_axAdditionalElements;
@@ -10,16 +10,16 @@
 
 @implementation SBTransientOverlayWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBRemoteTransientOverlayHostContentAdapter" hasInstanceMethod:@"_performButtonEvents:" withFullSignature:{"B", "Q", 0}];
-  [v3 validateClass:@"SBRemoteTransientOverlayHostContentAdapter" hasInstanceVariable:@"_hostRemoteViewController" withType:"SBRemoteTransientOverlayHostViewController"];
-  [v3 validateClass:@"_UIRemoteViewController" hasInstanceMethod:@"serviceBundleIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBTransientOverlayWindow" isKindOfClass:@"UIWindow"];
-  [v3 validateClass:@"SBRemoteTransientOverlayViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBRemoteTransientOverlayHostViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBRemoteTransientOverlayViewController" hasInstanceVariable:@"_hostContentAdapter" withType:"SBRemoteTransientOverlayHostContentAdapter"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBRemoteTransientOverlayHostContentAdapter" hasInstanceMethod:@"_performButtonEvents:" withFullSignature:{"B", "Q", 0}];
+  [validationsCopy validateClass:@"SBRemoteTransientOverlayHostContentAdapter" hasInstanceVariable:@"_hostRemoteViewController" withType:"SBRemoteTransientOverlayHostViewController"];
+  [validationsCopy validateClass:@"_UIRemoteViewController" hasInstanceMethod:@"serviceBundleIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBTransientOverlayWindow" isKindOfClass:@"UIWindow"];
+  [validationsCopy validateClass:@"SBRemoteTransientOverlayViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBRemoteTransientOverlayHostViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBRemoteTransientOverlayViewController" hasInstanceVariable:@"_hostContentAdapter" withType:"SBRemoteTransientOverlayHostContentAdapter"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,20 +27,20 @@
   v6.receiver = self;
   v6.super_class = SBTransientOverlayWindowAccessibility;
   [(SBTransientOverlayWindowAccessibility *)&v6 _accessibilityLoadAccessibilityInformation];
-  v3 = [(SBTransientOverlayWindowAccessibility *)self _axRemoteServiceBundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.shortcuts.runtime"];
+  _axRemoteServiceBundleIdentifier = [(SBTransientOverlayWindowAccessibility *)self _axRemoteServiceBundleIdentifier];
+  v4 = [_axRemoteServiceBundleIdentifier isEqualToString:@"com.apple.shortcuts.runtime"];
 
   if (v4)
   {
-    v5 = [(SBTransientOverlayWindowAccessibility *)self _axAdditionalElements];
-    [(SBTransientOverlayWindowAccessibility *)self _accessibilitySetAdditionalElements:v5];
+    _axAdditionalElements = [(SBTransientOverlayWindowAccessibility *)self _axAdditionalElements];
+    [(SBTransientOverlayWindowAccessibility *)self _accessibilitySetAdditionalElements:_axAdditionalElements];
   }
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = [(SBTransientOverlayWindowAccessibility *)self _axRemoteServiceBundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.shortcuts.runtime"];
+  _axRemoteServiceBundleIdentifier = [(SBTransientOverlayWindowAccessibility *)self _axRemoteServiceBundleIdentifier];
+  v3 = [_axRemoteServiceBundleIdentifier isEqualToString:@"com.apple.shortcuts.runtime"];
 
   if (v3)
   {
@@ -58,7 +58,7 @@ void __67__SBTransientOverlayWindowAccessibility_accessibilityPerformEscape__blo
 
 - (id)_axAdditionalElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:self];
   objc_initWeak(&location, self);
   v9[0] = MEMORY[0x29EDCA5F8];
@@ -78,12 +78,12 @@ void __67__SBTransientOverlayWindowAccessibility_accessibilityPerformEscape__blo
   v5 = accessibilityLocalizedString(@"springboard.shortcutmenu.dismiss");
   [v4 setAccessibilityLabel:v5];
 
-  [v3 axSafelyAddObject:v4];
+  [array axSafelyAddObject:v4];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 
-  return v3;
+  return array;
 }
 
 double __62__SBTransientOverlayWindowAccessibility__axAdditionalElements__block_invoke(uint64_t a1)
@@ -108,8 +108,8 @@ uint64_t __62__SBTransientOverlayWindowAccessibility__axAdditionalElements__bloc
 
 - (id)_axRemoteServiceBundleIdentifier
 {
-  v2 = [(SBTransientOverlayWindowAccessibility *)self _axRemoteContentViewController];
-  v3 = [v2 safeStringForKey:@"serviceBundleIdentifier"];
+  _axRemoteContentViewController = [(SBTransientOverlayWindowAccessibility *)self _axRemoteContentViewController];
+  v3 = [_axRemoteContentViewController safeStringForKey:@"serviceBundleIdentifier"];
 
   return v3;
 }

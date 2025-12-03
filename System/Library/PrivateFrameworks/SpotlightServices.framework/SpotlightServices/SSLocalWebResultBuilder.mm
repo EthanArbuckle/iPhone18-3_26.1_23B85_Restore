@@ -1,7 +1,7 @@
 @interface SSLocalWebResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-+ (id)stringWithUrl:(id)a3;
-- (SSLocalWebResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
++ (id)stringWithUrl:(id)url;
+- (SSLocalWebResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 - (id)buildDescriptions;
 - (id)buildResult;
@@ -9,50 +9,50 @@
 
 @implementation SSLocalWebResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v3 = [a3 contentType];
-  v4 = [&unk_1F55B75B0 containsObject:v3];
+  contentType = [result contentType];
+  v4 = [&unk_1F55B75B0 containsObject:contentType];
 
   return v4;
 }
 
-+ (id)stringWithUrl:(id)a3
++ (id)stringWithUrl:(id)url
 {
-  v3 = a3;
-  v4 = [v3 _lp_simplifiedDisplayString];
-  v5 = [v3 absoluteString];
+  urlCopy = url;
+  _lp_simplifiedDisplayString = [urlCopy _lp_simplifiedDisplayString];
+  absoluteString = [urlCopy absoluteString];
 
-  if (!v4)
+  if (!_lp_simplifiedDisplayString)
   {
-    v6 = [v5 rangeOfString:@"."];
-    if (v6 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v6 + v7, v9 = [v5 length], v10 = v9 - v8, v9 <= v8) || (v11 = objc_msgSend(v5, "rangeOfString:options:range:", @"/", 0, v8, v10), v11 == 0x7FFFFFFFFFFFFFFFLL) && (v11 = objc_msgSend(v5, "rangeOfString:options:range:", @"?", 0, v8, v10), v11 == 0x7FFFFFFFFFFFFFFFLL))
+    v6 = [absoluteString rangeOfString:@"."];
+    if (v6 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v6 + v7, v9 = [absoluteString length], v10 = v9 - v8, v9 <= v8) || (v11 = objc_msgSend(absoluteString, "rangeOfString:options:range:", @"/", 0, v8, v10), v11 == 0x7FFFFFFFFFFFFFFFLL) && (v11 = objc_msgSend(absoluteString, "rangeOfString:options:range:", @"?", 0, v8, v10), v11 == 0x7FFFFFFFFFFFFFFFLL))
     {
-      v4 = 0;
+      _lp_simplifiedDisplayString = 0;
     }
 
     else
     {
-      v4 = [v5 substringToIndex:v11];
+      _lp_simplifiedDisplayString = [absoluteString substringToIndex:v11];
     }
   }
 
-  return v4;
+  return _lp_simplifiedDisplayString;
 }
 
-- (SSLocalWebResultBuilder)initWithResult:(id)a3
+- (SSLocalWebResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v14.receiver = self;
   v14.super_class = SSLocalWebResultBuilder;
-  v5 = [(SSResultBuilder *)&v14 initWithResult:v4];
+  v5 = [(SSResultBuilder *)&v14 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x1E6964C28] withType:objc_opt_class()];
     [(SSLocalWebResultBuilder *)v5 setSiteName:v6];
 
     v7 = *MEMORY[0x1E6963EB0];
-    v8 = [v4 valueForAttribute:*MEMORY[0x1E6963EB0] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x1E6963EB0] withType:objc_opt_class()];
     if (v8)
     {
       [(SSLocalWebResultBuilder *)v5 setUrl:v8];
@@ -61,12 +61,12 @@
     else
     {
       v9 = MEMORY[0x1E695DFF8];
-      v10 = [v4 valueForAttribute:v7 withType:objc_opt_class()];
+      v10 = [resultCopy valueForAttribute:v7 withType:objc_opt_class()];
       v11 = [v9 URLWithString:v10];
       [(SSLocalWebResultBuilder *)v5 setUrl:v11];
     }
 
-    v12 = [v4 valueForAttribute:*MEMORY[0x1E6964AD8] withType:objc_opt_class()];
+    v12 = [resultCopy valueForAttribute:*MEMORY[0x1E6964AD8] withType:objc_opt_class()];
     [(SSLocalWebResultBuilder *)v5 setCloudTabDeviceName:v12];
   }
 
@@ -77,15 +77,15 @@
 {
   v10.receiver = self;
   v10.super_class = SSLocalWebResultBuilder;
-  v3 = [(SSResultBuilder *)&v10 buildResult];
+  buildResult = [(SSResultBuilder *)&v10 buildResult];
   v4 = objc_opt_class();
   v5 = [(SSLocalWebResultBuilder *)self url];
   v6 = [v4 stringWithUrl:v5];
-  v7 = [MEMORY[0x1E696AB08] controlCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
-  [v3 setCompletion:v8];
+  controlCharacterSet = [MEMORY[0x1E696AB08] controlCharacterSet];
+  v8 = [v6 stringByTrimmingCharactersInSet:controlCharacterSet];
+  [buildResult setCompletion:v8];
 
-  return v3;
+  return buildResult;
 }
 
 - (id)buildCommand
@@ -98,18 +98,18 @@
     v5 = [(SSLocalWebResultBuilder *)self url];
     v6 = [v4 punchoutWithURL:v5];
 
-    v7 = objc_opt_new();
-    [v7 setPunchout:v6];
+    buildCommand = objc_opt_new();
+    [buildCommand setPunchout:v6];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = SSLocalWebResultBuilder;
-    v7 = [(SSResultBuilder *)&v9 buildCommand];
+    buildCommand = [(SSResultBuilder *)&v9 buildCommand];
   }
 
-  return v7;
+  return buildCommand;
 }
 
 - (id)buildDescriptions
@@ -126,31 +126,31 @@
     [v4 addObject:v7];
   }
 
-  v8 = [(SSLocalWebResultBuilder *)self cloudTabDeviceName];
-  v9 = [v8 length];
+  cloudTabDeviceName = [(SSLocalWebResultBuilder *)self cloudTabDeviceName];
+  v9 = [cloudTabDeviceName length];
 
   if (v9)
   {
     v10 = MEMORY[0x1E696AEC0];
     v11 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"FROM_CLOUD_TAB_DEVICE_FORMAT" value:&stru_1F556FE60 table:@"SpotlightServices"];
-    v13 = [(SSLocalWebResultBuilder *)self cloudTabDeviceName];
-    v14 = [v10 stringWithFormat:v12, v13];
+    cloudTabDeviceName2 = [(SSLocalWebResultBuilder *)self cloudTabDeviceName];
+    v14 = [v10 stringWithFormat:v12, cloudTabDeviceName2];
     [v4 addObject:v14];
   }
 
-  v15 = [(SSResultBuilder *)self lastUsedDate];
-  if (v15)
+  lastUsedDate = [(SSResultBuilder *)self lastUsedDate];
+  if (lastUsedDate)
   {
-    v16 = v15;
-    v17 = [(SSResultBuilder *)self result];
-    v18 = [v17 contentType];
-    v19 = [v18 isEqualToString:@"com.apple.safari.history"];
+    v16 = lastUsedDate;
+    result = [(SSResultBuilder *)self result];
+    contentType = [result contentType];
+    v19 = [contentType isEqualToString:@"com.apple.safari.history"];
 
     if (v19)
     {
-      v20 = [(SSResultBuilder *)self lastUsedDate];
-      v21 = [SSDateFormatManager dyanmicStringFromDate:v20];
+      lastUsedDate2 = [(SSResultBuilder *)self lastUsedDate];
+      v21 = [SSDateFormatManager dyanmicStringFromDate:lastUsedDate2];
 
       v22 = MEMORY[0x1E696AEC0];
       v23 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -170,9 +170,9 @@
     }
 
     v27 = buildDescriptions_symbolNamesForContentTypes;
-    v28 = [(SSResultBuilder *)self result];
-    v29 = [v28 contentType];
-    v30 = [v27 objectForKeyedSubscript:v29];
+    result2 = [(SSResultBuilder *)self result];
+    contentType2 = [result2 contentType];
+    v30 = [v27 objectForKeyedSubscript:contentType2];
 
     if (v30)
     {

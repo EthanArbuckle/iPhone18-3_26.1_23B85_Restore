@@ -12,23 +12,23 @@
   v2 = objc_alloc_init(MEMORY[0x277CCABB8]);
   [v2 setMinimumFractionDigits:1];
   [v2 setMaximumFractionDigits:2];
-  v3 = [a1 adjustment];
-  if (v3)
+  adjustment = [self adjustment];
+  if (adjustment)
   {
-    v4 = v3;
+    v4 = adjustment;
     v39 = v2;
-    v5 = [a1 enabled];
+    enabled = [self enabled];
 
-    if (v5)
+    if (enabled)
     {
-      v6 = [a1 visualInputKeys];
-      v41 = a1;
-      v7 = [a1 analyticsKeysBlocklist];
+      visualInputKeys = [self visualInputKeys];
+      selfCopy = self;
+      analyticsKeysBlocklist = [self analyticsKeysBlocklist];
       v42 = 0u;
       v43 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v8 = v6;
+      v8 = visualInputKeys;
       v9 = [v8 countByEnumeratingWithState:&v42 objects:v46 count:16];
       v2 = v39;
       if (!v9)
@@ -49,33 +49,33 @@
           }
 
           v14 = *(*(&v42 + 1) + 8 * i);
-          if (([v7 containsObject:v14] & 1) == 0)
+          if (([analyticsKeysBlocklist containsObject:v14] & 1) == 0)
           {
-            v15 = [*(v11 + 2248) apertureKey];
-            v16 = [v14 isEqualToString:v15];
+            apertureKey = [*(v11 + 2248) apertureKey];
+            v16 = [v14 isEqualToString:apertureKey];
 
             if (v16)
             {
               v17 = MEMORY[0x277CCABB0];
-              [v41 aperture];
+              [selfCopy aperture];
               v18 = [v17 numberWithDouble:?];
               v19 = [v2 stringFromNumber:v18];
               [v40 setObject:v19 forKeyedSubscript:@"aperture"];
               goto LABEL_15;
             }
 
-            v20 = [*(v11 + 2248) focusRectKey];
-            v21 = [v14 isEqualToString:v20];
+            focusRectKey = [*(v11 + 2248) focusRectKey];
+            v21 = [v14 isEqualToString:focusRectKey];
 
             if (v21)
             {
-              v22 = [v41 focusRect];
-              v23 = [v22 objectForKeyedSubscript:@"x"];
+              focusRect = [selfCopy focusRect];
+              v23 = [focusRect objectForKeyedSubscript:@"x"];
               [v23 floatValue];
               v25 = v24;
 
-              v26 = [v41 focusRect];
-              v27 = [v26 objectForKeyedSubscript:@"y"];
+              focusRect2 = [selfCopy focusRect];
+              v27 = [focusRect2 objectForKeyedSubscript:@"y"];
               [v27 floatValue];
               v29 = v28;
 
@@ -91,7 +91,7 @@
               goto LABEL_15;
             }
 
-            v18 = [v41 valueForKey:v14];
+            v18 = [selfCopy valueForKey:v14];
             [v18 doubleValue];
             if (v33 != 0.0)
             {
@@ -139,9 +139,9 @@ LABEL_22:
 - (id)analyticsKeysBlocklist
 {
   v0 = MEMORY[0x277CBEB98];
-  v1 = [MEMORY[0x277D3A8C8] depthInfoKey];
-  v2 = [MEMORY[0x277D3A8C8] glassesMatteAllowedKey];
-  v3 = [v0 setWithObjects:{v1, v2, 0}];
+  depthInfoKey = [MEMORY[0x277D3A8C8] depthInfoKey];
+  glassesMatteAllowedKey = [MEMORY[0x277D3A8C8] glassesMatteAllowedKey];
+  v3 = [v0 setWithObjects:{depthInfoKey, glassesMatteAllowedKey, 0}];
 
   return v3;
 }

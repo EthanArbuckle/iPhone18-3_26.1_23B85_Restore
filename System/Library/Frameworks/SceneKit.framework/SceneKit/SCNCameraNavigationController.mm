@@ -1,19 +1,19 @@
 @interface SCNCameraNavigationController
 - ($0B194710A4D1BCC9074A0631D7052F72)_sceneBoundingSphere;
-- (BOOL)_computeBoundingSphereOmittingFloorsForNode:(__C3DNode *)a3 sphere:(C3DSphere *)a4;
+- (BOOL)_computeBoundingSphereOmittingFloorsForNode:(__C3DNode *)node sphere:(C3DSphere *)sphere;
 - (BOOL)_pointOfViewUsesOrthographicProjection;
 - (BOOL)enableInertia;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)wantsRedraw;
-- (SCNCameraNavigationController)initWithView:(id)a3;
+- (SCNCameraNavigationController)initWithView:(id)view;
 - (SCNVector3)cameraAutomaticTargetPoint;
 - (SCNVector3)cameraTarget;
 - (SCNVector3)gimbalLockVector;
 - (double)_modeSensitivity;
 - (double)zoomFactor;
-- (float)_cappedTranslationDelta:(float)a3;
-- (float)_orthographicZoomFactorForProposedZoomFactor:(float)a3;
+- (float)_cappedTranslationDelta:(float)delta;
+- (float)_orthographicZoomFactorForProposedZoomFactor:(float)factor;
 - (float)_pointOfViewOrthographicScale;
 - (float)_targetDistance;
 - (float)_translationCoef;
@@ -25,46 +25,46 @@
 - (void)__didChangePointOfView;
 - (void)__willChangePointOfView;
 - (void)_computeAutomaticTargetPointIfNeeded;
-- (void)_computeStickyAxisIfNeeded:(CGPoint)a3;
-- (void)_computeTranslationOrigin3DFromPoint:(CGPoint)a3;
-- (void)_defaultTargetForScene:(void *)a3;
-- (void)_handleDoubleTap:(id)a3;
-- (void)_handlePan:(id)a3;
-- (void)_handlePinch:(id)a3;
-- (void)_handleRotation:(id)a3;
+- (void)_computeStickyAxisIfNeeded:(CGPoint)needed;
+- (void)_computeTranslationOrigin3DFromPoint:(CGPoint)point;
+- (void)_defaultTargetForScene:(void *)scene;
+- (void)_handleDoubleTap:(id)tap;
+- (void)_handlePan:(id)pan;
+- (void)_handlePinch:(id)pinch;
+- (void)_handleRotation:(id)rotation;
 - (void)_installFreeViewCameraIfNeeded;
 - (void)_prepareFreeViewCamera;
 - (void)_resetFreeViewCamera;
-- (void)_setPointOfViewOrthographicScale:(float)a3;
+- (void)_setPointOfViewOrthographicScale:(float)scale;
 - (void)_setupUpVector;
-- (void)_startBrowsingIfNeeded:(CGPoint)a3;
+- (void)_startBrowsingIfNeeded:(CGPoint)needed;
 - (void)_stopInertia;
 - (void)_switchToFreeViewCamera;
-- (void)_translateToViewPoint:(CGPoint)a3;
+- (void)_translateToViewPoint:(CGPoint)point;
 - (void)_willBeginInteraction;
-- (void)beginGesture:(id)a3;
+- (void)beginGesture:(id)gesture;
 - (void)cameraDidChange;
 - (void)dealloc;
-- (void)focusNode:(id)a3;
-- (void)focusNodes:(id)a3;
-- (void)panWithGestureRecognizer:(id)a3;
-- (void)pinchWithGestureRecognizer:(id)a3;
-- (void)rotateOf:(double)a3;
-- (void)rotateWithGestureRecognizer:(id)a3;
+- (void)focusNode:(id)node;
+- (void)focusNodes:(id)nodes;
+- (void)panWithGestureRecognizer:(id)recognizer;
+- (void)pinchWithGestureRecognizer:(id)recognizer;
+- (void)rotateOf:(double)of;
+- (void)rotateWithGestureRecognizer:(id)recognizer;
 - (void)sceneDidChange;
 - (void)sceneWillChange;
-- (void)setAutomaticCameraTarget:(BOOL)a3;
-- (void)setCameraTarget:(SCNVector3)a3;
-- (void)setEnableFreeCamera:(BOOL)a3;
-- (void)setEnableInertia:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFriction:(double)a3;
-- (void)setGimbalLockMode:(BOOL)a3;
-- (void)setGimbalLockVector:(SCNVector3)a3;
-- (void)setZoomFactor:(double)a3;
-- (void)translateByX:(float)a3 Y:(float)a4 Z:(float)a5;
-- (void)viewWillDrawAtTime:(double)a3;
-- (void)zoomBy:(float)a3 animate:(BOOL)a4;
+- (void)setAutomaticCameraTarget:(BOOL)target;
+- (void)setCameraTarget:(SCNVector3)target;
+- (void)setEnableFreeCamera:(BOOL)camera;
+- (void)setEnableInertia:(BOOL)inertia;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFriction:(double)friction;
+- (void)setGimbalLockMode:(BOOL)mode;
+- (void)setGimbalLockVector:(SCNVector3)vector;
+- (void)setZoomFactor:(double)factor;
+- (void)translateByX:(float)x Y:(float)y Z:(float)z;
+- (void)viewWillDrawAtTime:(double)time;
+- (void)zoomBy:(float)by animate:(BOOL)animate;
 @end
 
 @implementation SCNCameraNavigationController
@@ -199,9 +199,9 @@ LABEL_14:
 
 - (id)pointOfView
 {
-  v2 = [(SCNCameraNavigationController *)self cameraController];
+  cameraController = [(SCNCameraNavigationController *)self cameraController];
 
-  return [(SCNCameraController *)v2 pointOfView];
+  return [(SCNCameraController *)cameraController pointOfView];
 }
 
 - (id)gestureRecognizers
@@ -260,7 +260,7 @@ LABEL_14:
   return [MEMORY[0x277CBEA60] arrayWithObjects:{pressGesture, panGesture, tapGesture, pinchGesture, rotateGesture, 0}];
 }
 
-- (SCNCameraNavigationController)initWithView:(id)a3
+- (SCNCameraNavigationController)initWithView:(id)view
 {
   v8.receiver = self;
   v8.super_class = SCNCameraNavigationController;
@@ -268,9 +268,9 @@ LABEL_14:
   v5 = v4;
   if (v4)
   {
-    v4->_freeViewCameraNode = a3;
+    v4->_freeViewCameraNode = view;
     v4->_delegate = objc_alloc_init(SCNCameraController);
-    -[SCNCameraNavigationControllerDelegate setPointOfView:](v5->_delegate, "setPointOfView:", [a3 pointOfView]);
+    -[SCNCameraNavigationControllerDelegate setPointOfView:](v5->_delegate, "setPointOfView:", [view pointOfView]);
     [(SCNCameraNavigationControllerDelegate *)v5->_delegate setInertiaEnabled:1];
     if (C3DWasLinkedBeforeMajorOSYear2017())
     {
@@ -310,16 +310,16 @@ LABEL_14:
   [(SCNCameraNavigationController *)&v3 dealloc];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v14 = *MEMORY[0x277D85DE8];
-  self->_enabled = a3;
-  v4 = [(SCNCameraNavigationController *)self gestureRecognizers];
+  self->_enabled = enabled;
+  gestureRecognizers = [(SCNCameraNavigationController *)self gestureRecognizers];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -331,14 +331,14 @@ LABEL_14:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) setEnabled:self->_enabled];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [gestureRecognizers countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -347,33 +347,33 @@ LABEL_14:
 
 - (BOOL)enableInertia
 {
-  v2 = [(SCNCameraNavigationController *)self cameraController];
+  cameraController = [(SCNCameraNavigationController *)self cameraController];
 
-  return [(SCNCameraController *)v2 inertiaEnabled];
+  return [(SCNCameraController *)cameraController inertiaEnabled];
 }
 
-- (void)setEnableInertia:(BOOL)a3
+- (void)setEnableInertia:(BOOL)inertia
 {
-  v3 = a3;
-  v4 = [(SCNCameraNavigationController *)self cameraController];
+  inertiaCopy = inertia;
+  cameraController = [(SCNCameraNavigationController *)self cameraController];
 
-  [(SCNCameraController *)v4 setInertiaEnabled:v3];
+  [(SCNCameraController *)cameraController setInertiaEnabled:inertiaCopy];
 }
 
-- (void)setFriction:(double)a3
+- (void)setFriction:(double)friction
 {
-  v3 = a3;
-  v4 = [(SCNCameraNavigationController *)self cameraController];
-  *&v5 = v3;
+  frictionCopy = friction;
+  cameraController = [(SCNCameraNavigationController *)self cameraController];
+  *&v5 = frictionCopy;
 
-  [(SCNCameraController *)v4 setInertiaFriction:v5];
+  [(SCNCameraController *)cameraController setInertiaFriction:v5];
 }
 
-- (void)setAutomaticCameraTarget:(BOOL)a3
+- (void)setAutomaticCameraTarget:(BOOL)target
 {
-  if (BYTE1(self->_inertia.lastDragLocation.x) != a3)
+  if (BYTE1(self->_inertia.lastDragLocation.x) != target)
   {
-    BYTE1(self->_inertia.lastDragLocation.x) = a3;
+    BYTE1(self->_inertia.lastDragLocation.x) = target;
     [(SCNCameraNavigationController *)self invalidateCameraTarget];
   }
 }
@@ -381,32 +381,32 @@ LABEL_14:
 - (SCNVector3)cameraTarget
 {
   [(SCNCameraNavigationController *)self _computeAutomaticTargetPointIfNeeded];
-  v3 = [(SCNCameraNavigationController *)self cameraController];
+  cameraController = [(SCNCameraNavigationController *)self cameraController];
 
-  [(SCNCameraController *)v3 target];
+  [(SCNCameraController *)cameraController target];
   result.z = v6;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (void)setCameraTarget:(SCNVector3)a3
+- (void)setCameraTarget:(SCNVector3)target
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = target.z;
+  y = target.y;
+  x = target.x;
   [(SCNCameraNavigationController *)self setAutomaticCameraTarget:0];
-  v7 = [(SCNCameraNavigationController *)self cameraController];
+  cameraController = [(SCNCameraNavigationController *)self cameraController];
   *&v8 = x;
   *&v9 = y;
   *&v10 = z;
 
-  [(SCNCameraController *)v7 setTarget:v8, v9, v10];
+  [(SCNCameraController *)cameraController setTarget:v8, v9, v10];
 }
 
-- (void)setGimbalLockMode:(BOOL)a3
+- (void)setGimbalLockMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 1;
   }
@@ -416,9 +416,9 @@ LABEL_14:
     v3 = 3;
   }
 
-  v4 = [(SCNCameraNavigationController *)self cameraController];
+  cameraController = [(SCNCameraNavigationController *)self cameraController];
 
-  [(SCNCameraController *)v4 setInteractionMode:v3];
+  [(SCNCameraController *)cameraController setInteractionMode:v3];
 }
 
 - (SCNVector3)gimbalLockVector
@@ -432,7 +432,7 @@ LABEL_14:
   return result;
 }
 
-- (void)setGimbalLockVector:(SCNVector3)a3
+- (void)setGimbalLockVector:(SCNVector3)vector
 {
   v3 = scn_default_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -464,24 +464,24 @@ LABEL_14:
   return !v5;
 }
 
-- (void)focusNode:(id)a3
+- (void)focusNode:(id)node
 {
   v3[1] = *MEMORY[0x277D85DE8];
-  v3[0] = a3;
+  v3[0] = node;
   -[SCNCameraNavigationController focusNodes:](self, "focusNodes:", [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:1]);
 }
 
-- (void)focusNodes:(id)a3
+- (void)focusNodes:(id)nodes
 {
-  if (a3)
+  if (nodes)
   {
     self->_didEverFocusNode = 1;
     [(SCNCameraNavigationController *)self setAutomaticCameraTarget:0];
     [(SCNCameraNavigationController *)self _switchToFreeViewCamera];
-    v5 = [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] automaticTarget];
+    automaticTarget = [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] automaticTarget];
     [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] setAutomaticTarget:1];
-    [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] frameNodes:a3];
-    [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] setAutomaticTarget:v5];
+    [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] frameNodes:nodes];
+    [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] setAutomaticTarget:automaticTarget];
     if ([(SCNCameraNavigationController *)self _pointOfViewUsesOrthographicProjection])
     {
       originalOrthoScale = self->_originalOrthoScale;
@@ -510,10 +510,10 @@ LABEL_14:
   return v2;
 }
 
-- (void)setEnableFreeCamera:(BOOL)a3
+- (void)setEnableFreeCamera:(BOOL)camera
 {
-  BYTE2(self->_cameraController) = a3;
-  if (!a3)
+  BYTE2(self->_cameraController) = camera;
+  if (!camera)
   {
     [(SCNCameraNavigationController *)self _resetFreeViewCamera];
   }
@@ -521,11 +521,11 @@ LABEL_14:
 
 - (void)_resetFreeViewCamera
 {
-  v3 = [(objc_class *)self[1].super.isa sceneRef];
-  if (v3)
+  sceneRef = [(objc_class *)self[1].super.isa sceneRef];
+  if (sceneRef)
   {
-    v4 = v3;
-    C3DSceneLock(v3);
+    v4 = sceneRef;
+    C3DSceneLock(sceneRef);
     C3DRemoveSceneRef([(objc_class *)self[1].super.isa nodeRef], [(objc_class *)self[1].super.isa sceneRef]);
     C3DSceneUnlock(v4);
   }
@@ -544,18 +544,18 @@ LABEL_14:
     return;
   }
 
-  v5 = [(objc_class *)v3 presentationNode];
-  if ([v5 camera])
+  presentationNode = [(objc_class *)v3 presentationNode];
+  if ([presentationNode camera])
   {
-    v6 = [v5 camera];
+    camera = [presentationNode camera];
   }
 
   else
   {
-    v6 = [v5 light];
+    camera = [presentationNode light];
   }
 
-  [v6 orthographicScale];
+  [camera orthographicScale];
   *&v7 = v7;
   self->_originalOrthoScale = *&v7;
   self->_orthographicZoomFactor = 1.0;
@@ -575,10 +575,10 @@ LABEL_14:
   {
     memset(&v22, 0, sizeof(v22));
 LABEL_22:
-    v14 = [(objc_class *)v4 presentationNode];
-    if (v14)
+    presentationNode2 = [(objc_class *)v4 presentationNode];
+    if (presentationNode2)
     {
-      [v14 worldTransform];
+      [presentationNode2 worldTransform];
     }
 
     else
@@ -611,16 +611,16 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v13 = [(objc_class *)v4 light];
+  light = [(objc_class *)v4 light];
   v11 = +[SCNCamera camera];
-  if (v13)
+  if (light)
   {
-    [v13 spotOuterAngle];
+    [light spotOuterAngle];
     [(SCNCamera *)v11 setFieldOfView:?];
     [(SCNCamera *)v11 setFieldOfViewOrientation:0];
-    [v13 zNear];
+    [light zNear];
     [(SCNCamera *)v11 setZNear:?];
-    [v13 zFar];
+    [light zFar];
     [(SCNCamera *)v11 setZFar:?];
   }
 
@@ -671,10 +671,10 @@ LABEL_25:
     *(v15 + 64) |= 4u;
   }
 
-  v16 = [(SCNScene *)[(SCNView *)[(SCNCameraNavigationController *)self view] scene] sceneRef];
-  if (v16)
+  sceneRef = [(SCNScene *)[(SCNView *)[(SCNCameraNavigationController *)self view] scene] sceneRef];
+  if (sceneRef)
   {
-    v17 = v16;
+    v17 = sceneRef;
     if (!C3DGetSceneRef([(objc_class *)self[1].super.isa nodeRef]))
     {
       C3DSceneLock(v17);
@@ -688,12 +688,12 @@ LABEL_25:
 {
   if ([(SCNCameraNavigationController *)self enableFreeCamera])
   {
-    v3 = [(SCNView *)[(SCNCameraNavigationController *)self view] renderer];
-    if ([v3 pointOfView] != self[1].super.isa)
+    renderer = [(SCNView *)[(SCNCameraNavigationController *)self view] renderer];
+    if ([renderer pointOfView] != self[1].super.isa)
     {
       +[SCNTransaction begin];
       [SCNTransaction setDisableActions:1];
-      [v3 setPointOfView:self[1].super.isa];
+      [renderer setPointOfView:self[1].super.isa];
       [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] setPointOfView:self[1].super.isa];
 
       +[SCNTransaction commit];
@@ -719,13 +719,13 @@ LABEL_25:
   else
   {
     v3 = [-[SCNView renderer](-[SCNCameraNavigationController view](self "view")];
-    v4 = [(SCNCameraNavigationController *)self cameraController];
+    cameraController = [(SCNCameraNavigationController *)self cameraController];
 
-    [(SCNCameraController *)v4 setPointOfView:v3];
+    [(SCNCameraController *)cameraController setPointOfView:v3];
   }
 }
 
-- (float)_cappedTranslationDelta:(float)a3
+- (float)_cappedTranslationDelta:(float)delta
 {
   [(SCNCameraNavigationController *)self _targetDistance];
   if (v5 >= 10000000.0)
@@ -737,28 +737,28 @@ LABEL_25:
     [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] simdWorldFront];
     v9 = vmulq_f32(v16, v8);
     v10 = v9.f32[2] + vaddv_f32(*v9.f32);
-    if (v10 >= 0.0 && a3 < 0.0)
+    if (v10 >= 0.0 && delta < 0.0)
     {
-      v12 = 0.0;
+      deltaCopy = 0.0;
     }
 
     else
     {
-      v12 = a3;
+      deltaCopy = delta;
     }
 
-    if (v12 > 0.0 && v10 < 0.0)
+    if (deltaCopy > 0.0 && v10 < 0.0)
     {
       return 0.0;
     }
 
     else
     {
-      return v12;
+      return deltaCopy;
     }
   }
 
-  return a3;
+  return delta;
 }
 
 - (float)_translationCoef
@@ -789,7 +789,7 @@ LABEL_25:
   return result;
 }
 
-- (void)rotateOf:(double)a3
+- (void)rotateOf:(double)of
 {
   +[SCNTransaction begin];
   [SCNTransaction setDisableActions:1];
@@ -803,16 +803,16 @@ LABEL_25:
   v8 = v7;
   v9 = v5 * 0.5;
   v10 = v7 * 0.5;
-  v11 = [(SCNCameraNavigationController *)self cameraController];
-  *&v12 = a3;
-  [(SCNCameraController *)v11 rollBy:v12 aroundScreenPoint:v9 viewport:v10, v6, v8];
+  cameraController = [(SCNCameraNavigationController *)self cameraController];
+  *&v12 = of;
+  [(SCNCameraController *)cameraController rollBy:v12 aroundScreenPoint:v9 viewport:v10, v6, v8];
 
   +[SCNTransaction commit];
 }
 
-- (void)zoomBy:(float)a3 animate:(BOOL)a4
+- (void)zoomBy:(float)by animate:(BOOL)animate
 {
-  v4 = a4;
+  animateCopy = animate;
   if ([(SCNCameraNavigationController *)self autoSwitchToFreeCamera])
   {
     [(SCNCameraNavigationController *)self _switchToFreeViewCamera];
@@ -820,32 +820,32 @@ LABEL_25:
 
   if ([(SCNCameraNavigationController *)self pointOfView])
   {
-    if (v4)
+    if (animateCopy)
     {
       +[SCNTransaction begin];
       [SCNTransaction setAnimationDuration:0.3];
-      v7 = [(SCNCameraNavigationController *)self cameraController];
-      *&v8 = a3 * -100.0;
-      [(SCNCameraController *)v7 translateInCameraSpaceByX:0.0 Y:0.0 Z:v8];
+      cameraController = [(SCNCameraNavigationController *)self cameraController];
+      *&v8 = by * -100.0;
+      [(SCNCameraController *)cameraController translateInCameraSpaceByX:0.0 Y:0.0 Z:v8];
 
       +[SCNTransaction commit];
     }
 
     else
     {
-      v9 = [(SCNCameraNavigationController *)self cameraController];
+      cameraController2 = [(SCNCameraNavigationController *)self cameraController];
 
-      *&v10 = a3 * -100.0;
-      [(SCNCameraController *)v9 translateInCameraSpaceByX:0.0 Y:0.0 Z:v10];
+      *&v10 = by * -100.0;
+      [(SCNCameraController *)cameraController2 translateInCameraSpaceByX:0.0 Y:0.0 Z:v10];
     }
   }
 }
 
 - (double)zoomFactor
 {
-  v3 = [(SCNCameraNavigationController *)self _pointOfViewUsesOrthographicProjection];
+  _pointOfViewUsesOrthographicProjection = [(SCNCameraNavigationController *)self _pointOfViewUsesOrthographicProjection];
   v4 = 76;
-  if (v3)
+  if (_pointOfViewUsesOrthographicProjection)
   {
     v4 = 84;
   }
@@ -853,7 +853,7 @@ LABEL_25:
   return *(&self->super.isa + v4);
 }
 
-- (float)_orthographicZoomFactorForProposedZoomFactor:(float)a3
+- (float)_orthographicZoomFactorForProposedZoomFactor:(float)factor
 {
   [(SCNCameraNavigationController *)self _orthographicScaleForZoomFactor:?];
   v6 = v5;
@@ -919,23 +919,23 @@ LABEL_25:
     return originalOrthoScale / v21;
   }
 
-  return a3;
+  return factor;
 }
 
-- (void)setZoomFactor:(double)a3
+- (void)setZoomFactor:(double)factor
 {
   [(SCNCameraNavigationController *)self zoomFactor];
-  if (a3 > 0.0 && v5 != a3)
+  if (factor > 0.0 && v5 != factor)
   {
     if (BYTE3(self->_cameraController) == 1)
     {
       [(SCNCameraNavigationController *)self _switchToFreeViewCamera];
     }
 
-    v7 = [(SCNCameraNavigationController *)self pointOfView];
+    pointOfView = [(SCNCameraNavigationController *)self pointOfView];
     if ([(SCNCameraNavigationController *)self _pointOfViewUsesOrthographicProjection])
     {
-      *&v8 = a3;
+      *&v8 = factor;
       [(SCNCameraNavigationController *)self _orthographicZoomFactorForProposedZoomFactor:v8];
       self->_orthographicZoomFactor = v9;
       [(SCNCameraNavigationController *)self _orthographicScaleForZoomFactor:?];
@@ -946,7 +946,7 @@ LABEL_25:
     else
     {
       v10 = tan(self->_cameraOriginalFieldOfView * 0.5 / 180.0 * 3.14159265);
-      v11 = atan(v10 / a3);
+      v11 = atan(v10 / factor);
       *&v11 = v11 / 3.14159265 * 180.0 + v11 / 3.14159265 * 180.0;
       v12 = fmin(*&v11, 120.0);
       if (v12 < 1.0)
@@ -955,17 +955,17 @@ LABEL_25:
       }
 
       v13 = v12;
-      [objc_msgSend(v7 "camera")];
-      v14 = a3;
-      self->_fieldOfViewZoomFactor = v14;
+      [objc_msgSend(pointOfView "camera")];
+      factorCopy = factor;
+      self->_fieldOfViewZoomFactor = factorCopy;
     }
   }
 }
 
-- (void)translateByX:(float)a3 Y:(float)a4 Z:(float)a5
+- (void)translateByX:(float)x Y:(float)y Z:(float)z
 {
-  v14 = *&a4;
-  v16 = *&a3;
+  v14 = *&y;
+  v16 = *&x;
   if (BYTE3(self->_cameraController) == 1)
   {
     [(SCNCameraNavigationController *)self _switchToFreeViewCamera];
@@ -973,7 +973,7 @@ LABEL_25:
 
   if ([(SCNCameraNavigationController *)self pointOfView])
   {
-    *&v7 = a5;
+    *&v7 = z;
     [(SCNCameraNavigationController *)self _cappedTranslationDelta:v7];
     v8 = v16;
     v8.i32[1] = v15;
@@ -981,11 +981,11 @@ LABEL_25:
     v17 = v8;
     [(SCNCameraNavigationController *)self _translationCoef];
     v18 = vmulq_n_f32(v17, v10);
-    v11 = [(SCNCameraNavigationController *)self cameraController];
+    cameraController = [(SCNCameraNavigationController *)self cameraController];
     LODWORD(v13) = v18.i32[1];
 
     *&v12 = -v18.f32[2];
-    [(SCNCameraController *)v11 translateInCameraSpaceByX:*v18.i64 Y:v13 Z:v12];
+    [(SCNCameraController *)cameraController translateInCameraSpaceByX:*v18.i64 Y:v13 Z:v12];
   }
 }
 
@@ -997,25 +997,25 @@ LABEL_25:
   [(SCNCameraNavigationController *)self _resetFreeViewCamera];
 }
 
-- (void)viewWillDrawAtTime:(double)a3
+- (void)viewWillDrawAtTime:(double)time
 {
   v5 = +[SCNTransaction immediateMode];
   [SCNTransaction setImmediateMode:1];
   os_unfair_lock_lock(&self->_drawAtTimeLock);
   if ([(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] isInertiaRunning])
   {
-    v6 = [(SCNScene *)[(SCNView *)[(SCNCameraNavigationController *)self view] scene] sceneRef];
-    if (v6)
+    sceneRef = [(SCNScene *)[(SCNView *)[(SCNCameraNavigationController *)self view] scene] sceneRef];
+    if (sceneRef)
     {
-      v7 = v6;
-      C3DSceneLock(v6);
-      [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] updateInertiaAtTime:a3];
+      v7 = sceneRef;
+      C3DSceneLock(sceneRef);
+      [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] updateInertiaAtTime:time];
       C3DSceneUnlock(v7);
     }
 
     else
     {
-      [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] updateInertiaAtTime:a3];
+      [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] updateInertiaAtTime:time];
     }
   }
 
@@ -1040,24 +1040,24 @@ LABEL_25:
   }
 
   [(SCNCameraNavigationController *)self _stopInertia];
-  v6 = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] camera];
-  if ([(SCNCamera *)v6 useLegacyFov])
+  camera = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] camera];
+  if ([(SCNCamera *)camera useLegacyFov])
   {
-    [(SCNCamera *)v6 xFov];
+    [(SCNCamera *)camera xFov];
     if (v7 != 0.0)
     {
-      [(SCNCamera *)v6 yFov];
+      [(SCNCamera *)camera yFov];
       if (v8 != 0.0)
       {
         [(SCNView *)[(SCNCameraNavigationController *)self view] bounds];
         v11 = v10 / fmax(v9, 1.0);
-        [(SCNCamera *)v6 xFov];
+        [(SCNCamera *)camera xFov];
         v13 = v12;
-        [(SCNCamera *)v6 yFov];
+        [(SCNCamera *)camera yFov];
         *&v13 = v13 / v14;
-        [(SCNCamera *)v6 fieldOfView];
-        [(SCNCamera *)v6 setFieldOfView:?];
-        [(SCNCamera *)v6 setProjectionDirection:*&v13 > v11];
+        [(SCNCamera *)camera fieldOfView];
+        [(SCNCamera *)camera setFieldOfView:?];
+        [(SCNCamera *)camera setProjectionDirection:*&v13 > v11];
       }
     }
   }
@@ -1084,68 +1084,68 @@ LABEL_25:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = [(SCNCameraNavigationController *)self enabled];
-  if (v7)
+  enabled = [(SCNCameraNavigationController *)self enabled];
+  if (enabled)
   {
     pressGesture = self->_pressGesture;
-    v9 = pressGesture == a3 || pressGesture == a4;
-    LOBYTE(v7) = v9 || (tapGesture = self->_tapGesture, panGesture = self->_panGesture, tapGesture == a3) && (panGesture == a4 || self->_pinchGesture == a4 || self->_rotateGesture == a4) || tapGesture == a4 && panGesture == a3 || tapGesture == a4 && self->_pinchGesture == a3;
+    v9 = pressGesture == recognizer || pressGesture == gestureRecognizer;
+    LOBYTE(enabled) = v9 || (tapGesture = self->_tapGesture, panGesture = self->_panGesture, tapGesture == recognizer) && (panGesture == gestureRecognizer || self->_pinchGesture == gestureRecognizer || self->_rotateGesture == gestureRecognizer) || tapGesture == gestureRecognizer && panGesture == recognizer || tapGesture == gestureRecognizer && self->_pinchGesture == recognizer;
   }
 
-  return v7;
+  return enabled;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v5 = [(SCNCameraNavigationController *)self enabled];
-  if (v5)
+  enabled = [(SCNCameraNavigationController *)self enabled];
+  if (enabled)
   {
-    [(SCNCameraNavigationController *)self beginGesture:a3];
+    [(SCNCameraNavigationController *)self beginGesture:begin];
   }
 
-  return v5;
+  return enabled;
 }
 
-- (void)_handlePinch:(id)a3
-{
-  if ([(SCNCameraNavigationController *)self enabled])
-  {
-
-    [(SCNCameraNavigationController *)self pinchWithGestureRecognizer:a3];
-  }
-}
-
-- (void)_handlePan:(id)a3
+- (void)_handlePinch:(id)pinch
 {
   if ([(SCNCameraNavigationController *)self enabled])
   {
 
-    [(SCNCameraNavigationController *)self panWithGestureRecognizer:a3];
+    [(SCNCameraNavigationController *)self pinchWithGestureRecognizer:pinch];
   }
 }
 
-- (void)_handleRotation:(id)a3
+- (void)_handlePan:(id)pan
 {
   if ([(SCNCameraNavigationController *)self enabled])
   {
 
-    [(SCNCameraNavigationController *)self rotateWithGestureRecognizer:a3];
+    [(SCNCameraNavigationController *)self panWithGestureRecognizer:pan];
   }
 }
 
-- (void)_handleDoubleTap:(id)a3
+- (void)_handleRotation:(id)rotation
 {
   if ([(SCNCameraNavigationController *)self enabled])
   {
-    v4 = [(SCNCameraNavigationController *)self delegate];
 
-    [(SCNCameraNavigationControllerDelegate *)v4 switchToNextCamera];
+    [(SCNCameraNavigationController *)self rotateWithGestureRecognizer:rotation];
   }
 }
 
-- (void)beginGesture:(id)a3
+- (void)_handleDoubleTap:(id)tap
+{
+  if ([(SCNCameraNavigationController *)self enabled])
+  {
+    delegate = [(SCNCameraNavigationController *)self delegate];
+
+    [(SCNCameraNavigationControllerDelegate *)delegate switchToNextCamera];
+  }
+}
+
+- (void)beginGesture:(id)gesture
 {
   if (BYTE3(self->_cameraController) == 1)
   {
@@ -1155,9 +1155,9 @@ LABEL_25:
   [(SCNCameraNavigationController *)self _willBeginInteraction];
   self->_isDraggingWithOneFinger = 0;
   self->_lastGestureFingerCount = 0;
-  if ([a3 numberOfTouches])
+  if ([gesture numberOfTouches])
   {
-    [a3 locationInView:{-[SCNCameraNavigationController view](self, "view")}];
+    [gesture locationInView:{-[SCNCameraNavigationController view](self, "view")}];
     v6 = v5;
     v8 = v7;
   }
@@ -1205,12 +1205,12 @@ LABEL_12:
   }
 }
 
-- (void)rotateWithGestureRecognizer:(id)a3
+- (void)rotateWithGestureRecognizer:(id)recognizer
 {
-  [a3 rotation];
+  [recognizer rotation];
   v6 = v5;
   [(SCNCameraNavigationController *)self _stopInertia];
-  if ([a3 state] == 1)
+  if ([recognizer state] == 1)
   {
     [(SCNCameraNavigationController *)self __willChangePointOfView];
   }
@@ -1220,17 +1220,17 @@ LABEL_12:
   [(SCNCameraNavigationController *)self rotateOf:(v6 - self->_lastRotationAngle) / 3.14159265 * -180.0];
   +[SCNTransaction commit];
   self->_lastRotationAngle = v6;
-  if ([a3 state] == 4 || objc_msgSend(a3, "state") == 3)
+  if ([recognizer state] == 4 || objc_msgSend(recognizer, "state") == 3)
   {
 
     [(SCNCameraNavigationController *)self __didChangePointOfView];
   }
 }
 
-- (void)pinchWithGestureRecognizer:(id)a3
+- (void)pinchWithGestureRecognizer:(id)recognizer
 {
   [(SCNCameraNavigationController *)self _stopInertia];
-  if ([a3 state] == 1)
+  if ([recognizer state] == 1)
   {
     [(SCNCameraNavigationController *)self __willChangePointOfView];
   }
@@ -1238,46 +1238,46 @@ LABEL_12:
   +[SCNTransaction begin];
   [SCNTransaction setDisableActions:1];
   v5 = fmax(self->_initialZoom, 0.001);
-  [a3 scale];
+  [recognizer scale];
   [(SCNCameraNavigationController *)self setZoomFactor:v6 * v5];
   +[SCNTransaction commit];
-  if ([a3 state] == 4 || objc_msgSend(a3, "state") == 3)
+  if ([recognizer state] == 4 || objc_msgSend(recognizer, "state") == 3)
   {
 
     [(SCNCameraNavigationController *)self __didChangePointOfView];
   }
 }
 
-- (void)panWithGestureRecognizer:(id)a3
+- (void)panWithGestureRecognizer:(id)recognizer
 {
-  v5 = [a3 numberOfTouches];
+  numberOfTouches = [recognizer numberOfTouches];
   if (self->_browseMode != 2)
   {
-    v6 = v5;
-    [a3 locationInView:{-[SCNCameraNavigationController view](self, "view")}];
+    v6 = numberOfTouches;
+    [recognizer locationInView:{-[SCNCameraNavigationController view](self, "view")}];
     v8 = v7;
     v10 = v9;
     [(SCNCameraNavigationController *)self _stopInertia];
-    if ([a3 state] == 1)
+    if ([recognizer state] == 1)
     {
       [(SCNCameraNavigationController *)self __willChangePointOfView];
     }
 
     +[SCNTransaction begin];
     [SCNTransaction setDisableActions:1];
-    if ([a3 state] == 3)
+    if ([recognizer state] == 3)
     {
       if (self->_isDraggingWithOneFinger)
       {
-        [a3 velocityInView:{-[SCNCameraNavigationController view](self, "view")}];
+        [recognizer velocityInView:{-[SCNCameraNavigationController view](self, "view")}];
         if ([(SCNView *)[(SCNCameraNavigationController *)self view] preferredFramesPerSecond])
         {
           [(SCNView *)[(SCNCameraNavigationController *)self view] preferredFramesPerSecond];
         }
 
-        v11 = [(SCNCameraNavigationController *)self cameraController];
+        cameraController = [(SCNCameraNavigationController *)self cameraController];
         [(SCNView *)[(SCNCameraNavigationController *)self view] bounds];
-        [(SCNCameraController *)v11 endInteraction:v8 withViewport:v10 velocity:?];
+        [(SCNCameraController *)cameraController endInteraction:v8 withViewport:v10 velocity:?];
         if (![(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] isInertiaRunning])
         {
           [(SCNCameraNavigationController *)self __didChangePointOfView];
@@ -1292,7 +1292,7 @@ LABEL_12:
         case 3:
           if (self->_lastGestureFingerCount != 3)
           {
-            [(SCNCameraNavigationController *)self beginGesture:a3];
+            [(SCNCameraNavigationController *)self beginGesture:recognizer];
             self->_lastGestureFingerCount = 3;
           }
 
@@ -1302,14 +1302,14 @@ LABEL_12:
           *&v21 = v21;
           [(SCNCameraNavigationController *)self _cappedTranslationDelta:v21];
           v23 = v22;
-          v24 = [(SCNCameraNavigationController *)self cameraController];
+          cameraController2 = [(SCNCameraNavigationController *)self cameraController];
           *&v25 = -(v20 * v23);
-          [(SCNCameraController *)v24 translateInCameraSpaceByX:0.0 Y:0.0 Z:v25];
+          [(SCNCameraController *)cameraController2 translateInCameraSpaceByX:0.0 Y:0.0 Z:v25];
           break;
         case 2:
           if (self->_lastGestureFingerCount != 2)
           {
-            [(SCNCameraNavigationController *)self beginGesture:a3];
+            [(SCNCameraNavigationController *)self beginGesture:recognizer];
             self->_lastGestureFingerCount = 2;
           }
 
@@ -1321,20 +1321,20 @@ LABEL_12:
           if (self->_lastGestureFingerCount == 1)
           {
             self->_isDraggingWithOneFinger = 1;
-            v12 = [(SCNCameraNavigationController *)self cameraController];
+            cameraController3 = [(SCNCameraNavigationController *)self cameraController];
             [(SCNView *)[(SCNCameraNavigationController *)self view] bounds];
             v14 = v13;
             v16 = v15;
             [(SCNCameraNavigationController *)self _modeSensitivity];
-            [(SCNCameraController *)v12 continueInteraction:v8 withViewport:v10 sensitivity:v14, v16, v17];
+            [(SCNCameraController *)cameraController3 continueInteraction:v8 withViewport:v10 sensitivity:v14, v16, v17];
           }
 
           else
           {
-            [(SCNCameraNavigationController *)self beginGesture:a3];
-            v26 = [(SCNCameraNavigationController *)self cameraController];
+            [(SCNCameraNavigationController *)self beginGesture:recognizer];
+            cameraController4 = [(SCNCameraNavigationController *)self cameraController];
             [(SCNView *)[(SCNCameraNavigationController *)self view] bounds];
-            [(SCNCameraController *)v26 beginInteraction:v8 withViewport:v10];
+            [(SCNCameraController *)cameraController4 beginInteraction:v8 withViewport:v10];
             self->_lastGestureFingerCount = 1;
           }
 
@@ -1350,16 +1350,16 @@ LABEL_12:
 
 - (double)_modeSensitivity
 {
-  v3 = [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] interactionMode];
-  if (v3 >= SCNInteractionModePan)
+  interactionMode = [(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] interactionMode];
+  if (interactionMode >= SCNInteractionModePan)
   {
-    if (v3 == SCNInteractionModeTruck)
+    if (interactionMode == SCNInteractionModeTruck)
     {
 
       [(SCNCameraNavigationController *)self truckSensitivity];
     }
 
-    else if (v3 == SCNInteractionModePan)
+    else if (interactionMode == SCNInteractionModePan)
     {
 
       [(SCNCameraNavigationController *)self panSensitivity];
@@ -1382,24 +1382,24 @@ LABEL_12:
 
 - (uint64_t)worldFront
 {
-  v1 = [objc_msgSend(a1 "cameraController")];
+  v1 = [objc_msgSend(self "cameraController")];
 
   return [v1 simdWorldFront];
 }
 
-- (void)_startBrowsingIfNeeded:(CGPoint)a3
+- (void)_startBrowsingIfNeeded:(CGPoint)needed
 {
-  y = a3.y;
-  x = a3.x;
+  y = needed.y;
+  x = needed.x;
   +[SCNTransaction begin];
   [SCNTransaction setDisableActions:1];
-  v6 = [(SCNCameraNavigationController *)self pointOfView];
+  pointOfView = [(SCNCameraNavigationController *)self pointOfView];
   if (BYTE3(self->_cameraController) == 1)
   {
     [(SCNCameraNavigationController *)self _prepareFreeViewCamera];
   }
 
-  if (![(objc_class *)v6 parentNode]&& v6 != self[1].super.isa)
+  if (![(objc_class *)pointOfView parentNode]&& pointOfView != self[1].super.isa)
   {
     [(SCNCameraNavigationController *)self _installFreeViewCameraIfNeeded];
   }
@@ -1414,17 +1414,17 @@ LABEL_12:
   self->_orthographicZoomFactor = 1.0;
 }
 
-- (void)_defaultTargetForScene:(void *)a3
+- (void)_defaultTargetForScene:(void *)scene
 {
-  v5 = [a1 pointOfView];
-  [a1 worldFront];
+  pointOfView = [self pointOfView];
+  [self worldFront];
   v24 = v6;
-  [objc_msgSend(v5 "presentationInstance")];
+  [objc_msgSend(pointOfView "presentationInstance")];
   v25 = v7;
-  v8.i64[0] = [a1 _sceneBoundingSphere];
+  v8.i64[0] = [self _sceneBoundingSphere];
   v8.i64[1] = v9;
   v22 = vsubq_f32(v8, v25);
-  [objc_msgSend(v5 "camera")];
+  [objc_msgSend(pointOfView "camera")];
   *&v10 = v10 * 3.14159265 / 180.0;
   v11 = cosf(*&v10);
   v12 = vmulq_f32(v22, v22);
@@ -1434,15 +1434,15 @@ LABEL_12:
   v14 = vmulq_f32(v24, vmulq_n_f32(v22, vmul_f32(*v12.f32, vrsqrts_f32(v13, vmul_f32(*v12.f32, *v12.f32))).f32[0]));
   if ((v14.f32[2] + vaddv_f32(*v14.f32)) <= v11)
   {
-    [objc_msgSend(v5 "camera")];
+    [objc_msgSend(pointOfView "camera")];
     *&v15 = v15;
     v23 = vmlaq_n_f32(v25, v24, *&v15);
-    v16 = [a3 rootNode];
+    rootNode = [scene rootNode];
     LODWORD(v18) = v25.i32[2];
     LODWORD(v17) = v25.i32[1];
     LODWORD(v20) = v23.i32[2];
     LODWORD(v19) = v23.i32[1];
-    v21 = [v16 hitTestWithSegmentFromPoint:0 toPoint:*v25.i64 options:{v17, v18, *v23.i64, v19, v20}];
+    v21 = [rootNode hitTestWithSegmentFromPoint:0 toPoint:*v25.i64 options:{v17, v18, *v23.i64, v19, v20}];
     if ([v21 count])
     {
       [objc_msgSend(v21 "firstObject")];
@@ -1450,7 +1450,7 @@ LABEL_12:
 
     else
     {
-      [a1 _targetDistance];
+      [self _targetDistance];
     }
   }
 }
@@ -1458,9 +1458,9 @@ LABEL_12:
 - (SCNVector3)cameraAutomaticTargetPoint
 {
   [(SCNCameraNavigationController *)self _computeAutomaticTargetPointIfNeeded];
-  v3 = [(SCNCameraNavigationController *)self cameraController];
+  cameraController = [(SCNCameraNavigationController *)self cameraController];
 
-  [(SCNCameraController *)v3 target];
+  [(SCNCameraController *)cameraController target];
   result.z = v6;
   result.y = v5;
   result.x = v4;
@@ -1472,12 +1472,12 @@ LABEL_12:
   if (BYTE1(self->_inertia.lastDragLocation.x) == 1 && (LOBYTE(self->_inertia.lastDragLocation.x) & 1) == 0 && ![(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] automaticTarget])
   {
     LOBYTE(self->_inertia.lastDragLocation.x) = 1;
-    v3 = [(SCNCameraNavigationController *)self pointOfView];
+    pointOfView = [(SCNCameraNavigationController *)self pointOfView];
     [(SCNCameraNavigationController *)self worldFront];
     v17 = v4;
     [(SCNCameraNavigationController *)self _targetDistance];
     v18 = v5;
-    [objc_msgSend(v3 "presentationNode")];
+    [objc_msgSend(pointOfView "presentationNode")];
     if (self->_didEverFocusNode)
     {
       v8 = v17;
@@ -1487,9 +1487,9 @@ LABEL_12:
     else
     {
       v19 = v6;
-      v9 = [(SCNCameraNavigationController *)self _sceneBoundingSphere];
+      _sceneBoundingSphere = [(SCNCameraNavigationController *)self _sceneBoundingSphere];
       v6 = v19;
-      v10.i64[0] = v9;
+      v10.i64[0] = _sceneBoundingSphere;
       v10.i64[1] = v11;
       v12 = vsubq_f32(v10, v19);
       v13 = vmulq_f32(v17, v12);
@@ -1504,9 +1504,9 @@ LABEL_12:
     }
 
     *&v20 = vmlaq_n_f32(v6, v8, v7).u64[0];
-    v16 = [(SCNCameraNavigationController *)self cameraController];
+    cameraController = [(SCNCameraNavigationController *)self cameraController];
 
-    [(SCNCameraController *)v16 setSimdTarget:v20];
+    [(SCNCameraController *)cameraController setSimdTarget:v20];
   }
 }
 
@@ -1528,16 +1528,16 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)_computeBoundingSphereOmittingFloorsForNode:(__C3DNode *)a3 sphere:(C3DSphere *)a4
+- (BOOL)_computeBoundingSphereOmittingFloorsForNode:(__C3DNode *)node sphere:(C3DSphere *)sphere
 {
-  *a4 = xmmword_21C280360;
+  *sphere = xmmword_21C280360;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __84__SCNCameraNavigationController__computeBoundingSphereOmittingFloorsForNode_sphere___block_invoke;
   v6[3] = &__block_descriptor_40_e20_q16__0____C3DNode__8l;
-  v6[4] = a4;
-  C3DNodeApplyHierarchy(a3, v6);
-  return *(a4 + 3) >= 0.0;
+  v6[4] = sphere;
+  C3DNodeApplyHierarchy(node, v6);
+  return *(sphere + 3) >= 0.0;
 }
 
 uint64_t __84__SCNCameraNavigationController__computeBoundingSphereOmittingFloorsForNode_sphere___block_invoke(uint64_t a1, float32x4_t *a2)
@@ -1564,12 +1564,12 @@ uint64_t __84__SCNCameraNavigationController__computeBoundingSphereOmittingFloor
   return 0;
 }
 
-- (void)_computeStickyAxisIfNeeded:(CGPoint)a3
+- (void)_computeStickyAxisIfNeeded:(CGPoint)needed
 {
   if (self->_anon_119[3] == 1 && !*&self->_anon_119[19])
   {
-    y = a3.y;
-    v4 = vcvt_f32_f64(vaddq_f64(a3, vcvtq_f64_f32(*&self->_anon_119[11])));
+    y = needed.y;
+    v4 = vcvt_f32_f64(vaddq_f64(needed, vcvtq_f64_f32(*&self->_anon_119[11])));
     *&self->_anon_119[11] = v4;
     if (vaddv_f32(vmul_f32(v4, v4)) > 1.0)
     {
@@ -1598,75 +1598,75 @@ LABEL_10:
 
 - (float)_pointOfViewOrthographicScale
 {
-  v3 = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] camera];
-  v4 = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] light];
-  if (!v3)
+  camera = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] camera];
+  light = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] light];
+  if (!camera)
   {
-    v3 = v4;
-    if (!v4)
+    camera = light;
+    if (!light)
     {
       return 1.0;
     }
   }
 
-  [(SCNCamera *)v3 orthographicScale];
+  [(SCNCamera *)camera orthographicScale];
   return v5;
 }
 
-- (void)_setPointOfViewOrthographicScale:(float)a3
+- (void)_setPointOfViewOrthographicScale:(float)scale
 {
-  v5 = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] camera];
-  v6 = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] light];
-  if (v5 || (v5 = v6) != 0)
+  camera = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] camera];
+  light = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] light];
+  if (camera || (camera = light) != 0)
   {
 
-    [(SCNCamera *)v5 setOrthographicScale:a3];
+    [(SCNCamera *)camera setOrthographicScale:scale];
   }
 }
 
 - (BOOL)_pointOfViewUsesOrthographicProjection
 {
-  v3 = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] camera];
-  v4 = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] light];
-  if (v3)
+  camera = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] camera];
+  light = [(SCNNode *)[(SCNCameraController *)[(SCNCameraNavigationController *)self cameraController] pointOfView] light];
+  if (camera)
   {
 
-    LOBYTE(v4) = [(SCNCamera *)v3 usesOrthographicProjection];
+    LOBYTE(light) = [(SCNCamera *)camera usesOrthographicProjection];
   }
 
-  else if (v4)
+  else if (light)
   {
-    v5 = [(SCNLight *)v4 type];
+    type = [(SCNLight *)light type];
 
-    LOBYTE(v4) = [(NSString *)v5 isEqualToString:@"directional"];
+    LOBYTE(light) = [(NSString *)type isEqualToString:@"directional"];
   }
 
-  return v4;
+  return light;
 }
 
-- (void)_computeTranslationOrigin3DFromPoint:(CGPoint)a3
+- (void)_computeTranslationOrigin3DFromPoint:(CGPoint)point
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   [(SCNView *)[(SCNCameraNavigationController *)self view] bounds];
   v4.f64[0] = x;
   v4.f64[1] = y;
   v5 = vcvt_f32_f64(v4);
   v7.f64[1] = v6;
   v32 = vcvt_hight_f32_f64(0, v7);
-  v8 = [(SCNCameraNavigationController *)self pointOfView];
+  pointOfView = [(SCNCameraNavigationController *)self pointOfView];
   *self->_translationOrigin = [(SCNCameraNavigationController *)self _sceneBoundingSphere];
   *&self->_translationOrigin[8] = v9;
-  v10 = [(SCNScene *)[(SCNView *)[(SCNCameraNavigationController *)self view] scene] sceneRef];
-  v11 = v10;
-  if (v10)
+  sceneRef = [(SCNScene *)[(SCNView *)[(SCNCameraNavigationController *)self view] scene] sceneRef];
+  v11 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v10);
+    C3DSceneLock(sceneRef);
   }
 
-  v12 = [v8 nodeRef];
+  nodeRef = [pointOfView nodeRef];
   v13.n128_u64[0] = v5;
-  v14 = _C3DHitTestComputeHitSegment(v12, v11, &v34, &v35, v32, v13);
+  v14 = _C3DHitTestComputeHitSegment(nodeRef, v11, &v34, &v35, v32, v13);
   if (v15)
   {
     [(SCNCameraNavigationController *)self worldFront];
@@ -1710,27 +1710,27 @@ LABEL_10:
   }
 }
 
-- (void)_translateToViewPoint:(CGPoint)a3
+- (void)_translateToViewPoint:(CGPoint)point
 {
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   [(SCNView *)[(SCNCameraNavigationController *)self view] bounds];
   v5.f64[1] = v4;
   v35 = vcvt_hight_f32_f64(0, v5);
   v6.f64[0] = x;
   v6.f64[1] = y;
   v7 = vcvt_f32_f64(v6);
-  v8 = [(SCNCameraNavigationController *)self pointOfView];
-  v9 = [(SCNScene *)[(SCNView *)[(SCNCameraNavigationController *)self view] scene] sceneRef];
-  v10 = v9;
-  if (v9)
+  pointOfView = [(SCNCameraNavigationController *)self pointOfView];
+  sceneRef = [(SCNScene *)[(SCNView *)[(SCNCameraNavigationController *)self view] scene] sceneRef];
+  v10 = sceneRef;
+  if (sceneRef)
   {
-    C3DSceneLock(v9);
+    C3DSceneLock(sceneRef);
   }
 
-  v11 = [v8 nodeRef];
+  nodeRef = [pointOfView nodeRef];
   v12.n128_u64[0] = v7;
-  _C3DHitTestComputeHitSegment(v11, v10, &v40, &v41, v35, v12);
+  _C3DHitTestComputeHitSegment(nodeRef, v10, &v40, &v41, v35, v12);
   v14 = v13;
   if (v10)
   {
@@ -1756,15 +1756,15 @@ LABEL_10:
     if (v22 != 0.0 && ((v23 = v34, v23.i32[3] = 1.0, v24 = vmulq_f32(v23, v20), v25 = -vaddv_f32(vadd_f32(*v24.i8, *&vextq_s8(v24, v24, 8uLL))) / v22, v25 >= 0.0) ? (v26 = v25 <= v32) : (v26 = 0), v26))
     {
       v37 = vsubq_f32(v18, vmlaq_n_f32(v23, v36, v25));
-      [v8 simdWorldTransform];
+      [pointOfView simdWorldTransform];
       v43 = __invert_f4(v42);
       v38 = vmlaq_laneq_f32(vmlaq_n_f32(vmulq_lane_f32(v43.columns[1], *v37.f32, 1), v43.columns[0], v37.f32[0]), v43.columns[2], v37, 2);
       +[SCNTransaction begin];
       [SCNTransaction setDisableActions:1];
-      v28 = [(SCNCameraNavigationController *)self cameraController];
+      cameraController = [(SCNCameraNavigationController *)self cameraController];
       LODWORD(v30) = v38.i32[2];
       LODWORD(v29) = v38.i32[1];
-      [(SCNCameraController *)v28 translateInCameraSpaceByX:*v38.i64 Y:v29 Z:v30];
+      [(SCNCameraController *)cameraController translateInCameraSpaceByX:*v38.i64 Y:v29 Z:v30];
       +[SCNTransaction commit];
     }
 
@@ -1788,9 +1788,9 @@ LABEL_10:
     [(SCNCameraNavigationController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v3 = [(SCNCameraNavigationController *)self delegate];
+      delegate = [(SCNCameraNavigationController *)self delegate];
 
-      [(SCNCameraNavigationControllerDelegate *)v3 willChangePointOfView];
+      [(SCNCameraNavigationControllerDelegate *)delegate willChangePointOfView];
     }
   }
 }

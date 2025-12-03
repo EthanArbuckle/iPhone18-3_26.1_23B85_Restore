@@ -1,7 +1,7 @@
 @interface TUIHFadeLayout
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicHeight;
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth;
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4;
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context;
 - (void)computeLayout;
 - (void)onChildrenUpdated;
 @end
@@ -19,13 +19,13 @@
   decorator = self->_decorator;
   self->_decorator = 0;
 
-  v5 = [(TUILayout *)self children];
+  children = [(TUILayout *)self children];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_38DBC;
   v6[3] = &unk_25ECF8;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [children enumerateObjectsUsingBlock:v6];
 }
 
 - ($E297CC25127479E857BE23A4F8632EA4)computeIntrinsicWidth
@@ -33,13 +33,13 @@
   content = self->_content;
   if (content)
   {
-    v5 = [(TUILayout *)content validatedIntrinsicWidth];
+    validatedIntrinsicWidth = [(TUILayout *)content validatedIntrinsicWidth];
     v7 = v6;
   }
 
   else
   {
-    v5 = 0x7FC000007FC00000;
+    validatedIntrinsicWidth = 0x7FC000007FC00000;
     v7 = 0x200007FC00000;
   }
 
@@ -68,20 +68,20 @@
   decorator = self->_decorator;
   if (decorator)
   {
-    v14 = [(TUILayout *)decorator validatedIntrinsicWidth];
+    validatedIntrinsicWidth2 = [(TUILayout *)decorator validatedIntrinsicWidth];
   }
 
   else
   {
-    v14 = 0x7FC000007FC00000;
+    validatedIntrinsicWidth2 = 0x7FC000007FC00000;
     v15 = 0x200007FC00000;
   }
 
-  v17[0] = v5;
+  v17[0] = validatedIntrinsicWidth;
   v17[1] = v7;
   v17[2] = v12;
   v17[3] = 0x1700007FC00000;
-  v17[4] = v14;
+  v17[4] = validatedIntrinsicWidth2;
   v17[5] = v15;
   return TUILengthSum(v17, 3);
 }
@@ -131,30 +131,30 @@
   }
 }
 
-- (id)newRenderModelCompatibleWithKind:(unint64_t)a3 context:(id)a4
+- (id)newRenderModelCompatibleWithKind:(unint64_t)kind context:(id)context
 {
-  v6 = a4;
-  if (a3 < 4)
+  contextCopy = context;
+  if (kind < 4)
   {
     v37 = 0;
   }
 
   else
   {
-    v7 = [(TUILayout *)self model];
-    [v6 contentsScale];
+    model = [(TUILayout *)self model];
+    [contextCopy contentsScale];
     v9 = v8;
-    v10 = [v6 renderModelForLayout:self->_content kind:6];
+    v10 = [contextCopy renderModelForLayout:self->_content kind:6];
     [(TUILayout *)self->_content erasableInsetsForContentsScale:v9];
     v12 = v11;
     v14 = v13;
     v16 = v15;
     v18 = v17;
-    v19 = [v6 renderModelForLayout:self->_decorator kind:6];
+    v19 = [contextCopy renderModelForLayout:self->_decorator kind:6];
     v39 = v16;
     v40 = v14;
     v41 = v12;
-    v20 = [v7 identifier];
+    identifier = [model identifier];
     [(TUILayout *)self computedNaturalSize];
     v23 = TUISizeRoundedForScale(v21, v22, v9);
     v25 = v24;
@@ -164,10 +164,10 @@
     [(TUILayout *)self->_decorator computedOrigin];
     v31 = v30;
     v33 = v32;
-    [v7 padding];
+    [model padding];
     v35 = v34;
-    [v7 gradientWidth];
-    v37 = [TUIOverlayFadeView renderModelWithIdentifier:v20 size:v10 content:v19 contentOrigin:[(TUILayout *)self computedLayoutDirection] contentErasableInsets:v23 overlay:v25 overlayOrigin:v27 padding:v29 gradientWidth:v41 layoutDirection:v40, v39, v18, v31, v33, v35, v36];
+    [model gradientWidth];
+    v37 = [TUIOverlayFadeView renderModelWithIdentifier:identifier size:v10 content:v19 contentOrigin:[(TUILayout *)self computedLayoutDirection] contentErasableInsets:v23 overlay:v25 overlayOrigin:v27 padding:v29 gradientWidth:v41 layoutDirection:v40, v39, v18, v31, v33, v35, v36];
   }
 
   return v37;

@@ -1,92 +1,92 @@
 @interface STSVehicleReport
-- (BOOL)isFunctionInProgress:(id)a3;
-- (BOOL)isFunctionSupported:(id)a3;
+- (BOOL)isFunctionInProgress:(id)progress;
+- (BOOL)isFunctionSupported:(id)supported;
 - (NSArray)functionsInProgress;
 - (NSArray)supportedFunctions;
 - (NSString)keyIdentifier;
-- (STSVehicleReport)initWithCoder:(id)a3;
+- (STSVehicleReport)initWithCoder:(id)coder;
 - (id)description;
-- (id)getStatusForFunction:(id)a3;
-- (id)initVehicleReport:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)getStatusForFunction:(id)function;
+- (id)initVehicleReport:(id)report;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSVehicleReport
 
-- (id)initVehicleReport:(id)a3
+- (id)initVehicleReport:(id)report
 {
-  v5 = a3;
+  reportCopy = report;
   v9.receiver = self;
   v9.super_class = STSVehicleReport;
   v6 = [(STSVehicleReport *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_vehicleReport, a3);
+    objc_storeStrong(&v6->_vehicleReport, report);
   }
 
   return v7;
 }
 
-- (BOOL)isFunctionSupported:(id)a3
+- (BOOL)isFunctionSupported:(id)supported
 {
-  v4 = a3;
-  v5 = [(STSVehicleReport *)self vehicleReport];
-  v6 = [v5 isRKEFunctionSupported:v4];
+  supportedCopy = supported;
+  vehicleReport = [(STSVehicleReport *)self vehicleReport];
+  v6 = [vehicleReport isRKEFunctionSupported:supportedCopy];
 
   return v6;
 }
 
 - (NSArray)supportedFunctions
 {
-  v2 = [(STSVehicleReport *)self vehicleReport];
-  v3 = [v2 getSupportedRKEFunctions];
+  vehicleReport = [(STSVehicleReport *)self vehicleReport];
+  getSupportedRKEFunctions = [vehicleReport getSupportedRKEFunctions];
 
-  return v3;
+  return getSupportedRKEFunctions;
 }
 
-- (BOOL)isFunctionInProgress:(id)a3
+- (BOOL)isFunctionInProgress:(id)progress
 {
-  v4 = a3;
-  v5 = [(STSVehicleReport *)self vehicleReport];
-  v6 = [v5 isRKEFunctionInProgress:v4];
+  progressCopy = progress;
+  vehicleReport = [(STSVehicleReport *)self vehicleReport];
+  v6 = [vehicleReport isRKEFunctionInProgress:progressCopy];
 
   return v6;
 }
 
 - (NSArray)functionsInProgress
 {
-  v2 = [(STSVehicleReport *)self vehicleReport];
-  v3 = [v2 getRKEFunctionsInProgress];
+  vehicleReport = [(STSVehicleReport *)self vehicleReport];
+  getRKEFunctionsInProgress = [vehicleReport getRKEFunctionsInProgress];
 
-  return v3;
+  return getRKEFunctionsInProgress;
 }
 
-- (id)getStatusForFunction:(id)a3
+- (id)getStatusForFunction:(id)function
 {
-  v4 = a3;
-  v5 = [(STSVehicleReport *)self vehicleReport];
-  v6 = [v5 getStatusForRKEFunction:v4];
+  functionCopy = function;
+  vehicleReport = [(STSVehicleReport *)self vehicleReport];
+  v6 = [vehicleReport getStatusForRKEFunction:functionCopy];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STSVehicleReport *)self vehicleReport];
-  [v4 encodeObject:v5 forKey:@"stsVehicleReport"];
+  coderCopy = coder;
+  vehicleReport = [(STSVehicleReport *)self vehicleReport];
+  [coderCopy encodeObject:vehicleReport forKey:@"stsVehicleReport"];
 }
 
-- (STSVehicleReport)initWithCoder:(id)a3
+- (STSVehicleReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = STSVehicleReport;
   v5 = [(STSVehicleReport *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stsVehicleReport"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stsVehicleReport"];
     vehicleReport = v5->_vehicleReport;
     v5->_vehicleReport = v6;
   }
@@ -96,16 +96,16 @@
 
 - (NSString)keyIdentifier
 {
-  v2 = [(STSVehicleReport *)self vehicleReport];
-  v3 = [v2 keyIdentifier];
+  vehicleReport = [(STSVehicleReport *)self vehicleReport];
+  keyIdentifier = [vehicleReport keyIdentifier];
 
-  return v3;
+  return keyIdentifier;
 }
 
 - (id)description
 {
-  v2 = [(STSVehicleReport *)self vehicleReport];
-  v3 = [v2 description];
+  vehicleReport = [(STSVehicleReport *)self vehicleReport];
+  v3 = [vehicleReport description];
 
   return v3;
 }

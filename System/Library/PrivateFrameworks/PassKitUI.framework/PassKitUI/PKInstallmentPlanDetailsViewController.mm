@@ -1,51 +1,51 @@
 @interface PKInstallmentPlanDetailsViewController
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (PKInstallmentPlanDetailsViewController)initWithAccount:(id)a3 installmentPlan:(id)a4 accountService:(id)a5 accountUserCollection:(id)a6 familyMemberCollection:(id)a7 transactionSourceCollection:(id)a8;
-- (id)_detailsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_progressCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (PKInstallmentPlanDetailsViewController)initWithAccount:(id)account installmentPlan:(id)plan accountService:(id)service accountUserCollection:(id)collection familyMemberCollection:(id)memberCollection transactionSourceCollection:(id)sourceCollection;
+- (id)_detailsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_progressCellForTableView:(id)view atIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_updateHeaderHeight;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKInstallmentPlanDetailsViewController
 
-- (PKInstallmentPlanDetailsViewController)initWithAccount:(id)a3 installmentPlan:(id)a4 accountService:(id)a5 accountUserCollection:(id)a6 familyMemberCollection:(id)a7 transactionSourceCollection:(id)a8
+- (PKInstallmentPlanDetailsViewController)initWithAccount:(id)account installmentPlan:(id)plan accountService:(id)service accountUserCollection:(id)collection familyMemberCollection:(id)memberCollection transactionSourceCollection:(id)sourceCollection
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v28 = a6;
-  v27 = a7;
-  v26 = a8;
+  accountCopy = account;
+  planCopy = plan;
+  serviceCopy = service;
+  collectionCopy = collection;
+  memberCollectionCopy = memberCollection;
+  sourceCollectionCopy = sourceCollection;
   v29.receiver = self;
   v29.super_class = PKInstallmentPlanDetailsViewController;
   v18 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v29, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1], 2);
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_account, a3);
-    objc_storeStrong(&v19->_installmentPlan, a4);
-    objc_storeStrong(&v19->_accountService, a5);
-    objc_storeStrong(&v19->_accountUserCollection, a6);
-    objc_storeStrong(&v19->_familyMemberCollection, a7);
-    objc_storeStrong(&v19->_transactionSourceCollection, a8);
+    objc_storeStrong(&v18->_account, account);
+    objc_storeStrong(&v19->_installmentPlan, plan);
+    objc_storeStrong(&v19->_accountService, service);
+    objc_storeStrong(&v19->_accountUserCollection, collection);
+    objc_storeStrong(&v19->_familyMemberCollection, memberCollection);
+    objc_storeStrong(&v19->_transactionSourceCollection, sourceCollection);
     v20 = objc_alloc_init(PKPaymentTransactionDetailAmountLineItemGenerator);
     lineItemGenerator = v19->_lineItemGenerator;
     v19->_lineItemGenerator = v20;
 
-    v22 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)v19->_lineItemGenerator lineItemsForInstallmentPlan:v16];
+    v22 = [(PKPaymentTransactionDetailAmountLineItemGenerator *)v19->_lineItemGenerator lineItemsForInstallmentPlan:planCopy];
     lineItems = v19->_lineItems;
     v19->_lineItems = v22;
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v24 = [(PKInstallmentPlanDetailsViewController *)v19 navigationItem];
-      [v24 pkui_setupScrollEdgeChromelessAppearance];
-      [v24 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      navigationItem = [(PKInstallmentPlanDetailsViewController *)v19 navigationItem];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
   }
 
@@ -57,16 +57,16 @@
   v34.receiver = self;
   v34.super_class = PKInstallmentPlanDetailsViewController;
   [(PKSectionTableViewController *)&v34 viewDidLoad];
-  v3 = [(PKInstallmentPlanDetailsViewController *)self tableView];
-  [v3 setRowHeight:*MEMORY[0x1E69DE3D0]];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"StatusCellReuseIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"LineItemCellReuseIdentifier"];
-  v4 = [(PKCreditInstallmentPlan *)self->_installmentPlan totalAmount];
-  if (v4 && (v5 = v4, [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  tableView = [(PKInstallmentPlanDetailsViewController *)self tableView];
+  [tableView setRowHeight:*MEMORY[0x1E69DE3D0]];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"StatusCellReuseIdentifier"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"LineItemCellReuseIdentifier"];
+  totalAmount = [(PKCreditInstallmentPlan *)self->_installmentPlan totalAmount];
+  if (totalAmount && (v5 = totalAmount, [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [(PKCreditInstallmentPlan *)self->_installmentPlan totalAmount];
-    v8 = [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode];
-    v9 = PKCurrencyAmountCreate(v7, v8);
+    totalAmount2 = [(PKCreditInstallmentPlan *)self->_installmentPlan totalAmount];
+    currencyCode = [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode];
+    v9 = PKCurrencyAmountCreate(totalAmount2, currencyCode);
   }
 
   else
@@ -79,55 +79,55 @@
   self->_headerView = v10;
 
   v12 = self->_headerView;
-  v13 = [v9 formattedStringValue];
-  [(PKPaymentTransactionDetailHeaderView *)v12 setAmountText:v13];
+  formattedStringValue = [v9 formattedStringValue];
+  [(PKPaymentTransactionDetailHeaderView *)v12 setAmountText:formattedStringValue];
 
   v14 = self->_headerView;
-  v15 = [(PKCreditInstallmentPlan *)self->_installmentPlan merchant];
-  v16 = [v15 name];
-  [(PKPaymentTransactionDetailHeaderView *)v14 setSubtitleText:v16];
+  merchant = [(PKCreditInstallmentPlan *)self->_installmentPlan merchant];
+  name = [merchant name];
+  [(PKPaymentTransactionDetailHeaderView *)v14 setSubtitleText:name];
 
-  v17 = [(PKCreditInstallmentPlan *)self->_installmentPlan summary];
-  v18 = [v17 startDate];
+  summary = [(PKCreditInstallmentPlan *)self->_installmentPlan summary];
+  startDate = [summary startDate];
 
-  if (v18)
+  if (startDate)
   {
     v19 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v19 setDateStyle:2];
     [v19 setTimeStyle:1];
     v20 = self->_headerView;
-    v21 = [v19 stringFromDate:v18];
+    v21 = [v19 stringFromDate:startDate];
     [(PKPaymentTransactionDetailHeaderView *)v20 setSecondarySubtitleText:v21];
   }
 
-  v22 = [(PKCreditInstallmentPlan *)self->_installmentPlan accountUserAltDSID];
-  if (v22)
+  accountUserAltDSID = [(PKCreditInstallmentPlan *)self->_installmentPlan accountUserAltDSID];
+  if (accountUserAltDSID)
   {
-    v23 = [(PKAccountUserCollection *)self->_accountUserCollection accountUserWithAltDSID:v22];
-    v24 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMemberForAltDSID:v22];
+    v23 = [(PKAccountUserCollection *)self->_accountUserCollection accountUserWithAltDSID:accountUserAltDSID];
+    v24 = [(PKFamilyMemberCollection *)self->_familyMemberCollection familyMemberForAltDSID:accountUserAltDSID];
     v25 = MEMORY[0x1E69B8740];
-    v26 = [v23 nameComponents];
-    v27 = [v25 contactForFamilyMember:v24 nameComponents:v26 imageData:0];
+    nameComponents = [v23 nameComponents];
+    v27 = [v25 contactForFamilyMember:v24 nameComponents:nameComponents imageData:0];
 
     if (v27)
     {
-      v28 = [v27 givenName];
-      PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTra_0.isa, &stru_1F3BD5BF0.isa, v28);
-      v33 = v18;
-      v29 = v3;
+      givenName = [v27 givenName];
+      PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTra_0.isa, &stru_1F3BD5BF0.isa, givenName);
+      v33 = startDate;
+      v29 = tableView;
       v30 = v23;
       v32 = v31 = v9;
 
       [(PKPaymentTransactionDetailHeaderView *)self->_headerView setTertiarySubtitleText:v32];
       v9 = v31;
       v23 = v30;
-      v3 = v29;
-      v18 = v33;
+      tableView = v29;
+      startDate = v33;
     }
   }
 
-  [v3 setTableHeaderView:self->_headerView];
-  [v3 setAccessibilityIdentifier:*MEMORY[0x1E69B9888]];
+  [tableView setTableHeaderView:self->_headerView];
+  [tableView setAccessibilityIdentifier:*MEMORY[0x1E69B9888]];
 }
 
 - (void)viewWillLayoutSubviews
@@ -138,20 +138,20 @@
   [(PKInstallmentPlanDetailsViewController *)self _updateHeaderHeight];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKInstallmentPlanDetailsViewController *)self tableView];
-    v4 = [(PKInstallmentPlanDetailsViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    tableView = [(PKInstallmentPlanDetailsViewController *)self tableView];
+    navigationItem = [(PKInstallmentPlanDetailsViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
-  if (!a3)
+  if (!section)
   {
     return 1;
   }
 
-  if (a3 == 1)
+  if (section == 1)
   {
     return [(PKAccount *)self->_account accessLevel:v3]== 1;
   }
@@ -159,9 +159,9 @@
   return 0;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   if (v5 == 1)
   {
     return 3;
@@ -175,20 +175,20 @@
   return [(NSArray *)self->_lineItems count]+ 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   if (v8 == 1)
   {
-    v9 = [(PKInstallmentPlanDetailsViewController *)self _progressCellForTableView:v6 atIndexPath:v7];
+    v9 = [(PKInstallmentPlanDetailsViewController *)self _progressCellForTableView:viewCopy atIndexPath:pathCopy];
     goto LABEL_5;
   }
 
   if (!v8)
   {
-    v9 = [(PKInstallmentPlanDetailsViewController *)self _detailsCellForTableView:v6 atIndexPath:v7];
+    v9 = [(PKInstallmentPlanDetailsViewController *)self _detailsCellForTableView:viewCopy atIndexPath:pathCopy];
 LABEL_5:
     v10 = v9;
     goto LABEL_7;
@@ -200,23 +200,23 @@ LABEL_7:
   return v10;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  cellCopy = cell;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   if (v8 == 1)
   {
-    [v11 setSeparatorStyle:{objc_msgSend(v11, "hasTrailingLineSeperator")}];
+    [cellCopy setSeparatorStyle:{objc_msgSend(cellCopy, "hasTrailingLineSeperator")}];
   }
 
   else if (!v8)
   {
-    v9 = [v7 row];
+    v9 = [pathCopy row];
     if (v9 >= 1)
     {
       v10 = [(NSArray *)self->_lineItems objectAtIndex:v9 - 1];
-      [v11 setSeparatorStyle:{objc_msgSend(v10, "hasTrailingLineSeperator")}];
+      [cellCopy setSeparatorStyle:{objc_msgSend(v10, "hasTrailingLineSeperator")}];
     }
   }
 }
@@ -225,8 +225,8 @@ LABEL_7:
 {
   if (self->_headerView)
   {
-    v14 = [(PKInstallmentPlanDetailsViewController *)self tableView];
-    [v14 bounds];
+    tableView = [(PKInstallmentPlanDetailsViewController *)self tableView];
+    [tableView bounds];
     v4 = v3;
     [(PKPaymentTransactionDetailHeaderView *)self->_headerView frame];
     v6 = v5;
@@ -236,22 +236,22 @@ LABEL_7:
     {
       v12 = v9;
       headerView = self->_headerView;
-      [v14 _rectForTableHeaderView];
+      [tableView _rectForTableHeaderView];
       [(PKPaymentTransactionDetailHeaderView *)headerView setFrame:?];
-      [v14 _tableHeaderHeightDidChangeToHeight:v12];
+      [tableView _tableHeaderHeightDidChangeToHeight:v12];
     }
   }
 }
 
-- (id)_detailsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_detailsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   if (v8)
   {
     v9 = [(NSArray *)self->_lineItems objectAtIndex:v8 - 1];
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"LineItemCellReuseIdentifier" forIndexPath:v7];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"LineItemCellReuseIdentifier" forIndexPath:pathCopy];
     if ([v9 isEmphasized])
     {
       v11 = 2;
@@ -265,17 +265,17 @@ LABEL_7:
     v12 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90], v11, 0);
     [v10 setHasTrailingLineSeperator:{objc_msgSend(v9, "hasTrailingLineSeperator")}];
     [v10 setTitleFont:v12];
-    v13 = [v9 label];
-    [v10 setTitleText:v13];
+    label = [v9 label];
+    [v10 setTitleText:label];
 
     [v10 setValueFont:v12];
-    v14 = [v9 value];
-    [v10 setValueText:v14];
+    value = [v9 value];
+    [v10 setValueText:value];
   }
 
   else
   {
-    v10 = [v6 dequeueReusableCellWithIdentifier:@"StatusCellReuseIdentifier" forIndexPath:v7];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:@"StatusCellReuseIdentifier" forIndexPath:pathCopy];
     v15 = PKLocalizedFeatureString();
     [v10 setPrimaryText:v15];
 
@@ -284,17 +284,17 @@ LABEL_7:
       v16 = objc_alloc_init(MEMORY[0x1E696ADA0]);
       [v16 setNumberStyle:3];
       v17 = [(PKCreditInstallmentPlan *)self->_installmentPlan apr];
-      v18 = [v17 pk_isIntegralNumber];
+      pk_isIntegralNumber = [v17 pk_isIntegralNumber];
 
-      if ((v18 & 1) == 0)
+      if ((pk_isIntegralNumber & 1) == 0)
       {
         [v16 setMinimumFractionDigits:2];
       }
 
-      v19 = [(PKCreditInstallmentPlan *)self->_installmentPlan duration];
+      duration = [(PKCreditInstallmentPlan *)self->_installmentPlan duration];
       v20 = [(PKCreditInstallmentPlan *)self->_installmentPlan apr];
       v21 = [v16 stringFromNumber:v20];
-      v9 = PKLocalizedString(&cfstr_PlanDurationAp.isa, &cfstr_Lu_0.isa, v19, v21);
+      v9 = PKLocalizedString(&cfstr_PlanDurationAp.isa, &cfstr_Lu_0.isa, duration, v21);
     }
 
     else
@@ -308,19 +308,19 @@ LABEL_7:
   return v10;
 }
 
-- (id)_progressCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_progressCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
   if (v8 == 2)
   {
-    v12 = [(PKCreditInstallmentPlan *)self->_installmentPlan remainingAmount];
-    v20 = [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode];
-    v15 = v20;
-    if (v12)
+    remainingAmount = [(PKCreditInstallmentPlan *)self->_installmentPlan remainingAmount];
+    currencyCode = [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode];
+    formattedStringValue3 = currencyCode;
+    if (remainingAmount)
     {
-      v21 = v20 == 0;
+      v21 = currencyCode == 0;
     }
 
     else
@@ -335,53 +335,53 @@ LABEL_7:
 
     else
     {
-      v11 = PKCurrencyAmountCreate(v12, v20);
+      v11 = PKCurrencyAmountCreate(remainingAmount, currencyCode);
     }
 
-    v22 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90]);
-    v13 = [v6 dequeueReusableCellWithIdentifier:@"LineItemCellReuseIdentifier" forIndexPath:v7];
+    formattedStringValue2 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90]);
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:@"LineItemCellReuseIdentifier" forIndexPath:pathCopy];
     [v13 setHasTrailingLineSeperator:1];
-    [v13 setTitleFont:v22];
+    [v13 setTitleFont:formattedStringValue2];
     v23 = PKLocalizedFeatureString();
     [v13 setTitleText:v23];
 
-    [v13 setValueFont:v22];
-    v24 = [(NSDecimalNumber *)v11 formattedStringValue];
-    [v13 setValueText:v24];
+    [v13 setValueFont:formattedStringValue2];
+    formattedStringValue = [(NSDecimalNumber *)v11 formattedStringValue];
+    [v13 setValueText:formattedStringValue];
 
     goto LABEL_17;
   }
 
   if (v8 == 1)
   {
-    v16 = [(PKCreditInstallmentPlan *)self->_installmentPlan summary];
-    v17 = [v16 paymentsToDateAmount];
-    v18 = v17;
-    if (v17)
+    summary = [(PKCreditInstallmentPlan *)self->_installmentPlan summary];
+    paymentsToDateAmount = [summary paymentsToDateAmount];
+    v18 = paymentsToDateAmount;
+    if (paymentsToDateAmount)
     {
-      v19 = v17;
+      zero = paymentsToDateAmount;
     }
 
     else
     {
-      v19 = [MEMORY[0x1E696AB90] zero];
+      zero = [MEMORY[0x1E696AB90] zero];
     }
 
-    v11 = v19;
+    v11 = zero;
 
-    v25 = [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode];
-    v12 = PKCurrencyAmountCreate(v11, v25);
+    currencyCode2 = [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode];
+    remainingAmount = PKCurrencyAmountCreate(v11, currencyCode2);
 
-    v15 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90], 2, 0);
-    v13 = [v6 dequeueReusableCellWithIdentifier:@"LineItemCellReuseIdentifier" forIndexPath:v7];
+    formattedStringValue3 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90], 2, 0);
+    v13 = [viewCopy dequeueReusableCellWithIdentifier:@"LineItemCellReuseIdentifier" forIndexPath:pathCopy];
     [v13 setHasTrailingLineSeperator:0];
-    [v13 setTitleFont:v15];
+    [v13 setTitleFont:formattedStringValue3];
     v26 = PKLocalizedFeatureString();
     [v13 setTitleText:v26];
 
-    [v13 setValueFont:v15];
-    v22 = [(NSDecimalNumber *)v12 formattedStringValue];
-    [v13 setValueText:v22];
+    [v13 setValueFont:formattedStringValue3];
+    formattedStringValue2 = [(NSDecimalNumber *)remainingAmount formattedStringValue];
+    [v13 setValueText:formattedStringValue2];
 LABEL_17:
 
     goto LABEL_18;
@@ -393,20 +393,20 @@ LABEL_17:
     goto LABEL_19;
   }
 
-  v9 = [(PKCreditInstallmentPlan *)self->_installmentPlan totalBilled];
-  v10 = [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode];
-  v11 = PKCurrencyAmountCreate(v9, v10);
+  totalBilled = [(PKCreditInstallmentPlan *)self->_installmentPlan totalBilled];
+  currencyCode3 = [(PKCreditInstallmentPlan *)self->_installmentPlan currencyCode];
+  v11 = PKCurrencyAmountCreate(totalBilled, currencyCode3);
 
-  v12 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90]);
-  v13 = [v6 dequeueReusableCellWithIdentifier:@"LineItemCellReuseIdentifier" forIndexPath:v7];
+  remainingAmount = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90]);
+  v13 = [viewCopy dequeueReusableCellWithIdentifier:@"LineItemCellReuseIdentifier" forIndexPath:pathCopy];
   [v13 setHasTrailingLineSeperator:1];
-  [v13 setTitleFont:v12];
+  [v13 setTitleFont:remainingAmount];
   v14 = PKLocalizedFeatureString();
   [v13 setTitleText:v14];
 
-  [v13 setValueFont:v12];
-  v15 = [(NSDecimalNumber *)v11 formattedStringValue];
-  [v13 setValueText:v15];
+  [v13 setValueFont:remainingAmount];
+  formattedStringValue3 = [(NSDecimalNumber *)v11 formattedStringValue];
+  [v13 setValueText:formattedStringValue3];
 LABEL_18:
 
 LABEL_19:

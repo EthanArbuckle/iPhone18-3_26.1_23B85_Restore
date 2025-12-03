@@ -1,12 +1,12 @@
 @interface NPTUploadDataStream
-- (NPTUploadDataStream)initWithLength:(unint64_t)a3;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (NPTUploadDataStream)initWithLength:(unint64_t)length;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 - (void)open;
 @end
 
 @implementation NPTUploadDataStream
 
-- (NPTUploadDataStream)initWithLength:(unint64_t)a3
+- (NPTUploadDataStream)initWithLength:(unint64_t)length
 {
   v10.receiver = self;
   v10.super_class = NPTUploadDataStream;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->remainingLength = a3;
+    v4->remainingLength = length;
     v4->status = 0;
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_create("streamCallBackQueue", v6);
@@ -25,11 +25,11 @@
   return v5;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
-  if (self->remainingLength >= a4)
+  if (self->remainingLength >= length)
   {
-    remainingLength = a4;
+    remainingLength = length;
   }
 
   else
@@ -37,7 +37,7 @@
     remainingLength = self->remainingLength;
   }
 
-  memset(a3, 114, remainingLength);
+  memset(read, 114, remainingLength);
   v6 = self->remainingLength - remainingLength;
   self->remainingLength = v6;
   callBackQueue = self->callBackQueue;

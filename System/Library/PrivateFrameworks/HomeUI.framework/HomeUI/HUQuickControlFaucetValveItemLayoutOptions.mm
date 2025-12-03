@@ -1,14 +1,14 @@
 @interface HUQuickControlFaucetValveItemLayoutOptions
-+ (id)defaultOptionsForViewSize:(CGSize)a3;
++ (id)defaultOptionsForViewSize:(CGSize)size;
 @end
 
 @implementation HUQuickControlFaucetValveItemLayoutOptions
 
-+ (id)defaultOptionsForViewSize:(CGSize)a3
++ (id)defaultOptionsForViewSize:(CGSize)size
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HUQuickControlFaucetValveItemLayoutOptions;
-  v3 = objc_msgSendSuper2(&v5, sel_defaultOptionsForViewSize_, a3.width, a3.height);
+  v3 = objc_msgSendSuper2(&v5, sel_defaultOptionsForViewSize_, size.width, size.height);
   [v3 setPreferredLayoutStyle:0];
   [v3 setTitlePosition:1];
   [v3 setInteritemSpacingForSmallControlSize:36.0];

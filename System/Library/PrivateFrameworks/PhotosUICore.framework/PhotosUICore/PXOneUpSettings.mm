@@ -1,7 +1,7 @@
 @interface PXOneUpSettings
 + (PXOneUpSettings)sharedInstance;
 + (id)settingsControllerModule;
-- (BOOL)shouldInitiallyZoomContentWithSize:(CGSize)a3 toFillViewWithSize:(CGSize)a4 forAssetMediaType:(int64_t)a5 userInterfaceIdiom:(int64_t)a6;
+- (BOOL)shouldInitiallyZoomContentWithSize:(CGSize)size toFillViewWithSize:(CGSize)withSize forAssetMediaType:(int64_t)type userInterfaceIdiom:(int64_t)idiom;
 - (void)setDefaultValues;
 @end
 
@@ -11,8 +11,8 @@
 {
   v8.receiver = self;
   v8.super_class = PXOneUpSettings;
-  v3 = [(PTSettings *)&v8 setDefaultValues];
-  v4 = MEMORY[0x1A590D320](v3);
+  setDefaultValues = [(PTSettings *)&v8 setDefaultValues];
+  v4 = MEMORY[0x1A590D320](setDefaultValues);
   v5 = 41.0;
   if (!v4)
   {
@@ -30,11 +30,11 @@
   [(PXOneUpSettings *)self setReverseFavoritesOneUpSortOrder:0];
 }
 
-- (BOOL)shouldInitiallyZoomContentWithSize:(CGSize)a3 toFillViewWithSize:(CGSize)a4 forAssetMediaType:(int64_t)a5 userInterfaceIdiom:(int64_t)a6
+- (BOOL)shouldInitiallyZoomContentWithSize:(CGSize)size toFillViewWithSize:(CGSize)withSize forAssetMediaType:(int64_t)type userInterfaceIdiom:(int64_t)idiom
 {
   v8 = MEMORY[0x1A590D320]();
   result = 0;
-  if (a6 != 1 && a5 != 2)
+  if (idiom != 1 && type != 2)
   {
     if (v8)
     {
@@ -86,8 +86,8 @@ void __33__PXOneUpSettings_sharedInstance__block_invoke()
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:3];
   v12 = [v2 sectionWithRows:v11 title:@"Settings"];
   v21[0] = v12;
-  v13 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v21[1] = v13;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v21[1] = px_restoreDefaultsSection;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v15 = [v2 moduleWithTitle:@"One Up" contents:v14];
 

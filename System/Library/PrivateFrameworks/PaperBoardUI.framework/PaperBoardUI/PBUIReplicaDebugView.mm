@@ -1,9 +1,9 @@
 @interface PBUIReplicaDebugView
 + (id)debugFont;
-- (PBUIReplicaDebugView)initWithFrame:(CGRect)a3;
+- (PBUIReplicaDebugView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setColor:(id)color;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PBUIReplicaDebugView
@@ -28,12 +28,12 @@ void __33__PBUIReplicaDebugView_debugFont__block_invoke()
   debugFont___font = v0;
 }
 
-- (PBUIReplicaDebugView)initWithFrame:(CGRect)a3
+- (PBUIReplicaDebugView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v19.receiver = self;
   v19.super_class = PBUIReplicaDebugView;
   v7 = [(PBUIReplicaDebugView *)&v19 initWithFrame:?];
@@ -52,16 +52,16 @@ void __33__PBUIReplicaDebugView_debugFont__block_invoke()
     [(UIView *)v8->_borderView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v8->_labelView setTranslatesAutoresizingMaskIntoConstraints:0];
     v13 = v8->_labelView;
-    v14 = [objc_opt_class() debugFont];
-    [(UILabel *)v13 setFont:v14];
+    debugFont = [objc_opt_class() debugFont];
+    [(UILabel *)v13 setFont:debugFont];
 
     [(UILabel *)v8->_labelView setNumberOfLines:1];
-    v15 = [(UIView *)v8->_borderView layer];
-    v16 = [MEMORY[0x277D75348] redColor];
-    [v15 setBorderColor:{objc_msgSend(v16, "CGColor")}];
+    layer = [(UIView *)v8->_borderView layer];
+    redColor = [MEMORY[0x277D75348] redColor];
+    [layer setBorderColor:{objc_msgSend(redColor, "CGColor")}];
 
-    v17 = [(UIView *)v8->_borderView layer];
-    [v17 setBorderWidth:15.0];
+    layer2 = [(UIView *)v8->_borderView layer];
+    [layer2 setBorderWidth:15.0];
 
     [(PBUIReplicaDebugView *)v8 addSubview:v8->_borderView];
     [(PBUIReplicaDebugView *)v8 addSubview:v8->_labelView];
@@ -70,30 +70,30 @@ void __33__PBUIReplicaDebugView_debugFont__block_invoke()
   return v8;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UILabel *)self->_labelView setText:a3];
+  [(UILabel *)self->_labelView setText:title];
   self->_labelViewNeedsLayout = 1;
 
   [(PBUIReplicaDebugView *)self setNeedsLayout];
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
-  v6 = v4;
-  if (!v4)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (!colorCopy)
   {
-    v4 = [MEMORY[0x277D75348] redColor];
+    colorCopy = [MEMORY[0x277D75348] redColor];
   }
 
-  objc_storeStrong(&self->_color, v4);
+  objc_storeStrong(&self->_color, colorCopy);
   if (!v6)
   {
   }
 
-  v5 = [(UIView *)self->_borderView layer];
-  [v5 setBorderColor:{-[UIColor CGColor](self->_color, "CGColor")}];
+  layer = [(UIView *)self->_borderView layer];
+  [layer setBorderColor:{-[UIColor CGColor](self->_color, "CGColor")}];
 }
 
 - (void)layoutSubviews

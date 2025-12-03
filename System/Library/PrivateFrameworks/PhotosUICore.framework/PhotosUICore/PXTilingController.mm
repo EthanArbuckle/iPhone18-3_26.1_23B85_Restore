@@ -1,26 +1,26 @@
 @interface PXTilingController
-- (BOOL)getTile:(void *)a3 geometry:(PXTileGeometry *)a4 group:(unint64_t *)a5 userData:(id *)a6 forTileWithIdentifier:(PXTileIdentifier *)a7;
+- (BOOL)getTile:(void *)tile geometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (CGPoint)_layoutDesiredOrigin;
 - (CGPoint)_updatedPreferredVisibleOrigin;
-- (CGPoint)convertPointFromLayout:(CGPoint)a3;
+- (CGPoint)convertPointFromLayout:(CGPoint)layout;
 - (CGPoint)layoutPreferredOrigin;
 - (CGRect)_activeRect;
 - (CGRect)_cachedRect;
 - (CGRect)_dirtyRect;
 - (CGRect)_pagedRect;
 - (CGRect)_visibleRect;
-- (CGRect)convertRectFromLayout:(CGRect)a3;
+- (CGRect)convertRectFromLayout:(CGRect)layout;
 - (CGRect)layoutContentBounds;
 - (CGRect)layoutScrollBounds;
 - (CGSize)_referenceSize;
 - (PXScrollController)scrollController;
 - (PXScrollInfo)scrollInfo;
 - (PXTileAnimator)tileAnimator;
-- (PXTileIdentifier)tileIdentifierForTile:(SEL)a3;
+- (PXTileIdentifier)tileIdentifierForTile:(SEL)tile;
 - (PXTileSource)tileSource;
 - (PXTilingChange)_currentChange;
 - (PXTilingController)init;
-- (PXTilingController)initWithLayout:(id)a3;
+- (PXTilingController)initWithLayout:(id)layout;
 - (PXTilingControllerDebugInfo)debugInfo;
 - (PXTilingControllerObserver)observer;
 - (PXTilingControllerScrollDelegate)scrollDelegate;
@@ -29,31 +29,31 @@
 - (PXTilingLayout)_layoutWithInitializedVisibleOrigin;
 - (UIEdgeInsets)_contentInset;
 - (UIEdgeInsets)_maxPreheatPadding;
-- (id)_indexesOfVisibleTilesInRect:(CGRect)a3 withOptions:(id)a4;
-- (id)_preheatRecordForPreheatHandler:(id)a3 context:(void *)a4 createIfNeeded:(BOOL)a5;
-- (id)convertScrollInfoFromLayout:(id)a3;
+- (id)_indexesOfVisibleTilesInRect:(CGRect)rect withOptions:(id)options;
+- (id)_preheatRecordForPreheatHandler:(id)handler context:(void *)context createIfNeeded:(BOOL)needed;
+- (id)convertScrollInfoFromLayout:(id)layout;
 - (id)debugQuickLookObject;
-- (id)imageTileWithIdentifier:(PXTileIdentifier *)a3;
-- (id)titleSubtitleTileWithIdentifier:(PXTileIdentifier *)a3;
+- (id)imageTileWithIdentifier:(PXTileIdentifier *)identifier;
+- (id)titleSubtitleTileWithIdentifier:(PXTileIdentifier *)identifier;
 - (void)_discardCurrentChange;
 - (void)_ensureCurrentChange;
-- (void)_fillBuffersWithTileStatesAtIndexes:(id)a3;
-- (void)_handleTileAnimationCompletionWithIndex:(unint64_t)a3;
+- (void)_fillBuffersWithTileStatesAtIndexes:(id)indexes;
+- (void)_handleTileAnimationCompletionWithIndex:(unint64_t)index;
 - (void)_invalidateAllCachedRects;
-- (void)_invalidateCachesOutsideRect:(CGRect)a3;
+- (void)_invalidateCachesOutsideRect:(CGRect)rect;
 - (void)_invalidateLayoutPreferredVisibleOrigin;
-- (void)_invalidateRect:(CGRect)a3;
+- (void)_invalidateRect:(CGRect)rect;
 - (void)_invalidateScrollInfo;
 - (void)_invalidateTiles;
-- (void)_markRectAsCached:(CGRect)a3;
-- (void)_prepareBufferForCount:(unint64_t)a3;
-- (void)_setActiveRect:(CGRect)a3;
-- (void)_setDirtyRect:(CGRect)a3;
+- (void)_markRectAsCached:(CGRect)cached;
+- (void)_prepareBufferForCount:(unint64_t)count;
+- (void)_setActiveRect:(CGRect)rect;
+- (void)_setDirtyRect:(CGRect)rect;
 - (void)_setNeedsUpdate;
-- (void)_setPagedRect:(CGRect)a3;
-- (void)_setReferenceSize:(CGSize)a3;
-- (void)_setTargetLayout:(id)a3;
-- (void)_setVisibleRect:(CGRect)a3;
+- (void)_setPagedRect:(CGRect)rect;
+- (void)_setReferenceSize:(CGSize)size;
+- (void)_setTargetLayout:(id)layout;
+- (void)_setVisibleRect:(CGRect)rect;
 - (void)_updateDebugDelegateIfNeeded;
 - (void)_updateLayoutMetricsIfNeeded;
 - (void)_updateLayoutPositionIfNeeded;
@@ -69,16 +69,16 @@
 - (void)beginUpdate;
 - (void)dealloc;
 - (void)endUpdate;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
-- (void)registerPreheatHandler:(id)a3 withPadding:(UIEdgeInsets)a4 tileGroup:(unint64_t)a5 context:(void *)a6;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
+- (void)registerPreheatHandler:(id)handler withPadding:(UIEdgeInsets)padding tileGroup:(unint64_t)group context:(void *)context;
 - (void)requestFocus;
-- (void)setLayoutOrigin:(CGPoint)a3;
-- (void)setReferenceSize:(CGSize)a3 contentInset:(UIEdgeInsets)a4;
-- (void)setScrollController:(id)a3;
-- (void)setScrollDelegate:(id)a3;
-- (void)setTransitionDelegate:(id)a3;
-- (void)tilingLayout:(id)a3 invalidatedWithContext:(id)a4;
-- (void)unregisterPreheatHandler:(id)a3 context:(void *)a4;
+- (void)setLayoutOrigin:(CGPoint)origin;
+- (void)setReferenceSize:(CGSize)size contentInset:(UIEdgeInsets)inset;
+- (void)setScrollController:(id)controller;
+- (void)setScrollDelegate:(id)delegate;
+- (void)setTransitionDelegate:(id)delegate;
+- (void)tilingLayout:(id)layout invalidatedWithContext:(id)context;
+- (void)unregisterPreheatHandler:(id)handler context:(void *)context;
 - (void)updateLayout;
 - (void)updateMetrics;
 @end
@@ -87,8 +87,8 @@
 
 - (void)requestFocus
 {
-  v3 = [(PXTilingController *)self observer];
-  [v3 tilingController:self invalidatedWithContext:1];
+  observer = [(PXTilingController *)self observer];
+  [observer tilingController:self invalidatedWithContext:1];
 }
 
 - (PXTilingDebugDelegate)debugDelegate
@@ -265,41 +265,41 @@
   return WeakRetained;
 }
 
-- (void)tilingLayout:(id)a3 invalidatedWithContext:(id)a4
+- (void)tilingLayout:(id)layout invalidatedWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  contextCopy = context;
   if (self->_hasInitializedLayout)
   {
     [(PXTilingController *)self _ensureCurrentChange];
-    v8 = [(PXTilingController *)self _currentChange];
-    v9 = [[PXTilingChangeEvent alloc] initWithLayoutInvalidationContext:v7];
-    [v8 addEvent:v9];
+    _currentChange = [(PXTilingController *)self _currentChange];
+    v9 = [[PXTilingChangeEvent alloc] initWithLayoutInvalidationContext:contextCopy];
+    [_currentChange addEvent:v9];
 
     [(PXTilingController *)self _invalidateLayoutPreparation];
-    if (([v7 invalidatedContentBounds] & 1) != 0 || objc_msgSend(v7, "invalidatedScrollBounds"))
+    if (([contextCopy invalidatedContentBounds] & 1) != 0 || objc_msgSend(contextCopy, "invalidatedScrollBounds"))
     {
-      v10 = [(PXTilingController *)self observer];
-      [v10 tilingController:self invalidatedWithContext:2];
+      observer = [(PXTilingController *)self observer];
+      [observer tilingController:self invalidatedWithContext:2];
 
       [(PXTilingController *)self _setNeedsUpdate];
     }
 
-    if ([v7 invalidatedVisibleRect])
+    if ([contextCopy invalidatedVisibleRect])
     {
       [(PXTilingController *)self _setLayoutWithInitializedVisibleOrigin:0];
       [(PXTilingController *)self _invalidateLayoutPreferredVisibleOrigin];
     }
 
-    if ([v7 invalidatedScrollInfo])
+    if ([contextCopy invalidatedScrollInfo])
     {
       [(PXTilingController *)self _invalidateScrollInfo];
     }
 
-    v11 = [v7 invalidatedAllTiles];
-    v12 = [v7 invalidatedTileGroups];
-    v13 = v12;
-    if (v11 && [v12 count] || (v26 = 0, v27 = &v26, v28 = 0x2020000000, v29 = 0, v25[0] = MEMORY[0x1E69E9820], v25[1] = 3221225472, v25[2] = __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invoke, v25[3] = &unk_1E7737E80, v25[4] = &v26, objc_msgSend(v7, "enumerateInvalidatedTileIdentifiersUsingBlock:", v25), v14 = *(v27 + 24) | v11, _Block_object_dispose(&v26, 8), (v14 & 1) != 0))
+    invalidatedAllTiles = [contextCopy invalidatedAllTiles];
+    invalidatedTileGroups = [contextCopy invalidatedTileGroups];
+    v13 = invalidatedTileGroups;
+    if (invalidatedAllTiles && [invalidatedTileGroups count] || (v26 = 0, v27 = &v26, v28 = 0x2020000000, v29 = 0, v25[0] = MEMORY[0x1E69E9820], v25[1] = 3221225472, v25[2] = __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invoke, v25[3] = &unk_1E7737E80, v25[4] = &v26, objc_msgSend(contextCopy, "enumerateInvalidatedTileIdentifiersUsingBlock:", v25), v14 = *(v27 + 24) | invalidatedAllTiles, _Block_object_dispose(&v26, 8), (v14 & 1) != 0))
     {
       v15 = 1;
     }
@@ -316,15 +316,15 @@ LABEL_16:
       v15 = 0;
     }
 
-    v16 = [(PXTilingController *)self _tileStates];
+    _tileStates = [(PXTilingController *)self _tileStates];
     v18 = MEMORY[0x1E69E9820];
     v19 = 3221225472;
     v20 = __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invoke_2;
     v21 = &unk_1E7737EA8;
     v24 = v15;
     v22 = v13;
-    v23 = v16;
-    v17 = v16;
+    v23 = _tileStates;
+    v17 = _tileStates;
     [v17 enumerateStatesUsingBlock:&v18];
     [(PXTilingController *)self _invalidateAllCachedRects:v18];
     [(PXTilingController *)self _invalidateTiles];
@@ -378,12 +378,12 @@ __n128 __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invo
 
 - (void)_updateDebugDelegateIfNeeded
 {
-  v3 = [(PXTilingController *)self debugDelegate];
-  if (v3)
+  debugDelegate = [(PXTilingController *)self debugDelegate];
+  if (debugDelegate)
   {
-    v4 = v3;
-    [v3 tilingControllerDidUpdateDebugInfo:self];
-    v3 = v4;
+    v4 = debugDelegate;
+    [debugDelegate tilingControllerDidUpdateDebugInfo:self];
+    debugDelegate = v4;
   }
 }
 
@@ -392,14 +392,14 @@ __n128 __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invo
   if (self->_needsUpdateFlags.scrollInfo)
   {
     self->_needsUpdateFlags.scrollInfo = 0;
-    v4 = [(PXTilingController *)self targetLayout];
-    if (!self->_scrollDelegateFlags.respondsToScrollInfoForLayout || (-[PXTilingController scrollDelegate](self, "scrollDelegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 tilingController:self scrollInfoForLayout:v4], v7 = objc_claimAutoreleasedReturnValue(), v5, (v6 = v7) == 0))
+    targetLayout = [(PXTilingController *)self targetLayout];
+    if (!self->_scrollDelegateFlags.respondsToScrollInfoForLayout || (-[PXTilingController scrollDelegate](self, "scrollDelegate"), v5 = objc_claimAutoreleasedReturnValue(), [v5 tilingController:self scrollInfoForLayout:targetLayout], v7 = objc_claimAutoreleasedReturnValue(), v5, (scrollInfo = v7) == 0))
     {
-      v6 = [v4 scrollInfo];
+      scrollInfo = [targetLayout scrollInfo];
     }
 
-    v8 = v6;
-    [(PXTilingController *)self _setScrollInfo:v6];
+    v8 = scrollInfo;
+    [(PXTilingController *)self _setScrollInfo:scrollInfo];
   }
 }
 
@@ -407,8 +407,8 @@ __n128 __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invo
 {
   self->_needsUpdateFlags.scrollInfo = 1;
   [(PXTilingController *)self _setNeedsUpdate];
-  v3 = [(PXTilingController *)self observer];
-  [v3 tilingController:self invalidatedWithContext:2];
+  observer = [(PXTilingController *)self observer];
+  [observer tilingController:self invalidatedWithContext:2];
 }
 
 - (void)_updateMaxPreheatPaddingIfNeeded
@@ -425,8 +425,8 @@ __n128 __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invo
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(PXTilingController *)self _preheatRecords];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    _preheatRecords = [(PXTilingController *)self _preheatRecords];
+    v8 = [_preheatRecords countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -437,7 +437,7 @@ __n128 __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invo
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(_preheatRecords);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
@@ -466,7 +466,7 @@ __n128 __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invo
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [_preheatRecords countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -492,7 +492,7 @@ __n128 __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invo
     v17 = __Block_byref_object_copy__96433;
     v18 = __Block_byref_object_dispose__96434;
     v19 = 0;
-    v11 = [(PXTilingController *)self _preheatRecords];
+    _preheatRecords = [(PXTilingController *)self _preheatRecords];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __47__PXTilingController__updatePreheatingIfNeeded__block_invoke;
@@ -503,12 +503,12 @@ __n128 __58__PXTilingController_tilingLayout_invalidatedWithContext___block_invo
     v13[9] = v10;
     v13[4] = self;
     v13[5] = &v14;
-    [v11 enumerateObjectsUsingBlock:v13];
+    [_preheatRecords enumerateObjectsUsingBlock:v13];
 
     if ([v15[5] count])
     {
-      v12 = [(PXTilingController *)self _preheatRecords];
-      [v12 removeObjectsAtIndexes:v15[5]];
+      _preheatRecords2 = [(PXTilingController *)self _preheatRecords];
+      [_preheatRecords2 removeObjectsAtIndexes:v15[5]];
 
       [(PXTilingController *)self _invalidateMaxPreheatPadding];
       [(PXTilingController *)self _updateMaxPreheatPaddingIfNeeded];
@@ -548,19 +548,19 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
   if (self->_needsUpdateFlags.tiles)
   {
     self->_needsUpdateFlags.tiles = 0;
-    v91 = [(PXTilingController *)self tileSource];
-    if (v91)
+    tileSource = [(PXTilingController *)self tileSource];
+    if (tileSource)
     {
-      v4 = [(PXTilingController *)self _tileStates];
-      [v4 count];
+      _tileStates = [(PXTilingController *)self _tileStates];
+      [_tileStates count];
       kdebug_trace();
-      v5 = [(PXTilingController *)self targetLayout];
-      v90 = [(PXTilingController *)self _coordinateSpaceIdentifier];
-      v89 = [(PXTilingController *)self _coordinateSpaceConverter];
-      v87 = [(PXTilingController *)self transitionDelegate];
-      v6 = [(PXTilingController *)self _currentChangeIfExists];
-      v7 = v6;
-      if (v6 && ([v6 isIdentity] & 1) == 0 && self->_transitionDelegateFlags.respondsToTileIdentifierConverterForChange && (objc_msgSend(v87, "tilingController:tileIdentifierConverterForChange:", self, v7), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+      targetLayout = [(PXTilingController *)self targetLayout];
+      _coordinateSpaceIdentifier = [(PXTilingController *)self _coordinateSpaceIdentifier];
+      _coordinateSpaceConverter = [(PXTilingController *)self _coordinateSpaceConverter];
+      transitionDelegate = [(PXTilingController *)self transitionDelegate];
+      _currentChangeIfExists = [(PXTilingController *)self _currentChangeIfExists];
+      v7 = _currentChangeIfExists;
+      if (_currentChangeIfExists && ([_currentChangeIfExists isIdentity] & 1) == 0 && self->_transitionDelegateFlags.respondsToTileIdentifierConverterForChange && (objc_msgSend(transitionDelegate, "tilingController:tileIdentifierConverterForChange:", self, v7), (v8 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v127[0] = MEMORY[0x1E69E9820];
         v127[1] = 3221225472;
@@ -568,7 +568,7 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
         v127[3] = &unk_1E7737C88;
         v88 = v8;
         v128 = v88;
-        v129 = v4;
+        v129 = _tileStates;
         [v129 enumerateStatesUsingBlock:v127];
       }
 
@@ -621,7 +621,7 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
         v27 = rect.size.height;
         if (!CGRectIsEmpty(*&v24))
         {
-          [v89 convertRect:v90 fromCoordinateSpaceIdentifier:objc_msgSend(v5 toCoordinateSpaceIdentifier:{"coordinateSpaceIdentifier"), rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
+          [_coordinateSpaceConverter convertRect:_coordinateSpaceIdentifier fromCoordinateSpaceIdentifier:objc_msgSend(targetLayout toCoordinateSpaceIdentifier:{"coordinateSpaceIdentifier"), rect.origin.x, rect.origin.y, rect.size.width, rect.size.height}];
           v29 = v28;
           v31 = v30;
           v33 = v32;
@@ -631,27 +631,27 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
           v119[1] = 3221225472;
           v119[2] = __42__PXTilingController__updateTilesIfNeeded__block_invoke_2;
           v119[3] = &unk_1E7737D40;
-          v120 = v4;
-          v124 = v90;
+          v120 = _tileStates;
+          v124 = _coordinateSpaceIdentifier;
           v125 = a2;
-          v121 = v89;
-          v122 = self;
-          v123 = v5;
+          v121 = _coordinateSpaceConverter;
+          selfCopy = self;
+          v123 = targetLayout;
           [v123 enumerateTilesInRect:0 withOptions:v119 usingBlock:{v29, v31, v33, v35}];
           kdebug_trace();
         }
 
-        v36 = [v7 fromLayout];
-        v37 = [v7 toLayout];
-        v38 = v37;
-        if (v37)
+        fromLayout = [v7 fromLayout];
+        toLayout = [v7 toLayout];
+        v38 = toLayout;
+        if (toLayout)
         {
-          v39 = v37;
+          v39 = toLayout;
         }
 
         else
         {
-          v39 = v5;
+          v39 = targetLayout;
         }
 
         v40 = v39;
@@ -669,25 +669,25 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
         v112[2] = __42__PXTilingController__updateTilesIfNeeded__block_invoke_4;
         v112[3] = &unk_1E7737D68;
         v113 = v43;
-        v114 = v36;
-        v44 = v4;
-        v45 = v4;
+        v114 = fromLayout;
+        v44 = _tileStates;
+        v45 = _tileStates;
         v46 = v7;
         v47 = a2;
-        v48 = v5;
+        v48 = targetLayout;
         v49 = v44;
         v115 = v44;
         v117 = v40;
-        v118 = v90;
-        v116 = v89;
+        v118 = _coordinateSpaceIdentifier;
+        v116 = _coordinateSpaceConverter;
         v50 = v40;
-        v51 = v36;
+        v51 = fromLayout;
         v52 = v43;
         v53 = v49;
-        v5 = v48;
+        targetLayout = v48;
         a2 = v47;
         v7 = v46;
-        v4 = v45;
+        _tileStates = v45;
         [v53 enumerateStatesUsingBlock:v112];
       }
 
@@ -701,16 +701,16 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
 
         else if (self->_transitionDelegateFlags.respondsToTransitionAnimationCoordinatorForChange)
         {
-          v56 = [v7 fromLayout];
-          v57 = v56;
-          if (v56 && !+[PXTilingCoordinateSpaceConverter canConvertBetweenCoordinateSpaceIdentifier:andCoordinateSpaceIdentifier:](PXTilingCoordinateSpaceConverter, "canConvertBetweenCoordinateSpaceIdentifier:andCoordinateSpaceIdentifier:", [v56 coordinateSpaceIdentifier], v90))
+          fromLayout2 = [v7 fromLayout];
+          v57 = fromLayout2;
+          if (fromLayout2 && !+[PXTilingCoordinateSpaceConverter canConvertBetweenCoordinateSpaceIdentifier:andCoordinateSpaceIdentifier:](PXTilingCoordinateSpaceConverter, "canConvertBetweenCoordinateSpaceIdentifier:andCoordinateSpaceIdentifier:", [fromLayout2 coordinateSpaceIdentifier], _coordinateSpaceIdentifier))
           {
             v54 = 0;
           }
 
           else
           {
-            v54 = [v87 tilingController:self transitionAnimationCoordinatorForChange:v7];
+            v54 = [transitionDelegate tilingController:self transitionAnimationCoordinatorForChange:v7];
           }
         }
 
@@ -731,12 +731,12 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
       v110[3] = &unk_1E7737D90;
       v58 = v54;
       v111 = v58;
-      v59 = [v4 indexesOfStatesPassingTest:v110];
+      v59 = [_tileStates indexesOfStatesPassingTest:v110];
       v108[0] = MEMORY[0x1E69E9820];
       v108[1] = 3221225472;
       v108[2] = __42__PXTilingController__updateTilesIfNeeded__block_invoke_6;
       v108[3] = &unk_1E7737C60;
-      v60 = v4;
+      v60 = _tileStates;
       v109 = v60;
       [v60 enumerateStatesAtIndexes:v59 usingBlock:v108];
       [(PXTilingController *)self _activeRect];
@@ -744,7 +744,7 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
       v64 = v63;
       v66 = v65;
       v68 = v67;
-      v69 = [(PXTilingController *)self tileAnimator];
+      tileAnimator = [(PXTilingController *)self tileAnimator];
       objc_initWeak(&buf, self);
       v100[0] = MEMORY[0x1E69E9820];
       v100[1] = 3221225472;
@@ -754,20 +754,20 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
       v100[4] = self;
       v70 = v58;
       v101 = v70;
-      v71 = v89;
+      v71 = _coordinateSpaceConverter;
       v102 = v71;
-      v107[2] = v90;
-      v72 = v5;
+      v107[2] = _coordinateSpaceIdentifier;
+      v72 = targetLayout;
       v73 = v60;
       v103 = v73;
       v107[3] = v62;
       v107[4] = v64;
       v107[5] = v66;
       v107[6] = v68;
-      v104 = v91;
+      v104 = tileSource;
       v74 = v72;
       v105 = v74;
-      v75 = v69;
+      v75 = tileAnimator;
       v106 = v75;
       objc_copyWeak(v107, &buf);
       [v73 enumerateStatesUsingBlock:v100];
@@ -799,7 +799,7 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
         v83 = *(MEMORY[0x1E695F040] + 24);
       }
 
-      v85 = [MEMORY[0x1E696AD50] indexSet];
+      indexSet = [MEMORY[0x1E696AD50] indexSet];
       v92[0] = MEMORY[0x1E69E9820];
       v92[1] = 3221225472;
       v92[2] = __42__PXTilingController__updateTilesIfNeeded__block_invoke_2_54;
@@ -811,7 +811,7 @@ void __47__PXTilingController__updatePreheatingIfNeeded__block_invoke(uint64_t a
       v96 = v79;
       v97 = v81;
       v98 = v83;
-      v86 = v85;
+      v86 = indexSet;
       v94 = v86;
       [v23 enumerateStatesUsingBlock:v92];
       [(PXTilingController *)self _updatePreheatingIfNeeded];
@@ -2216,12 +2216,12 @@ double __42__PXTilingController__updateTilesIfNeeded__block_invoke_3(uint64_t a1
   [(PXTilingController *)self _invalidatePreheating];
 }
 
-- (void)_invalidateCachesOutsideRect:(CGRect)a3
+- (void)_invalidateCachesOutsideRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PXTilingController *)self _cachedRect];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -2240,12 +2240,12 @@ double __42__PXTilingController__updateTilesIfNeeded__block_invoke_3(uint64_t a1
   [(PXTilingController *)self _invalidateRect:?];
 }
 
-- (void)_invalidateRect:(CGRect)a3
+- (void)_invalidateRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(PXTilingController *)self _dirtyRect];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -2273,8 +2273,8 @@ double __42__PXTilingController__updateTilesIfNeeded__block_invoke_3(uint64_t a1
   if (self->_needsUpdateFlags.layoutPreparation)
   {
     self->_needsUpdateFlags.layoutPreparation = 0;
-    v3 = [(PXTilingController *)self targetLayout];
-    [v3 prepareLayout];
+    targetLayout = [(PXTilingController *)self targetLayout];
+    [targetLayout prepareLayout];
   }
 }
 
@@ -2283,24 +2283,24 @@ double __42__PXTilingController__updateTilesIfNeeded__block_invoke_3(uint64_t a1
   if (self->_needsUpdateFlags.layoutVisibleRect)
   {
     self->_needsUpdateFlags.layoutVisibleRect = 0;
-    v3 = [(PXTilingController *)self targetLayout];
+    targetLayout = [(PXTilingController *)self targetLayout];
     [(PXTilingController *)self _visibleRect];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(PXTilingController *)self _coordinateSpaceConverter];
-    [v12 convertRect:-[PXTilingController _coordinateSpaceIdentifier](self fromCoordinateSpaceIdentifier:"_coordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{objc_msgSend(v3, "coordinateSpaceIdentifier"), v5, v7, v9, v11}];
+    _coordinateSpaceConverter = [(PXTilingController *)self _coordinateSpaceConverter];
+    [_coordinateSpaceConverter convertRect:-[PXTilingController _coordinateSpaceIdentifier](self fromCoordinateSpaceIdentifier:"_coordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{objc_msgSend(targetLayout, "coordinateSpaceIdentifier"), v5, v7, v9, v11}];
     v14 = v13;
     v16 = v15;
 
-    [v3 visibleOrigin];
+    [targetLayout visibleOrigin];
     if (v16 != v18 || v14 != v17)
     {
-      [v3 setVisibleOrigin:{v14, v16}];
+      [targetLayout setVisibleOrigin:{v14, v16}];
     }
 
-    [v3 visibleSize];
+    [targetLayout visibleSize];
     PXSizeApproximatelyEqualToSize();
   }
 }
@@ -2368,29 +2368,29 @@ __n128 __51__PXTilingController__updateLayoutPositionIfNeeded__block_invoke(uint
   }
 
   self->_needsUpdateFlags.layoutPreferredVisibleOrigin = 0;
-  v23 = [(PXTilingController *)self targetLayout];
-  [v23 scrollBounds];
+  targetLayout = [(PXTilingController *)self targetLayout];
+  [targetLayout scrollBounds];
   v5 = v4;
   v7 = v6;
-  v8 = [(PXTilingController *)self _layoutWithInitializedVisibleOrigin];
+  _layoutWithInitializedVisibleOrigin = [(PXTilingController *)self _layoutWithInitializedVisibleOrigin];
 
-  if (v23 == v8)
+  if (targetLayout == _layoutWithInitializedVisibleOrigin)
   {
-    v9 = [(PXTilingController *)self _coordinateSpace];
-    v12 = [v23 coordinateSpace];
-    [v12 setParentSpace:v9];
+    _coordinateSpace = [(PXTilingController *)self _coordinateSpace];
+    coordinateSpace = [targetLayout coordinateSpace];
+    [coordinateSpace setParentSpace:_coordinateSpace];
     [(PXTilingController *)self _visibleRect];
     v14 = v13;
     v16 = v15;
-    v17 = [(PXTilingController *)self _coordinateSpaceConverter];
-    [v17 convertPoint:objc_msgSend(v9 fromCoordinateSpaceIdentifier:"identifier") toCoordinateSpaceIdentifier:{objc_msgSend(v23, "coordinateSpaceIdentifier"), v14, v16}];
+    _coordinateSpaceConverter = [(PXTilingController *)self _coordinateSpaceConverter];
+    [_coordinateSpaceConverter convertPoint:objc_msgSend(_coordinateSpace fromCoordinateSpaceIdentifier:"identifier") toCoordinateSpaceIdentifier:{objc_msgSend(targetLayout, "coordinateSpaceIdentifier"), v14, v16}];
     v5 = v18;
     v7 = v19;
 
     if (self->_scrollDelegateFlags.respondsToTargetVisibleOriginForLayoutProposedVisibleOrigin)
     {
-      v20 = [(PXTilingController *)self scrollDelegate];
-      [v20 tilingController:self targetVisibleOriginForLayout:v23 proposedVisibleOrigin:{v5, v7}];
+      scrollDelegate = [(PXTilingController *)self scrollDelegate];
+      [scrollDelegate tilingController:self targetVisibleOriginForLayout:targetLayout proposedVisibleOrigin:{v5, v7}];
       v5 = v21;
       v7 = v22;
     }
@@ -2398,11 +2398,11 @@ __n128 __51__PXTilingController__updateLayoutPositionIfNeeded__block_invoke(uint
     goto LABEL_9;
   }
 
-  [(PXTilingController *)self _setLayoutWithInitializedVisibleOrigin:v23];
+  [(PXTilingController *)self _setLayoutWithInitializedVisibleOrigin:targetLayout];
   if (self->_scrollDelegateFlags.respondsToInitialVisibleOriginForLayout)
   {
-    v9 = [(PXTilingController *)self scrollDelegate];
-    [v9 tilingController:self initialVisibleOriginForLayout:v23];
+    _coordinateSpace = [(PXTilingController *)self scrollDelegate];
+    [_coordinateSpace tilingController:self initialVisibleOriginForLayout:targetLayout];
     v5 = v10;
     v7 = v11;
 LABEL_9:
@@ -2416,8 +2416,8 @@ LABEL_9:
   self->_needsUpdateFlags.layoutPreferredVisibleOrigin = 1;
   [(PXTilingController *)self _setNeedsUpdate];
   [(PXTilingController *)self _setLayoutDesiredOrigin:*off_1E77221E8, *(off_1E77221E8 + 1)];
-  v3 = [(PXTilingController *)self observer];
-  [v3 tilingController:self invalidatedWithContext:2];
+  observer = [(PXTilingController *)self observer];
+  [observer tilingController:self invalidatedWithContext:2];
 }
 
 - (void)_updateLayoutMetricsIfNeeded
@@ -2425,7 +2425,7 @@ LABEL_9:
   if (self->_needsUpdateFlags.layoutMetrics)
   {
     self->_needsUpdateFlags.layoutMetrics = 0;
-    v16 = [(PXTilingController *)self targetLayout];
+    targetLayout = [(PXTilingController *)self targetLayout];
     [(PXTilingController *)self _referenceSize];
     v4 = v3;
     v6 = v5;
@@ -2433,19 +2433,19 @@ LABEL_9:
     v8 = v7;
     v10 = v9;
     [(PXTilingController *)self _contentInset];
-    [v16 referenceSize];
+    [targetLayout referenceSize];
     if (v6 != v12 || v4 != v11)
     {
-      [v16 setReferenceSize:{v4, v6}];
+      [targetLayout setReferenceSize:{v4, v6}];
     }
 
-    [v16 visibleSize];
+    [targetLayout visibleSize];
     if (v8 != v15 || v10 != v14)
     {
-      [v16 setVisibleSize:{v8, v10}];
+      [targetLayout setVisibleSize:{v8, v10}];
     }
 
-    [v16 contentInset];
+    [targetLayout contentInset];
     PXEdgeInsetsEqualToEdgeInsets();
   }
 }
@@ -2455,13 +2455,13 @@ LABEL_9:
   if (self->_needsUpdateFlags.scrollControllerMetrics)
   {
     self->_needsUpdateFlags.scrollControllerMetrics = 0;
-    v20 = [(PXTilingController *)self scrollController];
-    [v20 activeRect];
+    scrollController = [(PXTilingController *)self scrollController];
+    [scrollController activeRect];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    [v20 visibleRect];
+    [scrollController visibleRect];
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -2476,8 +2476,8 @@ LABEL_9:
   if (!self->_isPerformingUpdates && !self->_hasScheduledUpdate)
   {
     self->_hasScheduledUpdate = 1;
-    v3 = [(PXTilingController *)self observer];
-    [v3 setTilingControllerNeedsUpdate:self];
+    observer = [(PXTilingController *)self observer];
+    [observer setTilingControllerNeedsUpdate:self];
   }
 }
 
@@ -2490,8 +2490,8 @@ LABEL_9:
   v4 = *(off_1E77221E8 + 1);
   [(PXTilingController *)self _setUpdatedPreferredVisibleOrigin:*off_1E77221E8, v4];
   [(PXTilingController *)self _setLayoutDesiredOrigin:v3, v4];
-  v5 = [(PXTilingController *)self targetLayout];
-  [(PXTilingController *)self _setCurrentLayout:v5];
+  targetLayout = [(PXTilingController *)self targetLayout];
+  [(PXTilingController *)self _setCurrentLayout:targetLayout];
 
   [(PXTilingController *)self _updateDebugDelegateIfNeeded];
   self->_isPerformingUpdates = 0;
@@ -2520,14 +2520,14 @@ LABEL_9:
 
 - (void)beginUpdate
 {
-  v3 = [(PXTilingController *)self _currentChangeIfExists];
-  if (v3 && self->_transitionDelegateFlags.respondsToPrepareForChange)
+  _currentChangeIfExists = [(PXTilingController *)self _currentChangeIfExists];
+  if (_currentChangeIfExists && self->_transitionDelegateFlags.respondsToPrepareForChange)
   {
-    v5 = v3;
-    v4 = [(PXTilingController *)self transitionDelegate];
-    [v4 tilingController:self prepareForChange:v5];
+    v5 = _currentChangeIfExists;
+    transitionDelegate = [(PXTilingController *)self transitionDelegate];
+    [transitionDelegate tilingController:self prepareForChange:v5];
 
-    v3 = v5;
+    _currentChangeIfExists = v5;
   }
 
   *&self->_isPerformingUpdates = 1;
@@ -2544,8 +2544,8 @@ LABEL_9:
   currentChange = self->__currentChange;
   if (!currentChange)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXTilingController.m" lineNumber:709 description:@"invalid access to current change"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingController.m" lineNumber:709 description:@"invalid access to current change"];
 
     currentChange = self->__currentChange;
   }
@@ -2565,8 +2565,8 @@ LABEL_9:
     currentChange = self->__currentChange;
   }
 
-  v6 = [(PXTilingController *)self targetLayout];
-  [(PXTilingChange *)currentChange recordLayout:v6];
+  targetLayout = [(PXTilingController *)self targetLayout];
+  [(PXTilingChange *)currentChange recordLayout:targetLayout];
 
   v7 = self->__currentChange;
   [(PXTilingController *)self _referenceSize];
@@ -2575,13 +2575,13 @@ LABEL_9:
   [(PXTilingController *)self _contentInset];
   [(PXTilingChange *)v8 recordContentInset:?];
   v9 = self->__currentChange;
-  v10 = [(PXTilingController *)self compositionInvalidationContexts];
-  [(PXTilingChange *)v9 recordCompositionInvalidationContexts:v10];
+  compositionInvalidationContexts = [(PXTilingController *)self compositionInvalidationContexts];
+  [(PXTilingChange *)v9 recordCompositionInvalidationContexts:compositionInvalidationContexts];
 }
 
-- (id)convertScrollInfoFromLayout:(id)a3
+- (id)convertScrollInfoFromLayout:(id)layout
 {
-  v4 = [a3 copy];
+  v4 = [layout copy];
   v5 = v4;
   if (v4)
   {
@@ -2589,10 +2589,10 @@ LABEL_9:
     [(PXTilingController *)self convertPointFromLayout:?];
     v7 = v6;
     v9 = v8;
-    v10 = [(PXTilingController *)self targetLayout];
-    v11 = [v10 shouldFlipHorizontally];
+    targetLayout = [(PXTilingController *)self targetLayout];
+    shouldFlipHorizontally = [targetLayout shouldFlipHorizontally];
 
-    if (v11)
+    if (shouldFlipHorizontally)
     {
       [v5 interpageSpacing];
       v7 = v7 + v12;
@@ -2604,15 +2604,15 @@ LABEL_9:
   return v5;
 }
 
-- (CGRect)convertRectFromLayout:(CGRect)a3
+- (CGRect)convertRectFromLayout:(CGRect)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(PXTilingController *)self _coordinateSpaceConverter];
-  v9 = [(PXTilingController *)self targetLayout];
-  [v8 convertRect:objc_msgSend(v9 fromCoordinateSpaceIdentifier:"coordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{-[PXTilingController _coordinateSpaceIdentifier](self, "_coordinateSpaceIdentifier"), x, y, width, height}];
+  height = layout.size.height;
+  width = layout.size.width;
+  y = layout.origin.y;
+  x = layout.origin.x;
+  _coordinateSpaceConverter = [(PXTilingController *)self _coordinateSpaceConverter];
+  targetLayout = [(PXTilingController *)self targetLayout];
+  [_coordinateSpaceConverter convertRect:objc_msgSend(targetLayout fromCoordinateSpaceIdentifier:"coordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{-[PXTilingController _coordinateSpaceIdentifier](self, "_coordinateSpaceIdentifier"), x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -2629,13 +2629,13 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)convertPointFromLayout:(CGPoint)a3
+- (CGPoint)convertPointFromLayout:(CGPoint)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(PXTilingController *)self _coordinateSpaceConverter];
-  v7 = [(PXTilingController *)self targetLayout];
-  [v6 convertPoint:objc_msgSend(v7 fromCoordinateSpaceIdentifier:"coordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{-[PXTilingController _coordinateSpaceIdentifier](self, "_coordinateSpaceIdentifier"), x, y}];
+  y = layout.y;
+  x = layout.x;
+  _coordinateSpaceConverter = [(PXTilingController *)self _coordinateSpaceConverter];
+  targetLayout = [(PXTilingController *)self targetLayout];
+  [_coordinateSpaceConverter convertPoint:objc_msgSend(targetLayout fromCoordinateSpaceIdentifier:"coordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{-[PXTilingController _coordinateSpaceIdentifier](self, "_coordinateSpaceIdentifier"), x, y}];
   v9 = v8;
   v11 = v10;
 
@@ -2646,17 +2646,17 @@ LABEL_9:
   return result;
 }
 
-- (void)setLayoutOrigin:(CGPoint)a3
+- (void)setLayoutOrigin:(CGPoint)origin
 {
-  [(PXTilingController *)self _setLayoutDesiredOrigin:a3.x, a3.y];
+  [(PXTilingController *)self _setLayoutDesiredOrigin:origin.x, origin.y];
 
   [(PXTilingController *)self _invalidateLayoutPosition];
 }
 
 - (PXScrollInfo)scrollInfo
 {
-  v2 = [(PXTilingController *)self _scrollInfo];
-  v3 = [v2 copy];
+  _scrollInfo = [(PXTilingController *)self _scrollInfo];
+  v3 = [_scrollInfo copy];
 
   return v3;
 }
@@ -2665,8 +2665,8 @@ LABEL_9:
 {
   if (!self->_isPerformingUpdates)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXTilingController.m" lineNumber:616 description:@"property not valid unless within updates"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingController.m" lineNumber:616 description:@"property not valid unless within updates"];
   }
 
   [(PXTilingController *)self _updatedPreferredVisibleOrigin];
@@ -2689,8 +2689,8 @@ double __43__PXTilingController_layoutPreferredOrigin__block_invoke(uint64_t a1,
 
 - (CGRect)layoutScrollBounds
 {
-  v2 = [(PXTilingController *)self targetLayout];
-  [v2 scrollBounds];
+  targetLayout = [(PXTilingController *)self targetLayout];
+  [targetLayout scrollBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2709,8 +2709,8 @@ double __43__PXTilingController_layoutPreferredOrigin__block_invoke(uint64_t a1,
 
 - (CGRect)layoutContentBounds
 {
-  v2 = [(PXTilingController *)self targetLayout];
-  [v2 contentBounds];
+  targetLayout = [(PXTilingController *)self targetLayout];
+  [targetLayout contentBounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -2727,24 +2727,24 @@ double __43__PXTilingController_layoutPreferredOrigin__block_invoke(uint64_t a1,
   return result;
 }
 
-- (void)setReferenceSize:(CGSize)a3 contentInset:(UIEdgeInsets)a4
+- (void)setReferenceSize:(CGSize)size contentInset:(UIEdgeInsets)inset
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  [(PXTilingController *)self _setReferenceSize:a3.width, a3.height];
+  right = inset.right;
+  bottom = inset.bottom;
+  left = inset.left;
+  top = inset.top;
+  [(PXTilingController *)self _setReferenceSize:size.width, size.height];
 
   [(PXTilingController *)self _setContentInset:top, left, bottom, right];
 }
 
-- (void)_markRectAsCached:(CGRect)a3
+- (void)_markRectAsCached:(CGRect)cached
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = cached.size.height;
+  width = cached.size.width;
+  y = cached.origin.y;
+  x = cached.origin.x;
+  if (CGRectIsEmpty(cached))
   {
     return;
   }
@@ -2881,22 +2881,22 @@ LABEL_17:
   [(PXTilingController *)self _setCachedRect:x, y, width, height];
 }
 
-- (void)_fillBuffersWithTileStatesAtIndexes:(id)a3
+- (void)_fillBuffersWithTileStatesAtIndexes:(id)indexes
 {
-  v4 = a3;
-  -[PXTilingController _prepareBufferForCount:](self, "_prepareBufferForCount:", [v4 count]);
+  indexesCopy = indexes;
+  -[PXTilingController _prepareBufferForCount:](self, "_prepareBufferForCount:", [indexesCopy count]);
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x2020000000;
   v7[3] = 0;
-  v5 = [(PXTilingController *)self _tileStates];
+  _tileStates = [(PXTilingController *)self _tileStates];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__PXTilingController__fillBuffersWithTileStatesAtIndexes___block_invoke;
   v6[3] = &unk_1E7737CB0;
   v6[4] = self;
   v6[5] = v7;
-  [v5 enumerateStatesAtIndexes:v4 usingBlock:v6];
+  [_tileStates enumerateStatesAtIndexes:indexesCopy usingBlock:v6];
 
   _Block_object_dispose(v7, 8);
 }
@@ -2940,30 +2940,30 @@ __n128 __58__PXTilingController__fillBuffersWithTileStatesAtIndexes___block_invo
   return result;
 }
 
-- (void)_prepareBufferForCount:(unint64_t)a3
+- (void)_prepareBufferForCount:(unint64_t)count
 {
-  if (self->_bufferCount < a3)
+  if (self->_bufferCount < count)
   {
-    self->_identifierBuffer = malloc_type_realloc(self->_identifierBuffer, 88 * a3, 0x1000040931E79F6uLL);
-    self->_geometryBuffer = malloc_type_realloc(self->_geometryBuffer, 192 * a3, 0x108004042DB75DEuLL);
-    self->_bufferCount = a3;
+    self->_identifierBuffer = malloc_type_realloc(self->_identifierBuffer, 88 * count, 0x1000040931E79F6uLL);
+    self->_geometryBuffer = malloc_type_realloc(self->_geometryBuffer, 192 * count, 0x108004042DB75DEuLL);
+    self->_bufferCount = count;
   }
 }
 
-- (id)_preheatRecordForPreheatHandler:(id)a3 context:(void *)a4 createIfNeeded:(BOOL)a5
+- (id)_preheatRecordForPreheatHandler:(id)handler context:(void *)context createIfNeeded:(BOOL)needed
 {
-  v5 = a5;
+  neededCopy = needed;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  handlerCopy = handler;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [(PXTilingController *)self _preheatRecords];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  _preheatRecords = [(PXTilingController *)self _preheatRecords];
+  v10 = [_preheatRecords countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
-    v19 = v5;
+    v19 = neededCopy;
     v11 = *v21;
     while (2)
     {
@@ -2971,17 +2971,17 @@ __n128 __58__PXTilingController__fillBuffersWithTileStatesAtIndexes___block_invo
       {
         if (*v21 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_preheatRecords);
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 preheatHandler];
-        v15 = v14;
-        if (v14 == v8)
+        preheatHandler = [v13 preheatHandler];
+        v15 = preheatHandler;
+        if (preheatHandler == handlerCopy)
         {
-          v16 = [v13 context];
+          context = [v13 context];
 
-          if (v16 == a4)
+          if (context == context)
           {
             v10 = v13;
             goto LABEL_13;
@@ -2993,7 +2993,7 @@ __n128 __58__PXTilingController__fillBuffersWithTileStatesAtIndexes___block_invo
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v10 = [_preheatRecords countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v10)
       {
         continue;
@@ -3003,23 +3003,23 @@ __n128 __58__PXTilingController__fillBuffersWithTileStatesAtIndexes___block_invo
     }
 
 LABEL_13:
-    v5 = v19;
+    neededCopy = v19;
   }
 
-  if (!v10 && v5)
+  if (!v10 && neededCopy)
   {
-    v10 = [[PXTilingControllerPreheatRecord alloc] initWithPreheatHandler:v8 context:a4];
-    v17 = [(PXTilingController *)self _preheatRecords];
-    [v17 addObject:v10];
+    v10 = [[PXTilingControllerPreheatRecord alloc] initWithPreheatHandler:handlerCopy context:context];
+    _preheatRecords2 = [(PXTilingController *)self _preheatRecords];
+    [_preheatRecords2 addObject:v10];
   }
 
   return v10;
 }
 
-- (void)_handleTileAnimationCompletionWithIndex:(unint64_t)a3
+- (void)_handleTileAnimationCompletionWithIndex:(unint64_t)index
 {
-  v5 = [(PXTilingController *)self _tileStates];
-  v6 = [v5 stateAtIndex:a3];
+  _tileStates = [(PXTilingController *)self _tileStates];
+  v6 = [_tileStates stateAtIndex:index];
 
   v7 = *(v6 + 704) - 1;
   *(v6 + 704) = v7;
@@ -3030,27 +3030,27 @@ LABEL_13:
   }
 }
 
-- (id)_indexesOfVisibleTilesInRect:(CGRect)a3 withOptions:(id)a4
+- (id)_indexesOfVisibleTilesInRect:(CGRect)rect withOptions:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9 = MEMORY[0x1E696AD50];
-  v10 = a4;
-  v11 = [v9 indexSet];
-  v12 = [v10 tileGroups];
+  optionsCopy = options;
+  indexSet = [v9 indexSet];
+  tileGroups = [optionsCopy tileGroups];
 
-  v13 = [(PXTilingController *)self _tileStates];
+  _tileStates = [(PXTilingController *)self _tileStates];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __63__PXTilingController__indexesOfVisibleTilesInRect_withOptions___block_invoke;
   v19[3] = &unk_1E7737C88;
-  v20 = v12;
-  v14 = v11;
+  v20 = tileGroups;
+  v14 = indexSet;
   v21 = v14;
-  v15 = v12;
-  [v13 enumerateStatesInRect:v19 usingBlock:{x, y, width, height}];
+  v15 = tileGroups;
+  [_tileStates enumerateStatesInRect:v19 usingBlock:{x, y, width, height}];
   v16 = v21;
   v17 = v14;
 
@@ -3073,26 +3073,26 @@ void *__63__PXTilingController__indexesOfVisibleTilesInRect_withOptions___block_
   return result;
 }
 
-- (void)_setTargetLayout:(id)a3
+- (void)_setTargetLayout:(id)layout
 {
-  v5 = a3;
-  if (self->_targetLayout != v5)
+  layoutCopy = layout;
+  if (self->_targetLayout != layoutCopy)
   {
     [(PXTilingController *)self _ensureCurrentChange];
     [(PXTilingLayout *)self->_targetLayout setObserver:0];
-    objc_storeStrong(&self->_targetLayout, a3);
+    objc_storeStrong(&self->_targetLayout, layout);
     [(PXTilingLayout *)self->_targetLayout setObserver:self];
-    v6 = [(PXTilingController *)self _currentChange];
-    v7 = [[PXTilingChangeEvent alloc] initWithChangeToLayout:v5];
-    [v6 addEvent:v7];
+    _currentChange = [(PXTilingController *)self _currentChange];
+    v7 = [[PXTilingChangeEvent alloc] initWithChangeToLayout:layoutCopy];
+    [_currentChange addEvent:v7];
 
-    v8 = [(PXTilingController *)self _tileStates];
+    _tileStates = [(PXTilingController *)self _tileStates];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __39__PXTilingController__setTargetLayout___block_invoke;
     v10[3] = &unk_1E7737C60;
-    v11 = v8;
-    v9 = v8;
+    v11 = _tileStates;
+    v9 = _tileStates;
     [v9 enumerateStatesUsingBlock:v10];
     [(PXTilingController *)self _invalidateAllCachedRects];
     [(PXTilingController *)self _invalidateLayoutMetrics];
@@ -3138,13 +3138,13 @@ __n128 __39__PXTilingController__setTargetLayout___block_invoke(uint64_t a1, uin
   return result;
 }
 
-- (void)_setDirtyRect:(CGRect)a3
+- (void)_setDirtyRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->__dirtyRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->__dirtyRect))
   {
     self->__dirtyRect.origin.x = x;
     self->__dirtyRect.origin.y = y;
@@ -3162,13 +3162,13 @@ __n128 __39__PXTilingController__setTargetLayout___block_invoke(uint64_t a1, uin
   }
 }
 
-- (void)_setPagedRect:(CGRect)a3
+- (void)_setPagedRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->__pagedRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->__pagedRect))
   {
     self->__pagedRect.origin.x = x;
     self->__pagedRect.origin.y = y;
@@ -3193,13 +3193,13 @@ uint64_t __36__PXTilingController__setPagedRect___block_invoke(uint64_t result, 
   return result;
 }
 
-- (void)_setVisibleRect:(CGRect)a3
+- (void)_setVisibleRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->__visibleRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->__visibleRect))
   {
     v8 = self->__visibleRect.size.width;
     v9 = self->__visibleRect.size.height;
@@ -3216,13 +3216,13 @@ uint64_t __36__PXTilingController__setPagedRect___block_invoke(uint64_t result, 
   }
 }
 
-- (void)_setActiveRect:(CGRect)a3
+- (void)_setActiveRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->__activeRect))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (!CGRectEqualToRect(rect, self->__activeRect))
   {
     self->__activeRect.origin.x = x;
     self->__activeRect.origin.y = y;
@@ -3234,12 +3234,12 @@ uint64_t __36__PXTilingController__setPagedRect___block_invoke(uint64_t result, 
   }
 }
 
-- (void)_setReferenceSize:(CGSize)a3
+- (void)_setReferenceSize:(CGSize)size
 {
-  if (a3.width != self->__referenceSize.width || a3.height != self->__referenceSize.height)
+  if (size.width != self->__referenceSize.width || size.height != self->__referenceSize.height)
   {
-    height = a3.height;
-    width = a3.width;
+    height = size.height;
+    width = size.width;
     [(PXTilingController *)self _ensureCurrentChange];
     self->__referenceSize.width = width;
     self->__referenceSize.height = height;
@@ -3249,10 +3249,10 @@ uint64_t __36__PXTilingController__setPagedRect___block_invoke(uint64_t result, 
 
 - (id)debugQuickLookObject
 {
-  v2 = [(PXTilingController *)self debugInfo];
-  v3 = [v2 debugQuickLookObject];
+  debugInfo = [(PXTilingController *)self debugInfo];
+  debugQuickLookObject = [debugInfo debugQuickLookObject];
 
-  return v3;
+  return debugQuickLookObject;
 }
 
 - (PXTilingControllerDebugInfo)debugInfo
@@ -3269,10 +3269,10 @@ uint64_t __36__PXTilingController__setPagedRect___block_invoke(uint64_t result, 
   [(PXTilingControllerDebugInfo *)v3 setCachedRect:?];
   [(PXTilingController *)self layoutContentBounds];
   [(PXTilingControllerDebugInfo *)v3 setContentBounds:?];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   memset(v50, 0, sizeof(v50));
-  v5 = [(PXTilingController *)self _preheatRecords];
-  if ([v5 countByEnumeratingWithState:v50 objects:v52 count:16])
+  _preheatRecords = [(PXTilingController *)self _preheatRecords];
+  if ([_preheatRecords countByEnumeratingWithState:v50 objects:v52 count:16])
   {
     v6 = **(&v50[0] + 1);
     [(PXTilingController *)self _activeRect];
@@ -3280,9 +3280,9 @@ uint64_t __36__PXTilingController__setPagedRect___block_invoke(uint64_t result, 
     sub_1A524D1F4();
   }
 
-  [(PXTilingControllerDebugInfo *)v3 setPreheatRects:v4];
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [(PXTilingController *)self _tileStates];
+  [(PXTilingControllerDebugInfo *)v3 setPreheatRects:array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  _tileStates = [(PXTilingController *)self _tileStates];
   [(PXTilingController *)self _pagedRect];
   v10 = v9;
   v12 = v11;
@@ -3292,20 +3292,20 @@ uint64_t __36__PXTilingController__setPagedRect___block_invoke(uint64_t result, 
   v48[1] = 3221225472;
   v48[2] = __31__PXTilingController_debugInfo__block_invoke;
   v48[3] = &unk_1E7737C60;
-  v17 = v7;
+  v17 = array2;
   v49 = v17;
-  [v8 enumerateStatesInRect:v48 usingBlock:{v10, v12, v14, v16}];
+  [_tileStates enumerateStatesInRect:v48 usingBlock:{v10, v12, v14, v16}];
 
   v39 = v17;
   [(PXTilingControllerDebugInfo *)v3 setPagedItems:v17];
-  v18 = [MEMORY[0x1E695DF70] array];
-  v19 = [MEMORY[0x1E696AD50] indexSet];
+  array3 = [MEMORY[0x1E695DF70] array];
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v20 = [(PXTilingController *)self _preheatRecords];
-  v21 = [v20 countByEnumeratingWithState:&v44 objects:v51 count:16];
+  _preheatRecords2 = [(PXTilingController *)self _preheatRecords];
+  v21 = [_preheatRecords2 countByEnumeratingWithState:&v44 objects:v51 count:16];
   if (v21)
   {
     v22 = v21;
@@ -3316,30 +3316,30 @@ uint64_t __36__PXTilingController__setPagedRect___block_invoke(uint64_t result, 
       {
         if (*v45 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(_preheatRecords2);
         }
 
-        v25 = [*(*(&v44 + 1) + 8 * i) preheatedTileIndexes];
-        [v19 addIndexes:v25];
+        preheatedTileIndexes = [*(*(&v44 + 1) + 8 * i) preheatedTileIndexes];
+        [indexSet addIndexes:preheatedTileIndexes];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v44 objects:v51 count:16];
+      v22 = [_preheatRecords2 countByEnumeratingWithState:&v44 objects:v51 count:16];
     }
 
     while (v22);
   }
 
-  v26 = [(PXTilingController *)self _tileStates];
+  _tileStates2 = [(PXTilingController *)self _tileStates];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __31__PXTilingController_debugInfo__block_invoke_2;
   v42[3] = &unk_1E7737C60;
-  v43 = v18;
-  v27 = v18;
-  [v26 enumerateStatesAtIndexes:v19 usingBlock:v42];
+  v43 = array3;
+  v27 = array3;
+  [_tileStates2 enumerateStatesAtIndexes:indexSet usingBlock:v42];
 
   [(PXTilingControllerDebugInfo *)v3 setPreheatedItems:v27];
-  v28 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   [(PXTilingController *)self _activeRect];
   v30 = v29;
   v32 = v31;
@@ -3349,8 +3349,8 @@ uint64_t __36__PXTilingController__setPagedRect___block_invoke(uint64_t result, 
   v40[1] = 3221225472;
   v40[2] = __31__PXTilingController_debugInfo__block_invoke_3;
   v40[3] = &unk_1E773D130;
-  v41 = v28;
-  v37 = v28;
+  v41 = array4;
+  v37 = array4;
   [(PXTilingController *)self enumerateTilesInRect:0 withOptions:v40 usingBlock:v30, v32, v34, v36];
   [(PXTilingControllerDebugInfo *)v3 setActiveItems:v37];
 
@@ -3378,29 +3378,29 @@ void __31__PXTilingController_debugInfo__block_invoke_3(uint64_t a1, uint64_t a2
   [v4 addObject:v5];
 }
 
-- (void)unregisterPreheatHandler:(id)a3 context:(void *)a4
+- (void)unregisterPreheatHandler:(id)handler context:(void *)context
 {
-  v5 = [(PXTilingController *)self _preheatRecordForPreheatHandler:a3 context:a4 createIfNeeded:0];
+  v5 = [(PXTilingController *)self _preheatRecordForPreheatHandler:handler context:context createIfNeeded:0];
   if (v5)
   {
     v7 = v5;
-    v6 = [(PXTilingController *)self _preheatRecords];
-    [v6 removeObject:v7];
+    _preheatRecords = [(PXTilingController *)self _preheatRecords];
+    [_preheatRecords removeObject:v7];
 
     [(PXTilingController *)self _invalidateMaxPreheatPadding];
     v5 = v7;
   }
 }
 
-- (void)registerPreheatHandler:(id)a3 withPadding:(UIEdgeInsets)a4 tileGroup:(unint64_t)a5 context:(void *)a6
+- (void)registerPreheatHandler:(id)handler withPadding:(UIEdgeInsets)padding tileGroup:(unint64_t)group context:(void *)context
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v12 = [(PXTilingController *)self _preheatRecordForPreheatHandler:a3 context:a6 createIfNeeded:1];
+  right = padding.right;
+  bottom = padding.bottom;
+  left = padding.left;
+  top = padding.top;
+  v12 = [(PXTilingController *)self _preheatRecordForPreheatHandler:handler context:context createIfNeeded:1];
   [v12 setPadding:{top, left, bottom, right}];
-  [v12 setTileGroup:a5];
+  [v12 setTileGroup:group];
   [(PXTilingController *)self _invalidateMaxPreheatPadding];
   [(PXTilingController *)self _invalidatePreheating];
 }
@@ -3462,22 +3462,22 @@ uint64_t __61__PXTilingController_hitTestTileAtPoint_padding_passingTest___block
   return result;
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
-  v12 = [(PXTilingController *)self _indexesOfVisibleTilesInRect:a4 withOptions:x, y, width, height];
-  v13 = [(PXTilingController *)self _tileStates];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  blockCopy = block;
+  height = [(PXTilingController *)self _indexesOfVisibleTilesInRect:options withOptions:x, y, width, height];
+  _tileStates = [(PXTilingController *)self _tileStates];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __66__PXTilingController_enumerateTilesInRect_withOptions_usingBlock___block_invoke;
   v15[3] = &unk_1E7737C10;
-  v16 = v11;
-  v14 = v11;
-  [v13 enumerateStatesAtIndexes:v12 usingBlock:v15];
+  v16 = blockCopy;
+  v14 = blockCopy;
+  [_tileStates enumerateStatesAtIndexes:height usingBlock:v15];
 }
 
 uint64_t __66__PXTilingController_enumerateTilesInRect_withOptions_usingBlock___block_invoke(uint64_t result, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -3539,18 +3539,18 @@ uint64_t __66__PXTilingController_enumerateTilesInRect_withOptions_usingBlock___
   return result;
 }
 
-- (BOOL)getTile:(void *)a3 geometry:(PXTileGeometry *)a4 group:(unint64_t *)a5 userData:(id *)a6 forTileWithIdentifier:(PXTileIdentifier *)a7
+- (BOOL)getTile:(void *)tile geometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  v13 = [(PXTilingController *)self _tileStates];
-  v14 = *&a7->index[5];
-  v47 = *&a7->index[3];
+  _tileStates = [(PXTilingController *)self _tileStates];
+  v14 = *&identifier->index[5];
+  v47 = *&identifier->index[3];
   v48 = v14;
-  v49 = *&a7->index[7];
-  *&v50 = a7->index[9];
-  v15 = *&a7->index[1];
-  v45 = *&a7->length;
+  v49 = *&identifier->index[7];
+  *&v50 = identifier->index[9];
+  v15 = *&identifier->index[1];
+  v45 = *&identifier->length;
   v46 = v15;
-  v16 = [v13 indexOfStateWithTargetIdentifier:&v45];
+  v16 = [_tileStates indexOfStateWithTargetIdentifier:&v45];
 
   if (v16 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -3592,7 +3592,7 @@ LABEL_6:
     v21 = *(v31 + 272);
     v22 = *(v31 + 680);
     v23 = 1;
-    if (!a3)
+    if (!tile)
     {
       goto LABEL_8;
     }
@@ -3600,20 +3600,20 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v17 = [(PXTilingController *)self _tileStates];
+  _tileStates2 = [(PXTilingController *)self _tileStates];
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
   v57[2] = __76__PXTilingController_getTile_geometry_group_userData_forTileWithIdentifier___block_invoke;
   v57[3] = &__block_descriptor_120_e414_B24__0__PXProtectedTileState_B_PXTileIdentifier_Q_10Q___PXTileIdentifier_Q_10Q___PXTileIdentifier_Q_10Q__QB_PXTileGeometry__CGRect__CGPoint_dd__CGSize_dd___CGPoint_dd__CGSize_dd__CGAffineTransform_dddddd_ddB_CGSize_dd__CGRect__CGPoint_dd__CGSize_dd___v__PXTileGeometry__CGRect__CGPoint_dd__CGSize_dd___CGPoint_dd__CGSize_dd__CGAffineTransform_dddddd_ddB_CGSize_dd__CGRect__CGPoint_dd__CGSize_dd___v_BB_v_v_vQ_8_B16l;
-  v18 = *&a7->index[5];
-  v60 = *&a7->index[3];
+  v18 = *&identifier->index[5];
+  v60 = *&identifier->index[3];
   v61 = v18;
-  v62 = *&a7->index[7];
-  v63 = a7->index[9];
-  v19 = *&a7->index[1];
-  v58 = *&a7->length;
+  v62 = *&identifier->index[7];
+  v63 = identifier->index[9];
+  v19 = *&identifier->index[1];
+  v58 = *&identifier->length;
   v59 = v19;
-  v16 = [v17 indexOfFirstStatePassingTest:v57];
+  v16 = [_tileStates2 indexOfFirstStatePassingTest:v57];
 
   if (v16 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -3642,44 +3642,44 @@ LABEL_6:
   v29 = *(off_1E7722248 + 3);
   v47 = *(off_1E7722248 + 2);
   v48 = v29;
-  if (a3)
+  if (tile)
   {
 LABEL_7:
-    *a3 = v20;
+    *tile = v20;
   }
 
 LABEL_8:
-  if (a4)
+  if (geometry)
   {
     v38 = v54;
-    *&a4->hidden = v53;
-    *&a4->contentSize.height = v38;
+    *&geometry->hidden = v53;
+    *&geometry->contentSize.height = v38;
     v39 = v56;
-    *&a4->contentsRect.origin.y = v55;
-    *&a4->contentsRect.size.height = v39;
+    *&geometry->contentsRect.origin.y = v55;
+    *&geometry->contentsRect.size.height = v39;
     v40 = v50;
-    *&a4->transform.a = v49;
-    *&a4->transform.c = v40;
+    *&geometry->transform.a = v49;
+    *&geometry->transform.c = v40;
     v41 = v52;
-    *&a4->transform.tx = v51;
-    *&a4->alpha = v41;
+    *&geometry->transform.tx = v51;
+    *&geometry->alpha = v41;
     v42 = v46;
-    a4->frame.origin = v45;
-    a4->frame.size = v42;
+    geometry->frame.origin = v45;
+    geometry->frame.size = v42;
     v43 = v48;
-    a4->center = v47;
-    a4->size = v43;
+    geometry->center = v47;
+    geometry->size = v43;
   }
 
-  if (a5)
+  if (group)
   {
-    *a5 = v21;
+    *group = v21;
   }
 
-  if (a6)
+  if (data)
   {
     v22 = v22;
-    *a6 = v22;
+    *data = v22;
   }
 
   return v23;
@@ -3726,7 +3726,7 @@ BOOL __76__PXTilingController_getTile_geometry_group_userData_forTileWithIdentif
   return result;
 }
 
-- (PXTileIdentifier)tileIdentifierForTile:(SEL)a3
+- (PXTileIdentifier)tileIdentifierForTile:(SEL)tile
 {
   v12 = 0;
   v13 = &v12;
@@ -3738,14 +3738,14 @@ BOOL __76__PXTilingController_getTile_geometry_group_userData_forTileWithIdentif
   v19 = 0u;
   v20 = 0u;
   v21 = 0;
-  v6 = [(PXTilingController *)self _tileStates];
+  _tileStates = [(PXTilingController *)self _tileStates];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __44__PXTilingController_tileIdentifierForTile___block_invoke;
   v11[3] = &unk_1E7737BC8;
   v11[4] = &v12;
   v11[5] = a4;
-  [v6 enumerateStatesUsingBlock:v11];
+  [_tileStates enumerateStatesUsingBlock:v11];
 
   v7 = v13;
   v8 = *(v13 + 5);
@@ -3782,9 +3782,9 @@ __n128 __44__PXTilingController_tileIdentifierForTile___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setTransitionDelegate:(id)a3
+- (void)setTransitionDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_transitionDelegate);
 
   if (WeakRetained != obj)
@@ -3796,9 +3796,9 @@ __n128 __44__PXTilingController_tileIdentifierForTile___block_invoke(uint64_t a1
   }
 }
 
-- (void)setScrollDelegate:(id)a3
+- (void)setScrollDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_scrollDelegate);
 
   if (WeakRetained != obj)
@@ -3810,9 +3810,9 @@ __n128 __44__PXTilingController_tileIdentifierForTile___block_invoke(uint64_t a1
   }
 }
 
-- (void)setScrollController:(id)a3
+- (void)setScrollController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_scrollController);
 
   v5 = obj;
@@ -3857,9 +3857,9 @@ __n128 __44__PXTilingController_tileIdentifierForTile___block_invoke(uint64_t a1
   [(PXTilingController *)&v5 dealloc];
 }
 
-- (PXTilingController)initWithLayout:(id)a3
+- (PXTilingController)initWithLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   v24.receiver = self;
   v24.super_class = PXTilingController;
   v6 = [(PXTilingController *)&v24 init];
@@ -3879,7 +3879,7 @@ __n128 __44__PXTilingController_tileIdentifierForTile___block_invoke(uint64_t a1
     v12 = *(v7 + 18);
     *(v7 + 18) = v11;
 
-    objc_storeStrong(v7 + 9, a3);
+    objc_storeStrong(v7 + 9, layout);
     [*(v7 + 9) setObserver:v7];
     v13 = objc_alloc_init(PXTileStatePool);
     v14 = *(v7 + 21);
@@ -3897,9 +3897,9 @@ __n128 __44__PXTilingController_tileIdentifierForTile___block_invoke(uint64_t a1
     *(v7 + 440) = v17;
     *(v7 + 392) = v16;
     *(v7 + 408) = v17;
-    v18 = [MEMORY[0x1E696AD50] indexSet];
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     v19 = *(v7 + 22);
-    *(v7 + 22) = v18;
+    *(v7 + 22) = indexSet;
 
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = *(v7 + 23);
@@ -3919,22 +3919,22 @@ __n128 __44__PXTilingController_tileIdentifierForTile___block_invoke(uint64_t a1
 
 - (PXTilingController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXTilingController.m" lineNumber:104 description:@"invalid initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXTilingController.m" lineNumber:104 description:@"invalid initializer"];
 
   abort();
 }
 
-- (id)imageTileWithIdentifier:(PXTileIdentifier *)a3
+- (id)imageTileWithIdentifier:(PXTileIdentifier *)identifier
 {
   v9 = 0;
-  v3 = *&a3->index[5];
-  v7[2] = *&a3->index[3];
+  v3 = *&identifier->index[5];
+  v7[2] = *&identifier->index[3];
   v7[3] = v3;
-  v7[4] = *&a3->index[7];
-  v8 = a3->index[9];
-  v4 = *&a3->index[1];
-  v7[0] = *&a3->length;
+  v7[4] = *&identifier->index[7];
+  v8 = identifier->index[9];
+  v4 = *&identifier->index[1];
+  v7[0] = *&identifier->length;
   v7[1] = v4;
   v5 = 0;
   if ([(PXTilingController *)self getTile:&v9 geometry:0 group:0 userData:0 forTileWithIdentifier:v7])
@@ -3951,16 +3951,16 @@ __n128 __44__PXTilingController_tileIdentifierForTile___block_invoke(uint64_t a1
   return v5;
 }
 
-- (id)titleSubtitleTileWithIdentifier:(PXTileIdentifier *)a3
+- (id)titleSubtitleTileWithIdentifier:(PXTileIdentifier *)identifier
 {
   v9 = 0;
-  v3 = *&a3->index[5];
-  v7[2] = *&a3->index[3];
+  v3 = *&identifier->index[5];
+  v7[2] = *&identifier->index[3];
   v7[3] = v3;
-  v7[4] = *&a3->index[7];
-  v8 = a3->index[9];
-  v4 = *&a3->index[1];
-  v7[0] = *&a3->length;
+  v7[4] = *&identifier->index[7];
+  v8 = identifier->index[9];
+  v4 = *&identifier->index[1];
+  v7[0] = *&identifier->length;
   v7[1] = v4;
   v5 = 0;
   if ([(PXTilingController *)self getTile:&v9 geometry:0 group:0 userData:0 forTileWithIdentifier:v7])

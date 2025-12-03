@@ -1,19 +1,19 @@
 @interface MTRGenericCluster
-- (MTRGenericCluster)initWithDevice:(id)a3 endpointID:(id)a4 queue:(id)a5;
+- (MTRGenericCluster)initWithDevice:(id)device endpointID:(id)d queue:(id)queue;
 @end
 
 @implementation MTRGenericCluster
 
-- (MTRGenericCluster)initWithDevice:(id)a3 endpointID:(id)a4 queue:(id)a5
+- (MTRGenericCluster)initWithDevice:(id)device endpointID:(id)d queue:(id)queue
 {
-  v9 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = MTRGenericCluster;
-  v10 = [(MTRCluster *)&v13 initWithEndpointID:a4 queue:a5];
+  v10 = [(MTRCluster *)&v13 initWithEndpointID:d queue:queue];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a3);
+    objc_storeStrong(&v10->_device, device);
   }
 
   return v11;

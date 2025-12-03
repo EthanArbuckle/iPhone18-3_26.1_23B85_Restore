@@ -1,23 +1,23 @@
 @interface _CloudBookmarkSyncMigrationPositionGeneratorEnumerator
-- (_CloudBookmarkSyncMigrationPositionGeneratorEnumerator)initWithParentPositionGenerator:(id)a3;
+- (_CloudBookmarkSyncMigrationPositionGeneratorEnumerator)initWithParentPositionGenerator:(id)generator;
 - (id)nextObject;
 @end
 
 @implementation _CloudBookmarkSyncMigrationPositionGeneratorEnumerator
 
-- (_CloudBookmarkSyncMigrationPositionGeneratorEnumerator)initWithParentPositionGenerator:(id)a3
+- (_CloudBookmarkSyncMigrationPositionGeneratorEnumerator)initWithParentPositionGenerator:(id)generator
 {
-  v5 = a3;
+  generatorCopy = generator;
   v12.receiver = self;
   v12.super_class = _CloudBookmarkSyncMigrationPositionGeneratorEnumerator;
   v6 = [(_CloudBookmarkSyncMigrationPositionGeneratorEnumerator *)&v12 init];
   if (v6)
   {
-    v7 = [v5 rootRecordName];
-    if ([v7 length])
+    rootRecordName = [generatorCopy rootRecordName];
+    if ([rootRecordName length])
     {
-      objc_storeStrong(&v6->_parentGenerator, a3);
-      objc_storeStrong(&v6->_rootRecordName, v7);
+      objc_storeStrong(&v6->_parentGenerator, generator);
+      objc_storeStrong(&v6->_rootRecordName, rootRecordName);
       v8 = [NSMutableArray arrayWithObject:v6->_rootRecordName];
       folderRecordQueue = v6->_folderRecordQueue;
       v6->_folderRecordQueue = v8;
@@ -35,13 +35,13 @@
   {
     rootRecordName = 0;
 LABEL_7:
-    v8 = 0;
+    firstObject2 = 0;
     self->_rootRecordName = 0;
     goto LABEL_8;
   }
 
-  v3 = [(CloudBookmarkSyncMigrationPositionGenerator *)self->_parentGenerator rootRecordName];
-  v4 = [v3 isEqualToString:self->_rootRecordName];
+  rootRecordName = [(CloudBookmarkSyncMigrationPositionGenerator *)self->_parentGenerator rootRecordName];
+  v4 = [rootRecordName isEqualToString:self->_rootRecordName];
 
   if ((v4 & 1) == 0)
   {
@@ -49,44 +49,44 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = [(NSMutableArray *)self->_currentChildRecordNames firstObject];
-  if (v5)
+  firstObject = [(NSMutableArray *)self->_currentChildRecordNames firstObject];
+  if (firstObject)
   {
-    v6 = v5;
+    v6 = firstObject;
     [(NSMutableArray *)self->_currentChildRecordNames removeObjectAtIndex:0];
     rootRecordName = v6;
-    v8 = rootRecordName;
+    firstObject2 = rootRecordName;
   }
 
   else
   {
-    v8 = [(NSMutableArray *)self->_folderRecordQueue firstObject];
-    if (v8)
+    firstObject2 = [(NSMutableArray *)self->_folderRecordQueue firstObject];
+    if (firstObject2)
     {
       while (1)
       {
         [(NSMutableArray *)self->_folderRecordQueue removeObjectAtIndex:0];
         folderRecordQueue = self->_folderRecordQueue;
-        v11 = [(CloudBookmarkSyncMigrationPositionGenerator *)self->_parentGenerator childFolderRecordNamesForRecordName:v8];
+        v11 = [(CloudBookmarkSyncMigrationPositionGenerator *)self->_parentGenerator childFolderRecordNamesForRecordName:firstObject2];
         [(NSMutableArray *)folderRecordQueue addObjectsFromArray:v11];
 
-        v12 = [(CloudBookmarkSyncMigrationPositionGenerator *)self->_parentGenerator childRecordNamesForRecordName:v8];
-        v13 = [v12 firstObject];
-        if (v13)
+        v12 = [(CloudBookmarkSyncMigrationPositionGenerator *)self->_parentGenerator childRecordNamesForRecordName:firstObject2];
+        firstObject3 = [v12 firstObject];
+        if (firstObject3)
         {
           break;
         }
 
         rootRecordName = [(NSMutableArray *)self->_folderRecordQueue firstObject];
 
-        v8 = rootRecordName;
+        firstObject2 = rootRecordName;
         if (!rootRecordName)
         {
           goto LABEL_8;
         }
       }
 
-      v14 = v13;
+      v14 = firstObject3;
       v15 = [v12 mutableCopy];
       currentChildRecordNames = self->_currentChildRecordNames;
       self->_currentChildRecordNames = v15;
@@ -94,7 +94,7 @@ LABEL_7:
       [(NSMutableArray *)self->_currentChildRecordNames removeObjectAtIndex:0];
       rootRecordName = v14;
 
-      v8 = rootRecordName;
+      firstObject2 = rootRecordName;
     }
 
     else
@@ -105,7 +105,7 @@ LABEL_7:
 
 LABEL_8:
 
-  return v8;
+  return firstObject2;
 }
 
 @end

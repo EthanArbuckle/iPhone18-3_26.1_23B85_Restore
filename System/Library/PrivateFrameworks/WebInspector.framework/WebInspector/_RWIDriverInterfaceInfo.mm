@@ -1,25 +1,25 @@
 @interface _RWIDriverInterfaceInfo
-- (_RWIDriverInterfaceInfo)initWithConfiguration:(id)a3 connection:(id)a4;
+- (_RWIDriverInterfaceInfo)initWithConfiguration:(id)configuration connection:(id)connection;
 - (id)dictionaryRepresentation;
-- (void)updateDriverState:(id)a3;
+- (void)updateDriverState:(id)state;
 @end
 
 @implementation _RWIDriverInterfaceInfo
 
-- (_RWIDriverInterfaceInfo)initWithConfiguration:(id)a3 connection:(id)a4
+- (_RWIDriverInterfaceInfo)initWithConfiguration:(id)configuration connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = _RWIDriverInterfaceInfo;
   v8 = [(_RWIDriverInterfaceInfo *)&v15 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [configurationCopy copy];
     configuration = v8->_configuration;
     v8->_configuration = v9;
 
-    objc_storeStrong(&v8->_connection, a4);
+    objc_storeStrong(&v8->_connection, connection);
     v11 = +[RWIDriverState inactive];
     state = v8->_state;
     v8->_state = v11;
@@ -32,23 +32,23 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(RWIDriverConfiguration *)self->_configuration encodeToPayload:v3];
-  [(RWIDriverState *)self->_state encodeToPayload:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(RWIDriverConfiguration *)self->_configuration encodeToPayload:dictionary];
+  [(RWIDriverState *)self->_state encodeToPayload:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)updateDriverState:(id)a3
+- (void)updateDriverState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   state = self->_state;
   p_state = &self->_state;
-  if (state != v5)
+  if (state != stateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_state, a3);
-    v5 = v8;
+    v8 = stateCopy;
+    objc_storeStrong(p_state, state);
+    stateCopy = v8;
   }
 }
 

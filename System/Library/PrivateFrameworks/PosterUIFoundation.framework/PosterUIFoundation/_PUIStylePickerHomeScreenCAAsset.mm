@@ -1,24 +1,24 @@
 @interface _PUIStylePickerHomeScreenCAAsset
-- (_PUIStylePickerHomeScreenCAAsset)initWithAssetName:(id)a3 bundle:(id)a4;
-- (void)configureAssetPackageView:(id)a3 withColorStops:(id)a4 accentColor:(id)a5;
+- (_PUIStylePickerHomeScreenCAAsset)initWithAssetName:(id)name bundle:(id)bundle;
+- (void)configureAssetPackageView:(id)view withColorStops:(id)stops accentColor:(id)color;
 @end
 
 @implementation _PUIStylePickerHomeScreenCAAsset
 
-- (_PUIStylePickerHomeScreenCAAsset)initWithAssetName:(id)a3 bundle:(id)a4
+- (_PUIStylePickerHomeScreenCAAsset)initWithAssetName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v14.receiver = self;
   v14.super_class = _PUIStylePickerHomeScreenCAAsset;
   v9 = [(_PUIStylePickerHomeScreenCAAsset *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_assetName, a3);
-    if (v8)
+    objc_storeStrong(&v9->_assetName, name);
+    if (bundleCopy)
     {
-      v11 = v8;
+      v11 = bundleCopy;
     }
 
     else
@@ -33,46 +33,46 @@
   return v10;
 }
 
-- (void)configureAssetPackageView:(id)a3 withColorStops:(id)a4 accentColor:(id)a5
+- (void)configureAssetPackageView:(id)view withColorStops:(id)stops accentColor:(id)color
 {
-  v20 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(_PUIStylePickerHomeScreenCAAsset *)self assetName];
-  v11 = [(_PUIStylePickerHomeScreenCAAsset *)self bundle];
-  [v9 updateAsset:v10 bundle:v11];
+  stopsCopy = stops;
+  colorCopy = color;
+  viewCopy = view;
+  assetName = [(_PUIStylePickerHomeScreenCAAsset *)self assetName];
+  bundle = [(_PUIStylePickerHomeScreenCAAsset *)self bundle];
+  [viewCopy updateAsset:assetName bundle:bundle];
 
-  v12 = [v9 publishedObjectWithName:@"gradient"];
-  v13 = [v9 publishedObjectWithName:@"accented"];
+  v12 = [viewCopy publishedObjectWithName:@"gradient"];
+  v13 = [viewCopy publishedObjectWithName:@"accented"];
 
-  v14 = [(_PUIStylePickerHomeScreenCAAsset *)self assetName];
-  v15 = [v14 isEqualToString:@"choice-1"];
+  assetName2 = [(_PUIStylePickerHomeScreenCAAsset *)self assetName];
+  v15 = [assetName2 isEqualToString:@"choice-1"];
 
   if (v15)
   {
-    v16 = [v20 count];
+    v16 = [stopsCopy count];
   }
 
   else
   {
-    v17 = [(_PUIStylePickerHomeScreenCAAsset *)self assetName];
-    v18 = [v17 isEqualToString:@"choice-3"];
+    assetName3 = [(_PUIStylePickerHomeScreenCAAsset *)self assetName];
+    v18 = [assetName3 isEqualToString:@"choice-3"];
 
     if (!v18)
     {
       goto LABEL_9;
     }
 
-    v16 = [v20 count];
-    if (v8)
+    v16 = [stopsCopy count];
+    if (colorCopy)
     {
-      [v13 setContentsMultiplyColor:{objc_msgSend(v8, "CGColor")}];
+      [v13 setContentsMultiplyColor:{objc_msgSend(colorCopy, "CGColor")}];
     }
   }
 
-  if (v20 && v16)
+  if (stopsCopy && v16)
   {
-    v19 = [v20 bs_mapNoNulls:&__block_literal_global_373];
+    v19 = [stopsCopy bs_mapNoNulls:&__block_literal_global_373];
     [v12 setColors:v19];
   }
 

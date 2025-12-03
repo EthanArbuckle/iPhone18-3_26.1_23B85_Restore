@@ -1,5 +1,5 @@
 @interface GPUDrainOperation
-- (GPUDrainOperation)initWithIterationDelay:(id)a3;
+- (GPUDrainOperation)initWithIterationDelay:(id)delay;
 - (void)acquireGPUAssertion;
 - (void)beginRender;
 - (void)cancel;
@@ -46,13 +46,13 @@
 
 - (void)releaseGPUAssertion
 {
-  v3 = [(GPUDrainOperation *)self gpuAssertion];
+  gpuAssertion = [(GPUDrainOperation *)self gpuAssertion];
 
-  if (v3)
+  if (gpuAssertion)
   {
-    v4 = [(GPUDrainOperation *)self gpuAssertion];
+    gpuAssertion2 = [(GPUDrainOperation *)self gpuAssertion];
     v10 = 0;
-    v5 = [v4 invalidateWithError:&v10];
+    v5 = [gpuAssertion2 invalidateWithError:&v10];
     v6 = v10;
 
     if (v5)
@@ -86,16 +86,16 @@
   }
 }
 
-- (GPUDrainOperation)initWithIterationDelay:(id)a3
+- (GPUDrainOperation)initWithIterationDelay:(id)delay
 {
-  v5 = a3;
+  delayCopy = delay;
   v9.receiver = self;
   v9.super_class = GPUDrainOperation;
   v6 = [(GPUDrainOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_iterationDelay, a3);
+    objc_storeStrong(&v6->_iterationDelay, delay);
   }
 
   return v7;

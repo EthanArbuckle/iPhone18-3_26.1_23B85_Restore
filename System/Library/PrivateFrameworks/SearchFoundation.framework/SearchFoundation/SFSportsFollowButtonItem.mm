@@ -1,55 +1,55 @@
 @interface SFSportsFollowButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFSportsFollowButtonItem)initWithCoder:(id)a3;
-- (SFSportsFollowButtonItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFSportsFollowButtonItem)initWithCoder:(id)coder;
+- (SFSportsFollowButtonItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSportsFollowButtonItem
 
-- (SFSportsFollowButtonItem)initWithProtobuf:(id)a3
+- (SFSportsFollowButtonItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v18.receiver = self;
   v18.super_class = SFSportsFollowButtonItem;
   v5 = [(SFSportsFollowButtonItem *)&v18 init];
   if (v5)
   {
-    v6 = [v4 sportsItem];
+    sportsItem = [protobufCopy sportsItem];
 
-    if (v6)
+    if (sportsItem)
     {
       v7 = [SFSportsItem alloc];
-      v8 = [v4 sportsItem];
-      v9 = [(SFSportsItem *)v7 initWithProtobuf:v8];
+      sportsItem2 = [protobufCopy sportsItem];
+      v9 = [(SFSportsItem *)v7 initWithProtobuf:sportsItem2];
       [(SFSportsFollowButtonItem *)v5 setSportsItem:v9];
     }
 
-    v10 = [v4 toggleButtonConfiguration];
+    toggleButtonConfiguration = [protobufCopy toggleButtonConfiguration];
 
-    if (v10)
+    if (toggleButtonConfiguration)
     {
       v11 = [SFToggleButtonConfiguration alloc];
-      v12 = [v4 toggleButtonConfiguration];
-      v13 = [(SFToggleButtonConfiguration *)v11 initWithProtobuf:v12];
+      toggleButtonConfiguration2 = [protobufCopy toggleButtonConfiguration];
+      v13 = [(SFToggleButtonConfiguration *)v11 initWithProtobuf:toggleButtonConfiguration2];
       [(SFSportsFollowButtonItem *)v5 setToggleButtonConfiguration:v13];
     }
 
-    v14 = [v4 fallbackTitle];
+    fallbackTitle = [protobufCopy fallbackTitle];
 
-    if (v14)
+    if (fallbackTitle)
     {
-      v15 = [v4 fallbackTitle];
-      [(SFSportsFollowButtonItem *)v5 setFallbackTitle:v15];
+      fallbackTitle2 = [protobufCopy fallbackTitle];
+      [(SFSportsFollowButtonItem *)v5 setFallbackTitle:fallbackTitle2];
     }
 
-    if ([v4 uniqueId])
+    if ([protobufCopy uniqueId])
     {
-      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [protobufCopy uniqueId]);
     }
 
     v16 = v5;
@@ -63,37 +63,37 @@
   v12.receiver = self;
   v12.super_class = SFSportsFollowButtonItem;
   v3 = [(SFButtonItem *)&v12 hash];
-  v4 = [(SFSportsFollowButtonItem *)self sportsItem];
-  v5 = [v4 hash];
-  v6 = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFSportsFollowButtonItem *)self fallbackTitle];
-  v9 = v7 ^ [v8 hash];
+  sportsItem = [(SFSportsFollowButtonItem *)self sportsItem];
+  v5 = [sportsItem hash];
+  toggleButtonConfiguration = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
+  v7 = v5 ^ [toggleButtonConfiguration hash];
+  fallbackTitle = [(SFSportsFollowButtonItem *)self fallbackTitle];
+  v9 = v7 ^ [fallbackTitle hash];
   v10 = v9 ^ [(SFButtonItem *)self uniqueId];
 
   return v10 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFSportsFollowButtonItem *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFSportsFollowButtonItem *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v34.receiver = self;
       v34.super_class = SFSportsFollowButtonItem;
-      if ([(SFButtonItem *)&v34 isEqual:v5])
+      if ([(SFButtonItem *)&v34 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFSportsFollowButtonItem *)self sportsItem];
-        v8 = [(SFSportsFollowButtonItem *)v6 sportsItem];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        sportsItem = [(SFSportsFollowButtonItem *)self sportsItem];
+        sportsItem2 = [(SFSportsFollowButtonItem *)v6 sportsItem];
+        if ((sportsItem != 0) == (sportsItem2 == 0))
         {
           v11 = 0;
 LABEL_34:
@@ -101,63 +101,63 @@ LABEL_34:
           goto LABEL_35;
         }
 
-        v9 = [(SFSportsFollowButtonItem *)self sportsItem];
-        if (v9)
+        sportsItem3 = [(SFSportsFollowButtonItem *)self sportsItem];
+        if (sportsItem3)
         {
-          v10 = [(SFSportsFollowButtonItem *)self sportsItem];
-          v3 = [(SFSportsFollowButtonItem *)v6 sportsItem];
-          if (![v10 isEqual:v3])
+          sportsItem4 = [(SFSportsFollowButtonItem *)self sportsItem];
+          sportsItem5 = [(SFSportsFollowButtonItem *)v6 sportsItem];
+          if (![sportsItem4 isEqual:sportsItem5])
           {
             v11 = 0;
             goto LABEL_32;
           }
 
-          v33 = v10;
+          v33 = sportsItem4;
         }
 
-        v12 = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
-        v13 = [(SFSportsFollowButtonItem *)v6 toggleButtonConfiguration];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        toggleButtonConfiguration = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
+        toggleButtonConfiguration2 = [(SFSportsFollowButtonItem *)v6 toggleButtonConfiguration];
+        v14 = toggleButtonConfiguration2;
+        if ((toggleButtonConfiguration != 0) == (toggleButtonConfiguration2 == 0))
         {
 
           v11 = 0;
           goto LABEL_31;
         }
 
-        v15 = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
-        if (v15)
+        toggleButtonConfiguration3 = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
+        if (toggleButtonConfiguration3)
         {
-          v27 = v12;
-          v16 = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
-          v29 = [(SFSportsFollowButtonItem *)v6 toggleButtonConfiguration];
-          v30 = v16;
-          if (![v16 isEqual:?])
+          v27 = toggleButtonConfiguration;
+          toggleButtonConfiguration4 = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
+          toggleButtonConfiguration5 = [(SFSportsFollowButtonItem *)v6 toggleButtonConfiguration];
+          v30 = toggleButtonConfiguration4;
+          if (![toggleButtonConfiguration4 isEqual:?])
           {
             v11 = 0;
-            v12 = v27;
+            toggleButtonConfiguration = v27;
             goto LABEL_29;
           }
 
-          v31 = v15;
-          v32 = v3;
-          v12 = v27;
+          v31 = toggleButtonConfiguration3;
+          v32 = sportsItem5;
+          toggleButtonConfiguration = v27;
         }
 
         else
         {
           v31 = 0;
-          v32 = v3;
+          v32 = sportsItem5;
         }
 
-        v17 = [(SFSportsFollowButtonItem *)self fallbackTitle];
-        v18 = [(SFSportsFollowButtonItem *)v6 fallbackTitle];
-        if ((v17 != 0) == (v18 == 0))
+        fallbackTitle = [(SFSportsFollowButtonItem *)self fallbackTitle];
+        fallbackTitle2 = [(SFSportsFollowButtonItem *)v6 fallbackTitle];
+        if ((fallbackTitle != 0) == (fallbackTitle2 == 0))
         {
 
           v11 = 0;
-          v15 = v31;
-          v3 = v32;
+          toggleButtonConfiguration3 = v31;
+          sportsItem5 = v32;
           if (!v31)
           {
             goto LABEL_30;
@@ -166,17 +166,17 @@ LABEL_34:
           goto LABEL_29;
         }
 
-        v25 = v18;
-        v26 = v17;
+        v25 = fallbackTitle2;
+        v26 = fallbackTitle;
         [(SFSportsFollowButtonItem *)self fallbackTitle];
-        v28 = v15 = v31;
+        v28 = toggleButtonConfiguration3 = v31;
         if (v28)
         {
-          v19 = [(SFSportsFollowButtonItem *)self fallbackTitle];
-          v23 = [(SFSportsFollowButtonItem *)v6 fallbackTitle];
-          v24 = v19;
-          v20 = [v19 isEqual:?];
-          v3 = v32;
+          fallbackTitle3 = [(SFSportsFollowButtonItem *)self fallbackTitle];
+          fallbackTitle4 = [(SFSportsFollowButtonItem *)v6 fallbackTitle];
+          v24 = fallbackTitle3;
+          v20 = [fallbackTitle3 isEqual:?];
+          sportsItem5 = v32;
           if (!v20)
           {
             v11 = 0;
@@ -188,8 +188,8 @@ LABEL_28:
 LABEL_30:
 
 LABEL_31:
-              v10 = v33;
-              if (!v9)
+              sportsItem4 = v33;
+              if (!sportsItem3)
               {
 LABEL_33:
 
@@ -209,11 +209,11 @@ LABEL_29:
 
         else
         {
-          v3 = v32;
+          sportsItem5 = v32;
         }
 
-        v21 = [(SFButtonItem *)self uniqueId];
-        v11 = v21 == [(SFButtonItem *)v6 uniqueId];
+        uniqueId = [(SFButtonItem *)self uniqueId];
+        v11 = uniqueId == [(SFButtonItem *)v6 uniqueId];
         if (!v28)
         {
           goto LABEL_28;
@@ -231,21 +231,21 @@ LABEL_35:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SFSportsFollowButtonItem;
-  v4 = [(SFButtonItem *)&v12 copyWithZone:a3];
-  v5 = [(SFSportsFollowButtonItem *)self sportsItem];
-  v6 = [v5 copy];
+  v4 = [(SFButtonItem *)&v12 copyWithZone:zone];
+  sportsItem = [(SFSportsFollowButtonItem *)self sportsItem];
+  v6 = [sportsItem copy];
   [v4 setSportsItem:v6];
 
-  v7 = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
-  v8 = [v7 copy];
+  toggleButtonConfiguration = [(SFSportsFollowButtonItem *)self toggleButtonConfiguration];
+  v8 = [toggleButtonConfiguration copy];
   [v4 setToggleButtonConfiguration:v8];
 
-  v9 = [(SFSportsFollowButtonItem *)self fallbackTitle];
-  v10 = [v9 copy];
+  fallbackTitle = [(SFSportsFollowButtonItem *)self fallbackTitle];
+  v10 = [fallbackTitle copy];
   [v4 setFallbackTitle:v10];
 
   [v4 setUniqueId:{-[SFButtonItem uniqueId](self, "uniqueId")}];
@@ -255,31 +255,31 @@ LABEL_35:
 - (NSData)jsonData
 {
   v2 = [[_SFPBSportsFollowButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBSportsFollowButtonItem *)v2 jsonData];
+  jsonData = [(_SFPBSportsFollowButtonItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBSportsFollowButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBSportsFollowButtonItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBSportsFollowButtonItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBSportsFollowButtonItem alloc] initWithFacade:self];
-  v5 = [(_SFPBSportsFollowButtonItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBSportsFollowButtonItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFSportsFollowButtonItem)initWithCoder:(id)a3
+- (SFSportsFollowButtonItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBSportsFollowButtonItem alloc] initWithData:v5];
   v7 = [(SFSportsFollowButtonItem *)self initWithProtobuf:v6];

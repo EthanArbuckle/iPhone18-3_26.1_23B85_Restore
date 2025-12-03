@@ -1,15 +1,15 @@
 @interface RiverTodayCardBackgroundView
-- (_TtC8AppStore28RiverTodayCardBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC8AppStore28RiverTodayCardBackgroundView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)preferredContentSizeDidChangeWithView:(id)a3 previousTraitCollection:(id)a4;
+- (void)preferredContentSizeDidChangeWithView:(id)view previousTraitCollection:(id)collection;
 @end
 
 @implementation RiverTodayCardBackgroundView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004A38D4();
 }
 
@@ -22,13 +22,13 @@
   sub_1004A3758();
 }
 
-- (void)preferredContentSizeDidChangeWithView:(id)a3 previousTraitCollection:(id)a4
+- (void)preferredContentSizeDidChangeWithView:(id)view previousTraitCollection:(id)collection
 {
-  v4 = self;
+  selfCopy = self;
   sub_1004A3758();
 }
 
-- (_TtC8AppStore28RiverTodayCardBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore28RiverTodayCardBackgroundView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

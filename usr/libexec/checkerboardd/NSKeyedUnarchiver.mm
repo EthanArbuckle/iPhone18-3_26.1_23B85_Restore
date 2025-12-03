@@ -1,19 +1,19 @@
 @interface NSKeyedUnarchiver
-+ (BOOL)_magicIsValidOnVersion1XPCObject:(id)a3;
-+ (void)_unarchiveObjectFromVersion1XPCObject:(id)a3 allowedClasses:(id)a4 completion:(id)a5;
-+ (void)unarchiveObjectFromXPCObject:(id)a3 allowedClasses:(id)a4 completion:(id)a5;
++ (BOOL)_magicIsValidOnVersion1XPCObject:(id)object;
++ (void)_unarchiveObjectFromVersion1XPCObject:(id)object allowedClasses:(id)classes completion:(id)completion;
++ (void)unarchiveObjectFromXPCObject:(id)object allowedClasses:(id)classes completion:(id)completion;
 @end
 
 @implementation NSKeyedUnarchiver
 
-+ (void)unarchiveObjectFromXPCObject:(id)a3 allowedClasses:(id)a4 completion:(id)a5
++ (void)unarchiveObjectFromXPCObject:(id)object allowedClasses:(id)classes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  objectCopy = object;
+  classesCopy = classes;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = v10;
+    v11 = completionCopy;
   }
 
   else
@@ -21,10 +21,10 @@
     v11 = &stru_100010438;
   }
 
-  uint64 = xpc_dictionary_get_uint64(v8, "Version");
+  uint64 = xpc_dictionary_get_uint64(objectCopy, "Version");
   if (uint64 == 1)
   {
-    [a1 _unarchiveObjectFromVersion1XPCObject:v8 allowedClasses:v9 completion:v11];
+    [self _unarchiveObjectFromVersion1XPCObject:objectCopy allowedClasses:classesCopy completion:v11];
   }
 
   else
@@ -40,19 +40,19 @@
   }
 }
 
-+ (void)_unarchiveObjectFromVersion1XPCObject:(id)a3 allowedClasses:(id)a4 completion:(id)a5
++ (void)_unarchiveObjectFromVersion1XPCObject:(id)object allowedClasses:(id)classes completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([a1 _magicIsValidOnVersion1XPCObject:v8])
+  objectCopy = object;
+  classesCopy = classes;
+  completionCopy = completion;
+  if ([self _magicIsValidOnVersion1XPCObject:objectCopy])
   {
     length = 0;
-    data = xpc_dictionary_get_data(v8, "Data", &length);
+    data = xpc_dictionary_get_data(objectCopy, "Data", &length);
     v12 = [NSData dataWithBytes:data length:length];
     v13 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v12 error:0];
     [v13 setRequiresSecureCoding:1];
-    v14 = [v13 decodeObjectOfClasses:v9 forKey:NSKeyedArchiveRootObjectKey];
+    v14 = [v13 decodeObjectOfClasses:classesCopy forKey:NSKeyedArchiveRootObjectKey];
   }
 
   else
@@ -60,12 +60,12 @@
     v14 = 0;
   }
 
-  v10[2](v10, v14);
+  completionCopy[2](completionCopy, v14);
 }
 
-+ (BOOL)_magicIsValidOnVersion1XPCObject:(id)a3
++ (BOOL)_magicIsValidOnVersion1XPCObject:(id)object
 {
-  string = xpc_dictionary_get_string(a3, "Magic");
+  string = xpc_dictionary_get_string(object, "Magic");
   v4 = string;
   if (string)
   {

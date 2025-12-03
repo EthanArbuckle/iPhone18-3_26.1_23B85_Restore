@@ -1,8 +1,8 @@
 @interface _UIKeyboardAnimator
 - (_UIKeyboardAnimator)init;
-- (void)applyToKeyboardOperations:(id)a3;
-- (void)prepareForAnimationWithState:(id)a3;
-- (void)runAnimationWithState:(id)a3;
+- (void)applyToKeyboardOperations:(id)operations;
+- (void)prepareForAnimationWithState:(id)state;
+- (void)runAnimationWithState:(id)state;
 @end
 
 @implementation _UIKeyboardAnimator
@@ -22,40 +22,40 @@
   return v2;
 }
 
-- (void)applyToKeyboardOperations:(id)a3
+- (void)applyToKeyboardOperations:(id)operations
 {
-  v4 = a3;
+  operationsCopy = operations;
   v5 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
   [v5 pushAnimationStyle:self->_style];
-  v4[2](v4);
+  operationsCopy[2](operationsCopy);
 
   [v5 popAnimationStyle];
 }
 
-- (void)prepareForAnimationWithState:(id)a3
+- (void)prepareForAnimationWithState:(id)state
 {
-  v3 = a3;
-  [v3 startFrame];
+  stateCopy = state;
+  [stateCopy startFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 animatingView];
+  animatingView = [stateCopy animatingView];
 
-  [v12 setFrame:{v5, v7, v9, v11}];
+  [animatingView setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)runAnimationWithState:(id)a3
+- (void)runAnimationWithState:(id)state
 {
-  v3 = a3;
-  [v3 endFrame];
+  stateCopy = state;
+  [stateCopy endFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 animatingView];
+  animatingView = [stateCopy animatingView];
 
-  [v12 setFrame:{v5, v7, v9, v11}];
+  [animatingView setFrame:{v5, v7, v9, v11}];
 }
 
 @end

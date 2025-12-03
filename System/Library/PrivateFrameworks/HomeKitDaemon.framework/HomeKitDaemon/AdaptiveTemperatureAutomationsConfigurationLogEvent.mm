@@ -2,8 +2,8 @@
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
 - (NSString)description;
-- (_TtC13HomeKitDaemon51AdaptiveTemperatureAutomationsConfigurationLogEvent)initWithHomeUUID:(id)a3;
-- (_TtC13HomeKitDaemon51AdaptiveTemperatureAutomationsConfigurationLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4;
+- (_TtC13HomeKitDaemon51AdaptiveTemperatureAutomationsConfigurationLogEvent)initWithHomeUUID:(id)d;
+- (_TtC13HomeKitDaemon51AdaptiveTemperatureAutomationsConfigurationLogEvent)initWithStartTime:(double)time homeUUID:(id)d;
 @end
 
 @implementation AdaptiveTemperatureAutomationsConfigurationLogEvent
@@ -20,7 +20,7 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v2 = self;
+  selfCopy = self;
   sub_229606FE8();
 
   sub_22956540C();
@@ -31,7 +31,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_22960738C();
 
   v3 = sub_22A4DD5AC();
@@ -39,7 +39,7 @@
   return v3;
 }
 
-- (_TtC13HomeKitDaemon51AdaptiveTemperatureAutomationsConfigurationLogEvent)initWithHomeUUID:(id)a3
+- (_TtC13HomeKitDaemon51AdaptiveTemperatureAutomationsConfigurationLogEvent)initWithHomeUUID:(id)d
 {
   v3 = sub_22A4DB7DC();
   v4 = *(*(v3 - 8) + 64);
@@ -50,7 +50,7 @@
   return result;
 }
 
-- (_TtC13HomeKitDaemon51AdaptiveTemperatureAutomationsConfigurationLogEvent)initWithStartTime:(double)a3 homeUUID:(id)a4
+- (_TtC13HomeKitDaemon51AdaptiveTemperatureAutomationsConfigurationLogEvent)initWithStartTime:(double)time homeUUID:(id)d
 {
   v4 = sub_22A4DB7DC();
   v5 = *(*(v4 - 8) + 64);

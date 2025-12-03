@@ -9,20 +9,20 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CBEB58] setWithCapacity:2];
-  v4 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v4)
+  if (parentUUID)
   {
-    v5 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v3 addObject:v5];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v3 addObject:parentUUID2];
   }
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(HMDUserManagementOperationModel *)self dependencies];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  dependencies = [(HMDUserManagementOperationModel *)self dependencies];
+  v7 = [dependencies countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -33,14 +33,14 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dependencies);
         }
 
         v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v14 + 1) + 8 * i)];
         [v3 addObject:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [dependencies countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

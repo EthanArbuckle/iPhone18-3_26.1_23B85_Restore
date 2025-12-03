@@ -1,128 +1,128 @@
 @interface WFPredictedLocationTransitionTrigger
 + (id)displayGlyph;
-+ (id)localizedDisplayNameWithContext:(id)a3;
-- (WFPredictedLocationTransitionTrigger)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)localizedDisplayNameWithContext:(id)context;
+- (WFPredictedLocationTransitionTrigger)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)localizedDescriptionWithConfigurationSummary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFPredictedLocationTransitionTrigger
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = WFPredictedLocationTransitionTrigger;
-  v4 = [(WFTrigger *)&v6 copyWithZone:a3];
+  v4 = [(WFTrigger *)&v6 copyWithZone:zone];
   [v4 setDestinationType:{-[WFPredictedLocationTransitionTrigger destinationType](self, "destinationType")}];
   [v4 setMinutesBefore:{-[WFPredictedLocationTransitionTrigger minutesBefore](self, "minutesBefore")}];
   return v4;
 }
 
-- (WFPredictedLocationTransitionTrigger)initWithCoder:(id)a3
+- (WFPredictedLocationTransitionTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = WFPredictedLocationTransitionTrigger;
-  v5 = [(WFTrigger *)&v14 initWithCoder:v4];
+  v5 = [(WFTrigger *)&v14 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationType"];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 unsignedIntegerValue];
+      unsignedIntegerValue = [v6 unsignedIntegerValue];
     }
 
     else
     {
-      v8 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    [(WFPredictedLocationTransitionTrigger *)v5 setDestinationType:v8];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minutesBefore"];
+    [(WFPredictedLocationTransitionTrigger *)v5 setDestinationType:unsignedIntegerValue];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minutesBefore"];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v11 = 0;
+      unsignedIntegerValue2 = 0;
     }
 
-    [(WFPredictedLocationTransitionTrigger *)v5 setMinutesBefore:v11];
+    [(WFPredictedLocationTransitionTrigger *)v5 setMinutesBefore:unsignedIntegerValue2];
     v12 = v5;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = WFPredictedLocationTransitionTrigger;
-  v4 = a3;
-  [(WFTrigger *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFTrigger *)&v7 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[WFPredictedLocationTransitionTrigger destinationType](self, "destinationType", v7.receiver, v7.super_class)}];
-  [v4 encodeObject:v5 forKey:@"destinationType"];
+  [coderCopy encodeObject:v5 forKey:@"destinationType"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[WFPredictedLocationTransitionTrigger minutesBefore](self, "minutesBefore")}];
-  [v4 encodeObject:v6 forKey:@"minutesBefore"];
+  [coderCopy encodeObject:v6 forKey:@"minutesBefore"];
 }
 
 - (id)localizedDescriptionWithConfigurationSummary
 {
-  v3 = [(WFPredictedLocationTransitionTrigger *)self destinationType];
-  if (!v3)
+  destinationType = [(WFPredictedLocationTransitionTrigger *)self destinationType];
+  if (!destinationType)
   {
     goto LABEL_5;
   }
 
-  if (v3 != 1)
+  if (destinationType != 1)
   {
     goto LABEL_8;
   }
 
-  v4 = [(WFPredictedLocationTransitionTrigger *)self minutesBefore];
-  if (v4 < 6)
+  minutesBefore = [(WFPredictedLocationTransitionTrigger *)self minutesBefore];
+  if (minutesBefore < 6)
   {
-    v5 = &off_1E83757D0[v4];
+    v5 = &off_1E83757D0[minutesBefore];
   }
 
   else
   {
 LABEL_5:
-    v3 = [(WFPredictedLocationTransitionTrigger *)self minutesBefore];
-    if (v3 >= 6)
+    destinationType = [(WFPredictedLocationTransitionTrigger *)self minutesBefore];
+    if (destinationType >= 6)
     {
       goto LABEL_8;
     }
 
-    v5 = &off_1E8375800[v3];
+    v5 = &off_1E8375800[destinationType];
   }
 
-  v3 = WFLocalizedString(*v5);
+  destinationType = WFLocalizedString(*v5);
 LABEL_8:
 
-  return v3;
+  return destinationType;
 }
 
 + (id)displayGlyph
 {
   v2 = MEMORY[0x1E69E0B58];
-  v3 = [MEMORY[0x1E696AAE8] bundleForClass:a1];
+  v3 = [MEMORY[0x1E696AAE8] bundleForClass:self];
   v4 = [v2 imageNamed:@"LeaveTriggerIcon" inBundle:v3];
 
   return v4;
 }
 
-+ (id)localizedDisplayNameWithContext:(id)a3
++ (id)localizedDisplayNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Before I Commute", @"Before I Commute");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }

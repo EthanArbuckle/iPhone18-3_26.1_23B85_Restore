@@ -2,7 +2,7 @@
 + (id)PhotosSearchLabeledData;
 + (id)configurationForPhotosSearchLabeledData;
 + (id)storeConfigurationForPhotosSearchLabeledData;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -11,7 +11,7 @@
 + (id)PhotosSearchLabeledData
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForPhotosSearchLabeledData];
+  configurationForPhotosSearchLabeledData = [self configurationForPhotosSearchLabeledData];
   v3 = +[BMAeroMLPhotosSearchLabeledData columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -23,7 +23,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"AeroML.LabeledData.PhotosSearchLabeledData" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AeroML.LabeledData.PhotosSearchLabeledData" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"AeroML.LabeledData.PhotosSearchLabeledData" schema:v9 configuration:configurationForPhotosSearchLabeledData];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -32,13 +32,13 @@
 
 + (id)configurationForPhotosSearchLabeledData
 {
-  v3 = [a1 storeConfigurationForPhotosSearchLabeledData];
-  v4 = [a1 syncPolicyForPhotosSearchLabeledData];
+  storeConfigurationForPhotosSearchLabeledData = [self storeConfigurationForPhotosSearchLabeledData];
+  syncPolicyForPhotosSearchLabeledData = [self syncPolicyForPhotosSearchLabeledData];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"5449DAFE-E197-4488-BB2C-2BDF6E25E84D"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AeroML.LabeledData.PhotosSearchLabeledData" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"AeroML.LabeledData.PhotosSearchLabeledData" eventClass:objc_opt_class() storeConfig:storeConfigurationForPhotosSearchLabeledData syncPolicy:syncPolicyForPhotosSearchLabeledData legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -51,19 +51,19 @@
   return v3;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"PhotosSearchLabeledData"])
+  if ([name isEqualToString:@"PhotosSearchLabeledData"])
   {
-    v4 = [a1 PhotosSearchLabeledData];
+    photosSearchLabeledData = [self PhotosSearchLabeledData];
   }
 
   else
   {
-    v4 = 0;
+    photosSearchLabeledData = 0;
   }
 
-  return v4;
+  return photosSearchLabeledData;
 }
 
 + (id)validKeyPaths

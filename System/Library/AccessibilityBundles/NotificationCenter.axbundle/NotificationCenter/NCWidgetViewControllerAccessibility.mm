@@ -1,15 +1,15 @@
 @interface NCWidgetViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation NCWidgetViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_NCWidgetViewController" hasInstanceMethod:@"_setActiveDisplayMode: unconditionallyNotifyingContentProvidingViewController:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"_NCWidgetViewController" hasInstanceMethod:@"_widgetExtensionContext" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_NCWidgetExtensionContext" hasInstanceMethod:@"_activeDisplayMode" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_NCWidgetViewController" hasInstanceMethod:@"_setActiveDisplayMode: unconditionallyNotifyingContentProvidingViewController:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"_NCWidgetViewController" hasInstanceMethod:@"_widgetExtensionContext" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_NCWidgetExtensionContext" hasInstanceMethod:@"_activeDisplayMode" withFullSignature:{"q", 0}];
 }
 
 @end

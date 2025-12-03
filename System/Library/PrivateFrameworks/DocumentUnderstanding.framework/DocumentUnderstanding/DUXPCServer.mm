@@ -1,34 +1,34 @@
 @interface DUXPCServer
 + (id)sharedInstance;
-+ (void)_registerDocumentUnderstandingListenerWithTextUnderstandingManager:(id)a3;
-+ (void)registerDUXPCListenersWithManager:(id)a3;
++ (void)_registerDocumentUnderstandingListenerWithTextUnderstandingManager:(id)manager;
++ (void)registerDUXPCListenersWithManager:(id)manager;
 - (DUXPCServer)init;
-- (void)_newClientConnection:(id)a3 withTextUnderstandingManager:(id)a4;
-- (void)_registerDocumentUpdateHandlerListenerWithTextUnderstandingManager:(id)a3;
+- (void)_newClientConnection:(id)connection withTextUnderstandingManager:(id)manager;
+- (void)_registerDocumentUpdateHandlerListenerWithTextUnderstandingManager:(id)manager;
 @end
 
 @implementation DUXPCServer
 
-- (void)_newClientConnection:(id)a3 withTextUnderstandingManager:(id)a4
+- (void)_newClientConnection:(id)connection withTextUnderstandingManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (objc_msgSend_checkForAndLogTrueCStringEntitlement_connection_(DUXPCServerHelper, v8, "com.apple.TextUnderstanding.DocumentUpdateHandler", v6, v9))
+  connectionCopy = connection;
+  managerCopy = manager;
+  if (objc_msgSend_checkForAndLogTrueCStringEntitlement_connection_(DUXPCServerHelper, v8, "com.apple.TextUnderstanding.DocumentUpdateHandler", connectionCopy, v9))
   {
-    xpc_connection_set_target_queue(v6, self->_documentUpdateQueue);
+    xpc_connection_set_target_queue(connectionCopy, self->_documentUpdateQueue);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = sub_232CE27DC;
     handler[3] = &unk_2789A7C70;
-    v11 = v7;
-    xpc_connection_set_event_handler(v6, handler);
-    xpc_connection_resume(v6);
+    v11 = managerCopy;
+    xpc_connection_set_event_handler(connectionCopy, handler);
+    xpc_connection_resume(connectionCopy);
   }
 }
 
-- (void)_registerDocumentUpdateHandlerListenerWithTextUnderstandingManager:(id)a3
+- (void)_registerDocumentUpdateHandlerListenerWithTextUnderstandingManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -41,7 +41,7 @@
   v7[2] = sub_232CE2B74;
   v7[3] = &unk_2789A7C48;
   v7[4] = self;
-  v6 = v4;
+  v6 = managerCopy;
   v8 = v6;
   xpc_connection_set_event_handler(listener, v7);
   xpc_connection_resume(self->_listener);
@@ -114,11 +114,11 @@ LABEL_11:
   return v8;
 }
 
-+ (void)_registerDocumentUnderstandingListenerWithTextUnderstandingManager:(id)a3
++ (void)_registerDocumentUnderstandingListenerWithTextUnderstandingManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = [DUXPCServerDelegate alloc];
-  v8 = objc_msgSend_initWithManager_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithManager_(v4, v5, managerCopy, v6, v7);
 
   v9 = qword_2814E3D98;
   qword_2814E3D98 = v8;
@@ -134,16 +134,16 @@ LABEL_11:
   objc_msgSend_resume(v23, v19, v20, v21, v22);
 }
 
-+ (void)registerDUXPCListenersWithManager:(id)a3
++ (void)registerDUXPCListenersWithManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = sub_232CE3008;
   aBlock[3] = &unk_2789A7BF8;
-  v12 = v4;
-  v13 = a1;
-  v5 = v4;
+  v12 = managerCopy;
+  selfCopy = self;
+  v5 = managerCopy;
   v6 = _Block_copy(aBlock);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -164,7 +164,7 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = sub_232CE3118;
   block[3] = &unk_2789A7E98;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27DDD4DF8 != -1)
   {
     dispatch_once(&qword_27DDD4DF8, block);

@@ -1,13 +1,13 @@
 @interface CNContainerMeIdentifierDescription
-- (void)ABValueFromCNValue:(id)a3;
+- (void)ABValueFromCNValue:(id)value;
 @end
 
 @implementation CNContainerMeIdentifierDescription
 
-- (void)ABValueFromCNValue:(id)a3
+- (void)ABValueFromCNValue:(id)value
 {
-  v3 = [a3 intValue];
-  v4 = [MEMORY[0x1E696AD98] numberWithInt:v3];
+  intValue = [value intValue];
+  v4 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
   if (!v4)
   {
     return 0;

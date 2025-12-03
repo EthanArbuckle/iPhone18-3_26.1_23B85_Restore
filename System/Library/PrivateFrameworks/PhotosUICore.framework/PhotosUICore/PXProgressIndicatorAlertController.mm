@@ -1,19 +1,19 @@
 @interface PXProgressIndicatorAlertController
-+ (id)beginShowingModalProgressWithConfiguration:(id)a3;
++ (id)beginShowingModalProgressWithConfiguration:(id)configuration;
 - (PXProgressIndicatorAlertController)init;
-- (void)_dismissAlert:(id)a3;
+- (void)_dismissAlert:(id)alert;
 - (void)_presentAlert;
 - (void)_startShowingProgress;
 - (void)dealloc;
-- (void)stopShowing:(id)a3;
+- (void)stopShowing:(id)showing;
 @end
 
 @implementation PXProgressIndicatorAlertController
 
-- (void)_dismissAlert:(id)a3
+- (void)_dismissAlert:(id)alert
 {
   v11 = *MEMORY[0x1E69E9840];
-  _Dismiss(self->_alertController, self->_window, a3);
+  _Dismiss(self->_alertController, self->_window, alert);
   alertController = self->_alertController;
   self->_alertController = 0;
 
@@ -28,7 +28,7 @@
     if (os_signpost_enabled(v6))
     {
       v9 = 134217984;
-      v10 = self;
+      selfCopy = self;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v6, OS_SIGNPOST_INTERVAL_END, v8, "PXProgressIndicatorAlertControllerShowing", "Context=%{signpost.telemetry:string2}lu ", &v9, 0xCu);
     }
   }
@@ -38,9 +38,9 @@
 {
   if (!self->_isCanceled)
   {
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     alertPresentedDate = self->_alertPresentedDate;
-    self->_alertPresentedDate = v4;
+    self->_alertPresentedDate = date;
 
     v22 = objc_alloc_init(MEMORY[0x1E69DD258]);
     v6 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:101];
@@ -50,33 +50,33 @@
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [v22 view];
-    [v15 setBounds:{v8, v10, v12, v14}];
+    view = [v22 view];
+    [view setBounds:{v8, v10, v12, v14}];
 
-    v16 = [v22 view];
-    [v16 addSubview:v6];
+    view2 = [v22 view];
+    [view2 addSubview:v6];
 
     [v6 startAnimating];
     v17 = MEMORY[0x1E69DC650];
-    v18 = [(PXProgressIndicatorAlertController *)self title];
-    v19 = [v17 alertControllerWithTitle:v18 message:0 preferredStyle:1];
+    title = [(PXProgressIndicatorAlertController *)self title];
+    v19 = [v17 alertControllerWithTitle:title message:0 preferredStyle:1];
     alertController = self->_alertController;
     self->_alertController = v19;
 
     [(UIAlertController *)self->_alertController setContentViewController:v22];
-    v21 = [(UIWindow *)self->_window rootViewController];
-    [v21 px_presentOverTopmostPresentedViewController:self->_alertController animated:1 completion:0];
+    rootViewController = [(UIWindow *)self->_window rootViewController];
+    [rootViewController px_presentOverTopmostPresentedViewController:self->_alertController animated:1 completion:0];
   }
 }
 
 - (void)_startShowingProgress
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC668] sharedApplication];
-  v4 = [v3 windows];
-  v5 = [v4 firstObject];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  windows = [mEMORY[0x1E69DC668] windows];
+  firstObject = [windows firstObject];
   window = self->_window;
-  self->_window = v5;
+  self->_window = firstObject;
 
   [(UIWindow *)self->_window setUserInteractionEnabled:0];
   [(PXProgressIndicatorAlertController *)self delay];
@@ -89,7 +89,7 @@
     if (os_signpost_enabled(v9))
     {
       *buf = 134218240;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = v8;
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v11, "PXProgressIndicatorAlertControllerShowing", "Context=%{signpost.telemetry:string2}lu delay:%.2f", buf, 0x16u);
@@ -137,13 +137,13 @@ void __59__PXProgressIndicatorAlertController__startShowingProgress__block_invok
   px_dispatch_on_main_queue();
 }
 
-- (void)stopShowing:(id)a3
+- (void)stopShowing:(id)showing
 {
-  v4 = a3;
+  showingCopy = showing;
   if (!self->_isCanceled)
   {
     self->_isCanceled = 1;
-    v4;
+    showingCopy;
     px_dispatch_on_main_queue();
   }
 }
@@ -193,14 +193,14 @@ void __50__PXProgressIndicatorAlertController_stopShowing___block_invoke(uint64_
   return result;
 }
 
-+ (id)beginShowingModalProgressWithConfiguration:(id)a3
++ (id)beginShowingModalProgressWithConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v4 = objc_alloc_init(PXProgressIndicatorAlertController);
-  if (v3)
+  if (configurationCopy)
   {
-    v3[2](v3, v4);
+    configurationCopy[2](configurationCopy, v4);
   }
 
   [(PXProgressIndicatorAlertController *)v4 _startShowingProgress];

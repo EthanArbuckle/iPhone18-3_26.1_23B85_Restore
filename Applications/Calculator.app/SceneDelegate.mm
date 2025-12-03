@@ -1,9 +1,9 @@
 @interface SceneDelegate
 - (_TtC10Calculator13SceneDelegate)init;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
 - (void)sceneWillResignActive:;
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5;
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler;
 @end
 
 @implementation SceneDelegate
@@ -15,10 +15,10 @@
   return [(SceneDelegate *)&v3 init];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v4 = objc_opt_self();
-  v6 = self;
+  selfCopy = self;
   [v4 preheatSystemSoundsForObject:?];
   if (qword_1001546E0 != -1)
   {
@@ -32,21 +32,21 @@
   }
 }
 
-- (void)windowScene:(id)a3 performActionForShortcutItem:(id)a4 completionHandler:(id)a5
+- (void)windowScene:(id)scene performActionForShortcutItem:(id)item completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
-  v8 = a4;
-  v9 = self;
-  v10 = sub_100082078(v8);
+  v7 = _Block_copy(handler);
+  itemCopy = item;
+  selfCopy = self;
+  v10 = sub_100082078(itemCopy);
   v7[2](v7, v10 & 1);
 
   _Block_release(v7);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v3 = qword_1001546E0;
-  v5 = self;
+  selfCopy = self;
   if (v3 != -1)
   {
     swift_once();
@@ -58,7 +58,7 @@
     [v4 deactivate];
   }
 
-  [objc_opt_self() cooldownSystemSoundsForObject:v5];
+  [objc_opt_self() cooldownSystemSoundsForObject:selfCopy];
 }
 
 - (void)sceneWillResignActive:
@@ -68,11 +68,11 @@
   if (v0)
   {
     v1 = v0;
-    v2 = [objc_opt_self() sharedApplication];
-    v3 = [v2 shortcutItems];
-    if (v3)
+    sharedApplication = [objc_opt_self() sharedApplication];
+    shortcutItems = [sharedApplication shortcutItems];
+    if (shortcutItems)
     {
-      v4 = v3;
+      v4 = shortcutItems;
       sub_1000827A4();
       v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -96,12 +96,12 @@
         v7.super.isa = 0;
       }
 
-      [v2 setShortcutItems:v7.super.isa];
+      [sharedApplication setShortcutItems:v7.super.isa];
     }
 
     else
     {
-      [v2 setShortcutItems:0];
+      [sharedApplication setShortcutItems:0];
     }
   }
 }

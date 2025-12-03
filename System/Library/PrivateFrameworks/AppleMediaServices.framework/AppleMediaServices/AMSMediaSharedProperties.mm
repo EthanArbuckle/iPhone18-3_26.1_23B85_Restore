@@ -1,15 +1,15 @@
 @interface AMSMediaSharedProperties
 + (NSMapTable)sharedPropertiesMapTable;
 + (OS_dispatch_queue)accessQueue;
-+ (id)_propertiesForClientIdentifier:(id)a3 account:(id)a4 bag:(id)a5 clientInfo:(id)a6 URLKnownToBeTrusted:(BOOL)a7;
-+ (id)propertiesForMarketingItemTask:(id)a3;
-+ (id)propertiesForMediaTask:(id)a3;
-+ (id)propertiesForMercuryCacheFetchTask:(id)a3;
-+ (id)propertiesForNotificationSettingsTask:(id)a3;
-+ (id)propertiesForRatingsTask:(id)a3;
-+ (id)propertiesForStorefrontsTask:(id)a3;
-+ (id)propertiesForUserNotificationSettingsTask:(id)a3;
-- (id)_initWithClientIdentifier:(id)a3 account:(id)a4 bag:(id)a5 clientInfo:(id)a6 URLKnownToBeTrusted:(BOOL)a7;
++ (id)_propertiesForClientIdentifier:(id)identifier account:(id)account bag:(id)bag clientInfo:(id)info URLKnownToBeTrusted:(BOOL)trusted;
++ (id)propertiesForMarketingItemTask:(id)task;
++ (id)propertiesForMediaTask:(id)task;
++ (id)propertiesForMercuryCacheFetchTask:(id)task;
++ (id)propertiesForNotificationSettingsTask:(id)task;
++ (id)propertiesForRatingsTask:(id)task;
++ (id)propertiesForStorefrontsTask:(id)task;
++ (id)propertiesForUserNotificationSettingsTask:(id)task;
+- (id)_initWithClientIdentifier:(id)identifier account:(id)account bag:(id)bag clientInfo:(id)info URLKnownToBeTrusted:(BOOL)trusted;
 @end
 
 @implementation AMSMediaSharedProperties
@@ -36,8 +36,8 @@ void __39__AMSMediaSharedProperties_accessQueue__block_invoke()
 
 + (NSMapTable)sharedPropertiesMapTable
 {
-  v2 = [a1 accessQueue];
-  dispatch_assert_queue_V2(v2);
+  accessQueue = [self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   if (qword_1ED6E2DD0 != -1)
   {
@@ -56,112 +56,112 @@ uint64_t __52__AMSMediaSharedProperties_sharedPropertiesMapTable__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)propertiesForMarketingItemTask:(id)a3
++ (id)propertiesForMarketingItemTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 clientIdentifier];
-  v6 = [v4 account];
-  v7 = [v4 bag];
-  v8 = [v4 clientInfo];
+  taskCopy = task;
+  clientIdentifier = [taskCopy clientIdentifier];
+  account = [taskCopy account];
+  v7 = [taskCopy bag];
+  clientInfo = [taskCopy clientInfo];
 
-  v9 = [a1 _propertiesForClientIdentifier:v5 account:v6 bag:v7 clientInfo:v8 URLKnownToBeTrusted:0];
+  v9 = [self _propertiesForClientIdentifier:clientIdentifier account:account bag:v7 clientInfo:clientInfo URLKnownToBeTrusted:0];
 
   return v9;
 }
 
-+ (id)propertiesForMediaTask:(id)a3
++ (id)propertiesForMediaTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 clientIdentifier];
-  v6 = [v4 account];
-  v7 = [v4 bag];
-  v8 = [v4 clientInfo];
-  v9 = [v4 URLKnownToBeTrusted];
+  taskCopy = task;
+  clientIdentifier = [taskCopy clientIdentifier];
+  account = [taskCopy account];
+  v7 = [taskCopy bag];
+  clientInfo = [taskCopy clientInfo];
+  uRLKnownToBeTrusted = [taskCopy URLKnownToBeTrusted];
 
-  v10 = [a1 _propertiesForClientIdentifier:v5 account:v6 bag:v7 clientInfo:v8 URLKnownToBeTrusted:v9];
+  v10 = [self _propertiesForClientIdentifier:clientIdentifier account:account bag:v7 clientInfo:clientInfo URLKnownToBeTrusted:uRLKnownToBeTrusted];
 
   return v10;
 }
 
-+ (id)propertiesForMercuryCacheFetchTask:(id)a3
++ (id)propertiesForMercuryCacheFetchTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 clientIdentifier];
-  v6 = [v4 account];
-  v7 = [v4 bag];
-  v8 = [v4 clientInfo];
+  taskCopy = task;
+  clientIdentifier = [taskCopy clientIdentifier];
+  account = [taskCopy account];
+  v7 = [taskCopy bag];
+  clientInfo = [taskCopy clientInfo];
 
-  v9 = [a1 _propertiesForClientIdentifier:v5 account:v6 bag:v7 clientInfo:v8 URLKnownToBeTrusted:0];
+  v9 = [self _propertiesForClientIdentifier:clientIdentifier account:account bag:v7 clientInfo:clientInfo URLKnownToBeTrusted:0];
 
   return v9;
 }
 
-+ (id)propertiesForRatingsTask:(id)a3
++ (id)propertiesForRatingsTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 clientIdentifier];
-  v6 = [v4 bag];
+  taskCopy = task;
+  clientIdentifier = [taskCopy clientIdentifier];
+  v6 = [taskCopy bag];
 
-  v7 = [a1 _propertiesForClientIdentifier:v5 account:0 bag:v6 clientInfo:0 URLKnownToBeTrusted:0];
+  v7 = [self _propertiesForClientIdentifier:clientIdentifier account:0 bag:v6 clientInfo:0 URLKnownToBeTrusted:0];
 
   return v7;
 }
 
-+ (id)propertiesForStorefrontsTask:(id)a3
++ (id)propertiesForStorefrontsTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 clientIdentifier];
-  v6 = [v4 bag];
+  taskCopy = task;
+  clientIdentifier = [taskCopy clientIdentifier];
+  v6 = [taskCopy bag];
 
-  v7 = [a1 _propertiesForClientIdentifier:v5 account:0 bag:v6 clientInfo:0 URLKnownToBeTrusted:0];
+  v7 = [self _propertiesForClientIdentifier:clientIdentifier account:0 bag:v6 clientInfo:0 URLKnownToBeTrusted:0];
 
   return v7;
 }
 
-+ (id)propertiesForNotificationSettingsTask:(id)a3
++ (id)propertiesForNotificationSettingsTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 account];
-  v6 = [v4 bag];
-  v7 = [v4 clientInfo];
+  taskCopy = task;
+  account = [taskCopy account];
+  v6 = [taskCopy bag];
+  clientInfo = [taskCopy clientInfo];
 
-  v8 = [a1 _propertiesForClientIdentifier:@"com.apple.AppleMediaServices" account:v5 bag:v6 clientInfo:v7 URLKnownToBeTrusted:0];
+  v8 = [self _propertiesForClientIdentifier:@"com.apple.AppleMediaServices" account:account bag:v6 clientInfo:clientInfo URLKnownToBeTrusted:0];
 
   return v8;
 }
 
-+ (id)propertiesForUserNotificationSettingsTask:(id)a3
++ (id)propertiesForUserNotificationSettingsTask:(id)task
 {
-  v4 = a3;
-  v5 = [v4 clientIdentifier];
-  v6 = [v4 account];
-  v7 = [v4 bag];
-  v8 = [v4 clientInfo];
+  taskCopy = task;
+  clientIdentifier = [taskCopy clientIdentifier];
+  account = [taskCopy account];
+  v7 = [taskCopy bag];
+  clientInfo = [taskCopy clientInfo];
 
-  v9 = [a1 _propertiesForClientIdentifier:v5 account:v6 bag:v7 clientInfo:v8 URLKnownToBeTrusted:0];
+  v9 = [self _propertiesForClientIdentifier:clientIdentifier account:account bag:v7 clientInfo:clientInfo URLKnownToBeTrusted:0];
 
   return v9;
 }
 
-- (id)_initWithClientIdentifier:(id)a3 account:(id)a4 bag:(id)a5 clientInfo:(id)a6 URLKnownToBeTrusted:(BOOL)a7
+- (id)_initWithClientIdentifier:(id)identifier account:(id)account bag:(id)bag clientInfo:(id)info URLKnownToBeTrusted:(BOOL)trusted
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  trustedCopy = trusted;
+  identifierCopy = identifier;
+  accountCopy = account;
+  bagCopy = bag;
+  infoCopy = info;
   v25.receiver = self;
   v25.super_class = AMSMediaSharedProperties;
   v16 = [(AMSMediaSharedProperties *)&v25 init];
   if (v16)
   {
-    v17 = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
-    v18 = [[AMSURLSession alloc] initWithConfiguration:v17];
-    v19 = [[AMSMediaTokenService alloc] initWithClientIdentifier:v12 bag:v14];
-    [(AMSMediaTokenService *)v19 setAccount:v13];
-    [(AMSMediaTokenService *)v19 setClientInfo:v15];
+    defaultSessionConfiguration = [MEMORY[0x1E695AC80] defaultSessionConfiguration];
+    v18 = [[AMSURLSession alloc] initWithConfiguration:defaultSessionConfiguration];
+    v19 = [[AMSMediaTokenService alloc] initWithClientIdentifier:identifierCopy bag:bagCopy];
+    [(AMSMediaTokenService *)v19 setAccount:accountCopy];
+    [(AMSMediaTokenService *)v19 setClientInfo:infoCopy];
     [(AMSMediaTokenService *)v19 setSession:v18];
-    [(AMSMediaTokenService *)v19 setURLKnownToBeTrusted:v7];
+    [(AMSMediaTokenService *)v19 setURLKnownToBeTrusted:trustedCopy];
     v20 = [[AMSMediaProtocolHandler alloc] initWithTokenService:v19];
     [(AMSURLSession *)v18 setProtocolHandler:v20];
     session = v16->_session;
@@ -175,45 +175,45 @@ uint64_t __52__AMSMediaSharedProperties_sharedPropertiesMapTable__block_invoke()
   return v16;
 }
 
-+ (id)_propertiesForClientIdentifier:(id)a3 account:(id)a4 bag:(id)a5 clientInfo:(id)a6 URLKnownToBeTrusted:(BOOL)a7
++ (id)_propertiesForClientIdentifier:(id)identifier account:(id)account bag:(id)bag clientInfo:(id)info URLKnownToBeTrusted:(BOOL)trusted
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  accountCopy = account;
+  bagCopy = bag;
+  infoCopy = info;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy__39;
   v38 = __Block_byref_object_dispose__39;
   v39 = 0;
-  v16 = [a1 accessQueue];
+  accessQueue = [self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __102__AMSMediaSharedProperties__propertiesForClientIdentifier_account_bag_clientInfo_URLKnownToBeTrusted___block_invoke;
   block[3] = &unk_1E73B73A0;
   v32 = &v34;
-  v33 = a1;
-  v17 = v12;
+  selfCopy = self;
+  v17 = identifierCopy;
   v31 = v17;
-  dispatch_sync(v16, block);
+  dispatch_sync(accessQueue, block);
 
   v18 = v35[5];
   if (!v18)
   {
-    v19 = [a1 accessQueue];
+    accessQueue2 = [self accessQueue];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __102__AMSMediaSharedProperties__propertiesForClientIdentifier_account_bag_clientInfo_URLKnownToBeTrusted___block_invoke_2;
     v22[3] = &unk_1E73B8E68;
     v27 = &v34;
-    v28 = a1;
+    selfCopy2 = self;
     v23 = v17;
-    v24 = v13;
-    v25 = v14;
-    v26 = v15;
-    v29 = a7;
-    dispatch_barrier_sync(v19, v22);
+    v24 = accountCopy;
+    v25 = bagCopy;
+    v26 = infoCopy;
+    trustedCopy = trusted;
+    dispatch_barrier_sync(accessQueue2, v22);
 
     v18 = v35[5];
   }

@@ -1,33 +1,33 @@
 @interface NTKZeusAnalogFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
++ (BOOL)isRestrictedForDevice:(id)device;
 + (id)_complicationSlotDescriptors;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)_orderedComplicationSlots;
-- (BOOL)customComplication:(id)a3 supportsFamilies:(id)a4 forSlot:(id)a5;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
+- (BOOL)customComplication:(id)complication supportsFamilies:(id)families forSlot:(id)slot;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
 - (id)_complicationMigrationPaths;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (id)customComplicationControllerForComplication:(id)a3 variant:(id)a4 slot:(id)a5;
-- (id)customComplicationsForSlot:(id)a3;
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3;
-- (int64_t)customComplicationFamilyForComplication:(id)a3 slot:(id)a4;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (id)customComplicationControllerForComplication:(id)complication variant:(id)variant slot:(id)slot;
+- (id)customComplicationsForSlot:(id)slot;
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index;
+- (int64_t)customComplicationFamilyForComplication:(id)complication slot:(id)slot;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKZeusAnalogFace
 
-- (int64_t)_editModeForOldEncodingIndex:(int64_t)a3
+- (int64_t)_editModeForOldEncodingIndex:(int64_t)index
 {
   v3 = 11;
-  if (a3 != 1)
+  if (index != 1)
   {
     v3 = 0;
   }
 
-  if (a3)
+  if (index)
   {
     return v3;
   }
@@ -49,9 +49,9 @@
   return v2;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  if ([a3 collectionType] == &dword_4 + 1)
+  if ([device collectionType] == &dword_4 + 1)
   {
     return 0;
   }
@@ -67,7 +67,7 @@
   v11 = xmmword_37BC8;
   v12 = 5;
   v2 = [NSIndexSet indexSetWithIndexes:&v11 count:3];
-  v3 = [NSIndexSet indexSetWithIndex:11, NTKComplicationSlotTop];
+  nTKComplicationSlotTop = [NSIndexSet indexSetWithIndex:11, NTKComplicationSlotTop];
   v4 = NTKComplicationSlotDescriptor();
   v9[1] = NTKComplicationSlotBottom;
   v10[0] = v4;
@@ -88,30 +88,30 @@
   return v2;
 }
 
-- (id)customComplicationControllerForComplication:(id)a3 variant:(id)a4 slot:(id)a5
+- (id)customComplicationControllerForComplication:(id)complication variant:(id)variant slot:(id)slot
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 complicationType];
-  if (v9 == &dword_4)
+  complicationCopy = complication;
+  variantCopy = variant;
+  complicationType = [complicationCopy complicationType];
+  if (complicationType == &dword_4)
   {
     v10 = off_444A0;
     goto LABEL_7;
   }
 
-  if (v9 == (&dword_4 + 1))
+  if (complicationType == (&dword_4 + 1))
   {
     v10 = off_444A8;
     goto LABEL_7;
   }
 
-  if (v9 == (&dword_8 + 3))
+  if (complicationType == (&dword_8 + 3))
   {
     v10 = off_44478;
 LABEL_7:
     v11 = objc_alloc(*v10);
-    v12 = [(NTKZeusAnalogFace *)self device];
-    v13 = [v11 initWithComplication:v7 variant:v8 device:v12];
+    device = [(NTKZeusAnalogFace *)self device];
+    v13 = [v11 initWithComplication:complicationCopy variant:variantCopy device:device];
 
     goto LABEL_9;
   }
@@ -122,15 +122,15 @@ LABEL_9:
   return v13;
 }
 
-- (id)customComplicationsForSlot:(id)a3
+- (id)customComplicationsForSlot:(id)slot
 {
-  v3 = a3;
-  if ([v3 isEqual:NTKComplicationSlotTop])
+  slotCopy = slot;
+  if ([slotCopy isEqual:NTKComplicationSlotTop])
   {
     v4 = [NTKComplication allComplicationsOfType:11];
   }
 
-  else if ([v3 isEqual:NTKComplicationSlotBottom])
+  else if ([slotCopy isEqual:NTKComplicationSlotBottom])
   {
     v4 = objc_opt_new();
     v5 = [NTKComplication allComplicationsOfType:5];
@@ -148,22 +148,22 @@ LABEL_9:
   return v4;
 }
 
-- (int64_t)customComplicationFamilyForComplication:(id)a3 slot:(id)a4
+- (int64_t)customComplicationFamilyForComplication:(id)complication slot:(id)slot
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqual:NTKComplicationSlotTop])
+  complicationCopy = complication;
+  slotCopy = slot;
+  if ([slotCopy isEqual:NTKComplicationSlotTop])
   {
     v8 = &NTKComplicationFamilyZeusUpper;
   }
 
   else
   {
-    if (![v7 isEqual:NTKComplicationSlotBottom])
+    if (![slotCopy isEqual:NTKComplicationSlotBottom])
     {
       v11.receiver = self;
       v11.super_class = NTKZeusAnalogFace;
-      v9 = [(NTKZeusAnalogFace *)&v11 customComplicationFamilyForComplication:v6 slot:v7];
+      v9 = [(NTKZeusAnalogFace *)&v11 customComplicationFamilyForComplication:complicationCopy slot:slotCopy];
       goto LABEL_7;
     }
 
@@ -176,14 +176,14 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)customComplication:(id)a3 supportsFamilies:(id)a4 forSlot:(id)a5
+- (BOOL)customComplication:(id)complication supportsFamilies:(id)families forSlot:(id)slot
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 complicationType];
-  if ((v9 - 4) >= 2)
+  familiesCopy = families;
+  slotCopy = slot;
+  complicationType = [complication complicationType];
+  if ((complicationType - 4) >= 2)
   {
-    if (v9 == &dword_8 + 3 && [v8 isEqual:NTKComplicationSlotTop])
+    if (complicationType == &dword_8 + 3 && [slotCopy isEqual:NTKComplicationSlotTop])
     {
       v10 = &NTKComplicationFamilyZeusUpper;
       goto LABEL_7;
@@ -194,7 +194,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (([v8 isEqual:NTKComplicationSlotBottom] & 1) == 0)
+  if (([slotCopy isEqual:NTKComplicationSlotBottom] & 1) == 0)
   {
     goto LABEL_8;
   }
@@ -202,16 +202,16 @@ LABEL_8:
   v10 = &NTKComplicationFamilyZeusLower;
 LABEL_7:
   v11 = [NSNumber numberWithInteger:*v10];
-  v12 = [v7 containsObject:v11];
+  v12 = [familiesCopy containsObject:v11];
 
 LABEL_9:
   return v12;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKZeusAnalogFace *)self device:a3];
-  switch(a3)
+  v5 = [(NTKZeusAnalogFace *)self device:mode];
+  switch(mode)
   {
     case 10:
       v6 = [NTKZeusColorEditOption optionWithColor:7 forDevice:v5];
@@ -232,55 +232,55 @@ LABEL_9:
   return v7;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 11)
+  if (mode == 11)
   {
-    v4 = [@"EDIT_MODE_LABEL_DIAL" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_DIAL" stringByAppendingString:{@"_COMPANION", device}];
     v5 = NTKCompanionClockFaceLocalizedString();
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___NTKZeusAnalogFace;
-    v5 = objc_msgSendSuper2(&v7, "_localizedNameOverrideForCustomEditMode:forDevice:", a3, a4);
+    v5 = objc_msgSendSuper2(&v7, "_localizedNameOverrideForCustomEditMode:forDevice:", mode, device);
   }
 
   return v5;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKZeusAnalogFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKZeusAnalogFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKZeusAnalogFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKZeusAnalogFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKZeusAnalogFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKZeusAnalogFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKZeusAnalogFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKZeusAnalogFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKZeusAnalogFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKZeusAnalogFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKZeusAnalogFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKZeusAnalogFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 10 || a3 == 13 || a3 == 11)
+  if (mode == 10 || mode == 13 || mode == 11)
   {
     v4 = objc_opt_class();
   }
@@ -295,8 +295,8 @@ LABEL_9:
 
 - (id)_faceDescription
 {
-  v2 = [(NTKZeusAnalogFace *)self _faceDescriptionKey];
-  v3 = [NTKZeusAnalogFaceBundle localizedStringForKey:v2 comment:&stru_45510];
+  _faceDescriptionKey = [(NTKZeusAnalogFace *)self _faceDescriptionKey];
+  v3 = [NTKZeusAnalogFaceBundle localizedStringForKey:_faceDescriptionKey comment:&stru_45510];
 
   return v3;
 }

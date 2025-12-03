@@ -1,39 +1,39 @@
 @interface CNiOSPersonFetcher
-+ (id)peopleForFetchRequest:(id)a3 matchInfos:(id *)a4 inAddressBook:(void *)a5 environment:(id)a6 error:(id *)a7;
++ (id)peopleForFetchRequest:(id)request matchInfos:(id *)infos inAddressBook:(void *)book environment:(id)environment error:(id *)error;
 - (BOOL)shouldSortInMemory;
-- (CNiOSPersonFetcher)initWithAddressBook:(void *)a3 fetchRequest:(id)a4 environment:(id)a5;
-- (id)executeFetchRequestWithProgressiveResults:(id)a3 completion:(id)a4;
-- (id)fetchPeopleReturningMatchInfos:(id *)a3 error:(id *)a4;
-- (id)fetchPeopleUsingNativeSortReturningMatchInfos:(id *)a3 error:(id *)a4;
-- (id)sortPeople:(id)a3;
+- (CNiOSPersonFetcher)initWithAddressBook:(void *)book fetchRequest:(id)request environment:(id)environment;
+- (id)executeFetchRequestWithProgressiveResults:(id)results completion:(id)completion;
+- (id)fetchPeopleReturningMatchInfos:(id *)infos error:(id *)error;
+- (id)fetchPeopleUsingNativeSortReturningMatchInfos:(id *)infos error:(id *)error;
+- (id)sortPeople:(id)people;
 - (void)dealloc;
 @end
 
 @implementation CNiOSPersonFetcher
 
-+ (id)peopleForFetchRequest:(id)a3 matchInfos:(id *)a4 inAddressBook:(void *)a5 environment:(id)a6 error:(id *)a7
++ (id)peopleForFetchRequest:(id)request matchInfos:(id *)infos inAddressBook:(void *)book environment:(id)environment error:(id *)error
 {
-  v11 = a6;
-  v12 = a3;
-  v13 = [[CNiOSPersonFetcher alloc] initWithAddressBook:a5 fetchRequest:v12 environment:v11];
+  environmentCopy = environment;
+  requestCopy = request;
+  v13 = [[CNiOSPersonFetcher alloc] initWithAddressBook:book fetchRequest:requestCopy environment:environmentCopy];
 
-  v14 = [(CNiOSPersonFetcher *)v13 fetchPeopleReturningMatchInfos:a4 error:a7];
+  v14 = [(CNiOSPersonFetcher *)v13 fetchPeopleReturningMatchInfos:infos error:error];
 
   return v14;
 }
 
-- (CNiOSPersonFetcher)initWithAddressBook:(void *)a3 fetchRequest:(id)a4 environment:(id)a5
+- (CNiOSPersonFetcher)initWithAddressBook:(void *)book fetchRequest:(id)request environment:(id)environment
 {
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = CNiOSPersonFetcher;
   v11 = [(CNiOSPersonFetcher *)&v15 init];
   if (v11)
   {
-    if (a3)
+    if (book)
     {
-      v12 = CFRetain(a3);
+      v12 = CFRetain(book);
     }
 
     else
@@ -42,8 +42,8 @@
     }
 
     v11->_addressBook = v12;
-    objc_storeStrong(&v11->_fetchRequest, a4);
-    objc_storeStrong(&v11->_environment, a5);
+    objc_storeStrong(&v11->_fetchRequest, request);
+    objc_storeStrong(&v11->_environment, environment);
     v13 = v11;
   }
 
@@ -63,14 +63,14 @@
   [(CNiOSPersonFetcher *)&v4 dealloc];
 }
 
-- (id)executeFetchRequestWithProgressiveResults:(id)a3 completion:(id)a4
+- (id)executeFetchRequestWithProgressiveResults:(id)results completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CNiOSPersonFetchRequest *)self->_fetchRequest predicate];
-  if ([v8 conformsToProtocol:&unk_1F09931E0])
+  resultsCopy = results;
+  completionCopy = completion;
+  predicate = [(CNiOSPersonFetchRequest *)self->_fetchRequest predicate];
+  if ([predicate conformsToProtocol:&unk_1F09931E0])
   {
-    v9 = [v8 cn_fetchPeopleInAddressBook:self->_addressBook fetchRequest:self->_fetchRequest progressiveResults:v6 completion:v7 environment:self->_environment];
+    v9 = [predicate cn_fetchPeopleInAddressBook:self->_addressBook fetchRequest:self->_fetchRequest progressiveResults:resultsCopy completion:completionCopy environment:self->_environment];
   }
 
   else
@@ -81,9 +81,9 @@
   return v9;
 }
 
-- (id)fetchPeopleReturningMatchInfos:(id *)a3 error:(id *)a4
+- (id)fetchPeopleReturningMatchInfos:(id *)infos error:(id *)error
 {
-  v5 = [(CNiOSPersonFetcher *)self fetchPeopleUsingNativeSortReturningMatchInfos:a3 error:a4];
+  v5 = [(CNiOSPersonFetcher *)self fetchPeopleUsingNativeSortReturningMatchInfos:infos error:error];
   if ([(CNiOSPersonFetcher *)self shouldSortInMemory])
   {
     v6 = [(CNiOSPersonFetcher *)self sortPeople:v5];
@@ -94,7 +94,7 @@
   return v5;
 }
 
-- (id)fetchPeopleUsingNativeSortReturningMatchInfos:(id *)a3 error:(id *)a4
+- (id)fetchPeopleUsingNativeSortReturningMatchInfos:(id *)infos error:(id *)error
 {
   v12 = 0;
   v13 = &v12;
@@ -102,7 +102,7 @@
   v15 = __Block_byref_object_copy__10;
   v16 = __Block_byref_object_dispose__10;
   v17 = 0;
-  v10[6] = a3;
+  v10[6] = infos;
   v11 = 0;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -112,19 +112,19 @@
   v10[5] = &v12;
   v6 = CNBridgeABCFResultAndErrorFromBlock(&v11, v10);
   v7 = v11;
-  if (a3)
+  if (infos)
   {
-    *a3 = v13[5];
+    *infos = v13[5];
   }
 
   if (v7)
   {
 
-    if (a4)
+    if (error)
     {
       v8 = v7;
       v6 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -174,8 +174,8 @@ uint64_t __74__CNiOSPersonFetcher_fetchPeopleUsingNativeSortReturningMatchInfos_
 {
   if ([(CNiOSPersonFetchRequest *)self->_fetchRequest shouldSort])
   {
-    v3 = [(CNiOSPersonFetchRequest *)self->_fetchRequest predicate];
-    v4 = [v3 cn_supportsNativeSorting] ^ 1;
+    predicate = [(CNiOSPersonFetchRequest *)self->_fetchRequest predicate];
+    v4 = [predicate cn_supportsNativeSorting] ^ 1;
   }
 
   else
@@ -186,14 +186,14 @@ uint64_t __74__CNiOSPersonFetcher_fetchPeopleUsingNativeSortReturningMatchInfos_
   return v4;
 }
 
-- (id)sortPeople:(id)a3
+- (id)sortPeople:(id)people
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __33__CNiOSPersonFetcher_sortPeople___block_invoke;
   v5[3] = &unk_1E7413650;
   v5[4] = self;
-  v3 = [a3 sortedArrayUsingComparator:v5];
+  v3 = [people sortedArrayUsingComparator:v5];
 
   return v3;
 }

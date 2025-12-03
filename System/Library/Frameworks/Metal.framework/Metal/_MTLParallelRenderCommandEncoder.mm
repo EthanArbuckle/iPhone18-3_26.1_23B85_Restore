@@ -1,21 +1,21 @@
 @interface _MTLParallelRenderCommandEncoder
-- (_MTLParallelRenderCommandEncoder)initWithCommandBuffer:(id)a3 renderPassDescriptor:(id)a4;
+- (_MTLParallelRenderCommandEncoder)initWithCommandBuffer:(id)buffer renderPassDescriptor:(id)descriptor;
 - (id)_renderCommandEncoderCommon;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (id)renderCommandEncoder;
-- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4;
+- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity;
 - (void)dealloc;
 - (void)endEncoding;
 - (void)initializeEnhancedCommandBufferErrors;
-- (void)insertDebugSignpost:(id)a3;
+- (void)insertDebugSignpost:(id)signpost;
 - (void)preEndEncoding;
 @end
 
 @implementation _MTLParallelRenderCommandEncoder
 
-- (_MTLParallelRenderCommandEncoder)initWithCommandBuffer:(id)a3 renderPassDescriptor:(id)a4
+- (_MTLParallelRenderCommandEncoder)initWithCommandBuffer:(id)buffer renderPassDescriptor:(id)descriptor
 {
-  if (a3)
+  if (buffer)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -27,10 +27,10 @@
 
   else
   {
-    [(_MTLParallelRenderCommandEncoder *)self initWithCommandBuffer:a2 renderPassDescriptor:0, a4, v4, v5, v6, v7, v30.receiver];
+    [(_MTLParallelRenderCommandEncoder *)self initWithCommandBuffer:a2 renderPassDescriptor:0, descriptor, v4, v5, v6, v7, v30.receiver];
   }
 
-  if (a4)
+  if (descriptor)
   {
     objc_opt_class();
     v19 = objc_opt_isKindOfClass();
@@ -50,19 +50,19 @@
   v27 = [(_MTLObjectWithLabel *)&v30 init];
   if (v27)
   {
-    v27->_device = [a3 device];
-    v27->_queue = [a3 commandQueue];
-    v27->_commandBuffer = a3;
-    v27->_renderPassDescriptor = [a4 copy];
+    v27->_device = [buffer device];
+    v27->_queue = [buffer commandQueue];
+    v27->_commandBuffer = buffer;
+    v27->_renderPassDescriptor = [descriptor copy];
     [(_MTLParallelRenderCommandEncoder *)v27 initializeEnhancedCommandBufferErrors];
     [(MTLCommandBuffer *)v27->_commandBuffer setCurrentCommandEncoder:v27];
     pthread_mutex_init(&v27->_lock, 0);
     v27->_retainedReferences = [(MTLCommandBuffer *)v27->_commandBuffer retainedReferences];
     v27->_commandBuffersSize = 16;
     v27->_commandBuffers = malloc_type_malloc(0x80uLL, 0x80040B8603338uLL);
-    v28 = [(MTLCommandBuffer *)v27->_commandBuffer isStatEnabled];
-    v27->_StatEnabled = v28;
-    if (v28)
+    isStatEnabled = [(MTLCommandBuffer *)v27->_commandBuffer isStatEnabled];
+    v27->_StatEnabled = isStatEnabled;
+    if (isStatEnabled)
     {
       v27->_numThisEncoder = [(MTLCommandBuffer *)v27->_commandBuffer getAndIncrementNumEncoders];
     }
@@ -83,29 +83,29 @@
       commandBuffer = self->_commandBuffer;
       if (*(self->_device + 328) == 1)
       {
-        v4 = [(MTLCommandBuffer *)commandBuffer progressTrackingRenderCommandEncoder];
-        [v4 setRenderPipelineState:*(self->_device + 42)];
+        progressTrackingRenderCommandEncoder = [(MTLCommandBuffer *)commandBuffer progressTrackingRenderCommandEncoder];
+        [progressTrackingRenderCommandEncoder setRenderPipelineState:*(self->_device + 42)];
         v5 = self->_commandBuffer;
         v6 = *(v5 + 64);
         v7 = *(v5 + 130);
         *(v5 + 130) = v7 + 1;
-        [v4 setVertexBuffer:v6 offset:(4 * v7) atIndex:0];
-        [v4 drawPrimitives:0 vertexStart:0 vertexCount:1];
-        [v4 updateFence:self->_progressFence afterStages:1];
+        [progressTrackingRenderCommandEncoder setVertexBuffer:v6 offset:(4 * v7) atIndex:0];
+        [progressTrackingRenderCommandEncoder drawPrimitives:0 vertexStart:0 vertexCount:1];
+        [progressTrackingRenderCommandEncoder updateFence:self->_progressFence afterStages:1];
       }
 
       else
       {
-        v4 = [(MTLCommandBuffer *)commandBuffer progressTrackingBlitCommandEncoder];
+        progressTrackingRenderCommandEncoder = [(MTLCommandBuffer *)commandBuffer progressTrackingBlitCommandEncoder];
         v8 = self->_commandBuffer;
         v9 = *(v8 + 64);
         v10 = *(v8 + 130);
         *(v8 + 130) = v10 + 1;
-        [v4 fillBuffer:v9 range:(4 * v10) value:{4, 255}];
-        [v4 updateFence:self->_progressFence];
+        [progressTrackingRenderCommandEncoder fillBuffer:v9 range:(4 * v10) value:{4, 255}];
+        [progressTrackingRenderCommandEncoder updateFence:self->_progressFence];
       }
 
-      [v4 endEncoding];
+      [progressTrackingRenderCommandEncoder endEncoding];
     }
   }
 }
@@ -132,20 +132,20 @@
   [(_MTLObjectWithLabel *)&v4 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v16[6] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v6 = [(_MTLObjectWithLabel *)self retainedLabel];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  retainedLabel = [(_MTLObjectWithLabel *)self retainedLabel];
   v7 = MEMORY[0x1E696AEC0];
   v15.receiver = self;
   v15.super_class = _MTLParallelRenderCommandEncoder;
   v8 = [(_MTLParallelRenderCommandEncoder *)&v15 description];
   v16[0] = v5;
   v16[1] = @"label =";
-  if (v6)
+  if (retainedLabel)
   {
-    v9 = v6;
+    v9 = retainedLabel;
   }
 
   else
@@ -159,7 +159,7 @@
   device = self->_device;
   if (device)
   {
-    v11 = [(MTLDevice *)device formattedDescription:a3 + 4];
+    v11 = [(MTLDevice *)device formattedDescription:description + 4];
   }
 
   else
@@ -180,15 +180,15 @@
   queue = self->_queue;
   if (retainedReferences)
   {
-    v5 = [(MTLCommandQueue *)queue commandBuffer];
+    commandBuffer = [(MTLCommandQueue *)queue commandBuffer];
   }
 
   else
   {
-    v5 = [(MTLCommandQueue *)queue commandBufferWithUnretainedReferences];
+    commandBuffer = [(MTLCommandQueue *)queue commandBufferWithUnretainedReferences];
   }
 
-  v6 = v5;
+  v6 = commandBuffer;
   [v6 signalCommandBufferAvailable];
   [v6 setOwnedByParallelEncoder:1];
   [v6 setErrorOptions:0];
@@ -239,7 +239,7 @@
   return v3;
 }
 
-- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)a3 capacity:(unint64_t)a4
+- (id)sampledRenderCommandEncoderWithProgramInfoBuffer:(id *)buffer capacity:(unint64_t)capacity
 {
   v5 = [-[_MTLParallelRenderCommandEncoder _renderCommandEncoderCommon](self "_renderCommandEncoderCommon")];
   if (MTLTraceEnabled())
@@ -256,11 +256,11 @@
 {
   if (([(MTLCommandBuffer *)self->_commandBuffer errorOptions]& 1) != 0 && self->_needsFrameworkAssistedErrorTracking)
   {
-    v3 = [(_MTLParallelRenderCommandEncoder *)self renderCommandEncoder];
-    [v3 waitForFence:self->_progressFence beforeStages:1];
-    [v3 updateFence:self->_progressFence afterStages:2];
+    renderCommandEncoder = [(_MTLParallelRenderCommandEncoder *)self renderCommandEncoder];
+    [renderCommandEncoder waitForFence:self->_progressFence beforeStages:1];
+    [renderCommandEncoder updateFence:self->_progressFence afterStages:2];
 
-    [v3 endEncoding];
+    [renderCommandEncoder endEncoding];
   }
 }
 
@@ -272,29 +272,29 @@
     commandBuffer = self->_commandBuffer;
     if (*(self->_device + 328) == 1)
     {
-      v4 = [(MTLCommandBuffer *)commandBuffer progressTrackingRenderCommandEncoder];
-      [v4 waitForFence:self->_progressFence beforeStages:1];
-      [v4 setRenderPipelineState:*(self->_device + 42)];
+      progressTrackingRenderCommandEncoder = [(MTLCommandBuffer *)commandBuffer progressTrackingRenderCommandEncoder];
+      [progressTrackingRenderCommandEncoder waitForFence:self->_progressFence beforeStages:1];
+      [progressTrackingRenderCommandEncoder setRenderPipelineState:*(self->_device + 42)];
       v5 = self->_commandBuffer;
       v6 = *(v5 + 64);
       v7 = *(v5 + 130);
       *(v5 + 130) = v7 + 1;
-      [v4 setVertexBuffer:v6 offset:(4 * v7) atIndex:0];
-      [v4 drawPrimitives:0 vertexStart:0 vertexCount:1];
+      [progressTrackingRenderCommandEncoder setVertexBuffer:v6 offset:(4 * v7) atIndex:0];
+      [progressTrackingRenderCommandEncoder drawPrimitives:0 vertexStart:0 vertexCount:1];
     }
 
     else
     {
-      v4 = [(MTLCommandBuffer *)commandBuffer progressTrackingBlitCommandEncoder];
-      [v4 waitForFence:self->_progressFence];
+      progressTrackingRenderCommandEncoder = [(MTLCommandBuffer *)commandBuffer progressTrackingBlitCommandEncoder];
+      [progressTrackingRenderCommandEncoder waitForFence:self->_progressFence];
       v8 = self->_commandBuffer;
       v9 = *(v8 + 64);
       v10 = *(v8 + 130);
       *(v8 + 130) = v10 + 1;
-      [v4 fillBuffer:v9 range:(4 * v10) value:{4, 255}];
+      [progressTrackingRenderCommandEncoder fillBuffer:v9 range:(4 * v10) value:{4, 255}];
     }
 
-    [v4 endEncoding];
+    [progressTrackingRenderCommandEncoder endEncoding];
     progressFence = self->_progressFence;
     if (([(MTLCommandBuffer *)self->_commandBuffer retainedReferences]& 1) != 0)
     {
@@ -327,7 +327,7 @@
   self->_commandBuffer = 0;
 }
 
-- (void)insertDebugSignpost:(id)a3
+- (void)insertDebugSignpost:(id)signpost
 {
   if (([(MTLCommandBuffer *)self->_commandBuffer errorOptions]& 1) != 0)
   {
@@ -338,7 +338,7 @@
       self->_debugSignposts = debugSignposts;
     }
 
-    [(NSMutableArray *)debugSignposts addObject:a3];
+    [(NSMutableArray *)debugSignposts addObject:signpost];
   }
 }
 

@@ -1,44 +1,44 @@
 @interface MainWindowContentContainerViewController
-- (BOOL)_isWindowSizeFullscreen:(CGSize)a3;
+- (BOOL)_isWindowSizeFullscreen:(CGSize)fullscreen;
 - (MainWindowContentContainerDelegate)delegate;
-- (MainWindowContentContainerViewController)initWithRootNavigationController:(id)a3;
+- (MainWindowContentContainerViewController)initWithRootNavigationController:(id)controller;
 - (MainWindowSearchBar)searchBar;
 - (id)startSearch;
 - (void)cancelSearch;
-- (void)continueSearchWithTerm:(id)a3;
-- (void)endSearch:(BOOL)a3;
-- (void)keyboardFrameChanged:(id)a3;
+- (void)continueSearchWithTerm:(id)term;
+- (void)endSearch:(BOOL)search;
+- (void)keyboardFrameChanged:(id)changed;
 - (void)layoutSegmentedControl;
 - (void)loadView;
 - (void)resetSearchBar;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchResultsViewController:(id)a3 didSelectEvent:(id)a4;
-- (void)setSearchBar:(id)a3;
-- (void)setupSearch:(BOOL)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchResultsViewController:(id)controller didSelectEvent:(id)event;
+- (void)setSearchBar:(id)bar;
+- (void)setupSearch:(BOOL)search;
 - (void)setupSearchNavBarHeight;
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4;
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column;
 - (void)teardownSearch;
 - (void)todayTapped;
 - (void)todayToolbarItemPressed;
 - (void)updateSearchViewControllerToolbar;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MainWindowContentContainerViewController
 
-- (MainWindowContentContainerViewController)initWithRootNavigationController:(id)a3
+- (MainWindowContentContainerViewController)initWithRootNavigationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v19.receiver = self;
   v19.super_class = MainWindowContentContainerViewController;
   v6 = [(MainWindowContentContainerViewController *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootNavigationController, a3);
+    objc_storeStrong(&v6->_rootNavigationController, controller);
     v8 = [[UISplitViewController alloc] initWithStyle:1];
     splitViewController = v7->_splitViewController;
     v7->_splitViewController = v8;
@@ -47,22 +47,22 @@
     [(UISplitViewController *)v7->_splitViewController setPreferredDisplayMode:1];
     [(UISplitViewController *)v7->_splitViewController setPrimaryEdge:1];
     [(UISplitViewController *)v7->_splitViewController setPresentsWithGesture:0];
-    v10 = [v5 EKUI_viewHierarchy];
-    [MainWindowRootViewController sidebarWidthForViewHierarchy:v10];
+    eKUI_viewHierarchy = [controllerCopy EKUI_viewHierarchy];
+    [MainWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
     [(UISplitViewController *)v7->_splitViewController setMinimumPrimaryColumnWidth:?];
-    [MainWindowRootViewController sidebarWidthForViewHierarchy:v10];
+    [MainWindowRootViewController sidebarWidthForViewHierarchy:eKUI_viewHierarchy];
     [(UISplitViewController *)v7->_splitViewController setMaximumPrimaryColumnWidth:?];
     v11 = objc_alloc_init(UIViewController);
     containerViewController = v7->_containerViewController;
     v7->_containerViewController = v11;
 
-    v13 = [(UIViewController *)v7->_containerViewController view];
-    [v13 setAutoresizingMask:18];
+    view = [(UIViewController *)v7->_containerViewController view];
+    [view setAutoresizingMask:18];
 
     [(UIViewController *)v7->_containerViewController addChildViewController:v7->_rootNavigationController];
-    v14 = [(UIViewController *)v7->_containerViewController view];
-    v15 = [(RootNavigationController *)v7->_rootNavigationController view];
-    [v14 addSubview:v15];
+    view2 = [(UIViewController *)v7->_containerViewController view];
+    view3 = [(RootNavigationController *)v7->_rootNavigationController view];
+    [view2 addSubview:view3];
 
     [(RootNavigationController *)v7->_rootNavigationController didMoveToParentViewController:v7->_containerViewController];
     v16 = [[MainWindowWrapperNavigationController alloc] initWithRootViewController:v7->_containerViewController];
@@ -82,21 +82,21 @@
   v9 = objc_alloc_init(UIView);
   [v9 setAutoresizingMask:18];
   [(MainWindowContentContainerViewController *)self addChildViewController:self->_splitViewController];
-  v3 = [(UISplitViewController *)self->_splitViewController view];
-  [v9 addSubview:v3];
+  view = [(UISplitViewController *)self->_splitViewController view];
+  [v9 addSubview:view];
 
   [(UISplitViewController *)self->_splitViewController didMoveToParentViewController:self];
-  v4 = [(MainWindowContentContainerViewController *)self traitCollection];
-  v5 = [v4 horizontalSizeClass];
+  traitCollection = [(MainWindowContentContainerViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v5 == 2)
+  if (horizontalSizeClass == 2)
   {
-    v6 = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
+    viewSwitcher = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
     segmentedControl = self->_segmentedControl;
-    self->_segmentedControl = v6;
+    self->_segmentedControl = viewSwitcher;
 
-    v8 = [(UIViewController *)self->_containerViewController view];
-    [v8 addSubview:self->_segmentedControl];
+    view2 = [(UIViewController *)self->_containerViewController view];
+    [view2 addSubview:self->_segmentedControl];
   }
 
   [(MainWindowContentContainerViewController *)self setView:v9];
@@ -104,14 +104,14 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v12 = [(MainWindowContentContainerViewController *)self view];
-  [v12 bounds];
+  view = [(MainWindowContentContainerViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(UISplitViewController *)self->_splitViewController view];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  view2 = [(UISplitViewController *)self->_splitViewController view];
+  [view2 setFrame:{v4, v6, v8, v10}];
 
   [(MainWindowContentContainerViewController *)self layoutSegmentedControl];
 }
@@ -119,17 +119,17 @@
 - (void)layoutSegmentedControl
 {
   segmentedControl = self->_segmentedControl;
-  v4 = [(UIViewController *)self->_containerViewController view];
-  [v4 bounds];
+  view = [(UIViewController *)self->_containerViewController view];
+  [view bounds];
   [(UISegmentedControl *)segmentedControl sizeThatFits:v5, v6];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(MainWindowContentContainerViewController *)self view];
-  v12 = [v11 window];
-  v13 = [(UIViewController *)self->_containerViewController view];
-  [v12 bounds];
-  [v13 convertPoint:v12 fromView:{CGRectGetWidth(v24) * 0.5, 0.0}];
+  view2 = [(MainWindowContentContainerViewController *)self view];
+  window = [view2 window];
+  view3 = [(UIViewController *)self->_containerViewController view];
+  [window bounds];
+  [view3 convertPoint:window fromView:{CGRectGetWidth(v24) * 0.5, 0.0}];
   v15 = v14;
 
   IsCompact = EKUICurrentHeightSizeClassIsCompact();
@@ -153,13 +153,13 @@
   v19 = v18;
   if (self->_animatingSidebar)
   {
-    v20 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1000312B0;
     v21[3] = &unk_10020F1C8;
     v22 = v19;
-    [v20 animateAlongsideTransition:v21 completion:0];
+    [transitionCoordinator animateAlongsideTransition:v21 completion:0];
   }
 
   else
@@ -168,19 +168,19 @@
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 horizontalSizeClass];
-  v9 = [(MainWindowContentContainerViewController *)self traitCollection];
-  v10 = [v9 horizontalSizeClass];
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  horizontalSizeClass = [collectionCopy horizontalSizeClass];
+  traitCollection = [(MainWindowContentContainerViewController *)self traitCollection];
+  horizontalSizeClass2 = [traitCollection horizontalSizeClass];
 
-  if (v8 == v10)
+  if (horizontalSizeClass == horizontalSizeClass2)
   {
     v30.receiver = self;
     v30.super_class = MainWindowContentContainerViewController;
-    [(MainWindowContentContainerViewController *)&v30 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
+    [(MainWindowContentContainerViewController *)&v30 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
     goto LABEL_16;
   }
 
@@ -189,7 +189,7 @@
     if (!self->_animatingSidebar)
     {
       WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-      v17 = [WeakRetained text];
+      text = [WeakRetained text];
 
       [(MainWindowContentContainerViewController *)self endSearch:0];
       goto LABEL_10;
@@ -199,43 +199,43 @@
     goto LABEL_8;
   }
 
-  v11 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  presentedViewController = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
 LABEL_8:
-    v17 = 0;
+    text = 0;
     goto LABEL_10;
   }
 
-  v13 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
-  v14 = [v13 searchResultsUpdater];
+  presentedViewController2 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  searchResultsUpdater = [presentedViewController2 searchResultsUpdater];
 
-  [v14 setShouldLeaveSearchString:1];
-  v15 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
-  v16 = [v15 searchBar];
-  v17 = [v16 text];
+  [searchResultsUpdater setShouldLeaveSearchString:1];
+  presentedViewController3 = [(RootNavigationController *)self->_rootNavigationController presentedViewController];
+  searchBar = [presentedViewController3 searchBar];
+  text = [searchBar text];
 
   [(RootNavigationController *)self->_rootNavigationController dismissViewControllerAnimated:0 completion:0];
 LABEL_10:
   v29.receiver = self;
   v29.super_class = MainWindowContentContainerViewController;
-  [(MainWindowContentContainerViewController *)&v29 willTransitionToTraitCollection:v6 withTransitionCoordinator:v7];
-  v19 = [v6 horizontalSizeClass];
+  [(MainWindowContentContainerViewController *)&v29 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
+  horizontalSizeClass3 = [collectionCopy horizontalSizeClass];
   segmentedControl = self->_segmentedControl;
-  if (v19 == 2)
+  if (horizontalSizeClass3 == 2)
   {
     if (!segmentedControl)
     {
-      v21 = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
+      viewSwitcher = [(RootNavigationController *)self->_rootNavigationController viewSwitcher];
       v22 = self->_segmentedControl;
-      self->_segmentedControl = v21;
+      self->_segmentedControl = viewSwitcher;
     }
 
-    v23 = [(UIViewController *)self->_containerViewController view];
-    [v23 addSubview:self->_segmentedControl];
+    view = [(UIViewController *)self->_containerViewController view];
+    [view addSubview:self->_segmentedControl];
 
     v24 = v28;
     v28[0] = _NSConcreteStackBlock;
@@ -254,22 +254,22 @@ LABEL_10:
 
   v24[2] = v25;
   v24[3] = &unk_10020F1F0;
-  v24[4] = v17;
+  v24[4] = text;
   v24[5] = self;
-  v26 = v17;
-  [v7 animateAlongsideTransition:0 completion:v24];
+  v26 = text;
+  [coordinatorCopy animateAlongsideTransition:0 completion:v24];
 
 LABEL_16:
 }
 
-- (BOOL)_isWindowSizeFullscreen:(CGSize)a3
+- (BOOL)_isWindowSizeFullscreen:(CGSize)fullscreen
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MainWindowContentContainerViewController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 screen];
-  [v7 bounds];
+  height = fullscreen.height;
+  width = fullscreen.width;
+  view = [(MainWindowContentContainerViewController *)self view];
+  window = [view window];
+  screen = [window screen];
+  [screen bounds];
   v9 = v8;
   v11 = v10;
 
@@ -321,15 +321,15 @@ LABEL_16:
   return vabdd_f64(v14, v15) < 2.22044605e-16;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
+  v8 = coordinatorCopy;
+  if (coordinatorCopy)
   {
-    [v7 targetTransform];
+    [coordinatorCopy targetTransform];
     v9 = *(&v22 + 1);
     [v8 targetTransform];
     v10 = *&v19;
@@ -347,15 +347,15 @@ LABEL_16:
     v9 = 0.0;
   }
 
-  v11 = [(UISplitViewController *)self->_splitViewController splitBehavior];
-  v12 = [(MainWindowContentContainerViewController *)self _isWindowSizeFullscreen:width, height];
-  v13 = v12;
-  if (v12)
+  splitBehavior = [(UISplitViewController *)self->_splitViewController splitBehavior];
+  height = [(MainWindowContentContainerViewController *)self _isWindowSizeFullscreen:width, height];
+  v13 = height;
+  if (height)
   {
     v14 = atan2(v9, v10) * 57.2957795;
     if (v14 == 0.0 || fabs(v14) == 180.0)
     {
-      if (v11 == UISplitViewControllerSplitBehaviorOverlay)
+      if (splitBehavior == UISplitViewControllerSplitBehaviorOverlay)
       {
         v15 = 3;
       }
@@ -366,7 +366,7 @@ LABEL_16:
       }
     }
 
-    else if (v11 == UISplitViewControllerSplitBehaviorOverlay)
+    else if (splitBehavior == UISplitViewControllerSplitBehaviorOverlay)
     {
       v15 = 2;
     }
@@ -395,9 +395,9 @@ LABEL_16:
   [(MainWindowContentContainerViewController *)&v16 viewWillTransitionToSize:v8 withTransitionCoordinator:width, height];
 }
 
-- (void)splitViewController:(id)a3 willHideColumn:(int64_t)a4
+- (void)splitViewController:(id)controller willHideColumn:(int64_t)column
 {
-  if (!a4)
+  if (!column)
   {
     v14[5] = v7;
     v14[6] = v6;
@@ -416,12 +416,12 @@ LABEL_16:
     v13[3] = &unk_10020EB00;
     v13[4] = self;
     v10 = objc_retainBlock(v13);
-    v11 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
 
-    if (v11)
+    if (transitionCoordinator)
     {
-      v12 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
-      [v12 animateAlongsideTransition:v9 completion:v10];
+      transitionCoordinator2 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+      [transitionCoordinator2 animateAlongsideTransition:v9 completion:v10];
     }
 
     else
@@ -432,18 +432,18 @@ LABEL_16:
   }
 }
 
-- (void)setSearchBar:(id)a3
+- (void)setSearchBar:(id)bar
 {
-  v5 = a3;
-  v4 = objc_storeWeak(&self->_searchBar, v5);
-  [v5 setHeightObserver:self];
+  barCopy = bar;
+  v4 = objc_storeWeak(&self->_searchBar, barCopy);
+  [barCopy setHeightObserver:self];
 }
 
-- (void)keyboardFrameChanged:(id)a3
+- (void)keyboardFrameChanged:(id)changed
 {
   p_keyboardFrame = &self->_keyboardFrame;
-  v9 = [a3 userInfo];
-  v4 = [v9 objectForKey:UIKeyboardFrameEndUserInfoKey];
+  userInfo = [changed userInfo];
+  v4 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
   [v4 CGRectValue];
   p_keyboardFrame->origin.x = v5;
   p_keyboardFrame->origin.y = v6;
@@ -459,17 +459,17 @@ LABEL_16:
   [(UINavigationController *)searchResultsNavController setToolbarHidden:v3];
 }
 
-- (void)continueSearchWithTerm:(id)a3
+- (void)continueSearchWithTerm:(id)term
 {
-  v4 = a3;
-  v5 = [(MainWindowContentContainerViewController *)self delegate];
-  [v5 searchTapped];
+  termCopy = term;
+  delegate = [(MainWindowContentContainerViewController *)self delegate];
+  [delegate searchTapped];
 
   WeakRetained = objc_loadWeakRetained(&self->_searchBar);
-  [WeakRetained setText:v4];
+  [WeakRetained setText:termCopy];
 
   v7 = objc_loadWeakRetained(&self->_searchBar);
-  [(MainWindowContentContainerViewController *)self searchBar:v7 textDidChange:v4];
+  [(MainWindowContentContainerViewController *)self searchBar:v7 textDidChange:termCopy];
 }
 
 - (id)startSearch
@@ -492,9 +492,9 @@ LABEL_16:
 
   else
   {
-    v5 = [WeakRetained isFirstResponder];
+    isFirstResponder = [WeakRetained isFirstResponder];
 
-    if (!v5)
+    if (!isFirstResponder)
     {
       return;
     }
@@ -504,15 +504,15 @@ LABEL_16:
   }
 }
 
-- (void)setupSearch:(BOOL)a3
+- (void)setupSearch:(BOOL)search
 {
   if (!self->_searchResultsNavController)
   {
-    v3 = a3;
+    searchCopy = search;
     v5 = [SearchResultsViewController alloc];
-    v6 = [(RootNavigationController *)self->_rootNavigationController model];
-    v7 = [(RootNavigationController *)self->_rootNavigationController window];
-    v8 = [(SearchResultsViewController *)v5 initWithModel:v6 window:v7];
+    model = [(RootNavigationController *)self->_rootNavigationController model];
+    window = [(RootNavigationController *)self->_rootNavigationController window];
+    v8 = [(SearchResultsViewController *)v5 initWithModel:model window:window];
     searchResultsController = self->_searchResultsController;
     self->_searchResultsController = v8;
 
@@ -552,10 +552,10 @@ LABEL_16:
     [(UISplitViewController *)self->_splitViewController setPreferredDisplayMode:v19];
     [(UISplitViewController *)self->_splitViewController setViewController:self->_searchResultsNavController forColumn:0];
     [(UISplitViewController *)self->_splitViewController showColumn:0];
-    self->_animatingSidebar = v3;
-    if (v3)
+    self->_animatingSidebar = searchCopy;
+    if (searchCopy)
     {
-      v20 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+      transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
       v21[4] = self;
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
@@ -566,36 +566,36 @@ LABEL_16:
       v21[1] = 3221225472;
       v21[2] = sub_100032208;
       v21[3] = &unk_10020F240;
-      [v20 animateAlongsideTransition:v22 completion:v21];
+      [transitionCoordinator animateAlongsideTransition:v22 completion:v21];
     }
 
     [(MainWindowContentContainerViewController *)self updateSearchViewControllerToolbar];
   }
 }
 
-- (void)searchResultsViewController:(id)a3 didSelectEvent:(id)a4
+- (void)searchResultsViewController:(id)controller didSelectEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  eventCopy = event;
   if ([(UISplitViewController *)self->_splitViewController splitBehavior]== 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_searchBar);
     [(MainWindowContentContainerViewController *)self searchBarCancelButtonClicked:WeakRetained];
 
-    v9 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100032354;
     v10[3] = &unk_10020F268;
     v10[4] = self;
-    v11 = v6;
-    v12 = v7;
-    [v9 animateAlongsideTransition:v10 completion:0];
+    v11 = controllerCopy;
+    v12 = eventCopy;
+    [transitionCoordinator animateAlongsideTransition:v10 completion:0];
   }
 
   else
   {
-    [(RootNavigationController *)self->_rootNavigationController searchResultsViewController:v6 didSelectEvent:v7];
+    [(RootNavigationController *)self->_rootNavigationController searchResultsViewController:controllerCopy didSelectEvent:eventCopy];
   }
 }
 
@@ -628,11 +628,11 @@ LABEL_16:
     v6 = v8;
   }
 
-  v9 = [(SearchResultsViewController *)self->_searchResultsController navigationItem];
-  [v9 _setMinimumDesiredHeight:0 forBarMetrics:v6];
+  navigationItem = [(SearchResultsViewController *)self->_searchResultsController navigationItem];
+  [navigationItem _setMinimumDesiredHeight:0 forBarMetrics:v6];
 
-  v10 = [(SearchResultsViewController *)self->_searchResultsController navigationItem];
-  [v10 _setMinimumDesiredHeight:1 forBarMetrics:v6];
+  navigationItem2 = [(SearchResultsViewController *)self->_searchResultsController navigationItem];
+  [navigationItem2 _setMinimumDesiredHeight:1 forBarMetrics:v6];
 }
 
 - (void)resetSearchBar
@@ -657,12 +657,12 @@ LABEL_16:
   self->_searchResultsController = 0;
 }
 
-- (void)endSearch:(BOOL)a3
+- (void)endSearch:(BOOL)search
 {
-  v3 = a3;
+  searchCopy = search;
   [(UISplitViewController *)self->_splitViewController hideColumn:0];
   [(MainWindowContentContainerViewController *)self resetSearchBar];
-  self->_animatingSidebar = v3;
+  self->_animatingSidebar = searchCopy;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100032704;
@@ -675,10 +675,10 @@ LABEL_16:
   v8[3] = &unk_10020F240;
   v8[4] = self;
   v6 = objc_retainBlock(v8);
-  if (v3)
+  if (searchCopy)
   {
-    v7 = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
-    [v7 animateAlongsideTransition:v5 completion:v6];
+    transitionCoordinator = [(UISplitViewController *)self->_splitViewController transitionCoordinator];
+    [transitionCoordinator animateAlongsideTransition:v5 completion:v6];
   }
 
   else
@@ -688,22 +688,22 @@ LABEL_16:
   }
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v3 = [(MainWindowContentContainerViewController *)self delegate];
-  [v3 searchTapped];
+  delegate = [(MainWindowContentContainerViewController *)self delegate];
+  [delegate searchTapped];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 length])
+  barCopy = bar;
+  changeCopy = change;
+  if ([changeCopy length])
   {
     [(MainWindowContentContainerViewController *)self setupSearch:1];
   }
 
-  [(SearchResultsViewController *)self->_searchResultsController searchBar:v7 textDidChange:v6];
+  [(SearchResultsViewController *)self->_searchResultsController searchBar:barCopy textDidChange:changeCopy];
 }
 
 - (MainWindowContentContainerDelegate)delegate

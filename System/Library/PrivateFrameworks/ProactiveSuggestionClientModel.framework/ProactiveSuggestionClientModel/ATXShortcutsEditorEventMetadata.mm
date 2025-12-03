@@ -1,15 +1,15 @@
 @interface ATXShortcutsEditorEventMetadata
-- (ATXShortcutsEditorEventMetadata)initWithCoder:(id)a3;
-- (ATXShortcutsEditorEventMetadata)initWithNumStepsInShortcut:(unint64_t)a3;
-- (ATXShortcutsEditorEventMetadata)initWithProto:(id)a3;
-- (ATXShortcutsEditorEventMetadata)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (ATXShortcutsEditorEventMetadata)initWithCoder:(id)coder;
+- (ATXShortcutsEditorEventMetadata)initWithNumStepsInShortcut:(unint64_t)shortcut;
+- (ATXShortcutsEditorEventMetadata)initWithProto:(id)proto;
+- (ATXShortcutsEditorEventMetadata)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXShortcutsEditorEventMetadata
 
-- (ATXShortcutsEditorEventMetadata)initWithNumStepsInShortcut:(unint64_t)a3
+- (ATXShortcutsEditorEventMetadata)initWithNumStepsInShortcut:(unint64_t)shortcut
 {
   v8.receiver = self;
   v8.super_class = ATXShortcutsEditorEventMetadata;
@@ -20,66 +20,66 @@
     proto = v4->_proto;
     v4->_proto = v5;
 
-    [(ATXPBShortcutsEditorEventMetadata *)v4->_proto setNumStepsInShortcut:a3];
+    [(ATXPBShortcutsEditorEventMetadata *)v4->_proto setNumStepsInShortcut:shortcut];
   }
 
   return v4;
 }
 
-- (ATXShortcutsEditorEventMetadata)initWithProto:(id)a3
+- (ATXShortcutsEditorEventMetadata)initWithProto:(id)proto
 {
-  v4 = [a3 numStepsInShortcut];
+  numStepsInShortcut = [proto numStepsInShortcut];
 
-  return [(ATXShortcutsEditorEventMetadata *)self initWithNumStepsInShortcut:v4];
+  return [(ATXShortcutsEditorEventMetadata *)self initWithNumStepsInShortcut:numStepsInShortcut];
 }
 
-- (ATXShortcutsEditorEventMetadata)initWithProtoData:(id)a3
+- (ATXShortcutsEditorEventMetadata)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBShortcutsEditorEventMetadata alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBShortcutsEditorEventMetadata alloc] initWithData:dataCopy];
 
     self = [(ATXShortcutsEditorEventMetadata *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXShortcutsEditorEventMetadata *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXShortcutsEditorEventMetadata *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXShortcutsEditorEventMetadata)initWithCoder:(id)a3
+- (ATXShortcutsEditorEventMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(ATXShortcutsEditorEventMetadata *)self initWithProtoData:v5];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShortcutsEditorEventMetadata *)self isEqualToATXShortcutsEditorEventMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXShortcutsEditorEventMetadata *)self isEqualToATXShortcutsEditorEventMetadata:v5];
   }
 
   return v6;

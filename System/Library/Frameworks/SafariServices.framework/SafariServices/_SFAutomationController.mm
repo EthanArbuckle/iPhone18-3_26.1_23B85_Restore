@@ -1,6 +1,6 @@
 @interface _SFAutomationController
 + (BOOL)isSystemRemoteAutomationEnabled;
-- (void)setAllowsRemoteAutomation:(BOOL)a3;
+- (void)setAllowsRemoteAutomation:(BOOL)automation;
 @end
 
 @implementation _SFAutomationController
@@ -13,14 +13,14 @@
   return v3;
 }
 
-- (void)setAllowsRemoteAutomation:(BOOL)a3
+- (void)setAllowsRemoteAutomation:(BOOL)automation
 {
-  v3 = a3;
+  automationCopy = automation;
   v5 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:@"com.apple.webinspectord"];
-  [v5 setBool:v3 forKey:@"RemoteAutomationEnabled"];
+  [v5 setBool:automationCopy forKey:@"RemoteAutomationEnabled"];
   [v5 synchronize];
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v4 postNotificationName:@"_SFDeveloperPreferencesDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:@"_SFDeveloperPreferencesDidChangeNotification" object:0];
 }
 
 @end

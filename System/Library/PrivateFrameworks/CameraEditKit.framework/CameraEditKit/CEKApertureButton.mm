@@ -1,47 +1,47 @@
 @interface CEKApertureButton
-- (CEKApertureButton)initWithFrame:(CGRect)a3;
+- (CEKApertureButton)initWithFrame:(CGRect)frame;
 - (CEKApertureButtonDelegate)delegate;
 - (CGSize)intrinsicContentSize;
 - (UIEdgeInsets)_expansionInsets;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIEdgeInsets)tappableEdgeInsets;
-- (id)_circleImageWithColor:(id)a3;
-- (void)_rotateView:(id)a3 withInterfaceOrientation:(int64_t)a4 animated:(BOOL)a5;
-- (void)_setCenterAndBoundsForView:(id)a3 frame:(CGRect)a4;
-- (void)_setLayer:(id)a3 highlighted:(BOOL)a4 animated:(BOOL)a5;
+- (id)_circleImageWithColor:(id)color;
+- (void)_rotateView:(id)view withInterfaceOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)_setCenterAndBoundsForView:(id)view frame:(CGRect)frame;
+- (void)_setLayer:(id)layer highlighted:(BOOL)highlighted animated:(BOOL)animated;
 - (void)_updateBackgroundView;
-- (void)_updateColorsAnimated:(BOOL)a3;
-- (void)_updateSymbolLabelOrientationAnimated:(BOOL)a3;
+- (void)_updateColorsAnimated:(BOOL)animated;
+- (void)_updateSymbolLabelOrientationAnimated:(BOOL)animated;
 - (void)_updateValueLabel;
 - (void)layoutSubviews;
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4;
-- (void)setApertureValue:(double)a3;
-- (void)setExpansionDirection:(int64_t)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setShouldShowApertureValue:(BOOL)a3 animated:(BOOL)a4;
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3;
-- (void)setWantsBackground:(BOOL)a3;
+- (void)setActive:(BOOL)active animated:(BOOL)animated;
+- (void)setApertureValue:(double)value;
+- (void)setExpansionDirection:(int64_t)direction;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setShouldShowApertureValue:(BOOL)value animated:(BOOL)animated;
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets;
+- (void)setWantsBackground:(BOOL)background;
 - (void)tintColorDidChange;
 @end
 
 @implementation CEKApertureButton
 
-- (CEKApertureButton)initWithFrame:(CGRect)a3
+- (CEKApertureButton)initWithFrame:(CGRect)frame
 {
   v41[1] = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = CEKApertureButton;
-  v3 = [(CEKApertureButton *)&v39 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CEKApertureButton *)&v39 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] systemYellowColor];
-    [(CEKApertureButton *)v3 setTintColor:v4];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    [(CEKApertureButton *)v3 setTintColor:systemYellowColor];
 
     v3->_orientation = 1;
     v3->_expansionDirection = 0;
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    v6 = [(CEKApertureButton *)v3 _circleImageWithColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v6 = [(CEKApertureButton *)v3 _circleImageWithColor:whiteColor];
 
     [v6 size];
     v9 = [v6 resizableImageWithCapInsets:1 resizingMode:{v7 * 0.5, v8 * 0.5, v7 * 0.5, v8 * 0.5}];
@@ -68,8 +68,8 @@
     v19 = *(MEMORY[0x1E695F058] + 16);
     v20 = *(MEMORY[0x1E695F058] + 24);
     v21 = [v16 initWithFrame:{*MEMORY[0x1E695F058], v18, v19, v20}];
-    v22 = [MEMORY[0x1E69DC888] clearColor];
-    [v21 setBackgroundColor:v22];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v21 setBackgroundColor:clearColor];
 
     [v21 setFont:v12];
     [v21 setTextAlignment:4];
@@ -77,8 +77,8 @@
     objc_storeStrong(&v3->__symbolLabel, v21);
     v23 = CEKMonospacedStylisticNumeralFontOfSizeAndStyle(0, 14.0);
     v24 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v17, v18, v19, v20}];
-    v25 = [MEMORY[0x1E69DC888] clearColor];
-    [v24 setBackgroundColor:v25];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [v24 setBackgroundColor:clearColor2];
 
     [v24 setFont:v23];
     [v24 setTextAlignment:4];
@@ -124,11 +124,11 @@
   return v3;
 }
 
-- (void)setApertureValue:(double)a3
+- (void)setApertureValue:(double)value
 {
-  if (self->_apertureValue != a3)
+  if (self->_apertureValue != value)
   {
-    self->_apertureValue = a3;
+    self->_apertureValue = value;
     if ([(CEKApertureButton *)self shouldShowApertureValue])
     {
 
@@ -137,32 +137,32 @@
   }
 }
 
-- (void)setShouldShowApertureValue:(BOOL)a3 animated:(BOOL)a4
+- (void)setShouldShowApertureValue:(BOOL)value animated:(BOOL)animated
 {
-  if (self->_shouldShowApertureValue != a3)
+  if (self->_shouldShowApertureValue != value)
   {
     v14 = v4;
     v15 = v5;
-    v6 = a4;
-    self->_shouldShowApertureValue = a3;
-    if (a3)
+    animatedCopy = animated;
+    self->_shouldShowApertureValue = value;
+    if (value)
     {
       [(CEKApertureButton *)self _updateValueLabel];
     }
 
     [(CEKApertureButton *)self setNeedsLayout];
-    v9 = [(CEKApertureButton *)self delegate];
-    [v9 apertureButtonNeedsLayout:self animated:v6];
+    delegate = [(CEKApertureButton *)self delegate];
+    [delegate apertureButtonNeedsLayout:self animated:animatedCopy];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke;
     v12[3] = &unk_1E7CC6AC0;
-    v13 = a3;
+    valueCopy = value;
     v12[4] = self;
     v10 = _Block_copy(v12);
     v11 = v10;
-    if (v6)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v10 options:0 animations:0.25 completion:0.0];
     }
@@ -172,7 +172,7 @@
       (*(v10 + 2))(v10);
     }
 
-    [(CEKApertureButton *)self _updateSymbolLabelOrientationAnimated:v6];
+    [(CEKApertureButton *)self _updateSymbolLabelOrientationAnimated:animatedCopy];
   }
 }
 
@@ -208,11 +208,11 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
   v13 = ;
   v5 = [MEMORY[0x1E696AD98] numberWithDouble:v4];
   v6 = [v13 stringFromNumber:v5];
-  v7 = [(CEKApertureButton *)self _valueLabel];
-  [v7 setText:v6];
+  _valueLabel = [(CEKApertureButton *)self _valueLabel];
+  [_valueLabel setText:v6];
 
-  v8 = [(CEKApertureButton *)self _valueLabel];
-  [v8 intrinsicContentSize];
+  _valueLabel2 = [(CEKApertureButton *)self _valueLabel];
+  [_valueLabel2 intrinsicContentSize];
 
   [(CEKApertureButton *)self _cachedValueLabelWidth];
   v10 = v9;
@@ -222,27 +222,27 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
   if (v10 != v11)
   {
     [(CEKApertureButton *)self setNeedsLayout];
-    v12 = [(CEKApertureButton *)self delegate];
-    [v12 apertureButtonNeedsLayout:self animated:0];
+    delegate = [(CEKApertureButton *)self delegate];
+    [delegate apertureButtonNeedsLayout:self animated:0];
   }
 }
 
-- (void)setExpansionDirection:(int64_t)a3
+- (void)setExpansionDirection:(int64_t)direction
 {
-  if (self->_expansionDirection != a3)
+  if (self->_expansionDirection != direction)
   {
-    self->_expansionDirection = a3;
+    self->_expansionDirection = direction;
     [(CEKApertureButton *)self setNeedsLayout];
-    v5 = [(CEKApertureButton *)self delegate];
-    [v5 apertureButtonNeedsLayout:self animated:0];
+    delegate = [(CEKApertureButton *)self delegate];
+    [delegate apertureButtonNeedsLayout:self animated:0];
   }
 }
 
-- (void)setWantsBackground:(BOOL)a3
+- (void)setWantsBackground:(BOOL)background
 {
-  if (self->_wantsBackground != a3)
+  if (self->_wantsBackground != background)
   {
-    self->_wantsBackground = a3;
+    self->_wantsBackground = background;
     [(CEKApertureButton *)self _updateBackgroundView];
   }
 }
@@ -258,45 +258,45 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
   }
 }
 
-- (void)_updateColorsAnimated:(BOOL)a3
+- (void)_updateColorsAnimated:(BOOL)animated
 {
   if ([(CEKApertureButton *)self isActive])
   {
-    v10 = [(CEKApertureButton *)self tintColor];
+    tintColor = [(CEKApertureButton *)self tintColor];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69DC888] labelColor];
-    v10 = [v4 colorWithAlphaComponent:0.6];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    tintColor = [labelColor colorWithAlphaComponent:0.6];
   }
 
   if ([(CEKApertureButton *)self isActive])
   {
-    v5 = [(CEKApertureButton *)self tintColor];
+    tintColor2 = [(CEKApertureButton *)self tintColor];
   }
 
   else
   {
-    v6 = [MEMORY[0x1E69DC888] labelColor];
-    v5 = [v6 colorWithAlphaComponent:1.0];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    tintColor2 = [labelColor2 colorWithAlphaComponent:1.0];
   }
 
-  v7 = [(CEKApertureButton *)self _circleOutlineView];
-  [v7 setTintColor:v10];
+  _circleOutlineView = [(CEKApertureButton *)self _circleOutlineView];
+  [_circleOutlineView setTintColor:tintColor];
 
-  v8 = [(CEKApertureButton *)self _symbolLabel];
-  [v8 setTextColor:v5];
+  _symbolLabel = [(CEKApertureButton *)self _symbolLabel];
+  [_symbolLabel setTextColor:tintColor2];
 
-  v9 = [(CEKApertureButton *)self _valueLabel];
-  [v9 setTextColor:v5];
+  _valueLabel = [(CEKApertureButton *)self _valueLabel];
+  [_valueLabel setTextColor:tintColor2];
 }
 
 - (void)_updateBackgroundView
 {
-  v11 = [(CEKApertureButton *)self _circleBackgroundView];
-  v3 = [(CEKApertureButton *)self wantsBackground];
-  if (!v11 && v3)
+  _circleBackgroundView = [(CEKApertureButton *)self _circleBackgroundView];
+  wantsBackground = [(CEKApertureButton *)self wantsBackground];
+  if (!_circleBackgroundView && wantsBackground)
   {
     v4 = MEMORY[0x1E69DCAB8];
     v5 = CEKFrameworkBundle();
@@ -304,23 +304,23 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
 
     [v6 size];
     v9 = [v6 resizableImageWithCapInsets:1 resizingMode:{v7 * 0.5, v8 * 0.5, v7 * 0.5, v8 * 0.5}];
-    v11 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
+    _circleBackgroundView = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v9];
     [(CEKApertureButton *)self set_circleBackgroundView:?];
   }
 
-  v10 = [v11 superview];
+  superview = [_circleBackgroundView superview];
 
-  if (v3)
+  if (wantsBackground)
   {
-    if (v10 != self)
+    if (superview != self)
     {
-      [(CEKApertureButton *)self insertSubview:v11 atIndex:0];
+      [(CEKApertureButton *)self insertSubview:_circleBackgroundView atIndex:0];
     }
   }
 
-  else if (v10 == self)
+  else if (superview == self)
   {
-    [v11 removeFromSuperview];
+    [_circleBackgroundView removeFromSuperview];
   }
 }
 
@@ -338,8 +338,8 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
     v10 = v8 + v9;
     [(CEKApertureButton *)self _cachedValueLabelWidth];
     v12 = v10 + v11 + -2.0 + -2.0;
-    v13 = [(CEKApertureButton *)self expansionDirection];
-    switch(v13)
+    expansionDirection = [(CEKApertureButton *)self expansionDirection];
+    switch(expansionDirection)
     {
       case 2:
         UIRoundToViewScale();
@@ -372,9 +372,9 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
   v4 = 22.0;
   if ([(CEKApertureButton *)self wantsBackground])
   {
-    v5 = [(CEKApertureButton *)self _circleBackgroundView];
-    v6 = [v5 image];
-    [v6 size];
+    _circleBackgroundView = [(CEKApertureButton *)self _circleBackgroundView];
+    image = [_circleBackgroundView image];
+    [image size];
     v4 = v7;
     v3 = v8;
   }
@@ -416,10 +416,10 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
   v44.receiver = self;
   v44.super_class = CEKApertureButton;
   [(CEKApertureButton *)&v44 layoutSubviews];
-  v3 = [(CEKApertureButton *)self _circleOutlineView];
-  v4 = [(CEKApertureButton *)self _circleBackgroundView];
-  v5 = [(CEKApertureButton *)self _symbolLabel];
-  v6 = [(CEKApertureButton *)self _valueLabel];
+  _circleOutlineView = [(CEKApertureButton *)self _circleOutlineView];
+  _circleBackgroundView = [(CEKApertureButton *)self _circleBackgroundView];
+  _symbolLabel = [(CEKApertureButton *)self _symbolLabel];
+  _valueLabel = [(CEKApertureButton *)self _valueLabel];
   [(CEKApertureButton *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -430,20 +430,20 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
   v41 = v13;
   [(CEKApertureButton *)self _cachedValueLabelWidth];
   v43 = v14;
-  v15 = [(CEKApertureButton *)self shouldShowApertureValue];
+  shouldShowApertureValue = [(CEKApertureButton *)self shouldShowApertureValue];
   UIRectGetCenter();
   UIRectCenteredAboutPointScale();
   [(CEKApertureButton *)self _expansionInsets];
   UIRectInset();
-  [(CEKApertureButton *)self _setCenterAndBoundsForView:v3 frame:?];
+  [(CEKApertureButton *)self _setCenterAndBoundsForView:_circleOutlineView frame:?];
   [(CEKApertureButton *)self tappableEdgeInsets];
-  [v4 setFrame:{v8 + v19, v10 + v16, v39 - (v19 + v17), v40 - (v16 + v18)}];
-  [v3 bounds];
+  [_circleBackgroundView setFrame:{v8 + v19, v10 + v16, v39 - (v19 + v17), v40 - (v16 + v18)}];
+  [_circleOutlineView bounds];
   v21 = v20;
   v23 = v22;
   v25 = v24;
   v27 = v26;
-  if (v15)
+  if (shouldShowApertureValue)
   {
     UIRoundToViewScale();
     v29 = v28;
@@ -498,82 +498,82 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
     v29 = v42;
   }
 
-  [(CEKApertureButton *)self _setCenterAndBoundsForView:v5 frame:v29, 0.0, v31, v27];
-  [(CEKApertureButton *)self _setCenterAndBoundsForView:v6 frame:v33, 0.0, v43, v27];
+  [(CEKApertureButton *)self _setCenterAndBoundsForView:_symbolLabel frame:v29, 0.0, v31, v27];
+  [(CEKApertureButton *)self _setCenterAndBoundsForView:_valueLabel frame:v33, 0.0, v43, v27];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(CEKApertureButton *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(CEKApertureButton *)self isHighlighted];
   v8.receiver = self;
   v8.super_class = CEKApertureButton;
-  [(CEKApertureButton *)&v8 setHighlighted:v3];
-  if (v5 != v3)
+  [(CEKApertureButton *)&v8 setHighlighted:highlightedCopy];
+  if (isHighlighted != highlightedCopy)
   {
-    v6 = [(CEKApertureButton *)self _circleOutlineView];
-    v7 = [v6 layer];
-    [(CEKApertureButton *)self _setLayer:v7 highlighted:v3 animated:1];
+    _circleOutlineView = [(CEKApertureButton *)self _circleOutlineView];
+    layer = [_circleOutlineView layer];
+    [(CEKApertureButton *)self _setLayer:layer highlighted:highlightedCopy animated:1];
   }
 }
 
-- (void)setActive:(BOOL)a3 animated:(BOOL)a4
+- (void)setActive:(BOOL)active animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CEKApertureButton *)self isActive];
-  [(CEKApertureButton *)self setSelected:v5];
-  if (v7 != v5)
+  animatedCopy = animated;
+  activeCopy = active;
+  isActive = [(CEKApertureButton *)self isActive];
+  [(CEKApertureButton *)self setSelected:activeCopy];
+  if (isActive != activeCopy)
   {
 
-    [(CEKApertureButton *)self _updateColorsAnimated:v4];
+    [(CEKApertureButton *)self _updateColorsAnimated:animatedCopy];
   }
 }
 
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_tappableEdgeInsets.top), vceqq_f64(v4, *&self->_tappableEdgeInsets.bottom)))) & 1) == 0)
   {
-    self->_tappableEdgeInsets = a3;
+    self->_tappableEdgeInsets = insets;
     [(CEKApertureButton *)self setNeedsLayout];
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
-    [(CEKApertureButton *)self _updateSymbolLabelOrientationAnimated:a4];
+    self->_orientation = orientation;
+    [(CEKApertureButton *)self _updateSymbolLabelOrientationAnimated:animated];
   }
 }
 
-- (void)_updateSymbolLabelOrientationAnimated:(BOOL)a3
+- (void)_updateSymbolLabelOrientationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(CEKApertureButton *)self shouldShowApertureValue])
   {
-    v5 = 1;
+    orientation = 1;
   }
 
   else
   {
-    v5 = [(CEKApertureButton *)self orientation];
+    orientation = [(CEKApertureButton *)self orientation];
   }
 
-  v6 = [(CEKApertureButton *)self _symbolLabel];
-  [(CEKApertureButton *)self _rotateView:v6 withInterfaceOrientation:v5 animated:v3];
+  _symbolLabel = [(CEKApertureButton *)self _symbolLabel];
+  [(CEKApertureButton *)self _rotateView:_symbolLabel withInterfaceOrientation:orientation animated:animatedCopy];
 }
 
-- (id)_circleImageWithColor:(id)a3
+- (id)_circleImageWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CEKApertureButton *)self traitCollection];
-  [v5 displayScale];
+  colorCopy = color;
+  traitCollection = [(CEKApertureButton *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
 
   v16.origin.x = *MEMORY[0x1E695F058];
@@ -589,7 +589,7 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
   v17.origin.y = 22.0;
   UIGraphicsBeginImageContextWithOptions(v17.origin, 0, v7);
   CurrentContext = UIGraphicsGetCurrentContext();
-  [v4 setStroke];
+  [colorCopy setStroke];
 
   CGContextSetLineWidth(CurrentContext, 1.0 / v7 * 3.0);
   v18.origin.x = x;
@@ -603,33 +603,33 @@ void __57__CEKApertureButton_setShouldShowApertureValue_animated___block_invoke(
   return v13;
 }
 
-- (void)_setCenterAndBoundsForView:(id)a3 frame:(CGRect)a4
+- (void)_setCenterAndBoundsForView:(id)view frame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  v8 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  viewCopy = view;
   UIRectGetCenter();
   v6 = *MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 8);
-  [v8 setCenter:?];
-  [v8 setBounds:{v6, v7, width, height}];
+  [viewCopy setCenter:?];
+  [viewCopy setBounds:{v6, v7, width, height}];
 }
 
-- (void)_rotateView:(id)a3 withInterfaceOrientation:(int64_t)a4 animated:(BOOL)a5
+- (void)_rotateView:(id)view withInterfaceOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
+  animatedCopy = animated;
+  viewCopy = view;
   memset(&v20, 0, sizeof(v20));
-  if (a4 > 2)
+  if (orientation > 2)
   {
-    if (a4 == 4)
+    if (orientation == 4)
     {
       v11 = -1.57079633;
     }
 
     else
     {
-      if (a4 != 3)
+      if (orientation != 3)
       {
         goto LABEL_12;
       }
@@ -647,9 +647,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a4 >= 2)
+  if (orientation >= 2)
   {
-    if (a4 != 2)
+    if (orientation != 2)
     {
       goto LABEL_12;
     }
@@ -673,7 +673,7 @@ LABEL_12:
   aBlock[4] = self;
   v12 = _Block_copy(aBlock);
   v13 = v12;
-  if (v5)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v12 options:0 animations:0.3 completion:0.0];
   }
@@ -694,21 +694,21 @@ uint64_t __67__CEKApertureButton__rotateView_withInterfaceOrientation_animated__
   return [v1 setTransform:v4];
 }
 
-- (void)_setLayer:(id)a3 highlighted:(BOOL)a4 animated:(BOOL)a5
+- (void)_setLayer:(id)layer highlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [v8 presentationLayer];
-  v10 = v9;
-  if (v9)
+  animatedCopy = animated;
+  highlightedCopy = highlighted;
+  layerCopy = layer;
+  presentationLayer = [layerCopy presentationLayer];
+  v10 = presentationLayer;
+  if (presentationLayer)
   {
-    v11 = v9;
+    v11 = presentationLayer;
   }
 
   else
   {
-    v11 = v8;
+    v11 = layerCopy;
   }
 
   v12 = v11;
@@ -737,7 +737,7 @@ uint64_t __67__CEKApertureButton__rotateView_withInterfaceOrientation_animated__
   CATransform3DInvert(&b, &a);
   a = v35;
   CATransform3DConcat(&v33, &a, &b);
-  if (v6)
+  if (highlightedCopy)
   {
     v18 = CEKIsPadLayoutForView(self);
     v19 = 0.9;
@@ -754,7 +754,7 @@ uint64_t __67__CEKApertureButton__rotateView_withInterfaceOrientation_animated__
     v33 = a;
   }
 
-  if (v5)
+  if (animatedCopy)
   {
     UIAnimationDragCoefficient();
     v21 = v20;
@@ -779,11 +779,11 @@ uint64_t __67__CEKApertureButton__rotateView_withInterfaceOrientation_animated__
     v28 = [MEMORY[0x1E696B098] valueWithCATransform3D:&b];
     [v22 setToValue:v28];
 
-    [v8 addAnimation:v22 forKey:@"highlightScaleAnimation"];
+    [layerCopy addAnimation:v22 forKey:@"highlightScaleAnimation"];
   }
 
   b = v33;
-  [v8 setTransform:&b];
+  [layerCopy setTransform:&b];
 }
 
 - (CEKApertureButtonDelegate)delegate

@@ -1,26 +1,26 @@
 @interface NURenderer
 + (CGColorSpace)workingColorSpace;
-+ (NURenderer)rendererWithMetalDevice:(id)a3 options:(id)a4;
-+ (id)_renderContextOptionsWithOptions:(id)a3 nameSuffix:(id)a4;
++ (NURenderer)rendererWithMetalDevice:(id)device options:(id)options;
++ (id)_renderContextOptionsWithOptions:(id)options nameSuffix:(id)suffix;
 + (id)defaultRenderContextOptions;
 + (int)workingFormat;
-- (BOOL)addCurrentRenderCompletionHandler:(id)a3;
+- (BOOL)addCurrentRenderCompletionHandler:(id)handler;
 - (NSString)description;
 - (NSString)name;
 - (NURenderer)init;
-- (NURenderer)initWithCIContext:(id)a3 priority:(int64_t)a4;
-- (id)imageForSurface:(id)a3 options:(id)a4;
-- (id)renderDestinationForSurface:(id)a3;
-- (id)renderImage:(id)a3 rect:(id *)a4 toDestination:(id)a5 atPoint:(id)a6 error:(id *)a7;
+- (NURenderer)initWithCIContext:(id)context priority:(int64_t)priority;
+- (id)imageForSurface:(id)surface options:(id)options;
+- (id)renderDestinationForSurface:(id)surface;
+- (id)renderImage:(id)image rect:(id *)rect toDestination:(id)destination atPoint:(id)point error:(id *)error;
 @end
 
 @implementation NURenderer
 
-- (id)renderDestinationForSurface:(id)a3
+- (id)renderDestinationForSurface:(id)surface
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  surfaceCopy = surface;
+  if (!surfaceCopy)
   {
     v7 = NUAssertLogger_23497();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -41,8 +41,8 @@
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v14;
         v25 = 2114;
@@ -53,8 +53,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -63,19 +63,19 @@
     _NUAssertFailHandler("[NURenderer renderDestinationForSurface:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 225, @"Invalid parameter not satisfying: %s", v19, v20, v21, v22, "surface != nil");
   }
 
-  v4 = v3;
-  v5 = [v3 newRenderDestination];
-  [v5 setLabel:@"NURenderer-surface"];
+  v4 = surfaceCopy;
+  newRenderDestination = [surfaceCopy newRenderDestination];
+  [newRenderDestination setLabel:@"NURenderer-surface"];
 
-  return v5;
+  return newRenderDestination;
 }
 
-- (id)imageForSurface:(id)a3 options:(id)a4
+- (id)imageForSurface:(id)surface options:(id)options
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  surfaceCopy = surface;
+  optionsCopy = options;
+  if (!surfaceCopy)
   {
     v10 = NUAssertLogger_23497();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -96,8 +96,8 @@
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v27 = v17;
         v28 = 2114;
@@ -108,8 +108,8 @@
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -118,40 +118,40 @@
     _NUAssertFailHandler("[NURenderer imageForSurface:options:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 215, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "surface != nil");
   }
 
-  v7 = v6;
-  v8 = [MEMORY[0x1E695F658] imageWithIOSurface:objc_msgSend(v5 options:{"IOSurfaceRef"), v6}];
+  v7 = optionsCopy;
+  v8 = [MEMORY[0x1E695F658] imageWithIOSurface:objc_msgSend(surfaceCopy options:{"IOSurfaceRef"), optionsCopy}];
 
   return v8;
 }
 
-- (BOOL)addCurrentRenderCompletionHandler:(id)a3
+- (BOOL)addCurrentRenderCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CIContext *)self->_context clientCommandQueue];
-  v6 = v5;
-  if (v5)
+  handlerCopy = handler;
+  clientCommandQueue = [(CIContext *)self->_context clientCommandQueue];
+  v6 = clientCommandQueue;
+  if (clientCommandQueue)
   {
-    v7 = [v5 commandBuffer];
+    commandBuffer = [clientCommandQueue commandBuffer];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __48__NURenderer_addCurrentRenderCompletionHandler___block_invoke;
     v9[3] = &unk_1E810B050;
-    v10 = v4;
-    [v7 addCompletedHandler:v9];
-    [v7 commit];
+    v10 = handlerCopy;
+    [commandBuffer addCompletedHandler:v9];
+    [commandBuffer commit];
   }
 
   return v6 != 0;
 }
 
-- (id)renderImage:(id)a3 rect:(id *)a4 toDestination:(id)a5 atPoint:(id)a6 error:(id *)a7
+- (id)renderImage:(id)image rect:(id *)rect toDestination:(id)destination atPoint:(id)point error:(id *)error
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
+  var1 = point.var1;
+  var0 = point.var0;
   v140 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  if (!a7)
+  imageCopy = image;
+  destinationCopy = destination;
+  if (!error)
   {
     v25 = NUAssertLogger_23497();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -172,8 +172,8 @@
         v67 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v68 = MEMORY[0x1E696AF00];
         v69 = v67;
-        v70 = [v68 callStackSymbols];
-        v71 = [v70 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v68 callStackSymbols];
+        v71 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v67;
         *&buf[12] = 2114;
@@ -184,8 +184,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v31;
       _os_log_error_impl(&dword_1C0184000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -194,7 +194,7 @@
     _NUAssertFailHandler("[NURenderer renderImage:rect:toDestination:atPoint:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 148, @"Invalid parameter not satisfying: %s", v72, v73, v74, v75, "error != NULL");
   }
 
-  if (!v13)
+  if (!imageCopy)
   {
     v32 = NUAssertLogger_23497();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -215,8 +215,8 @@
         v76 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v77 = MEMORY[0x1E696AF00];
         v78 = v76;
-        v79 = [v77 callStackSymbols];
-        v80 = [v79 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v77 callStackSymbols];
+        v80 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v76;
         *&buf[12] = 2114;
@@ -227,8 +227,8 @@
 
     else if (v36)
     {
-      v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v38 = [v37 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v38 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v38;
       _os_log_error_impl(&dword_1C0184000, v35, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -258,8 +258,8 @@
         v85 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v86 = MEMORY[0x1E696AF00];
         v87 = v85;
-        v88 = [v86 callStackSymbols];
-        v89 = [v88 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v86 callStackSymbols];
+        v89 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v85;
         *&buf[12] = 2114;
@@ -270,8 +270,8 @@
 
     else if (v43)
     {
-      v44 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v45 = [v44 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v45 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v45;
       _os_log_error_impl(&dword_1C0184000, v42, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -301,8 +301,8 @@
         v94 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v95 = MEMORY[0x1E696AF00];
         v96 = v94;
-        v97 = [v95 callStackSymbols];
-        v98 = [v97 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v95 callStackSymbols];
+        v98 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v94;
         *&buf[12] = 2114;
@@ -313,8 +313,8 @@
 
     else if (v50)
     {
-      v51 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v52 = [v51 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v52 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v52;
       _os_log_error_impl(&dword_1C0184000, v49, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -323,9 +323,9 @@
     _NUAssertFailHandler("[NURenderer renderImage:rect:toDestination:atPoint:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 151, @"Invalid parameter not satisfying: %s", v99, v100, v101, v102, "point.y >= 0");
   }
 
-  v15 = v14;
-  v16 = a4->var1.var0 + var0;
-  if (v16 > [v14 width])
+  v15 = destinationCopy;
+  v16 = rect->var1.var0 + var0;
+  if (v16 > [destinationCopy width])
   {
     v53 = NUAssertLogger_23497();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -346,8 +346,8 @@
         v103 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v104 = MEMORY[0x1E696AF00];
         v105 = v103;
-        v106 = [v104 callStackSymbols];
-        v107 = [v106 componentsJoinedByString:@"\n"];
+        callStackSymbols9 = [v104 callStackSymbols];
+        v107 = [callStackSymbols9 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v103;
         *&buf[12] = 2114;
@@ -358,8 +358,8 @@
 
     else if (v57)
     {
-      v58 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v59 = [v58 componentsJoinedByString:@"\n"];
+      callStackSymbols10 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v59 = [callStackSymbols10 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v59;
       _os_log_error_impl(&dword_1C0184000, v56, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -368,7 +368,7 @@
     _NUAssertFailHandler("[NURenderer renderImage:rect:toDestination:atPoint:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 152, @"Invalid parameter not satisfying: %s", v108, v109, v110, v111, "point.x + rect.size.width <= (NSInteger)destination.width");
   }
 
-  v17 = a4->var1.var1 + var1;
+  v17 = rect->var1.var1 + var1;
   if (v17 > [v15 height])
   {
     v60 = NUAssertLogger_23497();
@@ -390,8 +390,8 @@
         v112 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v113 = MEMORY[0x1E696AF00];
         v114 = v112;
-        v115 = [v113 callStackSymbols];
-        v116 = [v115 componentsJoinedByString:@"\n"];
+        callStackSymbols11 = [v113 callStackSymbols];
+        v116 = [callStackSymbols11 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v112;
         *&buf[12] = 2114;
@@ -402,8 +402,8 @@
 
     else if (v64)
     {
-      v65 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v66 = [v65 componentsJoinedByString:@"\n"];
+      callStackSymbols12 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v66 = [callStackSymbols12 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v66;
       _os_log_error_impl(&dword_1C0184000, v63, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -414,8 +414,8 @@
 
   if (v15)
   {
-    v18 = [v15 label];
-    v19 = [v18 length];
+    label = [v15 label];
+    v19 = [label length];
 
     if (!v19)
     {
@@ -441,9 +441,9 @@
     block[3] = &unk_1E810B028;
     v124 = buf;
     block[4] = self;
-    v122 = v13;
-    v21 = a4->var1;
-    v126 = a4->var0;
+    v122 = imageCopy;
+    v21 = rect->var1;
+    v126 = rect->var0;
     v127 = v21;
     v128 = var0;
     v129 = var1;
@@ -453,7 +453,7 @@
     v22 = v131[5];
     if (v22)
     {
-      *a7 = v22;
+      *error = v22;
     }
 
     v23 = *(*&buf[8] + 40);
@@ -465,7 +465,7 @@
   else
   {
     [NUError failureError:@"nil CIRenderDestination" object:0];
-    *a7 = v23 = 0;
+    *error = v23 = 0;
   }
 
   return v23;
@@ -594,8 +594,8 @@ LABEL_8:
     {
       v10 = MEMORY[0x1E696AF00];
       v11 = v9;
-      v12 = [v10 callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v10 callStackSymbols];
+      v13 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v28 = v13;
       _os_log_error_impl(&dword_1C0184000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -611,8 +611,8 @@ LABEL_8:
     v16 = MEMORY[0x1E696AF00];
     v17 = specific;
     v18 = v14;
-    v19 = [v16 callStackSymbols];
-    v20 = [v19 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v16 callStackSymbols];
+    v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v28 = specific;
     v29 = 2114;
@@ -629,20 +629,20 @@ LABEL_14:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NURenderer *)self name];
-  v5 = [(NURenderer *)self context];
-  v6 = [v5 workingFormat];
-  v7 = [(NURenderer *)self context];
-  v8 = [v3 stringWithFormat:@"%@ - fmt=%d, spc=%@", v4, v6, objc_msgSend(v7, "workingColorSpace")];
+  name = [(NURenderer *)self name];
+  context = [(NURenderer *)self context];
+  workingFormat = [context workingFormat];
+  context2 = [(NURenderer *)self context];
+  v8 = [v3 stringWithFormat:@"%@ - fmt=%d, spc=%@", name, workingFormat, objc_msgSend(context2, "workingColorSpace")];
 
   return v8;
 }
 
-- (NURenderer)initWithCIContext:(id)a3 priority:(int64_t)a4
+- (NURenderer)initWithCIContext:(id)context priority:(int64_t)priority
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v22 = NUAssertLogger_23497();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -663,8 +663,8 @@ LABEL_14:
         v29 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v30 = MEMORY[0x1E696AF00];
         v31 = v29;
-        v32 = [v30 callStackSymbols];
-        v33 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v30 callStackSymbols];
+        v33 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v40 = v29;
         v41 = 2114;
@@ -675,8 +675,8 @@ LABEL_14:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v28 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v28 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v40 = v28;
       _os_log_error_impl(&dword_1C0184000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -685,7 +685,7 @@ LABEL_14:
     _NUAssertFailHandler("[NURenderer initWithCIContext:priority:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 121, @"Invalid parameter not satisfying: %s", v34, v35, v36, v37, "context != nil");
   }
 
-  v7 = v6;
+  v7 = contextCopy;
   v38.receiver = self;
   v38.super_class = NURenderer;
   v8 = [(NURenderer *)&v38 init];
@@ -695,27 +695,27 @@ LABEL_14:
 
   v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v12 = v11;
-  if (a4 > 3)
+  if (priority > 3)
   {
     v13 = QOS_CLASS_UNSPECIFIED;
   }
 
   else
   {
-    v13 = dword_1C03C2A60[a4];
+    v13 = dword_1C03C2A60[priority];
   }
 
   v14 = dispatch_queue_attr_make_with_qos_class(v11, v13, 0);
 
   v15 = MEMORY[0x1E696AEC0];
-  if (a4 > 3)
+  if (priority > 3)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = off_1E8109988[a4];
+    v16 = off_1E8109988[priority];
   }
 
   v17 = v16;
@@ -774,8 +774,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -791,8 +791,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -808,12 +808,12 @@ LABEL_14:
   _NUAssertFailHandler("[NURenderer init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NURenderer.m", 116, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-+ (id)_renderContextOptionsWithOptions:(id)a3 nameSuffix:(id)a4
++ (id)_renderContextOptionsWithOptions:(id)options nameSuffix:(id)suffix
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 defaultRenderContextOptions];
-  v9 = [v8 mutableCopy];
+  optionsCopy = options;
+  suffixCopy = suffix;
+  defaultRenderContextOptions = [self defaultRenderContextOptions];
+  v9 = [defaultRenderContextOptions mutableCopy];
   v10 = [0 objectForKeyedSubscript:*MEMORY[0x1E695F850]];
 
   if (v10)
@@ -826,12 +826,12 @@ LABEL_14:
     v11 = @"NUHigh%@";
   }
 
-  v12 = [MEMORY[0x1E696AEC0] stringWithFormat:v11, v7];
+  suffixCopy = [MEMORY[0x1E696AEC0] stringWithFormat:v11, suffixCopy];
 
-  [v9 setObject:v12 forKeyedSubscript:@"kCIContextName"];
-  if (v6)
+  [v9 setObject:suffixCopy forKeyedSubscript:@"kCIContextName"];
+  if (optionsCopy)
   {
-    [v9 addEntriesFromDictionary:v6];
+    [v9 addEntriesFromDictionary:optionsCopy];
   }
 
   return v9;
@@ -861,32 +861,32 @@ LABEL_14:
     +[NUColorSpace sRGBLinearColorSpace];
   }
   v2 = ;
-  v3 = [v2 CGColorSpace];
+  cGColorSpace = [v2 CGColorSpace];
 
-  return v3;
+  return cGColorSpace;
 }
 
 + (id)defaultRenderContextOptions
 {
   v8[3] = *MEMORY[0x1E69E9840];
   v7[0] = *MEMORY[0x1E695F868];
-  v8[0] = [a1 workingColorSpace];
+  v8[0] = [self workingColorSpace];
   v7[1] = *MEMORY[0x1E695F870];
-  v3 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(a1, "workingFormat")}];
+  v3 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(self, "workingFormat")}];
   v8[1] = v3;
   v7[2] = *MEMORY[0x1E695F7D8];
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(a1, "allowClampToAlpha")}];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(self, "allowClampToAlpha")}];
   v8[2] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:v7 count:3];
 
   return v5;
 }
 
-+ (NURenderer)rendererWithMetalDevice:(id)a3 options:(id)a4
++ (NURenderer)rendererWithMetalDevice:(id)device options:(id)options
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NUMetalRenderer alloc] initWithMetalDevice:v6 options:v5];
+  optionsCopy = options;
+  deviceCopy = device;
+  v7 = [[NUMetalRenderer alloc] initWithMetalDevice:deviceCopy options:optionsCopy];
 
   return v7;
 }

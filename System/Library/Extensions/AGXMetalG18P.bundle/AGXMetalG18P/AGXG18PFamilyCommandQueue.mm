@@ -1,13 +1,13 @@
 @interface AGXG18PFamilyCommandQueue
-- (AGXG18PFamilyCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4;
-- (BOOL)setGPUPriority:(unint64_t)a3;
-- (BOOL)setGPUPriority:(unint64_t)a3 offset:(unsigned __int16)a4;
+- (AGXG18PFamilyCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor;
+- (BOOL)setGPUPriority:(unint64_t)priority;
+- (BOOL)setGPUPriority:(unint64_t)priority offset:(unsigned __int16)offset;
 - (id)commandBuffer;
-- (id)commandBufferWithDescriptor:(id)a3;
+- (id)commandBufferWithDescriptor:(id)descriptor;
 - (id)commandBufferWithUnretainedReferences;
-- (unint64_t)resolveAndUpdateQueuePriority:(unint64_t)a3;
+- (unint64_t)resolveAndUpdateQueuePriority:(unint64_t)priority;
 - (void)dealloc;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation AGXG18PFamilyCommandQueue
@@ -27,18 +27,18 @@
   [(IOGPUMetalCommandQueue *)&v4 dealloc];
 }
 
-- (AGXG18PFamilyCommandQueue)initWithDevice:(id)a3 descriptor:(id)a4
+- (AGXG18PFamilyCommandQueue)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v27 = *MEMORY[0x29EDCA608];
   bzero(v25, 0x408uLL);
-  v7 = [a4 devicePartition];
+  devicePartition = [descriptor devicePartition];
   v8 = 0xFFFFFFFFLL;
-  if (v7 == 2)
+  if (devicePartition == 2)
   {
     v8 = 1;
   }
 
-  if (v7 == 1)
+  if (devicePartition == 1)
   {
     v9 = 0;
   }
@@ -48,7 +48,7 @@
     v9 = v8;
   }
 
-  if ([a4 disableIOFencing])
+  if ([descriptor disableIOFencing])
   {
     v10 = 0x200000000;
   }
@@ -58,15 +58,15 @@
     v10 = 0;
   }
 
-  v11 = [a4 enableLowLatencySignalSharedEvent];
+  enableLowLatencySignalSharedEvent = [descriptor enableLowLatencySignalSharedEvent];
   v12 = 0x400000000;
-  if (!v11)
+  if (!enableLowLatencySignalSharedEvent)
   {
     v12 = 0;
   }
 
   v13 = v9 | v10 | v12;
-  if ([a4 enableLowLatencyWaitSharedEvent])
+  if ([descriptor enableLowLatencyWaitSharedEvent])
   {
     v14 = 0x800000000;
   }
@@ -76,7 +76,7 @@
     v14 = 0;
   }
 
-  if ([a4 lockParameterBufferSizeToMax])
+  if ([descriptor lockParameterBufferSizeToMax])
   {
     v15 = 0x1000000000;
   }
@@ -86,9 +86,9 @@
     v15 = 0;
   }
 
-  v16 = [a4 disableCrossQueueHazardTracking];
+  disableCrossQueueHazardTracking = [descriptor disableCrossQueueHazardTracking];
   v17 = 0x100000000;
-  if (v16)
+  if (disableCrossQueueHazardTracking)
   {
     v17 = 0;
   }
@@ -96,13 +96,13 @@
   v26 = v13 | v14 | v15 | v17;
   v24.receiver = self;
   v24.super_class = AGXG18PFamilyCommandQueue;
-  v18 = [(IOGPUMetalCommandQueue *)&v24 initWithDevice:a3 descriptor:a4 args:v25 argsSize:1040];
+  v18 = [(IOGPUMetalCommandQueue *)&v24 initWithDevice:device descriptor:descriptor args:v25 argsSize:1040];
   v19 = v18;
   if (v18)
   {
-    v20 = [(IOGPUMetalCommandQueue *)v18 device];
+    device = [(IOGPUMetalCommandQueue *)v18 device];
     {
-      v23 = v20;
+      v23 = device;
       {
         [AGXG18PFamilyCommandQueue initWithDevice:descriptor:]::isInternalInstall = *(*(v23 + 848) + 16945);
       }
@@ -132,29 +132,29 @@
   return v19;
 }
 
-- (BOOL)setGPUPriority:(unint64_t)a3 offset:(unsigned __int16)a4
+- (BOOL)setGPUPriority:(unint64_t)priority offset:(unsigned __int16)offset
 {
   v5.receiver = self;
   v5.super_class = AGXG18PFamilyCommandQueue;
-  return [(IOGPUMetalCommandQueue *)&v5 setGPUPriority:[(AGXG18PFamilyCommandQueue *)self resolveAndUpdateQueuePriority:a3] offset:a4];
+  return [(IOGPUMetalCommandQueue *)&v5 setGPUPriority:[(AGXG18PFamilyCommandQueue *)self resolveAndUpdateQueuePriority:priority] offset:offset];
 }
 
-- (BOOL)setGPUPriority:(unint64_t)a3
+- (BOOL)setGPUPriority:(unint64_t)priority
 {
   v4.receiver = self;
   v4.super_class = AGXG18PFamilyCommandQueue;
-  return [(IOGPUMetalCommandQueue *)&v4 setGPUPriority:[(AGXG18PFamilyCommandQueue *)self resolveAndUpdateQueuePriority:a3]];
+  return [(IOGPUMetalCommandQueue *)&v4 setGPUPriority:[(AGXG18PFamilyCommandQueue *)self resolveAndUpdateQueuePriority:priority]];
 }
 
-- (unint64_t)resolveAndUpdateQueuePriority:(unint64_t)a3
+- (unint64_t)resolveAndUpdateQueuePriority:(unint64_t)priority
 {
   {
-    v13 = self;
-    self = v13;
+    selfCopy = self;
+    self = selfCopy;
     if (v6)
     {
-      [AGXG18PFamilyCommandQueue resolveAndUpdateQueuePriority:]::isInternalInstall = *(*([(IOGPUMetalCommandQueue *)v13 device]+ 848) + 16945);
-      self = v13;
+      [AGXG18PFamilyCommandQueue resolveAndUpdateQueuePriority:]::isInternalInstall = *(*([(IOGPUMetalCommandQueue *)selfCopy device]+ 848) + 16945);
+      self = selfCopy;
     }
   }
 
@@ -162,44 +162,44 @@
   {
     v4 = &unk_2A179E000;
     {
-      v7 = self;
+      selfCopy2 = self;
       v4 = &unk_2A179E000;
       v9 = v8;
-      self = v7;
+      self = selfCopy2;
       if (v9)
       {
         [AGXG18PFamilyCommandQueue resolveAndUpdateQueuePriority:]::forceGPUPriorityHigh = 0;
         v4 = &unk_2A179E000;
-        self = v7;
+        self = selfCopy2;
       }
     }
 
     v15 = 0;
     {
-      v14 = self;
+      selfCopy3 = self;
       v10 = v4;
       v4 = v10;
       v12 = v11;
-      self = v14;
+      self = selfCopy3;
       if (v12)
       {
         [AGXG18PFamilyCommandQueue resolveAndUpdateQueuePriority:]::forceGPUPriorityEVIsSet = findEnvVarNum<unsigned long long>("AGX_FORCE_GPU_PRIORITY", &v15);
         v4 = v10;
-        self = v14;
+        self = selfCopy3;
       }
     }
 
     if (v4[3552])
     {
-      a3 = 0;
+      priority = 0;
     }
   }
 
-  HIDWORD(self->_commandQueueBTInfo.callstack[63]) = a3;
-  return a3;
+  HIDWORD(self->_commandQueueBTInfo.callstack[63]) = priority;
+  return priority;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
   v5 = [*(-[IOGPUMetalCommandQueue device](self "device") + 896)];
   v6 = 1 << v5;
@@ -211,27 +211,27 @@
   *(&self->super._resourceGroupsLock + 1) |= v6;
   v7.receiver = self;
   v7.super_class = AGXG18PFamilyCommandQueue;
-  [(IOGPUMetalCommandQueue *)&v7 setLabel:a3];
+  [(IOGPUMetalCommandQueue *)&v7 setLabel:label];
 }
 
-- (id)commandBufferWithDescriptor:(id)a3
+- (id)commandBufferWithDescriptor:(id)descriptor
 {
-  v4 = -[AGXG18PFamilyCommandBuffer initWithQueue:retainedReferences:]([AGXG18PFamilyCommandBuffer alloc], "initWithQueue:retainedReferences:", self, [a3 retainedReferences]);
-  -[_MTLCommandBuffer setErrorOptions:](v4, "setErrorOptions:", [a3 errorOptions]);
-  v5 = [a3 deadlineProfile];
-  if (v5)
+  v4 = -[AGXG18PFamilyCommandBuffer initWithQueue:retainedReferences:]([AGXG18PFamilyCommandBuffer alloc], "initWithQueue:retainedReferences:", self, [descriptor retainedReferences]);
+  -[_MTLCommandBuffer setErrorOptions:](v4, "setErrorOptions:", [descriptor errorOptions]);
+  deadlineProfile = [descriptor deadlineProfile];
+  if (deadlineProfile)
   {
-    v6 = v5[8];
-    v7 = v5;
+    v6 = deadlineProfile[8];
+    v7 = deadlineProfile;
     *(&v4->super.super.super.super.isa + *MEMORY[0x29EDBB770]) = v7;
     *(v4->_impl + 134) = v6;
   }
 
-  v4->_captureProgramAddressTable = [a3 captureProgramAddressTable];
-  v4->_cloneIntersectionFunctionTablesPerDispatch = [a3 cloneIntersectionFunctionTablesPerDispatch];
+  v4->_captureProgramAddressTable = [descriptor captureProgramAddressTable];
+  v4->_cloneIntersectionFunctionTablesPerDispatch = [descriptor cloneIntersectionFunctionTablesPerDispatch];
   impl = v4->_impl;
-  impl[568] = [a3 disableFineGrainedComputePreemption];
-  [(_MTLCommandBuffer *)v4 configWithCommandBufferDescriptor:a3];
+  impl[568] = [descriptor disableFineGrainedComputePreemption];
+  [(_MTLCommandBuffer *)v4 configWithCommandBufferDescriptor:descriptor];
   return v4;
 }
 

@@ -1,6 +1,6 @@
 @interface TUAudioController
 - (TUAudioController)init;
-- (void)_requestUpdatedValueWithBlock:(id)a3 object:(id *)a4 isRequestingPointer:(BOOL *)a5 forceNewRequest:(BOOL)a6 scheduleTimePointer:(unint64_t *)a7 notificationString:(id)a8 notificationUserInfo:(id)a9 queue:(id)a10;
+- (void)_requestUpdatedValueWithBlock:(id)block object:(id *)object isRequestingPointer:(BOOL *)pointer forceNewRequest:(BOOL)request scheduleTimePointer:(unint64_t *)timePointer notificationString:(id)string notificationUserInfo:(id)info queue:(id)self0;
 @end
 
 @implementation TUAudioController
@@ -18,31 +18,31 @@
   return result;
 }
 
-- (void)_requestUpdatedValueWithBlock:(id)a3 object:(id *)a4 isRequestingPointer:(BOOL *)a5 forceNewRequest:(BOOL)a6 scheduleTimePointer:(unint64_t *)a7 notificationString:(id)a8 notificationUserInfo:(id)a9 queue:(id)a10
+- (void)_requestUpdatedValueWithBlock:(id)block object:(id *)object isRequestingPointer:(BOOL *)pointer forceNewRequest:(BOOL)request scheduleTimePointer:(unint64_t *)timePointer notificationString:(id)string notificationUserInfo:(id)info queue:(id)self0
 {
-  v12 = a6;
-  v16 = a3;
-  v17 = a8;
-  v18 = a9;
-  if (!*a5 || v12)
+  requestCopy = request;
+  blockCopy = block;
+  stringCopy = string;
+  infoCopy = info;
+  if (!*pointer || requestCopy)
   {
-    v20 = a10;
+    queueCopy = queue;
     v21 = mach_absolute_time();
-    *a7 = v21;
-    *a5 = 1;
+    *timePointer = v21;
+    *pointer = 1;
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __170__TUAudioController_Internal___requestUpdatedValueWithBlock_object_isRequestingPointer_forceNewRequest_scheduleTimePointer_notificationString_notificationUserInfo_queue___block_invoke;
     v22[3] = &unk_1E7424D78;
     v22[4] = self;
-    v26 = a7;
+    timePointerCopy = timePointer;
     v27 = v21;
-    v25 = v16;
-    v28 = a4;
-    v23 = v17;
-    v24 = v18;
-    v29 = a5;
-    dispatch_async(v20, v22);
+    v25 = blockCopy;
+    objectCopy = object;
+    v23 = stringCopy;
+    v24 = infoCopy;
+    pointerCopy = pointer;
+    dispatch_async(queueCopy, v22);
   }
 }
 

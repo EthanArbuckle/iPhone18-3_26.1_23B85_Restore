@@ -1,46 +1,46 @@
 @interface STUsageReportAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityStringForDate:(id)a3 timePeriod:(unint64_t)a4;
-- (id)_countedDataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4 includeIndicatorImageName:(BOOL)a5;
-- (id)_timedDataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityStringForDate:(id)date timePeriod:(unint64_t)period;
+- (id)_countedDataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier includeIndicatorImageName:(BOOL)name;
+- (id)_timedDataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier;
 - (id)screenTimeDataSet;
 @end
 
 @implementation STUsageReportAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"screenTimeDataSet" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"_countedDataSetForItemType:trustIdentifier:includeIndicatorImageName:" withFullSignature:{"@", "Q", "@", "B", 0}];
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"_timedDataSetForItemType:useDarkColors:" withFullSignature:{"@", "Q", "B", 0}];
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"_timedDataSetForItemType:trustIdentifier:" withFullSignature:{"@", "Q", "@", 0}];
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"topUsageItemsWithMaxCount:type:includeAggregateItem:nonAggregateItems:darkColors:" withFullSignature:{"@", "Q", "Q", "B", "^@", "B", 0}];
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"type" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"STUsageReportGraphDataSet" hasInstanceMethod:@"dataPoints" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUsageReportGraphDataPoint" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUsageReportGraphDataPoint" hasInstanceMethod:@"segments" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"applicationUsageByStartOfDateIntervalByTrustIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"webUsageByStartOfDateIntervalByTrustIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"categoryUsageByStartOfDateIntervalByTrustIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"STUsageReport" hasInstanceMethod:@"screenTimeByStartOfDateInterval" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"screenTimeDataSet" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"_countedDataSetForItemType:trustIdentifier:includeIndicatorImageName:" withFullSignature:{"@", "Q", "@", "B", 0}];
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"_timedDataSetForItemType:useDarkColors:" withFullSignature:{"@", "Q", "B", 0}];
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"_timedDataSetForItemType:trustIdentifier:" withFullSignature:{"@", "Q", "@", 0}];
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"topUsageItemsWithMaxCount:type:includeAggregateItem:nonAggregateItems:darkColors:" withFullSignature:{"@", "Q", "Q", "B", "^@", "B", 0}];
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"type" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"STUsageReportGraphDataSet" hasInstanceMethod:@"dataPoints" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUsageReportGraphDataPoint" hasInstanceMethod:@"date" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUsageReportGraphDataPoint" hasInstanceMethod:@"segments" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"applicationUsageByStartOfDateIntervalByTrustIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"webUsageByStartOfDateIntervalByTrustIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"categoryUsageByStartOfDateIntervalByTrustIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"STUsageReport" hasInstanceMethod:@"screenTimeByStartOfDateInterval" withFullSignature:{"@", 0}];
 }
 
-- (id)_accessibilityStringForDate:(id)a3 timePeriod:(unint64_t)a4
+- (id)_accessibilityStringForDate:(id)date timePeriod:(unint64_t)period
 {
-  v5 = a3;
-  if (!v5)
+  dateCopy = date;
+  if (!dateCopy)
   {
     goto LABEL_6;
   }
 
-  if (!a4)
+  if (!period)
   {
     v6 = AXClockTimeStringForDate();
     goto LABEL_9;
   }
 
-  if (a4 == 2)
+  if (period == 2)
   {
     v8 = MEMORY[0x29EDBA0F8];
     v9 = accessibilityLocalizedString(@"week.of");
@@ -50,7 +50,7 @@
     goto LABEL_10;
   }
 
-  if (a4 != 1)
+  if (period != 1)
   {
 LABEL_6:
     v7 = 0;
@@ -67,19 +67,19 @@ LABEL_10:
 
 - (id)screenTimeDataSet
 {
-  v2 = self;
+  selfCopy = self;
   v31 = *MEMORY[0x29EDCA608];
   v29.receiver = self;
   v29.super_class = STUsageReportAccessibility;
-  v3 = [(STUsageReportAccessibility *)&v29 screenTimeDataSet];
-  v4 = [(STUsageReportAccessibility *)v2 _axTimePeriodForDescription];
-  v5 = [(STUsageReportAccessibility *)v2 safeDictionaryForKey:@"screenTimeByStartOfDateInterval"];
+  screenTimeDataSet = [(STUsageReportAccessibility *)&v29 screenTimeDataSet];
+  _axTimePeriodForDescription = [(STUsageReportAccessibility *)selfCopy _axTimePeriodForDescription];
+  v5 = [(STUsageReportAccessibility *)selfCopy safeDictionaryForKey:@"screenTimeByStartOfDateInterval"];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v21 = v3;
-  obj = [v3 safeArrayForKey:@"dataPoints"];
+  v21 = screenTimeDataSet;
+  obj = [screenTimeDataSet safeArrayForKey:@"dataPoints"];
   v24 = [obj countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v24)
   {
@@ -96,7 +96,7 @@ LABEL_10:
 
         v8 = *(*(&v25 + 1) + 8 * i);
         v9 = [v8 safeValueForKey:@"date"];
-        v10 = [(STUsageReportAccessibility *)v2 _accessibilityStringForDate:v9 timePeriod:v4];
+        v10 = [(STUsageReportAccessibility *)selfCopy _accessibilityStringForDate:v9 timePeriod:_axTimePeriodForDescription];
         objc_opt_class();
         v11 = [v5 objectForKeyedSubscript:v9];
         v12 = __UIAccessibilityCastAsClass();
@@ -106,14 +106,14 @@ LABEL_10:
         {
           v14 = MEMORY[0x29C2EBAB0](v13 < 60.0);
           __AXStringForVariables();
-          v15 = v4;
+          v15 = _axTimePeriodForDescription;
           v16 = v5;
-          v18 = v17 = v2;
+          v18 = v17 = selfCopy;
           [v8 setAccessibilityLabel:{v18, v14, @"__AXStringForVariablesSentinel"}];
 
-          v2 = v17;
+          selfCopy = v17;
           v5 = v16;
-          v4 = v15;
+          _axTimePeriodForDescription = v15;
           v6 = v22;
         }
       }
@@ -129,22 +129,22 @@ LABEL_10:
   return v21;
 }
 
-- (id)_timedDataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4
+- (id)_timedDataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier
 {
   v40 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  identifierCopy = identifier;
   v38.receiver = self;
   v38.super_class = STUsageReportAccessibility;
-  v7 = [(STUsageReportAccessibility *)&v38 _timedDataSetForItemType:a3 trustIdentifier:v6];
-  v8 = [(STUsageReportAccessibility *)self _axTimePeriodForDescription];
-  if (a3 - 2 > 2)
+  v7 = [(STUsageReportAccessibility *)&v38 _timedDataSetForItemType:type trustIdentifier:identifierCopy];
+  _axTimePeriodForDescription = [(STUsageReportAccessibility *)self _axTimePeriodForDescription];
+  if (type - 2 > 2)
   {
     v31 = 0;
   }
 
   else
   {
-    v31 = [(STUsageReportAccessibility *)self safeValueForKey:off_29F2F3AA0[a3 - 2]];
+    v31 = [(STUsageReportAccessibility *)self safeValueForKey:off_29F2F3AA0[type - 2]];
   }
 
   v36 = 0u;
@@ -159,7 +159,7 @@ LABEL_10:
     v10 = v9;
     v11 = @"date";
     v12 = *v35;
-    v28 = v6;
+    v28 = identifierCopy;
     do
     {
       v13 = 0;
@@ -173,8 +173,8 @@ LABEL_10:
 
         v32 = *(*(&v34 + 1) + 8 * v13);
         v14 = [v32 safeValueForKey:v11];
-        v33 = [(STUsageReportAccessibility *)self _accessibilityStringForDate:v14 timePeriod:v8];
-        v15 = [v31 objectForKeyedSubscript:v6];
+        v33 = [(STUsageReportAccessibility *)self _accessibilityStringForDate:v14 timePeriod:_axTimePeriodForDescription];
+        v15 = [v31 objectForKeyedSubscript:identifierCopy];
         v16 = [v15 objectForKeyedSubscript:v14];
 
         v17 = [v16 safeValueForKey:@"totalUsage"];
@@ -185,17 +185,17 @@ LABEL_10:
           __AXStringForVariables();
           v20 = v12;
           v21 = v11;
-          v22 = v8;
+          v22 = _axTimePeriodForDescription;
           v24 = v23 = self;
           [v32 setAccessibilityLabel:{v24, v19, @"__AXStringForVariablesSentinel"}];
 
           self = v23;
-          v8 = v22;
+          _axTimePeriodForDescription = v22;
           v11 = v21;
           v12 = v20;
           v10 = v29;
 
-          v6 = v28;
+          identifierCopy = v28;
         }
 
         ++v13;
@@ -289,15 +289,15 @@ LABEL_12:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (id)_countedDataSetForItemType:(unint64_t)a3 trustIdentifier:(id)a4 includeIndicatorImageName:(BOOL)a5
+- (id)_countedDataSetForItemType:(unint64_t)type trustIdentifier:(id)identifier includeIndicatorImageName:(BOOL)name
 {
   v37 = *MEMORY[0x29EDCA608];
   v35.receiver = self;
   v35.super_class = STUsageReportAccessibility;
-  v26 = a4;
-  v6 = [STUsageReportAccessibility _countedDataSetForItemType:sel__countedDataSetForItemType_trustIdentifier_includeIndicatorImageName_ trustIdentifier:a3 includeIndicatorImageName:?];
-  v30 = self;
-  v29 = [(STUsageReportAccessibility *)self _axTimePeriodForDescription];
+  identifierCopy = identifier;
+  v6 = [STUsageReportAccessibility _countedDataSetForItemType:sel__countedDataSetForItemType_trustIdentifier_includeIndicatorImageName_ trustIdentifier:type includeIndicatorImageName:?];
+  selfCopy = self;
+  _axTimePeriodForDescription = [(STUsageReportAccessibility *)self _axTimePeriodForDescription];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -320,12 +320,12 @@ LABEL_12:
 
         v11 = *(*(&v31 + 1) + 8 * i);
         v12 = [v11 safeValueForKey:@"date"];
-        v13 = [(STUsageReportAccessibility *)v30 _accessibilityStringForDate:v12 timePeriod:v29];
+        v13 = [(STUsageReportAccessibility *)selfCopy _accessibilityStringForDate:v12 timePeriod:_axTimePeriodForDescription];
         v14 = [v11 safeArrayForKey:@"segments"];
-        v15 = [v14 firstObject];
+        firstObject = [v14 firstObject];
 
         objc_opt_class();
-        v16 = [v15 safeValueForKey:@"amount"];
+        v16 = [firstObject safeValueForKey:@"amount"];
         v17 = __UIAccessibilityCastAsClass();
 
         if (!v17)
@@ -335,14 +335,14 @@ LABEL_10:
           goto LABEL_13;
         }
 
-        if (a3 == 5)
+        if (type == 5)
         {
           v18 = @"notifications.count.format";
         }
 
         else
         {
-          if (a3 != 6)
+          if (type != 6)
           {
             goto LABEL_10;
           }

@@ -1,16 +1,16 @@
 @interface HMCAMDEmbeddedDevice
 - (HMCAMDEmbeddedDevice)init;
-- (id)instanceOfClass:(Class)a3 forShortName:(id)a4;
-- (id)performCommandFromClass:(id)a3 method:(id)a4 arguments:(id)a5 error:(id *)a6;
+- (id)instanceOfClass:(Class)class forShortName:(id)name;
+- (id)performCommandFromClass:(id)class method:(id)method arguments:(id)arguments error:(id *)error;
 @end
 
 @implementation HMCAMDEmbeddedDevice
 
-- (id)performCommandFromClass:(id)a3 method:(id)a4 arguments:(id)a5 error:(id *)a6
+- (id)performCommandFromClass:(id)class method:(id)method arguments:(id)arguments error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  classCopy = class;
+  methodCopy = method;
+  argumentsCopy = arguments;
   v12 = NSStringFromSelector(a2);
   v13 = [NSString stringWithFormat:@"%@ is unavailable", v12];
   v14 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v13 userInfo:0];
@@ -19,12 +19,12 @@
   objc_exception_throw(v14);
 }
 
-- (id)instanceOfClass:(Class)a3 forShortName:(id)a4
+- (id)instanceOfClass:(Class)class forShortName:(id)name
 {
-  v5 = a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(NSMutableDictionary *)v6->_classInstances objectForKeyedSubscript:v5];
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v7 = [(NSMutableDictionary *)selfCopy->_classInstances objectForKeyedSubscript:nameCopy];
 
   if (!v7)
   {
@@ -34,12 +34,12 @@
       goto LABEL_5;
     }
 
-    [(NSMutableDictionary *)v6->_classInstances setObject:v8 forKeyedSubscript:v5];
+    [(NSMutableDictionary *)selfCopy->_classInstances setObject:v8 forKeyedSubscript:nameCopy];
   }
 
-  v8 = [(NSMutableDictionary *)v6->_classInstances objectForKeyedSubscript:v5];
+  v8 = [(NSMutableDictionary *)selfCopy->_classInstances objectForKeyedSubscript:nameCopy];
 LABEL_5:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }

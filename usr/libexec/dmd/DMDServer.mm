@@ -89,32 +89,32 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Running Server", v7, 2u);
   }
 
-  v3 = [(DMDServer *)self taskServerDelegate];
-  [v3 run];
+  taskServerDelegate = [(DMDServer *)self taskServerDelegate];
+  [taskServerDelegate run];
 
-  v4 = [(DMDServer *)self taskOperationServiceListener];
-  [v4 resume];
+  taskOperationServiceListener = [(DMDServer *)self taskOperationServiceListener];
+  [taskOperationServiceListener resume];
 
-  v5 = [(DMDServer *)self policyServerListener];
-  [v5 resume];
+  policyServerListener = [(DMDServer *)self policyServerListener];
+  [policyServerListener resume];
 
-  v6 = [(DMDServer *)self emergencyModeListener];
-  [v6 resume];
+  emergencyModeListener = [(DMDServer *)self emergencyModeListener];
+  [emergencyModeListener resume];
 }
 
 - (void)invalidate
 {
-  v3 = [(DMDServer *)self taskServer];
-  [v3 invalidate];
+  taskServer = [(DMDServer *)self taskServer];
+  [taskServer invalidate];
 
-  v4 = [(DMDServer *)self taskOperationServiceListener];
-  [v4 invalidate];
+  taskOperationServiceListener = [(DMDServer *)self taskOperationServiceListener];
+  [taskOperationServiceListener invalidate];
 
-  v5 = [(DMDServer *)self policyServerListener];
-  [v5 invalidate];
+  policyServerListener = [(DMDServer *)self policyServerListener];
+  [policyServerListener invalidate];
 
-  v6 = [(DMDServer *)self emergencyModeListener];
-  [v6 invalidate];
+  emergencyModeListener = [(DMDServer *)self emergencyModeListener];
+  [emergencyModeListener invalidate];
 }
 
 @end

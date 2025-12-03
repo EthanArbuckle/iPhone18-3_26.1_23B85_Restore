@@ -1,19 +1,19 @@
 @interface MFError
-+ (MFError)errorWithDomain:(id)a3 code:(int64_t)a4 localizedDescription:(id)a5 title:(id)a6 userInfo:(id)a7;
-+ (MFError)errorWithException:(id)a3;
-- (MFError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
++ (MFError)errorWithDomain:(id)domain code:(int64_t)code localizedDescription:(id)description title:(id)title userInfo:(id)info;
++ (MFError)errorWithException:(id)exception;
+- (MFError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
 - (id)localizedDescription;
 - (id)mf_moreInfo;
 - (id)mf_shortDescription;
 - (id)recoveryAttempter;
 - (id)userInfo;
 - (void)dealloc;
-- (void)useGenericDescription:(id)a3;
+- (void)useGenericDescription:(id)description;
 @end
 
 @implementation MFError
 
-- (MFError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (MFError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
   if (initWithDomain_code_userInfo__onceToken != -1)
   {
@@ -22,7 +22,7 @@
 
   v10.receiver = self;
   v10.super_class = MFError;
-  return [(MFError *)&v10 initWithDomain:a3 code:a4 userInfo:a5];
+  return [(MFError *)&v10 initWithDomain:domain code:code userInfo:info];
 }
 
 __CFString *__40__MFError_initWithDomain_code_userInfo___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -38,18 +38,18 @@ __CFString *__40__MFError_initWithDomain_code_userInfo___block_invoke_2(uint64_t
   }
 }
 
-+ (MFError)errorWithDomain:(id)a3 code:(int64_t)a4 localizedDescription:(id)a5 title:(id)a6 userInfo:(id)a7
++ (MFError)errorWithDomain:(id)domain code:(int64_t)code localizedDescription:(id)description title:(id)title userInfo:(id)info
 {
-  if (!a3)
+  if (!domain)
   {
     return 0;
   }
 
-  if (a5 | a6)
+  if (description | title)
   {
-    if (a7)
+    if (info)
     {
-      MutableCopy = CFDictionaryCreateMutableCopy(0, 0, a7);
+      MutableCopy = CFDictionaryCreateMutableCopy(0, 0, info);
     }
 
     else
@@ -58,17 +58,17 @@ __CFString *__40__MFError_initWithDomain_code_userInfo___block_invoke_2(uint64_t
     }
 
     v15 = MutableCopy;
-    if (a5)
+    if (description)
     {
-      CFDictionarySetValue(MutableCopy, *MEMORY[0x277CCA450], a5);
+      CFDictionarySetValue(MutableCopy, *MEMORY[0x277CCA450], description);
     }
 
-    if (a6)
+    if (title)
     {
-      CFDictionarySetValue(v15, @"_MFShortDescription", a6);
+      CFDictionarySetValue(v15, @"_MFShortDescription", title);
     }
 
-    v13 = [a1 errorWithDomain:a3 code:a4 localizedDescription:0 title:0 userInfo:v15];
+    v13 = [self errorWithDomain:domain code:code localizedDescription:0 title:0 userInfo:v15];
     if (([objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")] & 1) == 0)
     {
       v16 = MFLogGeneral();
@@ -81,28 +81,28 @@ __CFString *__40__MFError_initWithDomain_code_userInfo___block_invoke_2(uint64_t
     return v13;
   }
 
-  return [a1 errorWithDomain:? code:? userInfo:?];
+  return [self errorWithDomain:? code:? userInfo:?];
 }
 
-+ (MFError)errorWithException:(id)a3
++ (MFError)errorWithException:(id)exception
 {
-  v4 = [a3 reason];
+  reason = [exception reason];
 
-  return [a1 errorWithDomain:@"MFMessageErrorDomain" code:1029 localizedDescription:v4];
+  return [self errorWithDomain:@"MFMessageErrorDomain" code:1029 localizedDescription:reason];
 }
 
 - (id)userInfo
 {
   v7.receiver = self;
   v7.super_class = MFError;
-  v3 = [(MFError *)&v7 userInfo];
+  userInfo = [(MFError *)&v7 userInfo];
   moreUserInfo = self->_moreUserInfo;
   if (moreUserInfo)
   {
-    if (v3)
+    if (userInfo)
     {
       v5 = [(NSMutableDictionary *)moreUserInfo mutableCopyWithZone:0];
-      [v5 addEntriesFromDictionary:v3];
+      [v5 addEntriesFromDictionary:userInfo];
       return v5;
     }
 
@@ -112,7 +112,7 @@ __CFString *__40__MFError_initWithDomain_code_userInfo___block_invoke_2(uint64_t
     }
   }
 
-  return v3;
+  return userInfo;
 }
 
 - (id)localizedDescription
@@ -130,11 +130,11 @@ __CFString *__40__MFError_initWithDomain_code_userInfo___block_invoke_2(uint64_t
 
 - (id)recoveryAttempter
 {
-  v2 = [(MFError *)self userInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x277CCA658]];
+  userInfo = [(MFError *)self userInfo];
+  v3 = [userInfo objectForKey:*MEMORY[0x277CCA658]];
   if (!v3)
   {
-    v3 = [v2 objectForKey:@"RecoveryAttemptorClassName"];
+    v3 = [userInfo objectForKey:@"RecoveryAttemptorClassName"];
     if (v3)
     {
       v3 = objc_alloc_init(NSClassFromString(v3));
@@ -170,22 +170,22 @@ __CFString *__40__MFError_initWithDomain_code_userInfo___block_invoke_2(uint64_t
   return result;
 }
 
-- (void)useGenericDescription:(id)a3
+- (void)useGenericDescription:(id)description
 {
-  v4 = [(MFError *)self localizedDescription];
-  if (v4 && (v5 = v4, ([v4 isEqualToString:&stru_2869ED3E0] & 1) == 0))
+  localizedDescription = [(MFError *)self localizedDescription];
+  if (localizedDescription && (v5 = localizedDescription, ([localizedDescription isEqualToString:&stru_2869ED3E0] & 1) == 0))
   {
-    v7 = [objc_allocWithZone(MEMORY[0x277CCACA8]) initWithFormat:MFLookupLocalizedString(@"MSG_SERVER_ERROR", @"%@\n\nThe server error encountered was: %@", @"Delayed", a3, v5];
+    descriptionCopy2 = [objc_allocWithZone(MEMORY[0x277CCACA8]) initWithFormat:MFLookupLocalizedString(@"MSG_SERVER_ERROR", @"%@\n\nThe server error encountered was: %@", @"Delayed", description, v5];
   }
 
   else
   {
-    v6 = a3;
-    v7 = a3;
+    descriptionCopy = description;
+    descriptionCopy2 = description;
   }
 
-  v9 = v7;
-  [(MFError *)self setLocalizedDescription:v7];
+  v9 = descriptionCopy2;
+  [(MFError *)self setLocalizedDescription:descriptionCopy2];
 }
 
 - (void)dealloc

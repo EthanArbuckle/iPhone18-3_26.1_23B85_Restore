@@ -1,29 +1,29 @@
 @interface EQKitLayoutImplementation
-- (BOOL)layoutWithContext:(id)a3;
+- (BOOL)layoutWithContext:(id)context;
 - (CGRect)erasableBounds;
 - (CGSize)naturalSize;
-- (EQKitLayoutImplementation)initWithRoot:(id)a3 environment:(id)a4;
+- (EQKitLayoutImplementation)initWithRoot:(id)root environment:(id)environment;
 - (NSString)description;
 - (double)depth;
 - (double)height;
 - (double)vsize;
 - (id)rootInspectable;
-- (id)selectionForPoint:(CGPoint)a3;
+- (id)selectionForPoint:(CGPoint)point;
 - (void)dealloc;
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitLayoutImplementation
 
-- (EQKitLayoutImplementation)initWithRoot:(id)a3 environment:(id)a4
+- (EQKitLayoutImplementation)initWithRoot:(id)root environment:(id)environment
 {
   v8.receiver = self;
   v8.super_class = EQKitLayoutImplementation;
   v6 = [(EQKitLayoutImplementation *)&v8 init];
   if (v6)
   {
-    v6->mRoot = a3;
-    v6->mEnvironment = a4;
+    v6->mRoot = root;
+    v6->mEnvironment = environment;
   }
 
   return v6;
@@ -36,25 +36,25 @@
   [(EQKitLayoutImplementation *)&v3 dealloc];
 }
 
-- (BOOL)layoutWithContext:(id)a3
+- (BOOL)layoutWithContext:(id)context
 {
   self->mBox = 0;
   self->mScale = 1.0;
-  if (a3)
+  if (context)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       return self->mBox != 0;
     }
 
-    v5 = [(EQKitRootNode *)self->mRoot attributeCollection];
-    if (!v5)
+    attributeCollection = [(EQKitRootNode *)self->mRoot attributeCollection];
+    if (!attributeCollection)
     {
       return self->mBox != 0;
     }
 
     [(EQKitEnvironment *)self->mEnvironment beginLayout];
-    EQKitLayoutManager::EQKitLayoutManager(v31, a3, self->mEnvironment, v5);
+    EQKitLayoutManager::EQKitLayoutManager(v31, context, self->mEnvironment, attributeCollection);
     mBox = EQKitLayoutManager::layoutExpression(v31, self->mRoot, &self->mAscent, &self->mDescent, &self->mLeading, &self->mNaturalAlignmentOffset, &self->mSingleLineHeight);
     self->mBox = mBox;
     if (self->mSingleLineHeight)
@@ -88,11 +88,11 @@
     [(EQKitBox *)mBox width];
     if (v15 > 0.0 && v7 > 0.0)
     {
-      [a3 targetSize];
+      [context targetSize];
       v18 = v17;
       if (v17 <= 0.0 || (v19 = v16, v16 <= 0.0))
       {
-        [a3 containerSize];
+        [context containerSize];
         v26 = v25;
         if (v25 <= 0.0)
         {
@@ -197,9 +197,9 @@ LABEL_20:
   }
 }
 
-- (id)selectionForPoint:(CGPoint)a3
+- (id)selectionForPoint:(CGPoint)point
 {
-  result = [(EQKitBox *)self->mBox hitTest:a3.x, a3.y];
+  result = [(EQKitBox *)self->mBox hitTest:point.x, point.y];
   if (result)
   {
     v4 = result;
@@ -248,16 +248,16 @@ LABEL_20:
   return result;
 }
 
-- (void)renderIntoContext:(id)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(id)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [a3 cgContext];
-  CGContextSaveGState(v6);
-  CGContextScaleCTM(v6, self->mScale, self->mScale);
+  y = offset.y;
+  x = offset.x;
+  cgContext = [context cgContext];
+  CGContextSaveGState(cgContext);
+  CGContextScaleCTM(cgContext, self->mScale, self->mScale);
   CGAffineTransformMakeScale(&v9, 1.0 / self->mScale, 1.0 / self->mScale);
-  [(EQKitBox *)self->mBox renderIntoContext:a3 offset:vaddq_f64(*&v9.tx, vmlaq_n_f64(vmulq_n_f64(*&v9.c, y), *&v9.a, x))];
-  CGContextRestoreGState(v6);
+  [(EQKitBox *)self->mBox renderIntoContext:context offset:vaddq_f64(*&v9.tx, vmlaq_n_f64(vmulq_n_f64(*&v9.c, y), *&v9.a, x))];
+  CGContextRestoreGState(cgContext);
 }
 
 - (id)rootInspectable

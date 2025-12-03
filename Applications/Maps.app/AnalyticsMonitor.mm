@@ -1,6 +1,6 @@
 @interface AnalyticsMonitor
 - (AnalyticsMonitor)init;
-- (void)processNotification:(id)a3;
+- (void)processNotification:(id)notification;
 @end
 
 @implementation AnalyticsMonitor
@@ -36,33 +36,33 @@
   return v2;
 }
 
-- (void)processNotification:(id)a3
+- (void)processNotification:(id)notification
 {
-  v28 = a3;
-  v4 = [v28 object];
-  if (v4)
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  if (object)
   {
-    v5 = [v28 object];
-    v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___ContainerProtocol];
+    object2 = [notificationCopy object];
+    v6 = [object2 conformsToProtocol:&OBJC_PROTOCOL___ContainerProtocol];
 
     if (v6)
     {
-      v4 = [v28 object];
+      object = [notificationCopy object];
     }
 
     else
     {
-      v4 = 0;
+      object = 0;
     }
   }
 
-  v7 = [v28 name];
-  v8 = [v7 isEqualToString:@"ContainerDidChangeLayoutNotification"];
+  name = [notificationCopy name];
+  v8 = [name isEqualToString:@"ContainerDidChangeLayoutNotification"];
 
   if (v8)
   {
-    v9 = [v28 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"ContainerLayout"];
+    userInfo = [notificationCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"ContainerLayout"];
     self->_containeeLayout = [v10 integerValue];
 LABEL_9:
 
@@ -70,62 +70,62 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v11 = [v28 name];
-  v12 = [v11 isEqualToString:@"ContainerDidChangeStyleNotification"];
+  name2 = [notificationCopy name];
+  v12 = [name2 isEqualToString:@"ContainerDidChangeStyleNotification"];
 
   if (v12)
   {
-    v9 = [v28 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"ContainerStyle"];
+    userInfo = [notificationCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"ContainerStyle"];
     self->_containerStyle = [v10 integerValue];
     goto LABEL_9;
   }
 
-  v13 = [v28 name];
-  v14 = [v13 isEqualToString:@"ContainerWillChangeLayoutNotification"];
+  name3 = [notificationCopy name];
+  v14 = [name3 isEqualToString:@"ContainerWillChangeLayoutNotification"];
 
   if (v14)
   {
-    v15 = [v28 userInfo];
-    v16 = [v15 objectForKeyedSubscript:@"ContainerUpdateSource"];
-    v17 = [v16 unsignedIntegerValue];
+    userInfo2 = [notificationCopy userInfo];
+    v16 = [userInfo2 objectForKeyedSubscript:@"ContainerUpdateSource"];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
 
     containeeLayout = self->_containeeLayout;
-    v19 = [v28 userInfo];
-    v20 = [v19 objectForKeyedSubscript:@"ContainerLayout"];
-    v21 = [v20 integerValue];
+    userInfo3 = [notificationCopy userInfo];
+    v20 = [userInfo3 objectForKeyedSubscript:@"ContainerLayout"];
+    integerValue = [v20 integerValue];
 
-    v22 = [v28 userInfo];
-    v9 = [v22 objectForKeyedSubscript:@"ContainerContainee"];
+    userInfo4 = [notificationCopy userInfo];
+    userInfo = [userInfo4 objectForKeyedSubscript:@"ContainerContainee"];
 
-    if (v21 > containeeLayout)
+    if (integerValue > containeeLayout)
     {
       v23 = 1;
     }
 
     else
     {
-      v23 = 2 * (v21 < containeeLayout);
+      v23 = 2 * (integerValue < containeeLayout);
     }
 
-    if (v21 == containeeLayout || v17 != 1)
+    if (integerValue == containeeLayout || unsignedIntegerValue != 1)
     {
       goto LABEL_10;
     }
 
-    if ([v9 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
+    if ([userInfo conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
     {
-      v24 = v9;
+      v24 = userInfo;
     }
 
     else
     {
       if (objc_opt_respondsToSelector())
       {
-        v26 = [v9 contentViewController];
-        if ([v26 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
+        contentViewController = [userInfo contentViewController];
+        if ([contentViewController conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
         {
-          v25 = v26;
+          v25 = contentViewController;
         }
 
         else
@@ -141,14 +141,14 @@ LABEL_10:
         goto LABEL_31;
       }
 
-      if (![v4 conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
+      if (![object conformsToProtocol:&OBJC_PROTOCOL___GEOLogContextDelegate])
       {
 LABEL_32:
-        v27 = 0;
+        currentUITargetForAnalytics = 0;
         goto LABEL_33;
       }
 
-      v24 = v4;
+      v24 = object;
     }
 
     v25 = v24;
@@ -158,10 +158,10 @@ LABEL_32:
     }
 
 LABEL_31:
-    v27 = [v25 currentUITargetForAnalytics];
+    currentUITargetForAnalytics = [v25 currentUITargetForAnalytics];
 
 LABEL_33:
-    [GEOAPPortal captureUserAction:v23 target:v27 value:0];
+    [GEOAPPortal captureUserAction:v23 target:currentUITargetForAnalytics value:0];
     goto LABEL_10;
   }
 

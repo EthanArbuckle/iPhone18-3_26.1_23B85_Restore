@@ -13,8 +13,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(QLPXCompoundNumberFilter *)self filters];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  filters = [(QLPXCompoundNumberFilter *)self filters];
+  v6 = [filters countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -26,7 +26,7 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(filters);
         }
 
         v10 = *(*(&v15 + 1) + 8 * v9);
@@ -42,7 +42,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [filters countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);

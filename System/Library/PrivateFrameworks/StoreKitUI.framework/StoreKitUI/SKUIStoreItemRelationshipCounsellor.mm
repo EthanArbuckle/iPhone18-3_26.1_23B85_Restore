@@ -1,15 +1,15 @@
 @interface SKUIStoreItemRelationshipCounsellor
-- (BOOL)itemHasChildren:(id)a3;
-- (BOOL)itemHasParent:(id)a3;
+- (BOOL)itemHasChildren:(id)children;
+- (BOOL)itemHasParent:(id)parent;
 - (SKUIStoreItemRelationshipCounsellor)init;
-- (id)childItemsForItem:(id)a3;
-- (id)familyForItem:(id)a3;
-- (id)parentItemForItem:(id)a3;
-- (id)siblingItemsForItem:(id)a3;
-- (void)addChildren:(id)a3 forParent:(id)a4;
+- (id)childItemsForItem:(id)item;
+- (id)familyForItem:(id)item;
+- (id)parentItemForItem:(id)item;
+- (id)siblingItemsForItem:(id)item;
+- (void)addChildren:(id)children forParent:(id)parent;
 - (void)init;
-- (void)removeAllRelationshipsForItem:(id)a3;
-- (void)setChildren:(id)a3 forParent:(id)a4;
+- (void)removeAllRelationshipsForItem:(id)item;
+- (void)setChildren:(id)children forParent:(id)parent;
 @end
 
 @implementation SKUIStoreItemRelationshipCounsellor
@@ -26,9 +26,9 @@
   v3 = [(SKUIStoreItemRelationshipCounsellor *)&v9 init];
   if (v3)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     relationshipsDictionary = v3->_relationshipsDictionary;
-    v3->_relationshipsDictionary = v4;
+    v3->_relationshipsDictionary = dictionary;
 
     v6 = objc_alloc_init(MEMORY[0x277CCAC60]);
     lock = v3->_lock;
@@ -40,147 +40,147 @@
   return v3;
 }
 
-- (BOOL)itemHasParent:(id)a3
+- (BOOL)itemHasParent:(id)parent
 {
-  v4 = a3;
-  v5 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v5 lock];
+  parentCopy = parent;
+  lock = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock lock];
 
-  v6 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  relationshipsDictionary = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+  v7 = [relationshipsDictionary objectForKeyedSubscript:parentCopy];
 
-  v8 = [v7 chidItems];
-  v9 = [v8 containsObject:v4];
+  chidItems = [v7 chidItems];
+  v9 = [chidItems containsObject:parentCopy];
 
-  v10 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v10 unlock];
+  lock2 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock2 unlock];
 
   return v9;
 }
 
-- (BOOL)itemHasChildren:(id)a3
+- (BOOL)itemHasChildren:(id)children
 {
-  v4 = a3;
-  v5 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v5 lock];
+  childrenCopy = children;
+  lock = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock lock];
 
-  v6 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  relationshipsDictionary = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+  v7 = [relationshipsDictionary objectForKeyedSubscript:childrenCopy];
 
-  v8 = [v7 singleParent];
-  v9 = [v8 isEqual:v4];
+  singleParent = [v7 singleParent];
+  v9 = [singleParent isEqual:childrenCopy];
 
-  v10 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v10 unlock];
+  lock2 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock2 unlock];
 
   return v9;
 }
 
-- (id)childItemsForItem:(id)a3
+- (id)childItemsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v5 lock];
+  itemCopy = item;
+  lock = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock lock];
 
-  v6 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  relationshipsDictionary = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+  v7 = [relationshipsDictionary objectForKeyedSubscript:itemCopy];
 
-  v8 = [v7 singleParent];
-  v9 = [v8 isEqual:v4];
+  singleParent = [v7 singleParent];
+  v9 = [singleParent isEqual:itemCopy];
 
   if (v9)
   {
-    v10 = [v7 chidItems];
+    chidItems = [v7 chidItems];
   }
 
   else
   {
-    v10 = 0;
+    chidItems = 0;
   }
 
-  v11 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v11 unlock];
+  lock2 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock2 unlock];
 
-  return v10;
+  return chidItems;
 }
 
-- (id)parentItemForItem:(id)a3
+- (id)parentItemForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v5 lock];
+  itemCopy = item;
+  lock = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock lock];
 
-  v6 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  relationshipsDictionary = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+  v7 = [relationshipsDictionary objectForKeyedSubscript:itemCopy];
 
-  v8 = [v7 chidItems];
-  v9 = [v8 containsObject:v4];
+  chidItems = [v7 chidItems];
+  v9 = [chidItems containsObject:itemCopy];
 
   if (v9)
   {
-    v10 = [v7 singleParent];
+    singleParent = [v7 singleParent];
   }
 
   else
   {
-    v10 = 0;
+    singleParent = 0;
   }
 
-  v11 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v11 unlock];
+  lock2 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock2 unlock];
 
-  return v10;
+  return singleParent;
 }
 
-- (id)siblingItemsForItem:(id)a3
+- (id)siblingItemsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v5 lock];
+  itemCopy = item;
+  lock = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock lock];
 
-  v6 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  relationshipsDictionary = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+  v7 = [relationshipsDictionary objectForKeyedSubscript:itemCopy];
 
-  v8 = [v7 chidItems];
-  v9 = [v8 containsObject:v4];
+  chidItems = [v7 chidItems];
+  v9 = [chidItems containsObject:itemCopy];
 
   if (v9)
   {
-    v10 = [v7 chidItems];
+    chidItems2 = [v7 chidItems];
   }
 
   else
   {
-    v10 = 0;
+    chidItems2 = 0;
   }
 
-  v11 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v11 unlock];
+  lock2 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock2 unlock];
 
-  return v10;
+  return chidItems2;
 }
 
-- (id)familyForItem:(id)a3
+- (id)familyForItem:(id)item
 {
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  itemCopy = item;
   v6 = [v4 set];
-  v7 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v7 lock];
+  lock = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock lock];
 
-  v8 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-  v9 = [v8 objectForKeyedSubscript:v5];
+  relationshipsDictionary = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+  v9 = [relationshipsDictionary objectForKeyedSubscript:itemCopy];
 
   if (v9)
   {
-    v10 = [v9 chidItems];
-    [v6 unionSet:v10];
+    chidItems = [v9 chidItems];
+    [v6 unionSet:chidItems];
 
-    v11 = [v9 singleParent];
-    [v6 addObject:v11];
+    singleParent = [v9 singleParent];
+    [v6 addObject:singleParent];
 
-    v12 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-    [v12 unlock];
+    lock2 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+    [lock2 unlock];
 
     if ([v6 count])
     {
@@ -191,8 +191,8 @@
 
   else
   {
-    v14 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-    [v14 unlock];
+    lock3 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+    [lock3 unlock];
   }
 
   v13 = 0;
@@ -201,29 +201,29 @@ LABEL_6:
   return v13;
 }
 
-- (void)setChildren:(id)a3 forParent:(id)a4
+- (void)setChildren:(id)children forParent:(id)parent
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  childrenCopy = children;
+  parentCopy = parent;
+  if ([childrenCopy count])
   {
-    v8 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-    [v8 lock];
+    lock = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+    [lock lock];
 
-    v9 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    relationshipsDictionary = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+    v10 = [relationshipsDictionary objectForKeyedSubscript:parentCopy];
 
     if (v10)
     {
-      [(SKUIStoreItemRelationshipCounsellor *)self removeAllRelationshipsForItem:v7];
+      [(SKUIStoreItemRelationshipCounsellor *)self removeAllRelationshipsForItem:parentCopy];
     }
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v11 = v6;
+    v11 = childrenCopy;
     v12 = [v11 countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v12)
     {
@@ -240,8 +240,8 @@ LABEL_6:
           }
 
           v16 = *(*(&v33 + 1) + 8 * v15);
-          v17 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-          v18 = [v17 objectForKeyedSubscript:v16];
+          relationshipsDictionary2 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+          v18 = [relationshipsDictionary2 objectForKeyedSubscript:v16];
 
           if (v18)
           {
@@ -258,9 +258,9 @@ LABEL_6:
       while (v13);
     }
 
-    v19 = [[SKUIStoreItemRelationship alloc] initWithParent:v7 andChildren:v11];
-    v20 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-    [v20 setObject:v19 forKeyedSubscript:v7];
+    v19 = [[SKUIStoreItemRelationship alloc] initWithParent:parentCopy andChildren:v11];
+    relationshipsDictionary3 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+    [relationshipsDictionary3 setObject:v19 forKeyedSubscript:parentCopy];
 
     v31 = 0u;
     v32 = 0u;
@@ -283,8 +283,8 @@ LABEL_6:
           }
 
           v26 = *(*(&v29 + 1) + 8 * v25);
-          v27 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-          [v27 setObject:v19 forKeyedSubscript:v26];
+          relationshipsDictionary4 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+          [relationshipsDictionary4 setObject:v19 forKeyedSubscript:v26];
 
           ++v25;
         }
@@ -296,32 +296,32 @@ LABEL_6:
       while (v23);
     }
 
-    v28 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-    [v28 unlock];
+    lock2 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+    [lock2 unlock];
   }
 }
 
-- (void)addChildren:(id)a3 forParent:(id)a4
+- (void)addChildren:(id)children forParent:(id)parent
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  childrenCopy = children;
+  parentCopy = parent;
+  if ([childrenCopy count])
   {
-    v8 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-    [v8 lock];
+    lock = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+    [lock lock];
 
-    v9 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    relationshipsDictionary = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+    v10 = [relationshipsDictionary objectForKeyedSubscript:parentCopy];
 
     if (v10)
     {
-      v11 = [v10 chidItems];
-      v12 = [v6 setByAddingObjectsFromSet:v11];
+      chidItems = [v10 chidItems];
+      v12 = [childrenCopy setByAddingObjectsFromSet:chidItems];
 
-      v13 = [[SKUIStoreItemRelationship alloc] initWithParent:v7 andChildren:v12];
-      v14 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-      [v14 setObject:v13 forKeyedSubscript:v7];
+      v13 = [[SKUIStoreItemRelationship alloc] initWithParent:parentCopy andChildren:v12];
+      relationshipsDictionary2 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+      [relationshipsDictionary2 setObject:v13 forKeyedSubscript:parentCopy];
 
       v25 = 0u;
       v26 = 0u;
@@ -344,8 +344,8 @@ LABEL_6:
             }
 
             v20 = *(*(&v23 + 1) + 8 * v19);
-            v21 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-            [v21 setObject:v13 forKeyedSubscript:v20];
+            relationshipsDictionary3 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+            [relationshipsDictionary3 setObject:v13 forKeyedSubscript:v20];
 
             ++v19;
           }
@@ -360,36 +360,36 @@ LABEL_6:
 
     else
     {
-      [(SKUIStoreItemRelationshipCounsellor *)self setChildren:v6 forParent:v7];
+      [(SKUIStoreItemRelationshipCounsellor *)self setChildren:childrenCopy forParent:parentCopy];
     }
 
-    v22 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-    [v22 unlock];
+    lock2 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+    [lock2 unlock];
   }
 }
 
-- (void)removeAllRelationshipsForItem:(id)a3
+- (void)removeAllRelationshipsForItem:(id)item
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v5 lock];
+  itemCopy = item;
+  lock = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock lock];
 
-  v6 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  relationshipsDictionary = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+  v7 = [relationshipsDictionary objectForKeyedSubscript:itemCopy];
 
   if (v7)
   {
-    v8 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-    v9 = [v7 singleParent];
-    [v8 removeObjectForKey:v9];
+    relationshipsDictionary2 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+    singleParent = [v7 singleParent];
+    [relationshipsDictionary2 removeObjectForKey:singleParent];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v10 = [v7 chidItems];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    chidItems = [v7 chidItems];
+    v11 = [chidItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -401,26 +401,26 @@ LABEL_6:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(chidItems);
           }
 
           v15 = *(*(&v18 + 1) + 8 * v14);
-          v16 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
-          [v16 removeObjectForKey:v15];
+          relationshipsDictionary3 = [(SKUIStoreItemRelationshipCounsellor *)self relationshipsDictionary];
+          [relationshipsDictionary3 removeObjectForKey:v15];
 
           ++v14;
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [chidItems countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
     }
   }
 
-  v17 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
-  [v17 unlock];
+  lock2 = [(SKUIStoreItemRelationshipCounsellor *)self lock];
+  [lock2 unlock];
 }
 
 - (void)init

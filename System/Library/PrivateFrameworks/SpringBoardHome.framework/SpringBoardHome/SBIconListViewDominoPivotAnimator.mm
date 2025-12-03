@@ -1,86 +1,86 @@
 @interface SBIconListViewDominoPivotAnimator
-- (SBIconListViewDominoPivotAnimator)initWithPivotIcon:(id)a3;
+- (SBIconListViewDominoPivotAnimator)initWithPivotIcon:(id)icon;
 - (SBIconListViewDominoPivotAnimatorDelegate)delegate;
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6;
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block;
 @end
 
 @implementation SBIconListViewDominoPivotAnimator
 
-- (SBIconListViewDominoPivotAnimator)initWithPivotIcon:(id)a3
+- (SBIconListViewDominoPivotAnimator)initWithPivotIcon:(id)icon
 {
-  v5 = a3;
+  iconCopy = icon;
   v12.receiver = self;
   v12.super_class = SBIconListViewDominoPivotAnimator;
   v6 = [(SBIconListViewDominoPivotAnimator *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pivotIcon, a3);
+    objc_storeStrong(&v6->_pivotIcon, icon);
     v7->_pivotIconIndex = 0x7FFFFFFFFFFFFFFFLL;
     v8 = +[SBHHomeScreenDomain rootSettings];
-    v9 = [v8 iconEditingSettings];
+    iconEditingSettings = [v8 iconEditingSettings];
     iconEditingSettings = v7->_iconEditingSettings;
-    v7->_iconEditingSettings = v9;
+    v7->_iconEditingSettings = iconEditingSettings;
   }
 
   return v7;
 }
 
-- (void)iconListView:(id)a3 wantsAnimatedLayoutForIconView:(id)a4 withParameters:(SBIconListLayoutAnimationParameters *)a5 alongsideAnimationBlock:(id)a6
+- (void)iconListView:(id)view wantsAnimatedLayoutForIconView:(id)iconView withParameters:(SBIconListLayoutAnimationParameters *)parameters alongsideAnimationBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [v10 model];
-  v14 = [v11 icon];
-  v15 = [v13 indexForIcon:v14];
-  v16 = [(SBIconListViewDominoPivotAnimator *)self pivotIconIndex];
-  if (v16 == 0x7FFFFFFFFFFFFFFFLL)
+  viewCopy = view;
+  iconViewCopy = iconView;
+  blockCopy = block;
+  model = [viewCopy model];
+  icon = [iconViewCopy icon];
+  v15 = [model indexForIcon:icon];
+  pivotIconIndex = [(SBIconListViewDominoPivotAnimator *)self pivotIconIndex];
+  if (pivotIconIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v17 = [(SBIconListViewDominoPivotAnimator *)self pivotIcon];
-    if (v17)
+    pivotIcon = [(SBIconListViewDominoPivotAnimator *)self pivotIcon];
+    if (pivotIcon)
     {
-      v16 = [v13 indexForIcon:v17];
+      pivotIconIndex = [model indexForIcon:pivotIcon];
     }
 
     else
     {
-      v16 = 0x7FFFFFFFFFFFFFFFLL;
+      pivotIconIndex = 0x7FFFFFFFFFFFFFFFLL;
     }
 
-    [(SBIconListViewDominoPivotAnimator *)self setPivotIconIndex:v16];
+    [(SBIconListViewDominoPivotAnimator *)self setPivotIconIndex:pivotIconIndex];
   }
 
-  v18 = [(SBIconListViewDominoPivotAnimator *)self delegate];
+  delegate = [(SBIconListViewDominoPivotAnimator *)self delegate];
   [(SBHIconEditingSettings *)self->_iconEditingSettings defaultSpringDuration];
   v20 = v19;
   [(SBHIconEditingSettings *)self->_iconEditingSettings defaultSpringDampingRatio];
   v22 = v21 + -0.03;
-  v23 = vabdd_f64(v15, v16) * 0.05;
+  v23 = vabdd_f64(v15, pivotIconIndex) * 0.05;
   v24 = MEMORY[0x1E69DD250];
-  var7 = a5->var7;
+  var7 = parameters->var7;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
-  v26 = *&a5->var2.continuousCornerRadius;
-  v41 = *&a5->var2.size.height;
+  v26 = *&parameters->var2.continuousCornerRadius;
+  v41 = *&parameters->var2.size.height;
   v42 = v26;
-  v27 = *&a5->var5;
-  var4 = a5->var4;
+  v27 = *&parameters->var5;
+  var4 = parameters->var4;
   v44 = v27;
-  v28 = *&a5->var1;
-  var0 = a5->var0;
+  v28 = *&parameters->var1;
+  var0 = parameters->var0;
   v33[2] = __120__SBIconListViewDominoPivotAnimator_iconListView_wantsAnimatedLayoutForIconView_withParameters_alongsideAnimationBlock___block_invoke;
   v33[3] = &unk_1E80895D8;
   v40 = v28;
-  v34 = v11;
-  v35 = v10;
-  v37 = self;
-  v38 = v12;
-  v36 = v18;
-  v29 = v18;
-  v30 = v12;
-  v31 = v10;
-  v32 = v11;
+  v34 = iconViewCopy;
+  v35 = viewCopy;
+  selfCopy = self;
+  v38 = blockCopy;
+  v36 = delegate;
+  v29 = delegate;
+  v30 = blockCopy;
+  v31 = viewCopy;
+  v32 = iconViewCopy;
   [v24 animateWithDuration:var7 delay:v33 usingSpringWithDamping:0 initialSpringVelocity:v20 options:v23 animations:v22 completion:0.0];
 }
 

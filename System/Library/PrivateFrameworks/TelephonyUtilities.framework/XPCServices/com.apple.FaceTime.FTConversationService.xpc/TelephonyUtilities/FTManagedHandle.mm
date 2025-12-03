@@ -1,27 +1,27 @@
 @interface FTManagedHandle
-+ (id)managedHandleForTUHandle:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)managedHandlesForTUHandles:(id)a3 inManagedObjectContext:(id)a4;
-- (FTManagedHandle)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
++ (id)managedHandleForTUHandle:(id)handle inManagedObjectContext:(id)context;
++ (id)managedHandlesForTUHandles:(id)handles inManagedObjectContext:(id)context;
+- (FTManagedHandle)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (TUHandle)tuHandle;
 @end
 
 @implementation FTManagedHandle
 
-+ (id)managedHandleForTUHandle:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedHandleForTUHandle:(id)handle inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 persistentStoreCoordinator];
-  v8 = [v7 managedObjectModel];
+  handleCopy = handle;
+  contextCopy = context;
+  persistentStoreCoordinator = [contextCopy persistentStoreCoordinator];
+  managedObjectModel = [persistentStoreCoordinator managedObjectModel];
 
-  if (v8)
+  if (managedObjectModel)
   {
-    v9 = [v8 entitiesByName];
-    v10 = [v9 objectForKeyedSubscript:@"Handle"];
+    entitiesByName = [managedObjectModel entitiesByName];
+    v10 = [entitiesByName objectForKeyedSubscript:@"Handle"];
 
     if (v10)
     {
-      v11 = [objc_alloc(objc_opt_class()) initWithEntity:v10 insertIntoManagedObjectContext:v6];
+      v11 = [objc_alloc(objc_opt_class()) initWithEntity:v10 insertIntoManagedObjectContext:contextCopy];
     }
 
     else
@@ -32,23 +32,23 @@
         v18 = 138412546;
         v19 = @"Handle";
         v20 = 2112;
-        v21 = v6;
+        v21 = contextCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Could not find entity description with name %@ in managed object context %@. Falling back to convenience initializer.", &v18, 0x16u);
       }
 
-      v11 = [objc_alloc(objc_opt_class()) initWithContext:v6];
+      v11 = [objc_alloc(objc_opt_class()) initWithContext:contextCopy];
     }
 
     v12 = v11;
-    v14 = [v5 isoCountryCode];
-    [v12 setIsoCountryCode:v14];
+    isoCountryCode = [handleCopy isoCountryCode];
+    [v12 setIsoCountryCode:isoCountryCode];
 
-    v15 = [v5 normalizedValue];
-    [v12 setNormalizedValue:v15];
+    normalizedValue = [handleCopy normalizedValue];
+    [v12 setNormalizedValue:normalizedValue];
 
-    [v12 setType:{objc_msgSend(v5, "type")}];
-    v16 = [v5 value];
-    [v12 setValue:v16];
+    [v12 setType:{objc_msgSend(handleCopy, "type")}];
+    value = [handleCopy value];
+    [v12 setValue:value];
   }
 
   else
@@ -59,16 +59,16 @@
   return v12;
 }
 
-+ (id)managedHandlesForTUHandles:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedHandlesForTUHandles:(id)handles inManagedObjectContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v6 count]);
+  handlesCopy = handles;
+  contextCopy = context;
+  v8 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [handlesCopy count]);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = v6;
+  v9 = handlesCopy;
   v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
@@ -83,7 +83,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [a1 managedHandleForTUHandle:*(*(&v17 + 1) + 8 * i) inManagedObjectContext:{v7, v17}];
+        v14 = [self managedHandleForTUHandle:*(*(&v17 + 1) + 8 * i) inManagedObjectContext:{contextCopy, v17}];
         if (v14)
         {
           [v8 addObject:v14];
@@ -103,28 +103,28 @@
 
 - (TUHandle)tuHandle
 {
-  v3 = [(FTManagedHandle *)self type];
-  if (v3 == 1)
+  type = [(FTManagedHandle *)self type];
+  if (type == 1)
   {
-    v4 = [(FTManagedHandle *)self value];
-    v5 = [TUHandle normalizedGenericHandleForValue:v4];
+    value = [(FTManagedHandle *)self value];
+    v5 = [TUHandle normalizedGenericHandleForValue:value];
     goto LABEL_7;
   }
 
-  if (v3 == 2)
+  if (type == 2)
   {
-    v4 = [(FTManagedHandle *)self value];
-    v6 = [(FTManagedHandle *)self isoCountryCode];
-    v7 = [TUHandle normalizedPhoneNumberHandleForValue:v4 isoCountryCode:v6];
+    value = [(FTManagedHandle *)self value];
+    isoCountryCode = [(FTManagedHandle *)self isoCountryCode];
+    v7 = [TUHandle normalizedPhoneNumberHandleForValue:value isoCountryCode:isoCountryCode];
 
 LABEL_8:
     goto LABEL_10;
   }
 
-  if (v3 == 3)
+  if (type == 3)
   {
-    v4 = [(FTManagedHandle *)self value];
-    v5 = [TUHandle normalizedEmailAddressHandleForValue:v4];
+    value = [(FTManagedHandle *)self value];
+    v5 = [TUHandle normalizedEmailAddressHandleForValue:value];
 LABEL_7:
     v7 = v5;
     goto LABEL_8;
@@ -136,11 +136,11 @@ LABEL_10:
   return v7;
 }
 
-- (FTManagedHandle)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (FTManagedHandle)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for FTManagedHandle();
-  return [(FTManagedHandle *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(FTManagedHandle *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

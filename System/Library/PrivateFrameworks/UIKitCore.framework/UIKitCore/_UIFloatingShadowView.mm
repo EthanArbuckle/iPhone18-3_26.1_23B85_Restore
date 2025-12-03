@@ -1,25 +1,25 @@
 @interface _UIFloatingShadowView
-- (CGPath)_shadowPathForSize:(CGSize)a3 radius:(double)a4;
+- (CGPath)_shadowPathForSize:(CGSize)size radius:(double)radius;
 - (CGRect)shadowContentsCenter;
 - (CGSize)shadowSize;
-- (_UIFloatingShadowView)initWithFrame:(CGRect)a3;
+- (_UIFloatingShadowView)initWithFrame:(CGRect)frame;
 - (void)_layoutShadow;
 - (void)_setShadowImageIfNeeded;
 - (void)_updateShadowLayer;
 - (void)layoutSubviews;
-- (void)setShadowContentsCenter:(CGRect)a3;
-- (void)setShadowEnabled:(BOOL)a3;
-- (void)setShadowImage:(id)a3;
-- (void)setShadowOpacity:(double)a3;
+- (void)setShadowContentsCenter:(CGRect)center;
+- (void)setShadowEnabled:(BOOL)enabled;
+- (void)setShadowImage:(id)image;
+- (void)setShadowOpacity:(double)opacity;
 @end
 
 @implementation _UIFloatingShadowView
 
-- (_UIFloatingShadowView)initWithFrame:(CGRect)a3
+- (_UIFloatingShadowView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = _UIFloatingShadowView;
-  v3 = [(UIView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -43,45 +43,45 @@
   [(_UIFloatingShadowView *)self _layoutShadow];
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
-  self->_shadowOpacity = a3;
-  v5 = [(UIView *)self->_shadowView layer];
+  self->_shadowOpacity = opacity;
+  layer = [(UIView *)self->_shadowView layer];
   shadowOpacity = self->_shadowOpacity;
   *&shadowOpacity = shadowOpacity;
-  [v5 setOpacity:shadowOpacity];
+  [layer setOpacity:shadowOpacity];
 }
 
-- (void)setShadowEnabled:(BOOL)a3
+- (void)setShadowEnabled:(BOOL)enabled
 {
-  if (self->_shadowEnabled != a3)
+  if (self->_shadowEnabled != enabled)
   {
-    self->_shadowEnabled = a3;
+    self->_shadowEnabled = enabled;
     [(_UIFloatingShadowView *)self _updateShadowLayer];
 
     [(UIView *)self setNeedsLayout];
   }
 }
 
-- (void)setShadowImage:(id)a3
+- (void)setShadowImage:(id)image
 {
-  objc_storeStrong(&self->_shadowImage, a3);
-  v5 = a3;
-  v7 = [(UIView *)self->_shadowView layer];
-  v6 = [v5 CGImage];
+  objc_storeStrong(&self->_shadowImage, image);
+  imageCopy = image;
+  layer = [(UIView *)self->_shadowView layer];
+  cGImage = [imageCopy CGImage];
 
-  [v7 setContents:v6];
+  [layer setContents:cGImage];
 }
 
-- (void)setShadowContentsCenter:(CGRect)a3
+- (void)setShadowContentsCenter:(CGRect)center
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_shadowContentsCenter = a3;
-  v7 = [(UIView *)self->_shadowView layer];
-  [v7 setContentsCenter:{x, y, width, height}];
+  height = center.size.height;
+  width = center.size.width;
+  y = center.origin.y;
+  x = center.origin.x;
+  self->_shadowContentsCenter = center;
+  layer = [(UIView *)self->_shadowView layer];
+  [layer setContentsCenter:{x, y, width, height}];
 }
 
 - (void)_layoutShadow
@@ -189,7 +189,7 @@
 
   else
   {
-    v3 = [(_UIFloatingShadowView *)self shadowImage];
+    shadowImage = [(_UIFloatingShadowView *)self shadowImage];
     v4 = [UIView alloc];
     [(UIView *)self frame];
     v5 = [(UIView *)v4 initWithFrame:?];
@@ -198,12 +198,12 @@
 
     [(UIView *)self->_shadowView setOpaque:0];
     [(UIView *)self->_shadowView setBackgroundColor:0];
-    v7 = [(UIView *)self->_shadowView layer];
-    [v7 setContents:{objc_msgSend(v3, "CGImage")}];
+    layer = [(UIView *)self->_shadowView layer];
+    [layer setContents:{objc_msgSend(shadowImage, "CGImage")}];
     [(_UIFloatingShadowView *)self shadowContentsCenter];
-    [v7 setContentsCenter:?];
-    [v7 setOpacity:0.0];
-    [v7 setZPosition:-1000.0];
+    [layer setContentsCenter:?];
+    [layer setOpacity:0.0];
+    [layer setZPosition:-1000.0];
     [(_UIFloatingShadowView *)self _layoutShadow];
     v8 = *&self->_shadowTransform.m23;
     v15 = *&self->_shadowTransform.m21;
@@ -239,10 +239,10 @@
   }
 }
 
-- (CGPath)_shadowPathForSize:(CGSize)a3 radius:(double)a4
+- (CGPath)_shadowPathForSize:(CGSize)size radius:(double)radius
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (qword_1ED499FE8 != -1)
   {
     dispatch_once(&qword_1ED499FE8, &__block_literal_global_49);
@@ -255,10 +255,10 @@
   v15 = v14;
   [(_UIFloatingShadowView *)self cornerRadius:*&width];
   v24[2] = v16;
-  *&v24[3] = a4;
+  *&v24[3] = radius;
   v17 = [MEMORY[0x1E696B098] valueWithBytes:v24 objCType:"{?={CGSize=dd}dd}"];
-  v18 = [_MergedGlobals_3_3 objectForKey:v17];
-  if (!v18)
+  cGPath = [_MergedGlobals_3_3 objectForKey:v17];
+  if (!cGPath)
   {
     x = round(v9 + (v13 - width) * 0.5);
     y = round(v11 + (v15 - height) * 0.5);
@@ -268,7 +268,7 @@
       v25.origin.y = y;
       v25.size.width = width;
       v25.size.height = height;
-      v26 = CGRectInset(v25, -a4, -a4);
+      v26 = CGRectInset(v25, -radius, -radius);
       x = v26.origin.x;
       y = v26.origin.y;
       width = v26.size.width;
@@ -277,15 +277,15 @@
 
     [(_UIFloatingShadowView *)self cornerRadius];
     v22 = [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, width, height, v21];
-    v18 = [v22 CGPath];
+    cGPath = [v22 CGPath];
 
-    if (v18)
+    if (cGPath)
     {
-      [_MergedGlobals_3_3 setObject:v18 forKey:v17];
+      [_MergedGlobals_3_3 setObject:cGPath forKey:v17];
     }
   }
 
-  return v18;
+  return cGPath;
 }
 
 - (CGSize)shadowSize

@@ -1,9 +1,9 @@
 @interface HKMedicalIDRegisteredOrganDonorTableItem
 - (HKMedicalIDRegisteredOrganDonorTableItemDelegate)delegate;
 - (UIEdgeInsets)separatorInset;
-- (id)initInEditMode:(BOOL)a3 organDonationOrganization:(int64_t)a4;
+- (id)initInEditMode:(BOOL)mode organDonationOrganization:(int64_t)organization;
 - (id)organizationLogo;
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index;
 - (id)title;
 - (id)titleForFooter;
 - (void)presentDonateLifeRegistrationSequence;
@@ -11,20 +11,20 @@
 
 @implementation HKMedicalIDRegisteredOrganDonorTableItem
 
-- (id)initInEditMode:(BOOL)a3 organDonationOrganization:(int64_t)a4
+- (id)initInEditMode:(BOOL)mode organDonationOrganization:(int64_t)organization
 {
-  v5 = a3;
-  if (a3)
+  modeCopy = mode;
+  if (mode)
   {
     [HKMedicalIDRegisteredOrganDonorTableItem initInEditMode:a2 organDonationOrganization:self];
   }
 
   v8.receiver = self;
   v8.super_class = HKMedicalIDRegisteredOrganDonorTableItem;
-  result = [(HKEmergencyCardTableItem *)&v8 initInEditMode:v5];
+  result = [(HKEmergencyCardTableItem *)&v8 initInEditMode:modeCopy];
   if (result)
   {
-    *(result + 5) = a4;
+    *(result + 5) = organization;
   }
 
   return result;
@@ -71,22 +71,22 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndex:(int64_t)a4
+- (id)tableView:(id)view cellForRowAtIndex:(int64_t)index
 {
-  v5 = a3;
+  viewCopy = view;
   if (+[HKOrganDonationConnectionManager hasStoredRegistrant](HKOrganDonationConnectionManager, "hasStoredRegistrant") || +[HKOrganDonationConnectionManager shouldShowStoreDemoOrganDonation])
   {
-    v6 = +[HKIDRegisteredReviewCell defaultReuseIdentifier];
-    v7 = [v5 dequeueReusableCellWithIdentifier:v6];
+    actionButton = +[HKIDRegisteredReviewCell defaultReuseIdentifier];
+    v7 = [viewCopy dequeueReusableCellWithIdentifier:actionButton];
   }
 
   else
   {
     v8 = +[HKOrganDonationCallToActionTableViewCell defaultReuseIdentifier];
-    v7 = [v5 dequeueReusableCellWithIdentifier:v8];
+    v7 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
-    v6 = [v7 actionButton];
-    [v6 addTarget:self action:sel_presentDonateLifeRegistrationSequence forControlEvents:64];
+    actionButton = [v7 actionButton];
+    [actionButton addTarget:self action:sel_presentDonateLifeRegistrationSequence forControlEvents:64];
   }
 
   return v7;
@@ -95,12 +95,12 @@
 - (void)presentDonateLifeRegistrationSequence
 {
   v6 = objc_alloc_init(HKOrganDonationRegisterViewController);
-  v3 = [(HKEmergencyCardTableItem *)self data];
-  [(HKOrganDonationRegisterViewController *)v6 setMedicalIDData:v3];
+  data = [(HKEmergencyCardTableItem *)self data];
+  [(HKOrganDonationRegisterViewController *)v6 setMedicalIDData:data];
 
   v4 = [[HKNavigationController alloc] initWithRootViewController:v6];
-  v5 = [(HKEmergencyCardTableItem *)self owningViewController];
-  [v5 presentViewController:v4 animated:1 completion:0];
+  owningViewController = [(HKEmergencyCardTableItem *)self owningViewController];
+  [owningViewController presentViewController:v4 animated:1 completion:0];
 
   [(HKOrganDonationRegisterViewController *)v6 submitOrganDonationFlowImpressionEvent:1];
 }

@@ -1,28 +1,28 @@
 @interface TransientSubscriptionHistory
-+ (id)predicateForChannelIdentifier:(id)a3;
-+ (id)predicateForLastSubscriptionDate:(id)a3;
++ (id)predicateForChannelIdentifier:(id)identifier;
++ (id)predicateForLastSubscriptionDate:(id)date;
 @end
 
 @implementation TransientSubscriptionHistory
 
-+ (id)predicateForLastSubscriptionDate:(id)a3
++ (id)predicateForLastSubscriptionDate:(id)date
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  dateCopy = date;
   v5 = +[TransientSubscriptionHistory lastSubscriptionDateKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  dateCopy = [v3 predicateWithFormat:@"%K == %@", v5, dateCopy];
 
-  return v6;
+  return dateCopy;
 }
 
-+ (id)predicateForChannelIdentifier:(id)a3
++ (id)predicateForChannelIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[TransientSubscriptionHistory channelIdentifierKeyPath];
-  v6 = [v3 predicateWithFormat:@"%K == %@", v5, v4];
+  identifierCopy = [v3 predicateWithFormat:@"%K == %@", v5, identifierCopy];
 
-  return v6;
+  return identifierCopy;
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface TileSetOverrideDebugController
-- (TileSetOverrideDebugController)initWithStyle:(int64_t)a3;
+- (TileSetOverrideDebugController)initWithStyle:(int64_t)style;
 - (id)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_reloadTileSetBeingOverridden;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation TileSetOverrideDebugController
@@ -19,20 +19,20 @@
   return WeakRetained;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  if (self->_versionTextField == v4)
+  editingCopy = editing;
+  if (self->_versionTextField == editingCopy)
   {
-    v8 = v4;
-    v6 = [(UITextField *)v4 text];
-    if ([v6 length])
+    v8 = editingCopy;
+    text = [(UITextField *)editingCopy text];
+    if ([text length])
     {
       self->_hasOverrideVersion = 1;
-      self->_version = [v6 intValue];
+      self->_version = [text intValue];
       [(UITextField *)v8 resignFirstResponder];
-      v7 = [(TileSetOverrideDebugController *)self tableView];
-      [v7 reloadData];
+      tableView = [(TileSetOverrideDebugController *)self tableView];
+      [tableView reloadData];
     }
 
     else
@@ -43,49 +43,49 @@
 
   else
   {
-    if (self->_baseURLTextField == v4)
+    if (self->_baseURLTextField == editingCopy)
     {
-      v8 = v4;
-      v5 = [(UITextField *)v4 text];
-      [(TileSetOverrideDebugController *)self setBaseURL:v5];
+      v8 = editingCopy;
+      text2 = [(UITextField *)editingCopy text];
+      [(TileSetOverrideDebugController *)self setBaseURL:text2];
     }
 
     else
     {
-      if (self->_localizationURLTextField != v4)
+      if (self->_localizationURLTextField != editingCopy)
       {
         goto LABEL_11;
       }
 
-      v8 = v4;
-      v5 = [(UITextField *)v4 text];
-      [(TileSetOverrideDebugController *)self setLocalizationURL:v5];
+      v8 = editingCopy;
+      text2 = [(UITextField *)editingCopy text];
+      [(TileSetOverrideDebugController *)self setLocalizationURL:text2];
     }
 
     [(UITextField *)v8 resignFirstResponder];
-    v6 = [(TileSetOverrideDebugController *)self tableView];
-    [v6 reloadData];
+    text = [(TileSetOverrideDebugController *)self tableView];
+    [text reloadData];
   }
 
-  v4 = v8;
+  editingCopy = v8;
 LABEL_11:
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   [(UITextField *)self->_versionTextField resignFirstResponder];
   [(UITextField *)self->_baseURLTextField resignFirstResponder];
   [(UITextField *)self->_localizationURLTextField resignFirstResponder];
-  v8 = [v7 section];
-  if (v8 <= 2)
+  section = [pathCopy section];
+  if (section <= 2)
   {
-    if (v8)
+    if (section)
     {
-      if (v8 == 1)
+      if (section == 1)
       {
-        v38 = [v7 row];
+        v38 = [pathCopy row];
         if (v38 >= 3)
         {
           v11 = -1;
@@ -101,12 +101,12 @@ LABEL_11:
 
       else
       {
-        if (v8 != 2)
+        if (section != 2)
         {
           goto LABEL_48;
         }
 
-        v10 = [v7 row];
+        v10 = [pathCopy row];
         if (v10 >= 3)
         {
           v11 = -1;
@@ -123,7 +123,7 @@ LABEL_11:
 
     else
     {
-      v37 = [v7 row];
+      v37 = [pathCopy row];
       if (v37 > 0x1D)
       {
         v11 = -1;
@@ -142,9 +142,9 @@ LABEL_11:
     goto LABEL_48;
   }
 
-  if (v8 <= 4)
+  if (section <= 4)
   {
-    if (v8 == 3)
+    if (section == 3)
     {
       versionTextField = self->_versionTextField;
     }
@@ -157,7 +157,7 @@ LABEL_11:
     goto LABEL_40;
   }
 
-  if (v8 == 5)
+  if (section == 5)
   {
     versionTextField = self->_localizationURLTextField;
 LABEL_40:
@@ -165,10 +165,10 @@ LABEL_40:
     goto LABEL_48;
   }
 
-  if (v8 == 6)
+  if (section == 6)
   {
-    v41 = v7;
-    v42 = v6;
+    v41 = pathCopy;
+    v42 = viewCopy;
     v39 = GeoServicesConfig_ActiveTileGroupOverrides[1];
     v40 = GeoServicesConfig_ActiveTileGroupOverrides[0];
     v13 = GEOConfigGetArray();
@@ -179,7 +179,7 @@ LABEL_40:
     v50 = 0u;
     obj = v13;
     v14 = [obj countByEnumeratingWithState:&v47 objects:v53 count:16];
-    v46 = self;
+    selfCopy = self;
     if (v14)
     {
       v15 = v14;
@@ -198,16 +198,16 @@ LABEL_40:
 
           v20 = *(*(&v47 + 1) + 8 * i);
           v21 = [v20 objectForKeyedSubscript:{v16, v39, v40}];
-          v22 = [v21 intValue];
+          intValue = [v21 intValue];
 
           v23 = [v20 objectForKeyedSubscript:v17];
-          v24 = [v23 intValue];
+          intValue2 = [v23 intValue];
 
           v25 = [v20 objectForKeyedSubscript:v18];
-          v26 = [v25 intValue];
+          intValue3 = [v25 intValue];
 
-          self = v46;
-          if (v22 == v46->_style && v24 == v46->_size && v26 == v46->_scale)
+          self = selfCopy;
+          if (intValue == selfCopy->_style && intValue2 == selfCopy->_size && intValue3 == selfCopy->_scale)
           {
             [v43 removeObject:v20];
           }
@@ -219,7 +219,7 @@ LABEL_40:
       while (v15);
     }
 
-    v7 = v41;
+    pathCopy = v41;
     v27 = v43;
     if (![v41 row])
     {
@@ -235,21 +235,21 @@ LABEL_40:
       v31 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:3];
       v32 = [NSMutableDictionary dictionaryWithDictionary:v31];
 
-      self = v46;
-      if (v46->_hasOverrideVersion)
+      self = selfCopy;
+      if (selfCopy->_hasOverrideVersion)
       {
-        v33 = [NSNumber numberWithUnsignedInt:v46->_version];
+        v33 = [NSNumber numberWithUnsignedInt:selfCopy->_version];
         [v32 setObject:v33 forKeyedSubscript:GEOActiveTileGroupOverrideVersionKey];
       }
 
-      if ([(NSString *)v46->_baseURL length:v39])
+      if ([(NSString *)selfCopy->_baseURL length:v39])
       {
-        [v32 setObject:v46->_baseURL forKeyedSubscript:GEOActiveTileGroupOverrideBaseURLKey];
+        [v32 setObject:selfCopy->_baseURL forKeyedSubscript:GEOActiveTileGroupOverrideBaseURLKey];
       }
 
-      if ([(NSString *)v46->_localizationURL length])
+      if ([(NSString *)selfCopy->_localizationURL length])
       {
-        [v32 setObject:v46->_localizationURL forKeyedSubscript:GEOActiveTileGroupOverrideLocalizationURLKey];
+        [v32 setObject:selfCopy->_localizationURL forKeyedSubscript:GEOActiveTileGroupOverrideLocalizationURLKey];
       }
 
       [v43 addObject:v32];
@@ -261,18 +261,18 @@ LABEL_40:
       v27 = 0;
     }
 
-    v6 = v42;
+    viewCopy = v42;
     GEOConfigSetArray();
     v34 = +[NSNotificationCenter defaultCenter];
     [v34 postNotificationName:@"ActiveTileGroupOverridesDidChangeNotification" object:0];
 
-    v35 = [(TileSetOverrideDebugController *)self navigationController];
-    v36 = [v35 popViewControllerAnimated:1];
+    navigationController = [(TileSetOverrideDebugController *)self navigationController];
+    v36 = [navigationController popViewControllerAnimated:1];
   }
 
 LABEL_48:
-  [v6 reloadData];
-  [v6 deselectRowAtIndexPath:v7 animated:1];
+  [viewCopy reloadData];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 - (void)_reloadTileSetBeingOverridden
@@ -281,17 +281,17 @@ LABEL_48:
   self->_tileSetBeingOverridden = 0;
 
   v4 = +[GEOResourceManifestManager modernManager];
-  v5 = [v4 activeTileGroup];
+  activeTileGroup = [v4 activeTileGroup];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 tileSets];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  tileSets = [activeTileGroup tileSets];
+  v7 = [tileSets countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
-    v13 = v5;
+    v13 = activeTileGroup;
     v8 = *v15;
     while (2)
     {
@@ -299,7 +299,7 @@ LABEL_48:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tileSets);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -310,7 +310,7 @@ LABEL_48:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [tileSets countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -320,26 +320,26 @@ LABEL_48:
     }
 
 LABEL_13:
-    v5 = v13;
+    activeTileGroup = v13;
   }
 
   v11 = self->_tileSetBeingOverridden;
   self->_tileSetBeingOverridden = v7;
 
-  v12 = [(TileSetOverrideDebugController *)self tableView];
-  [v12 reloadData];
+  tableView = [(TileSetOverrideDebugController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] == 6)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] == 6)
   {
     v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
-    v9 = [v7 row];
-    v10 = [v8 textLabel];
-    v11 = v10;
+    v9 = [pathCopy row];
+    textLabel = [v8 textLabel];
+    v11 = textLabel;
     if (v9)
     {
       v12 = @"Remove Override";
@@ -350,14 +350,14 @@ LABEL_13:
       v12 = @"Apply Override";
     }
 
-    [v10 setText:v12];
+    [textLabel setText:v12];
 
-    v13 = [v8 textLabel];
-    [v13 setTextAlignment:1];
+    textLabel2 = [v8 textLabel];
+    [textLabel2 setTextAlignment:1];
     goto LABEL_6;
   }
 
-  if ([v7 section] == 3)
+  if ([pathCopy section] == 3)
   {
     v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
     [v8 setAccessoryType:0];
@@ -383,36 +383,36 @@ LABEL_13:
       goto LABEL_19;
     }
 
-    v18 = [NSString stringWithFormat:@"%i", [(GEOActiveTileSet *)tileSetBeingOverridden version]];
+    baseURL = [NSString stringWithFormat:@"%i", [(GEOActiveTileSet *)tileSetBeingOverridden version]];
 LABEL_17:
-    v20 = v18;
-    [(UITextField *)baseURLTextField setPlaceholder:v18];
+    v20 = baseURL;
+    [(UITextField *)baseURLTextField setPlaceholder:baseURL];
 
 LABEL_19:
     [*(&self->super.super.super.super.super.super.isa + v14) sizeToFit];
     [*(&self->super.super.super.super.super.super.isa + v14) frame];
     v22 = v21;
-    v23 = [v8 contentView];
-    [v23 bounds];
+    contentView = [v8 contentView];
+    [contentView bounds];
     v25 = v24 + -12.0;
 
-    v26 = [v8 contentView];
-    [v26 bounds];
+    contentView2 = [v8 contentView];
+    [contentView2 bounds];
     v28 = (v27 - v25) * 0.5;
 
-    v29 = [v8 contentView];
-    [v29 bounds];
+    contentView3 = [v8 contentView];
+    [contentView3 bounds];
     v31 = (v30 - v22) * 0.5;
 
     [*(&self->super.super.super.super.super.super.isa + v14) setFrame:{v28, v31, v25, v22}];
     [*(&self->super.super.super.super.super.super.isa + v14) removeFromSuperview];
-    v32 = [v8 contentView];
-    [v32 addSubview:*(&self->super.super.super.super.super.super.isa + v14)];
+    contentView4 = [v8 contentView];
+    [contentView4 addSubview:*(&self->super.super.super.super.super.super.isa + v14)];
 
     goto LABEL_20;
   }
 
-  if ([v7 section] == 4)
+  if ([pathCopy section] == 4)
   {
     v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
     [v8 setAccessoryType:0];
@@ -420,11 +420,11 @@ LABEL_19:
     v14 = 120;
     [(UITextField *)self->_baseURLTextField setText:self->_baseURL];
     baseURLTextField = self->_baseURLTextField;
-    v18 = [(GEOActiveTileSet *)self->_tileSetBeingOverridden baseURL];
+    baseURL = [(GEOActiveTileSet *)self->_tileSetBeingOverridden baseURL];
     goto LABEL_17;
   }
 
-  if ([v7 section] == 5)
+  if ([pathCopy section] == 5)
   {
     v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:0];
     [v8 setAccessoryType:0];
@@ -432,46 +432,46 @@ LABEL_19:
     v14 = 128;
     [(UITextField *)self->_localizationURLTextField setText:self->_localizationURL];
     baseURLTextField = self->_localizationURLTextField;
-    v18 = [(GEOActiveTileSet *)self->_tileSetBeingOverridden localizationURL];
+    baseURL = [(GEOActiveTileSet *)self->_tileSetBeingOverridden localizationURL];
     goto LABEL_17;
   }
 
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"TileSetInfoCell"];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"TileSetInfoCell"];
   if (!v8)
   {
     v8 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"TileSetInfoCell"];
   }
 
-  v34 = [v7 section];
-  if (v34 > 1)
+  section = [pathCopy section];
+  if (section > 1)
   {
-    if (v34 == 2)
+    if (section == 2)
     {
-      v41 = [v7 row];
+      v41 = [pathCopy row];
       if (v41 >= 3)
       {
         v37 = -1;
-        v42 = [NSString stringWithFormat:@"(unknown: %i)", 0xFFFFFFFFLL];
+        0xFFFFFFFFLL = [NSString stringWithFormat:@"(unknown: %i)", 0xFFFFFFFFLL];
       }
 
       else
       {
-        v42 = *(&off_1016301D0 + v41);
+        0xFFFFFFFFLL = *(&off_1016301D0 + v41);
         v37 = v41;
       }
 
-      v46 = [v8 textLabel];
-      [v46 setText:v42];
+      textLabel3 = [v8 textLabel];
+      [textLabel3 setText:0xFFFFFFFFLL];
 
       v44 = 156;
       goto LABEL_43;
     }
 
-    if (v34 == 3)
+    if (section == 3)
     {
-      v13 = [NSString stringWithFormat:@"%i", self->_version];
-      v38 = [v8 textLabel];
-      [v38 setText:v13];
+      textLabel2 = [NSString stringWithFormat:@"%i", self->_version];
+      textLabel4 = [v8 textLabel];
+      [textLabel4 setText:textLabel2];
 
 LABEL_6:
     }
@@ -479,45 +479,45 @@ LABEL_6:
 
   else
   {
-    if (!v34)
+    if (!section)
     {
-      v39 = [v7 row];
+      v39 = [pathCopy row];
       if (v39 >= 0x1E)
       {
         v37 = -1;
-        v40 = [NSString stringWithFormat:@"(unknown: %i)", 0xFFFFFFFFLL];
+        0xFFFFFFFFLL2 = [NSString stringWithFormat:@"(unknown: %i)", 0xFFFFFFFFLL];
       }
 
       else
       {
         v37 = dword_101214F40[v39];
-        v40 = *(&off_1016300C8 + v39);
+        0xFFFFFFFFLL2 = *(&off_1016300C8 + v39);
       }
 
-      v45 = [v8 textLabel];
-      [v45 setText:v40];
+      textLabel5 = [v8 textLabel];
+      [textLabel5 setText:0xFFFFFFFFLL2];
 
       v44 = 148;
       goto LABEL_43;
     }
 
-    if (v34 == 1)
+    if (section == 1)
     {
-      v35 = [v7 row];
+      v35 = [pathCopy row];
       if (v35 >= 3)
       {
         v37 = -1;
-        v36 = [NSString stringWithFormat:@"(unknown: %i)", 0xFFFFFFFFLL];
+        0xFFFFFFFFLL3 = [NSString stringWithFormat:@"(unknown: %i)", 0xFFFFFFFFLL];
       }
 
       else
       {
-        v36 = *(&off_1016301B8 + v35);
+        0xFFFFFFFFLL3 = *(&off_1016301B8 + v35);
         v37 = v35;
       }
 
-      v43 = [v8 textLabel];
-      [v43 setText:v36];
+      textLabel6 = [v8 textLabel];
+      [textLabel6 setText:0xFFFFFFFFLL3];
 
       v44 = 152;
 LABEL_43:
@@ -540,29 +540,29 @@ LABEL_20:
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4 > 6)
+  if (section > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_101214F08[a4];
+    return qword_101214F08[section];
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4 > 5)
+  if (section > 5)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_101630098 + a4);
+    return *(&off_101630098 + section);
   }
 }
 
@@ -576,11 +576,11 @@ LABEL_20:
   [(MapsDebugValuesViewController *)&v3 dealloc];
 }
 
-- (TileSetOverrideDebugController)initWithStyle:(int64_t)a3
+- (TileSetOverrideDebugController)initWithStyle:(int64_t)style
 {
   v16.receiver = self;
   v16.super_class = TileSetOverrideDebugController;
-  v3 = [(TileSetOverrideDebugController *)&v16 initWithStyle:a3];
+  v3 = [(TileSetOverrideDebugController *)&v16 initWithStyle:style];
   v4 = v3;
   if (v3)
   {

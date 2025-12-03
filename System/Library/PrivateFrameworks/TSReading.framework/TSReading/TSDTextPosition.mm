@@ -1,52 +1,52 @@
 @interface TSDTextPosition
-+ (id)textPositionWithCharIndex:(unint64_t)a3;
-+ (id)textPositionWithCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4 preferredPosition:(float)a5 isPreferredStart:(BOOL)a6;
-- (BOOL)isEqual:(id)a3;
-- (TSDTextPosition)initWithCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4 preferredPosition:(float)a5 isPreferredStart:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int)distanceFromPosition:(id)a3;
-- (int64_t)compare:(id)a3;
++ (id)textPositionWithCharIndex:(unint64_t)index;
++ (id)textPositionWithCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity preferredPosition:(float)position isPreferredStart:(BOOL)start;
+- (BOOL)isEqual:(id)equal;
+- (TSDTextPosition)initWithCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity preferredPosition:(float)position isPreferredStart:(BOOL)start;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int)distanceFromPosition:(id)position;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation TSDTextPosition
 
-+ (id)textPositionWithCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4 preferredPosition:(float)a5 isPreferredStart:(BOOL)a6
++ (id)textPositionWithCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity preferredPosition:(float)position isPreferredStart:(BOOL)start
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = [a1 alloc];
-  *&v11 = a5;
-  v12 = [v10 initWithCharIndex:a3 eolAffinity:v8 preferredPosition:v6 isPreferredStart:v11];
+  startCopy = start;
+  affinityCopy = affinity;
+  v10 = [self alloc];
+  *&v11 = position;
+  v12 = [v10 initWithCharIndex:index eolAffinity:affinityCopy preferredPosition:startCopy isPreferredStart:v11];
 
   return v12;
 }
 
-+ (id)textPositionWithCharIndex:(unint64_t)a3
++ (id)textPositionWithCharIndex:(unint64_t)index
 {
-  v3 = [[a1 alloc] initWithCharIndex:a3];
+  v3 = [[self alloc] initWithCharIndex:index];
 
   return v3;
 }
 
-- (TSDTextPosition)initWithCharIndex:(unint64_t)a3 eolAffinity:(BOOL)a4 preferredPosition:(float)a5 isPreferredStart:(BOOL)a6
+- (TSDTextPosition)initWithCharIndex:(unint64_t)index eolAffinity:(BOOL)affinity preferredPosition:(float)position isPreferredStart:(BOOL)start
 {
   v11.receiver = self;
   v11.super_class = TSDTextPosition;
   result = [(TSDTextPosition *)&v11 init];
   if (result)
   {
-    result->_charIndex = a3;
-    result->_eolAffinity = a4;
-    result->_preferredPosition = a5;
-    result->_isPreferredStart = a6;
+    result->_charIndex = index;
+    result->_eolAffinity = affinity;
+    result->_preferredPosition = position;
+    result->_isPreferredStart = start;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   charIndex = self->_charIndex;
   eolAffinity = self->_eolAffinity;
   *&v7 = self->_preferredPosition;
@@ -55,20 +55,20 @@
   return [v4 initWithCharIndex:charIndex eolAffinity:eolAffinity preferredPosition:isPreferredStart isPreferredStart:v7];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
   if (!v4)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextPosition compare:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextPosition.m"), 66, @"bad text position"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextPosition.m"), 66, @"bad text position"}];
   }
 
-  v7 = [v4 charIndex];
+  charIndex = [v4 charIndex];
   charIndex = self->_charIndex;
-  if (charIndex == v7)
+  if (charIndex == charIndex)
   {
     eolAffinity = self->_eolAffinity;
     if (eolAffinity == [v4 endOfLineAffinity])
@@ -87,7 +87,7 @@
     }
   }
 
-  else if (charIndex > v7)
+  else if (charIndex > charIndex)
   {
     return 1;
   }
@@ -98,7 +98,7 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -110,15 +110,15 @@
   return v4;
 }
 
-- (int)distanceFromPosition:(id)a3
+- (int)distanceFromPosition:(id)position
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
   if (!v4)
   {
-    v5 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDTextPosition distanceFromPosition:]"];
-    [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextPosition.m"), 107, @"bad text position"}];
+    [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDTextPosition.m"), 107, @"bad text position"}];
   }
 
   charIndex = self->_charIndex;

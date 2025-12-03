@@ -1,26 +1,26 @@
 @interface CafeSwell
-+ (id)algorithmWithData:(id)a3;
-- (id)init:(id)a3;
++ (id)algorithmWithData:(id)data;
+- (id)init:(id)init;
 - (id)output;
-- (id)preRun:(id)a3;
-- (int)freshInitWithData:(id)a3;
-- (int)runWithData:(id)a3;
-- (void)multiLog:(id)a3;
+- (id)preRun:(id)run;
+- (int)freshInitWithData:(id)data;
+- (int)runWithData:(id)data;
+- (void)multiLog:(id)log;
 @end
 
 @implementation CafeSwell
 
-+ (id)algorithmWithData:(id)a3
++ (id)algorithmWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __31__CafeSwell_algorithmWithData___block_invoke;
   v10[3] = &unk_278D050D8;
-  v11 = v4;
-  v12 = a1;
+  v11 = dataCopy;
+  selfCopy = self;
   v5 = +[CafeSwell algorithmWithData:]::onceToken;
-  v6 = v4;
+  v6 = dataCopy;
   if (v5 != -1)
   {
     dispatch_once(&+[CafeSwell algorithmWithData:]::onceToken, v10);
@@ -39,19 +39,19 @@ uint64_t __31__CafeSwell_algorithmWithData___block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (int)freshInitWithData:(id)a3
+- (int)freshInitWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"smcData"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"smcData"];
   CafeSwellAlgo::Deserialization::setSMCKeyDataFromDictionary(v7, v5);
 
   CafeSwellAlgo::CoreEngine::freshInit([(CafeSwell *)self model], v7);
   return 0;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v3 = MEMORY[0x28223BE20](self, a2, a3);
+  v3 = MEMORY[0x28223BE20](self, a2, init);
   v15 = *MEMORY[0x277D85DE8];
   v13 = v4;
   [v13 objectForKey:@"smcData"];
@@ -79,7 +79,7 @@ uint64_t __31__CafeSwell_algorithmWithData___block_invoke(uint64_t a1)
   operator new();
 }
 
-- (int)runWithData:(id)a3
+- (int)runWithData:(id)data
 {
   *v99 = 0u;
   v100 = 0u;
@@ -87,11 +87,11 @@ uint64_t __31__CafeSwell_algorithmWithData___block_invoke(uint64_t a1)
   *v98 = 0u;
   *__p = 0u;
   *v96 = 0u;
-  v89 = a3;
-  v3 = [v89 objectForKeyedSubscript:@"smcData"];
+  dataCopy = data;
+  v3 = [dataCopy objectForKeyedSubscript:@"smcData"];
   CafeSwellAlgo::Deserialization::setSMCKeyDataFromDictionary(&v91, v3);
 
-  v4 = v89;
+  v4 = dataCopy;
   v5 = [v4 objectForKeyedSubscript:@"BDC_OBC"];
   v6 = [v5 count];
 
@@ -388,8 +388,8 @@ uint64_t __31__CafeSwell_algorithmWithData___block_invoke(uint64_t a1)
   if (v99[1] == v100)
   {
 LABEL_82:
-    v77 = [(CafeSwell *)self model];
-    if ((v77[177] & 1) == 0)
+    model = [(CafeSwell *)self model];
+    if ((model[177] & 1) == 0)
     {
       if ((*&v94 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL)
       {
@@ -440,7 +440,7 @@ LABEL_90:
 
     if (v100 != v99[1] && v98[1] != v98[0] && __p[1] != __p[0] && v97 != v96[1])
     {
-      if (v77[176])
+      if (model[176])
       {
 LABEL_88:
         v78 = 3;
@@ -623,8 +623,8 @@ LABEL_106:
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
   v26[1] = @"kSavedAlgoStateCafeSwellCoreAlgo";
   v27[0] = v4;
-  v5 = [(CafeSwell *)self model];
-  v7 = CafeSwellAlgo::Serialization::createDiskStateFromPersistentState((v5 + 184), v6);
+  model = [(CafeSwell *)self model];
+  v7 = CafeSwellAlgo::Serialization::createDiskStateFromPersistentState((model + 184), v6);
   v27[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
   v29[0] = v8;
@@ -656,13 +656,13 @@ LABEL_106:
   return v15;
 }
 
-- (id)preRun:(id)a3
+- (id)preRun:(id)run
 {
   v21[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"streamCurrentDate"];
-  v6 = [MEMORY[0x277CBEB68] null];
-  v7 = [v5 isEqual:v6];
+  runCopy = run;
+  v5 = [runCopy objectForKeyedSubscript:@"streamCurrentDate"];
+  null = [MEMORY[0x277CBEB68] null];
+  v7 = [v5 isEqual:null];
 
   if (v7)
   {
@@ -671,13 +671,13 @@ LABEL_106:
 
   else
   {
-    [v4 objectForKeyedSubscript:@"streamCurrentDate"];
+    [runCopy objectForKeyedSubscript:@"streamCurrentDate"];
   }
   v8 = ;
-  v9 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v10 = objc_alloc_init(MEMORY[0x277CBEAB8]);
   [v10 setDay:-30];
-  v11 = [v9 dateByAddingComponents:v10 toDate:v8 options:0];
+  v11 = [currentCalendar dateByAddingComponents:v10 toDate:v8 options:0];
   [v11 timeIntervalSince1970];
   v13 = v12;
   [(CafeSwell *)self previousACAMInitializationTime];
@@ -702,13 +702,13 @@ LABEL_106:
   return v17;
 }
 
-- (void)multiLog:(id)a3
+- (void)multiLog:(id)log
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  logCopy = log;
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v5 setDateFormat:@"YYYY-MM-dd HH:m:s.SSS"];
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v4 arguments:&v12];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:logCopy arguments:&v12];
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEFAULT))
   {

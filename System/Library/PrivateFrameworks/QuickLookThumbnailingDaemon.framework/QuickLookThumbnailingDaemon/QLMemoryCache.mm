@@ -1,19 +1,19 @@
 @interface QLMemoryCache
-- (BOOL)addThumbnailData:(id)a3;
-- (BOOL)sendThumbnailDataForThumbnailRequest:(id)a3 withCacheThread:(id)a4;
-- (QLMemoryCache)initWithCacheThread:(id)a3;
+- (BOOL)addThumbnailData:(id)data;
+- (BOOL)sendThumbnailDataForThumbnailRequest:(id)request withCacheThread:(id)thread;
+- (QLMemoryCache)initWithCacheThread:(id)thread;
 - (_QLCacheThread)cacheThread;
-- (id)thumbnailDataToSaveWithBatch:(unint64_t)a3;
+- (id)thumbnailDataToSaveWithBatch:(unint64_t)batch;
 - (unint64_t)thumbnailToSaveCount;
 - (void)_getReadLock;
 - (void)_getWriteLock;
-- (void)_invalidateThumbnailData:(id)a3;
+- (void)_invalidateThumbnailData:(id)data;
 - (void)_releaseReadLock;
 - (void)_releaseWriteLock;
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)a3;
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)a3;
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)identifiers;
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)identifiers;
 - (void)reset;
-- (void)thumbnailDataBatchSaved:(id)a3;
+- (void)thumbnailDataBatchSaved:(id)saved;
 - (void)thumbnailToSaveCount;
 @end
 
@@ -77,9 +77,9 @@
   return v3;
 }
 
-- (QLMemoryCache)initWithCacheThread:(id)a3
+- (QLMemoryCache)initWithCacheThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   v13.receiver = self;
   v13.super_class = QLMemoryCache;
   v5 = [(QLMemoryCache *)&v13 init];
@@ -98,7 +98,7 @@
     v5->_memoryLock = v10;
 
     v5->_cacheEnabled = 1;
-    objc_storeWeak(&v5->_cacheThread, v4);
+    objc_storeWeak(&v5->_cacheThread, threadCopy);
   }
 
   return v5;
@@ -151,39 +151,39 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateThumbnailData:(id)a3
+- (void)_invalidateThumbnailData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v13 = 0;
-  if ([v4 setState:2 changedState:&v13] && v13 == 1)
+  if ([dataCopy setState:2 changedState:&v13] && v13 == 1)
   {
-    self->_memoryUsed -= [v4 totalBufferSize];
-    v5 = [v4 bitmapDataToValidate];
+    self->_memoryUsed -= [dataCopy totalBufferSize];
+    bitmapDataToValidate = [dataCopy bitmapDataToValidate];
 
-    if (v5)
+    if (bitmapDataToValidate)
     {
-      v6 = [(QLMemoryCache *)self cacheThread];
-      v7 = [v6 diskCache];
-      v8 = [v4 bitmapDataToValidate];
-      [v7 discardReservedBuffer:v8];
+      cacheThread = [(QLMemoryCache *)self cacheThread];
+      diskCache = [cacheThread diskCache];
+      bitmapDataToValidate2 = [dataCopy bitmapDataToValidate];
+      [diskCache discardReservedBuffer:bitmapDataToValidate2];
     }
 
-    v9 = [v4 metadataToValidate];
+    metadataToValidate = [dataCopy metadataToValidate];
 
-    if (v9)
+    if (metadataToValidate)
     {
-      v10 = [(QLMemoryCache *)self cacheThread];
-      v11 = [v10 diskCache];
-      v12 = [v4 metadataToValidate];
-      [v11 discardReservedBuffer:v12];
+      cacheThread2 = [(QLMemoryCache *)self cacheThread];
+      diskCache2 = [cacheThread2 diskCache];
+      metadataToValidate2 = [dataCopy metadataToValidate];
+      [diskCache2 discardReservedBuffer:metadataToValidate2];
     }
   }
 }
 
-- (BOOL)addThumbnailData:(id)a3
+- (BOOL)addThumbnailData:(id)data
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   cacheEnabled = self->_cacheEnabled;
   if (!cacheEnabled)
   {
@@ -193,40 +193,40 @@
   v6 = _log_8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [v4 fileIdentifier];
-    [v4 size];
+    fileIdentifier = [dataCopy fileIdentifier];
+    [dataCopy size];
     v9 = v8;
-    v10 = [v4 bitmapFormat];
-    v11 = [v10 width];
-    v12 = [v4 bitmapFormat];
+    bitmapFormat = [dataCopy bitmapFormat];
+    width = [bitmapFormat width];
+    bitmapFormat2 = [dataCopy bitmapFormat];
     v38 = 138413058;
-    v39 = v7;
+    v39 = fileIdentifier;
     v40 = 2048;
     v41 = v9;
     v42 = 2048;
-    v43 = v11;
+    v43 = width;
     v44 = 2048;
-    v45 = [v12 height];
+    height = [bitmapFormat2 height];
     _os_log_impl(&dword_2615D3000, v6, OS_LOG_TYPE_INFO, "Adding thumbnail %@ %f (%zd, %zd) to pending saves", &v38, 0x2Au);
   }
 
-  v13 = [v4 fileIdentifier];
+  fileIdentifier2 = [dataCopy fileIdentifier];
   [(QLMemoryCache *)self _getWriteLock];
-  v14 = [(NSMutableDictionary *)self->_thumbnailData objectForKeyedSubscript:v13];
+  v14 = [(NSMutableDictionary *)self->_thumbnailData objectForKeyedSubscript:fileIdentifier2];
   if (!v14)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    [(NSMutableDictionary *)self->_thumbnailData setObject:v14 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)self->_thumbnailData setObject:v14 forKeyedSubscript:fileIdentifier2];
   }
 
   v15 = [v14 count];
   if (v15 >= 1)
   {
     v16 = v15;
-    v17 = [v4 version];
+    version = [dataCopy version];
     v18 = [v14 objectAtIndexedSubscript:0];
-    v19 = [v18 version];
-    v20 = [v17 isEqual:v19];
+    version2 = [v18 version];
+    v20 = [version isEqual:version2];
 
     if (v20)
     {
@@ -236,24 +236,24 @@
         while (1)
         {
           v22 = [v14 objectAtIndexedSubscript:v21];
-          v23 = [v22 iconMode];
-          if (v23 == [v4 iconMode])
+          iconMode = [v22 iconMode];
+          if (iconMode == [dataCopy iconMode])
           {
-            v24 = [v22 badgeType];
-            if (v24 == [v4 badgeType])
+            badgeType = [v22 badgeType];
+            if (badgeType == [dataCopy badgeType])
             {
-              v25 = [v22 iconVariant];
-              if (v25 == [v4 iconVariant])
+              iconVariant = [v22 iconVariant];
+              if (iconVariant == [dataCopy iconVariant])
               {
-                v26 = [v22 interpolationQuality];
-                if (v26 == [v4 interpolationQuality])
+                interpolationQuality = [v22 interpolationQuality];
+                if (interpolationQuality == [dataCopy interpolationQuality])
                 {
-                  v27 = [v22 externalGeneratorDataHash];
-                  if (v27 == [v4 externalGeneratorDataHash])
+                  externalGeneratorDataHash = [v22 externalGeneratorDataHash];
+                  if (externalGeneratorDataHash == [dataCopy externalGeneratorDataHash])
                   {
                     [v22 size];
                     v29 = v28;
-                    [v4 size];
+                    [dataCopy size];
                     if (v29 == v30)
                     {
                       break;
@@ -278,7 +278,7 @@
 
         [(QLMemoryCache *)self _invalidateThumbnailData:v22];
         [(NSMutableArray *)self->_thumbnailDataToSave removeObject:v22];
-        [v14 replaceObjectAtIndex:v21 withObject:v4];
+        [v14 replaceObjectAtIndex:v21 withObject:dataCopy];
 
         goto LABEL_22;
       }
@@ -298,9 +298,9 @@
   }
 
 LABEL_21:
-  [v14 addObject:v4];
+  [v14 addObject:dataCopy];
 LABEL_22:
-  self->_memoryUsed += [v4 totalBufferSize];
+  self->_memoryUsed += [dataCopy totalBufferSize];
   if (!self->_pendingSavesTransaction)
   {
     v33 = os_transaction_create();
@@ -308,7 +308,7 @@ LABEL_22:
     self->_pendingSavesTransaction = v33;
   }
 
-  [(NSMutableArray *)self->_thumbnailDataToSave addObject:v4];
+  [(NSMutableArray *)self->_thumbnailDataToSave addObject:dataCopy];
   [(QLMemoryCache *)self _releaseWriteLock];
 
 LABEL_25:
@@ -316,22 +316,22 @@ LABEL_25:
   return cacheEnabled;
 }
 
-- (BOOL)sendThumbnailDataForThumbnailRequest:(id)a3 withCacheThread:(id)a4
+- (BOOL)sendThumbnailDataForThumbnailRequest:(id)request withCacheThread:(id)thread
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  threadCopy = thread;
   if (!self->_cacheEnabled)
   {
     v37 = 0;
     goto LABEL_42;
   }
 
-  v8 = [v6 request];
-  v9 = [v8 fileIdentifier];
-  v10 = [v9 fileIdentifier];
+  request = [requestCopy request];
+  fileIdentifier = [request fileIdentifier];
+  v9FileIdentifier = [fileIdentifier fileIdentifier];
 
-  if (!v10)
+  if (!v9FileIdentifier)
   {
     v20 = _log_8();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -343,13 +343,13 @@ LABEL_25:
     goto LABEL_41;
   }
 
-  [v8 maximumPixelSize];
+  [request maximumPixelSize];
   v12 = v11;
-  v13 = [v8 iconMode];
-  v14 = [v6 badgeType];
-  v50 = [v6 needsLowQualityThumbnailGeneration];
+  iconMode = [request iconMode];
+  badgeType = [requestCopy badgeType];
+  needsLowQualityThumbnailGeneration = [requestCopy needsLowQualityThumbnailGeneration];
   [(QLMemoryCache *)self _getReadLock];
-  v15 = [(NSMutableDictionary *)self->_thumbnailData objectForKeyedSubscript:v10];
+  v15 = [(NSMutableDictionary *)self->_thumbnailData objectForKeyedSubscript:v9FileIdentifier];
   v16 = v15;
   if (!v15)
   {
@@ -361,8 +361,8 @@ LABEL_39:
   }
 
   v48 = v15;
-  v49 = self;
-  v47 = v10;
+  selfCopy = self;
+  v47 = v9FileIdentifier;
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
@@ -372,14 +372,14 @@ LABEL_39:
   if (!v18)
   {
 
-    v10 = v47;
+    v9FileIdentifier = v47;
     v16 = v48;
     goto LABEL_39;
   }
 
   v19 = v18;
-  v45 = v7;
-  v46 = v6;
+  v45 = threadCopy;
+  v46 = requestCopy;
   v20 = 0;
   v21 = *v52;
   while (2)
@@ -392,16 +392,16 @@ LABEL_39:
       }
 
       v23 = *(*(&v51 + 1) + 8 * i);
-      if (v13 == [v23 iconMode] && objc_msgSend(v23, "badgeType") == v14)
+      if (iconMode == [v23 iconMode] && objc_msgSend(v23, "badgeType") == badgeType)
       {
-        v24 = [v23 iconVariant];
-        if (v24 == [v8 iconVariant])
+        iconVariant = [v23 iconVariant];
+        if (iconVariant == [request iconVariant])
         {
-          v25 = [v23 interpolationQuality];
-          if (v25 == [v8 interpolationQuality])
+          interpolationQuality = [v23 interpolationQuality];
+          if (interpolationQuality == [request interpolationQuality])
           {
-            v26 = [v23 externalGeneratorDataHash];
-            if (v26 == [v8 externalThumbnailGeneratorDataHash])
+            externalGeneratorDataHash = [v23 externalGeneratorDataHash];
+            if (externalGeneratorDataHash == [request externalThumbnailGeneratorDataHash])
             {
               [v23 size];
               if (v27 == v12)
@@ -412,9 +412,9 @@ LABEL_39:
                 goto LABEL_34;
               }
 
-              if (v50)
+              if (needsLowQualityThumbnailGeneration)
               {
-                [v8 minimumDimension];
+                [request minimumDimension];
                 if (QLSThumbnailSizeIsSufficientForLowQuality())
                 {
                   if (!v20)
@@ -473,21 +473,21 @@ LABEL_24:
 
 LABEL_34:
 
-  v7 = v45;
-  v6 = v46;
-  v10 = v47;
+  threadCopy = v45;
+  requestCopy = v46;
+  v9FileIdentifier = v47;
   v16 = v48;
-  self = v49;
+  self = selfCopy;
   if (!v20)
   {
     goto LABEL_39;
   }
 
-  v39 = [v8 fileIdentifier];
-  v40 = [v39 version];
+  fileIdentifier2 = [request fileIdentifier];
+  version = [fileIdentifier2 version];
 
-  v41 = [v20 version];
-  v42 = [v41 isEqual:v40];
+  version2 = [v20 version];
+  v42 = [version2 isEqual:version];
 
   if ((v42 & 1) == 0)
   {
@@ -495,7 +495,7 @@ LABEL_34:
     v20 = 0;
   }
 
-  [(QLMemoryCache *)v49 _releaseReadLock];
+  [(QLMemoryCache *)selfCopy _releaseReadLock];
   v16 = v48;
   if (v20)
   {
@@ -517,16 +517,16 @@ LABEL_42:
   return v37;
 }
 
-- (void)thumbnailDataBatchSaved:(id)a3
+- (void)thumbnailDataBatchSaved:(id)saved
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  savedCopy = saved;
   [(QLMemoryCache *)self _getWriteLock];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v5 = v4;
+  v5 = savedCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v6)
   {
@@ -549,10 +549,10 @@ LABEL_42:
         v12 = _log_8();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [v11 fileIdentifier];
+          fileIdentifier = [v11 fileIdentifier];
           [v11 size];
           *buf = v25;
-          v32 = v21;
+          v32 = fileIdentifier;
           v33 = 2048;
           v34 = v22;
           _os_log_debug_impl(&dword_2615D3000, v12, OS_LOG_TYPE_DEBUG, "thumbnail saved %@ %f", buf, 0x16u);
@@ -560,8 +560,8 @@ LABEL_42:
 
         [(NSMutableArray *)self->_thumbnailDataToSave removeObject:v11];
         thumbnailData = self->_thumbnailData;
-        v14 = [v11 fileIdentifier];
-        v15 = [(NSMutableDictionary *)thumbnailData objectForKeyedSubscript:v14];
+        fileIdentifier2 = [v11 fileIdentifier];
+        v15 = [(NSMutableDictionary *)thumbnailData objectForKeyedSubscript:fileIdentifier2];
 
         if (v15)
         {
@@ -592,8 +592,8 @@ LABEL_42:
           if (!v16)
           {
             v19 = self->_thumbnailData;
-            v20 = [v11 fileIdentifier];
-            [(NSMutableDictionary *)v19 setObject:0 forKeyedSubscript:v20];
+            fileIdentifier3 = [v11 fileIdentifier];
+            [(NSMutableDictionary *)v19 setObject:0 forKeyedSubscript:fileIdentifier3];
           }
         }
 
@@ -621,31 +621,31 @@ LABEL_17:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)thumbnailDataToSaveWithBatch:(unint64_t)a3
+- (id)thumbnailDataToSaveWithBatch:(unint64_t)batch
 {
   v19 = *MEMORY[0x277D85DE8];
   [(QLMemoryCache *)self _getWriteLock];
-  if (a3 && [(NSMutableArray *)self->_thumbnailDataToSave count]>= a3 || (a3 = [(NSMutableArray *)self->_thumbnailDataToSave count]) != 0)
+  if (batch && [(NSMutableArray *)self->_thumbnailDataToSave count]>= batch || (batch = [(NSMutableArray *)self->_thumbnailDataToSave count]) != 0)
   {
-    v5 = [(NSMutableArray *)self->_thumbnailDataToSave subarrayWithRange:0, a3];
+    batch = [(NSMutableArray *)self->_thumbnailDataToSave subarrayWithRange:0, batch];
   }
 
   else
   {
-    v5 = 0;
+    batch = 0;
   }
 
   v6 = _log_8();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v5 count];
+    v9 = [batch count];
     thumbnailDataToSave = self->_thumbnailDataToSave;
     v11 = 138413058;
-    v12 = self;
+    selfCopy = self;
     v13 = 2048;
     v14 = v9;
     v15 = 2048;
-    v16 = a3;
+    batchCopy = batch;
     v17 = 2112;
     v18 = thumbnailDataToSave;
     _os_log_debug_impl(&dword_2615D3000, v6, OS_LOG_TYPE_DEBUG, "%@: getting thumbnail data save batch: %lu thumbnails, asked for %lu - total: %@", &v11, 0x2Au);
@@ -654,24 +654,24 @@ LABEL_17:
   [(QLMemoryCache *)self _releaseWriteLock];
   v7 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return batch;
 }
 
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)a3
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(QLMemoryCache *)self _getWriteLock];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   thumbnailData = self->_thumbnailData;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __104__QLMemoryCache_removeCachedThumbnailsFromUninstalledFileProvidersWithRemainingFileProviderIdentifiers___block_invoke;
   v16[3] = &unk_279ADDF28;
-  v7 = v4;
+  v7 = identifiersCopy;
   v17 = v7;
-  v18 = v5;
-  v19 = self;
-  v8 = v5;
+  v18 = array;
+  selfCopy = self;
+  v8 = array;
   [(NSMutableDictionary *)thumbnailData enumerateKeysAndObjectsUsingBlock:v16];
   [(NSMutableDictionary *)self->_thumbnailData removeObjectsForKeys:v8];
   v9 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -768,21 +768,21 @@ void __104__QLMemoryCache_removeCachedThumbnailsFromUninstalledFileProvidersWith
   }
 }
 
-- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)a3
+- (void)removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   [(QLMemoryCache *)self _getWriteLock];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   thumbnailData = self->_thumbnailData;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __83__QLMemoryCache_removeCachedThumbnailsFromUninstalledFileProvidersWithIdentifiers___block_invoke;
   v16[3] = &unk_279ADDF28;
-  v7 = v4;
+  v7 = identifiersCopy;
   v17 = v7;
-  v18 = v5;
-  v19 = self;
-  v8 = v5;
+  v18 = array;
+  selfCopy = self;
+  v8 = array;
   [(NSMutableDictionary *)thumbnailData enumerateKeysAndObjectsUsingBlock:v16];
   [(NSMutableDictionary *)self->_thumbnailData removeObjectsForKeys:v8];
   v9 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -906,7 +906,7 @@ void __83__QLMemoryCache_removeCachedThumbnailsFromUninstalledFileProvidersWithI
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2048;
   v7 = a2;
   _os_log_debug_impl(&dword_2615D3000, log, OS_LOG_TYPE_DEBUG, "%@: thumbnail left to be saved %ld", &v4, 0x16u);

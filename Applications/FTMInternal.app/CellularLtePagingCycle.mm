@@ -1,25 +1,25 @@
 @interface CellularLtePagingCycle
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEarfcn:(BOOL)a3;
-- (void)setHasNumSubs:(BOOL)a3;
-- (void)setHasPagingCycleMs:(BOOL)a3;
-- (void)setHasPhyCellId:(BOOL)a3;
-- (void)setHasPsPref:(BOOL)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEarfcn:(BOOL)earfcn;
+- (void)setHasNumSubs:(BOOL)subs;
+- (void)setHasPagingCycleMs:(BOOL)ms;
+- (void)setHasPhyCellId:(BOOL)id;
+- (void)setHasPsPref:(BOOL)pref;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLtePagingCycle
 
-- (void)setHasEarfcn:(BOOL)a3
+- (void)setHasEarfcn:(BOOL)earfcn
 {
-  if (a3)
+  if (earfcn)
   {
     v3 = 2;
   }
@@ -32,9 +32,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPhyCellId:(BOOL)a3
+- (void)setHasPhyCellId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 16;
   }
@@ -47,9 +47,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasPagingCycleMs:(BOOL)a3
+- (void)setHasPagingCycleMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 8;
   }
@@ -62,9 +62,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 64;
   }
@@ -77,9 +77,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasNumSubs:(BOOL)a3
+- (void)setHasNumSubs:(BOOL)subs
 {
-  if (a3)
+  if (subs)
   {
     v3 = 4;
   }
@@ -92,9 +92,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasPsPref:(BOOL)a3
+- (void)setHasPsPref:(BOOL)pref
 {
-  if (a3)
+  if (pref)
   {
     v3 = 32;
   }
@@ -112,8 +112,8 @@
   v7.receiver = self;
   v7.super_class = CellularLtePagingCycle;
   v3 = [(CellularLtePagingCycle *)&v7 description];
-  v4 = [(CellularLtePagingCycle *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLtePagingCycle *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -229,16 +229,16 @@ LABEL_9:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v13 = v4;
+  v13 = toCopy;
   if (has)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v13;
+    toCopy = v13;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -259,7 +259,7 @@ LABEL_3:
 
   earfcn = self->_earfcn;
   PBDataWriterWriteUint32Field();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -275,7 +275,7 @@ LABEL_4:
 LABEL_16:
   phyCellId = self->_phyCellId;
   PBDataWriterWriteUint32Field();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -291,7 +291,7 @@ LABEL_5:
 LABEL_17:
   pagingCycleMs = self->_pagingCycleMs;
   PBDataWriterWriteUint32Field();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -307,7 +307,7 @@ LABEL_6:
 LABEL_18:
   subsId = self->_subsId;
   PBDataWriterWriteUint32Field();
-  v4 = v13;
+  toCopy = v13;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -323,31 +323,31 @@ LABEL_7:
 LABEL_19:
   numSubs = self->_numSubs;
   PBDataWriterWriteUint32Field();
-  v4 = v13;
+  toCopy = v13;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
     psPref = self->_psPref;
     PBDataWriterWriteUint32Field();
-    v4 = v13;
+    toCopy = v13;
   }
 
 LABEL_9:
   if (self->_plmn)
   {
     PBDataWriterWriteDataField();
-    v4 = v13;
+    toCopy = v13;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -366,8 +366,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 4) = self->_earfcn;
-  *(v4 + 48) |= 2u;
+  *(toCopy + 4) = self->_earfcn;
+  *(toCopy + 48) |= 2u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -381,8 +381,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  *(v4 + 7) = self->_phyCellId;
-  *(v4 + 48) |= 0x10u;
+  *(toCopy + 7) = self->_phyCellId;
+  *(toCopy + 48) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -396,8 +396,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  *(v4 + 6) = self->_pagingCycleMs;
-  *(v4 + 48) |= 8u;
+  *(toCopy + 6) = self->_pagingCycleMs;
+  *(toCopy + 48) |= 8u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -411,8 +411,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  *(v4 + 11) = self->_subsId;
-  *(v4 + 48) |= 0x40u;
+  *(toCopy + 11) = self->_subsId;
+  *(toCopy + 48) |= 0x40u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -426,27 +426,27 @@ LABEL_7:
   }
 
 LABEL_19:
-  *(v4 + 5) = self->_numSubs;
-  *(v4 + 48) |= 4u;
+  *(toCopy + 5) = self->_numSubs;
+  *(toCopy + 48) |= 4u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
-    *(v4 + 10) = self->_psPref;
-    *(v4 + 48) |= 0x20u;
+    *(toCopy + 10) = self->_psPref;
+    *(toCopy + 48) |= 0x20u;
   }
 
 LABEL_9:
   if (self->_plmn)
   {
-    v6 = v4;
-    [v4 setPlmn:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setPlmn:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -541,31 +541,31 @@ LABEL_8:
   }
 
 LABEL_9:
-  v8 = [(NSData *)self->_plmn copyWithZone:a3];
+  v8 = [(NSData *)self->_plmn copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_39;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_39:
     v7 = 0;
@@ -574,84 +574,84 @@ LABEL_39:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_earfcn != *(v4 + 4))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_earfcn != *(equalCopy + 4))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 48) & 0x10) == 0 || self->_phyCellId != *(v4 + 7))
+    if ((*(equalCopy + 48) & 0x10) == 0 || self->_phyCellId != *(equalCopy + 7))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 48) & 0x10) != 0)
+  else if ((*(equalCopy + 48) & 0x10) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_pagingCycleMs != *(v4 + 6))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_pagingCycleMs != *(equalCopy + 6))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 48) & 0x40) == 0 || self->_subsId != *(v4 + 11))
+    if ((*(equalCopy + 48) & 0x40) == 0 || self->_subsId != *(equalCopy + 11))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 48) & 0x40) != 0)
+  else if ((*(equalCopy + 48) & 0x40) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_numSubs != *(v4 + 5))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_numSubs != *(equalCopy + 5))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 48) & 4) != 0)
+  else if ((*(equalCopy + 48) & 4) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 48) & 0x20) == 0 || self->_psPref != *(v4 + 10))
+    if ((*(equalCopy + 48) & 0x20) == 0 || self->_psPref != *(equalCopy + 10))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 48) & 0x20) != 0)
+  else if ((*(equalCopy + 48) & 0x20) != 0)
   {
     goto LABEL_39;
   }
 
   plmn = self->_plmn;
-  if (plmn | *(v4 + 4))
+  if (plmn | *(equalCopy + 4))
   {
     v7 = [(NSData *)plmn isEqual:?];
   }
@@ -762,15 +762,15 @@ LABEL_8:
   return v7 ^ v6 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ [(NSData *)self->_plmn hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if (v5)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -783,14 +783,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 48) & 2) == 0)
+  else if ((*(fromCopy + 48) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_earfcn = *(v4 + 4);
+  self->_earfcn = *(fromCopy + 4);
   *&self->_has |= 2u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -803,9 +803,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_phyCellId = *(v4 + 7);
+  self->_phyCellId = *(fromCopy + 7);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 8) == 0)
   {
 LABEL_5:
@@ -818,9 +818,9 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_pagingCycleMs = *(v4 + 6);
+  self->_pagingCycleMs = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 0x40) == 0)
   {
 LABEL_6:
@@ -833,9 +833,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_subsId = *(v4 + 11);
+  self->_subsId = *(fromCopy + 11);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if ((v5 & 4) == 0)
   {
 LABEL_7:
@@ -848,21 +848,21 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_numSubs = *(v4 + 5);
+  self->_numSubs = *(fromCopy + 5);
   *&self->_has |= 4u;
-  if ((*(v4 + 48) & 0x20) != 0)
+  if ((*(fromCopy + 48) & 0x20) != 0)
   {
 LABEL_8:
-    self->_psPref = *(v4 + 10);
+    self->_psPref = *(fromCopy + 10);
     *&self->_has |= 0x20u;
   }
 
 LABEL_9:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(CellularLtePagingCycle *)self setPlmn:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

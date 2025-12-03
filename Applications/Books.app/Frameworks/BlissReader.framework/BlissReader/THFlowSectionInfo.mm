@@ -31,9 +31,9 @@
     }
   }
 
-  v4 = [(THSectionInfo *)self pages];
+  pages = [(THSectionInfo *)self pages];
 
-  return [NSArray arrayWithArray:v4];
+  return [NSArray arrayWithArray:pages];
 }
 
 - (void)dealloc

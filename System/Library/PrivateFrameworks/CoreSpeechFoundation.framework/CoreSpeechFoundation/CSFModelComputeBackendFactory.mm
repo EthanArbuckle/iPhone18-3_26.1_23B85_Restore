@@ -1,17 +1,17 @@
 @interface CSFModelComputeBackendFactory
-+ (id)provideComputeBackendWithModelFile:(id)a3 separateWeight:(id)a4 error:(id *)a5;
++ (id)provideComputeBackendWithModelFile:(id)file separateWeight:(id)weight error:(id *)error;
 @end
 
 @implementation CSFModelComputeBackendFactory
 
-+ (id)provideComputeBackendWithModelFile:(id)a3 separateWeight:(id)a4 error:(id *)a5
++ (id)provideComputeBackendWithModelFile:(id)file separateWeight:(id)weight error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 hasSuffix:@"bnns.mil"])
+  fileCopy = file;
+  weightCopy = weight;
+  if ([fileCopy hasSuffix:@"bnns.mil"])
   {
-    v9 = [CSFBnnsIrLookUp getBnnsIrPathFromMilFile:v7];
+    v9 = [CSFBnnsIrLookUp getBnnsIrPathFromMilFile:fileCopy];
     v10 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -20,12 +20,12 @@
       v29 = 2112;
       v30 = v9;
       v31 = 2112;
-      v32 = v7;
+      v32 = fileCopy;
       _os_log_impl(&dword_1DDA4B000, v10, OS_LOG_TYPE_DEFAULT, "%s obtained lookup bnnsIrPath : %@ for mil path: %@", buf, 0x20u);
     }
 
     v24 = 0;
-    v11 = [[CSFMil2bnnsComputeBackend alloc] initWithModelFile:v7 bnnsIrPath:v9 errOut:&v24];
+    v11 = [[CSFMil2bnnsComputeBackend alloc] initWithModelFile:fileCopy bnnsIrPath:v9 errOut:&v24];
     v12 = v24;
 
     if (!v11)
@@ -44,16 +44,16 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  if ([v7 hasSuffix:@"bnnsir"])
+  if ([fileCopy hasSuffix:@"bnnsir"])
   {
     v23 = 0;
-    v11 = [[CSFMil2bnnsComputeBackend alloc] initWithBnnsIrFile:v7 weightPath:v8 errOut:&v23];
+    v11 = [[CSFMil2bnnsComputeBackend alloc] initWithBnnsIrFile:fileCopy weightPath:weightCopy errOut:&v23];
     v13 = v23;
   }
 
   else
   {
-    if (![v7 hasSuffix:@"mlmodelc"])
+    if (![fileCopy hasSuffix:@"mlmodelc"])
     {
       v15 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E696A578];
@@ -67,7 +67,7 @@ LABEL_11:
     }
 
     v22 = 0;
-    v11 = [[CSFCoreMLComputeBackend alloc] initWithModelFile:v7 error:&v22];
+    v11 = [[CSFCoreMLComputeBackend alloc] initWithModelFile:fileCopy error:&v22];
     v13 = v22;
   }
 
@@ -84,17 +84,17 @@ LABEL_14:
     *buf = 136315650;
     v28 = "+[CSFModelComputeBackendFactory provideComputeBackendWithModelFile:separateWeight:error:]";
     v29 = 2112;
-    v30 = v7;
+    v30 = fileCopy;
     v31 = 2112;
     v32 = v12;
     _os_log_impl(&dword_1DDA4B000, v18, OS_LOG_TYPE_DEFAULT, "%s model: %@ init with error: %@", buf, 0x20u);
   }
 
-  if (a5)
+  if (error)
   {
     v19 = v12;
     v14 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else

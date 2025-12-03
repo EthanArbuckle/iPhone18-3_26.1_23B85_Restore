@@ -1,19 +1,19 @@
 @interface ADLayoutUtils
-+ (float)aspectRatioForKnownLayout:(unint64_t)a3;
-+ (id)layoutAsString:(unint64_t)a3;
-+ (unint64_t)layoutForSize:(CGSize)a3;
-+ (unint64_t)transposeLayout:(unint64_t)a3;
++ (float)aspectRatioForKnownLayout:(unint64_t)layout;
++ (id)layoutAsString:(unint64_t)string;
++ (unint64_t)layoutForSize:(CGSize)size;
++ (unint64_t)transposeLayout:(unint64_t)layout;
 @end
 
 @implementation ADLayoutUtils
 
-+ (unint64_t)layoutForSize:(CGSize)a3
++ (unint64_t)layoutForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = 0;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3.width / a3.height;
+  v6 = size.width / size.height;
   while (1)
   {
     v7 = qword_2404CA458[v5];
@@ -55,28 +55,28 @@
   return v7;
 }
 
-+ (float)aspectRatioForKnownLayout:(unint64_t)a3
++ (float)aspectRatioForKnownLayout:(unint64_t)layout
 {
   result = 0.0;
-  if (a3 <= 3)
+  if (layout <= 3)
   {
-    return flt_2404C86E0[a3];
+    return flt_2404C86E0[layout];
   }
 
   return result;
 }
 
-+ (unint64_t)transposeLayout:(unint64_t)a3
++ (unint64_t)transposeLayout:(unint64_t)layout
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 < 4)
+  if (layout < 4)
   {
-    return qword_2404CA458[a3];
+    return qword_2404CA458[layout];
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v5 = [ADLayoutUtils layoutAsString:a3];
+    v5 = [ADLayoutUtils layoutAsString:layout];
     v6 = 138412290;
     v7 = v5;
     _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot get transpose layout for layout %@", &v6, 0xCu);
@@ -85,37 +85,37 @@
   return 254;
 }
 
-+ (id)layoutAsString:(unint64_t)a3
++ (id)layoutAsString:(unint64_t)string
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (a3 > 2)
+  if (string > 2)
   {
-    switch(a3)
+    switch(string)
     {
       case 3uLL:
-        v4 = @"kADLayoutPortrait_9_16";
+        string = @"kADLayoutPortrait_9_16";
         goto LABEL_17;
       case 0xFEuLL:
-        v4 = @"kADLayoutUnknown";
+        string = @"kADLayoutUnknown";
         goto LABEL_17;
       case 0xFFuLL:
-        v4 = @"kADLayoutDefault";
+        string = @"kADLayoutDefault";
         goto LABEL_17;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(string)
     {
       case 0uLL:
-        v4 = @"kADLayoutLandscape_4_3";
+        string = @"kADLayoutLandscape_4_3";
         goto LABEL_17;
       case 1uLL:
-        v4 = @"kADLayoutPortrait_3_4";
+        string = @"kADLayoutPortrait_3_4";
         goto LABEL_17;
       case 2uLL:
-        v4 = @"kADLayoutLandscape_16_9";
+        string = @"kADLayoutLandscape_16_9";
         goto LABEL_17;
     }
   }
@@ -123,14 +123,14 @@
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     *buf = 134217984;
-    v7 = a3;
+    stringCopy = string;
     _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Unknown layout numbered: %lu", buf, 0xCu);
   }
 
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", a3];
+  string = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", string];
 LABEL_17:
 
-  return v4;
+  return string;
 }
 
 @end

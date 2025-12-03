@@ -1,28 +1,28 @@
 @interface ADDeviceSyncItem
-+ (id)newWithBuilder:(id)a3;
-- (ADDeviceSyncItem)initWithBuilder:(id)a3;
-- (ADDeviceSyncItem)initWithCoder:(id)a3;
-- (ADDeviceSyncItem)initWithUUID:(id)a3 properties:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (ADDeviceSyncItem)initWithBuilder:(id)builder;
+- (ADDeviceSyncItem)initWithCoder:(id)coder;
+- (ADDeviceSyncItem)initWithUUID:(id)d properties:(id)properties;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ADDeviceSyncItem
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"ADDeviceSyncItem::UUID"];
-  [v5 encodeObject:self->_properties forKey:@"ADDeviceSyncItem::properties"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"ADDeviceSyncItem::UUID"];
+  [coderCopy encodeObject:self->_properties forKey:@"ADDeviceSyncItem::properties"];
 }
 
-- (ADDeviceSyncItem)initWithCoder:(id)a3
+- (ADDeviceSyncItem)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncItem::UUID"];
+  coderCopy = coder;
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ADDeviceSyncItem::UUID"];
   v17 = objc_opt_class();
   v4 = objc_opt_class();
   v5 = objc_opt_class();
@@ -34,16 +34,16 @@
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [NSSet setWithObjects:v17, v4, v5, v6, v7, v8, v9, v10, v11, v12, objc_opt_class(), 0];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"ADDeviceSyncItem::properties"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"ADDeviceSyncItem::properties"];
 
   v15 = [(ADDeviceSyncItem *)self initWithUUID:v18 properties:v14];
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -53,14 +53,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(ADDeviceSyncItem *)v5 UUID];
+      v5 = equalCopy;
+      uUID = [(ADDeviceSyncItem *)v5 UUID];
       UUID = self->_UUID;
-      if (UUID == v6 || [(NSUUID *)UUID isEqual:v6])
+      if (UUID == uUID || [(NSUUID *)UUID isEqual:uUID])
       {
-        v8 = [(ADDeviceSyncItem *)v5 properties];
+        properties = [(ADDeviceSyncItem *)v5 properties];
         properties = self->_properties;
-        v10 = properties == v8 || [(NSDictionary *)properties isEqual:v8];
+        v10 = properties == properties || [(NSDictionary *)properties isEqual:properties];
       }
 
       else
@@ -78,7 +78,7 @@
   return v10;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = [NSString alloc];
   v8.receiver = self;
@@ -89,41 +89,41 @@
   return v6;
 }
 
-- (ADDeviceSyncItem)initWithUUID:(id)a3 properties:(id)a4
+- (ADDeviceSyncItem)initWithUUID:(id)d properties:(id)properties
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100313D60;
   v10[3] = &unk_10051BB08;
-  v11 = a3;
-  v12 = a4;
-  v6 = v12;
-  v7 = v11;
+  dCopy = d;
+  propertiesCopy = properties;
+  v6 = propertiesCopy;
+  v7 = dCopy;
   v8 = [(ADDeviceSyncItem *)self initWithBuilder:v10];
 
   return v8;
 }
 
-- (ADDeviceSyncItem)initWithBuilder:(id)a3
+- (ADDeviceSyncItem)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = ADDeviceSyncItem;
   v5 = [(ADDeviceSyncItem *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_ADDeviceSyncItemMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_ADDeviceSyncItemMutation *)v7 isDirty])
     {
-      v8 = [(_ADDeviceSyncItemMutation *)v7 getUUID];
-      v9 = [v8 copy];
+      getUUID = [(_ADDeviceSyncItemMutation *)v7 getUUID];
+      v9 = [getUUID copy];
       UUID = v6->_UUID;
       v6->_UUID = v9;
 
-      v11 = [(_ADDeviceSyncItemMutation *)v7 getProperties];
-      v12 = [v11 copy];
+      getProperties = [(_ADDeviceSyncItemMutation *)v7 getProperties];
+      v12 = [getProperties copy];
       properties = v6->_properties;
       v6->_properties = v12;
     }
@@ -132,31 +132,31 @@
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_ADDeviceSyncItemMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_ADDeviceSyncItemMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(ADDeviceSyncItem);
-      v7 = [(_ADDeviceSyncItemMutation *)v5 getUUID];
-      v8 = [v7 copy];
+      getUUID = [(_ADDeviceSyncItemMutation *)v5 getUUID];
+      v8 = [getUUID copy];
       UUID = v6->_UUID;
       v6->_UUID = v8;
 
-      v10 = [(_ADDeviceSyncItemMutation *)v5 getProperties];
-      v11 = [v10 copy];
+      getProperties = [(_ADDeviceSyncItemMutation *)v5 getProperties];
+      v11 = [getProperties copy];
       properties = v6->_properties;
       v6->_properties = v11;
     }

@@ -1,21 +1,21 @@
 @interface CKContextSharedExtractionHelper
-+ (BOOL)_isRelevantForExtractionWithView:(id)a3;
-+ (BOOL)elementIsOnScreenWithView:(id)a3 window:(id)a4;
-+ (BOOL)textBlockLooksLikeAListWithText:(id)a3;
-+ (id)bestContentStringForWebViewUIElements:(id)a3 andTitle:(id)a4;
-+ (id)bestImageForView:(id)a3;
-+ (id)blocksFromText:(id)a3;
-+ (void)descendantsRelevantForContentExtractionFromView:(id)a3 intoArray:(id)a4;
++ (BOOL)_isRelevantForExtractionWithView:(id)view;
++ (BOOL)elementIsOnScreenWithView:(id)view window:(id)window;
++ (BOOL)textBlockLooksLikeAListWithText:(id)text;
++ (id)bestContentStringForWebViewUIElements:(id)elements andTitle:(id)title;
++ (id)bestImageForView:(id)view;
++ (id)blocksFromText:(id)text;
++ (void)descendantsRelevantForContentExtractionFromView:(id)view intoArray:(id)array;
 @end
 
 @implementation CKContextSharedExtractionHelper
 
-+ (id)blocksFromText:(id)a3
++ (id)blocksFromText:(id)text
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  textCopy = text;
+  whitespaceAndNewlineCharacterSet = [v3 whitespaceAndNewlineCharacterSet];
+  v6 = [textCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v6 length])
   {
@@ -38,10 +38,10 @@
   return v9;
 }
 
-+ (BOOL)textBlockLooksLikeAListWithText:(id)a3
++ (BOOL)textBlockLooksLikeAListWithText:(id)text
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  textCopy = text;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -60,7 +60,7 @@
           objc_enumerationMutation(&unk_1F305C7C0);
         }
 
-        v8 = [v3 componentsSeparatedByString:*(*(&v23 + 1) + 8 * i)];
+        v8 = [textCopy componentsSeparatedByString:*(*(&v23 + 1) + 8 * i)];
         if (([v8 count] - 1) >= 6)
         {
           v9 = v8;
@@ -125,22 +125,22 @@ LABEL_24:
   return v16;
 }
 
-+ (void)descendantsRelevantForContentExtractionFromView:(id)a3 intoArray:(id)a4
++ (void)descendantsRelevantForContentExtractionFromView:(id)view intoArray:(id)array
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([a1 _isRelevantForExtractionWithView:v6])
+  viewCopy = view;
+  arrayCopy = array;
+  if ([self _isRelevantForExtractionWithView:viewCopy])
   {
-    [v7 addObject:v6];
+    [arrayCopy addObject:viewCopy];
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v8 = [v6 subviews];
-    v9 = [v8 reverseObjectEnumerator];
+    subviews = [viewCopy subviews];
+    reverseObjectEnumerator = [subviews reverseObjectEnumerator];
 
-    v10 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v10 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v10)
     {
       v11 = v10;
@@ -152,16 +152,16 @@ LABEL_24:
         {
           if (*v29 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v14 = *(*(&v28 + 1) + 8 * v13);
-          if (![v6 clipsToBounds])
+          if (![viewCopy clipsToBounds])
           {
             goto LABEL_9;
           }
 
-          [v6 bounds];
+          [viewCopy bounds];
           v16 = v15;
           v18 = v17;
           v20 = v19;
@@ -178,14 +178,14 @@ LABEL_24:
           if (CGRectIntersectsRect(v34, v35))
           {
 LABEL_9:
-            [a1 descendantsRelevantForContentExtractionFromView:v14 intoArray:v7];
+            [self descendantsRelevantForContentExtractionFromView:v14 intoArray:arrayCopy];
           }
 
           ++v13;
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v28 objects:v32 count:16];
+        v11 = [reverseObjectEnumerator countByEnumeratingWithState:&v28 objects:v32 count:16];
       }
 
       while (v11);
@@ -195,19 +195,19 @@ LABEL_9:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)bestContentStringForWebViewUIElements:(id)a3 andTitle:(id)a4
++ (id)bestContentStringForWebViewUIElements:(id)elements andTitle:(id)title
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  elementsCopy = elements;
+  titleCopy = title;
+  if ([elementsCopy count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v5;
+    v8 = elementsCopy;
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v9)
     {
@@ -226,8 +226,8 @@ LABEL_9:
           [v13 density];
           if (v14 > 43.0)
           {
-            v15 = [v13 text];
-            [v7 addObject:v15];
+            text = [v13 text];
+            [array addObject:text];
           }
         }
 
@@ -237,8 +237,8 @@ LABEL_9:
       while (v10);
     }
 
-    v16 = [v7 componentsJoinedByString:@"\n\n"];
-    if ([v6 length])
+    v16 = [array componentsJoinedByString:@"\n\n"];
+    if ([titleCopy length])
     {
       v17 = &stru_1F305A6D8;
       if (v16)
@@ -246,7 +246,7 @@ LABEL_9:
         v17 = v16;
       }
 
-      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", v6, @"\n\n", v17];
+      v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@%@", titleCopy, @"\n\n", v17];
 
       v16 = v18;
     }
@@ -262,21 +262,21 @@ LABEL_9:
   return v16;
 }
 
-+ (BOOL)_isRelevantForExtractionWithView:(id)a3
++ (BOOL)_isRelevantForExtractionWithView:(id)view
 {
-  v3 = a3;
-  if ([v3 isHidden])
+  viewCopy = view;
+  if ([viewCopy isHidden])
   {
     goto LABEL_5;
   }
 
-  [v3 alpha];
+  [viewCopy alpha];
   if (v4 < 0.05)
   {
     goto LABEL_5;
   }
 
-  [v3 frame];
+  [viewCopy frame];
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -297,18 +297,18 @@ LABEL_5:
   return v9;
 }
 
-+ (id)bestImageForView:(id)a3
++ (id)bestImageForView:(id)view
 {
-  v3 = a3;
-  [v3 frame];
-  if (CGRectGetWidth(v11) < 40.0 || ([v3 frame], CGRectGetHeight(v12) < 40.0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_respondsToSelector() & 1) == 0)
+  viewCopy = view;
+  [viewCopy frame];
+  if (CGRectGetWidth(v11) < 40.0 || ([viewCopy frame], CGRectGetHeight(v12) < 40.0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_respondsToSelector() & 1) == 0)
   {
     v6 = 0;
   }
 
   else
   {
-    v4 = [v3 performSelector:sel_image];
+    v4 = [viewCopy performSelector:sel_image];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -331,21 +331,21 @@ LABEL_5:
   return v6;
 }
 
-+ (BOOL)elementIsOnScreenWithView:(id)a3 window:(id)a4
++ (BOOL)elementIsOnScreenWithView:(id)view window:(id)window
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 bounds];
-  [v6 convertRect:v5 toView:?];
+  windowCopy = window;
+  viewCopy = view;
+  [viewCopy bounds];
+  [viewCopy convertRect:windowCopy toView:?];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  [v6 frame];
+  [viewCopy frame];
   v26 = v16;
   v27 = v15;
 
-  [v5 bounds];
+  [windowCopy bounds];
   v18 = v17;
   v20 = v19;
   v22 = v21;

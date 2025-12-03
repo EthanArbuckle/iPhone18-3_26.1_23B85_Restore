@@ -2,10 +2,10 @@
 + (BOOL)initialContentDownloadsEnabled;
 + (BOOL)shouldPostNotificationOnDefaultBrowserInstallation;
 + (id)interface;
-+ (void)_installApps:(void *)a3 onPairedDevice:(void *)a4 withCompletionHandler:;
-+ (void)installApp:(id)a3 onPairedDevice:(id)a4 withCompletionHandler:(id)a5;
-+ (void)installApp:(id)a3 withCompletionHandler:(id)a4;
-+ (void)installApps:(id)a3 onPairedDevice:(id)a4 withCompletionHandler:(id)a5;
++ (void)_installApps:(void *)apps onPairedDevice:(void *)device withCompletionHandler:;
++ (void)installApp:(id)app onPairedDevice:(id)device withCompletionHandler:(id)handler;
++ (void)installApp:(id)app withCompletionHandler:(id)handler;
++ (void)installApps:(id)apps onPairedDevice:(id)device withCompletionHandler:(id)handler;
 @end
 
 @implementation ASDInstallApps
@@ -168,22 +168,22 @@
   return v7 & 1;
 }
 
-+ (void)installApp:(id)a3 onPairedDevice:(id)a4 withCompletionHandler:(id)a5
++ (void)installApp:(id)app onPairedDevice:(id)device withCompletionHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v17[0] = a3;
+  handlerCopy = handler;
+  v17[0] = app;
   v9 = MEMORY[0x1E695DEC8];
-  v10 = a4;
-  v11 = a3;
+  deviceCopy = device;
+  appCopy = app;
   v12 = [v9 arrayWithObjects:v17 count:1];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __66__ASDInstallApps_installApp_onPairedDevice_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E7CDB7A8;
-  v16 = v8;
-  v13 = v8;
-  [a1 installApps:v12 onPairedDevice:v10 withCompletionHandler:v15];
+  v16 = handlerCopy;
+  v13 = handlerCopy;
+  [self installApps:v12 onPairedDevice:deviceCopy withCompletionHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -196,21 +196,21 @@ void __66__ASDInstallApps_installApp_onPairedDevice_withCompletionHandler___bloc
   (*(v4 + 16))(v4, v6, v5);
 }
 
-+ (void)installApp:(id)a3 withCompletionHandler:(id)a4
++ (void)installApp:(id)app withCompletionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v14[0] = a3;
+  handlerCopy = handler;
+  v14[0] = app;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a3;
+  appCopy = app;
   v9 = [v7 arrayWithObjects:v14 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__ASDInstallApps_installApp_withCompletionHandler___block_invoke;
   v12[3] = &unk_1E7CDB7A8;
-  v13 = v6;
-  v10 = v6;
-  [(ASDInstallApps *)a1 _installApps:v9 onPairedDevice:0 withCompletionHandler:v12];
+  v13 = handlerCopy;
+  v10 = handlerCopy;
+  [(ASDInstallApps *)self _installApps:v9 onPairedDevice:0 withCompletionHandler:v12];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -223,14 +223,14 @@ void __51__ASDInstallApps_installApp_withCompletionHandler___block_invoke(uint64
   (*(v4 + 16))(v4, v6, v5);
 }
 
-+ (void)_installApps:(void *)a3 onPairedDevice:(void *)a4 withCompletionHandler:
++ (void)_installApps:(void *)apps onPairedDevice:(void *)device withCompletionHandler:
 {
   v50 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  appsCopy = apps;
+  deviceCopy = device;
   objc_opt_self();
-  v9 = [v6 firstObject];
+  firstObject = [v6 firstObject];
   v10 = objc_opt_class();
 
   objc_opt_self();
@@ -281,7 +281,7 @@ LABEL_5:
         v25 = 507;
 LABEL_19:
         v27 = ASDErrorWithUnderlyingErrorAndDescription(0, @"ASDErrorDomain", v25, v24);
-        v8[2](v8, 0, v27);
+        deviceCopy[2](deviceCopy, 0, v27);
 
         v22 = v12;
         goto LABEL_20;
@@ -320,7 +320,7 @@ LABEL_12:
   v38[3] = &unk_1E7CDB8E0;
   v18 = v12;
   v39 = v18;
-  v40 = v8;
+  v40 = deviceCopy;
   v19 = MEMORY[0x1B8CBC4F0](v38);
   v20 = +[ASDServiceBroker defaultBroker];
   v33[0] = MEMORY[0x1E69E9820];
@@ -330,7 +330,7 @@ LABEL_12:
   v36 = v19;
   v37 = v10;
   v34 = v18;
-  v35 = v7;
+  v35 = appsCopy;
   v21 = v19;
   [v20 getInstallationServiceWithCompletionHandler:v33];
 
@@ -340,20 +340,20 @@ LABEL_20:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)installApps:(id)a3 onPairedDevice:(id)a4 withCompletionHandler:(id)a5
++ (void)installApps:(id)apps onPairedDevice:(id)device withCompletionHandler:(id)handler
 {
-  v11 = a3;
-  v8 = a5;
-  v9 = [a4 pairingID];
-  if (v9)
+  appsCopy = apps;
+  handlerCopy = handler;
+  pairingID = [device pairingID];
+  if (pairingID)
   {
-    [(ASDInstallApps *)a1 _installApps:v11 onPairedDevice:v9 withCompletionHandler:v8];
+    [(ASDInstallApps *)self _installApps:appsCopy onPairedDevice:pairingID withCompletionHandler:handlerCopy];
   }
 
   else
   {
     v10 = ASDErrorWithUnderlyingErrorAndDescription(0, @"ASDErrorDomain", 507, @"Paired device has no identifier, did you mean to install locally?");
-    (*(v8 + 2))(v8, 0, v10);
+    (*(handlerCopy + 2))(handlerCopy, 0, v10);
   }
 }
 

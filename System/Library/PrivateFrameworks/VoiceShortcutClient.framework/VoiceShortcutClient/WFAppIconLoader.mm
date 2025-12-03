@@ -1,37 +1,37 @@
 @interface WFAppIconLoader
-+ (void)loadIconWithBundleIdentifier:(id)a3 desiredSize:(CGSize)a4 completionHandler:(id)a5;
++ (void)loadIconWithBundleIdentifier:(id)identifier desiredSize:(CGSize)size completionHandler:(id)handler;
 @end
 
 @implementation WFAppIconLoader
 
-+ (void)loadIconWithBundleIdentifier:(id)a3 desiredSize:(CGSize)a4 completionHandler:(id)a5
++ (void)loadIconWithBundleIdentifier:(id)identifier desiredSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E695DFF8] URLWithString:@"https://itunes.apple.com/"];
   v11 = [MEMORY[0x1E696AF20] componentsWithURL:v10 resolvingAgainstBaseURL:0];
   [v11 setPath:@"/lookup"];
-  v12 = [MEMORY[0x1E696AF60] queryItemWithName:@"bundleId" value:v8];
+  v12 = [MEMORY[0x1E696AF60] queryItemWithName:@"bundleId" value:identifierCopy];
   v28[0] = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
   [v11 setQueryItems:v13];
 
-  v14 = [MEMORY[0x1E696AF78] wf_sharedSession];
+  wf_sharedSession = [MEMORY[0x1E696AF78] wf_sharedSession];
   v15 = [v11 URL];
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __78__WFAppIconLoader_loadIconWithBundleIdentifier_desiredSize_completionHandler___block_invoke;
   v23 = &unk_1E7B00418;
-  v24 = v8;
-  v25 = v9;
+  v24 = identifierCopy;
+  v25 = handlerCopy;
   v26 = width;
   v27 = height;
-  v16 = v9;
-  v17 = v8;
-  v18 = [v14 dataTaskWithURL:v15 completionHandler:&v20];
+  v16 = handlerCopy;
+  v17 = identifierCopy;
+  v18 = [wf_sharedSession dataTaskWithURL:v15 completionHandler:&v20];
   [v18 resume];
 
   v19 = *MEMORY[0x1E69E9840];

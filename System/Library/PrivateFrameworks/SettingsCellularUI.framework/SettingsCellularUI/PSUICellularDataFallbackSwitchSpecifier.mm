@@ -1,15 +1,15 @@
 @interface PSUICellularDataFallbackSwitchSpecifier
 - (PSListController)hostController;
-- (PSUICellularDataFallbackSwitchSpecifier)initWithHostController:(id)a3;
-- (id)isFallbackEnabled:(id)a3;
-- (void)setFallbackEnabled:(id)a3 specifier:(id)a4;
+- (PSUICellularDataFallbackSwitchSpecifier)initWithHostController:(id)controller;
+- (id)isFallbackEnabled:(id)enabled;
+- (void)setFallbackEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation PSUICellularDataFallbackSwitchSpecifier
 
-- (PSUICellularDataFallbackSwitchSpecifier)initWithHostController:(id)a3
+- (PSUICellularDataFallbackSwitchSpecifier)initWithHostController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"CELLULAR_DATA_SWITCHING" value:&stru_287733598 table:@"Gemini-Gemini"];
   v9.receiver = self;
@@ -18,30 +18,30 @@
 
   if (v7)
   {
-    objc_storeWeak(&v7->_hostController, v4);
+    objc_storeWeak(&v7->_hostController, controllerCopy);
     [(PSUICellularDataFallbackSwitchSpecifier *)v7 setProperty:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277D3FD80]];
   }
 
   return v7;
 }
 
-- (void)setFallbackEnabled:(id)a3 specifier:(id)a4
+- (void)setFallbackEnabled:(id)enabled specifier:(id)specifier
 {
-  if (a3)
+  if (enabled)
   {
-    v4 = [a3 BOOLValue];
+    bOOLValue = [enabled BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   v5 = +[PSUICoreTelephonyDataCache sharedInstance];
-  [v5 setDataFallbackEnabled:v4];
+  [v5 setDataFallbackEnabled:bOOLValue];
 }
 
-- (id)isFallbackEnabled:(id)a3
+- (id)isFallbackEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
   v4 = +[PSUICoreTelephonyDataCache sharedInstance];

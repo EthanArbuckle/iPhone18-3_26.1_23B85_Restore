@@ -1,29 +1,29 @@
 @interface HMSiriEndpointProfilesMessenger
 + (id)logCategory;
-+ (id)messageTargetUUIDWithHomeUUID:(id)a3;
-- (HMSiriEndpointProfilesMessenger)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4;
++ (id)messageTargetUUIDWithHomeUUID:(id)d;
+- (HMSiriEndpointProfilesMessenger)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher;
 - (id)logIdentifier;
-- (void)sendApplyOnboardingSelectionsRequestWithAccessoryUUID:(id)a3 onboardingSelections:(id)a4 completionHandler:(id)a5;
-- (void)sendDeleteSiriHistoryRequestWithAccessoryUUID:(id)a3 completionHandler:(id)a4;
+- (void)sendApplyOnboardingSelectionsRequestWithAccessoryUUID:(id)d onboardingSelections:(id)selections completionHandler:(id)handler;
+- (void)sendDeleteSiriHistoryRequestWithAccessoryUUID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation HMSiriEndpointProfilesMessenger
 
 - (id)logIdentifier
 {
-  v2 = [(HMSiriEndpointProfilesMessenger *)self messageTargetUUID];
-  v3 = [v2 UUIDString];
+  messageTargetUUID = [(HMSiriEndpointProfilesMessenger *)self messageTargetUUID];
+  uUIDString = [messageTargetUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)sendDeleteSiriHistoryRequestWithAccessoryUUID:(id)a3 completionHandler:(id)a4
+- (void)sendDeleteSiriHistoryRequestWithAccessoryUUID:(id)d completionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -31,30 +31,30 @@
     *buf = 138543618;
     v30 = v11;
     v31 = 2112;
-    v32 = v6;
+    v32 = dCopy;
     _os_log_impl(&dword_19BB39000, v10, OS_LOG_TYPE_INFO, "%{public}@Sending delete siri history request with accessory UUID: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [[HMSiriEndpointDeleteSiriHistoryMessagePayload alloc] initWithAccessoryUUID:v6];
+  v12 = [[HMSiriEndpointDeleteSiriHistoryMessagePayload alloc] initWithAccessoryUUID:dCopy];
   v13 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v14 = [(HMSiriEndpointProfilesMessenger *)v9 messageTargetUUID];
-  v15 = [v13 initWithTarget:v14];
+  messageTargetUUID = [(HMSiriEndpointProfilesMessenger *)selfCopy messageTargetUUID];
+  v15 = [v13 initWithTarget:messageTargetUUID];
 
   v16 = objc_alloc(MEMORY[0x1E69A2A10]);
   v17 = +[HMSiriEndpointDeleteSiriHistoryMessagePayload messageName];
-  v18 = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)v12 payloadCopy];
-  v19 = [v16 initWithName:v17 destination:v15 payload:v18];
+  payloadCopy = [(HMSiriEndpointDeleteSiriHistoryMessagePayload *)v12 payloadCopy];
+  v19 = [v16 initWithName:v17 destination:v15 payload:payloadCopy];
 
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __99__HMSiriEndpointProfilesMessenger_sendDeleteSiriHistoryRequestWithAccessoryUUID_completionHandler___block_invoke;
   v26 = &unk_1E754DE00;
-  v27 = v9;
-  v28 = v7;
-  v20 = v7;
+  v27 = selfCopy;
+  v28 = handlerCopy;
+  v20 = handlerCopy;
   [v19 setResponseHandler:&v23];
-  v21 = [(HMSiriEndpointProfilesMessenger *)v9 messageDispatcher:v23];
+  v21 = [(HMSiriEndpointProfilesMessenger *)selfCopy messageDispatcher:v23];
   [v21 sendMessage:v19];
 
   v22 = *MEMORY[0x1E69E9840];
@@ -88,14 +88,14 @@ void __99__HMSiriEndpointProfilesMessenger_sendDeleteSiriHistoryRequestWithAcces
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendApplyOnboardingSelectionsRequestWithAccessoryUUID:(id)a3 onboardingSelections:(id)a4 completionHandler:(id)a5
+- (void)sendApplyOnboardingSelectionsRequestWithAccessoryUUID:(id)d onboardingSelections:(id)selections completionHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  selectionsCopy = selections;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -103,31 +103,31 @@ void __99__HMSiriEndpointProfilesMessenger_sendDeleteSiriHistoryRequestWithAcces
     *buf = 138543874;
     v33 = v14;
     v34 = 2112;
-    v35 = v8;
+    v35 = dCopy;
     v36 = 2112;
-    v37 = v9;
+    v37 = selectionsCopy;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@Sending apply onboarding selections request with accessory UUID: %@ onboarding selections: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [[HMSiriEndpointApplyOnboardingSelectionsPayload alloc] initWithAccessoryUUID:v8 onboardingSelections:v9];
+  v15 = [[HMSiriEndpointApplyOnboardingSelectionsPayload alloc] initWithAccessoryUUID:dCopy onboardingSelections:selectionsCopy];
   v16 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v17 = [(HMSiriEndpointProfilesMessenger *)v12 messageTargetUUID];
-  v18 = [v16 initWithTarget:v17];
+  messageTargetUUID = [(HMSiriEndpointProfilesMessenger *)selfCopy messageTargetUUID];
+  v18 = [v16 initWithTarget:messageTargetUUID];
 
   v19 = objc_alloc(MEMORY[0x1E69A2A10]);
-  v20 = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)v15 payloadCopy];
-  v21 = [v19 initWithName:@"HMSiriEndpointApplyOnboardingSelectionsRequestMessage" destination:v18 payload:v20];
+  payloadCopy = [(HMSiriEndpointApplyOnboardingSelectionsPayload *)v15 payloadCopy];
+  v21 = [v19 initWithName:@"HMSiriEndpointApplyOnboardingSelectionsRequestMessage" destination:v18 payload:payloadCopy];
 
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __128__HMSiriEndpointProfilesMessenger_sendApplyOnboardingSelectionsRequestWithAccessoryUUID_onboardingSelections_completionHandler___block_invoke;
   v29 = &unk_1E754DE00;
-  v30 = v12;
-  v31 = v10;
-  v22 = v10;
+  v30 = selfCopy;
+  v31 = handlerCopy;
+  v22 = handlerCopy;
   [v21 setResponseHandler:&v26];
-  v23 = [(HMSiriEndpointProfilesMessenger *)v12 messageDispatcher:v26];
+  v23 = [(HMSiriEndpointProfilesMessenger *)selfCopy messageDispatcher:v26];
   v24 = [v21 copy];
   [v23 sendMessage:v24];
 
@@ -211,18 +211,18 @@ LABEL_16:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (HMSiriEndpointProfilesMessenger)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4
+- (HMSiriEndpointProfilesMessenger)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  dispatcherCopy = dispatcher;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = dispatcherCopy;
+  if (!dispatcherCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -235,8 +235,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_messageTargetUUID, a3);
-    objc_storeStrong(&v11->_messageDispatcher, a4);
+    objc_storeStrong(&v10->_messageTargetUUID, d);
+    objc_storeStrong(&v11->_messageDispatcher, dispatcher);
   }
 
   return v11;
@@ -264,15 +264,15 @@ uint64_t __46__HMSiriEndpointProfilesMessenger_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)messageTargetUUIDWithHomeUUID:(id)a3
++ (id)messageTargetUUIDWithHomeUUID:(id)d
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"CFD1F2B8-1A6D-447F-B7CC-23AE501D9033"];
   v6 = MEMORY[0x1E696AFB0];
-  v7 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v7 dataUsingEncoding:4];
+  v8 = [uUIDString dataUsingEncoding:4];
   v9 = [v6 hmf_UUIDWithNamespace:v5 data:v8];
 
   return v9;

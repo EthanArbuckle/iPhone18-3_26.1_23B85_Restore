@@ -1,14 +1,14 @@
 @interface DRFlockAnimatable
-+ (id)animationBlock:(id)a3;
++ (id)animationBlock:(id)block;
 @end
 
 @implementation DRFlockAnimatable
 
-+ (id)animationBlock:(id)a3
++ (id)animationBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
-  [v4 setAnimationBlock:v3];
+  [v4 setAnimationBlock:blockCopy];
 
   return v4;
 }

@@ -1,24 +1,24 @@
 @interface _MRVirtualTouchEventProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPhase:(id)a3;
+- (int)StringAsPhase:(id)phase;
 - (int)phase;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasFinger:(BOOL)a3;
-- (void)setHasPhase:(BOOL)a3;
-- (void)setHasY:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasFinger:(BOOL)finger;
+- (void)setHasPhase:(BOOL)phase;
+- (void)setHasY:(BOOL)y;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRVirtualTouchEventProtobuf
 
-- (void)setHasY:(BOOL)a3
+- (void)setHasY:(BOOL)y
 {
-  if (a3)
+  if (y)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   }
 }
 
-- (void)setHasPhase:(BOOL)a3
+- (void)setHasPhase:(BOOL)phase
 {
-  if (a3)
+  if (phase)
   {
     v3 = 8;
   }
@@ -59,35 +59,35 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsPhase:(id)a3
+- (int)StringAsPhase:(id)phase
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  phaseCopy = phase;
+  if ([phaseCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Began"])
+  else if ([phaseCopy isEqualToString:@"Began"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Moved"])
+  else if ([phaseCopy isEqualToString:@"Moved"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Stationary"])
+  else if ([phaseCopy isEqualToString:@"Stationary"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Ended"])
+  else if ([phaseCopy isEqualToString:@"Ended"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Cancelled"])
+  else if ([phaseCopy isEqualToString:@"Cancelled"])
   {
     v4 = 5;
   }
@@ -100,9 +100,9 @@
   return v4;
 }
 
-- (void)setHasFinger:(BOOL)a3
+- (void)setHasFinger:(BOOL)finger
 {
-  if (a3)
+  if (finger)
   {
     v3 = 4;
   }
@@ -121,20 +121,20 @@
   v8.receiver = self;
   v8.super_class = _MRVirtualTouchEventProtobuf;
   v4 = [(_MRVirtualTouchEventProtobuf *)&v8 description];
-  v5 = [(_MRVirtualTouchEventProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRVirtualTouchEventProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_x];
-    [v3 setObject:v7 forKey:@"x"];
+    [dictionary setObject:v7 forKey:@"x"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -155,7 +155,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithDouble:self->_y];
-  [v3 setObject:v8 forKey:@"y"];
+  [dictionary setObject:v8 forKey:@"y"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -181,7 +181,7 @@ LABEL_11:
     v10 = off_1E76A3380[phase];
   }
 
-  [v3 setObject:v10 forKey:@"phase"];
+  [dictionary setObject:v10 forKey:@"phase"];
 
   if ((*&self->_has & 4) == 0)
   {
@@ -190,16 +190,16 @@ LABEL_11:
 
 LABEL_5:
   v5 = [MEMORY[0x1E696AD98] numberWithInt:self->_finger];
-  [v3 setObject:v5 forKey:@"finger"];
+  [dictionary setObject:v5 forKey:@"finger"];
 
 LABEL_6:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -250,14 +250,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = *&self->_x;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = *&self->_x;
+    *(toCopy + 32) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -276,8 +276,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = *&self->_y;
-  *(v4 + 32) |= 2u;
+  toCopy[2] = *&self->_y;
+  *(toCopy + 32) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -291,21 +291,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  *(v4 + 7) = self->_phase;
-  *(v4 + 32) |= 8u;
+  *(toCopy + 7) = self->_phase;
+  *(toCopy + 32) |= 8u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_5:
-    *(v4 + 6) = self->_finger;
-    *(v4 + 32) |= 4u;
+    *(toCopy + 6) = self->_finger;
+    *(toCopy + 32) |= 4u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has)
   {
@@ -357,23 +357,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_x != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_x != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_21:
     v5 = 0;
@@ -382,34 +382,34 @@ LABEL_21:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_y != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_y != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0 || self->_phase != *(v4 + 7))
+    if ((*(equalCopy + 32) & 8) == 0 || self->_phase != *(equalCopy + 7))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 32) & 8) != 0)
+  else if ((*(equalCopy + 32) & 8) != 0)
   {
     goto LABEL_21;
   }
 
-  v5 = (*(v4 + 32) & 4) == 0;
+  v5 = (*(equalCopy + 32) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_finger != *(v4 + 6))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_finger != *(equalCopy + 6))
     {
       goto LABEL_21;
     }
@@ -515,15 +515,15 @@ LABEL_19:
   return v8 ^ v4 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if (v5)
   {
-    self->_x = *(v4 + 1);
+    self->_x = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -536,14 +536,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 2) == 0)
+  else if ((*(fromCopy + 32) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_y = *(v4 + 2);
+  self->_y = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 32);
+  v5 = *(fromCopy + 32);
   if ((v5 & 8) == 0)
   {
 LABEL_4:
@@ -556,12 +556,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_phase = *(v4 + 7);
+  self->_phase = *(fromCopy + 7);
   *&self->_has |= 8u;
-  if ((*(v4 + 32) & 4) != 0)
+  if ((*(fromCopy + 32) & 4) != 0)
   {
 LABEL_5:
-    self->_finger = *(v4 + 6);
+    self->_finger = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 

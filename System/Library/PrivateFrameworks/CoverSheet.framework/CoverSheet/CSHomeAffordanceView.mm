@@ -1,71 +1,71 @@
 @interface CSHomeAffordanceView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view;
 - (CGRect)extendedFrameForPointerAnimationSuppression;
-- (CGSize)suggestedSizeForContentWidth:(double)a3;
+- (CGSize)suggestedSizeForContentWidth:(double)width;
 - (CSAlwaysOnHomeAffordancePillView)alwaysOnHomeAffordancePillView;
-- (CSHomeAffordanceView)initWithCoverSheetContext:(id)a3;
+- (CSHomeAffordanceView)initWithCoverSheetContext:(id)context;
 - (MTLumaDodgePillView)lumaDodgePillView;
 - (MTStaticColorPillView)staticColorPillView;
 - (SBFHomeAffordanceView)homeAffordanceView;
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3;
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view;
 - (double)suggestedEdgeSpacing;
 - (id)_newAlwaysOnHomeAffordancePillView;
 - (id)_newHomeAffordanceView;
 - (id)_newLumaDodgePillView;
 - (id)_newStaticColorPillView;
-- (id)_viewForStyle:(unint64_t)a3;
-- (id)styleForRegion:(id)a3 forView:(id)a4;
+- (id)_viewForStyle:(unint64_t)style;
+- (id)styleForRegion:(id)region forView:(id)view;
 - (unint64_t)_effectiveHomeAffordanceViewHintStyle;
-- (void)_transitionToStyle:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_transitionToStyle:(unint64_t)style animated:(BOOL)animated;
 - (void)_updateForLegibility;
-- (void)assistantDidChangeHomeAffordanceDoubleTapGestureEnablement:(id)a3;
+- (void)assistantDidChangeHomeAffordanceDoubleTapGestureEnablement:(id)enablement;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)performHintAnimationWithCompletionHandler:(id)a3;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setOverrideColor:(id)a3;
-- (void)setStyle:(unint64_t)a3;
-- (void)setSystemPointerInteractionEnabled:(BOOL)a3;
+- (void)performHintAnimationWithCompletionHandler:(id)handler;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setOverrideColor:(id)color;
+- (void)setStyle:(unint64_t)style;
+- (void)setSystemPointerInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation CSHomeAffordanceView
 
-- (CSHomeAffordanceView)initWithCoverSheetContext:(id)a3
+- (CSHomeAffordanceView)initWithCoverSheetContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = CSHomeAffordanceView;
   v6 = [(CSHomeAffordanceView *)&v18 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_coverSheetContext, a3);
-    v8 = [MEMORY[0x277D65E80] rootSettings];
+    objc_storeStrong(&v6->_coverSheetContext, context);
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
     settings = v7->_settings;
-    v7->_settings = v8;
+    v7->_settings = rootSettings;
 
-    v10 = [(CSHomeAffordanceView *)v7 _newStaticColorPillView];
-    v11 = [(CSHomeAffordanceView *)v7 _newLumaDodgePillView];
-    v12 = [(CSHomeAffordanceView *)v7 _newAlwaysOnHomeAffordancePillView];
-    v13 = [(CSHomeAffordanceView *)v7 _newHomeAffordanceView];
-    [v13 addContentView:v12];
-    [v13 addContentView:v11];
-    [v13 addContentView:v10];
-    [(CSHomeAffordanceView *)v7 addSubview:v13];
-    objc_storeWeak(&v7->_staticColorPillView, v10);
-    objc_storeWeak(&v7->_lumaDodgePillView, v11);
-    objc_storeWeak(&v7->_alwaysOnHomeAffordancePillView, v12);
-    objc_storeWeak(&v7->_homeAffordanceView, v13);
+    _newStaticColorPillView = [(CSHomeAffordanceView *)v7 _newStaticColorPillView];
+    _newLumaDodgePillView = [(CSHomeAffordanceView *)v7 _newLumaDodgePillView];
+    _newAlwaysOnHomeAffordancePillView = [(CSHomeAffordanceView *)v7 _newAlwaysOnHomeAffordancePillView];
+    _newHomeAffordanceView = [(CSHomeAffordanceView *)v7 _newHomeAffordanceView];
+    [_newHomeAffordanceView addContentView:_newAlwaysOnHomeAffordancePillView];
+    [_newHomeAffordanceView addContentView:_newLumaDodgePillView];
+    [_newHomeAffordanceView addContentView:_newStaticColorPillView];
+    [(CSHomeAffordanceView *)v7 addSubview:_newHomeAffordanceView];
+    objc_storeWeak(&v7->_staticColorPillView, _newStaticColorPillView);
+    objc_storeWeak(&v7->_lumaDodgePillView, _newLumaDodgePillView);
+    objc_storeWeak(&v7->_alwaysOnHomeAffordancePillView, _newAlwaysOnHomeAffordancePillView);
+    objc_storeWeak(&v7->_homeAffordanceView, _newHomeAffordanceView);
     v7->_style = 0;
-    v14 = [MEMORY[0x277D759A0] mainScreen];
-    [v14 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     [(CSHomeAffordanceView *)v7 suggestedSizeForContentWidth:v15];
 
     BSRectWithSize();
     [(CSHomeAffordanceView *)v7 setFrame:?];
-    v16 = [(CSCoverSheetContextProviding *)v7->_coverSheetContext assistantController];
-    [v16 addAssistantControllerObserver:v7];
+    assistantController = [(CSCoverSheetContextProviding *)v7->_coverSheetContext assistantController];
+    [assistantController addAssistantControllerObserver:v7];
   }
 
   return v7;
@@ -73,8 +73,8 @@
 
 - (void)dealloc
 {
-  v3 = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
-  [v3 removeAssistantControllerObserver:self];
+  assistantController = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
+  [assistantController removeAssistantControllerObserver:self];
 
   v4.receiver = self;
   v4.super_class = CSHomeAffordanceView;
@@ -113,10 +113,10 @@
   return v2;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(CSHomeAffordanceView *)self bounds];
   UIRectGetCenter();
   UIRectCenteredAboutPoint();
@@ -126,10 +126,10 @@
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (CGSize)suggestedSizeForContentWidth:(double)a3
+- (CGSize)suggestedSizeForContentWidth:(double)width
 {
   WeakRetained = objc_loadWeakRetained(&self->_lumaDodgePillView);
-  [WeakRetained suggestedSizeForContentWidth:a3];
+  [WeakRetained suggestedSizeForContentWidth:width];
   v6 = v5;
   v8 = v7;
 
@@ -168,69 +168,69 @@
   return result;
 }
 
-- (void)performHintAnimationWithCompletionHandler:(id)a3
+- (void)performHintAnimationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_homeAffordanceView);
-  [WeakRetained performHintAnimationWithCompletionHandler:v4];
+  [WeakRetained performHintAnimationWithCompletionHandler:handlerCopy];
 }
 
-- (void)setSystemPointerInteractionEnabled:(BOOL)a3
+- (void)setSystemPointerInteractionEnabled:(BOOL)enabled
 {
-  if (self->_systemPointerInteractionEnabled != a3)
+  if (self->_systemPointerInteractionEnabled != enabled)
   {
-    v4 = a3;
-    self->_systemPointerInteractionEnabled = a3;
-    v6 = [(CSCoverSheetContextProviding *)self->_coverSheetContext systemPointerInteractionManager];
-    v7 = v6;
-    if (v4)
+    enabledCopy = enabled;
+    self->_systemPointerInteractionEnabled = enabled;
+    systemPointerInteractionManager = [(CSCoverSheetContextProviding *)self->_coverSheetContext systemPointerInteractionManager];
+    v7 = systemPointerInteractionManager;
+    if (enabledCopy)
     {
-      [v6 registerView:self delegate:self];
+      [systemPointerInteractionManager registerView:self delegate:self];
     }
 
     else
     {
-      [v6 unregisterView:self];
+      [systemPointerInteractionManager unregisterView:self];
     }
   }
 }
 
-- (void)setStyle:(unint64_t)a3
+- (void)setStyle:(unint64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
     [CSHomeAffordanceView _transitionToStyle:"_transitionToStyle:animated:" animated:?];
   }
 }
 
-- (void)setOverrideColor:(id)a3
+- (void)setOverrideColor:(id)color
 {
-  v5 = a3;
-  if (self->_overrideColor != v5)
+  colorCopy = color;
+  if (self->_overrideColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_overrideColor, a3);
-    v6 = [(CSHomeAffordanceView *)self staticColorPillView];
-    [v6 setPillColor:self->_overrideColor];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_overrideColor, color);
+    staticColorPillView = [(CSHomeAffordanceView *)self staticColorPillView];
+    [staticColorPillView setPillColor:self->_overrideColor];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings sb_isEqualToLegibilitySettings:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_legibilitySettings, a3);
+    objc_storeStrong(&self->_legibilitySettings, settings);
     [(CSHomeAffordanceView *)self _updateForLegibility];
   }
 }
 
 - (void)_updateForLegibility
 {
-  v3 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(CSHomeAffordanceView *)self setOverrideColor:v3];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(CSHomeAffordanceView *)self setOverrideColor:primaryColor];
 
   WeakRetained = objc_loadWeakRetained(&self->_lumaDodgePillView);
   if ([(_UILegibilitySettings *)self->_legibilitySettings style]== 2)
@@ -256,13 +256,13 @@
   [WeakRetained setFrame:?];
 }
 
-- (void)assistantDidChangeHomeAffordanceDoubleTapGestureEnablement:(id)a3
+- (void)assistantDidChangeHomeAffordanceDoubleTapGestureEnablement:(id)enablement
 {
   WeakRetained = objc_loadWeakRetained(&self->_homeAffordanceView);
   [WeakRetained setHintStyle:{-[CSHomeAffordanceView _effectiveHomeAffordanceViewHintStyle](self, "_effectiveHomeAffordanceViewHintStyle")}];
 }
 
-- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)a3
+- (UIEdgeInsets)pointerInteractionHitTestInsetsForView:(id)view
 {
   [(SBFHomeGrabberSettings *)self->_settings hitTestOutsetSides];
   v5 = v4;
@@ -278,9 +278,9 @@
   return result;
 }
 
-- (BOOL)shouldBeginPointerInteractionRequest:(id)a3 atLocation:(CGPoint)a4 forView:(id)a5
+- (BOOL)shouldBeginPointerInteractionRequest:(id)request atLocation:(CGPoint)location forView:(id)view
 {
-  if (([a3 _isPencilInitiated] & 1) != 0 || (-[CSHomeAffordanceView isHiddenOrHasHiddenAncestor](self, "isHiddenOrHasHiddenAncestor") & 1) != 0 || !-[CSHomeAffordanceView _isInAWindow](self, "_isInAWindow"))
+  if (([request _isPencilInitiated] & 1) != 0 || (-[CSHomeAffordanceView isHiddenOrHasHiddenAncestor](self, "isHiddenOrHasHiddenAncestor") & 1) != 0 || !-[CSHomeAffordanceView _isInAWindow](self, "_isInAWindow"))
   {
     return 0;
   }
@@ -288,7 +288,7 @@
   return [(CSHomeAffordanceView *)self isSystemPointerInteractionEnabled];
 }
 
-- (id)styleForRegion:(id)a3 forView:(id)a4
+- (id)styleForRegion:(id)region forView:(id)view
 {
   v5 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:self];
   v6 = [MEMORY[0x277D75860] effectWithPreview:v5];
@@ -304,18 +304,18 @@
   return v20;
 }
 
-- (void)_transitionToStyle:(unint64_t)a3 animated:(BOOL)a4
+- (void)_transitionToStyle:(unint64_t)style animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   style = self->_style;
-  self->_style = a3;
+  self->_style = style;
   v8 = [(CSHomeAffordanceView *)self _viewForStyle:style];
   v9 = [(CSHomeAffordanceView *)self _viewForStyle:self->_style];
   if (v9 != v8)
   {
-    v10 = [(CSHomeAffordanceView *)self homeAffordanceView];
+    homeAffordanceView = [(CSHomeAffordanceView *)self homeAffordanceView];
     [v9 setHidden:0];
-    if (v4)
+    if (animatedCopy)
     {
       v11 = 0.6;
     }
@@ -330,8 +330,8 @@
     v17[1] = 3221225472;
     v17[2] = __52__CSHomeAffordanceView__transitionToStyle_animated___block_invoke;
     v17[3] = &unk_27838B690;
-    v21 = a3;
-    v18 = v10;
+    styleCopy = style;
+    v18 = homeAffordanceView;
     v19 = v8;
     v20 = v9;
     v14[0] = MEMORY[0x277D85DD0];
@@ -341,7 +341,7 @@
     v14[4] = self;
     v15 = v20;
     v16 = v19;
-    v13 = v10;
+    v13 = homeAffordanceView;
     [v12 animateWithDuration:v17 animations:v14 completion:v11];
   }
 
@@ -374,16 +374,16 @@ void __52__CSHomeAffordanceView__transitionToStyle_animated___block_invoke_2(uin
   }
 }
 
-- (id)_viewForStyle:(unint64_t)a3
+- (id)_viewForStyle:(unint64_t)style
 {
-  if (a3 - 1 > 2)
+  if (style - 1 > 2)
   {
     WeakRetained = 0;
   }
 
   else
   {
-    WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *off_27838B6D8[a3 - 1]));
+    WeakRetained = objc_loadWeakRetained((&self->super.super.super.isa + *off_27838B6D8[style - 1]));
   }
 
   return WeakRetained;
@@ -391,10 +391,10 @@ void __52__CSHomeAffordanceView__transitionToStyle_animated___block_invoke_2(uin
 
 - (unint64_t)_effectiveHomeAffordanceViewHintStyle
 {
-  v2 = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
-  v3 = [v2 isHomeAffordanceDoubleTapGestureEnabled];
+  assistantController = [(CSCoverSheetContextProviding *)self->_coverSheetContext assistantController];
+  isHomeAffordanceDoubleTapGestureEnabled = [assistantController isHomeAffordanceDoubleTapGestureEnabled];
 
-  if (v3)
+  if (isHomeAffordanceDoubleTapGestureEnabled)
   {
     return *MEMORY[0x277D66040];
   }

@@ -1,24 +1,24 @@
 @interface WFCurrentDateActionMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (NSDateFormatter)dateFormatter;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFCurrentDateActionMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"128") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"128") == 3)
   {
-    if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.currentdate", v5))
+    if (WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.currentdate", migrationCopy))
     {
       HasActionsWithIdentifier = 1;
     }
 
     else
     {
-      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.date", v5);
+      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.date", migrationCopy);
     }
   }
 
@@ -55,8 +55,8 @@
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKey:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKey:actionIdentifierKey];
 
         if ([v10 isEqualToString:@"is.workflow.actions.currentdate"])
         {
@@ -68,18 +68,18 @@
           goto LABEL_10;
         }
 
-        v14 = [(WFWorkflowMigration *)self actionParametersKey];
-        v15 = [v8 objectForKeyedSubscript:v14];
+        actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+        v15 = [v8 objectForKeyedSubscript:actionParametersKey];
         v16 = [v15 objectForKeyedSubscript:v5];
 
         if (!v16)
         {
 LABEL_7:
-          v11 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v8 setObject:@"is.workflow.actions.date" forKeyedSubscript:v11];
+          actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v8 setObject:@"is.workflow.actions.date" forKeyedSubscript:actionIdentifierKey2];
 
-          v12 = [(WFWorkflowMigration *)self actionParametersKey];
-          v13 = [v8 objectForKeyedSubscript:v12];
+          actionParametersKey2 = [(WFWorkflowMigration *)self actionParametersKey];
+          v13 = [v8 objectForKeyedSubscript:actionParametersKey2];
 
           [v13 setObject:@"Current Date" forKeyedSubscript:@"WFDateActionMode"];
         }
@@ -93,8 +93,8 @@ LABEL_10:
             goto LABEL_14;
           }
 
-          v17 = [(WFWorkflowMigration *)self actionParametersKey];
-          v13 = [v8 objectForKey:v17];
+          actionParametersKey3 = [(WFWorkflowMigration *)self actionParametersKey];
+          v13 = [v8 objectForKey:actionParametersKey3];
 
           [v13 setObject:@"Specified Date" forKeyedSubscript:@"WFDateActionMode"];
           v18 = [v13 objectForKeyedSubscript:v7];
@@ -103,9 +103,9 @@ LABEL_10:
 
           if (isKindOfClass)
           {
-            v20 = [(WFCurrentDateActionMigration *)self dateFormatter];
+            dateFormatter = [(WFCurrentDateActionMigration *)self dateFormatter];
             v21 = [v13 objectForKeyedSubscript:v7];
-            v22 = [v20 stringFromDate:v21];
+            v22 = [dateFormatter stringFromDate:v21];
             [v13 setObject:v22 forKeyedSubscript:v7];
           }
         }

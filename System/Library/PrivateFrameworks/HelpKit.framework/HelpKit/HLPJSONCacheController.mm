@@ -1,11 +1,11 @@
 @interface HLPJSONCacheController
 + (id)sharedInstance;
-- (BOOL)isURLValid:(id)a3;
-- (id)formattedDataWithData:(id)a3;
-- (id)formattedDataWithFileURL:(id)a3;
+- (BOOL)isURLValid:(id)valid;
+- (id)formattedDataWithData:(id)data;
+- (id)formattedDataWithFileURL:(id)l;
 - (id)newDataCache;
 - (void)commonInit;
-- (void)formattedDataWithFileURL:(id)a3 completionHandler:(id)a4;
+- (void)formattedDataWithFileURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation HLPJSONCacheController
@@ -50,24 +50,24 @@ uint64_t __40__HLPJSONCacheController_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)formattedDataWithFileURL:(id)a3
+- (id)formattedDataWithFileURL:(id)l
 {
   v4 = MEMORY[0x277CBEA90];
-  v5 = [a3 path];
-  v6 = [v4 dataWithContentsOfFile:v5];
+  path = [l path];
+  v6 = [v4 dataWithContentsOfFile:path];
 
   v7 = [(HLPJSONCacheController *)self formattedDataWithData:v6];
 
   return v7;
 }
 
-- (id)formattedDataWithData:(id)a3
+- (id)formattedDataWithData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v8 = 0;
-    v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v3 options:1 error:&v8];
+    v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:1 error:&v8];
     v5 = v8;
     if (v5)
     {
@@ -90,31 +90,31 @@ uint64_t __40__HLPJSONCacheController_sharedInstance__block_invoke()
   return v4;
 }
 
-- (BOOL)isURLValid:(id)a3
+- (BOOL)isURLValid:(id)valid
 {
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v4 path];
+  validCopy = valid;
+  defaultManager = [v3 defaultManager];
+  path = [validCopy path];
 
-  LOBYTE(v4) = [v5 fileExistsAtPath:v6];
-  return v4;
+  LOBYTE(validCopy) = [defaultManager fileExistsAtPath:path];
+  return validCopy;
 }
 
-- (void)formattedDataWithFileURL:(id)a3 completionHandler:(id)a4
+- (void)formattedDataWithFileURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(HLPJSONCacheController *)self isURLValid:v6])
+  lCopy = l;
+  handlerCopy = handler;
+  if ([(HLPJSONCacheController *)self isURLValid:lCopy])
   {
     v8 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __69__HLPJSONCacheController_formattedDataWithFileURL_completionHandler___block_invoke;
     block[3] = &unk_2797074D8;
-    v10 = v6;
-    v11 = self;
-    v12 = v7;
+    v10 = lCopy;
+    selfCopy = self;
+    v12 = handlerCopy;
     dispatch_async(v8, block);
   }
 }

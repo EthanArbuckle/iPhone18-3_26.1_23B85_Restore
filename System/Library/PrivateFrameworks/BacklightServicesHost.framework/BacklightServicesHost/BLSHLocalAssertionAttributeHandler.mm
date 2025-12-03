@@ -2,12 +2,12 @@
 + (Class)attributeBaseClass;
 + (Class)entryClass;
 + (id)attributeClasses;
-+ (id)registerHandlerForService:(id)a3;
++ (id)registerHandlerForService:(id)service;
 - (BLSHLocalAssertionService)service;
-- (id)initForService:(id)a3;
-- (id)withLock_entryFromEntries:(void *)a3 forAttribute:;
-- (void)activateAttributes:(id)a3 fromAssertion:(id)a4 forService:(id)a5;
-- (void)deactivateAttributes:(id)a3 fromAssertion:(id)a4 forService:(id)a5;
+- (id)initForService:(id)service;
+- (id)withLock_entryFromEntries:(void *)entries forAttribute:;
+- (void)activateAttributes:(id)attributes fromAssertion:(id)assertion forService:(id)service;
+- (void)deactivateAttributes:(id)attributes fromAssertion:(id)assertion forService:(id)service;
 - (void)setupService;
 @end
 
@@ -20,10 +20,10 @@
   return WeakRetained;
 }
 
-+ (id)registerHandlerForService:(id)a3
++ (id)registerHandlerForService:(id)service
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initForService:v4];
+  serviceCopy = service;
+  v5 = [[self alloc] initForService:serviceCopy];
 
   [v5 setupService];
 
@@ -34,7 +34,7 @@
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = NSStringFromSelector(a2);
-  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalAssertionAttributeHandler and override %@", a1, v5];
+  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalAssertionAttributeHandler and override %@", self, v5];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -46,7 +46,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"BLSHLocalAssertionAttributeHandler.m";
     v19 = 1024;
@@ -66,7 +66,7 @@
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = NSStringFromSelector(a2);
-  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalAssertionAttributeHandler and override %@", a1, v5];
+  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalAssertionAttributeHandler and override %@", self, v5];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -78,7 +78,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"BLSHLocalAssertionAttributeHandler.m";
     v19 = 1024;
@@ -98,7 +98,7 @@
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = NSStringFromSelector(a2);
-  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalAssertionAttributeHandler and override %@", a1, v5];
+  v6 = [v4 stringWithFormat:@"%@ must subclass BLSHLocalAssertionAttributeHandler and override %@", self, v5];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
@@ -110,7 +110,7 @@
     v13 = 2114;
     v14 = v9;
     v15 = 2048;
-    v16 = a1;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"BLSHLocalAssertionAttributeHandler.m";
     v19 = 1024;
@@ -126,9 +126,9 @@
   return result;
 }
 
-- (id)initForService:(id)a3
+- (id)initForService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v10.receiver = self;
   v10.super_class = BLSHLocalAssertionAttributeHandler;
   v5 = [(BLSHLocalAssertionAttributeHandler *)&v10 init];
@@ -136,11 +136,11 @@
   if (v5)
   {
     v5->_lock._os_unfair_lock_opaque = 0;
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     entries = v6->_entries;
-    v6->_entries = v7;
+    v6->_entries = dictionary;
 
-    objc_storeWeak(&v6->_service, v4);
+    objc_storeWeak(&v6->_service, serviceCopy);
   }
 
   return v6;
@@ -149,43 +149,43 @@
 - (void)setupService
 {
   WeakRetained = objc_loadWeakRetained(&self->_service);
-  v3 = [objc_opt_class() attributeClasses];
-  [WeakRetained registerAttributeHandler:self forAttributeClasses:v3];
+  attributeClasses = [objc_opt_class() attributeClasses];
+  [WeakRetained registerAttributeHandler:self forAttributeClasses:attributeClasses];
 }
 
-- (void)activateAttributes:(id)a3 fromAssertion:(id)a4 forService:(id)a5
+- (void)activateAttributes:(id)attributes fromAssertion:(id)assertion forService:(id)service
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v35 = a5;
-  v37 = v9;
-  v10 = [v9 identifier];
-  if (v10)
+  attributesCopy = attributes;
+  assertionCopy = assertion;
+  serviceCopy = service;
+  v37 = assertionCopy;
+  identifier = [assertionCopy identifier];
+  if (identifier)
   {
     os_unfair_lock_lock(&self->_lock);
-    v11 = [(NSMutableDictionary *)self->_entries objectForKey:v10];
-    if (!v11)
+    array = [(NSMutableDictionary *)self->_entries objectForKey:identifier];
+    if (!array)
     {
-      v11 = [MEMORY[0x277CBEB18] array];
-      [(NSMutableDictionary *)self->_entries setObject:v11 forKey:v10];
+      array = [MEMORY[0x277CBEB18] array];
+      [(NSMutableDictionary *)self->_entries setObject:array forKey:identifier];
     }
 
-    v33 = v10;
-    v36 = [objc_opt_class() entryClass];
-    v12 = [objc_opt_class() attributeBaseClass];
+    v33 = identifier;
+    entryClass = [objc_opt_class() entryClass];
+    attributeBaseClass = [objc_opt_class() attributeBaseClass];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v34 = v8;
-    v13 = v8;
+    v34 = attributesCopy;
+    v13 = attributesCopy;
     v14 = [v13 countByEnumeratingWithState:&v39 objects:v51 count:16];
     if (v14)
     {
       v15 = v14;
       v16 = *v40;
-      v38 = self;
+      selfCopy = self;
       do
       {
         v17 = 0;
@@ -199,21 +199,21 @@
           v18 = *(*(&v39 + 1) + 8 * v17);
           if (objc_opt_isKindOfClass())
           {
-            v20 = [(BLSHLocalAssertionAttributeHandler *)self withLock_entryFromEntries:v11 forAttribute:v18];
+            v20 = [(BLSHLocalAssertionAttributeHandler *)self withLock_entryFromEntries:array forAttribute:v18];
             if (v20)
             {
               v19 = v20;
-              v21 = v11;
-              v22 = [v20 reactivateIfPossible];
+              v21 = array;
+              reactivateIfPossible = [v20 reactivateIfPossible];
               v23 = bls_assertions_log();
               v24 = v23;
-              if (v22)
+              if (reactivateIfPossible)
               {
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
                 {
                   v25 = NSStringFromBLSAssertingObject();
                   *buf = 134218754;
-                  v44 = v38;
+                  selfCopy3 = selfCopy;
                   v45 = 2114;
                   v46 = v19;
                   v47 = 2112;
@@ -229,7 +229,7 @@
               {
                 v25 = NSStringFromBLSAssertingObject();
                 *buf = 134218754;
-                v44 = v38;
+                selfCopy3 = selfCopy;
                 v45 = 2114;
                 v46 = v19;
                 v47 = 2112;
@@ -240,12 +240,12 @@
 LABEL_28:
               }
 
-              v11 = v21;
-              self = v38;
+              array = v21;
+              self = selfCopy;
               goto LABEL_12;
             }
 
-            v19 = [v36 activateForAttribute:v18 fromAssertion:v37 forService:v35 attributeHandler:self];
+            v19 = [entryClass activateForAttribute:v18 fromAssertion:v37 forService:serviceCopy attributeHandler:self];
             v26 = bls_assertions_log();
             v27 = v26;
             if (v19)
@@ -253,9 +253,9 @@ LABEL_28:
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
               {
                 NSStringFromBLSAssertingObject();
-                v30 = v29 = v11;
+                v30 = v29 = array;
                 *buf = 134218754;
-                v44 = v38;
+                selfCopy3 = selfCopy;
                 v45 = 2112;
                 v46 = v19;
                 v47 = 2112;
@@ -264,11 +264,11 @@ LABEL_28:
                 v50 = v30;
                 _os_log_debug_impl(&dword_21FD11000, v27, OS_LOG_TYPE_DEBUG, "%p did activate entry:%{pubic}@ for attribute:%{pubic}@ assertion:%{pubic}@", buf, 0x2Au);
 
-                v11 = v29;
-                self = v38;
+                array = v29;
+                self = selfCopy;
               }
 
-              [v11 addObject:v19];
+              [array addObject:v19];
             }
 
             else
@@ -277,9 +277,9 @@ LABEL_28:
               {
                 v28 = NSStringFromBLSAssertingObject();
                 *buf = 134218754;
-                v44 = self;
+                selfCopy3 = self;
                 v45 = 2112;
-                v46 = v36;
+                v46 = entryClass;
                 v47 = 2114;
                 v48 = v18;
                 v49 = 2112;
@@ -297,11 +297,11 @@ LABEL_28:
             if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
             {
               *buf = 134218498;
-              v44 = self;
+              selfCopy3 = self;
               v45 = 2112;
               v46 = v18;
               v47 = 2112;
-              v48 = v12;
+              v48 = attributeBaseClass;
               _os_log_fault_impl(&dword_21FD11000, v19, OS_LOG_TYPE_FAULT, "%p cannot activate invalid attribute:%@ not of class:%@", buf, 0x20u);
             }
           }
@@ -320,14 +320,14 @@ LABEL_12:
     }
 
     os_unfair_lock_unlock(&self->_lock);
-    v10 = v33;
-    v8 = v34;
+    identifier = v33;
+    attributesCopy = v34;
   }
 
   else
   {
-    v11 = bls_assertions_log();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
+    array = bls_assertions_log();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_FAULT))
     {
       [BLSHLocalAssertionAttributeHandler activateAttributes:fromAssertion:forService:];
     }
@@ -336,27 +336,27 @@ LABEL_12:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deactivateAttributes:(id)a3 fromAssertion:(id)a4 forService:(id)a5
+- (void)deactivateAttributes:(id)attributes fromAssertion:(id)assertion forService:(id)service
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 identifier];
-  if (v9)
+  attributesCopy = attributes;
+  assertionCopy = assertion;
+  identifier = [assertionCopy identifier];
+  if (identifier)
   {
     os_unfair_lock_lock(&self->_lock);
     [objc_opt_class() attributeBaseClass];
-    v10 = [(NSMutableDictionary *)self->_entries objectForKey:v9];
+    v10 = [(NSMutableDictionary *)self->_entries objectForKey:identifier];
     if (v10)
     {
-      v27 = v9;
-      v28 = v7;
-      v29 = v8;
+      v27 = identifier;
+      v28 = attributesCopy;
+      v29 = assertionCopy;
       v32 = 0u;
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v11 = v7;
+      v11 = attributesCopy;
       v12 = [v11 countByEnumeratingWithState:&v30 objects:v42 count:16];
       if (v12)
       {
@@ -384,7 +384,7 @@ LABEL_12:
                 {
                   v20 = NSStringFromBLSAssertingObject();
                   *buf = 134218754;
-                  v35 = self;
+                  selfCopy3 = self;
                   v36 = 2112;
                   v37 = v17;
                   v38 = 2112;
@@ -405,7 +405,7 @@ LABEL_12:
                 {
                   v22 = NSStringFromBLSAssertingObject();
                   *buf = 134218498;
-                  v35 = self;
+                  selfCopy3 = self;
                   v36 = 2112;
                   v37 = v16;
                   v38 = 2112;
@@ -422,7 +422,7 @@ LABEL_12:
               if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
               {
                 *buf = 134218242;
-                v35 = self;
+                selfCopy3 = self;
                 v36 = 2112;
                 v37 = v16;
                 _os_log_fault_impl(&dword_21FD11000, v17, OS_LOG_TYPE_FAULT, "%p cannot deactivate invalid attribute:%@", buf, 0x16u);
@@ -440,9 +440,9 @@ LABEL_12:
         while (v24);
       }
 
-      v9 = v27;
-      v7 = v28;
-      v8 = v29;
+      identifier = v27;
+      attributesCopy = v28;
+      assertionCopy = v29;
       if (![v10 count])
       {
         [(NSMutableDictionary *)self->_entries removeObjectForKey:v27];
@@ -473,14 +473,14 @@ LABEL_12:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)withLock_entryFromEntries:(void *)a3 forAttribute:
+- (id)withLock_entryFromEntries:(void *)entries forAttribute:
 {
   v20 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  entriesCopy = entries;
+  if (self)
   {
-    os_unfair_lock_assert_owner(a1 + 4);
+    os_unfair_lock_assert_owner(self + 4);
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -500,9 +500,9 @@ LABEL_12:
           }
 
           v11 = *(*(&v15 + 1) + 8 * i);
-          v12 = [v11 attribute];
+          attribute = [v11 attribute];
 
-          if (v12 == v6)
+          if (attribute == entriesCopy)
           {
             v8 = v11;
             goto LABEL_12;

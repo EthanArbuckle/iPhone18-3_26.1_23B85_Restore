@@ -1,7 +1,7 @@
 @interface _MKFFaceprint
 - (MKFFaceprintDatabaseID)databaseID;
 - (id)createHMFaceprint;
-- (void)updateWithHMFaceprint:(id)a3;
+- (void)updateWithHMFaceprint:(id)faceprint;
 @end
 
 @implementation _MKFFaceprint
@@ -16,26 +16,26 @@
 - (id)createHMFaceprint
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(_MKFFaceprint *)self data];
-  v4 = [(_MKFFaceprint *)self modelUUID];
-  v5 = [(_MKFFaceprint *)self faceCropUUID];
-  v6 = v5;
-  if (v3 && v4 && v5)
+  data = [(_MKFFaceprint *)self data];
+  modelUUID = [(_MKFFaceprint *)self modelUUID];
+  faceCropUUID = [(_MKFFaceprint *)self faceCropUUID];
+  v6 = faceCropUUID;
+  if (data && modelUUID && faceCropUUID)
   {
     v7 = objc_alloc(MEMORY[0x277CD1A38]);
-    v8 = [(_MKFFaceprint *)self modelID];
-    v9 = [v7 initWithUUID:v8 data:v3 modelUUID:v4 faceCropUUID:v6];
+    modelID = [(_MKFFaceprint *)self modelID];
+    v9 = [v7 initWithUUID:modelID data:data modelUUID:modelUUID faceCropUUID:v6];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = HMFGetLogIdentifier();
-      v14 = [(HMDManagedObject *)v11 debugDescription];
+      v14 = [(HMDManagedObject *)selfCopy debugDescription];
       v17 = 138543618;
       v18 = v13;
       v19 = 2112;
@@ -52,18 +52,18 @@
   return v9;
 }
 
-- (void)updateWithHMFaceprint:(id)a3
+- (void)updateWithHMFaceprint:(id)faceprint
 {
-  v4 = a3;
-  v5 = [v4 data];
-  [(_MKFFaceprint *)self setData:v5];
+  faceprintCopy = faceprint;
+  data = [faceprintCopy data];
+  [(_MKFFaceprint *)self setData:data];
 
-  v6 = [v4 modelUUID];
-  [(_MKFFaceprint *)self setModelUUID:v6];
+  modelUUID = [faceprintCopy modelUUID];
+  [(_MKFFaceprint *)self setModelUUID:modelUUID];
 
-  v7 = [v4 faceCropUUID];
+  faceCropUUID = [faceprintCopy faceCropUUID];
 
-  [(_MKFFaceprint *)self setFaceCropUUID:v7];
+  [(_MKFFaceprint *)self setFaceCropUUID:faceCropUUID];
 }
 
 @end

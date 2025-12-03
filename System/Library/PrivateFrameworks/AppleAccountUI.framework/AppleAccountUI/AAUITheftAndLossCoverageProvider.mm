@@ -1,16 +1,16 @@
 @interface AAUITheftAndLossCoverageProvider
-- (void)createTnLDisclaimerViewControllerWithConfirmActionHandler:(id)a3 cancelActionHandler:(id)a4 completion:(id)a5;
-- (void)tnlDisclaimerLabelWithCompletion:(id)a3;
+- (void)createTnLDisclaimerViewControllerWithConfirmActionHandler:(id)handler cancelActionHandler:(id)actionHandler completion:(id)completion;
+- (void)tnlDisclaimerLabelWithCompletion:(id)completion;
 @end
 
 @implementation AAUITheftAndLossCoverageProvider
 
-- (void)createTnLDisclaimerViewControllerWithConfirmActionHandler:(id)a3 cancelActionHandler:(id)a4 completion:(id)a5
+- (void)createTnLDisclaimerViewControllerWithConfirmActionHandler:(id)handler cancelActionHandler:(id)actionHandler completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x1E699C960];
-  v9 = a4;
-  v10 = a3;
+  actionHandlerCopy = actionHandler;
+  handlerCopy = handler;
   v11 = [v8 alloc];
   v12 = [v11 initWithUseCase:*MEMORY[0x1E699C958] serialNumber:0];
   v13 = objc_alloc_init(MEMORY[0x1E699C968]);
@@ -18,9 +18,9 @@
   v15[1] = 3221225472;
   v15[2] = __125__AAUITheftAndLossCoverageProvider_createTnLDisclaimerViewControllerWithConfirmActionHandler_cancelActionHandler_completion___block_invoke;
   v15[3] = &unk_1E820B870;
-  v16 = v7;
-  v14 = v7;
-  [v13 disclaimerViewControllerForContext:v12 confirmActionHandler:v10 cancelActionHandler:v9 completion:v15];
+  v16 = completionCopy;
+  v14 = completionCopy;
+  [v13 disclaimerViewControllerForContext:v12 confirmActionHandler:handlerCopy cancelActionHandler:actionHandlerCopy completion:v15];
 }
 
 void __125__AAUITheftAndLossCoverageProvider_createTnLDisclaimerViewControllerWithConfirmActionHandler_cancelActionHandler_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -57,9 +57,9 @@ void __125__AAUITheftAndLossCoverageProvider_createTnLDisclaimerViewControllerWi
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)tnlDisclaimerLabelWithCompletion:(id)a3
+- (void)tnlDisclaimerLabelWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc(MEMORY[0x1E699C960]);
   v5 = [v4 initWithUseCase:*MEMORY[0x1E699C950] serialNumber:0];
   v6 = objc_alloc_init(MEMORY[0x1E699C968]);
@@ -67,8 +67,8 @@ void __125__AAUITheftAndLossCoverageProvider_createTnLDisclaimerViewControllerWi
   v8[1] = 3221225472;
   v8[2] = __69__AAUITheftAndLossCoverageProvider_tnlDisclaimerLabelWithCompletion___block_invoke;
   v8[3] = &unk_1E820B898;
-  v9 = v3;
-  v7 = v3;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 disclaimerLabelForContext:v5 completion:v8];
 }
 

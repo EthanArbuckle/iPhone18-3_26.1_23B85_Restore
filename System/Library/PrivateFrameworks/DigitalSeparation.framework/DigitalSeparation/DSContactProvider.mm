@@ -1,13 +1,13 @@
 @interface DSContactProvider
 + (id)defaultProvider;
 - (DSContactProvider)init;
-- (DSContactProvider)initWithStore:(id)a3;
+- (DSContactProvider)initWithStore:(id)store;
 - (id)keysToFetch;
-- (id)sanitizeContacts:(id)a3;
-- (id)unifiedContactInDictionary:(id)a3 forIdentity:(id)a4;
-- (id)unifiedContactsDictionaryForHandleStrings:(id)a3;
-- (id)unifiedContactsDictionaryForIdentities:(id)a3;
-- (id)unifiedContactsForContactIdentifiers:(id)a3;
+- (id)sanitizeContacts:(id)contacts;
+- (id)unifiedContactInDictionary:(id)dictionary forIdentity:(id)identity;
+- (id)unifiedContactsDictionaryForHandleStrings:(id)strings;
+- (id)unifiedContactsDictionaryForIdentities:(id)identities;
+- (id)unifiedContactsForContactIdentifiers:(id)identifiers;
 @end
 
 @implementation DSContactProvider
@@ -46,10 +46,10 @@ uint64_t __36__DSContactProvider_defaultProvider__block_invoke()
   block[1] = 3221225472;
   block[2] = __25__DSContactProvider_init__block_invoke;
   block[3] = &unk_278F72AC0;
-  v6 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = selfCopy;
   dispatch_async(v5, block);
-  v7 = [(DSContactProvider *)v6 initWithStore:0];
+  v7 = [(DSContactProvider *)selfCopy initWithStore:0];
 
   return v7;
 }
@@ -64,16 +64,16 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (DSContactProvider)initWithStore:(id)a3
+- (DSContactProvider)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = DSContactProvider;
   v6 = [(DSContactProvider *)&v11 init];
   v7 = v6;
-  if (v5 && v6)
+  if (storeCopy && v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = dispatch_queue_create("DSContactProviderContactStoreWork", 0);
     contactStoreWorkQueue = v7->_contactStoreWorkQueue;
     v7->_contactStoreWorkQueue = v8;
@@ -82,16 +82,16 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)sanitizeContacts:(id)a3
+- (id)sanitizeContacts:(id)contacts
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  contactsCopy = contacts;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = contactsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -106,8 +106,8 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) identifier];
-        [v5 addObject:v11];
+        identifier = [*(*(&v15 + 1) + 8 * i) identifier];
+        [array addObject:identifier];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -116,23 +116,23 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
     while (v8);
   }
 
-  v12 = [(DSContactProvider *)self unifiedContactsForContactIdentifiers:v5];
+  v12 = [(DSContactProvider *)self unifiedContactsForContactIdentifiers:array];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (id)unifiedContactsDictionaryForIdentities:(id)a3
+- (id)unifiedContactsDictionaryForIdentities:(id)identities
 {
   v75 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v56 = [MEMORY[0x277CBEB18] array];
+  identitiesCopy = identities;
+  array = [MEMORY[0x277CBEB18] array];
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v4 = v3;
+  v4 = identitiesCopy;
   v5 = [v4 countByEnumeratingWithState:&v65 objects:v74 count:16];
   if (v5)
   {
@@ -148,8 +148,8 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v65 + 1) + 8 * i);
-        v10 = [v9 unifiedContactIdentifier];
-        v11 = [v10 length];
+        unifiedContactIdentifier = [v9 unifiedContactIdentifier];
+        v11 = [unifiedContactIdentifier length];
 
         if (v11)
         {
@@ -157,14 +157,14 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
           if (os_log_type_enabled(DSLog_8, OS_LOG_TYPE_INFO))
           {
             v13 = v12;
-            v14 = [v9 unifiedContactIdentifier];
+            unifiedContactIdentifier2 = [v9 unifiedContactIdentifier];
             *buf = 138477827;
-            v73 = v14;
+            v73 = unifiedContactIdentifier2;
             _os_log_impl(&dword_248C40000, v13, OS_LOG_TYPE_INFO, "Adding contact identifier %{private}@ to predicate", buf, 0xCu);
           }
 
-          v15 = [v9 unifiedContactIdentifier];
-          [v56 addObject:v15];
+          unifiedContactIdentifier3 = [v9 unifiedContactIdentifier];
+          [array addObject:unifiedContactIdentifier3];
         }
       }
 
@@ -174,8 +174,8 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
     while (v6);
   }
 
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  v17 = [(DSContactProvider *)self unifiedContactsForContactIdentifiers:v56];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v17 = [(DSContactProvider *)self unifiedContactsForContactIdentifiers:array];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -197,8 +197,8 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
         v70 = *(*(&v61 + 1) + 8 * j);
         v22 = v70;
         v23 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
-        v24 = [v22 identifier];
-        [v16 setObject:v23 forKey:v24];
+        identifier = [v22 identifier];
+        [dictionary setObject:v23 forKey:identifier];
       }
 
       v19 = [v17 countByEnumeratingWithState:&v61 objects:v71 count:16];
@@ -207,7 +207,7 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
     while (v19);
   }
 
-  v25 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
@@ -228,13 +228,13 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
         }
 
         v31 = *(*(&v57 + 1) + 8 * k);
-        v32 = [v31 unifiedContactIdentifier];
-        v33 = [v32 length];
+        unifiedContactIdentifier4 = [v31 unifiedContactIdentifier];
+        v33 = [unifiedContactIdentifier4 length];
 
         if (v33)
         {
-          v34 = [v31 unifiedContactIdentifier];
-          v35 = [v16 objectForKeyedSubscript:v34];
+          unifiedContactIdentifier5 = [v31 unifiedContactIdentifier];
+          v35 = [dictionary objectForKeyedSubscript:unifiedContactIdentifier5];
 
           if (v35)
           {
@@ -245,15 +245,15 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
           if (os_log_type_enabled(DSLog_8, OS_LOG_TYPE_INFO))
           {
             v37 = v36;
-            v38 = [v31 unifiedContactIdentifier];
+            unifiedContactIdentifier6 = [v31 unifiedContactIdentifier];
             *buf = 138477827;
-            v73 = v38;
+            v73 = unifiedContactIdentifier6;
             _os_log_impl(&dword_248C40000, v37, OS_LOG_TYPE_INFO, "Contact identifier %{private}@ wasn't recognized by ContactStore", buf, 0xCu);
           }
         }
 
-        v39 = [v31 emailAddress];
-        v40 = [v39 length];
+        emailAddress = [v31 emailAddress];
+        v40 = [emailAddress length];
 
         if (v40)
         {
@@ -261,18 +261,18 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
           if (os_log_type_enabled(DSLog_8, OS_LOG_TYPE_INFO))
           {
             v42 = v41;
-            v43 = [v31 emailAddress];
+            emailAddress2 = [v31 emailAddress];
             *buf = 138477827;
-            v73 = v43;
+            v73 = emailAddress2;
             _os_log_impl(&dword_248C40000, v42, OS_LOG_TYPE_INFO, "Adding identity email address %{private}@ to predicate", buf, 0xCu);
           }
 
-          v44 = [v31 emailAddress];
-          [v25 addObject:v44];
+          emailAddress3 = [v31 emailAddress];
+          [array2 addObject:emailAddress3];
         }
 
-        v45 = [v31 phoneNumber];
-        v46 = [v45 length];
+        phoneNumber = [v31 phoneNumber];
+        v46 = [phoneNumber length];
 
         if (v46)
         {
@@ -280,14 +280,14 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
           if (os_log_type_enabled(DSLog_8, OS_LOG_TYPE_INFO))
           {
             v48 = v47;
-            v49 = [v31 phoneNumber];
+            phoneNumber2 = [v31 phoneNumber];
             *buf = 138477827;
-            v73 = v49;
+            v73 = phoneNumber2;
             _os_log_impl(&dword_248C40000, v48, OS_LOG_TYPE_INFO, "Adding identity phone number %{private}@ to predicate", buf, 0xCu);
           }
 
-          v50 = [v31 phoneNumber];
-          [v25 addObject:v50];
+          phoneNumber3 = [v31 phoneNumber];
+          [array2 addObject:phoneNumber3];
         }
       }
 
@@ -297,33 +297,33 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
     while (v28);
   }
 
-  v51 = [(DSContactProvider *)self unifiedContactsDictionaryForHandleStrings:v25];
+  v51 = [(DSContactProvider *)self unifiedContactsDictionaryForHandleStrings:array2];
   if ([v51 count])
   {
-    [v16 addEntriesFromDictionary:v51];
+    [dictionary addEntriesFromDictionary:v51];
   }
 
   v52 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return dictionary;
 }
 
-- (id)unifiedContactInDictionary:(id)a3 forIdentity:(id)a4
+- (id)unifiedContactInDictionary:(id)dictionary forIdentity:(id)identity
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 unifiedContactIdentifier];
-  v8 = [v7 length];
+  dictionaryCopy = dictionary;
+  identityCopy = identity;
+  unifiedContactIdentifier = [identityCopy unifiedContactIdentifier];
+  v8 = [unifiedContactIdentifier length];
 
   if (v8)
   {
-    v9 = [v6 unifiedContactIdentifier];
-    v10 = [v5 objectForKeyedSubscript:v9];
-    v11 = [v10 firstObject];
+    unifiedContactIdentifier2 = [identityCopy unifiedContactIdentifier];
+    v10 = [dictionaryCopy objectForKeyedSubscript:unifiedContactIdentifier2];
+    firstObject = [v10 firstObject];
 
     v12 = DSLog_8;
-    if (v11)
+    if (firstObject)
     {
       if (!os_log_type_enabled(DSLog_8, OS_LOG_TYPE_INFO))
       {
@@ -331,31 +331,31 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
       }
 
       v13 = v12;
-      v14 = [v6 unifiedContactIdentifier];
+      unifiedContactIdentifier3 = [identityCopy unifiedContactIdentifier];
       v28 = 138412547;
-      v29 = v14;
+      v29 = unifiedContactIdentifier3;
       v30 = 2113;
-      v31 = v11;
+      v31 = firstObject;
       v15 = "Found contact based on identity %@ %{private}@";
       goto LABEL_15;
     }
 
     if (os_log_type_enabled(DSLog_8, OS_LOG_TYPE_ERROR))
     {
-      [DSContactProvider unifiedContactInDictionary:v6 forIdentity:v12];
+      [DSContactProvider unifiedContactInDictionary:identityCopy forIdentity:v12];
     }
   }
 
-  v16 = [v6 phoneNumber];
-  v17 = [v16 length];
+  phoneNumber = [identityCopy phoneNumber];
+  v17 = [phoneNumber length];
 
   if (v17)
   {
-    v18 = [v6 phoneNumber];
-    v19 = [v5 objectForKeyedSubscript:v18];
-    v11 = [v19 firstObject];
+    phoneNumber2 = [identityCopy phoneNumber];
+    v19 = [dictionaryCopy objectForKeyedSubscript:phoneNumber2];
+    firstObject = [v19 firstObject];
 
-    if (v11)
+    if (firstObject)
     {
       v20 = DSLog_8;
       if (!os_log_type_enabled(DSLog_8, OS_LOG_TYPE_INFO))
@@ -364,36 +364,36 @@ uint64_t __25__DSContactProvider_init__block_invoke(uint64_t a1)
       }
 
       v13 = v20;
-      v14 = [v6 phoneNumber];
+      unifiedContactIdentifier3 = [identityCopy phoneNumber];
       v28 = 138478083;
-      v29 = v11;
+      v29 = firstObject;
       v30 = 2113;
-      v31 = v14;
+      v31 = unifiedContactIdentifier3;
       v15 = "Found matching contact %{private}@ based on phone number %{private}@";
       goto LABEL_15;
     }
   }
 
-  v21 = [v6 emailAddress];
-  v22 = [v21 length];
+  emailAddress = [identityCopy emailAddress];
+  v22 = [emailAddress length];
 
   if (v22)
   {
-    v23 = [v6 emailAddress];
-    v24 = [v5 objectForKeyedSubscript:v23];
-    v11 = [v24 firstObject];
+    emailAddress2 = [identityCopy emailAddress];
+    v24 = [dictionaryCopy objectForKeyedSubscript:emailAddress2];
+    firstObject = [v24 firstObject];
 
-    if (v11)
+    if (firstObject)
     {
       v25 = DSLog_8;
       if (os_log_type_enabled(DSLog_8, OS_LOG_TYPE_INFO))
       {
         v13 = v25;
-        v14 = [v6 emailAddress];
+        unifiedContactIdentifier3 = [identityCopy emailAddress];
         v28 = 138478083;
-        v29 = v11;
+        v29 = firstObject;
         v30 = 2113;
-        v31 = v14;
+        v31 = unifiedContactIdentifier3;
         v15 = "Found matching contact %{private}@ based on email %{private}@";
 LABEL_15:
         _os_log_impl(&dword_248C40000, v13, OS_LOG_TYPE_INFO, v15, &v28, 0x16u);
@@ -403,19 +403,19 @@ LABEL_15:
 
   else
   {
-    v11 = 0;
+    firstObject = 0;
   }
 
 LABEL_17:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return firstObject;
 }
 
-- (id)unifiedContactsForContactIdentifiers:(id)a3
+- (id)unifiedContactsForContactIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -428,9 +428,9 @@ LABEL_17:
   block[2] = __58__DSContactProvider_unifiedContactsForContactIdentifiers___block_invoke;
   block[3] = &unk_278F73008;
   block[4] = self;
-  v10 = v4;
+  v10 = identifiersCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = identifiersCopy;
   dispatch_sync(contactStoreWorkQueue, block);
   v7 = v13[5];
 
@@ -467,9 +467,9 @@ void __58__DSContactProvider_unifiedContactsForContactIdentifiers___block_invoke
   }
 }
 
-- (id)unifiedContactsDictionaryForHandleStrings:(id)a3
+- (id)unifiedContactsDictionaryForHandleStrings:(id)strings
 {
-  v4 = a3;
+  stringsCopy = strings;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -482,9 +482,9 @@ void __58__DSContactProvider_unifiedContactsForContactIdentifiers___block_invoke
   block[2] = __63__DSContactProvider_unifiedContactsDictionaryForHandleStrings___block_invoke;
   block[3] = &unk_278F73008;
   block[4] = self;
-  v10 = v4;
+  v10 = stringsCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = stringsCopy;
   dispatch_sync(contactStoreWorkQueue, block);
   v7 = v13[5];
 

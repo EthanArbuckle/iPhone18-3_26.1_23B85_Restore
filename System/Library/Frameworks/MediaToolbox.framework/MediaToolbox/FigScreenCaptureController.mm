@@ -1,14 +1,14 @@
 @interface FigScreenCaptureController
-+ (id)screenCaptureControllerWithCaptureConfiguration:(id)a3;
-+ (id)screenCaptureControllerWithDisplayConfiguration:(id)a3;
-+ (id)screenCaptureControllerWithFigVirtualDisplayOptions:(id)a3;
-+ (id)screenCaptureControllerWithSize:(CGSize)a3 minIntervalBetweenFrames:(id *)a4;
++ (id)screenCaptureControllerWithCaptureConfiguration:(id)configuration;
++ (id)screenCaptureControllerWithDisplayConfiguration:(id)configuration;
++ (id)screenCaptureControllerWithFigVirtualDisplayOptions:(id)options;
++ (id)screenCaptureControllerWithSize:(CGSize)size minIntervalBetweenFrames:(id *)frames;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minIntervalBetweenFrames;
 - (CGSize)size;
-- (FigScreenCaptureController)initWithDisplayConfiguration:(id)a3;
-- (FigScreenCaptureController)initWithFigVirtualDisplayOptions:(id)a3;
-- (FigScreenCaptureController)initWithScreenCaptureConfiguration:(id)a3;
-- (FigScreenCaptureController)initWithSize:(CGSize)a3 minIntervalBetweenFrames:(id *)a4;
+- (FigScreenCaptureController)initWithDisplayConfiguration:(id)configuration;
+- (FigScreenCaptureController)initWithFigVirtualDisplayOptions:(id)options;
+- (FigScreenCaptureController)initWithScreenCaptureConfiguration:(id)configuration;
+- (FigScreenCaptureController)initWithSize:(CGSize)size minIntervalBetweenFrames:(id *)frames;
 - (__CFDictionary)getFVDOptions;
 - (id)description;
 - (uint64_t)resumeCapture;
@@ -16,7 +16,7 @@
 - (uint64_t)suspendCapture;
 - (void)dealloc;
 - (void)resumeCapture;
-- (void)setFigVirtualDisplayOption:(id)a3 forKey:(id)a4;
+- (void)setFigVirtualDisplayOption:(id)option forKey:(id)key;
 - (void)startCapture;
 - (void)stopCapture;
 - (void)suspendCapture;
@@ -24,40 +24,40 @@
 
 @implementation FigScreenCaptureController
 
-+ (id)screenCaptureControllerWithSize:(CGSize)a3 minIntervalBetweenFrames:(id *)a4
++ (id)screenCaptureControllerWithSize:(CGSize)size minIntervalBetweenFrames:(id *)frames
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v7 = [FigScreenCaptureController alloc];
-  v9 = *a4;
+  v9 = *frames;
   return [(FigScreenCaptureController *)v7 initWithSize:&v9 minIntervalBetweenFrames:width, height];
 }
 
-+ (id)screenCaptureControllerWithFigVirtualDisplayOptions:(id)a3
++ (id)screenCaptureControllerWithFigVirtualDisplayOptions:(id)options
 {
-  v3 = [[FigScreenCaptureController alloc] initWithFigVirtualDisplayOptions:a3];
+  v3 = [[FigScreenCaptureController alloc] initWithFigVirtualDisplayOptions:options];
 
   return v3;
 }
 
-+ (id)screenCaptureControllerWithCaptureConfiguration:(id)a3
++ (id)screenCaptureControllerWithCaptureConfiguration:(id)configuration
 {
-  v3 = [[FigScreenCaptureController alloc] initWithScreenCaptureConfiguration:a3];
+  v3 = [[FigScreenCaptureController alloc] initWithScreenCaptureConfiguration:configuration];
 
   return v3;
 }
 
-+ (id)screenCaptureControllerWithDisplayConfiguration:(id)a3
++ (id)screenCaptureControllerWithDisplayConfiguration:(id)configuration
 {
-  v3 = [[FigScreenCaptureController alloc] initWithDisplayConfiguration:a3];
+  v3 = [[FigScreenCaptureController alloc] initWithDisplayConfiguration:configuration];
 
   return v3;
 }
 
-- (FigScreenCaptureController)initWithSize:(CGSize)a3 minIntervalBetweenFrames:(id *)a4
+- (FigScreenCaptureController)initWithSize:(CGSize)size minIntervalBetweenFrames:(id *)frames
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13[1] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = FigScreenCaptureController;
@@ -77,7 +77,7 @@
       CFRelease(DictionaryRepresentation);
     }
 
-    v10 = *a4;
+    v10 = *frames;
     CMTimeGetSeconds(&v10);
     FigCFDictionarySetInt32();
     CFDictionarySetValue(v7->_options, @"usage", @"Uncompressed");
@@ -90,7 +90,7 @@
   return v7;
 }
 
-- (FigScreenCaptureController)initWithFigVirtualDisplayOptions:(id)a3
+- (FigScreenCaptureController)initWithFigVirtualDisplayOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = FigScreenCaptureController;
@@ -99,9 +99,9 @@
   {
     v4->_lock = FigSimpleMutexCreate();
     v5 = *MEMORY[0x1E695E480];
-    if (a3)
+    if (options)
     {
-      MutableCopy = CFDictionaryCreateMutableCopy(v5, 0, a3);
+      MutableCopy = CFDictionaryCreateMutableCopy(v5, 0, options);
     }
 
     else
@@ -117,30 +117,30 @@
   return v4;
 }
 
-- (FigScreenCaptureController)initWithScreenCaptureConfiguration:(id)a3
+- (FigScreenCaptureController)initWithScreenCaptureConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = FigScreenCaptureController;
   v4 = [(FigScreenCaptureController *)&v6 init];
   if (v4)
   {
-    v4->_lock = [a3 getLock];
-    v4->_screenCaptureConfiguration = a3;
+    v4->_lock = [configuration getLock];
+    v4->_screenCaptureConfiguration = configuration;
     v4->_mode = 1;
   }
 
   return v4;
 }
 
-- (FigScreenCaptureController)initWithDisplayConfiguration:(id)a3
+- (FigScreenCaptureController)initWithDisplayConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = FigScreenCaptureController;
   v4 = [(FigScreenCaptureController *)&v6 init];
   if (v4)
   {
-    v4->_lock = [a3 getLock];
-    v4->_displayConfiguration = a3;
+    v4->_lock = [configuration getLock];
+    v4->_displayConfiguration = configuration;
     v4->_mode = 2;
   }
 
@@ -165,11 +165,11 @@
   return self->_options;
 }
 
-- (void)setFigVirtualDisplayOption:(id)a3 forKey:(id)a4
+- (void)setFigVirtualDisplayOption:(id)option forKey:(id)key
 {
-  v6 = [(FigScreenCaptureController *)self getFVDOptions];
+  getFVDOptions = [(FigScreenCaptureController *)self getFVDOptions];
   FigSimpleMutexLock();
-  CFDictionarySetValue(v6, a4, a3);
+  CFDictionarySetValue(getFVDOptions, key, option);
 
   FigSimpleMutexUnlock();
 }
@@ -221,7 +221,7 @@
   mode = self->_mode;
   if (mode == 2)
   {
-    v7 = [(FigDisplayConfiguration *)self->_displayConfiguration refreshRate];
+    refreshRate = [(FigDisplayConfiguration *)self->_displayConfiguration refreshRate];
   }
 
   else
@@ -250,10 +250,10 @@
     FigSimpleMutexLock();
     FigCFDictionaryGetInt32IfPresent();
     FigSimpleMutexUnlock();
-    v7 = v9;
+    refreshRate = v9;
   }
 
-  result = CMTimeMake(&v8, 1, v7);
+  result = CMTimeMake(&v8, 1, refreshRate);
 LABEL_9:
   *retstr = v8;
   return result;
@@ -313,10 +313,10 @@ LABEL_9:
   v29 = *MEMORY[0x1E69E9840];
   v22 = 0;
   cf = 0;
-  v3 = [(FigScreenCaptureController *)self getFVDOptions];
+  getFVDOptions = [(FigScreenCaptureController *)self getFVDOptions];
   FigSimpleMutexLock();
   v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[PID%d]", getpid()];
-  CFDictionarySetValue(v3, @"logPrefix", v4);
+  CFDictionarySetValue(getFVDOptions, @"logPrefix", v4);
   if (self->_session)
   {
     [FigScreenCaptureController startCapture];
@@ -335,14 +335,14 @@ LABEL_9:
     *&v24[16] = 0x3052000000;
     *&v25 = __Block_byref_object_copy_;
     *(&v25 + 1) = __Block_byref_object_dispose_;
-    v26 = self;
+    selfCopy = self;
     v6 = *MEMORY[0x1E695E480];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __42__FigScreenCaptureController_startCapture__block_invoke;
     v21[3] = &unk_1E7479BB8;
     v21[4] = v24;
-    if (FigVirtualDisplaySessionRemoteFrameReceiverCreate(v6, v3, v21, &self->_session))
+    if (FigVirtualDisplaySessionRemoteFrameReceiverCreate(v6, getFVDOptions, v21, &self->_session))
     {
       *type = 0;
       v19 = OS_LOG_TYPE_DEFAULT;
@@ -360,20 +360,20 @@ LABEL_9:
 
   else
   {
-    v26 = 0;
+    selfCopy = 0;
     v25 = 0u;
     *&v24[8] = 0u;
-    if (!CFDictionaryContainsKey(v3, @"clientName"))
+    if (!CFDictionaryContainsKey(getFVDOptions, @"clientName"))
     {
       v7 = getprogname();
       if (v7)
       {
-        CFDictionarySetValue(v3, @"clientName", [MEMORY[0x1E696AEC0] stringWithUTF8String:v7]);
+        CFDictionarySetValue(getFVDOptions, @"clientName", [MEMORY[0x1E696AEC0] stringWithUTF8String:v7]);
       }
     }
 
     v8 = *MEMORY[0x1E695E480];
-    if (FigVirtualDisplayProcessorCreate(*MEMORY[0x1E695E480], v3, &cf))
+    if (FigVirtualDisplayProcessorCreate(*MEMORY[0x1E695E480], getFVDOptions, &cf))
     {
       *type = 0;
       v19 = OS_LOG_TYPE_DEFAULT;
@@ -387,7 +387,7 @@ LABEL_9:
     *&v25 = conduitFinalizeCallback;
     *(&v25 + 1) = conduitPushFrameCallback;
     v27 = conduitClearScreenCallback;
-    if (FigVirtualDisplaySinkConduitCreate(v8, v24, v3, &v22) || FigVirtualDisplaySessionCreateWithComponents(v8, 0, cf, v22, v3, &self->_session))
+    if (FigVirtualDisplaySinkConduitCreate(v8, v24, getFVDOptions, &v22) || FigVirtualDisplaySessionCreateWithComponents(v8, 0, cf, v22, getFVDOptions, &self->_session))
     {
       *type = 0;
       v19 = OS_LOG_TYPE_DEFAULT;
@@ -409,7 +409,7 @@ LABEL_9:
   v10 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v10)
   {
-    v11 = v10(session, v3, v18);
+    v11 = v10(session, getFVDOptions, v18);
     if (!v11)
     {
       goto LABEL_21;

@@ -1,17 +1,17 @@
 @interface CategoryVisualizationMagnitude
-+ (id)_magnitudesMatchingQuery:(id)a3;
-+ (id)_predicateForBucket:(int64_t)a3;
-+ (id)_predicateForPassUniqueID:(id)a3 bucket:(int64_t)a4;
++ (id)_magnitudesMatchingQuery:(id)query;
++ (id)_predicateForBucket:(int64_t)bucket;
++ (id)_predicateForPassUniqueID:(id)d bucket:(int64_t)bucket;
 + (id)_propertySetters;
-+ (id)_propertyValuesForMagnitude:(id)a3;
-+ (id)anyInDatabase:(id)a3 withPID:(id)a4;
-+ (id)insertMagnitude:(id)a3 inDatabase:(id)a4;
-+ (id)insertOrUpdateMagnitude:(id)a3 inDatabase:(id)a4;
-+ (id)magnitudesForPassUniqueIdentifier:(id)a3 inDatabase:(id)a4;
-+ (void)deleteAnyInDatabase:(id)a3 forPassUniqueID:(id)a4;
-- (CategoryVisualizationMagnitude)initWithMagnitude:(id)a3 inDatabase:(id)a4;
++ (id)_propertyValuesForMagnitude:(id)magnitude;
++ (id)anyInDatabase:(id)database withPID:(id)d;
++ (id)insertMagnitude:(id)magnitude inDatabase:(id)database;
++ (id)insertOrUpdateMagnitude:(id)magnitude inDatabase:(id)database;
++ (id)magnitudesForPassUniqueIdentifier:(id)identifier inDatabase:(id)database;
++ (void)deleteAnyInDatabase:(id)database forPassUniqueID:(id)d;
+- (CategoryVisualizationMagnitude)initWithMagnitude:(id)magnitude inDatabase:(id)database;
 - (id)magnitude;
-- (void)updateWithMagnitude:(id)a3;
+- (void)updateWithMagnitude:(id)magnitude;
 @end
 
 @implementation CategoryVisualizationMagnitude
@@ -29,80 +29,80 @@
   return v2;
 }
 
-- (CategoryVisualizationMagnitude)initWithMagnitude:(id)a3 inDatabase:(id)a4
+- (CategoryVisualizationMagnitude)initWithMagnitude:(id)magnitude inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _propertyValuesForMagnitude:v7];
+  databaseCopy = database;
+  magnitudeCopy = magnitude;
+  v8 = [objc_opt_class() _propertyValuesForMagnitude:magnitudeCopy];
 
-  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:v6];
+  v9 = [(SQLiteEntity *)self initWithPropertyValues:v8 inDatabase:databaseCopy];
   return v9;
 }
 
-+ (id)anyInDatabase:(id)a3 withPID:(id)a4
++ (id)anyInDatabase:(id)database withPID:(id)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPID:a4];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPID:d];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
   return v8;
 }
 
-+ (id)magnitudesForPassUniqueIdentifier:(id)a3 inDatabase:(id)a4
++ (id)magnitudesForPassUniqueIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPassUniqueID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPassUniqueID:identifier];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _magnitudesMatchingQuery:v8];
+  v9 = [self _magnitudesMatchingQuery:v8];
 
   return v9;
 }
 
-+ (id)insertMagnitude:(id)a3 inDatabase:(id)a4
++ (id)insertMagnitude:(id)magnitude inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithMagnitude:v7 inDatabase:v6];
+  databaseCopy = database;
+  magnitudeCopy = magnitude;
+  v8 = [[self alloc] initWithMagnitude:magnitudeCopy inDatabase:databaseCopy];
 
   return v8;
 }
 
-+ (id)insertOrUpdateMagnitude:(id)a3 inDatabase:(id)a4
++ (id)insertOrUpdateMagnitude:(id)magnitude inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 passUniqueIdentifier];
-  v9 = [a1 _predicateForPassUniqueID:v8 bucket:{objc_msgSend(v7, "bucket")}];
+  databaseCopy = database;
+  magnitudeCopy = magnitude;
+  passUniqueIdentifier = [magnitudeCopy passUniqueIdentifier];
+  v9 = [self _predicateForPassUniqueID:passUniqueIdentifier bucket:{objc_msgSend(magnitudeCopy, "bucket")}];
 
-  v10 = [a1 anyInDatabase:v6 predicate:v9];
+  v10 = [self anyInDatabase:databaseCopy predicate:v9];
   if (v10)
   {
     v11 = v10;
-    [v10 updateWithMagnitude:v7];
+    [v10 updateWithMagnitude:magnitudeCopy];
   }
 
   else
   {
-    v11 = [a1 insertMagnitude:v7 inDatabase:v6];
+    v11 = [self insertMagnitude:magnitudeCopy inDatabase:databaseCopy];
   }
 
   return v11;
 }
 
-+ (void)deleteAnyInDatabase:(id)a3 forPassUniqueID:(id)a4
++ (void)deleteAnyInDatabase:(id)database forPassUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = [a1 _predicateForPassUniqueID:a4];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPassUniqueID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   [v8 deleteAllEntities];
 }
 
-- (void)updateWithMagnitude:(id)a3
+- (void)updateWithMagnitude:(id)magnitude
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _propertyValuesForMagnitude:v4];
+  magnitudeCopy = magnitude;
+  v5 = [objc_opt_class() _propertyValuesForMagnitude:magnitudeCopy];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v5];
 }
@@ -110,18 +110,18 @@
 - (id)magnitude
 {
   v3 = objc_alloc_init(PKCategoryVisualizationMagnitude);
-  v4 = [objc_opt_class() _propertySetters];
-  v5 = [v4 allKeys];
+  _propertySetters = [objc_opt_class() _propertySetters];
+  allKeys = [_propertySetters allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100052A54;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertySetters;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySetters;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;
@@ -129,32 +129,32 @@
   return v6;
 }
 
-+ (id)_magnitudesMatchingQuery:(id)a3
++ (id)_magnitudesMatchingQuery:(id)query
 {
-  v4 = a3;
-  v5 = [a1 _propertySetters];
+  queryCopy = query;
+  _propertySetters = [self _propertySetters];
   v6 = objc_alloc_init(NSMutableSet);
-  v7 = [v5 allKeys];
+  allKeys = [_propertySetters allKeys];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100052BDC;
   v12[3] = &unk_10083C998;
   v14 = v6;
-  v15 = a1;
-  v13 = v5;
+  selfCopy = self;
+  v13 = _propertySetters;
   v8 = v6;
-  v9 = v5;
-  [v4 enumeratePersistentIDsAndProperties:v7 usingBlock:v12];
+  v9 = _propertySetters;
+  [queryCopy enumeratePersistentIDsAndProperties:allKeys usingBlock:v12];
 
   v10 = [v8 copy];
 
   return v10;
 }
 
-+ (id)_predicateForPassUniqueID:(id)a3 bucket:(int64_t)a4
++ (id)_predicateForPassUniqueID:(id)d bucket:(int64_t)bucket
 {
-  v6 = [a1 _predicateForPassUniqueID:a3];
-  v7 = [a1 _predicateForBucket:a4];
+  v6 = [self _predicateForPassUniqueID:d];
+  v7 = [self _predicateForBucket:bucket];
   v11[0] = v6;
   v11[1] = v7;
   v8 = [NSArray arrayWithObjects:v11 count:2];
@@ -163,25 +163,25 @@
   return v9;
 }
 
-+ (id)_predicateForBucket:(int64_t)a3
++ (id)_predicateForBucket:(int64_t)bucket
 {
-  v3 = [NSNumber numberWithInteger:a3];
+  v3 = [NSNumber numberWithInteger:bucket];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"b" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_propertyValuesForMagnitude:(id)a3
++ (id)_propertyValuesForMagnitude:(id)magnitude
 {
-  v3 = a3;
+  magnitudeCopy = magnitude;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [v3 passUniqueIdentifier];
-  [v4 setObjectOrNull:v5 forKey:@"a"];
+  passUniqueIdentifier = [magnitudeCopy passUniqueIdentifier];
+  [v4 setObjectOrNull:passUniqueIdentifier forKey:@"a"];
 
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 bucket]);
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [magnitudeCopy bucket]);
   [v4 setObjectOrNull:v6 forKey:@"b"];
 
-  [v3 magnitude];
+  [magnitudeCopy magnitude];
   v8 = v7;
 
   v9 = [NSNumber numberWithDouble:v8];

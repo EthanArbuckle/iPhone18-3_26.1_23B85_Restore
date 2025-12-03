@@ -1,22 +1,22 @@
 @interface OpenCommuteEntryActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation OpenCommuteEntryActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v10 = a3;
-  v5 = a4;
+  actionCopy = action;
+  contextCopy = context;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v10 entryID];
-    v7 = [MapsSuggestionsEntry archivedDestinationForUniqueID:v6];
+    entryID = [actionCopy entryID];
+    v7 = [MapsSuggestionsEntry archivedDestinationForUniqueID:entryID];
 
-    v8 = [v5 appCoordinator];
-    v9 = [v8 appStateManager];
-    [v9 openCommuteEntry:v7];
+    appCoordinator = [contextCopy appCoordinator];
+    appStateManager = [appCoordinator appStateManager];
+    [appStateManager openCommuteEntry:v7];
   }
 }
 

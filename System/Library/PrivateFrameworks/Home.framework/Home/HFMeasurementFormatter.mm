@@ -1,19 +1,19 @@
 @interface HFMeasurementFormatter
 - (HFMeasurementFormatter)init;
-- (HFMeasurementFormatter)initWithMeasurementBlock:(id)a3;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringForObjectValue:(id)a3 withUnit:(BOOL)a4;
+- (HFMeasurementFormatter)initWithMeasurementBlock:(id)block;
+- (id)stringForObjectValue:(id)value;
+- (id)stringForObjectValue:(id)value withUnit:(BOOL)unit;
 @end
 
 @implementation HFMeasurementFormatter
 
-- (HFMeasurementFormatter)initWithMeasurementBlock:(id)a3
+- (HFMeasurementFormatter)initWithMeasurementBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HFMeasurementFormatter.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"measurementBlock"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFMeasurementFormatter.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"measurementBlock"}];
   }
 
   v10.receiver = self;
@@ -23,7 +23,7 @@
   if (v6)
   {
     [(NSMeasurementFormatter *)v6 setUnitStyle:1];
-    [(HFMeasurementFormatter *)v7 setMeasurementBlock:v5];
+    [(HFMeasurementFormatter *)v7 setMeasurementBlock:blockCopy];
   }
 
   return v7;
@@ -31,20 +31,20 @@
 
 - (HFMeasurementFormatter)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFMeasurementFormatter.m" lineNumber:32 description:@"Use -initWithMeasurementBlock:"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFMeasurementFormatter.m" lineNumber:32 description:@"Use -initWithMeasurementBlock:"];
 
   return 0;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(HFMeasurementFormatter *)self measurementBlock];
-    v6 = (v5)[2](v5, v4);
+    measurementBlock = [(HFMeasurementFormatter *)self measurementBlock];
+    v6 = (measurementBlock)[2](measurementBlock, valueCopy);
     v7 = [(NSMeasurementFormatter *)self stringFromMeasurement:v6];
   }
 
@@ -52,22 +52,22 @@
   {
     v9.receiver = self;
     v9.super_class = HFMeasurementFormatter;
-    v7 = [(NSMeasurementFormatter *)&v9 stringForObjectValue:v4];
+    v7 = [(NSMeasurementFormatter *)&v9 stringForObjectValue:valueCopy];
   }
 
   return v7;
 }
 
-- (id)stringForObjectValue:(id)a3 withUnit:(BOOL)a4
+- (id)stringForObjectValue:(id)value withUnit:(BOOL)unit
 {
-  v6 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(HFMeasurementFormatter *)self measurementBlock];
-    v8 = (v7)[2](v7, v6);
+    measurementBlock = [(HFMeasurementFormatter *)self measurementBlock];
+    v8 = (measurementBlock)[2](measurementBlock, valueCopy);
 
-    if (!a4)
+    if (!unit)
     {
       if (qword_280E02C78 != -1)
       {
@@ -88,7 +88,7 @@
   {
     v13.receiver = self;
     v13.super_class = HFMeasurementFormatter;
-    v11 = [(NSMeasurementFormatter *)&v13 stringForObjectValue:v6];
+    v11 = [(NSMeasurementFormatter *)&v13 stringForObjectValue:valueCopy];
   }
 
   return v11;

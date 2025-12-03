@@ -14,7 +14,7 @@
 
 - (BOOL)isLoaded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_192C5DED0();
 
   return v3;

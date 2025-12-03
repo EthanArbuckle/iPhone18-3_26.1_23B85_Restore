@@ -1,6 +1,6 @@
 @interface Daemon
 - (Daemon)init;
-- (void)_handleMigrationDidFinishNotification:(id)a3;
+- (void)_handleMigrationDidFinishNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -43,7 +43,7 @@
   [(Daemon *)&v4 dealloc];
 }
 
-- (void)_handleMigrationDidFinishNotification:(id)a3
+- (void)_handleMigrationDidFinishNotification:(id)notification
 {
   v3 = byte_1005AAD30;
   objc_opt_self();

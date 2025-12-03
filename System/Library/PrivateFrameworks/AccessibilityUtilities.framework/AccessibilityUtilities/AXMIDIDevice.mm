@@ -1,36 +1,36 @@
 @interface AXMIDIDevice
-- (AXMIDIDevice)initWithMIDIDevice:(unsigned int)a3 delegate:(id)a4;
+- (AXMIDIDevice)initWithMIDIDevice:(unsigned int)device delegate:(id)delegate;
 - (AXMIDIDeviceProtocol)delegate;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_entityForMidiEntity:(unsigned int)a3 addIfNeeded:(BOOL)a4;
+- (id)_entityForMidiEntity:(unsigned int)entity addIfNeeded:(BOOL)needed;
 - (id)fullDescription;
 - (unint64_t)hash;
-- (void)addMidiDestination:(unsigned int)a3;
-- (void)addMidiSource:(unsigned int)a3;
-- (void)entity:(id)a3 didAddDestination:(id)a4;
-- (void)entity:(id)a3 didAddSource:(id)a4;
-- (void)entity:(id)a3 didRemoveDestination:(id)a4;
-- (void)entity:(id)a3 didRemoveSource:(id)a4;
-- (void)removeMidiDestination:(unsigned int)a3;
-- (void)removeMidiEntity:(unsigned int)a3;
-- (void)removeMidiSource:(unsigned int)a3;
+- (void)addMidiDestination:(unsigned int)destination;
+- (void)addMidiSource:(unsigned int)source;
+- (void)entity:(id)entity didAddDestination:(id)destination;
+- (void)entity:(id)entity didAddSource:(id)source;
+- (void)entity:(id)entity didRemoveDestination:(id)destination;
+- (void)entity:(id)entity didRemoveSource:(id)source;
+- (void)removeMidiDestination:(unsigned int)destination;
+- (void)removeMidiEntity:(unsigned int)entity;
+- (void)removeMidiSource:(unsigned int)source;
 - (void)resetAndDetectEntities;
 @end
 
 @implementation AXMIDIDevice
 
-- (AXMIDIDevice)initWithMIDIDevice:(unsigned int)a3 delegate:(id)a4
+- (AXMIDIDevice)initWithMIDIDevice:(unsigned int)device delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = AXMIDIDevice;
   v7 = [(AXMIDIDevice *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v8->_midiDevice = a3;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    v8->_midiDevice = device;
     v9 = [MEMORY[0x1E695DFA8] set];
     entities = v8->_entities;
     v8->_entities = v9;
@@ -42,8 +42,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AXMIDIDevice *)self name];
-  v5 = [v3 stringWithFormat:@"<AXMIDIDevice:%p [%@]>", self, v4];
+  name = [(AXMIDIDevice *)self name];
+  v5 = [v3 stringWithFormat:@"<AXMIDIDevice:%p [%@]>", self, name];
 
   return v5;
 }
@@ -51,98 +51,98 @@
 - (id)fullDescription
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"AXMIDIDevice<%p>\n", self];
-  v4 = [(AXMIDIDevice *)self name];
-  [v3 appendFormat:@" Name: %@\n", v4];
+  name = [(AXMIDIDevice *)self name];
+  [v3 appendFormat:@" Name: %@\n", name];
 
-  v5 = [(AXMIDIDevice *)self manufacturer];
-  [v3 appendFormat:@" Manufacturer: %@\n", v5];
+  manufacturer = [(AXMIDIDevice *)self manufacturer];
+  [v3 appendFormat:@" Manufacturer: %@\n", manufacturer];
 
-  v6 = [(AXMIDIDevice *)self model];
-  [v3 appendFormat:@" Model: %@\n", v6];
+  model = [(AXMIDIDevice *)self model];
+  [v3 appendFormat:@" Model: %@\n", model];
 
-  v7 = [(AXMIDIDevice *)self driverName];
-  [v3 appendFormat:@" Driver: %@\n", v7];
+  driverName = [(AXMIDIDevice *)self driverName];
+  [v3 appendFormat:@" Driver: %@\n", driverName];
 
-  v8 = [(AXMIDIDevice *)self uniqueID];
-  [v3 appendFormat:@" Unique ID: %@\n", v8];
+  uniqueID = [(AXMIDIDevice *)self uniqueID];
+  [v3 appendFormat:@" Unique ID: %@\n", uniqueID];
 
-  v9 = [(AXMIDIDevice *)self deviceID];
-  [v3 appendFormat:@" Device ID: %@\n", v9];
+  deviceID = [(AXMIDIDevice *)self deviceID];
+  [v3 appendFormat:@" Device ID: %@\n", deviceID];
 
-  v10 = [(AXMIDIDevice *)self isOffline];
-  [v3 appendFormat:@" Is Offline: %@\n", v10];
+  isOffline = [(AXMIDIDevice *)self isOffline];
+  [v3 appendFormat:@" Is Offline: %@\n", isOffline];
 
-  v11 = [(AXMIDIDevice *)self isPrivate];
-  [v3 appendFormat:@" Is Private: %@\n", v11];
+  isPrivate = [(AXMIDIDevice *)self isPrivate];
+  [v3 appendFormat:@" Is Private: %@\n", isPrivate];
 
-  v12 = [(AXMIDIDevice *)self supportsGeneralMIDI];
-  [v3 appendFormat:@" Supports General MIDI: %@\n", v12];
+  supportsGeneralMIDI = [(AXMIDIDevice *)self supportsGeneralMIDI];
+  [v3 appendFormat:@" Supports General MIDI: %@\n", supportsGeneralMIDI];
 
-  v13 = [(AXMIDIDevice *)self supportsMMC];
-  [v3 appendFormat:@" Supports MMC: %@\n", v13];
+  supportsMMC = [(AXMIDIDevice *)self supportsMMC];
+  [v3 appendFormat:@" Supports MMC: %@\n", supportsMMC];
 
-  v14 = [(AXMIDIDevice *)self entities];
-  v15 = [v14 allObjects];
+  entities = [(AXMIDIDevice *)self entities];
+  allObjects = [entities allObjects];
 
-  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+  v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(allObjects, "count")}];
   [v3 appendFormat:@" Entities: %@\n", v16];
 
-  if ([v15 count])
+  if ([allObjects count])
   {
     v17 = 0;
     v18 = @"     Name: %@\n";
     v19 = @"     Manufacturer: %@\n";
     v20 = @"     Model: %@\n";
     v21 = @"     Driver: %@\n";
-    v82 = v15;
+    v82 = allObjects;
     do
     {
       v83 = v17 + 1;
       v22 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-      v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+      v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(allObjects, "count")}];
       [v3 appendFormat:@"  Entity %@ of %@\n", v22, v23];
 
-      v24 = [v15 objectAtIndex:v17];
-      v25 = [v24 name];
-      [v3 appendFormat:@"   Name: %@\n", v25];
+      v24 = [allObjects objectAtIndex:v17];
+      name2 = [v24 name];
+      [v3 appendFormat:@"   Name: %@\n", name2];
 
-      v26 = [v24 driverName];
-      [v3 appendFormat:@"   Driver: %@\n", v26];
+      driverName2 = [v24 driverName];
+      [v3 appendFormat:@"   Driver: %@\n", driverName2];
 
-      v27 = [v24 uniqueID];
-      [v3 appendFormat:@"   Unique ID: %@\n", v27];
+      uniqueID2 = [v24 uniqueID];
+      [v3 appendFormat:@"   Unique ID: %@\n", uniqueID2];
 
-      v28 = [v24 deviceID];
-      [v3 appendFormat:@"   Device ID: %@\n", v28];
+      deviceID2 = [v24 deviceID];
+      [v3 appendFormat:@"   Device ID: %@\n", deviceID2];
 
-      v29 = [v24 isEmbedded];
-      [v3 appendFormat:@"   Is Embedded: %@\n", v29];
+      isEmbedded = [v24 isEmbedded];
+      [v3 appendFormat:@"   Is Embedded: %@\n", isEmbedded];
 
-      v30 = [v24 isBroadcast];
-      [v3 appendFormat:@"   Is Broadcast: %@\n", v30];
+      isBroadcast = [v24 isBroadcast];
+      [v3 appendFormat:@"   Is Broadcast: %@\n", isBroadcast];
 
-      v31 = [v24 isOffline];
-      [v3 appendFormat:@"   Is Offline: %@\n", v31];
+      isOffline2 = [v24 isOffline];
+      [v3 appendFormat:@"   Is Offline: %@\n", isOffline2];
 
-      v32 = [v24 isPrivate];
-      [v3 appendFormat:@"   Is Private: %@\n", v32];
+      isPrivate2 = [v24 isPrivate];
+      [v3 appendFormat:@"   Is Private: %@\n", isPrivate2];
 
-      v33 = [v24 supportsGeneralMIDI];
-      [v3 appendFormat:@"   Supports General MIDI: %@\n", v33];
+      supportsGeneralMIDI2 = [v24 supportsGeneralMIDI];
+      [v3 appendFormat:@"   Supports General MIDI: %@\n", supportsGeneralMIDI2];
 
-      v34 = [v24 supportsMMC];
-      [v3 appendFormat:@"   Supports MMC: %@\n", v34];
+      supportsMMC2 = [v24 supportsMMC];
+      [v3 appendFormat:@"   Supports MMC: %@\n", supportsMMC2];
 
       v35 = MEMORY[0x1E696AD98];
-      v36 = [v24 sources];
-      v37 = [v35 numberWithUnsignedInteger:{objc_msgSend(v36, "count")}];
+      sources = [v24 sources];
+      v37 = [v35 numberWithUnsignedInteger:{objc_msgSend(sources, "count")}];
       [v3 appendFormat:@"   Sources: %@\n", v37];
 
       v84 = v24;
-      v38 = [v24 sources];
-      v39 = [v38 allObjects];
+      sources2 = [v24 sources];
+      allObjects2 = [sources2 allObjects];
 
-      if ([v39 count])
+      if ([allObjects2 count])
       {
         v40 = 0;
         do
@@ -153,7 +153,7 @@
           v44 = v20;
           v45 = v19;
           v46 = v18;
-          v47 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v39, "count")}];
+          v47 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(allObjects2, "count")}];
           [v3 appendFormat:@"    Source %@ of %@\n", v42, v47];
 
           v18 = v46;
@@ -161,105 +161,105 @@
           v20 = v44;
           v21 = v43;
 
-          v48 = [v39 objectAtIndex:v40];
-          v49 = [v48 name];
-          [v3 appendFormat:v18, v49];
+          v48 = [allObjects2 objectAtIndex:v40];
+          name3 = [v48 name];
+          [v3 appendFormat:v18, name3];
 
-          v50 = [v48 manufacturer];
-          [v3 appendFormat:v19, v50];
+          manufacturer2 = [v48 manufacturer];
+          [v3 appendFormat:v19, manufacturer2];
 
-          v51 = [v48 model];
-          [v3 appendFormat:v20, v51];
+          model2 = [v48 model];
+          [v3 appendFormat:v20, model2];
 
-          v52 = [v48 driverName];
-          [v3 appendFormat:v43, v52];
+          driverName3 = [v48 driverName];
+          [v3 appendFormat:v43, driverName3];
 
-          v53 = [v48 uniqueID];
-          [v3 appendFormat:@"     Unique ID: %@\n", v53];
+          uniqueID3 = [v48 uniqueID];
+          [v3 appendFormat:@"     Unique ID: %@\n", uniqueID3];
 
-          v54 = [v48 receiveChannels];
-          [v3 appendFormat:@"     Receive Channels: %@\n", v54];
+          receiveChannels = [v48 receiveChannels];
+          [v3 appendFormat:@"     Receive Channels: %@\n", receiveChannels];
 
-          v55 = [v48 transmitChannels];
-          [v3 appendFormat:@"     Transmit Channels: %@\n", v55];
+          transmitChannels = [v48 transmitChannels];
+          [v3 appendFormat:@"     Transmit Channels: %@\n", transmitChannels];
 
-          v56 = [v48 isEmbedded];
-          [v3 appendFormat:@"     Is Embedded: %@\n", v56];
+          isEmbedded2 = [v48 isEmbedded];
+          [v3 appendFormat:@"     Is Embedded: %@\n", isEmbedded2];
 
-          v57 = [v48 isBroadcast];
-          [v3 appendFormat:@"     Is Broadcast: %@\n", v57];
+          isBroadcast2 = [v48 isBroadcast];
+          [v3 appendFormat:@"     Is Broadcast: %@\n", isBroadcast2];
 
-          v58 = [v48 isOffline];
-          [v3 appendFormat:@"     Is Offline: %@\n", v58];
+          isOffline3 = [v48 isOffline];
+          [v3 appendFormat:@"     Is Offline: %@\n", isOffline3];
 
-          v59 = [v48 isPrivate];
-          [v3 appendFormat:@"     Is Private: %@\n", v59];
+          isPrivate3 = [v48 isPrivate];
+          [v3 appendFormat:@"     Is Private: %@\n", isPrivate3];
 
           v40 = v41;
         }
 
-        while (v41 < [v39 count]);
+        while (v41 < [allObjects2 count]);
       }
 
-      v60 = [v84 destinations];
-      v61 = [v60 allObjects];
+      destinations = [v84 destinations];
+      allObjects3 = [destinations allObjects];
 
-      v62 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v61, "count")}];
+      v62 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(allObjects3, "count")}];
       [v3 appendFormat:@"   Destinations: %@\n", v62];
 
       v63 = v20;
       v64 = v18;
-      if ([v61 count])
+      if ([allObjects3 count])
       {
         v65 = 0;
         do
         {
           v66 = v65 + 1;
           v67 = [MEMORY[0x1E696AD98] numberWithInteger:v65 + 1];
-          v68 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v61, "count")}];
+          v68 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(allObjects3, "count")}];
           [v3 appendFormat:@"    Destination %@ of %@\n", v67, v68];
 
-          v69 = [v61 objectAtIndex:v65];
-          v70 = [v69 name];
-          [v3 appendFormat:v64, v70];
+          v69 = [allObjects3 objectAtIndex:v65];
+          name4 = [v69 name];
+          [v3 appendFormat:v64, name4];
 
-          v71 = [v69 manufacturer];
-          [v3 appendFormat:@"     Manufacturer: %@\n", v71];
+          manufacturer3 = [v69 manufacturer];
+          [v3 appendFormat:@"     Manufacturer: %@\n", manufacturer3];
 
-          v72 = [v69 model];
-          [v3 appendFormat:v63, v72];
+          model3 = [v69 model];
+          [v3 appendFormat:v63, model3];
 
-          v73 = [v69 driverName];
-          [v3 appendFormat:@"     Driver: %@\n", v73];
+          driverName4 = [v69 driverName];
+          [v3 appendFormat:@"     Driver: %@\n", driverName4];
 
-          v74 = [v69 uniqueID];
-          [v3 appendFormat:@"     Unique ID: %@\n", v74];
+          uniqueID4 = [v69 uniqueID];
+          [v3 appendFormat:@"     Unique ID: %@\n", uniqueID4];
 
-          v75 = [v69 receiveChannels];
-          [v3 appendFormat:@"     Receive Channels: %@\n", v75];
+          receiveChannels2 = [v69 receiveChannels];
+          [v3 appendFormat:@"     Receive Channels: %@\n", receiveChannels2];
 
-          v76 = [v69 transmitChannels];
-          [v3 appendFormat:@"     Transmit Channels: %@\n", v76];
+          transmitChannels2 = [v69 transmitChannels];
+          [v3 appendFormat:@"     Transmit Channels: %@\n", transmitChannels2];
 
-          v77 = [v69 isEmbedded];
-          [v3 appendFormat:@"     Is Embedded: %@\n", v77];
+          isEmbedded3 = [v69 isEmbedded];
+          [v3 appendFormat:@"     Is Embedded: %@\n", isEmbedded3];
 
-          v78 = [v69 isBroadcast];
-          [v3 appendFormat:@"     Is Broadcast: %@\n", v78];
+          isBroadcast3 = [v69 isBroadcast];
+          [v3 appendFormat:@"     Is Broadcast: %@\n", isBroadcast3];
 
-          v79 = [v69 isOffline];
-          [v3 appendFormat:@"     Is Offline: %@\n", v79];
+          isOffline4 = [v69 isOffline];
+          [v3 appendFormat:@"     Is Offline: %@\n", isOffline4];
 
-          v80 = [v69 isPrivate];
-          [v3 appendFormat:@"     Is Private: %@\n", v80];
+          isPrivate4 = [v69 isPrivate];
+          [v3 appendFormat:@"     Is Private: %@\n", isPrivate4];
 
           v65 = v66;
         }
 
-        while (v66 < [v61 count]);
+        while (v66 < [allObjects3 count]);
       }
 
-      v15 = v82;
+      allObjects = v82;
       v17 = v83;
       v18 = v64;
       v19 = @"     Manufacturer: %@\n";
@@ -273,15 +273,15 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AXMIDIDevice *)self uniqueID];
-    v6 = [v4 uniqueID];
-    v7 = [v5 isEqual:v6];
+    uniqueID = [(AXMIDIDevice *)self uniqueID];
+    uniqueID2 = [equalCopy uniqueID];
+    v7 = [uniqueID isEqual:uniqueID2];
   }
 
   else
@@ -294,10 +294,10 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AXMIDIDevice *)self uniqueID];
-  v3 = [v2 unsignedIntegerValue];
+  uniqueID = [(AXMIDIDevice *)self uniqueID];
+  unsignedIntegerValue = [uniqueID unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (void)resetAndDetectEntities
@@ -313,10 +313,10 @@
   }
 }
 
-- (void)removeMidiEntity:(unsigned int)a3
+- (void)removeMidiEntity:(unsigned int)entity
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(AXMIDIDevice *)self _entityForMidiEntity:*&a3 addIfNeeded:0];
+  v4 = [(AXMIDIDevice *)self _entityForMidiEntity:*&entity addIfNeeded:0];
   if (v4)
   {
     v5 = AXLogMIDI();
@@ -328,18 +328,18 @@
     }
 
     [v4 setDevice:0];
-    v6 = [(AXMIDIDevice *)self entities];
-    [v6 removeObject:v4];
+    entities = [(AXMIDIDevice *)self entities];
+    [entities removeObject:v4];
 
-    v7 = [(AXMIDIDevice *)self delegate];
-    [v7 device:self didRemoveEntity:v4];
+    delegate = [(AXMIDIDevice *)self delegate];
+    [delegate device:self didRemoveEntity:v4];
   }
 }
 
-- (void)addMidiSource:(unsigned int)a3
+- (void)addMidiSource:(unsigned int)source
 {
-  v3 = *&a3;
-  v5 = AXMIDIEntityForEndpoint(a3);
+  v3 = *&source;
+  v5 = AXMIDIEntityForEndpoint(source);
   if (v5)
   {
     v7 = v5;
@@ -350,10 +350,10 @@
   }
 }
 
-- (void)removeMidiSource:(unsigned int)a3
+- (void)removeMidiSource:(unsigned int)source
 {
-  v3 = *&a3;
-  v5 = AXMIDIEntityForEndpoint(a3);
+  v3 = *&source;
+  v5 = AXMIDIEntityForEndpoint(source);
   if (v5)
   {
     v7 = v5;
@@ -364,10 +364,10 @@
   }
 }
 
-- (void)addMidiDestination:(unsigned int)a3
+- (void)addMidiDestination:(unsigned int)destination
 {
-  v3 = *&a3;
-  v5 = AXMIDIEntityForEndpoint(a3);
+  v3 = *&destination;
+  v5 = AXMIDIEntityForEndpoint(destination);
   if (v5)
   {
     v7 = v5;
@@ -378,10 +378,10 @@
   }
 }
 
-- (void)removeMidiDestination:(unsigned int)a3
+- (void)removeMidiDestination:(unsigned int)destination
 {
-  v3 = *&a3;
-  v5 = AXMIDIEntityForEndpoint(a3);
+  v3 = *&destination;
+  v5 = AXMIDIEntityForEndpoint(destination);
   if (v5)
   {
     v7 = v5;
@@ -392,17 +392,17 @@
   }
 }
 
-- (id)_entityForMidiEntity:(unsigned int)a3 addIfNeeded:(BOOL)a4
+- (id)_entityForMidiEntity:(unsigned int)entity addIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v5 = *&a3;
+  neededCopy = needed;
+  v5 = *&entity;
   v24 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(AXMIDIDevice *)self entities];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  entities = [(AXMIDIDevice *)self entities];
+  v8 = [entities countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v8)
   {
     v9 = v8;
@@ -413,7 +413,7 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(entities);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
@@ -424,7 +424,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v9 = [entities countByEnumeratingWithState:&v17 objects:v23 count:16];
       if (v9)
       {
         continue;
@@ -434,11 +434,11 @@
     }
   }
 
-  if (v4)
+  if (neededCopy)
   {
     v13 = [[AXMIDIDeviceEntity alloc] initWithMIDIEntity:v5 device:self];
-    v14 = [(AXMIDIDevice *)self entities];
-    [v14 addObject:v13];
+    entities2 = [(AXMIDIDevice *)self entities];
+    [entities2 addObject:v13];
 
     v15 = AXLogMIDI();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -449,8 +449,8 @@
     }
 
     [(AXMIDIDeviceEntity *)v13 resetAndDetectEndpoints];
-    v7 = [(AXMIDIDevice *)self delegate];
-    [v7 device:self didAddEntity:v13];
+    entities = [(AXMIDIDevice *)self delegate];
+    [entities device:self didAddEntity:v13];
 LABEL_14:
   }
 
@@ -462,36 +462,36 @@ LABEL_14:
   return v13;
 }
 
-- (void)entity:(id)a3 didAddSource:(id)a4
+- (void)entity:(id)entity didAddSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXMIDIDevice *)self delegate];
-  [v8 device:self entity:v7 didAddSource:v6];
+  sourceCopy = source;
+  entityCopy = entity;
+  delegate = [(AXMIDIDevice *)self delegate];
+  [delegate device:self entity:entityCopy didAddSource:sourceCopy];
 }
 
-- (void)entity:(id)a3 didRemoveSource:(id)a4
+- (void)entity:(id)entity didRemoveSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXMIDIDevice *)self delegate];
-  [v8 device:self entity:v7 didRemoveSource:v6];
+  sourceCopy = source;
+  entityCopy = entity;
+  delegate = [(AXMIDIDevice *)self delegate];
+  [delegate device:self entity:entityCopy didRemoveSource:sourceCopy];
 }
 
-- (void)entity:(id)a3 didAddDestination:(id)a4
+- (void)entity:(id)entity didAddDestination:(id)destination
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXMIDIDevice *)self delegate];
-  [v8 device:self entity:v7 didAddDestination:v6];
+  destinationCopy = destination;
+  entityCopy = entity;
+  delegate = [(AXMIDIDevice *)self delegate];
+  [delegate device:self entity:entityCopy didAddDestination:destinationCopy];
 }
 
-- (void)entity:(id)a3 didRemoveDestination:(id)a4
+- (void)entity:(id)entity didRemoveDestination:(id)destination
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXMIDIDevice *)self delegate];
-  [v8 device:self entity:v7 didRemoveDestination:v6];
+  destinationCopy = destination;
+  entityCopy = entity;
+  delegate = [(AXMIDIDevice *)self delegate];
+  [delegate device:self entity:entityCopy didRemoveDestination:destinationCopy];
 }
 
 - (AXMIDIDeviceProtocol)delegate

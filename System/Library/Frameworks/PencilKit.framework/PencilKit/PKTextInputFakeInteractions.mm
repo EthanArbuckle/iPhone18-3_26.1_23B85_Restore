@@ -1,7 +1,7 @@
 @interface PKTextInputFakeInteractions
 + (id)sharedInstance;
-+ (void)attachFakeInteractionToViewIfNecessary:(id)a3;
-- (void)_attachToView:(id)a3;
++ (void)attachFakeInteractionToViewIfNecessary:(id)necessary;
+- (void)_attachToView:(id)view;
 @end
 
 @implementation PKTextInputFakeInteractions
@@ -25,29 +25,29 @@ void __45__PKTextInputFakeInteractions_sharedInstance__block_invoke()
   _MergedGlobals_168 = v0;
 }
 
-+ (void)attachFakeInteractionToViewIfNecessary:(id)a3
++ (void)attachFakeInteractionToViewIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = [a1 sharedInstance];
-  [v5 _attachToView:v4];
+  necessaryCopy = necessary;
+  sharedInstance = [self sharedInstance];
+  [sharedInstance _attachToView:necessaryCopy];
 }
 
-- (void)_attachToView:(id)a3
+- (void)_attachToView:(id)view
 {
-  v20 = a3;
-  v3 = [v20 fakeScribbleInteractionDelegate];
+  viewCopy = view;
+  fakeScribbleInteractionDelegate = [viewCopy fakeScribbleInteractionDelegate];
 
-  if (!v3 && (PKHasScribbleInteractionInView(v20) & 1) == 0)
+  if (!fakeScribbleInteractionDelegate && (PKHasScribbleInteractionInView(viewCopy) & 1) == 0)
   {
     v4 = +[PKTextInputSettings sharedSettings];
-    v5 = [v4 enableTargetedAppWorkarounds];
+    enableTargetedAppWorkarounds = [v4 enableTargetedAppWorkarounds];
 
-    if (v5)
+    if (enableTargetedAppWorkarounds)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v20;
+        v6 = viewCopy;
         if ([v6 isStylusDrawingEnabled])
         {
           v7 = [[PKFakeNotesDelegate alloc] initWithTextView:v6];
@@ -57,13 +57,13 @@ void __45__PKTextInputFakeInteractions_sharedInstance__block_invoke()
 LABEL_21:
             v16 = 0;
 LABEL_26:
-            [v20 setFakeScribbleInteractionDelegate:v7];
+            [viewCopy setFakeScribbleInteractionDelegate:v7];
             v18 = objc_alloc_init(PKScribbleInteraction);
-            v19 = [v20 fakeScribbleInteractionDelegate];
-            [(PKScribbleInteraction *)v18 setDelegate:v19];
+            fakeScribbleInteractionDelegate2 = [viewCopy fakeScribbleInteractionDelegate];
+            [(PKScribbleInteraction *)v18 setDelegate:fakeScribbleInteractionDelegate2];
 
             [(PKScribbleInteraction *)v18 setElementSource:v16];
-            [v20 addInteraction:v18];
+            [viewCopy addInteraction:v18];
 
             goto LABEL_27;
           }
@@ -78,7 +78,7 @@ LABEL_26:
       {
         if (objc_opt_isKindOfClass())
         {
-          v8 = [[PKFakeVoiceMemosDelegate alloc] initWithView:v20];
+          v8 = [[PKFakeVoiceMemosDelegate alloc] initWithView:viewCopy];
           if (v8)
           {
 LABEL_20:
@@ -90,16 +90,16 @@ LABEL_20:
 
       if (NSClassFromString(&cfstr_Ekuitableviewc.isa) && (objc_opt_isKindOfClass() & 1) != 0)
       {
-        v9 = v20;
-        v10 = [v9 textLabel];
-        v11 = [v10 text];
-        v12 = [v11 isEqualToString:@"Location"];
+        v9 = viewCopy;
+        textLabel = [v9 textLabel];
+        text = [textLabel text];
+        v12 = [text isEqualToString:@"Location"];
 
         if (v12)
         {
           v13 = [PKFakeCalendarLocationDelegate alloc];
-          v14 = [v9 window];
-          v15 = [(PKFakeCalendarLocationDelegate *)v13 initWithCell:v9 window:v14];
+          window = [v9 window];
+          v15 = [(PKFakeCalendarLocationDelegate *)v13 initWithCell:v9 window:window];
 
           v7 = v15;
           if (v7)
@@ -116,7 +116,7 @@ LABEL_25:
       }
     }
 
-    if ([PKFakeDisableDelegate _shouldAttachForView:v20])
+    if ([PKFakeDisableDelegate _shouldAttachForView:viewCopy])
     {
       v8 = objc_alloc_init(PKFakeDisableDelegate);
       if (v8)
@@ -125,9 +125,9 @@ LABEL_25:
       }
     }
 
-    if ([PKFakeTapToFocusDelegate _shouldAttachForView:v20])
+    if ([PKFakeTapToFocusDelegate _shouldAttachForView:viewCopy])
     {
-      v17 = [[PKFakeTapToFocusDelegate alloc] initWithView:v20];
+      v17 = [[PKFakeTapToFocusDelegate alloc] initWithView:viewCopy];
       if (v17)
       {
         v7 = v17;

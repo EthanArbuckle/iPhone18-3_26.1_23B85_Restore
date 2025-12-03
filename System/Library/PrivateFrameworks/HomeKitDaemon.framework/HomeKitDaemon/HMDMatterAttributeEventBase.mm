@@ -1,28 +1,28 @@
 @interface HMDMatterAttributeEventBase
-+ (id)compareValueOfAttribute:(id)a3 againstValue:(id)a4 operatorType:(id)a5;
++ (id)compareValueOfAttribute:(id)attribute againstValue:(id)value operatorType:(id)type;
 + (id)logCategory;
-- (BOOL)_activate:(unint64_t)a3 completionHandler:(id)a4;
-- (BOOL)isCompatibleWithEvent:(id)a3;
-- (HMDMatterAttributeEventBase)initWithCoder:(id)a3;
-- (HMDMatterAttributeEventBase)initWithModel:(id)a3 home:(id)a4;
+- (BOOL)_activate:(unint64_t)_activate completionHandler:(id)handler;
+- (BOOL)isCompatibleWithEvent:(id)event;
+- (HMDMatterAttributeEventBase)initWithCoder:(id)coder;
+- (HMDMatterAttributeEventBase)initWithModel:(id)model home:(id)home;
 - (HMDMatterPath)matterPath;
 - (id)createPayload;
 - (id)description;
-- (void)__handleAttributesChangedNotification:(id)a3;
+- (void)__handleAttributesChangedNotification:(id)notification;
 - (void)_registerForMessages;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleAttributesChangedNotification:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleAttributesChangedNotification:(id)notification;
 @end
 
 @implementation HMDMatterAttributeEventBase
 
-- (BOOL)_activate:(unint64_t)a3 completionHandler:(id)a4
+- (BOOL)_activate:(unint64_t)_activate completionHandler:(id)handler
 {
   v9.receiver = self;
   v9.super_class = HMDMatterAttributeEventBase;
-  v5 = a4;
-  v6 = [(HMDEvent *)&v9 _activate:a3 completionHandler:0];
-  v7 = _Block_copy(v5);
+  handlerCopy = handler;
+  v6 = [(HMDEvent *)&v9 _activate:_activate completionHandler:0];
+  v7 = _Block_copy(handlerCopy);
 
   if (v7)
   {
@@ -32,32 +32,32 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = HMDMatterAttributeEventBase;
-  v4 = a3;
-  [(HMDEvent *)&v13 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDEvent *)&v13 encodeWithCoder:coderCopy];
   v5 = [(HMDMatterAttributeEventBase *)self matterPath:v13.receiver];
-  v6 = [v5 attributeID];
-  [v4 encodeObject:v6 forKey:*MEMORY[0x277CCF2D0]];
+  attributeID = [v5 attributeID];
+  [coderCopy encodeObject:attributeID forKey:*MEMORY[0x277CCF2D0]];
 
-  v7 = [(HMDMatterAttributeEventBase *)self matterPath];
-  v8 = [v7 clusterID];
-  [v4 encodeObject:v8 forKey:*MEMORY[0x277CCFC00]];
+  matterPath = [(HMDMatterAttributeEventBase *)self matterPath];
+  clusterID = [matterPath clusterID];
+  [coderCopy encodeObject:clusterID forKey:*MEMORY[0x277CCFC00]];
 
-  v9 = [(HMDMatterAttributeEventBase *)self matterPath];
-  v10 = [v9 endpointID];
-  [v4 encodeObject:v10 forKey:*MEMORY[0x277CCFD08]];
+  matterPath2 = [(HMDMatterAttributeEventBase *)self matterPath];
+  endpointID = [matterPath2 endpointID];
+  [coderCopy encodeObject:endpointID forKey:*MEMORY[0x277CCFD08]];
 
-  v11 = [(HMDMatterAttributeEventBase *)self matterPath];
-  v12 = [v11 accessory];
-  [v4 encodeObject:v12 forKey:@"accessory"];
+  matterPath3 = [(HMDMatterAttributeEventBase *)self matterPath];
+  accessory = [matterPath3 accessory];
+  [coderCopy encodeObject:accessory forKey:@"accessory"];
 }
 
-- (HMDMatterAttributeEventBase)initWithCoder:(id)a3
+- (HMDMatterAttributeEventBase)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -74,43 +74,43 @@
   v3 = MEMORY[0x277CBEB38];
   v17.receiver = self;
   v17.super_class = HMDMatterAttributeEventBase;
-  v4 = [(HMDEvent *)&v17 createPayload];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  createPayload = [(HMDEvent *)&v17 createPayload];
+  v5 = [v3 dictionaryWithDictionary:createPayload];
 
-  v6 = [(HMDMatterAttributeEventBase *)self matterPath];
-  v7 = [v6 accessory];
-  v8 = [v7 uuid];
-  [v5 setObject:v8 forKeyedSubscript:*MEMORY[0x277CCF0B0]];
+  matterPath = [(HMDMatterAttributeEventBase *)self matterPath];
+  accessory = [matterPath accessory];
+  uuid = [accessory uuid];
+  [v5 setObject:uuid forKeyedSubscript:*MEMORY[0x277CCF0B0]];
 
-  v9 = [(HMDMatterAttributeEventBase *)self matterPath];
-  v10 = [v9 attributeID];
-  [v5 setObject:v10 forKeyedSubscript:*MEMORY[0x277CCF2D8]];
+  matterPath2 = [(HMDMatterAttributeEventBase *)self matterPath];
+  attributeID = [matterPath2 attributeID];
+  [v5 setObject:attributeID forKeyedSubscript:*MEMORY[0x277CCF2D8]];
 
-  v11 = [(HMDMatterAttributeEventBase *)self matterPath];
-  v12 = [v11 clusterID];
-  [v5 setObject:v12 forKeyedSubscript:*MEMORY[0x277CCFC08]];
+  matterPath3 = [(HMDMatterAttributeEventBase *)self matterPath];
+  clusterID = [matterPath3 clusterID];
+  [v5 setObject:clusterID forKeyedSubscript:*MEMORY[0x277CCFC08]];
 
-  v13 = [(HMDMatterAttributeEventBase *)self matterPath];
-  v14 = [v13 endpointID];
-  [v5 setObject:v14 forKeyedSubscript:*MEMORY[0x277CCFD10]];
+  matterPath4 = [(HMDMatterAttributeEventBase *)self matterPath];
+  endpointID = [matterPath4 endpointID];
+  [v5 setObject:endpointID forKeyedSubscript:*MEMORY[0x277CCFD10]];
 
   v15 = [v5 copy];
 
   return v15;
 }
 
-- (void)handleAttributesChangedNotification:(id)a3
+- (void)handleAttributesChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDEvent *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDEvent *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__HMDMatterAttributeEventBase_handleAttributesChangedNotification___block_invoke;
   v7[3] = &unk_27868A750;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __67__HMDMatterAttributeEventBase_handleAttributesChangedNotification___block_invoke(uint64_t a1)
@@ -120,51 +120,51 @@ void __67__HMDMatterAttributeEventBase_handleAttributesChangedNotification___blo
   [v1 __handleAttributesChangedNotification:v2];
 }
 
-- (void)__handleAttributesChangedNotification:(id)a3
+- (void)__handleAttributesChangedNotification:(id)notification
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 hmf_numberForKey:@"HMDMatterAttributeChangedNotificationEndpointIDKey"];
-  v6 = [v4 hmf_numberForKey:@"HMDMatterAttributeChangedNotificationClusterIDKey"];
-  v7 = [v4 hmf_numberForKey:@"HMDMatterAttributeChangedNotificationAttributeIDKey"];
+  notificationCopy = notification;
+  v5 = [notificationCopy hmf_numberForKey:@"HMDMatterAttributeChangedNotificationEndpointIDKey"];
+  v6 = [notificationCopy hmf_numberForKey:@"HMDMatterAttributeChangedNotificationClusterIDKey"];
+  v7 = [notificationCopy hmf_numberForKey:@"HMDMatterAttributeChangedNotificationAttributeIDKey"];
   v8 = v7;
   if (v5 && v6 && v7)
   {
-    v9 = [(HMDMatterAttributeEventBase *)self matterPath];
-    v10 = [(HMDMatterAttributeEventBase *)self matterPath];
-    v11 = [v10 accessory];
-    v12 = [HMDMatterPath PathWithAttributeID:v8 endpointID:v5 clusterID:v6 accessory:v11];
-    v13 = [v9 isEqual:v12];
+    matterPath = [(HMDMatterAttributeEventBase *)self matterPath];
+    matterPath2 = [(HMDMatterAttributeEventBase *)self matterPath];
+    accessory = [matterPath2 accessory];
+    v12 = [HMDMatterPath PathWithAttributeID:v8 endpointID:v5 clusterID:v6 accessory:accessory];
+    v13 = [matterPath isEqual:v12];
 
     if (v13)
     {
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         v17 = HMFGetLogIdentifier();
-        v18 = [(HMDMatterAttributeEventBase *)v15 matterPath];
+        matterPath3 = [(HMDMatterAttributeEventBase *)selfCopy matterPath];
         v34 = 138543618;
         v35 = v17;
         v36 = 2112;
-        v37 = v18;
+        v37 = matterPath3;
         _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Received notification that attributes changed state, evaluating if trigger needs to be executed, %@", &v34, 0x16u);
       }
 
       objc_autoreleasePoolPop(v14);
-      if ([(HMDMatterAttributeEventBase *)v15 _evaluateNewValue:v4])
+      if ([(HMDMatterAttributeEventBase *)selfCopy _evaluateNewValue:notificationCopy])
       {
-        v19 = [(HMDMatterAttributeEventBase *)v15 isActive];
+        isActive = [(HMDMatterAttributeEventBase *)selfCopy isActive];
         v20 = objc_autoreleasePoolPush();
-        v21 = v15;
+        v21 = selfCopy;
         v22 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           v23 = HMFGetLogIdentifier();
           v24 = v23;
           v25 = "Not firing";
-          if (v19)
+          if (isActive)
           {
             v25 = "Firing";
           }
@@ -174,7 +174,7 @@ void __67__HMDMatterAttributeEventBase_handleAttributesChangedNotification___blo
           v35 = v23;
           v37 = v25;
           v36 = 2080;
-          if (v19)
+          if (isActive)
           {
             v26 = "is";
           }
@@ -185,10 +185,10 @@ void __67__HMDMatterAttributeEventBase_handleAttributesChangedNotification___blo
         }
 
         objc_autoreleasePoolPop(v20);
-        if (v19)
+        if (isActive)
         {
-          v27 = [(HMDEvent *)v21 delegate];
-          v28 = [v27 didOccurEvent:v21 causingDevice:0];
+          delegate = [(HMDEvent *)v21 delegate];
+          v28 = [delegate didOccurEvent:v21 causingDevice:0];
         }
       }
     }
@@ -197,7 +197,7 @@ void __67__HMDMatterAttributeEventBase_handleAttributesChangedNotification___blo
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
@@ -225,28 +225,28 @@ void __67__HMDMatterAttributeEventBase_handleAttributesChangedNotification___blo
   v12.receiver = self;
   v12.super_class = HMDMatterAttributeEventBase;
   [(HMDEvent *)&v12 _registerForMessages];
-  v3 = [(HMDMatterAttributeEventBase *)self matterPath];
-  v4 = [v3 accessory];
+  matterPath = [(HMDMatterAttributeEventBase *)self matterPath];
+  accessory = [matterPath accessory];
 
-  if (v4)
+  if (accessory)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:self selector:sel_handleAttributesChangedNotification_ name:@"HMDMatterAttributeChangedNotification" object:v4];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_handleAttributesChangedNotification_ name:@"HMDMatterAttributeChangedNotification" object:accessory];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v9 = HMFGetLogIdentifier();
-      v10 = [(HMDMatterAttributeEventBase *)v7 matterPath];
+      matterPath2 = [(HMDMatterAttributeEventBase *)selfCopy matterPath];
       *buf = 138543618;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      v16 = matterPath2;
       _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_ERROR, "%{public}@Unable to find accessory on matter path %@", buf, 0x16u);
     }
 
@@ -258,23 +258,23 @@ void __67__HMDMatterAttributeEventBase_handleAttributesChangedNotification___blo
 
 - (HMDMatterPath)matterPath
 {
-  v3 = [(HMDEvent *)self home];
-  v4 = [(HMDMatterAttributeEventBase *)self matterPathUUID];
-  v5 = [v3 matterPathWithUUID:v4];
+  home = [(HMDEvent *)self home];
+  matterPathUUID = [(HMDMatterAttributeEventBase *)self matterPathUUID];
+  v5 = [home matterPathWithUUID:matterPathUUID];
 
   return v5;
 }
 
-- (BOOL)isCompatibleWithEvent:(id)a3
+- (BOOL)isCompatibleWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = HMDMatterAttributeEventBase;
-  if ([(HMDEvent *)&v9 isCompatibleWithEvent:v4])
+  if ([(HMDEvent *)&v9 isCompatibleWithEvent:eventCopy])
   {
-    v5 = [(HMDMatterAttributeEventBase *)self matterPath];
-    v6 = [v4 matterPath];
-    v7 = [v5 isEqual:v6];
+    matterPath = [(HMDMatterAttributeEventBase *)self matterPath];
+    matterPath2 = [eventCopy matterPath];
+    v7 = [matterPath isEqual:matterPath2];
   }
 
   else
@@ -291,35 +291,35 @@ void __67__HMDMatterAttributeEventBase_handleAttributesChangedNotification___blo
   v8.receiver = self;
   v8.super_class = HMDMatterAttributeEventBase;
   v4 = [(HMDEvent *)&v8 description];
-  v5 = [(HMDMatterAttributeEventBase *)self matterPath];
-  v6 = [v3 stringWithFormat:@"%@, %@", v4, v5];
+  matterPath = [(HMDMatterAttributeEventBase *)self matterPath];
+  v6 = [v3 stringWithFormat:@"%@, %@", v4, matterPath];
 
   return v6;
 }
 
-- (HMDMatterAttributeEventBase)initWithModel:(id)a3 home:(id)a4
+- (HMDMatterAttributeEventBase)initWithModel:(id)model home:(id)home
 {
-  v6 = a3;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = HMDMatterAttributeEventBase;
-  v7 = [(HMDEvent *)&v11 initWithModel:v6 home:a4];
+  v7 = [(HMDEvent *)&v11 initWithModel:modelCopy home:home];
   if (v7)
   {
-    v8 = [v6 matterPathUUID];
+    matterPathUUID = [modelCopy matterPathUUID];
     matterPathUUID = v7->_matterPathUUID;
-    v7->_matterPathUUID = v8;
+    v7->_matterPathUUID = matterPathUUID;
   }
 
   return v7;
 }
 
-+ (id)compareValueOfAttribute:(id)a3 againstValue:(id)a4 operatorType:(id)a5
++ (id)compareValueOfAttribute:(id)attribute againstValue:(id)value operatorType:(id)type
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [a5 unsignedIntegerValue];
+  valueCopy = value;
+  attributeCopy = attribute;
+  unsignedIntegerValue = [type unsignedIntegerValue];
   v10 = MEMORY[0x277CCABB0];
-  v11 = compareCharacteristicValue(v8, v7, v9, &unk_283E753C8);
+  v11 = compareCharacteristicValue(attributeCopy, valueCopy, unsignedIntegerValue, &unk_283E753C8);
 
   return [v10 numberWithBool:v11];
 }

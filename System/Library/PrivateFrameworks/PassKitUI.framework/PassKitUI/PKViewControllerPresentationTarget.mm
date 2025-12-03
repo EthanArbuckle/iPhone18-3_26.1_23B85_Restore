@@ -1,18 +1,18 @@
 @interface PKViewControllerPresentationTarget
-+ (id)targetWithPresentingViewController:(id)a3;
-+ (id)targetWithPresentingViewController:(id)a3 sourceItem:(id)a4;
-+ (id)targetWithPresentingViewController:(id)a3 sourceView:(id)a4;
++ (id)targetWithPresentingViewController:(id)controller;
++ (id)targetWithPresentingViewController:(id)controller sourceItem:(id)item;
++ (id)targetWithPresentingViewController:(id)controller sourceView:(id)view;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)_initWithPresentingViewController:(id)a3 sourceItem:(id)a4;
+- (id)_initWithPresentingViewController:(id)controller sourceItem:(id)item;
 @end
 
 @implementation PKViewControllerPresentationTarget
 
-- (id)_initWithPresentingViewController:(id)a3 sourceItem:(id)a4
+- (id)_initWithPresentingViewController:(id)controller sourceItem:(id)item
 {
-  v7 = a3;
-  result = a4;
-  if (v7)
+  controllerCopy = controller;
+  result = item;
+  if (controllerCopy)
   {
     v9 = result;
     v12.receiver = self;
@@ -21,7 +21,7 @@
     p_isa = &v10->super.isa;
     if (v10)
     {
-      objc_storeStrong(&v10->_presentingViewController, a3);
+      objc_storeStrong(&v10->_presentingViewController, controller);
       objc_storeWeak(p_isa + 2, v9);
     }
 
@@ -36,28 +36,28 @@
   return result;
 }
 
-+ (id)targetWithPresentingViewController:(id)a3
++ (id)targetWithPresentingViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [[PKViewControllerPresentationTarget alloc] _initWithPresentingViewController:v3 sourceItem:0];
+  controllerCopy = controller;
+  v4 = [[PKViewControllerPresentationTarget alloc] _initWithPresentingViewController:controllerCopy sourceItem:0];
 
   return v4;
 }
 
-+ (id)targetWithPresentingViewController:(id)a3 sourceItem:(id)a4
++ (id)targetWithPresentingViewController:(id)controller sourceItem:(id)item
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PKViewControllerPresentationTarget alloc] _initWithPresentingViewController:v6 sourceItem:v5];
+  itemCopy = item;
+  controllerCopy = controller;
+  v7 = [[PKViewControllerPresentationTarget alloc] _initWithPresentingViewController:controllerCopy sourceItem:itemCopy];
 
   return v7;
 }
 
-+ (id)targetWithPresentingViewController:(id)a3 sourceView:(id)a4
++ (id)targetWithPresentingViewController:(id)controller sourceView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PKViewControllerPresentationTarget alloc] _initWithPresentingViewController:v6 sourceItem:v5];
+  viewCopy = view;
+  controllerCopy = controller;
+  v7 = [[PKViewControllerPresentationTarget alloc] _initWithPresentingViewController:controllerCopy sourceItem:viewCopy];
 
   return v7;
 }

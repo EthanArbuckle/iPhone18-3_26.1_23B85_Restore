@@ -2,8 +2,8 @@
 - (GQHTableState)init;
 - (int64_t)nextSplitTableIndex;
 - (void)dealloc;
-- (void)setSplitTable:(BOOL)a3;
-- (void)setTable:(id)a3;
+- (void)setSplitTable:(BOOL)table;
+- (void)setTable:(id)table;
 @end
 
 @implementation GQHTableState
@@ -40,23 +40,23 @@
   [(GQHTableState *)&v5 dealloc];
 }
 
-- (void)setTable:(id)a3
+- (void)setTable:(id)table
 {
-  v3 = a3;
-  v5 = a3;
+  tableCopy = table;
+  tableCopy2 = table;
 
-  self->mTable = v3;
-  LODWORD(v3) = [-[GQDTTable model](v3 "model")];
+  self->mTable = tableCopy;
+  LODWORD(tableCopy) = [-[GQDTTable model](tableCopy "model")];
   mCellCountInColumns = self->mCellCountInColumns;
   v7 = 0;
-  sub_33CFC(mCellCountInColumns, v3, &v7);
+  sub_33CFC(mCellCountInColumns, tableCopy, &v7);
   self->mPrevRowIndex = -1;
-  self->mPrevColumnIndex = v3;
+  self->mPrevColumnIndex = tableCopy;
 }
 
-- (void)setSplitTable:(BOOL)a3
+- (void)setSplitTable:(BOOL)table
 {
-  self->mSplitTable = a3;
+  self->mSplitTable = table;
   self->mCurrentTablePosition = 0.0;
   self->mLastAttachmentPosition = 0.0;
 }

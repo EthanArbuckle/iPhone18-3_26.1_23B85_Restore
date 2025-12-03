@@ -1,20 +1,20 @@
 @interface PGGraphPetRelationshipDonator
 - (PGGraphPetRelationshipDonator)init;
-- (void)donateWithPetNodes:(NSArray *)a3 isRebuild:(BOOL)a4 completionHandler:(id)a5;
+- (void)donateWithPetNodes:(NSArray *)nodes isRebuild:(BOOL)rebuild completionHandler:(id)handler;
 @end
 
 @implementation PGGraphPetRelationshipDonator
 
-- (void)donateWithPetNodes:(NSArray *)a3 isRebuild:(BOOL)a4 completionHandler:(id)a5
+- (void)donateWithPetNodes:(NSArray *)nodes isRebuild:(BOOL)rebuild completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DAB07C0, &qword_22F77A4F0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8);
   v12 = &v20 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  *(v14 + 16) = a3;
-  *(v14 + 24) = a4;
+  *(v14 + 16) = nodes;
+  *(v14 + 24) = rebuild;
   *(v14 + 32) = v13;
   *(v14 + 40) = self;
   v15 = sub_22F741320();
@@ -29,8 +29,8 @@
   v17[3] = 0;
   v17[4] = &unk_22F783A70;
   v17[5] = v16;
-  v18 = a3;
-  v19 = self;
+  nodesCopy = nodes;
+  selfCopy = self;
   sub_22F33C54C(0, 0, v12, &unk_22F784250, v17);
 }
 

@@ -35,11 +35,11 @@ void __37__NTKTimeOffsetManager_sharedManager__block_invoke()
   if (v2)
   {
     [(NTKTimeOffsetManager *)v2 _loadTimeOffset];
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__handleFaceDefaultsChanged name:@"NTKFaceDefaultsChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__handleFaceDefaultsChanged name:@"NTKFaceDefaultsChangedNotification" object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v3 selector:sel__handleFaceLibraryReloaded name:@"NTKFaceLibraryReloadedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__handleFaceLibraryReloaded name:@"NTKFaceLibraryReloadedNotification" object:0];
   }
 
   return v3;
@@ -47,8 +47,8 @@ void __37__NTKTimeOffsetManager_sharedManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NTKTimeOffsetManager;

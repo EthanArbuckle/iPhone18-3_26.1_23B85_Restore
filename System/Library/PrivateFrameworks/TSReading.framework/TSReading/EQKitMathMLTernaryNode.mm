@@ -1,24 +1,24 @@
 @interface EQKitMathMLTernaryNode
 - (BOOL)isBaseFontNameUsed;
-- (EQKitMathMLTernaryNode)initWithFirst:(id)a3 second:(id)a4 third:(id)a5;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (EQKitMathMLTernaryNode)initWithFirst:(id)first second:(id)second third:(id)third;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLTernaryNode
 
-- (EQKitMathMLTernaryNode)initWithFirst:(id)a3 second:(id)a4 third:(id)a5
+- (EQKitMathMLTernaryNode)initWithFirst:(id)first second:(id)second third:(id)third
 {
-  if (a3)
+  if (first)
   {
-    if (a4)
+    if (second)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [EQKitMathMLTernaryNode initWithFirst:a2 second:self third:?];
-    if (a5)
+    if (third)
     {
       goto LABEL_4;
     }
@@ -27,13 +27,13 @@ LABEL_8:
   }
 
   [EQKitMathMLTernaryNode initWithFirst:a2 second:self third:?];
-  if (!a4)
+  if (!second)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (a5)
+  if (third)
   {
     goto LABEL_4;
   }
@@ -46,9 +46,9 @@ LABEL_4:
   v10 = [(EQKitMathMLTernaryNode *)&v12 init];
   if (v10)
   {
-    v10->mFirst = a3;
-    v10->mSecond = a4;
-    v10->mThird = a5;
+    v10->mFirst = first;
+    v10->mSecond = second;
+    v10->mThird = third;
     [(EQKitMathMLNode *)v10->mFirst setParent:v10];
     [(EQKitMathMLNode *)v10->mSecond setParent:v10];
     [(EQKitMathMLNode *)v10->mThird setParent:v10];
@@ -64,9 +64,9 @@ LABEL_4:
   [(EQKitMathMLTernaryNode *)&v3 dealloc];
 }
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
-  v7 = [a4 parseChildrenAsArrayFromXMLNode:?];
+  v7 = [parser parseChildrenAsArrayFromXMLNode:?];
   if ([v7 count] == 3)
   {
     v8 = [v7 objectAtIndex:0];
@@ -78,7 +78,7 @@ LABEL_4:
 
   else
   {
-    [a4 reportError:5 withNode:a3];
+    [parser reportError:5 withNode:node];
 
     return 0;
   }

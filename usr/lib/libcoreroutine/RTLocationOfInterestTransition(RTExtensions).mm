@@ -15,13 +15,13 @@
     v5 = a3;
     v6 = [v4 modeOfTransportationFromMotionActivityType:{objc_msgSend(v5, "predominantMotionActivityType")}];
     v7 = objc_alloc(MEMORY[0x277D01180]);
-    v8 = [v5 identifier];
-    v9 = [v5 startDate];
-    v10 = [v5 stopDate];
-    v11 = [v5 visitIdentifierOrigin];
-    v12 = [v5 visitIdentifierDestination];
+    identifier = [v5 identifier];
+    startDate = [v5 startDate];
+    stopDate = [v5 stopDate];
+    visitIdentifierOrigin = [v5 visitIdentifierOrigin];
+    visitIdentifierDestination = [v5 visitIdentifierDestination];
 
-    v13 = [v7 initWithIdentifier:v8 startDate:v9 stopDate:v10 visitIdentifierOrigin:v11 visitIdentifierDestination:v12 modeOfTransportation:v6];
+    v13 = [v7 initWithIdentifier:identifier startDate:startDate stopDate:stopDate visitIdentifierOrigin:visitIdentifierOrigin visitIdentifierDestination:visitIdentifierDestination modeOfTransportation:v6];
   }
 
   else

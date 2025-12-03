@@ -1,27 +1,27 @@
 @interface HMDUserActionPredictionManager
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4;
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user;
 - (HMBLocalZone)localZone;
-- (HMDUserActionPredictionManager)initWithHome:(id)a3;
-- (HMDUserActionPredictionManager)initWithZoneManager:(id)a3 workQueue:(id)a4;
+- (HMDUserActionPredictionManager)initWithHome:(id)home;
+- (HMDUserActionPredictionManager)initWithZoneManager:(id)manager workQueue:(id)queue;
 - (id)_removeZones;
 - (void)configure;
 - (void)removeZones;
-- (void)setLocalZone:(id)a3;
-- (void)zoneManagerDidStart:(id)a3;
-- (void)zoneManagerDidStop:(id)a3;
+- (void)setLocalZone:(id)zone;
+- (void)zoneManagerDidStart:(id)start;
+- (void)zoneManagerDidStop:(id)stop;
 @end
 
 @implementation HMDUserActionPredictionManager
 
-- (void)zoneManagerDidStop:(id)a3
+- (void)zoneManagerDidStop:(id)stop
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDUserActionPredictionManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  stopCopy = stop;
+  workQueue = [(HMDUserActionPredictionManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -32,20 +32,20 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMDUserActionPredictionManager *)v7 setLocalZone:0];
+  [(HMDUserActionPredictionManager *)selfCopy setLocalZone:0];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)zoneManagerDidStart:(id)a3
+- (void)zoneManagerDidStart:(id)start
 {
   v62 = *MEMORY[0x277D85DE8];
-  v49 = a3;
-  v5 = [(HMDUserActionPredictionManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  startCopy = start;
+  workQueue = [(HMDUserActionPredictionManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -58,22 +58,22 @@
   objc_autoreleasePoolPop(v6);
   v10 = objc_alloc(MEMORY[0x277D0F770]);
   v11 = MEMORY[0x277CCACA8];
-  v12 = MEMORY[0x22AAD2510](v7, a2);
+  v12 = MEMORY[0x22AAD2510](selfCopy, a2);
   v13 = [v11 stringWithFormat:@"%@, %s:%ld", v12, "/Library/Caches/com.apple.xbs/Sources/HomeKit_executables/Sources/homed/User/User Action Predictions/HMDUserActionPredictionManager.m", 135];
   v14 = [v10 initWithName:v13];
 
-  v15 = [(HMDUserActionPredictionManager *)v7 zoneManager];
-  v16 = [v15 localZone];
-  [(HMDUserActionPredictionManager *)v7 setLocalZone:v16];
+  zoneManager = [(HMDUserActionPredictionManager *)selfCopy zoneManager];
+  localZone = [zoneManager localZone];
+  [(HMDUserActionPredictionManager *)selfCopy setLocalZone:localZone];
 
-  v17 = [(HMDUserActionPredictionManager *)v7 localZone];
-  [v17 startUp];
+  localZone2 = [(HMDUserActionPredictionManager *)selfCopy localZone];
+  [localZone2 startUp];
 
   v48 = v14;
   [v14 markWithReason:@"Fetch models from backing store"];
-  v18 = [(HMDUserActionPredictionManager *)v7 localZone];
+  localZone3 = [(HMDUserActionPredictionManager *)selfCopy localZone];
   v55 = 0;
-  v19 = [v18 fetchModelsOfType:objc_opt_class() error:&v55];
+  v19 = [localZone3 fetchModelsOfType:objc_opt_class() error:&v55];
   v47 = v55;
 
   v53 = 0u;
@@ -96,17 +96,17 @@
         }
 
         v24 = *(*(&v51 + 1) + 8 * i);
-        v25 = [(HMDUserActionPredictionManager *)v7 localZone];
-        v26 = v7;
+        localZone4 = [(HMDUserActionPredictionManager *)selfCopy localZone];
+        v26 = selfCopy;
         v27 = MEMORY[0x277CBEB98];
-        v28 = [v24 hmbModelID];
-        v60 = v28;
+        hmbModelID = [v24 hmbModelID];
+        v60 = hmbModelID;
         v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v60 count:1];
         v30 = [v27 setWithArray:v29];
         v31 = [MEMORY[0x277D17108] optionsWithLabel:@"Remove no longer used user action prediction"];
-        v32 = [v25 removeModelIDs:v30 options:v31];
+        v32 = [localZone4 removeModelIDs:v30 options:v31];
 
-        v7 = v26;
+        selfCopy = v26;
       }
 
       v21 = [obj countByEnumeratingWithState:&v51 objects:v61 count:16];
@@ -118,7 +118,7 @@
   if (v47)
   {
     v33 = objc_autoreleasePoolPush();
-    v34 = v7;
+    v34 = selfCopy;
     v35 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
@@ -134,7 +134,7 @@
   }
 
   v37 = objc_autoreleasePoolPush();
-  v38 = v7;
+  v38 = selfCopy;
   v39 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
   {
@@ -166,9 +166,9 @@
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user
 {
-  v4 = [(HMDUserActionPredictionManager *)self workQueue:a3];
+  v4 = [(HMDUserActionPredictionManager *)self workQueue:manager];
   dispatch_assert_queue_V2(v4);
 
   return 0;
@@ -177,11 +177,11 @@
 - (id)_removeZones
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUserActionPredictionManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDUserActionPredictionManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -192,12 +192,12 @@
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDUserActionPredictionManager *)v5 zoneManager];
-  v9 = [v8 remove];
+  zoneManager = [(HMDUserActionPredictionManager *)selfCopy zoneManager];
+  remove = [zoneManager remove];
 
   v10 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return remove;
 }
 
 - (HMBLocalZone)localZone
@@ -209,45 +209,45 @@
   return v3;
 }
 
-- (void)setLocalZone:(id)a3
+- (void)setLocalZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   os_unfair_lock_lock_with_options();
   localZone = self->_localZone;
-  self->_localZone = v4;
+  self->_localZone = zoneCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (void)removeZones
 {
-  v3 = [(HMDUserActionPredictionManager *)self workQueue];
+  workQueue = [(HMDUserActionPredictionManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__HMDUserActionPredictionManager_removeZones__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)configure
 {
-  v3 = [(HMDUserActionPredictionManager *)self zoneManager];
-  [v3 setDelegate:self];
+  zoneManager = [(HMDUserActionPredictionManager *)self zoneManager];
+  [zoneManager setDelegate:self];
 
-  v4 = [(HMDUserActionPredictionManager *)self zoneManager];
-  [v4 setDataSource:self];
+  zoneManager2 = [(HMDUserActionPredictionManager *)self zoneManager];
+  [zoneManager2 setDataSource:self];
 
-  v5 = [(HMDUserActionPredictionManager *)self zoneManager];
-  [v5 configure];
+  zoneManager3 = [(HMDUserActionPredictionManager *)self zoneManager];
+  [zoneManager3 configure];
 
-  v6 = [(HMDUserActionPredictionManager *)self workQueue];
+  workQueue = [(HMDUserActionPredictionManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__HMDUserActionPredictionManager_configure__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(workQueue, block);
 }
 
 void __43__HMDUserActionPredictionManager_configure__block_invoke(uint64_t a1)
@@ -256,50 +256,50 @@ void __43__HMDUserActionPredictionManager_configure__block_invoke(uint64_t a1)
   [v1 start];
 }
 
-- (HMDUserActionPredictionManager)initWithZoneManager:(id)a3 workQueue:(id)a4
+- (HMDUserActionPredictionManager)initWithZoneManager:(id)manager workQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  queueCopy = queue;
   v13.receiver = self;
   v13.super_class = HMDUserActionPredictionManager;
   v9 = [(HMDUserActionPredictionManager *)&v13 init];
   if (v9)
   {
-    v10 = [v7 defaultConfiguration];
-    v11 = [v10 mutableCopy];
+    defaultConfiguration = [managerCopy defaultConfiguration];
+    v11 = [defaultConfiguration mutableCopy];
 
     [v11 setZoneOwner:1];
     [v11 setShouldCreateZone:0];
-    [v7 setDefaultConfiguration:v11];
-    objc_storeStrong(&v9->_workQueue, a4);
-    objc_storeStrong(&v9->_zoneManager, a3);
+    [managerCopy setDefaultConfiguration:v11];
+    objc_storeStrong(&v9->_workQueue, queue);
+    objc_storeStrong(&v9->_zoneManager, manager);
   }
 
   return v9;
 }
 
-- (HMDUserActionPredictionManager)initWithHome:(id)a3
+- (HMDUserActionPredictionManager)initWithHome:(id)home
 {
-  v4 = a3;
-  v5 = [v4 workQueue];
-  v6 = [v4 uuid];
-  if (v6)
+  homeCopy = home;
+  workQueue = [homeCopy workQueue];
+  uuid = [homeCopy uuid];
+  if (uuid)
   {
-    v7 = v6;
+    v7 = uuid;
     v8 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"9A1A9B9D-BE90-4E26-A5EC-70FE027E74EA"];
     v9 = MEMORY[0x277CCAD78];
-    v10 = [v7 UUIDString];
-    v11 = [v10 dataUsingEncoding:4];
+    uUIDString = [v7 UUIDString];
+    v11 = [uUIDString dataUsingEncoding:4];
     v12 = [v9 hmf_UUIDWithNamespace:v8 data:v11];
 
-    v13 = [v12 UUIDString];
-    v14 = [@"user-action-prediction-data-" stringByAppendingString:v13];
+    uUIDString2 = [v12 UUIDString];
+    v14 = [@"user-action-prediction-data-" stringByAppendingString:uUIDString2];
 
     v15 = [HMDDatabaseZoneManager alloc];
     v16 = +[HMDDatabase defaultDatabase];
-    v17 = [(HMDDatabaseZoneManager *)v15 initWithDatabase:v16 zoneName:v14 home:v4 messageTargetUUID:v12 workQueue:v5];
+    v17 = [(HMDDatabaseZoneManager *)v15 initWithDatabase:v16 zoneName:v14 home:homeCopy messageTargetUUID:v12 workQueue:workQueue];
 
-    v18 = [(HMDUserActionPredictionManager *)self initWithZoneManager:v17 workQueue:v5];
+    v18 = [(HMDUserActionPredictionManager *)self initWithZoneManager:v17 workQueue:workQueue];
     return v18;
   }
 

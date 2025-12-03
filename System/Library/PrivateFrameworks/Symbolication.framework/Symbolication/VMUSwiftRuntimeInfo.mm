@@ -1,16 +1,16 @@
 @interface VMUSwiftRuntimeInfo
-- (VMUSwiftRuntimeInfo)initWithSwiftCore:(_CSTypeRef)a3 memoryReader:(id)a4 task:(id)a5;
+- (VMUSwiftRuntimeInfo)initWithSwiftCore:(_CSTypeRef)core memoryReader:(id)reader task:(id)task;
 @end
 
 @implementation VMUSwiftRuntimeInfo
 
-- (VMUSwiftRuntimeInfo)initWithSwiftCore:(_CSTypeRef)a3 memoryReader:(id)a4 task:(id)a5
+- (VMUSwiftRuntimeInfo)initWithSwiftCore:(_CSTypeRef)core memoryReader:(id)reader task:(id)task
 {
-  opaque_2 = a3._opaque_2;
-  opaque_1 = a3._opaque_1;
+  opaque_2 = core._opaque_2;
+  opaque_1 = core._opaque_1;
   v68[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  readerCopy = reader;
+  taskCopy = task;
   v65.receiver = self;
   v65.super_class = VMUSwiftRuntimeInfo;
   v11 = [(VMUSwiftRuntimeInfo *)&v65 init];
@@ -19,11 +19,11 @@
     goto LABEL_12;
   }
 
-  v12 = [v10 isExclaveCore];
-  v13 = v9;
+  isExclaveCore = [taskCopy isExclaveCore];
+  v13 = readerCopy;
   v14 = CSIsNull();
   v15 = v14;
-  if ((v12 | v14))
+  if ((isExclaveCore | v14))
   {
 
     if (v15)
@@ -65,7 +65,7 @@ LABEL_16:
       goto LABEL_12;
     }
 
-    if ([v10 isExclave])
+    if ([taskCopy isExclave])
     {
       v24 = 7;
     }
@@ -95,18 +95,18 @@ LABEL_16:
       }
     }
 
-    v29 = [v10 isExclaveCore];
+    isExclaveCore2 = [taskCopy isExclaveCore];
     v30 = 0x8000000000000001;
-    if (v29)
+    if (isExclaveCore2)
     {
       v30 = 0;
     }
 
     *(v11 + 1) = v30;
-    *(v11 + 2) = v29 ^ 1u;
-    v31 = [v10 isExclaveCore];
+    *(v11 + 2) = isExclaveCore2 ^ 1u;
+    isExclaveCore3 = [taskCopy isExclaveCore];
     v32 = -8;
-    if (v31)
+    if (isExclaveCore3)
     {
       v32 = -1;
     }

@@ -23,8 +23,8 @@
     v8 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
     [(RecoveryViewController *)v7 setActivityView:v8];
 
-    v9 = [(RecoveryViewController *)v7 activityView];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    activityView = [(RecoveryViewController *)v7 activityView];
+    [activityView setTranslatesAutoresizingMaskIntoConstraints:0];
 
     v10 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     v11 = +[NSBundle mainBundle];
@@ -38,31 +38,31 @@
 
     v48 = v4;
     v14 = [UIStackView alloc];
-    v15 = [(RecoveryViewController *)v7 activityView];
-    v52[0] = v15;
+    activityView2 = [(RecoveryViewController *)v7 activityView];
+    v52[0] = activityView2;
     v52[1] = v10;
     v16 = [NSArray arrayWithObjects:v52 count:2];
     v17 = [v14 initWithArrangedSubviews:v16];
     [(RecoveryViewController *)v7 setStackView:v17];
 
-    v18 = [(RecoveryViewController *)v7 stackView];
-    [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+    stackView = [(RecoveryViewController *)v7 stackView];
+    [stackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v19 = [(RecoveryViewController *)v7 stackView];
-    [v19 setAxis:0];
+    stackView2 = [(RecoveryViewController *)v7 stackView];
+    [stackView2 setAxis:0];
 
-    v20 = [(RecoveryViewController *)v7 stackView];
-    [v20 setAlignment:1];
+    stackView3 = [(RecoveryViewController *)v7 stackView];
+    [stackView3 setAlignment:1];
 
-    v21 = [(RecoveryViewController *)v7 stackView];
-    [v21 setDistribution:0];
+    stackView4 = [(RecoveryViewController *)v7 stackView];
+    [stackView4 setDistribution:0];
 
-    v22 = [(RecoveryViewController *)v7 stackView];
-    [v22 setSpacing:10.0];
+    stackView5 = [(RecoveryViewController *)v7 stackView];
+    [stackView5 setSpacing:10.0];
 
     v23 = [UIStackView alloc];
-    v24 = [(RecoveryViewController *)v7 stackView];
-    v51 = v24;
+    stackView6 = [(RecoveryViewController *)v7 stackView];
+    v51 = stackView6;
     v25 = [NSArray arrayWithObjects:&v51 count:1];
     v26 = [v23 initWithArrangedSubviews:v25];
 
@@ -70,28 +70,28 @@
     [v26 setAxis:1];
     [v26 setAlignment:1];
     [v26 setDistribution:0];
-    v27 = [(RecoveryViewController *)v7 contentView];
-    [v27 addSubview:v26];
+    contentView = [(RecoveryViewController *)v7 contentView];
+    [contentView addSubview:v26];
 
-    v45 = [v26 topAnchor];
-    v46 = [(RecoveryViewController *)v7 contentView];
-    v44 = [v46 topAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    topAnchor = [v26 topAnchor];
+    contentView2 = [(RecoveryViewController *)v7 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v43 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v50[0] = v43;
-    v41 = [v26 leftAnchor];
-    v42 = [(RecoveryViewController *)v7 contentView];
-    v40 = [v42 leftAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    leftAnchor = [v26 leftAnchor];
+    contentView3 = [(RecoveryViewController *)v7 contentView];
+    leftAnchor2 = [contentView3 leftAnchor];
+    v39 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v50[1] = v39;
-    v37 = [v26 rightAnchor];
-    v38 = [(RecoveryViewController *)v7 contentView];
-    v28 = [v38 rightAnchor];
-    v29 = [v37 constraintEqualToAnchor:v28];
+    rightAnchor = [v26 rightAnchor];
+    contentView4 = [(RecoveryViewController *)v7 contentView];
+    rightAnchor2 = [contentView4 rightAnchor];
+    v29 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v50[2] = v29;
-    v30 = [v26 bottomAnchor];
-    v31 = [(RecoveryViewController *)v7 contentView];
-    v32 = [v31 bottomAnchor];
-    [v30 constraintEqualToAnchor:v32];
+    bottomAnchor = [v26 bottomAnchor];
+    contentView5 = [(RecoveryViewController *)v7 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v34 = v33 = v6;
     v50[3] = v34;
     v35 = [NSArray arrayWithObjects:v50 count:4];
@@ -113,12 +113,12 @@
 
 - (void)_notifyDelegateOnBegin
 {
-  v3 = [(RecoveryViewController *)self delegate];
+  delegate = [(RecoveryViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(RecoveryViewController *)self delegate];
-    [v4 recoveryViewControllerDidBegin:self];
+    delegate2 = [(RecoveryViewController *)self delegate];
+    [delegate2 recoveryViewControllerDidBegin:self];
   }
 }
 

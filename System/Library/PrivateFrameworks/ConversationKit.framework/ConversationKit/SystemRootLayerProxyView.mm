@@ -7,13 +7,13 @@
 
 - (void)didMoveToSuperview
 {
-  v1 = a1;
+  selfCopy = self;
   SystemRootLayerProxyView.didMoveToSuperview()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SystemRootLayerProxyView.layoutSubviews()();
 }
 

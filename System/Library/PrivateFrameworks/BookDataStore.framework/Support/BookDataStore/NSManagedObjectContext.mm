@@ -1,38 +1,38 @@
 @interface NSManagedObjectContext
-+ (id)mergePredicate:(id)a3 andPredicate:(id)a4;
-- (id)copyEntityProperty:(id)a3 fromEntityName:(id)a4 withPredicate:(id)a5;
-- (id)entity:(id)a3 withPredicate:(id)a4 sortDescriptors:(id)a5 fetchLimit:(unint64_t)a6 prefetchRelationships:(id)a7;
-- (id)newByClass:(Class)a3;
-- (id)objectIDsWithPredicate:(id)a3 forEntity:(id)a4;
-- (id)unbatchedObjectsWithPredicate:(id)a3 forEntity:(id)a4;
-- (unint64_t)countEntity:(id)a3 withPredicate:(id)a4;
-- (void)batchDeleteEntity:(id)a3 matching:(id)a4 prefetchRelationships:(id)a5;
-- (void)im_performSafeAccess:(id)a3;
++ (id)mergePredicate:(id)predicate andPredicate:(id)andPredicate;
+- (id)copyEntityProperty:(id)property fromEntityName:(id)name withPredicate:(id)predicate;
+- (id)entity:(id)entity withPredicate:(id)predicate sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit prefetchRelationships:(id)relationships;
+- (id)newByClass:(Class)class;
+- (id)objectIDsWithPredicate:(id)predicate forEntity:(id)entity;
+- (id)unbatchedObjectsWithPredicate:(id)predicate forEntity:(id)entity;
+- (unint64_t)countEntity:(id)entity withPredicate:(id)predicate;
+- (void)batchDeleteEntity:(id)entity matching:(id)matching prefetchRelationships:(id)relationships;
+- (void)im_performSafeAccess:(id)access;
 @end
 
 @implementation NSManagedObjectContext
 
-+ (id)mergePredicate:(id)a3 andPredicate:(id)a4
++ (id)mergePredicate:(id)predicate andPredicate:(id)andPredicate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  predicateCopy = predicate;
+  andPredicateCopy = andPredicate;
+  v7 = andPredicateCopy;
+  if (predicateCopy && andPredicateCopy)
   {
-    v8 = [[NSArray alloc] initWithObjects:{v5, v6, 0}];
+    v8 = [[NSArray alloc] initWithObjects:{predicateCopy, andPredicateCopy, 0}];
     v9 = [NSCompoundPredicate andPredicateWithSubpredicates:v8];
   }
 
   else
   {
-    if (v5)
+    if (predicateCopy)
     {
-      v10 = v5;
+      v10 = predicateCopy;
     }
 
     else
     {
-      v10 = v6;
+      v10 = andPredicateCopy;
     }
 
     v9 = v10;
@@ -41,15 +41,15 @@
   return v9;
 }
 
-- (unint64_t)countEntity:(id)a3 withPredicate:(id)a4
+- (unint64_t)countEntity:(id)entity withPredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
+  predicateCopy = predicate;
+  entityCopy = entity;
   v8 = objc_alloc_init(NSFetchRequest);
-  v9 = [NSEntityDescription entityForName:v7 inManagedObjectContext:self];
+  v9 = [NSEntityDescription entityForName:entityCopy inManagedObjectContext:self];
 
   [v8 setEntity:v9];
-  [v8 setPredicate:v6];
+  [v8 setPredicate:predicateCopy];
 
   v14 = 0;
   v10 = [(NSManagedObjectContext *)self countForFetchRequest:v8 error:&v14];
@@ -68,42 +68,42 @@
   return v10;
 }
 
-- (id)copyEntityProperty:(id)a3 fromEntityName:(id)a4 withPredicate:(id)a5
+- (id)copyEntityProperty:(id)property fromEntityName:(id)name withPredicate:(id)predicate
 {
-  v5 = [(NSManagedObjectContext *)self copyEntityPropertyArray:a3 fromEntityName:a4 withPredicate:a5 sortBy:0 ascending:0];
+  v5 = [(NSManagedObjectContext *)self copyEntityPropertyArray:property fromEntityName:name withPredicate:predicate sortBy:0 ascending:0];
   if ([v5 count] == 1 || objc_msgSend(v5, "count") >= 2)
   {
-    v6 = [v5 lastObject];
+    lastObject = [v5 lastObject];
   }
 
   else
   {
-    v6 = 0;
+    lastObject = 0;
   }
 
-  v7 = [v6 copy];
+  v7 = [lastObject copy];
 
   return v7;
 }
 
-- (id)newByClass:(Class)a3
+- (id)newByClass:(Class)class
 {
-  v4 = NSStringFromClass(a3);
+  v4 = NSStringFromClass(class);
   v5 = [NSEntityDescription insertNewObjectForEntityForName:v4 inManagedObjectContext:self];
 
   return v5;
 }
 
-- (id)objectIDsWithPredicate:(id)a3 forEntity:(id)a4
+- (id)objectIDsWithPredicate:(id)predicate forEntity:(id)entity
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  entityCopy = entity;
   v8 = objc_autoreleasePoolPush();
   v9 = objc_alloc_init(NSFetchRequest);
-  v10 = [NSEntityDescription entityForName:v7 inManagedObjectContext:self];
+  v10 = [NSEntityDescription entityForName:entityCopy inManagedObjectContext:self];
   [v9 setEntity:v10];
 
-  [v9 setPredicate:v6];
+  [v9 setPredicate:predicateCopy];
   [v9 setResultType:1];
   [v9 setIncludesPropertyValues:0];
   v15 = 0;
@@ -120,16 +120,16 @@
   return v11;
 }
 
-- (id)unbatchedObjectsWithPredicate:(id)a3 forEntity:(id)a4
+- (id)unbatchedObjectsWithPredicate:(id)predicate forEntity:(id)entity
 {
-  v6 = a3;
-  v7 = a4;
+  predicateCopy = predicate;
+  entityCopy = entity;
   v8 = objc_autoreleasePoolPush();
   v9 = objc_alloc_init(NSFetchRequest);
-  v10 = [NSEntityDescription entityForName:v7 inManagedObjectContext:self];
+  v10 = [NSEntityDescription entityForName:entityCopy inManagedObjectContext:self];
   [v9 setEntity:v10];
 
-  [v9 setPredicate:v6];
+  [v9 setPredicate:predicateCopy];
   [v9 setIncludesPropertyValues:1];
   v15 = 0;
   v11 = [(NSManagedObjectContext *)self executeFetchRequest:v9 error:&v15];
@@ -145,32 +145,32 @@
   return v11;
 }
 
-- (id)entity:(id)a3 withPredicate:(id)a4 sortDescriptors:(id)a5 fetchLimit:(unint64_t)a6 prefetchRelationships:(id)a7
+- (id)entity:(id)entity withPredicate:(id)predicate sortDescriptors:(id)descriptors fetchLimit:(unint64_t)limit prefetchRelationships:(id)relationships
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  entityCopy = entity;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  relationshipsCopy = relationships;
   v16 = objc_autoreleasePoolPush();
   v17 = objc_alloc_init(NSFetchRequest);
-  v18 = [NSEntityDescription entityForName:v12 inManagedObjectContext:self];
+  v18 = [NSEntityDescription entityForName:entityCopy inManagedObjectContext:self];
   [v17 setEntity:v18];
 
-  [v17 setPredicate:v13];
-  [v17 setSortDescriptors:v14];
-  if ([v15 count])
+  [v17 setPredicate:predicateCopy];
+  [v17 setSortDescriptors:descriptorsCopy];
+  if ([relationshipsCopy count])
   {
-    [v17 setRelationshipKeyPathsForPrefetching:v15];
+    [v17 setRelationshipKeyPathsForPrefetching:relationshipsCopy];
   }
 
-  if (a6)
+  if (limit)
   {
-    if (a6 <= 0xA)
+    if (limit <= 0xA)
     {
       [v17 setReturnsObjectsAsFaults:0];
     }
 
-    [v17 setFetchLimit:a6];
+    [v17 setFetchLimit:limit];
   }
 
   else
@@ -192,21 +192,21 @@
   return v19;
 }
 
-- (void)im_performSafeAccess:(id)a3
+- (void)im_performSafeAccess:(id)access
 {
-  v4 = a3;
+  accessCopy = access;
   [(NSManagedObjectContext *)self im_pushSafeAccessState];
-  v4[2](v4);
+  accessCopy[2](accessCopy);
   [(NSManagedObjectContext *)self im_popSafeAccessState];
 }
 
-- (void)batchDeleteEntity:(id)a3 matching:(id)a4 prefetchRelationships:(id)a5
+- (void)batchDeleteEntity:(id)entity matching:(id)matching prefetchRelationships:(id)relationships
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  entityCopy = entity;
+  matchingCopy = matching;
+  relationshipsCopy = relationships;
   v11 = objc_autoreleasePoolPush();
-  [(NSManagedObjectContext *)self unbatchedObjectsWithPredicate:v9 forEntity:v8];
+  [(NSManagedObjectContext *)self unbatchedObjectsWithPredicate:matchingCopy forEntity:entityCopy];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -216,7 +216,7 @@
   v13[2] = sub_100014FE0;
   v12 = v13[3] = &unk_10023FA70;
   v14 = v12;
-  v15 = self;
+  selfCopy = self;
   v16 = &v17;
   [(NSManagedObjectContext *)self im_performSafeAccess:v13];
   if (*(v18 + 6))

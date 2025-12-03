@@ -1,6 +1,6 @@
 @interface NPHCountryCodeCompanionReplication
 - (NPHCountryCodeCompanionReplication)init;
-- (void)_updateAndBroadcastCodeWithKey:(id)a3 usingFunction:(void *)a4;
+- (void)_updateAndBroadcastCodeWithKey:(id)key usingFunction:(void *)function;
 - (void)dealloc;
 @end
 
@@ -38,16 +38,16 @@
   [(NPHCountryCodeCompanionReplication *)&v4 dealloc];
 }
 
-- (void)_updateAndBroadcastCodeWithKey:(id)a3 usingFunction:(void *)a4
+- (void)_updateAndBroadcastCodeWithKey:(id)key usingFunction:(void *)function
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = (a4)();
-  CFPreferencesSetAppValue(v6, v7, @"com.apple.mobilephone");
+  keyCopy = key;
+  v7 = (function)();
+  CFPreferencesSetAppValue(keyCopy, v7, @"com.apple.mobilephone");
   CFPreferencesAppSynchronize(@"com.apple.mobilephone");
   npsManager = self->_npsManager;
   v9 = MEMORY[0x277CBEB98];
-  v13[0] = v6;
+  v13[0] = keyCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   v11 = [v9 setWithArray:v10];
   [(NPSManager *)npsManager synchronizeUserDefaultsDomain:@"com.apple.mobilephone" keys:v11];

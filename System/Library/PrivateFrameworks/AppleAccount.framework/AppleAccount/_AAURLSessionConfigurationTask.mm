@@ -1,10 +1,10 @@
 @interface _AAURLSessionConfigurationTask
 - (NSString)description;
 - (_AAURLSessionConfigurationTask)init;
-- (_AAURLSessionConfigurationTask)initWithSession:(id)a3 request:(id)a4 completion:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_initiateSessionTaskWithConfiguration:(id)a3;
-- (void)_invokeCompletionWithData:(id)a3 response:(id)a4 error:(id)a5;
+- (_AAURLSessionConfigurationTask)initWithSession:(id)session request:(id)request completion:(id)completion;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_initiateSessionTaskWithConfiguration:(id)configuration;
+- (void)_invokeCompletionWithData:(id)data response:(id)response error:(id)error;
 - (void)_unfairLock_initiateConfigurationTask;
 - (void)resume;
 - (void)suspend;
@@ -19,21 +19,21 @@
   return 0;
 }
 
-- (_AAURLSessionConfigurationTask)initWithSession:(id)a3 request:(id)a4 completion:(id)a5
+- (_AAURLSessionConfigurationTask)initWithSession:(id)session request:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  sessionCopy = session;
+  requestCopy = request;
+  completionCopy = completion;
+  if (sessionCopy)
   {
-    if (v10)
+    if (requestCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
     [_AAURLSessionConfigurationTask initWithSession:request:completion:];
-    if (v11)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -42,13 +42,13 @@ LABEL_8:
   }
 
   [_AAURLSessionConfigurationTask initWithSession:request:completion:];
-  if (!v10)
+  if (!requestCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (completionCopy)
   {
     goto LABEL_4;
   }
@@ -62,9 +62,9 @@ LABEL_4:
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_session, a3);
-    objc_storeStrong(&v13->_originalRequest, a4);
-    v14 = _Block_copy(v11);
+    objc_storeStrong(&v12->_session, session);
+    objc_storeStrong(&v13->_originalRequest, request);
+    v14 = _Block_copy(completionCopy);
     completion = v13->_completion;
     v13->_completion = v14;
 
@@ -92,20 +92,20 @@ LABEL_4:
   }
 }
 
-- (void)_initiateSessionTaskWithConfiguration:(id)a3
+- (void)_initiateSessionTaskWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  if (!v4)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [_AAURLSessionConfigurationTask _initiateSessionTaskWithConfiguration:];
   }
 
   v5 = [(NSURLRequest *)self->_originalRequest URL];
-  v6 = [v5 aa_endpoint];
+  aa_endpoint = [v5 aa_endpoint];
 
-  if (v6)
+  if (aa_endpoint)
   {
-    v7 = [v4 urlForEndpoint:v6];
+    v7 = [configurationCopy urlForEndpoint:aa_endpoint];
     if (v7)
     {
       v8 = [(NSURLRequest *)self->_originalRequest mutableCopy];
@@ -128,7 +128,7 @@ LABEL_4:
       v13 = _AALogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(_AAURLSessionConfigurationTask *)v6 _initiateSessionTaskWithConfiguration:v13];
+        [(_AAURLSessionConfigurationTask *)aa_endpoint _initiateSessionTaskWithConfiguration:v13];
       }
 
       v8 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-4401];
@@ -149,11 +149,11 @@ LABEL_4:
   }
 }
 
-- (void)_invokeCompletionWithData:(id)a3 response:(id)a4 error:(id)a5
+- (void)_invokeCompletionWithData:(id)data response:(id)response error:(id)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  errorCopy = error;
+  responseCopy = response;
+  dataCopy = data;
   os_unfair_lock_lock(&self->_unfairLock);
   p_completion = &self->_completion;
   completion = self->_completion;
@@ -168,7 +168,7 @@ LABEL_4:
   *p_completion = 0;
 
   os_unfair_lock_unlock(&self->_unfairLock);
-  v15[2](v15, v11, v10, v9);
+  v15[2](v15, dataCopy, responseCopy, errorCopy);
 }
 
 - (void)suspend
@@ -202,7 +202,7 @@ LABEL_4:
   v10 = 3221225472;
   v11 = __45___AAURLSessionConfigurationTask_description__block_invoke;
   v12 = &unk_1E7C9C280;
-  v13 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_unfairLock);
   v3 = __45___AAURLSessionConfigurationTask_description__block_invoke(&v9);
   os_unfair_lock_unlock(&self->_unfairLock);
@@ -214,9 +214,9 @@ LABEL_4:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   session = self->_session;
   originalRequest = self->_originalRequest;
   completion = self->_completion;

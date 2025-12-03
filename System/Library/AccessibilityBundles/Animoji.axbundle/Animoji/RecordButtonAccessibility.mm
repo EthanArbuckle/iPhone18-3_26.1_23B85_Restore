@@ -1,14 +1,14 @@
 @interface RecordButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation RecordButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RecordButton" isKindOfClass:@"UIControl"];
-  [v3 validateClass:@"UIControl" hasInstanceMethod:@"enabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RecordButton" isKindOfClass:@"UIControl"];
+  [validationsCopy validateClass:@"UIControl" hasInstanceMethod:@"enabled" withFullSignature:{"B", 0}];
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface PLRebuildUserNotification
 - (BOOL)_shouldShowUserNotification;
-- (PLRebuildUserNotification)initWithMessage:(id)a3;
+- (PLRebuildUserNotification)initWithMessage:(id)message;
 - (int64_t)showAlertAndWaitForResponse;
-- (void)_snoozeForHours:(unint64_t)a3;
+- (void)_snoozeForHours:(unint64_t)hours;
 @end
 
 @implementation PLRebuildUserNotification
 
-- (void)_snoozeForHours:(unint64_t)a3
+- (void)_snoozeForHours:(unint64_t)hours
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a3 * 60.0 * 60.0];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v6 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:hours * 60.0 * 60.0];
   v7 = PLBackendGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = 134218242;
-    v9 = a3;
+    hoursCopy = hours;
     v10 = 2112;
     v11 = v6;
     _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_INFO, "PLRebuildUserNotification snooze for %tu hour(s) until %@", &v8, 0x16u);
   }
 
   [v6 timeIntervalSinceReferenceDate];
-  [v5 setDouble:@"PLRebuildUserNotificationSnoozeUntilTime" forKey:?];
-  [v5 setObject:self->_message forKey:@"PLRebuildUserNotificationSnoozeLastMessageKey"];
+  [standardUserDefaults setDouble:@"PLRebuildUserNotificationSnoozeUntilTime" forKey:?];
+  [standardUserDefaults setObject:self->_message forKey:@"PLRebuildUserNotificationSnoozeLastMessageKey"];
 }
 
 - (BOOL)_shouldShowUserNotification
@@ -32,11 +32,11 @@
   v15 = *MEMORY[0x1E69E9840];
   if (+[PLDeviceRestoreMigrationSupport isDataMigrationInProgress])
   {
-    v3 = PLBackendGetLog();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    standardUserDefaults = PLBackendGetLog();
+    if (os_log_type_enabled(standardUserDefaults, OS_LOG_TYPE_INFO))
     {
       LOWORD(v13) = 0;
-      _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_INFO, "PLRebuildUserNotification: Data migration is in progress. Not showing the alert.", &v13, 2u);
+      _os_log_impl(&dword_19BF1F000, standardUserDefaults, OS_LOG_TYPE_INFO, "PLRebuildUserNotification: Data migration is in progress. Not showing the alert.", &v13, 2u);
     }
 
     v4 = 0;
@@ -44,10 +44,10 @@
 
   else
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    [v3 doubleForKey:@"PLRebuildUserNotificationSnoozeUntilTime"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    [standardUserDefaults doubleForKey:@"PLRebuildUserNotificationSnoozeUntilTime"];
     v6 = v5;
-    v7 = [v3 stringForKey:@"PLRebuildUserNotificationSnoozeLastMessageKey"];
+    v7 = [standardUserDefaults stringForKey:@"PLRebuildUserNotificationSnoozeLastMessageKey"];
     v8 = [MEMORY[0x1E695DF00] now];
     if ([v7 isEqualToString:self->_message] && (objc_msgSend(v8, "timeIntervalSinceReferenceDate"), v9 < v6))
     {
@@ -82,9 +82,9 @@
     v4 = *MEMORY[0x1E695EE60];
     v24[0] = v3;
     v24[1] = v4;
-    v5 = [(PLRebuildUserNotification *)self message];
+    message = [(PLRebuildUserNotification *)self message];
     v6 = *MEMORY[0x1E695EE78];
-    v25[1] = v5;
+    v25[1] = message;
     v25[2] = @"Not now";
     v7 = *MEMORY[0x1E695EE70];
     v24[2] = v6;
@@ -166,16 +166,16 @@ LABEL_16:
   return 2;
 }
 
-- (PLRebuildUserNotification)initWithMessage:(id)a3
+- (PLRebuildUserNotification)initWithMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = PLRebuildUserNotification;
   v6 = [(PLRebuildUserNotification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_message, a3);
+    objc_storeStrong(&v6->_message, message);
   }
 
   return v7;

@@ -1,34 +1,34 @@
 @interface ICASLinkAddApproach
-- (ICASLinkAddApproach)initWithLinkAddApproach:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASLinkAddApproach)initWithLinkAddApproach:(int64_t)approach;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASLinkAddApproach
 
-- (ICASLinkAddApproach)initWithLinkAddApproach:(int64_t)a3
+- (ICASLinkAddApproach)initWithLinkAddApproach:(int64_t)approach
 {
   v5.receiver = self;
   v5.super_class = ICASLinkAddApproach;
   result = [(ICASLinkAddApproach *)&v5 init];
   if (result)
   {
-    result->_linkAddApproach = a3;
+    result->_linkAddApproach = approach;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASLinkAddApproach *)self linkAddApproach];
-  if ((v3 - 1) > 6)
+  linkAddApproach = [(ICASLinkAddApproach *)self linkAddApproach];
+  if ((linkAddApproach - 1) > 6)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799AF908[v3 - 1];
+    return off_2799AF908[linkAddApproach - 1];
   }
 }
 

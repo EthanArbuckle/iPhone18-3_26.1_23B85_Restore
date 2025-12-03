@@ -1,23 +1,23 @@
 @interface DTTapStatusMemo
-- (DTTapStatusMemo)initWithStatus:(unsigned int)a3 notice:(id)a4 info:(id)a5 timestamp:(unint64_t)a6;
+- (DTTapStatusMemo)initWithStatus:(unsigned int)status notice:(id)notice info:(id)info timestamp:(unint64_t)timestamp;
 @end
 
 @implementation DTTapStatusMemo
 
-- (DTTapStatusMemo)initWithStatus:(unsigned int)a3 notice:(id)a4 info:(id)a5 timestamp:(unint64_t)a6
+- (DTTapStatusMemo)initWithStatus:(unsigned int)status notice:(id)notice info:(id)info timestamp:(unint64_t)timestamp
 {
-  v11 = a4;
-  v12 = a5;
+  noticeCopy = notice;
+  infoCopy = info;
   v16.receiver = self;
   v16.super_class = DTTapStatusMemo;
   v13 = [(DTTapStatusMemo *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    *(v13 + 3) = a3;
-    objc_storeStrong(v13 + 3, a4);
-    objc_storeStrong(&v14->_notice, a5);
-    *&v14->_status = a6;
+    *(v13 + 3) = status;
+    objc_storeStrong(v13 + 3, notice);
+    objc_storeStrong(&v14->_notice, info);
+    *&v14->_status = timestamp;
   }
 
   return v14;

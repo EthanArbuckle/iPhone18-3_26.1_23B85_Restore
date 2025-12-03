@@ -1,31 +1,31 @@
 @interface FMCongestionPrediction
-- (FMCongestionPrediction)initWithSeenCount:(int)a3 predictedBadCells:(id)a4 predictedGoodCells:(id)a5 predictedTimeUntilCongestion:(unint64_t)a6 predictedTimeInCongestion:(unint64_t)a7;
+- (FMCongestionPrediction)initWithSeenCount:(int)count predictedBadCells:(id)cells predictedGoodCells:(id)goodCells predictedTimeUntilCongestion:(unint64_t)congestion predictedTimeInCongestion:(unint64_t)inCongestion;
 - (double)actualTimeInCongestion;
 - (double)actualTimeUntilCongestion;
 - (id)description;
-- (void)activateAtTime:(id)a3;
+- (void)activateAtTime:(id)time;
 - (void)end;
-- (void)leftCongestionAtTime:(id)a3;
+- (void)leftCongestionAtTime:(id)time;
 @end
 
 @implementation FMCongestionPrediction
 
-- (FMCongestionPrediction)initWithSeenCount:(int)a3 predictedBadCells:(id)a4 predictedGoodCells:(id)a5 predictedTimeUntilCongestion:(unint64_t)a6 predictedTimeInCongestion:(unint64_t)a7
+- (FMCongestionPrediction)initWithSeenCount:(int)count predictedBadCells:(id)cells predictedGoodCells:(id)goodCells predictedTimeUntilCongestion:(unint64_t)congestion predictedTimeInCongestion:(unint64_t)inCongestion
 {
-  v13 = a4;
-  v14 = a5;
+  cellsCopy = cells;
+  goodCellsCopy = goodCells;
   v27.receiver = self;
   v27.super_class = FMCongestionPrediction;
   v15 = [(FMCongestionPrediction *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    v15->_seenCount = a3;
+    v15->_seenCount = count;
     v15->_state = 0;
-    objc_storeStrong(&v15->_predictedBadCells, a4);
-    objc_storeStrong(&v16->_predictedGoodCells, a5);
-    v16->_predictedTimeUntilCongestion = a6;
-    v16->_predictedTimeInCongestion = a7;
+    objc_storeStrong(&v15->_predictedBadCells, cells);
+    objc_storeStrong(&v16->_predictedGoodCells, goodCells);
+    v16->_predictedTimeUntilCongestion = congestion;
+    v16->_predictedTimeInCongestion = inCongestion;
     v17 = +[NSDate now];
     receivedTime = v16->_receivedTime;
     v16->_receivedTime = v17;
@@ -52,23 +52,23 @@
   return v16;
 }
 
-- (void)activateAtTime:(id)a3
+- (void)activateAtTime:(id)time
 {
-  v5 = a3;
+  timeCopy = time;
   if (![(FMCongestionPrediction *)self state])
   {
     self->_state = 1;
-    objc_storeStrong(&self->_activatedTime, a3);
+    objc_storeStrong(&self->_activatedTime, time);
   }
 }
 
-- (void)leftCongestionAtTime:(id)a3
+- (void)leftCongestionAtTime:(id)time
 {
-  v5 = a3;
+  timeCopy = time;
   if ([(FMCongestionPrediction *)self state]== 1)
   {
     self->_state = 2;
-    objc_storeStrong(&self->_leftCongestionTime, a3);
+    objc_storeStrong(&self->_leftCongestionTime, time);
   }
 }
 
@@ -82,12 +82,12 @@
 
 - (double)actualTimeUntilCongestion
 {
-  v3 = [(FMCongestionPrediction *)self activatedTime];
-  v4 = [(FMCongestionPrediction *)self receivedTime];
+  activatedTime = [(FMCongestionPrediction *)self activatedTime];
+  receivedTime = [(FMCongestionPrediction *)self receivedTime];
   v5 = 0.0;
-  if (-[FMCongestionPrediction state](self, "state") && v3 && [v3 compare:v4] != -1)
+  if (-[FMCongestionPrediction state](self, "state") && activatedTime && [activatedTime compare:receivedTime] != -1)
   {
-    [v3 timeIntervalSinceDate:v4];
+    [activatedTime timeIntervalSinceDate:receivedTime];
     v5 = v6;
   }
 
@@ -96,8 +96,8 @@
 
 - (double)actualTimeInCongestion
 {
-  v3 = [(FMCongestionPrediction *)self leftCongestionTime];
-  v4 = [(FMCongestionPrediction *)self activatedTime];
+  leftCongestionTime = [(FMCongestionPrediction *)self leftCongestionTime];
+  activatedTime = [(FMCongestionPrediction *)self activatedTime];
   if ([(FMCongestionPrediction *)self state]== 2)
   {
     v5 = 0.0;
@@ -112,9 +112,9 @@
     }
   }
 
-  if (v4 && v3 && [v3 compare:v4] != -1)
+  if (activatedTime && leftCongestionTime && [leftCongestionTime compare:activatedTime] != -1)
   {
-    [v3 timeIntervalSinceDate:v4];
+    [leftCongestionTime timeIntervalSinceDate:activatedTime];
     v5 = v6;
   }
 
@@ -125,15 +125,15 @@ LABEL_8:
 
 - (id)description
 {
-  v14 = [(FMCongestionPrediction *)self state];
-  v13 = [(FMCongestionPrediction *)self seenCount];
-  v16 = [(FMCongestionPrediction *)self predictedBadCells];
-  v15 = [(FMCongestionPrediction *)self predictedGoodCells];
-  v3 = [(FMCongestionPrediction *)self predictedTimeUntilCongestion];
-  v4 = [(FMCongestionPrediction *)self predictedTimeInCongestion];
-  v5 = [(FMCongestionPrediction *)self receivedTime];
-  v6 = [(FMCongestionPrediction *)self activatedTime];
-  v7 = [(FMCongestionPrediction *)self leftCongestionTime];
+  state = [(FMCongestionPrediction *)self state];
+  seenCount = [(FMCongestionPrediction *)self seenCount];
+  predictedBadCells = [(FMCongestionPrediction *)self predictedBadCells];
+  predictedGoodCells = [(FMCongestionPrediction *)self predictedGoodCells];
+  predictedTimeUntilCongestion = [(FMCongestionPrediction *)self predictedTimeUntilCongestion];
+  predictedTimeInCongestion = [(FMCongestionPrediction *)self predictedTimeInCongestion];
+  receivedTime = [(FMCongestionPrediction *)self receivedTime];
+  activatedTime = [(FMCongestionPrediction *)self activatedTime];
+  leftCongestionTime = [(FMCongestionPrediction *)self leftCongestionTime];
   if ([(FMCongestionPrediction *)self isFedMobilityPredictionEventSubmitted])
   {
     v8 = @"YES";
@@ -144,9 +144,9 @@ LABEL_8:
     v8 = @"NO";
   }
 
-  v9 = [(FMCongestionPrediction *)self actualBadCells];
-  v10 = [(FMCongestionPrediction *)self actualGoodCells];
-  v11 = [NSString stringWithFormat:@"state %u, seenCount %d, predictedBadCells %@, predictedGoodCells %@, predictedTimeUntilCongestion %llu, predictedTimeInCongestion %llu, receivedTime %@, activatedTime %@, leftCongestionTime %@, isFedMobilityPredictionEventSubmitted %@, actualBadCells %@, actualGoodCells %@, suppressionReason %u", v14, v13, v16, v15, v3, v4, v5, v6, v7, v8, v9, v10, [(FMCongestionPrediction *)self suppressionReason]];
+  actualBadCells = [(FMCongestionPrediction *)self actualBadCells];
+  actualGoodCells = [(FMCongestionPrediction *)self actualGoodCells];
+  v11 = [NSString stringWithFormat:@"state %u, seenCount %d, predictedBadCells %@, predictedGoodCells %@, predictedTimeUntilCongestion %llu, predictedTimeInCongestion %llu, receivedTime %@, activatedTime %@, leftCongestionTime %@, isFedMobilityPredictionEventSubmitted %@, actualBadCells %@, actualGoodCells %@, suppressionReason %u", state, seenCount, predictedBadCells, predictedGoodCells, predictedTimeUntilCongestion, predictedTimeInCongestion, receivedTime, activatedTime, leftCongestionTime, v8, actualBadCells, actualGoodCells, [(FMCongestionPrediction *)self suppressionReason]];
 
   return v11;
 }

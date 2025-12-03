@@ -1,111 +1,111 @@
 @interface _PSInteractionsStatistics
-- (BOOL)containsConversationId:(id)a3;
-- (BOOL)isUsingDefaultValue:(id)a3 forConversationId:(id)a4;
+- (BOOL)containsConversationId:(id)id;
+- (BOOL)isUsingDefaultValue:(id)value forConversationId:(id)id;
 - (NSDictionary)features;
 - (NSDictionary)properties;
-- (_PSInteractionsStatistics)initWithConfig:(id)a3;
-- (id)descriptionRedacted:(BOOL)a3;
-- (id)nonNilFeaturesForConversationId:(id)a3;
-- (id)privacyMitigatedFeatureValueFromName:(id)a3 forConversationId:(id)a4;
-- (id)privatizedConversationId:(id)a3;
-- (id)valueForFeature:(id)a3 forConversationId:(id)a4;
-- (id)valueForProperty:(id)a3 forConversationId:(id)a4;
-- (id)valueOrDefaultValueForFeature:(id)a3 forConversationId:(id)a4;
-- (void)_updatePropertiesFromRecord:(id)a3 forConversationId:(id)a4;
-- (void)addConversationId:(id)a3;
-- (void)aggregateSumForArguments:(id)a3;
-- (void)computeAppsSharedFromForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeContentBasedFeaturesForPersonIdsDetectedInPhoto:(id)a3 sceneCategoriesDetectedInPhoto:(id)a4;
-- (void)computeDynamicFeatureWithOperatorName:(void *)a3 forArguments:;
+- (_PSInteractionsStatistics)initWithConfig:(id)config;
+- (id)descriptionRedacted:(BOOL)redacted;
+- (id)nonNilFeaturesForConversationId:(id)id;
+- (id)privacyMitigatedFeatureValueFromName:(id)name forConversationId:(id)id;
+- (id)privatizedConversationId:(id)id;
+- (id)valueForFeature:(id)feature forConversationId:(id)id;
+- (id)valueForProperty:(id)property forConversationId:(id)id;
+- (id)valueOrDefaultValueForFeature:(id)feature forConversationId:(id)id;
+- (void)_updatePropertiesFromRecord:(id)record forConversationId:(id)id;
+- (void)addConversationId:(id)id;
+- (void)aggregateSumForArguments:(id)arguments;
+- (void)computeAppsSharedFromForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeContentBasedFeaturesForPersonIdsDetectedInPhoto:(id)photo sceneCategoriesDetectedInPhoto:(id)inPhoto;
+- (void)computeDynamicFeatureWithOperatorName:(void *)name forArguments:;
 - (void)computeDynamicFeatures;
-- (void)computeHasEverSharePlayedWithConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeIsFirstPartyAppForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeMaxIoUOfSharesOfPeopleInPhotoForPeopleDetectedInPhoto:(id)a3;
+- (void)computeHasEverSharePlayedWithConversationId:(id)id interactionRecord:(id)record;
+- (void)computeIsFirstPartyAppForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeMaxIoUOfSharesOfPeopleInPhotoForPeopleDetectedInPhoto:(id)photo;
 - (void)computeNumberOfAppsSharedFromWithConversation;
-- (void)computeNumberOfEngagedSuggestionsFromCurrentAppWithConversationForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeNumberOfEngagedSuggestionsOfDetectedPeopleForPeopleDetectedInPhoto:(id)a3;
+- (void)computeNumberOfEngagedSuggestionsFromCurrentAppWithConversationForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeNumberOfEngagedSuggestionsOfDetectedPeopleForPeopleDetectedInPhoto:(id)photo;
 - (void)computeNumberOfEngagedSuggestionsOfPeopleInPhoto;
-- (void)computeNumberOfEngagedSuggestionsOfTopDomainURLWithConversationForConversationId:(id)a3 interactionRecord:(id)a4;
+- (void)computeNumberOfEngagedSuggestionsOfTopDomainURLWithConversationForConversationId:(id)id interactionRecord:(id)record;
 - (void)computeNumberOfEngagedSuggestionsToTargetApp;
-- (void)computeNumberOfEngagedSuggestionsWithConversationId:(id)a3 interactionRecord:(id)a4;
+- (void)computeNumberOfEngagedSuggestionsWithConversationId:(id)id interactionRecord:(id)record;
 - (void)computeNumberOfFacesSharedWithConversation;
-- (void)computeNumberOfIncomingInteractionsWithConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeNumberOfInteractionsDuringTimePeriodWithConversationForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeNumberOfOutgoingInteractionsWithConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeNumberOfRecentOutgoingInteractionsWithConversationForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeNumberOfSharesFromCurrentAppWithConversationForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeNumberOfSharesOfDetectedPeopleForPeopleDetectedInPhoto:(id)a3;
-- (void)computeNumberOfSharesOfDetectedScenesInPhotoForSceneCategoriesDetectedInPhoto:(id)a3;
+- (void)computeNumberOfIncomingInteractionsWithConversationId:(id)id interactionRecord:(id)record;
+- (void)computeNumberOfInteractionsDuringTimePeriodWithConversationForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeNumberOfOutgoingInteractionsWithConversationId:(id)id interactionRecord:(id)record;
+- (void)computeNumberOfRecentOutgoingInteractionsWithConversationForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeNumberOfSharesFromCurrentAppWithConversationForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeNumberOfSharesOfDetectedPeopleForPeopleDetectedInPhoto:(id)photo;
+- (void)computeNumberOfSharesOfDetectedScenesInPhotoForSceneCategoriesDetectedInPhoto:(id)photo;
 - (void)computeNumberOfSharesOfPeopleInPhoto;
 - (void)computeNumberOfSharesOfScenesInPhoto;
-- (void)computeNumberOfSharesOfTopDomainURLWithConversationForConversationId:(id)a3 interactionRecord:(id)a4;
+- (void)computeNumberOfSharesOfTopDomainURLWithConversationForConversationId:(id)id interactionRecord:(id)record;
 - (void)computeNumberOfSharesToTargetApp;
-- (void)computeNumberOfSharesWithConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computePhotoFeaturesForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeScenesBasedFeaturesForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeStatisticsWithInteractionStore:(id)a3;
-- (void)computeTimeSinceLastIncomingInteractionForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeTimeSinceLastOutgoingInteractionForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeTimeSinceLastPhoneCallWithConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeTimeSinceLastPhotoShareWithConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)computeTimeSinceLastShareWithConversation:(id)a3 interactionRecord:(id)a4;
-- (void)computeTimeSinceLastUIEngagementForConversationId:(id)a3 interactionRecord:(id)a4;
-- (void)copyFeatureForArguments:(id)a3;
-- (void)dispatchComputationForBatchFeature:(void *)a1;
-- (void)dispatchComputationForContentFeature:(void *)a3 personIdsDetectedInPhoto:(void *)a4 sceneCategoriesDetectedInPhoto:;
-- (void)dispatchComputationForIncrementalFeature:(void *)a3 conversationId:(void *)a4 interactionRecord:;
-- (void)divideWithDivisorForArguments:(id)a3;
-- (void)exponentialWithMultiplierForArguments:(id)a3;
-- (void)imputeFeatureForArguments:(id)a3;
-- (void)incrementValueForFeature:(id)a3 andConversationId:(id)a4;
-- (void)initFeature:(id)a3 withValue:(id)a4;
-- (void)laplaceProbabilityWithAlphaForArguments:(id)a3;
-- (void)logWithBaseForArguments:(id)a3;
-- (void)multiplyWithKeyForArguments:(id)a3;
-- (void)mutliplyWithScalarForArguments:(id)a3;
-- (void)powerWithExponentForArguments:(id)a3;
-- (void)processInteractionRecord:(id)a3;
-- (void)reciprocalWithOffsetForArguments:(id)a3;
-- (void)removeConversationIds:(id)a3;
-- (void)removeFeature:(id)a3 andConversation:(id)a4;
-- (void)renameFeatureForArguments:(id)a3;
-- (void)savePastSharedPhotoDetectedPersonIds:(id)a3 forConversationId:(id)a4 forSyntheticInteraction:(BOOL)a5;
-- (void)setValue:(id)a3 forFeature:(id)a4 andConversationId:(id)a5;
-- (void)setValue:(id)a3 forProperty:(id)a4 andConversationId:(id)a5;
-- (void)sumWithAddendForArguments:(id)a3;
-- (void)sumWithKeyForArguments:(id)a3;
+- (void)computeNumberOfSharesWithConversationId:(id)id interactionRecord:(id)record;
+- (void)computePhotoFeaturesForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeScenesBasedFeaturesForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeStatisticsWithInteractionStore:(id)store;
+- (void)computeTimeSinceLastIncomingInteractionForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeTimeSinceLastOutgoingInteractionForConversationId:(id)id interactionRecord:(id)record;
+- (void)computeTimeSinceLastPhoneCallWithConversationId:(id)id interactionRecord:(id)record;
+- (void)computeTimeSinceLastPhotoShareWithConversationId:(id)id interactionRecord:(id)record;
+- (void)computeTimeSinceLastShareWithConversation:(id)conversation interactionRecord:(id)record;
+- (void)computeTimeSinceLastUIEngagementForConversationId:(id)id interactionRecord:(id)record;
+- (void)copyFeatureForArguments:(id)arguments;
+- (void)dispatchComputationForBatchFeature:(void *)feature;
+- (void)dispatchComputationForContentFeature:(void *)feature personIdsDetectedInPhoto:(void *)photo sceneCategoriesDetectedInPhoto:;
+- (void)dispatchComputationForIncrementalFeature:(void *)feature conversationId:(void *)id interactionRecord:;
+- (void)divideWithDivisorForArguments:(id)arguments;
+- (void)exponentialWithMultiplierForArguments:(id)arguments;
+- (void)imputeFeatureForArguments:(id)arguments;
+- (void)incrementValueForFeature:(id)feature andConversationId:(id)id;
+- (void)initFeature:(id)feature withValue:(id)value;
+- (void)laplaceProbabilityWithAlphaForArguments:(id)arguments;
+- (void)logWithBaseForArguments:(id)arguments;
+- (void)multiplyWithKeyForArguments:(id)arguments;
+- (void)mutliplyWithScalarForArguments:(id)arguments;
+- (void)powerWithExponentForArguments:(id)arguments;
+- (void)processInteractionRecord:(id)record;
+- (void)reciprocalWithOffsetForArguments:(id)arguments;
+- (void)removeConversationIds:(id)ids;
+- (void)removeFeature:(id)feature andConversation:(id)conversation;
+- (void)renameFeatureForArguments:(id)arguments;
+- (void)savePastSharedPhotoDetectedPersonIds:(id)ids forConversationId:(id)id forSyntheticInteraction:(BOOL)interaction;
+- (void)setValue:(id)value forFeature:(id)feature andConversationId:(id)id;
+- (void)setValue:(id)value forProperty:(id)property andConversationId:(id)id;
+- (void)sumWithAddendForArguments:(id)arguments;
+- (void)sumWithKeyForArguments:(id)arguments;
 @end
 
 @implementation _PSInteractionsStatistics
 
-- (void)computeAppsSharedFromForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeAppsSharedFromForConversationId:(id)id interactionRecord:(id)record
 {
-  v14 = a3;
-  v6 = a4;
-  if ([v6 mechanism] == 13)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy mechanism] == 13)
   {
-    v7 = [(_PSInteractionsStatistics *)self appsSharedFromByConversationId];
-    v8 = [v7 objectForKeyedSubscript:v14];
+    appsSharedFromByConversationId = [(_PSInteractionsStatistics *)self appsSharedFromByConversationId];
+    v8 = [appsSharedFromByConversationId objectForKeyedSubscript:idCopy];
 
     if (!v8)
     {
       v9 = objc_opt_new();
-      v10 = [(_PSInteractionsStatistics *)self appsSharedFromByConversationId];
-      [v10 setObject:v9 forKeyedSubscript:v14];
+      appsSharedFromByConversationId2 = [(_PSInteractionsStatistics *)self appsSharedFromByConversationId];
+      [appsSharedFromByConversationId2 setObject:v9 forKeyedSubscript:idCopy];
     }
 
-    v11 = [(_PSInteractionsStatistics *)self appsSharedFromByConversationId];
-    v12 = [v11 objectForKeyedSubscript:v14];
-    v13 = [v6 bundleId];
-    [v12 addObject:v13];
+    appsSharedFromByConversationId3 = [(_PSInteractionsStatistics *)self appsSharedFromByConversationId];
+    v12 = [appsSharedFromByConversationId3 objectForKeyedSubscript:idCopy];
+    bundleId = [recordCopy bundleId];
+    [v12 addObject:bundleId];
   }
 }
 
-- (void)computeIsFirstPartyAppForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeIsFirstPartyAppForConversationId:(id)id interactionRecord:(id)record
 {
-  v11 = a3;
-  v5 = [(_PSInteractionsStatistics *)self valueForProperty:@"ConversationBundleId" forConversationId:v11];
-  v6 = [(_PSInteractionsStatistics *)self valueForFeature:@"isFirstPartyApp" forConversationId:v11];
+  idCopy = id;
+  v5 = [(_PSInteractionsStatistics *)self valueForProperty:@"ConversationBundleId" forConversationId:idCopy];
+  v6 = [(_PSInteractionsStatistics *)self valueForFeature:@"isFirstPartyApp" forConversationId:idCopy];
   v7 = v6;
   if (v5)
   {
@@ -121,66 +121,66 @@
   {
     v9 = [v5 hasPrefix:@"com.apple."];
     v10 = [MEMORY[0x1E696AD98] numberWithBool:v9];
-    [(_PSInteractionsStatistics *)self setValue:v10 forFeature:@"isFirstPartyApp" andConversationId:v11];
+    [(_PSInteractionsStatistics *)self setValue:v10 forFeature:@"isFirstPartyApp" andConversationId:idCopy];
   }
 }
 
-- (void)computeNumberOfSharesFromCurrentAppWithConversationForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfSharesFromCurrentAppWithConversationForConversationId:(id)id interactionRecord:(id)record
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v6 mechanism] == 13)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy mechanism] == 13)
   {
-    v7 = [v6 bundleId];
-    v8 = [(_PSInteractionsStatistics *)self config];
-    v9 = [v8 sourceBundleId];
-    v10 = [v7 isEqualToString:v9];
+    bundleId = [recordCopy bundleId];
+    config = [(_PSInteractionsStatistics *)self config];
+    sourceBundleId = [config sourceBundleId];
+    v10 = [bundleId isEqualToString:sourceBundleId];
 
     if (v10)
     {
-      [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfSharesFromCurrentAppWithConversation" andConversationId:v11];
+      [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfSharesFromCurrentAppWithConversation" andConversationId:idCopy];
     }
   }
 }
 
-- (void)computeNumberOfEngagedSuggestionsFromCurrentAppWithConversationForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfEngagedSuggestionsFromCurrentAppWithConversationForConversationId:(id)id interactionRecord:(id)record
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v6 mechanism] == 20)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy mechanism] == 20)
   {
-    v7 = [v6 bundleId];
-    v8 = [(_PSInteractionsStatistics *)self config];
-    v9 = [v8 sourceBundleId];
-    v10 = [v7 isEqualToString:v9];
+    bundleId = [recordCopy bundleId];
+    config = [(_PSInteractionsStatistics *)self config];
+    sourceBundleId = [config sourceBundleId];
+    v10 = [bundleId isEqualToString:sourceBundleId];
 
     if (v10)
     {
-      [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfEngagedSuggestionsFromCurrentAppWithConversation" andConversationId:v11];
+      [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfEngagedSuggestionsFromCurrentAppWithConversation" andConversationId:idCopy];
     }
   }
 }
 
-- (void)computeNumberOfSharesOfTopDomainURLWithConversationForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfSharesOfTopDomainURLWithConversationForConversationId:(id)id interactionRecord:(id)record
 {
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v6 = a4;
-  v7 = [(_PSInteractionsStatistics *)self config];
-  v8 = [v7 topDomainURL];
-  if (v8)
+  idCopy = id;
+  recordCopy = record;
+  config = [(_PSInteractionsStatistics *)self config];
+  topDomainURL = [config topDomainURL];
+  if (topDomainURL)
   {
-    v9 = v8;
-    v10 = [v6 mechanism];
+    v9 = topDomainURL;
+    mechanism = [recordCopy mechanism];
 
-    if (v10 == 13)
+    if (mechanism == 13)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v21 = v6;
-      obj = [v6 attachments];
+      v21 = recordCopy;
+      obj = [recordCopy attachments];
       v11 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v11)
       {
@@ -196,15 +196,15 @@
               objc_enumerationMutation(obj);
             }
 
-            v15 = [*(*(&v24 + 1) + 8 * v14) contentURL];
-            v16 = [v15 host];
-            v17 = [(_PSInteractionsStatistics *)self config];
-            v18 = [v17 topDomainURL];
-            v19 = [v16 isEqualToString:v18];
+            contentURL = [*(*(&v24 + 1) + 8 * v14) contentURL];
+            host = [contentURL host];
+            config2 = [(_PSInteractionsStatistics *)self config];
+            topDomainURL2 = [config2 topDomainURL];
+            v19 = [host isEqualToString:topDomainURL2];
 
             if (v19)
             {
-              [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfSharesOfTopDomainURLWithConversation" andConversationId:v22];
+              [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfSharesOfTopDomainURLWithConversation" andConversationId:idCopy];
             }
 
             ++v14;
@@ -217,7 +217,7 @@
         while (v12);
       }
 
-      v6 = v21;
+      recordCopy = v21;
     }
   }
 
@@ -228,26 +228,26 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)computeNumberOfEngagedSuggestionsOfTopDomainURLWithConversationForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfEngagedSuggestionsOfTopDomainURLWithConversationForConversationId:(id)id interactionRecord:(id)record
 {
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v6 = a4;
-  v7 = [(_PSInteractionsStatistics *)self config];
-  v8 = [v7 topDomainURL];
-  if (v8)
+  idCopy = id;
+  recordCopy = record;
+  config = [(_PSInteractionsStatistics *)self config];
+  topDomainURL = [config topDomainURL];
+  if (topDomainURL)
   {
-    v9 = v8;
-    v10 = [v6 mechanism];
+    v9 = topDomainURL;
+    mechanism = [recordCopy mechanism];
 
-    if (v10 == 20)
+    if (mechanism == 20)
     {
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v21 = v6;
-      obj = [v6 attachments];
+      v21 = recordCopy;
+      obj = [recordCopy attachments];
       v11 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v11)
       {
@@ -263,15 +263,15 @@
               objc_enumerationMutation(obj);
             }
 
-            v15 = [*(*(&v24 + 1) + 8 * v14) contentURL];
-            v16 = [v15 host];
-            v17 = [(_PSInteractionsStatistics *)self config];
-            v18 = [v17 topDomainURL];
-            v19 = [v16 isEqualToString:v18];
+            contentURL = [*(*(&v24 + 1) + 8 * v14) contentURL];
+            host = [contentURL host];
+            config2 = [(_PSInteractionsStatistics *)self config];
+            topDomainURL2 = [config2 topDomainURL];
+            v19 = [host isEqualToString:topDomainURL2];
 
             if (v19)
             {
-              [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfEngagedSuggestionsOfTopDomainURLWithConversation" andConversationId:v22];
+              [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfEngagedSuggestionsOfTopDomainURLWithConversation" andConversationId:idCopy];
             }
 
             ++v14;
@@ -284,7 +284,7 @@
         while (v12);
       }
 
-      v6 = v21;
+      recordCopy = v21;
     }
   }
 
@@ -295,48 +295,48 @@
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)computeNumberOfSharesWithConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfSharesWithConversationId:(id)id interactionRecord:(id)record
 {
-  v6 = a3;
-  if ([a4 mechanism] == 13)
+  idCopy = id;
+  if ([record mechanism] == 13)
   {
-    [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfSharesWithConversation" andConversationId:v6];
+    [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfSharesWithConversation" andConversationId:idCopy];
   }
 }
 
-- (void)computeNumberOfEngagedSuggestionsWithConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfEngagedSuggestionsWithConversationId:(id)id interactionRecord:(id)record
 {
-  v6 = a3;
-  if ([a4 mechanism] == 20)
+  idCopy = id;
+  if ([record mechanism] == 20)
   {
-    [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfEngagedSuggestionsWithConversation" andConversationId:v6];
+    [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfEngagedSuggestionsWithConversation" andConversationId:idCopy];
   }
 }
 
-- (void)computeNumberOfOutgoingInteractionsWithConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfOutgoingInteractionsWithConversationId:(id)id interactionRecord:(id)record
 {
-  v7 = a3;
-  v6 = a4;
-  if ([v6 direction] == 1 && objc_msgSend(v6, "mechanism") != 20)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy direction] == 1 && objc_msgSend(recordCopy, "mechanism") != 20)
   {
-    [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfOutgoingInteractionsWithConversation" andConversationId:v7];
+    [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfOutgoingInteractionsWithConversation" andConversationId:idCopy];
   }
 }
 
-- (void)computeNumberOfIncomingInteractionsWithConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfIncomingInteractionsWithConversationId:(id)id interactionRecord:(id)record
 {
-  v6 = a3;
-  if (![a4 direction])
+  idCopy = id;
+  if (![record direction])
   {
-    [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfIncomingInteractionsWithConversation" andConversationId:v6];
+    [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfIncomingInteractionsWithConversation" andConversationId:idCopy];
   }
 }
 
-- (void)computeNumberOfInteractionsDuringTimePeriodWithConversationForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfInteractionsDuringTimePeriodWithConversationForConversationId:(id)id interactionRecord:(id)record
 {
-  v13 = a3;
-  v6 = a4;
-  if ([v6 direction] == 1)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy direction] == 1)
   {
     if (computeNumberOfInteractionsDuringTimePeriodWithConversationForConversationId_interactionRecord___pasOnceToken2 != -1)
     {
@@ -346,150 +346,150 @@
     v7 = computeNumberOfInteractionsDuringTimePeriodWithConversationForConversationId_interactionRecord___pasExprOnceResult;
     v8 = objc_autoreleasePoolPush();
     v9 = MEMORY[0x1E695DF00];
-    [v6 startDate];
+    [recordCopy startDate];
     v10 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
     objc_autoreleasePoolPop(v8);
     LODWORD(v8) = [v7 isDateInWeekend:v10];
 
-    v11 = [(_PSInteractionsStatistics *)self config];
-    v12 = [v11 isWeekendShare];
+    config = [(_PSInteractionsStatistics *)self config];
+    isWeekendShare = [config isWeekendShare];
 
-    if (v8 == v12)
+    if (v8 == isWeekendShare)
     {
-      [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfInteractionsDuringTimePeriodWithConversation" andConversationId:v13];
+      [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfInteractionsDuringTimePeriodWithConversation" andConversationId:idCopy];
     }
   }
 }
 
-- (void)computeNumberOfRecentOutgoingInteractionsWithConversationForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeNumberOfRecentOutgoingInteractionsWithConversationForConversationId:(id)id interactionRecord:(id)record
 {
-  v12 = a3;
-  v6 = a4;
-  if ([v6 direction] == 1)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy direction] == 1)
   {
-    v7 = [(_PSInteractionsStatistics *)self config];
-    [v7 anchorTimeStamp];
+    config = [(_PSInteractionsStatistics *)self config];
+    [config anchorTimeStamp];
     v9 = v8;
-    [v6 startDate];
+    [recordCopy startDate];
     v11 = v9 - v10;
 
     if (v11 <= 900.0)
     {
-      [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfRecentOutgoingInteractionsWithConversation" andConversationId:v12];
+      [(_PSInteractionsStatistics *)self incrementValueForFeature:@"numberOfRecentOutgoingInteractionsWithConversation" andConversationId:idCopy];
     }
   }
 }
 
-- (void)computeTimeSinceLastOutgoingInteractionForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeTimeSinceLastOutgoingInteractionForConversationId:(id)id interactionRecord:(id)record
 {
-  v16 = a3;
-  v6 = a4;
-  if ([v6 direction] == 1 && objc_msgSend(v6, "mechanism") != 20)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy direction] == 1 && objc_msgSend(recordCopy, "mechanism") != 20)
   {
-    v7 = [(_PSInteractionsStatistics *)self config];
-    [v7 anchorTimeStamp];
+    config = [(_PSInteractionsStatistics *)self config];
+    [config anchorTimeStamp];
     v9 = v8;
-    [v6 startDate];
+    [recordCopy startDate];
     v11 = v9 - v10;
 
-    v12 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastOutgoingInteraction" forConversationId:v16];
+    v12 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastOutgoingInteraction" forConversationId:idCopy];
     v13 = v12;
     if (!v12 || ([v12 doubleValue], v11 < v14))
     {
       v15 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-      [(_PSInteractionsStatistics *)self setValue:v15 forFeature:@"timeSinceLastOutgoingInteraction" andConversationId:v16];
+      [(_PSInteractionsStatistics *)self setValue:v15 forFeature:@"timeSinceLastOutgoingInteraction" andConversationId:idCopy];
     }
   }
 }
 
-- (void)computeTimeSinceLastUIEngagementForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeTimeSinceLastUIEngagementForConversationId:(id)id interactionRecord:(id)record
 {
-  v16 = a3;
-  v6 = a4;
-  if ([v6 mechanism] == 20)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy mechanism] == 20)
   {
-    v7 = [(_PSInteractionsStatistics *)self config];
-    [v7 anchorTimeStamp];
+    config = [(_PSInteractionsStatistics *)self config];
+    [config anchorTimeStamp];
     v9 = v8;
-    [v6 startDate];
+    [recordCopy startDate];
     v11 = v9 - v10;
 
-    v12 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastUIEngagement" forConversationId:v16];
+    v12 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastUIEngagement" forConversationId:idCopy];
     v13 = v12;
     if (!v12 || ([v12 doubleValue], v11 < v14))
     {
       v15 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-      [(_PSInteractionsStatistics *)self setValue:v15 forFeature:@"timeSinceLastUIEngagement" andConversationId:v16];
+      [(_PSInteractionsStatistics *)self setValue:v15 forFeature:@"timeSinceLastUIEngagement" andConversationId:idCopy];
     }
   }
 }
 
-- (void)computeTimeSinceLastPhoneCallWithConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeTimeSinceLastPhoneCallWithConversationId:(id)id interactionRecord:(id)record
 {
-  v23 = a3;
-  v6 = a4;
+  idCopy = id;
+  recordCopy = record;
   v7 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F2D8BFB8];
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v6, "mechanism")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(recordCopy, "mechanism")}];
   v9 = [v7 containsObject:v8];
 
   if (v9)
   {
-    [v6 endDate];
+    [recordCopy endDate];
     v11 = v10;
-    [v6 startDate];
+    [recordCopy startDate];
     v13 = v12;
-    v14 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastPhoneCallWithConversation" forConversationId:v23];
+    v14 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastPhoneCallWithConversation" forConversationId:idCopy];
 
     v15 = v11 - v13;
     if (!v14 && v15 > 5.0)
     {
-      v17 = [(_PSInteractionsStatistics *)self config];
-      [v17 anchorTimeStamp];
+      config = [(_PSInteractionsStatistics *)self config];
+      [config anchorTimeStamp];
       v19 = v18;
-      [v6 endDate];
+      [recordCopy endDate];
       v21 = v19 - v20;
 
       v22 = [MEMORY[0x1E696AD98] numberWithDouble:v21];
-      [(_PSInteractionsStatistics *)self setValue:v22 forFeature:@"timeSinceLastPhoneCallWithConversation" andConversationId:v23];
+      [(_PSInteractionsStatistics *)self setValue:v22 forFeature:@"timeSinceLastPhoneCallWithConversation" andConversationId:idCopy];
     }
   }
 }
 
-- (void)computeTimeSinceLastIncomingInteractionForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeTimeSinceLastIncomingInteractionForConversationId:(id)id interactionRecord:(id)record
 {
-  v14 = a3;
-  v6 = a4;
-  if (![v6 direction])
+  idCopy = id;
+  recordCopy = record;
+  if (![recordCopy direction])
   {
-    v7 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastIncomingInteraction" forConversationId:v14];
+    v7 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastIncomingInteraction" forConversationId:idCopy];
 
     if (!v7)
     {
-      v8 = [(_PSInteractionsStatistics *)self config];
-      [v8 anchorTimeStamp];
+      config = [(_PSInteractionsStatistics *)self config];
+      [config anchorTimeStamp];
       v10 = v9;
-      [v6 startDate];
+      [recordCopy startDate];
       v12 = v10 - v11;
 
       v13 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-      [(_PSInteractionsStatistics *)self setValue:v13 forFeature:@"timeSinceLastIncomingInteraction" andConversationId:v14];
+      [(_PSInteractionsStatistics *)self setValue:v13 forFeature:@"timeSinceLastIncomingInteraction" andConversationId:idCopy];
     }
   }
 }
 
-- (void)computeTimeSinceLastPhotoShareWithConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeTimeSinceLastPhotoShareWithConversationId:(id)id interactionRecord:(id)record
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 mechanism] == 20)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy mechanism] == 20)
   {
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = [v7 attachments];
-    v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    attachments = [recordCopy attachments];
+    v9 = [attachments countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v9)
     {
       v10 = v9;
@@ -500,33 +500,33 @@
         {
           if (*v24 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(attachments);
           }
 
-          v13 = [*(*(&v23 + 1) + 8 * i) photoLocalIdentifier];
+          photoLocalIdentifier = [*(*(&v23 + 1) + 8 * i) photoLocalIdentifier];
 
-          if (v13)
+          if (photoLocalIdentifier)
           {
 
-            v14 = [(_PSInteractionsStatistics *)self config];
-            [v14 anchorTimeStamp];
+            config = [(_PSInteractionsStatistics *)self config];
+            [config anchorTimeStamp];
             v16 = v15;
-            [v7 startDate];
+            [recordCopy startDate];
             v18 = v16 - v17;
 
-            v19 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastPhotoShareWithConversation" forConversationId:v6];
-            v8 = v19;
+            v19 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastPhotoShareWithConversation" forConversationId:idCopy];
+            attachments = v19;
             if (!v19 || ([v19 doubleValue], v18 < v20))
             {
               v21 = [MEMORY[0x1E696AD98] numberWithDouble:v18];
-              [(_PSInteractionsStatistics *)self setValue:v21 forFeature:@"timeSinceLastPhotoShareWithConversation" andConversationId:v6];
+              [(_PSInteractionsStatistics *)self setValue:v21 forFeature:@"timeSinceLastPhotoShareWithConversation" andConversationId:idCopy];
             }
 
             goto LABEL_14;
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v10 = [attachments countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v10)
         {
           continue;
@@ -542,81 +542,81 @@ LABEL_14:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)computeTimeSinceLastShareWithConversation:(id)a3 interactionRecord:(id)a4
+- (void)computeTimeSinceLastShareWithConversation:(id)conversation interactionRecord:(id)record
 {
-  v16 = a3;
-  v6 = a4;
-  if ([v6 mechanism] == 13)
+  conversationCopy = conversation;
+  recordCopy = record;
+  if ([recordCopy mechanism] == 13)
   {
-    v7 = [(_PSInteractionsStatistics *)self config];
-    [v7 anchorTimeStamp];
+    config = [(_PSInteractionsStatistics *)self config];
+    [config anchorTimeStamp];
     v9 = v8;
-    [v6 startDate];
+    [recordCopy startDate];
     v11 = v9 - v10;
 
-    v12 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastShareWithConversation" forConversationId:v16];
+    v12 = [(_PSInteractionsStatistics *)self valueForFeature:@"timeSinceLastShareWithConversation" forConversationId:conversationCopy];
     v13 = v12;
     if (!v12 || ([v12 doubleValue], v11 < v14))
     {
       v15 = [MEMORY[0x1E696AD98] numberWithDouble:v11];
-      [(_PSInteractionsStatistics *)self setValue:v15 forFeature:@"timeSinceLastShareWithConversation" andConversationId:v16];
+      [(_PSInteractionsStatistics *)self setValue:v15 forFeature:@"timeSinceLastShareWithConversation" andConversationId:conversationCopy];
     }
   }
 }
 
-- (void)computeHasEverSharePlayedWithConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeHasEverSharePlayedWithConversationId:(id)id interactionRecord:(id)record
 {
-  v11 = a3;
+  idCopy = id;
   v6 = MEMORY[0x1E69978D0];
-  v7 = [a4 recipients];
-  v8 = [v7 allObjects];
-  v9 = [v6 generateConversationIdFromInteractionRecipientRecords:v8];
+  recipients = [record recipients];
+  allObjects = [recipients allObjects];
+  v9 = [v6 generateConversationIdFromInteractionRecipientRecords:allObjects];
 
-  v10 = [(_PSInteractionsStatistics *)self hasSharePlayedWith];
-  LODWORD(v7) = [v10 containsObject:v9];
+  hasSharePlayedWith = [(_PSInteractionsStatistics *)self hasSharePlayedWith];
+  LODWORD(recipients) = [hasSharePlayedWith containsObject:v9];
 
-  if (v7)
+  if (recipients)
   {
-    [(_PSInteractionsStatistics *)self setValue:&unk_1F2D8AF20 forFeature:@"hasEverSharePlayedWithConversation" andConversationId:v11];
+    [(_PSInteractionsStatistics *)self setValue:&unk_1F2D8AF20 forFeature:@"hasEverSharePlayedWithConversation" andConversationId:idCopy];
   }
 }
 
-- (void)computePhotoFeaturesForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computePhotoFeaturesForConversationId:(id)id interactionRecord:(id)record
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v6 mechanism] == 13 || objc_msgSend(v6, "mechanism") == 20)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy mechanism] == 13 || objc_msgSend(recordCopy, "mechanism") == 20)
   {
-    v7 = [v6 attachments];
-    v8 = [v7 _pas_mappedSetWithTransform:&__block_literal_global_29];
+    attachments = [recordCopy attachments];
+    v8 = [attachments _pas_mappedSetWithTransform:&__block_literal_global_29];
 
-    -[_PSInteractionsStatistics savePastSharedPhotoDetectedPersonIds:forConversationId:forSyntheticInteraction:](self, "savePastSharedPhotoDetectedPersonIds:forConversationId:forSyntheticInteraction:", v8, v9, [v6 mechanism] == 20);
+    -[_PSInteractionsStatistics savePastSharedPhotoDetectedPersonIds:forConversationId:forSyntheticInteraction:](self, "savePastSharedPhotoDetectedPersonIds:forConversationId:forSyntheticInteraction:", v8, idCopy, [recordCopy mechanism] == 20);
   }
 }
 
-- (void)computeScenesBasedFeaturesForConversationId:(id)a3 interactionRecord:(id)a4
+- (void)computeScenesBasedFeaturesForConversationId:(id)id interactionRecord:(id)record
 {
   v41 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v6 = a4;
-  if ([v6 mechanism] == 13)
+  idCopy = id;
+  recordCopy = record;
+  if ([recordCopy mechanism] == 13)
   {
-    v7 = [v6 attachments];
-    v8 = [v7 _pas_mappedSetWithTransform:&__block_literal_global_31_0];
+    attachments = [recordCopy attachments];
+    v8 = [attachments _pas_mappedSetWithTransform:&__block_literal_global_31_0];
 
     v29 = v8;
     if ([v8 count])
     {
-      v25 = v6;
+      v25 = recordCopy;
       v37 = 0u;
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v9 = [(_PSInteractionsStatistics *)self config];
-      v10 = [v9 sceneCategoryTagMapping];
+      config = [(_PSInteractionsStatistics *)self config];
+      sceneCategoryTagMapping = [config sceneCategoryTagMapping];
 
-      obj = v10;
-      v30 = [v10 countByEnumeratingWithState:&v35 objects:v40 count:16];
+      obj = sceneCategoryTagMapping;
+      v30 = [sceneCategoryTagMapping countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v30)
       {
         v28 = *v36;
@@ -630,12 +630,12 @@ LABEL_14:
             }
 
             v12 = *(*(&v35 + 1) + 8 * i);
-            v13 = [(_PSInteractionsStatistics *)self config];
-            v14 = [v13 sceneTagThresholdForSceneCategoryName:v12];
+            config2 = [(_PSInteractionsStatistics *)self config];
+            v14 = [config2 sceneTagThresholdForSceneCategoryName:v12];
 
-            v15 = [(_PSInteractionsStatistics *)self config];
-            v16 = [v15 sceneCategoryTagMapping];
-            v17 = [v16 objectForKeyedSubscript:v12];
+            config3 = [(_PSInteractionsStatistics *)self config];
+            sceneCategoryTagMapping2 = [config3 sceneCategoryTagMapping];
+            v17 = [sceneCategoryTagMapping2 objectForKeyedSubscript:v12];
 
             v33 = 0u;
             v34 = 0u;
@@ -661,7 +661,7 @@ LABEL_14:
                   {
                     if (++v21 >= [v14 intValue])
                     {
-                      [(_PSInteractionsStatistics *)self incrementValueForFeature:v12 andConversationId:v27];
+                      [(_PSInteractionsStatistics *)self incrementValueForFeature:v12 andConversationId:idCopy];
                       goto LABEL_19;
                     }
                   }
@@ -686,7 +686,7 @@ LABEL_19:
         while (v30);
       }
 
-      v6 = v25;
+      recordCopy = v25;
     }
   }
 
@@ -722,8 +722,8 @@ LABEL_19:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v8 = [(_PSInteractionsStatistics *)self personsIdsInPhotosForPastShareInteractions];
-        v9 = [v8 objectForKeyedSubscript:v6];
+        personsIdsInPhotosForPastShareInteractions = [(_PSInteractionsStatistics *)self personsIdsInPhotosForPastShareInteractions];
+        v9 = [personsIdsInPhotosForPastShareInteractions objectForKeyedSubscript:v6];
 
         v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v10)
@@ -802,9 +802,9 @@ LABEL_19:
 
           v11 = [(_PSInteractionsStatistics *)self valueOrDefaultValueForFeature:@"numberOfSharesWithConversation" forConversationId:v8];
           v12 = MEMORY[0x1E696AD98];
-          v13 = [v11 intValue];
+          intValue = [v11 intValue];
           v14 = [v3 objectForKeyedSubscript:v9];
-          v15 = [v12 numberWithInt:{objc_msgSend(v14, "intValue") + v13}];
+          v15 = [v12 numberWithInt:{objc_msgSend(v14, "intValue") + intValue}];
           [v3 setObject:v15 forKeyedSubscript:v9];
         }
       }
@@ -819,8 +819,8 @@ LABEL_19:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = [(_PSInteractionsStatistics *)self conversationIds];
-  v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+  v17 = [conversationIds countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v17)
   {
     v18 = v17;
@@ -831,7 +831,7 @@ LABEL_19:
       {
         if (*v28 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(conversationIds);
         }
 
         v21 = *(*(&v27 + 1) + 8 * j);
@@ -845,7 +845,7 @@ LABEL_19:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v18 = [conversationIds countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v18);
@@ -890,9 +890,9 @@ LABEL_19:
 
           v11 = [(_PSInteractionsStatistics *)self valueOrDefaultValueForFeature:@"numberOfEngagedSuggestionsWithConversation" forConversationId:v8];
           v12 = MEMORY[0x1E696AD98];
-          v13 = [v11 intValue];
+          intValue = [v11 intValue];
           v14 = [v3 objectForKeyedSubscript:v9];
-          v15 = [v12 numberWithInt:{objc_msgSend(v14, "intValue") + v13}];
+          v15 = [v12 numberWithInt:{objc_msgSend(v14, "intValue") + intValue}];
           [v3 setObject:v15 forKeyedSubscript:v9];
         }
       }
@@ -907,8 +907,8 @@ LABEL_19:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v16 = [(_PSInteractionsStatistics *)self conversationIds];
-  v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+  conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+  v17 = [conversationIds countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v17)
   {
     v18 = v17;
@@ -919,7 +919,7 @@ LABEL_19:
       {
         if (*v28 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(conversationIds);
         }
 
         v21 = *(*(&v27 + 1) + 8 * j);
@@ -936,7 +936,7 @@ LABEL_19:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+      v18 = [conversationIds countByEnumeratingWithState:&v27 objects:v35 count:16];
     }
 
     while (v18);
@@ -947,18 +947,18 @@ LABEL_19:
 
 - (void)computeNumberOfAppsSharedFromWithConversation
 {
-  v3 = [(_PSInteractionsStatistics *)self appsSharedFromByConversationId];
+  appsSharedFromByConversationId = [(_PSInteractionsStatistics *)self appsSharedFromByConversationId];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __90___PSInteractionsStatistics_StaticFeatures__computeNumberOfAppsSharedFromWithConversation__block_invoke;
   v4[3] = &unk_1E7C24160;
   v4[4] = self;
-  [v3 enumerateKeysAndObjectsUsingBlock:v4];
+  [appsSharedFromByConversationId enumerateKeysAndObjectsUsingBlock:v4];
 }
 
 - (void)computeNumberOfSharesOfPeopleInPhoto
 {
-  v2 = self;
+  selfCopy = self;
   v46 = *MEMORY[0x1E69E9840];
   v39 = 0u;
   v40 = 0u;
@@ -969,7 +969,7 @@ LABEL_19:
   if (v26)
   {
     v24 = *v40;
-    v25 = v2;
+    v25 = selfCopy;
     do
     {
       v3 = 0;
@@ -984,9 +984,9 @@ LABEL_19:
         v4 = *(*(&v39 + 1) + 8 * v3);
         context = objc_autoreleasePoolPush();
         v5 = objc_opt_new();
-        v6 = [(_PSInteractionsStatistics *)v2 personsIdsInPhotosForPastShareInteractions];
+        personsIdsInPhotosForPastShareInteractions = [(_PSInteractionsStatistics *)selfCopy personsIdsInPhotosForPastShareInteractions];
         v27 = v4;
-        v7 = [v6 objectForKeyedSubscript:v4];
+        v7 = [personsIdsInPhotosForPastShareInteractions objectForKeyedSubscript:v4];
 
         v37 = 0u;
         v38 = 0u;
@@ -1056,7 +1056,7 @@ LABEL_19:
         }
 
         v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
-        v2 = v25;
+        selfCopy = v25;
         [(_PSInteractionsStatistics *)v25 setValue:v21 forFeature:@"numberOfSharesOfPeopleInPhotoWithConversation" andConversationId:v27];
 
         objc_autoreleasePoolPop(context);
@@ -1075,7 +1075,7 @@ LABEL_19:
 
 - (void)computeNumberOfEngagedSuggestionsOfPeopleInPhoto
 {
-  v2 = self;
+  selfCopy = self;
   v46 = *MEMORY[0x1E69E9840];
   v39 = 0u;
   v40 = 0u;
@@ -1086,7 +1086,7 @@ LABEL_19:
   if (v26)
   {
     v24 = *v40;
-    v25 = v2;
+    v25 = selfCopy;
     do
     {
       v3 = 0;
@@ -1101,9 +1101,9 @@ LABEL_19:
         v4 = *(*(&v39 + 1) + 8 * v3);
         context = objc_autoreleasePoolPush();
         v5 = objc_opt_new();
-        v6 = [(_PSInteractionsStatistics *)v2 personsIdsInPhotosForPastSyntheticShareInteractions];
+        personsIdsInPhotosForPastSyntheticShareInteractions = [(_PSInteractionsStatistics *)selfCopy personsIdsInPhotosForPastSyntheticShareInteractions];
         v27 = v4;
-        v7 = [v6 objectForKeyedSubscript:v4];
+        v7 = [personsIdsInPhotosForPastSyntheticShareInteractions objectForKeyedSubscript:v4];
 
         v37 = 0u;
         v38 = 0u;
@@ -1173,7 +1173,7 @@ LABEL_19:
         }
 
         v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v10];
-        v2 = v25;
+        selfCopy = v25;
         [(_PSInteractionsStatistics *)v25 setValue:v21 forFeature:@"numberOfEngagedSuggestionsOfPeopleInPhotoWithConversation" andConversationId:v27];
 
         objc_autoreleasePoolPop(context);
@@ -1216,10 +1216,10 @@ LABEL_19:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v5 = [(_PSInteractionsStatistics *)self config];
-        v6 = [v5 configuredSceneCategoryTagNames];
+        config = [(_PSInteractionsStatistics *)self config];
+        configuredSceneCategoryTagNames = [config configuredSceneCategoryTagNames];
 
-        v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v7 = [configuredSceneCategoryTagNames countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v7)
         {
           v8 = v7;
@@ -1231,15 +1231,15 @@ LABEL_19:
             {
               if (*v20 != v10)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(configuredSceneCategoryTagNames);
               }
 
               v12 = [(_PSInteractionsStatistics *)self valueForFeature:*(*(&v19 + 1) + 8 * j) forConversationId:v4];
-              v13 = [v12 intValue];
+              intValue = [v12 intValue];
 
-              if (v9 <= v13)
+              if (v9 <= intValue)
               {
-                v9 = v13;
+                v9 = intValue;
               }
 
               else
@@ -1248,7 +1248,7 @@ LABEL_19:
               }
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v8 = [configuredSceneCategoryTagNames countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v8);
@@ -1272,11 +1272,11 @@ LABEL_19:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)computeNumberOfSharesOfDetectedPeopleForPeopleDetectedInPhoto:(id)a3
+- (void)computeNumberOfSharesOfDetectedPeopleForPeopleDetectedInPhoto:(id)photo
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  photoCopy = photo;
+  if (photoCopy)
   {
     v43 = 0u;
     v44 = 0u;
@@ -1287,7 +1287,7 @@ LABEL_19:
     if (v27)
     {
       v25 = *v42;
-      v26 = self;
+      selfCopy = self;
       do
       {
         v5 = 0;
@@ -1302,9 +1302,9 @@ LABEL_19:
           v6 = *(*(&v41 + 1) + 8 * v5);
           context = objc_autoreleasePoolPush();
           v7 = objc_opt_new();
-          v8 = [(_PSInteractionsStatistics *)self personsIdsInPhotosForPastShareInteractions];
+          personsIdsInPhotosForPastShareInteractions = [(_PSInteractionsStatistics *)self personsIdsInPhotosForPastShareInteractions];
           v28 = v6;
-          v9 = [v8 objectForKeyedSubscript:v6];
+          v9 = [personsIdsInPhotosForPastShareInteractions objectForKeyedSubscript:v6];
 
           v39 = 0u;
           v40 = 0u;
@@ -1347,7 +1347,7 @@ LABEL_19:
                       }
 
                       v20 = *(*(&v33 + 1) + 8 * j);
-                      if ([v4 containsObject:v20])
+                      if ([photoCopy containsObject:v20])
                       {
                         [v7 addObject:v20];
                         v21 = [v7 countForObject:v20];
@@ -1377,8 +1377,8 @@ LABEL_19:
           }
 
           v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-          self = v26;
-          [(_PSInteractionsStatistics *)v26 setValue:v22 forFeature:@"numberOfSharesOfDetectedPeopleWithConversation" andConversationId:v28];
+          self = selfCopy;
+          [(_PSInteractionsStatistics *)selfCopy setValue:v22 forFeature:@"numberOfSharesOfDetectedPeopleWithConversation" andConversationId:v28];
 
           objc_autoreleasePoolPop(context);
           v5 = v30 + 1;
@@ -1395,11 +1395,11 @@ LABEL_19:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)computeNumberOfEngagedSuggestionsOfDetectedPeopleForPeopleDetectedInPhoto:(id)a3
+- (void)computeNumberOfEngagedSuggestionsOfDetectedPeopleForPeopleDetectedInPhoto:(id)photo
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  photoCopy = photo;
+  if (photoCopy)
   {
     v43 = 0u;
     v44 = 0u;
@@ -1410,7 +1410,7 @@ LABEL_19:
     if (v27)
     {
       v25 = *v42;
-      v26 = self;
+      selfCopy = self;
       do
       {
         v5 = 0;
@@ -1425,9 +1425,9 @@ LABEL_19:
           v6 = *(*(&v41 + 1) + 8 * v5);
           context = objc_autoreleasePoolPush();
           v7 = objc_opt_new();
-          v8 = [(_PSInteractionsStatistics *)self personsIdsInPhotosForPastSyntheticShareInteractions];
+          personsIdsInPhotosForPastSyntheticShareInteractions = [(_PSInteractionsStatistics *)self personsIdsInPhotosForPastSyntheticShareInteractions];
           v28 = v6;
-          v9 = [v8 objectForKeyedSubscript:v6];
+          v9 = [personsIdsInPhotosForPastSyntheticShareInteractions objectForKeyedSubscript:v6];
 
           v39 = 0u;
           v40 = 0u;
@@ -1470,7 +1470,7 @@ LABEL_19:
                       }
 
                       v20 = *(*(&v33 + 1) + 8 * j);
-                      if ([v4 containsObject:v20])
+                      if ([photoCopy containsObject:v20])
                       {
                         [v7 addObject:v20];
                         v21 = [v7 countForObject:v20];
@@ -1500,8 +1500,8 @@ LABEL_19:
           }
 
           v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v12];
-          self = v26;
-          [(_PSInteractionsStatistics *)v26 setValue:v22 forFeature:@"numberOfEngagedSuggestionsOfDetectedPeopleWithConversation" andConversationId:v28];
+          self = selfCopy;
+          [(_PSInteractionsStatistics *)selfCopy setValue:v22 forFeature:@"numberOfEngagedSuggestionsOfDetectedPeopleWithConversation" andConversationId:v28];
 
           objc_autoreleasePoolPop(context);
           v5 = v30 + 1;
@@ -1518,11 +1518,11 @@ LABEL_19:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)computeMaxIoUOfSharesOfPeopleInPhotoForPeopleDetectedInPhoto:(id)a3
+- (void)computeMaxIoUOfSharesOfPeopleInPhotoForPeopleDetectedInPhoto:(id)photo
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  photoCopy = photo;
+  if (photoCopy)
   {
     v34 = 0u;
     v35 = 0u;
@@ -1533,7 +1533,7 @@ LABEL_19:
     if (v23)
     {
       v21 = *v33;
-      v22 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v23; ++i)
@@ -1549,9 +1549,9 @@ LABEL_19:
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v7 = [(_PSInteractionsStatistics *)self personsIdsInPhotosForPastShareInteractions];
+          personsIdsInPhotosForPastShareInteractions = [(_PSInteractionsStatistics *)self personsIdsInPhotosForPastShareInteractions];
           v24 = v6;
-          v8 = [v7 objectForKeyedSubscript:v6];
+          v8 = [personsIdsInPhotosForPastShareInteractions objectForKeyedSubscript:v6];
 
           v9 = [v8 countByEnumeratingWithState:&v28 objects:v36 count:16];
           if (v9)
@@ -1569,8 +1569,8 @@ LABEL_19:
                 }
 
                 v14 = *(*(&v28 + 1) + 8 * j);
-                v15 = [v4 mutableCopy];
-                v16 = [v4 mutableCopy];
+                v15 = [photoCopy mutableCopy];
+                v16 = [photoCopy mutableCopy];
                 [v15 intersectSet:v14];
                 [v16 unionSet:v14];
                 if ([v16 count])
@@ -1600,8 +1600,8 @@ LABEL_19:
           }
 
           v18 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
-          self = v22;
-          [(_PSInteractionsStatistics *)v22 setValue:v18 forFeature:@"maxIoUIoUSharesOfPeopleInPhotoWithConversation" andConversationId:v24];
+          self = selfCopy;
+          [(_PSInteractionsStatistics *)selfCopy setValue:v18 forFeature:@"maxIoUIoUSharesOfPeopleInPhotoWithConversation" andConversationId:v24];
 
           objc_autoreleasePoolPop(context);
         }
@@ -1616,11 +1616,11 @@ LABEL_19:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)computeNumberOfSharesOfDetectedScenesInPhotoForSceneCategoriesDetectedInPhoto:(id)a3
+- (void)computeNumberOfSharesOfDetectedScenesInPhotoForSceneCategoriesDetectedInPhoto:(id)photo
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  photoCopy = photo;
+  if (photoCopy)
   {
     v29 = 0u;
     v30 = 0u;
@@ -1646,10 +1646,10 @@ LABEL_19:
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v7 = [(_PSInteractionsStatistics *)self config];
-          v8 = [v7 configuredSceneCategoryTagNames];
+          config = [(_PSInteractionsStatistics *)self config];
+          configuredSceneCategoryTagNames = [config configuredSceneCategoryTagNames];
 
-          v9 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v9 = [configuredSceneCategoryTagNames countByEnumeratingWithState:&v23 objects:v31 count:16];
           v22 = v5;
           if (v9)
           {
@@ -1662,21 +1662,21 @@ LABEL_19:
               {
                 if (*v24 != v12)
                 {
-                  objc_enumerationMutation(v8);
+                  objc_enumerationMutation(configuredSceneCategoryTagNames);
                 }
 
                 v14 = *(*(&v23 + 1) + 8 * i);
-                if (([v4 containsObject:v14] & 1) == 0)
+                if (([photoCopy containsObject:v14] & 1) == 0)
                 {
                   [(_PSInteractionsStatistics *)self removeFeature:v14 andConversation:v6];
                 }
 
                 v15 = [(_PSInteractionsStatistics *)self valueForFeature:v14 forConversationId:v6];
-                v16 = [v15 intValue];
+                intValue = [v15 intValue];
 
-                if (v11 <= v16)
+                if (v11 <= intValue)
                 {
-                  v11 = v16;
+                  v11 = intValue;
                 }
 
                 else
@@ -1685,7 +1685,7 @@ LABEL_19:
                 }
               }
 
-              v10 = [v8 countByEnumeratingWithState:&v23 objects:v31 count:16];
+              v10 = [configuredSceneCategoryTagNames countByEnumeratingWithState:&v23 objects:v31 count:16];
             }
 
             while (v10);
@@ -1713,16 +1713,16 @@ LABEL_19:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sumWithKeyForArguments:(id)a3
+- (void)sumWithKeyForArguments:(id)arguments
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
-    v25 = v4;
-    v26 = [v4 objectAtIndexedSubscript:2];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
+    v25 = argumentsCopy;
+    v26 = [argumentsCopy objectAtIndexedSubscript:2];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -1787,7 +1787,7 @@ LABEL_19:
       while (v8);
     }
 
-    v4 = v25;
+    argumentsCopy = v25;
   }
 
   else
@@ -1802,25 +1802,25 @@ LABEL_19:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sumWithAddendForArguments:(id)a3
+- (void)sumWithAddendForArguments:(id)arguments
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     [v6 doubleValue];
     v8 = v7;
 
-    v22 = v4;
-    v23 = [v4 objectAtIndexedSubscript:2];
+    v22 = argumentsCopy;
+    v23 = [argumentsCopy objectAtIndexedSubscript:2];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [(_PSInteractionsStatistics *)self conversationIds];
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+    v10 = [conversationIds countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1832,7 +1832,7 @@ LABEL_19:
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(conversationIds);
           }
 
           v14 = *(*(&v24 + 1) + 8 * v13);
@@ -1852,13 +1852,13 @@ LABEL_19:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v11 = [conversationIds countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v11);
     }
 
-    v4 = v22;
+    argumentsCopy = v22;
   }
 
   else
@@ -1873,16 +1873,16 @@ LABEL_19:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)multiplyWithKeyForArguments:(id)a3
+- (void)multiplyWithKeyForArguments:(id)arguments
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
-    v25 = v4;
-    v26 = [v4 objectAtIndexedSubscript:2];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
+    v25 = argumentsCopy;
+    v26 = [argumentsCopy objectAtIndexedSubscript:2];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -1947,7 +1947,7 @@ LABEL_19:
       while (v8);
     }
 
-    v4 = v25;
+    argumentsCopy = v25;
   }
 
   else
@@ -1962,25 +1962,25 @@ LABEL_19:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)mutliplyWithScalarForArguments:(id)a3
+- (void)mutliplyWithScalarForArguments:(id)arguments
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     [v6 doubleValue];
     v8 = v7;
 
-    v22 = v4;
-    v23 = [v4 objectAtIndexedSubscript:2];
+    v22 = argumentsCopy;
+    v23 = [argumentsCopy objectAtIndexedSubscript:2];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [(_PSInteractionsStatistics *)self conversationIds];
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+    v10 = [conversationIds countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1992,7 +1992,7 @@ LABEL_19:
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(conversationIds);
           }
 
           v14 = *(*(&v24 + 1) + 8 * v13);
@@ -2012,13 +2012,13 @@ LABEL_19:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v11 = [conversationIds countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v11);
     }
 
-    v4 = v22;
+    argumentsCopy = v22;
   }
 
   else
@@ -2033,16 +2033,16 @@ LABEL_19:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)divideWithDivisorForArguments:(id)a3
+- (void)divideWithDivisorForArguments:(id)arguments
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
-    v26 = v4;
-    v27 = [v4 objectAtIndexedSubscript:2];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
+    v26 = argumentsCopy;
+    v27 = [argumentsCopy objectAtIndexedSubscript:2];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -2111,7 +2111,7 @@ LABEL_19:
       while (v8);
     }
 
-    v4 = v26;
+    argumentsCopy = v26;
   }
 
   else
@@ -2126,19 +2126,19 @@ LABEL_19:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)exponentialWithMultiplierForArguments:(id)a3
+- (void)exponentialWithMultiplierForArguments:(id)arguments
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     [v6 doubleValue];
     v8 = v7;
 
-    v21 = v4;
-    v9 = [v4 objectAtIndexedSubscript:2];
+    v21 = argumentsCopy;
+    v9 = [argumentsCopy objectAtIndexedSubscript:2];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -2181,7 +2181,7 @@ LABEL_19:
       while (v11);
     }
 
-    v4 = v21;
+    argumentsCopy = v21;
   }
 
   else
@@ -2196,25 +2196,25 @@ LABEL_19:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reciprocalWithOffsetForArguments:(id)a3
+- (void)reciprocalWithOffsetForArguments:(id)arguments
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     [v6 doubleValue];
     v8 = v7;
 
-    v22 = v4;
-    v23 = [v4 objectAtIndexedSubscript:2];
+    v22 = argumentsCopy;
+    v23 = [argumentsCopy objectAtIndexedSubscript:2];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = [(_PSInteractionsStatistics *)self conversationIds];
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+    v10 = [conversationIds countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v10)
     {
       v11 = v10;
@@ -2226,7 +2226,7 @@ LABEL_19:
         {
           if (*v25 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(conversationIds);
           }
 
           v14 = *(*(&v24 + 1) + 8 * v13);
@@ -2249,13 +2249,13 @@ LABEL_19:
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v11 = [conversationIds countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v11);
     }
 
-    v4 = v22;
+    argumentsCopy = v22;
   }
 
   else
@@ -2270,19 +2270,19 @@ LABEL_19:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)powerWithExponentForArguments:(id)a3
+- (void)powerWithExponentForArguments:(id)arguments
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     [v6 doubleValue];
     v8 = v7;
 
-    v21 = v4;
-    v9 = [v4 objectAtIndexedSubscript:2];
+    v21 = argumentsCopy;
+    v9 = [argumentsCopy objectAtIndexedSubscript:2];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -2325,7 +2325,7 @@ LABEL_19:
       while (v11);
     }
 
-    v4 = v21;
+    argumentsCopy = v21;
   }
 
   else
@@ -2340,28 +2340,28 @@ LABEL_19:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)laplaceProbabilityWithAlphaForArguments:(id)a3
+- (void)laplaceProbabilityWithAlphaForArguments:(id)arguments
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     [v6 doubleValue];
     v8 = v7;
 
-    v30 = v4;
-    v32 = [v4 objectAtIndexedSubscript:2];
-    v9 = [(_PSInteractionsStatistics *)self conversationIds];
-    v10 = [v9 count];
+    v30 = argumentsCopy;
+    v32 = [argumentsCopy objectAtIndexedSubscript:2];
+    conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+    v10 = [conversationIds count];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v11 = [(_PSInteractionsStatistics *)self conversationIds];
-    v12 = [v11 countByEnumeratingWithState:&v37 objects:v42 count:16];
+    conversationIds2 = [(_PSInteractionsStatistics *)self conversationIds];
+    v12 = [conversationIds2 countByEnumeratingWithState:&v37 objects:v42 count:16];
     if (v12)
     {
       v13 = v12;
@@ -2373,7 +2373,7 @@ LABEL_19:
         {
           if (*v38 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(conversationIds2);
           }
 
           v17 = [(_PSInteractionsStatistics *)self valueOrDefaultValueForFeature:v5 forConversationId:*(*(&v37 + 1) + 8 * i)];
@@ -2381,7 +2381,7 @@ LABEL_19:
           v15 = v15 + v18;
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v37 objects:v42 count:16];
+        v13 = [conversationIds2 countByEnumeratingWithState:&v37 objects:v42 count:16];
       }
 
       while (v13);
@@ -2428,7 +2428,7 @@ LABEL_19:
       while (v20);
     }
 
-    v4 = v30;
+    argumentsCopy = v30;
   }
 
   else
@@ -2443,19 +2443,19 @@ LABEL_19:
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logWithBaseForArguments:(id)a3
+- (void)logWithBaseForArguments:(id)arguments
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 2)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     [v6 doubleValue];
     v8 = v7;
 
-    v21 = v4;
-    v9 = [v4 objectAtIndexedSubscript:2];
+    v21 = argumentsCopy;
+    v9 = [argumentsCopy objectAtIndexedSubscript:2];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -2495,7 +2495,7 @@ LABEL_19:
       while (v11);
     }
 
-    v4 = v21;
+    argumentsCopy = v21;
   }
 
   else
@@ -2510,20 +2510,20 @@ LABEL_19:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)renameFeatureForArguments:(id)a3
+- (void)renameFeatureForArguments:(id)arguments
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 1)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 1)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(_PSInteractionsStatistics *)self conversationIds];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+    v8 = [conversationIds countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2534,7 +2534,7 @@ LABEL_19:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(conversationIds);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
@@ -2543,7 +2543,7 @@ LABEL_19:
           [(_PSInteractionsStatistics *)self removeFeature:v5 andConversation:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [conversationIds countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -2562,20 +2562,20 @@ LABEL_19:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyFeatureForArguments:(id)a3
+- (void)copyFeatureForArguments:(id)arguments
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 1)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 1)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(_PSInteractionsStatistics *)self conversationIds];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+    v8 = [conversationIds countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2586,7 +2586,7 @@ LABEL_19:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(conversationIds);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
@@ -2594,7 +2594,7 @@ LABEL_19:
           [(_PSInteractionsStatistics *)self setValue:v13 forFeature:v6 andConversationId:v12];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [conversationIds countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -2613,21 +2613,21 @@ LABEL_19:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)aggregateSumForArguments:(id)a3
+- (void)aggregateSumForArguments:(id)arguments
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 1)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 1)
   {
-    v6 = [v4 objectAtIndexedSubscript:0];
-    v26 = v4;
-    v7 = [v4 objectAtIndexedSubscript:1];
+    v6 = [argumentsCopy objectAtIndexedSubscript:0];
+    v26 = argumentsCopy;
+    v7 = [argumentsCopy objectAtIndexedSubscript:1];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v8 = [(_PSInteractionsStatistics *)self conversationIds];
-    v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+    conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+    v9 = [conversationIds countByEnumeratingWithState:&v31 objects:v36 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2639,7 +2639,7 @@ LABEL_19:
         {
           if (*v32 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(conversationIds);
           }
 
           v14 = [(_PSInteractionsStatistics *)self valueOrDefaultValueForFeature:v6 forConversationId:*(*(&v31 + 1) + 8 * i)];
@@ -2647,7 +2647,7 @@ LABEL_19:
           v12 = v12 + v15;
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
+        v10 = [conversationIds countByEnumeratingWithState:&v31 objects:v36 count:16];
       }
 
       while (v10);
@@ -2664,8 +2664,8 @@ LABEL_19:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v16 = [(_PSInteractionsStatistics *)self conversationIds];
-    v17 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+    conversationIds2 = [(_PSInteractionsStatistics *)self conversationIds];
+    v17 = [conversationIds2 countByEnumeratingWithState:&v27 objects:v35 count:16];
     if (v17)
     {
       v18 = v17;
@@ -2676,7 +2676,7 @@ LABEL_19:
         {
           if (*v28 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(conversationIds2);
           }
 
           v21 = *(*(&v27 + 1) + 8 * j);
@@ -2687,14 +2687,14 @@ LABEL_19:
           objc_autoreleasePoolPop(v22);
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v18 = [conversationIds2 countByEnumeratingWithState:&v27 objects:v35 count:16];
       }
 
       while (v18);
     }
 
     v5 = v25;
-    v4 = v26;
+    argumentsCopy = v26;
   }
 
   else
@@ -2709,20 +2709,20 @@ LABEL_19:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)imputeFeatureForArguments:(id)a3
+- (void)imputeFeatureForArguments:(id)arguments
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count] > 1)
+  argumentsCopy = arguments;
+  if ([argumentsCopy count] > 1)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [argumentsCopy objectAtIndexedSubscript:0];
+    v6 = [argumentsCopy objectAtIndexedSubscript:1];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(_PSInteractionsStatistics *)self conversationIds];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+    v8 = [conversationIds countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -2733,7 +2733,7 @@ LABEL_19:
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(conversationIds);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
@@ -2743,7 +2743,7 @@ LABEL_19:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [conversationIds countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -2762,16 +2762,16 @@ LABEL_19:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (_PSInteractionsStatistics)initWithConfig:(id)a3
+- (_PSInteractionsStatistics)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v23.receiver = self;
   v23.super_class = _PSInteractionsStatistics;
   v6 = [(_PSInteractionsStatistics *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v8 = objc_opt_new();
     properties = v7->_properties;
     v7->_properties = v8;
@@ -2818,7 +2818,7 @@ LABEL_19:
   return v2;
 }
 
-- (id)descriptionRedacted:(BOOL)a3
+- (id)descriptionRedacted:(BOOL)redacted
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   objc_msgSend(v5, "appendString:", @"_PSInteractionsStatistics(\n");
@@ -2828,9 +2828,9 @@ LABEL_19:
   v10[2] = __49___PSInteractionsStatistics_descriptionRedacted___block_invoke;
   v10[3] = &unk_1E7C241F0;
   v7 = v5;
-  v13 = a3;
+  redactedCopy = redacted;
   v11 = v7;
-  v12 = self;
+  selfCopy = self;
   [(NSMutableDictionary *)features enumerateKeysAndObjectsUsingBlock:v10];
   [v7 appendString:@""]);
   v8 = v7;
@@ -2838,85 +2838,85 @@ LABEL_19:
   return v7;
 }
 
-- (BOOL)containsConversationId:(id)a3
+- (BOOL)containsConversationId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:id];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)addConversationId:(id)a3
+- (void)addConversationId:(id)id
 {
-  v14 = a3;
+  idCopy = id;
   v4 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:?];
 
   if (!v4)
   {
     v5 = objc_opt_new();
-    [(NSMutableDictionary *)self->_properties setObject:v5 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_properties setObject:v5 forKeyedSubscript:idCopy];
 
     v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%du", arc4random()];
-    v7 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:v14];
+    v7 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:idCopy];
     [v7 setObject:v6 forKeyedSubscript:@"privatizedConversationIdentifier"];
   }
 
-  v8 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:v14];
+  v8 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:idCopy];
 
   if (!v8)
   {
     v9 = objc_opt_new();
-    [(NSMutableDictionary *)self->_features setObject:v9 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_features setObject:v9 forKeyedSubscript:idCopy];
   }
 
-  v10 = [(NSMutableDictionary *)self->_personsIdsInPhotosForPastShareInteractions objectForKeyedSubscript:v14];
+  v10 = [(NSMutableDictionary *)self->_personsIdsInPhotosForPastShareInteractions objectForKeyedSubscript:idCopy];
 
   if (!v10)
   {
     v11 = objc_opt_new();
-    [(NSMutableDictionary *)self->_personsIdsInPhotosForPastShareInteractions setObject:v11 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_personsIdsInPhotosForPastShareInteractions setObject:v11 forKeyedSubscript:idCopy];
   }
 
-  v12 = [(NSMutableDictionary *)self->_personsIdsInPhotosForPastSyntheticShareInteractions objectForKeyedSubscript:v14];
+  v12 = [(NSMutableDictionary *)self->_personsIdsInPhotosForPastSyntheticShareInteractions objectForKeyedSubscript:idCopy];
 
   if (!v12)
   {
     v13 = objc_opt_new();
-    [(NSMutableDictionary *)self->_personsIdsInPhotosForPastSyntheticShareInteractions setObject:v13 forKeyedSubscript:v14];
+    [(NSMutableDictionary *)self->_personsIdsInPhotosForPastSyntheticShareInteractions setObject:v13 forKeyedSubscript:idCopy];
   }
 }
 
-- (void)removeConversationIds:(id)a3
+- (void)removeConversationIds:(id)ids
 {
   features = self->_features;
-  v5 = a3;
-  [(NSMutableDictionary *)features removeObjectsForKeys:v5];
-  [(NSMutableDictionary *)self->_properties removeObjectsForKeys:v5];
-  [(NSMutableDictionary *)self->_personsIdsInPhotosForPastShareInteractions removeObjectsForKeys:v5];
-  [(NSMutableDictionary *)self->_personsIdsInPhotosForPastSyntheticShareInteractions removeObjectsForKeys:v5];
-  [(NSMutableDictionary *)self->_mostRecentInteractionTimestampByConversationId removeObjectsForKeys:v5];
-  [(NSMutableDictionary *)self->_appsSharedFromByConversationId removeObjectsForKeys:v5];
+  idsCopy = ids;
+  [(NSMutableDictionary *)features removeObjectsForKeys:idsCopy];
+  [(NSMutableDictionary *)self->_properties removeObjectsForKeys:idsCopy];
+  [(NSMutableDictionary *)self->_personsIdsInPhotosForPastShareInteractions removeObjectsForKeys:idsCopy];
+  [(NSMutableDictionary *)self->_personsIdsInPhotosForPastSyntheticShareInteractions removeObjectsForKeys:idsCopy];
+  [(NSMutableDictionary *)self->_mostRecentInteractionTimestampByConversationId removeObjectsForKeys:idsCopy];
+  [(NSMutableDictionary *)self->_appsSharedFromByConversationId removeObjectsForKeys:idsCopy];
 }
 
-- (id)privatizedConversationId:(id)a3
+- (id)privatizedConversationId:(id)id
 {
-  v3 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:id];
   v4 = [v3 objectForKeyedSubscript:@"privatizedConversationIdentifier"];
 
   return v4;
 }
 
-- (id)nonNilFeaturesForConversationId:(id)a3
+- (id)nonNilFeaturesForConversationId:(id)id
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = [(_PSInteractionsStatisticsConfig *)self->_config defaultValues];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  defaultValues = [(_PSInteractionsStatisticsConfig *)self->_config defaultValues];
+  v7 = [defaultValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2927,15 +2927,15 @@ LABEL_19:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(defaultValues);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(_PSInteractionsStatistics *)self valueOrDefaultValueForFeature:v11 forConversationId:v4];
+        v12 = [(_PSInteractionsStatistics *)self valueOrDefaultValueForFeature:v11 forConversationId:idCopy];
         [v5 setObject:v12 forKeyedSubscript:v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [defaultValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -2947,19 +2947,19 @@ LABEL_19:
   return v13;
 }
 
-- (void)initFeature:(id)a3 withValue:(id)a4
+- (void)initFeature:(id)feature withValue:(id)value
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  featureCopy = feature;
+  valueCopy = value;
+  if (valueCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = [(_PSInteractionsStatistics *)self conversationIds];
-    v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    conversationIds = [(_PSInteractionsStatistics *)self conversationIds];
+    v9 = [conversationIds countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2971,14 +2971,14 @@ LABEL_19:
         {
           if (*v15 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(conversationIds);
           }
 
-          [(_PSInteractionsStatistics *)self setValue:v7 forFeature:v6 andConversationId:*(*(&v14 + 1) + 8 * v12++)];
+          [(_PSInteractionsStatistics *)self setValue:valueCopy forFeature:featureCopy andConversationId:*(*(&v14 + 1) + 8 * v12++)];
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v10 = [conversationIds countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v10);
@@ -2988,48 +2988,48 @@ LABEL_19:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setValue:(id)a3 forFeature:(id)a4 andConversationId:(id)a5
+- (void)setValue:(id)value forFeature:(id)feature andConversationId:(id)id
 {
-  if (a3)
+  if (value)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    [(_PSInteractionsStatistics *)self addConversationId:v8];
-    v11 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:v8];
+    idCopy = id;
+    featureCopy = feature;
+    valueCopy = value;
+    [(_PSInteractionsStatistics *)self addConversationId:idCopy];
+    v11 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:idCopy];
 
-    [v11 setObject:v10 forKeyedSubscript:v9];
+    [v11 setObject:valueCopy forKeyedSubscript:featureCopy];
   }
 }
 
-- (void)removeFeature:(id)a3 andConversation:(id)a4
+- (void)removeFeature:(id)feature andConversation:(id)conversation
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:v6];
+  featureCopy = feature;
+  conversationCopy = conversation;
+  v7 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:conversationCopy];
 
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:v6];
-    [v8 removeObjectForKey:v9];
+    v8 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:conversationCopy];
+    [v8 removeObjectForKey:featureCopy];
   }
 }
 
-- (id)valueForFeature:(id)a3 forConversationId:(id)a4
+- (id)valueForFeature:(id)feature forConversationId:(id)id
 {
   features = self->_features;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)features objectForKeyedSubscript:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  featureCopy = feature;
+  v7 = [(NSMutableDictionary *)features objectForKeyedSubscript:id];
+  v8 = [v7 objectForKeyedSubscript:featureCopy];
 
   return v8;
 }
 
-- (id)valueOrDefaultValueForFeature:(id)a3 forConversationId:(id)a4
+- (id)valueOrDefaultValueForFeature:(id)feature forConversationId:(id)id
 {
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  featureCopy = feature;
+  v7 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:id];
+  v8 = [v7 objectForKeyedSubscript:featureCopy];
   v9 = v8;
   if (v8)
   {
@@ -3038,86 +3038,86 @@ LABEL_19:
 
   else
   {
-    v11 = [(_PSInteractionsStatisticsConfig *)self->_config defaultValues];
-    v10 = [v11 objectForKeyedSubscript:v6];
+    defaultValues = [(_PSInteractionsStatisticsConfig *)self->_config defaultValues];
+    v10 = [defaultValues objectForKeyedSubscript:featureCopy];
   }
 
   return v10;
 }
 
-- (BOOL)isUsingDefaultValue:(id)a3 forConversationId:(id)a4
+- (BOOL)isUsingDefaultValue:(id)value forConversationId:(id)id
 {
   features = self->_features;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)features objectForKeyedSubscript:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  valueCopy = value;
+  v7 = [(NSMutableDictionary *)features objectForKeyedSubscript:id];
+  v8 = [v7 objectForKeyedSubscript:valueCopy];
 
   return v8 == 0;
 }
 
-- (void)incrementValueForFeature:(id)a3 andConversationId:(id)a4
+- (void)incrementValueForFeature:(id)feature andConversationId:(id)id
 {
-  v6 = a4;
-  v7 = a3;
-  [(_PSInteractionsStatistics *)self addConversationId:v6];
+  idCopy = id;
+  featureCopy = feature;
+  [(_PSInteractionsStatistics *)self addConversationId:idCopy];
   v8 = MEMORY[0x1E696AD98];
-  v13 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:v6];
-  v9 = [v13 objectForKeyedSubscript:v7];
+  v13 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:idCopy];
+  v9 = [v13 objectForKeyedSubscript:featureCopy];
   [v9 doubleValue];
   v11 = [v8 numberWithDouble:v10 + 1.0];
-  v12 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:v6];
+  v12 = [(NSMutableDictionary *)self->_features objectForKeyedSubscript:idCopy];
 
-  [v12 setObject:v11 forKeyedSubscript:v7];
+  [v12 setObject:v11 forKeyedSubscript:featureCopy];
 }
 
-- (void)setValue:(id)a3 forProperty:(id)a4 andConversationId:(id)a5
+- (void)setValue:(id)value forProperty:(id)property andConversationId:(id)id
 {
-  if (a3)
+  if (value)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    [(_PSInteractionsStatistics *)self addConversationId:v8];
-    v11 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:v8];
+    idCopy = id;
+    propertyCopy = property;
+    valueCopy = value;
+    [(_PSInteractionsStatistics *)self addConversationId:idCopy];
+    v11 = [(NSMutableDictionary *)self->_properties objectForKeyedSubscript:idCopy];
 
-    [v11 setObject:v10 forKeyedSubscript:v9];
+    [v11 setObject:valueCopy forKeyedSubscript:propertyCopy];
   }
 }
 
-- (id)valueForProperty:(id)a3 forConversationId:(id)a4
+- (id)valueForProperty:(id)property forConversationId:(id)id
 {
   properties = self->_properties;
-  v6 = a3;
-  v7 = [(NSMutableDictionary *)properties objectForKeyedSubscript:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  propertyCopy = property;
+  v7 = [(NSMutableDictionary *)properties objectForKeyedSubscript:id];
+  v8 = [v7 objectForKeyedSubscript:propertyCopy];
 
   return v8;
 }
 
-- (void)savePastSharedPhotoDetectedPersonIds:(id)a3 forConversationId:(id)a4 forSyntheticInteraction:(BOOL)a5
+- (void)savePastSharedPhotoDetectedPersonIds:(id)ids forConversationId:(id)id forSyntheticInteraction:(BOOL)interaction
 {
-  v5 = a5;
-  v12 = a3;
-  v8 = a4;
-  [(_PSInteractionsStatistics *)self addConversationId:v8];
-  if ([v12 count])
+  interactionCopy = interaction;
+  idsCopy = ids;
+  idCopy = id;
+  [(_PSInteractionsStatistics *)self addConversationId:idCopy];
+  if ([idsCopy count])
   {
     v9 = 40;
-    if (v5)
+    if (interactionCopy)
     {
       v9 = 48;
     }
 
-    v10 = [*(&self->super.isa + v9) objectForKeyedSubscript:v8];
-    v11 = [v12 copy];
+    v10 = [*(&self->super.isa + v9) objectForKeyedSubscript:idCopy];
+    v11 = [idsCopy copy];
     [v10 addObject:v11];
   }
 }
 
-- (void)computeStatisticsWithInteractionStore:(id)a3
+- (void)computeStatisticsWithInteractionStore:(id)store
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_opt_new();
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   [(_PSInteractionsStatisticsConfig *)self->_config maxComputationTime];
@@ -3141,15 +3141,15 @@ LABEL_19:
   v11 = v5;
   v43 = v11;
   v12 = MEMORY[0x1B8C8C060](v42);
-  v13 = [(_PSInteractionsStatisticsConfig *)self->_config sharingInteractionPredicate];
-  v14 = [(_PSInteractionsStatisticsConfig *)self->_config fetchLimit];
+  sharingInteractionPredicate = [(_PSInteractionsStatisticsConfig *)self->_config sharingInteractionPredicate];
+  fetchLimit = [(_PSInteractionsStatisticsConfig *)self->_config fetchLimit];
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
   v41[2] = __67___PSInteractionsStatistics_computeStatisticsWithInteractionStore___block_invoke_2;
   v41[3] = &unk_1E7C24240;
   v41[4] = self;
   v33 = v12;
-  [v4 iterInteractionRecordsWithPredicate:v13 fetchLimit:v14 sortAscending:0 updateTelemetry:v12 withBlock:v41];
+  [storeCopy iterInteractionRecordsWithPredicate:sharingInteractionPredicate fetchLimit:fetchLimit sortAscending:0 updateTelemetry:v12 withBlock:v41];
 
   v15 = +[_PSLogging rewriteChannel];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -3165,22 +3165,22 @@ LABEL_19:
   v31 = v11;
   v40 = v31;
   v16 = MEMORY[0x1B8C8C060](v39);
-  v17 = [(_PSInteractionsStatisticsConfig *)self->_config communicationInteractionPredicate];
-  v18 = [(_PSInteractionsStatisticsConfig *)self->_config fetchLimit];
+  communicationInteractionPredicate = [(_PSInteractionsStatisticsConfig *)self->_config communicationInteractionPredicate];
+  fetchLimit2 = [(_PSInteractionsStatisticsConfig *)self->_config fetchLimit];
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __67___PSInteractionsStatistics_computeStatisticsWithInteractionStore___block_invoke_2_85;
   v38[3] = &unk_1E7C24240;
   v38[4] = self;
   v32 = v16;
-  [v4 iterInteractionRecordsWithPredicate:v17 fetchLimit:v18 sortAscending:0 updateTelemetry:v16 withBlock:v38];
+  [storeCopy iterInteractionRecordsWithPredicate:communicationInteractionPredicate fetchLimit:fetchLimit2 sortAscending:0 updateTelemetry:v16 withBlock:v38];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v19 = [(_PSInteractionsStatisticsConfig *)self->_config staticFeatures];
-  v20 = [v19 countByEnumeratingWithState:&v34 objects:v46 count:16];
+  staticFeatures = [(_PSInteractionsStatisticsConfig *)self->_config staticFeatures];
+  v20 = [staticFeatures countByEnumeratingWithState:&v34 objects:v46 count:16];
   if (v20)
   {
     v21 = v20;
@@ -3191,7 +3191,7 @@ LABEL_19:
       {
         if (*v35 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(staticFeatures);
         }
 
         v24 = *(*(&v34 + 1) + 8 * i);
@@ -3213,7 +3213,7 @@ LABEL_19:
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v34 objects:v46 count:16];
+      v21 = [staticFeatures countByEnumeratingWithState:&v34 objects:v46 count:16];
     }
 
     while (v21);
@@ -3232,19 +3232,19 @@ LABEL_19:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processInteractionRecord:(id)a3
+- (void)processInteractionRecord:(id)record
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 targetBundleId];
-  v6 = [v5 isEqual:@"com.apple.telephonyutilities.callservicesd"];
+  recordCopy = record;
+  targetBundleId = [recordCopy targetBundleId];
+  v6 = [targetBundleId isEqual:@"com.apple.telephonyutilities.callservicesd"];
 
   if (v6)
   {
     v7 = MEMORY[0x1E69978D0];
-    v8 = [v4 recipients];
-    v9 = [v8 allObjects];
-    v10 = [v7 generateConversationIdFromInteractionRecipientRecords:v9];
+    recipients = [recordCopy recipients];
+    allObjects = [recipients allObjects];
+    v10 = [v7 generateConversationIdFromInteractionRecipientRecords:allObjects];
 
     if (v10)
     {
@@ -3252,17 +3252,17 @@ LABEL_19:
     }
   }
 
-  v11 = [v4 conversationId];
-  if (v11)
+  conversationId = [recordCopy conversationId];
+  if (conversationId)
   {
-    [(_PSInteractionsStatistics *)self addConversationId:v11];
-    [(_PSInteractionsStatistics *)self _updatePropertiesFromRecord:v4 forConversationId:v11];
+    [(_PSInteractionsStatistics *)self addConversationId:conversationId];
+    [(_PSInteractionsStatistics *)self _updatePropertiesFromRecord:recordCopy forConversationId:conversationId];
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v12 = [(_PSInteractionsStatisticsConfig *)self->_config staticFeatures];
-    v13 = [v12 countByEnumeratingWithState:&v21 objects:v27 count:16];
+    staticFeatures = [(_PSInteractionsStatisticsConfig *)self->_config staticFeatures];
+    v13 = [staticFeatures countByEnumeratingWithState:&v21 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -3273,14 +3273,14 @@ LABEL_19:
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(staticFeatures);
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
           v18 = PSStaticFeatureFromString(v17);
           if (v18)
           {
-            [(_PSInteractionsStatistics *)self dispatchComputationForIncrementalFeature:v18 conversationId:v11 interactionRecord:v4];
+            [(_PSInteractionsStatistics *)self dispatchComputationForIncrementalFeature:v18 conversationId:conversationId interactionRecord:recordCopy];
           }
 
           else
@@ -3295,7 +3295,7 @@ LABEL_19:
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v21 objects:v27 count:16];
+        v14 = [staticFeatures countByEnumeratingWithState:&v21 objects:v27 count:16];
       }
 
       while (v14);
@@ -3304,76 +3304,76 @@ LABEL_19:
 
   else
   {
-    v12 = +[_PSLogging rewriteChannel];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    staticFeatures = +[_PSLogging rewriteChannel];
+    if (os_log_type_enabled(staticFeatures, OS_LOG_TYPE_DEBUG))
     {
-      [(_PSInteractionsStatistics *)v4 processInteractionRecord:v12];
+      [(_PSInteractionsStatistics *)recordCopy processInteractionRecord:staticFeatures];
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updatePropertiesFromRecord:(id)a3 forConversationId:(id)a4
+- (void)_updatePropertiesFromRecord:(id)record forConversationId:(id)id
 {
-  v22 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_mostRecentInteractionTimestampByConversationId objectForKeyedSubscript:v6];
+  recordCopy = record;
+  idCopy = id;
+  v7 = [(NSMutableDictionary *)self->_mostRecentInteractionTimestampByConversationId objectForKeyedSubscript:idCopy];
   [v7 doubleValue];
   v9 = v8;
-  [v22 startDate];
+  [recordCopy startDate];
   if (v9 <= v10)
   {
-    v11 = [(_PSInteractionsStatisticsConfig *)self->_config appBundleIdForRecord:v22];
+    v11 = [(_PSInteractionsStatisticsConfig *)self->_config appBundleIdForRecord:recordCopy];
     if (v11)
     {
-      [(_PSInteractionsStatistics *)self setValue:v11 forProperty:@"ConversationBundleId" andConversationId:v6];
+      [(_PSInteractionsStatistics *)self setValue:v11 forProperty:@"ConversationBundleId" andConversationId:idCopy];
     }
 
-    v12 = [v22 contentURL];
+    contentURL = [recordCopy contentURL];
 
-    if (v12)
+    if (contentURL)
     {
-      v13 = [v22 contentURL];
-      [(_PSInteractionsStatistics *)self setValue:v13 forProperty:@"ConversationINImageURL" andConversationId:v6];
+      contentURL2 = [recordCopy contentURL];
+      [(_PSInteractionsStatistics *)self setValue:contentURL2 forProperty:@"ConversationINImageURL" andConversationId:idCopy];
     }
 
-    v14 = [v22 groupName];
+    groupName = [recordCopy groupName];
 
-    if (v14)
+    if (groupName)
     {
-      v15 = [v22 groupName];
-      [(_PSInteractionsStatistics *)self setValue:v15 forProperty:@"ConversationGroupName" andConversationId:v6];
+      groupName2 = [recordCopy groupName];
+      [(_PSInteractionsStatistics *)self setValue:groupName2 forProperty:@"ConversationGroupName" andConversationId:idCopy];
     }
 
-    if ([v22 direction] == 1)
+    if ([recordCopy direction] == 1)
     {
       v16 = MEMORY[0x1E69978D0];
-      v17 = [v22 recipients];
-      v18 = [v17 allObjects];
-      v19 = [v16 generateConversationIdFromInteractionRecipientRecords:v18];
+      recipients = [recordCopy recipients];
+      allObjects = [recipients allObjects];
+      v19 = [v16 generateConversationIdFromInteractionRecipientRecords:allObjects];
 
-      [(_PSInteractionsStatistics *)self setValue:v19 forProperty:@"RecipientListConversationId" andConversationId:v6];
+      [(_PSInteractionsStatistics *)self setValue:v19 forProperty:@"RecipientListConversationId" andConversationId:idCopy];
     }
 
     v20 = MEMORY[0x1E696AD98];
-    [v22 startDate];
+    [recordCopy startDate];
     v21 = [v20 numberWithDouble:?];
-    [(NSMutableDictionary *)self->_mostRecentInteractionTimestampByConversationId setObject:v21 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_mostRecentInteractionTimestampByConversationId setObject:v21 forKeyedSubscript:idCopy];
   }
 }
 
-- (void)computeContentBasedFeaturesForPersonIdsDetectedInPhoto:(id)a3 sceneCategoriesDetectedInPhoto:(id)a4
+- (void)computeContentBasedFeaturesForPersonIdsDetectedInPhoto:(id)photo sceneCategoriesDetectedInPhoto:(id)inPhoto
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  photoCopy = photo;
+  inPhotoCopy = inPhoto;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(_PSInteractionsStatisticsConfig *)self->_config staticFeatures];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  staticFeatures = [(_PSInteractionsStatisticsConfig *)self->_config staticFeatures];
+  v9 = [staticFeatures countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -3384,14 +3384,14 @@ LABEL_19:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(staticFeatures);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
         v14 = PSStaticFeatureFromString(v13);
         if (v14)
         {
-          [(_PSInteractionsStatistics *)self dispatchComputationForContentFeature:v14 personIdsDetectedInPhoto:v6 sceneCategoriesDetectedInPhoto:v7];
+          [(_PSInteractionsStatistics *)self dispatchComputationForContentFeature:v14 personIdsDetectedInPhoto:photoCopy sceneCategoriesDetectedInPhoto:inPhotoCopy];
         }
 
         else
@@ -3406,7 +3406,7 @@ LABEL_19:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v10 = [staticFeatures countByEnumeratingWithState:&v17 objects:v23 count:16];
     }
 
     while (v10);
@@ -3422,8 +3422,8 @@ LABEL_19:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(_PSInteractionsStatisticsConfig *)self->_config dynamicFeatureRecipe];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  dynamicFeatureRecipe = [(_PSInteractionsStatisticsConfig *)self->_config dynamicFeatureRecipe];
+  v4 = [dynamicFeatureRecipe countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3434,7 +3434,7 @@ LABEL_19:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dynamicFeatureRecipe);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -3443,7 +3443,7 @@ LABEL_19:
         [(_PSInteractionsStatistics *)self computeDynamicFeatureWithOperatorName:v9 forArguments:v10];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [dynamicFeatureRecipe countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -3452,45 +3452,45 @@ LABEL_19:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)privacyMitigatedFeatureValueFromName:(id)a3 forConversationId:(id)a4
+- (id)privacyMitigatedFeatureValueFromName:(id)name forConversationId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  idCopy = id;
   v8 = objc_opt_new();
-  v9 = [(_PSInteractionsStatistics *)self valueOrDefaultValueForFeature:v6 forConversationId:v7];
+  v9 = [(_PSInteractionsStatistics *)self valueOrDefaultValueForFeature:nameCopy forConversationId:idCopy];
   [v9 doubleValue];
   v11 = v10;
-  v12 = v6;
+  v12 = nameCopy;
   if (([v12 isEqualToString:@"timeSinceLastIncomingInteraction"] & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"timeSinceLastOutgoingInteraction") & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"timeSinceLastPhoneCallWithConversation") & 1) != 0 || (objc_msgSend(v12, "isEqualToString:", @"timeSinceLastPhotoShareWithConversation") & 1) != 0 || objc_msgSend(v12, "isEqualToString:", @"timeSinceLastShareWithConversation"))
   {
     v11 = round(v11);
   }
 
   [v8 setValue:v11];
-  [v8 setDefaultValue:{-[_PSInteractionsStatistics isUsingDefaultValue:forConversationId:](self, "isUsingDefaultValue:forConversationId:", v12, v7)}];
+  [v8 setDefaultValue:{-[_PSInteractionsStatistics isUsingDefaultValue:forConversationId:](self, "isUsingDefaultValue:forConversationId:", v12, idCopy)}];
 
   return v8;
 }
 
-- (void)dispatchComputationForContentFeature:(void *)a3 personIdsDetectedInPhoto:(void *)a4 sceneCategoriesDetectedInPhoto:
+- (void)dispatchComputationForContentFeature:(void *)feature personIdsDetectedInPhoto:(void *)photo sceneCategoriesDetectedInPhoto:
 {
-  v8 = a3;
-  v7 = a4;
-  if (a1)
+  featureCopy = feature;
+  photoCopy = photo;
+  if (self)
   {
     switch(a2)
     {
       case 28:
-        [a1 computeMaxIoUOfSharesOfPeopleInPhotoForPeopleDetectedInPhoto:v8];
+        [self computeMaxIoUOfSharesOfPeopleInPhotoForPeopleDetectedInPhoto:featureCopy];
         break;
       case 29:
-        [a1 computeNumberOfEngagedSuggestionsOfDetectedPeopleForPeopleDetectedInPhoto:v8];
+        [self computeNumberOfEngagedSuggestionsOfDetectedPeopleForPeopleDetectedInPhoto:featureCopy];
         break;
       case 30:
-        [a1 computeNumberOfSharesOfDetectedPeopleForPeopleDetectedInPhoto:v8];
+        [self computeNumberOfSharesOfDetectedPeopleForPeopleDetectedInPhoto:featureCopy];
         break;
       case 31:
-        [a1 computeNumberOfSharesOfDetectedScenesInPhotoForSceneCategoriesDetectedInPhoto:v7];
+        [self computeNumberOfSharesOfDetectedScenesInPhotoForSceneCategoriesDetectedInPhoto:photoCopy];
         break;
       default:
         break;
@@ -3498,43 +3498,43 @@ LABEL_19:
   }
 }
 
-- (void)dispatchComputationForBatchFeature:(void *)a1
+- (void)dispatchComputationForBatchFeature:(void *)feature
 {
-  if (a1)
+  if (feature)
   {
     switch(a2)
     {
       case 0x16uLL:
-        a1 = [a1 computeNumberOfSharesToTargetApp];
+        feature = [feature computeNumberOfSharesToTargetApp];
         break;
       case 0x17uLL:
-        a1 = [a1 computeNumberOfEngagedSuggestionsToTargetApp];
+        feature = [feature computeNumberOfEngagedSuggestionsToTargetApp];
         break;
       case 0x18uLL:
-        a1 = [a1 computeNumberOfEngagedSuggestionsOfPeopleInPhoto];
+        feature = [feature computeNumberOfEngagedSuggestionsOfPeopleInPhoto];
         break;
       case 0x19uLL:
-        a1 = [a1 computeNumberOfSharesOfPeopleInPhoto];
+        feature = [feature computeNumberOfSharesOfPeopleInPhoto];
         break;
       case 0x1AuLL:
-        a1 = [a1 computeNumberOfSharesOfScenesInPhoto];
+        feature = [feature computeNumberOfSharesOfScenesInPhoto];
         break;
       case 0x1BuLL:
-        a1 = [a1 computeNumberOfFacesSharedWithConversation];
+        feature = [feature computeNumberOfFacesSharedWithConversation];
         break;
       default:
-        return a1;
+        return feature;
     }
   }
 
-  return a1;
+  return feature;
 }
 
-- (void)dispatchComputationForIncrementalFeature:(void *)a3 conversationId:(void *)a4 interactionRecord:
+- (void)dispatchComputationForIncrementalFeature:(void *)feature conversationId:(void *)id interactionRecord:
 {
-  v8 = a3;
-  v7 = a4;
-  if (a1)
+  featureCopy = feature;
+  idCopy = id;
+  if (self)
   {
     switch(a2)
     {
@@ -3607,12 +3607,12 @@ LABEL_19:
   }
 }
 
-- (void)computeDynamicFeatureWithOperatorName:(void *)a3 forArguments:
+- (void)computeDynamicFeatureWithOperatorName:(void *)name forArguments:
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  nameCopy = name;
+  if (self)
   {
     switch(PSDynamicFeatureOperatorFromString(v5))
     {

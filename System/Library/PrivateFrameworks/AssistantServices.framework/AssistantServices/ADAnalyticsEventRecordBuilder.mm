@@ -1,7 +1,7 @@
 @interface ADAnalyticsEventRecordBuilder
 - (id)build;
 - (void)reset;
-- (void)setValue:(id)a3 forColumnName:(id)a4;
+- (void)setValue:(id)value forColumnName:(id)name;
 @end
 
 @implementation ADAnalyticsEventRecordBuilder
@@ -9,76 +9,76 @@
 - (id)build
 {
   v21 = [AFAnalyticsEvent alloc];
-  v3 = [(SiriCoreSQLiteValue *)self->_deliveryStreamValue siriCoreSQLiteValue_toNumber];
-  v4 = [v3 unsignedLongLongValue];
-  v5 = [(SiriCoreSQLiteValue *)self->_typeValue siriCoreSQLiteValue_toNumber];
-  v6 = [v5 integerValue];
-  v7 = [(SiriCoreSQLiteValue *)self->_timestampValue siriCoreSQLiteValue_toNumber];
-  v8 = [v7 unsignedLongLongValue];
-  v9 = [(SiriCoreSQLiteValue *)self->_contextDataTypeValue siriCoreSQLiteValue_toNumber];
-  v10 = [v9 integerValue];
-  v11 = [(SiriCoreSQLiteValue *)self->_contextDataValue siriCoreSQLiteValue_toData];
-  v12 = [v21 initWithDeliveryStream:v4 type:v6 timestamp:v8 contextDataType:v10 contextData:v11];
+  siriCoreSQLiteValue_toNumber = [(SiriCoreSQLiteValue *)self->_deliveryStreamValue siriCoreSQLiteValue_toNumber];
+  unsignedLongLongValue = [siriCoreSQLiteValue_toNumber unsignedLongLongValue];
+  siriCoreSQLiteValue_toNumber2 = [(SiriCoreSQLiteValue *)self->_typeValue siriCoreSQLiteValue_toNumber];
+  integerValue = [siriCoreSQLiteValue_toNumber2 integerValue];
+  siriCoreSQLiteValue_toNumber3 = [(SiriCoreSQLiteValue *)self->_timestampValue siriCoreSQLiteValue_toNumber];
+  unsignedLongLongValue2 = [siriCoreSQLiteValue_toNumber3 unsignedLongLongValue];
+  siriCoreSQLiteValue_toNumber4 = [(SiriCoreSQLiteValue *)self->_contextDataTypeValue siriCoreSQLiteValue_toNumber];
+  integerValue2 = [siriCoreSQLiteValue_toNumber4 integerValue];
+  siriCoreSQLiteValue_toData = [(SiriCoreSQLiteValue *)self->_contextDataValue siriCoreSQLiteValue_toData];
+  v12 = [v21 initWithDeliveryStream:unsignedLongLongValue type:integerValue timestamp:unsignedLongLongValue2 contextDataType:integerValue2 contextData:siriCoreSQLiteValue_toData];
 
   v13 = [AFAnalyticsEventRecord alloc];
-  v14 = [(SiriCoreSQLiteValue *)self->_streamUIDValue siriCoreSQLiteValue_toString];
-  v15 = [(SiriCoreSQLiteValue *)self->_dateCreatedValue siriCoreSQLiteValue_toNumber];
-  [v15 doubleValue];
+  siriCoreSQLiteValue_toString = [(SiriCoreSQLiteValue *)self->_streamUIDValue siriCoreSQLiteValue_toString];
+  siriCoreSQLiteValue_toNumber5 = [(SiriCoreSQLiteValue *)self->_dateCreatedValue siriCoreSQLiteValue_toNumber];
+  [siriCoreSQLiteValue_toNumber5 doubleValue];
   v16 = [NSDate dateWithTimeIntervalSince1970:?];
-  v17 = [(SiriCoreSQLiteValue *)self->_speechIdValue siriCoreSQLiteValue_toString];
-  v18 = [(SiriCoreSQLiteValue *)self->_recordIdValue siriCoreSQLiteValue_toString];
-  v19 = [v13 initWithEvent:v12 streamUID:v14 dateCreated:v16 speechId:v17 recordId:v18];
+  siriCoreSQLiteValue_toString2 = [(SiriCoreSQLiteValue *)self->_speechIdValue siriCoreSQLiteValue_toString];
+  siriCoreSQLiteValue_toString3 = [(SiriCoreSQLiteValue *)self->_recordIdValue siriCoreSQLiteValue_toString];
+  v19 = [v13 initWithEvent:v12 streamUID:siriCoreSQLiteValue_toString dateCreated:v16 speechId:siriCoreSQLiteValue_toString2 recordId:siriCoreSQLiteValue_toString3];
 
   return v19;
 }
 
-- (void)setValue:(id)a3 forColumnName:(id)a4
+- (void)setValue:(id)value forColumnName:(id)name
 {
-  v9 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"stream_uid"])
+  valueCopy = value;
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"stream_uid"])
   {
     v8 = 8;
   }
 
-  else if ([v7 isEqualToString:@"delivery_stream"])
+  else if ([nameCopy isEqualToString:@"delivery_stream"])
   {
     v8 = 16;
   }
 
-  else if ([v7 isEqualToString:@"type"])
+  else if ([nameCopy isEqualToString:@"type"])
   {
     v8 = 24;
   }
 
-  else if ([v7 isEqualToString:@"timestamp"])
+  else if ([nameCopy isEqualToString:@"timestamp"])
   {
     v8 = 32;
   }
 
-  else if ([v7 isEqualToString:@"context_data"])
+  else if ([nameCopy isEqualToString:@"context_data"])
   {
     v8 = 40;
   }
 
-  else if ([v7 isEqualToString:@"context_data_type"])
+  else if ([nameCopy isEqualToString:@"context_data_type"])
   {
     v8 = 48;
   }
 
-  else if ([v7 isEqualToString:@"date_created"])
+  else if ([nameCopy isEqualToString:@"date_created"])
   {
     v8 = 56;
   }
 
-  else if ([v7 isEqualToString:@"assistant_id"])
+  else if ([nameCopy isEqualToString:@"assistant_id"])
   {
     v8 = 64;
   }
 
   else
   {
-    if (![v7 isEqualToString:@"record_id"])
+    if (![nameCopy isEqualToString:@"record_id"])
     {
       goto LABEL_20;
     }
@@ -86,7 +86,7 @@
     v8 = 72;
   }
 
-  objc_storeStrong((&self->super.isa + v8), a3);
+  objc_storeStrong((&self->super.isa + v8), value);
 LABEL_20:
 }
 

@@ -1,52 +1,52 @@
 @interface SUUIBrickGridPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUIBrickGridPageSection)initWithPageComponent:(id)a3;
-- (UIEdgeInsets)_contentInsetsForColumnIndex:(int64_t)a3 rowWidth:(double)a4;
-- (id)_editorialLayoutForBrick:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUIBrickGridPageSection)initWithPageComponent:(id)component;
+- (UIEdgeInsets)_contentInsetsForColumnIndex:(int64_t)index rowWidth:(double)width;
+- (id)_editorialLayoutForBrick:(id)brick;
 - (id)_missingItemLoader;
-- (id)cellForIndexPath:(id)a3;
-- (id)clickEventWithLink:(id)a3 elementName:(id)a4 index:(int64_t)a5;
+- (id)cellForIndexPath:(id)path;
+- (id)clickEventWithLink:(id)link elementName:(id)name index:(int64_t)index;
 - (int64_t)numberOfCells;
-- (void)_enumerateVisibleBricksUsingBlock:(id)a3;
-- (void)_loadArtworkForBrick:(id)a3 artworkLoader:(id)a4 reason:(int64_t)a5;
-- (void)_loadMissingItemsFromIndex:(int64_t)a3 withReason:(int64_t)a4;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4;
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3;
+- (void)_enumerateVisibleBricksUsingBlock:(id)block;
+- (void)_loadArtworkForBrick:(id)brick artworkLoader:(id)loader reason:(int64_t)reason;
+- (void)_loadMissingItemsFromIndex:(int64_t)index withReason:(int64_t)reason;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)artworkRequest:(id)request didLoadImage:(id)image;
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path;
 - (void)dealloc;
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)willAppearInContext:(id)a3;
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)willAppearInContext:(id)context;
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SUUIBrickGridPageSection
 
-- (SUUIBrickGridPageSection)initWithPageComponent:(id)a3
+- (SUUIBrickGridPageSection)initWithPageComponent:(id)component
 {
   v15.receiver = self;
   v15.super_class = SUUIBrickGridPageSection;
-  v3 = [(SUUIStorePageSection *)&v15 initWithPageComponent:a3];
+  v3 = [(SUUIStorePageSection *)&v15 initWithPageComponent:component];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
     v6 = 145.0;
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v6 = 208.0;
     }
 
     v7 = 2;
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v7 = 3;
     }
 
     v8 = 10.0;
     v9 = 20.0;
-    if (v5 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v8 = 20.0;
     }
@@ -56,7 +56,7 @@
       v9 = 15.0;
     }
 
-    *&v3->_baseHeight = qword_259FCABE0[v5 == 1];
+    *&v3->_baseHeight = qword_259FCABE0[userInterfaceIdiom == 1];
     v3->_columnWidth = v6;
     v3->_numberOfColumns = v7;
     v3->_paddingHorizontal = v8;
@@ -81,74 +81,74 @@
   [(SUUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v13 = a4;
-  v6 = a3;
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 viewElement];
-  [v13 addItemViewElement:v8];
+  sessionCopy = session;
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 
-  v9 = [v6 item];
-  v10 = [(SUUIStorePageSection *)self pageComponent];
-  v11 = [v10 children];
+  item = [pathCopy item];
+  pageComponent2 = [(SUUIStorePageSection *)self pageComponent];
+  children = [pageComponent2 children];
 
-  if (v9 < [v11 count])
+  if (item < [children count])
   {
-    v12 = [v11 objectAtIndex:v9];
-    [v13 addItemIdentifier:{objc_msgSend(v12, "brickIdentifier")}];
+    v12 = [children objectAtIndex:item];
+    [sessionCopy addItemIdentifier:{objc_msgSend(v12, "brickIdentifier")}];
   }
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:0x286AF9AE0 forIndexPath:v4];
-  v8 = [(SUUIStorePageSection *)self backgroundColorForIndexPath:v4];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:0x286AF9AE0 forIndexPath:pathCopy];
+  v8 = [(SUUIStorePageSection *)self backgroundColorForIndexPath:pathCopy];
   [v7 setBackgroundColor:v8];
 
-  v9 = [v4 row];
+  v9 = [pathCopy row];
   v10 = v9 % self->_numberOfColumns;
-  [v6 bounds];
+  [collectionView bounds];
   [(SUUIBrickGridPageSection *)self _contentInsetsForColumnIndex:v10 rowWidth:v11];
   [v7 setContentInsets:?];
-  v12 = [(SUUIStorePageSection *)self pageComponent];
-  v13 = [v12 children];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  children = [pageComponent children];
 
-  if (v9 < [v13 count])
+  if (v9 < [children count])
   {
-    v14 = [v13 objectAtIndex:v9];
-    v15 = [v14 accessibilityLabel];
-    [v7 setAccessibilityLabel:v15];
+    v14 = [children objectAtIndex:v9];
+    accessibilityLabel = [v14 accessibilityLabel];
+    [v7 setAccessibilityLabel:accessibilityLabel];
 
     v16 = [(SUUIBrickGridPageSection *)self _editorialLayoutForBrick:v14];
     [v7 applyEditorialLayout:v16 orientation:0];
-    v17 = [v5 resourceLoader];
+    resourceLoader = [context resourceLoader];
     v18 = [(NSMapTable *)self->_artworkRequests objectForKey:v14];
-    v19 = [v18 unsignedIntegerValue];
+    unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-    if (!v19)
+    if (!unsignedIntegerValue)
     {
       goto LABEL_5;
     }
 
-    v20 = [v17 cachedResourceForRequestIdentifier:v19];
+    v20 = [resourceLoader cachedResourceForRequestIdentifier:unsignedIntegerValue];
     if (v20)
     {
 LABEL_9:
       [v7 setBrickImage:v20];
-      v26 = [v5 colorScheme];
-      [v7 setColoringWithColorScheme:v26];
+      colorScheme = [context colorScheme];
+      [v7 setColoringWithColorScheme:colorScheme];
 
       goto LABEL_11;
     }
 
-    if (([v17 trySetReason:1 forRequestWithIdentifier:v19] & 1) == 0)
+    if (([resourceLoader trySetReason:1 forRequestWithIdentifier:unsignedIntegerValue] & 1) == 0)
     {
 LABEL_5:
-      [(SUUIBrickGridPageSection *)self _loadArtworkForBrick:v14 artworkLoader:v17 reason:1];
+      [(SUUIBrickGridPageSection *)self _loadArtworkForBrick:v14 artworkLoader:resourceLoader reason:1];
     }
 
     placeholderImage = self->_placeholderImage;
@@ -176,38 +176,38 @@ LABEL_11:
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  v5 = [a3 item];
+  item = [path item];
   numberOfColumns = self->_numberOfColumns;
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 collectionView];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v9 = v5 % self->_numberOfColumns;
-  [v8 bounds];
+  v9 = item % self->_numberOfColumns;
+  [collectionView bounds];
   [(SUUIBrickGridPageSection *)self _contentInsetsForColumnIndex:v9 rowWidth:v10];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
   columnWidth = self->_columnWidth;
-  v20 = [(SUUIStorePageSection *)self pageComponent];
-  v21 = [v20 children];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  children = [pageComponent children];
 
-  v22 = [v21 count];
+  v22 = [children count];
   v23 = self->_numberOfColumns;
   if (v23 >= 1)
   {
     v24 = v22;
-    v25 = v23 * (v5 / numberOfColumns);
+    v25 = v23 * (item / numberOfColumns);
     if (v25 < v22)
     {
-      v26 = v23 * (v5 / numberOfColumns);
+      v26 = v23 * (item / numberOfColumns);
       do
       {
         baseHeight = self->_baseHeight;
-        v28 = [v21 objectAtIndex:v26];
+        v28 = [children objectAtIndex:v26];
         v29 = [(SUUIBrickGridPageSection *)self _editorialLayoutForBrick:v28];
 
         if (v29)
@@ -233,18 +233,18 @@ LABEL_11:
   return result;
 }
 
-- (id)clickEventWithLink:(id)a3 elementName:(id)a4 index:(int64_t)a5
+- (id)clickEventWithLink:(id)link elementName:(id)name index:(int64_t)index
 {
   v13.receiver = self;
   v13.super_class = SUUIBrickGridPageSection;
-  v7 = [(SUUIStorePageSection *)&v13 clickEventWithLink:a3 elementName:a4 index:?];
+  v7 = [(SUUIStorePageSection *)&v13 clickEventWithLink:link elementName:name index:?];
   if (v7)
   {
-    v8 = [(SUUIStorePageSection *)self context];
-    v9 = [v8 collectionView];
+    context = [(SUUIStorePageSection *)self context];
+    collectionView = [context collectionView];
 
-    v10 = [MEMORY[0x277CCAA70] indexPathForItem:a5 inSection:{-[SUUIStorePageSection sectionIndex](self, "sectionIndex")}];
-    v11 = [v9 cellForItemAtIndexPath:v10];
+    v10 = [MEMORY[0x277CCAA70] indexPathForItem:index inSection:{-[SUUIStorePageSection sectionIndex](self, "sectionIndex")}];
+    v11 = [collectionView cellForItemAtIndexPath:v10];
 
     SUUIMetricsSetClickEventPositionWithView(v7, v11);
   }
@@ -252,65 +252,65 @@ LABEL_11:
   return v7;
 }
 
-- (void)collectionViewDidSelectItemAtIndexPath:(id)a3
+- (void)collectionViewDidSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v14 = [v5 children];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  children = [pageComponent children];
 
-  v6 = [v4 item];
-  v7 = v6 >= [v14 count];
-  v8 = v14;
+  item = [pathCopy item];
+  v7 = item >= [children count];
+  v8 = children;
   if (!v7)
   {
-    v9 = [v14 objectAtIndex:v6];
-    v10 = [v9 link];
-    v11 = [(SUUIBrickGridPageSection *)self clickEventWithLink:v10 elementName:*MEMORY[0x277D6A4C8] index:v6];
+    v9 = [children objectAtIndex:item];
+    link = [v9 link];
+    v11 = [(SUUIBrickGridPageSection *)self clickEventWithLink:link elementName:*MEMORY[0x277D6A4C8] index:item];
     if (v11)
     {
-      v12 = [(SUUIStorePageSection *)self context];
-      v13 = [v12 metricsController];
-      [v13 recordEvent:v11];
+      context = [(SUUIStorePageSection *)self context];
+      metricsController = [context metricsController];
+      [metricsController recordEvent:v11];
     }
 
-    [(SUUIStorePageSection *)self showPageWithLink:v10];
+    [(SUUIStorePageSection *)self showPageWithLink:link];
 
-    v8 = v14;
+    v8 = children;
   }
 }
 
 - (int64_t)numberOfCells
 {
-  v3 = [(SUUIStorePageSection *)self pageComponent];
-  v4 = [v3 children];
-  v5 = [v4 count];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  children = [pageComponent children];
+  v5 = [children count];
 
   v6 = v5 % self->_numberOfColumns;
   return v6 + v5;
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x2020000000;
   v14[3] = 0;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 resourceLoader];
+  context = [(SUUIStorePageSection *)self context];
+  resourceLoader = [context resourceLoader];
 
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v8 = [v7 children];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  children = [pageComponent children];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__SUUIBrickGridPageSection_prefetchResourcesWithReason___block_invoke;
   v10[3] = &unk_2798F66B8;
   v10[4] = self;
-  v9 = v6;
+  v9 = resourceLoader;
   v11 = v9;
   v12 = v14;
-  v13 = a3;
-  [v8 enumerateObjectsUsingBlock:v10];
+  reasonCopy = reason;
+  [children enumerateObjectsUsingBlock:v10];
 
   _Block_object_dispose(v14, 8);
 }
@@ -326,20 +326,20 @@ void __56__SUUIBrickGridPageSection_prefetchResourcesWithReason___block_invoke(u
   }
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  contextCopy = context;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9AE0];
-  v7 = [MEMORY[0x277D75418] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:0x286AF9AE0];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v8 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    [v6 bounds];
+    [collectionView bounds];
     v9 = 3;
     if (v10 > v11)
     {
@@ -349,14 +349,14 @@ void __56__SUUIBrickGridPageSection_prefetchResourcesWithReason___block_invoke(u
     self->_numberOfColumns = v9;
   }
 
-  v12 = [(SUUIStorePageSection *)self pageComponent];
-  v13 = [v12 children];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  children = [pageComponent children];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = v13;
+  v14 = children;
   v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
@@ -383,24 +383,24 @@ void __56__SUUIBrickGridPageSection_prefetchResourcesWithReason___block_invoke(u
 
   v20.receiver = self;
   v20.super_class = SUUIBrickGridPageSection;
-  [(SUUIStorePageSection *)&v20 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v20 willAppearInContext:contextCopy];
 }
 
-- (void)willTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v34 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(SUUIStorePageSection *)self context];
-  [v8 portraitPageWidth];
+  coordinatorCopy = coordinator;
+  context = [(SUUIStorePageSection *)self context];
+  [context portraitPageWidth];
   v10 = v9;
-  v11 = [MEMORY[0x277D75418] currentDevice];
-  v12 = [v11 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v25 = v8;
-  v27 = v7;
-  if (v12 == 1)
+  v25 = context;
+  v27 = coordinatorCopy;
+  if (userInterfaceIdiom == 1)
   {
     if (width <= height)
     {
@@ -409,7 +409,7 @@ void __56__SUUIBrickGridPageSection_prefetchResourcesWithReason___block_invoke(u
 
     else
     {
-      [v8 landscapePageWidth];
+      [context landscapePageWidth];
       v10 = v13;
       v14 = 4;
     }
@@ -417,16 +417,16 @@ void __56__SUUIBrickGridPageSection_prefetchResourcesWithReason___block_invoke(u
     self->_numberOfColumns = v14;
   }
 
-  v15 = [(SUUIStorePageSection *)self context];
-  v16 = [v15 collectionView];
+  context2 = [(SUUIStorePageSection *)self context];
+  collectionView = [context2 collectionView];
 
-  v17 = [(SUUIStorePageSection *)self sectionIndex];
-  v18 = [v16 indexPathsForVisibleItems];
+  sectionIndex = [(SUUIStorePageSection *)self sectionIndex];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v19 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  v19 = [indexPathsForVisibleItems countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v19)
   {
     v20 = v19;
@@ -437,19 +437,19 @@ void __56__SUUIBrickGridPageSection_prefetchResourcesWithReason___block_invoke(u
       {
         if (*v30 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v23 = *(*(&v29 + 1) + 8 * i);
-        if ([v23 section] == v17)
+        if ([v23 section] == sectionIndex)
         {
-          v24 = [v16 cellForItemAtIndexPath:v23];
+          v24 = [collectionView cellForItemAtIndexPath:v23];
           -[SUUIBrickGridPageSection _contentInsetsForColumnIndex:rowWidth:](self, "_contentInsetsForColumnIndex:rowWidth:", [v23 item] % self->_numberOfColumns, v10);
           [v24 setContentInsets:?];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v20 = [indexPathsForVisibleItems countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v20);
@@ -460,18 +460,18 @@ void __56__SUUIBrickGridPageSection_prefetchResourcesWithReason___block_invoke(u
   [(SUUIStorePageSection *)&v28 willTransitionToSize:v27 withTransitionCoordinator:width, height];
 }
 
-- (void)artworkRequest:(id)a3 didLoadImage:(id)a4
+- (void)artworkRequest:(id)request didLoadImage:(id)image
 {
-  v6 = a4;
-  v7 = [a3 requestIdentifier];
+  imageCopy = image;
+  requestIdentifier = [request requestIdentifier];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__SUUIBrickGridPageSection_artworkRequest_didLoadImage___block_invoke;
   v9[3] = &unk_2798F66E0;
-  v10 = v6;
-  v11 = v7;
+  v10 = imageCopy;
+  v11 = requestIdentifier;
   v9[4] = self;
-  v8 = v6;
+  v8 = imageCopy;
   [(SUUIBrickGridPageSection *)self _enumerateVisibleBricksUsingBlock:v9];
 }
 
@@ -490,36 +490,36 @@ void __56__SUUIBrickGridPageSection_artworkRequest_didLoadImage___block_invoke(u
   }
 }
 
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers
 {
-  v7 = a4;
-  v8 = a5;
-  if ([v7 count])
+  itemsCopy = items;
+  identifiersCopy = identifiers;
+  if ([itemsCopy count])
   {
-    v9 = [(SUUIStorePageSection *)self pageComponent];
-    v10 = [v9 _updateWithMissingItems:v7];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    v10 = [pageComponent _updateWithMissingItems:itemsCopy];
   }
 
-  if ([v8 count])
+  if ([identifiersCopy count])
   {
-    v11 = [(SUUIStorePageSection *)self pageComponent];
-    v12 = [v11 _updateWithInvalidItemIdentifiers:v8];
+    pageComponent2 = [(SUUIStorePageSection *)self pageComponent];
+    v12 = [pageComponent2 _updateWithInvalidItemIdentifiers:identifiersCopy];
     if ([v12 count])
     {
       v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v14 = [(SUUIStorePageSection *)self sectionIndex];
+      sectionIndex = [(SUUIStorePageSection *)self sectionIndex];
       v18 = MEMORY[0x277D85DD0];
       v19 = 3221225472;
       v20 = __82__SUUIBrickGridPageSection_missingItemLoader_didLoadItems_invalidItemIdentifiers___block_invoke;
       v21 = &unk_2798F6708;
       v22 = v13;
-      v23 = v14;
+      v23 = sectionIndex;
       v15 = v13;
       [v12 enumerateIndexesUsingBlock:&v18];
       v16 = [(SUUIStorePageSection *)self context:v18];
-      v17 = [v16 collectionView];
+      collectionView = [v16 collectionView];
 
-      [v17 deleteItemsAtIndexPaths:v15];
+      [collectionView deleteItemsAtIndexPaths:v15];
     }
   }
 }
@@ -531,13 +531,13 @@ void __82__SUUIBrickGridPageSection_missingItemLoader_didLoadItems_invalidItemId
   [v2 addObject:v3];
 }
 
-- (UIEdgeInsets)_contentInsetsForColumnIndex:(int64_t)a3 rowWidth:(double)a4
+- (UIEdgeInsets)_contentInsetsForColumnIndex:(int64_t)index rowWidth:(double)width
 {
   numberOfColumns = self->_numberOfColumns;
   v5 = numberOfColumns - 1;
   if (numberOfColumns == 1)
   {
-    v6 = (a4 - self->_columnWidth) * 0.5;
+    v6 = (width - self->_columnWidth) * 0.5;
     paddingHorizontal = floorf(v6);
     p_paddingTop = &self->_paddingTop;
     v9 = paddingHorizontal;
@@ -546,13 +546,13 @@ void __82__SUUIBrickGridPageSection_missingItemLoader_didLoadItems_invalidItemId
   else
   {
     paddingHorizontal = self->_paddingHorizontal;
-    v10 = (a4 + paddingHorizontal * -2.0 - self->_columnWidth * numberOfColumns) / v5;
+    v10 = (width + paddingHorizontal * -2.0 - self->_columnWidth * numberOfColumns) / v5;
     v11 = floorf(v10);
-    if (a3)
+    if (index)
     {
       p_paddingTop = &self->_paddingTop;
       v12 = floorf(v11 * 0.5);
-      if (v5 == a3)
+      if (v5 == index)
       {
         v9 = self->_paddingHorizontal;
       }
@@ -581,22 +581,22 @@ void __82__SUUIBrickGridPageSection_missingItemLoader_didLoadItems_invalidItemId
   return result;
 }
 
-- (id)_editorialLayoutForBrick:(id)a3
+- (id)_editorialLayoutForBrick:(id)brick
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_editorialLayouts objectForKey:v4];
+  brickCopy = brick;
+  v5 = [(NSMapTable *)self->_editorialLayouts objectForKey:brickCopy];
   if (!v5)
   {
-    v6 = [v4 editorial];
-    if (v6)
+    editorial = [brickCopy editorial];
+    if (editorial)
     {
       v7 = [SUUIEditorialLayout alloc];
-      v8 = [(SUUIStorePageSection *)self context];
-      v9 = [v8 textLayoutCache];
-      v5 = [(SUUIEditorialLayout *)v7 initWithEditorial:v6 layoutCache:v9];
+      context = [(SUUIStorePageSection *)self context];
+      textLayoutCache = [context textLayoutCache];
+      v5 = [(SUUIEditorialLayout *)v7 initWithEditorial:editorial layoutCache:textLayoutCache];
 
       [(SUUIEditorialLayout *)v5 setLayoutWidth:0 forOrientation:self->_columnWidth];
-      [(NSMapTable *)self->_editorialLayouts setObject:v5 forKey:v4];
+      [(NSMapTable *)self->_editorialLayouts setObject:v5 forKey:brickCopy];
     }
 
     else
@@ -608,27 +608,27 @@ void __82__SUUIBrickGridPageSection_missingItemLoader_didLoadItems_invalidItemId
   return v5;
 }
 
-- (void)_enumerateVisibleBricksUsingBlock:(id)a3
+- (void)_enumerateVisibleBricksUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 children];
+  blockCopy = block;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  children = [pageComponent children];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 collectionView];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v9 = [(SUUIStorePageSection *)self sectionIndex];
-  v10 = [v8 indexPathsForVisibleItems];
+  sectionIndex = [(SUUIStorePageSection *)self sectionIndex];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__SUUIBrickGridPageSection__enumerateVisibleBricksUsingBlock___block_invoke;
   v13[3] = &unk_2798F6730;
-  v15 = v4;
-  v16 = v9;
-  v14 = v6;
-  v11 = v4;
-  v12 = v6;
-  [v10 enumerateObjectsUsingBlock:v13];
+  v15 = blockCopy;
+  v16 = sectionIndex;
+  v14 = children;
+  v11 = blockCopy;
+  v12 = children;
+  [indexPathsForVisibleItems enumerateObjectsUsingBlock:v13];
 }
 
 void __62__SUUIBrickGridPageSection__enumerateVisibleBricksUsingBlock___block_invoke(uint64_t a1, void *a2)
@@ -645,12 +645,12 @@ void __62__SUUIBrickGridPageSection__enumerateVisibleBricksUsingBlock___block_in
   }
 }
 
-- (void)_loadArtworkForBrick:(id)a3 artworkLoader:(id)a4 reason:(int64_t)a5
+- (void)_loadArtworkForBrick:(id)brick artworkLoader:(id)loader reason:(int64_t)reason
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = [v15 artwork];
-  v10 = [v9 URL];
+  brickCopy = brick;
+  loaderCopy = loader;
+  artwork = [brickCopy artwork];
+  v10 = [artwork URL];
 
   if (v10)
   {
@@ -662,19 +662,19 @@ void __62__SUUIBrickGridPageSection__enumerateVisibleBricksUsingBlock___block_in
     [(SUUIArtworkRequest *)v11 setURL:v10];
     artworkRequests = self->_artworkRequests;
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SUUIResourceRequest requestIdentifier](v11, "requestIdentifier")}];
-    [(NSMapTable *)artworkRequests setObject:v14 forKey:v15];
+    [(NSMapTable *)artworkRequests setObject:v14 forKey:brickCopy];
 
-    [v8 loadResourceWithRequest:v11 reason:a5];
+    [loaderCopy loadResourceWithRequest:v11 reason:reason];
   }
 }
 
-- (void)_loadMissingItemsFromIndex:(int64_t)a3 withReason:(int64_t)a4
+- (void)_loadMissingItemsFromIndex:(int64_t)index withReason:(int64_t)reason
 {
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  if ([v8 isMissingItemData])
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  if ([pageComponent isMissingItemData])
   {
-    v7 = [(SUUIBrickGridPageSection *)self _missingItemLoader];
-    [v7 loadItemsForPageComponent:v8 startIndex:a3 reason:a4];
+    _missingItemLoader = [(SUUIBrickGridPageSection *)self _missingItemLoader];
+    [_missingItemLoader loadItemsForPageComponent:pageComponent startIndex:index reason:reason];
   }
 }
 
@@ -684,9 +684,9 @@ void __62__SUUIBrickGridPageSection__enumerateVisibleBricksUsingBlock___block_in
   if (!missingItemLoader)
   {
     v4 = [SUUIMissingItemLoader alloc];
-    v5 = [(SUUIStorePageSection *)self context];
-    v6 = [v5 resourceLoader];
-    v7 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:v6];
+    context = [(SUUIStorePageSection *)self context];
+    resourceLoader = [context resourceLoader];
+    v7 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:resourceLoader];
     v8 = self->_missingItemLoader;
     self->_missingItemLoader = v7;
 

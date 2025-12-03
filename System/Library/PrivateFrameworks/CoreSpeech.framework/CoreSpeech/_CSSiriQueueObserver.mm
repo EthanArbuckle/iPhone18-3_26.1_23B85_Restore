@@ -1,7 +1,7 @@
 @interface _CSSiriQueueObserver
-- (_CSSiriQueueObserver)initWithQueue:(id)a3 heartBeatInterval:(double)a4 timeoutInterval:(double)a5 timeoutHandler:(id)a6;
-- (void)heartBeatFiredWithQueue:(id)a3;
-- (void)startWithQueue:(id)a3;
+- (_CSSiriQueueObserver)initWithQueue:(id)queue heartBeatInterval:(double)interval timeoutInterval:(double)timeoutInterval timeoutHandler:(id)handler;
+- (void)heartBeatFiredWithQueue:(id)queue;
+- (void)startWithQueue:(id)queue;
 - (void)stop;
 - (void)timeoutDetected;
 @end
@@ -35,9 +35,9 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)heartBeatFiredWithQueue:(id)a3
+- (void)heartBeatFiredWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v23 = 0;
   v24 = &v23;
@@ -60,7 +60,7 @@
   v19[3] = &unk_2784C6FD0;
   v9 = v6;
   v20 = v9;
-  v10 = [v7 initWithTimeoutInterval:v4 onQueue:v19 timeoutHandler:timeoutInterval];
+  v10 = [v7 initWithTimeoutInterval:queueCopy onQueue:v19 timeoutHandler:timeoutInterval];
   v11 = v24[5];
   v24[5] = v10;
 
@@ -71,9 +71,9 @@
   v15[2] = __48___CSSiriQueueObserver_heartBeatFiredWithQueue___block_invoke_3;
   v15[3] = &unk_2784C5948;
   v16 = v9;
-  v17 = v4;
+  v17 = queueCopy;
   v18 = &v23;
-  v13 = v4;
+  v13 = queueCopy;
   v14 = v9;
   dispatch_async(queue, v15);
 
@@ -109,10 +109,10 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithQueue:(id)a3
+- (void)startWithQueue:(id)queue
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   if (!self->_heartBeat)
   {
     v5 = *MEMORY[0x277CEF0A0];
@@ -122,7 +122,7 @@
       *location = 136315394;
       *&location[4] = "[_CSSiriQueueObserver startWithQueue:]";
       v17 = 2112;
-      v18 = queue;
+      queueCopy2 = queue;
       _os_log_debug_impl(&dword_222E4D000, v5, OS_LOG_TYPE_DEBUG, "%s queue = %@", location, 0x16u);
     }
 
@@ -135,7 +135,7 @@
     v13[2] = __39___CSSiriQueueObserver_startWithQueue___block_invoke;
     v13[3] = &unk_2784C5678;
     objc_copyWeak(&v15, location);
-    v14 = v4;
+    v14 = queueCopy;
     v9 = [v7 initWithIdentifier:v6 queue:v14 effectiveDate:0 expirationDuration:v13 heartBeatInterval:0 heartBeatHandler:0.0 invalidationHandler:heartBeatInterval];
     heartBeat = self->_heartBeat;
     self->_heartBeat = v9;
@@ -147,20 +147,20 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (_CSSiriQueueObserver)initWithQueue:(id)a3 heartBeatInterval:(double)a4 timeoutInterval:(double)a5 timeoutHandler:(id)a6
+- (_CSSiriQueueObserver)initWithQueue:(id)queue heartBeatInterval:(double)interval timeoutInterval:(double)timeoutInterval timeoutHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
+  queueCopy = queue;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = _CSSiriQueueObserver;
   v13 = [(_CSSiriQueueObserver *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queue, a3);
-    v14->_heartBeatInterval = a4;
-    v14->_timeoutInterval = a5;
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_queue, queue);
+    v14->_heartBeatInterval = interval;
+    v14->_timeoutInterval = timeoutInterval;
+    v15 = [handlerCopy copy];
     timeoutHandler = v14->_timeoutHandler;
     v14->_timeoutHandler = v15;
   }

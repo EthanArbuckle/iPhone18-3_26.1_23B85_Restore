@@ -1,102 +1,102 @@
 @interface ARSession
-+ (BOOL)_supportsConfiguration:(id)a3;
-+ (id)_applySessionOverrides:(id)a3 outError:(id *)a4;
++ (BOOL)_supportsConfiguration:(id)configuration;
++ (id)_applySessionOverrides:(id)overrides outError:(id *)error;
 + (id)_fullDescription;
 + (id)_runningSessions;
-+ (void)forceEnvironmentTexturingTechniqueToManualMode:(id)a3;
++ (void)forceEnvironmentTexturingTechniqueToManualMode:(id)mode;
 + (void)initialize;
 - (ARFrame)currentFrame;
 - (ARSession)init;
 - (ARTrackedRaycast)trackedRaycast:(ARRaycastQuery *)query updateHandler:(void *)updateHandler;
-- (BOOL)_geoTrackingPublicStatusChangedFromLastVendedFrameToFrame:(id)a3;
-- (BOOL)_trackingStateChangedFromLastVendedFrameToFrame:(id)a3;
+- (BOOL)_geoTrackingPublicStatusChangedFromLastVendedFrameToFrame:(id)frame;
+- (BOOL)_trackingStateChangedFromLastVendedFrameToFrame:(id)frame;
 - (BOOL)is6DofFaceTracking;
-- (BOOL)isPrimaryImageData:(id)a3;
+- (BOOL)isPrimaryImageData:(id)data;
 - (BOOL)isUserFaceTracking;
-- (BOOL)querySceneReconstructionOccupancyWithPoints:(id)a3 callback:(id)a4;
+- (BOOL)querySceneReconstructionOccupancyWithPoints:(id)points callback:(id)callback;
 - (NSArray)raycast:(ARRaycastQuery *)query;
 - (NSString)description;
-- (__n128)_cameraTransformForResultData:(void *)a3 previousFrame:(void *)a4;
+- (__n128)_cameraTransformForResultData:(void *)data previousFrame:(void *)frame;
 - (__n128)originTransform;
-- (__n128)predictedDeviceTransformAtTimestamp:(uint64_t)a1;
+- (__n128)predictedDeviceTransformAtTimestamp:(uint64_t)timestamp;
 - (id)_frameContextByConsumingPendingChanges;
 - (id)_fullDescription;
-- (id)_getGeoAnchorAltitude:(id)a3;
+- (id)_getGeoAnchorAltitude:(id)altitude;
 - (id)_getObservers;
-- (id)_imageSensorForConfiguration:(id)a3 existingSensor:(id)a4;
-- (id)_updateAnchorsForFrame:(id)a3 resultDatas:(id)a4 context:(id)a5;
+- (id)_imageSensorForConfiguration:(id)configuration existingSensor:(id)sensor;
+- (id)_updateAnchorsForFrame:(id)frame resultDatas:(id)datas context:(id)context;
 - (id)adPipelineParameters;
-- (id)annotateAnchorToRaycastResults:(id)a3;
+- (id)annotateAnchorToRaycastResults:(id)results;
 - (id)delegate;
 - (id)replaySensor;
-- (int64_t)_preferredRenderFrameRateForCaptureFrameRate:(int64_t)a3 isNominalPower:(BOOL)a4;
-- (int64_t)_preferredRenderSyncFrameRateForCaptureFrameRate:(int64_t)a3;
-- (void)_addObserver:(id)a3;
-- (void)_changePowerUsage:(unint64_t)a3;
+- (int64_t)_preferredRenderFrameRateForCaptureFrameRate:(int64_t)rate isNominalPower:(BOOL)power;
+- (int64_t)_preferredRenderSyncFrameRateForCaptureFrameRate:(int64_t)rate;
+- (void)_addObserver:(id)observer;
+- (void)_changePowerUsage:(unint64_t)usage;
 - (void)_configureSensorsForRecording;
 - (void)_endInterruption;
 - (void)_interruptSession;
-- (void)_lookupAltitudeForAnchor:(id)a3;
-- (void)_pauseWaitingForOutstandingCallbacks:(BOOL)a3;
-- (void)_populateRawSceneUnderstandingDataForFrame:(id)a3 fromResultData:(id)a4;
-- (void)_removeGeoAnchorAltitude:(id)a3;
-- (void)_removeObserver:(id)a3;
-- (void)_replaceOrAddSensor:(id)a3;
-- (void)_saveGraphFileInFileName:(id *)a3;
-- (void)_sessionCameraDidChangeTrackingState:(id)a3;
-- (void)_sessionDidAddAnchors:(id)a3;
-- (void)_sessionDidCaptureHighResolutionFrame:(id)a3 error:(id)a4;
-- (void)_sessionDidChangeGeoTrackingStatus:(id)a3;
-- (void)_sessionDidFailWithError:(id)a3;
-- (void)_sessionDidOutputAudioData:(id)a3;
-- (void)_sessionDidOutputCollaborationData:(id)a3;
-- (void)_sessionDidRemoveAnchors:(id)a3;
-- (void)_sessionDidUpdateAnchors:(id)a3;
-- (void)_sessionDidUpdateExternalAnchors:(id)a3;
-- (void)_sessionDidUpdateFrame:(id)a3;
-- (void)_sessionDidUpdateSpatialMappingPointClouds:(id)a3;
-- (void)_sessionRequestedRunWithConfiguration:(id)a3 options:(unint64_t)a4;
+- (void)_lookupAltitudeForAnchor:(id)anchor;
+- (void)_pauseWaitingForOutstandingCallbacks:(BOOL)callbacks;
+- (void)_populateRawSceneUnderstandingDataForFrame:(id)frame fromResultData:(id)data;
+- (void)_removeGeoAnchorAltitude:(id)altitude;
+- (void)_removeObserver:(id)observer;
+- (void)_replaceOrAddSensor:(id)sensor;
+- (void)_saveGraphFileInFileName:(id *)name;
+- (void)_sessionCameraDidChangeTrackingState:(id)state;
+- (void)_sessionDidAddAnchors:(id)anchors;
+- (void)_sessionDidCaptureHighResolutionFrame:(id)frame error:(id)error;
+- (void)_sessionDidChangeGeoTrackingStatus:(id)status;
+- (void)_sessionDidFailWithError:(id)error;
+- (void)_sessionDidOutputAudioData:(id)data;
+- (void)_sessionDidOutputCollaborationData:(id)data;
+- (void)_sessionDidRemoveAnchors:(id)anchors;
+- (void)_sessionDidUpdateAnchors:(id)anchors;
+- (void)_sessionDidUpdateExternalAnchors:(id)anchors;
+- (void)_sessionDidUpdateFrame:(id)frame;
+- (void)_sessionDidUpdateSpatialMappingPointClouds:(id)clouds;
+- (void)_sessionRequestedRunWithConfiguration:(id)configuration options:(unint64_t)options;
 - (void)_sessionShouldAttemptRelocalization;
-- (void)_sessionWillRunWithConfiguration:(id)a3;
-- (void)_setGeoAnchorAltitude:(id)a3 pair:(id)a4;
-- (void)_setInternalConfiguration:(id)a3;
-- (void)_setPrimaryTechnique:(id)a3 secondaryTechnique:(id)a4 stillImageRootTechnique:(id)a5;
-- (void)_startSensorsWithDataTypes:(unint64_t)a3;
-- (void)_stopAllSensorsWaitingForOutstandingCallbacks:(BOOL)a3;
-- (void)_stopSensorsWithDataTypes:(unint64_t)a3 keepingDataTypes:(unint64_t)a4;
-- (void)_updateFeaturePointsForFrame:(id)a3 previousFrame:(id)a4 trackingStateChanged:(BOOL)a5 context:(id)a6;
-- (void)_updateOriginTransformForFrame:(id)a3 previousFrame:(id)a4 modifiers:(unint64_t)a5 context:(id)a6;
-- (void)_updatePowerPressureLevelWithToken:(int)a3;
+- (void)_sessionWillRunWithConfiguration:(id)configuration;
+- (void)_setGeoAnchorAltitude:(id)altitude pair:(id)pair;
+- (void)_setInternalConfiguration:(id)configuration;
+- (void)_setPrimaryTechnique:(id)technique secondaryTechnique:(id)secondaryTechnique stillImageRootTechnique:(id)rootTechnique;
+- (void)_startSensorsWithDataTypes:(unint64_t)types;
+- (void)_stopAllSensorsWaitingForOutstandingCallbacks:(BOOL)callbacks;
+- (void)_stopSensorsWithDataTypes:(unint64_t)types keepingDataTypes:(unint64_t)dataTypes;
+- (void)_updateFeaturePointsForFrame:(id)frame previousFrame:(id)previousFrame trackingStateChanged:(BOOL)changed context:(id)context;
+- (void)_updateOriginTransformForFrame:(id)frame previousFrame:(id)previousFrame modifiers:(unint64_t)modifiers context:(id)context;
+- (void)_updatePowerPressureLevelWithToken:(int)token;
 - (void)_updatePowerUsage;
-- (void)_updateSensorsWithConfiguration:(id)a3;
-- (void)_updateSessionStateWithConfiguration:(id)a3 options:(unint64_t)a4;
-- (void)_updateSessionWithConfiguration:(id)a3 options:(unint64_t)a4;
+- (void)_updateSensorsWithConfiguration:(id)configuration;
+- (void)_updateSessionStateWithConfiguration:(id)configuration options:(unint64_t)options;
+- (void)_updateSessionWithConfiguration:(id)configuration options:(unint64_t)options;
 - (void)_updateThermalStateFromCurrentProcessInfo;
 - (void)addAnchor:(ARAnchor *)anchor;
-- (void)captureHighResolutionFrameUsingPhotoSettings:(id)a3 completion:(id)a4;
+- (void)captureHighResolutionFrameUsingPhotoSettings:(id)settings completion:(id)completion;
 - (void)createReferenceObjectWithTransform:(simd_float4x4)transform center:(simd_float3)center extent:(simd_float3)extent completionHandler:(void *)completionHandler;
 - (void)dealloc;
-- (void)forceEnvironmentTexturingToManualMode:(BOOL)a3;
+- (void)forceEnvironmentTexturingToManualMode:(BOOL)mode;
 - (void)getCurrentWorldMapWithCompletionHandler:(void *)completionHandler;
 - (void)getGeoLocationForPoint:(simd_float3)position completionHandler:(void *)completionHandler;
 - (void)pause;
 - (void)removeAnchor:(ARAnchor *)anchor;
 - (void)runWithConfiguration:(ARConfiguration *)configuration options:(ARSessionRunOptions)options;
-- (void)sensor:(id)a3 didFailWithError:(id)a4;
-- (void)sensor:(id)a3 didOutputSensorData:(id)a4;
-- (void)sensorDidPause:(id)a3;
-- (void)sensorDidRestart:(id)a3;
-- (void)setAvailableSensors:(id)a3;
-- (void)setGeoTrackingTechnique:(id)a3;
-- (void)setOriginTransform:(__n128)a3;
-- (void)setState:(unint64_t)a3;
+- (void)sensor:(id)sensor didFailWithError:(id)error;
+- (void)sensor:(id)sensor didOutputSensorData:(id)data;
+- (void)sensorDidPause:(id)pause;
+- (void)sensorDidRestart:(id)restart;
+- (void)setAvailableSensors:(id)sensors;
+- (void)setGeoTrackingTechnique:(id)technique;
+- (void)setOriginTransform:(__n128)transform;
+- (void)setState:(unint64_t)state;
 - (void)setWorldOrigin:(simd_float4x4)relativeTransform;
-- (void)setupResultRequestSyncScheduler:(id)a3 forTechnique:(id)a4;
-- (void)setupSessionForTechniques:(id)a3;
-- (void)technique:(id)a3 didChangeState:(int64_t)a4;
-- (void)technique:(id)a3 didOutputCollaborationData:(id)a4;
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6;
-- (void)timerDidVendFrame:(id)a3;
+- (void)setupResultRequestSyncScheduler:(id)scheduler forTechnique:(id)technique;
+- (void)setupSessionForTechniques:(id)techniques;
+- (void)technique:(id)technique didChangeState:(int64_t)state;
+- (void)technique:(id)technique didOutputCollaborationData:(id)data;
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context;
+- (void)timerDidVendFrame:(id)frame;
 - (void)updateWithCollaborationData:(ARCollaborationData *)collaborationData;
 @end
 
@@ -108,7 +108,7 @@
   block[1] = 3221225472;
   block[2] = __23__ARSession_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken != -1)
   {
     dispatch_once(&initialize_onceToken, block);
@@ -187,9 +187,9 @@ void __29__ARSession__runningSessions__block_invoke()
   v2 = [(ARSession *)&v87 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     v4 = *(v2 + 62);
-    *(v2 + 62) = v3;
+    *(v2 + 62) = uUID;
 
     *(v2 + 65) = 0;
     v5 = dispatch_semaphore_create(1);
@@ -215,9 +215,9 @@ void __29__ARSession__runningSessions__block_invoke()
     v15 = *(v2 + 69);
     *(v2 + 69) = v14;
 
-    v16 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v17 = *(v2 + 25);
-    *(v2 + 25) = v16;
+    *(v2 + 25) = weakObjectsHashTable;
 
     v18 = dispatch_semaphore_create(1);
     v19 = *(v2 + 26);
@@ -328,13 +328,13 @@ void __29__ARSession__runningSessions__block_invoke()
     v54 = *(v2 + 28);
     *(v2 + 28) = v53;
 
-    v55 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v82[0] = MEMORY[0x1E69E9820];
     v82[1] = 3221225472;
     v82[2] = __17__ARSession_init__block_invoke_2;
     v82[3] = &unk_1E817CB90;
     objc_copyWeak(&v83, &location);
-    v56 = [v55 addObserverForName:*MEMORY[0x1E696A7E0] object:0 queue:v52 usingBlock:v82];
+    v56 = [defaultCenter addObserverForName:*MEMORY[0x1E696A7E0] object:0 queue:v52 usingBlock:v82];
     v57 = *(v2 + 27);
     *(v2 + 27) = v56;
 
@@ -361,13 +361,13 @@ void __29__ARSession__runningSessions__block_invoke()
     {
       v67 = objc_opt_class();
       v68 = NSStringFromClass(v67);
-      v69 = [v2 identifier];
+      identifier = [v2 identifier];
       *buf = 138543874;
       v89 = v68;
       v90 = 2048;
       v91 = v2;
       v92 = 2112;
-      v93 = v69;
+      v93 = identifier;
       _os_log_impl(&dword_1C241C000, v66, OS_LOG_TYPE_INFO, "%{public}@ <%p>: initialized with identifier %@", buf, 0x20u);
     }
 
@@ -383,9 +383,9 @@ void __29__ARSession__runningSessions__block_invoke()
     objc_autoreleasePoolPop(v73);
     objc_sync_exit(v72);
 
-    v75 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v76 = *(v2 + 79);
-    *(v2 + 79) = v75;
+    *(v2 + 79) = dictionary;
 
     v2[7] = 0;
     *(v2 + 109) = 0;
@@ -454,8 +454,8 @@ void __17__ARSession_init__block_invoke_2(uint64_t a1)
 
   if (self->_thermalStateObserver)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self->_thermalStateObserver];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_thermalStateObserver];
   }
 
   peakPowerPressureToken = self->_peakPowerPressureToken;
@@ -535,7 +535,7 @@ uint64_t __20__ARSession_dealloc__block_invoke(uint64_t a1)
         *buf = 138543874;
         v40 = v12;
         v41 = 2048;
-        v42 = self;
+        selfCopy6 = self;
         v43 = 2112;
         v44 = v13;
         _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_INFO, "%{public}@ <%p>: SceneReconstruction after enforcing addition of KeyframePointCloudWithColor=%@", buf, 0x20u);
@@ -558,7 +558,7 @@ uint64_t __20__ARSession_dealloc__block_invoke(uint64_t a1)
       *buf = 138544130;
       v40 = v18;
       v41 = 2048;
-      v42 = self;
+      selfCopy6 = self;
       v43 = 2114;
       v44 = v8;
       v45 = 2114;
@@ -582,7 +582,7 @@ uint64_t __20__ARSession_dealloc__block_invoke(uint64_t a1)
       v33[3] = &unk_1E817C240;
       v8 = v21;
       v34 = v8;
-      v35 = self;
+      selfCopy3 = self;
       v36 = options;
       dispatch_async(stateQueue, v33);
     }
@@ -606,7 +606,7 @@ uint64_t __20__ARSession_dealloc__block_invoke(uint64_t a1)
           *buf = 138543874;
           v40 = v30;
           v41 = 2048;
-          v42 = self;
+          selfCopy6 = self;
           v43 = 2112;
           v44 = v22;
           _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Failed to apply overrides to configuration. Error: %@", buf, 0x20u);
@@ -620,7 +620,7 @@ uint64_t __20__ARSession_dealloc__block_invoke(uint64_t a1)
         *buf = 138543874;
         v40 = v32;
         v41 = 2048;
-        v42 = self;
+        selfCopy6 = self;
         v43 = 2112;
         v44 = v22;
         _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Failed to apply overrides to configuration. Error: %@", buf, 0x20u);
@@ -641,7 +641,7 @@ uint64_t __20__ARSession_dealloc__block_invoke(uint64_t a1)
       *buf = 138543874;
       v40 = v25;
       v41 = 2048;
-      v42 = self;
+      selfCopy6 = self;
       v43 = 2112;
       v44 = v8;
       _os_log_impl(&dword_1C241C000, v16, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to run the session, configuration is not supported on this device: %@", buf, 0x20u);
@@ -869,7 +869,7 @@ void __42__ARSession_runWithConfiguration_options___block_invoke_43(uint64_t a1,
     *buf = 138543618;
     v11 = v6;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: begin pause", buf, 0x16u);
   }
 
@@ -930,8 +930,8 @@ LABEL_6:
 - (void)addAnchor:(ARAnchor *)anchor
 {
   v4 = anchor;
-  v5 = [(ARAnchor *)v4 identifier];
-  [v5 ar_integerValue];
+  identifier = [(ARAnchor *)v4 identifier];
+  [identifier ar_integerValue];
   kdebug_trace();
 
   stateQueue = self->_stateQueue;
@@ -940,7 +940,7 @@ LABEL_6:
   v8[2] = __23__ARSession_addAnchor___block_invoke;
   v8[3] = &unk_1E817BEC8;
   v9 = v4;
-  v10 = self;
+  selfCopy = self;
   v7 = v4;
   dispatch_async(stateQueue, v8);
 }
@@ -1001,8 +1001,8 @@ uint64_t __23__ARSession_addAnchor___block_invoke(uint64_t a1)
 - (void)removeAnchor:(ARAnchor *)anchor
 {
   v4 = anchor;
-  v5 = [(ARAnchor *)v4 identifier];
-  [v5 ar_integerValue];
+  identifier = [(ARAnchor *)v4 identifier];
+  [identifier ar_integerValue];
   kdebug_trace();
 
   stateQueue = self->_stateQueue;
@@ -1034,7 +1034,7 @@ uint64_t __26__ARSession_removeAnchor___block_invoke(uint64_t a1)
   v4[1] = 3221225472;
   v4[2] = __28__ARSession_setWorldOrigin___block_invoke;
   v4[3] = &unk_1E817CBE0;
-  v6 = self;
+  selfCopy = self;
   v5 = relativeTransform;
   dispatch_async(stateQueue, v4);
 }
@@ -1105,14 +1105,14 @@ intptr_t __28__ARSession_setWorldOrigin___block_invoke(uint64_t a1)
   return dispatch_semaphore_signal(*(*(a1 + 96) + 184));
 }
 
-+ (void)forceEnvironmentTexturingTechniqueToManualMode:(id)a3
++ (void)forceEnvironmentTexturingTechniqueToManualMode:(id)mode
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  modeCopy = mode;
+  if (modeCopy)
   {
-    v5 = -[AREnvironmentTexturingTechnique initWithOptions:wantsHDREnvironmentTextures:]([AREnvironmentTexturingTechnique alloc], "initWithOptions:wantsHDREnvironmentTextures:", 1, [v4 wantsHDREnvironmentTextures]);
-    if (([v4 isEqual:v5] & 1) == 0)
+    v5 = -[AREnvironmentTexturingTechnique initWithOptions:wantsHDREnvironmentTextures:]([AREnvironmentTexturingTechnique alloc], "initWithOptions:wantsHDREnvironmentTextures:", 1, [modeCopy wantsHDREnvironmentTextures]);
+    if (([modeCopy isEqual:v5] & 1) == 0)
     {
       v6 = _ARLogSession_0();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1122,16 +1122,16 @@ intptr_t __28__ARSession_setWorldOrigin___block_invoke(uint64_t a1)
         v9 = 138543618;
         v10 = v8;
         v11 = 2048;
-        v12 = a1;
+        selfCopy = self;
         _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Forcing environment texturing technique to manual mode", &v9, 0x16u);
       }
 
-      [v4 reconfigureFrom:v5];
+      [modeCopy reconfigureFrom:v5];
     }
   }
 }
 
-- (void)forceEnvironmentTexturingToManualMode:(BOOL)a3
+- (void)forceEnvironmentTexturingToManualMode:(BOOL)mode
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1139,7 +1139,7 @@ intptr_t __28__ARSession_setWorldOrigin___block_invoke(uint64_t a1)
   v4[2] = __51__ARSession_forceEnvironmentTexturingToManualMode___block_invoke;
   v4[3] = &unk_1E817CC08;
   v4[4] = self;
-  v5 = a3;
+  modeCopy = mode;
   dispatch_async(stateQueue, v4);
 }
 
@@ -1325,24 +1325,24 @@ uint64_t __53__ARSession_getCurrentWorldMapWithCompletionHandler___block_invoke_
 - (id)adPipelineParameters
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [(ARSession *)self technique];
+  technique = [(ARSession *)self technique];
 
-  if (!v3 || (-[ARSession technique](self, "technique"), v4 = objc_claimAutoreleasedReturnValue(), v12[0] = v4, [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1], v5 = objc_claimAutoreleasedReturnValue(), +[ARTechnique techniqueConformsToProtocol:inArray:](ARTechnique, "techniqueConformsToProtocol:inArray:", &unk_1F425FD78, v5), v6 = objc_claimAutoreleasedReturnValue(), v5, v4, !v6))
+  if (!technique || (-[ARSession technique](self, "technique"), v4 = objc_claimAutoreleasedReturnValue(), v12[0] = v4, [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1], v5 = objc_claimAutoreleasedReturnValue(), +[ARTechnique techniqueConformsToProtocol:inArray:](ARTechnique, "techniqueConformsToProtocol:inArray:", &unk_1F425FD78, v5), secondaryTechnique = objc_claimAutoreleasedReturnValue(), v5, v4, !secondaryTechnique))
   {
-    v6 = [(ARSession *)self secondaryTechnique];
+    secondaryTechnique = [(ARSession *)self secondaryTechnique];
 
-    if (v6)
+    if (secondaryTechnique)
     {
-      v7 = [(ARSession *)self secondaryTechnique];
-      v11 = v7;
+      secondaryTechnique2 = [(ARSession *)self secondaryTechnique];
+      v11 = secondaryTechnique2;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v11 count:1];
-      v6 = [ARTechnique techniqueConformsToProtocol:&unk_1F425FD78 inArray:v8];
+      secondaryTechnique = [ARTechnique techniqueConformsToProtocol:&unk_1F425FD78 inArray:v8];
     }
   }
 
-  v9 = [v6 pipelineParameters];
+  pipelineParameters = [secondaryTechnique pipelineParameters];
 
-  return v9;
+  return pipelineParameters;
 }
 
 - (void)createReferenceObjectWithTransform:(simd_float4x4)transform center:(simd_float3)center extent:(simd_float3)extent completionHandler:(void *)completionHandler
@@ -1353,7 +1353,7 @@ uint64_t __53__ARSession_getCurrentWorldMapWithCompletionHandler___block_invoke_
   block[1] = 3221225472;
   block[2] = __80__ARSession_createReferenceObjectWithTransform_center_extent_completionHandler___block_invoke;
   block[3] = &unk_1E817CCC8;
-  v17 = self;
+  selfCopy = self;
   v18 = v7;
   v14 = transform;
   v15 = center;
@@ -1481,9 +1481,9 @@ void __80__ARSession_createReferenceObjectWithTransform_center_extent_completion
   (*(v7 + 16))(v7, 0, v8);
 }
 
-- (void)_pauseWaitingForOutstandingCallbacks:(BOOL)a3
+- (void)_pauseWaitingForOutstandingCallbacks:(BOOL)callbacks
 {
-  v3 = a3;
+  callbacksCopy = callbacks;
   dispatch_assert_queue_V2(self->_stateQueue);
   resultRequestScheduler = self->_resultRequestScheduler;
   self->_resultRequestScheduler = 0;
@@ -1503,9 +1503,9 @@ void __80__ARSession_createReferenceObjectWithTransform_center_extent_completion
     dispatch_semaphore_signal(self->_pendingHiResFrameCaptureSemaphore);
     if (v7)
     {
-      v9 = [(ARSession *)self delegateQueue];
-      v10 = v9;
-      if (!v9)
+      delegateQueue = [(ARSession *)self delegateQueue];
+      v10 = delegateQueue;
+      if (!delegateQueue)
       {
         v10 = MEMORY[0x1E69E96A0];
         v11 = MEMORY[0x1E69E96A0];
@@ -1518,7 +1518,7 @@ void __80__ARSession_createReferenceObjectWithTransform_center_extent_completion
       v7 = v7;
       v13 = v7;
       dispatch_async(v10, block);
-      if (!v9)
+      if (!delegateQueue)
       {
       }
     }
@@ -1531,7 +1531,7 @@ void __80__ARSession_createReferenceObjectWithTransform_center_extent_completion
   }
 
   [(ARSessionMetrics *)self->_metrics sessionStopped];
-  [(ARSession *)self _stopAllSensorsWaitingForOutstandingCallbacks:v3];
+  [(ARSession *)self _stopAllSensorsWaitingForOutstandingCallbacks:callbacksCopy];
 }
 
 void __50__ARSession__pauseWaitingForOutstandingCallbacks___block_invoke(uint64_t a1)
@@ -1550,25 +1550,25 @@ void __50__ARSession__pauseWaitingForOutstandingCallbacks___block_invoke(uint64_
   (*(v7 + 16))(v7, 0, v8);
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     kdebug_trace();
     if ([(ARSession *)self _shouldUpdateLocationSensorForFusion])
     {
-      [(ARRemoteLocationSensor *)self->_locationSensor updateARSessionState:a3];
+      [(ARRemoteLocationSensor *)self->_locationSensor updateARSessionState:state];
     }
 
-    v5 = [(ARSession *)self _getObservers];
+    _getObservers = [(ARSession *)self _getObservers];
     kdebug_trace();
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = v5;
+    v6 = _getObservers;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -1601,7 +1601,7 @@ void __50__ARSession__pauseWaitingForOutstandingCallbacks___block_invoke(uint64_
     }
 
     kdebug_trace();
-    if (a3 != 1)
+    if (state != 1)
     {
       [(ARFrameUpdateTimer *)self->_frameUpdateTimer stop];
     }
@@ -1610,31 +1610,31 @@ void __50__ARSession__pauseWaitingForOutstandingCallbacks___block_invoke(uint64_
 
 - (__n128)originTransform
 {
-  dispatch_semaphore_wait(*(a1 + 136), 0xFFFFFFFFFFFFFFFFLL);
-  [*(a1 + 128) sessionOriginTransform];
+  dispatch_semaphore_wait(*(self + 136), 0xFFFFFFFFFFFFFFFFLL);
+  [*(self + 128) sessionOriginTransform];
   v4 = __invert_f4(v5);
-  dispatch_semaphore_signal(*(a1 + 136));
-  dispatch_semaphore_wait(*(a1 + 184), 0xFFFFFFFFFFFFFFFFLL);
-  if ([*(a1 + 176) sessionTransformUpdated])
+  dispatch_semaphore_signal(*(self + 136));
+  dispatch_semaphore_wait(*(self + 184), 0xFFFFFFFFFFFFFFFFLL);
+  if ([*(self + 176) sessionTransformUpdated])
   {
-    [*(a1 + 176) sessionTransform];
+    [*(self + 176) sessionTransform];
     v4 = v2;
   }
 
-  dispatch_semaphore_signal(*(a1 + 184));
+  dispatch_semaphore_signal(*(self + 184));
   return v4;
 }
 
-- (void)setOriginTransform:(__n128)a3
+- (void)setOriginTransform:(__n128)transform
 {
-  v5 = *(a1 + 192);
+  v5 = *(self + 192);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__ARSession_setOriginTransform___block_invoke;
   v6[3] = &unk_1E817CBE0;
-  v11 = a1;
+  selfCopy = self;
   v7 = a2;
-  v8 = a3;
+  transformCopy = transform;
   v9 = a4;
   v10 = a5;
   dispatch_async(v5, v6);
@@ -1649,7 +1649,7 @@ intptr_t __32__ARSession_setOriginTransform___block_invoke(uint64_t a1)
   return dispatch_semaphore_signal(v2);
 }
 
-- (__n128)predictedDeviceTransformAtTimestamp:(uint64_t)a1
+- (__n128)predictedDeviceTransformAtTimestamp:(uint64_t)timestamp
 {
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -1657,22 +1657,22 @@ intptr_t __32__ARSession_setOriginTransform___block_invoke(uint64_t a1)
   os_activity_scope_enter(v4, &state);
 
   kdebug_trace();
-  v5 = [a1 technique];
-  if (v5 && ([a1 configurationInternal], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "worldAlignment"), v6, v7 != 2))
+  technique = [timestamp technique];
+  if (technique && ([timestamp configurationInternal], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "worldAlignment"), v6, v7 != 2))
   {
     v8 = objc_opt_new();
-    v9 = [a1 configurationInternal];
-    v10 = [v9 videoFormat];
-    [v8 setCameraPosition:{objc_msgSend(v10, "captureDevicePosition")}];
+    configurationInternal = [timestamp configurationInternal];
+    videoFormat = [configurationInternal videoFormat];
+    [v8 setCameraPosition:{objc_msgSend(videoFormat, "captureDevicePosition")}];
 
-    v11 = [v5 predictedResultDataAtTimestamp:v8 context:a2];
-    dispatch_semaphore_wait(*(a1 + 136), 0xFFFFFFFFFFFFFFFFLL);
-    [a1 _cameraTransformForResultData:v11 previousFrame:*(a1 + 128)];
+    v11 = [technique predictedResultDataAtTimestamp:v8 context:a2];
+    dispatch_semaphore_wait(*(timestamp + 136), 0xFFFFFFFFFFFFFFFFLL);
+    [timestamp _cameraTransformForResultData:v11 previousFrame:*(timestamp + 128)];
     v25 = v13;
     v26 = v12;
     v23 = v15;
     v24 = v14;
-    dispatch_semaphore_signal(*(a1 + 136));
+    dispatch_semaphore_signal(*(timestamp + 136));
     v16 = ARDisplayCenterTransformForCaptureDevicePosition([v8 cameraPosition]);
     v29 = v17;
     v31 = v16;
@@ -1747,7 +1747,7 @@ intptr_t __32__ARSession_setOriginTransform___block_invoke(uint64_t a1)
       *buf = 138543874;
       v10 = v6;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v7;
       _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_INFO, "%{public}@ <%p>: was interrupted: paused sensor type(s) %@", buf, 0x20u);
@@ -1778,7 +1778,7 @@ intptr_t __32__ARSession_setOriginTransform___block_invoke(uint64_t a1)
       *buf = 138543618;
       v10 = v6;
       v11 = 2048;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: interruption ended", buf, 0x16u);
     }
 
@@ -1791,11 +1791,11 @@ intptr_t __32__ARSession_setOriginTransform___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updatePowerPressureLevelWithToken:(int)a3
+- (void)_updatePowerPressureLevelWithToken:(int)token
 {
   v22 = *MEMORY[0x1E69E9840];
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(token, &state64))
   {
     self->_peakPowerPressureLevel = 0;
     if (ARShouldUseLogTypeError_onceToken_21 != -1)
@@ -1815,7 +1815,7 @@ intptr_t __32__ARSession_setOriginTransform___block_invoke(uint64_t a1)
         *buf = 138543618;
         v17 = v8;
         v18 = 2048;
-        v19 = self;
+        selfCopy3 = self;
         v9 = "%{public}@ <%p>: could not read peak power";
         v10 = v6;
         v11 = OS_LOG_TYPE_ERROR;
@@ -1832,7 +1832,7 @@ LABEL_11:
       *buf = 138543618;
       v17 = v8;
       v18 = 2048;
-      v19 = self;
+      selfCopy3 = self;
       v9 = "Error: %{public}@ <%p>: could not read peak power";
       v10 = v6;
       v11 = OS_LOG_TYPE_INFO;
@@ -1851,7 +1851,7 @@ LABEL_11:
       *buf = 138543874;
       v17 = v8;
       v18 = 2048;
-      v19 = self;
+      selfCopy3 = self;
       v20 = 2048;
       v21 = state64;
       v9 = "%{public}@ <%p>: peak power level: %llu";
@@ -1867,11 +1867,11 @@ LABEL_12:
 - (void)_updateThermalStateFromCurrentProcessInfo
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(ARThermalStateProvider *)self->_thermalStateProvider thermalState];
-  if (self->_thermalState != v3)
+  thermalState = [(ARThermalStateProvider *)self->_thermalStateProvider thermalState];
+  if (self->_thermalState != thermalState)
   {
-    self->_thermalState = v3;
-    [(ARSessionMetrics *)self->_metrics sessionUpdateThermalState:v3];
+    self->_thermalState = thermalState;
+    [(ARSessionMetrics *)self->_metrics sessionUpdateThermalState:thermalState];
     v4 = _ARLogSession_0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
@@ -1881,7 +1881,7 @@ LABEL_12:
       v8 = 138543874;
       v9 = v6;
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
       v13 = thermalState;
       _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_INFO, "%{public}@ <%p>: thermal state: %li", &v8, 0x20u);
@@ -1906,35 +1906,35 @@ LABEL_12:
   [(ARSession *)self _changePowerUsage:v5];
 }
 
-- (void)_changePowerUsage:(unint64_t)a3
+- (void)_changePowerUsage:(unint64_t)usage
 {
   v36 = *MEMORY[0x1E69E9840];
-  if ([(ARSession *)self powerUsage]!= a3)
+  if ([(ARSession *)self powerUsage]!= usage)
   {
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     v5 = _os_activity_create(&dword_1C241C000, "Power usage changed", arkitActivity, OS_ACTIVITY_FLAG_DEFAULT);
     os_activity_scope_enter(v5, &state);
 
-    v6 = [(ARSession *)self powerUsage];
-    [(ARSession *)self setPowerUsage:a3];
-    if (a3)
+    powerUsage = [(ARSession *)self powerUsage];
+    [(ARSession *)self setPowerUsage:usage];
+    if (usage)
     {
       v7 = _ARLogSession_0();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-      if (v6 <= a3)
+      if (powerUsage <= usage)
       {
         if (v8)
         {
           v14 = objc_opt_class();
           v15 = NSStringFromClass(v14);
-          v16 = [(ARSession *)self powerUsage];
+          powerUsage2 = [(ARSession *)self powerUsage];
           *buf = 138543874;
           v31 = v15;
           v32 = 2048;
-          v33 = self;
+          selfCopy3 = self;
           v34 = 2048;
-          v35 = v16;
+          v35 = powerUsage2;
           _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Increasing power utilization [%li]", buf, 0x20u);
         }
       }
@@ -1943,13 +1943,13 @@ LABEL_12:
       {
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = [(ARSession *)self powerUsage];
+        powerUsage3 = [(ARSession *)self powerUsage];
         *buf = 138543874;
         v31 = v10;
         v32 = 2048;
-        v33 = self;
+        selfCopy3 = self;
         v34 = 2048;
-        v35 = v11;
+        v35 = powerUsage3;
         _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Decreasing power utilization [%li]", buf, 0x20u);
       }
     }
@@ -1964,24 +1964,24 @@ LABEL_12:
         *buf = 138543618;
         v31 = v13;
         v32 = 2048;
-        v33 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Restoring normal power utilization", buf, 0x16u);
       }
     }
 
-    v17 = [(ARSession *)self technique];
-    [v17 setPowerUsage:a3];
+    technique = [(ARSession *)self technique];
+    [technique setPowerUsage:usage];
 
-    v18 = [(ARSession *)self secondaryTechnique];
-    [v18 setPowerUsage:a3];
+    secondaryTechnique = [(ARSession *)self secondaryTechnique];
+    [secondaryTechnique setPowerUsage:usage];
 
     kdebug_trace();
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v19 = [(ARSession *)self availableSensors];
-    v20 = [v19 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    availableSensors = [(ARSession *)self availableSensors];
+    v20 = [availableSensors countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v20)
     {
       v21 = *v25;
@@ -1992,20 +1992,20 @@ LABEL_12:
         {
           if (*v25 != v21)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(availableSensors);
           }
 
           v23 = *(*(&v24 + 1) + 8 * v22);
           if (objc_opt_respondsToSelector())
           {
-            [v23 setPowerUsage:a3];
+            [v23 setPowerUsage:usage];
           }
 
           ++v22;
         }
 
         while (v20 != v22);
-        v20 = [v19 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v20 = [availableSensors countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v20);
@@ -2019,87 +2019,87 @@ LABEL_12:
 - (id)_frameContextByConsumingPendingChanges
 {
   dispatch_semaphore_wait(self->_frameContextHandlerSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v3 = [(ARFrameContextHandler *)self->_frameContextHandler createdContextByConsumingPendingChanges];
-  v4 = [(ARSession *)self configurationInternal];
-  [v3 setWorldAlignment:{objc_msgSend(v4, "worldAlignment")}];
+  createdContextByConsumingPendingChanges = [(ARFrameContextHandler *)self->_frameContextHandler createdContextByConsumingPendingChanges];
+  configurationInternal = [(ARSession *)self configurationInternal];
+  [createdContextByConsumingPendingChanges setWorldAlignment:{objc_msgSend(configurationInternal, "worldAlignment")}];
 
-  v5 = [(ARSession *)self configurationInternal];
-  [v3 setFrameDebugOptions:{objc_msgSend(v5, "frameDebugOptions")}];
+  configurationInternal2 = [(ARSession *)self configurationInternal];
+  [createdContextByConsumingPendingChanges setFrameDebugOptions:{objc_msgSend(configurationInternal2, "frameDebugOptions")}];
 
   worldTrackingTechnique = self->_worldTrackingTechnique;
   if (worldTrackingTechnique)
   {
-    v7 = [(ARWorldTrackingTechnique *)worldTrackingTechnique mutableOptions];
-    v8 = [v7 initialWorldMap];
-    [v3 setWorldMap:v8];
+    mutableOptions = [(ARWorldTrackingTechnique *)worldTrackingTechnique mutableOptions];
+    initialWorldMap = [mutableOptions initialWorldMap];
+    [createdContextByConsumingPendingChanges setWorldMap:initialWorldMap];
   }
 
   dispatch_semaphore_signal(self->_frameContextHandlerSemaphore);
 
-  return v3;
+  return createdContextByConsumingPendingChanges;
 }
 
-- (int64_t)_preferredRenderSyncFrameRateForCaptureFrameRate:(int64_t)a3
+- (int64_t)_preferredRenderSyncFrameRateForCaptureFrameRate:(int64_t)rate
 {
-  v3 = 48;
-  if (a3 != 24)
+  rateCopy = 48;
+  if (rate != 24)
   {
-    v3 = a3;
+    rateCopy = rate;
   }
 
-  if (a3 == 25)
+  if (rate == 25)
   {
-    v3 = 60;
+    rateCopy = 60;
   }
 
-  if (a3 == 10)
+  if (rate == 10)
   {
     return 60;
   }
 
   else
   {
-    return v3;
+    return rateCopy;
   }
 }
 
-- (int64_t)_preferredRenderFrameRateForCaptureFrameRate:(int64_t)a3 isNominalPower:(BOOL)a4
+- (int64_t)_preferredRenderFrameRateForCaptureFrameRate:(int64_t)rate isNominalPower:(BOOL)power
 {
   v4 = 60;
-  v5 = 30;
-  if (a4)
+  rateCopy = 30;
+  if (power)
   {
-    v5 = 60;
+    rateCopy = 60;
   }
 
-  if (a3 != 30)
+  if (rate != 30)
   {
-    v5 = a3;
+    rateCopy = rate;
   }
 
-  if (a3 != 25)
+  if (rate != 25)
   {
-    v4 = v5;
+    v4 = rateCopy;
   }
 
   v6 = 10;
-  if (a4)
+  if (power)
   {
     v6 = 60;
   }
 
-  v7 = 48;
-  if (a3 != 24)
+  rateCopy2 = 48;
+  if (rate != 24)
   {
-    v7 = a3;
+    rateCopy2 = rate;
   }
 
-  if (a3 != 10)
+  if (rate != 10)
   {
-    v6 = v7;
+    v6 = rateCopy2;
   }
 
-  if (a3 <= 24)
+  if (rate <= 24)
   {
     return v6;
   }
@@ -2110,11 +2110,11 @@ LABEL_12:
   }
 }
 
-+ (BOOL)_supportsConfiguration:(id)a3
++ (BOOL)_supportsConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 deviceModel];
-  if (v4)
+  configurationCopy = configuration;
+  deviceModel = [configurationCopy deviceModel];
+  if (deviceModel)
   {
   }
 
@@ -2127,7 +2127,7 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if ([v3 userFaceTrackingEnabled])
+    if ([configurationCopy userFaceTrackingEnabled])
     {
       v5 = +[ARWorldTrackingConfiguration supportsUserFaceTracking];
 LABEL_10:
@@ -2139,7 +2139,7 @@ LABEL_10:
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 isWorldTrackingEnabled])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [configurationCopy isWorldTrackingEnabled])
     {
       v5 = +[ARFaceTrackingConfiguration supportsWorldTracking];
       goto LABEL_10;
@@ -2151,7 +2151,7 @@ LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v3;
+    v7 = configurationCopy;
     v8 = v7;
     if (v6)
     {
@@ -2172,39 +2172,39 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)_trackingStateChangedFromLastVendedFrameToFrame:(id)a3
+- (BOOL)_trackingStateChangedFromLastVendedFrameToFrame:(id)frame
 {
   lastVendedFrameSemaphore = self->_lastVendedFrameSemaphore;
-  v5 = a3;
+  frameCopy = frame;
   dispatch_semaphore_wait(lastVendedFrameSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  LOBYTE(lastVendedFrameSemaphore) = TrackingStateDifferent(self->_lastVendedFrame, v5);
+  LOBYTE(lastVendedFrameSemaphore) = TrackingStateDifferent(self->_lastVendedFrame, frameCopy);
 
   dispatch_semaphore_signal(self->_lastVendedFrameSemaphore);
   return lastVendedFrameSemaphore;
 }
 
-- (BOOL)_geoTrackingPublicStatusChangedFromLastVendedFrameToFrame:(id)a3
+- (BOOL)_geoTrackingPublicStatusChangedFromLastVendedFrameToFrame:(id)frame
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  frameCopy = frame;
   dispatch_semaphore_wait(self->_lastVendedFrameSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v5 = self->_lastVendedFrame;
   dispatch_semaphore_signal(self->_lastVendedFrameSemaphore);
-  v6 = [v4 geoTrackingStatus];
+  geoTrackingStatus = [frameCopy geoTrackingStatus];
 
-  if (v6)
+  if (geoTrackingStatus)
   {
-    v7 = [(ARFrame *)v5 geoTrackingStatus];
+    geoTrackingStatus2 = [(ARFrame *)v5 geoTrackingStatus];
 
-    if (v7)
+    if (geoTrackingStatus2)
     {
-      v8 = [v4 geoTrackingStatus];
-      v9 = [(ARFrame *)v5 geoTrackingStatus];
-      LODWORD(v6) = [v8 isEqual:v9] ^ 1;
+      geoTrackingStatus3 = [frameCopy geoTrackingStatus];
+      geoTrackingStatus4 = [(ARFrame *)v5 geoTrackingStatus];
+      LODWORD(geoTrackingStatus) = [geoTrackingStatus3 isEqual:geoTrackingStatus4] ^ 1;
 
-      v10 = [v4 geoTrackingStatus];
-      v11 = [(ARFrame *)v5 geoTrackingStatus];
-      v12 = [v10 isEqualPrivate:v11];
+      geoTrackingStatus5 = [frameCopy geoTrackingStatus];
+      geoTrackingStatus6 = [(ARFrame *)v5 geoTrackingStatus];
+      v12 = [geoTrackingStatus5 isEqualPrivate:geoTrackingStatus6];
 
       if (v12)
       {
@@ -2214,7 +2214,7 @@ LABEL_13:
 
     else
     {
-      LOBYTE(v6) = 1;
+      LOBYTE(geoTrackingStatus) = 1;
     }
 
     v13 = _ARLogSession_0();
@@ -2222,18 +2222,18 @@ LABEL_13:
     {
       v14 = objc_opt_class();
       v24 = NSStringFromClass(v14);
-      v23 = [v4 geoTrackingStatus];
-      v21 = NSStringFromARGeoTrackingState([v23 state]);
-      v22 = [v4 geoTrackingStatus];
-      v15 = NSStringFromARGeoTrackingStateReason([v22 stateReason]);
-      v16 = [v4 geoTrackingStatus];
-      v17 = NSStringFromARGeoTrackingAccuracy([v16 accuracy]);
-      v18 = [v4 geoTrackingStatus];
-      v19 = NSStringFromARGeoTrackingInternalFailureReason([v18 failureReasons]);
+      geoTrackingStatus7 = [frameCopy geoTrackingStatus];
+      v21 = NSStringFromARGeoTrackingState([geoTrackingStatus7 state]);
+      geoTrackingStatus8 = [frameCopy geoTrackingStatus];
+      v15 = NSStringFromARGeoTrackingStateReason([geoTrackingStatus8 stateReason]);
+      geoTrackingStatus9 = [frameCopy geoTrackingStatus];
+      v17 = NSStringFromARGeoTrackingAccuracy([geoTrackingStatus9 accuracy]);
+      geoTrackingStatus10 = [frameCopy geoTrackingStatus];
+      v19 = NSStringFromARGeoTrackingInternalFailureReason([geoTrackingStatus10 failureReasons]);
       *buf = 138544642;
       v26 = v24;
       v27 = 2048;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
       v30 = v21;
       v31 = 2112;
@@ -2248,50 +2248,50 @@ LABEL_13:
 
 LABEL_9:
 
-  return v6;
+  return geoTrackingStatus;
 }
 
-- (void)timerDidVendFrame:(id)a3
+- (void)timerDidVendFrame:(id)frame
 {
   v78 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(ARSession *)self _trackingStateChangedFromLastVendedFrameToFrame:v5];
-  v7 = [(ARSession *)self _geoTrackingPublicStatusChangedFromLastVendedFrameToFrame:v5];
+  frameCopy = frame;
+  v6 = [(ARSession *)self _trackingStateChangedFromLastVendedFrameToFrame:frameCopy];
+  v7 = [(ARSession *)self _geoTrackingPublicStatusChangedFromLastVendedFrameToFrame:frameCopy];
   dispatch_semaphore_wait(self->_lastVendedFrameSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  objc_storeStrong(&self->_lastVendedFrame, a3);
+  objc_storeStrong(&self->_lastVendedFrame, frame);
   dispatch_semaphore_signal(self->_lastVendedFrameSemaphore);
   if (v6)
   {
-    v8 = [v5 camera];
-    [(ARSession *)self _sessionCameraDidChangeTrackingState:v8];
+    camera = [frameCopy camera];
+    [(ARSession *)self _sessionCameraDidChangeTrackingState:camera];
   }
 
   if (v7)
   {
-    v9 = [v5 geoTrackingStatus];
-    [(ARSession *)self _sessionDidChangeGeoTrackingStatus:v9];
+    geoTrackingStatus = [frameCopy geoTrackingStatus];
+    [(ARSession *)self _sessionDidChangeGeoTrackingStatus:geoTrackingStatus];
   }
 
-  v10 = [v5 anchorChangeSet];
-  if (v10)
+  anchorChangeSet = [frameCopy anchorChangeSet];
+  if (anchorChangeSet)
   {
-    [v5 setAnchorChangeSet:0];
-    v11 = [v10 externalAnchors];
-    v12 = [v11 count];
+    [frameCopy setAnchorChangeSet:0];
+    externalAnchors = [anchorChangeSet externalAnchors];
+    v12 = [externalAnchors count];
 
-    v53 = v10;
-    v55 = v5;
+    v53 = anchorChangeSet;
+    v55 = frameCopy;
     if (v12)
     {
-      v13 = [v10 externalAnchors];
-      [(ARSession *)self _sessionDidUpdateExternalAnchors:v13];
+      externalAnchors2 = [anchorChangeSet externalAnchors];
+      [(ARSession *)self _sessionDidUpdateExternalAnchors:externalAnchors2];
 
       v67 = 0u;
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v14 = [v10 externalAnchors];
-      v15 = [v14 countByEnumeratingWithState:&v65 objects:v77 count:16];
+      externalAnchors3 = [anchorChangeSet externalAnchors];
+      v15 = [externalAnchors3 countByEnumeratingWithState:&v65 objects:v77 count:16];
       if (v15)
       {
         v16 = v15;
@@ -2302,7 +2302,7 @@ LABEL_9:
           {
             if (*v66 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(externalAnchors3);
             }
 
             v19 = *(*(&v65 + 1) + 8 * i);
@@ -2315,37 +2315,37 @@ LABEL_9:
               *buf = 138543874;
               v72 = v22;
               v73 = 2048;
-              v74 = self;
+              selfCopy3 = self;
               v75 = 2112;
               v76 = v23;
               _os_log_impl(&dword_1C241C000, v20, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: External anchor updated: %@", buf, 0x20u);
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v65 objects:v77 count:16];
+          v16 = [externalAnchors3 countByEnumeratingWithState:&v65 objects:v77 count:16];
         }
 
         while (v16);
       }
 
-      v10 = v53;
-      v5 = v55;
+      anchorChangeSet = v53;
+      frameCopy = v55;
     }
 
-    v24 = [v10 removedAnchors];
-    v25 = [v24 count];
+    removedAnchors = [anchorChangeSet removedAnchors];
+    v25 = [removedAnchors count];
 
     if (v25)
     {
-      v26 = [v10 removedAnchors];
-      [(ARSession *)self _sessionDidRemoveAnchors:v26];
+      removedAnchors2 = [anchorChangeSet removedAnchors];
+      [(ARSession *)self _sessionDidRemoveAnchors:removedAnchors2];
 
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
       v62 = 0u;
-      v27 = [v10 removedAnchors];
-      v28 = [v27 countByEnumeratingWithState:&v61 objects:v70 count:16];
+      removedAnchors3 = [anchorChangeSet removedAnchors];
+      v28 = [removedAnchors3 countByEnumeratingWithState:&v61 objects:v70 count:16];
       if (v28)
       {
         v29 = v28;
@@ -2356,7 +2356,7 @@ LABEL_9:
           {
             if (*v62 != v30)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(removedAnchors3);
             }
 
             v32 = *(*(&v61 + 1) + 8 * j);
@@ -2369,37 +2369,37 @@ LABEL_9:
               *buf = 138543874;
               v72 = v35;
               v73 = 2048;
-              v74 = self;
+              selfCopy3 = self;
               v75 = 2112;
               v76 = v36;
               _os_log_impl(&dword_1C241C000, v33, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Anchor removed: %@", buf, 0x20u);
             }
           }
 
-          v29 = [v27 countByEnumeratingWithState:&v61 objects:v70 count:16];
+          v29 = [removedAnchors3 countByEnumeratingWithState:&v61 objects:v70 count:16];
         }
 
         while (v29);
       }
 
-      v10 = v54;
-      v5 = v56;
+      anchorChangeSet = v54;
+      frameCopy = v56;
     }
 
-    v37 = [v10 addedAnchors];
-    v38 = [v37 count];
+    addedAnchors = [anchorChangeSet addedAnchors];
+    v38 = [addedAnchors count];
 
     if (v38)
     {
-      v39 = [v10 addedAnchors];
-      [(ARSession *)self _sessionDidAddAnchors:v39];
+      addedAnchors2 = [anchorChangeSet addedAnchors];
+      [(ARSession *)self _sessionDidAddAnchors:addedAnchors2];
 
       v59 = 0u;
       v60 = 0u;
       v57 = 0u;
       v58 = 0u;
-      v40 = [v10 addedAnchors];
-      v41 = [v40 countByEnumeratingWithState:&v57 objects:v69 count:16];
+      addedAnchors3 = [anchorChangeSet addedAnchors];
+      v41 = [addedAnchors3 countByEnumeratingWithState:&v57 objects:v69 count:16];
       if (v41)
       {
         v42 = v41;
@@ -2410,7 +2410,7 @@ LABEL_9:
           {
             if (*v58 != v43)
             {
-              objc_enumerationMutation(v40);
+              objc_enumerationMutation(addedAnchors3);
             }
 
             v45 = *(*(&v57 + 1) + 8 * k);
@@ -2423,34 +2423,34 @@ LABEL_9:
               *buf = 138543874;
               v72 = v48;
               v73 = 2048;
-              v74 = self;
+              selfCopy3 = self;
               v75 = 2112;
               v76 = v49;
               _os_log_impl(&dword_1C241C000, v46, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Anchor added: %@", buf, 0x20u);
             }
           }
 
-          v42 = [v40 countByEnumeratingWithState:&v57 objects:v69 count:16];
+          v42 = [addedAnchors3 countByEnumeratingWithState:&v57 objects:v69 count:16];
         }
 
         while (v42);
       }
 
-      v10 = v54;
-      v5 = v56;
+      anchorChangeSet = v54;
+      frameCopy = v56;
     }
 
-    v50 = [v10 updatedAnchors];
-    v51 = [v50 count];
+    updatedAnchors = [anchorChangeSet updatedAnchors];
+    v51 = [updatedAnchors count];
 
     if (v51)
     {
-      v52 = [v10 updatedAnchors];
-      [(ARSession *)self _sessionDidUpdateAnchors:v52];
+      updatedAnchors2 = [anchorChangeSet updatedAnchors];
+      [(ARSession *)self _sessionDidUpdateAnchors:updatedAnchors2];
     }
   }
 
-  [(ARSession *)self _sessionDidUpdateFrame:v5];
+  [(ARSession *)self _sessionDidUpdateFrame:frameCopy];
 }
 
 - (NSString)description
@@ -2465,8 +2465,8 @@ LABEL_9:
   [(ARFrame *)self->_lastVendedFrame timestamp];
   [v6 appendFormat:@" timestamp=%f", v7];
   dispatch_semaphore_signal(self->_lastVendedFrameSemaphore);
-  v8 = [(ARSession *)self configurationInternal];
-  [v6 appendFormat:@" configuration=%@", v8];
+  configurationInternal = [(ARSession *)self configurationInternal];
+  [v6 appendFormat:@" configuration=%@", configurationInternal];
 
   [v6 appendString:@">"];
 
@@ -2516,13 +2516,13 @@ LABEL_9:
 
   [v5 appendFormat:@"RelocalizationRequested: %@\n", v8];
   [v5 appendFormat:@"RelocalizationTimeoutDate: %@\n", self->_relocalizationTimeoutDate];
-  v9 = [(ARSession *)self technique];
-  v10 = [v9 _fullDescription];
-  [v5 appendFormat:@"Technique:\n%@\n", v10];
+  technique = [(ARSession *)self technique];
+  _fullDescription = [technique _fullDescription];
+  [v5 appendFormat:@"Technique:\n%@\n", _fullDescription];
 
-  v11 = [(ARSession *)self secondaryTechnique];
-  v12 = [v11 _fullDescription];
-  [v5 appendFormat:@"Secondary Technique: \n%@\n", v12];
+  secondaryTechnique = [(ARSession *)self secondaryTechnique];
+  _fullDescription2 = [secondaryTechnique _fullDescription];
+  [v5 appendFormat:@"Secondary Technique: \n%@\n", _fullDescription2];
 
   [v5 appendFormat:@"Sensors:\n"];
   if ([(NSArray *)self->_availableSensors count])
@@ -2584,16 +2584,16 @@ LABEL_9:
   v2 = +[ARSession _runningSessions];
   if ([v2 count] < 2)
   {
-    v4 = [v2 firstObject];
-    v3 = [v4 _fullDescription];
+    firstObject = [v2 firstObject];
+    _fullDescription = [firstObject _fullDescription];
   }
 
   else
   {
-    v3 = [v2 description];
+    _fullDescription = [v2 description];
   }
 
-  return v3;
+  return _fullDescription;
 }
 
 - (NSArray)raycast:(ARRaycastQuery *)query
@@ -2639,24 +2639,24 @@ LABEL_9:
   return v9;
 }
 
-- (id)annotateAnchorToRaycastResults:(id)a3
+- (id)annotateAnchorToRaycastResults:(id)results
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(ARSession *)self currentFrame];
-  if (v6)
+  resultsCopy = results;
+  array = [MEMORY[0x1E695DF70] array];
+  currentFrame = [(ARSession *)self currentFrame];
+  if (currentFrame)
   {
-    v28 = v5;
-    v27 = v6;
-    v7 = [v6 anchors];
-    v8 = ARDictionaryFromAnchors(v7);
+    v28 = array;
+    v27 = currentFrame;
+    anchors = [currentFrame anchors];
+    v8 = ARDictionaryFromAnchors(anchors);
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v9 = v4;
+    v9 = resultsCopy;
     v10 = [v9 countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v10)
     {
@@ -2672,12 +2672,12 @@ LABEL_9:
           }
 
           v14 = *(*(&v33 + 1) + 8 * i);
-          v15 = [v14 anchorIdentifier];
+          anchorIdentifier = [v14 anchorIdentifier];
 
-          if (v15)
+          if (anchorIdentifier)
           {
-            v16 = [v14 anchorIdentifier];
-            v17 = [v8 objectForKeyedSubscript:v16];
+            anchorIdentifier2 = [v14 anchorIdentifier];
+            v17 = [v8 objectForKeyedSubscript:anchorIdentifier2];
 
             v18 = v17 != 0;
             if (v17)
@@ -2715,8 +2715,8 @@ LABEL_9:
             v18 = 0;
           }
 
-          v24 = [v14 target];
-          if (v18 || v24 == 2)
+          target = [v14 target];
+          if (v18 || target == 2)
           {
             [v28 addObject:v14];
           }
@@ -2728,10 +2728,10 @@ LABEL_9:
       while (v11);
     }
 
-    v5 = v28;
+    array = v28;
     v25 = v28;
 
-    v6 = v27;
+    currentFrame = v27;
   }
 
   else
@@ -2746,8 +2746,8 @@ LABEL_9:
 {
   v28 = *MEMORY[0x1E69E9840];
   v4 = collaborationData;
-  v5 = [(ARCollaborationData *)v4 vioSessionID];
-  if (v5 == [(ARWorldTrackingTechnique *)self->_worldTrackingTechnique vioSessionIdentifier])
+  vioSessionID = [(ARCollaborationData *)v4 vioSessionID];
+  if (vioSessionID == [(ARWorldTrackingTechnique *)self->_worldTrackingTechnique vioSessionIdentifier])
   {
     if (ARShouldUseLogTypeError_onceToken_21 != -1)
     {
@@ -2763,14 +2763,14 @@ LABEL_9:
       {
         v9 = objc_opt_class();
         v10 = NSStringFromClass(v9);
-        v11 = [(ARSession *)self identifier];
-        v12 = [v11 UUIDString];
+        identifier = [(ARSession *)self identifier];
+        uUIDString = [identifier UUIDString];
         v22 = 138543874;
         v23 = v10;
         v24 = 2048;
-        v25 = self;
+        selfCopy3 = self;
         v26 = 2112;
-        v27 = v12;
+        v27 = uUIDString;
         v13 = "%{public}@ <%p>: Ignoring collaboration data originating from own session with ID: %@";
         v14 = v8;
         v15 = OS_LOG_TYPE_ERROR;
@@ -2783,14 +2783,14 @@ LABEL_12:
     {
       v21 = objc_opt_class();
       v10 = NSStringFromClass(v21);
-      v11 = [(ARSession *)self identifier];
-      v12 = [v11 UUIDString];
+      identifier = [(ARSession *)self identifier];
+      uUIDString = [identifier UUIDString];
       v22 = 138543874;
       v23 = v10;
       v24 = 2048;
-      v25 = self;
+      selfCopy3 = self;
       v26 = 2112;
-      v27 = v12;
+      v27 = uUIDString;
       v13 = "Error: %{public}@ <%p>: Ignoring collaboration data originating from own session with ID: %@";
       v14 = v8;
       v15 = OS_LOG_TYPE_INFO;
@@ -2809,7 +2809,7 @@ LABEL_12:
     v22 = 138543874;
     v23 = v18;
     v24 = 2048;
-    v25 = self;
+    selfCopy3 = self;
     v26 = 2112;
     v27 = v19;
     _os_log_impl(&dword_1C241C000, v16, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: updateWithCollaborationData: %@", &v22, 0x20u);
@@ -2817,8 +2817,8 @@ LABEL_12:
 
   [(ARCollaborationData *)v4 timestamp];
   [(ARCollaborationData *)v4 vioDataType];
-  v20 = [(ARCollaborationData *)v4 vioData];
-  [v20 length];
+  vioData = [(ARCollaborationData *)v4 vioData];
+  [vioData length];
   [(ARCollaborationData *)v4 vioSessionID];
   kdebug_trace();
 
@@ -2830,35 +2830,35 @@ LABEL_12:
 LABEL_14:
 }
 
-- (id)_getGeoAnchorAltitude:(id)a3
+- (id)_getGeoAnchorAltitude:(id)altitude
 {
-  v4 = a3;
+  altitudeCopy = altitude;
   os_unfair_lock_lock(&self->_geoAnchorToAltitudeLock);
-  v5 = [(ARSession *)self geoAnchorToAltitude];
-  v6 = [v5 objectForKey:v4];
+  geoAnchorToAltitude = [(ARSession *)self geoAnchorToAltitude];
+  v6 = [geoAnchorToAltitude objectForKey:altitudeCopy];
 
   os_unfair_lock_unlock(&self->_geoAnchorToAltitudeLock);
 
   return v6;
 }
 
-- (void)_setGeoAnchorAltitude:(id)a3 pair:(id)a4
+- (void)_setGeoAnchorAltitude:(id)altitude pair:(id)pair
 {
-  v6 = a4;
-  v7 = a3;
+  pairCopy = pair;
+  altitudeCopy = altitude;
   os_unfair_lock_lock(&self->_geoAnchorToAltitudeLock);
-  v8 = [(ARSession *)self geoAnchorToAltitude];
-  [v8 setObject:v6 forKey:v7];
+  geoAnchorToAltitude = [(ARSession *)self geoAnchorToAltitude];
+  [geoAnchorToAltitude setObject:pairCopy forKey:altitudeCopy];
 
   os_unfair_lock_unlock(&self->_geoAnchorToAltitudeLock);
 }
 
-- (void)_removeGeoAnchorAltitude:(id)a3
+- (void)_removeGeoAnchorAltitude:(id)altitude
 {
-  v4 = a3;
+  altitudeCopy = altitude;
   os_unfair_lock_lock(&self->_geoAnchorToAltitudeLock);
-  v5 = [(ARSession *)self geoAnchorToAltitude];
-  [v5 removeObjectForKey:v4];
+  geoAnchorToAltitude = [(ARSession *)self geoAnchorToAltitude];
+  [geoAnchorToAltitude removeObjectForKey:altitudeCopy];
 
   os_unfair_lock_unlock(&self->_geoAnchorToAltitudeLock);
 }
@@ -2867,12 +2867,12 @@ LABEL_14:
 {
   v56 = *MEMORY[0x1E69E9840];
   v5 = completionHandler;
-  v6 = [(ARSession *)self geoTrackingTechnique];
-  v7 = v6;
-  if (v6)
+  geoTrackingTechnique = [(ARSession *)self geoTrackingTechnique];
+  v7 = geoTrackingTechnique;
+  if (geoTrackingTechnique)
   {
     v37 = 0;
-    [v6 getLocationFromWorldPosition:&v37 error:*position.i64];
+    [geoTrackingTechnique getLocationFromWorldPosition:&v37 error:*position.i64];
     v8 = v37;
     if (v8)
     {
@@ -2910,7 +2910,7 @@ LABEL_14:
         *buf = 138545155;
         v41 = v21;
         v42 = 2048;
-        v43 = self;
+        selfCopy2 = self;
         v44 = 2049;
         v45 = position.f32[0];
         v46 = 2049;
@@ -2960,7 +2960,7 @@ LABEL_14:
       *buf = 138543618;
       v41 = v15;
       v42 = 2048;
-      v43 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v13, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: ARGeoTrackingConfiguration is not running. Cannot call getGeoLocationForPoint.", buf, 0x16u);
     }
 
@@ -3011,10 +3011,10 @@ uint64_t __54__ARSession_getGeoLocationForPoint_completionHandler___block_invoke
   return v6(v2, 0, v3, v4, v7);
 }
 
-- (BOOL)querySceneReconstructionOccupancyWithPoints:(id)a3 callback:(id)a4
+- (BOOL)querySceneReconstructionOccupancyWithPoints:(id)points callback:(id)callback
 {
-  v6 = a4;
-  v7 = v6;
+  callbackCopy = callback;
+  v7 = callbackCopy;
   worldTrackingTechnique = self->_worldTrackingTechnique;
   if (worldTrackingTechnique)
   {
@@ -3022,8 +3022,8 @@ uint64_t __54__ARSession_getGeoLocationForPoint_completionHandler___block_invoke
     v11[1] = 3221225472;
     v11[2] = __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___block_invoke;
     v11[3] = &unk_1E817CD40;
-    v12 = v6;
-    v9 = [(ARWorldTrackingTechnique *)worldTrackingTechnique querySceneReconstructionOccupancyWithPoints:a3 callback:v11];
+    v12 = callbackCopy;
+    v9 = [(ARWorldTrackingTechnique *)worldTrackingTechnique querySceneReconstructionOccupancyWithPoints:points callback:v11];
   }
 
   else
@@ -3047,24 +3047,24 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
   CV3DReconOccupancyQueryResultRelease();
 }
 
-- (void)_addObserver:(id)a3
+- (void)_addObserver:(id)observer
 {
   observersSemaphore = self->_observersSemaphore;
-  v5 = a3;
+  observerCopy = observer;
   dispatch_semaphore_wait(observersSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  [(NSHashTable *)self->_observers addObject:v5];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
 
   v6 = self->_observersSemaphore;
 
   dispatch_semaphore_signal(v6);
 }
 
-- (void)_removeObserver:(id)a3
+- (void)_removeObserver:(id)observer
 {
   observersSemaphore = self->_observersSemaphore;
-  v5 = a3;
+  observerCopy = observer;
   dispatch_semaphore_wait(observersSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  [(NSHashTable *)self->_observers removeObject:v5];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   v6 = self->_observersSemaphore;
 
@@ -3074,26 +3074,26 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
 - (id)_getObservers
 {
   dispatch_semaphore_wait(self->_observersSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v3 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   dispatch_semaphore_signal(self->_observersSemaphore);
 
-  return v3;
+  return allObjects;
 }
 
-- (void)_setPrimaryTechnique:(id)a3 secondaryTechnique:(id)a4 stillImageRootTechnique:(id)a5
+- (void)_setPrimaryTechnique:(id)technique secondaryTechnique:(id)secondaryTechnique stillImageRootTechnique:(id)rootTechnique
 {
   v93 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [(ARSession *)self technique];
-  v76 = [(ARSession *)self secondaryTechnique];
-  v73 = [(ARSession *)self stillImageRootTechnique];
-  v13 = [(ARSession *)self useFrameUpdateTimer];
-  v74 = v11;
-  v75 = v12;
-  if (v12 != v8)
+  techniqueCopy = technique;
+  secondaryTechniqueCopy = secondaryTechnique;
+  rootTechniqueCopy = rootTechnique;
+  array = [MEMORY[0x1E695DF70] array];
+  technique = [(ARSession *)self technique];
+  secondaryTechnique = [(ARSession *)self secondaryTechnique];
+  stillImageRootTechnique = [(ARSession *)self stillImageRootTechnique];
+  useFrameUpdateTimer = [(ARSession *)self useFrameUpdateTimer];
+  v74 = array;
+  v75 = technique;
+  if (technique != techniqueCopy)
   {
     v14 = _ARLogSession_0();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
@@ -3103,17 +3103,17 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
       *buf = 138544130;
       v86 = v16;
       v87 = 2048;
-      v88 = self;
+      selfCopy9 = self;
       v89 = 2048;
       v90 = v75;
       v91 = 2048;
-      v92 = v8;
+      v92 = techniqueCopy;
       _os_log_impl(&dword_1C241C000, v14, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Replacing session primary technique %p with %p", buf, 0x2Au);
     }
 
     [(ARRenderSyncScheduler *)v75 setDelegate:0];
     resultRequestScheduler = self->_resultRequestScheduler;
-    if (resultRequestScheduler == 0 && !v13)
+    if (resultRequestScheduler == 0 && !useFrameUpdateTimer)
     {
       v18 = [[ARRenderSyncScheduler alloc] initWithExpectedFramesPerSecond:60];
       v19 = self->_resultRequestScheduler;
@@ -3128,7 +3128,7 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
         *buf = 138543874;
         v86 = v22;
         v87 = 2048;
-        v88 = self;
+        selfCopy9 = self;
         v89 = 2048;
         v90 = v23;
         _os_log_impl(&dword_1C241C000, v20, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Creating primary renderSyncScheduler <%p>", buf, 0x20u);
@@ -3139,7 +3139,7 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
 
     if (resultRequestScheduler)
     {
-      [(ARSession *)self setupResultRequestSyncScheduler:resultRequestScheduler forTechnique:v8];
+      [(ARSession *)self setupResultRequestSyncScheduler:resultRequestScheduler forTechnique:techniqueCopy];
       v24 = _ARLogSession_0();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
@@ -3151,7 +3151,7 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
         *buf = 138544130;
         v86 = v26;
         v87 = 2048;
-        v88 = self;
+        selfCopy9 = self;
         v89 = 2048;
         v90 = v28;
         v91 = 2048;
@@ -3165,21 +3165,21 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
     {
       v31 = objc_opt_class();
       v32 = NSStringFromClass(v31);
-      [(ARRenderSyncScheduler *)v8 bonusLatency];
+      [(ARRenderSyncScheduler *)techniqueCopy bonusLatency];
       *buf = 138543874;
       v86 = v32;
       v87 = 2048;
-      v88 = self;
+      selfCopy9 = self;
       v89 = 2048;
       v90 = v33;
       _os_log_impl(&dword_1C241C000, v30, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Primary technique bonus latency %f", buf, 0x20u);
     }
 
-    v11 = v74;
+    array = v74;
   }
 
-  [v11 addObject:v8];
-  if (v76 != v9)
+  [array addObject:techniqueCopy];
+  if (secondaryTechnique != secondaryTechniqueCopy)
   {
     v34 = _ARLogSession_0();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
@@ -3189,17 +3189,17 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
       *buf = 138544130;
       v86 = v36;
       v87 = 2048;
-      v88 = self;
+      selfCopy9 = self;
       v89 = 2048;
-      v90 = v76;
+      v90 = secondaryTechnique;
       v91 = 2048;
-      v92 = v9;
+      v92 = secondaryTechniqueCopy;
       _os_log_impl(&dword_1C241C000, v34, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Replacing session secondary technique %p with %p", buf, 0x2Au);
     }
 
-    [(ARRenderSyncScheduler *)v76 setDelegate:0];
+    [(ARRenderSyncScheduler *)secondaryTechnique setDelegate:0];
     secondaryResultRequestScheduler = self->_secondaryResultRequestScheduler;
-    if (secondaryResultRequestScheduler == 0 && !v13)
+    if (secondaryResultRequestScheduler == 0 && !useFrameUpdateTimer)
     {
       v38 = [[ARRenderSyncScheduler alloc] initWithExpectedFramesPerSecond:60];
       v39 = self->_secondaryResultRequestScheduler;
@@ -3214,7 +3214,7 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
         *buf = 138543874;
         v86 = v42;
         v87 = 2048;
-        v88 = self;
+        selfCopy9 = self;
         v89 = 2048;
         v90 = v43;
         _os_log_impl(&dword_1C241C000, v40, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Creating secondary renderSyncScheduler <%p>", buf, 0x20u);
@@ -3225,7 +3225,7 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
 
     if (secondaryResultRequestScheduler)
     {
-      [(ARSession *)self setupResultRequestSyncScheduler:secondaryResultRequestScheduler forTechnique:v9];
+      [(ARSession *)self setupResultRequestSyncScheduler:secondaryResultRequestScheduler forTechnique:secondaryTechniqueCopy];
       v44 = _ARLogSession_0();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
       {
@@ -3237,7 +3237,7 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
         *buf = 138544130;
         v86 = v46;
         v87 = 2048;
-        v88 = self;
+        selfCopy9 = self;
         v89 = 2048;
         v90 = v48;
         v91 = 2048;
@@ -3251,26 +3251,26 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
     {
       v51 = objc_opt_class();
       v52 = NSStringFromClass(v51);
-      [(ARRenderSyncScheduler *)v9 bonusLatency];
+      [(ARRenderSyncScheduler *)secondaryTechniqueCopy bonusLatency];
       *buf = 138543874;
       v86 = v52;
       v87 = 2048;
-      v88 = self;
+      selfCopy9 = self;
       v89 = 2048;
       v90 = v53;
       _os_log_impl(&dword_1C241C000, v50, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Secondary technique bonus latency %f", buf, 0x20u);
     }
 
-    v11 = v74;
+    array = v74;
   }
 
-  if (v9)
+  if (secondaryTechniqueCopy)
   {
-    [v11 addObject:v9];
+    [array addObject:secondaryTechniqueCopy];
   }
 
-  v54 = v73;
-  if (v73 != v10)
+  v54 = stillImageRootTechnique;
+  if (stillImageRootTechnique != rootTechniqueCopy)
   {
     v55 = _ARLogSession_0();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
@@ -3280,55 +3280,55 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
       *buf = 138544130;
       v86 = v57;
       v87 = 2048;
-      v88 = self;
+      selfCopy9 = self;
       v89 = 2048;
-      v90 = v73;
+      v90 = stillImageRootTechnique;
       v91 = 2048;
-      v92 = v10;
+      v92 = rootTechniqueCopy;
       _os_log_impl(&dword_1C241C000, v55, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Replacing highRes session technique %p with %p", buf, 0x2Au);
     }
 
-    [(ARRenderSyncScheduler *)v73 setDelegate:0];
+    [(ARRenderSyncScheduler *)stillImageRootTechnique setDelegate:0];
   }
 
-  if (v10)
+  if (rootTechniqueCopy)
   {
-    [v11 addObject:v10];
+    [array addObject:rootTechniqueCopy];
   }
 
-  [(ARSession *)self setupSessionForTechniques:v11];
-  [(ARSession *)self setTechnique:v8];
-  [(ARSession *)self setSecondaryTechnique:v9];
-  [(ARSession *)self setStillImageRootTechnique:v10];
+  [(ARSession *)self setupSessionForTechniques:array];
+  [(ARSession *)self setTechnique:techniqueCopy];
+  [(ARSession *)self setSecondaryTechnique:secondaryTechniqueCopy];
+  [(ARSession *)self setStillImageRootTechnique:rootTechniqueCopy];
   [(ARSession *)self _logTechniqueGraphForDebugging];
   dispatch_semaphore_wait(self->_frameContextHandlerSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   [(ARFrameContextHandler *)self->_frameContextHandler clearInFlightContextsReapplyingChanges];
   dispatch_semaphore_signal(self->_frameContextHandlerSemaphore);
   if (ARDeviceSupportsJasper())
   {
-    v58 = [(ARSession *)self adPipelineParameters];
-    v59 = [v58 aggregationParameters];
+    adPipelineParameters = [(ARSession *)self adPipelineParameters];
+    aggregationParameters = [adPipelineParameters aggregationParameters];
 
-    if (v59)
+    if (aggregationParameters)
     {
-      [(ARDepthPointCloudCoalescer *)self->_depthPointCloudCoalescer setAggregationParameters:v59];
+      [(ARDepthPointCloudCoalescer *)self->_depthPointCloudCoalescer setAggregationParameters:aggregationParameters];
     }
   }
 
   if (ARLinkedOnOrAfterAzulC())
   {
-    v71 = v10;
-    v72 = v9;
+    v71 = rootTechniqueCopy;
+    v72 = secondaryTechniqueCopy;
     v77 = objc_opt_new();
     v80 = 0u;
     v81 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v60 = [(ARSession *)self currentFrame];
-    v61 = [v60 anchors];
+    currentFrame = [(ARSession *)self currentFrame];
+    anchors = [currentFrame anchors];
 
-    obj = v61;
-    v62 = [v61 countByEnumeratingWithState:&v80 objects:v84 count:16];
+    obj = anchors;
+    v62 = [anchors countByEnumeratingWithState:&v80 objects:v84 count:16];
     if (v62)
     {
       v63 = v62;
@@ -3351,13 +3351,13 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
             v79[3] = &unk_1E817CD68;
             v79[4] = v66;
             v67 = [MEMORY[0x1E696AE18] predicateWithBlock:v79];
-            v68 = [(ARSession *)self technique];
-            v69 = [v68 techniqueMatchingPredicate:v67];
+            technique2 = [(ARSession *)self technique];
+            v69 = [technique2 techniqueMatchingPredicate:v67];
 
             if (!v69)
             {
-              v70 = [(ARSession *)self secondaryTechnique];
-              v69 = [v70 techniqueMatchingPredicate:v67];
+              secondaryTechnique2 = [(ARSession *)self secondaryTechnique];
+              v69 = [secondaryTechnique2 techniqueMatchingPredicate:v67];
 
               if (!v69)
               {
@@ -3380,10 +3380,10 @@ void __66__ARSession_querySceneReconstructionOccupancyWithPoints_callback___bloc
       dispatch_semaphore_signal(self->_frameContextHandlerSemaphore);
     }
 
-    v9 = v72;
-    v10 = v71;
-    v54 = v73;
-    v11 = v74;
+    secondaryTechniqueCopy = v72;
+    rootTechniqueCopy = v71;
+    v54 = stillImageRootTechnique;
+    array = v74;
   }
 }
 
@@ -3395,15 +3395,15 @@ uint64_t __77__ARSession__setPrimaryTechnique_secondaryTechnique_stillImageRootT
   return [v0 producesResultDataForAnchorOfClass:v1];
 }
 
-- (void)setupSessionForTechniques:(id)a3
+- (void)setupSessionForTechniques:(id)techniques
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  techniquesCopy = techniques;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  v5 = [techniquesCopy countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3414,7 +3414,7 @@ uint64_t __77__ARSession__setPrimaryTechnique_secondaryTechnique_stillImageRootT
       {
         if (*v39 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(techniquesCopy);
         }
 
         v9 = *(*(&v38 + 1) + 8 * i);
@@ -3422,15 +3422,15 @@ uint64_t __77__ARSession__setPrimaryTechnique_secondaryTechnique_stillImageRootT
         [v9 setPowerUsage:{-[ARSession powerUsage](self, "powerUsage")}];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v6 = [techniquesCopy countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v6);
   }
 
   v10 = 0x1E817A000uLL;
-  v11 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:v4];
-  v12 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:v4];
+  v11 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:techniquesCopy];
+  v12 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:techniquesCopy];
   v13 = v12;
   if (v11)
   {
@@ -3450,24 +3450,24 @@ uint64_t __77__ARSession__setPrimaryTechnique_secondaryTechnique_stillImageRootT
   if (*p_worldTrackingTechnique)
   {
     [(ARWorldTrackingTechnique *)v16 setTrackedRaycastPostProcessor:self->_trackedRaycastPostProcessor];
-    v17 = [(ARWorldTrackingTechnique *)self->_worldTrackingTechnique mutableOptions];
-    v18 = [v17 slamConfiguration];
-    self->_vioFusionEnabled = [v18 isEqualToString:@"CoreLocationIntegration"];
+    mutableOptions = [(ARWorldTrackingTechnique *)self->_worldTrackingTechnique mutableOptions];
+    slamConfiguration = [mutableOptions slamConfiguration];
+    self->_vioFusionEnabled = [slamConfiguration isEqualToString:@"CoreLocationIntegration"];
 
     v16 = self->_worldTrackingTechnique;
   }
 
   [(ARWorldTrackingTechnique *)v16 addObserver:self];
-  v19 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:v4];
+  v19 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:techniquesCopy];
   [(ARSession *)self setGeoTrackingTechnique:v19];
 
-  v20 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:v4];
+  v20 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:techniquesCopy];
   self->_techniquesWantPredictedPoseForWideCam = v20 != 0;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v21 = v4;
+  v21 = techniquesCopy;
   v22 = [v21 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v22)
   {
@@ -3483,8 +3483,8 @@ uint64_t __77__ARSession__setPrimaryTechnique_secondaryTechnique_stillImageRootT
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v34 + 1) + 8 * j) resultDataClasses];
-        v27 = [v26 containsObject:objc_opt_class()];
+        resultDataClasses = [*(*(&v34 + 1) + 8 * j) resultDataClasses];
+        v27 = [resultDataClasses containsObject:objc_opt_class()];
 
         if (v27)
         {
@@ -3523,26 +3523,26 @@ LABEL_24:
   self->_recordingTechnique = v31;
 }
 
-- (void)setupResultRequestSyncScheduler:(id)a3 forTechnique:(id)a4
+- (void)setupResultRequestSyncScheduler:(id)scheduler forTechnique:(id)technique
 {
-  v27 = a4;
-  v6 = a3;
-  v7 = [v27 requiredSensorDataTypes];
-  v8 = [v27 techniqueOfClass:objc_opt_class()];
+  techniqueCopy = technique;
+  schedulerCopy = scheduler;
+  requiredSensorDataTypes = [techniqueCopy requiredSensorDataTypes];
+  v8 = [techniqueCopy techniqueOfClass:objc_opt_class()];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 mutableOptions];
-    v11 = [v10 imageSensorSettings];
-    v12 = [v11 visionDataOutputEnabled];
+    mutableOptions = [v8 mutableOptions];
+    imageSensorSettings = [mutableOptions imageSensorSettings];
+    visionDataOutputEnabled = [imageSensorSettings visionDataOutputEnabled];
 
-    v13 = [v9 mutableOptions];
-    v14 = [v13 imageSensorSettingsForUltraWide];
-    v15 = [v14 visionDataOutputEnabled];
+    mutableOptions2 = [v9 mutableOptions];
+    imageSensorSettingsForUltraWide = [mutableOptions2 imageSensorSettingsForUltraWide];
+    visionDataOutputEnabled2 = [imageSensorSettingsForUltraWide visionDataOutputEnabled];
 
-    v16 = (v12 | v15) ^ 1;
-    v17 = v15 ^ 1;
-    if ((v7 & 0x10) == 0)
+    v16 = (visionDataOutputEnabled | visionDataOutputEnabled2) ^ 1;
+    v17 = visionDataOutputEnabled2 ^ 1;
+    if ((requiredSensorDataTypes & 0x10) == 0)
     {
 LABEL_3:
       v18 = v16 | v17;
@@ -3554,9 +3554,9 @@ LABEL_3:
 
       if ((v18 & 1) == 0)
       {
-        v20 = [(ARSession *)self isUserFaceTracking];
+        isUserFaceTracking = [(ARSession *)self isUserFaceTracking];
         v19 = 0.035;
-        if (!v20)
+        if (!isUserFaceTracking)
         {
           v19 = 0.015;
         }
@@ -3570,7 +3570,7 @@ LABEL_3:
   {
     v17 = 1;
     v16 = 1;
-    if ((v7 & 0x10) == 0)
+    if ((requiredSensorDataTypes & 0x10) == 0)
     {
       goto LABEL_3;
     }
@@ -3584,11 +3584,11 @@ LABEL_3:
   }
 
 LABEL_12:
-  [v6 setInputJitterBufferInterval:v19];
-  [v6 inputJitterBufferInterval];
+  [schedulerCopy setInputJitterBufferInterval:v19];
+  [schedulerCopy inputJitterBufferInterval];
   v23 = v22 * 0.75;
-  [v27 setBonusLatency:v22 * 0.75];
-  [v27 requiredTimeInterval];
+  [techniqueCopy setBonusLatency:v22 * 0.75];
+  [techniqueCopy requiredTimeInterval];
   v25 = v24 - v23;
   if (v25 >= 0.0)
   {
@@ -3600,67 +3600,67 @@ LABEL_12:
     v26 = 0.0;
   }
 
-  [v6 setVsyncOffset:-(ARDispatchAfterLeewayForTimeInterval(v26) + v26 + 0.003)];
+  [schedulerCopy setVsyncOffset:-(ARDispatchAfterLeewayForTimeInterval(v26) + v26 + 0.003)];
 }
 
-- (void)_setInternalConfiguration:(id)a3
+- (void)_setInternalConfiguration:(id)configuration
 {
-  v4 = a3;
-  [(ARSession *)self setConfigurationInternal:v4];
-  v5 = [v4 copy];
+  configurationCopy = configuration;
+  [(ARSession *)self setConfigurationInternal:configurationCopy];
+  v5 = [configurationCopy copy];
 
   [(ARSession *)self setConfigurationForPublicGetter:v5];
 }
 
-- (void)_updateSessionWithConfiguration:(id)a3 options:(unint64_t)a4
+- (void)_updateSessionWithConfiguration:(id)configuration options:(unint64_t)options
 {
   v137 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(__CFString *)v6 techniques];
-  v8 = [(__CFString *)v6 secondaryTechniques];
-  v9 = [(__CFString *)v6 customSensors];
+  configurationCopy = configuration;
+  techniques = [(__CFString *)configurationCopy techniques];
+  secondaryTechniques = [(__CFString *)configurationCopy secondaryTechniques];
+  customSensors = [(__CFString *)configurationCopy customSensors];
 
-  if (v9)
+  if (customSensors)
   {
-    v10 = [(__CFString *)v6 replaySensor];
-    if (v10)
+    replaySensor = [(__CFString *)configurationCopy replaySensor];
+    if (replaySensor)
     {
-      v11 = v10;
+      v11 = replaySensor;
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
         v13 = [ARReplayConfiguration alloc];
-        v14 = [(__CFString *)v6 replaySensor];
-        v15 = [(ARReplayConfiguration *)v13 initWithBaseConfiguration:v6 replaySensor:v14];
+        replaySensor2 = [(__CFString *)configurationCopy replaySensor];
+        v15 = [(ARReplayConfiguration *)v13 initWithBaseConfiguration:configurationCopy replaySensor:replaySensor2];
 
-        v16 = [(ARCustomTechniquesConfiguration *)v15 techniques];
+        techniques2 = [(ARCustomTechniquesConfiguration *)v15 techniques];
 
-        v17 = [(ARReplayConfiguration *)v15 secondaryTechniques];
+        secondaryTechniques2 = [(ARReplayConfiguration *)v15 secondaryTechniques];
 
-        v8 = v17;
-        v7 = v16;
+        secondaryTechniques = secondaryTechniques2;
+        techniques = techniques2;
       }
     }
   }
 
-  if (v7)
+  if (techniques)
   {
     if (self->_forceEnvironmentTexturingToManualMode)
     {
       v18 = objc_opt_new();
-      [v18 addObjectsFromArray:v7];
-      [v18 addObjectsFromArray:v8];
-      v19 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:v7];
+      [v18 addObjectsFromArray:techniques];
+      [v18 addObjectsFromArray:secondaryTechniques];
+      v19 = [ARTechnique techniqueOfClass:objc_opt_class() inArray:techniques];
       [ARSession forceEnvironmentTexturingTechniqueToManualMode:v19];
     }
 
-    if ([(__CFString *)v6 isKindOfConfiguration:objc_opt_class()])
+    if ([(__CFString *)configurationCopy isKindOfConfiguration:objc_opt_class()])
     {
-      v20 = [(__CFString *)v6 replaySensor];
+      replaySensor3 = [(__CFString *)configurationCopy replaySensor];
 
-      if (v20)
+      if (replaySensor3)
       {
         v21 = objc_opt_new();
         [(__CFString *)v21 configureForReplay];
@@ -3672,28 +3672,28 @@ LABEL_12:
           *buf = 138543874;
           v132 = v24;
           v133 = 2048;
-          v134 = self;
+          selfCopy13 = self;
           v135 = 2048;
           v136 = v21;
           _os_log_impl(&dword_1C241C000, v22, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Creating location sensor for replay: %p", buf, 0x20u);
         }
 
-        v25 = [(__CFString *)v6 replaySensor];
-        v130[0] = v25;
+        replaySensor4 = [(__CFString *)configurationCopy replaySensor];
+        v130[0] = replaySensor4;
         v130[1] = v21;
         v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:2];
 
-        [(__CFString *)v6 setCustomSensors:v26];
+        [(__CFString *)configurationCopy setCustomSensors:v26];
       }
     }
 
-    [(ARSession *)self _updateSensorsWithConfiguration:v6];
+    [(ARSession *)self _updateSensorsWithConfiguration:configurationCopy];
     v126 = 0u;
     v127 = 0u;
     v125 = 0u;
     v124 = 0u;
-    v114 = v7;
-    v27 = v7;
+    v114 = techniques;
+    v27 = techniques;
     v28 = [v27 countByEnumeratingWithState:&v124 objects:v129 count:16];
     if (v28)
     {
@@ -3727,8 +3727,8 @@ LABEL_12:
     v123 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v115 = v8;
-    v37 = v8;
+    v115 = secondaryTechniques;
+    v37 = secondaryTechniques;
     v38 = [v37 countByEnumeratingWithState:&v120 objects:v128 count:16];
     if (v38)
     {
@@ -3752,11 +3752,11 @@ LABEL_12:
       while (v39);
     }
 
-    if ([(__CFString *)v6 isKindOfConfiguration:objc_opt_class()])
+    if ([(__CFString *)configurationCopy isKindOfConfiguration:objc_opt_class()])
     {
-      v42 = [(__CFString *)v6 replaySensor];
+      replaySensor5 = [(__CFString *)configurationCopy replaySensor];
 
-      if (v42)
+      if (replaySensor5)
       {
         v43 = _ARLogSession_0();
         if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
@@ -3766,7 +3766,7 @@ LABEL_12:
           *buf = 138543618;
           v132 = v45;
           v133 = 2048;
-          v134 = self;
+          selfCopy13 = self;
           _os_log_impl(&dword_1C241C000, v43, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Disabling location data type because of replay.", buf, 0x16u);
         }
 
@@ -3774,7 +3774,7 @@ LABEL_12:
       }
     }
 
-    v46 = [(__CFString *)v6 getAsKindOfConfiguration:objc_opt_class()];
+    v46 = [(__CFString *)configurationCopy getAsKindOfConfiguration:objc_opt_class()];
     v36 = v46;
     if (v46 && [v46 disableLocationSensor])
     {
@@ -3786,36 +3786,36 @@ LABEL_12:
         *buf = 138543618;
         v132 = v49;
         v133 = 2048;
-        v134 = self;
+        selfCopy13 = self;
         _os_log_impl(&dword_1C241C000, v47, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Disabling location sensor data type via SPI.", buf, 0x16u);
       }
 
       v31 &= ~0x40uLL;
     }
 
-    v50 = [(ARSession *)self runningSensors];
-    v51 = ([(ARSession *)self runningSensors]^ v31) & v50;
-    v52 = [(ARSession *)self runningSensors];
+    runningSensors = [(ARSession *)self runningSensors];
+    v51 = ([(ARSession *)self runningSensors]^ v31) & runningSensors;
+    runningSensors2 = [(ARSession *)self runningSensors];
     [(ARSession *)self _stopSensorsWithDataTypes:v51 keepingDataTypes:v31];
-    [(ARSession *)self _updateSessionStateWithConfiguration:v6 options:a4];
-    [(ARSession *)self _setInternalConfiguration:v6];
-    [(ARSession *)self _sessionWillRunWithConfiguration:v6];
+    [(ARSession *)self _updateSessionStateWithConfiguration:configurationCopy options:options];
+    [(ARSession *)self _setInternalConfiguration:configurationCopy];
+    [(ARSession *)self _sessionWillRunWithConfiguration:configurationCopy];
     if ([(ARSession *)self state]== 2 && [(ARSession *)self pausedSensors])
     {
-      v7 = v114;
-      v8 = v115;
+      techniques = v114;
+      secondaryTechniques = v115;
     }
 
     else
     {
-      v111 = v52;
+      v111 = runningSensors2;
       v112 = v51;
       v113 = v36;
-      v53 = [(ARSession *)self technique];
+      technique = [(ARSession *)self technique];
 
       v54 = _ARLogSession_0();
       v55 = os_log_type_enabled(v54, OS_LOG_TYPE_DEBUG);
-      if ((a4 & 1) != 0 || !v53)
+      if ((options & 1) != 0 || !technique)
       {
         if (v55)
         {
@@ -3824,7 +3824,7 @@ LABEL_12:
           *buf = 138543618;
           v132 = v63;
           v133 = 2048;
-          v134 = self;
+          selfCopy13 = self;
           _os_log_impl(&dword_1C241C000, v54, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Using all new techniques.", buf, 0x16u);
         }
 
@@ -3840,24 +3840,24 @@ LABEL_12:
           *buf = 138543618;
           v132 = v57;
           v133 = 2048;
-          v134 = self;
+          selfCopy13 = self;
           _os_log_impl(&dword_1C241C000, v54, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Re-using existing techniques if possible.", buf, 0x16u);
         }
 
         v58 = [[ARParentTechnique alloc] initWithTechniques:v27 delegate:self];
-        v59 = [(ARSession *)self technique];
-        v60 = [v59 techniques];
+        technique2 = [(ARSession *)self technique];
+        techniques3 = [technique2 techniques];
         v61 = v58;
-        [(ARParentTechnique *)v58 reuseTechniques:v60];
+        [(ARParentTechnique *)v58 reuseTechniques:techniques3];
       }
 
       if ([v37 count])
       {
-        v64 = [(ARSession *)self secondaryTechnique];
+        secondaryTechnique = [(ARSession *)self secondaryTechnique];
 
         v65 = _ARLogSession_0();
         v66 = os_log_type_enabled(v65, OS_LOG_TYPE_DEBUG);
-        if ((a4 & 1) != 0 || !v64)
+        if ((options & 1) != 0 || !secondaryTechnique)
         {
           if (v66)
           {
@@ -3866,7 +3866,7 @@ LABEL_12:
             *buf = 138543618;
             v132 = v73;
             v133 = 2048;
-            v134 = self;
+            selfCopy13 = self;
             _os_log_impl(&dword_1C241C000, v65, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Using all new secondary techniques.", buf, 0x16u);
           }
 
@@ -3882,14 +3882,14 @@ LABEL_12:
             *buf = 138543618;
             v132 = v68;
             v133 = 2048;
-            v134 = self;
+            selfCopy13 = self;
             _os_log_impl(&dword_1C241C000, v65, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Re-using existing techniques if possible.", buf, 0x16u);
           }
 
           v69 = [[ARParentTechnique alloc] initWithTechniques:v37 delegate:self];
-          v70 = [(ARSession *)self secondaryTechnique];
-          v71 = [v70 techniques];
-          [(ARParentTechnique *)v69 reuseTechniques:v71];
+          secondaryTechnique2 = [(ARSession *)self secondaryTechnique];
+          techniques4 = [secondaryTechnique2 techniques];
+          [(ARParentTechnique *)v69 reuseTechniques:techniques4];
         }
       }
 
@@ -3898,15 +3898,15 @@ LABEL_12:
         v69 = 0;
       }
 
-      v74 = [(__CFString *)v6 techniquesForStillImageGraph];
-      v110 = v74;
-      if ([v74 count])
+      techniquesForStillImageGraph = [(__CFString *)configurationCopy techniquesForStillImageGraph];
+      v110 = techniquesForStillImageGraph;
+      if ([techniquesForStillImageGraph count])
       {
-        v75 = [(ARSession *)self stillImageRootTechnique];
+        stillImageRootTechnique = [(ARSession *)self stillImageRootTechnique];
 
         v76 = _ARLogSession_0();
         v77 = os_log_type_enabled(v76, OS_LOG_TYPE_DEBUG);
-        if ((a4 & 1) != 0 || !v75)
+        if ((options & 1) != 0 || !stillImageRootTechnique)
         {
           if (v77)
           {
@@ -3915,11 +3915,11 @@ LABEL_12:
             *buf = 138543618;
             v132 = v84;
             v133 = 2048;
-            v134 = self;
+            selfCopy13 = self;
             _os_log_impl(&dword_1C241C000, v76, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Using all new high-res techniques.", buf, 0x16u);
           }
 
-          v80 = [[ARParentTechnique alloc] initWithTechniques:v74 delegate:self];
+          v80 = [[ARParentTechnique alloc] initWithTechniques:techniquesForStillImageGraph delegate:self];
         }
 
         else
@@ -3931,14 +3931,14 @@ LABEL_12:
             *buf = 138543618;
             v132 = v79;
             v133 = 2048;
-            v134 = self;
+            selfCopy13 = self;
             _os_log_impl(&dword_1C241C000, v76, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Re-using existing still image techniques if possible.", buf, 0x16u);
           }
 
-          v80 = [[ARParentTechnique alloc] initWithTechniques:v74 delegate:self];
-          v81 = [(ARSession *)self stillImageRootTechnique];
-          v82 = [v81 techniques];
-          [(ARParentTechnique *)v80 reuseTechniques:v82];
+          v80 = [[ARParentTechnique alloc] initWithTechniques:techniquesForStillImageGraph delegate:self];
+          stillImageRootTechnique2 = [(ARSession *)self stillImageRootTechnique];
+          techniques5 = [stillImageRootTechnique2 techniques];
+          [(ARParentTechnique *)v80 reuseTechniques:techniques5];
         }
       }
 
@@ -3948,16 +3948,16 @@ LABEL_12:
       }
 
       [(ARSession *)self _setPrimaryTechnique:v61 secondaryTechnique:v69 stillImageRootTechnique:v80, v80];
-      v85 = [(ARSession *)self configurationInternal];
-      v86 = [v85 parentImageSensorSettings];
-      v87 = [v86 settings];
-      v88 = [v87 firstObject];
-      v89 = [v88 videoFormat];
+      configurationInternal = [(ARSession *)self configurationInternal];
+      parentImageSensorSettings = [configurationInternal parentImageSensorSettings];
+      settings = [parentImageSensorSettings settings];
+      firstObject = [settings firstObject];
+      videoFormat = [firstObject videoFormat];
       primaryVideoFormat = self->_primaryVideoFormat;
-      self->_primaryVideoFormat = v89;
+      self->_primaryVideoFormat = videoFormat;
 
-      v91 = [(__CFString *)v6 replaySensor];
-      v92 = [v91 replayMode];
+      replaySensor6 = [(__CFString *)configurationCopy replaySensor];
+      replayMode = [replaySensor6 replayMode];
       prepareTechniquesQueue = self->_prepareTechniquesQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -3965,18 +3965,18 @@ LABEL_12:
       block[3] = &unk_1E817CD90;
       v94 = v61;
       v117 = v94;
-      v119 = v92 != 0;
+      v119 = replayMode != 0;
       v95 = v69;
       v118 = v95;
       dispatch_async(prepareTechniquesQueue, block);
-      if (v91)
+      if (replaySensor6)
       {
         dispatch_sync(self->_prepareTechniquesQueue, &__block_literal_global_253);
       }
 
-      [(ARRenderSyncScheduler *)self->_resultRequestScheduler setExcessiveCallbackOptions:v91 != 0];
-      [(ARRenderSyncScheduler *)self->_secondaryResultRequestScheduler setExcessiveCallbackOptions:v91 != 0];
-      if (([(__CFString *)v6 disableRenderSyncScheduling]& 1) != 0 || [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.session.disableRenderSyncScheduling"]|| v92 || [(ARSession *)self useFrameUpdateTimer])
+      [(ARRenderSyncScheduler *)self->_resultRequestScheduler setExcessiveCallbackOptions:replaySensor6 != 0];
+      [(ARRenderSyncScheduler *)self->_secondaryResultRequestScheduler setExcessiveCallbackOptions:replaySensor6 != 0];
+      if (([(__CFString *)configurationCopy disableRenderSyncScheduling]& 1) != 0 || [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.session.disableRenderSyncScheduling"]|| replayMode || [(ARSession *)self useFrameUpdateTimer])
       {
         [(ARRenderSyncScheduler *)self->_resultRequestScheduler setSchedulingActive:0];
         [(ARRenderSyncScheduler *)self->_secondaryResultRequestScheduler setSchedulingActive:0];
@@ -3988,19 +3988,19 @@ LABEL_12:
           *buf = 138543618;
           v132 = v98;
           v133 = 2048;
-          v134 = self;
+          selfCopy13 = self;
           _os_log_impl(&dword_1C241C000, v96, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Disabling scheduling for ResultRequestSchedulers", buf, 0x16u);
         }
 
-        v99 = [(ARSession *)self useFrameUpdateTimer];
-        if (v92)
+        useFrameUpdateTimer = [(ARSession *)self useFrameUpdateTimer];
+        if (replayMode)
         {
           v100 = 0;
         }
 
         else
         {
-          v100 = v99;
+          v100 = useFrameUpdateTimer;
         }
       }
 
@@ -4016,7 +4016,7 @@ LABEL_12:
           *buf = 138543618;
           v132 = v108;
           v133 = 2048;
-          v134 = self;
+          selfCopy13 = self;
           _os_log_impl(&dword_1C241C000, v106, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Enabling scheduling for ResultRequestSchedulers", buf, 0x16u);
         }
 
@@ -4029,17 +4029,17 @@ LABEL_12:
       {
         v102 = objc_opt_class();
         v103 = NSStringFromClass(v102);
-        v104 = [(ARFrameUpdateTimer *)self->_frameUpdateTimer isActive];
+        isActive = [(ARFrameUpdateTimer *)self->_frameUpdateTimer isActive];
         v105 = @"Disabling";
         *buf = 138543874;
         v132 = v103;
-        if (v104)
+        if (isActive)
         {
           v105 = @"Enabling";
         }
 
         v133 = 2048;
-        v134 = self;
+        selfCopy13 = self;
         v135 = 2112;
         v136 = v105;
         _os_log_impl(&dword_1C241C000, v101, OS_LOG_TYPE_INFO, "%{public}@ <%p>: %@ frame update timer", buf, 0x20u);
@@ -4049,8 +4049,8 @@ LABEL_12:
       [(ARSession *)self _configureSensorsForRecording];
       [(ARSession *)self _saveGraphFileInFileName:0];
 
-      v7 = v114;
-      v8 = v115;
+      techniques = v114;
+      secondaryTechniques = v115;
       v36 = v113;
     }
   }
@@ -4065,9 +4065,9 @@ LABEL_12:
       *buf = 138543874;
       v132 = v35;
       v133 = 2048;
-      v134 = self;
+      selfCopy13 = self;
       v135 = 2112;
-      v136 = v6;
+      v136 = configurationCopy;
       _os_log_impl(&dword_1C241C000, v33, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to run the session, configuration is not supported on this device: %@", buf, 0x20u);
     }
 
@@ -4085,20 +4085,20 @@ uint64_t __53__ARSession__updateSessionWithConfiguration_options___block_invoke(
   return kdebug_trace();
 }
 
-- (void)_updateSessionStateWithConfiguration:(id)a3 options:(unint64_t)a4
+- (void)_updateSessionStateWithConfiguration:(id)configuration options:(unint64_t)options
 {
-  v4 = a4;
+  optionsCopy = options;
   v27 = *MEMORY[0x1E69E9840];
   dispatch_semaphore_wait(self->_frameContextHandlerSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  if ((v4 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     dispatch_semaphore_wait(self->_lastProcessedFrameSemaphore, 0xFFFFFFFFFFFFFFFFLL);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = [(ARFrame *)self->_lastProcessedFrame anchors];
-    v7 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    anchors = [(ARFrame *)self->_lastProcessedFrame anchors];
+    v7 = [anchors countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -4110,14 +4110,14 @@ uint64_t __53__ARSession__updateSessionWithConfiguration_options___block_invoke(
         {
           if (*v19 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(anchors);
           }
 
           [(ARFrameContextHandler *)self->_frameContextHandler removeAnchor:*(*(&v18 + 1) + 8 * v10++)];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v8 = [anchors countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v8);
@@ -4133,21 +4133,21 @@ uint64_t __53__ARSession__updateSessionWithConfiguration_options___block_invoke(
       *buf = 138543618;
       v23 = v13;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Removing existing anchors", buf, 0x16u);
     }
 
-    if ((v4 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v4 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_4;
       }
 
 LABEL_17:
       [(ARWorldTrackingTechnique *)self->_worldTrackingTechnique resetSceneReconstruction];
-      if ((v4 & 1) == 0)
+      if ((optionsCopy & 1) == 0)
       {
         goto LABEL_21;
       }
@@ -4156,19 +4156,19 @@ LABEL_17:
     }
   }
 
-  else if ((v4 & 4) == 0)
+  else if ((optionsCopy & 4) == 0)
   {
     goto LABEL_3;
   }
 
   [(ARWorldTrackingTechnique *)self->_worldTrackingTechnique stopAllRaycasts];
-  if ((v4 & 8) != 0)
+  if ((optionsCopy & 8) != 0)
   {
     goto LABEL_17;
   }
 
 LABEL_4:
-  if ((v4 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
     goto LABEL_21;
   }
@@ -4183,7 +4183,7 @@ LABEL_18:
     *buf = 138543618;
     v23 = v16;
     v24 = 2048;
-    v25 = self;
+    selfCopy2 = self;
     _os_log_impl(&dword_1C241C000, v14, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Reset session transform", buf, 0x16u);
   }
 
@@ -4196,26 +4196,26 @@ LABEL_21:
   dispatch_semaphore_signal(self->_resultDataOfSecondaryFrameContextsSemaphore);
 }
 
-- (void)technique:(id)a3 didOutputResultData:(id)a4 timestamp:(double)a5 context:(id)a6
+- (void)technique:(id)technique didOutputResultData:(id)data timestamp:(double)timestamp context:(id)context
 {
   v382 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  obj = a4;
-  v11 = a6;
+  techniqueCopy = technique;
+  obj = data;
+  contextCopy = context;
   kdebug_trace();
   kdebug_trace();
   dispatch_semaphore_wait(self->_frameContextHandlerSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  v335 = v11;
-  [(ARFrameContextHandler *)self->_frameContextHandler markFrameContextProcessed:v11];
-  v336 = self;
+  v335 = contextCopy;
+  [(ARFrameContextHandler *)self->_frameContextHandler markFrameContextProcessed:contextCopy];
+  selfCopy = self;
   dispatch_semaphore_signal(self->_frameContextHandlerSemaphore);
   v366 = 0u;
   v367 = 0u;
   v368 = 0u;
   v369 = 0u;
-  v302 = v10;
-  v12 = [v10 splitTechniques];
-  v13 = [v12 countByEnumeratingWithState:&v366 objects:v381 count:16];
+  v302 = techniqueCopy;
+  splitTechniques = [techniqueCopy splitTechniques];
+  v13 = [splitTechniques countByEnumeratingWithState:&v366 objects:v381 count:16];
   if (v13)
   {
     v14 = *v367;
@@ -4225,13 +4225,13 @@ LABEL_21:
       {
         if (*v367 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(splitTechniques);
         }
 
-        [*(*(&v366 + 1) + 8 * i) requestResultDataAtTimestamp:v335 context:a5];
+        [*(*(&v366 + 1) + 8 * i) requestResultDataAtTimestamp:v335 context:timestamp];
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v366 objects:v381 count:16];
+      v13 = [splitTechniques countByEnumeratingWithState:&v366 objects:v381 count:16];
     }
 
     while (v13);
@@ -4240,17 +4240,17 @@ LABEL_21:
   if (!v335 || ([v335 imageData], (v16 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_23:
-    if (v336->resultDatasOfSecondaryFrameContexts)
+    if (selfCopy->resultDatasOfSecondaryFrameContexts)
     {
-      dispatch_semaphore_wait(v336->_resultDataOfSecondaryFrameContextsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-      v28 = [obj arrayByAddingObjectsFromArray:v336->resultDatasOfSecondaryFrameContexts];
+      dispatch_semaphore_wait(selfCopy->_resultDataOfSecondaryFrameContextsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+      v28 = [obj arrayByAddingObjectsFromArray:selfCopy->resultDatasOfSecondaryFrameContexts];
 
-      v29 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v360 = 0u;
       v361 = 0u;
       v358 = 0u;
       v359 = 0u;
-      v30 = v336->resultDatasOfSecondaryFrameContexts;
+      v30 = selfCopy->resultDatasOfSecondaryFrameContexts;
       v31 = [(NSArray *)v30 countByEnumeratingWithState:&v358 objects:v379 count:16];
       if (v31)
       {
@@ -4279,7 +4279,7 @@ LABEL_23:
               }
             }
 
-            [v29 addObject:v34];
+            [array addObject:v34];
           }
 
           v31 = [(NSArray *)v30 countByEnumeratingWithState:&v358 objects:v379 count:16];
@@ -4288,31 +4288,31 @@ LABEL_23:
         while (v31);
       }
 
-      objc_storeStrong(&v336->resultDatasOfSecondaryFrameContexts, v29);
-      dispatch_semaphore_signal(v336->_resultDataOfSecondaryFrameContextsSemaphore);
+      objc_storeStrong(&selfCopy->resultDatasOfSecondaryFrameContexts, array);
+      dispatch_semaphore_signal(selfCopy->_resultDataOfSecondaryFrameContextsSemaphore);
 
       obj = v28;
     }
 
-    v35 = [[ARFrame alloc] initWithTimestamp:v335 context:a5];
-    v36 = [v335 orientationData];
-    v37 = [v36 deviceMotion];
-    [v37 heading];
+    v35 = [[ARFrame alloc] initWithTimestamp:v335 context:timestamp];
+    orientationData = [v335 orientationData];
+    deviceMotion = [orientationData deviceMotion];
+    [deviceMotion heading];
     [(ARFrame *)v35 setRawHeading:?];
 
-    v38 = [v335 locationData];
-    v39 = [v38 location];
-    [(ARFrame *)v35 setRawLocation:v39];
+    locationData = [v335 locationData];
+    location = [locationData location];
+    [(ARFrame *)v35 setRawLocation:location];
 
-    v40 = [v335 locationData];
-    [v40 timestamp];
+    locationData2 = [v335 locationData];
+    [locationData2 timestamp];
     [(ARFrame *)v35 setRawLocationTimestamp:?];
 
-    v41 = [v335 locationData];
-    [v41 undulation];
+    locationData3 = [v335 locationData];
+    [locationData3 undulation];
     [(ARFrame *)v35 setUndulation:?];
 
-    if ((v336->_runningSensors & 0x40) != 0)
+    if ((selfCopy->_runningSensors & 0x40) != 0)
     {
       v42 = _ARLogSession_0();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -4323,7 +4323,7 @@ LABEL_23:
         *buf = 138543875;
         *&buf[4] = v44;
         *&buf[12] = 2048;
-        *&buf[14] = v336;
+        *&buf[14] = selfCopy;
         *&buf[22] = 2049;
         *&buf[24] = v45;
         _os_log_impl(&dword_1C241C000, v42, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: currentFrame.rawHeading,%{private}f", buf, 0x20u);
@@ -4336,21 +4336,21 @@ LABEL_23:
         v48 = NSStringFromClass(v47);
         [(ARFrame *)v35 rawLocationTimestamp];
         v50 = v49;
-        v51 = [(ARFrame *)v35 rawLocation];
-        [v51 coordinate];
+        rawLocation = [(ARFrame *)v35 rawLocation];
+        [rawLocation coordinate];
         v53 = v52;
-        v54 = [(ARFrame *)v35 rawLocation];
-        [v54 coordinate];
+        rawLocation2 = [(ARFrame *)v35 rawLocation];
+        [rawLocation2 coordinate];
         v56 = v55;
-        v57 = [(ARFrame *)v35 rawLocation];
-        [v57 altitudeWgs84];
+        rawLocation3 = [(ARFrame *)v35 rawLocation];
+        [rawLocation3 altitudeWgs84];
         v59 = v58;
-        v60 = [(ARFrame *)v35 rawLocation];
-        v61 = [v60 isAltitudeWgs84Available];
+        rawLocation4 = [(ARFrame *)v35 rawLocation];
+        isAltitudeWgs84Available = [rawLocation4 isAltitudeWgs84Available];
         *buf = 138544899;
         *&buf[4] = v48;
         *&buf[12] = 2048;
-        *&buf[14] = v336;
+        *&buf[14] = selfCopy;
         *&buf[22] = 2049;
         *&buf[24] = v50;
         LOWORD(v377[0]) = 2049;
@@ -4360,15 +4360,15 @@ LABEL_23:
         WORD2(v377[1]) = 2049;
         *(&v377[1] + 6) = v59;
         HIWORD(v377[1]) = 1024;
-        v378 = v61;
+        v378 = isAltitudeWgs84Available;
         _os_log_impl(&dword_1C241C000, v46, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: currentFrame.rawLocation,%{private}lf,%{private}lf,%{private}lf,%{private}lf,%d", buf, 0x44u);
       }
     }
 
     if ([(ARFrame *)v35 isHighResolution])
     {
-      v62 = [(ARSession *)v336 technique];
-      v63 = [v62 predictedResultDataAtTimestamp:v335 context:a5];
+      technique = [(ARSession *)selfCopy technique];
+      v63 = [technique predictedResultDataAtTimestamp:v335 context:timestamp];
 
       v64 = [MEMORY[0x1E696AE18] predicateWithFormat:@"class != %@", objc_opt_class()];
       v65 = [v63 filteredArrayUsingPredicate:v64];
@@ -4390,7 +4390,7 @@ LABEL_23:
     if (v333)
     {
       v316 = 0;
-      v306 = 0;
+      worldAlignmentModifiers = 0;
       v318 = *v355;
       do
       {
@@ -4409,21 +4409,21 @@ LABEL_23:
             v317 = v69;
             v307 = v72;
             v310 = v71;
-            v73 = [(ARFrame *)v35 camera];
-            [v73 setTransform:{v317, v313, v310, v307}];
+            camera = [(ARFrame *)v35 camera];
+            [camera setTransform:{v317, v313, v310, v307}];
 
             v316 = 1;
           }
 
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && v336->_renderPersonBoundingBoxesIntoCapturedImage)
+          if ((objc_opt_isKindOfClass() & 1) != 0 && selfCopy->_renderPersonBoundingBoxesIntoCapturedImage)
           {
             v352 = 0u;
             v353 = 0u;
             v350 = 0u;
             v351 = 0u;
-            v74 = [v68 detectedObjects];
-            v75 = [v74 countByEnumeratingWithState:&v350 objects:v374 count:16];
+            detectedObjects = [v68 detectedObjects];
+            v75 = [detectedObjects countByEnumeratingWithState:&v350 objects:v374 count:16];
             if (v75)
             {
               v76 = *v351;
@@ -4433,14 +4433,14 @@ LABEL_23:
                 {
                   if (*v351 != v76)
                   {
-                    objc_enumerationMutation(v74);
+                    objc_enumerationMutation(detectedObjects);
                   }
 
                   [*(*(&v350 + 1) + 8 * m) boundingBox];
                   ARDrawNormalizedCGRectIntoYUVPixelBuffer([(ARFrame *)v35 capturedImage], 255, v78, v79, v80, v81);
                 }
 
-                v75 = [v74 countByEnumeratingWithState:&v350 objects:v374 count:16];
+                v75 = [detectedObjects countByEnumeratingWithState:&v350 objects:v374 count:16];
               }
 
               while (v75);
@@ -4449,27 +4449,27 @@ LABEL_23:
 
           if (objc_opt_respondsToSelector())
           {
-            v82 = [v68 worldTrackingState];
-            v83 = [v82 state];
-            v84 = [(ARFrame *)v35 camera];
-            [v84 setTrackingState:v83];
+            worldTrackingState = [v68 worldTrackingState];
+            state = [worldTrackingState state];
+            camera2 = [(ARFrame *)v35 camera];
+            [camera2 setTrackingState:state];
 
-            v85 = [v82 reason];
-            v86 = [(ARFrame *)v35 camera];
-            [v86 setTrackingStateReason:v85];
+            reason = [worldTrackingState reason];
+            camera3 = [(ARFrame *)v35 camera];
+            [camera3 setTrackingStateReason:reason];
 
-            [(ARFrame *)v35 setWorldTrackingState:v82];
-            [v335 setDidRelocalize:{objc_msgSend(v82, "majorRelocalization")}];
+            [(ARFrame *)v35 setWorldTrackingState:worldTrackingState];
+            [v335 setDidRelocalize:{objc_msgSend(worldTrackingState, "majorRelocalization")}];
             if ([v335 didRelocalize])
             {
-              dispatch_semaphore_wait(v336->_lastProcessedFrameSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-              [v82 majorRelocalizationCameraTransform];
+              dispatch_semaphore_wait(selfCopy->_lastProcessedFrameSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+              [worldTrackingState majorRelocalizationCameraTransform];
               v311 = v88;
               v314 = v87;
               v308 = v89;
               v303 = v90;
-              v91 = [(ARFrame *)v336->_lastProcessedFrame camera];
-              [v91 transform];
+              camera4 = [(ARFrame *)selfCopy->_lastProcessedFrame camera];
+              [camera4 transform];
               v384 = __invert_f4(v383);
               v92 = 0;
               v370 = v384;
@@ -4486,7 +4486,7 @@ LABEL_23:
               v315 = *buf;
               v309 = v377[0];
               v304 = v377[1];
-              [(ARFrame *)v336->_lastProcessedFrame referenceOriginTransform];
+              [(ARFrame *)selfCopy->_lastProcessedFrame referenceOriginTransform];
               v93 = 0;
               v370.columns[0] = v94;
               v370.columns[1] = v95;
@@ -4503,20 +4503,20 @@ LABEL_23:
               while (v93 != 4);
               [v335 setRelocalizationDeltaTransform:{*buf, *&buf[16], *v377, *&v377[1]}];
 
-              dispatch_semaphore_signal(v336->_lastProcessedFrameSemaphore);
+              dispatch_semaphore_signal(selfCopy->_lastProcessedFrameSemaphore);
               v98 = _ARLogSession_0();
               if (os_log_type_enabled(v98, OS_LOG_TYPE_INFO))
               {
                 v99 = objc_opt_class();
                 v100 = NSStringFromClass(v99);
-                [v82 lastMajorRelocalizationTimestamp];
+                [worldTrackingState lastMajorRelocalizationTimestamp];
                 v102 = v101;
                 [v335 relocalizationDeltaTransform];
                 v107 = ARMatrix4x4Description(0, v103, v104, v105, v106);
                 *buf = 138544130;
                 *&buf[4] = v100;
                 *&buf[12] = 2048;
-                *&buf[14] = v336;
+                *&buf[14] = selfCopy;
                 *&buf[22] = 2048;
                 *&buf[24] = v102;
                 LOWORD(v377[0]) = 2112;
@@ -4541,17 +4541,17 @@ LABEL_23:
             v108 = v68;
             -[ARFrame setWorldMappingStatus:](v35, "setWorldMappingStatus:", [v108 worldMappingStatus]);
             [v335 frameDebugOptions];
-            v109 = [v108 lineCloud];
-            [(ARFrame *)v35 setWorldTrackingLineCloud:v109];
+            lineCloud = [v108 lineCloud];
+            [(ARFrame *)v35 setWorldTrackingLineCloud:lineCloud];
 
-            v110 = [v108 currentlyActiveVideoFormat];
-            [(ARFrame *)v35 setCurrentlyActiveVideoFormat:v110];
+            currentlyActiveVideoFormat = [v108 currentlyActiveVideoFormat];
+            [(ARFrame *)v35 setCurrentlyActiveVideoFormat:currentlyActiveVideoFormat];
 
-            if ([(ARSession *)v336 _shouldUpdateLocationSensorForFusion])
+            if ([(ARSession *)selfCopy _shouldUpdateLocationSensorForFusion])
             {
-              locationSensor = v336->_locationSensor;
-              v112 = [v335 imageData];
-              [(ARRemoteLocationSensor *)locationSensor updateEstimationFromVIOPose:v108 imageData:v112];
+              locationSensor = selfCopy->_locationSensor;
+              imageData = [v335 imageData];
+              [(ARRemoteLocationSensor *)locationSensor updateEstimationFromVIOPose:v108 imageData:imageData];
             }
           }
 
@@ -4559,8 +4559,8 @@ LABEL_23:
           if (objc_opt_isKindOfClass())
           {
             v113 = v68;
-            v114 = [v113 location];
-            [(ARFrame *)v35 setLocation:v114];
+            location2 = [v113 location];
+            [(ARFrame *)v35 setLocation:location2];
 
             [v113 heading];
             [(ARFrame *)v35 setHeading:?];
@@ -4569,20 +4569,20 @@ LABEL_23:
             {
               v116 = objc_opt_class();
               v117 = NSStringFromClass(v116);
-              v118 = [(ARFrame *)v35 location];
-              [v118 coordinate];
+              location3 = [(ARFrame *)v35 location];
+              [location3 coordinate];
               v120 = v119;
-              v121 = [(ARFrame *)v35 location];
-              [v121 coordinate];
+              location4 = [(ARFrame *)v35 location];
+              [location4 coordinate];
               v123 = v122;
-              v124 = [(ARFrame *)v35 location];
-              [v124 altitude];
+              location5 = [(ARFrame *)v35 location];
+              [location5 altitude];
               v126 = v125;
               [(ARFrame *)v35 heading];
               *buf = 138544643;
               *&buf[4] = v117;
               *&buf[12] = 2048;
-              *&buf[14] = v336;
+              *&buf[14] = selfCopy;
               *&buf[22] = 2049;
               *&buf[24] = v120;
               LOWORD(v377[0]) = 2049;
@@ -4600,11 +4600,11 @@ LABEL_23:
           {
             v128 = v68;
             [(ARFrame *)v35 setVlState:v128];
-            v129 = [v128 trackingStatus];
-            [(ARFrame *)v35 setGeoTrackingStatus:v129];
+            trackingStatus = [v128 trackingStatus];
+            [(ARFrame *)v35 setGeoTrackingStatus:trackingStatus];
 
-            v130 = [v128 fusedReplayLocation];
-            [(ARFrame *)v35 setRawLocation:v130];
+            fusedReplayLocation = [v128 fusedReplayLocation];
+            [(ARFrame *)v35 setRawLocation:fusedReplayLocation];
 
             [v128 fusedReplayLocationTimestamp];
             [(ARFrame *)v35 setRawLocationTimestamp:?];
@@ -4614,18 +4614,18 @@ LABEL_23:
           if (objc_opt_isKindOfClass())
           {
             v131 = v68;
-            v132 = [v131 debugInfo];
-            [(ARFrame *)v35 setVlDebugInfo:v132];
+            debugInfo = [v131 debugInfo];
+            [(ARFrame *)v35 setVlDebugInfo:debugInfo];
           }
 
           if (objc_opt_respondsToSelector())
           {
             if (objc_opt_respondsToSelector())
             {
-              v306 = [v68 worldAlignmentModifiers];
+              worldAlignmentModifiers = [v68 worldAlignmentModifiers];
             }
 
-            if ((v306 & 1) == 0)
+            if ((worldAlignmentModifiers & 1) == 0)
             {
               [v68 worldAlignmentTransform];
               [(ARFrame *)v35 setWorldAlignmentTransform:?];
@@ -4634,12 +4634,12 @@ LABEL_23:
 
           if (objc_opt_respondsToSelector())
           {
-            v133 = [v68 lightEstimate];
-            [(ARFrame *)v35 setLightEstimate:v133];
+            lightEstimate = [v68 lightEstimate];
+            [(ARFrame *)v35 setLightEstimate:lightEstimate];
 
             v134 = ARLinkedOnOrAfterDawn();
-            v135 = [v68 lightEstimate];
-            [v135 ambientIntensity];
+            lightEstimate2 = [v68 lightEstimate];
+            [lightEstimate2 ambientIntensity];
             if (v134)
             {
               v136 = v136 / 1000.0;
@@ -4647,15 +4647,15 @@ LABEL_23:
 
             v137 = v136;
             v138 = ARMapLightIntensity(v137);
-            v139 = [(ARFrame *)v35 camera];
+            camera5 = [(ARFrame *)v35 camera];
             *&v140 = v138;
-            [v139 setExposureOffset:v140];
+            [camera5 setExposureOffset:v140];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v141 = [v68 featurePoints];
-            [(ARFrame *)v35 setReferenceFeaturePoints:v141];
+            featurePoints = [v68 featurePoints];
+            [(ARFrame *)v35 setReferenceFeaturePoints:featurePoints];
           }
 
           objc_opt_class();
@@ -4683,7 +4683,7 @@ LABEL_23:
             -[ARFrame setEstimatedDepthData:](v35, "setEstimatedDepthData:", [v144 depthBuffer]);
           }
 
-          if ((-[ARConfiguration frameSemantics](v336->_configurationInternal, "frameSemantics") & 8) != 0 && ARDeviceSupportsJasper() && [v68 isMemberOfClass:objc_opt_class()])
+          if ((-[ARConfiguration frameSemantics](selfCopy->_configurationInternal, "frameSemantics") & 8) != 0 && ARDeviceSupportsJasper() && [v68 isMemberOfClass:objc_opt_class()])
           {
             v145 = v68;
             v146 = [objc_alloc(MEMORY[0x1E69864F8]) initWithDepthMap:objc_msgSend(v145 confidenceMap:{"singleFrameDepthBuffer"), objc_msgSend(v145, "confidenceMap")}];
@@ -4693,7 +4693,7 @@ LABEL_23:
             -[ARFrame setDepthConfidenceData:](v35, "setDepthConfidenceData:", [v145 confidenceBuffer]);
           }
 
-          if ((-[ARConfiguration frameSemantics](v336->_configurationInternal, "frameSemantics") & 0x10) != 0 && ARDeviceSupportsJasper() && [v68 isMemberOfClass:objc_opt_class()])
+          if ((-[ARConfiguration frameSemantics](selfCopy->_configurationInternal, "frameSemantics") & 0x10) != 0 && ARDeviceSupportsJasper() && [v68 isMemberOfClass:objc_opt_class()])
           {
             v147 = v68;
             v148 = [objc_alloc(MEMORY[0x1E69864F8]) initWithDepthMap:objc_msgSend(v147 confidenceMap:{"depthBuffer"), objc_msgSend(v147, "confidenceMap")}];
@@ -4708,20 +4708,20 @@ LABEL_23:
           {
             v149 = v68;
             v150 = objc_opt_new();
-            v151 = [v149 trackedDetectionResult];
+            trackedDetectionResult = [v149 trackedDetectionResult];
 
-            if (v151)
+            if (trackedDetectionResult)
             {
-              v152 = [v149 trackedDetectionResult];
-              [v150 addObject:v152];
+              trackedDetectionResult2 = [v149 trackedDetectionResult];
+              [v150 addObject:trackedDetectionResult2];
             }
 
-            v153 = [v149 alignedDetectionResult];
+            alignedDetectionResult = [v149 alignedDetectionResult];
 
-            if (v153)
+            if (alignedDetectionResult)
             {
-              v154 = [v149 alignedDetectionResult];
-              [v150 addObject:v154];
+              alignedDetectionResult2 = [v149 alignedDetectionResult];
+              [v150 addObject:alignedDetectionResult2];
             }
 
             v155 = [v150 ar_map:&__block_literal_global_290];
@@ -4738,17 +4738,17 @@ LABEL_23:
     else
     {
       v316 = 0;
-      v306 = 0;
+      worldAlignmentModifiers = 0;
     }
 
     v334 = [obj ar_filter:&__block_literal_global_295];
     if ([v334 count])
     {
-      [(ARSession *)v336 _sessionDidUpdateSpatialMappingPointClouds:v334];
+      [(ARSession *)selfCopy _sessionDidUpdateSpatialMappingPointClouds:v334];
     }
 
-    v156 = [(ARSession *)v336 configurationInternal];
-    if ([v156 isPersonMetadataEnabled] && -[ARFrame segmentationBuffer](v35, "segmentationBuffer"))
+    configurationInternal = [(ARSession *)selfCopy configurationInternal];
+    if ([configurationInternal isPersonMetadataEnabled] && -[ARFrame segmentationBuffer](v35, "segmentationBuffer"))
     {
       v157 = [(ARFrame *)v35 estimatedDepthData]== 0;
 
@@ -4760,8 +4760,8 @@ LABEL_139:
           [(ARFrame *)v35 setResultDatas:obj];
         }
 
-        v165 = [(ARFrame *)v35 camera];
-        if (![v165 trackingState])
+        camera6 = [(ARFrame *)v35 camera];
+        if (![camera6 trackingState])
         {
           if (v316)
           {
@@ -4777,13 +4777,13 @@ LABEL_144:
               if ([v335 frameDebugOptions])
               {
                 v166 = objc_opt_new();
-                v167 = [v335 imageData];
-                v168 = [v167 captureDate];
-                [v168 timeIntervalSinceNow];
+                imageData2 = [v335 imageData];
+                captureDate = [imageData2 captureDate];
+                [captureDate timeIntervalSinceNow];
                 [v166 setVideoLatency:-v169];
 
-                v170 = [v335 imageData];
-                [v170 timestamp];
+                imageData3 = [v335 imageData];
+                [imageData3 timestamp];
                 [v166 addTimestamp:objc_opt_class() forDataOfClass:v171];
 
                 v344 = 0u;
@@ -4821,29 +4821,29 @@ LABEL_144:
                 [(ARFrame *)v35 setTimingData:v166];
               }
 
-              v178 = [(ARSession *)v336 powerUsage]== 0;
-              v179 = [v335 imageData];
-              v180 = [v179 captureFramesPerSecond];
+              v178 = [(ARSession *)selfCopy powerUsage]== 0;
+              imageData4 = [v335 imageData];
+              captureFramesPerSecond = [imageData4 captureFramesPerSecond];
 
-              [(ARFrame *)v35 setRenderFramesPerSecond:[(ARSession *)v336 _preferredRenderFrameRateForCaptureFrameRate:v180 isNominalPower:v178]];
+              [(ARFrame *)v35 setRenderFramesPerSecond:[(ARSession *)selfCopy _preferredRenderFrameRateForCaptureFrameRate:captureFramesPerSecond isNominalPower:v178]];
               [(ARFrame *)v35 setShouldRestrictFrameRate:v178 ^ 1];
-              dispatch_semaphore_wait(v336->_lastProcessedFrameSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-              v181 = [(ARFrame *)v35 camera];
-              v182 = [v181 trackingStateReason];
-              v183 = v182 == 4;
-              if (v182 == 4)
+              dispatch_semaphore_wait(selfCopy->_lastProcessedFrameSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+              camera7 = [(ARFrame *)v35 camera];
+              trackingStateReason = [camera7 trackingStateReason];
+              v183 = trackingStateReason == 4;
+              if (trackingStateReason == 4)
               {
-                v184 = [(ARFrame *)v35 camera];
-                v185 = [v184 trackingState] == 1;
+                camera8 = [(ARFrame *)v35 camera];
+                v185 = [camera8 trackingState] == 1;
 
                 if (!v185)
                 {
                   v183 = 0;
 LABEL_168:
-                  v186 = v336;
+                  v186 = selfCopy;
 LABEL_169:
-                  v190 = [(ARSession *)v186 technique];
-                  v332 = [v190 techniqueOfClass:objc_opt_class()];
+                  technique2 = [(ARSession *)v186 technique];
+                  v332 = [technique2 techniqueOfClass:objc_opt_class()];
 
                   if (v332)
                   {
@@ -4855,8 +4855,8 @@ LABEL_169:
                     v191 = 0;
                   }
 
-                  v192 = [(ARSession *)v336 technique];
-                  v331 = [v192 techniqueOfClass:objc_opt_class()];
+                  technique3 = [(ARSession *)selfCopy technique];
+                  v331 = [technique3 techniqueOfClass:objc_opt_class()];
 
                   if (v331)
                   {
@@ -4870,46 +4870,46 @@ LABEL_169:
 
                   if ((v191 | v193))
                   {
-                    v194 = [(ARFrame *)v35 camera];
-                    v195 = [v194 trackingState] == 0;
+                    camera9 = [(ARFrame *)v35 camera];
+                    v195 = [camera9 trackingState] == 0;
 
                     if (!v195)
                     {
-                      v196 = [(ARFrame *)v35 camera];
-                      [v196 setTrackingState:1];
+                      camera10 = [(ARFrame *)v35 camera];
+                      [camera10 setTrackingState:1];
 
-                      v197 = [(ARFrame *)v35 camera];
-                      [v197 setTrackingStateReason:1];
+                      camera11 = [(ARFrame *)v35 camera];
+                      [camera11 setTrackingStateReason:1];
                     }
                   }
 
-                  p_lastProcessedFrame = &v336->_lastProcessedFrame;
-                  v199 = TrackingStateDifferent(v336->_lastProcessedFrame, v35);
-                  v200 = [(ARSession *)v336 geoTrackingTechnique];
-                  if (v200)
+                  p_lastProcessedFrame = &selfCopy->_lastProcessedFrame;
+                  v199 = TrackingStateDifferent(selfCopy->_lastProcessedFrame, v35);
+                  geoTrackingTechnique = [(ARSession *)selfCopy geoTrackingTechnique];
+                  if (geoTrackingTechnique)
                   {
-                    v201 = [(ARFrame *)v35 geoTrackingStatus];
-                    v202 = v201 == 0;
+                    geoTrackingStatus = [(ARFrame *)v35 geoTrackingStatus];
+                    v202 = geoTrackingStatus == 0;
 
                     if (v202)
                     {
-                      v203 = [*p_lastProcessedFrame vlState];
+                      vlState = [*p_lastProcessedFrame vlState];
 
-                      if (v203)
+                      if (vlState)
                       {
-                        v204 = [*p_lastProcessedFrame vlState];
-                        [(ARFrame *)v35 setVlState:v204];
+                        vlState2 = [*p_lastProcessedFrame vlState];
+                        [(ARFrame *)v35 setVlState:vlState2];
 
-                        v205 = [*p_lastProcessedFrame vlState];
-                        v206 = [v205 trackingStatus];
-                        [(ARFrame *)v35 setGeoTrackingStatus:v206];
+                        vlState3 = [*p_lastProcessedFrame vlState];
+                        trackingStatus2 = [vlState3 trackingStatus];
+                        [(ARFrame *)v35 setGeoTrackingStatus:trackingStatus2];
 
-                        v207 = [*p_lastProcessedFrame vlState];
-                        v208 = [v207 fusedReplayLocation];
-                        [(ARFrame *)v35 setRawLocation:v208];
+                        vlState4 = [*p_lastProcessedFrame vlState];
+                        fusedReplayLocation2 = [vlState4 fusedReplayLocation];
+                        [(ARFrame *)v35 setRawLocation:fusedReplayLocation2];
 
-                        v209 = [*p_lastProcessedFrame vlState];
-                        [v209 fusedReplayLocationTimestamp];
+                        vlState5 = [*p_lastProcessedFrame vlState];
+                        [vlState5 fusedReplayLocationTimestamp];
                         [(ARFrame *)v35 setRawLocationTimestamp:?];
 
                         v210 = _ARLogSession_0();
@@ -4920,7 +4920,7 @@ LABEL_169:
                           *buf = 138543618;
                           *&buf[4] = v212;
                           *&buf[12] = 2048;
-                          *&buf[14] = v336;
+                          *&buf[14] = selfCopy;
                           _os_log_impl(&dword_1C241C000, v210, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Using vlState from previous frame.", buf, 0x16u);
                         }
                       }
@@ -4933,33 +4933,33 @@ LABEL_169:
                     }
                   }
 
-                  v213 = v336;
+                  v213 = selfCopy;
                   if ([v335 didRelocalize])
                   {
-                    os_unfair_lock_lock(&v336->_worldMapSurfaceDataLock);
-                    v214 = [v335 worldMap];
-                    v215 = [v214 surfaceData];
-                    if (v215)
+                    os_unfair_lock_lock(&selfCopy->_worldMapSurfaceDataLock);
+                    worldMap = [v335 worldMap];
+                    surfaceData = [worldMap surfaceData];
+                    if (surfaceData)
                     {
-                      v216 = [(ARWorldTrackingTechnique *)v336->_worldTrackingTechnique hasLoadedSurfaceData];
+                      hasLoadedSurfaceData = [(ARWorldTrackingTechnique *)selfCopy->_worldTrackingTechnique hasLoadedSurfaceData];
 
-                      v213 = v336;
-                      if (!v216)
+                      v213 = selfCopy;
+                      if (!hasLoadedSurfaceData)
                       {
                         [(ARFrame *)v35 timestamp];
                         kdebug_trace();
-                        worldTrackingTechnique = v336->_worldTrackingTechnique;
-                        v218 = [v335 worldMap];
-                        v219 = [v218 surfaceData];
-                        [(ARWorldTrackingTechnique *)worldTrackingTechnique loadSurfaceData:v219];
+                        worldTrackingTechnique = selfCopy->_worldTrackingTechnique;
+                        worldMap2 = [v335 worldMap];
+                        surfaceData2 = [worldMap2 surfaceData];
+                        [(ARWorldTrackingTechnique *)worldTrackingTechnique loadSurfaceData:surfaceData2];
 
-                        dispatch_semaphore_wait(v336->_frameContextHandlerSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+                        dispatch_semaphore_wait(selfCopy->_frameContextHandlerSemaphore, 0xFFFFFFFFFFFFFFFFLL);
                         v338 = 0u;
                         v339 = 0u;
                         v340 = 0u;
                         v341 = 0u;
-                        v220 = [(ARFrame *)v35 anchors];
-                        v221 = [v220 countByEnumeratingWithState:&v338 objects:v371 count:16];
+                        anchors = [(ARFrame *)v35 anchors];
+                        v221 = [anchors countByEnumeratingWithState:&v338 objects:v371 count:16];
                         if (v221)
                         {
                           v222 = *v339;
@@ -4969,25 +4969,25 @@ LABEL_169:
                             {
                               if (*v339 != v222)
                               {
-                                objc_enumerationMutation(v220);
+                                objc_enumerationMutation(anchors);
                               }
 
                               v224 = *(*(&v338 + 1) + 8 * ii);
                               objc_opt_class();
                               if (objc_opt_isKindOfClass())
                               {
-                                [(ARFrameContextHandler *)v336->_frameContextHandler removeAnchor:v224];
+                                [(ARFrameContextHandler *)selfCopy->_frameContextHandler removeAnchor:v224];
                               }
                             }
 
-                            v221 = [v220 countByEnumeratingWithState:&v338 objects:v371 count:16];
+                            v221 = [anchors countByEnumeratingWithState:&v338 objects:v371 count:16];
                           }
 
                           while (v221);
                         }
 
-                        v213 = v336;
-                        dispatch_semaphore_signal(v336->_frameContextHandlerSemaphore);
+                        v213 = selfCopy;
+                        dispatch_semaphore_signal(selfCopy->_frameContextHandlerSemaphore);
                         [(ARFrame *)v35 timestamp];
                         kdebug_trace();
                       }
@@ -4996,19 +4996,19 @@ LABEL_169:
                     else
                     {
 
-                      v213 = v336;
+                      v213 = selfCopy;
                     }
 
                     os_unfair_lock_unlock(&v213->_worldMapSurfaceDataLock);
                   }
 
-                  [(ARSession *)v213 _updateOriginTransformForFrame:v35 previousFrame:v213->_lastProcessedFrame modifiers:v306 context:v335];
+                  [(ARSession *)v213 _updateOriginTransformForFrame:v35 previousFrame:v213->_lastProcessedFrame modifiers:worldAlignmentModifiers context:v335];
                   if ([(ARFrame *)v35 referenceOriginTransformAvailable])
                   {
                     if ([v335 worldAlignment] == 2)
                     {
-                      v225 = [(ARFrame *)v35 camera];
-                      [v225 setTransform:{*MEMORY[0x1E69E9B18], *(MEMORY[0x1E69E9B18] + 16), *(MEMORY[0x1E69E9B18] + 32), *(MEMORY[0x1E69E9B18] + 48)}];
+                      camera12 = [(ARFrame *)v35 camera];
+                      [camera12 setTransform:{*MEMORY[0x1E69E9B18], *(MEMORY[0x1E69E9B18] + 16), *(MEMORY[0x1E69E9B18] + 32), *(MEMORY[0x1E69E9B18] + 48)}];
                     }
 
                     else
@@ -5018,8 +5018,8 @@ LABEL_169:
                       v328 = v226;
                       v319 = v229;
                       v322 = v228;
-                      v225 = [(ARFrame *)v35 camera];
-                      [v225 transform];
+                      camera12 = [(ARFrame *)v35 camera];
+                      [camera12 transform];
                       v230 = 0;
                       v370.columns[0] = v231;
                       v370.columns[1] = v232;
@@ -5038,77 +5038,77 @@ LABEL_169:
                       v329 = *buf;
                       v320 = *&v377[1];
                       v323 = *v377;
-                      v235 = [(ARFrame *)v35 camera];
-                      [v235 setTransform:{v329, v326, v323, v320}];
+                      camera13 = [(ARFrame *)v35 camera];
+                      [camera13 setTransform:{v329, v326, v323, v320}];
                     }
 
-                    if (v336->_worldTrackingTechnique)
+                    if (selfCopy->_worldTrackingTechnique)
                     {
                       [(ARFrame *)v35 referenceOriginTransform];
-                      [(ARWorldTrackingTechnique *)v336->_worldTrackingTechnique setReferenceOriginTransform:?];
+                      [(ARWorldTrackingTechnique *)selfCopy->_worldTrackingTechnique setReferenceOriginTransform:?];
                     }
                   }
 
-                  [(ARSession *)v336 _populateRawSceneUnderstandingDataForFrame:v35 fromResultData:obj];
-                  v236 = v336;
-                  if (v336->_configuredForWorldTracking)
+                  [(ARSession *)selfCopy _populateRawSceneUnderstandingDataForFrame:v35 fromResultData:obj];
+                  v236 = selfCopy;
+                  if (selfCopy->_configuredForWorldTracking)
                   {
-                    v237 = [(ARSession *)v336 is6DofFaceTracking];
-                    v236 = v336;
-                    if (!v237)
+                    is6DofFaceTracking = [(ARSession *)selfCopy is6DofFaceTracking];
+                    v236 = selfCopy;
+                    if (!is6DofFaceTracking)
                     {
-                      [(ARSession *)v336 _updateFeaturePointsForFrame:v35 previousFrame:v336->_lastProcessedFrame trackingStateChanged:v199 context:v335];
-                      v236 = v336;
+                      [(ARSession *)selfCopy _updateFeaturePointsForFrame:v35 previousFrame:selfCopy->_lastProcessedFrame trackingStateChanged:v199 context:v335];
+                      v236 = selfCopy;
                     }
                   }
 
                   if ([(ARSession *)v236 is6DofFaceTracking])
                   {
-                    v238 = [(ARFrame *)v35 camera];
-                    [v238 transform];
+                    camera14 = [(ARFrame *)v35 camera];
+                    [camera14 transform];
                     v243 = ARFrontWideCameraTransformFromBackWideAngleCameraTransform(v239, v240, v241, v242);
                     v327 = v244;
                     v330 = v243;
                     v321 = v246;
                     v324 = v245;
-                    v247 = [(ARFrame *)v35 camera];
-                    [v247 setTransform:{v330, v327, v324, v321}];
+                    camera15 = [(ARFrame *)v35 camera];
+                    [camera15 setTransform:{v330, v327, v324, v321}];
                   }
 
-                  v248 = [(ARFrame *)v35 lightEstimate];
+                  lightEstimate3 = [(ARFrame *)v35 lightEstimate];
                   objc_opt_class();
                   isKindOfClass = objc_opt_isKindOfClass();
 
                   if (isKindOfClass)
                   {
-                    v250 = [(ARFrame *)v35 lightEstimate];
-                    v251 = [(ARFrame *)v35 camera];
-                    v252 = [v250 lightEstimateByApplyingRotation:{ARMatrix3x3FromMatrix4x4(objc_msgSend(v251, "transform"))}];
+                    lightEstimate4 = [(ARFrame *)v35 lightEstimate];
+                    camera16 = [(ARFrame *)v35 camera];
+                    v252 = [lightEstimate4 lightEstimateByApplyingRotation:{ARMatrix3x3FromMatrix4x4(objc_msgSend(camera16, "transform"))}];
                     [(ARFrame *)v35 setLightEstimate:v252];
                   }
 
-                  v253 = [(ARFrame *)v336->_lastProcessedFrame anchors];
-                  [v253 count];
+                  anchors2 = [(ARFrame *)selfCopy->_lastProcessedFrame anchors];
+                  [anchors2 count];
                   kdebug_trace();
 
-                  v254 = [(ARFrame *)v336->_lastProcessedFrame anchors];
-                  [(ARFrame *)v35 setAnchors:v254];
+                  anchors3 = [(ARFrame *)selfCopy->_lastProcessedFrame anchors];
+                  [(ARFrame *)v35 setAnchors:anchors3];
 
-                  v255 = [(ARFrame *)v336->_lastProcessedFrame privateAnchors];
-                  [(ARFrame *)v35 setPrivateAnchors:v255];
+                  privateAnchors = [(ARFrame *)selfCopy->_lastProcessedFrame privateAnchors];
+                  [(ARFrame *)v35 setPrivateAnchors:privateAnchors];
 
-                  v256 = [(ARSession *)v336 _updateAnchorsForFrame:v35 resultDatas:obj context:v335];
-                  v257 = [(ARFrame *)v35 anchors];
-                  [v257 count];
+                  v256 = [(ARSession *)selfCopy _updateAnchorsForFrame:v35 resultDatas:obj context:v335];
+                  anchors4 = [(ARFrame *)v35 anchors];
+                  [anchors4 count];
                   kdebug_trace();
 
                   if (v199)
                   {
-                    v258 = [(ARFrame *)v35 camera];
-                    if ([v258 trackingState])
+                    camera17 = [(ARFrame *)v35 camera];
+                    if ([camera17 trackingState])
                     {
-                      v257 = [(ARFrame *)v35 camera];
-                      v259 = [v257 trackingStateReason] == 1;
+                      anchors4 = [(ARFrame *)v35 camera];
+                      v259 = [anchors4 trackingStateReason] == 1;
 
                       if (!v259)
                       {
@@ -5122,15 +5122,15 @@ LABEL_169:
 
                     if (*p_lastProcessedFrame)
                     {
-                      v260 = [*p_lastProcessedFrame camera];
-                      if (![v260 trackingState])
+                      camera18 = [*p_lastProcessedFrame camera];
+                      if (![camera18 trackingState])
                       {
 
                         goto LABEL_225;
                       }
 
-                      v257 = [*p_lastProcessedFrame camera];
-                      v261 = [v257 trackingStateReason] == 1;
+                      anchors4 = [*p_lastProcessedFrame camera];
+                      v261 = [anchors4 trackingStateReason] == 1;
 
                       if (v261)
                       {
@@ -5139,7 +5139,7 @@ LABEL_169:
                     }
 
                     [(ARFrame *)v35 timestamp];
-                    v336->_currentTrackingStartingTimestamp = v262;
+                    selfCopy->_currentTrackingStartingTimestamp = v262;
                   }
 
 LABEL_225:
@@ -5150,10 +5150,10 @@ LABEL_225:
                     kdebug_trace();
                   }
 
-                  v263 = [(ARSession *)v336 relocalizing];
-                  [(ARSession *)v336 setRelocalizing:v183];
-                  v264 = v183 ^ v263;
-                  if (v183 & (v183 ^ v263))
+                  relocalizing = [(ARSession *)selfCopy relocalizing];
+                  [(ARSession *)selfCopy setRelocalizing:v183];
+                  v264 = v183 ^ relocalizing;
+                  if (v183 & (v183 ^ relocalizing))
                   {
                     v265 = _ARLogSession_0();
                     if (os_log_type_enabled(v265, OS_LOG_TYPE_INFO))
@@ -5163,48 +5163,48 @@ LABEL_225:
                       *buf = 138543618;
                       *&buf[4] = v267;
                       *&buf[12] = 2048;
-                      *&buf[14] = v336;
+                      *&buf[14] = selfCopy;
                       _os_log_impl(&dword_1C241C000, v265, OS_LOG_TYPE_INFO, "%{public}@ <%p>: world tracking did start relocalizing", buf, 0x16u);
                     }
 
-                    v268 = [v335 worldMap];
+                    worldMap3 = [v335 worldMap];
 
-                    if (v268)
+                    if (worldMap3)
                     {
-                      v269 = v336;
-                      v336->_relocalizationRequested = 1;
+                      v269 = selfCopy;
+                      selfCopy->_relocalizationRequested = 1;
                     }
 
                     else
                     {
-                      v276 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:v336->_defaultRelocalizationDuration];
-                      relocalizationTimeoutDate = v336->_relocalizationTimeoutDate;
-                      v336->_relocalizationTimeoutDate = v276;
+                      v276 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:selfCopy->_defaultRelocalizationDuration];
+                      relocalizationTimeoutDate = selfCopy->_relocalizationTimeoutDate;
+                      selfCopy->_relocalizationTimeoutDate = v276;
 
-                      [(ARSession *)v336 _sessionShouldAttemptRelocalization];
-                      v269 = v336;
+                      [(ARSession *)selfCopy _sessionShouldAttemptRelocalization];
+                      v269 = selfCopy;
                     }
                   }
 
                   else if (v183)
                   {
-                    v269 = v336;
-                    if (!v336->_relocalizationRequested)
+                    v269 = selfCopy;
+                    if (!selfCopy->_relocalizationRequested)
                     {
-                      [(NSDate *)v336->_relocalizationTimeoutDate timeIntervalSinceNow];
-                      v269 = v336;
+                      [(NSDate *)selfCopy->_relocalizationTimeoutDate timeIntervalSinceNow];
+                      v269 = selfCopy;
                       if (v270 < 0.0)
                       {
-                        v271 = v336->_relocalizationTimeoutDate;
-                        v336->_relocalizationTimeoutDate = 0;
+                        v271 = selfCopy->_relocalizationTimeoutDate;
+                        selfCopy->_relocalizationTimeoutDate = 0;
 
-                        v269 = v336;
-                        stateQueue = v336->_stateQueue;
+                        v269 = selfCopy;
+                        stateQueue = selfCopy->_stateQueue;
                         block[0] = MEMORY[0x1E69E9820];
                         block[1] = 3221225472;
                         block[2] = __61__ARSession_technique_didOutputResultData_timestamp_context___block_invoke_311;
                         block[3] = &unk_1E817BFE8;
-                        block[4] = v336;
+                        block[4] = selfCopy;
                         dispatch_async(stateQueue, block);
                       }
                     }
@@ -5212,7 +5212,7 @@ LABEL_225:
 
                   else
                   {
-                    v269 = v336;
+                    v269 = selfCopy;
                     if (v264)
                     {
                       v273 = _ARLogSession_0();
@@ -5223,36 +5223,36 @@ LABEL_225:
                         *buf = 138543618;
                         *&buf[4] = v275;
                         *&buf[12] = 2048;
-                        *&buf[14] = v336;
+                        *&buf[14] = selfCopy;
                         _os_log_impl(&dword_1C241C000, v273, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: world tracking ended relocalization", buf, 0x16u);
                       }
 
-                      v269 = v336;
-                      v336->_relocalizationRequested = 0;
+                      v269 = selfCopy;
+                      selfCopy->_relocalizationRequested = 0;
                     }
                   }
 
                   [(ARSessionMetrics *)v269->_metrics sessionDidUpdateFrame:v35];
-                  v278 = v336->_worldTrackingTechnique;
-                  dispatch_semaphore_signal(v336->_lastProcessedFrameSemaphore);
+                  v278 = selfCopy->_worldTrackingTechnique;
+                  dispatch_semaphore_signal(selfCopy->_lastProcessedFrameSemaphore);
                   if ([(ARFrame *)v35 isHighResolution])
                   {
-                    [(ARSession *)v336 _sessionDidCaptureHighResolutionFrame:v35 error:0];
+                    [(ARSession *)selfCopy _sessionDidCaptureHighResolutionFrame:v35 error:0];
                   }
 
                   else
                   {
                     [(ARFrame *)v35 setScheduledTimestamp:CACurrentMediaTime()];
-                    v279 = [v335 imageData];
-                    v257 = [(ARSession *)v336 configurationInternal];
-                    v280 = ARTimerFramesPerSecond(v279, v257);
+                    imageData5 = [v335 imageData];
+                    anchors4 = [(ARSession *)selfCopy configurationInternal];
+                    v280 = ARTimerFramesPerSecond(imageData5, anchors4);
 
-                    v281 = v336;
-                    inFrameAnchorVisualizer = v336->_inFrameAnchorVisualizer;
+                    v281 = selfCopy;
+                    inFrameAnchorVisualizer = selfCopy->_inFrameAnchorVisualizer;
                     if (inFrameAnchorVisualizer)
                     {
                       [(ARInFrameAnchorVisualizer *)inFrameAnchorVisualizer drawOriginAndAnchorsOnFrame:v35];
-                      v281 = v336;
+                      v281 = selfCopy;
                     }
 
                     [(ARFrameUpdateTimer *)v281->_frameUpdateTimer scheduleFrame:v35 captureFramesPerSecond:v280];
@@ -5264,48 +5264,48 @@ LABEL_225:
                     goto LABEL_265;
                   }
 
-                  v283 = [v256 removedAnchors];
-                  v284 = [v283 count];
+                  removedAnchors = [v256 removedAnchors];
+                  camera20 = [removedAnchors count];
 
-                  if (v284)
+                  if (camera20)
                   {
-                    v285 = [v256 removedAnchors];
-                    v257 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_314];
-                    v284 = [v285 filteredArrayUsingPredicate:v257];
+                    removedAnchors2 = [v256 removedAnchors];
+                    anchors4 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_314];
+                    camera20 = [removedAnchors2 filteredArrayUsingPredicate:anchors4];
 
-                    [(ARWorldTrackingTechnique *)v278 removeReferenceAnchors:v284];
+                    [(ARWorldTrackingTechnique *)v278 removeReferenceAnchors:camera20];
                   }
 
-                  v286 = [(ARFrame *)v35 camera];
-                  v287 = [v286 trackingState];
-                  if (v287 == 1)
+                  camera19 = [(ARFrame *)v35 camera];
+                  trackingState = [camera19 trackingState];
+                  if (trackingState == 1)
                   {
-                    v284 = [(ARFrame *)v35 camera];
-                    if ([v284 trackingStateReason]== 1)
+                    camera20 = [(ARFrame *)v35 camera];
+                    if ([camera20 trackingStateReason]== 1)
                     {
                       goto LABEL_251;
                     }
 
-                    v257 = [(ARFrame *)v35 camera];
-                    if ([v257 trackingStateReason] == 4)
+                    anchors4 = [(ARFrame *)v35 camera];
+                    if ([anchors4 trackingStateReason] == 4)
                     {
 
                       goto LABEL_264;
                     }
                   }
 
-                  v288 = v287 == 1;
-                  v289 = [(ARFrame *)v35 camera];
-                  v290 = [v289 trackingState];
+                  v288 = trackingState == 1;
+                  camera21 = [(ARFrame *)v35 camera];
+                  trackingState2 = [camera21 trackingState];
 
                   if (v288)
                   {
-                    LOBYTE(v291) = v290 == 0;
+                    LOBYTE(v291) = trackingState2 == 0;
                   }
 
                   else
                   {
-                    v291 = v290 == 0;
+                    v291 = trackingState2 == 0;
                   }
 
                   if (v291)
@@ -5313,14 +5313,14 @@ LABEL_225:
                     goto LABEL_265;
                   }
 
-                  v292 = [(ARFrame *)v35 referenceOriginTransformUpdated];
-                  v293 = [(ARFrame *)v35 anchors];
-                  v294 = [v293 count] != 0;
+                  referenceOriginTransformUpdated = [(ARFrame *)v35 referenceOriginTransformUpdated];
+                  anchors5 = [(ARFrame *)v35 anchors];
+                  v294 = [anchors5 count] != 0;
 
-                  if ((v294 & (v264 ^ v292)) == 0)
+                  if ((v294 & (v264 ^ referenceOriginTransformUpdated)) == 0)
                   {
-                    v299 = [v256 addedAnchors];
-                    v300 = [v299 count];
+                    addedAnchors = [v256 addedAnchors];
+                    v300 = [addedAnchors count];
 
                     if (!v300)
                     {
@@ -5329,32 +5329,32 @@ LABEL_265:
                       goto LABEL_266;
                     }
 
-                    v301 = [v256 addedAnchors];
-                    v286 = ARAnchorsForPoseGraphUpdates(v301);
+                    addedAnchors2 = [v256 addedAnchors];
+                    camera19 = ARAnchorsForPoseGraphUpdates(addedAnchors2);
 
-                    [(ARWorldTrackingTechnique *)v278 addReferenceAnchors:v286];
+                    [(ARWorldTrackingTechnique *)v278 addReferenceAnchors:camera19];
 LABEL_264:
 
                     goto LABEL_265;
                   }
 
-                  v295 = [(ARFrame *)v35 anchors];
-                  v286 = ARAnchorsForPoseGraphUpdates(v295);
+                  anchors6 = [(ARFrame *)v35 anchors];
+                  camera19 = ARAnchorsForPoseGraphUpdates(anchors6);
 
-                  [(ARWorldTrackingTechnique *)v278 addReferenceAnchors:v286];
-                  v284 = _ARLogSession_0();
-                  if (os_log_type_enabled(v284, OS_LOG_TYPE_DEBUG))
+                  [(ARWorldTrackingTechnique *)v278 addReferenceAnchors:camera19];
+                  camera20 = _ARLogSession_0();
+                  if (os_log_type_enabled(camera20, OS_LOG_TYPE_DEBUG))
                   {
                     v296 = objc_opt_class();
                     v297 = NSStringFromClass(v296);
-                    v298 = [v286 count];
+                    v298 = [camera19 count];
                     *buf = 138543874;
                     *&buf[4] = v297;
                     *&buf[12] = 2048;
-                    *&buf[14] = v336;
+                    *&buf[14] = selfCopy;
                     *&buf[22] = 2048;
                     *&buf[24] = v298;
-                    _os_log_impl(&dword_1C241C000, v284, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: all anchors re-added to pose graph updates: %tu", buf, 0x20u);
+                    _os_log_impl(&dword_1C241C000, camera20, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: all anchors re-added to pose graph updates: %tu", buf, 0x20u);
                   }
 
 LABEL_251:
@@ -5362,46 +5362,46 @@ LABEL_251:
                   goto LABEL_264;
                 }
 
-                v186 = v336;
-                if (v336->_relocalizationRequested)
+                v186 = selfCopy;
+                if (selfCopy->_relocalizationRequested)
                 {
                   v183 = 1;
                   goto LABEL_169;
                 }
 
-                v181 = [(ARFrame *)v35 camera];
-                [v181 setTrackingStateReason:1];
+                camera7 = [(ARFrame *)v35 camera];
+                [camera7 setTrackingStateReason:1];
               }
 
               goto LABEL_168;
             }
           }
 
-          configuredForWorldTracking = v336->_configuredForWorldTracking;
-          v189 = [(ARFrame *)v35 camera];
-          v165 = v189;
+          configuredForWorldTracking = selfCopy->_configuredForWorldTracking;
+          camera22 = [(ARFrame *)v35 camera];
+          camera6 = camera22;
           if (configuredForWorldTracking)
           {
-            [v189 setTrackingState:1];
+            [camera22 setTrackingState:1];
 
-            v165 = [(ARFrame *)v35 camera];
-            [v165 setTrackingStateReason:1];
+            camera6 = [(ARFrame *)v35 camera];
+            [camera6 setTrackingStateReason:1];
           }
 
           else
           {
-            [v189 setTrackingState:2];
+            [camera22 setTrackingState:2];
           }
         }
 
         goto LABEL_144;
       }
 
-      v156 = [obj ar_firstObjectPassingTest:&__block_literal_global_299];
-      if (v156)
+      configurationInternal = [obj ar_firstObjectPassingTest:&__block_literal_global_299];
+      if (configurationInternal)
       {
         v158 = objc_opt_new();
-        v159 = [v156 transformToCVPixelBuffer:-[ARFrame segmentationBuffer](v35 depthBuffer:{"segmentationBuffer"), -[ARFrame estimatedDepthData](v35, "estimatedDepthData")}];
+        v159 = [configurationInternal transformToCVPixelBuffer:-[ARFrame segmentationBuffer](v35 depthBuffer:{"segmentationBuffer"), -[ARFrame estimatedDepthData](v35, "estimatedDepthData")}];
         v348 = 0u;
         v349 = 0u;
         v346 = 0u;
@@ -5437,31 +5437,31 @@ LABEL_251:
     goto LABEL_139;
   }
 
-  v17 = [v335 imageData];
-  if (([v17 isSecondary] & 1) == 0)
+  imageData6 = [v335 imageData];
+  if (([imageData6 isSecondary] & 1) == 0)
   {
 
     goto LABEL_23;
   }
 
-  v18 = [v335 imageData];
-  v19 = [v18 isHighResolution];
+  imageData7 = [v335 imageData];
+  isHighResolution = [imageData7 isHighResolution];
 
-  if (v19)
+  if (isHighResolution)
   {
     goto LABEL_23;
   }
 
-  dispatch_semaphore_wait(v336->_resultDataOfSecondaryFrameContextsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-  objc_storeStrong(&v336->resultDatasOfSecondaryFrameContexts, a4);
-  dispatch_semaphore_signal(v336->_resultDataOfSecondaryFrameContextsSemaphore);
-  dispatch_semaphore_wait(v336->_frameContextHandlerSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+  dispatch_semaphore_wait(selfCopy->_resultDataOfSecondaryFrameContextsSemaphore, 0xFFFFFFFFFFFFFFFFLL);
+  objc_storeStrong(&selfCopy->resultDatasOfSecondaryFrameContexts, data);
+  dispatch_semaphore_signal(selfCopy->_resultDataOfSecondaryFrameContextsSemaphore);
+  dispatch_semaphore_wait(selfCopy->_frameContextHandlerSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   v362 = 0u;
   v363 = 0u;
   v364 = 0u;
   v365 = 0u;
-  v20 = [v335 anchorsToRemove];
-  v21 = [v20 countByEnumeratingWithState:&v362 objects:v380 count:16];
+  anchorsToRemove = [v335 anchorsToRemove];
+  v21 = [anchorsToRemove countByEnumeratingWithState:&v362 objects:v380 count:16];
   if (v21)
   {
     v22 = *v363;
@@ -5471,29 +5471,29 @@ LABEL_251:
       {
         if (*v363 != v22)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(anchorsToRemove);
         }
 
-        [(ARFrameContextHandler *)v336->_frameContextHandler removeAnchor:*(*(&v362 + 1) + 8 * kk)];
+        [(ARFrameContextHandler *)selfCopy->_frameContextHandler removeAnchor:*(*(&v362 + 1) + 8 * kk)];
       }
 
-      v21 = [v20 countByEnumeratingWithState:&v362 objects:v380 count:16];
+      v21 = [anchorsToRemove countByEnumeratingWithState:&v362 objects:v380 count:16];
     }
 
     while (v21);
   }
 
-  v24 = [v335 anchorsToStopTracking];
-  v25 = [v24 count] == 0;
+  anchorsToStopTracking = [v335 anchorsToStopTracking];
+  v25 = [anchorsToStopTracking count] == 0;
 
   if (!v25)
   {
-    frameContextHandler = v336->_frameContextHandler;
-    v27 = [v335 anchorsToStopTracking];
-    [(ARFrameContextHandler *)frameContextHandler stopTrackingAnchors:v27];
+    frameContextHandler = selfCopy->_frameContextHandler;
+    anchorsToStopTracking2 = [v335 anchorsToStopTracking];
+    [(ARFrameContextHandler *)frameContextHandler stopTrackingAnchors:anchorsToStopTracking2];
   }
 
-  dispatch_semaphore_signal(v336->_frameContextHandlerSemaphore);
+  dispatch_semaphore_signal(selfCopy->_frameContextHandlerSemaphore);
 LABEL_266:
 }
 
@@ -5550,10 +5550,10 @@ uint64_t __61__ARSession_technique_didOutputResultData_timestamp_context___block
   return [*(*(a1 + 32) + 8) clearMap];
 }
 
-- (void)_populateRawSceneUnderstandingDataForFrame:(id)a3 fromResultData:(id)a4
+- (void)_populateRawSceneUnderstandingDataForFrame:(id)frame fromResultData:(id)data
 {
-  v37 = a3;
-  v5 = [a4 ar_firstObjectPassingTest:&__block_literal_global_316];
+  frameCopy = frame;
+  v5 = [data ar_firstObjectPassingTest:&__block_literal_global_316];
   v6 = [v5 resultDataOfClass:objc_opt_class()];
   v7 = [v6 ar_firstObjectPassingTest:&__block_literal_global_319];
 
@@ -5590,27 +5590,27 @@ uint64_t __61__ARSession_technique_didOutputResultData_timestamp_context___block
 
     -[ARRawSceneUnderstandingData setNormalsBuffer:](v8, "setNormalsBuffer:", [v11 normalsBuffer]);
     v12 = [v5 resultDataOfClass:objc_opt_class()];
-    v13 = [v12 firstObject];
+    firstObject = [v12 firstObject];
 
-    if (v13)
+    if (firstObject)
     {
-      [v13 timestamp];
+      [firstObject timestamp];
       [(ARRawSceneUnderstandingData *)v8 setTimestamp:?];
-      -[ARRawSceneUnderstandingData setCapturedImage:](v8, "setCapturedImage:", [v13 pixelBuffer]);
+      -[ARRawSceneUnderstandingData setCapturedImage:](v8, "setCapturedImage:", [firstObject pixelBuffer]);
     }
 
     v14 = [v5 resultDataOfClass:objc_opt_class()];
-    v15 = [v14 firstObject];
+    firstObject2 = [v14 firstObject];
 
-    if (v13 && v15)
+    if (firstObject && firstObject2)
     {
-      v16 = [[ARCamera alloc] initFromImageData:v13];
-      [v37 referenceOriginTransform];
+      v16 = [[ARCamera alloc] initFromImageData:firstObject];
+      [frameCopy referenceOriginTransform];
       v35 = v18;
       v36 = v17;
       v33 = v20;
       v34 = v19;
-      [v15 cameraTransform];
+      [firstObject2 cameraTransform];
       v21 = 0;
       v38[0] = v22;
       v38[1] = v23;
@@ -5631,27 +5631,27 @@ uint64_t __61__ARSession_technique_didOutputResultData_timestamp_context___block
       [(ARRawSceneUnderstandingData *)v8 setWideCamera:v16];
     }
 
-    v26 = [v13 latestUltraWideImage];
+    latestUltraWideImage = [firstObject latestUltraWideImage];
 
-    if (v26 && v15)
+    if (latestUltraWideImage && firstObject2)
     {
       v27 = [ARCamera alloc];
-      v28 = [v13 latestUltraWideImage];
-      v29 = [(ARCamera *)v27 initFromImageData:v28];
+      latestUltraWideImage2 = [firstObject latestUltraWideImage];
+      v29 = [(ARCamera *)v27 initFromImageData:latestUltraWideImage2];
 
       [(ARRawSceneUnderstandingData *)v8 setUltraWideCamera:v29];
     }
 
     v30 = [v5 resultDataOfClass:objc_opt_class()];
-    v31 = [v30 firstObject];
+    firstObject3 = [v30 firstObject];
 
-    if (v31)
+    if (firstObject3)
     {
-      v32 = [v31 latestResizedUltraWideImageData];
-      [(ARRawSceneUnderstandingData *)v8 setUltraWideDownscalingResultData:v32];
+      latestResizedUltraWideImageData = [firstObject3 latestResizedUltraWideImageData];
+      [(ARRawSceneUnderstandingData *)v8 setUltraWideDownscalingResultData:latestResizedUltraWideImageData];
     }
 
-    [v37 setRawSceneUnderstandingData:v8];
+    [frameCopy setRawSceneUnderstandingData:v8];
   }
 }
 
@@ -5695,11 +5695,11 @@ BOOL __71__ARSession__populateRawSceneUnderstandingDataForFrame_fromResultData__
   return v5 == 2;
 }
 
-- (__n128)_cameraTransformForResultData:(void *)a3 previousFrame:(void *)a4
+- (__n128)_cameraTransformForResultData:(void *)data previousFrame:(void *)frame
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  frameCopy = frame;
   v39 = *(MEMORY[0x1E69E9B18] + 16);
   v41 = *MEMORY[0x1E69E9B18];
   v35 = *(MEMORY[0x1E69E9B18] + 48);
@@ -5708,7 +5708,7 @@ BOOL __71__ARSession__populateRawSceneUnderstandingDataForFrame_fromResultData__
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v43 objects:v48 count:16];
+  v8 = [dataCopy countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v8)
   {
     v9 = v8;
@@ -5719,7 +5719,7 @@ BOOL __71__ARSession__populateRawSceneUnderstandingDataForFrame_fromResultData__
       {
         if (*v44 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(dataCopy);
         }
 
         v12 = *(*(&v43 + 1) + 8 * i);
@@ -5733,25 +5733,25 @@ BOOL __71__ARSession__populateRawSceneUnderstandingDataForFrame_fromResultData__
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v43 objects:v48 count:16];
+      v9 = [dataCopy countByEnumeratingWithState:&v43 objects:v48 count:16];
     }
 
     while (v9);
   }
 
-  if ([v6 count])
+  if ([dataCopy count])
   {
     goto LABEL_23;
   }
 
-  if (v7)
+  if (frameCopy)
   {
-    v17 = [v7 camera];
+    camera = [frameCopy camera];
 
-    if (v17)
+    if (camera)
     {
-      v18 = [v7 camera];
-      [v18 transform];
+      camera2 = [frameCopy camera];
+      [camera2 transform];
       v42 = v19;
 
       goto LABEL_27;
@@ -5775,7 +5775,7 @@ BOOL __71__ARSession__populateRawSceneUnderstandingDataForFrame_fromResultData__
       *buf = 138543618;
       *&buf[4] = v24;
       *&buf[12] = 2048;
-      *&buf[14] = a1;
+      *&buf[14] = self;
       v25 = "%{public}@ <%p>: prediction failure can lead to no resultData. Falling back to old camera transform";
       v26 = v22;
       v27 = OS_LOG_TYPE_ERROR;
@@ -5791,7 +5791,7 @@ LABEL_21:
     *buf = 138543618;
     *&buf[4] = v24;
     *&buf[12] = 2048;
-    *&buf[14] = a1;
+    *&buf[14] = self;
     v25 = "Error: %{public}@ <%p>: prediction failure can lead to no resultData. Falling back to old camera transform";
     v26 = v22;
     v27 = OS_LOG_TYPE_INFO;
@@ -5799,9 +5799,9 @@ LABEL_21:
   }
 
 LABEL_23:
-  if ([v7 referenceOriginTransformAvailable])
+  if ([frameCopy referenceOriginTransformAvailable])
   {
-    [v7 referenceOriginTransform];
+    [frameCopy referenceOriginTransform];
     v33 = 0;
     v47[0] = v42;
     v47[1] = v40;
@@ -5825,50 +5825,50 @@ LABEL_27:
   return v42;
 }
 
-- (void)_updateOriginTransformForFrame:(id)a3 previousFrame:(id)a4 modifiers:(unint64_t)a5 context:(id)a6
+- (void)_updateOriginTransformForFrame:(id)frame previousFrame:(id)previousFrame modifiers:(unint64_t)modifiers context:(id)context
 {
-  v7 = a5;
+  modifiersCopy = modifiers;
   v117 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (![v10 isHighResolution] || (objc_msgSend(v11, "isHighResolution") & 1) != 0)
+  frameCopy = frame;
+  previousFrameCopy = previousFrame;
+  contextCopy = context;
+  if (![frameCopy isHighResolution] || (objc_msgSend(previousFrameCopy, "isHighResolution") & 1) != 0)
   {
-    if (([v12 sessionTransformUpdated] & 1) == 0)
+    if (([contextCopy sessionTransformUpdated] & 1) == 0)
     {
-      if ((v7 & 8) != 0)
+      if ((modifiersCopy & 8) != 0)
       {
-        [v12 resumeSessionCameraPositionAndHeading];
+        [contextCopy resumeSessionCameraPositionAndHeading];
       }
 
-      else if ((v7 & 4) != 0)
+      else if ((modifiersCopy & 4) != 0)
       {
-        [v12 resumeSessionCameraPosition];
+        [contextCopy resumeSessionCameraPosition];
       }
     }
 
-    if ([v12 didRelocalize])
+    if ([contextCopy didRelocalize])
     {
-      v13 = [v12 worldMap];
+      worldMap = [contextCopy worldMap];
 
-      if (v13)
+      if (worldMap)
       {
-        v14 = [v12 worldMap];
-        [v14 referenceOriginTransform];
+        worldMap2 = [contextCopy worldMap];
+        [worldMap2 referenceOriginTransform];
         v119 = __invert_f4(v118);
-        [v10 setWorldAlignmentTransform:{*v119.columns[0].i64, *v119.columns[1].i64, *v119.columns[2].i64, *v119.columns[3].i64}];
+        [frameCopy setWorldAlignmentTransform:{*v119.columns[0].i64, *v119.columns[1].i64, *v119.columns[2].i64, *v119.columns[3].i64}];
 
-        [v12 resetSessionTransform];
+        [contextCopy resetSessionTransform];
       }
     }
 
-    if ([v12 sessionTransformReset])
+    if ([contextCopy sessionTransformReset])
     {
-      v15 = [v11 sessionOriginTransformAvailable];
-      v16 = [v11 sessionOriginTransformAvailable];
+      sessionOriginTransformAvailable = [previousFrameCopy sessionOriginTransformAvailable];
+      sessionOriginTransformAvailable2 = [previousFrameCopy sessionOriginTransformAvailable];
 LABEL_46:
-      v58 = [v10 worldAlignmentTransformAvailable];
-      if (v7 & 1) != 0 || (v58)
+      worldAlignmentTransformAvailable = [frameCopy worldAlignmentTransformAvailable];
+      if (modifiersCopy & 1) != 0 || (worldAlignmentTransformAvailable)
       {
         if ([(ARConfiguration *)self->_configurationInternal worldAlignment]!= ARWorldAlignmentCamera)
         {
@@ -5878,34 +5878,34 @@ LABEL_46:
 
       else
       {
-        if ([v11 worldAlignmentTransformAvailable])
+        if ([previousFrameCopy worldAlignmentTransformAvailable])
         {
-          [v11 worldAlignmentTransform];
-          [v10 setWorldAlignmentTransform:?];
+          [previousFrameCopy worldAlignmentTransform];
+          [frameCopy setWorldAlignmentTransform:?];
         }
 
         if ([(ARConfiguration *)self->_configurationInternal worldAlignment]!= ARWorldAlignmentCamera)
         {
-          if ((v15 & 1) == 0)
+          if ((sessionOriginTransformAvailable & 1) == 0)
           {
-            if ([v11 referenceOriginTransformAvailable])
+            if ([previousFrameCopy referenceOriginTransformAvailable])
             {
-              [v11 referenceOriginTransform];
-              [v10 setReferenceOriginTransform:?];
+              [previousFrameCopy referenceOriginTransform];
+              [frameCopy setReferenceOriginTransform:?];
               v59 = 0;
               goto LABEL_75;
             }
 
             v59 = 0;
 LABEL_64:
-            if ([v10 sessionOriginTransformAvailable] && objc_msgSend(v10, "worldAlignmentTransformAvailable"))
+            if ([frameCopy sessionOriginTransformAvailable] && objc_msgSend(frameCopy, "worldAlignmentTransformAvailable"))
             {
-              [v10 sessionOriginTransform];
+              [frameCopy sessionOriginTransform];
               v110 = v73;
               v114 = v72;
               v102 = v75;
               v106 = v74;
-              [v10 worldAlignmentTransform];
+              [frameCopy worldAlignmentTransform];
               v130 = __invert_f4(v129);
               v76 = 0;
               v115 = v130;
@@ -5923,34 +5923,34 @@ LABEL_64:
               v77.columns[1].i64[0] = buf.columns[1].i64[0];
             }
 
-            else if ([v10 sessionOriginTransformAvailable])
+            else if ([frameCopy sessionOriginTransformAvailable])
             {
-              [v10 sessionOriginTransform];
+              [frameCopy sessionOriginTransform];
             }
 
             else
             {
-              if (![v10 worldAlignmentTransformAvailable])
+              if (![frameCopy worldAlignmentTransformAvailable])
               {
                 goto LABEL_75;
               }
 
-              [v10 worldAlignmentTransform];
+              [frameCopy worldAlignmentTransform];
               v77 = __invert_f4(v131);
             }
 
-            [v10 setReferenceOriginTransform:{*v77.columns[0].i64, *v77.columns[1].i64, *v77.columns[2].i64, *v77.columns[3].i64}];
+            [frameCopy setReferenceOriginTransform:{*v77.columns[0].i64, *v77.columns[1].i64, *v77.columns[2].i64, *v77.columns[3].i64}];
 LABEL_75:
-            [v10 setReferenceOriginTransformUpdated:v59];
-            [v10 setReferenceOriginChanged:v16 & 1];
-            if (v16)
+            [frameCopy setReferenceOriginTransformUpdated:v59];
+            [frameCopy setReferenceOriginChanged:sessionOriginTransformAvailable2 & 1];
+            if (sessionOriginTransformAvailable2)
             {
               v78 = _ARLogSession_0();
               if (os_log_type_enabled(v78, OS_LOG_TYPE_INFO))
               {
                 v79 = objc_opt_class();
                 v80 = NSStringFromClass(v79);
-                [v10 referenceOriginTransform];
+                [frameCopy referenceOriginTransform];
                 v85 = ARMatrix4x4Description(0, v81, v82, v83, v84);
                 buf.columns[0].i32[0] = 138543874;
                 *(buf.columns[0].i64 + 4) = v80;
@@ -5971,24 +5971,24 @@ LABEL_63:
         }
       }
 
-      v60 = [v10 camera];
-      [v60 transform];
+      camera = [frameCopy camera];
+      [camera transform];
       v124 = __invert_f4(v123);
-      [v10 setReferenceOriginTransform:{*v124.columns[0].i64, *v124.columns[1].i64, *v124.columns[2].i64, *v124.columns[3].i64}];
+      [frameCopy setReferenceOriginTransform:{*v124.columns[0].i64, *v124.columns[1].i64, *v124.columns[2].i64, *v124.columns[3].i64}];
 
-      if ((v16 & 1) == 0)
+      if ((sessionOriginTransformAvailable2 & 1) == 0)
       {
-        [v10 setReferenceOriginTransformUpdated:1];
-        [v10 setReferenceOriginChanged:0];
+        [frameCopy setReferenceOriginTransformUpdated:1];
+        [frameCopy setReferenceOriginChanged:0];
         goto LABEL_79;
       }
 
-      [v11 sessionOriginTransform];
+      [previousFrameCopy sessionOriginTransform];
       v108 = v62;
       v112 = v61;
       v100 = v64;
       v104 = v63;
-      [v10 sessionOriginTransform];
+      [frameCopy sessionOriginTransform];
       v126 = __invert_f4(v125);
       v65 = 0;
       v115 = v126;
@@ -6004,12 +6004,12 @@ LABEL_63:
       v98 = buf.columns[0];
       v89 = buf.columns[3];
       v92 = buf.columns[2];
-      [v10 worldAlignmentTransform];
+      [frameCopy worldAlignmentTransform];
       v109 = v67;
       v113 = v66;
       v101 = v69;
       v105 = v68;
-      [v11 worldAlignmentTransform];
+      [previousFrameCopy worldAlignmentTransform];
       v128 = __invert_f4(v127);
       v70 = 0;
       v115 = v128;
@@ -6031,20 +6031,20 @@ LABEL_63:
       }
 
       while (v71 != 4);
-      [v10 setReferenceOriginDelta:{*buf.columns[0].i64, *buf.columns[1].i64, *buf.columns[2].i64, *buf.columns[3].i64}];
+      [frameCopy setReferenceOriginDelta:{*buf.columns[0].i64, *buf.columns[1].i64, *buf.columns[2].i64, *buf.columns[3].i64}];
       v59 = 1;
       goto LABEL_75;
     }
 
-    v18 = [v12 sessionTransformUpdated];
-    v16 = v7 >> 1;
-    if (v18)
+    sessionTransformUpdated = [contextCopy sessionTransformUpdated];
+    sessionOriginTransformAvailable2 = modifiersCopy >> 1;
+    if (sessionTransformUpdated)
     {
-      [v12 sessionTransform];
+      [contextCopy sessionTransform];
       v17 = __invert_f4(v120);
-      if (!v11)
+      if (!previousFrameCopy)
       {
-        v15 = 1;
+        sessionOriginTransformAvailable = 1;
         goto LABEL_45;
       }
 
@@ -6055,53 +6055,53 @@ LABEL_63:
 
     else
     {
-      if (!v11)
+      if (!previousFrameCopy)
       {
         v107 = *(MEMORY[0x1E69E9B18] + 32);
         v111 = *MEMORY[0x1E69E9B18];
         v99 = *(MEMORY[0x1E69E9B18] + 48);
         v103 = *(MEMORY[0x1E69E9B18] + 16);
 LABEL_44:
-        v57 = [v11 sessionOriginTransformAvailable];
-        v15 = 0;
+        sessionOriginTransformAvailable3 = [previousFrameCopy sessionOriginTransformAvailable];
+        sessionOriginTransformAvailable = 0;
         v17.columns[3].i64[0] = v99;
         v17.columns[1].i64[0] = v103;
         v17.columns[2].i64[0] = v107;
         v17.columns[0].i64[0] = v111;
-        if (!v57)
+        if (!sessionOriginTransformAvailable3)
         {
           goto LABEL_46;
         }
 
 LABEL_45:
-        [v10 setSessionOriginTransform:{*v17.columns[0].i64, *v17.columns[1].i64, *v17.columns[2].i64, *v17.columns[3].i64}];
+        [frameCopy setSessionOriginTransform:{*v17.columns[0].i64, *v17.columns[1].i64, *v17.columns[2].i64, *v17.columns[3].i64}];
         goto LABEL_46;
       }
 
-      [v11 sessionOriginTransform];
+      [previousFrameCopy sessionOriginTransform];
       *&v107 = v17.columns[2].i64[0];
       *&v111 = v17.columns[0].i64[0];
       *&v103 = v17.columns[1].i64[0];
     }
 
     *&v99 = v17.columns[3].i64[0];
-    if (([v12 sessionTransformShouldResumeCameraHeading] & 1) != 0 || objc_msgSend(v12, "sessionTransformShouldResumeCameraPosition"))
+    if (([contextCopy sessionTransformShouldResumeCameraHeading] & 1) != 0 || objc_msgSend(contextCopy, "sessionTransformShouldResumeCameraPosition"))
     {
-      v19 = [v11 camera];
-      [v19 transform];
+      camera2 = [previousFrameCopy camera];
+      [camera2 transform];
       v90 = v21;
       v93 = v20;
       v86 = v22;
       v96 = v23;
 
-      if ([v11 worldAlignment] == 2)
+      if ([previousFrameCopy worldAlignment] == 2)
       {
-        [v11 gravityAlignedReferenceOriginTransform];
+        [previousFrameCopy gravityAlignedReferenceOriginTransform];
         v94 = v25;
         v97 = v24;
         v87 = v27;
         v91 = v26;
-        [v11 referenceOriginTransform];
+        [previousFrameCopy referenceOriginTransform];
         v122 = __invert_f4(v121);
         v28 = 0;
         v115 = v122;
@@ -6119,7 +6119,7 @@ LABEL_45:
         v96 = buf.columns[3];
       }
 
-      if ([v12 sessionTransformShouldResumeCameraHeading])
+      if ([contextCopy sessionTransformShouldResumeCameraHeading])
       {
         v29.n128_f64[0] = AREulerAnglesFromMatrix(v93, v90, v88);
         v88 = v29;
@@ -6172,7 +6172,7 @@ LABEL_45:
         *&v99 = 0;
       }
 
-      if ([v12 sessionTransformShouldResumeCameraPosition])
+      if ([contextCopy sessionTransformShouldResumeCameraPosition])
       {
         v54 = _ARLogSession_0();
         if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
@@ -6192,8 +6192,8 @@ LABEL_45:
           _os_log_impl(&dword_1C241C000, v54, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Updated session origin (%f, %f, %f)", &buf, 0x34u);
         }
 
-        v16 = 1;
-        v15 = 1;
+        sessionOriginTransformAvailable2 = 1;
+        sessionOriginTransformAvailable = 1;
         v17.columns[2].i64[0] = v107;
         v17.columns[0].i64[0] = v111;
         v17.columns[1].i64[0] = v103;
@@ -6201,15 +6201,15 @@ LABEL_45:
         goto LABEL_45;
       }
 
-      v16 = 1;
+      sessionOriginTransformAvailable2 = 1;
       v17.columns[3].i64[0] = v99;
-      v15 = 1;
+      sessionOriginTransformAvailable = 1;
       goto LABEL_43;
     }
 
-    if (v18)
+    if (sessionTransformUpdated)
     {
-      v15 = 1;
+      sessionOriginTransformAvailable = 1;
       v17.columns[3].i64[0] = v99;
 LABEL_43:
       v17.columns[2].i64[0] = v107;
@@ -6221,41 +6221,41 @@ LABEL_43:
     goto LABEL_44;
   }
 
-  if ([v11 sessionOriginTransformAvailable])
+  if ([previousFrameCopy sessionOriginTransformAvailable])
   {
-    [v11 sessionOriginTransform];
-    [v10 setSessionOriginTransform:?];
+    [previousFrameCopy sessionOriginTransform];
+    [frameCopy setSessionOriginTransform:?];
   }
 
-  if ([v11 worldAlignmentTransformAvailable])
+  if ([previousFrameCopy worldAlignmentTransformAvailable])
   {
-    [v11 worldAlignmentTransform];
-    [v10 setWorldAlignmentTransform:?];
+    [previousFrameCopy worldAlignmentTransform];
+    [frameCopy setWorldAlignmentTransform:?];
   }
 
-  if ([v11 referenceOriginTransformAvailable])
+  if ([previousFrameCopy referenceOriginTransformAvailable])
   {
-    [v11 referenceOriginTransform];
-    [v10 setReferenceOriginTransform:?];
+    [previousFrameCopy referenceOriginTransform];
+    [frameCopy setReferenceOriginTransform:?];
   }
 
 LABEL_79:
 }
 
-- (void)_updateFeaturePointsForFrame:(id)a3 previousFrame:(id)a4 trackingStateChanged:(BOOL)a5 context:(id)a6
+- (void)_updateFeaturePointsForFrame:(id)frame previousFrame:(id)previousFrame trackingStateChanged:(BOOL)changed context:(id)context
 {
-  v6 = a5;
+  changedCopy = changed;
   v46 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (![v9 referenceOriginChanged])
+  frameCopy = frame;
+  previousFrameCopy = previousFrame;
+  if (![frameCopy referenceOriginChanged])
   {
-    v18 = [v9 referenceFeaturePoints];
-    if ([v18 count])
+    referenceFeaturePoints = [frameCopy referenceFeaturePoints];
+    if ([referenceFeaturePoints count])
     {
-      v19 = [v10 cachedPointClouds];
-      v20 = [v9 referenceFeaturePoints];
-      v21 = [v19 containsObject:v20] ^ 1;
+      cachedPointClouds = [previousFrameCopy cachedPointClouds];
+      referenceFeaturePoints2 = [frameCopy referenceFeaturePoints];
+      v21 = [cachedPointClouds containsObject:referenceFeaturePoints2] ^ 1;
     }
 
     else
@@ -6263,22 +6263,22 @@ LABEL_79:
       v21 = 0;
     }
 
-    if (v6)
+    if (changedCopy)
     {
-      v22 = [v9 camera];
-      v23 = [v22 trackingStateReason];
+      camera = [frameCopy camera];
+      trackingStateReason = [camera trackingStateReason];
 
-      if (v23 == 1)
+      if (trackingStateReason == 1)
       {
 
-        v10 = 0;
+        previousFrameCopy = 0;
       }
     }
 
     if (v21)
     {
-      v24 = [v10 cachedPointClouds];
-      v25 = [v24 mutableCopy];
+      cachedPointClouds2 = [previousFrameCopy cachedPointClouds];
+      v25 = [cachedPointClouds2 mutableCopy];
       v26 = v25;
       if (v25)
       {
@@ -6292,39 +6292,39 @@ LABEL_79:
 
       v33 = v27;
 
-      v34 = [v9 referenceFeaturePoints];
-      [v33 addObject:v34];
+      referenceFeaturePoints3 = [frameCopy referenceFeaturePoints];
+      [v33 addObject:referenceFeaturePoints3];
 
       if ([v33 count] > self->_featurePointAccumulationCount)
       {
         [v33 removeObjectAtIndex:0];
       }
 
-      [v9 setCachedPointClouds:v33];
+      [frameCopy setCachedPointClouds:v33];
       v35 = [ARPointCloud concatPointClouds:v33];
-      [v9 setReferenceFeaturePoints:v35];
+      [frameCopy setReferenceFeaturePoints:v35];
 
-      [v9 referenceOriginTransformUpdated];
+      [frameCopy referenceOriginTransformUpdated];
       goto LABEL_27;
     }
 
-    v28 = [v9 referenceFeaturePoints];
-    if (!v28)
+    referenceFeaturePoints4 = [frameCopy referenceFeaturePoints];
+    if (!referenceFeaturePoints4)
     {
-      v28 = [v9 camera];
-      if ([v28 trackingState] != 2)
+      referenceFeaturePoints4 = [frameCopy camera];
+      if ([referenceFeaturePoints4 trackingState] != 2)
       {
-        v29 = [v9 camera];
-        if ([v29 trackingStateReason] != 4)
+        camera2 = [frameCopy camera];
+        if ([camera2 trackingStateReason] != 4)
         {
-          v39 = [v9 camera];
-          v40 = [v39 trackingStateReason];
+          camera3 = [frameCopy camera];
+          trackingStateReason2 = [camera3 trackingStateReason];
 
-          if (v40 != 1)
+          if (trackingStateReason2 != 1)
           {
-            [v9 setFeaturePoints:0];
+            [frameCopy setFeaturePoints:0];
 LABEL_21:
-            if (![v9 referenceOriginTransformUpdated])
+            if (![frameCopy referenceOriginTransformUpdated])
             {
               goto LABEL_31;
             }
@@ -6333,14 +6333,14 @@ LABEL_21:
           }
 
 LABEL_20:
-          v30 = [v10 cachedPointClouds];
-          [v9 setCachedPointClouds:v30];
+          cachedPointClouds3 = [previousFrameCopy cachedPointClouds];
+          [frameCopy setCachedPointClouds:cachedPointClouds3];
 
-          v31 = [v10 referenceFeaturePoints];
-          [v9 setReferenceFeaturePoints:v31];
+          referenceFeaturePoints5 = [previousFrameCopy referenceFeaturePoints];
+          [frameCopy setReferenceFeaturePoints:referenceFeaturePoints5];
 
-          v32 = [v10 featurePoints];
-          [v9 setFeaturePoints:v32];
+          featurePoints = [previousFrameCopy featurePoints];
+          [frameCopy setFeaturePoints:featurePoints];
 
           goto LABEL_21;
         }
@@ -6358,47 +6358,47 @@ LABEL_20:
     *buf = 138543618;
     v43 = v13;
     v44 = 2048;
-    v45 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v11, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Removing previous cached feature points, because reference origin changed", buf, 0x16u);
   }
 
-  v14 = [v9 referenceFeaturePoints];
+  referenceFeaturePoints6 = [frameCopy referenceFeaturePoints];
 
-  if (v14)
+  if (referenceFeaturePoints6)
   {
-    v15 = [v9 referenceFeaturePoints];
-    v41 = v15;
+    referenceFeaturePoints7 = [frameCopy referenceFeaturePoints];
+    v41 = referenceFeaturePoints7;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v41 count:1];
     v17 = [v16 mutableCopy];
-    [v9 setCachedPointClouds:v17];
+    [frameCopy setCachedPointClouds:v17];
 
 LABEL_27:
-    v36 = [v9 referenceOriginTransformAvailable];
-    v37 = [v9 referenceFeaturePoints];
-    if (v36)
+    referenceOriginTransformAvailable = [frameCopy referenceOriginTransformAvailable];
+    referenceFeaturePoints8 = [frameCopy referenceFeaturePoints];
+    if (referenceOriginTransformAvailable)
     {
-      [v9 referenceOriginTransform];
-      v38 = [v37 pointCloudByApplyingTransform:?];
-      [v9 setFeaturePoints:v38];
+      [frameCopy referenceOriginTransform];
+      v38 = [referenceFeaturePoints8 pointCloudByApplyingTransform:?];
+      [frameCopy setFeaturePoints:v38];
     }
 
     else
     {
-      [v9 setFeaturePoints:v37];
+      [frameCopy setFeaturePoints:referenceFeaturePoints8];
     }
   }
 
 LABEL_31:
 }
 
-- (void)setGeoTrackingTechnique:(id)a3
+- (void)setGeoTrackingTechnique:(id)technique
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  techniqueCopy = technique;
   geoTrackingTechnique = self->_geoTrackingTechnique;
   v7 = _ARLogSession_0();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (geoTrackingTechnique == v5)
+  if (geoTrackingTechnique == techniqueCopy)
   {
     if (v8)
     {
@@ -6407,9 +6407,9 @@ LABEL_31:
       v15 = 138543874;
       v16 = v14;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
-      v20 = v5;
+      v20 = techniqueCopy;
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: The specified geo tracking technique is already set: %@", &v15, 0x20u);
     }
   }
@@ -6425,47 +6425,47 @@ LABEL_31:
       v15 = 138544130;
       v16 = v11;
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2112;
       v20 = v12;
       v21 = 2112;
-      v22 = v5;
+      v22 = techniqueCopy;
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Changing geo tracking technique - old: %@, new: %@", &v15, 0x2Au);
     }
 
     [(ARRemoteTechnique *)*p_geoTrackingTechnique setActive:0];
-    objc_storeStrong(&self->_geoTrackingTechnique, a3);
+    objc_storeStrong(&self->_geoTrackingTechnique, technique);
     [(ARRemoteTechnique *)*p_geoTrackingTechnique setActive:1];
   }
 }
 
-- (void)_lookupAltitudeForAnchor:(id)a3
+- (void)_lookupAltitudeForAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   dispatch_assert_queue_V2(self->_stateQueue);
-  v5 = [v4 identifier];
-  v6 = [(ARSession *)self _getGeoAnchorAltitude:v5];
+  identifier = [anchorCopy identifier];
+  v6 = [(ARSession *)self _getGeoAnchorAltitude:identifier];
   if (v6)
   {
   }
 
   else
   {
-    v7 = [v4 isAltitudeLookupInProgress];
+    isAltitudeLookupInProgress = [anchorCopy isAltitudeLookupInProgress];
 
-    if ((v7 & 1) == 0)
+    if ((isAltitudeLookupInProgress & 1) == 0)
     {
-      [v4 setIsAltitudeLookupInProgress:1];
-      [v4 coordinate];
+      [anchorCopy setIsAltitudeLookupInProgress:1];
+      [anchorCopy coordinate];
       v9 = v8;
-      [v4 coordinate];
+      [anchorCopy coordinate];
       v11 = CLLocationCoordinate2DMake(v9, v10);
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __38__ARSession__lookupAltitudeForAnchor___block_invoke;
       v12[3] = &unk_1E817CE18;
       v12[4] = self;
-      v13 = v4;
+      v13 = anchorCopy;
       v14 = v11;
       [(ARSession *)self _lookupAltitudeAtCoordinate:v12 completionHandler:v11.latitude, v11.longitude];
     }
@@ -6632,9 +6632,9 @@ LABEL_26:
   [*(a1 + 40) setIsAltitudeLookupInProgress:0];
 }
 
-- (id)_updateAnchorsForFrame:(id)a3 resultDatas:(id)a4 context:(id)a5
+- (id)_updateAnchorsForFrame:(id)frame resultDatas:(id)datas context:(id)context
 {
-  v5 = MEMORY[0x1EEE9AC00](self, a2, a3, a4, a5);
+  v5 = MEMORY[0x1EEE9AC00](self, a2, frame, datas, context);
   v7 = v6;
   v9 = v8;
   v421 = v5;
@@ -6660,25 +6660,25 @@ LABEL_26:
     v412 = *(MEMORY[0x1E69E9B18] + 32);
   }
 
-  v13 = [v11 anchors];
-  v14 = [v11 privateAnchors];
-  v15 = [v13 arrayByAddingObjectsFromArray:v14];
+  anchors = [v11 anchors];
+  privateAnchors = [v11 privateAnchors];
+  v15 = [anchors arrayByAddingObjectsFromArray:privateAnchors];
 
   v16 = ARDictionaryFromAnchors(v15);
-  v17 = [MEMORY[0x1E695DF90] dictionary];
-  v18 = [MEMORY[0x1E695DF90] dictionary];
-  v371 = [MEMORY[0x1E695DF90] dictionary];
-  v369 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
   v19 = *(v421 + 128);
   v418 = v11;
   v358 = v15;
   if (v19 && ([v19 worldTrackingState], v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
   {
-    v21 = [v11 worldTrackingState];
-    [v21 originTimestamp];
+    worldTrackingState = [v11 worldTrackingState];
+    [worldTrackingState originTimestamp];
     v23 = v22;
-    v24 = [*(v421 + 128) worldTrackingState];
-    [v24 originTimestamp];
+    worldTrackingState2 = [*(v421 + 128) worldTrackingState];
+    [worldTrackingState2 originTimestamp];
     v376 = v23 > v25;
   }
 
@@ -6693,8 +6693,8 @@ LABEL_26:
   v495 = 0u;
   v494 = 0u;
   v419 = v16;
-  v26 = [v16 allValues];
-  v27 = [v26 countByEnumeratingWithState:&v494 objects:v520 count:16];
+  allValues = [v16 allValues];
+  v27 = [allValues countByEnumeratingWithState:&v494 objects:v520 count:16];
   if (v27)
   {
     v28 = v27;
@@ -6705,7 +6705,7 @@ LABEL_26:
       {
         if (*v495 != v29)
         {
-          objc_enumerationMutation(v26);
+          objc_enumerationMutation(allValues);
         }
 
         v31 = *(*(&v494 + 1) + 8 * i);
@@ -6715,55 +6715,55 @@ LABEL_26:
           v32 = v31;
           if (([v32 isAltitudeAvailable] & 1) == 0)
           {
-            v33 = [v32 identifier];
-            v34 = [v421 _getGeoAnchorAltitude:v33];
+            identifier = [v32 identifier];
+            v34 = [v421 _getGeoAnchorAltitude:identifier];
 
             if (v34)
             {
               if ([v34 lookupFailed])
               {
-                v35 = [v32 identifier];
-                [v371 setObject:v32 forKey:v35];
+                identifier2 = [v32 identifier];
+                [dictionary3 setObject:v32 forKey:identifier2];
               }
 
               else
               {
-                v36 = [v34 source];
+                source = [v34 source];
                 [v34 altitude];
                 v38 = v37;
                 if ([v32 altitudeSource] == 3)
                 {
                   [v32 altitude];
                   v38 = v39;
-                  v36 = 3;
+                  source = 3;
                 }
 
                 [v32 coordinate];
                 v41 = v40;
                 v43 = v42;
                 [v34 undulation];
-                [v32 initWithCoordinate:v36 altitude:1 altitudeSource:v41 isAltitudeAvailable:v43 undulation:{v38, v44}];
+                [v32 initWithCoordinate:source altitude:1 altitudeSource:v41 isAltitudeAvailable:v43 undulation:{v38, v44}];
               }
             }
           }
         }
       }
 
-      v28 = [v26 countByEnumeratingWithState:&v494 objects:v520 count:16];
+      v28 = [allValues countByEnumeratingWithState:&v494 objects:v520 count:16];
     }
 
     while (v28);
   }
 
-  v417 = v18;
-  v414 = v17;
+  v417 = dictionary2;
+  v414 = dictionary;
 
   v493 = 0u;
   v492 = 0u;
   v491 = 0u;
   v490 = 0u;
-  v45 = [v371 allValues];
-  v46 = [v45 countByEnumeratingWithState:&v490 objects:v519 count:16];
+  allValues2 = [dictionary3 allValues];
+  v46 = [allValues2 countByEnumeratingWithState:&v490 objects:v519 count:16];
   if (v46)
   {
     v47 = v46;
@@ -6775,7 +6775,7 @@ LABEL_26:
       {
         if (*v491 != v48)
         {
-          objc_enumerationMutation(v45);
+          objc_enumerationMutation(allValues2);
         }
 
         v51 = *(*(&v490 + 1) + 8 * j);
@@ -6796,14 +6796,14 @@ LABEL_26:
 
           v55 = objc_opt_class();
           v56 = NSStringFromClass(v55);
-          v57 = [v51 identifier];
+          identifier3 = [v51 identifier];
           *buf = 138543874;
           *&buf[4] = v56;
           *&buf[12] = 2048;
           *&buf[14] = v421;
           v49 = &ARTechnique_Image_to_Result_Frame_keyToCode;
           *&buf[22] = 2112;
-          *&buf[24] = v57;
+          *&buf[24] = identifier3;
           v58 = v54;
           v59 = OS_LOG_TYPE_ERROR;
           v60 = "%{public}@ <%p>: Failed to look up geo anchor altitude. Removing anchor: %@";
@@ -6818,14 +6818,14 @@ LABEL_26:
 
           v61 = objc_opt_class();
           v56 = NSStringFromClass(v61);
-          v57 = [v51 identifier];
+          identifier3 = [v51 identifier];
           *buf = 138543874;
           *&buf[4] = v56;
           *&buf[12] = 2048;
           *&buf[14] = v421;
           v49 = &ARTechnique_Image_to_Result_Frame_keyToCode;
           *&buf[22] = 2112;
-          *&buf[24] = v57;
+          *&buf[24] = identifier3;
           v58 = v54;
           v59 = OS_LOG_TYPE_INFO;
           v60 = "Error: %{public}@ <%p>: Failed to look up geo anchor altitude. Removing anchor: %@";
@@ -6834,14 +6834,14 @@ LABEL_26:
         _os_log_impl(&dword_1C241C000, v58, v59, v60, buf, 0x20u);
 
 LABEL_38:
-        v62 = [v51 identifier];
-        [v419 removeObjectForKey:v62];
+        identifier4 = [v51 identifier];
+        [v419 removeObjectForKey:identifier4];
 
-        v63 = [v51 identifier];
-        [v421 _removeGeoAnchorAltitude:v63];
+        identifier5 = [v51 identifier];
+        [v421 _removeGeoAnchorAltitude:identifier5];
       }
 
-      v47 = [v45 countByEnumeratingWithState:&v490 objects:v519 count:16];
+      v47 = [allValues2 countByEnumeratingWithState:&v490 objects:v519 count:16];
     }
 
     while (v47);
@@ -6856,8 +6856,8 @@ LABEL_38:
     v488 = 0u;
     v487 = 0u;
     v486 = 0u;
-    v67 = [v419 allValues];
-    v68 = [v67 countByEnumeratingWithState:&v486 objects:v518 count:16];
+    allValues3 = [v419 allValues];
+    v68 = [allValues3 countByEnumeratingWithState:&v486 objects:v518 count:16];
     if (v68)
     {
       v69 = v68;
@@ -6868,7 +6868,7 @@ LABEL_38:
         {
           if (*v487 != v70)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(allValues3);
           }
 
           v72 = *(*(&v486 + 1) + 8 * k);
@@ -6876,17 +6876,17 @@ LABEL_38:
           if (objc_opt_isKindOfClass())
           {
             v73 = [v72 copy];
-            v74 = [v73 identifier];
-            [v419 setObject:v73 forKey:v74];
+            identifier6 = [v73 identifier];
+            [v419 setObject:v73 forKey:identifier6];
 
             v75 = v73;
             [v75 setIsTracked:0];
-            v76 = [v75 identifier];
-            [v417 setObject:v75 forKey:v76];
+            identifier7 = [v75 identifier];
+            [v417 setObject:v75 forKey:identifier7];
           }
         }
 
-        v69 = [v67 countByEnumeratingWithState:&v486 objects:v518 count:16];
+        v69 = [allValues3 countByEnumeratingWithState:&v486 objects:v518 count:16];
       }
 
       while (v69);
@@ -6899,8 +6899,8 @@ LABEL_38:
     v484 = 0u;
     v483 = 0u;
     v482 = 0u;
-    v77 = [v419 allValues];
-    v78 = [v77 countByEnumeratingWithState:&v482 objects:v517 count:16];
+    allValues4 = [v419 allValues];
+    v78 = [allValues4 countByEnumeratingWithState:&v482 objects:v517 count:16];
     v79 = v376;
     if (!v78)
     {
@@ -6918,15 +6918,15 @@ LABEL_38:
       {
         if (*v483 != v81)
         {
-          objc_enumerationMutation(v77);
+          objc_enumerationMutation(allValues4);
         }
 
         v83 = *(*(&v482 + 1) + 8 * v82);
         if (!v79 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (v84 = v83) == 0)
         {
           v84 = [v83 copy];
-          v85 = [v84 identifier];
-          [v419 setObject:v84 forKey:v85];
+          identifier8 = [v84 identifier];
+          [v419 setObject:v84 forKey:identifier8];
         }
 
         if ([v409 didRelocalize])
@@ -6939,23 +6939,23 @@ LABEL_38:
             {
               v88 = objc_opt_class();
               v89 = NSStringFromClass(v88);
-              v90 = [v84 identifier];
+              identifier9 = [v84 identifier];
               [v409 relocalizationDeltaTransform];
               ARMatrix4x4Description(0, v91, v92, v93, v94);
-              v96 = v95 = v77;
+              v96 = v95 = allValues4;
               *buf = 138544130;
               *&buf[4] = v89;
               *&buf[12] = 2048;
               *&buf[14] = v421;
               v79 = v376;
               *&buf[22] = 2112;
-              *&buf[24] = v90;
+              *&buf[24] = identifier9;
               LOWORD(v522) = 2112;
               *(&v522 + 2) = v96;
               _os_log_impl(&dword_1C241C000, v87, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Relocalization - Anchor (%@) left in place, delta %@", buf, 0x2Au);
 
               v80 = v380;
-              v77 = v95;
+              allValues4 = v95;
               v81 = v372;
 
               v65 = v418;
@@ -7006,8 +7006,8 @@ LABEL_38:
             while (v110 != 64);
 LABEL_78:
             [v84 setTransform:{*buf, *&buf[16], *&v522, *&v523}];
-            v133 = [v84 identifier];
-            [v417 setObject:v84 forKey:v133];
+            identifier10 = [v84 identifier];
+            [v417 setObject:v84 forKey:identifier10];
 
             goto LABEL_79;
           }
@@ -7088,7 +7088,7 @@ LABEL_79:
       }
 
       while (v82 != v80);
-      v139 = [v77 countByEnumeratingWithState:&v482 objects:v517 count:16];
+      v139 = [allValues4 countByEnumeratingWithState:&v482 objects:v517 count:16];
       v80 = v139;
       if (!v139)
       {
@@ -7105,9 +7105,9 @@ LABEL_85:
   v480 = 0u;
   v479 = 0u;
   v478 = 0u;
-  v140 = [v66 anchorsToRemove];
-  v141 = [v140 countByEnumeratingWithState:&v478 objects:v516 count:16];
-  v142 = v371;
+  anchorsToRemove = [v66 anchorsToRemove];
+  v141 = [anchorsToRemove countByEnumeratingWithState:&v478 objects:v516 count:16];
+  v142 = dictionary3;
   if (v141)
   {
     v143 = v141;
@@ -7118,30 +7118,30 @@ LABEL_85:
       {
         if (*v479 != v144)
         {
-          objc_enumerationMutation(v140);
+          objc_enumerationMutation(anchorsToRemove);
         }
 
-        v146 = [*(*(&v478 + 1) + 8 * m) identifier];
-        v147 = [v64 objectForKey:v146];
+        identifier11 = [*(*(&v478 + 1) + 8 * m) identifier];
+        v147 = [v64 objectForKey:identifier11];
 
         if (v147)
         {
-          v148 = [v147 identifier];
-          [v371 setObject:v147 forKey:v148];
+          identifier12 = [v147 identifier];
+          [dictionary3 setObject:v147 forKey:identifier12];
 
-          v149 = [v147 identifier];
-          [v64 removeObjectForKey:v149];
+          identifier13 = [v147 identifier];
+          [v64 removeObjectForKey:identifier13];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v150 = [v147 identifier];
-            [v421 _removeGeoAnchorAltitude:v150];
+            identifier14 = [v147 identifier];
+            [v421 _removeGeoAnchorAltitude:identifier14];
           }
         }
       }
 
-      v143 = [v140 countByEnumeratingWithState:&v478 objects:v516 count:16];
+      v143 = [anchorsToRemove countByEnumeratingWithState:&v478 objects:v516 count:16];
     }
 
     while (v143);
@@ -7153,8 +7153,8 @@ LABEL_85:
     v476 = 0u;
     v475 = 0u;
     v474 = 0u;
-    v151 = [v66 anchorsToStopTracking];
-    v152 = [v151 countByEnumeratingWithState:&v474 objects:v515 count:16];
+    anchorsToStopTracking = [v66 anchorsToStopTracking];
+    v152 = [anchorsToStopTracking countByEnumeratingWithState:&v474 objects:v515 count:16];
     if (v152)
     {
       v153 = v152;
@@ -7165,11 +7165,11 @@ LABEL_85:
         {
           if (*v475 != v154)
           {
-            objc_enumerationMutation(v151);
+            objc_enumerationMutation(anchorsToStopTracking);
           }
 
-          v156 = [*(*(&v474 + 1) + 8 * n) identifier];
-          v157 = [v64 objectForKey:v156];
+          identifier15 = [*(*(&v474 + 1) + 8 * n) identifier];
+          v157 = [v64 objectForKey:identifier15];
 
           if (objc_opt_respondsToSelector())
           {
@@ -7182,11 +7182,11 @@ LABEL_85:
                 [v159 setIsTracked:0];
               }
 
-              v160 = [v159 identifier];
-              [v419 setObject:v159 forKey:v160];
+              identifier16 = [v159 identifier];
+              [v419 setObject:v159 forKey:identifier16];
 
-              v161 = [v159 identifier];
-              [v417 setObject:v159 forKey:v161];
+              identifier17 = [v159 identifier];
+              [v417 setObject:v159 forKey:identifier17];
 
               v65 = v418;
             }
@@ -7195,29 +7195,29 @@ LABEL_85:
           }
         }
 
-        v153 = [v151 countByEnumeratingWithState:&v474 objects:v515 count:16];
+        v153 = [anchorsToStopTracking countByEnumeratingWithState:&v474 objects:v515 count:16];
       }
 
       while (v153);
     }
 
     v66 = v409;
-    v142 = v371;
+    v142 = dictionary3;
   }
 
-  v162 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
   v360 = objc_opt_new();
   if ([v66 didRelocalize])
   {
-    v163 = [v66 worldMap];
-    v164 = [v163 anchors];
-    v165 = ARDictionaryFromAnchors(v164);
+    worldMap = [v66 worldMap];
+    anchors2 = [worldMap anchors];
+    v165 = ARDictionaryFromAnchors(anchors2);
 
     if ([*(v421 + 8) isMultiSessionMode])
     {
-      v166 = [v66 worldMap];
-      v167 = [v166 anchors];
-      v168 = ARAnchorsForPoseGraphUpdates(v167);
+      worldMap2 = [v66 worldMap];
+      anchors3 = [worldMap2 anchors];
+      v168 = ARAnchorsForPoseGraphUpdates(anchors3);
 
       v473 = 0u;
       v472 = 0u;
@@ -7244,18 +7244,18 @@ LABEL_85:
             {
               v176 = objc_opt_class();
               v177 = NSStringFromClass(v176);
-              v178 = [v174 identifier];
+              identifier18 = [v174 identifier];
               *buf = 138543874;
               *&buf[4] = v177;
               *&buf[12] = 2048;
               *&buf[14] = v421;
               *&buf[22] = 2114;
-              *&buf[24] = v178;
+              *&buf[24] = identifier18;
               _os_log_impl(&dword_1C241C000, v175, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: skipped adding anchor loaded from world map: %{public}@", buf, 0x20u);
             }
 
-            v179 = [v174 identifier];
-            [v165 removeObjectForKey:v179];
+            identifier19 = [v174 identifier];
+            [v165 removeObjectForKey:identifier19];
           }
 
           v171 = [v169 countByEnumeratingWithState:&v470 objects:v514 count:16];
@@ -7267,19 +7267,19 @@ LABEL_85:
       v65 = v418;
       v64 = v419;
       v66 = v409;
-      v142 = v371;
+      v142 = dictionary3;
     }
   }
 
   else
   {
-    v165 = v162;
+    v165 = dictionary5;
   }
 
-  v180 = [v65 camera];
-  v181 = [v180 trackingState];
+  camera = [v65 camera];
+  trackingState = [camera trackingState];
 
-  if (v181)
+  if (trackingState)
   {
     v469 = 0u;
     v468 = 0u;
@@ -7287,7 +7287,7 @@ LABEL_85:
     v466 = 0u;
     obj = v359;
     v182 = [obj countByEnumeratingWithState:&v466 objects:v513 count:16];
-    v183 = v369;
+    v183 = dictionary4;
     if (!v182)
     {
       goto LABEL_159;
@@ -7309,8 +7309,8 @@ LABEL_85:
         if (objc_opt_isKindOfClass())
         {
           v187 = v186;
-          v188 = [v65 camera];
-          [v187 setCurrentCamera:v188];
+          camera2 = [v65 camera];
+          [v187 setCurrentCamera:camera2];
         }
 
         if (objc_opt_respondsToSelector())
@@ -7320,8 +7320,8 @@ LABEL_85:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v189 = [v65 camera];
-              [v189 transform];
+              camera3 = [v65 camera];
+              [camera3 transform];
               v194 = ARFrontWideCameraTransformFromBackWideAngleCameraTransformWithZFlip(v190, v191, v192, v193);
               v381 = v195;
               v388 = v194;
@@ -7333,8 +7333,8 @@ LABEL_85:
               v367 = v198;
               v361 = v201;
               v363 = v200;
-              v202 = [v64 allValues];
-              v203 = [v186 anchorsForCameraWithTransform:v202 referenceOriginTransform:v360 existingAnchors:v388 anchorsToRemove:{v381, v377, v373, v367, v365, v363, v361}];
+              allValues5 = [v64 allValues];
+              v203 = [v186 anchorsForCameraWithTransform:allValues5 referenceOriginTransform:v360 existingAnchors:v388 anchorsToRemove:{v381, v377, v373, v367, v365, v363, v361}];
               goto LABEL_139;
             }
           }
@@ -7346,8 +7346,8 @@ LABEL_85:
 
           else
           {
-            v202 = [v65 camera];
-            [v202 transform];
+            allValues5 = [v65 camera];
+            [allValues5 transform];
             v382 = v205;
             v389 = v204;
             v374 = v207;
@@ -7357,8 +7357,8 @@ LABEL_85:
             v368 = v208;
             v362 = v211;
             v364 = v210;
-            v212 = [v64 allValues];
-            v203 = [v186 anchorsForCameraWithTransform:v212 referenceOriginTransform:v360 existingAnchors:v389 anchorsToRemove:{v382, v378, v374, v368, v366, v364, v362}];
+            allValues6 = [v64 allValues];
+            v203 = [v186 anchorsForCameraWithTransform:allValues6 referenceOriginTransform:v360 existingAnchors:v389 anchorsToRemove:{v382, v378, v374, v368, v366, v364, v362}];
 
 LABEL_139:
           }
@@ -7383,8 +7383,8 @@ LABEL_139:
                 }
 
                 v218 = *(*(&v462 + 1) + 8 * kk);
-                v219 = [v218 identifier];
-                [v165 setObject:v218 forKey:v219];
+                identifier20 = [v218 identifier];
+                [v165 setObject:v218 forKey:identifier20];
               }
 
               v215 = [v213 countByEnumeratingWithState:&v462 objects:v512 count:16];
@@ -7395,7 +7395,7 @@ LABEL_139:
 
           v65 = v418;
           v64 = v419;
-          v183 = v369;
+          v183 = dictionary4;
         }
 
         if (objc_opt_respondsToSelector())
@@ -7405,8 +7405,8 @@ LABEL_139:
           v390 = v220;
           v375 = v223;
           v379 = v222;
-          v224 = [v64 allValues];
-          v225 = [v186 externalAnchorsWithReferenceOriginTransform:v224 existingAnchors:{v390, v383, v379, v375}];
+          allValues7 = [v64 allValues];
+          v225 = [v186 externalAnchorsWithReferenceOriginTransform:allValues7 existingAnchors:{v390, v383, v379, v375}];
 
           v460 = 0u;
           v461 = 0u;
@@ -7428,8 +7428,8 @@ LABEL_139:
                 }
 
                 v231 = *(*(&v458 + 1) + 8 * mm);
-                v232 = [v231 identifier];
-                [v183 setObject:v231 forKey:v232];
+                identifier21 = [v231 identifier];
+                [v183 setObject:v231 forKey:identifier21];
               }
 
               v228 = [v226 countByEnumeratingWithState:&v458 objects:v511 count:16];
@@ -7449,7 +7449,7 @@ LABEL_139:
 LABEL_159:
 
         v66 = v409;
-        v142 = v371;
+        v142 = dictionary3;
         break;
       }
     }
@@ -7474,22 +7474,22 @@ LABEL_159:
           objc_enumerationMutation(v408);
         }
 
-        v237 = [*(*(&v454 + 1) + 8 * nn) identifier];
-        v238 = [v64 objectForKey:v237];
+        identifier22 = [*(*(&v454 + 1) + 8 * nn) identifier];
+        v238 = [v64 objectForKey:identifier22];
 
         if (v238)
         {
-          v239 = [v238 identifier];
-          [v142 setObject:v238 forKey:v239];
+          identifier23 = [v238 identifier];
+          [v142 setObject:v238 forKey:identifier23];
 
-          v240 = [v238 identifier];
-          [v64 removeObjectForKey:v240];
+          identifier24 = [v238 identifier];
+          [v64 removeObjectForKey:identifier24];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v241 = [v238 identifier];
-            [v421 _removeGeoAnchorAltitude:v241];
+            identifier25 = [v238 identifier];
+            [v421 _removeGeoAnchorAltitude:identifier25];
           }
         }
       }
@@ -7506,8 +7506,8 @@ LABEL_159:
     v453 = 0u;
     v450 = 0u;
     v451 = 0u;
-    v242 = [v64 allValues];
-    v243 = [v242 countByEnumeratingWithState:&v450 objects:v509 count:16];
+    allValues8 = [v64 allValues];
+    v243 = [allValues8 countByEnumeratingWithState:&v450 objects:v509 count:16];
     if (!v243)
     {
       goto LABEL_183;
@@ -7521,15 +7521,15 @@ LABEL_159:
       {
         if (*v451 != v245)
         {
-          objc_enumerationMutation(v242);
+          objc_enumerationMutation(allValues8);
         }
 
         v247 = *(*(&v450 + 1) + 8 * i1);
-        v248 = [v247 identifier];
-        v249 = [v165 objectForKey:v248];
+        identifier26 = [v247 identifier];
+        v249 = [v165 objectForKey:identifier26];
         if (v249)
         {
-          v250 = v249;
+          identifier27 = v249;
         }
 
         else
@@ -7542,13 +7542,13 @@ LABEL_159:
             continue;
           }
 
-          v248 = [v247 copy];
-          v250 = [v247 identifier];
-          [v419 setObject:v248 forKey:v250];
+          identifier26 = [v247 copy];
+          identifier27 = [v247 identifier];
+          [v419 setObject:identifier26 forKey:identifier27];
         }
       }
 
-      v244 = [v242 countByEnumeratingWithState:&v450 objects:v509 count:16];
+      v244 = [allValues8 countByEnumeratingWithState:&v450 objects:v509 count:16];
       if (!v244)
       {
 LABEL_183:
@@ -7563,8 +7563,8 @@ LABEL_183:
   v449 = 0u;
   v446 = 0u;
   v447 = 0u;
-  v401 = [v66 anchorsToAdd];
-  v252 = [v401 countByEnumeratingWithState:&v446 objects:v508 count:16];
+  anchorsToAdd = [v66 anchorsToAdd];
+  v252 = [anchorsToAdd countByEnumeratingWithState:&v446 objects:v508 count:16];
   if (v252)
   {
     v253 = v252;
@@ -7575,12 +7575,12 @@ LABEL_183:
       {
         if (*v447 != v254)
         {
-          objc_enumerationMutation(v401);
+          objc_enumerationMutation(anchorsToAdd);
         }
 
         v256 = *(*(&v446 + 1) + 8 * i2);
-        v257 = [v256 identifier];
-        v258 = [v64 objectForKey:v257];
+        identifier28 = [v256 identifier];
+        v258 = [v64 objectForKey:identifier28];
 
         if (!v258)
         {
@@ -7605,28 +7605,28 @@ LABEL_183:
             [v256 setReferenceTransform:{*buf, *&buf[16], *&v522, *&v523}];
           }
 
-          v264 = [v256 identifier];
-          v265 = [v371 objectForKey:v264];
+          identifier29 = [v256 identifier];
+          v265 = [dictionary3 objectForKey:identifier29];
 
           v266 = v414;
           if (v265)
           {
-            v267 = [v265 identifier];
-            [v371 removeObjectForKey:v267];
+            identifier30 = [v265 identifier];
+            [dictionary3 removeObjectForKey:identifier30];
 
             v266 = v417;
           }
 
-          v268 = [v256 identifier];
-          [v266 setObject:v256 forKey:v268];
+          identifier31 = [v256 identifier];
+          [v266 setObject:v256 forKey:identifier31];
 
-          v269 = [v256 identifier];
+          identifier32 = [v256 identifier];
           v64 = v419;
-          [v419 setObject:v256 forKey:v269];
+          [v419 setObject:v256 forKey:identifier32];
         }
       }
 
-      v253 = [v401 countByEnumeratingWithState:&v446 objects:v508 count:16];
+      v253 = [anchorsToAdd countByEnumeratingWithState:&v446 objects:v508 count:16];
     }
 
     while (v253);
@@ -7636,8 +7636,8 @@ LABEL_183:
   v445 = 0u;
   v442 = 0u;
   v443 = 0u;
-  v402 = [v165 allValues];
-  v270 = [v402 countByEnumeratingWithState:&v442 objects:v507 count:16];
+  allValues9 = [v165 allValues];
+  v270 = [allValues9 countByEnumeratingWithState:&v442 objects:v507 count:16];
   if (v270)
   {
     v271 = v270;
@@ -7648,7 +7648,7 @@ LABEL_183:
       {
         if (*v443 != v272)
         {
-          objc_enumerationMutation(v402);
+          objc_enumerationMutation(allValues9);
         }
 
         v274 = *(*(&v442 + 1) + 8 * i3);
@@ -7675,10 +7675,10 @@ LABEL_183:
 
         [v418 timestamp];
         [v274 setLastUpdateTimestamp:?];
-        v280 = [v274 identifier];
-        v281 = [v419 objectForKey:v280];
+        identifier33 = [v274 identifier];
+        v281 = [v419 objectForKey:identifier33];
 
-        v282 = [v274 identifier];
+        identifier34 = [v274 identifier];
         if (v281)
         {
           v283 = v417;
@@ -7689,13 +7689,13 @@ LABEL_183:
           v283 = v414;
         }
 
-        [v283 setObject:v274 forKey:v282];
+        [v283 setObject:v274 forKey:identifier34];
 
-        v284 = [v274 identifier];
-        [v419 setObject:v274 forKey:v284];
+        identifier35 = [v274 identifier];
+        [v419 setObject:v274 forKey:identifier35];
       }
 
-      v271 = [v402 countByEnumeratingWithState:&v442 objects:v507 count:16];
+      v271 = [allValues9 countByEnumeratingWithState:&v442 objects:v507 count:16];
     }
 
     while (v271);
@@ -7705,14 +7705,14 @@ LABEL_183:
   v441 = 0u;
   v438 = 0u;
   v439 = 0u;
-  v285 = [v409 collaborationData];
-  v286 = [v285 countByEnumeratingWithState:&v438 objects:v506 count:16];
+  collaborationData = [v409 collaborationData];
+  v286 = [collaborationData countByEnumeratingWithState:&v438 objects:v506 count:16];
   v287 = v419;
   if (v286)
   {
     v288 = v286;
     v289 = *v439;
-    v403 = v285;
+    v403 = collaborationData;
     v396 = *v439;
     do
     {
@@ -7722,7 +7722,7 @@ LABEL_183:
       {
         if (*v439 != v289)
         {
-          objc_enumerationMutation(v285);
+          objc_enumerationMutation(collaborationData);
         }
 
         v291 = *(*(&v438 + 1) + 8 * v290);
@@ -7730,8 +7730,8 @@ LABEL_183:
         {
           v416 = v290;
           v292 = v291;
-          v293 = [v291 anchorIdentifier];
-          v294 = [v287 objectForKey:v293];
+          anchorIdentifier = [v291 anchorIdentifier];
+          v294 = [v287 objectForKey:anchorIdentifier];
 
           v295 = [v294 isMemberOfClass:objc_opt_class()];
           v296 = _ARLogSession_0();
@@ -7767,20 +7767,20 @@ LABEL_183:
             {
               v323 = objc_opt_class();
               v324 = NSStringFromClass(v323);
-              v325 = [v292 anchorIdentifier];
+              anchorIdentifier2 = [v292 anchorIdentifier];
               [v294 description];
-              v327 = v326 = v285;
+              v327 = v326 = collaborationData;
               *buf = 138544130;
               *&buf[4] = v324;
               *&buf[12] = 2048;
               *&buf[14] = v421;
               *&buf[22] = 2112;
-              *&buf[24] = v325;
+              *&buf[24] = anchorIdentifier2;
               LOWORD(v522) = 2112;
               *(&v522 + 2) = v327;
               _os_log_impl(&dword_1C241C000, v296, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Not sending anchor data, it is not found or not a simple anchor: %@, %@", buf, 0x2Au);
 
-              v285 = v326;
+              collaborationData = v326;
               v287 = v419;
 
               v288 = v411;
@@ -7802,8 +7802,8 @@ LABEL_183:
           v435 = 0u;
           v436 = 0u;
           v437 = 0u;
-          v303 = [v287 allValues];
-          v304 = [v303 countByEnumeratingWithState:&v434 objects:v505 count:16];
+          allValues10 = [v287 allValues];
+          v304 = [allValues10 countByEnumeratingWithState:&v434 objects:v505 count:16];
           if (v304)
           {
             v305 = v304;
@@ -7814,7 +7814,7 @@ LABEL_183:
               {
                 if (*v435 != v306)
                 {
-                  objc_enumerationMutation(v303);
+                  objc_enumerationMutation(allValues10);
                 }
 
                 v308 = *(*(&v434 + 1) + 8 * i4);
@@ -7824,7 +7824,7 @@ LABEL_183:
                 }
               }
 
-              v305 = [v303 countByEnumeratingWithState:&v434 objects:v505 count:16];
+              v305 = [allValues10 countByEnumeratingWithState:&v434 objects:v505 count:16];
             }
 
             while (v305);
@@ -7892,7 +7892,7 @@ LABEL_183:
 
           [v421 _sessionDidOutputCollaborationData:v413];
           v287 = v419;
-          v285 = v403;
+          collaborationData = v403;
           v289 = v396;
           v288 = v411;
         }
@@ -7903,7 +7903,7 @@ LABEL_249:
       }
 
       while (v290 != v288);
-      v288 = [v285 countByEnumeratingWithState:&v438 objects:v506 count:16];
+      v288 = [collaborationData countByEnumeratingWithState:&v438 objects:v506 count:16];
     }
 
     while (v288);
@@ -7913,8 +7913,8 @@ LABEL_249:
   v429 = 0u;
   v426 = 0u;
   v427 = 0u;
-  v328 = [v287 allValues];
-  v329 = [v328 countByEnumeratingWithState:&v426 objects:v503 count:16];
+  allValues11 = [v287 allValues];
+  v329 = [allValues11 countByEnumeratingWithState:&v426 objects:v503 count:16];
   v330 = v414;
   if (v329)
   {
@@ -7926,20 +7926,20 @@ LABEL_249:
       {
         if (*v427 != v332)
         {
-          objc_enumerationMutation(v328);
+          objc_enumerationMutation(allValues11);
         }
 
         v334 = *(*(&v426 + 1) + 8 * i6);
-        v335 = [v334 sessionIdentifier];
+        sessionIdentifier = [v334 sessionIdentifier];
 
-        if (!v335)
+        if (!sessionIdentifier)
         {
-          v336 = [v421 identifier];
-          [v334 setSessionIdentifier:v336];
+          identifier36 = [v421 identifier];
+          [v334 setSessionIdentifier:identifier36];
         }
       }
 
-      v331 = [v328 countByEnumeratingWithState:&v426 objects:v503 count:16];
+      v331 = [allValues11 countByEnumeratingWithState:&v426 objects:v503 count:16];
     }
 
     while (v331);
@@ -7949,8 +7949,8 @@ LABEL_249:
   v425 = 0u;
   v422 = 0u;
   v423 = 0u;
-  v337 = [v371 allValues];
-  v338 = [v337 countByEnumeratingWithState:&v422 objects:v502 count:16];
+  allValues12 = [dictionary3 allValues];
+  v338 = [allValues12 countByEnumeratingWithState:&v422 objects:v502 count:16];
   v339 = v409;
   v340 = v419;
   if (v338)
@@ -7963,36 +7963,36 @@ LABEL_249:
       {
         if (*v423 != v342)
         {
-          objc_enumerationMutation(v337);
+          objc_enumerationMutation(allValues12);
         }
 
         [*(*(&v422 + 1) + 8 * i7) setSessionIdentifier:0];
       }
 
-      v341 = [v337 countByEnumeratingWithState:&v422 objects:v502 count:16];
+      v341 = [allValues12 countByEnumeratingWithState:&v422 objects:v502 count:16];
     }
 
     while (v341);
   }
 
-  v344 = [v419 allValues];
-  v345 = ARAnchorsForPublicDelegate(v344);
+  allValues13 = [v419 allValues];
+  v345 = ARAnchorsForPublicDelegate(allValues13);
   [v418 setAnchors:v345];
 
-  v346 = [v419 allValues];
+  allValues14 = [v419 allValues];
   v347 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_341];
-  v348 = [v346 filteredArrayUsingPredicate:v347];
+  v348 = [allValues14 filteredArrayUsingPredicate:v347];
 
   [v418 setPrivateAnchors:v348];
   v349 = v417;
-  if ([v414 count] || objc_msgSend(v417, "count") || objc_msgSend(v371, "count") || objc_msgSend(v369, "count"))
+  if ([v414 count] || objc_msgSend(v417, "count") || objc_msgSend(dictionary3, "count") || objc_msgSend(dictionary4, "count"))
   {
     v350 = [ARAnchorChangeSet alloc];
-    v351 = [v414 allValues];
-    v352 = [v417 allValues];
-    v353 = [v371 allValues];
-    v354 = [v369 allValues];
-    v355 = [(ARAnchorChangeSet *)v350 initWithAddedAnchors:v351 updatedAnchors:v352 removedAnchors:v353 externalAnchors:v354];
+    allValues15 = [v414 allValues];
+    allValues16 = [v417 allValues];
+    allValues17 = [dictionary3 allValues];
+    allValues18 = [dictionary4 allValues];
+    v355 = [(ARAnchorChangeSet *)v350 initWithAddedAnchors:allValues15 updatedAnchors:allValues16 removedAnchors:allValues17 externalAnchors:allValues18];
     [v418 setAnchorChangeSet:v355];
 
     v340 = v419;
@@ -8002,15 +8002,15 @@ LABEL_249:
     v349 = v417;
   }
 
-  v356 = [v418 anchorChangeSet];
+  anchorChangeSet = [v418 anchorChangeSet];
 
-  return v356;
+  return anchorChangeSet;
 }
 
-- (void)setAvailableSensors:(id)a3
+- (void)setAvailableSensors:(id)sensors
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sensorsCopy = sensors;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -8031,7 +8031,7 @@ LABEL_249:
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
-        if ([v5 indexOfObjectIdenticalTo:v11] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([sensorsCopy indexOfObjectIdenticalTo:v11] == 0x7FFFFFFFFFFFFFFFLL)
         {
           [v11 setDelegate:0];
         }
@@ -8043,7 +8043,7 @@ LABEL_249:
     while (v8);
   }
 
-  v30 = v5;
+  v30 = sensorsCopy;
 
   imageSensor = self->_imageSensor;
   self->_imageSensor = 0;
@@ -8051,7 +8051,7 @@ LABEL_249:
   replaySensor = self->_replaySensor;
   self->_replaySensor = 0;
 
-  objc_storeStrong(&self->_availableSensors, a3);
+  objc_storeStrong(&self->_availableSensors, sensors);
   v35 = 0u;
   v36 = 0u;
   v33 = 0u;
@@ -8131,7 +8131,7 @@ LABEL_249:
     *buf = 138543874;
     v42 = v28;
     v43 = 2048;
-    v44 = self;
+    selfCopy = self;
     v45 = 2048;
     v46 = v32;
     _os_log_impl(&dword_1C241C000, v26, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Setting new location sensor: %p", buf, 0x20u);
@@ -8148,8 +8148,8 @@ LABEL_249:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(ARSession *)self availableSensors];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  availableSensors = [(ARSession *)self availableSensors];
+  v3 = [availableSensors countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -8159,7 +8159,7 @@ LABEL_249:
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(availableSensors);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -8170,7 +8170,7 @@ LABEL_249:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [availableSensors countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -8185,11 +8185,11 @@ LABEL_11:
   return v3;
 }
 
-- (void)_replaceOrAddSensor:(id)a3
+- (void)_replaceOrAddSensor:(id)sensor
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  sensorCopy = sensor;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -8200,7 +8200,7 @@ LABEL_11:
   {
 
 LABEL_13:
-    [v5 addObject:{v4, v14}];
+    [array addObject:{sensorCopy, v14}];
     goto LABEL_14;
   }
 
@@ -8217,17 +8217,17 @@ LABEL_13:
       }
 
       v12 = *(*(&v14 + 1) + 8 * i);
-      v13 = [v12 providedDataTypes];
-      if (([v4 providedDataTypes] & v13) != 0)
+      providedDataTypes = [v12 providedDataTypes];
+      if (([sensorCopy providedDataTypes] & providedDataTypes) != 0)
       {
         [v12 stop];
         -[ARSession setRunningSensors:](self, "setRunningSensors:", -[ARSession runningSensors](self, "runningSensors") & ~[v12 providedDataTypes]);
         -[ARSession setPausedSensors:](self, "setPausedSensors:", -[ARSession pausedSensors](self, "pausedSensors") & ~[v12 providedDataTypes]);
         v9 = 1;
-        v12 = v4;
+        v12 = sensorCopy;
       }
 
-      [v5 addObject:v12];
+      [array addObject:v12];
     }
 
     v8 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -8241,24 +8241,24 @@ LABEL_13:
   }
 
 LABEL_14:
-  [(ARSession *)self setAvailableSensors:v5];
+  [(ARSession *)self setAvailableSensors:array];
 }
 
-+ (id)_applySessionOverrides:(id)a3 outError:(id *)a4
++ (id)_applySessionOverrides:(id)overrides outError:(id *)error
 {
   v113 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  overridesCopy = overrides;
   v7 = 0x1E817A000uLL;
   v8 = [ARKitUserDefaults integerForKey:@"com.apple.arkit.session.cameraPosition"];
   if (v8)
   {
     v9 = v8;
-    v10 = [(ARRecordingConfiguration *)v6 videoFormat];
-    v11 = [v10 captureDevicePosition];
+    videoFormat = [(ARRecordingConfiguration *)overridesCopy videoFormat];
+    captureDevicePosition = [videoFormat captureDevicePosition];
 
-    if (v11 != v9)
+    if (captureDevicePosition != v9)
     {
-      [(ARCustomTechniquesConfiguration *)v6 setCameraPosition:v9];
+      [(ARCustomTechniquesConfiguration *)overridesCopy setCameraPosition:v9];
       v12 = _ARLogSession_0();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -8273,7 +8273,7 @@ LABEL_14:
         }
 
         v107 = 2048;
-        v108 = a1;
+        selfCopy8 = self;
         v109 = 2112;
         v110 = v15;
         _os_log_impl(&dword_1C241C000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Overriding default camera position to %@", buf, 0x20u);
@@ -8281,18 +8281,18 @@ LABEL_14:
     }
   }
 
-  v16 = [(ARRecordingConfiguration *)v6 videoFormat];
-  if (v16)
+  videoFormat2 = [(ARRecordingConfiguration *)overridesCopy videoFormat];
+  if (videoFormat2)
   {
-    v17 = v16;
-    v18 = [(ARRecordingConfiguration *)v6 videoFormat];
-    if ([v18 captureDevicePosition]== 1)
+    v17 = videoFormat2;
+    videoFormat3 = [(ARRecordingConfiguration *)overridesCopy videoFormat];
+    if ([videoFormat3 captureDevicePosition]== 1)
     {
-      v19 = [(ARRecordingConfiguration *)v6 videoFormat];
-      v20 = [v19 captureDeviceType];
+      videoFormat4 = [(ARRecordingConfiguration *)overridesCopy videoFormat];
+      captureDeviceType = [videoFormat4 captureDeviceType];
       v21 = *MEMORY[0x1E6986950];
 
-      v31 = v20 == v21;
+      v31 = captureDeviceType == v21;
       v7 = 0x1E817A000uLL;
       if (!v31)
       {
@@ -8307,26 +8307,26 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      [(ARConfiguration *)v6 setAutoFocusEnabled:[ARKitUserDefaults BOOLForKey:@"com.apple.arkit.imagesensor.back.wide.autoFocus"]];
-      v18 = _ARLogSession_0();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+      [(ARConfiguration *)overridesCopy setAutoFocusEnabled:[ARKitUserDefaults BOOLForKey:@"com.apple.arkit.imagesensor.back.wide.autoFocus"]];
+      videoFormat3 = _ARLogSession_0();
+      if (os_log_type_enabled(videoFormat3, OS_LOG_TYPE_DEFAULT))
       {
         v22 = objc_opt_class();
         v23 = NSStringFromClass(v22);
-        v24 = [(ARConfiguration *)v6 isAutoFocusEnabled];
+        isAutoFocusEnabled = [(ARConfiguration *)overridesCopy isAutoFocusEnabled];
         v25 = @"disabled";
         *buf = 138543874;
         v106 = v23;
-        if (v24)
+        if (isAutoFocusEnabled)
         {
           v25 = @"enabled";
         }
 
         v107 = 2048;
-        v108 = a1;
+        selfCopy8 = self;
         v109 = 2112;
         v110 = v25;
-        _os_log_impl(&dword_1C241C000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Image sensor auto focus %@ by user defaults", buf, 0x20u);
+        _os_log_impl(&dword_1C241C000, videoFormat3, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Image sensor auto focus %@ by user defaults", buf, 0x20u);
       }
     }
 
@@ -8362,29 +8362,29 @@ LABEL_19:
         {
           v33 = objc_opt_class();
           NSStringFromClass(v33);
-          v35 = v34 = a1;
+          v35 = v34 = self;
           *buf = 138543874;
           v106 = v35;
           v107 = 2048;
-          v108 = v34;
+          selfCopy8 = v34;
           v109 = 2112;
           v110 = @"com.apple.arkit.imagedetection.assetcatalog";
           _os_log_impl(&dword_1C241C000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: When using the default '%@' the options 'path' and 'recognition_group_name' need to be specified", buf, 0x20u);
 
-          a1 = v34;
+          self = v34;
           v7 = 0x1E817A000;
         }
       }
 
       else
       {
-        v36 = [v28 isAbsolutePath];
-        if ((v36 & 1) == 0)
+        isAbsolutePath = [v28 isAbsolutePath];
+        if ((isAbsolutePath & 1) == 0)
         {
           v37 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
-          v38 = [v37 lastObject];
+          lastObject = [v37 lastObject];
 
-          v39 = [v38 stringByAppendingPathComponent:v28];
+          v39 = [lastObject stringByAppendingPathComponent:v28];
 
           v28 = v39;
         }
@@ -8394,7 +8394,7 @@ LABEL_19:
 
         if (v32)
         {
-          [(ARRecordingConfiguration *)v6 setDetectionImages:v32];
+          [(ARRecordingConfiguration *)overridesCopy setDetectionImages:v32];
         }
 
         else
@@ -8404,18 +8404,18 @@ LABEL_19:
           {
             v42 = objc_opt_class();
             NSStringFromClass(v42);
-            v44 = v43 = a1;
+            v44 = v43 = self;
             *buf = 138544130;
             v106 = v44;
             v107 = 2048;
-            v108 = v43;
+            selfCopy8 = v43;
             v109 = 2112;
             v110 = v30;
             v111 = 2112;
             v112 = v28;
             _os_log_impl(&dword_1C241C000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: No recognition group named '%@' found in '%@'", buf, 0x2Au);
 
-            a1 = v43;
+            self = v43;
             v7 = 0x1E817A000uLL;
           }
         }
@@ -8438,20 +8438,20 @@ LABEL_19:
   else
   {
     v47 = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, 1uLL, 1);
-    v48 = [v47 lastObject];
+    lastObject2 = [v47 lastObject];
 
     v49 = NSTemporaryDirectory();
     v50 = [v49 stringByAppendingPathComponent:v45];
     [v46 addObject:v50];
 
-    v51 = [v48 stringByAppendingPathComponent:v45];
+    v51 = [lastObject2 stringByAppendingPathComponent:v45];
     [v46 addObject:v51];
   }
 
   v52 = [v46 indexOfObjectPassingTest:&__block_literal_global_459];
   if (v52 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (a4)
+    if (error)
     {
       v53 = v7;
       v54 = MEMORY[0x1E696ABC0];
@@ -8461,7 +8461,7 @@ LABEL_19:
       v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v103 forKeys:&v102 count:1];
       v57 = v54;
       v7 = v53;
-      *a4 = [v57 errorWithDomain:@"com.apple.arkit.error" code:102 userInfo:v56];
+      *error = [v57 errorWithDomain:@"com.apple.arkit.error" code:102 userInfo:v56];
 
       goto LABEL_50;
     }
@@ -8471,19 +8471,19 @@ LABEL_19:
 
   v58 = [v46 objectAtIndex:v52];
   v59 = [MEMORY[0x1E695DFF8] fileURLWithPath:v58];
-  v60 = ARReplaySensorClassForMovieURL(v59, a4);
+  v60 = ARReplaySensorClassForMovieURL(v59, error);
   if (v60)
   {
     v61 = [[v60 alloc] initWithSequenceURL:v59 replayMode:0];
-    v62 = [(ARRecordingConfiguration *)v6 parentImageSensorSettings];
-    [v61 setParentImageSensorSettings:v62];
+    parentImageSensorSettings = [(ARRecordingConfiguration *)overridesCopy parentImageSensorSettings];
+    [v61 setParentImageSensorSettings:parentImageSensorSettings];
 
     if (v61)
     {
-      v97 = a1;
+      selfCopy3 = self;
       v104 = v61;
       v63 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v104 count:1];
-      [(ARCustomTechniquesConfiguration *)v6 setCustomSensors:v63];
+      [(ARCustomTechniquesConfiguration *)overridesCopy setCustomSensors:v63];
       v64 = _ARLogSession_0();
       if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
       {
@@ -8492,7 +8492,7 @@ LABEL_19:
         *buf = 138543874;
         v106 = v66;
         v107 = 2048;
-        v108 = v97;
+        selfCopy8 = selfCopy3;
         v109 = 2112;
         v110 = v58;
         _os_log_impl(&dword_1C241C000, v64, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Forcing replay of sequence instead of live sensor capturing from file: %@", buf, 0x20u);
@@ -8500,7 +8500,7 @@ LABEL_19:
         v7 = 0x1E817A000;
       }
 
-      a1 = v97;
+      self = selfCopy3;
       goto LABEL_49;
     }
 
@@ -8521,7 +8521,7 @@ LABEL_19:
         *buf = 138543874;
         v106 = v91;
         v107 = 2048;
-        v108 = a1;
+        selfCopy8 = self;
         v109 = 2112;
         v110 = v59;
         v92 = "%{public}@ <%p>: Unable to create replay sensor for file: %@";
@@ -8539,7 +8539,7 @@ LABEL_77:
       *buf = 138543874;
       v106 = v91;
       v107 = 2048;
-      v108 = a1;
+      selfCopy8 = self;
       v109 = 2112;
       v110 = v59;
       v92 = "Error: %{public}@ <%p>: Unable to create replay sensor for file: %@";
@@ -8553,10 +8553,10 @@ LABEL_77:
 
 LABEL_49:
 
-  if (a4)
+  if (error)
   {
 LABEL_50:
-    if (*a4)
+    if (*error)
     {
       if (ARShouldUseLogTypeError_onceToken_21 != -1)
       {
@@ -8572,11 +8572,11 @@ LABEL_50:
         {
           v69 = objc_opt_class();
           v70 = NSStringFromClass(v69);
-          v71 = *a4;
+          v71 = *error;
           *buf = 138544130;
           v106 = v70;
           v107 = 2048;
-          v108 = a1;
+          selfCopy8 = self;
           v109 = 2112;
           v110 = v45;
           v111 = 2112;
@@ -8593,11 +8593,11 @@ LABEL_69:
       {
         v85 = objc_opt_class();
         v70 = NSStringFromClass(v85);
-        v86 = *a4;
+        v86 = *error;
         *buf = 138544130;
         v106 = v70;
         v107 = 2048;
-        v108 = a1;
+        selfCopy8 = self;
         v109 = 2112;
         v110 = v45;
         v111 = 2112;
@@ -8630,33 +8630,33 @@ LABEL_57:
       *buf = 138543874;
       v106 = v79;
       v107 = 2048;
-      v108 = a1;
+      selfCopy8 = self;
       v109 = 2048;
       v110 = v76;
       _os_log_impl(&dword_1C241C000, v77, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Forcing %li second recording", buf, 0x20u);
     }
 
-    v80 = [[ARRecordingConfiguration alloc] initWithBaseConfiguration:v6 fileURL:0];
+    v80 = [[ARRecordingConfiguration alloc] initWithBaseConfiguration:overridesCopy fileURL:0];
     [(ARRecordingConfiguration *)v80 startRecording];
     if (v76 >= 1)
     {
-      v81 = [(ARRecordingConfiguration *)v80 recordingTechnique];
+      recordingTechnique = [(ARRecordingConfiguration *)v80 recordingTechnique];
       v82 = dispatch_time(0, 1000000000 * v76);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __45__ARSession__applySessionOverrides_outError___block_invoke_465;
       block[3] = &unk_1E817C010;
-      v100 = a1;
+      selfCopy9 = self;
       v101 = v76;
-      v99 = v81;
-      v83 = v81;
+      v99 = recordingTechnique;
+      v83 = recordingTechnique;
       dispatch_after(v82, MEMORY[0x1E69E96A0], block);
     }
   }
 
   else
   {
-    v80 = v6;
+    v80 = overridesCopy;
   }
 
   if (+[ARQATracer isEnabled])
@@ -8664,8 +8664,8 @@ LABEL_57:
     [(ARConfiguration *)v80 setFrameDebugOptions:[(ARConfiguration *)v80 frameDebugOptions]| 2];
   }
 
-  v6 = v80;
-  v84 = v6;
+  overridesCopy = v80;
+  v84 = overridesCopy;
 LABEL_80:
 
   return v84;
@@ -8708,20 +8708,20 @@ uint64_t __45__ARSession__applySessionOverrides_outError___block_invoke_465(uint
   return [*(a1 + 32) finishRecording];
 }
 
-- (void)captureHighResolutionFrameUsingPhotoSettings:(id)a3 completion:(id)a4
+- (void)captureHighResolutionFrameUsingPhotoSettings:(id)settings completion:(id)completion
 {
   v38[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  completionCopy = completion;
   dispatch_semaphore_wait(self->_pendingHiResFrameCaptureSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   if ([(ARSession *)self state])
   {
     if (self->_isHiResFrameCaptureInProgress)
     {
       dispatch_semaphore_signal(self->_pendingHiResFrameCaptureSemaphore);
-      v8 = [(ARSession *)self delegateQueue];
-      v9 = v8;
-      if (!v8)
+      delegateQueue = [(ARSession *)self delegateQueue];
+      v9 = delegateQueue;
+      if (!delegateQueue)
       {
         v9 = MEMORY[0x1E69E96A0];
         v10 = MEMORY[0x1E69E96A0];
@@ -8731,9 +8731,9 @@ uint64_t __45__ARSession__applySessionOverrides_outError___block_invoke_465(uint
       block[1] = 3221225472;
       block[2] = __69__ARSession_captureHighResolutionFrameUsingPhotoSettings_completion___block_invoke_2;
       block[3] = &unk_1E817CC30;
-      v33 = v7;
+      v33 = completionCopy;
       dispatch_async(v9, block);
-      if (!v8)
+      if (!delegateQueue)
       {
       }
 
@@ -8742,10 +8742,10 @@ uint64_t __45__ARSession__applySessionOverrides_outError___block_invoke_465(uint
 
     else
     {
-      v20 = [(ARSession *)self stillImageRootTechnique];
-      v21 = [v20 prepareWasCalled];
+      stillImageRootTechnique = [(ARSession *)self stillImageRootTechnique];
+      prepareWasCalled = [stillImageRootTechnique prepareWasCalled];
 
-      if ((v21 & 1) == 0)
+      if ((prepareWasCalled & 1) == 0)
       {
         stillImageProcessingQueue = self->_stillImageProcessingQueue;
         v31[0] = MEMORY[0x1E69E9820];
@@ -8756,19 +8756,19 @@ uint64_t __45__ARSession__applySessionOverrides_outError___block_invoke_465(uint
         dispatch_async(stillImageProcessingQueue, v31);
       }
 
-      v23 = MEMORY[0x1C691B4C0](v7);
+      v23 = MEMORY[0x1C691B4C0](completionCopy);
       pendingHiResFrameCaptureCompletionBlock = self->_pendingHiResFrameCaptureCompletionBlock;
       self->_pendingHiResFrameCaptureCompletionBlock = v23;
 
       self->_isHiResFrameCaptureInProgress = 1;
       dispatch_semaphore_signal(self->_pendingHiResFrameCaptureSemaphore);
-      v25 = [(ARSession *)self availableSensors];
+      availableSensors = [(ARSession *)self availableSensors];
       v26 = MEMORY[0x1E69E9820];
       v27 = 3221225472;
       v28 = __69__ARSession_captureHighResolutionFrameUsingPhotoSettings_completion___block_invoke_469;
       v29 = &unk_1E817CE60;
-      v30 = v6;
-      [v25 enumerateObjectsUsingBlock:&v26];
+      v30 = settingsCopy;
+      [availableSensors enumerateObjectsUsingBlock:&v26];
 
       [(ARSessionMetrics *)self->_metrics recordHiResFrameCapture:v26];
       v11 = v30;
@@ -8786,9 +8786,9 @@ uint64_t __45__ARSession__applySessionOverrides_outError___block_invoke_465(uint
     v38[0] = v11;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:&v37 count:1];
     dispatch_semaphore_signal(self->_pendingHiResFrameCaptureSemaphore);
-    v16 = [(ARSession *)self delegateQueue];
-    v17 = v16;
-    if (!v16)
+    delegateQueue2 = [(ARSession *)self delegateQueue];
+    v17 = delegateQueue2;
+    if (!delegateQueue2)
     {
       v17 = MEMORY[0x1E69E96A0];
       v18 = MEMORY[0x1E69E96A0];
@@ -8799,10 +8799,10 @@ uint64_t __45__ARSession__applySessionOverrides_outError___block_invoke_465(uint
     v34[2] = __69__ARSession_captureHighResolutionFrameUsingPhotoSettings_completion___block_invoke;
     v34[3] = &unk_1E817CCF0;
     v35 = v15;
-    v36 = v7;
+    v36 = completionCopy;
     v19 = v15;
     dispatch_async(v17, v34);
-    if (!v16)
+    if (!delegateQueue2)
     {
     }
   }
@@ -8856,17 +8856,17 @@ void __69__ARSession_captureHighResolutionFrameUsingPhotoSettings_completion___b
   }
 }
 
-- (void)_updateSensorsWithConfiguration:(id)a3
+- (void)_updateSensorsWithConfiguration:(id)configuration
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 customSensors];
+  configurationCopy = configuration;
+  customSensors = [configurationCopy customSensors];
 
-  if (v5)
+  if (customSensors)
   {
-    v6 = [(ARSession *)self availableSensors];
-    v7 = [v4 customSensors];
-    if ([v6 isEqualToArray:v7])
+    availableSensors = [(ARSession *)self availableSensors];
+    customSensors2 = [configurationCopy customSensors];
+    if ([availableSensors isEqualToArray:customSensors2])
     {
       if (([(ARReplaySensorProtocol *)self->_replaySensor finishedReplaying]& 1) == 0)
       {
@@ -8875,9 +8875,9 @@ void __69__ARSession_captureHighResolutionFrameUsingPhotoSettings_completion___b
       }
 
       replaySensor = self->_replaySensor;
-      v9 = [v4 replaySensor];
+      replaySensor = [configurationCopy replaySensor];
 
-      if (replaySensor == v9)
+      if (replaySensor == replaySensor)
       {
         goto LABEL_42;
       }
@@ -8888,8 +8888,8 @@ void __69__ARSession_captureHighResolutionFrameUsingPhotoSettings_completion___b
     }
 
     [(ARSession *)self _stopAllSensorsWaitingForOutstandingCallbacks:1];
-    v6 = [v4 customSensors];
-    [(ARSession *)self setAvailableSensors:v6];
+    availableSensors = [configurationCopy customSensors];
+    [(ARSession *)self setAvailableSensors:availableSensors];
 LABEL_20:
 
     goto LABEL_42;
@@ -8917,17 +8917,17 @@ LABEL_20:
     }
   }
 
-  v16 = [(ARSession *)self configurationInternal];
-  v17 = [v16 customSensors];
-  if (v17)
+  configurationInternal = [(ARSession *)self configurationInternal];
+  customSensors3 = [configurationInternal customSensors];
+  if (customSensors3)
   {
 
 LABEL_12:
-    v18 = [MEMORY[0x1E695DF70] array];
-    v19 = [(ARSession *)self _imageSensorForConfiguration:v4 existingSensor:0];
+    array = [MEMORY[0x1E695DF70] array];
+    v19 = [(ARSession *)self _imageSensorForConfiguration:configurationCopy existingSensor:0];
     if (v19)
     {
-      [v18 addObject:v19];
+      [array addObject:v19];
     }
 
     if ([ARKitUserDefaults BOOLForKey:@"com.apple.arkit.session.useIOKit"])
@@ -8967,29 +8967,29 @@ LABEL_12:
 
     if (v20)
     {
-      [v18 addObject:v20];
+      [array addObject:v20];
     }
 
-    v27 = -[ARDeviceOrientationSensor initWithMotionManager:alignment:]([ARDeviceOrientationSensor alloc], "initWithMotionManager:alignment:", self->_motionManger, [v4 worldAlignment]);
+    v27 = -[ARDeviceOrientationSensor initWithMotionManager:alignment:]([ARDeviceOrientationSensor alloc], "initWithMotionManager:alignment:", self->_motionManger, [configurationCopy worldAlignment]);
     if (v27)
     {
-      [v18 addObject:v27];
+      [array addObject:v27];
     }
 
     v28 = objc_opt_new();
     if (v28)
     {
-      [v18 addObject:v28];
+      [array addObject:v28];
     }
 
     [(ARSession *)self _stopAllSensorsWaitingForOutstandingCallbacks:1];
-    [(ARSession *)self setAvailableSensors:v18];
+    [(ARSession *)self setAvailableSensors:array];
 
     goto LABEL_42;
   }
 
-  v29 = [(ARSession *)self availableSensors];
-  v30 = [v29 count] == 0;
+  availableSensors2 = [(ARSession *)self availableSensors];
+  v30 = [availableSensors2 count] == 0;
 
   if (v30)
   {
@@ -9002,15 +9002,15 @@ LABEL_12:
   v48 = __Block_byref_object_copy__2;
   v49 = __Block_byref_object_dispose__2;
   v50 = 0;
-  v31 = [(ARSession *)self availableSensors];
+  availableSensors3 = [(ARSession *)self availableSensors];
   v42[0] = MEMORY[0x1E69E9820];
   v42[1] = 3221225472;
   v42[2] = __45__ARSession__updateSensorsWithConfiguration___block_invoke;
   v42[3] = &unk_1E817CE88;
   v42[4] = buf;
-  [v31 enumerateObjectsUsingBlock:v42];
+  [availableSensors3 enumerateObjectsUsingBlock:v42];
 
-  v32 = [(ARSession *)self _imageSensorForConfiguration:v4 existingSensor:*(*&buf[8] + 40)];
+  v32 = [(ARSession *)self _imageSensorForConfiguration:configurationCopy existingSensor:*(*&buf[8] + 40)];
   if (v32)
   {
     v33 = _ARLogSession_0();
@@ -9021,20 +9021,20 @@ LABEL_12:
       *v43 = 138543618;
       v44 = v35;
       v45 = 2048;
-      v46 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v33, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Replacing image sensor", v43, 0x16u);
     }
 
     [(ARSession *)self _replaceOrAddSensor:v32];
   }
 
-  v36 = [(ARSession *)self configurationInternal];
-  v37 = [v36 worldAlignment];
-  LOBYTE(v37) = v37 == [v4 worldAlignment];
+  configurationInternal2 = [(ARSession *)self configurationInternal];
+  worldAlignment = [configurationInternal2 worldAlignment];
+  LOBYTE(worldAlignment) = worldAlignment == [configurationCopy worldAlignment];
 
-  if ((v37 & 1) == 0)
+  if ((worldAlignment & 1) == 0)
   {
-    v38 = -[ARDeviceOrientationSensor initWithMotionManager:alignment:]([ARDeviceOrientationSensor alloc], "initWithMotionManager:alignment:", self->_motionManger, [v4 worldAlignment]);
+    v38 = -[ARDeviceOrientationSensor initWithMotionManager:alignment:]([ARDeviceOrientationSensor alloc], "initWithMotionManager:alignment:", self->_motionManger, [configurationCopy worldAlignment]);
     if (v38)
     {
       v39 = _ARLogSession_0();
@@ -9045,7 +9045,7 @@ LABEL_12:
         *v43 = 138543618;
         v44 = v41;
         v45 = 2048;
-        v46 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1C241C000, v39, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Replacing orientation sensor because alignment has changed", v43, 0x16u);
       }
 
@@ -9067,12 +9067,12 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
   }
 }
 
-- (id)_imageSensorForConfiguration:(id)a3 existingSensor:(id)a4
+- (id)_imageSensorForConfiguration:(id)configuration existingSensor:(id)sensor
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [a3 parentImageSensorSettings];
-  v8 = [(ARParentImageSensor *)v6 canReconfigure:v7];
+  sensorCopy = sensor;
+  parentImageSensorSettings = [configuration parentImageSensorSettings];
+  v8 = [(ARParentImageSensor *)sensorCopy canReconfigure:parentImageSensorSettings];
   v9 = _ARLogSession_0();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
   if (v8)
@@ -9084,12 +9084,12 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       v20 = 138543618;
       v21 = v12;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Reconfiguring existing image sensor based on new settings...", &v20, 0x16u);
     }
 
-    [(ARParentImageSensor *)v6 reconfigure:v7];
-    v13 = v6;
+    [(ARParentImageSensor *)sensorCopy reconfigure:parentImageSensorSettings];
+    v13 = sensorCopy;
   }
 
   else
@@ -9101,15 +9101,15 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       v20 = 138543618;
       v21 = v15;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v9, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Creating new image sensor, because settings are changed...", &v20, 0x16u);
     }
 
-    v13 = [[ARParentImageSensor alloc] initWithSettings:v7];
+    v13 = [[ARParentImageSensor alloc] initWithSettings:parentImageSensorSettings];
   }
 
   v16 = v13;
-  if (v13 == v6)
+  if (v13 == sensorCopy)
   {
     v17 = 0;
   }
@@ -9124,10 +9124,10 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
   return v17;
 }
 
-- (void)_startSensorsWithDataTypes:(unint64_t)a3
+- (void)_startSensorsWithDataTypes:(unint64_t)types
 {
   v56 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (types)
   {
     state.opaque[0] = 0;
     state.opaque[1] = 0;
@@ -9140,11 +9140,11 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
     {
       v6 = objc_opt_class();
       v7 = NSStringFromClass(v6);
-      v8 = ARSensorDataTypesToString(a3);
+      v8 = ARSensorDataTypesToString(types);
       *buf = 138543874;
       v48 = v7;
       v49 = 2048;
-      v50 = self;
+      selfCopy6 = self;
       v51 = 2112;
       v52 = v8;
       _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Starting sensors with data type(s): %@ …", buf, 0x20u);
@@ -9170,15 +9170,15 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
           }
 
           v14 = *(*(&v42 + 1) + 8 * i);
-          if (([v14 providedDataTypes] & a3) != 0)
+          if (([v14 providedDataTypes] & types) != 0)
           {
             [v14 setDelegate:self];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               v15 = v14;
-              v16 = [(ARSession *)self beforeRunningAVCaptureSession];
-              [v15 setBeforeRunningAVCaptureSession:v16];
+              beforeRunningAVCaptureSession = [(ARSession *)self beforeRunningAVCaptureSession];
+              [v15 setBeforeRunningAVCaptureSession:beforeRunningAVCaptureSession];
             }
 
             [v14 start];
@@ -9202,7 +9202,7 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       *buf = 138543874;
       v48 = v19;
       v49 = 2048;
-      v50 = self;
+      selfCopy6 = self;
       v51 = 2112;
       v52 = v20;
       _os_log_impl(&dword_1C241C000, v17, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Started sensors with data type(s): %@", buf, 0x20u);
@@ -9217,14 +9217,14 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       *buf = 138543874;
       v48 = v23;
       v49 = 2048;
-      v50 = self;
+      selfCopy6 = self;
       v51 = 2112;
       v52 = v24;
       _os_log_impl(&dword_1C241C000, v21, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Currently running sensors with data type(s): %@", buf, 0x20u);
     }
 
-    v25 = v10 & a3;
-    if ((v10 & a3) != a3)
+    v25 = v10 & types;
+    if ((v10 & types) != types)
     {
       if (ARShouldUseLogTypeError_onceToken_21 != -1)
       {
@@ -9240,11 +9240,11 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
         {
           v29 = objc_opt_class();
           v30 = NSStringFromClass(v29);
-          v31 = ARSensorDataTypesToString(v25 ^ a3);
+          v31 = ARSensorDataTypesToString(v25 ^ types);
           *buf = 138543874;
           v48 = v30;
           v49 = 2048;
-          v50 = self;
+          selfCopy6 = self;
           v51 = 2112;
           v52 = v31;
           _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to start required sensor(s) %@", buf, 0x20u);
@@ -9255,11 +9255,11 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       {
         v32 = objc_opt_class();
         v33 = NSStringFromClass(v32);
-        v34 = ARSensorDataTypesToString(v25 ^ a3);
+        v34 = ARSensorDataTypesToString(v25 ^ types);
         *buf = 138543874;
         v48 = v33;
         v49 = 2048;
-        v50 = self;
+        selfCopy6 = self;
         v51 = 2112;
         v52 = v34;
         _os_log_impl(&dword_1C241C000, v28, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to start required sensor(s) %@", buf, 0x20u);
@@ -9271,11 +9271,11 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
         v36 = objc_opt_class();
         v37 = NSStringFromClass(v36);
         v38 = ARSensorDataTypesToString(v10);
-        v39 = ARSensorDataTypesToString(a3);
+        v39 = ARSensorDataTypesToString(types);
         *buf = 138544130;
         v48 = v37;
         v49 = 2048;
-        v50 = self;
+        selfCopy6 = self;
         v51 = 2112;
         v52 = v38;
         v53 = 2112;
@@ -9296,8 +9296,8 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
 - (void)_configureSensorsForRecording
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(ARSession *)self technique];
-  v4 = [v3 techniqueOfClass:objc_opt_class()];
+  technique = [(ARSession *)self technique];
+  v4 = [technique techniqueOfClass:objc_opt_class()];
 
   if (v4)
   {
@@ -9340,23 +9340,23 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
 
     if (([(ARSession *)self runningSensors]& 0x40) != 0)
     {
-      v11 = [(ARSession *)self latestLocationData];
+      latestLocationData = [(ARSession *)self latestLocationData];
 
-      if (v11)
+      if (latestLocationData)
       {
-        v12 = [(ARSession *)self latestLocationData];
-        v13 = [v4 processData:v12];
+        latestLocationData2 = [(ARSession *)self latestLocationData];
+        v13 = [v4 processData:latestLocationData2];
       }
     }
   }
 }
 
-- (void)_stopSensorsWithDataTypes:(unint64_t)a3 keepingDataTypes:(unint64_t)a4
+- (void)_stopSensorsWithDataTypes:(unint64_t)types keepingDataTypes:(unint64_t)dataTypes
 {
   v51 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (types)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
@@ -9376,11 +9376,11 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
           }
 
           v12 = *(*(&v39 + 1) + 8 * i);
-          v13 = [v12 providedDataTypes];
-          if ((v13 & a3) != 0 && (v13 & a4) == 0)
+          providedDataTypes = [v12 providedDataTypes];
+          if ((providedDataTypes & types) != 0 && (providedDataTypes & dataTypes) == 0)
           {
             [v12 setDelegate:0];
-            [v7 addObject:v12];
+            [array addObject:v12];
           }
         }
 
@@ -9390,7 +9390,7 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       while (v9);
     }
 
-    if ([v7 count])
+    if ([array count])
     {
       state.opaque[0] = 0;
       state.opaque[1] = 0;
@@ -9403,11 +9403,11 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       {
         v17 = objc_opt_class();
         v18 = NSStringFromClass(v17);
-        v19 = ARSensorDataTypesToString(a3);
+        v19 = ARSensorDataTypesToString(types);
         *buf = 138543874;
         v45 = v18;
         v46 = 2048;
-        v47 = self;
+        selfCopy3 = self;
         v48 = 2112;
         v49 = v19;
         _os_log_impl(&dword_1C241C000, v16, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Stopping sensors with data type(s): %@", buf, 0x20u);
@@ -9417,7 +9417,7 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v20 = v7;
+      v20 = array;
       v21 = 0;
       v22 = [v20 countByEnumeratingWithState:&v34 objects:v43 count:16];
       if (v22)
@@ -9456,7 +9456,7 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
         *buf = 138543874;
         v45 = v28;
         v46 = 2048;
-        v47 = self;
+        selfCopy3 = self;
         v48 = 2112;
         v49 = v29;
         _os_log_impl(&dword_1C241C000, v26, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Stopped sensors with data type(s): %@", buf, 0x20u);
@@ -9471,7 +9471,7 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
         *buf = 138543874;
         v45 = v32;
         v46 = 2048;
-        v47 = self;
+        selfCopy3 = self;
         v48 = 2112;
         v49 = v33;
         _os_log_impl(&dword_1C241C000, v30, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Currently running sensors with data type(s): %@", buf, 0x20u);
@@ -9482,9 +9482,9 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_stopAllSensorsWaitingForOutstandingCallbacks:(BOOL)a3
+- (void)_stopAllSensorsWaitingForOutstandingCallbacks:(BOOL)callbacks
 {
-  v3 = a3;
+  callbacksCopy = callbacks;
   v45 = *MEMORY[0x1E69E9840];
   if ([(NSArray *)self->_availableSensors count])
   {
@@ -9503,7 +9503,7 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       *buf = 138543618;
       v42 = v8;
       v43 = 2048;
-      v44 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Stopping all sensors", buf, 0x16u);
     }
 
@@ -9565,7 +9565,7 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       while (v14);
     }
 
-    if (v3)
+    if (callbacksCopy)
     {
       v27 = 0u;
       v28 = 0u;
@@ -9615,7 +9615,7 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
       *buf = 138543618;
       v42 = v24;
       v43 = 2048;
-      v44 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C241C000, v22, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Stopped all sensors", buf, 0x16u);
     }
 
@@ -9623,15 +9623,15 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)isPrimaryImageData:(id)a3
+- (BOOL)isPrimaryImageData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   primaryVideoFormat = self->_primaryVideoFormat;
   v7 = 1;
   if (primaryVideoFormat)
   {
-    v6 = [(ARVideoFormat *)primaryVideoFormat captureDevicePosition];
-    if (v6 != [v4 cameraPosition] || objc_msgSend(v4, "isHighResolution"))
+    captureDevicePosition = [(ARVideoFormat *)primaryVideoFormat captureDevicePosition];
+    if (captureDevicePosition != [dataCopy cameraPosition] || objc_msgSend(dataCopy, "isHighResolution"))
     {
       v7 = 0;
     }
@@ -9640,30 +9640,30 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
   return v7;
 }
 
-- (void)sensor:(id)a3 didOutputSensorData:(id)a4
+- (void)sensor:(id)sensor didOutputSensorData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 providedDataTypes];
+  sensorCopy = sensor;
+  dataCopy = data;
+  [sensorCopy providedDataTypes];
   kdebug_trace();
-  v8 = [(ARSession *)self technique];
-  v72 = [(ARSession *)self secondaryTechnique];
-  v71 = [(ARSession *)self stillImageRootTechnique];
+  technique = [(ARSession *)self technique];
+  secondaryTechnique = [(ARSession *)self secondaryTechnique];
+  stillImageRootTechnique = [(ARSession *)self stillImageRootTechnique];
   if (self->_techniquesWantPredictedPoseForWideCam || ARDeviceSupportsJasper() && ((objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0)))
   {
     v9 = objc_opt_new();
-    v10 = [(ARSession *)self configurationInternal];
-    v11 = [v10 videoFormat];
-    [v9 setCameraPosition:{objc_msgSend(v11, "captureDevicePosition")}];
+    configurationInternal = [(ARSession *)self configurationInternal];
+    videoFormat = [configurationInternal videoFormat];
+    [v9 setCameraPosition:{objc_msgSend(videoFormat, "captureDevicePosition")}];
 
     worldTrackingTechnique = self->_worldTrackingTechnique;
-    [v7 timestamp];
+    [dataCopy timestamp];
     v13 = [(ARWorldTrackingTechnique *)worldTrackingTechnique predictedResultDataAtTimestamp:v9 context:?];
     v14 = [v13 ar_firstObjectPassingTest:&__block_literal_global_479];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = v7;
+      v15 = dataCopy;
       if (v14)
       {
         [v14 visionCameraTransform];
@@ -9690,13 +9690,13 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v29 = [v8 processData:v7];
-    v30 = [v72 processData:v7];
-    v31 = [v71 processData:v7];
+    v29 = [technique processData:dataCopy];
+    v30 = [secondaryTechnique processData:dataCopy];
+    v31 = [stillImageRootTechnique processData:dataCopy];
     goto LABEL_44;
   }
 
-  v20 = v7;
+  v20 = dataCopy;
   if ([(ARSession *)self isPrimaryImageData:v20])
   {
     [v20 timestamp];
@@ -9705,8 +9705,8 @@ void __45__ARSession__updateSensorsWithConfiguration___block_invoke(uint64_t a1,
 
   if ([v20 cameraPosition] == 1)
   {
-    v21 = [v20 cameraType];
-    v22 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(v21);
+    cameraType = [v20 cameraType];
+    v22 = ARIsSupportedAVCaptureDeviceTypeForRearCameraBackdrop(cameraType);
 
     if (v22)
     {
@@ -9776,7 +9776,7 @@ LABEL_34:
 LABEL_38:
     if ([(ARSession *)self isPrimaryImageData:v20])
     {
-      v37 = [v8 processData:v20];
+      v37 = [technique processData:v20];
       [v20 setVisionData:0];
     }
 
@@ -9787,7 +9787,7 @@ LABEL_38:
       block[1] = 3221225472;
       block[2] = __40__ARSession_sensor_didOutputSensorData___block_invoke_2;
       block[3] = &unk_1E817BEC8;
-      v87 = v71;
+      v87 = stillImageRootTechnique;
       v88 = v20;
       dispatch_async(stillImageProcessingQueue, block);
     }
@@ -9795,7 +9795,7 @@ LABEL_38:
     else
     {
       [v20 setSecondary:1];
-      v39 = [v72 processData:v20];
+      v39 = [secondaryTechnique processData:v20];
       v40 = [(ARRecordingTechniquePublic *)self->_recordingTechnique processData:v20];
     }
 
@@ -9803,7 +9803,7 @@ LABEL_44:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(ARSession *)self _sessionDidOutputAudioData:v7];
+      [(ARSession *)self _sessionDidOutputAudioData:dataCopy];
 LABEL_80:
       kdebug_trace();
       goto LABEL_81;
@@ -9815,7 +9815,7 @@ LABEL_80:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v47 = [v7 copy];
+        v47 = [dataCopy copy];
         [(ARSession *)self setLatestDeviceOrientationData:v47];
       }
 
@@ -9827,18 +9827,18 @@ LABEL_80:
           goto LABEL_80;
         }
 
-        v47 = [v7 copy];
+        v47 = [dataCopy copy];
         [(ARSession *)self setLatestLocationData:v47];
       }
 
       goto LABEL_80;
     }
 
-    v70 = v8;
-    v41 = v7;
-    v42 = [v41 isSecondary];
+    v70 = technique;
+    v41 = dataCopy;
+    isSecondary = [v41 isSecondary];
     v43 = 296;
-    if (v42)
+    if (isSecondary)
     {
       v43 = 304;
     }
@@ -9846,13 +9846,13 @@ LABEL_80:
     v44 = *(&self->super.isa + v43);
     if ([v44 schedulingActive] && !objc_msgSend(v41, "isHighResolution"))
     {
-      v61 = [v41 captureFramesPerSecond];
-      v62 = [(ARSession *)self configurationInternal];
-      v63 = [v62 isKindOfConfiguration:objc_opt_class()];
+      captureFramesPerSecond = [v41 captureFramesPerSecond];
+      configurationInternal2 = [(ARSession *)self configurationInternal];
+      v63 = [configurationInternal2 isKindOfConfiguration:objc_opt_class()];
 
       if (v63)
       {
-        v61 = 60;
+        captureFramesPerSecond = 60;
         v64 = 60 / [v41 captureFramesPerSecond];
       }
 
@@ -9868,7 +9868,7 @@ LABEL_80:
         for (i = 0; i != v64; ++i)
         {
           [v41 timestamp];
-          v68 = 1.0 / v61 * i + v67;
+          v68 = 1.0 / captureFramesPerSecond * i + v67;
           kdebug_trace();
           v73[0] = MEMORY[0x1E69E9820];
           v73[1] = 3221225472;
@@ -9888,10 +9888,10 @@ LABEL_80:
       goto LABEL_79;
     }
 
-    v45 = [(ARSession *)self technique];
+    technique2 = [(ARSession *)self technique];
     if ([v41 isSecondary])
     {
-      v46 = [(ARSession *)self secondaryTechnique];
+      secondaryTechnique2 = [(ARSession *)self secondaryTechnique];
     }
 
     else
@@ -9899,23 +9899,23 @@ LABEL_80:
       if (![v41 isHighResolution])
       {
 LABEL_61:
-        if (v45)
+        if (technique2)
         {
           [v41 timestamp];
           kdebug_trace();
-          v49 = [(ARSession *)self _frameContextByConsumingPendingChanges];
-          [v49 setImageData:v41];
-          v50 = [(ARSession *)self latestDeviceOrientationData];
-          [v49 setOrientationData:v50];
+          _frameContextByConsumingPendingChanges = [(ARSession *)self _frameContextByConsumingPendingChanges];
+          [_frameContextByConsumingPendingChanges setImageData:v41];
+          latestDeviceOrientationData = [(ARSession *)self latestDeviceOrientationData];
+          [_frameContextByConsumingPendingChanges setOrientationData:latestDeviceOrientationData];
 
-          v51 = [(ARSession *)self latestLocationData];
-          [v49 setLocationData:v51];
+          latestLocationData = [(ARSession *)self latestLocationData];
+          [_frameContextByConsumingPendingChanges setLocationData:latestLocationData];
 
           [v41 timestamp];
           kdebug_trace();
-          v52 = [v49 imageData];
-          v53 = [(ARSession *)self configurationInternal];
-          v54 = ARTimerFramesPerSecond(v52, v53);
+          imageData = [_frameContextByConsumingPendingChanges imageData];
+          configurationInternal3 = [(ARSession *)self configurationInternal];
+          v54 = ARTimerFramesPerSecond(imageData, configurationInternal3);
 
           v55 = v54 / [v41 captureFramesPerSecond];
           v56 = 0;
@@ -9930,7 +9930,7 @@ LABEL_61:
             [v41 timestamp];
             kdebug_trace();
             [v41 timestamp];
-            [v45 requestResultDataAtTimestamp:v49 context:? withTimeout:?];
+            [technique2 requestResultDataAtTimestamp:_frameContextByConsumingPendingChanges context:? withTimeout:?];
           }
 
           else
@@ -9943,41 +9943,41 @@ LABEL_61:
             v82 = v55;
             v83 = v54;
             v78 = v41;
-            v79 = v45;
+            v79 = technique2;
             v84 = v56;
             v85 = fmax(1.0 / v54 + -0.005, 0.0);
-            v80 = v49;
-            v81 = self;
+            v80 = _frameContextByConsumingPendingChanges;
+            selfCopy = self;
             dispatch_async(resultDataPredictionQueue, v77);
           }
         }
 
-        v6 = v69;
+        sensorCopy = v69;
 LABEL_79:
 
-        v8 = v70;
+        technique = v70;
         goto LABEL_80;
       }
 
-      v46 = [(ARSession *)self stillImageRootTechnique];
+      secondaryTechnique2 = [(ARSession *)self stillImageRootTechnique];
     }
 
-    v48 = v46;
+    v48 = secondaryTechnique2;
 
-    v45 = v48;
+    technique2 = v48;
     goto LABEL_61;
   }
 
-  v35 = [(ARVideoFormat *)self->_primaryVideoFormat captureDeviceType];
-  if ([v35 isEqualToString:*MEMORY[0x1E6986948]])
+  captureDeviceType = [(ARVideoFormat *)self->_primaryVideoFormat captureDeviceType];
+  if ([captureDeviceType isEqualToString:*MEMORY[0x1E6986948]])
   {
 
     goto LABEL_38;
   }
 
-  v36 = [(ARSession *)self is6DofFaceTracking];
+  is6DofFaceTracking = [(ARSession *)self is6DofFaceTracking];
 
-  if (v36)
+  if (is6DofFaceTracking)
   {
     goto LABEL_38;
   }
@@ -10153,13 +10153,13 @@ void __40__ARSession_sensor_didOutputSensorData___block_invoke_4(uint64_t a1)
   }
 }
 
-- (void)sensor:(id)a3 didFailWithError:(id)a4
+- (void)sensor:(id)sensor didFailWithError:(id)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ARSession *)self configurationInternal];
-  if ([v8 isKindOfConfiguration:objc_opt_class()])
+  sensorCopy = sensor;
+  errorCopy = error;
+  configurationInternal = [(ARSession *)self configurationInternal];
+  if ([configurationInternal isKindOfConfiguration:objc_opt_class()])
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -10173,8 +10173,8 @@ void __40__ARSession_sensor_didOutputSensorData___block_invoke_4(uint64_t a1)
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v7 underlyingErrors];
-    v10 = [v8 countByEnumeratingWithState:&v19 objects:v29 count:16];
+    configurationInternal = [errorCopy underlyingErrors];
+    v10 = [configurationInternal countByEnumeratingWithState:&v19 objects:v29 count:16];
     if (v10)
     {
       v11 = v10;
@@ -10185,7 +10185,7 @@ void __40__ARSession_sensor_didOutputSensorData___block_invoke_4(uint64_t a1)
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(configurationInternal);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
@@ -10205,20 +10205,20 @@ void __40__ARSession_sensor_didOutputSensorData___block_invoke_4(uint64_t a1)
               *buf = 138543874;
               v24 = v18;
               v25 = 2048;
-              v26 = self;
+              selfCopy = self;
               v27 = 2112;
               v28 = v14;
               _os_log_impl(&dword_1C241C000, v16, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Restarting device orientation sensor with magnetic north reference frame due to %@.", buf, 0x20u);
             }
 
-            [v6 changeReferenceFrame:4];
+            [sensorCopy changeReferenceFrame:4];
             [(ARSessionMetrics *)self->_metrics recordTrueNorthUnavailable];
 
             goto LABEL_20;
           }
         }
 
-        v11 = [v8 countByEnumeratingWithState:&v19 objects:v29 count:16];
+        v11 = [configurationInternal countByEnumeratingWithState:&v19 objects:v29 count:16];
         if (v11)
         {
           continue;
@@ -10230,23 +10230,23 @@ void __40__ARSession_sensor_didOutputSensorData___block_invoke_4(uint64_t a1)
   }
 
 LABEL_12:
-  if ([v7 code] == 107)
+  if ([errorCopy code] == 107)
   {
-    [(ARSession *)self _sessionDidCaptureHighResolutionFrame:0 error:v7];
+    [(ARSession *)self _sessionDidCaptureHighResolutionFrame:0 error:errorCopy];
   }
 
   else
   {
-    [(ARSession *)self _sessionDidFailWithError:v7];
+    [(ARSession *)self _sessionDidFailWithError:errorCopy];
   }
 
 LABEL_20:
 }
 
-- (void)sensorDidPause:(id)a3
+- (void)sensorDidPause:(id)pause
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pauseCopy = pause;
   v5 = _ARLogSession_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -10255,7 +10255,7 @@ LABEL_20:
     *buf = 138543618;
     v16 = v7;
     v17 = 2048;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: begin interruption", buf, 0x16u);
   }
 
@@ -10265,8 +10265,8 @@ LABEL_20:
   block[2] = __28__ARSession_sensorDidPause___block_invoke;
   block[3] = &unk_1E817BEC8;
   block[4] = self;
-  v14 = v4;
-  v9 = v4;
+  v14 = pauseCopy;
+  v9 = pauseCopy;
   dispatch_async(stateQueue, block);
   v10 = dispatch_time(0, 400000000);
   v11 = self->_stateQueue;
@@ -10392,10 +10392,10 @@ LABEL_6:
   }
 }
 
-- (void)sensorDidRestart:(id)a3
+- (void)sensorDidRestart:(id)restart
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  restartCopy = restart;
   v5 = _ARLogSession_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -10404,7 +10404,7 @@ LABEL_6:
     *buf = 138543618;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: end interruption", buf, 0x16u);
   }
 
@@ -10414,8 +10414,8 @@ LABEL_6:
   v10[2] = __30__ARSession_sensorDidRestart___block_invoke;
   v10[3] = &unk_1E817BEC8;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = restartCopy;
+  v9 = restartCopy;
   dispatch_async(stateQueue, v10);
 }
 
@@ -10497,16 +10497,16 @@ void __30__ARSession_sensorDidRestart___block_invoke_2(uint64_t a1)
   [WeakRetained sessionInterruptionEnded:*(a1 + 32)];
 }
 
-- (void)_sessionWillRunWithConfiguration:(id)a3
+- (void)_sessionWillRunWithConfiguration:(id)configuration
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ARSession *)self _getObservers];
+  configurationCopy = configuration;
+  _getObservers = [(ARSession *)self _getObservers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [_getObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -10518,36 +10518,36 @@ void __30__ARSession_sensorDidRestart___block_invoke_2(uint64_t a1)
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_getObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 session:self willRunWithConfiguration:v4];
+          [v10 session:self willRunWithConfiguration:configurationCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_getObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_sessionRequestedRunWithConfiguration:(id)a3 options:(unint64_t)a4
+- (void)_sessionRequestedRunWithConfiguration:(id)configuration options:(unint64_t)options
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(ARSession *)self _getObservers];
+  configurationCopy = configuration;
+  _getObservers = [(ARSession *)self _getObservers];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [_getObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -10559,39 +10559,39 @@ void __30__ARSession_sensorDidRestart___block_invoke_2(uint64_t a1)
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_getObservers);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 session:self requestedRunWithConfiguration:v6 options:a4];
+          [v12 session:self requestedRunWithConfiguration:configurationCopy options:options];
         }
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [_getObservers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_sessionDidUpdateFrame:(id)a3
+- (void)_sessionDidUpdateFrame:(id)frame
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 timestamp];
+  frameCopy = frame;
+  [frameCopy timestamp];
   kdebug_trace();
-  v5 = [v4 capturedImage];
+  capturedImage = [frameCopy capturedImage];
   os_unfair_lock_lock_with_options();
   v6 = objc_autoreleasePoolPush();
   [(NSPointerArray *)self->_weakPixelBuffers ar_compactZeroedWeakPointers];
-  if (![(NSPointerArray *)self->_weakPixelBuffers count]|| [(NSPointerArray *)self->_weakPixelBuffers pointerAtIndex:[(NSPointerArray *)self->_weakPixelBuffers count]- 1]!= v5)
+  if (![(NSPointerArray *)self->_weakPixelBuffers count]|| [(NSPointerArray *)self->_weakPixelBuffers pointerAtIndex:[(NSPointerArray *)self->_weakPixelBuffers count]- 1]!= capturedImage)
   {
-    [(NSPointerArray *)self->_weakPixelBuffers addPointer:v5];
+    [(NSPointerArray *)self->_weakPixelBuffers addPointer:capturedImage];
   }
 
   objc_autoreleasePoolPop(v6);
@@ -10620,7 +10620,7 @@ void __30__ARSession_sensorDidRestart___block_invoke_2(uint64_t a1)
           v12 = *(*(&v23 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v12 session:self didUpdateFrame:v4];
+            [v12 session:self didUpdateFrame:frameCopy];
           }
         }
 
@@ -10630,13 +10630,13 @@ void __30__ARSession_sensorDidRestart___block_invoke_2(uint64_t a1)
       while (v9);
     }
 
-    v13 = [(ARSession *)self delegate];
+    delegate = [(ARSession *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      objc_initWeak(location, v13);
-      v14 = [(ARSession *)self delegateQueue];
-      v15 = v14;
-      if (!v14)
+      objc_initWeak(location, delegate);
+      delegateQueue = [(ARSession *)self delegateQueue];
+      v15 = delegateQueue;
+      if (!delegateQueue)
       {
         v15 = MEMORY[0x1E69E96A0];
         v16 = MEMORY[0x1E69E96A0];
@@ -10648,9 +10648,9 @@ void __30__ARSession_sensorDidRestart___block_invoke_2(uint64_t a1)
       block[3] = &unk_1E817CF00;
       objc_copyWeak(&v22, location);
       block[4] = self;
-      v21 = v4;
+      v21 = frameCopy;
       dispatch_async(v15, block);
-      if (!v14)
+      if (!delegateQueue)
       {
       }
 
@@ -10658,7 +10658,7 @@ void __30__ARSession_sensorDidRestart___block_invoke_2(uint64_t a1)
       objc_destroyWeak(location);
     }
 
-    [v4 timestamp];
+    [frameCopy timestamp];
     kdebug_trace();
   }
 
@@ -10672,13 +10672,13 @@ void __30__ARSession_sensorDidRestart___block_invoke_2(uint64_t a1)
       *location = 138543874;
       *&location[4] = v19;
       v29 = 2048;
-      v30 = self;
+      selfCopy = self;
       v31 = 2048;
       v32 = v7;
       _os_log_impl(&dword_1C241C000, v17, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: The delegate of ARSession is retaining %lu ARFrames. The camera will stop delivering camera images if the delegate keeps holding on to too many ARFrames. This could be a threading or memory management issue in the delegate and should be fixed.", location, 0x20u);
     }
 
-    [v4 timestamp];
+    [frameCopy timestamp];
     kdebug_trace();
     kdebug_trace();
   }
@@ -10690,10 +10690,10 @@ void __36__ARSession__sessionDidUpdateFrame___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didUpdateFrame:*(a1 + 40)];
 }
 
-- (void)_sessionDidCaptureHighResolutionFrame:(id)a3 error:(id)a4
+- (void)_sessionDidCaptureHighResolutionFrame:(id)frame error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  frameCopy = frame;
+  errorCopy = error;
   dispatch_semaphore_wait(self->_pendingHiResFrameCaptureSemaphore, 0xFFFFFFFFFFFFFFFFLL);
   if (self->_pendingHiResFrameCaptureCompletionBlock)
   {
@@ -10705,9 +10705,9 @@ void __36__ARSession__sessionDidUpdateFrame___block_invoke(uint64_t a1)
     dispatch_semaphore_signal(self->_pendingHiResFrameCaptureSemaphore);
     if (v8)
     {
-      v10 = [(ARSession *)self delegateQueue];
-      v11 = v10;
-      if (!v10)
+      delegateQueue = [(ARSession *)self delegateQueue];
+      v11 = delegateQueue;
+      if (!delegateQueue)
       {
         v11 = MEMORY[0x1E69E96A0];
         v12 = MEMORY[0x1E69E96A0];
@@ -10718,11 +10718,11 @@ void __36__ARSession__sessionDidUpdateFrame___block_invoke(uint64_t a1)
       block[2] = __57__ARSession__sessionDidCaptureHighResolutionFrame_error___block_invoke;
       block[3] = &unk_1E817CC78;
       v17 = v8;
-      v15 = v6;
-      v16 = v7;
+      v15 = frameCopy;
+      v16 = errorCopy;
       v13 = v8;
       dispatch_async(v11, block);
-      if (!v10)
+      if (!delegateQueue)
       {
       }
     }
@@ -10734,12 +10734,12 @@ void __36__ARSession__sessionDidUpdateFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sessionCameraDidChangeTrackingState:(id)a3
+- (void)_sessionCameraDidChangeTrackingState:(id)state
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 trackingState];
-  [v4 trackingStateReason];
+  stateCopy = state;
+  [stateCopy trackingState];
+  [stateCopy trackingStateReason];
   kdebug_trace();
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -10751,12 +10751,12 @@ void __36__ARSession__sessionDidUpdateFrame___block_invoke(uint64_t a1)
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = ARTrackingStateToString([v4 trackingState]);
-    v10 = ARTrackingStateReasonToString([v4 trackingStateReason]);
+    v9 = ARTrackingStateToString([stateCopy trackingState]);
+    v10 = ARTrackingStateReasonToString([stateCopy trackingStateReason]);
     *buf = 138544130;
     v30 = v8;
     v31 = 2048;
-    v32 = self;
+    selfCopy = self;
     v33 = 2112;
     v34 = v9;
     v35 = 2112;
@@ -10785,7 +10785,7 @@ void __36__ARSession__sessionDidUpdateFrame___block_invoke(uint64_t a1)
         v15 = *(*(&v23 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v15 session:self cameraDidChangeTrackingState:v4];
+          [v15 session:self cameraDidChangeTrackingState:stateCopy];
         }
       }
 
@@ -10795,13 +10795,13 @@ void __36__ARSession__sessionDidUpdateFrame___block_invoke(uint64_t a1)
     while (v12);
   }
 
-  v16 = [(ARSession *)self delegate];
+  delegate = [(ARSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    objc_initWeak(buf, v16);
-    v17 = [(ARSession *)self delegateQueue];
-    v18 = v17;
-    if (!v17)
+    objc_initWeak(buf, delegate);
+    delegateQueue = [(ARSession *)self delegateQueue];
+    v18 = delegateQueue;
+    if (!delegateQueue)
     {
       v18 = MEMORY[0x1E69E96A0];
       v19 = MEMORY[0x1E69E96A0];
@@ -10813,9 +10813,9 @@ void __36__ARSession__sessionDidUpdateFrame___block_invoke(uint64_t a1)
     block[3] = &unk_1E817CF00;
     objc_copyWeak(&v22, buf);
     block[4] = self;
-    v21 = v4;
+    v21 = stateCopy;
     dispatch_async(v18, block);
-    if (!v17)
+    if (!delegateQueue)
     {
     }
 
@@ -10823,8 +10823,8 @@ void __36__ARSession__sessionDidUpdateFrame___block_invoke(uint64_t a1)
     objc_destroyWeak(buf);
   }
 
-  [v4 trackingState];
-  [v4 trackingStateReason];
+  [stateCopy trackingState];
+  [stateCopy trackingStateReason];
   kdebug_trace();
 
   os_activity_scope_leave(&state);
@@ -10836,10 +10836,10 @@ void __50__ARSession__sessionCameraDidChangeTrackingState___block_invoke(uint64_
   [WeakRetained session:*(a1 + 32) cameraDidChangeTrackingState:*(a1 + 40)];
 }
 
-- (void)_sessionDidFailWithError:(id)a3
+- (void)_sessionDidFailWithError:(id)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = _ARLogSession_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -10848,14 +10848,14 @@ void __50__ARSession__sessionCameraDidChangeTrackingState___block_invoke(uint64_
     *buf = 138543874;
     v26 = v7;
     v27 = 2048;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
-    v30 = v4;
+    v30 = errorCopy;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: did fail with error: %@", buf, 0x20u);
   }
 
-  [(ARSessionMetrics *)self->_metrics reportSessionFailure:v4];
-  [v4 code];
+  [(ARSessionMetrics *)self->_metrics reportSessionFailure:errorCopy];
+  [errorCopy code];
   kdebug_trace();
   [(ARSession *)self pause];
   [(ARSession *)self _getObservers];
@@ -10879,7 +10879,7 @@ void __50__ARSession__sessionCameraDidChangeTrackingState___block_invoke(uint64_
         v12 = *(*(&v20 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v12 session:self didFailWithError:v4];
+          [v12 session:self didFailWithError:errorCopy];
         }
       }
 
@@ -10889,13 +10889,13 @@ void __50__ARSession__sessionCameraDidChangeTrackingState___block_invoke(uint64_
     while (v9);
   }
 
-  v13 = [(ARSession *)self delegate];
+  delegate = [(ARSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    objc_initWeak(buf, v13);
-    v14 = [(ARSession *)self delegateQueue];
-    v15 = v14;
-    if (!v14)
+    objc_initWeak(buf, delegate);
+    delegateQueue = [(ARSession *)self delegateQueue];
+    v15 = delegateQueue;
+    if (!delegateQueue)
     {
       v15 = MEMORY[0x1E69E96A0];
       v16 = MEMORY[0x1E69E96A0];
@@ -10907,9 +10907,9 @@ void __50__ARSession__sessionCameraDidChangeTrackingState___block_invoke(uint64_
     block[3] = &unk_1E817CF00;
     objc_copyWeak(&v19, buf);
     block[4] = self;
-    v18 = v4;
+    v18 = errorCopy;
     dispatch_async(v15, block);
-    if (!v14)
+    if (!delegateQueue)
     {
     }
 
@@ -10917,7 +10917,7 @@ void __50__ARSession__sessionCameraDidChangeTrackingState___block_invoke(uint64_
     objc_destroyWeak(buf);
   }
 
-  [v4 code];
+  [errorCopy code];
   kdebug_trace();
 }
 
@@ -10927,11 +10927,11 @@ void __38__ARSession__sessionDidFailWithError___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didFailWithError:*(a1 + 40)];
 }
 
-- (void)_sessionDidAddAnchors:(id)a3
+- (void)_sessionDidAddAnchors:(id)anchors
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 count];
+  anchorsCopy = anchors;
+  [anchorsCopy count];
   kdebug_trace();
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -10959,7 +10959,7 @@ void __38__ARSession__sessionDidFailWithError___block_invoke(uint64_t a1)
         v10 = *(*(&v24 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v10 session:self didAddAnchors:v4];
+          [v10 session:self didAddAnchors:anchorsCopy];
         }
       }
 
@@ -10969,16 +10969,16 @@ void __38__ARSession__sessionDidFailWithError___block_invoke(uint64_t a1)
     while (v7);
   }
 
-  v11 = ARAnchorsForPublicDelegate(v4);
+  v11 = ARAnchorsForPublicDelegate(anchorsCopy);
   if ([v11 count])
   {
-    v12 = [(ARSession *)self delegate];
+    delegate = [(ARSession *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      objc_initWeak(&location, v12);
-      v13 = [(ARSession *)self delegateQueue];
-      v14 = v13;
-      if (!v13)
+      objc_initWeak(&location, delegate);
+      delegateQueue = [(ARSession *)self delegateQueue];
+      v14 = delegateQueue;
+      if (!delegateQueue)
       {
         v14 = MEMORY[0x1E69E96A0];
         v15 = MEMORY[0x1E69E96A0];
@@ -10989,10 +10989,10 @@ void __38__ARSession__sessionDidFailWithError___block_invoke(uint64_t a1)
       v18 = __35__ARSession__sessionDidAddAnchors___block_invoke;
       v19 = &unk_1E817CF00;
       objc_copyWeak(&v22, &location);
-      v20 = self;
+      selfCopy = self;
       v21 = v11;
       dispatch_async(v14, &v16);
-      if (!v13)
+      if (!delegateQueue)
       {
       }
 
@@ -11001,7 +11001,7 @@ void __38__ARSession__sessionDidFailWithError___block_invoke(uint64_t a1)
     }
   }
 
-  [v4 count];
+  [anchorsCopy count];
   kdebug_trace();
 
   os_activity_scope_leave(&state);
@@ -11013,11 +11013,11 @@ void __35__ARSession__sessionDidAddAnchors___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didAddAnchors:*(a1 + 40)];
 }
 
-- (void)_sessionDidUpdateAnchors:(id)a3
+- (void)_sessionDidUpdateAnchors:(id)anchors
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 count];
+  anchorsCopy = anchors;
+  [anchorsCopy count];
   kdebug_trace();
   [(ARSession *)self _getObservers];
   v25 = 0u;
@@ -11040,7 +11040,7 @@ void __35__ARSession__sessionDidAddAnchors___block_invoke(uint64_t a1)
         v9 = *(*(&v23 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v9 session:self didUpdateAnchors:v4];
+          [v9 session:self didUpdateAnchors:anchorsCopy];
         }
       }
 
@@ -11050,16 +11050,16 @@ void __35__ARSession__sessionDidAddAnchors___block_invoke(uint64_t a1)
     while (v6);
   }
 
-  v10 = ARAnchorsForPublicDelegate(v4);
+  v10 = ARAnchorsForPublicDelegate(anchorsCopy);
   if ([v10 count])
   {
-    v11 = [(ARSession *)self delegate];
+    delegate = [(ARSession *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      objc_initWeak(&location, v11);
-      v12 = [(ARSession *)self delegateQueue];
-      v13 = v12;
-      if (!v12)
+      objc_initWeak(&location, delegate);
+      delegateQueue = [(ARSession *)self delegateQueue];
+      v13 = delegateQueue;
+      if (!delegateQueue)
       {
         v13 = MEMORY[0x1E69E96A0];
         v14 = MEMORY[0x1E69E96A0];
@@ -11070,10 +11070,10 @@ void __35__ARSession__sessionDidAddAnchors___block_invoke(uint64_t a1)
       v17 = __38__ARSession__sessionDidUpdateAnchors___block_invoke;
       v18 = &unk_1E817CF00;
       objc_copyWeak(&v21, &location);
-      v19 = self;
+      selfCopy = self;
       v20 = v10;
       dispatch_async(v13, &v15);
-      if (!v12)
+      if (!delegateQueue)
       {
       }
 
@@ -11082,7 +11082,7 @@ void __35__ARSession__sessionDidAddAnchors___block_invoke(uint64_t a1)
     }
   }
 
-  [v4 count];
+  [anchorsCopy count];
   kdebug_trace();
 }
 
@@ -11092,11 +11092,11 @@ void __38__ARSession__sessionDidUpdateAnchors___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didUpdateAnchors:*(a1 + 40)];
 }
 
-- (void)_sessionDidRemoveAnchors:(id)a3
+- (void)_sessionDidRemoveAnchors:(id)anchors
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 count];
+  anchorsCopy = anchors;
+  [anchorsCopy count];
   kdebug_trace();
   [(ARSession *)self _getObservers];
   v25 = 0u;
@@ -11119,7 +11119,7 @@ void __38__ARSession__sessionDidUpdateAnchors___block_invoke(uint64_t a1)
         v9 = *(*(&v23 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v9 session:self didRemoveAnchors:v4];
+          [v9 session:self didRemoveAnchors:anchorsCopy];
         }
       }
 
@@ -11129,16 +11129,16 @@ void __38__ARSession__sessionDidUpdateAnchors___block_invoke(uint64_t a1)
     while (v6);
   }
 
-  v10 = ARAnchorsForPublicDelegate(v4);
+  v10 = ARAnchorsForPublicDelegate(anchorsCopy);
   if ([v10 count])
   {
-    v11 = [(ARSession *)self delegate];
+    delegate = [(ARSession *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      objc_initWeak(&location, v11);
-      v12 = [(ARSession *)self delegateQueue];
-      v13 = v12;
-      if (!v12)
+      objc_initWeak(&location, delegate);
+      delegateQueue = [(ARSession *)self delegateQueue];
+      v13 = delegateQueue;
+      if (!delegateQueue)
       {
         v13 = MEMORY[0x1E69E96A0];
         v14 = MEMORY[0x1E69E96A0];
@@ -11149,10 +11149,10 @@ void __38__ARSession__sessionDidUpdateAnchors___block_invoke(uint64_t a1)
       v17 = __38__ARSession__sessionDidRemoveAnchors___block_invoke;
       v18 = &unk_1E817CF00;
       objc_copyWeak(&v21, &location);
-      v19 = self;
+      selfCopy = self;
       v20 = v10;
       dispatch_async(v13, &v15);
-      if (!v12)
+      if (!delegateQueue)
       {
       }
 
@@ -11161,7 +11161,7 @@ void __38__ARSession__sessionDidUpdateAnchors___block_invoke(uint64_t a1)
     }
   }
 
-  [v4 count];
+  [anchorsCopy count];
   kdebug_trace();
 }
 
@@ -11171,18 +11171,18 @@ void __38__ARSession__sessionDidRemoveAnchors___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didRemoveAnchors:*(a1 + 40)];
 }
 
-- (void)_sessionDidUpdateExternalAnchors:(id)a3
+- (void)_sessionDidUpdateExternalAnchors:(id)anchors
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 count];
+  anchorsCopy = anchors;
+  [anchorsCopy count];
   kdebug_trace();
-  v5 = [(ARSession *)self _getObservers];
+  _getObservers = [(ARSession *)self _getObservers];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [_getObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -11194,26 +11194,26 @@ void __38__ARSession__sessionDidRemoveAnchors___block_invoke(uint64_t a1)
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_getObservers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 session:self didUpdateExternalAnchors:v4];
+          [v10 session:self didUpdateExternalAnchors:anchorsCopy];
         }
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [_getObservers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  [v4 count];
+  [anchorsCopy count];
   kdebug_trace();
 }
 
@@ -11278,13 +11278,13 @@ void __38__ARSession__sessionDidRemoveAnchors___block_invoke(uint64_t a1)
     while (v4);
   }
 
-  v10 = [(ARSession *)self delegate];
+  delegate = [(ARSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    objc_initWeak(&from, v10);
-    v11 = [(ARSession *)self delegateQueue];
-    v12 = v11;
-    if (!v11)
+    objc_initWeak(&from, delegate);
+    delegateQueue = [(ARSession *)self delegateQueue];
+    v12 = delegateQueue;
+    if (!delegateQueue)
     {
       v12 = MEMORY[0x1E69E96A0];
       v13 = MEMORY[0x1E69E96A0];
@@ -11298,7 +11298,7 @@ void __38__ARSession__sessionDidRemoveAnchors___block_invoke(uint64_t a1)
     objc_copyWeak(&v17, &from);
     v15[4] = self;
     dispatch_async(v12, v15);
-    if (!v11)
+    if (!delegateQueue)
     {
     }
 
@@ -11385,11 +11385,11 @@ void __48__ARSession__sessionShouldAttemptRelocalization__block_invoke_2(uint64_
   (*(v2 + 16))(v2, [WeakRetained sessionShouldAttemptRelocalization:*(a1 + 32)]);
 }
 
-- (void)_sessionDidOutputAudioData:(id)a3
+- (void)_sessionDidOutputAudioData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 timestamp];
+  dataCopy = data;
+  [dataCopy timestamp];
   kdebug_trace();
   [(ARSession *)self _getObservers];
   v20 = 0u;
@@ -11412,7 +11412,7 @@ void __48__ARSession__sessionShouldAttemptRelocalization__block_invoke_2(uint64_
         v9 = *(*(&v18 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v9 session:self didOutputAudioSampleBuffer:{objc_msgSend(v4, "sampleBuffer")}];
+          [v9 session:self didOutputAudioSampleBuffer:{objc_msgSend(dataCopy, "sampleBuffer")}];
         }
       }
 
@@ -11422,13 +11422,13 @@ void __48__ARSession__sessionShouldAttemptRelocalization__block_invoke_2(uint64_
     while (v6);
   }
 
-  v10 = [(ARSession *)self delegate];
+  delegate = [(ARSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    objc_initWeak(&location, v10);
-    v11 = [(ARSession *)self delegateQueue];
-    v12 = v11;
-    if (!v11)
+    objc_initWeak(&location, delegate);
+    delegateQueue = [(ARSession *)self delegateQueue];
+    v12 = delegateQueue;
+    if (!delegateQueue)
     {
       v12 = MEMORY[0x1E69E96A0];
       v13 = MEMORY[0x1E69E96A0];
@@ -11440,9 +11440,9 @@ void __48__ARSession__sessionShouldAttemptRelocalization__block_invoke_2(uint64_
     v14[3] = &unk_1E817CF00;
     objc_copyWeak(&v16, &location);
     v14[4] = self;
-    v15 = v4;
+    v15 = dataCopy;
     dispatch_async(v12, v14);
-    if (!v11)
+    if (!delegateQueue)
     {
     }
 
@@ -11457,29 +11457,29 @@ void __40__ARSession__sessionDidOutputAudioData___block_invoke(uint64_t a1)
   [WeakRetained session:*(a1 + 32) didOutputAudioSampleBuffer:{objc_msgSend(*(a1 + 40), "sampleBuffer")}];
 }
 
-- (void)_sessionDidOutputCollaborationData:(id)a3
+- (void)_sessionDidOutputCollaborationData:(id)data
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v5 = _ARLogSession_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = NSStringFromARCollaborationData(v4);
+    v8 = NSStringFromARCollaborationData(dataCopy);
     *buf = 138543874;
     v28 = v7;
     v29 = 2048;
-    v30 = self;
+    selfCopy = self;
     v31 = 2112;
     v32 = v8;
     _os_log_impl(&dword_1C241C000, v5, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: didOutputCollaborationData: %@", buf, 0x20u);
   }
 
-  [v4 timestamp];
-  [v4 vioDataType];
-  v9 = [v4 vioData];
-  [v9 length];
+  [dataCopy timestamp];
+  [dataCopy vioDataType];
+  vioData = [dataCopy vioData];
+  [vioData length];
   kdebug_trace();
 
   [(ARSession *)self _getObservers];
@@ -11503,7 +11503,7 @@ void __40__ARSession__sessionDidOutputAudioData___block_invoke(uint64_t a1)
         v14 = *(*(&v22 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v14 session:self didOutputCollaborationData:v4];
+          [v14 session:self didOutputCollaborationData:dataCopy];
         }
       }
 
@@ -11513,13 +11513,13 @@ void __40__ARSession__sessionDidOutputAudioData___block_invoke(uint64_t a1)
     while (v11);
   }
 
-  v15 = [(ARSession *)self delegate];
+  delegate = [(ARSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    objc_initWeak(buf, v15);
-    v16 = [(ARSession *)self delegateQueue];
-    v17 = v16;
-    if (!v16)
+    objc_initWeak(buf, delegate);
+    delegateQueue = [(ARSession *)self delegateQueue];
+    v17 = delegateQueue;
+    if (!delegateQueue)
     {
       v17 = MEMORY[0x1E69E96A0];
       v18 = MEMORY[0x1E69E96A0];
@@ -11531,9 +11531,9 @@ void __40__ARSession__sessionDidOutputAudioData___block_invoke(uint64_t a1)
     block[3] = &unk_1E817CF00;
     objc_copyWeak(&v21, buf);
     block[4] = self;
-    v20 = v4;
+    v20 = dataCopy;
     dispatch_async(v17, block);
-    if (!v16)
+    if (!delegateQueue)
     {
     }
 
@@ -11541,8 +11541,8 @@ void __40__ARSession__sessionDidOutputAudioData___block_invoke(uint64_t a1)
     objc_destroyWeak(buf);
   }
 
-  [(ARRecordingTechniquePublic *)self->_recordingTechnique recordCollaborationData:v4 localSession:1];
-  [v4 timestamp];
+  [(ARRecordingTechniquePublic *)self->_recordingTechnique recordCollaborationData:dataCopy localSession:1];
+  [dataCopy timestamp];
   kdebug_trace();
 }
 
@@ -11552,13 +11552,13 @@ void __48__ARSession__sessionDidOutputCollaborationData___block_invoke(uint64_t 
   [WeakRetained session:*(a1 + 32) didOutputCollaborationData:*(a1 + 40)];
 }
 
-- (void)_sessionDidChangeGeoTrackingStatus:(id)a3
+- (void)_sessionDidChangeGeoTrackingStatus:(id)status
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 state];
-  [v4 stateReason];
-  [v4 accuracy];
+  statusCopy = status;
+  [statusCopy state];
+  [statusCopy stateReason];
+  [statusCopy accuracy];
   kdebug_trace();
   [(ARSession *)self _getObservers];
   v24 = 0u;
@@ -11581,7 +11581,7 @@ void __48__ARSession__sessionDidOutputCollaborationData___block_invoke(uint64_t 
         v9 = *(*(&v22 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v9 session:self didChangeGeoTrackingStatus:v4];
+          [v9 session:self didChangeGeoTrackingStatus:statusCopy];
         }
       }
 
@@ -11591,13 +11591,13 @@ void __48__ARSession__sessionDidOutputCollaborationData___block_invoke(uint64_t 
     while (v6);
   }
 
-  v10 = [(ARSession *)self delegate];
+  delegate = [(ARSession *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    objc_initWeak(&location, v10);
-    v11 = [(ARSession *)self delegateQueue];
-    v12 = v11;
-    if (!v11)
+    objc_initWeak(&location, delegate);
+    delegateQueue = [(ARSession *)self delegateQueue];
+    v12 = delegateQueue;
+    if (!delegateQueue)
     {
       v12 = MEMORY[0x1E69E96A0];
       v13 = MEMORY[0x1E69E96A0];
@@ -11608,10 +11608,10 @@ void __48__ARSession__sessionDidOutputCollaborationData___block_invoke(uint64_t 
     v16 = __48__ARSession__sessionDidChangeGeoTrackingStatus___block_invoke;
     v17 = &unk_1E817CF00;
     objc_copyWeak(&v20, &location);
-    v18 = self;
-    v19 = v4;
+    selfCopy = self;
+    v19 = statusCopy;
     dispatch_async(v12, &v14);
-    if (!v11)
+    if (!delegateQueue)
     {
     }
 
@@ -11619,9 +11619,9 @@ void __48__ARSession__sessionDidOutputCollaborationData___block_invoke(uint64_t 
     objc_destroyWeak(&location);
   }
 
-  [v4 state];
-  [v4 stateReason];
-  [v4 accuracy];
+  [statusCopy state];
+  [statusCopy stateReason];
+  [statusCopy accuracy];
   kdebug_trace();
 }
 
@@ -11631,10 +11631,10 @@ void __48__ARSession__sessionDidChangeGeoTrackingStatus___block_invoke(uint64_t 
   [WeakRetained session:*(a1 + 32) didChangeGeoTrackingStatus:*(a1 + 40)];
 }
 
-- (void)_sessionDidUpdateSpatialMappingPointClouds:(id)a3
+- (void)_sessionDidUpdateSpatialMappingPointClouds:(id)clouds
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cloudsCopy = clouds;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -11658,7 +11658,7 @@ void __48__ARSession__sessionDidChangeGeoTrackingStatus___block_invoke(uint64_t 
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 session:self didUpdateSpatialMappingPointClouds:{v4, v11}];
+          [v10 session:self didUpdateSpatialMappingPointClouds:{cloudsCopy, v11}];
         }
 
         ++v9;
@@ -11672,12 +11672,12 @@ void __48__ARSession__sessionDidChangeGeoTrackingStatus___block_invoke(uint64_t 
   }
 }
 
-- (void)technique:(id)a3 didChangeState:(int64_t)a4
+- (void)technique:(id)technique didChangeState:(int64_t)state
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a4 == 3)
+  if (state == 3)
   {
-    v5 = [MEMORY[0x1E696AFB0] ar_UUIDWithIntegerValue:{objc_msgSend(a3, "vioSessionIdentifier")}];
+    v5 = [MEMORY[0x1E696AFB0] ar_UUIDWithIntegerValue:{objc_msgSend(technique, "vioSessionIdentifier")}];
     [(ARSession *)self setIdentifier:v5];
 
     v6 = _ARLogSession_0();
@@ -11685,123 +11685,123 @@ void __48__ARSession__sessionDidChangeGeoTrackingStatus___block_invoke(uint64_t 
     {
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [(ARSession *)self identifier];
+      identifier = [(ARSession *)self identifier];
       v10 = 138543874;
       v11 = v8;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
-      v15 = v9;
+      v15 = identifier;
       _os_log_impl(&dword_1C241C000, v6, OS_LOG_TYPE_INFO, "%{public}@ <%p>: identifier changed to %@", &v10, 0x20u);
     }
   }
 }
 
-- (void)technique:(id)a3 didOutputCollaborationData:(id)a4
+- (void)technique:(id)technique didOutputCollaborationData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  techniqueCopy = technique;
+  dataCopy = data;
   v8 = _ARLogSession_0();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    v11 = NSStringFromARCollaborationData(v7);
+    v11 = NSStringFromARCollaborationData(dataCopy);
     v12 = 138544130;
     v13 = v10;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2048;
-    v17 = v6;
+    v17 = techniqueCopy;
     v18 = 2112;
     v19 = v11;
     _os_log_impl(&dword_1C241C000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Technique (%p) didOutputCollaborationData: %@", &v12, 0x2Au);
   }
 
-  if ([v7 vioDataType] == 1 || objc_msgSend(v7, "vioDataType") == 3)
+  if ([dataCopy vioDataType] == 1 || objc_msgSend(dataCopy, "vioDataType") == 3)
   {
     dispatch_semaphore_wait(self->_frameContextHandlerSemaphore, 0xFFFFFFFFFFFFFFFFLL);
-    [(ARFrameContextHandler *)self->_frameContextHandler addCollaborationData:v7];
+    [(ARFrameContextHandler *)self->_frameContextHandler addCollaborationData:dataCopy];
     dispatch_semaphore_signal(self->_frameContextHandlerSemaphore);
   }
 
   else
   {
-    [(ARSession *)self _sessionDidOutputCollaborationData:v7];
+    [(ARSession *)self _sessionDidOutputCollaborationData:dataCopy];
   }
 }
 
 - (BOOL)is6DofFaceTracking
 {
-  v3 = [(ARSession *)self configurationInternal];
+  configurationInternal = [(ARSession *)self configurationInternal];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [(ARSession *)self configurationInternal];
-    v5 = [v4 templateConfiguration];
+    configurationInternal2 = [(ARSession *)self configurationInternal];
+    templateConfiguration = [configurationInternal2 templateConfiguration];
 
-    v3 = v5;
+    configurationInternal = templateConfiguration;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 isWorldTrackingEnabled];
+    isWorldTrackingEnabled = [configurationInternal isWorldTrackingEnabled];
   }
 
   else
   {
-    v6 = 0;
+    isWorldTrackingEnabled = 0;
   }
 
-  return v6;
+  return isWorldTrackingEnabled;
 }
 
 - (BOOL)isUserFaceTracking
 {
-  v3 = [(ARSession *)self configurationInternal];
+  configurationInternal = [(ARSession *)self configurationInternal];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v4 = [(ARSession *)self configurationInternal];
-    v5 = [v4 templateConfiguration];
+    configurationInternal2 = [(ARSession *)self configurationInternal];
+    templateConfiguration = [configurationInternal2 templateConfiguration];
 
-    v3 = v5;
+    configurationInternal = templateConfiguration;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v3 userFaceTrackingEnabled];
+    userFaceTrackingEnabled = [configurationInternal userFaceTrackingEnabled];
   }
 
   else
   {
-    v6 = 0;
+    userFaceTrackingEnabled = 0;
   }
 
-  return v6;
+  return userFaceTrackingEnabled;
 }
 
-- (void)_saveGraphFileInFileName:(id *)a3
+- (void)_saveGraphFileInFileName:(id *)name
 {
   v35 = *MEMORY[0x1E69E9840];
   if ([ARKitUserDefaults BOOLForKey:@"com.apple.arkit.session.configuration.saveDotGraph"])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    [v5 addObject:@"digraph g { "];
-    [v5 addObject:@"node [shape=record]"];
-    v6 = [(ARSession *)self technique];
-    [v6 dotGraphWithLines:v5 rootName:@"Primary"];
+    array = [MEMORY[0x1E695DF70] array];
+    [array addObject:@"digraph g { "];
+    [array addObject:@"node [shape=record]"];
+    technique = [(ARSession *)self technique];
+    [technique dotGraphWithLines:array rootName:@"Primary"];
 
-    v7 = [(ARSession *)self stillImageRootTechnique];
-    [v7 dotGraphWithLines:v5 rootName:@"HighRes"];
+    stillImageRootTechnique = [(ARSession *)self stillImageRootTechnique];
+    [stillImageRootTechnique dotGraphWithLines:array rootName:@"HighRes"];
 
-    [v5 addObject:@"}"];
-    v8 = [v5 componentsJoinedByString:@"\n"];
+    [array addObject:@"}"];
+    v8 = [array componentsJoinedByString:@"\n"];
     v9 = NSTemporaryDirectory();
-    v10 = [(ARSession *)self configurationInternal];
+    configurationInternal = [(ARSession *)self configurationInternal];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     v13 = [v9 stringByAppendingFormat:@"%@.dot", v12];
@@ -11819,16 +11819,16 @@ void __48__ARSession__sessionDidChangeGeoTrackingStatus___block_invoke(uint64_t 
         *buf = 138543874;
         v30 = v25;
         v31 = 2048;
-        v32 = self;
+        selfCopy3 = self;
         v33 = 2114;
         v34 = v13;
         _os_log_impl(&dword_1C241C000, v23, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Graph: Successfully wrote the configuration's dot file to '%{public}@'", buf, 0x20u);
       }
 
-      if (a3)
+      if (name)
       {
         v26 = v13;
-        *a3 = v13;
+        *name = v13;
       }
 
       goto LABEL_16;
@@ -11851,7 +11851,7 @@ void __48__ARSession__sessionDidChangeGeoTrackingStatus___block_invoke(uint64_t 
         *buf = 138543874;
         v30 = v19;
         v31 = 2048;
-        v32 = self;
+        selfCopy3 = self;
         v33 = 2112;
         v34 = v14;
         v20 = "%{public}@ <%p>: Graph: Could not write dot graph to file. Error: %@";
@@ -11869,7 +11869,7 @@ LABEL_14:
       *buf = 138543874;
       v30 = v19;
       v31 = 2048;
-      v32 = self;
+      selfCopy3 = self;
       v33 = 2112;
       v34 = v14;
       v20 = "Error: %{public}@ <%p>: Graph: Could not write dot graph to file. Error: %@";

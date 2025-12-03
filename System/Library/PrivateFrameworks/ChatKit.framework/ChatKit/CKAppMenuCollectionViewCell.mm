@@ -1,19 +1,19 @@
 @interface CKAppMenuCollectionViewCell
-- (CKAppMenuCollectionViewCell)initWithFrame:(CGRect)a3;
+- (CKAppMenuCollectionViewCell)initWithFrame:(CGRect)frame;
 - (CKAppMenuCollectionViewCellDelegate)delegate;
-- (void)didHoverOverCell:(id)a3;
-- (void)handleTap:(id)a3;
+- (void)didHoverOverCell:(id)cell;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation CKAppMenuCollectionViewCell
 
-- (CKAppMenuCollectionViewCell)initWithFrame:(CGRect)a3
+- (CKAppMenuCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v31.receiver = self;
   v31.super_class = CKAppMenuCollectionViewCell;
-  v3 = [(CKAppMenuCollectionViewCell *)&v31 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKAppMenuCollectionViewCell *)&v31 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -24,41 +24,41 @@
     v9 = [v4 initWithFrame:{*MEMORY[0x1E695F058], v6, v7, v8}];
     [(CKAppMenuCollectionViewCell *)v3 setTitleLabel:v9];
 
-    v10 = [(CKAppMenuCollectionViewCell *)v3 titleLabel];
+    titleLabel = [(CKAppMenuCollectionViewCell *)v3 titleLabel];
     v11 = +[CKUIBehavior sharedBehaviors];
-    v12 = [v11 appMenuTitleFont];
-    [v10 setFont:v12];
+    appMenuTitleFont = [v11 appMenuTitleFont];
+    [titleLabel setFont:appMenuTitleFont];
 
-    v13 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v14 = [(CKAppMenuCollectionViewCell *)v3 titleLabel];
-    [v14 setTextColor:v13];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    titleLabel2 = [(CKAppMenuCollectionViewCell *)v3 titleLabel];
+    [titleLabel2 setTextColor:secondaryLabelColor];
 
-    v15 = [(CKAppMenuCollectionViewCell *)v3 contentView];
-    v16 = [(CKAppMenuCollectionViewCell *)v3 titleLabel];
-    [v15 addSubview:v16];
+    contentView = [(CKAppMenuCollectionViewCell *)v3 contentView];
+    titleLabel3 = [(CKAppMenuCollectionViewCell *)v3 titleLabel];
+    [contentView addSubview:titleLabel3];
 
     v17 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v5, v6, v7, v8}];
     [(CKAppMenuCollectionViewCell *)v3 setImageView:v17];
 
-    v18 = [(CKAppMenuCollectionViewCell *)v3 contentView];
-    v19 = [(CKAppMenuCollectionViewCell *)v3 imageView];
-    [v18 addSubview:v19];
+    contentView2 = [(CKAppMenuCollectionViewCell *)v3 contentView];
+    imageView = [(CKAppMenuCollectionViewCell *)v3 imageView];
+    [contentView2 addSubview:imageView];
 
     v20 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v5, v6, v7, v8}];
     [(CKAppMenuCollectionViewCell *)v3 setSelectionView:v20];
 
     v21 = +[CKUIBehavior sharedBehaviors];
-    v22 = [v21 theme];
-    v23 = [v22 appTintColor];
-    v24 = [(CKAppMenuCollectionViewCell *)v3 selectionView];
-    [v24 setBackgroundColor:v23];
+    theme = [v21 theme];
+    appTintColor = [theme appTintColor];
+    selectionView = [(CKAppMenuCollectionViewCell *)v3 selectionView];
+    [selectionView setBackgroundColor:appTintColor];
 
-    v25 = [(CKAppMenuCollectionViewCell *)v3 selectionView];
-    [v25 setAlpha:0.0];
+    selectionView2 = [(CKAppMenuCollectionViewCell *)v3 selectionView];
+    [selectionView2 setAlpha:0.0];
 
-    v26 = [(CKAppMenuCollectionViewCell *)v3 contentView];
-    v27 = [(CKAppMenuCollectionViewCell *)v3 selectionView];
-    [v26 insertSubview:v27 atIndex:0];
+    contentView3 = [(CKAppMenuCollectionViewCell *)v3 contentView];
+    selectionView3 = [(CKAppMenuCollectionViewCell *)v3 selectionView];
+    [contentView3 insertSubview:selectionView3 atIndex:0];
 
     v28 = [objc_alloc(MEMORY[0x1E69DCAA0]) initWithTarget:v3 action:sel_didHoverOverCell_];
     [(CKAppMenuCollectionViewCell *)v3 addGestureRecognizer:v28];
@@ -81,23 +81,23 @@
 
   [(CKAppMenuCollectionViewCell *)self layoutMargins];
   v9 = v8;
-  v10 = [(CKAppMenuCollectionViewCell *)self contentView];
-  [v10 frame];
+  contentView = [(CKAppMenuCollectionViewCell *)self contentView];
+  [contentView frame];
   v11 = CGRectGetMidY(v49) - v7 * 0.5;
-  v12 = [(CKAppMenuCollectionViewCell *)self imageView];
-  [v12 setFrame:{v9, v11, v5, v7}];
+  imageView = [(CKAppMenuCollectionViewCell *)self imageView];
+  [imageView setFrame:{v9, v11, v5, v7}];
 
-  v13 = [(CKAppMenuCollectionViewCell *)self titleLabel];
-  [v13 intrinsicContentSize];
+  titleLabel = [(CKAppMenuCollectionViewCell *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v15 = v14;
 
-  v16 = [(CKAppMenuCollectionViewCell *)self contentView];
-  [v16 frame];
+  contentView2 = [(CKAppMenuCollectionViewCell *)self contentView];
+  [contentView2 frame];
   v18 = v17;
   [(CKAppMenuCollectionViewCell *)self layoutMargins];
   v20 = v18 - v19;
-  v21 = [(CKAppMenuCollectionViewCell *)self imageView];
-  [v21 frame];
+  imageView2 = [(CKAppMenuCollectionViewCell *)self imageView];
+  [imageView2 frame];
   v22 = v20 - CGRectGetMaxX(v50);
   [(CKAppMenuCollectionViewCell *)self layoutMargins];
   v24 = v22 - v23;
@@ -107,58 +107,58 @@
     v15 = v24;
   }
 
-  v25 = [(CKAppMenuCollectionViewCell *)self imageView];
-  [v25 frame];
+  imageView3 = [(CKAppMenuCollectionViewCell *)self imageView];
+  [imageView3 frame];
   MaxX = CGRectGetMaxX(v51);
   [(CKAppMenuCollectionViewCell *)self layoutMargins];
   v28 = MaxX + v27;
-  v29 = [(CKAppMenuCollectionViewCell *)self contentView];
-  [v29 frame];
+  contentView3 = [(CKAppMenuCollectionViewCell *)self contentView];
+  [contentView3 frame];
   MidY = CGRectGetMidY(v52);
-  v31 = [(CKAppMenuCollectionViewCell *)self titleLabel];
-  [v31 intrinsicContentSize];
+  titleLabel2 = [(CKAppMenuCollectionViewCell *)self titleLabel];
+  [titleLabel2 intrinsicContentSize];
   v33 = MidY - v32 * 0.5;
-  v34 = [(CKAppMenuCollectionViewCell *)self titleLabel];
-  [v34 intrinsicContentSize];
+  titleLabel3 = [(CKAppMenuCollectionViewCell *)self titleLabel];
+  [titleLabel3 intrinsicContentSize];
   v36 = v35;
-  v37 = [(CKAppMenuCollectionViewCell *)self titleLabel];
-  [v37 setFrame:{v28, v33, v15, v36}];
+  titleLabel4 = [(CKAppMenuCollectionViewCell *)self titleLabel];
+  [titleLabel4 setFrame:{v28, v33, v15, v36}];
 
-  v38 = [(CKAppMenuCollectionViewCell *)self contentView];
-  [v38 bounds];
+  contentView4 = [(CKAppMenuCollectionViewCell *)self contentView];
+  [contentView4 bounds];
   v40 = v39;
   v42 = v41;
   v44 = v43;
   v46 = v45;
-  v47 = [(CKAppMenuCollectionViewCell *)self selectionView];
-  [v47 setFrame:{v40, v42, v44, v46}];
+  selectionView = [(CKAppMenuCollectionViewCell *)self selectionView];
+  [selectionView setFrame:{v40, v42, v44, v46}];
 }
 
-- (void)didHoverOverCell:(id)a3
+- (void)didHoverOverCell:(id)cell
 {
-  v4 = a3;
-  v6 = [(CKAppMenuCollectionViewCell *)self delegate];
-  v5 = [v4 state];
+  cellCopy = cell;
+  delegate = [(CKAppMenuCollectionViewCell *)self delegate];
+  state = [cellCopy state];
 
-  [v6 appMenuCollectionViewCell:self didHoverWithState:v5];
+  [delegate appMenuCollectionViewCell:self didHoverWithState:state];
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = [(CKAppMenuCollectionViewCell *)self delegate];
-  [v4 appMenuCollectionViewCellWasTapped:self];
+  delegate = [(CKAppMenuCollectionViewCell *)self delegate];
+  [delegate appMenuCollectionViewCellWasTapped:self];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = CKAppMenuCollectionViewCell;
   [(CKAppMenuCollectionViewCell *)&v8 setSelected:?];
-  v5 = [(CKAppMenuCollectionViewCell *)self selectionView];
-  [v5 setAlpha:v3];
+  selectionView = [(CKAppMenuCollectionViewCell *)self selectionView];
+  [selectionView setAlpha:selectedCopy];
 
-  if (v3)
+  if (selectedCopy)
   {
     [MEMORY[0x1E69DC888] whiteColor];
   }
@@ -168,8 +168,8 @@
     [MEMORY[0x1E69DC888] secondaryLabelColor];
   }
   v6 = ;
-  v7 = [(CKAppMenuCollectionViewCell *)self titleLabel];
-  [v7 setTextColor:v6];
+  titleLabel = [(CKAppMenuCollectionViewCell *)self titleLabel];
+  [titleLabel setTextColor:v6];
 }
 
 - (CKAppMenuCollectionViewCellDelegate)delegate

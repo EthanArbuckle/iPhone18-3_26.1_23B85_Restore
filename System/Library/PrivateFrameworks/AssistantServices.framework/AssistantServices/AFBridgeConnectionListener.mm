@@ -1,9 +1,9 @@
 @interface AFBridgeConnectionListener
-- (AFBridgeConnectionListener)initWithBridgeName:(id)a3 machService:(id)a4 withServiceInterface:(id)a5 withDelegateInterface:(id)a6;
+- (AFBridgeConnectionListener)initWithBridgeName:(id)name machService:(id)service withServiceInterface:(id)interface withDelegateInterface:(id)delegateInterface;
 - (AFBridgeConnectionListenerDelegate)delegate;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)notifyClientWithBlock:(id)a3;
-- (void)resumeConnectionWithBridgeProxy:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)notifyClientWithBlock:(id)block;
+- (void)resumeConnectionWithBridgeProxy:(id)proxy;
 @end
 
 @implementation AFBridgeConnectionListener
@@ -15,17 +15,17 @@
   return WeakRetained;
 }
 
-- (void)notifyClientWithBlock:(id)a3
+- (void)notifyClientWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__AFBridgeConnectionListener_notifyClientWithBlock___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(queue, v7);
 }
 
@@ -75,17 +75,17 @@ LABEL_7:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resumeConnectionWithBridgeProxy:(id)a3
+- (void)resumeConnectionWithBridgeProxy:(id)proxy
 {
-  v4 = a3;
+  proxyCopy = proxy;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__AFBridgeConnectionListener_resumeConnectionWithBridgeProxy___block_invoke;
   v7[3] = &unk_1E7349860;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = proxyCopy;
+  v6 = proxyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -153,11 +153,11 @@ LABEL_7:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -169,35 +169,35 @@ LABEL_7:
     _os_log_impl(&dword_1912FE000, v8, OS_LOG_TYPE_INFO, "%s Incoming connection request for: %@", buf, 0x16u);
   }
 
-  v10 = [v7 valueForEntitlement:self->_machServiceName];
+  v10 = [connectionCopy valueForEntitlement:self->_machServiceName];
 
   if (v10)
   {
-    [v7 setExportedInterface:self->_exportedInterface];
-    [v7 setExportedObject:self->_bridgeProxy];
-    [v7 setRemoteObjectInterface:self->_remoteInterface];
-    v11 = [v7 processIdentifier];
+    [connectionCopy setExportedInterface:self->_exportedInterface];
+    [connectionCopy setExportedObject:self->_bridgeProxy];
+    [connectionCopy setRemoteObjectInterface:self->_remoteInterface];
+    processIdentifier = [connectionCopy processIdentifier];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __65__AFBridgeConnectionListener_listener_shouldAcceptNewConnection___block_invoke;
     v25[3] = &unk_1E7346BE8;
-    v26 = v11;
+    v26 = processIdentifier;
     v25[4] = self;
-    [v7 setInvalidationHandler:v25];
+    [connectionCopy setInvalidationHandler:v25];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __65__AFBridgeConnectionListener_listener_shouldAcceptNewConnection___block_invoke_2;
     v23[3] = &unk_1E7346BE8;
-    v24 = v11;
+    v24 = processIdentifier;
     v23[4] = self;
-    [v7 setInterruptionHandler:v23];
+    [connectionCopy setInterruptionHandler:v23];
     queue = self->_queue;
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __65__AFBridgeConnectionListener_listener_shouldAcceptNewConnection___block_invoke_3;
     v20 = &unk_1E7349860;
-    v21 = self;
-    v13 = v7;
+    selfCopy = self;
+    v13 = connectionCopy;
     v22 = v13;
     dispatch_async(queue, &v17);
     [v13 resume];
@@ -258,29 +258,29 @@ void __65__AFBridgeConnectionListener_listener_shouldAcceptNewConnection___block
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (AFBridgeConnectionListener)initWithBridgeName:(id)a3 machService:(id)a4 withServiceInterface:(id)a5 withDelegateInterface:(id)a6
+- (AFBridgeConnectionListener)initWithBridgeName:(id)name machService:(id)service withServiceInterface:(id)interface withDelegateInterface:(id)delegateInterface
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nameCopy = name;
+  serviceCopy = service;
+  interfaceCopy = interface;
+  delegateInterfaceCopy = delegateInterface;
   v23.receiver = self;
   v23.super_class = AFBridgeConnectionListener;
   v15 = [(AFBridgeConnectionListener *)&v23 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_bridgeName, a3);
-    objc_storeStrong(&v16->_machServiceName, a4);
-    objc_storeStrong(&v16->_exportedInterface, a5);
-    objc_storeStrong(&v16->_remoteInterface, a6);
+    objc_storeStrong(&v15->_bridgeName, name);
+    objc_storeStrong(&v16->_machServiceName, service);
+    objc_storeStrong(&v16->_exportedInterface, interface);
+    objc_storeStrong(&v16->_remoteInterface, delegateInterface);
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("AFBridgeConnectionListener", v17);
 
     queue = v16->_queue;
     v16->_queue = v18;
 
-    v20 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:v12];
+    v20 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:serviceCopy];
     listener = v16->_listener;
     v16->_listener = v20;
 

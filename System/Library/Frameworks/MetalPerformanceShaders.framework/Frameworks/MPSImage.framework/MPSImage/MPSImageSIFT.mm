@@ -1,12 +1,12 @@
 @interface MPSImageSIFT
-- (MPSImageSIFT)initWithDevice:(id)a3 descriptor:(id)a4;
+- (MPSImageSIFT)initWithDevice:(id)device descriptor:(id)descriptor;
 - (void)dealloc;
-- (void)encodeToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationGaussianPyramid:(id)a5 destinationDOGPyramid:(id)a6 keypointsBuffer:(id)a7 keypointBufferOffset:(unint64_t)a8 keypointCountBuffer:(id)a9 keypointCountBufferOffset:(unint64_t)a10;
+- (void)encodeToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationGaussianPyramid:(id)pyramid destinationDOGPyramid:(id)gPyramid keypointsBuffer:(id)keypointsBuffer keypointBufferOffset:(unint64_t)offset keypointCountBuffer:(id)countBuffer keypointCountBufferOffset:(unint64_t)self0;
 @end
 
 @implementation MPSImageSIFT
 
-- (MPSImageSIFT)initWithDevice:(id)a3 descriptor:(id)a4
+- (MPSImageSIFT)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v187.receiver = self;
   v187.super_class = MPSImageSIFT;
@@ -14,19 +14,19 @@
   v7 = v6;
   if (v6)
   {
-    v6->_sigma = *(a4 + 2);
-    v6->_layersPerOctave = *(a4 + 2);
-    v6->_octaves = *(a4 + 3);
-    v6->_upscale = *(a4 + 32);
-    v6->_contrastThreshold = *(a4 + 9);
-    v6->_edgeThreshold = *(a4 + 5);
-    v6->_initialSigma = *(a4 + 12);
-    v6->_imageBoundary = *(a4 + 7);
-    v6->_orientationRadius = *(a4 + 16);
-    v6->_orientationWeight = *(a4 + 17);
-    v6->_orientationBins = *(a4 + 9);
-    v6->_orientationThreshold = *(a4 + 20);
-    v6->_maximumKeyPoints = *(a4 + 11);
+    v6->_sigma = *(descriptor + 2);
+    v6->_layersPerOctave = *(descriptor + 2);
+    v6->_octaves = *(descriptor + 3);
+    v6->_upscale = *(descriptor + 32);
+    v6->_contrastThreshold = *(descriptor + 9);
+    v6->_edgeThreshold = *(descriptor + 5);
+    v6->_initialSigma = *(descriptor + 12);
+    v6->_imageBoundary = *(descriptor + 7);
+    v6->_orientationRadius = *(descriptor + 16);
+    v6->_orientationWeight = *(descriptor + 17);
+    v6->_orientationBins = *(descriptor + 9);
+    v6->_orientationThreshold = *(descriptor + 20);
+    v6->_maximumKeyPoints = *(descriptor + 11);
     v6->_fusedKeypointOrientation = 0;
     v8 = *MEMORY[0x277CD7350];
     v6->_useCompressedTexture = ((*(&v6->super.super.super.isa + v8))[369] & 0x80000) != 0;
@@ -115,7 +115,7 @@ LABEL_13:
 LABEL_26:
           v56 = (*(**(&v7->super.super.super.isa + v33) + 24))(*(&v7->super.super.super.isa + v33));
           v57 = (*(**(&v7->super.super.super.isa + v33) + 40))(*(&v7->super.super.super.isa + v33));
-          v61 = objc_msgSend_newBufferWithLength_options_(a3, v58, 4 * v35, v57 | (16 * v56), v59, v60);
+          v61 = objc_msgSend_newBufferWithLength_options_(device, v58, 4 * v35, v57 | (16 * v56), v59, v60);
           v7->_weights = v61;
           v67 = objc_msgSend_contents(v61, v62, v63, v64, v65, v66);
           v70 = v67;
@@ -446,7 +446,7 @@ LABEL_62:
     }
 
     v13 = v12;
-    v158 = a3;
+    deviceCopy = device;
     v176 = v10;
     v182 = v12;
     if (layersPerOctave <= 0xFFFFFFFFFFFFFFFDLL)
@@ -503,7 +503,7 @@ LABEL_62:
     while (v23);
 LABEL_12:
     v10 = v7->_sigma;
-    a3 = v158;
+    device = deviceCopy;
     goto LABEL_13;
   }
 
@@ -519,24 +519,24 @@ LABEL_12:
   [(MPSKernel *)&v3 dealloc];
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceTexture:(id)a4 destinationGaussianPyramid:(id)a5 destinationDOGPyramid:(id)a6 keypointsBuffer:(id)a7 keypointBufferOffset:(unint64_t)a8 keypointCountBuffer:(id)a9 keypointCountBufferOffset:(unint64_t)a10
+- (void)encodeToCommandBuffer:(id)buffer sourceTexture:(id)texture destinationGaussianPyramid:(id)pyramid destinationDOGPyramid:(id)gPyramid keypointsBuffer:(id)keypointsBuffer keypointBufferOffset:(unint64_t)offset keypointCountBuffer:(id)countBuffer keypointCountBufferOffset:(unint64_t)self0
 {
-  v612 = a8;
-  v613 = a7;
-  v610 = a3;
+  offsetCopy = offset;
+  keypointsBufferCopy = keypointsBuffer;
+  bufferCopy = buffer;
   v674 = *MEMORY[0x277D85DE8];
   *&v642 = *MEMORY[0x277CD7350];
   v14 = *(&self->super.super.super.isa + v642);
-  v15 = objc_msgSend_pixelFormat(a4, a2, a3, a4, a5, a6);
+  v15 = objc_msgSend_pixelFormat(texture, a2, buffer, texture, pyramid, gPyramid);
   PixelInfo = MPSDevice::GetPixelInfo(v14, v15, MPSImageFeatureChannelFormatNone);
-  v22 = objc_msgSend_width(a4, v17, v18, v19, v20, v21);
-  v633 = a4;
-  v28 = objc_msgSend_height(a4, v23, v24, v25, v26, v27);
+  v22 = objc_msgSend_width(texture, v17, v18, v19, v20, v21);
+  textureCopy = texture;
+  v28 = objc_msgSend_height(texture, v23, v24, v25, v26, v27);
   upscale = self->_upscale;
   v619 = v28;
   v620 = v22;
   v30 = v22 << upscale;
-  v31 = a6;
+  gPyramidCopy = gPyramid;
   if (v30 >= v28 << upscale)
   {
     v30 = v28 << upscale;
@@ -563,7 +563,7 @@ LABEL_12:
 
   v634 = v37;
   v40 = *MEMORY[0x277CD7378];
-  v648 = self;
+  selfCopy = self;
   v643 = v40;
   if ((*(v40 + self) & 1) == 0)
   {
@@ -572,22 +572,22 @@ LABEL_12:
       MTLReportFailure();
     }
 
-    if (!v610 && MTLReportFailureTypeEnabled())
+    if (!bufferCopy && MTLReportFailureTypeEnabled())
     {
       v605 = objc_opt_class();
       NSStringFromClass(v605);
       MTLReportFailure();
     }
 
-    if (!v633 && MTLReportFailureTypeEnabled())
+    if (!textureCopy && MTLReportFailureTypeEnabled())
     {
       v606 = objc_opt_class();
       NSStringFromClass(v606);
       MTLReportFailure();
     }
 
-    objc_msgSend_textureType(v633, v32, v33, v34, v35, v36);
-    if (objc_msgSend_textureType(v633, v41, v42, v43, v44, v45) != 2 && MTLReportFailureTypeEnabled())
+    objc_msgSend_textureType(textureCopy, v32, v33, v34, v35, v36);
+    if (objc_msgSend_textureType(textureCopy, v41, v42, v43, v44, v45) != 2 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
@@ -597,90 +597,90 @@ LABEL_12:
       MTLReportFailure();
     }
 
-    if ((v648->super._checkFlags & 0x40) == 0 && (PixelInfo & 0x40000000000) != 0 && MTLReportFailureTypeEnabled())
+    if ((selfCopy->super._checkFlags & 0x40) == 0 && (PixelInfo & 0x40000000000) != 0 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    if ((v648->super._checkFlags & 4) != 0 && (PixelInfo & 0x80000000000) == 0 && MTLReportFailureTypeEnabled())
+    if ((selfCopy->super._checkFlags & 4) != 0 && (PixelInfo & 0x80000000000) == 0 && MTLReportFailureTypeEnabled())
     {
       MTLReportFailure();
     }
 
-    if (v613)
+    if (keypointsBufferCopy)
     {
-      objc_msgSend_length(v613, v32, v46, v34, v35, v36);
-      if (objc_msgSend_length(v613, v47, v48, v49, v50, v51) < 36 * v648->_maximumKeyPoints)
+      objc_msgSend_length(keypointsBufferCopy, v32, v46, v34, v35, v36);
+      if (objc_msgSend_length(keypointsBufferCopy, v47, v48, v49, v50, v51) < 36 * selfCopy->_maximumKeyPoints)
       {
         if (MTLReportFailureTypeEnabled())
         {
-          v608 = 36 * v648->_maximumKeyPoints;
-          objc_msgSend_length(v613, v32, v46, v34, v35, v36);
+          v608 = 36 * selfCopy->_maximumKeyPoints;
+          objc_msgSend_length(keypointsBufferCopy, v32, v46, v34, v35, v36);
           MTLReportFailure();
         }
       }
     }
 
-    if (a5)
+    if (pyramid)
     {
-      objc_msgSend_count(a5, v32, v46, v34, v35, v36);
-      if (objc_msgSend_count(a5, v52, v53, v54, v55, v56) < v634)
+      objc_msgSend_count(pyramid, v32, v46, v34, v35, v36);
+      if (objc_msgSend_count(pyramid, v52, v53, v54, v55, v56) < v634)
       {
         if (MTLReportFailureTypeEnabled())
         {
-          objc_msgSend_count(a5, v32, v46, v34, v35, v36);
+          objc_msgSend_count(pyramid, v32, v46, v34, v35, v36);
           MTLReportFailure();
         }
       }
     }
 
-    if (a6)
+    if (gPyramid)
     {
-      objc_msgSend_count(a6, v32, v46, v34, v35, v36);
-      if (objc_msgSend_count(a6, v57, v58, v59, v60, v61) < v634)
+      objc_msgSend_count(gPyramid, v32, v46, v34, v35, v36);
+      if (objc_msgSend_count(gPyramid, v57, v58, v59, v60, v61) < v634)
       {
         if (MTLReportFailureTypeEnabled())
         {
-          objc_msgSend_count(a6, v32, v607, v34, v35, v36);
+          objc_msgSend_count(gPyramid, v32, v607, v34, v35, v36);
           MTLReportFailure();
         }
       }
     }
 
-    if (a5 && v634)
+    if (pyramid && v634)
     {
       v62 = 0;
       v64 = v619;
       v63 = v620;
       do
       {
-        v65 = objc_msgSend_objectAtIndexedSubscript_(a5, v32, v62, v34, v35, v36);
+        v65 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v32, v62, v34, v35, v36);
         objc_msgSend_width(v65, v66, v67, v68, v69, v70);
-        v75 = objc_msgSend_objectAtIndexedSubscript_(a5, v71, v62, v72, v73, v74);
+        v75 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v71, v62, v72, v73, v74);
         if (objc_msgSend_width(v75, v76, v77, v78, v79, v80) != v63 && MTLReportFailureTypeEnabled())
         {
-          v121 = objc_msgSend_objectAtIndexedSubscript_(a5, v81, v62, v82, v83, v84);
+          v121 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v81, v62, v82, v83, v84);
           objc_msgSend_width(v121, v122, v123, v124, v125, v126);
           MTLReportFailure();
         }
 
-        v85 = objc_msgSend_objectAtIndexedSubscript_(a5, v81, v62, v82, v83, v84);
+        v85 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v81, v62, v82, v83, v84);
         objc_msgSend_height(v85, v86, v87, v88, v89, v90);
-        v95 = objc_msgSend_objectAtIndexedSubscript_(a5, v91, v62, v92, v93, v94);
+        v95 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v91, v62, v92, v93, v94);
         if (objc_msgSend_height(v95, v96, v97, v98, v99, v100) != v64 && MTLReportFailureTypeEnabled())
         {
-          v127 = objc_msgSend_objectAtIndexedSubscript_(a5, v101, v62, v102, v103, v104);
+          v127 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v101, v62, v102, v103, v104);
           objc_msgSend_height(v127, v128, v129, v130, v131, v132);
           MTLReportFailure();
         }
 
-        v105 = objc_msgSend_objectAtIndexedSubscript_(a5, v101, v62, v102, v103, v104);
+        v105 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v101, v62, v102, v103, v104);
         objc_msgSend_arrayLength(v105, v106, v107, v108, v109, v110);
-        v115 = objc_msgSend_objectAtIndexedSubscript_(a5, v111, v62, v112, v113, v114);
-        if (objc_msgSend_arrayLength(v115, v116, v117, v118, v119, v120) < *(&v648->super.super.super.isa + v617) + 3 && MTLReportFailureTypeEnabled())
+        v115 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v111, v62, v112, v113, v114);
+        if (objc_msgSend_arrayLength(v115, v116, v117, v118, v119, v120) < *(&selfCopy->super.super.super.isa + v617) + 3 && MTLReportFailureTypeEnabled())
         {
-          v133 = *(&v648->super.super.super.isa + v617) + 3;
-          v134 = objc_msgSend_objectAtIndexedSubscript_(a5, v32, v62, v34, v35, v36);
+          v133 = *(&selfCopy->super.super.super.isa + v617) + 3;
+          v134 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v32, v62, v34, v35, v36);
           objc_msgSend_arrayLength(v134, v135, v136, v137, v138, v139);
           MTLReportFailure();
         }
@@ -693,40 +693,40 @@ LABEL_12:
       while (v634 != v62);
     }
 
-    if (v31 && v634)
+    if (gPyramidCopy && v634)
     {
       v140 = 0;
       v142 = v619;
       v141 = v620;
       do
       {
-        v143 = objc_msgSend_objectAtIndexedSubscript_(v31, v32, v140, v34, v35, v36);
+        v143 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v32, v140, v34, v35, v36);
         objc_msgSend_width(v143, v144, v145, v146, v147, v148);
-        v153 = objc_msgSend_objectAtIndexedSubscript_(v31, v149, v140, v150, v151, v152);
+        v153 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v149, v140, v150, v151, v152);
         if (objc_msgSend_width(v153, v154, v155, v156, v157, v158) != v141 && MTLReportFailureTypeEnabled())
         {
-          v199 = objc_msgSend_objectAtIndexedSubscript_(v31, v159, v140, v160, v161, v162);
+          v199 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v159, v140, v160, v161, v162);
           objc_msgSend_width(v199, v200, v201, v202, v203, v204);
           MTLReportFailure();
         }
 
-        v163 = objc_msgSend_objectAtIndexedSubscript_(v31, v159, v140, v160, v161, v162);
+        v163 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v159, v140, v160, v161, v162);
         objc_msgSend_height(v163, v164, v165, v166, v167, v168);
-        v173 = objc_msgSend_objectAtIndexedSubscript_(v31, v169, v140, v170, v171, v172);
+        v173 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v169, v140, v170, v171, v172);
         if (objc_msgSend_height(v173, v174, v175, v176, v177, v178) != v142 && MTLReportFailureTypeEnabled())
         {
-          v205 = objc_msgSend_objectAtIndexedSubscript_(v31, v179, v140, v180, v181, v182);
+          v205 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v179, v140, v180, v181, v182);
           objc_msgSend_height(v205, v206, v207, v208, v209, v210);
           MTLReportFailure();
         }
 
-        v183 = objc_msgSend_objectAtIndexedSubscript_(v31, v179, v140, v180, v181, v182);
+        v183 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v179, v140, v180, v181, v182);
         objc_msgSend_arrayLength(v183, v184, v185, v186, v187, v188);
-        v193 = objc_msgSend_objectAtIndexedSubscript_(v31, v189, v140, v190, v191, v192);
-        if (objc_msgSend_arrayLength(v193, v194, v195, v196, v197, v198) < *(&v648->super.super.super.isa + v617) + 2 && MTLReportFailureTypeEnabled())
+        v193 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v189, v140, v190, v191, v192);
+        if (objc_msgSend_arrayLength(v193, v194, v195, v196, v197, v198) < *(&selfCopy->super.super.super.isa + v617) + 2 && MTLReportFailureTypeEnabled())
         {
-          v211 = *(&v648->super.super.super.isa + v617) + 2;
-          v212 = objc_msgSend_objectAtIndexedSubscript_(v31, v32, v140, v34, v35, v36);
+          v211 = *(&selfCopy->super.super.super.isa + v617) + 2;
+          v212 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v32, v140, v34, v35, v36);
           objc_msgSend_arrayLength(v212, v213, v214, v215, v216, v217);
           MTLReportFailure();
         }
@@ -742,14 +742,14 @@ LABEL_12:
 
   v611 = 208;
   v218 = 4.0;
-  if (!v648->_upscale)
+  if (!selfCopy->_upscale)
   {
     v218 = 1.0;
   }
 
-  if (-(((v648->_initialSigma * v648->_initialSigma) * v218) - (v648->_sigma * v648->_sigma)) >= 0.01)
+  if (-(((selfCopy->_initialSigma * selfCopy->_initialSigma) * v218) - (selfCopy->_sigma * selfCopy->_sigma)) >= 0.01)
   {
-    v219 = -(((v648->_initialSigma * v648->_initialSigma) * v218) - (v648->_sigma * v648->_sigma));
+    v219 = -(((selfCopy->_initialSigma * selfCopy->_initialSigma) * v218) - (selfCopy->_sigma * selfCopy->_sigma));
   }
 
   else
@@ -757,10 +757,10 @@ LABEL_12:
     v219 = 0.01;
   }
 
-  v220 = *(&v648->super.super.super.isa + v642);
-  if (a5)
+  v220 = *(&selfCopy->super.super.super.isa + v642);
+  if (pyramid)
   {
-    v221 = objc_msgSend_objectAtIndexedSubscript_(a5, v32, 0, v34, v35, v36);
+    v221 = objc_msgSend_objectAtIndexedSubscript_(pyramid, v32, 0, v34, v35, v36);
     v227 = objc_msgSend_pixelFormat(v221, v222, v223, v224, v225, v226);
   }
 
@@ -771,11 +771,11 @@ LABEL_12:
 
   v228 = v634;
   v662 = MPSDevice::GetPixelInfo(v220, v227, MPSImageFeatureChannelFormatNone);
-  v233 = *(&v648->super.super.super.isa + v642);
-  v646 = a5;
-  if (v31)
+  v233 = *(&selfCopy->super.super.super.isa + v642);
+  bufferOffsetCopy = pyramid;
+  if (gPyramidCopy)
   {
-    v234 = objc_msgSend_objectAtIndexedSubscript_(v31, v229, 0, v230, v231, v232);
+    v234 = objc_msgSend_objectAtIndexedSubscript_(gPyramidCopy, v229, 0, v230, v231, v232);
     v240 = objc_msgSend_pixelFormat(v234, v235, v236, v237, v238, v239);
   }
 
@@ -786,30 +786,30 @@ LABEL_12:
 
   v609[1] = v609;
   v661 = MPSDevice::GetPixelInfo(v233, v240, MPSImageFeatureChannelFormatNone);
-  LODWORD(v639) = v648->_useCompressedTexture & ((*(&v648->super.super.super.isa + v642))[369] >> 19);
+  LODWORD(v639) = selfCopy->_useCompressedTexture & ((*(&selfCopy->super.super.super.isa + v642))[369] >> 19);
   v241 = (MEMORY[0x28223BE20])();
   v243 = (v609 - ((v242 + 15) & 0xFFFFFFFFFFFFFFF0));
   v641 = v242;
   MEMORY[0x28223BE20](v241);
   v245 = (v609 - v244);
-  v246 = v31;
+  v246 = gPyramidCopy;
   v640 = v243;
   v647 = v609 - v244;
   v247 = 0;
   if (v228)
   {
     TempBuffer = (layersPerOctave + 2);
-    v645 = (layersPerOctave + 3);
+    countBufferCopy = (layersPerOctave + 3);
     v248 = v228;
     v250 = v619;
     v249 = v620;
     v251 = v642;
     while (1)
     {
-      if (v646)
+      if (bufferOffsetCopy)
       {
         *v243 = 0;
-        if (!v31)
+        if (!gPyramidCopy)
         {
           goto LABEL_71;
         }
@@ -818,28 +818,28 @@ LABEL_12:
       else
       {
         v252 = v251;
-        v253 = v648;
-        v254 = *(&v648->super.super.super.isa + v252);
+        v253 = selfCopy;
+        v254 = *(&selfCopy->super.super.super.isa + v252);
         *&v649 = v249;
         *(&v649 + 1) = v250;
-        *&v650 = v645;
+        *&v650 = countBufferCopy;
         *v243 = sub_2399696CC(v254, &v662, &v649, v639);
         v247 += (*(**(&v253->super.super.super.isa + v252) + 64))(*(&v253->super.super.super.isa + v252));
         v251 = v252;
-        v31 = v246;
+        gPyramidCopy = v246;
         if (!v246)
         {
 LABEL_71:
           v255 = v251;
-          v256 = v648;
-          v257 = *(&v648->super.super.super.isa + v255);
+          v256 = selfCopy;
+          v257 = *(&selfCopy->super.super.super.isa + v255);
           *&v649 = v249;
           *(&v649 + 1) = v250;
           *&v650 = TempBuffer;
           *v245 = sub_2399696CC(v257, &v661, &v649, v639);
           v247 += (*(**(&v256->super.super.super.isa + v255) + 64))(*(&v256->super.super.super.isa + v255));
           v251 = v255;
-          v31 = v246;
+          gPyramidCopy = v246;
           goto LABEL_66;
         }
       }
@@ -859,8 +859,8 @@ LABEL_66:
 
   v251 = v642;
 LABEL_73:
-  v258 = v648;
-  v660 = MPSDevice::GetPixelInfo(*(&v648->super.super.super.isa + v251), MTLPixelFormatR16Unorm, MPSImageFeatureChannelFormatNone);
+  v258 = selfCopy;
+  v660 = MPSDevice::GetPixelInfo(*(&selfCopy->super.super.super.isa + v251), MTLPixelFormatR16Unorm, MPSImageFeatureChannelFormatNone);
   v259 = *(&v258->super.super.super.isa + v251);
   *&v649 = v620;
   *(&v649 + 1) = v619;
@@ -873,7 +873,7 @@ LABEL_73:
     (*(*v261 + 64))(v261, v260);
   }
 
-  v262 = v610;
+  v262 = bufferCopy;
   v263 = v634;
   v264 = v246;
   v265 = v643;
@@ -883,7 +883,7 @@ LABEL_73:
   v658 = v274;
   v659 = v258;
   v275 = v265[v258];
-  v276 = v646;
+  v276 = bufferOffsetCopy;
   if ((v275 & 0x18) != 0)
   {
     v277 = *(&v258->super.super.super.isa + *MEMORY[0x277CD7360]);
@@ -893,7 +893,7 @@ LABEL_73:
     }
   }
 
-  MEMORY[0x23EE7BAC0](v657, v610, 0);
+  MEMORY[0x23EE7BAC0](v657, bufferCopy, 0);
   v285 = v619;
   v284 = v620;
   v286 = MPSAutoCache::PrefetchHeapSize();
@@ -972,8 +972,8 @@ LABEL_73:
     v615 = v309;
     v614 = v309 - 1;
     v640 = (layersPerOctave + 3);
-    v311 = v633;
-    v312 = v648;
+    v311 = textureCopy;
+    v312 = selfCopy;
     v314 = v619;
     v313 = v620;
     while (1)
@@ -1006,7 +1006,7 @@ LABEL_168:
       MPSAutoCache::ReleaseTempResource();
       v313 = v620 >> 1;
       v314 = v619 >> 1;
-      v311 = v633;
+      v311 = textureCopy;
       v263 = v634;
       if (++v647 == v634)
       {
@@ -1017,7 +1017,7 @@ LABEL_168:
     v315 = 0;
     v316 = 0;
     v632 = &v628[8 * v647];
-    v645 = *v632;
+    countBufferCopy = *v632;
     if (v647)
     {
       v317 = 0;
@@ -1060,26 +1060,26 @@ LABEL_168:
         goto LABEL_108;
       }
 
-      if (objc_msgSend_textureType(v645, v289, v306, v290, v291, v292) != 3)
+      if (objc_msgSend_textureType(countBufferCopy, v289, v306, v290, v291, v292) != 3)
       {
         break;
       }
 
-      v327 = objc_msgSend_pixelFormat(v645, v322, v323, v324, v325, v326);
-      v643 = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(v645, v328, v327, 2, 0, 1, v316, 1);
+      v327 = objc_msgSend_pixelFormat(countBufferCopy, v322, v323, v324, v325, v326);
+      v643 = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(countBufferCopy, v328, v327, 2, 0, 1, v316, 1);
       if (v316)
       {
-        v329 = objc_msgSend_pixelFormat(v645, v322, v323, v324, v325, v326);
-        TempBuffer = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(v645, v330, v329, 2, 0, 1, v316 - 1, 1);
+        v329 = objc_msgSend_pixelFormat(countBufferCopy, v322, v323, v324, v325, v326);
+        TempBuffer = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(countBufferCopy, v330, v329, 2, 0, 1, v316 - 1, 1);
         v336 = objc_msgSend_pixelFormat(v625, v331, v332, v333, v334, v335);
-        v646 = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(v625, v337, v336, 2, 0, 1, v316 - 1, 1);
+        bufferOffsetCopy = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(v625, v337, v336, 2, 0, 1, v316 - 1, 1);
         goto LABEL_117;
       }
 
-      v646 = 0;
+      bufferOffsetCopy = 0;
       TempBuffer = v626;
       v338 = 0;
-      v339 = v648;
+      v339 = selfCopy;
       if (!layersPerOctave)
       {
 LABEL_118:
@@ -1092,7 +1092,7 @@ LABEL_118:
             v338 = objc_msgSend_newTextureViewWithPixelFormat_textureType_levels_slices_(v338, v341, v340, 2, 0, 1, 0, 1);
           }
 
-          v339 = v648;
+          v339 = selfCopy;
         }
       }
 
@@ -1129,7 +1129,7 @@ LABEL_122:
         *&v667[24] = -1;
         *&v667[32] = v413;
         *v667 = v413;
-        *&v667[16] = v412 | ((v338 != 0) << 20) | ((v646 != 0) << 21) | v637 | (v321 << 25);
+        *&v667[16] = v412 | ((v338 != 0) << 20) | ((bufferOffsetCopy != 0) << 21) | v637 | (v321 << 25);
         v414 = *(&v339->super.super.super.isa + *MEMORY[0x277CD7370]);
         ComputeState = MPSLibrary::GetComputeState();
         v668.i64[0] = 0;
@@ -1149,9 +1149,9 @@ LABEL_122:
           objc_msgSend_setTexture_atIndex_(v274, v426, v338, 2, v427, v428);
         }
 
-        if (v646)
+        if (bufferOffsetCopy)
         {
-          objc_msgSend_setTexture_atIndex_(v274, v426, v646, 3, v427, v428);
+          objc_msgSend_setTexture_atIndex_(v274, v426, bufferOffsetCopy, 3, v427, v428);
         }
 
         objc_msgSend_setBytes_length_atIndex_(v274, v426, &v668, 76, 0, v428);
@@ -1223,7 +1223,7 @@ LABEL_122:
         }
 
         *&v650 = v627 | (v348 << 16) | v637 | v345 | 0x80000;
-        v349 = *(&v648->super.super.super.isa + *MEMORY[0x277CD7370]);
+        v349 = *(&selfCopy->super.super.super.isa + *MEMORY[0x277CD7370]);
         v350 = MPSLibrary::GetComputeState();
         *v667 = 0;
         *&v667[10] = WORD2(v638);
@@ -1235,7 +1235,7 @@ LABEL_122:
         objc_msgSend_setTexture_atIndex_(v274, v355, TempBuffer, 0, v356, v357);
         objc_msgSend_setTexture_atIndex_(v274, v358, v636, 1, v359, v360);
         objc_msgSend_setBytes_length_atIndex_(v274, v361, v667, 76, 0, v362);
-        objc_msgSend_setBuffer_offset_atIndex_(v274, v363, v648->_weights, 4 * v315, 1, v364);
+        objc_msgSend_setBuffer_offset_atIndex_(v274, v363, selfCopy->_weights, 4 * v315, 1, v364);
         objc_msgSend_setSamplerState_atIndex_(v274, v365, v343, 0, v366, v367);
         if (v639)
         {
@@ -1258,8 +1258,8 @@ LABEL_122:
         v666 = 1;
         objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v274, v368, &v668, &v665, v369, v370);
         v274 = v658;
-        v373 = *(&v648->super.super.super.isa + v642);
-        v374 = v648->super._edgeMode;
+        v373 = *(&selfCopy->super.super.super.isa + v642);
+        v374 = selfCopy->super._edgeMode;
         v375 = MPSDevice::GetSampler();
         *&v376 = -1;
         *(&v376 + 1) = -1;
@@ -1268,8 +1268,8 @@ LABEL_122:
         *(&v650 + 1) = -1;
         v651 = v376;
         v649 = v376;
-        *&v650 = v637 | ((v348 | (16 * (v338 != 0)) | (32 * (v646 != 0))) << 16) | v345 | 0x1000;
-        v377 = *(&v648->super.super.super.isa + *MEMORY[0x277CD7370]);
+        *&v650 = v637 | ((v348 | (16 * (v338 != 0)) | (32 * (bufferOffsetCopy != 0))) << 16) | v345 | 0x1000;
+        v377 = *(&selfCopy->super.super.super.isa + *MEMORY[0x277CD7370]);
         v378 = MPSLibrary::GetComputeState();
         *v667 = 0;
         *&v667[10] = WORD2(v638);
@@ -1285,14 +1285,14 @@ LABEL_122:
           objc_msgSend_setTexture_atIndex_(v274, v389, v338, 2, v390, v391);
         }
 
-        if (v646)
+        if (bufferOffsetCopy)
         {
           objc_msgSend_setTexture_atIndex_(v274, v389, TempBuffer, 3, v390, v391);
-          objc_msgSend_setTexture_atIndex_(v274, v392, v646, 4, v393, v394);
+          objc_msgSend_setTexture_atIndex_(v274, v392, bufferOffsetCopy, 4, v393, v394);
         }
 
         objc_msgSend_setBytes_length_atIndex_(v274, v389, v667, 76, 0, v391);
-        objc_msgSend_setBuffer_offset_atIndex_(v274, v395, v648->_weights, 4 * v315, 1, v396);
+        objc_msgSend_setBuffer_offset_atIndex_(v274, v395, selfCopy->_weights, 4 * v315, 1, v396);
         objc_msgSend_setSamplerState_atIndex_(v274, v397, v375, 0, v398, v399);
         if (v639)
         {
@@ -1316,11 +1316,11 @@ LABEL_122:
         objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v274, v400, &v668, &v665, v401, v402);
       }
 
-      if (v643 != v645)
+      if (v643 != countBufferCopy)
       {
       }
 
-      if (TempBuffer != v633)
+      if (TempBuffer != textureCopy)
       {
       }
 
@@ -1331,19 +1331,19 @@ LABEL_122:
 LABEL_108:
       v315 += (v321 + 7) & 0xFFFFFFFFFFFFFFF8;
       ++v316;
-      v312 = v648;
+      v312 = selfCopy;
       if (v640 == v316)
       {
         goto LABEL_168;
       }
     }
 
-    v646 = 0;
-    v643 = v645;
+    bufferOffsetCopy = 0;
+    v643 = countBufferCopy;
     TempBuffer = v626;
 LABEL_117:
     v338 = 0;
-    v339 = v648;
+    v339 = selfCopy;
     if (layersPerOctave == v316)
     {
       goto LABEL_118;
@@ -1352,7 +1352,7 @@ LABEL_117:
     goto LABEL_122;
   }
 
-  v312 = v648;
+  v312 = selfCopy;
 LABEL_171:
   *&v437 = -1;
   *(&v437 + 1) = -1;
@@ -1377,22 +1377,22 @@ LABEL_171:
   else
   {
     v641 = MPSLibrary::GetComputeState();
-    v441 = *(&v648->super.super.super.isa + v438);
+    v441 = *(&selfCopy->super.super.super.isa + v438);
     *&v638 = MPSLibrary::GetComputeState();
     v640 = 0;
   }
 
-  v442 = *(&v648->super.super.super.isa + v642);
-  v443 = v648->super._edgeMode;
+  v442 = *(&selfCopy->super.super.super.isa + v642);
+  v443 = selfCopy->super._edgeMode;
   v643 = MPSDevice::GetSampler();
   TempBuffer = MPSAutoCache::GetTempBuffer(v657, 16, 0);
   LODWORD(v663) = 0;
   objc_msgSend_setComputePipelineState_(v274, v444, v639, v445, v446, v447);
-  v448 = v613;
+  v448 = keypointsBufferCopy;
   v449 = v658;
-  v645 = a9;
-  v646 = a10;
-  objc_msgSend_setBuffer_offset_atIndex_(v658, v450, a9, a10, 0, v451);
+  countBufferCopy = countBuffer;
+  bufferOffsetCopy = bufferOffset;
+  objc_msgSend_setBuffer_offset_atIndex_(v658, v450, countBuffer, bufferOffset, 0, v451);
   objc_msgSend_setBuffer_offset_atIndex_(v449, v452, TempBuffer, 0, 1, v453);
   LODWORD(v663) = 0;
   objc_msgSend_setBytes_length_atIndex_(v449, v454, &v663, 4, 2, v455);
@@ -1410,16 +1410,16 @@ LABEL_171:
       v465 = *&v628[8 * v464];
       v466 = *&v621[8 * v464];
       v467 = objc_msgSend_width(v466, v459, v460, v461, v462, v463);
-      if (v467 > 2 * v648->_imageBoundary)
+      if (v467 > 2 * selfCopy->_imageBoundary)
       {
         v468 = objc_msgSend_height(v466, v459, v460, v461, v462, v463);
-        if (v468 > 2 * v648->_imageBoundary)
+        if (v468 > 2 * selfCopy->_imageBoundary)
         {
-          if ((*(&v648->super.super.super.isa + v647) & 1) == 0)
+          if ((*(&selfCopy->super.super.super.isa + v647) & 1) == 0)
           {
             objc_msgSend_setComputePipelineState_(v449, v459, v639, v461, v462, v463);
             v449 = v658;
-            objc_msgSend_setBuffer_offset_atIndex_(v658, v469, v645, v646, 0, v470);
+            objc_msgSend_setBuffer_offset_atIndex_(v658, v469, countBufferCopy, bufferOffsetCopy, 0, v470);
             objc_msgSend_setBuffer_offset_atIndex_(v449, v471, TempBuffer, 0, 1, v472);
             LODWORD(v663) = 1;
             objc_msgSend_setBytes_length_atIndex_(v449, v473, &v663, 4, 2, v474);
@@ -1430,8 +1430,8 @@ LABEL_171:
             objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v449, v475, v667, &v668, v476, v477);
           }
 
-          contrastThreshold = v648->_contrastThreshold;
-          v479 = *(&v648->super.super.super.isa + v617);
+          contrastThreshold = selfCopy->_contrastThreshold;
+          v479 = *(&selfCopy->super.super.super.isa + v617);
           memset(v667, 0, 76);
           v480 = objc_msgSend_width(v466, v459, v460, v461, v462, v463);
           v486 = objc_msgSend_height(v466, v481, v482, v483, v484, v485);
@@ -1439,24 +1439,24 @@ LABEL_171:
           *&v667[10] = v486;
           *&v667[8] = v480;
           *&v667[16] = v464;
-          *&v667[24] = v648->_imageBoundary;
-          v492 = *(&v648->super.super.super.isa + v617);
+          *&v667[24] = selfCopy->_imageBoundary;
+          v492 = *(&selfCopy->super.super.super.isa + v617);
           *&v667[26] = v492;
-          *&v493 = v648->_edgeThreshold;
+          *&v493 = selfCopy->_edgeThreshold;
           *&v667[28] = 1.0 / v492;
           *&v667[32] = __PAIR64__(v493, v491);
-          *&v667[40] = *(&v648->super.super.super.isa + v611);
-          orientationRadius = v648->_orientationRadius;
-          orientationWeight = v648->_orientationWeight;
-          orientationBins = v648->_orientationBins;
+          *&v667[40] = *(&selfCopy->super.super.super.isa + v611);
+          orientationRadius = selfCopy->_orientationRadius;
+          orientationWeight = selfCopy->_orientationWeight;
+          orientationBins = selfCopy->_orientationBins;
           *&v667[44] = orientationBins;
           *&v667[48] = __PAIR64__(LODWORD(orientationWeight), LODWORD(orientationRadius));
-          *&v667[56] = v648->_orientationThreshold;
-          *&v667[60] = v648->_maximumKeyPoints;
+          *&v667[56] = selfCopy->_orientationThreshold;
+          *&v667[60] = selfCopy->_maximumKeyPoints;
           *&v667[64] = orientationBins / 6.2832;
           *&v667[68] = 360.0 / orientationBins;
           *&v667[72] = (1 << (v464 + 1));
-          if (*(&v648->super.super.super.isa + v647))
+          if (*(&selfCopy->super.super.super.isa + v647))
           {
             objc_msgSend_setComputePipelineState_(v449, v487, v640, v488, v489, v490);
           }
@@ -1470,28 +1470,28 @@ LABEL_171:
           objc_msgSend_setTexture_atIndex_(v658, v497, v466, 0, v498, v499);
           objc_msgSend_setTexture_atIndex_(v449, v500, v465, 1, v501, v502);
           objc_msgSend_setBytes_length_atIndex_(v449, v503, v667, 76, 0, v504);
-          objc_msgSend_setBuffer_offset_atIndex_(v449, v505, v448, v612, 1, v506);
-          objc_msgSend_setBuffer_offset_atIndex_(v449, v507, v645, v646, 2, v508);
-          if (*(&v648->super.super.super.isa + v647) == 1)
+          objc_msgSend_setBuffer_offset_atIndex_(v449, v505, v448, offsetCopy, 1, v506);
+          objc_msgSend_setBuffer_offset_atIndex_(v449, v507, countBufferCopy, bufferOffsetCopy, 2, v508);
+          if (*(&selfCopy->super.super.super.isa + v647) == 1)
           {
-            objc_msgSend_setThreadgroupMemoryLength_atIndex_(v449, v509, 8 * v648->_orientationBins, 0, v510, v511);
+            objc_msgSend_setThreadgroupMemoryLength_atIndex_(v449, v509, 8 * selfCopy->_orientationBins, 0, v510, v511);
           }
 
           objc_msgSend_setSamplerState_atIndex_(v449, v509, v643, 0, v510, v511);
           v517 = objc_msgSend_width(v466, v512, v513, v514, v515, v516);
-          imageBoundary = v648->_imageBoundary;
+          imageBoundary = selfCopy->_imageBoundary;
           v524 = objc_msgSend_height(v466, v519, v520, v521, v522, v523);
-          v525 = (v524 - 2 * v648->_imageBoundary + 1) >> 1;
+          v525 = (v524 - 2 * selfCopy->_imageBoundary + 1) >> 1;
           v668.i64[0] = (v517 - 2 * imageBoundary + 61) / 0x3E;
           v668.i64[1] = v525;
           v669 = 1;
           v665 = v642;
           v666 = 1;
           objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v449, v526, &v668, &v665, v527, v528);
-          if ((*(&v648->super.super.super.isa + v647) & 1) == 0)
+          if ((*(&selfCopy->super.super.super.isa + v647) & 1) == 0)
           {
             objc_msgSend_setComputePipelineState_(v449, v459, v639, v461, v462, v463);
-            objc_msgSend_setBuffer_offset_atIndex_(v449, v529, v645, v646, 0, v530);
+            objc_msgSend_setBuffer_offset_atIndex_(v449, v529, countBufferCopy, bufferOffsetCopy, 0, v530);
             objc_msgSend_setBuffer_offset_atIndex_(v449, v531, TempBuffer, 0, 1, v532);
             LODWORD(v663) = 2;
             objc_msgSend_setBytes_length_atIndex_(v449, v533, &v663, 4, 2, v534);
@@ -1503,17 +1503,17 @@ LABEL_171:
             objc_msgSend_setComputePipelineState_(v449, v538, v638, v539, v540, v541);
             objc_msgSend_setTexture_atIndex_(v449, v542, v465, 0, v543, v544);
             objc_msgSend_setBytes_length_atIndex_(v449, v545, v667, 76, 0, v546);
-            objc_msgSend_setBuffer_offset_atIndex_(v449, v547, v613, v612, 1, v548);
-            objc_msgSend_setBuffer_offset_atIndex_(v449, v549, v645, v646, 2, v550);
+            objc_msgSend_setBuffer_offset_atIndex_(v449, v547, keypointsBufferCopy, offsetCopy, 1, v548);
+            objc_msgSend_setBuffer_offset_atIndex_(v449, v549, countBufferCopy, bufferOffsetCopy, 2, v550);
             objc_msgSend_setBuffer_offset_atIndex_(v449, v551, TempBuffer, 0, 3, v552);
             objc_msgSend_setSamplerState_atIndex_(v449, v553, v643, 0, v554, v555);
-            objc_msgSend_setThreadgroupMemoryLength_atIndex_(v449, v556, 8 * v648->_orientationBins, 0, v557, v558);
+            objc_msgSend_setThreadgroupMemoryLength_atIndex_(v449, v556, 8 * selfCopy->_orientationBins, 0, v557, v558);
             v668 = v642;
             v669 = 1;
             objc_msgSend_dispatchThreadgroupsWithIndirectBuffer_indirectBufferOffset_threadsPerThreadgroup_(v449, v559, TempBuffer, 4, &v668, v560);
           }
 
-          v448 = v613;
+          v448 = keypointsBufferCopy;
         }
       }
 
@@ -1523,10 +1523,10 @@ LABEL_171:
     while (v634 != v464);
   }
 
-  v561 = v633;
-  if (v633)
+  v561 = textureCopy;
+  if (textureCopy)
   {
-    v562 = objc_msgSend_userDictionary(v610, v459, v460, v461, v462, v463);
+    v562 = objc_msgSend_userDictionary(bufferCopy, v459, v460, v461, v462, v463);
     v567 = objc_msgSend_objectForKey_(v562, v563, @"_MPSCommandBufferRetainListKey", v564, v565, v566);
     if (!v567)
     {
@@ -1538,7 +1538,7 @@ LABEL_171:
       *&v667[16] = sub_23993DA2C;
       *&v667[24] = &unk_278AC37A8;
       *&v667[32] = @"_MPSCommandBufferRetainListKey";
-      objc_msgSend_addCompletedHandler_(v610, v576, v667, v577, v578, v579);
+      objc_msgSend_addCompletedHandler_(bufferCopy, v576, v667, v577, v578, v579);
       v567 = v572;
     }
 
@@ -1547,8 +1547,8 @@ LABEL_171:
 
   if (v448)
   {
-    v580 = v610;
-    v581 = objc_msgSend_userDictionary(v610, v459, v460, v461, v462, v463);
+    v580 = bufferCopy;
+    v581 = objc_msgSend_userDictionary(bufferCopy, v459, v460, v461, v462, v463);
     v586 = objc_msgSend_objectForKey_(v581, v582, @"_MPSCommandBufferRetainListKey", v583, v584, v585);
     if (!v586)
     {

@@ -1,15 +1,15 @@
 @interface PFMetadataImage
 + (id)defaultOptionsForCGImageSource;
-+ (id)stringByRemovingImageIoDotSuffixFromString:(id)a3;
-- (BOOL)_anyImageHasProcessingFlag:(unint64_t)a3;
-- (BOOL)_configureWithImageData:(id)a3 cacheImageSource:(BOOL)a4 cacheImageData:(BOOL)a5;
-- (BOOL)_configureWithImageProperties:(id)a3;
-- (BOOL)_configureWithImageSource:(CGImageSource *)a3 cacheImageSource:(BOOL)a4;
-- (BOOL)_configureWithImageURL:(id)a3 cacheImageSource:(BOOL)a4 cacheImageData:(BOOL)a5;
++ (id)stringByRemovingImageIoDotSuffixFromString:(id)string;
+- (BOOL)_anyImageHasProcessingFlag:(unint64_t)flag;
+- (BOOL)_configureWithImageData:(id)data cacheImageSource:(BOOL)source cacheImageData:(BOOL)imageData;
+- (BOOL)_configureWithImageProperties:(id)properties;
+- (BOOL)_configureWithImageSource:(CGImageSource *)source cacheImageSource:(BOOL)imageSource;
+- (BOOL)_configureWithImageURL:(id)l cacheImageSource:(BOOL)source cacheImageData:(BOOL)data;
 - (BOOL)_hasFFCDimensions;
 - (BOOL)_hasScreenshotDimensions;
-- (BOOL)_isSpatialStereoGroup:(id)a3 inImageSource:(CGImageSource *)a4;
-- (BOOL)configureWithMetadataPlist:(id)a3;
+- (BOOL)_isSpatialStereoGroup:(id)group inImageSource:(CGImageSource *)source;
+- (BOOL)configureWithMetadataPlist:(id)plist;
 - (BOOL)containsCustomStylesMetadataBlob;
 - (BOOL)containsSpatialCameraHEIFMetadata;
 - (BOOL)flashFired;
@@ -19,7 +19,7 @@
 - (BOOL)hasISOGainMap;
 - (BOOL)hasSmartStyle;
 - (BOOL)isDeferredPhotoProxyExpectingDepth;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFrontFacingCamera;
 - (BOOL)isHDR;
 - (BOOL)isHDR_ExtendedRange;
@@ -35,16 +35,16 @@
 - (NSNumber)iso;
 - (NSNumber)whiteBalance;
 - (NSString)cameraSerialNumber;
-- (PFMetadataImage)initWithEncodedImagePropertyData:(id)a3 contentType:(id)a4 timeZoneLookup:(id)a5;
-- (PFMetadataImage)initWithImageData:(id)a3 contentType:(id)a4 options:(unsigned __int16)a5 timeZoneLookup:(id)a6 cacheImageSource:(BOOL)a7 cacheImageData:(BOOL)a8;
-- (PFMetadataImage)initWithImageProperties:(id)a3 contentType:(id)a4 options:(unsigned __int16)a5 timeZoneLookup:(id)a6;
-- (PFMetadataImage)initWithImageSource:(CGImageSource *)a3 contentType:(id)a4 options:(unsigned __int16)a5 timeZoneLookup:(id)a6 cacheImageSource:(BOOL)a7;
-- (PFMetadataImage)initWithImageSourceProxyData:(id)a3 contentType:(id)a4 timeZoneLookup:(id)a5;
-- (PFMetadataImage)initWithImageSourceProxyOrEncodedImagePropertyData:(id)a3 contentType:(id)a4 timeZoneLookup:(id)a5;
-- (PFMetadataImage)initWithImageURL:(id)a3 contentType:(id)a4 options:(unsigned __int16)a5 timeZoneLookup:(id)a6 cacheImageSource:(BOOL)a7 cacheImageData:(BOOL)a8;
+- (PFMetadataImage)initWithEncodedImagePropertyData:(id)data contentType:(id)type timeZoneLookup:(id)lookup;
+- (PFMetadataImage)initWithImageData:(id)data contentType:(id)type options:(unsigned __int16)options timeZoneLookup:(id)lookup cacheImageSource:(BOOL)source cacheImageData:(BOOL)imageData;
+- (PFMetadataImage)initWithImageProperties:(id)properties contentType:(id)type options:(unsigned __int16)options timeZoneLookup:(id)lookup;
+- (PFMetadataImage)initWithImageSource:(CGImageSource *)source contentType:(id)type options:(unsigned __int16)options timeZoneLookup:(id)lookup cacheImageSource:(BOOL)imageSource;
+- (PFMetadataImage)initWithImageSourceProxyData:(id)data contentType:(id)type timeZoneLookup:(id)lookup;
+- (PFMetadataImage)initWithImageSourceProxyOrEncodedImagePropertyData:(id)data contentType:(id)type timeZoneLookup:(id)lookup;
+- (PFMetadataImage)initWithImageURL:(id)l contentType:(id)type options:(unsigned __int16)options timeZoneLookup:(id)lookup cacheImageSource:(BOOL)source cacheImageData:(BOOL)data;
 - (id)GIFDelayTime;
 - (id)HEICSDelayTime;
-- (id)_formatValue:(id)a3 withPrecision:(unint64_t)a4;
+- (id)_formatValue:(id)value withPrecision:(unint64_t)precision;
 - (id)_imageSourceProperties;
 - (id)_makeGPSProperties;
 - (id)altitudeRef;
@@ -55,7 +55,7 @@
 - (id)cameraModel;
 - (id)captionAbstract;
 - (id)ciffDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)credit;
 - (id)deferredPhotoProcessingIdentifier;
 - (id)digitalZoomRatio;
@@ -93,7 +93,7 @@
 - (id)makerAppleDictionary;
 - (id)makerCanonDictionary;
 - (id)makerNikonDictionary;
-- (id)metadataForImagePropertiesAtIndex:(unint64_t)a3;
+- (id)metadataForImagePropertiesAtIndex:(unint64_t)index;
 - (id)meteringMode;
 - (id)nrfSrlStatus;
 - (id)originatingAssetIdentifier;
@@ -135,117 +135,117 @@
 - (void)_computeISOSetting;
 - (void)_computeWhiteBalanceValue;
 - (void)dealloc;
-- (void)enumerateRawThumbnailInfoWithBlock:(id)a3;
-- (void)fixupGPSWithDate:(id)a3 time:(id)a4;
-- (void)setCgImageMetadata:(CGImageMetadata *)a3;
-- (void)setImageSource:(CGImageSource *)a3;
-- (void)setKeysAndValues:(id)a3 inDictionary:(id)a4;
+- (void)enumerateRawThumbnailInfoWithBlock:(id)block;
+- (void)fixupGPSWithDate:(id)date time:(id)time;
+- (void)setCgImageMetadata:(CGImageMetadata *)metadata;
+- (void)setImageSource:(CGImageSource *)source;
+- (void)setKeysAndValues:(id)values inDictionary:(id)dictionary;
 @end
 
 @implementation PFMetadataImage
 
 - (id)rawDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:@"{raw}" fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:@"{raw}" fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)iptcDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DD90] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DD90] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)tiffDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DF28] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DF28] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)gpsDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DBF0] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DBF0] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)gifDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DB70] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DB70] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)ciffDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696D438] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696D438] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)makerCanonDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DE38] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DE38] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)makerNikonDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DE50] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DE50] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)makerAppleDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DE30] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DE30] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)exifAuxDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696D8B0] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696D8B0] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
 - (id)exifDictionary
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696D9B0] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696D9B0] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
 
-- (void)setKeysAndValues:(id)a3 inDictionary:(id)a4
+- (void)setKeysAndValues:(id)values inDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v20 = self;
+  valuesCopy = values;
+  dictionaryCopy = dictionary;
+  selfCopy = self;
   v8 = [(NSDictionary *)self->_cgImageProperties mutableCopy];
   v9 = v8;
-  if (v7)
+  if (dictionaryCopy)
   {
-    v10 = [(NSDictionary *)v8 objectForKeyedSubscript:v7];
+    v10 = [(NSDictionary *)v8 objectForKeyedSubscript:dictionaryCopy];
     v11 = [v10 mutableCopy];
 
-    [(NSDictionary *)v9 setObject:v11 forKeyedSubscript:v7];
+    [(NSDictionary *)v9 setObject:v11 forKeyedSubscript:dictionaryCopy];
   }
 
   else
@@ -257,7 +257,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v6;
+  v12 = valuesCopy;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
@@ -283,24 +283,24 @@
     while (v14);
   }
 
-  cgImageProperties = v20->_cgImageProperties;
-  v20->_cgImageProperties = v9;
+  cgImageProperties = selfCopy->_cgImageProperties;
+  selfCopy->_cgImageProperties = v9;
 }
 
-- (void)fixupGPSWithDate:(id)a3 time:(id)a4
+- (void)fixupGPSWithDate:(id)date time:(id)time
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PFMetadata *)self gpsDateTime];
+  dateCopy = date;
+  timeCopy = time;
+  gpsDateTime = [(PFMetadata *)self gpsDateTime];
 
-  if (!v8)
+  if (!gpsDateTime)
   {
     v9 = *MEMORY[0x1E696DC70];
     v11[0] = *MEMORY[0x1E696DBA8];
     v11[1] = v9;
-    v12[0] = v6;
-    v12[1] = v7;
+    v12[0] = dateCopy;
+    v12[1] = timeCopy;
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
     [(PFMetadataImage *)self setKeysAndValues:v10 inDictionary:*MEMORY[0x1E696DBF0]];
 
@@ -308,15 +308,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  equalCopy = equal;
   v19.receiver = self;
   v19.super_class = PFMetadataImage;
-  if ([(PFMetadata *)&v19 isEqual:v4])
+  if ([(PFMetadata *)&v19 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     cgImageProperties = self->_cgImageProperties;
     v7 = v5[25];
     if (v7)
@@ -380,11 +380,11 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PFMetadataImage;
-  v4 = [(PFMetadata *)&v6 copyWithZone:a3];
+  v4 = [(PFMetadata *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 25, self->_cgImageProperties);
   [v4 setImageSource:self->_imageSource];
   objc_storeStrong(v4 + 27, self->_imageData);
@@ -392,11 +392,11 @@
   return v4;
 }
 
-- (void)setImageSource:(CGImageSource *)a3
+- (void)setImageSource:(CGImageSource *)source
 {
-  if (a3)
+  if (source)
   {
-    CFRetain(a3);
+    CFRetain(source);
   }
 
   imageSource = self->_imageSource;
@@ -405,15 +405,15 @@
     CFRelease(imageSource);
   }
 
-  self->_imageSource = a3;
+  self->_imageSource = source;
 }
 
 - (id)plistForEncoding
 {
   v6.receiver = self;
   v6.super_class = PFMetadataImage;
-  v3 = [(PFMetadata *)&v6 plistForEncoding];
-  v4 = [v3 mutableCopy];
+  plistForEncoding = [(PFMetadata *)&v6 plistForEncoding];
+  v4 = [plistForEncoding mutableCopy];
 
   [v4 setObject:self->_cgImageProperties forKeyedSubscript:PFMetadataPlistCgImageProperties];
 
@@ -432,15 +432,15 @@
 
     else
     {
-      v7 = [(PFMetadata *)self fileURL];
+      fileURL = [(PFMetadata *)self fileURL];
 
-      if (!v7)
+      if (!fileURL)
       {
         goto LABEL_8;
       }
 
-      v8 = [(PFMetadata *)self fileURL];
-      imageSource = CGImageSourceCreateWithURL(v8, 0);
+      fileURL2 = [(PFMetadata *)self fileURL];
+      imageSource = CGImageSourceCreateWithURL(fileURL2, 0);
 
       v4 = imageSource;
       if (!imageSource)
@@ -585,11 +585,11 @@ LABEL_8:
   return 0;
 }
 
-- (id)_formatValue:(id)a3 withPrecision:(unint64_t)a4
+- (id)_formatValue:(id)value withPrecision:(unint64_t)precision
 {
   v5 = MEMORY[0x1E696AEC0];
-  [a3 doubleValue];
-  v7 = [v5 stringWithFormat:@"%.*f", a4, v6];
+  [value doubleValue];
+  v7 = [v5 stringWithFormat:@"%.*f", precision, v6];
   if (v7)
   {
     v8 = [MEMORY[0x1E696AB90] decimalNumberWithString:v7];
@@ -605,8 +605,8 @@ LABEL_8:
 
 - (id)_makeGPSProperties
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DBF0] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DBF0] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
@@ -615,8 +615,8 @@ LABEL_8:
 {
   v5.receiver = self;
   v5.super_class = PFMetadataImage;
-  v2 = [(PFMetadata *)&v5 syndicationProperties];
-  v3 = [v2 mutableCopy];
+  syndicationProperties = [(PFMetadata *)&v5 syndicationProperties];
+  v3 = [syndicationProperties mutableCopy];
 
   return v3;
 }
@@ -624,14 +624,14 @@ LABEL_8:
 - (void)_computeExposureTime
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D9B0];
   v5 = *MEMORY[0x1E696DAF0];
   v29[0] = *MEMORY[0x1E696D9B0];
   v29[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:2];
   v7 = [v6 componentsJoinedByString:@"."];
-  v8 = [v3 valueForKeyPath:v7 fromProperties:self->_cgImageProperties];
+  v8 = [typeVerifier valueForKeyPath:v7 fromProperties:self->_cgImageProperties];
   v9 = [v8 objectAtIndex:1];
 
   if (v9)
@@ -639,26 +639,26 @@ LABEL_8:
     goto LABEL_3;
   }
 
-  v10 = [(PFMetadata *)self typeVerifier];
+  typeVerifier2 = [(PFMetadata *)self typeVerifier];
   v11 = *MEMORY[0x1E696D9E0];
   v28[0] = v4;
   v28[1] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:2];
   v13 = [v12 componentsJoinedByString:@"."];
-  v9 = [v10 valueForKeyPath:v13 fromProperties:self->_cgImageProperties];
+  v9 = [typeVerifier2 valueForKeyPath:v13 fromProperties:self->_cgImageProperties];
 
   if (v9)
   {
     goto LABEL_3;
   }
 
-  v16 = [(PFMetadata *)self typeVerifier];
+  typeVerifier3 = [(PFMetadata *)self typeVerifier];
   v17 = *MEMORY[0x1E696DAE8];
   v27[0] = v4;
   v27[1] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
   v19 = [v18 componentsJoinedByString:@"."];
-  v14 = [v16 valueForKeyPath:v19 fromProperties:self->_cgImageProperties];
+  v14 = [typeVerifier3 valueForKeyPath:v19 fromProperties:self->_cgImageProperties];
 
   if (!v14)
   {
@@ -931,30 +931,30 @@ LABEL_4:
 - (void)_computeCameraSerialNumber
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v14[0] = *MEMORY[0x1E696D9B0];
   v14[1] = @"CameraSerialNumber";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   if (!v6)
   {
-    v7 = [(PFMetadata *)self typeVerifier];
+    typeVerifier2 = [(PFMetadata *)self typeVerifier];
     v8 = *MEMORY[0x1E696D958];
     v13[0] = *MEMORY[0x1E696D8B0];
     v13[1] = v8;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v10 = [v9 componentsJoinedByString:@"."];
-    v6 = [v7 valueForKeyPath:v10 fromProperties:self->_cgImageProperties];
+    v6 = [typeVerifier2 valueForKeyPath:v10 fromProperties:self->_cgImageProperties];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) == 0 && (objc_opt_respondsToSelector())
   {
-    v11 = [v6 stringValue];
+    stringValue = [v6 stringValue];
 
-    v6 = v11;
+    v6 = stringValue;
   }
 
   cameraSerialNumber = self->_cameraSerialNumber;
@@ -964,26 +964,26 @@ LABEL_4:
 - (void)_computeISOSetting
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D9B0];
   v5 = *MEMORY[0x1E696DAB8];
   v37[0] = *MEMORY[0x1E696D9B0];
   v37[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:2];
   v7 = [v6 componentsJoinedByString:@"."];
-  v8 = [v3 valueForKeyPath:v7 fromProperties:self->_cgImageProperties];
+  v8 = [typeVerifier valueForKeyPath:v7 fromProperties:self->_cgImageProperties];
   iso = self->_iso;
   self->_iso = v8;
 
   if (!self->_iso)
   {
-    v10 = [(PFMetadata *)self typeVerifier];
+    typeVerifier2 = [(PFMetadata *)self typeVerifier];
     v11 = *MEMORY[0x1E696DE58];
     v36[0] = *MEMORY[0x1E696DE50];
     v36[1] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
     v13 = [v12 componentsJoinedByString:@"."];
-    v14 = [v10 valueForKeyPath:v13 fromProperties:self->_cgImageProperties];
+    v14 = [typeVerifier2 valueForKeyPath:v13 fromProperties:self->_cgImageProperties];
 
     if (v14)
     {
@@ -991,8 +991,8 @@ LABEL_4:
       if (v15)
       {
         v16 = v15;
-        v17 = [(PFMetadata *)self typeVerifier];
-        v18 = [v17 valueAtIndex:v16 - 1 forKey:v11 fromArray:v14];
+        typeVerifier3 = [(PFMetadata *)self typeVerifier];
+        v18 = [typeVerifier3 valueAtIndex:v16 - 1 forKey:v11 fromArray:v14];
         v19 = self->_iso;
         self->_iso = v18;
       }
@@ -1000,32 +1000,32 @@ LABEL_4:
 
     if (!self->_iso)
     {
-      v20 = [(PFMetadata *)self typeVerifier];
+      typeVerifier4 = [(PFMetadata *)self typeVerifier];
       v21 = *MEMORY[0x1E696DA28];
       v35[0] = v4;
       v35[1] = v21;
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:2];
       v23 = [v22 componentsJoinedByString:@"."];
-      v24 = [v20 valueForKeyPath:v23 fromProperties:self->_cgImageProperties];
+      v24 = [typeVerifier4 valueForKeyPath:v23 fromProperties:self->_cgImageProperties];
       v25 = self->_iso;
       self->_iso = v24;
 
       if (!self->_iso)
       {
-        v26 = [(PFMetadata *)self typeVerifier];
+        typeVerifier5 = [(PFMetadata *)self typeVerifier];
         v27 = *MEMORY[0x1E696DA40];
         v34[0] = v4;
         v34[1] = v27;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
         v29 = [v28 componentsJoinedByString:@"."];
-        v30 = [v26 valueForKeyPath:v29 fromProperties:self->_cgImageProperties];
+        v30 = [typeVerifier5 valueForKeyPath:v29 fromProperties:self->_cgImageProperties];
 
         if (v30)
         {
           if ([v30 count])
           {
-            v31 = [(PFMetadata *)self typeVerifier];
-            v32 = [v31 valueAtIndex:0 forKey:v27 fromArray:v30];
+            typeVerifier6 = [(PFMetadata *)self typeVerifier];
+            v32 = [typeVerifier6 valueAtIndex:0 forKey:v27 fromArray:v30];
             v33 = self->_iso;
             self->_iso = v32;
           }
@@ -1038,13 +1038,13 @@ LABEL_4:
 - (void)_computeWhiteBalanceValue
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DB50];
   v15[0] = *MEMORY[0x1E696D9B0];
   v15[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   if ([(NSNumber *)v7 isEqualToNumber:&unk_1F2AAB470])
   {
@@ -1058,24 +1058,24 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [(PFMetadataImage *)self lightSource];
+  lightSource = [(PFMetadataImage *)self lightSource];
 
-  if (v10)
+  if (lightSource)
   {
     whiteBalance = self->_whiteBalance;
-    self->_whiteBalance = v10;
-    v9 = v10;
+    self->_whiteBalance = lightSource;
+    v9 = lightSource;
     goto LABEL_5;
   }
 
-  v12 = [(PFMetadataImage *)self whiteBalanceIndex];
-  v11 = v12;
-  if (v12)
+  whiteBalanceIndex = [(PFMetadataImage *)self whiteBalanceIndex];
+  v11 = whiteBalanceIndex;
+  if (whiteBalanceIndex)
   {
-    v13 = [(NSNumber *)v12 integerValue];
-    if (v13 <= 0x15)
+    integerValue = [(NSNumber *)whiteBalanceIndex integerValue];
+    if (integerValue <= 0x15)
     {
-      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:_computeWhiteBalanceValue_canonWhiteBalance[v13]];
+      v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:_computeWhiteBalanceValue_canonWhiteBalance[integerValue]];
       whiteBalance = self->_whiteBalance;
       self->_whiteBalance = v14;
       goto LABEL_6;
@@ -1088,22 +1088,22 @@ LABEL_7:
 - (void)_computeFNumberValue
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v5 = *MEMORY[0x1E696D8A8];
   v21[0] = *MEMORY[0x1E696D9B0];
   v4 = v21[0];
   v21[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   v7 = [v6 componentsJoinedByString:@"."];
-  v8 = [v3 valueForKeyPath:v7 fromProperties:self->_cgImageProperties];
+  v8 = [typeVerifier valueForKeyPath:v7 fromProperties:self->_cgImageProperties];
 
-  v9 = [(PFMetadata *)self typeVerifier];
+  typeVerifier2 = [(PFMetadata *)self typeVerifier];
   v10 = *MEMORY[0x1E696D9E8];
   v20[0] = v4;
   v20[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v12 = [v11 componentsJoinedByString:@"."];
-  v13 = [v9 valueForKeyPath:v12 fromProperties:self->_cgImageProperties];
+  v13 = [typeVerifier2 valueForKeyPath:v12 fromProperties:self->_cgImageProperties];
 
   if (v8)
   {
@@ -1156,27 +1156,27 @@ LABEL_15:
 
 - (BOOL)hasAlphaChannel
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DD50] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DD50] fromProperties:self->_cgImageProperties];
 
-  LOBYTE(v3) = [v4 BOOLValue];
-  return v3;
+  LOBYTE(typeVerifier) = [v4 BOOLValue];
+  return typeVerifier;
 }
 
 - (BOOL)containsCustomStylesMetadataBlob
 {
-  v2 = self;
+  selfCopy = self;
   v47[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadataImage *)self _imageSourceProperties];
-  if (v3)
+  _imageSourceProperties = [(PFMetadataImage *)self _imageSourceProperties];
+  if (_imageSourceProperties)
   {
-    v4 = [(PFMetadata *)v2 typeVerifier];
+    typeVerifier = [(PFMetadata *)selfCopy typeVerifier];
     v5 = *MEMORY[0x1E696DDE8];
     v47[0] = *MEMORY[0x1E696DB58];
     v47[1] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:2];
     v7 = [v6 componentsJoinedByString:@"."];
-    v8 = [v4 valueForKeyPath:v7 fromProperties:v3];
+    v8 = [typeVerifier valueForKeyPath:v7 fromProperties:_imageSourceProperties];
 
     v43 = 0u;
     v44 = 0u;
@@ -1186,14 +1186,14 @@ LABEL_15:
     v35 = [v9 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v35)
     {
-      v33 = v3;
+      v33 = _imageSourceProperties;
       v10 = 0;
       v11 = *v42;
       v12 = *MEMORY[0x1E696D410];
       v13 = *MEMORY[0x1E696D418];
       v14 = *MEMORY[0x1E69919F8];
       v31 = *v42;
-      v32 = v2;
+      v32 = selfCopy;
       v34 = v9;
       v30 = *MEMORY[0x1E696D410];
       do
@@ -1208,7 +1208,7 @@ LABEL_15:
           }
 
           v17 = *(*(&v41 + 1) + 8 * v15);
-          v18 = [(PFMetadata *)v2 typeVerifier:v30];
+          v18 = [(PFMetadata *)selfCopy typeVerifier:v30];
           v10 = [v18 valueForKeyPath:v12 fromProperties:v17];
 
           if (v10)
@@ -1239,7 +1239,7 @@ LABEL_15:
                   {
 
                     v27 = 1;
-                    v3 = v33;
+                    _imageSourceProperties = v33;
                     goto LABEL_27;
                   }
                 }
@@ -1255,7 +1255,7 @@ LABEL_15:
             }
 
             v11 = v31;
-            v2 = v32;
+            selfCopy = v32;
             v9 = v34;
             v12 = v30;
           }
@@ -1270,7 +1270,7 @@ LABEL_15:
 
       while (v35);
 
-      v3 = v33;
+      _imageSourceProperties = v33;
     }
 
     v26 = metadataLog;
@@ -1300,16 +1300,16 @@ LABEL_27:
 - (int64_t)cameraUsedForCapture
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E69867B8];
   v10[0] = *MEMORY[0x1E696DE30];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
-  v8 = [v7 integerValue];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
 - (id)imageSourceProxyData
@@ -1321,12 +1321,12 @@ LABEL_27:
 
   else
   {
-    v4 = [(PFMetadata *)self fileURL];
+    fileURL = [(PFMetadata *)self fileURL];
 
-    if (v4)
+    if (fileURL)
     {
-      v5 = [(PFMetadata *)self fileURL];
-      v3 = CGImageSourceCreateWithURL(v5, 0);
+      fileURL2 = [(PFMetadata *)self fileURL];
+      v3 = CGImageSourceCreateWithURL(fileURL2, 0);
     }
 
     else
@@ -1347,13 +1347,13 @@ LABEL_27:
 - (id)credit
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DD80];
   v9[0] = *MEMORY[0x1E696DD90];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -1361,16 +1361,16 @@ LABEL_27:
 - (id)generativeAIImageType
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DDB8];
   v11[0] = *MEMORY[0x1E696DD90];
   v11[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
-  v8 = [v7 lastPathComponent];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  lastPathComponent = [v7 lastPathComponent];
 
-  if ([v8 isEqualToString:@"trainedAlgorithmicMedia"])
+  if ([lastPathComponent isEqualToString:@"trainedAlgorithmicMedia"])
   {
     v9 = &unk_1F2AAB440;
   }
@@ -1380,7 +1380,7 @@ LABEL_27:
     v9 = &unk_1F2AAB428;
   }
 
-  if ([v8 isEqualToString:@"compositeWithTrainedAlgorithmicMedia"])
+  if ([lastPathComponent isEqualToString:@"compositeWithTrainedAlgorithmicMedia"])
   {
     v9 = &unk_1F2AAB458;
   }
@@ -1391,22 +1391,22 @@ LABEL_27:
 - (BOOL)containsSpatialCameraHEIFMetadata
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DD40];
   v5 = *MEMORY[0x1E696E1E8];
   v26[0] = *MEMORY[0x1E696DD40];
   v26[1] = v5;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
   v7 = [v6 componentsJoinedByString:@"."];
-  v8 = [v3 valueForKeyPath:v7 fromProperties:self->_cgImageProperties];
+  v8 = [typeVerifier valueForKeyPath:v7 fromProperties:self->_cgImageProperties];
 
   if (v8)
   {
-    v9 = [(PFMetadata *)self typeVerifier];
-    v10 = [v9 valueForKey:*MEMORY[0x1E696E188] fromProperties:v8];
+    typeVerifier2 = [(PFMetadata *)self typeVerifier];
+    v10 = [typeVerifier2 valueForKey:*MEMORY[0x1E696E188] fromProperties:v8];
 
-    v11 = [(PFMetadata *)self typeVerifier];
-    v12 = [v11 valueForKey:*MEMORY[0x1E696E198] fromProperties:v8];
+    typeVerifier3 = [(PFMetadata *)self typeVerifier];
+    v12 = [typeVerifier3 valueForKey:*MEMORY[0x1E696E198] fromProperties:v8];
 
     if (v10)
     {
@@ -1425,21 +1425,21 @@ LABEL_27:
 
     else
     {
-      v15 = [(PFMetadata *)self typeVerifier];
+      typeVerifier4 = [(PFMetadata *)self typeVerifier];
       v16 = *MEMORY[0x1E696E1F0];
       v25[0] = v4;
       v25[1] = v16;
       v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
       v18 = [v17 componentsJoinedByString:@"."];
-      v19 = [v15 valueForKeyPath:v18 fromProperties:self->_cgImageProperties];
+      v19 = [typeVerifier4 valueForKeyPath:v18 fromProperties:self->_cgImageProperties];
 
       if (v19)
       {
-        v20 = [(PFMetadata *)self typeVerifier];
-        v21 = [v20 valueForKey:*MEMORY[0x1E696E1C0] fromProperties:v19];
+        typeVerifier5 = [(PFMetadata *)self typeVerifier];
+        v21 = [typeVerifier5 valueForKey:*MEMORY[0x1E696E1C0] fromProperties:v19];
 
-        v22 = [(PFMetadata *)self typeVerifier];
-        v23 = [v22 valueForKey:*MEMORY[0x1E696E1D0] fromProperties:v19];
+        typeVerifier6 = [(PFMetadata *)self typeVerifier];
+        v23 = [typeVerifier6 valueForKey:*MEMORY[0x1E696E1D0] fromProperties:v19];
 
         v14 = 0;
         if (v21 && v23)
@@ -1463,9 +1463,9 @@ LABEL_27:
   return v14;
 }
 
-- (BOOL)_anyImageHasProcessingFlag:(unint64_t)a3
+- (BOOL)_anyImageHasProcessingFlag:(unint64_t)flag
 {
-  if (([(PFMetadataImage *)self photoProcessingFlags]& a3) != 0)
+  if (([(PFMetadataImage *)self photoProcessingFlags]& flag) != 0)
   {
     return 1;
   }
@@ -1494,9 +1494,9 @@ LABEL_27:
     if (v12)
     {
       v14 = [v12 objectForKeyedSubscript:v17];
-      v15 = [v14 unsignedIntValue];
+      unsignedIntValue = [v14 unsignedIntValue];
 
-      if ((a3 & ~v15) == 0)
+      if ((flag & ~unsignedIntValue) == 0)
       {
         break;
       }
@@ -1515,11 +1515,11 @@ LABEL_12:
   return v5;
 }
 
-- (BOOL)_isSpatialStereoGroup:(id)a3 inImageSource:(CGImageSource *)a4
+- (BOOL)_isSpatialStereoGroup:(id)group inImageSource:(CGImageSource *)source
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!a4)
+  groupCopy = group;
+  if (!source)
   {
     v25 = metadataLog;
     if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
@@ -1532,8 +1532,8 @@ LABEL_12:
     goto LABEL_33;
   }
 
-  v7 = [(PFMetadata *)self typeVerifier];
-  v8 = [v7 valueForKey:*MEMORY[0x1E696DCE0] fromProperties:v6];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v8 = [typeVerifier valueForKey:*MEMORY[0x1E696DCE0] fromProperties:groupCopy];
 
   if (!v8 || ![v8 isEqualToString:*MEMORY[0x1E696DCF0]])
   {
@@ -1541,9 +1541,9 @@ LABEL_12:
     goto LABEL_32;
   }
 
-  v9 = [(PFMetadata *)self typeVerifier];
+  typeVerifier2 = [(PFMetadata *)self typeVerifier];
   v10 = *MEMORY[0x1E696DC90];
-  v11 = [v9 valueForKey:*MEMORY[0x1E696DC90] fromProperties:v6];
+  v11 = [typeVerifier2 valueForKey:*MEMORY[0x1E696DC90] fromProperties:groupCopy];
 
   if (!v11)
   {
@@ -1553,7 +1553,7 @@ LABEL_12:
       *buf = 138543618;
       v37 = v10;
       v38 = 2114;
-      v39 = v6;
+      v39 = groupCopy;
       _os_log_impl(&dword_1B35C1000, v26, OS_LOG_TYPE_INFO, "Not recognizing stereo group as spatial because %{public}@ key is missing: %{public}@", buf, 0x16u);
     }
 
@@ -1589,8 +1589,8 @@ LABEL_12:
       }
 
       v17 = *(*(&v32 + 1) + 8 * i);
-      v18 = [(PFMetadata *)self typeVerifier];
-      v19 = [v18 valueForKey:v17 fromProperties:v6];
+      typeVerifier3 = [(PFMetadata *)self typeVerifier];
+      v19 = [typeVerifier3 valueForKey:v17 fromProperties:groupCopy];
 
       if (!v19)
       {
@@ -1600,26 +1600,26 @@ LABEL_12:
           *buf = 138543618;
           v37 = v17;
           v38 = 2114;
-          v39 = v6;
+          v39 = groupCopy;
           _os_log_error_impl(&dword_1B35C1000, v27, OS_LOG_TYPE_ERROR, "Unexpected missing image index key %{public}@ in stereo group: %{public}@", buf, 0x16u);
         }
 
         goto LABEL_29;
       }
 
-      v20 = [v19 unsignedIntegerValue];
-      v21 = [(PFMetadataImage *)self metadataForImagePropertiesAtIndex:v20];
+      unsignedIntegerValue = [v19 unsignedIntegerValue];
+      v21 = [(PFMetadataImage *)self metadataForImagePropertiesAtIndex:unsignedIntegerValue];
       if (!v21)
       {
         v28 = metadataLog;
         if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
         {
           *buf = 134218498;
-          v37 = v20;
+          v37 = unsignedIntegerValue;
           v38 = 2114;
           v39 = v17;
           v40 = 2114;
-          v41 = v6;
+          v41 = groupCopy;
           _os_log_error_impl(&dword_1B35C1000, v28, OS_LOG_TYPE_ERROR, "Unable to get image properties for image index %tu for image index key %{public}@ in stereo group: %{public}@", buf, 0x20u);
         }
 
@@ -1630,9 +1630,9 @@ LABEL_29:
       }
 
       v22 = v21;
-      v23 = [v21 containsSpatialCameraHEIFMetadata];
+      containsSpatialCameraHEIFMetadata = [v21 containsSpatialCameraHEIFMetadata];
 
-      if (!v23)
+      if (!containsSpatialCameraHEIFMetadata)
       {
         goto LABEL_29;
       }
@@ -1664,12 +1664,12 @@ LABEL_33:
   isSpatialMediaValue = self->_isSpatialMediaValue;
   if (!isSpatialMediaValue)
   {
-    v4 = [(PFMetadataImage *)self _imageSourceProperties];
-    if (v4)
+    _imageSourceProperties = [(PFMetadataImage *)self _imageSourceProperties];
+    if (_imageSourceProperties)
     {
-      v5 = [(PFMetadataImage *)self imageSource];
-      v6 = [(PFMetadata *)self typeVerifier];
-      v7 = [v6 valueForKey:*MEMORY[0x1E696DD00] fromProperties:v4];
+      imageSource = [(PFMetadataImage *)self imageSource];
+      typeVerifier = [(PFMetadata *)self typeVerifier];
+      v7 = [typeVerifier valueForKey:*MEMORY[0x1E696DD00] fromProperties:_imageSourceProperties];
 
       v28 = 0u;
       v29 = 0u;
@@ -1690,7 +1690,7 @@ LABEL_33:
               objc_enumerationMutation(v8);
             }
 
-            if ([(PFMetadataImage *)self _isSpatialStereoGroup:*(*(&v26 + 1) + 8 * i) inImageSource:v5, v26])
+            if ([(PFMetadataImage *)self _isSpatialStereoGroup:*(*(&v26 + 1) + 8 * i) inImageSource:imageSource, v26])
             {
               v13 = self->_isSpatialMediaValue;
               self->_isSpatialMediaValue = MEMORY[0x1E695E118];
@@ -1719,13 +1719,13 @@ LABEL_13:
 
     else
     {
-      v14 = [(PFMetadata *)self typeVerifier];
+      typeVerifier2 = [(PFMetadata *)self typeVerifier];
       v15 = *MEMORY[0x1E696E1E8];
       v30[0] = *MEMORY[0x1E696DD40];
       v30[1] = v15;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:2];
       v17 = [v16 componentsJoinedByString:@"."];
-      v8 = [v14 valueForKeyPath:v17 fromProperties:self->_cgImageProperties];
+      v8 = [typeVerifier2 valueForKeyPath:v17 fromProperties:self->_cgImageProperties];
 
       v18 = [v8 objectForKeyedSubscript:*MEMORY[0x1E696E178]];
       if (v18)
@@ -1763,19 +1763,19 @@ LABEL_22:
   return [(NSNumber *)isSpatialMediaValue BOOLValue];
 }
 
-- (id)metadataForImagePropertiesAtIndex:(unint64_t)a3
+- (id)metadataForImagePropertiesAtIndex:(unint64_t)index
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(PFMetadataImage *)self imageSource];
-  Count = CGImageSourceGetCount(v5);
-  if (Count <= a3)
+  imageSource = [(PFMetadataImage *)self imageSource];
+  Count = CGImageSourceGetCount(imageSource);
+  if (Count <= index)
   {
     v11 = Count;
     v12 = metadataLog;
     if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
     {
       v15 = 134218240;
-      v16 = a3;
+      indexCopy2 = index;
       v17 = 2048;
       v18 = v11;
       _os_log_error_impl(&dword_1B35C1000, v12, OS_LOG_TYPE_ERROR, "Invalid request for per-image-index %tu sub-metadata for image source with count %tu", &v15, 0x16u);
@@ -1786,12 +1786,12 @@ LABEL_22:
 
   else
   {
-    v7 = CGImageSourceCopyPropertiesAtIndex(v5, a3, +[PFMetadataImage defaultOptionsForCGImageSource]);
+    v7 = CGImageSourceCopyPropertiesAtIndex(imageSource, index, +[PFMetadataImage defaultOptionsForCGImageSource]);
     if (v7)
     {
       v8 = [PFMetadata alloc];
-      v9 = [(PFMetadata *)self timeZoneLookup];
-      v10 = [(PFMetadata *)v8 initWithImageProperties:v7 contentType:0 timeZoneLookup:v9];
+      timeZoneLookup = [(PFMetadata *)self timeZoneLookup];
+      v10 = [(PFMetadata *)v8 initWithImageProperties:v7 contentType:0 timeZoneLookup:timeZoneLookup];
     }
 
     else
@@ -1800,7 +1800,7 @@ LABEL_22:
       if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
       {
         v15 = 134217984;
-        v16 = a3;
+        indexCopy2 = index;
         _os_log_error_impl(&dword_1B35C1000, v13, OS_LOG_TYPE_ERROR, "Unable to get per-image-index %tu properties", &v15, 0xCu);
       }
 
@@ -1811,20 +1811,20 @@ LABEL_22:
   return v10;
 }
 
-- (void)enumerateRawThumbnailInfoWithBlock:(id)a3
+- (void)enumerateRawThumbnailInfoWithBlock:(id)block
 {
   v42[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PFMetadataImage *)self _imageSourceProperties];
-  if (v5)
+  blockCopy = block;
+  _imageSourceProperties = [(PFMetadataImage *)self _imageSourceProperties];
+  if (_imageSourceProperties)
   {
-    v6 = [(PFMetadata *)self typeVerifier];
+    typeVerifier = [(PFMetadata *)self typeVerifier];
     v42[0] = @"{raw}";
     v42[1] = @"Thumbnails";
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
     v8 = [v7 componentsJoinedByString:@"."];
-    v32 = v5;
-    v9 = [v6 valueForKeyPath:v8 fromProperties:v5];
+    v32 = _imageSourceProperties;
+    v9 = [typeVerifier valueForKeyPath:v8 fromProperties:_imageSourceProperties];
 
     v39 = 0u;
     v40 = 0u;
@@ -1848,30 +1848,30 @@ LABEL_4:
         }
 
         v14 = *(*(&v37 + 1) + 8 * v13);
-        v15 = [(PFMetadata *)self typeVerifier];
-        v16 = [v15 valueForKeyPath:v34 fromProperties:v14];
+        typeVerifier2 = [(PFMetadata *)self typeVerifier];
+        v16 = [typeVerifier2 valueForKeyPath:v34 fromProperties:v14];
         [v16 floatValue];
         v18 = v17;
 
-        v19 = [(PFMetadata *)self typeVerifier];
-        v20 = [v19 valueForKeyPath:v12 fromProperties:v14];
+        typeVerifier3 = [(PFMetadata *)self typeVerifier];
+        v20 = [typeVerifier3 valueForKeyPath:v12 fromProperties:v14];
         [v20 floatValue];
         v22 = v21;
 
-        v23 = [(PFMetadata *)self typeVerifier];
-        v24 = [v23 valueForKeyPath:@"JPEGOffset" fromProperties:v14];
-        v25 = [v24 unsignedIntegerValue];
+        typeVerifier4 = [(PFMetadata *)self typeVerifier];
+        v24 = [typeVerifier4 valueForKeyPath:@"JPEGOffset" fromProperties:v14];
+        unsignedIntegerValue = [v24 unsignedIntegerValue];
 
-        v26 = [(PFMetadata *)self typeVerifier];
-        v27 = [v26 valueForKeyPath:@"JPEGLength" fromProperties:v14];
-        v28 = [v27 unsignedIntegerValue];
+        typeVerifier5 = [(PFMetadata *)self typeVerifier];
+        v27 = [typeVerifier5 valueForKeyPath:@"JPEGLength" fromProperties:v14];
+        unsignedIntegerValue2 = [v27 unsignedIntegerValue];
 
-        v29 = [(PFMetadata *)self typeVerifier];
-        v30 = [v29 valueForKeyPath:@"Orientation" fromProperties:v14];
-        v31 = [v30 intValue];
+        typeVerifier6 = [(PFMetadata *)self typeVerifier];
+        v30 = [typeVerifier6 valueForKeyPath:@"Orientation" fromProperties:v14];
+        intValue = [v30 intValue];
 
         v36 = 0;
-        v4[2](v4, v25, v28, v31, &v36, v18, v22);
+        blockCopy[2](blockCopy, unsignedIntegerValue, unsignedIntegerValue2, intValue, &v36, v18, v22);
         if (v36)
         {
           break;
@@ -1890,20 +1890,20 @@ LABEL_4:
       }
     }
 
-    v5 = v32;
+    _imageSourceProperties = v32;
   }
 }
 
 - (id)nrfSrlStatus
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6990AD0];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -1911,28 +1911,28 @@ LABEL_4:
 - (unint64_t)photosAppFeatureFlags
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6986800];
   v10[0] = *MEMORY[0x1E696DE30];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (id)smartStyleExpectingReversibility
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696DE30];
   v8[1] = kPFImagePropertyMakerAppleSmartStyles;
   v8[2] = kPFImagePropertyMakerAppleSmartStylesIsExpectingReversibility;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6;
 }
@@ -1940,43 +1940,43 @@ LABEL_4:
 - (id)smartStyleIsReversible
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696DE30];
   v8[1] = kPFImagePropertyMakerAppleSmartStyles;
   v8[2] = kPFImagePropertyMakerAppleSmartStylesIsReversible;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6;
 }
 
 - (signed)smartStyleCast
 {
-  v2 = self;
+  selfCopy = self;
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696DE30];
   v8[1] = kPFImagePropertyMakerAppleSmartStyles;
   v8[2] = kPFImagePropertyMakerAppleSmartStylesCast;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:v2->_cgImageProperties];
-  LOWORD(v2) = [v6 intValue];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:selfCopy->_cgImageProperties];
+  LOWORD(selfCopy) = [v6 intValue];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)smartStyleIntensity
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696DE30];
   v8[1] = kPFImagePropertyMakerAppleSmartStyles;
   v8[2] = kPFImagePropertyMakerAppleSmartStylesIntensity;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6;
 }
@@ -1984,13 +1984,13 @@ LABEL_4:
 - (id)smartStyleColorBias
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696DE30];
   v8[1] = kPFImagePropertyMakerAppleSmartStyles;
   v8[2] = kPFImagePropertyMakerAppleSmartStylesColorBias;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6;
 }
@@ -1998,13 +1998,13 @@ LABEL_4:
 - (id)smartStyleToneBias
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696DE30];
   v8[1] = kPFImagePropertyMakerAppleSmartStyles;
   v8[2] = kPFImagePropertyMakerAppleSmartStylesToneBias;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6;
 }
@@ -2012,13 +2012,13 @@ LABEL_4:
 - (id)smartStyleRenderingVersion
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696DE30];
   v8[1] = kPFImagePropertyMakerAppleSmartStyles;
   v8[2] = kPFImagePropertyMakerAppleSmartStylesRenderingVersion;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:3];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6;
 }
@@ -2026,12 +2026,12 @@ LABEL_4:
 - (BOOL)hasSmartStyle
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696DE30];
   v8[1] = kPFImagePropertyMakerAppleSmartStyles;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6 != 0;
 }
@@ -2039,14 +2039,14 @@ LABEL_4:
 - (id)semanticStylePreset
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6986828];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v9[2] = *MEMORY[0x1E6986830];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2054,14 +2054,14 @@ LABEL_4:
 - (id)semanticStyleRenderingVersion
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6986828];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v9[2] = *MEMORY[0x1E6986838];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2069,14 +2069,14 @@ LABEL_4:
 - (id)semanticStyleWarmthBias
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6986828];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v9[2] = *MEMORY[0x1E6986848];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2084,14 +2084,14 @@ LABEL_4:
 - (id)semanticStyleToneBias
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6986828];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v9[2] = *MEMORY[0x1E6986840];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:3];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2099,13 +2099,13 @@ LABEL_4:
 - (id)speedRef
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DC60];
   v9[0] = *MEMORY[0x1E696DBF0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2113,13 +2113,13 @@ LABEL_4:
 - (id)imageDirectionRef
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DC10];
   v9[0] = *MEMORY[0x1E696DBF0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2127,13 +2127,13 @@ LABEL_4:
 - (id)imageDirection
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DC08];
   v9[0] = *MEMORY[0x1E696DBF0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2141,13 +2141,13 @@ LABEL_4:
 - (id)gpsHPositioningError
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DC00];
   v9[0] = *MEMORY[0x1E696DBF0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2155,13 +2155,13 @@ LABEL_4:
 - (id)altitudeRef
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DB90];
   v9[0] = *MEMORY[0x1E696DBF0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2169,13 +2169,13 @@ LABEL_4:
 - (id)HEICSDelayTime
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DD18];
   v9[0] = *MEMORY[0x1E696DD20];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2183,13 +2183,13 @@ LABEL_4:
 - (id)GIFDelayTime
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DB68];
   v9[0] = *MEMORY[0x1E696DB70];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2197,21 +2197,21 @@ LABEL_4:
 - (id)lightSource
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DA68];
   v9[0] = *MEMORY[0x1E696D9B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
 
 - (id)profileName
 {
-  v3 = [(PFMetadata *)self typeVerifier];
-  v4 = [v3 valueForKey:*MEMORY[0x1E696DEF0] fromProperties:self->_cgImageProperties];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
+  v4 = [typeVerifier valueForKey:*MEMORY[0x1E696DEF0] fromProperties:self->_cgImageProperties];
 
   return v4;
 }
@@ -2219,13 +2219,13 @@ LABEL_4:
 - (id)whiteBalanceIndex
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D440];
   v9[0] = *MEMORY[0x1E696D438];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2268,13 +2268,13 @@ LABEL_4:
 - (id)meteringMode
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DA80];
   v9[0] = *MEMORY[0x1E696D9B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2294,13 +2294,13 @@ LABEL_4:
 - (id)lensMaximumMM
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D8C8];
   v9[0] = *MEMORY[0x1E696D8B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 index:1 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 index:1 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2308,13 +2308,13 @@ LABEL_4:
 - (id)lensMinimumMM
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D8C8];
   v9[0] = *MEMORY[0x1E696D8B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 index:0 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 index:0 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2322,13 +2322,13 @@ LABEL_4:
 - (id)lensMake
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DA50];
   v9[0] = *MEMORY[0x1E696D9B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2336,22 +2336,22 @@ LABEL_4:
 - (id)lensModel
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DA58];
   v13[0] = *MEMORY[0x1E696D9B0];
   v13[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   if (!v7)
   {
-    v8 = [(PFMetadata *)self typeVerifier];
+    typeVerifier2 = [(PFMetadata *)self typeVerifier];
     v12[0] = *MEMORY[0x1E696D8B0];
     v12[1] = v4;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
     v10 = [v9 componentsJoinedByString:@"."];
-    v7 = [v8 valueForKeyPath:v10 fromProperties:self->_cgImageProperties];
+    v7 = [typeVerifier2 valueForKeyPath:v10 fromProperties:self->_cgImageProperties];
   }
 
   return v7;
@@ -2359,19 +2359,19 @@ LABEL_4:
 
 - (id)portraitInLandscapeCamera
 {
-  v3 = [(PFMetadataImage *)self cameraModel];
-  v4 = [(PFMetadataImage *)self cameraMake];
-  if ([v3 isEqualToString:@"Canon PowerShot S95"])
+  cameraModel = [(PFMetadataImage *)self cameraModel];
+  cameraMake = [(PFMetadataImage *)self cameraMake];
+  if ([cameraModel isEqualToString:@"Canon PowerShot S95"])
   {
     v5 = @"S95";
   }
 
-  else if ([v4 isEqualToString:@"OLYMPUS IMAGING CORP.  "] && (objc_msgSend(v3, "isEqualToString:", @"E-5             ") & 1) != 0)
+  else if ([cameraMake isEqualToString:@"OLYMPUS IMAGING CORP.  "] && (objc_msgSend(cameraModel, "isEqualToString:", @"E-5             ") & 1) != 0)
   {
     v5 = @"OLYMPUSE5";
   }
 
-  else if ([v3 isEqualToString:@"Canon PowerShot G12"])
+  else if ([cameraModel isEqualToString:@"Canon PowerShot G12"])
   {
     v5 = @"G12";
   }
@@ -2399,12 +2399,12 @@ LABEL_4:
 - (id)focusDistance
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696D8B0];
   v8[1] = @"FocusDistance";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6;
 }
@@ -2412,12 +2412,12 @@ LABEL_4:
 - (id)focusMode
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696D8B0];
   v8[1] = @"FocusMode";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6;
 }
@@ -2425,12 +2425,12 @@ LABEL_4:
 - (id)focusPoints
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8[0] = *MEMORY[0x1E696D8B0];
   v8[1] = @"AFInfo";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
   v5 = [v4 componentsJoinedByString:@"."];
-  v6 = [v3 valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
+  v6 = [typeVerifier valueForKeyPath:v5 fromProperties:self->_cgImageProperties];
 
   return v6;
 }
@@ -2438,13 +2438,13 @@ LABEL_4:
 - (id)digitalZoomRatio
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D9C0];
   v9[0] = *MEMORY[0x1E696D9B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2452,13 +2452,13 @@ LABEL_4:
 - (id)focalLengthIn35mm
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DA08];
   v9[0] = *MEMORY[0x1E696D9B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2466,13 +2466,13 @@ LABEL_4:
 - (id)focalLength
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DA18];
   v10[0] = *MEMORY[0x1E696D9B0];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   if (v7)
   {
@@ -2489,34 +2489,34 @@ LABEL_4:
 
 - (BOOL)flashFired
 {
-  v3 = [(PFMetadataImage *)self flashCompensation];
-  v4 = v3;
-  if (v3)
+  flashCompensation = [(PFMetadataImage *)self flashCompensation];
+  v4 = flashCompensation;
+  if (flashCompensation)
   {
-    v5 = v3;
+    flashValue = flashCompensation;
   }
 
   else
   {
-    v5 = [(PFMetadataImage *)self flashValue];
+    flashValue = [(PFMetadataImage *)self flashValue];
   }
 
-  v6 = v5;
+  v6 = flashValue;
 
-  v7 = [v6 integerValue];
-  return v7 & 1;
+  integerValue = [v6 integerValue];
+  return integerValue & 1;
 }
 
 - (id)flashCompensation
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D8C0];
   v9[0] = *MEMORY[0x1E696D8B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2524,13 +2524,13 @@ LABEL_4:
 - (id)flashValue
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D9F0];
   v9[0] = *MEMORY[0x1E696D9B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2585,13 +2585,13 @@ LABEL_4:
 - (id)brightness
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D960];
   v9[0] = *MEMORY[0x1E696D9B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2599,13 +2599,13 @@ LABEL_4:
 - (id)exposureBias
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D9C8];
   v10[0] = *MEMORY[0x1E696D9B0];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   if (v7)
   {
@@ -2646,13 +2646,13 @@ LABEL_4:
 - (id)firmware
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D8B8];
   v9[0] = *MEMORY[0x1E696D8B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2660,22 +2660,22 @@ LABEL_4:
 - (id)ownerName
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D8D0];
   v9[0] = *MEMORY[0x1E696D8B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
 
-- (void)setCgImageMetadata:(CGImageMetadata *)a3
+- (void)setCgImageMetadata:(CGImageMetadata *)metadata
 {
-  if (a3)
+  if (metadata)
   {
-    CFRetain(a3);
+    CFRetain(metadata);
   }
 
   cgImageMetadata = self->_cgImageMetadata;
@@ -2684,7 +2684,7 @@ LABEL_4:
     CFRelease(cgImageMetadata);
   }
 
-  self->_cgImageMetadata = a3;
+  self->_cgImageMetadata = metadata;
 }
 
 - (id)hdrGainMap
@@ -2696,11 +2696,11 @@ LABEL_4:
   v15 = __Block_byref_object_copy__6586;
   v16 = __Block_byref_object_dispose__6587;
   v17 = 0;
-  v3 = [(PFMetadata *)self fileURL];
+  fileURL = [(PFMetadata *)self fileURL];
 
-  if (v3)
+  if (fileURL)
   {
-    v4 = [(PFMetadata *)self fileURL];
+    fileURL2 = [(PFMetadata *)self fileURL];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __29__PFMetadataImage_hdrGainMap__block_invoke;
@@ -2708,7 +2708,7 @@ LABEL_4:
     v10[5] = &v12;
     v11 = 0;
     v10[4] = self;
-    v5 = [PFMediaUtilities enumerateImageSourceIndexesOfFileAtURL:v4 error:&v11 block:v10];
+    v5 = [PFMediaUtilities enumerateImageSourceIndexesOfFileAtURL:fileURL2 error:&v11 block:v10];
     v6 = v11;
 
     if (!v5)
@@ -2752,50 +2752,50 @@ void __29__PFMetadataImage_hdrGainMap__block_invoke(uint64_t a1, CGImageSourceRe
 - (int64_t)customRendered
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696D988];
   v10[0] = *MEMORY[0x1E696D9B0];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
-  v8 = [v7 integerValue];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
 - (BOOL)isScreenshot
 {
-  v3 = [(PFMetadataImage *)self isImage];
-  if (v3)
+  isImage = [(PFMetadataImage *)self isImage];
+  if (isImage)
   {
-    v4 = [(PFMetadataImage *)self userComment];
-    v5 = [v4 isEqualToString:@"Screenshot"];
+    userComment = [(PFMetadataImage *)self userComment];
+    v5 = [userComment isEqualToString:@"Screenshot"];
 
     if (v5)
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isImage) = 1;
     }
 
     else
     {
-      v6 = [(PFMetadata *)self contentType];
-      v7 = [v6 conformsToType:*MEMORY[0x1E6982F28]];
+      contentType = [(PFMetadata *)self contentType];
+      v7 = [contentType conformsToType:*MEMORY[0x1E6982F28]];
 
       if (v7)
       {
 
-        LOBYTE(v3) = [(PFMetadataImage *)self _hasScreenshotDimensions];
+        LOBYTE(isImage) = [(PFMetadataImage *)self _hasScreenshotDimensions];
       }
 
       else
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(isImage) = 0;
       }
     }
   }
 
-  return v3;
+  return isImage;
 }
 
 - (BOOL)isDeferredPhotoProxyExpectingDepth
@@ -2835,43 +2835,43 @@ void __29__PFMetadataImage_hdrGainMap__block_invoke(uint64_t a1, CGImageSourceRe
 - (unint64_t)photoCaptureFlags
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6990B30];
   v10[0] = *MEMORY[0x1E696DE30];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)photoProcessingFlags
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E69867F8];
   v10[0] = *MEMORY[0x1E696DE30];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (id)photoProcessingIdentifier
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6990AE8];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2879,26 +2879,26 @@ void __29__PFMetadataImage_hdrGainMap__block_invoke(uint64_t a1, CGImageSourceRe
 - (id)imageCaptureRequestIdentifier
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6990A88];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
 
 - (id)deferredPhotoProcessingIdentifier
 {
-  v3 = [(PFMetadataImage *)self imageCaptureRequestIdentifier];
-  v4 = [(PFMetadataImage *)self photoProcessingIdentifier];
-  v5 = v4;
+  imageCaptureRequestIdentifier = [(PFMetadataImage *)self imageCaptureRequestIdentifier];
+  photoProcessingIdentifier = [(PFMetadataImage *)self photoProcessingIdentifier];
+  v5 = photoProcessingIdentifier;
   v6 = 0;
-  if (v3 && v4)
+  if (imageCaptureRequestIdentifier && photoProcessingIdentifier)
   {
-    v7 = [v3 stringByAppendingString:@"/"];
+    v7 = [imageCaptureRequestIdentifier stringByAppendingString:@"/"];
     v6 = [v7 stringByAppendingString:v5];
   }
 
@@ -2908,13 +2908,13 @@ void __29__PFMetadataImage_hdrGainMap__block_invoke(uint64_t a1, CGImageSourceRe
 - (id)groupingUuid
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E69867C8];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2922,13 +2922,13 @@ void __29__PFMetadataImage_hdrGainMap__block_invoke(uint64_t a1, CGImageSourceRe
 - (id)burstUuid
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E69867B0];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -2936,62 +2936,62 @@ void __29__PFMetadataImage_hdrGainMap__block_invoke(uint64_t a1, CGImageSourceRe
 - (id)userComment
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DB40];
   v9[0] = *MEMORY[0x1E696D9B0];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
 
 - (BOOL)isPhotoBooth
 {
-  v2 = [(PFMetadataImage *)self keywords];
-  v3 = [v2 containsObject:@"Photo Booth"];
+  keywords = [(PFMetadataImage *)self keywords];
+  v3 = [keywords containsObject:@"Photo Booth"];
 
   return v3;
 }
 
 - (BOOL)isFrontFacingCamera
 {
-  v3 = [(PFMetadataImage *)self cameraUsedForCapture];
-  if ((v3 - 5) >= 2)
+  cameraUsedForCapture = [(PFMetadataImage *)self cameraUsedForCapture];
+  if ((cameraUsedForCapture - 5) >= 2)
   {
-    if (v3)
+    if (cameraUsedForCapture)
     {
       return 0;
     }
 
-    v5 = [(PFMetadataImage *)self lensMake];
-    v6 = [(PFMetadataImage *)self lensModel];
-    v7 = [v6 lowercaseString];
+    lensMake = [(PFMetadataImage *)self lensMake];
+    lensModel = [(PFMetadataImage *)self lensModel];
+    lowercaseString = [lensModel lowercaseString];
 
-    if (v5 && v7)
+    if (lensMake && lowercaseString)
     {
-      if ([v5 isEqualToString:@"Apple"] && objc_msgSend(v7, "containsString:", @"front"))
+      if ([lensMake isEqualToString:@"Apple"] && objc_msgSend(lowercaseString, "containsString:", @"front"))
       {
-        v4 = [v7 containsString:@"camera"];
+        _hasFFCDimensions = [lowercaseString containsString:@"camera"];
 LABEL_14:
 
-        return v4;
+        return _hasFFCDimensions;
       }
     }
 
     else
     {
-      v8 = [(PFMetadataImage *)self cameraMake];
-      if ([v8 isEqualToString:@"Apple"])
+      cameraMake = [(PFMetadataImage *)self cameraMake];
+      if ([cameraMake isEqualToString:@"Apple"])
       {
-        v4 = [(PFMetadataImage *)self _hasFFCDimensions];
+        _hasFFCDimensions = [(PFMetadataImage *)self _hasFFCDimensions];
 
         goto LABEL_14;
       }
     }
 
-    v4 = 0;
+    _hasFFCDimensions = 0;
     goto LABEL_14;
   }
 
@@ -3001,13 +3001,13 @@ LABEL_14:
 - (id)keywords
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DDD0];
   v9[0] = *MEMORY[0x1E696DD90];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -3015,13 +3015,13 @@ LABEL_14:
 - (id)title
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DDD8];
   v9[0] = *MEMORY[0x1E696DD90];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -3029,21 +3029,21 @@ LABEL_14:
 - (id)hdrGainMapPercentageValue
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6990AB8];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
 
 - (BOOL)hasHDRGainMap
 {
-  v2 = [(PFMetadataImage *)self hdrGainMapPercentageValue];
-  v3 = v2 != 0;
+  hdrGainMapPercentageValue = [(PFMetadataImage *)self hdrGainMapPercentageValue];
+  v3 = hdrGainMapPercentageValue != 0;
 
   return v3;
 }
@@ -3051,32 +3051,32 @@ LABEL_14:
 - (id)hdrGain
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6990AB0];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
 
 - (BOOL)hasISOGainMap
 {
-  v2 = self;
+  selfCopy = self;
   v42[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadataImage *)self _imageSourceProperties];
-  if (v3)
+  _imageSourceProperties = [(PFMetadataImage *)self _imageSourceProperties];
+  if (_imageSourceProperties)
   {
-    v4 = [(PFMetadata *)v2 typeVerifier];
+    typeVerifier = [(PFMetadata *)selfCopy typeVerifier];
     v5 = *MEMORY[0x1E696DDE8];
     v42[0] = *MEMORY[0x1E696DB58];
     v42[1] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:2];
     v7 = [v6 componentsJoinedByString:@"."];
-    v31 = v3;
-    v8 = [v4 valueForKeyPath:v7 fromProperties:v3];
+    v31 = _imageSourceProperties;
+    v8 = [typeVerifier valueForKeyPath:v7 fromProperties:_imageSourceProperties];
 
     v38 = 0u;
     v39 = 0u;
@@ -3091,7 +3091,7 @@ LABEL_14:
       v12 = *MEMORY[0x1E696D418];
       v13 = *MEMORY[0x1E696D280];
       v28 = *v37;
-      v29 = v2;
+      v29 = selfCopy;
       v27 = *MEMORY[0x1E696D410];
       do
       {
@@ -3104,8 +3104,8 @@ LABEL_14:
           }
 
           v15 = *(*(&v36 + 1) + 8 * v14);
-          v16 = [(PFMetadata *)v2 typeVerifier];
-          v17 = [v16 valueForKeyPath:v11 fromProperties:v15];
+          typeVerifier2 = [(PFMetadata *)selfCopy typeVerifier];
+          v17 = [typeVerifier2 valueForKeyPath:v11 fromProperties:v15];
 
           v34 = 0u;
           v35 = 0u;
@@ -3148,7 +3148,7 @@ LABEL_14:
           }
 
           ++v14;
-          v2 = v29;
+          selfCopy = v29;
           v11 = v27;
           v10 = v28;
         }
@@ -3168,7 +3168,7 @@ LABEL_14:
 
 LABEL_21:
 
-    v3 = v31;
+    _imageSourceProperties = v31;
   }
 
   else
@@ -3181,47 +3181,47 @@ LABEL_21:
 
 - (BOOL)isHDR_ExtendedRange
 {
-  v3 = [(PFMetadataImage *)self cgColorSpace];
-  if (v3)
+  cgColorSpace = [(PFMetadataImage *)self cgColorSpace];
+  if (cgColorSpace)
   {
 
-    return CGColorSpaceUsesExtendedRange(v3);
+    return CGColorSpaceUsesExtendedRange(cgColorSpace);
   }
 
   else
   {
-    v5 = [(PFMetadata *)self contentType];
-    if (v5 && (+[PFUniformTypeUtilities openEXRImageType](PFUniformTypeUtilities, "openEXRImageType"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v5 conformsToType:v6], v6, (v7 & 1) != 0))
+    contentType = [(PFMetadata *)self contentType];
+    if (contentType && (+[PFUniformTypeUtilities openEXRImageType](PFUniformTypeUtilities, "openEXRImageType"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [contentType conformsToType:v6], v6, (v7 & 1) != 0))
     {
-      v8 = 1;
+      bOOLValue = 1;
     }
 
     else
     {
-      v9 = [(PFMetadata *)self typeVerifier];
-      v10 = [v9 valueForKey:*MEMORY[0x1E696DDF0] fromProperties:self->_cgImageProperties];
+      typeVerifier = [(PFMetadata *)self typeVerifier];
+      v10 = [typeVerifier valueForKey:*MEMORY[0x1E696DDF0] fromProperties:self->_cgImageProperties];
 
-      v8 = [v10 BOOLValue];
+      bOOLValue = [v10 BOOLValue];
     }
 
-    return v8;
+    return bOOLValue;
   }
 }
 
 - (BOOL)isHDR_TS22028_5
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadataImage *)self cgColorSpace];
-  if (v3)
+  cgColorSpace = [(PFMetadataImage *)self cgColorSpace];
+  if (cgColorSpace)
   {
 
-    return CGColorSpaceUsesITUR_2100TF(v3);
+    return CGColorSpaceUsesITUR_2100TF(cgColorSpace);
   }
 
   else
   {
-    v5 = [(PFMetadataImage *)self profileName];
-    if (v5 && (v13 = 0u, v14 = 0u, v11 = 0u, v12 = 0u, (v6 = [&unk_1F2AAB938 countByEnumeratingWithState:&v11 objects:v15 count:16]) != 0))
+    profileName = [(PFMetadataImage *)self profileName];
+    if (profileName && (v13 = 0u, v14 = 0u, v11 = 0u, v12 = 0u, (v6 = [&unk_1F2AAB938 countByEnumeratingWithState:&v11 objects:v15 count:16]) != 0))
     {
       v7 = v6;
       v8 = *v12;
@@ -3234,7 +3234,7 @@ LABEL_21:
             objc_enumerationMutation(&unk_1F2AAB938);
           }
 
-          if ([v5 containsString:*(*(&v11 + 1) + 8 * i)])
+          if ([profileName containsString:*(*(&v11 + 1) + 8 * i)])
           {
             v10 = 1;
             goto LABEL_17;
@@ -3276,13 +3276,13 @@ LABEL_17:
 - (id)spatialOverCaptureIdentifier
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6986888];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -3290,13 +3290,13 @@ LABEL_17:
 - (id)artworkContentDescription
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DDA8];
   v9[0] = *MEMORY[0x1E696DD90];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -3304,13 +3304,13 @@ LABEL_17:
 - (id)captionAbstract
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DD68];
   v9[0] = *MEMORY[0x1E696DD90];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -3318,13 +3318,13 @@ LABEL_17:
 - (id)renderOriginatingAssetIdentifier
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6986818];
   v10[0] = *MEMORY[0x1E696DE30];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   v8 = [objc_opt_class() stringByRemovingImageIoDotSuffixFromString:v7];
 
@@ -3334,13 +3334,13 @@ LABEL_17:
 - (id)originatingAssetIdentifier
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6986808];
   v10[0] = *MEMORY[0x1E696DE30];
   v10[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   v8 = [objc_opt_class() stringByRemovingImageIoDotSuffixFromString:v7];
 
@@ -3350,13 +3350,13 @@ LABEL_17:
 - (id)software
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DF68];
   v9[0] = *MEMORY[0x1E696DF28];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -3364,13 +3364,13 @@ LABEL_17:
 - (id)cameraModel
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DF50];
   v9[0] = *MEMORY[0x1E696DF28];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -3378,13 +3378,13 @@ LABEL_17:
 - (id)cameraMake
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E696DF48];
   v9[0] = *MEMORY[0x1E696DF28];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -3392,13 +3392,13 @@ LABEL_17:
 - (id)playbackVariation
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E6986810];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
@@ -3406,20 +3406,20 @@ LABEL_17:
 - (id)livePhotoPairingIdentifier
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = *MEMORY[0x1E69867A8];
   v9[0] = *MEMORY[0x1E696DE30];
   v9[1] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:2];
   v6 = [v5 componentsJoinedByString:@"."];
-  v7 = [v3 valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
+  v7 = [typeVerifier valueForKeyPath:v6 fromProperties:self->_cgImageProperties];
 
   return v7;
 }
 
-- (BOOL)_configureWithImageProperties:(id)a3
+- (BOOL)_configureWithImageProperties:(id)properties
 {
-  objc_storeStrong(&self->_cgImageProperties, a3);
+  objc_storeStrong(&self->_cgImageProperties, properties);
   [(PFMetadata *)self setSourceType:4];
   return self->_cgImageProperties != 0;
 }
@@ -3434,12 +3434,12 @@ LABEL_17:
   return MEMORY[0x1EEDC8DE0]();
 }
 
-- (BOOL)_configureWithImageSource:(CGImageSource *)a3 cacheImageSource:(BOOL)a4
+- (BOOL)_configureWithImageSource:(CGImageSource *)source cacheImageSource:(BOOL)imageSource
 {
-  if (a3)
+  if (source)
   {
-    v4 = a4;
-    v7 = CGImageSourceGetType(a3);
+    imageSourceCopy = imageSource;
+    v7 = CGImageSourceGetType(source);
     if (v7 && ([MEMORY[0x1E6982C40] typeWithIdentifier:v7], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "conformsToType:", *MEMORY[0x1E6982F88]), v8, (v9 & 1) != 0))
     {
       PrimaryImageIndex = 0;
@@ -3447,20 +3447,20 @@ LABEL_17:
 
     else
     {
-      PrimaryImageIndex = CGImageSourceGetPrimaryImageIndex(a3);
+      PrimaryImageIndex = CGImageSourceGetPrimaryImageIndex(source);
     }
 
     v11 = +[PFMetadataImage defaultOptionsForCGImageSource];
-    v12 = CGImageSourceCopyPropertiesAtIndex(a3, PrimaryImageIndex, v11);
+    v12 = CGImageSourceCopyPropertiesAtIndex(source, PrimaryImageIndex, v11);
     v13 = [(__CFDictionary *)v12 mutableCopy];
 
     v14 = [(PFMetadataImage *)self _configureWithImageProperties:v13];
     if (v14)
     {
       self->_cachedImageSourcePrimaryImageIndex = PrimaryImageIndex;
-      if (v4)
+      if (imageSourceCopy)
       {
-        [(PFMetadataImage *)self setImageSource:a3];
+        [(PFMetadataImage *)self setImageSource:source];
       }
 
       if ([(PFMetadata *)self shouldLookForXmpSidecar])
@@ -3490,33 +3490,33 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)_configureWithImageData:(id)a3 cacheImageSource:(BOOL)a4 cacheImageData:(BOOL)a5
+- (BOOL)_configureWithImageData:(id)data cacheImageSource:(BOOL)source cacheImageData:(BOOL)imageData
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = a3;
-  if (v9)
+  imageDataCopy = imageData;
+  sourceCopy = source;
+  dataCopy = data;
+  if (dataCopy)
   {
     v10 = +[PFMetadataImage defaultOptionsForCGImageSource];
     v11 = [v10 mutableCopy];
 
-    v12 = [(PFMetadata *)self contentType];
+    contentType = [(PFMetadata *)self contentType];
 
-    if (v12)
+    if (contentType)
     {
-      v13 = [(PFMetadata *)self contentType];
-      v14 = [v13 identifier];
-      [v11 setObject:v14 forKeyedSubscript:*MEMORY[0x1E696E118]];
+      contentType2 = [(PFMetadata *)self contentType];
+      identifier = [contentType2 identifier];
+      [v11 setObject:identifier forKeyedSubscript:*MEMORY[0x1E696E118]];
     }
 
-    v15 = CGImageSourceCreateWithData(v9, v11);
+    v15 = CGImageSourceCreateWithData(dataCopy, v11);
     if (v15)
     {
       v16 = v15;
-      v17 = [(PFMetadataImage *)self _configureWithImageSource:v15 cacheImageSource:v6];
-      if (v17 && v5)
+      v17 = [(PFMetadataImage *)self _configureWithImageSource:v15 cacheImageSource:sourceCopy];
+      if (v17 && imageDataCopy)
       {
-        objc_storeStrong(&self->_imageData, a3);
+        objc_storeStrong(&self->_imageData, data);
         LOBYTE(v17) = 1;
       }
 
@@ -3539,29 +3539,29 @@ LABEL_17:
   return v17;
 }
 
-- (BOOL)_configureWithImageURL:(id)a3 cacheImageSource:(BOOL)a4 cacheImageData:(BOOL)a5
+- (BOOL)_configureWithImageURL:(id)l cacheImageSource:(BOOL)source cacheImageData:(BOOL)data
 {
-  v5 = a5;
-  v6 = a4;
+  dataCopy = data;
+  sourceCopy = source;
   v44 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (v8)
+  lCopy = l;
+  if (lCopy)
   {
-    [(PFMetadata *)self setFileURL:v8];
+    [(PFMetadata *)self setFileURL:lCopy];
     if ([(PFMetadata *)self noFileAccess])
     {
-      v9 = [(PFMetadata *)self contentType];
+      contentType = [(PFMetadata *)self contentType];
 
-      if (!v9)
+      if (!contentType)
       {
         v42 = 0;
-        v10 = [PFUniformTypeUtilities typeForURL:v8 error:&v42];
+        v10 = [PFUniformTypeUtilities typeForURL:lCopy error:&v42];
         v11 = v42;
         [(PFMetadata *)self setContentType:v10];
 
-        v12 = [(PFMetadata *)self contentType];
+        contentType2 = [(PFMetadata *)self contentType];
 
-        if (!v12)
+        if (!contentType2)
         {
           v13 = metadataLog;
           if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
@@ -3574,25 +3574,25 @@ LABEL_17:
       }
     }
 
-    v14 = [(PFMetadata *)self fileSystemProperties];
-    v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E696A3B8]];
-    v16 = [v15 unsignedLongLongValue];
+    fileSystemProperties = [(PFMetadata *)self fileSystemProperties];
+    v15 = [fileSystemProperties objectForKeyedSubscript:*MEMORY[0x1E696A3B8]];
+    unsignedLongLongValue = [v15 unsignedLongLongValue];
 
     if ([(PFMetadata *)self useJpegFastPath])
     {
-      if (v16)
+      if (unsignedLongLongValue)
       {
-        v17 = [(PFMetadata *)self contentType];
-        if (v17)
+        contentType3 = [(PFMetadata *)self contentType];
+        if (contentType3)
         {
-          v18 = v17;
-          v19 = [(PFMetadata *)self contentType];
-          if ([v19 conformsToType:*MEMORY[0x1E6982E58]])
+          v18 = contentType3;
+          contentType4 = [(PFMetadata *)self contentType];
+          if ([contentType4 conformsToType:*MEMORY[0x1E6982E58]])
           {
 
-            if (!v6 && !v5)
+            if (!sourceCopy && !dataCopy)
             {
-              v20 = [v8 path];
+              path = [lCopy path];
               v21 = CopyMetadataFromFileAtPath();
               v22 = [v21 mutableCopy];
 
@@ -3616,12 +3616,12 @@ LABEL_40:
 
     if ([(PFMetadata *)self shouldLookForXmpSidecar])
     {
-      v25 = [v8 path];
-      v26 = [v25 stringByDeletingPathExtension];
+      path2 = [lCopy path];
+      stringByDeletingPathExtension = [path2 stringByDeletingPathExtension];
 
-      v27 = [v26 stringByAppendingPathExtension:@"xmp"];
+      v27 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"xmp"];
       memset(&v43, 0, sizeof(v43));
-      if (!stat([v27 fileSystemRepresentation], &v43) && v43.st_mode < 0 || (objc_msgSend(v26, "stringByAppendingPathExtension:", @"XMP"), v28 = objc_claimAutoreleasedReturnValue(), v27, memset(&v43, 0, sizeof(v43)), v27 = v28, v29 = stat(objc_msgSend(v28, "fileSystemRepresentation"), &v43), v30 = 0, !v29) && v43.st_mode < 0)
+      if (!stat([v27 fileSystemRepresentation], &v43) && v43.st_mode < 0 || (objc_msgSend(stringByDeletingPathExtension, "stringByAppendingPathExtension:", @"XMP"), v28 = objc_claimAutoreleasedReturnValue(), v27, memset(&v43, 0, sizeof(v43)), v27 = v28, v29 = stat(objc_msgSend(v28, "fileSystemRepresentation"), &v43), v30 = 0, !v29) && v43.st_mode < 0)
       {
         v30 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v27];
         if (v30)
@@ -3634,25 +3634,25 @@ LABEL_40:
       }
     }
 
-    if (v5 && ![(PFMetadata *)self noFileAccess])
+    if (dataCopy && ![(PFMetadata *)self noFileAccess])
     {
       v41 = 0;
-      v35 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v8 options:1 error:&v41];
+      v35 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:&v41];
       v36 = v41;
-      v23 = [(PFMetadataImage *)self _configureWithImageData:v35 cacheImageSource:v6 cacheImageData:1];
+      v23 = [(PFMetadataImage *)self _configureWithImageData:v35 cacheImageSource:sourceCopy cacheImageData:1];
       if (!v23)
       {
         v37 = metadataLog;
         if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
         {
           v39 = v37;
-          v40 = [(PFMetadata *)self contentType];
+          contentType5 = [(PFMetadata *)self contentType];
           v43.st_dev = 134218754;
           *&v43.st_mode = v35;
           WORD2(v43.st_ino) = 2048;
-          *(&v43.st_ino + 6) = v40;
+          *(&v43.st_ino + 6) = contentType5;
           HIWORD(v43.st_gid) = 2112;
-          *&v43.st_rdev = v8;
+          *&v43.st_rdev = lCopy;
           LOWORD(v43.st_atimespec.tv_sec) = 2112;
           *(&v43.st_atimespec.tv_sec + 2) = v36;
           _os_log_error_impl(&dword_1B35C1000, v39, OS_LOG_TYPE_ERROR, "Asked to cache image data. Unable to configure with data (%p) and contentType (%p) from path '%@'. (%@)", &v43, 0x2Au);
@@ -3662,18 +3662,18 @@ LABEL_40:
 
     else
     {
-      v31 = CGImageSourceCreateWithURL(v8, v22);
+      v31 = CGImageSourceCreateWithURL(lCopy, v22);
       if (v31)
       {
         v32 = v31;
-        v23 = [(PFMetadataImage *)self _configureWithImageSource:v31 cacheImageSource:v6];
+        v23 = [(PFMetadataImage *)self _configureWithImageSource:v31 cacheImageSource:sourceCopy];
         if (!v23)
         {
           v33 = metadataLog;
           if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
           {
             v43.st_dev = 138412290;
-            *&v43.st_mode = v8;
+            *&v43.st_mode = lCopy;
             _os_log_error_impl(&dword_1B35C1000, v33, OS_LOG_TYPE_ERROR, "Failed to get an image source from path '%@'", &v43, 0xCu);
           }
         }
@@ -3687,7 +3687,7 @@ LABEL_40:
         if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
         {
           v43.st_dev = 138412290;
-          *&v43.st_mode = v8;
+          *&v43.st_mode = lCopy;
           _os_log_error_impl(&dword_1B35C1000, v34, OS_LOG_TYPE_ERROR, "Failed to get an image source from path '%@'", &v43, 0xCu);
         }
 
@@ -3704,14 +3704,14 @@ LABEL_41:
   return v23;
 }
 
-- (BOOL)configureWithMetadataPlist:(id)a3
+- (BOOL)configureWithMetadataPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v8.receiver = self;
   v8.super_class = PFMetadataImage;
-  if ([(PFMetadata *)&v8 configureWithMetadataPlist:v4])
+  if ([(PFMetadata *)&v8 configureWithMetadataPlist:plistCopy])
   {
-    v5 = [v4 objectForKeyedSubscript:PFMetadataPlistCgImageProperties];
+    v5 = [plistCopy objectForKeyedSubscript:PFMetadataPlistCgImageProperties];
     v6 = [(PFMetadataImage *)self _configureWithImageProperties:v5];
   }
 
@@ -3723,15 +3723,15 @@ LABEL_41:
   return v6;
 }
 
-- (PFMetadataImage)initWithImageProperties:(id)a3 contentType:(id)a4 options:(unsigned __int16)a5 timeZoneLookup:(id)a6
+- (PFMetadataImage)initWithImageProperties:(id)properties contentType:(id)type options:(unsigned __int16)options timeZoneLookup:(id)lookup
 {
-  v7 = a5;
-  v10 = a3;
+  optionsCopy = options;
+  propertiesCopy = properties;
   v14.receiver = self;
   v14.super_class = PFMetadataImage;
-  v11 = [(PFMetadata *)&v14 initWithContentType:a4 options:v7 timeZoneLookup:a6];
+  v11 = [(PFMetadata *)&v14 initWithContentType:type options:optionsCopy timeZoneLookup:lookup];
   v12 = v11;
-  if (v11 && ![(PFMetadataImage *)v11 _configureWithImageProperties:v10])
+  if (v11 && ![(PFMetadataImage *)v11 _configureWithImageProperties:propertiesCopy])
   {
 
     v12 = 0;
@@ -3740,12 +3740,12 @@ LABEL_41:
   return v12;
 }
 
-- (PFMetadataImage)initWithImageSourceProxyOrEncodedImagePropertyData:(id)a3 contentType:(id)a4 timeZoneLookup:(id)a5
+- (PFMetadataImage)initWithImageSourceProxyOrEncodedImagePropertyData:(id)data contentType:(id)type timeZoneLookup:(id)lookup
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PFMetadataImage *)self initWithImageSourceProxyData:v8 contentType:v9 timeZoneLookup:v10];
+  dataCopy = data;
+  typeCopy = type;
+  lookupCopy = lookup;
+  v11 = [(PFMetadataImage *)self initWithImageSourceProxyData:dataCopy contentType:typeCopy timeZoneLookup:lookupCopy];
   v12 = v11;
   if (v11)
   {
@@ -3754,7 +3754,7 @@ LABEL_41:
 
   else
   {
-    v13 = [[PFMetadataImage alloc] initWithEncodedImagePropertyData:v8 contentType:v9 timeZoneLookup:v10];
+    v13 = [[PFMetadataImage alloc] initWithEncodedImagePropertyData:dataCopy contentType:typeCopy timeZoneLookup:lookupCopy];
   }
 
   v14 = v13;
@@ -3762,31 +3762,31 @@ LABEL_41:
   return v14;
 }
 
-- (PFMetadataImage)initWithImageSourceProxyData:(id)a3 contentType:(id)a4 timeZoneLookup:(id)a5
+- (PFMetadataImage)initWithImageSourceProxyData:(id)data contentType:(id)type timeZoneLookup:(id)lookup
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = CGImageSourceCreateWithProxyData();
-  if (v9)
+  typeCopy = type;
+  lookupCopy = lookup;
+  selfCopy = CGImageSourceCreateWithProxyData();
+  if (selfCopy)
   {
-    v10 = [(PFMetadataImage *)self initWithImageSource:v9 contentType:v7 options:12 timeZoneLookup:v8 cacheImageSource:1];
-    CFRelease(v9);
+    v10 = [(PFMetadataImage *)self initWithImageSource:selfCopy contentType:typeCopy options:12 timeZoneLookup:lookupCopy cacheImageSource:1];
+    CFRelease(selfCopy);
     self = v10;
-    v9 = self;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (PFMetadataImage)initWithEncodedImagePropertyData:(id)a3 contentType:(id)a4 timeZoneLookup:(id)a5
+- (PFMetadataImage)initWithEncodedImagePropertyData:(id)data contentType:(id)type timeZoneLookup:(id)lookup
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(PFMetadata *)self initWithContentType:a4 options:12 timeZoneLookup:a5];
+  dataCopy = data;
+  v9 = [(PFMetadata *)self initWithContentType:type options:12 timeZoneLookup:lookup];
   if (v9)
   {
     v16 = 0;
-    v10 = [PFMetadataImage propertyListObjectFromEncodedData:v8 expectedClass:objc_opt_class() options:0 error:&v16];
+    v10 = [PFMetadataImage propertyListObjectFromEncodedData:dataCopy expectedClass:objc_opt_class() options:0 error:&v16];
     v11 = v16;
     if (![(PFMetadataImage *)v9 _configureWithImageProperties:v10])
     {
@@ -3794,9 +3794,9 @@ LABEL_41:
       if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
       {
         v14 = v12;
-        v15 = [v8 length];
+        v15 = [dataCopy length];
         *buf = 134218498;
-        v18 = v8;
+        v18 = dataCopy;
         v19 = 2048;
         v20 = v15;
         v21 = 2114;
@@ -3813,12 +3813,12 @@ LABEL_41:
   return v9;
 }
 
-- (PFMetadataImage)initWithImageSource:(CGImageSource *)a3 contentType:(id)a4 options:(unsigned __int16)a5 timeZoneLookup:(id)a6 cacheImageSource:(BOOL)a7
+- (PFMetadataImage)initWithImageSource:(CGImageSource *)source contentType:(id)type options:(unsigned __int16)options timeZoneLookup:(id)lookup cacheImageSource:(BOOL)imageSource
 {
-  v7 = a7;
-  v9 = [(PFMetadata *)self initWithContentType:a4 options:a5 timeZoneLookup:a6];
+  imageSourceCopy = imageSource;
+  v9 = [(PFMetadata *)self initWithContentType:type options:options timeZoneLookup:lookup];
   v10 = v9;
-  if (v9 && ![(PFMetadataImage *)v9 _configureWithImageSource:a3 cacheImageSource:v7])
+  if (v9 && ![(PFMetadataImage *)v9 _configureWithImageSource:source cacheImageSource:imageSourceCopy])
   {
 
     return 0;
@@ -3827,15 +3827,15 @@ LABEL_41:
   return v10;
 }
 
-- (PFMetadataImage)initWithImageData:(id)a3 contentType:(id)a4 options:(unsigned __int16)a5 timeZoneLookup:(id)a6 cacheImageSource:(BOOL)a7 cacheImageData:(BOOL)a8
+- (PFMetadataImage)initWithImageData:(id)data contentType:(id)type options:(unsigned __int16)options timeZoneLookup:(id)lookup cacheImageSource:(BOOL)source cacheImageData:(BOOL)imageData
 {
-  v8 = a8;
-  v9 = a7;
-  v11 = a5;
-  v14 = a3;
-  v15 = [(PFMetadata *)self initWithContentType:a4 options:v11 timeZoneLookup:a6];
+  imageDataCopy = imageData;
+  sourceCopy = source;
+  optionsCopy = options;
+  dataCopy = data;
+  v15 = [(PFMetadata *)self initWithContentType:type options:optionsCopy timeZoneLookup:lookup];
   v16 = v15;
-  if (v15 && ![(PFMetadataImage *)v15 _configureWithImageData:v14 cacheImageSource:v9 cacheImageData:v8])
+  if (v15 && ![(PFMetadataImage *)v15 _configureWithImageData:dataCopy cacheImageSource:sourceCopy cacheImageData:imageDataCopy])
   {
 
     v16 = 0;
@@ -3844,15 +3844,15 @@ LABEL_41:
   return v16;
 }
 
-- (PFMetadataImage)initWithImageURL:(id)a3 contentType:(id)a4 options:(unsigned __int16)a5 timeZoneLookup:(id)a6 cacheImageSource:(BOOL)a7 cacheImageData:(BOOL)a8
+- (PFMetadataImage)initWithImageURL:(id)l contentType:(id)type options:(unsigned __int16)options timeZoneLookup:(id)lookup cacheImageSource:(BOOL)source cacheImageData:(BOOL)data
 {
-  v8 = a8;
-  v9 = a7;
-  v11 = a5;
-  v14 = a3;
-  v15 = [(PFMetadata *)self initWithContentType:a4 options:v11 timeZoneLookup:a6];
+  dataCopy = data;
+  sourceCopy = source;
+  optionsCopy = options;
+  lCopy = l;
+  v15 = [(PFMetadata *)self initWithContentType:type options:optionsCopy timeZoneLookup:lookup];
   v16 = v15;
-  if (v15 && ![(PFMetadataImage *)v15 _configureWithImageURL:v14 cacheImageSource:v9 cacheImageData:v8])
+  if (v15 && ![(PFMetadataImage *)v15 _configureWithImageURL:lCopy cacheImageSource:sourceCopy cacheImageData:dataCopy])
   {
 
     v16 = 0;
@@ -3912,17 +3912,17 @@ void __49__PFMetadataImage_defaultOptionsForCGImageSource__block_invoke()
   defaultOptionsForCGImageSource_options = v0;
 }
 
-+ (id)stringByRemovingImageIoDotSuffixFromString:(id)a3
++ (id)stringByRemovingImageIoDotSuffixFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 hasSuffix:@"."])
+  stringCopy = string;
+  if ([stringCopy hasSuffix:@"."])
   {
-    v4 = [v3 stringByReplacingOccurrencesOfString:@"." withString:&stru_1F2A8EB68];
+    v4 = [stringCopy stringByReplacingOccurrencesOfString:@"." withString:&stru_1F2A8EB68];
 
-    v3 = v4;
+    stringCopy = v4;
   }
 
-  return v3;
+  return stringCopy;
 }
 
 @end

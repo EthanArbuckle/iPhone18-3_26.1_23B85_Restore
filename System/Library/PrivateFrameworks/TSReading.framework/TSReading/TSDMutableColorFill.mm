@@ -1,30 +1,30 @@
 @interface TSDMutableColorFill
-- (void)setBrightness:(double)a3;
-- (void)setColor:(id)a3;
-- (void)setHue:(double)a3;
-- (void)setOpacity:(double)a3;
-- (void)setSaturation:(double)a3;
+- (void)setBrightness:(double)brightness;
+- (void)setColor:(id)color;
+- (void)setHue:(double)hue;
+- (void)setOpacity:(double)opacity;
+- (void)setSaturation:(double)saturation;
 @end
 
 @implementation TSDMutableColorFill
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
   mColor = self->super.mColor;
   if (([(TSUColor *)mColor isEqual:?]& 1) == 0)
   {
-    self->super.mColor = [a3 copy];
+    self->super.mColor = [color copy];
   }
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
-  v4 = [(TSUColor *)[(TSDColorFill *)self color] colorWithAlphaComponent:a3];
+  v4 = [(TSUColor *)[(TSDColorFill *)self color] colorWithAlphaComponent:opacity];
 
   [(TSDMutableColorFill *)self setColor:v4];
 }
 
-- (void)setHue:(double)a3
+- (void)setHue:(double)hue
 {
   v5 = MEMORY[0x277D6C2A8];
   [(TSDColorFill *)self saturation];
@@ -32,12 +32,12 @@
   [(TSDColorFill *)self brightness];
   v9 = v8;
   [(TSDColorFill *)self opacity];
-  v11 = [v5 colorWithHue:a3 saturation:v7 brightness:v9 alpha:v10];
+  v11 = [v5 colorWithHue:hue saturation:v7 brightness:v9 alpha:v10];
 
   [(TSDMutableColorFill *)self setColor:v11];
 }
 
-- (void)setBrightness:(double)a3
+- (void)setBrightness:(double)brightness
 {
   v5 = MEMORY[0x277D6C2A8];
   [(TSDColorFill *)self hue];
@@ -45,12 +45,12 @@
   [(TSDColorFill *)self saturation];
   v9 = v8;
   [(TSDColorFill *)self opacity];
-  v11 = [v5 colorWithHue:v7 saturation:v9 brightness:a3 alpha:v10];
+  v11 = [v5 colorWithHue:v7 saturation:v9 brightness:brightness alpha:v10];
 
   [(TSDMutableColorFill *)self setColor:v11];
 }
 
-- (void)setSaturation:(double)a3
+- (void)setSaturation:(double)saturation
 {
   v5 = MEMORY[0x277D6C2A8];
   [(TSDColorFill *)self hue];
@@ -58,7 +58,7 @@
   [(TSDColorFill *)self brightness];
   v9 = v8;
   [(TSDColorFill *)self opacity];
-  v11 = [v5 colorWithHue:v7 saturation:a3 brightness:v9 alpha:v10];
+  v11 = [v5 colorWithHue:v7 saturation:saturation brightness:v9 alpha:v10];
 
   [(TSDMutableColorFill *)self setColor:v11];
 }

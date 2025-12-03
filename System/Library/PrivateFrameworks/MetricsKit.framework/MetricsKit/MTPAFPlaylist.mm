@@ -1,25 +1,25 @@
 @interface MTPAFPlaylist
-- (MTPAFPlaylist)initWithSharedMetricsData:(id)a3;
+- (MTPAFPlaylist)initWithSharedMetricsData:(id)data;
 - (id)currentItems;
-- (void)addItemStartAtMilliseconds:(unint64_t)a3 endAtMilliseconds:(unint64_t)a4 metricsData:(id)a5;
-- (void)updateEventData:(id)a3;
+- (void)addItemStartAtMilliseconds:(unint64_t)milliseconds endAtMilliseconds:(unint64_t)atMilliseconds metricsData:(id)data;
+- (void)updateEventData:(id)data;
 @end
 
 @implementation MTPAFPlaylist
 
-- (MTPAFPlaylist)initWithSharedMetricsData:(id)a3
+- (MTPAFPlaylist)initWithSharedMetricsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = MTPAFPlaylist;
   v5 = [(MTPAFPlaylist *)&v9 init];
   if (v5)
   {
-    v6 = [v4 mt_deepCopy];
-    [(MTPAFPlaylist *)v5 setMetricsData:v6];
+    mt_deepCopy = [dataCopy mt_deepCopy];
+    [(MTPAFPlaylist *)v5 setMetricsData:mt_deepCopy];
 
-    v7 = [MEMORY[0x277CBEB18] array];
-    [(MTPAFPlaylist *)v5 setItems:v7];
+    array = [MEMORY[0x277CBEB18] array];
+    [(MTPAFPlaylist *)v5 setItems:array];
   }
 
   return v5;
@@ -27,48 +27,48 @@
 
 - (id)currentItems
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MTPAFPlaylist *)v2 items];
-  v4 = [v3 copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  items = [(MTPAFPlaylist *)selfCopy items];
+  v4 = [items copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (void)addItemStartAtMilliseconds:(unint64_t)a3 endAtMilliseconds:(unint64_t)a4 metricsData:(id)a5
+- (void)addItemStartAtMilliseconds:(unint64_t)milliseconds endAtMilliseconds:(unint64_t)atMilliseconds metricsData:(id)data
 {
-  v11 = a5;
-  v8 = [[MTPAFPlaylistItem alloc] initWithStart:a3 end:a4 metricsData:v11];
-  v9 = self;
-  objc_sync_enter(v9);
-  v10 = [(MTPAFPlaylist *)v9 items];
-  [v10 addObject:v8];
+  dataCopy = data;
+  v8 = [[MTPAFPlaylistItem alloc] initWithStart:milliseconds end:atMilliseconds metricsData:dataCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  items = [(MTPAFPlaylist *)selfCopy items];
+  [items addObject:v8];
 
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)updateEventData:(id)a3
+- (void)updateEventData:(id)data
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(MTPAFPlaylist *)v4 metricsData];
+  dataCopy = data;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  metricsData = [(MTPAFPlaylist *)selfCopy metricsData];
 
-  if (v5)
+  if (metricsData)
   {
-    v6 = [(MTPAFPlaylist *)v4 metricsData];
-    v7 = [v6 arrayByAddingObjectsFromArray:v8];
-    [(MTPAFPlaylist *)v4 setMetricsData:v7];
+    metricsData2 = [(MTPAFPlaylist *)selfCopy metricsData];
+    v7 = [metricsData2 arrayByAddingObjectsFromArray:dataCopy];
+    [(MTPAFPlaylist *)selfCopy setMetricsData:v7];
   }
 
   else
   {
-    [(MTPAFPlaylist *)v4 setMetricsData:v8];
+    [(MTPAFPlaylist *)selfCopy setMetricsData:dataCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

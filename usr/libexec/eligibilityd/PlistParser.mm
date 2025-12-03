@@ -1,7 +1,7 @@
 @interface PlistParser
 - (NSArray)domains;
 - (PlistParser)init;
-- (PlistParser)initWithPlistDictionary:(id)a3 dataStore:(id)a4 error:(id *)a5;
+- (PlistParser)initWithPlistDictionary:(id)dictionary dataStore:(id)store error:(id *)error;
 @end
 
 @implementation PlistParser
@@ -16,11 +16,11 @@
   return v3.super.isa;
 }
 
-- (PlistParser)initWithPlistDictionary:(id)a3 dataStore:(id)a4 error:(id *)a5
+- (PlistParser)initWithPlistDictionary:(id)dictionary dataStore:(id)store error:(id *)error
 {
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   swift_unknownObjectRetain();
-  return sub_10000C0F4(v6, a4);
+  return sub_10000C0F4(v6, store);
 }
 
 - (PlistParser)init

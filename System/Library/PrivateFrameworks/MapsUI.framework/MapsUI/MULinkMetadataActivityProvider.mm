@@ -1,14 +1,14 @@
 @interface MULinkMetadataActivityProvider
-+ (id)activityProviderFromDataProvider:(id)a3;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
-- (void)registerLinkMetadata:(id)a3;
++ (id)activityProviderFromDataProvider:(id)provider;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
+- (void)registerLinkMetadata:(id)metadata;
 @end
 
 @implementation MULinkMetadataActivityProvider
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   cachedLinkMetadata = self->_cachedLinkMetadata;
   if (!cachedLinkMetadata)
   {
@@ -33,25 +33,25 @@
   return v9;
 }
 
-- (void)registerLinkMetadata:(id)a3
+- (void)registerLinkMetadata:(id)metadata
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(metadata);
   linkMetadataBlock = self->_linkMetadataBlock;
   self->_linkMetadataBlock = v4;
 
   MEMORY[0x1EEE66BB8](v4, linkMetadataBlock);
 }
 
-+ (id)activityProviderFromDataProvider:(id)a3
++ (id)activityProviderFromDataProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = objc_alloc_init(MULinkMetadataActivityProvider);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__MULinkMetadataActivityProvider_activityProviderFromDataProvider___block_invoke;
   v7[3] = &unk_1E8218B50;
-  v8 = v3;
-  v5 = v3;
+  v8 = providerCopy;
+  v5 = providerCopy;
   [(MULinkMetadataActivityProvider *)v4 registerLinkMetadata:v7];
 
   return v4;

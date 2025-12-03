@@ -1,17 +1,17 @@
 @interface COSSystemAppsSettingsManager
-- (BOOL)_shouldReloadChangedRow:(id)a3 installed:(BOOL)a4 activeDevice:(id)a5;
-- (COSSystemAppsSettingsManager)initWithDelegate:(id)a3;
+- (BOOL)_shouldReloadChangedRow:(id)row installed:(BOOL)installed activeDevice:(id)device;
+- (COSSystemAppsSettingsManager)initWithDelegate:(id)delegate;
 - (COSSystemAppsSettingsManagerDelegate)delegate;
-- (id)_systemAppSpecifierDictForBundleRow:(id)a3;
-- (void)_addRequiredWatchAppsToMapping:(id)a3;
+- (id)_systemAppSpecifierDictForBundleRow:(id)row;
+- (void)_addRequiredWatchAppsToMapping:(id)mapping;
 - (void)_buildSystemAppSpecifierDicts;
 - (void)_loadSystemAppSettings;
 - (void)_notifyThatFullSpecifierDictListIsLoaded;
-- (void)_notifyThatSpecifiersShouldBeRemoved:(id)a3;
+- (void)_notifyThatSpecifiersShouldBeRemoved:(id)removed;
 - (void)_recheckInstallStateForAllBundleRows;
-- (void)_setUpBundleRows:(id)a3;
+- (void)_setUpBundleRows:(id)rows;
 - (void)buildSystemAppSettings;
-- (void)watchAppsChangedForBundleRows:(id)a3 installed:(BOOL)a4;
+- (void)watchAppsChangedForBundleRows:(id)rows installed:(BOOL)installed;
 @end
 
 @implementation COSSystemAppsSettingsManager
@@ -26,13 +26,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s - Loading system app bundles", buf, 0xCu);
   }
 
-  v4 = [(COSSystemAppsSettingsManager *)self bundleLoadingQueue];
+  bundleLoadingQueue = [(COSSystemAppsSettingsManager *)self bundleLoadingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000088D4;
   block[3] = &unk_1002682F0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(bundleLoadingQueue, block);
 }
 
 - (void)_buildSystemAppSpecifierDicts
@@ -45,9 +45,9 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s - building system app specifier bundle dictionaries", buf, 0xCu);
   }
 
-  v4 = [(COSSystemAppsSettingsManager *)self systemAppsSpecifiersBundleDicts];
+  systemAppsSpecifiersBundleDicts = [(COSSystemAppsSettingsManager *)self systemAppsSpecifiersBundleDicts];
 
-  if (!v4)
+  if (!systemAppsSpecifiersBundleDicts)
   {
     v5 = objc_opt_new();
     [(COSSystemAppsSettingsManager *)self setSystemAppsSpecifiersBundleDicts:v5];
@@ -58,8 +58,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(COSSystemAppsSettingsManager *)self bundleRows];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  bundleRows = [(COSSystemAppsSettingsManager *)self bundleRows];
+  v8 = [bundleRows countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -71,7 +71,7 @@
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(bundleRows);
         }
 
         v12 = [(COSSystemAppsSettingsManager *)self _systemAppSpecifierDictForBundleRow:*(*(&v13 + 1) + 8 * v11)];
@@ -84,7 +84,7 @@
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [bundleRows countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -95,8 +95,8 @@
 
 - (void)_notifyThatFullSpecifierDictListIsLoaded
 {
-  v3 = [(COSSystemAppsSettingsManager *)self systemAppsSpecifiersBundleDicts];
-  v4 = [v3 copy];
+  systemAppsSpecifiersBundleDicts = [(COSSystemAppsSettingsManager *)self systemAppsSpecifiersBundleDicts];
+  v4 = [systemAppsSpecifiersBundleDicts copy];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -115,16 +115,16 @@
   return WeakRetained;
 }
 
-- (COSSystemAppsSettingsManager)initWithDelegate:(id)a3
+- (COSSystemAppsSettingsManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = COSSystemAppsSettingsManager;
   v5 = [(COSSystemAppsSettingsManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v8 = dispatch_queue_create("com.apple.Bridge.systemapploading", v7);
     bundleLoadingQueue = v6->_bundleLoadingQueue;
@@ -142,18 +142,18 @@
 
 - (void)buildSystemAppSettings
 {
-  v3 = [(COSSystemAppsSettingsManager *)self bundleLoadingQueue];
+  bundleLoadingQueue = [(COSSystemAppsSettingsManager *)self bundleLoadingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011D3E4;
   block[3] = &unk_1002682F0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(bundleLoadingQueue, block);
 }
 
-- (void)_setUpBundleRows:(id)a3
+- (void)_setUpBundleRows:(id)rows
 {
-  v4 = a3;
+  rowsCopy = rows;
   v5 = objc_opt_new();
   [(COSSystemAppsSettingsManager *)self setBundleRows:v5];
 
@@ -162,7 +162,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = rowsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -185,8 +185,8 @@
 
         [(COSSystemAppsSettingsManager *)self _addRequiredWatchAppsToMapping:v15];
         [(COSSystemAppSettingsBundleRow *)v15 setAreRequiredWatchAppsInstalled:v6];
-        v16 = [(COSSystemAppsSettingsManager *)self bundleRows];
-        [v16 addObject:v15];
+        bundleRows = [(COSSystemAppsSettingsManager *)self bundleRows];
+        [bundleRows addObject:v15];
 
         v11 = v11 + 1;
       }
@@ -206,8 +206,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(COSSystemAppsSettingsManager *)self bundleRows];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  bundleRows = [(COSSystemAppsSettingsManager *)self bundleRows];
+  v5 = [bundleRows countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -219,7 +219,7 @@
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(bundleRows);
         }
 
         [*(*(&v9 + 1) + 8 * v8) setAreRequiredWatchAppsInstalled:v3];
@@ -227,22 +227,22 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [bundleRows countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_addRequiredWatchAppsToMapping:(id)a3
+- (void)_addRequiredWatchAppsToMapping:(id)mapping
 {
-  v4 = a3;
-  v5 = [v4 requiredInstalledWatchApps];
+  mappingCopy = mapping;
+  requiredInstalledWatchApps = [mappingCopy requiredInstalledWatchApps];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [requiredInstalledWatchApps countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -253,20 +253,20 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(requiredInstalledWatchApps);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [(COSSystemAppsSettingsManager *)self watchBundleIDToBundleRowMapping];
+        watchBundleIDToBundleRowMapping = [(COSSystemAppsSettingsManager *)self watchBundleIDToBundleRowMapping];
 
-        if (!v11)
+        if (!watchBundleIDToBundleRowMapping)
         {
           v12 = objc_opt_new();
           [(COSSystemAppsSettingsManager *)self setWatchBundleIDToBundleRowMapping:v12];
         }
 
-        v13 = [(COSSystemAppsSettingsManager *)self watchBundleIDToBundleRowMapping];
-        v14 = [v13 objectForKeyedSubscript:v10];
+        watchBundleIDToBundleRowMapping2 = [(COSSystemAppsSettingsManager *)self watchBundleIDToBundleRowMapping];
+        v14 = [watchBundleIDToBundleRowMapping2 objectForKeyedSubscript:v10];
         v15 = v14;
         if (v14)
         {
@@ -280,87 +280,87 @@
 
         v17 = v16;
 
-        if (([v17 containsObject:v4] & 1) == 0)
+        if (([v17 containsObject:mappingCopy] & 1) == 0)
         {
-          [v17 addObject:v4];
-          v18 = [(COSSystemAppsSettingsManager *)self watchBundleIDToBundleRowMapping];
-          [v18 setObject:v17 forKeyedSubscript:v10];
+          [v17 addObject:mappingCopy];
+          watchBundleIDToBundleRowMapping3 = [(COSSystemAppsSettingsManager *)self watchBundleIDToBundleRowMapping];
+          [watchBundleIDToBundleRowMapping3 setObject:v17 forKeyedSubscript:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [requiredInstalledWatchApps countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
   }
 }
 
-- (id)_systemAppSpecifierDictForBundleRow:(id)a3
+- (id)_systemAppSpecifierDictForBundleRow:(id)row
 {
-  v3 = a3;
-  if ([v3 requiredAppsInstalled])
+  rowCopy = row;
+  if ([rowCopy requiredAppsInstalled])
   {
-    v4 = [v3 settingsBundleDict];
+    settingsBundleDict = [rowCopy settingsBundleDict];
   }
 
   else
   {
-    v4 = 0;
+    settingsBundleDict = 0;
   }
 
-  return v4;
+  return settingsBundleDict;
 }
 
-- (void)_notifyThatSpecifiersShouldBeRemoved:(id)a3
+- (void)_notifyThatSpecifiersShouldBeRemoved:(id)removed
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10011D990;
   v4[3] = &unk_100268358;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  removedCopy = removed;
+  v3 = removedCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)watchAppsChangedForBundleRows:(id)a3 installed:(BOOL)a4
+- (void)watchAppsChangedForBundleRows:(id)rows installed:(BOOL)installed
 {
-  v6 = a3;
-  v7 = [(COSSystemAppsSettingsManager *)self bundleLoadingQueue];
+  rowsCopy = rows;
+  bundleLoadingQueue = [(COSSystemAppsSettingsManager *)self bundleLoadingQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10011DAA0;
   block[3] = &unk_10026B130;
-  v10 = v6;
-  v11 = self;
-  v12 = a4;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = rowsCopy;
+  selfCopy = self;
+  installedCopy = installed;
+  v8 = rowsCopy;
+  dispatch_async(bundleLoadingQueue, block);
 }
 
-- (BOOL)_shouldReloadChangedRow:(id)a3 installed:(BOOL)a4 activeDevice:(id)a5
+- (BOOL)_shouldReloadChangedRow:(id)row installed:(BOOL)installed activeDevice:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 requiredAppsInstalled];
-  [v7 setAreRequiredWatchAppsInstalled:v8];
+  installedCopy = installed;
+  rowCopy = row;
+  deviceCopy = device;
+  requiredAppsInstalled = [rowCopy requiredAppsInstalled];
+  [rowCopy setAreRequiredWatchAppsInstalled:deviceCopy];
 
-  if (v9 != [v7 requiredAppsInstalled] && objc_msgSend(v7, "requiredAppsInstalled") == v6)
+  if (requiredAppsInstalled != [rowCopy requiredAppsInstalled] && objc_msgSend(rowCopy, "requiredAppsInstalled") == installedCopy)
   {
     v11 = pbb_bridge_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 identifier];
-      v13 = v12;
+      identifier = [rowCopy identifier];
+      v13 = identifier;
       v14 = @"uninstalled";
-      if (v6)
+      if (installedCopy)
       {
         v14 = @"installed";
       }
 
       v16 = 138412546;
-      v17 = v12;
+      v17 = identifier;
       v18 = 2112;
       v19 = v14;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Watch app corresponding with this dependent row %@ has been %@, flagging row for reload", &v16, 0x16u);

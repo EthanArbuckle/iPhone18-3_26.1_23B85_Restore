@@ -1,23 +1,23 @@
 @interface HMDHH1EOLMessageFilter
-+ (BOOL)isAllowedMessage:(id)a3;
++ (BOOL)isAllowedMessage:(id)message;
 + (id)logCategory;
-- (BOOL)acceptMessage:(id)a3 target:(id)a4 errorReason:(id *)a5;
+- (BOOL)acceptMessage:(id)message target:(id)target errorReason:(id *)reason;
 @end
 
 @implementation HMDHH1EOLMessageFilter
 
-- (BOOL)acceptMessage:(id)a3 target:(id)a4 errorReason:(id *)a5
+- (BOOL)acceptMessage:(id)message target:(id)target errorReason:(id *)reason
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 name];
-  v11 = [HMDHH1EOLMessageFilter isAllowedMessage:v10];
+  messageCopy = message;
+  targetCopy = target;
+  name = [messageCopy name];
+  v11 = [HMDHH1EOLMessageFilter isAllowedMessage:name];
 
   if (!v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -25,12 +25,12 @@
       v18 = 138543618;
       v19 = v15;
       v20 = 2112;
-      v21 = v8;
+      v21 = messageCopy;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Rejecting message: %@", &v18, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    *a5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
+    *reason = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -59,16 +59,16 @@ uint64_t __37__HMDHH1EOLMessageFilter_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (BOOL)isAllowedMessage:(id)a3
++ (BOOL)isAllowedMessage:(id)message
 {
   v3 = isAllowedMessage__pred_476;
-  v4 = a3;
+  messageCopy = message;
   if (v3 != -1)
   {
     dispatch_once(&isAllowedMessage__pred_476, &__block_literal_global_479);
   }
 
-  v5 = [isAllowedMessage___allowedMessages_477 containsObject:v4];
+  v5 = [isAllowedMessage___allowedMessages_477 containsObject:messageCopy];
 
   return v5;
 }

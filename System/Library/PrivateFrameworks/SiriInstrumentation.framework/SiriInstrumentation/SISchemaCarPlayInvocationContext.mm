@@ -1,26 +1,26 @@
 @interface SISchemaCarPlayInvocationContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaCarPlayInvocationContext)initWithDictionary:(id)a3;
-- (SISchemaCarPlayInvocationContext)initWithJSON:(id)a3;
+- (SISchemaCarPlayInvocationContext)initWithDictionary:(id)dictionary;
+- (SISchemaCarPlayInvocationContext)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasCarPlayConnection:(BOOL)a3;
-- (void)setHasEnhancedVoiceTriggerMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasCarPlayConnection:(BOOL)connection;
+- (void)setHasEnhancedVoiceTriggerMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaCarPlayInvocationContext
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bundleID)
   {
-    v4 = [(SISchemaCarPlayInvocationContext *)self bundleID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"bundleID"];
+    bundleID = [(SISchemaCarPlayInvocationContext *)self bundleID];
+    v5 = [bundleID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"bundleID"];
   }
 
   has = self->_has;
@@ -43,7 +43,7 @@ LABEL_11:
       v10 = off_1E78E3730[v9];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"directAction"];
+    [dictionary setObject:v10 forKeyedSubscript:@"directAction"];
     if ((*&self->_has & 2) == 0)
     {
       goto LABEL_19;
@@ -63,7 +63,7 @@ LABEL_11:
     v8 = off_1E78E3718[v7];
   }
 
-  [v3 setObject:v8 forKeyedSubscript:@"carPlayConnection"];
+  [dictionary setObject:v8 forKeyedSubscript:@"carPlayConnection"];
   has = self->_has;
   if (has)
   {
@@ -85,24 +85,24 @@ LABEL_15:
       v12 = off_1E78E3780[v11];
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"enhancedVoiceTriggerMode"];
+    [dictionary setObject:v12 forKeyedSubscript:@"enhancedVoiceTriggerMode"];
   }
 
 LABEL_19:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (SISchemaCarPlayInvocationContext)initWithDictionary:(id)a3
+- (SISchemaCarPlayInvocationContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaCarPlayInvocationContext;
   v5 = [(SISchemaCarPlayInvocationContext *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"bundleID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,21 +110,21 @@ LABEL_19:
       [(SISchemaCarPlayInvocationContext *)v5 setBundleID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"directAction"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"directAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaCarPlayInvocationContext setDirectAction:](v5, "setDirectAction:", [v8 intValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"enhancedVoiceTriggerMode"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"enhancedVoiceTriggerMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaCarPlayInvocationContext setEnhancedVoiceTriggerMode:](v5, "setEnhancedVoiceTriggerMode:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"carPlayConnection"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"carPlayConnection"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -137,30 +137,30 @@ LABEL_19:
   return v5;
 }
 
-- (SISchemaCarPlayInvocationContext)initWithJSON:(id)a3
+- (SISchemaCarPlayInvocationContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaCarPlayInvocationContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaCarPlayInvocationContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaCarPlayInvocationContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -212,30 +212,30 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(SISchemaCarPlayInvocationContext *)self bundleID];
-  v6 = [v4 bundleID];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  bundleID = [(SISchemaCarPlayInvocationContext *)self bundleID];
+  bundleID2 = [equalCopy bundleID];
+  v7 = bundleID2;
+  if ((bundleID != 0) == (bundleID2 == 0))
   {
 
     goto LABEL_20;
   }
 
-  v8 = [(SISchemaCarPlayInvocationContext *)self bundleID];
-  if (v8)
+  bundleID3 = [(SISchemaCarPlayInvocationContext *)self bundleID];
+  if (bundleID3)
   {
-    v9 = v8;
-    v10 = [(SISchemaCarPlayInvocationContext *)self bundleID];
-    v11 = [v4 bundleID];
-    v12 = [v10 isEqual:v11];
+    v9 = bundleID3;
+    bundleID4 = [(SISchemaCarPlayInvocationContext *)self bundleID];
+    bundleID5 = [equalCopy bundleID];
+    v12 = [bundleID4 isEqual:bundleID5];
 
     if (!v12)
     {
@@ -248,7 +248,7 @@ LABEL_4:
   }
 
   has = self->_has;
-  v14 = v4[28];
+  v14 = equalCopy[28];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_20:
@@ -259,13 +259,13 @@ LABEL_20:
   if (*&has)
   {
     directAction = self->_directAction;
-    if (directAction != [v4 directAction])
+    if (directAction != [equalCopy directAction])
     {
       goto LABEL_20;
     }
 
     has = self->_has;
-    v14 = v4[28];
+    v14 = equalCopy[28];
   }
 
   v16 = (*&has >> 1) & 1;
@@ -277,10 +277,10 @@ LABEL_20:
   if (v16)
   {
     enhancedVoiceTriggerMode = self->_enhancedVoiceTriggerMode;
-    if (enhancedVoiceTriggerMode == [v4 enhancedVoiceTriggerMode])
+    if (enhancedVoiceTriggerMode == [equalCopy enhancedVoiceTriggerMode])
     {
       has = self->_has;
-      v14 = v4[28];
+      v14 = equalCopy[28];
       goto LABEL_16;
     }
 
@@ -297,7 +297,7 @@ LABEL_16:
   if (v18)
   {
     carPlayConnection = self->_carPlayConnection;
-    if (carPlayConnection != [v4 carPlayConnection])
+    if (carPlayConnection != [equalCopy carPlayConnection])
     {
       goto LABEL_20;
     }
@@ -309,12 +309,12 @@ LABEL_21:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(SISchemaCarPlayInvocationContext *)self bundleID];
+  toCopy = to;
+  bundleID = [(SISchemaCarPlayInvocationContext *)self bundleID];
 
-  if (v4)
+  if (bundleID)
   {
     PBDataWriterWriteStringField();
   }
@@ -326,24 +326,24 @@ LABEL_21:
     has = self->_has;
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasCarPlayConnection:(BOOL)a3
+- (void)setHasCarPlayConnection:(BOOL)connection
 {
-  if (a3)
+  if (connection)
   {
     v3 = 4;
   }
@@ -356,9 +356,9 @@ LABEL_21:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEnhancedVoiceTriggerMode:(BOOL)a3
+- (void)setHasEnhancedVoiceTriggerMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 2;
   }

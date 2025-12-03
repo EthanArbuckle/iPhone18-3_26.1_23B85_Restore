@@ -1,6 +1,6 @@
 @interface HMSUIMovieLoopPLayer
 + (Class)layerClass;
-- (_TtC13HearingModeUI20HMSUIMovieLoopPLayer)initWithFrame:(CGRect)a3;
+- (_TtC13HearingModeUI20HMSUIMovieLoopPLayer)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -15,11 +15,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2520339D8();
 }
 
-- (_TtC13HearingModeUI20HMSUIMovieLoopPLayer)initWithFrame:(CGRect)a3
+- (_TtC13HearingModeUI20HMSUIMovieLoopPLayer)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

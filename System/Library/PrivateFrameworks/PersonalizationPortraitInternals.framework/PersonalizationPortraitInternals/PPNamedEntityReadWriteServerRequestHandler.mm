@@ -1,48 +1,48 @@
 @interface PPNamedEntityReadWriteServerRequestHandler
-- (void)clearWithCompletion:(id)a3;
-- (void)cloudSyncWithCompletion:(id)a3;
-- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 completion:(id)a4;
-- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 completion:(id)a5;
-- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 completion:(id)a6;
-- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 completion:(id)a5;
-- (void)donateLocationNamedEntities:(id)a3 bundleId:(id)a4 groupId:(id)a5 completion:(id)a6;
-- (void)donateMapItem:(id)a3 forPlaceName:(id)a4 completion:(id)a5;
-- (void)flushDonationsWithCompletion:(id)a3;
-- (void)removeMapItemForPlaceName:(id)a3 completion:(id)a4;
-- (void)removeMapItemsBeforeCutoffDate:(id)a3 completion:(id)a4;
+- (void)clearWithCompletion:(id)completion;
+- (void)cloudSyncWithCompletion:(id)completion;
+- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id completion:(id)completion;
+- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id documentIds:(id)ids completion:(id)completion;
+- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date completion:(id)completion;
+- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupIds:(id)ids completion:(id)completion;
+- (void)donateLocationNamedEntities:(id)entities bundleId:(id)id groupId:(id)groupId completion:(id)completion;
+- (void)donateMapItem:(id)item forPlaceName:(id)name completion:(id)completion;
+- (void)flushDonationsWithCompletion:(id)completion;
+- (void)removeMapItemForPlaceName:(id)name completion:(id)completion;
+- (void)removeMapItemsBeforeCutoffDate:(id)date completion:(id)completion;
 @end
 
 @implementation PPNamedEntityReadWriteServerRequestHandler
 
-- (void)donateLocationNamedEntities:(id)a3 bundleId:(id)a4 groupId:(id)a5 completion:(id)a6
+- (void)donateLocationNamedEntities:(id)entities bundleId:(id)id groupId:(id)groupId completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  entitiesCopy = entities;
+  completionCopy = completion;
+  groupIdCopy = groupId;
+  idCopy = id;
   v13 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v20 = [v9 count];
+    v20 = [entitiesCopy count];
     _os_log_impl(&dword_23224A000, v13, OS_LOG_TYPE_DEFAULT, "PPNamedEntityReadWriteServer: donateLocationNamedEntities: %tu entities", buf, 0xCu);
   }
 
   v14 = +[PPLocalNamedEntityStore defaultStore];
   v18 = 0;
-  v15 = [v14 donateLocationNamedEntities:v9 bundleId:v12 groupId:v11 error:&v18];
+  v15 = [v14 donateLocationNamedEntities:entitiesCopy bundleId:idCopy groupId:groupIdCopy error:&v18];
 
   v16 = v18;
-  v10[2](v10, v15, v16);
+  completionCopy[2](completionCopy, v15, v16);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeMapItemsBeforeCutoffDate:(id)a3 completion:(id)a4
+- (void)removeMapItemsBeforeCutoffDate:(id)date completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  dateCopy = date;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -52,16 +52,16 @@
 
   v8 = +[PPLocalNamedEntityStore defaultStore];
   v11 = 0;
-  v9 = [v8 removeMapItemsBeforeCutoffDate:v6 error:&v11];
+  v9 = [v8 removeMapItemsBeforeCutoffDate:dateCopy error:&v11];
 
   v10 = v11;
-  v5[2](v5, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
-- (void)removeMapItemForPlaceName:(id)a3 completion:(id)a4
+- (void)removeMapItemForPlaceName:(id)name completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  nameCopy = name;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -71,17 +71,17 @@
 
   v8 = +[PPLocalNamedEntityStore defaultStore];
   v11 = 0;
-  v9 = [v8 removeMapItemForPlaceName:v6 error:&v11];
+  v9 = [v8 removeMapItemForPlaceName:nameCopy error:&v11];
 
   v10 = v11;
-  v5[2](v5, v9, v10);
+  completionCopy[2](completionCopy, v9, v10);
 }
 
-- (void)donateMapItem:(id)a3 forPlaceName:(id)a4 completion:(id)a5
+- (void)donateMapItem:(id)item forPlaceName:(id)name completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  nameCopy = name;
+  itemCopy = item;
   v10 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -91,15 +91,15 @@
 
   v11 = +[PPLocalNamedEntityStore defaultStore];
   v14 = 0;
-  v12 = [v11 donateMapItem:v9 forPlaceName:v8 error:&v14];
+  v12 = [v11 donateMapItem:itemCopy forPlaceName:nameCopy error:&v14];
 
   v13 = v14;
-  v7[2](v7, v12, v13);
+  completionCopy[2](completionCopy, v12, v13);
 }
 
-- (void)clearWithCompletion:(id)a3
+- (void)clearWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -113,12 +113,12 @@
   v6 = [v5 clearWithError:&v8 deletedCount:buf];
   v7 = v8;
 
-  v3[2](v3, v6, *buf, v7);
+  completionCopy[2](completionCopy, v6, *buf, v7);
 }
 
-- (void)cloudSyncWithCompletion:(id)a3
+- (void)cloudSyncWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -131,15 +131,15 @@
   v6 = [v5 cloudSyncWithError:&v8];
   v7 = v8;
 
-  v3[2](v3, v6, v7);
+  completionCopy[2](completionCopy, v6, v7);
 }
 
-- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupId:(id)a4 olderThanDate:(id)a5 completion:(id)a6
+- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupId:(id)groupId olderThanDate:(id)date completion:(id)completion
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  completionCopy = completion;
+  dateCopy = date;
+  groupIdCopy = groupId;
+  idCopy = id;
   v13 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -150,16 +150,16 @@
   *buf = 0;
   v14 = +[PPLocalNamedEntityStore defaultStore];
   v17 = 0;
-  v15 = [v14 deleteAllNamedEntitiesFromSourcesWithBundleId:v12 groupId:v11 olderThan:v10 deletedCount:buf error:&v17];
+  v15 = [v14 deleteAllNamedEntitiesFromSourcesWithBundleId:idCopy groupId:groupIdCopy olderThan:dateCopy deletedCount:buf error:&v17];
 
   v16 = v17;
-  v9[2](v9, v15, *buf, v16);
+  completionCopy[2](completionCopy, v15, *buf, v16);
 }
 
-- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 completion:(id)a4
+- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  idCopy = id;
   v7 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -170,17 +170,17 @@
   *buf = 0;
   v8 = +[PPLocalNamedEntityStore defaultStore];
   v11 = 0;
-  v9 = [v8 deleteAllNamedEntitiesFromSourcesWithBundleId:v6 deletedCount:buf error:&v11];
+  v9 = [v8 deleteAllNamedEntitiesFromSourcesWithBundleId:idCopy deletedCount:buf error:&v11];
 
   v10 = v11;
-  v5[2](v5, v9, *buf, v10);
+  completionCopy[2](completionCopy, v9, *buf, v10);
 }
 
-- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 groupIds:(id)a4 completion:(id)a5
+- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id groupIds:(id)ids completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  idsCopy = ids;
+  idCopy = id;
   v10 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -191,17 +191,17 @@
   *buf = 0;
   v11 = +[PPLocalNamedEntityStore defaultStore];
   v14 = 0;
-  v12 = [v11 deleteAllNamedEntitiesFromSourcesWithBundleId:v9 groupIds:v8 deletedCount:buf error:&v14];
+  v12 = [v11 deleteAllNamedEntitiesFromSourcesWithBundleId:idCopy groupIds:idsCopy deletedCount:buf error:&v14];
 
   v13 = v14;
-  v7[2](v7, v12, *buf, v13);
+  completionCopy[2](completionCopy, v12, *buf, v13);
 }
 
-- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)a3 documentIds:(id)a4 completion:(id)a5
+- (void)deleteAllNamedEntitiesFromSourcesWithBundleId:(id)id documentIds:(id)ids completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  completionCopy = completion;
+  idsCopy = ids;
+  idCopy = id;
   v10 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -212,16 +212,16 @@
   *buf = 0;
   v11 = +[PPLocalNamedEntityStore defaultStore];
   v14 = 0;
-  v12 = [v11 deleteAllNamedEntitiesFromSourcesWithBundleId:v9 documentIds:v8 deletedCount:buf error:&v14];
+  v12 = [v11 deleteAllNamedEntitiesFromSourcesWithBundleId:idCopy documentIds:idsCopy deletedCount:buf error:&v14];
 
   v13 = v14;
-  v7[2](v7, v12, *buf, v13);
+  completionCopy[2](completionCopy, v12, *buf, v13);
 }
 
-- (void)flushDonationsWithCompletion:(id)a3
+- (void)flushDonationsWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -245,7 +245,7 @@
     }
   }
 
-  v3[2](v3);
+  completionCopy[2](completionCopy);
 
   v9 = *MEMORY[0x277D85DE8];
 }

@@ -1,59 +1,59 @@
 @interface PXAssetLocationAction
-- (id)_undoLocationForAsset:(id)a3;
-- (id)locationForAsset:(id)a3 shifted:(BOOL *)a4;
+- (id)_undoLocationForAsset:(id)asset;
+- (id)locationForAsset:(id)asset shifted:(BOOL *)shifted;
 - (void)_loadOriginalLocationsIfNeeded;
-- (void)_performChangesWithLocationProvider:(id)a3 completionHandler:(id)a4;
+- (void)_performChangesWithLocationProvider:(id)provider completionHandler:(id)handler;
 - (void)_requestRevGeocoding;
 - (void)_sendAnalyticsEvent;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXAssetLocationAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __37__PXAssetLocationAction_performUndo___block_invoke;
   v3[3] = &unk_1E772EB08;
   v3[4] = self;
-  [(PXAssetLocationAction *)self _performChangesWithLocationProvider:v3 completionHandler:a3];
+  [(PXAssetLocationAction *)self _performChangesWithLocationProvider:v3 completionHandler:undo];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   [(PXAssetLocationAction *)self _loadOriginalLocationsIfNeeded];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__PXAssetLocationAction_performAction___block_invoke;
   v5[3] = &unk_1E772EB08;
   v5[4] = self;
-  [(PXAssetLocationAction *)self _performChangesWithLocationProvider:v5 completionHandler:v4];
+  [(PXAssetLocationAction *)self _performChangesWithLocationProvider:v5 completionHandler:actionCopy];
 }
 
-- (void)_performChangesWithLocationProvider:(id)a3 completionHandler:(id)a4
+- (void)_performChangesWithLocationProvider:(id)provider completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PXAssetLocationAction *)self onUnitChange];
+  providerCopy = provider;
+  handlerCopy = handler;
+  onUnitChange = [(PXAssetLocationAction *)self onUnitChange];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__PXAssetLocationAction__performChangesWithLocationProvider_completionHandler___block_invoke;
   v14[3] = &unk_1E7744FE0;
   v14[4] = self;
-  v15 = v6;
-  v16 = v8;
+  v15 = providerCopy;
+  v16 = onUnitChange;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__PXAssetLocationAction__performChangesWithLocationProvider_completionHandler___block_invoke_2;
   v12[3] = &unk_1E774BD88;
   v12[4] = self;
-  v13 = v7;
-  v9 = v7;
-  v10 = v8;
-  v11 = v6;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = onUnitChange;
+  v11 = providerCopy;
   [(PXPhotosAction *)self performChanges:v14 completionHandler:v12];
 }
 
@@ -108,11 +108,11 @@ void __79__PXAssetLocationAction__performChangesWithLocationProvider_completionH
 - (void)_sendAnalyticsEvent
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v3 = [(PXAssetLocationAction *)self analyticsActionString];
-  v4 = v3;
-  if (v3)
+  analyticsActionString = [(PXAssetLocationAction *)self analyticsActionString];
+  v4 = analyticsActionString;
+  if (analyticsActionString)
   {
-    v5 = v3;
+    v5 = analyticsActionString;
   }
 
   else
@@ -122,8 +122,8 @@ void __79__PXAssetLocationAction__performChangesWithLocationProvider_completionH
 
   v6 = v5;
 
-  v7 = [(PXAssetsAction *)self assets];
-  v8 = [v7 count];
+  assets = [(PXAssetsAction *)self assets];
+  v8 = [assets count];
   v9 = @"n";
   if (v8 == 1)
   {
@@ -132,11 +132,11 @@ void __79__PXAssetLocationAction__performChangesWithLocationProvider_completionH
 
   v10 = v9;
 
-  v11 = [(PXAssetLocationAction *)self analyticsPlaceLevelString];
-  v12 = v11;
-  if (v11)
+  analyticsPlaceLevelString = [(PXAssetLocationAction *)self analyticsPlaceLevelString];
+  v12 = analyticsPlaceLevelString;
+  if (analyticsPlaceLevelString)
   {
-    v13 = v11;
+    v13 = analyticsPlaceLevelString;
   }
 
   else
@@ -159,8 +159,8 @@ void __79__PXAssetLocationAction__performChangesWithLocationProvider_completionH
 
 - (void)_requestRevGeocoding
 {
-  v3 = [(PXPhotosAction *)self photoLibrary];
-  v4 = [(PXAssetsAction *)self assets];
+  photoLibrary = [(PXPhotosAction *)self photoLibrary];
+  assets = [(PXAssetsAction *)self assets];
   if (_requestRevGeocoding_onceToken != -1)
   {
     dispatch_once(&_requestRevGeocoding_onceToken, &__block_literal_global_14536);
@@ -171,10 +171,10 @@ void __79__PXAssetLocationAction__performChangesWithLocationProvider_completionH
   v8[1] = 3221225472;
   v8[2] = __45__PXAssetLocationAction__requestRevGeocoding__block_invoke_2;
   v8[3] = &unk_1E774C620;
-  v9 = v4;
-  v10 = v3;
-  v6 = v3;
-  v7 = v4;
+  v9 = assets;
+  v10 = photoLibrary;
+  v6 = photoLibrary;
+  v7 = assets;
   dispatch_async(v5, v8);
 }
 
@@ -186,15 +186,15 @@ void __45__PXAssetLocationAction__requestRevGeocoding__block_invoke()
   _requestRevGeocoding_queue = v0;
 }
 
-- (id)_undoLocationForAsset:(id)a3
+- (id)_undoLocationForAsset:(id)asset
 {
   originalLocations = self->_originalLocations;
-  v4 = [a3 localIdentifier];
-  v5 = [(NSDictionary *)originalLocations objectForKey:v4];
+  localIdentifier = [asset localIdentifier];
+  v5 = [(NSDictionary *)originalLocations objectForKey:localIdentifier];
 
-  v6 = [v5 location];
+  location = [v5 location];
 
-  return v6;
+  return location;
 }
 
 - (void)_loadOriginalLocationsIfNeeded
@@ -202,13 +202,13 @@ void __45__PXAssetLocationAction__requestRevGeocoding__block_invoke()
   v27 = *MEMORY[0x1E69E9840];
   if (!self->_originalLocations)
   {
-    v2 = [(PXAssetsAction *)self assets];
-    v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v2, "count")}];
+    assets = [(PXAssetsAction *)self assets];
+    v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(assets, "count")}];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = v2;
+    v4 = assets;
     v5 = [v4 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v5)
     {
@@ -224,21 +224,21 @@ void __45__PXAssetLocationAction__requestRevGeocoding__block_invoke()
           }
 
           v9 = *(*(&v22 + 1) + 8 * i);
-          v10 = [v9 location];
-          if (v10)
+          location = [v9 location];
+          if (location)
           {
             [v9 fetchPropertySetsIfNeeded];
             v11 = [PXPlaceAnnotation alloc];
-            v12 = [v9 photosInfoPanelLocationProperties];
-            v13 = [v12 placeAnnotationData];
-            v14 = [(PXPlaceAnnotation *)v11 initWithData:v13];
+            photosInfoPanelLocationProperties = [v9 photosInfoPanelLocationProperties];
+            placeAnnotationData = [photosInfoPanelLocationProperties placeAnnotationData];
+            v14 = [(PXPlaceAnnotation *)v11 initWithData:placeAnnotationData];
 
             v15 = [PXAnnotatedLocation alloc];
-            v16 = [v9 location];
-            v17 = [(PXAnnotatedLocation *)v15 initWithLocation:v16 placeAnnotation:v14];
+            location2 = [v9 location];
+            v17 = [(PXAnnotatedLocation *)v15 initWithLocation:location2 placeAnnotation:v14];
 
-            v18 = [v9 localIdentifier];
-            [v3 setObject:v17 forKey:v18];
+            localIdentifier = [v9 localIdentifier];
+            [v3 setObject:v17 forKey:localIdentifier];
           }
         }
 
@@ -254,13 +254,13 @@ void __45__PXAssetLocationAction__requestRevGeocoding__block_invoke()
   }
 }
 
-- (id)locationForAsset:(id)a3 shifted:(BOOL *)a4
+- (id)locationForAsset:(id)asset shifted:(BOOL *)shifted
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  assetCopy = asset;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v7 handleFailureInMethod:a2 object:self file:@"PXAssetLocationAction.m" lineNumber:42 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetLocationAction locationForAsset:shifted:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetLocationAction.m" lineNumber:42 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetLocationAction locationForAsset:shifted:]", v9}];
 
   abort();
 }

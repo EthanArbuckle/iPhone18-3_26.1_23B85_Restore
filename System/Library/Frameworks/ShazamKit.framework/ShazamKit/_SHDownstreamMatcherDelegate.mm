@@ -1,16 +1,16 @@
 @interface _SHDownstreamMatcherDelegate
 - (SHMatcherController)worker;
-- (void)matcher:(id)a3 didProduceResponse:(id)a4;
+- (void)matcher:(id)matcher didProduceResponse:(id)response;
 @end
 
 @implementation _SHDownstreamMatcherDelegate
 
-- (void)matcher:(id)a3 didProduceResponse:(id)a4
+- (void)matcher:(id)matcher didProduceResponse:(id)response
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_SHDownstreamMatcherDelegate *)self worker];
-  [v8 downstreamMatcher:v7 didProduceResponse:v6];
+  responseCopy = response;
+  matcherCopy = matcher;
+  worker = [(_SHDownstreamMatcherDelegate *)self worker];
+  [worker downstreamMatcher:matcherCopy didProduceResponse:responseCopy];
 }
 
 - (SHMatcherController)worker

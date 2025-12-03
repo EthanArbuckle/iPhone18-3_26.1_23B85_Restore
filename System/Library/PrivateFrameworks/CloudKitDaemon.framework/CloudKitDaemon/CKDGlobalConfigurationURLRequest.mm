@@ -1,17 +1,17 @@
 @interface CKDGlobalConfigurationURLRequest
 - (id)additionalHeaderValues;
 - (id)url;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParsePlistObject:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParsePlistObject:(id)object;
 @end
 
 @implementation CKDGlobalConfigurationURLRequest
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v3.receiver = self;
   v3.super_class = CKDGlobalConfigurationURLRequest;
-  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:a3];
+  [(CKDURLRequest *)&v3 fillOutEquivalencyPropertiesBuilder:builder];
 }
 
 - (id)additionalHeaderValues
@@ -57,10 +57,10 @@
   return v26;
 }
 
-- (void)requestDidParsePlistObject:(id)a3
+- (void)requestDidParsePlistObject:(id)object
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -74,12 +74,12 @@
     v15 = 138543618;
     v16 = v9;
     v17 = 2114;
-    v18 = v4;
+    v18 = objectCopy;
     _os_log_impl(&dword_22506F000, v6, OS_LOG_TYPE_INFO, "req: %{public}@, Fetched configuration plist from server: %{public}@", &v15, 0x16u);
   }
 
   v10 = [CKDServerConfiguration alloc];
-  v12 = objc_msgSend_initWithValues_(v10, v11, v4);
+  v12 = objc_msgSend_initWithValues_(v10, v11, objectCopy);
   configuration = self->_configuration;
   self->_configuration = v12;
 

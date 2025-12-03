@@ -1,25 +1,25 @@
 @interface HRSpeedBumpItem
-- (HRSpeedBumpItem)initWithTitle:(id)a3 body:(id)a4 bubbles:(id)a5 category:(int64_t)a6;
+- (HRSpeedBumpItem)initWithTitle:(id)title body:(id)body bubbles:(id)bubbles category:(int64_t)category;
 - (id)delegate;
 @end
 
 @implementation HRSpeedBumpItem
 
-- (HRSpeedBumpItem)initWithTitle:(id)a3 body:(id)a4 bubbles:(id)a5 category:(int64_t)a6
+- (HRSpeedBumpItem)initWithTitle:(id)title body:(id)body bubbles:(id)bubbles category:(int64_t)category
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  titleCopy = title;
+  bodyCopy = body;
+  bubblesCopy = bubbles;
   v17.receiver = self;
   v17.super_class = HRSpeedBumpItem;
   v14 = [(HRSpeedBumpItem *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_title, a3);
-    objc_storeStrong(&v15->_body, a4);
-    objc_storeStrong(&v15->_bubbles, a5);
-    v15->_category = a6;
+    objc_storeStrong(&v14->_title, title);
+    objc_storeStrong(&v15->_body, body);
+    objc_storeStrong(&v15->_bubbles, bubbles);
+    v15->_category = category;
   }
 
   return v15;

@@ -10,15 +10,15 @@
 - (void)avt_fixQuirksOfNewUSDSchemaWithOptions:()AVTExtension handler:
 {
   v6 = a4;
-  [a1 avt_setInitialValuesExportedAsAnimationsWithWithOptions:a3 handler:v6];
-  [a1 avt_removeDuplicateSkeletonRootWithHandler:v6];
-  [a1 avt_removeFaceSetsExportedAsDummyNodesWithHandler:v6];
+  [self avt_setInitialValuesExportedAsAnimationsWithWithOptions:a3 handler:v6];
+  [self avt_removeDuplicateSkeletonRootWithHandler:v6];
+  [self avt_removeFaceSetsExportedAsDummyNodesWithHandler:v6];
 }
 
 - (void)avt_setInitialValuesExportedAsAnimationsWithWithOptions:()AVTExtension handler:
 {
   v6 = a4;
-  v7 = [a1 rootNode];
+  rootNode = [self rootNode];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __90__VFXWorld_AVTExtension__avt_setInitialValuesExportedAsAnimationsWithWithOptions_handler___block_invoke;
@@ -26,7 +26,7 @@
   v13 = v6;
   v14 = a3;
   v8 = v6;
-  [v7 enumerateHierarchyUsingBlock:&v9];
+  [rootNode enumerateHierarchyUsingBlock:&v9];
 
   [MEMORY[0x1E69DF378] flush];
 }
@@ -35,9 +35,9 @@
 {
   v64 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v44 = a1;
-  v5 = [a1 rootNode];
-  v6 = [v5 childNodeWithName:@"skeleton_GRP" recursively:1];
+  selfCopy = self;
+  rootNode = [self rootNode];
+  v6 = [rootNode childNodeWithName:@"skeleton_GRP" recursively:1];
 
   if (v6)
   {
@@ -63,8 +63,8 @@
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v52 + 1) + 8 * i) name];
-        v12 = [v11 hasPrefix:@"mindBlown_"];
+        name = [*(*(&v52 + 1) + 8 * i) name];
+        v12 = [name hasPrefix:@"mindBlown_"];
 
         if (v12)
         {
@@ -108,44 +108,44 @@ LABEL_12:
       }
 
       v17 = *(*(&v48 + 1) + 8 * v16);
-      v18 = [v17 name];
-      if (([v18 isEqualToString:@"root_JNT"]& 1) != 0)
+      name2 = [v17 name];
+      if (([name2 isEqualToString:@"root_JNT"]& 1) != 0)
       {
         goto LABEL_21;
       }
 
-      v19 = [v17 name];
-      if ([v19 isEqualToString:@"bodyRoot_JNT"])
+      name3 = [v17 name];
+      if ([name3 isEqualToString:@"bodyRoot_JNT"])
       {
         break;
       }
 
-      v20 = [v17 name];
-      v21 = [v20 isEqualToString:@"spineFk0_JNT"];
+      name4 = [v17 name];
+      v21 = [name4 isEqualToString:@"spineFk0_JNT"];
 
       if ((v21 & 1) == 0)
       {
-        v18 = avt_default_log();
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        name2 = avt_default_log();
+        if (os_log_type_enabled(name2, OS_LOG_TYPE_ERROR))
         {
-          v37 = [v17 name];
+          name5 = [v17 name];
           *buf = 136315394;
           v59 = "[rootJoint.name isEqualToString:AVT_SKINNER_ROOT_NAME] || [rootJoint.name isEqualToString:AVT_SKINNER_MEMOJI_FLATTENED_BODY_ROOT_NAME] || [rootJoint.name isEqualToString:AVT_SKINNER_MEMOJI_HIERARCHICAL_BODY_ROOT_NAME]";
           v60 = 2112;
-          v61 = v37;
-          _os_log_error_impl(&dword_1BB472000, v18, OS_LOG_TYPE_ERROR, "Error: Condition '%s' failed. Skeleton group has unknown root joint %@", buf, 0x16u);
+          v61 = name5;
+          _os_log_error_impl(&dword_1BB472000, name2, OS_LOG_TYPE_ERROR, "Error: Condition '%s' failed. Skeleton group has unknown root joint %@", buf, 0x16u);
         }
 
         goto LABEL_21;
       }
 
 LABEL_22:
-      v22 = [v17 childNodes];
-      v23 = [v22 firstObject];
+      childNodes = [v17 childNodes];
+      firstObject = [childNodes firstObject];
 
-      v24 = [v17 name];
-      v25 = [v23 name];
-      v26 = [v24 isEqualToString:v25];
+      name6 = [v17 name];
+      name7 = [firstObject name];
+      v26 = [name6 isEqualToString:name7];
 
       if (v26)
       {
@@ -162,23 +162,23 @@ LABEL_22:
         if (v4)
         {
           v32 = MEMORY[0x1E696AEC0];
-          v33 = [v17 name];
-          v34 = [v23 childNodes];
-          v35 = [v32 stringWithFormat:@"Removed duplicate node %@ (%ld child joints)", v33, objc_msgSend(v34, "count")];
+          name8 = [v17 name];
+          childNodes2 = [firstObject childNodes];
+          v35 = [v32 stringWithFormat:@"Removed duplicate node %@ (%ld child joints)", name8, objc_msgSend(childNodes2, "count")];
           v4[2](v4, v35);
         }
 
         [v17 removeFromParentNode];
-        [v23 removeFromParentNode];
-        [v43 addChildNode:v23];
-        v36 = [v44 rootNode];
+        [firstObject removeFromParentNode];
+        [v43 addChildNode:firstObject];
+        rootNode2 = [selfCopy rootNode];
         v46[0] = MEMORY[0x1E69E9820];
         v46[1] = 3221225472;
         v46[2] = __69__VFXWorld_AVTExtension__avt_removeDuplicateSkeletonRootWithHandler___block_invoke;
         v46[3] = &unk_1E7F47EA0;
         v46[4] = v17;
-        v47 = v23;
-        [v36 enumerateHierarchyUsingBlock:v46];
+        v47 = firstObject;
+        [rootNode2 enumerateHierarchyUsingBlock:v46];
       }
 
       if (v14 == ++v16)
@@ -208,14 +208,14 @@ LABEL_34:
   v27 = *MEMORY[0x1E69E9840];
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [a1 rootNode];
+  rootNode = [self rootNode];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __76__VFXWorld_AVTExtension__avt_removeFaceSetsExportedAsDummyNodesWithHandler___block_invoke;
   v24[3] = &unk_1E7F47B10;
   v7 = v5;
   v25 = v7;
-  [v6 enumerateHierarchyUsingBlock:v24];
+  [rootNode enumerateHierarchyUsingBlock:v24];
 
   v22 = 0u;
   v23 = 0u;
@@ -241,10 +241,10 @@ LABEL_34:
         if (v4)
         {
           v13 = MEMORY[0x1E696AEC0];
-          v14 = [*(*(&v20 + 1) + 8 * v11) name];
-          v15 = [v12 parentNode];
-          v16 = [v15 name];
-          v17 = [v13 stringWithFormat:@"Removed face set dummy node %@ from %@", v14, v16];
+          name = [*(*(&v20 + 1) + 8 * v11) name];
+          parentNode = [v12 parentNode];
+          name2 = [parentNode name];
+          v17 = [v13 stringWithFormat:@"Removed face set dummy node %@ from %@", name, name2];
           v4[2](v4, v17);
         }
 

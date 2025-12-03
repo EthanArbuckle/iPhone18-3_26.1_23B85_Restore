@@ -1,9 +1,9 @@
 @interface FTMutableShortcutFuzzyMatchResponse
 - (FTMutableShortcutFuzzyMatchResponse)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)return_code;
-- (void)setShortcut_score_pairs:(id)a3;
-- (void)setUtterance:(id)a3;
+- (void)setShortcut_score_pairs:(id)shortcut_score_pairs;
+- (void)setUtterance:(id)utterance;
 @end
 
 @implementation FTMutableShortcutFuzzyMatchResponse
@@ -15,17 +15,17 @@
   v2 = [(FTMutableShortcutFuzzyMatchResponse *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -33,24 +33,24 @@
   return v4;
 }
 
-- (void)setUtterance:(id)a3
+- (void)setUtterance:(id)utterance
 {
-  v4 = [a3 copy];
+  v4 = [utterance copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setShortcut_score_pairs:(id)a3
+- (void)setShortcut_score_pairs:(id)shortcut_score_pairs
 {
-  v4 = [a3 copy];
+  v4 = [shortcut_score_pairs copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
 - (int)return_code
 {
   v2 = [(NSMutableDictionary *)self->super._storage objectForKeyedSubscript:@"return_code"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 @end

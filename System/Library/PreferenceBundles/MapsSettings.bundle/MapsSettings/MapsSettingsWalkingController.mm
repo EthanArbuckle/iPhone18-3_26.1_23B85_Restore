@@ -1,9 +1,9 @@
 @interface MapsSettingsWalkingController
-- (id)_avoidBusyRoads:(id)a3;
-- (id)_avoidHills:(id)a3;
-- (id)_avoidStairs:(id)a3;
+- (id)_avoidBusyRoads:(id)roads;
+- (id)_avoidHills:(id)hills;
+- (id)_avoidStairs:(id)stairs;
 - (id)specifiers;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -20,11 +20,11 @@
   [(MapsSettingsWalkingController *)self setTitle:v4];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = MapsSettingsWalkingController;
-  [(MapsSettingsWalkingController *)&v9 viewDidAppear:a3];
+  [(MapsSettingsWalkingController *)&v9 viewDidAppear:appear];
   v4 = MapsSettingsWalkingTitle();
   v5 = AppsSettingsTitle();
   v10[0] = v5;
@@ -131,7 +131,7 @@
   return v3;
 }
 
-- (id)_avoidHills:(id)a3
+- (id)_avoidHills:(id)hills
 {
   v3 = [MapsSettings valueForDefaultsKey:@"MapsDefaultWalkingAvoidHillsKey"];
   if (!v3)
@@ -142,7 +142,7 @@
   return v3;
 }
 
-- (id)_avoidBusyRoads:(id)a3
+- (id)_avoidBusyRoads:(id)roads
 {
   v3 = [MapsSettings valueForDefaultsKey:@"MapsDefaultWalkingAvoidBusyRoadsKey"];
   if (!v3)
@@ -153,7 +153,7 @@
   return v3;
 }
 
-- (id)_avoidStairs:(id)a3
+- (id)_avoidStairs:(id)stairs
 {
   v3 = [MapsSettings valueForDefaultsKey:@"MapsDefaultWalkingAvoidStairsKey"];
   if (!v3)

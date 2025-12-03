@@ -1,6 +1,6 @@
 @interface APLogImpressionRequester
 - (id)protoBuffer;
-- (void)makeDelayedRequest:(double)a3 requestSentHandler:(id)a4 responseCallback:(id)a5;
+- (void)makeDelayedRequest:(double)request requestSentHandler:(id)handler responseCallback:(id)callback;
 @end
 
 @implementation APLogImpressionRequester
@@ -9,27 +9,27 @@
 {
   v3 = objc_alloc_init(APPBLogImpressionRequest);
   [(APPBLogImpressionRequest *)v3 setType:[(APLogImpressionRequester *)self type]];
-  v4 = [(APLegacyMetricRequester *)self logMetadata];
-  [(APPBLogImpressionRequest *)v3 setMetaData:v4];
+  logMetadata = [(APLegacyMetricRequester *)self logMetadata];
+  [(APPBLogImpressionRequest *)v3 setMetaData:logMetadata];
 
-  v5 = [(APLegacyMetricRequester *)self internalContent];
-  v6 = [v5 transientContent];
-  [v6 accumulatedPlaybackTime];
+  internalContent = [(APLegacyMetricRequester *)self internalContent];
+  transientContent = [internalContent transientContent];
+  [transientContent accumulatedPlaybackTime];
   v8 = v7;
 
   if (v8 > 0.0)
   {
-    v9 = [(APLegacyMetricRequester *)self internalContent];
-    v10 = [v9 transientContent];
-    [v10 accumulatedPlaybackTime];
+    internalContent2 = [(APLegacyMetricRequester *)self internalContent];
+    transientContent2 = [internalContent2 transientContent];
+    [transientContent2 accumulatedPlaybackTime];
     *&v11 = v11;
     [(APPBLogImpressionRequest *)v3 setPlaybackTime:v11];
 
     [(APPBLogImpressionRequest *)v3 playbackTime];
     v13 = v12;
-    v14 = [(APLegacyMetricRequester *)self internalContent];
-    v15 = [v14 content];
-    [v15 impressionThreshold];
+    internalContent3 = [(APLegacyMetricRequester *)self internalContent];
+    content = [internalContent3 content];
+    [content impressionThreshold];
     v17 = v16;
 
     if (v17 > v13)
@@ -40,18 +40,18 @@
 
   if ([(APLogImpressionRequester *)self isViewableImpression])
   {
-    v18 = [(APLegacyMetricRequester *)self metric];
-    v19 = metricPropertyValue(v18, 0x15);
+    metric = [(APLegacyMetricRequester *)self metric];
+    v19 = metricPropertyValue(metric, 0x15);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [(APLegacyMetricRequester *)self metric];
-      v21 = metricPropertyValue(v20, 0x15);
-      v22 = [v21 intValue];
+      metric2 = [(APLegacyMetricRequester *)self metric];
+      v21 = metricPropertyValue(metric2, 0x15);
+      intValue = [v21 intValue];
 
-      if (v22 != -1)
+      if (intValue != -1)
       {
-        v23 = v22;
+        placementType = intValue;
         goto LABEL_15;
       }
     }
@@ -60,49 +60,49 @@
     {
     }
 
-    v24 = [(APLegacyMetricRequester *)self internalContent];
-    v25 = [v24 content];
-    if (v25)
+    internalContent4 = [(APLegacyMetricRequester *)self internalContent];
+    content2 = [internalContent4 content];
+    if (content2)
     {
-      v26 = v25;
-      v27 = [(APLegacyMetricRequester *)self internalContent];
-      v28 = [v27 content];
-      v29 = [v28 representations];
-      v30 = [v29 count];
+      v26 = content2;
+      internalContent5 = [(APLegacyMetricRequester *)self internalContent];
+      content3 = [internalContent5 content];
+      representations = [content3 representations];
+      v30 = [representations count];
 
       if (!v30)
       {
-        v23 = -1;
+        placementType = -1;
         goto LABEL_15;
       }
 
-      v24 = [(APLegacyMetricRequester *)self internalContent];
-      v31 = [v24 content];
-      v32 = [v31 getRepresentation];
-      v23 = [v32 placementType];
+      internalContent4 = [(APLegacyMetricRequester *)self internalContent];
+      content4 = [internalContent4 content];
+      getRepresentation = [content4 getRepresentation];
+      placementType = [getRepresentation placementType];
     }
 
     else
     {
-      v23 = -1;
+      placementType = -1;
     }
 
 LABEL_15:
-    v33 = [(APLegacyMetricRequester *)self context];
-    v34 = [(APLegacyMetricRequester *)self internalContent];
-    v35 = [v34 content];
-    v36 = [v35 identifier];
-    v37 = [v33 contextJSONForRequest:v36 andPlacementType:v23];
+    context = [(APLegacyMetricRequester *)self context];
+    internalContent6 = [(APLegacyMetricRequester *)self internalContent];
+    content5 = [internalContent6 content];
+    identifier = [content5 identifier];
+    v37 = [context contextJSONForRequest:identifier andPlacementType:placementType];
     [(APPBLogImpressionRequest *)v3 setContextString:v37];
   }
 
   return v3;
 }
 
-- (void)makeDelayedRequest:(double)a3 requestSentHandler:(id)a4 responseCallback:(id)a5
+- (void)makeDelayedRequest:(double)request requestSentHandler:(id)handler responseCallback:(id)callback
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  callbackCopy = callback;
   if (+[APSystemInternal isAppleInternalInstall])
   {
     v10 = [NSUserDefaults alloc];
@@ -117,13 +117,13 @@ LABEL_15:
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}s Overriding delay to 0 seconds", buf, 0xCu);
       }
 
-      a3 = 0.0;
+      request = 0.0;
     }
   }
 
   v13.receiver = self;
   v13.super_class = APLogImpressionRequester;
-  [(APServerRequester *)&v13 makeDelayedRequest:v8 requestSentHandler:v9 responseCallback:a3];
+  [(APServerRequester *)&v13 makeDelayedRequest:handlerCopy requestSentHandler:callbackCopy responseCallback:request];
 }
 
 @end

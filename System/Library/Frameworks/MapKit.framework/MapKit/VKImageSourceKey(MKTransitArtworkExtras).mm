@@ -9,7 +9,7 @@
 
 - (id)shieldColorString
 {
-  [a1 transitLineColor];
+  [self transitLineColor];
   v2 = v1;
   v4 = v3;
   v6 = v5;
@@ -24,45 +24,45 @@
 
 - (id)iconDataSource
 {
-  if ([a1 keyType] == 2)
+  if ([self keyType] == 2)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)shieldDataSource
 {
-  if ([a1 keyType] == 1)
+  if ([self keyType] == 1)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v2 = 0;
+    selfCopy = 0;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)artworkSourceType
 {
-  v1 = [a1 keyType];
-  if (v1 == 1)
+  keyType = [self keyType];
+  if (keyType == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v1 == 2);
+    return 2 * (keyType == 2);
   }
 }
 

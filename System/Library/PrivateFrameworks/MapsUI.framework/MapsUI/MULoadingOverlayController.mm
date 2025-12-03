@@ -1,7 +1,7 @@
 @interface MULoadingOverlayController
-- (MULoadingOverlayController)initWithParentView:(id)a3 contentView:(id)a4;
+- (MULoadingOverlayController)initWithParentView:(id)view contentView:(id)contentView;
 - (void)attachLoadingOverlay;
-- (void)removeLoadingOverlayAnimated:(BOOL)a3 completion:(id)a4;
+- (void)removeLoadingOverlayAnimated:(BOOL)animated completion:(id)completion;
 - (void)updateLayoutForBoundsChange;
 @end
 
@@ -14,10 +14,10 @@
   [(MULoadingView *)self->_loadingView setFrame:?];
 }
 
-- (void)removeLoadingOverlayAnimated:(BOOL)a3 completion:(id)a4
+- (void)removeLoadingOverlayAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   [(MULoadingView *)self->_loadingView endAnimatingActivityIndicatorWithError:0];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -31,10 +31,10 @@
   v12 = __70__MULoadingOverlayController_removeLoadingOverlayAnimated_completion___block_invoke_5;
   v13 = &unk_1E8219650;
   objc_copyWeak(&v15, &location);
-  v8 = v6;
+  v8 = completionCopy;
   v14 = v8;
   v9 = _Block_copy(&v10);
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:2 delay:v7 options:v9 animations:0.200000003 completion:{0.0, v10, v11, v12, v13}];
   }
@@ -157,18 +157,18 @@ void __50__MULoadingOverlayController_attachLoadingOverlay__block_invoke(uint64_
   }
 }
 
-- (MULoadingOverlayController)initWithParentView:(id)a3 contentView:(id)a4
+- (MULoadingOverlayController)initWithParentView:(id)view contentView:(id)contentView
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  contentViewCopy = contentView;
   v11.receiver = self;
   v11.super_class = MULoadingOverlayController;
   v8 = [(MULoadingOverlayController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_parentView, v6);
-    objc_storeWeak(&v9->_contentView, v7);
+    objc_storeWeak(&v8->_parentView, viewCopy);
+    objc_storeWeak(&v9->_contentView, contentViewCopy);
     v9->_showAfterInterval = 0.200000003;
   }
 

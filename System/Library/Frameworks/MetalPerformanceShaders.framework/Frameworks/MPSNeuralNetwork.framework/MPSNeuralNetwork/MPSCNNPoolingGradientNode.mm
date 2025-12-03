@@ -1,6 +1,6 @@
 @interface MPSCNNPoolingGradientNode
 + (MPSCNNPoolingGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY paddingPolicy:(id)paddingPolicy;
-- (MPSCNNPoolingGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4;
+- (MPSCNNPoolingGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter;
 - (MPSCNNPoolingGradientNode)initWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY paddingPolicy:(id)paddingPolicy;
 @end
 
@@ -8,7 +8,7 @@
 
 + (MPSCNNPoolingGradientNode)nodeWithSourceGradient:(MPSNNImageNode *)sourceGradient sourceImage:(MPSNNImageNode *)sourceImage gradientState:(MPSNNGradientStateNode *)gradientState kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY paddingPolicy:(id)paddingPolicy
 {
-  v16 = [a1 alloc];
+  v16 = [self alloc];
   v18 = objc_msgSend_initWithSourceGradient_sourceImage_gradientState_kernelWidth_kernelHeight_strideInPixelsX_strideInPixelsY_paddingPolicy_(v16, v17, sourceGradient, sourceImage, gradientState, kernelWidth, kernelHeight, strideInPixelsX, strideInPixelsY, paddingPolicy);
 
   return v18;
@@ -35,7 +35,7 @@
   return result;
 }
 
-- (MPSCNNPoolingGradientNode)initWithGradientImages:(id)a3 forwardFilter:(id)a4
+- (MPSCNNPoolingGradientNode)initWithGradientImages:(id)images forwardFilter:(id)filter
 {
   objc_opt_class();
   objc_opt_isKindOfClass();
@@ -44,19 +44,19 @@
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = a4;
+    filterCopy = filter;
     MTLReportFailure();
   }
 
   v11.receiver = self;
   v11.super_class = MPSCNNPoolingGradientNode;
-  result = [(MPSNNGradientFilterNode *)&v11 initWithGradientImages:a3 forwardFilter:a4, v9, v10];
+  result = [(MPSNNGradientFilterNode *)&v11 initWithGradientImages:images forwardFilter:filter, v9, filterCopy];
   if (result)
   {
-    result->_kernelWidth = *(a4 + 7);
-    result->_kernelHeight = *(a4 + 8);
-    result->_strideInPixelsX = *(a4 + 9);
-    result->_strideInPixelsY = *(a4 + 10);
+    result->_kernelWidth = *(filter + 7);
+    result->_kernelHeight = *(filter + 8);
+    result->_strideInPixelsX = *(filter + 9);
+    result->_strideInPixelsY = *(filter + 10);
   }
 
   return result;

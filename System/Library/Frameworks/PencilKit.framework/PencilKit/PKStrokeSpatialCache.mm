@@ -1,8 +1,8 @@
 @interface PKStrokeSpatialCache
 - (PKStrokeSpatialCache)init;
 - (void)_cancelGenerateVisibleStrokesBlockIfNecessary;
-- (void)_generateStrokesOnCanvasForVisibleFrame:(double)a3 inDrawing:(double)a4;
-- (void)_invalidateCacheForBounds:(int)a3 inDrawing:(CGFloat)a4 force:(CGFloat)a5;
+- (void)_generateStrokesOnCanvasForVisibleFrame:(double)frame inDrawing:(double)drawing;
+- (void)_invalidateCacheForBounds:(int)bounds inDrawing:(CGFloat)drawing force:(CGFloat)force;
 - (void)dealloc;
 @end
 
@@ -43,23 +43,23 @@
   [(PKStrokeSpatialCache *)&v5 dealloc];
 }
 
-- (void)_invalidateCacheForBounds:(int)a3 inDrawing:(CGFloat)a4 force:(CGFloat)a5
+- (void)_invalidateCacheForBounds:(int)bounds inDrawing:(CGFloat)drawing force:(CGFloat)force
 {
   v16 = a2;
-  if (a1)
+  if (self)
   {
-    v18.origin.x = a4;
-    v18.origin.y = a5;
+    v18.origin.x = drawing;
+    v18.origin.y = force;
     v18.size.width = a6;
     v18.size.height = a7;
     v13 = !CGRectIsNull(v18);
-    v19.origin.x = a4;
-    v19.origin.y = a5;
+    v19.origin.x = drawing;
+    v19.origin.y = force;
     v19.size.width = a6;
     v19.size.height = a7;
-    if (CGRectEqualToRect(v19, *(a1 + 64)))
+    if (CGRectEqualToRect(v19, *(self + 64)))
     {
-      v14 = [v16 isEqual:*(a1 + 56)] ^ 1;
+      v14 = [v16 isEqual:*(self + 56)] ^ 1;
     }
 
     else
@@ -67,63 +67,63 @@
       v14 = 1;
     }
 
-    v20.origin.x = a4;
-    v20.origin.y = a5;
+    v20.origin.x = drawing;
+    v20.origin.y = force;
     v20.size.width = a6;
     v20.size.height = a7;
     if (CGRectIsNull(v20))
     {
-      [(PKStrokeSpatialCache *)a1 _cancelGenerateVisibleStrokesBlockIfNecessary];
-      *(a1 + 8) = 1;
-      v15 = *(a1 + 24);
-      *(a1 + 24) = MEMORY[0x1E695E0F0];
+      [(PKStrokeSpatialCache *)self _cancelGenerateVisibleStrokesBlockIfNecessary];
+      *(self + 8) = 1;
+      v15 = *(self + 24);
+      *(self + 24) = MEMORY[0x1E695E0F0];
     }
 
-    else if ((v13 & (v14 | a3)) == 1)
+    else if ((v13 & (v14 | bounds)) == 1)
     {
-      [(PKStrokeSpatialCache *)a1 _generateStrokesOnCanvasForVisibleFrame:v16 inDrawing:a4, a5, a6, a7];
+      [(PKStrokeSpatialCache *)self _generateStrokesOnCanvasForVisibleFrame:v16 inDrawing:drawing, force, a6, a7];
     }
   }
 }
 
 - (void)_cancelGenerateVisibleStrokesBlockIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[4];
+    v2 = self[4];
     if (v2)
     {
-      ++a1[6];
+      ++self[6];
       dispatch_block_cancel(v2);
 
-      objc_setProperty_nonatomic_copy(a1, v3, 0, 32);
+      objc_setProperty_nonatomic_copy(self, v3, 0, 32);
     }
   }
 }
 
-- (void)_generateStrokesOnCanvasForVisibleFrame:(double)a3 inDrawing:(double)a4
+- (void)_generateStrokesOnCanvasForVisibleFrame:(double)frame inDrawing:(double)drawing
 {
   v12 = a2;
-  if (a1)
+  if (self)
   {
-    [(PKStrokeSpatialCache *)a1 _cancelGenerateVisibleStrokesBlockIfNecessary];
-    v13 = [v12 strokes];
-    objc_storeStrong((a1 + 56), a2);
-    *(a1 + 64) = a3;
-    *(a1 + 72) = a4;
-    *(a1 + 80) = a5;
-    *(a1 + 88) = a6;
+    [(PKStrokeSpatialCache *)self _cancelGenerateVisibleStrokesBlockIfNecessary];
+    strokes = [v12 strokes];
+    objc_storeStrong((self + 56), a2);
+    *(self + 64) = frame;
+    *(self + 72) = drawing;
+    *(self + 80) = a5;
+    *(self + 88) = a6;
     v14 = [v12 copy];
-    objc_initWeak(&location, a1);
-    v15 = (*(a1 + 48) + 1);
-    *(a1 + 48) = v15;
+    objc_initWeak(&location, self);
+    v15 = (*(self + 48) + 1);
+    *(self + 48) = v15;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __74__PKStrokeSpatialCache__generateStrokesOnCanvasForVisibleFrame_inDrawing___block_invoke;
     block[3] = &unk_1E82DA420;
-    block[4] = a1;
-    v21[1] = *&a3;
-    v21[2] = *&a4;
+    block[4] = self;
+    v21[1] = *&frame;
+    v21[2] = *&drawing;
     v21[3] = *&a5;
     v21[4] = *&a6;
     v16 = v14;
@@ -131,10 +131,10 @@
     objc_copyWeak(v21, &location);
     v21[5] = v15;
     v17 = dispatch_block_create(0, block);
-    objc_setProperty_nonatomic_copy(a1, v18, v17, 32);
+    objc_setProperty_nonatomic_copy(self, v18, v17, 32);
 
-    *(a1 + 8) = 0;
-    dispatch_async(*(a1 + 40), *(a1 + 32));
+    *(self + 8) = 0;
+    dispatch_async(*(self + 40), *(self + 32));
     objc_destroyWeak(v21);
 
     objc_destroyWeak(&location);

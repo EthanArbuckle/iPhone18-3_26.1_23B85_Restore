@@ -1,25 +1,25 @@
 @interface ULOdometryState
-- (ULOdometryState)initWithDeviceIdentifier:(id)a3 deltaPositionX:(id)a4 deltaPositionY:(id)a5 deltaPositionZ:(id)a6 timestamp:(double)a7;
+- (ULOdometryState)initWithDeviceIdentifier:(id)identifier deltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z timestamp:(double)timestamp;
 @end
 
 @implementation ULOdometryState
 
-- (ULOdometryState)initWithDeviceIdentifier:(id)a3 deltaPositionX:(id)a4 deltaPositionY:(id)a5 deltaPositionZ:(id)a6 timestamp:(double)a7
+- (ULOdometryState)initWithDeviceIdentifier:(id)identifier deltaPositionX:(id)x deltaPositionY:(id)y deltaPositionZ:(id)z timestamp:(double)timestamp
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  identifierCopy = identifier;
+  xCopy = x;
+  yCopy = y;
+  zCopy = z;
   v22.receiver = self;
   v22.super_class = ULOdometryState;
   v16 = [(ULOdometryState *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    [(ULOdometryState *)v16 setDeviceIdentifier:v12];
-    if (v13)
+    [(ULOdometryState *)v16 setDeviceIdentifier:identifierCopy];
+    if (xCopy)
     {
-      v18 = v13;
+      v18 = xCopy;
     }
 
     else
@@ -28,9 +28,9 @@
     }
 
     [(ULOdometryState *)v17 setDeltaPositionX:v18];
-    if (v14)
+    if (yCopy)
     {
-      v19 = v14;
+      v19 = yCopy;
     }
 
     else
@@ -39,9 +39,9 @@
     }
 
     [(ULOdometryState *)v17 setDeltaPositionY:v19];
-    if (v15)
+    if (zCopy)
     {
-      v20 = v15;
+      v20 = zCopy;
     }
 
     else
@@ -50,7 +50,7 @@
     }
 
     [(ULOdometryState *)v17 setDeltaPositionZ:v20];
-    [(ULOdometryState *)v17 setTimestamp:a7];
+    [(ULOdometryState *)v17 setTimestamp:timestamp];
   }
 
   return v17;

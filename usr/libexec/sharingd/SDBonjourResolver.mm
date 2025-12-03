@@ -1,20 +1,20 @@
 @interface SDBonjourResolver
-- (SDBonjourResolver)initWithName:(id)a3 type:(id)a4 domain:(id)a5 path:(id)a6 timeout:(BOOL)a7;
+- (SDBonjourResolver)initWithName:(id)name type:(id)type domain:(id)domain path:(id)path timeout:(BOOL)timeout;
 - (SDBonjourResolverDelegate)delegate;
 - (void)cancel;
 - (void)dealloc;
-- (void)notifyClient:(int)a3;
+- (void)notifyClient:(int)client;
 - (void)resolve;
 @end
 
 @implementation SDBonjourResolver
 
-- (SDBonjourResolver)initWithName:(id)a3 type:(id)a4 domain:(id)a5 path:(id)a6 timeout:(BOOL)a7
+- (SDBonjourResolver)initWithName:(id)name type:(id)type domain:(id)domain path:(id)path timeout:(BOOL)timeout
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  nameCopy = name;
+  typeCopy = type;
+  domainCopy = domain;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = SDBonjourResolver;
   v17 = [(SDBonjourResolver *)&v24 init];
@@ -22,22 +22,22 @@
   if (v17)
   {
     v17->_connection = 0;
-    objc_storeStrong(&v17->_domain, a5);
+    objc_storeStrong(&v17->_domain, domain);
     v18->_error = 0;
     hostName = v18->_hostName;
     v18->_hostName = 0;
 
-    objc_storeStrong(&v18->_name, a3);
-    objc_storeStrong(&v18->_path, a6);
+    objc_storeStrong(&v18->_name, name);
+    objc_storeStrong(&v18->_path, path);
     portNumber = v18->_portNumber;
     v18->_portNumber = 0;
 
     v18->_resolve = 0;
-    v18->_timeout = a7;
+    v18->_timeout = timeout;
     timer = v18->_timer;
     v18->_timer = 0;
 
-    objc_storeStrong(&v18->_type, a4);
+    objc_storeStrong(&v18->_type, type);
     url = v18->_url;
     v18->_url = 0;
   }
@@ -53,10 +53,10 @@
   [(SDBonjourResolver *)&v3 dealloc];
 }
 
-- (void)notifyClient:(int)a3
+- (void)notifyClient:(int)client
 {
   [(SDBonjourResolver *)self cancel];
-  self->_error = a3;
+  self->_error = client;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained bonjourResolverDidChange:self];
 }
@@ -73,13 +73,13 @@
   if (!Connection)
   {
     self->_resolve = self->_connection;
-    v7 = [(NSString *)self->_name UTF8String];
-    v8 = [(NSString *)self->_type UTF8String];
-    v9 = [(NSString *)self->_domain UTF8String];
+    uTF8String = [(NSString *)self->_name UTF8String];
+    uTF8String2 = [(NSString *)self->_type UTF8String];
+    uTF8String3 = [(NSString *)self->_domain UTF8String];
     v10 = +[SDStatusMonitor sharedMonitor];
     if ([(NSString *)self->_type isEqual:sub_10011830C()])
     {
-      v30 = v7;
+      v30 = uTF8String;
       if ([v10 enableDemoMode])
       {
         v11 = 0;
@@ -144,7 +144,7 @@
         v10 = v29;
       }
 
-      v7 = v30;
+      uTF8String = v30;
     }
 
     else
@@ -153,7 +153,7 @@
       v12 = 0x4000;
     }
 
-    v19 = DNSServiceResolve(&self->_resolve, v12, v11, v7, v8, v9, sub_1002721A4, self);
+    v19 = DNSServiceResolve(&self->_resolve, v12, v11, uTF8String, uTF8String2, uTF8String3, sub_1002721A4, self);
     if (v19)
     {
       v20 = v19;

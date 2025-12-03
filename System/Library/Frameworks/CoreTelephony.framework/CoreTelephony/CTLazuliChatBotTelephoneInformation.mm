@@ -1,11 +1,11 @@
 @interface CTLazuliChatBotTelephoneInformation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliChatBotTelephoneInformation:(id)a3;
-- (CTLazuliChatBotTelephoneInformation)initWithCoder:(id)a3;
-- (CTLazuliChatBotTelephoneInformation)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliChatBotTelephoneInformation:(id)information;
+- (CTLazuliChatBotTelephoneInformation)initWithCoder:(id)coder;
+- (CTLazuliChatBotTelephoneInformation)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliChatBotTelephoneInformation
@@ -13,30 +13,30 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliChatBotTelephoneInformation *)self label];
-  [v3 appendFormat:@", label = %@", v4];
+  label = [(CTLazuliChatBotTelephoneInformation *)self label];
+  [v3 appendFormat:@", label = %@", label];
 
-  v5 = [(CTLazuliChatBotTelephoneInformation *)self telNumber];
-  [v3 appendFormat:@", telNumber = %@", v5];
+  telNumber = [(CTLazuliChatBotTelephoneInformation *)self telNumber];
+  [v3 appendFormat:@", telNumber = %@", telNumber];
 
-  v6 = [(CTLazuliChatBotTelephoneInformation *)self telephoneType];
-  [v3 appendFormat:@", telephoneType = %@", v6];
+  telephoneType = [(CTLazuliChatBotTelephoneInformation *)self telephoneType];
+  [v3 appendFormat:@", telephoneType = %@", telephoneType];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliChatBotTelephoneInformation:(id)a3
+- (BOOL)isEqualToCTLazuliChatBotTelephoneInformation:(id)information
 {
-  v4 = a3;
-  v5 = [(CTLazuliChatBotTelephoneInformation *)self label];
-  v6 = [v4 label];
-  if (v5 != v6)
+  informationCopy = information;
+  label = [(CTLazuliChatBotTelephoneInformation *)self label];
+  label2 = [informationCopy label];
+  if (label != label2)
   {
-    v19 = [(CTLazuliChatBotTelephoneInformation *)self label];
-    v17 = [v4 label];
-    if (![v19 isEqualToString:?])
+    label3 = [(CTLazuliChatBotTelephoneInformation *)self label];
+    label4 = [informationCopy label];
+    if (![label3 isEqualToString:?])
     {
       v7 = 0;
 LABEL_13:
@@ -45,13 +45,13 @@ LABEL_13:
     }
   }
 
-  v8 = [(CTLazuliChatBotTelephoneInformation *)self telNumber];
-  v9 = [v4 telNumber];
-  if (v8 != v9)
+  telNumber = [(CTLazuliChatBotTelephoneInformation *)self telNumber];
+  telNumber2 = [informationCopy telNumber];
+  if (telNumber != telNumber2)
   {
-    v18 = [(CTLazuliChatBotTelephoneInformation *)self telNumber];
-    v16 = [v4 telNumber];
-    if (![v18 isEqualToCTLazuliChatBotTelephoneNumber:?])
+    telNumber3 = [(CTLazuliChatBotTelephoneInformation *)self telNumber];
+    telNumber4 = [informationCopy telNumber];
+    if (![telNumber3 isEqualToCTLazuliChatBotTelephoneNumber:?])
     {
       v7 = 0;
 LABEL_11:
@@ -60,10 +60,10 @@ LABEL_11:
     }
   }
 
-  v10 = [(CTLazuliChatBotTelephoneInformation *)self telephoneType];
-  v11 = [v4 telephoneType];
-  v12 = v11;
-  if (v10 == v11)
+  telephoneType = [(CTLazuliChatBotTelephoneInformation *)self telephoneType];
+  telephoneType2 = [informationCopy telephoneType];
+  v12 = telephoneType2;
+  if (telephoneType == telephoneType2)
   {
 
     v7 = 1;
@@ -71,19 +71,19 @@ LABEL_11:
 
   else
   {
-    v13 = [(CTLazuliChatBotTelephoneInformation *)self telephoneType];
-    v14 = [v4 telephoneType];
-    v7 = [v13 isEqualToString:v14];
+    telephoneType3 = [(CTLazuliChatBotTelephoneInformation *)self telephoneType];
+    telephoneType4 = [informationCopy telephoneType];
+    v7 = [telephoneType3 isEqualToString:telephoneType4];
   }
 
-  if (v8 != v9)
+  if (telNumber != telNumber2)
   {
     goto LABEL_11;
   }
 
 LABEL_12:
 
-  if (v5 != v6)
+  if (label != label2)
   {
     goto LABEL_13;
   }
@@ -93,63 +93,63 @@ LABEL_14:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotTelephoneInformation *)self isEqualToCTLazuliChatBotTelephoneInformation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliChatBotTelephoneInformation *)self isEqualToCTLazuliChatBotTelephoneInformation:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliChatBotTelephoneInformation allocWithZone:?];
-  v6 = [(NSString *)self->_label copyWithZone:a3];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
   [(CTLazuliChatBotTelephoneInformation *)v5 setLabel:v6];
 
-  v7 = [(CTLazuliChatBotTelephoneNumber *)self->_telNumber copyWithZone:a3];
+  v7 = [(CTLazuliChatBotTelephoneNumber *)self->_telNumber copyWithZone:zone];
   [(CTLazuliChatBotTelephoneInformation *)v5 setTelNumber:v7];
 
-  v8 = [(NSString *)self->_telephoneType copyWithZone:a3];
+  v8 = [(NSString *)self->_telephoneType copyWithZone:zone];
   [(CTLazuliChatBotTelephoneInformation *)v5 setTelephoneType:v8];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_label forKey:@"kLabelKey"];
-  [v4 encodeObject:self->_telNumber forKey:@"kTelNumberKey"];
-  [v4 encodeObject:self->_telephoneType forKey:@"kTelephoneTypeKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_label forKey:@"kLabelKey"];
+  [coderCopy encodeObject:self->_telNumber forKey:@"kTelNumberKey"];
+  [coderCopy encodeObject:self->_telephoneType forKey:@"kTelephoneTypeKey"];
 }
 
-- (CTLazuliChatBotTelephoneInformation)initWithCoder:(id)a3
+- (CTLazuliChatBotTelephoneInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CTLazuliChatBotTelephoneInformation;
   v5 = [(CTLazuliChatBotTelephoneInformation *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kLabelKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kLabelKey"];
     label = v5->_label;
     v5->_label = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTelNumberKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTelNumberKey"];
     telNumber = v5->_telNumber;
     v5->_telNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kTelephoneTypeKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kTelephoneTypeKey"];
     telephoneType = v5->_telephoneType;
     v5->_telephoneType = v10;
   }
@@ -157,33 +157,33 @@ LABEL_14:
   return v5;
 }
 
-- (CTLazuliChatBotTelephoneInformation)initWithReflection:(const void *)a3
+- (CTLazuliChatBotTelephoneInformation)initWithReflection:(const void *)reflection
 {
   v17.receiver = self;
   v17.super_class = CTLazuliChatBotTelephoneInformation;
   v4 = [(CTLazuliChatBotTelephoneInformation *)&v17 init];
   if (v4)
   {
-    if (*(a3 + 23) >= 0)
+    if (*(reflection + 23) >= 0)
     {
-      v5 = a3;
+      reflectionCopy = reflection;
     }
 
     else
     {
-      v5 = *a3;
+      reflectionCopy = *reflection;
     }
 
-    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v5];
+    v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:reflectionCopy];
     label = v4->_label;
     v4->_label = v6;
 
-    v8 = [[CTLazuliChatBotTelephoneNumber alloc] initWithReflection:a3 + 24];
+    v8 = [[CTLazuliChatBotTelephoneNumber alloc] initWithReflection:reflection + 24];
     telNumber = v4->_telNumber;
     v4->_telNumber = v8;
 
-    v12 = *(a3 + 6);
-    v11 = a3 + 48;
+    v12 = *(reflection + 6);
+    v11 = reflection + 48;
     v10 = v12;
     if (v11[23] >= 0)
     {

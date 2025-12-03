@@ -1,40 +1,40 @@
 @interface PGCityscapeWallpaperSuggester
-+ (BOOL)candidate:(id)a3 passesFilteringWithContext:(id)a4 curationContext:(id)a5 thresholdHelper:(id)a6 statistics:(id *)a7;
-+ (BOOL)isPositiveWithUrbanSceneLabelsForAsset:(id)a3;
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6;
++ (BOOL)candidate:(id)candidate passesFilteringWithContext:(id)context curationContext:(id)curationContext thresholdHelper:(id)helper statistics:(id *)statistics;
++ (BOOL)isPositiveWithUrbanSceneLabelsForAsset:(id)asset;
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason;
 + (CLSSceneTaxonomyHierarchy)sceneTaxonomy;
-+ (id)candidatesFromAssets:(id)a3;
-+ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)a3;
-- (PGCityscapeWallpaperSuggester)initWithSession:(id)a3;
++ (id)candidatesFromAssets:(id)assets;
++ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)ds;
+- (PGCityscapeWallpaperSuggester)initWithSession:(id)session;
 - (id)fetchCandidateAssets;
-- (id)fetchUnsortedCandidatesWithProgressReporter:(id)a3;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
-- (void)logPosterFilteringStatistics:(id *)a3;
+- (id)fetchUnsortedCandidatesWithProgressReporter:(id)reporter;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
+- (void)logPosterFilteringStatistics:(id *)statistics;
 - (void)setupFilteringContexts;
 @end
 
 @implementation PGCityscapeWallpaperSuggester
 
-- (void)logPosterFilteringStatistics:(id *)a3
+- (void)logPosterFilteringStatistics:(id *)statistics
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = [(PGAbstractSuggester *)self session];
-  v5 = [v4 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
   {
-    var0 = a3->var0;
-    var1 = a3->var1;
-    var2 = a3->var2;
-    var3 = a3->var3;
-    var4 = a3->var4;
-    var5 = a3->var5;
-    var6 = a3->var6;
-    var7 = a3->var7;
-    var8 = a3->var8;
-    var9 = a3->var9;
-    var10 = a3->var10;
-    var11 = a3->var11;
+    var0 = statistics->var0;
+    var1 = statistics->var1;
+    var2 = statistics->var2;
+    var3 = statistics->var3;
+    var4 = statistics->var4;
+    var5 = statistics->var5;
+    var6 = statistics->var6;
+    var7 = statistics->var7;
+    var8 = statistics->var8;
+    var9 = statistics->var9;
+    var10 = statistics->var10;
+    var11 = statistics->var11;
     v19[0] = 67111936;
     v19[1] = var0;
     v20 = 1024;
@@ -59,17 +59,17 @@
     v39 = var10;
     v40 = 1024;
     v41 = var11;
-    _os_log_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_INFO, "[PGCityscapeWallpaperSuggester] Filtered out %d for isUtility, %d for avoidForKeyAsset, %d for aesthetics, %d for wallpaper score, %d for aesthetics+wallpaper, %d for clock overlap, %d for low resolution, %d for crop score, %d for not safe for display, %d for positive people scene, %d for low light, %d for sensitive location", v19, 0x4Au);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_INFO, "[PGCityscapeWallpaperSuggester] Filtered out %d for isUtility, %d for avoidForKeyAsset, %d for aesthetics, %d for wallpaper score, %d for aesthetics+wallpaper, %d for clock overlap, %d for low resolution, %d for crop score, %d for not safe for display, %d for positive people scene, %d for low light, %d for sensitive location", v19, 0x4Au);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchUnsortedCandidatesWithProgressReporter:(id)a3
+- (id)fetchUnsortedCandidatesWithProgressReporter:(id)reporter
 {
   v82 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isCancelledWithProgress:0.0])
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -85,10 +85,10 @@
 
   else
   {
-    v45 = [(PGAbstractSuggester *)self session];
-    v6 = [v45 loggingConnection];
-    v44 = [(PGCityscapeWallpaperSuggester *)self fetchCandidateAssets];
-    if ([v4 isCancelledWithProgress:0.2])
+    session = [(PGAbstractSuggester *)self session];
+    loggingConnection = [session loggingConnection];
+    fetchCandidateAssets = [(PGCityscapeWallpaperSuggester *)self fetchCandidateAssets];
+    if ([reporterCopy isCancelledWithProgress:0.2])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -105,7 +105,7 @@
     else
     {
       v49 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v7 = v6;
+      v7 = loggingConnection;
       v8 = os_signpost_id_generate(v7);
       v9 = v7;
       v10 = v9;
@@ -117,12 +117,12 @@
       }
 
       spid = v8;
-      v40 = v6;
+      v40 = loggingConnection;
 
       info = 0;
       mach_timebase_info(&info);
       v38 = mach_absolute_time();
-      v41 = [v44 count] / 0xC8uLL;
+      v41 = [fetchCandidateAssets count] / 0xC8uLL;
       v80 = 0u;
       v81 = 0u;
       v78 = 0u;
@@ -140,20 +140,20 @@
       v56 = 0u;
       v57 = 0u;
       v55 = 0u;
-      v50 = [v45 curationContext];
+      curationContext = [session curationContext];
       v11 = 0;
       v12 = 0;
       oslog = v10;
-      v43 = v4;
+      v43 = reporterCopy;
       while (1)
       {
         v47 = v12;
         context = objc_autoreleasePoolPush();
         v46 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:?];
-        v13 = [v44 objectsAtIndexes:?];
+        v13 = [fetchCandidateAssets objectsAtIndexes:?];
         v14 = MEMORY[0x277CD97A8];
-        v15 = [v45 curationContext];
-        [v14 prefetchOnAssets:v13 options:14 curationContext:v15];
+        curationContext2 = [session curationContext];
+        [v14 prefetchOnAssets:v13 options:14 curationContext:curationContext2];
 
         v53 = 0u;
         v54 = 0u;
@@ -179,7 +179,7 @@
               if ([objc_opt_class() isPositiveWithUrbanSceneLabelsForAsset:v21])
               {
                 v23 = [[PGCityscapeWallpaperSuggestionCandidate alloc] initWithAsset:v21];
-                if ([objc_opt_class() candidate:v23 passesFilteringWithContext:self->_primaryFilteringContext curationContext:v50 thresholdHelper:self->_peopleSceneConfidenceThresholdHelper statistics:buf] && (!self->_secondaryFilteringContext || objc_msgSend(objc_opt_class(), "candidate:passesFilteringWithContext:curationContext:thresholdHelper:statistics:", v23, self->_secondaryFilteringContext, v50, self->_peopleSceneConfidenceThresholdHelper, &v55)))
+                if ([objc_opt_class() candidate:v23 passesFilteringWithContext:self->_primaryFilteringContext curationContext:curationContext thresholdHelper:self->_peopleSceneConfidenceThresholdHelper statistics:buf] && (!self->_secondaryFilteringContext || objc_msgSend(objc_opt_class(), "candidate:passesFilteringWithContext:curationContext:thresholdHelper:statistics:", v23, self->_secondaryFilteringContext, curationContext, self->_peopleSceneConfidenceThresholdHelper, &v55)))
                 {
                   [v49 addObject:v23];
                 }
@@ -199,16 +199,16 @@
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
         {
           v24 = oslog;
-          v25 = [v46 firstIndex];
-          v26 = [v46 lastIndex];
+          firstIndex = [v46 firstIndex];
+          lastIndex = [v46 lastIndex];
           *v65 = 134218240;
-          *&v65[4] = v25;
+          *&v65[4] = firstIndex;
           *&v65[12] = 2048;
-          *&v65[14] = v26;
+          *&v65[14] = lastIndex;
           _os_log_debug_impl(&dword_22F0FC000, v24, OS_LOG_TYPE_DEBUG, "[PGCityscapeWallpaperSuggester] processed candidates from %lu to %lu", v65, 0x16u);
         }
 
-        v4 = v43;
+        reporterCopy = v43;
         if ([v43 isCancelledWithProgress:1.0 / (v41 + 1) * 0.8 * v47 + 0.2])
         {
           break;
@@ -291,7 +291,7 @@
           }
 
           v5 = v49;
-          v6 = v40;
+          loggingConnection = v40;
           goto LABEL_50;
         }
       }
@@ -307,7 +307,7 @@
 
       objc_autoreleasePoolPop(context);
       v5 = MEMORY[0x277CBEBF8];
-      v6 = v40;
+      loggingConnection = v40;
       v27 = v49;
 LABEL_50:
     }
@@ -321,10 +321,10 @@ LABEL_50:
 - (id)fetchCandidateAssets
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v2 = [(PGAbstractSuggester *)self session];
-  v3 = [v2 loggingConnection];
-  v4 = os_signpost_id_generate(v3);
-  v5 = v3;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  v4 = os_signpost_id_generate(loggingConnection);
+  v5 = loggingConnection;
   v6 = v5;
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v5))
   {
@@ -335,24 +335,24 @@ LABEL_50:
   info = 0;
   mach_timebase_info(&info);
   v7 = mach_absolute_time();
-  v8 = [v2 photoLibrary];
-  v9 = [v8 librarySpecificFetchOptions];
-  [v9 setCacheSizeForFetch:200];
-  [v9 setChunkSizeForFetch:200];
+  photoLibrary = [session photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setCacheSizeForFetch:200];
+  [librarySpecificFetchOptions setChunkSizeForFetch:200];
   v10 = +[PGWallpaperSuggestionUtilities assetFetchPropertySetsIncludingGating:](PGWallpaperSuggestionUtilities, "assetFetchPropertySetsIncludingGating:", [objc_opt_class() filtersForTopSuggestions]);
-  [v9 setFetchPropertySets:v10];
+  [librarySpecificFetchOptions setFetchPropertySets:v10];
 
   v11 = objc_opt_class();
-  v12 = [v2 forbiddenAssetUUIDs];
-  v13 = [v11 prefilteringInternalPredicateWithForbiddenAssetUUIDs:v12];
-  [v9 setInternalPredicate:v13];
+  forbiddenAssetUUIDs = [session forbiddenAssetUUIDs];
+  v13 = [v11 prefilteringInternalPredicateWithForbiddenAssetUUIDs:forbiddenAssetUUIDs];
+  [librarySpecificFetchOptions setInternalPredicate:v13];
 
   v14 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:0];
   v31[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
-  [v9 setSortDescriptors:v15];
+  [librarySpecificFetchOptions setSortDescriptors:v15];
 
-  v16 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v9];
+  v16 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:librarySpecificFetchOptions];
   v17 = v6;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
@@ -387,11 +387,11 @@ LABEL_50:
   return v16;
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v145[6] = *MEMORY[0x277D85DE8];
-  v127 = a3;
-  v124 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v5 = [MEMORY[0x277D22C80] progressReporterWithProgressBlock:?];
   v137 = 0;
   v138 = &v137;
@@ -414,10 +414,10 @@ LABEL_50:
     goto LABEL_29;
   }
 
-  v8 = [v127 maximumNumberOfSuggestions];
-  v9 = [(PGAbstractSuggester *)self session];
-  [v9 loggingConnection];
-  v10 = v122 = v9;
+  maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
+  session = [(PGAbstractSuggester *)self session];
+  [session loggingConnection];
+  v10 = v122 = session;
   v11 = os_signpost_id_generate(v10);
   v12 = v10;
   v13 = v12;
@@ -434,12 +434,12 @@ LABEL_50:
   info = 0;
   mach_timebase_info(&info);
   v117 = mach_absolute_time();
-  v14 = [v127 additionalOptions];
+  additionalOptions = [optionsCopy additionalOptions];
 
-  if (v14)
+  if (additionalOptions)
   {
-    v15 = [v127 additionalOptions];
-    v16 = [v15 objectForKey:@"filteringContext"];
+    additionalOptions2 = [optionsCopy additionalOptions];
+    v16 = [additionalOptions2 objectForKey:@"filteringContext"];
 
     if (v16)
     {
@@ -451,7 +451,7 @@ LABEL_50:
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     *buf = 67109120;
-    *v143 = v8;
+    *v143 = maximumNumberOfSuggestions;
     _os_log_impl(&dword_22F0FC000, oslog, OS_LOG_TYPE_INFO, "[PGCityscapeWallpaperSuggester] Starting to generate %d suggestions.", buf, 8u);
   }
 
@@ -567,9 +567,9 @@ LABEL_26:
   v110 = [MEMORY[0x277CBEA60] arrayWithObjects:v145 count:6];
 
   v34 = MEMORY[0x277D3C810];
-  v35 = [(PGCityscapeWallpaperSuggester *)self primaryFilteringContext];
-  [v35 timeIntervalForCandidateDeduping];
-  v107 = [v34 sortedDedupedCandidatesFromCandidates:v123 sortDescriptors:v110 timeIntervalForCandidateDeduping:v8 targetNumberOfSuggestions:4 maximumTimeIntervalReductionFactor:?];
+  primaryFilteringContext = [(PGCityscapeWallpaperSuggester *)self primaryFilteringContext];
+  [primaryFilteringContext timeIntervalForCandidateDeduping];
+  v107 = [v34 sortedDedupedCandidatesFromCandidates:v123 sortDescriptors:v110 timeIntervalForCandidateDeduping:maximumNumberOfSuggestions targetNumberOfSuggestions:4 maximumTimeIntervalReductionFactor:?];
 
   if (v138[3])
   {
@@ -595,17 +595,17 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  v42 = [objc_opt_class() suggestionTypes];
-  v116 = [v42 firstIndex];
+  suggestionTypes = [objc_opt_class() suggestionTypes];
+  firstIndex = [suggestionTypes firstIndex];
 
-  v43 = [objc_opt_class() suggestionSubtypes];
-  v115 = [v43 firstIndex];
+  suggestionSubtypes = [objc_opt_class() suggestionSubtypes];
+  firstIndex2 = [suggestionSubtypes firstIndex];
 
   assetGater = self->_assetGater;
   v45 = [PGWallpaperSuggestionAccumulator alloc];
   if (assetGater)
   {
-    v46 = 2 * v8;
+    v46 = 2 * maximumNumberOfSuggestions;
   }
 
   else
@@ -623,9 +623,9 @@ LABEL_42:
     v47 = 0;
   }
 
-  v106 = [(PGWallpaperSuggestionAccumulator *)v45 initWithTargetNumberOfSuggestions:v8 targetMinimumNumberOfGatedSuggestions:v47 maximumNumberOfSuggestionsToTryForGating:v46 loggingConnection:oslog];
-  v103 = [MEMORY[0x277CBEAA8] date];
-  v105 = [v103 dateByAddingTimeInterval:120.0];
+  v106 = [(PGWallpaperSuggestionAccumulator *)v45 initWithTargetNumberOfSuggestions:maximumNumberOfSuggestions targetMinimumNumberOfGatedSuggestions:v47 maximumNumberOfSuggestionsToTryForGating:v46 loggingConnection:oslog];
+  date = [MEMORY[0x277CBEAA8] date];
+  v105 = [date dateByAddingTimeInterval:120.0];
   v48 = [v107 count];
   log = oslog;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
@@ -634,7 +634,7 @@ LABEL_42:
     *buf = 67109890;
     *v143 = v48;
     *&v143[4] = 2112;
-    *&v143[6] = v103;
+    *&v143[6] = date;
     *&v143[14] = 2112;
     *&v143[16] = v49;
     LOWORD(v144[0]) = 2112;
@@ -667,7 +667,7 @@ LABEL_42:
 LABEL_105:
 
 LABEL_106:
-    v85 = [(PGWallpaperSuggestionAccumulator *)v106 suggestions];
+    suggestions = [(PGWallpaperSuggestionAccumulator *)v106 suggestions];
     v86 = self->_assetGater;
     v87 = log;
     v88 = os_log_type_enabled(v87, OS_LOG_TYPE_INFO);
@@ -678,12 +678,12 @@ LABEL_106:
         goto LABEL_112;
       }
 
-      v89 = [v85 count];
-      v90 = [(PGWallpaperSuggestionAccumulator *)v106 numberOfGatedSuggestions];
+      v89 = [suggestions count];
+      numberOfGatedSuggestions = [(PGWallpaperSuggestionAccumulator *)v106 numberOfGatedSuggestions];
       *buf = 67109376;
       *v143 = v89;
       *&v143[4] = 1024;
-      *&v143[6] = v90;
+      *&v143[6] = numberOfGatedSuggestions;
       v91 = "[PGCityscapeWallpaperSuggester] Generated %d suggestions (%d gated)";
       v92 = v87;
       v93 = 14;
@@ -696,7 +696,7 @@ LABEL_106:
         goto LABEL_112;
       }
 
-      v94 = [v85 count];
+      v94 = [suggestions count];
       *buf = 67109120;
       *v143 = v94;
       v91 = "[PGCityscapeWallpaperSuggester] Generated %d suggestions";
@@ -753,7 +753,7 @@ LABEL_112:
           _os_log_impl(&dword_22F0FC000, v100, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
         }
 
-        v7 = v85;
+        v7 = suggestions;
         goto LABEL_126;
       }
     }
@@ -796,13 +796,13 @@ LABEL_58:
     v56 = *(*(&v132 + 1) + 8 * v55);
     v57 = objc_autoreleasePoolPush();
     v58 = [PGSingleAssetSuggestion alloc];
-    v59 = [v56 asset];
-    v60 = [(PGSingleAssetSuggestion *)v58 initWithType:v116 subtype:v115 asset:v59];
+    asset = [v56 asset];
+    v60 = [(PGSingleAssetSuggestion *)v58 initWithType:firstIndex subtype:firstIndex2 asset:asset];
 
     v61 = self->_assetGater;
     if (v61)
     {
-      v62 = [v56 asset];
+      asset2 = [v56 asset];
       v128[0] = MEMORY[0x277D85DD0];
       v128[1] = 3221225472;
       v128[2] = __65__PGCityscapeWallpaperSuggester_suggestionsWithOptions_progress___block_invoke;
@@ -810,18 +810,18 @@ LABEL_58:
       v130 = &v137;
       v129 = v5;
       v131 = v54 * v53;
-      v63 = [(PGWallpaperSuggestionAssetGater *)v61 gateAsset:v62 progressBlock:v128];
+      v63 = [(PGWallpaperSuggestionAssetGater *)v61 gateAsset:asset2 progressBlock:v128];
 
       -[PGSingleAssetSuggestion setAvailableFeatures:](v60, "setAvailableFeatures:", [v63 availableFeatures]);
-      v64 = [v63 passesAnyGating];
-      v65 = [v63 didTimeout];
+      passesAnyGating = [v63 passesAnyGating];
+      didTimeout = [v63 didTimeout];
 
-      v119 += v65;
+      v119 += didTimeout;
     }
 
     else
     {
-      v64 = 1;
+      passesAnyGating = 1;
     }
 
     if (v138[3])
@@ -850,13 +850,13 @@ LABEL_67:
     }
 
     ++v112;
-    if (v64)
+    if (passesAnyGating)
     {
       goto LABEL_80;
     }
 
-    v69 = [v56 cropResult];
-    v70 = [v69 cropForOrientation:{-[PGCityscapeWallpaperSuggesterFilteringContext orientation](self->_primaryFilteringContext, "orientation")}];
+    cropResult = [v56 cropResult];
+    v70 = [cropResult cropForOrientation:{-[PGCityscapeWallpaperSuggesterFilteringContext orientation](self->_primaryFilteringContext, "orientation")}];
 
     v71 = -[PGCityscapeWallpaperSuggesterFilteringContext ignoreClockOverlap](self->_primaryFilteringContext, "ignoreClockOverlap") ? 1 : [v70 passesClockOverlap];
     [v70 cropZoomRatio];
@@ -872,7 +872,7 @@ LABEL_67:
     if (v80)
     {
 LABEL_80:
-      [(PGWallpaperSuggestionAccumulator *)v106 addSuggestion:v60 passingGating:v64, v101];
+      [(PGWallpaperSuggestionAccumulator *)v106 addSuggestion:v60 passingGating:passesAnyGating, v101];
       ++v108;
       if ([(PGWallpaperSuggestionAccumulator *)v106 accumulationIsComplete])
       {
@@ -912,8 +912,8 @@ LABEL_80:
       }
     }
 
-    v82 = [MEMORY[0x277CBEAA8] date];
-    [v105 timeIntervalSinceDate:v82];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [v105 timeIntervalSinceDate:date2];
     v84 = v83;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
@@ -1007,9 +1007,9 @@ uint64_t __65__PGCityscapeWallpaperSuggester_suggestionsWithOptions_progress___b
 
 - (void)setupFilteringContexts
 {
-  v2 = self;
+  selfCopy = self;
   v3 = objc_opt_class();
-  if (!v2)
+  if (!selfCopy)
   {
     NSStringFromClass(v3);
     objc_claimAutoreleasedReturnValue();
@@ -1019,7 +1019,7 @@ LABEL_11:
     return;
   }
 
-  if (([(PGCityscapeWallpaperSuggester *)v2 isMemberOfClass:v3]& 1) == 0)
+  if (([(PGCityscapeWallpaperSuggester *)selfCopy isMemberOfClass:v3]& 1) == 0)
   {
     v12 = objc_opt_class();
     NSStringFromClass(v12);
@@ -1035,8 +1035,8 @@ LABEL_11:
   if (IsIPad)
   {
     v6 = [(PGCityscapeWallpaperSuggesterFilteringContext *)v5 initForCityscapesInOrientation:2];
-    primaryFilteringContext = v2->_primaryFilteringContext;
-    v2->_primaryFilteringContext = v6;
+    primaryFilteringContext = selfCopy->_primaryFilteringContext;
+    selfCopy->_primaryFilteringContext = v6;
 
     v8 = [[PGCityscapeWallpaperSuggesterFilteringContext alloc] initForCityscapesInOrientation:1];
   }
@@ -1044,29 +1044,29 @@ LABEL_11:
   else
   {
     v9 = [(PGCityscapeWallpaperSuggesterFilteringContext *)v5 initForCityscapesInOrientation:1];
-    v10 = v2->_primaryFilteringContext;
-    v2->_primaryFilteringContext = v9;
+    v10 = selfCopy->_primaryFilteringContext;
+    selfCopy->_primaryFilteringContext = v9;
 
     v8 = 0;
   }
 
-  secondaryFilteringContext = v2->_secondaryFilteringContext;
-  v2->_secondaryFilteringContext = v8;
+  secondaryFilteringContext = selfCopy->_secondaryFilteringContext;
+  selfCopy->_secondaryFilteringContext = v8;
 }
 
-- (PGCityscapeWallpaperSuggester)initWithSession:(id)a3
+- (PGCityscapeWallpaperSuggester)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v13.receiver = self;
   v13.super_class = PGCityscapeWallpaperSuggester;
-  v5 = [(PGAbstractSuggester *)&v13 initWithSession:v4];
+  v5 = [(PGAbstractSuggester *)&v13 initWithSession:sessionCopy];
   if (v5)
   {
     if ([objc_opt_class() filtersForTopSuggestions])
     {
       v6 = [PGWallpaperSuggestionAssetGater alloc];
-      v7 = [v4 loggingConnection];
-      v8 = [(PGWallpaperSuggestionAssetGater *)v6 initWithType:4 loggingConnection:v7];
+      loggingConnection = [sessionCopy loggingConnection];
+      v8 = [(PGWallpaperSuggestionAssetGater *)v6 initWithType:4 loggingConnection:loggingConnection];
       assetGater = v5->_assetGater;
       v5->_assetGater = v8;
 
@@ -1083,62 +1083,62 @@ LABEL_11:
   return v5;
 }
 
-+ (BOOL)passesFilteringWithAsset:(id)a3 curationContext:(id)a4 orientation:(int64_t)a5 reason:(id *)a6
++ (BOOL)passesFilteringWithAsset:(id)asset curationContext:(id)context orientation:(int64_t)orientation reason:(id *)reason
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([a1 isPositiveWithUrbanSceneLabelsForAsset:v10])
+  assetCopy = asset;
+  contextCopy = context;
+  if ([self isPositiveWithUrbanSceneLabelsForAsset:assetCopy])
   {
-    v38 = [v10 photoLibrary];
-    v12 = [v38 librarySpecificFetchOptions];
-    v13 = [a1 prefilteringInternalPredicateWithForbiddenAssetUUIDs:0];
-    [v12 setInternalPredicate:v13];
+    photoLibrary = [assetCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v13 = [self prefilteringInternalPredicateWithForbiddenAssetUUIDs:0];
+    [librarySpecificFetchOptions setInternalPredicate:v13];
 
     v14 = MEMORY[0x277CD97A8];
-    v15 = [v10 localIdentifier];
-    v39[0] = v15;
+    localIdentifier = [assetCopy localIdentifier];
+    v39[0] = localIdentifier;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-    v17 = [v14 fetchAssetsWithLocalIdentifiers:v16 options:v12];
-    v18 = [v17 firstObject];
+    v17 = [v14 fetchAssetsWithLocalIdentifiers:v16 options:librarySpecificFetchOptions];
+    firstObject = [v17 firstObject];
 
-    if (!v18)
+    if (!firstObject)
     {
       v23 = 0;
-      if (a6)
+      if (reason)
       {
-        *a6 = @"Fails Predicate";
+        *reason = @"Fails Predicate";
       }
 
       goto LABEL_29;
     }
 
-    v19 = [objc_opt_class() filtersForTopSuggestions];
-    v20 = [[PGCityscapeWallpaperSuggestionCandidate alloc] initWithAsset:v10];
+    filtersForTopSuggestions = [objc_opt_class() filtersForTopSuggestions];
+    v20 = [[PGCityscapeWallpaperSuggestionCandidate alloc] initWithAsset:assetCopy];
     v21 = [PGCityscapeWallpaperSuggesterFilteringContext alloc];
-    if (v19)
+    if (filtersForTopSuggestions)
     {
-      v22 = [(PGCityscapeWallpaperSuggesterFilteringContext *)v21 initForTopCityscapesInOrientation:a5];
+      v22 = [(PGCityscapeWallpaperSuggesterFilteringContext *)v21 initForTopCityscapesInOrientation:orientation];
     }
 
     else
     {
-      v22 = [(PGCityscapeWallpaperSuggesterFilteringContext *)v21 initForCityscapesInOrientation:a5];
+      v22 = [(PGCityscapeWallpaperSuggesterFilteringContext *)v21 initForCityscapesInOrientation:orientation];
     }
 
     v24 = v22;
     v36 = +[PGWallpaperSuggestionUtilities peopleSceneConfidenceThresholdHelper];
     v37 = v20;
-    if ([a1 candidate:v20 passesFilteringWithContext:v24 curationContext:v11 thresholdHelper:? statistics:?])
+    if ([self candidate:v20 passesFilteringWithContext:v24 curationContext:contextCopy thresholdHelper:? statistics:?])
     {
-      if (v19)
+      if (filtersForTopSuggestions)
       {
         v25 = [PGWallpaperSuggestionAssetGater alloc];
         v26 = [(PGWallpaperSuggestionAssetGater *)v25 initWithType:4 loggingConnection:MEMORY[0x277D86220]];
         v23 = 1;
         [(PGWallpaperSuggestionAssetGater *)v26 setCoversTracks:1];
         [(PGWallpaperSuggestionAssetGater *)v26 setIsUserInitiated:1];
-        v35 = [(PGWallpaperSuggestionAssetGater *)v26 gateAsset:v10 progressBlock:&__block_literal_global_504];
+        v35 = [(PGWallpaperSuggestionAssetGater *)v26 gateAsset:assetCopy progressBlock:&__block_literal_global_504];
         if ([v35 passesAnyGating])
         {
           v27 = @"Pass Segmented";
@@ -1146,8 +1146,8 @@ LABEL_11:
 
         else
         {
-          v28 = [(PGCityscapeWallpaperSuggestionCandidate *)v20 cropResult];
-          v29 = [v28 cropForOrientation:a5];
+          cropResult = [(PGCityscapeWallpaperSuggestionCandidate *)v20 cropResult];
+          v29 = [cropResult cropForOrientation:orientation];
 
           if (([v24 ignoreClockOverlap] & 1) != 0 || objc_msgSend(v29, "passesClockOverlap"))
           {
@@ -1173,7 +1173,7 @@ LABEL_11:
           }
         }
 
-        if (!a6)
+        if (!reason)
         {
           goto LABEL_28;
         }
@@ -1183,7 +1183,7 @@ LABEL_11:
       {
         v27 = @"Pass";
         v23 = 1;
-        if (!a6)
+        if (!reason)
         {
           goto LABEL_28;
         }
@@ -1192,7 +1192,7 @@ LABEL_11:
 
     else
     {
-      if (!a6)
+      if (!reason)
       {
         v23 = 0;
 LABEL_28:
@@ -1205,14 +1205,14 @@ LABEL_29:
       v27 = @"Unknown Reason";
     }
 
-    *a6 = v27;
+    *reason = v27;
     goto LABEL_28;
   }
 
   v23 = 0;
-  if (a6)
+  if (reason)
   {
-    *a6 = @"No Urban Scene";
+    *reason = @"No Urban Scene";
   }
 
 LABEL_30:
@@ -1221,70 +1221,70 @@ LABEL_30:
   return v23;
 }
 
-+ (BOOL)candidate:(id)a3 passesFilteringWithContext:(id)a4 curationContext:(id)a5 thresholdHelper:(id)a6 statistics:(id *)a7
++ (BOOL)candidate:(id)candidate passesFilteringWithContext:(id)context curationContext:(id)curationContext thresholdHelper:(id)helper statistics:(id *)statistics
 {
   v71 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a5;
-  v15 = [v11 asset];
-  v16 = [v15 curationModel];
-  v17 = [v14 userFeedbackCalculator];
+  candidateCopy = candidate;
+  contextCopy = context;
+  helperCopy = helper;
+  curationContextCopy = curationContext;
+  asset = [candidateCopy asset];
+  curationModel = [asset curationModel];
+  userFeedbackCalculator = [curationContextCopy userFeedbackCalculator];
 
-  LODWORD(v14) = [v16 isUtilityForMemoriesWithAsset:v15 userFeedbackCalculator:v17 blockSocialMediaImportedAssets:PGWallpaperSuggestionBlockSocialMediaImportedAssets];
-  if (v14)
+  LODWORD(curationContextCopy) = [curationModel isUtilityForMemoriesWithAsset:asset userFeedbackCalculator:userFeedbackCalculator blockSocialMediaImportedAssets:PGWallpaperSuggestionBlockSocialMediaImportedAssets];
+  if (curationContextCopy)
   {
     v18 = 0;
-    ++a7->var0;
+    ++statistics->var0;
     goto LABEL_44;
   }
 
-  if ([v16 avoidIfPossibleForKeyAssetWithAsset:v15 statistics:&a7->var12])
+  if ([curationModel avoidIfPossibleForKeyAssetWithAsset:asset statistics:&statistics->var12])
   {
     v18 = 0;
-    ++a7->var1;
+    ++statistics->var1;
     goto LABEL_44;
   }
 
-  v19 = [v16 aestheticsModel];
-  v20 = [v19 overallAestheticScoreNode];
-  [v20 highPrecisionOperatingPoint];
+  aestheticsModel = [curationModel aestheticsModel];
+  overallAestheticScoreNode = [aestheticsModel overallAestheticScoreNode];
+  [overallAestheticScoreNode highPrecisionOperatingPoint];
   v22 = v21;
 
-  [v15 overallAestheticScore];
+  [asset overallAestheticScore];
   if (v22 > v23)
   {
     v18 = 0;
-    ++a7->var2;
+    ++statistics->var2;
     goto LABEL_44;
   }
 
-  [v12 absoluteMinimumWallpaperScore];
+  [contextCopy absoluteMinimumWallpaperScore];
   v25 = v24;
   if (v24 < 0.0)
   {
-    v26 = [v16 wallpaperScoreModel];
-    v27 = [v26 minimumWallpaperScoreNode];
-    [v27 operatingPoint];
+    wallpaperScoreModel = [curationModel wallpaperScoreModel];
+    minimumWallpaperScoreNode = [wallpaperScoreModel minimumWallpaperScoreNode];
+    [minimumWallpaperScoreNode operatingPoint];
     v25 = v28;
   }
 
-  [v11 wallpaperScore];
+  [candidateCopy wallpaperScore];
   if (v25 > v29)
   {
     v18 = 0;
-    ++a7->var3;
+    ++statistics->var3;
     goto LABEL_44;
   }
 
-  v30 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v30 doubleForKey:@"PGCityscapeWallpaperSuggesterAestheticScore"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults doubleForKey:@"PGCityscapeWallpaperSuggesterAestheticScore"];
   v32 = v31;
 
   if (v32 <= 0.0)
   {
-    v34 = [v16 isAestheticallyPrettyGoodWithAsset:v15];
+    v34 = [curationModel isAestheticallyPrettyGoodWithAsset:asset];
   }
 
   else
@@ -1296,22 +1296,22 @@ LABEL_30:
       _os_log_impl(&dword_22F0FC000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "[PGCityscapeWallpaperSuggester] Using custom aesthetics score %.2f ", &v69, 0xCu);
     }
 
-    [v15 overallAestheticScore];
+    [asset overallAestheticScore];
     v34 = v32 <= v33;
   }
 
-  [v12 minimumWallpaperScore];
+  [contextCopy minimumWallpaperScore];
   v36 = v35;
   if (v35 < 0.0)
   {
-    v37 = [v16 wallpaperScoreModel];
-    v38 = [v37 cityscapeNode];
-    [v38 highRecallOperatingPoint];
+    wallpaperScoreModel2 = [curationModel wallpaperScoreModel];
+    cityscapeNode = [wallpaperScoreModel2 cityscapeNode];
+    [cityscapeNode highRecallOperatingPoint];
     v36 = v39;
   }
 
-  v40 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v40 doubleForKey:@"PGCityscapeWallpaperSuggesterWallpaperScore"];
+  standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults2 doubleForKey:@"PGCityscapeWallpaperSuggesterWallpaperScore"];
   v42 = v41;
 
   if (v42 > 0.0)
@@ -1326,7 +1326,7 @@ LABEL_30:
     v36 = v42;
   }
 
-  [v11 wallpaperScore];
+  [candidateCopy wallpaperScore];
   if (v36 <= v43)
   {
     v44 = 1;
@@ -1340,30 +1340,30 @@ LABEL_30:
   if ((v44 & 1) == 0)
   {
     v18 = 0;
-    ++a7->var9;
+    ++statistics->var9;
     goto LABEL_44;
   }
 
-  if (([v12 bypassCropScoreCheck] & 1) == 0)
+  if (([contextCopy bypassCropScoreCheck] & 1) == 0)
   {
-    v45 = [v11 cropResult];
-    v46 = [v45 cropForOrientation:{objc_msgSend(v12, "orientation")}];
+    cropResult = [candidateCopy cropResult];
+    v46 = [cropResult cropForOrientation:{objc_msgSend(contextCopy, "orientation")}];
 
-    if (([v12 ignoreClockOverlap] & 1) != 0 || objc_msgSend(v46, "passesClockOverlap"))
+    if (([contextCopy ignoreClockOverlap] & 1) != 0 || objc_msgSend(v46, "passesClockOverlap"))
     {
       [v46 cropZoomRatio];
       v48 = v47;
-      [v12 maximumCropZoomRatio];
+      [contextCopy maximumCropZoomRatio];
       if (v48 <= v49)
       {
         [v46 cropScore];
         v52 = v51;
-        [v12 minimumCropScore];
+        [contextCopy minimumCropScore];
         if (v52 >= v53)
         {
           v65 = v53;
-          [v12 cropScorePenaltyCutOff];
-          [v11 setCropScorePenalty:{+[PGWallpaperSuggestionUtilities computeQuantizedPenalty:minScore:cutOff:](PGWallpaperSuggestionUtilities, "computeQuantizedPenalty:minScore:cutOff:", v52, v65, v66)}];
+          [contextCopy cropScorePenaltyCutOff];
+          [candidateCopy setCropScorePenalty:{+[PGWallpaperSuggestionUtilities computeQuantizedPenalty:minScore:cutOff:](PGWallpaperSuggestionUtilities, "computeQuantizedPenalty:minScore:cutOff:", v52, v65, v66)}];
 
           goto LABEL_27;
         }
@@ -1382,47 +1382,47 @@ LABEL_30:
       v50 = 16;
     }
 
-    ++*(&a7->var0 + v50);
+    ++*(&statistics->var0 + v50);
 
     v18 = 0;
     goto LABEL_44;
   }
 
 LABEL_27:
-  if ([MEMORY[0x277D3C7C0] assetIsSafeForWidgetDisplay:v15])
+  if ([MEMORY[0x277D3C7C0] assetIsSafeForWidgetDisplay:asset])
   {
-    if ([PGWallpaperSuggestionUtilities foundDominantPeopleSceneInAsset:v15 withConfidenceThresholdHelper:v13])
+    if ([PGWallpaperSuggestionUtilities foundDominantPeopleSceneInAsset:asset withConfidenceThresholdHelper:helperCopy])
     {
       v18 = 0;
-      ++a7->var8;
+      ++statistics->var8;
     }
 
     else
     {
-      [v12 maximumLowLightScore];
+      [contextCopy maximumLowLightScore];
       v55 = v54;
       if (v54 < 0.0)
       {
-        v56 = [v15 curationModel];
-        v57 = [v56 aestheticsModel];
-        v58 = [v57 lowLightNode];
-        [v58 operatingPoint];
+        curationModel2 = [asset curationModel];
+        aestheticsModel2 = [curationModel2 aestheticsModel];
+        lowLightNode = [aestheticsModel2 lowLightNode];
+        [lowLightNode operatingPoint];
         v55 = v59;
       }
 
-      v60 = [v15 aestheticProperties];
-      [v60 lowLight];
+      aestheticProperties = [asset aestheticProperties];
+      [aestheticProperties lowLight];
       v62 = v61;
 
       if (v55 >= v62)
       {
-        v67 = [v11 asset];
-        v68 = [PGSensitiveLocationBlocklistConfiguration isAssetAtSensitiveLocationAndDate:v67];
+        asset2 = [candidateCopy asset];
+        v68 = [PGSensitiveLocationBlocklistConfiguration isAssetAtSensitiveLocationAndDate:asset2];
 
         if (v68)
         {
           v18 = 0;
-          ++a7->var11;
+          ++statistics->var11;
         }
 
         else
@@ -1434,7 +1434,7 @@ LABEL_27:
       else
       {
         v18 = 0;
-        ++a7->var10;
+        ++statistics->var10;
       }
     }
   }
@@ -1442,7 +1442,7 @@ LABEL_27:
   else
   {
     v18 = 0;
-    ++a7->var7;
+    ++statistics->var7;
   }
 
 LABEL_44:
@@ -1451,7 +1451,7 @@ LABEL_44:
   return v18;
 }
 
-+ (BOOL)isPositiveWithUrbanSceneLabelsForAsset:(id)a3
++ (BOOL)isPositiveWithUrbanSceneLabelsForAsset:(id)asset
 {
   v27 = *MEMORY[0x277D85DE8];
   v12 = @"cityscape";
@@ -1470,27 +1470,27 @@ LABEL_44:
   v25 = @"Q4198718";
   v26 = @"Q957904";
   v4 = MEMORY[0x277CBEA60];
-  v5 = a3;
+  assetCopy = asset;
   v6 = [v4 arrayWithObjects:&v12 count:15];
   v7 = [PGSceneAssetFilter alloc];
-  v8 = [a1 sceneTaxonomy];
-  v9 = [(PGSceneAssetFilter *)v7 initForEntityNetWithSceneNames:v6 positiveSceneCustomSignalModelBlock:&__block_literal_global_6546 secondaryPositiveScenes:MEMORY[0x277CBEBF8] positiveDominantScenes:MEMORY[0x277CBEBF8] positiveDominantSceneCustomSignalModelBlock:0 positiveSemDevScenes:MEMORY[0x277CBEBF8] negativeScenes:MEMORY[0x277CBEBF8] sceneTaxonomy:v8, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27];
+  sceneTaxonomy = [self sceneTaxonomy];
+  v9 = [(PGSceneAssetFilter *)v7 initForEntityNetWithSceneNames:v6 positiveSceneCustomSignalModelBlock:&__block_literal_global_6546 secondaryPositiveScenes:MEMORY[0x277CBEBF8] positiveDominantScenes:MEMORY[0x277CBEBF8] positiveDominantSceneCustomSignalModelBlock:0 positiveSemDevScenes:MEMORY[0x277CBEBF8] negativeScenes:MEMORY[0x277CBEBF8] sceneTaxonomy:sceneTaxonomy, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22, v23, v24, v25, v26, v27];
 
-  LOBYTE(v8) = [v9 passesWithAsset:v5];
+  LOBYTE(sceneTaxonomy) = [v9 passesWithAsset:assetCopy];
   v10 = *MEMORY[0x277D85DE8];
-  return v8;
+  return sceneTaxonomy;
 }
 
-+ (id)candidatesFromAssets:(id)a3
++ (id)candidatesFromAssets:(id)assets
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  assetsCopy = assets;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = assetsCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -1522,9 +1522,9 @@ LABEL_44:
   return v4;
 }
 
-+ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)a3
++ (id)prefilteringInternalPredicateWithForbiddenAssetUUIDs:(id)ds
 {
-  v3 = a3;
+  dsCopy = ds;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"kind", 0];
   [v4 addObject:v5];
@@ -1538,10 +1538,10 @@ LABEL_44:
   [v4 addObject:v9];
   v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"playbackStyle", &unk_2844854F0];
   [v4 addObject:v10];
-  if ([v3 count])
+  if ([dsCopy count])
   {
-    v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", v3];
-    [v4 addObject:v11];
+    dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"uuid", dsCopy];
+    [v4 addObject:dsCopy];
   }
 
   v12 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v4];

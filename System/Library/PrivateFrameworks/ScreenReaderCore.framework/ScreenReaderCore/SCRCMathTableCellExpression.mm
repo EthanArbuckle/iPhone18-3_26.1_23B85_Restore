@@ -1,8 +1,8 @@
 @interface SCRCMathTableCellExpression
 - (id)_prefixForCell;
 - (id)_suffixForCell;
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4;
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5;
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed;
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position;
 - (void)_getTableDataIfNecessary;
 @end
 
@@ -12,22 +12,22 @@
 {
   if (!self->_didGetTablePosition)
   {
-    v7 = [(SCRCMathExpression *)self parent];
-    v3 = [v7 children];
-    v4 = [v3 indexOfObjectIdenticalTo:self] + 1;
-    v5 = [v7 parent];
-    v6 = [v5 children];
-    self->_rowIndex = [v6 indexOfObjectIdenticalTo:v7] + 1;
+    parent = [(SCRCMathExpression *)self parent];
+    children = [parent children];
+    v4 = [children indexOfObjectIdenticalTo:self] + 1;
+    v7Parent = [parent parent];
+    children2 = [v7Parent children];
+    self->_rowIndex = [children2 indexOfObjectIdenticalTo:parent] + 1;
     self->_columnIndex = v4;
-    self->_tableRowCount = [v6 count];
-    self->_tableColumnCount = [v3 count];
+    self->_tableRowCount = [children2 count];
+    self->_tableColumnCount = [children count];
     self->_didGetTablePosition = 1;
   }
 }
 
-- (id)speakableDescriptionWithSpeakingStyle:(int64_t)a3 arePausesAllowed:(BOOL)a4
+- (id)speakableDescriptionWithSpeakingStyle:(int64_t)style arePausesAllowed:(BOOL)allowed
 {
-  v4 = a4;
+  allowedCopy = allowed;
   [(SCRCMathTableCellExpression *)self _getTableDataIfNecessary];
   if (self->_tableColumnCount == 1)
   {
@@ -56,7 +56,7 @@ LABEL_5:
 
   v8 = [(SCRCMathExpression *)self localizedStringForKey:@"math.row.and.column.formatter"];
   v16 = MEMORY[0x277CCA898];
-  v29 = v4;
+  v29 = allowedCopy;
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:self->_rowIndex];
   v13 = [(SCRCMathExpression *)self localizedStringForNumber:v12];
   v14 = [v16 scrcStringWithString:v13];
@@ -66,12 +66,12 @@ LABEL_5:
   v20 = [v17 scrcStringWithString:v19];
   v15 = [v7 scrcStringWithFormat:v8, v14, v20];
 
-  v4 = v29;
+  allowedCopy = v29;
 LABEL_7:
 
   v30.receiver = self;
   v30.super_class = SCRCMathTableCellExpression;
-  v21 = [(SCRCMathRowExpression *)&v30 speakableDescriptionWithSpeakingStyle:a3 arePausesAllowed:v4];
+  v21 = [(SCRCMathRowExpression *)&v30 speakableDescriptionWithSpeakingStyle:style arePausesAllowed:allowedCopy];
   if (![v21 length])
   {
     v22 = MEMORY[0x277CCA898];
@@ -88,24 +88,24 @@ LABEL_7:
   return v27;
 }
 
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  positionCopy = position;
   v21.receiver = self;
   v21.super_class = SCRCMathTableCellExpression;
-  v9 = [(SCRCMathArrayExpression *)&v21 speakableSegmentsWithSpeakingStyle:a3 upToDepth:a4 treePosition:v8];
+  v9 = [(SCRCMathArrayExpression *)&v21 speakableSegmentsWithSpeakingStyle:style upToDepth:depth treePosition:positionCopy];
   if (![v9 count])
   {
     v10 = MEMORY[0x277CCA898];
     v11 = MEMORY[0x277CCACA8];
-    v12 = [(SCRCMathTableCellExpression *)self _prefixForCell];
-    v13 = [v12 string];
+    _prefixForCell = [(SCRCMathTableCellExpression *)self _prefixForCell];
+    string = [_prefixForCell string];
     v14 = [(SCRCMathExpression *)self localizedStringForKey:@"empty.content"];
-    v15 = [(SCRCMathTableCellExpression *)self _suffixForCell];
-    v16 = [v15 string];
-    v17 = [v11 stringWithFormat:@"%@%@%@", v13, v14, v16];
-    v18 = [v10 scrcStringWithString:v17 treePosition:v8];
+    _suffixForCell = [(SCRCMathTableCellExpression *)self _suffixForCell];
+    string2 = [_suffixForCell string];
+    v17 = [v11 stringWithFormat:@"%@%@%@", string, v14, string2];
+    v18 = [v10 scrcStringWithString:v17 treePosition:positionCopy];
 
     v22[0] = v18;
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];

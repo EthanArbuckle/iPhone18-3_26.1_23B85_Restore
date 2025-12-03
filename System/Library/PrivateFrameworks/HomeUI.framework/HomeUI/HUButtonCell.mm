@@ -1,47 +1,47 @@
 @interface HUButtonCell
-- (HUButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HUButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)didMoveToSuperview;
 - (void)prepareForReuse;
-- (void)setHideTitle:(BOOL)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)setHideTitle:(BOOL)title;
+- (void)setTextAlignment:(int64_t)alignment;
 - (void)tintColorDidChange;
 - (void)updateTitle;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUButtonCell
 
-- (HUButtonCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HUButtonCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = HUButtonCell;
-  v4 = [(HUButtonCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HUButtonCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(HUButtonCell *)v4 setTextColorFollowsTintColor:1];
     [(HUButtonCell *)v5 setTextAlignment:4];
     [(HUButtonCell *)v5 setHideTitle:0];
-    v6 = [(HUButtonCell *)v5 textLabel];
-    [v6 setNumberOfLines:0];
+    textLabel = [(HUButtonCell *)v5 textLabel];
+    [textLabel setNumberOfLines:0];
   }
 
   return v5;
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  self->_textAlignment = a3;
-  v4 = [(HUButtonCell *)self textLabel];
-  [v4 setTextAlignment:a3];
+  self->_textAlignment = alignment;
+  textLabel = [(HUButtonCell *)self textLabel];
+  [textLabel setTextAlignment:alignment];
 }
 
-- (void)setHideTitle:(BOOL)a3
+- (void)setHideTitle:(BOOL)title
 {
-  self->_hideTitle = a3;
-  v4 = [(HUButtonCell *)self hideTitle];
-  v5 = [(HUButtonCell *)self textLabel];
-  [v5 setHidden:v4];
+  self->_hideTitle = title;
+  hideTitle = [(HUButtonCell *)self hideTitle];
+  textLabel = [(HUButtonCell *)self textLabel];
+  [textLabel setHidden:hideTitle];
 }
 
 - (void)prepareForReuse
@@ -71,17 +71,17 @@
   [(HUButtonCell *)self updateTitle];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v4 = [(HUButtonCell *)self item];
-  v5 = [v4 latestResults];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
-  v7 = [(HUButtonCell *)self textLabel];
-  [v7 setText:v6];
+  item = [(HUButtonCell *)self item];
+  latestResults = [item latestResults];
+  v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  textLabel = [(HUButtonCell *)self textLabel];
+  [textLabel setText:v6];
 
-  v8 = [(HUButtonCell *)self item];
-  v9 = [v8 latestResults];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
+  item2 = [(HUButtonCell *)self item];
+  latestResults2 = [item2 latestResults];
+  v10 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D13DC8]];
   [(HUButtonCell *)self setAccessibilityIdentifier:v10];
 
   [(HUButtonCell *)self updateTitle];
@@ -89,35 +89,35 @@
 
 - (void)updateTitle
 {
-  v9 = [MEMORY[0x277D75348] labelColor];
-  v3 = [(HUButtonCell *)self textAlignment];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  textAlignment = [(HUButtonCell *)self textAlignment];
   if ([(HUButtonCell *)self textColorFollowsTintColor])
   {
-    v4 = [(HUButtonCell *)self tintColor];
+    tintColor = [(HUButtonCell *)self tintColor];
 
-    v9 = v4;
+    labelColor = tintColor;
   }
 
   if ([(HUButtonCell *)self isDestructive])
   {
-    v5 = [MEMORY[0x277D75348] systemRedColor];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
 
-    v3 = 4;
-    v9 = v5;
+    textAlignment = 4;
+    labelColor = systemRedColor;
   }
 
   if ([(HUButtonCell *)self isDisabled])
   {
-    v6 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
 
-    v9 = v6;
+    labelColor = systemGrayColor;
   }
 
-  v7 = [(HUButtonCell *)self textLabel];
-  [v7 setTextColor:v9];
+  textLabel = [(HUButtonCell *)self textLabel];
+  [textLabel setTextColor:labelColor];
 
-  v8 = [(HUButtonCell *)self textLabel];
-  [v8 setTextAlignment:v3];
+  textLabel2 = [(HUButtonCell *)self textLabel];
+  [textLabel2 setTextAlignment:textAlignment];
 }
 
 @end

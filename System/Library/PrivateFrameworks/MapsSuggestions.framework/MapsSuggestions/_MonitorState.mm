@@ -2,8 +2,8 @@
 - (BOOL)isMonitoring;
 - (BOOL)shouldBeMonitoring;
 - (_MonitorState)init;
-- (void)setMonitoring:(BOOL)a3;
-- (void)setShouldBeMonitoring:(BOOL)a3;
+- (void)setMonitoring:(BOOL)monitoring;
+- (void)setShouldBeMonitoring:(BOOL)monitoring;
 @end
 
 @implementation _MonitorState
@@ -23,37 +23,37 @@
 
 - (BOOL)isMonitoring
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isMonitoring = v2->_isMonitoring;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isMonitoring = selfCopy->_isMonitoring;
+  objc_sync_exit(selfCopy);
 
   return isMonitoring;
 }
 
-- (void)setMonitoring:(BOOL)a3
+- (void)setMonitoring:(BOOL)monitoring
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_isMonitoring = a3;
+  obj->_isMonitoring = monitoring;
   objc_sync_exit(obj);
 }
 
 - (BOOL)shouldBeMonitoring
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  shouldBeMonitoring = v2->_shouldBeMonitoring;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shouldBeMonitoring = selfCopy->_shouldBeMonitoring;
+  objc_sync_exit(selfCopy);
 
   return shouldBeMonitoring;
 }
 
-- (void)setShouldBeMonitoring:(BOOL)a3
+- (void)setShouldBeMonitoring:(BOOL)monitoring
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_shouldBeMonitoring = a3;
+  obj->_shouldBeMonitoring = monitoring;
   objc_sync_exit(obj);
 }
 

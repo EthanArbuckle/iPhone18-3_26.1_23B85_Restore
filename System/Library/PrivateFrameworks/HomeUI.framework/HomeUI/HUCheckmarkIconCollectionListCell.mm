@@ -1,7 +1,7 @@
 @interface HUCheckmarkIconCollectionListCell
 - (UICellAccessory)checkmarkCellAccessory;
 - (id)_buildAccessories;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUCheckmarkIconCollectionListCell
@@ -18,8 +18,8 @@
     self->_checkmarkAccessoryView = v4;
 
     v6 = objc_alloc(MEMORY[0x277D75250]);
-    v7 = [(HUCheckmarkIconCollectionListCell *)self checkmarkAccessoryView];
-    v8 = [v6 initWithCustomView:v7 placement:1];
+    checkmarkAccessoryView = [(HUCheckmarkIconCollectionListCell *)self checkmarkAccessoryView];
+    v8 = [v6 initWithCustomView:checkmarkAccessoryView placement:1];
     v9 = self->_checkmarkCellAccessory;
     self->_checkmarkCellAccessory = v8;
 
@@ -33,13 +33,13 @@
 {
   v8.receiver = self;
   v8.super_class = HUCheckmarkIconCollectionListCell;
-  v3 = [(HUIconCollectionListCell *)&v8 _buildAccessories];
-  v4 = [v3 mutableCopy];
+  _buildAccessories = [(HUIconCollectionListCell *)&v8 _buildAccessories];
+  v4 = [_buildAccessories mutableCopy];
 
   if (![(HUCheckmarkIconCollectionListCell *)self hidesCheckmark])
   {
-    v5 = [(HUCheckmarkIconCollectionListCell *)self checkmarkCellAccessory];
-    [v4 addObject:v5];
+    checkmarkCellAccessory = [(HUCheckmarkIconCollectionListCell *)self checkmarkCellAccessory];
+    [v4 addObject:checkmarkCellAccessory];
   }
 
   v6 = [v4 copy];
@@ -47,21 +47,21 @@
   return v6;
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v15.receiver = self;
   v15.super_class = HUCheckmarkIconCollectionListCell;
-  [(HUIconCollectionListCell *)&v15 updateUIWithAnimation:a3];
+  [(HUIconCollectionListCell *)&v15 updateUIWithAnimation:animation];
   if (![(HUCheckmarkIconCollectionListCell *)self hidesCheckmark])
   {
-    v4 = [(HUIconCollectionListCell *)self item];
-    v5 = [v4 latestResults];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
-    v7 = [v6 BOOLValue];
+    item = [(HUIconCollectionListCell *)self item];
+    latestResults = [item latestResults];
+    v6 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13EA8]];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [(HUIconCollectionListCell *)self item];
-    v9 = [v8 latestResults];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D14068]];
+    item2 = [(HUIconCollectionListCell *)self item];
+    latestResults2 = [item2 latestResults];
+    v10 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D14068]];
 
     if (v10)
     {
@@ -73,8 +73,8 @@
       v11 = 0;
     }
 
-    v12 = [(HUCheckmarkIconCollectionListCell *)self checkmarkAccessoryView];
-    [v12 setChecked:v11];
+    checkmarkAccessoryView = [(HUCheckmarkIconCollectionListCell *)self checkmarkAccessoryView];
+    [checkmarkAccessoryView setChecked:v11];
 
     if ([(HUCheckmarkIconCollectionListCell *)self disablesCheckmark])
     {
@@ -83,11 +83,11 @@
 
     else
     {
-      v13 = [(HUIconCollectionListCell *)self isDisabled]| v7;
+      v13 = [(HUIconCollectionListCell *)self isDisabled]| bOOLValue;
     }
 
-    v14 = [(HUCheckmarkIconCollectionListCell *)self checkmarkAccessoryView];
-    [v14 setDisabled:v13 & 1];
+    checkmarkAccessoryView2 = [(HUCheckmarkIconCollectionListCell *)self checkmarkAccessoryView];
+    [checkmarkAccessoryView2 setDisabled:v13 & 1];
   }
 }
 

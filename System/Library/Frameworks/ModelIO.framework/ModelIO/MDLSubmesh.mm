@@ -1,22 +1,22 @@
 @interface MDLSubmesh
 - (MDLSubmesh)initWithMDLSubmesh:(MDLSubmesh *)submesh indexType:(MDLIndexBitDepth)indexType geometryType:(MDLGeometryType)geometryType;
 - (MDLSubmesh)initWithName:(NSString *)name indexBuffer:(id)indexBuffer indexCount:(NSUInteger)indexCount indexType:(MDLIndexBitDepth)indexType geometryType:(MDLGeometryType)geometryType material:(MDLMaterial *)material;
-- (MDLSubmesh)initWithName:(id)a3 indexBuffer:(id)a4 indexCount:(unint64_t)a5 indexType:(unint64_t)a6 faceIndexing:(id)a7 geometryType:(int64_t)a8 material:(id)a9 topology:(id)a10;
+- (MDLSubmesh)initWithName:(id)name indexBuffer:(id)buffer indexCount:(unint64_t)count indexType:(unint64_t)type faceIndexing:(id)indexing geometryType:(int64_t)geometryType material:(id)material topology:(id)self0;
 - (id)indexBufferAsIndexType:(MDLIndexBitDepth)indexType;
-- (void)boundingBoxForMesh:(float32x4_t *)a3@<X8>;
-- (void)debugPrintToFile:(__sFILE *)a3;
+- (void)boundingBoxForMesh:(float32x4_t *)mesh@<X8>;
+- (void)debugPrintToFile:(__sFILE *)file;
 @end
 
 @implementation MDLSubmesh
 
-- (MDLSubmesh)initWithName:(id)a3 indexBuffer:(id)a4 indexCount:(unint64_t)a5 indexType:(unint64_t)a6 faceIndexing:(id)a7 geometryType:(int64_t)a8 material:(id)a9 topology:(id)a10
+- (MDLSubmesh)initWithName:(id)name indexBuffer:(id)buffer indexCount:(unint64_t)count indexType:(unint64_t)type faceIndexing:(id)indexing geometryType:(int64_t)geometryType material:(id)material topology:(id)self0
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a9;
-  v17 = a10;
-  if (objc_msgSend_type(v14, v18, v19) == 2 && (!v15 || v17) && (!v15 || a8 == 5))
+  nameCopy = name;
+  bufferCopy = buffer;
+  indexingCopy = indexing;
+  materialCopy = material;
+  topologyCopy = topology;
+  if (objc_msgSend_type(bufferCopy, v18, v19) == 2 && (!indexingCopy || topologyCopy) && (!indexingCopy || geometryType == 5))
   {
     v41.receiver = self;
     v41.super_class = MDLSubmesh;
@@ -25,35 +25,35 @@
     if (v37)
     {
       v36 = objc_msgSend_null(MEMORY[0x277CBEB68], v20, v21);
-      if (objc_msgSend_isEqual_(v14, v22, v36))
+      if (objc_msgSend_isEqual_(bufferCopy, v22, v36))
       {
         allocator = v36;
       }
 
       else
       {
-        v35 = objc_msgSend_allocator(v14, v23, v24);
+        v35 = objc_msgSend_allocator(bufferCopy, v23, v24);
 
         if (!v35)
         {
 LABEL_14:
-          objc_storeStrong(&v37->_indexBuffer, a4);
-          objc_storeStrong(&v37->_material, a9);
-          objc_storeStrong(&v37->_topology, a10);
-          objc_storeStrong(&v37->_faceIndexing, a7);
-          v33 = objc_msgSend_copy(v13, v31, v32);
+          objc_storeStrong(&v37->_indexBuffer, buffer);
+          objc_storeStrong(&v37->_material, material);
+          objc_storeStrong(&v37->_topology, topology);
+          objc_storeStrong(&v37->_faceIndexing, indexing);
+          v33 = objc_msgSend_copy(nameCopy, v31, v32);
           name = v37->_name;
           v37->_name = v33;
 
-          v37->_indexCount = a5;
-          v37->_geometryType = a8;
-          v37->_indexType = a6;
+          v37->_indexCount = count;
+          v37->_geometryType = geometryType;
+          v37->_indexType = type;
           self = v37;
-          v26 = self;
+          selfCopy = self;
           goto LABEL_10;
         }
 
-        v30 = objc_msgSend_allocator(v14, v28, v29);
+        v30 = objc_msgSend_allocator(bufferCopy, v28, v29);
         allocator = v37->_allocator;
         v37->_allocator = v30;
       }
@@ -62,10 +62,10 @@ LABEL_14:
     }
   }
 
-  v26 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v26;
+  return selfCopy;
 }
 
 - (MDLSubmesh)initWithName:(NSString *)name indexBuffer:(id)indexBuffer indexCount:(NSUInteger)indexCount indexType:(MDLIndexBitDepth)indexType geometryType:(MDLGeometryType)geometryType material:(MDLMaterial *)material
@@ -75,7 +75,7 @@ LABEL_10:
   v14 = material;
   if (objc_msgSend_type(v13, v15, v16) != 2 || (v36.receiver = self, v36.super_class = MDLSubmesh, v19 = [(MDLSubmesh *)&v36 init], (self = v19) == 0))
   {
-    v32 = 0;
+    selfCopy = 0;
     goto LABEL_9;
   }
 
@@ -105,10 +105,10 @@ LABEL_6:
   v19->_geometryType = geometryType;
   v19->_indexType = indexType;
   self = v19;
-  v32 = self;
+  selfCopy = self;
 LABEL_9:
 
-  return v32;
+  return selfCopy;
 }
 
 - (MDLSubmesh)initWithMDLSubmesh:(MDLSubmesh *)submesh indexType:(MDLIndexBitDepth)indexType geometryType:(MDLGeometryType)geometryType
@@ -126,9 +126,9 @@ LABEL_9:
     v45 = objc_msgSend_bytes(v42, v43, v44);
     if (objc_msgSend_geometryType(v8, v46, v47) == 5)
     {
-      v35 = objc_msgSend_topology(v8, v48, v49);
+      selfCopy5 = objc_msgSend_topology(v8, v48, v49);
 
-      if (!v35)
+      if (!selfCopy5)
       {
         v68 = 0;
         v55 = 0;
@@ -172,7 +172,7 @@ LABEL_14:
     switch(indexType)
     {
       case MDLIndexBitDepthUInt32:
-        v133 = self;
+        selfCopy3 = self;
         v132 = v67;
         __p = 0;
         v137 = 0;
@@ -188,7 +188,7 @@ LABEL_14:
         v82 = (v101 - v102) >> 2;
         goto LABEL_20;
       case MDLIndexBitDepthUInt16:
-        v133 = self;
+        selfCopy3 = self;
         v132 = v67;
         __p = 0;
         v137 = 0;
@@ -204,7 +204,7 @@ LABEL_14:
         v82 = (v90 - v91) >> 1;
         goto LABEL_20;
       case MDLIndexBitDepthUInt8:
-        v133 = self;
+        selfCopy3 = self;
         v132 = v67;
         __p = 0;
         v137 = 0;
@@ -256,15 +256,15 @@ LABEL_20:
         v123 = objc_msgSend_name(v8, v112, v113);
         v126 = objc_msgSend_material(v8, v124, v125);
         v129 = objc_msgSend_topology(v8, v127, v128);
-        self = objc_msgSend_initWithName_indexBuffer_indexCount_indexType_geometryType_material_topology_(v133, v130, v123, v110, v82, indexType, geometryType, v126, v129);
+        self = objc_msgSend_initWithName_indexBuffer_indexCount_indexType_geometryType_material_topology_(selfCopy3, v130, v123, v110, v82, indexType, geometryType, v126, v129);
 
         v55 = v118;
-        v35 = self;
+        selfCopy5 = self;
         goto LABEL_32;
     }
 
     v68 = 0;
-    v35 = 0;
+    selfCopy5 = 0;
 LABEL_32:
 
     objc_autoreleasePoolPop(context);
@@ -280,10 +280,10 @@ LABEL_32:
   v33 = objc_msgSend_topology(v8, v31, v32);
   self = objc_msgSend_initWithName_indexBuffer_indexCount_indexType_geometryType_material_topology_(self, v34, v15, v18, v21, v24, v27, v30, v33);
 
-  v35 = self;
+  selfCopy5 = self;
 LABEL_33:
 
-  return v35;
+  return selfCopy5;
 }
 
 - (id)indexBufferAsIndexType:(MDLIndexBitDepth)indexType
@@ -456,26 +456,26 @@ LABEL_37:
   return v4;
 }
 
-- (void)debugPrintToFile:(__sFILE *)a3
+- (void)debugPrintToFile:(__sFILE *)file
 {
-  fprintf(a3, "%lu ", self->_indexCount);
+  fprintf(file, "%lu ", self->_indexCount);
   indexType = self->_indexType;
   switch(indexType)
   {
     case 0x20uLL:
-      fwrite("32Bit Indices:\n", 0xFuLL, 1uLL, a3);
+      fwrite("32Bit Indices:\n", 0xFuLL, 1uLL, file);
       v21 = objc_msgSend_map(self->_indexBuffer, v16, v17);
       v20 = objc_msgSend_bytes(v21, v18, v19);
       sub_239EFEE20(v20, self->_indexCount);
       goto LABEL_7;
     case 0x10uLL:
-      fwrite("16Bit Indices:\n", 0xFuLL, 1uLL, a3);
+      fwrite("16Bit Indices:\n", 0xFuLL, 1uLL, file);
       v21 = objc_msgSend_map(self->_indexBuffer, v11, v12);
       v15 = objc_msgSend_bytes(v21, v13, v14);
       sub_239EFED8C(v15, self->_indexCount);
       goto LABEL_7;
     case 8uLL:
-      fwrite("8Bit Indices:\n", 0xEuLL, 1uLL, a3);
+      fwrite("8Bit Indices:\n", 0xEuLL, 1uLL, file);
       v21 = objc_msgSend_map(self->_indexBuffer, v6, v7);
       v10 = objc_msgSend_bytes(v21, v8, v9);
       sub_239EFECF8(v10, self->_indexCount);
@@ -484,17 +484,17 @@ LABEL_7:
       return;
   }
 
-  fwrite("INVALID INDEX TYPE!!!\n", 0x16uLL, 1uLL, a3);
+  fwrite("INVALID INDEX TYPE!!!\n", 0x16uLL, 1uLL, file);
 }
 
-- (void)boundingBoxForMesh:(float32x4_t *)a3@<X8>
+- (void)boundingBoxForMesh:(float32x4_t *)mesh@<X8>
 {
   v5 = a2;
-  a3[1].i64[0] = 0;
-  a3[1].i64[1] = 0;
+  mesh[1].i64[0] = 0;
+  mesh[1].i64[1] = 0;
   __asm { FMOV            V0.4S, #-1.0 }
 
-  *a3 = _Q0;
+  *mesh = _Q0;
   v11 = objc_msgSend_vertexAttributeDataForAttributeNamed_asFormat_(v5, v10, @"position", 786435);
   v14 = v11;
   if (v11 && objc_msgSend_format(v11, v12, v13))
@@ -504,7 +504,7 @@ LABEL_7:
     v23 = v20;
     if (v17 && v20 != 0)
     {
-      v25 = a1[3];
+      v25 = self[3];
       if (v25)
       {
         v26 = objc_msgSend_map(v25, v21, v22);
@@ -512,11 +512,11 @@ LABEL_7:
         if (v26 && objc_msgSend_bytes(v26, v27, v28))
         {
           v34 = objc_msgSend_bytes(v29, v30, v31);
-          v35 = a1[6];
+          v35 = self[6];
           switch(v35)
           {
             case 8:
-              for (i = a1[2]; i; --i)
+              for (i = self[2]; i; --i)
               {
                 v49 = *v34;
                 v34 = (v34 + 1);
@@ -529,13 +529,13 @@ LABEL_7:
                   v51.i32[2] = *(v53 + 8);
                   v54 = v51;
                   v55 = v51;
-                  sub_239EB1DF0(a3, &v54);
+                  sub_239EB1DF0(mesh, &v54);
                 }
               }
 
               break;
             case 16:
-              for (j = a1[2]; j; --j)
+              for (j = self[2]; j; --j)
               {
                 v43 = *v34++;
                 v44 = objc_msgSend_bufferSize(v14, v32, v33);
@@ -547,13 +547,13 @@ LABEL_7:
                   v45.i32[2] = *(v47 + 8);
                   v54 = v45;
                   v55 = v45;
-                  sub_239EB1DF0(a3, &v54);
+                  sub_239EB1DF0(mesh, &v54);
                 }
               }
 
               break;
             case 32:
-              for (k = a1[2]; k; --k)
+              for (k = self[2]; k; --k)
               {
                 v37 = *v34;
                 v34 += 2;
@@ -566,7 +566,7 @@ LABEL_7:
                   v39.i32[2] = *(v41 + 8);
                   v54 = v39;
                   v55 = v39;
-                  sub_239EB1DF0(a3, &v54);
+                  sub_239EB1DF0(mesh, &v54);
                 }
               }
 

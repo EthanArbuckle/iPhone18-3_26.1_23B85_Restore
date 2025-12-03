@@ -1,9 +1,9 @@
 @interface RPRemoteAlertManager
 + (id)sharedInstance;
-- (BOOL)createRemoteHandleForApplication:(id)a3 bundleID:(id)a4;
+- (BOOL)createRemoteHandleForApplication:(id)application bundleID:(id)d;
 - (RPRemoteAlertManager)init;
 - (void)clearRemoteHandle;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation RPRemoteAlertManager
@@ -97,10 +97,10 @@
   }
 }
 
-- (BOOL)createRemoteHandleForApplication:(id)a3 bundleID:(id)a4
+- (BOOL)createRemoteHandleForApplication:(id)application bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446978;
@@ -108,9 +108,9 @@
     v21 = 1024;
     v22 = 58;
     v23 = 2112;
-    v24 = v6;
+    v24 = applicationCopy;
     v25 = 2112;
-    v26 = v7;
+    v26 = dCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d app=%@ bundleId=%@", buf, 0x26u);
   }
 
@@ -126,8 +126,8 @@
   v11 = objc_alloc_init(SBSRemoteAlertConfigurationContext);
   v17[0] = @"applicationName";
   v17[1] = @"bundleIdentifier";
-  v18[0] = v6;
-  v18[1] = v7;
+  v18[0] = applicationCopy;
+  v18[1] = dCopy;
   v12 = [NSDictionary dictionaryWithObjects:v18 forKeys:v17 count:2];
   [v11 setUserInfo:v12];
   v13 = [SBSRemoteAlertHandle newHandleWithDefinition:v10 configurationContext:v11];
@@ -141,9 +141,9 @@
   return 1;
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446466;

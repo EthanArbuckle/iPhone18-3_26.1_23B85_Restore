@@ -1,43 +1,43 @@
 @interface SBUIPasscodeLockViewBaseAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityActivateKeyboardReturnKey;
 - (BOOL)_accessibilityEntryFieldIsFirstResponder;
 - (BOOL)_accessibilityHasDeletableText;
 - (BOOL)becomeFirstResponder;
 - (unint64_t)_accessibilityHandwritingAttributeAllowedCharacterSets;
 - (unint64_t)_accessibilityHandwritingAttributePreferredCharacterSet;
-- (void)_accessibilityInsertText:(id)a3;
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4;
-- (void)_setPasscodeLockViewState:(int64_t)a3 animated:(BOOL)a4;
+- (void)_accessibilityInsertText:(id)text;
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string;
+- (void)_setPasscodeLockViewState:(int64_t)state animated:(BOOL)animated;
 @end
 
 @implementation SBUIPasscodeLockViewBaseAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBUIPasscodeLockViewBase" hasInstanceMethod:@"style" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"SBUIPasscodeLockViewWithKeypad" hasInstanceVariable:@"_entryField" withType:"SBUIPasscodeEntryField"];
-  [v3 validateClass:@"SBUIPasscodeLockViewWithKeyboard" hasInstanceVariable:@"_alphaEntryField" withType:"SBUIAlphanumericPasscodeEntryField"];
-  [v3 validateClass:@"SBUIPasscodeLockViewWithKeyboard" hasInstanceVariable:@"_entryField" withType:"SBUIPasscodeEntryField"];
-  [v3 validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"stringValue" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"appendString:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"deleteLastCharacter" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBUIPasscodeLockViewBase" hasInstanceMethod:@"_resetForFailedPasscode:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"SBUIPasscodeLockViewBase" hasInstanceMethod:@"_setPasscodeLockViewState:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"SBUIPasscodeLockViewBase" hasInstanceVariable:@"_statusText" withType:"NSString"];
-  [v3 validateClass:@"SBUIPasscodeLockViewBase" hasInstanceVariable:@"_statusState" withType:"Q"];
-  [v3 validateClass:@"SBUIPasscodeLockViewBase" hasInstanceMethod:@"_updateStatusTextForBioEvent: animated:" withFullSignature:{"v", "Q", "B", 0}];
-  [v3 validateClass:@"NSString" hasInstanceMethod:@"isNewline" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewBase" hasInstanceMethod:@"style" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewWithKeypad" hasInstanceVariable:@"_entryField" withType:"SBUIPasscodeEntryField"];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewWithKeyboard" hasInstanceVariable:@"_alphaEntryField" withType:"SBUIAlphanumericPasscodeEntryField"];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewWithKeyboard" hasInstanceVariable:@"_entryField" withType:"SBUIPasscodeEntryField"];
+  [validationsCopy validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"stringValue" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"appendString:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeEntryField" hasInstanceMethod:@"deleteLastCharacter" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewBase" hasInstanceMethod:@"_resetForFailedPasscode:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewBase" hasInstanceMethod:@"_setPasscodeLockViewState:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewBase" hasInstanceVariable:@"_statusText" withType:"NSString"];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewBase" hasInstanceVariable:@"_statusState" withType:"Q"];
+  [validationsCopy validateClass:@"SBUIPasscodeLockViewBase" hasInstanceMethod:@"_updateStatusTextForBioEvent: animated:" withFullSignature:{"v", "Q", "B", 0}];
+  [validationsCopy validateClass:@"NSString" hasInstanceMethod:@"isNewline" withFullSignature:{"B", 0}];
 }
 
 - (unint64_t)_accessibilityHandwritingAttributePreferredCharacterSet
 {
   v2 = [(SBUIPasscodeLockViewBaseAccessibility *)self safeValueForKey:@"style"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  if (v3 >= 3)
+  if (intValue >= 3)
   {
     return 1;
   }
@@ -51,9 +51,9 @@
 - (unint64_t)_accessibilityHandwritingAttributeAllowedCharacterSets
 {
   v3 = [(SBUIPasscodeLockViewBaseAccessibility *)self safeValueForKey:@"style"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 < 2)
+  if (intValue < 2)
   {
     return 4;
   }
@@ -87,13 +87,13 @@ uint64_t __71__SBUIPasscodeLockViewBaseAccessibility__accessibilityHasDeletableT
   return result;
 }
 
-- (void)_accessibilityInsertText:(id)a3
+- (void)_accessibilityInsertText:(id)text
 {
-  v4 = a3;
-  if (v4)
+  textCopy = text;
+  if (textCopy)
   {
     v5 = [(SBUIPasscodeLockViewBaseAccessibility *)self safeValueForKey:@"_entryField"];
-    v7 = v4;
+    v7 = textCopy;
     v8 = v5;
     v6 = v5;
     AXPerformSafeBlock();
@@ -126,9 +126,9 @@ void __66__SBUIPasscodeLockViewBaseAccessibility__accessibilityInsertText___bloc
 - (BOOL)_accessibilityActivateKeyboardReturnKey
 {
   v3 = [(SBUIPasscodeLockViewBaseAccessibility *)self safeValueForKey:@"style"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if (v4 != 3 || (v6.receiver = self, v6.super_class = SBUIPasscodeLockViewBaseAccessibility, ![(SBUIPasscodeLockViewBaseAccessibility *)&v6 _accessibilityActivateKeyboardReturnKey]))
+  if (intValue != 3 || (v6.receiver = self, v6.super_class = SBUIPasscodeLockViewBaseAccessibility, ![(SBUIPasscodeLockViewBaseAccessibility *)&v6 _accessibilityActivateKeyboardReturnKey]))
   {
     [(SBUIPasscodeLockViewBaseAccessibility *)self _accessibilityInsertText:@"\n"];
   }
@@ -136,11 +136,11 @@ void __66__SBUIPasscodeLockViewBaseAccessibility__accessibilityInsertText___bloc
   return 1;
 }
 
-- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)a3 withString:(id)a4
+- (void)_accessibilityReplaceCharactersAtCursor:(unint64_t)cursor withString:(id)string
 {
-  v5 = a4;
+  stringCopy = string;
   v6 = [(SBUIPasscodeLockViewBaseAccessibility *)self safeValueForKey:@"_entryField"];
-  v7 = v5;
+  v7 = stringCopy;
   v8 = v6;
   AXPerformSafeBlock();
 }
@@ -175,17 +175,17 @@ uint64_t __92__SBUIPasscodeLockViewBaseAccessibility__accessibilityReplaceCharac
   v2 = [(SBUIPasscodeLockViewBaseAccessibility *)self safeValueForKey:@"_entryField"];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 isFirstResponder];
+  isFirstResponder = [v3 isFirstResponder];
 
-  return v4;
+  return isFirstResponder;
 }
 
 - (BOOL)becomeFirstResponder
 {
   v22.receiver = self;
   v22.super_class = SBUIPasscodeLockViewBaseAccessibility;
-  v3 = [(SBUIPasscodeLockViewBaseAccessibility *)&v22 becomeFirstResponder];
-  if ([(SBUIPasscodeLockViewBaseAccessibility *)self safeIntegerForKey:@"_statusState"]== 1 && v3)
+  becomeFirstResponder = [(SBUIPasscodeLockViewBaseAccessibility *)&v22 becomeFirstResponder];
+  if ([(SBUIPasscodeLockViewBaseAccessibility *)self safeIntegerForKey:@"_statusState"]== 1 && becomeFirstResponder)
   {
     v16 = 0;
     v17 = &v16;
@@ -197,7 +197,7 @@ uint64_t __92__SBUIPasscodeLockViewBaseAccessibility__accessibilityReplaceCharac
     v11 = 3221225472;
     v12 = __61__SBUIPasscodeLockViewBaseAccessibility_becomeFirstResponder__block_invoke;
     v13 = &unk_29F3021F0;
-    v14 = self;
+    selfCopy = self;
     v15 = &v16;
     AXPerformSafeBlock();
     v5 = v17[5];
@@ -207,11 +207,11 @@ uint64_t __92__SBUIPasscodeLockViewBaseAccessibility__accessibilityReplaceCharac
   }
 
   v6 = [(SBUIPasscodeLockViewBaseAccessibility *)self window:v10];
-  v7 = [v6 windowScene];
-  v8 = [v7 focusSystem];
+  windowScene = [v6 windowScene];
+  focusSystem = [windowScene focusSystem];
 
-  [v8 requestFocusUpdateToEnvironment:v8];
-  return v3;
+  [focusSystem requestFocusUpdateToEnvironment:focusSystem];
+  return becomeFirstResponder;
 }
 
 void __61__SBUIPasscodeLockViewBaseAccessibility_becomeFirstResponder__block_invoke(uint64_t a1)
@@ -223,11 +223,11 @@ void __61__SBUIPasscodeLockViewBaseAccessibility_becomeFirstResponder__block_inv
   *(v3 + 40) = v2;
 }
 
-- (void)_setPasscodeLockViewState:(int64_t)a3 animated:(BOOL)a4
+- (void)_setPasscodeLockViewState:(int64_t)state animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = SBUIPasscodeLockViewBaseAccessibility;
-  [(SBUIPasscodeLockViewBaseAccessibility *)&v4 _setPasscodeLockViewState:a3 animated:?];
+  [(SBUIPasscodeLockViewBaseAccessibility *)&v4 _setPasscodeLockViewState:state animated:?];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 

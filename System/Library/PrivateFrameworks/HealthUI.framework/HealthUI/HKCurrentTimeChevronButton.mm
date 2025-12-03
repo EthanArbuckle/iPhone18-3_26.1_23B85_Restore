@@ -1,15 +1,15 @@
 @interface HKCurrentTimeChevronButton
-- (CGRect)_squareRectWithDimension:(double)a3 chevronDirection:(int64_t)a4;
-- (CGRect)backgroundRectForBounds:(CGRect)a3;
-- (CGRect)imageRectForContentRect:(CGRect)a3;
-- (HKCurrentTimeChevronButton)initWithChevronDirection:(int64_t)a3;
+- (CGRect)_squareRectWithDimension:(double)dimension chevronDirection:(int64_t)direction;
+- (CGRect)backgroundRectForBounds:(CGRect)bounds;
+- (CGRect)imageRectForContentRect:(CGRect)rect;
+- (HKCurrentTimeChevronButton)initWithChevronDirection:(int64_t)direction;
 - (void)_updateButtonAppearence;
-- (void)setChevronDirection:(int64_t)a3;
+- (void)setChevronDirection:(int64_t)direction;
 @end
 
 @implementation HKCurrentTimeChevronButton
 
-- (HKCurrentTimeChevronButton)initWithChevronDirection:(int64_t)a3
+- (HKCurrentTimeChevronButton)initWithChevronDirection:(int64_t)direction
 {
   v7.receiver = self;
   v7.super_class = HKCurrentTimeChevronButton;
@@ -17,18 +17,18 @@
   v5 = v4;
   if (v4)
   {
-    v4->_chevronDirection = a3;
+    v4->_chevronDirection = direction;
     [(HKCurrentTimeChevronButton *)v4 _updateButtonAppearence];
   }
 
   return v5;
 }
 
-- (void)setChevronDirection:(int64_t)a3
+- (void)setChevronDirection:(int64_t)direction
 {
-  if (self->_chevronDirection != a3)
+  if (self->_chevronDirection != direction)
   {
-    self->_chevronDirection = a3;
+    self->_chevronDirection = direction;
     [(HKCurrentTimeChevronButton *)self _updateButtonAppearence];
 
     [(HKCurrentTimeChevronButton *)self setNeedsLayout];
@@ -83,19 +83,19 @@
   [(HKCurrentTimeChevronButton *)self setContentMode:1];
 }
 
-- (CGRect)backgroundRectForBounds:(CGRect)a3
+- (CGRect)backgroundRectForBounds:(CGRect)bounds
 {
-  if (a3.size.width >= a3.size.height)
+  if (bounds.size.width >= bounds.size.height)
   {
-    height = a3.size.height;
+    height = bounds.size.height;
   }
 
   else
   {
-    height = a3.size.width;
+    height = bounds.size.width;
   }
 
-  [(HKCurrentTimeChevronButton *)self _squareRectWithDimension:self->_chevronDirection chevronDirection:height, a3.origin.y];
+  [(HKCurrentTimeChevronButton *)self _squareRectWithDimension:self->_chevronDirection chevronDirection:height, bounds.origin.y];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -103,19 +103,19 @@
   return result;
 }
 
-- (CGRect)imageRectForContentRect:(CGRect)a3
+- (CGRect)imageRectForContentRect:(CGRect)rect
 {
-  if (a3.size.width >= a3.size.height)
+  if (rect.size.width >= rect.size.height)
   {
-    height = a3.size.height;
+    height = rect.size.height;
   }
 
   else
   {
-    height = a3.size.width;
+    height = rect.size.width;
   }
 
-  [(HKCurrentTimeChevronButton *)self _squareRectWithDimension:self->_chevronDirection chevronDirection:height, a3.origin.y];
+  [(HKCurrentTimeChevronButton *)self _squareRectWithDimension:self->_chevronDirection chevronDirection:height, rect.origin.y];
   result.size.height = v7;
   result.size.width = v6;
   result.origin.y = v5;
@@ -123,20 +123,20 @@
   return result;
 }
 
-- (CGRect)_squareRectWithDimension:(double)a3 chevronDirection:(int64_t)a4
+- (CGRect)_squareRectWithDimension:(double)dimension chevronDirection:(int64_t)direction
 {
-  v5 = 0.0;
-  if (a4 != 1)
+  dimensionCopy = 0.0;
+  if (direction != 1)
   {
-    v5 = a3;
+    dimensionCopy = dimension;
   }
 
   v6 = 0.0;
-  v7 = a3;
-  result.size.height = v7;
-  result.size.width = a3;
+  dimensionCopy2 = dimension;
+  result.size.height = dimensionCopy2;
+  result.size.width = dimension;
   result.origin.y = v6;
-  result.origin.x = v5;
+  result.origin.x = dimensionCopy;
   return result;
 }
 

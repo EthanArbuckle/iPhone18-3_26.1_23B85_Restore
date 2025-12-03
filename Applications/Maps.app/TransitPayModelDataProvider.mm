@@ -1,10 +1,10 @@
 @interface TransitPayModelDataProvider
-- (BOOL)_allIdentifiersAreInteroperable:(id)a3;
+- (BOOL)_allIdentifiersAreInteroperable:(id)interoperable;
 - (BOOL)_userHasNonDCICardInCurrentMarket;
-- (TransitPayModelDataProvider)initWithTransitPaymentMethods:(id)a3 suggestions:(id)a4 isTourist:(BOOL)a5 defaultPaymentCardsIdentifiers:(id)a6 defaultPaymentCardsExpressStatuses:(id)a7 userClosedLoopIdentifiers:(id)a8 availablePasses:(id)a9;
+- (TransitPayModelDataProvider)initWithTransitPaymentMethods:(id)methods suggestions:(id)suggestions isTourist:(BOOL)tourist defaultPaymentCardsIdentifiers:(id)identifiers defaultPaymentCardsExpressStatuses:(id)statuses userClosedLoopIdentifiers:(id)loopIdentifiers availablePasses:(id)passes;
 - (id)_filteredClosedLoopIdentifiers;
 - (id)_modelDataForOpenLoop;
-- (id)_modelDataForPaymentMethodIdentifiers:(id)a3 actionTitle:(id)a4;
+- (id)_modelDataForPaymentMethodIdentifiers:(id)identifiers actionTitle:(id)title;
 - (id)_walletImage;
 - (id)description;
 - (id)modelData;
@@ -47,9 +47,9 @@
 
 - (id)modelData
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_paymentMethods)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_paymentMethods)
   {
     v11 = sub_10003D020();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -83,7 +83,7 @@
     goto LABEL_21;
   }
 
-  if (!v2->_suggestions)
+  if (!selfCopy->_suggestions)
   {
     v13 = sub_10003D020();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -117,29 +117,29 @@
 LABEL_21:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, v12, buf, 0x26u);
 LABEL_22:
-    v14 = 0;
+    _modelDataForOpenLoop = 0;
     goto LABEL_89;
   }
 
   v3 = [NSMutableSet alloc];
-  v4 = [(NSMutableDictionary *)v2->_defaultPaymentCardsIdentifiers allKeys];
-  v5 = [v3 initWithArray:v4];
+  allKeys = [(NSMutableDictionary *)selfCopy->_defaultPaymentCardsIdentifiers allKeys];
+  v5 = [v3 initWithArray:allKeys];
 
   v6 = [NSMutableSet alloc];
-  v7 = [(NSMutableDictionary *)v2->_userClosedLoopIdentifiers allKeys];
-  v8 = [v6 initWithArray:v7];
+  allKeys2 = [(NSMutableDictionary *)selfCopy->_userClosedLoopIdentifiers allKeys];
+  v8 = [v6 initWithArray:allKeys2];
 
-  if (!v2->_numberOfCLNonDCIMethods)
+  if (!selfCopy->_numberOfCLNonDCIMethods)
   {
     goto LABEL_112;
   }
 
-  if (!v2->_numberOfOLMethods)
+  if (!selfCopy->_numberOfOLMethods)
   {
-    if ([(TransitPayModelDataProvider *)v2 _userHasNonDCICardInCurrentMarket])
+    if ([(TransitPayModelDataProvider *)selfCopy _userHasNonDCICardInCurrentMarket])
     {
-      v9 = sub_10003D020();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+      _filteredClosedLoopIdentifiers = sub_10003D020();
+      if (os_log_type_enabled(_filteredClosedLoopIdentifiers, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
         v10 = "No suggestion for a non-DCI card in a market without OL support";
@@ -147,17 +147,17 @@ LABEL_22:
       }
 
 LABEL_86:
-      v14 = 0;
+      _modelDataForOpenLoop = 0;
       goto LABEL_87;
     }
 
-    if (!v2->_numberOfOLMethods)
+    if (!selfCopy->_numberOfOLMethods)
     {
       goto LABEL_112;
     }
   }
 
-  if (![(TransitPayModelDataProvider *)v2 _userHasNonDCICardInCurrentMarket])
+  if (![(TransitPayModelDataProvider *)selfCopy _userHasNonDCICardInCurrentMarket])
   {
     v20 = sub_10003D020();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -170,25 +170,25 @@ LABEL_86:
   else
   {
 LABEL_112:
-    if (v2->_numberOfCLDCIMethods && v2->_numberOfOLMethods)
+    if (selfCopy->_numberOfCLDCIMethods && selfCopy->_numberOfOLMethods)
     {
-      if (!v2->_isTourist)
+      if (!selfCopy->_isTourist)
       {
-        if (([(NSMutableSet *)v2->_routeTNIs intersectsSet:v8]& 1) == 0)
+        if (([(NSMutableSet *)selfCopy->_routeTNIs intersectsSet:v8]& 1) == 0)
         {
-          v9 = [(TransitPayModelDataProvider *)v2 _filteredClosedLoopIdentifiers];
+          _filteredClosedLoopIdentifiers = [(TransitPayModelDataProvider *)selfCopy _filteredClosedLoopIdentifiers];
           v21 = sub_10003D020();
           if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v58 = v9;
+            v58 = _filteredClosedLoopIdentifiers;
             _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "isTourist = NO. Showing Closed Loop Suggestions for: %@", buf, 0xCu);
           }
 
-          if ([v9 count]== 1)
+          if ([_filteredClosedLoopIdentifiers count]== 1)
           {
-            availablePasses = v2->_availablePasses;
-            v23 = [v9 objectAtIndexedSubscript:0];
+            availablePasses = selfCopy->_availablePasses;
+            v23 = [_filteredClosedLoopIdentifiers objectAtIndexedSubscript:0];
             v24 = [(NSDictionary *)availablePasses objectForKeyedSubscript:v23];
             +[NSBundle mainBundle];
             if (v24)
@@ -212,13 +212,13 @@ LABEL_112:
             v55 = [v23 localizedStringForKey:@"MAPS_TRANSIT_PAY_ACTION_BUTTON_MULTIPLE_CLOSED_LOOP_CARDS" value:@"localized string not found" table:0];
           }
 
-          v14 = [(TransitPayModelDataProvider *)v2 _modelDataForPaymentMethodIdentifiers:v9 actionTitle:v55];
+          _modelDataForOpenLoop = [(TransitPayModelDataProvider *)selfCopy _modelDataForPaymentMethodIdentifiers:_filteredClosedLoopIdentifiers actionTitle:v55];
 
           goto LABEL_87;
         }
 
-        v9 = sub_10003D020();
-        if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+        _filteredClosedLoopIdentifiers = sub_10003D020();
+        if (!os_log_type_enabled(_filteredClosedLoopIdentifiers, OS_LOG_TYPE_INFO))
         {
           goto LABEL_86;
         }
@@ -228,15 +228,15 @@ LABEL_112:
         goto LABEL_84;
       }
 
-      if (![v5 count]|| ([v5 intersectsSet:v2->_routeTNIs]& 1) == 0)
+      if (![v5 count]|| ([v5 intersectsSet:selfCopy->_routeTNIs]& 1) == 0)
       {
-        v9 = sub_10003D020();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+        _filteredClosedLoopIdentifiers = sub_10003D020();
+        if (os_log_type_enabled(_filteredClosedLoopIdentifiers, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
           v10 = "Tourist. No Suggestion. No payment card in the wallet has an identifier that the route needs.";
 LABEL_84:
-          v32 = v9;
+          v32 = _filteredClosedLoopIdentifiers;
           v33 = 2;
 LABEL_85:
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, v10, buf, v33);
@@ -249,7 +249,7 @@ LABEL_85:
 
     else
     {
-      if (v2->_numberOfIOMethods && [(NSMutableSet *)v2->_routeTNIs intersectsSet:v8])
+      if (selfCopy->_numberOfIOMethods && [(NSMutableSet *)selfCopy->_routeTNIs intersectsSet:v8])
       {
         v15 = sub_10003D020();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
@@ -258,23 +258,23 @@ LABEL_85:
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "Checking _numberOfIOMethods >= 1 && [_routeIdentifiers intersectsSet:userClosedLoopIdentifiers]", buf, 2u);
         }
 
-        v9 = [(NSMutableSet *)v2->_routeTNIs mutableCopy];
-        [v9 intersectSet:v8];
+        _filteredClosedLoopIdentifiers = [(NSMutableSet *)selfCopy->_routeTNIs mutableCopy];
+        [_filteredClosedLoopIdentifiers intersectSet:v8];
         v16 = sub_10003D020();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v58 = v9;
+          v58 = _filteredClosedLoopIdentifiers;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Showing Interoperable Suggestion for: %@", buf, 0xCu);
         }
 
-        if ([(TransitPayModelDataProvider *)v2 _allIdentifiersAreInteroperable:v9])
+        if ([(TransitPayModelDataProvider *)selfCopy _allIdentifiersAreInteroperable:_filteredClosedLoopIdentifiers])
         {
-          v17 = [v9 allObjects];
+          allObjects = [_filteredClosedLoopIdentifiers allObjects];
           v18 = +[NSBundle mainBundle];
           v19 = [v18 localizedStringForKey:@"MAPS_TRANSIT_PAY_ACTION_BUTTON_SEE_HOW_IT_WORKS" value:@"localized string not found" table:0];
 
-          v14 = [(TransitPayModelDataProvider *)v2 _modelDataForPaymentMethodIdentifiers:v17 actionTitle:v19];
+          _modelDataForOpenLoop = [(TransitPayModelDataProvider *)selfCopy _modelDataForPaymentMethodIdentifiers:allObjects actionTitle:v19];
 
 LABEL_87:
           goto LABEL_88;
@@ -288,10 +288,10 @@ LABEL_87:
         }
       }
 
-      numberOfCLDCIMethods = v2->_numberOfCLDCIMethods;
+      numberOfCLDCIMethods = selfCopy->_numberOfCLDCIMethods;
       if (numberOfCLDCIMethods >= 2)
       {
-        if (([(NSMutableSet *)v2->_routeTNIs intersectsSet:v8]& 1) == 0)
+        if (([(NSMutableSet *)selfCopy->_routeTNIs intersectsSet:v8]& 1) == 0)
         {
           v35 = sub_10003D020();
           if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
@@ -300,8 +300,8 @@ LABEL_87:
             _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_INFO, "Checking _numberOfCLMethods >= 1 && ![_routeIdentifiers intersectsSet:userClosedLoopIdentifiers]", buf, 2u);
           }
 
-          v9 = [(TransitPayModelDataProvider *)v2 _filteredClosedLoopIdentifiers];
-          v36 = [v9 count];
+          _filteredClosedLoopIdentifiers = [(TransitPayModelDataProvider *)selfCopy _filteredClosedLoopIdentifiers];
+          v36 = [_filteredClosedLoopIdentifiers count];
           v37 = sub_10003D020();
           v38 = os_log_type_enabled(v37, OS_LOG_TYPE_INFO);
           if (v36)
@@ -309,14 +309,14 @@ LABEL_87:
             if (v38)
             {
               *buf = 138412290;
-              v58 = v9;
+              v58 = _filteredClosedLoopIdentifiers;
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "Showing Closed Loop Suggestions from multiple options for: %@", buf, 0xCu);
             }
 
-            if ([v9 count]== 1)
+            if ([_filteredClosedLoopIdentifiers count]== 1)
             {
-              v39 = v2->_availablePasses;
-              v40 = [v9 objectAtIndexedSubscript:0];
+              v39 = selfCopy->_availablePasses;
+              v40 = [_filteredClosedLoopIdentifiers objectAtIndexedSubscript:0];
               v41 = [(NSDictionary *)v39 objectForKeyedSubscript:v40];
               +[NSBundle mainBundle];
               if (v41)
@@ -340,7 +340,7 @@ LABEL_87:
               v37 = [v40 localizedStringForKey:@"MAPS_TRANSIT_PAY_ACTION_BUTTON_MULTIPLE_CLOSED_LOOP_CARDS" value:@"localized string not found" table:0];
             }
 
-            v14 = [(TransitPayModelDataProvider *)v2 _modelDataForPaymentMethodIdentifiers:v9 actionTitle:v37];
+            _modelDataForOpenLoop = [(TransitPayModelDataProvider *)selfCopy _modelDataForPaymentMethodIdentifiers:_filteredClosedLoopIdentifiers actionTitle:v37];
           }
 
           else
@@ -351,13 +351,13 @@ LABEL_87:
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "No Suggestion. Could not parse an identifier that has a valid paymentMethodSuggestion.", buf, 2u);
             }
 
-            v14 = 0;
+            _modelDataForOpenLoop = 0;
           }
 
           goto LABEL_87;
         }
 
-        numberOfCLDCIMethods = v2->_numberOfCLDCIMethods;
+        numberOfCLDCIMethods = selfCopy->_numberOfCLDCIMethods;
       }
 
       if (numberOfCLDCIMethods == 1)
@@ -369,23 +369,23 @@ LABEL_87:
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "Checking _numberOfCLMethods == 1", buf, 2u);
         }
 
-        if (![(NSMutableSet *)v2->_routeTNIs intersectsSet:v8])
+        if (![(NSMutableSet *)selfCopy->_routeTNIs intersectsSet:v8])
         {
-          v45 = [(TransitPayModelDataProvider *)v2 _filteredClosedLoopIdentifiers];
-          v9 = v45;
-          if (v45 && [v45 count])
+          _filteredClosedLoopIdentifiers2 = [(TransitPayModelDataProvider *)selfCopy _filteredClosedLoopIdentifiers];
+          _filteredClosedLoopIdentifiers = _filteredClosedLoopIdentifiers2;
+          if (_filteredClosedLoopIdentifiers2 && [_filteredClosedLoopIdentifiers2 count])
           {
             v46 = sub_10003D020();
             if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
             {
-              v47 = [v9 objectAtIndexedSubscript:0];
+              v47 = [_filteredClosedLoopIdentifiers objectAtIndexedSubscript:0];
               *buf = 138412290;
               v58 = v47;
               _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_INFO, "Showing Closed Loop Suggestion for: %@", buf, 0xCu);
             }
 
-            v48 = v2->_availablePasses;
-            v49 = [v9 objectAtIndexedSubscript:0];
+            v48 = selfCopy->_availablePasses;
+            v49 = [_filteredClosedLoopIdentifiers objectAtIndexedSubscript:0];
             v50 = [(NSDictionary *)v48 objectForKeyedSubscript:v49];
             +[NSBundle mainBundle];
             if (v50)
@@ -402,7 +402,7 @@ LABEL_87:
 
             v56 = v53;
 
-            v14 = [(TransitPayModelDataProvider *)v2 _modelDataForPaymentMethodIdentifiers:v9 actionTitle:v56];
+            _modelDataForOpenLoop = [(TransitPayModelDataProvider *)selfCopy _modelDataForPaymentMethodIdentifiers:_filteredClosedLoopIdentifiers actionTitle:v56];
           }
 
           else
@@ -414,32 +414,32 @@ LABEL_87:
               _os_log_impl(&_mh_execute_header, v49, OS_LOG_TYPE_INFO, "No Suggestion. Could not parse an identifier that has a valid paymentMethodSuggestion.", buf, 2u);
             }
 
-            v14 = 0;
+            _modelDataForOpenLoop = 0;
           }
 
           goto LABEL_87;
         }
 
-        v9 = sub_10003D020();
-        if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+        _filteredClosedLoopIdentifiers = sub_10003D020();
+        if (!os_log_type_enabled(_filteredClosedLoopIdentifiers, OS_LOG_TYPE_INFO))
         {
           goto LABEL_86;
         }
 
-        routeTNIs = v2->_routeTNIs;
+        routeTNIs = selfCopy->_routeTNIs;
         *buf = 138412546;
         v58 = routeTNIs;
         v59 = 2112;
         *v60 = v8;
         v10 = "No Suggestion. User already has CL pass in their Wallet: Suggested: \n%@\nExisting passes:\n%@";
-        v32 = v9;
+        v32 = _filteredClosedLoopIdentifiers;
         v33 = 22;
         goto LABEL_85;
       }
 
-      if (!v2->_numberOfOLMethods)
+      if (!selfCopy->_numberOfOLMethods)
       {
-        v14 = 0;
+        _modelDataForOpenLoop = 0;
         goto LABEL_88;
       }
 
@@ -450,10 +450,10 @@ LABEL_87:
         _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "Checking _numberOfOLMethods >= 1", buf, 2u);
       }
 
-      if (([v5 intersectsSet:v2->_routeTNIs]& 1) == 0)
+      if (([v5 intersectsSet:selfCopy->_routeTNIs]& 1) == 0)
       {
-        v9 = sub_10003D020();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+        _filteredClosedLoopIdentifiers = sub_10003D020();
+        if (os_log_type_enabled(_filteredClosedLoopIdentifiers, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
           v10 = "No Suggestion. The default payment card in Wallet does not has an identifier that the route needs.";
@@ -465,8 +465,8 @@ LABEL_87:
 
       if (![v5 count])
       {
-        v9 = sub_10003D020();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+        _filteredClosedLoopIdentifiers = sub_10003D020();
+        if (os_log_type_enabled(_filteredClosedLoopIdentifiers, OS_LOG_TYPE_INFO))
         {
           *buf = 0;
           v10 = "User does not have even a single payment card. Not showing any Suggestion";
@@ -478,16 +478,16 @@ LABEL_87:
     }
   }
 
-  v14 = [(TransitPayModelDataProvider *)v2 _modelDataForOpenLoop];
+  _modelDataForOpenLoop = [(TransitPayModelDataProvider *)selfCopy _modelDataForOpenLoop];
 LABEL_88:
 
 LABEL_89:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v14;
+  return _modelDataForOpenLoop;
 }
 
-- (BOOL)_allIdentifiersAreInteroperable:(id)a3
+- (BOOL)_allIdentifiersAreInteroperable:(id)interoperable
 {
   v19 = 0;
   v20 = &v19;
@@ -497,8 +497,8 @@ LABEL_89:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  interoperableCopy = interoperable;
+  v5 = [interoperableCopy countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v5)
   {
     v6 = *v16;
@@ -509,7 +509,7 @@ LABEL_89:
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(interoperableCopy);
         }
 
         v8 = *(*(&v15 + 1) + 8 * v7);
@@ -525,7 +525,7 @@ LABEL_89:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v5 = [interoperableCopy countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v5);
@@ -577,23 +577,23 @@ LABEL_89:
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [(NSMutableDictionary *)self->_userClosedLoopIdentifiers allKeys];
-        v10 = [v8 identifier];
-        v11 = [v9 containsObject:v10];
+        allKeys = [(NSMutableDictionary *)self->_userClosedLoopIdentifiers allKeys];
+        identifier = [v8 identifier];
+        v11 = [allKeys containsObject:identifier];
 
         if (v11)
         {
           v12 = [(NSMutableDictionary *)self->_paymentMethodToSuggestionMapping objectForKeyedSubscript:v8];
-          v13 = [v12 type];
+          type = [v12 type];
 
-          if (v13 == 4)
+          if (type == 4)
           {
             v15 = sub_10003D020();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
             {
-              v16 = [v8 identifier];
+              identifier2 = [v8 identifier];
               *buf = 138412290;
-              v23 = v16;
+              v23 = identifier2;
               _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "User owns card %@ which is non-DCI", buf, 0xCu);
             }
 
@@ -638,15 +638,15 @@ LABEL_14:
 - (id)_modelDataForOpenLoop
 {
   v3 = [NSMutableSet alloc];
-  v4 = [(NSMutableDictionary *)self->_defaultPaymentCardsIdentifiers allKeys];
-  v5 = [v3 initWithArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_defaultPaymentCardsIdentifiers allKeys];
+  v5 = [v3 initWithArray:allKeys];
 
   [v5 intersectSet:self->_routeTNIs];
   if ([v5 count])
   {
     identifierToPaymentMethodMapping = self->_identifierToPaymentMethodMapping;
-    v7 = [v5 anyObject];
-    v8 = [(NSMutableDictionary *)identifierToPaymentMethodMapping objectForKeyedSubscript:v7];
+    anyObject = [v5 anyObject];
+    v8 = [(NSMutableDictionary *)identifierToPaymentMethodMapping objectForKeyedSubscript:anyObject];
 
     v9 = [(NSMutableDictionary *)self->_paymentMethodToSuggestionMapping objectForKeyedSubscript:v8];
     if ([v9 type] == 1)
@@ -655,8 +655,8 @@ LABEL_14:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v10 = v5;
-      v11 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      allObjects2 = v5;
+      v11 = [allObjects2 countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v11)
       {
         v12 = v11;
@@ -667,13 +667,13 @@ LABEL_14:
           {
             if (*v27 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allObjects2);
             }
 
             v15 = [(NSDictionary *)self->_defaultPaymentCardsExpressStatuses objectForKeyedSubscript:*(*(&v26 + 1) + 8 * i), v26];
-            v16 = [v15 BOOLValue];
+            bOOLValue = [v15 BOOLValue];
 
-            if (v16)
+            if (bOOLValue)
             {
               v21 = sub_10003D020();
               if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -682,17 +682,17 @@ LABEL_14:
                 _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Showing Open Loop Express Suggestion", buf, 2u);
               }
 
-              v22 = [v10 allObjects];
+              allObjects = [allObjects2 allObjects];
               v23 = +[NSBundle mainBundle];
               v24 = [v23 localizedStringForKey:@"MAPS_TRANSIT_PAY_ACTION_BUTTON_SEE_HOW_IT_WORKS" value:@"localized string not found" table:0];
 
-              v17 = [(TransitPayModelDataProvider *)self _modelDataForPaymentMethodIdentifiers:v22 actionTitle:v24];
+              v17 = [(TransitPayModelDataProvider *)self _modelDataForPaymentMethodIdentifiers:allObjects actionTitle:v24];
 
               goto LABEL_23;
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v26 objects:v31 count:16];
+          v12 = [allObjects2 countByEnumeratingWithState:&v26 objects:v31 count:16];
           if (v12)
           {
             continue;
@@ -702,11 +702,11 @@ LABEL_14:
         }
       }
 
-      v10 = sub_10003D020();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
+      allObjects2 = sub_10003D020();
+      if (os_log_type_enabled(allObjects2, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "User had no express-enabled default cards", buf, 2u);
+        _os_log_impl(&_mh_execute_header, allObjects2, OS_LOG_TYPE_INFO, "User had no express-enabled default cards", buf, 2u);
       }
 
       v17 = 0;
@@ -721,11 +721,11 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Showing Open Loop Non-Express Suggestion", buf, 2u);
       }
 
-      v10 = [v5 allObjects];
+      allObjects2 = [v5 allObjects];
       v19 = +[NSBundle mainBundle];
       v20 = [v19 localizedStringForKey:@"MAPS_TRANSIT_PAY_ACTION_BUTTON_SEE_HOW_IT_WORKS" value:@"localized string not found" table:0];
 
-      v17 = [(TransitPayModelDataProvider *)self _modelDataForPaymentMethodIdentifiers:v10 actionTitle:v20];
+      v17 = [(TransitPayModelDataProvider *)self _modelDataForPaymentMethodIdentifiers:allObjects2 actionTitle:v20];
     }
 
 LABEL_23:
@@ -746,11 +746,11 @@ LABEL_23:
   return v17;
 }
 
-- (id)_modelDataForPaymentMethodIdentifiers:(id)a3 actionTitle:(id)a4
+- (id)_modelDataForPaymentMethodIdentifiers:(id)identifiers actionTitle:(id)title
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifiersCopy = identifiers;
+  titleCopy = title;
+  if (!identifiersCopy)
   {
     v57 = sub_10003D020();
     if (os_log_type_enabled(v57, OS_LOG_TYPE_FAULT))
@@ -783,12 +783,12 @@ LABEL_23:
     goto LABEL_39;
   }
 
-  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
   v89 = 0u;
-  v9 = v6;
+  v9 = identifiersCopy;
   v10 = [v9 countByEnumeratingWithState:&v86 objects:v93 count:16];
   if (v10)
   {
@@ -911,18 +911,18 @@ LABEL_39:
     v20 = [[NSMutableDictionary alloc] initWithDictionary:self->_defaultPaymentCardsIdentifiers];
     [v20 addEntriesFromDictionary:self->_userClosedLoopIdentifiers];
     [v20 addEntriesFromDictionary:self->_availablePasses];
-    v21 = [v16 identifier];
-    v22 = [v20 objectForKey:v21];
+    identifier = [v16 identifier];
+    v22 = [v20 objectForKey:identifier];
 
     if (v22)
     {
       v78 = v8;
-      v79 = v6;
-      v82 = v7;
-      v23 = [v84 tipSubtitle];
-      v24 = [v16 identifier];
-      v25 = [v20 objectForKeyedSubscript:v24];
-      v26 = v23;
+      v79 = identifiersCopy;
+      v82 = titleCopy;
+      tipSubtitle = [v84 tipSubtitle];
+      identifier2 = [v16 identifier];
+      v25 = [v20 objectForKeyedSubscript:identifier2];
+      v26 = tipSubtitle;
       IsRightToLeft = MKApplicationLayoutDirectionIsRightToLeft();
       v94 = @"{CardName}";
       v95 = v25;
@@ -936,20 +936,20 @@ LABEL_39:
       v81 = [NSString _navigation_stringForServerFormattedString:v26 options:buf overrideVariables:v28];
 
       v85 = objc_alloc_init(NSMutableString);
-      v30 = [v84 educationalScreenPaymentBody];
-      v31 = [v30 count];
+      educationalScreenPaymentBody = [v84 educationalScreenPaymentBody];
+      v31 = [educationalScreenPaymentBody count];
 
       if (v31)
       {
         v32 = 0;
         do
         {
-          v33 = [v29 educationalScreenPaymentBody];
-          v34 = [v33 objectAtIndexedSubscript:v32];
+          educationalScreenPaymentBody2 = [v29 educationalScreenPaymentBody];
+          v34 = [educationalScreenPaymentBody2 objectAtIndexedSubscript:v32];
 
           v35 = v16;
-          v36 = [v16 identifier];
-          v37 = [v20 objectForKeyedSubscript:v36];
+          identifier3 = [v16 identifier];
+          v37 = [v20 objectForKeyedSubscript:identifier3];
           v38 = v34;
           LOBYTE(v34) = MKApplicationLayoutDirectionIsRightToLeft();
           v94 = @"{CardName}";
@@ -969,8 +969,8 @@ LABEL_39:
 
           v29 = v84;
           [v85 appendString:v43];
-          v44 = [v84 educationalScreenPaymentBody];
-          v45 = [v44 count] - 1;
+          educationalScreenPaymentBody3 = [v84 educationalScreenPaymentBody];
+          v45 = [educationalScreenPaymentBody3 count] - 1;
 
           if (v32 < v45)
           {
@@ -978,8 +978,8 @@ LABEL_39:
           }
 
           ++v32;
-          v46 = [v84 educationalScreenPaymentBody];
-          v47 = [v46 count];
+          educationalScreenPaymentBody4 = [v84 educationalScreenPaymentBody];
+          v47 = [educationalScreenPaymentBody4 count];
 
           v16 = v35;
         }
@@ -989,15 +989,15 @@ LABEL_39:
 
       v80 = [[NSString alloc] initWithString:v85];
       v73 = [TransitPayModelData alloc];
-      v48 = [v29 tipTitle];
-      v49 = [v48 formatStrings];
-      v75 = [v49 firstObject];
-      v50 = [(TransitPayModelDataProvider *)self _walletImage];
+      tipTitle = [v29 tipTitle];
+      formatStrings = [tipTitle formatStrings];
+      firstObject = [formatStrings firstObject];
+      _walletImage = [(TransitPayModelDataProvider *)self _walletImage];
       v51 = v16;
       v52 = v29;
-      v76 = v49;
-      v77 = v48;
-      v74 = v50;
+      v76 = formatStrings;
+      v77 = tipTitle;
+      v74 = _walletImage;
       if ([v51 paymentMethodType] == 1)
       {
         if ([v52 type] == 1)
@@ -1038,14 +1038,14 @@ LABEL_39:
       }
 
       v65 = [v8 copy];
-      v83 = [v52 educationalScreenTitle];
-      v66 = [v83 formatStrings];
-      v67 = [v66 firstObject];
-      v68 = [v52 educationalScreenAssets];
+      educationalScreenTitle = [v52 educationalScreenTitle];
+      formatStrings2 = [educationalScreenTitle formatStrings];
+      firstObject2 = [formatStrings2 firstObject];
+      educationalScreenAssets = [v52 educationalScreenAssets];
       LOBYTE(v72) = 0;
       v69 = v53;
       v70 = v65;
-      v62 = [(TransitPayModelData *)v73 initWithTitle:v75 subtitle:v81 actionTitle:v54 image:v74 suggestionType:v69 paymentMethods:v65 educationScreenTitle:v67 educationScreenAssetURLs:v68 educationScreenText:v80 topUpPassUniqueID:0 isForRemoteDevice:v72];
+      v62 = [(TransitPayModelData *)v73 initWithTitle:firstObject subtitle:v81 actionTitle:v54 image:v74 suggestionType:v69 paymentMethods:v65 educationScreenTitle:firstObject2 educationScreenAssetURLs:educationalScreenAssets educationScreenText:v80 topUpPassUniqueID:0 isForRemoteDevice:v72];
 
       v71 = sub_10003D020();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
@@ -1055,9 +1055,9 @@ LABEL_39:
         _os_log_impl(&_mh_execute_header, v71, OS_LOG_TYPE_INFO, "Returning Model: %@", buf, 0xCu);
       }
 
-      v6 = v79;
+      identifiersCopy = v79;
       v64 = v81;
-      v7 = v82;
+      titleCopy = v82;
     }
 
     else
@@ -1119,45 +1119,45 @@ LABEL_40:
   return v3;
 }
 
-- (TransitPayModelDataProvider)initWithTransitPaymentMethods:(id)a3 suggestions:(id)a4 isTourist:(BOOL)a5 defaultPaymentCardsIdentifiers:(id)a6 defaultPaymentCardsExpressStatuses:(id)a7 userClosedLoopIdentifiers:(id)a8 availablePasses:(id)a9
+- (TransitPayModelDataProvider)initWithTransitPaymentMethods:(id)methods suggestions:(id)suggestions isTourist:(BOOL)tourist defaultPaymentCardsIdentifiers:(id)identifiers defaultPaymentCardsExpressStatuses:(id)statuses userClosedLoopIdentifiers:(id)loopIdentifiers availablePasses:(id)passes
 {
-  v15 = a3;
-  v70 = a4;
-  v16 = a6;
-  v69 = a7;
-  v17 = a8;
-  v67 = a9;
+  methodsCopy = methods;
+  suggestionsCopy = suggestions;
+  identifiersCopy = identifiers;
+  statusesCopy = statuses;
+  loopIdentifiersCopy = loopIdentifiers;
+  passesCopy = passes;
   v85.receiver = self;
   v85.super_class = TransitPayModelDataProvider;
   v18 = [(TransitPayModelDataProvider *)&v85 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_suggestions, a4);
-    v19->_isTourist = a5;
-    v20 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v15, "count")}];
+    objc_storeStrong(&v18->_suggestions, suggestions);
+    v19->_isTourist = tourist;
+    v20 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(methodsCopy, "count")}];
     routeTNIs = v19->_routeTNIs;
     v19->_routeTNIs = v20;
 
-    v22 = [[NSMutableDictionary alloc] initWithDictionary:v16];
+    v22 = [[NSMutableDictionary alloc] initWithDictionary:identifiersCopy];
     defaultPaymentCardsIdentifiers = v19->_defaultPaymentCardsIdentifiers;
     v19->_defaultPaymentCardsIdentifiers = v22;
 
-    objc_storeStrong(&v19->_defaultPaymentCardsExpressStatuses, a7);
-    v24 = [[NSMutableDictionary alloc] initWithDictionary:v17];
+    objc_storeStrong(&v19->_defaultPaymentCardsExpressStatuses, statuses);
+    v24 = [[NSMutableDictionary alloc] initWithDictionary:loopIdentifiersCopy];
     userClosedLoopIdentifiers = v19->_userClosedLoopIdentifiers;
     v19->_userClosedLoopIdentifiers = v24;
 
-    objc_storeStrong(&v19->_availablePasses, a9);
+    objc_storeStrong(&v19->_availablePasses, passes);
   }
 
-  v26 = v16;
-  v68 = v17;
-  if (![v15 count])
+  v26 = identifiersCopy;
+  v68 = loopIdentifiersCopy;
+  if (![methodsCopy count])
   {
-    v60 = v69;
+    v60 = statusesCopy;
     v62 = sub_10003D020();
-    v27 = v70;
+    v27 = suggestionsCopy;
     if (os_log_type_enabled(v62, OS_LOG_TYPE_FAULT))
     {
       *buf = 136446978;
@@ -1189,9 +1189,9 @@ LABEL_40:
     goto LABEL_45;
   }
 
-  v66 = v16;
-  v27 = v70;
-  if (![v70 count])
+  v66 = identifiersCopy;
+  v27 = suggestionsCopy;
+  if (![suggestionsCopy count])
   {
     v63 = sub_10003D020();
     if (os_log_type_enabled(v63, OS_LOG_TYPE_FAULT))
@@ -1222,20 +1222,20 @@ LABEL_40:
     }
 
     v59 = 0;
-    v26 = v16;
-    v60 = v69;
+    v26 = identifiersCopy;
+    v60 = statusesCopy;
 LABEL_45:
-    v61 = v67;
+    v61 = passesCopy;
     goto LABEL_46;
   }
 
-  v65 = v15;
+  v65 = methodsCopy;
   v28 = objc_alloc_init(NSMutableIndexSet);
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  v29 = v70;
+  v29 = suggestionsCopy;
   v30 = [v29 countByEnumeratingWithState:&v81 objects:v88 count:16];
   if (v30)
   {
@@ -1255,8 +1255,8 @@ LABEL_45:
         v78 = 0u;
         v79 = 0u;
         v80 = 0u;
-        v35 = [v34 paymentMethodIndices];
-        v36 = [v35 countByEnumeratingWithState:&v77 objects:v87 count:16];
+        paymentMethodIndices = [v34 paymentMethodIndices];
+        v36 = [paymentMethodIndices countByEnumeratingWithState:&v77 objects:v87 count:16];
         if (v36)
         {
           v37 = v36;
@@ -1267,13 +1267,13 @@ LABEL_45:
             {
               if (*v78 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(paymentMethodIndices);
               }
 
               -[NSObject addIndex:](v28, "addIndex:", [*(*(&v77 + 1) + 8 * j) unsignedIntegerValue]);
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v77 objects:v87 count:16];
+            v37 = [paymentMethodIndices countByEnumeratingWithState:&v77 objects:v87 count:16];
           }
 
           while (v37);
@@ -1340,8 +1340,8 @@ LABEL_45:
         v56 = *(*(&v71 + 1) + 8 * k);
         if ([v56 purpose] == 2)
         {
-          v57 = [v56 paymentMethodIndices];
-          [v50 addObjectsFromArray:v57];
+          paymentMethodIndices2 = [v56 paymentMethodIndices];
+          [v50 addObjectsFromArray:paymentMethodIndices2];
         }
       }
 
@@ -1361,12 +1361,12 @@ LABEL_45:
   }
 
   v59 = v49;
-  v60 = v69;
-  v27 = v70;
+  v60 = statusesCopy;
+  v27 = suggestionsCopy;
   v26 = v66;
-  v61 = v67;
-  v17 = v68;
-  v15 = v65;
+  v61 = passesCopy;
+  loopIdentifiersCopy = v68;
+  methodsCopy = v65;
 LABEL_46:
 
   return v59;

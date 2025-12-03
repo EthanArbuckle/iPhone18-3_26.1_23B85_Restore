@@ -1,24 +1,24 @@
 @interface EKCalendarSubscriptionURLEditItem
 - (BOOL)becomeFirstResponder;
-- (BOOL)saveStateToCalendar:(id)a3;
+- (BOOL)saveStateToCalendar:(id)calendar;
 - (EKCalendarSubscriptionURLEditItemDelegate)urlEditItemDelegate;
 - (NSString)urlString;
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4;
-- (id)_textFieldColorForEditable:(BOOL)a3;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width;
+- (id)_textFieldColorForEditable:(BOOL)editable;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)headerTitle;
-- (int64_t)_cellSelectionStyleForEditable:(BOOL)a3;
+- (int64_t)_cellSelectionStyleForEditable:(BOOL)editable;
 - (void)_notifyDelegateThatURLStringChangedIfNeeded;
 - (void)_textFieldChanged;
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4;
-- (void)setEditable:(BOOL)a3;
-- (void)setUrlString:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem;
+- (void)setEditable:(BOOL)editable;
+- (void)setUrlString:(id)string;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation EKCalendarSubscriptionURLEditItem
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -26,51 +26,51 @@
     v5 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:1000 reuseIdentifier:0];
     [(UITableViewCell *)v5 setAccessibilityIdentifier:@"calendar-url-cell"];
     v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    v7 = [(UITableViewCell *)v5 editableTextField];
-    [v7 setFont:v6];
+    editableTextField = [(UITableViewCell *)v5 editableTextField];
+    [editableTextField setFont:v6];
 
     v8 = EventKitUIBundle();
     v9 = [v8 localizedStringForKey:@"example.com/cal.ics" value:&stru_1F4EF6790 table:0];
     [(UITableViewCell *)v5 setPlaceHolderValue:v9];
 
     [(UITableViewCell *)v5 setTextFieldOffset:0.0];
-    v10 = [(UITableViewCell *)v5 editableTextField];
-    [v10 setClearButtonMode:1];
+    editableTextField2 = [(UITableViewCell *)v5 editableTextField];
+    [editableTextField2 setClearButtonMode:1];
 
-    v11 = [(UITableViewCell *)v5 editableTextField];
-    [v11 setKeyboardType:3];
+    editableTextField3 = [(UITableViewCell *)v5 editableTextField];
+    [editableTextField3 setKeyboardType:3];
 
-    v12 = [(UITableViewCell *)v5 editableTextField];
-    [v12 setAutocorrectionType:1];
+    editableTextField4 = [(UITableViewCell *)v5 editableTextField];
+    [editableTextField4 setAutocorrectionType:1];
 
-    v13 = [(UITableViewCell *)v5 editableTextField];
-    [v13 setAutocapitalizationType:0];
+    editableTextField5 = [(UITableViewCell *)v5 editableTextField];
+    [editableTextField5 setAutocapitalizationType:0];
 
     editable = self->_editable;
-    v15 = [(UITableViewCell *)v5 editableTextField];
-    [v15 setEnabled:editable];
+    editableTextField6 = [(UITableViewCell *)v5 editableTextField];
+    [editableTextField6 setEnabled:editable];
 
     v16 = [(EKCalendarSubscriptionURLEditItem *)self _textFieldColorForEditable:self->_editable];
-    v17 = [(UITableViewCell *)v5 editableTextField];
-    [v17 setTextColor:v16];
+    editableTextField7 = [(UITableViewCell *)v5 editableTextField];
+    [editableTextField7 setTextColor:v16];
 
     [(UITableViewCell *)v5 setSelectionStyle:[(EKCalendarSubscriptionURLEditItem *)self _cellSelectionStyleForEditable:self->_editable]];
-    v18 = [(UITableViewCell *)v5 editableTextField];
-    [v18 setDelegate:self];
+    editableTextField8 = [(UITableViewCell *)v5 editableTextField];
+    [editableTextField8 setDelegate:self];
 
-    v19 = [(UITableViewCell *)v5 editableTextField];
-    [v19 setAccessibilityIdentifier:@"calendar-url-textfield"];
+    editableTextField9 = [(UITableViewCell *)v5 editableTextField];
+    [editableTextField9 setAccessibilityIdentifier:@"calendar-url-textfield"];
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v21 = *MEMORY[0x1E69DE5C0];
-    v22 = [(UITableViewCell *)v5 editableTextField];
-    [v20 addObserver:self selector:sel__textFieldChanged name:v21 object:v22];
+    editableTextField10 = [(UITableViewCell *)v5 editableTextField];
+    [defaultCenter addObserver:self selector:sel__textFieldChanged name:v21 object:editableTextField10];
 
     urlString = self->_urlString;
     if (urlString || ([(EKCalendar *)self->super._calendar subcalURL], v24 = objc_claimAutoreleasedReturnValue(), v25 = self->_urlString, self->_urlString = v24, v25, (urlString = self->_urlString) != 0))
     {
-      v26 = [(UITableViewCell *)v5 editableTextField];
-      [v26 setText:urlString];
+      editableTextField11 = [(UITableViewCell *)v5 editableTextField];
+      [editableTextField11 setText:urlString];
     }
 
     v27 = self->_cell;
@@ -82,9 +82,9 @@
   return cell;
 }
 
-- (id)_textFieldColorForEditable:(BOOL)a3
+- (id)_textFieldColorForEditable:(BOOL)editable
 {
-  if (a3)
+  if (editable)
   {
     [MEMORY[0x1E69DC888] labelColor];
   }
@@ -98,9 +98,9 @@
   return v3;
 }
 
-- (int64_t)_cellSelectionStyleForEditable:(BOOL)a3
+- (int64_t)_cellSelectionStyleForEditable:(BOOL)editable
 {
-  if (a3)
+  if (editable)
   {
     return 0;
   }
@@ -116,10 +116,10 @@
   cell = self->_cell;
   if (cell)
   {
-    v4 = [(UITableViewCell *)cell editableTextField];
-    v5 = [v4 text];
+    editableTextField = [(UITableViewCell *)cell editableTextField];
+    text = [editableTextField text];
     urlString = self->_urlString;
-    self->_urlString = v5;
+    self->_urlString = text;
   }
 
   v7 = self->_urlString;
@@ -127,32 +127,32 @@
   return v7;
 }
 
-- (void)setUrlString:(id)a3
+- (void)setUrlString:(id)string
 {
-  v8 = a3;
-  objc_storeStrong(&self->_urlString, a3);
+  stringCopy = string;
+  objc_storeStrong(&self->_urlString, string);
   cell = self->_cell;
   if (cell)
   {
     urlString = self->_urlString;
-    v7 = [(UITableViewCell *)cell editableTextField];
-    [v7 setText:urlString];
+    editableTextField = [(UITableViewCell *)cell editableTextField];
+    [editableTextField setText:urlString];
   }
 }
 
-- (void)setEditable:(BOOL)a3
+- (void)setEditable:(BOOL)editable
 {
-  self->_editable = a3;
+  self->_editable = editable;
   cell = self->_cell;
   if (cell)
   {
-    v5 = a3;
-    v6 = [(UITableViewCell *)cell editableTextField];
-    [v6 setEnabled:v5];
+    editableCopy = editable;
+    editableTextField = [(UITableViewCell *)cell editableTextField];
+    [editableTextField setEnabled:editableCopy];
 
     v7 = [(EKCalendarSubscriptionURLEditItem *)self _textFieldColorForEditable:self->_editable];
-    v8 = [(UITableViewCell *)self->_cell editableTextField];
-    [v8 setTextColor:v7];
+    editableTextField2 = [(UITableViewCell *)self->_cell editableTextField];
+    [editableTextField2 setTextColor:v7];
 
     v9 = [(EKCalendarSubscriptionURLEditItem *)self _cellSelectionStyleForEditable:self->_editable];
     v10 = self->_cell;
@@ -163,22 +163,22 @@
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(UITableViewCell *)self->_cell editableTextField];
-  [v2 becomeFirstResponder];
+  editableTextField = [(UITableViewCell *)self->_cell editableTextField];
+  [editableTextField becomeFirstResponder];
 
   return 1;
 }
 
-- (BOOL)saveStateToCalendar:(id)a3
+- (BOOL)saveStateToCalendar:(id)calendar
 {
-  v4 = a3;
-  v5 = [(EKCalendarSubscriptionURLEditItem *)self urlString];
-  [v4 setSubcalURL:v5];
+  calendarCopy = calendar;
+  urlString = [(EKCalendarSubscriptionURLEditItem *)self urlString];
+  [calendarCopy setSubcalURL:urlString];
 
   return 1;
 }
 
-- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)a3 forWidth:(double)a4
+- (double)defaultCellHeightForSubitemAtIndex:(unint64_t)index forWidth:(double)width
 {
   if (EKUIUnscaledCatalyst())
   {
@@ -213,33 +213,33 @@
   return v6;
 }
 
-- (void)calendarEditor:(id)a3 didSelectSubitem:(unint64_t)a4
+- (void)calendarEditor:(id)editor didSelectSubitem:(unint64_t)subitem
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc(MEMORY[0x1E69CD9F8]);
-  v6 = [(EKCalendarSubscriptionURLEditItem *)self urlString];
-  v22[0] = v6;
+  urlString = [(EKCalendarSubscriptionURLEditItem *)self urlString];
+  v22[0] = urlString;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:1];
   v8 = [v5 initWithActivityItems:v7 applicationActivities:0];
 
   cell = self->_cell;
-  v10 = [v8 popoverPresentationController];
-  [v10 setSourceView:cell];
+  popoverPresentationController = [v8 popoverPresentationController];
+  [popoverPresentationController setSourceView:cell];
 
   [(UITableViewCell *)self->_cell bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v8 popoverPresentationController];
-  [v19 setSourceRect:{v12, v14, v16, v18}];
+  popoverPresentationController2 = [v8 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v12, v14, v16, v18}];
 
-  v20 = [(EKCalendarEditItem *)self delegate];
-  v21 = [v20 owningNavigationController];
-  [v21 presentViewController:v8 animated:1 completion:0];
+  delegate = [(EKCalendarEditItem *)self delegate];
+  owningNavigationController = [delegate owningNavigationController];
+  [owningNavigationController presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
   if (_os_feature_enabled_impl())
   {
@@ -265,15 +265,15 @@
 
 - (void)_notifyDelegateThatURLStringChangedIfNeeded
 {
-  v3 = [(EKCalendarSubscriptionURLEditItem *)self urlEditItemDelegate];
-  if (v3)
+  urlEditItemDelegate = [(EKCalendarSubscriptionURLEditItem *)self urlEditItemDelegate];
+  if (urlEditItemDelegate)
   {
-    v4 = v3;
+    v4 = urlEditItemDelegate;
     lastNotifiedURLString = self->_lastNotifiedURLString;
     if (lastNotifiedURLString)
     {
-      v6 = [(EKCalendarSubscriptionURLEditItem *)self urlString];
-      v7 = [(NSString *)lastNotifiedURLString isEqualToString:v6];
+      urlString = [(EKCalendarSubscriptionURLEditItem *)self urlString];
+      v7 = [(NSString *)lastNotifiedURLString isEqualToString:urlString];
 
       if (v7)
       {
@@ -285,12 +285,12 @@
     {
     }
 
-    v8 = [(EKCalendarSubscriptionURLEditItem *)self urlString];
+    urlString2 = [(EKCalendarSubscriptionURLEditItem *)self urlString];
     v9 = self->_lastNotifiedURLString;
-    self->_lastNotifiedURLString = v8;
+    self->_lastNotifiedURLString = urlString2;
 
-    v10 = [(EKCalendarSubscriptionURLEditItem *)self urlEditItemDelegate];
-    [v10 URLEditItemDidChangeURLString:self];
+    urlEditItemDelegate2 = [(EKCalendarSubscriptionURLEditItem *)self urlEditItemDelegate];
+    [urlEditItemDelegate2 URLEditItemDidChangeURLString:self];
   }
 }
 

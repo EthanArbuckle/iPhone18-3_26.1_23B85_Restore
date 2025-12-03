@@ -1,6 +1,6 @@
 @interface EventKitSyncDiagnosticExtension
 + (id)log;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation EventKitSyncDiagnosticExtension
@@ -17,7 +17,7 @@
   return v3;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v3 = +[EventKitSyncDiagnosticExtension log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))

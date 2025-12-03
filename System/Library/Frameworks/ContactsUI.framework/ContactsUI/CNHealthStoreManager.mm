@@ -1,20 +1,20 @@
 @interface CNHealthStoreManager
 + (BOOL)shouldShowEmergencyContacts;
 + (id)descriptorForRequiredKeys;
-+ (id)emergencyContactMatchingContact:(id)a3;
-+ (id)identifiersForContactMatchingEmergencyContacts:(id)a3 contactStore:(id)a4;
++ (id)emergencyContactMatchingContact:(id)contact;
++ (id)identifiersForContactMatchingEmergencyContacts:(id)contacts contactStore:(id)store;
 + (id)log;
-- (CNHealthStoreManager)initWithEnvironment:(id)a3 healthStore:(id)a4 medicalIDStore:(id)a5;
+- (CNHealthStoreManager)initWithEnvironment:(id)environment healthStore:(id)store medicalIDStore:(id)dStore;
 - (HKHealthStore)healthStore;
 - (HKMedicalIDStore)medicalIDStore;
-- (id)createMedicalIDFromContact:(id)a3;
+- (id)createMedicalIDFromContact:(id)contact;
 - (id)nts_lazyHealthStore;
 - (id)nts_lazyMedicalIDStore;
-- (id)registerMedicalIDDataHandler:(id)a3;
+- (id)registerMedicalIDDataHandler:(id)handler;
 - (void)dealloc;
-- (void)notifyHandlersWithMedicalIDData:(id)a3;
+- (void)notifyHandlersWithMedicalIDData:(id)data;
 - (void)startListeningForChanges;
-- (void)unregisterHandlerForToken:(id)a3;
+- (void)unregisterHandlerForToken:(id)token;
 - (void)updateAndDispatchMedicalIDData;
 @end
 
@@ -24,14 +24,14 @@
 {
   [(CNHealthStoreManager *)self setIsListeningToChanges:1];
   objc_initWeak(&location, self);
-  v3 = [(CNHealthStoreManager *)self workQueue];
+  workQueue = [(CNHealthStoreManager *)self workQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__CNHealthStoreManager_startListeningForChanges__block_invoke;
   v4[3] = &unk_1E74E6D30;
   v4[4] = self;
   objc_copyWeak(&v5, &location);
-  [v3 performBlock:v4];
+  [workQueue performBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -93,11 +93,11 @@ void __48__CNHealthStoreManager_startListeningForChanges__block_invoke(uint64_t 
 
   else
   {
-    v2 = [MEMORY[0x1E696AAE8] mainBundle];
-    v3 = [v2 bundleIdentifier];
-    if (![v3 isEqualToString:@"com.apple.ContesterSwiftUI"])
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    if (![bundleIdentifier isEqualToString:@"com.apple.ContesterSwiftUI"])
     {
-      v8 = 0;
+      isMedicalIDAvailable = 0;
       goto LABEL_14;
     }
 
@@ -106,10 +106,10 @@ void __48__CNHealthStoreManager_startListeningForChanges__block_invoke(uint64_t 
 
   if (![getHKHealthStoreClass() isHealthDataAvailable])
   {
-    v8 = 0;
+    isMedicalIDAvailable = 0;
     if ((v4 & 1) == 0)
     {
-      return v8;
+      return isMedicalIDAvailable;
     }
 
     goto LABEL_14;
@@ -133,26 +133,26 @@ void __48__CNHealthStoreManager_startListeningForChanges__block_invoke(uint64_t 
 
   v6 = v5;
   _Block_object_dispose(&v11, 8);
-  v7 = [v5 shared];
-  v8 = [v7 isMedicalIDAvailable];
+  shared = [v5 shared];
+  isMedicalIDAvailable = [shared isMedicalIDAvailable];
 
   if (v4)
   {
 LABEL_14:
   }
 
-  return v8;
+  return isMedicalIDAvailable;
 }
 
 - (void)updateAndDispatchMedicalIDData
 {
-  v3 = [(CNHealthStoreManager *)self workQueue];
+  workQueue = [(CNHealthStoreManager *)self workQueue];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __54__CNHealthStoreManager_updateAndDispatchMedicalIDData__block_invoke;
   v4[3] = &unk_1E74E6A88;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [workQueue performBlock:v4];
 }
 
 void __54__CNHealthStoreManager_updateAndDispatchMedicalIDData__block_invoke(uint64_t a1)
@@ -195,7 +195,7 @@ void __54__CNHealthStoreManager_updateAndDispatchMedicalIDData__block_invoke(uin
   medicalIDStore = self->_medicalIDStore;
   if (!medicalIDStore)
   {
-    v4 = [(CNHealthStoreManager *)self nts_lazyHealthStore];
+    nts_lazyHealthStore = [(CNHealthStoreManager *)self nts_lazyHealthStore];
     v11 = 0;
     v12 = &v11;
     v13 = 0x2050000000;
@@ -239,15 +239,15 @@ void __54__CNHealthStoreManager_updateAndDispatchMedicalIDData__block_invoke(uin
   return healthStore;
 }
 
-- (id)createMedicalIDFromContact:(id)a3
+- (id)createMedicalIDFromContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNHealthStoreManager *)self healthStore];
-  v6 = [v5 createMedicalIDData];
+  contactCopy = contact;
+  healthStore = [(CNHealthStoreManager *)self healthStore];
+  createMedicalIDData = [healthStore createMedicalIDData];
 
-  [v6 loadDataFromCNContact:v4];
+  [createMedicalIDData loadDataFromCNContact:contactCopy];
 
-  return v6;
+  return createMedicalIDData;
 }
 
 void __48__CNHealthStoreManager_startListeningForChanges__block_invoke_2(uint64_t a1)
@@ -256,18 +256,18 @@ void __48__CNHealthStoreManager_startListeningForChanges__block_invoke_2(uint64_
   [WeakRetained updateAndDispatchMedicalIDData];
 }
 
-- (void)notifyHandlersWithMedicalIDData:(id)a3
+- (void)notifyHandlersWithMedicalIDData:(id)data
 {
-  v4 = a3;
-  v5 = [(CNHealthStoreManager *)self workQueue];
+  dataCopy = data;
+  workQueue = [(CNHealthStoreManager *)self workQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__CNHealthStoreManager_notifyHandlersWithMedicalIDData___block_invoke;
   v7[3] = &unk_1E74E77C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = dataCopy;
+  v6 = dataCopy;
+  [workQueue performBlock:v7];
 }
 
 void __56__CNHealthStoreManager_notifyHandlersWithMedicalIDData___block_invoke(uint64_t a1)
@@ -333,18 +333,18 @@ void __54__CNHealthStoreManager_updateAndDispatchMedicalIDData__block_invoke_2(u
   }
 }
 
-- (void)unregisterHandlerForToken:(id)a3
+- (void)unregisterHandlerForToken:(id)token
 {
-  v4 = a3;
-  v5 = [(CNHealthStoreManager *)self stateLock];
+  tokenCopy = token;
+  stateLock = [(CNHealthStoreManager *)self stateLock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __50__CNHealthStoreManager_unregisterHandlerForToken___block_invoke;
   v7[3] = &unk_1E74E77C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlock:v7];
+  v8 = tokenCopy;
+  v6 = tokenCopy;
+  [stateLock performBlock:v7];
 }
 
 void __50__CNHealthStoreManager_unregisterHandlerForToken___block_invoke(uint64_t a1)
@@ -353,22 +353,22 @@ void __50__CNHealthStoreManager_unregisterHandlerForToken___block_invoke(uint64_
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (id)registerMedicalIDDataHandler:(id)a3
+- (id)registerMedicalIDDataHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
+  handlerCopy = handler;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   objc_initWeak(&location, self);
-  v6 = [(CNHealthStoreManager *)self workQueue];
+  workQueue = [(CNHealthStoreManager *)self workQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__CNHealthStoreManager_registerMedicalIDDataHandler___block_invoke;
   v12[3] = &unk_1E74E4048;
   objc_copyWeak(&v15, &location);
-  v7 = v5;
+  v7 = uUID;
   v13 = v7;
-  v8 = v4;
+  v8 = handlerCopy;
   v14 = v8;
-  [v6 performBlock:v12];
+  [workQueue performBlock:v12];
 
   v9 = v14;
   v10 = v7;
@@ -444,50 +444,50 @@ void __53__CNHealthStoreManager_registerMedicalIDDataHandler___block_invoke_2(ui
   [(CNHealthStoreManager *)&v3 dealloc];
 }
 
-- (CNHealthStoreManager)initWithEnvironment:(id)a3 healthStore:(id)a4 medicalIDStore:(id)a5
+- (CNHealthStoreManager)initWithEnvironment:(id)environment healthStore:(id)store medicalIDStore:(id)dStore
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  environmentCopy = environment;
+  storeCopy = store;
+  dStoreCopy = dStore;
   v23.receiver = self;
   v23.super_class = CNHealthStoreManager;
   v12 = [(CNHealthStoreManager *)&v23 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_environment, a3);
-    objc_storeStrong(&v13->_healthStore, a4);
-    objc_storeStrong(&v13->_medicalIDStore, a5);
-    v14 = [v9 defaultSchedulerProvider];
-    v15 = [v14 newSerialSchedulerWithName:@"com.apple.Contacts.CNHealthStoreManager.workQueue"];
+    objc_storeStrong(&v12->_environment, environment);
+    objc_storeStrong(&v13->_healthStore, store);
+    objc_storeStrong(&v13->_medicalIDStore, dStore);
+    defaultSchedulerProvider = [environmentCopy defaultSchedulerProvider];
+    v15 = [defaultSchedulerProvider newSerialSchedulerWithName:@"com.apple.Contacts.CNHealthStoreManager.workQueue"];
     workQueue = v13->_workQueue;
     v13->_workQueue = v15;
 
     v13->_needsFetching = 1;
-    v17 = [v9 defaultSchedulerProvider];
-    v18 = [v17 newSynchronousSerialSchedulerWithName:@"com.apple.Contacts.CNHealthStoreManager.stateLock"];
+    defaultSchedulerProvider2 = [environmentCopy defaultSchedulerProvider];
+    v18 = [defaultSchedulerProvider2 newSynchronousSerialSchedulerWithName:@"com.apple.Contacts.CNHealthStoreManager.stateLock"];
     stateLock = v13->_stateLock;
     v13->_stateLock = v18;
 
-    v20 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     medicalIDDataHandlers = v13->_medicalIDDataHandlers;
-    v13->_medicalIDDataHandlers = v20;
+    v13->_medicalIDDataHandlers = dictionary;
   }
 
   return v13;
 }
 
-+ (id)identifiersForContactMatchingEmergencyContacts:(id)a3 contactStore:(id)a4
++ (id)identifiersForContactMatchingEmergencyContacts:(id)contacts contactStore:(id)store
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v23 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
+  contactsCopy = contacts;
+  storeCopy = store;
+  array = [MEMORY[0x1E695DF70] array];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = v5;
+  v7 = contactsCopy;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
@@ -504,25 +504,25 @@ void __53__CNHealthStoreManager_registerMedicalIDDataHandler___block_invoke_2(ui
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 nameContactIdentifier];
+        nameContactIdentifier = [v13 nameContactIdentifier];
 
-        if (v14)
+        if (nameContactIdentifier)
         {
-          v15 = [v13 nameContactIdentifier];
+          nameContactIdentifier2 = [v13 nameContactIdentifier];
           v28 = v11;
           v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v28 count:1];
-          v17 = [v23 unifiedContactWithIdentifier:v15 keysToFetch:v16 error:0];
+          v17 = [storeCopy unifiedContactWithIdentifier:nameContactIdentifier2 keysToFetch:v16 error:0];
 
-          v18 = [v17 allLinkedIdentifiers];
-          [v6 addObjectsFromArray:v18];
+          allLinkedIdentifiers = [v17 allLinkedIdentifiers];
+          [array addObjectsFromArray:allLinkedIdentifiers];
 
-          v19 = [v13 nameContactIdentifier];
-          LOBYTE(v16) = [v6 containsObject:v19];
+          nameContactIdentifier3 = [v13 nameContactIdentifier];
+          LOBYTE(v16) = [array containsObject:nameContactIdentifier3];
 
           if ((v16 & 1) == 0)
           {
-            v20 = [v13 nameContactIdentifier];
-            [v6 addObject:v20];
+            nameContactIdentifier4 = [v13 nameContactIdentifier];
+            [array addObject:nameContactIdentifier4];
           }
         }
       }
@@ -533,20 +533,20 @@ void __53__CNHealthStoreManager_registerMedicalIDDataHandler___block_invoke_2(ui
     while (v9);
   }
 
-  v21 = [v6 copy];
+  v21 = [array copy];
 
   return v21;
 }
 
-+ (id)emergencyContactMatchingContact:(id)a3
++ (id)emergencyContactMatchingContact:(id)contact
 {
-  v3 = [a3 allLinkedIdentifiers];
+  allLinkedIdentifiers = [contact allLinkedIdentifiers];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __56__CNHealthStoreManager_emergencyContactMatchingContact___block_invoke;
   v7[3] = &unk_1E74E4020;
-  v8 = v3;
-  v4 = v3;
+  v8 = allLinkedIdentifiers;
+  v4 = allLinkedIdentifiers;
   v5 = [v7 copy];
 
   return v5;

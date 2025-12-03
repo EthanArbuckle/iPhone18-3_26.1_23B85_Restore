@@ -1,36 +1,36 @@
 @interface TrackedFlowCounts
-- (void)addFlowCounts:(id)a3;
-- (void)subtractFlowCounts:(id)a3;
+- (void)addFlowCounts:(id)counts;
+- (void)subtractFlowCounts:(id)counts;
 @end
 
 @implementation TrackedFlowCounts
 
-- (void)addFlowCounts:(id)a3
+- (void)addFlowCounts:(id)counts
 {
-  v4 = a3;
-  self->_rxWiFiBytes += [v4 rxWiFiBytes];
-  self->_txWiFiBytes += [v4 txWiFiBytes];
-  self->_rxPkts += [v4 rxPkts];
-  self->_txPkts += [v4 txPkts];
-  self->_rxDupeBytes += [v4 rxDupeBytes];
-  self->_rxOOOBytes += [v4 rxOOOBytes];
-  v5 = [v4 txReTxBytes];
+  countsCopy = counts;
+  self->_rxWiFiBytes += [countsCopy rxWiFiBytes];
+  self->_txWiFiBytes += [countsCopy txWiFiBytes];
+  self->_rxPkts += [countsCopy rxPkts];
+  self->_txPkts += [countsCopy txPkts];
+  self->_rxDupeBytes += [countsCopy rxDupeBytes];
+  self->_rxOOOBytes += [countsCopy rxOOOBytes];
+  txReTxBytes = [countsCopy txReTxBytes];
 
-  self->_txReTxBytes += v5;
+  self->_txReTxBytes += txReTxBytes;
 }
 
-- (void)subtractFlowCounts:(id)a3
+- (void)subtractFlowCounts:(id)counts
 {
-  v4 = a3;
-  self->_rxWiFiBytes -= [v4 rxWiFiBytes];
-  self->_txWiFiBytes -= [v4 txWiFiBytes];
-  self->_rxPkts -= [v4 rxPkts];
-  self->_txPkts -= [v4 txPkts];
-  self->_rxDupeBytes -= [v4 rxDupeBytes];
-  self->_rxOOOBytes -= [v4 rxOOOBytes];
-  v5 = [v4 txReTxBytes];
+  countsCopy = counts;
+  self->_rxWiFiBytes -= [countsCopy rxWiFiBytes];
+  self->_txWiFiBytes -= [countsCopy txWiFiBytes];
+  self->_rxPkts -= [countsCopy rxPkts];
+  self->_txPkts -= [countsCopy txPkts];
+  self->_rxDupeBytes -= [countsCopy rxDupeBytes];
+  self->_rxOOOBytes -= [countsCopy rxOOOBytes];
+  txReTxBytes = [countsCopy txReTxBytes];
 
-  self->_txReTxBytes -= v5;
+  self->_txReTxBytes -= txReTxBytes;
 }
 
 @end

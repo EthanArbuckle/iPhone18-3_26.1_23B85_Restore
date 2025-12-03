@@ -1,18 +1,18 @@
 @interface _UIViewControllerTransition
-+ (id)zoomWithSourceViewProvider:(id)a3;
++ (id)zoomWithSourceViewProvider:(id)provider;
 - (UIViewController)_associatedViewController;
 - (id)_apiTransition;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setOptions:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setOptions:(id)options;
 @end
 
 @implementation _UIViewControllerTransition
 
-+ (id)zoomWithSourceViewProvider:(id)a3
++ (id)zoomWithSourceViewProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = objc_opt_new();
-  [v4 set_viewProvider:v3];
+  [v4 set_viewProvider:providerCopy];
 
   v5 = objc_opt_new();
   [v4 _setOptions:v5];
@@ -20,21 +20,21 @@
   return v4;
 }
 
-- (void)_setOptions:(id)a3
+- (void)_setOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   options = self->_options;
   p_options = &self->_options;
-  if (options != v4)
+  if (options != optionsCopy)
   {
-    if (!v4)
+    if (!optionsCopy)
     {
-      v4 = objc_opt_new();
+      optionsCopy = objc_opt_new();
     }
 
-    obj = v4;
-    objc_storeStrong(p_options, v4);
-    v4 = obj;
+    obj = optionsCopy;
+    objc_storeStrong(p_options, optionsCopy);
+    optionsCopy = obj;
   }
 }
 
@@ -54,18 +54,18 @@
   v13[3] = &unk_1E712CDB0;
   objc_copyWeak(&v14, &location);
   [v3 setAlignmentRectProvider:v13];
-  v4 = [(_UIViewControllerTransition *)self _options];
-  v5 = [v4 dimmingColor];
-  [v3 setDimmingColor:v5];
+  _options = [(_UIViewControllerTransition *)self _options];
+  dimmingColor = [_options dimmingColor];
+  [v3 setDimmingColor:dimmingColor];
 
-  v6 = [(_UIViewControllerTransition *)self _options];
-  v7 = [v6 dimmingVisualEffects];
-  v8 = [v7 firstObject];
+  _options2 = [(_UIViewControllerTransition *)self _options];
+  dimmingVisualEffects = [_options2 dimmingVisualEffects];
+  firstObject = [dimmingVisualEffects firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setDimmingVisualEffect:v8];
+    [v3 setDimmingVisualEffect:firstObject];
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -84,17 +84,17 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(_UIViewControllerTransition *)self _viewProvider];
-  [v4 set_viewProvider:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  _viewProvider = [(_UIViewControllerTransition *)self _viewProvider];
+  [v4 set_viewProvider:_viewProvider];
 
-  v6 = [(_UIViewControllerTransition *)self _options];
-  [v4 _setOptions:v6];
+  _options = [(_UIViewControllerTransition *)self _options];
+  [v4 _setOptions:_options];
 
-  v7 = [(_UIViewControllerTransition *)self _interactiveDismissShouldBeginHandler];
-  [v4 set_interactiveDismissShouldBeginHandler:v7];
+  _interactiveDismissShouldBeginHandler = [(_UIViewControllerTransition *)self _interactiveDismissShouldBeginHandler];
+  [v4 set_interactiveDismissShouldBeginHandler:_interactiveDismissShouldBeginHandler];
 
   return v4;
 }

@@ -1,90 +1,90 @@
 @interface UWLMessageWireEnvelope
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addLiveActivityEvents:(id)a3;
-- (void)addOptInEvents:(id)a3;
-- (void)addOptOutEvents:(id)a3;
-- (void)addPlayEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addLiveActivityEvents:(id)events;
+- (void)addOptInEvents:(id)events;
+- (void)addOptOutEvents:(id)events;
+- (void)addPlayEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation UWLMessageWireEnvelope
 
-- (void)addPlayEvents:(id)a3
+- (void)addPlayEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   playEvents = self->_playEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!playEvents)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_playEvents;
     self->_playEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     playEvents = self->_playEvents;
   }
 
-  [(NSMutableArray *)playEvents addObject:v4];
+  [(NSMutableArray *)playEvents addObject:eventsCopy];
 }
 
-- (void)addOptInEvents:(id)a3
+- (void)addOptInEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   optInEvents = self->_optInEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!optInEvents)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_optInEvents;
     self->_optInEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     optInEvents = self->_optInEvents;
   }
 
-  [(NSMutableArray *)optInEvents addObject:v4];
+  [(NSMutableArray *)optInEvents addObject:eventsCopy];
 }
 
-- (void)addOptOutEvents:(id)a3
+- (void)addOptOutEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   optOutEvents = self->_optOutEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!optOutEvents)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_optOutEvents;
     self->_optOutEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     optOutEvents = self->_optOutEvents;
   }
 
-  [(NSMutableArray *)optOutEvents addObject:v4];
+  [(NSMutableArray *)optOutEvents addObject:eventsCopy];
 }
 
-- (void)addLiveActivityEvents:(id)a3
+- (void)addLiveActivityEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   liveActivityEvents = self->_liveActivityEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!liveActivityEvents)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_liveActivityEvents;
     self->_liveActivityEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     liveActivityEvents = self->_liveActivityEvents;
   }
 
-  [(NSMutableArray *)liveActivityEvents addObject:v4];
+  [(NSMutableArray *)liveActivityEvents addObject:eventsCopy];
 }
 
 - (id)description
@@ -92,8 +92,8 @@
   v7.receiver = self;
   v7.super_class = UWLMessageWireEnvelope;
   v3 = [(UWLMessageWireEnvelope *)&v7 description];
-  v4 = [(UWLMessageWireEnvelope *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(UWLMessageWireEnvelope *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -107,8 +107,8 @@
   headers = self->_headers;
   if (headers)
   {
-    v6 = [(UWLMessageHeaders *)headers dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"headers"];
+    dictionaryRepresentation = [(UWLMessageHeaders *)headers dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"headers"];
   }
 
   if ([(NSMutableArray *)self->_playEvents count])
@@ -133,8 +133,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v48 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v48 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v48 objects:v55 count:16];
@@ -168,8 +168,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v44 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation3 = [*(*(&v44 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation3];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v44 objects:v54 count:16];
@@ -203,8 +203,8 @@
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v40 + 1) + 8 * k) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation4 = [*(*(&v40 + 1) + 8 * k) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation4];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v40 objects:v53 count:16];
@@ -238,8 +238,8 @@
             objc_enumerationMutation(v29);
           }
 
-          v34 = [*(*(&v36 + 1) + 8 * m) dictionaryRepresentation];
-          [v28 addObject:v34];
+          dictionaryRepresentation5 = [*(*(&v36 + 1) + 8 * m) dictionaryRepresentation];
+          [v28 addObject:dictionaryRepresentation5];
         }
 
         v31 = [(NSMutableArray *)v29 countByEnumeratingWithState:&v36 objects:v52 count:16];
@@ -254,9 +254,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   version = self->_version;
   PBDataWriterWriteInt32Field();
   headers = self->_headers;
@@ -390,19 +390,19 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v4[12] = self->_version;
-  v21 = v4;
-  [v4 setHeaders:self->_headers];
+  toCopy = to;
+  toCopy[12] = self->_version;
+  v21 = toCopy;
+  [toCopy setHeaders:self->_headers];
   if ([(UWLMessageWireEnvelope *)self playEventsCount])
   {
     [v21 clearPlayEvents];
-    v5 = [(UWLMessageWireEnvelope *)self playEventsCount];
-    if (v5)
+    playEventsCount = [(UWLMessageWireEnvelope *)self playEventsCount];
+    if (playEventsCount)
     {
-      v6 = v5;
+      v6 = playEventsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(UWLMessageWireEnvelope *)self playEventsAtIndex:i];
@@ -414,10 +414,10 @@
   if ([(UWLMessageWireEnvelope *)self optInEventsCount])
   {
     [v21 clearOptInEvents];
-    v9 = [(UWLMessageWireEnvelope *)self optInEventsCount];
-    if (v9)
+    optInEventsCount = [(UWLMessageWireEnvelope *)self optInEventsCount];
+    if (optInEventsCount)
     {
-      v10 = v9;
+      v10 = optInEventsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(UWLMessageWireEnvelope *)self optInEventsAtIndex:j];
@@ -429,10 +429,10 @@
   if ([(UWLMessageWireEnvelope *)self optOutEventsCount])
   {
     [v21 clearOptOutEvents];
-    v13 = [(UWLMessageWireEnvelope *)self optOutEventsCount];
-    if (v13)
+    optOutEventsCount = [(UWLMessageWireEnvelope *)self optOutEventsCount];
+    if (optOutEventsCount)
     {
-      v14 = v13;
+      v14 = optOutEventsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(UWLMessageWireEnvelope *)self optOutEventsAtIndex:k];
@@ -444,10 +444,10 @@
   if ([(UWLMessageWireEnvelope *)self liveActivityEventsCount])
   {
     [v21 clearLiveActivityEvents];
-    v17 = [(UWLMessageWireEnvelope *)self liveActivityEventsCount];
-    if (v17)
+    liveActivityEventsCount = [(UWLMessageWireEnvelope *)self liveActivityEventsCount];
+    if (liveActivityEventsCount)
     {
-      v18 = v17;
+      v18 = liveActivityEventsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(UWLMessageWireEnvelope *)self liveActivityEventsAtIndex:m];
@@ -457,11 +457,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[12] = self->_version;
-  v6 = [(UWLMessageHeaders *)self->_headers copyWithZone:a3];
+  v6 = [(UWLMessageHeaders *)self->_headers copyWithZone:zone];
   v7 = *(v5 + 1);
   *(v5 + 1) = v6;
 
@@ -485,7 +485,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v45 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v45 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addPlayEvents:v13];
 
         v12 = v12 + 1;
@@ -518,7 +518,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v41 + 1) + 8 * v18) copyWithZone:a3];
+        v19 = [*(*(&v41 + 1) + 8 * v18) copyWithZone:zone];
         [v5 addOptInEvents:v19];
 
         v18 = v18 + 1;
@@ -551,7 +551,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v25 = [*(*(&v37 + 1) + 8 * v24) copyWithZone:a3];
+        v25 = [*(*(&v37 + 1) + 8 * v24) copyWithZone:zone];
         [v5 addOptOutEvents:v25];
 
         v24 = v24 + 1;
@@ -584,7 +584,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v33 + 1) + 8 * v30) copyWithZone:{a3, v33}];
+        v31 = [*(*(&v33 + 1) + 8 * v30) copyWithZone:{zone, v33}];
         [v5 addLiveActivityEvents:v31];
 
         v30 = v30 + 1;
@@ -600,13 +600,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_version == *(v4 + 12) && ((headers = self->_headers, !(headers | v4[1])) || -[UWLMessageHeaders isEqual:](headers, "isEqual:")) && ((playEvents = self->_playEvents, !(playEvents | v4[5])) || -[NSMutableArray isEqual:](playEvents, "isEqual:")) && ((optInEvents = self->_optInEvents, !(optInEvents | v4[3])) || -[NSMutableArray isEqual:](optInEvents, "isEqual:")) && ((optOutEvents = self->_optOutEvents, !(optOutEvents | v4[4])) || -[NSMutableArray isEqual:](optOutEvents, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_version == *(equalCopy + 12) && ((headers = self->_headers, !(headers | equalCopy[1])) || -[UWLMessageHeaders isEqual:](headers, "isEqual:")) && ((playEvents = self->_playEvents, !(playEvents | equalCopy[5])) || -[NSMutableArray isEqual:](playEvents, "isEqual:")) && ((optInEvents = self->_optInEvents, !(optInEvents | equalCopy[3])) || -[NSMutableArray isEqual:](optInEvents, "isEqual:")) && ((optOutEvents = self->_optOutEvents, !(optOutEvents | equalCopy[4])) || -[NSMutableArray isEqual:](optOutEvents, "isEqual:")))
   {
     liveActivityEvents = self->_liveActivityEvents;
-    if (liveActivityEvents | v4[2])
+    if (liveActivityEvents | equalCopy[2])
     {
       v10 = [(NSMutableArray *)liveActivityEvents isEqual:?];
     }
@@ -635,12 +635,12 @@
   return v7 ^ [(NSMutableArray *)self->_liveActivityEvents hash]^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_version = *(v4 + 12);
+  fromCopy = from;
+  self->_version = *(fromCopy + 12);
   headers = self->_headers;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (headers)
   {
     if (v6)
@@ -658,7 +658,7 @@
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v7 = *(v4 + 5);
+  v7 = *(fromCopy + 5);
   v8 = [v7 countByEnumeratingWithState:&v39 objects:v46 count:16];
   if (v8)
   {
@@ -686,7 +686,7 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v12 = *(v4 + 3);
+  v12 = *(fromCopy + 3);
   v13 = [v12 countByEnumeratingWithState:&v35 objects:v45 count:16];
   if (v13)
   {
@@ -714,7 +714,7 @@
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v17 = *(v4 + 4);
+  v17 = *(fromCopy + 4);
   v18 = [v17 countByEnumeratingWithState:&v31 objects:v44 count:16];
   if (v18)
   {
@@ -742,7 +742,7 @@
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v22 = *(v4 + 2);
+  v22 = *(fromCopy + 2);
   v23 = [v22 countByEnumeratingWithState:&v27 objects:v43 count:16];
   if (v23)
   {

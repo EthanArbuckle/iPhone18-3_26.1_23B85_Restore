@@ -1,6 +1,6 @@
 @interface MTRGroupKeyManagementClusterGroupKeySetStruct
 - (MTRGroupKeyManagementClusterGroupKeySetStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -42,32 +42,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGroupKeyManagementClusterGroupKeySetStruct);
-  v5 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self groupKeySetID];
-  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setGroupKeySetID:v5];
+  groupKeySetID = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self groupKeySetID];
+  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setGroupKeySetID:groupKeySetID];
 
-  v6 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self groupKeySecurityPolicy];
-  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setGroupKeySecurityPolicy:v6];
+  groupKeySecurityPolicy = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self groupKeySecurityPolicy];
+  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setGroupKeySecurityPolicy:groupKeySecurityPolicy];
 
-  v7 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochKey0];
-  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochKey0:v7];
+  epochKey0 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochKey0];
+  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochKey0:epochKey0];
 
-  v8 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochStartTime0];
-  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochStartTime0:v8];
+  epochStartTime0 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochStartTime0];
+  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochStartTime0:epochStartTime0];
 
-  v9 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochKey1];
-  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochKey1:v9];
+  epochKey1 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochKey1];
+  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochKey1:epochKey1];
 
-  v10 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochStartTime1];
-  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochStartTime1:v10];
+  epochStartTime1 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochStartTime1];
+  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochStartTime1:epochStartTime1];
 
-  v11 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochKey2];
-  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochKey2:v11];
+  epochKey2 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochKey2];
+  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochKey2:epochKey2];
 
-  v12 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochStartTime2];
-  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochStartTime2:v12];
+  epochStartTime2 = [(MTRGroupKeyManagementClusterGroupKeySetStruct *)self epochStartTime2];
+  [(MTRGroupKeyManagementClusterGroupKeySetStruct *)v4 setEpochStartTime2:epochStartTime2];
 
   return v4;
 }

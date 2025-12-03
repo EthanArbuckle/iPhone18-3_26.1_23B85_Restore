@@ -1,12 +1,12 @@
 @interface CloudServiceCapabilitiesOperation
 - (BOOL)allowsBypassOfPrivacyAcknowledgement;
 - (BOOL)allowsPromptingForPrivacyAcknowledgement;
-- (id)_newResponseWithSubscriptionStatus:(id)a3;
+- (id)_newResponseWithSubscriptionStatus:(id)status;
 - (id)responseBlock;
 - (void)run;
-- (void)setAllowsBypassOfPrivacyAcknowledgement:(BOOL)a3;
-- (void)setAllowsPromptingForPrivacyAcknowledgement:(BOOL)a3;
-- (void)setResponseBlock:(id)a3;
+- (void)setAllowsBypassOfPrivacyAcknowledgement:(BOOL)acknowledgement;
+- (void)setAllowsPromptingForPrivacyAcknowledgement:(BOOL)acknowledgement;
+- (void)setResponseBlock:(id)block;
 @end
 
 @implementation CloudServiceCapabilitiesOperation
@@ -37,29 +37,29 @@
   return v4;
 }
 
-- (void)setAllowsPromptingForPrivacyAcknowledgement:(BOOL)a3
+- (void)setAllowsPromptingForPrivacyAcknowledgement:(BOOL)acknowledgement
 {
   [(CloudServiceCapabilitiesOperation *)self lock];
-  self->_allowsPromptingForPrivacyAcknowledgement = a3;
+  self->_allowsPromptingForPrivacyAcknowledgement = acknowledgement;
 
   [(CloudServiceCapabilitiesOperation *)self unlock];
 }
 
-- (void)setAllowsBypassOfPrivacyAcknowledgement:(BOOL)a3
+- (void)setAllowsBypassOfPrivacyAcknowledgement:(BOOL)acknowledgement
 {
   [(CloudServiceCapabilitiesOperation *)self lock];
-  self->_allowsBypassOfPrivacyAcknowledgement = a3;
+  self->_allowsBypassOfPrivacyAcknowledgement = acknowledgement;
 
   [(CloudServiceCapabilitiesOperation *)self unlock];
 }
 
-- (void)setResponseBlock:(id)a3
+- (void)setResponseBlock:(id)block
 {
-  v6 = a3;
+  blockCopy = block;
   [(CloudServiceCapabilitiesOperation *)self lock];
-  if (self->_responseBlock != v6)
+  if (self->_responseBlock != blockCopy)
   {
-    v4 = [v6 copy];
+    v4 = [blockCopy copy];
     responseBlock = self->_responseBlock;
     self->_responseBlock = v4;
   }
@@ -121,20 +121,20 @@ LABEL_8:
       {
         v12 = objc_alloc_init(SSVCloudServiceCapabilitiesResponse);
         [v12 setSubscriptionStatus:v46[5]];
-        v16 = [v46[5] accountStatus];
-        v17 = [v46[5] carrierBundlingStatus];
-        v18 = v17;
-        if (v16 == 3 || v17 == 4 || v17 == 1)
+        accountStatus = [v46[5] accountStatus];
+        carrierBundlingStatus = [v46[5] carrierBundlingStatus];
+        v18 = carrierBundlingStatus;
+        if (accountStatus == 3 || carrierBundlingStatus == 4 || carrierBundlingStatus == 1)
         {
           [v12 setSupportsMusicCatalogPlayback:1];
         }
 
-        if (v16 == 3 || v18 == 1)
+        if (accountStatus == 3 || v18 == 1)
         {
           v19 = +[SSAccountStore defaultStore];
-          v20 = [v19 activeLockerAccount];
+          activeLockerAccount = [v19 activeLockerAccount];
 
-          if (v20)
+          if (activeLockerAccount)
           {
             [v12 setSupportsAddToCloudMusicLibrary:1];
           }
@@ -143,10 +143,10 @@ LABEL_8:
         if (([v12 supportsMusicCatalogPlayback] & 1) == 0)
         {
           v21 = +[SSAccountStore defaultStore];
-          v22 = [v21 activeAccount];
-          v23 = [v22 isManagedAppleID];
+          activeAccount = [v21 activeAccount];
+          isManagedAppleID = [activeAccount isManagedAppleID];
 
-          if (v23)
+          if (isManagedAppleID)
           {
             v24 = 0;
           }
@@ -207,16 +207,16 @@ LABEL_8:
         goto LABEL_43;
       }
 
-      v25 = [v11 domain];
+      domain = [v11 domain];
       v26 = SSErrorDomain;
-      if (![v25 isEqualToString:SSErrorDomain])
+      if (![domain isEqualToString:SSErrorDomain])
       {
         goto LABEL_26;
       }
 
-      v27 = [v11 code];
+      code = [v11 code];
 
-      if (v27 != 107)
+      if (code != 107)
       {
 LABEL_27:
         v12 = 0;
@@ -227,23 +227,23 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      v28 = [v11 userInfo];
-      v25 = [v28 valueForKey:NSUnderlyingErrorKey];
+      userInfo = [v11 userInfo];
+      domain = [userInfo valueForKey:NSUnderlyingErrorKey];
 
-      v29 = [v25 domain];
-      if ([v29 isEqualToString:v26])
+      v25Domain = [domain domain];
+      if ([v25Domain isEqualToString:v26])
       {
-        v30 = [v25 code];
+        code2 = [domain code];
 
-        if (v30 != 154)
+        if (code2 != 154)
         {
 LABEL_26:
 
           goto LABEL_27;
         }
 
-        v29 = v11;
-        v11 = v25;
+        v25Domain = v11;
+        v11 = domain;
       }
 
       goto LABEL_26;
@@ -265,25 +265,25 @@ LABEL_44:
   [(CloudServiceCapabilitiesOperation *)self setSuccess:v13];
 }
 
-- (id)_newResponseWithSubscriptionStatus:(id)a3
+- (id)_newResponseWithSubscriptionStatus:(id)status
 {
-  v3 = a3;
+  statusCopy = status;
   v4 = objc_alloc_init(SSVCloudServiceCapabilitiesResponse);
-  [v4 setSubscriptionStatus:v3];
-  v5 = [v3 accountStatus];
-  v6 = [v3 carrierBundlingStatus];
+  [v4 setSubscriptionStatus:statusCopy];
+  accountStatus = [statusCopy accountStatus];
+  carrierBundlingStatus = [statusCopy carrierBundlingStatus];
 
-  if (v5 == 3 || v6 == 4 || v6 == 1)
+  if (accountStatus == 3 || carrierBundlingStatus == 4 || carrierBundlingStatus == 1)
   {
     [v4 setSupportsMusicCatalogPlayback:1];
   }
 
-  if (v5 == 3 || v6 == 1)
+  if (accountStatus == 3 || carrierBundlingStatus == 1)
   {
     v7 = +[SSAccountStore defaultStore];
-    v8 = [v7 activeLockerAccount];
+    activeLockerAccount = [v7 activeLockerAccount];
 
-    if (v8)
+    if (activeLockerAccount)
     {
       [v4 setSupportsAddToCloudMusicLibrary:1];
     }

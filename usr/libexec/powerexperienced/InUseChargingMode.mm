@@ -1,6 +1,6 @@
 @interface InUseChargingMode
 + (id)powerModeInstance;
-- (BOOL)evaluatePowerModeWithResourceHints:(id)a3 andContext:(id)a4;
+- (BOOL)evaluatePowerModeWithResourceHints:(id)hints andContext:(id)context;
 - (InUseChargingMode)init;
 - (void)enterPowerMode;
 - (void)exitPowerMode;
@@ -29,9 +29,9 @@
     [(PowerModeObjImpl *)self setAppliesChargingPolicy:1];
   }
 
-  v6 = self;
+  selfCopy = self;
 
-  return v6;
+  return selfCopy;
 }
 
 + (id)powerModeInstance
@@ -46,49 +46,49 @@
   return v3;
 }
 
-- (BOOL)evaluatePowerModeWithResourceHints:(id)a3 andContext:(id)a4
+- (BOOL)evaluatePowerModeWithResourceHints:(id)hints andContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v33 = [(PowerModeObjImpl *)self state];
+  hintsCopy = hints;
+  contextCopy = context;
+  state = [(PowerModeObjImpl *)self state];
   v8 = [(PowerModeObjImpl *)self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v35 = v6;
+    v35 = hintsCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "evaluatePowerMode resources %@", buf, 0xCu);
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"Display"];
-  v31 = [v9 state];
-  v10 = [v6 objectForKeyedSubscript:@"CarPlay"];
+  v9 = [hintsCopy objectForKeyedSubscript:@"Display"];
+  state2 = [v9 state];
+  v10 = [hintsCopy objectForKeyedSubscript:@"CarPlay"];
 
-  v11 = [v10 state];
-  v12 = [v6 objectForKeyedSubscript:@"Camera"];
+  state3 = [v10 state];
+  v12 = [hintsCopy objectForKeyedSubscript:@"Camera"];
 
-  v32 = [v12 state];
-  v13 = [v6 objectForKeyedSubscript:@"PersonalHotspot"];
+  state4 = [v12 state];
+  v13 = [hintsCopy objectForKeyedSubscript:@"PersonalHotspot"];
 
-  v14 = [v13 state];
-  v15 = [v7 objectForKeyedSubscript:@"kPluggedInContext"];
-  v16 = [v15 BOOLValue];
+  state5 = [v13 state];
+  v15 = [contextCopy objectForKeyedSubscript:@"kPluggedInContext"];
+  bOOLValue = [v15 BOOLValue];
 
-  v17 = [v7 objectForKeyedSubscript:@"kLockStateContext"];
-  v18 = [v17 BOOLValue];
+  v17 = [contextCopy objectForKeyedSubscript:@"kLockStateContext"];
+  bOOLValue2 = [v17 BOOLValue];
 
   v19 = 1;
-  if (((v31 == 101) & (v18 ^ 1)) == 0 && v11 != 1)
+  if (((state2 == 101) & (bOOLValue2 ^ 1)) == 0 && state3 != 1)
   {
-    v19 = v32 == 1 || v14 == 1;
+    v19 = state4 == 1 || state5 == 1;
   }
 
-  v21 = [v7 objectForKeyedSubscript:@"kBatteryLevelContext"];
+  v21 = [contextCopy objectForKeyedSubscript:@"kBatteryLevelContext"];
 
-  v22 = [v21 intValue];
-  if ((v16 & 1) == 0)
+  intValue = [v21 intValue];
+  if ((bOOLValue & 1) == 0)
   {
-    v23 = 0;
-    if ((v33 & 1) == 0)
+    inTypicalUsageEnvironment = 0;
+    if ((state & 1) == 0)
     {
       goto LABEL_33;
     }
@@ -96,14 +96,14 @@
     goto LABEL_21;
   }
 
-  v23 = v22 > 19 && v19;
-  if (!(v33 & 1 | ((v23 & 1) == 0)) && v11 != 1)
+  inTypicalUsageEnvironment = intValue > 19 && v19;
+  if (!(state & 1 | ((inTypicalUsageEnvironment & 1) == 0)) && state3 != 1)
   {
     v24 = +[ChargeDurationPredictor sharedInstance];
-    v23 = [v24 inTypicalUsageEnvironment];
+    inTypicalUsageEnvironment = [v24 inTypicalUsageEnvironment];
   }
 
-  if (v33 != v23)
+  if (state != inTypicalUsageEnvironment)
   {
 LABEL_21:
     v25 = [(PowerModeObjImpl *)self log];
@@ -114,27 +114,27 @@ LABEL_21:
       *buf = 138413570;
       v35 = v27;
       v36 = 1024;
-      v37 = v23;
+      v37 = inTypicalUsageEnvironment;
       v38 = 1024;
-      v39 = v31 == 101;
+      v39 = state2 == 101;
       v40 = 1024;
-      v41 = v11 == 1;
+      v41 = state3 == 1;
       v42 = 1024;
-      v43 = v32 == 1;
+      v43 = state4 == 1;
       v44 = 1024;
-      v45 = v16;
+      v45 = bOOLValue;
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "evaluatePowerMode: %@: %d display %d, carPlaySession %d cameraActive %d, pluggedIn %d", buf, 0x2Au);
     }
 
-    if (v23)
+    if (inTypicalUsageEnvironment)
     {
-      LOBYTE(v23) = 1;
+      LOBYTE(inTypicalUsageEnvironment) = 1;
     }
 
     else
     {
       v28 = 5;
-      if (v22 > 19)
+      if (intValue > 19)
       {
         v28 = 1;
       }
@@ -144,7 +144,7 @@ LABEL_21:
         v28 = 2;
       }
 
-      if (v16)
+      if (bOOLValue)
       {
         v29 = v28;
       }
@@ -155,13 +155,13 @@ LABEL_21:
       }
 
       [(PowerModeObjImpl *)self setExitReason:v29];
-      LOBYTE(v23) = 0;
+      LOBYTE(inTypicalUsageEnvironment) = 0;
     }
   }
 
 LABEL_33:
 
-  return v23;
+  return inTypicalUsageEnvironment;
 }
 
 - (void)enterPowerMode

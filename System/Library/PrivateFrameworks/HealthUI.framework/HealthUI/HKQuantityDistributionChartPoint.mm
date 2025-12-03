@@ -1,55 +1,55 @@
 @interface HKQuantityDistributionChartPoint
-- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)a3 bucketDate:(id)a4 bucketIncrement:(double)a5 unit:(id)a6 displayType:(id)a7;
-- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)a3 bucketIncrement:(double)a4 unit:(id)a5 displayType:(id)a6;
-- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)a3 unit:(id)a4 displayType:(id)a5;
+- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)data bucketDate:(id)date bucketIncrement:(double)increment unit:(id)unit displayType:(id)type;
+- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)data bucketIncrement:(double)increment unit:(id)unit displayType:(id)type;
+- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)data unit:(id)unit displayType:(id)type;
 - (NSString)description;
-- (id)_quickDate:(id)a3;
+- (id)_quickDate:(id)date;
 - (id)allYValues;
 @end
 
 @implementation HKQuantityDistributionChartPoint
 
-- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)a3 bucketDate:(id)a4 bucketIncrement:(double)a5 unit:(id)a6 displayType:(id)a7
+- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)data bucketDate:(id)date bucketIncrement:(double)increment unit:(id)unit displayType:(id)type
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dataCopy = data;
+  dateCopy = date;
+  unitCopy = unit;
+  typeCopy = type;
   v37.receiver = self;
   v37.super_class = HKQuantityDistributionChartPoint;
   v16 = [(HKQuantityDistributionChartPoint *)&v37 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_bucketDate, a4);
-    v18 = [v15 presentation];
+    objc_storeStrong(&v16->_bucketDate, date);
+    presentation = [typeCopy presentation];
     v19 = MEMORY[0x1E696AD98];
-    v20 = [v12 minimumValue];
-    [v20 doubleValueForUnit:v14];
+    minimumValue = [dataCopy minimumValue];
+    [minimumValue doubleValueForUnit:unitCopy];
     v21 = [v19 numberWithDouble:?];
-    v22 = [v18 adjustedValueForDaemonValue:v21];
+    v22 = [presentation adjustedValueForDaemonValue:v21];
     minimumY = v17->_minimumY;
     v17->_minimumY = v22;
 
-    v24 = [v15 presentation];
+    presentation2 = [typeCopy presentation];
     v25 = MEMORY[0x1E696AD98];
-    v26 = [v12 maximumValue];
-    [v26 doubleValueForUnit:v14];
+    maximumValue = [dataCopy maximumValue];
+    [maximumValue doubleValueForUnit:unitCopy];
     v27 = [v25 numberWithDouble:?];
-    v28 = [v24 adjustedValueForDaemonValue:v27];
+    v28 = [presentation2 adjustedValueForDaemonValue:v27];
     maximumY = v17->_maximumY;
     v17->_maximumY = v28;
 
-    v30 = [v15 presentation];
-    v31 = [v12 minimumBucketValue];
-    [v31 doubleValueForUnit:v14];
-    [v30 adjustedDoubleForDaemonDouble:?];
+    presentation3 = [typeCopy presentation];
+    minimumBucketValue = [dataCopy minimumBucketValue];
+    [minimumBucketValue doubleValueForUnit:unitCopy];
+    [presentation3 adjustedDoubleForDaemonDouble:?];
     v17->_minimumBucketValue = v32;
 
-    v17->_bucketIncrement = a5;
-    v33 = [v12 histogramCounts];
+    v17->_bucketIncrement = increment;
+    histogramCounts = [dataCopy histogramCounts];
     bucketCounts = v17->_bucketCounts;
-    v17->_bucketCounts = v33;
+    v17->_bucketCounts = histogramCounts;
 
     userInfo = v17->_userInfo;
     v17->_userInfo = 0;
@@ -58,45 +58,45 @@
   return v17;
 }
 
-- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)a3 bucketIncrement:(double)a4 unit:(id)a5 displayType:(id)a6
+- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)data bucketIncrement:(double)increment unit:(id)unit displayType:(id)type
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  v13 = [v12 startDate];
-  v14 = [v12 endDate];
-  v15 = HKUIMidDate(v13, v14);
+  typeCopy = type;
+  unitCopy = unit;
+  dataCopy = data;
+  startDate = [dataCopy startDate];
+  endDate = [dataCopy endDate];
+  v15 = HKUIMidDate(startDate, endDate);
 
-  v16 = [(HKQuantityDistributionChartPoint *)self initWithHistogramData:v12 bucketDate:v15 bucketIncrement:v11 unit:v10 displayType:a4];
+  v16 = [(HKQuantityDistributionChartPoint *)self initWithHistogramData:dataCopy bucketDate:v15 bucketIncrement:unitCopy unit:typeCopy displayType:increment];
   return v16;
 }
 
-- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)a3 unit:(id)a4 displayType:(id)a5
+- (HKQuantityDistributionChartPoint)initWithHistogramData:(id)data unit:(id)unit displayType:(id)type
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [HKQuantityDistributionDataSource bucketSizeForDisplayType:v8 preferredUnit:v9];
-  v12 = [v10 startDate];
-  v13 = [v10 endDate];
-  v14 = HKUIMidDate(v12, v13);
+  typeCopy = type;
+  unitCopy = unit;
+  dataCopy = data;
+  v11 = [HKQuantityDistributionDataSource bucketSizeForDisplayType:typeCopy preferredUnit:unitCopy];
+  startDate = [dataCopy startDate];
+  endDate = [dataCopy endDate];
+  v14 = HKUIMidDate(startDate, endDate);
 
   [v11 floatValue];
-  v16 = [(HKQuantityDistributionChartPoint *)self initWithHistogramData:v10 bucketDate:v14 bucketIncrement:v9 unit:v8 displayType:v15];
+  v16 = [(HKQuantityDistributionChartPoint *)self initWithHistogramData:dataCopy bucketDate:v14 bucketIncrement:unitCopy unit:typeCopy displayType:v15];
 
   return v16;
 }
 
-- (id)_quickDate:(id)a3
+- (id)_quickDate:(id)date
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"MM/dd/YYYY-HH:mm:ss"];
-  v6 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v5 setTimeZone:v6];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v5 setTimeZone:localTimeZone];
 
-  v7 = [v5 stringFromDate:v4];
+  v7 = [v5 stringFromDate:dateCopy];
 
   return v7;
 }

@@ -29,20 +29,20 @@
   v15[3] = &unk_1E69F2B88;
   v15[4] = v11;
   v15[5] = &v16;
-  [a1 enumerateByteRangesUsingBlock:v15];
+  [self enumerateByteRangesUsingBlock:v15];
   v12 = v17;
   if (*(v17 + 24) == 1)
   {
-    v13 = [(_NSDataCompressor *)v11 finishProcessing];
+    finishProcessing = [(_NSDataCompressor *)v11 finishProcessing];
     v12 = v17;
   }
 
   else
   {
-    v13 = 0;
+    finishProcessing = 0;
   }
 
-  *(v12 + 24) = v13;
+  *(v12 + 24) = finishProcessing;
 
   if (*(v17 + 24))
   {
@@ -63,14 +63,14 @@
 {
   v6 = _NSAlgToCompAlg(a3);
 
-  return [a1 _decompressedDataUsingCompressionAlgorithm:v6 error:a4];
+  return [self _decompressedDataUsingCompressionAlgorithm:v6 error:a4];
 }
 
 - (uint64_t)compressedDataUsingAlgorithm:()NSDataCompression error:
 {
   v6 = _NSAlgToCompAlg(a3);
 
-  return [a1 _compressedDataUsingCompressionAlgorithm:v6 error:a4];
+  return [self _compressedDataUsingCompressionAlgorithm:v6 error:a4];
 }
 
 - (id)_decompressedDataUsingCompressionAlgorithm:()NSDataCompression error:
@@ -87,7 +87,7 @@
   v8[2] = __78__NSData_NSDataCompression___decompressedDataUsingCompressionAlgorithm_error___block_invoke;
   v8[3] = &unk_1E69F2BB0;
   v8[4] = &v9;
-  [a1 _produceDataWithCompressionOperation:1 algorithm:a3 handler:v8];
+  [self _produceDataWithCompressionOperation:1 algorithm:a3 handler:v8];
   v5 = v10[5];
   if (a4 && !v5)
   {
@@ -114,7 +114,7 @@
   v8[2] = __76__NSData_NSDataCompression___compressedDataUsingCompressionAlgorithm_error___block_invoke;
   v8[3] = &unk_1E69F2BB0;
   v8[4] = &v9;
-  [a1 _produceDataWithCompressionOperation:0 algorithm:a3 handler:v8];
+  [self _produceDataWithCompressionOperation:0 algorithm:a3 handler:v8];
   v5 = v10[5];
   if (a4 && !v5)
   {

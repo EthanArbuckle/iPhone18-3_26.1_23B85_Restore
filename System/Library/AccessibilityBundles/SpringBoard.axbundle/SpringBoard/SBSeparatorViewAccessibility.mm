@@ -1,5 +1,5 @@
 @interface SBSeparatorViewAccessibility
-- (BOOL)_axPerformGestureForAction:(id)a3;
+- (BOOL)_axPerformGestureForAction:(id)action;
 - (BOOL)accessibilityPerformEscape;
 - (id)_accessibilityActionsForSideAppDivider;
 - (id)accessibilityCustomActions;
@@ -9,28 +9,28 @@
 
 - (BOOL)accessibilityPerformEscape
 {
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  v3 = [v2 performMedusaGesture:3];
+  server = [MEMORY[0x29EDBDFA8] server];
+  v3 = [server performMedusaGesture:3];
 
   return v3;
 }
 
 - (id)accessibilityCustomActions
 {
-  v3 = [(SBSeparatorViewAccessibility *)self _accessibilityActionsForSideAppDivider];
-  if ([v3 count])
+  _accessibilityActionsForSideAppDivider = [(SBSeparatorViewAccessibility *)self _accessibilityActionsForSideAppDivider];
+  if ([_accessibilityActionsForSideAppDivider count])
   {
-    v4 = v3;
+    accessibilityCustomActions = _accessibilityActionsForSideAppDivider;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBSeparatorViewAccessibility;
-    v4 = [(SBSeparatorViewAccessibility *)&v7 accessibilityCustomActions];
+    accessibilityCustomActions = [(SBSeparatorViewAccessibility *)&v7 accessibilityCustomActions];
   }
 
-  v5 = v4;
+  v5 = accessibilityCustomActions;
 
   return v5;
 }
@@ -38,18 +38,18 @@
 - (id)_accessibilityActionsForSideAppDivider
 {
   v34 = *MEMORY[0x29EDCA608];
-  v2 = [MEMORY[0x29EDBDFA8] server];
-  v3 = [v2 allowedMedusaGestures];
+  server = [MEMORY[0x29EDBDFA8] server];
+  allowedMedusaGestures = [server allowedMedusaGestures];
 
-  v28 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = AXSpringBoardPrimaryAppLabel();
   v5 = AXSpringBoardSideAppLabel();
-  v25 = [*MEMORY[0x29EDC8008] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x29EDC8008] userInterfaceLayoutDirection];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = allowedMedusaGestures;
   v6 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v6)
   {
@@ -65,15 +65,15 @@
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v29 + 1) + 8 * v9) unsignedIntegerValue];
-        v11 = v10;
-        if (v10 > 3)
+        unsignedIntegerValue = [*(*(&v29 + 1) + 8 * v9) unsignedIntegerValue];
+        v11 = unsignedIntegerValue;
+        if (unsignedIntegerValue > 3)
         {
-          if (v10 > 7)
+          if (unsignedIntegerValue > 7)
           {
-            if (v10 != 8)
+            if (unsignedIntegerValue != 8)
             {
-              if (v10 == 11)
+              if (unsignedIntegerValue == 11)
               {
                 if ([v4 length])
                 {
@@ -91,7 +91,7 @@ LABEL_36:
 
 LABEL_38:
                   v22 = [[AXSBSideAppCustomAction alloc] initWithName:v21 gesture:v11 target:self selector:sel__axPerformGestureForAction_];
-                  [v28 axSafelyAddObject:v22];
+                  [array axSafelyAddObject:v22];
 
                   goto LABEL_39;
                 }
@@ -101,7 +101,7 @@ LABEL_38:
 
               else
               {
-                if (v10 != 12)
+                if (unsignedIntegerValue != 12)
                 {
                   goto LABEL_39;
                 }
@@ -129,7 +129,7 @@ LABEL_33:
               goto LABEL_37;
             }
 
-            if (v25 != 1)
+            if (userInterfaceLayoutDirection != 1)
             {
 LABEL_45:
               v18 = @"side.app.slideover.right";
@@ -139,9 +139,9 @@ LABEL_45:
             goto LABEL_48;
           }
 
-          if (v10 != 4)
+          if (unsignedIntegerValue != 4)
           {
-            if (v10 != 7)
+            if (unsignedIntegerValue != 7)
             {
               goto LABEL_39;
             }
@@ -153,7 +153,7 @@ LABEL_45:
               goto LABEL_36;
             }
 
-            if (v25 == 1)
+            if (userInterfaceLayoutDirection == 1)
             {
               goto LABEL_45;
             }
@@ -170,7 +170,7 @@ LABEL_48:
             goto LABEL_33;
           }
 
-          if (v25 != 1)
+          if (userInterfaceLayoutDirection != 1)
           {
 LABEL_43:
             v18 = @"side.app.resize.expand.right";
@@ -180,11 +180,11 @@ LABEL_43:
           goto LABEL_50;
         }
 
-        if (v10 <= 1)
+        if (unsignedIntegerValue <= 1)
         {
-          if (v10)
+          if (unsignedIntegerValue)
           {
-            if (v10 != 1)
+            if (unsignedIntegerValue != 1)
             {
               goto LABEL_39;
             }
@@ -208,7 +208,7 @@ LABEL_43:
           goto LABEL_53;
         }
 
-        if (v10 != 2)
+        if (unsignedIntegerValue != 2)
         {
           if ([v4 length])
           {
@@ -217,7 +217,7 @@ LABEL_43:
             goto LABEL_36;
           }
 
-          if (v25 == 1)
+          if (userInterfaceLayoutDirection == 1)
           {
             goto LABEL_43;
           }
@@ -261,18 +261,18 @@ LABEL_39:
     while (v23);
   }
 
-  return v28;
+  return array;
 }
 
-- (BOOL)_axPerformGestureForAction:(id)a3
+- (BOOL)_axPerformGestureForAction:(id)action
 {
   v3 = MEMORY[0x29EDBDFA8];
-  v4 = a3;
-  v5 = [v3 server];
-  v6 = [v4 gesture];
+  actionCopy = action;
+  server = [v3 server];
+  gesture = [actionCopy gesture];
 
-  LOBYTE(v4) = [v5 performMedusaGesture:v6];
-  return v4;
+  LOBYTE(actionCopy) = [server performMedusaGesture:gesture];
+  return actionCopy;
 }
 
 @end

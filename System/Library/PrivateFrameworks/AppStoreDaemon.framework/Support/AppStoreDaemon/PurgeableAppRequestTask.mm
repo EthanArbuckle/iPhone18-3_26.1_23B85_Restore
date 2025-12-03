@@ -27,7 +27,7 @@
     }
 
     v10 = client;
-    v11 = [(XPCClient *)v10 clientID];
+    clientID = [(XPCClient *)v10 clientID];
     v31 = 138544130;
     v32 = v5;
     v33 = 2114;
@@ -35,7 +35,7 @@
     v35 = 2114;
     v36 = v7;
     v37 = 2114;
-    v38 = v11;
+    v38 = clientID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Purgeable request with options: %{public}@ client: %{public}@", &v31, 0x2Au);
   }
 
@@ -66,11 +66,11 @@
   v17 = options;
   v18 = sub_1001E99F8(v15, v17, v3);
 
-  v19 = [v18 error];
+  error = [v18 error];
 
   v20 = ASDLogHandleForCategory();
   v21 = v20;
-  if (v19)
+  if (error)
   {
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -79,13 +79,13 @@
 
     v22 = objc_opt_class();
     v23 = v22;
-    v24 = [v18 error];
+    error2 = [v18 error];
     v31 = 138543874;
     v32 = v22;
     v33 = 2114;
     v34 = v3;
     v35 = 2114;
-    v36 = v24;
+    v36 = error2;
     _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "[%{public}@] [%{public}@] Purgable app request resulted in error: %{public}@", &v31, 0x20u);
   }
 
@@ -98,25 +98,25 @@
 
     v25 = objc_opt_class();
     v23 = v25;
-    v26 = [v18 purgeableSize];
+    purgeableSize = [v18 purgeableSize];
     v31 = 138543874;
     v32 = v25;
     v33 = 2114;
     v34 = v3;
     v35 = 2048;
-    v36 = v26;
+    v36 = purgeableSize;
     _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "[%{public}@] [%{public}@] Purgeable request complete with purgeableSize: %lld", &v31, 0x20u);
   }
 
 LABEL_15:
   sub_10020F258(self, v18);
-  v27 = [v18 success];
+  success = [v18 success];
   if (self)
   {
-    self->super.super._success = v27;
+    self->super.super._success = success;
   }
 
-  v28 = [v18 error];
+  error3 = [v18 error];
   v30 = ASDErrorWithSafeUserInfo();
   if (self)
   {

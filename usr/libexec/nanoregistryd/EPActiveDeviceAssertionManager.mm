@@ -1,24 +1,24 @@
 @interface EPActiveDeviceAssertionManager
-- (EPActiveDeviceAssertionManager)initWithFactory:(id)a3 pairingID:(id)a4;
+- (EPActiveDeviceAssertionManager)initWithFactory:(id)factory pairingID:(id)d;
 - (NRRegistry)registry;
 - (void)destroyResource;
-- (void)updateWithPairingID:(id)a3;
+- (void)updateWithPairingID:(id)d;
 @end
 
 @implementation EPActiveDeviceAssertionManager
 
-- (EPActiveDeviceAssertionManager)initWithFactory:(id)a3 pairingID:(id)a4
+- (EPActiveDeviceAssertionManager)initWithFactory:(id)factory pairingID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  factoryCopy = factory;
+  dCopy = d;
   v9 = +[NRQueue registryDaemonQueue];
-  v10 = [v9 queue];
-  v11 = [(EPResourceManager *)self initWithQueue:v10];
+  queue = [v9 queue];
+  v11 = [(EPResourceManager *)self initWithQueue:queue];
 
   if (v11)
   {
-    objc_storeStrong(&v11->_factory, a3);
-    objc_storeStrong(&v11->_pairingID, a4);
+    objc_storeStrong(&v11->_factory, factory);
+    objc_storeStrong(&v11->_pairingID, d);
   }
 
   return v11;
@@ -26,8 +26,8 @@
 
 - (NRRegistry)registry
 {
-  v2 = [(EPActiveDeviceAssertionFactory *)self->_factory serviceRegistry];
-  v3 = [v2 serviceFromClass:objc_opt_class()];
+  serviceRegistry = [(EPActiveDeviceAssertionFactory *)self->_factory serviceRegistry];
+  v3 = [serviceRegistry serviceFromClass:objc_opt_class()];
 
   return v3;
 }
@@ -40,12 +40,12 @@
   [(EPActiveDeviceAssertionFactory *)self->_factory managerIsIdle:self];
 }
 
-- (void)updateWithPairingID:(id)a3
+- (void)updateWithPairingID:(id)d
 {
-  v4 = [(NSUUID *)self->_pairingID isEqual:a3];
-  v5 = [(EPActiveDeviceAssertionFactory *)self->_factory serviceRegistry];
-  v6 = [v5 queue];
-  v7 = v6;
+  v4 = [(NSUUID *)self->_pairingID isEqual:d];
+  serviceRegistry = [(EPActiveDeviceAssertionFactory *)self->_factory serviceRegistry];
+  queue = [serviceRegistry queue];
+  v7 = queue;
   if (v4)
   {
     v8 = v11;
@@ -65,7 +65,7 @@
   v8[2] = v9;
   v8[3] = &unk_100175660;
   v8[4] = self;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 }
 
 @end

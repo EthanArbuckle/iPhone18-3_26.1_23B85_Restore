@@ -1,23 +1,23 @@
 @interface WFSettingsKitViewController
 - (WFSettingsKitViewController)init;
-- (WFSettingsKitViewController)initWithCoder:(id)a3;
-- (WFSettingsKitViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleURL:(id)a3;
+- (WFSettingsKitViewController)initWithCoder:(id)coder;
+- (WFSettingsKitViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleURL:(id)l;
 - (void)loadView;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation WFSettingsKitViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  WFSettingsKitViewController.viewWillAppear(_:)(a3);
+  selfCopy = self;
+  WFSettingsKitViewController.viewWillAppear(_:)(appear);
 }
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   WFSettingsKitViewController.loadView()();
 }
 
@@ -29,7 +29,7 @@
   return [(WFSettingsKitViewController *)&v3 initWithNibName:0 bundle:0];
 }
 
-- (WFSettingsKitViewController)initWithCoder:(id)a3
+- (WFSettingsKitViewController)initWithCoder:(id)coder
 {
   *&self->PSViewController_opaque[OBJC_IVAR___WFSettingsKitViewController_hostingController] = 0;
   result = sub_7CE0();
@@ -37,14 +37,14 @@
   return result;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
   v4 = sub_7B60();
-  v5 = self;
+  selfCopy = self;
   WFSettingsKitViewController.handleURLDict(_:)(v4);
 }
 
-- (WFSettingsKitViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFSettingsKitViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

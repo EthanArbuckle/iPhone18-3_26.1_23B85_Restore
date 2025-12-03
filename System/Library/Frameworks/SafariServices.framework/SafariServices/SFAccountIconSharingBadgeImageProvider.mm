@@ -1,8 +1,8 @@
 @interface SFAccountIconSharingBadgeImageProvider
 + (id)sharedProvider;
 - (SFAccountIconSharingBadgeImageProvider)init;
-- (id)_createBadgeImageWithDiameter:(unint64_t)a3;
-- (id)badgeImageForDiameter:(unint64_t)a3;
+- (id)_createBadgeImageWithDiameter:(unint64_t)diameter;
+- (id)badgeImageForDiameter:(unint64_t)diameter;
 - (void)_resetAndInformSubscribers;
 @end
 
@@ -15,12 +15,12 @@
   v2 = [(SFAccountIconSharingBadgeImageProvider *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     subscribers = v2->_subscribers;
-    v2->_subscribers = v3;
+    v2->_subscribers = weakObjectsHashTable;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__resetAndInformSubscribers name:*MEMORY[0x1E69DEA38] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__resetAndInformSubscribers name:*MEMORY[0x1E69DEA38] object:0];
 
     v6 = v2;
   }
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = __56__SFAccountIconSharingBadgeImageProvider_sharedProvider__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedProvider_onceToken != -1)
   {
     dispatch_once(&sharedProvider_onceToken, block);
@@ -52,26 +52,26 @@ void __56__SFAccountIconSharingBadgeImageProvider_sharedProvider__block_invoke(u
   sharedProvider_provider = v1;
 }
 
-- (id)badgeImageForDiameter:(unint64_t)a3
+- (id)badgeImageForDiameter:(unint64_t)diameter
 {
   badgeDiameterToImageCache = self->_badgeDiameterToImageCache;
   if (!badgeDiameterToImageCache)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_badgeDiameterToImageCache;
-    self->_badgeDiameterToImageCache = v6;
+    self->_badgeDiameterToImageCache = dictionary;
 
     badgeDiameterToImageCache = self->_badgeDiameterToImageCache;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:diameter];
   v9 = [(NSMutableDictionary *)badgeDiameterToImageCache objectForKeyedSubscript:v8];
 
   if (!v9)
   {
-    v9 = [(SFAccountIconSharingBadgeImageProvider *)self _createBadgeImageWithDiameter:a3];
+    v9 = [(SFAccountIconSharingBadgeImageProvider *)self _createBadgeImageWithDiameter:diameter];
     v10 = self->_badgeDiameterToImageCache;
-    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:diameter];
     [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:v11];
   }
 
@@ -80,22 +80,22 @@ void __56__SFAccountIconSharingBadgeImageProvider_sharedProvider__block_invoke(u
   return v12;
 }
 
-- (id)_createBadgeImageWithDiameter:(unint64_t)a3
+- (id)_createBadgeImageWithDiameter:(unint64_t)diameter
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DCA80] defaultFormat];
-  [v4 setOpaque:0];
-  v5 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v4 format:{v3, v3}];
+  diameterCopy = diameter;
+  defaultFormat = [MEMORY[0x1E69DCA80] defaultFormat];
+  [defaultFormat setOpaque:0];
+  v5 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:defaultFormat format:{diameterCopy, diameterCopy}];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __72__SFAccountIconSharingBadgeImageProvider__createBadgeImageWithDiameter___block_invoke;
   v8[3] = &__block_descriptor_80_e40_v16__0__UIGraphicsImageRendererContext_8l;
   v8[4] = 0;
   v8[5] = 0;
-  *&v8[6] = v3;
-  *&v8[7] = v3;
-  *&v8[8] = v3;
-  *&v8[9] = v3;
+  *&v8[6] = diameterCopy;
+  *&v8[7] = diameterCopy;
+  *&v8[8] = diameterCopy;
+  *&v8[9] = diameterCopy;
   v6 = [v5 imageWithActions:v8];
 
   return v6;

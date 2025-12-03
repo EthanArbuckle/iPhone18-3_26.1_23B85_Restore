@@ -1,27 +1,27 @@
 @interface FlexLocalDBController
-- (BOOL)createSongEntryWithSongData:(id)a3 error:(id *)a4;
-- (BOOL)deleteFieldsForSongUID:(id)a3 deletions:(id)a4 error:(id *)a5;
-- (BOOL)updateSongWithData:(id)a3 error:(id *)a4;
-- (FlexLocalDBController)initWithDestinationURL:(id)a3;
+- (BOOL)createSongEntryWithSongData:(id)data error:(id *)error;
+- (BOOL)deleteFieldsForSongUID:(id)d deletions:(id)deletions error:(id *)error;
+- (BOOL)updateSongWithData:(id)data error:(id *)error;
+- (FlexLocalDBController)initWithDestinationURL:(id)l;
 - (NSArray)allSongEntries;
 - (NSDate)lastCloudCheckDate;
-- (void)_insertFirstCloudCheckDate:(id)a3 andSave:(BOOL)a4;
-- (void)setLastCloudCheckDate:(id)a3;
+- (void)_insertFirstCloudCheckDate:(id)date andSave:(BOOL)save;
+- (void)setLastCloudCheckDate:(id)date;
 @end
 
 @implementation FlexLocalDBController
 
-- (FlexLocalDBController)initWithDestinationURL:(id)a3
+- (FlexLocalDBController)initWithDestinationURL:(id)l
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  lCopy = l;
   v52.receiver = self;
   v52.super_class = FlexLocalDBController;
   v6 = [(FlexLocalDBController *)&v52 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_destinationURL, a3);
+    objc_storeStrong(&v6->_destinationURL, l);
     v8 = MEMORY[0x277CCA8D8];
     v9 = objc_opt_class();
     v13 = objc_msgSend_bundleForClass_(v8, v10, v9, v11, v12);
@@ -90,9 +90,9 @@ LABEL_9:
   return v17;
 }
 
-- (BOOL)createSongEntryWithSongData:(id)a3 error:(id *)a4
+- (BOOL)createSongEntryWithSongData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -110,14 +110,14 @@ LABEL_9:
   v14[2] = sub_24B7F74D4;
   v14[3] = &unk_27900EE58;
   objc_copyWeak(&v18, &location);
-  v8 = v6;
+  v8 = dataCopy;
   v15 = v8;
   v16 = &v20;
   v17 = &v26;
   objc_msgSend_performBlockAndWait_(backgroundContext, v9, v14, v10, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v12 = *(v27 + 24);
@@ -130,9 +130,9 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)updateSongWithData:(id)a3 error:(id *)a4
+- (BOOL)updateSongWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -150,14 +150,14 @@ LABEL_9:
   v14[2] = sub_24B7F7B74;
   v14[3] = &unk_27900EE58;
   objc_copyWeak(&v18, &location);
-  v8 = v6;
+  v8 = dataCopy;
   v15 = v8;
   v16 = &v20;
   v17 = &v26;
   objc_msgSend_performBlockAndWait_(backgroundContext, v9, v14, v10, v11);
-  if (a4)
+  if (error)
   {
-    *a4 = v21[5];
+    *error = v21[5];
   }
 
   v12 = *(v27 + 24);
@@ -170,10 +170,10 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)deleteFieldsForSongUID:(id)a3 deletions:(id)a4 error:(id *)a5
+- (BOOL)deleteFieldsForSongUID:(id)d deletions:(id)deletions error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  deletionsCopy = deletions;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -191,16 +191,16 @@ LABEL_9:
   v18[2] = sub_24B7F817C;
   v18[3] = &unk_27900EE80;
   objc_copyWeak(&v23, &location);
-  v11 = v8;
+  v11 = dCopy;
   v19 = v11;
-  v12 = v9;
+  v12 = deletionsCopy;
   v20 = v12;
   v21 = &v25;
   v22 = &v31;
   objc_msgSend_performBlockAndWait_(backgroundContext, v13, v18, v14, v15);
-  if (a5)
+  if (error)
   {
-    *a5 = v26[5];
+    *error = v26[5];
   }
 
   v16 = *(v32 + 24);
@@ -239,9 +239,9 @@ LABEL_9:
   return v11;
 }
 
-- (void)setLastCloudCheckDate:(id)a3
+- (void)setLastCloudCheckDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v8 = objc_msgSend_fetchRequestWithEntityName_(MEMORY[0x277CBE428], v5, @"LastCloudUpdate", v6, v7);
   backgroundContext = self->_backgroundContext;
   v15[0] = MEMORY[0x277D85DD0];
@@ -250,22 +250,22 @@ LABEL_9:
   v15[3] = &unk_27900EED0;
   v15[4] = self;
   v16 = v8;
-  v17 = v4;
-  v10 = v4;
+  v17 = dateCopy;
+  v10 = dateCopy;
   v11 = v8;
   objc_msgSend_performBlockAndWait_(backgroundContext, v12, v15, v13, v14);
 }
 
-- (void)_insertFirstCloudCheckDate:(id)a3 andSave:(BOOL)a4
+- (void)_insertFirstCloudCheckDate:(id)date andSave:(BOOL)save
 {
-  v4 = a4;
+  saveCopy = save;
   v6 = MEMORY[0x277CBE408];
   backgroundContext = self->_backgroundContext;
-  v8 = a3;
+  dateCopy = date;
   v11 = objc_msgSend_insertNewObjectForEntityForName_inManagedObjectContext_(v6, v9, @"LastCloudUpdate", backgroundContext, v10);
-  objc_msgSend_setDate_(v11, v12, v8, v13, v14);
+  objc_msgSend_setDate_(v11, v12, dateCopy, v13, v14);
 
-  if (v4)
+  if (saveCopy)
   {
     v18 = self->_backgroundContext;
     v25 = 0;

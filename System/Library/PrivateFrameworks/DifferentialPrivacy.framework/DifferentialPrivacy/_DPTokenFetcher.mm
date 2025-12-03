@@ -1,22 +1,22 @@
 @interface _DPTokenFetcher
 + (unint64_t)getTaskPeriodSeconds;
-- (BOOL)cleanupStaleTokensInPath:(id)a3;
-- (_DPTokenFetcher)initWithTaskName:(id)a3;
+- (BOOL)cleanupStaleTokensInPath:(id)path;
+- (_DPTokenFetcher)initWithTaskName:(id)name;
 - (void)doMaintenance;
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4;
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database;
 @end
 
 @implementation _DPTokenFetcher
 
-- (_DPTokenFetcher)initWithTaskName:(id)a3
+- (_DPTokenFetcher)initWithTaskName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = _DPTokenFetcher;
   v5 = [(_DPTokenFetcher *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     taskName = v5->_taskName;
     v5->_taskName = v6;
 
@@ -35,14 +35,14 @@
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)cleanupStaleTokensInPath:(id)a3
+- (BOOL)cleanupStaleTokensInPath:(id)path
 {
   v40 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v27 = v3;
-  if (v3)
+  pathCopy = path;
+  v27 = pathCopy;
+  if (pathCopy)
   {
-    v4 = v3;
+    v4 = pathCopy;
   }
 
   else
@@ -51,8 +51,8 @@
   }
 
   v5 = [_DPReportFilesMaintainer reportsInDirectory:v4, v4];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [MEMORY[0x277CBEAA8] date];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  date = [MEMORY[0x277CBEAA8] date];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
@@ -74,18 +74,18 @@
           objc_enumerationMutation(obj);
         }
 
-        v12 = [*(*(&v31 + 1) + 8 * v11) path];
-        v13 = [v6 attributesOfItemAtPath:v12 error:0];
-        v14 = [v13 fileCreationDate];
+        path = [*(*(&v31 + 1) + 8 * v11) path];
+        v13 = [defaultManager attributesOfItemAtPath:path error:0];
+        fileCreationDate = [v13 fileCreationDate];
 
-        v15 = [v14 dateByAddingTimeInterval:86500.0];
-        if ([v15 compare:v7] == -1)
+        v15 = [fileCreationDate dateByAddingTimeInterval:86500.0];
+        if ([v15 compare:date] == -1)
         {
           v16 = v10;
-          v17 = v7;
+          v17 = date;
           v30 = 0;
-          v18 = v6;
-          v19 = [v6 removeItemAtPath:v12 error:&v30];
+          v18 = defaultManager;
+          v19 = [defaultManager removeItemAtPath:path error:&v30];
           v20 = v30;
           v21 = +[_DPLog framework];
           v22 = v21;
@@ -94,24 +94,24 @@
             if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v36 = v12;
+              v36 = path;
               _os_log_impl(&dword_22622D000, v22, OS_LOG_TYPE_INFO, "Successfully removed token bucket file %@.", buf, 0xCu);
             }
           }
 
           else if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
           {
-            v23 = [v20 localizedDescription];
+            localizedDescription = [v20 localizedDescription];
             *buf = 138412546;
-            v36 = v12;
+            v36 = path;
             v37 = 2112;
-            v38 = v23;
+            v38 = localizedDescription;
             _os_log_error_impl(&dword_22622D000, v22, OS_LOG_TYPE_ERROR, "Failed to remove token bucket file %@ with error %@.", buf, 0x16u);
           }
 
-          v7 = v17;
+          date = v17;
           v10 = v16;
-          v6 = v18;
+          defaultManager = v18;
           v9 = v28;
         }
 
@@ -129,16 +129,16 @@
   return 1;
 }
 
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56___DPTokenFetcher_scheduleMaintenanceWithName_database___block_invoke;
   v7[3] = &unk_27858A930;
   v7[4] = self;
-  v4 = a3;
+  nameCopy = name;
   v5 = MEMORY[0x22AA7A8C0](v7);
-  v6 = +[_DPPeriodicTask taskWithName:period:handler:networkingRequired:](_DPPeriodicTask, "taskWithName:period:handler:networkingRequired:", v4, +[_DPTokenFetcher getTaskPeriodSeconds], v5, 1);
+  v6 = +[_DPPeriodicTask taskWithName:period:handler:networkingRequired:](_DPPeriodicTask, "taskWithName:period:handler:networkingRequired:", nameCopy, +[_DPTokenFetcher getTaskPeriodSeconds], v5, 1);
 
   [_DPPeriodicTaskManager registerTask:v6];
 }

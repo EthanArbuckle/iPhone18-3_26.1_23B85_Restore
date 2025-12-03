@@ -1,32 +1,32 @@
 @interface HKHRCardioFitnessNotificationStatus
-- (BOOL)isEqual:(id)a3;
-- (HKHRCardioFitnessNotificationStatus)initWithCoder:(id)a3;
-- (HKHRCardioFitnessNotificationStatus)initWithState:(int64_t)a3 unavailableReasons:(int64_t)a4 wristDetectEnabled:(BOOL)a5;
+- (BOOL)isEqual:(id)equal;
+- (HKHRCardioFitnessNotificationStatus)initWithCoder:(id)coder;
+- (HKHRCardioFitnessNotificationStatus)initWithState:(int64_t)state unavailableReasons:(int64_t)reasons wristDetectEnabled:(BOOL)enabled;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHRCardioFitnessNotificationStatus
 
-- (HKHRCardioFitnessNotificationStatus)initWithState:(int64_t)a3 unavailableReasons:(int64_t)a4 wristDetectEnabled:(BOOL)a5
+- (HKHRCardioFitnessNotificationStatus)initWithState:(int64_t)state unavailableReasons:(int64_t)reasons wristDetectEnabled:(BOOL)enabled
 {
   v9.receiver = self;
   v9.super_class = HKHRCardioFitnessNotificationStatus;
   result = [(HKHRCardioFitnessNotificationStatus *)&v9 init];
   if (result)
   {
-    result->_state = a3;
-    result->_notificationUnavailableReasons = a4;
-    result->_wristDetectEnabled = a5;
+    result->_state = state;
+    result->_notificationUnavailableReasons = reasons;
+    result->_wristDetectEnabled = enabled;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_state == v5->_state && self->_notificationUnavailableReasons == v5->_notificationUnavailableReasons && self->_wristDetectEnabled == v5->_wristDetectEnabled;
     }
 
@@ -58,26 +58,26 @@
   return v2 ^ v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInteger:state forKey:@"State"];
-  [v5 encodeInteger:self->_notificationUnavailableReasons forKey:@"NotificationUnavailableReasons"];
-  [v5 encodeBool:self->_wristDetectEnabled forKey:@"WristDetectEnabled"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:state forKey:@"State"];
+  [coderCopy encodeInteger:self->_notificationUnavailableReasons forKey:@"NotificationUnavailableReasons"];
+  [coderCopy encodeBool:self->_wristDetectEnabled forKey:@"WristDetectEnabled"];
 }
 
-- (HKHRCardioFitnessNotificationStatus)initWithCoder:(id)a3
+- (HKHRCardioFitnessNotificationStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKHRCardioFitnessNotificationStatus;
   v5 = [(HKHRCardioFitnessNotificationStatus *)&v7 init];
   if (v5)
   {
-    v5->_state = [v4 decodeIntegerForKey:@"State"];
-    v5->_notificationUnavailableReasons = [v4 decodeIntegerForKey:@"NotificationUnavailableReasons"];
-    v5->_wristDetectEnabled = [v4 decodeBoolForKey:@"WristDetectEnabled"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"State"];
+    v5->_notificationUnavailableReasons = [coderCopy decodeIntegerForKey:@"NotificationUnavailableReasons"];
+    v5->_wristDetectEnabled = [coderCopy decodeBoolForKey:@"WristDetectEnabled"];
   }
 
   return v5;

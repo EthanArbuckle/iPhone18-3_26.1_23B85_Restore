@@ -9,13 +9,13 @@
 {
   v8 = a3;
   v6 = a4;
-  v7 = v8;
+  null = v8;
   if (!v8)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  [a1 setValue:v7 forKey:v6];
+  [self setValue:null forKey:v6];
   if (!v8)
   {
   }
@@ -23,9 +23,9 @@
 
 - (void)valueWithNilHandlingForKey:()NullSupport
 {
-  v1 = [a1 valueForKey:?];
-  v2 = [MEMORY[0x277CBEB68] null];
-  if (v1 == v2)
+  v1 = [self valueForKey:?];
+  null = [MEMORY[0x277CBEB68] null];
+  if (v1 == null)
   {
     v3 = 0;
   }

@@ -1,18 +1,18 @@
 @interface SBUIWorkspaceAnimationController
-- (SBUIWorkspaceAnimationController)initWithTransitionContextProvider:(id)a3;
-- (SBUIWorkspaceAnimationController)initWithWorkspaceTransitionRequest:(id)a3;
+- (SBUIWorkspaceAnimationController)initWithTransitionContextProvider:(id)provider;
+- (SBUIWorkspaceAnimationController)initWithWorkspaceTransitionRequest:(id)request;
 @end
 
 @implementation SBUIWorkspaceAnimationController
 
-- (SBUIWorkspaceAnimationController)initWithWorkspaceTransitionRequest:(id)a3
+- (SBUIWorkspaceAnimationController)initWithWorkspaceTransitionRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = SBUIWorkspaceAnimationController;
-  return [(SBUIAnimationController *)&v4 initWithTransitionContextProvider:a3];
+  return [(SBUIAnimationController *)&v4 initWithTransitionContextProvider:request];
 }
 
-- (SBUIWorkspaceAnimationController)initWithTransitionContextProvider:(id)a3
+- (SBUIWorkspaceAnimationController)initWithTransitionContextProvider:(id)provider
 {
   v4 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE648];

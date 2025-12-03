@@ -1,20 +1,20 @@
 @interface PKPeerPaymentServiceRegistrationRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata;
 @end
 
 @implementation PKPeerPaymentServiceRegistrationRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5 deviceScore:(id)a6 odiAssessment:(id)a7 deviceMetadata:(id)a8
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier deviceScore:(id)score odiAssessment:(id)assessment deviceMetadata:(id)metadata
 {
   v54 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = v19;
-  if (!v14)
+  lCopy = l;
+  informationCopy = information;
+  identifierCopy = identifier;
+  scoreCopy = score;
+  assessmentCopy = assessment;
+  metadataCopy = metadata;
+  v20 = metadataCopy;
+  if (!lCopy)
   {
     v36 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -34,7 +34,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (!v15)
+  if (!informationCopy)
   {
     v36 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -51,7 +51,7 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  if (!v19)
+  if (!metadataCopy)
   {
     v36 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -103,9 +103,9 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v22 = [(PKPeerPaymentDeviceRegistrationData *)deviceData signedAuthToken];
+  signedAuthToken = [(PKPeerPaymentDeviceRegistrationData *)deviceData signedAuthToken];
 
-  if (!v22)
+  if (!signedAuthToken)
   {
     v36 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -122,9 +122,9 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v23 = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData enrollmentData];
+  enrollmentData = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData enrollmentData];
 
-  if (!v23)
+  if (!enrollmentData)
   {
     v36 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -144,67 +144,67 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  v49 = v16;
-  v24 = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData authorizationHeader];
-  [v15 setAuthorizationHeader:v24];
+  v49 = identifierCopy;
+  authorizationHeader = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData authorizationHeader];
+  [informationCopy setAuthorizationHeader:authorizationHeader];
 
-  v25 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v14 endpointComponents:&unk_1F23B4688 queryParameters:0 appleAccountInformation:v15];
+  v25 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B4688 queryParameters:0 appleAccountInformation:informationCopy];
   [v25 setHTTPMethod:@"POST"];
   [v25 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v48 = v25;
   [v25 setCachePolicy:1];
-  v26 = [MEMORY[0x1E695DF90] dictionary];
-  v47 = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData enrollmentData];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  enrollmentData2 = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData enrollmentData];
   v27 = PKSerialNumber();
-  [v26 setObject:v27 forKey:@"deviceSerialNumber"];
+  [dictionary setObject:v27 forKey:@"deviceSerialNumber"];
 
   v28 = PKProductType();
-  [v26 setObject:v28 forKey:@"productType"];
+  [dictionary setObject:v28 forKey:@"productType"];
 
-  v29 = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData companionSerialNumber];
-  if (v29)
+  companionSerialNumber = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData companionSerialNumber];
+  if (companionSerialNumber)
   {
-    [v26 setObject:v29 forKey:@"companionSerialNumber"];
+    [dictionary setObject:companionSerialNumber forKey:@"companionSerialNumber"];
   }
 
-  v30 = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData signedAuthToken];
-  if (v30)
+  signedAuthToken2 = [(PKPeerPaymentDeviceRegistrationData *)self->_deviceData signedAuthToken];
+  if (signedAuthToken2)
   {
-    [v26 setObject:v30 forKey:@"signedAuthToken"];
+    [dictionary setObject:signedAuthToken2 forKey:@"signedAuthToken"];
   }
 
   pushToken = self->_pushToken;
   if (pushToken)
   {
-    [v26 setObject:pushToken forKey:@"pushToken"];
+    [dictionary setObject:pushToken forKey:@"pushToken"];
   }
 
-  v46 = v29;
-  if (v47)
+  v46 = companionSerialNumber;
+  if (enrollmentData2)
   {
-    [v26 setObject:v47 forKey:@"enrollmentData"];
+    [dictionary setObject:enrollmentData2 forKey:@"enrollmentData"];
   }
 
-  if (v17)
+  if (scoreCopy)
   {
-    v32 = [v17 hexEncoding];
-    [v26 setObject:v32 forKey:@"deviceScore"];
+    hexEncoding = [scoreCopy hexEncoding];
+    [dictionary setObject:hexEncoding forKey:@"deviceScore"];
   }
 
-  if (v18)
+  if (assessmentCopy)
   {
-    [v26 setObject:v18 forKey:@"odiAssessment"];
+    [dictionary setObject:assessmentCopy forKey:@"odiAssessment"];
   }
 
-  v33 = [v20 dictionaryRepresentation];
-  [v26 setObject:v33 forKey:@"deviceMetadata"];
+  dictionaryRepresentation = [v20 dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKey:@"deviceMetadata"];
 
   [MEMORY[0x1E695AC60] setProperty:&unk_1F23B58B8 forKey:@"PKPeerPaymentEndPointKey" inRequest:v48];
-  v34 = [objc_opt_class() _HTTPBodyWithDictionary:v26];
+  v34 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v48 setHTTPBody:v34];
 
   v35 = [v48 copy];
-  v16 = v49;
+  identifierCopy = v49;
 LABEL_37:
 
   return v35;

@@ -1,17 +1,17 @@
 @interface NTKLilypadFaceView
-- (NTKLilypadFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
+- (NTKLilypadFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
 - (double)_activeClearColorForCurrentColorMode;
-- (double)_complicationAlphaForEditMode:(int64_t)a3;
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5;
+- (double)_complicationAlphaForEditMode:(int64_t)mode;
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options;
 - (void)_applyDataMode;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_loadSnapshotContentViews;
 - (void)_startClockTimer;
 - (void)_stopClockTimer;
-- (void)_timeUpdated:(CLKClockTimerDate *)a3;
+- (void)_timeUpdated:(CLKClockTimerDate *)updated;
 - (void)_unloadSnapshotContentViews;
 - (void)_updateClearColorAndColorMode;
 - (void)_updateLocale;
@@ -20,16 +20,16 @@
 - (void)cleanupAfterEditing;
 - (void)layoutSubviews;
 - (void)prepareForEditing;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKLilypadFaceView
 
-- (NTKLilypadFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKLilypadFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = NTKLilypadFaceView;
-  v5 = [(NTKLilypadFaceView *)&v9 initWithFaceStyle:a3 forDevice:a4 clientIdentifier:a5];
+  v5 = [(NTKLilypadFaceView *)&v9 initWithFaceStyle:style forDevice:device clientIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
@@ -81,10 +81,10 @@
   v5.receiver = self;
   v5.super_class = NTKLilypadFaceView;
   [(NTKLilypadFaceView *)&v5 _applyDataMode];
-  v3 = [(NTKLilypadFaceView *)self dataMode];
-  if (v3 <= 5)
+  dataMode = [(NTKLilypadFaceView *)self dataMode];
+  if (dataMode <= 5)
   {
-    LODWORD(v4) = dword_8808[v3];
+    LODWORD(v4) = dword_8808[dataMode];
     [(NTKLilypadQuad *)self->_quad setMotionSuppressed:v4];
   }
 
@@ -93,10 +93,10 @@
 
 - (void)_updatePausedState
 {
-  v3 = [(NTKLilypadFaceView *)self dataMode];
-  v4 = [(NTKLilypadFaceView *)self editing];
+  dataMode = [(NTKLilypadFaceView *)self dataMode];
+  editing = [(NTKLilypadFaceView *)self editing];
   v5 = [(NTKLilypadFaceView *)self isFrozen]^ 1;
-  v6 = ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1) & v5 & NTKIsScreenOn() | v4;
+  v6 = ((dataMode & 0xFFFFFFFFFFFFFFFBLL) == 1) & v5 & NTKIsScreenOn() | editing;
   if (v6)
   {
     if (!self->_isPaused)
@@ -150,27 +150,27 @@
   self->_clockTimerToken = 0;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   v8.receiver = self;
   v8.super_class = NTKLilypadFaceView;
-  [(NTKLilypadFaceView *)&v8 setOverrideDate:v6 duration:a4];
+  [(NTKLilypadFaceView *)&v8 setOverrideDate:dateCopy duration:duration];
   overrideDate = self->_overrideDate;
-  self->_overrideDate = v6;
+  self->_overrideDate = dateCopy;
 
   [(NTKLilypadFaceView *)self _updateTime];
 }
 
-- (void)_timeUpdated:(CLKClockTimerDate *)a3
+- (void)_timeUpdated:(CLKClockTimerDate *)updated
 {
   p_currentDate = &self->_currentDate;
-  objc_storeStrong(&self->_currentDate.now, a3->now);
-  v6 = *&a3->hour;
-  *&p_currentDate->second = *&a3->second;
+  objc_storeStrong(&self->_currentDate.now, updated->now);
+  v6 = *&updated->hour;
+  *&p_currentDate->second = *&updated->second;
   *&p_currentDate->hour = v6;
   [(NTKLilypadFaceView *)self _updateTime];
-  now = a3->now;
+  now = updated->now;
 }
 
 - (void)_updateTime
@@ -192,7 +192,7 @@
   v10 = v9;
   if (!now)
   {
-    v13 = [v9 faceDisplayTime];
+    faceDisplayTime = [v9 faceDisplayTime];
     goto LABEL_7;
   }
 
@@ -202,9 +202,9 @@
   if (v12 > 0.0)
   {
     v10 = +[NTKTimeOffsetManager sharedManager];
-    v13 = [v10 displayTimeForRealTime:p_currentDate->now];
+    faceDisplayTime = [v10 displayTimeForRealTime:p_currentDate->now];
 LABEL_7:
-    v14 = v13;
+    v14 = faceDisplayTime;
 
     CLKClockTimerDateForDate();
     v2 = v33;
@@ -250,7 +250,7 @@ LABEL_9:
   }
 
   v23 = pow(v22, 3.0);
-  v24 = self;
+  selfCopy2 = self;
   if (self->_is24HourMode)
   {
     v25 = hour;
@@ -272,10 +272,10 @@ LABEL_9:
 
     v19 = v34;
     v20 = v36;
-    v24 = self;
+    selfCopy2 = self;
   }
 
-  quad = v24->_quad;
+  quad = selfCopy2->_quad;
   v28 = v23 * -2.0 + v22 * v22 * 3.0;
   v33 = __PAIR64__(minute, v25);
   v34 = v19;
@@ -286,7 +286,7 @@ LABEL_9:
 
 - (double)_activeClearColorForCurrentColorMode
 {
-  *&a2 = 1.0 - *(a1 + 96);
+  *&a2 = 1.0 - *(self + 96);
   *&result = vdupq_lane_s32(*&a2, 0).u64[0];
   return result;
 }
@@ -299,8 +299,8 @@ LABEL_9:
   v3 = +[UIColor blackColor];
   [(NTKLilypadFaceView *)self setBackgroundColor:v3];
 
-  v4 = [(NTKLilypadFaceView *)self device];
-  [v4 screenBounds];
+  device = [(NTKLilypadFaceView *)self device];
+  [device screenBounds];
   v5 = [CLKUIQuadView quadViewWithFrame:@"Lily" identifier:0 options:0 colorSpace:?];
   quadView = self->_quadView;
   self->_quadView = v5;
@@ -308,16 +308,16 @@ LABEL_9:
   [(NTKLilypadFaceView *)self _activeClearColorForCurrentColorMode];
   [(CLKUIMetalQuadView *)self->_quadView setClearColor:v10, v7, v8, v9];
   v11 = [NTKLilypadQuad alloc];
-  v12 = [(NTKLilypadFaceView *)self device];
-  v13 = [(NTKLilypadQuad *)v11 initWithDevice:v12];
+  device2 = [(NTKLilypadFaceView *)self device];
+  v13 = [(NTKLilypadQuad *)v11 initWithDevice:device2];
   quad = self->_quad;
   self->_quad = v13;
 
   [(CLKUIMetalQuadView *)self->_quadView addQuad:self->_quad];
   [(CLKUIMetalQuadView *)self->_quadView setOpaque:1];
   [(NTKLilypadQuad *)self->_quad setIs24hour:self->_is24HourMode];
-  v15 = [(NTKLilypadFaceView *)self contentView];
-  [v15 addSubview:self->_quadView];
+  contentView = [(NTKLilypadFaceView *)self contentView];
+  [contentView addSubview:self->_quadView];
 
   [(CLKUIMetalQuadView *)self->_quadView setPreferredFramesPerSecond:60];
   [(CLKUIMetalQuadView *)self->_quadView setPaused:1];
@@ -325,19 +325,19 @@ LABEL_9:
   [(NTKLilypadFaceView *)self _activeClearColorForCurrentColorMode];
   [(NTKLilypadQuad *)v16 setColorMode:?];
   v17 = [NTKRoundedCornerOverlayView alloc];
-  v18 = [(NTKLilypadFaceView *)self contentView];
-  [v18 bounds];
+  contentView2 = [(NTKLilypadFaceView *)self contentView];
+  [contentView2 bounds];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(NTKLilypadFaceView *)self device];
-  v28 = [v17 initWithFrame:v27 forDeviceCornerRadius:{v20, v22, v24, v26}];
+  device3 = [(NTKLilypadFaceView *)self device];
+  v28 = [v17 initWithFrame:device3 forDeviceCornerRadius:{v20, v22, v24, v26}];
   cornerOverlayView = self->_cornerOverlayView;
   self->_cornerOverlayView = v28;
 
-  v30 = [(NTKLilypadFaceView *)self contentView];
-  [v30 addSubview:self->_cornerOverlayView];
+  contentView3 = [(NTKLilypadFaceView *)self contentView];
+  [contentView3 addSubview:self->_cornerOverlayView];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self->_quadView, sub_2B84, @"com.apple.nanotimekit.lilypad.screenshot", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
@@ -377,25 +377,25 @@ LABEL_9:
   [(NTKLilypadQuad *)quad setColorMode:*v5.i64];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 15)
+  if (mode == 15)
   {
-    LODWORD(self->_activeColorMode) = dword_8800[[a3 backgroundStyle] == 0];
+    LODWORD(self->_activeColorMode) = dword_8800[[option backgroundStyle] == 0];
 
     [(NTKLilypadFaceView *)self _updateClearColorAndColorMode];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 15)
+  if (mode == 15)
   {
-    v10 = a5;
-    v11 = dword_8800[[a4 backgroundStyle] == 0];
-    v12 = [v10 backgroundStyle];
+    toOptionCopy = toOption;
+    v11 = dword_8800[[option backgroundStyle] == 0];
+    backgroundStyle = [toOptionCopy backgroundStyle];
 
-    v13 = *&dword_8800[v12 == 0];
+    v13 = *&dword_8800[backgroundStyle == 0];
     CLKInterpolateBetweenFloatsUnclipped();
     *&v14 = v14;
     self->_activeColorMode = *&v14;
@@ -404,10 +404,10 @@ LABEL_9:
   }
 }
 
-- (double)_complicationAlphaForEditMode:(int64_t)a3
+- (double)_complicationAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 < 2)
+  if (mode < 2)
   {
     return 1.0;
   }
@@ -415,27 +415,27 @@ LABEL_9:
   return result;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  v8 = [(NTKLilypadFaceView *)self complicationContainerView];
-  [(NTKLilypadFaceView *)self _complicationAlphaForEditMode:a4];
-  [(NTKLilypadFaceView *)self _complicationAlphaForEditMode:a5];
+  complicationContainerView = [(NTKLilypadFaceView *)self complicationContainerView];
+  [(NTKLilypadFaceView *)self _complicationAlphaForEditMode:mode];
+  [(NTKLilypadFaceView *)self _complicationAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
-  [v8 setAlpha:?];
+  [complicationContainerView setAlpha:?];
 }
 
-- (id)_swatchImageForEditOption:(id)a3 mode:(int64_t)a4 withSelectedOptions:(id)a5
+- (id)_swatchImageForEditOption:(id)option mode:(int64_t)mode withSelectedOptions:(id)options
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 15)
+  optionCopy = option;
+  optionsCopy = options;
+  if (mode == 15)
   {
     if (qword_11348 != -1)
     {
       sub_63BC();
     }
 
-    v10 = v8;
+    v10 = optionCopy;
     v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 backgroundStyle]);
     v12 = [NSString stringWithFormat:@"%@", v11];
 
@@ -443,8 +443,8 @@ LABEL_9:
     if (!v13)
     {
       v14 = [NTKLilypadFaceView alloc];
-      v15 = [(NTKLilypadFaceView *)self device];
-      v16 = [(NTKLilypadFaceView *)v14 initWithFaceStyle:44 forDevice:v15 clientIdentifier:0];
+      device = [(NTKLilypadFaceView *)self device];
+      v16 = [(NTKLilypadFaceView *)v14 initWithFaceStyle:44 forDevice:device clientIdentifier:0];
 
       [(NTKLilypadFaceView *)self bounds];
       [v16 setFrame:?];
@@ -458,8 +458,8 @@ LABEL_9:
       v21 = v20;
       [(NTKLilypadFaceView *)self bounds];
       v22 = CGRectGetHeight(v29) / v21;
-      v23 = [(NTKLilypadFaceView *)self device];
-      [v23 screenScale];
+      device2 = [(NTKLilypadFaceView *)self device];
+      [device2 screenScale];
       v25 = v22 * v24;
 
       v13 = [v16[1] snapshotInRect:0.0 scale:0.0 time:{v19, v21, v25, 0.0}];
@@ -471,7 +471,7 @@ LABEL_9:
   {
     v27.receiver = self;
     v27.super_class = NTKLilypadFaceView;
-    v13 = [(NTKLilypadFaceView *)&v27 _swatchImageForEditOption:v8 mode:a4 withSelectedOptions:v9];
+    v13 = [(NTKLilypadFaceView *)&v27 _swatchImageForEditOption:optionCopy mode:mode withSelectedOptions:optionsCopy];
   }
 
   return v13;

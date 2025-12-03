@@ -1,32 +1,32 @@
 @interface HKObserverBridgeHandle
-- (BOOL)notifyObserversOfChangeForKey:(id)a3 newValue:(id)a4;
+- (BOOL)notifyObserversOfChangeForKey:(id)key newValue:(id)value;
 - (HKObserverBridge)bridge;
-- (HKObserverBridgeHandle)initWithBridge:(id)a3;
+- (HKObserverBridgeHandle)initWithBridge:(id)bridge;
 @end
 
 @implementation HKObserverBridgeHandle
 
-- (HKObserverBridgeHandle)initWithBridge:(id)a3
+- (HKObserverBridgeHandle)initWithBridge:(id)bridge
 {
-  v4 = a3;
+  bridgeCopy = bridge;
   v8.receiver = self;
   v8.super_class = HKObserverBridgeHandle;
   v5 = [(HKObserverBridgeHandle *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_bridge, v4);
+    objc_storeWeak(&v5->_bridge, bridgeCopy);
   }
 
   return v6;
 }
 
-- (BOOL)notifyObserversOfChangeForKey:(id)a3 newValue:(id)a4
+- (BOOL)notifyObserversOfChangeForKey:(id)key newValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_bridge);
-  v9 = [WeakRetained notifyObserversOfChangeForKey:v7 newValue:v6];
+  v9 = [WeakRetained notifyObserversOfChangeForKey:keyCopy newValue:valueCopy];
 
   return v9;
 }

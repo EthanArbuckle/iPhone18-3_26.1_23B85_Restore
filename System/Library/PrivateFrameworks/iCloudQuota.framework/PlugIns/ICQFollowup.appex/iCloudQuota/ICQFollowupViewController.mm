@@ -1,37 +1,37 @@
 @interface ICQFollowupViewController
 - (id)sharedFollowUpController;
 - (int64_t)requestType;
-- (void)_finalizeUpgradeFlowManager:(id)a3;
-- (void)clearFollowupItem:(id)a3;
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3;
-- (void)getOfferWithRequestType:(int64_t)a3 withCompletion:(id)a4;
-- (void)handleRemoteUIAction:(id)a3;
-- (void)icqActionPhotosOptimize:(id)a3;
-- (void)icqActionPresentOptInFlow:(id)a3;
-- (void)icqActionPresentOptInFlowForOffer:(id)a3 withCompletion:(id)a4;
-- (void)icqActionPresentPurchaseFlow:(id)a3;
-- (void)icqActionPresentPurchaseFlowForOffer:(id)a3 withCompletion:(id)a4;
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5;
-- (void)startShowingServerUI:(id)a3;
+- (void)_finalizeUpgradeFlowManager:(id)manager;
+- (void)clearFollowupItem:(id)item;
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler;
+- (void)getOfferWithRequestType:(int64_t)type withCompletion:(id)completion;
+- (void)handleRemoteUIAction:(id)action;
+- (void)icqActionPhotosOptimize:(id)optimize;
+- (void)icqActionPresentOptInFlow:(id)flow;
+- (void)icqActionPresentOptInFlowForOffer:(id)offer withCompletion:(id)completion;
+- (void)icqActionPresentPurchaseFlow:(id)flow;
+- (void)icqActionPresentPurchaseFlowForOffer:(id)offer withCompletion:(id)completion;
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion;
+- (void)startShowingServerUI:(id)i;
 - (void)teardownOffer;
-- (void)upgradeFlowManagerDidCancel:(id)a3;
-- (void)upgradeFlowManagerDidComplete:(id)a3;
+- (void)upgradeFlowManagerDidCancel:(id)cancel;
+- (void)upgradeFlowManagerDidComplete:(id)complete;
 @end
 
 @implementation ICQFollowupViewController
 
 - (int64_t)requestType
 {
-  v3 = [(FLFollowUpItem *)self->_item uniqueIdentifier];
-  v4 = [v3 isEqualToString:_ICQIdentifierPrefixPremium];
+  uniqueIdentifier = [(FLFollowUpItem *)self->_item uniqueIdentifier];
+  v4 = [uniqueIdentifier isEqualToString:_ICQIdentifierPrefixPremium];
 
   if (v4)
   {
     return 2;
   }
 
-  v6 = [(FLFollowUpItem *)self->_item uniqueIdentifier];
-  v7 = [v6 isEqualToString:_ICQIdentifierPrefixEvent];
+  uniqueIdentifier2 = [(FLFollowUpItem *)self->_item uniqueIdentifier];
+  v7 = [uniqueIdentifier2 isEqualToString:_ICQIdentifierPrefixEvent];
 
   if (v7)
   {
@@ -56,15 +56,15 @@
   return v3;
 }
 
-- (void)clearFollowupItem:(id)a3
+- (void)clearFollowupItem:(id)item
 {
-  v4 = a3;
-  v5 = [(ICQFollowupViewController *)self sharedFollowUpController];
-  v6 = [v4 uniqueIdentifier];
-  v19 = v6;
+  itemCopy = item;
+  sharedFollowUpController = [(ICQFollowupViewController *)self sharedFollowUpController];
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v19 = uniqueIdentifier;
   v7 = [NSArray arrayWithObjects:&v19 count:1];
   v14 = 0;
-  [v5 clearPendingFollowUpItemsWithUniqueIdentifiers:v7 error:&v14];
+  [sharedFollowUpController clearPendingFollowUpItemsWithUniqueIdentifiers:v7 error:&v14];
   v8 = v14;
 
   v9 = _ICQGetLogSystem();
@@ -74,7 +74,7 @@
     if (v10)
     {
       *buf = 138412546;
-      v16 = v4;
+      v16 = itemCopy;
       v17 = 2112;
       v18 = v8;
       v11 = "unable to clear followup item %@ error %@";
@@ -95,9 +95,9 @@ LABEL_6:
   }
 }
 
-- (void)followUpPerformUpdateWithCompletionHandler:(id)a3
+- (void)followUpPerformUpdateWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
@@ -129,52 +129,52 @@ LABEL_6:
 
   v9 = dispatch_time(0, 10000000000);
   dispatch_group_wait(v8, v9);
-  v3[2](v3, *(v19 + 24) ^ 1);
+  handlerCopy[2](handlerCopy, *(v19 + 24) ^ 1);
 
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)processFollowUpItem:(id)a3 selectedAction:(id)a4 completion:(id)a5
+- (void)processFollowUpItem:(id)item selectedAction:(id)action completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  objc_storeStrong(&self->_item, a3);
-  v12 = [v10 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"ICQLinkAction"];
+  itemCopy = item;
+  actionCopy = action;
+  completionCopy = completion;
+  objc_storeStrong(&self->_item, item);
+  userInfo = [actionCopy userInfo];
+  v13 = [userInfo objectForKeyedSubscript:@"ICQLinkAction"];
   self->_icqAction = _ICQActionForString();
 
-  v14 = [v10 userInfo];
-  v15 = [v14 objectForKeyedSubscript:@"ICQLinkParameters"];
+  userInfo2 = [actionCopy userInfo];
+  v15 = [userInfo2 objectForKeyedSubscript:@"ICQLinkParameters"];
   icqActionParameters = self->_icqActionParameters;
   self->_icqActionParameters = v15;
 
-  v17 = [v10 userInfo];
-  v18 = [v17 objectForKeyedSubscript:@"ICQFlowServerDict"];
+  userInfo3 = [actionCopy userInfo];
+  v18 = [userInfo3 objectForKeyedSubscript:@"ICQFlowServerDict"];
   icqFlowServerDict = self->_icqFlowServerDict;
   self->_icqFlowServerDict = v18;
 
-  if ([v10 eventSource] == 3)
+  if ([actionCopy eventSource] == 3)
   {
-    v20 = [v9 actions];
-    v21 = [v20 indexOfObjectPassingTest:&stru_100008420];
+    actions = [itemCopy actions];
+    v21 = [actions indexOfObjectPassingTest:&stru_100008420];
 
     if (v21 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v22 = [v9 actions];
-      v23 = [v22 objectAtIndex:v21];
+      actions2 = [itemCopy actions];
+      v23 = [actions2 objectAtIndex:v21];
 
-      v24 = [v23 userInfo];
-      v25 = [v24 objectForKeyedSubscript:@"ICQLinkAction"];
+      userInfo4 = [v23 userInfo];
+      v25 = [userInfo4 objectForKeyedSubscript:@"ICQLinkAction"];
       self->_icqAction = _ICQActionForString();
 
-      v26 = [v23 userInfo];
-      v27 = [v26 objectForKeyedSubscript:@"ICQLinkParameters"];
+      userInfo5 = [v23 userInfo];
+      v27 = [userInfo5 objectForKeyedSubscript:@"ICQLinkParameters"];
       v28 = self->_icqActionParameters;
       self->_icqActionParameters = v27;
 
-      v29 = [v23 userInfo];
-      v30 = [v29 objectForKeyedSubscript:@"ICQFlowServerDict"];
+      userInfo6 = [v23 userInfo];
+      v30 = [userInfo6 objectForKeyedSubscript:@"ICQFlowServerDict"];
       v31 = self->_icqFlowServerDict;
       self->_icqFlowServerDict = v30;
     }
@@ -194,14 +194,14 @@ LABEL_6:
   if (v35)
   {
     v36 = os_transaction_create();
-    v37 = [v9 userInfo];
+    userInfo7 = [itemCopy userInfo];
     v38 = _ICQStringForKey();
 
-    v56 = v11;
+    v56 = completionCopy;
     if (v38)
     {
-      v39 = v9;
-      if ([v10 eventSource] == 3)
+      v39 = itemCopy;
+      if ([actionCopy eventSource] == 3)
       {
         v69 = ICQUpdateOfferKeyIsZeroAction;
         v70 = &off_100008658;
@@ -237,23 +237,23 @@ LABEL_6:
 
     else
     {
-      v39 = v9;
-      v41 = [(ICQFollowupViewController *)self requestType];
+      v39 = itemCopy;
+      requestType = [(ICQFollowupViewController *)self requestType];
       v57[0] = _NSConcreteStackBlock;
       v57[1] = 3221225472;
       v57[2] = sub_1000023E8;
       v57[3] = &unk_100008448;
-      v58 = v10;
+      v58 = actionCopy;
       v59 = v35;
       v60 = v36;
       v40 = v36;
-      [(ICQFollowupViewController *)self getOfferWithRequestType:v41 withCompletion:v57];
+      [(ICQFollowupViewController *)self getOfferWithRequestType:requestType withCompletion:v57];
 
       v42 = v58;
     }
 
-    v9 = v39;
-    v11 = v56;
+    itemCopy = v39;
+    completionCopy = v56;
   }
 
   v45 = self->_icqAction;
@@ -287,7 +287,7 @@ LABEL_42:
       }
 
 LABEL_37:
-      [(ICQFollowupViewController *)self clearFollowupItem:v9];
+      [(ICQFollowupViewController *)self clearFollowupItem:itemCopy];
       goto LABEL_42;
     }
 
@@ -365,18 +365,18 @@ LABEL_19:
 
   v46 = 0;
 LABEL_43:
-  v11[2](v11, v46);
+  completionCopy[2](completionCopy, v46);
 }
 
-- (void)startShowingServerUI:(id)a3
+- (void)startShowingServerUI:(id)i
 {
-  v4 = a3;
-  if (!v4)
+  iCopy = i;
+  if (!iCopy)
   {
     sub_10000339C();
   }
 
-  v5 = v4;
+  v5 = iCopy;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -473,17 +473,17 @@ LABEL_16:
 LABEL_24:
 }
 
-- (void)_finalizeUpgradeFlowManager:(id)a3
+- (void)_finalizeUpgradeFlowManager:(id)manager
 {
-  v4 = a3;
-  if (self->_upgradeFlowManager != v4)
+  managerCopy = manager;
+  if (self->_upgradeFlowManager != managerCopy)
   {
     v5 = _ICQGetLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       upgradeFlowManager = self->_upgradeFlowManager;
       v10 = 138412546;
-      v11 = v4;
+      v11 = managerCopy;
       v12 = 2112;
       v13 = upgradeFlowManager;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "ICQFollowup UpgradeFlowManager did cancel for manager %@ instead of %@", &v10, 0x16u);
@@ -502,9 +502,9 @@ LABEL_24:
   self->_upgradeFlowManager = 0;
 }
 
-- (void)upgradeFlowManagerDidCancel:(id)a3
+- (void)upgradeFlowManagerDidCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -512,12 +512,12 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "upgradeFlowManagerDidCancel", v6, 2u);
   }
 
-  [(ICQFollowupViewController *)self _finalizeUpgradeFlowManager:v4];
+  [(ICQFollowupViewController *)self _finalizeUpgradeFlowManager:cancelCopy];
 }
 
-- (void)upgradeFlowManagerDidComplete:(id)a3
+- (void)upgradeFlowManagerDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -526,16 +526,16 @@ LABEL_24:
   }
 
   [(ICQFollowupViewController *)self clearFollowupItem:self->_item];
-  [(ICQFollowupViewController *)self _finalizeUpgradeFlowManager:v4];
+  [(ICQFollowupViewController *)self _finalizeUpgradeFlowManager:completeCopy];
 }
 
-- (void)handleRemoteUIAction:(id)a3
+- (void)handleRemoteUIAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ICQFollowupViewController *)self requestType];
+  actionCopy = action;
+  requestType = [(ICQFollowupViewController *)self requestType];
   v6 = _ICQGetLogSystem();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5 == 5)
+  if (requestType == 5)
   {
     if (v7)
     {
@@ -548,11 +548,11 @@ LABEL_10:
 
 LABEL_11:
 
-    [(ICQFollowupViewController *)self icqActionPresentPurchaseFlow:v4];
+    [(ICQFollowupViewController *)self icqActionPresentPurchaseFlow:actionCopy];
     goto LABEL_12;
   }
 
-  if (v5 != 2)
+  if (requestType != 2)
   {
     if (v7)
     {
@@ -571,25 +571,25 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Handling remoteUI Action for premium offer", buf, 2u);
   }
 
-  [(ICQFollowupViewController *)self icqActionPresentOptInFlow:v4];
+  [(ICQFollowupViewController *)self icqActionPresentOptInFlow:actionCopy];
 LABEL_12:
 }
 
-- (void)icqActionPresentOptInFlow:(id)a3
+- (void)icqActionPresentOptInFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [(ICQFollowupViewController *)self requestType];
+  flowCopy = flow;
+  requestType = [(ICQFollowupViewController *)self requestType];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002BE0;
   v7[3] = &unk_100008498;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [(ICQFollowupViewController *)self getOfferWithRequestType:v5 withCompletion:v7];
+  v8 = flowCopy;
+  v6 = flowCopy;
+  [(ICQFollowupViewController *)self getOfferWithRequestType:requestType withCompletion:v7];
 }
 
-- (void)icqActionPresentOptInFlowForOffer:(id)a3 withCompletion:(id)a4
+- (void)icqActionPresentOptInFlowForOffer:(id)offer withCompletion:(id)completion
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -598,21 +598,21 @@ LABEL_12:
   }
 }
 
-- (void)icqActionPresentPurchaseFlow:(id)a3
+- (void)icqActionPresentPurchaseFlow:(id)flow
 {
-  v4 = a3;
-  v5 = [(ICQFollowupViewController *)self requestType];
+  flowCopy = flow;
+  requestType = [(ICQFollowupViewController *)self requestType];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100002E08;
   v7[3] = &unk_100008498;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [(ICQFollowupViewController *)self getOfferWithRequestType:v5 withCompletion:v7];
+  v8 = flowCopy;
+  v6 = flowCopy;
+  [(ICQFollowupViewController *)self getOfferWithRequestType:requestType withCompletion:v7];
 }
 
-- (void)icqActionPresentPurchaseFlowForOffer:(id)a3 withCompletion:(id)a4
+- (void)icqActionPresentPurchaseFlowForOffer:(id)offer withCompletion:(id)completion
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -621,26 +621,26 @@ LABEL_12:
   }
 }
 
-- (void)getOfferWithRequestType:(int64_t)a3 withCompletion:(id)a4
+- (void)getOfferWithRequestType:(int64_t)type withCompletion:(id)completion
 {
-  v5 = a4;
-  if (a3 > 2)
+  completionCopy = completion;
+  if (type > 2)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       v9 = +[ICQOfferManager sharedOfferManager];
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100003190;
       v10[3] = &unk_1000084C0;
-      v11 = v5;
+      v11 = completionCopy;
       [v9 getEventOfferWithOptions:0 completion:v10];
 
       v7 = v11;
       goto LABEL_11;
     }
 
-    if (a3 != 3)
+    if (type != 3)
     {
       goto LABEL_8;
     }
@@ -651,26 +651,26 @@ LABEL_7:
     v14[1] = 3221225472;
     v14[2] = sub_100003170;
     v14[3] = &unk_1000084C0;
-    v15 = v5;
+    v15 = completionCopy;
     [v8 getOfferForBundleIdentifier:@"com.apple.Preferences" completion:v14];
 
     v7 = v15;
     goto LABEL_11;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     goto LABEL_7;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v6 = +[ICQOfferManager sharedOfferManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100003180;
     v12[3] = &unk_1000084E8;
-    v13 = v5;
+    v13 = completionCopy;
     [v6 getPremiumOfferForBundleIdentifier:@"com.apple.Preferences" completion:v12];
 
     v7 = v13;
@@ -681,13 +681,13 @@ LABEL_8:
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    sub_1000034B8(a3, v7);
+    sub_1000034B8(type, v7);
   }
 
 LABEL_11:
 }
 
-- (void)icqActionPhotosOptimize:(id)a3
+- (void)icqActionPhotosOptimize:(id)optimize
 {
   v3 = _ICQGetLogSystem();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -698,15 +698,15 @@ LABEL_11:
 
 - (void)teardownOffer
 {
-  v2 = [(ICQFollowupViewController *)self requestType];
+  requestType = [(ICQFollowupViewController *)self requestType];
   v3 = +[ICQOfferManager sharedOfferManager];
   v4 = v3;
-  if (v2 == 5)
+  if (requestType == 5)
   {
     [v3 teardownCachedEventOffer];
   }
 
-  else if (v2 == 2)
+  else if (requestType == 2)
   {
     [v3 teardownCachedPremiumOffer];
   }

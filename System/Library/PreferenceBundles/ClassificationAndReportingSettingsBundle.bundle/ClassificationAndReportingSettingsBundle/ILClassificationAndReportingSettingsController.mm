@@ -1,19 +1,19 @@
 @interface ILClassificationAndReportingSettingsController
-- (ILClassificationAndReportingSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ILClassificationAndReportingSettingsController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)specifiers;
-- (void)createExtensionSpecifiersWithElectedExtension:(id)a3 allExtensions:(id)a4;
-- (void)presentAlertForExtensionName:(id)a3 completion:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)createExtensionSpecifiersWithElectedExtension:(id)extension allExtensions:(id)extensions;
+- (void)presentAlertForExtensionName:(id)name completion:(id)completion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation ILClassificationAndReportingSettingsController
 
-- (ILClassificationAndReportingSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (ILClassificationAndReportingSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = ILClassificationAndReportingSettingsController;
-  v4 = [(ILClassificationAndReportingSettingsController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(ILClassificationAndReportingSettingsController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -42,8 +42,8 @@
 - (id)specifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(ILClassificationAndReportingSettingsController *)self extensionSpecifiers];
-  [v3 addObjectsFromArray:v4];
+  extensionSpecifiers = [(ILClassificationAndReportingSettingsController *)self extensionSpecifiers];
+  [v3 addObjectsFromArray:extensionSpecifiers];
 
   v5 = [v3 copy];
   v6 = OBJC_IVAR___PSListController__specifiers;
@@ -56,17 +56,17 @@
   return v8;
 }
 
-- (void)createExtensionSpecifiersWithElectedExtension:(id)a3 allExtensions:(id)a4
+- (void)createExtensionSpecifiersWithElectedExtension:(id)extension allExtensions:(id)extensions
 {
-  v36 = a3;
-  v5 = a4;
+  extensionCopy = extension;
+  extensionsCopy = extensions;
   v6 = ILDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v46 = v5;
+    v46 = extensionsCopy;
     v47 = 2112;
-    v48 = v36;
+    v48 = extensionCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "gotExtensions: %@ elected extension: %@", buf, 0x16u);
   }
 
@@ -98,7 +98,7 @@
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v17 = v5;
+  v17 = extensionsCopy;
   v18 = [v17 countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v18)
   {
@@ -115,15 +115,15 @@
         }
 
         v23 = *(*(&v40 + 1) + 8 * i);
-        v24 = [v23 _plugIn];
-        v25 = [v24 localizedContainingName];
+        _plugIn = [v23 _plugIn];
+        localizedContainingName = [_plugIn localizedContainingName];
 
-        v26 = [PSSpecifier preferenceSpecifierNamed:v25 target:self set:0 get:0 detail:0 cell:3 edit:0];
+        v26 = [PSSpecifier preferenceSpecifierNamed:localizedContainingName target:self set:0 get:0 detail:0 cell:3 edit:0];
         [v26 setUserInfo:v23];
         v27 = [NSNumber numberWithBool:1];
         [v26 setProperty:v27 forKey:v21];
 
-        if ([v23 isEqual:v36])
+        if ([v23 isEqual:extensionCopy])
         {
           [v35 setProperty:v26 forKey:v34];
         }
@@ -148,16 +148,16 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v24.receiver = self;
   v24.super_class = ILClassificationAndReportingSettingsController;
-  v6 = a4;
-  [(ILClassificationAndReportingSettingsController *)&v24 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(ILClassificationAndReportingSettingsController *)self specifierAtIndexPath:v6];
+  pathCopy = path;
+  [(ILClassificationAndReportingSettingsController *)&v24 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(ILClassificationAndReportingSettingsController *)self specifierAtIndexPath:pathCopy];
 
   v8 = [(ILClassificationAndReportingSettingsController *)self getGroupSpecifierForSpecifier:v7];
-  v9 = [v7 userInfo];
+  userInfo = [v7 userInfo];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_2360;
@@ -166,28 +166,28 @@
   v21 = v10;
   v11 = v8;
   v22 = v11;
-  v23 = self;
+  selfCopy = self;
   v12 = objc_retainBlock(v20);
   v13 = v12;
-  if (v9)
+  if (userInfo)
   {
     v14 = ILDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v9;
+      v26 = userInfo;
       _os_log_impl(&dword_0, v14, OS_LOG_TYPE_DEFAULT, "presenting election alert for extension: %@", buf, 0xCu);
     }
 
-    v15 = [v9 _plugIn];
-    v16 = [v15 localizedContainingName];
+    _plugIn = [userInfo _plugIn];
+    localizedContainingName = [_plugIn localizedContainingName];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_24A4;
     v17[3] = &unk_83C0;
-    v18 = v9;
+    v18 = userInfo;
     v19 = v13;
-    [(ILClassificationAndReportingSettingsController *)self presentAlertForExtensionName:v16 completion:v17];
+    [(ILClassificationAndReportingSettingsController *)self presentAlertForExtensionName:localizedContainingName completion:v17];
   }
 
   else
@@ -196,25 +196,25 @@
   }
 }
 
-- (void)presentAlertForExtensionName:(id)a3 completion:(id)a4
+- (void)presentAlertForExtensionName:(id)name completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  nameCopy = name;
   v8 = [ILClassificationSettingsStrings localizedStringForKey:@"EXTENSION_ENABLE_ALERT_TITLE_MARKETING_NAME_%@_EXTENSION_NAME_%@"];
   v9 = [ILClassificationSettingsStrings localizedStringForKey:@"REPORTING_MARKETING_NAME"];
-  v10 = [NSString stringWithFormat:v8, v9, v7];
+  nameCopy = [NSString stringWithFormat:v8, v9, nameCopy];
 
   v11 = [ILClassificationSettingsStrings localizedStringForKey:@"EXTENSION_ENABLE_ALERT_WARNING_EXTENSION_NAME_%@"];
   v12 = [ILClassificationSettingsStrings localizedStringForKey:@"REPORTING_MARKETING_NAME"];
   v13 = [NSString stringWithFormat:v11, v12];
 
-  v14 = [UIAlertController alertControllerWithTitle:v10 message:v13 preferredStyle:1];
+  v14 = [UIAlertController alertControllerWithTitle:nameCopy message:v13 preferredStyle:1];
   v15 = [ILClassificationSettingsStrings localizedStringForKey:@"ENABLE_EXTENSION"];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_2814;
   v23[3] = &unk_83E8;
-  v16 = v6;
+  v16 = completionCopy;
   v24 = v16;
   v17 = [UIAlertAction actionWithTitle:v15 style:0 handler:v23];
   [v14 addAction:v17];

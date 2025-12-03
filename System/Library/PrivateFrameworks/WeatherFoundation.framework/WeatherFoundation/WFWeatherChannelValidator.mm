@@ -1,8 +1,8 @@
 @interface WFWeatherChannelValidator
-+ (BOOL)isLeafNodeType:(id)a3;
++ (BOOL)isLeafNodeType:(id)type;
 + (id)expectedStructure;
-- (BOOL)validateDictionary:(id)a3 expectedStructure:(id)a4;
-- (BOOL)validateResponseData:(id)a3;
+- (BOOL)validateDictionary:(id)dictionary expectedStructure:(id)structure;
+- (BOOL)validateResponseData:(id)data;
 @end
 
 @implementation WFWeatherChannelValidator
@@ -400,9 +400,9 @@
   return v26;
 }
 
-+ (BOOL)isLeafNodeType:(id)a3
++ (BOOL)isLeafNodeType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -418,10 +418,10 @@
   return v4 & 1;
 }
 
-- (BOOL)validateResponseData:(id)a3
+- (BOOL)validateResponseData:(id)data
 {
   v8 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v8];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -437,18 +437,18 @@
   return v6;
 }
 
-- (BOOL)validateDictionary:(id)a3 expectedStructure:(id)a4
+- (BOOL)validateDictionary:(id)dictionary expectedStructure:(id)structure
 {
   v54 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  structureCopy = structure;
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [structureCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
   v11 = MEMORY[0x277CBEB98];
-  v12 = v6;
-  v13 = [v6 allKeys];
-  v14 = [v11 setWithArray:v13];
+  v12 = dictionaryCopy;
+  allKeys2 = [dictionaryCopy allKeys];
+  v14 = [v11 setWithArray:allKeys2];
   v15 = [v10 isSubsetOfSet:v14];
 
   if (!v15)
@@ -461,8 +461,8 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v16 = [v7 allKeys];
-  v43 = [v16 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  allKeys3 = [structureCopy allKeys];
+  v43 = [allKeys3 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (!v43)
   {
     v38 = 1;
@@ -470,7 +470,7 @@
   }
 
   v17 = *v49;
-  v40 = v7;
+  v40 = structureCopy;
   v41 = v12;
   v42 = *v49;
   while (2)
@@ -479,12 +479,12 @@
     {
       if (*v49 != v17)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(allKeys3);
       }
 
       v19 = *(*(&v48 + 1) + 8 * i);
       v20 = [v12 objectForKey:{v19, v40, v41}];
-      v21 = [v7 objectForKeyedSubscript:v19];
+      v21 = [structureCopy objectForKeyedSubscript:v19];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -513,7 +513,7 @@
             goto LABEL_36;
           }
 
-          v23 = v16;
+          v23 = allKeys3;
           v24 = v20;
           v25 = [v21 objectAtIndexedSubscript:0];
           v44 = 0u;
@@ -551,9 +551,9 @@ LABEL_28:
 
           while (v28);
 
-          v7 = v40;
+          structureCopy = v40;
           v12 = v41;
-          v16 = v23;
+          allKeys3 = v23;
           v17 = v42;
           if (!v32)
           {
@@ -572,9 +572,9 @@ LABEL_28:
           v33 = v21;
           if ([v33 isRequired])
           {
-            v34 = [MEMORY[0x277CBEB68] null];
-            v35 = v34;
-            if (v20 == v34)
+            null = [MEMORY[0x277CBEB68] null];
+            v35 = null;
+            if (v20 == null)
             {
 
 LABEL_36:
@@ -605,7 +605,7 @@ LABEL_37:
     }
 
     v38 = 1;
-    v43 = [v16 countByEnumeratingWithState:&v48 objects:v53 count:16];
+    v43 = [allKeys3 countByEnumeratingWithState:&v48 objects:v53 count:16];
     if (v43)
     {
       continue;

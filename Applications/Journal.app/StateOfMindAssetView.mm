@@ -3,7 +3,7 @@
 - (NSString)accessibilityValue;
 - (int64_t)accessibilityContainerType;
 - (void)layoutSubviews;
-- (void)setAccessibilityValue:(id)a3;
+- (void)setAccessibilityValue:(id)value;
 - (void)userInterfaceStyleChanged;
 @end
 
@@ -11,7 +11,7 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000F67F4();
 
   return v3 & 1;
@@ -19,7 +19,7 @@
 
 - (int64_t)accessibilityContainerType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000F6968();
 
   return v3;
@@ -27,7 +27,7 @@
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F6B24();
   v4 = v3;
 
@@ -44,18 +44,18 @@
   return v5;
 }
 
-- (void)setAccessibilityValue:(id)a3
+- (void)setAccessibilityValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
-    v4 = self;
+    selfCopy = self;
     v5 = String._bridgeToObjectiveC()();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -66,13 +66,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F7980();
 }
 
 - (void)userInterfaceStyleChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000F7BD4();
 }
 

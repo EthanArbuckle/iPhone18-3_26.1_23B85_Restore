@@ -13,23 +13,23 @@
 - (BOOL)_hasStartedTranslation;
 - (BOOL)_isActiveTabPausedOrPlaying;
 - (BOOL)_isSiriReaderCurrentlyActive;
-- (BOOL)_presentBrowsingAssistantFromViewController:(id)a3 withSourceInfo:(id)a4 fromSafariViewController:(BOOL)a5;
+- (BOOL)_presentBrowsingAssistantFromViewController:(id)controller withSourceInfo:(id)info fromSafariViewController:(BOOL)viewController;
 - (BOOL)_shouldEnableDownloadsAlert;
-- (BOOL)_shouldShowItemForAction:(id)a3;
+- (BOOL)_shouldShowItemForAction:(id)action;
 - (BOOL)_shouldShowUnviewedFinishedDownloadsIndicator;
 - (BOOL)isReaderModeAvailable;
-- (BOOL)presentMenuFromViewController:(id)a3 withSourceInfo:(id)a4 fromSafariViewController:(BOOL)a5;
+- (BOOL)presentMenuFromViewController:(id)controller withSourceInfo:(id)info fromSafariViewController:(BOOL)viewController;
 - (NSArray)cardItems;
 - (SFBrowsingAssistantMenuSection)settingsSection;
 - (UIViewController)viewController;
 - (_SFBrowserContentController)browserContentController;
-- (_SFPageFormatMenuController)initWithBrowserContentController:(id)a3;
+- (_SFPageFormatMenuController)initWithBrowserContentController:(id)controller;
 - (id)_advancedPrivateBrowsingPrivacyProtectionsAlertItem;
 - (id)_clearEditsAlertItem;
 - (id)_consentCard;
 - (id)_contentBlockerManager;
 - (id)_contentBlockersToggleAlertItem;
-- (id)_desktopMobileToggleAlertItemWithOrientation:(int64_t)a3;
+- (id)_desktopMobileToggleAlertItemWithOrientation:(int64_t)orientation;
 - (id)_downloadsAlertItem;
 - (id)_downloadsSection;
 - (id)_editToolbarAlertItem;
@@ -41,11 +41,11 @@
 - (id)_extensionsSection;
 - (id)_fullScreenAlertItem;
 - (id)_internalTapToRadarTranslationAlertItem;
-- (id)_itemForAction:(id)a3;
+- (id)_itemForAction:(id)action;
 - (id)_listenToPageCard;
 - (id)_listeningControlsAlertItem;
 - (id)_localizedStringOfRunningDownloads;
-- (id)_makeItemForAction:(id)a3;
+- (id)_makeItemForAction:(id)action;
 - (id)_manageExtensionsAlertItem;
 - (id)_mediaStateAlertItem;
 - (id)_moreControlsAlertItem;
@@ -65,93 +65,93 @@
 - (id)_reportScribbleIssueItem;
 - (id)_reportWebCompatibilityIssueItemMainMenu;
 - (id)_reportWebCompatibilityIssueItemMoreMenu;
-- (id)_reportWebCompatibilityIssueItemWithAction:(int64_t)a3;
+- (id)_reportWebCompatibilityIssueItemWithAction:(int64_t)action;
 - (id)_scribbleAlertItem;
 - (id)_siriReaderAlertItem;
-- (id)_siriReaderAlertItemWithState:(int64_t)a3 identifier:(id)a4;
-- (id)_titleForPlaybackState:(int64_t)a3;
-- (id)_translateAlertItemForLocaleIdentifier:(id)a3;
+- (id)_siriReaderAlertItemWithState:(int64_t)state identifier:(id)identifier;
+- (id)_titleForPlaybackState:(int64_t)state;
+- (id)_translateAlertItemForLocaleIdentifier:(id)identifier;
 - (id)_userFeedbackAutofillAlertItem;
 - (id)_userFeedbackTranslationAlertItem;
 - (id)_viewSecurityInformationAlertItem;
 - (id)_webExtensionsController;
 - (id)_websiteSettingsAlertItem;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)menuForOrientation:(int64_t)a3 sourceInfo:(id)a4;
-- (id)moreMenuSectionsForEditMode:(BOOL)a3;
-- (id)primaryMenuSectionsForEditMode:(BOOL)a3 inFirstLevelMenu:(BOOL)a4;
-- (id)viewControllerForPresentationForItemController:(id)a3;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)menuForOrientation:(int64_t)orientation sourceInfo:(id)info;
+- (id)moreMenuSectionsForEditMode:(BOOL)mode;
+- (id)primaryMenuSectionsForEditMode:(BOOL)mode inFirstLevelMenu:(BOOL)menu;
+- (id)viewControllerForPresentationForItemController:(id)controller;
 - (int64_t)_deviceOrientation;
 - (unint64_t)_listenToPageActionStateForActiveTab;
-- (void)_anchorInWindowCoordinatesForAlert:(id)a3;
-- (void)_buildTranslationAlertItemsWithSourceInfo:(id)a3;
+- (void)_anchorInWindowCoordinatesForAlert:(id)alert;
+- (void)_buildTranslationAlertItemsWithSourceInfo:(id)info;
 - (void)_clearCachedCardItems;
 - (void)_clearCachedItems;
-- (void)_constructMenuForAlert:(id)a3 orientation:(int64_t)a4;
-- (void)_didTapButtonInStepper:(id)a3;
+- (void)_constructMenuForAlert:(id)alert orientation:(int64_t)orientation;
+- (void)_didTapButtonInStepper:(id)stepper;
 - (void)_didTapFindOnPage;
 - (void)_donateSummaryPresentationStartedIfNeeded;
 - (void)_hideReader;
 - (void)_invokeListenToPage;
 - (void)_presentSecurityInformation;
-- (void)_readerAvailabilityDidChange:(id)a3;
+- (void)_readerAvailabilityDidChange:(id)change;
 - (void)_showReader;
-- (void)_translationAvailabilityDidChange:(id)a3;
-- (void)_updateDownloadsAlertItem:(id)a3;
-- (void)_updateListenToPageButtonAvailabilityForCard:(id)a3;
+- (void)_translationAvailabilityDidChange:(id)change;
+- (void)_updateDownloadsAlertItem:(id)item;
+- (void)_updateListenToPageButtonAvailabilityForCard:(id)card;
 - (void)_updateListenToPageIfNeeded;
-- (void)_updateSiriReaderPlaybackStateAndIdentifierWithCompletion:(id)a3;
-- (void)browsingAssistantWillAppear:(id)a3;
-- (void)browsingAssistantWillDisappear:(id)a3;
-- (void)configureMainHeaderFooter:(id)a3;
-- (void)configureReaderButtonFooter:(id)a3;
-- (void)didReportUserResponseFeedback:(id)a3;
+- (void)_updateSiriReaderPlaybackStateAndIdentifierWithCompletion:(id)completion;
+- (void)browsingAssistantWillAppear:(id)appear;
+- (void)browsingAssistantWillDisappear:(id)disappear;
+- (void)configureMainHeaderFooter:(id)footer;
+- (void)configureReaderButtonFooter:(id)footer;
+- (void)didReportUserResponseFeedback:(id)feedback;
 - (void)dismissMenu;
-- (void)presentModalViewController:(id)a3 completion:(id)a4;
+- (void)presentModalViewController:(id)controller completion:(id)completion;
 - (void)reloadAlert;
 - (void)reloadBrowsingAssistantIfNeeded;
 - (void)updateReaderCardWithSummaryIfNeeded;
-- (void)updateShouldShowListeningControls:(BOOL)a3;
+- (void)updateShouldShowListeningControls:(BOOL)controls;
 @end
 
 @implementation _SFPageFormatMenuController
 
-- (void)_updateSiriReaderPlaybackStateAndIdentifierWithCompletion:(id)a3
+- (void)_updateSiriReaderPlaybackStateAndIdentifierWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+  completionCopy = completion;
+  mEMORY[0x1E69B1B90] = [MEMORY[0x1E69B1B90] sharedPlaybackController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __89___SFPageFormatMenuController__updateSiriReaderPlaybackStateAndIdentifierWithCompletion___block_invoke;
   v7[3] = &unk_1E8490818;
-  v8 = v4;
-  v9 = v3;
-  v5 = v3;
-  v6 = v4;
+  v8 = mEMORY[0x1E69B1B90];
+  v9 = completionCopy;
+  v5 = completionCopy;
+  v6 = mEMORY[0x1E69B1B90];
   [v6 updatePlaybackStateWithCompletion:v7];
 }
 
-- (_SFPageFormatMenuController)initWithBrowserContentController:(id)a3
+- (_SFPageFormatMenuController)initWithBrowserContentController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = _SFPageFormatMenuController;
   v5 = [(_SFPageFormatMenuController *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_browserContentController, v4);
+    objc_storeWeak(&v5->_browserContentController, controllerCopy);
     v7 = objc_alloc_init(MEMORY[0x1E69E3098]);
     featureManager = v6->_featureManager;
     v6->_featureManager = v7;
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v6 selector:sel__readerAvailabilityDidChange_ name:@"readerAvailabilityDidChange" object:0];
-    [v9 addObserver:v6 selector:sel__translationAvailabilityDidChange_ name:*MEMORY[0x1E69C9A10] object:0];
-    [v9 addObserver:v6 selector:sel__totalProgressDidChange_ name:@"_SFDownloadManagerTotalProgressDidChangeNotification" object:0];
-    [v9 addObserver:v6 selector:sel__didFinishLastDownload_ name:@"_SFDownloadManagerDidFinishLastDownloadNotification" object:0];
-    [v9 addObserver:v6 selector:sel__hasUnviewedDownloadsDidChange_ name:@"_SFDownloadManagerHasUnviewedDownloadsDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel__readerAvailabilityDidChange_ name:@"readerAvailabilityDidChange" object:0];
+    [defaultCenter addObserver:v6 selector:sel__translationAvailabilityDidChange_ name:*MEMORY[0x1E69C9A10] object:0];
+    [defaultCenter addObserver:v6 selector:sel__totalProgressDidChange_ name:@"_SFDownloadManagerTotalProgressDidChangeNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel__didFinishLastDownload_ name:@"_SFDownloadManagerDidFinishLastDownloadNotification" object:0];
+    [defaultCenter addObserver:v6 selector:sel__hasUnviewedDownloadsDidChange_ name:@"_SFDownloadManagerHasUnviewedDownloadsDidChangeNotification" object:0];
     v10 = v6;
   }
 
@@ -161,31 +161,31 @@
 - (id)_webExtensionsController
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 webExtensionsController];
+  activeDocument = [WeakRetained activeDocument];
+  webExtensionsController = [activeDocument webExtensionsController];
 
-  return v4;
+  return webExtensionsController;
 }
 
 - (id)_contentBlockerManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 contentBlockerManager];
+  activeDocument = [WeakRetained activeDocument];
+  contentBlockerManager = [activeDocument contentBlockerManager];
 
-  return v4;
+  return contentBlockerManager;
 }
 
-- (BOOL)_presentBrowsingAssistantFromViewController:(id)a3 withSourceInfo:(id)a4 fromSafariViewController:(BOOL)a5
+- (BOOL)_presentBrowsingAssistantFromViewController:(id)controller withSourceInfo:(id)info fromSafariViewController:(BOOL)viewController
 {
   v42[1] = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v33 = a4;
+  controllerCopy = controller;
+  infoCopy = info;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   v7 = objc_loadWeakRetained(&self->_viewController);
-  v8 = [v7 presentingViewController];
+  presentingViewController = [v7 presentingViewController];
 
-  if (v8)
+  if (presentingViewController)
   {
     if ([v7 stepperFocused])
     {
@@ -202,44 +202,44 @@
   {
     [(_SFPageFormatMenuController *)self _clearCachedItems];
     v9 = objc_alloc(MEMORY[0x1E69B1AD8]);
-    v10 = [WeakRetained activeDocument];
-    v11 = [v9 initWithShowingOnStartPage:{objc_msgSend(v10, "isShowingSystemStartPage")}];
+    activeDocument = [WeakRetained activeDocument];
+    v11 = [v9 initWithShowingOnStartPage:{objc_msgSend(activeDocument, "isShowingSystemStartPage")}];
 
     [v11 setDataSource:self];
     [v11 setDelegate:self];
     [v11 setModalPresentationStyle:7];
     objc_storeWeak(&self->_viewController, v11);
-    v12 = [v11 popoverPresentationController];
+    popoverPresentationController = [v11 popoverPresentationController];
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v33 permittedArrowDirections];
+      permittedArrowDirections = [infoCopy permittedArrowDirections];
     }
 
     else
     {
-      v13 = 1;
+      permittedArrowDirections = 1;
     }
 
-    [v12 setPermittedArrowDirections:v13];
-    v14 = [[_SFPopoverPresentationDelegate alloc] initWithSourceInfo:v33];
+    [popoverPresentationController setPermittedArrowDirections:permittedArrowDirections];
+    v14 = [[_SFPopoverPresentationDelegate alloc] initWithSourceInfo:infoCopy];
     [(_SFPopoverPresentationDelegate *)v14 setNestsAdaptiveSheetPresentationInNavigationController:0];
     v29 = v14;
-    [(_SFPopoverPresentationDelegate *)v14 attachToPopoverPresentationController:v12];
-    v15 = [v32 view];
-    v16 = [v15 window];
-    v17 = [v16 windowScene];
+    [(_SFPopoverPresentationDelegate *)v14 attachToPopoverPresentationController:popoverPresentationController];
+    view = [controllerCopy view];
+    window = [view window];
+    windowScene = [window windowScene];
     v18 = _SFContextInfoWithComment();
     location[1] = MEMORY[0x1E69E9820];
     location[2] = 3221225472;
     location[3] = __115___SFPageFormatMenuController__presentBrowsingAssistantFromViewController_withSourceInfo_fromSafariViewController___block_invoke;
     location[4] = &unk_1E8493EF0;
-    v19 = v33;
+    v19 = infoCopy;
     v40 = v19;
-    v30 = v12;
+    v30 = popoverPresentationController;
     v41 = v30;
     _SFPopoverSourceInfoUnwrap();
 
-    v20 = [v30 adaptiveSheetPresentationController];
+    adaptiveSheetPresentationController = [v30 adaptiveSheetPresentationController];
     objc_initWeak(location, v11);
     v21 = MEMORY[0x1E69DCF58];
     v36[0] = MEMORY[0x1E69E9820];
@@ -247,21 +247,21 @@
     v36[2] = __115___SFPageFormatMenuController__presentBrowsingAssistantFromViewController_withSourceInfo_fromSafariViewController___block_invoke_4;
     v36[3] = &unk_1E8493F38;
     objc_copyWeak(&v38, location);
-    v22 = v32;
+    v22 = controllerCopy;
     v37 = v22;
     v23 = [v21 customDetentWithIdentifier:0 resolver:v36];
     v42[0] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
-    [v20 setDetents:v24];
+    [adaptiveSheetPresentationController setDetents:v24];
 
-    [v20 setPrefersGrabberVisible:1];
+    [adaptiveSheetPresentationController setPrefersGrabberVisible:1];
     if ([MEMORY[0x1E69C8880] isSolariumEnabled])
     {
-      [v20 setPrefersGrabberVisible:0];
+      [adaptiveSheetPresentationController setPrefersGrabberVisible:0];
       [v30 _setShouldHideArrow:{objc_msgSend(v19, "shouldHideArrow")}];
-      v25 = [v19 zoomTransitionSourceView];
+      zoomTransitionSourceView = [v19 zoomTransitionSourceView];
 
-      if (v25)
+      if (zoomTransitionSourceView)
       {
         v26 = MEMORY[0x1E69DD260];
         v34[0] = MEMORY[0x1E69E9820];
@@ -282,30 +282,30 @@
     objc_destroyWeak(location);
   }
 
-  return v8 == 0;
+  return presentingViewController == 0;
 }
 
-- (BOOL)presentMenuFromViewController:(id)a3 withSourceInfo:(id)a4 fromSafariViewController:(BOOL)a5
+- (BOOL)presentMenuFromViewController:(id)controller withSourceInfo:(id)info fromSafariViewController:(BOOL)viewController
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  infoCopy = info;
   if ([MEMORY[0x1E69C8880] isBrowsingAssistantEnabled])
   {
-    v10 = [(_SFPageFormatMenuController *)self _presentBrowsingAssistantFromViewController:v8 withSourceInfo:v9 fromSafariViewController:v5];
+    v10 = [(_SFPageFormatMenuController *)self _presentBrowsingAssistantFromViewController:controllerCopy withSourceInfo:infoCopy fromSafariViewController:viewControllerCopy];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v12 = [WeakRetained presentingViewController];
+    presentingViewController = [WeakRetained presentingViewController];
 
-    if (v12)
+    if (presentingViewController)
     {
       v13 = objc_loadWeakRetained(&self->_viewController);
-      v14 = [v13 focusedItem];
+      focusedItem = [v13 focusedItem];
 
-      if (v14)
+      if (focusedItem)
       {
         [v13 setFocusedItem:0];
       }
@@ -320,53 +320,53 @@
 
     else
     {
-      v15 = [v8 view];
-      v16 = [v15 window];
-      v17 = [v16 windowScene];
-      v18 = -[_SFPageFormatMenuController menuForOrientation:sourceInfo:](self, "menuForOrientation:sourceInfo:", [v17 interfaceOrientation], v9);
+      view = [controllerCopy view];
+      window = [view window];
+      windowScene = [window windowScene];
+      v18 = -[_SFPageFormatMenuController menuForOrientation:sourceInfo:](self, "menuForOrientation:sourceInfo:", [windowScene interfaceOrientation], infoCopy);
 
-      [v18 setUsesReverseOrder:{objc_msgSend(v9, "permittedArrowDirections") == 2}];
-      [v18 setProvenance:{objc_msgSend(v9, "provenance")}];
+      [v18 setUsesReverseOrder:{objc_msgSend(infoCopy, "permittedArrowDirections") == 2}];
+      [v18 setProvenance:{objc_msgSend(infoCopy, "provenance")}];
       [v18 setModalPresentationStyle:7];
-      v19 = [v18 view];
-      [v19 setAccessibilityIdentifier:@"PageFormatMenu"];
+      view2 = [v18 view];
+      [view2 setAccessibilityIdentifier:@"PageFormatMenu"];
 
-      v20 = [[_SFPopoverPresentationDelegate alloc] initWithSourceInfo:v9];
+      v20 = [[_SFPopoverPresentationDelegate alloc] initWithSourceInfo:infoCopy];
       [(_SFPopoverPresentationDelegate *)v20 setPopoverUsesAdaptivePresentationInCompact:0];
-      v21 = [v18 popoverPresentationController];
+      popoverPresentationController = [v18 popoverPresentationController];
       v32 = v20;
-      [(_SFPopoverPresentationDelegate *)v20 attachToPopoverPresentationController:v21];
-      [v21 _setShouldHideArrow:{objc_msgSend(v9, "shouldHideArrow")}];
-      if ([v9 shouldPassthroughSuperview])
+      [(_SFPopoverPresentationDelegate *)v20 attachToPopoverPresentationController:popoverPresentationController];
+      [popoverPresentationController _setShouldHideArrow:{objc_msgSend(infoCopy, "shouldHideArrow")}];
+      if ([infoCopy shouldPassthroughSuperview])
       {
-        [v21 _setPreferredHorizontalAlignment:1];
+        [popoverPresentationController _setPreferredHorizontalAlignment:1];
       }
 
       if (objc_opt_respondsToSelector())
       {
-        v22 = [v9 permittedArrowDirections];
+        permittedArrowDirections = [infoCopy permittedArrowDirections];
       }
 
       else
       {
-        v22 = 1;
+        permittedArrowDirections = 1;
       }
 
-      [v21 setPermittedArrowDirections:v22];
+      [popoverPresentationController setPermittedArrowDirections:permittedArrowDirections];
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v24 = [v8 view];
-      v25 = [v24 window];
-      v26 = [v25 windowScene];
+      view3 = [controllerCopy view];
+      window2 = [view3 window];
+      windowScene2 = [window2 windowScene];
       v27 = _SFContextInfoWithComment();
       v33 = v23;
-      v34 = v9;
+      v34 = infoCopy;
       v35 = v18;
       v28 = v18;
       v29 = v23;
       _SFPopoverSourceInfoUnwrap();
 
       v10 = 1;
-      [v8 presentViewController:v28 animated:1 completion:0];
+      [controllerCopy presentViewController:v28 animated:1 completion:0];
       v30 = objc_loadWeakRetained(&self->_browserContentController);
       [v30 clearBadgeOnPageFormatMenu];
 
@@ -377,56 +377,56 @@
   return v10;
 }
 
-- (id)menuForOrientation:(int64_t)a3 sourceInfo:(id)a4
+- (id)menuForOrientation:(int64_t)orientation sourceInfo:(id)info
 {
   v6 = objc_alloc_init(_SFSettingsAlertController);
-  [(_SFPageFormatMenuController *)self _constructMenuForAlert:v6 orientation:a3];
+  [(_SFPageFormatMenuController *)self _constructMenuForAlert:v6 orientation:orientation];
 
   return v6;
 }
 
-- (void)_constructMenuForAlert:(id)a3 orientation:(int64_t)a4
+- (void)_constructMenuForAlert:(id)alert orientation:(int64_t)orientation
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  alertCopy = alert;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v8 = [WeakRetained activeDocument];
-  if ([v8 isShowingSystemStartPage])
+  activeDocument = [WeakRetained activeDocument];
+  if ([activeDocument isShowingSystemStartPage])
   {
-    v9 = [(_SFPageFormatMenuController *)self _otherTabAudioMediaStateAlertItem];
+    _otherTabAudioMediaStateAlertItem = [(_SFPageFormatMenuController *)self _otherTabAudioMediaStateAlertItem];
 LABEL_7:
-    v15 = v9;
-    [v6 addItem:v9];
+    v15 = _otherTabAudioMediaStateAlertItem;
+    [alertCopy addItem:_otherTabAudioMediaStateAlertItem];
 
     goto LABEL_8;
   }
 
-  v10 = [WeakRetained isShowingReader];
+  isShowingReader = [WeakRetained isShowingReader];
   if (self->_shouldShowListeningControls)
   {
-    v11 = [(_SFPageFormatMenuController *)self _endListeningToSiriReaderAlertItem];
-    [v6 addItem:v11];
+    _endListeningToSiriReaderAlertItem = [(_SFPageFormatMenuController *)self _endListeningToSiriReaderAlertItem];
+    [alertCopy addItem:_endListeningToSiriReaderAlertItem];
 
     if (![(_SFPageFormatMenuController *)self _isActiveTabPausedOrPlaying])
     {
-      v12 = [(_SFPageFormatMenuController *)self _siriReaderAlertItem];
-      [v6 addItem:v12];
+      _siriReaderAlertItem = [(_SFPageFormatMenuController *)self _siriReaderAlertItem];
+      [alertCopy addItem:_siriReaderAlertItem];
     }
 
-    [v6 addDivider];
-    v13 = [(_SFPageFormatMenuController *)self _playbackStateAndPositionAlertItem];
-    [v6 addItem:v13];
+    [alertCopy addDivider];
+    _playbackStateAndPositionAlertItem = [(_SFPageFormatMenuController *)self _playbackStateAndPositionAlertItem];
+    [alertCopy addItem:_playbackStateAndPositionAlertItem];
 
-    v14 = [(_SFPageFormatMenuController *)self _playbackRateAlertItem];
-    [v6 addItem:v14];
+    _playbackRateAlertItem = [(_SFPageFormatMenuController *)self _playbackRateAlertItem];
+    [alertCopy addItem:_playbackRateAlertItem];
 
-    [v6 addDivider];
-    v9 = [(_SFPageFormatMenuController *)self _moreControlsAlertItem];
+    [alertCopy addDivider];
+    _otherTabAudioMediaStateAlertItem = [(_SFPageFormatMenuController *)self _moreControlsAlertItem];
     goto LABEL_7;
   }
 
-  v16 = v10;
-  if (v10)
+  v16 = isShowingReader;
+  if (isShowingReader)
   {
     [(_SFPageFormatMenuController *)self _readerTextSizeAlertItem];
   }
@@ -436,25 +436,25 @@ LABEL_7:
     [(_SFPageFormatMenuController *)self _pageZoomAlertItem];
   }
   v17 = ;
-  [v6 addItem:v17];
+  [alertCopy addItem:v17];
 
-  v18 = [(_SFPageFormatMenuController *)self _readerAlertItem];
+  _readerAlertItem = [(_SFPageFormatMenuController *)self _readerAlertItem];
   readerAlertItem = self->_readerAlertItem;
-  self->_readerAlertItem = v18;
+  self->_readerAlertItem = _readerAlertItem;
 
   if (v16)
   {
-    v20 = 1;
+    isReaderAvailable = 1;
   }
 
   else
   {
-    v21 = [v8 readerContext];
-    v20 = [v21 isReaderAvailable];
+    readerContext = [activeDocument readerContext];
+    isReaderAvailable = [readerContext isReaderAvailable];
   }
 
-  [(_SFSettingsAlertItem *)self->_readerAlertItem setEnabled:v20];
-  [v6 addItem:self->_readerAlertItem];
+  [(_SFSettingsAlertItem *)self->_readerAlertItem setEnabled:isReaderAvailable];
+  [alertCopy addItem:self->_readerAlertItem];
   if ([MEMORY[0x1E69C8880] isSiriReadThisEnabled] && objc_msgSend(WeakRetained, "supportsSiriReadThis"))
   {
     if ([(_SFPageFormatMenuController *)self _isSiriReaderCurrentlyActive])
@@ -467,53 +467,53 @@ LABEL_7:
       [(_SFPageFormatMenuController *)self _siriReaderAlertItem];
     }
     v22 = ;
-    [v6 addItem:v22];
+    [alertCopy addItem:v22];
   }
 
   if ((v16 & 1) == 0)
   {
-    v59 = v20;
-    if (([WeakRetained hasDedicatedMediaStateButton] & 1) != 0 || !objc_msgSend(v8, "mediaStateIcon"))
+    v59 = isReaderAvailable;
+    if (([WeakRetained hasDedicatedMediaStateButton] & 1) != 0 || !objc_msgSend(activeDocument, "mediaStateIcon"))
     {
       v24 = 0;
     }
 
     else
     {
-      [v6 addDivider];
-      v23 = [(_SFPageFormatMenuController *)self _mediaStateAlertItem];
-      [v6 addItem:v23];
+      [alertCopy addDivider];
+      _mediaStateAlertItem = [(_SFPageFormatMenuController *)self _mediaStateAlertItem];
+      [alertCopy addItem:_mediaStateAlertItem];
 
       v24 = 1;
     }
 
-    v25 = [WeakRetained activeDocument];
-    v26 = [v25 atLeastOneOtherTabPlayingAudio];
+    activeDocument2 = [WeakRetained activeDocument];
+    atLeastOneOtherTabPlayingAudio = [activeDocument2 atLeastOneOtherTabPlayingAudio];
 
-    if (v26)
+    if (atLeastOneOtherTabPlayingAudio)
     {
       if ((v24 & 1) == 0)
       {
-        [v6 addDivider];
+        [alertCopy addDivider];
       }
 
-      v27 = [(_SFPageFormatMenuController *)self _otherTabAudioMediaStateAlertItem];
-      [v6 addItem:v27];
+      _otherTabAudioMediaStateAlertItem2 = [(_SFPageFormatMenuController *)self _otherTabAudioMediaStateAlertItem];
+      [alertCopy addItem:_otherTabAudioMediaStateAlertItem2];
     }
 
     if (([WeakRetained hasDedicatedDownloadsToolbarItem] & 1) == 0 && -[_SFPageFormatMenuController _shouldEnableDownloadsAlert](self, "_shouldEnableDownloadsAlert"))
     {
-      [v6 addDivider];
-      v28 = [(_SFPageFormatMenuController *)self _downloadsAlertItem];
+      [alertCopy addDivider];
+      _downloadsAlertItem = [(_SFPageFormatMenuController *)self _downloadsAlertItem];
       downloadsAlertItem = self->_downloadsAlertItem;
-      self->_downloadsAlertItem = v28;
+      self->_downloadsAlertItem = _downloadsAlertItem;
 
-      [v6 addItem:self->_downloadsAlertItem];
+      [alertCopy addItem:self->_downloadsAlertItem];
     }
 
-    [v6 addDivider];
-    v30 = [v6 safari_popoverSourceInfo];
-    [(_SFPageFormatMenuController *)self _buildTranslationAlertItemsWithSourceInfo:v30];
+    [alertCopy addDivider];
+    safari_popoverSourceInfo = [alertCopy safari_popoverSourceInfo];
+    [(_SFPageFormatMenuController *)self _buildTranslationAlertItemsWithSourceInfo:safari_popoverSourceInfo];
 
     v66 = 0u;
     v67 = 0u;
@@ -534,7 +534,7 @@ LABEL_7:
             objc_enumerationMutation(v31);
           }
 
-          [v6 addItem:*(*(&v64 + 1) + 8 * i)];
+          [alertCopy addItem:*(*(&v64 + 1) + 8 * i)];
         }
 
         v33 = [(NSArray *)v31 countByEnumeratingWithState:&v64 objects:v69 count:16];
@@ -543,101 +543,101 @@ LABEL_7:
       while (v33);
     }
 
-    LOBYTE(v20) = v59;
+    LOBYTE(isReaderAvailable) = v59;
   }
 
   if (-[_SFPageFormatMenuController _canShowWebsiteSettings](self, "_canShowWebsiteSettings") && [MEMORY[0x1E69C8880] isInternalInstall])
   {
-    [v6 addDivider];
-    v36 = [(_SFPageFormatMenuController *)self _userFeedbackAutofillAlertItem];
-    [v6 addItem:v36];
+    [alertCopy addDivider];
+    _userFeedbackAutofillAlertItem = [(_SFPageFormatMenuController *)self _userFeedbackAutofillAlertItem];
+    [alertCopy addItem:_userFeedbackAutofillAlertItem];
   }
 
-  [v6 addDivider];
-  if ((v20 & 1) == 0)
+  [alertCopy addDivider];
+  if ((isReaderAvailable & 1) == 0)
   {
-    v37 = [v8 readerContext];
-    [v37 checkReaderAvailability];
+    readerContext2 = [activeDocument readerContext];
+    [readerContext2 checkReaderAvailability];
   }
 
   if (v16)
   {
-    v38 = [(_SFPageFormatMenuController *)self _readerFontAlertItem];
-    [v6 addItem:v38];
+    _readerFontAlertItem = [(_SFPageFormatMenuController *)self _readerFontAlertItem];
+    [alertCopy addItem:_readerFontAlertItem];
 
-    v39 = [(_SFPageFormatMenuController *)self _readerThemeAlertItem];
+    _readerThemeAlertItem = [(_SFPageFormatMenuController *)self _readerThemeAlertItem];
 LABEL_58:
-    v44 = v39;
-    [v6 addItem:v39];
+    v44 = _readerThemeAlertItem;
+    [alertCopy addItem:_readerThemeAlertItem];
 
     goto LABEL_59;
   }
 
   if ([(_SFPageFormatMenuController *)self _canHideToolbar])
   {
-    v40 = [(_SFPageFormatMenuController *)self _fullScreenAlertItem];
-    [v6 addItem:v40];
+    _fullScreenAlertItem = [(_SFPageFormatMenuController *)self _fullScreenAlertItem];
+    [alertCopy addItem:_fullScreenAlertItem];
   }
 
   if ([(_SFPageFormatMenuController *)self _canToggleBetweenDesktopAndMobileSite])
   {
-    v41 = [(_SFPageFormatMenuController *)self _desktopMobileToggleAlertItemWithOrientation:a4];
-    [v6 addItem:v41];
+    v41 = [(_SFPageFormatMenuController *)self _desktopMobileToggleAlertItemWithOrientation:orientation];
+    [alertCopy addItem:v41];
   }
 
   if ([(_SFPageFormatMenuController *)self _canToggleContentBlockers])
   {
-    v42 = [(_SFPageFormatMenuController *)self _contentBlockersToggleAlertItem];
-    [v6 addItem:v42];
+    _contentBlockersToggleAlertItem = [(_SFPageFormatMenuController *)self _contentBlockersToggleAlertItem];
+    [alertCopy addItem:_contentBlockersToggleAlertItem];
   }
 
   if ([(_SFPageFormatMenuController *)self _canToggleAdvancedPrivateBrowsingPrivacyProtections])
   {
-    v43 = [(_SFPageFormatMenuController *)self _advancedPrivateBrowsingPrivacyProtectionsAlertItem];
-    [v6 addItem:v43];
+    _advancedPrivateBrowsingPrivacyProtectionsAlertItem = [(_SFPageFormatMenuController *)self _advancedPrivateBrowsingPrivacyProtectionsAlertItem];
+    [alertCopy addItem:_advancedPrivateBrowsingPrivacyProtectionsAlertItem];
   }
 
   if ([(_SFPageFormatMenuController *)self _canTogglePrivateRelay])
   {
-    v39 = [(_SFPageFormatMenuController *)self _privateRelayToggleAlertItem];
+    _readerThemeAlertItem = [(_SFPageFormatMenuController *)self _privateRelayToggleAlertItem];
     goto LABEL_58;
   }
 
 LABEL_59:
-  [v6 addDivider];
+  [alertCopy addDivider];
   if ([(_SFPageFormatMenuController *)self _canShowWebsiteSettings])
   {
-    v45 = [(_SFPageFormatMenuController *)self _websiteSettingsAlertItem];
-    [v6 addItem:v45];
+    _websiteSettingsAlertItem = [(_SFPageFormatMenuController *)self _websiteSettingsAlertItem];
+    [alertCopy addItem:_websiteSettingsAlertItem];
   }
 
   if (!(v16 & 1 | (([WeakRetained supportsPrivacyReport] & 1) == 0)))
   {
     v46 = [_SFPageFormatMenuPrivacyReportController alloc];
-    v47 = [WeakRetained activeDocument];
-    v48 = [(_SFPageFormatMenuPrivacyReportController *)v46 initWithDocument:v47];
+    activeDocument3 = [WeakRetained activeDocument];
+    v48 = [(_SFPageFormatMenuPrivacyReportController *)v46 initWithDocument:activeDocument3];
 
     [(_SFPageFormatMenuPrivacyReportController *)v48 setDelegate:self];
-    v49 = [(_SFPageFormatMenuPrivacyReportController *)v48 alertItem];
-    [v6 addItem:v49];
+    alertItem = [(_SFPageFormatMenuPrivacyReportController *)v48 alertItem];
+    [alertCopy addItem:alertItem];
   }
 
   if ((v16 & 1) == 0)
   {
     if (([WeakRetained hasDedicatedExtensionsButton] & 1) == 0)
     {
-      v50 = [(_SFPageFormatMenuController *)self _hasExtensionsAvailableToShowInManageExtensionsView];
-      if (v50)
+      _hasExtensionsAvailableToShowInManageExtensionsView = [(_SFPageFormatMenuController *)self _hasExtensionsAvailableToShowInManageExtensionsView];
+      if (_hasExtensionsAvailableToShowInManageExtensionsView)
       {
-        [v6 addDivider];
+        [alertCopy addDivider];
       }
 
       v62 = 0u;
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v51 = [(_SFPageFormatMenuController *)self _extensionItems];
-      v52 = [v51 countByEnumeratingWithState:&v60 objects:v68 count:16];
+      _extensionItems = [(_SFPageFormatMenuController *)self _extensionItems];
+      v52 = [_extensionItems countByEnumeratingWithState:&v60 objects:v68 count:16];
       if (v52)
       {
         v53 = v52;
@@ -648,32 +648,32 @@ LABEL_59:
           {
             if (*v61 != v54)
             {
-              objc_enumerationMutation(v51);
+              objc_enumerationMutation(_extensionItems);
             }
 
-            [v6 addItem:*(*(&v60 + 1) + 8 * j)];
+            [alertCopy addItem:*(*(&v60 + 1) + 8 * j)];
           }
 
-          v53 = [v51 countByEnumeratingWithState:&v60 objects:v68 count:16];
+          v53 = [_extensionItems countByEnumeratingWithState:&v60 objects:v68 count:16];
         }
 
         while (v53);
       }
 
-      if (v50)
+      if (_hasExtensionsAvailableToShowInManageExtensionsView)
       {
-        v56 = [(_SFPageFormatMenuController *)self _manageExtensionsAlertItem];
-        [v6 addItem:v56];
+        _manageExtensionsAlertItem = [(_SFPageFormatMenuController *)self _manageExtensionsAlertItem];
+        [alertCopy addItem:_manageExtensionsAlertItem];
       }
     }
 
     if (WBSAXShouldShowAnimatedImageControls() && [MEMORY[0x1E69853A0] instancesRespondToSelector:sel__pauseAllAnimationsWithCompletionHandler_])
     {
-      [v6 addDivider];
-      v57 = [v8 activeWebView];
-      v58 = [v57 _allowsAnyAnimationToPlay];
+      [alertCopy addDivider];
+      activeWebView = [activeDocument activeWebView];
+      _allowsAnyAnimationToPlay = [activeWebView _allowsAnyAnimationToPlay];
 
-      if (v58)
+      if (_allowsAnyAnimationToPlay)
       {
         [(_SFPageFormatMenuController *)self _pauseAllAnimationsAlertItem];
       }
@@ -682,7 +682,7 @@ LABEL_59:
       {
         [(_SFPageFormatMenuController *)self _playAllAnimationsAlertItem];
       }
-      v9 = ;
+      _otherTabAudioMediaStateAlertItem = ;
       goto LABEL_7;
     }
   }
@@ -692,20 +692,20 @@ LABEL_8:
 
 - (BOOL)_hasExtensionsAvailableToShowInManageExtensionsView
 {
-  v3 = [(_SFPageFormatMenuController *)self _webExtensionsController];
-  if ([v3 loadEnabledExtensionsWasCalled])
+  _webExtensionsController = [(_SFPageFormatMenuController *)self _webExtensionsController];
+  if ([_webExtensionsController loadEnabledExtensionsWasCalled])
   {
-    v4 = [(_SFPageFormatMenuController *)self _contentBlockerManager];
-    v5 = [v3 extensions];
-    if ([v5 count])
+    _contentBlockerManager = [(_SFPageFormatMenuController *)self _contentBlockerManager];
+    extensions = [_webExtensionsController extensions];
+    if ([extensions count])
     {
       v6 = 1;
     }
 
     else
     {
-      v7 = [v4 extensions];
-      v6 = [v7 count] != 0;
+      extensions2 = [_contentBlockerManager extensions];
+      v6 = [extensions2 count] != 0;
     }
   }
 
@@ -720,20 +720,20 @@ LABEL_8:
 - (id)_extensionItems
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [(_SFPageFormatMenuController *)self _webExtensionsController];
-  v5 = [WeakRetained activeDocument];
-  v6 = [v5 isPrivateBrowsingEnabled];
+  _webExtensionsController = [(_SFPageFormatMenuController *)self _webExtensionsController];
+  activeDocument = [WeakRetained activeDocument];
+  isPrivateBrowsingEnabled = [activeDocument isPrivateBrowsingEnabled];
 
-  v7 = [v4 enabledExtensionsWithPrivateBrowsingEnabled:v6];
-  v8 = [WeakRetained activeTabForExtensions];
+  v7 = [_webExtensionsController enabledExtensionsWithPrivateBrowsingEnabled:isPrivateBrowsingEnabled];
+  activeTabForExtensions = [WeakRetained activeTabForExtensions];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __46___SFPageFormatMenuController__extensionItems__block_invoke;
   v13[3] = &unk_1E8493FB0;
-  v14 = v4;
-  v15 = v8;
-  v9 = v8;
-  v10 = v4;
+  v14 = _webExtensionsController;
+  v15 = activeTabForExtensions;
+  v9 = activeTabForExtensions;
+  v10 = _webExtensionsController;
   v11 = [v7 safari_mapAndFilterObjectsUsingBlock:v13];
 
   return v11;
@@ -742,36 +742,36 @@ LABEL_8:
 - (id)_siriReaderAlertItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v26 = [WeakRetained activeDocument];
-  v4 = [v26 readerContext];
-  v5 = [MEMORY[0x1E69B1B98] sharedVoiceUtilities];
-  v6 = [v5 activeSiriReaderSessionIdentifier];
-  if (v6)
+  activeDocument = [WeakRetained activeDocument];
+  readerContext = [activeDocument readerContext];
+  mEMORY[0x1E69B1B98] = [MEMORY[0x1E69B1B98] sharedVoiceUtilities];
+  activeSiriReaderSessionIdentifier = [mEMORY[0x1E69B1B98] activeSiriReaderSessionIdentifier];
+  if (activeSiriReaderSessionIdentifier)
   {
-    v7 = v6;
-    v8 = [MEMORY[0x1E69B1B98] sharedVoiceUtilities];
-    v9 = [v8 activeSiriReaderSessionURL];
-    v10 = v4;
-    v11 = [v4 readerURL];
-    v12 = [v9 isEqual:v11];
+    v7 = activeSiriReaderSessionIdentifier;
+    mEMORY[0x1E69B1B98]2 = [MEMORY[0x1E69B1B98] sharedVoiceUtilities];
+    activeSiriReaderSessionURL = [mEMORY[0x1E69B1B98]2 activeSiriReaderSessionURL];
+    v10 = readerContext;
+    readerURL = [readerContext readerURL];
+    v12 = [activeSiriReaderSessionURL isEqual:readerURL];
 
     if (v12)
     {
-      v13 = [MEMORY[0x1E69B1B98] sharedVoiceUtilities];
-      v14 = [v13 activeSiriReaderSessionIdentifier];
+      mEMORY[0x1E69B1B98]3 = [MEMORY[0x1E69B1B98] sharedVoiceUtilities];
+      activeSiriReaderSessionIdentifier2 = [mEMORY[0x1E69B1B98]3 activeSiriReaderSessionIdentifier];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v10 = v4;
+    v10 = readerContext;
   }
 
-  v13 = [MEMORY[0x1E696AFB0] UUID];
-  v14 = [v13 UUIDString];
+  mEMORY[0x1E69B1B98]3 = [MEMORY[0x1E696AFB0] UUID];
+  activeSiriReaderSessionIdentifier2 = [mEMORY[0x1E69B1B98]3 UUIDString];
 LABEL_6:
-  v15 = v14;
+  v15 = activeSiriReaderSessionIdentifier2;
 
   v16 = [(_SFPageFormatMenuController *)self _siriReaderAlertItemWithState:0 identifier:v15];
   cachedSiriReaderAlertItem = self->_cachedSiriReaderAlertItem;
@@ -779,7 +779,7 @@ LABEL_6:
 
   [(_SFSettingsAlertItem *)self->_cachedSiriReaderAlertItem setEnabled:0];
   objc_initWeak(&location, self);
-  v18 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+  mEMORY[0x1E69B1B90] = [MEMORY[0x1E69B1B90] sharedPlaybackController];
   v19 = MEMORY[0x1E69E96A0];
   v20 = MEMORY[0x1E69E96A0];
   v27[0] = MEMORY[0x1E69E9820];
@@ -791,9 +791,9 @@ LABEL_6:
   objc_copyWeak(&v31, &location);
   v22 = v10;
   v29 = v22;
-  v23 = v26;
+  v23 = activeDocument;
   v30 = v23;
-  [v18 updateContentIdentifierOnQueue:v19 completion:v27];
+  [mEMORY[0x1E69B1B90] updateContentIdentifierOnQueue:v19 completion:v27];
 
   v24 = self->_cachedSiriReaderAlertItem;
   objc_destroyWeak(&v31);
@@ -852,8 +852,8 @@ LABEL_6:
   v6 = [_SFSettingsAlertItem buttonWithTitle:v3 textStyle:v5 icon:v4 action:37 handler:v10];
   [v6 setAccessibilityIdentifier:@"ListeningControls"];
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v8 = [WeakRetained activeDocument];
-  [v6 setEnabled:{objc_msgSend(v8, "isBlockedByScreenTime") ^ 1}];
+  activeDocument = [WeakRetained activeDocument];
+  [v6 setEnabled:{objc_msgSend(activeDocument, "isBlockedByScreenTime") ^ 1}];
 
   [v6 setKeepsMenuPresented:1];
 
@@ -878,8 +878,8 @@ LABEL_6:
 
   [v4 setAccessibilityIdentifier:@"PlaybackStateAndPosition"];
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained activeDocument];
-  [v4 setEnabled:{objc_msgSend(v6, "isBlockedByScreenTime") ^ 1}];
+  activeDocument = [WeakRetained activeDocument];
+  [v4 setEnabled:{objc_msgSend(activeDocument, "isBlockedByScreenTime") ^ 1}];
 
   return v4;
 }
@@ -887,9 +887,9 @@ LABEL_6:
 - (void)reloadAlert
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v3 = [WeakRetained presentingViewController];
+  presentingViewController = [WeakRetained presentingViewController];
 
-  if (v3)
+  if (presentingViewController)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -905,10 +905,10 @@ LABEL_6:
       {
         v4 = WeakRetained;
         [v4 removeAllItems];
-        v5 = [v4 view];
-        v6 = [v5 window];
-        v7 = [v6 windowScene];
-        -[_SFPageFormatMenuController _constructMenuForAlert:orientation:](self, "_constructMenuForAlert:orientation:", v4, [v7 interfaceOrientation]);
+        view = [v4 view];
+        window = [view window];
+        windowScene = [window windowScene];
+        -[_SFPageFormatMenuController _constructMenuForAlert:orientation:](self, "_constructMenuForAlert:orientation:", v4, [windowScene interfaceOrientation]);
 
         [v4 resizeMenu];
       }
@@ -919,36 +919,36 @@ LABEL_6:
 - (void)dismissMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v2 = [WeakRetained presentingViewController];
+  presentingViewController = [WeakRetained presentingViewController];
 
-  if (v2)
+  if (presentingViewController)
   {
-    v3 = [WeakRetained presentingViewController];
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController2 = [WeakRetained presentingViewController];
+    [presentingViewController2 dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)_readerAvailabilityDidChange:(id)a3
+- (void)_readerAvailabilityDidChange:(id)change
 {
-  v12 = a3;
-  v4 = [v12 object];
+  changeCopy = change;
+  object = [changeCopy object];
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained activeDocument];
-  v7 = [v6 readerContext];
+  activeDocument = [WeakRetained activeDocument];
+  readerContext = [activeDocument readerContext];
 
-  v8 = v12;
-  if (v4 == v7)
+  v8 = changeCopy;
+  if (object == readerContext)
   {
-    v9 = [v12 userInfo];
-    v10 = [v9 objectForKeyedSubscript:@"isAvailable"];
-    v11 = [v10 BOOLValue];
+    userInfo = [changeCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:@"isAvailable"];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       [(_SFSettingsAlertItem *)self->_readerAlertItem setEnabled:1];
     }
 
-    v8 = v12;
+    v8 = changeCopy;
   }
 }
 
@@ -956,10 +956,10 @@ LABEL_6:
 {
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [WeakRetained isShowingReader];
+  isShowingReader = [WeakRetained isShowingReader];
 
   v5 = _WBSLocalizedString();
-  if (v4)
+  if (isShowingReader)
   {
     [MEMORY[0x1E69DCAB8] systemImageNamed:@"safari"];
   }
@@ -987,69 +987,69 @@ LABEL_6:
 - (BOOL)_isActiveTabPausedOrPlaying
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained siriReaderPlaybackStateForActiveTab];
+  siriReaderPlaybackStateForActiveTab = [WeakRetained siriReaderPlaybackStateForActiveTab];
 
-  return (v3 - 1) < 2;
+  return (siriReaderPlaybackStateForActiveTab - 1) < 2;
 }
 
 - (BOOL)_isSiriReaderCurrentlyActive
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained siriReaderPlaybackStateForActiveTab];
+  siriReaderPlaybackStateForActiveTab = [WeakRetained siriReaderPlaybackStateForActiveTab];
 
-  v4 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
-  v5 = [v4 currentPlaybackState];
+  mEMORY[0x1E69B1B90] = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+  currentPlaybackState = [mEMORY[0x1E69B1B90] currentPlaybackState];
 
-  return (v5 - 1) < 2 && v3 != 3;
+  return (currentPlaybackState - 1) < 2 && siriReaderPlaybackStateForActiveTab != 3;
 }
 
-- (void)updateShouldShowListeningControls:(BOOL)a3
+- (void)updateShouldShowListeningControls:(BOOL)controls
 {
-  v3 = a3;
+  controlsCopy = controls;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   if ([(_SFPageFormatMenuController *)self _isActiveTabPausedOrPlaying])
   {
-    if (!v3)
+    if (!controlsCopy)
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(isSiriReadThisEnabled) = 0;
       goto LABEL_8;
     }
   }
 
   else
   {
-    v6 = [(_SFPageFormatMenuController *)self _isSiriReaderCurrentlyActive];
-    LOBYTE(v5) = 0;
-    if (!v6 || !v3)
+    _isSiriReaderCurrentlyActive = [(_SFPageFormatMenuController *)self _isSiriReaderCurrentlyActive];
+    LOBYTE(isSiriReadThisEnabled) = 0;
+    if (!_isSiriReaderCurrentlyActive || !controlsCopy)
     {
       goto LABEL_8;
     }
   }
 
-  v5 = [MEMORY[0x1E69C8880] isSiriReadThisEnabled];
-  if (v5)
+  isSiriReadThisEnabled = [MEMORY[0x1E69C8880] isSiriReadThisEnabled];
+  if (isSiriReadThisEnabled)
   {
-    LOBYTE(v5) = [WeakRetained supportsSiriReadThis];
+    LOBYTE(isSiriReadThisEnabled) = [WeakRetained supportsSiriReadThis];
   }
 
 LABEL_8:
-  self->_shouldShowListeningControls = v5;
+  self->_shouldShowListeningControls = isSiriReadThisEnabled;
 }
 
-- (id)_titleForPlaybackState:(int64_t)a3
+- (id)_titleForPlaybackState:(int64_t)state
 {
-  if ((a3 - 2) >= 2 && a3 != 1)
+  if ((state - 2) >= 2 && state != 1)
   {
-    v3 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
-    v4 = [v3 currentPlaybackState];
+    mEMORY[0x1E69B1B90] = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+    currentPlaybackState = [mEMORY[0x1E69B1B90] currentPlaybackState];
 
-    if ((v4 - 1) <= 1)
+    if ((currentPlaybackState - 1) <= 1)
     {
-      v5 = [MEMORY[0x1E69B1B98] sharedVoiceUtilities];
-      v6 = [v5 activeSiriReaderSessionIdentifier];
-      v7 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
-      v8 = [v7 nowPlayingContentIdentifier];
-      [v6 isEqualToString:v8];
+      mEMORY[0x1E69B1B98] = [MEMORY[0x1E69B1B98] sharedVoiceUtilities];
+      activeSiriReaderSessionIdentifier = [mEMORY[0x1E69B1B98] activeSiriReaderSessionIdentifier];
+      mEMORY[0x1E69B1B90]2 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+      nowPlayingContentIdentifier = [mEMORY[0x1E69B1B90]2 nowPlayingContentIdentifier];
+      [activeSiriReaderSessionIdentifier isEqualToString:nowPlayingContentIdentifier];
     }
   }
 
@@ -1058,10 +1058,10 @@ LABEL_8:
   return v9;
 }
 
-- (id)_siriReaderAlertItemWithState:(int64_t)a3 identifier:(id)a4
+- (id)_siriReaderAlertItemWithState:(int64_t)state identifier:(id)identifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v7 = [(_SFPageFormatMenuController *)self _titleForPlaybackState:a3];
+  v7 = [(_SFPageFormatMenuController *)self _titleForPlaybackState:state];
   v8 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"speaker.wave.2.bubble.left"];
   v9 = *MEMORY[0x1E69DDCF8];
   v13[0] = MEMORY[0x1E69E9820];
@@ -1080,8 +1080,8 @@ LABEL_8:
 {
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [WeakRetained activeDocument];
-  [v4 mediaStateIcon];
+  activeDocument = [WeakRetained activeDocument];
+  [activeDocument mediaStateIcon];
 
   v5 = SFTitleForTogglingMediaStateIcon();
   v6 = MEMORY[0x1E69DCAB8];
@@ -1126,8 +1126,8 @@ LABEL_8:
   v14 = v3;
   v9 = v3;
   v10 = [_SFSettingsAlertItem buttonWithTitle:v4 textStyle:v8 icon:v7 action:10 handler:v13];
-  v11 = [v9 title];
-  [v10 setSubtitle:v11];
+  title = [v9 title];
+  [v10 setSubtitle:title];
 
   [v10 setAccessibilityIdentifier:@"ToggleOtherTabsAudioMediaState"];
 
@@ -1158,57 +1158,57 @@ LABEL_8:
   return v6;
 }
 
-- (void)_updateDownloadsAlertItem:(id)a3
+- (void)_updateDownloadsAlertItem:(id)item
 {
-  v19 = a3;
-  v4 = [v19 isEnabled];
-  v5 = [v19 showsIndicatorDot];
-  v6 = [v19 badgeText];
+  itemCopy = item;
+  isEnabled = [itemCopy isEnabled];
+  showsIndicatorDot = [itemCopy showsIndicatorDot];
+  badgeText = [itemCopy badgeText];
   v7 = +[_SFDownloadManager sharedManager];
-  v8 = [v7 runningDownloadsCount];
+  runningDownloadsCount = [v7 runningDownloadsCount];
 
-  if (v8)
+  if (runningDownloadsCount)
   {
-    v9 = [v19 badgeView];
+    badgeView = [itemCopy badgeView];
 
-    if (v9)
+    if (badgeView)
     {
-      v10 = [v19 badgeView];
-      v11 = [(_SFPageFormatMenuController *)self _localizedStringOfRunningDownloads];
-      [v10 setBadgeText:v11];
+      badgeView2 = [itemCopy badgeView];
+      _localizedStringOfRunningDownloads = [(_SFPageFormatMenuController *)self _localizedStringOfRunningDownloads];
+      [badgeView2 setBadgeText:_localizedStringOfRunningDownloads];
     }
 
     else
     {
       v12 = [_SFPageFormatMenuBadgeView alloc];
-      v13 = [(_SFPageFormatMenuController *)self _localizedStringOfRunningDownloads];
-      v14 = [(_SFPageFormatMenuBadgeView *)v12 initWithText:v13];
-      [v19 setBadgeView:v14];
+      _localizedStringOfRunningDownloads2 = [(_SFPageFormatMenuController *)self _localizedStringOfRunningDownloads];
+      v14 = [(_SFPageFormatMenuBadgeView *)v12 initWithText:_localizedStringOfRunningDownloads2];
+      [itemCopy setBadgeView:v14];
     }
   }
 
   else
   {
-    [v19 setShowsIndicatorDot:{-[_SFPageFormatMenuController _shouldShowUnviewedFinishedDownloadsIndicator](self, "_shouldShowUnviewedFinishedDownloadsIndicator")}];
-    [v19 setBadgeView:0];
+    [itemCopy setShowsIndicatorDot:{-[_SFPageFormatMenuController _shouldShowUnviewedFinishedDownloadsIndicator](self, "_shouldShowUnviewedFinishedDownloadsIndicator")}];
+    [itemCopy setBadgeView:0];
   }
 
-  [v19 setEnabled:{-[_SFPageFormatMenuController _shouldEnableDownloadsAlert](self, "_shouldEnableDownloadsAlert")}];
+  [itemCopy setEnabled:{-[_SFPageFormatMenuController _shouldEnableDownloadsAlert](self, "_shouldEnableDownloadsAlert")}];
   v15 = +[_SFDownloadManager sharedManager];
   if ([v15 runningDownloadsCount])
   {
-    v16 = [(_SFPageFormatMenuController *)self _localizedStringOfRunningDownloads];
-    [v19 setBadgeText:v16];
+    _localizedStringOfRunningDownloads3 = [(_SFPageFormatMenuController *)self _localizedStringOfRunningDownloads];
+    [itemCopy setBadgeText:_localizedStringOfRunningDownloads3];
   }
 
   else
   {
-    [v19 setBadgeText:0];
+    [itemCopy setBadgeText:0];
   }
 
-  if (v4 != [v19 isEnabled] || v5 != objc_msgSend(v19, "showsIndicatorDot") || (objc_msgSend(v19, "badgeText"), v17 = objc_claimAutoreleasedReturnValue(), v18 = WBSIsEqual(), v17, (v18 & 1) == 0))
+  if (isEnabled != [itemCopy isEnabled] || showsIndicatorDot != objc_msgSend(itemCopy, "showsIndicatorDot") || (objc_msgSend(itemCopy, "badgeText"), v17 = objc_claimAutoreleasedReturnValue(), v18 = WBSIsEqual(), v17, (v18 & 1) == 0))
   {
-    [v19 notifyObserversItemDidUpdate];
+    [itemCopy notifyObserversItemDidUpdate];
   }
 }
 
@@ -1234,32 +1234,32 @@ LABEL_8:
   v3 = +[_SFDownloadManager sharedManager];
   if ([v3 runningDownloadsCount])
   {
-    v4 = 0;
+    hasUnviewedDownloads = 0;
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-    v4 = [WeakRetained hasUnviewedDownloads];
+    hasUnviewedDownloads = [WeakRetained hasUnviewedDownloads];
   }
 
-  return v4;
+  return hasUnviewedDownloads;
 }
 
-- (id)_desktopMobileToggleAlertItemWithOrientation:(int64_t)a3
+- (id)_desktopMobileToggleAlertItemWithOrientation:(int64_t)orientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v5 = [WeakRetained activeDocument];
+  activeDocument = [WeakRetained activeDocument];
 
-  v6 = [v5 reloadOptionsController];
-  v7 = [v5 webView];
-  v8 = [v7 URL];
-  [v6 setSupportsAdvancedPrivacyProtections:{objc_msgSend(v5, "supportsAdvancedPrivacyProtectionsForURL:", v8)}];
+  reloadOptionsController = [activeDocument reloadOptionsController];
+  webView = [activeDocument webView];
+  v8 = [webView URL];
+  [reloadOptionsController setSupportsAdvancedPrivacyProtections:{objc_msgSend(activeDocument, "supportsAdvancedPrivacyProtectionsForURL:", v8)}];
 
-  v9 = [v6 loadedUsingDesktopUserAgent];
+  loadedUsingDesktopUserAgent = [reloadOptionsController loadedUsingDesktopUserAgent];
   v10 = _WBSLocalizedString();
-  v11 = [MEMORY[0x1E69DCAB8] safari_currentDeviceImageNameForOrientation:a3];
-  if (v9)
+  v11 = [MEMORY[0x1E69DCAB8] safari_currentDeviceImageNameForOrientation:orientation];
+  if (loadedUsingDesktopUserAgent)
   {
     v12 = v11;
   }
@@ -1275,9 +1275,9 @@ LABEL_8:
   v19 = 3221225472;
   v20 = __76___SFPageFormatMenuController__desktopMobileToggleAlertItemWithOrientation___block_invoke;
   v21 = &unk_1E8494028;
-  v23 = v9;
-  v22 = v6;
-  v15 = v6;
+  v23 = loadedUsingDesktopUserAgent;
+  v22 = reloadOptionsController;
+  v15 = reloadOptionsController;
   v16 = [_SFSettingsAlertItem buttonWithTitle:v10 textStyle:v14 icon:v13 action:21 handler:&v18];
   [v16 setAccessibilityIdentifier:{@"ToggleDesktopMobileWebsite", v18, v19, v20, v21}];
 
@@ -1289,16 +1289,16 @@ LABEL_8:
   v3 = _WBSLocalizedString();
   v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"pause.circle"];
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained activeDocument];
-  v7 = [v6 activeWebView];
+  activeDocument = [WeakRetained activeDocument];
+  activeWebView = [activeDocument activeWebView];
 
   v8 = *MEMORY[0x1E69DDCF8];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59___SFPageFormatMenuController__pauseAllAnimationsAlertItem__block_invoke;
   v12[3] = &unk_1E848F9D8;
-  v13 = v7;
-  v9 = v7;
+  v13 = activeWebView;
+  v9 = activeWebView;
   v10 = [_SFSettingsAlertItem buttonWithTitle:v3 textStyle:v8 icon:v4 action:33 handler:v12];
   [v10 setAccessibilityIdentifier:@"PauseAllAnimationsAlertItem"];
 
@@ -1310,16 +1310,16 @@ LABEL_8:
   v3 = _WBSLocalizedString();
   v4 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"play.circle"];
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained activeDocument];
-  v7 = [v6 activeWebView];
+  activeDocument = [WeakRetained activeDocument];
+  activeWebView = [activeDocument activeWebView];
 
   v8 = *MEMORY[0x1E69DDCF8];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58___SFPageFormatMenuController__playAllAnimationsAlertItem__block_invoke;
   v12[3] = &unk_1E848F9D8;
-  v13 = v7;
-  v9 = v7;
+  v13 = activeWebView;
+  v9 = activeWebView;
   v10 = [_SFSettingsAlertItem buttonWithTitle:v3 textStyle:v8 icon:v4 action:34 handler:v12];
   [v10 setAccessibilityIdentifier:@"PlayAllAnimationsAlertItem"];
 
@@ -1343,38 +1343,38 @@ LABEL_8:
   return v6;
 }
 
-- (void)_anchorInWindowCoordinatesForAlert:(id)a3
+- (void)_anchorInWindowCoordinatesForAlert:(id)alert
 {
-  v13 = [a3 popoverPresentationController];
-  v3 = [v13 sourceView];
-  [v13 sourceRect];
+  popoverPresentationController = [alert popoverPresentationController];
+  sourceView = [popoverPresentationController sourceView];
+  [popoverPresentationController sourceRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [v3 window];
-  [v13 setSourceView:v12];
-  [v12 convertRect:v3 fromView:{v5, v7, v9, v11}];
-  [v13 setSourceRect:?];
+  window = [sourceView window];
+  [popoverPresentationController setSourceView:window];
+  [window convertRect:sourceView fromView:{v5, v7, v9, v11}];
+  [popoverPresentationController setSourceRect:?];
 }
 
-- (void)_buildTranslationAlertItemsWithSourceInfo:(id)a3
+- (void)_buildTranslationAlertItemsWithSourceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   p_translationAlertItems = &self->_translationAlertItems;
   translationAlertItems = self->_translationAlertItems;
   self->_translationAlertItems = 0;
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(_SFPageFormatMenuController *)self _userFeedbackTranslationAlertItem];
-  [v7 addObject:v8];
+  _userFeedbackTranslationAlertItem = [(_SFPageFormatMenuController *)self _userFeedbackTranslationAlertItem];
+  [v7 addObject:_userFeedbackTranslationAlertItem];
   if ([(_SFPageFormatMenuController *)self _hasStartedTranslation])
   {
-    v9 = [(_SFPageFormatMenuController *)self _exitTranslationAlertItem];
-    [v7 insertObject:v9 atIndex:0];
+    _exitTranslationAlertItem = [(_SFPageFormatMenuController *)self _exitTranslationAlertItem];
+    [v7 insertObject:_exitTranslationAlertItem atIndex:0];
 
-    v10 = [(_SFPageFormatMenuController *)self _internalTapToRadarTranslationAlertItem];
-    [v7 safari_addObjectUnlessNil:v10];
+    _internalTapToRadarTranslationAlertItem = [(_SFPageFormatMenuController *)self _internalTapToRadarTranslationAlertItem];
+    [v7 safari_addObjectUnlessNil:_internalTapToRadarTranslationAlertItem];
 
     objc_storeStrong(&self->_translationAlertItems, v7);
   }
@@ -1382,26 +1382,26 @@ LABEL_8:
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-    v12 = [WeakRetained activeDocument];
-    v13 = [v12 translationContext];
+    activeDocument = [WeakRetained activeDocument];
+    translationContext = [activeDocument translationContext];
 
-    v14 = [v13 availableTargetLocaleIdentifiers];
-    if ([v14 count])
+    availableTargetLocaleIdentifiers = [translationContext availableTargetLocaleIdentifiers];
+    if ([availableTargetLocaleIdentifiers count])
     {
-      [v8 setEnabled:0];
-      if ([v14 count] == 1)
+      [_userFeedbackTranslationAlertItem setEnabled:0];
+      if ([availableTargetLocaleIdentifiers count] == 1)
       {
-        v15 = [v14 firstObject];
-        v16 = [(_SFPageFormatMenuController *)self _translateAlertItemForLocaleIdentifier:v15];
+        firstObject = [availableTargetLocaleIdentifiers firstObject];
+        v16 = [(_SFPageFormatMenuController *)self _translateAlertItemForLocaleIdentifier:firstObject];
         [v7 insertObject:v16 atIndex:0];
 
         objc_storeStrong(p_translationAlertItems, v7);
       }
 
-      else if ([v14 count] >= 2)
+      else if ([availableTargetLocaleIdentifiers count] >= 2)
       {
         v17 = _WBSLocalizedString();
-        objc_initWeak(&location, v4);
+        objc_initWeak(&location, infoCopy);
         v18 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"translate"];
         v21 = *MEMORY[0x1E69DDCF8];
         v27[0] = MEMORY[0x1E69E9820];
@@ -1409,7 +1409,7 @@ LABEL_8:
         v27[2] = __73___SFPageFormatMenuController__buildTranslationAlertItemsWithSourceInfo___block_invoke;
         v27[3] = &unk_1E8494070;
         objc_copyWeak(&v29, &location);
-        v19 = v13;
+        v19 = translationContext;
         v28 = v19;
         v22 = v17;
         v20 = [_SFSettingsAlertItem buttonWithTitle:v17 textStyle:v21 icon:v18 action:14 handler:v27];
@@ -1436,14 +1436,14 @@ LABEL_8:
   }
 }
 
-- (id)_translateAlertItemForLocaleIdentifier:(id)a3
+- (id)_translateAlertItemForLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained activeDocument];
-  v7 = [v6 translationContext];
+  activeDocument = [WeakRetained activeDocument];
+  translationContext = [activeDocument translationContext];
 
-  v8 = [MEMORY[0x1E695DF58] safari_displayNameForLocaleIdentifier:v4];
+  v8 = [MEMORY[0x1E695DF58] safari_displayNameForLocaleIdentifier:identifierCopy];
   v9 = MEMORY[0x1E696AEC0];
   v10 = _WBSLocalizedString();
   v11 = [v9 stringWithFormat:v10, v8];
@@ -1454,10 +1454,10 @@ LABEL_8:
   v22[1] = 3221225472;
   v22[2] = __70___SFPageFormatMenuController__translateAlertItemForLocaleIdentifier___block_invoke;
   v22[3] = &unk_1E8493BD8;
-  v23 = v7;
-  v24 = v4;
-  v14 = v4;
-  v15 = v7;
+  v23 = translationContext;
+  v24 = identifierCopy;
+  v14 = identifierCopy;
+  v15 = translationContext;
   v16 = [_SFSettingsAlertItem buttonWithTitle:v11 textStyle:v12 icon:v13 action:15 handler:v22];
 
   [v16 setEnabled:0];
@@ -1478,8 +1478,8 @@ LABEL_8:
 - (id)_exitTranslationAlertItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 translationContext];
+  activeDocument = [WeakRetained activeDocument];
+  translationContext = [activeDocument translationContext];
 
   v5 = _WBSLocalizedString();
   v6 = *MEMORY[0x1E69DDCF8];
@@ -1488,8 +1488,8 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = __56___SFPageFormatMenuController__exitTranslationAlertItem__block_invoke;
   v11[3] = &unk_1E848F9D8;
-  v12 = v4;
-  v8 = v4;
+  v12 = translationContext;
+  v8 = translationContext;
   v9 = [_SFSettingsAlertItem buttonWithTitle:v5 textStyle:v6 icon:v7 action:17 handler:v11];
 
   [v9 setAccessibilityIdentifier:@"ReloadTranslatedWebpage"];
@@ -1541,22 +1541,22 @@ LABEL_8:
   return v6;
 }
 
-- (void)_translationAvailabilityDidChange:(id)a3
+- (void)_translationAvailabilityDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65___SFPageFormatMenuController__translationAvailabilityDidChange___block_invoke;
   v6[3] = &unk_1E848F548;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = changeCopy;
+  v5 = changeCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
 - (id)_userFeedbackAutofillAlertItem
 {
-  v3 = [MEMORY[0x1E69C8E90] titleText];
+  titleText = [MEMORY[0x1E69C8E90] titleText];
   v4 = *MEMORY[0x1E69DDCF8];
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"exclamationmark.bubble"];
   v8[0] = MEMORY[0x1E69E9820];
@@ -1564,7 +1564,7 @@ LABEL_8:
   v8[2] = __61___SFPageFormatMenuController__userFeedbackAutofillAlertItem__block_invoke;
   v8[3] = &unk_1E848F9D8;
   v8[4] = self;
-  v6 = [_SFSettingsAlertItem buttonWithTitle:v3 textStyle:v4 icon:v5 action:32 handler:v8];
+  v6 = [_SFSettingsAlertItem buttonWithTitle:titleText textStyle:v4 icon:v5 action:32 handler:v8];
 
   return v6;
 }
@@ -1573,9 +1573,9 @@ LABEL_8:
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   v3 = [SFPageZoomStepperController alloc];
-  v4 = [WeakRetained activeDocument];
-  v5 = [WeakRetained pageZoomManager];
-  v6 = [(SFPageZoomStepperController *)v3 initWithDocument:v4 preferenceManager:v5];
+  activeDocument = [WeakRetained activeDocument];
+  pageZoomManager = [WeakRetained pageZoomManager];
+  v6 = [(SFPageZoomStepperController *)v3 initWithDocument:activeDocument preferenceManager:pageZoomManager];
   v7 = [_SFSettingsAlertItem stepperWithController:v6 action:3 handler:&__block_literal_global_279_0];
 
   return v7;
@@ -1585,9 +1585,9 @@ LABEL_8:
 {
   v3 = [SFReaderTextSizeStepperController alloc];
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v5 = [WeakRetained activeDocument];
-  v6 = [v5 readerContext];
-  v7 = [(SFReaderTextSizeStepperController *)v3 initWithReaderContext:v6];
+  activeDocument = [WeakRetained activeDocument];
+  readerContext = [activeDocument readerContext];
+  v7 = [(SFReaderTextSizeStepperController *)v3 initWithReaderContext:readerContext];
   v8 = [_SFSettingsAlertItem stepperWithController:v7 action:4 handler:&__block_literal_global_282];
 
   return v8;
@@ -1596,22 +1596,22 @@ LABEL_8:
 - (id)_readerThemeAlertItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [WeakRetained activeDocument];
+  activeDocument = [WeakRetained activeDocument];
 
-  v5 = [v4 readerContext];
+  readerContext = [activeDocument readerContext];
   v6 = objc_loadWeakRetained(&self->_viewController);
-  v7 = [v6 provenance];
+  provenance = [v6 provenance];
 
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = __52___SFPageFormatMenuController__readerThemeAlertItem__block_invoke;
   v16 = &unk_1E84940C0;
-  v17 = v5;
-  v18 = v7;
-  v8 = v5;
+  v17 = readerContext;
+  v18 = provenance;
+  v8 = readerContext;
   v9 = [SFReaderAppearanceThemeSelector themeSelectorWithBlock:&v13];
-  v10 = [v8 configurationManager];
-  [v9 setSelectedTheme:{objc_msgSend(v10, "themeForAppearance:", objc_msgSend(v8, "currentAppearance"))}];
+  configurationManager = [v8 configurationManager];
+  [v9 setSelectedTheme:{objc_msgSend(configurationManager, "themeForAppearance:", objc_msgSend(v8, "currentAppearance"))}];
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   v11 = [_SFSettingsAlertItem paletteWithAction:0 controller:v9];
@@ -1623,11 +1623,11 @@ LABEL_8:
 - (id)_readerFontAlertItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 readerContext];
+  activeDocument = [WeakRetained activeDocument];
+  readerContext = [activeDocument readerContext];
 
   v5 = _WBSLocalizedString();
-  v6 = [[_SFReaderFontOptionsGroupController alloc] initWithReaderContext:v4];
+  v6 = [[_SFReaderFontOptionsGroupController alloc] initWithReaderContext:readerContext];
   v7 = [_SFSettingsAlertItem optionsGroupWithTitle:v5 action:6 subItemAction:7 controller:v6];
 
   [v7 setAccessibilityIdentifier:@"ReaderFont"];
@@ -1640,24 +1640,24 @@ LABEL_8:
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   if ([WeakRetained isShowingReader] & 1) != 0 || (objc_msgSend(WeakRetained, "activeDocument"), v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "webView"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "URL"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "safari_isSafariWebExtensionURL"), v5, v4, v3, (v6))
   {
-    v7 = 0;
+    hasEnabledContentBlockers = 0;
   }
 
   else
   {
-    v8 = [WeakRetained perSitePreferencesVendor];
-    v9 = [v8 contentBlockersPreferenceManager];
-    v7 = [v9 hasEnabledContentBlockers];
+    perSitePreferencesVendor = [WeakRetained perSitePreferencesVendor];
+    contentBlockersPreferenceManager = [perSitePreferencesVendor contentBlockersPreferenceManager];
+    hasEnabledContentBlockers = [contentBlockersPreferenceManager hasEnabledContentBlockers];
   }
 
-  return v7;
+  return hasEnabledContentBlockers;
 }
 
 - (BOOL)_canHideToolbar
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  if ([v3 canHideToolbar])
+  activeDocument = [WeakRetained activeDocument];
+  if ([activeDocument canHideToolbar])
   {
     v4 = [WeakRetained isShowingReader] ^ 1;
   }
@@ -1680,9 +1680,9 @@ LABEL_8:
 
   else
   {
-    v4 = [WeakRetained activeDocument];
-    v5 = [v4 webView];
-    v6 = [v5 URL];
+    activeDocument = [WeakRetained activeDocument];
+    webView = [activeDocument webView];
+    v6 = [webView URL];
 
     if ([v6 sf_isOfflineReadingListURL])
     {
@@ -1701,21 +1701,21 @@ LABEL_8:
 - (BOOL)_canShowWebsiteSettings
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 webView];
-  v5 = [v4 URL];
-  v6 = [v5 safari_isSafariWebExtensionURL];
+  activeDocument = [WeakRetained activeDocument];
+  webView = [activeDocument webView];
+  v5 = [webView URL];
+  safari_isSafariWebExtensionURL = [v5 safari_isSafariWebExtensionURL];
 
-  return v6 ^ 1;
+  return safari_isSafariWebExtensionURL ^ 1;
 }
 
 - (BOOL)_canShowReportWebsiteIssueInMainMenu
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 isPageReloaded];
+  activeDocument = [WeakRetained activeDocument];
+  isPageReloaded = [activeDocument isPageReloaded];
 
-  return v4;
+  return isPageReloaded;
 }
 
 - (BOOL)_canShowScribble
@@ -1723,17 +1723,17 @@ LABEL_8:
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   if ([WeakRetained isShowingReader])
   {
-    v3 = 0;
+    canEnableScribble = 0;
   }
 
   else
   {
-    v4 = [WeakRetained activeDocument];
-    v5 = [v4 sfScribbleController];
-    v3 = [v5 canEnableScribble];
+    activeDocument = [WeakRetained activeDocument];
+    sfScribbleController = [activeDocument sfScribbleController];
+    canEnableScribble = [sfScribbleController canEnableScribble];
   }
 
-  return v3;
+  return canEnableScribble;
 }
 
 - (BOOL)_canTogglePrivateRelay
@@ -1741,42 +1741,42 @@ LABEL_8:
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   if ([WeakRetained isShowingReader])
   {
-    v3 = 0;
+    _wasPrivateRelayed = 0;
   }
 
   else
   {
-    v4 = [WeakRetained activeDocument];
-    if ([v4 isNavigatingViaReloadWithoutPrivateRelay])
+    activeDocument = [WeakRetained activeDocument];
+    if ([activeDocument isNavigatingViaReloadWithoutPrivateRelay])
     {
-      v3 = 1;
+      _wasPrivateRelayed = 1;
     }
 
     else
     {
-      v5 = [v4 webView];
+      webView = [activeDocument webView];
       if (objc_opt_respondsToSelector())
       {
-        v6 = [v4 webView];
-        v3 = [v6 _wasPrivateRelayed];
+        webView2 = [activeDocument webView];
+        _wasPrivateRelayed = [webView2 _wasPrivateRelayed];
       }
 
       else
       {
-        v3 = 0;
+        _wasPrivateRelayed = 0;
       }
     }
   }
 
-  return v3;
+  return _wasPrivateRelayed;
 }
 
 - (id)_privateRelayToggleAlertItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 wasLoadedWithPrivateRelay];
-  if (v4)
+  activeDocument = [WeakRetained activeDocument];
+  wasLoadedWithPrivateRelay = [activeDocument wasLoadedWithPrivateRelay];
+  if (wasLoadedWithPrivateRelay)
   {
     v5 = @"pin.point.of.interest.to.line.below";
     v6 = 23;
@@ -1795,11 +1795,11 @@ LABEL_8:
   v14[1] = 3221225472;
   v14[2] = __59___SFPageFormatMenuController__privateRelayToggleAlertItem__block_invoke;
   v14[3] = &unk_1E8494110;
-  v17 = v4;
-  v15 = v3;
+  v17 = wasLoadedWithPrivateRelay;
+  v15 = activeDocument;
   v16 = WeakRetained;
   v10 = WeakRetained;
-  v11 = v3;
+  v11 = activeDocument;
   v12 = [_SFSettingsAlertItem buttonWithTitle:v7 textStyle:v9 icon:v8 action:v6 handler:v14];
   [v12 setAccessibilityIdentifier:@"TogglePrivateRelay"];
 
@@ -1809,9 +1809,9 @@ LABEL_8:
 - (BOOL)_canViewSecurityInformation
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 webView];
-  v5 = [v4 serverTrust] != 0;
+  activeDocument = [WeakRetained activeDocument];
+  webView = [activeDocument webView];
+  v5 = [webView serverTrust] != 0;
 
   return v5;
 }
@@ -1857,9 +1857,9 @@ LABEL_8:
   v4 = v3;
   _Block_object_dispose(&v23, 8);
   v5 = [v3 alloc];
-  v6 = [WeakRetained activeDocument];
-  v7 = [v6 webView];
-  v8 = [v5 initWithTrust:{objc_msgSend(v7, "serverTrust")}];
+  activeDocument = [WeakRetained activeDocument];
+  webView = [activeDocument webView];
+  v8 = [v5 initWithTrust:{objc_msgSend(webView, "serverTrust")}];
 
   v9 = _WBSLocalizedString();
   [v8 setTitle:v9];
@@ -1887,14 +1887,14 @@ LABEL_8:
   v12 = [[v10 alloc] initWithCertificatePresentationRequest:v8];
   if (v12)
   {
-    v13 = [WeakRetained viewControllerToPresentFromNavigationBar];
+    viewControllerToPresentFromNavigationBar = [WeakRetained viewControllerToPresentFromNavigationBar];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __58___SFPageFormatMenuController__presentSecurityInformation__block_invoke;
     v15[3] = &unk_1E848F548;
-    v16 = v13;
+    v16 = viewControllerToPresentFromNavigationBar;
     v17 = v12;
-    v14 = v13;
+    v14 = viewControllerToPresentFromNavigationBar;
     [v14 dismissViewControllerAnimated:1 completion:v15];
   }
 }
@@ -1902,20 +1902,20 @@ LABEL_8:
 - (BOOL)_hasStartedTranslation
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 translationContext];
-  v5 = [v4 hasStartedTranslating];
+  activeDocument = [WeakRetained activeDocument];
+  translationContext = [activeDocument translationContext];
+  hasStartedTranslating = [translationContext hasStartedTranslating];
 
-  return v5;
+  return hasStartedTranslating;
 }
 
 - (id)_contentBlockersToggleAlertItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
+  activeDocument = [WeakRetained activeDocument];
 
-  v4 = [v3 wasLoadedWithContentBlockersEnabled];
-  if (v4)
+  wasLoadedWithContentBlockersEnabled = [activeDocument wasLoadedWithContentBlockersEnabled];
+  if (wasLoadedWithContentBlockersEnabled)
   {
     v5 = @"shield.slash";
   }
@@ -1932,9 +1932,9 @@ LABEL_8:
   v13 = 3221225472;
   v14 = __62___SFPageFormatMenuController__contentBlockersToggleAlertItem__block_invoke;
   v15 = &unk_1E8494028;
-  v16 = v3;
-  v17 = v4;
-  v9 = v3;
+  v16 = activeDocument;
+  v17 = wasLoadedWithContentBlockersEnabled;
+  v9 = activeDocument;
   v10 = [_SFSettingsAlertItem buttonWithTitle:v6 textStyle:v8 icon:v7 action:22 handler:&v12];
   [v10 setAccessibilityIdentifier:{@"ToggleContentBlockers", v12, v13, v14, v15}];
 
@@ -1951,21 +1951,21 @@ LABEL_8:
 
   else
   {
-    v4 = [WeakRetained activeDocument];
-    v5 = [v4 webView];
-    v6 = [v5 URL];
-    v7 = [v6 safari_isSafariWebExtensionURL];
+    activeDocument = [WeakRetained activeDocument];
+    webView = [activeDocument webView];
+    v6 = [webView URL];
+    safari_isSafariWebExtensionURL = [v6 safari_isSafariWebExtensionURL];
 
-    if (v7)
+    if (safari_isSafariWebExtensionURL)
     {
       v3 = 0;
     }
 
     else
     {
-      v8 = [v4 isPrivateBrowsingEnabled];
-      v9 = [MEMORY[0x1E695E000] safari_browserDefaults];
-      v3 = [v9 safari_enableAdvancedPrivacyProtections:v8];
+      isPrivateBrowsingEnabled = [activeDocument isPrivateBrowsingEnabled];
+      safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+      v3 = [safari_browserDefaults safari_enableAdvancedPrivacyProtections:isPrivateBrowsingEnabled];
     }
   }
 
@@ -1975,10 +1975,10 @@ LABEL_8:
 - (id)_advancedPrivateBrowsingPrivacyProtectionsAlertItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [WeakRetained activeDocument];
-  v5 = [v4 wasLoadedWithAdvancedPrivateBrowsingPrivacyProtections];
-  v6 = v5;
-  if (v5)
+  activeDocument = [WeakRetained activeDocument];
+  wasLoadedWithAdvancedPrivateBrowsingPrivacyProtections = [activeDocument wasLoadedWithAdvancedPrivateBrowsingPrivacyProtections];
+  v6 = wasLoadedWithAdvancedPrivateBrowsingPrivacyProtections;
+  if (wasLoadedWithAdvancedPrivateBrowsingPrivacyProtections)
   {
     v7 = _WBSLocalizedString();
     if ([(_SFPageFormatMenuController *)self _canTogglePrivateRelay])
@@ -2012,9 +2012,9 @@ LABEL_9:
   v15 = 3221225472;
   v16 = __82___SFPageFormatMenuController__advancedPrivateBrowsingPrivacyProtectionsAlertItem__block_invoke;
   v17 = &unk_1E8494028;
-  v18 = v4;
+  v18 = activeDocument;
   v19 = v6;
-  v11 = v4;
+  v11 = activeDocument;
   v12 = [_SFSettingsAlertItem buttonWithTitle:v7 textStyle:v10 icon:0 action:v8 handler:&v14];
   [v12 setAccessibilityIdentifier:{@"ToggleAdvancedPrivateBrowsingPrivacyProtections", v14, v15, v16, v17}];
 
@@ -2041,12 +2041,12 @@ LABEL_9:
 - (id)_scribbleAlertItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
+  activeDocument = [WeakRetained activeDocument];
 
-  v4 = [v3 sfScribbleController];
-  v5 = [v4 userInitiatedScribblingDisabled];
+  sfScribbleController = [activeDocument sfScribbleController];
+  userInitiatedScribblingDisabled = [sfScribbleController userInitiatedScribblingDisabled];
 
-  if (v5)
+  if (userInitiatedScribblingDisabled)
   {
     v6 = 0;
   }
@@ -2060,7 +2060,7 @@ LABEL_9:
     v11[1] = 3221225472;
     v11[2] = __49___SFPageFormatMenuController__scribbleAlertItem__block_invoke;
     v11[3] = &unk_1E848F9D8;
-    v12 = v3;
+    v12 = activeDocument;
     v6 = [_SFSettingsAlertItem buttonWithTitle:v7 textStyle:v8 icon:v9 action:49 handler:v11];
 
     [v6 setAccessibilityIdentifier:@"Scribble"];
@@ -2072,7 +2072,7 @@ LABEL_9:
 - (id)_clearEditsAlertItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
+  activeDocument = [WeakRetained activeDocument];
 
   v4 = _WBSLocalizedString();
   v5 = *MEMORY[0x1E69DDCF8];
@@ -2081,8 +2081,8 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = __51___SFPageFormatMenuController__clearEditsAlertItem__block_invoke;
   v10[3] = &unk_1E848F9D8;
-  v11 = v3;
-  v7 = v3;
+  v11 = activeDocument;
+  v7 = activeDocument;
   v8 = [_SFSettingsAlertItem buttonWithTitle:v4 textStyle:v5 icon:v6 action:50 handler:v10];
 
   [v8 setAccessibilityIdentifier:@"ClearEdits"];
@@ -2093,7 +2093,7 @@ LABEL_9:
 - (id)_reportScribbleIssueItem
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [WeakRetained activeDocument];
+  activeDocument = [WeakRetained activeDocument];
 
   v5 = _WBSLocalizedString();
   v6 = *MEMORY[0x1E69DDCF8];
@@ -2102,12 +2102,12 @@ LABEL_9:
   v12 = 3221225472;
   v13 = __55___SFPageFormatMenuController__reportScribbleIssueItem__block_invoke;
   v14 = &unk_1E8493BD8;
-  v15 = self;
-  v16 = v4;
-  v8 = v4;
+  selfCopy = self;
+  v16 = activeDocument;
+  v8 = activeDocument;
   v9 = [_SFSettingsAlertItem buttonWithTitle:v5 textStyle:v6 icon:v7 action:51 handler:&v11];
 
-  [v9 setAccessibilityIdentifier:{@"ReportScribbleIssue", v11, v12, v13, v14, v15}];
+  [v9 setAccessibilityIdentifier:{@"ReportScribbleIssue", v11, v12, v13, v14, selfCopy}];
 
   return v9;
 }
@@ -2142,7 +2142,7 @@ LABEL_9:
   return v3;
 }
 
-- (id)_reportWebCompatibilityIssueItemWithAction:(int64_t)a3
+- (id)_reportWebCompatibilityIssueItemWithAction:(int64_t)action
 {
   v5 = _WBSLocalizedString();
   v6 = *MEMORY[0x1E69DDCF8];
@@ -2152,7 +2152,7 @@ LABEL_9:
   v10[2] = __74___SFPageFormatMenuController__reportWebCompatibilityIssueItemWithAction___block_invoke;
   v10[3] = &unk_1E848F9D8;
   v10[4] = self;
-  v8 = [_SFSettingsAlertItem buttonWithTitle:v5 textStyle:v6 icon:v7 action:a3 handler:v10];
+  v8 = [_SFSettingsAlertItem buttonWithTitle:v5 textStyle:v6 icon:v7 action:action handler:v10];
 
   [v8 setAccessibilityIdentifier:@"ReportWebCompatibilityIssue"];
 
@@ -2173,8 +2173,8 @@ LABEL_9:
 
   [v6 setAccessibilityIdentifier:@"ManageExtensions"];
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v8 = [WeakRetained activeDocument];
-  LOBYTE(v5) = [v8 isPrivateBrowsingEnabled];
+  activeDocument = [WeakRetained activeDocument];
+  LOBYTE(v5) = [activeDocument isPrivateBrowsingEnabled];
 
   if ((v5 & 1) != 0 || (-[_SFPageFormatMenuController _webExtensionsController](self, "_webExtensionsController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 recentlyInstalledExtensionCount], -[_SFPageFormatMenuController _contentBlockerManager](self, "_contentBlockerManager"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "recentlyInstalledExtensionCount") + v10, v11, v9, !v12))
   {
@@ -2219,9 +2219,9 @@ LABEL_9:
   if ([MEMORY[0x1E69C8880] isBrowsingAssistantEnabled])
   {
     WeakRetained = objc_loadWeakRetained(&self->_viewController);
-    v3 = [WeakRetained presentingViewController];
+    presentingViewController = [WeakRetained presentingViewController];
 
-    if (v3)
+    if (presentingViewController)
     {
       [WeakRetained reloadData];
     }
@@ -2272,20 +2272,20 @@ LABEL_9:
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   if (([WeakRetained isShowingReader] & 1) != 0 || !objc_msgSend(MEMORY[0x1E69C8EC8], "hasUserConsent"))
   {
-    v3 = 0;
+    array = 0;
   }
 
   else
   {
-    v24 = [WeakRetained activeDocument];
-    v3 = [MEMORY[0x1E695DF70] array];
+    activeDocument = [WeakRetained activeDocument];
+    array = [MEMORY[0x1E695DF70] array];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v4 = [v24 assistantController];
-    v5 = [v4 result];
-    obj = [v5 entityResults];
+    assistantController = [activeDocument assistantController];
+    result = [assistantController result];
+    obj = [result entityResults];
 
     v27 = [obj countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v27)
@@ -2302,23 +2302,23 @@ LABEL_9:
 
           v7 = *(*(&v31 + 1) + 8 * i);
           cachedEntityCards = self->_cachedEntityCards;
-          v9 = [v7 identifier];
-          v10 = [(NSMutableDictionary *)cachedEntityCards objectForKeyedSubscript:v9];
+          identifier = [v7 identifier];
+          v10 = [(NSMutableDictionary *)cachedEntityCards objectForKeyedSubscript:identifier];
 
           if (v10)
           {
-            if (([v3 containsObject:v10] & 1) == 0)
+            if (([array containsObject:v10] & 1) == 0)
             {
-              [v3 addObject:v10];
+              [array addObject:v10];
             }
           }
 
           else
           {
-            v11 = [v24 assistantController];
-            v12 = [v11 webpageIdentifier];
+            assistantController2 = [activeDocument assistantController];
+            webpageIdentifier = [assistantController2 webpageIdentifier];
 
-            v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v3, "count") + 3}];
+            v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(array, "count") + 3}];
             objc_initWeak(&location, self);
             v14 = MEMORY[0x1E69B1AE0];
             v28[0] = MEMORY[0x1E69E9820];
@@ -2326,32 +2326,32 @@ LABEL_9:
             v28[2] = __43___SFPageFormatMenuController__entityItems__block_invoke;
             v28[3] = &unk_1E8494138;
             objc_copyWeak(&v29, &location);
-            v15 = [v14 entityCardWithSearchResult:v7 webpageIdentifier:v12 componentIdentifier:v13 actionHandler:v28];
+            v15 = [v14 entityCardWithSearchResult:v7 webpageIdentifier:webpageIdentifier componentIdentifier:v13 actionHandler:v28];
             if (!self->_didDonateVisualPresentationEntityToBiome)
             {
-              v16 = [MEMORY[0x1E69C8810] sharedLogger];
-              [v16 didShowEntityCardSBA];
+              mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+              [mEMORY[0x1E69C8810] didShowEntityCardSBA];
 
-              v17 = [MEMORY[0x1E69C8EB0] sharedManager];
-              [v17 donateBrowsingAssistantVisualComponentPresentationStartedWithWebPageID:v12 componentType:objc_msgSend(MEMORY[0x1E69C8EB0] componentIdentifier:"entityComponentTypeFromResult:" tableOfContentsArrayLength:{v7), v13, 0}];
+              mEMORY[0x1E69C8EB0] = [MEMORY[0x1E69C8EB0] sharedManager];
+              [mEMORY[0x1E69C8EB0] donateBrowsingAssistantVisualComponentPresentationStartedWithWebPageID:webpageIdentifier componentType:objc_msgSend(MEMORY[0x1E69C8EB0] componentIdentifier:"entityComponentTypeFromResult:" tableOfContentsArrayLength:{v7), v13, 0}];
             }
 
             v18 = self->_cachedEntityCards;
             if (!v18)
             {
-              v19 = [MEMORY[0x1E695DF90] dictionary];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
               v20 = self->_cachedEntityCards;
-              self->_cachedEntityCards = v19;
+              self->_cachedEntityCards = dictionary;
 
               v18 = self->_cachedEntityCards;
             }
 
-            v21 = [v7 identifier];
-            [(NSMutableDictionary *)v18 setObject:v15 forKeyedSubscript:v21];
+            identifier2 = [v7 identifier];
+            [(NSMutableDictionary *)v18 setObject:v15 forKeyedSubscript:identifier2];
 
-            if (([v3 containsObject:0] & 1) == 0)
+            if (([array containsObject:0] & 1) == 0)
             {
-              [v3 addObject:v15];
+              [array addObject:v15];
             }
 
             objc_destroyWeak(&v29);
@@ -2365,191 +2365,191 @@ LABEL_9:
       while (v27);
     }
 
-    if ([v3 count])
+    if ([array count])
     {
       self->_didDonateVisualPresentationEntityToBiome = 1;
     }
   }
 
-  return v3;
+  return array;
 }
 
-- (BOOL)_shouldShowItemForAction:(id)a3
+- (BOOL)_shouldShowItemForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained activeDocument];
-  if (![v4 isEqualToString:*MEMORY[0x1E69B1D60]])
+  activeDocument = [WeakRetained activeDocument];
+  if (![actionCopy isEqualToString:*MEMORY[0x1E69B1D60]])
   {
-    if ([v6 isShowingSystemStartPage])
+    if ([activeDocument isShowingSystemStartPage])
     {
 LABEL_5:
       LOBYTE(v8) = 0;
       goto LABEL_13;
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x1E69B1CD0]])
+    if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CD0]])
     {
       goto LABEL_9;
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x1E69B1D68]])
+    if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D68]])
     {
-      v9 = [WeakRetained canTogglePinningTab];
+      canTogglePinningTab = [WeakRetained canTogglePinningTab];
       goto LABEL_12;
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x1E69B1CC8]])
+    if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CC8]])
     {
 LABEL_9:
-      v9 = [WeakRetained canAddToBookmarks];
+      canTogglePinningTab = [WeakRetained canAddToBookmarks];
     }
 
     else
     {
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1CE0]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CE0]])
       {
-        v9 = [WeakRetained canAddToReadingList];
+        canTogglePinningTab = [WeakRetained canAddToReadingList];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1CD8]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CD8]])
       {
-        v9 = [WeakRetained canAddToQuickNote];
+        canTogglePinningTab = [WeakRetained canAddToQuickNote];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D00]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D00]])
       {
-        v9 = [WeakRetained canMoveToTabGroup];
+        canTogglePinningTab = [WeakRetained canMoveToTabGroup];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D10]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D10]])
       {
-        v9 = [WeakRetained supportsPrivacyReport];
+        canTogglePinningTab = [WeakRetained supportsPrivacyReport];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D08]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D08]])
       {
-        v9 = [WeakRetained canPrintCurrentTab];
+        canTogglePinningTab = [WeakRetained canPrintCurrentTab];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D38]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D38]])
       {
-        v9 = [(_SFPageFormatMenuController *)self _canShowScribble];
+        canTogglePinningTab = [(_SFPageFormatMenuController *)self _canShowScribble];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D28]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D28]])
       {
-        v9 = [(_SFPageFormatMenuController *)self _canShowReportWebsiteIssueInMainMenu];
+        canTogglePinningTab = [(_SFPageFormatMenuController *)self _canShowReportWebsiteIssueInMainMenu];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D20]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D20]])
       {
-        v11 = [(_SFPageFormatMenuController *)self _canShowReportWebsiteIssueInMainMenu];
+        _canShowReportWebsiteIssueInMainMenu = [(_SFPageFormatMenuController *)self _canShowReportWebsiteIssueInMainMenu];
         goto LABEL_31;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1CF0]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CF0]])
       {
-        v9 = [(_SFPageFormatMenuController *)self _canHideToolbar];
+        canTogglePinningTab = [(_SFPageFormatMenuController *)self _canHideToolbar];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D30]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D30]])
       {
-        v9 = [(_SFPageFormatMenuController *)self _canToggleBetweenDesktopAndMobileSite];
+        canTogglePinningTab = [(_SFPageFormatMenuController *)self _canToggleBetweenDesktopAndMobileSite];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D50]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D50]])
       {
-        v9 = [(_SFPageFormatMenuController *)self _canToggleContentBlockers];
+        canTogglePinningTab = [(_SFPageFormatMenuController *)self _canToggleContentBlockers];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D40]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D40]])
       {
-        v9 = [(_SFPageFormatMenuController *)self _canToggleAdvancedPrivateBrowsingPrivacyProtections];
+        canTogglePinningTab = [(_SFPageFormatMenuController *)self _canToggleAdvancedPrivateBrowsingPrivacyProtections];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D70]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D70]])
       {
-        v9 = [(_SFPageFormatMenuController *)self _canTogglePrivateRelay];
+        canTogglePinningTab = [(_SFPageFormatMenuController *)self _canTogglePrivateRelay];
         goto LABEL_12;
       }
 
-      if ([v4 isEqualToString:*MEMORY[0x1E69B1D18]])
+      if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D18]])
       {
         if (![(_SFPageFormatMenuController *)self _canShowWebsiteSettings])
         {
           goto LABEL_5;
         }
 
-        v9 = [MEMORY[0x1E69C8880] isAutoFillInternalFeedbackUIEnabled];
+        canTogglePinningTab = [MEMORY[0x1E69C8880] isAutoFillInternalFeedbackUIEnabled];
       }
 
       else
       {
-        if ([v4 isEqualToString:*MEMORY[0x1E69B1D58]])
+        if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D58]])
         {
-          if (([WeakRetained hasDedicatedMediaStateButton] & 1) != 0 || !objc_msgSend(v6, "mediaStateIcon"))
+          if (([WeakRetained hasDedicatedMediaStateButton] & 1) != 0 || !objc_msgSend(activeDocument, "mediaStateIcon"))
           {
             goto LABEL_5;
           }
 
-          v11 = [WeakRetained isShowingReader];
+          _canShowReportWebsiteIssueInMainMenu = [WeakRetained isShowingReader];
 LABEL_31:
-          LOBYTE(v8) = v11 ^ 1;
+          LOBYTE(v8) = _canShowReportWebsiteIssueInMainMenu ^ 1;
           goto LABEL_13;
         }
 
-        if ([v4 isEqualToString:*MEMORY[0x1E69B1D48]])
+        if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D48]])
         {
           if (!WBSAXShouldShowAnimatedImageControls())
           {
             goto LABEL_5;
           }
 
-          v9 = [MEMORY[0x1E69853A0] instancesRespondToSelector:sel__pauseAllAnimationsWithCompletionHandler_];
+          canTogglePinningTab = [MEMORY[0x1E69853A0] instancesRespondToSelector:sel__pauseAllAnimationsWithCompletionHandler_];
         }
 
-        else if ([v4 isEqualToString:*MEMORY[0x1E69B1D98]])
+        else if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D98]])
         {
-          v9 = [(_SFPageFormatMenuController *)self _canViewSecurityInformation];
+          canTogglePinningTab = [(_SFPageFormatMenuController *)self _canViewSecurityInformation];
         }
 
         else
         {
-          if ([v4 isEqualToString:*MEMORY[0x1E69B1CE8]] && objc_msgSend(MEMORY[0x1E69C8880], "isSolariumEnabled") && (objc_opt_respondsToSelector() & 1) != 0)
+          if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CE8]] && objc_msgSend(MEMORY[0x1E69C8880], "isSolariumEnabled") && (objc_opt_respondsToSelector() & 1) != 0)
           {
             LOBYTE(v8) = 1;
             goto LABEL_13;
           }
 
-          if (![v4 isEqualToString:*MEMORY[0x1E69B1CF8]])
+          if (![actionCopy isEqualToString:*MEMORY[0x1E69B1CF8]])
           {
             goto LABEL_5;
           }
 
-          v9 = [(_SFPageFormatMenuController *)self _canShowListenToPageMenuAction];
+          canTogglePinningTab = [(_SFPageFormatMenuController *)self _canShowListenToPageMenuAction];
         }
       }
     }
 
 LABEL_12:
-    LOBYTE(v8) = v9;
+    LOBYTE(v8) = canTogglePinningTab;
     goto LABEL_13;
   }
 
-  v7 = [WeakRetained activeDocument];
-  if ([v7 atLeastOneOtherTabPlayingAudio])
+  activeDocument2 = [WeakRetained activeDocument];
+  if ([activeDocument2 atLeastOneOtherTabPlayingAudio])
   {
     v8 = [WeakRetained isShowingReader] ^ 1;
   }
@@ -2563,38 +2563,38 @@ LABEL_13:
   return v8;
 }
 
-- (id)_itemForAction:(id)a3
+- (id)_itemForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   cachedMenuItems = self->_cachedMenuItems;
   if (!cachedMenuItems)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_cachedMenuItems;
-    self->_cachedMenuItems = v6;
+    self->_cachedMenuItems = dictionary;
 
     cachedMenuItems = self->_cachedMenuItems;
   }
 
-  v8 = [(NSMutableDictionary *)cachedMenuItems objectForKeyedSubscript:v4];
+  v8 = [(NSMutableDictionary *)cachedMenuItems objectForKeyedSubscript:actionCopy];
 
   if (!v8)
   {
-    v9 = [(_SFPageFormatMenuController *)self _makeItemForAction:v4];
-    [(NSMutableDictionary *)self->_cachedMenuItems setObject:v9 forKeyedSubscript:v4];
+    v9 = [(_SFPageFormatMenuController *)self _makeItemForAction:actionCopy];
+    [(NSMutableDictionary *)self->_cachedMenuItems setObject:v9 forKeyedSubscript:actionCopy];
   }
 
-  v10 = [(NSMutableDictionary *)self->_cachedMenuItems objectForKeyedSubscript:v4];
+  v10 = [(NSMutableDictionary *)self->_cachedMenuItems objectForKeyedSubscript:actionCopy];
 
   return v10;
 }
 
-- (id)_makeItemForAction:(id)a3
+- (id)_makeItemForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained activeDocument];
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1CD0]])
+  activeDocument = [WeakRetained activeDocument];
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CD0]])
   {
     v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"star"];
     v8 = _WBSLocalizedString();
@@ -2604,7 +2604,7 @@ LABEL_13:
     v47[2] = __50___SFPageFormatMenuController__makeItemForAction___block_invoke;
     v47[3] = &unk_1E848F9D8;
     v48 = WeakRetained;
-    v10 = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v9 icon:v7 action:42 handler:v47];
+    alertItem = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v9 icon:v7 action:42 handler:v47];
     v11 = v48;
 LABEL_10:
 
@@ -2612,7 +2612,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D68]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D68]])
   {
     if ([WeakRetained currentTabIsPinned])
     {
@@ -2632,12 +2632,12 @@ LABEL_11:
     v45[2] = __50___SFPageFormatMenuController__makeItemForAction___block_invoke_3;
     v45[3] = &unk_1E848F9D8;
     v46 = WeakRetained;
-    v10 = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v14 icon:v7 action:48 handler:v45];
+    alertItem = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v14 icon:v7 action:48 handler:v45];
     v11 = v46;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1CC8]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CC8]])
   {
     v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"book"];
     v8 = _WBSLocalizedString();
@@ -2647,12 +2647,12 @@ LABEL_11:
     v43[2] = __50___SFPageFormatMenuController__makeItemForAction___block_invoke_4;
     v43[3] = &unk_1E848F9D8;
     v44 = WeakRetained;
-    v10 = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v13 icon:v7 action:43 handler:v43];
+    alertItem = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v13 icon:v7 action:43 handler:v43];
     v11 = v44;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1CE0]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CE0]])
   {
     v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"eyeglasses"];
     v16 = _WBSLocalizedString();
@@ -2662,13 +2662,13 @@ LABEL_11:
     v41[2] = __50___SFPageFormatMenuController__makeItemForAction___block_invoke_6;
     v41[3] = &unk_1E848F9D8;
     v42 = WeakRetained;
-    v10 = [_SFSettingsAlertItem buttonWithTitle:v16 textStyle:v17 icon:v7 action:45 handler:v41];
+    alertItem = [_SFSettingsAlertItem buttonWithTitle:v16 textStyle:v17 icon:v7 action:45 handler:v41];
 
-    [v10 setAccessibilityIdentifier:@"AddToReadingList"];
+    [alertItem setAccessibilityIdentifier:@"AddToReadingList"];
     goto LABEL_11;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1CD8]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CD8]])
   {
     v7 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"quicknote"];
     v8 = _WBSLocalizedString();
@@ -2678,16 +2678,16 @@ LABEL_11:
     v39[2] = __50___SFPageFormatMenuController__makeItemForAction___block_invoke_8;
     v39[3] = &unk_1E848F9D8;
     v40 = WeakRetained;
-    v10 = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v18 icon:v7 action:44 handler:v39];
+    alertItem = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v18 icon:v7 action:44 handler:v39];
     v11 = v40;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D00]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D00]])
   {
-    v19 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.up.forward.app"];
+    activeWebView = [MEMORY[0x1E69DCAB8] systemImageNamed:@"arrow.up.forward.app"];
     v20 = _WBSLocalizedString();
-    v10 = [_SFSettingsAlertItem buttonWithTitle:v20 textStyle:*MEMORY[0x1E69DDCF8] icon:v19 action:46 handler:&__block_literal_global_507];
+    alertItem = [_SFSettingsAlertItem buttonWithTitle:v20 textStyle:*MEMORY[0x1E69DDCF8] icon:activeWebView action:46 handler:&__block_literal_global_507];
 
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -2703,7 +2703,7 @@ LABEL_23:
     v36[3] = &unk_1E848F8F0;
     objc_copyWeak(&v37, &location);
     v21 = [WeakRetained moveMenuOnPageMenuWithDismissHandler:v36];
-    [v10 setPopUpMenu:v21];
+    [alertItem setPopUpMenu:v21];
 
     v22 = &v37;
 LABEL_22:
@@ -2712,19 +2712,19 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D10]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D10]])
   {
     v23 = [_SFPageFormatMenuPrivacyReportController alloc];
-    v24 = [WeakRetained activeDocument];
-    v25 = [(_SFPageFormatMenuPrivacyReportController *)v23 initWithDocument:v24];
+    activeDocument2 = [WeakRetained activeDocument];
+    v25 = [(_SFPageFormatMenuPrivacyReportController *)v23 initWithDocument:activeDocument2];
 
     [(_SFPageFormatMenuPrivacyReportController *)v25 setDelegate:self];
-    v10 = [(_SFPageFormatMenuPrivacyReportController *)v25 alertItem];
+    alertItem = [(_SFPageFormatMenuPrivacyReportController *)v25 alertItem];
 
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D08]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D08]])
   {
     v7 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"printer"];
     v8 = _WBSLocalizedString();
@@ -2734,83 +2734,83 @@ LABEL_22:
     v34[2] = __50___SFPageFormatMenuController__makeItemForAction___block_invoke_12;
     v34[3] = &unk_1E848F9D8;
     v35 = WeakRetained;
-    v10 = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v26 icon:v7 action:47 handler:v34];
+    alertItem = [_SFSettingsAlertItem buttonWithTitle:v8 textStyle:v26 icon:v7 action:47 handler:v34];
     v11 = v35;
     goto LABEL_10;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D38]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D38]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _scribbleAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _scribbleAlertItem];
 LABEL_50:
-    v10 = v27;
+    alertItem = _scribbleAlertItem;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D28]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D28]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _reportWebCompatibilityIssueItemMainMenu];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _reportWebCompatibilityIssueItemMainMenu];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D20]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D20]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _reportWebCompatibilityIssueItemMoreMenu];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _reportWebCompatibilityIssueItemMoreMenu];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1CF0]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CF0]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _fullScreenAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _fullScreenAlertItem];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D30]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D30]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _desktopMobileToggleAlertItemWithOrientation:[(_SFPageFormatMenuController *)self _deviceOrientation]];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _desktopMobileToggleAlertItemWithOrientation:[(_SFPageFormatMenuController *)self _deviceOrientation]];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D50]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D50]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _contentBlockersToggleAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _contentBlockersToggleAlertItem];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D40]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D40]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _advancedPrivateBrowsingPrivacyProtectionsAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _advancedPrivateBrowsingPrivacyProtectionsAlertItem];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D70]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D70]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _privateRelayToggleAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _privateRelayToggleAlertItem];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D18]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D18]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _userFeedbackAutofillAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _userFeedbackAutofillAlertItem];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D58]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D58]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _mediaStateAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _mediaStateAlertItem];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D60]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D60]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _otherTabAudioMediaStateAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _otherTabAudioMediaStateAlertItem];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D48]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D48]])
   {
-    v19 = [v6 activeWebView];
-    if ([v19 _allowsAnyAnimationToPlay])
+    activeWebView = [activeDocument activeWebView];
+    if ([activeWebView _allowsAnyAnimationToPlay])
     {
       [(_SFPageFormatMenuController *)self _pauseAllAnimationsAlertItem];
     }
@@ -2819,28 +2819,28 @@ LABEL_50:
     {
       [(_SFPageFormatMenuController *)self _playAllAnimationsAlertItem];
     }
-    v10 = ;
+    alertItem = ;
     goto LABEL_23;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1D98]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1D98]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _viewSecurityInformationAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _viewSecurityInformationAlertItem];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1CE8]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CE8]])
   {
-    v27 = [(_SFPageFormatMenuController *)self _editToolbarAlertItem];
+    _scribbleAlertItem = [(_SFPageFormatMenuController *)self _editToolbarAlertItem];
     goto LABEL_50;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69B1CF8]])
+  if ([actionCopy isEqualToString:*MEMORY[0x1E69B1CF8]])
   {
-    v10 = [(_SFPageFormatMenuController *)self _siriReaderAlertItem];
+    alertItem = [(_SFPageFormatMenuController *)self _siriReaderAlertItem];
     v28 = objc_loadWeakRetained(&self->_browserContentController);
-    v29 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
-    v30 = [v29 currentPlaybackState];
+    mEMORY[0x1E69B1B90] = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+    currentPlaybackState = [mEMORY[0x1E69B1B90] currentPlaybackState];
 
     objc_initWeak(&location, self);
     v31[0] = MEMORY[0x1E69E9820];
@@ -2848,38 +2848,38 @@ LABEL_50:
     v31[2] = __50___SFPageFormatMenuController__makeItemForAction___block_invoke_14;
     v31[3] = &unk_1E8494160;
     objc_copyWeak(v33, &location);
-    v33[1] = v30;
-    v19 = v28;
-    v32 = v19;
+    v33[1] = currentPlaybackState;
+    activeWebView = v28;
+    v32 = activeWebView;
     [(_SFPageFormatMenuController *)self _updateSiriReaderPlaybackStateAndIdentifierWithCompletion:v31];
 
     v22 = v33;
     goto LABEL_22;
   }
 
-  v10 = 0;
+  alertItem = 0;
 LABEL_12:
 
-  return v10;
+  return alertItem;
 }
 
-- (id)primaryMenuSectionsForEditMode:(BOOL)a3 inFirstLevelMenu:(BOOL)a4
+- (id)primaryMenuSectionsForEditMode:(BOOL)mode inFirstLevelMenu:(BOOL)menu
 {
-  v55 = a4;
+  menuCopy = menu;
   v80 = *MEMORY[0x1E69E9840];
-  v57 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   v6 = 0x1E69B1000uLL;
-  v62 = [MEMORY[0x1E69B1AE8] favoritesSection];
-  v7 = [MEMORY[0x1E695DF70] array];
+  favoritesSection = [MEMORY[0x1E69B1AE8] favoritesSection];
+  array2 = [MEMORY[0x1E695DF70] array];
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v8 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v9 = [v8 browsingAssistant_favoritedMenuActions];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  browsingAssistant_favoritedMenuActions = [safari_browserDefaults browsingAssistant_favoritedMenuActions];
 
-  v10 = [v9 countByEnumeratingWithState:&v73 objects:v79 count:16];
+  v10 = [browsingAssistant_favoritedMenuActions countByEnumeratingWithState:&v73 objects:v79 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2887,63 +2887,63 @@ LABEL_12:
     v13 = *MEMORY[0x1E69B1D38];
     v58 = *MEMORY[0x1E69B1D88];
     v60 = *MEMORY[0x1E69B1D38];
-    v63 = a3;
+    modeCopy = mode;
     do
     {
       for (i = 0; i != v11; ++i)
       {
         if (*v74 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(browsingAssistant_favoritedMenuActions);
         }
 
         v15 = *(*(&v73 + 1) + 8 * i);
         if ([(_SFPageFormatMenuController *)self _shouldShowItemForAction:v15])
         {
-          if (a3 || ![v15 isEqualToString:v13])
+          if (mode || ![v15 isEqualToString:v13])
           {
-            v16 = [(_SFPageFormatMenuController *)self _itemForAction:v15];
-            [v7 safari_addObjectUnlessNil:v16];
+            _effectiveScribbleItems = [(_SFPageFormatMenuController *)self _itemForAction:v15];
+            [array2 safari_addObjectUnlessNil:_effectiveScribbleItems];
           }
 
           else
           {
-            v16 = [(_SFPageFormatMenuController *)self _effectiveScribbleItems];
-            if ([v16 count] > 1)
+            _effectiveScribbleItems = [(_SFPageFormatMenuController *)self _effectiveScribbleItems];
+            if ([_effectiveScribbleItems count] > 1)
             {
-              v18 = v7;
-              if ([v7 count])
+              v18 = array2;
+              if ([array2 count])
               {
-                v19 = v62;
-                [v62 setItems:v18];
-                [v57 addObject:v62];
+                v19 = favoritesSection;
+                [favoritesSection setItems:v18];
+                [array addObject:favoritesSection];
                 v20 = [objc_alloc(*(v6 + 2792)) initWithIdentifier:v58];
-                [v20 setItems:v16];
-                [v57 addObject:v20];
+                [v20 setItems:_effectiveScribbleItems];
+                [array addObject:v20];
 
                 v6 = 0x1E69B1000;
               }
 
               else
               {
-                v19 = v62;
-                [v62 setItems:v16];
-                [v57 addObject:v62];
+                v19 = favoritesSection;
+                [favoritesSection setItems:_effectiveScribbleItems];
+                [array addObject:favoritesSection];
               }
 
               v21 = [objc_alloc(*(v6 + 2792)) initWithIdentifier:@"otherFavorites"];
 
-              v7 = [MEMORY[0x1E695DF70] array];
-              v17 = v18;
-              v62 = v21;
-              a3 = v63;
+              array2 = [MEMORY[0x1E695DF70] array];
+              firstObject = v18;
+              favoritesSection = v21;
+              mode = modeCopy;
               v13 = v60;
             }
 
             else
             {
-              v17 = [v16 firstObject];
-              [v7 safari_addObjectUnlessNil:v17];
+              firstObject = [_effectiveScribbleItems firstObject];
+              [array2 safari_addObjectUnlessNil:firstObject];
             }
 
             v6 = 0x1E69B1000;
@@ -2951,20 +2951,20 @@ LABEL_12:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v73 objects:v79 count:16];
+      v11 = [browsingAssistant_favoritedMenuActions countByEnumeratingWithState:&v73 objects:v79 count:16];
     }
 
     while (v11);
   }
 
   v22 = WeakRetained;
-  v23 = [WeakRetained isShowingReader];
-  if (!v55 || v23)
+  isShowingReader = [WeakRetained isShowingReader];
+  if (!menuCopy || isShowingReader)
   {
-    if (!(a3 | ![(_SFPageFormatMenuController *)self _canShowListenToPageMenuAction]| ((v23 & 1) == 0) | !v55))
+    if (!(mode | ![(_SFPageFormatMenuController *)self _canShowListenToPageMenuAction]| ((isShowingReader & 1) == 0) | !menuCopy))
     {
-      v45 = [(_SFPageFormatMenuController *)self _siriReaderAlertItem];
-      [v7 addObject:v45];
+      _siriReaderAlertItem = [(_SFPageFormatMenuController *)self _siriReaderAlertItem];
+      [array2 addObject:_siriReaderAlertItem];
     }
 
     goto LABEL_55;
@@ -2993,7 +2993,7 @@ LABEL_12:
         if ([(_SFPageFormatMenuController *)self _shouldShowItemForAction:v29])
         {
           v30 = [(_SFPageFormatMenuController *)self _itemForAction:v29];
-          [v7 safari_addObjectUnlessNil:v30];
+          [array2 safari_addObjectUnlessNil:v30];
         }
       }
 
@@ -3006,17 +3006,17 @@ LABEL_12:
   if ([(_SFPageFormatMenuController *)self _isShowingImmersiveContent])
   {
 LABEL_55:
-    v33 = v62;
-    [v62 setItems:v7];
-    v32 = v57;
-    [v57 addObject:v62];
-    v46 = [v57 copy];
+    v33 = favoritesSection;
+    [favoritesSection setItems:array2];
+    v32 = array;
+    [array addObject:favoritesSection];
+    v46 = [array copy];
     goto LABEL_64;
   }
 
   translationAlertItems = self->_translationAlertItems;
-  v32 = v57;
-  v33 = v62;
+  v32 = array;
+  v33 = favoritesSection;
   if (!translationAlertItems)
   {
     [(_SFPageFormatMenuController *)self _buildTranslationAlertItemsWithSourceInfo:0];
@@ -3052,10 +3052,10 @@ LABEL_55:
       }
 
       v39 = *(*(&v65 + 1) + 8 * k);
-      v40 = [v39 actionType];
-      if (v40 > 17)
+      actionType = [v39 actionType];
+      if (actionType > 17)
       {
-        if (v40 == 18)
+        if (actionType == 18)
         {
           v41 = v61;
           v42 = v36;
@@ -3064,7 +3064,7 @@ LABEL_55:
 
         else
         {
-          if (v40 != 19)
+          if (actionType != 19)
           {
             continue;
           }
@@ -3077,7 +3077,7 @@ LABEL_55:
         goto LABEL_48;
       }
 
-      if ((v40 - 14) < 2)
+      if ((actionType - 14) < 2)
       {
         v41 = v64;
         v64 = v39;
@@ -3091,7 +3091,7 @@ LABEL_48:
 
       v41 = v36;
       v42 = v39;
-      if (v40 == 17)
+      if (actionType == 17)
       {
         goto LABEL_48;
       }
@@ -3104,11 +3104,11 @@ LABEL_48:
 
   if (v64)
   {
-    [v7 addObject:?];
-    v33 = v62;
-    [v62 setItems:v7];
-    v32 = v57;
-    [v57 addObject:v62];
+    [array2 addObject:?];
+    v33 = favoritesSection;
+    [favoritesSection setItems:array2];
+    v32 = array;
+    [array addObject:favoritesSection];
     v22 = WeakRetained;
     v35 = v59;
     v44 = v61;
@@ -3116,43 +3116,43 @@ LABEL_48:
   }
 
   v22 = WeakRetained;
-  v32 = v57;
+  v32 = array;
   v44 = v61;
-  v33 = v62;
+  v33 = favoritesSection;
   v35 = v59;
   if (v36)
   {
-    [v62 setItems:v7];
-    [v57 addObject:v62];
+    [favoritesSection setItems:array2];
+    [array addObject:favoritesSection];
     v47 = objc_alloc(MEMORY[0x1E69B1AE8]);
     v48 = [v47 initWithIdentifier:*MEMORY[0x1E69B1D90]];
-    v49 = [MEMORY[0x1E695DF70] array];
-    [v49 safari_addObjectUnlessNil:v36];
-    [v49 safari_addObjectUnlessNil:v61];
-    [v49 safari_addObjectUnlessNil:v59];
-    [v48 setItems:v49];
-    [v57 addObject:v48];
+    array3 = [MEMORY[0x1E695DF70] array];
+    [array3 safari_addObjectUnlessNil:v36];
+    [array3 safari_addObjectUnlessNil:v61];
+    [array3 safari_addObjectUnlessNil:v59];
+    [v48 setItems:array3];
+    [array addObject:v48];
 
     goto LABEL_60;
   }
 
 LABEL_57:
-  [v33 setItems:v7];
+  [v33 setItems:array2];
   [v32 addObject:v33];
   v36 = 0;
 LABEL_60:
   v64 = 0;
 LABEL_61:
-  v50 = [v22 activeDocument];
-  v51 = [v50 isShowingSystemStartPage];
+  activeDocument = [v22 activeDocument];
+  isShowingSystemStartPage = [activeDocument isShowingSystemStartPage];
 
-  if ((v51 & 1) == 0)
+  if ((isShowingSystemStartPage & 1) == 0)
   {
-    v52 = [(_SFPageFormatMenuController *)self _downloadsSection];
-    [v32 safari_addObjectUnlessNil:v52];
+    _downloadsSection = [(_SFPageFormatMenuController *)self _downloadsSection];
+    [v32 safari_addObjectUnlessNil:_downloadsSection];
 
-    v53 = [(_SFPageFormatMenuController *)self _extensionsSection];
-    [v32 safari_addObjectUnlessNil:v53];
+    _extensionsSection = [(_SFPageFormatMenuController *)self _extensionsSection];
+    [v32 safari_addObjectUnlessNil:_extensionsSection];
   }
 
   v46 = [v32 copy];
@@ -3174,9 +3174,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = [(_SFPageFormatMenuController *)self _hasExtensionsAvailableToShowInManageExtensionsView];
+  _hasExtensionsAvailableToShowInManageExtensionsView = [(_SFPageFormatMenuController *)self _hasExtensionsAvailableToShowInManageExtensionsView];
 
-  if (!v4)
+  if (!_hasExtensionsAvailableToShowInManageExtensionsView)
   {
     goto LABEL_6;
   }
@@ -3191,19 +3191,19 @@ LABEL_6:
   {
     v8 = objc_alloc(MEMORY[0x1E69B1AE8]);
     v6 = [v8 initWithIdentifier:*MEMORY[0x1E69B1D80]];
-    v9 = [(_SFPageFormatMenuController *)self _manageExtensionsAlertItem];
-    v25[0] = v9;
+    _manageExtensionsAlertItem = [(_SFPageFormatMenuController *)self _manageExtensionsAlertItem];
+    v25[0] = _manageExtensionsAlertItem;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
-    v11 = [(_SFPageFormatMenuController *)self _extensionItems];
-    v12 = [v10 arrayByAddingObjectsFromArray:v11];
+    _extensionItems = [(_SFPageFormatMenuController *)self _extensionItems];
+    v12 = [v10 arrayByAddingObjectsFromArray:_extensionItems];
     [(SFBrowsingAssistantMenuSection *)v6 setItems:v12];
 
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = [(SFBrowsingAssistantMenuSection *)v6 items];
-    v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    items = [(SFBrowsingAssistantMenuSection *)v6 items];
+    v14 = [items countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
       v15 = v14;
@@ -3214,7 +3214,7 @@ LABEL_6:
         {
           if (*v21 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(items);
           }
 
           v18 = *(*(&v20 + 1) + 8 * i);
@@ -3222,7 +3222,7 @@ LABEL_6:
           [v18 setUpSelectionHandlerIfNeededWithViewController:v19];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v15 = [items countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v15);
@@ -3248,9 +3248,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v4 = [(_SFPageFormatMenuController *)self _shouldEnableDownloadsAlert];
+  _shouldEnableDownloadsAlert = [(_SFPageFormatMenuController *)self _shouldEnableDownloadsAlert];
 
-  if (!v4)
+  if (!_shouldEnableDownloadsAlert)
   {
     goto LABEL_7;
   }
@@ -3259,9 +3259,9 @@ LABEL_7:
   downloadsAlertItem = self->_downloadsAlertItem;
   if (!downloadsAlertItem)
   {
-    v7 = [(_SFPageFormatMenuController *)self _downloadsAlertItem];
+    _downloadsAlertItem = [(_SFPageFormatMenuController *)self _downloadsAlertItem];
     v8 = self->_downloadsAlertItem;
-    self->_downloadsAlertItem = v7;
+    self->_downloadsAlertItem = _downloadsAlertItem;
 
     downloadsAlertItem = self->_downloadsAlertItem;
   }
@@ -3275,14 +3275,14 @@ LABEL_8:
   return v5;
 }
 
-- (id)moreMenuSectionsForEditMode:(BOOL)a3
+- (id)moreMenuSectionsForEditMode:(BOOL)mode
 {
   v49 = *MEMORY[0x1E69E9840];
-  v35 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v7 = [v6 browsingAssistant_favoritedMenuActions];
-  v8 = [v5 setWithArray:v7];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  browsingAssistant_favoritedMenuActions = [safari_browserDefaults browsingAssistant_favoritedMenuActions];
+  v8 = [v5 setWithArray:browsingAssistant_favoritedMenuActions];
 
   v45 = 0u;
   v46 = 0u;
@@ -3296,7 +3296,7 @@ LABEL_8:
     v37 = *MEMORY[0x1E69B1D38];
     v33 = *MEMORY[0x1E69B1D88];
     v9 = 0x1E69B1000uLL;
-    v34 = a3;
+    modeCopy = mode;
     do
     {
       v10 = 0;
@@ -3310,7 +3310,7 @@ LABEL_8:
         v32 = v10;
         v11 = *(*(&v43 + 1) + 8 * v10);
         v38 = [objc_alloc(*(v9 + 2792)) initWithIdentifier:v11];
-        v12 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
@@ -3323,7 +3323,7 @@ LABEL_8:
         {
           v16 = v15;
           v17 = *v40;
-          v18 = v12;
+          v18 = array2;
           do
           {
             for (i = 0; i != v16; ++i)
@@ -3336,52 +3336,52 @@ LABEL_8:
               v20 = *(*(&v39 + 1) + 8 * i);
               if (-[_SFPageFormatMenuController _shouldShowItemForAction:](self, "_shouldShowItemForAction:", v20) && ([v8 containsObject:v20] & 1) == 0)
               {
-                if (a3 || ![v20 isEqualToString:v37])
+                if (mode || ![v20 isEqualToString:v37])
                 {
-                  v21 = [(_SFPageFormatMenuController *)self _itemForAction:v20];
-                  [v18 safari_addObjectUnlessNil:v21];
+                  _effectiveScribbleItems = [(_SFPageFormatMenuController *)self _itemForAction:v20];
+                  [v18 safari_addObjectUnlessNil:_effectiveScribbleItems];
                 }
 
                 else
                 {
-                  v21 = [(_SFPageFormatMenuController *)self _effectiveScribbleItems];
-                  if ([v21 count] > 1)
+                  _effectiveScribbleItems = [(_SFPageFormatMenuController *)self _effectiveScribbleItems];
+                  if ([_effectiveScribbleItems count] > 1)
                   {
                     if ([v18 count])
                     {
                       [v38 setItems:v18];
-                      [v35 addObject:v38];
+                      [array addObject:v38];
                       v36 = v18;
                       v25 = [objc_alloc(MEMORY[0x1E69B1AE8]) initWithIdentifier:v33];
-                      [v25 setItems:v21];
-                      [v35 addObject:v25];
+                      [v25 setItems:_effectiveScribbleItems];
+                      [array addObject:v25];
 
                       v18 = v36;
                     }
 
                     else
                     {
-                      [v38 setItems:v21];
-                      [v35 addObject:v38];
+                      [v38 setItems:_effectiveScribbleItems];
+                      [array addObject:v38];
                     }
 
                     v26 = [objc_alloc(MEMORY[0x1E69B1AE8]) initWithIdentifier:@"otherAdvancedActions"];
 
-                    v24 = [MEMORY[0x1E695DF70] array];
+                    array3 = [MEMORY[0x1E695DF70] array];
                     v38 = v26;
-                    a3 = v34;
+                    mode = modeCopy;
                   }
 
                   else
                   {
-                    v22 = [v21 firstObject];
+                    firstObject = [_effectiveScribbleItems firstObject];
                     v23 = v18;
-                    v18 = v22;
-                    v24 = v23;
-                    [v23 safari_addObjectUnlessNil:v22];
+                    v18 = firstObject;
+                    array3 = v23;
+                    [v23 safari_addObjectUnlessNil:firstObject];
                   }
 
-                  v18 = v24;
+                  v18 = array3;
                 }
               }
             }
@@ -3394,11 +3394,11 @@ LABEL_8:
 
         else
         {
-          v18 = v12;
+          v18 = array2;
         }
 
         [v38 setItems:v18];
-        [v35 addObject:v38];
+        [array addObject:v38];
 
         v10 = v32 + 1;
         v9 = 0x1E69B1000;
@@ -3411,7 +3411,7 @@ LABEL_8:
     while (v31);
   }
 
-  v27 = [v35 copy];
+  v27 = [array copy];
 
   return v27;
 }
@@ -3419,36 +3419,36 @@ LABEL_8:
 - (id)_effectiveScribbleItems
 {
   v3 = [(_SFPageFormatMenuController *)self _itemForAction:*MEMORY[0x1E69B1D38]];
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v4 safari_addObjectUnlessNil:v3];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safari_addObjectUnlessNil:v3];
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained activeDocument];
+  activeDocument = [WeakRetained activeDocument];
 
-  v7 = [v6 sfScribbleController];
-  v8 = [v7 hiddenElementCount];
+  sfScribbleController = [activeDocument sfScribbleController];
+  hiddenElementCount = [sfScribbleController hiddenElementCount];
 
-  if (v8)
+  if (hiddenElementCount)
   {
-    v9 = [(_SFPageFormatMenuController *)self _clearEditsAlertItem];
-    [v4 safari_addObjectUnlessNil:v9];
+    _clearEditsAlertItem = [(_SFPageFormatMenuController *)self _clearEditsAlertItem];
+    [array safari_addObjectUnlessNil:_clearEditsAlertItem];
   }
 
-  else if (![v6 hasEnteredScribbleMode])
+  else if (![activeDocument hasEnteredScribbleMode])
   {
     goto LABEL_7;
   }
 
-  v10 = [v6 sfScribbleController];
-  v11 = [v10 userInitiatedScribblingDisabled];
+  sfScribbleController2 = [activeDocument sfScribbleController];
+  userInitiatedScribblingDisabled = [sfScribbleController2 userInitiatedScribblingDisabled];
 
-  if ((v11 & 1) == 0 && [(_SFPageFormatMenuController *)self _shouldShowScribbleFeedbackButton])
+  if ((userInitiatedScribblingDisabled & 1) == 0 && [(_SFPageFormatMenuController *)self _shouldShowScribbleFeedbackButton])
   {
-    v12 = [(_SFPageFormatMenuController *)self _reportScribbleIssueItem];
-    [v4 safari_addObjectUnlessNil:v12];
+    _reportScribbleIssueItem = [(_SFPageFormatMenuController *)self _reportScribbleIssueItem];
+    [array safari_addObjectUnlessNil:_reportScribbleIssueItem];
   }
 
 LABEL_7:
-  v13 = [v4 copy];
+  v13 = [array copy];
 
   return v13;
 }
@@ -3456,13 +3456,13 @@ LABEL_7:
 - (int64_t)_deviceOrientation
 {
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v3 = [WeakRetained presentingViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 interfaceOrientation];
+  presentingViewController = [WeakRetained presentingViewController];
+  view = [presentingViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return v7;
+  return interfaceOrientation;
 }
 
 - (SFBrowsingAssistantMenuSection)settingsSection
@@ -3473,14 +3473,14 @@ LABEL_7:
     if (!settingsSection)
     {
       WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-      v5 = [WeakRetained activeDocument];
+      activeDocument = [WeakRetained activeDocument];
       v6 = [_SFPerSitePreferencesPopoverViewController alloc];
-      v7 = [v5 perSitePreferencesVendor];
-      v8 = [(_SFPerSitePreferencesPopoverViewController *)v6 initWithBrowserDocument:v5 perSitePreferencesVendor:v7];
+      perSitePreferencesVendor = [activeDocument perSitePreferencesVendor];
+      v8 = [(_SFPerSitePreferencesPopoverViewController *)v6 initWithBrowserDocument:activeDocument perSitePreferencesVendor:perSitePreferencesVendor];
 
-      v9 = [(_SFPerSitePreferencesPopoverViewController *)v8 pageMenuSection];
+      pageMenuSection = [(_SFPerSitePreferencesPopoverViewController *)v8 pageMenuSection];
       v10 = self->_settingsSection;
-      self->_settingsSection = v9;
+      self->_settingsSection = pageMenuSection;
 
       settingsSection = self->_settingsSection;
     }
@@ -3501,19 +3501,19 @@ LABEL_7:
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   if ([WeakRetained supportsSiriReadThis])
   {
-    v3 = [WeakRetained activeDocument];
-    v4 = [v3 readerContext];
-    if ([WeakRetained canReadActiveLanguage] && objc_msgSend(v4, "isReaderAvailable") && (objc_msgSend(v3, "isBlockedByScreenTime") & 1) == 0)
+    activeDocument = [WeakRetained activeDocument];
+    readerContext = [activeDocument readerContext];
+    if ([WeakRetained canReadActiveLanguage] && objc_msgSend(readerContext, "isReaderAvailable") && (objc_msgSend(activeDocument, "isBlockedByScreenTime") & 1) == 0)
     {
-      v7 = [WeakRetained siriReaderPlaybackStateForActiveTab];
-      if ((v7 - 1) > 2)
+      siriReaderPlaybackStateForActiveTab = [WeakRetained siriReaderPlaybackStateForActiveTab];
+      if ((siriReaderPlaybackStateForActiveTab - 1) > 2)
       {
         v5 = 1;
       }
 
       else
       {
-        v5 = qword_1D47DE748[v7 - 1];
+        v5 = qword_1D47DE748[siriReaderPlaybackStateForActiveTab - 1];
       }
     }
 
@@ -3533,46 +3533,46 @@ LABEL_7:
 
 - (BOOL)_canShowListenToPageMenuAction
 {
-  v3 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-  if (v3)
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  if (isSolariumEnabled)
   {
-    LOBYTE(v3) = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab]!= 0;
+    LOBYTE(isSolariumEnabled) = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab]!= 0;
   }
 
-  return v3;
+  return isSolariumEnabled;
 }
 
 - (NSArray)cardItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(_SFPageFormatMenuController *)self _readerCard];
-  v5 = [(_SFPageFormatMenuController *)self _listenToPageCard];
-  [v3 safari_addObjectUnlessNil:v5];
+  array = [MEMORY[0x1E695DF70] array];
+  _readerCard = [(_SFPageFormatMenuController *)self _readerCard];
+  _listenToPageCard = [(_SFPageFormatMenuController *)self _listenToPageCard];
+  [array safari_addObjectUnlessNil:_listenToPageCard];
 
-  [v3 safari_addObjectUnlessNil:v4];
-  v6 = [(_SFPageFormatMenuController *)self _readerOptionsCard];
-  [v3 safari_addObjectUnlessNil:v6];
+  [array safari_addObjectUnlessNil:_readerCard];
+  _readerOptionsCard = [(_SFPageFormatMenuController *)self _readerOptionsCard];
+  [array safari_addObjectUnlessNil:_readerOptionsCard];
 
-  v7 = [(_SFPageFormatMenuController *)self _consentCard];
-  [v3 safari_addObjectUnlessNil:v7];
+  _consentCard = [(_SFPageFormatMenuController *)self _consentCard];
+  [array safari_addObjectUnlessNil:_consentCard];
 
-  v8 = [(_SFPageFormatMenuController *)self _entityItems];
-  [v3 safari_addObjectsFromArrayUnlessNil:v8];
+  _entityItems = [(_SFPageFormatMenuController *)self _entityItems];
+  [array safari_addObjectsFromArrayUnlessNil:_entityItems];
 
-  v9 = [v3 copy];
+  v9 = [array copy];
 
   return v9;
 }
 
-- (void)_updateListenToPageButtonAvailabilityForCard:(id)a3
+- (void)_updateListenToPageButtonAvailabilityForCard:(id)card
 {
-  v4 = a3;
-  v5 = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab];
-  v6 = [v4 secondaryAction];
+  cardCopy = card;
+  _listenToPageActionStateForActiveTab = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab];
+  secondaryAction = [cardCopy secondaryAction];
 
-  if (v5)
+  if (_listenToPageActionStateForActiveTab)
   {
-    if (!v6)
+    if (!secondaryAction)
     {
       objc_initWeak(&location, self);
       v11 = MEMORY[0x1E69B1AE0];
@@ -3581,36 +3581,36 @@ LABEL_7:
       v16 = __76___SFPageFormatMenuController__updateListenToPageButtonAvailabilityForCard___block_invoke;
       v17 = &unk_1E848F8F0;
       objc_copyWeak(&v18, &location);
-      v12 = [v11 listenToPageActionForHandler:&v14 state:v5];
-      [v4 setSecondaryAction:{v12, v14, v15, v16, v17}];
+      v12 = [v11 listenToPageActionForHandler:&v14 state:_listenToPageActionStateForActiveTab];
+      [cardCopy setSecondaryAction:{v12, v14, v15, v16, v17}];
 
-      v13 = [v4 secondaryAction];
-      [v13 setAttributes:{objc_msgSend(v13, "attributes") & 0xFFFFFFFFFFFFFFFELL}];
+      secondaryAction2 = [cardCopy secondaryAction];
+      [secondaryAction2 setAttributes:{objc_msgSend(secondaryAction2, "attributes") & 0xFFFFFFFFFFFFFFFELL}];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
       goto LABEL_8;
     }
 
-    v7 = [v4 secondaryAction];
-    v8 = [v7 attributes];
+    secondaryAction3 = [cardCopy secondaryAction];
+    attributes = [secondaryAction3 attributes];
 
-    if (v8)
+    if (attributes)
     {
-      v9 = [v4 secondaryAction];
-      v10 = [v9 copy];
+      secondaryAction4 = [cardCopy secondaryAction];
+      v10 = [secondaryAction4 copy];
 
       [v10 setAttributes:{objc_msgSend(v10, "attributes") & 0xFFFFFFFFFFFFFFFELL}];
-      [v4 setSecondaryAction:v10];
+      [cardCopy setSecondaryAction:v10];
 
 LABEL_8:
-      [v4 notifyObserverCardDidUpdate];
+      [cardCopy notifyObserverCardDidUpdate];
     }
   }
 
-  else if (v6)
+  else if (secondaryAction)
   {
-    [v4 setSecondaryAction:0];
+    [cardCopy setSecondaryAction:0];
     goto LABEL_8;
   }
 }
@@ -3629,10 +3629,10 @@ LABEL_8:
     else
     {
       objc_initWeak(&location, self);
-      v6 = [WeakRetained activeDocument];
-      v7 = [v6 readerContext];
+      activeDocument = [WeakRetained activeDocument];
+      readerContext = [activeDocument readerContext];
 
-      v8 = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab];
+      _listenToPageActionStateForActiveTab = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab];
       v9 = MEMORY[0x1E69B1AE0];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
@@ -3644,13 +3644,13 @@ LABEL_8:
       v18[2] = __49___SFPageFormatMenuController__readerOptionsCard__block_invoke_2;
       v18[3] = &unk_1E848F8F0;
       objc_copyWeak(&v19, &location);
-      v10 = [v9 readerOptionsCardWithReaderContext:v7 dismissReaderHandler:v20 listenToPageHandler:v18 listenToPageActionState:v8];
+      v10 = [v9 readerOptionsCardWithReaderContext:readerContext dismissReaderHandler:v20 listenToPageHandler:v18 listenToPageActionState:_listenToPageActionStateForActiveTab];
       v11 = self->_cachedReaderOptionsCard;
       self->_cachedReaderOptionsCard = v10;
 
-      if (v8)
+      if (_listenToPageActionStateForActiveTab)
       {
-        v12 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+        mEMORY[0x1E69B1B90] = [MEMORY[0x1E69B1B90] sharedPlaybackController];
         v13 = MEMORY[0x1E69E96A0];
         v14 = MEMORY[0x1E69E96A0];
         v16[0] = MEMORY[0x1E69E9820];
@@ -3658,7 +3658,7 @@ LABEL_8:
         v16[2] = __49___SFPageFormatMenuController__readerOptionsCard__block_invoke_3;
         v16[3] = &unk_1E8494188;
         objc_copyWeak(&v17, &location);
-        [v12 updateContentIdentifierOnQueue:v13 completion:v16];
+        [mEMORY[0x1E69B1B90] updateContentIdentifierOnQueue:v13 completion:v16];
 
         objc_destroyWeak(&v17);
       }
@@ -3682,62 +3682,62 @@ LABEL_8:
 - (BOOL)isReaderModeAvailable
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v3 = [WeakRetained activeDocument];
-  v4 = [v3 readerContext];
-  v5 = [v4 isReaderAvailable];
+  activeDocument = [WeakRetained activeDocument];
+  readerContext = [activeDocument readerContext];
+  isReaderAvailable = [readerContext isReaderAvailable];
 
-  return v5;
+  return isReaderAvailable;
 }
 
 - (void)_showReader
 {
-  v3 = [(_SFPageFormatMenuController *)self viewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  viewController = [(_SFPageFormatMenuController *)self viewController];
+  [viewController dismissViewControllerAnimated:1 completion:0];
 
-  v12 = [(_SFPageFormatMenuController *)self browserContentController];
-  if (([v12 isShowingReader] & 1) == 0)
+  browserContentController = [(_SFPageFormatMenuController *)self browserContentController];
+  if (([browserContentController isShowingReader] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E69C8810] sharedLogger];
-    [v4 didToggleReaderSBA];
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    [mEMORY[0x1E69C8810] didToggleReaderSBA];
 
     WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-    v6 = [WeakRetained activeDocument];
-    v7 = [v6 assistantController];
+    activeDocument = [WeakRetained activeDocument];
+    assistantController = [activeDocument assistantController];
 
-    v8 = [v7 summary];
-    if (v8)
+    summary = [assistantController summary];
+    if (summary)
     {
-      v9 = [MEMORY[0x1E69C8810] sharedLogger];
-      [v9 didClickSummaryCardSBA];
+      mEMORY[0x1E69C8810]2 = [MEMORY[0x1E69C8810] sharedLogger];
+      [mEMORY[0x1E69C8810]2 didClickSummaryCardSBA];
 
-      v10 = [MEMORY[0x1E69C8EB0] sharedManager];
-      v11 = [v7 webpageIdentifier];
-      [v10 donateBrowsingAssistantUserInteractionDetectedWithWebPageID:v11 componentType:2 componentIdentifier:&unk_1F5023278 tableOfContentsArrayLength:0 tableOfContentsTextIndex:0 readerSectionExpanded:0];
+      mEMORY[0x1E69C8EB0] = [MEMORY[0x1E69C8EB0] sharedManager];
+      webpageIdentifier = [assistantController webpageIdentifier];
+      [mEMORY[0x1E69C8EB0] donateBrowsingAssistantUserInteractionDetectedWithWebPageID:webpageIdentifier componentType:2 componentIdentifier:&unk_1F5023278 tableOfContentsArrayLength:0 tableOfContentsTextIndex:0 readerSectionExpanded:0];
     }
 
-    [v12 toggleShowingReaderForUserAction];
+    [browserContentController toggleShowingReaderForUserAction];
   }
 }
 
 - (void)_hideReader
 {
-  v3 = [(_SFPageFormatMenuController *)self viewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  viewController = [(_SFPageFormatMenuController *)self viewController];
+  [viewController dismissViewControllerAnimated:1 completion:0];
 
-  v5 = [(_SFPageFormatMenuController *)self browserContentController];
-  if ([v5 isShowingReader])
+  browserContentController = [(_SFPageFormatMenuController *)self browserContentController];
+  if ([browserContentController isShowingReader])
   {
-    v4 = [MEMORY[0x1E69C8810] sharedLogger];
-    [v4 didToggleReaderSBA];
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    [mEMORY[0x1E69C8810] didToggleReaderSBA];
 
-    [v5 toggleShowingReaderForUserAction];
+    [browserContentController toggleShowingReaderForUserAction];
   }
 }
 
 - (void)_invokeListenToPage
 {
-  v3 = [(_SFPageFormatMenuController *)self viewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  viewController = [(_SFPageFormatMenuController *)self viewController];
+  [viewController dismissViewControllerAnimated:1 completion:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
   [WeakRetained siriReadThisMenuInvocation];
@@ -3746,18 +3746,18 @@ LABEL_8:
 - (void)_donateSummaryPresentationStartedIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [WeakRetained activeDocument];
-  v9 = [v4 assistantController];
+  activeDocument = [WeakRetained activeDocument];
+  assistantController = [activeDocument assistantController];
 
-  v5 = [v9 summary];
-  if ([v5 length] && !self->_didDonateVisualPresentationSummaryToBiome)
+  summary = [assistantController summary];
+  if ([summary length] && !self->_didDonateVisualPresentationSummaryToBiome)
   {
-    v6 = [MEMORY[0x1E69C8810] sharedLogger];
-    [v6 didShowSummaryCardSBA];
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    [mEMORY[0x1E69C8810] didShowSummaryCardSBA];
 
-    v7 = [MEMORY[0x1E69C8EB0] sharedManager];
-    v8 = [v9 webpageIdentifier];
-    [v7 donateBrowsingAssistantVisualComponentPresentationStartedWithWebPageID:v8 componentType:2 componentIdentifier:&unk_1F5023278 tableOfContentsArrayLength:0];
+    mEMORY[0x1E69C8EB0] = [MEMORY[0x1E69C8EB0] sharedManager];
+    webpageIdentifier = [assistantController webpageIdentifier];
+    [mEMORY[0x1E69C8EB0] donateBrowsingAssistantVisualComponentPresentationStartedWithWebPageID:webpageIdentifier componentType:2 componentIdentifier:&unk_1F5023278 tableOfContentsArrayLength:0];
 
     self->_didDonateVisualPresentationSummaryToBiome = 1;
   }
@@ -3780,36 +3780,36 @@ LABEL_8:
     goto LABEL_24;
   }
 
-  v6 = [WeakRetained activeDocument];
-  v7 = [v6 readerContext];
-  v8 = [v7 isReaderAvailable];
-  v9 = [v6 assistantController];
-  if ([MEMORY[0x1E69C8EC8] hasUserConsent] && objc_msgSend(v9, "isSummaryAvailable"))
+  activeDocument = [WeakRetained activeDocument];
+  readerContext = [activeDocument readerContext];
+  isReaderAvailable = [readerContext isReaderAvailable];
+  assistantController = [activeDocument assistantController];
+  if ([MEMORY[0x1E69C8EC8] hasUserConsent] && objc_msgSend(assistantController, "isSummaryAvailable"))
   {
-    v10 = [v9 summary];
+    summary = [assistantController summary];
     v11 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:self];
     [(_SFPageFormatMenuController *)self _donateSummaryPresentationStartedIfNeeded];
-    if (v10)
+    if (summary)
     {
 LABEL_11:
-      v12 = [v9 cachedReaderArticleTitle];
-      v13 = v12;
-      if (v12)
+      cachedReaderArticleTitle = [assistantController cachedReaderArticleTitle];
+      v13 = cachedReaderArticleTitle;
+      if (cachedReaderArticleTitle)
       {
-        v27 = v12;
+        title = cachedReaderArticleTitle;
       }
 
       else
       {
-        v14 = [v6 webView];
-        v27 = [v14 title];
+        webView = [activeDocument webView];
+        title = [webView title];
       }
 
       v26 = v11;
 
-      v15 = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab];
-      v16 = [v9 result];
-      v17 = [v16 disclaimerText];
+      _listenToPageActionStateForActiveTab = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab];
+      result = [assistantController result];
+      disclaimerText = [result disclaimerText];
 
       v18 = MEMORY[0x1E69B1AE0];
       v37[0] = MEMORY[0x1E69E9820];
@@ -3823,13 +3823,13 @@ LABEL_11:
       v34[3] = &unk_1E8490298;
       objc_copyWeak(&v36, location);
       v35 = WeakRetained;
-      v19 = [v18 readerCardWithReaderContext:v7 title:v27 summary:v10 disclaimer:v17 contextMenuInteraction:v26 showReaderHandler:v37 listenToPageHandler:v34 listenToPageActionState:v15];
+      v19 = [v18 readerCardWithReaderContext:readerContext title:title summary:summary disclaimer:disclaimerText contextMenuInteraction:v26 showReaderHandler:v37 listenToPageHandler:v34 listenToPageActionState:_listenToPageActionStateForActiveTab];
       v20 = self->_cachedReaderCard;
       self->_cachedReaderCard = v19;
 
-      if (v15)
+      if (_listenToPageActionStateForActiveTab)
       {
-        v21 = v8;
+        v21 = isReaderAvailable;
       }
 
       else
@@ -3839,32 +3839,32 @@ LABEL_11:
 
       if (v21 == 1)
       {
-        v22 = [MEMORY[0x1E69B1B90] sharedPlaybackController];
+        mEMORY[0x1E69B1B90] = [MEMORY[0x1E69B1B90] sharedPlaybackController];
         v23 = MEMORY[0x1E69E96A0];
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
         v32[2] = __42___SFPageFormatMenuController__readerCard__block_invoke_3;
         v32[3] = &unk_1E8494188;
         objc_copyWeak(&v33, location);
-        [v22 updateContentIdentifierOnQueue:MEMORY[0x1E69E96A0] completion:v32];
+        [mEMORY[0x1E69B1B90] updateContentIdentifierOnQueue:MEMORY[0x1E69E96A0] completion:v32];
 
         objc_destroyWeak(&v33);
       }
 
-      if (v8)
+      if (isReaderAvailable)
       {
-        v24 = [v9 cachedReaderArticleTitle];
+        cachedReaderArticleTitle2 = [assistantController cachedReaderArticleTitle];
 
-        if (!v24)
+        if (!cachedReaderArticleTitle2)
         {
           v28[0] = MEMORY[0x1E69E9820];
           v28[1] = 3221225472;
           v28[2] = __42___SFPageFormatMenuController__readerCard__block_invoke_4;
           v28[3] = &unk_1E84941B0;
           objc_copyWeak(&v31, location);
-          v29 = v9;
-          v30 = v27;
-          [v7 getReaderArticleTitleWithCompletion:v28];
+          v29 = assistantController;
+          v30 = title;
+          [readerContext getReaderArticleTitleWithCompletion:v28];
 
           objc_destroyWeak(&v31);
         }
@@ -3883,15 +3883,15 @@ LABEL_11:
   else
   {
     v11 = 0;
-    v10 = 0;
+    summary = 0;
     v4 = 0;
-    if ((v8 & 1) == 0)
+    if ((isReaderAvailable & 1) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  v10 = 0;
+  summary = 0;
   v4 = 0;
   if (([MEMORY[0x1E69C8880] isSolariumEnabled] & 1) == 0)
   {
@@ -3909,33 +3909,33 @@ LABEL_24:
 - (void)updateReaderCardWithSummaryIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [WeakRetained activeDocument];
-  v12 = [v4 assistantController];
+  activeDocument = [WeakRetained activeDocument];
+  assistantController = [activeDocument assistantController];
 
-  v5 = [MEMORY[0x1E69C8EC8] hasUserConsent];
-  v6 = v12;
-  if (v5)
+  hasUserConsent = [MEMORY[0x1E69C8EC8] hasUserConsent];
+  v6 = assistantController;
+  if (hasUserConsent)
   {
-    v7 = [v12 isSummaryAvailable];
-    v6 = v12;
-    if (v7)
+    isSummaryAvailable = [assistantController isSummaryAvailable];
+    v6 = assistantController;
+    if (isSummaryAvailable)
     {
       if (self->_cachedReaderCard)
       {
-        v8 = [v12 summary];
+        summary = [assistantController summary];
         v9 = [objc_alloc(MEMORY[0x1E69DC8E0]) initWithDelegate:self];
-        v10 = [(SFBrowsingAssistantCardItem *)self->_cachedReaderCard bodyText];
-        v11 = [v8 isEqualToString:v10];
+        bodyText = [(SFBrowsingAssistantCardItem *)self->_cachedReaderCard bodyText];
+        v11 = [summary isEqualToString:bodyText];
 
         if ((v11 & 1) == 0)
         {
-          [(SFBrowsingAssistantCardItem *)self->_cachedReaderCard setBodyText:v8];
+          [(SFBrowsingAssistantCardItem *)self->_cachedReaderCard setBodyText:summary];
           [(SFBrowsingAssistantCardItem *)self->_cachedReaderCard setContextMenuInteraction:v9];
           [(SFBrowsingAssistantCardItem *)self->_cachedReaderCard notifyObserverCardDidUpdate];
           [(_SFPageFormatMenuController *)self _donateSummaryPresentationStartedIfNeeded];
         }
 
-        v6 = v12;
+        v6 = assistantController;
       }
     }
   }
@@ -3944,14 +3944,14 @@ LABEL_24:
 - (void)_updateListenToPageIfNeeded
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab];
+  _listenToPageActionStateForActiveTab = [(_SFPageFormatMenuController *)self _listenToPageActionStateForActiveTab];
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58___SFPageFormatMenuController__updateListenToPageIfNeeded__block_invoke;
   v6[3] = &unk_1E8494160;
   objc_copyWeak(v8, &location);
-  v8[1] = v4;
+  v8[1] = _listenToPageActionStateForActiveTab;
   v5 = WeakRetained;
   v7 = v5;
   [(_SFPageFormatMenuController *)self _updateSiriReaderPlaybackStateAndIdentifierWithCompletion:v6];
@@ -3968,9 +3968,9 @@ LABEL_24:
     cachedListenToPageCard = self->_cachedListenToPageCard;
     if (!cachedListenToPageCard)
     {
-      v12 = [MEMORY[0x1E69B1AE0] listenToPageCard];
+      listenToPageCard = [MEMORY[0x1E69B1AE0] listenToPageCard];
       v13 = self->_cachedListenToPageCard;
-      self->_cachedListenToPageCard = v12;
+      self->_cachedListenToPageCard = listenToPageCard;
 
       cachedListenToPageCard = self->_cachedListenToPageCard;
     }
@@ -4030,49 +4030,49 @@ LABEL_24:
   return v11;
 }
 
-- (void)configureMainHeaderFooter:(id)a3
+- (void)configureMainHeaderFooter:(id)footer
 {
-  v4 = a3;
+  footerCopy = footer;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v6 = [WeakRetained isShowingReader];
-  v7 = v6;
-  if (v6)
+  isShowingReader = [WeakRetained isShowingReader];
+  v7 = isShowingReader;
+  if (isShowingReader)
   {
     v8 = [SFReaderTextSizeStepperController alloc];
-    v9 = [WeakRetained activeDocument];
-    v10 = [v9 readerContext];
-    v11 = [(SFReaderTextSizeStepperController *)v8 initWithReaderContext:v10];
+    activeDocument = [WeakRetained activeDocument];
+    readerContext = [activeDocument readerContext];
+    v11 = [(SFReaderTextSizeStepperController *)v8 initWithReaderContext:readerContext];
   }
 
   else
   {
     v12 = [SFPageZoomStepperController alloc];
-    v9 = [WeakRetained activeDocument];
-    v10 = [WeakRetained pageZoomManager];
-    v11 = [(SFPageZoomStepperController *)v12 initWithDocument:v9 preferenceManager:v10];
+    activeDocument = [WeakRetained activeDocument];
+    readerContext = [WeakRetained pageZoomManager];
+    v11 = [(SFPageZoomStepperController *)v12 initWithDocument:activeDocument preferenceManager:readerContext];
   }
 
   v13 = v11;
 
   if (v13)
   {
-    v14 = [v4 stepper];
+    stepper = [footerCopy stepper];
 
-    if (!v14)
+    if (!stepper)
     {
       v15 = objc_alloc_init(MEMORY[0x1E69B1BA8]);
-      [v4 setStepper:v15];
+      [footerCopy setStepper:v15];
     }
 
-    v16 = [v4 stepper];
-    [v13 prepareStepper:v16];
+    stepper2 = [footerCopy stepper];
+    [v13 prepareStepper:stepper2];
     if ((v7 & 1) == 0 && [(_SFPageFormatMenuController *)self _isShowingImmersiveContent])
     {
-      [v16 setUserInteractionEnabled:0];
+      [stepper2 setUserInteractionEnabled:0];
     }
 
-    objc_initWeak(&from, v16);
+    objc_initWeak(&from, stepper2);
     if (objc_opt_respondsToSelector())
     {
       v28[0] = MEMORY[0x1E69E9820];
@@ -4092,7 +4092,7 @@ LABEL_24:
     v17 = v13;
     v25 = v17;
     objc_copyWeak(&v27, &location);
-    [v16 setDecrementButtonActionHandler:v24];
+    [stepper2 setDecrementButtonActionHandler:v24];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __57___SFPageFormatMenuController_configureMainHeaderFooter___block_invoke_3;
@@ -4100,7 +4100,7 @@ LABEL_24:
     objc_copyWeak(&v22, &from);
     v21 = v17;
     objc_copyWeak(&v23, &location);
-    [v16 setIncrementButtonActionHandler:v20];
+    [stepper2 setIncrementButtonActionHandler:v20];
     objc_destroyWeak(&v23);
 
     objc_destroyWeak(&v22);
@@ -4110,37 +4110,37 @@ LABEL_24:
     objc_destroyWeak(&from);
   }
 
-  [v4 setLeadingButtonEnabled:{objc_msgSend(WeakRetained, "canFindOnPage")}];
+  [footerCopy setLeadingButtonEnabled:{objc_msgSend(WeakRetained, "canFindOnPage")}];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __57___SFPageFormatMenuController_configureMainHeaderFooter___block_invoke_4;
   v18[3] = &unk_1E848F8F0;
   objc_copyWeak(&v19, &location);
-  [v4 setLeadingButtonActionHandler:v18];
+  [footerCopy setLeadingButtonActionHandler:v18];
   objc_destroyWeak(&v19);
 
   objc_destroyWeak(&location);
 }
 
-- (void)configureReaderButtonFooter:(id)a3
+- (void)configureReaderButtonFooter:(id)footer
 {
-  v4 = a3;
+  footerCopy = footer;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  [v4 setShowingReader:{objc_msgSend(WeakRetained, "isShowingReader")}];
+  [footerCopy setShowingReader:{objc_msgSend(WeakRetained, "isShowingReader")}];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __59___SFPageFormatMenuController_configureReaderButtonFooter___block_invoke;
   v8[3] = &unk_1E848F8F0;
   objc_copyWeak(&v9, &location);
-  [v4 setShowReader:v8];
+  [footerCopy setShowReader:v8];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59___SFPageFormatMenuController_configureReaderButtonFooter___block_invoke_2;
   v6[3] = &unk_1E848F8F0;
   objc_copyWeak(&v7, &location);
-  [v4 setHideReader:v6];
+  [footerCopy setHideReader:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -4149,43 +4149,43 @@ LABEL_24:
 - (void)_didTapFindOnPage
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [WeakRetained activeDocument];
+  activeDocument = [WeakRetained activeDocument];
 
-  v5 = [MEMORY[0x1E69C8810] sharedLogger];
-  [v5 didClickFindInPageSBA];
+  mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+  [mEMORY[0x1E69C8810] didClickFindInPageSBA];
 
-  v6 = [(_SFPageFormatMenuController *)self viewController];
+  viewController = [(_SFPageFormatMenuController *)self viewController];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48___SFPageFormatMenuController__didTapFindOnPage__block_invoke;
   v8[3] = &unk_1E848F810;
-  v9 = v4;
-  v7 = v4;
-  [v6 dismissViewControllerAnimated:1 completion:v8];
+  v9 = activeDocument;
+  v7 = activeDocument;
+  [viewController dismissViewControllerAnimated:1 completion:v8];
 }
 
-- (void)_didTapButtonInStepper:(id)a3
+- (void)_didTapButtonInStepper:(id)stepper
 {
-  v4 = a3;
+  stepperCopy = stepper;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
   [WeakRetained setStepperFocused:1];
   if (([WeakRetained _isInPopoverPresentation] & 1) == 0 && (objc_msgSend(WeakRetained, "isBeingDismissed") & 1) == 0)
   {
-    v6 = [WeakRetained presentingViewController];
+    presentingViewController = [WeakRetained presentingViewController];
 
-    if (v6)
+    if (presentingViewController)
     {
-      [v4 pulse];
+      [stepperCopy pulse];
       v7 = objc_loadWeakRetained(&self->_browserContentController);
-      v8 = [v7 viewControllerToPresentFrom];
-      v9 = [WeakRetained popoverPresentationController];
-      v10 = [v9 adaptiveSheetPresentationController];
-      v11 = [v10 containerView];
+      viewControllerToPresentFrom = [v7 viewControllerToPresentFrom];
+      popoverPresentationController = [WeakRetained popoverPresentationController];
+      adaptiveSheetPresentationController = [popoverPresentationController adaptiveSheetPresentationController];
+      containerView = [adaptiveSheetPresentationController containerView];
 
-      v12 = [v8 view];
-      v13 = [v8 view];
-      [v13 frame];
-      [v12 convertRect:v11 toView:?];
+      view = [viewControllerToPresentFrom view];
+      view2 = [viewControllerToPresentFrom view];
+      [view2 frame];
+      [view convertRect:containerView toView:?];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -4193,8 +4193,8 @@ LABEL_24:
 
       v22 = objc_alloc_init(MEMORY[0x1E69B1BB0]);
       [v22 setFrame:{v15, v17, v19, v21}];
-      [v11 addSubview:v22];
-      [v22 setStepper:v4];
+      [containerView addSubview:v22];
+      [v22 setStepper:stepperCopy];
       self->_stepperIsInTransitionView = 1;
       v25[0] = MEMORY[0x1E69E9820];
       v25[1] = 3221225472;
@@ -4210,48 +4210,48 @@ LABEL_24:
   }
 }
 
-- (void)browsingAssistantWillAppear:(id)a3
+- (void)browsingAssistantWillAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  LODWORD(self) = [v4 _isInPopoverPresentation];
+  LODWORD(self) = [appearCopy _isInPopoverPresentation];
 
   [WeakRetained willPresentBrowsingAssistantInSheet:self ^ 1];
 }
 
-- (void)browsingAssistantWillDisappear:(id)a3
+- (void)browsingAssistantWillDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  LODWORD(self) = [v4 _isInPopoverPresentation];
+  LODWORD(self) = [disappearCopy _isInPopoverPresentation];
 
   [WeakRetained willDismissBrowsingAssistantInSheet:self ^ 1];
 }
 
-- (id)viewControllerForPresentationForItemController:(id)a3
+- (id)viewControllerForPresentationForItemController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v4 = [WeakRetained viewControllerToPresentFromNavigationBar];
+  viewControllerToPresentFromNavigationBar = [WeakRetained viewControllerToPresentFromNavigationBar];
 
-  return v4;
+  return viewControllerToPresentFromNavigationBar;
 }
 
-- (void)presentModalViewController:(id)a3 completion:(id)a4
+- (void)presentModalViewController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  [WeakRetained presentModalViewController:v7 completion:v6];
+  [WeakRetained presentModalViewController:controllerCopy completion:completionCopy];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
+  interactionCopy = interaction;
   WeakRetained = objc_loadWeakRetained(&self->_browserContentController);
-  v7 = [WeakRetained activeDocument];
-  v8 = [v7 assistantController];
-  v9 = [v8 result];
-  v10 = [v9 summaryResult];
+  activeDocument = [WeakRetained activeDocument];
+  assistantController = [activeDocument assistantController];
+  result = [assistantController result];
+  summaryResult = [result summaryResult];
 
   v19 = 0;
   v20 = &v19;
@@ -4271,43 +4271,43 @@ LABEL_24:
 
   v12 = v11;
   _Block_object_dispose(&v19, 8);
-  v13 = [v11 rowViewForResult:v10 style:0 feedbackDelegate:self];
+  v13 = [v11 rowViewForResult:summaryResult style:0 feedbackDelegate:self];
   v14 = 0;
   if (objc_opt_respondsToSelector())
   {
     v15 = MEMORY[0x1E69DC8D8];
-    v16 = [v13 contextMenuActionProvider];
-    v14 = [v15 configurationWithIdentifier:0 previewProvider:0 actionProvider:v16];
+    contextMenuActionProvider = [v13 contextMenuActionProvider];
+    v14 = [v15 configurationWithIdentifier:0 previewProvider:0 actionProvider:contextMenuActionProvider];
   }
 
   return v14;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
   v5 = MEMORY[0x1E69DCE28];
-  v6 = a3;
+  interactionCopy = interaction;
   v7 = objc_alloc_init(v5);
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v7 setBackgroundColor:clearColor];
 
-  v9 = [v6 view];
+  view = [interactionCopy view];
 
-  [v9 bounds];
+  [view bounds];
   v10 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:? cornerRadius:?];
   [v7 setVisiblePath:v10];
 
-  v11 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v9 parameters:v7];
+  v11 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:view parameters:v7];
 
   return v11;
 }
 
-- (void)didReportUserResponseFeedback:(id)a3
+- (void)didReportUserResponseFeedback:(id)feedback
 {
-  v3 = a3;
-  [v3 setReportType:3];
-  v4 = [MEMORY[0x1E69C8EC0] sharedPARSession];
-  [v4 didReportUserResponseFeedback:v3];
+  feedbackCopy = feedback;
+  [feedbackCopy setReportType:3];
+  mEMORY[0x1E69C8EC0] = [MEMORY[0x1E69C8EC0] sharedPARSession];
+  [mEMORY[0x1E69C8EC0] didReportUserResponseFeedback:feedbackCopy];
 }
 
 - (_SFBrowserContentController)browserContentController

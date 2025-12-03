@@ -1,43 +1,43 @@
 @interface PGFeatureExtractorPhotoLibrarySize
-+ (BOOL)preCalculatePhotoLibrarySizeWithPhotoLibrary:(id)a3;
++ (BOOL)preCalculatePhotoLibrarySizeWithPhotoLibrary:(id)library;
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
 @end
 
 @implementation PGFeatureExtractorPhotoLibrarySize
 
-+ (BOOL)preCalculatePhotoLibrarySizeWithPhotoLibrary:(id)a3
++ (BOOL)preCalculatePhotoLibrarySizeWithPhotoLibrary:(id)library
 {
-  v4 = a3;
-  [a1 resetPreCalculatedPhotoLibrarySize];
-  v5 = [v4 librarySpecificFetchOptions];
+  libraryCopy = library;
+  [self resetPreCalculatedPhotoLibrarySize];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
 
-  [v5 setWantsIncrementalChangeDetails:0];
-  [v5 setShouldPrefetchCount:1];
-  [v5 setIsExclusivePredicate:1];
-  v6 = [a1 _allAssetsOfType:1 withOptions:v5];
-  v7 = [a1 _allAssetsOfType:2 withOptions:v5];
-  [a1 setPreCalculatedPhotoLibrarySize:{objc_msgSend(v7, "count") + objc_msgSend(v6, "count")}];
+  [librarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+  [librarySpecificFetchOptions setShouldPrefetchCount:1];
+  [librarySpecificFetchOptions setIsExclusivePredicate:1];
+  v6 = [self _allAssetsOfType:1 withOptions:librarySpecificFetchOptions];
+  v7 = [self _allAssetsOfType:2 withOptions:librarySpecificFetchOptions];
+  [self setPreCalculatedPhotoLibrarySize:{objc_msgSend(v7, "count") + objc_msgSend(v6, "count")}];
 
   return 1;
 }
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_opt_class() preCalculatedPhotoLibrarySize];
-  if (v5)
+  entityCopy = entity;
+  preCalculatedPhotoLibrarySize = [objc_opt_class() preCalculatedPhotoLibrarySize];
+  if (preCalculatedPhotoLibrarySize)
   {
     goto LABEL_4;
   }
 
-  if ([objc_opt_class() preCalculatePhotoLibrarySizeWithPhotoLibrary:v4])
+  if ([objc_opt_class() preCalculatePhotoLibrarySizeWithPhotoLibrary:entityCopy])
   {
-    v5 = [objc_opt_class() preCalculatedPhotoLibrarySize];
+    preCalculatedPhotoLibrarySize = [objc_opt_class() preCalculatedPhotoLibrarySize];
 LABEL_4:
     v6 = objc_alloc(MEMORY[0x277D22C40]);
-    *&v7 = v5;
+    *&v7 = preCalculatedPhotoLibrarySize;
     v8 = [MEMORY[0x277CCABB0] numberWithFloat:v7];
     v13[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];

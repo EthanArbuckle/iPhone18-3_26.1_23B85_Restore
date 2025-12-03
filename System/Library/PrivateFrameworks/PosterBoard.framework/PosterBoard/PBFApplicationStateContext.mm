@@ -1,32 +1,32 @@
 @interface PBFApplicationStateContext
-+ (id)contextWithForegroundStateDescription:(id)a3 posterUUIDs:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)contextWithForegroundStateDescription:(id)description posterUUIDs:(id)ds;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation PBFApplicationStateContext
 
-+ (id)contextWithForegroundStateDescription:(id)a3 posterUUIDs:(id)a4
++ (id)contextWithForegroundStateDescription:(id)description posterUUIDs:(id)ds
 {
-  v5 = a4;
-  v6 = a3;
+  dsCopy = ds;
+  descriptionCopy = description;
   v7 = objc_alloc_init(PBFApplicationStateContext);
-  v8 = [v6 copy];
+  v8 = [descriptionCopy copy];
 
   foregroundStateDescription = v7->_foregroundStateDescription;
   v7->_foregroundStateDescription = v8;
 
-  v10 = [v5 copy];
+  v10 = [dsCopy copy];
   posterUUIDs = v7->_posterUUIDs;
   v7->_posterUUIDs = v10;
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSSet *)v4->_posterUUIDs isEqualToSet:self->_posterUUIDs];
+      v5 = [(NSSet *)equalCopy->_posterUUIDs isEqualToSet:self->_posterUUIDs];
     }
 
     else
@@ -52,12 +52,12 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendString:self->_foregroundStateDescription withName:@"foregroundStateDescription" skipIfEmpty:1];
-  v4 = [(NSSet *)self->_posterUUIDs allObjects];
-  [v3 appendArraySection:v4 withName:@"posterUUIDs" skipIfEmpty:1];
+  allObjects = [(NSSet *)self->_posterUUIDs allObjects];
+  [v3 appendArraySection:allObjects withName:@"posterUUIDs" skipIfEmpty:1];
 
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

@@ -1,25 +1,25 @@
 @interface MBFSEventCollector
-+ (void)markModificationsWith:(id)a3 since:(id)a4 domainManager:(id)a5 persona:(id)a6 cancellationHandler:(id)a7;
-- (BOOL)_collectEventsFromPreviousState:(id)a3 persona:(id)a4 cancellationHandler:(id)a5;
-- (MBFSEventCollector)initWithDomainMarker:(id)a3;
-- (id)_buildPathToDomainMapWithDomainManager:(id)a3;
-- (id)_pathToModifiedDomainFlagsForVolume:(id)a3;
-- (id)_pathToMonitorForVolume:(id)a3;
-- (void)_buildEventReadersForPersona:(id)a3 domainManager:(id)a4;
++ (void)markModificationsWith:(id)with since:(id)since domainManager:(id)manager persona:(id)persona cancellationHandler:(id)handler;
+- (BOOL)_collectEventsFromPreviousState:(id)state persona:(id)persona cancellationHandler:(id)handler;
+- (MBFSEventCollector)initWithDomainMarker:(id)marker;
+- (id)_buildPathToDomainMapWithDomainManager:(id)manager;
+- (id)_pathToModifiedDomainFlagsForVolume:(id)volume;
+- (id)_pathToMonitorForVolume:(id)volume;
+- (void)_buildEventReadersForPersona:(id)persona domainManager:(id)manager;
 @end
 
 @implementation MBFSEventCollector
 
-- (MBFSEventCollector)initWithDomainMarker:(id)a3
+- (MBFSEventCollector)initWithDomainMarker:(id)marker
 {
-  v5 = a3;
+  markerCopy = marker;
   v14.receiver = self;
   v14.super_class = MBFSEventCollector;
   v6 = [(MBFSEventCollector *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_domainMarker, a3);
+    objc_storeStrong(&v6->_domainMarker, marker);
     v8 = objc_opt_class();
     Name = class_getName(v8);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -31,9 +31,9 @@
   return v7;
 }
 
-- (id)_pathToMonitorForVolume:(id)a3
+- (id)_pathToMonitorForVolume:(id)volume
 {
-  if ([a3 isEqualToString:@"/private/var"])
+  if ([volume isEqualToString:@"/private/var"])
   {
     return @"containers";
   }
@@ -44,9 +44,9 @@
   }
 }
 
-- (id)_pathToModifiedDomainFlagsForVolume:(id)a3
+- (id)_pathToModifiedDomainFlagsForVolume:(id)volume
 {
-  if ([a3 isEqualToString:@"/private/var"])
+  if ([volume isEqualToString:@"/private/var"])
   {
     v3 = &off_1003E1F50;
   }
@@ -67,20 +67,20 @@
   return v4;
 }
 
-- (void)_buildEventReadersForPersona:(id)a3 domainManager:(id)a4
+- (void)_buildEventReadersForPersona:(id)persona domainManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  v22 = v6;
-  v8 = [v6 volumesToBackUp];
-  v21 = v7;
-  v25 = [(MBFSEventCollector *)self _buildPathToDomainMapWithDomainManager:v7];
-  v9 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v8, "count")}];
+  personaCopy = persona;
+  managerCopy = manager;
+  v22 = personaCopy;
+  volumesToBackUp = [personaCopy volumesToBackUp];
+  v21 = managerCopy;
+  v25 = [(MBFSEventCollector *)self _buildPathToDomainMapWithDomainManager:managerCopy];
+  v9 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(volumesToBackUp, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v8;
+  v10 = volumesToBackUp;
   v26 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v26)
   {
@@ -102,8 +102,8 @@
         v15 = [(MBFSEventCollector *)self _pathToModifiedDomainFlagsForVolume:v12];
         v16 = [v25 objectForKeyedSubscript:v12];
         v17 = [MBFSEventReader alloc];
-        v18 = [(MBFSEventCollector *)self domainMarker];
-        v19 = [(MBFSEventReader *)v17 initWithDomainMarker:v18 pathToMonitor:v14 pathToModifiedDomainFlags:v15 pathToDomainMapping:v16];
+        domainMarker = [(MBFSEventCollector *)self domainMarker];
+        v19 = [(MBFSEventReader *)v17 initWithDomainMarker:domainMarker pathToMonitor:v14 pathToModifiedDomainFlags:v15 pathToDomainMapping:v16];
 
         [v9 setObject:v19 forKeyedSubscript:v12];
         objc_autoreleasePoolPop(v13);
@@ -127,26 +127,26 @@
   [(MBFSEventCollector *)self setReaderForVolume:v9];
 }
 
-- (id)_buildPathToDomainMapWithDomainManager:(id)a3
+- (id)_buildPathToDomainMapWithDomainManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v35 = objc_opt_new();
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v32 = self;
-  v5 = [(MBFSEventCollector *)self domainMarker];
-  v6 = [v5 unmodifiedDomainNames];
+  selfCopy = self;
+  domainMarker = [(MBFSEventCollector *)self domainMarker];
+  unmodifiedDomainNames = [domainMarker unmodifiedDomainNames];
 
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v41 objects:v50 count:16];
+  obj = unmodifiedDomainNames;
+  v7 = [unmodifiedDomainNames countByEnumeratingWithState:&v41 objects:v50 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v42;
     v30 = *v42;
-    v31 = v4;
+    v31 = managerCopy;
     do
     {
       v10 = 0;
@@ -160,31 +160,31 @@
 
         v11 = *(*(&v41 + 1) + 8 * v10);
         v12 = objc_autoreleasePoolPush();
-        if (([v4 containsDomainName:v11] & 1) == 0)
+        if (([managerCopy containsDomainName:v11] & 1) == 0)
         {
           __assert_rtn("[MBFSEventCollector _buildPathToDomainMapWithDomainManager:]", "MBFSEventCollector.m", 211, "[domainManager containsDomainName:domainName]");
         }
 
-        v13 = [v4 domainForName:v11];
+        v13 = [managerCopy domainForName:v11];
         if ([v13 supportsFSEventsForDetectingChanges])
         {
           v36 = v12;
-          v14 = [v13 volumeMountPoint];
-          v15 = [v35 objectForKeyedSubscript:v14];
+          volumeMountPoint = [v13 volumeMountPoint];
+          v15 = [v35 objectForKeyedSubscript:volumeMountPoint];
           if (!v15)
           {
             v15 = objc_opt_new();
-            [v35 setObject:v15 forKeyedSubscript:v14];
+            [v35 setObject:v15 forKeyedSubscript:volumeMountPoint];
           }
 
-          v16 = [v13 rootPathRelativeToVolumeMountPoint];
-          [v15 setObject:v13 forKeyedSubscript:v16];
+          rootPathRelativeToVolumeMountPoint = [v13 rootPathRelativeToVolumeMountPoint];
+          [v15 setObject:v13 forKeyedSubscript:rootPathRelativeToVolumeMountPoint];
           v39 = 0u;
           v40 = 0u;
           v37 = 0u;
           v38 = 0u;
-          v17 = [v13 relativePathsToBackup];
-          v18 = [v17 countByEnumeratingWithState:&v37 objects:v45 count:16];
+          relativePathsToBackup = [v13 relativePathsToBackup];
+          v18 = [relativePathsToBackup countByEnumeratingWithState:&v37 objects:v45 count:16];
           if (v18)
           {
             v19 = v18;
@@ -195,21 +195,21 @@
               {
                 if (*v38 != v20)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(relativePathsToBackup);
                 }
 
-                v22 = [v16 stringByAppendingPathComponent:*(*(&v37 + 1) + 8 * i)];
+                v22 = [rootPathRelativeToVolumeMountPoint stringByAppendingPathComponent:*(*(&v37 + 1) + 8 * i)];
                 [v15 setObject:v13 forKeyedSubscript:v22];
               }
 
-              v19 = [v17 countByEnumeratingWithState:&v37 objects:v45 count:16];
+              v19 = [relativePathsToBackup countByEnumeratingWithState:&v37 objects:v45 count:16];
             }
 
             while (v19);
           }
 
           v9 = v30;
-          v4 = v31;
+          managerCopy = v31;
           v8 = v33;
           v12 = v36;
         }
@@ -219,22 +219,22 @@
           v23 = MBGetDefaultLog();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
           {
-            v24 = [v13 name];
-            v25 = [v13 rootPath];
+            name = [v13 name];
+            rootPath = [v13 rootPath];
             *buf = 138412546;
-            v47 = v24;
+            v47 = name;
             v48 = 2112;
-            v49 = v25;
+            v49 = rootPath;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Skipping FSEvents for: %@ path:%@", buf, 0x16u);
 
-            v26 = [v13 name];
+            name2 = [v13 name];
             [v13 rootPath];
-            v29 = v28 = v26;
+            v29 = v28 = name2;
             _MBLog();
           }
 
-          v14 = [(MBFSEventCollector *)v32 domainMarker];
-          [v14 markModifiedDomain:v11];
+          volumeMountPoint = [(MBFSEventCollector *)selfCopy domainMarker];
+          [volumeMountPoint markModifiedDomain:v11];
         }
 
         objc_autoreleasePoolPop(v12);
@@ -251,11 +251,11 @@
   return v35;
 }
 
-- (BOOL)_collectEventsFromPreviousState:(id)a3 persona:(id)a4 cancellationHandler:(id)a5
+- (BOOL)_collectEventsFromPreviousState:(id)state persona:(id)persona cancellationHandler:(id)handler
 {
-  v72 = a3;
-  v7 = a4;
-  v8 = a5;
+  stateCopy = state;
+  personaCopy = persona;
+  handlerCopy = handler;
   v110 = 0;
   v111 = &v110;
   v112 = 0x2020000000;
@@ -266,9 +266,9 @@
   v109 = 0;
   group = dispatch_group_create();
   v73 = objc_opt_new();
-  [v7 volumesToBackUp];
-  v74 = v8;
-  v70 = v7;
+  [personaCopy volumesToBackUp];
+  v74 = handlerCopy;
+  v70 = personaCopy;
   v104 = 0u;
   v105 = 0u;
   v102 = 0u;
@@ -310,12 +310,12 @@
         goto LABEL_18;
       }
 
-      v14 = [v72 eventId];
-      v15 = [v14 unsignedLongLongValue];
+      eventId = [stateCopy eventId];
+      unsignedLongLongValue = [eventId unsignedLongLongValue];
 
-      v16 = [v72 eventDatabaseUUIDForVolumeUUID];
-      v17 = [v12 UUIDString];
-      v18 = [v16 objectForKeyedSubscript:v17];
+      eventDatabaseUUIDForVolumeUUID = [stateCopy eventDatabaseUUIDForVolumeUUID];
+      uUIDString = [v12 UUIDString];
+      v18 = [eventDatabaseUUIDForVolumeUUID objectForKeyedSubscript:uUIDString];
 
       if (!v18)
       {
@@ -340,8 +340,8 @@ LABEL_18:
       *&buf[16] = 0x3032000000;
       v118 = sub_1001C8E90;
       *&v119 = sub_1001C8EA0;
-      v19 = [(MBFSEventCollector *)self readerForVolume];
-      *(&v119 + 1) = [v19 objectForKeyedSubscript:v11];
+      readerForVolume = [(MBFSEventCollector *)self readerForVolume];
+      *(&v119 + 1) = [readerForVolume objectForKeyedSubscript:v11];
 
       if (!*(*&buf[8] + 40))
       {
@@ -349,15 +349,15 @@ LABEL_18:
       }
 
       v20 = [MBFSEventStream alloc];
-      v21 = [(MBFSEventCollector *)self eventQueue];
-      v22 = [*(*&buf[8] + 40) pathToMonitor];
+      eventQueue = [(MBFSEventCollector *)self eventQueue];
+      pathToMonitor = [*(*&buf[8] + 40) pathToMonitor];
       v100[0] = _NSConcreteStackBlock;
       v100[1] = 3221225472;
       v100[2] = sub_1001C8EA8;
       v100[3] = &unk_1003C1180;
       v100[4] = &v106;
       v100[5] = buf;
-      v23 = [(MBFSEventStream *)v20 initWithQueue:v21 volumeMountPoint:v11 databaseUUID:v18 eventID:v15 rootPathToMonitor:v22 eventHandler:v100];
+      v23 = [(MBFSEventStream *)v20 initWithQueue:eventQueue volumeMountPoint:v11 databaseUUID:v18 eventID:unsignedLongLongValue rootPathToMonitor:pathToMonitor eventHandler:v100];
 
       dispatch_group_enter(group);
       v97[0] = _NSConcreteStackBlock;
@@ -425,7 +425,7 @@ LABEL_19:
         *&buf[16] = v33;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Stopping FSEvent collection timedOut:%d cancelled:%d failed:%d", buf, 0x14u);
         v66 = v31;
-        v67 = v33;
+        eventsSkipped3 = v33;
         v65 = v28;
         _MBLog();
       }
@@ -493,9 +493,9 @@ LABEL_19:
           v44 = [(MBFSEventCollector *)self readerForVolume:v65];
           v45 = [v44 objectForKeyedSubscript:v43];
 
-          v46 = [v45 eventsCollected];
-          v47 = [v45 eventsSkipped];
-          v48 = [v45 modifiedDomainsFlags];
+          eventsCollected = [v45 eventsCollected];
+          eventsSkipped = [v45 eventsSkipped];
+          modifiedDomainsFlags = [v45 modifiedDomainsFlags];
           v49 = MBGetDefaultLog();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
           {
@@ -503,33 +503,33 @@ LABEL_19:
             if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
             {
               v76 = v41;
-              v51 = [v45 modifiedDomainsFlags];
-              v52 = [v45 eventsCollected];
-              v53 = [v45 eventsSkipped];
+              modifiedDomainsFlags2 = [v45 modifiedDomainsFlags];
+              eventsCollected2 = [v45 eventsCollected];
+              eventsSkipped2 = [v45 eventsSkipped];
               *buf = 134218754;
-              *&buf[4] = v51;
+              *&buf[4] = modifiedDomainsFlags2;
               *&buf[12] = 2048;
-              *&buf[14] = v52;
+              *&buf[14] = eventsCollected2;
               *&buf[22] = 2048;
-              v118 = v53;
+              v118 = eventsSkipped2;
               LOWORD(v119) = 2114;
               *(&v119 + 2) = v43;
               _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_INFO, "FSEvents Scan flags:0x%lx collected:%llu skipped:%llu for %{public}@", buf, 0x2Au);
               v41 = v76;
             }
 
-            v54 = [v45 modifiedDomainsFlags];
-            v55 = [v45 eventsCollected];
-            v67 = [v45 eventsSkipped];
+            modifiedDomainsFlags3 = [v45 modifiedDomainsFlags];
+            eventsCollected3 = [v45 eventsCollected];
+            eventsSkipped3 = [v45 eventsSkipped];
             v68 = v43;
-            v65 = v54;
-            v66 = v55;
+            v65 = modifiedDomainsFlags3;
+            v66 = eventsCollected3;
             _MBLog();
           }
 
-          v82 = &v82[v46];
-          v41 = (v41 + v47);
-          v84 |= v48;
+          v82 = &v82[eventsCollected];
+          v41 = (v41 + eventsSkipped);
+          v84 |= modifiedDomainsFlags;
           v42 = v42 + 1;
         }
 
@@ -558,7 +558,7 @@ LABEL_19:
       v118 = v41;
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "FSEvents Scan flags:0x%lx collected:%llu skipped:%llu", buf, 0x20u);
       v66 = v82;
-      v67 = v41;
+      eventsSkipped3 = v41;
       v65 = v84;
       _MBLog();
     }
@@ -569,10 +569,10 @@ LABEL_19:
       v88 = 0u;
       v85 = 0u;
       v86 = 0u;
-      v57 = [(MBFSEventCollector *)self domainMarker];
-      v58 = [v57 unmodifiedDomainNames];
+      domainMarker = [(MBFSEventCollector *)self domainMarker];
+      unmodifiedDomainNames = [domainMarker unmodifiedDomainNames];
 
-      v59 = [v58 countByEnumeratingWithState:&v85 objects:v114 count:16];
+      v59 = [unmodifiedDomainNames countByEnumeratingWithState:&v85 objects:v114 count:16];
       if (v59)
       {
         v60 = *v86;
@@ -582,7 +582,7 @@ LABEL_19:
           {
             if (*v86 != v60)
             {
-              objc_enumerationMutation(v58);
+              objc_enumerationMutation(unmodifiedDomainNames);
             }
 
             v62 = *(*(&v85 + 1) + 8 * k);
@@ -593,7 +593,7 @@ LABEL_19:
             }
           }
 
-          v59 = [v58 countByEnumeratingWithState:&v85 objects:v114 count:16];
+          v59 = [unmodifiedDomainNames countByEnumeratingWithState:&v85 objects:v114 count:16];
         }
 
         while (v59);
@@ -607,13 +607,13 @@ LABEL_19:
   return v69 == 0;
 }
 
-+ (void)markModificationsWith:(id)a3 since:(id)a4 domainManager:(id)a5 persona:(id)a6 cancellationHandler:(id)a7
++ (void)markModificationsWith:(id)with since:(id)since domainManager:(id)manager persona:(id)persona cancellationHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  withCopy = with;
+  sinceCopy = since;
+  managerCopy = manager;
+  personaCopy = persona;
+  handlerCopy = handler;
   v16 = objc_autoreleasePoolPush();
   v17 = MBGetDefaultLog();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -623,9 +623,9 @@ LABEL_19:
     _MBLog();
   }
 
-  v18 = [[MBFSEventCollector alloc] initWithDomainMarker:v11];
-  [(MBFSEventCollector *)v18 _buildEventReadersForPersona:v14 domainManager:v13];
-  if (![(MBFSEventCollector *)v18 _collectEventsFromPreviousState:v12 persona:v14 cancellationHandler:v15]&& (v15[2](v15) & 1) == 0)
+  v18 = [[MBFSEventCollector alloc] initWithDomainMarker:withCopy];
+  [(MBFSEventCollector *)v18 _buildEventReadersForPersona:personaCopy domainManager:managerCopy];
+  if (![(MBFSEventCollector *)v18 _collectEventsFromPreviousState:sinceCopy persona:personaCopy cancellationHandler:handlerCopy]&& (handlerCopy[2](handlerCopy) & 1) == 0)
   {
     v25 = v16;
     v19 = MBGetDefaultLog();
@@ -640,8 +640,8 @@ LABEL_19:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v20 = [v11 unmodifiedDomainNames];
-    v21 = [v20 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    unmodifiedDomainNames = [withCopy unmodifiedDomainNames];
+    v21 = [unmodifiedDomainNames countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v21)
     {
       v22 = v21;
@@ -653,15 +653,15 @@ LABEL_19:
         {
           if (*v27 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(unmodifiedDomainNames);
           }
 
-          [v11 markModifiedDomain:*(*(&v26 + 1) + 8 * v24)];
+          [withCopy markModifiedDomain:*(*(&v26 + 1) + 8 * v24)];
           v24 = v24 + 1;
         }
 
         while (v22 != v24);
-        v22 = [v20 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v22 = [unmodifiedDomainNames countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v22);

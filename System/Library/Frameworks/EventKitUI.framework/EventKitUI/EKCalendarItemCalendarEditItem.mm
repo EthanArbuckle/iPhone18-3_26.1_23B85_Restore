@@ -1,39 +1,39 @@
 @interface EKCalendarItemCalendarEditItem
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3;
-- (EKCalendarItemCalendarEditItem)initWithEntityType:(unint64_t)a3;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints;
+- (EKCalendarItemCalendarEditItem)initWithEntityType:(unint64_t)type;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)eligibleCalendars;
-- (id)popupMenu:(id)a3;
+- (id)popupMenu:(id)menu;
 @end
 
 @implementation EKCalendarItemCalendarEditItem
 
-- (EKCalendarItemCalendarEditItem)initWithEntityType:(unint64_t)a3
+- (EKCalendarItemCalendarEditItem)initWithEntityType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = EKCalendarItemCalendarEditItem;
   result = [(EKCalendarItemCalendarEditItem *)&v5 init];
   if (result)
   {
-    result->_entityType = a3;
+    result->_entityType = type;
   }
 
   return result;
 }
 
-- (BOOL)canBeConfiguredForCalendarConstraints:(id)a3
+- (BOOL)canBeConfiguredForCalendarConstraints:(id)constraints
 {
-  v4 = [(EKCalendarItemEditItem *)self calendarItem];
-  if ([v4 isNew])
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  if ([calendarItem isNew])
   {
     goto LABEL_8;
   }
 
-  v5 = [(EKCalendarItemEditItem *)self calendarItem];
-  v6 = [v5 calendar];
-  v7 = [v6 source];
-  v8 = [v7 constraints];
-  if (![v8 requiresOutgoingInvitationsInDefaultCalendar])
+  calendarItem2 = [(EKCalendarItemEditItem *)self calendarItem];
+  calendar = [calendarItem2 calendar];
+  source = [calendar source];
+  constraints = [source constraints];
+  if (![constraints requiresOutgoingInvitationsInDefaultCalendar])
   {
 LABEL_7:
 
@@ -41,17 +41,17 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [(EKCalendarItemEditItem *)self calendarItem];
-  if (![v9 isSelfOrganizedInvitation])
+  calendarItem3 = [(EKCalendarItemEditItem *)self calendarItem];
+  if (![calendarItem3 isSelfOrganizedInvitation])
   {
 
     goto LABEL_7;
   }
 
-  v10 = [(EKCalendarItemEditItem *)self calendarItem];
-  v11 = [v10 hasAttendees];
+  calendarItem4 = [(EKCalendarItemEditItem *)self calendarItem];
+  hasAttendees = [calendarItem4 hasAttendees];
 
-  if ((v11 & 1) == 0)
+  if ((hasAttendees & 1) == 0)
   {
 LABEL_9:
     WeakRetained = objc_loadWeakRetained(&self->super._store);
@@ -63,10 +63,10 @@ LABEL_9:
   return 0;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
-  v4 = [(EKCalendarItemEditItem *)self calendarItem];
-  v5 = [v4 calendar];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  calendar = [calendarItem calendar];
 
   WeakRetained = objc_loadWeakRetained(&self->super._store);
   v7 = [WeakRetained readWriteCalendarCountForEntityType:self->_entityType];
@@ -77,29 +77,29 @@ LABEL_9:
     [(EKUIPopupTableViewCell *)v8 setSelectionStyle:0];
     if (self->_entityType)
     {
-      v11 = [v5 title];
+      title = [calendar title];
 
-      if (v11)
+      if (title)
       {
-        v12 = CUIKDisplayedTitleForCalendar();
+        systemBackgroundColor = CUIKDisplayedTitleForCalendar();
       }
 
       else
       {
         v16 = EventKitUIBundle();
-        v12 = [v16 localizedStringForKey:@"Untitled Calendar" value:&stru_1F4EF6790 table:0];
+        systemBackgroundColor = [v16 localizedStringForKey:@"Untitled Calendar" value:&stru_1F4EF6790 table:0];
       }
 
-      v14 = [(EKUIPopupTableViewCell *)v8 detailTextLabel];
-      [v14 setText:v12];
+      detailTextLabel = [(EKUIPopupTableViewCell *)v8 detailTextLabel];
+      [detailTextLabel setText:systemBackgroundColor];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-      v14 = CalendarTitleWithDotAttributedString(v5, v12);
-      v15 = [(EKUIPopupTableViewCell *)v8 detailTextLabel];
-      [v15 setAttributedText:v14];
+      systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+      detailTextLabel = CalendarTitleWithDotAttributedString(calendar, systemBackgroundColor);
+      detailTextLabel2 = [(EKUIPopupTableViewCell *)v8 detailTextLabel];
+      [detailTextLabel2 setAttributedText:detailTextLabel];
     }
   }
 
@@ -107,16 +107,16 @@ LABEL_9:
   {
     v8 = [[EKUIPopupTableViewCell alloc] initWithStyle:1 reuseIdentifier:0];
     [(EKUIPopupTableViewCell *)v8 setShowSelectedImage:1];
-    v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
     if (EKUICatalyst())
     {
-      v10 = [(EKCalendarItemCalendarEditItem *)self popupMenu:v9];
+      v10 = [(EKCalendarItemCalendarEditItem *)self popupMenu:systemBackgroundColor2];
       [(EKUIPopupTableViewCell *)v8 setPopupMenu:v10];
     }
 
     else
     {
-      v13 = [EKUICalendarMenu placeholderMenuForCalendar:v5 backgroundColor:v9];
+      v13 = [EKUICalendarMenu placeholderMenuForCalendar:calendar backgroundColor:systemBackgroundColor2];
       [(EKUIPopupTableViewCell *)v8 setPopupMenu:v13];
 
       v26[0] = 0;
@@ -132,7 +132,7 @@ LABEL_9:
       v21[3] = &unk_1E84401A8;
       objc_copyWeak(&v24, &location);
       v23 = v26;
-      v22 = v9;
+      v22 = systemBackgroundColor2;
       [(EKUIPopupTableViewCell *)v8 setPopupMenuProvider:v21];
 
       objc_destroyWeak(&v24);
@@ -143,8 +143,8 @@ LABEL_9:
 
   v17 = EventKitUIBundle();
   v18 = [v17 localizedStringForKey:@"Calendar" value:&stru_1F4EF6790 table:0];
-  v19 = [(EKUIPopupTableViewCell *)v8 textLabel];
-  [v19 setText:v18];
+  textLabel = [(EKUIPopupTableViewCell *)v8 textLabel];
+  [textLabel setText:v18];
 
   [(EKUIPopupTableViewCell *)v8 setAccessibilityIdentifier:@"calendar-selection-cell"];
 
@@ -172,19 +172,19 @@ void *__56__EKCalendarItemCalendarEditItem_cellForSubitemAtIndex___block_invoke(
 - (id)eligibleCalendars
 {
   v2 = MEMORY[0x1E69933B0];
-  v3 = [(EKCalendarItemEditItem *)self calendarItem];
-  v4 = [v2 eligibleCalendarsForMovingEvent:v3];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  v4 = [v2 eligibleCalendarsForMovingEvent:calendarItem];
 
   return v4;
 }
 
-- (id)popupMenu:(id)a3
+- (id)popupMenu:(id)menu
 {
-  v4 = a3;
-  v5 = [(EKCalendarItemCalendarEditItem *)self eligibleCalendars];
+  menuCopy = menu;
+  eligibleCalendars = [(EKCalendarItemCalendarEditItem *)self eligibleCalendars];
   objc_initWeak(&location, self);
-  v6 = [(EKCalendarItemEditItem *)self calendarItem];
-  v7 = [v6 eventStore];
+  calendarItem = [(EKCalendarItemEditItem *)self calendarItem];
+  eventStore = [calendarItem eventStore];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__EKCalendarItemCalendarEditItem_popupMenu___block_invoke;
@@ -195,7 +195,7 @@ void *__56__EKCalendarItemCalendarEditItem_cellForSubitemAtIndex___block_invoke(
   v10[2] = __44__EKCalendarItemCalendarEditItem_popupMenu___block_invoke_2;
   v10[3] = &unk_1E84401F8;
   objc_copyWeak(&v11, &location);
-  v8 = [EKUICalendarMenu calendarMenuWithCalendars:v5 eventStore:v7 backgroundColor:v4 setupActionHandler:v12 selectionHandler:v10];
+  v8 = [EKUICalendarMenu calendarMenuWithCalendars:eligibleCalendars eventStore:eventStore backgroundColor:menuCopy setupActionHandler:v12 selectionHandler:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);

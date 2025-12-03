@@ -1,19 +1,19 @@
 @interface WAProtobufMessageSubmitter
 - (basic_string<char,)_fieldNameFromKey:(std::allocator<char>> *__return_ptr)retstr;
-- (id)_generateSetterInvocationFromInstance:(id)a3 andFieldKey:(id)a4 isRepeatable:(BOOL)a5;
-- (id)instantiateAWDProtobufAndPopulateValues:(id)a3;
+- (id)_generateSetterInvocationFromInstance:(id)instance andFieldKey:(id)key isRepeatable:(BOOL)repeatable;
+- (id)instantiateAWDProtobufAndPopulateValues:(id)values;
 @end
 
 @implementation WAProtobufMessageSubmitter
 
-- (id)instantiateAWDProtobufAndPopulateValues:(id)a3
+- (id)instantiateAWDProtobufAndPopulateValues:(id)values
 {
-  v4 = a3;
-  v60 = v4;
-  v5 = [v4 originalClassName];
-  v6 = objc_alloc_init(NSClassFromString(v5));
+  valuesCopy = values;
+  v60 = valuesCopy;
+  originalClassName = [valuesCopy originalClassName];
+  v6 = objc_alloc_init(NSClassFromString(originalClassName));
 
-  if (!v4)
+  if (!valuesCopy)
   {
     v51 = WALogCategoryDefaultHandle();
     obj = v51;
@@ -34,8 +34,8 @@
     obj = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
     {
-      v52 = [v4 key];
-      v53 = [v4 originalClassName];
+      v52 = [valuesCopy key];
+      originalClassName2 = [valuesCopy originalClassName];
       *buf = 136447234;
       *&buf[4] = "[WAProtobufMessageSubmitter instantiateAWDProtobufAndPopulateValues:]";
       v67 = 1024;
@@ -43,9 +43,9 @@
       v69 = 2112;
       v70 = v52;
       v71 = 2112;
-      v72 = v53;
+      v72 = originalClassName2;
       v73 = 2112;
-      v74 = v4;
+      v74 = valuesCopy;
       _os_log_impl(&_mh_execute_header, obj, OS_LOG_TYPE_ERROR, "%{public}s::%d:PARSER: Didn't get an instantiated instance of AWD implementation in order to populate filed with key: %@ (%@). Bailing to avoid a crash. *** This is likely due to an out of date WirelessDiagnostics framework on the build (WiFiAnalytics model references classes contained in a newer version of WirelessDiagnostics framework). %@", buf, 0x30u);
     }
 
@@ -56,7 +56,7 @@
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = [v4 mutableFields];
+  obj = [valuesCopy mutableFields];
   v7 = [obj countByEnumeratingWithState:&v62 objects:v61 count:16];
   if (!v7)
   {
@@ -81,14 +81,14 @@ LABEL_82:
       v59 = v9;
       v10 = *(*(&v62 + 1) + 8 * v9);
       context = objc_autoreleasePoolPush();
-      v11 = [v60 mutableFields];
-      v12 = [v11 objectForKeyedSubscript:v10];
+      mutableFields = [v60 mutableFields];
+      v12 = [mutableFields objectForKeyedSubscript:v10];
 
       v13 = 0;
       while ([v12 isRepeatable])
       {
-        v14 = [v12 repeatableValues];
-        v15 = v13 < [v14 count];
+        repeatableValues = [v12 repeatableValues];
+        v15 = v13 < [repeatableValues count];
 
         if (!v15)
         {
@@ -123,54 +123,54 @@ LABEL_13:
           }
         }
 
-        v22 = [v12 type];
-        if (v22 > 5)
+        type = [v12 type];
+        if (type > 5)
         {
-          if (v22 <= 7)
+          if (type <= 7)
           {
-            if (v22 != 6)
+            if (type != 6)
             {
               if ([v12 isRepeatable])
               {
-                v31 = [v12 repeatableValues];
-                v32 = [v31 objectAtIndexedSubscript:v13];
-                v33 = [v32 BOOLValue];
+                repeatableValues2 = [v12 repeatableValues];
+                v32 = [repeatableValues2 objectAtIndexedSubscript:v13];
+                bOOLValue = [v32 BOOLValue];
               }
 
               else
               {
-                v33 = [v12 BOOLValue];
+                bOOLValue = [v12 BOOLValue];
               }
 
-              buf[0] = v33;
+              buf[0] = bOOLValue;
               [v8 setArgument:buf atIndex:2];
               goto LABEL_67;
             }
 
             if ([v12 isRepeatable])
             {
-              v40 = [v12 repeatableValues];
-              v41 = [v40 objectAtIndexedSubscript:v13];
-              v42 = [v41 unsignedLongLongValue];
+              repeatableValues3 = [v12 repeatableValues];
+              v41 = [repeatableValues3 objectAtIndexedSubscript:v13];
+              unsignedLongLongValue = [v41 unsignedLongLongValue];
             }
 
             else
             {
-              v42 = [v12 uint64Value];
+              unsignedLongLongValue = [v12 uint64Value];
             }
 
 LABEL_57:
-            *buf = v42;
+            *buf = unsignedLongLongValue;
             [v8 setArgument:buf atIndex:2];
             goto LABEL_67;
           }
 
-          if ((v22 - 8) < 2)
+          if ((type - 8) < 2)
           {
             if ([v12 isRepeatable])
             {
-              v26 = [v12 repeatableValues];
-              *buf = [v26 objectAtIndexedSubscript:v13];
+              repeatableValues4 = [v12 repeatableValues];
+              *buf = [repeatableValues4 objectAtIndexedSubscript:v13];
             }
 
             else
@@ -193,19 +193,19 @@ LABEL_57:
             goto LABEL_67;
           }
 
-          if (v22 == 10)
+          if (type == 10)
           {
             if ([v12 isRepeatable])
             {
-              v34 = [v12 repeatableValues];
-              v35 = [v34 objectAtIndexedSubscript:v13];
+              repeatableValues5 = [v12 repeatableValues];
+              v35 = [repeatableValues5 objectAtIndexedSubscript:v13];
               *buf = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:v35];
             }
 
             else
             {
-              v34 = [v12 subMessageValue];
-              *buf = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:v34];
+              repeatableValues5 = [v12 subMessageValue];
+              *buf = [(WAProtobufMessageSubmitter *)self instantiateAWDProtobufAndPopulateValues:repeatableValues5];
             }
 
             [v8 setArgument:buf atIndex:2];
@@ -217,66 +217,66 @@ LABEL_57:
 
         else
         {
-          if (v22 > 2)
+          if (type > 2)
           {
-            if (v22 == 3)
+            if (type == 3)
             {
               if ([v12 isRepeatable])
               {
-                v43 = [v12 repeatableValues];
-                v44 = [v43 objectAtIndexedSubscript:v13];
-                v25 = [v44 intValue];
+                repeatableValues6 = [v12 repeatableValues];
+                v44 = [repeatableValues6 objectAtIndexedSubscript:v13];
+                intValue = [v44 intValue];
               }
 
               else
               {
-                v25 = [v12 int32Value];
+                intValue = [v12 int32Value];
               }
 
               goto LABEL_59;
             }
 
-            if (v22 != 4)
+            if (type != 4)
             {
               if ([v12 isRepeatable])
               {
-                v23 = [v12 repeatableValues];
-                v24 = [v23 objectAtIndexedSubscript:v13];
-                v25 = [v24 unsignedIntValue];
+                repeatableValues7 = [v12 repeatableValues];
+                v24 = [repeatableValues7 objectAtIndexedSubscript:v13];
+                intValue = [v24 unsignedIntValue];
               }
 
               else
               {
-                v25 = [v12 uint32Value];
+                intValue = [v12 uint32Value];
               }
 
 LABEL_59:
-              *buf = v25;
+              *buf = intValue;
               [v8 setArgument:buf atIndex:2];
               goto LABEL_67;
             }
 
             if ([v12 isRepeatable])
             {
-              v45 = [v12 repeatableValues];
-              v46 = [v45 objectAtIndexedSubscript:v13];
-              v42 = [v46 longLongValue];
+              repeatableValues8 = [v12 repeatableValues];
+              v46 = [repeatableValues8 objectAtIndexedSubscript:v13];
+              unsignedLongLongValue = [v46 longLongValue];
             }
 
             else
             {
-              v42 = [v12 int64Value];
+              unsignedLongLongValue = [v12 int64Value];
             }
 
             goto LABEL_57;
           }
 
-          if (v22 == 1)
+          if (type == 1)
           {
             if ([v12 isRepeatable])
             {
-              v36 = [v12 repeatableValues];
-              v37 = [v36 objectAtIndexedSubscript:v13];
+              repeatableValues9 = [v12 repeatableValues];
+              v37 = [repeatableValues9 objectAtIndexedSubscript:v13];
               [v37 doubleValue];
               v39 = v38;
             }
@@ -292,12 +292,12 @@ LABEL_59:
             goto LABEL_67;
           }
 
-          if (v22 == 2)
+          if (type == 2)
           {
             if ([v12 isRepeatable])
             {
-              v27 = [v12 repeatableValues];
-              v28 = [v27 objectAtIndexedSubscript:v13];
+              repeatableValues10 = [v12 repeatableValues];
+              v28 = [repeatableValues10 objectAtIndexedSubscript:v13];
               [v28 floatValue];
               v30 = v29;
             }
@@ -357,12 +357,12 @@ LABEL_83:
   return v6;
 }
 
-- (id)_generateSetterInvocationFromInstance:(id)a3 andFieldKey:(id)a4 isRepeatable:(BOOL)a5
+- (id)_generateSetterInvocationFromInstance:(id)instance andFieldKey:(id)key isRepeatable:(BOOL)repeatable
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 UTF8String];
-  v10 = [v8 lengthOfBytesUsingEncoding:4];
+  instanceCopy = instance;
+  keyCopy = key;
+  uTF8String = [keyCopy UTF8String];
+  v10 = [keyCopy lengthOfBytesUsingEncoding:4];
   v11 = v10;
   if (v10 >= 0x7FFFFFFFFFFFFFF8)
   {
@@ -377,7 +377,7 @@ LABEL_83:
   v33 = v10;
   if (v10)
   {
-    memmove(&__dst, v9, v10);
+    memmove(&__dst, uTF8String, v10);
   }
 
   *(&__dst + v11) = 0;
@@ -527,7 +527,7 @@ LABEL_32:
   {
 LABEL_50:
     v24 = [NSInvocation invocationWithMethodSignature:v17, v30[0], v30[1], v31];
-    [v24 setTarget:v7];
+    [v24 setTarget:instanceCopy];
     [v24 setSelector:v16];
     goto LABEL_51;
   }
@@ -552,7 +552,7 @@ LABEL_50:
     *&__p[12] = 1024;
     *&__p[14] = 132;
     *&__p[18] = 2112;
-    *&__p[20] = v8;
+    *&__p[20] = keyCopy;
     v36 = 2080;
     v37 = v28;
     v38 = 2080;

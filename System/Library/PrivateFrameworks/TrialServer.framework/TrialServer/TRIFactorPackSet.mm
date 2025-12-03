@@ -1,14 +1,14 @@
 @interface TRIFactorPackSet
-+ (BOOL)_signatures:(id)a3 onItems:(id)a4 areValidUsingPublicCertificate:(id)a5;
++ (BOOL)_signatures:(id)_signatures onItems:(id)items areValidUsingPublicCertificate:(id)certificate;
 + (id)allReferencedCKRecordKeys;
-+ (id)artifactFromCKRecord:(id)a3;
-+ (id)setWithIdent:(id)a3 packs:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSet:(id)a3;
++ (id)artifactFromCKRecord:(id)record;
++ (id)setWithIdent:(id)ident packs:(id)packs;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSet:(id)set;
 - (BOOL)isStructurallyValid;
-- (TRIFactorPackSet)initWithIdent:(id)a3 packs:(id)a4;
-- (id)copyWithReplacementIdent:(id)a3;
-- (id)copyWithReplacementPacks:(id)a3;
+- (TRIFactorPackSet)initWithIdent:(id)ident packs:(id)packs;
+- (id)copyWithReplacementIdent:(id)ident;
+- (id)copyWithReplacementPacks:(id)packs;
 - (id)description;
 @end
 
@@ -29,24 +29,24 @@
   return v4;
 }
 
-+ (id)artifactFromCKRecord:(id)a3
++ (id)artifactFromCKRecord:(id)record
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 values];
-  v6 = v5;
-  if (v5)
+  recordCopy = record;
+  values = [recordCopy values];
+  v6 = values;
+  if (values)
   {
-    v7 = [v5 triArrayValueForField:*MEMORY[0x277D73940] isNestedValue:0];
+    v7 = [values triArrayValueForField:*MEMORY[0x277D73940] isNestedValue:0];
     v8 = v7;
     if (!v7 || [v7 count]&& ([v8 objectAtIndexedSubscript:0], v9 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v9, (isKindOfClass & 1) == 0))
     {
       v12 = TRILogCategory_Server();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v29 = [v4 recordID];
+        recordID = [recordCopy recordID];
         *buf = 138412290;
-        v49 = v29;
+        v49 = recordID;
         _os_log_error_impl(&dword_26F567000, v12, OS_LOG_TYPE_ERROR, "FactorPackSet in CloudKit record %@ has missing or corrupt factor pack definitions.", buf, 0xCu);
       }
 
@@ -61,9 +61,9 @@
       v15 = TRILogCategory_Server();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v32 = [v4 recordID];
+        recordID2 = [recordCopy recordID];
         *buf = 138412290;
-        v49 = v32;
+        v49 = recordID2;
         _os_log_error_impl(&dword_26F567000, v15, OS_LOG_TYPE_ERROR, "FactorPackSet in CloudKit record %@ has missing or corrupt factor pack definition signatures.", buf, 0xCu);
       }
 
@@ -77,9 +77,9 @@
       v16 = TRILogCategory_Server();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        v36 = [v4 recordID];
+        recordID3 = [recordCopy recordID];
         *buf = 138412290;
-        v49 = v36;
+        v49 = recordID3;
         _os_log_error_impl(&dword_26F567000, v16, OS_LOG_TYPE_ERROR, "FactorPackSet in CloudKit record %@ has missing or corrupt public certificate.", buf, 0xCu);
       }
 
@@ -93,9 +93,9 @@
       v17 = TRILogCategory_Server();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v37 = [v4 recordID];
+        recordID4 = [recordCopy recordID];
         *buf = 138412290;
-        v49 = v37;
+        v49 = recordID4;
         _os_log_error_impl(&dword_26F567000, v17, OS_LOG_TYPE_ERROR, "FactorPackSet in CloudKit record %@ has missing or corrupt factor pack set id.", buf, 0xCu);
       }
 
@@ -106,7 +106,7 @@
     v17 = TRIValidateFactorPackSetId();
     if (v17)
     {
-      if ([a1 _signatures:v12 onItems:v8 areValidUsingPublicCertificate:v15])
+      if ([self _signatures:v12 onItems:v8 areValidUsingPublicCertificate:v15])
       {
         v38 = v16;
         v39 = v17;
@@ -199,9 +199,9 @@ LABEL_50:
         goto LABEL_51;
       }
 
-      v30 = [v4 recordID];
+      recordID5 = [recordCopy recordID];
       *buf = 138412546;
-      v49 = v30;
+      v49 = recordID5;
       v50 = 2114;
       v51 = v17;
       v31 = "CloudKit record %@ with factor pack set id %{public}@ does not have valid signatures.";
@@ -215,9 +215,9 @@ LABEL_50:
         goto LABEL_42;
       }
 
-      v30 = [v4 recordID];
+      recordID5 = [recordCopy recordID];
       *buf = 138412546;
-      v49 = v30;
+      v49 = recordID5;
       v50 = 2114;
       v51 = v16;
       v31 = "CloudKit record %@ has factor pack set id which was rejected as unsuitable: %{public}@";
@@ -231,9 +231,9 @@ LABEL_50:
   v8 = TRILogCategory_Server();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v28 = [v4 recordID];
+    recordID6 = [recordCopy recordID];
     *buf = 138412290;
-    v49 = v28;
+    v49 = recordID6;
     _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "Could not create FactorPackSet artifact from CloudKit record %@.", buf, 0xCu);
   }
 
@@ -245,24 +245,24 @@ LABEL_51:
   return v27;
 }
 
-+ (BOOL)_signatures:(id)a3 onItems:(id)a4 areValidUsingPublicCertificate:(id)a5
++ (BOOL)_signatures:(id)_signatures onItems:(id)items areValidUsingPublicCertificate:(id)certificate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 count];
-  if (v10 == [v8 count])
+  _signaturesCopy = _signatures;
+  itemsCopy = items;
+  certificateCopy = certificate;
+  v10 = [_signaturesCopy count];
+  if (v10 == [itemsCopy count])
   {
-    v11 = [TRISignatureKey keyFromData:v9];
+    v11 = [TRISignatureKey keyFromData:certificateCopy];
     if (v11)
     {
-      if ([v7 count])
+      if ([_signaturesCopy count])
       {
         v12 = 0;
         do
         {
-          v13 = [v7 objectAtIndexedSubscript:v12];
-          v14 = [v8 objectAtIndexedSubscript:v12];
+          v13 = [_signaturesCopy objectAtIndexedSubscript:v12];
+          v14 = [itemsCopy objectAtIndexedSubscript:v12];
           v15 = [v11 validateBase64Signature:v13 data:v14];
 
           if ((v15 & 1) == 0)
@@ -273,7 +273,7 @@ LABEL_51:
           ++v12;
         }
 
-        while (v12 < [v7 count]);
+        while (v12 < [_signaturesCopy count]);
       }
 
       else
@@ -300,15 +300,15 @@ LABEL_51:
 {
   v62 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB38]);
-  v35 = self;
-  v4 = [(TRIFactorPackSet *)self packs];
-  v36 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  selfCopy = self;
+  packs = [(TRIFactorPackSet *)self packs];
+  v36 = [v3 initWithCapacity:{objc_msgSend(packs, "count")}];
 
   v53 = 0u;
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = [(TRIFactorPackSet *)v35 packs];
+  obj = [(TRIFactorPackSet *)selfCopy packs];
   v5 = [obj countByEnumeratingWithState:&v51 objects:v61 count:16];
   if (!v5)
   {
@@ -333,9 +333,9 @@ LABEL_51:
         v10 = TRILogCategory_Server();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
-          v32 = [(TRIFactorPackSet *)v35 ident];
+          ident = [(TRIFactorPackSet *)selfCopy ident];
           *v59 = 138543362;
-          *&v59[4] = v32;
+          *&v59[4] = ident;
           _os_log_error_impl(&dword_26F567000, v10, OS_LOG_TYPE_ERROR, "Factor pack set %{public}@ contains factor pack with missing id", v59, 0xCu);
         }
 
@@ -348,7 +348,7 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v9 = [v7 factorPackId];
+      factorPackId = [v7 factorPackId];
       v10 = TRIValidateFactorPackId();
 
       if (!v10)
@@ -356,17 +356,17 @@ LABEL_32:
         goto LABEL_31;
       }
 
-      v11 = [v7 selectedNamespace];
-      if (![v7 hasSelectedNamespace] || !objc_msgSend(v11, "hasName") || (objc_msgSend(v11, "name"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "triIsPathSafe"), v12, (v13 & 1) == 0))
+      selectedNamespace = [v7 selectedNamespace];
+      if (![v7 hasSelectedNamespace] || !objc_msgSend(selectedNamespace, "hasName") || (objc_msgSend(selectedNamespace, "name"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "triIsPathSafe"), v12, (v13 & 1) == 0))
       {
         v28 = TRILogCategory_Server();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
         {
-          v31 = [v11 name];
+          name = [selectedNamespace name];
           *v59 = 138543618;
           *&v59[4] = v10;
           *&v59[12] = 2114;
-          *&v59[14] = v31;
+          *&v59[14] = name;
           _os_log_error_impl(&dword_26F567000, v28, OS_LOG_TYPE_ERROR, "FactorPack %{public}@ has invalid selectedNamespace.name: %{public}@", v59, 0x16u);
         }
 
@@ -377,25 +377,25 @@ LABEL_32:
       *&v59[8] = v59;
       *&v59[16] = 0x2020000000;
       v60 = 0;
-      v14 = [v11 name];
-      v15 = [v36 objectForKeyedSubscript:v14];
+      name2 = [selectedNamespace name];
+      v15 = [v36 objectForKeyedSubscript:name2];
 
       if (!v15)
       {
         v15 = objc_opt_new();
-        v16 = [v11 name];
-        [v36 setObject:v15 forKeyedSubscript:v16];
+        name3 = [selectedNamespace name];
+        [v36 setObject:v15 forKeyedSubscript:name3];
       }
 
       v17 = objc_opt_new();
-      v18 = [v11 compatibilityVersionArray];
+      compatibilityVersionArray = [selectedNamespace compatibilityVersionArray];
       v49[0] = MEMORY[0x277D85DD0];
       v49[1] = 3221225472;
       v49[2] = __46__TRIFactorPackSet_Utils__isStructurallyValid__block_invoke;
       v49[3] = &unk_279DDF630;
       v19 = v17;
       v50 = v19;
-      [v18 enumerateValuesWithBlock:v49];
+      [compatibilityVersionArray enumerateValuesWithBlock:v49];
 
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
@@ -403,8 +403,8 @@ LABEL_32:
       v44[3] = &unk_279DDF6F8;
       v20 = v15;
       v45 = v20;
-      v46 = v35;
-      v21 = v11;
+      v46 = selfCopy;
+      v21 = selectedNamespace;
       v47 = v21;
       v48 = v59;
       [v19 enumerateObjectsUsingBlock:v44];
@@ -433,11 +433,11 @@ LABEL_32:
           v25 = TRILogCategory_Server();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
-            v26 = [v23 name];
+            name4 = [v23 name];
             *buf = 138543618;
             v56 = v10;
             v57 = 2114;
-            v58 = v26;
+            v58 = name4;
             _os_log_error_impl(&dword_26F567000, v25, OS_LOG_TYPE_ERROR, "FactorPack %{public}@ has selectedNamespace %{public}@ which does not match all contained factors.", buf, 0x16u);
           }
         }
@@ -542,14 +542,14 @@ LABEL_6:
   }
 }
 
-- (TRIFactorPackSet)initWithIdent:(id)a3 packs:(id)a4
+- (TRIFactorPackSet)initWithIdent:(id)ident packs:(id)packs
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  identCopy = ident;
+  packsCopy = packs;
+  v10 = packsCopy;
+  if (identCopy)
   {
-    if (v9)
+    if (packsCopy)
     {
       goto LABEL_3;
     }
@@ -557,8 +557,8 @@ LABEL_6:
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1549 description:{@"Invalid parameter not satisfying: %@", @"ident != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1549 description:{@"Invalid parameter not satisfying: %@", @"ident != nil"}];
 
     if (v10)
     {
@@ -566,8 +566,8 @@ LABEL_6:
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1550 description:{@"Invalid parameter not satisfying: %@", @"packs != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1550 description:{@"Invalid parameter not satisfying: %@", @"packs != nil"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -576,50 +576,50 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_ident, a3);
-    objc_storeStrong(&v12->_packs, a4);
+    objc_storeStrong(&v11->_ident, ident);
+    objc_storeStrong(&v12->_packs, packs);
   }
 
   return v12;
 }
 
-+ (id)setWithIdent:(id)a3 packs:(id)a4
++ (id)setWithIdent:(id)ident packs:(id)packs
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdent:v7 packs:v6];
+  packsCopy = packs;
+  identCopy = ident;
+  v8 = [[self alloc] initWithIdent:identCopy packs:packsCopy];
 
   return v8;
 }
 
-- (id)copyWithReplacementIdent:(id)a3
+- (id)copyWithReplacementIdent:(id)ident
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithIdent:v4 packs:self->_packs];
+  identCopy = ident;
+  v5 = [objc_alloc(objc_opt_class()) initWithIdent:identCopy packs:self->_packs];
 
   return v5;
 }
 
-- (id)copyWithReplacementPacks:(id)a3
+- (id)copyWithReplacementPacks:(id)packs
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithIdent:self->_ident packs:v4];
+  packsCopy = packs;
+  v5 = [objc_alloc(objc_opt_class()) initWithIdent:self->_ident packs:packsCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSet:(id)a3
+- (BOOL)isEqualToSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  setCopy = set;
+  v5 = setCopy;
+  if (!setCopy)
   {
     goto LABEL_8;
   }
 
   v6 = self->_ident == 0;
-  v7 = [v4 ident];
-  v8 = v7 != 0;
+  ident = [setCopy ident];
+  v8 = ident != 0;
 
   if (v6 == v8)
   {
@@ -629,8 +629,8 @@ LABEL_3:
   ident = self->_ident;
   if (ident)
   {
-    v10 = [v5 ident];
-    v11 = [(TRIFactorPackSetId *)ident isEqual:v10];
+    ident2 = [v5 ident];
+    v11 = [(TRIFactorPackSetId *)ident isEqual:ident2];
 
     if (!v11)
     {
@@ -639,8 +639,8 @@ LABEL_3:
   }
 
   v12 = self->_packs == 0;
-  v13 = [v5 packs];
-  v14 = v13 != 0;
+  packs = [v5 packs];
+  v14 = packs != 0;
 
   if (v12 == v14)
   {
@@ -653,8 +653,8 @@ LABEL_8:
     packs = self->_packs;
     if (packs)
     {
-      v16 = [v5 packs];
-      v17 = [(NSArray *)packs isEqual:v16];
+      packs2 = [v5 packs];
+      v17 = [(NSArray *)packs isEqual:packs2];
     }
 
     else
@@ -666,18 +666,18 @@ LABEL_8:
   return v17 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIFactorPackSet *)self isEqualToSet:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIFactorPackSet *)self isEqualToSet:v5];
   }
 
   return v6;

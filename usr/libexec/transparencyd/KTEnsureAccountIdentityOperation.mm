@@ -1,22 +1,22 @@
 @interface KTEnsureAccountIdentityOperation
-- (KTEnsureAccountIdentityOperation)initWithDependencies:(id)a3 pcsOperation:(id)a4;
+- (KTEnsureAccountIdentityOperation)initWithDependencies:(id)dependencies pcsOperation:(id)operation;
 - (void)groupStart;
 @end
 
 @implementation KTEnsureAccountIdentityOperation
 
-- (KTEnsureAccountIdentityOperation)initWithDependencies:(id)a3 pcsOperation:(id)a4
+- (KTEnsureAccountIdentityOperation)initWithDependencies:(id)dependencies pcsOperation:(id)operation
 {
-  v7 = a3;
-  v8 = a4;
+  dependenciesCopy = dependencies;
+  operationCopy = operation;
   v12.receiver = self;
   v12.super_class = KTEnsureAccountIdentityOperation;
   v9 = [(KTGroupOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong((v9 + 134), a4);
-    objc_storeStrong((v10 + 142), a3);
+    objc_storeStrong((v9 + 134), operation);
+    objc_storeStrong((v10 + 142), dependencies);
     v10[120] = 0;
   }
 
@@ -25,9 +25,9 @@
 
 - (void)groupStart
 {
-  v3 = [(KTEnsureAccountIdentityOperation *)self pcsOperation];
+  pcsOperation = [(KTEnsureAccountIdentityOperation *)self pcsOperation];
   v25 = 0;
-  v4 = [v3 getCurrentKTPCSIdentity:off_10038B2A0 error:&v25];
+  v4 = [pcsOperation getCurrentKTPCSIdentity:off_10038B2A0 error:&v25];
   v5 = v25;
 
   if (v4)
@@ -56,8 +56,8 @@
 
   if ([v5 code] == 27)
   {
-    v7 = [v5 domain];
-    v8 = [v7 isEqual:kPCSErrorDomain];
+    domain = [v5 domain];
+    v8 = [domain isEqual:kPCSErrorDomain];
 
     if (v8)
     {
@@ -68,25 +68,25 @@ LABEL_10:
       v10 = objc_alloc_init(NSOperation);
       [(KTEnsureAccountIdentityOperation *)self setFinishedOp:v10];
 
-      v11 = [(KTEnsureAccountIdentityOperation *)self finishedOp];
-      [(KTGroupOperation *)self dependOnBeforeGroupFinished:v11];
+      finishedOp = [(KTEnsureAccountIdentityOperation *)self finishedOp];
+      [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
-      v12 = [(KTEnsureAccountIdentityOperation *)self pcsOperation];
+      pcsOperation2 = [(KTEnsureAccountIdentityOperation *)self pcsOperation];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_1000679B8;
       v24[3] = &unk_10031C450;
       v24[4] = self;
-      [v12 createManateeIdentity:0 service:off_10038B2A0 complete:v24];
+      [pcsOperation2 createManateeIdentity:0 service:off_10038B2A0 complete:v24];
 LABEL_11:
 
       goto LABEL_20;
     }
   }
 
-  v13 = [(KTEnsureAccountIdentityOperation *)self deps];
-  v14 = [v13 lockStateTracker];
-  v15 = [v14 isLockedError:v5];
+  deps = [(KTEnsureAccountIdentityOperation *)self deps];
+  lockStateTracker = [deps lockStateTracker];
+  v15 = [lockStateTracker isLockedError:v5];
 
   if (v15)
   {
@@ -94,16 +94,16 @@ LABEL_11:
     goto LABEL_20;
   }
 
-  v16 = [(KTEnsureAccountIdentityOperation *)self deps];
-  v17 = [v16 reachabilityTracker];
+  deps2 = [(KTEnsureAccountIdentityOperation *)self deps];
+  reachabilityTracker = [deps2 reachabilityTracker];
   v18 = [objc_opt_class() isNetworkError:v5];
 
   if (v18)
   {
     [(KTResultOperation *)self setError:v5];
-    v19 = [(KTEnsureAccountIdentityOperation *)self deps];
-    v20 = [v19 networkTimeout];
-    [v20 networkWithFeedback:1];
+    deps3 = [(KTEnsureAccountIdentityOperation *)self deps];
+    networkTimeout = [deps3 networkTimeout];
+    [networkTimeout networkWithFeedback:1];
 
     goto LABEL_20;
   }
@@ -119,11 +119,11 @@ LABEL_11:
   v22 = qword_10038BD68;
   if (os_log_type_enabled(qword_10038BD68, OS_LOG_TYPE_ERROR))
   {
-    v12 = v22;
-    v23 = [(KTResultOperation *)self error];
+    pcsOperation2 = v22;
+    error = [(KTResultOperation *)self error];
     *buf = 138412290;
-    v27 = v23;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "createManateeIdentity no identity returned: %@", buf, 0xCu);
+    v27 = error;
+    _os_log_impl(&_mh_execute_header, pcsOperation2, OS_LOG_TYPE_ERROR, "createManateeIdentity no identity returned: %@", buf, 0xCu);
 
     goto LABEL_11;
   }

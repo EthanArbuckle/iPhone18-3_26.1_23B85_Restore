@@ -1,11 +1,11 @@
 @interface SPUIViewController
-- (BOOL)isActiveViewController:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)isActiveViewController:(id)controller;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (SPUIViewController)init;
 - (SPUIViewControllerDelegate)delegate;
 - (id)activeViewController;
 - (id)contentScrollView;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (void)didTapInEmptyRegion;
 @end
 
@@ -23,11 +23,11 @@
     v5 = [(SPUIResultsViewController *)v3 initWithSearchModel:v4];
     [(SPUIViewController *)v2 setSearchResultViewController:v5];
 
-    v6 = [(SPUIViewController *)v2 searchResultViewController];
-    [v6 setDelegate:v2];
+    searchResultViewController = [(SPUIViewController *)v2 searchResultViewController];
+    [searchResultViewController setDelegate:v2];
 
-    v7 = [(SPUIViewController *)v2 searchResultViewController];
-    [v7 setFeedbackListener:v2];
+    searchResultViewController2 = [(SPUIViewController *)v2 searchResultViewController];
+    [searchResultViewController2 setFeedbackListener:v2];
   }
 
   return v2;
@@ -35,18 +35,18 @@
 
 - (id)activeViewController
 {
-  v2 = [(SPUIViewController *)self childViewControllers];
-  v3 = [v2 firstObject];
+  childViewControllers = [(SPUIViewController *)self childViewControllers];
+  firstObject = [childViewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)contentScrollView
 {
-  v2 = [(SPUIViewController *)self activeViewController];
-  v3 = [v2 contentScrollView];
+  activeViewController = [(SPUIViewController *)self activeViewController];
+  contentScrollView = [activeViewController contentScrollView];
 
-  return v3;
+  return contentScrollView;
 }
 
 - (SPUIViewControllerDelegate)delegate
@@ -83,21 +83,21 @@ uint64_t __53__SPUIViewController_activateViewController_animate___block_invoke_
 
 - (void)didTapInEmptyRegion
 {
-  v2 = [(SPUIViewController *)self delegate];
-  [v2 dismissSearchViewWithReason:2];
+  delegate = [(SPUIViewController *)self delegate];
+  [delegate dismissSearchViewWithReason:2];
 }
 
-- (BOOL)isActiveViewController:(id)a3
+- (BOOL)isActiveViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SPUIViewController *)self activeViewController];
+  controllerCopy = controller;
+  activeViewController = [(SPUIViewController *)self activeViewController];
 
-  return v5 == v4;
+  return activeViewController == controllerCopy;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  if ([objc_opt_class() isFeedbackSelector:a3] && !-[SPUIViewController isInStateRestoration](self, "isInStateRestoration"))
+  if ([objc_opt_class() isFeedbackSelector:selector] && !-[SPUIViewController isInStateRestoration](self, "isInStateRestoration"))
   {
     v5 = +[SPUIFeedbackManager feedbackListener];
   }
@@ -106,13 +106,13 @@ uint64_t __53__SPUIViewController_activateViewController_animate___block_invoke_
   {
     v7.receiver = self;
     v7.super_class = SPUIViewController;
-    v5 = [(SPUIViewController *)&v7 forwardingTargetForSelector:a3];
+    v5 = [(SPUIViewController *)&v7 forwardingTargetForSelector:selector];
   }
 
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = SPUIViewController;
@@ -123,7 +123,7 @@ uint64_t __53__SPUIViewController_activateViewController_animate___block_invoke_
 
   else
   {
-    v5 = [objc_opt_class() isFeedbackSelector:a3];
+    v5 = [objc_opt_class() isFeedbackSelector:selector];
     if (v5)
     {
       LOBYTE(v5) = ![(SPUIViewController *)self isInStateRestoration];

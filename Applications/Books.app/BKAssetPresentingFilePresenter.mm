@@ -1,7 +1,7 @@
 @interface BKAssetPresentingFilePresenter
-- (BKAssetPresentingFilePresenter)initWithViewController:(id)a3;
+- (BKAssetPresentingFilePresenter)initWithViewController:(id)controller;
 - (BKBasePresentingViewController)viewController;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
 - (void)activate;
 - (void)deactivate;
 - (void)dealloc;
@@ -9,20 +9,20 @@
 
 @implementation BKAssetPresentingFilePresenter
 
-- (BKAssetPresentingFilePresenter)initWithViewController:(id)a3
+- (BKAssetPresentingFilePresenter)initWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v26.receiver = self;
   v26.super_class = BKAssetPresentingFilePresenter;
   v5 = [(BKAssetPresentingFilePresenter *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_viewController, v4);
-    v7 = [(BKAssetPresentingFilePresenter *)v6 viewController];
-    v8 = [v7 assetViewController];
-    v9 = [v8 asset];
-    v10 = [v9 url];
+    objc_storeWeak(&v5->_viewController, controllerCopy);
+    viewController = [(BKAssetPresentingFilePresenter *)v6 viewController];
+    assetViewController = [viewController assetViewController];
+    asset = [assetViewController asset];
+    v10 = [asset url];
     urlForPresentingBook = v6->_urlForPresentingBook;
     v6->_urlForPresentingBook = v10;
 
@@ -95,13 +95,13 @@
   }
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(BKAssetPresentingFilePresenter *)self viewController];
-  [v5 im_dismissAnimated:0 immediate:1];
+  handlerCopy = handler;
+  viewController = [(BKAssetPresentingFilePresenter *)self viewController];
+  [viewController im_dismissAnimated:0 immediate:1];
 
-  v7 = objc_retainBlock(v4);
+  v7 = objc_retainBlock(handlerCopy);
   v6 = v7;
   if (v7)
   {

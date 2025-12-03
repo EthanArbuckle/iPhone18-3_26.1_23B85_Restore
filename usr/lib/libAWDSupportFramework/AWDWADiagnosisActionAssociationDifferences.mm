@@ -1,28 +1,28 @@
 @interface AWDWADiagnosisActionAssociationDifferences
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEventType:(id)a3;
+- (int)StringAsEventType:(id)type;
 - (int)eventType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAdditionalInfo:(BOOL)a3;
-- (void)setHasChangedChannel:(BOOL)a3;
-- (void)setHasChangedDNSPrimary:(BOOL)a3;
-- (void)setHasChangedDNSSecondary:(BOOL)a3;
-- (void)setHasChangedMAC:(BOOL)a3;
-- (void)setHasEventType:(BOOL)a3;
-- (void)setHasNewBSSID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAdditionalInfo:(BOOL)info;
+- (void)setHasChangedChannel:(BOOL)channel;
+- (void)setHasChangedDNSPrimary:(BOOL)primary;
+- (void)setHasChangedDNSSecondary:(BOOL)secondary;
+- (void)setHasChangedMAC:(BOOL)c;
+- (void)setHasEventType:(BOOL)type;
+- (void)setHasNewBSSID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWADiagnosisActionAssociationDifferences
 
-- (void)setHasNewBSSID:(BOOL)a3
+- (void)setHasNewBSSID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 0x80;
   }
@@ -35,9 +35,9 @@
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setHasChangedChannel:(BOOL)a3
+- (void)setHasChangedChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 8;
   }
@@ -50,9 +50,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasChangedDNSPrimary:(BOOL)a3
+- (void)setHasChangedDNSPrimary:(BOOL)primary
 {
-  if (a3)
+  if (primary)
   {
     v3 = 16;
   }
@@ -65,9 +65,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasChangedDNSSecondary:(BOOL)a3
+- (void)setHasChangedDNSSecondary:(BOOL)secondary
 {
-  if (a3)
+  if (secondary)
   {
     v3 = 32;
   }
@@ -80,9 +80,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasChangedMAC:(BOOL)a3
+- (void)setHasChangedMAC:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 64;
   }
@@ -108,9 +108,9 @@
   }
 }
 
-- (void)setHasEventType:(BOOL)a3
+- (void)setHasEventType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -123,39 +123,39 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsEventType:(id)a3
+- (int)StringAsEventType:(id)type
 {
-  if ([a3 isEqualToString:@"kDiagnosisEventTypeMainDpsNotification"])
+  if ([type isEqualToString:@"kDiagnosisEventTypeMainDpsNotification"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kDiagnosisEventTypePowerToggled"])
+  if ([type isEqualToString:@"kDiagnosisEventTypePowerToggled"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"kDiagnosisEventTypeControlCenterToggled"])
+  if ([type isEqualToString:@"kDiagnosisEventTypeControlCenterToggled"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"kDiagnosisEventTypeLinkUp"])
+  if ([type isEqualToString:@"kDiagnosisEventTypeLinkUp"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"kDiagnosisEventTypeRoamed"])
+  if ([type isEqualToString:@"kDiagnosisEventTypeRoamed"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"kDiagnosisEventTypeIPConfigured"])
+  if ([type isEqualToString:@"kDiagnosisEventTypeIPConfigured"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"kDiagnosisEventTypeLinkDown"])
+  if ([type isEqualToString:@"kDiagnosisEventTypeLinkDown"])
   {
     return 6;
   }
@@ -163,9 +163,9 @@
   return 0;
 }
 
-- (void)setHasAdditionalInfo:(BOOL)a3
+- (void)setHasAdditionalInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 2;
   }
@@ -187,11 +187,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if (has < 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_newBSSID), @"newBSSID"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_newBSSID), @"newBSSID"}];
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -210,7 +210,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_changedChannel), @"changedChannel"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_changedChannel), @"changedChannel"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -224,7 +224,7 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_changedDNSPrimary), @"changedDNSPrimary"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_changedDNSPrimary), @"changedDNSPrimary"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -238,7 +238,7 @@ LABEL_5:
   }
 
 LABEL_14:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_changedDNSSecondary), @"changedDNSSecondary"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_changedDNSSecondary), @"changedDNSSecondary"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -252,7 +252,7 @@ LABEL_6:
   }
 
 LABEL_15:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_changedMAC), @"changedMAC"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_changedMAC), @"changedMAC"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -274,17 +274,17 @@ LABEL_17:
       v7 = off_29EE33120[eventType];
     }
 
-    [v3 setObject:v7 forKey:@"eventType"];
+    [dictionary setObject:v7 forKey:@"eventType"];
     if ((*&self->_has & 2) != 0)
     {
       goto LABEL_9;
     }
 
-    return v3;
+    return dictionary;
   }
 
 LABEL_16:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -295,13 +295,13 @@ LABEL_8:
   if ((has & 2) != 0)
   {
 LABEL_9:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_additionalInfo), @"additionalInfo"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_additionalInfo), @"additionalInfo"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
@@ -406,7 +406,7 @@ LABEL_16:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x80000000) == 0)
@@ -419,22 +419,22 @@ LABEL_16:
     goto LABEL_3;
   }
 
-  *(a3 + 28) = self->_newBSSID;
-  *(a3 + 32) |= 0x80u;
+  *(to + 28) = self->_newBSSID;
+  *(to + 32) |= 0x80u;
   *&has = self->_has;
   if ((*&has & 8) != 0)
   {
 LABEL_3:
-    *(a3 + 24) = self->_changedChannel;
-    *(a3 + 32) |= 8u;
+    *(to + 24) = self->_changedChannel;
+    *(to + 32) |= 8u;
     *&has = self->_has;
   }
 
 LABEL_4:
   if ((*&has & 0x10) != 0)
   {
-    *(a3 + 25) = self->_changedDNSPrimary;
-    *(a3 + 32) |= 0x10u;
+    *(to + 25) = self->_changedDNSPrimary;
+    *(to + 32) |= 0x10u;
     *&has = self->_has;
     if ((*&has & 0x20) == 0)
     {
@@ -453,8 +453,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  *(a3 + 26) = self->_changedDNSSecondary;
-  *(a3 + 32) |= 0x20u;
+  *(to + 26) = self->_changedDNSSecondary;
+  *(to + 32) |= 0x20u;
   *&has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -468,8 +468,8 @@ LABEL_7:
   }
 
 LABEL_13:
-  *(a3 + 27) = self->_changedMAC;
-  *(a3 + 32) |= 0x40u;
+  *(to + 27) = self->_changedMAC;
+  *(to + 32) |= 0x40u;
   *&has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -483,8 +483,8 @@ LABEL_8:
   }
 
 LABEL_14:
-  *(a3 + 1) = self->_timestamp;
-  *(a3 + 32) |= 1u;
+  *(to + 1) = self->_timestamp;
+  *(to + 32) |= 1u;
   *&has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -495,23 +495,23 @@ LABEL_9:
     }
 
 LABEL_16:
-    *(a3 + 4) = self->_additionalInfo;
-    *(a3 + 32) |= 2u;
+    *(to + 4) = self->_additionalInfo;
+    *(to + 32) |= 2u;
     return;
   }
 
 LABEL_15:
-  *(a3 + 5) = self->_eventType;
-  *(a3 + 32) |= 4u;
+  *(to + 5) = self->_eventType;
+  *(to + 32) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_16;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if (has < 0)
   {
@@ -623,9 +623,9 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
@@ -634,126 +634,126 @@ LABEL_9:
   has = self->_has;
   if ((*&has & 0x80000000) != 0)
   {
-    if ((*(a3 + 32) & 0x80) == 0)
+    if ((*(equal + 32) & 0x80) == 0)
     {
       goto LABEL_56;
     }
 
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if (self->_newBSSID)
     {
-      if ((*(a3 + 28) & 1) == 0)
+      if ((*(equal + 28) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(a3 + 32) & 0x80) != 0)
+  else if ((*(equal + 32) & 0x80) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 8) != 0)
   {
-    if ((*(a3 + 32) & 8) == 0)
+    if ((*(equal + 32) & 8) == 0)
     {
       goto LABEL_56;
     }
 
-    v8 = *(a3 + 24);
+    v8 = *(equal + 24);
     if (self->_changedChannel)
     {
-      if ((*(a3 + 24) & 1) == 0)
+      if ((*(equal + 24) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(a3 + 32) & 8) != 0)
+  else if ((*(equal + 32) & 8) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 0x10) != 0)
   {
-    if ((*(a3 + 32) & 0x10) == 0)
+    if ((*(equal + 32) & 0x10) == 0)
     {
       goto LABEL_56;
     }
 
-    v9 = *(a3 + 25);
+    v9 = *(equal + 25);
     if (self->_changedDNSPrimary)
     {
-      if ((*(a3 + 25) & 1) == 0)
+      if ((*(equal + 25) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(a3 + 25))
+    else if (*(equal + 25))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(a3 + 32) & 0x10) != 0)
+  else if ((*(equal + 32) & 0x10) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 0x20) != 0)
   {
-    if ((*(a3 + 32) & 0x20) == 0)
+    if ((*(equal + 32) & 0x20) == 0)
     {
       goto LABEL_56;
     }
 
-    v10 = *(a3 + 26);
+    v10 = *(equal + 26);
     if (self->_changedDNSSecondary)
     {
-      if ((*(a3 + 26) & 1) == 0)
+      if ((*(equal + 26) & 1) == 0)
       {
         goto LABEL_56;
       }
     }
 
-    else if (*(a3 + 26))
+    else if (*(equal + 26))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(a3 + 32) & 0x20) != 0)
+  else if ((*(equal + 32) & 0x20) != 0)
   {
     goto LABEL_56;
   }
 
   if ((*&has & 0x40) != 0)
   {
-    if ((*(a3 + 32) & 0x40) != 0)
+    if ((*(equal + 32) & 0x40) != 0)
     {
-      v11 = *(a3 + 27);
+      v11 = *(equal + 27);
       if (self->_changedMAC)
       {
-        if ((*(a3 + 27) & 1) == 0)
+        if ((*(equal + 27) & 1) == 0)
         {
           goto LABEL_56;
         }
       }
 
-      else if (*(a3 + 27))
+      else if (*(equal + 27))
       {
         goto LABEL_56;
       }
@@ -766,7 +766,7 @@ LABEL_56:
     return v5;
   }
 
-  if ((*(a3 + 32) & 0x40) != 0)
+  if ((*(equal + 32) & 0x40) != 0)
   {
     goto LABEL_56;
   }
@@ -774,34 +774,34 @@ LABEL_56:
 LABEL_12:
   if (*&has)
   {
-    if ((*(a3 + 32) & 1) == 0 || self->_timestamp != *(a3 + 1))
+    if ((*(equal + 32) & 1) == 0 || self->_timestamp != *(equal + 1))
     {
       goto LABEL_56;
     }
   }
 
-  else if (*(a3 + 32))
+  else if (*(equal + 32))
   {
     goto LABEL_56;
   }
 
   if ((*&has & 4) != 0)
   {
-    if ((*(a3 + 32) & 4) == 0 || self->_eventType != *(a3 + 5))
+    if ((*(equal + 32) & 4) == 0 || self->_eventType != *(equal + 5))
     {
       goto LABEL_56;
     }
   }
 
-  else if ((*(a3 + 32) & 4) != 0)
+  else if ((*(equal + 32) & 4) != 0)
   {
     goto LABEL_56;
   }
 
-  LOBYTE(v5) = (*(a3 + 32) & 2) == 0;
+  LOBYTE(v5) = (*(equal + 32) & 2) == 0;
   if ((*&has & 2) != 0)
   {
-    if ((*(a3 + 32) & 2) == 0 || self->_additionalInfo != *(a3 + 4))
+    if ((*(equal + 32) & 2) == 0 || self->_additionalInfo != *(equal + 4))
     {
       goto LABEL_56;
     }
@@ -922,9 +922,9 @@ LABEL_9:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 32);
+  v3 = *(from + 32);
   if ((v3 & 0x80000000) == 0)
   {
     if ((v3 & 8) == 0)
@@ -935,23 +935,23 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  self->_newBSSID = *(a3 + 28);
+  self->_newBSSID = *(from + 28);
   *&self->_has |= 0x80u;
-  LOBYTE(v3) = *(a3 + 32);
+  LOBYTE(v3) = *(from + 32);
   if ((v3 & 8) != 0)
   {
 LABEL_3:
-    self->_changedChannel = *(a3 + 24);
+    self->_changedChannel = *(from + 24);
     *&self->_has |= 8u;
-    LOBYTE(v3) = *(a3 + 32);
+    LOBYTE(v3) = *(from + 32);
   }
 
 LABEL_4:
   if ((v3 & 0x10) != 0)
   {
-    self->_changedDNSPrimary = *(a3 + 25);
+    self->_changedDNSPrimary = *(from + 25);
     *&self->_has |= 0x10u;
-    LOBYTE(v3) = *(a3 + 32);
+    LOBYTE(v3) = *(from + 32);
     if ((v3 & 0x20) == 0)
     {
 LABEL_6:
@@ -969,9 +969,9 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  self->_changedDNSSecondary = *(a3 + 26);
+  self->_changedDNSSecondary = *(from + 26);
   *&self->_has |= 0x20u;
-  LOBYTE(v3) = *(a3 + 32);
+  LOBYTE(v3) = *(from + 32);
   if ((v3 & 0x40) == 0)
   {
 LABEL_7:
@@ -984,9 +984,9 @@ LABEL_7:
   }
 
 LABEL_13:
-  self->_changedMAC = *(a3 + 27);
+  self->_changedMAC = *(from + 27);
   *&self->_has |= 0x40u;
-  LOBYTE(v3) = *(a3 + 32);
+  LOBYTE(v3) = *(from + 32);
   if ((v3 & 1) == 0)
   {
 LABEL_8:
@@ -999,9 +999,9 @@ LABEL_8:
   }
 
 LABEL_14:
-  self->_timestamp = *(a3 + 1);
+  self->_timestamp = *(from + 1);
   *&self->_has |= 1u;
-  LOBYTE(v3) = *(a3 + 32);
+  LOBYTE(v3) = *(from + 32);
   if ((v3 & 4) == 0)
   {
 LABEL_9:
@@ -1011,15 +1011,15 @@ LABEL_9:
     }
 
 LABEL_16:
-    self->_additionalInfo = *(a3 + 4);
+    self->_additionalInfo = *(from + 4);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_15:
-  self->_eventType = *(a3 + 5);
+  self->_eventType = *(from + 5);
   *&self->_has |= 4u;
-  if ((*(a3 + 32) & 2) != 0)
+  if ((*(from + 32) & 2) != 0)
   {
     goto LABEL_16;
   }

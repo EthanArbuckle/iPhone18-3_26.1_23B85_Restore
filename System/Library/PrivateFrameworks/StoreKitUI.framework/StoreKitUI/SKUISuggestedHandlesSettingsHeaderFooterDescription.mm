@@ -1,18 +1,18 @@
 @interface SKUISuggestedHandlesSettingsHeaderFooterDescription
-- (SKUISuggestedHandlesSettingsHeaderFooterDescription)initWithSuggestedHandles:(id)a3 clientContext:(id)a4 delegate:(id)a5;
+- (SKUISuggestedHandlesSettingsHeaderFooterDescription)initWithSuggestedHandles:(id)handles clientContext:(id)context delegate:(id)delegate;
 - (SKUISuggestedHandlesSettingsHeaderFooterDescriptionDelegate)delegate;
 - (id)helpText;
 - (id)suggestedHandles;
-- (void)selectedHandleAtIndex:(unint64_t)a3;
+- (void)selectedHandleAtIndex:(unint64_t)index;
 @end
 
 @implementation SKUISuggestedHandlesSettingsHeaderFooterDescription
 
-- (SKUISuggestedHandlesSettingsHeaderFooterDescription)initWithSuggestedHandles:(id)a3 clientContext:(id)a4 delegate:(id)a5
+- (SKUISuggestedHandlesSettingsHeaderFooterDescription)initWithSuggestedHandles:(id)handles clientContext:(id)context delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlesCopy = handles;
+  contextCopy = context;
+  delegateCopy = delegate;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISuggestedHandlesSettingsHeaderFooterDescription initWithSuggestedHandles:clientContext:delegate:];
@@ -22,9 +22,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_clientContext, a4);
-    objc_storeWeak(&v12->_delegate, v10);
-    v13 = [v8 copy];
+    objc_storeStrong(&v11->_clientContext, context);
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    v13 = [handlesCopy copy];
     suggestedHandles = v12->_suggestedHandles;
     v12->_suggestedHandles = v13;
   }
@@ -66,9 +66,9 @@ LABEL_10:
   return v6;
 }
 
-- (void)selectedHandleAtIndex:(unint64_t)a3
+- (void)selectedHandleAtIndex:(unint64_t)index
 {
-  v9 = [(NSArray *)self->_suggestedHandles objectAtIndex:a3];
+  v9 = [(NSArray *)self->_suggestedHandles objectAtIndex:index];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {

@@ -1,7 +1,7 @@
 @interface CCUISensorAttributionSensorButton
-- (CCUISensorAttributionSensorButton)initWithSensorActivityData:(id)a3;
+- (CCUISensorAttributionSensorButton)initWithSensorActivityData:(id)data;
 - (CGRect)cachedExpandedRect;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)_indicatorWidth;
 - (id)_fontForTitleLabel;
 - (void)_enableUserInteractionForLargeContentViewerIfNeeded;
@@ -13,10 +13,10 @@
 
 @implementation CCUISensorAttributionSensorButton
 
-- (CCUISensorAttributionSensorButton)initWithSensorActivityData:(id)a3
+- (CCUISensorAttributionSensorButton)initWithSensorActivityData:(id)data
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v50.receiver = self;
   v50.super_class = CCUISensorAttributionSensorButton;
   v7 = *MEMORY[0x277CBF3A0];
@@ -26,23 +26,23 @@
   v11 = [(CCUISensorAttributionSensorButton *)&v50 initWithFrame:*MEMORY[0x277CBF3A0], v8, v9, v10];
   if (v11)
   {
-    if (!v6)
+    if (!dataCopy)
     {
       [(CCUISensorAttributionSensorButton *)a2 initWithSensorActivityData:v11];
     }
 
-    v12 = [(CCUISensorAttributionSensorButton *)v11 traitCollection];
-    v13 = [v12 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v13);
+    traitCollection = [(CCUISensorAttributionSensorButton *)v11 traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-    objc_storeStrong(&v11->_sensorActivityData, a3);
+    objc_storeStrong(&v11->_sensorActivityData, data);
     v15 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v7, v8, v9, v10}];
     descriptionLabel = v11->_descriptionLabel;
     v11->_descriptionLabel = v15;
 
     v17 = v11->_descriptionLabel;
-    v18 = [(CCUISensorAttributionSensorButton *)v11 _fontForTitleLabel];
-    [(UILabel *)v17 setFont:v18];
+    _fontForTitleLabel = [(CCUISensorAttributionSensorButton *)v11 _fontForTitleLabel];
+    [(UILabel *)v17 setFont:_fontForTitleLabel];
 
     v19 = v11->_descriptionLabel;
     if (IsAccessibilityCategory)
@@ -58,25 +58,25 @@
 
     [(UILabel *)v11->_descriptionLabel setMinimumScaleFactor:0.5];
     v20 = v11->_descriptionLabel;
-    v21 = CCUILocalizedDescriptionForSensorActivityData(v6);
+    v21 = CCUILocalizedDescriptionForSensorActivityData(dataCopy);
     [(UILabel *)v20 setText:v21];
 
     v22 = v11->_descriptionLabel;
     v23 = [MEMORY[0x277D75348] colorWithWhite:0.85 alpha:1.0];
     [(UILabel *)v22 setTextColor:v23];
 
-    v24 = [(UILabel *)v11->_descriptionLabel layer];
+    layer = [(UILabel *)v11->_descriptionLabel layer];
     v25 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    [v24 setCompositingFilter:v25];
+    [layer setCompositingFilter:v25];
 
-    v26 = [(UILabel *)v11->_descriptionLabel layer];
-    [v26 setAllowsGroupBlending:0];
+    layer2 = [(UILabel *)v11->_descriptionLabel layer];
+    [layer2 setAllowsGroupBlending:0];
 
     [(CCUISensorAttributionSensorButton *)v11 addSubview:v11->_descriptionLabel];
     v27 = CCUIImageForSensorType([(CCUISensorActivityData *)v11->_sensorActivityData sensorType]);
     v28 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v27];
-    v29 = [MEMORY[0x277D75348] systemWhiteColor];
-    [v28 setTintColor:v29];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [v28 setTintColor:systemWhiteColor];
 
     CGAffineTransformMakeScale(&v49, 0.5, 0.5);
     [v28 setTransform:&v49];
@@ -96,26 +96,26 @@
     [(UIView *)v11->_indicatorView addSubview:v32];
     [(UIView *)v11->_indicatorView addSubview:v28];
     [(UIView *)v11->_indicatorView sendSubviewToBack:v32];
-    v37 = [MEMORY[0x277D759A0] mainScreen];
-    v38 = [(UIView *)v11->_indicatorView layer];
-    [v37 scale];
-    [v38 setRasterizationScale:?];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    layer3 = [(UIView *)v11->_indicatorView layer];
+    [mainScreen scale];
+    [layer3 setRasterizationScale:?];
 
-    v39 = [(UIView *)v11->_indicatorView layer];
-    [v39 setShouldRasterize:1];
+    layer4 = [(UIView *)v11->_indicatorView layer];
+    [layer4 setShouldRasterize:1];
 
     [v28 frame];
     [v32 bounds];
     UIRectCenteredRect();
     [v28 setFrame:?];
     v40 = MEMORY[0x277CCACA8];
-    v41 = CCUIIdentifierForSensorType([v6 sensorType]);
-    v42 = [v6 bundleIdentifier];
-    v43 = [v40 stringWithFormat:@"%@-activity-data-button-%@", v41, v42];
+    v41 = CCUIIdentifierForSensorType([dataCopy sensorType]);
+    bundleIdentifier = [dataCopy bundleIdentifier];
+    v43 = [v40 stringWithFormat:@"%@-activity-data-button-%@", v41, bundleIdentifier];
     [(CCUISensorAttributionSensorButton *)v11 setAccessibilityIdentifier:v43];
 
-    v44 = [(CCUISensorAttributionSensorButton *)v11 layer];
-    [v44 setAllowsGroupBlending:0];
+    layer5 = [(CCUISensorAttributionSensorButton *)v11 layer];
+    [layer5 setAllowsGroupBlending:0];
 
     [(CCUISensorAttributionSensorButton *)v11 addSubview:v11->_indicatorView];
     v45 = objc_opt_self();
@@ -127,21 +127,21 @@
   return v11;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(CCUISensorAttributionSensorButton *)self traitCollection];
-  v7 = [v6 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7);
+  height = fits.height;
+  width = fits.width;
+  traitCollection = [(CCUISensorAttributionSensorButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   [(CCUISensorAttributionSensorButton *)self _indicatorWidth];
   v10 = v9;
   [(UILabel *)self->_descriptionLabel sizeThatFits:width - v9 + -4.0, height];
   v12 = v11;
   v14 = v13;
-  v15 = [(UILabel *)self->_descriptionLabel font];
-  [v15 lineHeight];
+  font = [(UILabel *)self->_descriptionLabel font];
+  [font lineHeight];
   v17 = v14 / v16;
 
   v18 = v17 > 1.5 && IsAccessibilityCategory;
@@ -200,8 +200,8 @@
     v15 = v14;
     v17 = v16;
     v19 = v18;
-    v20 = [MEMORY[0x277D75128] sharedApplication];
-    if ([v20 userInterfaceLayoutDirection] == 1)
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    if ([mEMORY[0x277D75128] userInterfaceLayoutDirection] == 1)
     {
       v23.origin.x = v13;
       v23.origin.y = v15;
@@ -233,8 +233,8 @@
     v7 = v6;
     [(CCUISensorAttributionSensorButton *)self _indicatorWidth];
     [(UILabel *)self->_descriptionLabel sizeThatFits:v5 - v8 + -4.0, v7];
-    v9 = [MEMORY[0x277D75128] sharedApplication];
-    if ([v9 userInterfaceLayoutDirection] != 1)
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    if ([mEMORY[0x277D75128] userInterfaceLayoutDirection] != 1)
     {
       [(CCUISensorAttributionSensorButton *)self _indicatorWidth];
     }
@@ -255,17 +255,17 @@
 
 - (id)_fontForTitleLabel
 {
-  v2 = [MEMORY[0x277CF0D60] defaultFontProvider];
-  v3 = [v2 preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
+  defaultFontProvider = [MEMORY[0x277CF0D60] defaultFontProvider];
+  v3 = [defaultFontProvider preferredFontForTextStyle:*MEMORY[0x277D76968] hiFontStyle:1];
 
   return v3;
 }
 
 - (void)_enableUserInteractionForLargeContentViewerIfNeeded
 {
-  v3 = [(CCUISensorAttributionSensorButton *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(CCUISensorAttributionSensorButton *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   [(CCUISensorAttributionSensorButton *)self setUserInteractionEnabled:IsAccessibilityCategory];
 }

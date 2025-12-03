@@ -1,8 +1,8 @@
 @interface DBDashboardWorkspaceStateChangeItem
 - (NSString)description;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_buildDescriptionWithBuilder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_buildDescriptionWithBuilder:(id)builder;
 @end
 
 @implementation DBDashboardWorkspaceStateChangeItem
@@ -18,14 +18,14 @@
 {
   v3 = [objc_alloc(MEMORY[0x277CF0C00]) initWithObject:self];
   [(DBDashboardWorkspaceStateChangeItem *)self _buildDescriptionWithBuilder:v3];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (void)_buildDescriptionWithBuilder:(id)a3
+- (void)_buildDescriptionWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   if (self->_changeType)
   {
     v5 = @"Remove";
@@ -36,8 +36,8 @@
     v5 = @"Add";
   }
 
-  v11 = v4;
-  v6 = [v4 appendObject:v5 withName:@"changeType"];
+  v11 = builderCopy;
+  v6 = [builderCopy appendObject:v5 withName:@"changeType"];
   presentationPreference = self->_presentationPreference;
   if (presentationPreference)
   {
@@ -61,7 +61,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) _init];
   *(result + 1) = self->_changeType;

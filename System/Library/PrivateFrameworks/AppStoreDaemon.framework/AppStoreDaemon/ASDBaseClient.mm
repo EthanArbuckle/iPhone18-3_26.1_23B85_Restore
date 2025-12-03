@@ -1,25 +1,25 @@
 @interface ASDBaseClient
-- (BOOL)_clientHasEntitlement:(uint64_t)a1;
-- (uint64_t)_clientHasASDEntitlement:(uint64_t)a1;
-- (void)_call:(id)a3 run:(id)a4 error:(id)a5;
+- (BOOL)_clientHasEntitlement:(uint64_t)entitlement;
+- (uint64_t)_clientHasASDEntitlement:(uint64_t)entitlement;
+- (void)_call:(id)_call run:(id)run error:(id)error;
 @end
 
 @implementation ASDBaseClient
 
-- (void)_call:(id)a3 run:(id)a4 error:(id)a5
+- (void)_call:(id)_call run:(id)run error:(id)error
 {
-  v7 = a4;
-  v8 = a5;
+  runCopy = run;
+  errorCopy = error;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __33__ASDBaseClient__call_run_error___block_invoke;
   v12[3] = &unk_1E7CDB730;
-  v9 = v8;
+  v9 = errorCopy;
   v13 = v9;
-  v10 = [a3 remoteObjectProxyWithErrorHandler:v12];
+  v10 = [_call remoteObjectProxyWithErrorHandler:v12];
   if (v10)
   {
-    v7[2](v7, v10);
+    runCopy[2](runCopy, v10);
   }
 
   else
@@ -29,11 +29,11 @@
   }
 }
 
-- (BOOL)_clientHasEntitlement:(uint64_t)a1
+- (BOOL)_clientHasEntitlement:(uint64_t)entitlement
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (entitlement)
   {
     v4 = SecTaskCreateFromSelf(0);
     if (v4)
@@ -105,11 +105,11 @@ LABEL_18:
   return v8;
 }
 
-- (uint64_t)_clientHasASDEntitlement:(uint64_t)a1
+- (uint64_t)_clientHasASDEntitlement:(uint64_t)entitlement
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (entitlement)
   {
     v4 = SecTaskCreateFromSelf(0);
     if (v4)

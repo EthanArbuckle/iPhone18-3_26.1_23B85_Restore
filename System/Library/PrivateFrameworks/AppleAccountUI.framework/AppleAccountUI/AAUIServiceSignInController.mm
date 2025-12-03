@@ -1,56 +1,56 @@
 @interface AAUIServiceSignInController
 - (AAUIAgeAttestationStateProviding)ageAttestationStateProvider;
-- (AAUIServiceSignInController)initWithSignInConfiguration:(id)a3;
+- (AAUIServiceSignInController)initWithSignInConfiguration:(id)configuration;
 - (AAUISignInViewController)signInViewController;
 - (AKAppleIDAuthenticationController)authenticationController;
 - (BOOL)_allowsAccountCreation;
-- (BOOL)_isAuthenticatingPrimary:(id)a3;
+- (BOOL)_isAuthenticatingPrimary:(id)primary;
 - (BOOL)_shouldShieldSignInUI;
 - (BOOL)_showsServiceIcons;
-- (id)_alertControllerForReusingAccount:(id)a3 serviceType:(id)a4 inViewController:(id)a5 completion:(id)a6;
-- (id)_serviceContextForCloudAndInactiveStoreWithAuthResults:(id)a3 parentViewController:(id)a4;
-- (id)_serviceContextWithResults:(id)a3 parentViewController:(id)a4;
+- (id)_alertControllerForReusingAccount:(id)account serviceType:(id)type inViewController:(id)controller completion:(id)completion;
+- (id)_serviceContextForCloudAndInactiveStoreWithAuthResults:(id)results parentViewController:(id)controller;
+- (id)_serviceContextWithResults:(id)results parentViewController:(id)controller;
 - (id)_serviceOwnersManager;
-- (id)_spinnerMessageForService:(id)a3;
+- (id)_spinnerMessageForService:(id)service;
 - (id)_spinnerViewController;
 - (void)_attemptReauthAndSignInToServices;
-- (void)_attemptSignInForServices:(id)a3 serviceContext:(id)a4;
-- (void)_authenticateExistingAccount:(id)a3 serviceType:(id)a4 inViewController:(id)a5 completion:(id)a6;
+- (void)_attemptSignInForServices:(id)services serviceContext:(id)context;
+- (void)_authenticateExistingAccount:(id)account serviceType:(id)type inViewController:(id)controller completion:(id)completion;
 - (void)_commonInit;
 - (void)_delegate_serviceSignInControllerDidCancel;
-- (void)_delegate_signInControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4;
-- (void)_invokeShieldUIWithViewController:(id)a3 completion:(id)a4;
-- (void)_mainQueue_continueSignInWithAuthenticationResults:(id)a3 parentViewController:(id)a4;
-- (void)_mainQueue_presentAlertForError:(id)a3 inViewController:(id)a4 completion:(id)a5;
-- (void)_mainQueue_presentContinueUsingInViewController:(id)a3 account:(id)a4 serviceType:(id)a5 completion:(id)a6;
-- (void)_mainQueue_presentSpinnerViewControllerInParentViewController:(id)a3 withCompletion:(id)a4;
-- (void)_prepareToSignInForServices:(id)a3 withAuthenticationResults:(id)a4 parentViewController:(id)a5;
-- (void)_setInitialViewController:(id)a3;
-- (void)continueSignInWithAuthenticationResults:(id)a3 viewController:(id)a4 completion:(id)a5;
-- (void)controllerFinishedWithAIDAResults:(id)a3;
+- (void)_delegate_signInControllerDidCompleteWithSuccess:(BOOL)success error:(id)error;
+- (void)_invokeShieldUIWithViewController:(id)controller completion:(id)completion;
+- (void)_mainQueue_continueSignInWithAuthenticationResults:(id)results parentViewController:(id)controller;
+- (void)_mainQueue_presentAlertForError:(id)error inViewController:(id)controller completion:(id)completion;
+- (void)_mainQueue_presentContinueUsingInViewController:(id)controller account:(id)account serviceType:(id)type completion:(id)completion;
+- (void)_mainQueue_presentSpinnerViewControllerInParentViewController:(id)controller withCompletion:(id)completion;
+- (void)_prepareToSignInForServices:(id)services withAuthenticationResults:(id)results parentViewController:(id)controller;
+- (void)_setInitialViewController:(id)controller;
+- (void)continueSignInWithAuthenticationResults:(id)results viewController:(id)controller completion:(id)completion;
+- (void)controllerFinishedWithAIDAResults:(id)results;
 - (void)loadViewControllerForPresentation;
-- (void)prepareInViewController:(id)a3 completion:(id)a4;
-- (void)signInViewController:(id)a3 didCompleteWithAuthenticationResults:(id)a4;
-- (void)signInViewControllerDidCancel:(id)a3;
-- (void)signInViewControllerDidSelectChildSignIn:(id)a3;
-- (void)signInViewControllerDidSelectOtherOptions:(id)a3;
-- (void)signInViewControllerDidSkip:(id)a3;
+- (void)prepareInViewController:(id)controller completion:(id)completion;
+- (void)signInViewController:(id)controller didCompleteWithAuthenticationResults:(id)results;
+- (void)signInViewControllerDidCancel:(id)cancel;
+- (void)signInViewControllerDidSelectChildSignIn:(id)in;
+- (void)signInViewControllerDidSelectOtherOptions:(id)options;
+- (void)signInViewControllerDidSkip:(id)skip;
 - (void)startSplitAcountSignInFlow;
-- (void)willAuthenticateWithContext:(id)a3;
+- (void)willAuthenticateWithContext:(id)context;
 @end
 
 @implementation AAUIServiceSignInController
 
-- (AAUIServiceSignInController)initWithSignInConfiguration:(id)a3
+- (AAUIServiceSignInController)initWithSignInConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = AAUIServiceSignInController;
   v6 = [(AAUIServiceSignInController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_signInConfig, a3);
+    objc_storeStrong(&v6->_signInConfig, configuration);
     [(AAUIServiceSignInController *)v7 _commonInit];
   }
 
@@ -66,9 +66,9 @@
 
 - (void)loadViewControllerForPresentation
 {
-  v3 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-  v4 = [v3 navigationBar];
-  [v4 setAccessibilityIdentifier:@"sign-in-nav-bar"];
+  navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setAccessibilityIdentifier:@"sign-in-nav-bar"];
 
   if ([(AAUIServiceSignInController *)self _shouldShieldSignInUI])
   {
@@ -79,19 +79,19 @@
       _os_log_impl(&dword_1C5355000, v5, OS_LOG_TYPE_DEFAULT, "Invoking shield UI.", buf, 2u);
     }
 
-    v6 = [(AAUIServiceSignInController *)self signInConfig];
-    v7 = [v6 navigationController];
-    [v7 setNavigationBarHidden:1 animated:0];
+    signInConfig = [(AAUIServiceSignInController *)self signInConfig];
+    navigationController2 = [signInConfig navigationController];
+    [navigationController2 setNavigationBarHidden:1 animated:0];
 
     objc_initWeak(buf, self);
-    v8 = [(AAUIServiceSignInController *)self signInConfig];
-    v9 = [v8 navigationController];
+    signInConfig2 = [(AAUIServiceSignInController *)self signInConfig];
+    navigationController3 = [signInConfig2 navigationController];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __64__AAUIServiceSignInController_loadViewControllerForPresentation__block_invoke;
     v19[3] = &unk_1E820DE68;
     objc_copyWeak(&v20, buf);
-    [(AAUIServiceSignInController *)self _invokeShieldUIWithViewController:v9 completion:v19];
+    [(AAUIServiceSignInController *)self _invokeShieldUIWithViewController:navigationController3 completion:v19];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);
@@ -106,19 +106,19 @@
       _os_log_impl(&dword_1C5355000, v11, OS_LOG_TYPE_DEFAULT, "Service sign in configuration signaled for reauth.", buf, 2u);
     }
 
-    v12 = [(AAUIServiceSignInController *)self _spinnerViewController];
-    [(AAUIServiceSignInController *)self _setInitialViewController:v12];
+    _spinnerViewController = [(AAUIServiceSignInController *)self _spinnerViewController];
+    [(AAUIServiceSignInController *)self _setInitialViewController:_spinnerViewController];
 
     [(AAUIServiceSignInController *)self _attemptReauthAndSignInToServices];
   }
 
   else
   {
-    v13 = [(AAUIServiceSignInConfiguration *)self->_signInConfig authenticationResults];
+    authenticationResults = [(AAUIServiceSignInConfiguration *)self->_signInConfig authenticationResults];
 
     v14 = _AAUILogSystem();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-    if (v13)
+    if (authenticationResults)
     {
       if (v15)
       {
@@ -126,12 +126,12 @@
         _os_log_impl(&dword_1C5355000, v14, OS_LOG_TYPE_DEFAULT, "Continuing sign in with authentication results...", buf, 2u);
       }
 
-      v16 = [(AAUIServiceSignInController *)self _spinnerViewController];
-      [(AAUIServiceSignInController *)self _setInitialViewController:v16];
+      _spinnerViewController2 = [(AAUIServiceSignInController *)self _spinnerViewController];
+      [(AAUIServiceSignInController *)self _setInitialViewController:_spinnerViewController2];
 
-      v17 = [(AAUIServiceSignInConfiguration *)self->_signInConfig authenticationResults];
-      v18 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-      [(AAUIServiceSignInController *)self _mainQueue_continueSignInWithAuthenticationResults:v17 parentViewController:v18];
+      authenticationResults2 = [(AAUIServiceSignInConfiguration *)self->_signInConfig authenticationResults];
+      navigationController4 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+      [(AAUIServiceSignInController *)self _mainQueue_continueSignInWithAuthenticationResults:authenticationResults2 parentViewController:navigationController4];
     }
 
     else
@@ -142,8 +142,8 @@
         _os_log_impl(&dword_1C5355000, v14, OS_LOG_TYPE_DEFAULT, "No authentication results found, displaying sign in...", buf, 2u);
       }
 
-      v17 = [(AAUIServiceSignInController *)self signInViewController];
-      [(AAUIServiceSignInController *)self _setInitialViewController:v17];
+      authenticationResults2 = [(AAUIServiceSignInController *)self signInViewController];
+      [(AAUIServiceSignInController *)self _setInitialViewController:authenticationResults2];
     }
   }
 }
@@ -194,31 +194,31 @@ void __64__AAUIServiceSignInController_loadViewControllerForPresentation__block_
 
   else
   {
-    v4 = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
-    v5 = [v4 ageAttestationPhase1Enabled];
+    ageAttestationStateProvider = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
+    ageAttestationPhase1Enabled = [ageAttestationStateProvider ageAttestationPhase1Enabled];
 
-    if (v5)
+    if (ageAttestationPhase1Enabled)
     {
-      v6 = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
-      v7 = [v6 shieldSignInOrCreateFlows];
+      ageAttestationStateProvider2 = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
+      shieldSignInOrCreateFlows = [ageAttestationStateProvider2 shieldSignInOrCreateFlows];
     }
 
     else
     {
-      v7 = 0;
+      shieldSignInOrCreateFlows = 0;
     }
 
-    v8 = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
-    v9 = [v8 ageBasedAccountSupportEnabled];
+    ageAttestationStateProvider3 = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
+    ageBasedAccountSupportEnabled = [ageAttestationStateProvider3 ageBasedAccountSupportEnabled];
 
-    v3 = v9 | v7;
-    if (v9 && (v7 & 1) == 0)
+    v3 = ageBasedAccountSupportEnabled | shieldSignInOrCreateFlows;
+    if (ageBasedAccountSupportEnabled && (shieldSignInOrCreateFlows & 1) == 0)
     {
-      v10 = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
-      if ([v10 shieldSignInOrCreateFlowsForTeen])
+      ageAttestationStateProvider4 = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
+      if ([ageAttestationStateProvider4 shieldSignInOrCreateFlowsForTeen])
       {
-        v11 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
-        v3 = v11 == 0;
+        serviceTypes = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
+        v3 = serviceTypes == 0;
       }
 
       else
@@ -246,25 +246,25 @@ void __64__AAUIServiceSignInController_loadViewControllerForPresentation__block_
   return ageAttestationStateProvider;
 }
 
-- (void)_setInitialViewController:(id)a3
+- (void)_setInitialViewController:(id)controller
 {
   v12[1] = *MEMORY[0x1E69E9840];
   signInConfig = self->_signInConfig;
-  v5 = a3;
-  v6 = [(AAUIServiceSignInConfiguration *)signInConfig navigationController];
-  v7 = [v6 viewControllers];
-  v8 = [v7 count];
+  controllerCopy = controller;
+  navigationController = [(AAUIServiceSignInConfiguration *)signInConfig navigationController];
+  viewControllers = [navigationController viewControllers];
+  v8 = [viewControllers count];
 
-  v9 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-  v11 = v9;
+  navigationController2 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+  v11 = navigationController2;
   if (v8)
   {
-    [v9 pushViewController:v5 animated:1];
+    [navigationController2 pushViewController:controllerCopy animated:1];
   }
 
   else
   {
-    v12[0] = v5;
+    v12[0] = controllerCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
 
     [v11 setViewControllers:v10 animated:0];
@@ -280,7 +280,7 @@ void __64__AAUIServiceSignInController_loadViewControllerForPresentation__block_
   aBlock[3] = &unk_1E820C6E8;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+  _serviceOwnersManager = [(AAUIServiceSignInController *)self _serviceOwnersManager];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -302,10 +302,10 @@ void __64__AAUIServiceSignInController_loadViewControllerForPresentation__block_
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v4 accountForService:{v9, v16}];
-        v11 = [v10 username];
-        v12 = [(AAUIServiceSignInConfiguration *)self->_signInConfig username];
-        v13 = [v11 isEqualToString:v12];
+        v10 = [_serviceOwnersManager accountForService:{v9, v16}];
+        username = [v10 username];
+        username2 = [(AAUIServiceSignInConfiguration *)self->_signInConfig username];
+        v13 = [username isEqualToString:username2];
 
         if (v13)
         {
@@ -317,9 +317,9 @@ void __64__AAUIServiceSignInController_loadViewControllerForPresentation__block_
             _os_log_impl(&dword_1C5355000, v14, OS_LOG_TYPE_DEFAULT, "Found account for service %{public}@, prompting for sign in...", buf, 0xCu);
           }
 
-          v15 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+          navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
           v3 = v16;
-          [(AAUIServiceSignInController *)self _authenticateExistingAccount:v10 serviceType:v9 inViewController:v15 completion:v16];
+          [(AAUIServiceSignInController *)self _authenticateExistingAccount:v10 serviceType:v9 inViewController:navigationController completion:v16];
 
           goto LABEL_13;
         }
@@ -398,13 +398,13 @@ void __64__AAUIServiceSignInController__attemptReauthAndSignInToServices__block_
   return v3;
 }
 
-- (id)_spinnerMessageForService:(id)a3
+- (id)_spinnerMessageForService:(id)service
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  serviceCopy = service;
+  v4 = serviceCopy;
+  if (serviceCopy)
   {
-    if ([v3 isEqualToString:*MEMORY[0x1E698C218]])
+    if ([serviceCopy isEqualToString:*MEMORY[0x1E698C218]])
     {
       v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
       v6 = v5;
@@ -473,10 +473,10 @@ LABEL_16:
     else
     {
       v4 = objc_alloc_init(AAUISpinnerViewController);
-      v5 = [(AAUISpinnerViewController *)v4 label];
-      v6 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
-      v7 = [(AAUIServiceSignInController *)self _spinnerMessageForService:v6];
-      [v5 setText:v7];
+      label = [(AAUISpinnerViewController *)v4 label];
+      serviceType = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
+      v7 = [(AAUIServiceSignInController *)self _spinnerMessageForService:serviceType];
+      [label setText:v7];
     }
 
     v8 = self->_spinnerViewController;
@@ -490,28 +490,28 @@ LABEL_16:
 
 - (BOOL)_showsServiceIcons
 {
-  v3 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
-  if (!v3)
+  serviceType = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
+  if (!serviceType)
   {
     return 1;
   }
 
-  v4 = v3;
-  v5 = [(AAUIServiceSignInConfiguration *)self->_signInConfig splitSignIn];
+  v4 = serviceType;
+  splitSignIn = [(AAUIServiceSignInConfiguration *)self->_signInConfig splitSignIn];
 
-  return v5;
+  return splitSignIn;
 }
 
 - (BOOL)_allowsAccountCreation
 {
-  v3 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
-  v4 = [v3 count];
+  serviceTypes = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
+  v4 = [serviceTypes count];
 
-  v5 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
-  if ([v5 count] == 1)
+  serviceTypes2 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
+  if ([serviceTypes2 count] == 1)
   {
-    v6 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    serviceTypes3 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
+    v7 = [serviceTypes3 objectAtIndexedSubscript:0];
     v8 = v7 == *MEMORY[0x1E698C218];
   }
 
@@ -523,19 +523,19 @@ LABEL_16:
   return v4 == 0 || v8;
 }
 
-- (BOOL)_isAuthenticatingPrimary:(id)a3
+- (BOOL)_isAuthenticatingPrimary:(id)primary
 {
-  v4 = a3;
-  v5 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
-  if (v5 && (v6 = v5, -[AAUIServiceSignInConfiguration serviceType](self->_signInConfig, "serviceType"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:v4], v7, v6, !v8))
+  primaryCopy = primary;
+  serviceType = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
+  if (serviceType && (v6 = serviceType, -[AAUIServiceSignInConfiguration serviceType](self->_signInConfig, "serviceType"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isEqualToString:primaryCopy], v7, v6, !v8))
   {
     v11 = 0;
   }
 
   else
   {
-    v9 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
-    v10 = [v9 accountForService:v4];
+    _serviceOwnersManager = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+    v10 = [_serviceOwnersManager accountForService:primaryCopy];
 
     v11 = v10 == 0;
   }
@@ -543,14 +543,14 @@ LABEL_16:
   return v11;
 }
 
-- (id)_serviceContextWithResults:(id)a3 parentViewController:(id)a4
+- (id)_serviceContextWithResults:(id)results parentViewController:(id)controller
 {
-  v6 = a3;
+  resultsCopy = results;
   signInConfig = self->_signInConfig;
-  v8 = a4;
-  v9 = [(AAUIServiceSignInConfiguration *)signInConfig serviceContext];
+  controllerCopy = controller;
+  serviceContext = [(AAUIServiceSignInConfiguration *)signInConfig serviceContext];
 
-  if (v9 && (-[AAUIServiceSignInConfiguration serviceContext](self->_signInConfig, "serviceContext"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 mutableCopy], v10, v11))
+  if (serviceContext && (-[AAUIServiceSignInConfiguration serviceContext](self->_signInConfig, "serviceContext"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 mutableCopy], v10, v11))
   {
     v12 = _AAUILogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -568,33 +568,33 @@ LABEL_16:
     v13 = 0;
   }
 
-  [v11 setAuthenticationResults:v6];
+  [v11 setAuthenticationResults:resultsCopy];
   [v11 setOperationUIPermissions:{-[AAUIServiceSignInConfiguration aidaOperationUIPermissions](self->_signInConfig, "aidaOperationUIPermissions")}];
-  [v11 setViewController:v8];
+  [v11 setViewController:controllerCopy];
 
   v14 = objc_alloc(MEMORY[0x1E6997858]);
-  v15 = [v11 viewController];
-  v16 = [v14 initWithPresentingViewController:v15];
+  viewController = [v11 viewController];
+  v16 = [v14 initWithPresentingViewController:viewController];
   cdpUIController = self->_cdpUIController;
   self->_cdpUIController = v16;
 
   [(CDPUIController *)self->_cdpUIController setForceInlinePresentation:1];
   [v11 setCdpUiProvider:self->_cdpUIController];
-  v18 = [v11 signInContexts];
-  v19 = v18;
+  signInContexts = [v11 signInContexts];
+  v19 = signInContexts;
   if (v13)
   {
-    v20 = [v18 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+    v20 = [signInContexts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
     flowControllerDelegate = self->_flowControllerDelegate;
     self->_flowControllerDelegate = v20;
 
-    v22 = [v11 viewController];
-    [(AAUISignInFlowControllerDelegate *)self->_flowControllerDelegate setPresentingViewController:v22];
+    viewController2 = [v11 viewController];
+    [(AAUISignInFlowControllerDelegate *)self->_flowControllerDelegate setPresentingViewController:viewController2];
   }
 
   else
   {
-    v23 = [v18 mutableCopy];
+    v23 = [signInContexts mutableCopy];
     v24 = v23;
     if (v23)
     {
@@ -606,21 +606,21 @@ LABEL_16:
       v25 = objc_opt_new();
     }
 
-    v22 = v25;
+    viewController2 = v25;
 
     v26 = [AAUISignInFlowControllerDelegate alloc];
-    v27 = [v11 viewController];
-    v28 = [(AAUISignInFlowControllerDelegate *)v26 initWithPresentingViewController:v27];
+    viewController3 = [v11 viewController];
+    v28 = [(AAUISignInFlowControllerDelegate *)v26 initWithPresentingViewController:viewController3];
     v29 = self->_flowControllerDelegate;
     self->_flowControllerDelegate = v28;
 
     [(AAUISignInFlowControllerDelegate *)self->_flowControllerDelegate setProgressViewAlreadyPresented:self->_spinnerViewController != 0];
-    [v22 setObject:self->_flowControllerDelegate forKeyedSubscript:*MEMORY[0x1E698C218]];
-    [v11 setSignInContexts:v22];
+    [viewController2 setObject:self->_flowControllerDelegate forKeyedSubscript:*MEMORY[0x1E698C218]];
+    [v11 setSignInContexts:viewController2];
   }
 
-  v30 = [(AAUIServiceSignInConfiguration *)self->_signInConfig localSecret];
-  if (v30)
+  localSecret = [(AAUIServiceSignInConfiguration *)self->_signInConfig localSecret];
+  if (localSecret)
   {
   }
 
@@ -629,18 +629,18 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  v31 = [objc_alloc(MEMORY[0x1E69977E8]) initWithAuthenticationResults:v6];
+  v31 = [objc_alloc(MEMORY[0x1E69977E8]) initWithAuthenticationResults:resultsCopy];
   [v31 setIsAttemptingBackupRestore:{-[AAUIServiceSignInConfiguration isAttemptingBackupRestore](self->_signInConfig, "isAttemptingBackupRestore")}];
-  v32 = [(AAUIServiceSignInConfiguration *)self->_signInConfig localSecret];
+  localSecret2 = [(AAUIServiceSignInConfiguration *)self->_signInConfig localSecret];
 
-  if (v32)
+  if (localSecret2)
   {
-    v33 = [(AAUIServiceSignInConfiguration *)self->_signInConfig localSecret];
-    v34 = [v33 validatedSecret];
-    [v31 setCachedLocalSecret:v34];
+    localSecret3 = [(AAUIServiceSignInConfiguration *)self->_signInConfig localSecret];
+    validatedSecret = [localSecret3 validatedSecret];
+    [v31 setCachedLocalSecret:validatedSecret];
 
-    v35 = [(AAUIServiceSignInConfiguration *)self->_signInConfig localSecret];
-    [v31 setCachedLocalSecretType:{objc_msgSend(v35, "secretType")}];
+    localSecret4 = [(AAUIServiceSignInConfiguration *)self->_signInConfig localSecret];
+    [v31 setCachedLocalSecretType:{objc_msgSend(localSecret4, "secretType")}];
   }
 
   [(AAUISignInFlowControllerDelegate *)self->_flowControllerDelegate setCdpContext:v31];
@@ -660,14 +660,14 @@ LABEL_19:
 
   [MEMORY[0x1E698B940] verifyAndFixPersonaIfNeeded:self->_originalPersona desiredContext:self->_originalPersonaContext];
   v4 = objc_alloc_init(AAUISignInViewController);
-  v5 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
-  [(AAUISignInViewController *)v4 _setAkServiceType:AKServiceTypeFromAIDAServiceType(v5)];
+  serviceType = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
+  [(AAUISignInViewController *)v4 _setAkServiceType:AKServiceTypeFromAIDAServiceType(serviceType)];
 
-  v6 = [(AAUIServiceSignInConfiguration *)self->_signInConfig username];
-  [(AAUISignInViewController *)v4 setUsername:v6];
+  username = [(AAUIServiceSignInConfiguration *)self->_signInConfig username];
+  [(AAUISignInViewController *)v4 setUsername:username];
 
-  v7 = [(AAUIServiceSignInConfiguration *)self->_signInConfig privacyLinkIdentifiers];
-  [(AAUISignInViewController *)v4 setPrivacyLinkIdentifiers:v7];
+  privacyLinkIdentifiers = [(AAUIServiceSignInConfiguration *)self->_signInConfig privacyLinkIdentifiers];
+  [(AAUISignInViewController *)v4 setPrivacyLinkIdentifiers:privacyLinkIdentifiers];
 
   [(AAUISignInViewController *)v4 setAllowSkip:[(AAUIServiceSignInConfiguration *)self->_signInConfig allowSkip]];
   [(AAUISignInViewController *)v4 setShouldShowSystemBackButton:[(AAUIServiceSignInConfiguration *)self->_signInConfig shouldShowSystemBackButton]];
@@ -681,13 +681,13 @@ LABEL_19:
   if ([(AAUIServiceSignInConfiguration *)self->_signInConfig shouldDisableAccountCreation])
   {
 LABEL_6:
-    v8 = 0;
+    _allowsAccountCreation = 0;
     goto LABEL_7;
   }
 
-  v8 = [(AAUIServiceSignInController *)self _allowsAccountCreation];
+  _allowsAccountCreation = [(AAUIServiceSignInController *)self _allowsAccountCreation];
 LABEL_7:
-  [(AAUISignInViewController *)v4 setAllowsAccountCreation:v8];
+  [(AAUISignInViewController *)v4 setAllowsAccountCreation:_allowsAccountCreation];
   if ([(AAUIServiceSignInConfiguration *)self->_signInConfig offeriCloudAMSSplitSignIn])
   {
     [(AAUISignInViewController *)v4 setShowOtherOptions:1];
@@ -714,8 +714,8 @@ LABEL_7:
   }
 
   [(AAUISignInViewController *)v4 setShowsChildSignIn:[(AAUIServiceSignInConfiguration *)self->_signInConfig showsChildSignIn]];
-  v11 = [(AAUIServiceSignInController *)self akURLBag];
-  [(AAUISignInViewController *)v4 setAKURLBag:v11];
+  akURLBag = [(AAUIServiceSignInController *)self akURLBag];
+  [(AAUISignInViewController *)v4 setAKURLBag:akURLBag];
 
   v12 = self->_signInViewController;
   self->_signInViewController = v4;
@@ -726,24 +726,24 @@ LABEL_16:
   return signInViewController;
 }
 
-- (id)_alertControllerForReusingAccount:(id)a3 serviceType:(id)a4 inViewController:(id)a5 completion:(id)a6
+- (id)_alertControllerForReusingAccount:(id)account serviceType:(id)type inViewController:(id)controller completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v56 = a5;
-  v55 = a6;
-  v60 = v11;
+  accountCopy = account;
+  typeCopy = type;
+  controllerCopy = controller;
+  completionCopy = completion;
+  v60 = typeCopy;
   v12 = AALocalizedStringForServiceType();
-  v58 = self;
-  v13 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
+  selfCopy = self;
+  serviceType = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
   v65 = AALocalizedStringForServiceType();
 
-  v14 = [v10 userFullName];
-  v62 = v14;
+  userFullName = [accountCopy userFullName];
+  v62 = userFullName;
   v63 = v12;
-  if (v14)
+  if (userFullName)
   {
-    v15 = v14;
+    v15 = userFullName;
     v16 = MEMORY[0x1E696AEC0];
     v17 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v18 = [v17 localizedStringForKey:@"SIGN_IN_CONTINUE_USING_TITLE" value:&stru_1F447F790 table:@"Localizable"];
@@ -753,8 +753,8 @@ LABEL_16:
     v20 = MEMORY[0x1E696AEC0];
     v21 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v22 = [v21 localizedStringForKey:@"SIGN_IN_CONTINUE_USING_MESSAGE_REBRAND" value:&stru_1F447F790 table:@"Localizable"];
-    v23 = [v10 aa_formattedUsername];
-    v24 = [v20 stringWithFormat:v22, v12, v23, v15, v65];
+    aa_formattedUsername = [accountCopy aa_formattedUsername];
+    v24 = [v20 stringWithFormat:v22, v12, aa_formattedUsername, v15, v65];
 
     v25 = MEMORY[0x1E696AEC0];
     v26 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -764,7 +764,7 @@ LABEL_16:
 
   else
   {
-    [v10 aa_formattedUsername];
+    [accountCopy aa_formattedUsername];
     v26 = v28 = v12;
     v29 = MEMORY[0x1E696AEC0];
     v30 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -790,15 +790,15 @@ LABEL_16:
   v70[1] = 3221225472;
   v70[2] = __105__AAUIServiceSignInController__alertControllerForReusingAccount_serviceType_inViewController_completion___block_invoke;
   v70[3] = &unk_1E820DE90;
-  v70[4] = v58;
-  v71 = v10;
+  v70[4] = selfCopy;
+  v71 = accountCopy;
   v72 = v60;
-  v73 = v56;
-  v41 = v55;
+  v73 = controllerCopy;
+  v41 = completionCopy;
   v74 = v41;
-  v59 = v56;
+  v59 = controllerCopy;
   v61 = v60;
-  v57 = v10;
+  v57 = accountCopy;
   v42 = [v38 actionWithTitle:v40 style:0 handler:v70];
   [v37 addAction:v42];
 
@@ -824,9 +824,9 @@ LABEL_16:
   v50 = [v46 actionWithTitle:v48 style:0 handler:v66];
   [v37 addAction:v50];
 
-  v51 = [v37 actions];
-  v52 = [v51 firstObject];
-  [v37 setPreferredAction:v52];
+  actions = [v37 actions];
+  firstObject = [actions firstObject];
+  [v37 setPreferredAction:firstObject];
 
   return v37;
 }
@@ -869,27 +869,27 @@ void __105__AAUIServiceSignInController__alertControllerForReusingAccount_servic
   (*(v3 + 16))(v3, 0, v4);
 }
 
-- (void)prepareInViewController:(id)a3 completion:(id)a4
+- (void)prepareInViewController:(id)controller completion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__AAUIServiceSignInController_prepareInViewController_completion___block_invoke;
   aBlock[3] = &unk_1E820D1E0;
   aBlock[4] = self;
-  v22 = v6;
+  v22 = completionCopy;
   v29 = v22;
   v21 = _Block_copy(aBlock);
-  v7 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+  _serviceOwnersManager = [(AAUIServiceSignInController *)self _serviceOwnersManager];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = [objc_opt_class() supportedServices];
-  v9 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  supportedServices = [objc_opt_class() supportedServices];
+  v9 = [supportedServices countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v9)
   {
     v10 = v9;
@@ -900,13 +900,13 @@ void __105__AAUIServiceSignInController__alertControllerForReusingAccount_servic
       {
         if (*v25 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(supportedServices);
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v7 accountForService:v13];
-        v15 = [v14 username];
-        v16 = [v15 length];
+        v14 = [_serviceOwnersManager accountForService:v13];
+        username = [v14 username];
+        v16 = [username length];
 
         if (v16)
         {
@@ -918,15 +918,15 @@ void __105__AAUIServiceSignInController__alertControllerForReusingAccount_servic
             _os_log_impl(&dword_1C5355000, v20, OS_LOG_TYPE_DEFAULT, "Found account for service %{public}@, prompting for sign in...", buf, 0xCu);
           }
 
-          v19 = v23;
+          v19 = controllerCopy;
           v18 = v21;
-          [(AAUIServiceSignInController *)self _mainQueue_presentContinueUsingInViewController:v23 account:v14 serviceType:v13 completion:v21];
+          [(AAUIServiceSignInController *)self _mainQueue_presentContinueUsingInViewController:controllerCopy account:v14 serviceType:v13 completion:v21];
 
           goto LABEL_15;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v10 = [supportedServices countByEnumeratingWithState:&v24 objects:v32 count:16];
       if (v10)
       {
         continue;
@@ -945,7 +945,7 @@ void __105__AAUIServiceSignInController__alertControllerForReusingAccount_servic
 
   v18 = v21;
   (*(v21 + 2))(v21, 0, 0);
-  v19 = v23;
+  v19 = controllerCopy;
 LABEL_15:
 }
 
@@ -963,18 +963,18 @@ void __66__AAUIServiceSignInController_prepareInViewController_completion___bloc
   }
 }
 
-- (void)_mainQueue_presentContinueUsingInViewController:(id)a3 account:(id)a4 serviceType:(id)a5 completion:(id)a6
+- (void)_mainQueue_presentContinueUsingInViewController:(id)controller account:(id)account serviceType:(id)type completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __110__AAUIServiceSignInController__mainQueue_presentContinueUsingInViewController_account_serviceType_completion___block_invoke;
   v14[3] = &unk_1E820D630;
-  v15 = v10;
-  v11 = v10;
-  v12 = a3;
-  v13 = [(AAUIServiceSignInController *)self _alertControllerForReusingAccount:a4 serviceType:a5 inViewController:v12 completion:v14];
-  [v12 presentViewController:v13 animated:1 completion:0];
+  v15 = completionCopy;
+  v11 = completionCopy;
+  controllerCopy = controller;
+  v13 = [(AAUIServiceSignInController *)self _alertControllerForReusingAccount:account serviceType:type inViewController:controllerCopy completion:v14];
+  [controllerCopy presentViewController:v13 animated:1 completion:0];
 }
 
 void __110__AAUIServiceSignInController__mainQueue_presentContinueUsingInViewController_account_serviceType_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1014,16 +1014,16 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_invokeShieldUIWithViewController:(id)a3 completion:(id)a4
+- (void)_invokeShieldUIWithViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  completionCopy = completion;
   v8 = objc_alloc_init(MEMORY[0x1E698DE80]);
-  [v8 setPresentingViewController:v6];
+  [v8 setPresentingViewController:controllerCopy];
   [v8 setAuthenticationType:2];
   v9 = objc_alloc_init(MEMORY[0x1E698DDC8]);
-  v10 = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
-  if ([v10 ageBasedAccountSupportEnabled])
+  ageAttestationStateProvider = [(AAUIServiceSignInController *)self ageAttestationStateProvider];
+  if ([ageAttestationStateProvider ageBasedAccountSupportEnabled])
   {
     v11 = objc_opt_respondsToSelector();
 
@@ -1049,14 +1049,14 @@ LABEL_6:
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__14;
   v22 = __Block_byref_object_dispose__14;
-  v23 = [(AAUIServiceSignInController *)self authenticationController];
+  authenticationController = [(AAUIServiceSignInController *)self authenticationController];
   v13 = v19[5];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __76__AAUIServiceSignInController__invokeShieldUIWithViewController_completion___block_invoke;
   v15[3] = &unk_1E820B730;
   v17 = &v18;
-  v14 = v7;
+  v14 = completionCopy;
   v16 = v14;
   [v13 authenticateWithContext:v8 completion:v15];
 
@@ -1074,32 +1074,32 @@ void __76__AAUIServiceSignInController__invokeShieldUIWithViewController_complet
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_authenticateExistingAccount:(id)a3 serviceType:(id)a4 inViewController:(id)a5 completion:(id)a6
+- (void)_authenticateExistingAccount:(id)account serviceType:(id)type inViewController:(id)controller completion:(id)completion
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  accountCopy = account;
+  typeCopy = type;
+  controllerCopy = controller;
+  completionCopy = completion;
   v14 = objc_alloc_init(MEMORY[0x1E698DE80]);
   [v14 setShouldOfferSecurityUpgrade:0];
-  v15 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
-  v16 = [v15 altDSIDForAccount:v10 service:v11];
+  _serviceOwnersManager = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+  v16 = [_serviceOwnersManager altDSIDForAccount:accountCopy service:typeCopy];
   [v14 setAltDSID:v16];
 
-  v17 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
-  v18 = [v17 DSIDForAccount:v10 service:v11];
+  _serviceOwnersManager2 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+  v18 = [_serviceOwnersManager2 DSIDForAccount:accountCopy service:typeCopy];
   [v14 setDSID:v18];
 
-  v19 = [v10 username];
-  [v14 setIsUsernameEditable:{objc_msgSend(v19, "length") == 0}];
+  username = [accountCopy username];
+  [v14 setIsUsernameEditable:{objc_msgSend(username, "length") == 0}];
 
-  [v14 setPresentingViewController:v12];
-  v20 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
-  [v14 setServiceType:AKServiceTypeFromAIDAServiceType(v20)];
+  [v14 setPresentingViewController:controllerCopy];
+  serviceType = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
+  [v14 setServiceType:AKServiceTypeFromAIDAServiceType(serviceType)];
 
-  v21 = [v10 username];
-  [v14 setUsername:v21];
+  username2 = [accountCopy username];
+  [v14 setUsername:username2];
 
   LODWORD(v18) = [(AAUIServiceSignInController *)self _isAuthenticatingPrimary:*MEMORY[0x1E698C218]];
   v22 = _AAUILogSystem();
@@ -1139,14 +1139,14 @@ void __76__AAUIServiceSignInController__invokeShieldUIWithViewController_complet
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__14;
   v36 = __Block_byref_object_dispose__14;
-  v37 = [(AAUIServiceSignInController *)self authenticationController];
+  authenticationController = [(AAUIServiceSignInController *)self authenticationController];
   v28 = *(*(&buf + 1) + 40);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __100__AAUIServiceSignInController__authenticateExistingAccount_serviceType_inViewController_completion___block_invoke;
   v30[3] = &unk_1E820B730;
   p_buf = &buf;
-  v29 = v13;
+  v29 = completionCopy;
   v31 = v29;
   [v28 authenticateWithContext:v14 completion:v30];
 
@@ -1174,11 +1174,11 @@ void __100__AAUIServiceSignInController__authenticateExistingAccount_serviceType
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_mainQueue_continueSignInWithAuthenticationResults:(id)a3 parentViewController:(id)a4
+- (void)_mainQueue_continueSignInWithAuthenticationResults:(id)results parentViewController:(id)controller
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  controllerCopy = controller;
+  resultsCopy = results;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1186,8 +1186,8 @@ void __100__AAUIServiceSignInController__authenticateExistingAccount_serviceType
   aBlock[3] = &unk_1E820C1A8;
   aBlock[4] = self;
   v8 = _Block_copy(aBlock);
-  v9 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
-  v10 = [v9 count];
+  serviceTypes = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
+  v10 = [serviceTypes count];
 
   v11 = _AAUILogSystem();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -1195,17 +1195,17 @@ void __100__AAUIServiceSignInController__authenticateExistingAccount_serviceType
   {
     if (v12)
     {
-      v13 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
+      serviceTypes2 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
       *buf = 138543362;
-      v17 = v13;
+      v17 = serviceTypes2;
       _os_log_impl(&dword_1C5355000, v11, OS_LOG_TYPE_DEFAULT, "Client opted to sign in %{public}@, attempting sign in now...", buf, 0xCu);
     }
 
-    v14 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
-    [(AAUIServiceSignInController *)self _prepareToSignInForServices:v14 withAuthenticationResults:v7 parentViewController:v6];
+    serviceTypes3 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
+    [(AAUIServiceSignInController *)self _prepareToSignInForServices:serviceTypes3 withAuthenticationResults:resultsCopy parentViewController:controllerCopy];
 
-    v6 = v7;
-    v7 = v14;
+    controllerCopy = resultsCopy;
+    resultsCopy = serviceTypes3;
   }
 
   else
@@ -1216,7 +1216,7 @@ void __100__AAUIServiceSignInController__authenticateExistingAccount_serviceType
       _os_log_impl(&dword_1C5355000, v11, OS_LOG_TYPE_DEFAULT, "No service specified by client, attempting sign in for all...", buf, 2u);
     }
 
-    [(AAUIServiceSignInController *)self continueSignInWithAuthenticationResults:v7 viewController:v6 completion:v8];
+    [(AAUIServiceSignInController *)self continueSignInWithAuthenticationResults:resultsCopy viewController:controllerCopy completion:v8];
   }
 }
 
@@ -1251,23 +1251,23 @@ void __103__AAUIServiceSignInController__mainQueue_continueSignInWithAuthenticat
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)continueSignInWithAuthenticationResults:(id)a3 viewController:(id)a4 completion:(id)a5
+- (void)continueSignInWithAuthenticationResults:(id)results viewController:(id)controller completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(AAUIServiceSignInController *)self _serviceContextWithResults:a3 parentViewController:a4];
-  v10 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+  completionCopy = completion;
+  v9 = [(AAUIServiceSignInController *)self _serviceContextWithResults:results parentViewController:controller];
+  _serviceOwnersManager = [(AAUIServiceSignInController *)self _serviceOwnersManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+    _serviceOwnersManager2 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __97__AAUIServiceSignInController_continueSignInWithAuthenticationResults_viewController_completion___block_invoke;
     v14[3] = &unk_1E820C308;
-    v15 = v8;
-    [v12 signInToAllServicesInBackgroundUsingContext:v9 completion:v14];
+    v15 = completionCopy;
+    [_serviceOwnersManager2 signInToAllServicesInBackgroundUsingContext:v9 completion:v14];
   }
 
   else
@@ -1278,9 +1278,9 @@ void __103__AAUIServiceSignInController__mainQueue_continueSignInWithAuthenticat
       [AAUIServiceSignInController continueSignInWithAuthenticationResults:viewController:completion:];
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -1335,22 +1335,22 @@ uint64_t __97__AAUIServiceSignInController_continueSignInWithAuthenticationResul
   return result;
 }
 
-- (void)_delegate_signInControllerDidCompleteWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_delegate_signInControllerDidCompleteWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
+  successCopy = success;
+  errorCopy = error;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x3032000000;
   v23[3] = __Block_byref_object_copy__14;
   v23[4] = __Block_byref_object_dispose__14;
-  v7 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
-  v8 = v7;
+  serviceType = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
+  v8 = serviceType;
   v9 = *MEMORY[0x1E698C218];
-  if (v7)
+  if (serviceType)
   {
-    v9 = v7;
+    v9 = serviceType;
   }
 
   v24 = v9;
@@ -1363,19 +1363,19 @@ uint64_t __97__AAUIServiceSignInController_continueSignInWithAuthenticationResul
   aBlock[5] = v23;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (!v6)
+  if (!errorCopy)
   {
-    (*(v10 + 2))(v10, v4, 0);
+    (*(v10 + 2))(v10, successCopy, 0);
     goto LABEL_19;
   }
 
-  v12 = [v6 aa_isAAErrorWithCode:-1];
-  v13 = [v6 domain];
-  v14 = [v13 isEqualToString:*MEMORY[0x1E69977D8]];
+  v12 = [errorCopy aa_isAAErrorWithCode:-1];
+  domain = [errorCopy domain];
+  v14 = [domain isEqualToString:*MEMORY[0x1E69977D8]];
 
   if (v14)
   {
-    if ([v6 shouldDisplayToUser])
+    if ([errorCopy shouldDisplayToUser])
     {
 LABEL_13:
       v16 = _AAUILogSystem();
@@ -1384,21 +1384,21 @@ LABEL_13:
         [AAUIServiceSignInController _delegate_signInControllerDidCompleteWithSuccess:error:];
       }
 
-      v17 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+      navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __86__AAUIServiceSignInController__delegate_signInControllerDidCompleteWithSuccess_error___block_invoke_122;
       v18[3] = &unk_1E820DF08;
-      v19 = v6;
+      v19 = errorCopy;
       v20 = v11;
-      v21 = v4;
-      [(AAUIServiceSignInController *)self _mainQueue_presentAlertForError:v19 inViewController:v17 completion:v18];
+      v21 = successCopy;
+      [(AAUIServiceSignInController *)self _mainQueue_presentAlertForError:v19 inViewController:navigationController completion:v18];
 
       goto LABEL_19;
     }
   }
 
-  else if (([v6 aa_isAASignInErrorWithCode:-8006] & 1) == 0 && ((objc_msgSend(v6, "ak_isUserCancelError") | v12) & 1) == 0)
+  else if (([errorCopy aa_isAASignInErrorWithCode:-8006] & 1) == 0 && ((objc_msgSend(errorCopy, "ak_isUserCancelError") | v12) & 1) == 0)
   {
     goto LABEL_13;
   }
@@ -1421,7 +1421,7 @@ LABEL_13:
     }
   }
 
-  (v11)[2](v11, v4, v6);
+  (v11)[2](v11, successCopy, errorCopy);
 LABEL_19:
 
   _Block_object_dispose(v23, 8);
@@ -1478,9 +1478,9 @@ uint64_t __86__AAUIServiceSignInController__delegate_signInControllerDidComplete
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)controllerFinishedWithAIDAResults:(id)a3
+- (void)controllerFinishedWithAIDAResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1489,25 +1489,25 @@ uint64_t __86__AAUIServiceSignInController__delegate_signInControllerDidComplete
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   v6 = *MEMORY[0x1E698C218];
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  v7 = [resultsCopy objectForKeyedSubscript:*MEMORY[0x1E698C218]];
   if (v7)
   {
     v8 = v7;
-    v9 = [v4 objectForKeyedSubscript:v6];
-    v10 = [v9 error];
+    v9 = [resultsCopy objectForKeyedSubscript:v6];
+    error = [v9 error];
 
-    if (v10)
+    if (error)
     {
-      v11 = [v4 objectForKeyedSubscript:v6];
-      v12 = [v11 error];
+      v11 = [resultsCopy objectForKeyedSubscript:v6];
+      error2 = [v11 error];
 
-      v13 = [v12 aa_isAAErrorWithCode:-1];
-      v14 = [v12 domain];
-      v15 = [v14 isEqualToString:*MEMORY[0x1E69977D8]];
+      v13 = [error2 aa_isAAErrorWithCode:-1];
+      domain = [error2 domain];
+      v15 = [domain isEqualToString:*MEMORY[0x1E69977D8]];
 
       if (v15)
       {
-        if (![v12 shouldDisplayToUser])
+        if (![error2 shouldDisplayToUser])
         {
 LABEL_5:
           v16 = _AAUILogSystem();
@@ -1525,14 +1525,14 @@ LABEL_5:
             [AAUIServiceSignInController _delegate_signInControllerDidCompleteWithSuccess:error:];
           }
 
-          v5[2](v5, v4);
+          v5[2](v5, resultsCopy);
 LABEL_16:
 
           goto LABEL_17;
         }
       }
 
-      else if (([v12 aa_isAASignInErrorWithCode:-8006] | v13))
+      else if (([error2 aa_isAASignInErrorWithCode:-8006] | v13))
       {
         goto LABEL_5;
       }
@@ -1543,21 +1543,21 @@ LABEL_16:
         [AAUIServiceSignInController _delegate_signInControllerDidCompleteWithSuccess:error:];
       }
 
-      v19 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+      navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __65__AAUIServiceSignInController_controllerFinishedWithAIDAResults___block_invoke_126;
       v20[3] = &unk_1E820BAD0;
-      v21 = v12;
+      v21 = error2;
       v23 = v5;
-      v22 = v4;
-      [(AAUIServiceSignInController *)self _mainQueue_presentAlertForError:v21 inViewController:v19 completion:v20];
+      v22 = resultsCopy;
+      [(AAUIServiceSignInController *)self _mainQueue_presentAlertForError:v21 inViewController:navigationController completion:v20];
 
       goto LABEL_16;
     }
   }
 
-  v5[2](v5, v4);
+  v5[2](v5, resultsCopy);
 LABEL_17:
 }
 
@@ -1663,13 +1663,13 @@ uint64_t __65__AAUIServiceSignInController_controllerFinishedWithAIDAResults___b
   return (*(*(a1 + 48) + 16))();
 }
 
-- (void)_prepareToSignInForServices:(id)a3 withAuthenticationResults:(id)a4 parentViewController:(id)a5
+- (void)_prepareToSignInForServices:(id)services withAuthenticationResults:(id)results parentViewController:(id)controller
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] == 1 && (objc_msgSend(v8, "objectAtIndexedSubscript:", 0), v11 = objc_claimAutoreleasedReturnValue(), v12 = *MEMORY[0x1E698C218], v11, v11 == v12))
+  servicesCopy = services;
+  resultsCopy = results;
+  controllerCopy = controller;
+  if ([servicesCopy count] == 1 && (objc_msgSend(servicesCopy, "objectAtIndexedSubscript:", 0), v11 = objc_claimAutoreleasedReturnValue(), v12 = *MEMORY[0x1E698C218], v11, v11 == v12))
   {
     v14 = _AAUILogSystem();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -1678,28 +1678,28 @@ uint64_t __65__AAUIServiceSignInController_controllerFinishedWithAIDAResults___b
       _os_log_impl(&dword_1C5355000, v14, OS_LOG_TYPE_DEFAULT, "Detected cloud only service sign in.", v17, 2u);
     }
 
-    v13 = [(AAUIServiceSignInController *)self _serviceContextForCloudAndInactiveStoreWithAuthResults:v9 parentViewController:v10];
+    v13 = [(AAUIServiceSignInController *)self _serviceContextForCloudAndInactiveStoreWithAuthResults:resultsCopy parentViewController:controllerCopy];
     v15 = *MEMORY[0x1E698C238];
     v18[0] = v12;
     v18[1] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
 
-    v8 = v16;
+    servicesCopy = v16;
   }
 
   else
   {
-    v13 = [(AAUIServiceSignInController *)self _serviceContextWithResults:v9 parentViewController:v10];
+    v13 = [(AAUIServiceSignInController *)self _serviceContextWithResults:resultsCopy parentViewController:controllerCopy];
   }
 
-  [(AAUIServiceSignInController *)self _attemptSignInForServices:v8 serviceContext:v13];
+  [(AAUIServiceSignInController *)self _attemptSignInForServices:servicesCopy serviceContext:v13];
 }
 
-- (void)_attemptSignInForServices:(id)a3 serviceContext:(id)a4
+- (void)_attemptSignInForServices:(id)services serviceContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  servicesCopy = services;
+  contextCopy = context;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1711,23 +1711,23 @@ uint64_t __65__AAUIServiceSignInController_controllerFinishedWithAIDAResults___b
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v6;
+    v22 = servicesCopy;
     _os_log_impl(&dword_1C5355000, v9, OS_LOG_TYPE_DEFAULT, "Attempting sign in for services %{public}@ with authentication results", buf, 0xCu);
   }
 
-  v10 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+  _serviceOwnersManager = [(AAUIServiceSignInController *)self _serviceOwnersManager];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+    _serviceOwnersManager2 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __72__AAUIServiceSignInController__attemptSignInForServices_serviceContext___block_invoke;
     v18[3] = &unk_1E820DF78;
     v18[4] = self;
-    [v12 signInToServices:v6 usingContext:v7 completion:v18];
+    [_serviceOwnersManager2 signInToServices:servicesCopy usingContext:contextCopy completion:v18];
   }
 
   else
@@ -1741,10 +1741,10 @@ uint64_t __65__AAUIServiceSignInController_controllerFinishedWithAIDAResults___b
     v14 = objc_alloc(MEMORY[0x1E698C260]);
     v15 = [MEMORY[0x1E696ABC0] aa_errorWithCode:-3];
     v16 = *MEMORY[0x1E698C218];
-    v12 = [v14 initWithSuccess:0 error:v15 type:*MEMORY[0x1E698C218]];
+    _serviceOwnersManager2 = [v14 initWithSuccess:0 error:v15 type:*MEMORY[0x1E698C218]];
 
     v19 = v16;
-    v20 = v12;
+    v20 = _serviceOwnersManager2;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
     [(AAUIServiceSignInController *)self controllerFinishedWithAIDAResults:v17];
   }
@@ -1775,11 +1775,11 @@ void __72__AAUIServiceSignInController__attemptSignInForServices_serviceContext_
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 
-- (id)_serviceContextForCloudAndInactiveStoreWithAuthResults:(id)a3 parentViewController:(id)a4
+- (id)_serviceContextForCloudAndInactiveStoreWithAuthResults:(id)results parentViewController:(id)controller
 {
-  v4 = [(AAUIServiceSignInController *)self _serviceContextWithResults:a3 parentViewController:a4];
-  v5 = [v4 signInContexts];
-  v6 = [v5 mutableCopy];
+  v4 = [(AAUIServiceSignInController *)self _serviceContextWithResults:results parentViewController:controller];
+  signInContexts = [v4 signInContexts];
+  v6 = [signInContexts mutableCopy];
 
   v7 = objc_alloc_init(MEMORY[0x1E698CB28]);
   [v7 setCanMakeAccountActive:0];
@@ -1792,10 +1792,10 @@ void __72__AAUIServiceSignInController__attemptSignInForServices_serviceContext_
   return v9;
 }
 
-- (void)signInViewController:(id)a3 didCompleteWithAuthenticationResults:(id)a4
+- (void)signInViewController:(id)controller didCompleteWithAuthenticationResults:(id)results
 {
-  v8 = a4;
-  v9 = a3;
+  resultsCopy = results;
+  controllerCopy = controller;
   v10 = _AAUILogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1803,16 +1803,16 @@ void __72__AAUIServiceSignInController__attemptSignInForServices_serviceContext_
     _os_log_impl(&dword_1C5355000, v10, OS_LOG_TYPE_DEFAULT, "Sign in view controller completed with authentication results!", buf, 2u);
   }
 
-  v11 = [v9 parentViewController];
+  parentViewController = [controllerCopy parentViewController];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __89__AAUIServiceSignInController_signInViewController_didCompleteWithAuthenticationResults___block_invoke;
   aBlock[3] = &unk_1E820BF58;
   aBlock[4] = self;
-  v12 = v8;
+  v12 = resultsCopy;
   v25 = v12;
-  v13 = v11;
+  v13 = parentViewController;
   v26 = v13;
   v14 = _Block_copy(aBlock);
   if (!+[AAUIFeatureFlags isNewSignInProgressEnabled])
@@ -1820,35 +1820,35 @@ void __72__AAUIServiceSignInController__attemptSignInForServices_serviceContext_
     goto LABEL_12;
   }
 
-  v15 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
-  v16 = [v15 count];
+  serviceTypes = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
+  v16 = [serviceTypes count];
   if (v16)
   {
     v17 = *MEMORY[0x1E698C218];
     goto LABEL_6;
   }
 
-  v21 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
-  if (!v21)
+  serviceType = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
+  if (!serviceType)
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v4 = v21;
-  v22 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
-  v5 = v22;
+  v4 = serviceType;
+  serviceType2 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceType];
+  v5 = serviceType2;
   v17 = *MEMORY[0x1E698C218];
-  if (v22 == *MEMORY[0x1E698C218])
+  if (serviceType2 == *MEMORY[0x1E698C218])
   {
 
     goto LABEL_16;
   }
 
 LABEL_6:
-  v18 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
-  v19 = [v18 containsObject:v17];
+  serviceTypes2 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceTypes];
+  v19 = [serviceTypes2 containsObject:v17];
 
   if (!v16)
   {
@@ -1878,7 +1878,7 @@ LABEL_17:
 LABEL_20:
 }
 
-- (void)signInViewControllerDidCancel:(id)a3
+- (void)signInViewControllerDidCancel:(id)cancel
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1890,21 +1890,21 @@ LABEL_20:
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if (self->_splitAccountSignInController)
   {
-    v5 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-    v6 = [v5 topViewController];
+    navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+    topViewController = [navigationController topViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-      v9 = [v8 popViewControllerAnimated:1];
+      navigationController2 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+      v9 = [navigationController2 popViewControllerAnimated:1];
     }
 
     else
     {
-      v8 = _AAUILogSystem();
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      navigationController2 = _AAUILogSystem();
+      if (os_log_type_enabled(navigationController2, OS_LOG_TYPE_ERROR))
       {
         [AAUIServiceSignInController signInViewControllerDidCancel:];
       }
@@ -1922,15 +1922,15 @@ LABEL_20:
 
 - (void)_delegate_serviceSignInControllerDidCancel
 {
-  v4 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceDelegate];
+  serviceDelegate = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-    [v4 serviceSignInControllerDidCancel:v3];
+    navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+    [serviceDelegate serviceSignInControllerDidCancel:navigationController];
   }
 }
 
-- (void)signInViewControllerDidSkip:(id)a3
+- (void)signInViewControllerDidSkip:(id)skip
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1940,15 +1940,15 @@ LABEL_20:
   }
 
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceDelegate];
+  serviceDelegate = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-    [v5 serviceSignInController:v6 didSkipWithReason:0];
+    navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+    [serviceDelegate serviceSignInController:navigationController didSkipWithReason:0];
   }
 }
 
-- (void)signInViewControllerDidSelectChildSignIn:(id)a3
+- (void)signInViewControllerDidSelectChildSignIn:(id)in
 {
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1958,17 +1958,17 @@ LABEL_20:
   }
 
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceDelegate];
+  serviceDelegate = [(AAUIServiceSignInConfiguration *)self->_signInConfig serviceDelegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-    [v5 serviceSignInController:v6 didSkipWithReason:1];
+    navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+    [serviceDelegate serviceSignInController:navigationController didSkipWithReason:1];
   }
 }
 
-- (void)signInViewControllerDidSelectOtherOptions:(id)a3
+- (void)signInViewControllerDidSelectOtherOptions:(id)options
 {
-  if (-[AAUIServiceSignInConfiguration offeriCloudAMSSplitSignIn](self->_signInConfig, "offeriCloudAMSSplitSignIn", a3) && (-[AAUIServiceSignInConfiguration serviceTypes](self->_signInConfig, "serviceTypes"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, !v5))
+  if (-[AAUIServiceSignInConfiguration offeriCloudAMSSplitSignIn](self->_signInConfig, "offeriCloudAMSSplitSignIn", options) && (-[AAUIServiceSignInConfiguration serviceTypes](self->_signInConfig, "serviceTypes"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 count], v4, !v5))
   {
     v7 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
     v6 = [v7 localizedStringForKey:@"SIGN_IN_OTHER_SIGN_IN_OPTIONS" value:&stru_1F447F790 table:@"Localizable"];
@@ -1991,8 +1991,8 @@ LABEL_20:
     v14 = [MEMORY[0x1E69DC648] actionWithTitle:v11 style:1 handler:0];
     [v12 addAction:v14];
 
-    v15 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-    [v15 presentViewController:v12 animated:1 completion:0];
+    navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+    [navigationController presentViewController:v12 animated:1 completion:0];
   }
 
   else
@@ -2008,21 +2008,21 @@ LABEL_20:
 - (void)startSplitAcountSignInFlow
 {
   v3 = [AAUIAppleIDSignInConfigSplitAccountiCloud alloc];
-  v4 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-  v14 = [(AAUIAppleIDSignInConfigSplitAccountiCloud *)v3 initWithNavController:v4];
+  navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+  v14 = [(AAUIAppleIDSignInConfigSplitAccountiCloud *)v3 initWithNavController:navigationController];
 
   v5 = [[AAUIOnboardingSignInController alloc] initWithSetupSignInConfig:v14];
   splitAccountSignInController = self->_splitAccountSignInController;
   self->_splitAccountSignInController = v5;
 
-  v7 = [(AAUIServiceSignInController *)self authenticationController];
-  v8 = [(AAUIOnboardingSignInController *)self->_splitAccountSignInController serviceController];
-  v9 = [v8 signInViewController];
-  [v9 setAuthenticationController:v7];
+  authenticationController = [(AAUIServiceSignInController *)self authenticationController];
+  serviceController = [(AAUIOnboardingSignInController *)self->_splitAccountSignInController serviceController];
+  signInViewController = [serviceController signInViewController];
+  [signInViewController setAuthenticationController:authenticationController];
 
-  v10 = [(AAUIServiceSignInController *)self _serviceOwnersManager];
-  v11 = [(AAUIOnboardingSignInController *)self->_splitAccountSignInController serviceController];
-  [v11 setServiceOwnersManager:v10];
+  _serviceOwnersManager = [(AAUIServiceSignInController *)self _serviceOwnersManager];
+  serviceController2 = [(AAUIOnboardingSignInController *)self->_splitAccountSignInController serviceController];
+  [serviceController2 setServiceOwnersManager:_serviceOwnersManager];
 
   v12 = [[AAUIOnboardingSplitSignInDelegate alloc] initWithServiceSignInController:self];
   splitSignInDelegate = self->_splitSignInDelegate;
@@ -2032,35 +2032,35 @@ LABEL_20:
   [(AAUIOnboardingSignInController *)self->_splitAccountSignInController start];
 }
 
-- (void)willAuthenticateWithContext:(id)a3
+- (void)willAuthenticateWithContext:(id)context
 {
-  v3 = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
-  [v3 setModalInPresentation:1];
+  navigationController = [(AAUIServiceSignInConfiguration *)self->_signInConfig navigationController];
+  [navigationController setModalInPresentation:1];
 }
 
-- (void)_mainQueue_presentSpinnerViewControllerInParentViewController:(id)a3 withCompletion:(id)a4
+- (void)_mainQueue_presentSpinnerViewControllerInParentViewController:(id)controller withCompletion:(id)completion
 {
-  v8 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  controllerCopy = controller;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v7 = [(AAUIServiceSignInController *)self _spinnerViewController];
-  [v6 showViewController:v7 sender:self];
+  _spinnerViewController = [(AAUIServiceSignInController *)self _spinnerViewController];
+  [controllerCopy showViewController:_spinnerViewController sender:self];
 
-  v8[2]();
+  completionCopy[2]();
 }
 
-- (void)_mainQueue_presentAlertForError:(id)a3 inViewController:(id)a4 completion:(id)a5
+- (void)_mainQueue_presentAlertForError:(id)error inViewController:(id)controller completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x1E696AAE8];
-  v9 = a4;
-  v10 = a3;
+  controllerCopy = controller;
+  errorCopy = error;
   v11 = [v8 bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"SIGN_IN_ERROR_TITLE" value:&stru_1F447F790 table:@"Localizable"];
 
-  v13 = [v10 userInfo];
+  userInfo = [errorCopy userInfo];
 
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A578]];
+  v14 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A578]];
   v15 = v14;
   if (v14)
   {
@@ -2082,12 +2082,12 @@ LABEL_20:
   v24[1] = 3221225472;
   v24[2] = __91__AAUIServiceSignInController__mainQueue_presentAlertForError_inViewController_completion___block_invoke;
   v24[3] = &unk_1E820CA70;
-  v25 = v7;
-  v22 = v7;
+  v25 = completionCopy;
+  v22 = completionCopy;
   v23 = [v21 actionWithTitle:v19 style:0 handler:v24];
   [v20 addAction:v23];
 
-  [v9 presentViewController:v20 animated:1 completion:0];
+  [controllerCopy presentViewController:v20 animated:1 completion:0];
 }
 
 void __64__AAUIServiceSignInController_loadViewControllerForPresentation__block_invoke_cold_1()

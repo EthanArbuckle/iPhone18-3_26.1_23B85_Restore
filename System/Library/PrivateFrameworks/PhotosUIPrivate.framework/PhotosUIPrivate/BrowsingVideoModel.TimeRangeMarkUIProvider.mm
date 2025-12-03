@@ -1,15 +1,15 @@
 @interface BrowsingVideoModel.TimeRangeMarkUIProvider
-- (CGSize)timeRangeMark:(id)a3 sizeInFrame:(CGRect)a4;
-- (id)uiProxyForTimeRangeMark:(id)a3 withSource:(id)a4;
+- (CGSize)timeRangeMark:(id)mark sizeInFrame:(CGRect)frame;
+- (id)uiProxyForTimeRangeMark:(id)mark withSource:(id)source;
 @end
 
 @implementation BrowsingVideoModel.TimeRangeMarkUIProvider
 
-- (CGSize)timeRangeMark:(id)a3 sizeInFrame:(CGRect)a4
+- (CGSize)timeRangeMark:(id)mark sizeInFrame:(CGRect)frame
 {
-  v5 = a3;
-  v6 = self;
-  sub_1B372DC94(v5);
+  markCopy = mark;
+  selfCopy = self;
+  sub_1B372DC94(markCopy);
   v8 = v7;
   v10 = v9;
 
@@ -20,11 +20,11 @@
   return result;
 }
 
-- (id)uiProxyForTimeRangeMark:(id)a3 withSource:(id)a4
+- (id)uiProxyForTimeRangeMark:(id)mark withSource:(id)source
 {
-  v5 = a3;
+  markCopy = mark;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_1B372DDB0();
 
   swift_unknownObjectRelease();

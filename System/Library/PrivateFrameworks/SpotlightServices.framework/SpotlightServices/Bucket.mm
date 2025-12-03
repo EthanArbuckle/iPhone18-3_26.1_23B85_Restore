@@ -1,52 +1,52 @@
 @interface Bucket
-- (BOOL)addOne:(id)a3;
-- (Bucket)initWithItem:(id)a3 isPerfectScoreBucket:(BOOL)a4;
-- (void)calculateLikelihood:(id)a3;
+- (BOOL)addOne:(id)one;
+- (Bucket)initWithItem:(id)item isPerfectScoreBucket:(BOOL)bucket;
+- (void)calculateLikelihood:(id)likelihood;
 @end
 
 @implementation Bucket
 
-- (Bucket)initWithItem:(id)a3 isPerfectScoreBucket:(BOOL)a4
+- (Bucket)initWithItem:(id)item isPerfectScoreBucket:(BOOL)bucket
 {
-  v4 = a4;
+  bucketCopy = bucket;
   v15.receiver = self;
   v15.super_class = Bucket;
-  v5 = a3;
+  itemCopy = item;
   v6 = [(Bucket *)&v15 init];
   v7 = v6;
   v8 = 0.015;
-  if (v4)
+  if (bucketCopy)
   {
     v8 = 0.08;
   }
 
   v6->_threshold = v8;
-  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v5, 0}];
+  v9 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{itemCopy, 0}];
   items = v7->_items;
   v7->_items = v9;
 
-  [v5 topicalityScore];
+  [itemCopy topicalityScore];
   v7->_upperBound = v11;
-  [v5 topicalityScore];
+  [itemCopy topicalityScore];
   v13 = v12;
 
   v7->_lowerBound = v13;
-  v7->_isPerfectScoreBucket = v4;
+  v7->_isPerfectScoreBucket = bucketCopy;
   return v7;
 }
 
-- (BOOL)addOne:(id)a3
+- (BOOL)addOne:(id)one
 {
-  v4 = a3;
+  oneCopy = one;
   upperBound = self->_upperBound;
-  [v4 topicalityScore];
+  [oneCopy topicalityScore];
   if (upperBound < v6)
   {
     upperBound = v6;
   }
 
   lowerBound = self->_lowerBound;
-  [v4 topicalityScore];
+  [oneCopy topicalityScore];
   if (lowerBound >= v8)
   {
     v9 = v8;
@@ -60,7 +60,7 @@
   threshold = self->_threshold;
   if (upperBound - v9 <= threshold)
   {
-    [(NSMutableArray *)self->_items addObject:v4];
+    [(NSMutableArray *)self->_items addObject:oneCopy];
     self->_upperBound = upperBound;
     self->_lowerBound = v9;
   }
@@ -68,10 +68,10 @@
   return upperBound - v9 <= threshold;
 }
 
-- (void)calculateLikelihood:(id)a3
+- (void)calculateLikelihood:(id)likelihood
 {
   v50 = *MEMORY[0x1E69E9840];
-  v37 = a3;
+  likelihoodCopy = likelihood;
   if (self->_isPerfectScoreBucket)
   {
     v4 = self->_upperBound + 0.1;
@@ -96,7 +96,7 @@
       v12 = 0.0001;
     }
 
-    v36 = [v37 isSearchToolClient];
+    isSearchToolClient = [likelihoodCopy isSearchToolClient];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -152,12 +152,12 @@ LABEL_21:
       v26 = SSGeneralLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [v37 searchString];
-        v28 = SSRedactStringClient(v27, 1, v36);
-        SSRedactStringClient(v24, 1, v36);
+        searchString = [likelihoodCopy searchString];
+        v28 = SSRedactStringClient(searchString, 1, isSearchToolClient);
+        SSRedactStringClient(v24, 1, isSearchToolClient);
         v30 = v29 = v13;
-        v31 = [v19 identifier];
-        v32 = SSRedactStringClient(v31, 1, v36);
+        identifier = [v19 identifier];
+        v32 = SSRedactStringClient(identifier, 1, isSearchToolClient);
         *buf = v34;
         v44 = v28;
         v45 = 2112;

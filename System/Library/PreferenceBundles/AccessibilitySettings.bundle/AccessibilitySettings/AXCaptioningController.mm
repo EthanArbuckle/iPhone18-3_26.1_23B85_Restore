@@ -1,21 +1,21 @@
 @interface AXCaptioningController
 - (AXCaptioningController)init;
 - (id)_localizedAudioTranscriptionsFooterText;
-- (id)currentTheme:(id)a3;
-- (id)preferSDHEnabled:(id)a3;
-- (id)showAudioTranscriptions:(id)a3;
-- (id)showOnSkipBack:(id)a3;
-- (id)showSubtitlesWhenLanguageMismatch:(id)a3;
-- (id)showSubtitlesWhenMuted:(id)a3;
+- (id)currentTheme:(id)theme;
+- (id)preferSDHEnabled:(id)enabled;
+- (id)showAudioTranscriptions:(id)transcriptions;
+- (id)showOnSkipBack:(id)back;
+- (id)showSubtitlesWhenLanguageMismatch:(id)mismatch;
+- (id)showSubtitlesWhenMuted:(id)muted;
 - (id)specifiers;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
 - (void)_handleWorkoutVoiceFeatureAvailabilityChanged;
-- (void)setPreferSDHEnabled:(id)a3 specifier:(id)a4;
-- (void)setShowAudioTranscriptions:(id)a3 specifier:(id)a4;
-- (void)setShowOnSkipBack:(id)a3 specifier:(id)a4;
-- (void)setShowSubtitlesWhenLanguageMismatch:(id)a3 specifier:(id)a4;
-- (void)setShowSubtitlesWhenMuted:(id)a3 specifier:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setPreferSDHEnabled:(id)enabled specifier:(id)specifier;
+- (void)setShowAudioTranscriptions:(id)transcriptions specifier:(id)specifier;
+- (void)setShowOnSkipBack:(id)back specifier:(id)specifier;
+- (void)setShowSubtitlesWhenLanguageMismatch:(id)mismatch specifier:(id)specifier;
+- (void)setShowSubtitlesWhenMuted:(id)muted specifier:(id)specifier;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AXCaptioningController
@@ -119,8 +119,8 @@ void __30__AXCaptioningController_init__block_invoke_2(uint64_t a1)
     [v4 addObject:v13];
     v14 = +[PSSpecifier emptyGroupSpecifier];
 
-    v15 = [(AXCaptioningController *)self _localizedAudioTranscriptionsFooterText];
-    [v14 setProperty:v15 forKey:v29];
+    _localizedAudioTranscriptionsFooterText = [(AXCaptioningController *)self _localizedAudioTranscriptionsFooterText];
+    [v14 setProperty:_localizedAudioTranscriptionsFooterText forKey:v29];
 
     [v14 setIdentifier:@"AudioTranscriptionsGroup"];
     [v4 addObject:v14];
@@ -169,66 +169,66 @@ void __30__AXCaptioningController_init__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (id)showOnSkipBack:(id)a3
+- (id)showOnSkipBack:(id)back
 {
   v3 = _AXSAutomaticSubtitlesShowOnSkipBack();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setShowOnSkipBack:(id)a3 specifier:(id)a4
+- (void)setShowOnSkipBack:(id)back specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [back BOOLValue];
 
-  __AXSSetAutomaticSubtitlesShowOnSkipBack(v4);
+  __AXSSetAutomaticSubtitlesShowOnSkipBack(bOOLValue);
 }
 
-- (id)showSubtitlesWhenMuted:(id)a3
+- (id)showSubtitlesWhenMuted:(id)muted
 {
   v3 = _AXSAutomaticSubtitlesShowWhenMuted();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setShowSubtitlesWhenMuted:(id)a3 specifier:(id)a4
+- (void)setShowSubtitlesWhenMuted:(id)muted specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [muted BOOLValue];
 
-  __AXSSetAutomaticSubtitlesShowWhenMuted(v4);
+  __AXSSetAutomaticSubtitlesShowWhenMuted(bOOLValue);
 }
 
-- (id)showSubtitlesWhenLanguageMismatch:(id)a3
+- (id)showSubtitlesWhenLanguageMismatch:(id)mismatch
 {
   v3 = _AXSAutomaticSubtitlesShowWhenLanguageMismatch();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setShowSubtitlesWhenLanguageMismatch:(id)a3 specifier:(id)a4
+- (void)setShowSubtitlesWhenLanguageMismatch:(id)mismatch specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [mismatch BOOLValue];
 
-  __AXSSetAutomaticSubtitlesShowWhenLanguageMismatch(v4);
+  __AXSSetAutomaticSubtitlesShowWhenLanguageMismatch(bOOLValue);
 }
 
-- (id)showAudioTranscriptions:(id)a3
+- (id)showAudioTranscriptions:(id)transcriptions
 {
   v3 = _AXSShowAudioTranscriptions();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setShowAudioTranscriptions:(id)a3 specifier:(id)a4
+- (void)setShowAudioTranscriptions:(id)transcriptions specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  transcriptionsCopy = transcriptions;
+  specifierCopy = specifier;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __63__AXCaptioningController_setShowAudioTranscriptions_specifier___block_invoke;
   v15[3] = &unk_255538;
-  v8 = v6;
+  v8 = transcriptionsCopy;
   v16 = v8;
-  v17 = self;
+  selfCopy = self;
   v9 = objc_retainBlock(v15);
   if ([v8 BOOLValue] && (+[AFPreferences sharedPreferences](AFPreferences, "sharedPreferences"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "dictationIsEnabled"), v10, (v11 & 1) == 0))
   {
@@ -238,7 +238,7 @@ void __30__AXCaptioningController_init__block_invoke_2(uint64_t a1)
     v12[3] = &unk_2584C0;
     v14 = v9;
     v12[4] = self;
-    v13 = v7;
+    v13 = specifierCopy;
     [TIAssistantSettings presentDialogForType:0 withCompletionHandler:v12];
   }
 
@@ -293,7 +293,7 @@ void __63__AXCaptioningController_setShowAudioTranscriptions_specifier___block_i
   }
 }
 
-- (id)currentTheme:(id)a3
+- (id)currentTheme:(id)theme
 {
   active = MACaptionAppearancePrefCopyActiveProfileID();
   v4 = MACaptionAppearancePrefCopyProfileName();
@@ -305,48 +305,48 @@ void __63__AXCaptioningController_setShowAudioTranscriptions_specifier___block_i
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXCaptioningController;
-  [(AccessibilitySettingsBaseController *)&v4 viewWillAppear:a3];
+  [(AccessibilitySettingsBaseController *)&v4 viewWillAppear:appear];
   [(AXCaptioningController *)self reloadSpecifierID:@"currentTheme"];
 }
 
-- (void)setPreferSDHEnabled:(id)a3 specifier:(id)a4
+- (void)setPreferSDHEnabled:(id)enabled specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
   _AXSClosedCaptionsSetEnabled();
   v4 = +[HUUtilities sharedUtilities];
   [v4 updateHearingFeatureUsage];
 }
 
-- (id)preferSDHEnabled:(id)a3
+- (id)preferSDHEnabled:(id)enabled
 {
   v3 = _AXSClosedCaptionsEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
   v13.receiver = self;
   v13.super_class = AXCaptioningController;
-  v5 = [(AXCaptioningController *)&v13 tableView:a3 titleForFooterInSection:?];
+  v5 = [(AXCaptioningController *)&v13 tableView:view titleForFooterInSection:?];
   v6 = +[NSLocale preferredLanguages];
   if ([v6 count])
   {
     v7 = [v6 objectAtIndex:0];
     v8 = [v7 hasPrefix:@"en"];
 
-    if (!a4)
+    if (!section)
     {
       if (v8)
       {
         v9 = +[UIDevice currentDevice];
-        v10 = [v9 userInterfaceIdiom];
+        userInterfaceIdiom = [v9 userInterfaceIdiom];
 
-        if (v10 == &dword_0 + 1)
+        if (userInterfaceIdiom == &dword_0 + 1)
         {
           v11 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_25D420];
 
@@ -380,13 +380,13 @@ void __63__AXCaptioningController_setShowAudioTranscriptions_specifier___block_i
 
 - (void)_handleWorkoutVoiceFeatureAvailabilityChanged
 {
-  v3 = [(AXCaptioningController *)self specifiers];
-  v5 = [v3 specifierForID:@"AudioTranscriptionsGroup"];
+  specifiers = [(AXCaptioningController *)self specifiers];
+  v5 = [specifiers specifierForID:@"AudioTranscriptionsGroup"];
 
   if (v5)
   {
-    v4 = [(AXCaptioningController *)self _localizedAudioTranscriptionsFooterText];
-    [v5 setProperty:v4 forKey:PSFooterTextGroupKey];
+    _localizedAudioTranscriptionsFooterText = [(AXCaptioningController *)self _localizedAudioTranscriptionsFooterText];
+    [v5 setProperty:_localizedAudioTranscriptionsFooterText forKey:PSFooterTextGroupKey];
 
     [(AXCaptioningController *)self reloadSpecifier:v5];
   }

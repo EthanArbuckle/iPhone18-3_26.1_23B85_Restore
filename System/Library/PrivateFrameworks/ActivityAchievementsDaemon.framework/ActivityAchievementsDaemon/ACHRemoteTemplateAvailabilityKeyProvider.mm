@@ -1,24 +1,24 @@
 @interface ACHRemoteTemplateAvailabilityKeyProvider
-- (ACHRemoteTemplateAvailabilityKeyProvider)initWithHealthStore:(id)a3 creatorDevice:(unsigned __int8)a4;
-- (BOOL)markTemplateAvailable:(id)a3 error:(id *)a4;
-- (BOOL)templateAvailableOnPairedDevice:(id)a3 error:(id *)a4;
-- (id)availabilityStateKeyFromUniqueName:(id)a3 creatorDevice:(unsigned __int8)a4;
+- (ACHRemoteTemplateAvailabilityKeyProvider)initWithHealthStore:(id)store creatorDevice:(unsigned __int8)device;
+- (BOOL)markTemplateAvailable:(id)available error:(id *)error;
+- (BOOL)templateAvailableOnPairedDevice:(id)device error:(id *)error;
+- (id)availabilityStateKeyFromUniqueName:(id)name creatorDevice:(unsigned __int8)device;
 @end
 
 @implementation ACHRemoteTemplateAvailabilityKeyProvider
 
-- (ACHRemoteTemplateAvailabilityKeyProvider)initWithHealthStore:(id)a3 creatorDevice:(unsigned __int8)a4
+- (ACHRemoteTemplateAvailabilityKeyProvider)initWithHealthStore:(id)store creatorDevice:(unsigned __int8)device
 {
-  v6 = a3;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = ACHRemoteTemplateAvailabilityKeyProvider;
   v7 = [(ACHRemoteTemplateAvailabilityKeyProvider *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    v7->_creatorDevice = a4;
+    v7->_creatorDevice = device;
     v9 = objc_alloc(MEMORY[0x277CCD570]);
-    v10 = [v9 initWithCategory:4 domainName:*MEMORY[0x277CE8AD8] healthStore:v6];
+    v10 = [v9 initWithCategory:4 domainName:*MEMORY[0x277CE8AD8] healthStore:storeCopy];
     keyValueDomain = v8->_keyValueDomain;
     v8->_keyValueDomain = v10;
   }
@@ -26,16 +26,16 @@
   return v8;
 }
 
-- (BOOL)markTemplateAvailable:(id)a3 error:(id *)a4
+- (BOOL)markTemplateAvailable:(id)available error:(id *)error
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = [a3 uniqueName];
-  v7 = [(ACHRemoteTemplateAvailabilityKeyProvider *)self availabilityStateKeyFromUniqueName:v6 creatorDevice:[(ACHRemoteTemplateAvailabilityKeyProvider *)self creatorDevice]];
+  uniqueName = [available uniqueName];
+  v7 = [(ACHRemoteTemplateAvailabilityKeyProvider *)self availabilityStateKeyFromUniqueName:uniqueName creatorDevice:[(ACHRemoteTemplateAvailabilityKeyProvider *)self creatorDevice]];
 
   if (v7)
   {
-    v8 = [(ACHRemoteTemplateAvailabilityKeyProvider *)self keyValueDomain];
-    v9 = [v8 setNumber:MEMORY[0x277CBEC38] forKey:v7 error:a4];
+    keyValueDomain = [(ACHRemoteTemplateAvailabilityKeyProvider *)self keyValueDomain];
+    v9 = [keyValueDomain setNumber:MEMORY[0x277CBEC38] forKey:v7 error:error];
   }
 
   else
@@ -49,10 +49,10 @@
     v13 = v12;
     if (v13)
     {
-      if (a4)
+      if (error)
       {
         v14 = v13;
-        *a4 = v13;
+        *error = v13;
       }
 
       else
@@ -68,25 +68,25 @@
   return v9;
 }
 
-- (BOOL)templateAvailableOnPairedDevice:(id)a3 error:(id *)a4
+- (BOOL)templateAvailableOnPairedDevice:(id)device error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = [a3 uniqueName];
-  v7 = [(ACHRemoteTemplateAvailabilityKeyProvider *)self availabilityStateKeyFromUniqueName:v6 creatorDevice:[(ACHRemoteTemplateAvailabilityKeyProvider *)self creatorDevice]];
+  uniqueName = [device uniqueName];
+  v7 = [(ACHRemoteTemplateAvailabilityKeyProvider *)self availabilityStateKeyFromUniqueName:uniqueName creatorDevice:[(ACHRemoteTemplateAvailabilityKeyProvider *)self creatorDevice]];
 
   if (v7)
   {
-    v8 = [(ACHRemoteTemplateAvailabilityKeyProvider *)self keyValueDomain];
-    v9 = [v8 numberForKey:v7 error:a4];
+    keyValueDomain = [(ACHRemoteTemplateAvailabilityKeyProvider *)self keyValueDomain];
+    v9 = [keyValueDomain numberForKey:v7 error:error];
 
     if (v9)
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue = 0;
     }
   }
 
@@ -101,10 +101,10 @@
     v14 = v13;
     if (v14)
     {
-      if (a4)
+      if (error)
       {
         v15 = v14;
-        *a4 = v14;
+        *error = v14;
       }
 
       else
@@ -113,22 +113,22 @@
       }
     }
 
-    v10 = 0;
+    bOOLValue = 0;
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v10;
+  return bOOLValue;
 }
 
-- (id)availabilityStateKeyFromUniqueName:(id)a3 creatorDevice:(unsigned __int8)a4
+- (id)availabilityStateKeyFromUniqueName:(id)name creatorDevice:(unsigned __int8)device
 {
   v4 = MEMORY[0x277CE8AE8];
-  if (a4 != 1)
+  if (device != 1)
   {
     v4 = MEMORY[0x277CE8AE0];
   }
 
-  v5 = [a3 stringByAppendingString:*v4];
+  v5 = [name stringByAppendingString:*v4];
 
   return v5;
 }

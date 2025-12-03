@@ -1,22 +1,22 @@
 @interface HDSPIDSService
-+ (id)cloudServiceWithScheduler:(id)a3;
-+ (id)localServiceWithScheduler:(id)a3;
++ (id)cloudServiceWithScheduler:(id)scheduler;
++ (id)localServiceWithScheduler:(id)scheduler;
 @end
 
 @implementation HDSPIDSService
 
-+ (id)localServiceWithScheduler:(id)a3
++ (id)localServiceWithScheduler:(id)scheduler
 {
-  v3 = a3;
-  v4 = [[_HDSPIDSService alloc] initWithIsCloudService:0 scheduler:v3];
+  schedulerCopy = scheduler;
+  v4 = [[_HDSPIDSService alloc] initWithIsCloudService:0 scheduler:schedulerCopy];
 
   return v4;
 }
 
-+ (id)cloudServiceWithScheduler:(id)a3
++ (id)cloudServiceWithScheduler:(id)scheduler
 {
-  v3 = a3;
-  v4 = [[_HDSPIDSService alloc] initWithIsCloudService:1 scheduler:v3];
+  schedulerCopy = scheduler;
+  v4 = [[_HDSPIDSService alloc] initWithIsCloudService:1 scheduler:schedulerCopy];
 
   return v4;
 }

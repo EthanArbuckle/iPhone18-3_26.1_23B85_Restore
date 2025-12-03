@@ -1,21 +1,21 @@
 @interface _WKWebExtensionDeclarativeNetRequestTranslator
-+ (id)jsonObjectsFromData:(id)a3 errorStrings:(id *)a4;
-+ (id)translateRules:(id)a3 errorStrings:(id *)a4;
++ (id)jsonObjectsFromData:(id)data errorStrings:(id *)strings;
++ (id)translateRules:(id)rules errorStrings:(id *)strings;
 @end
 
 @implementation _WKWebExtensionDeclarativeNetRequestTranslator
 
-+ (id)translateRules:(id)a3 errorStrings:(id *)a4
++ (id)translateRules:(id)rules errorStrings:(id *)strings
 {
   v50 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [MEMORY[0x1E695DF70] array];
+  rulesCopy = rules;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v29;
+  obj = rulesCopy;
   v6 = [obj countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v6)
   {
@@ -59,15 +59,15 @@
               v17 = v16;
               if (v15)
               {
-                [v4 addObject:v15];
+                [array addObject:v15];
               }
 
               else if (v16)
               {
                 ++v7;
-                if ([v5 count] <= 0x31)
+                if ([array2 count] <= 0x31)
                 {
-                  [v5 addObject:v17];
+                  [array2 addObject:v17];
                 }
               }
 
@@ -90,7 +90,7 @@
 
     if (v7 >= 0x33)
     {
-      [v5 addObject:@"Error limit hit. No longer omitting errors."];
+      [array2 addObject:@"Error limit hit. No longer omitting errors."];
     }
   }
 
@@ -98,15 +98,15 @@
   {
   }
 
-  if (a4)
+  if (strings)
   {
-    *a4 = [v5 copy];
+    *strings = [array2 copy];
   }
 
-  v19 = [v4 sortedArrayUsingComparator:{&__block_literal_global, a4}];
+  v19 = [array sortedArrayUsingComparator:{&__block_literal_global, strings}];
   v20 = [v19 mutableCopy];
 
-  v21 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
@@ -125,8 +125,8 @@
           objc_enumerationMutation(v22);
         }
 
-        v26 = [*(*(&v34 + 1) + 8 * j) ruleInWebKitFormat];
-        [v21 addObjectsFromArray:v26];
+        ruleInWebKitFormat = [*(*(&v34 + 1) + 8 * j) ruleInWebKitFormat];
+        [array3 addObjectsFromArray:ruleInWebKitFormat];
       }
 
       v23 = [v22 countByEnumeratingWithState:&v34 objects:v47 count:16];
@@ -135,20 +135,20 @@
     while (v23);
   }
 
-  return v21;
+  return array3;
 }
 
-+ (id)jsonObjectsFromData:(id)a3 errorStrings:(id *)a4
++ (id)jsonObjectsFromData:(id)data errorStrings:(id *)strings
 {
   v25 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v17 = [MEMORY[0x1E695DF70] array];
-  v4 = [MEMORY[0x1E695DF70] array];
+  dataCopy = data;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v15;
+  obj = dataCopy;
   v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
@@ -172,15 +172,15 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v17 addObject:v10];
+            [array addObject:v10];
           }
         }
 
         if (v11)
         {
-          v12 = [v11 userInfo];
-          v13 = [v12 objectForKeyedSubscript:v7];
-          [v4 addObject:v13];
+          userInfo = [v11 userInfo];
+          v13 = [userInfo objectForKeyedSubscript:v7];
+          [array2 addObject:v13];
         }
       }
 
@@ -190,12 +190,12 @@
     while (v5);
   }
 
-  if (a4)
+  if (strings)
   {
-    *a4 = [v4 copy];
+    *strings = [array2 copy];
   }
 
-  return v17;
+  return array;
 }
 
 @end

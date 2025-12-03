@@ -1,7 +1,7 @@
 @interface NEKProtobufSerializer
 + (void)oops;
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4;
-- (id)dataFromChange:(id)a3;
+- (id)changeFromData:(id)data ofType:(int64_t)type;
+- (id)dataFromChange:(id)change;
 @end
 
 @implementation NEKProtobufSerializer
@@ -14,9 +14,9 @@
   os_unfair_lock_unlock(&unk_1000D1860);
 }
 
-- (id)dataFromChange:(id)a3
+- (id)dataFromChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = objc_alloc_init(NEKPBProtoBuffMessage);
   os_unfair_lock_lock(&unk_1000D1860);
   if (dword_1000D15F0 == 0x80000000)
@@ -35,13 +35,13 @@
   dword_1000D15F0 = v6;
   os_unfair_lock_unlock(&unk_1000D1860);
   [(NEKPBProtoBuffMessage *)v4 setPacketNumber:v7];
-  v8 = [(NEKPBProtoBuffMessage *)v4 packetNumber];
-  v9 = [(NEKPBProtoBuffMessage *)v4 packetNumber];
+  packetNumber = [(NEKPBProtoBuffMessage *)v4 packetNumber];
+  packetNumber2 = [(NEKPBProtoBuffMessage *)v4 packetNumber];
   v10 = *(qword_1000D18A8 + 8);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v17 = v9;
-    v18 = HIWORD(v8) & 0x7FFF;
+    v17 = packetNumber2;
+    v18 = HIWORD(packetNumber) & 0x7FFF;
     v19 = v10;
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
@@ -57,7 +57,7 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = sub_1000460DC(v3);
+    v11 = sub_1000460DC(changeCopy);
     [(NEKPBProtoBuffMessage *)v4 setStoreWrapper:v11];
   }
 
@@ -66,7 +66,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = sub_1000448CC(v3);
+      v11 = sub_1000448CC(changeCopy);
       [(NEKPBProtoBuffMessage *)v4 setCalendarWrapper:v11];
     }
 
@@ -75,7 +75,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v11 = v3;
+        v11 = changeCopy;
         if ([v11 isReminderWithLocation])
         {
           ct_green_tea_logger_create();
@@ -99,7 +99,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = sub_100046688(v3);
+          v11 = sub_100046688(changeCopy);
           [(NEKPBProtoBuffMessage *)v4 setDeletionWrapper:v11];
         }
 
@@ -111,7 +111,7 @@
             goto LABEL_22;
           }
 
-          v11 = sub_100046830(v3);
+          v11 = sub_100046830(changeCopy);
           [(NEKPBProtoBuffMessage *)v4 setValidationWrapper:v11];
         }
       }
@@ -119,59 +119,59 @@
   }
 
 LABEL_22:
-  v15 = [(NEKPBProtoBuffMessage *)v4 data];
+  data = [(NEKPBProtoBuffMessage *)v4 data];
 
-  return v15;
+  return data;
 }
 
-- (id)changeFromData:(id)a3 ofType:(int64_t)a4
+- (id)changeFromData:(id)data ofType:(int64_t)type
 {
-  v4 = a3;
-  v5 = [[NEKPBProtoBuffMessage alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[NEKPBProtoBuffMessage alloc] initWithData:dataCopy];
 
-  v6 = [(NEKPBProtoBuffMessage *)v5 storeWrapper];
+  storeWrapper = [(NEKPBProtoBuffMessage *)v5 storeWrapper];
 
-  if (v6)
+  if (storeWrapper)
   {
-    v7 = [(NEKPBProtoBuffMessage *)v5 storeWrapper];
-    v8 = sub_1000463B4(v7);
+    storeWrapper2 = [(NEKPBProtoBuffMessage *)v5 storeWrapper];
+    v8 = sub_1000463B4(storeWrapper2);
   }
 
   else
   {
-    v9 = [(NEKPBProtoBuffMessage *)v5 calendarWrapper];
+    calendarWrapper = [(NEKPBProtoBuffMessage *)v5 calendarWrapper];
 
-    if (v9)
+    if (calendarWrapper)
     {
-      v7 = [(NEKPBProtoBuffMessage *)v5 calendarWrapper];
-      v8 = sub_100044FC0(v7);
+      storeWrapper2 = [(NEKPBProtoBuffMessage *)v5 calendarWrapper];
+      v8 = sub_100044FC0(storeWrapper2);
     }
 
     else
     {
-      v10 = [(NEKPBProtoBuffMessage *)v5 iCSWrapper];
+      iCSWrapper = [(NEKPBProtoBuffMessage *)v5 iCSWrapper];
 
-      if (v10)
+      if (iCSWrapper)
       {
-        v7 = [(NEKPBProtoBuffMessage *)v5 iCSWrapper];
-        v8 = sub_100045A74(v7);
+        storeWrapper2 = [(NEKPBProtoBuffMessage *)v5 iCSWrapper];
+        v8 = sub_100045A74(storeWrapper2);
       }
 
       else
       {
-        v11 = [(NEKPBProtoBuffMessage *)v5 deletionWrapper];
+        deletionWrapper = [(NEKPBProtoBuffMessage *)v5 deletionWrapper];
 
-        if (v11)
+        if (deletionWrapper)
         {
-          v7 = [(NEKPBProtoBuffMessage *)v5 deletionWrapper];
-          v8 = sub_100046760(v7);
+          storeWrapper2 = [(NEKPBProtoBuffMessage *)v5 deletionWrapper];
+          v8 = sub_100046760(storeWrapper2);
         }
 
         else
         {
-          v12 = [(NEKPBProtoBuffMessage *)v5 validationWrapper];
+          validationWrapper = [(NEKPBProtoBuffMessage *)v5 validationWrapper];
 
-          if (!v12)
+          if (!validationWrapper)
           {
             v26 = *(qword_1000D18A8 + 8);
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -182,8 +182,8 @@ LABEL_22:
             goto LABEL_26;
           }
 
-          v7 = [(NEKPBProtoBuffMessage *)v5 validationWrapper];
-          v8 = sub_100046908(v7);
+          storeWrapper2 = [(NEKPBProtoBuffMessage *)v5 validationWrapper];
+          v8 = sub_100046908(storeWrapper2);
         }
       }
     }
@@ -194,15 +194,15 @@ LABEL_22:
   if (v13)
   {
     os_unfair_lock_lock(&unk_1000D1860);
-    v14 = [(NEKPBProtoBuffMessage *)v5 packetNumber];
-    v15 = [(NEKPBProtoBuffMessage *)v5 packetNumber];
-    v16 = v15;
-    v17 = dword_1000D15F4 == 0x80000000 || v14 < 0;
-    v18 = v15 & 0x7FFFFFFF;
+    packetNumber = [(NEKPBProtoBuffMessage *)v5 packetNumber];
+    packetNumber2 = [(NEKPBProtoBuffMessage *)v5 packetNumber];
+    v16 = packetNumber2;
+    v17 = dword_1000D15F4 == 0x80000000 || packetNumber < 0;
+    v18 = packetNumber2 & 0x7FFFFFFF;
     v19 = (dword_1000D15F4 + 1) & 0x7FFFFFFF;
     if (v17)
     {
-      v19 = v15 & 0x7FFFFFFF;
+      v19 = packetNumber2 & 0x7FFFFFFF;
     }
 
     dword_1000D15F4 = v19;

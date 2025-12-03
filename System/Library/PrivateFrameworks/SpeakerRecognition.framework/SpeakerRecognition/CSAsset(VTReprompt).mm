@@ -7,11 +7,11 @@
 
 - (id)blobName
 {
-  v1 = [a1 dictionary];
-  v2 = v1;
-  if (v1)
+  dictionary = [self dictionary];
+  v2 = dictionary;
+  if (dictionary)
   {
-    v3 = [v1 objectForKeyedSubscript:@"blobName"];
+    v3 = [dictionary objectForKeyedSubscript:@"blobName"];
 
     if (v3)
     {
@@ -29,11 +29,11 @@
 
 - (id)blobVersion
 {
-  v1 = [a1 dictionary];
-  v2 = v1;
-  if (v1)
+  dictionary = [self dictionary];
+  v2 = dictionary;
+  if (dictionary)
   {
-    v3 = [v1 objectForKeyedSubscript:@"version"];
+    v3 = [dictionary objectForKeyedSubscript:@"version"];
 
     if (v3)
     {

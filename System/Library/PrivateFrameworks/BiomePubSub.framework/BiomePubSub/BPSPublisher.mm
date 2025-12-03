@@ -1,42 +1,42 @@
 @interface BPSPublisher
 - (BOOL)completed;
-- (id)bufferWithSize:(unint64_t)a3 prefetch:(unint64_t)a4 whenFull:(unint64_t)a5;
+- (id)bufferWithSize:(unint64_t)size prefetch:(unint64_t)prefetch whenFull:(unint64_t)full;
 - (id)collect;
-- (id)combineLatestwithOther:(id)a3;
-- (id)connectableSinkWithCompletion:(id)a3 shouldContinue:(id)a4;
-- (id)correlateWithCurrent:(id)a3 comparator:(id)a4 correlateHandler:(id)a5;
-- (id)debounceFor:(double)a3 getTimestamp:(id)a4;
-- (id)drivableSinkWithBookmark:(id)a3 completion:(id)a4 shouldContinue:(id)a5;
-- (id)filterWithIsIncluded:(id)a3;
-- (id)flatMapWithTransform:(id)a3;
-- (id)groupByKey:(id)a3;
-- (id)handleEventsReceiveOutput:(id)a3 receiveCancel:(id)a4;
-- (id)handleEventsReceiveSubscription:(id)a3 receiveOutput:(id)a4 receiveCompletion:(id)a5 receiveCancel:(id)a6 receiveRequest:(id)a7;
+- (id)combineLatestwithOther:(id)other;
+- (id)connectableSinkWithCompletion:(id)completion shouldContinue:(id)continue;
+- (id)correlateWithCurrent:(id)current comparator:(id)comparator correlateHandler:(id)handler;
+- (id)debounceFor:(double)for getTimestamp:(id)timestamp;
+- (id)drivableSinkWithBookmark:(id)bookmark completion:(id)completion shouldContinue:(id)continue;
+- (id)filterWithIsIncluded:(id)included;
+- (id)flatMapWithTransform:(id)transform;
+- (id)groupByKey:(id)key;
+- (id)handleEventsReceiveOutput:(id)output receiveCancel:(id)cancel;
+- (id)handleEventsReceiveSubscription:(id)subscription receiveOutput:(id)output receiveCompletion:(id)completion receiveCancel:(id)cancel receiveRequest:(id)request;
 - (id)last;
-- (id)mapWithTransform:(id)a3;
-- (id)mergeWithOther:(id)a3;
-- (id)mergeWithOthers:(id)a3;
+- (id)mapWithTransform:(id)transform;
+- (id)mergeWithOther:(id)other;
+- (id)mergeWithOthers:(id)others;
 - (id)multicast;
-- (id)multicastCreateSubject:(id)a3;
-- (id)multicastSubject:(id)a3;
-- (id)orderedMergeWithOther:(id)a3 comparator:(id)a4;
-- (id)orderedMergeWithOthers:(id)a3 comparator:(id)a4;
-- (id)reduce:(id)a3;
-- (id)reduceWithInitial:(id)a3 nextPartialResult:(id)a4;
-- (id)removeDuplicatesWithIsDuplicate:(id)a3;
-- (id)scanWithInitial:(id)a3 nextPartialResult:(id)a4;
-- (id)sequenceWithSequence:(id)a3;
-- (id)sinkWithBookmark:(id)a3 completion:(id)a4 receiveInput:(id)a5;
-- (id)sinkWithCompletion:(id)a3 receiveInput:(id)a4;
-- (id)sinkWithCompletion:(id)a3 shouldContinue:(id)a4;
-- (id)startWithSubscriber:(id)a3;
-- (id)timerFor:(double)a3 getTimestamp:(id)a4;
-- (id)windowByKey:(id)a3 assigner:(id)a4;
-- (id)windowWithAssigner:(id)a3;
-- (id)zipWithOther:(id)a3;
-- (id)zipWithOthers:(id)a3;
+- (id)multicastCreateSubject:(id)subject;
+- (id)multicastSubject:(id)subject;
+- (id)orderedMergeWithOther:(id)other comparator:(id)comparator;
+- (id)orderedMergeWithOthers:(id)others comparator:(id)comparator;
+- (id)reduce:(id)reduce;
+- (id)reduceWithInitial:(id)initial nextPartialResult:(id)result;
+- (id)removeDuplicatesWithIsDuplicate:(id)duplicate;
+- (id)scanWithInitial:(id)initial nextPartialResult:(id)result;
+- (id)sequenceWithSequence:(id)sequence;
+- (id)sinkWithBookmark:(id)bookmark completion:(id)completion receiveInput:(id)input;
+- (id)sinkWithCompletion:(id)completion receiveInput:(id)input;
+- (id)sinkWithCompletion:(id)completion shouldContinue:(id)continue;
+- (id)startWithSubscriber:(id)subscriber;
+- (id)timerFor:(double)for getTimestamp:(id)timestamp;
+- (id)windowByKey:(id)key assigner:(id)assigner;
+- (id)windowWithAssigner:(id)assigner;
+- (id)zipWithOther:(id)other;
+- (id)zipWithOthers:(id)others;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSPublisher
@@ -48,8 +48,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(BPSPublisher *)self upstreamPublishers];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  upstreamPublishers = [(BPSPublisher *)self upstreamPublishers];
+  v3 = [upstreamPublishers countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -60,7 +60,7 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(upstreamPublishers);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) completed])
@@ -70,7 +70,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [upstreamPublishers countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -94,8 +94,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(BPSPublisher *)self upstreamPublishers];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  upstreamPublishers = [(BPSPublisher *)self upstreamPublishers];
+  v3 = [upstreamPublishers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -107,14 +107,14 @@ LABEL_11:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(upstreamPublishers);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) reset];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [upstreamPublishers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -123,19 +123,19 @@ LABEL_11:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)correlateWithCurrent:(id)a3 comparator:(id)a4 correlateHandler:(id)a5
+- (id)correlateWithCurrent:(id)current comparator:(id)comparator correlateHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  currentCopy = current;
+  comparatorCopy = comparator;
+  handlerCopy = handler;
   if (BPSPipelineSupportsPullBasedPublishers(self))
   {
-    v11 = [BPSCorrelate correlatePublisherChainWithPrior:self current:v8 comparator:v9 correlateHandler:v10];
+    v11 = [BPSCorrelate correlatePublisherChainWithPrior:self current:currentCopy comparator:comparatorCopy correlateHandler:handlerCopy];
   }
 
   else
   {
-    v11 = [[BPSCorrelate alloc] initWithPrior:self current:v8 comparator:v9 correlateHandler:v10];
+    v11 = [[BPSCorrelate alloc] initWithPrior:self current:currentCopy comparator:comparatorCopy correlateHandler:handlerCopy];
   }
 
   v12 = v11;
@@ -143,23 +143,23 @@ LABEL_11:
   return v12;
 }
 
-- (id)bufferWithSize:(unint64_t)a3 prefetch:(unint64_t)a4 whenFull:(unint64_t)a5
+- (id)bufferWithSize:(unint64_t)size prefetch:(unint64_t)prefetch whenFull:(unint64_t)full
 {
-  v5 = [[BPSBuffer alloc] initWithUpstream:self size:a3 prefetch:a4 whenFull:a5];
+  v5 = [[BPSBuffer alloc] initWithUpstream:self size:size prefetch:prefetch whenFull:full];
 
   return v5;
 }
 
-- (id)startWithSubscriber:(id)a3
+- (id)startWithSubscriber:(id)subscriber
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  subscriberCopy = subscriber;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(BPSPublisher *)self upstreamPublishers];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  upstreamPublishers = [(BPSPublisher *)self upstreamPublishers];
+  v6 = [upstreamPublishers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -170,10 +170,10 @@ LABEL_11:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(upstreamPublishers);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) startWithSubscriber:v4];
+        v10 = [*(*(&v14 + 1) + 8 * i) startWithSubscriber:subscriberCopy];
         if (v10)
         {
           v11 = v10;
@@ -181,7 +181,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [upstreamPublishers countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -199,7 +199,7 @@ LABEL_11:
   return v11;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
   v3 = MEMORY[0x1E695DF30];
   v4 = *MEMORY[0x1E695D930];
@@ -207,10 +207,10 @@ LABEL_11:
   [v3 raise:v4 format:{@"Override method %@ in subclass %@", v5, objc_opt_class()}];
 }
 
-- (id)sinkWithCompletion:(id)a3 receiveInput:(id)a4
+- (id)sinkWithCompletion:(id)completion receiveInput:(id)input
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  inputCopy = input;
   v8 = BPSPipelineSupportsPullBasedPublishers(self);
   v9 = [BPSSink alloc];
   v10 = v9;
@@ -220,15 +220,15 @@ LABEL_11:
     v13[1] = 3221225472;
     v13[2] = __64__BPSPublisher_BPSSubscribers__sinkWithCompletion_receiveInput___block_invoke;
     v13[3] = &unk_1E8320D98;
-    v14 = v6;
-    v11 = [(BPSSink *)v10 initWithReceiveBookmarkCompletion:v13 receiveInput:v7];
+    v14 = completionCopy;
+    v11 = [(BPSSink *)v10 initWithReceiveBookmarkCompletion:v13 receiveInput:inputCopy];
 
     [(BPSSink *)v11 subscribeTo:self];
   }
 
   else
   {
-    v11 = [(BPSSink *)v9 initWithReceiveCompletion:v6 receiveInput:v7];
+    v11 = [(BPSSink *)v9 initWithReceiveCompletion:completionCopy receiveInput:inputCopy];
 
     [(BPSPublisher *)self subscribe:v11];
   }
@@ -236,10 +236,10 @@ LABEL_11:
   return v11;
 }
 
-- (id)sinkWithCompletion:(id)a3 shouldContinue:(id)a4
+- (id)sinkWithCompletion:(id)completion shouldContinue:(id)continue
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  continueCopy = continue;
   v8 = BPSPipelineSupportsPullBasedPublishers(self);
   v9 = [BPSDrivableSink alloc];
   v10 = v9;
@@ -249,15 +249,15 @@ LABEL_11:
     v13[1] = 3221225472;
     v13[2] = __66__BPSPublisher_BPSSubscribers__sinkWithCompletion_shouldContinue___block_invoke;
     v13[3] = &unk_1E8320D98;
-    v14 = v6;
-    v11 = [(BPSDrivableSink *)v10 initWithReceiveBookmarkCompletion:v13 shouldContinue:v7];
+    v14 = completionCopy;
+    v11 = [(BPSDrivableSink *)v10 initWithReceiveBookmarkCompletion:v13 shouldContinue:continueCopy];
 
     [(BPSDrivableSink *)v11 subscribeTo:self];
   }
 
   else
   {
-    v11 = [(BPSDrivableSink *)v9 initWithReceiveCompletion:v6 shouldContinue:v7];
+    v11 = [(BPSDrivableSink *)v9 initWithReceiveCompletion:completionCopy shouldContinue:continueCopy];
 
     [(BPSPublisher *)self subscribe:v11];
   }
@@ -265,20 +265,20 @@ LABEL_11:
   return v11;
 }
 
-- (id)connectableSinkWithCompletion:(id)a3 shouldContinue:(id)a4
+- (id)connectableSinkWithCompletion:(id)completion shouldContinue:(id)continue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BPSDrivableSink alloc] initWithReceiveCompletion:v6 shouldContinue:v5];
+  continueCopy = continue;
+  completionCopy = completion;
+  v7 = [[BPSDrivableSink alloc] initWithReceiveCompletion:completionCopy shouldContinue:continueCopy];
 
   return v7;
 }
 
-- (id)sinkWithBookmark:(id)a3 completion:(id)a4 receiveInput:(id)a5
+- (id)sinkWithBookmark:(id)bookmark completion:(id)completion receiveInput:(id)input
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  bookmarkCopy = bookmark;
+  inputCopy = input;
+  completionCopy = completion;
   if (BPSPipelineSupportsPullBasedPublishers(self))
   {
     if (![BMBookmarkablePublisher isPipelineBookmarkable:self])
@@ -290,11 +290,11 @@ LABEL_11:
       }
     }
 
-    v12 = [[BPSSink alloc] initWithReceiveBookmarkCompletion:v10 receiveInput:v9];
+    v12 = [[BPSSink alloc] initWithReceiveBookmarkCompletion:completionCopy receiveInput:inputCopy];
 
-    if (v8 && [(BPSPublisher *)self conformsToProtocol:&unk_1F4872E18])
+    if (bookmarkCopy && [(BPSPublisher *)self conformsToProtocol:&unk_1F4872E18])
     {
-      [(BPSPublisher *)self applyBookmarkNode:v8];
+      [(BPSPublisher *)self applyBookmarkNode:bookmarkCopy];
     }
 
     [(BPSSink *)v12 subscribeTo:self];
@@ -302,17 +302,17 @@ LABEL_11:
 
   else
   {
-    v12 = [[BPSSink alloc] initWithReceiveBookmarkedCompletion:v10 receiveInput:v9];
+    v12 = [[BPSSink alloc] initWithReceiveBookmarkedCompletion:completionCopy receiveInput:inputCopy];
 
     v13 = __biome_log_for_category();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [BPSPublisher(BMBookmarkableSink) sinkWithBookmark:v8 completion:v13 receiveInput:?];
+      [BPSPublisher(BMBookmarkableSink) sinkWithBookmark:bookmarkCopy completion:v13 receiveInput:?];
     }
 
     if ([(BPSPublisher *)self conformsToProtocol:&unk_1F4872E18])
     {
-      v14 = [(BPSPublisher *)self withBookmark:v8];
+      v14 = [(BPSPublisher *)self withBookmark:bookmarkCopy];
       [v14 subscribe:v12];
     }
 
@@ -329,11 +329,11 @@ LABEL_11:
   return v12;
 }
 
-- (id)drivableSinkWithBookmark:(id)a3 completion:(id)a4 shouldContinue:(id)a5
+- (id)drivableSinkWithBookmark:(id)bookmark completion:(id)completion shouldContinue:(id)continue
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  bookmarkCopy = bookmark;
+  continueCopy = continue;
+  completionCopy = completion;
   if (BPSPipelineSupportsPullBasedPublishers(self))
   {
     if (![BMBookmarkablePublisher isPipelineBookmarkable:self])
@@ -345,11 +345,11 @@ LABEL_11:
       }
     }
 
-    v12 = [[BPSDrivableSink alloc] initWithReceiveBookmarkCompletion:v10 shouldContinue:v9];
+    v12 = [[BPSDrivableSink alloc] initWithReceiveBookmarkCompletion:completionCopy shouldContinue:continueCopy];
 
-    if (v8 && [(BPSPublisher *)self conformsToProtocol:&unk_1F4872E18])
+    if (bookmarkCopy && [(BPSPublisher *)self conformsToProtocol:&unk_1F4872E18])
     {
-      [(BPSPublisher *)self applyBookmarkNode:v8];
+      [(BPSPublisher *)self applyBookmarkNode:bookmarkCopy];
     }
 
     [(BPSDrivableSink *)v12 subscribeTo:self];
@@ -357,17 +357,17 @@ LABEL_11:
 
   else
   {
-    v12 = [[BPSDrivableSink alloc] initWithReceiveBookmarkedCompletion:v10 shouldContinue:v9];
+    v12 = [[BPSDrivableSink alloc] initWithReceiveBookmarkedCompletion:completionCopy shouldContinue:continueCopy];
 
     v13 = __biome_log_for_category();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      [BPSPublisher(BMBookmarkableSink) sinkWithBookmark:v8 completion:v13 receiveInput:?];
+      [BPSPublisher(BMBookmarkableSink) sinkWithBookmark:bookmarkCopy completion:v13 receiveInput:?];
     }
 
     if ([(BPSPublisher *)self conformsToProtocol:&unk_1F4872E18])
     {
-      v14 = [(BPSPublisher *)self withBookmark:v8];
+      v14 = [(BPSPublisher *)self withBookmark:bookmarkCopy];
       [v14 subscribe:v12];
     }
 
@@ -384,14 +384,14 @@ LABEL_11:
   return v12;
 }
 
-- (id)mergeWithOthers:(id)a3
+- (id)mergeWithOthers:(id)others
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
-  v5 = [v3 arrayWithObjects:&v10 count:1];
-  v6 = [v5 arrayByAddingObjectsFromArray:{v4, v10, v11}];
+  othersCopy = others;
+  v5 = [v3 arrayWithObjects:&selfCopy count:1];
+  v6 = [v5 arrayByAddingObjectsFromArray:{othersCopy, selfCopy, v11}];
 
   v7 = [[BPSMergeMany alloc] initWithPublishers:v6];
   v8 = *MEMORY[0x1E69E9840];
@@ -399,80 +399,80 @@ LABEL_11:
   return v7;
 }
 
-- (id)mergeWithOther:(id)a3
+- (id)mergeWithOther:(id)other
 {
-  v4 = a3;
-  v5 = [[BPSMerge alloc] initWithA:self b:v4];
+  otherCopy = other;
+  v5 = [[BPSMerge alloc] initWithA:self b:otherCopy];
 
   return v5;
 }
 
-- (id)combineLatestwithOther:(id)a3
+- (id)combineLatestwithOther:(id)other
 {
-  v4 = a3;
-  v5 = [[BPSCombineLatest alloc] initWithA:self b:v4];
+  otherCopy = other;
+  v5 = [[BPSCombineLatest alloc] initWithA:self b:otherCopy];
 
   return v5;
 }
 
-- (id)debounceFor:(double)a3 getTimestamp:(id)a4
+- (id)debounceFor:(double)for getTimestamp:(id)timestamp
 {
-  v6 = a4;
-  v7 = [[BPSDebounce alloc] initWithUpstream:self for:v6 getTimestamp:a3];
+  timestampCopy = timestamp;
+  v7 = [[BPSDebounce alloc] initWithUpstream:self for:timestampCopy getTimestamp:for];
 
   return v7;
 }
 
-- (id)scanWithInitial:(id)a3 nextPartialResult:(id)a4
+- (id)scanWithInitial:(id)initial nextPartialResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BPSScan alloc] initWithUpstream:self initialResult:v7 nextPartialResult:v6];
+  resultCopy = result;
+  initialCopy = initial;
+  v8 = [[BPSScan alloc] initWithUpstream:self initialResult:initialCopy nextPartialResult:resultCopy];
 
   return v8;
 }
 
-- (id)timerFor:(double)a3 getTimestamp:(id)a4
+- (id)timerFor:(double)for getTimestamp:(id)timestamp
 {
-  v6 = a4;
-  v7 = [[BPSTimer alloc] initWithUpstream:self interval:v6 getTimestamp:a3];
+  timestampCopy = timestamp;
+  v7 = [[BPSTimer alloc] initWithUpstream:self interval:timestampCopy getTimestamp:for];
 
   return v7;
 }
 
-- (id)reduceWithInitial:(id)a3 nextPartialResult:(id)a4
+- (id)reduceWithInitial:(id)initial nextPartialResult:(id)result
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BPSReduce alloc] initWithUpstream:self initialResult:v7 nextPartialResult:v6];
+  resultCopy = result;
+  initialCopy = initial;
+  v8 = [[BPSReduce alloc] initWithUpstream:self initialResult:initialCopy nextPartialResult:resultCopy];
 
   return v8;
 }
 
-- (id)reduce:(id)a3
+- (id)reduce:(id)reduce
 {
-  v4 = a3;
+  reduceCopy = reduce;
   v5 = [BPSReduce alloc];
-  v6 = [v4 accumulator];
-  v7 = [v4 closure];
+  accumulator = [reduceCopy accumulator];
+  closure = [reduceCopy closure];
 
-  v8 = [(BPSReduce *)v5 initWithUpstream:self initialResult:v6 nextPartialResult:v7];
+  v8 = [(BPSReduce *)v5 initWithUpstream:self initialResult:accumulator nextPartialResult:closure];
 
   return v8;
 }
 
-- (id)sequenceWithSequence:(id)a3
+- (id)sequenceWithSequence:(id)sequence
 {
-  v3 = a3;
-  v4 = [[BPSSequence alloc] initWithSequence:v3];
+  sequenceCopy = sequence;
+  v4 = [[BPSSequence alloc] initWithSequence:sequenceCopy];
 
   return v4;
 }
 
-- (id)mapWithTransform:(id)a3
+- (id)mapWithTransform:(id)transform
 {
-  v4 = a3;
-  v5 = [[BPSMap alloc] initWithUpstream:self transform:v4];
+  transformCopy = transform;
+  v5 = [[BPSMap alloc] initWithUpstream:self transform:transformCopy];
 
   return v5;
 }
@@ -484,10 +484,10 @@ LABEL_11:
   return v2;
 }
 
-- (id)filterWithIsIncluded:(id)a3
+- (id)filterWithIsIncluded:(id)included
 {
-  v4 = a3;
-  v5 = [[BPSFilter alloc] initWithUpstream:self isIncluded:v4];
+  includedCopy = included;
+  v5 = [[BPSFilter alloc] initWithUpstream:self isIncluded:includedCopy];
 
   return v5;
 }
@@ -499,30 +499,30 @@ LABEL_11:
   return v2;
 }
 
-- (id)flatMapWithTransform:(id)a3
+- (id)flatMapWithTransform:(id)transform
 {
-  v4 = a3;
-  v5 = [[BPSFlatMap alloc] initWithUpstream:self maxPublishers:1 transform:v4];
+  transformCopy = transform;
+  v5 = [[BPSFlatMap alloc] initWithUpstream:self maxPublishers:1 transform:transformCopy];
 
   return v5;
 }
 
-- (id)zipWithOther:(id)a3
+- (id)zipWithOther:(id)other
 {
-  v4 = a3;
-  v5 = [[BPSZip alloc] initWithA:self b:v4];
+  otherCopy = other;
+  v5 = [[BPSZip alloc] initWithA:self b:otherCopy];
 
   return v5;
 }
 
-- (id)zipWithOthers:(id)a3
+- (id)zipWithOthers:(id)others
 {
   v11 = *MEMORY[0x1E69E9840];
-  v10 = self;
+  selfCopy = self;
   v3 = MEMORY[0x1E695DEC8];
-  v4 = a3;
-  v5 = [v3 arrayWithObjects:&v10 count:1];
-  v6 = [v5 arrayByAddingObjectsFromArray:{v4, v10, v11}];
+  othersCopy = others;
+  v5 = [v3 arrayWithObjects:&selfCopy count:1];
+  v6 = [v5 arrayByAddingObjectsFromArray:{othersCopy, selfCopy, v11}];
 
   v7 = [[BPSZipMany alloc] initWithPublishers:v6];
   v8 = *MEMORY[0x1E69E9840];
@@ -530,52 +530,52 @@ LABEL_11:
   return v7;
 }
 
-- (id)orderedMergeWithOther:(id)a3 comparator:(id)a4
+- (id)orderedMergeWithOther:(id)other comparator:(id)comparator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BPSOrderedMerge alloc] initWithA:self b:v7 comparator:v6];
+  comparatorCopy = comparator;
+  otherCopy = other;
+  v8 = [[BPSOrderedMerge alloc] initWithA:self b:otherCopy comparator:comparatorCopy];
 
   return v8;
 }
 
-- (id)orderedMergeWithOthers:(id)a3 comparator:(id)a4
+- (id)orderedMergeWithOthers:(id)others comparator:(id)comparator
 {
   v14 = *MEMORY[0x1E69E9840];
-  v13 = self;
+  selfCopy = self;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 arrayWithObjects:&v13 count:1];
-  v9 = [v8 arrayByAddingObjectsFromArray:{v7, v13, v14}];
+  comparatorCopy = comparator;
+  othersCopy = others;
+  v8 = [v5 arrayWithObjects:&selfCopy count:1];
+  v9 = [v8 arrayByAddingObjectsFromArray:{othersCopy, selfCopy, v14}];
 
-  v10 = [[BPSOrderedMerge alloc] initWithPublishers:v9 comparator:v6];
+  v10 = [[BPSOrderedMerge alloc] initWithPublishers:v9 comparator:comparatorCopy];
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (id)removeDuplicatesWithIsDuplicate:(id)a3
+- (id)removeDuplicatesWithIsDuplicate:(id)duplicate
 {
-  v4 = a3;
-  v5 = [[BPSRemoveDuplicates alloc] initWithUpstream:self isDuplicate:v4];
+  duplicateCopy = duplicate;
+  v5 = [[BPSRemoveDuplicates alloc] initWithUpstream:self isDuplicate:duplicateCopy];
 
   return v5;
 }
 
-- (id)windowByKey:(id)a3 assigner:(id)a4
+- (id)windowByKey:(id)key assigner:(id)assigner
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BPSWindower alloc] initWithUpstream:self key:v7 assigner:v6];
+  assignerCopy = assigner;
+  keyCopy = key;
+  v8 = [[BPSWindower alloc] initWithUpstream:self key:keyCopy assigner:assignerCopy];
 
   return v8;
 }
 
-- (id)windowWithAssigner:(id)a3
+- (id)windowWithAssigner:(id)assigner
 {
-  v4 = a3;
-  v5 = [[BPSWindower alloc] initWithUpstream:self key:&__block_literal_global_5 assigner:v4];
+  assignerCopy = assigner;
+  v5 = [[BPSWindower alloc] initWithUpstream:self key:&__block_literal_global_5 assigner:assignerCopy];
 
   return v5;
 }
@@ -587,61 +587,61 @@ LABEL_11:
   return v2;
 }
 
-- (id)multicastSubject:(id)a3
+- (id)multicastSubject:(id)subject
 {
-  v4 = a3;
+  subjectCopy = subject;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __47__BPSPublisher_BPSOperators__multicastSubject___block_invoke;
   v8[3] = &unk_1E8320C30;
-  v9 = v4;
-  v5 = v4;
+  v9 = subjectCopy;
+  v5 = subjectCopy;
   v6 = [(BPSPublisher *)self multicastCreateSubject:v8];
 
   return v6;
 }
 
-- (id)multicastCreateSubject:(id)a3
+- (id)multicastCreateSubject:(id)subject
 {
-  v4 = a3;
-  v5 = [[BPSMulticast alloc] initWithUpstream:self createSubject:v4];
+  subjectCopy = subject;
+  v5 = [[BPSMulticast alloc] initWithUpstream:self createSubject:subjectCopy];
 
   return v5;
 }
 
-- (id)handleEventsReceiveOutput:(id)a3 receiveCancel:(id)a4
+- (id)handleEventsReceiveOutput:(id)output receiveCancel:(id)cancel
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[BPSHandleEvents alloc] initWithUpstream:self receiveOutput:v7 receiveCancel:v6];
+  cancelCopy = cancel;
+  outputCopy = output;
+  v8 = [[BPSHandleEvents alloc] initWithUpstream:self receiveOutput:outputCopy receiveCancel:cancelCopy];
 
   return v8;
 }
 
-- (id)handleEventsReceiveSubscription:(id)a3 receiveOutput:(id)a4 receiveCompletion:(id)a5 receiveCancel:(id)a6 receiveRequest:(id)a7
+- (id)handleEventsReceiveSubscription:(id)subscription receiveOutput:(id)output receiveCompletion:(id)completion receiveCancel:(id)cancel receiveRequest:(id)request
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[BPSHandleEvents alloc] initWithUpstream:self receiveSubscription:v16 receiveOutput:v15 receiveCompletion:v14 receiveCancel:v13 receiveRequest:v12];
+  requestCopy = request;
+  cancelCopy = cancel;
+  completionCopy = completion;
+  outputCopy = output;
+  subscriptionCopy = subscription;
+  v17 = [[BPSHandleEvents alloc] initWithUpstream:self receiveSubscription:subscriptionCopy receiveOutput:outputCopy receiveCompletion:completionCopy receiveCancel:cancelCopy receiveRequest:requestCopy];
 
   return v17;
 }
 
-- (id)groupByKey:(id)a3
+- (id)groupByKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __36__BPSPublisher_GroupBy__groupByKey___block_invoke;
   v16[3] = &unk_1E83210B0;
-  v5 = v4;
+  v5 = keyCopy;
   v17 = v5;
   v6 = [(BPSPublisher *)self mapWithTransform:v16];
-  v7 = [(BPSPublisher *)self multicast];
-  v8 = BPSPipelineSupportsPullBasedPublishers(v7);
+  multicast = [(BPSPublisher *)self multicast];
+  v8 = BPSPipelineSupportsPullBasedPublishers(multicast);
 
   if (v8)
   {

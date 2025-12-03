@@ -21,29 +21,29 @@
 
 - (void)stayOnOrStepToOutputRow
 {
-  if (a1)
+  if (self)
   {
-    while ((a1[9] & 1) == 0 && (a1[8] & 1) == 0)
+    while ((self[9] & 1) == 0 && (self[8] & 1) == 0)
     {
-      a1[8] = 0;
+      self[8] = 0;
       v2 = objc_autoreleasePoolPush();
-      if ([a1 currentIndexEof])
+      if ([self currentIndexEof])
       {
-        a1[9] = 1;
+        self[9] = 1;
 
         objc_autoreleasePoolPop(v2);
         return;
       }
 
-      v3 = [a1 currentIndexedRowSatisfiesConstraints];
+      currentIndexedRowSatisfiesConstraints = [self currentIndexedRowSatisfiesConstraints];
       objc_autoreleasePoolPop(v2);
-      if (v3)
+      if (currentIndexedRowSatisfiesConstraints)
       {
         return;
       }
 
       v4 = objc_autoreleasePoolPush();
-      [a1 stepIndexedRow];
+      [self stepIndexedRow];
       objc_autoreleasePoolPop(v4);
     }
   }
@@ -51,22 +51,22 @@
 
 - (_BYTE)outputValue
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    [(_PASSqliteCollectionsCursor *)a1 stayOnOrStepToOutputRow];
-    if (v1[9] == 1)
+    [(_PASSqliteCollectionsCursor *)self stayOnOrStepToOutputRow];
+    if (selfCopy[9] == 1)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel_outputValue object:v1 file:@"_PASSqliteCollections.m" lineNumber:389 description:{@"Invalid parameter not satisfying: %@", @"!_eof"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel_outputValue object:selfCopy file:@"_PASSqliteCollections.m" lineNumber:389 description:{@"Invalid parameter not satisfying: %@", @"!_eof"}];
     }
 
     v2 = objc_autoreleasePoolPush();
-    v1 = [v1 currentIndexedValue];
+    selfCopy = [selfCopy currentIndexedValue];
     objc_autoreleasePoolPop(v2);
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

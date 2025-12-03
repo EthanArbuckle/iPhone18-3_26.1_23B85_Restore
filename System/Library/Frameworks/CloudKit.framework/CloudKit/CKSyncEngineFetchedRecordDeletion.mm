@@ -1,16 +1,16 @@
 @interface CKSyncEngineFetchedRecordDeletion
-- (CKSyncEngineFetchedRecordDeletion)initWithRecordID:(id)a3 recordType:(id)a4;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (CKSyncEngineFetchedRecordDeletion)initWithRecordID:(id)d recordType:(id)type;
+- (void)CKDescribePropertiesUsing:(id)using;
 @end
 
 @implementation CKSyncEngineFetchedRecordDeletion
 
-- (CKSyncEngineFetchedRecordDeletion)initWithRecordID:(id)a3 recordType:(id)a4
+- (CKSyncEngineFetchedRecordDeletion)initWithRecordID:(id)d recordType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  typeCopy = type;
   v26 = 0;
-  v9 = _CKCheckArgument("recordID", v7, 0, 0, 0, &v26);
+  v9 = _CKCheckArgument("recordID", dCopy, 0, 0, 0, &v26);
   v10 = v26;
   if ((v9 & 1) == 0)
   {
@@ -30,21 +30,21 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_recordID, a3);
-    objc_storeStrong(&v12->_recordType, a4);
+    objc_storeStrong(&v11->_recordID, d);
+    objc_storeStrong(&v12->_recordType, type);
   }
 
   return v12;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
-  v4 = a3;
+  usingCopy = using;
   v7 = objc_msgSend_recordType(self, v5, v6);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"recordType", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"recordType", v7, 0);
 
   v12 = objc_msgSend_recordID(self, v9, v10);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v11, @"recordID", v12, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v11, @"recordID", v12, 0);
 }
 
 @end

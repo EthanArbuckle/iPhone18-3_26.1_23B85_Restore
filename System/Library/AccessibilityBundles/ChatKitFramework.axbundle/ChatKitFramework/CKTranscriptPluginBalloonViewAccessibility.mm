@@ -1,5 +1,5 @@
 @interface CKTranscriptPluginBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsAppClip;
 - (BOOL)_axIsAttachedHandwritingPlugin;
 - (BOOL)_axIsAttachedPlugin;
@@ -7,9 +7,9 @@
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
 - (CGRect)_accessibilityMediaAnalysisFrame;
-- (id)_axAppClipDescriptionForMetadata:(id)a3;
+- (id)_axAppClipDescriptionForMetadata:(id)metadata;
 - (id)_axBalloonViewCustomActions;
-- (id)_axHandwritingDescriptionForDataSource:(id)a3;
+- (id)_axHandwritingDescriptionForDataSource:(id)source;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -23,29 +23,29 @@
 
 @implementation CKTranscriptPluginBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptPluginBalloonView" isKindOfClass:@"CKBalloonView"];
-  [v3 validateClass:@"CKTranscriptPluginBalloonView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"LPCollaborationFooterView"];
-  [v3 validateClass:@"CKTranscriptPluginBalloonView" hasInstanceMethod:@"pluginView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKBrowserItemPayload" isKindOfClass:@"IMPluginPayload"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptPluginBalloonView" isKindOfClass:@"CKBalloonView"];
+  [validationsCopy validateClass:@"CKTranscriptPluginBalloonView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"LPCollaborationFooterView"];
+  [validationsCopy validateClass:@"CKTranscriptPluginBalloonView" hasInstanceMethod:@"pluginView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKBrowserItemPayload" isKindOfClass:@"IMPluginPayload"];
   if (NSClassFromString(&cfstr_Richlinkplugin.isa))
   {
-    [v3 validateClass:@"RichLinkPluginDataSource"];
+    [validationsCopy validateClass:@"RichLinkPluginDataSource"];
   }
 
-  [v3 validateClass:@"IMPluginPayload" hasInstanceMethod:@"pluginBundleID" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IMTranscriptPluginChatItem" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptPluginBalloonView" hasInstanceMethod:@"pluginView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPLinkMetadata" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPLinkMetadata" hasInstanceMethod:@"associatedApplication" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPAssociatedApplicationMetadata" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPAssociatedApplicationMetadata" hasInstanceMethod:@"caption" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LPAssociatedApplicationMetadata" hasInstanceMethod:@"clipAction" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"LPLinkView" hasInstanceMethod:@"_captionTapRecognized:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"LPLinkView" hasInstanceMethod:@"_mediaTapRecognized:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"IMPluginPayload" hasInstanceMethod:@"pluginBundleID" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IMTranscriptPluginChatItem" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptPluginBalloonView" hasInstanceMethod:@"pluginView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPLinkMetadata" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPLinkMetadata" hasInstanceMethod:@"associatedApplication" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPAssociatedApplicationMetadata" hasInstanceMethod:@"bundleIdentifier" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPAssociatedApplicationMetadata" hasInstanceMethod:@"caption" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LPAssociatedApplicationMetadata" hasInstanceMethod:@"clipAction" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"LPLinkView" hasInstanceMethod:@"_captionTapRecognized:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"LPLinkView" hasInstanceMethod:@"_mediaTapRecognized:" withFullSignature:{"v", "@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -99,9 +99,9 @@ LABEL_15:
   }
 
 LABEL_13:
-  v8 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axIsAttachedPlugin];
+  _axIsAttachedPlugin = [(CKTranscriptPluginBalloonViewAccessibility *)self _axIsAttachedPlugin];
   v6 = 0;
-  if (v8 && !v4)
+  if (_axIsAttachedPlugin && !v4)
   {
     goto LABEL_15;
   }
@@ -133,17 +133,17 @@ uint64_t __68__CKTranscriptPluginBalloonViewAccessibility_isAccessibilityElement
 {
   v8.receiver = self;
   v8.super_class = CKTranscriptPluginBalloonViewAccessibility;
-  v3 = [(CKTranscriptPluginBalloonViewAccessibility *)&v8 accessibilityValue];
+  accessibilityValue = [(CKTranscriptPluginBalloonViewAccessibility *)&v8 accessibilityValue];
   if ([(CKTranscriptPluginBalloonViewAccessibility *)self _axIsURL]|| [(CKTranscriptPluginBalloonViewAccessibility *)self _axIsAttachedPlugin])
   {
     v4 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"pluginView"];
-    v7 = [v4 accessibilityValue];
+    accessibilityValue2 = [v4 accessibilityValue];
     v5 = __UIAXStringForVariables();
 
-    v3 = v5;
+    accessibilityValue = v5;
   }
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityLabel
@@ -152,24 +152,24 @@ uint64_t __68__CKTranscriptPluginBalloonViewAccessibility_isAccessibilityElement
   {
     if ([(CKTranscriptPluginBalloonViewAccessibility *)self _axIsHandwriting])
     {
-      v7 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axChatItemForBalloon];
+      _axChatItemForBalloon = [(CKTranscriptPluginBalloonViewAccessibility *)self _axChatItemForBalloon];
       v8 = __UIAccessibilitySafeClass();
 
-      v9 = [v8 safeValueForKeyPath:@"IMChatItem.dataSource"];
-      v10 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axHandwritingDescriptionForDataSource:v9];
+      _axDigitalTouchDescription = [v8 safeValueForKeyPath:@"IMChatItem.dataSource"];
+      v10 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axHandwritingDescriptionForDataSource:_axDigitalTouchDescription];
 LABEL_9:
-      v6 = v10;
+      accessibilityLabel2 = v10;
 
 LABEL_21:
 LABEL_22:
       objc_opt_class();
       v4 = __UIAccessibilityCastAsSafeCategory();
-      v19 = [v4 _axMessageSender];
-      v20 = [v4 _axHighlightedDescription];
-      v21 = [v4 _axReplyDescription];
-      v22 = [v4 _axStickerDescription];
-      v23 = [v4 _axAcknowledgmentDescription];
-      v27 = [v4 _axMessageTime];
+      _axMessageSender = [v4 _axMessageSender];
+      _axHighlightedDescription = [v4 _axHighlightedDescription];
+      _axReplyDescription = [v4 _axReplyDescription];
+      _axStickerDescription = [v4 _axStickerDescription];
+      _axAcknowledgmentDescription = [v4 _axAcknowledgmentDescription];
+      _axMessageTime = [v4 _axMessageTime];
       v24 = __UIAXStringForVariables();
 
       goto LABEL_30;
@@ -178,7 +178,7 @@ LABEL_22:
     if ([(CKTranscriptPluginBalloonViewAccessibility *)self _axIsAppClip])
     {
       v8 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKeyPath:@"pluginView._metadata"];
-      v18 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axAppClipDescriptionForMetadata:v8];
+      accessibilityLabel = [(CKTranscriptPluginBalloonViewAccessibility *)self _axAppClipDescriptionForMetadata:v8];
     }
 
     else
@@ -187,21 +187,21 @@ LABEL_22:
       {
         if (![(CKTranscriptPluginBalloonViewAccessibility *)self _axIsDigitalTouch])
         {
-          v6 = 0;
+          accessibilityLabel2 = 0;
           goto LABEL_22;
         }
 
         v8 = accessibilityLocalizedString(@"digital.touch.label");
-        v9 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axDigitalTouchDescription];
+        _axDigitalTouchDescription = [(CKTranscriptPluginBalloonViewAccessibility *)self _axDigitalTouchDescription];
         v10 = __UIAXStringForVariables();
         goto LABEL_9;
       }
 
       v8 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"pluginView"];
-      v18 = [v8 accessibilityLabel];
+      accessibilityLabel = [v8 accessibilityLabel];
     }
 
-    v6 = v18;
+    accessibilityLabel2 = accessibilityLabel;
     goto LABEL_21;
   }
 
@@ -219,15 +219,15 @@ LABEL_22:
   if ([(CKTranscriptPluginBalloonViewAccessibility *)self _axIsAttachedHandwritingPlugin])
   {
     v5 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"dataSource"];
-    v6 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axHandwritingDescriptionForDataSource:v5];
+    accessibilityLabel2 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axHandwritingDescriptionForDataSource:v5];
   }
 
   else
   {
     v11 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"pluginView"];
-    v6 = [v11 accessibilityLabel];
+    accessibilityLabel2 = [v11 accessibilityLabel];
     v12 = NSClassFromString(&cfstr_Msmessageexten_1.isa);
-    if (![v6 length])
+    if (![accessibilityLabel2 length])
     {
       if (v12)
       {
@@ -240,8 +240,8 @@ LABEL_22:
             v15 = [(objc_class *)v13 messagePayloadFromPluginPayload:v14];
             v16 = __UIAccessibilitySafeClass();
 
-            v17 = [v16 accessibilityLabel];
-            if (v17)
+            accessibilityLabel3 = [v16 accessibilityLabel];
+            if (accessibilityLabel3)
             {
               [v16 accessibilityLabel];
             }
@@ -252,7 +252,7 @@ LABEL_22:
             }
             v25 = ;
 
-            v6 = v25;
+            accessibilityLabel2 = v25;
           }
         }
       }
@@ -270,15 +270,15 @@ LABEL_30:
   if ([(CKTranscriptPluginBalloonViewAccessibility *)self _axIsURL])
   {
     v3 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"pluginView"];
-    v4 = [v3 accessibilityHint];
+    accessibilityHint = [v3 accessibilityHint];
   }
 
   else
   {
-    v4 = 0;
+    accessibilityHint = 0;
   }
 
-  return v4;
+  return accessibilityHint;
 }
 
 - (int64_t)accessibilityContainerType
@@ -297,41 +297,41 @@ LABEL_30:
 {
   v6.receiver = self;
   v6.super_class = CKTranscriptPluginBalloonViewAccessibility;
-  v3 = [(CKTranscriptPluginBalloonViewAccessibility *)&v6 accessibilityTraits];
+  accessibilityTraits = [(CKTranscriptPluginBalloonViewAccessibility *)&v6 accessibilityTraits];
   if ([(CKTranscriptPluginBalloonViewAccessibility *)self _axIsURL])
   {
     v4 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"pluginView"];
-    v3 |= [v4 accessibilityTraits];
+    accessibilityTraits |= [v4 accessibilityTraits];
   }
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)_axBalloonViewCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v11.receiver = self;
   v11.super_class = CKTranscriptPluginBalloonViewAccessibility;
-  v4 = [(CKTranscriptPluginBalloonViewAccessibility *)&v11 _axBalloonViewCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _axBalloonViewCustomActions = [(CKTranscriptPluginBalloonViewAccessibility *)&v11 _axBalloonViewCustomActions];
+  [array axSafelyAddObjectsFromArray:_axBalloonViewCustomActions];
 
   v5 = [(CKTranscriptPluginBalloonViewAccessibility *)self _accessibilityValueForKey:@"AXPluginClearActionProvider"];
   if (v5)
   {
     v6 = accessibilityLocalizedString(@"plugin.clear.action.title");
-    v7 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v6 target:self selector:sel__axClear];
-    [v3 addObject:v7];
+    accessibilityCustomActions2 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v6 target:self selector:sel__axClear];
+    [array addObject:accessibilityCustomActions2];
   }
 
   else if ([(CKTranscriptPluginBalloonViewAccessibility *)self _axIsAppClip])
   {
     v6 = accessibilityLocalizedString(@"plugin.appClip.OpenInSafari.title");
-    v7 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"pluginView"];
-    v8 = [v7 accessibilityCustomActions];
-    [v3 addObjectsFromArray:v8];
+    accessibilityCustomActions2 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"pluginView"];
+    accessibilityCustomActions = [accessibilityCustomActions2 accessibilityCustomActions];
+    [array addObjectsFromArray:accessibilityCustomActions];
 
     v9 = [objc_alloc(MEMORY[0x29EDC78E0]) initWithName:v6 target:self selector:sel__axAppClipOpenInSafari];
-    [v3 addObject:v9];
+    [array addObject:v9];
   }
 
   else
@@ -342,13 +342,13 @@ LABEL_30:
     }
 
     v6 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"pluginView"];
-    v7 = [v6 accessibilityCustomActions];
-    [v3 addObjectsFromArray:v7];
+    accessibilityCustomActions2 = [v6 accessibilityCustomActions];
+    [array addObjectsFromArray:accessibilityCustomActions2];
   }
 
 LABEL_8:
 
-  return v3;
+  return array;
 }
 
 - (BOOL)accessibilityActivate
@@ -368,9 +368,9 @@ LABEL_8:
   else if ([(CKTranscriptPluginBalloonViewAccessibility *)self _axIsURL])
   {
     v6 = [(CKTranscriptPluginBalloonViewAccessibility *)self safeValueForKey:@"pluginView"];
-    v7 = [v6 accessibilityActivate];
+    accessibilityActivate = [v6 accessibilityActivate];
 
-    return v7;
+    return accessibilityActivate;
   }
 
   v8.receiver = self;
@@ -397,8 +397,8 @@ LABEL_8:
   v3 = [v2 safeArrayForKey:@"_axMediaViews"];
   if ([v3 count] == 1)
   {
-    v4 = [v3 firstObject];
-    [v4 _accessibilityVisibleFrame];
+    firstObject = [v3 firstObject];
+    [firstObject _accessibilityVisibleFrame];
     v6 = v5;
     v8 = v7;
     v10 = v9;
@@ -430,29 +430,29 @@ LABEL_8:
   v9 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 subviews];
+  subviews = [v3 subviews];
 
-  if (v4)
+  if (subviews)
   {
-    v5 = v4;
+    automationElements = subviews;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CKTranscriptPluginBalloonViewAccessibility;
-    v5 = [(CKTranscriptPluginBalloonViewAccessibility *)&v8 automationElements];
+    automationElements = [(CKTranscriptPluginBalloonViewAccessibility *)&v8 automationElements];
   }
 
-  v6 = v5;
+  v6 = automationElements;
 
   return v6;
 }
 
 - (BOOL)_axIsAttachedPlugin
 {
-  v3 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axChatItemForBalloon];
-  if (v3)
+  _axChatItemForBalloon = [(CKTranscriptPluginBalloonViewAccessibility *)self _axChatItemForBalloon];
+  if (_axChatItemForBalloon)
   {
     v4 = 0;
   }
@@ -476,7 +476,7 @@ LABEL_8:
     v5 = [v3 safeValueForKeyPath:@"_metadata.associatedApplication"];
     v6 = [v5 safeValueForKey:@"bundleIdentifier"];
 
-    v7 = [(CKTranscriptPluginBalloonViewAccessibility *)self _axIsURL];
+    _axIsURL = [(CKTranscriptPluginBalloonViewAccessibility *)self _axIsURL];
     if (v6)
     {
       v8 = v4;
@@ -487,7 +487,7 @@ LABEL_8:
       v8 = 0;
     }
 
-    v9 = v7 && v8;
+    v9 = _axIsURL && v8;
   }
 
   else
@@ -498,11 +498,11 @@ LABEL_8:
   return v9;
 }
 
-- (id)_axAppClipDescriptionForMetadata:(id)a3
+- (id)_axAppClipDescriptionForMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [v3 safeValueForKey:@"associatedApplication"];
-  v5 = [v3 safeStringForKey:@"title"];
+  metadataCopy = metadata;
+  v4 = [metadataCopy safeValueForKey:@"associatedApplication"];
+  v5 = [metadataCopy safeStringForKey:@"title"];
 
   v6 = [v4 safeStringForKey:@"_caption"];
   v7 = [v4 safeIntegerForKey:@"clipAction"];
@@ -539,12 +539,12 @@ LABEL_8:
   return isKindOfClass & 1;
 }
 
-- (id)_axHandwritingDescriptionForDataSource:(id)a3
+- (id)_axHandwritingDescriptionForDataSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 safeValueForKeyPath:@"handwritingFromPayload.drawing"];
+    v4 = [sourceCopy safeValueForKeyPath:@"handwritingFromPayload.drawing"];
     objc_opt_class();
     v5 = [v4 safeValueForKey:@"strokes"];
     v6 = __UIAccessibilityCastAsClass();

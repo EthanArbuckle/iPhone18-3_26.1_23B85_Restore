@@ -1,28 +1,28 @@
 @interface PKDashboardBalanceView
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardBalanceView)initWithFrame:(CGRect)a3;
-- (void)_buttonPressed:(id)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardBalanceView)initWithFrame:(CGRect)frame;
+- (void)_buttonPressed:(id)pressed;
 - (void)createSubviews;
 - (void)layoutSubviews;
 - (void)resetFonts;
-- (void)setAvailableCredit:(id)a3;
-- (void)setBalance:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleColor:(id)a3;
-- (void)setTopUpAction:(id)a3;
-- (void)setTopUpEnabled:(BOOL)a3;
-- (void)setTopUpTitle:(id)a3;
+- (void)setAvailableCredit:(id)credit;
+- (void)setBalance:(id)balance;
+- (void)setTitle:(id)title;
+- (void)setTitleColor:(id)color;
+- (void)setTopUpAction:(id)action;
+- (void)setTopUpEnabled:(BOOL)enabled;
+- (void)setTopUpTitle:(id)title;
 @end
 
 @implementation PKDashboardBalanceView
 
-- (PKDashboardBalanceView)initWithFrame:(CGRect)a3
+- (PKDashboardBalanceView)initWithFrame:(CGRect)frame
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v8.receiver = self;
   v8.super_class = PKDashboardBalanceView;
-  v3 = [(PKDashboardCollectionViewCell *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,40 +40,40 @@
 
 - (void)createSubviews
 {
-  v3 = [(PKDashboardBalanceView *)self contentView];
+  contentView = [(PKDashboardBalanceView *)self contentView];
   v4 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   titleLabel = self->_titleLabel;
   self->_titleLabel = v4;
 
   v6 = self->_titleLabel;
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v6 setTextColor:v7];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v6 setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_titleLabel setNumberOfLines:1];
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-  [v3 addSubview:self->_titleLabel];
+  [contentView addSubview:self->_titleLabel];
   v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   detailLabel = self->_detailLabel;
   self->_detailLabel = v8;
 
   v10 = self->_detailLabel;
-  v11 = [MEMORY[0x1E69DC888] labelColor];
-  [(UILabel *)v10 setTextColor:v11];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UILabel *)v10 setTextColor:labelColor];
 
   [(UILabel *)self->_detailLabel setNumberOfLines:0];
   [(UILabel *)self->_detailLabel setAccessibilityIdentifier:*MEMORY[0x1E69B96F8]];
-  [v3 addSubview:self->_detailLabel];
+  [contentView addSubview:self->_detailLabel];
   v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   availableCreditLabel = self->_availableCreditLabel;
   self->_availableCreditLabel = v12;
 
   [(UILabel *)self->_availableCreditLabel setNumberOfLines:2];
   v14 = self->_availableCreditLabel;
-  v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)v14 setTextColor:v15];
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)v14 setTextColor:secondaryLabelColor2];
 
   [(UILabel *)self->_availableCreditLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
-  [v3 addSubview:self->_availableCreditLabel];
+  [contentView addSubview:self->_availableCreditLabel];
   v30 = 0x4034000000000000;
   v31 = xmmword_1BE0B69E0;
   v32 = vdupq_n_s64(2uLL);
@@ -82,17 +82,17 @@
   self->_actionButton = v16;
 
   v18 = self->_actionButton;
-  v19 = [MEMORY[0x1E69DC888] labelColor];
-  [(PKContinuousButton *)v18 setTintColor:v19];
+  labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+  [(PKContinuousButton *)v18 setTintColor:labelColor2];
 
   v20 = self->_actionButton;
-  v21 = [objc_opt_class() defaultBackgroundColor];
-  [(PKContinuousButton *)v20 updateTitleColorWithColor:v21];
+  defaultBackgroundColor = [objc_opt_class() defaultBackgroundColor];
+  [(PKContinuousButton *)v20 updateTitleColorWithColor:defaultBackgroundColor];
 
   [(PKContinuousButton *)self->_actionButton setContentEdgeInsets:10.0, 16.0, 10.0, 16.0];
   [(PKContinuousButton *)self->_actionButton addTarget:self action:sel__buttonPressed_ forControlEvents:64];
   [(PKContinuousButton *)self->_actionButton setAccessibilityIdentifier:*MEMORY[0x1E69B93D0]];
-  [v3 addSubview:self->_actionButton];
+  [contentView addSubview:self->_actionButton];
   v22 = [MEMORY[0x1E69DCAD8] configurationWithWeight:6];
   v23 = [MEMORY[0x1E69DCAD8] configurationWithScale:1];
   v24 = [v22 configurationByApplyingConfiguration:v23];
@@ -103,10 +103,10 @@
   self->_disclosureView = v26;
 
   v28 = self->_disclosureView;
-  v29 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  [(UIImageView *)v28 setTintColor:v29];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  [(UIImageView *)v28 setTintColor:tertiaryLabelColor];
 
-  [v3 addSubview:self->_disclosureView];
+  [contentView addSubview:self->_disclosureView];
   [(PKDashboardBalanceView *)self resetFonts];
   [(PKDashboardBalanceView *)self setAccessibilityIdentifier:*MEMORY[0x1E69B9500]];
 }
@@ -127,30 +127,30 @@
   v10 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], v5, 0x8000, 0);
   [(UILabel *)availableCreditLabel setFont:v10];
 
-  v12 = [(PKContinuousButton *)self->_actionButton titleLabel];
+  titleLabel = [(PKContinuousButton *)self->_actionButton titleLabel];
   v11 = PKFontForDefaultDesign(v4, *MEMORY[0x1E69DDC50], 2, 0);
-  [v12 setFont:v11];
+  [titleLabel setFont:v11];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   title = self->_title;
-  v10 = v4;
-  v6 = title;
-  if (v6 == v10)
+  v10 = titleCopy;
+  titleCopy2 = title;
+  if (titleCopy2 == v10)
   {
 
     goto LABEL_9;
   }
 
-  if (!v10 || !v6)
+  if (!v10 || !titleCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(NSString *)v10 isEqualToString:v6];
+  v7 = [(NSString *)v10 isEqualToString:titleCopy2];
 
   if (!v7)
   {
@@ -166,12 +166,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
-  v7 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleColor, a3);
+    objc_storeStrong(&self->_titleColor, color);
     titleLabel = self->_titleLabel;
     if (self->_titleColor)
     {
@@ -180,38 +180,38 @@ LABEL_9:
 
     else
     {
-      v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      [(UILabel *)titleLabel setTextColor:v6];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      [(UILabel *)titleLabel setTextColor:secondaryLabelColor];
     }
 
     [(PKDashboardBalanceView *)self setNeedsLayout];
   }
 }
 
-- (void)setBalance:(id)a3
+- (void)setBalance:(id)balance
 {
-  v5 = a3;
+  balanceCopy = balance;
   balance = self->_balance;
-  v9 = v5;
-  v7 = balance;
-  if (v7 == v9)
+  v9 = balanceCopy;
+  balanceCopy2 = balance;
+  if (balanceCopy2 == v9)
   {
 
     goto LABEL_9;
   }
 
-  if (!v9 || !v7)
+  if (!v9 || !balanceCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [(NSString *)v9 isEqualToString:v7];
+  v8 = [(NSString *)v9 isEqualToString:balanceCopy2];
 
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_balance, a3);
+    objc_storeStrong(&self->_balance, balance);
     [(UILabel *)self->_detailLabel setText:self->_balance];
     [(PKDashboardBalanceView *)self setNeedsLayout];
   }
@@ -219,11 +219,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setAvailableCredit:(id)a3
+- (void)setAvailableCredit:(id)credit
 {
-  v5 = a3;
+  creditCopy = credit;
   availableCredit = self->_availableCredit;
-  v9 = v5;
+  v9 = creditCopy;
   v7 = availableCredit;
   if (v7 == v9)
   {
@@ -242,7 +242,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_availableCredit, a3);
+    objc_storeStrong(&self->_availableCredit, credit);
     [(UILabel *)self->_availableCreditLabel setText:self->_availableCredit];
     [(PKDashboardBalanceView *)self setNeedsLayout];
   }
@@ -250,11 +250,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTopUpTitle:(id)a3
+- (void)setTopUpTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   topUpTitle = self->_topUpTitle;
-  v9 = v5;
+  v9 = titleCopy;
   v7 = topUpTitle;
   if (v7 == v9)
   {
@@ -273,7 +273,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_topUpTitle, a3);
+    objc_storeStrong(&self->_topUpTitle, title);
     [(PKContinuousButton *)self->_actionButton setTitle:self->_topUpTitle forState:0];
     [(PKDashboardBalanceView *)self setNeedsLayout];
   }
@@ -281,9 +281,9 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTopUpAction:(id)a3
+- (void)setTopUpAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   topUpAction = self->_topUpAction;
   self->_topUpAction = v4;
 
@@ -292,34 +292,34 @@ LABEL_9:
   [(PKDashboardBalanceView *)self setNeedsLayout];
 }
 
-- (void)setTopUpEnabled:(BOOL)a3
+- (void)setTopUpEnabled:(BOOL)enabled
 {
-  if (self->_topUpEnabled == !a3)
+  if (self->_topUpEnabled == !enabled)
   {
-    self->_topUpEnabled = a3;
+    self->_topUpEnabled = enabled;
     [(PKContinuousButton *)self->_actionButton setEnabled:?];
     actionButton = self->_actionButton;
     if (self->_topUpEnabled)
     {
-      v5 = [MEMORY[0x1E69DC888] labelColor];
-      [(PKContinuousButton *)actionButton setTintColor:v5];
+      labelColor = [MEMORY[0x1E69DC888] labelColor];
+      [(PKContinuousButton *)actionButton setTintColor:labelColor];
 
       v6 = self->_actionButton;
-      v7 = [objc_opt_class() defaultBackgroundColor];
+      defaultBackgroundColor = [objc_opt_class() defaultBackgroundColor];
       v8 = v6;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] systemFillColor];
-      [(PKContinuousButton *)actionButton setTintColor:v9];
+      systemFillColor = [MEMORY[0x1E69DC888] systemFillColor];
+      [(PKContinuousButton *)actionButton setTintColor:systemFillColor];
 
       v10 = self->_actionButton;
-      v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      defaultBackgroundColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
       v8 = v10;
     }
 
-    v11 = v7;
+    v11 = defaultBackgroundColor;
     [(PKContinuousButton *)v8 updateTitleColorWithColor:?];
   }
 }
@@ -333,22 +333,22 @@ LABEL_9:
   [(PKDashboardBalanceView *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKDashboardBalanceView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKDashboardBalanceView *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = _UISolariumFeatureFlagEnabled();
   v9 = _UISolariumFeatureFlagEnabled();
   if (v8)
@@ -403,8 +403,8 @@ LABEL_9:
   remainder.origin.y = v14;
   remainder.size.width = v15;
   remainder.size.height = v17;
-  v19 = [(UILabel *)self->_titleLabel font];
-  [v19 pointSize];
+  font = [(UILabel *)self->_titleLabel font];
+  [font pointSize];
   v21 = v20;
 
   [(UILabel *)self->_titleLabel sizeThatFits:v15, v17];
@@ -441,8 +441,8 @@ LABEL_9:
   }
 
   [(UILabel *)self->_titleLabel setNumberOfLines:v31];
-  v34 = [(PKContinuousButton *)self->_actionButton titleLabel];
-  [v34 setNumberOfLines:v32];
+  titleLabel = [(PKContinuousButton *)self->_actionButton titleLabel];
+  [titleLabel setNumberOfLines:v32];
 
   memset(&slice, 0, sizeof(slice));
   if (v27 <= v15)
@@ -575,7 +575,7 @@ LABEL_9:
   return result;
 }
 
-- (void)_buttonPressed:(id)a3
+- (void)_buttonPressed:(id)pressed
 {
   topUpAction = self->_topUpAction;
   if (topUpAction)

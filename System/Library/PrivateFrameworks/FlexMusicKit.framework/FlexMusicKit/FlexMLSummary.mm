@@ -1,15 +1,15 @@
 @interface FlexMLSummary
-+ (id)summaryFromSummaries:(id)a3 targetTimeScale:(int)a4;
-- (FlexMLSummary)initWithDictionary:(id)a3 targetTimeScale:(int)a4;
-- (void)setDuration:(id *)a3;
++ (id)summaryFromSummaries:(id)summaries targetTimeScale:(int)scale;
+- (FlexMLSummary)initWithDictionary:(id)dictionary targetTimeScale:(int)scale;
+- (void)setDuration:(id *)duration;
 @end
 
 @implementation FlexMLSummary
 
-+ (id)summaryFromSummaries:(id)a3 targetTimeScale:(int)a4
++ (id)summaryFromSummaries:(id)summaries targetTimeScale:(int)scale
 {
   v346 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  summariesCopy = summaries;
   v9 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v5, v6, v7, v8);
   v334 = **&MEMORY[0x277CC08F0];
   v308 = objc_msgSend_array(MEMORY[0x277CBEB18], v10, v11, v12, v13);
@@ -21,7 +21,7 @@
   v331 = 0u;
   v332 = 0u;
   v333 = 0u;
-  v33 = v4;
+  v33 = summariesCopy;
   v300 = objc_msgSend_countByEnumeratingWithState_objects_count_(v33, v34, &v330, v345, 16);
   if (v300)
   {
@@ -243,7 +243,7 @@
         v316[1] = 3221225472;
         v316[2] = sub_24B7F591C;
         v316[3] = &unk_27900EE08;
-        v317 = a4;
+        scaleCopy = scale;
         v318 = v334;
         v168 = MEMORY[0x24C24B550](v316);
         v173 = objc_msgSend_allBeats(v305, v169, v170, v171, v172);
@@ -275,7 +275,7 @@
           if (v211)
           {
             objc_msgSend_doubleValue(v211, v212, v213, v214, v215);
-            CMTimeMakeWithSeconds(&rhs, v216, a4);
+            CMTimeMakeWithSeconds(&rhs, v216, scale);
           }
 
           else
@@ -405,28 +405,28 @@
   objc_msgSend_setObject_forKey_(v9, v285, v284, @"peak", v286);
 
   v287 = [FlexMLSummary alloc];
-  v290 = objc_msgSend_initWithDictionary_targetTimeScale_(v287, v288, v9, a4, v289);
+  v290 = objc_msgSend_initWithDictionary_targetTimeScale_(v287, v288, v9, scale, v289);
 
   v291 = *MEMORY[0x277D85DE8];
 
   return v290;
 }
 
-- (FlexMLSummary)initWithDictionary:(id)a3 targetTimeScale:(int)a4
+- (FlexMLSummary)initWithDictionary:(id)dictionary targetTimeScale:(int)scale
 {
   v185 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v182.receiver = self;
   v182.super_class = FlexMLSummary;
   v9 = [(FlexMLSummary *)&v182 init];
   if (v9)
   {
-    v10 = objc_msgSend_objectForKey_(v5, v6, @"duration", v7, v8);
+    v10 = objc_msgSend_objectForKey_(dictionaryCopy, v6, @"duration", v7, v8);
     v15 = v10;
     if (v10)
     {
       objc_msgSend_doubleValue(v10, v11, v12, v13, v14);
-      CMTimeMakeWithSeconds(&v181, v16, a4);
+      CMTimeMakeWithSeconds(&v181, v16, scale);
     }
 
     else
@@ -436,11 +436,11 @@
 
     *(v9 + 64) = v181;
 
-    v24 = objc_msgSend_objectForKey_(v5, v17, @"segments", v18, v19);
+    v24 = objc_msgSend_objectForKey_(dictionaryCopy, v17, @"segments", v18, v19);
     if (v24)
     {
       v160 = v9;
-      v161 = v5;
+      v161 = dictionaryCopy;
       v164 = objc_msgSend_array(MEMORY[0x277CBEB18], v20, v21, v22, v23);
       v177 = 0u;
       v178 = 0u;
@@ -469,7 +469,7 @@
             if (v31)
             {
               objc_msgSend_doubleValue(v31, v32, v33, v34, v35);
-              CMTimeMakeWithSeconds(&v181, v37, a4);
+              CMTimeMakeWithSeconds(&v181, v37, scale);
             }
 
             else
@@ -483,7 +483,7 @@
             if (v41)
             {
               objc_msgSend_doubleValue(v41, v42, v43, v44, v45);
-              CMTimeMakeWithSeconds(&v176, v47, a4);
+              CMTimeMakeWithSeconds(&v176, v47, scale);
             }
 
             else
@@ -497,7 +497,7 @@
             if (v51)
             {
               objc_msgSend_doubleValue(v51, v52, v53, v54, v55);
-              CMTimeMakeWithSeconds(&v175, v57, a4);
+              CMTimeMakeWithSeconds(&v175, v57, scale);
             }
 
             else
@@ -549,7 +549,7 @@
                       if (v95)
                       {
                         objc_msgSend_doubleValue(v95, v96, v97, v98, v99);
-                        CMTimeMakeWithSeconds(&v170, v101, a4);
+                        CMTimeMakeWithSeconds(&v170, v101, scale);
                       }
 
                       else
@@ -592,23 +592,23 @@
       v116 = *(v160 + 2);
       *(v160 + 2) = v164;
 
-      v5 = v161;
+      dictionaryCopy = v161;
       v24 = v159;
     }
 
-    v117 = objc_msgSend_objectForKey_(v5, v20, @"videoScores", v22, v23);
+    v117 = objc_msgSend_objectForKey_(dictionaryCopy, v20, @"videoScores", v22, v23);
     objc_storeStrong(v9 + 3, v117);
-    v121 = objc_msgSend_objectForKey_(v5, v118, @"lkfs", v119, v120);
+    v121 = objc_msgSend_objectForKey_(dictionaryCopy, v118, @"lkfs", v119, v120);
     objc_msgSend_doubleValue(v121, v122, v123, v124, v125);
     *(v9 + 7) = v126;
 
-    v130 = objc_msgSend_objectForKey_(v5, v127, @"peak", v128, v129);
+    v130 = objc_msgSend_objectForKey_(dictionaryCopy, v127, @"peak", v128, v129);
     objc_msgSend_floatValue(v130, v131, v132, v133, v134);
     *(v9 + 2) = v135;
 
-    v139 = objc_msgSend_objectForKey_(v5, v136, @"beatTimes", v137, v138);
+    v139 = objc_msgSend_objectForKey_(dictionaryCopy, v136, @"beatTimes", v137, v138);
 
-    v143 = v5;
+    v143 = dictionaryCopy;
     if (v139 || (objc_msgSend_objectForKey_(v117, v140, @"beatTimes", v141, v142), v144 = objc_claimAutoreleasedReturnValue(), v144, v143 = v117, v144))
     {
       v145 = objc_msgSend_objectForKey_(v143, v140, @"beatTimes", v141, v142);
@@ -616,9 +616,9 @@
       *(v9 + 4) = v145;
     }
 
-    v147 = objc_msgSend_objectForKey_(v5, v140, @"barTimes", v141, v142);
+    v147 = objc_msgSend_objectForKey_(dictionaryCopy, v140, @"barTimes", v141, v142);
 
-    v151 = v5;
+    v151 = dictionaryCopy;
     if (v147 || (objc_msgSend_objectForKey_(v117, v148, @"barTimes", v149, v150), v152 = objc_claimAutoreleasedReturnValue(), v152, v151 = v117, v152))
     {
       v153 = objc_msgSend_objectForKey_(v151, v148, @"barTimes", v149, v150);
@@ -626,7 +626,7 @@
       *(v9 + 5) = v153;
     }
 
-    v155 = objc_msgSend_objectForKey_(v5, v148, @"loopTimes", v149, v150);
+    v155 = objc_msgSend_objectForKey_(dictionaryCopy, v148, @"loopTimes", v149, v150);
     v156 = *(v9 + 6);
     *(v9 + 6) = v155;
   }
@@ -635,10 +635,10 @@
   return v9;
 }
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_duration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_duration.epoch = duration->var3;
   *&self->_duration.value = v3;
 }
 

@@ -1,117 +1,117 @@
 @interface PDAnimationCache
-+ (id)createAnimationInfoDataForCacheItem:(id)a3 order:(unsigned int)a4;
-+ (void)loadAnimationCache:(id)a3 pdAnimation:(id)a4 state:(id)a5;
-+ (void)mapAnimationInfo:(id)a3 cacheData:(id)a4 state:(id)a5;
-+ (void)mapCommonData:(id)a3 cacheData:(id)a4 state:(id)a5;
-- (PDAnimationCache)initWithAnimationInfo:(id)a3;
++ (id)createAnimationInfoDataForCacheItem:(id)item order:(unsigned int)order;
++ (void)loadAnimationCache:(id)cache pdAnimation:(id)animation state:(id)state;
++ (void)mapAnimationInfo:(id)info cacheData:(id)data state:(id)state;
++ (void)mapCommonData:(id)data cacheData:(id)cacheData state:(id)state;
+- (PDAnimationCache)initWithAnimationInfo:(id)info;
 @end
 
 @implementation PDAnimationCache
 
-- (PDAnimationCache)initWithAnimationInfo:(id)a3
+- (PDAnimationCache)initWithAnimationInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v13.receiver = self;
   v13.super_class = PDAnimationCache;
   v5 = [(PDAnimationCache *)&v13 init];
   if (v5)
   {
-    v6 = [v4 target];
-    [(PDAnimationCache *)v5 setTarget:v6];
+    target = [infoCopy target];
+    [(PDAnimationCache *)v5 setTarget:target];
 
-    v7 = [v4 motionPath];
-    [(PDAnimationCache *)v5 setMotionPath:v7];
+    motionPath = [infoCopy motionPath];
+    [(PDAnimationCache *)v5 setMotionPath:motionPath];
 
-    v8 = [v4 groupId];
-    [(PDAnimationCache *)v5 setGroupId:v8];
+    groupId = [infoCopy groupId];
+    [(PDAnimationCache *)v5 setGroupId:groupId];
 
-    v9 = [v4 build];
-    [(PDAnimationCache *)v5 setBuild:v9];
+    build = [infoCopy build];
+    [(PDAnimationCache *)v5 setBuild:build];
 
-    v5->mNodeType = [v4 nodeType];
-    v5->mPresetId = [v4 presetId];
-    v5->mPresetSubType = [v4 presetSubType];
-    v5->mPresetClass = [v4 presetClass];
-    v5->mIterateType = [v4 iterateType];
-    if ([v4 hasDelay])
+    v5->mNodeType = [infoCopy nodeType];
+    v5->mPresetId = [infoCopy presetId];
+    v5->mPresetSubType = [infoCopy presetSubType];
+    v5->mPresetClass = [infoCopy presetClass];
+    v5->mIterateType = [infoCopy iterateType];
+    if ([infoCopy hasDelay])
     {
-      [v4 delay];
+      [infoCopy delay];
       [(PDAnimationCache *)v5 setDelay:?];
     }
 
-    if ([v4 hasDirection])
+    if ([infoCopy hasDirection])
     {
-      [v4 direction];
+      [infoCopy direction];
       [(PDAnimationCache *)v5 setDirection:?];
     }
 
-    if ([v4 hasDuration])
+    if ([infoCopy hasDuration])
     {
-      [v4 duration];
+      [infoCopy duration];
       [(PDAnimationCache *)v5 setDuration:?];
     }
 
-    if ([v4 hasPartCount])
+    if ([infoCopy hasPartCount])
     {
-      -[PDAnimationCache setPartCount:](v5, "setPartCount:", [v4 partCount]);
+      -[PDAnimationCache setPartCount:](v5, "setPartCount:", [infoCopy partCount]);
     }
 
-    if ([v4 hasValue])
+    if ([infoCopy hasValue])
     {
-      [v4 value];
+      [infoCopy value];
       [(PDAnimationCache *)v5 setValue:?];
     }
 
-    v5->mIsHead = [v4 isHead];
-    v5->mLevel = [v4 level];
-    v10 = [v4 groupId];
+    v5->mIsHead = [infoCopy isHead];
+    v5->mLevel = [infoCopy level];
+    groupId2 = [infoCopy groupId];
     mGroupId = v5->mGroupId;
-    v5->mGroupId = v10;
+    v5->mGroupId = groupId2;
   }
 
   return v5;
 }
 
-+ (void)loadAnimationCache:(id)a3 pdAnimation:(id)a4 state:(id)a5
++ (void)loadAnimationCache:(id)cache pdAnimation:(id)animation state:(id)state
 {
-  v22 = a3;
-  v8 = a4;
-  v21 = a5;
-  v9 = [v8 rootTimeNode];
-  if (v9)
+  cacheCopy = cache;
+  animationCopy = animation;
+  stateCopy = state;
+  rootTimeNode = [animationCopy rootTimeNode];
+  if (rootTimeNode)
   {
-    [a1 mapCommonData:v9 cacheData:v22 state:v21];
+    [self mapCommonData:rootTimeNode cacheData:cacheCopy state:stateCopy];
   }
 
-  v10 = [v8 buildMap];
-  if (v10)
+  buildMap = [animationCopy buildMap];
+  if (buildMap)
   {
     for (i = 0; ; i = v12 + 1)
     {
       v12 = i;
-      if ([v22 count] <= i)
+      if ([cacheCopy count] <= i)
       {
         break;
       }
 
-      v13 = [v22 objectAtIndex:i];
-      v14 = [v13 target];
+      v13 = [cacheCopy objectAtIndex:i];
+      target = [v13 target];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v15 = [v13 target];
-        v16 = [v15 drawable];
+        target2 = [v13 target];
+        drawable = [target2 drawable];
 
-        if (!v16)
+        if (!drawable)
         {
           goto LABEL_13;
         }
 
         v17 = [PDBuildMapKey alloc];
-        v18 = [v13 groupId];
-        v19 = [(PDBuildMapKey *)v17 initWithDrawable:v16 groupId:v18];
+        groupId = [v13 groupId];
+        v19 = [(PDBuildMapKey *)v17 initWithDrawable:drawable groupId:groupId];
 
-        v20 = [v10 objectForKey:v19];
+        v20 = [buildMap objectForKey:v19];
         if (v20)
         {
           [v13 setBuild:v20];
@@ -120,7 +120,7 @@
 
       else
       {
-        v16 = v14;
+        drawable = target;
       }
 
 LABEL_13:
@@ -128,101 +128,101 @@ LABEL_13:
   }
 }
 
-+ (id)createAnimationInfoDataForCacheItem:(id)a3 order:(unsigned int)a4
++ (id)createAnimationInfoDataForCacheItem:(id)item order:(unsigned int)order
 {
-  v4 = a3;
-  v5 = [v4 target];
+  itemCopy = item;
+  target = [itemCopy target];
 
-  if (v5)
+  if (target)
   {
     v6 = [PDAnimationInfoData alloc];
-    v7 = [v4 target];
-    v8 = [v4 presetClass];
-    v9 = [v4 presetId];
-    v10 = [v4 nodeType];
-    v11 = [v4 iterateType];
-    [v4 delay];
+    target2 = [itemCopy target];
+    presetClass = [itemCopy presetClass];
+    presetId = [itemCopy presetId];
+    nodeType = [itemCopy nodeType];
+    iterateType = [itemCopy iterateType];
+    [itemCopy delay];
     v13 = v12;
-    v14 = [v4 presetSubType];
-    v15 = [v4 groupId];
-    v16 = [v4 build];
-    v5 = [(PDAnimationInfoData *)v6 initWithTarget:v7 presetClass:v8 presetId:v9 triggerType:v10 iterateType:v11 delay:a4 direction:v13 order:v14 groupId:v15 build:v16];
+    presetSubType = [itemCopy presetSubType];
+    groupId = [itemCopy groupId];
+    build = [itemCopy build];
+    target = [(PDAnimationInfoData *)v6 initWithTarget:target2 presetClass:presetClass presetId:presetId triggerType:nodeType iterateType:iterateType delay:order direction:v13 order:presetSubType groupId:groupId build:build];
   }
 
-  return v5;
+  return target;
 }
 
-+ (void)mapCommonData:(id)a3 cacheData:(id)a4 state:(id)a5
++ (void)mapCommonData:(id)data cacheData:(id)cacheData state:(id)state
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v23 hasPresetClass] && (objc_msgSend(v23, "animationPresetClass") == 1 || objc_msgSend(v23, "animationPresetClass") == 2 || objc_msgSend(v23, "animationPresetClass") == 6 || objc_msgSend(v23, "animationPresetClass") == 3 || objc_msgSend(v23, "animationPresetClass") == 4))
+  dataCopy = data;
+  cacheDataCopy = cacheData;
+  stateCopy = state;
+  if ([dataCopy hasPresetClass] && (objc_msgSend(dataCopy, "animationPresetClass") == 1 || objc_msgSend(dataCopy, "animationPresetClass") == 2 || objc_msgSend(dataCopy, "animationPresetClass") == 6 || objc_msgSend(dataCopy, "animationPresetClass") == 3 || objc_msgSend(dataCopy, "animationPresetClass") == 4))
   {
-    [a1 mapAnimationInfo:v23 cacheData:v8 state:v9];
+    [self mapAnimationInfo:dataCopy cacheData:cacheDataCopy state:stateCopy];
     goto LABEL_25;
   }
 
-  v10 = [v23 childTimeNodeList];
+  childTimeNodeList = [dataCopy childTimeNodeList];
 
-  if (v10)
+  if (childTimeNodeList)
   {
-    v11 = [v23 childTimeNodeList];
+    childTimeNodeList2 = [dataCopy childTimeNodeList];
     for (i = 0; ; i = v13 + 1)
     {
       v13 = i;
-      if ([v11 count] <= i)
+      if ([childTimeNodeList2 count] <= i)
       {
 
         break;
       }
 
-      v14 = [v11 objectAtIndex:i];
-      v15 = [v14 parallel];
+      v14 = [childTimeNodeList2 objectAtIndex:i];
+      parallel = [v14 parallel];
 
-      if (v15)
+      if (parallel)
       {
-        v16 = [v14 parallel];
-        [a1 mapCommonData:v16 cacheData:v8 state:v9];
+        parallel2 = [v14 parallel];
+        [self mapCommonData:parallel2 cacheData:cacheDataCopy state:stateCopy];
       }
 
       else
       {
-        v17 = [v14 sequential];
+        sequential = [v14 sequential];
 
-        if (v17)
+        if (sequential)
         {
-          v16 = [v14 sequential];
-          [a1 mapCommonData:v16 cacheData:v8 state:v9];
+          parallel2 = [v14 sequential];
+          [self mapCommonData:parallel2 cacheData:cacheDataCopy state:stateCopy];
         }
 
         else
         {
-          v18 = [v14 audio];
-          if (v18)
+          audio = [v14 audio];
+          if (audio)
           {
           }
 
           else
           {
-            v19 = [v14 video];
+            video = [v14 video];
 
-            if (!v19)
+            if (!video)
             {
               goto LABEL_23;
             }
           }
 
-          v16 = [v14 audio];
-          if (v16 || ([v14 video], (v16 = objc_claimAutoreleasedReturnValue()) != 0))
+          parallel2 = [v14 audio];
+          if (parallel2 || ([v14 video], (parallel2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v20 = [v16 target];
+            target = [parallel2 target];
 
-            if (v20)
+            if (target)
             {
-              v21 = [v9 mediaNodeMap];
-              v22 = [v16 target];
-              [v21 setObject:v16 forUncopiedKey:v22];
+              mediaNodeMap = [stateCopy mediaNodeMap];
+              target2 = [parallel2 target];
+              [mediaNodeMap setObject:parallel2 forUncopiedKey:target2];
             }
           }
         }
@@ -235,38 +235,38 @@ LABEL_23:
 LABEL_25:
 }
 
-+ (void)mapAnimationInfo:(id)a3 cacheData:(id)a4 state:(id)a5
++ (void)mapAnimationInfo:(id)info cacheData:(id)data state:(id)state
 {
-  v19 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [v19 animationPresetClass];
-  v10 = [v19 type];
-  v11 = [v19 presetSubType];
-  v12 = [v19 presetId];
-  v13 = [v19 groupId];
+  infoCopy = info;
+  dataCopy = data;
+  stateCopy = state;
+  animationPresetClass = [infoCopy animationPresetClass];
+  type = [infoCopy type];
+  presetSubType = [infoCopy presetSubType];
+  presetId = [infoCopy presetId];
+  groupId = [infoCopy groupId];
   v14 = objc_opt_class();
-  v15 = TSUDynamicCast(v14, v19);
-  v16 = [v15 buildInfo];
-  if (v16)
+  v15 = TSUDynamicCast(v14, infoCopy);
+  buildInfo = [v15 buildInfo];
+  if (buildInfo)
   {
     v17 = objc_alloc_init(PDAnimationCache);
-    [(PDAnimationCache *)v17 setPresetClass:v9];
-    [(PDAnimationCache *)v17 setNodeType:v10];
-    [(PDAnimationCache *)v17 setPresetSubType:v11];
-    [(PDAnimationCache *)v17 setPresetId:v12];
-    v18 = [v16 target];
-    [(PDAnimationCache *)v17 setTarget:v18];
+    [(PDAnimationCache *)v17 setPresetClass:animationPresetClass];
+    [(PDAnimationCache *)v17 setNodeType:type];
+    [(PDAnimationCache *)v17 setPresetSubType:presetSubType];
+    [(PDAnimationCache *)v17 setPresetId:presetId];
+    target = [buildInfo target];
+    [(PDAnimationCache *)v17 setTarget:target];
 
-    -[PDAnimationCache setIterateType:](v17, "setIterateType:", [v16 iterateType]);
-    [(PDAnimationCache *)v17 setGroupId:v13];
-    [v16 duration];
+    -[PDAnimationCache setIterateType:](v17, "setIterateType:", [buildInfo iterateType]);
+    [(PDAnimationCache *)v17 setGroupId:groupId];
+    [buildInfo duration];
     [(PDAnimationCache *)v17 setDuration:?];
-    [v16 delay];
+    [buildInfo delay];
     [(PDAnimationCache *)v17 setDelay:?];
-    if ([v8 isValid:v17])
+    if ([stateCopy isValid:v17])
     {
-      [v7 addObject:v17];
+      [dataCopy addObject:v17];
     }
   }
 }

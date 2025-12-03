@@ -1,6 +1,6 @@
 @interface EscrowRequestInformCloudServicesOperation
-+ (id)triggerCloudServicesPasscodeRequest:(id)a3 serializedReason:(id)a4 error:(id *)a5;
-- (EscrowRequestInformCloudServicesOperation)initWithIntendedState:(id)a3 errorState:(id)a4 lockStateTracker:(id)a5;
++ (id)triggerCloudServicesPasscodeRequest:(id)request serializedReason:(id)reason error:(id *)error;
+- (EscrowRequestInformCloudServicesOperation)initWithIntendedState:(id)state errorState:(id)errorState lockStateTracker:(id)tracker;
 - (void)main;
 @end
 
@@ -21,12 +21,12 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 domain];
-    if ([v7 isEqualToString:NSOSStatusErrorDomain])
+    domain = [v5 domain];
+    if ([domain isEqualToString:NSOSStatusErrorDomain])
     {
-      v8 = [v6 code];
+      code = [v6 code];
 
-      if (v8 == -25300)
+      if (code == -25300)
       {
         goto LABEL_6;
       }
@@ -44,8 +44,8 @@
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "failed to fetch records from keychain: %@", buf, 0xCu);
     }
 
-    v29 = [(EscrowRequestInformCloudServicesOperation *)self lockStateTracker];
-    v30 = [v29 isLockedError:v6];
+    lockStateTracker = [(EscrowRequestInformCloudServicesOperation *)self lockStateTracker];
+    v30 = [lockStateTracker isLockedError:v6];
 
     if (v30)
     {
@@ -115,10 +115,10 @@ LABEL_8:
       goto LABEL_25;
     }
 
-    v16 = [v15 uuid];
-    v17 = [v15 serializedReason];
+    uuid = [v15 uuid];
+    serializedReason = [v15 serializedReason];
     v39 = 0;
-    v18 = [EscrowRequestInformCloudServicesOperation triggerCloudServicesPasscodeRequest:v16 serializedReason:v17 error:&v39];
+    v18 = [EscrowRequestInformCloudServicesOperation triggerCloudServicesPasscodeRequest:uuid serializedReason:serializedReason error:&v39];
     v6 = v39;
 
     v19 = +[NSDate date];
@@ -170,8 +170,8 @@ LABEL_8:
         }
 
         [(CKKSResultOperation *)self setError:v6];
-        v23 = [(EscrowRequestInformCloudServicesOperation *)self lockStateTracker];
-        v24 = [v23 isLockedError:v6];
+        lockStateTracker2 = [(EscrowRequestInformCloudServicesOperation *)self lockStateTracker];
+        v24 = [lockStateTracker2 isLockedError:v6];
 
         if (v24)
         {
@@ -227,34 +227,34 @@ LABEL_25:
 LABEL_50:
 }
 
-- (EscrowRequestInformCloudServicesOperation)initWithIntendedState:(id)a3 errorState:(id)a4 lockStateTracker:(id)a5
+- (EscrowRequestInformCloudServicesOperation)initWithIntendedState:(id)state errorState:(id)errorState lockStateTracker:(id)tracker
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  trackerCopy = tracker;
   v15.receiver = self;
   v15.super_class = EscrowRequestInformCloudServicesOperation;
   v12 = [(CKKSResultOperation *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_intendedState, a3);
-    objc_storeStrong(&v13->_nextState, a4);
-    objc_storeStrong(&v13->_lockStateTracker, a5);
+    objc_storeStrong(&v12->_intendedState, state);
+    objc_storeStrong(&v13->_nextState, errorState);
+    objc_storeStrong(&v13->_lockStateTracker, tracker);
   }
 
   return v13;
 }
 
-+ (id)triggerCloudServicesPasscodeRequest:(id)a3 serializedReason:(id)a4 error:(id *)a5
++ (id)triggerCloudServicesPasscodeRequest:(id)request serializedReason:(id)reason error:(id *)error
 {
-  v7 = a4;
-  v8 = a3;
+  reasonCopy = reason;
+  requestCopy = request;
   v9 = [[SecureBackup alloc] initWithUserActivityLabel:@"passcodeRequest"];
-  v10 = [[SecureBackupEscrowReason alloc] initWithData:v7];
+  v10 = [[SecureBackupEscrowReason alloc] initWithData:reasonCopy];
 
   v21 = 0;
-  v11 = [v9 beginHSA2PasscodeRequest:1 uuid:v8 reason:v10 error:&v21];
+  v11 = [v9 beginHSA2PasscodeRequest:1 uuid:requestCopy reason:v10 error:&v21];
 
   v12 = v21;
   v13 = v12;
@@ -270,11 +270,11 @@ LABEL_50:
 
   if (v14)
   {
-    v18 = [v11 cert];
+    cert = [v11 cert];
 
-    if (v18)
+    if (cert)
     {
-      v17 = [v11 cert];
+      cert2 = [v11 cert];
       goto LABEL_15;
     }
 
@@ -296,19 +296,19 @@ LABEL_50:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "escrowrequest: unable to begin passcode request: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v16 = v13;
-      v17 = 0;
-      *a5 = v13;
+      cert2 = 0;
+      *error = v13;
       goto LABEL_15;
     }
   }
 
-  v17 = 0;
+  cert2 = 0;
 LABEL_15:
 
-  return v17;
+  return cert2;
 }
 
 @end

@@ -1,58 +1,58 @@
 @interface SUUIOfferCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SUUIOfferCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SUUIOfferCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SUUIOfferCollectionViewCell
 
-- (SUUIOfferCollectionViewCell)initWithFrame:(CGRect)a3
+- (SUUIOfferCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = SUUIOfferCollectionViewCell;
-  v3 = [(SUUICollectionViewCell *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUICollectionViewCell *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SUUIOfferCollectionViewCell *)v3 contentView];
+    contentView = [(SUUIOfferCollectionViewCell *)v3 contentView];
     v6 = [SUUIOfferView alloc];
-    [v5 bounds];
+    [contentView bounds];
     v7 = [(SUUIOfferView *)v6 initWithFrame:?];
     offerView = v4->_offerView;
     v4->_offerView = v7;
 
-    [v5 addSubview:v4->_offerView];
+    [contentView addSubview:v4->_offerView];
   }
 
   return v4;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   offerView = self->_offerView;
-  v5 = a3;
-  v6 = [v5 backgroundColor];
-  [(SUUIViewReuseView *)offerView setBackgroundColor:v6];
+  attributesCopy = attributes;
+  backgroundColor = [attributesCopy backgroundColor];
+  [(SUUIViewReuseView *)offerView setBackgroundColor:backgroundColor];
 
   v7.receiver = self;
   v7.super_class = SUUIOfferCollectionViewCell;
-  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:v5];
+  [(SUUICollectionViewCell *)&v7 applyLayoutAttributes:attributesCopy];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  [SUUIOfferView preferredSizeForViewElement:a3 context:a4];
+  [SUUIOfferView preferredSizeForViewElement:element context:context];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SUUIOfferView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SUUIOfferView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
@@ -64,19 +64,19 @@
   v5.super_class = SUUIOfferCollectionViewCell;
   [(SUUICollectionViewCell *)&v5 layoutSubviews];
   offerView = self->_offerView;
-  v4 = [(SUUIOfferCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SUUIOfferCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SUUIOfferView *)offerView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   offerView = self->_offerView;
-  v5 = a3;
-  [(SUUIViewReuseView *)offerView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SUUIViewReuseView *)offerView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIOfferCollectionViewCell;
-  [(SUUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SUUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 @end

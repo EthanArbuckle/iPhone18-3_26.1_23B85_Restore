@@ -1,24 +1,24 @@
 @interface SHFUPluginPreloaded
-- (SHFUPluginPreloaded)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6 deviceProperties:(id)a7;
-- (void)findFirmwareWithOptions:(id)a3 remote:(BOOL)a4;
+- (SHFUPluginPreloaded)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options deviceProperties:(id)properties;
+- (void)findFirmwareWithOptions:(id)options remote:(BOOL)remote;
 @end
 
 @implementation SHFUPluginPreloaded
 
-- (SHFUPluginPreloaded)initWithDeviceClass:(id)a3 delegate:(id)a4 info:(id *)a5 options:(id)a6 deviceProperties:(id)a7
+- (SHFUPluginPreloaded)initWithDeviceClass:(id)class delegate:(id)delegate info:(id *)info options:(id)options deviceProperties:(id)properties
 {
   v8.receiver = self;
   v8.super_class = SHFUPluginPreloaded;
-  return [(SHFUPlugin *)&v8 initWithDeviceClass:a3 delegate:a4 info:a5 options:a6 deviceProperties:a7];
+  return [(SHFUPlugin *)&v8 initWithDeviceClass:class delegate:delegate info:info options:options deviceProperties:properties];
 }
 
-- (void)findFirmwareWithOptions:(id)a3 remote:(BOOL)a4
+- (void)findFirmwareWithOptions:(id)options remote:(BOOL)remote
 {
-  v6 = a3;
-  v7 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+  optionsCopy = options;
+  logHandle = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
   {
-    sub_100015D94(v6, a4, v7);
+    sub_100015D94(optionsCopy, remote, logHandle);
   }
 
   v40 = 0;
@@ -34,15 +34,15 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v11 = [(SHFUPlugin *)self delegate];
-  v12 = [(SHFUPlugin *)self batteryCheckDevice];
-  v13 = [v12 BOOLValue];
-  v14 = [(SHFUPlugin *)self logHandle];
-  v15 = [(SHFUPlugin *)self options];
-  v16 = [v15 objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
-  v17 = [(SHFUPlugin *)self errorDomain];
+  delegate = [(SHFUPlugin *)self delegate];
+  batteryCheckDevice = [(SHFUPlugin *)self batteryCheckDevice];
+  bOOLValue = [batteryCheckDevice BOOLValue];
+  logHandle2 = [(SHFUPlugin *)self logHandle];
+  options = [(SHFUPlugin *)self options];
+  v16 = [options objectForKeyedSubscript:@"IOMatchLaunchServiceID"];
+  errorDomain = [(SHFUPlugin *)self errorDomain];
   v39 = 0;
-  v10 = [SHFUDevice getDevices:v11 hasPowerSource:v13 logHandle:v14 registryEntryID:v16 errorDomain:v17 error:&v39];
+  v10 = [SHFUDevice getDevices:delegate hasPowerSource:bOOLValue logHandle:logHandle2 registryEntryID:v16 errorDomain:errorDomain error:&v39];
   v9 = v39;
 
   if (v9)
@@ -77,18 +77,18 @@ LABEL_6:
           goto LABEL_28;
         }
 
-        v29 = [(SHFUPlugin *)self latestFirmwareVersions];
-        v30 = [v28 hardwareVersionSupportedBy:v29];
+        latestFirmwareVersions = [(SHFUPlugin *)self latestFirmwareVersions];
+        v30 = [v28 hardwareVersionSupportedBy:latestFirmwareVersions];
 
         if ((v30 & 1) == 0)
         {
           v31 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Device has HW revision ID %u which does not match FW files", [v28 hardwareVersion]);
           v32 = [NSError alloc];
-          v33 = [(SHFUPlugin *)self errorDomain];
+          errorDomain2 = [(SHFUPlugin *)self errorDomain];
           v51 = NSLocalizedDescriptionKey;
           v52 = v31;
           v34 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
-          v9 = [v32 initWithDomain:v33 code:44 userInfo:v34];
+          v9 = [v32 initWithDomain:errorDomain2 code:44 userInfo:v34];
 
           v18 = 0;
           goto LABEL_28;
@@ -116,12 +116,12 @@ LABEL_6:
 LABEL_28:
 
 LABEL_7:
-  v19 = [(SHFUPlugin *)self logHandle];
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  logHandle3 = [(SHFUPlugin *)self logHandle];
+  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(SHFUPlugin *)self targetDevice];
+    targetDevice = [(SHFUPlugin *)self targetDevice];
     *buf = 138413314;
-    v42 = v20;
+    v42 = targetDevice;
     v43 = 1024;
     v44 = v9 == 0;
     v45 = 1024;
@@ -130,11 +130,11 @@ LABEL_7:
     v48 = 0;
     v49 = 2112;
     v50 = v9;
-    _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "findFirmware: target device %@ successful %d updateAvailable %d needsDownload %d error %@", buf, 0x28u);
+    _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_DEFAULT, "findFirmware: target device %@ successful %d updateAvailable %d needsDownload %d error %@", buf, 0x28u);
   }
 
-  v21 = [(SHFUPlugin *)self delegate];
-  v22 = [(SHFUPlugin *)self pluginInfo];
+  delegate2 = [(SHFUPlugin *)self delegate];
+  pluginInfo = [(SHFUPlugin *)self pluginInfo];
   if (v9)
   {
     v23 = 0;
@@ -145,7 +145,7 @@ LABEL_7:
     v23 = v18;
   }
 
-  [v21 didFind:v9 == 0 info:v22 updateAvailable:v18 needsDownload:0 error:v9];
+  [delegate2 didFind:v9 == 0 info:pluginInfo updateAvailable:v18 needsDownload:0 error:v9];
 
   if ((v23 & 1) == 0)
   {

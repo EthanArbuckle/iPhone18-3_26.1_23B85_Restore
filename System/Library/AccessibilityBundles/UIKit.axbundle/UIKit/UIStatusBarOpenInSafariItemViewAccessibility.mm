@@ -1,19 +1,19 @@
 @interface UIStatusBarOpenInSafariItemViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHint;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation UIStatusBarOpenInSafariItemViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"UIStatusBarOpenInSafariItemView" hasInstanceMethod:@"destinationText" withFullSignature:{"@", 0}];
   objc_storeStrong(v4, obj);
 }
@@ -32,7 +32,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = UIStatusBarOpenInSafariItemViewAccessibility;

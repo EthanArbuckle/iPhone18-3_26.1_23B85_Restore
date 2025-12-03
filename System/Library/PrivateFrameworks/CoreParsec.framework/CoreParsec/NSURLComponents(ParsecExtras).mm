@@ -9,21 +9,21 @@
 
 - (id)parsec_componentsAfterRemovingSubdomains
 {
-  v2 = [a1 URL];
-  v3 = [v2 absoluteString];
-  v4 = [v3 parsec_readableURLStringAfterRemovingSubdomains];
+  v2 = [self URL];
+  absoluteString = [v2 absoluteString];
+  parsec_readableURLStringAfterRemovingSubdomains = [absoluteString parsec_readableURLStringAfterRemovingSubdomains];
 
-  if (v4)
+  if (parsec_readableURLStringAfterRemovingSubdomains)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:v4];
+    selfCopy = [objc_alloc(MEMORY[0x1E696AF20]) initWithString:parsec_readableURLStringAfterRemovingSubdomains];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
@@ -33,8 +33,8 @@
   v37 = *MEMORY[0x1E69E9840];
   if (!a3)
   {
-    v6 = [a1 URL];
-    v8 = [v6 absoluteString];
+    v6 = [self URL];
+    absoluteString = [v6 absoluteString];
     goto LABEL_29;
   }
 
@@ -51,13 +51,13 @@
     [v6 addObjectsFromArray:&unk_1F27A0920];
   }
 
-  v7 = [a1 string];
-  v8 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(v7, "length")}];
-  v9 = [a1 rangeOfHost];
+  string = [self string];
+  absoluteString = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:{objc_msgSend(string, "length")}];
+  rangeOfHost = [self rangeOfHost];
   if (v10)
   {
-    v31 = v7;
-    v11 = [v7 substringWithRange:{v9, v10}];
+    v31 = string;
+    v11 = [string substringWithRange:{rangeOfHost, v10}];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -92,26 +92,26 @@
       while (v14);
     }
 
-    [v8 appendString:v11];
-    v7 = v31;
+    [absoluteString appendString:v11];
+    string = v31;
   }
 
-  v20 = [a1 rangeOfPath];
+  rangeOfPath = [self rangeOfPath];
   if ((v4 & 4) == 0 && v21)
   {
-    v22 = [v7 substringWithRange:{v20, v21}];
+    v22 = [string substringWithRange:{rangeOfPath, v21}];
     v23 = v22;
     if ((v4 & 8) != 0)
     {
       v23 = v22;
-      v24 = [v23 lastPathComponent];
-      if ([v24 containsString:@"."])
+      lastPathComponent = [v23 lastPathComponent];
+      if ([lastPathComponent containsString:@"."])
       {
 
 LABEL_24:
-        v26 = [v23 stringByDeletingLastPathComponent];
+        stringByDeletingLastPathComponent = [v23 stringByDeletingLastPathComponent];
 
-        v23 = v26;
+        v23 = stringByDeletingLastPathComponent;
         goto LABEL_25;
       }
 
@@ -132,13 +132,13 @@ LABEL_25:
       v23 = v28;
     }
 
-    [v8 appendString:v23];
+    [absoluteString appendString:v23];
   }
 
 LABEL_29:
   v29 = *MEMORY[0x1E69E9840];
 
-  return v8;
+  return absoluteString;
 }
 
 + (id)parsec_componentsWithString:()ParsecExtras

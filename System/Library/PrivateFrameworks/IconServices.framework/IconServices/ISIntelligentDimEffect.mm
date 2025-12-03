@@ -1,6 +1,6 @@
 @interface ISIntelligentDimEffect
 - (ISIntelligentDimEffect)init;
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4;
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage;
 @end
 
 @implementation ISIntelligentDimEffect
@@ -19,35 +19,35 @@
   return v2;
 }
 
-- (id)filterWithBackgroundImage:(id)a3 inputImage:(id)a4
+- (id)filterWithBackgroundImage:(id)image inputImage:(id)inputImage
 {
-  v6 = a3;
-  v7 = a4;
+  imageCopy = image;
+  inputImageCopy = inputImage;
   v8 = objc_autoreleasePoolPush();
-  v9 = v7;
+  v9 = inputImageCopy;
   v10 = +[ISDefaults sharedInstance];
-  v11 = [v10 isDarkIconDimmingEnabled];
+  isDarkIconDimmingEnabled = [v10 isDarkIconDimmingEnabled];
 
   v12 = v9;
-  if (v11)
+  if (isDarkIconDimmingEnabled)
   {
     v13 = -[ISDimmingConversion initWithCGImage:]([ISDimmingConversion alloc], "initWithCGImage:", [v9 CGImage]);
     v12 = v9;
     if ([(ISDimmingConversion *)v13 isDimmable])
     {
-      v14 = [(ISDimmingConversion *)v13 createDimmedImage];
+      createDimmedImage = [(ISDimmingConversion *)v13 createDimmedImage];
       v12 = v9;
-      if (v14)
+      if (createDimmedImage)
       {
-        v15 = v14;
-        v12 = [objc_alloc(MEMORY[0x1E695F658]) initWithCGImage:v14];
+        v15 = createDimmedImage;
+        v12 = [objc_alloc(MEMORY[0x1E695F658]) initWithCGImage:createDimmedImage];
 
         CFRelease(v15);
         if ([(ISIntelligentDimEffect *)self flagDimming])
         {
           v16 = MEMORY[0x1E695F658];
-          v17 = [MEMORY[0x1E695F610] magentaColor];
-          v18 = [v16 imageWithColor:v17];
+          magentaColor = [MEMORY[0x1E695F610] magentaColor];
+          v18 = [v16 imageWithColor:magentaColor];
 
           v12 = v18;
         }

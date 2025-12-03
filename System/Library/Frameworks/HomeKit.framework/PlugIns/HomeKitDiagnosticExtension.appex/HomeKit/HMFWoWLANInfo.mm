@@ -1,14 +1,14 @@
 @interface HMFWoWLANInfo
-- (BOOL)isEqual:(id)a3;
-- (HMFWoWLANInfo)initWithCoder:(id)a3;
-- (HMFWoWLANInfo)initWithPrimaryIdentifier:(id)a3 wifiIdentifiers:(id)a4;
-- (HMFWoWLANInfo)initWithWakeVersion:(unsigned __int8)a3 wakePort:(unsigned __int16)a4 wakeAddress:(id)a5 wakeType:(int64_t)a6 wakePacketType:(int64_t)a7 wakePattern:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (HMFWoWLANInfo)initWithCoder:(id)coder;
+- (HMFWoWLANInfo)initWithPrimaryIdentifier:(id)identifier wifiIdentifiers:(id)identifiers;
+- (HMFWoWLANInfo)initWithWakeVersion:(unsigned __int8)version wakePort:(unsigned __int16)port wakeAddress:(id)address wakeType:(int64_t)type wakePacketType:(int64_t)packetType wakePattern:(id)pattern;
 - (NSString)wakeAddressString;
 - (id)description;
 - (int64_t)woWLANWakeUpTypeSupport;
 - (unint64_t)hash;
 - (unsigned)woWLANVersion;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMFWoWLANInfo
@@ -25,33 +25,33 @@
 
 - (unsigned)woWLANVersion
 {
-  v3 = [(HMFWoWLANInfo *)self version];
-  if (v3)
+  version = [(HMFWoWLANInfo *)self version];
+  if (version)
   {
 
-    LOBYTE(v3) = [(HMFWoWLANInfo *)self version];
+    LOBYTE(version) = [(HMFWoWLANInfo *)self version];
   }
 
-  return v3;
+  return version;
 }
 
 - (id)description
 {
   if ([(HMFWoWLANInfo *)self supportsSleepConfig])
   {
-    v3 = [NSNumber numberWithUnsignedChar:[(HMFWoWLANInfo *)self version]];
-    v4 = [NSNumber numberWithInteger:[(HMFWoWLANInfo *)self wakeType]];
+    primaryMACAddress = [NSNumber numberWithUnsignedChar:[(HMFWoWLANInfo *)self version]];
+    additionalMACAddresses = [NSNumber numberWithInteger:[(HMFWoWLANInfo *)self wakeType]];
     v5 = [NSNumber numberWithUnsignedShort:[(HMFWoWLANInfo *)self wakePort]];
-    v6 = [(HMFWoWLANInfo *)self wakeAddressString];
+    wakeAddressString = [(HMFWoWLANInfo *)self wakeAddressString];
     v7 = [NSNumber numberWithInteger:[(HMFWoWLANInfo *)self wakePacketType]];
-    v8 = [NSString stringWithFormat:@"<Version: %@, Wake Type: %@, Wake Port: %@, Wake Address: %@, Wake Packet Type: %@>", v3, v4, v5, v6, v7];
+    v8 = [NSString stringWithFormat:@"<Version: %@, Wake Type: %@, Wake Port: %@, Wake Address: %@, Wake Packet Type: %@>", primaryMACAddress, additionalMACAddresses, v5, wakeAddressString, v7];
   }
 
   else
   {
-    v3 = [(HMFWoWLANInfo *)self primaryMACAddress];
-    v4 = [(HMFWoWLANInfo *)self additionalMACAddresses];
-    v8 = [NSString stringWithFormat:@"<Primary Address: %@, Additional MAC Addresses: %@>", v3, v4];
+    primaryMACAddress = [(HMFWoWLANInfo *)self primaryMACAddress];
+    additionalMACAddresses = [(HMFWoWLANInfo *)self additionalMACAddresses];
+    v8 = [NSString stringWithFormat:@"<Primary Address: %@, Additional MAC Addresses: %@>", primaryMACAddress, additionalMACAddresses];
   }
 
   return v8;
@@ -61,39 +61,39 @@
 {
   if ([(HMFWoWLANInfo *)self supportsSleepConfig]&& [(HMFWoWLANInfo *)self wakePacketType]== 1)
   {
-    v3 = [(HMFWoWLANInfo *)self wakeAddress];
+    wakeAddress = [(HMFWoWLANInfo *)self wakeAddress];
 
-    if (v3)
+    if (wakeAddress)
     {
       v4 = [HMFMACAddress alloc];
-      v5 = [(HMFWoWLANInfo *)self wakeAddress];
-      v6 = [v4 initWithAddressData:v5];
+      wakeAddress2 = [(HMFWoWLANInfo *)self wakeAddress];
+      v6 = [v4 initWithAddressData:wakeAddress2];
 
-      v7 = [v6 formattedString];
+      formattedString = [v6 formattedString];
     }
 
     else
     {
-      v7 = [(HMFWoWLANInfo *)self wakePattern];
+      formattedString = [(HMFWoWLANInfo *)self wakePattern];
 
-      if (v7)
+      if (formattedString)
       {
-        v9 = [(HMFWoWLANInfo *)self wakePattern];
-        v10 = v9;
-        if (v9 && [v9 length] >= 0x66)
+        wakePattern = [(HMFWoWLANInfo *)self wakePattern];
+        v10 = wakePattern;
+        if (wakePattern && [wakePattern length] >= 0x66)
         {
-          v11 = [v10 bytes];
+          bytes = [v10 bytes];
           v12 = 0;
-          while (v11[v12] == 255)
+          while (bytes[v12] == 255)
           {
             if (++v12 == 6)
             {
               for (i = 0; i != 6; ++i)
               {
-                v20[i] = v11[i + 6];
+                v20[i] = bytes[i + 6];
               }
 
-              v14 = v11 + 6;
+              v14 = bytes + 6;
               v15 = 1;
 LABEL_20:
               v16 = 0;
@@ -112,7 +112,7 @@ LABEL_20:
                   v18 = [NSData dataWithBytes:v20 length:6];
                   v19 = [v17 initWithAddressData:v18];
 
-                  v7 = [v19 formattedString];
+                  formattedString = [v19 formattedString];
 
                   goto LABEL_13;
                 }
@@ -123,7 +123,7 @@ LABEL_20:
           }
         }
 
-        v7 = 0;
+        formattedString = 0;
 LABEL_13:
       }
     }
@@ -131,31 +131,31 @@ LABEL_13:
 
   else
   {
-    v7 = 0;
+    formattedString = 0;
   }
 
-  return v7;
+  return formattedString;
 }
 
-- (HMFWoWLANInfo)initWithCoder:(id)a3
+- (HMFWoWLANInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 decodeBoolForKey:@"HMFCI.woWLAN.sleepConfig"])
+  coderCopy = coder;
+  if ([coderCopy decodeBoolForKey:@"HMFCI.woWLAN.sleepConfig"])
   {
-    v5 = [v4 decodeIntegerForKey:@"HMFCI.woWLAN.WakePort"];
-    v6 = [v4 decodeIntegerForKey:@"HMFCI.woWLAN.version"];
-    v7 = [v4 decodeIntegerForKey:@"HMFCI.woWLAN.wakeType"];
-    v8 = [v4 decodeIntegerForKey:@"HMFCI.woWLAN.wakePacketType"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.wakePattern"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.WakeAddress"];
+    v5 = [coderCopy decodeIntegerForKey:@"HMFCI.woWLAN.WakePort"];
+    v6 = [coderCopy decodeIntegerForKey:@"HMFCI.woWLAN.version"];
+    v7 = [coderCopy decodeIntegerForKey:@"HMFCI.woWLAN.wakeType"];
+    v8 = [coderCopy decodeIntegerForKey:@"HMFCI.woWLAN.wakePacketType"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.wakePattern"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.WakeAddress"];
 
     v11 = [(HMFWoWLANInfo *)self initWithWakeVersion:v6 wakePort:v5 wakeAddress:v10 wakeType:v7 wakePacketType:v8 wakePattern:v9];
   }
 
   else
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.pID"];
-    v10 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.sIDs"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.pID"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"HMFCI.woWLAN.sIDs"];
 
     v11 = [(HMFWoWLANInfo *)self initWithPrimaryIdentifier:v9 wifiIdentifiers:v10];
   }
@@ -165,54 +165,54 @@ LABEL_13:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(HMFWoWLANInfo *)self primaryMACAddress];
+  coderCopy = coder;
+  primaryMACAddress = [(HMFWoWLANInfo *)self primaryMACAddress];
 
-  if (v4)
+  if (primaryMACAddress)
   {
-    v5 = [(HMFWoWLANInfo *)self primaryMACAddress];
-    [v12 encodeObject:v5 forKey:@"HMFCI.woWLAN.pID"];
+    primaryMACAddress2 = [(HMFWoWLANInfo *)self primaryMACAddress];
+    [coderCopy encodeObject:primaryMACAddress2 forKey:@"HMFCI.woWLAN.pID"];
   }
 
-  v6 = [(HMFWoWLANInfo *)self additionalMACAddresses];
+  additionalMACAddresses = [(HMFWoWLANInfo *)self additionalMACAddresses];
 
-  if (v6)
+  if (additionalMACAddresses)
   {
-    v7 = [(HMFWoWLANInfo *)self additionalMACAddresses];
-    [v12 encodeObject:v7 forKey:@"HMFCI.woWLAN.sIDs"];
+    additionalMACAddresses2 = [(HMFWoWLANInfo *)self additionalMACAddresses];
+    [coderCopy encodeObject:additionalMACAddresses2 forKey:@"HMFCI.woWLAN.sIDs"];
   }
 
   if ([(HMFWoWLANInfo *)self supportsSleepConfig])
   {
-    [v12 encodeBool:1 forKey:@"HMFCI.woWLAN.sleepConfig"];
-    [v12 encodeInteger:-[HMFWoWLANInfo version](self forKey:{"version"), @"HMFCI.woWLAN.version"}];
-    [v12 encodeInteger:-[HMFWoWLANInfo wakePort](self forKey:{"wakePort"), @"HMFCI.woWLAN.WakePort"}];
-    [v12 encodeInteger:-[HMFWoWLANInfo wakeType](self forKey:{"wakeType"), @"HMFCI.woWLAN.wakeType"}];
-    [v12 encodeInteger:-[HMFWoWLANInfo wakePacketType](self forKey:{"wakePacketType"), @"HMFCI.woWLAN.wakePacketType"}];
-    v8 = [(HMFWoWLANInfo *)self wakeAddress];
+    [coderCopy encodeBool:1 forKey:@"HMFCI.woWLAN.sleepConfig"];
+    [coderCopy encodeInteger:-[HMFWoWLANInfo version](self forKey:{"version"), @"HMFCI.woWLAN.version"}];
+    [coderCopy encodeInteger:-[HMFWoWLANInfo wakePort](self forKey:{"wakePort"), @"HMFCI.woWLAN.WakePort"}];
+    [coderCopy encodeInteger:-[HMFWoWLANInfo wakeType](self forKey:{"wakeType"), @"HMFCI.woWLAN.wakeType"}];
+    [coderCopy encodeInteger:-[HMFWoWLANInfo wakePacketType](self forKey:{"wakePacketType"), @"HMFCI.woWLAN.wakePacketType"}];
+    wakeAddress = [(HMFWoWLANInfo *)self wakeAddress];
 
-    if (v8)
+    if (wakeAddress)
     {
-      v9 = [(HMFWoWLANInfo *)self wakeAddress];
-      [v12 encodeObject:v9 forKey:@"HMFCI.woWLAN.WakeAddress"];
+      wakeAddress2 = [(HMFWoWLANInfo *)self wakeAddress];
+      [coderCopy encodeObject:wakeAddress2 forKey:@"HMFCI.woWLAN.WakeAddress"];
     }
 
-    v10 = [(HMFWoWLANInfo *)self wakePattern];
+    wakePattern = [(HMFWoWLANInfo *)self wakePattern];
 
-    if (v10)
+    if (wakePattern)
     {
-      v11 = [(HMFWoWLANInfo *)self wakePattern];
-      [v12 encodeObject:v11 forKey:@"HMFCI.woWLAN.wakePattern"];
+      wakePattern2 = [(HMFWoWLANInfo *)self wakePattern];
+      [coderCopy encodeObject:wakePattern2 forKey:@"HMFCI.woWLAN.wakePattern"];
     }
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
@@ -222,7 +222,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -236,8 +236,8 @@ LABEL_13:
       goto LABEL_15;
     }
 
-    v7 = [(HMFWoWLANInfo *)self primaryMACAddress];
-    v8 = [(HMFWoWLANInfo *)v6 primaryMACAddress];
+    primaryMACAddress = [(HMFWoWLANInfo *)self primaryMACAddress];
+    primaryMACAddress2 = [(HMFWoWLANInfo *)v6 primaryMACAddress];
     v9 = HMFEqualObjects();
 
     if (!v9)
@@ -245,8 +245,8 @@ LABEL_13:
       goto LABEL_15;
     }
 
-    v10 = [(HMFWoWLANInfo *)self additionalMACAddresses];
-    v11 = [(HMFWoWLANInfo *)v6 additionalMACAddresses];
+    additionalMACAddresses = [(HMFWoWLANInfo *)self additionalMACAddresses];
+    additionalMACAddresses2 = [(HMFWoWLANInfo *)v6 additionalMACAddresses];
     v12 = HMFEqualObjects();
 
     if (!v12)
@@ -254,44 +254,44 @@ LABEL_13:
       goto LABEL_15;
     }
 
-    v13 = [(HMFWoWLANInfo *)self version];
-    if (v13 != [(HMFWoWLANInfo *)v6 version])
+    version = [(HMFWoWLANInfo *)self version];
+    if (version != [(HMFWoWLANInfo *)v6 version])
     {
       goto LABEL_15;
     }
 
-    v14 = [(HMFWoWLANInfo *)self wakeType];
-    if (v14 != [(HMFWoWLANInfo *)v6 wakeType])
+    wakeType = [(HMFWoWLANInfo *)self wakeType];
+    if (wakeType != [(HMFWoWLANInfo *)v6 wakeType])
     {
       goto LABEL_15;
     }
 
-    v15 = [(HMFWoWLANInfo *)self wakePort];
-    if (v15 != [(HMFWoWLANInfo *)v6 wakePort])
+    wakePort = [(HMFWoWLANInfo *)self wakePort];
+    if (wakePort != [(HMFWoWLANInfo *)v6 wakePort])
     {
       goto LABEL_15;
     }
 
-    v16 = [(HMFWoWLANInfo *)self wakePacketType];
-    if (v16 != [(HMFWoWLANInfo *)v6 wakePacketType])
+    wakePacketType = [(HMFWoWLANInfo *)self wakePacketType];
+    if (wakePacketType != [(HMFWoWLANInfo *)v6 wakePacketType])
     {
       goto LABEL_15;
     }
 
-    v17 = [(HMFWoWLANInfo *)self supportsSleepConfig];
-    if (v17 != [(HMFWoWLANInfo *)v6 supportsSleepConfig])
+    supportsSleepConfig = [(HMFWoWLANInfo *)self supportsSleepConfig];
+    if (supportsSleepConfig != [(HMFWoWLANInfo *)v6 supportsSleepConfig])
     {
       goto LABEL_15;
     }
 
-    v18 = [(HMFWoWLANInfo *)self wakePattern];
-    v19 = [(HMFWoWLANInfo *)v6 wakePattern];
+    wakePattern = [(HMFWoWLANInfo *)self wakePattern];
+    wakePattern2 = [(HMFWoWLANInfo *)v6 wakePattern];
     v20 = HMFEqualObjects();
 
     if (v20)
     {
-      v21 = [(HMFWoWLANInfo *)self wakeAddress];
-      v22 = [(HMFWoWLANInfo *)v6 wakeAddress];
+      wakeAddress = [(HMFWoWLANInfo *)self wakeAddress];
+      wakeAddress2 = [(HMFWoWLANInfo *)v6 wakeAddress];
       v23 = HMFEqualObjects();
     }
 
@@ -309,30 +309,30 @@ LABEL_15:
 {
   if ([(HMFWoWLANInfo *)self supportsSleepConfig])
   {
-    v3 = [(HMFWoWLANInfo *)self version];
-    v4 = [(HMFWoWLANInfo *)self wakeType];
-    v5 = v4 ^ [(HMFWoWLANInfo *)self wakePacketType]^ v3;
-    v6 = [(HMFWoWLANInfo *)self wakePort];
-    v7 = [(HMFWoWLANInfo *)self wakePattern];
-    v8 = v5 ^ v6 ^ [v7 hash];
-    v9 = [(HMFWoWLANInfo *)self wakeAddress];
-    v10 = (v8 ^ [v9 hash]);
+    version = [(HMFWoWLANInfo *)self version];
+    wakeType = [(HMFWoWLANInfo *)self wakeType];
+    v5 = wakeType ^ [(HMFWoWLANInfo *)self wakePacketType]^ version;
+    wakePort = [(HMFWoWLANInfo *)self wakePort];
+    wakePattern = [(HMFWoWLANInfo *)self wakePattern];
+    v8 = v5 ^ wakePort ^ [wakePattern hash];
+    wakeAddress = [(HMFWoWLANInfo *)self wakeAddress];
+    v10 = (v8 ^ [wakeAddress hash]);
   }
 
   else
   {
-    v7 = [(HMFWoWLANInfo *)self primaryMACAddress];
-    v10 = [v7 hash];
+    wakePattern = [(HMFWoWLANInfo *)self primaryMACAddress];
+    v10 = [wakePattern hash];
   }
 
   return v10;
 }
 
-- (HMFWoWLANInfo)initWithWakeVersion:(unsigned __int8)a3 wakePort:(unsigned __int16)a4 wakeAddress:(id)a5 wakeType:(int64_t)a6 wakePacketType:(int64_t)a7 wakePattern:(id)a8
+- (HMFWoWLANInfo)initWithWakeVersion:(unsigned __int8)version wakePort:(unsigned __int16)port wakeAddress:(id)address wakeType:(int64_t)type wakePacketType:(int64_t)packetType wakePattern:(id)pattern
 {
-  v15 = a5;
-  v16 = a8;
-  if (v15)
+  addressCopy = address;
+  patternCopy = pattern;
+  if (addressCopy)
   {
     v25.receiver = self;
     v25.super_class = HMFWoWLANInfo;
@@ -341,22 +341,22 @@ LABEL_15:
     if (v17)
     {
       v17->_supportsSleepConfig = 1;
-      v17->_version = a3;
-      v17->_wakePort = a4;
-      objc_storeStrong(&v17->_wakeAddress, a5);
-      v18->_wakeType = a6;
-      v18->_wakePacketType = a7;
-      objc_storeStrong(&v18->_wakePattern, a8);
+      v17->_version = version;
+      v17->_wakePort = port;
+      objc_storeStrong(&v17->_wakeAddress, address);
+      v18->_wakeType = type;
+      v18->_wakePacketType = packetType;
+      objc_storeStrong(&v18->_wakePattern, pattern);
     }
 
-    v19 = v18;
-    v20 = v19;
+    selfCopy = v18;
+    v20 = selfCopy;
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -373,12 +373,12 @@ LABEL_15:
   return v20;
 }
 
-- (HMFWoWLANInfo)initWithPrimaryIdentifier:(id)a3 wifiIdentifiers:(id)a4
+- (HMFWoWLANInfo)initWithPrimaryIdentifier:(id)identifier wifiIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7 || [v8 count])
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  v9 = identifiersCopy;
+  if (identifierCopy || [identifiersCopy count])
   {
     v17.receiver = self;
     v17.super_class = HMFWoWLANInfo;
@@ -386,12 +386,12 @@ LABEL_15:
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_primaryMACAddress, a3);
-      objc_storeStrong(v11 + 3, a4);
+      objc_storeStrong(&v10->_primaryMACAddress, identifier);
+      objc_storeStrong(v11 + 3, identifiers);
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -407,10 +407,10 @@ LABEL_15:
     }
 
     objc_autoreleasePoolPop(v14);
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

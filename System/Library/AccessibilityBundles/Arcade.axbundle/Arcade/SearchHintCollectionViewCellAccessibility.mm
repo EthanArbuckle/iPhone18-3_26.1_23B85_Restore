@@ -9,9 +9,9 @@
 {
   v2 = [(SearchHintCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityHintView"];
   v3 = [v2 _accessibilityDescendantOfType:MEMORY[0x29C2C9570](@"AppStoreKit.DynamicTypeLabel")];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  return v4;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

@@ -1,47 +1,47 @@
 @interface PAConfiguration
-+ (PAConfiguration)configurationWithAudiogram:(id)a3;
-+ (PAConfiguration)configurationWithLeftMediaLoss:(id)a3 rightMediaLoss:(id)a4 leftSpeechLoss:(id)a5 andRightSpeechLoss:(id)a6;
-+ (PAConfiguration)configurationWithLevel:(unint64_t)a3 andShape:(unint64_t)a4;
-+ (PAConfiguration)configurationWithMediaOffsets:(id)a3 andSpeechOffsets:(id)a4;
-+ (PAConfiguration)configurationWithPreset:(id)a3 andAdjustments:(id)a4;
-+ (PAConfiguration)configurationWithRawAdjustment:(unint64_t)a3;
-+ (id)configurationFromAudiogramSample:(id)a3;
-+ (id)configurationFromType:(unint64_t)a3;
-+ (id)dataFromPreset:(id *)a3;
-+ (id)paramDataWithValue:(float)a3 andOffset:(int)a4;
-- ($0F930BAB90C9DC9B4982FDE0E97FE34F)transparencySettingsv4ForAddress:(id)a3;
-- ($582E6112602F317AA177BE214B91E8F0)readSettingsFromPreset:(id)a3;
-- ($D1907C19D6DE236B0F95485CBF7F2EE1)transparencySettingsForAddress:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PAConfiguration)initWithCoder:(id)a3;
-- (float)pureToneAverageForSpeech:(BOOL)a3;
-- (id)lossArrayFromDictionary:(id)a3 forLeft:(BOOL)a4;
-- (id)onBudsMediaSettingsForRoute:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (PAConfiguration)configurationWithAudiogram:(id)audiogram;
++ (PAConfiguration)configurationWithLeftMediaLoss:(id)loss rightMediaLoss:(id)mediaLoss leftSpeechLoss:(id)speechLoss andRightSpeechLoss:(id)rightSpeechLoss;
++ (PAConfiguration)configurationWithLevel:(unint64_t)level andShape:(unint64_t)shape;
++ (PAConfiguration)configurationWithMediaOffsets:(id)offsets andSpeechOffsets:(id)speechOffsets;
++ (PAConfiguration)configurationWithPreset:(id)preset andAdjustments:(id)adjustments;
++ (PAConfiguration)configurationWithRawAdjustment:(unint64_t)adjustment;
++ (id)configurationFromAudiogramSample:(id)sample;
++ (id)configurationFromType:(unint64_t)type;
++ (id)dataFromPreset:(id *)preset;
++ (id)paramDataWithValue:(float)value andOffset:(int)offset;
+- ($0F930BAB90C9DC9B4982FDE0E97FE34F)transparencySettingsv4ForAddress:(id)address;
+- ($582E6112602F317AA177BE214B91E8F0)readSettingsFromPreset:(id)preset;
+- ($D1907C19D6DE236B0F95485CBF7F2EE1)transparencySettingsForAddress:(id)address;
+- (BOOL)isEqual:(id)equal;
+- (PAConfiguration)initWithCoder:(id)coder;
+- (float)pureToneAverageForSpeech:(BOOL)speech;
+- (id)lossArrayFromDictionary:(id)dictionary forLeft:(BOOL)left;
+- (id)onBudsMediaSettingsForRoute:(id)route;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PAConfiguration
 
-+ (PAConfiguration)configurationWithPreset:(id)a3 andAdjustments:(id)a4
++ (PAConfiguration)configurationWithPreset:(id)preset andAdjustments:(id)adjustments
 {
-  v5 = a4;
-  v6 = a3;
+  adjustmentsCopy = adjustments;
+  presetCopy = preset;
   v7 = objc_alloc_init(objc_opt_class());
-  [v7 setPreset:v6];
+  [v7 setPreset:presetCopy];
 
-  [v7 setPresetAdjustments:v5];
+  [v7 setPresetAdjustments:adjustmentsCopy];
 
   return v7;
 }
 
-+ (id)configurationFromType:(unint64_t)a3
++ (id)configurationFromType:(unint64_t)type
 {
   v3 = 0;
-  if (a3 > 6)
+  if (type > 6)
   {
-    if (a3 <= 8)
+    if (type <= 8)
     {
-      if (a3 != 7)
+      if (type != 7)
       {
         v4 = 2;
         goto LABEL_20;
@@ -52,15 +52,15 @@
 
     else
     {
-      if (a3 == 9)
+      if (type == 9)
       {
         v4 = 3;
         goto LABEL_22;
       }
 
-      if (a3 != 10)
+      if (type != 10)
       {
-        if (a3 != 11)
+        if (type != 11)
         {
           goto LABEL_26;
         }
@@ -77,11 +77,11 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 != 4)
+    if (type != 4)
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         v4 = 2;
 LABEL_22:
@@ -101,13 +101,13 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (a3 - 1 < 2)
+  if (type - 1 < 2)
   {
     v3 = [PAConfiguration configurationWithRawAdjustment:?];
     goto LABEL_26;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v4 = 1;
     goto LABEL_22;
@@ -118,16 +118,16 @@ LABEL_26:
   return v3;
 }
 
-+ (PAConfiguration)configurationWithLevel:(unint64_t)a3 andShape:(unint64_t)a4
++ (PAConfiguration)configurationWithLevel:(unint64_t)level andShape:(unint64_t)shape
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v6 = paBundle();
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Presets_Level_%lu_Shape_%lu", a3, a4];
-  v8 = [v6 pathForResource:v7 ofType:@"aupreset"];
+  shape = [MEMORY[0x277CCACA8] stringWithFormat:@"Presets_Level_%lu_Shape_%lu", level, shape];
+  v8 = [v6 pathForResource:shape ofType:@"aupreset"];
 
   v9 = paBundle();
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Presets_SpeechMode_Level_%lu_Shape_%lu", a3, a4];
-  v11 = [v9 pathForResource:v10 ofType:@"aupreset"];
+  shape2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Presets_SpeechMode_Level_%lu_Shape_%lu", level, shape];
+  v11 = [v9 pathForResource:shape2 ofType:@"aupreset"];
 
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v8];
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v11];
@@ -146,8 +146,8 @@ LABEL_26:
   if ([v12 count])
   {
     v15 = [PAConfiguration configurationWithPreset:v12 andAdjustments:v14];
-    [v15 setLevel:a3];
-    [v15 setShape:a4];
+    [v15 setLevel:level];
+    [v15 setShape:shape];
   }
 
   else
@@ -160,7 +160,7 @@ LABEL_26:
   return v15;
 }
 
-+ (PAConfiguration)configurationWithRawAdjustment:(unint64_t)a3
++ (PAConfiguration)configurationWithRawAdjustment:(unint64_t)adjustment
 {
   v4 = paBundle();
   v5 = [v4 pathForResource:@"Presets_0_dB_gain" ofType:@"aupreset"];
@@ -168,18 +168,18 @@ LABEL_26:
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v5];
   v7 = [PAConfiguration configurationWithPreset:v6 andAdjustments:0];
   [v7 setLevel:0];
-  [v7 setShape:a3];
+  [v7 setShape:adjustment];
 
   return v7;
 }
 
-+ (PAConfiguration)configurationWithAudiogram:(id)a3
++ (PAConfiguration)configurationWithAudiogram:(id)audiogram
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] == 8)
+  audiogramCopy = audiogram;
+  if ([audiogramCopy count] == 8)
   {
-    v4 = [PAConfiguration configurationWithMediaOffsets:v3 andSpeechOffsets:v3];
+    v4 = [PAConfiguration configurationWithMediaOffsets:audiogramCopy andSpeechOffsets:audiogramCopy];
   }
 
   else
@@ -188,7 +188,7 @@ LABEL_26:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = audiogramCopy;
       _os_log_impl(&dword_25E445000, v5, OS_LOG_TYPE_DEFAULT, "Skipping audiogram %@", &v8, 0xCu);
     }
 
@@ -200,29 +200,29 @@ LABEL_26:
   return v4;
 }
 
-+ (PAConfiguration)configurationWithMediaOffsets:(id)a3 andSpeechOffsets:(id)a4
++ (PAConfiguration)configurationWithMediaOffsets:(id)offsets andSpeechOffsets:(id)speechOffsets
 {
   v126 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v121 = v6;
-  if ([v6 count] == 8 && objc_msgSend(v7, "count") == 8)
+  offsetsCopy = offsets;
+  speechOffsetsCopy = speechOffsets;
+  v121 = offsetsCopy;
+  if ([offsetsCopy count] == 8 && objc_msgSend(speechOffsetsCopy, "count") == 8)
   {
-    v118 = a1;
+    selfCopy = self;
     v114 = [PAConfiguration configurationWithLevel:1 andShape:1];
-    v120 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v8 = paBundle();
     v9 = [v8 pathForResource:@"PresetValues" ofType:@"plist"];
 
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v9];
     v11 = [v10 objectForKey:@"level"];
-    v12 = [&unk_28702BDF0 stringValue];
-    v13 = [v11 objectForKey:v12];
+    stringValue = [&unk_28702BDF0 stringValue];
+    v13 = [v11 objectForKey:stringValue];
 
     v14 = MEMORY[0x277CBEB38];
     v15 = [v13 objectForKey:@"shape"];
     [&unk_28702BDF0 stringValue];
-    v16 = v119 = v7;
+    v16 = v119 = speechOffsetsCopy;
     v17 = [v15 objectForKey:v16];
     v18 = [v14 dictionaryWithDictionary:v17];
 
@@ -234,17 +234,17 @@ LABEL_26:
 
     v116 = v21;
     v22 = [v21 objectForKey:@"level"];
-    v23 = [&unk_28702BDF0 stringValue];
-    v24 = [v22 objectForKey:v23];
+    stringValue2 = [&unk_28702BDF0 stringValue];
+    v24 = [v22 objectForKey:stringValue2];
 
     v25 = MEMORY[0x277CBEB38];
     v115 = v24;
     v26 = [v24 objectForKey:@"shape"];
-    v27 = [&unk_28702BDF0 stringValue];
-    v28 = [v26 objectForKey:v27];
+    stringValue3 = [&unk_28702BDF0 stringValue];
+    v28 = [v26 objectForKey:stringValue3];
     v29 = [v25 dictionaryWithDictionary:v28];
 
-    v7 = v119;
+    speechOffsetsCopy = v119;
     v30 = v114;
     v31 = [v114 settingsFromConfiguration:0];
     v32 = [v114 settingsFromConfiguration:1];
@@ -341,12 +341,12 @@ LABEL_26:
       v66 = [v33 objectAtIndexedSubscript:7];
       [v18 setObject:v66 forKey:@"rightLoss10000_dBHL"];
 
-      [v120 setObject:v18 forKey:@"PAConfigPresetMediaKey"];
+      [dictionary setObject:v18 forKey:@"PAConfigPresetMediaKey"];
       v67 = MEMORY[0x277CBEB38];
-      v68 = [v114 preset];
-      v69 = [v67 dictionaryWithDictionary:v68];
+      preset = [v114 preset];
+      v69 = [v67 dictionaryWithDictionary:preset];
 
-      v70 = [v118 dataFromPreset:v31];
+      v70 = [selfCopy dataFromPreset:v31];
       [v69 setValue:v70 forKey:@"data"];
 
       v30 = v114;
@@ -445,7 +445,7 @@ LABEL_26:
       v102 = [v34 objectAtIndexedSubscript:7];
       [v29 setObject:v102 forKey:@"rightLoss10000_dBHL"];
 
-      [v120 setObject:v29 forKey:@"PAConfigPresetSpeechKey"];
+      [dictionary setObject:v29 forKey:@"PAConfigPresetSpeechKey"];
       v103 = MEMORY[0x277CBEB38];
       [v30 presetAdjustments];
       v104 = v18;
@@ -453,10 +453,10 @@ LABEL_26:
       v107 = [v106 valueForKey:@"PAPresetAdjustmentSpeechModeKey"];
       v108 = [v103 dictionaryWithDictionary:v107];
 
-      v109 = [v118 dataFromPreset:v32];
+      v109 = [selfCopy dataFromPreset:v32];
       [v108 setValue:v109 forKey:@"data"];
 
-      v7 = v119;
+      speechOffsetsCopy = v119;
       v110 = [MEMORY[0x277CBEAC0] dictionaryWithObject:v108 forKey:@"PAPresetAdjustmentSpeechModeKey"];
       [v105 setPresetAdjustments:v110];
 
@@ -465,7 +465,7 @@ LABEL_26:
       free(v32);
     }
 
-    [v30 setAudiogramSettings:v120];
+    [v30 setAudiogramSettings:dictionary];
     [v30 setShape:12];
     [v30 setLevel:12];
   }
@@ -476,9 +476,9 @@ LABEL_26:
     if (os_log_type_enabled(v111, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v123 = v6;
+      v123 = offsetsCopy;
       v124 = 2112;
-      v125 = v7;
+      v125 = speechOffsetsCopy;
       _os_log_impl(&dword_25E445000, v111, OS_LOG_TYPE_DEFAULT, "Skipping offsets %@ - %@", buf, 0x16u);
     }
 
@@ -490,41 +490,41 @@ LABEL_26:
   return v30;
 }
 
-+ (PAConfiguration)configurationWithLeftMediaLoss:(id)a3 rightMediaLoss:(id)a4 leftSpeechLoss:(id)a5 andRightSpeechLoss:(id)a6
++ (PAConfiguration)configurationWithLeftMediaLoss:(id)loss rightMediaLoss:(id)mediaLoss leftSpeechLoss:(id)speechLoss andRightSpeechLoss:(id)rightSpeechLoss
 {
   v192 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 count] < 8 || objc_msgSend(v11, "count") < 8 || objc_msgSend(v12, "count") < 8 || objc_msgSend(v13, "count") < 8)
+  lossCopy = loss;
+  mediaLossCopy = mediaLoss;
+  speechLossCopy = speechLoss;
+  rightSpeechLossCopy = rightSpeechLoss;
+  if ([lossCopy count] < 8 || objc_msgSend(mediaLossCopy, "count") < 8 || objc_msgSend(speechLossCopy, "count") < 8 || objc_msgSend(rightSpeechLossCopy, "count") < 8)
   {
-    v14 = HCLogAudioAccommodations();
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    dictionary = HCLogAudioAccommodations();
+    if (os_log_type_enabled(dictionary, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218752;
-      *v186 = [v10 count];
+      *v186 = [lossCopy count];
       *&v186[8] = 2048;
-      v187 = [v11 count];
+      v187 = [mediaLossCopy count];
       v188 = 2048;
-      v189 = [v12 count];
+      v189 = [speechLossCopy count];
       v190 = 2048;
-      v191 = [v13 count];
-      _os_log_impl(&dword_25E445000, v14, OS_LOG_TYPE_DEFAULT, "Missing coefficients [%lu, %lu, %lu, %lu]", buf, 0x2Au);
+      v191 = [rightSpeechLossCopy count];
+      _os_log_impl(&dword_25E445000, dictionary, OS_LOG_TYPE_DEFAULT, "Missing coefficients [%lu, %lu, %lu, %lu]", buf, 0x2Au);
     }
 
     v15 = 0;
     goto LABEL_8;
   }
 
-  v175 = a1;
-  v176 = v11;
-  v177 = v13;
-  v178 = v12;
+  selfCopy = self;
+  v176 = mediaLossCopy;
+  v177 = rightSpeechLossCopy;
+  v178 = speechLossCopy;
   v181 = 0;
   v18 = 1;
   v19 = 0x279A1C000uLL;
-  v180 = v10;
+  v180 = lossCopy;
   do
   {
     for (i = 1; i != 4; ++i)
@@ -537,28 +537,28 @@ LABEL_26:
         continue;
       }
 
-      v23 = [v10 objectAtIndexedSubscript:0];
+      v23 = [lossCopy objectAtIndexedSubscript:0];
       [v23 floatValue];
       if (v24 != *v22)
       {
         goto LABEL_29;
       }
 
-      v25 = [v10 objectAtIndexedSubscript:1];
+      v25 = [lossCopy objectAtIndexedSubscript:1];
       [v25 floatValue];
       if (v26 != v22[1])
       {
         goto LABEL_28;
       }
 
-      v27 = [v10 objectAtIndexedSubscript:2];
+      v27 = [lossCopy objectAtIndexedSubscript:2];
       [v27 floatValue];
       if (v28 != v22[2])
       {
         goto LABEL_27;
       }
 
-      v29 = [v10 objectAtIndexedSubscript:3];
+      v29 = [lossCopy objectAtIndexedSubscript:3];
       [v29 floatValue];
       if (v30 != v22[3])
       {
@@ -569,7 +569,7 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v31 = [v10 objectAtIndexedSubscript:4];
+      v31 = [lossCopy objectAtIndexedSubscript:4];
       [v31 floatValue];
       if (v32 != v22[4])
       {
@@ -577,8 +577,8 @@ LABEL_28:
         goto LABEL_36;
       }
 
-      [v10 objectAtIndexedSubscript:5];
-      v34 = v33 = v10;
+      [lossCopy objectAtIndexedSubscript:5];
+      v34 = v33 = lossCopy;
       [v34 floatValue];
       if (v35 != v22[5])
       {
@@ -591,7 +591,7 @@ LABEL_28:
       {
 
 LABEL_35:
-        v10 = v33;
+        lossCopy = v33;
 LABEL_36:
         v19 = 0x279A1C000;
         goto LABEL_29;
@@ -604,7 +604,7 @@ LABEL_36:
 
       if (v39 != v40)
       {
-        v10 = v180;
+        lossCopy = v180;
         v19 = 0x279A1C000;
         goto LABEL_30;
       }
@@ -621,7 +621,7 @@ LABEL_36:
 
       v19 = 0x279A1C000uLL;
       [PAConfiguration configurationWithLevel:v18 andShape:i];
-      v10 = v180;
+      lossCopy = v180;
       v181 = v23 = v181;
 LABEL_29:
 
@@ -633,31 +633,31 @@ LABEL_30:
   }
 
   while (v18 != 4);
-  v11 = v176;
-  v13 = v177;
-  v12 = v178;
+  mediaLossCopy = v176;
+  rightSpeechLossCopy = v177;
+  speechLossCopy = v178;
   v15 = v181;
   if (!v181)
   {
     v182 = [*(v19 + 3648) configurationWithLevel:1 andShape:2];
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v42 = paBundle();
     v43 = [v42 pathForResource:@"PresetValues" ofType:@"plist"];
 
     v44 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v43];
     v45 = [v44 objectForKey:@"level"];
-    v46 = [&unk_28702BDF0 stringValue];
-    v47 = [v45 objectForKey:v46];
+    stringValue = [&unk_28702BDF0 stringValue];
+    v47 = [v45 objectForKey:stringValue];
 
     v48 = MEMORY[0x277CBEB38];
     [v47 objectForKey:@"shape"];
-    v50 = v49 = v10;
-    v51 = [&unk_28702BDF0 stringValue];
-    v52 = [v50 objectForKey:v51];
+    v50 = v49 = lossCopy;
+    stringValue2 = [&unk_28702BDF0 stringValue];
+    v52 = [v50 objectForKey:stringValue2];
     v173 = [v48 dictionaryWithDictionary:v52];
 
-    v11 = v176;
-    v10 = v49;
+    mediaLossCopy = v176;
+    lossCopy = v49;
     v53 = paBundle();
     v54 = [v53 pathForResource:@"PresetValuesSpeech" ofType:@"plist"];
 
@@ -666,14 +666,14 @@ LABEL_30:
 
     v179 = v55;
     v56 = [v55 objectForKey:@"level"];
-    v57 = [&unk_28702BDF0 stringValue];
-    v58 = [v56 objectForKey:v57];
+    stringValue3 = [&unk_28702BDF0 stringValue];
+    v58 = [v56 objectForKey:stringValue3];
 
     v59 = MEMORY[0x277CBEB38];
     v174 = v58;
     v60 = [v58 objectForKey:@"shape"];
-    v61 = [&unk_28702BDF0 stringValue];
-    v62 = [v60 objectForKey:v61];
+    stringValue4 = [&unk_28702BDF0 stringValue];
+    v62 = [v60 objectForKey:stringValue4];
     v63 = [v59 dictionaryWithDictionary:v62];
 
     v64 = v173;
@@ -683,35 +683,35 @@ LABEL_30:
     v66 = [v182 settingsFromConfiguration:1];
     if (v65)
     {
-      v67 = [v10 objectAtIndexedSubscript:0];
+      v67 = [lossCopy objectAtIndexedSubscript:0];
       [v67 floatValue];
       *v65 = v68;
 
-      v69 = [v10 objectAtIndexedSubscript:1];
+      v69 = [lossCopy objectAtIndexedSubscript:1];
       [v69 floatValue];
       v65[1] = v70;
 
-      v71 = [v10 objectAtIndexedSubscript:2];
+      v71 = [lossCopy objectAtIndexedSubscript:2];
       [v71 floatValue];
       v65[2] = v72;
 
-      v73 = [v10 objectAtIndexedSubscript:3];
+      v73 = [lossCopy objectAtIndexedSubscript:3];
       [v73 floatValue];
       v65[3] = v74;
 
-      v75 = [v10 objectAtIndexedSubscript:4];
+      v75 = [lossCopy objectAtIndexedSubscript:4];
       [v75 floatValue];
       v65[4] = v76;
 
-      v77 = [v10 objectAtIndexedSubscript:5];
+      v77 = [lossCopy objectAtIndexedSubscript:5];
       [v77 floatValue];
       v65[5] = v78;
 
-      v79 = [v10 objectAtIndexedSubscript:6];
+      v79 = [lossCopy objectAtIndexedSubscript:6];
       [v79 floatValue];
       v65[6] = v80;
 
-      v81 = [v10 objectAtIndexedSubscript:7];
+      v81 = [lossCopy objectAtIndexedSubscript:7];
       [v81 floatValue];
       v65[7] = v82;
 
@@ -747,28 +747,28 @@ LABEL_30:
       [v97 floatValue];
       v65[39] = v98;
 
-      v99 = [v10 objectAtIndexedSubscript:0];
+      v99 = [lossCopy objectAtIndexedSubscript:0];
       [v173 setObject:v99 forKey:@"leftLoss250_dBHL"];
 
-      v100 = [v10 objectAtIndexedSubscript:1];
+      v100 = [lossCopy objectAtIndexedSubscript:1];
       [v173 setObject:v100 forKey:@"leftLoss500_dBHL"];
 
-      v101 = [v10 objectAtIndexedSubscript:2];
+      v101 = [lossCopy objectAtIndexedSubscript:2];
       [v173 setObject:v101 forKey:@"leftLoss1000_dBHL"];
 
-      v102 = [v10 objectAtIndexedSubscript:3];
+      v102 = [lossCopy objectAtIndexedSubscript:3];
       [v173 setObject:v102 forKey:@"leftLoss2000_dBHL"];
 
-      v103 = [v10 objectAtIndexedSubscript:4];
+      v103 = [lossCopy objectAtIndexedSubscript:4];
       [v173 setObject:v103 forKey:@"leftLoss3000_dBHL"];
 
-      v104 = [v10 objectAtIndexedSubscript:5];
+      v104 = [lossCopy objectAtIndexedSubscript:5];
       [v173 setObject:v104 forKey:@"leftLoss4000_dBHL"];
 
-      v105 = [v10 objectAtIndexedSubscript:6];
+      v105 = [lossCopy objectAtIndexedSubscript:6];
       [v173 setObject:v105 forKey:@"leftLoss6000_dBHL"];
 
-      v106 = [v10 objectAtIndexedSubscript:7];
+      v106 = [lossCopy objectAtIndexedSubscript:7];
       [v173 setObject:v106 forKey:@"leftLoss10000_dBHL"];
 
       v107 = [v176 objectAtIndexedSubscript:0];
@@ -795,14 +795,14 @@ LABEL_30:
       v114 = [v176 objectAtIndexedSubscript:7];
       [v173 setObject:v114 forKey:@"rightLoss10000_dBHL"];
 
-      [v14 setObject:v173 forKey:@"PAConfigPresetMediaKey"];
-      [v14 setObject:v10 forKey:@"PAConfigLeftMediaKey"];
-      [v14 setObject:v176 forKey:@"PAConfigRightMediaKey"];
+      [dictionary setObject:v173 forKey:@"PAConfigPresetMediaKey"];
+      [dictionary setObject:lossCopy forKey:@"PAConfigLeftMediaKey"];
+      [dictionary setObject:v176 forKey:@"PAConfigRightMediaKey"];
       v115 = MEMORY[0x277CBEB38];
-      v116 = [v182 preset];
-      v117 = [v115 dictionaryWithDictionary:v116];
+      preset = [v182 preset];
+      v117 = [v115 dictionaryWithDictionary:preset];
 
-      v118 = [v175 dataFromPreset:v65];
+      v118 = [selfCopy dataFromPreset:v65];
       [v117 setValue:v118 forKey:@"data"];
 
       [v182 setPreset:v117];
@@ -923,16 +923,16 @@ LABEL_30:
       v166 = [v177 objectAtIndexedSubscript:7];
       [v63 setObject:v166 forKey:@"rightLoss10000_dBHL"];
 
-      [v14 setObject:v63 forKey:@"PAConfigPresetSpeechKey"];
-      [v14 setObject:v178 forKey:@"PAConfigLeftSpeechKey"];
-      [v14 setObject:v177 forKey:@"PAConfigRightSpeechKey"];
+      [dictionary setObject:v63 forKey:@"PAConfigPresetSpeechKey"];
+      [dictionary setObject:v178 forKey:@"PAConfigLeftSpeechKey"];
+      [dictionary setObject:v177 forKey:@"PAConfigRightSpeechKey"];
       v167 = MEMORY[0x277CBEB38];
-      v168 = [v182 presetAdjustments];
-      v169 = [v168 valueForKey:@"PAPresetAdjustmentSpeechModeKey"];
+      presetAdjustments = [v182 presetAdjustments];
+      v169 = [presetAdjustments valueForKey:@"PAPresetAdjustmentSpeechModeKey"];
       v170 = [v167 dictionaryWithDictionary:v169];
 
       v64 = v173;
-      v171 = [v175 dataFromPreset:v66];
+      v171 = [selfCopy dataFromPreset:v66];
       [v170 setValue:v171 forKey:@"data"];
 
       v15 = v182;
@@ -942,12 +942,12 @@ LABEL_30:
       free(v66);
     }
 
-    [v15 setAudiogramSettings:{v14, v173}];
+    [v15 setAudiogramSettings:{dictionary, v173}];
     [v15 setShape:12];
     [v15 setLevel:12];
 
-    v13 = v177;
-    v12 = v178;
+    rightSpeechLossCopy = v177;
+    speechLossCopy = v178;
 LABEL_8:
   }
 
@@ -956,31 +956,31 @@ LABEL_8:
   return v15;
 }
 
-+ (id)configurationFromAudiogramSample:(id)a3
++ (id)configurationFromAudiogramSample:(id)sample
 {
-  v3 = [PAAudiogramUtilities normalizedOffsetsFromAudiogram:a3];
+  v3 = [PAAudiogramUtilities normalizedOffsetsFromAudiogram:sample];
   v4 = [PAConfiguration configurationWithAudiogram:v3];
 
   return v4;
 }
 
-+ (id)paramDataWithValue:(float)a3 andOffset:(int)a4
++ (id)paramDataWithValue:(float)value andOffset:(int)offset
 {
-  v6[0] = bswap32(a4 >> 2);
-  v6[1] = bswap32(LODWORD(a3));
+  v6[0] = bswap32(offset >> 2);
+  v6[1] = bswap32(LODWORD(value));
   v4 = [MEMORY[0x277CBEA90] dataWithBytes:v6 length:8];
 
   return v4;
 }
 
-+ (id)dataFromPreset:(id *)a3
++ (id)dataFromPreset:(id *)preset
 {
-  v5 = [MEMORY[0x277CBEB28] data];
-  v6 = v5;
-  *&v7 = a3->var0;
-  if (a3->var0 == a3->var32 && (*&v7 = a3->var1, *&v7 == a3->var33) && (*&v7 = a3->var2, *&v7 == a3->var34) && (*&v7 = a3->var3, *&v7 == a3->var35) && (*&v7 = a3->var4, *&v7 == a3->var36) && (*&v7 = a3->var5, *&v7 == a3->var37) && (*&v7 = a3->var6, *&v7 == a3->var38))
+  data = [MEMORY[0x277CBEB28] data];
+  v6 = data;
+  *&v7 = preset->var0;
+  if (preset->var0 == preset->var32 && (*&v7 = preset->var1, *&v7 == preset->var33) && (*&v7 = preset->var2, *&v7 == preset->var34) && (*&v7 = preset->var3, *&v7 == preset->var35) && (*&v7 = preset->var4, *&v7 == preset->var36) && (*&v7 = preset->var5, *&v7 == preset->var37) && (*&v7 = preset->var6, *&v7 == preset->var38))
   {
-    *&v7 = a3->var7;
+    *&v7 = preset->var7;
     v8 = 0.0;
   }
 
@@ -991,180 +991,180 @@ LABEL_8:
 
   v90 = 0;
   v91 = 671088640;
-  [v5 appendBytes:&v90 length:{12, v7}];
-  *&v9 = a3->var0;
-  v10 = [a1 paramDataWithValue:0 andOffset:v9];
+  [data appendBytes:&v90 length:{12, v7}];
+  *&v9 = preset->var0;
+  v10 = [self paramDataWithValue:0 andOffset:v9];
   [v6 appendData:v10];
 
-  *&v11 = a3->var1;
-  v12 = [a1 paramDataWithValue:4 andOffset:v11];
+  *&v11 = preset->var1;
+  v12 = [self paramDataWithValue:4 andOffset:v11];
   [v6 appendData:v12];
 
-  *&v13 = a3->var2;
-  v14 = [a1 paramDataWithValue:8 andOffset:v13];
+  *&v13 = preset->var2;
+  v14 = [self paramDataWithValue:8 andOffset:v13];
   [v6 appendData:v14];
 
-  *&v15 = a3->var3;
-  v16 = [a1 paramDataWithValue:12 andOffset:v15];
+  *&v15 = preset->var3;
+  v16 = [self paramDataWithValue:12 andOffset:v15];
   [v6 appendData:v16];
 
-  *&v17 = a3->var4;
-  v18 = [a1 paramDataWithValue:16 andOffset:v17];
+  *&v17 = preset->var4;
+  v18 = [self paramDataWithValue:16 andOffset:v17];
   [v6 appendData:v18];
 
-  *&v19 = a3->var5;
-  v20 = [a1 paramDataWithValue:20 andOffset:v19];
+  *&v19 = preset->var5;
+  v20 = [self paramDataWithValue:20 andOffset:v19];
   [v6 appendData:v20];
 
-  *&v21 = a3->var6;
-  v22 = [a1 paramDataWithValue:24 andOffset:v21];
+  *&v21 = preset->var6;
+  v22 = [self paramDataWithValue:24 andOffset:v21];
   [v6 appendData:v22];
 
-  *&v23 = a3->var7;
-  v24 = [a1 paramDataWithValue:28 andOffset:v23];
+  *&v23 = preset->var7;
+  v24 = [self paramDataWithValue:28 andOffset:v23];
   [v6 appendData:v24];
 
-  *&v25 = a3->var8;
-  v26 = [a1 paramDataWithValue:32 andOffset:v25];
+  *&v25 = preset->var8;
+  v26 = [self paramDataWithValue:32 andOffset:v25];
   [v6 appendData:v26];
 
-  *&v27 = a3->var9;
-  v28 = [a1 paramDataWithValue:36 andOffset:v27];
+  *&v27 = preset->var9;
+  v28 = [self paramDataWithValue:36 andOffset:v27];
   [v6 appendData:v28];
 
-  *&v29 = a3->var10;
-  v30 = [a1 paramDataWithValue:40 andOffset:v29];
+  *&v29 = preset->var10;
+  v30 = [self paramDataWithValue:40 andOffset:v29];
   [v6 appendData:v30];
 
-  *&v31 = a3->var11;
-  v32 = [a1 paramDataWithValue:44 andOffset:v31];
+  *&v31 = preset->var11;
+  v32 = [self paramDataWithValue:44 andOffset:v31];
   [v6 appendData:v32];
 
-  *&v33 = a3->var12;
-  v34 = [a1 paramDataWithValue:48 andOffset:v33];
+  *&v33 = preset->var12;
+  v34 = [self paramDataWithValue:48 andOffset:v33];
   [v6 appendData:v34];
 
-  *&v35 = a3->var13;
-  v36 = [a1 paramDataWithValue:52 andOffset:v35];
+  *&v35 = preset->var13;
+  v36 = [self paramDataWithValue:52 andOffset:v35];
   [v6 appendData:v36];
 
-  *&v37 = a3->var14;
-  v38 = [a1 paramDataWithValue:56 andOffset:v37];
+  *&v37 = preset->var14;
+  v38 = [self paramDataWithValue:56 andOffset:v37];
   [v6 appendData:v38];
 
-  *&v39 = a3->var15;
-  v40 = [a1 paramDataWithValue:60 andOffset:v39];
+  *&v39 = preset->var15;
+  v40 = [self paramDataWithValue:60 andOffset:v39];
   [v6 appendData:v40];
 
-  *&v41 = a3->var16;
-  v42 = [a1 paramDataWithValue:64 andOffset:v41];
+  *&v41 = preset->var16;
+  v42 = [self paramDataWithValue:64 andOffset:v41];
   [v6 appendData:v42];
 
-  *&v43 = a3->var17;
-  v44 = [a1 paramDataWithValue:68 andOffset:v43];
+  *&v43 = preset->var17;
+  v44 = [self paramDataWithValue:68 andOffset:v43];
   [v6 appendData:v44];
 
-  *&v45 = a3->var18;
-  v46 = [a1 paramDataWithValue:72 andOffset:v45];
+  *&v45 = preset->var18;
+  v46 = [self paramDataWithValue:72 andOffset:v45];
   [v6 appendData:v46];
 
-  *&v47 = a3->var19;
-  v48 = [a1 paramDataWithValue:76 andOffset:v47];
+  *&v47 = preset->var19;
+  v48 = [self paramDataWithValue:76 andOffset:v47];
   [v6 appendData:v48];
 
-  *&v49 = a3->var20;
-  v50 = [a1 paramDataWithValue:80 andOffset:v49];
+  *&v49 = preset->var20;
+  v50 = [self paramDataWithValue:80 andOffset:v49];
   [v6 appendData:v50];
 
-  *&v51 = a3->var21;
-  v52 = [a1 paramDataWithValue:84 andOffset:v51];
+  *&v51 = preset->var21;
+  v52 = [self paramDataWithValue:84 andOffset:v51];
   [v6 appendData:v52];
 
-  *&v53 = a3->var22;
-  v54 = [a1 paramDataWithValue:88 andOffset:v53];
+  *&v53 = preset->var22;
+  v54 = [self paramDataWithValue:88 andOffset:v53];
   [v6 appendData:v54];
 
-  *&v55 = a3->var23;
-  v56 = [a1 paramDataWithValue:92 andOffset:v55];
+  *&v55 = preset->var23;
+  v56 = [self paramDataWithValue:92 andOffset:v55];
   [v6 appendData:v56];
 
-  *&v57 = a3->var24;
-  v58 = [a1 paramDataWithValue:96 andOffset:v57];
+  *&v57 = preset->var24;
+  v58 = [self paramDataWithValue:96 andOffset:v57];
   [v6 appendData:v58];
 
-  *&v59 = a3->var25;
-  v60 = [a1 paramDataWithValue:100 andOffset:v59];
+  *&v59 = preset->var25;
+  v60 = [self paramDataWithValue:100 andOffset:v59];
   [v6 appendData:v60];
 
-  *&v61 = a3->var26;
-  v62 = [a1 paramDataWithValue:104 andOffset:v61];
+  *&v61 = preset->var26;
+  v62 = [self paramDataWithValue:104 andOffset:v61];
   [v6 appendData:v62];
 
-  *&v63 = a3->var27;
-  v64 = [a1 paramDataWithValue:108 andOffset:v63];
+  *&v63 = preset->var27;
+  v64 = [self paramDataWithValue:108 andOffset:v63];
   [v6 appendData:v64];
 
-  *&v65 = a3->var28;
-  v66 = [a1 paramDataWithValue:112 andOffset:v65];
+  *&v65 = preset->var28;
+  v66 = [self paramDataWithValue:112 andOffset:v65];
   [v6 appendData:v66];
 
-  *&v67 = a3->var29;
-  v68 = [a1 paramDataWithValue:116 andOffset:v67];
+  *&v67 = preset->var29;
+  v68 = [self paramDataWithValue:116 andOffset:v67];
   [v6 appendData:v68];
 
-  *&v69 = a3->var30;
-  v70 = [a1 paramDataWithValue:120 andOffset:v69];
+  *&v69 = preset->var30;
+  v70 = [self paramDataWithValue:120 andOffset:v69];
   [v6 appendData:v70];
 
   *&v71 = v8;
-  v72 = [a1 paramDataWithValue:124 andOffset:v71];
+  v72 = [self paramDataWithValue:124 andOffset:v71];
   [v6 appendData:v72];
 
-  *&v73 = a3->var32;
-  v74 = [a1 paramDataWithValue:128 andOffset:v73];
+  *&v73 = preset->var32;
+  v74 = [self paramDataWithValue:128 andOffset:v73];
   [v6 appendData:v74];
 
-  *&v75 = a3->var33;
-  v76 = [a1 paramDataWithValue:132 andOffset:v75];
+  *&v75 = preset->var33;
+  v76 = [self paramDataWithValue:132 andOffset:v75];
   [v6 appendData:v76];
 
-  *&v77 = a3->var34;
-  v78 = [a1 paramDataWithValue:136 andOffset:v77];
+  *&v77 = preset->var34;
+  v78 = [self paramDataWithValue:136 andOffset:v77];
   [v6 appendData:v78];
 
-  *&v79 = a3->var35;
-  v80 = [a1 paramDataWithValue:140 andOffset:v79];
+  *&v79 = preset->var35;
+  v80 = [self paramDataWithValue:140 andOffset:v79];
   [v6 appendData:v80];
 
-  *&v81 = a3->var36;
-  v82 = [a1 paramDataWithValue:144 andOffset:v81];
+  *&v81 = preset->var36;
+  v82 = [self paramDataWithValue:144 andOffset:v81];
   [v6 appendData:v82];
 
-  *&v83 = a3->var37;
-  v84 = [a1 paramDataWithValue:148 andOffset:v83];
+  *&v83 = preset->var37;
+  v84 = [self paramDataWithValue:148 andOffset:v83];
   [v6 appendData:v84];
 
-  *&v85 = a3->var38;
-  v86 = [a1 paramDataWithValue:152 andOffset:v85];
+  *&v85 = preset->var38;
+  v86 = [self paramDataWithValue:152 andOffset:v85];
   [v6 appendData:v86];
 
-  *&v87 = a3->var39;
-  v88 = [a1 paramDataWithValue:156 andOffset:v87];
+  *&v87 = preset->var39;
+  v88 = [self paramDataWithValue:156 andOffset:v87];
   [v6 appendData:v88];
 
   return v6;
 }
 
-- (PAConfiguration)initWithCoder:(id)a3
+- (PAConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = PAConfiguration;
   v5 = [(PAConfiguration *)&v25 init];
   if (v5)
   {
-    -[PAConfiguration setLevel:](v5, "setLevel:", [v4 decodeIntegerForKey:@"PAConfigPresetLevelKey"]);
-    -[PAConfiguration setShape:](v5, "setShape:", [v4 decodeIntegerForKey:@"PAConfigPresetShapeKey"]);
+    -[PAConfiguration setLevel:](v5, "setLevel:", [coderCopy decodeIntegerForKey:@"PAConfigPresetLevelKey"]);
+    -[PAConfiguration setShape:](v5, "setShape:", [coderCopy decodeIntegerForKey:@"PAConfigPresetShapeKey"]);
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
@@ -1173,7 +1173,7 @@ LABEL_8:
     v11 = objc_opt_class();
     v12 = [v6 setWithObjects:{v7, v8, v9, v10, v11, objc_opt_class(), 0}];
     v24 = 0;
-    v13 = [v4 decodeTopLevelObjectOfClasses:v12 forKey:@"PAConfigPresetKey" error:&v24];
+    v13 = [coderCopy decodeTopLevelObjectOfClasses:v12 forKey:@"PAConfigPresetKey" error:&v24];
     v14 = v24;
     [(PAConfiguration *)v5 setPreset:v13];
 
@@ -1187,7 +1187,7 @@ LABEL_8:
     }
 
     v23 = 0;
-    v16 = [v4 decodeTopLevelObjectOfClasses:v12 forKey:@"PAConfigPresetAdjustmentsKey" error:&v23];
+    v16 = [coderCopy decodeTopLevelObjectOfClasses:v12 forKey:@"PAConfigPresetAdjustmentsKey" error:&v23];
     v17 = v23;
     [(PAConfiguration *)v5 setPresetAdjustments:v16];
 
@@ -1200,11 +1200,11 @@ LABEL_8:
       }
     }
 
-    if ([v4 containsValueForKey:@"PAConfigPresetAudiogramKey"])
+    if ([coderCopy containsValueForKey:@"PAConfigPresetAudiogramKey"])
     {
 
       v22 = 0;
-      v19 = [v4 decodeTopLevelObjectOfClasses:v12 forKey:@"PAConfigPresetAudiogramKey" error:&v22];
+      v19 = [coderCopy decodeTopLevelObjectOfClasses:v12 forKey:@"PAConfigPresetAudiogramKey" error:&v22];
       v17 = v22;
       [(PAConfiguration *)v5 setAudiogramSettings:v19];
 
@@ -1222,41 +1222,41 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  [v9 encodeInteger:self->_level forKey:@"PAConfigPresetLevelKey"];
-  [v9 encodeInteger:self->_shape forKey:@"PAConfigPresetShapeKey"];
-  v4 = [(PAConfiguration *)self preset];
-  [v9 encodeObject:v4 forKey:@"PAConfigPresetKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_level forKey:@"PAConfigPresetLevelKey"];
+  [coderCopy encodeInteger:self->_shape forKey:@"PAConfigPresetShapeKey"];
+  preset = [(PAConfiguration *)self preset];
+  [coderCopy encodeObject:preset forKey:@"PAConfigPresetKey"];
 
-  v5 = [(PAConfiguration *)self presetAdjustments];
-  [v9 encodeObject:v5 forKey:@"PAConfigPresetAdjustmentsKey"];
+  presetAdjustments = [(PAConfiguration *)self presetAdjustments];
+  [coderCopy encodeObject:presetAdjustments forKey:@"PAConfigPresetAdjustmentsKey"];
 
-  v6 = [(PAConfiguration *)self audiogramSettings];
-  v7 = [v6 count];
+  audiogramSettings = [(PAConfiguration *)self audiogramSettings];
+  v7 = [audiogramSettings count];
 
   if (v7)
   {
-    v8 = [(PAConfiguration *)self audiogramSettings];
-    [v9 encodeObject:v8 forKey:@"PAConfigPresetAudiogramKey"];
+    audiogramSettings2 = [(PAConfiguration *)self audiogramSettings];
+    [coderCopy encodeObject:audiogramSettings2 forKey:@"PAConfigPresetAudiogramKey"];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PAConfiguration *)self preset];
-    v7 = [v5 preset];
-    if ([v6 isEqualToDictionary:v7])
+    v5 = equalCopy;
+    preset = [(PAConfiguration *)self preset];
+    preset2 = [v5 preset];
+    if ([preset isEqualToDictionary:preset2])
     {
-      v8 = [(PAConfiguration *)self presetAdjustments];
-      v9 = [v5 presetAdjustments];
-      v10 = [v8 isEqualToDictionary:v9];
+      presetAdjustments = [(PAConfiguration *)self presetAdjustments];
+      presetAdjustments2 = [v5 presetAdjustments];
+      v10 = [presetAdjustments isEqualToDictionary:presetAdjustments2];
     }
 
     else
@@ -1273,10 +1273,10 @@ LABEL_8:
   return v10;
 }
 
-- ($582E6112602F317AA177BE214B91E8F0)readSettingsFromPreset:(id)a3
+- ($582E6112602F317AA177BE214B91E8F0)readSettingsFromPreset:(id)preset
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [a3 valueForKey:@"data"];
+  v3 = [preset valueForKey:@"data"];
   if ([v3 length])
   {
     v4 = malloc_type_calloc(1uLL, 0xA0uLL, 0x1000040B8406A4EuLL);
@@ -1347,10 +1347,10 @@ LABEL_8:
   return v4;
 }
 
-- ($0F930BAB90C9DC9B4982FDE0E97FE34F)transparencySettingsv4ForAddress:(id)a3
+- ($0F930BAB90C9DC9B4982FDE0E97FE34F)transparencySettingsv4ForAddress:(id)address
 {
   v118 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addressCopy = address;
   v5 = [(PAConfiguration *)self settingsFromConfiguration:0];
   if (v5)
   {
@@ -1362,15 +1362,15 @@ LABEL_8:
     *(v7 + 52) = vcvt_hight_f32_f64(vcvt_f32_f64(vmaxnmq_f64(vminnmq_f64(vcvtq_f64_f32(v6[16]), v8), 0)), vmaxnmq_f64(vminnmq_f64(vcvt_hight_f64_f32(*v6[16].f32), v8), 0));
     *(v7 + 68) = vcvt_hight_f32_f64(vcvt_f32_f64(vmaxnmq_f64(vminnmq_f64(vcvtq_f64_f32(v6[18]), v8), 0)), vmaxnmq_f64(vminnmq_f64(vcvt_hight_f64_f32(*v6[18].f32), v8), 0));
     v9 = +[PASettings sharedInstance];
-    [v9 transparencyToneForAddress:v4];
+    [v9 transparencyToneForAddress:addressCopy];
     v11 = v10 * 2.0 + -1.0;
 
     v12 = +[PASettings sharedInstance];
-    [v12 transparencyBalanceForAddress:v4];
+    [v12 transparencyBalanceForAddress:addressCopy];
     v14 = v13 * 2.0 + -1.0;
 
     v15 = +[PASettings sharedInstance];
-    [v15 transparencyAmplificationForAddress:v4];
+    [v15 transparencyAmplificationForAddress:addressCopy];
     v17 = v16 * 2.0 + -1.0;
 
     if (v14 <= 0.0)
@@ -1400,12 +1400,12 @@ LABEL_8:
     }
 
     v22 = +[PASettings sharedInstance];
-    v23 = [v22 transparencyBeamformingForAddress:v4];
+    v23 = [v22 transparencyBeamformingForAddress:addressCopy];
     *(v7 + 23) = v23;
     *(v7 + 11) = v23;
 
     v24 = +[PASettings sharedInstance];
-    [v24 transparencyNoiseSupressorForAddress:v4];
+    [v24 transparencyNoiseSupressorForAddress:addressCopy];
     *&v25 = v25;
     *(v7 + 24) = LODWORD(v25);
     *(v7 + 12) = LODWORD(v25);
@@ -1421,7 +1421,7 @@ LABEL_8:
     if ([v29 personalMediaEnabled])
     {
       v30 = +[PASettings sharedInstance];
-      *v7 = [v30 transparencyCustomizedForAddress:v4];
+      *v7 = [v30 transparencyCustomizedForAddress:addressCopy];
     }
 
     else
@@ -1430,7 +1430,7 @@ LABEL_8:
     }
 
     v31 = +[PASettings sharedInstance];
-    [v31 transparencyOwnVoiceForAddress:v4];
+    [v31 transparencyOwnVoiceForAddress:addressCopy];
     *&v32 = v32;
     *(v7 + 25) = LODWORD(v32);
 
@@ -1545,10 +1545,10 @@ LABEL_8:
   return v7;
 }
 
-- ($D1907C19D6DE236B0F95485CBF7F2EE1)transparencySettingsForAddress:(id)a3
+- ($D1907C19D6DE236B0F95485CBF7F2EE1)transparencySettingsForAddress:(id)address
 {
   v113 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addressCopy = address;
   v5 = [(PAConfiguration *)self settingsFromConfiguration:0];
   if (v5)
   {
@@ -1560,15 +1560,15 @@ LABEL_8:
     *(v7 + 52) = vcvt_hight_f32_f64(vcvt_f32_f64(vmaxnmq_f64(vminnmq_f64(vcvtq_f64_f32(v6[16]), v8), 0)), vmaxnmq_f64(vminnmq_f64(vcvt_hight_f64_f32(*v6[16].f32), v8), 0));
     *(v7 + 68) = vcvt_hight_f32_f64(vcvt_f32_f64(vmaxnmq_f64(vminnmq_f64(vcvtq_f64_f32(v6[18]), v8), 0)), vmaxnmq_f64(vminnmq_f64(vcvt_hight_f64_f32(*v6[18].f32), v8), 0));
     v9 = +[PASettings sharedInstance];
-    [v9 transparencyToneForAddress:v4];
+    [v9 transparencyToneForAddress:addressCopy];
     v11 = v10 * 2.0 + -1.0;
 
     v12 = +[PASettings sharedInstance];
-    [v12 transparencyBalanceForAddress:v4];
+    [v12 transparencyBalanceForAddress:addressCopy];
     v14 = v13 * 2.0 + -1.0;
 
     v15 = +[PASettings sharedInstance];
-    [v15 transparencyAmplificationForAddress:v4];
+    [v15 transparencyAmplificationForAddress:addressCopy];
     v17 = v16 * 2.0 + -1.0;
 
     if (v14 <= 0.0)
@@ -1598,12 +1598,12 @@ LABEL_8:
     }
 
     v22 = +[PASettings sharedInstance];
-    v23 = [v22 transparencyBeamformingForAddress:v4];
+    v23 = [v22 transparencyBeamformingForAddress:addressCopy];
     *(v7 + 23) = v23;
     *(v7 + 11) = v23;
 
     v24 = +[PASettings sharedInstance];
-    [v24 transparencyNoiseSupressorForAddress:v4];
+    [v24 transparencyNoiseSupressorForAddress:addressCopy];
     *&v25 = v25;
     *(v7 + 24) = LODWORD(v25);
     *(v7 + 12) = LODWORD(v25);
@@ -1619,7 +1619,7 @@ LABEL_8:
     if ([v29 personalMediaEnabled])
     {
       v30 = +[PASettings sharedInstance];
-      *v7 = [v30 transparencyCustomizedForAddress:v4];
+      *v7 = [v30 transparencyCustomizedForAddress:addressCopy];
     }
 
     else
@@ -1735,13 +1735,13 @@ LABEL_8:
   return v7;
 }
 
-- (id)lossArrayFromDictionary:(id)a3 forLeft:(BOOL)a4
+- (id)lossArrayFromDictionary:(id)dictionary forLeft:(BOOL)left
 {
-  v4 = a4;
+  leftCopy = left;
   v5 = MEMORY[0x277CBEB18];
-  v6 = a3;
-  v7 = [v5 array];
-  if (v4)
+  dictionaryCopy = dictionary;
+  array = [v5 array];
+  if (leftCopy)
   {
     v8 = @"leftLoss250_dBHL";
   }
@@ -1751,7 +1751,7 @@ LABEL_8:
     v8 = @"rightLoss250_dBHL";
   }
 
-  if (v4)
+  if (leftCopy)
   {
     v9 = @"leftLoss500_dBHL";
   }
@@ -1761,7 +1761,7 @@ LABEL_8:
     v9 = @"rightLoss500_dBHL";
   }
 
-  if (v4)
+  if (leftCopy)
   {
     v10 = @"leftLoss1000_dBHL";
   }
@@ -1771,7 +1771,7 @@ LABEL_8:
     v10 = @"rightLoss1000_dBHL";
   }
 
-  if (v4)
+  if (leftCopy)
   {
     v11 = @"leftLoss2000_dBHL";
   }
@@ -1781,7 +1781,7 @@ LABEL_8:
     v11 = @"rightLoss2000_dBHL";
   }
 
-  if (v4)
+  if (leftCopy)
   {
     v12 = @"leftLoss3000_dBHL";
   }
@@ -1791,7 +1791,7 @@ LABEL_8:
     v12 = @"rightLoss3000_dBHL";
   }
 
-  if (v4)
+  if (leftCopy)
   {
     v13 = @"leftLoss4000_dBHL";
   }
@@ -1801,7 +1801,7 @@ LABEL_8:
     v13 = @"rightLoss4000_dBHL";
   }
 
-  if (v4)
+  if (leftCopy)
   {
     v14 = @"leftLoss6000_dBHL";
   }
@@ -1811,7 +1811,7 @@ LABEL_8:
     v14 = @"rightLoss6000_dBHL";
   }
 
-  if (v4)
+  if (leftCopy)
   {
     v15 = @"leftLoss10000_dBHL";
   }
@@ -1821,33 +1821,33 @@ LABEL_8:
     v15 = @"rightLoss10000_dBHL";
   }
 
-  v16 = [v6 objectForKey:v8];
-  [v7 hcSafeAddObject:v16];
+  v16 = [dictionaryCopy objectForKey:v8];
+  [array hcSafeAddObject:v16];
 
-  v17 = [v6 objectForKey:v9];
-  [v7 hcSafeAddObject:v17];
+  v17 = [dictionaryCopy objectForKey:v9];
+  [array hcSafeAddObject:v17];
 
-  v18 = [v6 objectForKey:v10];
-  [v7 hcSafeAddObject:v18];
+  v18 = [dictionaryCopy objectForKey:v10];
+  [array hcSafeAddObject:v18];
 
-  v19 = [v6 objectForKey:v11];
-  [v7 hcSafeAddObject:v19];
+  v19 = [dictionaryCopy objectForKey:v11];
+  [array hcSafeAddObject:v19];
 
-  v20 = [v6 objectForKey:v12];
-  [v7 hcSafeAddObject:v20];
+  v20 = [dictionaryCopy objectForKey:v12];
+  [array hcSafeAddObject:v20];
 
-  v21 = [v6 objectForKey:v13];
-  [v7 hcSafeAddObject:v21];
+  v21 = [dictionaryCopy objectForKey:v13];
+  [array hcSafeAddObject:v21];
 
-  v22 = [v6 objectForKey:v14];
-  [v7 hcSafeAddObject:v22];
+  v22 = [dictionaryCopy objectForKey:v14];
+  [array hcSafeAddObject:v22];
 
-  v23 = [v6 objectForKey:v15];
+  v23 = [dictionaryCopy objectForKey:v15];
 
-  [v7 hcSafeAddObject:v23];
-  if ([v7 count] == 8)
+  [array hcSafeAddObject:v23];
+  if ([array count] == 8)
   {
-    v24 = v7;
+    v24 = array;
   }
 
   else
@@ -1860,24 +1860,24 @@ LABEL_8:
   return v24;
 }
 
-- (id)onBudsMediaSettingsForRoute:(id)a3
+- (id)onBudsMediaSettingsForRoute:(id)route
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  routeCopy = route;
   v5 = objc_alloc_init(getHMDeviceConfigurationsClass());
   v6 = +[PASettings sharedInstance];
-  v36 = v4;
-  v7 = [v6 personalMediaEnabledForRouteUID:v4];
+  v36 = routeCopy;
+  v7 = [v6 personalMediaEnabledForRouteUID:routeCopy];
 
   if (v7)
   {
     v8 = +[PASettings sharedInstance];
-    v9 = [v8 personalAudioAccommodationTypes];
+    personalAudioAccommodationTypes = [v8 personalAudioAccommodationTypes];
   }
 
   else
   {
-    v9 = 0;
+    personalAudioAccommodationTypes = 0;
   }
 
   v10 = HCLogAudioAccommodations();
@@ -1887,17 +1887,17 @@ LABEL_8:
     v12 = +[PASettings sharedInstance];
     v13 = [v11 numberWithUnsignedInteger:{objc_msgSend(v12, "currentEnrollmentProgress")}];
     v14 = +[PASettings sharedInstance];
-    v15 = [v14 personalMediaEnabledByRouteUID];
+    personalMediaEnabledByRouteUID = [v14 personalMediaEnabledByRouteUID];
     v16 = +[PASettings sharedInstance];
-    v17 = [v16 accommodationTypesByRouteUID];
+    accommodationTypesByRouteUID = [v16 accommodationTypesByRouteUID];
     *buf = 138413058;
     v38 = v36;
     v39 = 2112;
     v40 = v13;
     v41 = 2112;
-    v42 = v15;
+    v42 = personalMediaEnabledByRouteUID;
     v43 = 2112;
-    v44 = v17;
+    v44 = accommodationTypesByRouteUID;
     _os_log_impl(&dword_25E445000, v10, OS_LOG_TYPE_DEFAULT, "Checking state %@ - %@ - %@ - %@", buf, 0x2Au);
   }
 
@@ -1914,7 +1914,7 @@ LABEL_8:
 
   [v5 setEnrollPMEVoice:v19];
 
-  if ((v9 & 2) != 0)
+  if ((personalAudioAccommodationTypes & 2) != 0)
   {
     v20 = 1;
   }
@@ -1925,7 +1925,7 @@ LABEL_8:
   }
 
   [v5 setEnablePMEVoice:v20];
-  if ((v9 & 4) != 0)
+  if ((personalAudioAccommodationTypes & 4) != 0)
   {
     v21 = 1;
   }
@@ -1961,18 +1961,18 @@ LABEL_8:
   v29 = HCLogAudioAccommodations();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v5 mediaLossArrayLeft];
-    v31 = [v5 mediaLossArrayRight];
-    v32 = [v5 voiceLossArrayLeft];
-    v33 = [v5 voiceLossArrayRight];
+    mediaLossArrayLeft = [v5 mediaLossArrayLeft];
+    mediaLossArrayRight = [v5 mediaLossArrayRight];
+    voiceLossArrayLeft = [v5 voiceLossArrayLeft];
+    voiceLossArrayRight = [v5 voiceLossArrayRight];
     *buf = 138413058;
-    v38 = v30;
+    v38 = mediaLossArrayLeft;
     v39 = 2112;
-    v40 = v31;
+    v40 = mediaLossArrayRight;
     v41 = 2112;
-    v42 = v32;
+    v42 = voiceLossArrayLeft;
     v43 = 2112;
-    v44 = v33;
+    v44 = voiceLossArrayRight;
     _os_log_impl(&dword_25E445000, v29, OS_LOG_TYPE_DEFAULT, "Sending configuration [%@, %@], [%@, %@]", buf, 0x2Au);
   }
 
@@ -1981,15 +1981,15 @@ LABEL_8:
   return v5;
 }
 
-- (float)pureToneAverageForSpeech:(BOOL)a3
+- (float)pureToneAverageForSpeech:(BOOL)speech
 {
-  v3 = a3;
+  speechCopy = speech;
   v50 = *MEMORY[0x277D85DE8];
   if (self->_level == 12)
   {
-    v5 = [(PAConfiguration *)self audiogramSettings];
-    v6 = v5;
-    if (v3)
+    audiogramSettings = [(PAConfiguration *)self audiogramSettings];
+    v6 = audiogramSettings;
+    if (speechCopy)
     {
       v7 = @"PAConfigPresetSpeechKey";
     }
@@ -1999,13 +1999,13 @@ LABEL_8:
       v7 = @"PAConfigPresetMediaKey";
     }
 
-    v8 = [v5 objectForKey:v7];
+    v8 = [audiogramSettings objectForKey:v7];
   }
 
   else
   {
     v9 = @"PresetValues";
-    if (a3)
+    if (speech)
     {
       v9 = @"PresetValuesSpeech";
     }
@@ -2017,13 +2017,13 @@ LABEL_8:
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v6];
     v13 = [v12 objectForKey:@"level"];
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PAConfiguration level](self, "level")}];
-    v15 = [v14 stringValue];
-    v16 = [v13 objectForKey:v15];
+    stringValue = [v14 stringValue];
+    v16 = [v13 objectForKey:stringValue];
 
     v17 = [v16 objectForKey:@"shape"];
     v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[PAConfiguration shape](self, "shape")}];
-    v19 = [v18 stringValue];
-    v8 = [v17 objectForKey:v19];
+    stringValue2 = [v18 stringValue];
+    v8 = [v17 objectForKey:stringValue2];
   }
 
   v20 = 0.0;
@@ -2065,7 +2065,7 @@ LABEL_8:
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
   {
     v47[0] = 67109376;
-    v47[1] = v3;
+    v47[1] = speechCopy;
     v48 = 2048;
     v49 = v20;
     _os_log_impl(&dword_25E445000, v44, OS_LOG_TYPE_DEFAULT, "PTA %d = %lf", v47, 0x12u);

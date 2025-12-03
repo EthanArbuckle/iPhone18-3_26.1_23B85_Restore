@@ -1,14 +1,14 @@
 @interface AppLinkResolver
 + (id)_appBundleIdentifiersByURLPrefixes;
 - (AppLinkResolver)init;
-- (BOOL)isClipForAppBundleIdentifier:(id)a3;
-- (id)_bundleIdentifierForURL:(id)a3;
-- (id)_hardCodedBundleIdentifierForURL:(id)a3;
-- (id)appBundleIdentifierForURL:(id)a3;
-- (id)ipaLinkForClipBundleIdentifier:(id)a3;
-- (id)metadataForURL:(id)a3;
-- (void)getAppBundleIdentifierForURL:(id)a3 completionHandler:(id)a4;
-- (void)saveLinkWithURL:(id)a3 metadata:(id)a4;
+- (BOOL)isClipForAppBundleIdentifier:(id)identifier;
+- (id)_bundleIdentifierForURL:(id)l;
+- (id)_hardCodedBundleIdentifierForURL:(id)l;
+- (id)appBundleIdentifierForURL:(id)l;
+- (id)ipaLinkForClipBundleIdentifier:(id)identifier;
+- (id)metadataForURL:(id)l;
+- (void)getAppBundleIdentifierForURL:(id)l completionHandler:(id)handler;
+- (void)saveLinkWithURL:(id)l metadata:(id)metadata;
 @end
 
 @implementation AppLinkResolver
@@ -27,12 +27,12 @@
   return v3;
 }
 
-- (void)saveLinkWithURL:(id)a3 metadata:(id)a4
+- (void)saveLinkWithURL:(id)l metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  lCopy = l;
+  metadataCopy = metadata;
+  v8 = metadataCopy;
+  if (lCopy && metadataCopy)
   {
     if (!self->_URLHashToMetadataMap)
     {
@@ -41,54 +41,54 @@
       self->_URLHashToMetadataMap = v9;
     }
 
-    v11 = [v6 absoluteString];
-    v12 = [v11 cps_sha256];
+    absoluteString = [lCopy absoluteString];
+    cps_sha256 = [absoluteString cps_sha256];
 
-    [(NSMutableDictionary *)self->_URLHashToMetadataMap setObject:v8 forKey:v12];
+    [(NSMutableDictionary *)self->_URLHashToMetadataMap setObject:v8 forKey:cps_sha256];
     v13 = sub_100004064();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v14 = 138740227;
       v15 = v8;
       v16 = 2117;
-      v17 = v6;
+      v17 = lCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Found an app with meta data: %{sensitive}@, for URL: %{sensitive}@", &v14, 0x16u);
     }
   }
 }
 
-- (id)metadataForURL:(id)a3
+- (id)metadataForURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 absoluteString];
-  v6 = [v5 cps_sha256];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
+  cps_sha256 = [absoluteString cps_sha256];
 
-  v7 = [(NSMutableDictionary *)self->_URLHashToMetadataMap objectForKeyedSubscript:v6];
+  v7 = [(NSMutableDictionary *)self->_URLHashToMetadataMap objectForKeyedSubscript:cps_sha256];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    metadata = v7;
   }
 
   else
   {
     v10 = +[CPSSessionManager sharedManager];
-    v11 = [v10 sessionWithURL:v4 createIfNoExist:0];
+    v11 = [v10 sessionWithURL:lCopy createIfNoExist:0];
 
-    v9 = [v11 metadata];
+    metadata = [v11 metadata];
 
-    if (v9)
+    if (metadata)
     {
-      v9 = [v11 metadata];
+      metadata = [v11 metadata];
     }
   }
 
-  return v9;
+  return metadata;
 }
 
-- (id)appBundleIdentifierForURL:(id)a3
+- (id)appBundleIdentifierForURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = sub_100004064();
   if (os_signpost_enabled(v5))
   {
@@ -96,7 +96,7 @@
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v5, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "resolveURLAction", "start resolving URL", buf, 2u);
   }
 
-  v6 = [(AppLinkResolver *)self _bundleIdentifierForURL:v4];
+  v6 = [(AppLinkResolver *)self _bundleIdentifierForURL:lCopy];
 
   v7 = sub_100004064();
   if (os_signpost_enabled(v7))
@@ -108,16 +108,16 @@
   return v6;
 }
 
-- (id)ipaLinkForClipBundleIdentifier:(id)a3
+- (id)ipaLinkForClipBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_100001D14;
   v17 = sub_100001D24;
   v5 = +[AppLinkResolver _clipIPALinksByBundleIdentifiers];
-  v18 = [v5 objectForKeyedSubscript:v4];
+  v18 = [v5 objectForKeyedSubscript:identifierCopy];
 
   v6 = v14[5];
   if (v6)
@@ -132,7 +132,7 @@
     v10[1] = 3221225472;
     v10[2] = sub_100001D2C;
     v10[3] = &unk_1000144D0;
-    v11 = v4;
+    v11 = identifierCopy;
     v12 = &v13;
     [(NSMutableDictionary *)URLHashToMetadataMap enumerateKeysAndObjectsUsingBlock:v10];
     v7 = v14[5];
@@ -143,12 +143,12 @@
   return v7;
 }
 
-- (void)getAppBundleIdentifierForURL:(id)a3 completionHandler:(id)a4
+- (void)getAppBundleIdentifierForURL:(id)l completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    v6 = a4;
-    v7 = a3;
+    handlerCopy = handler;
+    lCopy = l;
     v8 = sub_100004064();
     if (os_signpost_enabled(v8))
     {
@@ -156,9 +156,9 @@
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v8, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "resolveURLAction", "start resolving URL", buf, 2u);
     }
 
-    v9 = [(AppLinkResolver *)self _bundleIdentifierForURL:v7];
+    v9 = [(AppLinkResolver *)self _bundleIdentifierForURL:lCopy];
 
-    v6[2](v6, v9);
+    handlerCopy[2](handlerCopy, v9);
     v10 = sub_100004064();
     if (os_signpost_enabled(v10))
     {
@@ -168,20 +168,20 @@
   }
 }
 
-- (BOOL)isClipForAppBundleIdentifier:(id)a3
+- (BOOL)isClipForAppBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[AppLinkResolver _appBundleIdentifiersByURLPrefixes];
-  v5 = [v4 allKeysForObject:v3];
+  v5 = [v4 allKeysForObject:identifierCopy];
 
-  LOBYTE(v3) = [v5 count] != 0;
-  return v3;
+  LOBYTE(identifierCopy) = [v5 count] != 0;
+  return identifierCopy;
 }
 
-- (id)_bundleIdentifierForURL:(id)a3
+- (id)_bundleIdentifierForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AppLinkResolver *)self metadataForURL:v4];
+  lCopy = l;
+  v5 = [(AppLinkResolver *)self metadataForURL:lCopy];
   v6 = v5;
   if (v5)
   {
@@ -190,7 +190,7 @@
 
   else
   {
-    [(AppLinkResolver *)self _hardCodedBundleIdentifierForURL:v4];
+    [(AppLinkResolver *)self _hardCodedBundleIdentifierForURL:lCopy];
   }
   v7 = ;
 
@@ -217,10 +217,10 @@
   return v2;
 }
 
-- (id)_hardCodedBundleIdentifierForURL:(id)a3
+- (id)_hardCodedBundleIdentifierForURL:(id)l
 {
-  v3 = a3;
-  v4 = [v3 absoluteString];
+  lCopy = l;
+  absoluteString = [lCopy absoluteString];
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -232,7 +232,7 @@
   v9[1] = 3221225472;
   v9[2] = sub_1000021C0;
   v9[3] = &unk_100014518;
-  v6 = v4;
+  v6 = absoluteString;
   v10 = v6;
   v11 = &v12;
   [v5 enumerateKeysAndObjectsUsingBlock:v9];

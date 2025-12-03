@@ -1,23 +1,23 @@
 @interface _UILiquidLensViewSpec
 + (id)settingsControllerModule;
-- (void)setLarge:(id)a3;
-- (void)setSmall:(id)a3;
+- (void)setLarge:(id)large;
+- (void)setSmall:(id)small;
 @end
 
 @implementation _UILiquidLensViewSpec
 
-- (void)setSmall:(id)a3
+- (void)setSmall:(id)small
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UILiquidLensViewSpec_small);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UILiquidLensViewSpec_small) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UILiquidLensViewSpec_small) = small;
+  smallCopy = small;
 }
 
-- (void)setLarge:(id)a3
+- (void)setLarge:(id)large
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UILiquidLensViewSpec_large);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UILiquidLensViewSpec_large) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UILiquidLensViewSpec_large) = large;
+  largeCopy = large;
 }
 
 + (id)settingsControllerModule

@@ -1,26 +1,26 @@
 @interface SBSLockScreenContentAssertion
-+ (id)acquireContentProviderAssertionForType:(unint64_t)a3 slot:(id)a4 identifier:(id)a5 configurationObject:(id)a6 errorHandler:(id)a7;
++ (id)acquireContentProviderAssertionForType:(unint64_t)type slot:(id)slot identifier:(id)identifier configurationObject:(id)object errorHandler:(id)handler;
 - (BOOL)_supportsReacquisition;
-- (SBSLockScreenContentAssertion)initWithType:(unint64_t)a3 slot:(id)a4 identifier:(id)a5 configurationObject:(id)a6 errorHandler:(id)a7;
-- (void)_acquireAssertionWithType:(unint64_t)a3 slot:(id)a4 identifier:(id)a5 configurationObject:(id)a6;
+- (SBSLockScreenContentAssertion)initWithType:(unint64_t)type slot:(id)slot identifier:(id)identifier configurationObject:(id)object errorHandler:(id)handler;
+- (void)_acquireAssertionWithType:(unint64_t)type slot:(id)slot identifier:(id)identifier configurationObject:(id)object;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation SBSLockScreenContentAssertion
 
-+ (id)acquireContentProviderAssertionForType:(unint64_t)a3 slot:(id)a4 identifier:(id)a5 configurationObject:(id)a6 errorHandler:(id)a7
++ (id)acquireContentProviderAssertionForType:(unint64_t)type slot:(id)slot identifier:(id)identifier configurationObject:(id)object errorHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([a1 _isRestrictedDevice])
+  slotCopy = slot;
+  identifierCopy = identifier;
+  objectCopy = object;
+  handlerCopy = handler;
+  if ([self _isRestrictedDevice])
   {
-    if (v15)
+    if (handlerCopy)
     {
       v16 = [MEMORY[0x1E696ABC0] errorWithDomain:@"SBSLockScreenContentAssertionErrorDomain" code:3 userInfo:0];
-      v15[2](v15, v16);
+      handlerCopy[2](handlerCopy, v16);
     }
 
     v17 = 0;
@@ -28,29 +28,29 @@
 
   else
   {
-    v17 = [[a1 alloc] initWithType:a3 slot:v12 identifier:v13 configurationObject:v14 errorHandler:v15];
+    v17 = [[self alloc] initWithType:type slot:slotCopy identifier:identifierCopy configurationObject:objectCopy errorHandler:handlerCopy];
   }
 
   return v17;
 }
 
-- (SBSLockScreenContentAssertion)initWithType:(unint64_t)a3 slot:(id)a4 identifier:(id)a5 configurationObject:(id)a6 errorHandler:(id)a7
+- (SBSLockScreenContentAssertion)initWithType:(unint64_t)type slot:(id)slot identifier:(id)identifier configurationObject:(id)object errorHandler:(id)handler
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  slotCopy = slot;
+  identifierCopy = identifier;
+  objectCopy = object;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = SBSLockScreenContentAssertion;
   v16 = [(SBSLockScreenContentAssertion *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    [(SBSLockScreenContentAssertion *)v16 _setErrorHandler:v15];
-    [(SBSLockScreenContentAssertion *)v17 setSlot:v12];
-    [(SBSLockScreenContentAssertion *)v17 setIdentifier:v13];
-    [(SBSLockScreenContentAssertion *)v17 setConfigurationObject:v14];
-    [(SBSLockScreenContentAssertion *)v17 _acquireAssertionWithType:a3 slot:v12 identifier:v13 configurationObject:v14];
+    [(SBSLockScreenContentAssertion *)v16 _setErrorHandler:handlerCopy];
+    [(SBSLockScreenContentAssertion *)v17 setSlot:slotCopy];
+    [(SBSLockScreenContentAssertion *)v17 setIdentifier:identifierCopy];
+    [(SBSLockScreenContentAssertion *)v17 setConfigurationObject:objectCopy];
+    [(SBSLockScreenContentAssertion *)v17 _acquireAssertionWithType:type slot:slotCopy identifier:identifierCopy configurationObject:objectCopy];
   }
 
   return v17;
@@ -74,11 +74,11 @@
   self->_action = 0;
 }
 
-- (void)_acquireAssertionWithType:(unint64_t)a3 slot:(id)a4 identifier:(id)a5 configurationObject:(id)a6
+- (void)_acquireAssertionWithType:(unint64_t)type slot:(id)slot identifier:(id)identifier configurationObject:(id)object
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  slotCopy = slot;
+  identifierCopy = identifier;
+  objectCopy = object;
   objc_initWeak(&location, self);
   v13 = [SBSLockScreenContentAction alloc];
   v21 = MEMORY[0x1E69E9820];
@@ -86,22 +86,22 @@
   v23 = __95__SBSLockScreenContentAssertion__acquireAssertionWithType_slot_identifier_configurationObject___block_invoke;
   v24 = &unk_1E735EE28;
   objc_copyWeak(v28, &location);
-  v28[1] = a3;
-  v14 = v10;
+  v28[1] = type;
+  v14 = slotCopy;
   v25 = v14;
-  v15 = v11;
+  v15 = identifierCopy;
   v26 = v15;
-  v16 = v12;
+  v16 = objectCopy;
   v27 = v16;
-  v17 = [(SBSLockScreenContentAction *)v13 initWithType:a3 slot:v14 identifier:v15 configurationObject:v16 handler:&v21];
+  v17 = [(SBSLockScreenContentAction *)v13 initWithType:type slot:v14 identifier:v15 configurationObject:v16 handler:&v21];
   action = self->_action;
   self->_action = v17;
 
   if (self->_action)
   {
     v19 = [MEMORY[0x1E695DFD8] setWithObject:{v21, v22, v23, v24, v25, v26}];
-    v20 = [MEMORY[0x1E699FCA0] sharedService];
-    [v20 sendActions:v19 withResult:0];
+    mEMORY[0x1E699FCA0] = [MEMORY[0x1E699FCA0] sharedService];
+    [mEMORY[0x1E699FCA0] sendActions:v19 withResult:0];
   }
 
   else
@@ -172,8 +172,8 @@ LABEL_14:
 
 - (BOOL)_supportsReacquisition
 {
-  v2 = [(SBSLockScreenContentAssertion *)self slot];
-  v3 = [v2 isEqualToString:@"App"];
+  slot = [(SBSLockScreenContentAssertion *)self slot];
+  v3 = [slot isEqualToString:@"App"];
 
   return v3;
 }

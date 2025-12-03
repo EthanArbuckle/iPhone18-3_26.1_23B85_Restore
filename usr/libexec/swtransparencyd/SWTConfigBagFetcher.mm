@@ -1,19 +1,19 @@
 @interface SWTConfigBagFetcher
-- (void)fetchConfigBag:(NSURLRequest *)a3 completionHandler:(id)a4;
-- (void)triggerConfigBagFetch:(double)a3;
+- (void)fetchConfigBag:(NSURLRequest *)bag completionHandler:(id)handler;
+- (void)triggerConfigBagFetch:(double)fetch;
 @end
 
 @implementation SWTConfigBagFetcher
 
-- (void)fetchConfigBag:(NSURLRequest *)a3 completionHandler:(id)a4
+- (void)fetchConfigBag:(NSURLRequest *)bag completionHandler:(id)handler
 {
   v7 = sub_100024248(&unk_100152620, &unk_1001031E0);
   v8 = *(*(v7 - 8) + 64);
   __chkstk_darwin(v7 - 8);
   v10 = &v17 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = bag;
   v12[3] = v11;
   v12[4] = self;
   v13 = type metadata accessor for TaskPriority();
@@ -28,15 +28,15 @@
   v15[3] = 0;
   v15[4] = &unk_100104240;
   v15[5] = v14;
-  v16 = a3;
+  bagCopy = bag;
 
   sub_100039048(0, 0, v10, &unk_100104250, v15);
 }
 
-- (void)triggerConfigBagFetch:(double)a3
+- (void)triggerConfigBagFetch:(double)fetch
 {
 
-  sub_1000388BC(a3);
+  sub_1000388BC(fetch);
 }
 
 @end

@@ -33,26 +33,26 @@
   v143 = 0;
   v144 = 0;
   LODWORD(v145[0]) = 0;
-  v5 = [a1 domain];
-  v6 = [v5 UTF8String];
-  v7 = [v5 length];
-  if (v6)
+  domain = [self domain];
+  uTF8String = [domain UTF8String];
+  v7 = [domain length];
+  if (uTF8String)
   {
     v8 = v7;
     DWORD2(v141) = v7;
     HIDWORD(v141) = v7 > 0xF;
     if (v7 <= 0xF)
     {
-      memcpy(&v143, v6, v7);
+      memcpy(&v143, uTF8String, v7);
       v9 = LODWORD(v145[0]) + v8;
 LABEL_10:
       LODWORD(v145[0]) = v9;
       goto LABEL_11;
     }
 
-    v10 = &v6[v7];
-    v11 = &v6[v7 - 16];
-    if (v6 <= v11)
+    v10 = &uTF8String[v7];
+    v11 = &uTF8String[v7 - 16];
+    if (uTF8String <= v11)
     {
       v12 = 0;
       v13 = 1640531535;
@@ -60,29 +60,29 @@ LABEL_10:
       v15 = -2048144777;
       do
       {
-        HIDWORD(v16) = v14 - 2048144777 * *v6;
+        HIDWORD(v16) = v14 - 2048144777 * *uTF8String;
         LODWORD(v16) = HIDWORD(v16);
         v14 = -1640531535 * (v16 >> 19);
-        HIDWORD(v16) = v15 - 2048144777 * *(v6 + 1);
+        HIDWORD(v16) = v15 - 2048144777 * *(uTF8String + 1);
         LODWORD(v16) = HIDWORD(v16);
         v15 = -1640531535 * (v16 >> 19);
-        HIDWORD(v16) = v12 - 2048144777 * *(v6 + 2);
+        HIDWORD(v16) = v12 - 2048144777 * *(uTF8String + 2);
         LODWORD(v16) = HIDWORD(v16);
         v12 = -1640531535 * (v16 >> 19);
-        HIDWORD(v16) = v13 - 2048144777 * *(v6 + 3);
+        HIDWORD(v16) = v13 - 2048144777 * *(uTF8String + 3);
         LODWORD(v16) = HIDWORD(v16);
         v13 = -1640531535 * (v16 >> 19);
-        v6 += 16;
+        uTF8String += 16;
       }
 
-      while (v6 <= v11);
+      while (uTF8String <= v11);
       v142.i64[0] = __PAIR64__(v15, v14);
       v142.i64[1] = __PAIR64__(v13, v12);
     }
 
-    if (v6 < v10)
+    if (uTF8String < v10)
     {
-      v9 = v10 - v6;
+      v9 = v10 - uTF8String;
       __memcpy_chk();
       goto LABEL_10;
     }
@@ -98,9 +98,9 @@ LABEL_11:
     {
       if (!v141)
       {
-        v49 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v50 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-        [v49 handleFailureInFunction:v50 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+        [currentHandler handleFailureInFunction:v50 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
 
         goto LABEL_58;
       }
@@ -486,9 +486,9 @@ LABEL_104:
   if (*v150 != 2000)
   {
 LABEL_124:
-    v138 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v139 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
-    [v138 handleFailureInFunction:v139 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
+    [currentHandler2 handleFailureInFunction:v139 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
     v117 = &stru_1F214F018;
     goto LABEL_106;
@@ -530,15 +530,15 @@ LABEL_125:
   v117 = @"0";
 LABEL_106:
   v149[0] = v117;
-  v118 = [a1 code];
-  if (v118)
+  code = [self code];
+  if (code)
   {
-    v119 = v118;
+    v119 = code;
     v120 = v152 + 9;
     do
     {
-      v121 = ldiv(v118, 10);
-      v118 = v121.quot;
+      v121 = ldiv(code, 10);
+      code = v121.quot;
       if (v121.rem >= 0)
       {
         LOBYTE(v122) = v121.rem;
@@ -573,20 +573,20 @@ LABEL_106:
   v125 = [MEMORY[0x1E695DEC8] arrayWithObjects:v149 count:2];
   v126 = [v125 componentsJoinedByString:@":"];
 
-  v127 = [a1 underlyingErrors];
+  underlyingErrors = [self underlyingErrors];
   v140[0] = MEMORY[0x1E69E9820];
   v140[1] = 3221225472;
   v140[2] = __43__NSError_MSVErrorAdditions__msv_signature__block_invoke;
   v140[3] = &unk_1E7981DD0;
-  v140[4] = a1;
+  v140[4] = self;
   v140[5] = a2;
-  v128 = [v127 msv_map:v140];
+  v128 = [underlyingErrors msv_map:v140];
 
   if ([v128 count] == 1)
   {
     v148[0] = v126;
-    v129 = [v128 firstObject];
-    v148[1] = v129;
+    firstObject = [v128 firstObject];
+    v148[1] = firstObject;
     v130 = v148;
   }
 
@@ -599,10 +599,10 @@ LABEL_106:
 
     v131 = MEMORY[0x1E696AEC0];
     v132 = [v128 componentsJoinedByString:{@", "}];
-    v129 = [v131 stringWithFormat:@"[%@]", v132];
+    firstObject = [v131 stringWithFormat:@"[%@]", v132];
 
     v147[0] = v126;
-    v147[1] = v129;
+    v147[1] = firstObject;
     v130 = v147;
   }
 
@@ -620,21 +620,21 @@ LABEL_121:
 
 - (id)msv_analyticSignature
 {
-  v2 = [MEMORY[0x1E696AD60] string];
-  v3 = a1;
-  if (v3)
+  string = [MEMORY[0x1E696AD60] string];
+  selfCopy = self;
+  if (selfCopy)
   {
-    v4 = v3;
+    v4 = selfCopy;
     v5 = *MEMORY[0x1E696A750];
     v15 = v18;
     v16 = *MEMORY[0x1E696AA08];
     while (1)
     {
-      v6 = [v4 domain];
-      [v2 appendFormat:@"%@-%lld", v6, objc_msgSend(v4, "code"), v15];
+      domain = [v4 domain];
+      [string appendFormat:@"%@-%lld", domain, objc_msgSend(v4, "code"), v15];
 
-      v7 = [v4 userInfo];
-      v8 = [v7 objectForKeyedSubscript:v5];
+      userInfo = [v4 userInfo];
+      v8 = [userInfo objectForKeyedSubscript:v5];
 
       if ((_NSIsNSArray() & 1) == 0)
       {
@@ -647,18 +647,18 @@ LABEL_121:
         break;
       }
 
-      v9 = [v8 firstObject];
-      v10 = v9;
-      if (v9)
+      firstObject = [v8 firstObject];
+      v10 = firstObject;
+      if (firstObject)
       {
-        v11 = v4;
-        v4 = v9;
+        userInfo2 = v4;
+        v4 = firstObject;
       }
 
       else
       {
-        v11 = [v4 userInfo];
-        v12 = [v11 objectForKeyedSubscript:v16];
+        userInfo2 = [v4 userInfo];
+        v12 = [userInfo2 objectForKeyedSubscript:v16];
 
         v4 = v12;
       }
@@ -669,7 +669,7 @@ LABEL_121:
         goto LABEL_13;
       }
 
-      [v2 appendString:@">"];
+      [string appendString:@">"];
 
       if (!v4)
       {
@@ -677,12 +677,12 @@ LABEL_121:
       }
     }
 
-    [v2 appendString:@"["];
+    [string appendString:@"["];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v18[0] = __51__NSError_MSVErrorAdditions__msv_analyticSignature__block_invoke;
     v18[1] = &unk_1E7981DA8;
-    v13 = v2;
+    v13 = string;
     v19 = v13;
     v8 = v8;
     v20 = v8;
@@ -695,43 +695,43 @@ LABEL_13:
 
 LABEL_14:
 
-  return v2;
+  return string;
 }
 
 - (id)msv_underlyingError
 {
-  v1 = [a1 underlyingErrors];
-  v2 = [v1 firstObject];
+  underlyingErrors = [self underlyingErrors];
+  firstObject = [underlyingErrors firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (id)msv_description
 {
   v45 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E696AD60] string];
-  v3 = [a1 userInfo];
+  string = [MEMORY[0x1E696AD60] string];
+  userInfo = [self userInfo];
   v4 = *MEMORY[0x1E696A278];
-  v5 = [v3 objectForKeyedSubscript:*MEMORY[0x1E696A278]];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696A278]];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    localizedDescription = v5;
   }
 
   else
   {
-    v7 = [a1 localizedDescription];
+    localizedDescription = [self localizedDescription];
   }
 
-  v8 = v7;
+  v8 = localizedDescription;
 
-  v9 = [a1 domain];
-  v10 = [a1 msv_codeDescription];
-  [v2 appendFormat:@"<%@.%@ %@ {\n", v9, v10, v8];
+  domain = [self domain];
+  msv_codeDescription = [self msv_codeDescription];
+  [string appendFormat:@"<%@.%@ %@ {\n", domain, msv_codeDescription, v8];
 
-  v11 = [a1 userInfo];
-  v12 = [v11 mutableCopy];
+  userInfo2 = [self userInfo];
+  v12 = [userInfo2 mutableCopy];
 
   [v12 setObject:0 forKeyedSubscript:v4];
   [v12 setObject:0 forKeyedSubscript:*MEMORY[0x1E696A578]];
@@ -740,12 +740,12 @@ LABEL_14:
   v13 = [v12 count];
   if (v13)
   {
-    v14 = [v12 msv_compactDescription];
-    [v2 appendFormat:@"    userInfo: %@;\n", v14];
+    msv_compactDescription = [v12 msv_compactDescription];
+    [string appendFormat:@"    userInfo: %@;\n", msv_compactDescription];
   }
 
-  v15 = [a1 underlyingErrors];
-  v16 = [v15 count];
+  underlyingErrors = [self underlyingErrors];
+  v16 = [underlyingErrors count];
 
   if (v16)
   {
@@ -753,12 +753,12 @@ LABEL_14:
     v31 = v13;
     v32 = v12;
     v33 = v8;
-    [v2 appendString:@"    underlyingErrors: ["];
+    [string appendString:@"    underlyingErrors: ["];
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    obj = [a1 underlyingErrors];
+    obj = [self underlyingErrors];
     v17 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
     if (v17)
     {
@@ -773,8 +773,8 @@ LABEL_14:
             objc_enumerationMutation(obj);
           }
 
-          v21 = [*(*(&v39 + 1) + 8 * i) msv_description];
-          v22 = [v21 componentsSeparatedByString:@"\n"];
+          msv_description = [*(*(&v39 + 1) + 8 * i) msv_description];
+          v22 = [msv_description componentsSeparatedByString:@"\n"];
           v35 = 0u;
           v36 = 0u;
           v37 = 0u;
@@ -793,7 +793,7 @@ LABEL_14:
                   objc_enumerationMutation(v22);
                 }
 
-                [v2 appendFormat:@"\n        %@", *(*(&v35 + 1) + 8 * j)];
+                [string appendFormat:@"\n        %@", *(*(&v35 + 1) + 8 * j)];
               }
 
               v24 = [v22 countByEnumeratingWithState:&v35 objects:v43 count:16];
@@ -802,7 +802,7 @@ LABEL_14:
             while (v24);
           }
 
-          [v2 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
         v18 = [obj countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -811,20 +811,20 @@ LABEL_14:
       while (v18);
     }
 
-    [v2 appendString:@"\n    ];\n"];
+    [string appendString:@"\n    ];\n"];
     v12 = v32;
     v8 = v33;
     v16 = v30;
     v13 = v31;
   }
 
-  [v2 appendString:@"}>"];
+  [string appendString:@"}>"];
   if (!(v13 | v16))
   {
-    [v2 replaceOccurrencesOfString:@"\n" withString:&stru_1F214F018 options:0 range:{0, objc_msgSend(v2, "length")}];
+    [string replaceOccurrencesOfString:@"\n" withString:&stru_1F214F018 options:0 range:{0, objc_msgSend(string, "length")}];
   }
 
-  v27 = [v2 copy];
+  v27 = [string copy];
 
   v28 = *MEMORY[0x1E69E9840];
 
@@ -834,7 +834,7 @@ LABEL_14:
 - (__CFString)msv_codeDescription
 {
   v18 = *MEMORY[0x1E69E9840];
-  quot = [a1 code];
+  quot = [self code];
   if (quot)
   {
     v3 = quot;
@@ -874,14 +874,14 @@ LABEL_14:
   }
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [a1 domain];
-  v11 = [v9 stringWithFormat:@"NSStringFrom%@Code", v10];
+  domain = [self domain];
+  v11 = [v9 stringWithFormat:@"NSStringFrom%@Code", domain];
 
   v12 = dlsym(0xFFFFFFFFFFFFFFFELL, [v11 UTF8String]);
   if (v12)
   {
     v13 = MEMORY[0x1E696AEC0];
-    v14 = v12([a1 code]);
+    v14 = v12([self code]);
     v15 = [v13 stringWithFormat:@"%@ (%@)", v14, v8];
 
     v8 = v15;
@@ -895,41 +895,41 @@ LABEL_14:
 - (id)msv_firstValueForUserInfoKey:()MSVErrorAdditions
 {
   v4 = a3;
-  v5 = [a1 userInfo];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  userInfo = [self userInfo];
+  v6 = [userInfo objectForKeyedSubscript:v4];
 
   if (v6)
   {
-    v7 = v6;
+    firstObject2 = v6;
   }
 
   else
   {
-    v8 = [a1 underlyingErrors];
-    v9 = [v8 mutableCopy];
+    underlyingErrors = [self underlyingErrors];
+    v9 = [underlyingErrors mutableCopy];
 
-    v10 = [v9 firstObject];
-    if (v10)
+    firstObject = [v9 firstObject];
+    if (firstObject)
     {
-      v11 = v10;
+      v11 = firstObject;
       while (1)
       {
-        v12 = [v11 userInfo];
-        v7 = [v12 objectForKeyedSubscript:v4];
+        userInfo2 = [v11 userInfo];
+        firstObject2 = [userInfo2 objectForKeyedSubscript:v4];
 
-        if (v7)
+        if (firstObject2)
         {
           break;
         }
 
-        v13 = [v9 msv_removeFirstObject];
-        v14 = [v11 underlyingErrors];
-        [v9 addObjectsFromArray:v14];
+        msv_removeFirstObject = [v9 msv_removeFirstObject];
+        underlyingErrors2 = [v11 underlyingErrors];
+        [v9 addObjectsFromArray:underlyingErrors2];
 
-        v7 = [v9 firstObject];
+        firstObject2 = [v9 firstObject];
 
-        v11 = v7;
-        if (!v7)
+        v11 = firstObject2;
+        if (!firstObject2)
         {
           goto LABEL_10;
         }
@@ -938,38 +938,38 @@ LABEL_14:
 
     else
     {
-      v7 = 0;
+      firstObject2 = 0;
     }
 
 LABEL_10:
   }
 
-  return v7;
+  return firstObject2;
 }
 
 - (id)msv_errorByUnwrappingDomain:()MSVErrorAdditions code:
 {
   v24 = *MEMORY[0x1E69E9840];
   v6 = a3;
-  if ([a1 code] != a4)
+  if ([self code] != a4)
   {
     goto LABEL_4;
   }
 
-  v7 = [a1 domain];
-  v8 = v7;
-  if (v7 == v6)
+  domain = [self domain];
+  v8 = domain;
+  if (domain == v6)
   {
 
     goto LABEL_15;
   }
 
-  v9 = [v7 isEqual:v6];
+  v9 = [domain isEqual:v6];
 
   if (v9)
   {
 LABEL_15:
-    v16 = a1;
+    selfCopy = self;
     goto LABEL_16;
   }
 
@@ -978,8 +978,8 @@ LABEL_4:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [a1 underlyingErrors];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  underlyingErrors = [self underlyingErrors];
+  v11 = [underlyingErrors countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -990,19 +990,19 @@ LABEL_4:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(underlyingErrors);
         }
 
         v15 = [*(*(&v19 + 1) + 8 * i) msv_errorByUnwrappingDomain:v6 code:a4];
         if (v15)
         {
-          v16 = v15;
+          selfCopy = v15;
 
           goto LABEL_16;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [underlyingErrors countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v12)
       {
         continue;
@@ -1012,32 +1012,32 @@ LABEL_4:
     }
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_16:
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return selfCopy;
 }
 
 - (id)msv_errorByUnwrappingDomain:()MSVErrorAdditions
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 domain];
-  v6 = v5;
-  if (v5 == v4)
+  domain = [self domain];
+  v6 = domain;
+  if (domain == v4)
   {
 
     goto LABEL_13;
   }
 
-  v7 = [v5 isEqual:v4];
+  v7 = [domain isEqual:v4];
 
   if (v7)
   {
 LABEL_13:
-    v14 = a1;
+    selfCopy = self;
     goto LABEL_15;
   }
 
@@ -1045,8 +1045,8 @@ LABEL_13:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [a1 underlyingErrors];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  underlyingErrors = [self underlyingErrors];
+  v9 = [underlyingErrors countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1057,19 +1057,19 @@ LABEL_13:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(underlyingErrors);
         }
 
         v13 = [*(*(&v17 + 1) + 8 * i) msv_errorByUnwrappingDomain:v4];
         if (v13)
         {
-          v14 = v13;
+          selfCopy = v13;
 
           goto LABEL_15;
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [underlyingErrors countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -1079,12 +1079,12 @@ LABEL_13:
     }
   }
 
-  v14 = 0;
+  selfCopy = 0;
 LABEL_15:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)msv_errorByWrappingWithDomain:()MSVErrorAdditions code:userInfo:debugDescription:
@@ -1092,7 +1092,7 @@ LABEL_15:
   v13 = a6;
   v14 = a5;
   v15 = a3;
-  v16 = [objc_opt_class() _msv_errorWithDomain:v15 code:a4 underlyingError:a1 underlyingErrors:0 userInfo:v14 debugDescriptionFormat:v13 arguments:&a9];
+  v16 = [objc_opt_class() _msv_errorWithDomain:v15 code:a4 underlyingError:self underlyingErrors:0 userInfo:v14 debugDescriptionFormat:v13 arguments:&a9];
 
   return v16;
 }
@@ -1101,23 +1101,23 @@ LABEL_15:
 {
   v12 = a5;
   v13 = a3;
-  v14 = [objc_opt_class() _msv_errorWithDomain:v13 code:a4 underlyingError:a1 underlyingErrors:0 userInfo:0 debugDescriptionFormat:v12 arguments:&a9];
+  v14 = [objc_opt_class() _msv_errorWithDomain:v13 code:a4 underlyingError:self underlyingErrors:0 userInfo:0 debugDescriptionFormat:v12 arguments:&a9];
 
   return v14;
 }
 
 - (id)msv_errorByRemovingUnsafeUserInfo
 {
-  v2 = [a1 userInfo];
-  if ([v2 count])
+  userInfo = [self userInfo];
+  if ([userInfo count])
   {
-    v3 = [v2 msv_filter:&__block_literal_global_2242];
+    v3 = [userInfo msv_filter:&__block_literal_global_2242];
     v4 = [v3 mutableCopy];
 
     v5 = *MEMORY[0x1E696AA08];
     v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
-    v7 = [v6 msv_errorByRemovingUnsafeUserInfo];
-    [v4 setObject:v7 forKeyedSubscript:v5];
+    msv_errorByRemovingUnsafeUserInfo = [v6 msv_errorByRemovingUnsafeUserInfo];
+    [v4 setObject:msv_errorByRemovingUnsafeUserInfo forKeyedSubscript:v5];
 
     v8 = *MEMORY[0x1E696A750];
     v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696A750]];
@@ -1125,25 +1125,25 @@ LABEL_15:
     [v4 setObject:v10 forKeyedSubscript:v8];
 
     v11 = [v4 msv_compactMapValues:&__block_literal_global_8];
-    if (v2 == v11 || [v2 isEqual:v11])
+    if (userInfo == v11 || [userInfo isEqual:v11])
     {
-      v12 = a1;
+      selfCopy2 = self;
     }
 
     else
     {
       v13 = MEMORY[0x1E696ABC0];
-      v14 = [a1 domain];
-      v12 = [v13 errorWithDomain:v14 code:objc_msgSend(a1 userInfo:{"code"), v11}];
+      domain = [self domain];
+      selfCopy2 = [v13 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v11}];
     }
   }
 
   else
   {
-    v12 = a1;
+    selfCopy2 = self;
   }
 
-  return v12;
+  return selfCopy2;
 }
 
 + (id)_msv_errorWithDomain:()MSVErrorAdditions code:underlyingError:underlyingErrors:userInfo:debugDescriptionFormat:arguments:
@@ -1190,42 +1190,42 @@ LABEL_15:
 
 + (id)msv_errorWithDomain:()MSVErrorAdditions code:underlyingErrors:userInfo:debugDescription:
 {
-  v9 = [a1 _msv_errorWithDomain:a3 code:a4 underlyingError:0 underlyingErrors:a5 userInfo:a6 debugDescriptionFormat:a7 arguments:&a9, &a9];
+  v9 = [self _msv_errorWithDomain:a3 code:a4 underlyingError:0 underlyingErrors:a5 userInfo:a6 debugDescriptionFormat:a7 arguments:&a9, &a9];
 
   return v9;
 }
 
 + (id)msv_errorWithDomain:()MSVErrorAdditions code:underlyingErrors:debugDescription:
 {
-  v9 = [a1 _msv_errorWithDomain:a3 code:a4 underlyingError:0 underlyingErrors:a5 userInfo:0 debugDescriptionFormat:a6 arguments:&a9, &a9];
+  v9 = [self _msv_errorWithDomain:a3 code:a4 underlyingError:0 underlyingErrors:a5 userInfo:0 debugDescriptionFormat:a6 arguments:&a9, &a9];
 
   return v9;
 }
 
 + (id)msv_errorWithDomain:()MSVErrorAdditions code:underlyingError:userInfo:debugDescription:
 {
-  v9 = [a1 _msv_errorWithDomain:a3 code:a4 underlyingError:a5 underlyingErrors:0 userInfo:a6 debugDescriptionFormat:a7 arguments:&a9, &a9];
+  v9 = [self _msv_errorWithDomain:a3 code:a4 underlyingError:a5 underlyingErrors:0 userInfo:a6 debugDescriptionFormat:a7 arguments:&a9, &a9];
 
   return v9;
 }
 
 + (id)msv_errorWithDomain:()MSVErrorAdditions code:userInfo:debugDescription:
 {
-  v9 = [a1 _msv_errorWithDomain:a3 code:a4 underlyingError:0 underlyingErrors:0 userInfo:a5 debugDescriptionFormat:a6 arguments:&a9, &a9];
+  v9 = [self _msv_errorWithDomain:a3 code:a4 underlyingError:0 underlyingErrors:0 userInfo:a5 debugDescriptionFormat:a6 arguments:&a9, &a9];
 
   return v9;
 }
 
 + (id)msv_errorWithDomain:()MSVErrorAdditions code:underlyingError:debugDescription:
 {
-  v9 = [a1 _msv_errorWithDomain:a3 code:a4 underlyingError:a5 underlyingErrors:0 userInfo:0 debugDescriptionFormat:a6 arguments:&a9, &a9];
+  v9 = [self _msv_errorWithDomain:a3 code:a4 underlyingError:a5 underlyingErrors:0 userInfo:0 debugDescriptionFormat:a6 arguments:&a9, &a9];
 
   return v9;
 }
 
 + (id)msv_errorWithDomain:()MSVErrorAdditions code:debugDescription:
 {
-  v9 = [a1 _msv_errorWithDomain:a3 code:a4 underlyingError:0 underlyingErrors:0 userInfo:0 debugDescriptionFormat:a5 arguments:&a9, &a9];
+  v9 = [self _msv_errorWithDomain:a3 code:a4 underlyingError:0 underlyingErrors:0 userInfo:0 debugDescriptionFormat:a5 arguments:&a9, &a9];
 
   return v9;
 }

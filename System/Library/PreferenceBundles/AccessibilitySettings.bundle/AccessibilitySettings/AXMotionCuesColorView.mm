@@ -1,27 +1,27 @@
 @interface AXMotionCuesColorView
 - (AXMotionCuesColorDelegate)delegate;
-- (AXMotionCuesColorView)initWithFrame:(CGRect)a3 color:(int)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (AXMotionCuesColorView)initWithFrame:(CGRect)frame color:(int)color;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (id)_uiColor;
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (void)_configureView;
-- (void)_userDidTapOnView:(id)a3;
-- (void)setHighlight:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)_userDidTapOnView:(id)view;
+- (void)setHighlight:(BOOL)highlight;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation AXMotionCuesColorView
 
-- (AXMotionCuesColorView)initWithFrame:(CGRect)a3 color:(int)a4
+- (AXMotionCuesColorView)initWithFrame:(CGRect)frame color:(int)color
 {
   v8.receiver = self;
   v8.super_class = AXMotionCuesColorView;
-  v5 = [(AXMotionCuesColorView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(AXMotionCuesColorView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_color = a4;
+    v5->_color = color;
     [(AXMotionCuesColorView *)v5 _configureView];
   }
 
@@ -33,44 +33,44 @@
   v3 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [(AXMotionCuesColorView *)self set_colorView:v3];
 
-  v4 = [(AXMotionCuesColorView *)self _colorView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  _colorView = [(AXMotionCuesColorView *)self _colorView];
+  [_colorView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(AXMotionCuesColorView *)self _colorView];
-  [v5 setContentMode:2];
+  _colorView2 = [(AXMotionCuesColorView *)self _colorView];
+  [_colorView2 setContentMode:2];
 
-  v6 = [(AXMotionCuesColorView *)self _uiColor];
-  v7 = [(AXMotionCuesColorView *)self _colorView];
-  [v7 setTintColor:v6];
+  _uiColor = [(AXMotionCuesColorView *)self _uiColor];
+  _colorView3 = [(AXMotionCuesColorView *)self _colorView];
+  [_colorView3 setTintColor:_uiColor];
 
-  v8 = [(AXMotionCuesColorView *)self _colorView];
-  [(AXMotionCuesColorView *)self addSubview:v8];
+  _colorView4 = [(AXMotionCuesColorView *)self _colorView];
+  [(AXMotionCuesColorView *)self addSubview:_colorView4];
 
-  v31 = [(AXMotionCuesColorView *)self _colorView];
-  v30 = [v31 leadingAnchor];
-  v29 = [(AXMotionCuesColorView *)self leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  _colorView5 = [(AXMotionCuesColorView *)self _colorView];
+  leadingAnchor = [_colorView5 leadingAnchor];
+  leadingAnchor2 = [(AXMotionCuesColorView *)self leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[0] = v28;
-  v27 = [(AXMotionCuesColorView *)self _colorView];
-  v26 = [v27 trailingAnchor];
-  v25 = [(AXMotionCuesColorView *)self trailingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  _colorView6 = [(AXMotionCuesColorView *)self _colorView];
+  trailingAnchor = [_colorView6 trailingAnchor];
+  trailingAnchor2 = [(AXMotionCuesColorView *)self trailingAnchor];
+  v24 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[1] = v24;
-  v23 = [(AXMotionCuesColorView *)self _colorView];
-  v22 = [v23 topAnchor];
-  v21 = [(AXMotionCuesColorView *)self topAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  _colorView7 = [(AXMotionCuesColorView *)self _colorView];
+  topAnchor = [_colorView7 topAnchor];
+  topAnchor2 = [(AXMotionCuesColorView *)self topAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[2] = v20;
-  v19 = [(AXMotionCuesColorView *)self _colorView];
-  v9 = [v19 bottomAnchor];
-  v10 = [(AXMotionCuesColorView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  _colorView8 = [(AXMotionCuesColorView *)self _colorView];
+  bottomAnchor = [_colorView8 bottomAnchor];
+  bottomAnchor2 = [(AXMotionCuesColorView *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[3] = v11;
-  v12 = [(AXMotionCuesColorView *)self _colorView];
-  v13 = [v12 heightAnchor];
-  v14 = [(AXMotionCuesColorView *)self _colorView];
-  v15 = [v14 widthAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  _colorView9 = [(AXMotionCuesColorView *)self _colorView];
+  heightAnchor = [_colorView9 heightAnchor];
+  _colorView10 = [(AXMotionCuesColorView *)self _colorView];
+  widthAnchor = [_colorView10 widthAnchor];
+  v16 = [heightAnchor constraintEqualToAnchor:widthAnchor];
   v32[4] = v16;
   v17 = [NSArray arrayWithObjects:v32 count:5];
   [NSLayoutConstraint activateConstraints:v17];
@@ -82,10 +82,10 @@
   [(AXMotionCuesColorView *)self addGestureRecognizer:v18];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  self->_selected = a3;
-  if (a3)
+  self->_selected = selected;
+  if (selected)
   {
     v4 = @"checkmark.circle.fill";
   }
@@ -97,34 +97,34 @@
 
   v7 = [UIImage systemImageNamed:v4 compatibleWithTraitCollection:0];
   v5 = [v7 imageWithRenderingMode:2];
-  v6 = [(AXMotionCuesColorView *)self _colorView];
-  [v6 setImage:v5];
+  _colorView = [(AXMotionCuesColorView *)self _colorView];
+  [_colorView setImage:v5];
 }
 
-- (void)_userDidTapOnView:(id)a3
+- (void)_userDidTapOnView:(id)view
 {
-  v4 = [a3 state];
-  [(AXMotionCuesColorView *)self setHighlight:(v4 - 1) < 2];
-  if (v4 == &dword_0 + 3)
+  state = [view state];
+  [(AXMotionCuesColorView *)self setHighlight:(state - 1) < 2];
+  if (state == &dword_0 + 3)
   {
-    v5 = [(AXMotionCuesColorView *)self delegate];
+    delegate = [(AXMotionCuesColorView *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(AXMotionCuesColorView *)self delegate];
-      [v7 userDidSelectMotionCuesColor:{-[AXMotionCuesColorView color](self, "color")}];
+      delegate2 = [(AXMotionCuesColorView *)self delegate];
+      [delegate2 userDidSelectMotionCuesColor:{-[AXMotionCuesColorView color](self, "color")}];
     }
   }
 }
 
-- (void)setHighlight:(BOOL)a3
+- (void)setHighlight:(BOOL)highlight
 {
-  if (self->_highlight != a3)
+  if (self->_highlight != highlight)
   {
-    self->_highlight = a3;
+    self->_highlight = highlight;
     v3 = 1.0;
-    if (a3)
+    if (highlight)
     {
       v3 = 0.5;
     }
@@ -133,12 +133,12 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXMotionCuesColorView *)self gestureRecognizers];
-  v9 = [v8 containsObject:v7];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  gestureRecognizers = [(AXMotionCuesColorView *)self gestureRecognizers];
+  v9 = [gestureRecognizers containsObject:recognizerCopy];
 
   if (v9)
   {
@@ -156,16 +156,16 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(AXMotionCuesColorView *)self color];
+  color = [(AXMotionCuesColorView *)self color];
 
-  return [AXMotionCuesColorCell nameForColor:v2];
+  return [AXMotionCuesColorCell nameForColor:color];
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(AXMotionCuesColorView *)self selected];
+  selected = [(AXMotionCuesColorView *)self selected];
   v3 = &UIAccessibilityTraitSelected;
-  if (!v2)
+  if (!selected)
   {
     v3 = &UIAccessibilityTraitNone;
   }
@@ -175,18 +175,18 @@
 
 - (id)_uiColor
 {
-  v2 = [(AXMotionCuesColorView *)self color];
-  if (v2 > 3)
+  color = [(AXMotionCuesColorView *)self color];
+  if (color > 3)
   {
-    if (v2 == 4)
+    if (color == 4)
     {
       v3 = +[UIColor systemGreenColor];
       goto LABEL_15;
     }
 
-    if (v2 != 5)
+    if (color != 5)
     {
-      if (v2 == 6)
+      if (color == 6)
       {
         v3 = +[UIColor systemPurpleColor];
         goto LABEL_15;
@@ -200,15 +200,15 @@
 
   else
   {
-    if (v2 == 1)
+    if (color == 1)
     {
       v3 = +[UIColor systemRedColor];
       goto LABEL_15;
     }
 
-    if (v2 != 2)
+    if (color != 2)
     {
-      if (v2 == 3)
+      if (color == 3)
       {
         v3 = +[UIColor systemYellowColor];
         goto LABEL_15;

@@ -1,40 +1,40 @@
 @interface CLBIO_Quaternion
-- (BOOL)isEqual:(id)a3;
-- (CLBIO_Quaternion)initWithCoder:(id)a3;
-- (CLBIO_Quaternion)initWithX:(double)a3 Y:(double)a4 Z:(double)a5 W:(double)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CLBIO_Quaternion)initWithCoder:(id)coder;
+- (CLBIO_Quaternion)initWithX:(double)x Y:(double)y Z:(double)z W:(double)w;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLBIO_Quaternion
 
-- (CLBIO_Quaternion)initWithX:(double)a3 Y:(double)a4 Z:(double)a5 W:(double)a6
+- (CLBIO_Quaternion)initWithX:(double)x Y:(double)y Z:(double)z W:(double)w
 {
   v11.receiver = self;
   v11.super_class = CLBIO_Quaternion;
   result = [(CLBIO_Quaternion *)&v11 init];
   if (result)
   {
-    result->_X = a3;
-    result->_Y = a4;
-    result->_Z = a5;
-    result->_W = a6;
+    result->_X = x;
+    result->_Y = y;
+    result->_Z = z;
+    result->_W = w;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     X = self->_X;
-    [a3 X];
-    if (X == v7 && (Y = self->_Y, [a3 Y], Y == v9) && (Z = self->_Z, objc_msgSend(a3, "Z"), Z == v11))
+    [equal X];
+    if (X == v7 && (Y = self->_Y, [equal Y], Y == v9) && (Z = self->_Z, objc_msgSend(equal, "Z"), Z == v11))
     {
       W = self->_W;
-      [a3 W];
+      [equal W];
       LOBYTE(v5) = W == v13;
     }
 
@@ -47,9 +47,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(CLBIO_Quaternion *)self X];
   [(CLBIO_Quaternion *)self Y];
   [(CLBIO_Quaternion *)self Z];
@@ -58,33 +58,33 @@
   return MEMORY[0x1EEE66B58](v4, sel_initWithX_Y_Z_W_);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(CLBIO_Quaternion *)self X];
-  [a3 encodeDouble:@"quaternionX" forKey:?];
+  [coder encodeDouble:@"quaternionX" forKey:?];
   [(CLBIO_Quaternion *)self Y];
-  [a3 encodeDouble:@"quaternionY" forKey:?];
+  [coder encodeDouble:@"quaternionY" forKey:?];
   [(CLBIO_Quaternion *)self Z];
-  [a3 encodeDouble:@"quaternionZ" forKey:?];
+  [coder encodeDouble:@"quaternionZ" forKey:?];
   [(CLBIO_Quaternion *)self W];
 
-  [a3 encodeDouble:@"quaternionW" forKey:?];
+  [coder encodeDouble:@"quaternionW" forKey:?];
 }
 
-- (CLBIO_Quaternion)initWithCoder:(id)a3
+- (CLBIO_Quaternion)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CLBIO_Quaternion;
   v4 = [(CLBIO_Quaternion *)&v10 init];
   if (v4)
   {
-    [a3 decodeDoubleForKey:@"quaternionX"];
+    [coder decodeDoubleForKey:@"quaternionX"];
     v4->_X = v5;
-    [a3 decodeDoubleForKey:@"quaternionY"];
+    [coder decodeDoubleForKey:@"quaternionY"];
     v4->_Y = v6;
-    [a3 decodeDoubleForKey:@"quaternionZ"];
+    [coder decodeDoubleForKey:@"quaternionZ"];
     v4->_Z = v7;
-    [a3 decodeDoubleForKey:@"quaternionW"];
+    [coder decodeDoubleForKey:@"quaternionW"];
     v4->_W = v8;
   }
 

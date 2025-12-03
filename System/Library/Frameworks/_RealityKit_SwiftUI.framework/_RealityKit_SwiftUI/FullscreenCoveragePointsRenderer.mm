@@ -1,8 +1,8 @@
 @interface FullscreenCoveragePointsRenderer
 - (_TtC19_RealityKit_SwiftUI32FullscreenCoveragePointsRenderer)init;
 - (void)dealloc;
-- (void)drawInMTKView:(id)a3;
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4;
+- (void)drawInMTKView:(id)view;
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change;
 @end
 
 @implementation FullscreenCoveragePointsRenderer
@@ -11,29 +11,29 @@
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC19_RealityKit_SwiftUI32FullscreenCoveragePointsRenderer_dragGesture);
   *(&self->super.isa + OBJC_IVAR____TtC19_RealityKit_SwiftUI32FullscreenCoveragePointsRenderer_dragGesture) = 0;
-  v3 = self;
+  selfCopy = self;
 
-  *&v3->view[OBJC_IVAR____TtC19_RealityKit_SwiftUI32FullscreenCoveragePointsRenderer_transformProvider] = 0;
+  *&selfCopy->view[OBJC_IVAR____TtC19_RealityKit_SwiftUI32FullscreenCoveragePointsRenderer_transformProvider] = 0;
   swift_unknownObjectWeakAssign();
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for FullscreenCoveragePointsRenderer(0);
   [(FullscreenCoveragePointsRenderer *)&v4 dealloc];
 }
 
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = self;
-  FullscreenCoveragePointsRenderer.mtkView(_:drawableSizeWillChange:)(v7, __PAIR128__(*&height, *&width));
+  height = change.height;
+  width = change.width;
+  viewCopy = view;
+  selfCopy = self;
+  FullscreenCoveragePointsRenderer.mtkView(_:drawableSizeWillChange:)(viewCopy, __PAIR128__(*&height, *&width));
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  FullscreenCoveragePointsRenderer.draw(in:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  FullscreenCoveragePointsRenderer.draw(in:)(viewCopy);
 }
 
 - (_TtC19_RealityKit_SwiftUI32FullscreenCoveragePointsRenderer)init

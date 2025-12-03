@@ -1,7 +1,7 @@
 @interface CRSUIProxyApplicationSceneSettings
 - (NSString)proxiedApplicationBundleIdentifier;
 - (id)frameRateLimit;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)mapStyle;
 @end
 
@@ -9,32 +9,32 @@
 
 - (NSString)proxiedApplicationBundleIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:1885817706];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:1885817706];
 
   return v3;
 }
 
 - (int64_t)mapStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422721];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422721];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
 - (id)frameRateLimit
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422722];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422722];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CRSUIMutableProxyApplicationSceneSettings allocWithZone:a3];
+  v4 = [CRSUIMutableProxyApplicationSceneSettings allocWithZone:zone];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }

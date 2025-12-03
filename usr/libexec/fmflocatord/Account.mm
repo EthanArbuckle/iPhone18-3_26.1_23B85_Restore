@@ -1,6 +1,6 @@
 @interface Account
 - (Account)init;
-- (BOOL)hasSameRelevantInfoAs:(id)a3;
+- (BOOL)hasSameRelevantInfoAs:(id)as;
 @end
 
 @implementation Account
@@ -13,26 +13,26 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
-    [(Account *)v2 setUuid:v4];
+    uUIDString = [v3 UUIDString];
+    [(Account *)v2 setUuid:uUIDString];
   }
 
   return v2;
 }
 
-- (BOOL)hasSameRelevantInfoAs:(id)a3
+- (BOOL)hasSameRelevantInfoAs:(id)as
 {
-  v5 = a3;
-  if (v5 && [v5 isMemberOfClass:objc_opt_class()])
+  asCopy = as;
+  if (asCopy && [asCopy isMemberOfClass:objc_opt_class()])
   {
-    v6 = [v5 uniqueId];
-    if (v6 || ([v5 uniqueId], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    uniqueId = [asCopy uniqueId];
+    if (uniqueId || ([asCopy uniqueId], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v7 = [v5 uniqueId];
-      v8 = [(Account *)self uniqueId];
-      v9 = [v7 isEqualToString:v8];
+      uniqueId2 = [asCopy uniqueId];
+      uniqueId3 = [(Account *)self uniqueId];
+      v9 = [uniqueId2 isEqualToString:uniqueId3];
 
-      if (v6)
+      if (uniqueId)
       {
 LABEL_10:
 

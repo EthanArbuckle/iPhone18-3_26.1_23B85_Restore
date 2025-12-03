@@ -1,18 +1,18 @@
 @interface battery_analysis_tt80_model_6t6qz674si
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (battery_analysis_tt80_model_6t6qz674si)init;
-- (battery_analysis_tt80_model_6t6qz674si)initWithConfiguration:(id)a3 error:(id *)a4;
-- (battery_analysis_tt80_model_6t6qz674si)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (battery_analysis_tt80_model_6t6qz674si)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (battery_analysis_tt80_model_6t6qz674si)initWithMLModel:(id)a3;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromInput_1:(id)a3 error:(id *)a4;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (battery_analysis_tt80_model_6t6qz674si)initWithConfiguration:(id)configuration error:(id *)error;
+- (battery_analysis_tt80_model_6t6qz674si)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (battery_analysis_tt80_model_6t6qz674si)initWithContentsOfURL:(id)l error:(id *)error;
+- (battery_analysis_tt80_model_6t6qz674si)initWithMLModel:(id)model;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromInput_1:(id)input_1 error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation battery_analysis_tt80_model_6t6qz674si
@@ -40,10 +40,10 @@
   return v4;
 }
 
-- (battery_analysis_tt80_model_6t6qz674si)initWithMLModel:(id)a3
+- (battery_analysis_tt80_model_6t6qz674si)initWithMLModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v10.receiver = self;
     v10.super_class = battery_analysis_tt80_model_6t6qz674si;
@@ -51,113 +51,113 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_model, a3);
+      objc_storeStrong(&v6->_model, model);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (battery_analysis_tt80_model_6t6qz674si)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(battery_analysis_tt80_model_6t6qz674si *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(battery_analysis_tt80_model_6t6qz674si *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (battery_analysis_tt80_model_6t6qz674si)initWithConfiguration:(id)a3 error:(id *)a4
+- (battery_analysis_tt80_model_6t6qz674si)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(battery_analysis_tt80_model_6t6qz674si *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(battery_analysis_tt80_model_6t6qz674si *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (battery_analysis_tt80_model_6t6qz674si)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (battery_analysis_tt80_model_6t6qz674si)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = [MLModel modelWithContentsOfURL:a3 error:a4];
+  v5 = [MLModel modelWithContentsOfURL:l error:error];
   if (v5)
   {
     self = [(battery_analysis_tt80_model_6t6qz674si *)self initWithMLModel:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (battery_analysis_tt80_model_6t6qz674si)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (battery_analysis_tt80_model_6t6qz674si)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v6 = [MLModel modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  v6 = [MLModel modelWithContentsOfURL:l configuration:configuration error:error];
   if (v6)
   {
     self = [(battery_analysis_tt80_model_6t6qz674si *)self initWithMLModel:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 URLOfModelInThisBundle];
-  [a1 loadContentsOfURL:v8 configuration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [self URLOfModelInThisBundle];
+  [self loadContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy completionHandler:handlerCopy];
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002C870;
   v8[3] = &unk_100048FF8;
-  v9 = a5;
-  v7 = v9;
-  [MLModel loadContentsOfURL:a3 configuration:a4 completionHandler:v8];
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  [MLModel loadContentsOfURL:l configuration:configuration completionHandler:v8];
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
-  v6 = a3;
+  featuresCopy = features;
   v7 = objc_alloc_init(MLPredictionOptions);
-  v8 = [(battery_analysis_tt80_model_6t6qz674si *)self predictionFromFeatures:v6 options:v7 error:a4];
+  v8 = [(battery_analysis_tt80_model_6t6qz674si *)self predictionFromFeatures:featuresCopy options:v7 error:error];
 
   return v8;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(battery_analysis_tt80_model_6t6qz674si *)self model];
-  v11 = [v10 predictionFromFeatures:v9 options:v8 error:a5];
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(battery_analysis_tt80_model_6t6qz674si *)self model];
+  v11 = [model predictionFromFeatures:featuresCopy options:optionsCopy error:error];
 
   if (v11)
   {
     v12 = [battery_analysis_tt80_model_6t6qz674siOutput alloc];
     v13 = [v11 featureValueForName:@"tt80_prediction"];
-    v14 = [v13 multiArrayValue];
-    v15 = [(battery_analysis_tt80_model_6t6qz674siOutput *)v12 initWithTt80_prediction:v14];
+    multiArrayValue = [v13 multiArrayValue];
+    v15 = [(battery_analysis_tt80_model_6t6qz674siOutput *)v12 initWithTt80_prediction:multiArrayValue];
   }
 
   else
@@ -168,76 +168,76 @@
   return v15;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(battery_analysis_tt80_model_6t6qz674si *)self model];
+  handlerCopy = handler;
+  featuresCopy = features;
+  model = [(battery_analysis_tt80_model_6t6qz674si *)self model];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10002CB38;
   v10[3] = &unk_100049020;
-  v11 = v6;
-  v9 = v6;
-  [v8 predictionFromFeatures:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy completionHandler:v10];
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(battery_analysis_tt80_model_6t6qz674si *)self model];
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(battery_analysis_tt80_model_6t6qz674si *)self model];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10002CD10;
   v13[3] = &unk_100049020;
-  v14 = v8;
-  v12 = v8;
-  [v11 predictionFromFeatures:v10 options:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy options:optionsCopy completionHandler:v13];
 }
 
-- (id)predictionFromInput_1:(id)a3 error:(id *)a4
+- (id)predictionFromInput_1:(id)input_1 error:(id *)error
 {
-  v6 = a3;
-  v7 = [[battery_analysis_tt80_model_6t6qz674siInput alloc] initWithInput_1:v6];
+  input_1Copy = input_1;
+  v7 = [[battery_analysis_tt80_model_6t6qz674siInput alloc] initWithInput_1:input_1Copy];
 
-  v8 = [(battery_analysis_tt80_model_6t6qz674si *)self predictionFromFeatures:v7 error:a4];
+  v8 = [(battery_analysis_tt80_model_6t6qz674si *)self predictionFromFeatures:v7 error:error];
 
   return v8;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[MLArrayBatchProvider alloc] initWithFeatureProviderArray:v8];
-  v11 = [(battery_analysis_tt80_model_6t6qz674si *)self model];
-  v12 = [v11 predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [[MLArrayBatchProvider alloc] initWithFeatureProviderArray:inputsCopy];
+  model = [(battery_analysis_tt80_model_6t6qz674si *)self model];
+  v12 = [model predictionsFromBatch:v10 options:optionsCopy error:error];
 
   if (v12)
   {
     v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v12 count]);
     if ([v12 count] >= 1)
     {
-      v21 = v9;
-      v22 = v8;
+      v21 = optionsCopy;
+      v22 = inputsCopy;
       v14 = 0;
       do
       {
         v15 = [v12 featuresAtIndex:{v14, v21, v22}];
         v16 = [battery_analysis_tt80_model_6t6qz674siOutput alloc];
         v17 = [v15 featureValueForName:@"tt80_prediction"];
-        v18 = [v17 multiArrayValue];
-        v19 = [(battery_analysis_tt80_model_6t6qz674siOutput *)v16 initWithTt80_prediction:v18];
+        multiArrayValue = [v17 multiArrayValue];
+        v19 = [(battery_analysis_tt80_model_6t6qz674siOutput *)v16 initWithTt80_prediction:multiArrayValue];
 
         [v13 addObject:v19];
         ++v14;
       }
 
       while (v14 < [v12 count]);
-      v9 = v21;
-      v8 = v22;
+      optionsCopy = v21;
+      inputsCopy = v22;
     }
   }
 

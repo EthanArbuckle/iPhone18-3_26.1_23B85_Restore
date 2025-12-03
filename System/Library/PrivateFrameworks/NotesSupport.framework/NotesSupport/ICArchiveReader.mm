@@ -1,30 +1,30 @@
 @interface ICArchiveReader
-- (BOOL)moveContentsOfDirectory:(id)a3 toDirectory:(id)a4 resultURLs:(id *)a5 error:(id *)a6;
-- (BOOL)unarchiveResultURLs:(id *)a3 error:(id *)a4;
-- (BOOL)unarchiveSourcePath:(id)a3 toDestinationPath:(id)a4 error:(id *)a5;
-- (ICArchiveReader)initWithSourceURL:(id)a3 destinationURL:(id)a4;
-- (id)incrementalPathInDirectory:(id)a3 withFilename:(id)a4 andExtension:(id)a5;
-- (id)temporaryDirectoryWithError:(id *)a3;
+- (BOOL)moveContentsOfDirectory:(id)directory toDirectory:(id)toDirectory resultURLs:(id *)ls error:(id *)error;
+- (BOOL)unarchiveResultURLs:(id *)ls error:(id *)error;
+- (BOOL)unarchiveSourcePath:(id)path toDestinationPath:(id)destinationPath error:(id *)error;
+- (ICArchiveReader)initWithSourceURL:(id)l destinationURL:(id)rL;
+- (id)incrementalPathInDirectory:(id)directory withFilename:(id)filename andExtension:(id)extension;
+- (id)temporaryDirectoryWithError:(id *)error;
 @end
 
 @implementation ICArchiveReader
 
-- (ICArchiveReader)initWithSourceURL:(id)a3 destinationURL:(id)a4
+- (ICArchiveReader)initWithSourceURL:(id)l destinationURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v14.receiver = self;
   v14.super_class = ICArchiveReader;
   v8 = [(ICArchiveReader *)&v14 init];
   if (v8)
   {
-    v9 = [v6 path];
+    path = [lCopy path];
     sourcePath = v8->_sourcePath;
-    v8->_sourcePath = v9;
+    v8->_sourcePath = path;
 
-    v11 = [v7 path];
+    path2 = [rLCopy path];
     destinationPath = v8->_destinationPath;
-    v8->_destinationPath = v11;
+    v8->_destinationPath = path2;
 
     v8->_writesTemporaryFilesInsideDestination = 1;
   }
@@ -32,24 +32,24 @@
   return v8;
 }
 
-- (BOOL)unarchiveResultURLs:(id *)a3 error:(id *)a4
+- (BOOL)unarchiveResultURLs:(id *)ls error:(id *)error
 {
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(ICArchiveReader *)self destinationPath];
-  v9 = [v7 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:a4];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  destinationPath = [(ICArchiveReader *)self destinationPath];
+  v9 = [defaultManager createDirectoryAtPath:destinationPath withIntermediateDirectories:1 attributes:0 error:error];
 
   if (v9)
   {
-    v10 = [(ICArchiveReader *)self temporaryDirectoryWithError:a4];
-    if (v10 && [v7 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:a4])
+    v10 = [(ICArchiveReader *)self temporaryDirectoryWithError:error];
+    if (v10 && [defaultManager createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:error])
     {
-      v11 = [(ICArchiveReader *)self sourcePath];
-      v12 = [(ICArchiveReader *)self unarchiveSourcePath:v11 toDestinationPath:v10 error:a4];
+      sourcePath = [(ICArchiveReader *)self sourcePath];
+      v12 = [(ICArchiveReader *)self unarchiveSourcePath:sourcePath toDestinationPath:v10 error:error];
 
       if (v12)
       {
-        v13 = [(ICArchiveReader *)self destinationPath];
-        v14 = [(ICArchiveReader *)self moveContentsOfDirectory:v10 toDirectory:v13 resultURLs:a3 error:a4];
+        destinationPath2 = [(ICArchiveReader *)self destinationPath];
+        v14 = [(ICArchiveReader *)self moveContentsOfDirectory:v10 toDirectory:destinationPath2 resultURLs:ls error:error];
       }
 
       else
@@ -57,7 +57,7 @@
         v14 = 0;
       }
 
-      [v7 removeItemAtPath:v10 error:0];
+      [defaultManager removeItemAtPath:v10 error:0];
     }
 
     else
@@ -74,44 +74,44 @@
   return v14;
 }
 
-- (id)temporaryDirectoryWithError:(id *)a3
+- (id)temporaryDirectoryWithError:(id *)error
 {
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   if ([(ICArchiveReader *)self writesTemporaryFilesInsideDestination])
   {
-    v7 = [(ICArchiveReader *)self destinationPath];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@".%@", v6];
-    v9 = [v7 stringByAppendingPathComponent:v8];
+    destinationPath = [(ICArchiveReader *)self destinationPath];
+    destinationPath2 = [MEMORY[0x1E696AEC0] stringWithFormat:@".%@", uUIDString];
+    path = [destinationPath stringByAppendingPathComponent:destinationPath2];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    destinationPath = [MEMORY[0x1E696AC08] defaultManager];
     v10 = MEMORY[0x1E695DFF8];
-    v8 = [(ICArchiveReader *)self destinationPath];
-    v11 = [v10 fileURLWithPath:v8];
-    v12 = [v7 URLForDirectory:99 inDomain:1 appropriateForURL:v11 create:1 error:a3];
-    v9 = [v12 path];
+    destinationPath2 = [(ICArchiveReader *)self destinationPath];
+    v11 = [v10 fileURLWithPath:destinationPath2];
+    v12 = [destinationPath URLForDirectory:99 inDomain:1 appropriateForURL:v11 create:1 error:error];
+    path = [v12 path];
   }
 
-  return v9;
+  return path;
 }
 
-- (BOOL)unarchiveSourcePath:(id)a3 toDestinationPath:(id)a4 error:(id *)a5
+- (BOOL)unarchiveSourcePath:(id)path toDestinationPath:(id)destinationPath error:(id *)error
 {
   v63[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  destinationPathCopy = destinationPath;
   archive_read_new();
   archive_read_support_compression_all();
   archive_read_support_format_all();
   archive_write_disk_new();
   archive_write_disk_set_standard_lookup();
-  v10 = [(ICArchiveReader *)self skipsInvisibleHeaders];
-  [v8 fileSystemRepresentation];
-  [v8 length];
+  skipsInvisibleHeaders = [(ICArchiveReader *)self skipsInvisibleHeaders];
+  [pathCopy fileSystemRepresentation];
+  [pathCopy length];
   open_filename = archive_read_open_filename();
   if (open_filename)
   {
@@ -122,17 +122,17 @@
     v15 = *MEMORY[0x1E696A588];
     v54[0] = *MEMORY[0x1E696A578];
     v54[1] = v15;
-    v16 = v8;
-    v17 = a5;
-    v18 = v9;
+    v16 = pathCopy;
+    errorCopy = error;
+    v18 = destinationPathCopy;
     v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s", archive_error_string()];
     v55[1] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v55 forKeys:v54 count:2];
     v21 = [v13 errorWithDomain:@"com.apple.notes" code:v14 userInfo:v20];
 
-    v9 = v18;
-    a5 = v17;
-    v8 = v16;
+    destinationPathCopy = v18;
+    error = errorCopy;
+    pathCopy = v16;
   }
 
   else
@@ -154,10 +154,10 @@
         context = objc_autoreleasePoolPush();
         v24 = v23;
         v25 = [*(v23 + 3776) stringWithUTF8String:archive_entry_pathname()];
-        v26 = [v9 stringByAppendingPathComponent:v25];
+        v26 = [destinationPathCopy stringByAppendingPathComponent:v25];
         [v26 fileSystemRepresentation];
         archive_entry_set_pathname();
-        if (!v10 || ([v25 hasPrefix:@"/."] & 1) == 0)
+        if (!skipsInvisibleHeaders || ([v25 hasPrefix:@"/."] & 1) == 0)
         {
           break;
         }
@@ -188,14 +188,14 @@ LABEL_16:
         v43 = [*(v24 + 3776) stringWithFormat:@"%s", archive_error_string()];
         v57[1] = v43;
         [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:2];
-        v44 = v8;
-        v45 = a5;
-        v47 = v46 = v9;
+        v44 = pathCopy;
+        errorCopy2 = error;
+        v47 = v46 = destinationPathCopy;
         v21 = [v41 errorWithDomain:@"com.apple.notes" code:v42 userInfo:v47];
 
-        v9 = v46;
-        a5 = v45;
-        v8 = v44;
+        destinationPathCopy = v46;
+        error = errorCopy2;
+        pathCopy = v44;
       }
 
       else
@@ -270,34 +270,34 @@ LABEL_21:
   archive_read_finish();
   archive_write_close();
   archive_write_finish();
-  if (a5)
+  if (error)
   {
     v39 = v21;
-    *a5 = v21;
+    *error = v21;
   }
 
   return v12 < 2;
 }
 
-- (BOOL)moveContentsOfDirectory:(id)a3 toDirectory:(id)a4 resultURLs:(id *)a5 error:(id *)a6
+- (BOOL)moveContentsOfDirectory:(id)directory toDirectory:(id)toDirectory resultURLs:(id *)ls error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  directoryCopy = directory;
+  toDirectoryCopy = toDirectory;
   [MEMORY[0x1E696AC08] defaultManager];
-  v40 = v39 = v10;
-  v12 = [v40 contentsOfDirectoryAtPath:v10 error:a6];
+  v40 = v39 = directoryCopy;
+  v12 = [v40 contentsOfDirectoryAtPath:directoryCopy error:error];
   v13 = v12;
-  v38 = a6;
-  if (*a6)
+  errorCopy = error;
+  if (*error)
   {
     v14 = 0;
   }
 
   else
   {
-    v32 = a5;
-    if (a5)
+    lsCopy = ls;
+    if (ls)
     {
       v15 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v12, "count")}];
     }
@@ -328,21 +328,21 @@ LABEL_21:
           }
 
           v17 = *(*(&v42 + 1) + 8 * i);
-          v18 = [v39 stringByAppendingPathComponent:{v17, v32}];
-          v19 = [v11 stringByAppendingPathComponent:v17];
+          v18 = [v39 stringByAppendingPathComponent:{v17, lsCopy}];
+          v19 = [toDirectoryCopy stringByAppendingPathComponent:v17];
           if ([(ICArchiveReader *)self overwrite])
           {
             v20 = v18;
             v21 = [MEMORY[0x1E695DFF8] fileURLWithPath:v18];
             v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:v19];
             v41 = 0;
-            v23 = [v40 replaceItemAtURL:v22 withItemAtURL:v21 backupItemName:0 options:1 resultingItemURL:&v41 error:v38];
+            v23 = [v40 replaceItemAtURL:v22 withItemAtURL:v21 backupItemName:0 options:1 resultingItemURL:&v41 error:errorCopy];
             v24 = v41;
             v25 = v24;
             if (!v23)
             {
 
-              v26 = v19;
+              path = v19;
               v15 = v34;
 LABEL_21:
 
@@ -350,25 +350,25 @@ LABEL_21:
               goto LABEL_22;
             }
 
-            v26 = [v24 path];
+            path = [v24 path];
 
             v15 = v34;
           }
 
           else
           {
-            v27 = [v17 stringByDeletingPathExtension];
-            v28 = [v17 pathExtension];
-            [(ICArchiveReader *)self incrementalPathInDirectory:v11 withFilename:v27 andExtension:v28];
-            v26 = v20 = v18;
+            stringByDeletingPathExtension = [v17 stringByDeletingPathExtension];
+            pathExtension = [v17 pathExtension];
+            [(ICArchiveReader *)self incrementalPathInDirectory:toDirectoryCopy withFilename:stringByDeletingPathExtension andExtension:pathExtension];
+            path = v20 = v18;
 
-            if (([v40 moveItemAtPath:v18 toPath:v26 error:v38] & 1) == 0)
+            if (([v40 moveItemAtPath:v18 toPath:path error:errorCopy] & 1) == 0)
             {
               goto LABEL_21;
             }
           }
 
-          v29 = [MEMORY[0x1E695DFF8] fileURLWithPath:v26];
+          v29 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
           [v15 addObject:v29];
         }
 
@@ -385,7 +385,7 @@ LABEL_21:
     if (v15)
     {
       v30 = v15;
-      *v32 = v15;
+      *lsCopy = v15;
     }
 
     v14 = 1;
@@ -396,31 +396,31 @@ LABEL_22:
   return v14;
 }
 
-- (id)incrementalPathInDirectory:(id)a3 withFilename:(id)a4 andExtension:(id)a5
+- (id)incrementalPathInDirectory:(id)directory withFilename:(id)filename andExtension:(id)extension
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 stringByAppendingPathComponent:v8];
-  if ([v9 length])
+  directoryCopy = directory;
+  filenameCopy = filename;
+  extensionCopy = extension;
+  v10 = [directoryCopy stringByAppendingPathComponent:filenameCopy];
+  if ([extensionCopy length])
   {
-    v11 = [v10 stringByAppendingPathExtension:v9];
+    v11 = [v10 stringByAppendingPathExtension:extensionCopy];
 
     v10 = v11;
   }
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v12 fileExistsAtPath:v10])
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:v10])
   {
     v13 = 2;
     do
     {
-      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %lu", v8, v13];
-      v15 = [v7 stringByAppendingPathComponent:v14];
+      v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %lu", filenameCopy, v13];
+      v15 = [directoryCopy stringByAppendingPathComponent:v14];
 
-      if ([v9 length])
+      if ([extensionCopy length])
       {
-        v16 = [v15 stringByAppendingPathExtension:v9];
+        v16 = [v15 stringByAppendingPathExtension:extensionCopy];
 
         v15 = v16;
       }
@@ -429,7 +429,7 @@ LABEL_22:
       v10 = v15;
     }
 
-    while (([v12 fileExistsAtPath:v15] & 1) != 0);
+    while (([defaultManager fileExistsAtPath:v15] & 1) != 0);
   }
 
   else

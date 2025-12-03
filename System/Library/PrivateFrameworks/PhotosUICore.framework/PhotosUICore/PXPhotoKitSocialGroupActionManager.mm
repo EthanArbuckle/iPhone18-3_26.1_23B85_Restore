@@ -1,43 +1,43 @@
 @interface PXPhotoKitSocialGroupActionManager
-- (BOOL)canPerformActionType:(id)a3;
-- (BOOL)isDestructiveActionType:(id)a3;
+- (BOOL)canPerformActionType:(id)type;
+- (BOOL)isDestructiveActionType:(id)type;
 - (PXPhotoKitSocialGroupActionManager)init;
-- (PXPhotoKitSocialGroupActionManager)initWithSocialGroups:(id)a3 photoLibrary:(id)a4;
-- (id)actionPerformerForActionType:(id)a3;
-- (id)actionPerformerForActionType:(id)a3 parameters:(id)a4;
-- (id)actionTypeForGenericType:(id)a3;
-- (id)contextMenuElementsWithHandler:(id)a3;
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4;
-- (id)systemImageNameForActionType:(id)a3;
+- (PXPhotoKitSocialGroupActionManager)initWithSocialGroups:(id)groups photoLibrary:(id)library;
+- (id)actionPerformerForActionType:(id)type;
+- (id)actionPerformerForActionType:(id)type parameters:(id)parameters;
+- (id)actionTypeForGenericType:(id)type;
+- (id)contextMenuElementsWithHandler:(id)handler;
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case;
+- (id)systemImageNameForActionType:(id)type;
 @end
 
 @implementation PXPhotoKitSocialGroupActionManager
 
-- (PXPhotoKitSocialGroupActionManager)initWithSocialGroups:(id)a3 photoLibrary:(id)a4
+- (PXPhotoKitSocialGroupActionManager)initWithSocialGroups:(id)groups photoLibrary:(id)library
 {
   ObjectType = swift_getObjectType();
   sub_1A3C52C70(0, &qword_1EB126C28);
   *(&self->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_socialGroups) = sub_1A524CA34();
-  *(&self->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_photoLibrary) = a4;
+  *(&self->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_photoLibrary) = library;
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v7 = a4;
+  libraryCopy = library;
   return [(PXPhotoKitSocialGroupActionManager *)&v9 init];
 }
 
-- (id)actionTypeForGenericType:(id)a3
+- (id)actionTypeForGenericType:(id)type
 {
   v4 = sub_1A524C674();
   v6 = v5;
   if (v4 == sub_1A524C674() && v6 == v7)
   {
-    v12 = a3;
+    typeCopy = type;
   }
 
   else
   {
     v9 = sub_1A524EAB4();
-    v10 = a3;
+    typeCopy2 = type;
 
     if ((v9 & 1) == 0)
     {
@@ -53,35 +53,35 @@ LABEL_9:
   return v11;
 }
 
-- (id)actionPerformerForActionType:(id)a3
+- (id)actionPerformerForActionType:(id)type
 {
   sub_1A524C674();
-  v4 = self;
+  selfCopy = self;
   sub_1A4680B60();
 }
 
-- (id)actionPerformerForActionType:(id)a3 parameters:(id)a4
+- (id)actionPerformerForActionType:(id)type parameters:(id)parameters
 {
   v5 = sub_1A524C674();
   v7 = v6;
   type metadata accessor for PXActionParameterKey();
   sub_1A3C38278(&unk_1EB1356B0);
   v8 = sub_1A524C3E4();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_1A4681620(v5, v7, v8);
 
   return v10;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
   v4 = sub_1A524C674();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A4682C14(v4, v6);
   v10 = v9;
 
-  v11 = *(&v7->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_socialGroups);
+  v11 = *(&selfCopy->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_socialGroups);
   if (v11 >> 62)
   {
     v12 = sub_1A524E2B4();
@@ -126,15 +126,15 @@ LABEL_9:
   return v12;
 }
 
-- (id)localizedTitleForActionType:(id)a3 useCase:(unint64_t)a4
+- (id)localizedTitleForActionType:(id)type useCase:(unint64_t)case
 {
   v5 = sub_1A524C674();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1A4682C14(v5, v7);
   v11 = v10;
 
-  v12 = *(&v8->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_socialGroups);
+  v12 = *(&selfCopy->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_socialGroups);
   if (v12 >> 62)
   {
     result = sub_1A524E2B4();
@@ -180,15 +180,15 @@ LABEL_9:
   return v16;
 }
 
-- (id)systemImageNameForActionType:(id)a3
+- (id)systemImageNameForActionType:(id)type
 {
   v4 = sub_1A524C674();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A4682C14(v4, v6);
   v10 = v9;
 
-  v11 = *(&v7->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_socialGroups);
+  v11 = *(&selfCopy->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_socialGroups);
   if (v11 >> 62)
   {
     result = sub_1A524E2B4();
@@ -234,15 +234,15 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)isDestructiveActionType:(id)a3
+- (BOOL)isDestructiveActionType:(id)type
 {
   v4 = sub_1A524C674();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A4682C14(v4, v6);
   v10 = v9;
 
-  v11 = *(&v7->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_socialGroups);
+  v11 = *(&selfCopy->super.super.isa + OBJC_IVAR___PXPhotoKitSocialGroupActionManager_socialGroups);
   if (v11 >> 62)
   {
     v12 = sub_1A524E2B4();
@@ -287,12 +287,12 @@ LABEL_9:
   return v12;
 }
 
-- (id)contextMenuElementsWithHandler:(id)a3
+- (id)contextMenuElementsWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1A46821A8(sub_1A4682F58, v5);
 }
 

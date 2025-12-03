@@ -1,127 +1,127 @@
 @interface LNAppShortcutSpanData
-- (BOOL)isEqual:(id)a3;
-- (LNAppShortcutSpanData)initWithCoder:(id)a3;
-- (LNAppShortcutSpanData)initWithValue:(id)a3 propertyTitle:(id)a4 propertyTitleKey:(id)a5 providerClassName:(id)a6 parameterTypeIdentifier:(id)a7 synonyms:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (LNAppShortcutSpanData)initWithCoder:(id)coder;
+- (LNAppShortcutSpanData)initWithValue:(id)value propertyTitle:(id)title propertyTitleKey:(id)key providerClassName:(id)name parameterTypeIdentifier:(id)identifier synonyms:(id)synonyms;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAppShortcutSpanData
 
 - (unint64_t)hash
 {
-  v3 = [(LNAppShortcutSpanData *)self propertyTitle];
-  v4 = [v3 hash];
-  v5 = [(LNAppShortcutSpanData *)self propertyTitleKey];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNAppShortcutSpanData *)self providerClassName];
-  v8 = [v7 hash];
-  v9 = [(LNAppShortcutSpanData *)self parameterTypeIdentifier];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(LNAppShortcutSpanData *)self synonyms];
-  v12 = [v11 hash];
-  v13 = [(LNAppShortcutSpanData *)self value];
-  v14 = v12 ^ [v13 hash];
+  propertyTitle = [(LNAppShortcutSpanData *)self propertyTitle];
+  v4 = [propertyTitle hash];
+  propertyTitleKey = [(LNAppShortcutSpanData *)self propertyTitleKey];
+  v6 = [propertyTitleKey hash] ^ v4;
+  providerClassName = [(LNAppShortcutSpanData *)self providerClassName];
+  v8 = [providerClassName hash];
+  parameterTypeIdentifier = [(LNAppShortcutSpanData *)self parameterTypeIdentifier];
+  v10 = v6 ^ v8 ^ [parameterTypeIdentifier hash];
+  synonyms = [(LNAppShortcutSpanData *)self synonyms];
+  v12 = [synonyms hash];
+  value = [(LNAppShortcutSpanData *)self value];
+  v14 = v12 ^ [value hash];
 
   return v10 ^ v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAppShortcutSpanData *)self propertyTitle];
-  [v4 encodeObject:v5 forKey:@"propertyTitle"];
+  coderCopy = coder;
+  propertyTitle = [(LNAppShortcutSpanData *)self propertyTitle];
+  [coderCopy encodeObject:propertyTitle forKey:@"propertyTitle"];
 
-  v6 = [(LNAppShortcutSpanData *)self propertyTitleKey];
-  [v4 encodeObject:v6 forKey:@"propertyTitleKey"];
+  propertyTitleKey = [(LNAppShortcutSpanData *)self propertyTitleKey];
+  [coderCopy encodeObject:propertyTitleKey forKey:@"propertyTitleKey"];
 
-  v7 = [(LNAppShortcutSpanData *)self providerClassName];
-  [v4 encodeObject:v7 forKey:@"providerClassName"];
+  providerClassName = [(LNAppShortcutSpanData *)self providerClassName];
+  [coderCopy encodeObject:providerClassName forKey:@"providerClassName"];
 
-  v8 = [(LNAppShortcutSpanData *)self value];
-  [v4 encodeObject:v8 forKey:@"value"];
+  value = [(LNAppShortcutSpanData *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 
-  v9 = [(LNAppShortcutSpanData *)self parameterTypeIdentifier];
-  [v4 encodeObject:v9 forKey:@"parameterTypeIdentifier"];
+  parameterTypeIdentifier = [(LNAppShortcutSpanData *)self parameterTypeIdentifier];
+  [coderCopy encodeObject:parameterTypeIdentifier forKey:@"parameterTypeIdentifier"];
 
-  v10 = [(LNAppShortcutSpanData *)self synonyms];
-  [v4 encodeObject:v10 forKey:@"synonyms"];
+  synonyms = [(LNAppShortcutSpanData *)self synonyms];
+  [coderCopy encodeObject:synonyms forKey:@"synonyms"];
 }
 
-- (LNAppShortcutSpanData)initWithCoder:(id)a3
+- (LNAppShortcutSpanData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"propertyTitle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"propertyTitle"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"propertyTitleKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"propertyTitleKey"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"providerClassName"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"providerClassName"];
       if (v7)
       {
-        v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+        v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
         if (v8)
         {
-          v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterTypeIdentifier"];
+          v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterTypeIdentifier"];
           if (v9)
           {
             v10 = MEMORY[0x1E695DFD8];
             v11 = objc_opt_class();
             v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-            v13 = [v4 decodeObjectOfClasses:v12 forKey:@"synonyms"];
+            v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"synonyms"];
 
             if (v13)
             {
               self = [(LNAppShortcutSpanData *)self initWithValue:v8 propertyTitle:v5 propertyTitleKey:v6 providerClassName:v7 parameterTypeIdentifier:v9 synonyms:v13];
-              v14 = self;
+              selfCopy = self;
             }
 
             else
             {
-              v14 = 0;
+              selfCopy = 0;
             }
           }
 
           else
           {
-            v14 = 0;
+            selfCopy = 0;
           }
         }
 
         else
         {
-          v14 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v14 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v14 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -130,10 +130,10 @@ LABEL_54:
       goto LABEL_55;
     }
 
-    v7 = [(LNAppShortcutSpanData *)self propertyTitle];
-    v8 = [(LNAppShortcutSpanData *)v6 propertyTitle];
-    v9 = v7;
-    v10 = v8;
+    propertyTitle = [(LNAppShortcutSpanData *)self propertyTitle];
+    propertyTitle2 = [(LNAppShortcutSpanData *)v6 propertyTitle];
+    v9 = propertyTitle;
+    v10 = propertyTitle2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -160,10 +160,10 @@ LABEL_53:
       }
     }
 
-    v16 = [(LNAppShortcutSpanData *)self propertyTitleKey];
-    v17 = [(LNAppShortcutSpanData *)v6 propertyTitleKey];
-    v14 = v16;
-    v18 = v17;
+    propertyTitleKey = [(LNAppShortcutSpanData *)self propertyTitleKey];
+    propertyTitleKey2 = [(LNAppShortcutSpanData *)v6 propertyTitleKey];
+    v14 = propertyTitleKey;
+    v18 = propertyTitleKey2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -195,10 +195,10 @@ LABEL_52:
       }
     }
 
-    v23 = [(LNAppShortcutSpanData *)self providerClassName];
-    v24 = [(LNAppShortcutSpanData *)v6 providerClassName];
-    v20 = v23;
-    v25 = v24;
+    providerClassName = [(LNAppShortcutSpanData *)self providerClassName];
+    providerClassName2 = [(LNAppShortcutSpanData *)v6 providerClassName];
+    v20 = providerClassName;
+    v25 = providerClassName2;
     v19 = v25;
     if (v20 == v25)
     {
@@ -223,10 +223,10 @@ LABEL_52:
     }
 
     v53 = v20;
-    v28 = [(LNAppShortcutSpanData *)self parameterTypeIdentifier];
-    v29 = [(LNAppShortcutSpanData *)v6 parameterTypeIdentifier];
-    v30 = v28;
-    v31 = v29;
+    parameterTypeIdentifier = [(LNAppShortcutSpanData *)self parameterTypeIdentifier];
+    parameterTypeIdentifier2 = [(LNAppShortcutSpanData *)v6 parameterTypeIdentifier];
+    v30 = parameterTypeIdentifier;
+    v31 = parameterTypeIdentifier2;
     v51 = v31;
     v52 = v30;
     if (v30 != v31)
@@ -258,10 +258,10 @@ LABEL_51:
           }
 
 LABEL_30:
-          v35 = [(LNAppShortcutSpanData *)self synonyms];
-          v36 = [(LNAppShortcutSpanData *)v6 synonyms];
-          v33 = v35;
-          v37 = v36;
+          synonyms = [(LNAppShortcutSpanData *)self synonyms];
+          synonyms2 = [(LNAppShortcutSpanData *)v6 synonyms];
+          v33 = synonyms;
+          v37 = synonyms2;
           v50 = v37;
           if (v33 != v37)
           {
@@ -306,10 +306,10 @@ LABEL_45:
 
           v48 = v33;
 LABEL_36:
-          v42 = [(LNAppShortcutSpanData *)self value];
-          v43 = [(LNAppShortcutSpanData *)v6 value];
-          v44 = v42;
-          v45 = v43;
+          value = [(LNAppShortcutSpanData *)self value];
+          value2 = [(LNAppShortcutSpanData *)v6 value];
+          v44 = value;
+          v45 = value2;
           v49 = v45;
           if (v44 == v45)
           {
@@ -364,20 +364,20 @@ LABEL_55:
   return v12;
 }
 
-- (LNAppShortcutSpanData)initWithValue:(id)a3 propertyTitle:(id)a4 propertyTitleKey:(id)a5 providerClassName:(id)a6 parameterTypeIdentifier:(id)a7 synonyms:(id)a8
+- (LNAppShortcutSpanData)initWithValue:(id)value propertyTitle:(id)title propertyTitleKey:(id)key providerClassName:(id)name parameterTypeIdentifier:(id)identifier synonyms:(id)synonyms
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  obj = a6;
-  v17 = a6;
-  v32 = a7;
-  v18 = a7;
-  v33 = a8;
-  v19 = a8;
-  if (v14)
+  valueCopy = value;
+  titleCopy = title;
+  keyCopy = key;
+  obj = name;
+  nameCopy = name;
+  identifierCopy = identifier;
+  identifierCopy2 = identifier;
+  synonymsCopy = synonyms;
+  synonymsCopy2 = synonyms;
+  if (valueCopy)
   {
-    if (v15)
+    if (titleCopy)
     {
       goto LABEL_3;
     }
@@ -385,13 +385,13 @@ LABEL_55:
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"value"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"value"}];
 
-    if (v15)
+    if (titleCopy)
     {
 LABEL_3:
-      if (v16)
+      if (keyCopy)
       {
         goto LABEL_4;
       }
@@ -400,13 +400,13 @@ LABEL_3:
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"propertyTitle"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"propertyTitle"}];
 
-  if (v16)
+  if (keyCopy)
   {
 LABEL_4:
-    if (v17)
+    if (nameCopy)
     {
       goto LABEL_5;
     }
@@ -415,22 +415,22 @@ LABEL_4:
   }
 
 LABEL_12:
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"propertyTitleKey"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"propertyTitleKey"}];
 
-  if (v17)
+  if (nameCopy)
   {
 LABEL_5:
-    if (v18)
+    if (identifierCopy2)
     {
       goto LABEL_6;
     }
 
 LABEL_14:
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"parameterTypeIdentifier"}];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"parameterTypeIdentifier"}];
 
-    if (v19)
+    if (synonymsCopy2)
     {
       goto LABEL_7;
     }
@@ -439,23 +439,23 @@ LABEL_14:
   }
 
 LABEL_13:
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"providerClassName"}];
+  currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler5 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"providerClassName"}];
 
-  if (!v18)
+  if (!identifierCopy2)
   {
     goto LABEL_14;
   }
 
 LABEL_6:
-  if (v19)
+  if (synonymsCopy2)
   {
     goto LABEL_7;
   }
 
 LABEL_15:
-  v29 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v29 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"synonyms"}];
+  currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler6 handleFailureInMethod:a2 object:self file:@"LNAppShortcutSpanData.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"synonyms"}];
 
 LABEL_7:
   v35.receiver = self;
@@ -464,12 +464,12 @@ LABEL_7:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_value, a3);
-    objc_storeStrong(&v21->_propertyTitle, a4);
-    objc_storeStrong(&v21->_propertyTitleKey, a5);
+    objc_storeStrong(&v20->_value, value);
+    objc_storeStrong(&v21->_propertyTitle, title);
+    objc_storeStrong(&v21->_propertyTitleKey, key);
     objc_storeStrong(&v21->_providerClassName, obj);
-    objc_storeStrong(&v21->_parameterTypeIdentifier, v32);
-    objc_storeStrong(&v21->_synonyms, v33);
+    objc_storeStrong(&v21->_parameterTypeIdentifier, identifierCopy);
+    objc_storeStrong(&v21->_synonyms, synonymsCopy);
     v22 = v21;
   }
 

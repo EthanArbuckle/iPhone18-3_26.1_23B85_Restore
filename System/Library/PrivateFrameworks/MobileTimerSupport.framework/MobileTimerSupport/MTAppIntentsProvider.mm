@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (MTAppIntentsProvider)init;
 - (MTAppIntentsProviderDelegate)delegate;
-- (void)didAddNewWorldClockWithNameWithManager:(id)a3 name:(id)a4;
-- (void)didRemoveWorldClockWithNameWithManager:(id)a3 name:(id)a4;
-- (void)didSelectTabWithManager:(id)a3 tab:(int64_t)a4;
+- (void)didAddNewWorldClockWithNameWithManager:(id)manager name:(id)name;
+- (void)didRemoveWorldClockWithNameWithManager:(id)manager name:(id)name;
+- (void)didSelectTabWithManager:(id)manager tab:(int64_t)tab;
 @end
 
 @implementation MTAppIntentsProvider
@@ -23,7 +23,7 @@ uint64_t __38__MTAppIntentsProvider_sharedInstance__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __38__MTAppIntentsProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken[0] != -1)
   {
     dispatch_once(sharedInstance_onceToken, block);
@@ -44,41 +44,41 @@ uint64_t __38__MTAppIntentsProvider_sharedInstance__block_invoke(uint64_t a1)
     v3 = +[_TtC18MobileTimerSupport19MTAppIntentsManager sharedManager];
     [(MTAppIntentsProvider *)v2 setManager:v3];
 
-    v4 = [(MTAppIntentsProvider *)v2 manager];
-    [v4 setDelegate:v2];
+    manager = [(MTAppIntentsProvider *)v2 manager];
+    [manager setDelegate:v2];
   }
 
   return v2;
 }
 
-- (void)didSelectTabWithManager:(id)a3 tab:(int64_t)a4
+- (void)didSelectTabWithManager:(id)manager tab:(int64_t)tab
 {
-  if ((a4 - 1) >= 3)
+  if ((tab - 1) >= 3)
   {
-    v5 = 0;
+    tabCopy = 0;
   }
 
   else
   {
-    v5 = a4;
+    tabCopy = tab;
   }
 
-  v6 = [(MTAppIntentsProvider *)self delegate];
-  [v6 appIntentsProvider:self didSelectTab:v5];
+  delegate = [(MTAppIntentsProvider *)self delegate];
+  [delegate appIntentsProvider:self didSelectTab:tabCopy];
 }
 
-- (void)didAddNewWorldClockWithNameWithManager:(id)a3 name:(id)a4
+- (void)didAddNewWorldClockWithNameWithManager:(id)manager name:(id)name
 {
-  v5 = a4;
-  v6 = [(MTAppIntentsProvider *)self delegate];
-  [v6 didAddNewWorldClockWithName:v5 provider:self];
+  nameCopy = name;
+  delegate = [(MTAppIntentsProvider *)self delegate];
+  [delegate didAddNewWorldClockWithName:nameCopy provider:self];
 }
 
-- (void)didRemoveWorldClockWithNameWithManager:(id)a3 name:(id)a4
+- (void)didRemoveWorldClockWithNameWithManager:(id)manager name:(id)name
 {
-  v5 = a4;
-  v6 = [(MTAppIntentsProvider *)self delegate];
-  [v6 didRemoveWorldClockWithName:v5 provider:self];
+  nameCopy = name;
+  delegate = [(MTAppIntentsProvider *)self delegate];
+  [delegate didRemoveWorldClockWithName:nameCopy provider:self];
 }
 
 - (MTAppIntentsProviderDelegate)delegate

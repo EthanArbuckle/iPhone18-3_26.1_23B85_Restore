@@ -1,49 +1,49 @@
 @interface VMAudioRecorderImp
 - (BOOL)_buildUndoStackCache;
 - (BOOL)_discardAllEdits;
-- (BOOL)_editRecording:(id)a3 error:(id *)a4;
+- (BOOL)_editRecording:(id)recording error:(id *)error;
 - (BOOL)_restoreMarkedVersion;
-- (BOOL)cutRecording:(id)a3 error:(id *)a4;
-- (BOOL)monitorRecordingTime:(double *)a3 duration:(double *)a4;
+- (BOOL)cutRecording:(id)recording error:(id *)error;
+- (BOOL)monitorRecordingTime:(double *)time duration:(double *)duration;
 - (BOOL)redoEditing;
 - (BOOL)shouldWaitForAccessToken;
 - (BOOL)startRecording;
 - (BOOL)stopRecording;
-- (BOOL)stopRecordingAtTime:(double)a3;
-- (BOOL)trimRecording:(id)a3 error:(id *)a4;
+- (BOOL)stopRecordingAtTime:(double)time;
+- (BOOL)trimRecording:(id)recording error:(id *)error;
 - (BOOL)undoEditing;
 - (NSArray)versions;
 - (VMAudioRecorderController)controller;
-- (id)_initWithRecordingID:(id)a3 model:(id)a4;
-- (id)finishEditing:(BOOL)a3;
+- (id)_initWithRecordingID:(id)d model:(id)model;
+- (id)finishEditing:(BOOL)editing;
 - (void)_clearUndoStackCache;
 - (void)_commitEditing;
 - (void)_discardRedoVersions;
 - (void)dealloc;
 - (void)markCurrentVersion;
-- (void)setController:(id)a3;
-- (void)setCurrentState:(int)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setRecordingError:(id)a3;
-- (void)setRecordingURL:(id)a3;
+- (void)setController:(id)controller;
+- (void)setCurrentState:(int)state;
+- (void)setCurrentTime:(double)time;
+- (void)setRecordingError:(id)error;
+- (void)setRecordingURL:(id)l;
 @end
 
 @implementation VMAudioRecorderImp
 
-- (id)_initWithRecordingID:(id)a3 model:(id)a4
+- (id)_initWithRecordingID:(id)d model:(id)model
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  modelCopy = model;
   v16.receiver = self;
   v16.super_class = VMAudioRecorderImp;
   v9 = [(VMAudioRecorderImp *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_recordingID, a3);
-    if (v7)
+    objc_storeStrong(&v9->_recordingID, d);
+    if (dCopy)
     {
-      v11 = [v8 recordingWithUniqueID:v7];
+      v11 = [modelCopy recordingWithUniqueID:dCopy];
       v12 = [v11 url];
       [(VMAudioRecorderImp *)v10 setRecordingURL:v12];
     }
@@ -87,20 +87,20 @@
   [(VMAudioRecorderImp *)&v8 dealloc];
 }
 
-- (void)setRecordingURL:(id)a3
+- (void)setRecordingURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v6 = self->_recordingURL;
-  if (([(NSURL *)v6 isEqual:v5]& 1) == 0)
+  if (([(NSURL *)v6 isEqual:lCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_recordingURL, a3);
-    v7 = [RCComposition compositionMetadataURLForComposedAVURL:v5];
+    objc_storeStrong(&self->_recordingURL, l);
+    v7 = [RCComposition compositionMetadataURLForComposedAVURL:lCopy];
     metadataURL = self->_metadataURL;
     self->_metadataURL = v7;
 
     v9 = +[RCSSavedRecordingService sharedService];
     v13 = 0;
-    v10 = [v9 disableOrphanedFragmentCleanupForCompositionAVURL:v5 error:&v13];
+    v10 = [v9 disableOrphanedFragmentCleanupForCompositionAVURL:lCopy error:&v13];
     v11 = v13;
     if ((v10 & 1) == 0)
     {
@@ -122,9 +122,9 @@
   }
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   controllerObservance = self->_controllerObservance;
   if (controllerObservance)
   {
@@ -133,13 +133,13 @@
     self->_controllerObservance = 0;
   }
 
-  objc_storeWeak(&self->_controller, v4);
-  if (v4)
+  objc_storeWeak(&self->_controller, controllerCopy);
+  if (controllerCopy)
   {
-    [v4 targetTime];
+    [controllerCopy targetTime];
     self->_targetTime = v7;
-    self->_targetTrackIndex = [v4 targetTrackIndex];
-    self->_overdubbing = [v4 overdubbing];
+    self->_targetTrackIndex = [controllerCopy targetTrackIndex];
+    self->_overdubbing = [controllerCopy overdubbing];
     objc_initWeak(&location, self);
     v8 = [NSString stringWithUTF8String:"targetTime"];
     v17[0] = v8;
@@ -161,96 +161,96 @@
   }
 }
 
-- (BOOL)monitorRecordingTime:(double *)a3 duration:(double *)a4
+- (BOOL)monitorRecordingTime:(double *)time duration:(double *)duration
 {
   v11 = 0.0;
   currentDuration = self->_currentDuration;
-  v7 = [(VMAudioRecorderImp *)self service];
-  v8 = [v7 sampleRecordingTime:&v11];
+  service = [(VMAudioRecorderImp *)self service];
+  v8 = [service sampleRecordingTime:&v11];
 
   if (v8)
   {
     v9 = v11;
-    *a3 = v11;
+    *time = v11;
     if (v9 < currentDuration)
     {
       v9 = currentDuration;
     }
 
-    *a4 = v9;
+    *duration = v9;
   }
 
   return v8;
 }
 
-- (void)setCurrentState:(int)a3
+- (void)setCurrentState:(int)state
 {
-  self->_currentState = a3;
-  v10 = [(VMAudioRecorderImp *)self service];
-  v5 = [v10 recordingError];
-  if (v5)
+  self->_currentState = state;
+  service = [(VMAudioRecorderImp *)self service];
+  recordingError = [service recordingError];
+  if (recordingError)
   {
-    v6 = [(VMAudioRecorderImp *)self controller];
-    [v6 setRecordingError:v5];
+    controller = [(VMAudioRecorderImp *)self controller];
+    [controller setRecordingError:recordingError];
 
-    [v10 setRecordingError:0];
+    [service setRecordingError:0];
   }
 
-  v7 = [v10 mode];
-  v9 = a3 > 1 && v7 == 2;
+  mode = [service mode];
+  v9 = state > 1 && mode == 2;
   if ([(VMAudioRecorderImp *)self recording]!= v9)
   {
     [(VMAudioRecorderImp *)self setRecording:v9];
-    if (!a3)
+    if (!state)
     {
       AudioServicesPlaySystemSoundWithCompletion(0x45Au, &stru_10028B3C0);
     }
   }
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  self->_currentTime = a3;
+  self->_currentTime = time;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  [WeakRetained setCurrentTime:a3];
+  [WeakRetained setCurrentTime:time];
 }
 
-- (void)setRecordingError:(id)a3
+- (void)setRecordingError:(id)error
 {
-  objc_storeStrong(&self->_recordingError, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_recordingError, error);
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  [WeakRetained setRecordingError:v5];
+  [WeakRetained setRecordingError:errorCopy];
 }
 
 - (BOOL)startRecording
 {
   self->_stopRecordingTime = 0.0;
-  v3 = [(VMAudioRecorderImp *)self service];
+  service = [(VMAudioRecorderImp *)self service];
   v17 = 0;
-  v4 = [v3 isRecordingEnabled:&v17];
+  v4 = [service isRecordingEnabled:&v17];
   v5 = v17;
   if (v4)
   {
     if ([(VMAudioRecorderImp *)self currentState])
     {
-      v6 = OSLogForCategory();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      recordingID = OSLogForCategory();
+      if (os_log_type_enabled(recordingID, OS_LOG_TYPE_ERROR))
       {
-        sub_1001B7DEC(self, v6);
+        sub_1001B7DEC(self, recordingID);
       }
     }
 
     else
     {
       [(VMAudioRecorderImp *)self setCurrentState:1];
-      v6 = [(VMAudioRecorderImp *)self recordingID];
+      recordingID = [(VMAudioRecorderImp *)self recordingID];
       if (!self->_overdubbing)
       {
         v8 = +[_TtC10VoiceMemos33TranscriptionAvailabilityProvider shared];
-        v9 = [v8 deviceIsSupported];
+        deviceIsSupported = [v8 deviceIsSupported];
 
-        if (v9)
+        if (deviceIsSupported)
         {
           v10 = self->_recordingURL;
           if (v10)
@@ -269,23 +269,23 @@
         }
       }
 
-      if (v6)
+      if (recordingID)
       {
         [(VMAudioRecorderImp *)self _clearUndoStackCache];
         [(VMAudioRecorderImp *)self targetTime];
-        [v3 replaceRecording:v6 atTime:self controller:?];
+        [service replaceRecording:recordingID atTime:self controller:?];
       }
 
       else
       {
         self->_currentDuration = 0.0;
-        [v3 startRecordingWithController:self];
+        [service startRecordingWithController:self];
       }
     }
 
-    v14 = [(VMAudioRecorderImp *)self controller];
-    v15 = [v14 recordingError];
-    v7 = v15 == 0;
+    controller = [(VMAudioRecorderImp *)self controller];
+    recordingError = [controller recordingError];
+    v7 = recordingError == 0;
   }
 
   else
@@ -299,8 +299,8 @@
 
 - (BOOL)stopRecording
 {
-  v3 = [(VMAudioRecorderImp *)self context];
-  [v3 setIsActionButtonInitiated:0];
+  context = [(VMAudioRecorderImp *)self context];
+  [context setIsActionButtonInitiated:0];
 
   if (self->_stopRecordingTime == 0.0)
   {
@@ -310,65 +310,65 @@
   return [(VMAudioRecorderImp *)self stopRecordingAtTime:?];
 }
 
-- (BOOL)stopRecordingAtTime:(double)a3
+- (BOOL)stopRecordingAtTime:(double)time
 {
-  v5 = [(VMAudioRecorderImp *)self currentState];
+  currentState = [(VMAudioRecorderImp *)self currentState];
   v6 = 1;
-  if (v5 && v5 != 3)
+  if (currentState && currentState != 3)
   {
-    v7 = [(VMAudioRecorderImp *)self service];
+    service = [(VMAudioRecorderImp *)self service];
     v11 = 0;
-    v6 = [v7 stopRecordingWithController:self atTime:&v11 error:a3];
+    v6 = [service stopRecordingWithController:self atTime:&v11 error:time];
     v8 = v11;
 
     if ((v6 & 1) == 0)
     {
-      v9 = [(VMAudioRecorderImp *)self controller];
-      [v9 setRecordingError:v8];
+      controller = [(VMAudioRecorderImp *)self controller];
+      [controller setRecordingError:v8];
     }
   }
 
   return v6;
 }
 
-- (BOOL)_editRecording:(id)a3 error:(id *)a4
+- (BOOL)_editRecording:(id)recording error:(id *)error
 {
-  v6 = a3;
+  recordingCopy = recording;
   [(VMAudioRecorderImp *)self _discardRedoVersions];
-  v7 = [(VMAudioRecorderImp *)self service];
-  LOBYTE(a4) = v6[2](v6, v7, a4);
+  service = [(VMAudioRecorderImp *)self service];
+  LOBYTE(error) = recordingCopy[2](recordingCopy, service, error);
 
-  return a4;
+  return error;
 }
 
-- (BOOL)trimRecording:(id)a3 error:(id *)a4
+- (BOOL)trimRecording:(id)recording error:(id *)error
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006A864;
   v5[3] = &unk_10028B3E8;
   v5[4] = self;
-  v6 = a3;
-  return [(VMAudioRecorderImp *)self _editRecording:v5 error:a4];
+  recordingCopy = recording;
+  return [(VMAudioRecorderImp *)self _editRecording:v5 error:error];
 }
 
-- (BOOL)cutRecording:(id)a3 error:(id *)a4
+- (BOOL)cutRecording:(id)recording error:(id *)error
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10006A948;
   v5[3] = &unk_10028B3E8;
   v5[4] = self;
-  v6 = a3;
-  return [(VMAudioRecorderImp *)self _editRecording:v5 error:a4];
+  recordingCopy = recording;
+  return [(VMAudioRecorderImp *)self _editRecording:v5 error:error];
 }
 
-- (id)finishEditing:(BOOL)a3
+- (id)finishEditing:(BOOL)editing
 {
-  v3 = a3;
-  v5 = [(VMAudioRecorderImp *)self service];
-  v6 = [(VMAudioRecorderImp *)self recordingID];
-  v7 = [v5 finalizeRecording:v6 controller:self saveAsNew:v3];
+  editingCopy = editing;
+  service = [(VMAudioRecorderImp *)self service];
+  recordingID = [(VMAudioRecorderImp *)self recordingID];
+  v7 = [service finalizeRecording:recordingID controller:self saveAsNew:editingCopy];
 
   return v7;
 }
@@ -515,12 +515,12 @@
   if (v3)
   {
     v4 = [NSFileVersion otherVersionsOfItemAtURL:v3];
-    v5 = [v4 firstObject];
-    v6 = v5;
-    if (v5)
+    firstObject = [v4 firstObject];
+    v6 = firstObject;
+    if (firstObject)
     {
       v13 = 0;
-      v7 = [v5 replaceItemAtURL:v3 options:1 error:&v13];
+      v7 = [firstObject replaceItemAtURL:v3 options:1 error:&v13];
       v8 = v13;
       if (v7 && [v7 isEqual:v3])
       {

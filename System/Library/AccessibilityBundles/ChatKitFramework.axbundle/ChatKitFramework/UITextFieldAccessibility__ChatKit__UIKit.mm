@@ -6,8 +6,8 @@
 
 - (BOOL)_accessibilityOverridesInvalidFrames
 {
-  v3 = [(UITextFieldAccessibility__ChatKit__UIKit *)self accessibilityIdentification];
-  v4 = [v3 isEqualToString:@"GroupNameField"];
+  accessibilityIdentification = [(UITextFieldAccessibility__ChatKit__UIKit *)self accessibilityIdentification];
+  v4 = [accessibilityIdentification isEqualToString:@"GroupNameField"];
 
   if (v4)
   {

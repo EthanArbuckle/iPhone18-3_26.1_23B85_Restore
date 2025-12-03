@@ -1,13 +1,13 @@
 @interface PageButtonsControl
-- (_TtC23ShelfKitCollectionViews18PageButtonsControl)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews18PageButtonsControl)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)scrollByButton:(id)a3;
+- (_TtC23ShelfKitCollectionViews18PageButtonsControl)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews18PageButtonsControl)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)scrollByButton:(id)button;
 @end
 
 @implementation PageButtonsControl
 
-- (_TtC23ShelfKitCollectionViews18PageButtonsControl)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews18PageButtonsControl)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews18PageButtonsControl_scrollHandle);
   *v3 = 0;
@@ -19,22 +19,22 @@
   return result;
 }
 
-- (void)scrollByButton:(id)a3
+- (void)scrollByButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
+  buttonCopy = button;
+  selfCopy = self;
   sub_29960C();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = swift_getObjectType();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(PageButtonsControl *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(PageButtonsControl *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -57,7 +57,7 @@ LABEL_5:
   return v7;
 }
 
-- (_TtC23ShelfKitCollectionViews18PageButtonsControl)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews18PageButtonsControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

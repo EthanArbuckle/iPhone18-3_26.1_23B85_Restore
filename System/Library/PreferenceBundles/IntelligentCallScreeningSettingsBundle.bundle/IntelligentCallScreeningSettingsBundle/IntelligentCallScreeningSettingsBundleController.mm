@@ -1,23 +1,23 @@
 @interface IntelligentCallScreeningSettingsBundleController
 - (BOOL)getCallScreeningEnabled;
-- (BOOL)isCurrentOption:(id)a3;
-- (IntelligentCallScreeningSettingsBundleController)initWithParentListController:(id)a3;
+- (BOOL)isCurrentOption:(id)option;
+- (IntelligentCallScreeningSettingsBundleController)initWithParentListController:(id)controller;
 - (PSListController)parentListController;
-- (id)createSpecifierForMenuOption:(id)a3;
+- (id)createSpecifierForMenuOption:(id)option;
 - (id)getCurrentlySelectedIntelligentCallScreeningSpecifier;
-- (id)specifiersWithSpecifier:(id)a3;
+- (id)specifiersWithSpecifier:(id)specifier;
 - (int64_t)getSelectedIntelligentCallScreeningMenuOptionForPhone;
-- (void)refreshView:(id)a3;
-- (void)setSelectedIntelligentCallScreeningOption:(id)a3;
+- (void)refreshView:(id)view;
+- (void)setSelectedIntelligentCallScreeningOption:(id)option;
 @end
 
 @implementation IntelligentCallScreeningSettingsBundleController
 
-- (IntelligentCallScreeningSettingsBundleController)initWithParentListController:(id)a3
+- (IntelligentCallScreeningSettingsBundleController)initWithParentListController:(id)controller
 {
   v16.receiver = self;
   v16.super_class = IntelligentCallScreeningSettingsBundleController;
-  v3 = [(IntelligentCallScreeningSettingsBundleController *)&v16 initWithParentListController:a3];
+  v3 = [(IntelligentCallScreeningSettingsBundleController *)&v16 initWithParentListController:controller];
   if (v3)
   {
     v4 = objc_alloc_init(TUFeatureFlags);
@@ -47,15 +47,15 @@
   return v3;
 }
 
-- (id)specifiersWithSpecifier:(id)a3
+- (id)specifiersWithSpecifier:(id)specifier
 {
   v25 = +[NSMutableArray array];
-  v4 = [(IntelligentCallScreeningSettingsBundleController *)self configurationProvider];
-  v5 = [v4 isReceptionistAvailable];
+  configurationProvider = [(IntelligentCallScreeningSettingsBundleController *)self configurationProvider];
+  isReceptionistAvailable = [configurationProvider isReceptionistAvailable];
 
   v6 = PHDefaultLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isReceptionistAvailable)
   {
     if (v7)
     {
@@ -94,11 +94,11 @@
           {
             [(NSArray *)v25 addObject:v15];
             [(NSMutableArray *)self->_intelligentCallScreeningMenuSpecifiers addObject:v15];
-            v16 = [v14 optionID];
-            v17 = [v16 integerValue];
+            optionID = [v14 optionID];
+            integerValue = [optionID integerValue];
 
             intelligentCallScreeningOptionToSpecifierMap = self->_intelligentCallScreeningOptionToSpecifierMap;
-            v19 = [NSNumber numberWithInteger:v17];
+            v19 = [NSNumber numberWithInteger:integerValue];
             [(NSMutableDictionary *)intelligentCallScreeningOptionToSpecifierMap setObject:v15 forKey:v19];
           }
         }
@@ -128,17 +128,17 @@
   return v25;
 }
 
-- (id)createSpecifierForMenuOption:(id)a3
+- (id)createSpecifierForMenuOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   v5 = objc_alloc_init(PSSpecifier);
-  v6 = [v4 titleKey];
-  v7 = [v4 explanationKey];
+  titleKey = [optionCopy titleKey];
+  explanationKey = [optionCopy explanationKey];
   v8 = objc_opt_class();
   objc_storeWeak(&v5[OBJC_IVAR___PSSpecifier_target], self);
   *&v5[OBJC_IVAR___PSSpecifier_cellType] = 3;
   *&v5[OBJC_IVAR___PSSpecifier_getter] = 0;
-  [v5 setProperty:v6 forKey:PSTitleKey];
+  [v5 setProperty:titleKey forKey:PSTitleKey];
   [v5 setProperty:v8 forKey:PSCellClassKey];
   [v5 setButtonAction:"setSelectedIntelligentCallScreeningOption:"];
   v9 = NSStringFromSelector("setSelectedIntelligentCallScreeningOption:");
@@ -147,21 +147,21 @@
   v10 = NSStringFromSelector(0);
   [v5 setProperty:v10 forKey:PSGetterKey];
 
-  [v5 setProperty:v7 forKey:PSTableCellSubtitleTextKey];
-  v11 = [v4 optionID];
+  [v5 setProperty:explanationKey forKey:PSTableCellSubtitleTextKey];
+  optionID = [optionCopy optionID];
 
-  [v5 setProperty:v11 forKey:PSIDKey];
+  [v5 setProperty:optionID forKey:PSIDKey];
 
   return v5;
 }
 
-- (BOOL)isCurrentOption:(id)a3
+- (BOOL)isCurrentOption:(id)option
 {
-  v4 = a3;
-  v5 = [(IntelligentCallScreeningSettingsBundleController *)self getSelectedIntelligentCallScreeningMenuOptionForPhone];
-  v6 = [v4 integerValue];
+  optionCopy = option;
+  getSelectedIntelligentCallScreeningMenuOptionForPhone = [(IntelligentCallScreeningSettingsBundleController *)self getSelectedIntelligentCallScreeningMenuOptionForPhone];
+  integerValue = [optionCopy integerValue];
 
-  return v5 == v6;
+  return getSelectedIntelligentCallScreeningMenuOptionForPhone == integerValue;
 }
 
 - (PSListController)parentListController
@@ -171,23 +171,23 @@
   return WeakRetained;
 }
 
-- (void)refreshView:(id)a3
+- (void)refreshView:(id)view
 {
-  v4 = a3;
-  if (!v4)
+  viewCopy = view;
+  if (!viewCopy)
   {
-    v4 = [(IntelligentCallScreeningSettingsBundleController *)self getCurrentlySelectedIntelligentCallScreeningSpecifier];
+    viewCopy = [(IntelligentCallScreeningSettingsBundleController *)self getCurrentlySelectedIntelligentCallScreeningSpecifier];
   }
 
-  [v4 setProperty:&__kCFBooleanTrue forKey:@"specifier-checked"];
-  v5 = [(IntelligentCallScreeningSettingsBundleController *)self parentListController];
-  [v5 reloadSpecifier:v4];
+  [viewCopy setProperty:&__kCFBooleanTrue forKey:@"specifier-checked"];
+  parentListController = [(IntelligentCallScreeningSettingsBundleController *)self parentListController];
+  [parentListController reloadSpecifier:viewCopy];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v15 = self;
+  selfCopy = self;
   v6 = self->_specifiers;
   v7 = [(NSArray *)v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
@@ -204,7 +204,7 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        if (([v11 isEqualToSpecifier:v4] & 1) == 0)
+        if (([v11 isEqualToSpecifier:viewCopy] & 1) == 0)
         {
           v12 = [v11 propertyForKey:@"specifier-checked"];
           v13 = [v12 isEqual:&__kCFBooleanTrue];
@@ -212,8 +212,8 @@
           if (v13)
           {
             [v11 setProperty:&__kCFBooleanFalse forKey:@"specifier-checked"];
-            v14 = [(IntelligentCallScreeningSettingsBundleController *)v15 parentListController];
-            [v14 reloadSpecifier:v11];
+            parentListController2 = [(IntelligentCallScreeningSettingsBundleController *)selfCopy parentListController];
+            [parentListController2 reloadSpecifier:v11];
           }
         }
       }
@@ -227,38 +227,38 @@
 
 - (int64_t)getSelectedIntelligentCallScreeningMenuOptionForPhone
 {
-  v2 = [(IntelligentCallScreeningSettingsBundleController *)self configurationProvider];
-  v3 = [v2 getSelectedIntelligentCallScreeningMenuOptionForPhone];
+  configurationProvider = [(IntelligentCallScreeningSettingsBundleController *)self configurationProvider];
+  getSelectedIntelligentCallScreeningMenuOptionForPhone = [configurationProvider getSelectedIntelligentCallScreeningMenuOptionForPhone];
 
-  return v3;
+  return getSelectedIntelligentCallScreeningMenuOptionForPhone;
 }
 
 - (id)getCurrentlySelectedIntelligentCallScreeningSpecifier
 {
-  v3 = [(IntelligentCallScreeningSettingsBundleController *)self getSelectedIntelligentCallScreeningMenuOptionForPhone];
+  getSelectedIntelligentCallScreeningMenuOptionForPhone = [(IntelligentCallScreeningSettingsBundleController *)self getSelectedIntelligentCallScreeningMenuOptionForPhone];
   intelligentCallScreeningOptionToSpecifierMap = self->_intelligentCallScreeningOptionToSpecifierMap;
-  v5 = [NSNumber numberWithInteger:v3];
+  v5 = [NSNumber numberWithInteger:getSelectedIntelligentCallScreeningMenuOptionForPhone];
   v6 = [(NSMutableDictionary *)intelligentCallScreeningOptionToSpecifierMap objectForKey:v5];
 
   return v6;
 }
 
-- (void)setSelectedIntelligentCallScreeningOption:(id)a3
+- (void)setSelectedIntelligentCallScreeningOption:(id)option
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(IntelligentCallScreeningSettingsBundleController *)self isCurrentOption:v5];
+  optionCopy = option;
+  identifier = [optionCopy identifier];
+  v6 = [(IntelligentCallScreeningSettingsBundleController *)self isCurrentOption:identifier];
 
   if ((v6 & 1) == 0)
   {
-    [(IntelligentCallScreeningSettingsBundleController *)self refreshView:v4];
-    v7 = [v4 identifier];
-    v8 = [&off_8568 stringValue];
-    if ([v7 isEqualToString:v8])
+    [(IntelligentCallScreeningSettingsBundleController *)self refreshView:optionCopy];
+    identifier2 = [optionCopy identifier];
+    stringValue = [&off_8568 stringValue];
+    if ([identifier2 isEqualToString:stringValue])
     {
-      v9 = [(IntelligentCallScreeningSettingsBundleController *)self getCallScreeningEnabled];
+      getCallScreeningEnabled = [(IntelligentCallScreeningSettingsBundleController *)self getCallScreeningEnabled];
 
-      if (v9)
+      if (getCallScreeningEnabled)
       {
 LABEL_9:
         v11 = dispatch_get_global_queue(33, 0);
@@ -266,8 +266,8 @@ LABEL_9:
         v12[1] = 3221225472;
         v12[2] = sub_173C;
         v12[3] = &unk_8280;
-        v13 = v4;
-        v14 = self;
+        v13 = optionCopy;
+        selfCopy = self;
         dispatch_async(v11, v12);
 
         goto LABEL_10;
@@ -281,8 +281,8 @@ LABEL_9:
       }
 
       [(IntelligentCallScreeningSettingsBundleController *)self setCallScreeningEnabled:1];
-      v7 = +[NSNotificationCenter defaultCenter];
-      [v7 postNotificationName:@"TUCallScreeningSettingsChangedNotification" object:0];
+      identifier2 = +[NSNotificationCenter defaultCenter];
+      [identifier2 postNotificationName:@"TUCallScreeningSettingsChangedNotification" object:0];
     }
 
     else
@@ -297,22 +297,22 @@ LABEL_10:
 
 - (BOOL)getCallScreeningEnabled
 {
-  v3 = [(IntelligentCallScreeningSettingsBundleController *)self featureFlags];
-  v4 = [v3 deviceExpertMigrationEnabled];
+  featureFlags = [(IntelligentCallScreeningSettingsBundleController *)self featureFlags];
+  deviceExpertMigrationEnabled = [featureFlags deviceExpertMigrationEnabled];
 
-  v5 = [(IntelligentCallScreeningSettingsBundleController *)self configurationProvider];
-  v6 = v5;
-  if (v4)
+  configurationProvider = [(IntelligentCallScreeningSettingsBundleController *)self configurationProvider];
+  v6 = configurationProvider;
+  if (deviceExpertMigrationEnabled)
   {
-    v7 = [v5 isCallScreeningEnabled];
+    isCallScreeningEnabled = [configurationProvider isCallScreeningEnabled];
   }
 
   else
   {
-    v7 = [v5 getSelectedIntelligentCallScreeningMenuOptionForPhone] != 0;
+    isCallScreeningEnabled = [configurationProvider getSelectedIntelligentCallScreeningMenuOptionForPhone] != 0;
   }
 
-  return v7;
+  return isCallScreeningEnabled;
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface _EXConnectionHandlerExtension
-- (BOOL)shouldAcceptConnection:(id)a3;
+- (BOOL)shouldAcceptConnection:(id)connection;
 - (void)willFinishLaunching;
 @end
 
@@ -8,7 +8,7 @@
 - (void)willFinishLaunching
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = NSStringFromClass(a1);
+  v1 = NSStringFromClass(self);
   OUTLINED_FUNCTION_1_2();
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_0_7();
@@ -16,15 +16,15 @@
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)shouldAcceptConnection:(id)a3
+- (BOOL)shouldAcceptConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(_EXConnectionHandlerExtension *)self connectionHandler];
+  connectionCopy = connection;
+  connectionHandler = [(_EXConnectionHandlerExtension *)self connectionHandler];
 
-  if (v5)
+  if (connectionHandler)
   {
-    v6 = [(_EXConnectionHandlerExtension *)self connectionHandler];
-    v7 = [v6 shouldAcceptXPCConnection:v4];
+    connectionHandler2 = [(_EXConnectionHandlerExtension *)self connectionHandler];
+    v7 = [connectionHandler2 shouldAcceptXPCConnection:connectionCopy];
   }
 
   else

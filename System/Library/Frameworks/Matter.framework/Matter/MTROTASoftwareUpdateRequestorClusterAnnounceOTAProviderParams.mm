@@ -1,8 +1,8 @@
 @interface MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -41,29 +41,29 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams);
-  v5 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self providerNodeID];
-  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setProviderNodeID:v5];
+  providerNodeID = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self providerNodeID];
+  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setProviderNodeID:providerNodeID];
 
-  v6 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self vendorID];
-  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setVendorID:v6];
+  vendorID = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self vendorID];
+  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setVendorID:vendorID];
 
-  v7 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self announcementReason];
-  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setAnnouncementReason:v7];
+  announcementReason = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self announcementReason];
+  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setAnnouncementReason:announcementReason];
 
-  v8 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self metadataForNode];
-  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setMetadataForNode:v8];
+  metadataForNode = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self metadataForNode];
+  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setMetadataForNode:metadataForNode];
 
-  v9 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self endpoint];
-  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setEndpoint:v9];
+  endpoint = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self endpoint];
+  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setEndpoint:endpoint];
 
-  v10 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self timedInvokeTimeoutMs];
-  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setTimedInvokeTimeoutMs:v10];
+  timedInvokeTimeoutMs = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self timedInvokeTimeoutMs];
+  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v11 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self serverSideProcessingTimeout];
-  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setServerSideProcessingTimeout:v11];
+  serverSideProcessingTimeout = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self serverSideProcessingTimeout];
+  [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -82,39 +82,39 @@
   return v10;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v27 = 0;
-  v28 = 0;
-  v29 = 0;
+  unsignedLongLongValue = 0;
+  unsignedShortValue = 0;
+  unsignedCharValue = 0;
   v30 = 0;
-  v32 = 0;
+  unsignedShortValue2 = 0;
   v26[0] = 0;
   v26[1] = 0;
   v25 = v26;
-  v5 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self providerNodeID];
-  v27 = [v5 unsignedLongLongValue];
+  providerNodeID = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self providerNodeID];
+  unsignedLongLongValue = [providerNodeID unsignedLongLongValue];
 
-  v6 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self vendorID];
-  v28 = [v6 unsignedShortValue];
+  vendorID = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self vendorID];
+  unsignedShortValue = [vendorID unsignedShortValue];
 
-  v7 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self announcementReason];
-  v29 = [v7 unsignedCharValue];
+  announcementReason = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self announcementReason];
+  unsignedCharValue = [announcementReason unsignedCharValue];
 
-  v8 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self metadataForNode];
+  metadataForNode = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self metadataForNode];
 
-  if (v8)
+  if (metadataForNode)
   {
     v30 = 1;
     v31 = 0uLL;
-    v9 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self metadataForNode];
-    sub_238DB6950(v19, [v9 bytes], objc_msgSend(v9, "length"));
+    metadataForNode2 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self metadataForNode];
+    sub_238DB6950(v19, [metadataForNode2 bytes], objc_msgSend(metadataForNode2, "length"));
 
     v31 = v19[0];
   }
 
-  v10 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self endpoint];
-  v32 = [v10 unsignedShortValue];
+  endpoint = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self endpoint];
+  unsignedShortValue2 = [endpoint unsignedShortValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v24);
   if (v24)
@@ -126,7 +126,7 @@
     v23 = 0;
     sub_238EA16C4(&v20, &v24, 0);
     sub_2393C7BF0(v19, &v20, 0xFFFFFFFF);
-    v11 = sub_238F236F0(&v27, v19, 0x100uLL);
+    v11 = sub_238F236F0(&unsignedLongLongValue, v19, 0x100uLL);
     v13 = v11;
     if (v11 || (v11 = sub_238DD2EFC(v19, &v24), v13 = v11, v11))
     {
@@ -135,8 +135,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v24);
-      v11 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v24);
+      v11 = sub_2393C7114(reader, 21, 256);
       v14 = v18;
       v13 = v11;
     }
@@ -164,19 +164,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTROTASoftwareUpdateRequestorClusterAnnounceOTAProviderParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -187,7 +187,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x122F00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

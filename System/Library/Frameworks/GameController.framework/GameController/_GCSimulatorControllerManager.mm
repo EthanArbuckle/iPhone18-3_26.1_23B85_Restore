@@ -1,29 +1,29 @@
 @interface _GCSimulatorControllerManager
 - (NSSet)devices;
 - (_GCSimulatorControllerManager)init;
-- (_GCSimulatorControllerManager)initWithDeviceSessionConfiguration:(id)a3 queue:(id)a4 environment:(id)a5;
-- (id)invalidateWithSession:(id)a3 environment:(id)a4;
+- (_GCSimulatorControllerManager)initWithDeviceSessionConfiguration:(id)configuration queue:(id)queue environment:(id)environment;
+- (id)invalidateWithSession:(id)session environment:(id)environment;
 - (id)matchingHIDServiceAttributes;
-- (void)_onqueue_HIDServiceAdded:(uint64_t)a1;
-- (void)_onqueue_HIDServiceRemoved:(uint64_t)a1;
-- (void)_onqueue_addController:(uint64_t)a1;
-- (void)_onqueue_removeController:(uint64_t)a1;
-- (void)awakeWithSession:(id)a3 environment:(id)a4;
-- (void)servicesDidChange:(id)a3 withAddedServices:(id)a4 removedServices:(id)a5;
+- (void)_onqueue_HIDServiceAdded:(uint64_t)added;
+- (void)_onqueue_HIDServiceRemoved:(uint64_t)removed;
+- (void)_onqueue_addController:(uint64_t)controller;
+- (void)_onqueue_removeController:(uint64_t)controller;
+- (void)awakeWithSession:(id)session environment:(id)environment;
+- (void)servicesDidChange:(id)change withAddedServices:(id)services removedServices:(id)removedServices;
 @end
 
 @implementation _GCSimulatorControllerManager
 
-- (_GCSimulatorControllerManager)initWithDeviceSessionConfiguration:(id)a3 queue:(id)a4 environment:(id)a5
+- (_GCSimulatorControllerManager)initWithDeviceSessionConfiguration:(id)configuration queue:(id)queue environment:(id)environment
 {
-  v7 = a4;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = _GCSimulatorControllerManager;
-  v8 = a5;
+  environmentCopy = environment;
   v9 = [(_GCSimulatorControllerManager *)&v19 init];
   sessionQueue = v9->_sessionQueue;
-  v9->_sessionQueue = v7;
-  v11 = v7;
+  v9->_sessionQueue = queueCopy;
+  v11 = queueCopy;
 
   v12 = GCLookupService();
 
@@ -48,14 +48,14 @@
   return 0;
 }
 
-- (void)awakeWithSession:(id)a3 environment:(id)a4
+- (void)awakeWithSession:(id)session environment:(id)environment
 {
-  v5 = [a3 hidEventSource];
+  hidEventSource = [session hidEventSource];
   hidEventSource = self->_hidEventSource;
-  self->_hidEventSource = v5;
+  self->_hidEventSource = hidEventSource;
 }
 
-- (id)invalidateWithSession:(id)a3 environment:(id)a4
+- (id)invalidateWithSession:(id)session environment:(id)environment
 {
   sessionQueue = self->_sessionQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -84,16 +84,16 @@
   return v3;
 }
 
-- (void)servicesDidChange:(id)a3 withAddedServices:(id)a4 removedServices:(id)a5
+- (void)servicesDidChange:(id)change withAddedServices:(id)services removedServices:(id)removedServices
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
+  servicesCopy = services;
+  removedServicesCopy = removedServices;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+  v9 = [removedServicesCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v9)
   {
     v10 = v9;
@@ -105,7 +105,7 @@
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(removedServicesCopy);
         }
 
         if (self)
@@ -117,7 +117,7 @@
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      v10 = [removedServicesCopy countByEnumeratingWithState:&v23 objects:v28 count:16];
     }
 
     while (v10);
@@ -127,7 +127,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = v7;
+  v13 = servicesCopy;
   v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v14)
   {
@@ -156,14 +156,14 @@
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_addController:(uint64_t)a1
+- (void)_onqueue_addController:(uint64_t)controller
 {
   v30[2] = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (controller)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = [*(a1 + 32) objectForKey:v3];
+    dispatch_assert_queue_V2(*(controller + 8));
+    v4 = [*(controller + 32) objectForKey:v3];
 
     if (v4)
     {
@@ -199,8 +199,8 @@
 
       v9 = objc_alloc_init(_GCGamepadEventKeyboardEventAdapterConfig);
       [(_GCGamepadEventKeyboardEventAdapterConfig *)v9 mapUsagePage:12 usage:516 toGamepadElement:23];
-      v10 = [[_GCKeyboardEventHIDAdapter alloc] initWithSource:*(a1 + 24) service:v3];
-      v11 = [[_GCGamepadEventGamepadHIDAdapter alloc] initWithSource:*(a1 + 24) service:v3];
+      v10 = [[_GCKeyboardEventHIDAdapter alloc] initWithSource:*(controller + 24) service:v3];
+      v11 = [[_GCGamepadEventGamepadHIDAdapter alloc] initWithSource:*(controller + 24) service:v3];
       v12 = [[_GCGamepadEventKeyboardEventAdapter alloc] initWithConfiguration:v9 source:v10];
       v13 = [[_GCGamepadEventFusionConfig alloc] initWithSourceCount:2];
       for (i = 0; i != 47; ++i)
@@ -217,13 +217,13 @@
       [(GCExtendedGamepad *)v24 setGamepadEventSource:v19];
 
       v20 = [MEMORY[0x1E695DFD8] setWithObject:v8];
-      [a1 willChangeValueForKey:@"devices" withSetMutation:1 usingObjects:v20];
-      v21 = *(a1 + 32);
+      [controller willChangeValueForKey:@"devices" withSetMutation:1 usingObjects:v20];
+      v21 = *(controller + 32);
       objc_sync_enter(v21);
-      [*(a1 + 32) setObject:v8 forKey:v3];
+      [*(controller + 32) setObject:v8 forKey:v3];
       objc_sync_exit(v21);
 
-      [a1 didChangeValueForKey:@"devices" withSetMutation:1 usingObjects:v20];
+      [controller didChangeValueForKey:@"devices" withSetMutation:1 usingObjects:v20];
       for (j = 0; j != 1584; j += 72)
       {
         __destructor_8_s0_s48_s56_s64(v26 + j);
@@ -236,22 +236,22 @@ LABEL_14:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onqueue_removeController:(uint64_t)a1
+- (void)_onqueue_removeController:(uint64_t)controller
 {
   v3 = a2;
-  if (a1)
+  if (controller)
   {
     v7 = v3;
-    dispatch_assert_queue_V2(*(a1 + 8));
-    v4 = [*(a1 + 32) objectForKey:v7];
+    dispatch_assert_queue_V2(*(controller + 8));
+    v4 = [*(controller + 32) objectForKey:v7];
     if (v4)
     {
       v5 = [MEMORY[0x1E695DFD8] setWithObject:v4];
-      [a1 willChangeValueForKey:@"devices" withSetMutation:2 usingObjects:v5];
-      v6 = *(a1 + 32);
+      [controller willChangeValueForKey:@"devices" withSetMutation:2 usingObjects:v5];
+      v6 = *(controller + 32);
       objc_sync_enter(v6);
-      [*(a1 + 32) removeObjectForKey:v7];
-      [(_GCSimulatorControllerManager *)v6 _onqueue_removeController:a1, v5];
+      [*(controller + 32) removeObjectForKey:v7];
+      [(_GCSimulatorControllerManager *)v6 _onqueue_removeController:controller, v5];
     }
 
     v3 = v7;
@@ -263,32 +263,32 @@ LABEL_14:
   v3 = objc_opt_new();
   v4 = self->_devices;
   objc_sync_enter(v4);
-  v5 = [(NSMutableDictionary *)self->_devices allValues];
-  [v3 addObjectsFromArray:v5];
+  allValues = [(NSMutableDictionary *)self->_devices allValues];
+  [v3 addObjectsFromArray:allValues];
 
   objc_sync_exit(v4);
 
   return v3;
 }
 
-- (void)_onqueue_HIDServiceRemoved:(uint64_t)a1
+- (void)_onqueue_HIDServiceRemoved:(uint64_t)removed
 {
-  if (a1)
+  if (removed)
   {
-    [(_GCSimulatorControllerManager *)a1 _onqueue_removeController:a2];
+    [(_GCSimulatorControllerManager *)removed _onqueue_removeController:a2];
   }
 }
 
-- (void)_onqueue_HIDServiceAdded:(uint64_t)a1
+- (void)_onqueue_HIDServiceAdded:(uint64_t)added
 {
   v3 = a2;
-  if (a1)
+  if (added)
   {
     v5 = v3;
     v4 = [v3 propertyForKey:@"PhysicalDeviceUniqueID"];
     if ([v4 isEqual:@"SimulatedGamepad"])
     {
-      [(_GCSimulatorControllerManager *)a1 _onqueue_addController:v5];
+      [(_GCSimulatorControllerManager *)added _onqueue_addController:v5];
     }
 
     v3 = v5;

@@ -52,8 +52,8 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [a1 mutableCopy];
-  v9 = [a1 length];
+  v8 = [self mutableCopy];
+  v9 = [self length];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __107__NSAttributedString_SafariSharedUIExtras__safari_attributedStringByReplacingAttributeName_withAttributes___block_invoke;
@@ -64,7 +64,7 @@
   v19 = v7;
   v11 = v7;
   v12 = v6;
-  [a1 enumerateAttribute:v12 inRange:0 options:v9 usingBlock:{0, v16}];
+  [self enumerateAttribute:v12 inRange:0 options:v9 usingBlock:{0, v16}];
   v13 = v19;
   v14 = v10;
 
@@ -74,7 +74,7 @@
 - (id)safari_attributedStringByAppendingAttributedString:()SafariSharedUIExtras
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 appendAttributedString:v4];
 
   v6 = [v5 copy];
@@ -85,9 +85,9 @@
 - (uint64_t)safari_isEqualToAttributedString:()SafariSharedUIExtras
 {
   v4 = a3;
-  v5 = [a1 string];
-  v6 = [v4 string];
-  v7 = [v5 isEqualToString:v6];
+  string = [self string];
+  string2 = [v4 string];
+  v7 = [string isEqualToString:string2];
 
   if (v7)
   {
@@ -95,14 +95,14 @@
     v15 = &v14;
     v16 = 0x2020000000;
     v17 = 1;
-    v8 = [a1 length];
+    v8 = [self length];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __77__NSAttributedString_SafariSharedUIExtras__safari_isEqualToAttributedString___block_invoke;
     v11[3] = &unk_1E82863F0;
     v12 = v4;
     v13 = &v14;
-    [a1 enumerateAttributesInRange:0 options:v8 usingBlock:{0, v11}];
+    [self enumerateAttributesInRange:0 options:v8 usingBlock:{0, v11}];
     v9 = *(v15 + 24);
 
     _Block_object_dispose(&v14, 8);

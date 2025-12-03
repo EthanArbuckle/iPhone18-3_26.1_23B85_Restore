@@ -7,7 +7,7 @@
 
 - (void)updateFocusEffectConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_248340F9C();
 }
 

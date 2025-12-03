@@ -1,23 +1,23 @@
 @interface SMWorkoutEvent
-- (BOOL)isEqual:(id)a3;
-- (SMWorkoutEvent)initWithCoder:(id)a3;
-- (SMWorkoutEvent)initWithDictionary:(id)a3;
-- (SMWorkoutEvent)initWithIdentifier:(id)a3 sessionIdentifier:(id)a4 location:(id)a5 activityType:(unint64_t)a6 locationType:(int64_t)a7 swimmingLocationType:(int64_t)a8 sessionState:(unint64_t)a9 isResumedSessionState:(BOOL)a10 date:(id)a11;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SMWorkoutEvent)initWithCoder:(id)coder;
+- (SMWorkoutEvent)initWithDictionary:(id)dictionary;
+- (SMWorkoutEvent)initWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier location:(id)location activityType:(unint64_t)type locationType:(int64_t)locationType swimmingLocationType:(int64_t)swimmingLocationType sessionState:(unint64_t)state isResumedSessionState:(BOOL)self0 date:(id)self1;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)outputToDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMWorkoutEvent
 
-- (SMWorkoutEvent)initWithIdentifier:(id)a3 sessionIdentifier:(id)a4 location:(id)a5 activityType:(unint64_t)a6 locationType:(int64_t)a7 swimmingLocationType:(int64_t)a8 sessionState:(unint64_t)a9 isResumedSessionState:(BOOL)a10 date:(id)a11
+- (SMWorkoutEvent)initWithIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier location:(id)location activityType:(unint64_t)type locationType:(int64_t)locationType swimmingLocationType:(int64_t)swimmingLocationType sessionState:(unint64_t)state isResumedSessionState:(BOOL)self0 date:(id)self1
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a11;
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  locationCopy = location;
+  dateCopy = date;
   v26.receiver = self;
   v26.super_class = SMWorkoutEvent;
   v19 = [(SMWorkoutEvent *)&v26 init];
@@ -28,17 +28,17 @@
   }
 
   v21 = 0;
-  if (v16 && v18)
+  if (sessionIdentifierCopy && dateCopy)
   {
-    objc_storeStrong(&v19->_identifier, a3);
-    objc_storeStrong(&v20->_sessionIdentifier, a4);
-    objc_storeStrong(&v20->_location, a5);
-    v20->_activityType = a6;
-    v20->_locationType = a7;
-    v20->_swimmingLocationType = a8;
-    v20->_sessionState = a9;
-    v20->_isResumedSessionState = a10;
-    objc_storeStrong(&v20->_date, a11);
+    objc_storeStrong(&v19->_identifier, identifier);
+    objc_storeStrong(&v20->_sessionIdentifier, sessionIdentifier);
+    objc_storeStrong(&v20->_location, location);
+    v20->_activityType = type;
+    v20->_locationType = locationType;
+    v20->_swimmingLocationType = swimmingLocationType;
+    v20->_sessionState = state;
+    v20->_isResumedSessionState = sessionState;
+    objc_storeStrong(&v20->_date, date);
 LABEL_5:
     v21 = v20;
   }
@@ -46,45 +46,45 @@ LABEL_5:
   return v21;
 }
 
-- (SMWorkoutEvent)initWithDictionary:(id)a3
+- (SMWorkoutEvent)initWithDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CCAD78];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [v3 alloc];
-  v6 = [v4 objectForKey:@"__kSMWorkoutEventIdentifierKey"];
+  v6 = [dictionaryCopy objectForKey:@"__kSMWorkoutEventIdentifierKey"];
   v7 = [v5 initWithUUIDString:v6];
 
   v8 = objc_alloc(MEMORY[0x277CCAD78]);
-  v9 = [v4 objectForKey:@"__kSMWorkoutEventSessionIdentifierKey"];
+  v9 = [dictionaryCopy objectForKey:@"__kSMWorkoutEventSessionIdentifierKey"];
   v10 = [v8 initWithUUIDString:v9];
 
   v11 = [SMLocation alloc];
-  v12 = [v4 objectForKey:@"__kSMWorkoutEventLocationKey"];
+  v12 = [dictionaryCopy objectForKey:@"__kSMWorkoutEventLocationKey"];
   v13 = [(SMLocation *)v11 initWithDictionary:v12];
 
-  v14 = [v4 objectForKey:@"__kSMWorkoutEventActivityTypeKey"];
-  v15 = [v14 unsignedIntValue];
+  v14 = [dictionaryCopy objectForKey:@"__kSMWorkoutEventActivityTypeKey"];
+  unsignedIntValue = [v14 unsignedIntValue];
 
-  v16 = [v4 objectForKey:@"__kSMWorkoutEventLocationTypeKey"];
-  v17 = [v16 unsignedIntValue];
+  v16 = [dictionaryCopy objectForKey:@"__kSMWorkoutEventLocationTypeKey"];
+  unsignedIntValue2 = [v16 unsignedIntValue];
 
-  v18 = [v4 objectForKey:@"__kSMWorkoutEventSwimmingLocationTypeKey"];
-  v19 = [v18 unsignedIntValue];
+  v18 = [dictionaryCopy objectForKey:@"__kSMWorkoutEventSwimmingLocationTypeKey"];
+  unsignedIntValue3 = [v18 unsignedIntValue];
 
-  v20 = [v4 objectForKey:@"__kSMWorkoutEventSessionStateKey"];
-  v21 = [v20 unsignedIntValue];
+  v20 = [dictionaryCopy objectForKey:@"__kSMWorkoutEventSessionStateKey"];
+  unsignedIntValue4 = [v20 unsignedIntValue];
 
-  v22 = [v4 objectForKey:@"__kSMWorkoutEventIsResumedSessionStateKey"];
-  v23 = [v22 BOOLValue];
+  v22 = [dictionaryCopy objectForKey:@"__kSMWorkoutEventIsResumedSessionStateKey"];
+  bOOLValue = [v22 BOOLValue];
 
-  v24 = [v4 objectForKey:@"__kSMWorkoutEventDateKey"];
+  v24 = [dictionaryCopy objectForKey:@"__kSMWorkoutEventDateKey"];
 
   [v24 doubleValue];
   v26 = v25;
 
   v27 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v26];
-  LOBYTE(v30) = v23;
-  v28 = [(SMWorkoutEvent *)self initWithIdentifier:v7 sessionIdentifier:v10 location:v13 activityType:v15 locationType:v17 swimmingLocationType:v19 sessionState:v21 isResumedSessionState:v30 date:v27];
+  LOBYTE(v30) = bOOLValue;
+  v28 = [(SMWorkoutEvent *)self initWithIdentifier:v7 sessionIdentifier:v10 location:v13 activityType:unsignedIntValue locationType:unsignedIntValue2 swimmingLocationType:unsignedIntValue3 sessionState:unsignedIntValue4 isResumedSessionState:v30 date:v27];
 
   return v28;
 }
@@ -92,32 +92,32 @@ LABEL_5:
 - (id)outputToDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(SMWorkoutEvent *)self identifier];
+  identifier = [(SMWorkoutEvent *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
-    v5 = [(SMWorkoutEvent *)self identifier];
-    v6 = [v5 UUIDString];
-    [v3 setObject:v6 forKey:@"__kSMWorkoutEventIdentifierKey"];
+    identifier2 = [(SMWorkoutEvent *)self identifier];
+    uUIDString = [identifier2 UUIDString];
+    [v3 setObject:uUIDString forKey:@"__kSMWorkoutEventIdentifierKey"];
   }
 
-  v7 = [(SMWorkoutEvent *)self sessionIdentifier];
+  sessionIdentifier = [(SMWorkoutEvent *)self sessionIdentifier];
 
-  if (v7)
+  if (sessionIdentifier)
   {
-    v8 = [(SMWorkoutEvent *)self sessionIdentifier];
-    v9 = [v8 UUIDString];
-    [v3 setObject:v9 forKey:@"__kSMWorkoutEventSessionIdentifierKey"];
+    sessionIdentifier2 = [(SMWorkoutEvent *)self sessionIdentifier];
+    uUIDString2 = [sessionIdentifier2 UUIDString];
+    [v3 setObject:uUIDString2 forKey:@"__kSMWorkoutEventSessionIdentifierKey"];
   }
 
-  v10 = [(SMWorkoutEvent *)self location];
+  location = [(SMWorkoutEvent *)self location];
 
-  if (v10)
+  if (location)
   {
-    v11 = [(SMWorkoutEvent *)self location];
-    v12 = [v11 outputToDictionary];
+    location2 = [(SMWorkoutEvent *)self location];
+    outputToDictionary = [location2 outputToDictionary];
 
-    [v3 setObject:v12 forKey:@"__kSMWorkoutEventLocationKey"];
+    [v3 setObject:outputToDictionary forKey:@"__kSMWorkoutEventLocationKey"];
   }
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMWorkoutEvent activityType](self, "activityType")}];
@@ -135,12 +135,12 @@ LABEL_5:
   v17 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMWorkoutEvent isResumedSessionState](self, "isResumedSessionState")}];
   [v3 setObject:v17 forKey:@"__kSMWorkoutEventIsResumedSessionStateKey"];
 
-  v18 = [(SMWorkoutEvent *)self date];
+  date = [(SMWorkoutEvent *)self date];
 
-  if (v18)
+  if (date)
   {
-    v19 = [(SMWorkoutEvent *)self date];
-    [v19 timeIntervalSince1970];
+    date2 = [(SMWorkoutEvent *)self date];
+    [date2 timeIntervalSince1970];
     v21 = v20;
 
     v22 = [MEMORY[0x277CCABB0] numberWithDouble:v21];
@@ -152,18 +152,18 @@ LABEL_5:
   return v23;
 }
 
-- (SMWorkoutEvent)initWithCoder:(id)a3
+- (SMWorkoutEvent)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutEventIdentifierKey"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutEventSessionIdentifierKey"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutEventLocationKey"];
-  v7 = [v3 decodeIntForKey:@"__kSMWorkoutEventActivityTypeKey"];
-  v8 = [v3 decodeIntForKey:@"__kSMWorkoutEventLocationTypeKey"];
-  v9 = [v3 decodeIntForKey:@"__kSMWorkoutEventSwimmingLocationTypeKey"];
-  v10 = [v3 decodeIntForKey:@"__kSMWorkoutEventSessionStateKey"];
-  v11 = [v3 decodeBoolForKey:@"__kSMWorkoutEventIsResumedSessionStateKey"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutEventDateKey"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutEventIdentifierKey"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutEventSessionIdentifierKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutEventLocationKey"];
+  v7 = [coderCopy decodeIntForKey:@"__kSMWorkoutEventActivityTypeKey"];
+  v8 = [coderCopy decodeIntForKey:@"__kSMWorkoutEventLocationTypeKey"];
+  v9 = [coderCopy decodeIntForKey:@"__kSMWorkoutEventSwimmingLocationTypeKey"];
+  v10 = [coderCopy decodeIntForKey:@"__kSMWorkoutEventSessionStateKey"];
+  v11 = [coderCopy decodeBoolForKey:@"__kSMWorkoutEventIsResumedSessionStateKey"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"__kSMWorkoutEventDateKey"];
 
   LOBYTE(v15) = v11;
   v13 = [(SMWorkoutEvent *)self initWithIdentifier:v4 sessionIdentifier:v5 location:v6 activityType:v7 locationType:v8 swimmingLocationType:v9 sessionState:v10 isResumedSessionState:v15 date:v12];
@@ -171,58 +171,58 @@ LABEL_5:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SMWorkoutEvent *)self identifier];
-  [v4 encodeObject:v5 forKey:@"__kSMWorkoutEventIdentifierKey"];
+  coderCopy = coder;
+  identifier = [(SMWorkoutEvent *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"__kSMWorkoutEventIdentifierKey"];
 
-  v6 = [(SMWorkoutEvent *)self sessionIdentifier];
-  [v4 encodeObject:v6 forKey:@"__kSMWorkoutEventSessionIdentifierKey"];
+  sessionIdentifier = [(SMWorkoutEvent *)self sessionIdentifier];
+  [coderCopy encodeObject:sessionIdentifier forKey:@"__kSMWorkoutEventSessionIdentifierKey"];
 
-  v7 = [(SMWorkoutEvent *)self location];
-  [v4 encodeObject:v7 forKey:@"__kSMWorkoutEventLocationKey"];
+  location = [(SMWorkoutEvent *)self location];
+  [coderCopy encodeObject:location forKey:@"__kSMWorkoutEventLocationKey"];
 
-  [v4 encodeInteger:-[SMWorkoutEvent activityType](self forKey:{"activityType"), @"__kSMWorkoutEventActivityTypeKey"}];
-  [v4 encodeInteger:-[SMWorkoutEvent locationType](self forKey:{"locationType"), @"__kSMWorkoutEventLocationTypeKey"}];
-  [v4 encodeInteger:-[SMWorkoutEvent swimmingLocationType](self forKey:{"swimmingLocationType"), @"__kSMWorkoutEventSwimmingLocationTypeKey"}];
-  [v4 encodeInteger:-[SMWorkoutEvent sessionState](self forKey:{"sessionState"), @"__kSMWorkoutEventSessionStateKey"}];
-  [v4 encodeBool:-[SMWorkoutEvent isResumedSessionState](self forKey:{"isResumedSessionState"), @"__kSMWorkoutEventIsResumedSessionStateKey"}];
-  v8 = [(SMWorkoutEvent *)self date];
-  [v4 encodeObject:v8 forKey:@"__kSMWorkoutEventDateKey"];
+  [coderCopy encodeInteger:-[SMWorkoutEvent activityType](self forKey:{"activityType"), @"__kSMWorkoutEventActivityTypeKey"}];
+  [coderCopy encodeInteger:-[SMWorkoutEvent locationType](self forKey:{"locationType"), @"__kSMWorkoutEventLocationTypeKey"}];
+  [coderCopy encodeInteger:-[SMWorkoutEvent swimmingLocationType](self forKey:{"swimmingLocationType"), @"__kSMWorkoutEventSwimmingLocationTypeKey"}];
+  [coderCopy encodeInteger:-[SMWorkoutEvent sessionState](self forKey:{"sessionState"), @"__kSMWorkoutEventSessionStateKey"}];
+  [coderCopy encodeBool:-[SMWorkoutEvent isResumedSessionState](self forKey:{"isResumedSessionState"), @"__kSMWorkoutEventIsResumedSessionStateKey"}];
+  date = [(SMWorkoutEvent *)self date];
+  [coderCopy encodeObject:date forKey:@"__kSMWorkoutEventDateKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   LOBYTE(v6) = self->_isResumedSessionState;
   return [v4 initWithIdentifier:self->_identifier sessionIdentifier:self->_sessionIdentifier location:self->_location activityType:self->_activityType locationType:self->_locationType swimmingLocationType:self->_swimmingLocationType sessionState:self->_sessionState isResumedSessionState:v6 date:self->_date];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(SMWorkoutEvent *)self sessionIdentifier];
-  v4 = [v3 hash];
-  v5 = [(SMWorkoutEvent *)self sessionIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(SMWorkoutEvent *)self location];
-  v8 = [v7 identifier];
-  v9 = v6 ^ [v8 hash];
-  v10 = [(SMWorkoutEvent *)self activityType];
-  v11 = v10 ^ [(SMWorkoutEvent *)self locationType];
+  sessionIdentifier = [(SMWorkoutEvent *)self sessionIdentifier];
+  v4 = [sessionIdentifier hash];
+  sessionIdentifier2 = [(SMWorkoutEvent *)self sessionIdentifier];
+  v6 = [sessionIdentifier2 hash] ^ v4;
+  location = [(SMWorkoutEvent *)self location];
+  identifier = [location identifier];
+  v9 = v6 ^ [identifier hash];
+  activityType = [(SMWorkoutEvent *)self activityType];
+  v11 = activityType ^ [(SMWorkoutEvent *)self locationType];
   v12 = v11 ^ [(SMWorkoutEvent *)self swimmingLocationType];
   v13 = v9 ^ v12 ^ [(SMWorkoutEvent *)self sessionState];
-  v14 = [(SMWorkoutEvent *)self isResumedSessionState];
-  v15 = [(SMWorkoutEvent *)self date];
-  v16 = v14 ^ [v15 hash];
+  isResumedSessionState = [(SMWorkoutEvent *)self isResumedSessionState];
+  date = [(SMWorkoutEvent *)self date];
+  v16 = isResumedSessionState ^ [date hash];
 
   return v13 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -232,48 +232,48 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SMWorkoutEvent *)self identifier];
-      v7 = [(SMWorkoutEvent *)v5 identifier];
-      if (v6 != v7)
+      v5 = equalCopy;
+      identifier = [(SMWorkoutEvent *)self identifier];
+      identifier2 = [(SMWorkoutEvent *)v5 identifier];
+      if (identifier != identifier2)
       {
-        v8 = [(SMWorkoutEvent *)self identifier];
-        v9 = [(SMWorkoutEvent *)v5 identifier];
-        if (![v8 isEqual:v9])
+        identifier3 = [(SMWorkoutEvent *)self identifier];
+        identifier4 = [(SMWorkoutEvent *)v5 identifier];
+        if (![identifier3 isEqual:identifier4])
         {
           v10 = 0;
           goto LABEL_24;
         }
 
-        v37 = v9;
-        v38 = v8;
+        v37 = identifier4;
+        v38 = identifier3;
       }
 
-      v11 = [(SMWorkoutEvent *)self sessionIdentifier];
-      v12 = [(SMWorkoutEvent *)v5 sessionIdentifier];
-      if (v11 != v12)
+      sessionIdentifier = [(SMWorkoutEvent *)self sessionIdentifier];
+      sessionIdentifier2 = [(SMWorkoutEvent *)v5 sessionIdentifier];
+      if (sessionIdentifier != sessionIdentifier2)
       {
-        v13 = [(SMWorkoutEvent *)self sessionIdentifier];
-        v14 = [(SMWorkoutEvent *)v5 sessionIdentifier];
-        if (![v13 isEqual:v14])
+        sessionIdentifier3 = [(SMWorkoutEvent *)self sessionIdentifier];
+        sessionIdentifier4 = [(SMWorkoutEvent *)v5 sessionIdentifier];
+        if (![sessionIdentifier3 isEqual:sessionIdentifier4])
         {
           v10 = 0;
           goto LABEL_22;
         }
 
-        v35 = v14;
-        v36 = v13;
+        v35 = sessionIdentifier4;
+        v36 = sessionIdentifier3;
       }
 
-      v15 = [(SMWorkoutEvent *)self location];
-      v16 = [(SMWorkoutEvent *)v5 location];
-      if ([v15 isEquivalent:v16] && (v17 = -[SMWorkoutEvent activityType](self, "activityType"), v17 == -[SMWorkoutEvent activityType](v5, "activityType")) && (v18 = -[SMWorkoutEvent locationType](self, "locationType"), v18 == -[SMWorkoutEvent locationType](v5, "locationType")) && (v19 = -[SMWorkoutEvent swimmingLocationType](self, "swimmingLocationType"), v19 == -[SMWorkoutEvent swimmingLocationType](v5, "swimmingLocationType")) && (v20 = -[SMWorkoutEvent sessionState](self, "sessionState"), v20 == -[SMWorkoutEvent sessionState](v5, "sessionState")) && (v21 = -[SMWorkoutEvent isResumedSessionState](self, "isResumedSessionState"), v21 == -[SMWorkoutEvent isResumedSessionState](v5, "isResumedSessionState")))
+      location = [(SMWorkoutEvent *)self location];
+      location2 = [(SMWorkoutEvent *)v5 location];
+      if ([location isEquivalent:location2] && (v17 = -[SMWorkoutEvent activityType](self, "activityType"), v17 == -[SMWorkoutEvent activityType](v5, "activityType")) && (v18 = -[SMWorkoutEvent locationType](self, "locationType"), v18 == -[SMWorkoutEvent locationType](v5, "locationType")) && (v19 = -[SMWorkoutEvent swimmingLocationType](self, "swimmingLocationType"), v19 == -[SMWorkoutEvent swimmingLocationType](v5, "swimmingLocationType")) && (v20 = -[SMWorkoutEvent sessionState](self, "sessionState"), v20 == -[SMWorkoutEvent sessionState](v5, "sessionState")) && (v21 = -[SMWorkoutEvent isResumedSessionState](self, "isResumedSessionState"), v21 == -[SMWorkoutEvent isResumedSessionState](v5, "isResumedSessionState")))
       {
-        v24 = [(SMWorkoutEvent *)self date];
-        [v24 timeIntervalSince1970];
+        date = [(SMWorkoutEvent *)self date];
+        [date timeIntervalSince1970];
         v26 = v25;
-        v34 = [(SMWorkoutEvent *)v5 date];
-        [v34 timeIntervalSince1970];
+        date2 = [(SMWorkoutEvent *)v5 date];
+        [date2 timeIntervalSince1970];
         if (v26 == v27)
         {
           v10 = 1;
@@ -281,15 +281,15 @@ LABEL_5:
 
         else
         {
-          v32 = [(SMWorkoutEvent *)self date];
-          [v32 timeIntervalSince1970];
+          date3 = [(SMWorkoutEvent *)self date];
+          [date3 timeIntervalSince1970];
           v29 = v28;
           [(SMWorkoutEvent *)v5 date];
-          v30 = v33 = v24;
+          v30 = v33 = date;
           [v30 timeIntervalSince1970];
           v10 = vabdd_f64(v29, v31) < 2.22044605e-16;
 
-          v24 = v33;
+          date = v33;
         }
 
         v22 = v10;
@@ -302,9 +302,9 @@ LABEL_5:
         v22 = 0;
       }
 
-      v14 = v35;
-      v13 = v36;
-      if (v11 == v12)
+      sessionIdentifier4 = v35;
+      sessionIdentifier3 = v36;
+      if (sessionIdentifier == sessionIdentifier2)
       {
 
         v10 = v22;
@@ -314,9 +314,9 @@ LABEL_5:
 LABEL_22:
 
 LABEL_23:
-      v9 = v37;
-      v8 = v38;
-      if (v6 == v7)
+      identifier4 = v37;
+      identifier3 = v38;
+      if (identifier == identifier2)
       {
 LABEL_25:
 
@@ -344,8 +344,8 @@ LABEL_26:
   v8 = *&self->_locationType;
   isResumedSessionState = self->_isResumedSessionState;
   sessionState = self->_sessionState;
-  v5 = [(NSDate *)self->_date stringFromDate];
-  v6 = [v2 stringWithFormat:@"identifier, %@, sessionIdentifier, %@, location, %@, activityType, %lu, locationType, %lu swimmingLocationType, %lu sessionState, %lu, isResumedSessionState, %d, date, %@", v10, v9, v8, sessionState, isResumedSessionState, v5];
+  stringFromDate = [(NSDate *)self->_date stringFromDate];
+  v6 = [v2 stringWithFormat:@"identifier, %@, sessionIdentifier, %@, location, %@, activityType, %lu, locationType, %lu swimmingLocationType, %lu sessionState, %lu, isResumedSessionState, %d, date, %@", v10, v9, v8, sessionState, isResumedSessionState, stringFromDate];
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface INCodableAttribute
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (INCodableAttribute)initWithCoder:(id)a3;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (INCodableAttribute)initWithCoder:(id)coder;
 - (INCodableDescription)_codableDescription;
 - (NSString)localizedDisplayName;
 - (SEL)getter;
@@ -75,29 +75,29 @@
 - (id)__INTypeCodableDescriptionTypeKey;
 - (id)__INTypeCodableDescriptionUnsupportedReasonsKey;
 - (id)__INTypeCodableDescriptionWindowSizeKey;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (id)dictionaryRepresentation;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
-- (id)localizedDisplayNameWithLocalizer:(id)a3;
-- (id)promptDialogWithType:(unint64_t)a3;
-- (id)unsupportedReasonWithIndex:(unint64_t)a3;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
-- (int64_t)arraySizeForSizeClass:(id)a3;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
+- (id)localizedDisplayNameWithLocalizer:(id)localizer;
+- (id)promptDialogWithType:(unint64_t)type;
+- (id)unsupportedReasonWithIndex:(unint64_t)index;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
+- (int64_t)arraySizeForSizeClass:(id)class;
 - (unint64_t)hash;
-- (unint64_t)indexForUnsupportedReason:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (unint64_t)indexForUnsupportedReason:(id)reason;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableAttribute
 
 - (unint64_t)hash
 {
-  v3 = [(INCodableAttribute *)self propertyName];
-  v4 = [v3 hash];
-  v5 = [(INCodableAttribute *)self displayPriorityRank];
-  v6 = [v5 hash] ^ v4;
+  propertyName = [(INCodableAttribute *)self propertyName];
+  v4 = [propertyName hash];
+  displayPriorityRank = [(INCodableAttribute *)self displayPriorityRank];
+  v6 = [displayPriorityRank hash] ^ v4;
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[INCodableAttribute modifier](self, "modifier")}];
   v8 = [v7 hash];
   v11.receiver = self;
@@ -116,233 +116,233 @@
 
 - (id)__INCodableDescriptionNameKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeNameKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeNameKey = [objc_opt_class() __INCodableAttributeNameKey];
 
-  return v3;
+  return __INCodableAttributeNameKey;
 }
 
 - (id)__INCodableDescriptionDisplayNameKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDisplayNameKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDisplayNameKey = [objc_opt_class() __INCodableAttributeDisplayNameKey];
 
-  return v3;
+  return __INCodableAttributeDisplayNameKey;
 }
 
 - (id)__INCodableDescriptionDisplayNameIDKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDisplayNameIDKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDisplayNameIDKey = [objc_opt_class() __INCodableAttributeDisplayNameIDKey];
 
-  return v3;
+  return __INCodableAttributeDisplayNameIDKey;
 }
 
 - (id)__INCodableDescriptionDisplayPriorityKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDisplayPriorityKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDisplayPriorityKey = [objc_opt_class() __INCodableAttributeDisplayPriorityKey];
 
-  return v3;
+  return __INCodableAttributeDisplayPriorityKey;
 }
 
 - (id)__INCodableDescriptionDefaultKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDefaultKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDefaultKey = [objc_opt_class() __INCodableAttributeDefaultKey];
 
-  return v3;
+  return __INCodableAttributeDefaultKey;
 }
 
 - (id)__INCodableDescriptionSupportsResolutionKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsResolutionKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsResolutionKey = [objc_opt_class() __INCodableAttributeSupportsResolutionKey];
 
-  return v3;
+  return __INCodableAttributeSupportsResolutionKey;
 }
 
 - (id)__INCodableDescriptionSupportsDynamicEnumerationKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsDynamicEnumerationKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsDynamicEnumerationKey = [objc_opt_class() __INCodableAttributeSupportsDynamicEnumerationKey];
 
-  return v3;
+  return __INCodableAttributeSupportsDynamicEnumerationKey;
 }
 
 - (id)__INCodableDescriptionSupportsSearchKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsSearchKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsSearchKey = [objc_opt_class() __INCodableAttributeSupportsSearchKey];
 
-  return v3;
+  return __INCodableAttributeSupportsSearchKey;
 }
 
 - (id)__INCodableDescriptionConfigurableKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeConfigurableKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeConfigurableKey = [objc_opt_class() __INCodableAttributeConfigurableKey];
 
-  return v3;
+  return __INCodableAttributeConfigurableKey;
 }
 
 - (id)__INCodableDescriptionWindowSizeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeWindowSizeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeWindowSizeKey = [objc_opt_class() __INCodableAttributeWindowSizeKey];
 
-  return v3;
+  return __INCodableAttributeWindowSizeKey;
 }
 
 - (id)__INCodableDescriptionSupportsMultipleValuesKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsMultipleValuesKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsMultipleValuesKey = [objc_opt_class() __INCodableAttributeSupportsMultipleValuesKey];
 
-  return v3;
+  return __INCodableAttributeSupportsMultipleValuesKey;
 }
 
 - (id)__INCodableDescriptionFixedSizeArrayKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeFixedSizeArrayKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeFixedSizeArrayKey = [objc_opt_class() __INCodableAttributeFixedSizeArrayKey];
 
-  return v3;
+  return __INCodableAttributeFixedSizeArrayKey;
 }
 
 - (id)__INCodableDescriptionPromptDialogsKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributePromptDialogsKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributePromptDialogsKey = [objc_opt_class() __INCodableAttributePromptDialogsKey];
 
-  return v3;
+  return __INCodableAttributePromptDialogsKey;
 }
 
 - (id)__INCodableDescriptionArraySizesKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeArraySizesKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeArraySizesKey = [objc_opt_class() __INCodableAttributeArraySizesKey];
 
-  return v3;
+  return __INCodableAttributeArraySizesKey;
 }
 
 - (id)__INCodableDescriptionUnsupportedReasonsKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeUnsupportedReasonsKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeUnsupportedReasonsKey = [objc_opt_class() __INCodableAttributeUnsupportedReasonsKey];
 
-  return v3;
+  return __INCodableAttributeUnsupportedReasonsKey;
 }
 
 - (id)__INCodableDescriptionMetadataKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeMetadataKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeMetadataKey = [objc_opt_class() __INCodableAttributeMetadataKey];
 
-  return v3;
+  return __INCodableAttributeMetadataKey;
 }
 
 - (id)__INCodableDescriptionEnumTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeEnumTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeEnumTypeKey = [objc_opt_class() __INCodableAttributeEnumTypeKey];
 
-  return v3;
+  return __INCodableAttributeEnumTypeKey;
 }
 
 - (id)__INCodableDescriptionRelationshipKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeRelationshipKey = [objc_opt_class() __INCodableAttributeRelationshipKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipKey;
 }
 
 - (id)__INCodableDescriptionEntityKeypathKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeEntityKeypathKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeEntityKeypathKey = [objc_opt_class() __INCodableAttributeEntityKeypathKey];
 
-  return v3;
+  return __INCodableAttributeEntityKeypathKey;
 }
 
 - (id)__INCodableDescriptionTagKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeTagKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeTagKey = [objc_opt_class() __INCodableAttributeTagKey];
 
-  return v3;
+  return __INCodableAttributeTagKey;
 }
 
 - (id)__INCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeTypeKey = [objc_opt_class() __INCodableAttributeTypeKey];
 
-  return v3;
+  return __INCodableAttributeTypeKey;
 }
 
-- (INCodableAttribute)initWithCoder:(id)a3
+- (INCodableAttribute)initWithCoder:(id)coder
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = INCodableAttribute;
   v5 = [(INCodableAttribute *)&v49 init];
   if (v5)
   {
-    -[INCodableAttribute setModifier:](v5, "setModifier:", [v4 decodeIntegerForKey:@"modifier"]);
-    -[INCodableAttribute setFixedSizeArray:](v5, "setFixedSizeArray:", [v4 decodeBoolForKey:@"fixedSizeArray"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"propertyName"];
+    -[INCodableAttribute setModifier:](v5, "setModifier:", [coderCopy decodeIntegerForKey:@"modifier"]);
+    -[INCodableAttribute setFixedSizeArray:](v5, "setFixedSizeArray:", [coderCopy decodeBoolForKey:@"fixedSizeArray"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"propertyName"];
     [(INCodableAttribute *)v5 setPropertyName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayPriorityRank"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayPriorityRank"];
     [(INCodableAttribute *)v5 setDisplayPriorityRank:v7];
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"displayName"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"displayName"];
     [(INCodableAttribute *)v5 setDisplayName:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayNameID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayNameID"];
     [(INCodableAttribute *)v5 setDisplayNameID:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
     [(INCodableAttribute *)v5 setMetadata:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relationship"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relationship"];
     [(INCodableAttribute *)v5 setRelationship:v14];
 
-    -[INCodableAttribute setSupportsResolution:](v5, "setSupportsResolution:", [v4 decodeBoolForKey:@"supportsResolution"]);
-    -[INCodableAttribute setConfigurable:](v5, "setConfigurable:", [v4 decodeBoolForKey:@"configurable"]);
-    -[INCodableAttribute setSupportsDynamicEnumeration:](v5, "setSupportsDynamicEnumeration:", [v4 decodeBoolForKey:@"supportsDynamicEnumeration"]);
-    -[INCodableAttribute setSupportsSearch:](v5, "setSupportsSearch:", [v4 decodeBoolForKey:@"supportsSearch"]);
+    -[INCodableAttribute setSupportsResolution:](v5, "setSupportsResolution:", [coderCopy decodeBoolForKey:@"supportsResolution"]);
+    -[INCodableAttribute setConfigurable:](v5, "setConfigurable:", [coderCopy decodeBoolForKey:@"configurable"]);
+    -[INCodableAttribute setSupportsDynamicEnumeration:](v5, "setSupportsDynamicEnumeration:", [coderCopy decodeBoolForKey:@"supportsDynamicEnumeration"]);
+    -[INCodableAttribute setSupportsSearch:](v5, "setSupportsSearch:", [coderCopy decodeBoolForKey:@"supportsSearch"]);
     v15 = MEMORY[0x1E695DFD8];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"promptDialogs"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"promptDialogs"];
     [(INCodableAttribute *)v5 _setPromptDialogs:v18];
 
     v19 = MEMORY[0x1E695DFD8];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"unsupportedReasons"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"unsupportedReasons"];
     [(INCodableAttribute *)v5 _setUnsupportedReasons:v22];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_codableDescription"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_codableDescription"];
     [(INCodableAttribute *)v5 _setCodableDescription:v23];
 
-    v44 = v4;
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_typeString"];
+    v44 = coderCopy;
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_typeString"];
     [(INCodableAttribute *)v5 _setTypeString:v24];
 
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v25 = [(INCodableAttribute *)v5 promptDialogs];
-    v26 = [v25 countByEnumeratingWithState:&v45 objects:v50 count:16];
+    promptDialogs = [(INCodableAttribute *)v5 promptDialogs];
+    v26 = [promptDialogs countByEnumeratingWithState:&v45 objects:v50 count:16];
     if (v26)
     {
       v27 = v26;
@@ -354,7 +354,7 @@
         {
           if (*v46 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(promptDialogs);
           }
 
           v30 = *(*(&v45 + 1) + 8 * v29);
@@ -375,13 +375,13 @@
         }
 
         while (v27 != v29);
-        v27 = [v25 countByEnumeratingWithState:&v45 objects:v50 count:16];
+        v27 = [promptDialogs countByEnumeratingWithState:&v45 objects:v50 count:16];
       }
 
       while (v27);
     }
 
-    v4 = v44;
+    coderCopy = v44;
     v35 = [v44 decodeObjectOfClass:objc_opt_class() forKey:@"entityKeypath"];
     [(INCodableAttribute *)v5 setEntityKeypath:v35];
 
@@ -400,63 +400,63 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   modifier = self->_modifier;
-  v6 = a3;
-  [v6 encodeInteger:modifier forKey:@"modifier"];
-  [v6 encodeObject:self->_propertyName forKey:@"propertyName"];
-  [v6 encodeObject:self->_displayName forKey:@"displayName"];
-  [v6 encodeObject:self->_displayNameID forKey:@"displayNameID"];
-  [v6 encodeObject:self->_displayPriorityRank forKey:@"displayPriorityRank"];
-  [v6 encodeBool:self->_supportsResolution forKey:@"supportsResolution"];
-  [v6 encodeBool:self->_supportsDynamicEnumeration forKey:@"supportsDynamicEnumeration"];
-  [v6 encodeBool:self->_supportsSearch forKey:@"supportsSearch"];
-  [v6 encodeBool:self->_configurable forKey:@"configurable"];
-  [v6 encodeObject:self->_metadata forKey:@"metadata"];
-  [v6 encodeObject:self->_relationship forKey:@"relationship"];
-  [v6 encodeObject:self->_promptDialogs forKey:@"promptDialogs"];
-  [v6 encodeObject:self->_unsupportedReasons forKey:@"unsupportedReasons"];
-  [v6 encodeObject:self->_typeString forKey:@"_typeString"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:modifier forKey:@"modifier"];
+  [coderCopy encodeObject:self->_propertyName forKey:@"propertyName"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:self->_displayNameID forKey:@"displayNameID"];
+  [coderCopy encodeObject:self->_displayPriorityRank forKey:@"displayPriorityRank"];
+  [coderCopy encodeBool:self->_supportsResolution forKey:@"supportsResolution"];
+  [coderCopy encodeBool:self->_supportsDynamicEnumeration forKey:@"supportsDynamicEnumeration"];
+  [coderCopy encodeBool:self->_supportsSearch forKey:@"supportsSearch"];
+  [coderCopy encodeBool:self->_configurable forKey:@"configurable"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeObject:self->_relationship forKey:@"relationship"];
+  [coderCopy encodeObject:self->_promptDialogs forKey:@"promptDialogs"];
+  [coderCopy encodeObject:self->_unsupportedReasons forKey:@"unsupportedReasons"];
+  [coderCopy encodeObject:self->_typeString forKey:@"_typeString"];
   WeakRetained = objc_loadWeakRetained(&self->_internalCodableDescription);
-  [v6 encodeConditionalObject:WeakRetained forKey:@"_codableDescription"];
+  [coderCopy encodeConditionalObject:WeakRetained forKey:@"_codableDescription"];
 
-  [v6 encodeObject:self->_entityKeypath forKey:@"entityKeypath"];
-  [v6 encodeBool:self->_fixedSizeArray forKey:@"fixedSizeArray"];
-  [v6 encodeObject:self->_arraySizesBySizeClass forKey:@"_arraySizesBySizeClass"];
-  [v6 encodeInteger:self->_windowSize forKey:@"windowSize"];
+  [coderCopy encodeObject:self->_entityKeypath forKey:@"entityKeypath"];
+  [coderCopy encodeBool:self->_fixedSizeArray forKey:@"fixedSizeArray"];
+  [coderCopy encodeObject:self->_arraySizesBySizeClass forKey:@"_arraySizesBySizeClass"];
+  [coderCopy encodeInteger:self->_windowSize forKey:@"windowSize"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 intents_setIntegerIfNonZero:self->_modifier forKey:@"modifier"];
-  [v7 intents_setPlistSafeObject:self->_propertyName forKey:@"propertyName"];
-  v8 = [v6 languageCode];
-  if ([(INCodableAttribute *)self isConfigurable]&& v8 && (displayName = self->_displayName, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  parametersCopy = parameters;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary intents_setIntegerIfNonZero:self->_modifier forKey:@"modifier"];
+  [dictionary intents_setPlistSafeObject:self->_propertyName forKey:@"propertyName"];
+  languageCode = [parametersCopy languageCode];
+  if ([(INCodableAttribute *)self isConfigurable]&& languageCode && (displayName = self->_displayName, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v11 = [INStringLocalizer localizerForLanguage:v8];
+    v11 = [INStringLocalizer localizerForLanguage:languageCode];
     v10 = [(INCodableAttribute *)self localizedDisplayNameWithLocalizer:v11];
   }
 
   else
   {
-    v10 = [(NSString *)self->_displayName intents_encodeForPlistRepresentationWithParameters:v6];
+    v10 = [(NSString *)self->_displayName intents_encodeForPlistRepresentationWithParameters:parametersCopy];
   }
 
-  [v7 intents_setPlistSafeObject:v10 forKey:@"displayName"];
+  [dictionary intents_setPlistSafeObject:v10 forKey:@"displayName"];
 
-  [v7 intents_setPlistSafeObject:v8 forKey:@"languageCode"];
-  [v7 intents_setPlistSafeObject:self->_displayNameID forKey:@"displayNameID"];
-  [v7 intents_setPlistSafeObject:self->_displayPriorityRank forKey:@"displayPriorityRank"];
-  [v7 intents_setBoolIfTrue:self->_supportsResolution forKey:@"supportsResolution"];
-  [v7 intents_setBoolIfTrue:self->_supportsDynamicEnumeration forKey:@"supportsDynamicEnumeration"];
-  [v7 intents_setBoolIfTrue:self->_supportsSearch forKey:@"supportsSearch"];
-  [v7 intents_setBoolIfTrue:self->_configurable forKey:@"configurable"];
+  [dictionary intents_setPlistSafeObject:languageCode forKey:@"languageCode"];
+  [dictionary intents_setPlistSafeObject:self->_displayNameID forKey:@"displayNameID"];
+  [dictionary intents_setPlistSafeObject:self->_displayPriorityRank forKey:@"displayPriorityRank"];
+  [dictionary intents_setBoolIfTrue:self->_supportsResolution forKey:@"supportsResolution"];
+  [dictionary intents_setBoolIfTrue:self->_supportsDynamicEnumeration forKey:@"supportsDynamicEnumeration"];
+  [dictionary intents_setBoolIfTrue:self->_supportsSearch forKey:@"supportsSearch"];
+  [dictionary intents_setBoolIfTrue:self->_configurable forKey:@"configurable"];
   relationship = self->_relationship;
   v22 = 0;
-  [v7 intents_setWidgetPlistRepresentable:relationship forKey:@"relationship" error:&v22];
+  [dictionary intents_setWidgetPlistRepresentable:relationship forKey:@"relationship" error:&v22];
   v13 = v22;
   if (v13)
   {
@@ -465,7 +465,7 @@
 
   metadata = self->_metadata;
   v21 = 0;
-  [v7 intents_setWidgetPlistRepresentable:metadata forKey:@"metadata" parameters:v6 error:&v21];
+  [dictionary intents_setWidgetPlistRepresentable:metadata forKey:@"metadata" parameters:parametersCopy error:&v21];
   v13 = v21;
   if (v13)
   {
@@ -474,16 +474,16 @@
 
   promptDialogs = self->_promptDialogs;
   v20 = 0;
-  [v7 intents_setArrayOfWidgetPlistRepresentable:promptDialogs forKey:@"promptDialogs" error:&v20];
+  [dictionary intents_setArrayOfWidgetPlistRepresentable:promptDialogs forKey:@"promptDialogs" error:&v20];
   v13 = v20;
-  if (v13 || (unsupportedReasons = self->_unsupportedReasons, v19 = 0, [v7 intents_setArrayOfWidgetPlistRepresentable:unsupportedReasons forKey:@"unsupportedReasons" error:&v19], (v13 = v19) != 0))
+  if (v13 || (unsupportedReasons = self->_unsupportedReasons, v19 = 0, [dictionary intents_setArrayOfWidgetPlistRepresentable:unsupportedReasons forKey:@"unsupportedReasons" error:&v19], (v13 = v19) != 0))
   {
 LABEL_10:
-    if (a4)
+    if (error)
     {
       v13 = v13;
       v17 = 0;
-      *a4 = v13;
+      *error = v13;
     }
 
     else
@@ -494,55 +494,55 @@ LABEL_10:
 
   else
   {
-    [v7 intents_setPlistSafeObject:self->_typeString forKey:@"_typeString"];
-    [v7 intents_setPlistSafeObject:self->_entityKeypath forKey:@"entityKeypath"];
-    [v7 intents_setBoolIfTrue:self->_fixedSizeArray forKey:@"fixedSizeArray"];
-    [v7 intents_setPlistSafeObject:self->_arraySizesBySizeClass forKey:@"_arraySizesBySizeClass"];
-    [v7 intents_setIntegerIfNonZero:self->_windowSize forKey:@"windowSize"];
-    v17 = v7;
+    [dictionary intents_setPlistSafeObject:self->_typeString forKey:@"_typeString"];
+    [dictionary intents_setPlistSafeObject:self->_entityKeypath forKey:@"entityKeypath"];
+    [dictionary intents_setBoolIfTrue:self->_fixedSizeArray forKey:@"fixedSizeArray"];
+    [dictionary intents_setPlistSafeObject:self->_arraySizesBySizeClass forKey:@"_arraySizesBySizeClass"];
+    [dictionary intents_setIntegerIfNonZero:self->_windowSize forKey:@"windowSize"];
+    v17 = dictionary;
     v13 = 0;
   }
 
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setModifier:{-[INCodableAttribute modifier](self, "modifier")}];
-  v5 = [(INCodableAttribute *)self propertyName];
-  [v4 setPropertyName:v5];
+  propertyName = [(INCodableAttribute *)self propertyName];
+  [v4 setPropertyName:propertyName];
 
-  v6 = [(INCodableAttribute *)self displayPriorityRank];
-  [v4 setDisplayPriorityRank:v6];
+  displayPriorityRank = [(INCodableAttribute *)self displayPriorityRank];
+  [v4 setDisplayPriorityRank:displayPriorityRank];
 
-  v7 = [(INCodableAttribute *)self displayName];
-  [v4 setDisplayName:v7];
+  displayName = [(INCodableAttribute *)self displayName];
+  [v4 setDisplayName:displayName];
 
-  v8 = [(INCodableAttribute *)self displayNameID];
-  [v4 setDisplayNameID:v8];
+  displayNameID = [(INCodableAttribute *)self displayNameID];
+  [v4 setDisplayNameID:displayNameID];
 
-  v9 = [(INCodableAttribute *)self metadata];
-  [v4 setMetadata:v9];
+  metadata = [(INCodableAttribute *)self metadata];
+  [v4 setMetadata:metadata];
 
-  v10 = [(INCodableAttribute *)self relationship];
-  [v4 setRelationship:v10];
+  relationship = [(INCodableAttribute *)self relationship];
+  [v4 setRelationship:relationship];
 
   [v4 setSupportsResolution:{-[INCodableAttribute supportsResolution](self, "supportsResolution")}];
   [v4 setSupportsDynamicEnumeration:{-[INCodableAttribute supportsDynamicEnumeration](self, "supportsDynamicEnumeration")}];
   [v4 setSupportsSearch:{-[INCodableAttribute supportsSearch](self, "supportsSearch")}];
   [v4 setConfigurable:{-[INCodableAttribute isConfigurable](self, "isConfigurable")}];
-  v11 = [(INCodableAttribute *)self promptDialogs];
-  [v4 _setPromptDialogs:v11];
+  promptDialogs = [(INCodableAttribute *)self promptDialogs];
+  [v4 _setPromptDialogs:promptDialogs];
 
-  v12 = [(INCodableAttribute *)self unsupportedReasons];
-  [v4 _setUnsupportedReasons:v12];
+  unsupportedReasons = [(INCodableAttribute *)self unsupportedReasons];
+  [v4 _setUnsupportedReasons:unsupportedReasons];
 
-  v13 = [(INCodableAttribute *)self _codableDescription];
-  [v4 _setCodableDescription:v13];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  [v4 _setCodableDescription:_codableDescription];
 
-  v14 = [(INCodableAttribute *)self _typeString];
-  [v4 _setTypeString:v14];
+  _typeString = [(INCodableAttribute *)self _typeString];
+  [v4 _setTypeString:_typeString];
 
   objc_storeStrong(v4 + 1, self->_promptDialogsByType);
   [v4 setFixedSizeArray:{-[INCodableAttribute isFixedSizeArray](self, "isFixedSizeArray")}];
@@ -551,45 +551,45 @@ LABEL_10:
   return v4;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v98 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  localizerCopy = localizer;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = [(INCodableAttribute *)self promptDialogWithType:0];
-  v7 = [v6 dictionaryRepresentationWithLocalizer:v4];
+  v7 = [v6 dictionaryRepresentationWithLocalizer:localizerCopy];
   [v5 if_addObjectIfNonNil:v7];
 
   v8 = [(INCodableAttribute *)self promptDialogWithType:1];
-  v9 = [v8 dictionaryRepresentationWithLocalizer:v4];
+  v9 = [v8 dictionaryRepresentationWithLocalizer:localizerCopy];
   [v5 if_addObjectIfNonNil:v9];
 
   v10 = [(INCodableAttribute *)self promptDialogWithType:2];
-  v11 = [v10 dictionaryRepresentationWithLocalizer:v4];
+  v11 = [v10 dictionaryRepresentationWithLocalizer:localizerCopy];
   [v5 if_addObjectIfNonNil:v11];
 
   v12 = [(INCodableAttribute *)self promptDialogWithType:3];
-  v13 = [v12 dictionaryRepresentationWithLocalizer:v4];
+  v13 = [v12 dictionaryRepresentationWithLocalizer:localizerCopy];
   [v5 if_addObjectIfNonNil:v13];
 
   v14 = [(INCodableAttribute *)self promptDialogWithType:4];
-  v15 = [v14 dictionaryRepresentationWithLocalizer:v4];
+  v15 = [v14 dictionaryRepresentationWithLocalizer:localizerCopy];
   [v5 if_addObjectIfNonNil:v15];
 
   v16 = [(INCodableAttribute *)self promptDialogWithType:5];
-  v17 = [v16 dictionaryRepresentationWithLocalizer:v4];
+  v17 = [v16 dictionaryRepresentationWithLocalizer:localizerCopy];
   [v5 if_addObjectIfNonNil:v17];
 
   v18 = MEMORY[0x1E695DF70];
-  v19 = [(INCodableAttribute *)self unsupportedReasons];
-  v20 = [v18 arrayWithCapacity:{objc_msgSend(v19, "count")}];
+  unsupportedReasons = [(INCodableAttribute *)self unsupportedReasons];
+  v20 = [v18 arrayWithCapacity:{objc_msgSend(unsupportedReasons, "count")}];
 
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  v21 = [(INCodableAttribute *)self unsupportedReasons];
-  v22 = [v21 countByEnumeratingWithState:&v91 objects:v97 count:16];
+  unsupportedReasons2 = [(INCodableAttribute *)self unsupportedReasons];
+  v22 = [unsupportedReasons2 countByEnumeratingWithState:&v91 objects:v97 count:16];
   if (v22)
   {
     v23 = v22;
@@ -600,95 +600,95 @@ LABEL_10:
       {
         if (*v92 != v24)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(unsupportedReasons2);
         }
 
-        v26 = [*(*(&v91 + 1) + 8 * i) dictionaryRepresentationWithLocalizer:v4];
+        v26 = [*(*(&v91 + 1) + 8 * i) dictionaryRepresentationWithLocalizer:localizerCopy];
         [v20 addObject:v26];
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v91 objects:v97 count:16];
+      v23 = [unsupportedReasons2 countByEnumeratingWithState:&v91 objects:v97 count:16];
     }
 
     while (v23);
   }
 
-  v27 = [(INCodableAttribute *)self _codableDescription];
-  v88 = [(INCodableAttribute *)self __INCodableDescriptionNameKey];
-  v95[0] = v88;
-  v28 = [(INCodableAttribute *)self propertyName];
-  v29 = v28;
-  if (!v28)
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableDescriptionNameKey = [(INCodableAttribute *)self __INCodableDescriptionNameKey];
+  v95[0] = __INCodableDescriptionNameKey;
+  propertyName = [(INCodableAttribute *)self propertyName];
+  v29 = propertyName;
+  if (!propertyName)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    propertyName = [MEMORY[0x1E695DFB0] null];
   }
 
-  v63 = v28;
-  v96[0] = v28;
-  v86 = [(INCodableAttribute *)self __INCodableDescriptionDisplayNameKey];
-  v95[1] = v86;
-  v30 = [(INCodableAttribute *)self localizedDisplayNameWithLocalizer:v4];
-  v31 = v30;
-  if (!v30)
+  v63 = propertyName;
+  v96[0] = propertyName;
+  __INCodableDescriptionDisplayNameKey = [(INCodableAttribute *)self __INCodableDescriptionDisplayNameKey];
+  v95[1] = __INCodableDescriptionDisplayNameKey;
+  null = [(INCodableAttribute *)self localizedDisplayNameWithLocalizer:localizerCopy];
+  v31 = null;
+  if (!null)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v62 = v30;
-  v96[1] = v30;
-  v84 = [(INCodableAttribute *)self __INCodableDescriptionDisplayNameIDKey];
-  v95[2] = v84;
-  v32 = [(INCodableAttribute *)self displayNameID];
-  v33 = v32;
-  if (!v32)
+  v62 = null;
+  v96[1] = null;
+  __INCodableDescriptionDisplayNameIDKey = [(INCodableAttribute *)self __INCodableDescriptionDisplayNameIDKey];
+  v95[2] = __INCodableDescriptionDisplayNameIDKey;
+  displayNameID = [(INCodableAttribute *)self displayNameID];
+  v33 = displayNameID;
+  if (!displayNameID)
   {
-    v32 = [MEMORY[0x1E695DFB0] null];
+    displayNameID = [MEMORY[0x1E695DFB0] null];
   }
 
   v87 = v29;
-  v61 = v32;
-  v96[2] = v32;
-  v82 = [(INCodableAttribute *)self __INCodableDescriptionDisplayPriorityKey];
-  v95[3] = v82;
-  v34 = [(INCodableAttribute *)self displayPriorityRank];
-  v35 = v34;
-  if (!v34)
+  v61 = displayNameID;
+  v96[2] = displayNameID;
+  __INCodableDescriptionDisplayPriorityKey = [(INCodableAttribute *)self __INCodableDescriptionDisplayPriorityKey];
+  v95[3] = __INCodableDescriptionDisplayPriorityKey;
+  displayPriorityRank = [(INCodableAttribute *)self displayPriorityRank];
+  v35 = displayPriorityRank;
+  if (!displayPriorityRank)
   {
-    v34 = [MEMORY[0x1E695DFB0] null];
+    displayPriorityRank = [MEMORY[0x1E695DFB0] null];
   }
 
-  v60 = v34;
-  v96[3] = v34;
-  v80 = [(INCodableAttribute *)self __INCodableDescriptionDefaultKey];
-  v95[4] = v80;
-  v36 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableAttribute isDefaultAttribute](self, "isDefaultAttribute")}];
-  v79 = v36;
-  if (!v36)
+  v60 = displayPriorityRank;
+  v96[3] = displayPriorityRank;
+  __INCodableDescriptionDefaultKey = [(INCodableAttribute *)self __INCodableDescriptionDefaultKey];
+  v95[4] = __INCodableDescriptionDefaultKey;
+  null2 = [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableAttribute isDefaultAttribute](self, "isDefaultAttribute")}];
+  v79 = null2;
+  if (!null2)
   {
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v96[4] = v36;
-  v78 = [(INCodableAttribute *)self __INCodableDescriptionSupportsMultipleValuesKey];
-  v95[5] = v78;
-  v77 = [(INCodableAttribute *)self modifier];
+  v96[4] = null2;
+  __INCodableDescriptionSupportsMultipleValuesKey = [(INCodableAttribute *)self __INCodableDescriptionSupportsMultipleValuesKey];
+  v95[5] = __INCodableDescriptionSupportsMultipleValuesKey;
+  modifier = [(INCodableAttribute *)self modifier];
   v85 = v31;
-  if (v77)
+  if (modifier)
   {
-    v37 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
   else
   {
-    v37 = MEMORY[0x1E695E118];
+    null3 = MEMORY[0x1E695E118];
   }
 
-  v64 = v37;
-  v96[5] = v37;
-  v76 = [(INCodableAttribute *)self __INCodableDescriptionSupportsResolutionKey];
-  v95[6] = v76;
+  v64 = null3;
+  v96[5] = null3;
+  __INCodableDescriptionSupportsResolutionKey = [(INCodableAttribute *)self __INCodableDescriptionSupportsResolutionKey];
+  v95[6] = __INCodableDescriptionSupportsResolutionKey;
   objc_opt_class();
-  v59 = v36;
+  v59 = null2;
   if (objc_opt_isKindOfClass())
   {
     [MEMORY[0x1E696AD98] numberWithBool:{-[INCodableAttribute supportsResolution](self, "supportsResolution")}];
@@ -700,8 +700,8 @@ LABEL_10:
   }
   v38 = ;
   v96[6] = v38;
-  v74 = [(INCodableAttribute *)self __INCodableDescriptionConfigurableKey];
-  v95[7] = v74;
+  __INCodableDescriptionConfigurableKey = [(INCodableAttribute *)self __INCodableDescriptionConfigurableKey];
+  v95[7] = __INCodableDescriptionConfigurableKey;
   objc_opt_class();
   v75 = v38;
   if (objc_opt_isKindOfClass())
@@ -715,8 +715,8 @@ LABEL_10:
   }
   v39 = ;
   v96[7] = v39;
-  v72 = [(INCodableAttribute *)self __INCodableDescriptionSupportsDynamicEnumerationKey];
-  v95[8] = v72;
+  __INCodableDescriptionSupportsDynamicEnumerationKey = [(INCodableAttribute *)self __INCodableDescriptionSupportsDynamicEnumerationKey];
+  v95[8] = __INCodableDescriptionSupportsDynamicEnumerationKey;
   objc_opt_class();
   v73 = v39;
   if (objc_opt_isKindOfClass())
@@ -730,8 +730,8 @@ LABEL_10:
   }
   v71 = ;
   v96[8] = v71;
-  v70 = [(INCodableAttribute *)self __INCodableDescriptionPromptDialogsKey];
-  v95[9] = v70;
+  __INCodableDescriptionPromptDialogsKey = [(INCodableAttribute *)self __INCodableDescriptionPromptDialogsKey];
+  v95[9] = __INCodableDescriptionPromptDialogsKey;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v41 = MEMORY[0x1E695E0F0];
@@ -746,10 +746,10 @@ LABEL_10:
   }
 
   v96[9] = v42;
-  v69 = [(INCodableAttribute *)self __INCodableDescriptionUnsupportedReasonsKey];
-  v95[10] = v69;
+  __INCodableDescriptionUnsupportedReasonsKey = [(INCodableAttribute *)self __INCodableDescriptionUnsupportedReasonsKey];
+  v95[10] = __INCodableDescriptionUnsupportedReasonsKey;
   objc_opt_class();
-  v89 = v27;
+  v89 = _codableDescription;
   if (objc_opt_isKindOfClass())
   {
     v43 = v20;
@@ -761,49 +761,49 @@ LABEL_10:
   }
 
   v96[10] = v43;
-  v68 = [(INCodableAttribute *)self __INCodableDescriptionMetadataKey];
-  v95[11] = v68;
-  v67 = [(INCodableAttribute *)self metadata];
-  v44 = [v67 dictionaryRepresentationWithLocalizer:v4];
-  v45 = v44;
-  if (!v44)
+  __INCodableDescriptionMetadataKey = [(INCodableAttribute *)self __INCodableDescriptionMetadataKey];
+  v95[11] = __INCodableDescriptionMetadataKey;
+  metadata = [(INCodableAttribute *)self metadata];
+  null4 = [metadata dictionaryRepresentationWithLocalizer:localizerCopy];
+  v45 = null4;
+  if (!null4)
   {
-    v44 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v81 = v35;
   v83 = v33;
   v90 = v5;
-  v58 = v44;
-  v96[11] = v44;
-  v66 = [(INCodableAttribute *)self __INCodableDescriptionRelationshipKey];
-  v95[12] = v66;
-  v65 = [(INCodableAttribute *)self relationship];
-  v46 = [v65 dictionaryRepresentationWithLocalizer:v4];
-  v47 = v46;
-  if (!v46)
+  v58 = null4;
+  v96[11] = null4;
+  __INCodableDescriptionRelationshipKey = [(INCodableAttribute *)self __INCodableDescriptionRelationshipKey];
+  v95[12] = __INCodableDescriptionRelationshipKey;
+  relationship = [(INCodableAttribute *)self relationship];
+  null5 = [relationship dictionaryRepresentationWithLocalizer:localizerCopy];
+  v47 = null5;
+  if (!null5)
   {
-    v46 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v96[12] = v46;
-  v48 = [(INCodableAttribute *)self __INCodableDescriptionEntityKeypathKey];
-  v95[13] = v48;
-  v49 = [(INCodableAttribute *)self entityKeypath];
-  v50 = v49;
-  if (!v49)
+  v96[12] = null5;
+  __INCodableDescriptionEntityKeypathKey = [(INCodableAttribute *)self __INCodableDescriptionEntityKeypathKey];
+  v95[13] = __INCodableDescriptionEntityKeypathKey;
+  entityKeypath = [(INCodableAttribute *)self entityKeypath];
+  null6 = entityKeypath;
+  if (!entityKeypath)
   {
-    v50 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v96[13] = v50;
-  v51 = [(INCodableAttribute *)self __INCodableDescriptionWindowSizeKey];
-  v95[14] = v51;
+  v96[13] = null6;
+  __INCodableDescriptionWindowSizeKey = [(INCodableAttribute *)self __INCodableDescriptionWindowSizeKey];
+  v95[14] = __INCodableDescriptionWindowSizeKey;
   v52 = [MEMORY[0x1E696AD98] numberWithInteger:{-[INCodableAttribute windowSize](self, "windowSize")}];
   v96[14] = v52;
   v53 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v96 forKeys:v95 count:15];
 
-  if (!v49)
+  if (!entityKeypath)
   {
   }
 
@@ -815,7 +815,7 @@ LABEL_10:
   {
   }
 
-  if (v77)
+  if (modifier)
   {
   }
 
@@ -839,11 +839,11 @@ LABEL_10:
   {
   }
 
-  v54 = [v53 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v53 if_dictionaryWithNonEmptyValues];
 
   v55 = *MEMORY[0x1E69E9840];
 
-  return v54;
+  return if_dictionaryWithNonEmptyValues;
 }
 
 - (id)dictionaryRepresentation
@@ -854,54 +854,54 @@ LABEL_10:
   return v4;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
   v99 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(INCodableAttribute *)self __INCodableDescriptionNameKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 if_stringByLowercasingFirstCharacter];
-  v8 = [v7 copy];
+  dictionaryCopy = dictionary;
+  __INCodableDescriptionNameKey = [(INCodableAttribute *)self __INCodableDescriptionNameKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionNameKey];
+  if_stringByLowercasingFirstCharacter = [v6 if_stringByLowercasingFirstCharacter];
+  v8 = [if_stringByLowercasingFirstCharacter copy];
   propertyName = self->_propertyName;
   self->_propertyName = v8;
 
-  v10 = [(INCodableAttribute *)self __INCodableDescriptionDisplayNameKey];
-  v11 = [v4 objectForKeyedSubscript:v10];
+  __INCodableDescriptionDisplayNameKey = [(INCodableAttribute *)self __INCodableDescriptionDisplayNameKey];
+  v11 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDisplayNameKey];
   displayName = self->_displayName;
   self->_displayName = v11;
 
-  v13 = [(INCodableAttribute *)self __INCodableDescriptionDisplayNameIDKey];
-  v14 = [v4 objectForKeyedSubscript:v13];
+  __INCodableDescriptionDisplayNameIDKey = [(INCodableAttribute *)self __INCodableDescriptionDisplayNameIDKey];
+  v14 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDisplayNameIDKey];
   displayNameID = self->_displayNameID;
   self->_displayNameID = v14;
 
-  v16 = [(INCodableAttribute *)self __INCodableDescriptionDisplayPriorityKey];
-  v17 = [v4 objectForKeyedSubscript:v16];
+  __INCodableDescriptionDisplayPriorityKey = [(INCodableAttribute *)self __INCodableDescriptionDisplayPriorityKey];
+  v17 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDisplayPriorityKey];
   displayPriorityRank = self->_displayPriorityRank;
   self->_displayPriorityRank = v17;
 
-  v19 = [(INCodableAttribute *)self __INCodableDescriptionDefaultKey];
-  v20 = [v4 objectForKeyedSubscript:v19];
+  __INCodableDescriptionDefaultKey = [(INCodableAttribute *)self __INCodableDescriptionDefaultKey];
+  v20 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionDefaultKey];
   self->_defaultAttribute = [v20 BOOLValue];
 
-  v21 = [(INCodableAttribute *)self __INCodableDescriptionSupportsResolutionKey];
-  v22 = [v4 objectForKeyedSubscript:v21];
+  __INCodableDescriptionSupportsResolutionKey = [(INCodableAttribute *)self __INCodableDescriptionSupportsResolutionKey];
+  v22 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionSupportsResolutionKey];
   self->_supportsResolution = [v22 BOOLValue];
 
-  v23 = [(INCodableAttribute *)self __INCodableDescriptionSupportsDynamicEnumerationKey];
-  v24 = [v4 objectForKeyedSubscript:v23];
+  __INCodableDescriptionSupportsDynamicEnumerationKey = [(INCodableAttribute *)self __INCodableDescriptionSupportsDynamicEnumerationKey];
+  v24 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionSupportsDynamicEnumerationKey];
   self->_supportsDynamicEnumeration = [v24 BOOLValue];
 
-  v25 = [(INCodableAttribute *)self __INCodableDescriptionSupportsSearchKey];
-  v26 = [v4 objectForKeyedSubscript:v25];
+  __INCodableDescriptionSupportsSearchKey = [(INCodableAttribute *)self __INCodableDescriptionSupportsSearchKey];
+  v26 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionSupportsSearchKey];
   self->_supportsSearch = [v26 BOOLValue];
 
-  v27 = [(INCodableAttribute *)self __INCodableDescriptionConfigurableKey];
-  v28 = [v4 objectForKeyedSubscript:v27];
+  __INCodableDescriptionConfigurableKey = [(INCodableAttribute *)self __INCodableDescriptionConfigurableKey];
+  v28 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionConfigurableKey];
   self->_configurable = [v28 BOOLValue];
 
-  v29 = [(INCodableAttribute *)self __INCodableDescriptionWindowSizeKey];
-  v30 = [v4 objectForKeyedSubscript:v29];
+  __INCodableDescriptionWindowSizeKey = [(INCodableAttribute *)self __INCodableDescriptionWindowSizeKey];
+  v30 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionWindowSizeKey];
 
   if (v30)
   {
@@ -926,26 +926,26 @@ LABEL_10:
 
   if ([v32 integerValue] < 1)
   {
-    v33 = 6;
+    integerValue = 6;
   }
 
   else
   {
-    v33 = [v32 integerValue];
+    integerValue = [v32 integerValue];
   }
 
-  self->_windowSize = v33;
-  v34 = [(INCodableAttribute *)self __INCodableDescriptionSupportsMultipleValuesKey];
-  v35 = [v4 objectForKeyedSubscript:v34];
-  v36 = [v35 BOOLValue];
+  self->_windowSize = integerValue;
+  __INCodableDescriptionSupportsMultipleValuesKey = [(INCodableAttribute *)self __INCodableDescriptionSupportsMultipleValuesKey];
+  v35 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionSupportsMultipleValuesKey];
+  bOOLValue = [v35 BOOLValue];
 
-  self->_modifier = v36 ^ 1u;
-  v37 = [(INCodableAttribute *)self __INCodableDescriptionFixedSizeArrayKey];
-  v38 = [v4 objectForKeyedSubscript:v37];
+  self->_modifier = bOOLValue ^ 1u;
+  __INCodableDescriptionFixedSizeArrayKey = [(INCodableAttribute *)self __INCodableDescriptionFixedSizeArrayKey];
+  v38 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionFixedSizeArrayKey];
   self->_fixedSizeArray = [v38 BOOLValue];
 
-  v39 = [(INCodableAttribute *)self __INCodableDescriptionPromptDialogsKey];
-  v40 = [v4 objectForKeyedSubscript:v39];
+  __INCodableDescriptionPromptDialogsKey = [(INCodableAttribute *)self __INCodableDescriptionPromptDialogsKey];
+  v40 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionPromptDialogsKey];
 
   v41 = 0x1E695D000uLL;
   if (v40)
@@ -977,8 +977,8 @@ LABEL_10:
   v90 = v43;
   v44 = [v43 if_map:v97];
   objc_storeStrong(&self->_promptDialogs, v44);
-  v45 = [(INCodableAttribute *)self __INCodableDescriptionArraySizesKey];
-  v46 = [v4 objectForKeyedSubscript:v45];
+  __INCodableDescriptionArraySizesKey = [(INCodableAttribute *)self __INCodableDescriptionArraySizesKey];
+  v46 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionArraySizesKey];
 
   if (v46)
   {
@@ -1005,7 +1005,7 @@ LABEL_10:
   if ([v48 count])
   {
     v87 = v44;
-    v88 = v4;
+    v88 = dictionaryCopy;
     obj = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v48, "count")}];
     v93 = 0u;
     v94 = 0u;
@@ -1038,8 +1038,8 @@ LABEL_10:
 
           if ([INCodableAttributeAvailableArraySizeClasses_codableAvailableArraySizeClasses containsObject:v56])
           {
-            v57 = [(INCodableAttribute *)self __INCodableDescriptionArraySizeSizeKey];
-            v58 = [v54 objectForKeyedSubscript:v57];
+            __INCodableDescriptionArraySizeSizeKey = [(INCodableAttribute *)self __INCodableDescriptionArraySizeSizeKey];
+            v58 = [v54 objectForKeyedSubscript:__INCodableDescriptionArraySizeSizeKey];
             [obj if_setObjectIfNonNil:v58 forKey:v56];
           }
 
@@ -1054,7 +1054,7 @@ LABEL_10:
     }
 
     v44 = v87;
-    v4 = v88;
+    dictionaryCopy = v88;
     v59 = obj;
     v41 = 0x1E695D000;
   }
@@ -1065,8 +1065,8 @@ LABEL_10:
   }
 
   objc_storeStrong(&self->_arraySizesBySizeClass, v59);
-  v60 = [(INCodableAttribute *)self __INCodableDescriptionUnsupportedReasonsKey];
-  v61 = [v4 objectForKeyedSubscript:v60];
+  __INCodableDescriptionUnsupportedReasonsKey = [(INCodableAttribute *)self __INCodableDescriptionUnsupportedReasonsKey];
+  v61 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionUnsupportedReasonsKey];
 
   if (v61)
   {
@@ -1100,16 +1100,16 @@ LABEL_10:
   unsupportedReasons = self->_unsupportedReasons;
   self->_unsupportedReasons = v65;
 
-  v67 = [(INCodableAttribute *)self __INCodableDescriptionMetadataKey];
-  v68 = [v4 objectForKeyedSubscript:v67];
+  __INCodableDescriptionMetadataKey = [(INCodableAttribute *)self __INCodableDescriptionMetadataKey];
+  v68 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionMetadataKey];
 
-  v69 = [(INCodableAttribute *)self __INCodableDescriptionTypeKey];
-  v70 = [v4 objectForKeyedSubscript:v69];
+  __INCodableDescriptionTypeKey = [(INCodableAttribute *)self __INCodableDescriptionTypeKey];
+  v70 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionTypeKey];
   typeString = self->_typeString;
   self->_typeString = v70;
 
-  v72 = [(INCodableAttribute *)self __INCodableDescriptionEnumTypeKey];
-  v73 = [v4 objectForKeyedSubscript:v72];
+  __INCodableDescriptionEnumTypeKey = [(INCodableAttribute *)self __INCodableDescriptionEnumTypeKey];
+  v73 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionEnumTypeKey];
   if (v73)
   {
     v74 = @"Enum";
@@ -1137,15 +1137,15 @@ LABEL_10:
   self->_metadata = v77;
 
   v79 = [[INCodableAttributeRelationship alloc] initWithCodableAttribute:self];
-  v80 = [(INCodableAttribute *)self __INCodableDescriptionRelationshipKey];
-  v81 = [v4 objectForKeyedSubscript:v80];
+  __INCodableDescriptionRelationshipKey = [(INCodableAttribute *)self __INCodableDescriptionRelationshipKey];
+  v81 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionRelationshipKey];
   [(INCodableAttributeRelationship *)v79 updateWithDictionary:v81];
 
   relationship = self->_relationship;
   self->_relationship = v79;
 
-  v83 = [(INCodableAttribute *)self __INCodableDescriptionEntityKeypathKey];
-  v84 = [v4 objectForKeyedSubscript:v83];
+  __INCodableDescriptionEntityKeypathKey = [(INCodableAttribute *)self __INCodableDescriptionEntityKeypathKey];
+  v84 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionEntityKeypathKey];
   entityKeypath = self->_entityKeypath;
   self->_entityKeypath = v84;
 
@@ -1186,7 +1186,7 @@ INCodableAttributeUnsupportedReason *__43__INCodableAttribute_updateWithDictiona
   return v4;
 }
 
-- (id)promptDialogWithType:(unint64_t)a3
+- (id)promptDialogWithType:(unint64_t)type
 {
   promptDialogsByType = self->_promptDialogsByType;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -1194,8 +1194,8 @@ INCodableAttributeUnsupportedReason *__43__INCodableAttribute_updateWithDictiona
 
   if (!v7)
   {
-    v8 = a3 - 2;
-    if (a3 == 2 && (-[NSMutableDictionary objectForKeyedSubscript:](self->_promptDialogsByType, "objectForKeyedSubscript:", &unk_1F02D7FD8), v9 = objc_claimAutoreleasedReturnValue(), [v9 formatString], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v11))
+    v8 = type - 2;
+    if (type == 2 && (-[NSMutableDictionary objectForKeyedSubscript:](self->_promptDialogsByType, "objectForKeyedSubscript:", &unk_1F02D7FD8), v9 = objc_claimAutoreleasedReturnValue(), [v9 formatString], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "length"), v10, v9, v11))
     {
       v7 = 0;
     }
@@ -1204,16 +1204,16 @@ INCodableAttributeUnsupportedReason *__43__INCodableAttribute_updateWithDictiona
     {
       v7 = objc_alloc_init(INCodableAttributePromptDialog);
       [(INCodableAttributeDialog *)v7 _setCodableAttribute:self];
-      [(INCodableAttributePromptDialog *)v7 setType:a3];
+      [(INCodableAttributePromptDialog *)v7 setType:type];
       [(INCodableAttributeDialog *)v7 setDefaultDialog:1];
-      if (a3 - 1 > 5)
+      if (type - 1 > 5)
       {
         v12 = @"Primary";
       }
 
       else
       {
-        v12 = off_1E7285DD8[a3 - 1];
+        v12 = off_1E7285DD8[type - 1];
       }
 
       v13 = v12;
@@ -1238,22 +1238,22 @@ INCodableAttributeUnsupportedReason *__43__INCodableAttribute_updateWithDictiona
   return v7;
 }
 
-- (id)localizedDisplayNameWithLocalizer:(id)a3
+- (id)localizedDisplayNameWithLocalizer:(id)localizer
 {
-  v4 = a3;
-  v5 = [(INCodableAttribute *)self _codableDescription];
-  v6 = [(INCodableAttribute *)self displayNameID];
-  v7 = [(INCodableAttribute *)self displayName];
-  v8 = [v5 _customLocalizationTable];
-  if (v8)
+  localizerCopy = localizer;
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  displayNameID = [(INCodableAttribute *)self displayNameID];
+  displayName = [(INCodableAttribute *)self displayName];
+  _customLocalizationTable = [_codableDescription _customLocalizationTable];
+  if (_customLocalizationTable)
   {
-    v9 = INLocalizedStringFromCodable(v6, v7, v8, v4, 0);
+    v9 = INLocalizedStringFromCodable(displayNameID, displayName, _customLocalizationTable, localizerCopy, 0);
   }
 
   else
   {
-    v10 = [v5 _localizationTable];
-    v9 = INLocalizedStringFromCodable(v6, v7, v10, v4, 0);
+    _localizationTable = [_codableDescription _localizationTable];
+    v9 = INLocalizedStringFromCodable(displayNameID, displayName, _localizationTable, localizerCopy, 0);
   }
 
   return v9;
@@ -1267,32 +1267,32 @@ INCodableAttributeUnsupportedReason *__43__INCodableAttribute_updateWithDictiona
   return v4;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INCodableAttribute;
   v6 = [(INCodableAttribute *)&v11 description];
-  v7 = [(INCodableAttribute *)self dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  dictionaryRepresentation = [(INCodableAttribute *)self dictionaryRepresentation];
+  v8 = [dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (int64_t)arraySizeForSizeClass:(id)a3
+- (int64_t)arraySizeForSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_arraySizesBySizeClass objectForKeyedSubscript:v4];
+  classCopy = class;
+  v5 = [(NSDictionary *)self->_arraySizesBySizeClass objectForKeyedSubscript:classCopy];
   if ([(INCodableAttribute *)self isFixedSizeArray])
   {
     if (v5)
     {
       if ([v5 integerValue] >= 1)
       {
-        v6 = [v5 integerValue];
+        integerValue = [v5 integerValue];
 LABEL_12:
-        v7 = v6;
+        v7 = integerValue;
         goto LABEL_19;
       }
 
@@ -1301,27 +1301,27 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v8 = [v4 isEqualToString:@"ExtraLarge"];
+    v8 = [classCopy isEqualToString:@"ExtraLarge"];
     v9 = @"Large";
     if ((v8 & 1) == 0)
     {
-      v10 = [v4 isEqualToString:@"Large"];
+      v10 = [classCopy isEqualToString:@"Large"];
       v9 = @"Medium";
       if ((v10 & 1) == 0)
       {
-        if ([v4 isEqualToString:@"Medium"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"AccessoryCorner"))
+        if ([classCopy isEqualToString:@"Medium"] & 1) != 0 || (objc_msgSend(classCopy, "isEqualToString:", @"AccessoryCorner"))
         {
           v9 = @"Small";
         }
 
-        else if ([v4 isEqualToString:@"AccessoryCircular"])
+        else if ([classCopy isEqualToString:@"AccessoryCircular"])
         {
           v9 = @"AccessoryCorner";
         }
 
         else
         {
-          if (([v4 isEqualToString:@"AccessoryRectangular"] & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"AccessoryInline"))
+          if (([classCopy isEqualToString:@"AccessoryRectangular"] & 1) == 0 && !objc_msgSend(classCopy, "isEqualToString:", @"AccessoryInline"))
           {
             goto LABEL_18;
           }
@@ -1331,7 +1331,7 @@ LABEL_18:
       }
     }
 
-    v6 = [(INCodableAttribute *)self arraySizeForSizeClass:v9];
+    integerValue = [(INCodableAttribute *)self arraySizeForSizeClass:v9];
     goto LABEL_12;
   }
 
@@ -1341,16 +1341,16 @@ LABEL_19:
   return v7;
 }
 
-- (unint64_t)indexForUnsupportedReason:(id)a3
+- (unint64_t)indexForUnsupportedReason:(id)reason
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(INCodableAttribute *)self unsupportedReasons];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  unsupportedReasons = [(INCodableAttribute *)self unsupportedReasons];
+  v6 = [unsupportedReasons countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1364,12 +1364,12 @@ LABEL_3:
     {
       if (*v18 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(unsupportedReasons);
       }
 
-      v12 = [*(*(&v17 + 1) + 8 * v10) code];
-      v13 = [v4 code];
-      v14 = [v12 isEqualToString:v13];
+      code = [*(*(&v17 + 1) + 8 * v10) code];
+      code2 = [reasonCopy code];
+      v14 = [code isEqualToString:code2];
 
       if (v14)
       {
@@ -1379,7 +1379,7 @@ LABEL_3:
       ++v11;
       if (v7 == ++v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [unsupportedReasons countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -1400,11 +1400,11 @@ LABEL_9:
   return v11;
 }
 
-- (id)unsupportedReasonWithIndex:(unint64_t)a3
+- (id)unsupportedReasonWithIndex:(unint64_t)index
 {
-  v4 = a3 - 1;
-  v5 = [(INCodableAttribute *)self unsupportedReasons];
-  v6 = [v5 count];
+  v4 = index - 1;
+  unsupportedReasons = [(INCodableAttribute *)self unsupportedReasons];
+  v6 = [unsupportedReasons count];
 
   if (v4 >= v6)
   {
@@ -1413,23 +1413,23 @@ LABEL_9:
 
   else
   {
-    v7 = [(INCodableAttribute *)self unsupportedReasons];
-    v8 = [v7 objectAtIndex:v4];
+    unsupportedReasons2 = [(INCodableAttribute *)self unsupportedReasons];
+    v8 = [unsupportedReasons2 objectAtIndex:v4];
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v6 = [(INCodableAttribute *)self propertyName];
-    if (v6)
+    propertyName = [(INCodableAttribute *)self propertyName];
+    if (propertyName)
     {
-      v3 = [(INCodableAttribute *)self propertyName];
-      v7 = v5;
+      propertyName2 = [(INCodableAttribute *)self propertyName];
+      v7 = equalCopy;
       if (v7)
       {
         objc_opt_class();
@@ -1451,9 +1451,9 @@ LABEL_9:
 
       v11 = v8;
 
-      v12 = [v11 propertyName];
+      propertyName3 = [v11 propertyName];
 
-      v10 = [v3 isEqual:v12];
+      v10 = [propertyName2 isEqual:propertyName3];
     }
 
     else
@@ -1461,19 +1461,19 @@ LABEL_9:
       v10 = 0;
     }
 
-    v13 = [(INCodableAttribute *)self displayPriorityRank];
-    if (v13 || ([v5 displayPriorityRank], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    displayPriorityRank = [(INCodableAttribute *)self displayPriorityRank];
+    if (displayPriorityRank || ([equalCopy displayPriorityRank], (propertyName2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v14 = [(INCodableAttribute *)self displayPriorityRank];
-      v15 = [v5 displayPriorityRank];
-      v16 = [v14 isEqual:v15];
+      displayPriorityRank2 = [(INCodableAttribute *)self displayPriorityRank];
+      displayPriorityRank3 = [equalCopy displayPriorityRank];
+      v16 = [displayPriorityRank2 isEqual:displayPriorityRank3];
 
-      if (v13)
+      if (displayPriorityRank)
       {
 LABEL_17:
 
-        v17 = [(INCodableAttribute *)self modifier];
-        v9 = (v17 == [v5 modifier]) & v10 & v16;
+        modifier = [(INCodableAttribute *)self modifier];
+        v9 = (modifier == [equalCopy modifier]) & v10 & v16;
         goto LABEL_18;
       }
     }
@@ -1494,48 +1494,48 @@ LABEL_18:
 
 - (SEL)setter
 {
-  v2 = [(INCodableAttribute *)self propertyName];
+  propertyName = [(INCodableAttribute *)self propertyName];
   v3 = objc_opt_class();
-  v4 = INSetterFromString(v2, v3);
+  v4 = INSetterFromString(propertyName, v3);
 
   return v4;
 }
 
 - (SEL)getter
 {
-  v2 = [(INCodableAttribute *)self propertyName];
-  v3 = NSSelectorFromString(v2);
+  propertyName = [(INCodableAttribute *)self propertyName];
+  v3 = NSSelectorFromString(propertyName);
 
   return v3;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
   v72 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = objc_alloc_init(a1);
-  [v7 setModifier:{objc_msgSend(v6, "intents_intForKey:", @"modifier"}];
-  [v7 setFixedSizeArray:{objc_msgSend(v6, "intents_BOOLForKey:", @"fixedSizeArray"}];
-  v8 = [v6 intents_stringForKey:@"propertyName"];
+  representationCopy = representation;
+  v7 = objc_alloc_init(self);
+  [v7 setModifier:{objc_msgSend(representationCopy, "intents_intForKey:", @"modifier"}];
+  [v7 setFixedSizeArray:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"fixedSizeArray"}];
+  v8 = [representationCopy intents_stringForKey:@"propertyName"];
   [v7 setPropertyName:v8];
 
-  v9 = [v6 intents_numberForKey:@"displayPriorityRank"];
+  v9 = [representationCopy intents_numberForKey:@"displayPriorityRank"];
   [v7 setDisplayPriorityRank:v9];
 
-  v10 = [v6 intents_stringForKey:@"displayName"];
+  v10 = [representationCopy intents_stringForKey:@"displayName"];
   [v7 setDisplayName:v10];
 
-  v11 = [v6 intents_stringForKey:@"displayNameID"];
+  v11 = [representationCopy intents_stringForKey:@"displayNameID"];
   [v7 setDisplayNameID:v11];
 
-  v12 = [v6 intents_stringForKey:@"_typeString"];
+  v12 = [representationCopy intents_stringForKey:@"_typeString"];
   [v7 _setTypeString:v12];
 
-  v13 = [v6 intents_stringForKey:@"languageCode"];
+  v13 = [representationCopy intents_stringForKey:@"languageCode"];
   [v7 setLanguageCode:v13];
 
-  v14 = [v6 intents_safeObjectForKey:@"metadata" ofType:objc_opt_class()];
-  v15 = [v6 objectForKeyedSubscript:@"enumType"];
+  v14 = [representationCopy intents_safeObjectForKey:@"metadata" ofType:objc_opt_class()];
+  v15 = [representationCopy objectForKeyedSubscript:@"enumType"];
   if (v15)
   {
     v16 = @"Enum";
@@ -1544,8 +1544,8 @@ LABEL_18:
 
   else
   {
-    v18 = [v7 _typeString];
-    v16 = INCodableAttributeMetadataTypeNameWithTypeName(v18);
+    _typeString = [v7 _typeString];
+    v16 = INCodableAttributeMetadataTypeNameWithTypeName(_typeString);
   }
 
   v70 = 0;
@@ -1554,11 +1554,11 @@ LABEL_18:
   if (v20)
   {
     v21 = v20;
-    if (a4)
+    if (error)
     {
       v22 = v20;
       v23 = 0;
-      *a4 = v21;
+      *error = v21;
     }
 
     else
@@ -1572,16 +1572,16 @@ LABEL_18:
     [v19 setCodableAttribute:v7];
     [v7 setMetadata:v19];
     v69 = 0;
-    v24 = [INCodableAttributeRelationship intents_widgetPlistRepresentableInDict:v6 key:@"relationship" error:&v69];
+    v24 = [INCodableAttributeRelationship intents_widgetPlistRepresentableInDict:representationCopy key:@"relationship" error:&v69];
     v25 = v69;
     if (v25)
     {
       v21 = v25;
-      if (a4)
+      if (error)
       {
         v26 = v25;
         v23 = 0;
-        *a4 = v21;
+        *error = v21;
       }
 
       else
@@ -1594,21 +1594,21 @@ LABEL_18:
     {
       [v24 setCodableAttribute:v7];
       [v7 setRelationship:v24];
-      [v7 setSupportsResolution:{objc_msgSend(v6, "intents_BOOLForKey:", @"supportsResolution"}];
-      [v7 setConfigurable:{objc_msgSend(v6, "intents_BOOLForKey:", @"configurable"}];
-      [v7 setSupportsDynamicEnumeration:{objc_msgSend(v6, "intents_BOOLForKey:", @"supportsDynamicEnumeration"}];
-      [v7 setSupportsSearch:{objc_msgSend(v6, "intents_BOOLForKey:", @"supportsSearch"}];
+      [v7 setSupportsResolution:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"supportsResolution"}];
+      [v7 setConfigurable:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"configurable"}];
+      [v7 setSupportsDynamicEnumeration:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"supportsDynamicEnumeration"}];
+      [v7 setSupportsSearch:{objc_msgSend(representationCopy, "intents_BOOLForKey:", @"supportsSearch"}];
       v68 = 0;
-      v27 = [INCodableAttributePromptDialog intents_arrayOfWidgetPlistRepresentableInDict:v6 key:@"promptDialogs" error:&v68 resultTransformer:0];
+      v27 = [INCodableAttributePromptDialog intents_arrayOfWidgetPlistRepresentableInDict:representationCopy key:@"promptDialogs" error:&v68 resultTransformer:0];
       v28 = v68;
       if (v28)
       {
         v21 = v28;
-        if (a4)
+        if (error)
         {
           v29 = v28;
           v23 = 0;
-          *a4 = v21;
+          *error = v21;
         }
 
         else
@@ -1631,17 +1631,17 @@ LABEL_18:
         v58 = v31;
         [v31 enumerateObjectsUsingBlock:v66];
         v65 = 0;
-        v33 = [INCodableAttributeUnsupportedReason intents_arrayOfWidgetPlistRepresentableInDict:v6 key:@"unsupportedReasons" error:&v65 resultTransformer:0];
+        v33 = [INCodableAttributeUnsupportedReason intents_arrayOfWidgetPlistRepresentableInDict:representationCopy key:@"unsupportedReasons" error:&v65 resultTransformer:0];
         v34 = v65;
         v21 = v34;
         v57 = v33;
         if (v34)
         {
-          if (a4)
+          if (error)
           {
             v35 = v34;
             v23 = 0;
-            *a4 = v21;
+            *error = v21;
           }
 
           else
@@ -1656,7 +1656,7 @@ LABEL_18:
           v53 = v19;
           v54 = v16;
           v55 = v14;
-          v56 = v6;
+          v56 = representationCopy;
           [v32 _setUnsupportedReasons:v33];
           v63[0] = MEMORY[0x1E69E9820];
           v63[1] = 3221225472;
@@ -1669,8 +1669,8 @@ LABEL_18:
           v62 = 0u;
           v59 = 0u;
           v60 = 0u;
-          v37 = [v36 promptDialogs];
-          v38 = [v37 countByEnumeratingWithState:&v59 objects:v71 count:16];
+          promptDialogs = [v36 promptDialogs];
+          v38 = [promptDialogs countByEnumeratingWithState:&v59 objects:v71 count:16];
           if (v38)
           {
             v39 = v38;
@@ -1681,7 +1681,7 @@ LABEL_18:
               {
                 if (*v60 != v40)
                 {
-                  objc_enumerationMutation(v37);
+                  objc_enumerationMutation(promptDialogs);
                 }
 
                 v42 = *(*(&v59 + 1) + 8 * i);
@@ -1699,13 +1699,13 @@ LABEL_18:
                 [v43 setObject:v42 forKeyedSubscript:v46];
               }
 
-              v39 = [v37 countByEnumeratingWithState:&v59 objects:v71 count:16];
+              v39 = [promptDialogs countByEnumeratingWithState:&v59 objects:v71 count:16];
             }
 
             while (v39);
           }
 
-          v6 = v56;
+          representationCopy = v56;
           v47 = [v56 intents_stringForKey:@"entityKeypath"];
           [v36 setEntityKeypath:v47];
 
@@ -1735,386 +1735,386 @@ LABEL_18:
 
 - (id)__INTypeCodableDescriptionWindowSizeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeWindowSizeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeWindowSizeKey = [objc_opt_class() __INCodableAttributeWindowSizeKey];
 
-  return v3;
+  return __INCodableAttributeWindowSizeKey;
 }
 
 - (id)__INTypeCodableDescriptionUnsupportedReasonsKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeUnsupportedReasonsKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeUnsupportedReasonsKey = [objc_opt_class() __INCodableAttributeUnsupportedReasonsKey];
 
-  return v3;
+  return __INCodableAttributeUnsupportedReasonsKey;
 }
 
 - (id)__INTypeCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeTypeKey = [objc_opt_class() __INCodableAttributeTypeKey];
 
-  return v3;
+  return __INCodableAttributeTypeKey;
 }
 
 - (id)__INTypeCodableDescriptionTagKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeTagKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeTagKey = [objc_opt_class() __INCodableAttributeTagKey];
 
-  return v3;
+  return __INCodableAttributeTagKey;
 }
 
 - (id)__INTypeCodableDescriptionSupportsSearchKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsSearchKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsSearchKey = [objc_opt_class() __INCodableAttributeSupportsSearchKey];
 
-  return v3;
+  return __INCodableAttributeSupportsSearchKey;
 }
 
 - (id)__INTypeCodableDescriptionSupportsResolutionKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsResolutionKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsResolutionKey = [objc_opt_class() __INCodableAttributeSupportsResolutionKey];
 
-  return v3;
+  return __INCodableAttributeSupportsResolutionKey;
 }
 
 - (id)__INTypeCodableDescriptionSupportsMultipleValuesKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsMultipleValuesKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsMultipleValuesKey = [objc_opt_class() __INCodableAttributeSupportsMultipleValuesKey];
 
-  return v3;
+  return __INCodableAttributeSupportsMultipleValuesKey;
 }
 
 - (id)__INTypeCodableDescriptionSupportsDynamicEnumerationKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsDynamicEnumerationKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsDynamicEnumerationKey = [objc_opt_class() __INCodableAttributeSupportsDynamicEnumerationKey];
 
-  return v3;
+  return __INCodableAttributeSupportsDynamicEnumerationKey;
 }
 
 - (id)__INTypeCodableDescriptionRelationshipKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeRelationshipKey = [objc_opt_class() __INCodableAttributeRelationshipKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipKey;
 }
 
 - (id)__INTypeCodableDescriptionPromptDialogsKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributePromptDialogsKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributePromptDialogsKey = [objc_opt_class() __INCodableAttributePromptDialogsKey];
 
-  return v3;
+  return __INCodableAttributePromptDialogsKey;
 }
 
 - (id)__INTypeCodableDescriptionNameKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeNameKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeNameKey = [objc_opt_class() __INCodableAttributeNameKey];
 
-  return v3;
+  return __INCodableAttributeNameKey;
 }
 
 - (id)__INTypeCodableDescriptionMetadataKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeMetadataKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeMetadataKey = [objc_opt_class() __INCodableAttributeMetadataKey];
 
-  return v3;
+  return __INCodableAttributeMetadataKey;
 }
 
 - (id)__INTypeCodableDescriptionFixedSizeArrayKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeFixedSizeArrayKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeFixedSizeArrayKey = [objc_opt_class() __INCodableAttributeFixedSizeArrayKey];
 
-  return v3;
+  return __INCodableAttributeFixedSizeArrayKey;
 }
 
 - (id)__INTypeCodableDescriptionEnumTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeEnumTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeEnumTypeKey = [objc_opt_class() __INCodableAttributeEnumTypeKey];
 
-  return v3;
+  return __INCodableAttributeEnumTypeKey;
 }
 
 - (id)__INTypeCodableDescriptionEntityKeypathKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeEntityKeypathKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeEntityKeypathKey = [objc_opt_class() __INCodableAttributeEntityKeypathKey];
 
-  return v3;
+  return __INCodableAttributeEntityKeypathKey;
 }
 
 - (id)__INTypeCodableDescriptionDisplayPriorityKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDisplayPriorityKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDisplayPriorityKey = [objc_opt_class() __INCodableAttributeDisplayPriorityKey];
 
-  return v3;
+  return __INCodableAttributeDisplayPriorityKey;
 }
 
 - (id)__INTypeCodableDescriptionDisplayNameIDKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDisplayNameIDKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDisplayNameIDKey = [objc_opt_class() __INCodableAttributeDisplayNameIDKey];
 
-  return v3;
+  return __INCodableAttributeDisplayNameIDKey;
 }
 
 - (id)__INTypeCodableDescriptionDisplayNameKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDisplayNameKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDisplayNameKey = [objc_opt_class() __INCodableAttributeDisplayNameKey];
 
-  return v3;
+  return __INCodableAttributeDisplayNameKey;
 }
 
 - (id)__INTypeCodableDescriptionDefaultKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDefaultKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDefaultKey = [objc_opt_class() __INCodableAttributeDefaultKey];
 
-  return v3;
+  return __INCodableAttributeDefaultKey;
 }
 
 - (id)__INTypeCodableDescriptionConfigurableKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeConfigurableKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeConfigurableKey = [objc_opt_class() __INCodableAttributeConfigurableKey];
 
-  return v3;
+  return __INCodableAttributeConfigurableKey;
 }
 
 - (id)__INTypeCodableDescriptionArraySizesKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeArraySizesKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeArraySizesKey = [objc_opt_class() __INCodableAttributeArraySizesKey];
 
-  return v3;
+  return __INCodableAttributeArraySizesKey;
 }
 
 - (id)__INTypeCodableDescriptionArraySizeSizeClassKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeArraySizeSizeClassKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeArraySizeSizeClassKey = [objc_opt_class() __INCodableAttributeArraySizeSizeClassKey];
 
-  return v3;
+  return __INCodableAttributeArraySizeSizeClassKey;
 }
 
 - (id)__INTypeCodableDescriptionArraySizeSizeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeArraySizeSizeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeArraySizeSizeKey = [objc_opt_class() __INCodableAttributeArraySizeSizeKey];
 
-  return v3;
+  return __INCodableAttributeArraySizeSizeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionWindowSizeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeWindowSizeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeWindowSizeKey = [objc_opt_class() __INCodableAttributeWindowSizeKey];
 
-  return v3;
+  return __INCodableAttributeWindowSizeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionUnsupportedReasonsKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeUnsupportedReasonsKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeUnsupportedReasonsKey = [objc_opt_class() __INCodableAttributeUnsupportedReasonsKey];
 
-  return v3;
+  return __INCodableAttributeUnsupportedReasonsKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeTypeKey = [objc_opt_class() __INCodableAttributeTypeKey];
 
-  return v3;
+  return __INCodableAttributeTypeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionTagKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeTagKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeTagKey = [objc_opt_class() __INCodableAttributeTagKey];
 
-  return v3;
+  return __INCodableAttributeTagKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionSupportsSearchKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsSearchKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsSearchKey = [objc_opt_class() __INCodableAttributeSupportsSearchKey];
 
-  return v3;
+  return __INCodableAttributeSupportsSearchKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionSupportsResolutionKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsResolutionKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsResolutionKey = [objc_opt_class() __INCodableAttributeSupportsResolutionKey];
 
-  return v3;
+  return __INCodableAttributeSupportsResolutionKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionSupportsMultipleValuesKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsMultipleValuesKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsMultipleValuesKey = [objc_opt_class() __INCodableAttributeSupportsMultipleValuesKey];
 
-  return v3;
+  return __INCodableAttributeSupportsMultipleValuesKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionSupportsDynamicEnumerationKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeSupportsDynamicEnumerationKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeSupportsDynamicEnumerationKey = [objc_opt_class() __INCodableAttributeSupportsDynamicEnumerationKey];
 
-  return v3;
+  return __INCodableAttributeSupportsDynamicEnumerationKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionRelationshipKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeRelationshipKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeRelationshipKey = [objc_opt_class() __INCodableAttributeRelationshipKey];
 
-  return v3;
+  return __INCodableAttributeRelationshipKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionPromptDialogsKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributePromptDialogsKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributePromptDialogsKey = [objc_opt_class() __INCodableAttributePromptDialogsKey];
 
-  return v3;
+  return __INCodableAttributePromptDialogsKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionNameKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeNameKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeNameKey = [objc_opt_class() __INCodableAttributeNameKey];
 
-  return v3;
+  return __INCodableAttributeNameKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionMetadataKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeMetadataKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeMetadataKey = [objc_opt_class() __INCodableAttributeMetadataKey];
 
-  return v3;
+  return __INCodableAttributeMetadataKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionFixedSizeArrayKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeFixedSizeArrayKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeFixedSizeArrayKey = [objc_opt_class() __INCodableAttributeFixedSizeArrayKey];
 
-  return v3;
+  return __INCodableAttributeFixedSizeArrayKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionEnumTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeEnumTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeEnumTypeKey = [objc_opt_class() __INCodableAttributeEnumTypeKey];
 
-  return v3;
+  return __INCodableAttributeEnumTypeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionEntityKeypathKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeEntityKeypathKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeEntityKeypathKey = [objc_opt_class() __INCodableAttributeEntityKeypathKey];
 
-  return v3;
+  return __INCodableAttributeEntityKeypathKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDisplayPriorityKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDisplayPriorityKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDisplayPriorityKey = [objc_opt_class() __INCodableAttributeDisplayPriorityKey];
 
-  return v3;
+  return __INCodableAttributeDisplayPriorityKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDisplayNameIDKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDisplayNameIDKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDisplayNameIDKey = [objc_opt_class() __INCodableAttributeDisplayNameIDKey];
 
-  return v3;
+  return __INCodableAttributeDisplayNameIDKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDisplayNameKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDisplayNameKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDisplayNameKey = [objc_opt_class() __INCodableAttributeDisplayNameKey];
 
-  return v3;
+  return __INCodableAttributeDisplayNameKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionDefaultKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeDefaultKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeDefaultKey = [objc_opt_class() __INCodableAttributeDefaultKey];
 
-  return v3;
+  return __INCodableAttributeDefaultKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionConfigurableKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeConfigurableKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeConfigurableKey = [objc_opt_class() __INCodableAttributeConfigurableKey];
 
-  return v3;
+  return __INCodableAttributeConfigurableKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionArraySizesKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeArraySizesKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeArraySizesKey = [objc_opt_class() __INCodableAttributeArraySizesKey];
 
-  return v3;
+  return __INCodableAttributeArraySizesKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionArraySizeSizeClassKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeArraySizeSizeClassKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeArraySizeSizeClassKey = [objc_opt_class() __INCodableAttributeArraySizeSizeClassKey];
 
-  return v3;
+  return __INCodableAttributeArraySizeSizeClassKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionArraySizeSizeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeArraySizeSizeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeArraySizeSizeKey = [objc_opt_class() __INCodableAttributeArraySizeSizeKey];
 
-  return v3;
+  return __INCodableAttributeArraySizeSizeKey;
 }
 
 - (id)__INCodableDescriptionArraySizeSizeClassKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeArraySizeSizeClassKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeArraySizeSizeClassKey = [objc_opt_class() __INCodableAttributeArraySizeSizeClassKey];
 
-  return v3;
+  return __INCodableAttributeArraySizeSizeClassKey;
 }
 
 - (id)__INCodableDescriptionArraySizeSizeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableAttributeArraySizeSizeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableAttributeArraySizeSizeKey = [objc_opt_class() __INCodableAttributeArraySizeSizeKey];
 
-  return v3;
+  return __INCodableAttributeArraySizeSizeKey;
 }
 
 @end

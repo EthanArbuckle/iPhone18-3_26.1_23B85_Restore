@@ -1,17 +1,17 @@
 @interface ShelvesViewSwiftUIHelperCell
 - (UICellConfigurationState)_bridgedConfigurationState;
-- (_TtC23ShelfKitCollectionViews28ShelvesViewSwiftUIHelperCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC23ShelfKitCollectionViews28ShelvesViewSwiftUIHelperCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)prepareForReuse;
 @end
 
 @implementation ShelvesViewSwiftUIHelperCell
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_1977F4(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_1977F4(attributesCopy);
 }
 
 - (UICellConfigurationState)_bridgedConfigurationState
@@ -20,7 +20,7 @@
   v4 = *(v3 - 8);
   __chkstk_darwin(v3);
   v6 = &v10 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
+  selfCopy = self;
   sub_197AF8();
 
   v8.super.super.isa = sub_3045E8().super.super.isa;
@@ -43,12 +43,12 @@
   v3[8] = 1;
 }
 
-- (_TtC23ShelfKitCollectionViews28ShelvesViewSwiftUIHelperCell)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews28ShelvesViewSwiftUIHelperCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   __asm { FMOV            V0.2D, #10.0 }
 

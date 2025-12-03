@@ -1,13 +1,13 @@
 @interface TTSVoiceResourceManager
-+ (id)effectiveResourceForLanguageCode:(id)a3 andVoiceType:(int64_t)a4;
-+ (void)enumerateLoadableResourcesInAsset:(id)a3 usingBlock:(id)a4;
++ (id)effectiveResourceForLanguageCode:(id)code andVoiceType:(int64_t)type;
++ (void)enumerateLoadableResourcesInAsset:(id)asset usingBlock:(id)block;
 @end
 
 @implementation TTSVoiceResourceManager
 
-+ (id)effectiveResourceForLanguageCode:(id)a3 andVoiceType:(int64_t)a4
++ (id)effectiveResourceForLanguageCode:(id)code andVoiceType:(int64_t)type
 {
-  v5 = a3;
+  codeCopy = code;
   if ((_AXSSpeechSynthesisOptions() & 8) != 0)
   {
     v9 = AXTTSLogCommon();
@@ -22,31 +22,31 @@
 
   else
   {
-    v8 = objc_msgSend_voiceResourceForLanguage_voiceType_(TTSSiriAssetManager, v6, v5, a4, v7);
+    v8 = objc_msgSend_voiceResourceForLanguage_voiceType_(TTSSiriAssetManager, v6, codeCopy, type, v7);
   }
 
   return v8;
 }
 
-+ (void)enumerateLoadableResourcesInAsset:(id)a3 usingBlock:(id)a4
++ (void)enumerateLoadableResourcesInAsset:(id)asset usingBlock:(id)block
 {
   v58 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v49 = v5;
-  if (v5)
+  assetCopy = asset;
+  blockCopy = block;
+  v49 = assetCopy;
+  if (assetCopy)
   {
     v7 = AXTTSLogRange();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_1A957878C(v5, v7, v8, v9, v10);
+      sub_1A957878C(assetCopy, v7, v8, v9, v10);
     }
 
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    obj = objc_msgSend_resourceList(v5, v11, v12, v13, v14);
+    obj = objc_msgSend_resourceList(assetCopy, v11, v12, v13, v14);
     v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v53, v57, 16);
     if (v16)
     {
@@ -79,7 +79,7 @@
             v52 = v45;
             v46 = v45;
             v47 = _Block_copy(aBlock);
-            v6[2](v6, v28, v24, v47, v46);
+            blockCopy[2](blockCopy, v28, v24, v47, v46);
           }
         }
 

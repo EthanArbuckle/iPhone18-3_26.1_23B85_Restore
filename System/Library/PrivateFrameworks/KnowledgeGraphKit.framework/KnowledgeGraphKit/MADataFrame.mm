@@ -1,12 +1,12 @@
 @interface MADataFrame
-- (BOOL)isEqual:(id)a3;
-- (MADataFrame)initWithName:(id)a3 rowIndexCache:(id)a4 columnIndexCache:(id)a5 matrix:(id)a6;
-- (MADataFrame)initWithName:(id)a3 rowLabels:(id)a4 columnLabels:(id)a5 matrix:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (MADataFrame)initWithName:(id)name rowIndexCache:(id)cache columnIndexCache:(id)indexCache matrix:(id)matrix;
+- (MADataFrame)initWithName:(id)name rowLabels:(id)labels columnLabels:(id)columnLabels matrix:(id)matrix;
 - (id)csvString;
-- (id)dataFrameByAppendingColumnsOfDataFrame:(id)a3 withName:(id)a4;
-- (id)numberAtRow:(id)a3 column:(id)a4;
-- (int64_t)indexOfColumnWithLabel:(id)a3;
-- (int64_t)indexOfRowWithLabel:(id)a3;
+- (id)dataFrameByAppendingColumnsOfDataFrame:(id)frame withName:(id)name;
+- (id)numberAtRow:(id)row column:(id)column;
+- (int64_t)indexOfColumnWithLabel:(id)label;
+- (int64_t)indexOfRowWithLabel:(id)label;
 - (unint64_t)hash;
 @end
 
@@ -20,10 +20,10 @@
   return v4 ^ v5 ^ [(MAFloatMatrix *)self->_matrix hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
@@ -33,13 +33,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       name = self->_name;
       if (name)
       {
-        v8 = [(MADataFrame *)v5 name];
-        v9 = [(NSString *)name isEqual:v8];
+        name = [(MADataFrame *)v5 name];
+        v9 = [(NSString *)name isEqual:name];
 
         if (!v9)
         {
@@ -50,8 +50,8 @@
       rowIndexCache = self->_rowIndexCache;
       if (rowIndexCache)
       {
-        v11 = [(MADataFrame *)v6 rowIndexCache];
-        v12 = [(MAIndexCache *)rowIndexCache isEqual:v11];
+        rowIndexCache = [(MADataFrame *)v6 rowIndexCache];
+        v12 = [(MAIndexCache *)rowIndexCache isEqual:rowIndexCache];
 
         if (!v12)
         {
@@ -69,8 +69,8 @@ LABEL_12:
       else
       {
         matrix = self->_matrix;
-        v17 = [(MADataFrame *)v6 matrix];
-        v18 = [(MAFloatMatrix *)matrix isEqual:v17];
+        matrix = [(MADataFrame *)v6 matrix];
+        v18 = [(MAFloatMatrix *)matrix isEqual:matrix];
       }
     }
 
@@ -88,21 +88,21 @@ LABEL_12:
   v24 = *MEMORY[0x277D85DE8];
   rowIndexCache = self->_rowIndexCache;
   columnIndexCache = self->_columnIndexCache;
-  v5 = [MEMORY[0x277CCAB68] string];
-  v6 = v5;
+  string = [MEMORY[0x277CCAB68] string];
+  v6 = string;
   if (columnIndexCache)
   {
     if (rowIndexCache)
     {
-      [v5 appendString:@"Index"];
+      [string appendString:@"Index"];
     }
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(MAIndexCache *)self->_columnIndexCache labels];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    labels = [(MAIndexCache *)self->_columnIndexCache labels];
+    v8 = [labels countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -113,13 +113,13 @@ LABEL_12:
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(labels);
           }
 
           [v6 appendFormat:@", %@", *(*(&v19 + 1) + 8 * i)];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [labels countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
@@ -135,8 +135,8 @@ LABEL_12:
     {
       if (rowIndexCache)
       {
-        v13 = [(MAIndexCache *)self->_rowIndexCache labels];
-        v14 = [v13 objectAtIndexedSubscript:v12];
+        labels2 = [(MAIndexCache *)self->_rowIndexCache labels];
+        v14 = [labels2 objectAtIndexedSubscript:v12];
         [v6 appendFormat:@"%@", v14];
       }
 
@@ -165,16 +165,16 @@ LABEL_12:
   return v6;
 }
 
-- (id)dataFrameByAppendingColumnsOfDataFrame:(id)a3 withName:(id)a4
+- (id)dataFrameByAppendingColumnsOfDataFrame:(id)frame withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  frameCopy = frame;
+  nameCopy = name;
   rowIndexCache = self->_rowIndexCache;
   if (rowIndexCache)
   {
 LABEL_4:
-    v10 = [v6 rowIndexCache];
-    v11 = [(MAIndexCache *)rowIndexCache isEqual:v10];
+    rowIndexCache = [frameCopy rowIndexCache];
+    v11 = [(MAIndexCache *)rowIndexCache isEqual:rowIndexCache];
 
     if (!v11)
     {
@@ -184,9 +184,9 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v9 = [v6 rowIndexCache];
+  rowIndexCache2 = [frameCopy rowIndexCache];
 
-  if (v9)
+  if (rowIndexCache2)
   {
     rowIndexCache = self->_rowIndexCache;
     goto LABEL_4;
@@ -194,24 +194,24 @@ LABEL_4:
 
 LABEL_5:
   v12 = self->_columnIndexCache == 0;
-  v13 = [v6 rowIndexCache];
-  v14 = v13 != 0;
+  rowIndexCache3 = [frameCopy rowIndexCache];
+  v14 = rowIndexCache3 != 0;
 
   if (v12 != v14)
   {
-    v15 = [(MAFloatMatrix *)self->_matrix rows];
-    v16 = [v6 matrix];
-    v17 = [v16 rows];
+    rows = [(MAFloatMatrix *)self->_matrix rows];
+    matrix = [frameCopy matrix];
+    rows2 = [matrix rows];
 
-    if (v15 == v17)
+    if (rows == rows2)
     {
       matrix = self->_matrix;
-      v19 = [v6 matrix];
-      v20 = [(MAFloatMatrix *)matrix matrixByAppendingColumnsOfMatrix:v19];
+      matrix2 = [frameCopy matrix];
+      v20 = [(MAFloatMatrix *)matrix matrixByAppendingColumnsOfMatrix:matrix2];
 
-      v21 = [(MAIndexCache *)self->_columnIndexCache labels];
-      v22 = [v6 columnLabels];
-      v23 = [v21 arrayByAddingObjectsFromArray:v22];
+      labels = [(MAIndexCache *)self->_columnIndexCache labels];
+      columnLabels = [frameCopy columnLabels];
+      v23 = [labels arrayByAddingObjectsFromArray:columnLabels];
 
       if (v23)
       {
@@ -223,7 +223,7 @@ LABEL_5:
         v24 = 0;
       }
 
-      v25 = [[MADataFrame alloc] initWithName:v7 rowIndexCache:self->_rowIndexCache columnIndexCache:v24 matrix:v20];
+      v25 = [[MADataFrame alloc] initWithName:nameCopy rowIndexCache:self->_rowIndexCache columnIndexCache:v24 matrix:v20];
 
       goto LABEL_10;
     }
@@ -236,11 +236,11 @@ LABEL_10:
   return v25;
 }
 
-- (id)numberAtRow:(id)a3 column:(id)a4
+- (id)numberAtRow:(id)row column:(id)column
 {
-  v6 = a4;
-  v7 = [(MADataFrame *)self indexOfRowWithLabel:a3];
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v7, v9 = [(MADataFrame *)self indexOfColumnWithLabel:v6], v9 == 0x7FFFFFFFFFFFFFFFLL))
+  columnCopy = column;
+  v7 = [(MADataFrame *)self indexOfRowWithLabel:row];
+  if (v7 == 0x7FFFFFFFFFFFFFFFLL || (v8 = v7, v9 = [(MADataFrame *)self indexOfColumnWithLabel:columnCopy], v9 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v10 = 0;
   }
@@ -255,12 +255,12 @@ LABEL_10:
   return v10;
 }
 
-- (int64_t)indexOfColumnWithLabel:(id)a3
+- (int64_t)indexOfColumnWithLabel:(id)label
 {
   columnIndexCache = self->_columnIndexCache;
   if (columnIndexCache)
   {
-    return [(MAIndexCache *)columnIndexCache indexOfLabel:a3];
+    return [(MAIndexCache *)columnIndexCache indexOfLabel:label];
   }
 
   else
@@ -269,12 +269,12 @@ LABEL_10:
   }
 }
 
-- (int64_t)indexOfRowWithLabel:(id)a3
+- (int64_t)indexOfRowWithLabel:(id)label
 {
   rowIndexCache = self->_rowIndexCache;
   if (rowIndexCache)
   {
-    return [(MAIndexCache *)rowIndexCache indexOfLabel:a3];
+    return [(MAIndexCache *)rowIndexCache indexOfLabel:label];
   }
 
   else
@@ -283,16 +283,16 @@ LABEL_10:
   }
 }
 
-- (MADataFrame)initWithName:(id)a3 rowLabels:(id)a4 columnLabels:(id)a5 matrix:(id)a6
+- (MADataFrame)initWithName:(id)name rowLabels:(id)labels columnLabels:(id)columnLabels matrix:(id)matrix
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  nameCopy = name;
+  labelsCopy = labels;
+  columnLabelsCopy = columnLabels;
+  matrixCopy = matrix;
+  if (!labelsCopy)
   {
     v14 = 0;
-    if (v12)
+    if (columnLabelsCopy)
     {
       goto LABEL_3;
     }
@@ -302,42 +302,42 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v14 = [[MAIndexCache alloc] initWithLabels:v11];
-  if (!v12)
+  v14 = [[MAIndexCache alloc] initWithLabels:labelsCopy];
+  if (!columnLabelsCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v15 = [[MAIndexCache alloc] initWithLabels:v12];
+  v15 = [[MAIndexCache alloc] initWithLabels:columnLabelsCopy];
 LABEL_6:
-  v16 = [(MADataFrame *)self initWithName:v10 rowIndexCache:v14 columnIndexCache:v15 matrix:v13];
+  v16 = [(MADataFrame *)self initWithName:nameCopy rowIndexCache:v14 columnIndexCache:v15 matrix:matrixCopy];
 
   return v16;
 }
 
-- (MADataFrame)initWithName:(id)a3 rowIndexCache:(id)a4 columnIndexCache:(id)a5 matrix:(id)a6
+- (MADataFrame)initWithName:(id)name rowIndexCache:(id)cache columnIndexCache:(id)indexCache matrix:(id)matrix
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  nameCopy = name;
+  cacheCopy = cache;
+  indexCacheCopy = indexCache;
+  matrixCopy = matrix;
+  if (cacheCopy)
   {
-    v14 = [v11 labels];
-    v15 = [v14 count];
-    v16 = [v13 rows];
+    labels = [cacheCopy labels];
+    v15 = [labels count];
+    rows = [matrixCopy rows];
 
-    if (v15 != v16)
+    if (v15 != rows)
     {
       goto LABEL_8;
     }
   }
 
-  if (v12 && ([v12 labels], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v19 = objc_msgSend(v13, "columns"), v17, v18 != v19))
+  if (indexCacheCopy && ([indexCacheCopy labels], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v19 = objc_msgSend(matrixCopy, "columns"), v17, v18 != v19))
   {
 LABEL_8:
-    v25 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -347,22 +347,22 @@ LABEL_8:
     v20 = [(MADataFrame *)&v27 init];
     if (v20)
     {
-      v21 = [v10 copy];
+      v21 = [nameCopy copy];
       name = v20->_name;
       v20->_name = v21;
 
-      objc_storeStrong(&v20->_rowIndexCache, a4);
-      objc_storeStrong(&v20->_columnIndexCache, a5);
-      v23 = [v13 copy];
+      objc_storeStrong(&v20->_rowIndexCache, cache);
+      objc_storeStrong(&v20->_columnIndexCache, indexCache);
+      v23 = [matrixCopy copy];
       matrix = v20->_matrix;
       v20->_matrix = v23;
     }
 
     self = v20;
-    v25 = self;
+    selfCopy = self;
   }
 
-  return v25;
+  return selfCopy;
 }
 
 @end

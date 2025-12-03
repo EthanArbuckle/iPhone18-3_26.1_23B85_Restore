@@ -1,31 +1,31 @@
 @interface TUCallDTMFUpdate
-- (TUCallDTMFUpdate)initWithCoder:(id)a3;
-- (TUCallDTMFUpdate)initWithDigits:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUCallDTMFUpdate)initWithCoder:(id)coder;
+- (TUCallDTMFUpdate)initWithDigits:(id)digits;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUCallDTMFUpdate
 
-- (TUCallDTMFUpdate)initWithDigits:(id)a3
+- (TUCallDTMFUpdate)initWithDigits:(id)digits
 {
-  v4 = a3;
+  digitsCopy = digits;
   v11.receiver = self;
   v11.super_class = TUCallDTMFUpdate;
   v5 = [(TUCallDTMFUpdate *)&v11 init];
   if (v5)
   {
-    if (!v4)
+    if (!digitsCopy)
     {
       [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"%s: parameter '%@' cannot be nil", "-[TUCallDTMFUpdate initWithDigits:]", @"digits"}];
     }
 
-    v6 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     UUID = v5->_UUID;
-    v5->_UUID = v6;
+    v5->_UUID = uUID;
 
-    v8 = [v4 copy];
+    v8 = [digitsCopy copy];
     digits = v5->_digits;
     v5->_digits = v8;
   }
@@ -37,39 +37,39 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(TUCallDTMFUpdate *)self digits];
-  v6 = [v3 stringWithFormat:@"<%@ %p digits=%@>", v4, self, v5];
+  digits = [(TUCallDTMFUpdate *)self digits];
+  v6 = [v3 stringWithFormat:@"<%@ %p digits=%@>", v4, self, digits];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(TUCallDTMFUpdate *)self UUID];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  uUID = [(TUCallDTMFUpdate *)self UUID];
+  v7 = [uUID copyWithZone:zone];
   [v5 setUUID:v7];
 
-  v8 = [(TUCallDTMFUpdate *)self digits];
-  v9 = [v8 copyWithZone:a3];
+  digits = [(TUCallDTMFUpdate *)self digits];
+  v9 = [digits copyWithZone:zone];
   [v5 setDigits:v9];
 
   return v5;
 }
 
-- (TUCallDTMFUpdate)initWithCoder:(id)a3
+- (TUCallDTMFUpdate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TUCallDTMFUpdate;
   v5 = [(TUCallDTMFUpdate *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"digits"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"digits"];
     digits = v5->_digits;
     v5->_digits = v8;
   }
@@ -77,14 +77,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(TUCallDTMFUpdate *)self UUID];
-  [v4 encodeObject:v5 forKey:@"UUID"];
+  coderCopy = coder;
+  uUID = [(TUCallDTMFUpdate *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"UUID"];
 
-  v6 = [(TUCallDTMFUpdate *)self digits];
-  [v4 encodeObject:v6 forKey:@"digits"];
+  digits = [(TUCallDTMFUpdate *)self digits];
+  [coderCopy encodeObject:digits forKey:@"digits"];
 }
 
 @end

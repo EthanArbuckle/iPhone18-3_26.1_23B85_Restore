@@ -1,95 +1,95 @@
 @interface SBMenuBarViewController
-- (BOOL)_addOverflowMenuToContainerIfNeededForcingViewLayout:(BOOL)a3;
+- (BOOL)_addOverflowMenuToContainerIfNeededForcingViewLayout:(BOOL)layout;
 - (NSArray)additionalKeyboardShortcutActionsForSession;
 - (SBMenuBarMainMenuView)previouslyPresentedMenu;
-- (SBMenuBarViewController)initWithScene:(id)a3 delegate:(id)a4 animateInitialPresentation:(BOOL)a5 loadCompletion:(id)a6;
+- (SBMenuBarViewController)initWithScene:(id)scene delegate:(id)delegate animateInitialPresentation:(BOOL)presentation loadCompletion:(id)completion;
 - (SBMenuBarViewControllerDelegate)delegate;
 - (_UISceneFocusSystemController)focusSystemController;
 - (double)desiredBlurWidth;
-- (double)yOffsetForPresentedMenuForMainMenuView:(id)a3;
-- (id)_createMainMenuViewForUIMainMenu:(id)a3 type:(int64_t)a4;
-- (id)_mainMenuViewPassingTest:(id)a3;
+- (double)yOffsetForPresentedMenuForMainMenuView:(id)view;
+- (id)_createMainMenuViewForUIMainMenu:(id)menu type:(int64_t)type;
+- (id)_mainMenuViewPassingTest:(id)test;
 - (id)_systemHelpMenus;
-- (id)_uiDeferredMenuElementForMainMenuDeferredElement:(id)a3 parentState:(id)a4;
-- (id)_uiMenuElementForChildMainMenuElement:(id)a3 parentMenuState:(id)a4;
-- (id)_uiMenuElementsForMainMenuElements:(id)a3 parentMenuState:(id)a4;
-- (id)_uiMenuForMainMenu:(id)a3 menuState:(id)a4;
-- (id)_uiMenuLeafForMainMenuCommand:(id)a3 parentMenuState:(id)a4;
-- (id)beginSceneFocusSystemActivationAssertionForMainMenuView:(id)a3;
-- (id)dataSourceForOpenApplicationWindowsContextMenuProvider:(id)a3;
-- (id)hostKeyboardShortcutsForMainMenu:(id)a3;
-- (id)menuBarHelpMenuProviderDemoMenuProvider:(id)a3;
-- (id)overrideClientNameForMainMenu:(id)a3;
-- (void)_adjustPresentedMenuForPointerOverViewInContainer:(id)a3 forPanGesture:(BOOL)a4;
-- (void)_applyStyleAttributes:(id)a3;
+- (id)_uiDeferredMenuElementForMainMenuDeferredElement:(id)element parentState:(id)state;
+- (id)_uiMenuElementForChildMainMenuElement:(id)element parentMenuState:(id)state;
+- (id)_uiMenuElementsForMainMenuElements:(id)elements parentMenuState:(id)state;
+- (id)_uiMenuForMainMenu:(id)menu menuState:(id)state;
+- (id)_uiMenuLeafForMainMenuCommand:(id)command parentMenuState:(id)state;
+- (id)beginSceneFocusSystemActivationAssertionForMainMenuView:(id)view;
+- (id)dataSourceForOpenApplicationWindowsContextMenuProvider:(id)provider;
+- (id)hostKeyboardShortcutsForMainMenu:(id)menu;
+- (id)menuBarHelpMenuProviderDemoMenuProvider:(id)provider;
+- (id)overrideClientNameForMainMenu:(id)menu;
+- (void)_adjustPresentedMenuForPointerOverViewInContainer:(id)container forPanGesture:(BOOL)gesture;
+- (void)_applyStyleAttributes:(id)attributes;
 - (void)_cancelEndSessionTimer;
 - (void)_clearSessionState;
 - (void)_createHelpMenuProviderIfNeeded;
-- (void)_createWindowControlsPlaceholderViewForViewController:(id)a3;
-- (void)_handleMenuPanGesture:(id)a3;
-- (void)_loadAllMainMenusWithCompletion:(id)a3;
+- (void)_createWindowControlsPlaceholderViewForViewController:(id)controller;
+- (void)_handleMenuPanGesture:(id)gesture;
+- (void)_loadAllMainMenusWithCompletion:(id)completion;
 - (void)_movePresentedMenuViewToPreviouslyPresented;
-- (void)_navigateToNextMenuHeaderForArrowKeyPress:(id)a3;
-- (void)_performMainMenuCommandInvocationRequestForCommand:(id)a3 withAuthenticationMessage:(id)a4;
-- (void)_possiblyFlashMenuViewPassingTest:(id)a3;
-- (void)_presentMenuViewNonInteractively:(id)a3 forPointerHover:(BOOL)a4;
-- (void)_runCommandFromContext:(id)a3;
+- (void)_navigateToNextMenuHeaderForArrowKeyPress:(id)press;
+- (void)_performMainMenuCommandInvocationRequestForCommand:(id)command withAuthenticationMessage:(id)message;
+- (void)_possiblyFlashMenuViewPassingTest:(id)test;
+- (void)_presentMenuViewNonInteractively:(id)interactively forPointerHover:(BOOL)hover;
+- (void)_runCommandFromContext:(id)context;
 - (void)_scheduleEndSessionTimer;
 - (void)_updateWindowControlsPosition;
-- (void)addAlongsidePresentationAnimations:(id)a3;
-- (void)addPresentationCompletionBlock:(id)a3;
-- (void)addWindowControlsAlongsideAnimations:(id)a3 completion:(id)a4;
+- (void)addAlongsidePresentationAnimations:(id)animations;
+- (void)addPresentationCompletionBlock:(id)block;
+- (void)addWindowControlsAlongsideAnimations:(id)animations completion:(id)completion;
 - (void)dealloc;
-- (void)didPresentContextMenuForMainMenuView:(id)a3;
-- (void)dismissAnimated:(BOOL)a3 alongsideAnimations:(id)a4 completion:(id)a5;
-- (void)flashMainMenuIfPossible:(id)a3;
-- (void)loadMenuElementsForMainMenus:(id)a3 handler:(id)a4;
+- (void)didPresentContextMenuForMainMenuView:(id)view;
+- (void)dismissAnimated:(BOOL)animated alongsideAnimations:(id)animations completion:(id)completion;
+- (void)flashMainMenuIfPossible:(id)possible;
+- (void)loadMenuElementsForMainMenus:(id)menus handler:(id)handler;
 - (void)loadView;
-- (void)mainMenuDidInvalidate:(id)a3;
-- (void)mainMenuProvider:(id)a3 didReceiveCommandInvocationNotification:(id)a4;
-- (void)menuBarHelpMenuProvider:(id)a3 handleOpenApplicationTipWithURL:(id)a4;
-- (void)noteSearchUsedInMenuBarHelpMenuProvider:(id)a3;
+- (void)mainMenuDidInvalidate:(id)invalidate;
+- (void)mainMenuProvider:(id)provider didReceiveCommandInvocationNotification:(id)notification;
+- (void)menuBarHelpMenuProvider:(id)provider handleOpenApplicationTipWithURL:(id)l;
+- (void)noteSearchUsedInMenuBarHelpMenuProvider:(id)provider;
 - (void)openApplicationMenu;
 - (void)openHelpMenu;
-- (void)setMenuBarContentIsLight:(BOOL)a3;
+- (void)setMenuBarContentIsLight:(BOOL)light;
 - (void)testInvalidation;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)willDismissContextMenuForMainMenuView:(id)a3 forPointerClick:(BOOL)a4;
-- (void)willLoadMenuElementsForMainMenuView:(id)a3;
-- (void)willPresentContextMenuForMainMenuView:(id)a3 forPointerClick:(BOOL)a4;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)willDismissContextMenuForMainMenuView:(id)view forPointerClick:(BOOL)click;
+- (void)willLoadMenuElementsForMainMenuView:(id)view;
+- (void)willPresentContextMenuForMainMenuView:(id)view forPointerClick:(BOOL)click;
 @end
 
 @implementation SBMenuBarViewController
 
-- (SBMenuBarViewController)initWithScene:(id)a3 delegate:(id)a4 animateInitialPresentation:(BOOL)a5 loadCompletion:(id)a6
+- (SBMenuBarViewController)initWithScene:(id)scene delegate:(id)delegate animateInitialPresentation:(BOOL)presentation loadCompletion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  sceneCopy = scene;
+  delegateCopy = delegate;
+  completionCopy = completion;
   v22.receiver = self;
   v22.super_class = SBMenuBarViewController;
   v14 = [(SBMenuBarViewController *)&v22 initWithNibName:0 bundle:0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_menuProvidingScene, a3);
-    objc_storeWeak(&v15->_delegate, v12);
+    objc_storeStrong(&v14->_menuProvidingScene, scene);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
     v16 = +[SBMenuBarDomain rootSettings];
     menuBarSettings = v15->_menuBarSettings;
     v15->_menuBarSettings = v16;
 
-    v15->_animateInitialPresentation = a5;
-    v18 = [(FBScene *)v15->_menuProvidingScene mainMenuProvider];
+    v15->_animateInitialPresentation = presentation;
+    mainMenuProvider = [(FBScene *)v15->_menuProvidingScene mainMenuProvider];
     mainMenuProvider = v15->_mainMenuProvider;
-    v15->_mainMenuProvider = v18;
+    v15->_mainMenuProvider = mainMenuProvider;
 
     [(_UISceneMainMenuProviding *)v15->_mainMenuProvider setHost:v15];
-    v20 = [(FBScene *)v15->_menuProvidingScene focusSystemController];
-    objc_storeWeak(&v15->_focusSystemController, v20);
+    focusSystemController = [(FBScene *)v15->_menuProvidingScene focusSystemController];
+    objc_storeWeak(&v15->_focusSystemController, focusSystemController);
 
-    [(SBMenuBarViewController *)v15 _loadAllMainMenusWithCompletion:v13];
+    [(SBMenuBarViewController *)v15 _loadAllMainMenusWithCompletion:completionCopy];
   }
 
   return v15;
@@ -103,11 +103,11 @@
   [(SBMenuBarViewController *)&v3 dealloc];
 }
 
-- (void)setMenuBarContentIsLight:(BOOL)a3
+- (void)setMenuBarContentIsLight:(BOOL)light
 {
-  if (self->_menuBarContentIsLight != a3)
+  if (self->_menuBarContentIsLight != light)
   {
-    self->_menuBarContentIsLight = a3;
+    self->_menuBarContentIsLight = light;
     gradientView = self->_gradientView;
     if (gradientView)
     {
@@ -116,23 +116,23 @@
   }
 }
 
-- (void)addAlongsidePresentationAnimations:(id)a3
+- (void)addAlongsidePresentationAnimations:(id)animations
 {
-  v4 = [a3 copy];
+  v4 = [animations copy];
   alongsidePresentationAnimations = self->_alongsidePresentationAnimations;
   self->_alongsidePresentationAnimations = v4;
 }
 
-- (void)addPresentationCompletionBlock:(id)a3
+- (void)addPresentationCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   presentationCompletionBlocks = self->_presentationCompletionBlocks;
-  v9 = v4;
+  v9 = blockCopy;
   if (!presentationCompletionBlocks)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = self->_presentationCompletionBlocks;
-    self->_presentationCompletionBlocks = v6;
+    self->_presentationCompletionBlocks = array;
 
     presentationCompletionBlocks = self->_presentationCompletionBlocks;
   }
@@ -141,14 +141,14 @@
   [(NSMutableArray *)presentationCompletionBlocks addObject:v8];
 }
 
-- (void)dismissAnimated:(BOOL)a3 alongsideAnimations:(id)a4 completion:(id)a5
+- (void)dismissAnimated:(BOOL)animated alongsideAnimations:(id)animations completion:(id)completion
 {
-  v6 = a3;
+  animatedCopy = animated;
   v49[4] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SBMenuBarMainMenuView *)self->_presentedMainMenuView contextMenuInteraction];
-  [v10 dismissMenu];
+  animationsCopy = animations;
+  completionCopy = completion;
+  contextMenuInteraction = [(SBMenuBarMainMenuView *)self->_presentedMainMenuView contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 
   presentedMainMenuView = self->_presentedMainMenuView;
   self->_presentedMainMenuView = 0;
@@ -157,38 +157,38 @@
   [v12 setSessionToEnd:self->_session];
   [(_UISceneMainMenuProviding *)self->_mainMenuProvider performSessionRequest:v12 handler:0];
   [(SBMenuBarViewController *)self _clearSessionState];
-  if (v6 && [(UIView *)self->_backgroundEffectContainerView _isInAWindow])
+  if (animatedCopy && [(UIView *)self->_backgroundEffectContainerView _isInAWindow])
   {
     v13 = [SBMenuBarAppearanceTransitionBackdropLayerView alloc];
     v14 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v13 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-    v15 = [(UIView *)self->_backgroundEffectContainerView window];
-    [v15 insertSubview:v14 atIndex:0];
+    window = [(UIView *)self->_backgroundEffectContainerView window];
+    [window insertSubview:v14 atIndex:0];
 
     [(SBMenuBarAppearanceTransitionBackdropLayerView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
     v36 = MEMORY[0x277CCAAD0];
-    v41 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v14 centerXAnchor];
-    v40 = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
-    v39 = [v41 constraintEqualToAnchor:v40];
+    centerXAnchor = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v14 centerXAnchor];
+    centerXAnchor2 = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
+    v39 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v49[0] = v39;
-    v38 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v14 topAnchor];
-    v37 = [(UIView *)self->_backgroundEffectContainerView topAnchor];
-    v35 = [v38 constraintEqualToAnchor:v37];
+    topAnchor = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v14 topAnchor];
+    topAnchor2 = [(UIView *)self->_backgroundEffectContainerView topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v49[1] = v35;
-    v34 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v14 widthAnchor];
-    v16 = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
-    v17 = [v34 constraintEqualToAnchor:v16];
+    widthAnchor = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v14 widthAnchor];
+    widthAnchor2 = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
+    v17 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v49[2] = v17;
     [(SBMenuBarAppearanceTransitionBackdropLayerView *)v14 heightAnchor];
-    v18 = v42 = v8;
+    v18 = v42 = animationsCopy;
     [(UIView *)self->_backgroundEffectContainerView heightAnchor];
-    v19 = v43 = v9;
+    v19 = v43 = completionCopy;
     v20 = [v18 constraintEqualToAnchor:v19 constant:15.0];
     v49[3] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v49 count:4];
     [v36 activateConstraints:v21];
 
-    v9 = v43;
-    v8 = v42;
+    completionCopy = v43;
+    animationsCopy = v42;
   }
 
   else
@@ -201,12 +201,12 @@
   v47[2] = __74__SBMenuBarViewController_dismissAnimated_alongsideAnimations_completion___block_invoke;
   v47[3] = &unk_2783A98A0;
   v47[4] = self;
-  v22 = v8;
+  v22 = animationsCopy;
   v48 = v22;
   v23 = MEMORY[0x223D6F7F0](v47);
   v24 = v23;
   self->_dismissed = 1;
-  if (v6)
+  if (animatedCopy)
   {
     v25 = MEMORY[0x277D75D18];
     [(SBMenuBarSettings *)self->_menuBarSettings entryAnimationDuration];
@@ -221,7 +221,7 @@
     v44[1] = 3221225472;
     v44[2] = __74__SBMenuBarViewController_dismissAnimated_alongsideAnimations_completion___block_invoke_2;
     v44[3] = &unk_2783B3B78;
-    v46 = v9;
+    v46 = completionCopy;
     v45 = v14;
     [v25 _animateUsingSpringWithDuration:0 delay:v24 options:v44 mass:v27 stiffness:0.0 damping:v29 initialVelocity:v31 animations:v33 completion:0.0];
   }
@@ -229,7 +229,7 @@
   else
   {
     (*(v23 + 16))(v23);
-    (*(v9 + 2))(v9, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 }
 
@@ -267,15 +267,15 @@ uint64_t __74__SBMenuBarViewController_dismissAnimated_alongsideAnimations_compl
   return [v3 removeFromSuperview];
 }
 
-- (void)addWindowControlsAlongsideAnimations:(id)a3 completion:(id)a4
+- (void)addWindowControlsAlongsideAnimations:(id)animations completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  animationsCopy = animations;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [WeakRetained windowControlsViewController];
+  windowControlsViewController = [WeakRetained windowControlsViewController];
 
-  [v9 setContextMenuContainerView:self->_contextMenuContainerView];
-  [(SBMenuBarViewController *)self _createWindowControlsPlaceholderViewForViewController:v9];
+  [windowControlsViewController setContextMenuContainerView:self->_contextMenuContainerView];
+  [(SBMenuBarViewController *)self _createWindowControlsPlaceholderViewForViewController:windowControlsViewController];
   [(SBMenuBarHeaderContainerView *)self->_menuHeaderContainerView prependMenuView:self->_windowControlsPlaceholderView];
   [(UIView *)self->_windowControlsPlaceholderView layoutIfNeeded];
   [(SBMenuBarViewController *)self _updateWindowControlsPosition];
@@ -286,9 +286,9 @@ uint64_t __74__SBMenuBarViewController_dismissAnimated_alongsideAnimations_compl
   MinX = CGRectGetMinX(v24);
   [v11 containerHeightForMenuBarViewController:self];
   CGAffineTransformMakeTranslation(&v23, MinX, -v13);
-  v14 = [v11 windowControlsWrapperView];
+  windowControlsWrapperView = [v11 windowControlsWrapperView];
   v22 = v23;
-  [v14 setTransform:&v22];
+  [windowControlsWrapperView setTransform:&v22];
 
   if (v10)
   {
@@ -300,12 +300,12 @@ uint64_t __74__SBMenuBarViewController_dismissAnimated_alongsideAnimations_compl
   v18[1] = 3221225472;
   v18[2] = __75__SBMenuBarViewController_addWindowControlsAlongsideAnimations_completion___block_invoke;
   v18[3] = &unk_2783A9C20;
-  v20 = self;
-  v21 = v6;
+  selfCopy = self;
+  v21 = animationsCopy;
   v19 = v11;
   v16 = v11;
-  v17 = v6;
-  [v15 _animateUsingDefaultTimingWithOptions:0 animations:v18 completion:v7];
+  v17 = animationsCopy;
+  [v15 _animateUsingDefaultTimingWithOptions:0 animations:v18 completion:completionCopy];
 }
 
 void __75__SBMenuBarViewController_addWindowControlsAlongsideAnimations_completion___block_invoke(uint64_t a1)
@@ -353,15 +353,15 @@ uint64_t __39__SBMenuBarViewController_openHelpMenu__block_invoke(uint64_t a1, v
   return v4;
 }
 
-- (void)flashMainMenuIfPossible:(id)a3
+- (void)flashMainMenuIfPossible:(id)possible
 {
-  v4 = a3;
+  possibleCopy = possible;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__SBMenuBarViewController_flashMainMenuIfPossible___block_invoke;
   v6[3] = &unk_2783BCE48;
-  v7 = v4;
-  v5 = v4;
+  v7 = possibleCopy;
+  v5 = possibleCopy;
   [(SBMenuBarViewController *)self _possiblyFlashMenuViewPassingTest:v6];
 }
 
@@ -374,11 +374,11 @@ uint64_t __51__SBMenuBarViewController_flashMainMenuIfPossible___block_invoke(ui
   return v5;
 }
 
-- (void)_adjustPresentedMenuForPointerOverViewInContainer:(id)a3 forPanGesture:(BOOL)a4
+- (void)_adjustPresentedMenuForPointerOverViewInContainer:(id)container forPanGesture:(BOOL)gesture
 {
-  v6 = a3;
+  containerCopy = container;
   v7 = objc_opt_class();
-  v8 = v6;
+  v8 = containerCopy;
   if (v7)
   {
     if (objc_opt_isKindOfClass())
@@ -435,7 +435,7 @@ LABEL_14:
       }
     }
 
-    else if (self->_menuSessionIsActiveForPointer || a4)
+    else if (self->_menuSessionIsActiveForPointer || gesture)
     {
       goto LABEL_14;
     }
@@ -456,14 +456,14 @@ void __91__SBMenuBarViewController__adjustPresentedMenuForPointerOverViewInConta
   v3 = self->_appKeyboardShortcutActionsForSession;
   if (self->_leftArrowNavigationAction && self->_rightArrowNavigationAction)
   {
-    v4 = [(SBMenuBarMainMenuView *)self->_presentedMainMenuView mainMenu];
-    v5 = [v4 identifier];
-    if ([v5 isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76CF8]])
+    mainMenu = [(SBMenuBarMainMenuView *)self->_presentedMainMenuView mainMenu];
+    identifier = [mainMenu identifier];
+    if ([identifier isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76CF8]])
     {
-      v6 = [(SBMenuBarViewController *)self menuBarHelpMenuProvider];
-      v7 = [v6 searchTextField];
-      v8 = [v7 text];
-      v9 = [v8 length];
+      menuBarHelpMenuProvider = [(SBMenuBarViewController *)self menuBarHelpMenuProvider];
+      searchTextField = [menuBarHelpMenuProvider searchTextField];
+      text = [searchTextField text];
+      v9 = [text length];
 
       if (v9)
       {
@@ -527,20 +527,20 @@ void __43__SBMenuBarViewController_testInvalidation__block_invoke(uint64_t a1)
   [(SBStatusBarMenuBarView *)self->_menuBarView addGestureRecognizer:v5];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v100[8] = *MEMORY[0x277D85DE8];
   v97.receiver = self;
   v97.super_class = SBMenuBarViewController;
-  [(SBMenuBarViewController *)&v97 viewIsAppearing:a3];
-  v4 = [(SBMenuBarViewController *)self delegate];
-  v88 = [(SBMenuBarViewController *)self view];
-  v5 = [v88 window];
+  [(SBMenuBarViewController *)&v97 viewIsAppearing:appearing];
+  delegate = [(SBMenuBarViewController *)self delegate];
+  view = [(SBMenuBarViewController *)self view];
+  window = [view window];
   backgroundEffectContainerView = self->_backgroundEffectContainerView;
   v7 = MEMORY[0x277CBF3A0];
   v8 = 0x277CBE000;
-  v89 = v4;
-  v90 = v5;
+  v89 = delegate;
+  v90 = window;
   if (!backgroundEffectContainerView)
   {
     v9 = [objc_alloc(MEMORY[0x277D65F80]) initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -553,40 +553,40 @@ void __43__SBMenuBarViewController_testInvalidation__block_invoke(uint64_t a1)
 
     [(UIView *)self->_backgroundEffectContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SBMenuBarBackgroundGradientView *)self->_gradientView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v5 insertSubview:self->_backgroundEffectContainerView atIndex:0];
+    [window insertSubview:self->_backgroundEffectContainerView atIndex:0];
     [(UIView *)self->_backgroundEffectContainerView addSubview:self->_gradientView];
     v63 = MEMORY[0x277CCAAD0];
-    v85 = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
-    v82 = [v5 centerXAnchor];
-    v79 = [v85 constraintEqualToAnchor:v82];
+    centerXAnchor = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
+    centerXAnchor2 = [window centerXAnchor];
+    v79 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v100[0] = v79;
-    v76 = [(UIView *)self->_backgroundEffectContainerView topAnchor];
-    v73 = [v5 topAnchor];
-    v70 = [v76 constraintEqualToAnchor:v73];
+    topAnchor = [(UIView *)self->_backgroundEffectContainerView topAnchor];
+    topAnchor2 = [window topAnchor];
+    v70 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v100[1] = v70;
-    v68 = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
-    v66 = [v5 widthAnchor];
-    v64 = [v68 constraintEqualToAnchor:v66];
+    widthAnchor = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
+    widthAnchor2 = [window widthAnchor];
+    v64 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v100[2] = v64;
-    v62 = [(UIView *)self->_backgroundEffectContainerView heightAnchor];
-    [v4 containerHeightForMenuBarViewController:self];
-    v61 = [v62 constraintEqualToConstant:v13 + v13];
+    heightAnchor = [(UIView *)self->_backgroundEffectContainerView heightAnchor];
+    [delegate containerHeightForMenuBarViewController:self];
+    v61 = [heightAnchor constraintEqualToConstant:v13 + v13];
     v100[3] = v61;
-    v60 = [(SBMenuBarBackgroundGradientView *)self->_gradientView centerXAnchor];
-    v59 = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59];
+    centerXAnchor3 = [(SBMenuBarBackgroundGradientView *)self->_gradientView centerXAnchor];
+    centerXAnchor4 = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
+    v58 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v100[4] = v58;
-    v57 = [(SBMenuBarBackgroundGradientView *)self->_gradientView centerYAnchor];
-    v56 = [(UIView *)self->_backgroundEffectContainerView centerYAnchor];
-    v14 = [v57 constraintEqualToAnchor:v56];
+    centerYAnchor = [(SBMenuBarBackgroundGradientView *)self->_gradientView centerYAnchor];
+    centerYAnchor2 = [(UIView *)self->_backgroundEffectContainerView centerYAnchor];
+    v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v100[5] = v14;
-    v15 = [(SBMenuBarBackgroundGradientView *)self->_gradientView heightAnchor];
-    v16 = [(UIView *)self->_backgroundEffectContainerView heightAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    heightAnchor2 = [(SBMenuBarBackgroundGradientView *)self->_gradientView heightAnchor];
+    heightAnchor3 = [(UIView *)self->_backgroundEffectContainerView heightAnchor];
+    v17 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
     v100[6] = v17;
-    v18 = [(SBMenuBarBackgroundGradientView *)self->_gradientView widthAnchor];
-    v19 = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    widthAnchor3 = [(SBMenuBarBackgroundGradientView *)self->_gradientView widthAnchor];
+    widthAnchor4 = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
+    v20 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4];
     v100[7] = v20;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v100 count:8];
     [v63 activateConstraints:v21];
@@ -594,17 +594,17 @@ void __43__SBMenuBarViewController_testInvalidation__block_invoke(uint64_t a1)
     v8 = 0x277CBE000;
     v7 = MEMORY[0x277CBF3A0];
 
-    v5 = v90;
-    v4 = v89;
+    window = v90;
+    delegate = v89;
 
     backgroundEffectContainerView = self->_backgroundEffectContainerView;
   }
 
-  v22 = [(UIView *)backgroundEffectContainerView layer];
-  [v22 setAllowsGroupOpacity:0];
+  layer = [(UIView *)backgroundEffectContainerView layer];
+  [layer setAllowsGroupOpacity:0];
 
-  v23 = [(UIView *)self->_backgroundEffectContainerView layer];
-  [v23 setAllowsGroupBlending:0];
+  layer2 = [(UIView *)self->_backgroundEffectContainerView layer];
+  [layer2 setAllowsGroupBlending:0];
 
   if (!self->_variableBlurView && [(SBMenuBarViewController *)self variableBlurNeeded])
   {
@@ -615,28 +615,28 @@ void __43__SBMenuBarViewController_testInvalidation__block_invoke(uint64_t a1)
     [(SBMenuBarBackgroundVariableBlurView *)self->_variableBlurView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)self->_backgroundEffectContainerView insertSubview:self->_variableBlurView atIndex:0];
     v71 = MEMORY[0x277CCAAD0];
-    v86 = [(SBMenuBarBackgroundVariableBlurView *)self->_variableBlurView centerXAnchor];
-    v83 = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
-    v80 = [v86 constraintEqualToAnchor:v83];
+    centerXAnchor5 = [(SBMenuBarBackgroundVariableBlurView *)self->_variableBlurView centerXAnchor];
+    centerXAnchor6 = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
+    v80 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v99[0] = v80;
-    v77 = [(SBMenuBarBackgroundVariableBlurView *)self->_variableBlurView topAnchor];
-    v74 = [(UIView *)self->_backgroundEffectContainerView topAnchor];
-    v69 = [v77 constraintEqualToAnchor:v74];
+    topAnchor3 = [(SBMenuBarBackgroundVariableBlurView *)self->_variableBlurView topAnchor];
+    topAnchor4 = [(UIView *)self->_backgroundEffectContainerView topAnchor];
+    v69 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v99[1] = v69;
-    v67 = [(SBMenuBarBackgroundVariableBlurView *)self->_variableBlurView heightAnchor];
-    v65 = [(UIView *)self->_backgroundEffectContainerView heightAnchor];
-    v26 = [v67 constraintEqualToAnchor:v65 constant:15.0];
+    heightAnchor4 = [(SBMenuBarBackgroundVariableBlurView *)self->_variableBlurView heightAnchor];
+    heightAnchor5 = [(UIView *)self->_backgroundEffectContainerView heightAnchor];
+    v26 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5 constant:15.0];
     v99[2] = v26;
-    v27 = [(SBMenuBarBackgroundVariableBlurView *)self->_variableBlurView widthAnchor];
-    v28 = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
-    [v27 constraintEqualToAnchor:v28];
-    v30 = v29 = v4;
+    widthAnchor5 = [(SBMenuBarBackgroundVariableBlurView *)self->_variableBlurView widthAnchor];
+    widthAnchor6 = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
+    [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
+    v30 = v29 = delegate;
     v99[3] = v30;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:v99 count:4];
     [v71 activateConstraints:v31];
 
-    v4 = v29;
-    v5 = v90;
+    delegate = v29;
+    window = v90;
 
     v8 = 0x277CBE000uLL;
   }
@@ -644,34 +644,34 @@ void __43__SBMenuBarViewController_testInvalidation__block_invoke(uint64_t a1)
   [(UIView *)self->_backgroundEffectContainerView setAlpha:0.0];
   [(SBMenuBarViewController *)self _updateWindowControlsPosition];
   memset(&v96, 0, sizeof(v96));
-  [v4 containerHeightForMenuBarViewController:self];
+  [delegate containerHeightForMenuBarViewController:self];
   CGAffineTransformMakeTranslation(&v96, 0.0, -v32);
   menuHeaderContainerView = self->_menuHeaderContainerView;
   v95 = v96;
   [(SBMenuBarHeaderContainerView *)menuHeaderContainerView setTransform:&v95];
-  v34 = [v4 windowControlsWrapperView];
+  windowControlsWrapperView = [delegate windowControlsWrapperView];
   v95 = v96;
-  [v34 setTransform:&v95];
+  [windowControlsWrapperView setTransform:&v95];
 
   v35 = [[SBMenuBarAppearanceTransitionBackdropLayerView alloc] initWithFrame:*v7, v7[1], v7[2], v7[3]];
-  [v5 insertSubview:v35 atIndex:0];
+  [window insertSubview:v35 atIndex:0];
   [(SBMenuBarAppearanceTransitionBackdropLayerView *)v35 setTranslatesAutoresizingMaskIntoConstraints:0];
   v72 = MEMORY[0x277CCAAD0];
-  v87 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v35 centerXAnchor];
-  v84 = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
-  v81 = [v87 constraintEqualToAnchor:v84];
+  centerXAnchor7 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v35 centerXAnchor];
+  centerXAnchor8 = [(UIView *)self->_backgroundEffectContainerView centerXAnchor];
+  v81 = [centerXAnchor7 constraintEqualToAnchor:centerXAnchor8];
   v98[0] = v81;
-  v78 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v35 topAnchor];
-  v75 = [(UIView *)self->_backgroundEffectContainerView topAnchor];
-  v36 = [v78 constraintEqualToAnchor:v75];
+  topAnchor5 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v35 topAnchor];
+  topAnchor6 = [(UIView *)self->_backgroundEffectContainerView topAnchor];
+  v36 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v98[1] = v36;
-  v37 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v35 widthAnchor];
-  v38 = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  widthAnchor7 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v35 widthAnchor];
+  widthAnchor8 = [(UIView *)self->_backgroundEffectContainerView widthAnchor];
+  v39 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8];
   v98[2] = v39;
-  v40 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v35 heightAnchor];
-  v41 = [(UIView *)self->_backgroundEffectContainerView heightAnchor];
-  v42 = [v40 constraintEqualToAnchor:v41 constant:15.0];
+  heightAnchor6 = [(SBMenuBarAppearanceTransitionBackdropLayerView *)v35 heightAnchor];
+  heightAnchor7 = [(UIView *)self->_backgroundEffectContainerView heightAnchor];
+  v42 = [heightAnchor6 constraintEqualToAnchor:heightAnchor7 constant:15.0];
   v98[3] = v42;
   v43 = [*(v8 + 2656) arrayWithObjects:v98 count:4];
   [v72 activateConstraints:v43];
@@ -785,64 +785,64 @@ uint64_t __43__SBMenuBarViewController_viewIsAppearing___block_invoke_2(uint64_t
   return [*(a1 + 40) removeFromSuperview];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v30[4] = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = SBMenuBarViewController;
-  [(SBMenuBarViewController *)&v29 viewDidAppear:a3];
+  [(SBMenuBarViewController *)&v29 viewDidAppear:appear];
   v4 = objc_alloc(MEMORY[0x277D65F80]);
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   contextMenuContainerView = self->_contextMenuContainerView;
   self->_contextMenuContainerView = v5;
 
   v7 = self->_contextMenuContainerView;
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [(UIView *)v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIView *)v7 setBackgroundColor:clearColor];
 
   [(UIView *)self->_contextMenuContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(SBMenuBarViewController *)self view];
-  v10 = [v9 window];
-  v11 = [v10 rootViewController];
-  v12 = [v11 view];
+  view = [(SBMenuBarViewController *)self view];
+  window = [view window];
+  rootViewController = [window rootViewController];
+  view2 = [rootViewController view];
 
-  [v12 insertSubview:self->_contextMenuContainerView atIndex:0];
+  [view2 insertSubview:self->_contextMenuContainerView atIndex:0];
   v23 = MEMORY[0x277CCAAD0];
-  v28 = [(UIView *)self->_contextMenuContainerView widthAnchor];
-  v27 = [v12 widthAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  widthAnchor = [(UIView *)self->_contextMenuContainerView widthAnchor];
+  widthAnchor2 = [view2 widthAnchor];
+  v26 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v30[0] = v26;
-  v25 = [(UIView *)self->_contextMenuContainerView heightAnchor];
-  v24 = [v12 heightAnchor];
-  v22 = [v25 constraintEqualToAnchor:v24];
+  heightAnchor = [(UIView *)self->_contextMenuContainerView heightAnchor];
+  heightAnchor2 = [view2 heightAnchor];
+  v22 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v30[1] = v22;
-  v13 = [(UIView *)self->_contextMenuContainerView centerXAnchor];
-  v14 = [v12 centerXAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  centerXAnchor = [(UIView *)self->_contextMenuContainerView centerXAnchor];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v30[2] = v15;
-  v16 = [(UIView *)self->_contextMenuContainerView centerYAnchor];
-  v17 = [v12 centerYAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerYAnchor = [(UIView *)self->_contextMenuContainerView centerYAnchor];
+  centerYAnchor2 = [view2 centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v30[3] = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
   [v23 activateConstraints:v19];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v21 = [WeakRetained windowControlsViewController];
-  [v21 setContextMenuContainerView:self->_contextMenuContainerView];
+  windowControlsViewController = [WeakRetained windowControlsViewController];
+  [windowControlsViewController setContextMenuContainerView:self->_contextMenuContainerView];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = SBMenuBarViewController;
-  [(SBMenuBarViewController *)&v4 viewDidDisappear:a3];
+  [(SBMenuBarViewController *)&v4 viewDidDisappear:disappear];
   [(_UISceneMainMenuProviding *)self->_mainMenuProvider setHost:0];
 }
 
-- (void)_loadAllMainMenusWithCompletion:(id)a3
+- (void)_loadAllMainMenusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   mainMenuProvider = self->_mainMenuProvider;
   v7[0] = MEMORY[0x277D85DD0];
@@ -850,7 +850,7 @@ uint64_t __43__SBMenuBarViewController_viewIsAppearing___block_invoke_2(uint64_t
   v7[2] = __59__SBMenuBarViewController__loadAllMainMenusWithCompletion___block_invoke;
   v7[3] = &unk_2783BCE98;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
   [(_UISceneMainMenuProviding *)mainMenuProvider getBaseMainMenu:v7];
 
@@ -1036,13 +1036,13 @@ uint64_t __59__SBMenuBarViewController__loadAllMainMenusWithCompletion___block_i
   return result;
 }
 
-- (id)_createMainMenuViewForUIMainMenu:(id)a3 type:(int64_t)a4
+- (id)_createMainMenuViewForUIMainMenu:(id)menu type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [[SBMenuBarMainMenuView alloc] initWithMainMenu:v6 type:a4 delegate:self];
+  menuCopy = menu;
+  v7 = [[SBMenuBarMainMenuView alloc] initWithMainMenu:menuCopy type:type delegate:self];
   [(SBMenuBarMainMenuView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(SBMenuBarMainMenuView *)v7 layer];
-  [v8 setHitTestsAsOpaque:1];
+  layer = [(SBMenuBarMainMenuView *)v7 layer];
+  [layer setHitTestsAsOpaque:1];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = [WeakRetained shouldDisableMenusForAppRestrictionForViewController:self];
@@ -1206,20 +1206,20 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
   }
 }
 
-- (void)_applyStyleAttributes:(id)a3
+- (void)_applyStyleAttributes:(id)attributes
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (([(STUIStatusBarStyleAttributes *)self->_currentStyleAttributes isEqual:v5]& 1) == 0)
+  attributesCopy = attributes;
+  if (([(STUIStatusBarStyleAttributes *)self->_currentStyleAttributes isEqual:attributesCopy]& 1) == 0)
   {
     currentStyleAttributes = self->_currentStyleAttributes;
-    objc_storeStrong(&self->_currentStyleAttributes, a3);
+    objc_storeStrong(&self->_currentStyleAttributes, attributes);
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v7 = [(SBMenuBarHeaderContainerView *)self->_menuHeaderContainerView menuHeaderViews];
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    menuHeaderViews = [(SBMenuBarHeaderContainerView *)self->_menuHeaderContainerView menuHeaderViews];
+    v8 = [menuHeaderViews countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1231,7 +1231,7 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(menuHeaderViews);
           }
 
           v12 = *(*(&v17 + 1) + 8 * v11);
@@ -1262,7 +1262,7 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [menuHeaderViews countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -1275,9 +1275,9 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
   }
 }
 
-- (BOOL)_addOverflowMenuToContainerIfNeededForcingViewLayout:(BOOL)a3
+- (BOOL)_addOverflowMenuToContainerIfNeededForcingViewLayout:(BOOL)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained maximumContentWidthForMenuBarViewController:self];
   v7 = v6;
@@ -1287,7 +1287,7 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
     return 0;
   }
 
-  if (v3)
+  if (layoutCopy)
   {
     [(SBMenuBarHeaderContainerView *)self->_menuHeaderContainerView layoutIfNeeded];
   }
@@ -1309,16 +1309,16 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
 {
   v17[2] = *MEMORY[0x277D85DE8];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained windowControlsWrapperView];
+  windowControlsWrapperView = [WeakRetained windowControlsWrapperView];
 
-  if (v4 && self->_windowControlsPlaceholderView)
+  if (windowControlsWrapperView && self->_windowControlsPlaceholderView)
   {
-    v5 = [v4 window];
-    v6 = [(UIView *)self->_windowControlsPlaceholderView window];
-    v7 = v6;
-    if (v5)
+    window = [windowControlsWrapperView window];
+    window2 = [(UIView *)self->_windowControlsPlaceholderView window];
+    v7 = window2;
+    if (window)
     {
-      v8 = v6 == 0;
+      v8 = window2 == 0;
     }
 
     else
@@ -1328,15 +1328,15 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
 
     if (!v8 && BSEqualObjects())
     {
-      [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+      [windowControlsWrapperView setTranslatesAutoresizingMaskIntoConstraints:0];
       v16 = MEMORY[0x277CCAAD0];
-      v9 = [v4 centerXAnchor];
-      v10 = [(UIView *)self->_windowControlsPlaceholderView centerXAnchor];
-      v11 = [v9 constraintEqualToAnchor:v10];
+      centerXAnchor = [windowControlsWrapperView centerXAnchor];
+      centerXAnchor2 = [(UIView *)self->_windowControlsPlaceholderView centerXAnchor];
+      v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v17[0] = v11;
-      v12 = [v4 centerYAnchor];
-      v13 = [(UIView *)self->_windowControlsPlaceholderView centerYAnchor];
-      v14 = [v12 constraintEqualToAnchor:v13];
+      centerYAnchor = [windowControlsWrapperView centerYAnchor];
+      centerYAnchor2 = [(UIView *)self->_windowControlsPlaceholderView centerYAnchor];
+      v14 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v17[1] = v14;
       v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
       [v16 activateConstraints:v15];
@@ -1344,12 +1344,12 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
   }
 }
 
-- (void)_handleMenuPanGesture:(id)a3
+- (void)_handleMenuPanGesture:(id)gesture
 {
-  v13 = a3;
-  if ([v13 state] == 2)
+  gestureCopy = gesture;
+  if ([gestureCopy state] == 2)
   {
-    [v13 locationInView:self->_menuHeaderContainerView];
+    [gestureCopy locationInView:self->_menuHeaderContainerView];
     v5 = v4;
     v7 = v6;
     [(SBMenuBarHeaderContainerView *)self->_menuHeaderContainerView bounds];
@@ -1383,42 +1383,42 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
   }
 }
 
-- (void)menuBarHelpMenuProvider:(id)a3 handleOpenApplicationTipWithURL:(id)a4
+- (void)menuBarHelpMenuProvider:(id)provider handleOpenApplicationTipWithURL:(id)l
 {
-  v5 = a4;
-  v6 = [(UIViewController *)self _sbDisplayConfiguration];
-  SBWorkspaceActivateApplicationFromURLWithDisplayConfiguration(v5, v6, 0, &__block_literal_global_40_2);
+  lCopy = l;
+  _sbDisplayConfiguration = [(UIViewController *)self _sbDisplayConfiguration];
+  SBWorkspaceActivateApplicationFromURLWithDisplayConfiguration(lCopy, _sbDisplayConfiguration, 0, &__block_literal_global_40_2);
 }
 
-- (id)menuBarHelpMenuProviderDemoMenuProvider:(id)a3
+- (id)menuBarHelpMenuProviderDemoMenuProvider:(id)provider
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained menuBarDemoMenuProvider];
+  menuBarDemoMenuProvider = [WeakRetained menuBarDemoMenuProvider];
 
-  return v4;
+  return menuBarDemoMenuProvider;
 }
 
-- (void)noteSearchUsedInMenuBarHelpMenuProvider:(id)a3
+- (void)noteSearchUsedInMenuBarHelpMenuProvider:(id)provider
 {
-  v3 = [(UIViewController *)self _sbWindowScene];
-  v4 = [v3 isExternalDisplayWindowScene];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  isExternalDisplayWindowScene = [_sbWindowScene isExternalDisplayWindowScene];
 
-  if ((v4 & 1) == 0)
+  if ((isExternalDisplayWindowScene & 1) == 0)
   {
-    v5 = [MEMORY[0x277D65DD0] sharedInstance];
-    [v5 emitEvent:71 withPayload:0];
+    mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
+    [mEMORY[0x277D65DD0] emitEvent:71 withPayload:0];
   }
 }
 
-- (void)willLoadMenuElementsForMainMenuView:(id)a3
+- (void)willLoadMenuElementsForMainMenuView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(SBMenuBarViewController *)self _cancelEndSessionTimer];
   presentedMainMenuView = self->_presentedMainMenuView;
 
   if (presentedMainMenuView)
   {
-    v6 = presentedMainMenuView == v4;
+    v6 = presentedMainMenuView == viewCopy;
   }
 
   else
@@ -1433,20 +1433,20 @@ void __65__SBMenuBarViewController__createMainMenuViewForUIMainMenu_type___block
   }
 }
 
-- (void)loadMenuElementsForMainMenus:(id)a3 handler:(id)a4
+- (void)loadMenuElementsForMainMenus:(id)menus handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  menusCopy = menus;
+  handlerCopy = handler;
   objc_initWeak(location, self);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __64__SBMenuBarViewController_loadMenuElementsForMainMenus_handler___block_invoke;
   v25[3] = &unk_2783BCEE8;
-  v8 = v6;
+  v8 = menusCopy;
   v26 = v8;
-  v27 = self;
+  selfCopy = self;
   objc_copyWeak(&v29, location);
-  v9 = v7;
+  v9 = handlerCopy;
   v28 = v9;
   v10 = MEMORY[0x223D6F7F0](v25);
   v11 = [v8 bs_map:&__block_literal_global_58_2];
@@ -1795,7 +1795,7 @@ void __64__SBMenuBarViewController_loadMenuElementsForMainMenus_handler___block_
   }
 }
 
-- (double)yOffsetForPresentedMenuForMainMenuView:(id)a3
+- (double)yOffsetForPresentedMenuForMainMenuView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained containerHeightForMenuBarViewController:self];
@@ -1806,101 +1806,101 @@ void __64__SBMenuBarViewController_loadMenuElementsForMainMenus_handler___block_
   return v8;
 }
 
-- (void)willPresentContextMenuForMainMenuView:(id)a3 forPointerClick:(BOOL)a4
+- (void)willPresentContextMenuForMainMenuView:(id)view forPointerClick:(BOOL)click
 {
-  v4 = a4;
+  clickCopy = click;
   v26[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 isPresentingMenuForPointerHover])
+  viewCopy = view;
+  if ([viewCopy isPresentingMenuForPointerHover])
   {
     [(SBMenuBarMainMenuView *)self->_presentedMainMenuView setDismissingMenuForPointerHover:1];
   }
 
-  v8 = [(SBMenuBarMainMenuView *)self->_presentedMainMenuView contextMenuInteraction];
-  [v8 dismissMenu];
+  contextMenuInteraction = [(SBMenuBarMainMenuView *)self->_presentedMainMenuView contextMenuInteraction];
+  [contextMenuInteraction dismissMenu];
 
   [(SBMenuBarViewController *)self _cancelEndSessionTimer];
-  objc_storeStrong(&self->_presentedMainMenuView, a3);
-  if (v4)
+  objc_storeStrong(&self->_presentedMainMenuView, view);
+  if (clickCopy)
   {
     self->_menuSessionIsActiveForPointer = 1;
   }
 
-  v9 = [v7 mainMenu];
-  v10 = [v9 identifier];
-  v11 = [v10 isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76CF8]];
+  mainMenu = [viewCopy mainMenu];
+  identifier = [mainMenu identifier];
+  v11 = [identifier isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76CF8]];
 
   if (v11)
   {
-    v12 = [(SBMenuBarViewController *)self menuBarHelpMenuProvider];
-    v13 = [v7 contextMenuInteraction];
-    [v12 setContextMenuInteraction:v13];
+    menuBarHelpMenuProvider = [(SBMenuBarViewController *)self menuBarHelpMenuProvider];
+    contextMenuInteraction2 = [viewCopy contextMenuInteraction];
+    [menuBarHelpMenuProvider setContextMenuInteraction:contextMenuInteraction2];
   }
 
-  v14 = [(UIViewController *)self _sbWindowScene];
-  v15 = [v14 isExternalDisplayWindowScene];
+  _sbWindowScene = [(UIViewController *)self _sbWindowScene];
+  isExternalDisplayWindowScene = [_sbWindowScene isExternalDisplayWindowScene];
 
-  if ((v15 & 1) == 0)
+  if ((isExternalDisplayWindowScene & 1) == 0)
   {
-    v16 = [v7 mainMenu];
-    if (v16)
+    mainMenu2 = [viewCopy mainMenu];
+    if (mainMenu2)
     {
-      v17 = [v7 mainMenu];
-      v18 = [v17 uiMenu];
-      v19 = [v18 title];
+      mainMenu3 = [viewCopy mainMenu];
+      uiMenu = [mainMenu3 uiMenu];
+      title = [uiMenu title];
 
-      if (!v19)
+      if (!title)
       {
-        v19 = @"Unknown";
+        title = @"Unknown";
       }
     }
 
     else
     {
-      v19 = @"Overflow";
+      title = @"Overflow";
     }
 
     v25 = *MEMORY[0x277D675E8];
-    v26[0] = v19;
+    v26[0] = title;
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v21 = MEMORY[0x277D65DD0];
     v22 = v20;
-    v23 = [v21 sharedInstance];
-    [v23 emitEvent:70 withPayload:v22];
+    sharedInstance = [v21 sharedInstance];
+    [sharedInstance emitEvent:70 withPayload:v22];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained menuWillPresentForViewController:self];
 }
 
-- (void)didPresentContextMenuForMainMenuView:(id)a3
+- (void)didPresentContextMenuForMainMenuView:(id)view
 {
-  v9 = a3;
+  viewCopy = view;
   if ([(SBMenuBarMainMenuView *)self->_presentedMainMenuView isEqual:?])
   {
-    v4 = [v9 mainMenu];
-    v5 = [v4 identifier];
-    v6 = [v5 isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76CF8]];
+    mainMenu = [viewCopy mainMenu];
+    identifier = [mainMenu identifier];
+    v6 = [identifier isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76CF8]];
 
     if (v6)
     {
-      v7 = [(SBMenuBarViewController *)self menuBarHelpMenuProvider];
-      v8 = [v7 searchTextField];
-      [v8 becomeFirstResponder];
+      menuBarHelpMenuProvider = [(SBMenuBarViewController *)self menuBarHelpMenuProvider];
+      searchTextField = [menuBarHelpMenuProvider searchTextField];
+      [searchTextField becomeFirstResponder];
     }
   }
 }
 
-- (void)willDismissContextMenuForMainMenuView:(id)a3 forPointerClick:(BOOL)a4
+- (void)willDismissContextMenuForMainMenuView:(id)view forPointerClick:(BOOL)click
 {
-  v8 = a3;
+  viewCopy = view;
   WeakRetained = objc_loadWeakRetained(&self->_previouslyPresentedMenu);
 
-  v6 = v8;
-  if (WeakRetained == v8)
+  v6 = viewCopy;
+  if (WeakRetained == viewCopy)
   {
     objc_storeWeak(&self->_previouslyPresentedMenu, 0);
-    v6 = v8;
+    v6 = viewCopy;
   }
 
   if ([(SBMenuBarMainMenuView *)self->_presentedMainMenuView isEqual:v6])
@@ -1909,14 +1909,14 @@ void __64__SBMenuBarViewController_loadMenuElementsForMainMenus_handler___block_
     self->_presentedMainMenuView = 0;
 
     [(SBMenuBarViewController *)self _scheduleEndSessionTimer];
-    if (([v8 isDismissingMenuForPointerHover] & 1) == 0)
+    if (([viewCopy isDismissingMenuForPointerHover] & 1) == 0)
     {
       self->_menuSessionIsActiveForPointer = 0;
     }
   }
 }
 
-- (id)beginSceneFocusSystemActivationAssertionForMainMenuView:(id)a3
+- (id)beginSceneFocusSystemActivationAssertionForMainMenuView:(id)view
 {
   WeakRetained = objc_loadWeakRetained(&self->_focusSystemController);
   v4 = [WeakRetained beginFocusSystemActivationAssertionWithReason:@"SBMenuBar"];
@@ -1924,77 +1924,77 @@ void __64__SBMenuBarViewController_loadMenuElementsForMainMenus_handler___block_
   return v4;
 }
 
-- (id)_uiMenuForMainMenu:(id)a3 menuState:(id)a4
+- (id)_uiMenuForMainMenu:(id)menu menuState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  menuCopy = menu;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [MEMORY[0x277CBEB18] array];
-  v10 = [v6 identifier];
+  array = [MEMORY[0x277CBEB18] array];
+  identifier = [menuCopy identifier];
   v11 = *MEMORY[0x277D76D98];
-  v12 = [v10 isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76D98]];
+  v12 = [identifier isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76D98]];
 
   v13 = MEMORY[0x277D76CF8];
   if (v12)
   {
     v14 = [WeakRetained systemWindowArrangementMenuWithOptions:1792];
 LABEL_3:
-    v15 = v14;
-    [v9 addObject:v14];
+    _systemHelpMenus = v14;
+    [array addObject:v14];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v16 = [v6 identifier];
-  v17 = [v16 isEquivalentToUIMenuIdentifier:*v13];
+  identifier2 = [menuCopy identifier];
+  v17 = [identifier2 isEquivalentToUIMenuIdentifier:*v13];
 
   if (v17)
   {
     [(SBMenuBarViewController *)self _createHelpMenuProviderIfNeeded];
-    v18 = [(SBMenuBarHelpMenuProvider *)self->_menuBarHelpMenuProvider searchTextField];
-    [v18 setText:0];
+    searchTextField = [(SBMenuBarHelpMenuProvider *)self->_menuBarHelpMenuProvider searchTextField];
+    [searchTextField setText:0];
 
-    v15 = [(SBMenuBarViewController *)self _systemHelpMenus];
-    [v9 addObjectsFromArray:v15];
+    _systemHelpMenus = [(SBMenuBarViewController *)self _systemHelpMenus];
+    [array addObjectsFromArray:_systemHelpMenus];
     goto LABEL_13;
   }
 
-  v19 = [v6 identifier];
-  v20 = [v19 isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76D18]];
+  identifier3 = [menuCopy identifier];
+  v20 = [identifier3 isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76D18]];
 
   if (v20)
   {
-    v21 = [(FBScene *)self->_menuProvidingScene clientHandle];
-    v15 = [v21 bundleIdentifier];
+    clientHandle = [(FBScene *)self->_menuProvidingScene clientHandle];
+    _systemHelpMenus = [clientHandle bundleIdentifier];
 
-    if (v15)
+    if (_systemHelpMenus)
     {
       recentDocumentsMenuProvider = self->_recentDocumentsMenuProvider;
       if (!recentDocumentsMenuProvider)
       {
         v49 = objc_alloc(MEMORY[0x277D66280]);
-        v23 = [MEMORY[0x277CCAD78] UUID];
-        v24 = [v49 initWithUniqueIdentifier:v23];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        v24 = [v49 initWithUniqueIdentifier:uUID];
         v25 = self->_recentDocumentsMenuProvider;
         self->_recentDocumentsMenuProvider = v24;
 
         recentDocumentsMenuProvider = self->_recentDocumentsMenuProvider;
       }
 
-      v26 = [(SBHRecentDocumentsContextMenuProvider *)recentDocumentsMenuProvider contextMenuSectionsForBundleIdentifier:v15];
+      v26 = [(SBHRecentDocumentsContextMenuProvider *)recentDocumentsMenuProvider contextMenuSectionsForBundleIdentifier:_systemHelpMenus];
       if ([v26 count])
       {
-        v27 = [v26 firstObject];
-        [v9 addObject:v27];
+        firstObject = [v26 firstObject];
+        [array addObject:firstObject];
       }
     }
 
     goto LABEL_13;
   }
 
-  v47 = [v6 identifier];
-  v48 = [v47 isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76D00]];
+  identifier4 = [menuCopy identifier];
+  v48 = [identifier4 isEquivalentToUIMenuIdentifier:*MEMORY[0x277D76D00]];
 
   if (v48)
   {
@@ -2003,26 +2003,26 @@ LABEL_13:
   }
 
 LABEL_14:
-  v28 = [v6 children];
-  v29 = [(SBMenuBarViewController *)self _uiMenuElementsForMainMenuElements:v28 parentMenuState:v7];
+  children = [menuCopy children];
+  v29 = [(SBMenuBarViewController *)self _uiMenuElementsForMainMenuElements:children parentMenuState:stateCopy];
 
-  [v9 addObjectsFromArray:v29];
-  v30 = [v6 identifier];
-  v31 = [v30 isEquivalentToUIMenuIdentifier:v11];
+  [array addObjectsFromArray:v29];
+  identifier5 = [menuCopy identifier];
+  v31 = [identifier5 isEquivalentToUIMenuIdentifier:v11];
 
   if (v31)
   {
-    v32 = [(FBScene *)self->_menuProvidingScene clientHandle];
-    v33 = [v32 bundleIdentifier];
+    clientHandle2 = [(FBScene *)self->_menuProvidingScene clientHandle];
+    bundleIdentifier = [clientHandle2 bundleIdentifier];
 
-    if (v33)
+    if (bundleIdentifier)
     {
       v34 = objc_alloc(MEMORY[0x277D66268]);
-      v35 = [MEMORY[0x277CCAD78] UUID];
-      v36 = [v34 initWithUniqueIdentifier:v35];
+      uUID2 = [MEMORY[0x277CCAD78] UUID];
+      mainBundle = [v34 initWithUniqueIdentifier:uUID2];
 
-      [v36 setDelegate:self];
-      v37 = [v36 contextMenuSectionsForBundleIdentifier:v33];
+      [mainBundle setDelegate:self];
+      v37 = [mainBundle contextMenuSectionsForBundleIdentifier:bundleIdentifier];
       if (![v37 count])
       {
 LABEL_23:
@@ -2030,8 +2030,8 @@ LABEL_23:
         goto LABEL_24;
       }
 
-      v38 = [v37 firstObject];
-      [v9 addObject:v38];
+      firstObject2 = [v37 firstObject];
+      [array addObject:firstObject2];
 LABEL_22:
 
       goto LABEL_23;
@@ -2040,23 +2040,23 @@ LABEL_22:
     goto LABEL_24;
   }
 
-  v39 = [v6 identifier];
-  v40 = [v39 isEquivalentToUIMenuIdentifier:*v13];
+  identifier6 = [menuCopy identifier];
+  v40 = [identifier6 isEquivalentToUIMenuIdentifier:*v13];
 
   if (v40 && self->_uncategorizedMenuState)
   {
-    v41 = [(_UIMainMenuSession *)self->_session uncategorizedMenu];
-    v33 = [(SBMenuBarViewController *)self _uiMenuForMainMenu:v41 menuState:self->_uncategorizedMenuState];
+    uncategorizedMenu = [(_UIMainMenuSession *)self->_session uncategorizedMenu];
+    bundleIdentifier = [(SBMenuBarViewController *)self _uiMenuForMainMenu:uncategorizedMenu menuState:self->_uncategorizedMenuState];
 
-    if ([v33 _hasVisibleChildren])
+    if ([bundleIdentifier _hasVisibleChildren])
     {
       v50 = MEMORY[0x277D75710];
-      v36 = [MEMORY[0x277CCA8D8] mainBundle];
-      v37 = [v36 localizedStringForKey:@"KEYBOARD_SHORTCUT_MENU_TITLE" value:&stru_283094718 table:@"SpringBoard"];
-      v38 = [MEMORY[0x277D755B8] systemImageNamed:@"command.square"];
-      v42 = [v33 children];
-      v43 = [v50 menuWithTitle:v37 image:v38 identifier:0 options:1792 children:v42];
-      [v9 addObject:v43];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v37 = [mainBundle localizedStringForKey:@"KEYBOARD_SHORTCUT_MENU_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+      firstObject2 = [MEMORY[0x277D755B8] systemImageNamed:@"command.square"];
+      children2 = [bundleIdentifier children];
+      v43 = [v50 menuWithTitle:v37 image:firstObject2 identifier:0 options:1792 children:children2];
+      [array addObject:v43];
 
       goto LABEL_22;
     }
@@ -2064,23 +2064,23 @@ LABEL_22:
 LABEL_24:
   }
 
-  v44 = [v6 uiMenu];
-  v45 = [v44 _menuByReplacingChildren:v9 additionalOptions:1792];
+  uiMenu = [menuCopy uiMenu];
+  v45 = [uiMenu _menuByReplacingChildren:array additionalOptions:1792];
 
   return v45;
 }
 
-- (id)_uiMenuElementsForMainMenuElements:(id)a3 parentMenuState:(id)a4
+- (id)_uiMenuElementsForMainMenuElements:(id)elements parentMenuState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
+  elementsCopy = elements;
+  stateCopy = state;
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = v6;
+  v9 = elementsCopy;
   v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
@@ -2095,10 +2095,10 @@ LABEL_24:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [(SBMenuBarViewController *)self _uiMenuElementForChildMainMenuElement:*(*(&v16 + 1) + 8 * i) parentMenuState:v7, v16];
+        v14 = [(SBMenuBarViewController *)self _uiMenuElementForChildMainMenuElement:*(*(&v16 + 1) + 8 * i) parentMenuState:stateCopy, v16];
         if (v14)
         {
-          [v8 addObject:v14];
+          [array addObject:v14];
         }
       }
 
@@ -2108,20 +2108,20 @@ LABEL_24:
     while (v11);
   }
 
-  return v8;
+  return array;
 }
 
-- (id)_uiMenuElementForChildMainMenuElement:(id)a3 parentMenuState:(id)a4
+- (id)_uiMenuElementForChildMainMenuElement:(id)element parentMenuState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  stateCopy = state;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [v7 childMenuStates];
-    v10 = [v8 identifier];
-    v11 = [v9 objectForKey:v10];
+    v8 = elementCopy;
+    childMenuStates = [stateCopy childMenuStates];
+    identifier = [v8 identifier];
+    v11 = [childMenuStates objectForKey:identifier];
 
     v12 = [(SBMenuBarViewController *)self _uiMenuForMainMenu:v8 menuState:v11];
 
@@ -2131,7 +2131,7 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [(SBMenuBarViewController *)self _uiMenuLeafForMainMenuCommand:v6 parentMenuState:v7];
+    v13 = [(SBMenuBarViewController *)self _uiMenuLeafForMainMenuCommand:elementCopy parentMenuState:stateCopy];
 LABEL_7:
     v12 = v13;
     goto LABEL_9;
@@ -2140,7 +2140,7 @@ LABEL_7:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [(SBMenuBarViewController *)self _uiDeferredMenuElementForMainMenuDeferredElement:v6 parentState:v7];
+    v13 = [(SBMenuBarViewController *)self _uiDeferredMenuElementForMainMenuDeferredElement:elementCopy parentState:stateCopy];
     goto LABEL_7;
   }
 
@@ -2150,10 +2150,10 @@ LABEL_9:
   return v12;
 }
 
-- (id)_uiMenuLeafForMainMenuCommand:(id)a3 parentMenuState:(id)a4
+- (id)_uiMenuLeafForMainMenuCommand:(id)command parentMenuState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  commandCopy = command;
+  stateCopy = state;
   objc_initWeak(&location, self);
   session = self->_session;
   v11[0] = MEMORY[0x277D85DD0];
@@ -2161,7 +2161,7 @@ LABEL_9:
   v11[2] = __73__SBMenuBarViewController__uiMenuLeafForMainMenuCommand_parentMenuState___block_invoke;
   v11[3] = &unk_2783BCF50;
   objc_copyWeak(&v12, &location);
-  v9 = [v6 uiMenuLeafForCommandAndAlternatesForSession:session parentState:v7 primaryActionHandler:v11];
+  v9 = [commandCopy uiMenuLeafForCommandAndAlternatesForSession:session parentState:stateCopy primaryActionHandler:v11];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
 
@@ -2175,19 +2175,19 @@ void __73__SBMenuBarViewController__uiMenuLeafForMainMenuCommand_parentMenuState
   [WeakRetained _runCommandFromContext:v3];
 }
 
-- (id)_uiDeferredMenuElementForMainMenuDeferredElement:(id)a3 parentState:(id)a4
+- (id)_uiDeferredMenuElementForMainMenuDeferredElement:(id)element parentState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  elementCopy = element;
+  stateCopy = state;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __88__SBMenuBarViewController__uiDeferredMenuElementForMainMenuDeferredElement_parentState___block_invoke;
   v12[3] = &unk_2783BCFF0;
   objc_copyWeak(&v15, &location);
-  v8 = v7;
+  v8 = stateCopy;
   v13 = v8;
-  v9 = v6;
+  v9 = elementCopy;
   v14 = v9;
   v10 = [v9 uiDeferredMenuElementForProvider:v12];
 
@@ -2272,18 +2272,18 @@ void __88__SBMenuBarViewController__uiDeferredMenuElementForMainMenuDeferredElem
   }
 }
 
-- (void)_runCommandFromContext:(id)a3
+- (void)_runCommandFromContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 command];
-  if ([v4 needsAuthenticationMessage])
+  contextCopy = context;
+  command = [contextCopy command];
+  if ([contextCopy needsAuthenticationMessage])
   {
-    v6 = [(FBScene *)self->_menuProvidingScene clientHandle];
-    v7 = [v6 processHandle];
-    v8 = v7;
-    if (v7)
+    clientHandle = [(FBScene *)self->_menuProvidingScene clientHandle];
+    processHandle = [clientHandle processHandle];
+    v8 = processHandle;
+    if (processHandle)
     {
-      [v7 auditToken];
+      [processHandle auditToken];
     }
 
     else
@@ -2295,14 +2295,14 @@ void __88__SBMenuBarViewController__uiDeferredMenuElementForMainMenuDeferredElem
     v9 = BSVersionedPIDForAuditToken();
 
     objc_initWeak(location, self);
-    v10 = [MEMORY[0x277D75810] generalPasteboard];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __50__SBMenuBarViewController__runCommandFromContext___block_invoke;
     v11[3] = &unk_2783BD018;
     objc_copyWeak(&v13, location);
-    v12 = v5;
-    [v10 _requestSecurePasteAuthenticationMessageWithContext:0x2602B97B3B8E05C3 forClientVersionedPID:v9 completionBlock:v11];
+    v12 = command;
+    [generalPasteboard _requestSecurePasteAuthenticationMessageWithContext:0x2602B97B3B8E05C3 forClientVersionedPID:v9 completionBlock:v11];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(location);
@@ -2310,7 +2310,7 @@ void __88__SBMenuBarViewController__uiDeferredMenuElementForMainMenuDeferredElem
 
   else
   {
-    [(SBMenuBarViewController *)self _performMainMenuCommandInvocationRequestForCommand:v5 withAuthenticationMessage:0];
+    [(SBMenuBarViewController *)self _performMainMenuCommandInvocationRequestForCommand:command withAuthenticationMessage:0];
   }
 }
 
@@ -2334,29 +2334,29 @@ void __50__SBMenuBarViewController__runCommandFromContext___block_invoke(uint64_
   BSDispatchMain();
 }
 
-- (void)_performMainMenuCommandInvocationRequestForCommand:(id)a3 withAuthenticationMessage:(id)a4
+- (void)_performMainMenuCommandInvocationRequestForCommand:(id)command withAuthenticationMessage:(id)message
 {
   v6 = MEMORY[0x277D760E0];
-  v7 = a4;
-  v8 = a3;
-  v10 = [[v6 alloc] initWithCommand:v8 session:self->_session];
+  messageCopy = message;
+  commandCopy = command;
+  v10 = [[v6 alloc] initWithCommand:commandCopy session:self->_session];
 
   v9 = objc_alloc_init(MEMORY[0x277D76108]);
   [v9 setSessionToEnd:self->_session];
   [v10 setSessionRequest:v9];
   [(SBMenuBarViewController *)self _clearSessionState];
-  [v10 setAuthenticationMessage:v7];
+  [v10 setAuthenticationMessage:messageCopy];
 
   [(_UISceneMainMenuProviding *)self->_mainMenuProvider performMainMenuCommandInvocationRequest:v10 responseHandler:0];
 }
 
-- (void)mainMenuDidInvalidate:(id)a3
+- (void)mainMenuDidInvalidate:(id)invalidate
 {
   if (!self->_dismissed)
   {
     [(SBMenuBarViewController *)self _clearSessionState];
-    v5 = [(SBMenuBarMainMenuView *)self->_presentedMainMenuView contextMenuInteraction];
-    [v5 dismissMenu];
+    contextMenuInteraction = [(SBMenuBarMainMenuView *)self->_presentedMainMenuView contextMenuInteraction];
+    [contextMenuInteraction dismissMenu];
 
     presentedMainMenuView = self->_presentedMainMenuView;
     self->_presentedMainMenuView = 0;
@@ -2372,16 +2372,16 @@ void __50__SBMenuBarViewController__runCommandFromContext___block_invoke(uint64_
   }
 }
 
-- (id)hostKeyboardShortcutsForMainMenu:(id)a3
+- (id)hostKeyboardShortcutsForMainMenu:(id)menu
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [SBApp registeredSystemKeyboardShortcuts];
+  registeredSystemKeyboardShortcuts = [SBApp registeredSystemKeyboardShortcuts];
   v4 = [MEMORY[0x277CBEB58] set];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = registeredSystemKeyboardShortcuts;
   v25 = [obj countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (v25)
   {
@@ -2398,27 +2398,27 @@ void __50__SBMenuBarViewController__runCommandFromContext___block_invoke(uint64_
         }
 
         v7 = *(*(&v33 + 1) + 8 * i);
-        v8 = [v7 modifierFlags];
-        v9 = [v7 input];
-        if (![(__CFString *)v9 length])
+        modifierFlags = [v7 modifierFlags];
+        input = [v7 input];
+        if (![(__CFString *)input length])
         {
-          v10 = [v7 _keyCodes];
-          if ([v10 count])
+          _keyCodes = [v7 _keyCodes];
+          if ([_keyCodes count])
           {
-            v11 = [v10 firstIndex];
-            if (v11 == 32)
+            firstIndex = [_keyCodes firstIndex];
+            if (firstIndex == 32)
             {
-              v13 = v9;
-              v9 = @"3";
+              v13 = input;
+              input = @"3";
             }
 
             else
             {
-              v12 = v11;
-              if (v11 == 33)
+              v12 = firstIndex;
+              if (firstIndex == 33)
               {
-                v13 = v9;
-                v9 = @"4";
+                v13 = input;
+                input = @"4";
               }
 
               else
@@ -2435,18 +2435,18 @@ void __50__SBMenuBarViewController__runCommandFromContext___block_invoke(uint64_
           }
         }
 
-        if ([(__CFString *)v9 length])
+        if ([(__CFString *)input length])
         {
           v28 = i;
-          v27 = [MEMORY[0x277D760E8] shortcutWithModifierFlags:v8 keyEquivalent:v9];
+          v27 = [MEMORY[0x277D760E8] shortcutWithModifierFlags:modifierFlags keyEquivalent:input];
           v26 = [objc_alloc(MEMORY[0x277D76100]) initWithKeyboardShortcut:v27];
           [v4 addObject:?];
           v31 = 0u;
           v32 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v14 = [v7 alternates];
-          v15 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          alternates = [v7 alternates];
+          v15 = [alternates countByEnumeratingWithState:&v29 objects:v37 count:16];
           if (v15)
           {
             v16 = v15;
@@ -2457,15 +2457,15 @@ void __50__SBMenuBarViewController__runCommandFromContext___block_invoke(uint64_
               {
                 if (*v30 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(alternates);
                 }
 
-                v19 = [MEMORY[0x277D760E8] shortcutWithModifierFlags:objc_msgSend(*(*(&v29 + 1) + 8 * j) keyEquivalent:{"modifierFlags") | v8, v9}];
+                v19 = [MEMORY[0x277D760E8] shortcutWithModifierFlags:objc_msgSend(*(*(&v29 + 1) + 8 * j) keyEquivalent:{"modifierFlags") | modifierFlags, input}];
                 v20 = [objc_alloc(MEMORY[0x277D76100]) initWithKeyboardShortcut:v19];
                 [v4 addObject:v20];
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+              v16 = [alternates countByEnumeratingWithState:&v29 objects:v37 count:16];
             }
 
             while (v16);
@@ -2484,9 +2484,9 @@ void __50__SBMenuBarViewController__runCommandFromContext___block_invoke(uint64_
   return v4;
 }
 
-- (void)mainMenuProvider:(id)a3 didReceiveCommandInvocationNotification:(id)a4
+- (void)mainMenuProvider:(id)provider didReceiveCommandInvocationNotification:(id)notification
 {
-  v5 = [a4 invokedCommandCategoryMenuIdentifierForSession:self->_session];
+  v5 = [notification invokedCommandCategoryMenuIdentifierForSession:self->_session];
   v6 = v5;
   if (v5)
   {
@@ -2508,17 +2508,17 @@ uint64_t __84__SBMenuBarViewController_mainMenuProvider_didReceiveCommandInvocat
   return v5;
 }
 
-- (id)overrideClientNameForMainMenu:(id)a3
+- (id)overrideClientNameForMainMenu:(id)menu
 {
-  v4 = [(FBScene *)self->_menuProvidingScene clientHandle];
-  v5 = [v4 bundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.webapp"];
+  clientHandle = [(FBScene *)self->_menuProvidingScene clientHandle];
+  bundleIdentifier = [clientHandle bundleIdentifier];
+  v6 = [bundleIdentifier isEqualToString:@"com.apple.webapp"];
 
   if (v6)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [(FBScene *)self->_menuProvidingScene identifier];
-    v9 = [WeakRetained displayNameForWebAppWithSceneIdentifier:v8];
+    identifier = [(FBScene *)self->_menuProvidingScene identifier];
+    v9 = [WeakRetained displayNameForWebAppWithSceneIdentifier:identifier];
   }
 
   else
@@ -2529,7 +2529,7 @@ uint64_t __84__SBMenuBarViewController_mainMenuProvider_didReceiveCommandInvocat
   return v9;
 }
 
-- (id)dataSourceForOpenApplicationWindowsContextMenuProvider:(id)a3
+- (id)dataSourceForOpenApplicationWindowsContextMenuProvider:(id)provider
 {
   v3 = objc_alloc_init(SBOpenApplicationWindowsContextMenuDataSource);
 
@@ -2538,8 +2538,8 @@ uint64_t __84__SBMenuBarViewController_mainMenuProvider_didReceiveCommandInvocat
 
 - (double)desiredBlurWidth
 {
-  v3 = [(SBMenuBarViewController *)self view];
-  [v3 bounds];
+  view = [(SBMenuBarViewController *)self view];
+  [view bounds];
   v5 = v4;
   [(SBMenuBarSettings *)self->_menuBarSettings backgroundBlurContentOverhang];
   v7 = v5 + v6 * 2.0;
@@ -2573,39 +2573,39 @@ void __70__SBMenuBarViewController__movePresentedMenuViewToPreviouslyPresented__
   [v1 dismissMenu];
 }
 
-- (void)_presentMenuViewNonInteractively:(id)a3 forPointerHover:(BOOL)a4
+- (void)_presentMenuViewNonInteractively:(id)interactively forPointerHover:(BOOL)hover
 {
-  v4 = a4;
-  v6 = a3;
+  hoverCopy = hover;
+  interactivelyCopy = interactively;
   [(SBMenuBarViewController *)self _cancelEndSessionTimer];
   [(SBMenuBarViewController *)self _movePresentedMenuViewToPreviouslyPresented];
-  if (v4)
+  if (hoverCopy)
   {
-    [(SBMenuBarMainMenuView *)v6 setPresentingMenuForPointerHover:1];
+    [(SBMenuBarMainMenuView *)interactivelyCopy setPresentingMenuForPointerHover:1];
   }
 
   else
   {
-    [(SBMenuBarMainMenuView *)v6 setPresentingMenuForKeyPress:1];
+    [(SBMenuBarMainMenuView *)interactivelyCopy setPresentingMenuForKeyPress:1];
   }
 
-  [(SBMenuBarMainMenuView *)v6 performPrimaryAction];
+  [(SBMenuBarMainMenuView *)interactivelyCopy performPrimaryAction];
   presentedMainMenuView = self->_presentedMainMenuView;
-  self->_presentedMainMenuView = v6;
+  self->_presentedMainMenuView = interactivelyCopy;
 }
 
-- (void)_navigateToNextMenuHeaderForArrowKeyPress:(id)a3
+- (void)_navigateToNextMenuHeaderForArrowKeyPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   if (self->_presentedMainMenuView)
   {
-    v18 = v4;
-    v5 = [(SBMenuBarHeaderContainerView *)self->_menuHeaderContainerView menuHeaderViews];
-    v6 = [v5 indexOfObject:self->_presentedMainMenuView];
-    v7 = [v5 count];
-    v8 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    v18 = pressCopy;
+    menuHeaderViews = [(SBMenuBarHeaderContainerView *)self->_menuHeaderContainerView menuHeaderViews];
+    v6 = [menuHeaderViews indexOfObject:self->_presentedMainMenuView];
+    v7 = [menuHeaderViews count];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v9 = MEMORY[0x277D76B60];
-    if (v8 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v9 = MEMORY[0x277D76B48];
     }
@@ -2624,7 +2624,7 @@ void __70__SBMenuBarViewController__movePresentedMenuViewToPreviouslyPresented__
     do
     {
       v12 = (v11 + v7) % v7;
-      v13 = [v5 objectAtIndex:v12];
+      v13 = [menuHeaderViews objectAtIndex:v12];
       v14 = objc_opt_class();
       v15 = v13;
       if (v14)
@@ -2661,14 +2661,14 @@ void __70__SBMenuBarViewController__movePresentedMenuViewToPreviouslyPresented__
       [(SBMenuBarViewController *)self _presentMenuViewNonInteractively:v17 forPointerHover:0];
     }
 
-    v4 = v18;
+    pressCopy = v18;
   }
 }
 
-- (void)_createWindowControlsPlaceholderViewForViewController:(id)a3
+- (void)_createWindowControlsPlaceholderViewForViewController:(id)controller
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = [a3 view];
+  view = [controller view];
   v5 = objc_alloc(MEMORY[0x277D75D18]);
   v6 = [v5 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   windowControlsPlaceholderView = self->_windowControlsPlaceholderView;
@@ -2676,31 +2676,31 @@ void __70__SBMenuBarViewController__movePresentedMenuViewToPreviouslyPresented__
 
   [(UIView *)self->_windowControlsPlaceholderView setTranslatesAutoresizingMaskIntoConstraints:0];
   v8 = MEMORY[0x277CCAAD0];
-  v9 = [(UIView *)self->_windowControlsPlaceholderView heightAnchor];
-  [v4 bounds];
-  v11 = [v9 constraintEqualToConstant:v10];
+  heightAnchor = [(UIView *)self->_windowControlsPlaceholderView heightAnchor];
+  [view bounds];
+  v11 = [heightAnchor constraintEqualToConstant:v10];
   v18[0] = v11;
-  v12 = [(UIView *)self->_windowControlsPlaceholderView widthAnchor];
-  [v4 bounds];
+  widthAnchor = [(UIView *)self->_windowControlsPlaceholderView widthAnchor];
+  [view bounds];
   v14 = v13;
   [(SBMenuBarSettings *)self->_menuBarSettings menuTitleSpacing];
-  v16 = [v12 constraintEqualToConstant:v14 + v15];
+  v16 = [widthAnchor constraintEqualToConstant:v14 + v15];
   v18[1] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
   [v8 activateConstraints:v17];
 }
 
-- (id)_mainMenuViewPassingTest:(id)a3
+- (id)_mainMenuViewPassingTest:(id)test
 {
-  v4 = a3;
-  v5 = [(SBMenuBarHeaderContainerView *)self->_menuHeaderContainerView menuHeaderViews];
+  testCopy = test;
+  menuHeaderViews = [(SBMenuBarHeaderContainerView *)self->_menuHeaderContainerView menuHeaderViews];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__SBMenuBarViewController__mainMenuViewPassingTest___block_invoke;
   v9[3] = &unk_2783BD040;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 bs_firstObjectPassingTest:v9];
+  v10 = testCopy;
+  v6 = testCopy;
+  v7 = [menuHeaderViews bs_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -2743,9 +2743,9 @@ uint64_t __52__SBMenuBarViewController__mainMenuViewPassingTest___block_invoke(u
   return v8;
 }
 
-- (void)_possiblyFlashMenuViewPassingTest:(id)a3
+- (void)_possiblyFlashMenuViewPassingTest:(id)test
 {
-  v3 = [(SBMenuBarViewController *)self _mainMenuViewPassingTest:a3];
+  v3 = [(SBMenuBarViewController *)self _mainMenuViewPassingTest:test];
   v4 = v3;
   if (v3)
   {
@@ -2774,8 +2774,8 @@ uint64_t __52__SBMenuBarViewController__mainMenuViewPassingTest___block_invoke(u
   endActiveSessionTimer = self->_endActiveSessionTimer;
   self->_endActiveSessionTimer = v4;
 
-  v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v6 addTimer:self->_endActiveSessionTimer forMode:*MEMORY[0x277CBE738]];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop addTimer:self->_endActiveSessionTimer forMode:*MEMORY[0x277CBE738]];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -2824,8 +2824,8 @@ void __51__SBMenuBarViewController__scheduleEndSessionTimer__block_invoke(uint64
 
 - (id)_systemHelpMenus
 {
-  v3 = [(SBMenuBarViewController *)self menuBarHelpMenuProvider];
-  v4 = [v3 systemHelpMenusForScene:self->_menuProvidingScene];
+  menuBarHelpMenuProvider = [(SBMenuBarViewController *)self menuBarHelpMenuProvider];
+  v4 = [menuBarHelpMenuProvider systemHelpMenusForScene:self->_menuProvidingScene];
 
   return v4;
 }

@@ -1,5 +1,5 @@
 @interface PKIDSManager
-- (BOOL)_queue_deviceIsRegistered:(id)a3;
+- (BOOL)_queue_deviceIsRegistered:(id)registered;
 - (BOOL)_queue_hasRegisteredAccounts;
 - (BOOL)_queue_hasRemoteDevices;
 - (BOOL)hasRemoteDevices;
@@ -7,57 +7,57 @@
 - (NSArray)paymentRequests;
 - (NSArray)remoteDevices;
 - (PKIDSManager)init;
-- (PKIDSManager)initWithIDSService:(id)a3;
-- (PKIDSManager)initWithTargetQueue:(id)a3;
-- (id)_fetchPaymentInstrumentsForRequestingDevice:(id)a3;
-- (id)_preparePaymentDeviceResponseForRequestingDevice:(id)a3 userDisabled:(BOOL)a4;
-- (id)_queue_cancelRemotePaymentRequest:(id)a3 completion:(id)a4;
-- (id)_queue_requestForIdentifier:(id)a3;
+- (PKIDSManager)initWithIDSService:(id)service;
+- (PKIDSManager)initWithTargetQueue:(id)queue;
+- (id)_fetchPaymentInstrumentsForRequestingDevice:(id)device;
+- (id)_preparePaymentDeviceResponseForRequestingDevice:(id)device userDisabled:(BOOL)disabled;
+- (id)_queue_cancelRemotePaymentRequest:(id)request completion:(id)completion;
+- (id)_queue_requestForIdentifier:(id)identifier;
 - (id)_remoteDevicesWithArchive;
-- (id)cancelRemotePaymentRequest:(id)a3 completion:(id)a4;
-- (id)requestForIdentifier:(id)a3;
-- (id)requestInstrumentThumbnail:(id)a3 forRemoteDevice:(id)a4 size:(CGSize)a5 completion:(id)a6;
-- (id)sendPayment:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (id)sendPaymentClientUpdate:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (id)sendPaymentHostUpdate:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (id)sendPaymentResult:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (id)sendPaymentStatus:(int64_t)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5;
-- (id)sendRemotePaymentRequest:(id)a3 completion:(id)a4;
-- (id)sendSetupRequest:(id)a3 appDisplayName:(id)a4 completion:(id)a5;
-- (int64_t)_paymentAuthorizationStatusForPaymentResult:(id)a3 forRemotePaymentRequest:(id)a4;
-- (void)_paymentCancellationReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_paymentClientUpdateReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_paymentDiscoveryRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_paymentDiscoveryResponseReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_paymentHostUpdateReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_paymentRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_paymentResponseReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_paymentResultReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_paymentSetupRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
+- (id)cancelRemotePaymentRequest:(id)request completion:(id)completion;
+- (id)requestForIdentifier:(id)identifier;
+- (id)requestInstrumentThumbnail:(id)thumbnail forRemoteDevice:(id)device size:(CGSize)size completion:(id)completion;
+- (id)sendPayment:(id)payment forRemotePaymentRequest:(id)request completion:(id)completion;
+- (id)sendPaymentClientUpdate:(id)update forRemotePaymentRequest:(id)request completion:(id)completion;
+- (id)sendPaymentHostUpdate:(id)update forRemotePaymentRequest:(id)request completion:(id)completion;
+- (id)sendPaymentResult:(id)result forRemotePaymentRequest:(id)request completion:(id)completion;
+- (id)sendPaymentStatus:(int64_t)status forRemotePaymentRequest:(id)request completion:(id)completion;
+- (id)sendRemotePaymentRequest:(id)request completion:(id)completion;
+- (id)sendSetupRequest:(id)request appDisplayName:(id)name completion:(id)completion;
+- (int64_t)_paymentAuthorizationStatusForPaymentResult:(id)result forRemotePaymentRequest:(id)request;
+- (void)_paymentCancellationReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_paymentClientUpdateReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_paymentDiscoveryRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_paymentDiscoveryResponseReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_paymentHostUpdateReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_paymentRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_paymentResponseReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_paymentResultReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_paymentSetupRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
 - (void)_postCTLMThrottleUncapNotification;
-- (void)_promptDetailsForVirtualCardRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_queue_addThumbnailCompletionHandler:(id)a3 forKey:(id)a4;
+- (void)_promptDetailsForVirtualCardRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_queue_addThumbnailCompletionHandler:(id)handler forKey:(id)key;
 - (void)_queue_logCloudPairingState;
-- (void)_queue_removeThumbnailCompletionHandlersForKeys:(id)a3;
-- (void)_queue_sendDeviceDiscoveryRequestToAllDevicesWithProximity:(BOOL)a3;
-- (void)_queue_sendDeviceDiscoveryRequestWithProximity:(BOOL)a3 devices:(id)a4;
-- (void)_queue_sendDiscoveryResponse:(id)a3 toDeviceWithFromID:(id)a4;
+- (void)_queue_removeThumbnailCompletionHandlersForKeys:(id)keys;
+- (void)_queue_sendDeviceDiscoveryRequestToAllDevicesWithProximity:(BOOL)proximity;
+- (void)_queue_sendDeviceDiscoveryRequestWithProximity:(BOOL)proximity devices:(id)devices;
+- (void)_queue_sendDiscoveryResponse:(id)response toDeviceWithFromID:(id)d;
 - (void)_registerCTLMThrottleUncapNotification;
 - (void)_registerListeners;
-- (void)_thumbnailRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)_thumbnailResponseReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)addDelegate:(id)a3;
+- (void)_thumbnailRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)_thumbnailResponseReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
 - (void)deleteArchivedDevices;
-- (void)discoverRemoteDevicesWithProximity:(BOOL)a3;
-- (void)invalidateMessage:(id)a3;
-- (void)promptDetailsForVirtualCard:(id)a3 showNotification:(BOOL)a4 completion:(id)a5;
-- (void)removeDelegate:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)discoverRemoteDevicesWithProximity:(BOOL)proximity;
+- (void)invalidateMessage:(id)message;
+- (void)promptDetailsForVirtualCard:(id)card showNotification:(BOOL)notification completion:(id)completion;
+- (void)removeDelegate:(id)delegate;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
 @end
 
 @implementation PKIDSManager
@@ -65,8 +65,8 @@
 - (NSArray)delegates
 {
   os_unfair_lock_lock(&self->_delegatesLock);
-  v3 = [(NSHashTable *)self->_delegates allObjects];
-  v4 = [v3 copy];
+  allObjects = [(NSHashTable *)self->_delegates allObjects];
+  v4 = [allObjects copy];
 
   os_unfair_lock_unlock(&self->_delegatesLock);
 
@@ -90,23 +90,23 @@
   return v4;
 }
 
-- (PKIDSManager)initWithTargetQueue:(id)a3
+- (PKIDSManager)initWithTargetQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v5 = [(PKIDSManager *)self init];
   v6 = v5;
   if (v5)
   {
-    dispatch_set_target_queue(v5->_internalQueue, v4);
-    dispatch_set_target_queue(v6->_callbackQueue, v4);
+    dispatch_set_target_queue(v5->_internalQueue, queueCopy);
+    dispatch_set_target_queue(v6->_callbackQueue, queueCopy);
   }
 
   return v6;
 }
 
-- (PKIDSManager)initWithIDSService:(id)a3
+- (PKIDSManager)initWithIDSService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v33.receiver = self;
   v33.super_class = PKIDSManager;
   v6 = [(PKIDSManager *)&v33 init];
@@ -122,7 +122,7 @@
     callbackQueue = v7->_callbackQueue;
     v7->_callbackQueue = v10;
 
-    objc_storeStrong(&v7->_service, a3);
+    objc_storeStrong(&v7->_service, service);
     v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
     remoteDevices = v7->_remoteDevices;
     v7->_remoteDevices = v12;
@@ -193,29 +193,29 @@ uint64_t __35__PKIDSManager_initWithIDSService___block_invoke(uint64_t a1)
   [(PKIDSManager *)&v3 dealloc];
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v7 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegatesLock);
   delegates = self->_delegates;
   if (!delegates)
   {
-    v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     v6 = self->_delegates;
-    self->_delegates = v5;
+    self->_delegates = pk_weakObjectsHashTableUsingPointerPersonality;
 
     delegates = self->_delegates;
   }
 
-  [(NSHashTable *)delegates addObject:v7];
+  [(NSHashTable *)delegates addObject:delegateCopy];
   os_unfair_lock_unlock(&self->_delegatesLock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegatesLock);
-  [(NSHashTable *)self->_delegates removeObject:v4];
+  [(NSHashTable *)self->_delegates removeObject:delegateCopy];
 
   os_unfair_lock_unlock(&self->_delegatesLock);
 }
@@ -306,7 +306,7 @@ uint64_t __32__PKIDSManager_hasRemoteDevices__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)discoverRemoteDevicesWithProximity:(BOOL)a3
+- (void)discoverRemoteDevicesWithProximity:(BOOL)proximity
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -314,7 +314,7 @@ uint64_t __32__PKIDSManager_hasRemoteDevices__block_invoke(uint64_t a1)
   v4[2] = __51__PKIDSManager_discoverRemoteDevicesWithProximity___block_invoke;
   v4[3] = &unk_1E79C4EC8;
   v4[4] = self;
-  v5 = a3;
+  proximityCopy = proximity;
   dispatch_async(internalQueue, v4);
 }
 
@@ -418,23 +418,23 @@ void __51__PKIDSManager_discoverRemoteDevicesWithProximity___block_invoke_2(uint
   dispatch_async(v5, v7);
 }
 
-- (id)sendSetupRequest:(id)a3 appDisplayName:(id)a4 completion:(id)a5
+- (id)sendSetupRequest:(id)request appDisplayName:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  nameCopy = name;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __59__PKIDSManager_sendSetupRequest_appDisplayName_completion___block_invoke;
   v16[3] = &unk_1E79C4EF0;
-  v17 = v9;
-  v18 = self;
-  v19 = v8;
-  v20 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v17 = nameCopy;
+  selfCopy = self;
+  v19 = requestCopy;
+  v20 = completionCopy;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = nameCopy;
   dispatch_sync(internalQueue, v16);
 
   return 0;
@@ -499,10 +499,10 @@ void __59__PKIDSManager_sendSetupRequest_appDisplayName_completion___block_invok
   }
 }
 
-- (id)sendRemotePaymentRequest:(id)a3 completion:(id)a4
+- (id)sendRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -515,11 +515,11 @@ void __59__PKIDSManager_sendSetupRequest_appDisplayName_completion___block_invok
   v13[2] = __52__PKIDSManager_sendRemotePaymentRequest_completion___block_invoke;
   v13[3] = &unk_1E79E0C38;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = requestCopy;
+  v15 = completionCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_sync(internalQueue, v13);
   v11 = v18[5];
 
@@ -593,11 +593,11 @@ void __52__PKIDSManager_sendRemotePaymentRequest_completion___block_invoke_2(voi
   }
 }
 
-- (id)sendPaymentHostUpdate:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (id)sendPaymentHostUpdate:(id)update forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  requestCopy = request;
+  completionCopy = completion;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -609,14 +609,14 @@ void __52__PKIDSManager_sendRemotePaymentRequest_completion___block_invoke_2(voi
   block[1] = 3221225472;
   block[2] = __73__PKIDSManager_sendPaymentHostUpdate_forRemotePaymentRequest_completion___block_invoke;
   block[3] = &unk_1E79D7460;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
-  v21 = v10;
+  v18 = updateCopy;
+  v19 = requestCopy;
+  selfCopy = self;
+  v21 = completionCopy;
   v22 = &v23;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = updateCopy;
   dispatch_sync(internalQueue, block);
   v15 = v24[5];
 
@@ -679,11 +679,11 @@ void __73__PKIDSManager_sendPaymentHostUpdate_forRemotePaymentRequest_completion
   }
 }
 
-- (id)sendPaymentClientUpdate:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (id)sendPaymentClientUpdate:(id)update forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  requestCopy = request;
+  completionCopy = completion;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -695,14 +695,14 @@ void __73__PKIDSManager_sendPaymentHostUpdate_forRemotePaymentRequest_completion
   block[1] = 3221225472;
   block[2] = __75__PKIDSManager_sendPaymentClientUpdate_forRemotePaymentRequest_completion___block_invoke;
   block[3] = &unk_1E79D7460;
-  v18 = v8;
-  v19 = v9;
-  v20 = self;
-  v21 = v10;
+  v18 = updateCopy;
+  v19 = requestCopy;
+  selfCopy = self;
+  v21 = completionCopy;
   v22 = &v23;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = updateCopy;
   dispatch_sync(internalQueue, block);
   v15 = v24[5];
 
@@ -765,11 +765,11 @@ void __75__PKIDSManager_sendPaymentClientUpdate_forRemotePaymentRequest_completi
   }
 }
 
-- (id)sendPayment:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (id)sendPayment:(id)payment forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  paymentCopy = payment;
+  requestCopy = request;
+  completionCopy = completion;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -781,14 +781,14 @@ void __75__PKIDSManager_sendPaymentClientUpdate_forRemotePaymentRequest_completi
   block[1] = 3221225472;
   block[2] = __63__PKIDSManager_sendPayment_forRemotePaymentRequest_completion___block_invoke;
   block[3] = &unk_1E79D7460;
-  v18 = v9;
-  v19 = v8;
-  v20 = self;
-  v21 = v10;
+  v18 = requestCopy;
+  v19 = paymentCopy;
+  selfCopy = self;
+  v21 = completionCopy;
   v22 = &v23;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v12 = completionCopy;
+  v13 = paymentCopy;
+  v14 = requestCopy;
   dispatch_sync(internalQueue, block);
   v15 = v24[5];
 
@@ -855,11 +855,11 @@ void __63__PKIDSManager_sendPayment_forRemotePaymentRequest_completion___block_i
   }
 }
 
-- (id)sendPaymentResult:(id)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (id)sendPaymentResult:(id)result forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultCopy = result;
+  requestCopy = request;
+  completionCopy = completion;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -872,13 +872,13 @@ void __63__PKIDSManager_sendPayment_forRemotePaymentRequest_completion___block_i
   block[2] = __69__PKIDSManager_sendPaymentResult_forRemotePaymentRequest_completion___block_invoke;
   block[3] = &unk_1E79D7460;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
+  v18 = resultCopy;
+  v19 = requestCopy;
+  v20 = completionCopy;
   v21 = &v22;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  v14 = resultCopy;
   dispatch_sync(internalQueue, block);
   v15 = v23[5];
 
@@ -948,21 +948,21 @@ void __69__PKIDSManager_sendPaymentResult_forRemotePaymentRequest_completion___b
   }
 }
 
-- (id)sendPaymentStatus:(int64_t)a3 forRemotePaymentRequest:(id)a4 completion:(id)a5
+- (id)sendPaymentStatus:(int64_t)status forRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v10 = objc_alloc_init(PKPaymentAuthorizationResult);
-  [(PKPaymentAuthorizationResult *)v10 setStatus:a3];
-  v11 = [(PKIDSManager *)self sendPaymentResult:v10 forRemotePaymentRequest:v9 completion:v8];
+  [(PKPaymentAuthorizationResult *)v10 setStatus:status];
+  v11 = [(PKIDSManager *)self sendPaymentResult:v10 forRemotePaymentRequest:requestCopy completion:completionCopy];
 
   return v11;
 }
 
-- (id)cancelRemotePaymentRequest:(id)a3 completion:(id)a4
+- (id)cancelRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -975,11 +975,11 @@ void __69__PKIDSManager_sendPaymentResult_forRemotePaymentRequest_completion___b
   v13[2] = __54__PKIDSManager_cancelRemotePaymentRequest_completion___block_invoke;
   v13[3] = &unk_1E79E0C38;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = requestCopy;
+  v15 = completionCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_sync(internalQueue, v13);
   v11 = v18[5];
 
@@ -996,12 +996,12 @@ void __54__PKIDSManager_cancelRemotePaymentRequest_completion___block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (id)requestInstrumentThumbnail:(id)a3 forRemoteDevice:(id)a4 size:(CGSize)a5 completion:(id)a6
+- (id)requestInstrumentThumbnail:(id)thumbnail forRemoteDevice:(id)device size:(CGSize)size completion:(id)completion
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a3;
-  v11 = a6;
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  completionCopy = completion;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -1015,12 +1015,12 @@ void __54__PKIDSManager_cancelRemotePaymentRequest_completion___block_invoke(uin
   v17[3] = &unk_1E79E0CD8;
   v22 = width;
   v23 = height;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
+  v18 = thumbnailCopy;
+  selfCopy = self;
+  v20 = completionCopy;
   v21 = &v24;
-  v13 = v11;
-  v14 = v10;
+  v13 = completionCopy;
+  v14 = thumbnailCopy;
   dispatch_sync(internalQueue, v17);
   v15 = v25[5];
 
@@ -1267,23 +1267,23 @@ void __75__PKIDSManager_requestInstrumentThumbnail_forRemoteDevice_size_completi
   }
 }
 
-- (void)invalidateMessage:(id)a3
+- (void)invalidateMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   internalQueue = self->_internalQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__PKIDSManager_invalidateMessage___block_invoke;
   v7[3] = &unk_1E79C4DD8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messageCopy;
+  v6 = messageCopy;
   dispatch_sync(internalQueue, v7);
 }
 
-- (id)requestForIdentifier:(id)a3
+- (id)requestForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -1295,10 +1295,10 @@ void __75__PKIDSManager_requestInstrumentThumbnail_forRemoteDevice_size_completi
   block[1] = 3221225472;
   block[2] = __37__PKIDSManager_requestForIdentifier___block_invoke;
   block[3] = &unk_1E79E0D00;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(internalQueue, block);
   v7 = v13[5];
 
@@ -1315,21 +1315,21 @@ void __37__PKIDSManager_requestForIdentifier___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)promptDetailsForVirtualCard:(id)a3 showNotification:(BOOL)a4 completion:(id)a5
+- (void)promptDetailsForVirtualCard:(id)card showNotification:(BOOL)notification completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  cardCopy = card;
+  completionCopy = completion;
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__PKIDSManager_promptDetailsForVirtualCard_showNotification_completion___block_invoke;
   v13[3] = &unk_1E79C4F18;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v14 = cardCopy;
+  notificationCopy = notification;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = cardCopy;
   dispatch_sync(internalQueue, v13);
 }
 
@@ -1406,11 +1406,11 @@ void __72__PKIDSManager_promptDetailsForVirtualCard_showNotification_completion_
   }
 }
 
-- (void)_paymentSetupRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_paymentSetupRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v31 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(IDSService *)self->_service deviceForFromID:a6];
+  receivedCopy = received;
+  v10 = [(IDSService *)self->_service deviceForFromID:d];
 
   if (v10)
   {
@@ -1423,16 +1423,16 @@ void __72__PKIDSManager_promptDetailsForVirtualCard_showNotification_completion_
 
     [(PKIDSManager *)self _postCTLMThrottleUncapNotification];
     v12 = [PKProtobufPaymentSetupRequest alloc];
-    v22 = v9;
-    v13 = [v9 data];
-    v14 = [(PKProtobufPaymentSetupRequest *)v12 initWithData:v13];
+    v22 = receivedCopy;
+    data = [receivedCopy data];
+    v14 = [(PKProtobufPaymentSetupRequest *)v12 initWithData:data];
 
-    v15 = [(PKIDSManager *)self delegates];
+    delegates = [(PKIDSManager *)self delegates];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v16 = [v15 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    v16 = [delegates countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1444,7 +1444,7 @@ void __72__PKIDSManager_promptDetailsForVirtualCard_showNotification_completion_
         {
           if (*v26 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(delegates);
           }
 
           v20 = *(*(&v25 + 1) + 8 * v19);
@@ -1461,13 +1461,13 @@ void __72__PKIDSManager_promptDetailsForVirtualCard_showNotification_completion_
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v17 = [delegates countByEnumeratingWithState:&v25 objects:v30 count:16];
       }
 
       while (v17);
     }
 
-    v9 = v22;
+    receivedCopy = v22;
   }
 }
 
@@ -1481,14 +1481,14 @@ void __76__PKIDSManager__paymentSetupRequestReceived_service_account_fromID_cont
   }
 }
 
-- (void)_paymentDiscoveryRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_paymentDiscoveryRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v50 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v34 = a4;
-  v35 = a5;
-  v13 = a6;
-  v36 = a7;
+  receivedCopy = received;
+  serviceCopy = service;
+  accountCopy = account;
+  dCopy = d;
+  contextCopy = context;
   v14 = PKLogFacilityTypeGetObject(9uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -1496,12 +1496,12 @@ void __76__PKIDSManager__paymentSetupRequestReceived_service_account_fromID_cont
     _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Received discovery request", buf, 2u);
   }
 
-  v15 = [(IDSService *)self->_service deviceForFromID:v13];
+  v15 = [(IDSService *)self->_service deviceForFromID:dCopy];
   v16 = [(PKIDSManager *)self _queue_deviceIsRegistered:v15];
 
   if (v16)
   {
-    v17 = [(IDSService *)self->_service deviceForFromID:v13, v34, v35, v36];
+    contextCopy = [(IDSService *)self->_service deviceForFromID:dCopy, serviceCopy, accountCopy, contextCopy];
     *buf = 0;
     v41 = buf;
     v42 = 0x3032000000;
@@ -1510,12 +1510,12 @@ void __76__PKIDSManager__paymentSetupRequestReceived_service_account_fromID_cont
     v45 = 0;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v17 name];
-      v19 = [v17 uniqueID];
+      name = [contextCopy name];
+      uniqueID = [contextCopy uniqueID];
       *v46 = 138412546;
-      v47 = v18;
+      v47 = name;
       v48 = 2112;
-      v49 = v19;
+      v49 = uniqueID;
       _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Received payment discovery request from %@ - %@", v46, 0x16u);
     }
 
@@ -1530,16 +1530,16 @@ void __76__PKIDSManager__paymentSetupRequestReceived_service_account_fromID_cont
     else
     {
       v23 = [PKProtobufPaymentDeviceRequest alloc];
-      v24 = [v12 data];
-      v25 = [(PKProtobufPaymentDeviceRequest *)v23 initWithData:v24];
+      data = [receivedCopy data];
+      v25 = [(PKProtobufPaymentDeviceRequest *)v23 initWithData:data];
 
-      v26 = [(PKProtobufPaymentDeviceRequest *)v25 shouldAdvertise];
-      v22 = v26;
-      if (v26)
+      shouldAdvertise = [(PKProtobufPaymentDeviceRequest *)v25 shouldAdvertise];
+      v22 = shouldAdvertise;
+      if (shouldAdvertise)
       {
         v27 = [PKProximityDetector alloc];
-        v28 = [v17 nsuuid];
-        v29 = [(PKProximityDetector *)v27 initWithAdvertisingDeviceUUID:v28];
+        nsuuid = [contextCopy nsuuid];
+        v29 = [(PKProximityDetector *)v27 initWithAdvertisingDeviceUUID:nsuuid];
 
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
@@ -1547,7 +1547,7 @@ void __76__PKIDSManager__paymentSetupRequestReceived_service_account_fromID_cont
         aBlock[3] = &unk_1E79E0D78;
         aBlock[4] = self;
         v39 = buf;
-        v38 = v13;
+        v38 = dCopy;
         v30 = _Block_copy(aBlock);
         [(PKProximityDetector *)v29 setHandler:v30];
         [(PKProximityDetector *)v29 startDetectingWithDuration:0 completion:30.0];
@@ -1560,13 +1560,13 @@ void __76__PKIDSManager__paymentSetupRequestReceived_service_account_fromID_cont
       }
     }
 
-    v31 = [(PKIDSManager *)self _preparePaymentDeviceResponseForRequestingDevice:v17 userDisabled:v21];
+    v31 = [(PKIDSManager *)self _preparePaymentDeviceResponseForRequestingDevice:contextCopy userDisabled:v21];
     v32 = *(v41 + 5);
     *(v41 + 5) = v31;
 
     if (!v22)
     {
-      [(PKIDSManager *)self _queue_sendDiscoveryResponse:*(v41 + 5) toDeviceWithFromID:v13];
+      [(PKIDSManager *)self _queue_sendDiscoveryResponse:*(v41 + 5) toDeviceWithFromID:dCopy];
     }
 
     v33 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(*(v41 + 5), "locked")}];
@@ -1586,7 +1586,7 @@ void __76__PKIDSManager__paymentSetupRequestReceived_service_account_fromID_cont
       _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Received payment discovery request, ignoring (device not recognized)", buf, 2u);
     }
 
-    v17 = v14;
+    contextCopy = v14;
   }
 }
 
@@ -1643,18 +1643,18 @@ uint64_t __80__PKIDSManager__paymentDiscoveryRequestReceived_service_account_fro
   return [v7 _queue_sendDiscoveryResponse:v9 toDeviceWithFromID:v8];
 }
 
-- (void)_paymentRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_paymentRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(IDSService *)self->_service deviceForFromID:a6];
+  receivedCopy = received;
+  v10 = [(IDSService *)self->_service deviceForFromID:d];
   v11 = [PKProtobufRemotePaymentRequest alloc];
-  v12 = [v9 data];
-  v13 = [(PKProtobufRemotePaymentRequest *)v11 initWithData:v12];
+  data = [receivedCopy data];
+  v13 = [(PKProtobufRemotePaymentRequest *)v11 initWithData:data];
 
   pendingCancellations = self->_pendingCancellations;
-  v15 = [(PKProtobufRemotePaymentRequest *)v13 identifier];
-  v16 = [(NSMutableArray *)pendingCancellations containsObject:v15];
+  identifier = [(PKProtobufRemotePaymentRequest *)v13 identifier];
+  v16 = [(NSMutableArray *)pendingCancellations containsObject:identifier];
 
   if (([(PKIDSManagerDataSource *)self->_dataSource continuityDisabledByUser:self]& 1) != 0 || v16 & 1 | ![(PKIDSManager *)self _queue_deviceIsRegistered:v10])
   {
@@ -1686,10 +1686,10 @@ LABEL_8:
     aBlock[1] = 3221225472;
     aBlock[2] = __71__PKIDSManager__paymentRequestReceived_service_account_fromID_context___block_invoke;
     aBlock[3] = &unk_1E79C4E00;
-    v40 = v9;
+    v40 = receivedCopy;
     v20 = v10;
     v41 = v20;
-    v42 = self;
+    selfCopy = self;
     v21 = _Block_copy(aBlock);
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
@@ -1700,8 +1700,8 @@ LABEL_8:
     v38 = v22;
     v23 = _Block_copy(v37);
     recentlySeenUUIDs = self->_recentlySeenUUIDs;
-    v25 = [v20 nsuuid];
-    v26 = [(NSMutableDictionary *)recentlySeenUUIDs objectForKey:v25];
+    nsuuid = [v20 nsuuid];
+    v26 = [(NSMutableDictionary *)recentlySeenUUIDs objectForKey:nsuuid];
 
     if (v26 && ([v26 timeIntervalSinceNow], v27 > -300.0))
     {
@@ -1733,8 +1733,8 @@ LABEL_8:
       }
 
       v31 = [PKProximityDetector alloc];
-      v32 = [v20 nsuuid];
-      v33 = [(PKProximityDetector *)v31 initWithAdvertisingDeviceUUID:v32];
+      nsuuid2 = [v20 nsuuid];
+      v33 = [(PKProximityDetector *)v31 initWithAdvertisingDeviceUUID:nsuuid2];
 
       v35[0] = MEMORY[0x1E69E9820];
       v35[1] = 3221225472;
@@ -1964,24 +1964,24 @@ void __71__PKIDSManager__paymentRequestReceived_service_account_fromID_context__
   }
 }
 
-- (void)_paymentResponseReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_paymentResponseReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(IDSService *)self->_service deviceForFromID:a6];
+  receivedCopy = received;
+  v10 = [(IDSService *)self->_service deviceForFromID:d];
 
   if (v10)
   {
     v11 = [PKProtobufRemotePaymentResponse alloc];
-    v24 = v9;
-    v12 = [v9 data];
-    v13 = [(PKProtobufRemotePaymentResponse *)v11 initWithData:v12];
+    v24 = receivedCopy;
+    data = [receivedCopy data];
+    v13 = [(PKProtobufRemotePaymentResponse *)v11 initWithData:data];
 
-    v14 = [(PKProtobufRemotePaymentResponse *)v13 remotePaymentRequestIdentifier];
-    v15 = [(PKIDSManager *)self _queue_requestForIdentifier:v14];
+    remotePaymentRequestIdentifier = [(PKProtobufRemotePaymentResponse *)v13 remotePaymentRequestIdentifier];
+    v15 = [(PKIDSManager *)self _queue_requestForIdentifier:remotePaymentRequestIdentifier];
 
-    v16 = [(PKProtobufRemotePaymentResponse *)v13 payment];
-    v17 = [PKPayment paymentWithProtobuf:v16];
+    payment = [(PKProtobufRemotePaymentResponse *)v13 payment];
+    v17 = [PKPayment paymentWithProtobuf:payment];
 
     [(PKIDSManager *)self delegates];
     v29 = 0u;
@@ -2020,7 +2020,7 @@ void __71__PKIDSManager__paymentRequestReceived_service_account_fromID_context__
       while (v19);
     }
 
-    v9 = v24;
+    receivedCopy = v24;
   }
 }
 
@@ -2039,21 +2039,21 @@ uint64_t __72__PKIDSManager__paymentResponseReceived_service_account_fromID_cont
   return result;
 }
 
-- (void)_paymentResultReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_paymentResultReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(IDSService *)self->_service deviceForFromID:a6];
+  receivedCopy = received;
+  v10 = [(IDSService *)self->_service deviceForFromID:d];
 
   if (v10)
   {
     v11 = [PKProtobufPaymentStatus alloc];
-    v27 = v9;
-    v12 = [v9 data];
-    v13 = [(PKProtobufPaymentStatus *)v11 initWithData:v12];
+    v27 = receivedCopy;
+    data = [receivedCopy data];
+    v13 = [(PKProtobufPaymentStatus *)v11 initWithData:data];
 
-    v14 = [(PKProtobufPaymentStatus *)v13 remotePaymentRequestIdentifier];
-    v28 = [(PKIDSManager *)self _queue_requestForIdentifier:v14];
+    remotePaymentRequestIdentifier = [(PKProtobufPaymentStatus *)v13 remotePaymentRequestIdentifier];
+    v28 = [(PKIDSManager *)self _queue_requestForIdentifier:remotePaymentRequestIdentifier];
 
     v15 = objc_alloc_init(PKPaymentAuthorizationResult);
     [(PKPaymentAuthorizationResult *)v15 setStatus:[(PKProtobufPaymentStatus *)v13 status]];
@@ -2071,7 +2071,7 @@ uint64_t __72__PKIDSManager__paymentResponseReceived_service_account_fromID_cont
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:2];
     AnalyticsSendEvent();
 
-    v18 = self;
+    selfCopy = self;
     [(PKIDSManager *)self delegates];
     v32 = 0u;
     v33 = 0u;
@@ -2093,7 +2093,7 @@ uint64_t __72__PKIDSManager__paymentResponseReceived_service_account_fromID_cont
           }
 
           v24 = *(*(&v32 + 1) + 8 * v23);
-          callbackQueue = v18->_callbackQueue;
+          callbackQueue = selfCopy->_callbackQueue;
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __70__PKIDSManager__paymentResultReceived_service_account_fromID_context___block_invoke;
@@ -2113,7 +2113,7 @@ uint64_t __72__PKIDSManager__paymentResponseReceived_service_account_fromID_cont
       while (v21);
     }
 
-    v9 = v27;
+    receivedCopy = v27;
   }
 }
 
@@ -2132,38 +2132,38 @@ uint64_t __70__PKIDSManager__paymentResultReceived_service_account_fromID_contex
   return result;
 }
 
-- (void)_paymentCancellationReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_paymentCancellationReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v38 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(IDSService *)self->_service deviceForFromID:a6];
+  receivedCopy = received;
+  v10 = [(IDSService *)self->_service deviceForFromID:d];
 
   if (v10)
   {
     AnalyticsSendEvent();
     v11 = [PKProtobufPaymentCancellation alloc];
-    v28 = v9;
-    v12 = [v9 data];
-    v13 = [(PKProtobufPaymentCancellation *)v11 initWithData:v12];
+    v28 = receivedCopy;
+    data = [receivedCopy data];
+    v13 = [(PKProtobufPaymentCancellation *)v11 initWithData:data];
 
-    v14 = [(PKProtobufPaymentCancellation *)v13 remotePaymentRequestIdentifier];
-    v15 = [(PKIDSManager *)self _queue_requestForIdentifier:v14];
+    remotePaymentRequestIdentifier = [(PKProtobufPaymentCancellation *)v13 remotePaymentRequestIdentifier];
+    v15 = [(PKIDSManager *)self _queue_requestForIdentifier:remotePaymentRequestIdentifier];
 
     v16 = PKLogFacilityTypeGetObject(9uLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(PKProtobufPaymentCancellation *)v13 remotePaymentRequestIdentifier];
+      remotePaymentRequestIdentifier2 = [(PKProtobufPaymentCancellation *)v13 remotePaymentRequestIdentifier];
       *buf = 138412290;
-      v37 = v17;
+      v37 = remotePaymentRequestIdentifier2;
       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Received cancellation for payment request with identifier: %@", buf, 0xCu);
     }
 
-    v18 = [(PKIDSManager *)self delegates];
+    delegates = [(PKIDSManager *)self delegates];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v19 = [v18 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v19 = [delegates countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v19)
     {
       v20 = v19;
@@ -2174,7 +2174,7 @@ uint64_t __70__PKIDSManager__paymentResultReceived_service_account_fromID_contex
         {
           if (*v32 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(delegates);
           }
 
           v23 = *(*(&v31 + 1) + 8 * i);
@@ -2188,7 +2188,7 @@ uint64_t __70__PKIDSManager__paymentResultReceived_service_account_fromID_contex
           dispatch_async(callbackQueue, block);
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v20 = [delegates countByEnumeratingWithState:&v31 objects:v35 count:16];
       }
 
       while (v20);
@@ -2198,17 +2198,17 @@ uint64_t __70__PKIDSManager__paymentResultReceived_service_account_fromID_contex
     {
       [(NSMutableArray *)self->_paymentRequests removeObject:v15];
       v25 = v13;
-      v9 = v28;
+      receivedCopy = v28;
     }
 
     else
     {
       pendingCancellations = self->_pendingCancellations;
       v25 = v13;
-      v27 = [(PKProtobufPaymentCancellation *)v13 remotePaymentRequestIdentifier];
-      [(NSMutableArray *)pendingCancellations safelyAddObject:v27];
+      remotePaymentRequestIdentifier3 = [(PKProtobufPaymentCancellation *)v13 remotePaymentRequestIdentifier];
+      [(NSMutableArray *)pendingCancellations safelyAddObject:remotePaymentRequestIdentifier3];
 
-      v9 = v28;
+      receivedCopy = v28;
     }
   }
 }
@@ -2227,21 +2227,21 @@ uint64_t __76__PKIDSManager__paymentCancellationReceived_service_account_fromID_
   return result;
 }
 
-- (void)_paymentHostUpdateReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_paymentHostUpdateReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(IDSService *)self->_service deviceForFromID:a6];
+  receivedCopy = received;
+  v10 = [(IDSService *)self->_service deviceForFromID:d];
 
   if (v10)
   {
     v11 = [PKProtobufPaymentHostUpdate alloc];
-    v25 = v9;
-    v12 = [v9 data];
-    v13 = [(PKProtobufPaymentHostUpdate *)v11 initWithData:v12];
+    v25 = receivedCopy;
+    data = [receivedCopy data];
+    v13 = [(PKProtobufPaymentHostUpdate *)v11 initWithData:data];
 
-    v14 = [(PKProtobufPaymentHostUpdate *)v13 remotePaymentRequestIdentifier];
-    v15 = [(PKIDSManager *)self _queue_requestForIdentifier:v14];
+    remotePaymentRequestIdentifier = [(PKProtobufPaymentHostUpdate *)v13 remotePaymentRequestIdentifier];
+    v15 = [(PKIDSManager *)self _queue_requestForIdentifier:remotePaymentRequestIdentifier];
 
     v16 = [PKPaymentHostUpdate paymentUpdateWithProtobuf:v13];
     v17 = PKLogFacilityTypeGetObject(9uLL);
@@ -2290,7 +2290,7 @@ uint64_t __76__PKIDSManager__paymentCancellationReceived_service_account_fromID_
       while (v20);
     }
 
-    v9 = v25;
+    receivedCopy = v25;
   }
 }
 
@@ -2309,22 +2309,22 @@ uint64_t __74__PKIDSManager__paymentHostUpdateReceived_service_account_fromID_co
   return result;
 }
 
-- (void)_paymentClientUpdateReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_paymentClientUpdateReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(IDSService *)self->_service deviceForFromID:a6];
+  receivedCopy = received;
+  v10 = [(IDSService *)self->_service deviceForFromID:d];
 
   if (v10)
   {
     AnalyticsSendEvent();
     v11 = [PKProtobufPaymentClientUpdate alloc];
-    v25 = v9;
-    v12 = [v9 data];
-    v13 = [(PKProtobufPaymentClientUpdate *)v11 initWithData:v12];
+    v25 = receivedCopy;
+    data = [receivedCopy data];
+    v13 = [(PKProtobufPaymentClientUpdate *)v11 initWithData:data];
 
-    v14 = [(PKProtobufPaymentClientUpdate *)v13 remotePaymentRequestIdentifier];
-    v15 = [(PKIDSManager *)self _queue_requestForIdentifier:v14];
+    remotePaymentRequestIdentifier = [(PKProtobufPaymentClientUpdate *)v13 remotePaymentRequestIdentifier];
+    v15 = [(PKIDSManager *)self _queue_requestForIdentifier:remotePaymentRequestIdentifier];
 
     v16 = [PKPaymentClientUpdate paymentUpdateResponseWithProtobuf:v13];
     v17 = PKLogFacilityTypeGetObject(9uLL);
@@ -2373,7 +2373,7 @@ uint64_t __74__PKIDSManager__paymentHostUpdateReceived_service_account_fromID_co
       while (v20);
     }
 
-    v9 = v25;
+    receivedCopy = v25;
   }
 }
 
@@ -2392,14 +2392,14 @@ uint64_t __76__PKIDSManager__paymentClientUpdateReceived_service_account_fromID_
   return result;
 }
 
-- (void)_thumbnailRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_thumbnailRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(IDSService *)self->_service deviceForFromID:v15];
+  receivedCopy = received;
+  serviceCopy = service;
+  accountCopy = account;
+  dCopy = d;
+  contextCopy = context;
+  v17 = [(IDSService *)self->_service deviceForFromID:dCopy];
 
   if (v17)
   {
@@ -2410,14 +2410,14 @@ uint64_t __76__PKIDSManager__paymentClientUpdateReceived_service_account_fromID_
       _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "Received thumbnail request", buf, 2u);
     }
 
-    v42 = v13;
+    v42 = serviceCopy;
 
     v19 = objc_autoreleasePoolPush();
     v20 = [PKProtobufPaymentInstrumentThumbnailRequest alloc];
-    v21 = [v12 data];
-    v22 = [(PKProtobufPaymentInstrumentThumbnailRequest *)v20 initWithData:v21];
+    data = [receivedCopy data];
+    v22 = [(PKProtobufPaymentInstrumentThumbnailRequest *)v20 initWithData:data];
 
-    v41 = v14;
+    v41 = accountCopy;
     if (objc_opt_respondsToSelector())
     {
       [(PKProtobufPaymentInstrumentThumbnailRequest *)v22 width];
@@ -2425,8 +2425,8 @@ uint64_t __76__PKIDSManager__paymentClientUpdateReceived_service_account_fromID_
       [(PKProtobufPaymentInstrumentThumbnailRequest *)v22 height];
       v26 = v25;
       dataSource = self->_dataSource;
-      v28 = [(PKProtobufPaymentInstrumentThumbnailRequest *)v22 passIdentifier];
-      v29 = [(PKIDSManagerDataSource *)dataSource thumbnailImageForPassIdentifier:v28 size:self manager:v24, v26];
+      passIdentifier = [(PKProtobufPaymentInstrumentThumbnailRequest *)v22 passIdentifier];
+      v29 = [(PKIDSManagerDataSource *)dataSource thumbnailImageForPassIdentifier:passIdentifier size:self manager:v24, v26];
 
       v30 = objc_alloc_init(PKProtobufPaymentInstrumentThumbnailResponse);
       v31 = v30;
@@ -2436,23 +2436,23 @@ uint64_t __76__PKIDSManager__paymentClientUpdateReceived_service_account_fromID_
         v32 = [MEMORY[0x1E695DEF0] dataWithCGImage:v29];
         [(PKProtobufPaymentInstrumentThumbnailResponse *)v31 setThumbnailImage:v32];
 
-        v33 = [(PKProtobufPaymentInstrumentThumbnailRequest *)v22 manifestHash];
-        [(PKProtobufPaymentInstrumentThumbnailResponse *)v31 setManifestHash:v33];
+        manifestHash = [(PKProtobufPaymentInstrumentThumbnailRequest *)v22 manifestHash];
+        [(PKProtobufPaymentInstrumentThumbnailResponse *)v31 setManifestHash:manifestHash];
 
 LABEL_9:
         v34 = objc_alloc(MEMORY[0x1E69A5388]);
-        v35 = [(PKProtobufPaymentInstrumentThumbnailResponse *)v31 data];
-        v36 = [v34 initWithProtobufData:v35 type:8 isResponse:1];
+        data2 = [(PKProtobufPaymentInstrumentThumbnailResponse *)v31 data];
+        v36 = [v34 initWithProtobufData:data2 type:8 isResponse:1];
 
         objc_autoreleasePoolPop(v19);
         service = self->_service;
-        v38 = [(IDSService *)service deviceForFromID:v15];
-        v39 = [v38 pk_idsDestination];
-        v40 = [v16 outgoingResponseIdentifier];
-        PKProtobufSend(service, v36, v39, v40, 0, &__block_literal_global_207);
+        v38 = [(IDSService *)service deviceForFromID:dCopy];
+        pk_idsDestination = [v38 pk_idsDestination];
+        outgoingResponseIdentifier = [contextCopy outgoingResponseIdentifier];
+        PKProtobufSend(service, v36, pk_idsDestination, outgoingResponseIdentifier, 0, &__block_literal_global_207);
 
-        v14 = v41;
-        v13 = v42;
+        accountCopy = v41;
+        serviceCopy = v42;
         goto LABEL_10;
       }
     }
@@ -2462,7 +2462,7 @@ LABEL_9:
       v31 = objc_alloc_init(PKProtobufPaymentInstrumentThumbnailResponse);
     }
 
-    [(PKProtobufPaymentInstrumentThumbnailResponse *)v31 setStatus:1, v14];
+    [(PKProtobufPaymentInstrumentThumbnailResponse *)v31 setStatus:1, accountCopy];
     goto LABEL_9;
   }
 
@@ -2487,14 +2487,14 @@ void __73__PKIDSManager__thumbnailRequestReceived_service_account_fromID_context
   }
 }
 
-- (void)_promptDetailsForVirtualCardRequestReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_promptDetailsForVirtualCardRequestReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v40 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  receivedCopy = received;
+  serviceCopy = service;
+  accountCopy = account;
+  dCopy = d;
+  contextCopy = context;
   v17 = PKLogFacilityTypeGetObject(9uLL);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -2502,22 +2502,22 @@ void __73__PKIDSManager__thumbnailRequestReceived_service_account_fromID_context
     _os_log_impl(&dword_1AD337000, v17, OS_LOG_TYPE_DEFAULT, "Received virtual card details request", buf, 2u);
   }
 
-  v18 = [(IDSService *)self->_service deviceForFromID:v15];
+  v18 = [(IDSService *)self->_service deviceForFromID:dCopy];
   if (v18)
   {
     v29 = v18;
-    v30 = v14;
-    v31 = v13;
+    v30 = accountCopy;
+    v31 = serviceCopy;
     v19 = [PKProtobufPromptDetailsForVirtualCard alloc];
-    v20 = [v12 data];
-    v21 = [(PKProtobufPromptDetailsForVirtualCard *)v19 initWithData:v20];
+    data = [receivedCopy data];
+    v21 = [(PKProtobufPromptDetailsForVirtualCard *)v19 initWithData:data];
 
-    v22 = [(PKIDSManager *)self delegates];
+    delegates = [(PKIDSManager *)self delegates];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v23 = [v22 countByEnumeratingWithState:&v34 objects:v39 count:16];
+    v23 = [delegates countByEnumeratingWithState:&v34 objects:v39 count:16];
     if (v23)
     {
       v24 = v23;
@@ -2528,7 +2528,7 @@ void __73__PKIDSManager__thumbnailRequestReceived_service_account_fromID_context
         {
           if (*v35 != v25)
           {
-            objc_enumerationMutation(v22);
+            objc_enumerationMutation(delegates);
           }
 
           v27 = *(*(&v34 + 1) + 8 * i);
@@ -2542,14 +2542,14 @@ void __73__PKIDSManager__thumbnailRequestReceived_service_account_fromID_context
           dispatch_async(callbackQueue, block);
         }
 
-        v24 = [v22 countByEnumeratingWithState:&v34 objects:v39 count:16];
+        v24 = [delegates countByEnumeratingWithState:&v34 objects:v39 count:16];
       }
 
       while (v24);
     }
 
-    v13 = v31;
-    v14 = v30;
+    serviceCopy = v31;
+    accountCopy = v30;
     v18 = v29;
   }
 }
@@ -2564,43 +2564,43 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
   }
 }
 
-- (void)_paymentDiscoveryResponseReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_paymentDiscoveryResponseReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v93 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = [(IDSService *)self->_service deviceForFromID:a6];
+  receivedCopy = received;
+  v10 = [(IDSService *)self->_service deviceForFromID:d];
   v11 = PKLogFacilityTypeGetObject(9uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v10 name];
-    v13 = [v10 uniqueID];
+    name = [v10 name];
+    uniqueID = [v10 uniqueID];
     *buf = 138412546;
-    v90 = v12;
+    v90 = name;
     v91 = 2112;
-    v92 = v13;
+    v92 = uniqueID;
     _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Received discovery response from device name:%@; identifier:%@", buf, 0x16u);
   }
 
   if (v10)
   {
-    v14 = [v10 uniqueID];
+    uniqueID2 = [v10 uniqueID];
 
-    if (v14)
+    if (uniqueID2)
     {
       oslog = v11;
-      v65 = self;
+      selfCopy = self;
       pendingDiscoveries = self->_pendingDiscoveries;
-      v16 = [v10 uniqueID];
-      [(NSMutableDictionary *)pendingDiscoveries removeObjectForKey:v16];
+      uniqueID3 = [v10 uniqueID];
+      [(NSMutableDictionary *)pendingDiscoveries removeObjectForKey:uniqueID3];
 
       v59 = v10;
       v61 = [[PKRemoteDevice alloc] initWithIDSDevice:v10];
       v17 = [PKProtobufPaymentDeviceResponse alloc];
-      v60 = v9;
-      v18 = [v9 data];
-      v19 = [(PKProtobufPaymentDeviceResponse *)v17 initWithData:v18];
+      v60 = receivedCopy;
+      data = [receivedCopy data];
+      v19 = [(PKProtobufPaymentDeviceResponse *)v17 initWithData:data];
 
-      v20 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v81 = 0u;
       v82 = 0u;
       v83 = 0u;
@@ -2608,7 +2608,7 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
       v62 = v19;
       obj = [(PKProtobufPaymentDeviceResponse *)v19 paymentInstruments];
       v21 = [obj countByEnumeratingWithState:&v81 objects:v88 count:16];
-      v64 = v20;
+      v64 = array;
       if (v21)
       {
         v22 = v21;
@@ -2628,8 +2628,8 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
             v78 = 0u;
             v79 = 0u;
             v80 = 0u;
-            v27 = [v25 paymentApplications];
-            v28 = [v27 countByEnumeratingWithState:&v77 objects:v87 count:16];
+            paymentApplications = [v25 paymentApplications];
+            v28 = [paymentApplications countByEnumeratingWithState:&v77 objects:v87 count:16];
             if (v28)
             {
               v29 = v28;
@@ -2640,14 +2640,14 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
                 {
                   if (*v78 != v30)
                   {
-                    objc_enumerationMutation(v27);
+                    objc_enumerationMutation(paymentApplications);
                   }
 
                   v32 = *(*(&v77 + 1) + 8 * j);
                   if ([v32 supportsInAppPayment] && objc_msgSend(v32, "supportsComboCard"))
                   {
-                    v33 = [v32 paymentApplicationsIncludingAuxiliaryPaymentTypes];
-                    [v26 addObjectsFromArray:v33];
+                    paymentApplicationsIncludingAuxiliaryPaymentTypes = [v32 paymentApplicationsIncludingAuxiliaryPaymentTypes];
+                    [v26 addObjectsFromArray:paymentApplicationsIncludingAuxiliaryPaymentTypes];
                   }
 
                   else
@@ -2656,16 +2656,16 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
                   }
                 }
 
-                v29 = [v27 countByEnumeratingWithState:&v77 objects:v87 count:16];
+                v29 = [paymentApplications countByEnumeratingWithState:&v77 objects:v87 count:16];
               }
 
               while (v29);
             }
 
-            v34 = [v26 pk_arrayCopy];
-            [v25 setPaymentApplications:v34];
+            pk_arrayCopy = [v26 pk_arrayCopy];
+            [v25 setPaymentApplications:pk_arrayCopy];
 
-            v20 = v64;
+            array = v64;
             [v64 addObject:v25];
           }
 
@@ -2677,19 +2677,19 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
 
       if ([(PKProtobufPaymentDeviceResponse *)v62 hasDefaultPaymentInstrumentIndex])
       {
-        v35 = [v20 objectAtIndex:{-[PKProtobufPaymentDeviceResponse defaultPaymentInstrumentIndex](v62, "defaultPaymentInstrumentIndex")}];
+        v35 = [array objectAtIndex:{-[PKProtobufPaymentDeviceResponse defaultPaymentInstrumentIndex](v62, "defaultPaymentInstrumentIndex")}];
         v36 = v61;
         [(PKRemoteDevice *)v61 setDefaultRemotePaymentInstrument:v35];
-        v9 = v60;
-        p_isa = &v65->super.isa;
+        receivedCopy = v60;
+        p_isa = &selfCopy->super.isa;
       }
 
       else
       {
         v35 = oslog;
-        v9 = v60;
+        receivedCopy = v60;
         v36 = v61;
-        p_isa = &v65->super.isa;
+        p_isa = &selfCopy->super.isa;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
@@ -2697,11 +2697,11 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
         }
       }
 
-      [(PKRemoteDevice *)v36 setRemotePaymentInstruments:v20];
+      [(PKRemoteDevice *)v36 setRemotePaymentInstruments:array];
       [(PKRemoteDevice *)v36 setIsLocked:[(PKProtobufPaymentDeviceResponse *)v62 locked]];
       [(PKRemoteDevice *)v36 setUserDisabled:[(PKProtobufPaymentDeviceResponse *)v62 userDisabled]];
-      v38 = [MEMORY[0x1E695DF00] date];
-      [(PKRemoteDevice *)v36 setLastSeen:v38];
+      date = [MEMORY[0x1E695DF00] date];
+      [(PKRemoteDevice *)v36 setLastSeen:date];
 
       [(PKRemoteDevice *)v36 setDeviceDisabled:[(PKProtobufPaymentDeviceResponse *)v62 deviceDisabled]];
       [(PKRemoteDevice *)v36 setSupportsFaceID:[(PKProtobufPaymentDeviceResponse *)v62 supportsFaceID]];
@@ -2710,8 +2710,8 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
       v74 = 0u;
       v75 = 0u;
       v76 = 0u;
-      v40 = [(PKProtobufPaymentDeviceResponse *)v62 supportedSetupFeatures];
-      v41 = [v40 countByEnumeratingWithState:&v73 objects:v86 count:16];
+      supportedSetupFeatures = [(PKProtobufPaymentDeviceResponse *)v62 supportedSetupFeatures];
+      v41 = [supportedSetupFeatures countByEnumeratingWithState:&v73 objects:v86 count:16];
       if (v41)
       {
         v42 = v41;
@@ -2722,14 +2722,14 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
           {
             if (*v74 != v43)
             {
-              objc_enumerationMutation(v40);
+              objc_enumerationMutation(supportedSetupFeatures);
             }
 
             v45 = [PKPaymentSetupFeature paymentSetupFeatureWithProtobuf:*(*(&v73 + 1) + 8 * k)];
             [v39 addObject:v45];
           }
 
-          v42 = [v40 countByEnumeratingWithState:&v73 objects:v86 count:16];
+          v42 = [supportedSetupFeatures countByEnumeratingWithState:&v73 objects:v86 count:16];
         }
 
         while (v42);
@@ -2738,10 +2738,10 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
       v46 = [v39 copy];
       [(PKRemoteDevice *)v61 setSupportedSetupFeatures:v46];
 
-      v47 = [(PKProtobufPaymentDeviceResponse *)v62 nearby];
-      if (v47 <= 2)
+      nearby = [(PKProtobufPaymentDeviceResponse *)v62 nearby];
+      if (nearby <= 2)
       {
-        [(PKRemoteDevice *)v61 setProximityState:qword_1ADB9B2D8[v47]];
+        [(PKRemoteDevice *)v61 setProximityState:qword_1ADB9B2D8[nearby]];
       }
 
       v48 = p_isa[1];
@@ -2758,12 +2758,12 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
       }
 
       [p_isa[1] addObject:v49];
-      v51 = [p_isa delegates];
+      delegates = [p_isa delegates];
       v67 = 0u;
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v52 = [v51 countByEnumeratingWithState:&v67 objects:v85 count:16];
+      v52 = [delegates countByEnumeratingWithState:&v67 objects:v85 count:16];
       if (v52)
       {
         v53 = v52;
@@ -2774,27 +2774,27 @@ void __91__PKIDSManager__promptDetailsForVirtualCardRequestReceived_service_acco
           {
             if (*v68 != v54)
             {
-              objc_enumerationMutation(v51);
+              objc_enumerationMutation(delegates);
             }
 
             v56 = *(*(&v67 + 1) + 8 * m);
-            callbackQueue = v65->_callbackQueue;
+            callbackQueue = selfCopy->_callbackQueue;
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __81__PKIDSManager__paymentDiscoveryResponseReceived_service_account_fromID_context___block_invoke_2;
             block[3] = &unk_1E79C4DD8;
             block[4] = v56;
-            block[5] = v65;
+            block[5] = selfCopy;
             dispatch_async(callbackQueue, block);
           }
 
-          v53 = [v51 countByEnumeratingWithState:&v67 objects:v85 count:16];
+          v53 = [delegates countByEnumeratingWithState:&v67 objects:v85 count:16];
         }
 
         while (v53);
       }
 
-      [(PKIDSManager *)v65 _archiveDevicesToDisk];
+      [(PKIDSManager *)selfCopy _archiveDevicesToDisk];
 
       v10 = v59;
     }
@@ -2824,31 +2824,31 @@ uint64_t __81__PKIDSManager__paymentDiscoveryResponseReceived_service_account_fr
   return result;
 }
 
-- (void)_thumbnailResponseReceived:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)_thumbnailResponseReceived:(id)received service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
   v75 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a7;
-  v54 = self;
-  v12 = [(IDSService *)self->_service deviceForFromID:a6];
+  receivedCopy = received;
+  contextCopy = context;
+  selfCopy = self;
+  v12 = [(IDSService *)self->_service deviceForFromID:d];
 
   if (!v12)
   {
     goto LABEL_31;
   }
 
-  v13 = [v11 incomingResponseIdentifier];
+  incomingResponseIdentifier = [contextCopy incomingResponseIdentifier];
   v14 = PKLogFacilityTypeGetObject(9uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v74 = v13;
+    v74 = incomingResponseIdentifier;
     _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Received thumbnail response: %@", buf, 0xCu);
   }
 
   v15 = [PKProtobufPaymentInstrumentThumbnailResponse alloc];
-  v16 = [v10 data];
-  v17 = [(PKProtobufPaymentInstrumentThumbnailResponse *)v15 initWithData:v16];
+  data = [receivedCopy data];
+  v17 = [(PKProtobufPaymentInstrumentThumbnailResponse *)v15 initWithData:data];
 
   if (![(PKProtobufPaymentInstrumentThumbnailResponse *)v17 status])
   {
@@ -2860,11 +2860,11 @@ uint64_t __81__PKIDSManager__paymentDiscoveryResponseReceived_service_account_fr
 
     Width = CGImageGetWidth(v23);
     Height = CGImageGetHeight(v23);
-    v19 = [(PKProtobufPaymentInstrumentThumbnailResponse *)v17 manifestHash];
+    manifestHash = [(PKProtobufPaymentInstrumentThumbnailResponse *)v17 manifestHash];
     v25 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"0123456789ABCDEFabcdef"];
-    v20 = [v25 invertedSet];
+    invertedSet = [v25 invertedSet];
 
-    if ([v19 rangeOfCharacterFromSet:v20] != 0x7FFFFFFFFFFFFFFFLL)
+    if ([manifestHash rangeOfCharacterFromSet:invertedSet] != 0x7FFFFFFFFFFFFFFFLL)
     {
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
@@ -2872,23 +2872,23 @@ uint64_t __81__PKIDSManager__paymentDiscoveryResponseReceived_service_account_fr
         _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "Manifest hash for thumbnail was not a valid SHA1 hash. Ignoring.", buf, 2u);
       }
 
-      v26 = v14;
+      height = v14;
       goto LABEL_41;
     }
 
-    v26 = [PKRemotePaymentInstrument thumbnailCachePathForManifestHash:v19 size:1 planningToWrite:Width, Height];
-    v27 = [MEMORY[0x1E695DFF8] fileURLWithPath:v26];
+    height = [PKRemotePaymentInstrument thumbnailCachePathForManifestHash:manifestHash size:1 planningToWrite:Width, Height];
+    v27 = [MEMORY[0x1E695DFF8] fileURLWithPath:height];
     v28 = CGImageDestinationCreateWithURL(v27, [*MEMORY[0x1E6982F28] identifier], 1uLL, 0);
     if (v28)
     {
       v29 = v28;
-      v52 = v26;
+      v52 = height;
       CGImageDestinationAddImage(v28, v23, 0);
       v30 = CGImageDestinationFinalize(v29);
       CFRelease(v29);
       if (v30)
       {
-        v26 = v52;
+        height = v52;
 LABEL_41:
 
         CGImageRelease(v23);
@@ -2896,7 +2896,7 @@ LABEL_41:
         goto LABEL_6;
       }
 
-      v26 = v52;
+      height = v52;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -2918,26 +2918,26 @@ LABEL_39:
 
   v18 = MEMORY[0x1E696ABC0];
   v71 = *MEMORY[0x1E696A578];
-  v19 = [(PKProtobufPaymentInstrumentThumbnailResponse *)v17 statusAsString:[(PKProtobufPaymentInstrumentThumbnailResponse *)v17 status]];
-  v72 = v19;
-  v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
-  v21 = [v18 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:v20];
+  manifestHash = [(PKProtobufPaymentInstrumentThumbnailResponse *)v17 statusAsString:[(PKProtobufPaymentInstrumentThumbnailResponse *)v17 status]];
+  v72 = manifestHash;
+  invertedSet = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v72 forKeys:&v71 count:1];
+  v21 = [v18 errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:invertedSet];
 LABEL_6:
 
 LABEL_14:
-  thumbnailCompletionHandlers = v54->_thumbnailCompletionHandlers;
+  thumbnailCompletionHandlers = selfCopy->_thumbnailCompletionHandlers;
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
   v67[2] = __74__PKIDSManager__thumbnailResponseReceived_service_account_fromID_context___block_invoke;
   v67[3] = &unk_1E79E0C60;
-  v32 = v13;
+  v32 = incomingResponseIdentifier;
   v68 = v32;
   v33 = [(NSMutableDictionary *)thumbnailCompletionHandlers keysOfEntriesPassingTest:v67];
   if ([v33 count])
   {
     v45 = v32;
-    v46 = v11;
-    v47 = v10;
+    v46 = contextCopy;
+    v47 = receivedCopy;
     v65 = 0u;
     v66 = 0u;
     v64 = 0u;
@@ -2959,8 +2959,8 @@ LABEL_14:
           }
 
           v53 = v34;
-          v35 = [(NSMutableDictionary *)v54->_thumbnailCompletionHandlers objectForKey:*(*(&v63 + 1) + 8 * v34), v44, v45, v46, v47];
-          [(PKIDSManager *)v54 _queue_removeThumbnailCompletionHandlersForKeys:obj];
+          v35 = [(NSMutableDictionary *)selfCopy->_thumbnailCompletionHandlers objectForKey:*(*(&v63 + 1) + 8 * v34), v44, v45, v46, v47];
+          [(PKIDSManager *)selfCopy _queue_removeThumbnailCompletionHandlersForKeys:obj];
           v61 = 0u;
           v62 = 0u;
           v59 = 0u;
@@ -2981,7 +2981,7 @@ LABEL_14:
                 }
 
                 v41 = *(*(&v59 + 1) + 8 * i);
-                callbackQueue = v54->_callbackQueue;
+                callbackQueue = selfCopy->_callbackQueue;
                 block[0] = MEMORY[0x1E69E9820];
                 block[1] = 3221225472;
                 block[2] = __74__PKIDSManager__thumbnailResponseReceived_service_account_fromID_context___block_invoke_2;
@@ -3008,8 +3008,8 @@ LABEL_14:
       while (v49);
     }
 
-    v11 = v46;
-    v10 = v47;
+    contextCopy = v46;
+    receivedCopy = v47;
     v33 = v44;
     v32 = v45;
   }
@@ -3032,13 +3032,13 @@ void __74__PKIDSManager__thumbnailResponseReceived_service_account_fromID_contex
   (*(v2 + 16))(v2, v3, *(a1 + 40));
 }
 
-- (int64_t)_paymentAuthorizationStatusForPaymentResult:(id)a3 forRemotePaymentRequest:(id)a4
+- (int64_t)_paymentAuthorizationStatusForPaymentResult:(id)result forRemotePaymentRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 status];
-  v6 = [v4 errors];
+  resultCopy = result;
+  status = [resultCopy status];
+  errors = [resultCopy errors];
 
-  v7 = [v6 count];
+  v7 = [errors count];
   if (v7)
   {
     return 1000;
@@ -3046,7 +3046,7 @@ void __74__PKIDSManager__thumbnailResponseReceived_service_account_fromID_contex
 
   else
   {
-    return v5;
+    return status;
   }
 }
 
@@ -3108,10 +3108,10 @@ LABEL_15:
   return v8;
 }
 
-- (id)_queue_requestForIdentifier:(id)a3
+- (id)_queue_requestForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(self->_internalQueue);
   v15 = 0u;
   v16 = 0u;
@@ -3132,8 +3132,8 @@ LABEL_15:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -3157,13 +3157,13 @@ LABEL_11:
   return v6;
 }
 
-- (void)_queue_addThumbnailCompletionHandler:(id)a3 forKey:(id)a4
+- (void)_queue_addThumbnailCompletionHandler:(id)handler forKey:(id)key
 {
-  v13 = a4;
+  keyCopy = key;
   internalQueue = self->_internalQueue;
-  v7 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(internalQueue);
-  v8 = [(NSMutableDictionary *)self->_thumbnailCompletionHandlers objectForKey:v13];
+  v8 = [(NSMutableDictionary *)self->_thumbnailCompletionHandlers objectForKey:keyCopy];
   v9 = v8;
   if (v8)
   {
@@ -3177,43 +3177,43 @@ LABEL_11:
 
   v11 = v10;
 
-  v12 = [v7 copy];
+  v12 = [handlerCopy copy];
   [v11 addObject:v12];
 
-  [(NSMutableDictionary *)self->_thumbnailCompletionHandlers setObject:v11 forKey:v13];
+  [(NSMutableDictionary *)self->_thumbnailCompletionHandlers setObject:v11 forKey:keyCopy];
 }
 
-- (void)_queue_removeThumbnailCompletionHandlersForKeys:(id)a3
+- (void)_queue_removeThumbnailCompletionHandlersForKeys:(id)keys
 {
   internalQueue = self->_internalQueue;
-  v5 = a3;
+  keysCopy = keys;
   dispatch_assert_queue_V2(internalQueue);
   thumbnailCompletionHandlers = self->_thumbnailCompletionHandlers;
-  v7 = [v5 allObjects];
+  allObjects = [keysCopy allObjects];
 
-  [(NSMutableDictionary *)thumbnailCompletionHandlers removeObjectsForKeys:v7];
+  [(NSMutableDictionary *)thumbnailCompletionHandlers removeObjectsForKeys:allObjects];
 }
 
-- (void)_queue_sendDeviceDiscoveryRequestToAllDevicesWithProximity:(BOOL)a3
+- (void)_queue_sendDeviceDiscoveryRequestToAllDevicesWithProximity:(BOOL)proximity
 {
-  v3 = a3;
-  v5 = [(IDSService *)self->_service devices];
-  [(PKIDSManager *)self _queue_sendDeviceDiscoveryRequestWithProximity:v3 devices:v5];
+  proximityCopy = proximity;
+  devices = [(IDSService *)self->_service devices];
+  [(PKIDSManager *)self _queue_sendDeviceDiscoveryRequestWithProximity:proximityCopy devices:devices];
 }
 
-- (void)_queue_sendDeviceDiscoveryRequestWithProximity:(BOOL)a3 devices:(id)a4
+- (void)_queue_sendDeviceDiscoveryRequestWithProximity:(BOOL)proximity devices:(id)devices
 {
-  v4 = a3;
+  proximityCopy = proximity;
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  devicesCopy = devices;
   dispatch_assert_queue_V2(self->_internalQueue);
-  v7 = [(IDSService *)self->_service devices];
+  devices = [(IDSService *)self->_service devices];
   remoteDevices = self->_remoteDevices;
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __71__PKIDSManager__queue_sendDeviceDiscoveryRequestWithProximity_devices___block_invoke;
   v56[3] = &unk_1E79CC428;
-  v45 = v7;
+  v45 = devices;
   v57 = v45;
   v9 = [(NSMutableArray *)remoteDevices indexesOfObjectsPassingTest:v56];
   if ([v9 count])
@@ -3225,7 +3225,7 @@ LABEL_11:
     {
       v11 = [v9 count];
       v12 = [(NSMutableArray *)self->_remoteDevices count];
-      v13 = [v6 count];
+      v13 = [devicesCopy count];
       *buf = 134218496;
       v60 = v11;
       v61 = 2048;
@@ -3239,11 +3239,11 @@ LABEL_11:
   v44 = v9;
   v14 = objc_alloc_init(PKProtobufPaymentDeviceRequest);
   [(PKProtobufPaymentDeviceRequest *)v14 setProtocolVersion:1];
-  [(PKProtobufPaymentDeviceRequest *)v14 setShouldAdvertise:v4];
+  [(PKProtobufPaymentDeviceRequest *)v14 setShouldAdvertise:proximityCopy];
   v15 = objc_alloc(MEMORY[0x1E69A5388]);
   v43 = v14;
-  v16 = [(PKProtobufPaymentDeviceRequest *)v14 data];
-  v42 = [v15 initWithProtobufData:v16 type:1 isResponse:0];
+  data = [(PKProtobufPaymentDeviceRequest *)v14 data];
+  v42 = [v15 initWithProtobufData:data type:1 isResponse:0];
 
   v17 = [MEMORY[0x1E695DFA8] set];
   v18 = [MEMORY[0x1E695DFA8] set];
@@ -3251,7 +3251,7 @@ LABEL_11:
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v19 = v6;
+  v19 = devicesCopy;
   v20 = v17;
   v21 = v19;
   v22 = [v19 countByEnumeratingWithState:&v52 objects:v58 count:16];
@@ -3271,10 +3271,10 @@ LABEL_11:
         }
 
         v26 = *(*(&v52 + 1) + 8 * v25);
-        v27 = [v26 uniqueID];
-        if (v27 && [v26 pk_isValidHandoffDevice])
+        uniqueID = [v26 uniqueID];
+        if (uniqueID && [v26 pk_isValidHandoffDevice])
         {
-          v28 = [(NSMutableDictionary *)self->_pendingDiscoveries objectForKey:v27];
+          v28 = [(NSMutableDictionary *)self->_pendingDiscoveries objectForKey:uniqueID];
           if (!v28 || PKForceLocalIDS())
           {
             goto LABEL_20;
@@ -3284,7 +3284,7 @@ LABEL_11:
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412546;
-            v60 = v27;
+            v60 = uniqueID;
             v61 = 2112;
             v62 = v28;
             _os_log_impl(&dword_1AD337000, v29, OS_LOG_TYPE_DEFAULT, "Discovery attempt already in-flight for device %@ sent at %@", buf, 0x16u);
@@ -3337,14 +3337,14 @@ LABEL_23:
   if ([v20 count])
   {
     v34 = [v20 pk_setByApplyingBlock:&__block_literal_global_149];
-    v35 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     v50[0] = MEMORY[0x1E69E9820];
     v50[1] = 3221225472;
     v50[2] = __71__PKIDSManager__queue_sendDeviceDiscoveryRequestWithProximity_devices___block_invoke_2;
     v50[3] = &unk_1E79E0E08;
     v50[4] = self;
-    v51 = v35;
-    v36 = v35;
+    v51 = date;
+    v36 = date;
     [v34 enumerateObjectsUsingBlock:v50];
     service = self->_service;
     v47[0] = MEMORY[0x1E69E9820];
@@ -3352,7 +3352,7 @@ LABEL_23:
     v47[2] = __71__PKIDSManager__queue_sendDeviceDiscoveryRequestWithProximity_devices___block_invoke_3;
     v47[3] = &unk_1E79E0E30;
     v48 = v34;
-    v49 = self;
+    selfCopy = self;
     v38 = v34;
     v39 = v42;
     PKProtobufSendWithOptions(service, v42, v38, 300, 0, 1, 0, v47, 0);
@@ -3526,23 +3526,23 @@ void __71__PKIDSManager__queue_sendDeviceDiscoveryRequestWithProximity_devices__
   }
 }
 
-- (void)_queue_sendDiscoveryResponse:(id)a3 toDeviceWithFromID:(id)a4
+- (void)_queue_sendDiscoveryResponse:(id)response toDeviceWithFromID:(id)d
 {
-  v14 = a3;
+  responseCopy = response;
   internalQueue = self->_internalQueue;
-  v7 = a4;
+  dCopy = d;
   dispatch_assert_queue_V2(internalQueue);
-  v8 = [(IDSService *)self->_service deviceForFromID:v7];
+  v8 = [(IDSService *)self->_service deviceForFromID:dCopy];
 
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x1E69A5388]);
-    v10 = [v14 data];
-    v11 = [v9 initWithProtobufData:v10 type:1 isResponse:1];
+    data = [responseCopy data];
+    v11 = [v9 initWithProtobufData:data type:1 isResponse:1];
 
     service = self->_service;
-    v13 = [v8 pk_idsDestination];
-    PKProtobufSend(service, v11, v13, 0, 0, &__block_literal_global_152);
+    pk_idsDestination = [v8 pk_idsDestination];
+    PKProtobufSend(service, v11, pk_idsDestination, 0, 0, &__block_literal_global_152);
   }
 }
 
@@ -3564,10 +3564,10 @@ void __64__PKIDSManager__queue_sendDiscoveryResponse_toDeviceWithFromID___block_
   }
 }
 
-- (id)_queue_cancelRemotePaymentRequest:(id)a3 completion:(id)a4
+- (id)_queue_cancelRemotePaymentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -3576,27 +3576,27 @@ void __64__PKIDSManager__queue_sendDiscoveryResponse_toDeviceWithFromID___block_
   v27 = 0;
   AnalyticsSendEvent();
   v8 = objc_alloc_init(PKProtobufPaymentCancellation);
-  v9 = [v6 identifier];
-  [(PKProtobufPaymentCancellation *)v8 setRemotePaymentRequestIdentifier:v9];
+  identifier = [requestCopy identifier];
+  [(PKProtobufPaymentCancellation *)v8 setRemotePaymentRequestIdentifier:identifier];
 
   v10 = objc_alloc(MEMORY[0x1E69A5388]);
-  v11 = [(PKProtobufPaymentCancellation *)v8 data];
-  v12 = [v10 initWithProtobufData:v11 type:6 isResponse:0];
+  data = [(PKProtobufPaymentCancellation *)v8 data];
+  v12 = [v10 initWithProtobufData:data type:6 isResponse:0];
 
   service = self->_service;
-  v14 = [v6 device];
-  v15 = [v14 pk_idsDestination];
+  device = [requestCopy device];
+  pk_idsDestination = [device pk_idsDestination];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __61__PKIDSManager__queue_cancelRemotePaymentRequest_completion___block_invoke;
   v19[3] = &unk_1E79E0C10;
-  v16 = v7;
+  v16 = completionCopy;
   v19[4] = self;
   v20 = v16;
   v21 = &v22;
-  PKProtobufSend(service, v12, v15, 0, 0, v19);
+  PKProtobufSend(service, v12, pk_idsDestination, 0, 0, v19);
 
-  [(NSMutableArray *)self->_paymentRequests removeObject:v6];
+  [(NSMutableArray *)self->_paymentRequests removeObject:requestCopy];
   v17 = v23[5];
 
   _Block_object_dispose(&v22, 8);
@@ -3642,8 +3642,8 @@ void __61__PKIDSManager__queue_cancelRemotePaymentRequest_completion___block_inv
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(IDSService *)self->_service accounts];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  accounts = [(IDSService *)self->_service accounts];
+  v4 = [accounts countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -3653,7 +3653,7 @@ void __61__PKIDSManager__queue_cancelRemotePaymentRequest_completion___block_inv
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(accounts);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isActive])
@@ -3663,7 +3663,7 @@ void __61__PKIDSManager__queue_cancelRemotePaymentRequest_completion___block_inv
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [accounts countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -3678,19 +3678,19 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_queue_deviceIsRegistered:(id)a3
+- (BOOL)_queue_deviceIsRegistered:(id)registered
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  registeredCopy = registered;
   dispatch_assert_queue_V2(self->_internalQueue);
-  if (v4)
+  if (registeredCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [(IDSService *)self->_service devices];
-    v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    devices = [(IDSService *)self->_service devices];
+    v6 = [devices countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v6)
     {
       v7 = *v18;
@@ -3700,13 +3700,13 @@ LABEL_11:
         {
           if (*v18 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(devices);
           }
 
-          v9 = [*(*(&v17 + 1) + 8 * i) uniqueID];
-          v10 = [v4 uniqueID];
-          v11 = v9;
-          v12 = v10;
+          uniqueID = [*(*(&v17 + 1) + 8 * i) uniqueID];
+          uniqueID2 = [registeredCopy uniqueID];
+          v11 = uniqueID;
+          v12 = uniqueID2;
           v13 = v12;
           if (v11 == v12)
           {
@@ -3741,7 +3741,7 @@ LABEL_20:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v6 = [devices countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v6)
         {
           continue;
@@ -3766,8 +3766,8 @@ LABEL_21:
 {
   v12 = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_internalQueue);
-  v3 = [(IDSService *)self->_service devices];
-  v4 = [v3 pk_objectsPassingTest:&__block_literal_global_159];
+  devices = [(IDSService *)self->_service devices];
+  v4 = [devices pk_objectsPassingTest:&__block_literal_global_159];
 
   if ([v4 count])
   {
@@ -3848,14 +3848,14 @@ uint64_t __43__PKIDSManager__queue_logCloudPairingState__block_invoke(uint64_t a
   [(IDSService *)service setProtobufAction:sel__paymentCancellationReceived_service_account_fromID_context_ forIncomingRequestsOfType:6];
 }
 
-- (id)_preparePaymentDeviceResponseForRequestingDevice:(id)a3 userDisabled:(BOOL)a4
+- (id)_preparePaymentDeviceResponseForRequestingDevice:(id)device userDisabled:(BOOL)disabled
 {
-  v4 = a4;
+  disabledCopy = disabled;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  deviceCopy = device;
   v7 = objc_alloc_init(PKProtobufPaymentDeviceResponse);
   [(PKProtobufPaymentDeviceResponse *)v7 setProtocolVersion:1];
-  [(PKProtobufPaymentDeviceResponse *)v7 setUserDisabled:v4];
+  [(PKProtobufPaymentDeviceResponse *)v7 setUserDisabled:disabledCopy];
   [(PKProtobufPaymentDeviceResponse *)v7 setSupportsFaceID:PKPearlIsAvailable()];
   if (![(PKProtobufPaymentDeviceResponse *)v7 userDisabled])
   {
@@ -3880,7 +3880,7 @@ uint64_t __43__PKIDSManager__queue_logCloudPairingState__block_invoke(uint64_t a
       [(PKProtobufPaymentDeviceResponse *)v7 setDeviceDisabled:[(PKIDSManagerDataSource *)self->_dataSource deviceAvailableForContinuityPayments:self]^ 1];
     }
 
-    v11 = [(PKIDSManager *)self _fetchPaymentInstrumentsForRequestingDevice:v6];
+    v11 = [(PKIDSManager *)self _fetchPaymentInstrumentsForRequestingDevice:deviceCopy];
     [(PKProtobufPaymentDeviceResponse *)v7 setPaymentInstruments:v11];
 
     if (objc_opt_respondsToSelector())
@@ -3903,11 +3903,11 @@ uint64_t __43__PKIDSManager__queue_logCloudPairingState__block_invoke(uint64_t a
       v13 = 0;
     }
 
-    v14 = [v13 unsupportedWebPaymentConfigurations];
+    unsupportedWebPaymentConfigurations = [v13 unsupportedWebPaymentConfigurations];
     if (v12)
     {
-      v15 = [v6 productVersion];
-      v16 = [v12 supportsWebPaymentMode:2 withExclusionList:v14 clientOSVersion:v15];
+      productVersion = [deviceCopy productVersion];
+      v16 = [v12 supportsWebPaymentMode:2 withExclusionList:unsupportedWebPaymentConfigurations clientOSVersion:productVersion];
 
       if (v16)
       {
@@ -3920,14 +3920,14 @@ uint64_t __43__PKIDSManager__queue_logCloudPairingState__block_invoke(uint64_t a
         }
 
         v18 = [[PKRemotePaymentInstrument alloc] initWithPaymentPass:v12];
-        v19 = [(PKProtobufPaymentDeviceResponse *)v7 paymentInstruments];
+        paymentInstruments = [(PKProtobufPaymentDeviceResponse *)v7 paymentInstruments];
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __78__PKIDSManager__preparePaymentDeviceResponseForRequestingDevice_userDisabled___block_invoke_196;
         v23[3] = &unk_1E79E0E78;
         v24 = v18;
         v20 = v18;
-        v21 = [v19 indexOfObjectPassingTest:v23];
+        v21 = [paymentInstruments indexOfObjectPassingTest:v23];
 
         if (v21 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -4003,25 +4003,25 @@ uint64_t __78__PKIDSManager__preparePaymentDeviceResponseForRequestingDevice_use
   return v6;
 }
 
-- (id)_fetchPaymentInstrumentsForRequestingDevice:(id)a3
+- (id)_fetchPaymentInstrumentsForRequestingDevice:(id)device
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v30 = [MEMORY[0x1E695DF70] array];
+  deviceCopy = device;
+  array = [MEMORY[0x1E695DF70] array];
   if (objc_opt_respondsToSelector())
   {
     v5 = [(PKIDSManagerDataSource *)self->_dataSource paymentPassesForContinuityDiscovery:self];
     if ((objc_opt_respondsToSelector() & 1) != 0 && ([(PKIDSManagerDataSource *)self->_dataSource webServiceConfigurationForContinuityPayments:self], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v27 = v6;
-      v7 = [v6 unsupportedWebPaymentConfigurations];
+      unsupportedWebPaymentConfigurations = [v6 unsupportedWebPaymentConfigurations];
       v39[0] = MEMORY[0x1E69E9820];
       v39[1] = 3221225472;
       v39[2] = __60__PKIDSManager__fetchPaymentInstrumentsForRequestingDevice___block_invoke;
       v39[3] = &unk_1E79E0EA0;
-      v40 = v7;
-      v41 = v4;
-      v8 = v7;
+      v40 = unsupportedWebPaymentConfigurations;
+      v41 = deviceCopy;
+      v8 = unsupportedWebPaymentConfigurations;
       v9 = [v5 pk_objectsPassingTest:v39];
 
       v5 = v9;
@@ -4044,7 +4044,7 @@ uint64_t __78__PKIDSManager__preparePaymentDeviceResponseForRequestingDevice_use
       v11 = v10;
       v12 = 0;
       v13 = *v36;
-      v28 = self;
+      selfCopy = self;
       v14 = off_1E79C1000;
       do
       {
@@ -4065,7 +4065,7 @@ uint64_t __78__PKIDSManager__preparePaymentDeviceResponseForRequestingDevice_use
 
             dispatch_group_enter(group);
             v21 = v14;
-            dataSource = v28->_dataSource;
+            dataSource = selfCopy->_dataSource;
             v32[0] = MEMORY[0x1E69E9820];
             v32[1] = 3221225472;
             v32[2] = __60__PKIDSManager__fetchPaymentInstrumentsForRequestingDevice___block_invoke_2;
@@ -4075,15 +4075,15 @@ uint64_t __78__PKIDSManager__preparePaymentDeviceResponseForRequestingDevice_use
             v34 = group;
             v23 = dataSource;
             v14 = v21;
-            [(PKIDSManagerDataSource *)v23 accountForPaymentPass:v16 manager:v28 completion:v32];
+            [(PKIDSManagerDataSource *)v23 accountForPaymentPass:v16 manager:selfCopy completion:v32];
 
-            v24 = v33;
+            protobuf = v33;
           }
 
           else
           {
-            v24 = [v17 protobuf];
-            [v30 addObject:v24];
+            protobuf = [v17 protobuf];
+            [array addObject:protobuf];
           }
         }
 
@@ -4101,12 +4101,12 @@ uint64_t __78__PKIDSManager__preparePaymentDeviceResponseForRequestingDevice_use
     dispatch_group_wait(group, 0xFFFFFFFFFFFFFFFFLL);
     if (v12)
     {
-      v25 = [v12 protobuf];
-      [v30 addObject:v25];
+      protobuf2 = [v12 protobuf];
+      [array addObject:protobuf2];
     }
   }
 
-  return v30;
+  return array;
 }
 
 uint64_t __60__PKIDSManager__fetchPaymentInstrumentsForRequestingDevice___block_invoke(uint64_t a1, void *a2)
@@ -4160,27 +4160,27 @@ void __60__PKIDSManager__fetchPaymentInstrumentsForRequestingDevice___block_invo
   dispatch_group_leave(v8);
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   v8 = PKLogFacilityTypeGetObject(9uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[PKIDSManager service:activeAccountsChanged:]";
     v24 = 2112;
-    v25 = v7;
+    v25 = changedCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
-  v9 = [(PKIDSManager *)self delegates];
+  delegates = [(PKIDSManager *)self delegates];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [delegates countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4192,7 +4192,7 @@ void __60__PKIDSManager__fetchPaymentInstrumentsForRequestingDevice___block_invo
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(delegates);
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
@@ -4208,7 +4208,7 @@ void __60__PKIDSManager__fetchPaymentInstrumentsForRequestingDevice___block_invo
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [delegates countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -4229,27 +4229,27 @@ uint64_t __46__PKIDSManager_service_activeAccountsChanged___block_invoke(uint64_
   return result;
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   v8 = PKLogFacilityTypeGetObject(9uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[PKIDSManager service:devicesChanged:]";
     v24 = 2112;
-    v25 = v7;
+    v25 = changedCopy;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
-  v9 = [(PKIDSManager *)self delegates];
+  delegates = [(PKIDSManager *)self delegates];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v10 = [delegates countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v10)
   {
     v11 = v10;
@@ -4261,7 +4261,7 @@ uint64_t __46__PKIDSManager_service_activeAccountsChanged___block_invoke(uint64_
       {
         if (*v18 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(delegates);
         }
 
         v14 = *(*(&v17 + 1) + 8 * v13);
@@ -4277,7 +4277,7 @@ uint64_t __46__PKIDSManager_service_activeAccountsChanged___block_invoke(uint64_
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v11 = [delegates countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v11);
@@ -4298,27 +4298,27 @@ uint64_t __39__PKIDSManager_service_devicesChanged___block_invoke_207(uint64_t a
   return result;
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  contextCopy = context;
   v14 = PKLogFacilityTypeGetObject(9uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v20 = v12;
+    v20 = identifierCopy;
     v21 = 2112;
-    v22 = v13;
+    v22 = contextCopy;
     _os_log_impl(&dword_1AD337000, v14, OS_LOG_TYPE_DEFAULT, "IDS Service has delivered message: %@, context: %@", buf, 0x16u);
   }
 
-  v15 = [(NSMutableDictionary *)self->_completionHandlers objectForKey:v12];
+  v15 = [(NSMutableDictionary *)self->_completionHandlers objectForKey:identifierCopy];
   if (v15)
   {
-    [(NSMutableDictionary *)self->_completionHandlers removeObjectForKey:v12];
+    [(NSMutableDictionary *)self->_completionHandlers removeObjectForKey:identifierCopy];
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -4329,7 +4329,7 @@ uint64_t __39__PKIDSManager_service_devicesChanged___block_invoke_207(uint64_t a
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   v25 = *MEMORY[0x1E69E9840];
   v12 = PKLogFacilityTypeGetObject(9uLL);
@@ -4338,58 +4338,58 @@ uint64_t __39__PKIDSManager_service_devicesChanged___block_invoke_207(uint64_t a
     v13 = 136316418;
     v14 = "[PKIDSManager service:account:incomingUnhandledProtobuf:fromID:context:]";
     v15 = 2112;
-    v16 = a3;
+    serviceCopy = service;
     v17 = 2112;
-    v18 = a4;
+    accountCopy = account;
     v19 = 2112;
-    v20 = a5;
+    protobufCopy = protobuf;
     v21 = 2112;
-    v22 = a6;
+    dCopy = d;
     v23 = 2112;
-    v24 = a7;
+    contextCopy = context;
     _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "%s %@ %@ %@ %@ %@", &v13, 0x3Eu);
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v66 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = PKLogFacilityTypeGetObject(9uLL);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136316418;
     v55 = "[PKIDSManager service:account:identifier:didSendWithSuccess:error:]";
     v56 = 2112;
-    v57 = v12;
+    v57 = serviceCopy;
     v58 = 2112;
-    v59 = v13;
+    v59 = accountCopy;
     v60 = 2112;
-    v61 = v14;
+    v61 = identifierCopy;
     v62 = 1024;
-    v63 = v8;
+    v63 = successCopy;
     v64 = 2112;
-    v65 = v15;
+    v65 = errorCopy;
     _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "%s %@ %@ %@ %d %@", buf, 0x3Au);
   }
 
-  if (!v8)
+  if (!successCopy)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v55 = v14;
+      v55 = identifierCopy;
       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Failed to send with success: %@", buf, 0xCu);
     }
 
-    v17 = [(NSMutableDictionary *)self->_completionHandlers objectForKey:v14];
+    v17 = [(NSMutableDictionary *)self->_completionHandlers objectForKey:identifierCopy];
     if (v17)
     {
-      [(NSMutableDictionary *)self->_completionHandlers removeObjectForKey:v14];
+      [(NSMutableDictionary *)self->_completionHandlers removeObjectForKey:identifierCopy];
       callbackQueue = self->_callbackQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -4397,7 +4397,7 @@ uint64_t __39__PKIDSManager_service_devicesChanged___block_invoke_207(uint64_t a
       block[3] = &unk_1E79C44A0;
       v19 = &v51;
       v51 = v17;
-      v50 = v15;
+      v50 = errorCopy;
       dispatch_async(callbackQueue, block);
       v20 = v50;
     }
@@ -4410,11 +4410,11 @@ uint64_t __39__PKIDSManager_service_devicesChanged___block_invoke_207(uint64_t a
       v47[2] = __68__PKIDSManager_service_account_identifier_didSendWithSuccess_error___block_invoke_2;
       v47[3] = &unk_1E79E0C60;
       v19 = &v48;
-      v48 = v14;
+      v48 = identifierCopy;
       v20 = [(NSMutableDictionary *)thumbnailCompletionHandlers keysOfEntriesPassingTest:v47];
       if ([v20 count])
       {
-        v31 = v12;
+        v31 = serviceCopy;
         v45 = 0u;
         v46 = 0u;
         v43 = 0u;
@@ -4464,7 +4464,7 @@ uint64_t __39__PKIDSManager_service_devicesChanged___block_invoke_207(uint64_t a
                     v36[2] = __68__PKIDSManager_service_account_identifier_didSendWithSuccess_error___block_invoke_3;
                     v36[3] = &unk_1E79C44A0;
                     v38 = v29;
-                    v37 = v15;
+                    v37 = errorCopy;
                     dispatch_async(v30, v36);
                   }
 
@@ -4485,7 +4485,7 @@ uint64_t __39__PKIDSManager_service_devicesChanged___block_invoke_207(uint64_t a
           while (v34);
         }
 
-        v12 = v31;
+        serviceCopy = v31;
         v17 = 0;
         v19 = &v48;
       }
@@ -4510,11 +4510,11 @@ uint64_t __68__PKIDSManager_service_account_identifier_didSendWithSuccess_error_
     _os_log_impl(&dword_1AD337000, v3, OS_LOG_TYPE_DEFAULT, "Deleting IDS device archive", v7, 2u);
   }
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = PKHomeDirectoryPath();
   v6 = [v5 stringByAppendingPathComponent:@"RemoteDevices.archive"];
 
-  [v4 removeItemAtPath:v6 error:0];
+  [defaultManager removeItemAtPath:v6 error:0];
   PKRemoteInstrumentThumbnailsCacheCreateDirectoryURL(0, &__block_literal_global_210_1);
   [(PKIDSManager *)self _createThumbnailCacheDirectory];
 }

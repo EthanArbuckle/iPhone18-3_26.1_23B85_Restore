@@ -1,16 +1,16 @@
 @interface SCMLNormalizer
-+ (id)normalizeText:(id)a3 lite:(BOOL)a4 error:(id *)a5;
-+ (id)trimmedText:(id)a3;
++ (id)normalizeText:(id)text lite:(BOOL)lite error:(id *)error;
++ (id)trimmedText:(id)text;
 - (_TtC26SensitiveContentAnalysisML14SCMLNormalizer)init;
 @end
 
 @implementation SCMLNormalizer
 
-+ (id)normalizeText:(id)a3 lite:(BOOL)a4 error:(id *)a5
++ (id)normalizeText:(id)text lite:(BOOL)lite error:(id *)error
 {
-  v5 = a4;
+  liteCopy = lite;
   v6 = sub_1B8AF0668();
-  if (v5)
+  if (liteCopy)
   {
     sub_1B8ACFCBC(v6, v7);
   }
@@ -25,7 +25,7 @@
   return v8;
 }
 
-+ (id)trimmedText:(id)a3
++ (id)trimmedText:(id)text
 {
   v3 = sub_1B8AEFB28();
   v4 = *(v3 - 8);

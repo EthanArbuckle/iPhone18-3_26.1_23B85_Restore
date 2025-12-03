@@ -1,20 +1,20 @@
 @interface IMCTChatBotCache
-- (void)destinationCapabilitiesUpdated:(id)a3 withCapabilities:(id)a4;
-- (void)didDiscover:(id)a3 destination:(id)a4 withCapabilities:(id)a5 withResult:(id)a6;
-- (void)didFinishFetchChatBotRenderInformation:(id)a3 forChatBot:(id)a4 withRenderData:(id)a5 withResult:(id)a6;
+- (void)destinationCapabilitiesUpdated:(id)updated withCapabilities:(id)capabilities;
+- (void)didDiscover:(id)discover destination:(id)destination withCapabilities:(id)capabilities withResult:(id)result;
+- (void)didFinishFetchChatBotRenderInformation:(id)information forChatBot:(id)bot withRenderData:(id)data withResult:(id)result;
 @end
 
 @implementation IMCTChatBotCache
 
-- (void)destinationCapabilitiesUpdated:(id)a3 withCapabilities:(id)a4
+- (void)destinationCapabilitiesUpdated:(id)updated withCapabilities:(id)capabilities
 {
-  v11 = a4;
-  v5 = self;
-  v6 = [v11 discovered];
-  [v11 isBot];
-  v7 = *(&v5->super.isa + OBJC_IVAR____TtC17IMSharedUtilities16IMCTChatBotCache_cache);
+  capabilitiesCopy = capabilities;
+  selfCopy = self;
+  discovered = [capabilitiesCopy discovered];
+  [capabilitiesCopy isBot];
+  v7 = *(&selfCopy->super.isa + OBJC_IVAR____TtC17IMSharedUtilities16IMCTChatBotCache_cache);
   v8 = sub_1A88C86C8();
-  v9 = [v6 uri];
+  v9 = [discovered uri];
   if (v9)
   {
     v10 = v9;
@@ -27,17 +27,17 @@
   }
 }
 
-- (void)didDiscover:(id)a3 destination:(id)a4 withCapabilities:(id)a5 withResult:(id)a6
+- (void)didDiscover:(id)discover destination:(id)destination withCapabilities:(id)capabilities withResult:(id)result
 {
-  if (a5)
+  if (capabilities)
   {
-    v14 = a4;
-    v8 = self;
-    v9 = a5;
-    [v9 isBot];
-    v10 = *(&v8->super.isa + OBJC_IVAR____TtC17IMSharedUtilities16IMCTChatBotCache_cache);
+    destinationCopy = destination;
+    selfCopy = self;
+    capabilitiesCopy = capabilities;
+    [capabilitiesCopy isBot];
+    v10 = *(&selfCopy->super.isa + OBJC_IVAR____TtC17IMSharedUtilities16IMCTChatBotCache_cache);
     v11 = sub_1A88C86C8();
-    v12 = [v14 uri];
+    v12 = [destinationCopy uri];
     if (v12)
     {
       v13 = v12;
@@ -51,14 +51,14 @@
   }
 }
 
-- (void)didFinishFetchChatBotRenderInformation:(id)a3 forChatBot:(id)a4 withRenderData:(id)a5 withResult:(id)a6
+- (void)didFinishFetchChatBotRenderInformation:(id)information forChatBot:(id)bot withRenderData:(id)data withResult:(id)result
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_1A87AAC04(v11, a5);
+  informationCopy = information;
+  botCopy = bot;
+  dataCopy = data;
+  resultCopy = result;
+  selfCopy = self;
+  sub_1A87AAC04(botCopy, data);
 }
 
 @end

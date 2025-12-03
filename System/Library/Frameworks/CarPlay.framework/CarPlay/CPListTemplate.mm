@@ -1,40 +1,40 @@
 @interface CPListTemplate
 + (CGSize)maximumGridButtonImageSize;
 + (NSUInteger)maximumItemCount;
-+ (void)_setMaximumGridButtonImageSize:(CGSize)a3;
-- (CPListTemplate)initWithCoder:(id)a3;
++ (void)_setMaximumGridButtonImageSize:(CGSize)size;
+- (CPListTemplate)initWithCoder:(id)coder;
 - (CPListTemplate)initWithTitle:(NSString *)title sections:(NSArray *)sections;
 - (CPListTemplate)initWithTitle:(NSString *)title sections:(NSArray *)sections assistantCellConfiguration:(CPAssistantCellConfiguration *)assistantCellConfiguration;
-- (CPListTemplate)initWithTitle:(id)a3 sections:(id)a4 assistantCellConfiguration:(id)a5 headerGridButtons:(id)a6;
-- (CPListTemplate)listTemplateWithIdentifier:(id)a3 didSelectImageAtIndex:(unint64_t)a4 inImageRowItemWithIdentifier:(id)a5;
-- (CPListTemplate)listTemplateWithIdentifier:(id)a3 didSelectListItemWithIdentifier:(id)a4 completionHandler:(id)a5;
+- (CPListTemplate)initWithTitle:(id)title sections:(id)sections assistantCellConfiguration:(id)configuration headerGridButtons:(id)buttons;
+- (CPListTemplate)listTemplateWithIdentifier:(id)identifier didSelectImageAtIndex:(unint64_t)index inImageRowItemWithIdentifier:(id)withIdentifier;
+- (CPListTemplate)listTemplateWithIdentifier:(id)identifier didSelectListItemWithIdentifier:(id)withIdentifier completionHandler:(id)handler;
 - (NSIndexPath)indexPathForItem:(id)item;
 - (NSUInteger)itemCount;
-- (id)_gridButtonsByFilteringAndTrimming:(id)a3;
-- (id)_itemForHostItemWithIdentifier:(id)a3;
-- (id)_sectionsByTrimmingAndLinkingSections:(id)a3;
+- (id)_gridButtonsByFilteringAndTrimming:(id)trimming;
+- (id)_itemForHostItemWithIdentifier:(id)identifier;
+- (id)_sectionsByTrimmingAndLinkingSections:(id)sections;
 - (id)delegate;
-- (void)_linkItemsInSection:(id)a3;
-- (void)_setItemNeedsUpdate:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)gridButton:(id)a3 setImageSet:(id)a4;
-- (void)gridButton:(id)a3 setTitleVariants:(id)a4;
-- (void)gridButton:(id)a3 setUnread:(BOOL)a4;
-- (void)handleActionForControlIdentifier:(id)a3;
+- (void)_linkItemsInSection:(id)section;
+- (void)_setItemNeedsUpdate:(id)update;
+- (void)encodeWithCoder:(id)coder;
+- (void)gridButton:(id)button setImageSet:(id)set;
+- (void)gridButton:(id)button setTitleVariants:(id)variants;
+- (void)gridButton:(id)button setUnread:(BOOL)unread;
+- (void)handleActionForControlIdentifier:(id)identifier;
 - (void)performUpdate;
 - (void)setAssistantCellConfiguration:(CPAssistantCellConfiguration *)assistantCellConfiguration;
-- (void)setHeaderGridButtons:(id)a3;
-- (void)setShowsSpinnerWhileEmpty:(BOOL)a3;
-- (void)updateHeaderImage:(id)a3 forSectionIdentifier:(id)a4;
+- (void)setHeaderGridButtons:(id)buttons;
+- (void)setShowsSpinnerWhileEmpty:(BOOL)empty;
+- (void)updateHeaderImage:(id)image forSectionIdentifier:(id)identifier;
 - (void)updateSections:(NSArray *)sections;
 @end
 
 @implementation CPListTemplate
 
-+ (void)_setMaximumGridButtonImageSize:(CGSize)a3
++ (void)_setMaximumGridButtonImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11 = *MEMORY[0x277D85DE8];
   v5 = CarPlayFrameworkGeneralLogging();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -86,10 +86,10 @@
   return result;
 }
 
-- (id)_sectionsByTrimmingAndLinkingSections:(id)a3
+- (id)_sectionsByTrimmingAndLinkingSections:(id)sections
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
+  sectionsCopy = sections;
+  array = [MEMORY[0x277CBEB18] array];
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -98,21 +98,21 @@
   v20[1] = v20;
   v20[2] = 0x2020000000;
   v20[3] = 0;
-  v7 = [objc_opt_class() maximumSectionCount];
-  v8 = [objc_opt_class() maximumItemCount];
+  maximumSectionCount = [objc_opt_class() maximumSectionCount];
+  maximumItemCount = [objc_opt_class() maximumItemCount];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__CPListTemplate__sectionsByTrimmingAndLinkingSections___block_invoke;
   v12[3] = &unk_278A111B8;
   v15 = v20;
   v16 = v21;
-  v17 = v7;
-  v18 = v8;
+  v17 = maximumSectionCount;
+  v18 = maximumItemCount;
   v19 = a2;
-  v9 = v6;
+  v9 = array;
   v13 = v9;
-  v14 = self;
-  [v5 enumerateObjectsUsingBlock:v12];
+  selfCopy = self;
+  [sectionsCopy enumerateObjectsUsingBlock:v12];
   v10 = [MEMORY[0x277CBEA60] arrayWithArray:v9];
 
   _Block_object_dispose(v20, 8);
@@ -179,11 +179,11 @@ LABEL_11:
   return MEMORY[0x2821F96F8](v7, v8);
 }
 
-- (id)_gridButtonsByFilteringAndTrimming:(id)a3
+- (id)_gridButtonsByFilteringAndTrimming:(id)trimming
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [objc_opt_class() maximumHeaderGridButtonCount];
+  trimmingCopy = trimming;
+  array = [MEMORY[0x277CBEB18] array];
+  maximumHeaderGridButtonCount = [objc_opt_class() maximumHeaderGridButtonCount];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
@@ -192,13 +192,13 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = __53__CPListTemplate__gridButtonsByFilteringAndTrimming___block_invoke;
   v11[3] = &unk_278A111E0;
-  v14 = v7;
+  v14 = maximumHeaderGridButtonCount;
   v15 = a2;
   v13 = v16;
   v11[4] = self;
-  v8 = v6;
+  v8 = array;
   v12 = v8;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [trimmingCopy enumerateObjectsUsingBlock:v11];
   v9 = [MEMORY[0x277CBEA60] arrayWithArray:v8];
 
   _Block_object_dispose(v16, 8);
@@ -273,14 +273,14 @@ void __53__CPListTemplate__gridButtonsByFilteringAndTrimming___block_invoke(uint
   return v11;
 }
 
-- (CPListTemplate)initWithTitle:(id)a3 sections:(id)a4 assistantCellConfiguration:(id)a5 headerGridButtons:(id)a6
+- (CPListTemplate)initWithTitle:(id)title sections:(id)sections assistantCellConfiguration:(id)configuration headerGridButtons:(id)buttons
 {
-  v10 = a6;
-  v11 = [(CPListTemplate *)self initWithTitle:a3 sections:a4 assistantCellConfiguration:a5];
+  buttonsCopy = buttons;
+  v11 = [(CPListTemplate *)self initWithTitle:title sections:sections assistantCellConfiguration:configuration];
   v12 = v11;
-  if (v10 && v11)
+  if (buttonsCopy && v11)
   {
-    v13 = [(CPListTemplate *)v11 _gridButtonsByFilteringAndTrimming:v10];
+    v13 = [(CPListTemplate *)v11 _gridButtonsByFilteringAndTrimming:buttonsCopy];
     headerGridButtons = v12->_headerGridButtons;
     v12->_headerGridButtons = v13;
   }
@@ -288,12 +288,12 @@ void __53__CPListTemplate__gridButtonsByFilteringAndTrimming___block_invoke(uint
   return v12;
 }
 
-- (CPListTemplate)initWithCoder:(id)a3
+- (CPListTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = CPListTemplate;
-  v5 = [(CPTemplate *)&v36 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v36 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB58] set];
@@ -306,37 +306,37 @@ void __53__CPListTemplate__gridButtonsByFilteringAndTrimming___block_invoke(uint
     v11 = objc_opt_class();
     v12 = objc_opt_class();
     v13 = [v8 setWithObjects:{v9, v10, v11, v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"kCPListTemplateSectionsKey"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"kCPListTemplateSectionsKey"];
     sections = v5->_sections;
     v5->_sections = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPListTemplateTitleKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPListTemplateTitleKey"];
     title = v5->_title;
     v5->_title = v16;
 
     v18 = MEMORY[0x277CBEB98];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"kCPListTemplateEmptyTitlesKey"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"kCPListTemplateEmptyTitlesKey"];
     emptyViewTitleVariants = v5->_emptyViewTitleVariants;
     v5->_emptyViewTitleVariants = v21;
 
     v23 = MEMORY[0x277CBEB98];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"kCPListTemplateEmptySubtitlesKey"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"kCPListTemplateEmptySubtitlesKey"];
     emptyViewSubtitleVariants = v5->_emptyViewSubtitleVariants;
     v5->_emptyViewSubtitleVariants = v26;
 
-    v5->_showsSpinnerWhileEmpty = [v4 decodeBoolForKey:@"kCPListTemplateShowsEmptySpinnerKey"];
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPAssistantCellConfigurationKey"];
+    v5->_showsSpinnerWhileEmpty = [coderCopy decodeBoolForKey:@"kCPListTemplateShowsEmptySpinnerKey"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPAssistantCellConfigurationKey"];
     assistantCellConfiguration = v5->_assistantCellConfiguration;
     v5->_assistantCellConfiguration = v28;
 
     v30 = MEMORY[0x277CBEB98];
     v31 = objc_opt_class();
     v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"kCPListTemplateHeaderGridButtonsKey"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"kCPListTemplateHeaderGridButtonsKey"];
     headerGridButtons = v5->_headerGridButtons;
     v5->_headerGridButtons = v33;
   }
@@ -344,31 +344,31 @@ void __53__CPListTemplate__gridButtonsByFilteringAndTrimming___block_invoke(uint
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CPListTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v11 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v11 encodeWithCoder:coderCopy];
   v5 = [(CPListTemplate *)self sections:v11.receiver];
-  [v4 encodeObject:v5 forKey:@"kCPListTemplateSectionsKey"];
+  [coderCopy encodeObject:v5 forKey:@"kCPListTemplateSectionsKey"];
 
-  v6 = [(CPListTemplate *)self title];
-  [v4 encodeObject:v6 forKey:@"kCPListTemplateTitleKey"];
+  title = [(CPListTemplate *)self title];
+  [coderCopy encodeObject:title forKey:@"kCPListTemplateTitleKey"];
 
-  v7 = [(CPListTemplate *)self emptyViewTitleVariants];
-  [v4 encodeObject:v7 forKey:@"kCPListTemplateEmptyTitlesKey"];
+  emptyViewTitleVariants = [(CPListTemplate *)self emptyViewTitleVariants];
+  [coderCopy encodeObject:emptyViewTitleVariants forKey:@"kCPListTemplateEmptyTitlesKey"];
 
-  v8 = [(CPListTemplate *)self emptyViewSubtitleVariants];
-  [v4 encodeObject:v8 forKey:@"kCPListTemplateEmptySubtitlesKey"];
+  emptyViewSubtitleVariants = [(CPListTemplate *)self emptyViewSubtitleVariants];
+  [coderCopy encodeObject:emptyViewSubtitleVariants forKey:@"kCPListTemplateEmptySubtitlesKey"];
 
-  v9 = [(CPListTemplate *)self assistantCellConfiguration];
-  [v4 encodeObject:v9 forKey:@"kCPAssistantCellConfigurationKey"];
+  assistantCellConfiguration = [(CPListTemplate *)self assistantCellConfiguration];
+  [coderCopy encodeObject:assistantCellConfiguration forKey:@"kCPAssistantCellConfigurationKey"];
 
-  v10 = [(CPListTemplate *)self headerGridButtons];
-  [v4 encodeObject:v10 forKey:@"kCPListTemplateHeaderGridButtonsKey"];
+  headerGridButtons = [(CPListTemplate *)self headerGridButtons];
+  [coderCopy encodeObject:headerGridButtons forKey:@"kCPListTemplateHeaderGridButtonsKey"];
 
-  [v4 encodeBool:-[CPListTemplate showsSpinnerWhileEmpty](self forKey:{"showsSpinnerWhileEmpty"), @"kCPListTemplateShowsEmptySpinnerKey"}];
+  [coderCopy encodeBool:-[CPListTemplate showsSpinnerWhileEmpty](self forKey:{"showsSpinnerWhileEmpty"), @"kCPListTemplateShowsEmptySpinnerKey"}];
 }
 
 - (void)updateSections:(NSArray *)sections
@@ -380,7 +380,7 @@ void __53__CPListTemplate__gridButtonsByFilteringAndTrimming___block_invoke(uint
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
     v15 = v5;
     _os_log_impl(&dword_236ED4000, v6, OS_LOG_TYPE_DEFAULT, "%@ enqueuing list update with %@", buf, 0x16u);
@@ -388,13 +388,13 @@ void __53__CPListTemplate__gridButtonsByFilteringAndTrimming___block_invoke(uint
 
   objc_storeStrong(&self->_sections, v5);
   objc_initWeak(buf, self);
-  v7 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __33__CPListTemplate_updateSections___block_invoke;
   v10[3] = &unk_278A11208;
   objc_copyWeak(&v11, buf);
-  v8 = [v7 addSuccessBlock:v10];
+  v8 = [templateProviderFuture addSuccessBlock:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(buf);
@@ -454,8 +454,8 @@ void __33__CPListTemplate_updateSections___block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) items];
-        v5 += [v8 count];
+        items = [*(*(&v11 + 1) + 8 * i) items];
+        v5 += [items count];
       }
 
       v4 = [(NSArray *)v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -473,27 +473,27 @@ void __33__CPListTemplate_updateSections___block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)updateHeaderImage:(id)a3 forSectionIdentifier:(id)a4
+- (void)updateHeaderImage:(id)image forSectionIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPTemplate *)self templateProviderFuture];
+  imageCopy = image;
+  identifierCopy = identifier;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __57__CPListTemplate_updateHeaderImage_forSectionIdentifier___block_invoke;
   v12[3] = &unk_278A11230;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 addSuccessBlock:v12];
+  v13 = imageCopy;
+  v14 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = imageCopy;
+  v11 = [templateProviderFuture addSuccessBlock:v12];
 }
 
-- (void)setShowsSpinnerWhileEmpty:(BOOL)a3
+- (void)setShowsSpinnerWhileEmpty:(BOOL)empty
 {
-  if (self->_showsSpinnerWhileEmpty != a3)
+  if (self->_showsSpinnerWhileEmpty != empty)
   {
-    self->_showsSpinnerWhileEmpty = a3;
+    self->_showsSpinnerWhileEmpty = empty;
     [(CPTemplate *)self setNeedsUpdate];
   }
 }
@@ -532,18 +532,18 @@ LABEL_5:
   return v8;
 }
 
-- (void)_linkItemsInSection:(id)a3
+- (void)_linkItemsInSection:(id)section
 {
-  v4 = a3;
-  [v4 setListTemplate:self];
-  v5 = [v4 items];
+  sectionCopy = section;
+  [sectionCopy setListTemplate:self];
+  items = [sectionCopy items];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __38__CPListTemplate__linkItemsInSection___block_invoke;
   v6[3] = &unk_278A11258;
   v6[4] = self;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [items enumerateObjectsUsingBlock:v6];
 }
 
 void __38__CPListTemplate__linkItemsInSection___block_invoke(uint64_t a1, void *a2)
@@ -555,20 +555,20 @@ void __38__CPListTemplate__linkItemsInSection___block_invoke(uint64_t a1, void *
   }
 }
 
-- (void)_setItemNeedsUpdate:(id)a3
+- (void)_setItemNeedsUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(CPListTemplate *)self itemsToReload];
-  [v5 addObject:v4];
+  updateCopy = update;
+  itemsToReload = [(CPListTemplate *)self itemsToReload];
+  [itemsToReload addObject:updateCopy];
 
   [(CPTemplate *)self setNeedsUpdate];
 }
 
-- (void)setHeaderGridButtons:(id)a3
+- (void)setHeaderGridButtons:(id)buttons
 {
-  obj = [(CPListTemplate *)self _gridButtonsByFilteringAndTrimming:a3];
-  v4 = [(CPListTemplate *)self headerGridButtons];
-  v5 = [v4 isEqualToArray:obj];
+  obj = [(CPListTemplate *)self _gridButtonsByFilteringAndTrimming:buttons];
+  headerGridButtons = [(CPListTemplate *)self headerGridButtons];
+  v5 = [headerGridButtons isEqualToArray:obj];
 
   if ((v5 & 1) == 0)
   {
@@ -581,39 +581,39 @@ void __38__CPListTemplate__linkItemsInSection___block_invoke(uint64_t a1, void *
 - (void)performUpdate
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(CPListTemplate *)self itemsToReload];
-  v4 = [v3 count];
+  itemsToReload = [(CPListTemplate *)self itemsToReload];
+  v4 = [itemsToReload count];
 
   if (v4)
   {
     v5 = CarPlayFrameworkGeneralLogging();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CPListTemplate *)self itemsToReload];
+      itemsToReload2 = [(CPListTemplate *)self itemsToReload];
       *buf = 138412546;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
-      v29 = v6;
+      v29 = itemsToReload2;
       _os_log_impl(&dword_236ED4000, v5, OS_LOG_TYPE_DEFAULT, "Sending List Template update for %@ with %@", buf, 0x16u);
     }
 
-    v7 = [(CPListTemplate *)self itemsToReload];
-    v8 = [v7 allObjects];
+    itemsToReload3 = [(CPListTemplate *)self itemsToReload];
+    allObjects = [itemsToReload3 allObjects];
 
-    v9 = [(CPListTemplate *)self itemsToReload];
-    [v9 removeAllObjects];
+    itemsToReload4 = [(CPListTemplate *)self itemsToReload];
+    [itemsToReload4 removeAllObjects];
 
-    v10 = [(CPTemplate *)self templateProviderFuture];
+    templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __31__CPListTemplate_performUpdate__block_invoke;
     v24[3] = &unk_278A11280;
-    v25 = v8;
-    v11 = v8;
-    v12 = [v10 addSuccessBlock:v24];
+    v25 = allObjects;
+    v11 = allObjects;
+    v12 = [templateProviderFuture addSuccessBlock:v24];
 
-    v13 = [(CPListTemplate *)self itemsToReload];
-    [v13 removeAllObjects];
+    itemsToReload5 = [(CPListTemplate *)self itemsToReload];
+    [itemsToReload5 removeAllObjects];
   }
 
   if ([(CPListTemplate *)self reloadHeaderButtons])
@@ -621,50 +621,50 @@ void __38__CPListTemplate__linkItemsInSection___block_invoke(uint64_t a1, void *
     v14 = CarPlayFrameworkGeneralLogging();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(CPListTemplate *)self headerGridButtons];
+      headerGridButtons = [(CPListTemplate *)self headerGridButtons];
       *buf = 138412546;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2114;
-      v29 = v15;
+      v29 = headerGridButtons;
       _os_log_impl(&dword_236ED4000, v14, OS_LOG_TYPE_DEFAULT, "Sending List Template header update for %@ with %{public}@", buf, 0x16u);
     }
 
     [(CPListTemplate *)self setReloadHeaderButtons:0];
-    v16 = [(CPListTemplate *)self headerGridButtons];
-    v17 = [v16 copy];
+    headerGridButtons2 = [(CPListTemplate *)self headerGridButtons];
+    v17 = [headerGridButtons2 copy];
 
-    v18 = [(CPTemplate *)self templateProviderFuture];
+    templateProviderFuture2 = [(CPTemplate *)self templateProviderFuture];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __31__CPListTemplate_performUpdate__block_invoke_126;
     v22[3] = &unk_278A11280;
     v23 = v17;
     v19 = v17;
-    v20 = [v18 addSuccessBlock:v22];
+    v20 = [templateProviderFuture2 addSuccessBlock:v22];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_itemForHostItemWithIdentifier:(id)a3
+- (id)_itemForHostItemWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__4;
   v19 = __Block_byref_object_dispose__4;
   v20 = 0;
-  v5 = [(CPListTemplate *)self sections];
+  sections = [(CPListTemplate *)self sections];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __49__CPListTemplate__itemForHostItemWithIdentifier___block_invoke;
   v12[3] = &unk_278A112D0;
-  v6 = v4;
+  v6 = identifierCopy;
   v13 = v6;
   v14 = &v15;
-  [v5 enumerateObjectsUsingBlock:v12];
+  [sections enumerateObjectsUsingBlock:v12];
 
   v7 = v16[5];
   if (!v7)
@@ -726,19 +726,19 @@ void __49__CPListTemplate__itemForHostItemWithIdentifier___block_invoke_2(uint64
   }
 }
 
-- (CPListTemplate)listTemplateWithIdentifier:(id)a3 didSelectListItemWithIdentifier:(id)a4 completionHandler:(id)a5
+- (CPListTemplate)listTemplateWithIdentifier:(id)identifier didSelectListItemWithIdentifier:(id)withIdentifier completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
+  withIdentifierCopy = withIdentifier;
+  handlerCopy = handler;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__CPListTemplate_listTemplateWithIdentifier_didSelectListItemWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_278A112F8;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v9 = v8;
-  v10 = v7;
+  v13 = withIdentifierCopy;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = withIdentifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   return result;
@@ -790,17 +790,17 @@ LABEL_10:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (CPListTemplate)listTemplateWithIdentifier:(id)a3 didSelectImageAtIndex:(unint64_t)a4 inImageRowItemWithIdentifier:(id)a5
+- (CPListTemplate)listTemplateWithIdentifier:(id)identifier didSelectImageAtIndex:(unint64_t)index inImageRowItemWithIdentifier:(id)withIdentifier
 {
-  v7 = a5;
+  withIdentifierCopy = withIdentifier;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__CPListTemplate_listTemplateWithIdentifier_didSelectImageAtIndex_inImageRowItemWithIdentifier___block_invoke;
   block[3] = &unk_278A10D48;
   block[4] = self;
-  v11 = v7;
-  v12 = a4;
-  v8 = v7;
+  v11 = withIdentifierCopy;
+  indexCopy = index;
+  v8 = withIdentifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 
   return result;
@@ -844,21 +844,21 @@ void __96__CPListTemplate_listTemplateWithIdentifier_didSelectImageAtIndex_inIma
 - (void)setAssistantCellConfiguration:(CPAssistantCellConfiguration *)assistantCellConfiguration
 {
   v5 = assistantCellConfiguration;
-  v6 = [(CPListTemplate *)self assistantCellConfiguration];
-  v7 = [v6 isEqual:v5];
+  assistantCellConfiguration = [(CPListTemplate *)self assistantCellConfiguration];
+  v7 = [assistantCellConfiguration isEqual:v5];
 
   if ((v7 & 1) == 0)
   {
     objc_storeStrong(&self->_assistantCellConfiguration, assistantCellConfiguration);
     if ((CPCurrentProcessHasAudioEntitlement() & 1) != 0 || (CPCurrentProcessHasCommunicationEntitlement() & 1) != 0 || CPCurrentProcessHasVideoEntitlement())
     {
-      v8 = [(CPTemplate *)self templateProviderFuture];
+      templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __48__CPListTemplate_setAssistantCellConfiguration___block_invoke;
       v10[3] = &unk_278A11280;
       v11 = v5;
-      v9 = [v8 addSuccessBlock:v10];
+      v9 = [templateProviderFuture addSuccessBlock:v10];
     }
   }
 }
@@ -889,16 +889,16 @@ void __48__CPListTemplate_setAssistantCellConfiguration___block_invoke_3(uint64_
   exit(-1);
 }
 
-- (void)handleActionForControlIdentifier:(id)a3
+- (void)handleActionForControlIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__CPListTemplate_handleActionForControlIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -1025,50 +1025,50 @@ void __51__CPListTemplate_handleActionForControlIdentifier___block_invoke_2(uint
   }
 }
 
-- (void)gridButton:(id)a3 setImageSet:(id)a4
+- (void)gridButton:(id)button setImageSet:(id)set
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  setCopy = set;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __41__CPListTemplate_gridButton_setImageSet___block_invoke;
   v12[3] = &unk_278A11230;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 addSuccessBlock:v12];
+  v13 = buttonCopy;
+  v14 = setCopy;
+  v9 = setCopy;
+  v10 = buttonCopy;
+  v11 = [templateProviderFuture addSuccessBlock:v12];
 }
 
-- (void)gridButton:(id)a3 setTitleVariants:(id)a4
+- (void)gridButton:(id)button setTitleVariants:(id)variants
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  variantsCopy = variants;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __46__CPListTemplate_gridButton_setTitleVariants___block_invoke;
   v12[3] = &unk_278A11230;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 addSuccessBlock:v12];
+  v13 = buttonCopy;
+  v14 = variantsCopy;
+  v9 = variantsCopy;
+  v10 = buttonCopy;
+  v11 = [templateProviderFuture addSuccessBlock:v12];
 }
 
-- (void)gridButton:(id)a3 setUnread:(BOOL)a4
+- (void)gridButton:(id)button setUnread:(BOOL)unread
 {
-  v6 = a3;
-  v7 = [(CPTemplate *)self templateProviderFuture];
+  buttonCopy = button;
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __39__CPListTemplate_gridButton_setUnread___block_invoke;
   v10[3] = &unk_278A11348;
-  v11 = v6;
-  v12 = a4;
-  v8 = v6;
-  v9 = [v7 addSuccessBlock:v10];
+  v11 = buttonCopy;
+  unreadCopy = unread;
+  v8 = buttonCopy;
+  v9 = [templateProviderFuture addSuccessBlock:v10];
 }
 
 - (id)delegate

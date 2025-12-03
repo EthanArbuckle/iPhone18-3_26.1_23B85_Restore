@@ -1,47 +1,47 @@
 @interface SFShowPhotosOneUpViewCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFShowPhotosOneUpViewCommand)initWithCoder:(id)a3;
-- (SFShowPhotosOneUpViewCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFShowPhotosOneUpViewCommand)initWithCoder:(id)coder;
+- (SFShowPhotosOneUpViewCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFShowPhotosOneUpViewCommand
 
-- (SFShowPhotosOneUpViewCommand)initWithProtobuf:(id)a3
+- (SFShowPhotosOneUpViewCommand)initWithProtobuf:(id)protobuf
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v45.receiver = self;
   v45.super_class = SFShowPhotosOneUpViewCommand;
   v5 = [(SFShowPhotosOneUpViewCommand *)&v45 init];
   if (v5)
   {
-    v6 = [v4 photosLibraryImage];
+    photosLibraryImage = [protobufCopy photosLibraryImage];
 
-    if (v6)
+    if (photosLibraryImage)
     {
       v7 = [SFPhotosLibraryImage alloc];
-      v8 = [v4 photosLibraryImage];
-      v9 = [(SFPhotosLibraryImage *)v7 initWithProtobuf:v8];
+      photosLibraryImage2 = [protobufCopy photosLibraryImage];
+      v9 = [(SFPhotosLibraryImage *)v7 initWithProtobuf:photosLibraryImage2];
       [(SFShowPhotosOneUpViewCommand *)v5 setPhotosLibraryImage:v9];
     }
 
-    v10 = [v4 matchedPerson];
+    matchedPerson = [protobufCopy matchedPerson];
 
-    if (v10)
+    if (matchedPerson)
     {
       v11 = [SFPerson alloc];
-      v12 = [v4 matchedPerson];
-      v13 = [(SFPerson *)v11 initWithProtobuf:v12];
+      matchedPerson2 = [protobufCopy matchedPerson];
+      v13 = [(SFPerson *)v11 initWithProtobuf:matchedPerson2];
       [(SFShowPhotosOneUpViewCommand *)v5 setMatchedPerson:v13];
     }
 
-    v14 = [v4 matchedScenes];
-    if (v14)
+    matchedScenes = [protobufCopy matchedScenes];
+    if (matchedScenes)
     {
       v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -55,8 +55,8 @@
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v16 = [v4 matchedScenes];
-    v17 = [v16 countByEnumeratingWithState:&v41 objects:v47 count:16];
+    matchedScenes2 = [protobufCopy matchedScenes];
+    v17 = [matchedScenes2 countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (v17)
     {
       v18 = v17;
@@ -67,7 +67,7 @@
         {
           if (*v42 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(matchedScenes2);
           }
 
           v21 = [[SFScene alloc] initWithProtobuf:*(*(&v41 + 1) + 8 * i)];
@@ -77,15 +77,15 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v41 objects:v47 count:16];
+        v18 = [matchedScenes2 countByEnumeratingWithState:&v41 objects:v47 count:16];
       }
 
       while (v18);
     }
 
     [(SFShowPhotosOneUpViewCommand *)v5 setMatchedScenes:v15];
-    v22 = [v4 matchedPeoples];
-    if (v22)
+    matchedPeoples = [protobufCopy matchedPeoples];
+    if (matchedPeoples)
     {
       v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -99,8 +99,8 @@
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v24 = [v4 matchedPeoples];
-    v25 = [v24 countByEnumeratingWithState:&v37 objects:v46 count:16];
+    matchedPeoples2 = [protobufCopy matchedPeoples];
+    v25 = [matchedPeoples2 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v25)
     {
       v26 = v25;
@@ -111,7 +111,7 @@
         {
           if (*v38 != v27)
           {
-            objc_enumerationMutation(v24);
+            objc_enumerationMutation(matchedPeoples2);
           }
 
           v29 = [[SFPerson alloc] initWithProtobuf:*(*(&v37 + 1) + 8 * j)];
@@ -121,20 +121,20 @@
           }
         }
 
-        v26 = [v24 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        v26 = [matchedPeoples2 countByEnumeratingWithState:&v37 objects:v46 count:16];
       }
 
       while (v26);
     }
 
     [(SFShowPhotosOneUpViewCommand *)v5 setMatchedPeople:v23];
-    v30 = [v4 photoFilePunchout];
+    photoFilePunchout = [protobufCopy photoFilePunchout];
 
-    if (v30)
+    if (photoFilePunchout)
     {
       v31 = [SFPunchout alloc];
-      v32 = [v4 photoFilePunchout];
-      v33 = [(SFPunchout *)v31 initWithProtobuf:v32];
+      photoFilePunchout2 = [protobufCopy photoFilePunchout];
+      v33 = [(SFPunchout *)v31 initWithProtobuf:photoFilePunchout2];
       [(SFShowPhotosOneUpViewCommand *)v5 setPhotoFilePunchout:v33];
     }
 
@@ -150,40 +150,40 @@
   v15.receiver = self;
   v15.super_class = SFShowPhotosOneUpViewCommand;
   v3 = [(SFCommand *)&v15 hash];
-  v4 = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
-  v5 = [v4 hash];
-  v6 = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(SFShowPhotosOneUpViewCommand *)self matchedPeople];
-  v11 = v9 ^ [v10 hash];
-  v12 = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
-  v13 = v11 ^ [v12 hash];
+  photosLibraryImage = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
+  v5 = [photosLibraryImage hash];
+  matchedPerson = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
+  v7 = v5 ^ [matchedPerson hash];
+  matchedScenes = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
+  v9 = v7 ^ [matchedScenes hash];
+  matchedPeople = [(SFShowPhotosOneUpViewCommand *)self matchedPeople];
+  v11 = v9 ^ [matchedPeople hash];
+  photoFilePunchout = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
+  v13 = v11 ^ [photoFilePunchout hash];
 
   return v13 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    if ([(SFShowPhotosOneUpViewCommand *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(SFShowPhotosOneUpViewCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v50.receiver = self;
       v50.super_class = SFShowPhotosOneUpViewCommand;
-      if ([(SFCommand *)&v50 isEqual:v4])
+      if ([(SFCommand *)&v50 isEqual:equalCopy])
       {
-        v5 = v4;
-        v6 = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
-        v7 = [(SFShowPhotosOneUpViewCommand *)v5 photosLibraryImage];
-        if ((v6 != 0) == (v7 == 0))
+        v5 = equalCopy;
+        photosLibraryImage = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
+        photosLibraryImage2 = [(SFShowPhotosOneUpViewCommand *)v5 photosLibraryImage];
+        if ((photosLibraryImage != 0) == (photosLibraryImage2 == 0))
         {
           v10 = 0;
 LABEL_51:
@@ -191,32 +191,32 @@ LABEL_51:
           goto LABEL_52;
         }
 
-        v8 = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
-        if (v8)
+        photosLibraryImage3 = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
+        if (photosLibraryImage3)
         {
-          v9 = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
-          v48 = [(SFShowPhotosOneUpViewCommand *)v5 photosLibraryImage];
-          if (![v9 isEqual:?])
+          photosLibraryImage4 = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
+          photosLibraryImage5 = [(SFShowPhotosOneUpViewCommand *)v5 photosLibraryImage];
+          if (![photosLibraryImage4 isEqual:?])
           {
             v10 = 0;
             goto LABEL_49;
           }
 
-          v47 = v9;
+          v47 = photosLibraryImage4;
         }
 
-        v49 = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
-        v11 = [(SFShowPhotosOneUpViewCommand *)v5 matchedPerson];
-        if ((v49 != 0) != (v11 == 0))
+        matchedPerson = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
+        matchedPerson2 = [(SFShowPhotosOneUpViewCommand *)v5 matchedPerson];
+        if ((matchedPerson != 0) != (matchedPerson2 == 0))
         {
-          v12 = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
-          if (v12)
+          matchedPerson3 = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
+          if (matchedPerson3)
           {
-            v13 = v12;
-            v14 = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
+            v13 = matchedPerson3;
+            matchedPerson4 = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
             [(SFShowPhotosOneUpViewCommand *)v5 matchedPerson];
-            v45 = v44 = v14;
-            if (![v14 isEqual:?])
+            v45 = v44 = matchedPerson4;
+            if (![matchedPerson4 isEqual:?])
             {
               v10 = 0;
               v19 = v13;
@@ -232,19 +232,19 @@ LABEL_51:
             v46 = 0;
           }
 
-          v15 = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
-          v16 = [(SFShowPhotosOneUpViewCommand *)v5 matchedScenes];
-          if ((v15 != 0) != (v16 == 0))
+          matchedScenes = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
+          matchedScenes2 = [(SFShowPhotosOneUpViewCommand *)v5 matchedScenes];
+          if ((matchedScenes != 0) != (matchedScenes2 == 0))
           {
-            v42 = v15;
-            v43 = v16;
-            v17 = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
-            if (v17)
+            v42 = matchedScenes;
+            v43 = matchedScenes2;
+            matchedScenes3 = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
+            if (matchedScenes3)
             {
-              v18 = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
-              v39 = [(SFShowPhotosOneUpViewCommand *)v5 matchedScenes];
-              v40 = v18;
-              if (![v18 isEqual:?])
+              matchedScenes4 = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
+              matchedScenes5 = [(SFShowPhotosOneUpViewCommand *)v5 matchedScenes];
+              v40 = matchedScenes4;
+              if (![matchedScenes4 isEqual:?])
               {
                 v10 = 0;
                 v20 = v45;
@@ -252,7 +252,7 @@ LABEL_51:
                 goto LABEL_44;
               }
 
-              v41 = v17;
+              v41 = matchedScenes3;
             }
 
             else
@@ -260,33 +260,33 @@ LABEL_51:
               v41 = 0;
             }
 
-            v21 = [(SFShowPhotosOneUpViewCommand *)self matchedPeople];
-            v22 = [(SFShowPhotosOneUpViewCommand *)v5 matchedPeople];
-            if ((v21 != 0) != (v22 == 0))
+            matchedPeople = [(SFShowPhotosOneUpViewCommand *)self matchedPeople];
+            matchedPeople2 = [(SFShowPhotosOneUpViewCommand *)v5 matchedPeople];
+            if ((matchedPeople != 0) != (matchedPeople2 == 0))
             {
-              v38 = v22;
+              v38 = matchedPeople2;
               [(SFShowPhotosOneUpViewCommand *)self matchedPeople];
               v37 = v20 = v45;
               if (v37)
               {
-                v33 = v21;
-                v23 = [(SFShowPhotosOneUpViewCommand *)self matchedPeople];
-                v35 = [(SFShowPhotosOneUpViewCommand *)v5 matchedPeople];
-                v36 = v23;
-                if (![v23 isEqual:?])
+                v33 = matchedPeople;
+                matchedPeople3 = [(SFShowPhotosOneUpViewCommand *)self matchedPeople];
+                matchedPeople4 = [(SFShowPhotosOneUpViewCommand *)v5 matchedPeople];
+                v36 = matchedPeople3;
+                if (![matchedPeople3 isEqual:?])
                 {
                   v10 = 0;
                   v27 = v37;
-                  v21 = v33;
+                  matchedPeople = v33;
                   goto LABEL_42;
                 }
 
-                v21 = v33;
+                matchedPeople = v33;
               }
 
-              v24 = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
-              v25 = [(SFShowPhotosOneUpViewCommand *)v5 photoFilePunchout];
-              if ((v24 != 0) == (v25 == 0))
+              photoFilePunchout = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
+              photoFilePunchout2 = [(SFShowPhotosOneUpViewCommand *)v5 photoFilePunchout];
+              if ((photoFilePunchout != 0) == (photoFilePunchout2 == 0))
               {
 
                 v10 = 0;
@@ -296,7 +296,7 @@ LABEL_51:
                 {
 LABEL_43:
 
-                  v17 = v41;
+                  matchedScenes3 = v41;
                   v19 = v46;
                   if (!v41)
                   {
@@ -309,17 +309,17 @@ LABEL_43:
 
               else
               {
-                v32 = v25;
-                v34 = v24;
-                v26 = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
+                v32 = photoFilePunchout2;
+                v34 = photoFilePunchout;
+                photoFilePunchout3 = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
                 v20 = v45;
                 v27 = v37;
-                if (v26)
+                if (photoFilePunchout3)
                 {
-                  v31 = v26;
-                  v30 = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
-                  v29 = [(SFShowPhotosOneUpViewCommand *)v5 photoFilePunchout];
-                  v10 = [v30 isEqual:v29];
+                  v31 = photoFilePunchout3;
+                  photoFilePunchout4 = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
+                  photoFilePunchout5 = [(SFShowPhotosOneUpViewCommand *)v5 photoFilePunchout];
+                  v10 = [photoFilePunchout4 isEqual:photoFilePunchout5];
 
                   if (!v37)
                   {
@@ -346,7 +346,7 @@ LABEL_42:
             v10 = 0;
             v20 = v45;
             v19 = v46;
-            v17 = v41;
+            matchedScenes3 = v41;
             if (!v41)
             {
 LABEL_45:
@@ -356,8 +356,8 @@ LABEL_45:
 LABEL_47:
 
 LABEL_48:
-                v9 = v47;
-                if (!v8)
+                photosLibraryImage4 = v47;
+                if (!photosLibraryImage3)
                 {
 LABEL_50:
 
@@ -397,29 +397,29 @@ LABEL_52:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = SFShowPhotosOneUpViewCommand;
-  v4 = [(SFCommand *)&v16 copyWithZone:a3];
-  v5 = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v16 copyWithZone:zone];
+  photosLibraryImage = [(SFShowPhotosOneUpViewCommand *)self photosLibraryImage];
+  v6 = [photosLibraryImage copy];
   [v4 setPhotosLibraryImage:v6];
 
-  v7 = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
-  v8 = [v7 copy];
+  matchedPerson = [(SFShowPhotosOneUpViewCommand *)self matchedPerson];
+  v8 = [matchedPerson copy];
   [v4 setMatchedPerson:v8];
 
-  v9 = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
-  v10 = [v9 copy];
+  matchedScenes = [(SFShowPhotosOneUpViewCommand *)self matchedScenes];
+  v10 = [matchedScenes copy];
   [v4 setMatchedScenes:v10];
 
-  v11 = [(SFShowPhotosOneUpViewCommand *)self matchedPeople];
-  v12 = [v11 copy];
+  matchedPeople = [(SFShowPhotosOneUpViewCommand *)self matchedPeople];
+  v12 = [matchedPeople copy];
   [v4 setMatchedPeople:v12];
 
-  v13 = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
-  v14 = [v13 copy];
+  photoFilePunchout = [(SFShowPhotosOneUpViewCommand *)self photoFilePunchout];
+  v14 = [photoFilePunchout copy];
   [v4 setPhotoFilePunchout:v14];
 
   return v4;
@@ -428,63 +428,63 @@ LABEL_52:
 - (NSData)jsonData
 {
   v2 = [[_SFPBShowPhotosOneUpViewCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBShowPhotosOneUpViewCommand *)v2 jsonData];
+  jsonData = [(_SFPBShowPhotosOneUpViewCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBShowPhotosOneUpViewCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBShowPhotosOneUpViewCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBShowPhotosOneUpViewCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFShowPhotosOneUpViewCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFShowPhotosOneUpViewCommand)initWithCoder:(id)a3
+- (SFShowPhotosOneUpViewCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFShowPhotosOneUpViewCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 photosLibraryImage];
-    [(SFShowPhotosOneUpViewCommand *)v5 setPhotosLibraryImage:v9];
+    photosLibraryImage = [(SFCommand *)v8 photosLibraryImage];
+    [(SFShowPhotosOneUpViewCommand *)v5 setPhotosLibraryImage:photosLibraryImage];
 
-    v10 = [(SFCommand *)v8 matchedPerson];
-    [(SFShowPhotosOneUpViewCommand *)v5 setMatchedPerson:v10];
+    matchedPerson = [(SFCommand *)v8 matchedPerson];
+    [(SFShowPhotosOneUpViewCommand *)v5 setMatchedPerson:matchedPerson];
 
-    v11 = [(SFCommand *)v8 matchedScenes];
-    [(SFShowPhotosOneUpViewCommand *)v5 setMatchedScenes:v11];
+    matchedScenes = [(SFCommand *)v8 matchedScenes];
+    [(SFShowPhotosOneUpViewCommand *)v5 setMatchedScenes:matchedScenes];
 
-    v12 = [(SFCommand *)v8 matchedPeople];
-    [(SFShowPhotosOneUpViewCommand *)v5 setMatchedPeople:v12];
+    matchedPeople = [(SFCommand *)v8 matchedPeople];
+    [(SFShowPhotosOneUpViewCommand *)v5 setMatchedPeople:matchedPeople];
 
-    v13 = [(SFCommand *)v8 photoFilePunchout];
-    [(SFShowPhotosOneUpViewCommand *)v5 setPhotoFilePunchout:v13];
+    photoFilePunchout = [(SFCommand *)v8 photoFilePunchout];
+    [(SFShowPhotosOneUpViewCommand *)v5 setPhotoFilePunchout:photoFilePunchout];
 
-    v14 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v14];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v15 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v15];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v16 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v16];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v17 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v17];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

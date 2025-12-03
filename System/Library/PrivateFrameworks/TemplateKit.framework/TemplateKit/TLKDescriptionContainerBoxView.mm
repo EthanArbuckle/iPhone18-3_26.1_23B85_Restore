@@ -6,17 +6,17 @@
 
 - (id)calculateViewForFirstBaselineLayout
 {
-  v2 = self;
-  v3 = [(TLKDescriptionContainerBoxView *)self viewForFirstAndLastBaseline];
-  v4 = v3;
-  if (v3)
+  selfCopy = self;
+  viewForFirstAndLastBaseline = [(TLKDescriptionContainerBoxView *)self viewForFirstAndLastBaseline];
+  v4 = viewForFirstAndLastBaseline;
+  if (viewForFirstAndLastBaseline)
   {
-    v2 = v3;
+    selfCopy = viewForFirstAndLastBaseline;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 @end

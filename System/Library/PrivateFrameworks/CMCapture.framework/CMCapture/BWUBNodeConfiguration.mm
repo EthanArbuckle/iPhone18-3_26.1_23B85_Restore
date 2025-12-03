@@ -82,14 +82,14 @@
 - (uint64_t)unifiedBracketingFusionSupportEnabled;
 - (uint64_t)verticalSensorBinningFactor;
 - (void)dealloc;
-- (void)setJasperSensorConfiguration:(uint64_t)a3;
-- (void)setPortTypesWithDepthSegmentationPortraitParameters:(uint64_t)a3;
-- (void)setPortTypesWithGeometricDistortionCorrectionEnabled:(uint64_t)a3;
-- (void)setPortTypesWithIntelligentDistortionCorrectionEnabled:(uint64_t)a3;
-- (void)setProvidedInferenceAttachedMediaByMode:(uint64_t)a3;
-- (void)setRawColorCalibrationsByPortType:(uint64_t)a3;
-- (void)setRawLensShadingCorrectionCoefficientsByPortType:(uint64_t)a3;
-- (void)setSensorConfigurationsByPortType:(uint64_t)a3;
+- (void)setJasperSensorConfiguration:(uint64_t)configuration;
+- (void)setPortTypesWithDepthSegmentationPortraitParameters:(uint64_t)parameters;
+- (void)setPortTypesWithGeometricDistortionCorrectionEnabled:(uint64_t)enabled;
+- (void)setPortTypesWithIntelligentDistortionCorrectionEnabled:(uint64_t)enabled;
+- (void)setProvidedInferenceAttachedMediaByMode:(uint64_t)mode;
+- (void)setRawColorCalibrationsByPortType:(uint64_t)type;
+- (void)setRawLensShadingCorrectionCoefficientsByPortType:(uint64_t)type;
+- (void)setSensorConfigurationsByPortType:(uint64_t)type;
 @end
 
 @implementation BWUBNodeConfiguration
@@ -131,11 +131,11 @@
   return result;
 }
 
-- (void)setSensorConfigurationsByPortType:(uint64_t)a3
+- (void)setSensorConfigurationsByPortType:(uint64_t)type
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_56(a1, a2, a3, 128);
+    OUTLINED_FUNCTION_0_56(self, a2, type, 128);
   }
 }
 
@@ -149,19 +149,19 @@
   return result;
 }
 
-- (void)setJasperSensorConfiguration:(uint64_t)a3
+- (void)setJasperSensorConfiguration:(uint64_t)configuration
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_56(a1, a2, a3, 144);
+    OUTLINED_FUNCTION_0_56(self, a2, configuration, 144);
   }
 }
 
 - (uint64_t)alwaysAllowModifyingInputBuffers
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 152));
+    return OUTLINED_FUNCTION_5_27(*(self + 152));
   }
 
   else
@@ -182,9 +182,9 @@
 
 - (uint64_t)inputIs10Bit
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 153));
+    return OUTLINED_FUNCTION_5_27(*(self + 153));
   }
 
   else
@@ -285,9 +285,9 @@
 
 - (uint64_t)outputPoolBackPressureEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 172));
+    return OUTLINED_FUNCTION_5_27(*(self + 172));
   }
 
   else
@@ -328,9 +328,9 @@
 
 - (uint64_t)unifiedBracketingFusionSupportEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 184));
+    return OUTLINED_FUNCTION_5_27(*(self + 184));
   }
 
   else
@@ -351,9 +351,9 @@
 
 - (uint64_t)digitalFlashSupportEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 185));
+    return OUTLINED_FUNCTION_5_27(*(self + 185));
   }
 
   else
@@ -374,9 +374,9 @@
 
 - (uint64_t)deepFusionSyntheticsInNRSupportEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 186));
+    return OUTLINED_FUNCTION_5_27(*(self + 186));
   }
 
   else
@@ -397,9 +397,9 @@
 
 - (uint64_t)deepFusionWaitForPreprocessingToFinish
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 187));
+    return OUTLINED_FUNCTION_5_27(*(self + 187));
   }
 
   else
@@ -420,9 +420,9 @@
 
 - (uint64_t)deepFusionSupportEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 188));
+    return OUTLINED_FUNCTION_5_27(*(self + 188));
   }
 
   else
@@ -503,12 +503,12 @@
 
 - (double)gainMapMainImageDownscalingFactor
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 204);
+  LODWORD(result) = *(self + 204);
   return result;
 }
 
@@ -524,12 +524,12 @@
 
 - (double)inferenceMainImageDownscalingFactor
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  LODWORD(result) = *(a1 + 208);
+  LODWORD(result) = *(self + 208);
   return result;
 }
 
@@ -553,19 +553,19 @@
   return result;
 }
 
-- (void)setProvidedInferenceAttachedMediaByMode:(uint64_t)a3
+- (void)setProvidedInferenceAttachedMediaByMode:(uint64_t)mode
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_56(a1, a2, a3, 216);
+    OUTLINED_FUNCTION_0_56(self, a2, mode, 216);
   }
 }
 
 - (uint64_t)redEyeReductionEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 224));
+    return OUTLINED_FUNCTION_5_27(*(self + 224));
   }
 
   else
@@ -646,9 +646,9 @@
 
 - (uint64_t)semanticStyleRenderingEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 240));
+    return OUTLINED_FUNCTION_5_27(*(self + 240));
   }
 
   else
@@ -697,11 +697,11 @@
   return result;
 }
 
-- (void)setPortTypesWithGeometricDistortionCorrectionEnabled:(uint64_t)a3
+- (void)setPortTypesWithGeometricDistortionCorrectionEnabled:(uint64_t)enabled
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_56(a1, a2, a3, 256);
+    OUTLINED_FUNCTION_0_56(self, a2, enabled, 256);
   }
 }
 
@@ -735,11 +735,11 @@
   return result;
 }
 
-- (void)setPortTypesWithIntelligentDistortionCorrectionEnabled:(uint64_t)a3
+- (void)setPortTypesWithIntelligentDistortionCorrectionEnabled:(uint64_t)enabled
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_56(a1, a2, a3, 272);
+    OUTLINED_FUNCTION_0_56(self, a2, enabled, 272);
   }
 }
 
@@ -765,9 +765,9 @@
 
 - (uint64_t)intelligentDistortionCorrectionAppliesFinalDimensions
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 284));
+    return OUTLINED_FUNCTION_5_27(*(self + 284));
   }
 
   else
@@ -848,9 +848,9 @@
 
 - (uint64_t)depthDataDeliveryEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 300));
+    return OUTLINED_FUNCTION_5_27(*(self + 300));
   }
 
   else
@@ -879,11 +879,11 @@
   return result;
 }
 
-- (void)setPortTypesWithDepthSegmentationPortraitParameters:(uint64_t)a3
+- (void)setPortTypesWithDepthSegmentationPortraitParameters:(uint64_t)parameters
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_56(a1, a2, a3, 304);
+    OUTLINED_FUNCTION_0_56(self, a2, parameters, 304);
   }
 }
 
@@ -909,9 +909,9 @@
 
 - (uint64_t)shouldComputeDisparityWhenCalibrationFails
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 320));
+    return OUTLINED_FUNCTION_5_27(*(self + 320));
   }
 
   else
@@ -932,9 +932,9 @@
 
 - (uint64_t)demosaicedRawEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 321));
+    return OUTLINED_FUNCTION_5_27(*(self + 321));
   }
 
   else
@@ -983,11 +983,11 @@
   return result;
 }
 
-- (void)setRawColorCalibrationsByPortType:(uint64_t)a3
+- (void)setRawColorCalibrationsByPortType:(uint64_t)type
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_56(a1, a2, a3, 328);
+    OUTLINED_FUNCTION_0_56(self, a2, type, 328);
   }
 }
 
@@ -1001,19 +1001,19 @@
   return result;
 }
 
-- (void)setRawLensShadingCorrectionCoefficientsByPortType:(uint64_t)a3
+- (void)setRawLensShadingCorrectionCoefficientsByPortType:(uint64_t)type
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_0_56(a1, a2, a3, 336);
+    OUTLINED_FUNCTION_0_56(self, a2, type, 336);
   }
 }
 
 - (uint64_t)generateLiDARDepth
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 344));
+    return OUTLINED_FUNCTION_5_27(*(self + 344));
   }
 
   else

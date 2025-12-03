@@ -1,25 +1,25 @@
 @interface CNiOSABContactsInGroupPredicate
-- (CNiOSABContactsInGroupPredicate)initWithCoder:(id)a3;
-- (CNiOSABContactsInGroupPredicate)initWithParentGroupIdentifier:(id)a3;
+- (CNiOSABContactsInGroupPredicate)initWithCoder:(id)coder;
+- (CNiOSABContactsInGroupPredicate)initWithParentGroupIdentifier:(id)identifier;
 - (NSString)description;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABContactsInGroupPredicate
 
-- (CNiOSABContactsInGroupPredicate)initWithParentGroupIdentifier:(id)a3
+- (CNiOSABContactsInGroupPredicate)initWithParentGroupIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"parentGroup.identifier == %@", v4];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"parentGroup.identifier == %@", identifierCopy];
   v10.receiver = self;
   v10.super_class = CNiOSABContactsInGroupPredicate;
-  v6 = [(CNPredicate *)&v10 initWithPredicate:v5];
+  v6 = [(CNPredicate *)&v10 initWithPredicate:identifierCopy];
 
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     parentGroupIdentifier = v6->_parentGroupIdentifier;
     v6->_parentGroupIdentifier = v7;
   }
@@ -27,15 +27,15 @@
   return v6;
 }
 
-- (CNiOSABContactsInGroupPredicate)initWithCoder:(id)a3
+- (CNiOSABContactsInGroupPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABContactsInGroupPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_parentGroupIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_parentGroupIdentifier"];
     v7 = [v6 copy];
     parentGroupIdentifier = v5->_parentGroupIdentifier;
     v5->_parentGroupIdentifier = v7;
@@ -46,28 +46,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABContactsInGroupPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_parentGroupIdentifier forKey:{@"_parentGroupIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_parentGroupIdentifier forKey:{@"_parentGroupIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier];
-  v11 = [v10 length];
+  requestCopy = request;
+  parentGroupIdentifier = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier];
+  v11 = [parentGroupIdentifier length];
 
   if (!v11)
   {
-    if (a7)
+    if (error)
     {
       [CNErrorFactory errorWithCode:400 userInfo:0];
-      *a7 = v15 = 0;
+      *error = v15 = 0;
     }
 
     else
@@ -78,8 +78,8 @@
     goto LABEL_11;
   }
 
-  v12 = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier];
-  v17[0] = v12;
+  parentGroupIdentifier2 = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier];
+  v17[0] = parentGroupIdentifier2;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v13 = ABAddressBookCopyGroupsWithUUIDs();
 
@@ -97,7 +97,7 @@ LABEL_9:
   }
 
   ValueAtIndex = CFArrayGetValueAtIndex(v13, 0);
-  v15 = ABGroupCopyArrayOfAllMembersWithSortOrdering(ValueAtIndex, [v9 sortOrder]);
+  v15 = ABGroupCopyArrayOfAllMembersWithSortOrdering(ValueAtIndex, [requestCopy sortOrder]);
   CFRelease(v13);
   if (!v15)
   {
@@ -109,21 +109,21 @@ LABEL_11:
   return v15;
 }
 
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error
 {
-  v7 = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier:a3];
+  v7 = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier:book];
   v8 = [v7 length];
 
   if (v8)
   {
     v9 = MEMORY[0x1E698A130];
-    v10 = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier];
-    v11 = [v9 predicateForContactsInGroupWithIdentifier:v10];
+    parentGroupIdentifier = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier];
+    v11 = [v9 predicateForContactsInGroupWithIdentifier:parentGroupIdentifier];
   }
 
   else
   {
-    CNSetError(a5, 400, 0);
+    CNSetError(error, 400, 0);
     v11 = 0;
   }
 
@@ -134,12 +134,12 @@ LABEL_11:
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsInGroupWithIdentifier:]"];
-  v5 = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier];
-  v6 = [v3 appendName:@"identifier" object:v5];
+  parentGroupIdentifier = [(CNiOSABContactsInGroupPredicate *)self parentGroupIdentifier];
+  v6 = [v3 appendName:@"identifier" object:parentGroupIdentifier];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 @end

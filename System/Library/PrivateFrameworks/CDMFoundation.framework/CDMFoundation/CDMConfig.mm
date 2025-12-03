@@ -1,8 +1,8 @@
 @interface CDMConfig
 + (id)defaultEnabledServiceGraph;
-- (CDMConfig)initWithMaxConcurrentCount:(unsigned int)a3;
+- (CDMConfig)initWithMaxConcurrentCount:(unsigned int)count;
 - (NSString)defaultLocaleIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CDMConfig
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
@@ -31,7 +31,7 @@
   return v4;
 }
 
-- (CDMConfig)initWithMaxConcurrentCount:(unsigned int)a3
+- (CDMConfig)initWithMaxConcurrentCount:(unsigned int)count
 {
   v17 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -39,21 +39,21 @@
   v4 = [(CDMConfig *)&v12 init];
   if (v4)
   {
-    if (!a3)
+    if (!count)
     {
-      a3 = +[CDMUserDefaultsUtils readGraphRunnerMaxConcurrentCount];
+      count = +[CDMUserDefaultsUtils readGraphRunnerMaxConcurrentCount];
       v5 = CDMOSLoggerForCategory(0);
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         *buf = 136315394;
         v14 = "[CDMConfig initWithMaxConcurrentCount:]";
         v15 = 1024;
-        v16 = a3;
+        countCopy = count;
         _os_log_impl(&dword_1DC287000, v5, OS_LOG_TYPE_INFO, "%s initWithDefaultMaxConcurrentCount=%d", buf, 0x12u);
       }
     }
 
-    v4->_maxConcurrentCount = a3;
+    v4->_maxConcurrentCount = count;
     v6 = MEMORY[0x1E695DFB8];
     v7 = [&unk_1F5819C88 copy];
     v8 = [v6 orderedSetWithArray:v7];

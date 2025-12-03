@@ -30,7 +30,7 @@
   v25 = &v26;
   v6 = v5;
   v23 = v6;
-  [a1 loadTracksWithMediaType:v4 completionHandler:v22];
+  [self loadTracksWithMediaType:v4 completionHandler:v22];
   dispatch_group_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v33[5];
   if (v7 && !v27[5])

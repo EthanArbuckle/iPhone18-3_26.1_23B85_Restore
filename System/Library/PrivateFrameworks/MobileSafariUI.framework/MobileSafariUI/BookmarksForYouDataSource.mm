@@ -1,27 +1,27 @@
 @interface BookmarksForYouDataSource
-- (BookmarksForYouDataSource)initWithBookmarkProvider:(id)a3 accessQueue:(id)a4 bookmarkCollection:(id)a5;
+- (BookmarksForYouDataSource)initWithBookmarkProvider:(id)provider accessQueue:(id)queue bookmarkCollection:(id)collection;
 - (void)dealloc;
-- (void)retrieveRecommendationsMatchingTopic:(id)a3 withCompletionHandler:(id)a4;
+- (void)retrieveRecommendationsMatchingTopic:(id)topic withCompletionHandler:(id)handler;
 @end
 
 @implementation BookmarksForYouDataSource
 
-- (BookmarksForYouDataSource)initWithBookmarkProvider:(id)a3 accessQueue:(id)a4 bookmarkCollection:(id)a5
+- (BookmarksForYouDataSource)initWithBookmarkProvider:(id)provider accessQueue:(id)queue bookmarkCollection:(id)collection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  queueCopy = queue;
+  collectionCopy = collection;
   v17.receiver = self;
   v17.super_class = BookmarksForYouDataSource;
   v12 = [(BookmarksForYouDataSource *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_bookmarkProvider, a3);
-    objc_storeStrong(&v13->_bookmarkProviderAccessQueue, a4);
-    v14 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v14 addObserver:v13 selector:sel__bookmarksDidChangeWithNotification_ name:*MEMORY[0x277D7B618] object:v11];
-    [v14 addObserver:v13 selector:sel__bookmarksDidChangeWithNotification_ name:*MEMORY[0x277D7B608] object:v11];
+    objc_storeStrong(&v12->_bookmarkProvider, provider);
+    objc_storeStrong(&v13->_bookmarkProviderAccessQueue, queue);
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v13 selector:sel__bookmarksDidChangeWithNotification_ name:*MEMORY[0x277D7B618] object:collectionCopy];
+    [defaultCenter addObserver:v13 selector:sel__bookmarksDidChangeWithNotification_ name:*MEMORY[0x277D7B608] object:collectionCopy];
     v15 = v13;
   }
 
@@ -30,25 +30,25 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = BookmarksForYouDataSource;
   [(BookmarksForYouDataSource *)&v4 dealloc];
 }
 
-- (void)retrieveRecommendationsMatchingTopic:(id)a3 withCompletionHandler:(id)a4
+- (void)retrieveRecommendationsMatchingTopic:(id)topic withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  topicCopy = topic;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = BookmarksForYouDataSource;
   [(WBSForYouRecommendationMediatorDataSource *)&v14 emitStartRetrievingRecommendationsPerformanceMarker];
-  if (v7)
+  if (handlerCopy)
   {
-    v8 = [v6 title];
-    if ([v8 length])
+    title = [topicCopy title];
+    if ([title length])
     {
       bookmarkProviderAccessQueue = self->_bookmarkProviderAccessQueue;
       v10[0] = MEMORY[0x277D85DD0];
@@ -56,15 +56,15 @@
       v10[2] = __88__BookmarksForYouDataSource_retrieveRecommendationsMatchingTopic_withCompletionHandler___block_invoke;
       v10[3] = &unk_2781D5430;
       v10[4] = self;
-      v11 = v8;
-      v12 = v6;
-      v13 = v7;
+      v11 = title;
+      v12 = topicCopy;
+      v13 = handlerCopy;
       dispatch_async(bookmarkProviderAccessQueue, v10);
     }
 
     else
     {
-      (*(v7 + 2))(v7, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }

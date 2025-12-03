@@ -1,40 +1,40 @@
 @interface BMMomentsEngagementNotificationInfo
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMomentsEngagementNotificationInfo)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BMMomentsEngagementNotificationInfo)initWithNotificationEventTimestamp:(id)a3 notificationPostingTimestamp:(id)a4 notificationSuggestionCount:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMMomentsEngagementNotificationInfo)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BMMomentsEngagementNotificationInfo)initWithNotificationEventTimestamp:(id)timestamp notificationPostingTimestamp:(id)postingTimestamp notificationSuggestionCount:(id)count;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)notificationEventTimestamp;
 - (NSDate)notificationPostingTimestamp;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMomentsEngagementNotificationInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
-    v7 = [v5 notificationEventTimestamp];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    notificationEventTimestamp = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
+    notificationEventTimestamp2 = [v5 notificationEventTimestamp];
+    v8 = notificationEventTimestamp2;
+    if (notificationEventTimestamp == notificationEventTimestamp2)
     {
     }
 
     else
     {
-      v9 = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
-      v10 = [v5 notificationEventTimestamp];
-      v11 = [v9 isEqual:v10];
+      notificationEventTimestamp3 = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
+      notificationEventTimestamp4 = [v5 notificationEventTimestamp];
+      v11 = [notificationEventTimestamp3 isEqual:notificationEventTimestamp4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
-    v14 = [v5 notificationPostingTimestamp];
-    v15 = v14;
-    if (v13 == v14)
+    notificationPostingTimestamp = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
+    notificationPostingTimestamp2 = [v5 notificationPostingTimestamp];
+    v15 = notificationPostingTimestamp2;
+    if (notificationPostingTimestamp == notificationPostingTimestamp2)
     {
     }
 
     else
     {
-      v16 = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
-      v17 = [v5 notificationPostingTimestamp];
-      v18 = [v16 isEqual:v17];
+      notificationPostingTimestamp3 = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
+      notificationPostingTimestamp4 = [v5 notificationPostingTimestamp];
+      v18 = [notificationPostingTimestamp3 isEqual:notificationPostingTimestamp4];
 
       if (!v18)
       {
@@ -69,8 +69,8 @@
 
     if (-[BMMomentsEngagementNotificationInfo hasNotificationSuggestionCount](self, "hasNotificationSuggestionCount") && [v5 hasNotificationSuggestionCount])
     {
-      v19 = [(BMMomentsEngagementNotificationInfo *)self notificationSuggestionCount];
-      v12 = v19 == [v5 notificationSuggestionCount];
+      notificationSuggestionCount = [(BMMomentsEngagementNotificationInfo *)self notificationSuggestionCount];
+      v12 = notificationSuggestionCount == [v5 notificationSuggestionCount];
 LABEL_17:
 
       goto LABEL_18;
@@ -124,12 +124,12 @@ LABEL_18:
 - (id)jsonDictionary
 {
   v19[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
-  if (v3)
+  notificationEventTimestamp = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
+  if (notificationEventTimestamp)
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
-    [v5 timeIntervalSince1970];
+    notificationEventTimestamp2 = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
+    [notificationEventTimestamp2 timeIntervalSince1970];
     v6 = [v4 numberWithDouble:?];
   }
 
@@ -138,12 +138,12 @@ LABEL_18:
     v6 = 0;
   }
 
-  v7 = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
-  if (v7)
+  notificationPostingTimestamp = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
+  if (notificationPostingTimestamp)
   {
     v8 = MEMORY[0x1E696AD98];
-    v9 = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
-    [v9 timeIntervalSince1970];
+    notificationPostingTimestamp2 = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
+    [notificationPostingTimestamp2 timeIntervalSince1970];
     v10 = [v8 numberWithDouble:?];
   }
 
@@ -163,29 +163,29 @@ LABEL_18:
   }
 
   v18[0] = @"notificationEventTimestamp";
-  v12 = v6;
+  null = v6;
   if (!v6)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v12;
+  v19[0] = null;
   v18[1] = @"notificationPostingTimestamp";
-  v13 = v10;
+  null2 = v10;
   if (!v10)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v13;
+  v19[1] = null2;
   v18[2] = @"notificationSuggestionCount";
-  v14 = v11;
+  null3 = v11;
   if (!v11)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v14;
+  v19[2] = null3;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
   if (v11)
   {
@@ -223,16 +223,16 @@ LABEL_19:
   return v15;
 }
 
-- (BMMomentsEngagementNotificationInfo)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMMomentsEngagementNotificationInfo)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"notificationEventTimestamp"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"notificationEventTimestamp"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v16 = [v6 objectForKeyedSubscript:@"notificationPostingTimestamp"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"notificationPostingTimestamp"];
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -293,7 +293,7 @@ LABEL_9:
     }
 
 LABEL_17:
-    v25 = [v6 objectForKeyedSubscript:@"notificationSuggestionCount"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"notificationSuggestionCount"];
     if (v25 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -396,40 +396,40 @@ LABEL_23:
 {
   v3 = objc_opt_new();
   [(BMMomentsEngagementNotificationInfo *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_hasRaw_notificationEventTimestamp)
   {
     raw_notificationEventTimestamp = self->_raw_notificationEventTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasRaw_notificationPostingTimestamp)
   {
     raw_notificationPostingTimestamp = self->_raw_notificationPostingTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasNotificationSuggestionCount)
   {
     notificationSuggestionCount = self->_notificationSuggestionCount;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v34.receiver = self;
   v34.super_class = BMMomentsEngagementNotificationInfo;
   v5 = [(BMEventBase *)&v34 init];
@@ -438,12 +438,12 @@ LABEL_23:
     goto LABEL_50;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -454,18 +454,18 @@ LABEL_23:
       while (1)
       {
         LOBYTE(v35) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v35 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v35 & 0x7F) << v7;
@@ -483,9 +483,9 @@ LABEL_23:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -500,18 +500,18 @@ LABEL_16:
         while (1)
         {
           LOBYTE(v35) = 0;
-          v23 = [v4 position] + 1;
-          if (v23 >= [v4 position] && (v24 = objc_msgSend(v4, "position") + 1, v24 <= objc_msgSend(v4, "length")))
+          v23 = [fromCopy position] + 1;
+          if (v23 >= [fromCopy position] && (v24 = objc_msgSend(fromCopy, "position") + 1, v24 <= objc_msgSend(fromCopy, "length")))
           {
-            v25 = [v4 data];
-            [v25 getBytes:&v35 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v22 |= (v35 & 0x7F) << v20;
@@ -529,7 +529,7 @@ LABEL_16:
           }
         }
 
-        if ([v4 hasError])
+        if ([fromCopy hasError])
         {
           v26 = 0;
         }
@@ -549,18 +549,18 @@ LABEL_41:
         {
           v5->_hasRaw_notificationPostingTimestamp = 1;
           v35 = 0;
-          v18 = [v4 position] + 8;
-          if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 8, v19 <= objc_msgSend(v4, "length")))
+          v18 = [fromCopy position] + 8;
+          if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 8, v19 <= objc_msgSend(fromCopy, "length")))
           {
-            v27 = [v4 data];
-            [v27 getBytes:&v35 range:{objc_msgSend(v4, "position"), 8}];
+            data3 = [fromCopy data];
+            [data3 getBytes:&v35 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v28 = v35;
@@ -581,18 +581,18 @@ LABEL_41:
 
           v5->_hasRaw_notificationEventTimestamp = 1;
           v35 = 0;
-          v16 = [v4 position] + 8;
-          if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 8, v17 <= objc_msgSend(v4, "length")))
+          v16 = [fromCopy position] + 8;
+          if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 8, v17 <= objc_msgSend(fromCopy, "length")))
           {
-            v30 = [v4 data];
-            [v30 getBytes:&v35 range:{objc_msgSend(v4, "position"), 8}];
+            data4 = [fromCopy data];
+            [data4 getBytes:&v35 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v28 = v35;
@@ -603,13 +603,13 @@ LABEL_41:
       }
 
 LABEL_47:
-      v31 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v31 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_49:
     v32 = 0;
@@ -627,29 +627,29 @@ LABEL_50:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
-  v5 = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
+  notificationEventTimestamp = [(BMMomentsEngagementNotificationInfo *)self notificationEventTimestamp];
+  notificationPostingTimestamp = [(BMMomentsEngagementNotificationInfo *)self notificationPostingTimestamp];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMomentsEngagementNotificationInfo notificationSuggestionCount](self, "notificationSuggestionCount")}];
-  v7 = [v3 initWithFormat:@"BMMomentsEngagementNotificationInfo with notificationEventTimestamp: %@, notificationPostingTimestamp: %@, notificationSuggestionCount: %@", v4, v5, v6];
+  v7 = [v3 initWithFormat:@"BMMomentsEngagementNotificationInfo with notificationEventTimestamp: %@, notificationPostingTimestamp: %@, notificationSuggestionCount: %@", notificationEventTimestamp, notificationPostingTimestamp, v6];
 
   return v7;
 }
 
-- (BMMomentsEngagementNotificationInfo)initWithNotificationEventTimestamp:(id)a3 notificationPostingTimestamp:(id)a4 notificationSuggestionCount:(id)a5
+- (BMMomentsEngagementNotificationInfo)initWithNotificationEventTimestamp:(id)timestamp notificationPostingTimestamp:(id)postingTimestamp notificationSuggestionCount:(id)count
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  timestampCopy = timestamp;
+  postingTimestampCopy = postingTimestamp;
+  countCopy = count;
   v16.receiver = self;
   v16.super_class = BMMomentsEngagementNotificationInfo;
   v11 = [(BMEventBase *)&v16 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v8)
+    if (timestampCopy)
     {
       v11->_hasRaw_notificationEventTimestamp = 1;
-      [v8 timeIntervalSince1970];
+      [timestampCopy timeIntervalSince1970];
     }
 
     else
@@ -659,10 +659,10 @@ LABEL_50:
     }
 
     v11->_raw_notificationEventTimestamp = v12;
-    if (v9)
+    if (postingTimestampCopy)
     {
       v11->_hasRaw_notificationPostingTimestamp = 1;
-      [v9 timeIntervalSince1970];
+      [postingTimestampCopy timeIntervalSince1970];
     }
 
     else
@@ -672,19 +672,19 @@ LABEL_50:
     }
 
     v11->_raw_notificationPostingTimestamp = v13;
-    if (v10)
+    if (countCopy)
     {
       v11->_hasNotificationSuggestionCount = 1;
-      v14 = [v10 intValue];
+      intValue = [countCopy intValue];
     }
 
     else
     {
       v11->_hasNotificationSuggestionCount = 0;
-      v14 = -1;
+      intValue = -1;
     }
 
-    v11->_notificationSuggestionCount = v14;
+    v11->_notificationSuggestionCount = intValue;
   }
 
   return v11;
@@ -721,9 +721,9 @@ LABEL_50:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -731,8 +731,8 @@ LABEL_50:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMMomentsEngagementNotificationInfo alloc] initByReadFrom:v7];
     v4 = v8;

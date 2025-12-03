@@ -1,15 +1,15 @@
 @interface TSKDocumentModelEnumerator
-- (TSKDocumentModelEnumerator)initWithEnumerator:(id)a3 filter:(id)a4;
-- (TSKDocumentModelEnumerator)initWithRootModelObject:(id)a3 filter:(id)a4;
+- (TSKDocumentModelEnumerator)initWithEnumerator:(id)enumerator filter:(id)filter;
+- (TSKDocumentModelEnumerator)initWithRootModelObject:(id)object filter:(id)filter;
 - (id)nextObject;
 - (void)dealloc;
-- (void)enumerateReferencedStylesUsingBlock:(id)a3;
-- (void)enumerateUsingBlock:(id)a3;
+- (void)enumerateReferencedStylesUsingBlock:(id)block;
+- (void)enumerateUsingBlock:(id)block;
 @end
 
 @implementation TSKDocumentModelEnumerator
 
-- (TSKDocumentModelEnumerator)initWithRootModelObject:(id)a3 filter:(id)a4
+- (TSKDocumentModelEnumerator)initWithRootModelObject:(id)object filter:(id)filter
 {
   v9.receiver = self;
   v9.super_class = TSKDocumentModelEnumerator;
@@ -17,21 +17,21 @@
   v7 = v6;
   if (v6)
   {
-    [(TSKDocumentModelEnumerator *)v6 setRoot:a3];
-    [(TSKDocumentModelEnumerator *)v7 setFilter:a4];
+    [(TSKDocumentModelEnumerator *)v6 setRoot:object];
+    [(TSKDocumentModelEnumerator *)v7 setFilter:filter];
     [(TSKDocumentModelEnumerator *)v7 setFilterBeforeAddingChildren:0];
   }
 
   return v7;
 }
 
-- (TSKDocumentModelEnumerator)initWithEnumerator:(id)a3 filter:(id)a4
+- (TSKDocumentModelEnumerator)initWithEnumerator:(id)enumerator filter:(id)filter
 {
-  if (!a3)
+  if (!enumerator)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSKDocumentModelEnumerator initWithEnumerator:filter:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentModelEnumerator.m"), 82, @"invalid nil value for '%s'", "enumerator"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/kit/TSKDocumentModelEnumerator.m"), 82, @"invalid nil value for '%s'", "enumerator"}];
   }
 
   v11.receiver = self;
@@ -39,8 +39,8 @@
   v9 = [(TSKDocumentModelEnumerator *)&v11 init];
   if (v9)
   {
-    -[TSKDocumentModelEnumerator setEnumeratorStack:](v9, "setEnumeratorStack:", [MEMORY[0x277CBEB18] arrayWithObject:a3]);
-    [(TSKDocumentModelEnumerator *)v9 setFilter:a4];
+    -[TSKDocumentModelEnumerator setEnumeratorStack:](v9, "setEnumeratorStack:", [MEMORY[0x277CBEB18] arrayWithObject:enumerator]);
+    [(TSKDocumentModelEnumerator *)v9 setFilter:filter];
     [(TSKDocumentModelEnumerator *)v9 setFilterBeforeAddingChildren:0];
   }
 
@@ -61,67 +61,67 @@
 {
   if (self->_enumeratorStack)
   {
-    v3 = 0;
+    root = 0;
   }
 
   else
   {
     if ([(TSKDocumentModelEnumerator *)self filter]&& (v4 = [(TSKDocumentModelEnumerator *)self filter], !v4[2](v4, [(TSKDocumentModelEnumerator *)self root], &self->_stop)))
     {
-      v3 = 0;
+      root = 0;
     }
 
     else
     {
-      v3 = [(TSKDocumentModelEnumerator *)self root];
+      root = [(TSKDocumentModelEnumerator *)self root];
     }
 
     [(TSKDocumentModelEnumerator *)self root];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [MEMORY[0x277CBEB18] arrayWithObject:{-[TSKModel childEnumerator](-[TSKDocumentModelEnumerator root](self, "root"), "childEnumerator")}];
+      array = [MEMORY[0x277CBEB18] arrayWithObject:{-[TSKModel childEnumerator](-[TSKDocumentModelEnumerator root](self, "root"), "childEnumerator")}];
     }
 
     else
     {
-      v5 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    [(TSKDocumentModelEnumerator *)self setEnumeratorStack:v5];
+    [(TSKDocumentModelEnumerator *)self setEnumeratorStack:array];
   }
 
-  if ([(NSMutableArray *)[(TSKDocumentModelEnumerator *)self enumeratorStack] count]&& !v3)
+  if ([(NSMutableArray *)[(TSKDocumentModelEnumerator *)self enumeratorStack] count]&& !root)
   {
     while (!self->_stop)
     {
-      v3 = [-[NSMutableArray lastObject](-[TSKDocumentModelEnumerator enumeratorStack](self "enumeratorStack")];
-      if (v3)
+      root = [-[NSMutableArray lastObject](-[TSKDocumentModelEnumerator enumeratorStack](self "enumeratorStack")];
+      if (root)
       {
         if (self->_filterBeforeAddingChildren)
         {
           if ([(TSKDocumentModelEnumerator *)self filter])
           {
-            v6 = [(TSKDocumentModelEnumerator *)self filter];
-            if (!v6[2](v6, v3, &self->_stop))
+            filter = [(TSKDocumentModelEnumerator *)self filter];
+            if (!filter[2](filter, root, &self->_stop))
             {
-              v3 = 0;
+              root = 0;
             }
           }
         }
 
-        if ((objc_opt_respondsToSelector() & 1) != 0 && [(TSKModel *)v3 childEnumerator])
+        if ((objc_opt_respondsToSelector() & 1) != 0 && [(TSKModel *)root childEnumerator])
         {
-          [(NSMutableArray *)[(TSKDocumentModelEnumerator *)self enumeratorStack] addObject:[(TSKModel *)v3 childEnumerator]];
+          [(NSMutableArray *)[(TSKDocumentModelEnumerator *)self enumeratorStack] addObject:[(TSKModel *)root childEnumerator]];
         }
 
         if (!self->_filterBeforeAddingChildren)
         {
           if ([(TSKDocumentModelEnumerator *)self filter])
           {
-            v7 = [(TSKDocumentModelEnumerator *)self filter];
-            if (!v7[2](v7, v3, &self->_stop))
+            filter2 = [(TSKDocumentModelEnumerator *)self filter];
+            if (!filter2[2](filter2, root, &self->_stop))
             {
-              v3 = 0;
+              root = 0;
             }
           }
         }
@@ -132,42 +132,42 @@
         [(NSMutableArray *)[(TSKDocumentModelEnumerator *)self enumeratorStack] removeLastObject];
       }
 
-      if (![(NSMutableArray *)[(TSKDocumentModelEnumerator *)self enumeratorStack] count]|| v3)
+      if (![(NSMutableArray *)[(TSKDocumentModelEnumerator *)self enumeratorStack] count]|| root)
       {
-        return v3;
+        return root;
       }
     }
 
     return 0;
   }
 
-  return v3;
+  return root;
 }
 
-- (void)enumerateUsingBlock:(id)a3
+- (void)enumerateUsingBlock:(id)block
 {
   v8 = 0;
-  v5 = [(TSKDocumentModelEnumerator *)self nextObject];
-  if (v5)
+  nextObject = [(TSKDocumentModelEnumerator *)self nextObject];
+  if (nextObject)
   {
-    v6 = v5;
+    v6 = nextObject;
     do
     {
-      (*(a3 + 2))(a3, v6, &v8);
-      v7 = [(TSKDocumentModelEnumerator *)self nextObject];
-      if (!v7)
+      (*(block + 2))(block, v6, &v8);
+      nextObject2 = [(TSKDocumentModelEnumerator *)self nextObject];
+      if (!nextObject2)
       {
         break;
       }
 
-      v6 = v7;
+      v6 = nextObject2;
     }
 
     while (!v8);
   }
 }
 
-- (void)enumerateReferencedStylesUsingBlock:(id)a3
+- (void)enumerateReferencedStylesUsingBlock:(id)block
 {
   v5 = objc_alloc_init(MEMORY[0x277D6C310]);
   v7[0] = 0;
@@ -180,7 +180,7 @@
   v6[2] = __80__TSKDocumentModelEnumerator_TSSAdditions__enumerateReferencedStylesUsingBlock___block_invoke;
   v6[3] = &unk_279D48080;
   v6[4] = v5;
-  v6[5] = a3;
+  v6[5] = block;
   v6[6] = v7;
   v7[5] = v6;
   [(TSKDocumentModelEnumerator *)self enumerateUsingBlock:v6];

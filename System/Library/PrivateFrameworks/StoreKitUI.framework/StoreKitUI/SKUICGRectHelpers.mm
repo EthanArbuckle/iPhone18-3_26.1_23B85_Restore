@@ -1,19 +1,19 @@
 @interface SKUICGRectHelpers
-+ (CGRect)rect:(CGRect)a3 withFlippedOriginXRelativeTo:(CGRect)a4;
++ (CGRect)rect:(CGRect)rect withFlippedOriginXRelativeTo:(CGRect)to;
 @end
 
 @implementation SKUICGRectHelpers
 
-+ (CGRect)rect:(CGRect)a3 withFlippedOriginXRelativeTo:(CGRect)a4
++ (CGRect)rect:(CGRect)rect withFlippedOriginXRelativeTo:(CGRect)to
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  rect = a3.size.height;
-  v8 = a3.size.width;
-  v9 = a3.origin.y;
-  v10 = a3.origin.x;
+  height = to.size.height;
+  width = to.size.width;
+  y = to.origin.y;
+  x = to.origin.x;
+  rect = rect.size.height;
+  v8 = rect.size.width;
+  v9 = rect.origin.y;
+  v10 = rect.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUICGRectHelpers rect:withFlippedOriginXRelativeTo:];

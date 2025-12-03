@@ -1,53 +1,53 @@
 @interface _SFPBMessageAttachment
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBMessageAttachment)initWithDictionary:(id)a3;
-- (_SFPBMessageAttachment)initWithFacade:(id)a3;
-- (_SFPBMessageAttachment)initWithJSON:(id)a3;
+- (_SFPBMessageAttachment)initWithDictionary:(id)dictionary;
+- (_SFPBMessageAttachment)initWithFacade:(id)facade;
+- (_SFPBMessageAttachment)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setLinkMetadata:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setLinkMetadata:(id)metadata;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBMessageAttachment
 
-- (_SFPBMessageAttachment)initWithFacade:(id)a3
+- (_SFPBMessageAttachment)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBMessageAttachment *)self init];
   if (v5)
   {
-    if ([v4 hasType])
+    if ([facadeCopy hasType])
     {
-      -[_SFPBMessageAttachment setType:](v5, "setType:", [v4 type]);
+      -[_SFPBMessageAttachment setType:](v5, "setType:", [facadeCopy type]);
     }
 
-    v6 = [v4 url];
+    v6 = [facadeCopy url];
 
     if (v6)
     {
       v7 = [_SFPBURL alloc];
-      v8 = [v4 url];
+      v8 = [facadeCopy url];
       v9 = [(_SFPBURL *)v7 initWithNSURL:v8];
       [(_SFPBMessageAttachment *)v5 setUrl:v9];
     }
 
-    v10 = [v4 linkMetadata];
+    linkMetadata = [facadeCopy linkMetadata];
 
-    if (v10)
+    if (linkMetadata)
     {
-      v11 = [v4 linkMetadata];
-      [(_SFPBMessageAttachment *)v5 setLinkMetadata:v11];
+      linkMetadata2 = [facadeCopy linkMetadata];
+      [(_SFPBMessageAttachment *)v5 setLinkMetadata:linkMetadata2];
     }
 
-    v12 = [v4 photosLibraryImage];
+    photosLibraryImage = [facadeCopy photosLibraryImage];
 
-    if (v12)
+    if (photosLibraryImage)
     {
       v13 = [_SFPBPhotosLibraryImage alloc];
-      v14 = [v4 photosLibraryImage];
-      v15 = [(_SFPBPhotosLibraryImage *)v13 initWithFacade:v14];
+      photosLibraryImage2 = [facadeCopy photosLibraryImage];
+      v15 = [(_SFPBPhotosLibraryImage *)v13 initWithFacade:photosLibraryImage2];
       [(_SFPBMessageAttachment *)v5 setPhotosLibraryImage:v15];
     }
 
@@ -57,22 +57,22 @@
   return v5;
 }
 
-- (_SFPBMessageAttachment)initWithDictionary:(id)a3
+- (_SFPBMessageAttachment)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = _SFPBMessageAttachment;
   v5 = [(_SFPBMessageAttachment *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"type"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"type"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBMessageAttachment setType:](v5, "setType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"url"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"url"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       [(_SFPBMessageAttachment *)v5 setUrl:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"linkMetadata"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"linkMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       [(_SFPBMessageAttachment *)v5 setLinkMetadata:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"photosLibraryImage"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"photosLibraryImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,30 +102,30 @@
   return v5;
 }
 
-- (_SFPBMessageAttachment)initWithJSON:(id)a3
+- (_SFPBMessageAttachment)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBMessageAttachment *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBMessageAttachment *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBMessageAttachment *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -138,72 +138,72 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkMetadata)
   {
-    v4 = [(_SFPBMessageAttachment *)self linkMetadata];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    linkMetadata = [(_SFPBMessageAttachment *)self linkMetadata];
+    v5 = [linkMetadata base64EncodedStringWithOptions:0];
     if (v5)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkMetadata"];
+      [dictionary setObject:v5 forKeyedSubscript:@"linkMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"linkMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkMetadata"];
     }
   }
 
   if (self->_photosLibraryImage)
   {
-    v7 = [(_SFPBMessageAttachment *)self photosLibraryImage];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    photosLibraryImage = [(_SFPBMessageAttachment *)self photosLibraryImage];
+    dictionaryRepresentation = [photosLibraryImage dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"photosLibraryImage"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"photosLibraryImage"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"photosLibraryImage"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"photosLibraryImage"];
     }
   }
 
   if (self->_type)
   {
-    v10 = [(_SFPBMessageAttachment *)self type];
-    if (v10 >= 5)
+    type = [(_SFPBMessageAttachment *)self type];
+    if (type >= 5)
     {
-      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v10];
+      v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", type];
     }
 
     else
     {
-      v11 = off_1E7ACE448[v10];
+      v11 = off_1E7ACE448[type];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"type"];
+    [dictionary setObject:v11 forKeyedSubscript:@"type"];
   }
 
   if (self->_url)
   {
     v12 = [(_SFPBMessageAttachment *)self url];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    dictionaryRepresentation2 = [v12 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"url"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"url"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"url"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"url"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -214,23 +214,23 @@
   return v5 ^ [(_SFPBPhotosLibraryImage *)self->_photosLibraryImage hash]^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   type = self->_type;
-  if (type != [v4 type])
+  if (type != [equalCopy type])
   {
     goto LABEL_18;
   }
 
-  v6 = [(_SFPBMessageAttachment *)self url];
-  v7 = [v4 url];
-  if ((v6 != 0) == (v7 == 0))
+  linkMetadata = [(_SFPBMessageAttachment *)self url];
+  linkMetadata2 = [equalCopy url];
+  if ((linkMetadata != 0) == (linkMetadata2 == 0))
   {
     goto LABEL_17;
   }
@@ -240,7 +240,7 @@
   {
     v9 = v8;
     v10 = [(_SFPBMessageAttachment *)self url];
-    v11 = [v4 url];
+    v11 = [equalCopy url];
     v12 = [v10 isEqual:v11];
 
     if (!v12)
@@ -253,20 +253,20 @@
   {
   }
 
-  v6 = [(_SFPBMessageAttachment *)self linkMetadata];
-  v7 = [v4 linkMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  linkMetadata = [(_SFPBMessageAttachment *)self linkMetadata];
+  linkMetadata2 = [equalCopy linkMetadata];
+  if ((linkMetadata != 0) == (linkMetadata2 == 0))
   {
     goto LABEL_17;
   }
 
-  v13 = [(_SFPBMessageAttachment *)self linkMetadata];
-  if (v13)
+  linkMetadata3 = [(_SFPBMessageAttachment *)self linkMetadata];
+  if (linkMetadata3)
   {
-    v14 = v13;
-    v15 = [(_SFPBMessageAttachment *)self linkMetadata];
-    v16 = [v4 linkMetadata];
-    v17 = [v15 isEqual:v16];
+    v14 = linkMetadata3;
+    linkMetadata4 = [(_SFPBMessageAttachment *)self linkMetadata];
+    linkMetadata5 = [equalCopy linkMetadata];
+    v17 = [linkMetadata4 isEqual:linkMetadata5];
 
     if (!v17)
     {
@@ -278,12 +278,12 @@
   {
   }
 
-  v6 = [(_SFPBMessageAttachment *)self photosLibraryImage];
-  v7 = [v4 photosLibraryImage];
-  if ((v6 != 0) != (v7 == 0))
+  linkMetadata = [(_SFPBMessageAttachment *)self photosLibraryImage];
+  linkMetadata2 = [equalCopy photosLibraryImage];
+  if ((linkMetadata != 0) != (linkMetadata2 == 0))
   {
-    v18 = [(_SFPBMessageAttachment *)self photosLibraryImage];
-    if (!v18)
+    photosLibraryImage = [(_SFPBMessageAttachment *)self photosLibraryImage];
+    if (!photosLibraryImage)
     {
 
 LABEL_21:
@@ -291,10 +291,10 @@ LABEL_21:
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(_SFPBMessageAttachment *)self photosLibraryImage];
-    v21 = [v4 photosLibraryImage];
-    v22 = [v20 isEqual:v21];
+    v19 = photosLibraryImage;
+    photosLibraryImage2 = [(_SFPBMessageAttachment *)self photosLibraryImage];
+    photosLibraryImage3 = [equalCopy photosLibraryImage];
+    v22 = [photosLibraryImage2 isEqual:photosLibraryImage3];
 
     if (v22)
     {
@@ -314,9 +314,9 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(_SFPBMessageAttachment *)self type])
   {
     PBDataWriterWriteInt32Field();
@@ -328,22 +328,22 @@ LABEL_19:
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBMessageAttachment *)self linkMetadata];
-  if (v5)
+  linkMetadata = [(_SFPBMessageAttachment *)self linkMetadata];
+  if (linkMetadata)
   {
     PBDataWriterWriteDataField();
   }
 
-  v6 = [(_SFPBMessageAttachment *)self photosLibraryImage];
-  if (v6)
+  photosLibraryImage = [(_SFPBMessageAttachment *)self photosLibraryImage];
+  if (photosLibraryImage)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setLinkMetadata:(id)a3
+- (void)setLinkMetadata:(id)metadata
 {
-  v4 = [a3 copy];
+  v4 = [metadata copy];
   linkMetadata = self->_linkMetadata;
   self->_linkMetadata = v4;
 

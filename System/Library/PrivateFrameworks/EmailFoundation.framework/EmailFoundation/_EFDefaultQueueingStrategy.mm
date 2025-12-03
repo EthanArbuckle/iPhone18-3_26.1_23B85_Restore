@@ -1,21 +1,21 @@
 @interface _EFDefaultQueueingStrategy
-- (void)enqueueObject:(id)a3 replaceIfExists:(BOOL)a4 buffer:(id)a5;
+- (void)enqueueObject:(id)object replaceIfExists:(BOOL)exists buffer:(id)buffer;
 @end
 
 @implementation _EFDefaultQueueingStrategy
 
-- (void)enqueueObject:(id)a3 replaceIfExists:(BOOL)a4 buffer:(id)a5
+- (void)enqueueObject:(id)object replaceIfExists:(BOOL)exists buffer:(id)buffer
 {
-  v6 = a4;
-  v9 = a3;
-  v7 = a5;
-  v8 = v7;
-  if (v6)
+  existsCopy = exists;
+  objectCopy = object;
+  bufferCopy = buffer;
+  v8 = bufferCopy;
+  if (existsCopy)
   {
-    [v7 removeObject:v9];
+    [bufferCopy removeObject:objectCopy];
   }
 
-  [v8 addObject:v9];
+  [v8 addObject:objectCopy];
 }
 
 @end

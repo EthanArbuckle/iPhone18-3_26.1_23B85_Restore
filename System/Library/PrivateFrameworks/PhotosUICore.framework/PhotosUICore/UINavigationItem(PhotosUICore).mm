@@ -14,7 +14,7 @@
   if (result)
   {
 
-    return [a1 setBackButtonDisplayMode:a3];
+    return [self setBackButtonDisplayMode:a3];
   }
 
   return result;
@@ -27,44 +27,44 @@
     return 0;
   }
 
-  return [a1 backButtonDisplayMode];
+  return [self backButtonDisplayMode];
 }
 
 - (void)px_updateBackButtonVisibilityForTraitCollection:()PhotosUICore
 {
   v6 = a3;
-  v4 = objc_getAssociatedObject(a1, sel_px_hidesBackButtonInRegularWidth);
+  v4 = objc_getAssociatedObject(self, sel_px_hidesBackButtonInRegularWidth);
   if (v4)
   {
     if ([v6 horizontalSizeClass] == 2)
     {
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
 
-    [a1 setHidesBackButton:v5];
+    [self setHidesBackButton:bOOLValue];
   }
 }
 
 - (void)px_setHidesBackButtonInRegularWidth:()PhotosUICore
 {
-  if ([a1 px_hidesBackButtonInRegularWidth] != a3)
+  if ([self px_hidesBackButtonInRegularWidth] != a3)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-    objc_setAssociatedObject(a1, sel_px_hidesBackButtonInRegularWidth, v5, 3);
+    objc_setAssociatedObject(self, sel_px_hidesBackButtonInRegularWidth, v5, 3);
   }
 }
 
 - (uint64_t)px_hidesBackButtonInRegularWidth
 {
-  v1 = objc_getAssociatedObject(a1, sel_px_hidesBackButtonInRegularWidth);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, sel_px_hidesBackButtonInRegularWidth);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface IMSyndicationActionPipelineParameter
-- (IMSyndicationActionPipelineParameter)initWithDefusedSyndicationAction:(id)a3 idsTrustedData:(id)a4 pipelineResources:(id)a5;
+- (IMSyndicationActionPipelineParameter)initWithDefusedSyndicationAction:(id)action idsTrustedData:(id)data pipelineResources:(id)resources;
 - (_NSRange)syndicatedMessagePartRange;
-- (id)createSyndicationActionWithChat:(id)a3;
+- (id)createSyndicationActionWithChat:(id)chat;
 - (id)description;
 @end
 
 @implementation IMSyndicationActionPipelineParameter
 
-- (IMSyndicationActionPipelineParameter)initWithDefusedSyndicationAction:(id)a3 idsTrustedData:(id)a4 pipelineResources:(id)a5
+- (IMSyndicationActionPipelineParameter)initWithDefusedSyndicationAction:(id)action idsTrustedData:(id)data pipelineResources:(id)resources
 {
-  v7 = a3;
-  v8 = a4;
+  actionCopy = action;
+  dataCopy = data;
   v49.receiver = self;
   v49.super_class = IMSyndicationActionPipelineParameter;
   v9 = [(IMSyndicationActionPipelineParameter *)&v49 init];
@@ -19,10 +19,10 @@
     goto LABEL_9;
   }
 
-  v10 = [v7 version];
-  v9->_version = v10;
+  version = [actionCopy version];
+  v9->_version = version;
   v11 = *MEMORY[0x277D1A798];
-  if (v11 != v10)
+  if (v11 != version)
   {
     v37 = IMLogHandleForCategory();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -33,36 +33,36 @@
     goto LABEL_13;
   }
 
-  v9->_actionType = [v7 actionType];
-  v9->_encodedSyndicationStartDate = [v7 encodedSyndicationStartDate];
-  v9->_itemType = [v7 itemType];
-  v12 = [v7 messagePartGUID];
+  v9->_actionType = [actionCopy actionType];
+  v9->_encodedSyndicationStartDate = [actionCopy encodedSyndicationStartDate];
+  v9->_itemType = [actionCopy itemType];
+  messagePartGUID = [actionCopy messagePartGUID];
   messagePartGUID = v9->_messagePartGUID;
-  v9->_messagePartGUID = v12;
+  v9->_messagePartGUID = messagePartGUID;
 
-  v9->_syndicatedMessagePartRange.location = [v7 syndicatedMessagePartRange];
+  v9->_syndicatedMessagePartRange.location = [actionCopy syndicatedMessagePartRange];
   v9->_syndicatedMessagePartRange.length = v14;
-  v15 = [v7 groupContext];
-  v16 = [v15 groupID];
+  groupContext = [actionCopy groupContext];
+  groupID = [groupContext groupID];
   groupID = v9->_groupID;
-  v9->_groupID = v16;
+  v9->_groupID = groupID;
 
-  v18 = [v15 currentGroupName];
+  currentGroupName = [groupContext currentGroupName];
   currentGroupName = v9->_currentGroupName;
-  v9->_currentGroupName = v18;
+  v9->_currentGroupName = currentGroupName;
 
-  v20 = [v15 participantDestinationIdentifiers];
+  participantDestinationIdentifiers = [groupContext participantDestinationIdentifiers];
   participantIdentifiers = v9->_participantIdentifiers;
-  v9->_participantIdentifiers = v20;
+  v9->_participantIdentifiers = participantDestinationIdentifiers;
 
-  v9->_isFromMe = [v8 isFromMe];
-  v22 = [v8 fromIdentifier];
-  v23 = [v22 copy];
+  v9->_isFromMe = [dataCopy isFromMe];
+  fromIdentifier = [dataCopy fromIdentifier];
+  v23 = [fromIdentifier copy];
   fromIdentifier = v9->_fromIdentifier;
   v9->_fromIdentifier = v23;
 
-  v25 = [v8 toIdentifier];
-  v26 = [v25 copy];
+  toIdentifier = [dataCopy toIdentifier];
+  v26 = [toIdentifier copy];
   toIdentifier = v9->_toIdentifier;
   v9->_toIdentifier = v26;
 
@@ -74,15 +74,15 @@
   v29 = v9;
   v48 = v29;
   v30 = [(NSArray *)v28 __imArrayByFilteringWithBlock:v47];
-  v31 = [v30 _IDsFromURIs];
+  _IDsFromURIs = [v30 _IDsFromURIs];
 
-  v32 = [(NSString *)v9->_fromIdentifier _stripFZIDPrefix];
-  if (-[NSArray count](v9->_participantIdentifiers, "count") > 2 || !v9->_isFromMe || ![v31 count])
+  _stripFZIDPrefix = [(NSString *)v9->_fromIdentifier _stripFZIDPrefix];
+  if (-[NSArray count](v9->_participantIdentifiers, "count") > 2 || !v9->_isFromMe || ![_IDsFromURIs count])
   {
     goto LABEL_8;
   }
 
-  if ([v31 count] != 1)
+  if ([_IDsFromURIs count] != 1)
   {
     v39 = IMLogHandleForCategory();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -95,13 +95,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v33 = [v31 lastObject];
-  v34 = [v33 _stripFZIDPrefix];
+  lastObject = [_IDsFromURIs lastObject];
+  _stripFZIDPrefix2 = [lastObject _stripFZIDPrefix];
 
-  v32 = v34;
+  _stripFZIDPrefix = _stripFZIDPrefix2;
 LABEL_8:
   fromDisplayID = v29->_fromDisplayID;
-  v29->_fromDisplayID = v32;
+  v29->_fromDisplayID = _stripFZIDPrefix;
 
 LABEL_9:
   v36 = v9;
@@ -110,10 +110,10 @@ LABEL_14:
   return v36;
 }
 
-- (id)createSyndicationActionWithChat:(id)a3
+- (id)createSyndicationActionWithChat:(id)chat
 {
-  v4 = a3;
-  if (!v4)
+  chatCopy = chat;
+  if (!chatCopy)
   {
     v5 = IMLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -131,16 +131,16 @@ LABEL_14:
   {
     v18 = (actionType >> 2) & 1;
     v19 = objc_alloc(MEMORY[0x277D1A920]);
-    v9 = [v4 guid];
-    v10 = [v19 initWithChatGUID:v9 syndicationStartDate:v5 autoDonateMessages:v18];
+    guid = [chatCopy guid];
+    v10 = [v19 initWithChatGUID:guid syndicationStartDate:v5 autoDonateMessages:v18];
     goto LABEL_8;
   }
 
   if (itemType == 1)
   {
     v8 = objc_alloc(MEMORY[0x277D1AAA0]);
-    v9 = [v4 guid];
-    v10 = [v8 initWithChatGUID:v9 syndicationStartDate:v5 syndicationActionType:actionType encodedMessagePartGUID:self->_messagePartGUID messagePartRange:{self->_syndicatedMessagePartRange.location, self->_syndicatedMessagePartRange.length}];
+    guid = [chatCopy guid];
+    v10 = [v8 initWithChatGUID:guid syndicationStartDate:v5 syndicationActionType:actionType encodedMessagePartGUID:self->_messagePartGUID messagePartRange:{self->_syndicatedMessagePartRange.location, self->_syndicatedMessagePartRange.length}];
 LABEL_8:
     v20 = v10;
 
@@ -176,8 +176,8 @@ LABEL_15:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(IMSyndicationActionPipelineParameter *)self syndicationAction];
-  v5 = [v3 stringWithFormat:@"<IMSyndicationActionPipelineParameter %p OUTPUT syndicationAction = %@>", self, v4];;
+  syndicationAction = [(IMSyndicationActionPipelineParameter *)self syndicationAction];
+  v5 = [v3 stringWithFormat:@"<IMSyndicationActionPipelineParameter %p OUTPUT syndicationAction = %@>", self, syndicationAction];;
 
   return v5;
 }

@@ -8,22 +8,22 @@
 {
   v8 = a4;
   v9 = a5;
-  v10 = [a1 scopedIdentifier];
-  v11 = [v10 scopeIdentifier];
-  v12 = [v11 isEqualToString:v9];
+  scopedIdentifier = [self scopedIdentifier];
+  scopeIdentifier = [scopedIdentifier scopeIdentifier];
+  v12 = [scopeIdentifier isEqualToString:v9];
 
   if (v12)
   {
-    v13 = [a1 sharingScopeIdentifier];
-    v14 = v13;
+    sharingScopeIdentifier = [self sharingScopeIdentifier];
+    v14 = sharingScopeIdentifier;
     if (a3 == 2)
     {
-      v15 = v13 == 0;
+      v15 = sharingScopeIdentifier == 0;
     }
 
     else if (a3 == 1)
     {
-      v15 = [v13 isEqualToString:v8];
+      v15 = [sharingScopeIdentifier isEqualToString:v8];
     }
 
     else

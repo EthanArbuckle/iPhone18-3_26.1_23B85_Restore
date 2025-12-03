@@ -1,39 +1,39 @@
 @interface VKCRemoveBackgroundVideoRequest
-- (VKCRemoveBackgroundVideoRequest)initWithPhotosAnalyzerRequest:(id)a3;
+- (VKCRemoveBackgroundVideoRequest)initWithPhotosAnalyzerRequest:(id)request;
 - (__n128)commonInit;
 - (id)createMADPreviewRequest;
 - (id)createMADRequest;
 - (int)madRequestID;
-- (void)setMadRequestID:(int)a3;
-- (void)setMaskTime:(id *)a3;
+- (void)setMadRequestID:(int)d;
+- (void)setMaskTime:(id *)time;
 @end
 
 @implementation VKCRemoveBackgroundVideoRequest
 
-- (VKCRemoveBackgroundVideoRequest)initWithPhotosAnalyzerRequest:(id)a3
+- (VKCRemoveBackgroundVideoRequest)initWithPhotosAnalyzerRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v8.receiver = self;
   v8.super_class = VKCRemoveBackgroundVideoRequest;
   v6 = [(VKCRemoveBackgroundVideoRequest *)&v8 init];
   if (v6)
   {
-    if (!v5)
+    if (!requestCopy)
     {
       [VKAssert handleFailedAssertWithCondition:"((request) != nil)" functionName:"[VKCRemoveBackgroundVideoRequest initWithPhotosAnalyzerRequest:]" simulateCrash:0 showAlert:0 format:@"Expected non-nil value for '%s'", "request"];
     }
 
-    objc_storeStrong(&v6->_photosRequest, a3);
+    objc_storeStrong(&v6->_photosRequest, request);
     [(VKCRemoveBackgroundVideoRequest *)v6 commonInit];
   }
 
   return v6;
 }
 
-- (void)setMadRequestID:(int)a3
+- (void)setMadRequestID:(int)d
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_madRequestID = a3;
+  self->_madRequestID = d;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -49,52 +49,52 @@
 - (id)createMADRequest
 {
   v3 = objc_alloc_init(MEMORY[0x1E69AE4D8]);
-  v4 = [(VKCRemoveBackgroundVideoRequest *)self maxDimension];
+  maxDimension = [(VKCRemoveBackgroundVideoRequest *)self maxDimension];
 
-  if (v4)
+  if (maxDimension)
   {
-    v5 = [(VKCRemoveBackgroundVideoRequest *)self maxDimension];
-    [v3 setMaxDimension:v5];
+    maxDimension2 = [(VKCRemoveBackgroundVideoRequest *)self maxDimension];
+    [v3 setMaxDimension:maxDimension2];
   }
 
-  v6 = [(VKCRemoveBackgroundVideoRequest *)self minDimension];
+  minDimension = [(VKCRemoveBackgroundVideoRequest *)self minDimension];
 
-  if (v6)
+  if (minDimension)
   {
-    v7 = [(VKCRemoveBackgroundVideoRequest *)self minDimension];
-    [v3 setMinDimension:v7];
+    minDimension2 = [(VKCRemoveBackgroundVideoRequest *)self minDimension];
+    [v3 setMinDimension:minDimension2];
   }
 
-  v8 = [(VKCRemoveBackgroundVideoRequest *)self maxFileSize];
+  maxFileSize = [(VKCRemoveBackgroundVideoRequest *)self maxFileSize];
 
-  if (v8)
+  if (maxFileSize)
   {
-    v9 = [(VKCRemoveBackgroundVideoRequest *)self maxFileSize];
-    [v3 setMaxFileSize:v9];
+    maxFileSize2 = [(VKCRemoveBackgroundVideoRequest *)self maxFileSize];
+    [v3 setMaxFileSize:maxFileSize2];
   }
 
-  v10 = [(VKCRemoveBackgroundVideoRequest *)self instancePoint];
+  instancePoint = [(VKCRemoveBackgroundVideoRequest *)self instancePoint];
 
-  if (v10)
+  if (instancePoint)
   {
-    v11 = [(VKCRemoveBackgroundVideoRequest *)self instancePoint];
-    [v3 setInstancePoint:v11];
+    instancePoint2 = [(VKCRemoveBackgroundVideoRequest *)self instancePoint];
+    [v3 setInstancePoint:instancePoint2];
   }
 
-  v12 = [(VKCRemoveBackgroundVideoRequest *)self outputType];
+  outputType = [(VKCRemoveBackgroundVideoRequest *)self outputType];
 
-  if (v12)
+  if (outputType)
   {
-    v13 = [(VKCRemoveBackgroundVideoRequest *)self outputType];
-    [v3 setOutputType:v13];
+    outputType2 = [(VKCRemoveBackgroundVideoRequest *)self outputType];
+    [v3 setOutputType:outputType2];
   }
 
-  v14 = [(VKCRemoveBackgroundVideoRequest *)self stickerIDs];
+  stickerIDs = [(VKCRemoveBackgroundVideoRequest *)self stickerIDs];
 
-  if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (stickerIDs && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v15 = [(VKCRemoveBackgroundVideoRequest *)self stickerIDs];
-    [v3 setStickerIdentifiers:v15];
+    stickerIDs2 = [(VKCRemoveBackgroundVideoRequest *)self stickerIDs];
+    [v3 setStickerIdentifiers:stickerIDs2];
   }
 
   [(VKCRemoveBackgroundVideoRequest *)self maskTime];
@@ -120,28 +120,28 @@
   return v2;
 }
 
-- (void)setMaskTime:(id *)a3
+- (void)setMaskTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_maskTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_maskTime.epoch = time->var3;
   *&self->_maskTime.value = v3;
 }
 
 - (__n128)commonInit
 {
-  if (a1)
+  if (self)
   {
-    *(a1 + 12) = 0;
-    v2 = [MEMORY[0x1E696AFB0] UUID];
-    v3 = [v2 UUIDString];
-    v4 = *(a1 + 72);
-    *(a1 + 72) = v3;
+    *(self + 12) = 0;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v4 = *(self + 72);
+    *(self + 72) = uUIDString;
 
-    *(a1 + 8) = -1;
+    *(self + 8) = -1;
     v5 = MEMORY[0x1E6960CC0];
     result = *MEMORY[0x1E6960CC0];
-    *(a1 + 80) = *MEMORY[0x1E6960CC0];
-    *(a1 + 96) = *(v5 + 16);
+    *(self + 80) = *MEMORY[0x1E6960CC0];
+    *(self + 96) = *(v5 + 16);
   }
 
   return result;

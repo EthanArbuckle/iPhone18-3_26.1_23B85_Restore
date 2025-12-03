@@ -3,7 +3,7 @@
 - (BOOL)getIsDeviceOwner;
 - (BOOL)getIsMediaFallbackUser;
 - (BOOL)getPersonalRequestsEnabled;
-- (_AFSharedUserInfoMutation)initWithBase:(id)a3;
+- (_AFSharedUserInfoMutation)initWithBase:(id)base;
 - (id)getCompanionDeviceInfo;
 - (id)getHomeUserId;
 - (id)getICloudAltDSID;
@@ -43,30 +43,30 @@
 {
   if ((*&self->_mutationFlags & 0x80) != 0)
   {
-    v2 = self->_iCloudAltDSID;
+    iCloudAltDSID = self->_iCloudAltDSID;
   }
 
   else
   {
-    v2 = [(AFSharedUserInfo *)self->_base iCloudAltDSID];
+    iCloudAltDSID = [(AFSharedUserInfo *)self->_base iCloudAltDSID];
   }
 
-  return v2;
+  return iCloudAltDSID;
 }
 
 - (id)getHomeUserId
 {
   if ((*&self->_mutationFlags & 0x40) != 0)
   {
-    v2 = self->_homeUserId;
+    homeUserId = self->_homeUserId;
   }
 
   else
   {
-    v2 = [(AFSharedUserInfo *)self->_base homeUserId];
+    homeUserId = [(AFSharedUserInfo *)self->_base homeUserId];
   }
 
-  return v2;
+  return homeUserId;
 }
 
 - (BOOL)getCompanionLinkReady
@@ -99,57 +99,57 @@
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_companionDeviceInfo;
+    companionDeviceInfo = self->_companionDeviceInfo;
   }
 
   else
   {
-    v2 = [(AFSharedUserInfo *)self->_base companionDeviceInfo];
+    companionDeviceInfo = [(AFSharedUserInfo *)self->_base companionDeviceInfo];
   }
 
-  return v2;
+  return companionDeviceInfo;
 }
 
 - (id)getLoggableSharedUserId
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_loggableSharedUserId;
+    loggableSharedUserId = self->_loggableSharedUserId;
   }
 
   else
   {
-    v2 = [(AFSharedUserInfo *)self->_base loggableSharedUserId];
+    loggableSharedUserId = [(AFSharedUserInfo *)self->_base loggableSharedUserId];
   }
 
-  return v2;
+  return loggableSharedUserId;
 }
 
 - (id)getSharedUserId
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_sharedUserId;
+    sharedUserId = self->_sharedUserId;
   }
 
   else
   {
-    v2 = [(AFSharedUserInfo *)self->_base sharedUserId];
+    sharedUserId = [(AFSharedUserInfo *)self->_base sharedUserId];
   }
 
-  return v2;
+  return sharedUserId;
 }
 
-- (_AFSharedUserInfoMutation)initWithBase:(id)a3
+- (_AFSharedUserInfoMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _AFSharedUserInfoMutation;
   v6 = [(_AFSharedUserInfoMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

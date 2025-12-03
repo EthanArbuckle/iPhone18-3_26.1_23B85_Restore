@@ -1,16 +1,16 @@
 @interface PKPlayerView
-- (PKPlayerView)initWithFrame:(CGRect)a3;
+- (PKPlayerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)playItemAtURL:(id)a3;
+- (void)playItemAtURL:(id)l;
 @end
 
 @implementation PKPlayerView
 
-- (PKPlayerView)initWithFrame:(CGRect)a3
+- (PKPlayerView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = PKPlayerView;
-  v3 = [(PKPlayerView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKPlayerView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E6988100] playerWithPlayerItem:0];
@@ -26,8 +26,8 @@
     [(AVPlayerViewController *)v3->_controller setCanPausePlaybackWhenExitingFullScreen:0];
     [(AVPlayerViewController *)v3->_controller setVideoGravity:*MEMORY[0x1E69874F0]];
     [(AVPlayerViewController *)v3->_controller setPlayer:v3->_player];
-    v8 = [(AVPlayerViewController *)v3->_controller view];
-    [(PKPlayerView *)v3 addSubview:v8];
+    view = [(AVPlayerViewController *)v3->_controller view];
+    [(PKPlayerView *)v3 addSubview:view];
   }
 
   return v3;
@@ -38,14 +38,14 @@
   v4.receiver = self;
   v4.super_class = PKPlayerView;
   [(PKPlayerView *)&v4 layoutSubviews];
-  v3 = [(AVPlayerViewController *)self->_controller view];
+  view = [(AVPlayerViewController *)self->_controller view];
   [(PKPlayerView *)self bounds];
-  [v3 setFrame:?];
+  [view setFrame:?];
 }
 
-- (void)playItemAtURL:(id)a3
+- (void)playItemAtURL:(id)l
 {
-  v6 = [MEMORY[0x1E69880B0] playerItemWithURL:a3];
+  v6 = [MEMORY[0x1E69880B0] playerItemWithURL:l];
   v4 = [MEMORY[0x1E69880E8] playerLooperWithPlayer:self->_player templateItem:v6];
   playerLooper = self->_playerLooper;
   self->_playerLooper = v4;

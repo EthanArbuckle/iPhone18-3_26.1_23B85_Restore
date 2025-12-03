@@ -1,67 +1,67 @@
 @interface PKPeerPaymentWebService
 + (id)sharedService;
-- (BOOL)_isValidResponse:(id)a3 error:(id)a4;
+- (BOOL)_isValidResponse:(id)response error:(id)error;
 - (BOOL)canBypassTrustValidation;
 - (BOOL)needsRegistration;
 - (NSString)accountIdentifier;
 - (NSURL)peerPaymentServiceURL;
-- (PKPeerPaymentWebService)initWithContext:(id)a3 targetDevice:(id)a4 archiver:(id)a5 tapToRadarDelegate:(id)a6;
-- (PKPeerPaymentWebService)initWithContext:(id)a3 targetDevice:(id)a4 tapToRadarDelegate:(id)a5;
-- (PKPeerPaymentWebService)initWithTapToRadarDelegate:(id)a3;
+- (PKPeerPaymentWebService)initWithContext:(id)context targetDevice:(id)device archiver:(id)archiver tapToRadarDelegate:(id)delegate;
+- (PKPeerPaymentWebService)initWithContext:(id)context targetDevice:(id)device tapToRadarDelegate:(id)delegate;
+- (PKPeerPaymentWebService)initWithTapToRadarDelegate:(id)delegate;
 - (id)_appleAccountInformation;
-- (id)_createDeviceScorerForAttributes:(id)a3;
+- (id)_createDeviceScorerForAttributes:(id)attributes;
 - (id)_deviceIdentifier;
-- (id)badRequestErrorWithResponse:(id)a3;
-- (id)forbiddenErrorWithResponse:(id)a3;
-- (unint64_t)peerPaymentAcceptTermsWithIdentifier:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentAccountWithCompletion:(id)a3;
-- (unint64_t)peerPaymentAddAssociatedAccountWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentAssociatedAccountActionWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentAssociatedAccountsWithCompletion:(id)a3;
-- (unint64_t)peerPaymentBankLookupWithCountryCode:(id)a3 query:(id)a4 completion:(id)a5;
-- (unint64_t)peerPaymentDocumentSubmissionRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentEmailTermsWithCompletion:(id)a3;
-- (unint64_t)peerPaymentEncryptionCertificateForDestination:(unint64_t)a3 withCompletion:(id)a4;
-- (unint64_t)peerPaymentFailureDiagnosticWithRequest:(id)a3 withCompletion:(id)a4;
-- (unint64_t)peerPaymentIdentityVerificationRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentPassDetailsWithCompletion:(id)a3;
-- (unint64_t)peerPaymentPendingRequestPerformAction:(id)a3 withRequestToken:(id)a4 completion:(id)a5;
-- (unint64_t)peerPaymentPendingRequestsWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentPerformAction:(id)a3 withPaymentIdentifier:(id)a4 completion:(id)a5;
-- (unint64_t)peerPaymentPerformQuoteWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentPreferencesWithCompletion:(id)a3;
-- (unint64_t)peerPaymentQuoteCertificatesForDestination:(unint64_t)a3 completion:(id)a4;
-- (unint64_t)peerPaymentQuoteWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentReOpenAccountWithCompletion:(id)a3;
-- (unint64_t)peerPaymentRecipientForRecipientAddress:(id)a3 senderAddress:(id)a4 source:(unint64_t)a5 completion:(id)a6;
-- (unint64_t)peerPaymentRecipientsForRecipientAddresses:(id)a3 senderAddress:(id)a4 source:(unint64_t)a5 completion:(id)a6;
-- (unint64_t)peerPaymentRecurringPaymentPerformAction:(unint64_t)a3 identifier:(id)a4 completion:(id)a5;
-- (unint64_t)peerPaymentRecurringPaymentsForAccountIdentifier:(id)a3 withCompletion:(id)a4;
-- (unint64_t)peerPaymentRegisterWithURL:(id)a3 pushToken:(id)a4 completion:(id)a5;
-- (unint64_t)peerPaymentRemoveAssociatedAccountWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentRequestStatementForAccountIdentifier:(id)a3 emailAddress:(id)a4 completion:(id)a5;
-- (unint64_t)peerPaymentRequestTokenWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentStatusWithPaymentIdentifier:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentUnregisterWithCompletion:(id)a3;
-- (unint64_t)peerPaymentUpdatePreferencesWithRequest:(id)a3 completion:(id)a4;
-- (unint64_t)peerPaymentUpdateUserInfoForRequest:(id)a3 withCompletion:(id)a4;
-- (unint64_t)peerPaymentUserInfoForAccountIdentifier:(id)a3 lastUpdated:(id)a4 withCompletion:(id)a5;
-- (unint64_t)submitDeviceScoreIdentifiersWithRequest:(id)a3 completion:(id)a4;
+- (id)badRequestErrorWithResponse:(id)response;
+- (id)forbiddenErrorWithResponse:(id)response;
+- (unint64_t)peerPaymentAcceptTermsWithIdentifier:(id)identifier completion:(id)completion;
+- (unint64_t)peerPaymentAccountWithCompletion:(id)completion;
+- (unint64_t)peerPaymentAddAssociatedAccountWithRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentAssociatedAccountActionWithRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentAssociatedAccountsWithCompletion:(id)completion;
+- (unint64_t)peerPaymentBankLookupWithCountryCode:(id)code query:(id)query completion:(id)completion;
+- (unint64_t)peerPaymentDocumentSubmissionRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentEmailTermsWithCompletion:(id)completion;
+- (unint64_t)peerPaymentEncryptionCertificateForDestination:(unint64_t)destination withCompletion:(id)completion;
+- (unint64_t)peerPaymentFailureDiagnosticWithRequest:(id)request withCompletion:(id)completion;
+- (unint64_t)peerPaymentIdentityVerificationRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentPassDetailsWithCompletion:(id)completion;
+- (unint64_t)peerPaymentPendingRequestPerformAction:(id)action withRequestToken:(id)token completion:(id)completion;
+- (unint64_t)peerPaymentPendingRequestsWithRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentPerformAction:(id)action withPaymentIdentifier:(id)identifier completion:(id)completion;
+- (unint64_t)peerPaymentPerformQuoteWithRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentPreferencesWithCompletion:(id)completion;
+- (unint64_t)peerPaymentQuoteCertificatesForDestination:(unint64_t)destination completion:(id)completion;
+- (unint64_t)peerPaymentQuoteWithRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentReOpenAccountWithCompletion:(id)completion;
+- (unint64_t)peerPaymentRecipientForRecipientAddress:(id)address senderAddress:(id)senderAddress source:(unint64_t)source completion:(id)completion;
+- (unint64_t)peerPaymentRecipientsForRecipientAddresses:(id)addresses senderAddress:(id)address source:(unint64_t)source completion:(id)completion;
+- (unint64_t)peerPaymentRecurringPaymentPerformAction:(unint64_t)action identifier:(id)identifier completion:(id)completion;
+- (unint64_t)peerPaymentRecurringPaymentsForAccountIdentifier:(id)identifier withCompletion:(id)completion;
+- (unint64_t)peerPaymentRegisterWithURL:(id)l pushToken:(id)token completion:(id)completion;
+- (unint64_t)peerPaymentRemoveAssociatedAccountWithRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentRequestStatementForAccountIdentifier:(id)identifier emailAddress:(id)address completion:(id)completion;
+- (unint64_t)peerPaymentRequestTokenWithRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentStatusWithPaymentIdentifier:(id)identifier completion:(id)completion;
+- (unint64_t)peerPaymentUnregisterWithCompletion:(id)completion;
+- (unint64_t)peerPaymentUpdatePreferencesWithRequest:(id)request completion:(id)completion;
+- (unint64_t)peerPaymentUpdateUserInfoForRequest:(id)request withCompletion:(id)completion;
+- (unint64_t)peerPaymentUserInfoForAccountIdentifier:(id)identifier lastUpdated:(id)updated withCompletion:(id)completion;
+- (unint64_t)submitDeviceScoreIdentifiersWithRequest:(id)request completion:(id)completion;
 - (void)_archiveContext;
-- (void)_deviceRegistrationDataWithCompletion:(id)a3;
-- (void)_deviceScoreForAttributes:(id)a3 withCompletion:(id)a4;
-- (void)_handleRetryAfterRegisterWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)_peerPaymentDeviceMetadataWithCompletion:(id)a3;
-- (void)_provideDeviceScoreFeedbackIfNeededForAttributes:(id)a3 ingested:(BOOL)a4;
-- (void)_renewAppleAccountWithCompletionHandler:(id)a3;
-- (void)handleResponse:(id)a3 withError:(id)a4 data:(id)a5 task:(id)a6 completionHandler:(id)a7;
-- (void)handleWillPerformHTTPRedirectionWithResponse:(id)a3 originalRequest:(id)a4 redirectHandler:(id)a5;
-- (void)performRequest:(id)a3 taskIdentifier:(unint64_t)a4 completionHandler:(id)a5;
-- (void)prewarmDeviceScoreForAttributes:(id)a3;
-- (void)setSharedService:(BOOL)a3;
-- (void)sharedPeerPaymentServiceChanged:(id)a3;
-- (void)unloadDeviceScoreForAttributes:(id)a3;
-- (void)updateDeviceScorersWithEncryptedPayloadVersion:(unint64_t)a3;
+- (void)_deviceRegistrationDataWithCompletion:(id)completion;
+- (void)_deviceScoreForAttributes:(id)attributes withCompletion:(id)completion;
+- (void)_handleRetryAfterRegisterWithRequest:(id)request completionHandler:(id)handler;
+- (void)_peerPaymentDeviceMetadataWithCompletion:(id)completion;
+- (void)_provideDeviceScoreFeedbackIfNeededForAttributes:(id)attributes ingested:(BOOL)ingested;
+- (void)_renewAppleAccountWithCompletionHandler:(id)handler;
+- (void)handleResponse:(id)response withError:(id)error data:(id)data task:(id)task completionHandler:(id)handler;
+- (void)handleWillPerformHTTPRedirectionWithResponse:(id)response originalRequest:(id)request redirectHandler:(id)handler;
+- (void)performRequest:(id)request taskIdentifier:(unint64_t)identifier completionHandler:(id)handler;
+- (void)prewarmDeviceScoreForAttributes:(id)attributes;
+- (void)setSharedService:(BOOL)service;
+- (void)sharedPeerPaymentServiceChanged:(id)changed;
+- (void)unloadDeviceScoreForAttributes:(id)attributes;
+- (void)updateDeviceScorersWithEncryptedPayloadVersion:(unint64_t)version;
 @end
 
 @implementation PKPeerPaymentWebService
@@ -70,29 +70,29 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PKPeerPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice appleAccountInformation];
+    appleAccountInformation = [(PKPeerPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice appleAccountInformation];
   }
 
   else
   {
     v4 = +[PKAppleAccountManager sharedInstance];
-    v3 = [v4 appleAccountInformation];
+    appleAccountInformation = [v4 appleAccountInformation];
   }
 
-  return v3;
+  return appleAccountInformation;
 }
 
 - (BOOL)needsRegistration
 {
-  v3 = [(PKPeerPaymentWebService *)self context];
-  if (v3)
+  context = [(PKPeerPaymentWebService *)self context];
+  if (context)
   {
-    v4 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-    if (v4)
+    peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+    if (peerPaymentServiceURL)
     {
-      v5 = [(PKPeerPaymentWebService *)self context];
-      v6 = [v5 deviceIdentifier];
-      v7 = v6 == 0;
+      context2 = [(PKPeerPaymentWebService *)self context];
+      deviceIdentifier = [context2 deviceIdentifier];
+      v7 = deviceIdentifier == 0;
     }
 
     else
@@ -123,39 +123,39 @@
       _os_log_impl(&dword_1AD337000, v4, OS_LOG_TYPE_DEFAULT, "Using overridden Peer Payment service URL: %@ ", &v8, 0xCu);
     }
 
-    v5 = v3;
+    serviceURL = v3;
   }
 
   else
   {
-    v6 = [(PKPeerPaymentWebService *)self context];
-    v5 = [v6 serviceURL];
+    context = [(PKPeerPaymentWebService *)self context];
+    serviceURL = [context serviceURL];
   }
 
-  return v5;
+  return serviceURL;
 }
 
-- (PKPeerPaymentWebService)initWithTapToRadarDelegate:(id)a3
+- (PKPeerPaymentWebService)initWithTapToRadarDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v5 = objc_alloc_init(PKPeerPaymentWebServiceContext);
-  v6 = [(PKPeerPaymentWebService *)self initWithContext:v5 targetDevice:0 tapToRadarDelegate:v4];
+  v6 = [(PKPeerPaymentWebService *)self initWithContext:v5 targetDevice:0 tapToRadarDelegate:delegateCopy];
 
   return v6;
 }
 
-- (PKPeerPaymentWebService)initWithContext:(id)a3 targetDevice:(id)a4 tapToRadarDelegate:(id)a5
+- (PKPeerPaymentWebService)initWithContext:(id)context targetDevice:(id)device tapToRadarDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
+  contextCopy = context;
+  deviceCopy = device;
   v20.receiver = self;
   v20.super_class = PKPeerPaymentWebService;
-  v11 = [(PKWebService *)&v20 initWithTapToRadarDelegate:a5];
+  v11 = [(PKWebService *)&v20 initWithTapToRadarDelegate:delegate];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_context, a3);
-    objc_storeStrong(&v12->_targetDevice, a4);
+    objc_storeStrong(&v11->_context, context);
+    objc_storeStrong(&v12->_targetDevice, device);
     v13 = +[PKSecureElement sharedSecureElement];
     secureElement = v12->_secureElement;
     v12->_secureElement = v13;
@@ -172,28 +172,28 @@
   return v12;
 }
 
-- (PKPeerPaymentWebService)initWithContext:(id)a3 targetDevice:(id)a4 archiver:(id)a5 tapToRadarDelegate:(id)a6
+- (PKPeerPaymentWebService)initWithContext:(id)context targetDevice:(id)device archiver:(id)archiver tapToRadarDelegate:(id)delegate
 {
-  v11 = a5;
-  v12 = [(PKPeerPaymentWebService *)self initWithContext:a3 targetDevice:a4 tapToRadarDelegate:a6];
+  archiverCopy = archiver;
+  v12 = [(PKPeerPaymentWebService *)self initWithContext:context targetDevice:device tapToRadarDelegate:delegate];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_archiver, a5);
+    objc_storeStrong(&v12->_archiver, archiver);
   }
 
   return v13;
 }
 
-- (void)performRequest:(id)a3 taskIdentifier:(unint64_t)a4 completionHandler:(id)a5
+- (void)performRequest:(id)request taskIdentifier:(unint64_t)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  requestCopy = request;
+  handlerCopy = handler;
+  if (requestCopy)
   {
     v13.receiver = self;
     v13.super_class = PKPeerPaymentWebService;
-    [(PKWebService *)&v13 performRequest:v8 taskIdentifier:a4 completionHandler:v9];
+    [(PKWebService *)&v13 performRequest:requestCopy taskIdentifier:identifier completionHandler:handlerCopy];
   }
 
   else
@@ -205,29 +205,29 @@
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Error: Attempting to perform a nil NSURLRequest. Failing with error PKPeerPaymentWebServiceErrorCodeRequiredParameterMissing.", v12, 2u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
       v11 = _PKPeerPaymentWebServiceError(4, 0, 0, self->_targetDevice);
-      (*(v9 + 2))(v9, 0, 0, v11);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v11);
     }
   }
 }
 
-- (void)handleResponse:(id)a3 withError:(id)a4 data:(id)a5 task:(id)a6 completionHandler:(id)a7
+- (void)handleResponse:(id)response withError:(id)error data:(id)data task:(id)task completionHandler:(id)handler
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  objc_initWeak(&location, a6);
-  v15 = a7;
+  responseCopy = response;
+  errorCopy = error;
+  dataCopy = data;
+  objc_initWeak(&location, task);
+  handlerCopy = handler;
   v16 = objc_loadWeakRetained(&location);
-  v17 = [v16 currentRequest];
+  currentRequest = [v16 currentRequest];
 
-  v18 = [v12 statusCode];
-  if (v18 > 448)
+  statusCode = [responseCopy statusCode];
+  if (statusCode > 448)
   {
-    if (v18 == 449)
+    if (statusCode == 449)
     {
       v26 = PKLogFacilityTypeGetObject(0xCuLL);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -236,30 +236,30 @@
         _os_log_impl(&dword_1AD337000, v26, OS_LOG_TYPE_DEFAULT, "Received Peer Payment Status Code 449. Identity Verification Required.", buf, 2u);
       }
 
-      v23 = [[PKPeerPaymentIdentityVerificationRequiredResponse alloc] initWithData:v14];
-      v24 = [(PKPeerPaymentIdentityVerificationRequiredResponse *)v23 prerequisiteIdentifier];
+      v23 = [[PKPeerPaymentIdentityVerificationRequiredResponse alloc] initWithData:dataCopy];
+      prerequisiteIdentifier = [(PKPeerPaymentIdentityVerificationRequiredResponse *)v23 prerequisiteIdentifier];
       v27 = objc_alloc_init(PKPeerPaymentIdentityVerificationRequest);
       [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v27];
-      [(PKPeerPaymentIdentityVerificationRequest *)v27 setPrerequisiteIdentifier:v24];
+      [(PKPeerPaymentIdentityVerificationRequest *)v27 setPrerequisiteIdentifier:prerequisiteIdentifier];
       v29[0] = MEMORY[0x1E69E9820];
       v29[1] = 3221225472;
       v29[2] = __80__PKPeerPaymentWebService_handleResponse_withError_data_task_completionHandler___block_invoke;
       v29[3] = &unk_1E79D1C28;
       v29[4] = self;
-      v31 = v15;
-      v30 = v12;
+      v31 = handlerCopy;
+      v30 = responseCopy;
       [(PKPeerPaymentWebService *)self peerPaymentIdentityVerificationRequest:v27 completion:v29];
     }
 
     else
     {
-      if (v18 != 451)
+      if (statusCode != 451)
       {
 LABEL_15:
         v23 = objc_loadWeakRetained(&location);
         v28.receiver = self;
         v28.super_class = PKPeerPaymentWebService;
-        [(PKWebService *)&v28 handleResponse:v12 withError:v13 data:v14 task:v23 completionHandler:v15];
+        [(PKWebService *)&v28 handleResponse:responseCopy withError:errorCopy data:dataCopy task:v23 completionHandler:handlerCopy];
 LABEL_26:
 
         goto LABEL_27;
@@ -272,32 +272,32 @@ LABEL_26:
         _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "Received Peer Payment Status Code 451. Terms Acceptance Required.", buf, 2u);
       }
 
-      v23 = [[PKPeerPaymentTermsAcceptanceResponse alloc] initWithData:v14];
+      v23 = [[PKPeerPaymentTermsAcceptanceResponse alloc] initWithData:dataCopy];
       if ([(PKPeerPaymentIdentityVerificationRequiredResponse *)v23 hasTermsData])
       {
         v34 = @"PKTermsResponseUserInfoKey";
         v35[0] = v23;
-        v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
+        prerequisiteIdentifier = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
       }
 
       else
       {
-        v24 = 0;
+        prerequisiteIdentifier = 0;
       }
 
-      v27 = _PKPeerPaymentWebServiceError(5, 0, v24, self->_targetDevice);
-      if (v15)
+      v27 = _PKPeerPaymentWebServiceError(5, 0, prerequisiteIdentifier, self->_targetDevice);
+      if (handlerCopy)
       {
-        (*(v15 + 2))(v15, 0, v12, v27);
+        (*(handlerCopy + 2))(handlerCopy, 0, responseCopy, v27);
       }
     }
 
     goto LABEL_26;
   }
 
-  if (v18 != 301)
+  if (statusCode != 301)
   {
-    if (v18 == 400)
+    if (statusCode == 400)
     {
       v19 = PKLogFacilityTypeGetObject(0xCuLL);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -306,15 +306,15 @@ LABEL_26:
         _os_log_impl(&dword_1AD337000, v19, OS_LOG_TYPE_DEFAULT, "Received Status Code 400. Bad Request.", buf, 2u);
       }
 
-      v20 = [(PKWebServiceResponse *)PKPeerPaymentWebServiceBadRequestResponse responseWithData:v14];
+      v20 = [(PKWebServiceResponse *)PKPeerPaymentWebServiceBadRequestResponse responseWithData:dataCopy];
       v21 = [(PKPeerPaymentWebService *)self badRequestErrorWithResponse:v20];
 
-      if (v15)
+      if (handlerCopy)
       {
-        (*(v15 + 2))(v15, v14, v12, v21);
+        (*(handlerCopy + 2))(handlerCopy, dataCopy, responseCopy, v21);
       }
 
-      v13 = v21;
+      errorCopy = v21;
       goto LABEL_27;
     }
 
@@ -328,7 +328,7 @@ LABEL_26:
     _os_log_impl(&dword_1AD337000, v25, OS_LOG_TYPE_DEFAULT, "Received Peer Payment Status Code 301. Retry after register.", buf, 2u);
   }
 
-  [(PKPeerPaymentWebService *)self _handleRetryAfterRegisterWithRequest:v17 completionHandler:v15];
+  [(PKPeerPaymentWebService *)self _handleRetryAfterRegisterWithRequest:currentRequest completionHandler:handlerCopy];
 LABEL_27:
 
   objc_destroyWeak(&location);
@@ -359,81 +359,81 @@ void __80__PKPeerPaymentWebService_handleResponse_withError_data_task_completion
   }
 }
 
-- (id)badRequestErrorWithResponse:(id)a3
+- (id)badRequestErrorWithResponse:(id)response
 {
-  v4 = [a3 errorCode];
-  v5 = [v4 integerValue];
+  errorCode = [response errorCode];
+  integerValue = [errorCode integerValue];
 
-  v6 = _PKPeerPaymentWebServiceError(v5, 0, 0, self->_targetDevice);
-  v7 = [v6 localizedFailureReason];
-  v8 = [v6 localizedRecoverySuggestion];
-  v9 = [v6 code];
-  if (!v9)
+  v6 = _PKPeerPaymentWebServiceError(integerValue, 0, 0, self->_targetDevice);
+  localizedFailureReason = [v6 localizedFailureReason];
+  localizedRecoverySuggestion = [v6 localizedRecoverySuggestion];
+  code = [v6 code];
+  if (!code)
   {
-    v9 = 40099;
+    code = 40099;
   }
 
-  v10 = _PKPeerPaymentWebServiceErrorCustom(v9, v7, v8, 0, 0);
+  v10 = _PKPeerPaymentWebServiceErrorCustom(code, localizedFailureReason, localizedRecoverySuggestion, 0, 0);
 
   return v10;
 }
 
-- (id)forbiddenErrorWithResponse:(id)a3
+- (id)forbiddenErrorWithResponse:(id)response
 {
-  v4 = a3;
-  v5 = [v4 errorCode];
-  v6 = [v5 integerValue];
+  responseCopy = response;
+  errorCode = [responseCopy errorCode];
+  integerValue = [errorCode integerValue];
 
-  v7 = _PKPeerPaymentWebServiceError(v6, 0, 0, self->_targetDevice);
-  v8 = [v7 localizedFailureReason];
-  v9 = [v7 localizedRecoverySuggestion];
-  v10 = [v7 code];
-  v11 = [v4 localizedTitle];
-  if (v11)
+  v7 = _PKPeerPaymentWebServiceError(integerValue, 0, 0, self->_targetDevice);
+  localizedFailureReason = [v7 localizedFailureReason];
+  localizedRecoverySuggestion = [v7 localizedRecoverySuggestion];
+  code = [v7 code];
+  localizedTitle = [responseCopy localizedTitle];
+  if (localizedTitle)
   {
   }
 
   else
   {
-    v12 = [v4 localizedDescription];
+    localizedDescription = [responseCopy localizedDescription];
 
-    if (!v12)
+    if (!localizedDescription)
     {
       goto LABEL_5;
     }
   }
 
-  v13 = [v4 localizedTitle];
+  localizedTitle2 = [responseCopy localizedTitle];
 
-  v14 = [v4 localizedDescription];
+  localizedDescription2 = [responseCopy localizedDescription];
 
-  v8 = v13;
-  v9 = v14;
+  localizedFailureReason = localizedTitle2;
+  localizedRecoverySuggestion = localizedDescription2;
 LABEL_5:
-  if (!v10)
+  if (!code)
   {
-    v10 = 40399;
+    code = 40399;
   }
 
   v18.receiver = self;
   v18.super_class = PKPeerPaymentWebService;
-  v15 = [(PKWebService *)&v18 forbiddenErrorWithResponse:v4];
-  v16 = _PKPeerPaymentWebServiceErrorCustom(v10, v8, v9, v15, 0);
+  v15 = [(PKWebService *)&v18 forbiddenErrorWithResponse:responseCopy];
+  v16 = _PKPeerPaymentWebServiceErrorCustom(code, localizedFailureReason, localizedRecoverySuggestion, v15, 0);
 
   return v16;
 }
 
-- (void)handleWillPerformHTTPRedirectionWithResponse:(id)a3 originalRequest:(id)a4 redirectHandler:(id)a5
+- (void)handleWillPerformHTTPRedirectionWithResponse:(id)response originalRequest:(id)request redirectHandler:(id)handler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v22 = a4;
-  v9 = a5;
+  responseCopy = response;
+  requestCopy = request;
+  handlerCopy = handler;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 1;
-  v10 = [v8 pk_valueForHTTPHeaderField:@"PeerPaymentURL"];
+  v10 = [responseCopy pk_valueForHTTPHeaderField:@"PeerPaymentURL"];
   if ([v10 length])
   {
     v11 = PKLogFacilityTypeGetObject(0xCuLL);
@@ -445,10 +445,10 @@ LABEL_5:
     }
 
     v12 = [MEMORY[0x1E695DFF8] URLWithString:v10];
-    v13 = [(PKPeerPaymentWebService *)self context];
-    v14 = [v13 pushToken];
+    context = [(PKPeerPaymentWebService *)self context];
+    pushToken = [context pushToken];
 
-    v15 = [MEMORY[0x1E695AC60] propertyForKey:@"PKPeerPaymentEndPointKey" inRequest:v22];
+    v15 = [MEMORY[0x1E695AC60] propertyForKey:@"PKPeerPaymentEndPointKey" inRequest:requestCopy];
     v16 = v15;
     if (v15 && ([v15 integerValue] - 1) < 2)
     {
@@ -464,13 +464,13 @@ LABEL_5:
       v25[2] = __104__PKPeerPaymentWebService_handleWillPerformHTTPRedirectionWithResponse_originalRequest_redirectHandler___block_invoke;
       v25[3] = &unk_1E79D1C50;
       v25[5] = &v26;
-      v25[4] = v9;
-      [(PKPeerPaymentWebService *)self peerPaymentRegisterWithURL:v12 pushToken:v14 completion:v25];
+      v25[4] = handlerCopy;
+      [(PKPeerPaymentWebService *)self peerPaymentRegisterWithURL:v12 pushToken:pushToken completion:v25];
     }
 
     else
     {
-      v18 = self;
+      selfCopy = self;
       v19 = objc_opt_respondsToSelector();
       targetDevice = self->_targetDevice;
       if (v19)
@@ -481,8 +481,8 @@ LABEL_5:
         v24[2] = __104__PKPeerPaymentWebService_handleWillPerformHTTPRedirectionWithResponse_originalRequest_redirectHandler___block_invoke_2;
         v24[3] = &unk_1E79D1C78;
         v24[5] = &v26;
-        v24[4] = v9;
-        [(PKPeerPaymentWebServiceTargetDeviceProtocol *)targetDevice peerPaymentReRegisterWithURL:v12 pushToken:v14 peerPaymentWebService:v18 completion:v24];
+        v24[4] = handlerCopy;
+        [(PKPeerPaymentWebServiceTargetDeviceProtocol *)targetDevice peerPaymentReRegisterWithURL:v12 pushToken:pushToken peerPaymentWebService:selfCopy completion:v24];
       }
 
       else
@@ -495,19 +495,19 @@ LABEL_5:
             _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "targetDevice cannot peer payment register. Aborting original request", buf, 2u);
           }
 
-          (*(v9 + 2))(v9, 0);
+          (*(handlerCopy + 2))(handlerCopy, 0);
           goto LABEL_15;
         }
 
-        v21 = v18->_targetDevice;
+        v21 = selfCopy->_targetDevice;
         v17 = v23;
         v23[0] = MEMORY[0x1E69E9820];
         v23[1] = 3221225472;
         v23[2] = __104__PKPeerPaymentWebService_handleWillPerformHTTPRedirectionWithResponse_originalRequest_redirectHandler___block_invoke_3;
         v23[3] = &unk_1E79D1C78;
         v23[5] = &v26;
-        v23[4] = v9;
-        [(PKPeerPaymentWebServiceTargetDeviceProtocol *)v21 peerPaymentReRegisterWithURL:v12 pushToken:v14 completion:v23];
+        v23[4] = handlerCopy;
+        [(PKPeerPaymentWebServiceTargetDeviceProtocol *)v21 peerPaymentReRegisterWithURL:v12 pushToken:pushToken completion:v23];
       }
     }
 
@@ -515,7 +515,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  (*(v9 + 2))(v9, *(v27 + 24));
+  (*(handlerCopy + 2))(handlerCopy, *(v27 + 24));
 LABEL_16:
 
   _Block_object_dispose(&v26, 8);
@@ -579,13 +579,13 @@ uint64_t __104__PKPeerPaymentWebService_handleWillPerformHTTPRedirectionWithResp
     if (!qword_1EB5B7D30)
     {
       v3 = +[PKPeerPaymentService sharedInstance];
-      v4 = [v3 sharedPeerPaymentWebServiceContext];
-      if (v4)
+      sharedPeerPaymentWebServiceContext = [v3 sharedPeerPaymentWebServiceContext];
+      if (sharedPeerPaymentWebServiceContext)
       {
         v5 = [[PKSharedPeerPaymentWebServiceArchiver alloc] initWithPeerPaymentService:v3];
         v6 = [PKPeerPaymentWebService alloc];
         v7 = [[PKPeerPaymentWebServiceTargetDevice alloc] initWithTargetDeviceDelegate:v3];
-        v8 = [(PKPeerPaymentWebService *)v6 initWithContext:v4 targetDevice:v7 archiver:v5];
+        v8 = [(PKPeerPaymentWebService *)v6 initWithContext:sharedPeerPaymentWebServiceContext targetDevice:v7 archiver:v5];
         v9 = qword_1EB5B7D30;
         qword_1EB5B7D30 = v8;
 
@@ -612,14 +612,14 @@ uint64_t __104__PKPeerPaymentWebService_handleWillPerformHTTPRedirectionWithResp
   return v2;
 }
 
-- (void)setSharedService:(BOOL)a3
+- (void)setSharedService:(BOOL)service
 {
-  self->_sharedService = a3;
-  v4 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v4 addObserver:self selector:sel_sharedPeerPaymentServiceChanged_ name:@"PDSharedPeerPaymentWebServiceDidChangeNotification" object:0 suspensionBehavior:2];
+  self->_sharedService = service;
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_sharedPeerPaymentServiceChanged_ name:@"PDSharedPeerPaymentWebServiceDidChangeNotification" object:0 suspensionBehavior:2];
 }
 
-- (void)sharedPeerPaymentServiceChanged:(id)a3
+- (void)sharedPeerPaymentServiceChanged:(id)changed
 {
   if ([(PKPeerPaymentWebService *)self isSharedService])
   {
@@ -665,10 +665,10 @@ void __59__PKPeerPaymentWebService_sharedPeerPaymentServiceChanged___block_invok
 
 - (NSString)accountIdentifier
 {
-  v2 = [(PKPeerPaymentService *)self->_peerPaymentService account];
-  v3 = [v2 identifier];
+  account = [(PKPeerPaymentService *)self->_peerPaymentService account];
+  identifier = [account identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (BOOL)canBypassTrustValidation
@@ -680,10 +680,10 @@ void __59__PKPeerPaymentWebService_sharedPeerPaymentServiceChanged___block_invok
     return 1;
   }
 
-  v3 = [(PKPeerPaymentWebService *)self context];
-  v4 = [v3 devSigned];
+  context = [(PKPeerPaymentWebService *)self context];
+  devSigned = [context devSigned];
 
-  if (v4)
+  if (devSigned)
   {
     v5 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -698,13 +698,13 @@ void __59__PKPeerPaymentWebService_sharedPeerPaymentServiceChanged___block_invok
   return 0;
 }
 
-- (unint64_t)peerPaymentRegisterWithURL:(id)a3 pushToken:(id)a4 completion:(id)a5
+- (unint64_t)peerPaymentRegisterWithURL:(id)l pushToken:(id)token completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(PKWebService *)self nextTaskID];
-  if (v8)
+  lCopy = l;
+  tokenCopy = token;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  if (lCopy)
   {
     v12 = objc_alloc_init(PKPeerPaymentDeviceScoreAttributes);
     [(PKPeerPaymentDeviceScoreAttributes *)v12 setEndpoint:1];
@@ -713,10 +713,10 @@ void __59__PKPeerPaymentWebService_sharedPeerPaymentServiceChanged___block_invok
     v16[2] = __75__PKPeerPaymentWebService_peerPaymentRegisterWithURL_pushToken_completion___block_invoke;
     v16[3] = &unk_1E79D1D68;
     v16[4] = self;
-    v19 = v10;
-    v17 = v9;
-    v18 = v8;
-    v20 = v11;
+    v19 = completionCopy;
+    v17 = tokenCopy;
+    v18 = lCopy;
+    v20 = nextTaskID;
     [(PKPeerPaymentWebService *)self _deviceScoreForAttributes:v12 withCompletion:v16];
 
 LABEL_7:
@@ -730,16 +730,16 @@ LABEL_7:
     _os_log_impl(&dword_1AD337000, v13, OS_LOG_TYPE_DEFAULT, "Error: Asked to register with a nil service url.", v15, 2u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = _PKPeerPaymentWebServiceError(4, 0, 0, self->_targetDevice);
-    (*(v10 + 2))(v10, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
     goto LABEL_7;
   }
 
 LABEL_8:
 
-  return v11;
+  return nextTaskID;
 }
 
 void __75__PKPeerPaymentWebService_peerPaymentRegisterWithURL_pushToken_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -956,16 +956,16 @@ LABEL_15:
   [*(a1 + 32) _provideDeviceScoreFeedbackIfNeededForAttributes:v14 ingested:1];
 }
 
-- (unint64_t)peerPaymentUnregisterWithCompletion:(id)a3
+- (unint64_t)peerPaymentUnregisterWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   if ([(PKPeerPaymentWebService *)self needsRegistration])
   {
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -973,20 +973,20 @@ LABEL_15:
   {
     v7 = objc_alloc_init(PKPeerPaymentServiceUnregisterRequest);
     [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-    v8 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-    v9 = [(PKPeerPaymentWebService *)self _deviceIdentifier];
-    v10 = [(PKPeerPaymentServiceUnregisterRequest *)v7 _urlRequestWithServiceURL:v6 appleAccountInformation:v8 deviceIdentifier:v9];
+    _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+    _deviceIdentifier = [(PKPeerPaymentWebService *)self _deviceIdentifier];
+    v10 = [(PKPeerPaymentServiceUnregisterRequest *)v7 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation deviceIdentifier:_deviceIdentifier];
 
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __63__PKPeerPaymentWebService_peerPaymentUnregisterWithCompletion___block_invoke;
     v12[3] = &unk_1E79CD770;
     v12[4] = self;
-    v13 = v4;
-    [(PKPeerPaymentWebService *)self performRequest:v10 taskIdentifier:v5 completionHandler:v12];
+    v13 = completionCopy;
+    [(PKPeerPaymentWebService *)self performRequest:v10 taskIdentifier:nextTaskID completionHandler:v12];
   }
 
-  return v5;
+  return nextTaskID;
 }
 
 void __63__PKPeerPaymentWebService_peerPaymentUnregisterWithCompletion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -1028,30 +1028,30 @@ void __63__PKPeerPaymentWebService_peerPaymentUnregisterWithCompletion___block_i
   }
 }
 
-- (unint64_t)peerPaymentAcceptTermsWithIdentifier:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentAcceptTermsWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v10 = objc_alloc_init(PKPeerPaymentAcceptTermsRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v10];
-  [(PKPeerPaymentAcceptTermsRequest *)v10 setTermsIdentifier:v7];
+  [(PKPeerPaymentAcceptTermsRequest *)v10 setTermsIdentifier:identifierCopy];
 
-  v11 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v12 = [(PKPeerPaymentWebService *)self _deviceIdentifier];
-  v13 = [(PKPeerPaymentAcceptTermsRequest *)v10 _urlRequestWithServiceURL:v9 appleAccountInformation:v11 deviceIdentifier:v12];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  _deviceIdentifier = [(PKPeerPaymentWebService *)self _deviceIdentifier];
+  v13 = [(PKPeerPaymentAcceptTermsRequest *)v10 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation deviceIdentifier:_deviceIdentifier];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __75__PKPeerPaymentWebService_peerPaymentAcceptTermsWithIdentifier_completion___block_invoke;
   v16[3] = &unk_1E79CD770;
   v16[4] = self;
-  v17 = v6;
-  v14 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v13 taskIdentifier:v8 completionHandler:v16];
+  v17 = completionCopy;
+  v14 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v13 taskIdentifier:nextTaskID completionHandler:v16];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __75__PKPeerPaymentWebService_peerPaymentAcceptTermsWithIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -1082,27 +1082,27 @@ void __75__PKPeerPaymentWebService_peerPaymentAcceptTermsWithIdentifier_completi
   }
 }
 
-- (unint64_t)peerPaymentPassDetailsWithCompletion:(id)a3
+- (unint64_t)peerPaymentPassDetailsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v7 = objc_alloc_init(PKPeerPaymentPassDetailsRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v9 = [(PKPeerPaymentWebService *)self _deviceIdentifier];
-  v10 = [(PKPeerPaymentPassDetailsRequest *)v7 _urlRequestWithServiceURL:v6 appleAccountInformation:v8 deviceIdentifier:v9];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  _deviceIdentifier = [(PKPeerPaymentWebService *)self _deviceIdentifier];
+  v10 = [(PKPeerPaymentPassDetailsRequest *)v7 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation deviceIdentifier:_deviceIdentifier];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__PKPeerPaymentWebService_peerPaymentPassDetailsWithCompletion___block_invoke;
   v13[3] = &unk_1E79CD770;
   v13[4] = self;
-  v14 = v4;
-  v11 = v4;
-  [(PKPeerPaymentWebService *)self performRequest:v10 taskIdentifier:v5 completionHandler:v13];
+  v14 = completionCopy;
+  v11 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v10 taskIdentifier:nextTaskID completionHandler:v13];
 
-  return v5;
+  return nextTaskID;
 }
 
 void __64__PKPeerPaymentWebService_peerPaymentPassDetailsWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1141,26 +1141,26 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentAccountWithCompletion:(id)a3
+- (unint64_t)peerPaymentAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v7 = objc_alloc_init(PKPeerPaymentAccountRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v9 = [(PKPeerPaymentAccountRequest *)v7 _urlRequestWithServiceURL:v6 appleAccountInformation:v8];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v9 = [(PKPeerPaymentAccountRequest *)v7 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __60__PKPeerPaymentWebService_peerPaymentAccountWithCompletion___block_invoke;
   v12[3] = &unk_1E79CD770;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
-  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:v5 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:nextTaskID completionHandler:v12];
 
-  return v5;
+  return nextTaskID;
 }
 
 void __60__PKPeerPaymentWebService_peerPaymentAccountWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1199,26 +1199,26 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentAssociatedAccountsWithCompletion:(id)a3
+- (unint64_t)peerPaymentAssociatedAccountsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v7 = objc_alloc_init(PKPeerPaymentAssociatedAccountsRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v9 = [(PKPeerPaymentAssociatedAccountsRequest *)v7 _urlRequestWithServiceURL:v6 appleAccountInformation:v8];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v9 = [(PKPeerPaymentAssociatedAccountsRequest *)v7 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __71__PKPeerPaymentWebService_peerPaymentAssociatedAccountsWithCompletion___block_invoke;
   v12[3] = &unk_1E79CD770;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
-  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:v5 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:nextTaskID completionHandler:v12];
 
-  return v5;
+  return nextTaskID;
 }
 
 void __71__PKPeerPaymentWebService_peerPaymentAssociatedAccountsWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1257,35 +1257,35 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentRecipientForRecipientAddress:(id)a3 senderAddress:(id)a4 source:(unint64_t)a5 completion:(id)a6
+- (unint64_t)peerPaymentRecipientForRecipientAddress:(id)address senderAddress:(id)senderAddress source:(unint64_t)source completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a4;
-  v13 = [(PKWebService *)self nextTaskID];
-  v14 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  addressCopy = address;
+  completionCopy = completion;
+  senderAddressCopy = senderAddress;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v15 = objc_alloc_init(PKPeerPaymentRecipientRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v15];
-  [(PKPeerPaymentRecipientRequest *)v15 setRecipientAddress:v10];
-  [(PKPeerPaymentRecipientRequest *)v15 setRecipientAddressSource:a5];
-  [(PKPeerPaymentRecipientRequest *)v15 setSenderAddress:v12];
+  [(PKPeerPaymentRecipientRequest *)v15 setRecipientAddress:addressCopy];
+  [(PKPeerPaymentRecipientRequest *)v15 setRecipientAddressSource:source];
+  [(PKPeerPaymentRecipientRequest *)v15 setSenderAddress:senderAddressCopy];
 
-  v16 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v17 = [(PKPeerPaymentWebService *)self _deviceIdentifier];
-  v18 = [(PKPeerPaymentRecipientRequest *)v15 _urlRequestWithServiceURL:v14 appleAccountInformation:v16 deviceIdentifier:v17];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  _deviceIdentifier = [(PKPeerPaymentWebService *)self _deviceIdentifier];
+  v18 = [(PKPeerPaymentRecipientRequest *)v15 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation deviceIdentifier:_deviceIdentifier];
 
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __99__PKPeerPaymentWebService_peerPaymentRecipientForRecipientAddress_senderAddress_source_completion___block_invoke;
   v22[3] = &unk_1E79D1CC8;
   v22[4] = self;
-  v23 = v10;
-  v24 = v11;
-  v19 = v11;
-  v20 = v10;
-  [(PKPeerPaymentWebService *)self performRequest:v18 taskIdentifier:v13 completionHandler:v22];
+  v23 = addressCopy;
+  v24 = completionCopy;
+  v19 = completionCopy;
+  v20 = addressCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v18 taskIdentifier:nextTaskID completionHandler:v22];
 
-  return v13;
+  return nextTaskID;
 }
 
 void __99__PKPeerPaymentWebService_peerPaymentRecipientForRecipientAddress_senderAddress_source_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1337,34 +1337,34 @@ LABEL_13:
   }
 }
 
-- (unint64_t)peerPaymentRecipientsForRecipientAddresses:(id)a3 senderAddress:(id)a4 source:(unint64_t)a5 completion:(id)a6
+- (unint64_t)peerPaymentRecipientsForRecipientAddresses:(id)addresses senderAddress:(id)address source:(unint64_t)source completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(PKWebService *)self nextTaskID];
-  v14 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  addressCopy = address;
+  addressesCopy = addresses;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v15 = objc_alloc_init(PKPeerPaymentRecipientsRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v15];
-  [(PKPeerPaymentRecipientsRequest *)v15 setRecipientAddresses:v12];
+  [(PKPeerPaymentRecipientsRequest *)v15 setRecipientAddresses:addressesCopy];
 
-  [(PKPeerPaymentRecipientsRequest *)v15 setRecipientAddressSource:a5];
-  [(PKPeerPaymentRecipientsRequest *)v15 setSenderAddress:v11];
+  [(PKPeerPaymentRecipientsRequest *)v15 setRecipientAddressSource:source];
+  [(PKPeerPaymentRecipientsRequest *)v15 setSenderAddress:addressCopy];
 
-  v16 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v17 = [(PKPeerPaymentWebService *)self _deviceIdentifier];
-  v18 = [(PKPeerPaymentRecipientsRequest *)v15 _urlRequestWithServiceURL:v14 appleAccountInformation:v16 deviceIdentifier:v17];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  _deviceIdentifier = [(PKPeerPaymentWebService *)self _deviceIdentifier];
+  v18 = [(PKPeerPaymentRecipientsRequest *)v15 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation deviceIdentifier:_deviceIdentifier];
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __102__PKPeerPaymentWebService_peerPaymentRecipientsForRecipientAddresses_senderAddress_source_completion___block_invoke;
   v21[3] = &unk_1E79CD770;
   v21[4] = self;
-  v22 = v10;
-  v19 = v10;
-  [(PKPeerPaymentWebService *)self performRequest:v18 taskIdentifier:v13 completionHandler:v21];
+  v22 = completionCopy;
+  v19 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v18 taskIdentifier:nextTaskID completionHandler:v21];
 
-  return v13;
+  return nextTaskID;
 }
 
 void __102__PKPeerPaymentWebService_peerPaymentRecipientsForRecipientAddresses_senderAddress_source_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1403,33 +1403,33 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentRequestTokenWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentRequestTokenWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v10 = [v6 recipientAddresses];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  recipientAddresses = [requestCopy recipientAddresses];
   v11 = objc_alloc_init(PKPeerPaymentDeviceScoreAttributes);
   [(PKPeerPaymentDeviceScoreAttributes *)v11 setEndpoint:5];
-  [(PKPeerPaymentDeviceScoreAttributes *)v11 setRecipientAddresses:v10];
+  [(PKPeerPaymentDeviceScoreAttributes *)v11 setRecipientAddresses:recipientAddresses];
   [(PKPeerPaymentDeviceScoreAttributes *)v11 setQuoteRequestDestination:1];
-  -[PKPeerPaymentDeviceScoreAttributes setMessagesContext:](v11, "setMessagesContext:", [v6 messagesContext]);
+  -[PKPeerPaymentDeviceScoreAttributes setMessagesContext:](v11, "setMessagesContext:", [requestCopy messagesContext]);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__PKPeerPaymentWebService_peerPaymentRequestTokenWithRequest_completion___block_invoke;
   v16[3] = &unk_1E79D1D68;
   v16[4] = self;
-  v17 = v6;
-  v19 = v7;
-  v20 = v8;
-  v18 = v9;
-  v12 = v7;
-  v13 = v9;
-  v14 = v6;
+  v17 = requestCopy;
+  v19 = completionCopy;
+  v20 = nextTaskID;
+  v18 = peerPaymentServiceURL;
+  v12 = completionCopy;
+  v13 = peerPaymentServiceURL;
+  v14 = requestCopy;
   [(PKPeerPaymentWebService *)self _deviceScoreForAttributes:v11 withCompletion:v16];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __73__PKPeerPaymentWebService_peerPaymentRequestTokenWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -1583,25 +1583,25 @@ LABEL_16:
   [*(a1 + 32) _provideDeviceScoreFeedbackIfNeededForAttributes:v21 ingested:1];
 }
 
-- (unint64_t)peerPaymentPendingRequestsWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentPendingRequestsWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [v7 _urlRequestWithServiceURL:v9 appleAccountInformation:v10];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [requestCopy _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __76__PKPeerPaymentWebService_peerPaymentPendingRequestsWithRequest_completion___block_invoke;
   v14[3] = &unk_1E79CD770;
   v14[4] = self;
-  v15 = v6;
-  v12 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v8 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __76__PKPeerPaymentWebService_peerPaymentPendingRequestsWithRequest_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1640,31 +1640,31 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentPendingRequestPerformAction:(id)a3 withRequestToken:(id)a4 completion:(id)a5
+- (unint64_t)peerPaymentPendingRequestPerformAction:(id)action withRequestToken:(id)token completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  tokenCopy = token;
+  actionCopy = action;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v13 = objc_alloc_init(PKPeerPaymentPendingRequestPerformActionRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v13];
-  [(PKPeerPaymentPendingRequestPerformActionRequest *)v13 setAction:v10];
+  [(PKPeerPaymentPendingRequestPerformActionRequest *)v13 setAction:actionCopy];
 
-  [(PKPeerPaymentPendingRequestPerformActionRequest *)v13 setRequestToken:v9];
-  v14 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v15 = [(PKPeerPaymentPendingRequestPerformActionRequest *)v13 _urlRequestWithServiceURL:v12 appleAccountInformation:v14];
+  [(PKPeerPaymentPendingRequestPerformActionRequest *)v13 setRequestToken:tokenCopy];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v15 = [(PKPeerPaymentPendingRequestPerformActionRequest *)v13 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __94__PKPeerPaymentWebService_peerPaymentPendingRequestPerformAction_withRequestToken_completion___block_invoke;
   v18[3] = &unk_1E79CD770;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:v11 completionHandler:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __94__PKPeerPaymentWebService_peerPaymentPendingRequestPerformAction_withRequestToken_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1703,34 +1703,34 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentQuoteWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentQuoteWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v10 = objc_alloc_init(PKPeerPaymentDeviceScoreAttributes);
   [(PKPeerPaymentDeviceScoreAttributes *)v10 setEndpoint:3];
-  v11 = [v6 recipientAddress];
-  [(PKPeerPaymentDeviceScoreAttributes *)v10 setRecipientAddress:v11];
+  recipientAddress = [requestCopy recipientAddress];
+  [(PKPeerPaymentDeviceScoreAttributes *)v10 setRecipientAddress:recipientAddress];
 
-  -[PKPeerPaymentDeviceScoreAttributes setQuoteRequestDestination:](v10, "setQuoteRequestDestination:", [v6 destination]);
-  -[PKPeerPaymentDeviceScoreAttributes setMessagesContext:](v10, "setMessagesContext:", [v6 messagesContext]);
+  -[PKPeerPaymentDeviceScoreAttributes setQuoteRequestDestination:](v10, "setQuoteRequestDestination:", [requestCopy destination]);
+  -[PKPeerPaymentDeviceScoreAttributes setMessagesContext:](v10, "setMessagesContext:", [requestCopy messagesContext]);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __66__PKPeerPaymentWebService_peerPaymentQuoteWithRequest_completion___block_invoke;
   v16[3] = &unk_1E79D1D68;
   v16[4] = self;
-  v17 = v6;
-  v19 = v7;
-  v20 = v8;
-  v18 = v9;
-  v12 = v7;
-  v13 = v9;
-  v14 = v6;
+  v17 = requestCopy;
+  v19 = completionCopy;
+  v20 = nextTaskID;
+  v18 = peerPaymentServiceURL;
+  v12 = completionCopy;
+  v13 = peerPaymentServiceURL;
+  v14 = requestCopy;
   [(PKPeerPaymentWebService *)self _deviceScoreForAttributes:v10 withCompletion:v16];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __66__PKPeerPaymentWebService_peerPaymentQuoteWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3, void *a4)
@@ -1850,27 +1850,27 @@ LABEL_14:
   [*(a1 + 32) _provideDeviceScoreFeedbackIfNeededForAttributes:v19 ingested:1];
 }
 
-- (unint64_t)peerPaymentQuoteCertificatesForDestination:(unint64_t)a3 completion:(id)a4
+- (unint64_t)peerPaymentQuoteCertificatesForDestination:(unint64_t)destination completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKWebService *)self nextTaskID];
-  v8 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v9 = objc_alloc_init(PKPeerPaymentQuoteCertificatesRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v9];
-  [(PKPeerPaymentQuoteCertificatesRequest *)v9 setDestination:a3];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [(PKPeerPaymentQuoteCertificatesRequest *)v9 _urlRequestWithServiceURL:v8 appleAccountInformation:v10];
+  [(PKPeerPaymentQuoteCertificatesRequest *)v9 setDestination:destination];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [(PKPeerPaymentQuoteCertificatesRequest *)v9 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__PKPeerPaymentWebService_peerPaymentQuoteCertificatesForDestination_completion___block_invoke;
   v14[3] = &unk_1E79CD770;
   v14[4] = self;
-  v15 = v6;
-  v12 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v7 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v7;
+  return nextTaskID;
 }
 
 void __81__PKPeerPaymentWebService_peerPaymentQuoteCertificatesForDestination_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -1913,38 +1913,38 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentIdentityVerificationRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentIdentityVerificationRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v10 = [(PKPeerPaymentWebService *)self context];
-  [v6 setDevSigned:{objc_msgSend(v10, "devSigned")}];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  context = [(PKPeerPaymentWebService *)self context];
+  [requestCopy setDevSigned:{objc_msgSend(context, "devSigned")}];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __77__PKPeerPaymentWebService_peerPaymentIdentityVerificationRequest_completion___block_invoke;
   aBlock[3] = &unk_1E79D1DE0;
-  v23 = v7;
-  v24 = v8;
+  v23 = completionCopy;
+  v24 = nextTaskID;
   aBlock[4] = self;
-  v11 = v7;
+  v11 = completionCopy;
   v12 = _Block_copy(aBlock);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __77__PKPeerPaymentWebService_peerPaymentIdentityVerificationRequest_completion___block_invoke_190;
   v17[3] = &unk_1E79D1E30;
-  v18 = v6;
-  v19 = self;
-  v20 = v9;
+  v18 = requestCopy;
+  selfCopy = self;
+  v20 = peerPaymentServiceURL;
   v21 = v12;
   v13 = v12;
-  v14 = v9;
-  v15 = v6;
+  v14 = peerPaymentServiceURL;
+  v15 = requestCopy;
   [(PKPeerPaymentWebService *)self _peerPaymentDeviceMetadataWithCompletion:v17];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __77__PKPeerPaymentWebService_peerPaymentIdentityVerificationRequest_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -2060,27 +2060,27 @@ void __77__PKPeerPaymentWebService_peerPaymentIdentityVerificationRequest_comple
   [*(a1 + 48) _provideDeviceScoreFeedbackIfNeededForAttributes:v19 ingested:1];
 }
 
-- (unint64_t)peerPaymentDocumentSubmissionRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentDocumentSubmissionRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [v6 _urlRequestWithServiceURL:v9 appleAccountInformation:v10];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [requestCopy _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__PKPeerPaymentWebService_peerPaymentDocumentSubmissionRequest_completion___block_invoke;
   v15[3] = &unk_1E79D1CC8;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v8 completionHandler:v15];
+  v16 = requestCopy;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v15];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __75__PKPeerPaymentWebService_peerPaymentDocumentSubmissionRequest_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2259,42 +2259,42 @@ LABEL_18:
 LABEL_19:
 }
 
-- (unint64_t)peerPaymentPerformQuoteWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentPerformQuoteWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v10 = [(PKPeerPaymentWebService *)self context];
-  v11 = [v10 pushToken];
-  [v6 setPushToken:v11];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  context = [(PKPeerPaymentWebService *)self context];
+  pushToken = [context pushToken];
+  [requestCopy setPushToken:pushToken];
 
-  v12 = [(PKPeerPaymentWebService *)self context];
-  v13 = [v12 signedEnrollmentDataSignature];
-  [v6 setSignedEnrollmentDataSignature:v13];
+  context2 = [(PKPeerPaymentWebService *)self context];
+  signedEnrollmentDataSignature = [context2 signedEnrollmentDataSignature];
+  [requestCopy setSignedEnrollmentDataSignature:signedEnrollmentDataSignature];
 
   v14 = objc_alloc_init(PKPeerPaymentDeviceScoreAttributes);
   [(PKPeerPaymentDeviceScoreAttributes *)v14 setEndpoint:4];
-  v15 = [v6 recipientPhoneOrEmail];
-  [(PKPeerPaymentDeviceScoreAttributes *)v14 setRecipientAddress:v15];
+  recipientPhoneOrEmail = [requestCopy recipientPhoneOrEmail];
+  [(PKPeerPaymentDeviceScoreAttributes *)v14 setRecipientAddress:recipientPhoneOrEmail];
 
-  -[PKPeerPaymentDeviceScoreAttributes setQuoteRequestDestination:](v14, "setQuoteRequestDestination:", [v6 destination]);
-  -[PKPeerPaymentDeviceScoreAttributes setMessagesContext:](v14, "setMessagesContext:", [v6 messagesContext]);
+  -[PKPeerPaymentDeviceScoreAttributes setQuoteRequestDestination:](v14, "setQuoteRequestDestination:", [requestCopy destination]);
+  -[PKPeerPaymentDeviceScoreAttributes setMessagesContext:](v14, "setMessagesContext:", [requestCopy messagesContext]);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __73__PKPeerPaymentWebService_peerPaymentPerformQuoteWithRequest_completion___block_invoke;
   v20[3] = &unk_1E79D1D68;
   v20[4] = self;
-  v21 = v6;
-  v23 = v7;
-  v24 = v8;
-  v22 = v9;
-  v16 = v7;
-  v17 = v9;
-  v18 = v6;
+  v21 = requestCopy;
+  v23 = completionCopy;
+  v24 = nextTaskID;
+  v22 = peerPaymentServiceURL;
+  v16 = completionCopy;
+  v17 = peerPaymentServiceURL;
+  v18 = requestCopy;
   [(PKPeerPaymentWebService *)self _deviceScoreForAttributes:v14 withCompletion:v20];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __73__PKPeerPaymentWebService_peerPaymentPerformQuoteWithRequest_completion___block_invoke(uint64_t a1, void *a2, void *a3, void *a4, void *a5)
@@ -2417,29 +2417,29 @@ LABEL_13:
   [*(a1 + 32) _provideDeviceScoreFeedbackIfNeededForAttributes:v14 ingested:1];
 }
 
-- (unint64_t)peerPaymentStatusWithPaymentIdentifier:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentStatusWithPaymentIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v10 = objc_alloc_init(PKPeerPaymentStatusRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v10];
-  [(PKPeerPaymentStatusRequest *)v10 setPaymentIdentifier:v7];
+  [(PKPeerPaymentStatusRequest *)v10 setPaymentIdentifier:identifierCopy];
 
-  v11 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v12 = [(PKPeerPaymentStatusRequest *)v10 _urlRequestWithServiceURL:v9 appleAccountInformation:v11];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v12 = [(PKPeerPaymentStatusRequest *)v10 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __77__PKPeerPaymentWebService_peerPaymentStatusWithPaymentIdentifier_completion___block_invoke;
   v15[3] = &unk_1E79CD770;
   v15[4] = self;
-  v16 = v6;
-  v13 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v12 taskIdentifier:v8 completionHandler:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v12 taskIdentifier:nextTaskID completionHandler:v15];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __77__PKPeerPaymentWebService_peerPaymentStatusWithPaymentIdentifier_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2478,31 +2478,31 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentPerformAction:(id)a3 withPaymentIdentifier:(id)a4 completion:(id)a5
+- (unint64_t)peerPaymentPerformAction:(id)action withPaymentIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  actionCopy = action;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v13 = objc_alloc_init(PKPeerPaymentPerformActionRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v13];
-  [(PKPeerPaymentPerformActionRequest *)v13 setAction:v10];
+  [(PKPeerPaymentPerformActionRequest *)v13 setAction:actionCopy];
 
-  [(PKPeerPaymentPerformActionRequest *)v13 setPaymentIdentifier:v9];
-  v14 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v15 = [(PKPeerPaymentPerformActionRequest *)v13 _urlRequestWithServiceURL:v12 appleAccountInformation:v14];
+  [(PKPeerPaymentPerformActionRequest *)v13 setPaymentIdentifier:identifierCopy];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v15 = [(PKPeerPaymentPerformActionRequest *)v13 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __85__PKPeerPaymentWebService_peerPaymentPerformAction_withPaymentIdentifier_completion___block_invoke;
   v18[3] = &unk_1E79CD770;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:v11 completionHandler:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __85__PKPeerPaymentWebService_peerPaymentPerformAction_withPaymentIdentifier_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2541,26 +2541,26 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentPreferencesWithCompletion:(id)a3
+- (unint64_t)peerPaymentPreferencesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v7 = objc_alloc_init(PKPeerPaymentPreferencesRequest);
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v8 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v9 = [(PKPeerPaymentPreferencesRequest *)v7 _urlRequestWithServiceURL:v6 appleAccountInformation:v8];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v9 = [(PKPeerPaymentPreferencesRequest *)v7 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__PKPeerPaymentWebService_peerPaymentPreferencesWithCompletion___block_invoke;
   v12[3] = &unk_1E79CD770;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
-  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:v5 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:nextTaskID completionHandler:v12];
 
-  return v5;
+  return nextTaskID;
 }
 
 void __64__PKPeerPaymentWebService_peerPaymentPreferencesWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2599,25 +2599,25 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentUpdatePreferencesWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentUpdatePreferencesWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [v7 _urlRequestWithServiceURL:v9 appleAccountInformation:v10];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [requestCopy _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__PKPeerPaymentWebService_peerPaymentUpdatePreferencesWithRequest_completion___block_invoke;
   v14[3] = &unk_1E79CD770;
   v14[4] = self;
-  v15 = v6;
-  v12 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v8 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __78__PKPeerPaymentWebService_peerPaymentUpdatePreferencesWithRequest_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2656,29 +2656,29 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentBankLookupWithCountryCode:(id)a3 query:(id)a4 completion:(id)a5
+- (unint64_t)peerPaymentBankLookupWithCountryCode:(id)code query:(id)query completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v13 = [[PKPeerPaymentBankLookupRequest alloc] initWithCountryCode:v10 query:v9];
+  completionCopy = completion;
+  queryCopy = query;
+  codeCopy = code;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  v13 = [[PKPeerPaymentBankLookupRequest alloc] initWithCountryCode:codeCopy query:queryCopy];
 
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v13];
-  v14 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v15 = [(PKPeerPaymentBankLookupRequest *)v13 _urlRequestWithServiceURL:v12 appleAccountInformation:v14];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v15 = [(PKPeerPaymentBankLookupRequest *)v13 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81__PKPeerPaymentWebService_peerPaymentBankLookupWithCountryCode_query_completion___block_invoke;
   v18[3] = &unk_1E79CD770;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:v11 completionHandler:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __81__PKPeerPaymentWebService_peerPaymentBankLookupWithCountryCode_query_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2717,32 +2717,32 @@ LABEL_11:
   }
 }
 
-- (unint64_t)peerPaymentRequestStatementForAccountIdentifier:(id)a3 emailAddress:(id)a4 completion:(id)a5
+- (unint64_t)peerPaymentRequestStatementForAccountIdentifier:(id)identifier emailAddress:(id)address completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  addressCopy = address;
+  identifierCopy = identifier;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v13 = objc_alloc_init(PKPeerPaymentStatementRequest);
-  [(PKPeerPaymentStatementRequest *)v13 setAccountIdentifier:v10];
+  [(PKPeerPaymentStatementRequest *)v13 setAccountIdentifier:identifierCopy];
 
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v13];
-  [(PKPeerPaymentStatementRequest *)v13 setEmailAddress:v9];
+  [(PKPeerPaymentStatementRequest *)v13 setEmailAddress:addressCopy];
 
-  v14 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v15 = [(PKPeerPaymentStatementRequest *)v13 _urlRequestWithServiceURL:v12 appleAccountInformation:v14];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v15 = [(PKPeerPaymentStatementRequest *)v13 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __99__PKPeerPaymentWebService_peerPaymentRequestStatementForAccountIdentifier_emailAddress_completion___block_invoke;
   v18[3] = &unk_1E79CD770;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:v11 completionHandler:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __99__PKPeerPaymentWebService_peerPaymentRequestStatementForAccountIdentifier_emailAddress_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2775,25 +2775,25 @@ void __99__PKPeerPaymentWebService_peerPaymentRequestStatementForAccountIdentifi
   }
 }
 
-- (unint64_t)peerPaymentReOpenAccountWithCompletion:(id)a3
+- (unint64_t)peerPaymentReOpenAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v7 = objc_alloc_init(PKPeerPaymentReOpenAccountRequest);
-  v8 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v9 = [(PKPeerPaymentReOpenAccountRequest *)v7 _urlRequestWithServiceURL:v6 appleAccountInformation:v8];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v9 = [(PKPeerPaymentReOpenAccountRequest *)v7 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__PKPeerPaymentWebService_peerPaymentReOpenAccountWithCompletion___block_invoke;
   v12[3] = &unk_1E79CD770;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
-  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:v5 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:nextTaskID completionHandler:v12];
 
-  return v5;
+  return nextTaskID;
 }
 
 void __66__PKPeerPaymentWebService_peerPaymentReOpenAccountWithCompletion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -2824,25 +2824,25 @@ void __66__PKPeerPaymentWebService_peerPaymentReOpenAccountWithCompletion___bloc
   }
 }
 
-- (unint64_t)peerPaymentEmailTermsWithCompletion:(id)a3
+- (unint64_t)peerPaymentEmailTermsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKWebService *)self nextTaskID];
-  v6 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   v7 = objc_alloc_init(PKPeerPaymentEmailTermsAccountRequest);
-  v8 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v9 = [(PKPeerPaymentEmailTermsAccountRequest *)v7 _urlRequestWithServiceURL:v6 appleAccountInformation:v8];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v9 = [(PKPeerPaymentEmailTermsAccountRequest *)v7 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__PKPeerPaymentWebService_peerPaymentEmailTermsWithCompletion___block_invoke;
   v12[3] = &unk_1E79CD770;
   v12[4] = self;
-  v13 = v4;
-  v10 = v4;
-  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:v5 completionHandler:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v9 taskIdentifier:nextTaskID completionHandler:v12];
 
-  return v5;
+  return nextTaskID;
 }
 
 void __63__PKPeerPaymentWebService_peerPaymentEmailTermsWithCompletion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -2873,25 +2873,25 @@ void __63__PKPeerPaymentWebService_peerPaymentEmailTermsWithCompletion___block_i
   }
 }
 
-- (unint64_t)submitDeviceScoreIdentifiersWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)submitDeviceScoreIdentifiersWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [v7 _urlRequestWithServiceURL:v9 appleAccountInformation:v10];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [requestCopy _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__PKPeerPaymentWebService_submitDeviceScoreIdentifiersWithRequest_completion___block_invoke;
   v14[3] = &unk_1E79CD770;
   v14[4] = self;
-  v15 = v6;
-  v12 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v8 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __78__PKPeerPaymentWebService_submitDeviceScoreIdentifiersWithRequest_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -2922,26 +2922,26 @@ void __78__PKPeerPaymentWebService_submitDeviceScoreIdentifiersWithRequest_compl
   }
 }
 
-- (unint64_t)peerPaymentAddAssociatedAccountWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentAddAssociatedAccountWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [v7 _urlRequestWithServiceURL:v9 appleAccountInformation:v10];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [requestCopy _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __81__PKPeerPaymentWebService_peerPaymentAddAssociatedAccountWithRequest_completion___block_invoke;
   v14[3] = &unk_1E79CD770;
   v14[4] = self;
-  v15 = v6;
-  v12 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v8 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __81__PKPeerPaymentWebService_peerPaymentAddAssociatedAccountWithRequest_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -2974,26 +2974,26 @@ void __81__PKPeerPaymentWebService_peerPaymentAddAssociatedAccountWithRequest_co
   }
 }
 
-- (unint64_t)peerPaymentRemoveAssociatedAccountWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentRemoveAssociatedAccountWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [v7 _urlRequestWithServiceURL:v9 appleAccountInformation:v10];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [requestCopy _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__PKPeerPaymentWebService_peerPaymentRemoveAssociatedAccountWithRequest_completion___block_invoke;
   v14[3] = &unk_1E79CD770;
   v14[4] = self;
-  v15 = v6;
-  v12 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v8 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __84__PKPeerPaymentWebService_peerPaymentRemoveAssociatedAccountWithRequest_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -3031,26 +3031,26 @@ void __84__PKPeerPaymentWebService_peerPaymentRemoveAssociatedAccountWithRequest
   }
 }
 
-- (unint64_t)peerPaymentAssociatedAccountActionWithRequest:(id)a3 completion:(id)a4
+- (unint64_t)peerPaymentAssociatedAccountActionWithRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [v7 _urlRequestWithServiceURL:v9 appleAccountInformation:v10];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [requestCopy _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__PKPeerPaymentWebService_peerPaymentAssociatedAccountActionWithRequest_completion___block_invoke;
   v14[3] = &unk_1E79CD770;
   v14[4] = self;
-  v15 = v6;
-  v12 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v8 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __84__PKPeerPaymentWebService_peerPaymentAssociatedAccountActionWithRequest_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -3088,28 +3088,28 @@ void __84__PKPeerPaymentWebService_peerPaymentAssociatedAccountActionWithRequest
   }
 }
 
-- (unint64_t)peerPaymentRecurringPaymentsForAccountIdentifier:(id)a3 withCompletion:(id)a4
+- (unint64_t)peerPaymentRecurringPaymentsForAccountIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v10 = [[PKPeerPaymentRecurringPaymentsRequest alloc] initWithAccountIdentifier:v7];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  v10 = [[PKPeerPaymentRecurringPaymentsRequest alloc] initWithAccountIdentifier:identifierCopy];
 
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v10];
-  v11 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v12 = [(PKPeerPaymentRecurringPaymentsRequest *)v10 _urlRequestWithServiceURL:v9 appleAccountInformation:v11];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v12 = [(PKPeerPaymentRecurringPaymentsRequest *)v10 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__PKPeerPaymentWebService_peerPaymentRecurringPaymentsForAccountIdentifier_withCompletion___block_invoke;
   v15[3] = &unk_1E79CD770;
   v15[4] = self;
-  v16 = v6;
-  v13 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v12 taskIdentifier:v8 completionHandler:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v12 taskIdentifier:nextTaskID completionHandler:v15];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __91__PKPeerPaymentWebService_peerPaymentRecurringPaymentsForAccountIdentifier_withCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -3153,31 +3153,31 @@ void __91__PKPeerPaymentWebService_peerPaymentRecurringPaymentsForAccountIdentif
   }
 }
 
-- (unint64_t)peerPaymentRecurringPaymentPerformAction:(unint64_t)a3 identifier:(id)a4 completion:(id)a5
+- (unint64_t)peerPaymentRecurringPaymentPerformAction:(unint64_t)action identifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(PKWebService *)self nextTaskID];
-  v11 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v12 = [[PKPeerPaymentRecurringPaymentActionRequest alloc] initWithRecurringPaymentIdentifier:v9];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  v12 = [[PKPeerPaymentRecurringPaymentActionRequest alloc] initWithRecurringPaymentIdentifier:identifierCopy];
 
-  v13 = PKPeerPaymentRecurringPaymentActionToString(a3);
+  v13 = PKPeerPaymentRecurringPaymentActionToString(action);
   [(PKPeerPaymentRecurringPaymentActionRequest *)v12 setAction:v13];
 
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v12];
-  v14 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v15 = [(PKPeerPaymentRecurringPaymentActionRequest *)v12 _urlRequestWithServiceURL:v11 appleAccountInformation:v14];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v15 = [(PKPeerPaymentRecurringPaymentActionRequest *)v12 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __90__PKPeerPaymentWebService_peerPaymentRecurringPaymentPerformAction_identifier_completion___block_invoke;
   v18[3] = &unk_1E79CD770;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:v10 completionHandler:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
 
-  return v10;
+  return nextTaskID;
 }
 
 void __90__PKPeerPaymentWebService_peerPaymentRecurringPaymentPerformAction_identifier_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -3221,27 +3221,27 @@ void __90__PKPeerPaymentWebService_peerPaymentRecurringPaymentPerformAction_iden
   }
 }
 
-- (unint64_t)peerPaymentEncryptionCertificateForDestination:(unint64_t)a3 withCompletion:(id)a4
+- (unint64_t)peerPaymentEncryptionCertificateForDestination:(unint64_t)destination withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(PKWebService *)self nextTaskID];
-  v8 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v9 = [[PKPeerPaymentEncryptionCertificatesRequest alloc] initWithEncryptionCertificateDestination:a3];
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  v9 = [[PKPeerPaymentEncryptionCertificatesRequest alloc] initWithEncryptionCertificateDestination:destination];
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v9];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [(PKPeerPaymentEncryptionCertificatesRequest *)v9 _urlRequestWithServiceURL:v8 appleAccountInformation:v10];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [(PKPeerPaymentEncryptionCertificatesRequest *)v9 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __89__PKPeerPaymentWebService_peerPaymentEncryptionCertificateForDestination_withCompletion___block_invoke;
   v14[3] = &unk_1E79D1E58;
-  v15 = v6;
-  v16 = a3;
+  v15 = completionCopy;
+  destinationCopy = destination;
   v14[4] = self;
-  v12 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v7 completionHandler:v14];
+  v12 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v7;
+  return nextTaskID;
 }
 
 void __89__PKPeerPaymentWebService_peerPaymentEncryptionCertificateForDestination_withCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -3282,26 +3282,26 @@ void __89__PKPeerPaymentWebService_peerPaymentEncryptionCertificateForDestinatio
   }
 }
 
-- (unint64_t)peerPaymentFailureDiagnosticWithRequest:(id)a3 withCompletion:(id)a4
+- (unint64_t)peerPaymentFailureDiagnosticWithRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v7];
-  v10 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v11 = [v7 _urlRequestWithServiceURL:v9 appleAccountInformation:v10];
+  completionCopy = completion;
+  requestCopy = request;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:requestCopy];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v11 = [requestCopy _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __82__PKPeerPaymentWebService_peerPaymentFailureDiagnosticWithRequest_withCompletion___block_invoke;
   v14[3] = &unk_1E79CD770;
   v14[4] = self;
-  v15 = v6;
-  v12 = v6;
-  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:v8 completionHandler:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v11 taskIdentifier:nextTaskID completionHandler:v14];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __82__PKPeerPaymentWebService_peerPaymentFailureDiagnosticWithRequest_withCompletion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -3332,29 +3332,29 @@ void __82__PKPeerPaymentWebService_peerPaymentFailureDiagnosticWithRequest_withC
   }
 }
 
-- (unint64_t)peerPaymentUserInfoForAccountIdentifier:(id)a3 lastUpdated:(id)a4 withCompletion:(id)a5
+- (unint64_t)peerPaymentUserInfoForAccountIdentifier:(id)identifier lastUpdated:(id)updated withCompletion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKWebService *)self nextTaskID];
-  v12 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v13 = [[PKPeerPaymentUserInfoRequest alloc] initWithAccountIdentifier:v10 lastUpdated:v9];
+  completionCopy = completion;
+  updatedCopy = updated;
+  identifierCopy = identifier;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  v13 = [[PKPeerPaymentUserInfoRequest alloc] initWithAccountIdentifier:identifierCopy lastUpdated:updatedCopy];
 
   [(PKPeerPaymentWebService *)self _updateRequestWithCurrentTargetDevice:v13];
-  v14 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-  v15 = [(PKPeerPaymentUserInfoRequest *)v13 _urlRequestWithServiceURL:v12 appleAccountInformation:v14];
+  _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+  v15 = [(PKPeerPaymentUserInfoRequest *)v13 _urlRequestWithServiceURL:peerPaymentServiceURL appleAccountInformation:_appleAccountInformation];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __94__PKPeerPaymentWebService_peerPaymentUserInfoForAccountIdentifier_lastUpdated_withCompletion___block_invoke;
   v18[3] = &unk_1E79CD770;
   v18[4] = self;
-  v19 = v8;
-  v16 = v8;
-  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:v11 completionHandler:v18];
+  v19 = completionCopy;
+  v16 = completionCopy;
+  [(PKPeerPaymentWebService *)self performRequest:v15 taskIdentifier:nextTaskID completionHandler:v18];
 
-  return v11;
+  return nextTaskID;
 }
 
 void __94__PKPeerPaymentWebService_peerPaymentUserInfoForAccountIdentifier_lastUpdated_withCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -3392,35 +3392,35 @@ void __94__PKPeerPaymentWebService_peerPaymentUserInfoForAccountIdentifier_lastU
   }
 }
 
-- (unint64_t)peerPaymentUpdateUserInfoForRequest:(id)a3 withCompletion:(id)a4
+- (unint64_t)peerPaymentUpdateUserInfoForRequest:(id)request withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKWebService *)self nextTaskID];
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  requestCopy = request;
+  completionCopy = completion;
+  nextTaskID = [(PKWebService *)self nextTaskID];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__PKPeerPaymentWebService_peerPaymentUpdateUserInfoForRequest_withCompletion___block_invoke;
   aBlock[3] = &unk_1E79D1DE0;
-  v22 = v7;
-  v23 = v8;
+  v22 = completionCopy;
+  v23 = nextTaskID;
   aBlock[4] = self;
-  v10 = v7;
+  v10 = completionCopy;
   v11 = _Block_copy(aBlock);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __78__PKPeerPaymentWebService_peerPaymentUpdateUserInfoForRequest_withCompletion___block_invoke_234;
   v16[3] = &unk_1E79D1E30;
-  v17 = v6;
-  v18 = self;
-  v19 = v9;
+  v17 = requestCopy;
+  selfCopy = self;
+  v19 = peerPaymentServiceURL;
   v20 = v11;
   v12 = v11;
-  v13 = v9;
-  v14 = v6;
+  v13 = peerPaymentServiceURL;
+  v14 = requestCopy;
   [(PKPeerPaymentWebService *)self _peerPaymentDeviceMetadataWithCompletion:v16];
 
-  return v8;
+  return nextTaskID;
 }
 
 void __78__PKPeerPaymentWebService_peerPaymentUpdateUserInfoForRequest_withCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -3538,25 +3538,25 @@ void __78__PKPeerPaymentWebService_peerPaymentUpdateUserInfoForRequest_withCompl
 
 - (id)_deviceIdentifier
 {
-  v2 = [(PKPeerPaymentWebService *)self context];
-  v3 = [v2 deviceIdentifier];
+  context = [(PKPeerPaymentWebService *)self context];
+  deviceIdentifier = [context deviceIdentifier];
 
-  return v3;
+  return deviceIdentifier;
 }
 
-- (void)_deviceRegistrationDataWithCompletion:(id)a3
+- (void)_deviceRegistrationDataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v5 = [(PKPeerPaymentWebService *)self _appleAccountInformation];
-    v6 = [v5 authorizationHeader];
+    _appleAccountInformation = [(PKPeerPaymentWebService *)self _appleAccountInformation];
+    authorizationHeader = [_appleAccountInformation authorizationHeader];
     v7 = dispatch_group_create();
     v8 = objc_alloc_init(PKPeerPaymentDeviceRegistrationData);
     [(PKPeerPaymentDeviceRegistrationData *)v8 setDevSigned:[(PKSecureElement *)self->_secureElement isProductionSigned]^ 1];
-    [(PKPeerPaymentDeviceRegistrationData *)v8 setAuthorizationHeader:v6];
+    [(PKPeerPaymentDeviceRegistrationData *)v8 setAuthorizationHeader:authorizationHeader];
     dispatch_group_enter(v7);
-    v9 = [v5 aidaAlternateDSID];
+    aidaAlternateDSID = [_appleAccountInformation aidaAlternateDSID];
     secureElement = self->_secureElement;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
@@ -3564,10 +3564,10 @@ void __78__PKPeerPaymentWebService_peerPaymentUpdateUserInfoForRequest_withCompl
     v25[3] = &unk_1E79D1E80;
     v11 = v8;
     v26 = v11;
-    v27 = self;
+    selfCopy = self;
     v12 = v7;
     v28 = v12;
-    [(PKSecureElement *)secureElement peerPaymentEnrollmentDataWithAlternateDSID:v9 completion:v25];
+    [(PKSecureElement *)secureElement peerPaymentEnrollmentDataWithAlternateDSID:aidaAlternateDSID completion:v25];
     dispatch_group_enter(v12);
     v13 = self->_secureElement;
     v22[0] = MEMORY[0x1E69E9820];
@@ -3578,15 +3578,15 @@ void __78__PKPeerPaymentWebService_peerPaymentUpdateUserInfoForRequest_withCompl
     v23 = v14;
     v24 = v12;
     v15 = v12;
-    [(PKSecureElement *)v13 signatureForAuthToken:v6 completion:v22];
+    [(PKSecureElement *)v13 signatureForAuthToken:authorizationHeader completion:v22];
     v16 = dispatch_get_global_queue(21, 0);
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __65__PKPeerPaymentWebService__deviceRegistrationDataWithCompletion___block_invoke_3;
     v18[3] = &unk_1E79CB3F8;
     v19 = v14;
-    v20 = self;
-    v21 = v4;
+    selfCopy2 = self;
+    v21 = completionCopy;
     v17 = v14;
     dispatch_group_notify(v15, v16, v18);
   }
@@ -3633,13 +3633,13 @@ void __65__PKPeerPaymentWebService__deviceRegistrationDataWithCompletion___block
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_peerPaymentDeviceMetadataWithCompletion:(id)a3
+- (void)_peerPaymentDeviceMetadataWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     paymentDevice = self->_paymentDevice;
-    v8 = v4;
+    v8 = completionCopy;
     if (!paymentDevice)
     {
       v6 = objc_alloc_init(PKPaymentDevice);
@@ -3650,24 +3650,24 @@ void __65__PKPeerPaymentWebService__deviceRegistrationDataWithCompletion___block
     }
 
     [(PKPaymentDevice *)paymentDevice paymentDeviceMetadataFields:43 completion:v8];
-    v4 = v8;
+    completionCopy = v8;
   }
 }
 
-- (void)_renewAppleAccountWithCompletionHandler:(id)a3
+- (void)_renewAppleAccountWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __67__PKPeerPaymentWebService__renewAppleAccountWithCompletionHandler___block_invoke;
   v11 = &unk_1E79C4680;
-  v12 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = handlerCopy;
   v13 = v5;
   v6 = _Block_copy(&v8);
   if (objc_opt_respondsToSelector())
   {
-    [(PKPeerPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice renewAppleAccountWithCompletionHandler:v6, v8, v9, v10, v11, v12];
+    [(PKPeerPaymentWebServiceTargetDeviceProtocol *)self->_targetDevice renewAppleAccountWithCompletionHandler:v6, v8, v9, v10, v11, selfCopy];
   }
 
   else
@@ -3698,18 +3698,18 @@ void __67__PKPeerPaymentWebService__renewAppleAccountWithCompletionHandler___blo
   }
 }
 
-- (void)prewarmDeviceScoreForAttributes:(id)a3
+- (void)prewarmDeviceScoreForAttributes:(id)attributes
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPeerPaymentService *)self->_peerPaymentService account];
-  v6 = [v5 deviceScoreEncryptedPayloadVersion];
+  attributesCopy = attributes;
+  account = [(PKPeerPaymentService *)self->_peerPaymentService account];
+  deviceScoreEncryptedPayloadVersion = [account deviceScoreEncryptedPayloadVersion];
 
-  [v4 setPayloadVersion:v6];
-  v7 = [v4 endpoint];
-  v8 = [v4 recipientAddresses];
-  v9 = [v4 messagesContext];
-  v10 = [v4 key];
+  [attributesCopy setPayloadVersion:deviceScoreEncryptedPayloadVersion];
+  endpoint = [attributesCopy endpoint];
+  recipientAddresses = [attributesCopy recipientAddresses];
+  messagesContext = [attributesCopy messagesContext];
+  v10 = [attributesCopy key];
   if ([v10 length])
   {
     prewarmedDeviceScorersQueue = self->_prewarmedDeviceScorersQueue;
@@ -3719,10 +3719,10 @@ void __67__PKPeerPaymentWebService__renewAppleAccountWithCompletionHandler___blo
     v14[3] = &unk_1E79D1EA8;
     v14[4] = self;
     v15 = v10;
-    v18 = v9;
-    v16 = v8;
-    v19 = v7;
-    v17 = v4;
+    v18 = messagesContext;
+    v16 = recipientAddresses;
+    v19 = endpoint;
+    v17 = attributesCopy;
     dispatch_async(prewarmedDeviceScorersQueue, v14);
   }
 
@@ -3731,7 +3731,7 @@ void __67__PKPeerPaymentWebService__renewAppleAccountWithCompletionHandler___blo
     v12 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = PKPeerPaymentDeviceScoreEndpointIdentifierForEndpoint(v7);
+      v13 = PKPeerPaymentDeviceScoreEndpointIdentifierForEndpoint(endpoint);
       *buf = 138412290;
       v21 = v13;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentWebService: Score: Invalid key for endpoint %@.", buf, 0xCu);
@@ -3933,12 +3933,12 @@ LABEL_36:
   }
 }
 
-- (void)unloadDeviceScoreForAttributes:(id)a3
+- (void)unloadDeviceScoreForAttributes:(id)attributes
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 endpoint];
-  v6 = [v4 key];
+  attributesCopy = attributes;
+  endpoint = [attributesCopy endpoint];
+  v6 = [attributesCopy key];
 
   if ([v6 length])
   {
@@ -3957,7 +3957,7 @@ LABEL_36:
     v8 = PKLogFacilityTypeGetObject(0xCuLL);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = PKPeerPaymentDeviceScoreEndpointIdentifierForEndpoint(v5);
+      v9 = PKPeerPaymentDeviceScoreEndpointIdentifierForEndpoint(endpoint);
       *buf = 138412290;
       v13 = v9;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "PKPeerPaymentWebService: Score: Invalid key for endpoint %@.", buf, 0xCu);
@@ -3985,14 +3985,14 @@ void __58__PKPeerPaymentWebService_unloadDeviceScoreForAttributes___block_invoke
   }
 }
 
-- (void)updateDeviceScorersWithEncryptedPayloadVersion:(unint64_t)a3
+- (void)updateDeviceScorersWithEncryptedPayloadVersion:(unint64_t)version
 {
   prewarmedDeviceScorers = self->_prewarmedDeviceScorers;
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __74__PKPeerPaymentWebService_updateDeviceScorersWithEncryptedPayloadVersion___block_invoke;
   v4[3] = &__block_descriptor_40_e74_v32__0__NSString_8__PKPeerPaymentDeviceScoreEncryptedPayloadManager_16_B24l;
-  v4[4] = a3;
+  v4[4] = version;
   [(NSMutableDictionary *)prewarmedDeviceScorers enumerateKeysAndObjectsUsingBlock:v4];
 }
 
@@ -4002,38 +4002,38 @@ void __74__PKPeerPaymentWebService_updateDeviceScorersWithEncryptedPayloadVersio
   [v4 setPayloadVersion:*(a1 + 32)];
 }
 
-- (id)_createDeviceScorerForAttributes:(id)a3
+- (id)_createDeviceScorerForAttributes:(id)attributes
 {
   peerPaymentService = self->_peerPaymentService;
-  v4 = a3;
-  v5 = [(PKPeerPaymentService *)peerPaymentService account];
-  v6 = [v5 deviceScoreEncryptedPayloadVersion];
+  attributesCopy = attributes;
+  account = [(PKPeerPaymentService *)peerPaymentService account];
+  deviceScoreEncryptedPayloadVersion = [account deviceScoreEncryptedPayloadVersion];
 
-  [v4 setPayloadVersion:v6];
-  v7 = [[PKPeerPaymentDeviceScoreEncryptedPayloadManager alloc] initWithDeviceScoreAttributes:v4];
+  [attributesCopy setPayloadVersion:deviceScoreEncryptedPayloadVersion];
+  v7 = [[PKPeerPaymentDeviceScoreEncryptedPayloadManager alloc] initWithDeviceScoreAttributes:attributesCopy];
 
   return v7;
 }
 
-- (void)_deviceScoreForAttributes:(id)a3 withCompletion:(id)a4
+- (void)_deviceScoreForAttributes:(id)attributes withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  attributesCopy = attributes;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v8 = [(PKPeerPaymentService *)self->_peerPaymentService account];
-    v9 = [v8 deviceScoreEncryptedPayloadVersion];
+    account = [(PKPeerPaymentService *)self->_peerPaymentService account];
+    deviceScoreEncryptedPayloadVersion = [account deviceScoreEncryptedPayloadVersion];
 
-    [v6 setPayloadVersion:v9];
-    v10 = [v6 key];
+    [attributesCopy setPayloadVersion:deviceScoreEncryptedPayloadVersion];
+    v10 = [attributesCopy key];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __68__PKPeerPaymentWebService__deviceScoreForAttributes_withCompletion___block_invoke;
     aBlock[3] = &unk_1E79D1F18;
     v11 = v10;
     v21 = v11;
-    v22 = self;
-    v23 = v7;
+    selfCopy = self;
+    v23 = completionCopy;
     v12 = _Block_copy(aBlock);
     prewarmedDeviceScorersQueue = self->_prewarmedDeviceScorersQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -4043,7 +4043,7 @@ void __74__PKPeerPaymentWebService_updateDeviceScorersWithEncryptedPayloadVersio
     block[4] = self;
     v17 = v11;
     v19 = v12;
-    v18 = v6;
+    v18 = attributesCopy;
     v14 = v12;
     v15 = v11;
     dispatch_async(prewarmedDeviceScorersQueue, block);
@@ -4192,25 +4192,25 @@ void __68__PKPeerPaymentWebService__deviceScoreForAttributes_withCompletion___bl
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_provideDeviceScoreFeedbackIfNeededForAttributes:(id)a3 ingested:(BOOL)a4
+- (void)_provideDeviceScoreFeedbackIfNeededForAttributes:(id)attributes ingested:(BOOL)ingested
 {
-  v6 = a3;
-  v7 = [(PKPeerPaymentService *)self->_peerPaymentService account];
-  v8 = [v7 deviceScoreEncryptedPayloadVersion];
+  attributesCopy = attributes;
+  account = [(PKPeerPaymentService *)self->_peerPaymentService account];
+  deviceScoreEncryptedPayloadVersion = [account deviceScoreEncryptedPayloadVersion];
 
-  [v6 setPayloadVersion:v8];
-  v9 = [v6 key];
+  [attributesCopy setPayloadVersion:deviceScoreEncryptedPayloadVersion];
+  v9 = [attributesCopy key];
   prewarmedDeviceScorersQueue = self->_prewarmedDeviceScorersQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__PKPeerPaymentWebService__provideDeviceScoreFeedbackIfNeededForAttributes_ingested___block_invoke;
   block[3] = &unk_1E79D0340;
   v14 = v9;
-  v15 = self;
-  v18 = a4;
-  v16 = v6;
-  v17 = v8;
-  v11 = v6;
+  selfCopy = self;
+  ingestedCopy = ingested;
+  v16 = attributesCopy;
+  v17 = deviceScoreEncryptedPayloadVersion;
+  v11 = attributesCopy;
   v12 = v9;
   dispatch_async(prewarmedDeviceScorersQueue, block);
 }
@@ -4343,10 +4343,10 @@ void __85__PKPeerPaymentWebService__provideDeviceScoreFeedbackIfNeededForAttribu
   }
 }
 
-- (void)_handleRetryAfterRegisterWithRequest:(id)a3 completionHandler:(id)a4
+- (void)_handleRetryAfterRegisterWithRequest:(id)request completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v8 = PKLogFacilityTypeGetObject(0xCuLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -4354,9 +4354,9 @@ void __85__PKPeerPaymentWebService__provideDeviceScoreFeedbackIfNeededForAttribu
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Registering device", buf, 2u);
   }
 
-  v9 = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
-  v10 = [(PKPeerPaymentWebService *)self context];
-  v11 = [v10 pushToken];
+  peerPaymentServiceURL = [(PKPeerPaymentWebService *)self peerPaymentServiceURL];
+  context = [(PKPeerPaymentWebService *)self context];
+  pushToken = [context pushToken];
 
   if (objc_opt_respondsToSelector())
   {
@@ -4366,9 +4366,9 @@ void __85__PKPeerPaymentWebService__provideDeviceScoreFeedbackIfNeededForAttribu
     v14[2] = __82__PKPeerPaymentWebService__handleRetryAfterRegisterWithRequest_completionHandler___block_invoke;
     v14[3] = &unk_1E79D1F40;
     v14[4] = self;
-    v15 = v6;
-    v16 = v7;
-    [(PKPeerPaymentWebServiceTargetDeviceProtocol *)targetDevice peerPaymentReRegisterWithURL:v9 pushToken:v11 peerPaymentWebService:self completion:v14];
+    v15 = requestCopy;
+    v16 = handlerCopy;
+    [(PKPeerPaymentWebServiceTargetDeviceProtocol *)targetDevice peerPaymentReRegisterWithURL:peerPaymentServiceURL pushToken:pushToken peerPaymentWebService:self completion:v14];
   }
 
   else
@@ -4380,7 +4380,7 @@ void __85__PKPeerPaymentWebService__provideDeviceScoreFeedbackIfNeededForAttribu
     }
 
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPeerPaymentWebServiceErrorDomain" code:0 userInfo:0];
-    (*(v7 + 2))(v7, 0, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v13);
   }
 }
 
@@ -4437,39 +4437,39 @@ void __82__PKPeerPaymentWebService__handleRetryAfterRegisterWithRequest_completi
 
 - (void)_archiveContext
 {
-  v3 = [(PKPeerPaymentWebService *)self context];
+  context = [(PKPeerPaymentWebService *)self context];
 
-  if (v3)
+  if (context)
   {
-    v5 = [(PKPeerPaymentWebService *)self archiver];
-    v4 = [(PKPeerPaymentWebService *)self context];
-    [v5 archiveContext:v4];
+    archiver = [(PKPeerPaymentWebService *)self archiver];
+    context2 = [(PKPeerPaymentWebService *)self context];
+    [archiver archiveContext:context2];
   }
 }
 
-- (BOOL)_isValidResponse:(id)a3 error:(id)a4
+- (BOOL)_isValidResponse:(id)response error:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  responseCopy = response;
+  errorCopy = error;
+  if (responseCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = v5;
-    v8 = [v7 statusCode];
+    v7 = responseCopy;
+    statusCode = [v7 statusCode];
     v9 = 1;
-    if (v8 != 200 && v8 != 304)
+    if (statusCode != 200 && statusCode != 304)
     {
-      if (v6)
+      if (errorCopy)
       {
         v10 = PKLogFacilityTypeGetObject(0xCuLL);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           v11 = [v7 URL];
-          v12 = [v11 absoluteString];
+          absoluteString = [v11 absoluteString];
           v14 = 138412546;
-          v15 = v12;
+          v15 = absoluteString;
           v16 = 2112;
-          v17 = v6;
+          v17 = errorCopy;
           _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Error executing request: %@ error: %@", &v14, 0x16u);
         }
       }

@@ -1,21 +1,21 @@
 @interface SearchUIOpenIndexedUserActivityHandler
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4;
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment;
 - (id)destinationApplicationBundleIdentifier;
-- (void)getUserActivityForCommand:(id)a3 environment:(id)a4 completionHandler:(id)a5;
+- (void)getUserActivityForCommand:(id)command environment:(id)environment completionHandler:(id)handler;
 @end
 
 @implementation SearchUIOpenIndexedUserActivityHandler
 
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment
 {
-  v4 = [a3 identifyingResult];
-  v5 = [v4 userActivityRequiredString];
-  if (v5)
+  identifyingResult = [model identifyingResult];
+  userActivityRequiredString = [identifyingResult userActivityRequiredString];
+  if (userActivityRequiredString)
   {
     v6 = objc_opt_new();
-    [v6 setUserActivityRequiredString:v5];
-    v7 = [v4 applicationBundleIdentifier];
-    [v6 setApplicationBundleIdentifier:v7];
+    [v6 setUserActivityRequiredString:userActivityRequiredString];
+    applicationBundleIdentifier = [identifyingResult applicationBundleIdentifier];
+    [v6 setApplicationBundleIdentifier:applicationBundleIdentifier];
   }
 
   else
@@ -26,25 +26,25 @@
   return v6;
 }
 
-- (void)getUserActivityForCommand:(id)a3 environment:(id)a4 completionHandler:(id)a5
+- (void)getUserActivityForCommand:(id)command environment:(id)environment completionHandler:(id)handler
 {
   v7 = MEMORY[0x1E69636A8];
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  commandCopy = command;
   v10 = [v7 alloc];
-  v13 = [v9 userActivityRequiredString];
-  v11 = [v10 _initWithUserActivityStrings:v13 secondaryString:0 optionalData:0];
-  v12 = [v9 applicationBundleIdentifier];
+  userActivityRequiredString = [commandCopy userActivityRequiredString];
+  v11 = [v10 _initWithUserActivityStrings:userActivityRequiredString secondaryString:0 optionalData:0];
+  applicationBundleIdentifier = [commandCopy applicationBundleIdentifier];
 
-  (*(a5 + 2))(v8, v11, v12);
+  (*(handler + 2))(handlerCopy, v11, applicationBundleIdentifier);
 }
 
 - (id)destinationApplicationBundleIdentifier
 {
-  v2 = [(SearchUICommandHandler *)self command];
-  v3 = [v2 applicationBundleIdentifier];
+  command = [(SearchUICommandHandler *)self command];
+  applicationBundleIdentifier = [command applicationBundleIdentifier];
 
-  return v3;
+  return applicationBundleIdentifier;
 }
 
 @end

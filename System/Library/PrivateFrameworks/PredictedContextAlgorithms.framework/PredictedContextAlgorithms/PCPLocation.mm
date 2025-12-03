@@ -1,24 +1,24 @@
 @interface PCPLocation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLocationReferenceFrame:(id)a3;
+- (int)StringAsLocationReferenceFrame:(id)frame;
 - (int)locationReferenceFrame;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLocationLatitudeDeg:(BOOL)a3;
-- (void)setHasLocationLongitudeDeg:(BOOL)a3;
-- (void)setHasLocationReferenceFrame:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLocationLatitudeDeg:(BOOL)deg;
+- (void)setHasLocationLongitudeDeg:(BOOL)deg;
+- (void)setHasLocationReferenceFrame:(BOOL)frame;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPLocation
 
-- (void)setHasLocationLatitudeDeg:(BOOL)a3
+- (void)setHasLocationLatitudeDeg:(BOOL)deg
 {
-  if (a3)
+  if (deg)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLocationLongitudeDeg:(BOOL)a3
+- (void)setHasLocationLongitudeDeg:(BOOL)deg
 {
-  if (a3)
+  if (deg)
   {
     v3 = 4;
   }
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)setHasLocationReferenceFrame:(BOOL)a3
+- (void)setHasLocationReferenceFrame:(BOOL)frame
 {
-  if (a3)
+  if (frame)
   {
     v3 = 8;
   }
@@ -74,20 +74,20 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsLocationReferenceFrame:(id)a3
+- (int)StringAsLocationReferenceFrame:(id)frame
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  frameCopy = frame;
+  if ([frameCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"WGS84"])
+  else if ([frameCopy isEqualToString:@"WGS84"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ChinaShifted"])
+  else if ([frameCopy isEqualToString:@"ChinaShifted"])
   {
     v4 = 2;
   }
@@ -106,20 +106,20 @@
   v8.receiver = self;
   v8.super_class = PCPLocation;
   v4 = [(PCPLocation *)&v8 description];
-  v5 = [(PCPLocation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPLocation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_locationLatitudeDeg];
-    [v3 setObject:v5 forKey:@"locationLatitudeDeg"];
+    [dictionary setObject:v5 forKey:@"locationLatitudeDeg"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -132,7 +132,7 @@ LABEL_3:
 
 LABEL_8:
       v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_locationHorizontalUncertaintyMeters];
-      [v3 setObject:v7 forKey:@"locationHorizontalUncertaintyMeters"];
+      [dictionary setObject:v7 forKey:@"locationHorizontalUncertaintyMeters"];
 
       if ((*&self->_has & 8) == 0)
       {
@@ -151,7 +151,7 @@ LABEL_9:
         v9 = off_1E83B8598[locationReferenceFrame];
       }
 
-      [v3 setObject:v9 forKey:@"locationReferenceFrame"];
+      [dictionary setObject:v9 forKey:@"locationReferenceFrame"];
 
       goto LABEL_13;
     }
@@ -163,7 +163,7 @@ LABEL_9:
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_locationLongitudeDeg];
-  [v3 setObject:v6 forKey:@"locationLongitudeDeg"];
+  [dictionary setObject:v6 forKey:@"locationLongitudeDeg"];
 
   has = self->_has;
   if (has)
@@ -179,12 +179,12 @@ LABEL_4:
 
 LABEL_13:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -235,14 +235,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_locationLatitudeDeg;
-    *(v4 + 36) |= 2u;
+    toCopy[2] = *&self->_locationLatitudeDeg;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -261,8 +261,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = *&self->_locationLongitudeDeg;
-  *(v4 + 36) |= 4u;
+  toCopy[3] = *&self->_locationLongitudeDeg;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -276,21 +276,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[1] = *&self->_locationHorizontalUncertaintyMeters;
-  *(v4 + 36) |= 1u;
+  toCopy[1] = *&self->_locationHorizontalUncertaintyMeters;
+  *(toCopy + 36) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    *(v4 + 8) = self->_locationReferenceFrame;
-    *(v4 + 36) |= 8u;
+    *(toCopy + 8) = self->_locationReferenceFrame;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -342,23 +342,23 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_locationLatitudeDeg != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_locationLatitudeDeg != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
 LABEL_21:
     v5 = 0;
@@ -367,34 +367,34 @@ LABEL_21:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_locationLongitudeDeg != *(v4 + 3))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_locationLongitudeDeg != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_locationHorizontalUncertaintyMeters != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_locationHorizontalUncertaintyMeters != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_21;
   }
 
-  v5 = (*(v4 + 36) & 8) == 0;
+  v5 = (*(equalCopy + 36) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_locationReferenceFrame != *(v4 + 8))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_locationReferenceFrame != *(equalCopy + 8))
     {
       goto LABEL_21;
     }
@@ -523,15 +523,15 @@ LABEL_22:
   return v8 ^ v4 ^ v12 ^ v16;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_locationLatitudeDeg = *(v4 + 2);
+    self->_locationLatitudeDeg = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -544,14 +544,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 4) == 0)
+  else if ((*(fromCopy + 36) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_locationLongitudeDeg = *(v4 + 3);
+  self->_locationLongitudeDeg = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -564,12 +564,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_locationHorizontalUncertaintyMeters = *(v4 + 1);
+  self->_locationHorizontalUncertaintyMeters = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 36) & 8) != 0)
+  if ((*(fromCopy + 36) & 8) != 0)
   {
 LABEL_5:
-    self->_locationReferenceFrame = *(v4 + 8);
+    self->_locationReferenceFrame = *(fromCopy + 8);
     *&self->_has |= 8u;
   }
 

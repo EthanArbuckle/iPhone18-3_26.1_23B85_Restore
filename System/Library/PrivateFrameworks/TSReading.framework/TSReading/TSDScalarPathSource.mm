@@ -1,73 +1,73 @@
 @interface TSDScalarPathSource
-+ (id)chevronWithScalar:(double)a3 naturalSize:(CGSize)a4;
-+ (id)pathSourceWithType:(int)a3 scalar:(double)a4 naturalSize:(CGSize)a5;
-+ (id)regularPolygonWithScalar:(double)a3 naturalSize:(CGSize)a4;
-+ (id)roundedRectangleWithScalar:(double)a3 naturalSize:(CGSize)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)chevronWithScalar:(double)scalar naturalSize:(CGSize)size;
++ (id)pathSourceWithType:(int)type scalar:(double)scalar naturalSize:(CGSize)size;
++ (id)regularPolygonWithScalar:(double)scalar naturalSize:(CGSize)size;
++ (id)roundedRectangleWithScalar:(double)scalar naturalSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isRectangular;
-- (CGPath)newFeedbackPathForKnob:(unint64_t)a3;
+- (CGPath)newFeedbackPathForKnob:(unint64_t)knob;
 - (CGPath)p_newChevronPath;
 - (CGPath)p_newRegularPolygonPath;
 - (CGPath)p_newRoundedRectPath;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGPoint)p_getControlKnobPointForChevron;
 - (CGPoint)p_getControlKnobPointForRegularPolygon;
 - (CGPoint)p_getControlKnobPointForRoundedRect;
 - (CGSize)naturalSize;
 - (CGSize)scaleFactorForInscribedRectangle;
-- (TSDScalarPathSource)initWithType:(int)a3 scalar:(double)a4 naturalSize:(CGSize)a5;
+- (TSDScalarPathSource)initWithType:(int)type scalar:(double)scalar naturalSize:(CGSize)size;
 - (double)maxScalar;
 - (id)bezierPathWithoutFlips;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)getFeedbackStringForKnob:(unint64_t)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)valueForSetSelector:(SEL)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)getFeedbackStringForKnob:(unint64_t)knob;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)valueForSetSelector:(SEL)selector;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
-- (void)p_setControlKnobPointForChevron:(CGPoint)a3;
-- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)a3;
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
-- (void)setScalarValue:(id)a3;
+- (void)p_setControlKnobPointForChevron:(CGPoint)chevron;
+- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)polygon;
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
+- (void)setScalarValue:(id)value;
 @end
 
 @implementation TSDScalarPathSource
 
-+ (id)roundedRectangleWithScalar:(double)a3 naturalSize:(CGSize)a4
++ (id)roundedRectangleWithScalar:(double)scalar naturalSize:(CGSize)size
 {
-  v4 = [[TSDScalarPathSource alloc] initWithType:0 scalar:a3 naturalSize:a4.width, a4.height];
+  v4 = [[TSDScalarPathSource alloc] initWithType:0 scalar:scalar naturalSize:size.width, size.height];
 
   return v4;
 }
 
-+ (id)regularPolygonWithScalar:(double)a3 naturalSize:(CGSize)a4
++ (id)regularPolygonWithScalar:(double)scalar naturalSize:(CGSize)size
 {
-  v4 = [[TSDScalarPathSource alloc] initWithType:1 scalar:a3 naturalSize:a4.width, a4.height];
+  v4 = [[TSDScalarPathSource alloc] initWithType:1 scalar:scalar naturalSize:size.width, size.height];
 
   return v4;
 }
 
-+ (id)chevronWithScalar:(double)a3 naturalSize:(CGSize)a4
++ (id)chevronWithScalar:(double)scalar naturalSize:(CGSize)size
 {
-  v4 = [[TSDScalarPathSource alloc] initWithType:2 scalar:a3 naturalSize:a4.width, a4.height];
+  v4 = [[TSDScalarPathSource alloc] initWithType:2 scalar:scalar naturalSize:size.width, size.height];
 
   return v4;
 }
 
-+ (id)pathSourceWithType:(int)a3 scalar:(double)a4 naturalSize:(CGSize)a5
++ (id)pathSourceWithType:(int)type scalar:(double)scalar naturalSize:(CGSize)size
 {
-  v5 = [[TSDScalarPathSource alloc] initWithType:*&a3 scalar:a4 naturalSize:a5.width, a5.height];
+  v5 = [[TSDScalarPathSource alloc] initWithType:*&type scalar:scalar naturalSize:size.width, size.height];
 
   return v5;
 }
 
-- (TSDScalarPathSource)initWithType:(int)a3 scalar:(double)a4 naturalSize:(CGSize)a5
+- (TSDScalarPathSource)initWithType:(int)type scalar:(double)scalar naturalSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v8 = *&a3;
+  height = size.height;
+  width = size.width;
+  v8 = *&type;
   v12.receiver = self;
   v12.super_class = TSDScalarPathSource;
   v9 = [(TSDScalarPathSource *)&v12 init];
@@ -75,18 +75,18 @@
   if (v9)
   {
     [(TSDScalarPathSource *)v9 setType:v8];
-    [(TSDScalarPathSource *)v10 setScalar:a4];
+    [(TSDScalarPathSource *)v10 setScalar:scalar];
     [(TSDScalarPathSource *)v10 setNaturalSize:width, height];
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TSDScalarPathSource;
-  v4 = [(TSDPathSource *)&v6 copyWithZone:a3];
+  v4 = [(TSDPathSource *)&v6 copyWithZone:zone];
   [v4 setType:{-[TSDScalarPathSource type](self, "type")}];
   [(TSDScalarPathSource *)self scalar];
   [v4 setScalar:?];
@@ -95,9 +95,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v9) = 1;
   }
@@ -113,13 +113,13 @@
     v9 = [(TSDPathSource *)&v21 isEqual:?];
     if (v9)
     {
-      v10 = [(TSDScalarPathSource *)self type];
-      if (v10 == [a3 type] && (-[TSDScalarPathSource scalar](self, "scalar"), v12 = v11, objc_msgSend(a3, "scalar"), vabdd_f64(v12, v13) < 0.00999999978))
+      type = [(TSDScalarPathSource *)self type];
+      if (type == [equal type] && (-[TSDScalarPathSource scalar](self, "scalar"), v12 = v11, objc_msgSend(equal, "scalar"), vabdd_f64(v12, v13) < 0.00999999978))
       {
         [(TSDScalarPathSource *)self naturalSize];
         v15 = v14;
         v17 = v16;
-        [a3 naturalSize];
+        [equal naturalSize];
         LOBYTE(v9) = v17 == v19 && v15 == v18;
       }
 
@@ -150,10 +150,10 @@
   return v3;
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (![(TSDScalarPathSource *)self type])
   {
     [(TSDPathSource *)self uniformScaleForScalingToNaturalSize:width, height];
@@ -164,9 +164,9 @@
   self->mNaturalSize.width = height;
 }
 
-- (void)setScalarValue:(id)a3
+- (void)setScalarValue:(id)value
 {
-  [a3 floatValue];
+  [value floatValue];
   v5 = v4;
 
   [(TSDScalarPathSource *)self setScalar:v5];
@@ -174,14 +174,14 @@
 
 - (double)maxScalar
 {
-  v3 = [(TSDScalarPathSource *)self type];
-  if (v3 == 2)
+  type = [(TSDScalarPathSource *)self type];
+  if (type == 2)
   {
     [(TSDScalarPathSource *)self naturalSize];
     return v11 / v12;
   }
 
-  else if (v3 == 1)
+  else if (type == 1)
   {
     return 100.0;
   }
@@ -189,7 +189,7 @@
   else
   {
     result = 0.0;
-    if (!v3)
+    if (!type)
     {
       [(TSDScalarPathSource *)self naturalSize];
       v6 = v5;
@@ -207,20 +207,20 @@
   return result;
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v4 = [(TSDScalarPathSource *)self type];
-  if (v4 == 2)
+  type = [(TSDScalarPathSource *)self type];
+  if (type == 2)
   {
     [(TSDScalarPathSource *)self p_getControlKnobPointForChevron];
   }
 
-  else if (v4 == 1)
+  else if (type == 1)
   {
     [(TSDScalarPathSource *)self p_getControlKnobPointForRegularPolygon];
   }
 
-  else if (v4)
+  else if (type)
   {
     v5 = *MEMORY[0x277CBF348];
     v6 = *(MEMORY[0x277CBF348] + 8);
@@ -236,12 +236,12 @@
   return result;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(TSDScalarPathSource *)self type];
-  switch(v7)
+  y = point.y;
+  x = point.x;
+  type = [(TSDScalarPathSource *)self type];
+  switch(type)
   {
     case 2:
 
@@ -258,16 +258,16 @@
   }
 }
 
-- (id)getFeedbackStringForKnob:(unint64_t)a3
+- (id)getFeedbackStringForKnob:(unint64_t)knob
 {
-  v4 = [(TSDScalarPathSource *)self type];
-  if (!v4)
+  type = [(TSDScalarPathSource *)self type];
+  if (!type)
   {
     v5 = @"Radius: %d pt";
     goto LABEL_5;
   }
 
-  if (v4 == 1)
+  if (type == 1)
   {
     v5 = @"Sides: %d";
 LABEL_5:
@@ -280,7 +280,7 @@ LABEL_5:
   return &stru_287D36338;
 }
 
-- (CGPath)newFeedbackPathForKnob:(unint64_t)a3
+- (CGPath)newFeedbackPathForKnob:(unint64_t)knob
 {
   if ([(TSDScalarPathSource *)self type]!= 1)
   {
@@ -306,9 +306,9 @@ LABEL_5:
   return Mutable;
 }
 
-- (id)valueForSetSelector:(SEL)a3
+- (id)valueForSetSelector:(SEL)selector
 {
-  if (sel_setScalarValue_ == a3)
+  if (sel_setScalarValue_ == selector)
   {
     v4 = MEMORY[0x277CCABB0];
     [(TSDScalarPathSource *)self scalar];
@@ -327,29 +327,29 @@ LABEL_5:
 
 - (id)bezierPathWithoutFlips
 {
-  v3 = [(TSDScalarPathSource *)self type];
-  if (v3 == 2)
+  type = [(TSDScalarPathSource *)self type];
+  if (type == 2)
   {
-    v4 = [(TSDScalarPathSource *)self p_newChevronPath];
+    p_newChevronPath = [(TSDScalarPathSource *)self p_newChevronPath];
   }
 
-  else if (v3 == 1)
+  else if (type == 1)
   {
-    v4 = [(TSDScalarPathSource *)self p_newRegularPolygonPath];
+    p_newChevronPath = [(TSDScalarPathSource *)self p_newRegularPolygonPath];
   }
 
   else
   {
-    if (v3)
+    if (type)
     {
       v5 = 0;
       goto LABEL_9;
     }
 
-    v4 = [(TSDScalarPathSource *)self p_newRoundedRectPath];
+    p_newChevronPath = [(TSDScalarPathSource *)self p_newRoundedRectPath];
   }
 
-  v5 = v4;
+  v5 = p_newChevronPath;
 LABEL_9:
   v6 = [TSDBezierPath bezierPathWithCGPath:v5];
   CGPathRelease(v5);
@@ -412,15 +412,15 @@ LABEL_9:
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __44__TSDScalarPathSource_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __44__TSDScalarPathSource_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -474,16 +474,16 @@ uint64_t __44__TSDScalarPathSource_mixingTypeWithObject___block_invoke(uint64_t 
   }
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__TSDScalarPathSource_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDScalarPathSource *__56__TSDScalarPathSource_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)
@@ -613,7 +613,7 @@ TSDScalarPathSource *__56__TSDScalarPathSource_mixedObjectWithFraction_ofObject_
   return Mutable;
 }
 
-- (void)p_setControlKnobPointForRoundedRect:(CGPoint)a3
+- (void)p_setControlKnobPointForRoundedRect:(CGPoint)rect
 {
   [(TSDScalarPathSource *)self naturalSize];
   v5 = v4;
@@ -645,10 +645,10 @@ TSDScalarPathSource *__56__TSDScalarPathSource_mixedObjectWithFraction_ofObject_
   return result;
 }
 
-- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)a3
+- (void)p_setControlKnobPointForRegularPolygon:(CGPoint)polygon
 {
-  y = a3.y;
-  x = a3.x;
+  y = polygon.y;
+  x = polygon.x;
   [(TSDScalarPathSource *)self naturalSize];
   v7 = v6;
   v9 = v8;
@@ -719,10 +719,10 @@ TSDScalarPathSource *__56__TSDScalarPathSource_mixedObjectWithFraction_ofObject_
   TSDOriginRotate(&v14, v6 * 0.5 * 0.7, ((v3 / 9.0) + -0.25) * 6.28318531);
   v14 = v10 + v14;
   v15 = v9 * 0.5 + v9 / v7 * v15;
-  v11 = [(TSDPathSource *)self hasVerticalFlip];
+  hasVerticalFlip = [(TSDPathSource *)self hasVerticalFlip];
   v12 = v14;
   v13 = v15;
-  if (v11)
+  if (hasVerticalFlip)
   {
     v13 = v9 - v15;
   }
@@ -732,7 +732,7 @@ TSDScalarPathSource *__56__TSDScalarPathSource_mixedObjectWithFraction_ofObject_
   return result;
 }
 
-- (void)p_setControlKnobPointForChevron:(CGPoint)a3
+- (void)p_setControlKnobPointForChevron:(CGPoint)chevron
 {
   [(TSDScalarPathSource *)self naturalSize];
   v5 = v4;

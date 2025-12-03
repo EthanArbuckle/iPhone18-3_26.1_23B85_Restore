@@ -19,8 +19,8 @@
   if (v5)
   {
     v6 = v5;
-    v7 = [(__CFString *)a1 length];
-    CharactersPtr = CFStringGetCharactersPtr(a1);
+    v7 = [(__CFString *)self length];
+    CharactersPtr = CFStringGetCharactersPtr(self);
     if (CharactersPtr)
     {
       v4[2](v4, v6, v7, CharactersPtr);
@@ -38,7 +38,7 @@
         v9 = malloc_type_malloc(2 * v7, 0x1000040BDFB0063uLL);
       }
 
-      [(__CFString *)a1 getCharacters:v9];
+      [(__CFString *)self getCharacters:v9];
       v4[2](v4, v6, v7, v9);
       if ((v7 << 32) >= 0x8000000001)
       {
@@ -63,7 +63,7 @@
   v3[2] = __42__NSString_GKAdditions___gkIsNaturallyRTL__block_invoke;
   v3[3] = &unk_2785DE0C0;
   v3[4] = &v4;
-  [a1 processUTF16CharactersForBidi:v3];
+  [self processUTF16CharactersForBidi:v3];
   v1 = *(v5 + 24);
   _Block_object_dispose(&v4, 8);
   return v1;
@@ -74,10 +74,10 @@
   v29 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  if ([v7 count] && objc_msgSend(a1, "length"))
+  if ([v7 count] && objc_msgSend(self, "length"))
   {
     v18 = v7;
-    v8 = [v6 valueForKeyPath:a1];
+    v8 = [v6 valueForKeyPath:self];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
@@ -147,35 +147,35 @@ LABEL_15:
 
 - (__CFString)_gkLocaleSensitiveUppercaseString
 {
-  v1 = [a1 mutableCopy];
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  CFStringUppercase(v1, v2);
+  v1 = [self mutableCopy];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  CFStringUppercase(v1, currentLocale);
 
   return v1;
 }
 
 - (id)_gkStringByUnescapingFromURLQuery
 {
-  v1 = [a1 stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-  v2 = [v1 stringByRemovingPercentEncoding];
+  v1 = [self stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+  stringByRemovingPercentEncoding = [v1 stringByRemovingPercentEncoding];
 
-  return v2;
+  return stringByRemovingPercentEncoding;
 }
 
 - (id)_gkArrayByTokenizingString
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v4 = [MEMORY[0x277CCAC80] scannerWithString:v3];
   [v4 setCharactersToBeSkipped:0];
   v14 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [v4 scanLocation];
-  if (v5 < [v3 length])
+  scanLocation = [v4 scanLocation];
+  if (scanLocation < [v3 length])
   {
     v6 = 0;
     while (1)
     {
-      v7 = [a1 characterAtIndex:{objc_msgSend(v4, "scanLocation")}];
+      v7 = [self characterAtIndex:{objc_msgSend(v4, "scanLocation")}];
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", v7];
       v9 = [&unk_283B33448 objectForKey:v8];
       if (v9)
@@ -195,13 +195,13 @@ LABEL_15:
       else
       {
         v15 = v6;
-        [v4 scanUpToCharactersFromSet:v2 intoString:&v15];
+        [v4 scanUpToCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:&v15];
         v10 = v15;
 
         if (v10)
         {
 LABEL_5:
-          v6 = [v10 stringByTrimmingCharactersInSet:v2];
+          v6 = [v10 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
           if ([v6 length])
           {
@@ -214,10 +214,10 @@ LABEL_5:
 
       v6 = 0;
 LABEL_9:
-      [v4 scanCharactersFromSet:v2 intoString:0];
+      [v4 scanCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:0];
 
-      v11 = [v4 scanLocation];
-      if (v11 >= [v3 length])
+      scanLocation2 = [v4 scanLocation];
+      if (scanLocation2 >= [v3 length])
       {
 
         break;
@@ -232,7 +232,7 @@ LABEL_9:
 
 - (id)_gkSHA256HashData
 {
-  v1 = [a1 dataUsingEncoding:1];
+  v1 = [self dataUsingEncoding:1];
   v2 = [MEMORY[0x277CBEB28] dataWithLength:32];
   CC_SHA256([v1 bytes], objc_msgSend(v1, "length"), objc_msgSend(v2, "mutableBytes"));
 
@@ -241,8 +241,8 @@ LABEL_9:
 
 - (id)_gkSHA256Hash
 {
-  v1 = [a1 _gkSHA256HashData];
-  v2 = [v1 base64EncodedStringWithOptions:0];
+  _gkSHA256HashData = [self _gkSHA256HashData];
+  v2 = [_gkSHA256HashData base64EncodedStringWithOptions:0];
 
   return v2;
 }

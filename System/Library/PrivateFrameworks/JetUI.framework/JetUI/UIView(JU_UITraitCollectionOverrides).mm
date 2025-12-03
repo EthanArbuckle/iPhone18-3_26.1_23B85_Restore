@@ -7,27 +7,27 @@
 
 - (uint64_t)juLayoutDirection
 {
-  v2 = [a1 _juLayoutDirectionValue];
-  v3 = [a1 _juLayoutDirectionFromLayoutDirectionValue:v2];
+  _juLayoutDirectionValue = [self _juLayoutDirectionValue];
+  v3 = [self _juLayoutDirectionFromLayoutDirectionValue:_juLayoutDirectionValue];
 
   return v3;
 }
 
 - (void)setJuLayoutDirection:()JU_UITraitCollectionOverrides
 {
-  if ([a1 juLayoutDirection] != a3)
+  if ([self juLayoutDirection] != a3)
   {
     if (sOriginal_UIView_traitCollection)
     {
-      v5 = [a1 traitCollection];
+      traitCollection = [self traitCollection];
     }
 
     else
     {
-      v5 = 0;
+      traitCollection = 0;
     }
 
-    v7 = v5;
+    v7 = traitCollection;
     if (a3 > 1)
     {
       v6 = 0;
@@ -38,11 +38,11 @@
       v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
     }
 
-    objc_setAssociatedObject(a1, sel_juLayoutDirection, v6, 0x303);
+    objc_setAssociatedObject(self, sel_juLayoutDirection, v6, 0x303);
     if (sOriginal_UIView_traitCollection)
     {
-      [a1 setNeedsLayout];
-      [a1 traitCollectionDidChange:v7];
+      [self setNeedsLayout];
+      [self traitCollectionDidChange:v7];
     }
   }
 }

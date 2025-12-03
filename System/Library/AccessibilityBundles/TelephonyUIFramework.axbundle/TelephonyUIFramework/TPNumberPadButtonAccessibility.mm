@@ -1,5 +1,5 @@
 @interface TPNumberPadButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
@@ -7,11 +7,11 @@
 
 @implementation TPNumberPadButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TPNumberPadButton" hasClassMethod:@"usesTelephonyGlyphsWhereAvailable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"TPNumberPadButton" hasClassMethod:@"localizedLettersForCharacter:" withFullSignature:{"@", "q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TPNumberPadButton" hasClassMethod:@"usesTelephonyGlyphsWhereAvailable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"TPNumberPadButton" hasClassMethod:@"localizedLettersForCharacter:" withFullSignature:{"@", "q", 0}];
 }
 
 - (BOOL)isAccessibilityElement
@@ -27,8 +27,8 @@
     return 0;
   }
 
-  v4 = [(TPNumberPadButtonAccessibility *)self accessibilityLabel];
-  v5 = v4 != 0;
+  accessibilityLabel = [(TPNumberPadButtonAccessibility *)self accessibilityLabel];
+  v5 = accessibilityLabel != 0;
 
   return v5;
 }
@@ -36,11 +36,11 @@
 - (id)accessibilityHint
 {
   v3 = [(TPNumberPadButtonAccessibility *)self safeValueForKey:@"character"];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
-  if ((v4 - 1) > 7)
+  if ((intValue - 1) > 7)
   {
-    v5 = 0;
+    accessibilityHint = 0;
   }
 
   else
@@ -55,21 +55,21 @@
     v11 = 3221225472;
     v12 = __51__TPNumberPadButtonAccessibility_accessibilityHint__block_invoke;
     v13 = &unk_29F309668;
-    v14 = self;
+    selfCopy = self;
     v15 = &v17;
-    v16 = v4;
+    v16 = intValue;
     AXPerformSafeBlock();
-    v5 = v18[5];
+    accessibilityHint = v18[5];
     _Block_object_dispose(&v17, 8);
   }
 
-  if (![v5 length])
+  if (![accessibilityHint length])
   {
-    if (v4 <= 4)
+    if (intValue <= 4)
     {
-      if (v4 > 2)
+      if (intValue > 2)
       {
-        if (v4 == 3)
+        if (intValue == 3)
         {
           v6 = @"4.key.hint";
         }
@@ -82,13 +82,13 @@
         goto LABEL_27;
       }
 
-      if (v4 == 1)
+      if (intValue == 1)
       {
         v6 = @"2.key.hint";
         goto LABEL_27;
       }
 
-      if (v4 == 2)
+      if (intValue == 2)
       {
         v6 = @"3.key.hint";
         goto LABEL_27;
@@ -97,9 +97,9 @@
 
     else
     {
-      if (v4 <= 6)
+      if (intValue <= 6)
       {
-        if (v4 == 5)
+        if (intValue == 5)
         {
           v6 = @"6.key.hint";
         }
@@ -112,37 +112,37 @@
         goto LABEL_27;
       }
 
-      if (v4 == 7)
+      if (intValue == 7)
       {
         v6 = @"8.key.hint";
         goto LABEL_27;
       }
 
-      if (v4 == 8)
+      if (intValue == 8)
       {
         v6 = @"9.key.hint";
         goto LABEL_27;
       }
 
-      if (v4 == 10 && ([objc_opt_class() safeBoolForKey:@"usesTelephonyGlyphsWhereAvailable"] & 1) != 0)
+      if (intValue == 10 && ([objc_opt_class() safeBoolForKey:@"usesTelephonyGlyphsWhereAvailable"] & 1) != 0)
       {
         v6 = @"0.key.hint";
 LABEL_27:
 
-        v5 = v6;
+        accessibilityHint = v6;
 LABEL_28:
-        v7 = accessibilityLocalizedString(v5);
+        v7 = accessibilityLocalizedString(accessibilityHint);
 
-        v5 = v7;
+        accessibilityHint = v7;
         goto LABEL_29;
       }
     }
 
-    if (!v5)
+    if (!accessibilityHint)
     {
       v9.receiver = self;
       v9.super_class = TPNumberPadButtonAccessibility;
-      v5 = [(TPNumberPadButtonAccessibility *)&v9 accessibilityHint];
+      accessibilityHint = [(TPNumberPadButtonAccessibility *)&v9 accessibilityHint];
       goto LABEL_29;
     }
 
@@ -151,7 +151,7 @@ LABEL_28:
 
 LABEL_29:
 
-  return v5;
+  return accessibilityHint;
 }
 
 uint64_t __51__TPNumberPadButtonAccessibility_accessibilityHint__block_invoke(uint64_t a1)
@@ -168,10 +168,10 @@ uint64_t __51__TPNumberPadButtonAccessibility_accessibilityHint__block_invoke(ui
 - (id)accessibilityLabel
 {
   v2 = [(TPNumberPadButtonAccessibility *)self safeValueForKey:@"character"];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
   v4 = @"number.pad.star";
-  switch(v3)
+  switch(intValue)
   {
     case 0:
     case 1:

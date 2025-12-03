@@ -1,15 +1,15 @@
 @interface FPDSubtreeChangeDetector
-- (BOOL)maintainDirstatWithError:(id *)a3;
-- (id)initAtPath:(id)a3 error:(id *)a4;
-- (id)verifyTreeIdentityWithError:(id *)a3;
-- (unint64_t)retrieveDirstatGenCountWithError:(id *)a3;
-- (unint64_t)retrieveFileIDWithError:(id *)a3;
+- (BOOL)maintainDirstatWithError:(id *)error;
+- (id)initAtPath:(id)path error:(id *)error;
+- (id)verifyTreeIdentityWithError:(id *)error;
+- (unint64_t)retrieveDirstatGenCountWithError:(id *)error;
+- (unint64_t)retrieveFileIDWithError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation FPDSubtreeChangeDetector
 
-- (unint64_t)retrieveFileIDWithError:(id *)a3
+- (unint64_t)retrieveFileIDWithError:(id *)error
 {
   memset(&v7, 0, sizeof(v7));
   if ((fstat(self->_fd, &v7) & 0x80000000) == 0)
@@ -17,9 +17,9 @@
     return v7.st_ino;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+    *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
   }
 
   v6 = fp_current_or_default_log();
@@ -31,15 +31,15 @@
   return 0;
 }
 
-- (BOOL)maintainDirstatWithError:(id *)a3
+- (BOOL)maintainDirstatWithError:(id *)error
 {
   v8 = 0;
   v5 = ffsctl(self->_fd, 0x80084A02uLL, &v8, 0);
   if (v5 < 0)
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+      *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
     }
 
     v6 = fp_current_or_default_log();
@@ -52,7 +52,7 @@
   return v5 >= 0;
 }
 
-- (unint64_t)retrieveDirstatGenCountWithError:(id *)a3
+- (unint64_t)retrieveDirstatGenCountWithError:(id *)error
 {
   v8 = 0u;
   v9 = 0u;
@@ -62,9 +62,9 @@
     return *(&v9 + 1);
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
+    *error = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
   }
 
   v6 = fp_current_or_default_log();
@@ -76,9 +76,9 @@
   return 0;
 }
 
-- (id)initAtPath:(id)a3 error:(id *)a4
+- (id)initAtPath:(id)path error:(id *)error
 {
-  v7 = a3;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = FPDSubtreeChangeDetector;
   v8 = [(FPDSubtreeChangeDetector *)&v18 init];
@@ -88,8 +88,8 @@
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v8->_path, a3);
-  [v7 fileSystemRepresentation];
+  objc_storeStrong(&v8->_path, path);
+  [pathCopy fileSystemRepresentation];
   v10 = openat_s();
   v9->_fd = v10;
   if (v10 < 0)
@@ -101,18 +101,18 @@
       [FPDSubtreeChangeDetector initAtPath:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v16 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     goto LABEL_13;
   }
 
-  v11 = [(FPDSubtreeChangeDetector *)v9 retrieveFileIDWithError:a4];
+  v11 = [(FPDSubtreeChangeDetector *)v9 retrieveFileIDWithError:error];
   v9->_fileID = v11;
-  if (!v11 || ![(FPDSubtreeChangeDetector *)v9 maintainDirstatWithError:a4]|| (v12 = [(FPDSubtreeChangeDetector *)v9 retrieveDirstatGenCountWithError:a4], (v9->_genCount = v12) == 0))
+  if (!v11 || ![(FPDSubtreeChangeDetector *)v9 maintainDirstatWithError:error]|| (v12 = [(FPDSubtreeChangeDetector *)v9 retrieveDirstatGenCountWithError:error], (v9->_genCount = v12) == 0))
   {
     close(v9->_fd);
 LABEL_13:
@@ -141,13 +141,13 @@ LABEL_14:
   [(FPDSubtreeChangeDetector *)&v4 dealloc];
 }
 
-- (id)verifyTreeIdentityWithError:(id *)a3
+- (id)verifyTreeIdentityWithError:(id *)error
 {
   v5 = [(FPDSubtreeChangeDetector *)self retrieveFileIDWithError:?];
   if (v5)
   {
     v6 = v5;
-    v5 = [(FPDSubtreeChangeDetector *)self retrieveDirstatGenCountWithError:a3];
+    v5 = [(FPDSubtreeChangeDetector *)self retrieveDirstatGenCountWithError:error];
     if (v5)
     {
       if (v6 == self->_fileID && v5 == self->_genCount)
@@ -155,12 +155,12 @@ LABEL_14:
         v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v5];
       }
 
-      else if (a3)
+      else if (error)
       {
         v7 = FPSubtreeChangedError();
         v8 = v7;
         v5 = 0;
-        *a3 = v7;
+        *error = v7;
       }
 
       else

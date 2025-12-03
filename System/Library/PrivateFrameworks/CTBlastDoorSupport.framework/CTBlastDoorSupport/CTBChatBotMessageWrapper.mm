@@ -1,11 +1,11 @@
 @interface CTBChatBotMessageWrapper
-- (CTBChatBotMessageWrapper)initWithWrapped:(optional<ctb:(BOOL)a4 :chatbot::Message> *)a3;
+- (CTBChatBotMessageWrapper)initWithWrapped:(optional<ctb:(BOOL)wrapped :chatbot::Message> *)a3;
 - (id).cxx_construct;
 @end
 
 @implementation CTBChatBotMessageWrapper
 
-- (CTBChatBotMessageWrapper)initWithWrapped:(optional<ctb:(BOOL)a4 :chatbot::Message> *)a3
+- (CTBChatBotMessageWrapper)initWithWrapped:(optional<ctb:(BOOL)wrapped :chatbot::Message> *)a3
 {
   v8.receiver = self;
   v8.super_class = CTBChatBotMessageWrapper;

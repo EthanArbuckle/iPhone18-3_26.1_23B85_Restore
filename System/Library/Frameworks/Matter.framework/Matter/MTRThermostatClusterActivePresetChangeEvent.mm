@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterActivePresetChangeEvent
 - (MTRThermostatClusterActivePresetChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterActivePresetChangeEvent);
-  v5 = [(MTRThermostatClusterActivePresetChangeEvent *)self previousPresetHandle];
-  [(MTRThermostatClusterActivePresetChangeEvent *)v4 setPreviousPresetHandle:v5];
+  previousPresetHandle = [(MTRThermostatClusterActivePresetChangeEvent *)self previousPresetHandle];
+  [(MTRThermostatClusterActivePresetChangeEvent *)v4 setPreviousPresetHandle:previousPresetHandle];
 
-  v6 = [(MTRThermostatClusterActivePresetChangeEvent *)self currentPresetHandle];
-  [(MTRThermostatClusterActivePresetChangeEvent *)v4 setCurrentPresetHandle:v6];
+  currentPresetHandle = [(MTRThermostatClusterActivePresetChangeEvent *)self currentPresetHandle];
+  [(MTRThermostatClusterActivePresetChangeEvent *)v4 setCurrentPresetHandle:currentPresetHandle];
 
   return v4;
 }

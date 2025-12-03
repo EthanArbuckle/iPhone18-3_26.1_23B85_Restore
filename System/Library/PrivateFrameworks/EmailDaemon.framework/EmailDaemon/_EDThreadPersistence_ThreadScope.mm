@@ -1,41 +1,41 @@
 @interface _EDThreadPersistence_ThreadScope
 - (BOOL)_dropTemporaryView;
 - (BOOL)_ensureTempScopeView;
-- (BOOL)createMessagesWithThreadObjectID:(id)a3 wrappedMessages:(id)a4 threadMessages:(id *)a5;
-- (_EDThreadPersistence_ThreadScope)initWithCache:(id)a3 messagePersistence:(id)a4 threadScopeDatabaseID:(int64_t)a5 threadScopeExpression:(id)a6;
+- (BOOL)createMessagesWithThreadObjectID:(id)d wrappedMessages:(id)messages threadMessages:(id *)threadMessages;
+- (_EDThreadPersistence_ThreadScope)initWithCache:(id)cache messagePersistence:(id)persistence threadScopeDatabaseID:(int64_t)d threadScopeExpression:(id)expression;
 @end
 
 @implementation _EDThreadPersistence_ThreadScope
 
-- (_EDThreadPersistence_ThreadScope)initWithCache:(id)a3 messagePersistence:(id)a4 threadScopeDatabaseID:(int64_t)a5 threadScopeExpression:(id)a6
+- (_EDThreadPersistence_ThreadScope)initWithCache:(id)cache messagePersistence:(id)persistence threadScopeDatabaseID:(int64_t)d threadScopeExpression:(id)expression
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  cacheCopy = cache;
+  persistenceCopy = persistence;
+  expressionCopy = expression;
   v17.receiver = self;
   v17.super_class = _EDThreadPersistence_ThreadScope;
   v13 = [(_EDThreadPersistence_ThreadScope *)&v17 init];
   if (v13)
   {
-    v14 = [[_EDThreadPersistence_SQLHelper alloc] initWithCache:v10];
+    v14 = [[_EDThreadPersistence_SQLHelper alloc] initWithCache:cacheCopy];
     sqlHelper = v13->_sqlHelper;
     v13->_sqlHelper = v14;
 
-    objc_storeStrong(&v13->_messagePersistence, a4);
-    v13->_threadScopeDatabaseID = a5;
-    objc_storeStrong(&v13->_threadScopeExpression, a6);
+    objc_storeStrong(&v13->_messagePersistence, persistence);
+    v13->_threadScopeDatabaseID = d;
+    objc_storeStrong(&v13->_threadScopeExpression, expression);
   }
 
   return v13;
 }
 
-- (BOOL)createMessagesWithThreadObjectID:(id)a3 wrappedMessages:(id)a4 threadMessages:(id *)a5
+- (BOOL)createMessagesWithThreadObjectID:(id)d wrappedMessages:(id)messages threadMessages:(id *)threadMessages
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(_EDThreadPersistence_ThreadScope *)self _ensureTempScopeView];
-  v11 = !v10;
-  if (!a5)
+  dCopy = d;
+  messagesCopy = messages;
+  _ensureTempScopeView = [(_EDThreadPersistence_ThreadScope *)self _ensureTempScopeView];
+  v11 = !_ensureTempScopeView;
+  if (!threadMessages)
   {
     v11 = 1;
   }
@@ -43,12 +43,12 @@
   if ((v11 & 1) == 0)
   {
     v12 = [_EDThreadPersistence_ThreadMessages alloc];
-    v13 = [(_EDThreadPersistence_ThreadScope *)self sqlHelper];
-    v14 = [(_EDThreadPersistence_ThreadScope *)self messagePersistence];
-    *a5 = [(_EDThreadPersistence_ThreadMessages *)v12 initWithSQLHelper:v13 messagePersistence:v14 threadScopeDatabaseID:[(_EDThreadPersistence_ThreadScope *)self threadScopeDatabaseID] threadObjectID:v8 wrappedMessages:v9];
+    sqlHelper = [(_EDThreadPersistence_ThreadScope *)self sqlHelper];
+    messagePersistence = [(_EDThreadPersistence_ThreadScope *)self messagePersistence];
+    *threadMessages = [(_EDThreadPersistence_ThreadMessages *)v12 initWithSQLHelper:sqlHelper messagePersistence:messagePersistence threadScopeDatabaseID:[(_EDThreadPersistence_ThreadScope *)self threadScopeDatabaseID] threadObjectID:dCopy wrappedMessages:messagesCopy];
   }
 
-  return v10;
+  return _ensureTempScopeView;
 }
 
 - (BOOL)_ensureTempScopeView
@@ -61,13 +61,13 @@
     if ([(_EDThreadPersistence_ThreadScope *)self _dropTemporaryView])
     {
       v5 = MEMORY[0x1E696AEC0];
-      v6 = [(_EDThreadPersistence_ThreadScope *)self threadScopeExpression];
-      v7 = [v6 ef_SQLExpression];
-      v8 = [v5 stringWithFormat:@"CREATE TEMP VIEW temp_thread_scope_message AS SELECT * FROM messages WHERE %@", v7];;
+      threadScopeExpression = [(_EDThreadPersistence_ThreadScope *)self threadScopeExpression];
+      ef_SQLExpression = [threadScopeExpression ef_SQLExpression];
+      v8 = [v5 stringWithFormat:@"CREATE TEMP VIEW temp_thread_scope_message AS SELECT * FROM messages WHERE %@", ef_SQLExpression];;
 
-      v9 = [(_EDThreadPersistence_ThreadScope *)self sqlHelper];
-      v10 = [v9 connection];
-      v2 = [v10 executeStatementString:v8 errorMessage:@"CREATE TEMP VIEW"];
+      sqlHelper = [(_EDThreadPersistence_ThreadScope *)self sqlHelper];
+      connection = [sqlHelper connection];
+      v2 = [connection executeStatementString:v8 errorMessage:@"CREATE TEMP VIEW"];
 
       if ((v2 & 1) == 0)
       {
@@ -92,9 +92,9 @@
 
 - (BOOL)_dropTemporaryView
 {
-  v2 = [(_EDThreadPersistence_ThreadScope *)self sqlHelper];
-  v3 = [v2 connection];
-  v4 = [v3 executeStatementString:@"DROP VIEW IF EXISTS temp_thread_scope_message;" errorMessage:@"DROP TEMP VIEW"];
+  sqlHelper = [(_EDThreadPersistence_ThreadScope *)self sqlHelper];
+  connection = [sqlHelper connection];
+  v4 = [connection executeStatementString:@"DROP VIEW IF EXISTS temp_thread_scope_message;" errorMessage:@"DROP TEMP VIEW"];
 
   if ((v4 & 1) == 0)
   {

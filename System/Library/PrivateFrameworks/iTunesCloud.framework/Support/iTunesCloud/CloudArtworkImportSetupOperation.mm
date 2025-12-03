@@ -33,10 +33,10 @@
   }
 
   v8 = [v2 enumeratorAtPath:v3];
-  v9 = [v8 nextObject];
-  if (v9)
+  nextObject = [v8 nextObject];
+  if (nextObject)
   {
-    v10 = v9;
+    v10 = nextObject;
     do
     {
       v11 = [v3 stringByAppendingPathComponent:v10];
@@ -56,13 +56,13 @@
         }
       }
 
-      v16 = [v8 nextObject];
+      nextObject2 = [v8 nextObject];
 
-      v10 = v16;
+      v10 = nextObject2;
       v6 = v13;
     }
 
-    while (v16);
+    while (nextObject2);
   }
 
   else

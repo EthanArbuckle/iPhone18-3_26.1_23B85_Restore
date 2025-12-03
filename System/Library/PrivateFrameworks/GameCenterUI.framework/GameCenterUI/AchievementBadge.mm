@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   AchievementBadge.layoutSubviews()();
 }
 
 - (void)_dynamicUserInterfaceTraitDidChange
 {
-  v2 = self;
+  selfCopy = self;
   AchievementBadge._dynamicUserInterfaceTraitDidChange()();
 }
 

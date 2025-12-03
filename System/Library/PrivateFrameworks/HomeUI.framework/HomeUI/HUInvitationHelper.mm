@@ -1,19 +1,19 @@
 @interface HUInvitationHelper
 + (id)_dateFormatter;
 + (id)dateFormatter;
-- (HUInvitationHelper)initWithMode:(unint64_t)a3;
+- (HUInvitationHelper)initWithMode:(unint64_t)mode;
 - (HUInvitationHelperDelegate)delegate;
 - (NSString)detailText;
 - (NSString)homeInvitationTitle;
 - (id)requiredKeyDescriptors;
 - (void)_updateInviterContactInfo;
-- (void)contactController:(id)a3 didFinishDownloadingFamilyMemberAvatar:(id)a4;
-- (void)setInvitation:(id)a3;
+- (void)contactController:(id)controller didFinishDownloadingFamilyMemberAvatar:(id)avatar;
+- (void)setInvitation:(id)invitation;
 @end
 
 @implementation HUInvitationHelper
 
-- (HUInvitationHelper)initWithMode:(unint64_t)a3
+- (HUInvitationHelper)initWithMode:(unint64_t)mode
 {
   v18.receiver = self;
   v18.super_class = HUInvitationHelper;
@@ -21,14 +21,14 @@
   v5 = v4;
   if (v4)
   {
-    v4->_mode = a3;
+    v4->_mode = mode;
     v6 = objc_alloc_init(MEMORY[0x277CBDA78]);
     contactsFormatter = v5->_contactsFormatter;
     v5->_contactsFormatter = v6;
 
     v8 = objc_alloc(MEMORY[0x277D145A8]);
-    v9 = [(HUInvitationHelper *)v5 requiredKeyDescriptors];
-    v10 = [v8 initWithKeyDescriptors:v9];
+    requiredKeyDescriptors = [(HUInvitationHelper *)v5 requiredKeyDescriptors];
+    v10 = [v8 initWithKeyDescriptors:requiredKeyDescriptors];
     contactsController = v5->_contactsController;
     v5->_contactsController = v10;
 
@@ -90,10 +90,10 @@ void __35__HUInvitationHelper_initWithMode___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setInvitation:(id)a3
+- (void)setInvitation:(id)invitation
 {
-  objc_storeStrong(&self->_invitation, a3);
-  if (a3)
+  objc_storeStrong(&self->_invitation, invitation);
+  if (invitation)
   {
 
     [(HUInvitationHelper *)self _updateInviterContactInfo];
@@ -110,21 +110,21 @@ void __35__HUInvitationHelper_initWithMode___block_invoke(uint64_t a1, void *a2)
 - (void)_updateInviterContactInfo
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(HUInvitationHelper *)self requiredKeyDescriptors];
-  v4 = [(HUInvitationHelper *)self invitation];
-  v5 = [v4 inviter];
-  v6 = [v5 userID];
+  requiredKeyDescriptors = [(HUInvitationHelper *)self requiredKeyDescriptors];
+  invitation = [(HUInvitationHelper *)self invitation];
+  inviter = [invitation inviter];
+  userID = [inviter userID];
 
-  if (!v6)
+  if (!userID)
   {
     v7 = HFLogForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v21 = [(HUInvitationHelper *)self invitation];
-      v22 = [v21 inviter];
-      v23 = [v22 hf_prettyDescription];
+      invitation2 = [(HUInvitationHelper *)self invitation];
+      inviter2 = [invitation2 inviter];
+      hf_prettyDescription = [inviter2 hf_prettyDescription];
       *buf = 138412290;
-      v27 = v23;
+      v27 = hf_prettyDescription;
       _os_log_error_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_ERROR, "Inviter userID is nil - %@", buf, 0xCu);
     }
 
@@ -132,16 +132,16 @@ void __35__HUInvitationHelper_initWithMode___block_invoke(uint64_t a1, void *a2)
     goto LABEL_14;
   }
 
-  v7 = [MEMORY[0x277CCACE0] componentsWithString:v6];
-  v8 = [v7 scheme];
-  if ([v8 isEqualToString:@"mailto"])
+  v7 = [MEMORY[0x277CCACE0] componentsWithString:userID];
+  scheme = [v7 scheme];
+  if ([scheme isEqualToString:@"mailto"])
   {
   }
 
   else
   {
-    v10 = [v7 scheme];
-    v11 = [v10 isEqualToString:@"tel"];
+    scheme2 = [v7 scheme];
+    v11 = [scheme2 isEqualToString:@"tel"];
 
     if (!v11)
     {
@@ -149,29 +149,29 @@ void __35__HUInvitationHelper_initWithMode___block_invoke(uint64_t a1, void *a2)
     }
   }
 
-  v12 = [v7 path];
+  path = [v7 path];
 
-  v6 = v12;
+  userID = path;
 LABEL_9:
-  [(HUInvitationHelper *)self setInviterID:v6];
-  v13 = [(HUInvitationHelper *)self familyMembers];
+  [(HUInvitationHelper *)self setInviterID:userID];
+  familyMembers = [(HUInvitationHelper *)self familyMembers];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __47__HUInvitationHelper__updateInviterContactInfo__block_invoke;
   v24[3] = &unk_277DB8900;
-  v9 = v6;
+  v9 = userID;
   v25 = v9;
-  v14 = [v13 na_firstObjectPassingTest:v24];
+  inviterContact = [familyMembers na_firstObjectPassingTest:v24];
 
-  if (!v14)
+  if (!inviterContact)
   {
-    v19 = [MEMORY[0x277D145A8] contactForAppleID:v9 keyDescriptors:v3];
+    v19 = [MEMORY[0x277D145A8] contactForAppleID:v9 keyDescriptors:requiredKeyDescriptors];
     [(HUInvitationHelper *)self setInviterContact:v19];
 
 LABEL_14:
-    v14 = [(HUInvitationHelper *)self inviterContact];
-    v20 = [v14 givenName];
-    -[HUInvitationHelper setIsUnknownContact:](self, "setIsUnknownContact:", [v9 isEqualToString:v20]);
+    inviterContact = [(HUInvitationHelper *)self inviterContact];
+    givenName = [inviterContact givenName];
+    -[HUInvitationHelper setIsUnknownContact:](self, "setIsUnknownContact:", [v9 isEqualToString:givenName]);
 
     goto LABEL_15;
   }
@@ -183,9 +183,9 @@ LABEL_14:
     _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "Inviter matches a family member", buf, 2u);
   }
 
-  v16 = [(HUInvitationHelper *)self contactsController];
-  v17 = [v14 dsid];
-  v18 = [v16 contactForFamilyMemberWithDsid:v17];
+  contactsController = [(HUInvitationHelper *)self contactsController];
+  dsid = [inviterContact dsid];
+  v18 = [contactsController contactForFamilyMemberWithDsid:dsid];
   [(HUInvitationHelper *)self setInviterContact:v18];
 
   [(HUInvitationHelper *)self setIsUnknownContact:0];
@@ -212,12 +212,12 @@ uint64_t __47__HUInvitationHelper__updateInviterContactInfo__block_invoke(uint64
 
 - (NSString)homeInvitationTitle
 {
-  v3 = [(HUInvitationHelper *)self isUnknownContact];
-  v4 = [(HUInvitationHelper *)self mode];
-  v5 = v4;
-  if (v3)
+  isUnknownContact = [(HUInvitationHelper *)self isUnknownContact];
+  mode = [(HUInvitationHelper *)self mode];
+  v5 = mode;
+  if (isUnknownContact)
   {
-    if (v4 == 1)
+    if (mode == 1)
     {
       v6 = @"HUUserManagementInvitation_UnknownInviteHomeName_Onboarding";
     }
@@ -230,13 +230,13 @@ uint64_t __47__HUInvitationHelper__updateInviterContactInfo__block_invoke(uint64
     goto LABEL_8;
   }
 
-  v7 = [(HUInvitationHelper *)self invitation];
-  v8 = v7;
+  invitation = [(HUInvitationHelper *)self invitation];
+  invitation2 = invitation;
   if (v5)
   {
-    v9 = [v7 isInviteeRestrictedGuest];
+    isInviteeRestrictedGuest = [invitation isInviteeRestrictedGuest];
 
-    if (v9)
+    if (isInviteeRestrictedGuest)
     {
       v6 = @"HUUserManagementInvitation_Onboarding_RestrictedGuest";
 LABEL_8:
@@ -244,15 +244,15 @@ LABEL_8:
       goto LABEL_12;
     }
 
-    v8 = [(HUInvitationHelper *)self invitation];
-    v11 = [v8 homeName];
-    HULocalizedStringWithFormat(@"HUUserManagementInvitation_Onboarding_HomeName", @"%@", v18, v19, v20, v21, v22, v23, v11);
+    invitation2 = [(HUInvitationHelper *)self invitation];
+    homeName = [invitation2 homeName];
+    HULocalizedStringWithFormat(@"HUUserManagementInvitation_Onboarding_HomeName", @"%@", v18, v19, v20, v21, v22, v23, homeName);
   }
 
   else
   {
-    v11 = [v7 homeName];
-    HULocalizedStringWithFormat(@"HUUserManagementInvitation_HomeSettingsCell_HomeName", @"%@", v12, v13, v14, v15, v16, v17, v11);
+    homeName = [invitation homeName];
+    HULocalizedStringWithFormat(@"HUUserManagementInvitation_HomeSettingsCell_HomeName", @"%@", v12, v13, v14, v15, v16, v17, homeName);
   }
   v10 = ;
 
@@ -263,112 +263,112 @@ LABEL_12:
 
 - (NSString)detailText
 {
-  v3 = [objc_opt_class() _dateFormatter];
-  v4 = [v3 copy];
+  _dateFormatter = [objc_opt_class() _dateFormatter];
+  v4 = [_dateFormatter copy];
   [v4 setDateStyle:1];
   [v4 setTimeStyle:0];
   [v4 setDoesRelativeDateFormatting:1];
   v5 = [v4 copy];
   [v5 setDateStyle:0];
   [v5 setTimeStyle:1];
-  v6 = [(HUInvitationHelper *)self invitation];
-  v7 = [v6 startDate];
+  invitation = [(HUInvitationHelper *)self invitation];
+  startDate = [invitation startDate];
 
-  v8 = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
-  v9 = [MEMORY[0x277CBEAA8] date];
+  autoupdatingCurrentCalendar = [MEMORY[0x277CBEA80] autoupdatingCurrentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
   v10 = MEMORY[0x277CBEAA8];
-  v11 = [v8 startOfDayForDate:v9];
+  v11 = [autoupdatingCurrentCalendar startOfDayForDate:date];
   v12 = [v10 hf_dateByAddingDays:-1 toDate:v11];
 
   v79 = v12;
-  v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v12 endDate:v9];
+  v13 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v12 endDate:date];
   v78 = v13;
   if ([(HUInvitationHelper *)self mode])
   {
     if ([(HUInvitationHelper *)self isUnknownContact])
     {
-      if ([v13 containsDate:v7])
+      if ([v13 containsDate:startDate])
       {
-        v14 = [v4 stringFromDate:v7];
-        v15 = [v5 stringFromDate:v7];
-        v73 = [(HUInvitationHelper *)self inviterID];
-        v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_RelativeDate_UnknownContact", @"%@ %@ %@", v16, v17, v18, v19, v20, v21, v14);
+        contactsFormatter = [v4 stringFromDate:startDate];
+        inviterID2 = [v5 stringFromDate:startDate];
+        inviterID = [(HUInvitationHelper *)self inviterID];
+        v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_RelativeDate_UnknownContact", @"%@ %@ %@", v16, v17, v18, v19, v20, v21, contactsFormatter);
       }
 
       else
       {
-        v14 = [v3 stringFromDate:v7];
-        v15 = [(HUInvitationHelper *)self inviterID];
-        v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_OtherDate_UnknownContact", @"%@ %@", v52, v53, v54, v55, v56, v57, v14);
+        contactsFormatter = [_dateFormatter stringFromDate:startDate];
+        inviterID2 = [(HUInvitationHelper *)self inviterID];
+        v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_OtherDate_UnknownContact", @"%@ %@", v52, v53, v54, v55, v56, v57, contactsFormatter);
       }
 
       goto LABEL_16;
     }
 
-    v75 = v8;
-    v42 = [(HUInvitationHelper *)self invitation];
-    v43 = [v42 isInviteeRestrictedGuest];
+    v75 = autoupdatingCurrentCalendar;
+    invitation2 = [(HUInvitationHelper *)self invitation];
+    isInviteeRestrictedGuest = [invitation2 isInviteeRestrictedGuest];
 
-    if (v43)
+    if (isInviteeRestrictedGuest)
     {
-      v14 = [(HUInvitationHelper *)self contactsFormatter];
-      v15 = [(HUInvitationHelper *)self inviterContact];
-      v44 = [v14 stringFromContact:v15];
+      contactsFormatter = [(HUInvitationHelper *)self contactsFormatter];
+      inviterID2 = [(HUInvitationHelper *)self inviterContact];
+      inviterID3 = [contactsFormatter stringFromContact:inviterID2];
       [(HUInvitationHelper *)self invitation];
-      v45 = v77 = v7;
-      v72 = [v45 homeName];
-      v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_RestrictedGuest", @"%@ %@", v46, v47, v48, v49, v50, v51, v44);
+      v45 = v77 = startDate;
+      homeName = [v45 homeName];
+      v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_RestrictedGuest", @"%@ %@", v46, v47, v48, v49, v50, v51, inviterID3);
 
-      v7 = v77;
+      startDate = v77;
     }
 
     else
     {
-      if (![v13 containsDate:v7])
+      if (![v13 containsDate:startDate])
       {
-        v14 = [v3 stringFromDate:v7];
-        v15 = [(HUInvitationHelper *)self inviterID];
-        v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_OtherDate", @"%@ %@", v64, v65, v66, v67, v68, v69, v14);
+        contactsFormatter = [_dateFormatter stringFromDate:startDate];
+        inviterID2 = [(HUInvitationHelper *)self inviterID];
+        v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_OtherDate", @"%@ %@", v64, v65, v66, v67, v68, v69, contactsFormatter);
         goto LABEL_15;
       }
 
-      v14 = [v4 stringFromDate:v7];
-      v15 = [v5 stringFromDate:v7];
-      v44 = [(HUInvitationHelper *)self inviterID];
-      v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_RelativeDate", @"%@ %@ %@", v58, v59, v60, v61, v62, v63, v14);
+      contactsFormatter = [v4 stringFromDate:startDate];
+      inviterID2 = [v5 stringFromDate:startDate];
+      inviterID3 = [(HUInvitationHelper *)self inviterID];
+      v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_RelativeDate", @"%@ %@ %@", v58, v59, v60, v61, v62, v63, contactsFormatter);
     }
 
 LABEL_15:
-    v8 = v75;
+    autoupdatingCurrentCalendar = v75;
     goto LABEL_16;
   }
 
-  v76 = v7;
-  v23 = [(HUInvitationHelper *)self contactsFormatter];
-  v24 = [(HUInvitationHelper *)self inviterContact];
-  v25 = [v23 stringFromContact:v24];
+  v76 = startDate;
+  contactsFormatter2 = [(HUInvitationHelper *)self contactsFormatter];
+  inviterContact = [(HUInvitationHelper *)self inviterContact];
+  v25 = [contactsFormatter2 stringFromContact:inviterContact];
   v22 = HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_HomeSettings", @"%@", v26, v27, v28, v29, v30, v31, v25);
 
-  v32 = [(HUInvitationHelper *)self invitation];
-  LODWORD(v25) = [v32 isInviteeRestrictedGuest];
+  invitation3 = [(HUInvitationHelper *)self invitation];
+  LODWORD(v25) = [invitation3 isInviteeRestrictedGuest];
 
   if (!v25)
   {
-    v7 = v76;
+    startDate = v76;
     goto LABEL_17;
   }
 
-  v14 = [(HUInvitationHelper *)self contactsFormatter];
-  v15 = [(HUInvitationHelper *)self inviterContact];
-  v33 = [v14 stringFromContact:v15];
-  v34 = [(HUInvitationHelper *)self invitation];
-  v71 = [v34 homeName];
+  contactsFormatter = [(HUInvitationHelper *)self contactsFormatter];
+  inviterID2 = [(HUInvitationHelper *)self inviterContact];
+  v33 = [contactsFormatter stringFromContact:inviterID2];
+  invitation4 = [(HUInvitationHelper *)self invitation];
+  homeName2 = [invitation4 homeName];
   HULocalizedStringWithFormat(@"HUUserManagementInvitationInfo_HomeSettings_RestrictedGuest", @"%@ %@", v35, v36, v37, v38, v39, v40, v33);
-  v41 = v74 = v3;
+  v41 = v74 = _dateFormatter;
 
   v22 = v41;
-  v3 = v74;
-  v7 = v76;
+  _dateFormatter = v74;
+  startDate = v76;
 LABEL_16:
 
 LABEL_17:
@@ -376,31 +376,31 @@ LABEL_17:
   return v22;
 }
 
-- (void)contactController:(id)a3 didFinishDownloadingFamilyMemberAvatar:(id)a4
+- (void)contactController:(id)controller didFinishDownloadingFamilyMemberAvatar:(id)avatar
 {
-  v6 = a3;
-  v7 = [a4 dsid];
-  v17 = [v6 contactForFamilyMemberWithDsid:v7];
+  controllerCopy = controller;
+  dsid = [avatar dsid];
+  v17 = [controllerCopy contactForFamilyMemberWithDsid:dsid];
 
-  v8 = [(HUInvitationHelper *)self inviterContact];
-  v9 = [v8 identifier];
-  v10 = [v17 identifier];
-  v11 = [v9 isEqual:v10];
+  inviterContact = [(HUInvitationHelper *)self inviterContact];
+  identifier = [inviterContact identifier];
+  identifier2 = [v17 identifier];
+  v11 = [identifier isEqual:identifier2];
 
   if (v11)
   {
     [(HUInvitationHelper *)self setInviterContact:v17];
-    v12 = [(HUInvitationHelper *)self delegate];
-    if (v12)
+    delegate = [(HUInvitationHelper *)self delegate];
+    if (delegate)
     {
-      v13 = v12;
-      v14 = [(HUInvitationHelper *)self delegate];
+      v13 = delegate;
+      delegate2 = [(HUInvitationHelper *)self delegate];
       v15 = objc_opt_respondsToSelector();
 
       if (v15)
       {
-        v16 = [(HUInvitationHelper *)self delegate];
-        [v16 invitationUtilityDidUpdateInformation:self];
+        delegate3 = [(HUInvitationHelper *)self delegate];
+        [delegate3 invitationUtilityDidUpdateInformation:self];
       }
     }
   }
@@ -408,8 +408,8 @@ LABEL_17:
 
 + (id)dateFormatter
 {
-  v2 = [objc_opt_class() _dateFormatter];
-  v3 = [v2 copy];
+  _dateFormatter = [objc_opt_class() _dateFormatter];
+  v3 = [_dateFormatter copy];
 
   return v3;
 }

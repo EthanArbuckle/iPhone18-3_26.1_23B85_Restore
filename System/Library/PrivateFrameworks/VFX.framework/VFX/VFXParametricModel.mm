@@ -1,21 +1,21 @@
 @interface VFXParametricModel
-+ (id)capsuleWithCapRadius:(float)a3 height:(float)a4;
-+ (id)coneWithTopRadius:(float)a3 bottomRadius:(float)a4 height:(float)a5;
-+ (id)cubeWithWidth:(float)a3 height:(float)a4 length:(float)a5 chamferRadius:(float)a6;
-+ (id)cylinderWithRadius:(float)a3 height:(float)a4;
-+ (id)planeWithWidth:(float)a3 height:(float)a4;
-+ (id)pyramidWithWidth:(float)a3 height:(float)a4 length:(float)a5;
-+ (id)sphereWithRadius:(float)a3;
-+ (id)torusWithRingRadius:(float)a3 pipeRadius:(float)a4;
-+ (id)tubeWithInnerRadius:(float)a3 outerRadius:(float)a4 height:(float)a5;
++ (id)capsuleWithCapRadius:(float)radius height:(float)height;
++ (id)coneWithTopRadius:(float)radius bottomRadius:(float)bottomRadius height:(float)height;
++ (id)cubeWithWidth:(float)width height:(float)height length:(float)length chamferRadius:(float)radius;
++ (id)cylinderWithRadius:(float)radius height:(float)height;
++ (id)planeWithWidth:(float)width height:(float)height;
++ (id)pyramidWithWidth:(float)width height:(float)height length:(float)length;
++ (id)sphereWithRadius:(float)radius;
++ (id)torusWithRingRadius:(float)radius pipeRadius:(float)pipeRadius;
++ (id)tubeWithInnerRadius:(float)radius outerRadius:(float)outerRadius height:(float)height;
 + (id)unitCube;
-- (BOOL)getBoundingBoxMin:(VFXParametricModel *)self max:(SEL)a2;
-- (BOOL)getBoundingSphereCenter:(VFXParametricModel *)self radius:(SEL)a2;
+- (BOOL)getBoundingBoxMin:(VFXParametricModel *)self max:(SEL)max;
+- (BOOL)getBoundingSphereCenter:(VFXParametricModel *)self radius:(SEL)radius;
 - (BOOL)isGeodesic;
 - (BOOL)isHemispheric;
 - (NSArray)bridgedComponentNames;
 - (VFXParametricModel)init;
-- (VFXParametricModel)initWithCoder:(id)a3;
+- (VFXParametricModel)initWithCoder:(id)coder;
 - (VFXParametricModel)initWithDefaultMaterial;
 - (float)chamferRadius;
 - (float)height;
@@ -26,9 +26,9 @@
 - (float)radius;
 - (float)topRadius;
 - (float)width;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initPresentationParametricModelWithParametricGeometryRef:(__CFXParametricGeometry *)a3;
+- (id)initPresentationParametricModelWithParametricGeometryRef:(__CFXParametricGeometry *)ref;
 - (id)initUninitialized;
 - (id)mesh;
 - (id)presentationModel;
@@ -45,34 +45,34 @@
 - (int64_t)segmentCount;
 - (int64_t)widthSegmentCount;
 - (void)_notifyModelChanged;
-- (void)_setupObjCModelFrom:(id)a3;
+- (void)_setupObjCModelFrom:(id)from;
 - (void)_updateModelFromPresentation;
-- (void)_updateModelFromPresentation:(__CFXParametricGeometry *)a3;
+- (void)_updateModelFromPresentation:(__CFXParametricGeometry *)presentation;
 - (void)_updatePresentationFromModel;
 - (void)_updateSphereType;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCapSegmentCount:(int64_t)a3;
-- (void)setChamferRadius:(float)a3;
-- (void)setChamferSegmentCount:(int64_t)a3;
-- (void)setCornerSegmentCount:(int64_t)a3;
-- (void)setGeodesic:(BOOL)a3;
-- (void)setHeight:(float)a3;
-- (void)setHeightSegmentCount:(int64_t)a3;
-- (void)setHemispheric:(BOOL)a3;
-- (void)setInnerRadius:(float)a3;
-- (void)setLength:(float)a3;
-- (void)setLengthSegmentCount:(int64_t)a3;
-- (void)setParametricType:(int64_t)a3;
-- (void)setPipeRadius:(float)a3;
-- (void)setPipeSegmentCount:(int64_t)a3;
-- (void)setPrimitiveType:(int64_t)a3;
-- (void)setRadialSegmentCount:(int64_t)a3;
-- (void)setRadialSpan:(float)a3;
-- (void)setRadius:(float)a3;
-- (void)setSegmentCount:(int64_t)a3;
-- (void)setTopRadius:(float)a3;
-- (void)setWidth:(float)a3;
-- (void)setWidthSegmentCount:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCapSegmentCount:(int64_t)count;
+- (void)setChamferRadius:(float)radius;
+- (void)setChamferSegmentCount:(int64_t)count;
+- (void)setCornerSegmentCount:(int64_t)count;
+- (void)setGeodesic:(BOOL)geodesic;
+- (void)setHeight:(float)height;
+- (void)setHeightSegmentCount:(int64_t)count;
+- (void)setHemispheric:(BOOL)hemispheric;
+- (void)setInnerRadius:(float)radius;
+- (void)setLength:(float)length;
+- (void)setLengthSegmentCount:(int64_t)count;
+- (void)setParametricType:(int64_t)type;
+- (void)setPipeRadius:(float)radius;
+- (void)setPipeSegmentCount:(int64_t)count;
+- (void)setPrimitiveType:(int64_t)type;
+- (void)setRadialSegmentCount:(int64_t)count;
+- (void)setRadialSpan:(float)span;
+- (void)setRadius:(float)radius;
+- (void)setSegmentCount:(int64_t)count;
+- (void)setTopRadius:(float)radius;
+- (void)setWidth:(float)width;
+- (void)setWidthSegmentCount:(int64_t)count;
 @end
 
 @implementation VFXParametricModel
@@ -129,11 +129,11 @@
   return v5;
 }
 
-- (id)initPresentationParametricModelWithParametricGeometryRef:(__CFXParametricGeometry *)a3
+- (id)initPresentationParametricModelWithParametricGeometryRef:(__CFXParametricGeometry *)ref
 {
   v4.receiver = self;
   v4.super_class = VFXParametricModel;
-  return [(VFXModel *)&v4 initPresentationModelWithModelRef:a3];
+  return [(VFXModel *)&v4 initPresentationModelWithModelRef:ref];
 }
 
 - (id)mesh
@@ -262,40 +262,40 @@
   objc_msgSend__updateModelFromPresentation_(self, v7, v6, v8);
 }
 
-- (void)_updateModelFromPresentation:(__CFXParametricGeometry *)a3
+- (void)_updateModelFromPresentation:(__CFXParametricGeometry *)presentation
 {
-  self->_type = sub_1AF1BE834(a3);
-  v5 = sub_1AF1BECB4(a3, 0);
+  self->_type = sub_1AF1BE834(presentation);
+  v5 = sub_1AF1BECB4(presentation, 0);
   self->_width = *&v5;
-  v6 = sub_1AF1BECB4(a3, 1);
+  v6 = sub_1AF1BECB4(presentation, 1);
   self->_height = *&v6;
-  v7 = sub_1AF1BECB4(a3, 2);
+  v7 = sub_1AF1BECB4(presentation, 2);
   self->_length = *&v7;
-  v8 = sub_1AF1BECB4(a3, 3);
+  v8 = sub_1AF1BECB4(presentation, 3);
   self->_chamferRadius = *&v8;
-  v9 = sub_1AF1BECB4(a3, 4);
+  v9 = sub_1AF1BECB4(presentation, 4);
   self->_radius = *&v9;
-  v10 = sub_1AF1BECB4(a3, 7);
+  v10 = sub_1AF1BECB4(presentation, 7);
   self->_pipeRadius = *&v10;
-  v11 = sub_1AF1BECB4(a3, 5);
+  v11 = sub_1AF1BECB4(presentation, 5);
   self->_topRadius = *&v11;
-  v12 = sub_1AF1BECB4(a3, 6);
+  v12 = sub_1AF1BECB4(presentation, 6);
   self->_innerRadius = *&v12;
-  self->_widthSegmentCount = sub_1AF1C2450(a3, 9);
-  self->_heightSegmentCount = sub_1AF1C2450(a3, 10);
-  self->_lengthSegmentCount = sub_1AF1C2450(a3, 11);
-  self->_chamferSegmentCount = sub_1AF1C2450(a3, 12);
-  self->_pipeSegmentCount = sub_1AF1C2450(a3, 15);
-  self->_capSegmentCount = sub_1AF1C2450(a3, 14);
-  self->_cornerSegmentCount = sub_1AF1C2450(a3, 12);
-  self->_segmentCount = sub_1AF1C2DC8(a3);
-  self->_radialSegmentCount = sub_1AF1C2B98(a3);
-  v13 = sub_1AF1C2450(a3, 19);
+  self->_widthSegmentCount = sub_1AF1C2450(presentation, 9);
+  self->_heightSegmentCount = sub_1AF1C2450(presentation, 10);
+  self->_lengthSegmentCount = sub_1AF1C2450(presentation, 11);
+  self->_chamferSegmentCount = sub_1AF1C2450(presentation, 12);
+  self->_pipeSegmentCount = sub_1AF1C2450(presentation, 15);
+  self->_capSegmentCount = sub_1AF1C2450(presentation, 14);
+  self->_cornerSegmentCount = sub_1AF1C2450(presentation, 12);
+  self->_segmentCount = sub_1AF1C2DC8(presentation);
+  self->_radialSegmentCount = sub_1AF1C2B98(presentation);
+  v13 = sub_1AF1C2450(presentation, 19);
   self->_spheregeodesic = v13 == 1;
   self->_spherehemispheric = v13 == 2;
-  v14 = sub_1AF1BECB4(a3, 18);
+  v14 = sub_1AF1BECB4(presentation, 18);
   self->_radialSpan = *&v14;
-  self->_primitiveType = sub_1AF1C2450(a3, 17);
+  self->_primitiveType = sub_1AF1C2450(presentation, 17);
 }
 
 - (void)_updatePresentationFromModel
@@ -311,59 +311,59 @@
   [(VFXModel *)&v3 _updateModelFromPresentation];
 }
 
-- (void)_setupObjCModelFrom:(id)a3
+- (void)_setupObjCModelFrom:(id)from
 {
   v139.receiver = self;
   v139.super_class = VFXParametricModel;
   [(VFXModel *)&v139 _setupObjCModelFrom:?];
   objc_msgSend_begin(VFXTransaction, v5, v6, v7);
   objc_msgSend_setImmediateMode_(VFXTransaction, v8, 1, v9);
-  v13 = objc_msgSend_primitiveType(a3, v10, v11, v12);
+  v13 = objc_msgSend_primitiveType(from, v10, v11, v12);
   objc_msgSend_setPrimitiveType_(self, v14, v13, v15);
-  objc_msgSend_width(a3, v16, v17, v18);
+  objc_msgSend_width(from, v16, v17, v18);
   objc_msgSend_setWidth_(self, v19, v20, v21);
-  objc_msgSend_height(a3, v22, v23, v24);
+  objc_msgSend_height(from, v22, v23, v24);
   objc_msgSend_setHeight_(self, v25, v26, v27);
-  objc_msgSend_length(a3, v28, v29, v30);
+  objc_msgSend_length(from, v28, v29, v30);
   objc_msgSend_setLength_(self, v31, v32, v33);
-  objc_msgSend_radius(a3, v34, v35, v36);
+  objc_msgSend_radius(from, v34, v35, v36);
   objc_msgSend_setRadius_(self, v37, v38, v39);
-  objc_msgSend_chamferRadius(a3, v40, v41, v42);
+  objc_msgSend_chamferRadius(from, v40, v41, v42);
   objc_msgSend_setChamferRadius_(self, v43, v44, v45);
-  objc_msgSend_topRadius(a3, v46, v47, v48);
+  objc_msgSend_topRadius(from, v46, v47, v48);
   objc_msgSend_setTopRadius_(self, v49, v50, v51);
-  objc_msgSend_pipeRadius(a3, v52, v53, v54);
+  objc_msgSend_pipeRadius(from, v52, v53, v54);
   objc_msgSend_setPipeRadius_(self, v55, v56, v57);
-  objc_msgSend_innerRadius(a3, v58, v59, v60);
+  objc_msgSend_innerRadius(from, v58, v59, v60);
   objc_msgSend_setInnerRadius_(self, v61, v62, v63);
-  v67 = objc_msgSend_segmentCount(a3, v64, v65, v66);
+  v67 = objc_msgSend_segmentCount(from, v64, v65, v66);
   objc_msgSend_setSegmentCount_(self, v68, v67, v69);
-  v73 = objc_msgSend_widthSegmentCount(a3, v70, v71, v72);
+  v73 = objc_msgSend_widthSegmentCount(from, v70, v71, v72);
   objc_msgSend_setWidthSegmentCount_(self, v74, v73, v75);
-  v79 = objc_msgSend_heightSegmentCount(a3, v76, v77, v78);
+  v79 = objc_msgSend_heightSegmentCount(from, v76, v77, v78);
   objc_msgSend_setHeightSegmentCount_(self, v80, v79, v81);
-  v85 = objc_msgSend_lengthSegmentCount(a3, v82, v83, v84);
+  v85 = objc_msgSend_lengthSegmentCount(from, v82, v83, v84);
   objc_msgSend_setLengthSegmentCount_(self, v86, v85, v87);
-  v91 = objc_msgSend_cornerSegmentCount(a3, v88, v89, v90);
+  v91 = objc_msgSend_cornerSegmentCount(from, v88, v89, v90);
   objc_msgSend_setCornerSegmentCount_(self, v92, v91, v93);
-  v97 = objc_msgSend_pipeSegmentCount(a3, v94, v95, v96);
+  v97 = objc_msgSend_pipeSegmentCount(from, v94, v95, v96);
   objc_msgSend_setPipeSegmentCount_(self, v98, v97, v99);
-  v103 = objc_msgSend_capSegmentCount(a3, v100, v101, v102);
+  v103 = objc_msgSend_capSegmentCount(from, v100, v101, v102);
   objc_msgSend_setCapSegmentCount_(self, v104, v103, v105);
-  v109 = objc_msgSend_radialSegmentCount(a3, v106, v107, v108);
+  v109 = objc_msgSend_radialSegmentCount(from, v106, v107, v108);
   objc_msgSend_setRadialSegmentCount_(self, v110, v109, v111);
-  objc_msgSend_radialSpan(a3, v112, v113, v114);
+  objc_msgSend_radialSpan(from, v112, v113, v114);
   objc_msgSend_setRadialSpan_(self, v115, v116, v117);
-  isGeodesic = objc_msgSend_isGeodesic(a3, v118, v119, v120);
+  isGeodesic = objc_msgSend_isGeodesic(from, v118, v119, v120);
   objc_msgSend_setGeodesic_(self, v122, isGeodesic, v123);
-  isHemispheric = objc_msgSend_isHemispheric(a3, v124, v125, v126);
+  isHemispheric = objc_msgSend_isHemispheric(from, v124, v125, v126);
   objc_msgSend_setHemispheric_(self, v128, isHemispheric, v129);
-  v133 = objc_msgSend_parametricType(a3, v130, v131, v132);
+  v133 = objc_msgSend_parametricType(from, v130, v131, v132);
   objc_msgSend_setParametricType_(self, v134, v133, v135);
   objc_msgSend_commitImmediate(VFXTransaction, v136, v137, v138);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v37[1] = *MEMORY[0x1E69E9840];
   v4 = objc_alloc(objc_opt_class());
@@ -385,7 +385,7 @@
   return inited;
 }
 
-- (BOOL)getBoundingBoxMin:(VFXParametricModel *)self max:(SEL)a2
+- (BOOL)getBoundingBoxMin:(VFXParametricModel *)self max:(SEL)max
 {
   v4 = v3;
   v5 = v2;
@@ -393,7 +393,7 @@
   *&v26 = 0;
   DWORD2(v25) = 0;
   *&v25 = 0;
-  if (!objc_msgSend_isPresentationObject(self, a2, v2, v3))
+  if (!objc_msgSend_isPresentationObject(self, max, v2, v3))
   {
     if (objc_msgSend__hasFixedBoundingBoxExtrema(self, v7, v8, v9))
     {
@@ -502,12 +502,12 @@ LABEL_17:
   return v19;
 }
 
-- (BOOL)getBoundingSphereCenter:(VFXParametricModel *)self radius:(SEL)a2
+- (BOOL)getBoundingSphereCenter:(VFXParametricModel *)self radius:(SEL)radius
 {
   v4 = v3;
   v5 = v2;
   v24 = 0uLL;
-  if (objc_msgSend_isPresentationObject(self, a2, v2, v3))
+  if (objc_msgSend_isPresentationObject(self, radius, v2, v3))
   {
     v12 = objc_msgSend_worldRef(self, v7, v8, v9);
     v16 = v12;
@@ -663,17 +663,17 @@ LABEL_17:
   }
 }
 
-- (void)setParametricType:(int64_t)a3
+- (void)setParametricType:(int64_t)type
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_type != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, type, v3) & 1) != 0 || self->_type != type)
   {
-    self->_type = a3;
+    self->_type = type;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF312018;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = type;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v6, self, v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -727,17 +727,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setWidth:(float)a3
+- (void)setWidth:(float)width
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_width != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_width != width)
   {
-    self->_width = a3;
+    self->_width = width;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF312208;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    widthCopy = width;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"width", v11);
     objc_msgSend__notifyModelChanged(self, v8, v9, v10);
   }
@@ -767,17 +767,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setHeight:(float)a3
+- (void)setHeight:(float)height
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_height != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_height != height)
   {
-    self->_height = a3;
+    self->_height = height;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF312380;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    heightCopy = height;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"height", v11);
     objc_msgSend__notifyModelChanged(self, v8, v9, v10);
   }
@@ -807,17 +807,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setLength:(float)a3
+- (void)setLength:(float)length
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_length != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_length != length)
   {
-    self->_length = a3;
+    self->_length = length;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF3124F8;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    lengthCopy = length;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"length", v11);
     objc_msgSend__notifyModelChanged(self, v8, v9, v10);
   }
@@ -847,17 +847,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setRadius:(float)a3
+- (void)setRadius:(float)radius
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_radius != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_radius != radius)
   {
-    self->_radius = a3;
+    self->_radius = radius;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF312670;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"radius", v11);
     objc_msgSend__notifyModelChanged(self, v8, v9, v10);
   }
@@ -887,17 +887,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setChamferRadius:(float)a3
+- (void)setChamferRadius:(float)radius
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_chamferRadius != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_chamferRadius != radius)
   {
-    self->_chamferRadius = a3;
+    self->_chamferRadius = radius;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF3127F0;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"chamferRadius", v11);
     objc_msgSend__notifyModelChanged(self, v8, v9, v10);
   }
@@ -927,17 +927,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setTopRadius:(float)a3
+- (void)setTopRadius:(float)radius
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_topRadius != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_topRadius != radius)
   {
-    self->_topRadius = a3;
+    self->_topRadius = radius;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF312968;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"topRadius", v11);
     objc_msgSend__notifyModelChanged(self, v8, v9, v10);
   }
@@ -967,17 +967,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setInnerRadius:(float)a3
+- (void)setInnerRadius:(float)radius
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_innerRadius != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_innerRadius != radius)
   {
-    self->_innerRadius = a3;
+    self->_innerRadius = radius;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF312AE0;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"innerRadius", v11);
     objc_msgSend__notifyModelChanged(self, v8, v9, v10);
   }
@@ -1007,17 +1007,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setPipeRadius:(float)a3
+- (void)setPipeRadius:(float)radius
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_pipeRadius != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_pipeRadius != radius)
   {
-    self->_pipeRadius = a3;
+    self->_pipeRadius = radius;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF312C58;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    radiusCopy = radius;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"pipeRadius", v11);
     objc_msgSend__notifyModelChanged(self, v8, v9, v10);
   }
@@ -1047,17 +1047,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setSegmentCount:(int64_t)a3
+- (void)setSegmentCount:(int64_t)count
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_segmentCount != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, count, v3) & 1) != 0 || self->_segmentCount != count)
   {
-    self->_segmentCount = a3;
+    self->_segmentCount = count;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF312DBC;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = count;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"segmentCount", v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1087,17 +1087,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setWidthSegmentCount:(int64_t)a3
+- (void)setWidthSegmentCount:(int64_t)count
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_widthSegmentCount != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, count, v3) & 1) != 0 || self->_widthSegmentCount != count)
   {
-    self->_widthSegmentCount = a3;
+    self->_widthSegmentCount = count;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF312F20;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = count;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"widthSegmentCount", v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1127,17 +1127,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setHeightSegmentCount:(int64_t)a3
+- (void)setHeightSegmentCount:(int64_t)count
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_heightSegmentCount != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, count, v3) & 1) != 0 || self->_heightSegmentCount != count)
   {
-    self->_heightSegmentCount = a3;
+    self->_heightSegmentCount = count;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF313084;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = count;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"heightSegmentCount", v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1167,17 +1167,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setLengthSegmentCount:(int64_t)a3
+- (void)setLengthSegmentCount:(int64_t)count
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_lengthSegmentCount != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, count, v3) & 1) != 0 || self->_lengthSegmentCount != count)
   {
-    self->_lengthSegmentCount = a3;
+    self->_lengthSegmentCount = count;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF3131E8;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = count;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"lengthSegmentCount", v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1207,17 +1207,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setChamferSegmentCount:(int64_t)a3
+- (void)setChamferSegmentCount:(int64_t)count
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_chamferSegmentCount != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, count, v3) & 1) != 0 || self->_chamferSegmentCount != count)
   {
-    self->_chamferSegmentCount = a3;
+    self->_chamferSegmentCount = count;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF31334C;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = count;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"chamferSegmentCount", v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1247,17 +1247,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setCornerSegmentCount:(int64_t)a3
+- (void)setCornerSegmentCount:(int64_t)count
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_cornerSegmentCount != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, count, v3) & 1) != 0 || self->_cornerSegmentCount != count)
   {
-    self->_cornerSegmentCount = a3;
+    self->_cornerSegmentCount = count;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF3134B0;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = count;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"cornerSegmentCount", v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1287,17 +1287,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setPipeSegmentCount:(int64_t)a3
+- (void)setPipeSegmentCount:(int64_t)count
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_pipeSegmentCount != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, count, v3) & 1) != 0 || self->_pipeSegmentCount != count)
   {
-    self->_pipeSegmentCount = a3;
+    self->_pipeSegmentCount = count;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF313614;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = count;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"pipeSegmentCount", v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1327,17 +1327,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setCapSegmentCount:(int64_t)a3
+- (void)setCapSegmentCount:(int64_t)count
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_capSegmentCount != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, count, v3) & 1) != 0 || self->_capSegmentCount != count)
   {
-    self->_capSegmentCount = a3;
+    self->_capSegmentCount = count;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF313778;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = count;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"capSegmentCount", v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1367,17 +1367,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setRadialSegmentCount:(int64_t)a3
+- (void)setRadialSegmentCount:(int64_t)count
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_radialSegmentCount != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, count, v3) & 1) != 0 || self->_radialSegmentCount != count)
   {
-    self->_radialSegmentCount = a3;
+    self->_radialSegmentCount = count;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF3138DC;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = count;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v6, self, @"radialSegmentCount", v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1407,17 +1407,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setRadialSpan:(float)a3
+- (void)setRadialSpan:(float)span
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_radialSpan != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, v3, v4) & 1) != 0 || self->_radialSpan != span)
   {
-    self->_radialSpan = a3;
+    self->_radialSpan = span;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF313A54;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    spanCopy = span;
     objc_msgSend_postCommandWithObject_key_applyBlock_(VFXTransaction, v7, self, @"radialSpan", v11);
     objc_msgSend__notifyModelChanged(self, v8, v9, v10);
   }
@@ -1447,17 +1447,17 @@ LABEL_17:
   return v14;
 }
 
-- (void)setPrimitiveType:(int64_t)a3
+- (void)setPrimitiveType:(int64_t)type
 {
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_primitiveType != a3)
+  if ((objc_msgSend_isPresentationObject(self, a2, type, v3) & 1) != 0 || self->_primitiveType != type)
   {
-    self->_primitiveType = a3;
+    self->_primitiveType = type;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = sub_1AF313BB0;
     v10[3] = &unk_1E7A7E248;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = type;
     objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v6, self, v10);
     objc_msgSend__notifyModelChanged(self, v7, v8, v9);
   }
@@ -1490,13 +1490,13 @@ LABEL_17:
   return v14;
 }
 
-- (void)setGeodesic:(BOOL)a3
+- (void)setGeodesic:(BOOL)geodesic
 {
-  v4 = a3;
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_spheregeodesic != v4)
+  geodesicCopy = geodesic;
+  if ((objc_msgSend_isPresentationObject(self, a2, geodesic, v3) & 1) != 0 || self->_spheregeodesic != geodesicCopy)
   {
-    self->_spheregeodesic = v4;
-    if (v4)
+    self->_spheregeodesic = geodesicCopy;
+    if (geodesicCopy)
     {
       objc_msgSend_willChangeValueForKey_(self, v6, @"hemispheric", v8);
       self->_spherehemispheric = 0;
@@ -1561,13 +1561,13 @@ LABEL_17:
   objc_msgSend_postCommandWithObject_applyBlock_(VFXTransaction, v6, self, v7);
 }
 
-- (void)setHemispheric:(BOOL)a3
+- (void)setHemispheric:(BOOL)hemispheric
 {
-  v4 = a3;
-  if ((objc_msgSend_isPresentationObject(self, a2, a3, v3) & 1) != 0 || self->_spherehemispheric != v4)
+  hemisphericCopy = hemispheric;
+  if ((objc_msgSend_isPresentationObject(self, a2, hemispheric, v3) & 1) != 0 || self->_spherehemispheric != hemisphericCopy)
   {
-    self->_spherehemispheric = v4;
-    if (v4)
+    self->_spherehemispheric = hemisphericCopy;
+    if (hemisphericCopy)
     {
       objc_msgSend_willChangeValueForKey_(self, v6, @"geodesic", v8);
       self->_spheregeodesic = 0;
@@ -1580,31 +1580,31 @@ LABEL_17:
   }
 }
 
-+ (id)planeWithWidth:(float)a3 height:(float)a4
++ (id)planeWithWidth:(float)width height:(float)height
 {
   v6 = objc_alloc(objc_opt_class());
   v10 = objc_msgSend_initWithDefaultMaterial(v6, v7, v8, v9);
   objc_msgSend_setParametricType_(v10, v11, 2, v12);
-  *&v13 = a3;
+  *&v13 = width;
   objc_msgSend_setWidth_(v10, v14, v15, v16, v13);
-  *&v17 = a4;
+  *&v17 = height;
   objc_msgSend_setHeight_(v10, v18, v19, v20, v17);
 
   return v10;
 }
 
-+ (id)cubeWithWidth:(float)a3 height:(float)a4 length:(float)a5 chamferRadius:(float)a6
++ (id)cubeWithWidth:(float)width height:(float)height length:(float)length chamferRadius:(float)radius
 {
   v10 = objc_alloc(objc_opt_class());
   v14 = objc_msgSend_initWithDefaultMaterial(v10, v11, v12, v13);
   objc_msgSend_setParametricType_(v14, v15, 0, v16);
-  *&v17 = a3;
+  *&v17 = width;
   objc_msgSend_setWidth_(v14, v18, v19, v20, v17);
-  *&v21 = a4;
+  *&v21 = height;
   objc_msgSend_setHeight_(v14, v22, v23, v24, v21);
-  *&v25 = a5;
+  *&v25 = length;
   objc_msgSend_setLength_(v14, v26, v27, v28, v25);
-  *&v29 = a6;
+  *&v29 = radius;
   objc_msgSend_setChamferRadius_(v14, v30, v31, v32, v29);
 
   return v14;
@@ -1615,105 +1615,105 @@ LABEL_17:
   LODWORD(v4) = 1.0;
   LODWORD(v5) = 1.0;
   LODWORD(v6) = 1.0;
-  return objc_msgSend_cubeWithWidth_height_length_chamferRadius_(a1, a2, v2, v3, v4, v5, v6, 0.0);
+  return objc_msgSend_cubeWithWidth_height_length_chamferRadius_(self, a2, v2, v3, v4, v5, v6, 0.0);
 }
 
-+ (id)pyramidWithWidth:(float)a3 height:(float)a4 length:(float)a5
++ (id)pyramidWithWidth:(float)width height:(float)height length:(float)length
 {
   v8 = objc_alloc(objc_opt_class());
   v12 = objc_msgSend_initWithDefaultMaterial(v8, v9, v10, v11);
   objc_msgSend_setParametricType_(v12, v13, 3, v14);
-  *&v15 = a3;
+  *&v15 = width;
   objc_msgSend_setWidth_(v12, v16, v17, v18, v15);
-  *&v19 = a4;
+  *&v19 = height;
   objc_msgSend_setHeight_(v12, v20, v21, v22, v19);
-  *&v23 = a5;
+  *&v23 = length;
   objc_msgSend_setLength_(v12, v24, v25, v26, v23);
 
   return v12;
 }
 
-+ (id)cylinderWithRadius:(float)a3 height:(float)a4
++ (id)cylinderWithRadius:(float)radius height:(float)height
 {
   v6 = objc_alloc(objc_opt_class());
   v10 = objc_msgSend_initWithDefaultMaterial(v6, v7, v8, v9);
   objc_msgSend_setParametricType_(v10, v11, 4, v12);
-  *&v13 = a3;
+  *&v13 = radius;
   objc_msgSend_setRadius_(v10, v14, v15, v16, v13);
-  *&v17 = a4;
+  *&v17 = height;
   objc_msgSend_setHeight_(v10, v18, v19, v20, v17);
 
   return v10;
 }
 
-+ (id)sphereWithRadius:(float)a3
++ (id)sphereWithRadius:(float)radius
 {
   v4 = objc_alloc(objc_opt_class());
   v8 = objc_msgSend_initWithDefaultMaterial(v4, v5, v6, v7);
   objc_msgSend_setParametricType_(v8, v9, 1, v10);
-  *&v11 = a3;
+  *&v11 = radius;
   objc_msgSend_setRadius_(v8, v12, v13, v14, v11);
 
   return v8;
 }
 
-+ (id)coneWithTopRadius:(float)a3 bottomRadius:(float)a4 height:(float)a5
++ (id)coneWithTopRadius:(float)radius bottomRadius:(float)bottomRadius height:(float)height
 {
   v8 = objc_alloc(objc_opt_class());
   v12 = objc_msgSend_initWithDefaultMaterial(v8, v9, v10, v11);
   objc_msgSend_setParametricType_(v12, v13, 5, v14);
-  *&v15 = a3;
+  *&v15 = radius;
   objc_msgSend_setTopRadius_(v12, v16, v17, v18, v15);
-  *&v19 = a4;
+  *&v19 = bottomRadius;
   objc_msgSend_setRadius_(v12, v20, v21, v22, v19);
-  *&v23 = a5;
+  *&v23 = height;
   objc_msgSend_setHeight_(v12, v24, v25, v26, v23);
 
   return v12;
 }
 
-+ (id)tubeWithInnerRadius:(float)a3 outerRadius:(float)a4 height:(float)a5
++ (id)tubeWithInnerRadius:(float)radius outerRadius:(float)outerRadius height:(float)height
 {
   v8 = objc_alloc(objc_opt_class());
   v12 = objc_msgSend_initWithDefaultMaterial(v8, v9, v10, v11);
   objc_msgSend_setParametricType_(v12, v13, 6, v14);
-  *&v15 = a3;
+  *&v15 = radius;
   objc_msgSend_setInnerRadius_(v12, v16, v17, v18, v15);
-  *&v19 = a4;
+  *&v19 = outerRadius;
   objc_msgSend_setRadius_(v12, v20, v21, v22, v19);
-  *&v23 = a5;
+  *&v23 = height;
   objc_msgSend_setHeight_(v12, v24, v25, v26, v23);
 
   return v12;
 }
 
-+ (id)capsuleWithCapRadius:(float)a3 height:(float)a4
++ (id)capsuleWithCapRadius:(float)radius height:(float)height
 {
   v6 = objc_alloc(objc_opt_class());
   v10 = objc_msgSend_initWithDefaultMaterial(v6, v7, v8, v9);
   objc_msgSend_setParametricType_(v10, v11, 7, v12);
-  *&v13 = a3;
+  *&v13 = radius;
   objc_msgSend_setRadius_(v10, v14, v15, v16, v13);
-  *&v17 = a4;
+  *&v17 = height;
   objc_msgSend_setHeight_(v10, v18, v19, v20, v17);
 
   return v10;
 }
 
-+ (id)torusWithRingRadius:(float)a3 pipeRadius:(float)a4
++ (id)torusWithRingRadius:(float)radius pipeRadius:(float)pipeRadius
 {
   v6 = objc_alloc(objc_opt_class());
   v10 = objc_msgSend_initWithDefaultMaterial(v6, v7, v8, v9);
   objc_msgSend_setParametricType_(v10, v11, 8, v12);
-  *&v13 = a3;
+  *&v13 = radius;
   objc_msgSend_setRadius_(v10, v14, v15, v16, v13);
-  *&v17 = a4;
+  *&v17 = pipeRadius;
   objc_msgSend_setPipeRadius_(v10, v18, v19, v20, v17);
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v52.receiver = self;
   v52.super_class = VFXParametricModel;
@@ -1724,33 +1724,33 @@ LABEL_17:
     objc_msgSend__updateModelFromPresentation_(self, v12, v11, v13);
   }
 
-  objc_msgSend_encodeInteger_forKey_(a3, v8, self->_type, @"parametricType");
-  objc_msgSend_encodeDouble_forKey_(a3, v14, @"width", v15, self->_width);
-  objc_msgSend_encodeDouble_forKey_(a3, v16, @"height", v17, self->_height);
-  objc_msgSend_encodeDouble_forKey_(a3, v18, @"length", v19, self->_length);
-  objc_msgSend_encodeDouble_forKey_(a3, v20, @"radius", v21, self->_radius);
-  objc_msgSend_encodeDouble_forKey_(a3, v22, @"innerRadius", v23, self->_innerRadius);
-  objc_msgSend_encodeDouble_forKey_(a3, v24, @"chamferRadius", v25, self->_chamferRadius);
-  objc_msgSend_encodeDouble_forKey_(a3, v26, @"topRadius", v27, self->_topRadius);
-  objc_msgSend_encodeDouble_forKey_(a3, v28, @"pipeRadius", v29, self->_pipeRadius);
-  objc_msgSend_encodeInteger_forKey_(a3, v30, self->_widthSegmentCount, @"widthSegmentCount");
-  objc_msgSend_encodeInteger_forKey_(a3, v31, self->_heightSegmentCount, @"heightSegmentCount");
-  objc_msgSend_encodeInteger_forKey_(a3, v32, self->_lengthSegmentCount, @"lengthSegmentCount");
-  objc_msgSend_encodeInteger_forKey_(a3, v33, self->_segmentCount, @"segmentCount");
-  objc_msgSend_encodeInteger_forKey_(a3, v34, self->_chamferSegmentCount, @"chamferSegmentCount");
-  objc_msgSend_encodeInteger_forKey_(a3, v35, self->_cornerSegmentCount, @"cornerSegmentCount");
-  objc_msgSend_encodeInteger_forKey_(a3, v36, self->_pipeSegmentCount, @"pipeSegmentCount");
-  objc_msgSend_encodeInteger_forKey_(a3, v37, self->_capSegmentCount, @"capSegmentCount");
-  objc_msgSend_encodeInteger_forKey_(a3, v38, self->_radialSegmentCount, @"radialSegmentCount");
-  objc_msgSend_encodeDouble_forKey_(a3, v39, @"radialSpan", v40, self->_radialSpan);
+  objc_msgSend_encodeInteger_forKey_(coder, v8, self->_type, @"parametricType");
+  objc_msgSend_encodeDouble_forKey_(coder, v14, @"width", v15, self->_width);
+  objc_msgSend_encodeDouble_forKey_(coder, v16, @"height", v17, self->_height);
+  objc_msgSend_encodeDouble_forKey_(coder, v18, @"length", v19, self->_length);
+  objc_msgSend_encodeDouble_forKey_(coder, v20, @"radius", v21, self->_radius);
+  objc_msgSend_encodeDouble_forKey_(coder, v22, @"innerRadius", v23, self->_innerRadius);
+  objc_msgSend_encodeDouble_forKey_(coder, v24, @"chamferRadius", v25, self->_chamferRadius);
+  objc_msgSend_encodeDouble_forKey_(coder, v26, @"topRadius", v27, self->_topRadius);
+  objc_msgSend_encodeDouble_forKey_(coder, v28, @"pipeRadius", v29, self->_pipeRadius);
+  objc_msgSend_encodeInteger_forKey_(coder, v30, self->_widthSegmentCount, @"widthSegmentCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v31, self->_heightSegmentCount, @"heightSegmentCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v32, self->_lengthSegmentCount, @"lengthSegmentCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v33, self->_segmentCount, @"segmentCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v34, self->_chamferSegmentCount, @"chamferSegmentCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v35, self->_cornerSegmentCount, @"cornerSegmentCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v36, self->_pipeSegmentCount, @"pipeSegmentCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v37, self->_capSegmentCount, @"capSegmentCount");
+  objc_msgSend_encodeInteger_forKey_(coder, v38, self->_radialSegmentCount, @"radialSegmentCount");
+  objc_msgSend_encodeDouble_forKey_(coder, v39, @"radialSpan", v40, self->_radialSpan);
   isGeodesic = objc_msgSend_isGeodesic(self, v41, v42, v43);
-  objc_msgSend_encodeBool_forKey_(a3, v45, isGeodesic, @"geodesic");
+  objc_msgSend_encodeBool_forKey_(coder, v45, isGeodesic, @"geodesic");
   isHemispheric = objc_msgSend_isHemispheric(self, v46, v47, v48);
-  objc_msgSend_encodeBool_forKey_(a3, v50, isHemispheric, @"hemispheric");
-  objc_msgSend_encodeInteger_forKey_(a3, v51, self->_primitiveType, @"primitiveType");
+  objc_msgSend_encodeBool_forKey_(coder, v50, isHemispheric, @"hemispheric");
+  objc_msgSend_encodeInteger_forKey_(coder, v51, self->_primitiveType, @"primitiveType");
 }
 
-- (VFXParametricModel)initWithCoder:(id)a3
+- (VFXParametricModel)initWithCoder:(id)coder
 {
   v133.receiver = self;
   v133.super_class = VFXParametricModel;
@@ -1759,58 +1759,58 @@ LABEL_17:
   {
     v8 = objc_msgSend_immediateMode(VFXTransaction, v4, v5, v6);
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
-    v13 = objc_msgSend_decodeIntegerForKey_(a3, v11, @"parametricType", v12);
+    v13 = objc_msgSend_decodeIntegerForKey_(coder, v11, @"parametricType", v12);
     objc_msgSend_setParametricType_(v7, v14, v13, v15);
-    objc_msgSend_decodeDoubleForKey_(a3, v16, @"width", v17);
+    objc_msgSend_decodeDoubleForKey_(coder, v16, @"width", v17);
     *&v18 = v18;
     objc_msgSend_setWidth_(v7, v19, v20, v21, v18);
-    objc_msgSend_decodeDoubleForKey_(a3, v22, @"height", v23);
+    objc_msgSend_decodeDoubleForKey_(coder, v22, @"height", v23);
     *&v24 = v24;
     objc_msgSend_setHeight_(v7, v25, v26, v27, v24);
-    objc_msgSend_decodeDoubleForKey_(a3, v28, @"length", v29);
+    objc_msgSend_decodeDoubleForKey_(coder, v28, @"length", v29);
     *&v30 = v30;
     objc_msgSend_setLength_(v7, v31, v32, v33, v30);
-    objc_msgSend_decodeDoubleForKey_(a3, v34, @"radius", v35);
+    objc_msgSend_decodeDoubleForKey_(coder, v34, @"radius", v35);
     *&v36 = v36;
     objc_msgSend_setRadius_(v7, v37, v38, v39, v36);
-    objc_msgSend_decodeDoubleForKey_(a3, v40, @"innerRadius", v41);
+    objc_msgSend_decodeDoubleForKey_(coder, v40, @"innerRadius", v41);
     *&v42 = v42;
     objc_msgSend_setInnerRadius_(v7, v43, v44, v45, v42);
-    objc_msgSend_decodeDoubleForKey_(a3, v46, @"chamferRadius", v47);
+    objc_msgSend_decodeDoubleForKey_(coder, v46, @"chamferRadius", v47);
     *&v48 = v48;
     objc_msgSend_setChamferRadius_(v7, v49, v50, v51, v48);
-    objc_msgSend_decodeDoubleForKey_(a3, v52, @"topRadius", v53);
+    objc_msgSend_decodeDoubleForKey_(coder, v52, @"topRadius", v53);
     *&v54 = v54;
     objc_msgSend_setTopRadius_(v7, v55, v56, v57, v54);
-    objc_msgSend_decodeDoubleForKey_(a3, v58, @"pipeRadius", v59);
+    objc_msgSend_decodeDoubleForKey_(coder, v58, @"pipeRadius", v59);
     *&v60 = v60;
     objc_msgSend_setPipeRadius_(v7, v61, v62, v63, v60);
-    v66 = objc_msgSend_decodeIntegerForKey_(a3, v64, @"segmentCount", v65);
+    v66 = objc_msgSend_decodeIntegerForKey_(coder, v64, @"segmentCount", v65);
     objc_msgSend_setSegmentCount_(v7, v67, v66, v68);
-    v71 = objc_msgSend_decodeIntegerForKey_(a3, v69, @"chamferSegmentCount", v70);
+    v71 = objc_msgSend_decodeIntegerForKey_(coder, v69, @"chamferSegmentCount", v70);
     objc_msgSend_setChamferSegmentCount_(v7, v72, v71, v73);
-    v76 = objc_msgSend_decodeIntegerForKey_(a3, v74, @"widthSegmentCount", v75);
+    v76 = objc_msgSend_decodeIntegerForKey_(coder, v74, @"widthSegmentCount", v75);
     objc_msgSend_setWidthSegmentCount_(v7, v77, v76, v78);
-    v81 = objc_msgSend_decodeIntegerForKey_(a3, v79, @"heightSegmentCount", v80);
+    v81 = objc_msgSend_decodeIntegerForKey_(coder, v79, @"heightSegmentCount", v80);
     objc_msgSend_setHeightSegmentCount_(v7, v82, v81, v83);
-    v86 = objc_msgSend_decodeIntegerForKey_(a3, v84, @"lengthSegmentCount", v85);
+    v86 = objc_msgSend_decodeIntegerForKey_(coder, v84, @"lengthSegmentCount", v85);
     objc_msgSend_setLengthSegmentCount_(v7, v87, v86, v88);
-    v91 = objc_msgSend_decodeIntegerForKey_(a3, v89, @"cornerSegmentCount", v90);
+    v91 = objc_msgSend_decodeIntegerForKey_(coder, v89, @"cornerSegmentCount", v90);
     objc_msgSend_setCornerSegmentCount_(v7, v92, v91, v93);
-    v96 = objc_msgSend_decodeIntegerForKey_(a3, v94, @"pipeSegmentCount", v95);
+    v96 = objc_msgSend_decodeIntegerForKey_(coder, v94, @"pipeSegmentCount", v95);
     objc_msgSend_setPipeSegmentCount_(v7, v97, v96, v98);
-    v101 = objc_msgSend_decodeIntegerForKey_(a3, v99, @"capSegmentCount", v100);
+    v101 = objc_msgSend_decodeIntegerForKey_(coder, v99, @"capSegmentCount", v100);
     objc_msgSend_setCapSegmentCount_(v7, v102, v101, v103);
-    v106 = objc_msgSend_decodeIntegerForKey_(a3, v104, @"radialSegmentCount", v105);
+    v106 = objc_msgSend_decodeIntegerForKey_(coder, v104, @"radialSegmentCount", v105);
     objc_msgSend_setRadialSegmentCount_(v7, v107, v106, v108);
-    objc_msgSend_decodeDoubleForKey_(a3, v109, @"radialSpan", v110);
+    objc_msgSend_decodeDoubleForKey_(coder, v109, @"radialSpan", v110);
     *&v111 = v111;
     objc_msgSend_setRadialSpan_(v7, v112, v113, v114, v111);
-    v117 = objc_msgSend_decodeBoolForKey_(a3, v115, @"geodesic", v116);
+    v117 = objc_msgSend_decodeBoolForKey_(coder, v115, @"geodesic", v116);
     objc_msgSend_setGeodesic_(v7, v118, v117, v119);
-    v122 = objc_msgSend_decodeBoolForKey_(a3, v120, @"hemispheric", v121);
+    v122 = objc_msgSend_decodeBoolForKey_(coder, v120, @"hemispheric", v121);
     objc_msgSend_setHemispheric_(v7, v123, v122, v124);
-    v127 = objc_msgSend_decodeIntegerForKey_(a3, v125, @"primitiveType", v126);
+    v127 = objc_msgSend_decodeIntegerForKey_(coder, v125, @"primitiveType", v126);
     objc_msgSend_setPrimitiveType_(v7, v128, v127, v129);
     objc_msgSend_setImmediateMode_(VFXTransaction, v130, v8, v131);
   }

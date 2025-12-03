@@ -60,7 +60,7 @@
     v12 = MEMORY[0x277CBEBF8];
   }
 
-  v13 = [a1 _userDomainConceptPropertyListWithFreeTextMedicationName:v8 freeTextFormCode:a4 namedQuantities:v12];
+  v13 = [self _userDomainConceptPropertyListWithFreeTextMedicationName:v8 freeTextFormCode:a4 namedQuantities:v12];
 
   v14 = *MEMORY[0x277D85DE8];
 

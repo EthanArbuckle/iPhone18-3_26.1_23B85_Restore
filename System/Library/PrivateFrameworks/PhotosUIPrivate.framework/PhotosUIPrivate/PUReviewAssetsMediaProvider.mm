@@ -1,61 +1,61 @@
 @interface PUReviewAssetsMediaProvider
 - (PUReviewAssetsMediaProvider)init;
-- (id)_resizeImageAtURL:(id)a3 imageUTI:(id)a4 targetSize:(CGSize)a5 bakeInOrientation:(BOOL)a6 error:(id *)a7;
-- (int)_requestAdjustmentDataForAsset:(id)a3 resultHandler:(id)a4;
-- (int)requestAVAssetForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestAsynchronousVideoURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7;
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5;
-- (void)cancelImageRequest:(int)a3;
+- (id)_resizeImageAtURL:(id)l imageUTI:(id)i targetSize:(CGSize)size bakeInOrientation:(BOOL)orientation error:(id *)error;
+- (int)_requestAdjustmentDataForAsset:(id)asset resultHandler:(id)handler;
+- (int)requestAVAssetForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (int)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestAsynchronousVideoURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler;
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler;
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler;
+- (void)cancelImageRequest:(int)request;
 @end
 
 @implementation PUReviewAssetsMediaProvider
 
-- (void)cancelImageRequest:(int)a3
+- (void)cancelImageRequest:(int)request
 {
-  v3 = *&a3;
-  v7 = [(PUReviewAssetsMediaProvider *)self _mediaRequests];
+  v3 = *&request;
+  _mediaRequests = [(PUReviewAssetsMediaProvider *)self _mediaRequests];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-  v5 = [v7 objectForKey:v4];
+  v5 = [_mediaRequests objectForKey:v4];
 
   if (v5)
   {
     [v5 cancelRequest];
     v6 = [MEMORY[0x1E696AD98] numberWithInt:v3];
-    [v7 removeObjectForKey:v6];
+    [_mediaRequests removeObjectForKey:v6];
   }
 }
 
-- (int)requestAnimatedImageForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAnimatedImageForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:663 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:663 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
   }
 
-  v12 = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
+  _incrementRequestIdentifier = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
   v32 = *MEMORY[0x1E6978E70];
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:v12];
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
   v33[0] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:&v32 count:1];
 
-  v15 = v9;
-  v16 = [v15 providedImageURLForImageVersion:{objc_msgSend(v10, "version")}];
-  v17 = [(PUReviewAssetsMediaProvider *)self _mediaRequests];
+  v15 = assetCopy;
+  v16 = [v15 providedImageURLForImageVersion:{objc_msgSend(optionsCopy, "version")}];
+  _mediaRequests = [(PUReviewAssetsMediaProvider *)self _mediaRequests];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = v10;
+    v18 = optionsCopy;
   }
 
   else
@@ -70,18 +70,18 @@
   v27[1] = 3221225472;
   v27[2] = __82__PUReviewAssetsMediaProvider_requestAnimatedImageForAsset_options_resultHandler___block_invoke;
   v27[3] = &unk_1E7B7D808;
-  v31 = v12;
+  v31 = _incrementRequestIdentifier;
   v29 = v14;
-  v30 = v11;
-  v28 = v17;
+  v30 = handlerCopy;
+  v28 = _mediaRequests;
   v20 = v14;
-  v21 = v11;
-  v22 = v17;
+  v21 = handlerCopy;
+  v22 = _mediaRequests;
   v23 = -[PUReviewAssetAnimatedImageMediaRequest initWithAnimatedImageRequestID:]([PUReviewAssetAnimatedImageMediaRequest alloc], "initWithAnimatedImageRequestID:", [v19 requestAnimatedImageWithURL:v16 completion:v27]);
-  v24 = [MEMORY[0x1E696AD98] numberWithInt:v12];
+  v24 = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
   [v22 setObject:v23 forKey:v24];
 
-  return v12;
+  return _incrementRequestIdentifier;
 }
 
 void __82__PUReviewAssetsMediaProvider_requestAnimatedImageForAsset_options_resultHandler___block_invoke(uint64_t a1, void *a2)
@@ -98,27 +98,27 @@ void __82__PUReviewAssetsMediaProvider_requestAnimatedImageForAsset_options_resu
   }
 }
 
-- (int)requestLivePhotoForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestLivePhotoForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
-  v14 = a3;
-  v15 = a7;
-  v16 = a6;
+  height = size.height;
+  width = size.width;
+  assetCopy = asset;
+  handlerCopy = handler;
+  optionsCopy = options;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v32 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:615 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:615 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
   }
 
-  v17 = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
-  v18 = v14;
-  v19 = [v18 providedPreviewImage];
-  v20 = [v18 providedImageURLForImageVersion:{objc_msgSend(v16, "version")}];
-  v21 = [v16 version];
+  _incrementRequestIdentifier = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
+  v18 = assetCopy;
+  providedPreviewImage = [v18 providedPreviewImage];
+  v20 = [v18 providedImageURLForImageVersion:{objc_msgSend(optionsCopy, "version")}];
+  version = [optionsCopy version];
 
-  v22 = [v18 providedVideoURLForImageVersion:v21];
+  v22 = [v18 providedVideoURLForImageVersion:version];
   v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = v23;
   if (v20)
@@ -131,22 +131,22 @@ void __82__PUReviewAssetsMediaProvider_requestAnimatedImageForAsset_options_resu
     [v24 addObject:v22];
   }
 
-  v25 = [(PUReviewAssetsMediaProvider *)self _mediaRequests];
+  _mediaRequests = [(PUReviewAssetsMediaProvider *)self _mediaRequests];
   v26 = MEMORY[0x1E69788C8];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __101__PUReviewAssetsMediaProvider_requestLivePhotoForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
   v33[3] = &unk_1E7B7D7E0;
-  v36 = v17;
-  v34 = v25;
-  v35 = v15;
-  v27 = v15;
-  v28 = v25;
-  v29 = -[PUReviewAssetLivePhotoMediaRequest initLivePhotoRequestID:]([PUReviewAssetLivePhotoMediaRequest alloc], "initLivePhotoRequestID:", [v26 requestLivePhotoWithResourceFileURLs:v24 placeholderImage:v19 targetSize:a5 contentMode:v33 resultHandler:{width, height}]);
-  v30 = [MEMORY[0x1E696AD98] numberWithInt:v17];
+  v36 = _incrementRequestIdentifier;
+  v34 = _mediaRequests;
+  v35 = handlerCopy;
+  v27 = handlerCopy;
+  v28 = _mediaRequests;
+  v29 = -[PUReviewAssetLivePhotoMediaRequest initLivePhotoRequestID:]([PUReviewAssetLivePhotoMediaRequest alloc], "initLivePhotoRequestID:", [v26 requestLivePhotoWithResourceFileURLs:v24 placeholderImage:providedPreviewImage targetSize:mode contentMode:v33 resultHandler:{width, height}]);
+  v30 = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
   [v28 setObject:v29 forKey:v30];
 
-  return v17;
+  return _incrementRequestIdentifier;
 }
 
 void __101__PUReviewAssetsMediaProvider_requestLivePhotoForAsset_targetSize_contentMode_options_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -201,65 +201,65 @@ LABEL_6:
   (*(*(a1 + 40) + 16))();
 }
 
-- (int)requestAsynchronousVideoURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAsynchronousVideoURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  assetCopy = asset;
+  handlerCopy = handler;
+  optionsCopy = options;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:596 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:596 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
   }
 
-  v12 = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
+  _incrementRequestIdentifier = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
   v20 = *MEMORY[0x1E6978E70];
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:v12];
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
   v21[0] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
 
-  v15 = v9;
-  v16 = [v11 version];
+  v15 = assetCopy;
+  version = [optionsCopy version];
 
-  v17 = [v15 providedVideoURLForVideoVersion:v16];
-  if (v10)
+  v17 = [v15 providedVideoURLForVideoVersion:version];
+  if (handlerCopy)
   {
-    v10[2](v10, v17, v14);
+    handlerCopy[2](handlerCopy, v17, v14);
   }
 
-  return v12;
+  return _incrementRequestIdentifier;
 }
 
-- (int)requestAVAssetForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestAVAssetForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  videoCopy = video;
+  handlerCopy = handler;
+  optionsCopy = options;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:558 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:558 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
   }
 
-  v12 = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
+  _incrementRequestIdentifier = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
   v34 = *MEMORY[0x1E6978E70];
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:v12];
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
   v35[0] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
 
-  v15 = v9;
-  v16 = [v11 version];
+  v15 = videoCopy;
+  version = [optionsCopy version];
 
-  v17 = [v15 providedVideoURLForVideoVersion:v16];
+  v17 = [v15 providedVideoURLForVideoVersion:version];
   v18 = [MEMORY[0x1E6988168] assetWithURL:v17];
   v19 = MEMORY[0x1E69C0910];
-  v20 = [v15 assetAdjustments];
+  assetAdjustments = [v15 assetAdjustments];
 
-  v21 = [v19 videoAdjustmentsFromAssetAdjustmentsIfRecognized:v20];
+  v21 = [v19 videoAdjustmentsFromAssetAdjustmentsIfRecognized:assetAdjustments];
 
   v22 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v18 videoAdjustments:v21];
   v30[0] = MEMORY[0x1E69E9820];
@@ -268,15 +268,15 @@ LABEL_6:
   v30[3] = &unk_1E7B80CB0;
   v31 = v22;
   v32 = v14;
-  v33 = v10;
-  v23 = v10;
+  v33 = handlerCopy;
+  v23 = handlerCopy;
   v24 = v14;
   v25 = v22;
   v26 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v30);
   v27 = dispatch_get_global_queue(21, 0);
   dispatch_async(v27, v26);
 
-  return v12;
+  return _incrementRequestIdentifier;
 }
 
 void __76__PUReviewAssetsMediaProvider_requestAVAssetForVideo_options_resultHandler___block_invoke(uint64_t a1)
@@ -314,34 +314,34 @@ void __76__PUReviewAssetsMediaProvider_requestAVAssetForVideo_options_resultHand
   }
 }
 
-- (int)requestPlayerItemForVideo:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestPlayerItemForVideo:(id)video options:(id)options resultHandler:(id)handler
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
+  videoCopy = video;
+  handlerCopy = handler;
+  optionsCopy = options;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:516 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:516 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
   }
 
-  v12 = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
+  _incrementRequestIdentifier = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
   v34 = *MEMORY[0x1E6978E70];
-  v13 = [MEMORY[0x1E696AD98] numberWithInt:v12];
+  v13 = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
   v35[0] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
 
-  v15 = v9;
-  v16 = [v11 version];
+  v15 = videoCopy;
+  version = [optionsCopy version];
 
-  v17 = [v15 providedVideoURLForVideoVersion:v16];
+  v17 = [v15 providedVideoURLForVideoVersion:version];
   v18 = [MEMORY[0x1E6988168] assetWithURL:v17];
   v19 = MEMORY[0x1E69C0910];
-  v20 = [v15 assetAdjustments];
+  assetAdjustments = [v15 assetAdjustments];
 
-  v21 = [v19 videoAdjustmentsFromAssetAdjustmentsIfRecognized:v20];
+  v21 = [v19 videoAdjustmentsFromAssetAdjustmentsIfRecognized:assetAdjustments];
 
   v22 = [objc_alloc(MEMORY[0x1E69C08F8]) initWithVideoAsset:v18 videoAdjustments:v21];
   v30[0] = MEMORY[0x1E69E9820];
@@ -350,15 +350,15 @@ void __76__PUReviewAssetsMediaProvider_requestAVAssetForVideo_options_resultHand
   v30[3] = &unk_1E7B80CB0;
   v31 = v22;
   v32 = v14;
-  v33 = v10;
-  v23 = v10;
+  v33 = handlerCopy;
+  v23 = handlerCopy;
   v24 = v14;
   v25 = v22;
   v26 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v30);
   v27 = dispatch_get_global_queue(21, 0);
   dispatch_async(v27, v26);
 
-  return v12;
+  return _incrementRequestIdentifier;
 }
 
 void __79__PUReviewAssetsMediaProvider_requestPlayerItemForVideo_options_resultHandler___block_invoke(uint64_t a1)
@@ -398,33 +398,33 @@ void __79__PUReviewAssetsMediaProvider_requestPlayerItemForVideo_options_resultH
   }
 }
 
-- (int)requestImageURLForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageURLForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:469 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:469 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
   }
 
-  v12 = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
-  v13 = ([v10 isSynchronous] & 1) != 0 || objc_msgSend(v10, "deliveryMode") == 0;
-  v14 = v9;
-  v15 = [v10 version];
-  v16 = [v14 providedImageURLForImageVersion:v15];
-  v17 = [v14 exifOrientationForImageVersion:v15];
+  _incrementRequestIdentifier = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
+  v13 = ([optionsCopy isSynchronous] & 1) != 0 || objc_msgSend(optionsCopy, "deliveryMode") == 0;
+  v14 = assetCopy;
+  version = [optionsCopy version];
+  v16 = [v14 providedImageURLForImageVersion:version];
+  v17 = [v14 exifOrientationForImageVersion:version];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__PUReviewAssetsMediaProvider_requestImageURLForAsset_options_resultHandler___block_invoke;
   block[3] = &unk_1E7B7D790;
-  v28 = v12;
+  v28 = _incrementRequestIdentifier;
   v29 = v17;
   v26 = v16;
-  v27 = v11;
-  v18 = v11;
+  v27 = handlerCopy;
+  v18 = handlerCopy;
   v19 = v16;
   v20 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
   v21 = v20;
@@ -439,7 +439,7 @@ void __79__PUReviewAssetsMediaProvider_requestPlayerItemForVideo_options_resultH
     dispatch_async(v22, v21);
   }
 
-  return v12;
+  return _incrementRequestIdentifier;
 }
 
 void __77__PUReviewAssetsMediaProvider_requestImageURLForAsset_options_resultHandler___block_invoke(uint64_t a1)
@@ -470,35 +470,35 @@ void __77__PUReviewAssetsMediaProvider_requestImageURLForAsset_options_resultHan
   (*(*(a1 + 40) + 16))();
 }
 
-- (int)requestImageDataForAsset:(id)a3 options:(id)a4 resultHandler:(id)a5
+- (int)requestImageDataForAsset:(id)asset options:(id)options resultHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:412 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:412 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
   }
 
-  v12 = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
-  v13 = ([v10 isSynchronous] & 1) != 0 || objc_msgSend(v10, "deliveryMode") == 0;
-  v14 = v9;
-  v15 = [v10 version];
-  v16 = [v14 providedImageURLForImageVersion:v15];
-  LODWORD(v15) = [v14 exifOrientationForImageVersion:v15];
-  v17 = [v10 loadingMode];
+  _incrementRequestIdentifier = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
+  v13 = ([optionsCopy isSynchronous] & 1) != 0 || objc_msgSend(optionsCopy, "deliveryMode") == 0;
+  v14 = assetCopy;
+  version = [optionsCopy version];
+  v16 = [v14 providedImageURLForImageVersion:version];
+  LODWORD(version) = [v14 exifOrientationForImageVersion:version];
+  loadingMode = [optionsCopy loadingMode];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __78__PUReviewAssetsMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke;
   v25[3] = &unk_1E7B7D768;
-  v27 = v11;
-  v28 = v17;
-  v29 = v12;
-  v30 = v15;
+  v27 = handlerCopy;
+  v28 = loadingMode;
+  v29 = _incrementRequestIdentifier;
+  v30 = version;
   v26 = v16;
-  v18 = v11;
+  v18 = handlerCopy;
   v19 = v16;
   v20 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v25);
   v21 = v20;
@@ -513,7 +513,7 @@ void __77__PUReviewAssetsMediaProvider_requestImageURLForAsset_options_resultHan
     dispatch_async(v22, v21);
   }
 
-  return v12;
+  return _incrementRequestIdentifier;
 }
 
 void __78__PUReviewAssetsMediaProvider_requestImageDataForAsset_options_resultHandler___block_invoke(uint64_t a1)
@@ -572,19 +572,19 @@ void __78__PUReviewAssetsMediaProvider_requestImageDataForAsset_options_resultHa
   (*(v16 + 16))(v16, v3, v17, v15, v10);
 }
 
-- (id)_resizeImageAtURL:(id)a3 imageUTI:(id)a4 targetSize:(CGSize)a5 bakeInOrientation:(BOOL)a6 error:(id *)a7
+- (id)_resizeImageAtURL:(id)l imageUTI:(id)i targetSize:(CGSize)size bakeInOrientation:(BOOL)orientation error:(id *)error
 {
-  v8 = a6;
-  height = a5.height;
-  width = a5.width;
+  orientationCopy = orientation;
+  height = size.height;
+  width = size.width;
   v30[1] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
-  if (v13)
+  lCopy = l;
+  iCopy = i;
+  v14 = iCopy;
+  if (iCopy)
   {
     v29 = *MEMORY[0x1E696E118];
-    v30[0] = v13;
+    v30[0] = iCopy;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   }
 
@@ -593,7 +593,7 @@ void __78__PUReviewAssetsMediaProvider_requestImageDataForAsset_options_resultHa
     v15 = 0;
   }
 
-  v16 = CGImageSourceCreateWithURL(v12, v15);
+  v16 = CGImageSourceCreateWithURL(lCopy, v15);
   if (v16)
   {
     v17 = v16;
@@ -615,7 +615,7 @@ void __78__PUReviewAssetsMediaProvider_requestImageDataForAsset_options_resultHa
     v22 = *MEMORY[0x1E695E4D0];
     v23 = *MEMORY[0x1E696DFE8];
     [v20 setObject:*MEMORY[0x1E695E4D0] forKeyedSubscript:*MEMORY[0x1E696DFE8]];
-    v24 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+    v24 = [MEMORY[0x1E696AD98] numberWithBool:orientationCopy];
     [v20 setObject:v24 forKeyedSubscript:*MEMORY[0x1E696E000]];
 
     [v20 setObject:v22 forKeyedSubscript:v23];
@@ -634,7 +634,7 @@ void __78__PUReviewAssetsMediaProvider_requestImageDataForAsset_options_resultHa
 
     CFRelease(v17);
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -643,7 +643,7 @@ void __78__PUReviewAssetsMediaProvider_requestImageDataForAsset_options_resultHa
   else
   {
     v27 = 0;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -651,7 +651,7 @@ void __78__PUReviewAssetsMediaProvider_requestImageDataForAsset_options_resultHa
 
   if (!v27)
   {
-    *a7 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PUReviewAssetsMediaProviderErrorDomain" code:-100 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"PUReviewAssetsMediaProviderErrorDomain" code:-100 userInfo:0];
   }
 
 LABEL_16:
@@ -659,39 +659,39 @@ LABEL_16:
   return v27;
 }
 
-- (int)requestImageForAsset:(id)a3 targetSize:(CGSize)a4 contentMode:(int64_t)a5 options:(id)a6 resultHandler:(id)a7
+- (int)requestImageForAsset:(id)asset targetSize:(CGSize)size contentMode:(int64_t)mode options:(id)options resultHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v90[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  assetCopy = asset;
+  optionsCopy = options;
+  handlerCopy = handler;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [MEMORY[0x1E696AAA8] currentHandler];
-    v60 = v59 = v15;
+    v60 = v59 = handlerCopy;
     [v60 handleFailureInMethod:a2 object:self file:@"PUReviewAssetsMediaProvider.m" lineNumber:178 description:@"PUReviewAssetsMediaProvider only accepts PUReviewAssets"];
 
-    v15 = v59;
+    handlerCopy = v59;
   }
 
-  v16 = v13;
-  v17 = [v14 version];
-  if (v17 != 16)
+  v16 = assetCopy;
+  version = [optionsCopy version];
+  if (version != 16)
   {
-    v19 = v17;
-    v68 = v15;
-    v18 = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
-    v66 = [v14 deliveryMode];
-    v20 = [v14 isSynchronous];
+    v19 = version;
+    v68 = handlerCopy;
+    _incrementRequestIdentifier = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
+    deliveryMode = [optionsCopy deliveryMode];
+    isSynchronous = [optionsCopy isSynchronous];
     v69 = [v16 providedImageURLForImageVersion:v19];
     v21 = [v16 providedVideoURLForImageVersion:v19];
     v22 = v21;
     if (([v16 playbackStyle] & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
-      v67 = (v21 != 0) & (v20 ^ 1);
+      v67 = (v21 != 0) & (isSynchronous ^ 1);
     }
 
     else
@@ -699,14 +699,14 @@ LABEL_16:
       v67 = 0;
     }
 
-    v23 = [v16 providedPreviewImage];
-    [v23 scale];
+    providedPreviewImage = [v16 providedPreviewImage];
+    [providedPreviewImage scale];
     v25 = v24;
-    [v23 size];
+    [providedPreviewImage size];
     v28 = height <= v25 * v27 && width <= v25 * v26;
-    if (v23)
+    if (providedPreviewImage)
     {
-      v29 = [v16 assetAdjustments];
+      assetAdjustments = [v16 assetAdjustments];
       if (v19)
       {
         v30 = 1;
@@ -714,7 +714,7 @@ LABEL_16:
 
       else
       {
-        v30 = v29 == 0;
+        v30 = assetAdjustments == 0;
       }
 
       v31 = v30;
@@ -727,8 +727,8 @@ LABEL_16:
 
     if ((v28 & v31 & 1) != 0 || !((v69 != 0) | v67 & 1))
     {
-      v15 = v68;
-      (v68)[2](v68, v23, 0);
+      handlerCopy = v68;
+      (v68)[2](v68, providedPreviewImage, 0);
       v38 = v22;
 LABEL_46:
 
@@ -737,60 +737,60 @@ LABEL_46:
 
     v65 = v31;
     v89 = *MEMORY[0x1E6978E70];
-    v32 = [MEMORY[0x1E696AD98] numberWithInt:v18];
+    v32 = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
     v90[0] = v32;
     v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v90 forKeys:&v89 count:1];
 
     v34 = MEMORY[0x1E69C08F0];
-    v35 = [v69 pathExtension];
-    v36 = [v34 typeWithFilenameExtension:v35 conformingToType:*MEMORY[0x1E6982E30]];
+    pathExtension = [v69 pathExtension];
+    v36 = [v34 typeWithFilenameExtension:pathExtension conformingToType:*MEMORY[0x1E6982E30]];
 
     if (([v36 conformsToType:*MEMORY[0x1E6982E58]] & 1) != 0 || objc_msgSend(v36, "conformsToType:", *MEMORY[0x1E6982E00]))
     {
-      v37 = [[PUCAMReviewAssetsFigDecodeItem alloc] initWithImageURL:v69 targetSize:width, height];
+      height = [[PUCAMReviewAssetsFigDecodeItem alloc] initWithImageURL:v69 targetSize:width, height];
     }
 
     else
     {
-      v37 = 0;
+      height = 0;
     }
 
     v38 = v22;
-    if (v20)
+    if (isSynchronous)
     {
-      v39 = v66;
+      v39 = deliveryMode;
       v40 = v33;
-      if (((v66 == 2) & v65) == 0)
+      if (((deliveryMode == 2) & v65) == 0)
       {
         v62 = v33;
-        v64 = v37;
-        if (v37)
+        v64 = height;
+        if (height)
         {
           v41 = v36;
-          v42 = [(PLFigPreheatItem *)v37 cachedImage:0];
+          height2 = [(PLFigPreheatItem *)height cachedImage:0];
           v43 = [v33 mutableCopy];
           v44 = 0;
-          v15 = v68;
+          handlerCopy = v68;
         }
 
         else
         {
           v41 = v36;
-          v51 = [v36 identifier];
+          identifier = [v36 identifier];
           v86 = 0;
-          v42 = [(PUReviewAssetsMediaProvider *)self _resizeImageAtURL:v69 imageUTI:v51 targetSize:1 bakeInOrientation:&v86 error:width, height];
+          height2 = [(PUReviewAssetsMediaProvider *)self _resizeImageAtURL:v69 imageUTI:identifier targetSize:1 bakeInOrientation:&v86 error:width, height];
           v44 = v86;
 
           v52 = [v33 mutableCopy];
           v43 = v52;
-          v15 = v68;
+          handlerCopy = v68;
           if (v44)
           {
             [v52 setObject:v44 forKeyedSubscript:*MEMORY[0x1E6978DF0]];
           }
         }
 
-        (*(v15 + 2))(v15, v42, v43);
+        (*(handlerCopy + 2))(handlerCopy, height2, v43);
 
         v40 = v62;
         goto LABEL_44;
@@ -799,15 +799,15 @@ LABEL_46:
 
     else
     {
-      v39 = v66;
+      v39 = deliveryMode;
       v40 = v33;
-      if (v66 <= 1)
+      if (deliveryMode <= 1)
       {
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
         aBlock[2] = __97__PUReviewAssetsMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke;
         aBlock[3] = &unk_1E7B7D6F0;
-        v45 = v37;
+        v45 = height;
         v85 = v68;
         v63 = v40;
         v84 = v40;
@@ -815,30 +815,30 @@ LABEL_46:
         v61 = v36;
         if (v45)
         {
-          v47 = [(PUReviewAssetsMediaProvider *)self _mediaRequests];
-          v48 = [MEMORY[0x1E696AD98] numberWithInt:v18];
-          [v47 setObject:v45 forKey:v48];
+          _mediaRequests = [(PUReviewAssetsMediaProvider *)self _mediaRequests];
+          v48 = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
+          [_mediaRequests setObject:v45 forKey:v48];
 
           v79[0] = MEMORY[0x1E69E9820];
           v79[1] = 3221225472;
           v79[2] = __97__PUReviewAssetsMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke_4;
           v79[3] = &unk_1E7B7D718;
-          v82 = v18;
-          v80 = v47;
+          v82 = _incrementRequestIdentifier;
+          v80 = _mediaRequests;
           v81 = v46;
           v49 = v46;
-          v50 = v47;
+          v50 = _mediaRequests;
           [(PLFigPreheatItem *)v45 startPreheatRequestWithCompletionHandler:v79];
         }
 
         else
         {
-          v53 = [v14 resizeMode];
+          resizeMode = [optionsCopy resizeMode];
           block[0] = MEMORY[0x1E69E9820];
           block[1] = 3221225472;
           block[2] = __97__PUReviewAssetsMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke_5;
           block[3] = &unk_1E7B7D740;
-          v77 = v53 == 2;
+          v77 = resizeMode == 2;
           block[4] = self;
           v71 = v69;
           v75 = width;
@@ -855,7 +855,7 @@ LABEL_46:
 
         v36 = v61;
         v40 = v63;
-        v37 = v45;
+        height = v45;
       }
     }
 
@@ -869,34 +869,34 @@ LABEL_46:
       v56 = v65;
     }
 
-    v15 = v68;
+    handlerCopy = v68;
     if (v56 != 1)
     {
       goto LABEL_45;
     }
 
-    v64 = v37;
+    v64 = height;
     v41 = v36;
-    v42 = [v40 mutableCopy];
+    height2 = [v40 mutableCopy];
     v87 = *MEMORY[0x1E6978E50];
     v88 = MEMORY[0x1E695E118];
     v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v88 forKeys:&v87 count:1];
-    [v42 addEntriesFromDictionary:v57];
+    [height2 addEntriesFromDictionary:v57];
 
-    (v68)[2](v68, v23, v42);
+    (v68)[2](v68, providedPreviewImage, height2);
 LABEL_44:
 
     v36 = v41;
-    v37 = v64;
+    height = v64;
 LABEL_45:
 
     goto LABEL_46;
   }
 
-  LODWORD(v18) = [(PUReviewAssetsMediaProvider *)self _requestAdjustmentDataForAsset:v16 resultHandler:v15];
+  LODWORD(_incrementRequestIdentifier) = [(PUReviewAssetsMediaProvider *)self _requestAdjustmentDataForAsset:v16 resultHandler:handlerCopy];
 LABEL_47:
 
-  return v18;
+  return _incrementRequestIdentifier;
 }
 
 void __97__PUReviewAssetsMediaProvider_requestImageForAsset_targetSize_contentMode_options_resultHandler___block_invoke(uint64_t a1, void *a2, char a3, void *a4)
@@ -1025,38 +1025,38 @@ LABEL_3:
   v10();
 }
 
-- (int)_requestAdjustmentDataForAsset:(id)a3 resultHandler:(id)a4
+- (int)_requestAdjustmentDataForAsset:(id)asset resultHandler:(id)handler
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
-  v9 = [v7 assetAdjustments];
+  handlerCopy = handler;
+  assetCopy = asset;
+  _incrementRequestIdentifier = [(PUReviewAssetsMediaProvider *)self _incrementRequestIdentifier];
+  assetAdjustments = [assetCopy assetAdjustments];
 
-  if (v9)
+  if (assetAdjustments)
   {
-    v10 = [v9 phAdjustmentData];
+    phAdjustmentData = [assetAdjustments phAdjustmentData];
     v14[0] = *MEMORY[0x1E6978E70];
-    v11 = [MEMORY[0x1E696AD98] numberWithInt:v8];
+    v11 = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
     v14[1] = *MEMORY[0x1E6978B30];
     v15[0] = v11;
-    v15[1] = v10;
+    v15[1] = phAdjustmentData;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v6[2](v6, 0, v12);
+    handlerCopy[2](handlerCopy, 0, v12);
 
-    v6 = v12;
+    handlerCopy = v12;
   }
 
   else
   {
     v16 = *MEMORY[0x1E6978E70];
-    v10 = [MEMORY[0x1E696AD98] numberWithInt:v8];
-    v17[0] = v10;
+    phAdjustmentData = [MEMORY[0x1E696AD98] numberWithInt:_incrementRequestIdentifier];
+    v17[0] = phAdjustmentData;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    v6[2](v6, 0, v11);
+    handlerCopy[2](handlerCopy, 0, v11);
   }
 
-  return v8;
+  return _incrementRequestIdentifier;
 }
 
 - (PUReviewAssetsMediaProvider)init
@@ -1066,13 +1066,13 @@ LABEL_3:
   v2 = [(PUReviewAssetsMediaProvider *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DCEB0] mainScreen];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
     atomic_store(0, &v2->_nextRequestIdentifier);
-    [v3 scale];
+    [mainScreen scale];
     v2->__screenScale = v4;
-    v5 = [MEMORY[0x1E6978788] mapTable];
+    mapTable = [MEMORY[0x1E6978788] mapTable];
     mediaRequests = v2->__mediaRequests;
-    v2->__mediaRequests = v5;
+    v2->__mediaRequests = mapTable;
 
     v7 = v2;
   }

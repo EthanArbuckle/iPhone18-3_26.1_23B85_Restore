@@ -1,32 +1,32 @@
 @interface NavigationDoubleHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)titleAlpha;
 - (void)layoutSubviews;
-- (void)setTitleAlpha:(double)a3;
+- (void)setTitleAlpha:(double)alpha;
 @end
 
 @implementation NavigationDoubleHeaderView
 
 - (double)titleAlpha
 {
-  v2 = self;
+  selfCopy = self;
   NavigationDoubleHeaderView.titleAlpha.getter();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTitleAlpha:(double)a3
+- (void)setTitleAlpha:(double)alpha
 {
-  v4 = self;
-  NavigationDoubleHeaderView.titleAlpha.setter(a3);
+  selfCopy = self;
+  NavigationDoubleHeaderView.titleAlpha.setter(alpha);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = NavigationDoubleHeaderView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -38,7 +38,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   NavigationDoubleHeaderView.layoutSubviews()();
 }
 

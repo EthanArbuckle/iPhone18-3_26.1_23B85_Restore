@@ -1,6 +1,6 @@
 @interface CNComposeRecipientTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CNComposeRecipientTextViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CNComposeRecipientTextViewAccessibility)initWithFrame:(CGRect)frame;
 - (id)automationElements;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_ensureInactiveTextView;
@@ -8,19 +8,19 @@
 
 @implementation CNComposeRecipientTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceVariable:@"_inactiveTextView" withType:"UITextView"];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"_ensureInactiveTextView" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CNComposeRecipientTextView" isKindOfClass:@"CNComposeHeaderView"];
-  [v3 validateClass:@"CNComposeHeaderView" hasInstanceMethod:@"labelView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipientAtom"];
-  [v3 validateClass:@"CNComposeRecipientAtom" hasInstanceVariable:@"_recipient" withType:"CNComposeRecipient"];
-  [v3 validateClass:@"CNComposeRecipient" hasInstanceMethod:@"displayString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceVariable:@"_atomViews" withType:"NSMutableArray"];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"addButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceVariable:@"_inactiveTextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"_ensureInactiveTextView" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" isKindOfClass:@"CNComposeHeaderView"];
+  [validationsCopy validateClass:@"CNComposeHeaderView" hasInstanceMethod:@"labelView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientAtom"];
+  [validationsCopy validateClass:@"CNComposeRecipientAtom" hasInstanceVariable:@"_recipient" withType:"CNComposeRecipient"];
+  [validationsCopy validateClass:@"CNComposeRecipient" hasInstanceMethod:@"displayString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceVariable:@"_atomViews" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"addButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -42,27 +42,27 @@
 {
   v8.receiver = self;
   v8.super_class = CNComposeRecipientTextViewAccessibility;
-  v3 = [(CNComposeRecipientTextViewAccessibility *)&v8 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(CNComposeRecipientTextViewAccessibility *)&v8 automationElements];
+  v4 = [automationElements mutableCopy];
   if (v4)
   {
-    v5 = v4;
+    array = v4;
   }
 
   else
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
 
-    if (!v5)
+    if (!array)
     {
-      v5 = [MEMORY[0x29EDB8DE8] array];
+      array = [MEMORY[0x29EDB8DE8] array];
     }
   }
 
   v6 = [(CNComposeRecipientTextViewAccessibility *)self safeValueForKey:@"labelView"];
-  [v5 axSafelyAddObject:v6];
+  [array axSafelyAddObject:v6];
 
-  return v5;
+  return array;
 }
 
 - (void)_ensureInactiveTextView
@@ -73,11 +73,11 @@
   [(CNComposeRecipientTextViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (CNComposeRecipientTextViewAccessibility)initWithFrame:(CGRect)a3
+- (CNComposeRecipientTextViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = CNComposeRecipientTextViewAccessibility;
-  v3 = [(CNComposeRecipientTextViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNComposeRecipientTextViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(CNComposeRecipientTextViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

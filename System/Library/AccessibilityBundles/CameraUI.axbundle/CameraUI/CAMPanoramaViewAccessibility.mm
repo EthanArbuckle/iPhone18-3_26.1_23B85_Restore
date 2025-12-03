@@ -1,17 +1,17 @@
 @interface CAMPanoramaViewAccessibility
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation CAMPanoramaViewAccessibility
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v8 = [(CAMPanoramaViewAccessibility *)self safeValueForKey:@"_instructionLabel"];
   [(CAMPanoramaViewAccessibility *)self convertPoint:v8 toView:x, y];
-  if ([v8 pointInside:v7 withEvent:?])
+  if ([v8 pointInside:eventCopy withEvent:?])
   {
     v9 = v8;
   }
@@ -20,7 +20,7 @@
   {
     v12.receiver = self;
     v12.super_class = CAMPanoramaViewAccessibility;
-    v9 = [(CAMPanoramaViewAccessibility *)&v12 _accessibilityHitTest:v7 withEvent:x, y];
+    v9 = [(CAMPanoramaViewAccessibility *)&v12 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   v10 = v9;

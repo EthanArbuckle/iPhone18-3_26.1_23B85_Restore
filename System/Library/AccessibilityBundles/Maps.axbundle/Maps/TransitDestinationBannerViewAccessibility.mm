@@ -1,16 +1,16 @@
 @interface TransitDestinationBannerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation TransitDestinationBannerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TransitDestinationBannerView" hasInstanceMethod:@"leadingView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TransitDestinationBannerView" hasInstanceMethod:@"minimalView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TransitDestinationBannerView" hasInstanceMethod:@"detachedMinimalView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TransitDestinationBannerView" hasInstanceMethod:@"leadingView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TransitDestinationBannerView" hasInstanceMethod:@"minimalView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TransitDestinationBannerView" hasInstanceMethod:@"detachedMinimalView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

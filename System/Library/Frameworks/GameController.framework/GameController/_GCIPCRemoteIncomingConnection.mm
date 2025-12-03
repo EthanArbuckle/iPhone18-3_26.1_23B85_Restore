@@ -1,19 +1,19 @@
 @interface _GCIPCRemoteIncomingConnection
 - (_GCIPCProcess)process;
-- (_GCIPCRemoteIncomingConnection)initWithConnection:(id)a3;
-- (_GCIPCRemoteIncomingConnection)initWithConnection:(id)a3 fromProcess:(id)a4;
+- (_GCIPCRemoteIncomingConnection)initWithConnection:(id)connection;
+- (_GCIPCRemoteIncomingConnection)initWithConnection:(id)connection fromProcess:(id)process;
 @end
 
 @implementation _GCIPCRemoteIncomingConnection
 
-- (_GCIPCRemoteIncomingConnection)initWithConnection:(id)a3 fromProcess:(id)a4
+- (_GCIPCRemoteIncomingConnection)initWithConnection:(id)connection fromProcess:(id)process
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  connectionCopy = connection;
+  processCopy = process;
+  v9 = processCopy;
+  if (connectionCopy)
   {
-    [v7 auditToken];
+    [connectionCopy auditToken];
     if (v9)
     {
 LABEL_3:
@@ -26,7 +26,7 @@ LABEL_3:
   {
     v19 = 0u;
     v20 = 0u;
-    if (v8)
+    if (processCopy)
     {
       goto LABEL_3;
     }
@@ -37,12 +37,12 @@ LABEL_3:
 LABEL_6:
   if (v19 != v17 || *(&v19 + 1) != *(&v17 + 1) || v20 != v18 || *(&v20 + 1) != *(&v18 + 1))
   {
-    [(_GCIPCRemoteIncomingConnection *)a2 initWithConnection:v7 fromProcess:v9];
+    [(_GCIPCRemoteIncomingConnection *)a2 initWithConnection:connectionCopy fromProcess:v9];
   }
 
   v16.receiver = self;
   v16.super_class = _GCIPCRemoteIncomingConnection;
-  v13 = [(GCIPCRemoteIncomingConnection *)&v16 initWithConnection:v7];
+  v13 = [(GCIPCRemoteIncomingConnection *)&v16 initWithConnection:connectionCopy];
   v14 = v13;
   if (v13)
   {
@@ -52,7 +52,7 @@ LABEL_6:
   return v14;
 }
 
-- (_GCIPCRemoteIncomingConnection)initWithConnection:(id)a3
+- (_GCIPCRemoteIncomingConnection)initWithConnection:(id)connection
 {
   [(_GCIPCRemoteIncomingConnection *)self doesNotRecognizeSelector:a2];
 

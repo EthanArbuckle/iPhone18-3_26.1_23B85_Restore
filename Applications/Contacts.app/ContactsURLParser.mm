@@ -1,9 +1,9 @@
 @interface ContactsURLParser
 + (OS_os_log)log;
 - (CNContactDataSource_Internal)dataSource;
-- (ContactsURLParser)initWithURL:(id)a3 dataSource:(id)a4;
-- (id)identifierFromShowCommandURL:(id)a3;
-- (void)readURL:(id)a3;
+- (ContactsURLParser)initWithURL:(id)l dataSource:(id)source;
+- (id)identifierFromShowCommandURL:(id)l;
+- (void)readURL:(id)l;
 @end
 
 @implementation ContactsURLParser
@@ -20,68 +20,68 @@
   return v3;
 }
 
-- (ContactsURLParser)initWithURL:(id)a3 dataSource:(id)a4
+- (ContactsURLParser)initWithURL:(id)l dataSource:(id)source
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = ContactsURLParser;
   v9 = [(ContactsURLParser *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeWeak(&v10->_dataSource, v8);
-    [(ContactsURLParser *)v10 readURL:v7];
+    objc_storeStrong(&v9->_url, l);
+    objc_storeWeak(&v10->_dataSource, sourceCopy);
+    [(ContactsURLParser *)v10 readURL:lCopy];
     v11 = v10;
   }
 
   return v10;
 }
 
-- (void)readURL:(id)a3
+- (void)readURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 scheme];
-  v6 = [v5 isEqualToString:@"contact"];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  v6 = [scheme isEqualToString:@"contact"];
 
   if (v6)
   {
-    v7 = [v4 scheme];
-    v8 = [v7 isEqualToString:@"search"];
+    scheme2 = [lCopy scheme];
+    v8 = [scheme2 isEqualToString:@"search"];
 
     if (v8)
     {
-      v9 = [v4 searchResultIdentifier];
-      [(ContactsURLParser *)self setLegacyIdenifier:v9];
+      searchResultIdentifier = [lCopy searchResultIdentifier];
+      [(ContactsURLParser *)self setLegacyIdenifier:searchResultIdentifier];
 
       [(ContactsURLParser *)self setAction:1];
     }
 
-    v10 = [v4 host];
-    v11 = [v10 isEqualToString:@"show"];
+    host = [lCopy host];
+    v11 = [host isEqualToString:@"show"];
 
     if (v11)
     {
-      v12 = [(ContactsURLParser *)self identifierFromShowCommandURL:v4];
+      v12 = [(ContactsURLParser *)self identifierFromShowCommandURL:lCopy];
       [(ContactsURLParser *)self setIdentifier:v12];
 
       [(ContactsURLParser *)self setAction:1];
     }
 
-    v13 = [v4 host];
-    v14 = [v13 isEqualToString:@"edit"];
+    host2 = [lCopy host];
+    v14 = [host2 isEqualToString:@"edit"];
 
     if (v14)
     {
-      v15 = [(ContactsURLParser *)self identifierFromShowCommandURL:v4];
+      v15 = [(ContactsURLParser *)self identifierFromShowCommandURL:lCopy];
       [(ContactsURLParser *)self setIdentifier:v15];
 
       [(ContactsURLParser *)self setAction:2];
     }
 
-    v16 = [v4 host];
-    v17 = [v16 isEqualToString:@"add"];
+    host3 = [lCopy host];
+    v17 = [host3 isEqualToString:@"add"];
 
     if (v17)
     {
@@ -95,27 +95,27 @@
     v18 = [objc_opt_class() log];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_10000F194(v4, v18);
+      sub_10000F194(lCopy, v18);
     }
   }
 }
 
-- (id)identifierFromShowCommandURL:(id)a3
+- (id)identifierFromShowCommandURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  v6 = [v4 query];
-  v7 = [v6 rangeOfString:@"="];
+  lCopy = l;
+  host = [lCopy host];
+  query = [lCopy query];
+  v7 = [query rangeOfString:@"="];
   if (v7)
   {
     v8 = v7;
-    if (v7 < [v6 length] - 1)
+    if (v7 < [query length] - 1)
     {
-      v9 = [v6 substringToIndex:v8];
-      v10 = [v6 substringFromIndex:v8 + 1];
+      v9 = [query substringToIndex:v8];
+      v10 = [query substringFromIndex:v8 + 1];
       if ([v9 isEqualToString:@"id"])
       {
-        v11 = v10;
+        preferredForNameMeContactIdentifier = v10;
 LABEL_16:
 
         goto LABEL_17;
@@ -125,8 +125,8 @@ LABEL_16:
       {
         if ([v10 isEqualToString:@"me"])
         {
-          v12 = [(ContactsURLParser *)self dataSource];
-          v11 = [v12 preferredForNameMeContactIdentifier];
+          dataSource = [(ContactsURLParser *)self dataSource];
+          preferredForNameMeContactIdentifier = [dataSource preferredForNameMeContactIdentifier];
 
           goto LABEL_16;
         }
@@ -147,7 +147,7 @@ LABEL_16:
         }
       }
 
-      v11 = 0;
+      preferredForNameMeContactIdentifier = 0;
       goto LABEL_16;
     }
   }
@@ -156,18 +156,18 @@ LABEL_16:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v15 = 138412802;
-    v16 = v6;
+    v16 = query;
     v17 = 2112;
-    v18 = v5;
+    v18 = host;
     v19 = 2112;
-    v20 = v4;
+    v20 = lCopy;
     _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Invalid query '%@' for command '%@' in URL %@.", &v15, 0x20u);
   }
 
-  v11 = 0;
+  preferredForNameMeContactIdentifier = 0;
 LABEL_17:
 
-  return v11;
+  return preferredForNameMeContactIdentifier;
 }
 
 - (CNContactDataSource_Internal)dataSource

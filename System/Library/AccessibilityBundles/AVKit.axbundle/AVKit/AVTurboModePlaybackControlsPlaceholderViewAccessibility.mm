@@ -1,16 +1,16 @@
 @interface AVTurboModePlaybackControlsPlaceholderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_makeProminentPlayButtonAndContainer;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AVTurboModePlaybackControlsPlaceholderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTurboModePlaybackControlsPlaceholderView" hasInstanceMethod:@"prominentPlayButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTurboModePlaybackControlsPlaceholderView" hasInstanceMethod:@"_makeProminentPlayButtonAndContainer" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTurboModePlaybackControlsPlaceholderView" hasInstanceMethod:@"prominentPlayButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTurboModePlaybackControlsPlaceholderView" hasInstanceMethod:@"_makeProminentPlayButtonAndContainer" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,10 +27,10 @@
 {
   v5.receiver = self;
   v5.super_class = AVTurboModePlaybackControlsPlaceholderViewAccessibility;
-  v3 = [(AVTurboModePlaybackControlsPlaceholderViewAccessibility *)&v5 _makeProminentPlayButtonAndContainer];
+  _makeProminentPlayButtonAndContainer = [(AVTurboModePlaybackControlsPlaceholderViewAccessibility *)&v5 _makeProminentPlayButtonAndContainer];
   [(AVTurboModePlaybackControlsPlaceholderViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 
-  return v3;
+  return _makeProminentPlayButtonAndContainer;
 }
 
 @end

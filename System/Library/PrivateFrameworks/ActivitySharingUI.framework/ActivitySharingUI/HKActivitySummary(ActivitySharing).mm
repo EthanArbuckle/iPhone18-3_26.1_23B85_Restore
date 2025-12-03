@@ -27,38 +27,38 @@
   {
     v14 = MEMORY[0x277D0A7E8];
     v15 = MEMORY[0x277CCABB0];
-    v16 = [v13 mmvQuantity];
-    v17 = [MEMORY[0x277CCDAB0] minuteUnit];
-    [v16 doubleValueForUnit:v17];
+    mmvQuantity = [v13 mmvQuantity];
+    minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+    [mmvQuantity doubleValueForUnit:minuteUnit];
     v18 = [v15 numberWithDouble:?];
     v19 = [v14 stringWithNumber:v18 decimalPrecision:1];
 
     v20 = MEMORY[0x277D0A7E8];
     v21 = MEMORY[0x277CCABB0];
-    v22 = [v13 mmgQuantity];
-    v23 = [MEMORY[0x277CCDAB0] minuteUnit];
-    [v22 doubleValueForUnit:v23];
+    mmgQuantity = [v13 mmgQuantity];
+    minuteUnit2 = [MEMORY[0x277CCDAB0] minuteUnit];
+    [mmgQuantity doubleValueForUnit:minuteUnit2];
     v24 = [v21 numberWithDouble:?];
     v25 = [v20 stringWithNumber:v24 decimalPrecision:1];
 
-    v26 = ActivitySharingBundle();
-    [v26 localizedStringForKey:@"MIN" value:&stru_2850F6650 table:@"Localizable"];
+    localizedShortActiveEnergyUnitString = ActivitySharingBundle();
+    [localizedShortActiveEnergyUnitString localizedStringForKey:@"MIN" value:&stru_2850F6650 table:@"Localizable"];
   }
 
   else
   {
-    v27 = [a1 activeEnergyBurned];
-    v19 = [v12 localizedStringWithActiveEnergy:v27];
+    activeEnergyBurned = [self activeEnergyBurned];
+    v19 = [v12 localizedStringWithActiveEnergy:activeEnergyBurned];
 
-    v28 = [a1 activeEnergyBurnedGoal];
-    v25 = [v12 localizedStringWithActiveEnergy:v28];
+    activeEnergyBurnedGoal = [self activeEnergyBurnedGoal];
+    v25 = [v12 localizedStringWithActiveEnergy:activeEnergyBurnedGoal];
 
-    v26 = [v12 localizedShortActiveEnergyUnitString];
-    [v26 localizedUppercaseString];
+    localizedShortActiveEnergyUnitString = [v12 localizedShortActiveEnergyUnitString];
+    [localizedShortActiveEnergyUnitString localizedUppercaseString];
   }
   v29 = ;
 
-  v30 = [a1 _isEmptyMoveSummaryForSnapshot:v13];
+  v30 = [self _isEmptyMoveSummaryForSnapshot:v13];
   if (v30)
   {
     v31 = ActivitySharingBundle();
@@ -84,13 +84,13 @@
   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
   v39 = [v35 initWithString:v33 attributes:v38];
 
-  v40 = [v50 fu_shortSlashFont];
-  v41 = [v39 string];
-  v42 = [v41 rangeOfString:@"/"];
-  [v39 addAttribute:v36 value:v40 range:{v42, v43}];
+  fu_shortSlashFont = [v50 fu_shortSlashFont];
+  string = [v39 string];
+  v42 = [string rangeOfString:@"/"];
+  [v39 addAttribute:v36 value:fu_shortSlashFont range:{v42, v43}];
 
-  v44 = [v39 string];
-  v45 = [v44 rangeOfString:v29];
+  string2 = [v39 string];
+  v45 = [string2 rangeOfString:v29];
   [v39 addAttribute:v36 value:v49 range:{v45, v46}];
 
   return v39;
@@ -101,11 +101,11 @@
   v8 = a5;
   v9 = a4;
   v10 = a3;
-  v11 = [v10 dataFont];
-  v12 = [v10 unitFont];
+  dataFont = [v10 dataFont];
+  unitFont = [v10 unitFont];
   v13 = [v10 keyColorForDisplayMode:1];
 
-  v14 = [a1 _moveStringWithFont:v11 smallCapsFont:v12 color:v13 formattingManager:v9 snapshot:v8];
+  v14 = [self _moveStringWithFont:dataFont smallCapsFont:unitFont color:v13 formattingManager:v9 snapshot:v8];
 
   return v14;
 }
@@ -116,10 +116,10 @@
   v9 = a4;
   v10 = a3;
   v11 = [v10 keyColorForDisplayMode:1];
-  v12 = [v10 multilineDataFont];
-  v13 = [v10 multilineUnitFont];
+  multilineDataFont = [v10 multilineDataFont];
+  multilineUnitFont = [v10 multilineUnitFont];
 
-  v14 = [a1 _moveStringWithFont:v12 smallCapsFont:v13 color:v11 formattingManager:v9 snapshot:v8];
+  v14 = [self _moveStringWithFont:multilineDataFont smallCapsFont:multilineUnitFont color:v11 formattingManager:v9 snapshot:v8];
 
   return v14;
 }
@@ -130,7 +130,7 @@
   v6 = a4;
   v7 = a3;
   v8 = [v7 keyColorForDisplayMode:1];
-  if ([a1 _isEmptyMoveSummaryForSnapshot:v6])
+  if ([self _isEmptyMoveSummaryForSnapshot:v6])
   {
     v9 = ActivitySharingBundle();
     v10 = [v9 localizedStringForKey:@"LIST_VIEW_EMPTY_VALUE" value:&stru_2850F6650 table:@"Localizable"];
@@ -138,10 +138,10 @@
 
   else
   {
-    v11 = [v6 isAmm];
+    isAmm = [v6 isAmm];
     v12 = MEMORY[0x277D0A7E8];
     v13 = MEMORY[0x277CCABB0];
-    if (v11)
+    if (isAmm)
     {
       [v6 mmPercent];
     }
@@ -159,10 +159,10 @@
 
   v15 = objc_alloc(MEMORY[0x277CCAB48]);
   v20[0] = *MEMORY[0x277D740A8];
-  v16 = [v7 multilineDataFont];
+  multilineDataFont = [v7 multilineDataFont];
 
   v20[1] = *MEMORY[0x277D740C0];
-  v21[0] = v16;
+  v21[0] = multilineDataFont;
   v21[1] = v8;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
   v18 = [v15 initWithString:v14 attributes:v17];
@@ -176,17 +176,17 @@
   v4 = a3;
   v38 = [v4 keyColorForDisplayMode:2];
   v5 = MEMORY[0x277CCABB0];
-  v6 = [a1 appleExerciseTime];
-  v7 = [MEMORY[0x277CCDAB0] minuteUnit];
-  [v6 doubleValueForUnit:v7];
+  appleExerciseTime = [self appleExerciseTime];
+  minuteUnit = [MEMORY[0x277CCDAB0] minuteUnit];
+  [appleExerciseTime doubleValueForUnit:minuteUnit];
   v8 = [v5 numberWithDouble:?];
 
   v37 = v8;
   v9 = [MEMORY[0x277D0A7E8] stringWithNumber:v8 decimalPrecision:1];
   v10 = MEMORY[0x277CCABB0];
-  v11 = [a1 appleExerciseTimeGoal];
-  v12 = [MEMORY[0x277CCDAB0] minuteUnit];
-  [v11 doubleValueForUnit:v12];
+  appleExerciseTimeGoal = [self appleExerciseTimeGoal];
+  minuteUnit2 = [MEMORY[0x277CCDAB0] minuteUnit];
+  [appleExerciseTimeGoal doubleValueForUnit:minuteUnit2];
   v13 = [v10 numberWithDouble:?];
 
   v36 = v13;
@@ -195,7 +195,7 @@
   v16 = [v15 localizedStringForKey:@"MIN" value:&stru_2850F6650 table:@"Localizable"];
 
   v35 = v9;
-  if ([a1 _isEmptyExerciseSummary])
+  if ([self _isEmptyExerciseSummary])
   {
     v17 = ActivitySharingBundle();
     [v17 localizedStringForKey:@"LIST_VIEW_EMPTY_RATIO" value:&stru_2850F6650 table:@"Localizable"];
@@ -212,24 +212,24 @@
   v20 = objc_alloc(MEMORY[0x277CCAB48]);
   v39[0] = *MEMORY[0x277D740A8];
   v21 = v39[0];
-  v22 = [v4 multilineDataFont];
+  multilineDataFont = [v4 multilineDataFont];
   v39[1] = *MEMORY[0x277D740C0];
-  v40[0] = v22;
+  v40[0] = multilineDataFont;
   v40[1] = v38;
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:2];
   v24 = [v20 initWithString:v19 attributes:v23];
 
-  v25 = [v4 multilineDataFont];
-  v26 = [v25 fu_shortSlashFont];
-  v27 = [v24 string];
-  v28 = [v27 rangeOfString:@"/"];
-  [v24 addAttribute:v21 value:v26 range:{v28, v29}];
+  multilineDataFont2 = [v4 multilineDataFont];
+  fu_shortSlashFont = [multilineDataFont2 fu_shortSlashFont];
+  string = [v24 string];
+  v28 = [string rangeOfString:@"/"];
+  [v24 addAttribute:v21 value:fu_shortSlashFont range:{v28, v29}];
 
-  v30 = [v4 multilineUnitFont];
+  multilineUnitFont = [v4 multilineUnitFont];
 
-  v31 = [v24 string];
-  v32 = [v31 rangeOfString:v16];
-  [v24 addAttribute:v21 value:v30 range:{v32, v33}];
+  string2 = [v24 string];
+  v32 = [string2 rangeOfString:v16];
+  [v24 addAttribute:v21 value:multilineUnitFont range:{v32, v33}];
 
   return v24;
 }
@@ -239,7 +239,7 @@
   v16[2] = *MEMORY[0x277D85DE8];
   v4 = a3;
   v5 = [v4 keyColorForDisplayMode:2];
-  if ([a1 _isEmptyExerciseSummary])
+  if ([self _isEmptyExerciseSummary])
   {
     v6 = ActivitySharingBundle();
     [v6 localizedStringForKey:@"LIST_VIEW_EMPTY_VALUE" value:&stru_2850F6650 table:@"Localizable"];
@@ -249,7 +249,7 @@
   {
     v7 = MEMORY[0x277D0A7E8];
     v8 = MEMORY[0x277CCABB0];
-    [a1 _exerciseTimeCompletionPercentage];
+    [self _exerciseTimeCompletionPercentage];
     v6 = [v8 numberWithDouble:?];
     [v7 percentStringWithNumber:v6];
   }
@@ -257,10 +257,10 @@
 
   v10 = objc_alloc(MEMORY[0x277CCAB48]);
   v15[0] = *MEMORY[0x277D740A8];
-  v11 = [v4 multilineDataFont];
+  multilineDataFont = [v4 multilineDataFont];
 
   v15[1] = *MEMORY[0x277D740C0];
-  v16[0] = v11;
+  v16[0] = multilineDataFont;
   v16[1] = v5;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
   v13 = [v10 initWithString:v9 attributes:v12];
@@ -274,34 +274,34 @@
   v4 = a3;
   v5 = [v4 keyColorForDisplayMode:3];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [a1 stepCount];
-  v8 = [MEMORY[0x277CCDAB0] countUnit];
-  [v7 doubleValueForUnit:v8];
+  stepCount = [self stepCount];
+  countUnit = [MEMORY[0x277CCDAB0] countUnit];
+  [stepCount doubleValueForUnit:countUnit];
   v9 = [v6 numberWithDouble:?];
 
   v10 = [MEMORY[0x277D0A7E8] stringWithNumber:v9 decimalPrecision:1];
-  v11 = [v9 integerValue];
+  integerValue = [v9 integerValue];
   v12 = MEMORY[0x277CCACA8];
   v13 = ActivitySharingBundle();
   v14 = [v13 localizedStringForKey:@"STEPS" value:&stru_2850F6650 table:@"Localizable"];
-  v15 = [v12 stringWithFormat:v14, v11, v10];
-  v16 = [v15 localizedUppercaseString];
+  v15 = [v12 stringWithFormat:v14, integerValue, v10];
+  localizedUppercaseString = [v15 localizedUppercaseString];
 
   v17 = objc_alloc(MEMORY[0x277CCAB48]);
   v27[0] = *MEMORY[0x277D740A8];
   v18 = v27[0];
-  v19 = [v4 multilineUnitFont];
+  multilineUnitFont = [v4 multilineUnitFont];
   v27[1] = *MEMORY[0x277D740C0];
-  v28[0] = v19;
+  v28[0] = multilineUnitFont;
   v28[1] = v5;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
-  v21 = [v17 initWithString:v16 attributes:v20];
+  v21 = [v17 initWithString:localizedUppercaseString attributes:v20];
 
-  v22 = [v4 multilineDataFont];
+  multilineDataFont = [v4 multilineDataFont];
 
-  v23 = [v21 string];
-  v24 = [v23 rangeOfString:v10];
-  [v21 addAttribute:v18 value:v22 range:{v24, v25}];
+  string = [v21 string];
+  v24 = [string rangeOfString:v10];
+  [v21 addAttribute:v18 value:multilineDataFont range:{v24, v25}];
 
   return v21;
 }
@@ -313,9 +313,9 @@
   v9 = a5;
   v10 = a3;
   v11 = [v10 keyColorForDisplayMode:3];
-  v12 = [a1 distanceWalkingRunning];
-  v13 = [MEMORY[0x277CCDAB0] meterUnit];
-  [v12 doubleValueForUnit:v13];
+  distanceWalkingRunning = [self distanceWalkingRunning];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  [distanceWalkingRunning doubleValueForUnit:meterUnit];
   v15 = v14;
 
   v40 = *MEMORY[0x277D74338];
@@ -330,14 +330,14 @@
   v41[0] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v41 forKeys:&v40 count:1];
 
-  v20 = [v10 multilineDataFont];
-  v21 = [v20 fontDescriptor];
-  v22 = [v21 fontDescriptorByAddingAttributes:v19];
+  multilineDataFont = [v10 multilineDataFont];
+  fontDescriptor = [multilineDataFont fontDescriptor];
+  v22 = [fontDescriptor fontDescriptorByAddingAttributes:v19];
 
   v23 = MEMORY[0x277D74300];
-  v24 = [v10 multilineDataFont];
+  multilineDataFont2 = [v10 multilineDataFont];
 
-  [v24 pointSize];
+  [multilineDataFont2 pointSize];
   v25 = [v23 fontWithDescriptor:v22 size:?];
 
   if (v9)
@@ -371,18 +371,18 @@
   v4 = a3;
   v5 = [v4 keyColorForDisplayMode:5];
   v6 = MEMORY[0x277CCABB0];
-  v7 = [a1 _pushCount];
-  v8 = [MEMORY[0x277CCDAB0] countUnit];
-  [v7 doubleValueForUnit:v8];
+  _pushCount = [self _pushCount];
+  countUnit = [MEMORY[0x277CCDAB0] countUnit];
+  [_pushCount doubleValueForUnit:countUnit];
   v9 = [v6 numberWithDouble:?];
 
   v10 = [MEMORY[0x277D0A7E8] stringWithNumber:v9 decimalPrecision:1];
   v11 = objc_alloc(MEMORY[0x277CCAB48]);
   v16[0] = *MEMORY[0x277D740A8];
-  v12 = [v4 dataFont];
+  dataFont = [v4 dataFont];
 
   v16[1] = *MEMORY[0x277D740C0];
-  v17[0] = v12;
+  v17[0] = dataFont;
   v17[1] = v5;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v14 = [v11 initWithString:v10 attributes:v13];
@@ -393,64 +393,64 @@
 - (uint64_t)_isEmptyMoveSummaryForSnapshot:()ActivitySharing
 {
   v4 = a3;
-  v5 = [a1 isPaused];
-  v6 = 1;
-  if (v4 && (v5 & 1) == 0)
+  isPaused = [self isPaused];
+  _isZero = 1;
+  if (v4 && (isPaused & 1) == 0)
   {
-    v7 = [a1 activeEnergyBurned];
-    if ([v7 _isZero])
+    activeEnergyBurned = [self activeEnergyBurned];
+    if ([activeEnergyBurned _isZero])
     {
-      v8 = [a1 activeEnergyBurnedGoal];
-      if ([v8 _isZero])
+      activeEnergyBurnedGoal = [self activeEnergyBurnedGoal];
+      if ([activeEnergyBurnedGoal _isZero])
       {
-        v9 = [v4 mmvQuantity];
-        if ([v9 _isZero])
+        mmvQuantity = [v4 mmvQuantity];
+        if ([mmvQuantity _isZero])
         {
-          v10 = [v4 mmgQuantity];
-          v6 = [v10 _isZero];
+          mmgQuantity = [v4 mmgQuantity];
+          _isZero = [mmgQuantity _isZero];
         }
 
         else
         {
-          v6 = 0;
+          _isZero = 0;
         }
       }
 
       else
       {
-        v6 = 0;
+        _isZero = 0;
       }
     }
 
     else
     {
-      v6 = 0;
+      _isZero = 0;
     }
   }
 
-  return v6;
+  return _isZero;
 }
 
 - (uint64_t)_isEmptyExerciseSummary
 {
-  if ([a1 isPaused])
+  if ([self isPaused])
   {
     return 1;
   }
 
-  v3 = [a1 appleExerciseTime];
-  if ([v3 _isZero])
+  appleExerciseTime = [self appleExerciseTime];
+  if ([appleExerciseTime _isZero])
   {
-    v4 = [a1 appleExerciseTimeGoal];
-    v2 = [v4 _isZero];
+    appleExerciseTimeGoal = [self appleExerciseTimeGoal];
+    _isZero = [appleExerciseTimeGoal _isZero];
   }
 
   else
   {
-    v2 = 0;
+    _isZero = 0;
   }
 
-  return v2;
+  return _isZero;
 }
 
 @end

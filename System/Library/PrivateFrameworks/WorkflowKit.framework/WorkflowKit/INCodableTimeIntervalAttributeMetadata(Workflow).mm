@@ -16,7 +16,7 @@
     v8 = a4 + 1;
     do
     {
-      v9 = [a1 unitNameForUnit:a3];
+      v9 = [self unitNameForUnit:a3];
       [v7 addObject:v9];
 
       ++a3;
@@ -45,9 +45,9 @@
 {
   [a3 doubleValue];
   v5 = v4;
-  v6 = [a1 defaultUnit];
-  v7 = v6;
-  switch(v6)
+  defaultUnit = [self defaultUnit];
+  v7 = defaultUnit;
+  switch(defaultUnit)
   {
     case 1:
       v8 = 60.0;
@@ -66,11 +66,11 @@
 LABEL_8:
   v9 = [WFNumberStringSubstitutableState alloc];
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:v5];
-  v11 = [v10 stringValue];
-  v12 = [(WFNumberStringSubstitutableState *)v9 initWithValue:v11];
+  stringValue = [v10 stringValue];
+  v12 = [(WFNumberStringSubstitutableState *)v9 initWithValue:stringValue];
 
   v13 = [WFQuantityParameterState alloc];
-  v14 = [a1 unitNameForUnit:v7];
+  v14 = [self unitNameForUnit:v7];
   v15 = [(WFQuantityParameterState *)v13 initWithMagnitudeState:v12 unitString:v14];
 
   return v15;
@@ -87,11 +87,11 @@ LABEL_8:
   {
     if (objc_opt_isKindOfClass())
     {
-      v12 = [v11 unitString];
-      v13 = [WFDurationQuantityFieldParameter calendarUnitFromUnitString:v12];
+      unitString = [v11 unitString];
+      v13 = [WFDurationQuantityFieldParameter calendarUnitFromUnitString:unitString];
 
-      v14 = [v11 magnitude];
-      [v14 doubleValue];
+      magnitude = [v11 magnitude];
+      [magnitude doubleValue];
       v16 = v15;
 
       switch(v13)
@@ -143,28 +143,28 @@ LABEL_15:
 
 - (id)wf_updatedParameterDefinition:()Workflow forCodableAttribute:localizer:
 {
-  v1 = a1;
+  selfCopy = self;
   v17[4] = *MEMORY[0x1E69E9840];
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &off_1F4B04770;
   v2 = objc_msgSendSuper2(&v15, sel_wf_updatedParameterDefinition_forCodableAttribute_localizer_);
-  v3 = [v1 unitNamesWithMinimumUnit:objc_msgSend(v1 maximumUnit:{"minimumUnit"), objc_msgSend(v1, "maximumUnit")}];
+  v3 = [selfCopy unitNamesWithMinimumUnit:objc_msgSend(selfCopy maximumUnit:{"minimumUnit"), objc_msgSend(selfCopy, "maximumUnit")}];
   v17[0] = v3;
   v16[0] = @"PossibleUnits";
   v16[1] = @"DefaultUnit";
-  v4 = [v3 firstObject];
-  v17[1] = v4;
+  firstObject = [v3 firstObject];
+  v17[1] = firstObject;
   v16[2] = @"DefaultValue";
-  v5 = [v1 defaultValue];
-  v6 = [v5 stringValue];
-  v17[2] = v6;
+  defaultValue = [selfCopy defaultValue];
+  stringValue = [defaultValue stringValue];
+  v17[2] = stringValue;
   v16[3] = @"AllowsNegativeNumbers";
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v1 minimumValue];
-  if (v8)
+  minimumValue = [selfCopy minimumValue];
+  if (minimumValue)
   {
-    v1 = [v1 minimumValue];
-    v9 = [v1 compare:&unk_1F4A9A708] == -1;
+    selfCopy = [selfCopy minimumValue];
+    v9 = [selfCopy compare:&unk_1F4A9A708] == -1;
   }
 
   else
@@ -177,7 +177,7 @@ LABEL_15:
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:4];
   v12 = [v2 definitionByAddingEntriesInDictionary:v11];
 
-  if (v8)
+  if (minimumValue)
   {
   }
 

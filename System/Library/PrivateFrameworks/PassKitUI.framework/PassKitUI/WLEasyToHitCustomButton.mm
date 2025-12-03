@@ -1,17 +1,17 @@
 @interface WLEasyToHitCustomButton
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIEdgeInsets)margins;
-- (WLEasyToHitCustomButton)initWithMargins:(UIEdgeInsets)a3;
+- (WLEasyToHitCustomButton)initWithMargins:(UIEdgeInsets)margins;
 @end
 
 @implementation WLEasyToHitCustomButton
 
-- (WLEasyToHitCustomButton)initWithMargins:(UIEdgeInsets)a3
+- (WLEasyToHitCustomButton)initWithMargins:(UIEdgeInsets)margins
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = margins.right;
+  bottom = margins.bottom;
+  left = margins.left;
+  top = margins.top;
   v10.receiver = self;
   v10.super_class = WLEasyToHitCustomButton;
   v7 = [(WLEasyToHitCustomButton *)&v10 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -24,10 +24,10 @@
   return v8;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(WLEasyToHitCustomButton *)self bounds];
   [(WLEasyToHitCustomButton *)self margins];
   UIRectInset();

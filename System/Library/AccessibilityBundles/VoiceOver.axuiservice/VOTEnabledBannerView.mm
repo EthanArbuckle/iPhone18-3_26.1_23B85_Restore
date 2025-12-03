@@ -1,14 +1,14 @@
 @interface VOTEnabledBannerView
-- (VOTEnabledBannerView)initWithFrame:(CGRect)a3;
+- (VOTEnabledBannerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation VOTEnabledBannerView
 
-- (VOTEnabledBannerView)initWithFrame:(CGRect)a3
+- (VOTEnabledBannerView)initWithFrame:(CGRect)frame
 {
   v40.receiver = self;
   v40.super_class = VOTEnabledBannerView;
-  v3 = [(VOTEnabledBannerView *)&v40 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VOTEnabledBannerView *)&v40 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -18,8 +18,8 @@
     v7 = [v5 initWithEffect:v6];
 
     [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [v7 layer];
-    [v8 setCornerRadius:5.0];
+    layer = [v7 layer];
+    [layer setCornerRadius:5.0];
 
     [v7 setClipsToBounds:1];
     [(VOTEnabledBannerView *)v4 addSubview:v7];
@@ -42,44 +42,44 @@
     [(VOTEnabledBannerView *)v4 addSubview:v11];
     [(VOTEnabledBannerView *)v4 setBannerLabelView:v11];
     v14 = +[NSMutableArray array];
-    v15 = [(VOTEnabledBannerView *)v4 topAnchor];
-    v16 = [v7 topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    topAnchor = [(VOTEnabledBannerView *)v4 topAnchor];
+    topAnchor2 = [v7 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v14 addObject:v17];
 
-    v18 = [(VOTEnabledBannerView *)v4 rightAnchor];
-    v19 = [v7 rightAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    rightAnchor = [(VOTEnabledBannerView *)v4 rightAnchor];
+    rightAnchor2 = [v7 rightAnchor];
+    v20 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v14 addObject:v20];
 
-    v21 = [(VOTEnabledBannerView *)v4 bottomAnchor];
-    v22 = [v7 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    bottomAnchor = [(VOTEnabledBannerView *)v4 bottomAnchor];
+    bottomAnchor2 = [v7 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v14 addObject:v23];
 
-    v24 = [(VOTEnabledBannerView *)v4 leftAnchor];
-    v25 = [v7 leftAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    leftAnchor = [(VOTEnabledBannerView *)v4 leftAnchor];
+    leftAnchor2 = [v7 leftAnchor];
+    v26 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v14 addObject:v26];
 
-    v27 = [(VOTEnabledBannerView *)v4 topAnchor];
-    v28 = [v11 topAnchor];
-    v29 = [v27 constraintEqualToAnchor:v28 constant:-20.0];
+    topAnchor3 = [(VOTEnabledBannerView *)v4 topAnchor];
+    topAnchor4 = [v11 topAnchor];
+    v29 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:-20.0];
     [v14 addObject:v29];
 
-    v30 = [(VOTEnabledBannerView *)v4 rightAnchor];
-    v31 = [v11 rightAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:60.0];
+    rightAnchor3 = [(VOTEnabledBannerView *)v4 rightAnchor];
+    rightAnchor4 = [v11 rightAnchor];
+    v32 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4 constant:60.0];
     [v14 addObject:v32];
 
-    v33 = [(VOTEnabledBannerView *)v4 bottomAnchor];
-    v34 = [v11 bottomAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34 constant:20.0];
+    bottomAnchor3 = [(VOTEnabledBannerView *)v4 bottomAnchor];
+    bottomAnchor4 = [v11 bottomAnchor];
+    v35 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:20.0];
     [v14 addObject:v35];
 
-    v36 = [(VOTEnabledBannerView *)v4 leftAnchor];
-    v37 = [v11 leftAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37 constant:-60.0];
+    leftAnchor3 = [(VOTEnabledBannerView *)v4 leftAnchor];
+    leftAnchor4 = [v11 leftAnchor];
+    v38 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:-60.0];
     [v14 addObject:v38];
 
     [NSLayoutConstraint activateConstraints:v14];

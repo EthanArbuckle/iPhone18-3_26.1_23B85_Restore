@@ -1,12 +1,12 @@
 @interface AAOBInheritanceShareDataModel
-- (AAOBInheritanceShareDataModel)initWithBeneficiaryName:(id)a3;
+- (AAOBInheritanceShareDataModel)initWithBeneficiaryName:(id)name;
 @end
 
 @implementation AAOBInheritanceShareDataModel
 
-- (AAOBInheritanceShareDataModel)initWithBeneficiaryName:(id)a3
+- (AAOBInheritanceShareDataModel)initWithBeneficiaryName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v26.receiver = self;
   v26.super_class = AAOBInheritanceShareDataModel;
   v5 = [(AAOBInheritanceShareDataModel *)&v26 init];
@@ -34,9 +34,9 @@
     }
 
     v14 = [v12 localizedStringForKey:v13 value:0 table:@"Localizable"];
-    v15 = [v11 stringWithFormat:v14, v4];
+    nameCopy = [v11 stringWithFormat:v14, nameCopy];
     detailText = v6->_detailText;
-    v6->_detailText = v15;
+    v6->_detailText = nameCopy;
 
     v17 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     if (+[AAFeatureFlags isSolariumEnabled])

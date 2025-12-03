@@ -1,13 +1,13 @@
 @interface DMDAirPlayManager
 + (DMDAirPlayManager)shared;
-- (BOOL)_setOutputDevices:(id)a3 forSessionType:(unint64_t)a4 password:(id)a5 error:(id *)a6;
-- (BOOL)startAirPlaySessionWithDestinationName:(id)a3 destinationDeviceID:(id)a4 password:(id)a5 scanWaitTime:(double)a6 sessionType:(unint64_t)a7 force:(BOOL)a8 error:(id *)a9;
-- (id)_discoverDeviceWithDestinationDeviceID:(id)a3 scanWaitTime:(double)a4 error:(id *)a5;
-- (id)_discoverDeviceWithDestinationName:(id)a3 scanWaitTime:(double)a4 sessionType:(unint64_t)a5;
-- (id)_messageForAirPlayPromptOnDisplayNamed:(id)a3;
+- (BOOL)_setOutputDevices:(id)devices forSessionType:(unint64_t)type password:(id)password error:(id *)error;
+- (BOOL)startAirPlaySessionWithDestinationName:(id)name destinationDeviceID:(id)d password:(id)password scanWaitTime:(double)time sessionType:(unint64_t)type force:(BOOL)force error:(id *)error;
+- (id)_discoverDeviceWithDestinationDeviceID:(id)d scanWaitTime:(double)time error:(id *)error;
+- (id)_discoverDeviceWithDestinationName:(id)name scanWaitTime:(double)time sessionType:(unint64_t)type;
+- (id)_messageForAirPlayPromptOnDisplayNamed:(id)named;
 - (id)initPrivate;
-- (void)_outputContextForSessionType:(unint64_t)a3;
-- (void)_promptUserToMirrorOnDisplayNamed:(id)a3 withCompletion:(id)a4;
+- (void)_outputContextForSessionType:(unint64_t)type;
+- (void)_promptUserToMirrorOnDisplayNamed:(id)named withCompletion:(id)completion;
 @end
 
 @implementation DMDAirPlayManager
@@ -42,13 +42,13 @@
   return v3;
 }
 
-- (BOOL)startAirPlaySessionWithDestinationName:(id)a3 destinationDeviceID:(id)a4 password:(id)a5 scanWaitTime:(double)a6 sessionType:(unint64_t)a7 force:(BOOL)a8 error:(id *)a9
+- (BOOL)startAirPlaySessionWithDestinationName:(id)name destinationDeviceID:(id)d password:(id)password scanWaitTime:(double)time sessionType:(unint64_t)type force:(BOOL)force error:(id *)error
 {
-  v10 = a8;
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  if (!(v17 | v18))
+  forceCopy = force;
+  nameCopy = name;
+  dCopy = d;
+  passwordCopy = password;
+  if (!(nameCopy | dCopy))
   {
     sub_10007C63C(a2, self);
   }
@@ -59,26 +59,26 @@
   v52 = sub_10000F0BC;
   v53 = sub_10000F0CC;
   v54 = 0;
-  v20 = 10.0;
-  if (a6 >= 10.0)
+  timeCopy = 10.0;
+  if (time >= 10.0)
   {
-    v20 = a6;
-    if (a6 > 500.0)
+    timeCopy = time;
+    if (time > 500.0)
     {
-      v20 = 500.0;
+      timeCopy = 500.0;
     }
   }
 
-  if ([(DMDAirPlayManager *)self _outputContextForSessionType:a7])
+  if ([(DMDAirPlayManager *)self _outputContextForSessionType:type])
   {
     v21 = MRAVOutputContextCopyOutputDevices();
     if ([v21 count])
     {
-      v22 = [v21 firstObject];
+      firstObject = [v21 firstObject];
       v23 = MRAVOutputDeviceCopyName();
       [(DMDAirPlayManager *)self setCurrentlyPickedDestinationName:v23];
 
-      v24 = [v21 firstObject];
+      firstObject2 = [v21 firstObject];
       v25 = MRAVOutputDeviceCopyUniqueIdentifier();
       [(DMDAirPlayManager *)self setCurrentlyPickedDestinationDeviceID:v25];
     }
@@ -91,10 +91,10 @@
   }
 
   self->mDeviceIDIsMAC = 0;
-  if (v18)
+  if (dCopy)
   {
-    v26 = [(DMDAirPlayManager *)self currentlyPickedDestinationDeviceID];
-    v27 = [v26 isEqualToString:v18];
+    currentlyPickedDestinationDeviceID = [(DMDAirPlayManager *)self currentlyPickedDestinationDeviceID];
+    v27 = [currentlyPickedDestinationDeviceID isEqualToString:dCopy];
 
     if (v27)
     {
@@ -104,22 +104,22 @@ LABEL_20:
       goto LABEL_26;
     }
 
-    if ([v18 containsString:@":"])
+    if ([dCopy containsString:@":"])
     {
       self->mDeviceIDIsMAC = 1;
-      v29 = v18;
+      v29 = dCopy;
 
       v28 = 0;
-      v17 = v29;
+      nameCopy = v29;
     }
 
     else
     {
       v30 = (v50 + 5);
       obj = v50[5];
-      v28 = [(DMDAirPlayManager *)self _discoverDeviceWithDestinationDeviceID:v18 scanWaitTime:&obj error:v20];
+      v28 = [(DMDAirPlayManager *)self _discoverDeviceWithDestinationDeviceID:dCopy scanWaitTime:&obj error:timeCopy];
       objc_storeStrong(v30, obj);
-      if (!v17)
+      if (!nameCopy)
       {
         goto LABEL_22;
       }
@@ -129,21 +129,21 @@ LABEL_20:
   else
   {
     v28 = 0;
-    if (!v17)
+    if (!nameCopy)
     {
       goto LABEL_22;
     }
   }
 
-  v31 = [(DMDAirPlayManager *)self currentlyPickedDestinationName];
-  v32 = [v31 isEqualToString:v17];
+  currentlyPickedDestinationName = [(DMDAirPlayManager *)self currentlyPickedDestinationName];
+  v32 = [currentlyPickedDestinationName isEqualToString:nameCopy];
 
   if (v32)
   {
     goto LABEL_20;
   }
 
-  v34 = [(DMDAirPlayManager *)self _discoverDeviceWithDestinationName:v17 scanWaitTime:a7 sessionType:v20];
+  v34 = [(DMDAirPlayManager *)self _discoverDeviceWithDestinationName:nameCopy scanWaitTime:type sessionType:timeCopy];
 
   v28 = v34;
 LABEL_22:
@@ -151,11 +151,11 @@ LABEL_22:
   {
     if ([v28 count])
     {
-      if (v10)
+      if (forceCopy)
       {
         v37 = (v50 + 5);
         v47 = v50[5];
-        [(DMDAirPlayManager *)self _setOutputDevices:v28 forSessionType:a7 password:v19 error:&v47];
+        [(DMDAirPlayManager *)self _setOutputDevices:v28 forSessionType:type password:passwordCopy error:&v47];
         objc_storeStrong(v37, v47);
       }
 
@@ -169,8 +169,8 @@ LABEL_22:
         v42[3] = &unk_1000CDCE8;
         v42[4] = self;
         v43 = v28;
-        v46 = a7;
-        v44 = v19;
+        typeCopy = type;
+        v44 = passwordCopy;
         v45 = &v49;
         [(DMDAirPlayManager *)self _promptUserToMirrorOnDisplayNamed:v41 withCompletion:v42];
       }
@@ -185,9 +185,9 @@ LABEL_22:
   }
 
   v35 = v50;
-  if (a9)
+  if (error)
   {
-    *a9 = v50[5];
+    *error = v50[5];
     v35 = v50;
   }
 
@@ -198,9 +198,9 @@ LABEL_26:
   return v33;
 }
 
-- (void)_outputContextForSessionType:(unint64_t)a3
+- (void)_outputContextForSessionType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
       return _MRAVOutputContextGetSharedSystemScreenContext(self, a2);
@@ -213,22 +213,22 @@ LABEL_26:
   return 0;
 }
 
-- (BOOL)_setOutputDevices:(id)a3 forSessionType:(unint64_t)a4 password:(id)a5 error:(id *)a6
+- (BOOL)_setOutputDevices:(id)devices forSessionType:(unint64_t)type password:(id)password error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(DMDAirPlayManager *)self _outputContextForSessionType:a4];
+  devicesCopy = devices;
+  passwordCopy = password;
+  v12 = [(DMDAirPlayManager *)self _outputContextForSessionType:type];
   v13 = objc_opt_new();
   v14 = v13;
-  if (v11)
+  if (passwordCopy)
   {
-    [v13 setObject:v11 forKeyedSubscript:@"AVOutputContextSetOutputDevicePasswordKey"];
+    [v13 setObject:passwordCopy forKeyedSubscript:@"AVOutputContextSetOutputDevicePasswordKey"];
   }
 
   if (!v12)
   {
     v20 = DMFErrorWithCodeAndUserInfo();
-    if (!a6)
+    if (!error)
     {
       goto LABEL_15;
     }
@@ -244,13 +244,13 @@ LABEL_26:
     [v15 setValue:v16 forKey:@"applicationProcessID"];
 
     NSSelectorFromString(@"avOutputDevice");
-    v17 = [v10 firstObject];
+    firstObject = [devicesCopy firstObject];
     LOBYTE(v16) = objc_opt_respondsToSelector();
 
     if (v16)
     {
-      v18 = [v10 firstObject];
-      v19 = [v18 valueForKey:@"avOutputDevice"];
+      firstObject2 = [devicesCopy firstObject];
+      v19 = [firstObject2 valueForKey:@"avOutputDevice"];
     }
 
     else
@@ -266,11 +266,11 @@ LABEL_26:
   }
 
   v20 = 0;
-  if (a6)
+  if (error)
   {
 LABEL_14:
     v22 = v20;
-    *a6 = v20;
+    *error = v20;
   }
 
 LABEL_15:
@@ -278,10 +278,10 @@ LABEL_15:
   return v20 == 0;
 }
 
-- (void)_promptUserToMirrorOnDisplayNamed:(id)a3 withCompletion:(id)a4
+- (void)_promptUserToMirrorOnDisplayNamed:(id)named withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  namedCopy = named;
   v16 = objc_opt_new();
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"AirPlay" value:&stru_1000D0428 table:@"DMFNotifications"];
@@ -295,41 +295,41 @@ LABEL_15:
   v13 = [v12 localizedStringForKey:@"Cancel" value:&stru_1000D0428 table:@"DMFNotifications"];
   [v16 setAlternateButtonTitle:v13];
 
-  v14 = [(DMDAirPlayManager *)self _messageForAirPlayPromptOnDisplayNamed:v7];
+  v14 = [(DMDAirPlayManager *)self _messageForAirPlayPromptOnDisplayNamed:namedCopy];
 
   [v16 setMessage:v14];
   v15 = +[DMDUserNotificationController sharedController];
-  [v15 showNotification:v16 completion:v6];
+  [v15 showNotification:v16 completion:completionCopy];
 }
 
-- (id)_messageForAirPlayPromptOnDisplayNamed:(id)a3
+- (id)_messageForAirPlayPromptOnDisplayNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = +[DMDDeviceController shared];
-  v5 = [v4 deviceType];
-  v6 = [v5 unsignedIntegerValue];
+  deviceType = [v4 deviceType];
+  unsignedIntegerValue = [deviceType unsignedIntegerValue];
 
   v7 = [NSBundle bundleForClass:objc_opt_class()];
   v8 = v7;
-  if ((v6 - 1) > 7)
+  if ((unsignedIntegerValue - 1) > 7)
   {
     v9 = @"Would you like to display your device’s screen on “%@”?";
   }
 
   else
   {
-    v9 = *(&off_1000CDD80 + (v6 - 1));
+    v9 = *(&off_1000CDD80 + (unsignedIntegerValue - 1));
   }
 
   v10 = [v7 localizedStringForKey:v9 value:&stru_1000D0428 table:@"DMFNotifications"];
-  v11 = [NSString stringWithFormat:v10, v3];
+  namedCopy = [NSString stringWithFormat:v10, namedCopy];
 
-  return v11;
+  return namedCopy;
 }
 
-- (id)_discoverDeviceWithDestinationDeviceID:(id)a3 scanWaitTime:(double)a4 error:(id *)a5
+- (id)_discoverDeviceWithDestinationDeviceID:(id)d scanWaitTime:(double)time error:(id *)error
 {
-  v7 = a3;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -340,7 +340,7 @@ LABEL_15:
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v30 = v7;
+  v30 = dCopy;
   [NSArray arrayWithObjects:&v30 count:1];
   v8 = MRAVReconnaissanceSessionCreateWithEndpointFeatures();
   MRAVReconnaissanceSessionSetUseWeakMatching();
@@ -348,7 +348,7 @@ LABEL_15:
   block[1] = 3221225472;
   block[2] = sub_10000F880;
   block[3] = &unk_1000CDD38;
-  v19 = a4;
+  timeCopy = time;
   v16 = &v20;
   v17 = &v24;
   v18 = v8;
@@ -358,9 +358,9 @@ LABEL_15:
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   CFRelease(v8);
   v10 = v21[3];
-  if (a5)
+  if (error)
   {
-    *a5 = v25[5];
+    *error = v25[5];
   }
 
   v11 = v15;
@@ -372,9 +372,9 @@ LABEL_15:
   return v12;
 }
 
-- (id)_discoverDeviceWithDestinationName:(id)a3 scanWaitTime:(double)a4 sessionType:(unint64_t)a5
+- (id)_discoverDeviceWithDestinationName:(id)name scanWaitTime:(double)time sessionType:(unint64_t)type
 {
-  v6 = a3;
+  nameCopy = name;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -384,10 +384,10 @@ LABEL_15:
   v7 = MRAVRoutingDiscoverySessionCreate();
   MRAVRoutingDiscoverySessionSetDiscoveryMode();
   v8 = dispatch_semaphore_create(0);
-  v9 = v6;
+  v9 = nameCopy;
   v10 = v8;
   v11 = MRAVRoutingDiscoverySessionAddOutputDevicesChangedCallback();
-  v12 = dispatch_time(0, (a4 * 1000000000.0));
+  v12 = dispatch_time(0, (time * 1000000000.0));
   dispatch_semaphore_wait(v10, v12);
   if (v11)
   {

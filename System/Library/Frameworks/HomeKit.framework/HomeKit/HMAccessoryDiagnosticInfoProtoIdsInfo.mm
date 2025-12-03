@@ -1,32 +1,32 @@
 @interface HMAccessoryDiagnosticInfoProtoIdsInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsIdsState:(id)a3;
+- (int)StringAsIdsState:(id)state;
 - (int)idsState;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryDiagnosticInfoProtoIdsInfo
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
-    self->_idsState = v4[4];
+    self->_idsState = fromCopy[4];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(HMAccessoryDiagnosticInfoProtoIdsInfo *)self setIdsIdentifierString:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -45,24 +45,24 @@
   return [(NSString *)self->_idsIdentifierString hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 20);
+  v5 = *(equalCopy + 20);
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0 || self->_idsState != *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) == 0 || self->_idsState != *(equalCopy + 4))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 20))
+  else if (*(equalCopy + 20))
   {
 LABEL_9:
     v7 = 0;
@@ -70,7 +70,7 @@ LABEL_9:
   }
 
   idsIdentifierString = self->_idsIdentifierString;
-  if (idsIdentifierString | *(v4 + 1))
+  if (idsIdentifierString | *(equalCopy + 1))
   {
     v7 = [(NSString *)idsIdentifierString isEqual:?];
   }
@@ -85,9 +85,9 @@ LABEL_10:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -95,51 +95,51 @@ LABEL_10:
     *(v5 + 20) |= 1u;
   }
 
-  v7 = [(NSString *)self->_idsIdentifierString copyWithZone:a3];
+  v7 = [(NSString *)self->_idsIdentifierString copyWithZone:zone];
   v8 = v6[1];
   v6[1] = v7;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_idsState;
-    *(v4 + 20) |= 1u;
+    toCopy[4] = self->_idsState;
+    *(toCopy + 20) |= 1u;
   }
 
   if (self->_idsIdentifierString)
   {
-    v5 = v4;
-    [v4 setIdsIdentifierString:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setIdsIdentifierString:?];
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     idsState = self->_idsState;
     PBDataWriterWriteInt32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_idsIdentifierString)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     idsState = self->_idsState;
@@ -161,16 +161,16 @@ LABEL_10:
       v5 = @"Unknown";
     }
 
-    [v3 setObject:v5 forKey:@"idsState"];
+    [dictionary setObject:v5 forKey:@"idsState"];
   }
 
   idsIdentifierString = self->_idsIdentifierString;
   if (idsIdentifierString)
   {
-    [v3 setObject:idsIdentifierString forKey:@"idsIdentifierString"];
+    [dictionary setObject:idsIdentifierString forKey:@"idsIdentifierString"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -179,23 +179,23 @@ LABEL_10:
   v8.receiver = self;
   v8.super_class = HMAccessoryDiagnosticInfoProtoIdsInfo;
   v4 = [(HMAccessoryDiagnosticInfoProtoIdsInfo *)&v8 description];
-  v5 = [(HMAccessoryDiagnosticInfoProtoIdsInfo *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryDiagnosticInfoProtoIdsInfo *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsIdsState:(id)a3
+- (int)StringAsIdsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Good"];
+    v4 = [stateCopy isEqualToString:@"Good"];
   }
 
   return v4;

@@ -1,20 +1,20 @@
 @interface _UIHorizontalIndexTitleBarCell
 + (id)cellFont;
 - (BOOL)_isAnotherIndexTitleCellFocused;
-- (_UIHorizontalIndexTitleBarCell)initWithFrame:(CGRect)a3;
+- (_UIHorizontalIndexTitleBarCell)initWithFrame:(CGRect)frame;
 - (double)_maxCellWidth;
 - (id)_backgroundEffectsView;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)_updateColors;
 - (void)_updateLegacyColors;
 - (void)_updateModernColors;
 - (void)_updateTransforms;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateForEntry:(id)a3;
+- (void)setSelected:(BOOL)selected;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateForEntry:(id)entry;
 @end
 
 @implementation _UIHorizontalIndexTitleBarCell
@@ -31,16 +31,16 @@
   return v3;
 }
 
-- (_UIHorizontalIndexTitleBarCell)initWithFrame:(CGRect)a3
+- (_UIHorizontalIndexTitleBarCell)initWithFrame:(CGRect)frame
 {
   v58[6] = *MEMORY[0x1E69E9840];
   v57.receiver = self;
   v57.super_class = _UIHorizontalIndexTitleBarCell;
-  v3 = [(UICollectionViewCell *)&v57 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionViewCell *)&v57 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(UICollectionViewCell *)v3 contentView];
+    contentView = [(UICollectionViewCell *)v3 contentView];
     v6 = _UISolariumEnabled();
     if (v6)
     {
@@ -65,7 +65,7 @@
     v12 = *(&v4->super.super.super.super.super.isa + v11);
     *(&v4->super.super.super.super.super.isa + v11) = v10;
 
-    v13 = [(_UIHorizontalIndexTitleBarCell *)v4 _backgroundEffectsView];
+    _backgroundEffectsView = [(_UIHorizontalIndexTitleBarCell *)v4 _backgroundEffectsView];
     if (_UISolariumEnabled())
     {
       v14 = 33.0;
@@ -76,15 +76,15 @@
       v14 = 10.0;
     }
 
-    v15 = [v13 layer];
-    [v15 setCornerRadius:v14];
+    layer = [_backgroundEffectsView layer];
+    [layer setCornerRadius:v14];
 
-    v16 = [v13 layer];
-    [v16 setMasksToBounds:1];
+    layer2 = [_backgroundEffectsView layer];
+    [layer2 setMasksToBounds:1];
 
-    v56 = v13;
-    [v13 setAutoresizingMask:18];
-    [v5 addSubview:v13];
+    v56 = _backgroundEffectsView;
+    [_backgroundEffectsView setAutoresizingMask:18];
+    [contentView addSubview:_backgroundEffectsView];
     v17 = [UILabel alloc];
     [(UIView *)v4 bounds];
     v18 = [(UILabel *)v17 initWithFrame:?];
@@ -98,7 +98,7 @@
     v21 = +[_UIHorizontalIndexTitleBarCell cellFont];
     [(UILabel *)v4->_sizingLabel setFont:v21];
 
-    [v5 addSubview:v4->_sizingLabel];
+    [contentView addSubview:v4->_sizingLabel];
     [(UIView *)v4->_sizingLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v22 = [UILabel alloc];
     [(UIView *)v4 bounds];
@@ -110,14 +110,14 @@
     v25 = +[_UIHorizontalIndexTitleBarCell cellFont];
     [(UILabel *)v4->_titleLabel setFont:v25];
 
-    v26 = v5;
-    [v5 addSubview:v4->_titleLabel];
+    v26 = contentView;
+    [contentView addSubview:v4->_titleLabel];
     [(UIView *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v49 = MEMORY[0x1E69977A0];
-    v27 = [(UIView *)v4->_sizingLabel leftAnchor];
-    v55 = v27;
-    v28 = [v5 leftAnchor];
-    v54 = v28;
+    leftAnchor = [(UIView *)v4->_sizingLabel leftAnchor];
+    v55 = leftAnchor;
+    leftAnchor2 = [contentView leftAnchor];
+    v54 = leftAnchor2;
     v29 = _UISolariumEnabled();
     v30 = 14.0;
     if (v29)
@@ -125,16 +125,16 @@
       v30 = 30.0;
     }
 
-    v53 = [v27 constraintEqualToAnchor:v28 constant:v30];
+    v53 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:v30];
     v58[0] = v53;
-    v52 = [(UIView *)v4->_sizingLabel topAnchor];
-    v51 = [v5 topAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51];
+    topAnchor = [(UIView *)v4->_sizingLabel topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v50 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v58[1] = v50;
-    v31 = [(UIView *)v4->_sizingLabel rightAnchor];
-    v48 = v31;
-    v32 = [v5 rightAnchor];
-    v47 = v32;
+    rightAnchor = [(UIView *)v4->_sizingLabel rightAnchor];
+    v48 = rightAnchor;
+    rightAnchor2 = [contentView rightAnchor];
+    v47 = rightAnchor2;
     v33 = _UISolariumEnabled();
     v34 = -14.0;
     if (v33)
@@ -142,19 +142,19 @@
       v34 = -30.0;
     }
 
-    v46 = [v31 constraintEqualToAnchor:v32 constant:v34];
+    v46 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:v34];
     v58[2] = v46;
-    v45 = [(UIView *)v4->_sizingLabel bottomAnchor];
-    v44 = [v5 bottomAnchor];
-    v35 = [v45 constraintEqualToAnchor:v44];
+    bottomAnchor = [(UIView *)v4->_sizingLabel bottomAnchor];
+    bottomAnchor2 = [contentView bottomAnchor];
+    v35 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v58[3] = v35;
-    v36 = [(UIView *)v4->_titleLabel centerXAnchor];
-    v37 = [v26 centerXAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerXAnchor = [(UIView *)v4->_titleLabel centerXAnchor];
+    centerXAnchor2 = [v26 centerXAnchor];
+    v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v58[4] = v38;
-    v39 = [(UIView *)v4->_titleLabel centerYAnchor];
-    v40 = [v26 centerYAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    centerYAnchor = [(UIView *)v4->_titleLabel centerYAnchor];
+    centerYAnchor2 = [v26 centerYAnchor];
+    v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v58[5] = v41;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:6];
     [v49 activateConstraints:v42];
@@ -165,14 +165,14 @@
   return v4;
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   [(_UIHorizontalIndexTitleBarCell *)self _maxCellWidth];
   v6 = v5;
   v11.receiver = self;
   v11.super_class = _UIHorizontalIndexTitleBarCell;
-  v7 = [(UICollectionReusableView *)&v11 preferredLayoutAttributesFittingAttributes:v4];
+  v7 = [(UICollectionReusableView *)&v11 preferredLayoutAttributesFittingAttributes:attributesCopy];
 
   v8 = [v7 copy];
   [v8 size];
@@ -192,12 +192,12 @@
   v5.receiver = self;
   v5.super_class = _UIHorizontalIndexTitleBarCell;
   [(UICollectionViewCell *)&v5 layoutSubviews];
-  v3 = [(UICollectionViewCell *)self contentView];
-  v4 = [(_UIHorizontalIndexTitleBarCell *)self _backgroundEffectsView];
-  [v3 bounds];
-  [v4 setBounds:?];
-  [v3 center];
-  [v4 setCenter:?];
+  contentView = [(UICollectionViewCell *)self contentView];
+  _backgroundEffectsView = [(_UIHorizontalIndexTitleBarCell *)self _backgroundEffectsView];
+  [contentView bounds];
+  [_backgroundEffectsView setBounds:?];
+  [contentView center];
+  [_backgroundEffectsView setCenter:?];
 }
 
 - (void)prepareForReuse
@@ -206,30 +206,30 @@
   v5.super_class = _UIHorizontalIndexTitleBarCell;
   [(UICollectionViewCell *)&v5 prepareForReuse];
   [(_UIHorizontalIndexTitleBarCell *)self setEntry:0];
-  v3 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-  [v3 setText:0];
+  titleLabel = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+  [titleLabel setText:0];
 
-  v4 = [(_UIHorizontalIndexTitleBarCell *)self sizingLabel];
-  [v4 setText:0];
+  sizingLabel = [(_UIHorizontalIndexTitleBarCell *)self sizingLabel];
+  [sizingLabel setText:0];
 
   [(_UIHorizontalIndexTitleBarCell *)self _updateColors];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = _UIHorizontalIndexTitleBarCell;
-  v4 = a3;
-  [(UICollectionViewCell *)&v6 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(UICollectionViewCell *)&v6 traitCollectionDidChange:changeCopy];
   v5 = [(UIView *)self traitCollection:v6.receiver];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a4;
+  coordinatorCopy = coordinator;
   v8.receiver = self;
   v8.super_class = _UIHorizontalIndexTitleBarCell;
-  [(UIView *)&v8 didUpdateFocusInContext:a3 withAnimationCoordinator:v6];
+  [(UIView *)&v8 didUpdateFocusInContext:context withAnimationCoordinator:coordinatorCopy];
   if (_UISolariumEnabled())
   {
     v7[0] = MEMORY[0x1E69E9820];
@@ -237,7 +237,7 @@
     v7[2] = __83___UIHorizontalIndexTitleBarCell_didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
     v7[3] = &unk_1E70F3590;
     v7[4] = self;
-    [v6 addCoordinatedAnimations:v7 completion:0];
+    [coordinatorCopy addCoordinatedAnimations:v7 completion:0];
   }
 
   else
@@ -246,26 +246,26 @@
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
   v4.receiver = self;
   v4.super_class = _UIHorizontalIndexTitleBarCell;
-  [(UICollectionViewCell *)&v4 setSelected:a3];
+  [(UICollectionViewCell *)&v4 setSelected:selected];
   [(_UIHorizontalIndexTitleBarCell *)self _updateColors];
 }
 
-- (void)updateForEntry:(id)a3
+- (void)updateForEntry:(id)entry
 {
-  v4 = a3;
-  [(_UIHorizontalIndexTitleBarCell *)self setEntry:v4];
-  v5 = [v4 title];
-  v6 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-  [v6 setText:v5];
+  entryCopy = entry;
+  [(_UIHorizontalIndexTitleBarCell *)self setEntry:entryCopy];
+  title = [entryCopy title];
+  titleLabel = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+  [titleLabel setText:title];
 
-  v8 = [v4 title];
+  title2 = [entryCopy title];
 
-  v7 = [(_UIHorizontalIndexTitleBarCell *)self sizingLabel];
-  [v7 setText:v8];
+  sizingLabel = [(_UIHorizontalIndexTitleBarCell *)self sizingLabel];
+  [sizingLabel setText:title2];
 }
 
 - (id)_backgroundEffectsView
@@ -286,19 +286,19 @@
 
 - (double)_maxCellWidth
 {
-  v3 = [(UICollectionReusableView *)self _collectionView];
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
   v4 = 760.0;
-  if (v3)
+  if (_collectionView)
   {
-    v5 = v3;
-    v6 = [(UICollectionReusableView *)self _collectionView];
-    [v6 frame];
+    v5 = _collectionView;
+    _collectionView2 = [(UICollectionReusableView *)self _collectionView];
+    [_collectionView2 frame];
     v8 = v7;
 
     if (v8 != 0.0)
     {
-      v9 = [(UICollectionReusableView *)self _collectionView];
-      [v9 frame];
+      _collectionView3 = [(UICollectionReusableView *)self _collectionView];
+      [_collectionView3 frame];
       v11 = v10;
 
       v4 = v11 * 0.5 + -200.0;
@@ -316,9 +316,9 @@
 
 - (BOOL)_isAnotherIndexTitleCellFocused
 {
-  v3 = [(UIView *)self _focusSystem];
-  v4 = [v3 focusedItem];
-  v5 = _UIFocusEnvironmentContainingView(v4);
+  _focusSystem = [(UIView *)self _focusSystem];
+  focusedItem = [_focusSystem focusedItem];
+  v5 = _UIFocusEnvironmentContainingView(focusedItem);
 
   if (v5)
   {
@@ -326,9 +326,9 @@
     v6 = 0;
     if ((objc_opt_isKindOfClass() & 1) != 0 && v5 != self)
     {
-      v7 = [(UICollectionReusableView *)v5 _collectionView];
-      v8 = [(UICollectionReusableView *)self _collectionView];
-      v6 = v7 == v8;
+      _collectionView = [(UICollectionReusableView *)v5 _collectionView];
+      _collectionView2 = [(UICollectionReusableView *)self _collectionView];
+      v6 = _collectionView == _collectionView2;
     }
   }
 
@@ -344,10 +344,10 @@
 {
   if (_UISolariumEnabled())
   {
-    v3 = [(_UIHorizontalIndexTitleBarCell *)self _backgroundEffectsView];
+    _backgroundEffectsView = [(_UIHorizontalIndexTitleBarCell *)self _backgroundEffectsView];
     if ([(UICollectionViewCell *)self isFocused])
     {
-      [v3 bounds];
+      [_backgroundEffectsView bounds];
       v5 = v4;
       v7 = v6;
       v8 = _UISolariumEnabled();
@@ -371,10 +371,10 @@
 
       CGAffineTransformMakeScale(&v20, v11, v10);
       v19 = v20;
-      [v3 setTransform:&v19];
+      [_backgroundEffectsView setTransform:&v19];
       CGAffineTransformMakeScale(&v18, v11, v11);
-      v12 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-      v13 = v12;
+      titleLabel = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+      v13 = titleLabel;
       *&v19.a = *&v18.a;
       *&v19.c = *&v18.c;
       v14 = *&v18.tx;
@@ -388,16 +388,16 @@
       *&v19.c = v16;
       *&v19.tx = *(MEMORY[0x1E695EFD0] + 32);
       v15 = *&v19.tx;
-      [v3 setTransform:&v19];
-      v12 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-      v13 = v12;
+      [_backgroundEffectsView setTransform:&v19];
+      titleLabel = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+      v13 = titleLabel;
       *&v19.a = v17;
       *&v19.c = v16;
       v14 = v15;
     }
 
     *&v19.tx = v14;
-    [v12 setTransform:&v19];
+    [titleLabel setTransform:&v19];
   }
 }
 
@@ -418,7 +418,7 @@
 
 - (void)_updateModernColors
 {
-  v3 = [(UICollectionViewCell *)self isFocused];
+  isFocused = [(UICollectionViewCell *)self isFocused];
   if ([(UICollectionViewCell *)self isSelected])
   {
     v4 = ![(_UIHorizontalIndexTitleBarCell *)self _isAnotherIndexTitleCellFocused];
@@ -429,27 +429,27 @@
     v4 = 0;
   }
 
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v5 userInterfaceStyle];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3)
+  if (isFocused)
   {
     v7 = +[UIColor blackColor];
-    v8 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-    [v8 setTextColor:v7];
+    titleLabel = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+    [titleLabel setTextColor:v7];
 
     v9 = 4019;
 LABEL_11:
     v13 = [UIBlurEffect effectWithStyle:v9];
-    v14 = [(_UIHorizontalIndexTitleBarCell *)self roundedCornersVisualEffectView];
-    [v14 setEffect:v13];
+    roundedCornersVisualEffectView = [(_UIHorizontalIndexTitleBarCell *)self roundedCornersVisualEffectView];
+    [roundedCornersVisualEffectView setEffect:v13];
     v15 = 1.0;
     goto LABEL_13;
   }
 
   if (v4)
   {
-    if (v6 == 2)
+    if (userInterfaceStyle == 2)
     {
       v10 = 12;
     }
@@ -460,30 +460,30 @@ LABEL_11:
     }
 
     v11 = +[UIColor labelColor];
-    v12 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-    [v12 setTextColor:v11];
+    titleLabel2 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+    [titleLabel2 setTextColor:v11];
 
     v9 = v10;
     goto LABEL_11;
   }
 
   v13 = +[UIColor secondaryLabelColor];
-  v14 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-  [v14 setTextColor:v13];
+  roundedCornersVisualEffectView = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+  [roundedCornersVisualEffectView setTextColor:v13];
   v15 = 0.0;
 LABEL_13:
 
-  v16 = [(_UIHorizontalIndexTitleBarCell *)self roundedCornersVisualEffectView];
-  [v16 setAlpha:v15];
+  roundedCornersVisualEffectView2 = [(_UIHorizontalIndexTitleBarCell *)self roundedCornersVisualEffectView];
+  [roundedCornersVisualEffectView2 setAlpha:v15];
 }
 
 - (void)_updateLegacyColors
 {
-  v3 = [(UICollectionViewCell *)self isFocused];
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v4 userInterfaceStyle];
+  isFocused = [(UICollectionViewCell *)self isFocused];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v5 == 2)
+  if (userInterfaceStyle == 2)
   {
     v6 = 1.0;
     v7 = [UIColor colorWithWhite:1.0 alpha:0.3];
@@ -501,37 +501,37 @@ LABEL_13:
 
   v10 = [UIColor colorWithWhite:v9 alpha:v8];
   v18 = [UIColor colorWithWhite:v6 alpha:1.0];
-  v11 = [(_UIHorizontalIndexTitleBarCell *)self roundedCornersBackground];
-  [v11 setBackgroundColor:v7];
+  roundedCornersBackground = [(_UIHorizontalIndexTitleBarCell *)self roundedCornersBackground];
+  [roundedCornersBackground setBackgroundColor:v7];
 
-  v12 = !v3;
-  v13 = [(_UIHorizontalIndexTitleBarCell *)self roundedCornersBackground];
-  [v13 setHidden:v12];
+  v12 = !isFocused;
+  roundedCornersBackground2 = [(_UIHorizontalIndexTitleBarCell *)self roundedCornersBackground];
+  [roundedCornersBackground2 setHidden:v12];
 
   if (v12)
   {
     if ([(UICollectionViewCell *)self isSelected]&& ![(_UIHorizontalIndexTitleBarCell *)self _isAnotherIndexTitleCellFocused])
     {
-      v16 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-      v14 = v16;
+      titleLabel = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+      v14 = titleLabel;
       v17 = v18;
     }
 
     else
     {
-      v16 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-      v14 = v16;
+      titleLabel = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+      v14 = titleLabel;
       v17 = v10;
     }
 
-    [v16 setTextColor:v17];
+    [titleLabel setTextColor:v17];
   }
 
   else
   {
     v14 = +[UIColor whiteColor];
-    v15 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
-    [v15 setTextColor:v14];
+    titleLabel2 = [(_UIHorizontalIndexTitleBarCell *)self titleLabel];
+    [titleLabel2 setTextColor:v14];
   }
 }
 

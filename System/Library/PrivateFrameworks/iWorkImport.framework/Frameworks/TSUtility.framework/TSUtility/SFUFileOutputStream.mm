@@ -1,22 +1,22 @@
 @interface SFUFileOutputStream
-- (SFUFileOutputStream)initWithPath:(id)a3;
+- (SFUFileOutputStream)initWithPath:(id)path;
 - (int64_t)offset;
 - (void)close;
 - (void)dealloc;
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4;
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4;
+- (void)seekToOffset:(int64_t)offset whence:(int)whence;
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size;
 @end
 
 @implementation SFUFileOutputStream
 
-- (SFUFileOutputStream)initWithPath:(id)a3
+- (SFUFileOutputStream)initWithPath:(id)path
 {
   v4 = [(SFUFileOutputStream *)self init];
   if (v4)
   {
-    unlink([a3 fileSystemRepresentation]);
-    v4->mFile = sub_27709E3C0(a3, "w");
-    v4->mPath = [a3 copy];
+    unlink([path fileSystemRepresentation]);
+    v4->mFile = sub_27709E3C0(path, "w");
+    v4->mPath = [path copy];
   }
 
   return v4;
@@ -35,7 +35,7 @@
   [(SFUFileOutputStream *)&v4 dealloc];
 }
 
-- (void)writeBuffer:(const char *)a3 size:(unint64_t)a4
+- (void)writeBuffer:(const char *)buffer size:(unint64_t)size
 {
   mFile = self->mFile;
   if (!mFile)
@@ -46,7 +46,7 @@
     mFile = self->mFile;
   }
 
-  if (fwrite(a3, 1uLL, a4, mFile) != a4)
+  if (fwrite(buffer, 1uLL, size, mFile) != size)
   {
     v9 = MEMORY[0x277CBEAD8];
 
@@ -74,7 +74,7 @@
   return v5;
 }
 
-- (void)seekToOffset:(int64_t)a3 whence:(int)a4
+- (void)seekToOffset:(int64_t)offset whence:(int)whence
 {
   mFile = self->mFile;
   if (!mFile)
@@ -85,7 +85,7 @@
     mFile = self->mFile;
   }
 
-  if (fseeko(mFile, a3, a4))
+  if (fseeko(mFile, offset, whence))
   {
     v9 = MEMORY[0x277CBEAD8];
 

@@ -1,10 +1,10 @@
 @interface REScriptASTFeatureBuilder
-- (BOOL)_loadIndexFromNode:(id)a3 index:(unint64_t *)a4 error:(id *)a5;
-- (id)_buildTransformedFeature:(id)a3 features:(id)a4 node:(id)a5 error:(id *)a6;
-- (id)buildObjectWithBinaryExpressionNode:(id)a3 previousExpression:(id)a4 error:(id *)a5;
-- (id)buildObjectWithFunctionNode:(id)a3 error:(id *)a4;
-- (id)buildObjectWithIdentifierNode:(id)a3 error:(id *)a4;
-- (id)buildObjectWithSubscriptExpressionNode:(id)a3 error:(id *)a4;
+- (BOOL)_loadIndexFromNode:(id)node index:(unint64_t *)index error:(id *)error;
+- (id)_buildTransformedFeature:(id)feature features:(id)features node:(id)node error:(id *)error;
+- (id)buildObjectWithBinaryExpressionNode:(id)node previousExpression:(id)expression error:(id *)error;
+- (id)buildObjectWithFunctionNode:(id)node error:(id *)error;
+- (id)buildObjectWithIdentifierNode:(id)node error:(id *)error;
+- (id)buildObjectWithSubscriptExpressionNode:(id)node error:(id *)error;
 - (id)objectTypeErrorDescription;
 @end
 
@@ -17,58 +17,58 @@
   return NSStringFromClass(v2);
 }
 
-- (id)buildObjectWithIdentifierNode:(id)a3 error:(id *)a4
+- (id)buildObjectWithIdentifierNode:(id)node error:(id *)error
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(REScriptASTObjectBuilder *)self table];
-  v8 = [v6 name];
+  nodeCopy = node;
+  table = [(REScriptASTObjectBuilder *)self table];
+  name = [nodeCopy name];
   v18 = 0;
-  if (![v7 typeForDefinition:v8 type:&v18] || v18)
+  if (![table typeForDefinition:name type:&v18] || v18)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
 
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Undefined feature %@", v8];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Undefined feature %@", name];
     v19 = @"REErrorTokenKey";
-    v10 = [v6 token];
-    v20 = v10;
+    token = [nodeCopy token];
+    v20 = token;
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-    *a4 = RECreateErrorWithCodeMessageAndUseInfo(210, v9, v11);
+    *error = RECreateErrorWithCodeMessageAndUseInfo(210, v9, v11);
 
-    a4 = 0;
+    error = 0;
   }
 
   else
   {
-    v9 = [v7 objectValueForDefinition:v8];
+    v9 = [table objectValueForDefinition:name];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v9 = v9;
-      a4 = v9;
+      error = v9;
     }
 
     else
     {
-      v12 = [v7 nodeValueForDefinition:v8];
+      v12 = [table nodeValueForDefinition:name];
       if (v12)
       {
-        a4 = [(REScriptASTObjectBuilder *)self buildObjectWithNode:v12 error:a4];
+        error = [(REScriptASTObjectBuilder *)self buildObjectWithNode:v12 error:error];
       }
 
-      else if (a4)
+      else if (error)
       {
-        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Feature %@ doesn't have a definition", v8];
+        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Feature %@ doesn't have a definition", name];
         v21 = @"REErrorTokenKey";
-        v14 = [v6 token];
-        v22[0] = v14;
+        token2 = [nodeCopy token];
+        v22[0] = token2;
         v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-        *a4 = RECreateErrorWithCodeMessageAndUseInfo(210, v13, v15);
+        *error = RECreateErrorWithCodeMessageAndUseInfo(210, v13, v15);
 
-        a4 = 0;
+        error = 0;
       }
     }
   }
@@ -76,71 +76,71 @@
 LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-- (id)buildObjectWithBinaryExpressionNode:(id)a3 previousExpression:(id)a4 error:(id *)a5
+- (id)buildObjectWithBinaryExpressionNode:(id)node previousExpression:(id)expression error:(id *)error
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 binaryOperator];
-  v11 = [v10 type];
+  nodeCopy = node;
+  expressionCopy = expression;
+  binaryOperator = [nodeCopy binaryOperator];
+  type = [binaryOperator type];
 
-  if (v11 != 28)
+  if (type != 28)
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
 
     v15 = MEMORY[0x277CCACA8];
-    v16 = [v8 binaryOperator];
-    v17 = REDescriptionForTokenType([v16 type]);
+    binaryOperator2 = [nodeCopy binaryOperator];
+    v17 = REDescriptionForTokenType([binaryOperator2 type]);
     v13 = [v15 stringWithFormat:@"Unsupported binary operator %@ for constructing feature", v17];
 
     v21 = @"REErrorTokenKey";
-    v14 = [v8 binaryOperator];
-    v22 = v14;
+    binaryOperator3 = [nodeCopy binaryOperator];
+    v22 = binaryOperator3;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    *a5 = RECreateErrorWithCodeMessageAndUseInfo(209, v13, v18);
+    *error = RECreateErrorWithCodeMessageAndUseInfo(209, v13, v18);
 
-    a5 = 0;
+    error = 0;
     goto LABEL_6;
   }
 
-  v12 = [v8 expression];
-  v13 = [(REScriptASTObjectBuilder *)self buildObjectWithNode:v12 error:a5];
+  expression = [nodeCopy expression];
+  v13 = [(REScriptASTObjectBuilder *)self buildObjectWithNode:expression error:error];
 
   if (v13)
   {
-    v23[0] = v9;
+    v23[0] = expressionCopy;
     v23[1] = v13;
-    v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
-    a5 = [REFeature crossedFeatureWithFeatures:v14];
+    binaryOperator3 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
+    error = [REFeature crossedFeatureWithFeatures:binaryOperator3];
 LABEL_6:
 
     goto LABEL_8;
   }
 
-  a5 = 0;
+  error = 0;
 LABEL_8:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return a5;
+  return error;
 }
 
-- (id)buildObjectWithFunctionNode:(id)a3 error:(id *)a4
+- (id)buildObjectWithFunctionNode:(id)node error:(id *)error
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(REScriptASTObjectBuilder *)self table];
-  v8 = [v6 functionIdentifier];
-  v9 = [v8 value];
+  nodeCopy = node;
+  table = [(REScriptASTObjectBuilder *)self table];
+  functionIdentifier = [nodeCopy functionIdentifier];
+  value = [functionIdentifier value];
 
   v40 = 0;
-  v10 = [v7 typeForDefinition:v9 type:&v40];
+  v10 = [table typeForDefinition:value type:&v40];
   if (v40 == 4)
   {
     v11 = v10;
@@ -153,19 +153,19 @@ LABEL_8:
 
   if (v11 == 1)
   {
-    if (([objc_msgSend(v7 objectValueForDefinition:{v9), "isSubclassOfClass:", objc_opt_class()}] & 1) == 0)
+    if (([objc_msgSend(table objectValueForDefinition:{value), "isSubclassOfClass:", objc_opt_class()}] & 1) == 0)
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_19;
       }
 
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Function %@ doesn't have a definition", v9];
+      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Function %@ doesn't have a definition", value];
       v43 = @"REErrorTokenKey";
-      v19 = [v6 functionIdentifier];
-      v44[0] = v19;
+      functionIdentifier2 = [nodeCopy functionIdentifier];
+      v44[0] = functionIdentifier2;
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-      *a4 = RECreateErrorWithCodeMessageAndUseInfo(210, v12, v21);
+      *error = RECreateErrorWithCodeMessageAndUseInfo(210, v12, v21);
 
       goto LABEL_15;
     }
@@ -174,8 +174,8 @@ LABEL_8:
     if (v12)
     {
       v13 = MEMORY[0x277CBEB18];
-      v14 = [v6 arguments];
-      v15 = [v13 arrayWithCapacity:{objc_msgSend(v14, "count")}];
+      arguments = [nodeCopy arguments];
+      v15 = [v13 arrayWithCapacity:{objc_msgSend(arguments, "count")}];
 
       v36 = 0;
       v37 = &v36;
@@ -188,34 +188,34 @@ LABEL_8:
       v34 = __Block_byref_object_dispose__14;
       v35 = 0;
       v16 = objc_alloc_init(RETransformerInvocation);
-      v17 = [v6 arguments];
+      arguments2 = [nodeCopy arguments];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __63__REScriptASTFeatureBuilder_buildObjectWithFunctionNode_error___block_invoke;
       v24[3] = &unk_2785FC288;
       v18 = v16;
       v25 = v18;
-      v26 = self;
+      selfCopy = self;
       v28 = &v30;
       v29 = &v36;
-      v19 = v15;
-      v27 = v19;
-      [v17 enumerateObjectsUsingBlock:v24];
+      functionIdentifier2 = v15;
+      v27 = functionIdentifier2;
+      [arguments2 enumerateObjectsUsingBlock:v24];
 
       [v12 configureWithInvocation:v18];
-      if (a4)
+      if (error)
       {
-        *a4 = v31[5];
+        *error = v31[5];
       }
 
       if (*(v37 + 24) == 1)
       {
-        a4 = [(REScriptASTFeatureBuilder *)self _buildTransformedFeature:v12 features:v19 node:v6 error:a4];
+        error = [(REScriptASTFeatureBuilder *)self _buildTransformedFeature:v12 features:functionIdentifier2 node:nodeCopy error:error];
       }
 
       else
       {
-        a4 = 0;
+        error = 0;
       }
 
       _Block_object_dispose(&v30, 8);
@@ -224,26 +224,26 @@ LABEL_8:
     }
   }
 
-  if (!a4)
+  if (!error)
   {
     goto LABEL_19;
   }
 
-  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Undefined function %@", v9];
+  v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Undefined function %@", value];
   v41 = @"REErrorTokenKey";
-  v19 = [v6 token];
-  v42 = v19;
+  functionIdentifier2 = [nodeCopy token];
+  v42 = functionIdentifier2;
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-  *a4 = RECreateErrorWithCodeMessageAndUseInfo(210, v12, v20);
+  *error = RECreateErrorWithCodeMessageAndUseInfo(210, v12, v20);
 
 LABEL_15:
-  a4 = 0;
+  error = 0;
 LABEL_18:
 
 LABEL_19:
   v22 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
 void __63__REScriptASTFeatureBuilder_buildObjectWithFunctionNode_error___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -329,55 +329,55 @@ LABEL_20:
   }
 }
 
-- (id)buildObjectWithSubscriptExpressionNode:(id)a3 error:(id *)a4
+- (id)buildObjectWithSubscriptExpressionNode:(id)node error:(id *)error
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 expression];
-  v8 = [(REScriptASTObjectBuilder *)self buildObjectWithNode:v7 error:a4];
+  nodeCopy = node;
+  expression = [nodeCopy expression];
+  v8 = [(REScriptASTObjectBuilder *)self buildObjectWithNode:expression error:error];
 
   if (!v8)
   {
 LABEL_8:
-    a4 = 0;
+    error = 0;
     goto LABEL_18;
   }
 
-  v9 = [v8 _bitCount];
-  if (v9 <= 0)
+  _bitCount = [v8 _bitCount];
+  if (_bitCount <= 0)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
 
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v8 name];
-    v14 = [v12 stringWithFormat:@"Unable to slice feature %@", v13];
+    name = [v8 name];
+    v14 = [v12 stringWithFormat:@"Unable to slice feature %@", name];
 
     v26 = @"REErrorTokenKey";
-    v15 = [v6 token];
-    v27[0] = v15;
+    token = [nodeCopy token];
+    v27[0] = token;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:&v26 count:1];
-    *a4 = RECreateErrorWithCodeMessageAndUseInfo(211, v14, v16);
+    *error = RECreateErrorWithCodeMessageAndUseInfo(211, v14, v16);
 
     goto LABEL_8;
   }
 
-  v10 = v9;
+  v10 = _bitCount;
   v23 = 0;
   v24 = 0;
-  v11 = [v6 startIndex];
-  if (!v11)
+  startIndex = [nodeCopy startIndex];
+  if (!startIndex)
   {
     v24 = 0;
 LABEL_10:
-    v17 = [v6 endIndex];
-    if (v17)
+    endIndex = [nodeCopy endIndex];
+    if (endIndex)
     {
-      if (![(REScriptASTFeatureBuilder *)self _loadIndexFromNode:v17 index:&v23 error:a4])
+      if (![(REScriptASTFeatureBuilder *)self _loadIndexFromNode:endIndex index:&v23 error:error])
       {
-        a4 = 0;
+        error = 0;
         goto LABEL_16;
       }
 
@@ -393,64 +393,64 @@ LABEL_10:
     v19 = [REFeatureTransformer maskAndShiftTransformWithStartIndex:v24 endIndex:v18];
     v25 = v8;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v25 count:1];
-    a4 = [(REScriptASTFeatureBuilder *)self _buildTransformedFeature:v19 features:v20 node:v6 error:a4];
+    error = [(REScriptASTFeatureBuilder *)self _buildTransformedFeature:v19 features:v20 node:nodeCopy error:error];
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  if ([(REScriptASTFeatureBuilder *)self _loadIndexFromNode:v11 index:&v24 error:a4])
+  if ([(REScriptASTFeatureBuilder *)self _loadIndexFromNode:startIndex index:&v24 error:error])
   {
     goto LABEL_10;
   }
 
-  a4 = 0;
+  error = 0;
 LABEL_17:
 
 LABEL_18:
   v21 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
-- (id)_buildTransformedFeature:(id)a3 features:(id)a4 node:(id)a5 error:(id *)a6
+- (id)_buildTransformedFeature:(id)feature features:(id)features node:(id)node error:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [REFeature transformedFeatureWithTransformer:v8 features:v9];
+  featureCopy = feature;
+  featuresCopy = features;
+  nodeCopy = node;
+  v11 = [REFeature transformedFeatureWithTransformer:featureCopy features:featuresCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (BOOL)_loadIndexFromNode:(id)a3 index:(unint64_t *)a4 error:(id *)a5
+- (BOOL)_loadIndexFromNode:(id)node index:(unint64_t *)index error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
-    v9 = [v8 token];
-    v10 = [v9 type];
+    token4 = nodeCopy;
+    token = [token4 token];
+    type = [token type];
 
-    if (v10 == 3)
+    if (type == 3)
     {
-      if (a4)
+      if (index)
       {
-        v11 = [v8 token];
-        v12 = [v11 value];
-        *a4 = [v12 integerValue];
+        token2 = [token4 token];
+        value = [token2 value];
+        *index = [value integerValue];
       }
 
-      LOBYTE(a5) = 1;
+      LOBYTE(error) = 1;
       goto LABEL_11;
     }
 
-    if (!a5)
+    if (!error)
     {
 LABEL_11:
 
@@ -458,30 +458,30 @@ LABEL_11:
     }
 
     v19 = @"REErrorTokenKey";
-    v13 = [v8 token];
-    v20[0] = v13;
+    token3 = [token4 token];
+    v20[0] = token3;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-    *a5 = RECreateErrorWithCodeMessageAndUseInfo(204, @"Unexpected literal. Expecting integer", v14);
+    *error = RECreateErrorWithCodeMessageAndUseInfo(204, @"Unexpected literal. Expecting integer", v14);
 
 LABEL_10:
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_11;
   }
 
-  if (a5)
+  if (error)
   {
     v17 = @"REErrorTokenKey";
-    v8 = [v7 token];
-    v18 = v8;
-    v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    *a5 = RECreateErrorWithCodeMessageAndUseInfo(204, @"Unexpected token. Expecting index", v13);
+    token4 = [nodeCopy token];
+    v18 = token4;
+    token3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
+    *error = RECreateErrorWithCodeMessageAndUseInfo(204, @"Unexpected token. Expecting index", token3);
     goto LABEL_10;
   }
 
 LABEL_12:
 
   v15 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
 @end

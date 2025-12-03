@@ -1,49 +1,49 @@
 @interface WKApplicationProxy
-+ (id)applicationsForContainerProxy:(id)a3;
-+ (id)gizmoAppBundleUrlWithPluginUrl:(id)a3;
-+ (id)watchAppBundleUrlWithContainerUrl:(id)a3;
-- (WKApplicationProxy)initWithBundleURL:(id)a3;
++ (id)applicationsForContainerProxy:(id)proxy;
++ (id)gizmoAppBundleUrlWithPluginUrl:(id)url;
++ (id)watchAppBundleUrlWithContainerUrl:(id)url;
+- (WKApplicationProxy)initWithBundleURL:(id)l;
 @end
 
 @implementation WKApplicationProxy
 
-- (WKApplicationProxy)initWithBundleURL:(id)a3
+- (WKApplicationProxy)initWithBundleURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = WKApplicationProxy;
   v5 = [(WKApplicationProxy *)&v8 init];
   bundleURL = v5->_bundleURL;
-  v5->_bundleURL = v4;
+  v5->_bundleURL = lCopy;
 
   return v5;
 }
 
-+ (id)applicationsForContainerProxy:(id)a3
++ (id)applicationsForContainerProxy:(id)proxy
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  proxyCopy = proxy;
   v34 = 0;
-  v5 = [v4 bundleURL];
-  v6 = [v5 path];
-  v7 = [v6 stringByAppendingPathComponent:@"Watch"];
+  bundleURL = [proxyCopy bundleURL];
+  path = [bundleURL path];
+  v7 = [path stringByAppendingPathComponent:@"Watch"];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  LODWORD(v6) = [v8 fileExistsAtPath:v7 isDirectory:&v34];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  LODWORD(path) = [defaultManager fileExistsAtPath:v7 isDirectory:&v34];
   v9 = v34;
 
-  if (!v6 || (v9 & 1) == 0)
+  if (!path || (v9 & 1) == 0)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v15 = [v4 plugInKitPlugins];
-    v18 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    plugInKitPlugins = [proxyCopy plugInKitPlugins];
+    v18 = [plugInKitPlugins countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v18)
     {
       v19 = v18;
-      v29 = a1;
+      selfCopy = self;
       v20 = *v31;
       while (2)
       {
@@ -51,35 +51,35 @@
         {
           if (*v31 != v20)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(plugInKitPlugins);
           }
 
           v22 = *(*(&v30 + 1) + 8 * i);
-          v23 = [v22 protocol];
-          v24 = [v23 isEqualToString:@"com.apple.watchkit"];
+          protocol = [v22 protocol];
+          v24 = [protocol isEqualToString:@"com.apple.watchkit"];
 
           if (v24)
           {
-            v25 = [v22 bundleURL];
-            v16 = [v29 gizmoAppBundleUrlWithPluginUrl:v25];
+            bundleURL2 = [v22 bundleURL];
+            v16 = [selfCopy gizmoAppBundleUrlWithPluginUrl:bundleURL2];
 
             if (v16)
             {
               v26 = [[WKApplicationProxy alloc] initWithBundleURL:v16];
-              v17 = [MEMORY[0x277CBEB18] array];
-              [v17 addObject:v26];
+              array = [MEMORY[0x277CBEB18] array];
+              [array addObject:v26];
             }
 
             else
             {
-              v17 = 0;
+              array = 0;
             }
 
             goto LABEL_17;
           }
         }
 
-        v19 = [v15 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v19 = [plugInKitPlugins countByEnumeratingWithState:&v30 objects:v35 count:16];
         if (v19)
         {
           continue;
@@ -93,47 +93,47 @@
   }
 
   v10 = MEMORY[0x277CBEBC0];
-  v11 = [v4 bundleURL];
-  v12 = [v11 path];
-  v13 = [v12 stringByAppendingPathComponent:@"Watch"];
+  bundleURL3 = [proxyCopy bundleURL];
+  path2 = [bundleURL3 path];
+  v13 = [path2 stringByAppendingPathComponent:@"Watch"];
   v14 = [v10 fileURLWithPath:v13];
-  v15 = [a1 watchAppBundleUrlWithContainerUrl:v14];
+  plugInKitPlugins = [self watchAppBundleUrlWithContainerUrl:v14];
 
-  if (!v15)
+  if (!plugInKitPlugins)
   {
 LABEL_13:
-    v17 = 0;
+    array = 0;
     goto LABEL_18;
   }
 
-  v16 = [[WKApplicationProxy alloc] initWithBundleURL:v15];
-  v17 = [MEMORY[0x277CBEB18] array];
-  [v17 addObject:v16];
+  v16 = [[WKApplicationProxy alloc] initWithBundleURL:plugInKitPlugins];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:v16];
 LABEL_17:
 
 LABEL_18:
   v27 = *MEMORY[0x277D85DE8];
 
-  return v17;
+  return array;
 }
 
-+ (id)watchAppBundleUrlWithContainerUrl:(id)a3
++ (id)watchAppBundleUrlWithContainerUrl:(id)url
 {
-  v3 = a3;
+  urlCopy = url;
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self ENDSWITH '.app'"];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v3 path];
-  v8 = [v6 contentsOfDirectoryAtPath:v7 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [urlCopy path];
+  v8 = [defaultManager contentsOfDirectoryAtPath:path error:0];
 
   v9 = [v8 filteredArrayUsingPredicate:v5];
   if ([v9 count])
   {
-    v10 = [v3 pathComponents];
-    v11 = [v10 mutableCopy];
+    pathComponents = [urlCopy pathComponents];
+    v11 = [pathComponents mutableCopy];
 
-    v12 = [v9 firstObject];
-    [v11 addObject:v12];
+    firstObject = [v9 firstObject];
+    [v11 addObject:firstObject];
 
     v13 = [v11 componentsJoinedByString:@"/"];
     v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:v13 isDirectory:1];
@@ -149,23 +149,23 @@ LABEL_18:
   return v14;
 }
 
-+ (id)gizmoAppBundleUrlWithPluginUrl:(id)a3
++ (id)gizmoAppBundleUrlWithPluginUrl:(id)url
 {
-  v3 = a3;
+  urlCopy = url;
   v4 = objc_autoreleasePoolPush();
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"self ENDSWITH '.app'"];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v3 path];
-  v8 = [v6 contentsOfDirectoryAtPath:v7 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [urlCopy path];
+  v8 = [defaultManager contentsOfDirectoryAtPath:path error:0];
 
   v9 = [v8 filteredArrayUsingPredicate:v5];
   if ([v9 count])
   {
-    v10 = [v3 pathComponents];
-    v11 = [v10 mutableCopy];
+    pathComponents = [urlCopy pathComponents];
+    v11 = [pathComponents mutableCopy];
 
-    v12 = [v9 firstObject];
-    [v11 addObject:v12];
+    firstObject = [v9 firstObject];
+    [v11 addObject:firstObject];
 
     v13 = [v11 componentsJoinedByString:@"/"];
     v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:v13 isDirectory:1];

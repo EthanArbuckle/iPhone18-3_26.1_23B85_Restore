@@ -1,7 +1,7 @@
 @interface FASettingsPresetPropertyCondition
 - (FASettingsPresetPropertyCondition)init;
-- (FASettingsPresetPropertyCondition)initWithDictionary:(id)a3;
-- (FASettingsPresetPropertyCondition)initWithSourceProperty:(id)a3 operand:(id)a4 result:(id)a5;
+- (FASettingsPresetPropertyCondition)initWithDictionary:(id)dictionary;
+- (FASettingsPresetPropertyCondition)initWithSourceProperty:(id)property operand:(id)operand result:(id)result;
 - (NSString)sourceProperty;
 @end
 
@@ -17,24 +17,24 @@
   return v4;
 }
 
-- (FASettingsPresetPropertyCondition)initWithSourceProperty:(id)a3 operand:(id)a4 result:(id)a5
+- (FASettingsPresetPropertyCondition)initWithSourceProperty:(id)property operand:(id)operand result:(id)result
 {
   v8 = sub_1B715E0A0();
   v9 = (self + OBJC_IVAR___FASettingsPresetPropertyCondition_sourceProperty);
   *v9 = v8;
   v9[1] = v10;
-  *(self + OBJC_IVAR___FASettingsPresetPropertyCondition_operand) = a4;
-  *(self + OBJC_IVAR___FASettingsPresetPropertyCondition_result) = a5;
+  *(self + OBJC_IVAR___FASettingsPresetPropertyCondition_operand) = operand;
+  *(self + OBJC_IVAR___FASettingsPresetPropertyCondition_result) = result;
   v14.receiver = self;
   v14.super_class = FASettingsPresetPropertyCondition;
-  v11 = a4;
-  v12 = a5;
+  operandCopy = operand;
+  resultCopy = result;
   return [(FASettingsPresetPropertyCondition *)&v14 init];
 }
 
-- (FASettingsPresetPropertyCondition)initWithDictionary:(id)a3
+- (FASettingsPresetPropertyCondition)initWithDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v3 = sub_1B715DFE0();
   }

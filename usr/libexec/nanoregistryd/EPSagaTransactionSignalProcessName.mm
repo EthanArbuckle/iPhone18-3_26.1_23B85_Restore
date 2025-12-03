@@ -1,36 +1,36 @@
 @interface EPSagaTransactionSignalProcessName
 - (EPTransactionDelegate)delegate;
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4;
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry;
 @end
 
 @implementation EPSagaTransactionSignalProcessName
 
-- (void)beginTransactionWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginTransactionWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"processName"];
-  v7 = [v5 objectForKeyedSubscript:@"signalNumber"];
+  entryCopy = entry;
+  v6 = [entryCopy objectForKeyedSubscript:@"processName"];
+  v7 = [entryCopy objectForKeyedSubscript:@"signalNumber"];
   +[NRUnixProcessSignaler signalProcessNamed:withSignal:](NRUnixProcessSignaler, "signalProcessNamed:withSignal:", v6, [v7 intValue]);
-  v8 = [v5 queue];
+  queue = [entryCopy queue];
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100051BF0;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v8, block);
+  dispatch_async(queue, block);
 }
 
-- (void)beginRollbackWithRoutingSlipEntry:(id)a3 serviceRegistry:(id)a4
+- (void)beginRollbackWithRoutingSlipEntry:(id)entry serviceRegistry:(id)registry
 {
-  v5 = [a3 queue];
+  queue = [entry queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100051CD0;
   block[3] = &unk_100175660;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(queue, block);
 }
 
 - (EPTransactionDelegate)delegate

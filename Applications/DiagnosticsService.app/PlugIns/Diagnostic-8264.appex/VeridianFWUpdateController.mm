@@ -1,37 +1,37 @@
 @interface VeridianFWUpdateController
-- (int64_t)_downloadVeridianFirmwareWithError:(id *)a3;
-- (int64_t)_requestFWURLAndDigestFromAST2WithError:(id *)a3;
-- (int64_t)_updateVeridianFirmwareWithError:(id *)a3;
-- (int64_t)_validateDeviceWithError:(id *)a3;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (int64_t)_downloadVeridianFirmwareWithError:(id *)error;
+- (int64_t)_requestFWURLAndDigestFromAST2WithError:(id *)error;
+- (int64_t)_updateVeridianFirmwareWithError:(id *)error;
+- (int64_t)_validateDeviceWithError:(id *)error;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation VeridianFWUpdateController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  responderCopy = responder;
   v8 = handleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315650;
     v12 = "[VeridianFWUpdateController setupWithInputs:responder:]";
     v13 = 2112;
-    v14 = v6;
+    v14 = inputsCopy;
     v15 = 2112;
-    v16 = v7;
+    v16 = responderCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v11, 0x20u);
   }
 
-  [(VeridianFWUpdateController *)self setInputs:v6];
-  v9 = [(VeridianFWUpdateController *)self inputs];
+  [(VeridianFWUpdateController *)self setInputs:inputsCopy];
+  inputs = [(VeridianFWUpdateController *)self inputs];
 
-  if (!v9)
+  if (!inputs)
   {
-    v10 = [(VeridianFWUpdateController *)self result];
-    [v10 setStatusCode:&off_1000089C0];
+    result = [(VeridianFWUpdateController *)self result];
+    [result setStatusCode:&off_1000089C0];
 
     [(VeridianFWUpdateController *)self setFinished:1];
   }
@@ -47,8 +47,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(VeridianFWUpdateController *)self inputs];
-  if ([v4 forceUpdate])
+  inputs = [(VeridianFWUpdateController *)self inputs];
+  if ([inputs forceUpdate])
   {
   }
 
@@ -74,10 +74,10 @@
     }
   }
 
-  v6 = [(VeridianFWUpdateController *)self inputs];
-  v7 = [v6 needRequestURL];
+  inputs2 = [(VeridianFWUpdateController *)self inputs];
+  needRequestURL = [inputs2 needRequestURL];
 
-  if (v7)
+  if (needRequestURL)
   {
     v45 = 0;
     v8 = [(VeridianFWUpdateController *)self _requestFWURLAndDigestFromAST2WithError:&v45];
@@ -99,21 +99,21 @@ LABEL_15:
 
   else
   {
-    v11 = [(VeridianFWUpdateController *)self inputs];
-    v12 = [v11 FWURL];
-    [(VeridianFWUpdateController *)self setFwURL:v12];
+    inputs3 = [(VeridianFWUpdateController *)self inputs];
+    fWURL = [inputs3 FWURL];
+    [(VeridianFWUpdateController *)self setFwURL:fWURL];
 
-    v13 = [(VeridianFWUpdateController *)self inputs];
-    v14 = [v13 FWDigest];
-    [(VeridianFWUpdateController *)self setFwDigest:v14];
+    inputs4 = [(VeridianFWUpdateController *)self inputs];
+    fWDigest = [inputs4 FWDigest];
+    [(VeridianFWUpdateController *)self setFwDigest:fWDigest];
 
     v9 = 0;
     v8 = -24;
   }
 
-  v15 = [(VeridianFWUpdateController *)self fwURL];
-  v16 = [v15 absoluteString];
-  if ([v16 length] >= 0x401)
+  fwURL = [(VeridianFWUpdateController *)self fwURL];
+  absoluteString = [fwURL absoluteString];
+  if ([absoluteString length] >= 0x401)
   {
 
 LABEL_13:
@@ -126,8 +126,8 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v17 = [(VeridianFWUpdateController *)self fwDigest];
-  v18 = [v17 length];
+  fwDigest = [(VeridianFWUpdateController *)self fwDigest];
+  v18 = [fwDigest length];
 
   if (v18 >= 0x401)
   {
@@ -193,8 +193,8 @@ LABEL_24:
   v23 = [CRUtils getInnermostNSError:v9];
 
   v24 = [NSNumber numberWithInteger:v8];
-  v25 = [(VeridianFWUpdateController *)self result];
-  [v25 setStatusCode:v24];
+  result = [(VeridianFWUpdateController *)self result];
+  [result setStatusCode:v24];
 
   v46[0] = @"pluginVersion";
   v39 = +[NSBundle mainBundle];
@@ -244,9 +244,9 @@ LABEL_24:
 
   v47[4] = v33;
   v34 = [NSDictionary dictionaryWithObjects:v47 forKeys:v46 count:5];
-  v35 = self;
-  v36 = [(VeridianFWUpdateController *)self result];
-  [v36 setData:v34];
+  selfCopy = self;
+  result2 = [(VeridianFWUpdateController *)self result];
+  [result2 setData:v34];
 
   if (!v19)
   {
@@ -278,10 +278,10 @@ LABEL_38:
   {
   }
 
-  [(VeridianFWUpdateController *)v35 setFinished:1];
+  [(VeridianFWUpdateController *)selfCopy setFinished:1];
 }
 
-- (int64_t)_requestFWURLAndDigestFromAST2WithError:(id *)a3
+- (int64_t)_requestFWURLAndDigestFromAST2WithError:(id *)error
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -362,9 +362,9 @@ LABEL_18:
   v13 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
   v11 = [NSURLSession sessionWithConfiguration:v13 delegate:self delegateQueue:0];
 
-  v14 = [(VeridianFWUpdateController *)self inputs];
-  v15 = [v14 ast2RequestURL];
-  v16 = [NSURL URLWithString:v15];
+  inputs = [(VeridianFWUpdateController *)self inputs];
+  ast2RequestURL = [inputs ast2RequestURL];
+  v16 = [NSURL URLWithString:ast2RequestURL];
   v10 = [NSMutableURLRequest requestWithURL:v16];
 
   [v10 setHTTPMethod:@"POST"];
@@ -414,16 +414,16 @@ LABEL_18:
     v28 = [NSURL URLWithString:v23];
     [(VeridianFWUpdateController *)self setFwURL:v28];
 
-    v29 = [(VeridianFWUpdateController *)self fwURL];
-    if (v29)
+    fwURL = [(VeridianFWUpdateController *)self fwURL];
+    if (fwURL)
     {
-      v39 = [(VeridianFWUpdateController *)self fwURL];
-      v37 = [v39 host];
-      if (v37)
+      fwURL2 = [(VeridianFWUpdateController *)self fwURL];
+      host = [fwURL2 host];
+      if (host)
       {
-        v36 = [(VeridianFWUpdateController *)self fwURL];
-        v30 = [v36 scheme];
-        if ([v30 caseInsensitiveCompare:@"http"])
+        fwURL3 = [(VeridianFWUpdateController *)self fwURL];
+        scheme = [fwURL3 scheme];
+        if ([scheme caseInsensitiveCompare:@"http"])
         {
 
 LABEL_36:
@@ -436,13 +436,13 @@ LABEL_36:
             v24 = handleForCategory();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
-              v40 = [(VeridianFWUpdateController *)self fwURL];
-              v32 = [(VeridianFWUpdateController *)self fwDigest];
+              fwURL4 = [(VeridianFWUpdateController *)self fwURL];
+              fwDigest = [(VeridianFWUpdateController *)self fwDigest];
               *v53 = 138412546;
-              v54 = v40;
+              v54 = fwURL4;
               v55 = 2112;
-              v56 = v32;
-              v38 = v32;
+              v56 = fwDigest;
+              v38 = fwDigest;
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Request Veridian fwURL: %@ and fwDigest: %@ from AST2 successfully", v53, 0x16u);
             }
 
@@ -454,9 +454,9 @@ LABEL_36:
           goto LABEL_34;
         }
 
-        v35 = [(VeridianFWUpdateController *)self fwURL];
-        v34 = [v35 scheme];
-        v33 = [v34 caseInsensitiveCompare:@"https"] == 0;
+        fwURL5 = [(VeridianFWUpdateController *)self fwURL];
+        scheme2 = [fwURL5 scheme];
+        v33 = [scheme2 caseInsensitiveCompare:@"https"] == 0;
 
         if (!v33)
         {
@@ -479,9 +479,9 @@ LABEL_34:
   v23 = 0;
   v25 = -24;
 LABEL_19:
-  if (a3)
+  if (error)
   {
-    *a3 = *(*(&buf + 1) + 40);
+    *error = *(*(&buf + 1) + 40);
   }
 
   _Block_object_dispose(&v47, 8);
@@ -490,7 +490,7 @@ LABEL_19:
   return v25;
 }
 
-- (int64_t)_downloadVeridianFirmwareWithError:(id *)a3
+- (int64_t)_downloadVeridianFirmwareWithError:(id *)error
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -561,7 +561,7 @@ LABEL_19:
     v13 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
     v14 = objc_opt_new();
     v15 = [NSURLSession sessionWithConfiguration:v13 delegate:v14 delegateQueue:0];
-    v16 = [(VeridianFWUpdateController *)self fwURL];
+    fwURL = [(VeridianFWUpdateController *)self fwURL];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_100002874;
@@ -571,13 +571,13 @@ LABEL_19:
     v41[6] = v52;
     v41[7] = &v42;
     v41[8] = &v54;
-    v17 = [v15 downloadTaskWithURL:v16 completionHandler:v41];
+    v17 = [v15 downloadTaskWithURL:fwURL completionHandler:v41];
     [v17 resume];
 
     v18 = v55[5];
-    v19 = [(VeridianFWUpdateController *)self inputs];
-    v20 = [v19 timeoutPeriod];
-    v21 = dispatch_time(0, 1000000000 * [v20 intValue]);
+    inputs = [(VeridianFWUpdateController *)self inputs];
+    timeoutPeriod = [inputs timeoutPeriod];
+    v21 = dispatch_time(0, 1000000000 * [timeoutPeriod intValue]);
     v22 = dispatch_semaphore_wait(v18, v21);
 
     if (v22 || !*(*(&buf + 1) + 40) || v43[5] || (v49[3] & 1) == 0)
@@ -606,10 +606,10 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Asset download success", v60, 2u);
       }
 
-      v28 = [v39 SHA256DigestString];
+      sHA256DigestString = [v39 SHA256DigestString];
 
-      v29 = [(VeridianFWUpdateController *)self fwDigest];
-      v30 = [v29 caseInsensitiveCompare:v28] == 0;
+      fwDigest = [(VeridianFWUpdateController *)self fwDigest];
+      v30 = [fwDigest caseInsensitiveCompare:sHA256DigestString] == 0;
 
       if (v30)
       {
@@ -626,8 +626,8 @@ LABEL_19:
 
       else
       {
-        v31 = [(VeridianFWUpdateController *)self fwDigest];
-        v23 = [NSString stringWithFormat:@"Digest Mismatched, Download Failure:%@:%@", v31, v28];
+        fwDigest2 = [(VeridianFWUpdateController *)self fwDigest];
+        v23 = [NSString stringWithFormat:@"Digest Mismatched, Download Failure:%@:%@", fwDigest2, sHA256DigestString];
 
         v32 = sub_1000040B0(0xFFFFFFFFFFFFFFE9, v23, 0);
         v33 = v43[5];
@@ -636,7 +636,7 @@ LABEL_19:
         v24 = 0;
       }
 
-      v40 = v28;
+      v40 = sHA256DigestString;
     }
 
     objc_autoreleasePoolPop(v7);
@@ -654,9 +654,9 @@ LABEL_19:
   }
 
   while (v26 != 1);
-  if (a3)
+  if (error)
   {
-    *a3 = v43[5];
+    *error = v43[5];
   }
 
   _Block_object_dispose(&v42, 8);
@@ -669,7 +669,7 @@ LABEL_19:
   return v37;
 }
 
-- (int64_t)_updateVeridianFirmwareWithError:(id *)a3
+- (int64_t)_updateVeridianFirmwareWithError:(id *)error
 {
   v3 = handleForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -736,10 +736,10 @@ LABEL_19:
       v12 = v11;
       if (v55)
       {
-        v13 = [(VeridianFWUpdateController *)self inputs];
-        v14 = [v13 forceUpdate];
+        inputs = [(VeridianFWUpdateController *)self inputs];
+        forceUpdate = [inputs forceUpdate];
 
-        if (v14)
+        if (forceUpdate)
         {
           v15 = +[MSUDataAccessor sharedDataAccessor];
           v63 = 0;
@@ -878,8 +878,8 @@ LABEL_65:
         }
 
         v28 = v27;
-        v29 = [(VeridianFWUpdateController *)self inputs];
-        if ([v29 useAppleConnect])
+        inputs2 = [(VeridianFWUpdateController *)self inputs];
+        if ([inputs2 useAppleConnect])
         {
 
           v30 = &handleForCategory_ptr;
@@ -1026,10 +1026,10 @@ LABEL_33:
   v6 = 0;
   v50 = -24;
 LABEL_84:
-  if (a3)
+  if (error)
   {
     v43 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   AMSupportSafeRelease();
@@ -1037,7 +1037,7 @@ LABEL_84:
   return v50;
 }
 
-- (int64_t)_validateDeviceWithError:(id *)a3
+- (int64_t)_validateDeviceWithError:(id *)error
 {
   v4 = handleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1063,13 +1063,13 @@ LABEL_14:
   }
 
   v5 = objc_opt_new();
-  v6 = [v5 isFirstAuthComplete];
+  isFirstAuthComplete = [v5 isFirstAuthComplete];
 
-  if (v6)
+  if (isFirstAuthComplete)
   {
     v7 = 0;
     v8 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -1082,11 +1082,11 @@ LABEL_14:
   v10 = -21;
 LABEL_15:
   v8 = sub_1000040B0(v10, v9, 0);
-  if (a3)
+  if (error)
   {
 LABEL_16:
     v8 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
 LABEL_17:

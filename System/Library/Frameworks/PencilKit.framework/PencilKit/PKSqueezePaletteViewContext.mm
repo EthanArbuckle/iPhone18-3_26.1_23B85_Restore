@@ -1,30 +1,30 @@
 @interface PKSqueezePaletteViewContext
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)canShowResetHandwritingEducationPane;
 - (uint64_t)canShowTapToRadar;
-- (void)setSelectedColor:(uint64_t)a1;
+- (void)setSelectedColor:(uint64_t)color;
 @end
 
 @implementation PKSqueezePaletteViewContext
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   if (v5)
   {
-    v6 = [(NSArray *)self->_tools copyWithZone:a3];
+    v6 = [(NSArray *)self->_tools copyWithZone:zone];
     v7 = *(v5 + 16);
     *(v5 + 16) = v6;
 
-    v8 = [(PKTool *)self->_selectedTool copyWithZone:a3];
+    v8 = [(PKTool *)self->_selectedTool copyWithZone:zone];
     v9 = *(v5 + 24);
     *(v5 + 24) = v8;
 
-    v10 = [(NSArray *)self->_swatchColors copyWithZone:a3];
+    v10 = [(NSArray *)self->_swatchColors copyWithZone:zone];
     v11 = *(v5 + 32);
     *(v5 + 32) = v10;
 
-    v12 = [(UIColor *)self->_selectedColor copyWithZone:a3];
+    v12 = [(UIColor *)self->_selectedColor copyWithZone:zone];
     v13 = *(v5 + 40);
     *(v5 + 40) = v12;
 
@@ -38,7 +38,7 @@
 - (uint64_t)canShowTapToRadar
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (!a1 || !os_variant_has_internal_diagnostics())
+  if (!self || !os_variant_has_internal_diagnostics())
   {
     return 0;
   }
@@ -47,7 +47,7 @@
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v4 = *(a1 + 16);
+  v4 = *(self + 16);
   v2 = [v4 countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v2)
   {
@@ -88,19 +88,19 @@ LABEL_15:
   if (result)
   {
     v1 = +[PKHandwritingEducationPaneSettings sharedInstance];
-    v2 = [(PKHandwritingEducationPaneSettings *)v1 canShowResetPaneInPalette];
+    canShowResetPaneInPalette = [(PKHandwritingEducationPaneSettings *)v1 canShowResetPaneInPalette];
 
-    return v2;
+    return canShowResetPaneInPalette;
   }
 
   return result;
 }
 
-- (void)setSelectedColor:(uint64_t)a1
+- (void)setSelectedColor:(uint64_t)color
 {
-  if (a1)
+  if (color)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((color + 40), a2);
   }
 }
 

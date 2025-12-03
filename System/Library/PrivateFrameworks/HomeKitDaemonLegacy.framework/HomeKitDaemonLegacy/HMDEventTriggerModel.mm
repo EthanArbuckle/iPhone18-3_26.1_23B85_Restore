@@ -1,30 +1,30 @@
 @interface HMDEventTriggerModel
 + (id)properties;
 - (id)createPayload;
-- (id)createPayloadWithCondition:(id)a3;
+- (id)createPayloadWithCondition:(id)condition;
 @end
 
 @implementation HMDEventTriggerModel
 
-- (id)createPayloadWithCondition:(id)a3
+- (id)createPayloadWithCondition:(id)condition
 {
-  v4 = a3;
+  conditionCopy = condition;
   v12.receiver = self;
   v12.super_class = HMDEventTriggerModel;
-  v5 = [(HMDTriggerModel *)&v12 createPayload];
-  v6 = [v5 mutableCopy];
+  createPayload = [(HMDTriggerModel *)&v12 createPayload];
+  v6 = [createPayload mutableCopy];
 
-  if (v4)
+  if (conditionCopy)
   {
-    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
+    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:conditionCopy requiringSecureCoding:1 error:0];
     [v6 setObject:v7 forKeyedSubscript:*MEMORY[0x277CD2298]];
   }
 
-  v8 = [(HMDEventTriggerModel *)self recurrences];
-  [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD22C8]];
+  recurrences = [(HMDEventTriggerModel *)self recurrences];
+  [v6 setObject:recurrences forKeyedSubscript:*MEMORY[0x277CD22C8]];
 
-  v9 = [(HMDEventTriggerModel *)self executeOnce];
-  [v6 setObject:v9 forKeyedSubscript:*MEMORY[0x277CD22B8]];
+  executeOnce = [(HMDEventTriggerModel *)self executeOnce];
+  [v6 setObject:executeOnce forKeyedSubscript:*MEMORY[0x277CD22B8]];
 
   v10 = [v6 copy];
 
@@ -35,27 +35,27 @@
 {
   v12.receiver = self;
   v12.super_class = HMDEventTriggerModel;
-  v3 = [(HMDTriggerModel *)&v12 createPayload];
-  v4 = [v3 mutableCopy];
+  createPayload = [(HMDTriggerModel *)&v12 createPayload];
+  v4 = [createPayload mutableCopy];
 
-  v5 = [(HMDEventTriggerModel *)self evaluationCondition];
+  evaluationCondition = [(HMDEventTriggerModel *)self evaluationCondition];
 
-  if (v5)
+  if (evaluationCondition)
   {
-    v6 = [(HMDEventTriggerModel *)self evaluationCondition];
-    [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD2298]];
+    evaluationCondition2 = [(HMDEventTriggerModel *)self evaluationCondition];
+    [v4 setObject:evaluationCondition2 forKeyedSubscript:*MEMORY[0x277CD2298]];
   }
 
-  v7 = [(HMDEventTriggerModel *)self recurrences];
+  recurrences = [(HMDEventTriggerModel *)self recurrences];
 
-  if (v7)
+  if (recurrences)
   {
-    v8 = [(HMDEventTriggerModel *)self recurrences];
-    [v4 setObject:v8 forKeyedSubscript:*MEMORY[0x277CD22C8]];
+    recurrences2 = [(HMDEventTriggerModel *)self recurrences];
+    [v4 setObject:recurrences2 forKeyedSubscript:*MEMORY[0x277CD22C8]];
   }
 
-  v9 = [(HMDEventTriggerModel *)self executeOnce];
-  [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x277CD22B8]];
+  executeOnce = [(HMDEventTriggerModel *)self executeOnce];
+  [v4 setObject:executeOnce forKeyedSubscript:*MEMORY[0x277CD22B8]];
 
   v10 = [v4 copy];
 
@@ -68,7 +68,7 @@
   block[1] = 3221225472;
   block[2] = __34__HMDEventTriggerModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_31469 != -1)
   {
     dispatch_once(&properties_onceToken_31469, block);

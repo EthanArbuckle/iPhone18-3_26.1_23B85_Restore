@@ -1,36 +1,36 @@
 @interface SPLocationProvider
-- (BOOL)isEqual:(id)a3;
-- (SPLocationProvider)initWithCoder:(id)a3;
-- (SPLocationProvider)initWithTimestamp:(id)a3 provider:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SPLocationProvider)initWithCoder:(id)coder;
+- (SPLocationProvider)initWithTimestamp:(id)timestamp provider:(id)provider;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPLocationProvider
 
-- (SPLocationProvider)initWithTimestamp:(id)a3 provider:(id)a4
+- (SPLocationProvider)initWithTimestamp:(id)timestamp provider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  timestampCopy = timestamp;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = SPLocationProvider;
   v9 = [(SPLocationProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_timestamp, a3);
-    objc_storeStrong(&v10->_provider, a4);
+    objc_storeStrong(&v9->_timestamp, timestamp);
+    objc_storeStrong(&v10->_provider, provider);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -40,14 +40,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SPLocationProvider *)self timestamp];
-      v7 = [(SPLocationProvider *)v5 timestamp];
-      if ([v6 isEqualToDate:v7])
+      v5 = equalCopy;
+      timestamp = [(SPLocationProvider *)self timestamp];
+      timestamp2 = [(SPLocationProvider *)v5 timestamp];
+      if ([timestamp isEqualToDate:timestamp2])
       {
-        v8 = [(SPLocationProvider *)self provider];
-        v9 = [(SPLocationProvider *)v5 provider];
-        v10 = [v8 isEqual:v9];
+        provider = [(SPLocationProvider *)self provider];
+        provider2 = [(SPLocationProvider *)v5 provider];
+        v10 = [provider isEqual:provider2];
       }
 
       else
@@ -65,37 +65,37 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPLocationProvider alloc];
-  v5 = [(SPLocationProvider *)self timestamp];
-  v6 = [(SPLocationProvider *)self provider];
-  v7 = [(SPLocationProvider *)v4 initWithTimestamp:v5 provider:v6];
+  timestamp = [(SPLocationProvider *)self timestamp];
+  provider = [(SPLocationProvider *)self provider];
+  v7 = [(SPLocationProvider *)v4 initWithTimestamp:timestamp provider:provider];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 encodeObject:timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_provider forKey:@"provider"];
+  coderCopy = coder;
+  [coderCopy encodeObject:timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_provider forKey:@"provider"];
 }
 
-- (SPLocationProvider)initWithCoder:(id)a3
+- (SPLocationProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = SPLocationProvider;
   v5 = [(SPLocationProvider *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provider"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provider"];
     provider = v5->_provider;
     v5->_provider = v8;
   }
@@ -106,11 +106,11 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SPLocationProvider *)self provider];
-  v5 = [v4 destination];
-  v6 = [(SPLocationProvider *)self timestamp];
-  v7 = [v6 description];
-  v8 = [v3 initWithFormat:@"Location Provider: %@, timestamp: %@", v5, v7];
+  provider = [(SPLocationProvider *)self provider];
+  destination = [provider destination];
+  timestamp = [(SPLocationProvider *)self timestamp];
+  v7 = [timestamp description];
+  v8 = [v3 initWithFormat:@"Location Provider: %@, timestamp: %@", destination, v7];
 
   return v8;
 }
@@ -119,11 +119,11 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SPLocationProvider *)self provider];
-  v6 = [v5 destination];
-  v7 = [(SPLocationProvider *)self timestamp];
-  v8 = [v7 description];
-  v9 = [v3 stringWithFormat:@"<%@: %p %@:%@>", v4, self, v6, v8];
+  provider = [(SPLocationProvider *)self provider];
+  destination = [provider destination];
+  timestamp = [(SPLocationProvider *)self timestamp];
+  v8 = [timestamp description];
+  v9 = [v3 stringWithFormat:@"<%@: %p %@:%@>", v4, self, destination, v8];
 
   return v9;
 }

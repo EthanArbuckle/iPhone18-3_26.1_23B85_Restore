@@ -1,17 +1,17 @@
 @interface HMAccessoryEventTopic
-+ (id)filterTopicsReplacingWithIndex:(id)a3;
-+ (id)topicFromSuffixID:(unint64_t)a3 homeUUID:(id)a4 accessoryUUID:(id)a5;
-+ (id)topicPrefixWithHomeUUID:(id)a3 accessoryUUID:(id)a4;
-+ (unint64_t)suffixIDFromTopicSuffix:(id)a3;
++ (id)filterTopicsReplacingWithIndex:(id)index;
++ (id)topicFromSuffixID:(unint64_t)d homeUUID:(id)iD accessoryUUID:(id)uID;
++ (id)topicPrefixWithHomeUUID:(id)d accessoryUUID:(id)iD;
++ (unint64_t)suffixIDFromTopicSuffix:(id)suffix;
 @end
 
 @implementation HMAccessoryEventTopic
 
-+ (id)filterTopicsReplacingWithIndex:(id)a3
++ (id)filterTopicsReplacingWithIndex:(id)index
 {
-  v3 = a3;
+  indexCopy = index;
   v4 = objc_autoreleasePoolPush();
-  v5 = [v3 na_map:&__block_literal_global_17452];
+  v5 = [indexCopy na_map:&__block_literal_global_17452];
   objc_autoreleasePoolPop(v4);
 
   return v5;
@@ -56,33 +56,33 @@ __CFString *__56__HMAccessoryEventTopic_filterTopicsReplacingWithIndex___block_i
   return v5;
 }
 
-+ (id)topicPrefixWithHomeUUID:(id)a3 accessoryUUID:(id)a4
++ (id)topicPrefixWithHomeUUID:(id)d accessoryUUID:(id)iD
 {
   v5 = MEMORY[0x1E69A2A20];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = a4;
-  v8 = [a3 UUIDString];
-  v9 = [v7 UUIDString];
+  iDCopy = iD;
+  uUIDString = [d UUIDString];
+  uUIDString2 = [iDCopy UUIDString];
 
-  v10 = [v6 stringWithFormat:@"home.%@.accessory.%@.", v8, v9];
+  v10 = [v6 stringWithFormat:@"home.%@.accessory.%@.", uUIDString, uUIDString2];
   v11 = [v5 hmf_cachedInstanceForString:v10];
 
   return v11;
 }
 
-+ (id)topicFromSuffixID:(unint64_t)a3 homeUUID:(id)a4 accessoryUUID:(id)a5
++ (id)topicFromSuffixID:(unint64_t)d homeUUID:(id)iD accessoryUUID:(id)uID
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a3];
+  iDCopy = iD;
+  uIDCopy = uID;
+  v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", d];
   v10 = [&unk_1F0EFD778 objectForKeyedSubscript:v9];
   if (v10)
   {
     v11 = MEMORY[0x1E69A2A20];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v7 UUIDString];
-    v14 = [v8 UUIDString];
-    v15 = [v12 stringWithFormat:@"home.%@.accessory.%@.%@", v13, v14, v10];
+    uUIDString = [iDCopy UUIDString];
+    uUIDString2 = [uIDCopy UUIDString];
+    v15 = [v12 stringWithFormat:@"home.%@.accessory.%@.%@", uUIDString, uUIDString2, v10];
     v16 = [v11 hmf_cachedInstanceForString:v15];
   }
 
@@ -94,22 +94,22 @@ __CFString *__56__HMAccessoryEventTopic_filterTopicsReplacingWithIndex___block_i
   return v16;
 }
 
-+ (unint64_t)suffixIDFromTopicSuffix:(id)a3
++ (unint64_t)suffixIDFromTopicSuffix:(id)suffix
 {
-  v3 = [(X *)&unk_1F0EFD750 objectForKeyedSubscript:a3];
+  v3 = [(X *)&unk_1F0EFD750 objectForKeyedSubscript:suffix];
   v4 = [v3 objectForKeyedSubscript:@"topicID"];
 
   if (v4)
   {
-    v5 = [v4 unsignedLongLongValue];
+    unsignedLongLongValue = [v4 unsignedLongLongValue];
   }
 
   else
   {
-    v5 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  return v5;
+  return unsignedLongLongValue;
 }
 
 @end

@@ -1,35 +1,35 @@
 @interface ECUtils
-+ (BOOL)isRenameFunction:(id)a3;
-+ (BOOL)validDateInExcel:(id)a3 edWorkbook:(id)a4;
-+ (double)dateTimeNumberFromNSDate:(id)a3 edWorkbook:(id)a4;
-+ (id)dateFromXlDateTimeNumber:(double)a3 edWorkbook:(id)a4;
++ (BOOL)isRenameFunction:(id)function;
++ (BOOL)validDateInExcel:(id)excel edWorkbook:(id)workbook;
++ (double)dateTimeNumberFromNSDate:(id)date edWorkbook:(id)workbook;
++ (id)dateFromXlDateTimeNumber:(double)number edWorkbook:(id)workbook;
 + (id)lassoDefaultTableName;
-+ (id)lassoStyleTableReferenceFromTableId:(id)a3;
-+ (id)renameFunction:(id)a3;
++ (id)lassoStyleTableReferenceFromTableId:(id)id;
++ (id)renameFunction:(id)function;
 + (id)renameMap;
-+ (unsigned)dateTimeOffsetForBuggy1900Dates:(double)a3 edWorkbook:(id)a4;
++ (unsigned)dateTimeOffsetForBuggy1900Dates:(double)dates edWorkbook:(id)workbook;
 @end
 
 @implementation ECUtils
 
-+ (BOOL)isRenameFunction:(id)a3
++ (BOOL)isRenameFunction:(id)function
 {
-  v4 = a3;
-  v5 = [a1 renameMap];
-  v6 = [v4 uppercaseString];
-  v7 = [v5 objectForKey:v6];
+  functionCopy = function;
+  renameMap = [self renameMap];
+  uppercaseString = [functionCopy uppercaseString];
+  v7 = [renameMap objectForKey:uppercaseString];
   v8 = v7 != 0;
 
   return v8;
 }
 
-+ (id)renameFunction:(id)a3
++ (id)renameFunction:(id)function
 {
-  v4 = a3;
-  v5 = [v4 uppercaseString];
+  functionCopy = function;
+  uppercaseString = [functionCopy uppercaseString];
 
-  v6 = [a1 renameMap];
-  v7 = [v6 objectForKey:v5];
+  renameMap = [self renameMap];
+  v7 = [renameMap objectForKey:uppercaseString];
 
   if (v7)
   {
@@ -38,7 +38,7 @@
 
   else
   {
-    v8 = v5;
+    v8 = uppercaseString;
   }
 
   v9 = v8;
@@ -46,9 +46,9 @@
   return v8;
 }
 
-+ (id)lassoStyleTableReferenceFromTableId:(id)a3
++ (id)lassoStyleTableReferenceFromTableId:(id)id
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"SFTGlobalID_%@", a3];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"SFTGlobalID_%@", id];
 
   return v3;
 }
@@ -61,35 +61,35 @@
   return v3;
 }
 
-+ (BOOL)validDateInExcel:(id)a3 edWorkbook:(id)a4
++ (BOOL)validDateInExcel:(id)excel edWorkbook:(id)workbook
 {
-  v5 = a3;
-  v6 = [a4 dateBaseDate];
-  [v5 timeIntervalSinceDate:v6];
+  excelCopy = excel;
+  dateBaseDate = [workbook dateBaseDate];
+  [excelCopy timeIntervalSinceDate:dateBaseDate];
   v8 = v7 >= -86400.0;
 
   return v8;
 }
 
-+ (id)dateFromXlDateTimeNumber:(double)a3 edWorkbook:(id)a4
++ (id)dateFromXlDateTimeNumber:(double)number edWorkbook:(id)workbook
 {
-  v6 = a4;
-  [a1 timeIntervalFromXlDateTimeNumber:v6 edWorkbook:a3];
+  workbookCopy = workbook;
+  [self timeIntervalFromXlDateTimeNumber:workbookCopy edWorkbook:number];
   v8 = v7;
   v9 = objc_alloc(MEMORY[0x277CBEAA8]);
-  v10 = [v6 dateBaseDate];
-  v11 = [v9 initWithTimeInterval:v10 sinceDate:v8];
+  dateBaseDate = [workbookCopy dateBaseDate];
+  v11 = [v9 initWithTimeInterval:dateBaseDate sinceDate:v8];
 
   return v11;
 }
 
-+ (double)dateTimeNumberFromNSDate:(id)a3 edWorkbook:(id)a4
++ (double)dateTimeNumberFromNSDate:(id)date edWorkbook:(id)workbook
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 dateBaseDate];
-  [v6 timeIntervalSinceDate:v8];
-  v10 = (v9 - (v9 / 86400) * 86400.0) / 86400.0 + (v9 / 86400) + [a1 dateTimeOffsetForBuggy1900Dates:v7 edWorkbook:(v9 - (v9 / 86400) * 86400.0) / 86400.0 + (v9 / 86400)];
+  dateCopy = date;
+  workbookCopy = workbook;
+  dateBaseDate = [workbookCopy dateBaseDate];
+  [dateCopy timeIntervalSinceDate:dateBaseDate];
+  v10 = (v9 - (v9 / 86400) * 86400.0) / 86400.0 + (v9 / 86400) + [self dateTimeOffsetForBuggy1900Dates:workbookCopy edWorkbook:(v9 - (v9 / 86400) * 86400.0) / 86400.0 + (v9 / 86400)];
 
   return v10;
 }
@@ -112,10 +112,10 @@
   return v5;
 }
 
-+ (unsigned)dateTimeOffsetForBuggy1900Dates:(double)a3 edWorkbook:(id)a4
++ (unsigned)dateTimeOffsetForBuggy1900Dates:(double)dates edWorkbook:(id)workbook
 {
-  v5 = [a4 dateBase];
-  if (a3 <= 60.0)
+  dateBase = [workbook dateBase];
+  if (dates <= 60.0)
   {
     v6 = 1;
   }
@@ -125,7 +125,7 @@
     v6 = 2;
   }
 
-  if (v5 == 1)
+  if (dateBase == 1)
   {
     return v6;
   }

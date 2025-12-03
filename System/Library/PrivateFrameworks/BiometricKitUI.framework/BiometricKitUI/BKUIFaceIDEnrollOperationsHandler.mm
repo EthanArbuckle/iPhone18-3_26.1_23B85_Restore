@@ -1,19 +1,19 @@
 @interface BKUIFaceIDEnrollOperationsHandler
 - (BKUIFaceIDEnrollOperationsHandler)init;
-- (BKUIFaceIDEnrollOperationsHandler)initWithBKPearlEnrollmentType:(int64_t)a3;
+- (BKUIFaceIDEnrollOperationsHandler)initWithBKPearlEnrollmentType:(int64_t)type;
 - (BKUIPearlEnrollOperationsDelegate)operationsDelegate;
-- (BOOL)_completeOperationWithError:(id *)a3;
-- (BOOL)_matchOperationPreflightCheck:(id *)a3;
-- (BOOL)_validateEnrolledPoses:(id)a3;
-- (BOOL)completeCurrentEnrollOperationWithError:(id *)a3;
+- (BOOL)_completeOperationWithError:(id *)error;
+- (BOOL)_matchOperationPreflightCheck:(id *)check;
+- (BOOL)_validateEnrolledPoses:(id)poses;
+- (BOOL)completeCurrentEnrollOperationWithError:(id *)error;
 - (BOOL)isActive;
 - (BOOL)shouldShowRetryUI;
 - (id)bkIdentities;
-- (id)getAuthContextForCredentialError:(id *)a3;
-- (id)getAuthContextForCredentialError:(id *)a3 authContext:(id *)a4;
+- (id)getAuthContextForCredentialError:(id *)error;
+- (id)getAuthContextForCredentialError:(id *)error authContext:(id *)context;
 - (int64_t)glassesRequirement;
 - (void)_cleanupEnroll;
-- (void)_cleanupEnroll:(BOOL)a3;
+- (void)_cleanupEnroll:(BOOL)enroll;
 - (void)_removeIdentity;
 - (void)advanceEnrollmentState;
 - (void)bkIdentities;
@@ -21,19 +21,19 @@
 - (void)cancelEnroll;
 - (void)cancelEnrollForRotation;
 - (void)cancelEnrollPreserveIdentity;
-- (void)enrollOperation:(id)a3 failedWithReason:(int64_t)a4;
-- (void)enrollOperation:(id)a3 finishedWithEnrollResult:(id)a4;
-- (void)enrollOperation:(id)a3 percentCompleted:(int64_t)a4;
-- (void)enrollOperation:(id)a3 progressedWithInfo:(id)a4;
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5;
-- (void)matchOperation:(id)a3 failedToMatchWithUserPositionSubstate:(int)a4 operationCompleteAction:(id)a5;
-- (void)matchUserForGlassesPhaseEnrollmentWithCompletionAction:(id)a3;
-- (void)matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction:(id)a3;
-- (void)operation:(id)a3 faceDetectStateChanged:(id)a4;
+- (void)enrollOperation:(id)operation failedWithReason:(int64_t)reason;
+- (void)enrollOperation:(id)operation finishedWithEnrollResult:(id)result;
+- (void)enrollOperation:(id)operation percentCompleted:(int64_t)completed;
+- (void)enrollOperation:(id)operation progressedWithInfo:(id)info;
+- (void)event:(int64_t)event params:(id)params reply:(id)reply;
+- (void)matchOperation:(id)operation failedToMatchWithUserPositionSubstate:(int)substate operationCompleteAction:(id)action;
+- (void)matchUserForGlassesPhaseEnrollmentWithCompletionAction:(id)action;
+- (void)matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction:(id)action;
+- (void)operation:(id)operation faceDetectStateChanged:(id)changed;
 - (void)retryOperation;
 - (void)retryPressed;
-- (void)setSuspend:(BOOL)a3;
-- (void)startEnrollForEnrollmentType:(int64_t)a3 glassesRequirement:(int64_t)a4 identity:(id)a5 operationStartedActionBlock:(id)a6;
+- (void)setSuspend:(BOOL)suspend;
+- (void)startEnrollForEnrollmentType:(int64_t)type glassesRequirement:(int64_t)requirement identity:(id)identity operationStartedActionBlock:(id)block;
 @end
 
 @implementation BKUIFaceIDEnrollOperationsHandler
@@ -68,17 +68,17 @@
     }
 
     [(BKUIFaceIDEnrollOperationsHandler *)self setGlassesEnforcementError:0];
-    v7 = [(BKUIFaceIDEnrollOperationsHandler *)self matchUserThenDoSingleEnrollmentCompletion];
-    [(BKUIFaceIDEnrollOperationsHandler *)self matchUserForSecondPhaseEnrollmentWithCompletionAction:v7];
+    matchUserThenDoSingleEnrollmentCompletion = [(BKUIFaceIDEnrollOperationsHandler *)self matchUserThenDoSingleEnrollmentCompletion];
+    [(BKUIFaceIDEnrollOperationsHandler *)self matchUserForSecondPhaseEnrollmentWithCompletionAction:matchUserThenDoSingleEnrollmentCompletion];
   }
 }
 
-- (BKUIFaceIDEnrollOperationsHandler)initWithBKPearlEnrollmentType:(int64_t)a3
+- (BKUIFaceIDEnrollOperationsHandler)initWithBKPearlEnrollmentType:(int64_t)type
 {
   result = [(BKUIFaceIDEnrollOperationsHandler *)self init];
   if (result)
   {
-    result->_enrollmentType = a3;
+    result->_enrollmentType = type;
   }
 
   return result;
@@ -125,9 +125,9 @@
     analyticsManager = v2->_analyticsManager;
     v2->_analyticsManager = v14;
 
-    v16 = [(BKUIFaceIDEnrollOperationsHandler *)v2 device];
+    device = [(BKUIFaceIDEnrollOperationsHandler *)v2 device];
     v22 = 0;
-    v17 = [v16 supportsPeriocularEnrollmentWithError:&v22];
+    v17 = [device supportsPeriocularEnrollmentWithError:&v22];
     v18 = v22;
 
     if (v18)
@@ -164,10 +164,10 @@
   return enrollOperation;
 }
 
-- (void)setSuspend:(BOOL)a3
+- (void)setSuspend:(BOOL)suspend
 {
   enrollOperation = self->_enrollOperation;
-  if (a3)
+  if (suspend)
   {
     v13 = 0;
     [(BKEnrollPearlOperation *)enrollOperation suspendWithError:&v13];
@@ -209,20 +209,20 @@ LABEL_8:
 
 LABEL_9:
 
-  v10 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  [v10 endEnrollFlowWithError:v6];
+  operationsDelegate = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  [operationsDelegate endEnrollFlowWithError:v6];
 }
 
 - (void)_cleanupEnroll
 {
   [(BKUIFaceIDEnrollOperationsHandler *)self _cleanupEnroll:1];
-  v3 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  [v3 invalidateSubstateTimer];
+  operationsDelegate = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  [operationsDelegate invalidateSubstateTimer];
 }
 
-- (void)_cleanupEnroll:(BOOL)a3
+- (void)_cleanupEnroll:(BOOL)enroll
 {
-  v3 = a3;
+  enrollCopy = enroll;
   enrollOperation = self->_enrollOperation;
   if (enrollOperation)
   {
@@ -230,15 +230,15 @@ LABEL_9:
     v6 = self->_enrollOperation;
     self->_enrollOperation = 0;
 
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    [v7 setIdleTimerDisabled:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] setIdleTimerDisabled:0];
   }
 
   [(SFClient *)self->_sharingclient invalidate];
   sharingclient = self->_sharingclient;
   self->_sharingclient = 0;
 
-  if (v3)
+  if (enrollCopy)
   {
     [(LAContext *)self->_authContext invalidate];
     authContext = self->_authContext;
@@ -255,7 +255,7 @@ LABEL_9:
   self->_enrollOperationInProgress = 0;
 }
 
-- (BOOL)completeCurrentEnrollOperationWithError:(id *)a3
+- (BOOL)completeCurrentEnrollOperationWithError:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = [(BKEnrollPearlOperation *)self->_enrollOperation completeWithError:?];
@@ -269,7 +269,7 @@ LABEL_9:
       v13 = 138412546;
       v14 = enrollOperation;
       v15 = 2048;
-      v16 = [(BKEnrollPearlOperation *)enrollOperation enrollmentType];
+      enrollmentType = [(BKEnrollPearlOperation *)enrollOperation enrollmentType];
       v8 = "sucessfully completed enroll operation:%@, type:%li";
 LABEL_6:
       _os_log_impl(&dword_241B0A000, v6, OS_LOG_TYPE_DEFAULT, v8, &v13, 0x16u);
@@ -282,11 +282,11 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = self->_enrollOperation;
-      v10 = *a3;
+      v10 = *error;
       v13 = 138412546;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      enrollmentType = v10;
       v8 = "Failed to complete current enroll operation:%@, error:%@";
       goto LABEL_6;
     }
@@ -390,15 +390,15 @@ void __60__BKUIFaceIDEnrollOperationsHandler_cancelEnrollForRotation__block_invo
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startEnrollForEnrollmentType:(int64_t)a3 glassesRequirement:(int64_t)a4 identity:(id)a5 operationStartedActionBlock:(id)a6
+- (void)startEnrollForEnrollmentType:(int64_t)type glassesRequirement:(int64_t)requirement identity:(id)identity operationStartedActionBlock:(id)block
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  LODWORD(a6) = self->_enrollOperationInProgress;
+  identityCopy = identity;
+  blockCopy = block;
+  LODWORD(block) = self->_enrollOperationInProgress;
   v12 = _BKUILoggingFacility();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (a6 == 1)
+  if (block == 1)
   {
     if (v13)
     {
@@ -409,44 +409,44 @@ void __60__BKUIFaceIDEnrollOperationsHandler_cancelEnrollForRotation__block_invo
 
   else
   {
-    v28 = v11;
+    v28 = blockCopy;
     if (v13)
     {
       *buf = 138412802;
-      v37 = self;
+      selfCopy = self;
       v38 = 2048;
-      v39 = a3;
+      typeCopy = type;
       v40 = 2112;
-      v41 = v10;
+      v41 = identityCopy;
       _os_log_impl(&dword_241B0A000, v12, OS_LOG_TYPE_DEFAULT, "%@ Starting Enroll... type:%li identity:%@ enrollOperationInProgress = YES", buf, 0x20u);
     }
 
-    v14 = [(BKUIFaceIDEnrollOperationsHandler *)self analyticsManager];
+    analyticsManager = [(BKUIFaceIDEnrollOperationsHandler *)self analyticsManager];
     v34[0] = @"inBuddy";
-    v27 = v10;
+    v27 = identityCopy;
     v15 = [MEMORY[0x277CCABB0] numberWithBool:{-[BKUIFaceIDEnrollOperationsHandler inbuddy](self, "inbuddy")}];
     v35[0] = v15;
     v34[1] = @"enrollmentType";
-    v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v16 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v35[1] = v16;
     v34[2] = @"enrollmentState";
     v17 = MEMORY[0x277CCABB0];
-    v18 = [(BKUIFaceIDEnrollOperationsHandler *)self enrollOperation];
-    v19 = [v17 numberWithInteger:{objc_msgSend(v18, "state")}];
+    enrollOperation = [(BKUIFaceIDEnrollOperationsHandler *)self enrollOperation];
+    v19 = [v17 numberWithInteger:{objc_msgSend(enrollOperation, "state")}];
     v35[2] = v19;
     v34[3] = @"enrollmentNeedsGlasses";
-    v20 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v20 = [MEMORY[0x277CCABB0] numberWithInteger:requirement];
     v35[3] = v20;
     [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:4];
-    v21 = v26 = a4;
-    [v14 traceEvent:@"com.apple.BKUI.FaceIDEnrollmentStarted" withPayload:v21];
+    v21 = v26 = requirement;
+    [analyticsManager traceEvent:@"com.apple.BKUI.FaceIDEnrollmentStarted" withPayload:v21];
 
-    v10 = v27;
+    identityCopy = v27;
     self->_bioKitCompletionPercentage = 0.0;
     self->_enrollOperationInProgress = 1;
-    v22 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-    v23 = [v22 view];
-    [v23 setNeedsLayout];
+    operationsDelegate = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+    view = [operationsDelegate view];
+    [view setNeedsLayout];
 
     enrollStartStopQueue = self->_enrollStartStopQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -454,10 +454,10 @@ void __60__BKUIFaceIDEnrollOperationsHandler_cancelEnrollForRotation__block_invo
     block[2] = __122__BKUIFaceIDEnrollOperationsHandler_startEnrollForEnrollmentType_glassesRequirement_identity_operationStartedActionBlock___block_invoke;
     block[3] = &unk_278D09E70;
     block[4] = self;
-    v32 = a3;
+    typeCopy2 = type;
     v30 = v27;
     v33 = v26;
-    v11 = v28;
+    blockCopy = v28;
     v31 = v28;
     dispatch_sync(enrollStartStopQueue, block);
   }
@@ -744,22 +744,22 @@ void __122__BKUIFaceIDEnrollOperationsHandler_startEnrollForEnrollmentType_glass
   [v2 endEnrollFlowWithError:*(a1 + 32)];
 }
 
-- (void)matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction:(id)a3
+- (void)matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_alloc_init(BKUIMatchVerifyPearlOperation);
   [(BKUIFaceIDEnrollOperationsHandler *)self setMatchOperation:v5];
 
-  v6 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  v7 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-  [v7 setOperationsDelegate:v6];
+  operationsDelegate = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  matchOperation = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+  [matchOperation setOperationsDelegate:operationsDelegate];
 
   [(BKUIFaceIDEnrollOperationsHandler *)self setGlassesEnforcementError:0];
-  [(BKUIFaceIDEnrollOperationsHandler *)self setMatchUserThenDoSingleEnrollmentCompletion:v4];
+  [(BKUIFaceIDEnrollOperationsHandler *)self setMatchUserThenDoSingleEnrollmentCompletion:actionCopy];
   v28 = 0;
-  LODWORD(v7) = [(BKUIFaceIDEnrollOperationsHandler *)self _matchOperationPreflightCheck:&v28];
+  LODWORD(matchOperation) = [(BKUIFaceIDEnrollOperationsHandler *)self _matchOperationPreflightCheck:&v28];
   v8 = v28;
-  if (v7)
+  if (matchOperation)
   {
     if ([(BKUIFaceIDEnrollOperationsHandler *)self inbuddy]&& [(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration]== 3 && +[BKUIPasscodeEntryController isDevicePasscodeSet]&& !v8)
     {
@@ -773,11 +773,11 @@ void __122__BKUIFaceIDEnrollOperationsHandler_startEnrollForEnrollmentType_glass
       v24[2] = __114__BKUIFaceIDEnrollOperationsHandler_matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction___block_invoke;
       v24[3] = &unk_278D09EC0;
       objc_copyWeak(&v26, &location);
-      v25 = v4;
+      v25 = actionCopy;
       v10 = [(BKUIPasscodeEntryController *)v9 initWithVerifiedPasscodeAction:v24];
       v11 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v10];
-      v12 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-      [v12 presentViewController:v11 animated:1 completion:0];
+      operationsDelegate2 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+      [operationsDelegate2 presentViewController:v11 animated:1 completion:0];
 
       v13 = &v26;
     }
@@ -786,29 +786,29 @@ void __122__BKUIFaceIDEnrollOperationsHandler_startEnrollForEnrollmentType_glass
     {
       if ([(BKUIFaceIDEnrollOperationsHandler *)self isEnrollmentAugmentationOnly])
       {
-        v14 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-        v15 = [v14 substate];
+        operationsDelegate3 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+        substate = [operationsDelegate3 substate];
 
-        if (v15 != 15)
+        if (substate != 15)
         {
-          v16 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-          [v16 setState:3 animated:1];
+          operationsDelegate4 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+          [operationsDelegate4 setState:3 animated:1];
         }
       }
 
       objc_initWeak(&location, self);
-      v17 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-      v18 = [(BKUIFaceIDEnrollOperationsHandler *)self device];
-      v19 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
-      v20 = [(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration];
+      matchOperation2 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+      device = [(BKUIFaceIDEnrollOperationsHandler *)self device];
+      identity = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
+      enrollmentConfiguration = [(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __114__BKUIFaceIDEnrollOperationsHandler_matchUserThenDoSingleEnrollmentWithExisitingEnrollmentConfigCompletionAction___block_invoke_4;
       v21[3] = &unk_278D09EE8;
       objc_copyWeak(&v23, &location);
       v21[4] = self;
-      v22 = v4;
-      [v17 startMatchOperationWithDevice:v18 identity:v19 credential:v8 withConfiguration:v20 matchOperationActionBlock:v21];
+      v22 = actionCopy;
+      [matchOperation2 startMatchOperationWithDevice:device identity:identity credential:v8 withConfiguration:enrollmentConfiguration matchOperationActionBlock:v21];
 
       v13 = &v23;
     }
@@ -891,34 +891,34 @@ void __114__BKUIFaceIDEnrollOperationsHandler_matchUserThenDoSingleEnrollmentWit
   }
 }
 
-- (void)matchUserForGlassesPhaseEnrollmentWithCompletionAction:(id)a3
+- (void)matchUserForGlassesPhaseEnrollmentWithCompletionAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_alloc_init(BKUIMatchVerifyPearlOperation);
   [(BKUIFaceIDEnrollOperationsHandler *)self setMatchOperation:v5];
 
-  v6 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  v7 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-  [v7 setOperationsDelegate:v6];
+  operationsDelegate = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  matchOperation = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+  [matchOperation setOperationsDelegate:operationsDelegate];
 
   v18 = 0;
-  LOBYTE(v7) = [(BKUIFaceIDEnrollOperationsHandler *)self _matchOperationPreflightCheck:&v18];
+  LOBYTE(matchOperation) = [(BKUIFaceIDEnrollOperationsHandler *)self _matchOperationPreflightCheck:&v18];
   v8 = v18;
-  if (v7)
+  if (matchOperation)
   {
     objc_initWeak(&location, self);
-    v9 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-    v10 = [(BKUIFaceIDEnrollOperationsHandler *)self device];
-    v11 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
-    v12 = [(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration];
+    matchOperation2 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+    device = [(BKUIFaceIDEnrollOperationsHandler *)self device];
+    identity = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
+    enrollmentConfiguration = [(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __92__BKUIFaceIDEnrollOperationsHandler_matchUserForGlassesPhaseEnrollmentWithCompletionAction___block_invoke;
     v14[3] = &unk_278D09EE8;
     objc_copyWeak(&v16, &location);
     v14[4] = self;
-    v15 = v4;
-    [v9 startMatchOperationWithDevice:v10 identity:v11 credential:v8 withConfiguration:v12 matchOperationActionBlock:v14];
+    v15 = actionCopy;
+    [matchOperation2 startMatchOperationWithDevice:device identity:identity credential:v8 withConfiguration:enrollmentConfiguration matchOperationActionBlock:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -952,7 +952,7 @@ void __92__BKUIFaceIDEnrollOperationsHandler_matchUserForGlassesPhaseEnrollmentW
   }
 }
 
-- (BOOL)_matchOperationPreflightCheck:(id *)a3
+- (BOOL)_matchOperationPreflightCheck:(id *)check
 {
   v26 = *MEMORY[0x277D85DE8];
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -964,9 +964,9 @@ void __92__BKUIFaceIDEnrollOperationsHandler_matchUserForGlassesPhaseEnrollmentW
   v6 = _BKUILoggingFacility();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(BKUIFaceIDEnrollOperationsHandler *)self credential];
+    credential = [(BKUIFaceIDEnrollOperationsHandler *)self credential];
     *buf = 67109120;
-    v25 = v7 != 0;
+    v25 = credential != 0;
     _os_log_impl(&dword_241B0A000, v6, OS_LOG_TYPE_DEFAULT, "Has credential: %d", buf, 8u);
   }
 
@@ -981,9 +981,9 @@ void __92__BKUIFaceIDEnrollOperationsHandler_matchUserForGlassesPhaseEnrollmentW
     _os_log_impl(&dword_241B0A000, v10, OS_LOG_TYPE_DEFAULT, "Has credentialSet: %d", buf, 8u);
   }
 
-  v11 = [(BKUIFaceIDEnrollOperationsHandler *)self device];
+  device = [(BKUIFaceIDEnrollOperationsHandler *)self device];
 
-  if (v11)
+  if (device)
   {
     goto LABEL_6;
   }
@@ -999,7 +999,7 @@ void __92__BKUIFaceIDEnrollOperationsHandler_matchUserForGlassesPhaseEnrollmentW
   {
 LABEL_6:
     v12 = v8;
-    *a3 = v8;
+    *check = v8;
     v13 = 1;
   }
 
@@ -1031,8 +1031,8 @@ uint64_t __67__BKUIFaceIDEnrollOperationsHandler__matchOperationPreflightCheck__
 - (void)cancelEnrollPreserveIdentity
 {
   [(BKUIFaceIDEnrollOperationsHandler *)self _cleanupEnroll:0];
-  v3 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-  [v3 cancelMatchOperation];
+  matchOperation = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+  [matchOperation cancelMatchOperation];
 
   [(NSMutableArray *)self->_poseStatus removeAllObjects];
   self->_bioKitCompletionPercentage = 0.0;
@@ -1050,28 +1050,28 @@ uint64_t __67__BKUIFaceIDEnrollOperationsHandler__matchOperationPreflightCheck__
 - (void)_removeIdentity
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
+  identity = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
 
-  if (v3 && ![(BKUIFaceIDEnrollOperationsHandler *)self isEnrollmentAugmentationOnly])
+  if (identity && ![(BKUIFaceIDEnrollOperationsHandler *)self isEnrollmentAugmentationOnly])
   {
     v4 = _BKUILoggingFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
+      identity2 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
       *buf = 138412290;
-      v11 = v5;
+      v11 = identity2;
       _os_log_impl(&dword_241B0A000, v4, OS_LOG_TYPE_DEFAULT, "Removing identity: %@", buf, 0xCu);
     }
 
     [(BKUIFaceIDEnrollOperationsHandler *)self setCanStartEnrollmentOperation:0];
-    v6 = [(BKUIFaceIDEnrollOperationsHandler *)self device];
-    v7 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
+    device = [(BKUIFaceIDEnrollOperationsHandler *)self device];
+    identity3 = [(BKUIFaceIDEnrollOperationsHandler *)self identity];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke;
     v9[3] = &unk_278D09F60;
     v9[4] = self;
-    [v6 removeIdentity:v7 reply:v9];
+    [device removeIdentity:identity3 reply:v9];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1117,19 +1117,19 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
 - (void)advanceEnrollmentState
 {
   v66 = *MEMORY[0x277D85DE8];
-  v3 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  operationsDelegate = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
   v4 = MEMORY[0x277CCACA8];
   v5 = (self->_bioKitCompletionPercentage * 100.0);
-  v6 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  [v6 percentOfPillsCompleted];
+  operationsDelegate2 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  [operationsDelegate2 percentOfPillsCompleted];
   v8 = [v4 stringWithFormat:@"BioKit: %d%%, rings: %d%%", v5, (v7 * 100.0)];
-  [v3 setProgressString:v8];
+  [operationsDelegate setProgressString:v8];
 
-  v9 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  [v9 _updateDebugLabel];
+  operationsDelegate3 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  [operationsDelegate3 _updateDebugLabel];
 
-  v10 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  [v10 percentOfPillsCompleted];
+  operationsDelegate4 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  [operationsDelegate4 percentOfPillsCompleted];
   v12 = v11;
 
   v58 = 0u;
@@ -1165,15 +1165,15 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
   v18 = _BKUILoggingFacility();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-    v20 = [v19 state];
+    operationsDelegate5 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+    state = [operationsDelegate5 state];
     v21 = (self->_bioKitCompletionPercentage * 100.0);
-    v22 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-    [v22 percentOfPillsCompleted];
+    operationsDelegate6 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+    [operationsDelegate6 percentOfPillsCompleted];
     *buf = 134218752;
     v61 = v12;
     v62 = 1024;
-    *v63 = v20;
+    *v63 = state;
     *&v63[4] = 1024;
     *&v63[6] = v21;
     LOWORD(v64[0]) = 1024;
@@ -1181,10 +1181,10 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
     _os_log_impl(&dword_241B0A000, v18, OS_LOG_TYPE_DEFAULT, "advanceEnrollmentState evaluate next state for advancement... percentPillsCompleted:%f state:%i BioKit: %d%%, rings: %d%%", buf, 0x1Eu);
   }
 
-  v24 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  v25 = [v24 state];
+  operationsDelegate7 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  state2 = [operationsDelegate7 state];
 
-  if (v25 == 5 && v12 >= 1.0)
+  if (state2 == 5 && v12 >= 1.0)
   {
     v26 = _BKUILoggingFacility();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1193,15 +1193,15 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
       _os_log_impl(&dword_241B0A000, v26, OS_LOG_TYPE_DEFAULT, "Finishing 1st enroll operation...", buf, 2u);
     }
 
-    v27 = [(BKUIFaceIDEnrollOperationsHandler *)self enrollOperation];
-    v28 = [v27 state];
+    enrollOperation = [(BKUIFaceIDEnrollOperationsHandler *)self enrollOperation];
+    state3 = [enrollOperation state];
 
-    if (v28 != 4)
+    if (state3 != 4)
     {
-      v29 = [(BKUIFaceIDEnrollOperationsHandler *)self enrollOperation];
+      enrollOperation2 = [(BKUIFaceIDEnrollOperationsHandler *)self enrollOperation];
       v55 = 0;
-      v30 = [v29 completeWithError:&v55];
-      v31 = v55;
+      v30 = [enrollOperation2 completeWithError:&v55];
+      operationsDelegate10 = v55;
 
       v32 = _BKUILoggingFacility();
       v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
@@ -1215,10 +1215,10 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
 
         if ([(BKUIFaceIDEnrollOperationsHandler *)self isEnrollmentAugmentationOnly])
         {
-          v34 = [(BKUIFaceIDEnrollOperationsHandler *)self isEnrollmentAugmentationOnly];
-          v35 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-          v36 = v35;
-          if (v34)
+          isEnrollmentAugmentationOnly = [(BKUIFaceIDEnrollOperationsHandler *)self isEnrollmentAugmentationOnly];
+          operationsDelegate8 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+          operationsDelegate9 = operationsDelegate8;
+          if (isEnrollmentAugmentationOnly)
           {
             v37 = 0.5;
           }
@@ -1231,8 +1231,8 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
 
         else
         {
-          v35 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-          v36 = v35;
+          operationsDelegate8 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+          operationsDelegate9 = operationsDelegate8;
           v37 = 1.0;
         }
 
@@ -1243,20 +1243,20 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
       if (v33)
       {
         *buf = 138412290;
-        v61 = *&v31;
+        v61 = *&operationsDelegate10;
         _os_log_impl(&dword_241B0A000, v32, OS_LOG_TYPE_DEFAULT, "Failed to complete 1st enroll: %@", buf, 0xCu);
       }
 
-      v36 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-      [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to complete 1st enroll: %@", v31, v53];
+      operationsDelegate9 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+      [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to complete 1st enroll: %@", operationsDelegate10, v53];
       goto LABEL_39;
     }
   }
 
   else
   {
-    v31 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-    if ([v31 state] != 7 || v12 < 1.0)
+    operationsDelegate10 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+    if ([operationsDelegate10 state] != 7 || v12 < 1.0)
     {
       goto LABEL_49;
     }
@@ -1279,14 +1279,14 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
       {
         v41 = self->_bioKitCompletionPercentage;
-        v42 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-        v43 = [v42 state];
+        operationsDelegate11 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+        state4 = [operationsDelegate11 state];
         *buf = 138412802;
         v61 = *&v39;
         v62 = 2048;
         *v63 = v41;
         *&v63[8] = 1024;
-        v64[0] = v43 == 7;
+        v64[0] = state4 == 7;
         _os_log_impl(&dword_241B0A000, v40, OS_LOG_TYPE_DEFAULT, "Finishing %@ enroll operation... %f %i", buf, 0x1Cu);
       }
 
@@ -1294,7 +1294,7 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
       {
         v54 = 0;
         v44 = [(BKUIFaceIDEnrollOperationsHandler *)self _completeOperationWithError:&v54];
-        v31 = v54;
+        operationsDelegate10 = v54;
         v45 = _BKUILoggingFacility();
         v46 = os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT);
         if (v44)
@@ -1306,21 +1306,21 @@ void __52__BKUIFaceIDEnrollOperationsHandler__removeIdentity__block_invoke_2(uin
             _os_log_impl(&dword_241B0A000, v45, OS_LOG_TYPE_DEFAULT, "%@ enroll operation marked as completed!", buf, 0xCu);
           }
 
-          v47 = [(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration];
-          v48 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-          v36 = v48;
-          if (!v47 || (v49 = [v48 state], v36, -[BKUIFaceIDEnrollOperationsHandler operationsDelegate](self, "operationsDelegate"), v36 = objc_claimAutoreleasedReturnValue(), v49 == 7))
+          enrollmentConfiguration = [(BKUIFaceIDEnrollOperationsHandler *)self enrollmentConfiguration];
+          operationsDelegate12 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+          operationsDelegate9 = operationsDelegate12;
+          if (!enrollmentConfiguration || (v49 = [operationsDelegate12 state], operationsDelegate9, -[BKUIFaceIDEnrollOperationsHandler operationsDelegate](self, "operationsDelegate"), operationsDelegate9 = objc_claimAutoreleasedReturnValue(), v49 == 7))
           {
             v37 = 0.5;
-            v35 = v36;
+            operationsDelegate8 = operationsDelegate9;
             v50 = 8;
 LABEL_47:
-            [v35 setState:v50 animated:1 afterDelay:v37];
+            [operationsDelegate8 setState:v50 animated:1 afterDelay:v37];
             goto LABEL_48;
           }
 
-          v51 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-          [v36 setState:objc_msgSend(v51 animated:"state") + 1 afterDelay:{1, 0.5}];
+          operationsDelegate13 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+          [operationsDelegate9 setState:objc_msgSend(operationsDelegate13 animated:"state") + 1 afterDelay:{1, 0.5}];
 LABEL_40:
 
 LABEL_48:
@@ -1334,14 +1334,14 @@ LABEL_49:
           *buf = 138412546;
           v61 = *&v39;
           v62 = 2112;
-          *v63 = v31;
+          *v63 = operationsDelegate10;
           _os_log_impl(&dword_241B0A000, v45, OS_LOG_TYPE_DEFAULT, "Failed to complete %@ enroll operation: %@", buf, 0x16u);
         }
 
-        v36 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-        [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to complete %@ enroll: %@", v39, v31];
-        v51 = LABEL_39:;
-        [v36 setStatus:v51];
+        operationsDelegate9 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+        [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to complete %@ enroll: %@", v39, operationsDelegate10];
+        operationsDelegate13 = LABEL_39:;
+        [operationsDelegate9 setStatus:operationsDelegate13];
         goto LABEL_40;
       }
     }
@@ -1351,16 +1351,16 @@ LABEL_50:
   v52 = *MEMORY[0x277D85DE8];
 }
 
-- (void)operation:(id)a3 faceDetectStateChanged:(id)a4
+- (void)operation:(id)operation faceDetectStateChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__BKUIFaceIDEnrollOperationsHandler_operation_faceDetectStateChanged___block_invoke;
   v7[3] = &unk_278D09A38;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -1625,29 +1625,29 @@ LABEL_54:
   }
 }
 
-- (void)enrollOperation:(id)a3 percentCompleted:(int64_t)a4
+- (void)enrollOperation:(id)operation percentCompleted:(int64_t)completed
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __70__BKUIFaceIDEnrollOperationsHandler_enrollOperation_percentCompleted___block_invoke;
   v4[3] = &unk_278D09F88;
   v4[4] = self;
-  v4[5] = a4;
+  v4[5] = completed;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
-- (void)enrollOperation:(id)a3 finishedWithEnrollResult:(id)a4
+- (void)enrollOperation:(id)operation finishedWithEnrollResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 enrolledIdentity];
-  if (!v8)
+  operationCopy = operation;
+  resultCopy = result;
+  enrolledIdentity = [resultCopy enrolledIdentity];
+  if (!enrolledIdentity)
   {
     [BKUIFaceIDEnrollOperationsHandler enrollOperation:finishedWithEnrollResult:];
   }
 
-  v9 = v8;
-  if ([v7 glassesDetected] && !objc_msgSend(v6, "periocularGlassesRequirement") && objc_msgSend(v6, "enrollmentType") == 3)
+  v9 = enrolledIdentity;
+  if ([resultCopy glassesDetected] && !objc_msgSend(operationCopy, "periocularGlassesRequirement") && objc_msgSend(operationCopy, "enrollmentType") == 3)
   {
     v10 = _BKUILoggingFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1659,19 +1659,19 @@ LABEL_54:
     [(BKUIFaceIDEnrollOperationsHandler *)self setGlassesFound:1];
   }
 
-  v11 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-  [v11 enrollOperation:v6 finishedWithIdentity:v9 animateImmediately:0];
+  operationsDelegate = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+  [operationsDelegate enrollOperation:operationCopy finishedWithIdentity:v9 animateImmediately:0];
 
   [(BKUIFaceIDEnrollOperationsHandler *)self _cleanupEnroll];
 }
 
-- (void)enrollOperation:(id)a3 failedWithReason:(int64_t)a4
+- (void)enrollOperation:(id)operation failedWithReason:(int64_t)reason
 {
-  v6 = a3;
-  if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 0xA)
+  operationCopy = operation;
+  if ((reason & 0xFFFFFFFFFFFFFFFELL) == 0xA)
   {
     [(BKUIFaceIDEnrollOperationsHandler *)self setGlassesEnforcementError:1];
-    if (a4 == 11)
+    if (reason == 11)
     {
       if ([(BKUIFaceIDEnrollOperationsHandler *)self glassesRequirement]== 2)
       {
@@ -1699,14 +1699,14 @@ LABEL_54:
     dispatch_after(v8, MEMORY[0x277D85CD0], block);
   }
 
-  else if (a4 != 1)
+  else if (reason != 1)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __70__BKUIFaceIDEnrollOperationsHandler_enrollOperation_failedWithReason___block_invoke_3;
     v9[3] = &unk_278D09F88;
     v9[4] = self;
-    v9[5] = a4;
+    v9[5] = reason;
     dispatch_async(MEMORY[0x277D85CD0], v9);
   }
 }
@@ -1756,14 +1756,14 @@ void __70__BKUIFaceIDEnrollOperationsHandler_enrollOperation_failedWithReason___
   [v8 endEnrollFlowWithError:v7];
 }
 
-- (void)matchOperation:(id)a3 failedToMatchWithUserPositionSubstate:(int)a4 operationCompleteAction:(id)a5
+- (void)matchOperation:(id)operation failedToMatchWithUserPositionSubstate:(int)substate operationCompleteAction:(id)action
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __114__BKUIFaceIDEnrollOperationsHandler_matchOperation_failedToMatchWithUserPositionSubstate_operationCompleteAction___block_invoke;
   v5[3] = &unk_278D09FB0;
   v5[4] = self;
-  v6 = a4;
+  substateCopy = substate;
   dispatch_async(MEMORY[0x277D85CD0], v5);
 }
 
@@ -1829,11 +1829,11 @@ void __114__BKUIFaceIDEnrollOperationsHandler_matchOperation_failedToMatchWithUs
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_validateEnrolledPoses:(id)a3
+- (BOOL)_validateEnrolledPoses:(id)poses
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  posesCopy = poses;
+  v4 = [posesCopy count];
   if (v4 != 3)
   {
     v11 = v4;
@@ -1853,7 +1853,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v5 = [v3 objectAtIndexedSubscript:0];
+  v5 = [posesCopy objectAtIndexedSubscript:0];
   v6 = [v5 count];
 
   if (v6 != 3)
@@ -1875,7 +1875,7 @@ LABEL_11:
   v7 = 0;
   while (1)
   {
-    v8 = [v3 objectAtIndexedSubscript:v7];
+    v8 = [posesCopy objectAtIndexedSubscript:v7];
     v9 = [v8 count];
 
     if (v9 != 3)
@@ -1893,7 +1893,7 @@ LABEL_11:
   v12 = _BKUILoggingFacility();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v3 objectAtIndexedSubscript:v7];
+    v16 = [posesCopy objectAtIndexedSubscript:v7];
     v17 = 134218496;
     v18 = v7;
     v19 = 2048;
@@ -1912,16 +1912,16 @@ LABEL_13:
   return v10;
 }
 
-- (void)enrollOperation:(id)a3 progressedWithInfo:(id)a4
+- (void)enrollOperation:(id)operation progressedWithInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__BKUIFaceIDEnrollOperationsHandler_enrollOperation_progressedWithInfo___block_invoke;
   v7[3] = &unk_278D09A38;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = infoCopy;
+  selfCopy = self;
+  v6 = infoCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -2072,18 +2072,18 @@ LABEL_20:
 LABEL_22:
 }
 
-- (id)getAuthContextForCredentialError:(id *)a3
+- (id)getAuthContextForCredentialError:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v5 = [(BKUIFaceIDEnrollOperationsHandler *)self credential];
-  if (v5)
+  credential = [(BKUIFaceIDEnrollOperationsHandler *)self credential];
+  if (credential)
   {
 
 LABEL_4:
-    v7 = [(BKUIFaceIDEnrollOperationsHandler *)self credential];
+    credential2 = [(BKUIFaceIDEnrollOperationsHandler *)self credential];
 
     LAContextClass = getLAContextClass();
-    if (v7)
+    if (credential2)
     {
       v9 = objc_opt_new();
       authContext = self->_authContext;
@@ -2118,30 +2118,30 @@ LABEL_4:
         _os_log_impl(&dword_241B0A000, v18, OS_LOG_TYPE_DEFAULT, "BKUIPearl: Error evaluating policy: %@", buf, 0xCu);
       }
 
-      if (a3)
+      if (error)
       {
         v19 = v17;
-        v20 = 0;
-        *a3 = v17;
+        externalizedContext = 0;
+        *error = v17;
       }
 
       else
       {
-        v20 = 0;
+        externalizedContext = 0;
       }
     }
 
     else
     {
-      v20 = [(LAContext *)self->_authContext externalizedContext];
+      externalizedContext = [(LAContext *)self->_authContext externalizedContext];
     }
 
     goto LABEL_15;
   }
 
-  v6 = [(BKUIFaceIDEnrollOperationsHandler *)self externalizedAuthContext];
+  externalizedAuthContext = [(BKUIFaceIDEnrollOperationsHandler *)self externalizedAuthContext];
 
-  if (v6)
+  if (externalizedAuthContext)
   {
     goto LABEL_4;
   }
@@ -2155,46 +2155,46 @@ LABEL_4:
       _os_log_impl(&dword_241B0A000, v23, OS_LOG_TYPE_DEFAULT, "Using cached authentication context", buf, 2u);
     }
 
-    v20 = [(LAContext *)self->_authContext externalizedContext];
+    externalizedContext = [(LAContext *)self->_authContext externalizedContext];
   }
 
   else
   {
-    v20 = 0;
+    externalizedContext = 0;
   }
 
 LABEL_15:
   v21 = *MEMORY[0x277D85DE8];
 
-  return v20;
+  return externalizedContext;
 }
 
-- (BOOL)_completeOperationWithError:(id *)a3
+- (BOOL)_completeOperationWithError:(id *)error
 {
-  v4 = [(BKUIFaceIDEnrollOperationsHandler *)self enrollOperation];
-  LOBYTE(a3) = [v4 completeWithError:a3];
+  enrollOperation = [(BKUIFaceIDEnrollOperationsHandler *)self enrollOperation];
+  LOBYTE(error) = [enrollOperation completeWithError:error];
 
-  return a3;
+  return error;
 }
 
-- (void)event:(int64_t)a3 params:(id)a4 reply:(id)a5
+- (void)event:(int64_t)event params:(id)params reply:(id)reply
 {
-  v8 = a5;
-  if (a3 == 2)
+  replyCopy = reply;
+  if (event == 2)
   {
-    v9 = [a4 objectForKey:&unk_2853CC9D8];
-    v10 = [v9 BOOLValue];
+    v9 = [params objectForKey:&unk_2853CC9D8];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
       authContext = self->_authContext;
-      v12 = [(BKUIFaceIDEnrollOperationsHandler *)self credential];
-      v13 = [v12 dataUsingEncoding:4];
+      credential = [(BKUIFaceIDEnrollOperationsHandler *)self credential];
+      v13 = [credential dataUsingEncoding:4];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __56__BKUIFaceIDEnrollOperationsHandler_event_params_reply___block_invoke;
       v14[3] = &unk_278D09FD8;
-      v15 = v8;
+      v15 = replyCopy;
       [(LAContext *)authContext setCredential:v13 forProcessedEvent:2 credentialType:-1 reply:v14];
     }
   }
@@ -2207,20 +2207,20 @@ LABEL_15:
     return 1;
   }
 
-  v4 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-  if (v4)
+  matchOperation = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+  if (matchOperation)
   {
-    v5 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-    v6 = [v5 matchedIdentity];
-    if (v6)
+    matchOperation2 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+    matchedIdentity = [matchOperation2 matchedIdentity];
+    if (matchedIdentity)
     {
       v3 = 0;
     }
 
     else
     {
-      v7 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-      v3 = [v7 failReason] == 1;
+      matchOperation3 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+      v3 = [matchOperation3 failReason] == 1;
     }
   }
 
@@ -2249,18 +2249,18 @@ LABEL_15:
 
   else
   {
-    v3 = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
-    [v3 retryMatchOperation];
+    matchOperation = [(BKUIFaceIDEnrollOperationsHandler *)self matchOperation];
+    [matchOperation retryMatchOperation];
 
-    v4 = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
-    [v4 setSubstate:0 animated:1 afterDelay:0.0];
+    operationsDelegate = [(BKUIFaceIDEnrollOperationsHandler *)self operationsDelegate];
+    [operationsDelegate setSubstate:0 animated:1 afterDelay:0.0];
   }
 }
 
-- (id)getAuthContextForCredentialError:(id *)a3 authContext:(id *)a4
+- (id)getAuthContextForCredentialError:(id *)error authContext:(id *)context
 {
-  v6 = [(BKUIFaceIDEnrollOperationsHandler *)self getAuthContextForCredentialError:a3];
-  *a4 = self->_authContext;
+  v6 = [(BKUIFaceIDEnrollOperationsHandler *)self getAuthContextForCredentialError:error];
+  *context = self->_authContext;
 
   return v6;
 }
@@ -2280,9 +2280,9 @@ LABEL_15:
 
 - (id)bkIdentities
 {
-  v2 = [(BKUIFaceIDEnrollOperationsHandler *)self device];
+  device = [(BKUIFaceIDEnrollOperationsHandler *)self device];
   v7 = 0;
-  v3 = [v2 identitiesWithError:&v7];
+  v3 = [device identitiesWithError:&v7];
   v4 = v7;
 
   if (v4)
@@ -2317,7 +2317,7 @@ void __70__BKUIFaceIDEnrollOperationsHandler_enrollOperation_failedWithReason___
 - (void)bkIdentities
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 description];
+  v3 = [self description];
   v5 = 138412290;
   v6 = v3;
   _os_log_error_impl(&dword_241B0A000, a2, OS_LOG_TYPE_ERROR, "unable to fetch number of identities error: %@", &v5, 0xCu);

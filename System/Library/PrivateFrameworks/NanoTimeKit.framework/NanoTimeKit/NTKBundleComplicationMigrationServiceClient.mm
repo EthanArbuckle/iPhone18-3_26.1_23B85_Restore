@@ -4,13 +4,13 @@
 - (void)_queue_clearInvalidationTimer;
 - (void)_queue_decrementTransactionCount;
 - (void)_queue_incrementTransactionCount;
-- (void)_queue_loadTypeLookupForDevice:(id)a3 completion:(id)a4;
-- (void)_queue_resetConnection:(BOOL)a3;
-- (void)_queue_serviceRequest:(id)a3 retryBudget:(unint64_t)a4;
+- (void)_queue_loadTypeLookupForDevice:(id)device completion:(id)completion;
+- (void)_queue_resetConnection:(BOOL)connection;
+- (void)_queue_serviceRequest:(id)request retryBudget:(unint64_t)budget;
 - (void)_queue_updateInvalidationTimer;
 - (void)_setupConnectionIfNeeded;
-- (void)generateTypeLookupForDevice:(id)a3 completion:(id)a4;
-- (void)serviceRequest:(id)a3 completion:(id)a4;
+- (void)generateTypeLookupForDevice:(id)device completion:(id)completion;
+- (void)serviceRequest:(id)request completion:(id)completion;
 @end
 
 @implementation NTKBundleComplicationMigrationServiceClient
@@ -58,20 +58,20 @@ void __61__NTKBundleComplicationMigrationServiceClient_sharedInstance__block_inv
   return v2;
 }
 
-- (void)serviceRequest:(id)a3 completion:(id)a4
+- (void)serviceRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__NTKBundleComplicationMigrationServiceClient_serviceRequest_completion___block_invoke;
   block[3] = &unk_27877DC88;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = requestCopy;
   dispatch_async(queue, block);
 }
 
@@ -115,10 +115,10 @@ void __73__NTKBundleComplicationMigrationServiceClient_serviceRequest_completion
   }
 }
 
-- (void)generateTypeLookupForDevice:(id)a3 completion:(id)a4
+- (void)generateTypeLookupForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v8 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -132,10 +132,10 @@ void __73__NTKBundleComplicationMigrationServiceClient_serviceRequest_completion
   block[2] = __86__NTKBundleComplicationMigrationServiceClient_generateTypeLookupForDevice_completion___block_invoke;
   block[3] = &unk_27877DC88;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = deviceCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = deviceCopy;
   dispatch_async(queue, block);
 }
 
@@ -227,11 +227,11 @@ void __71__NTKBundleComplicationMigrationServiceClient__setupConnectionIfNeeded_
   }
 }
 
-- (void)_queue_resetConnection:(BOOL)a3
+- (void)_queue_resetConnection:(BOOL)connection
 {
-  v3 = a3;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_queue);
-  if (v3)
+  if (connectionCopy)
   {
     [(NSXPCConnection *)self->_connection invalidate];
   }
@@ -240,10 +240,10 @@ void __71__NTKBundleComplicationMigrationServiceClient__setupConnectionIfNeeded_
   self->_connection = 0;
 }
 
-- (void)_queue_serviceRequest:(id)a3 retryBudget:(unint64_t)a4
+- (void)_queue_serviceRequest:(id)request retryBudget:(unint64_t)budget
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_queue);
   v31[0] = 0;
   v31[1] = v31;
@@ -256,10 +256,10 @@ void __71__NTKBundleComplicationMigrationServiceClient__setupConnectionIfNeeded_
   aBlock[3] = &unk_278782988;
   aBlock[4] = self;
   v30 = v31;
-  v7 = v6;
+  v7 = requestCopy;
   v29 = v7;
   v8 = _Block_copy(aBlock);
-  if (a4)
+  if (budget)
   {
     [(NTKBundleComplicationMigrationServiceClient *)self _setupConnectionIfNeeded];
     v9 = _NTKLoggingObjectForDomain(56, "NTKLoggingDomainBundleComplicationMigration");
@@ -280,7 +280,7 @@ void __71__NTKBundleComplicationMigrationServiceClient__setupConnectionIfNeeded_
     v26 = v31;
     v11 = v7;
     v25 = v11;
-    v27[1] = a4;
+    v27[1] = budget;
     v12 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v24];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
@@ -431,10 +431,10 @@ void __81__NTKBundleComplicationMigrationServiceClient__queue_serviceRequest_ret
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_queue_loadTypeLookupForDevice:(id)a3 completion:(id)a4
+- (void)_queue_loadTypeLookupForDevice:(id)device completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   [(NTKBundleComplicationMigrationServiceClient *)self _setupConnectionIfNeeded];
   [(NTKBundleComplicationMigrationServiceClient *)self _queue_incrementTransactionCount];
@@ -449,7 +449,7 @@ void __81__NTKBundleComplicationMigrationServiceClient__queue_serviceRequest_ret
   aBlock[3] = &unk_278782A28;
   v21 = v23;
   objc_copyWeak(&v22, &location);
-  v8 = v7;
+  v8 = completionCopy;
   v20 = v8;
   v9 = _Block_copy(aBlock);
   connection = self->_connection;
@@ -460,14 +460,14 @@ void __81__NTKBundleComplicationMigrationServiceClient__queue_serviceRequest_ret
   v11 = v9;
   v18 = v11;
   v12 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v17];
-  v13 = [v6 descriptor];
+  descriptor = [deviceCopy descriptor];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __89__NTKBundleComplicationMigrationServiceClient__queue_loadTypeLookupForDevice_completion___block_invoke_4;
   v15[3] = &unk_278782A50;
   v14 = v11;
   v16 = v14;
-  [v12 generateComplicationTypeLookupForDevice:v13 completion:v15];
+  [v12 generateComplicationTypeLookupForDevice:descriptor completion:v15];
 
   objc_destroyWeak(&v22);
   _Block_object_dispose(v23, 8);
@@ -542,8 +542,8 @@ void __89__NTKBundleComplicationMigrationServiceClient__queue_loadTypeLookupForD
     objc_copyWeak(&v9, buf);
     v5 = [v4 timerWithTimeInterval:0 repeats:v8 block:30.0];
     [(NSTimer *)v5 setTolerance:3.0];
-    v6 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v6 addTimer:v5 forMode:*MEMORY[0x277CBE738]];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [mainRunLoop addTimer:v5 forMode:*MEMORY[0x277CBE738]];
 
     invalidationTimer = self->_invalidationTimer;
     self->_invalidationTimer = v5;

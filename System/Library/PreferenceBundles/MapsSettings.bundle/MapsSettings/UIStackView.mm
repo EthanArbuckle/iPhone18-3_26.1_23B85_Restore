@@ -1,20 +1,20 @@
 @interface UIStackView
-- (void)_maps_removeArrangedSubview:(id)a3;
-- (void)_maps_setArrangedSubviews:(id)a3;
-- (void)_maps_setArrangedSubviews:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_maps_removeArrangedSubview:(id)subview;
+- (void)_maps_setArrangedSubviews:(id)subviews;
+- (void)_maps_setArrangedSubviews:(id)subviews animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation UIStackView
 
-- (void)_maps_setArrangedSubviews:(id)a3
+- (void)_maps_setArrangedSubviews:(id)subviews
 {
-  v4 = a3;
-  v5 = [(UIStackView *)self arrangedSubviews];
-  v6 = [NSMutableArray arrayWithArray:v5];
+  subviewsCopy = subviews;
+  arrangedSubviews = [(UIStackView *)self arrangedSubviews];
+  v6 = [NSMutableArray arrayWithArray:arrangedSubviews];
 
-  if (([v6 isEqualToArray:v4] & 1) == 0)
+  if (([v6 isEqualToArray:subviewsCopy] & 1) == 0)
   {
-    [v6 removeObjectsInArray:v4];
+    [v6 removeObjectsInArray:subviewsCopy];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
@@ -47,7 +47,7 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v12 = v4;
+    v12 = subviewsCopy;
     v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v13)
     {
@@ -75,21 +75,21 @@
   }
 }
 
-- (void)_maps_setArrangedSubviews:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_maps_setArrangedSubviews:(id)subviews animated:(BOOL)animated completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  if (a4)
+  completionCopy = completion;
+  subviewsCopy = subviews;
+  if (animated)
   {
-    v10 = [(UIStackView *)self arrangedSubviews];
-    v11 = [v9 differenceFromArray:v10];
+    arrangedSubviews = [(UIStackView *)self arrangedSubviews];
+    v11 = [subviewsCopy differenceFromArray:arrangedSubviews];
 
     if ([v11 hasChanges])
     {
       v12 = +[GroupAnimation animation];
       [v12 setDuration:UINavigationControllerHideShowBarDuration];
-      v13 = [v11 removals];
-      v14 = [v13 count];
+      removals = [v11 removals];
+      v14 = [removals count];
 
       if (v14)
       {
@@ -98,7 +98,7 @@
         v29[2] = sub_16D34;
         v29[3] = &unk_7FAF0;
         v30 = v11;
-        v31 = self;
+        selfCopy = self;
         [v12 addAnimations:v29];
       }
 
@@ -109,12 +109,12 @@
       v26[1] = 3221225472;
       v26[2] = sub_16E60;
       v26[3] = &unk_7FAF0;
-      v9 = v11;
-      v27 = v9;
-      v28 = self;
+      subviewsCopy = v11;
+      v27 = subviewsCopy;
+      selfCopy2 = self;
       [v15 addPreparation:v26];
-      v16 = [v9 insertions];
-      v17 = [v16 count];
+      insertions = [subviewsCopy insertions];
+      v17 = [insertions count];
 
       if (v17)
       {
@@ -122,13 +122,13 @@
         v24[1] = 3221225472;
         v24[2] = sub_17064;
         v24[3] = &unk_69228;
-        v25 = v9;
+        v25 = subviewsCopy;
         [v15 addAnimations:v24];
       }
 
-      if (v8)
+      if (completionCopy)
       {
-        [v15 addCompletion:v8];
+        [v15 addCompletion:completionCopy];
       }
 
       v19 = _NSConcreteStackBlock;
@@ -143,28 +143,28 @@
 
     else
     {
-      v9 = v11;
+      subviewsCopy = v11;
     }
   }
 
   else
   {
-    [(UIStackView *)self _maps_setArrangedSubviews:v9];
+    [(UIStackView *)self _maps_setArrangedSubviews:subviewsCopy];
   }
 }
 
-- (void)_maps_removeArrangedSubview:(id)a3
+- (void)_maps_removeArrangedSubview:(id)subview
 {
-  v6 = a3;
-  if (v6)
+  subviewCopy = subview;
+  if (subviewCopy)
   {
-    v4 = [(UIStackView *)self subviews];
-    v5 = [v4 containsObject:v6];
+    subviews = [(UIStackView *)self subviews];
+    v5 = [subviews containsObject:subviewCopy];
 
     if (v5)
     {
-      [(UIStackView *)self removeArrangedSubview:v6];
-      [v6 removeFromSuperview];
+      [(UIStackView *)self removeArrangedSubview:subviewCopy];
+      [subviewCopy removeFromSuperview];
     }
   }
 }

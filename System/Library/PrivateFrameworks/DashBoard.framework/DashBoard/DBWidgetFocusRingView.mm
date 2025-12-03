@@ -1,19 +1,19 @@
 @interface DBWidgetFocusRingView
-- (DBWidgetFocusRingView)initWithFrame:(CGRect)a3;
+- (DBWidgetFocusRingView)initWithFrame:(CGRect)frame;
 - (void)_updateFocusRect;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setCornerRadius:(double)a3;
-- (void)setRingColor:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setCornerRadius:(double)radius;
+- (void)setRingColor:(id)color;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation DBWidgetFocusRingView
 
 - (void)_updateFocusRect
 {
-  v3 = [(DBWidgetFocusRingView *)self focusPath];
-  [v3 removeAllPoints];
+  focusPath = [(DBWidgetFocusRingView *)self focusPath];
+  [focusPath removeAllPoints];
 
   [(DBWidgetFocusRingView *)self setFocusPath:0];
 
@@ -28,48 +28,48 @@
   [(DBWidgetFocusRingView *)self _updateFocusRect];
 }
 
-- (DBWidgetFocusRingView)initWithFrame:(CGRect)a3
+- (DBWidgetFocusRingView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = DBWidgetFocusRingView;
-  v3 = [(DBWidgetFocusRingView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DBWidgetFocusRingView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(DBWidgetFocusRingView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(DBWidgetFocusRingView *)v3 setBackgroundColor:clearColor];
 
     v3->_cornerRadius = 11.0;
-    v5 = [MEMORY[0x277D75348] _carSystemFocusColor];
+    _carSystemFocusColor = [MEMORY[0x277D75348] _carSystemFocusColor];
     ringColor = v3->_ringColor;
-    v3->_ringColor = v5;
+    v3->_ringColor = _carSystemFocusColor;
   }
 
   return v3;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = DBWidgetFocusRingView;
-  [(DBWidgetFocusRingView *)&v4 traitCollectionDidChange:a3];
+  [(DBWidgetFocusRingView *)&v4 traitCollectionDidChange:change];
   [(DBWidgetFocusRingView *)self _updateFocusRect];
 }
 
-- (void)setCornerRadius:(double)a3
+- (void)setCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(DBWidgetFocusRingView *)self _updateFocusRect];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v18.receiver = self;
   v18.super_class = DBWidgetFocusRingView;
   [(DBWidgetFocusRingView *)&v18 drawRect:?];
@@ -82,9 +82,9 @@
   v9 = v20.origin.y;
   v10 = v20.size.width;
   v11 = v20.size.height;
-  v12 = [(DBWidgetFocusRingView *)self focusPath];
+  focusPath = [(DBWidgetFocusRingView *)self focusPath];
 
-  if (!v12)
+  if (!focusPath)
   {
     v13 = MEMORY[0x277D75208];
     [(DBWidgetFocusRingView *)self cornerRadius];
@@ -93,16 +93,16 @@
     [(DBWidgetFocusRingView *)self setFocusPath:v15];
   }
 
-  v16 = [(DBWidgetFocusRingView *)self ringColor];
-  [v16 setStroke];
+  ringColor = [(DBWidgetFocusRingView *)self ringColor];
+  [ringColor setStroke];
 
-  v17 = [(DBWidgetFocusRingView *)self focusPath];
-  [v17 stroke];
+  focusPath2 = [(DBWidgetFocusRingView *)self focusPath];
+  [focusPath2 stroke];
 }
 
-- (void)setRingColor:(id)a3
+- (void)setRingColor:(id)color
 {
-  objc_storeStrong(&self->_ringColor, a3);
+  objc_storeStrong(&self->_ringColor, color);
 
   [(DBWidgetFocusRingView *)self setNeedsDisplay];
 }

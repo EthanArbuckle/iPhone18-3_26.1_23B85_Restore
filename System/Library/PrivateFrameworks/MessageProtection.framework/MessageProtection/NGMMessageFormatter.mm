@@ -1,79 +1,79 @@
 @interface NGMMessageFormatter
-+ (id)formatOutgoingInnerMessageWithPayload:(id)a3 attributes:(id)a4 destinationIdentity:(id)a5 sendingIdentity:(id)a6 error:(id *)a7;
-+ (id)formatOutgoingMessageWithEncryptedPayload:(id)a3 ephemeral:(id)a4 signature:(id)a5 keyValidator:(id)a6;
++ (id)formatOutgoingInnerMessageWithPayload:(id)payload attributes:(id)attributes destinationIdentity:(id)identity sendingIdentity:(id)sendingIdentity error:(id *)error;
++ (id)formatOutgoingMessageWithEncryptedPayload:(id)payload ephemeral:(id)ephemeral signature:(id)signature keyValidator:(id)validator;
 @end
 
 @implementation NGMMessageFormatter
 
-+ (id)formatOutgoingMessageWithEncryptedPayload:(id)a3 ephemeral:(id)a4 signature:(id)a5 keyValidator:(id)a6
++ (id)formatOutgoingMessageWithEncryptedPayload:(id)payload ephemeral:(id)ephemeral signature:(id)signature keyValidator:(id)validator
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  validatorCopy = validator;
+  signatureCopy = signature;
+  ephemeralCopy = ephemeral;
+  payloadCopy = payload;
   v13 = objc_alloc_init(NGMPBOuterMessage);
-  [(NGMPBOuterMessage *)v13 setEncryptedPayload:v12];
+  [(NGMPBOuterMessage *)v13 setEncryptedPayload:payloadCopy];
 
-  v14 = [v11 dataRepresentation];
+  dataRepresentation = [ephemeralCopy dataRepresentation];
 
-  [(NGMPBOuterMessage *)v13 setEphemeralPubKey:v14];
-  [(NGMPBOuterMessage *)v13 setSignature:v10];
+  [(NGMPBOuterMessage *)v13 setEphemeralPubKey:dataRepresentation];
+  [(NGMPBOuterMessage *)v13 setSignature:signatureCopy];
 
-  [(NGMPBOuterMessage *)v13 setKeyValidator:v9];
-  v15 = [(NGMPBOuterMessage *)v13 data];
+  [(NGMPBOuterMessage *)v13 setKeyValidator:validatorCopy];
+  data = [(NGMPBOuterMessage *)v13 data];
 
-  return v15;
+  return data;
 }
 
-+ (id)formatOutgoingInnerMessageWithPayload:(id)a3 attributes:(id)a4 destinationIdentity:(id)a5 sendingIdentity:(id)a6 error:(id *)a7
++ (id)formatOutgoingInnerMessageWithPayload:(id)payload attributes:(id)attributes destinationIdentity:(id)identity sendingIdentity:(id)sendingIdentity error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
+  payloadCopy = payload;
+  attributesCopy = attributes;
   v23 = 0;
-  v13 = a6;
-  v14 = a5;
+  sendingIdentityCopy = sendingIdentity;
+  identityCopy = identity;
   v15 = objc_alloc_init(NGMPBInnerMessage);
   v16 = +[NGMReplayManager sharedManager];
-  v17 = [v16 counterForDestinationWithIdentityKey:v14 sendingIdentity:v13 error:a7 success:&v23];
+  v17 = [v16 counterForDestinationWithIdentityKey:identityCopy sendingIdentity:sendingIdentityCopy error:error success:&v23];
 
   [(NGMPBInnerMessage *)v15 setCounter:v17];
-  if (v12)
+  if (attributesCopy)
   {
-    v18 = [v12 objectForKeyedSubscript:NGMEncryptedAttributeKTGossipData];
+    v18 = [attributesCopy objectForKeyedSubscript:NGMEncryptedAttributeKTGossipData];
 
     if (v18)
     {
-      v19 = [v12 objectForKeyedSubscript:NGMEncryptedAttributeKTGossipData];
+      v19 = [attributesCopy objectForKeyedSubscript:NGMEncryptedAttributeKTGossipData];
       [(NGMPBInnerMessage *)v15 setKtGossipData:v19];
     }
   }
 
   if (v23)
   {
-    [(NGMPBInnerMessage *)v15 setMessage:v11];
-    v20 = [(NGMPBInnerMessage *)v15 data];
+    [(NGMPBInnerMessage *)v15 setMessage:payloadCopy];
+    data = [(NGMPBInnerMessage *)v15 data];
   }
 
   else
   {
-    if (*a7)
+    if (*error)
     {
       v21 = MessageProtectionLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [NGMMessageFormatter formatOutgoingInnerMessageWithPayload:a7 attributes:v21 destinationIdentity:? sendingIdentity:? error:?];
+        [NGMMessageFormatter formatOutgoingInnerMessageWithPayload:error attributes:v21 destinationIdentity:? sendingIdentity:? error:?];
       }
     }
 
     else
     {
-      MPLogAndAssignError(6, a7, @"Error while obtaining counter");
+      MPLogAndAssignError(6, error, @"Error while obtaining counter");
     }
 
-    v20 = 0;
+    data = 0;
   }
 
-  return v20;
+  return data;
 }
 
 + (void)formatOutgoingInnerMessageWithPayload:(id *)a1 attributes:(NSObject *)a2 destinationIdentity:sendingIdentity:error:.cold.1(id *a1, NSObject *a2)

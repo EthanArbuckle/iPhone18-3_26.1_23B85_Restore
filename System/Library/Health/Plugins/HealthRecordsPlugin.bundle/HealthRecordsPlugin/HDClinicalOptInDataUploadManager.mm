@@ -1,32 +1,32 @@
 @interface HDClinicalOptInDataUploadManager
-- (HDClinicalOptInDataUploadManager)initWithProfileExtension:(id)a3;
+- (HDClinicalOptInDataUploadManager)initWithProfileExtension:(id)extension;
 - (HDHealthRecordsProfileExtension)profileExtension;
 - (HDProfile)profile;
 - (void)abortCurrentUploads;
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4;
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4;
-- (void)triggerClinicalOptInDataUploadWithCompletion:(id)a3;
+- (void)performPeriodicActivity:(id)activity completion:(id)completion;
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria;
+- (void)triggerClinicalOptInDataUploadWithCompletion:(id)completion;
 @end
 
 @implementation HDClinicalOptInDataUploadManager
 
-- (HDClinicalOptInDataUploadManager)initWithProfileExtension:(id)a3
+- (HDClinicalOptInDataUploadManager)initWithProfileExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   v20.receiver = self;
   v20.super_class = HDClinicalOptInDataUploadManager;
   v5 = [(HDClinicalOptInDataUploadManager *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profileExtension, v4);
-    v7 = [v4 profile];
-    objc_storeWeak(&v6->_profile, v7);
+    objc_storeWeak(&v5->_profileExtension, extensionCopy);
+    profile = [extensionCopy profile];
+    objc_storeWeak(&v6->_profile, profile);
 
     WeakRetained = objc_loadWeakRetained(&v6->_profileExtension);
-    v9 = [WeakRetained optInStudy];
+    optInStudy = [WeakRetained optInStudy];
     study = v6->_study;
-    v6->_study = v9;
+    v6->_study = optInStudy;
 
     v11 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
@@ -56,17 +56,17 @@
   [v3 makeObjectsPerformSelector:"shouldAbortUpload"];
 }
 
-- (void)triggerClinicalOptInDataUploadWithCompletion:(id)a3
+- (void)triggerClinicalOptInDataUploadWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDClinicalOptInDataUploadManager *)self profileExtension];
-  v6 = [v5 isImproveHealthRecordsDataSubmissionAllowed];
+  completionCopy = completion;
+  profileExtension = [(HDClinicalOptInDataUploadManager *)self profileExtension];
+  isImproveHealthRecordsDataSubmissionAllowed = [profileExtension isImproveHealthRecordsDataSubmissionAllowed];
 
-  if (v6)
+  if (isImproveHealthRecordsDataSubmissionAllowed)
   {
     v7 = [HDClinicalOptInStudyUpload alloc];
-    v8 = [(HDClinicalOptInDataUploadManager *)self study];
-    v9 = [(HDClinicalOptInStudyUpload *)v7 initWithStudy:v8 completion:v4];
+    study = [(HDClinicalOptInDataUploadManager *)self study];
+    v9 = [(HDClinicalOptInStudyUpload *)v7 initWithStudy:study completion:completionCopy];
 
     os_unfair_lock_lock(&self->_uploadsLock);
     [(NSMutableArray *)self->_currentUploads addObject:v9];
@@ -95,18 +95,18 @@
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "%{public}@: opt-in data collection is not enabled by the user", buf, 0xCu);
     }
 
-    (*(v4 + 2))(v4, 1, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0, 0);
   }
 }
 
-- (void)performPeriodicActivity:(id)a3 completion:(id)a4
+- (void)performPeriodicActivity:(id)activity completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 shouldDefer];
+  completionCopy = completion;
+  shouldDefer = [activity shouldDefer];
   _HKInitializeLogging();
   v8 = HKLogHealthRecords;
   v9 = os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (shouldDefer)
   {
     if (v9)
     {
@@ -118,7 +118,7 @@
     }
 
     [(HDClinicalOptInDataUploadManager *)self abortCurrentUploads];
-    v6[2](v6, 3, 0, 0.0);
+    completionCopy[2](completionCopy, 3, 0, 0.0);
   }
 
   else
@@ -137,14 +137,14 @@
     v14[2] = sub_2A7CC;
     v14[3] = &unk_106B90;
     v14[4] = self;
-    v15 = v6;
+    v15 = completionCopy;
     [(HDClinicalOptInDataUploadManager *)self triggerClinicalOptInDataUploadWithCompletion:v14];
   }
 }
 
-- (void)periodicActivity:(id)a3 configureXPCActivityCriteria:(id)a4
+- (void)periodicActivity:(id)activity configureXPCActivityCriteria:(id)criteria
 {
-  xdict = a4;
+  xdict = criteria;
   xpc_dictionary_set_string(xdict, XPC_ACTIVITY_PRIORITY, XPC_ACTIVITY_PRIORITY_UTILITY);
   xpc_dictionary_set_BOOL(xdict, XPC_ACTIVITY_REQUIRE_INEXPENSIVE_NETWORK_CONNECTIVITY, 1);
   xpc_dictionary_set_BOOL(xdict, XPC_ACTIVITY_REQUIRES_CLASS_A, 1);

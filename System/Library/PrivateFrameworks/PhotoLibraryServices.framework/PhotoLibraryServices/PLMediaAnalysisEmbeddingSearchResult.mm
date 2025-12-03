@@ -1,7 +1,7 @@
 @interface PLMediaAnalysisEmbeddingSearchResult
 - (NSNumber)distance;
 - (NSNumber)similarity;
-- (PLMediaAnalysisEmbeddingSearchResult)initWithAssetUUID:(id)a3 metric:(int64_t)a4 metricValue:(id)a5;
+- (PLMediaAnalysisEmbeddingSearchResult)initWithAssetUUID:(id)d metric:(int64_t)metric metricValue:(id)value;
 @end
 
 @implementation PLMediaAnalysisEmbeddingSearchResult
@@ -40,19 +40,19 @@
   return v4;
 }
 
-- (PLMediaAnalysisEmbeddingSearchResult)initWithAssetUUID:(id)a3 metric:(int64_t)a4 metricValue:(id)a5
+- (PLMediaAnalysisEmbeddingSearchResult)initWithAssetUUID:(id)d metric:(int64_t)metric metricValue:(id)value
 {
-  v9 = a3;
-  v10 = a5;
+  dCopy = d;
+  valueCopy = value;
   v14.receiver = self;
   v14.super_class = PLMediaAnalysisEmbeddingSearchResult;
   v11 = [(PLMediaAnalysisEmbeddingSearchResult *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_assetUUID, a3);
-    v12->_metric = a4;
-    objc_storeStrong(&v12->_metricValue, a5);
+    objc_storeStrong(&v11->_assetUUID, d);
+    v12->_metric = metric;
+    objc_storeStrong(&v12->_metricValue, value);
   }
 
   return v12;

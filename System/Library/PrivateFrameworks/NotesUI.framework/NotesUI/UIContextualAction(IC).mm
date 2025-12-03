@@ -14,7 +14,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Delete", @"Delete", 0, 1);
-  v6 = [a1 contextualActionWithTitle:v5 systemImageName:@"trash.fill" style:1 color:0 actionBlock:v4];
+  v6 = [self contextualActionWithTitle:v5 systemImageName:@"trash.fill" style:1 color:0 actionBlock:v4];
 
   return v6;
 }
@@ -23,7 +23,7 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Remove", @"Remove", 0, 1);
-  v6 = [a1 contextualActionWithTitle:v5 systemImageName:@"minus.circle" style:1 color:0 actionBlock:v4];
+  v6 = [self contextualActionWithTitle:v5 systemImageName:@"minus.circle" style:1 color:0 actionBlock:v4];
 
   return v6;
 }
@@ -32,8 +32,8 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Move", @"Move", 0, 1);
-  v6 = [MEMORY[0x1E69DC888] ICMoveActionBackgroundColor];
-  v7 = [a1 contextualActionWithTitle:v5 systemImageName:@"folder.fill" style:0 color:v6 actionBlock:v4];
+  iCMoveActionBackgroundColor = [MEMORY[0x1E69DC888] ICMoveActionBackgroundColor];
+  v7 = [self contextualActionWithTitle:v5 systemImageName:@"folder.fill" style:0 color:iCMoveActionBackgroundColor actionBlock:v4];
 
   return v7;
 }
@@ -53,8 +53,8 @@
     v8 = @"pin.fill";
   }
 
-  v9 = [MEMORY[0x1E69DC888] ICPinActionColor];
-  v10 = [a1 contextualActionWithTitle:v7 systemImageName:v8 style:0 color:v9 actionBlock:v6];
+  iCPinActionColor = [MEMORY[0x1E69DC888] ICPinActionColor];
+  v10 = [self contextualActionWithTitle:v7 systemImageName:v8 style:0 color:iCPinActionColor actionBlock:v6];
 
   return v10;
 }
@@ -63,8 +63,8 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Share", @"Share", 0, 1);
-  v6 = [MEMORY[0x1E69DC888] ICShareActionBackgroundColor];
-  v7 = [a1 contextualActionWithTitle:v5 systemImageName:@"square.and.arrow.up.fill" style:0 color:v6 actionBlock:v4];
+  iCShareActionBackgroundColor = [MEMORY[0x1E69DC888] ICShareActionBackgroundColor];
+  v7 = [self contextualActionWithTitle:v5 systemImageName:@"square.and.arrow.up.fill" style:0 color:iCShareActionBackgroundColor actionBlock:v4];
 
   return v7;
 }
@@ -73,8 +73,8 @@
 {
   v4 = a3;
   v5 = __ICLocalizedFrameworkString_impl(@"Reply", @"Reply", 0, 1);
-  v6 = [MEMORY[0x1E69DC888] ICShareActionBackgroundColor];
-  v7 = [a1 contextualActionWithTitle:v5 systemImageName:@"arrowshape.turn.up.left" style:0 color:v6 actionBlock:v4];
+  iCShareActionBackgroundColor = [MEMORY[0x1E69DC888] ICShareActionBackgroundColor];
+  v7 = [self contextualActionWithTitle:v5 systemImageName:@"arrowshape.turn.up.left" style:0 color:iCShareActionBackgroundColor actionBlock:v4];
 
   return v7;
 }

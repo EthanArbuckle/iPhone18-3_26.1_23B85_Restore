@@ -1,38 +1,38 @@
 @interface SBDashBoardHostableEntityWorkspaceTransitionManager
-- (SBDashBoardHostableEntityWorkspaceTransitionManager)initWithSwitcherViewController:(id)a3;
-- (id)_transactionForRequest:(id)a3;
-- (void)executeTransitionRequest:(id)a3 completion:(id)a4;
+- (SBDashBoardHostableEntityWorkspaceTransitionManager)initWithSwitcherViewController:(id)controller;
+- (id)_transactionForRequest:(id)request;
+- (void)executeTransitionRequest:(id)request completion:(id)completion;
 - (void)interruptCurrentTransitionIfNeeded;
 - (void)invalidate;
-- (void)transactionDidComplete:(id)a3;
+- (void)transactionDidComplete:(id)complete;
 @end
 
 @implementation SBDashBoardHostableEntityWorkspaceTransitionManager
 
-- (SBDashBoardHostableEntityWorkspaceTransitionManager)initWithSwitcherViewController:(id)a3
+- (SBDashBoardHostableEntityWorkspaceTransitionManager)initWithSwitcherViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SBDashBoardHostableEntityWorkspaceTransitionManager;
   v6 = [(SBDashBoardHostableEntityWorkspaceTransitionManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_switcherViewController, a3);
+    objc_storeStrong(&v6->_switcherViewController, controller);
   }
 
   return v7;
 }
 
-- (void)executeTransitionRequest:(id)a3 completion:(id)a4
+- (void)executeTransitionRequest:(id)request completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v17 = [(SBDashBoardHostableEntityWorkspaceTransitionManager *)self _transactionForRequest:v7];
+  completionCopy = completion;
+  requestCopy = request;
+  v17 = [(SBDashBoardHostableEntityWorkspaceTransitionManager *)self _transactionForRequest:requestCopy];
   v8 = [[SBLayoutStateTransitionContext alloc] initWithWorkspaceTransaction:v17];
   v9 = self->_switcherViewController;
   [(SBFluidSwitcherViewController *)v9 layoutStateTransitionCoordinator:0 transitionDidBeginWithTransitionContext:v8];
-  v10 = [(SBFluidSwitcherViewController *)v9 animationControllerForTransitionRequest:v7];
+  v10 = [(SBFluidSwitcherViewController *)v9 animationControllerForTransitionRequest:requestCopy];
 
   [(SBUIAnimationController *)v10 addObserver:self];
   [(SBFluidSwitcherAnimationController *)v10 begin];
@@ -45,14 +45,14 @@
   self->_currentLayoutStateTransitionContext = v8;
   v14 = v8;
 
-  v15 = [v6 copy];
+  v15 = [completionCopy copy];
   currentTransitionCompletionHandler = self->_currentTransitionCompletionHandler;
   self->_currentTransitionCompletionHandler = v15;
 }
 
 - (void)interruptCurrentTransitionIfNeeded
 {
-  v3 = [(SBLayoutStateTransitionContext *)self->_currentLayoutStateTransitionContext workspaceTransaction];
+  workspaceTransaction = [(SBLayoutStateTransitionContext *)self->_currentLayoutStateTransitionContext workspaceTransaction];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -85,12 +85,12 @@
   self->_currentTransitionCompletionHandler = 0;
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
-  v4 = a3;
-  if (self->_currentAnimationController == v4)
+  completeCopy = complete;
+  if (self->_currentAnimationController == completeCopy)
   {
-    v11 = v4;
+    v11 = completeCopy;
     v5 = self->_currentLayoutStateTransitionContext;
     v6 = self->_switcherViewController;
     [(SBFluidSwitcherViewController *)v6 layoutStateTransitionCoordinator:0 transitionWillEndWithTransitionContext:v5];
@@ -111,24 +111,24 @@
     currentTransitionCompletionHandler = self->_currentTransitionCompletionHandler;
     self->_currentTransitionCompletionHandler = 0;
 
-    v4 = v11;
+    completeCopy = v11;
   }
 }
 
-- (id)_transactionForRequest:(id)a3
+- (id)_transactionForRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 applicationContext];
-  v5 = [v4 activatingEntity];
+  requestCopy = request;
+  applicationContext = [requestCopy applicationContext];
+  activatingEntity = [applicationContext activatingEntity];
 
-  v6 = [v5 isHomeScreenEntity];
+  isHomeScreenEntity = [activatingEntity isHomeScreenEntity];
   v7 = off_2783A2CC0;
-  if (!v6)
+  if (!isHomeScreenEntity)
   {
     v7 = off_27839EBC0;
   }
 
-  v8 = [objc_alloc(*v7) initWithTransitionRequest:v3];
+  v8 = [objc_alloc(*v7) initWithTransitionRequest:requestCopy];
 
   return v8;
 }

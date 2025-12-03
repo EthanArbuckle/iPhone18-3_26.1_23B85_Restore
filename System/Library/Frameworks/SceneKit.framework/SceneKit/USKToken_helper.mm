@@ -1,12 +1,12 @@
 @interface USKToken_helper
-+ (id)tokenWithString:(id)a3;
++ (id)tokenWithString:(id)string;
 @end
 
 @implementation USKToken_helper
 
-+ (id)tokenWithString:(id)a3
++ (id)tokenWithString:(id)string
 {
-  v3 = [[USKToken_weak alloc] initWithString:a3];
+  v3 = [[USKToken_weak alloc] initWithString:string];
 
   return v3;
 }

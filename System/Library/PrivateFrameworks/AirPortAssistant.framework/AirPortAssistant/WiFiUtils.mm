@@ -1,33 +1,33 @@
 @interface WiFiUtils
-+ (BOOL)network:(id)a3 shouldBeIgnored:(int)a4;
-+ (BOOL)networkIsApple:(id)a3 productID:(unsigned int *)a4;
-+ (BOOL)networkIsSecure:(id)a3 secMode:(int *)a4 isEnterprise:(BOOL *)a5;
-+ (BOOL)scanInfoIsAirPlayDevice:(id)a3;
-+ (BOOL)scanInfoIsAudioDevice:(id)a3;
-+ (BOOL)scanInfoIsDWDSCapable:(id)a3 isDWDSEnabled:(BOOL *)a4;
-+ (BOOL)scanInfoIsGuestNetwork:(id)a3;
-+ (BOOL)scanInfoIsHomeKitSecureWAC:(id)a3;
-+ (BOOL)scanInfoIsInSoftReset:(id)a3;
-+ (BOOL)scanInfoIsMFIAirPlayDevice:(id)a3;
-+ (BOOL)scanInfoIsSTAOnly:(id)a3;
-+ (BOOL)scanInfoIsUnconfigured:(id)a3;
-+ (BOOL)scanInfoTestBitFromAppleDeviceIE:(id)a3 forType:(int64_t)a4;
-+ (BOOL)stringArray:(id)a3 containsBSSID:(id)a4;
-+ (id)copyFilteredNetworks:(id)a3 ignoreOptions:(int)a4;
-+ (id)getNetworkPassword:(id)a3;
-+ (id)scanInfoAirPortUniqueIdentifier:(id)a3;
-+ (id)scanInfoBSSIDStr:(id)a3;
-+ (id)scanInfoDataFromAppleDeviceIE:(id)a3 forType:(int64_t)a4;
-+ (id)scanInfoDeviceID:(id)a3;
-+ (id)scanInfoStringFromAppleDeviceIE:(id)a3 forType:(int64_t)a4;
++ (BOOL)network:(id)network shouldBeIgnored:(int)ignored;
++ (BOOL)networkIsApple:(id)apple productID:(unsigned int *)d;
++ (BOOL)networkIsSecure:(id)secure secMode:(int *)mode isEnterprise:(BOOL *)enterprise;
++ (BOOL)scanInfoIsAirPlayDevice:(id)device;
++ (BOOL)scanInfoIsAudioDevice:(id)device;
++ (BOOL)scanInfoIsDWDSCapable:(id)capable isDWDSEnabled:(BOOL *)enabled;
++ (BOOL)scanInfoIsGuestNetwork:(id)network;
++ (BOOL)scanInfoIsHomeKitSecureWAC:(id)c;
++ (BOOL)scanInfoIsInSoftReset:(id)reset;
++ (BOOL)scanInfoIsMFIAirPlayDevice:(id)device;
++ (BOOL)scanInfoIsSTAOnly:(id)only;
++ (BOOL)scanInfoIsUnconfigured:(id)unconfigured;
++ (BOOL)scanInfoTestBitFromAppleDeviceIE:(id)e forType:(int64_t)type;
++ (BOOL)stringArray:(id)array containsBSSID:(id)d;
++ (id)copyFilteredNetworks:(id)networks ignoreOptions:(int)options;
++ (id)getNetworkPassword:(id)password;
++ (id)scanInfoAirPortUniqueIdentifier:(id)identifier;
++ (id)scanInfoBSSIDStr:(id)str;
++ (id)scanInfoDataFromAppleDeviceIE:(id)e forType:(int64_t)type;
++ (id)scanInfoDeviceID:(id)d;
++ (id)scanInfoStringFromAppleDeviceIE:(id)e forType:(int64_t)type;
 + (id)sharedInstance;
-+ (int)barsForRSSI:(int)a3;
-+ (int)scanInfoDeviceKind:(id)a3;
-+ (unsigned)scanInfoAppleProductID:(id)a3;
-+ (unsigned)scanInfoSubAppleProductID:(id)a3;
++ (int)barsForRSSI:(int)i;
++ (int)scanInfoDeviceKind:(id)kind;
++ (unsigned)scanInfoAppleProductID:(id)d;
++ (unsigned)scanInfoSubAppleProductID:(id)d;
 + (void)sharedInstanceRelease;
 - (BOOL)getAutoJoinState;
-- (BOOL)isCurrentlyAssociatedToAnInfrastructureNetwork:(BOOL *)a3;
+- (BOOL)isCurrentlyAssociatedToAnInfrastructureNetwork:(BOOL *)network;
 - (BOOL)isJoinInProgress;
 - (BOOL)isScanInProgress;
 - (WiFiUtils)init;
@@ -36,37 +36,37 @@
 - (id)getCurrentAssociationScanInfo;
 - (id)getIfList;
 - (id)getLinkStatus;
-- (id)getNetworkPasswordForNetworkNamed:(id)a3;
-- (id)getPreferredNetworks:(BOOL)a3;
+- (id)getNetworkPasswordForNetworkNamed:(id)named;
+- (id)getPreferredNetworks:(BOOL)networks;
 - (id)mergedScanInfoArray;
-- (id)resetScanInfosOfType:(int)a3;
-- (id)scanInfoForMACAddress:(id)a3;
-- (id)scanInfoForName:(id)a3 wifiType:(int)a4;
-- (id)unconfiguredScanInfosOfType:(int)a3;
+- (id)resetScanInfosOfType:(int)type;
+- (id)scanInfoForMACAddress:(id)address;
+- (id)scanInfoForName:(id)name wifiType:(int)type;
+- (id)unconfiguredScanInfosOfType:(int)type;
 - (id)unmergedScanInfoArray;
 - (id)unmergedScanInfoDict;
-- (int)_asyncWiFiScan:(id)a3 wifiType:(int)a4 merge:(BOOL)a5 maxAge:(unint64_t)a6 isPeriodic:(BOOL)a7;
+- (int)_asyncWiFiScan:(id)scan wifiType:(int)type merge:(BOOL)merge maxAge:(unint64_t)age isPeriodic:(BOOL)periodic;
 - (int)clearScanCacheSync;
 - (int)closeWiFi;
 - (int)disassociateSync;
-- (int)joinNetworkWithNameAsync:(id)a3 password:(id)a4 rememberChoice:(int)a5;
-- (int)joinNetworkWithScanInfoAsync:(id)a3 password:(id)a4 rememberChoice:(int)a5;
-- (int)joinNetworkWithScanInfoSync:(id)a3 password:(id)a4 rememberChoice:(int)a5;
+- (int)joinNetworkWithNameAsync:(id)async password:(id)password rememberChoice:(int)choice;
+- (int)joinNetworkWithScanInfoAsync:(id)async password:(id)password rememberChoice:(int)choice;
+- (int)joinNetworkWithScanInfoSync:(id)sync password:(id)password rememberChoice:(int)choice;
 - (int)openWiFi;
-- (int)setAutoJoinState:(BOOL)a3;
-- (void)activateScanning:(BOOL)a3;
-- (void)asyncWiFiScanThread:(id)a3;
+- (int)setAutoJoinState:(BOOL)state;
+- (void)activateScanning:(BOOL)scanning;
+- (void)asyncWiFiScanThread:(id)thread;
 - (void)cancelAsync;
 - (void)clearScanCache;
 - (void)dealloc;
-- (void)joinNetworkWithNameThread:(id)a3;
-- (void)joinNetworkWithScanInfoThread:(id)a3;
-- (void)mergeScanResults:(id)a3 ageOut:(BOOL)a4;
-- (void)scanTimerCallback:(id)a3;
-- (void)setJoinInProgress:(BOOL)a3;
-- (void)setScanInProgress:(BOOL)a3;
-- (void)setScanOnlyWhenAppActive:(BOOL)a3;
-- (void)setUnmergedScanInfoDict:(id)a3;
+- (void)joinNetworkWithNameThread:(id)thread;
+- (void)joinNetworkWithScanInfoThread:(id)thread;
+- (void)mergeScanResults:(id)results ageOut:(BOOL)out;
+- (void)scanTimerCallback:(id)callback;
+- (void)setJoinInProgress:(BOOL)progress;
+- (void)setScanInProgress:(BOOL)progress;
+- (void)setScanOnlyWhenAppActive:(BOOL)active;
+- (void)setUnmergedScanInfoDict:(id)dict;
 - (void)triggerScan;
 @end
 
@@ -158,33 +158,33 @@
   [(WiFiUtils *)&v10 dealloc];
 }
 
-- (void)setScanOnlyWhenAppActive:(BOOL)a3
+- (void)setScanOnlyWhenAppActive:(BOOL)active
 {
-  if (self->_scanOnlyWhenAppActive != a3)
+  if (self->_scanOnlyWhenAppActive != active)
   {
-    self->_scanOnlyWhenAppActive = a3;
-    if (!a3 && self->_scanningActive)
+    self->_scanOnlyWhenAppActive = active;
+    if (!active && self->_scanningActive)
     {
-      MEMORY[0x2821F9670](self, sel_triggerScan, a3);
+      MEMORY[0x2821F9670](self, sel_triggerScan, active);
     }
   }
 }
 
-- (void)activateScanning:(BOOL)a3
+- (void)activateScanning:(BOOL)scanning
 {
-  v7 = a3;
+  scanningCopy = scanning;
   if (dword_27E381870 <= 800 && (dword_27E381870 != -1 || sub_23EB74AC8(&dword_27E381870, 0x320u)))
   {
-    sub_23EB75374(&dword_27E381870, "[WiFiUtils activateScanning:]", 800, "flag: %d _scanningActive: %d\n", v3, v4, v5, v6, v7);
+    sub_23EB75374(&dword_27E381870, "[WiFiUtils activateScanning:]", 800, "flag: %d _scanningActive: %d\n", v3, v4, v5, v6, scanningCopy);
   }
 
-  if (self->_scanningActive != v7)
+  if (self->_scanningActive != scanningCopy)
   {
-    self->_scanningActive = v7;
-    if (v7)
+    self->_scanningActive = scanningCopy;
+    if (scanningCopy)
     {
 
-      MEMORY[0x2821F9670](self, sel_triggerScan, a3);
+      MEMORY[0x2821F9670](self, sel_triggerScan, scanning);
     }
   }
 }
@@ -294,15 +294,15 @@
   return objc_msgSend_allValues(v4, v10, v11);
 }
 
-- (id)unconfiguredScanInfosOfType:(int)a3
+- (id)unconfiguredScanInfosOfType:(int)type
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v5 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, *&a3);
+  v5 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, *&type);
   v8 = objc_msgSend_unmergedScanInfoArray(self, v6, v7);
   v30 = 0u;
   v31 = 0u;
@@ -326,7 +326,7 @@
         if (objc_msgSend_scanInfoIsUnconfigured_(WiFiUtils, v11, v15))
         {
           v16 = objc_msgSend_scanInfoIs5GHz_(WiFiUtils, v11, v15);
-          if ((((a3 & 2) == 0) & v16) != 0 || ((a3 | v16) & 1) == 0)
+          if ((((type & 2) == 0) & v16) != 0 || ((type | v16) & 1) == 0)
           {
             if (dword_27E381870 <= 800 && (dword_27E381870 != -1 || sub_23EB74AC8(&dword_27E381870, 0x320u)))
             {
@@ -359,15 +359,15 @@
   return v5;
 }
 
-- (id)resetScanInfosOfType:(int)a3
+- (id)resetScanInfosOfType:(int)type
 {
   v35 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!type)
   {
     return 0;
   }
 
-  v5 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, *&a3);
+  v5 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, *&type);
   v8 = objc_msgSend_unmergedScanInfoArray(self, v6, v7);
   v30 = 0u;
   v31 = 0u;
@@ -391,7 +391,7 @@
         if (objc_msgSend_scanInfoIsInSoftReset_(WiFiUtils, v11, v15))
         {
           v16 = objc_msgSend_scanInfoIs5GHz_(WiFiUtils, v11, v15);
-          if ((((a3 & 2) == 0) & v16) != 0 || ((a3 | v16) & 1) == 0)
+          if ((((type & 2) == 0) & v16) != 0 || ((type | v16) & 1) == 0)
           {
             if (dword_27E381870 <= 800 && (dword_27E381870 != -1 || sub_23EB74AC8(&dword_27E381870, 0x320u)))
             {
@@ -424,15 +424,15 @@
   return v5;
 }
 
-- (id)scanInfoForMACAddress:(id)a3
+- (id)scanInfoForMACAddress:(id)address
 {
   v22 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!address)
   {
     return 0;
   }
 
-  if (objc_msgSend_isEqualToString_(a3, a2, @"00:00:00:00:00:00"))
+  if (objc_msgSend_isEqualToString_(address, a2, @"00:00:00:00:00:00"))
   {
     return 0;
   }
@@ -461,7 +461,7 @@ LABEL_5:
 
     v14 = *(*(&v17 + 1) + 8 * v13);
     v15 = objc_msgSend_objectForKey_(v14, v10, @"BSSID");
-    if (sub_23EBAFDF4(a3, v15))
+    if (sub_23EBAFDF4(address, v15))
     {
       return v14;
     }
@@ -480,13 +480,13 @@ LABEL_5:
   }
 }
 
-- (id)scanInfoForName:(id)a3 wifiType:(int)a4
+- (id)scanInfoForName:(id)name wifiType:(int)type
 {
   v4 = 0;
   v23 = *MEMORY[0x277D85DE8];
-  if (a3 && a4)
+  if (name && type)
   {
-    v7 = objc_msgSend_unmergedScanInfoArray(self, a2, a3);
+    v7 = objc_msgSend_unmergedScanInfoArray(self, a2, name);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -507,10 +507,10 @@ LABEL_5:
 
         v4 = *(*(&v18 + 1) + 8 * v13);
         v14 = objc_msgSend_scanInfoIs5GHz_(WiFiUtils, v10, v4);
-        if (((a4 & 2) == 0) & v14) == 0 && ((a4 | v14))
+        if (((type & 2) == 0) & v14) == 0 && ((type | v14))
         {
           v15 = objc_msgSend_objectForKey_(v4, v10, @"SSID_STR");
-          if (objc_msgSend_isEqualToString_(a3, v16, v15))
+          if (objc_msgSend_isEqualToString_(name, v16, v15))
           {
             break;
           }
@@ -539,21 +539,21 @@ LABEL_5:
   return v4;
 }
 
-+ (id)scanInfoBSSIDStr:(id)a3
++ (id)scanInfoBSSIDStr:(id)str
 {
   v9 = 0;
-  if (!a3)
+  if (!str)
   {
     return 0;
   }
 
-  sub_23EB6FF14(a3, &v9, "%kO", v3, v4, v5, v6, v7, @"BSSID");
+  sub_23EB6FF14(str, &v9, "%kO", v3, v4, v5, v6, v7, @"BSSID");
   return v9;
 }
 
-+ (id)scanInfoDeviceID:(id)a3
++ (id)scanInfoDeviceID:(id)d
 {
-  v3 = objc_msgSend_scanInfoDataFromAppleDeviceIE_forType_(WiFiUtils, a2, a3, 7);
+  v3 = objc_msgSend_scanInfoDataFromAppleDeviceIE_forType_(WiFiUtils, a2, d, 7);
   if (v3 && (v6 = v3, objc_msgSend_length(v3, v4, v5) == 6) && (v9 = objc_msgSend_bytes(v6, v7, v8)) != 0)
   {
     return objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"%02x%02x%02x%02x%02x%02x", *v9, v9[1], v9[2], v9[3], v9[4], v9[5]);
@@ -565,22 +565,22 @@ LABEL_5:
   }
 }
 
-+ (id)scanInfoStringFromAppleDeviceIE:(id)a3 forType:(int64_t)a4
++ (id)scanInfoStringFromAppleDeviceIE:(id)e forType:(int64_t)type
 {
-  if (!a3)
+  if (!e)
   {
     return 0;
   }
 
-  v4 = a4;
+  typeCopy = type;
   v13 = 0;
   v14 = 0;
   v11 = 0;
   v12 = 0;
-  Value = CFDictionaryGetValue(a3, @"IE");
+  Value = CFDictionaryGetValue(e, @"IE");
   BytePtr = CFDataGetBytePtr(Value);
   Length = CFDataGetLength(Value);
-  if (sub_23EB78B74(BytePtr, &BytePtr[Length], 10502144, &v12, &v11, 0) || sub_23EB78B04(v12, &v12[v11], v4, &v14, &v13, 0))
+  if (sub_23EB78B74(BytePtr, &BytePtr[Length], 10502144, &v12, &v11, 0) || sub_23EB78B04(v12, &v12[v11], typeCopy, &v14, &v13, 0))
   {
     return 0;
   }
@@ -589,19 +589,19 @@ LABEL_5:
   return objc_msgSend_initWithBytes_length_encoding_(v9, v10, v14, v13, 4);
 }
 
-+ (id)scanInfoDataFromAppleDeviceIE:(id)a3 forType:(int64_t)a4
++ (id)scanInfoDataFromAppleDeviceIE:(id)e forType:(int64_t)type
 {
-  if (!a3)
+  if (!e)
   {
     return 0;
   }
 
-  v4 = a4;
+  typeCopy = type;
   v11 = 0;
   v12 = 0;
   v13 = 0;
   v14 = 0;
-  Value = CFDictionaryGetValue(a3, @"IE");
+  Value = CFDictionaryGetValue(e, @"IE");
   BytePtr = CFDataGetBytePtr(Value);
   Length = CFDataGetLength(Value);
   if (sub_23EB78B74(BytePtr, &BytePtr[Length], 10502144, &v12, &v11, 0))
@@ -614,7 +614,7 @@ LABEL_5:
   {
     if (v11)
     {
-      v10 = sub_23EB78B04(v12, &v12[v11], v4, &v14, &v13, 0);
+      v10 = sub_23EB78B04(v12, &v12[v11], typeCopy, &v14, &v13, 0);
       result = 0;
       if (!v10)
       {
@@ -632,13 +632,13 @@ LABEL_5:
   return result;
 }
 
-+ (id)scanInfoAirPortUniqueIdentifier:(id)a3
++ (id)scanInfoAirPortUniqueIdentifier:(id)identifier
 {
   v8 = 0;
   v6 = 0;
   v7 = 0;
   v5 = 0;
-  if (sub_23EB81F28(a3, &v8, &v6) || sub_23EB78D24(v8, &v8[v6], 1, &v7, &v5, 0))
+  if (sub_23EB81F28(identifier, &v8, &v6) || sub_23EB78D24(v8, &v8[v6], 1, &v7, &v5, 0))
   {
     return 0;
   }
@@ -649,12 +649,12 @@ LABEL_5:
   }
 }
 
-+ (unsigned)scanInfoSubAppleProductID:(id)a3
++ (unsigned)scanInfoSubAppleProductID:(id)d
 {
   v9 = 0;
   v7 = 0;
   v8 = 0;
-  if (!sub_23EB81F28(a3, &v9, &v7) && ((v6 = 0, !sub_23EB78D24(v9, &v9[v7], 2, &v8, &v6, 0)) ? (v3 = v8 == 0) : (v3 = 1), !v3 ? (v4 = v6 == 1) : (v4 = 0), v4))
+  if (!sub_23EB81F28(d, &v9, &v7) && ((v6 = 0, !sub_23EB78D24(v9, &v9[v7], 2, &v8, &v6, 0)) ? (v3 = v8 == 0) : (v3 = 1), !v3 ? (v4 = v6 == 1) : (v4 = 0), v4))
   {
     return *v8;
   }
@@ -665,11 +665,11 @@ LABEL_5:
   }
 }
 
-+ (unsigned)scanInfoAppleProductID:(id)a3
++ (unsigned)scanInfoAppleProductID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    Value = CFDictionaryGetValue(a3, @"IE");
+    Value = CFDictionaryGetValue(d, @"IE");
     if (Value)
     {
       v4 = Value;
@@ -696,24 +696,24 @@ LABEL_5:
   return Value;
 }
 
-+ (int)scanInfoDeviceKind:(id)a3
++ (int)scanInfoDeviceKind:(id)kind
 {
-  if (!a3)
+  if (!kind)
   {
     return 0;
   }
 
-  if (objc_msgSend_scanInfoIsMFIAirPlayDevice_(WiFiUtils, a2, a3))
+  if (objc_msgSend_scanInfoIsMFIAirPlayDevice_(WiFiUtils, a2, kind))
   {
     return 3;
   }
 
-  if ((objc_msgSend_scanInfoSupportsMFIConfigV1_(WiFiUtils, v4, a3) & 1) != 0 || objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, v6, a3) && !objc_msgSend_scanInfoSupportsSecureWAC_(WiFiUtils, v7, a3))
+  if ((objc_msgSend_scanInfoSupportsMFIConfigV1_(WiFiUtils, v4, kind) & 1) != 0 || objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, v6, kind) && !objc_msgSend_scanInfoSupportsSecureWAC_(WiFiUtils, v7, kind))
   {
     return 4;
   }
 
-  if (objc_msgSend_scanInfoIsAirPlayDevice_(WiFiUtils, v7, a3))
+  if (objc_msgSend_scanInfoIsAirPlayDevice_(WiFiUtils, v7, kind))
   {
     return 2;
   }
@@ -721,11 +721,11 @@ LABEL_5:
   return 1;
 }
 
-+ (BOOL)scanInfoIsUnconfigured:(id)a3
++ (BOOL)scanInfoIsUnconfigured:(id)unconfigured
 {
-  if (a3)
+  if (unconfigured)
   {
-    Value = CFDictionaryGetValue(a3, @"IE");
+    Value = CFDictionaryGetValue(unconfigured, @"IE");
     if (Value)
     {
       v5 = Value;
@@ -734,7 +734,7 @@ LABEL_5:
       Length = CFDataGetLength(v5);
       if (sub_23EB78C00(BytePtr, &BytePtr[Length], 0, &v10))
       {
-        LOBYTE(Value) = objc_msgSend_scanInfoTestBitFromAppleDeviceIE_forType_(WiFiUtils, v8, a3, 1);
+        LOBYTE(Value) = objc_msgSend_scanInfoTestBitFromAppleDeviceIE_forType_(WiFiUtils, v8, unconfigured, 1);
       }
 
       else
@@ -752,11 +752,11 @@ LABEL_5:
   return Value;
 }
 
-+ (BOOL)scanInfoIsGuestNetwork:(id)a3
++ (BOOL)scanInfoIsGuestNetwork:(id)network
 {
-  if (a3)
+  if (network)
   {
-    Value = CFDictionaryGetValue(a3, @"IE");
+    Value = CFDictionaryGetValue(network, @"IE");
     if (Value)
     {
       v4 = Value;
@@ -783,11 +783,11 @@ LABEL_5:
   return Value;
 }
 
-+ (BOOL)scanInfoIsAudioDevice:(id)a3
++ (BOOL)scanInfoIsAudioDevice:(id)device
 {
-  if (a3)
+  if (device)
   {
-    Value = CFDictionaryGetValue(a3, @"IE");
+    Value = CFDictionaryGetValue(device, @"IE");
     if (Value)
     {
       v5 = Value;
@@ -796,7 +796,7 @@ LABEL_5:
       Length = CFDataGetLength(v5);
       if (sub_23EB78C00(BytePtr, &BytePtr[Length], 0, &v10))
       {
-        LOBYTE(Value) = objc_msgSend_scanInfoTestBitFromAppleDeviceIE_forType_(WiFiUtils, v8, a3, 0);
+        LOBYTE(Value) = objc_msgSend_scanInfoTestBitFromAppleDeviceIE_forType_(WiFiUtils, v8, device, 0);
       }
 
       else
@@ -814,11 +814,11 @@ LABEL_5:
   return Value;
 }
 
-+ (BOOL)scanInfoIsSTAOnly:(id)a3
++ (BOOL)scanInfoIsSTAOnly:(id)only
 {
-  if (a3)
+  if (only)
   {
-    Value = CFDictionaryGetValue(a3, @"IE");
+    Value = CFDictionaryGetValue(only, @"IE");
     if (Value)
     {
       v5 = Value;
@@ -827,14 +827,14 @@ LABEL_5:
       Length = CFDataGetLength(v5);
       if (sub_23EB78C00(BytePtr, &BytePtr[Length], 0, &v11))
       {
-        if (objc_msgSend_scanInfoSupportsMFIConfigV1_(WiFiUtils, v8, a3))
+        if (objc_msgSend_scanInfoSupportsMFIConfigV1_(WiFiUtils, v8, only))
         {
           LOBYTE(Value) = 1;
         }
 
         else
         {
-          LOBYTE(Value) = objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, v9, a3);
+          LOBYTE(Value) = objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, v9, only);
         }
       }
 
@@ -853,47 +853,47 @@ LABEL_5:
   return Value;
 }
 
-+ (BOOL)scanInfoIsMFIAirPlayDevice:(id)a3
++ (BOOL)scanInfoIsMFIAirPlayDevice:(id)device
 {
-  v4 = objc_msgSend_scanInfoSupportsMFIConfigV1_(WiFiUtils, a2, a3);
+  v4 = objc_msgSend_scanInfoSupportsMFIConfigV1_(WiFiUtils, a2, device);
   if (v4)
   {
 
-    LOBYTE(v4) = objc_msgSend_scanInfoIsAirPlayDevice_(WiFiUtils, v5, a3);
+    LOBYTE(v4) = objc_msgSend_scanInfoIsAirPlayDevice_(WiFiUtils, v5, device);
   }
 
   return v4;
 }
 
-+ (BOOL)scanInfoIsHomeKitSecureWAC:(id)a3
++ (BOOL)scanInfoIsHomeKitSecureWAC:(id)c
 {
-  v4 = objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, a2, a3);
+  v4 = objc_msgSend_scanInfoSupportsSpruce_(WiFiUtils, a2, c);
   if (v4)
   {
 
-    LOBYTE(v4) = objc_msgSend_scanInfoSupportsSecureWAC_(WiFiUtils, v5, a3);
+    LOBYTE(v4) = objc_msgSend_scanInfoSupportsSecureWAC_(WiFiUtils, v5, c);
   }
 
   return v4;
 }
 
-+ (BOOL)scanInfoIsAirPlayDevice:(id)a3
++ (BOOL)scanInfoIsAirPlayDevice:(id)device
 {
-  IsSTAOnly = objc_msgSend_scanInfoIsSTAOnly_(WiFiUtils, a2, a3);
+  IsSTAOnly = objc_msgSend_scanInfoIsSTAOnly_(WiFiUtils, a2, device);
   if (IsSTAOnly)
   {
 
-    LOBYTE(IsSTAOnly) = MEMORY[0x2821F9670](WiFiUtils, sel_scanInfoIsAudioDevice_, a3);
+    LOBYTE(IsSTAOnly) = MEMORY[0x2821F9670](WiFiUtils, sel_scanInfoIsAudioDevice_, device);
   }
 
   return IsSTAOnly;
 }
 
-+ (BOOL)scanInfoTestBitFromAppleDeviceIE:(id)a3 forType:(int64_t)a4
++ (BOOL)scanInfoTestBitFromAppleDeviceIE:(id)e forType:(int64_t)type
 {
-  if (a3)
+  if (e)
   {
-    Value = CFDictionaryGetValue(a3, @"IE");
+    Value = CFDictionaryGetValue(e, @"IE");
     if (Value)
     {
       v6 = Value;
@@ -902,14 +902,14 @@ LABEL_5:
       v11 = 0;
       BytePtr = CFDataGetBytePtr(Value);
       Length = CFDataGetLength(v6);
-      if (sub_23EB78B74(BytePtr, &BytePtr[Length], 10502144, &v13, &v11, 0) || (v9 = v11, v11 = 0, sub_23EB78B04(v13, &v13[v9], 0, &v12, &v11, 0)) || a4 >= (8 * v11))
+      if (sub_23EB78B74(BytePtr, &BytePtr[Length], 10502144, &v13, &v11, 0) || (v9 = v11, v11 = 0, sub_23EB78B04(v13, &v13[v9], 0, &v12, &v11, 0)) || type >= (8 * v11))
       {
         LOBYTE(Value) = 0;
       }
 
       else
       {
-        LODWORD(Value) = (v12[a4 / 8] >> (~a4 & 7)) & 1;
+        LODWORD(Value) = (v12[type / 8] >> (~type & 7)) & 1;
       }
     }
   }
@@ -922,11 +922,11 @@ LABEL_5:
   return Value;
 }
 
-+ (BOOL)scanInfoIsInSoftReset:(id)a3
++ (BOOL)scanInfoIsInSoftReset:(id)reset
 {
-  if (a3)
+  if (reset)
   {
-    Value = CFDictionaryGetValue(a3, @"IE");
+    Value = CFDictionaryGetValue(reset, @"IE");
     if (Value)
     {
       v4 = Value;
@@ -953,22 +953,22 @@ LABEL_5:
   return Value;
 }
 
-+ (BOOL)scanInfoIsDWDSCapable:(id)a3 isDWDSEnabled:(BOOL *)a4
++ (BOOL)scanInfoIsDWDSCapable:(id)capable isDWDSEnabled:(BOOL *)enabled
 {
-  if (!a3)
+  if (!capable)
   {
     return 0;
   }
 
-  v11 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, a3);
+  v11 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, capable);
   result = 0;
   v13 = v11 > 3 || v11 == 2;
   if (v13 && v11 != 102)
   {
-    if (a4)
+    if (enabled)
     {
       v17 = 0;
-      sub_23EB6FF14(a3, &v17, "%kO.%kO:int", v6, v7, v8, v9, v10, @"DWDS_IE");
+      sub_23EB6FF14(capable, &v17, "%kO.%kO:int", v6, v7, v8, v9, v10, @"DWDS_IE");
       if (v14)
       {
         v15 = 1;
@@ -980,7 +980,7 @@ LABEL_5:
       }
 
       v16 = !v15;
-      *a4 = v16;
+      *enabled = v16;
     }
 
     return 1;
@@ -989,10 +989,10 @@ LABEL_5:
   return result;
 }
 
-- (int)joinNetworkWithScanInfoAsync:(id)a3 password:(id)a4 rememberChoice:(int)a5
+- (int)joinNetworkWithScanInfoAsync:(id)async password:(id)password rememberChoice:(int)choice
 {
   v32 = 0;
-  if (!a3)
+  if (!async)
   {
     v11 = -6705;
 LABEL_7:
@@ -1000,7 +1000,7 @@ LABEL_7:
     return v11;
   }
 
-  if (!objc_msgSend_airPortIsOn(self, a2, a3))
+  if (!objc_msgSend_airPortIsOn(self, a2, async))
   {
     v11 = -6735;
     goto LABEL_7;
@@ -1011,25 +1011,25 @@ LABEL_7:
     return -6721;
   }
 
-  if (objc_msgSend_length(a4, v9, v10))
+  if (objc_msgSend_length(password, v9, v10))
   {
-    v14 = a4;
+    passwordCopy = password;
   }
 
   else
   {
-    v14 = 0;
+    passwordCopy = 0;
   }
 
-  if (!v14 && objc_msgSend_networkIsSecure_secMode_isEnterprise_(WiFiUtils, v13, a3, 0, &v32) && v32 != 1)
+  if (!passwordCopy && objc_msgSend_networkIsSecure_secMode_isEnterprise_(WiFiUtils, v13, async, 0, &v32) && v32 != 1)
   {
     v11 = -16;
     goto LABEL_7;
   }
 
   v15 = MEMORY[0x277CBEAC0];
-  objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v13, a5);
-  v17 = objc_msgSend_dictionaryWithObjectsAndKeys_(v15, v16, a3);
+  objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v13, choice);
+  v17 = objc_msgSend_dictionaryWithObjectsAndKeys_(v15, v16, async);
   if (!v17)
   {
     v11 = -6728;
@@ -1046,13 +1046,13 @@ LABEL_7:
   }
 
   v30 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v24, v25);
-  objc_msgSend_postNotificationNameOnMainThread_object_userInfo_waitUntilDone_(v30, v31, @"com.apple.WiFiUtils.Join.Start", self, a3, 0);
+  objc_msgSend_postNotificationNameOnMainThread_object_userInfo_waitUntilDone_(v30, v31, @"com.apple.WiFiUtils.Join.Start", self, async, 0);
   return 0;
 }
 
-- (int)joinNetworkWithNameAsync:(id)a3 password:(id)a4 rememberChoice:(int)a5
+- (int)joinNetworkWithNameAsync:(id)async password:(id)password rememberChoice:(int)choice
 {
-  if (!a3)
+  if (!async)
   {
     v9 = -6705;
 LABEL_7:
@@ -1060,7 +1060,7 @@ LABEL_7:
     return v9;
   }
 
-  if (!objc_msgSend_airPortIsOn(self, a2, a3))
+  if (!objc_msgSend_airPortIsOn(self, a2, async))
   {
     v9 = -6735;
     goto LABEL_7;
@@ -1072,8 +1072,8 @@ LABEL_7:
   }
 
   v11 = MEMORY[0x277CBEAC0];
-  objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v8, a5);
-  v13 = objc_msgSend_dictionaryWithObjectsAndKeys_(v11, v12, a3);
+  objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v8, choice);
+  v13 = objc_msgSend_dictionaryWithObjectsAndKeys_(v11, v12, async);
   if (!v13)
   {
     v9 = -6728;
@@ -1245,12 +1245,12 @@ LABEL_5:
   return result;
 }
 
-- (int)setAutoJoinState:(BOOL)a3
+- (int)setAutoJoinState:(BOOL)state
 {
   wifiShim = self->_wifiShim;
   if (wifiShim)
   {
-    return sub_23EC0B530(wifiShim, a3, a3, v3, v4, v5, v6, v7);
+    return sub_23EC0B530(wifiShim, state, state, v3, v4, v5, v6, v7);
   }
 
   else
@@ -1279,35 +1279,35 @@ LABEL_5:
   return wifiShim;
 }
 
-+ (id)getNetworkPassword:(id)a3
++ (id)getNetworkPassword:(id)password
 {
   v10 = 0;
-  if (!a3)
+  if (!password)
   {
     return 0;
   }
 
-  sub_23EC0C054(a3, &v10, a3, v3, v4, v5, v6, v7);
+  sub_23EC0C054(password, &v10, password, v3, v4, v5, v6, v7);
   v8 = v10;
   return v10;
 }
 
-- (BOOL)isCurrentlyAssociatedToAnInfrastructureNetwork:(BOOL *)a3
+- (BOOL)isCurrentlyAssociatedToAnInfrastructureNetwork:(BOOL *)network
 {
-  CurrentAssociationInfo = objc_msgSend_getCurrentAssociationInfo(self, a2, a3);
+  CurrentAssociationInfo = objc_msgSend_getCurrentAssociationInfo(self, a2, network);
   if (CurrentAssociationInfo)
   {
     v7 = CurrentAssociationInfo;
     v8 = objc_msgSend_objectForKey_(CurrentAssociationInfo, v6, @"STATE");
     if (objc_msgSend_integerValue(v8, v9, v10) == 4 && (v12 = objc_msgSend_objectForKey_(v7, v11, @"AP_MODE"), objc_msgSend_integerValue(v12, v13, v14) == 2))
     {
-      if (a3)
+      if (network)
       {
-        *a3 = 0;
+        *network = 0;
         CurrentAssociationScanInfo = objc_msgSend_getCurrentAssociationScanInfo(self, v15, v16);
         if (CurrentAssociationScanInfo)
         {
-          *a3 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, v18, CurrentAssociationScanInfo) != 0;
+          *network = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, v18, CurrentAssociationScanInfo) != 0;
         }
       }
 
@@ -1323,40 +1323,40 @@ LABEL_5:
   return CurrentAssociationInfo;
 }
 
-+ (BOOL)networkIsSecure:(id)a3 secMode:(int *)a4 isEnterprise:(BOOL *)a5
++ (BOOL)networkIsSecure:(id)secure secMode:(int *)mode isEnterprise:(BOOL *)enterprise
 {
-  v7 = sub_23EC0A274(a3, a2);
-  if (a4)
+  v7 = sub_23EC0A274(secure, a2);
+  if (mode)
   {
-    *a4 = v7;
+    *mode = v7;
   }
 
-  if (a5)
+  if (enterprise)
   {
-    *a5 = (v7 - 9) < 4;
+    *enterprise = (v7 - 9) < 4;
   }
 
   return v7 != 1;
 }
 
-+ (BOOL)networkIsApple:(id)a3 productID:(unsigned int *)a4
++ (BOOL)networkIsApple:(id)apple productID:(unsigned int *)d
 {
-  v5 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, a3);
-  if (a4)
+  v5 = objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, apple);
+  if (d)
   {
-    *a4 = v5;
+    *d = v5;
   }
 
   return v5 != 0;
 }
 
-- (id)getPreferredNetworks:(BOOL)a3
+- (id)getPreferredNetworks:(BOOL)networks
 {
   v11 = 0;
   result = self->_wifiShim;
   if (result)
   {
-    v9 = sub_23EC0AC78(result, a3, &v11, v3, v4, v5, v6, v7);
+    v9 = sub_23EC0AC78(result, networks, &v11, v3, v4, v5, v6, v7);
     result = v11;
     if (!v9)
     {
@@ -1371,18 +1371,18 @@ LABEL_5:
   return result;
 }
 
-+ (id)copyFilteredNetworks:(id)a3 ignoreOptions:(int)a4
++ (id)copyFilteredNetworks:(id)networks ignoreOptions:(int)options
 {
-  v4 = *&a4;
+  v4 = *&options;
   v20 = *MEMORY[0x277D85DE8];
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a3)
+  if (networks)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v6, &v15, v19, 16);
+    v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(networks, v6, &v15, v19, 16);
     if (v8)
     {
       v10 = v8;
@@ -1393,7 +1393,7 @@ LABEL_5:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(networks);
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
@@ -1403,7 +1403,7 @@ LABEL_5:
           }
         }
 
-        v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v9, &v15, v19, 16);
+        v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(networks, v9, &v15, v19, 16);
       }
 
       while (v10);
@@ -1413,10 +1413,10 @@ LABEL_5:
   return v7;
 }
 
-+ (BOOL)network:(id)a3 shouldBeIgnored:(int)a4
++ (BOOL)network:(id)network shouldBeIgnored:(int)ignored
 {
-  v4 = a4;
-  if ((a4 & 1) != 0 && !objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, a3))
+  ignoredCopy = ignored;
+  if ((ignored & 1) != 0 && !objc_msgSend_scanInfoAppleProductID_(WiFiUtils, a2, network))
   {
     if (dword_27E381870 > 800 || dword_27E381870 == -1 && !sub_23EB74AC8(&dword_27E381870, 0x320u))
     {
@@ -1427,7 +1427,7 @@ LABEL_5:
     goto LABEL_60;
   }
 
-  if ((v4 & 2) != 0 && objc_msgSend_scanInfoIsIBSS_(WiFiUtils, a2, a3))
+  if ((ignoredCopy & 2) != 0 && objc_msgSend_scanInfoIsIBSS_(WiFiUtils, a2, network))
   {
     if (dword_27E381870 > 800 || dword_27E381870 == -1 && !sub_23EB74AC8(&dword_27E381870, 0x320u))
     {
@@ -1436,13 +1436,13 @@ LABEL_5:
 
     v6 = "Ignoring this IBSS network:%@ (%@)\n";
 LABEL_60:
-    v10 = objc_msgSend_objectForKey_(a3, a2, @"SSID_STR");
-    objc_msgSend_objectForKey_(a3, v11, @"BSSID");
+    v10 = objc_msgSend_objectForKey_(network, a2, @"SSID_STR");
+    objc_msgSend_objectForKey_(network, v11, @"BSSID");
     sub_23EB75374(&dword_27E381870, "+[WiFiUtils network:shouldBeIgnored:]", 800, v6, v12, v13, v14, v15, v10);
     return 1;
   }
 
-  if ((v4 & 0x20) != 0 && objc_msgSend_scanInfoIsUnconfigured_(WiFiUtils, a2, a3))
+  if ((ignoredCopy & 0x20) != 0 && objc_msgSend_scanInfoIsUnconfigured_(WiFiUtils, a2, network))
   {
     if (dword_27E381870 > 800 || dword_27E381870 == -1 && !sub_23EB74AC8(&dword_27E381870, 0x320u))
     {
@@ -1453,7 +1453,7 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  if ((v4 & 0x40) != 0 && objc_msgSend_scanInfoIsGuestNetwork_(WiFiUtils, a2, a3))
+  if ((ignoredCopy & 0x40) != 0 && objc_msgSend_scanInfoIsGuestNetwork_(WiFiUtils, a2, network))
   {
     if (dword_27E381870 > 800 || dword_27E381870 == -1 && !sub_23EB74AC8(&dword_27E381870, 0x320u))
     {
@@ -1464,7 +1464,7 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  if ((v4 & 0x80) != 0 && (objc_msgSend_scanInfoIsDWDSCapable_isDWDSEnabled_(WiFiUtils, a2, a3, 0) & 1) == 0)
+  if ((ignoredCopy & 0x80) != 0 && (objc_msgSend_scanInfoIsDWDSCapable_isDWDSEnabled_(WiFiUtils, a2, network, 0) & 1) == 0)
   {
     if (dword_27E381870 > 800 || dword_27E381870 == -1 && !sub_23EB74AC8(&dword_27E381870, 0x320u))
     {
@@ -1475,7 +1475,7 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  if ((v4 & 0x100) != 0 && objc_msgSend_scanInfoIs5GHz_(WiFiUtils, a2, a3))
+  if ((ignoredCopy & 0x100) != 0 && objc_msgSend_scanInfoIs5GHz_(WiFiUtils, a2, network))
   {
     if (dword_27E381870 > 800 || dword_27E381870 == -1 && !sub_23EB74AC8(&dword_27E381870, 0x320u))
     {
@@ -1486,10 +1486,10 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  v7 = sub_23EC0A274(a3, a2);
+  v7 = sub_23EC0A274(network, a2);
   if (v7 == 1)
   {
-    if ((v4 & 0x10) == 0)
+    if ((ignoredCopy & 0x10) == 0)
     {
       return 0;
     }
@@ -1504,7 +1504,7 @@ LABEL_60:
   }
 
   v9 = v7;
-  if ((v4 & 4) != 0 && v7 - 9 <= 3)
+  if ((ignoredCopy & 4) != 0 && v7 - 9 <= 3)
   {
     if (dword_27E381870 > 800 || dword_27E381870 == -1 && !sub_23EB74AC8(&dword_27E381870, 0x320u))
     {
@@ -1515,7 +1515,7 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  if ((v4 & 8) != 0 && v7 <= 0xB && ((1 << v7) & 0xB5C) != 0 || (result = 0, (v4 & 0x200) != 0) && v9 == 13)
+  if ((ignoredCopy & 8) != 0 && v7 <= 0xB && ((1 << v7) & 0xB5C) != 0 || (result = 0, (ignoredCopy & 0x200) != 0) && v9 == 13)
   {
     if (dword_27E381870 > 800 || dword_27E381870 == -1 && !sub_23EB74AC8(&dword_27E381870, 0x320u))
     {
@@ -1529,15 +1529,15 @@ LABEL_60:
   return result;
 }
 
-+ (int)barsForRSSI:(int)a3
++ (int)barsForRSSI:(int)i
 {
-  v3 = a3 - 100;
-  if (a3 < 0)
+  iCopy = i - 100;
+  if (i < 0)
   {
-    v3 = a3;
+    iCopy = i;
   }
 
-  if (v3 < -99)
+  if (iCopy < -99)
   {
     return 0;
   }
@@ -1547,7 +1547,7 @@ LABEL_60:
   {
     result = v5 + 1;
     v6 = dword_23EC21E20[++v5];
-    if (v3 < v6)
+    if (iCopy < v6)
     {
       return result;
     }
@@ -1556,9 +1556,9 @@ LABEL_60:
   return 4;
 }
 
-- (id)getNetworkPasswordForNetworkNamed:(id)a3
+- (id)getNetworkPasswordForNetworkNamed:(id)named
 {
-  v3 = objc_msgSend_scanInfoForName_wifiType_(self, a2, a3, 3);
+  v3 = objc_msgSend_scanInfoForName_wifiType_(self, a2, named, 3);
   result = objc_msgSend_count(v3, v4, v5);
   if (result)
   {
@@ -1569,11 +1569,11 @@ LABEL_60:
   return result;
 }
 
-- (int)_asyncWiFiScan:(id)a3 wifiType:(int)a4 merge:(BOOL)a5 maxAge:(unint64_t)a6 isPeriodic:(BOOL)a7
+- (int)_asyncWiFiScan:(id)scan wifiType:(int)type merge:(BOOL)merge maxAge:(unint64_t)age isPeriodic:(BOOL)periodic
 {
-  v7 = a7;
-  v9 = a5;
-  if (!objc_msgSend_airPortIsOn(self, a2, a3))
+  periodicCopy = periodic;
+  mergeCopy = merge;
+  if (!objc_msgSend_airPortIsOn(self, a2, scan))
   {
     v14 = -6735;
 LABEL_5:
@@ -1584,11 +1584,11 @@ LABEL_5:
   if (!dispatch_semaphore_wait(self->_wifiBusy, 0))
   {
     v16 = MEMORY[0x277CBEAC0];
-    v17 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v13, a4);
-    v19 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v18, v7);
-    v21 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v20, a6);
-    v23 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v22, v9);
-    v25 = objc_msgSend_dictionaryWithObjectsAndKeys_(v16, v24, v17, @"ScanParam_WiFiType", v19, @"ScanParam_IsPeriodic", v21, @"ScanParam_MaxAge", v23, @"ScanParam_MergeResults", a3, @"ScanParam_Name", 0);
+    v17 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v13, type);
+    v19 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v18, periodicCopy);
+    v21 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v20, age);
+    v23 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v22, mergeCopy);
+    v25 = objc_msgSend_dictionaryWithObjectsAndKeys_(v16, v24, v17, @"ScanParam_WiFiType", v19, @"ScanParam_IsPeriodic", v21, @"ScanParam_MaxAge", v23, @"ScanParam_MergeResults", scan, @"ScanParam_Name", 0);
     if (v25)
     {
       v26 = v25;
@@ -1637,11 +1637,11 @@ LABEL_5:
   return result;
 }
 
-- (void)scanTimerCallback:(id)a3
+- (void)scanTimerCallback:(id)callback
 {
   if (self->_scanOnlyWhenAppActive)
   {
-    v5 = objc_msgSend_sharedApplication(MEMORY[0x277D75128], a2, a3);
+    v5 = objc_msgSend_sharedApplication(MEMORY[0x277D75128], a2, callback);
     v8 = objc_msgSend_applicationState(v5, v6, v7) == 0;
   }
 
@@ -1650,7 +1650,7 @@ LABEL_5:
     v8 = 1;
   }
 
-  objc_msgSend_airPortIsOn(self, a2, a3);
+  objc_msgSend_airPortIsOn(self, a2, callback);
   if (self->_scanningActive && v8)
   {
     if (objc_msgSend_airPortIsOn(self, v9, v10))
@@ -1661,7 +1661,7 @@ LABEL_5:
         v21 = MEMORY[0x277CBEAA8];
         objc_msgSend_periodicScanInterval(self, v19, v20);
         v24 = objc_msgSend_dateWithTimeIntervalSinceNow_(v21, v22, v23);
-        objc_msgSend_setFireDate_(a3, v25, v24);
+        objc_msgSend_setFireDate_(callback, v25, v24);
       }
     }
   }
@@ -1669,7 +1669,7 @@ LABEL_5:
   else
   {
     v26 = objc_msgSend_distantFuture(MEMORY[0x277CBEAA8], v9, v10);
-    objc_msgSend_setFireDate_(a3, v27, v26);
+    objc_msgSend_setFireDate_(callback, v27, v26);
     objc_msgSend_activateScanning_(self, v28, 0);
   }
 
@@ -1695,29 +1695,29 @@ LABEL_5:
   }
 }
 
-- (void)setScanInProgress:(BOOL)a3
+- (void)setScanInProgress:(BOOL)progress
 {
   objc_sync_enter(self);
-  self->_scanInProgress = a3;
+  self->_scanInProgress = progress;
 
   objc_sync_exit(self);
 }
 
-- (void)setJoinInProgress:(BOOL)a3
+- (void)setJoinInProgress:(BOOL)progress
 {
   objc_sync_enter(self);
-  self->_joinInProgress = a3;
+  self->_joinInProgress = progress;
 
   objc_sync_exit(self);
 }
 
-- (void)joinNetworkWithScanInfoThread:(id)a3
+- (void)joinNetworkWithScanInfoThread:(id)thread
 {
   v28 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  if (a3 && (v7 = objc_msgSend_objectForKey_(a3, v5, @"JoinParam_ScanInfo")) != 0 && (v8 = v7, (v9 = objc_msgSend_objectForKey_(a3, v5, @"JoinParam_RememberChoice")) != 0))
+  if (thread && (v7 = objc_msgSend_objectForKey_(thread, v5, @"JoinParam_ScanInfo")) != 0 && (v8 = v7, (v9 = objc_msgSend_objectForKey_(thread, v5, @"JoinParam_RememberChoice")) != 0))
   {
     v10 = v9;
-    v11 = objc_msgSend_objectForKey_(a3, v5, @"JoinParam_Password");
+    v11 = objc_msgSend_objectForKey_(thread, v5, @"JoinParam_Password");
     objc_msgSend_setJoinInProgress_(self, v12, 1);
     v15 = objc_msgSend_integerValue(v10, v13, v14);
     v17 = objc_msgSend_joinNetworkWithScanInfoSync_password_rememberChoice_(self, v16, v8, v11, v15);
@@ -1740,13 +1740,13 @@ LABEL_5:
   }
 }
 
-- (void)joinNetworkWithNameThread:(id)a3
+- (void)joinNetworkWithNameThread:(id)thread
 {
   v30 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  if (a3 && (v7 = objc_msgSend_objectForKey_(a3, v5, @"JoinParam_Name")) != 0 && (v8 = v7, (v9 = objc_msgSend_objectForKey_(a3, v5, @"JoinParam_RememberChoice")) != 0))
+  if (thread && (v7 = objc_msgSend_objectForKey_(thread, v5, @"JoinParam_Name")) != 0 && (v8 = v7, (v9 = objc_msgSend_objectForKey_(thread, v5, @"JoinParam_RememberChoice")) != 0))
   {
     v10 = v9;
-    v11 = objc_msgSend_objectForKey_(a3, v5, @"JoinParam_Password");
+    v11 = objc_msgSend_objectForKey_(thread, v5, @"JoinParam_Password");
     objc_msgSend_setJoinInProgress_(self, v12, 1);
     wifiShim = self->_wifiShim;
     v16 = objc_msgSend_integerValue(v10, v14, v15);
@@ -1770,15 +1770,15 @@ LABEL_5:
   }
 }
 
-- (int)joinNetworkWithScanInfoSync:(id)a3 password:(id)a4 rememberChoice:(int)a5
+- (int)joinNetworkWithScanInfoSync:(id)sync password:(id)password rememberChoice:(int)choice
 {
-  v5 = *&a5;
-  if (!objc_msgSend_airPortIsOn(self, a2, a3))
+  v5 = *&choice;
+  if (!objc_msgSend_airPortIsOn(self, a2, sync))
   {
     return -6735;
   }
 
-  if (!a3)
+  if (!sync)
   {
     return -6705;
   }
@@ -1789,22 +1789,22 @@ LABEL_5:
     return -6718;
   }
 
-  return sub_23EC0B188(wifiShim, a3, a4, v5, v9, v10, v11, v12);
+  return sub_23EC0B188(wifiShim, sync, password, v5, v9, v10, v11, v12);
 }
 
-- (void)asyncWiFiScanThread:(id)a3
+- (void)asyncWiFiScanThread:(id)thread
 {
   v7 = objc_alloc_init(MEMORY[0x277CCA8B0]);
   v53 = 0;
   if (self->_wifiShim)
   {
-    if (a3)
+    if (thread)
     {
-      v8 = objc_msgSend_objectForKey_(a3, v5, @"ScanParam_Name");
-      v10 = objc_msgSend_objectForKey_(a3, v9, @"ScanParam_IsPeriodic");
-      v12 = objc_msgSend_objectForKey_(a3, v11, @"ScanParam_WiFiType");
-      v14 = objc_msgSend_objectForKey_(a3, v13, @"ScanParam_MaxAge");
-      v16 = objc_msgSend_objectForKey_(a3, v15, @"ScanParam_MergeResults");
+      v8 = objc_msgSend_objectForKey_(thread, v5, @"ScanParam_Name");
+      v10 = objc_msgSend_objectForKey_(thread, v9, @"ScanParam_IsPeriodic");
+      v12 = objc_msgSend_objectForKey_(thread, v11, @"ScanParam_WiFiType");
+      v14 = objc_msgSend_objectForKey_(thread, v13, @"ScanParam_MaxAge");
+      v16 = objc_msgSend_objectForKey_(thread, v15, @"ScanParam_MergeResults");
       objc_msgSend_setScanInProgress_(self, v17, 1);
       wifiShim = self->_wifiShim;
       if (v12)
@@ -1876,14 +1876,14 @@ LABEL_5:
   }
 }
 
-+ (BOOL)stringArray:(id)a3 containsBSSID:(id)a4
++ (BOOL)stringArray:(id)array containsBSSID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, a2, &v12, v16, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(array, a2, &v12, v16, 16);
   if (v6)
   {
     v7 = v6;
@@ -1895,10 +1895,10 @@ LABEL_5:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
-        if (sub_23EBAFDF4(*(*(&v12 + 1) + 8 * v9), a4))
+        if (sub_23EBAFDF4(*(*(&v12 + 1) + 8 * v9), d))
         {
           LOBYTE(v6) = 1;
           return v6;
@@ -1908,7 +1908,7 @@ LABEL_5:
       }
 
       while (v7 != v9);
-      v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v10, &v12, v16, 16);
+      v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(array, v10, &v12, v16, 16);
       v7 = v6;
       if (v6)
       {
@@ -1922,13 +1922,13 @@ LABEL_5:
   return v6;
 }
 
-- (void)mergeScanResults:(id)a3 ageOut:(BOOL)a4
+- (void)mergeScanResults:(id)results ageOut:(BOOL)out
 {
   v66 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (results)
   {
-    v54 = a4;
-    v6 = objc_msgSend_unmergedScanInfoDict(self, a2, a3);
+    outCopy = out;
+    v6 = objc_msgSend_unmergedScanInfoDict(self, a2, results);
     v9 = objc_msgSend_mutableCopy(v6, v7, v8);
     v10 = MEMORY[0x277CBEB18];
     v55 = v9;
@@ -1938,7 +1938,7 @@ LABEL_5:
     v61 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v16, &v60, v65, 16);
+    v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(results, v16, &v60, v65, 16);
     if (v17)
     {
       v19 = v17;
@@ -1949,7 +1949,7 @@ LABEL_5:
         {
           if (*v61 != v20)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(results);
           }
 
           v22 = *(*(&v60 + 1) + 8 * i);
@@ -1968,13 +1968,13 @@ LABEL_5:
           }
         }
 
-        v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(a3, v18, &v60, v65, 16);
+        v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(results, v18, &v60, v65, 16);
       }
 
       while (v19);
     }
 
-    if (v54)
+    if (outCopy)
     {
       v58 = 0u;
       v59 = 0u;
@@ -2042,14 +2042,14 @@ LABEL_5:
   return v3;
 }
 
-- (void)setUnmergedScanInfoDict:(id)a3
+- (void)setUnmergedScanInfoDict:(id)dict
 {
   objc_sync_enter(self);
-  if (self->_unmergedScanInfoDict != a3)
+  if (self->_unmergedScanInfoDict != dict)
   {
-    v5 = a3;
+    dictCopy = dict;
 
-    self->_unmergedScanInfoDict = a3;
+    self->_unmergedScanInfoDict = dict;
   }
 
   objc_sync_exit(self);

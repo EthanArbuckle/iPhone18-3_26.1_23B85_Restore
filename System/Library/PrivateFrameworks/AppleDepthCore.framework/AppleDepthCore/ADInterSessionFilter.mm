@@ -1,29 +1,29 @@
 @interface ADInterSessionFilter
-- (ADInterSessionFilter)initWithFieldNames:(id)a3 parameters:(id)a4;
-- (BOOL)TtestStepWithCandidate:(unsigned int)a3;
-- (double)L2FromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4 ByElement:(unsigned int)a5 WithMean:(double)a6;
-- (double)LossFromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4;
-- (double)SLFromIndex:(unsigned int)a3;
-- (double)TTESTWithCandidate:(unsigned int)a3 ByElement:(unsigned int)a4;
-- (double)V1FromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4;
-- (double)V2FromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4;
-- (double)samplesMeanFromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4 ByElement:(unsigned int)a5;
-- (double)samplesVarianceFromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4 ByElement:(unsigned int)a5 WithMean:(double)a6;
-- (double)sigmaSWithCandidate:(unsigned int)a3 ByElement:(unsigned int)a4;
+- (ADInterSessionFilter)initWithFieldNames:(id)names parameters:(id)parameters;
+- (BOOL)TtestStepWithCandidate:(unsigned int)candidate;
+- (double)L2FromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex ByElement:(unsigned int)element WithMean:(double)mean;
+- (double)LossFromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex;
+- (double)SLFromIndex:(unsigned int)index;
+- (double)TTESTWithCandidate:(unsigned int)candidate ByElement:(unsigned int)element;
+- (double)V1FromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex;
+- (double)V2FromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex;
+- (double)samplesMeanFromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex ByElement:(unsigned int)element;
+- (double)samplesVarianceFromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex ByElement:(unsigned int)element WithMean:(double)mean;
+- (double)sigmaSWithCandidate:(unsigned int)candidate ByElement:(unsigned int)element;
 - (id).cxx_construct;
 - (id)calculate;
-- (id)calculateInterSessionFilterResultFromIndex:(unsigned int)a3;
-- (id)insertEntryAndCalculate:(id)a3 withWeight:(double)a4;
+- (id)calculateInterSessionFilterResultFromIndex:(unsigned int)index;
+- (id)insertEntryAndCalculate:(id)calculate withWeight:(double)weight;
 - (id)persistenceData;
-- (int64_t)fillWithDictionaryRepresentation:(id)a3;
-- (int64_t)fillWithEntry:(id)a3;
-- (int64_t)insertEntry:(id)a3 withWeight:(double)a4;
-- (int64_t)markOutliers:(unsigned int)a3;
+- (int64_t)fillWithDictionaryRepresentation:(id)representation;
+- (int64_t)fillWithEntry:(id)entry;
+- (int64_t)insertEntry:(id)entry withWeight:(double)weight;
+- (int64_t)markOutliers:(unsigned int)outliers;
 - (unsigned)kIndexCandidate;
 - (unsigned)stepDetection;
 - (void)dealloc;
-- (void)markInStep:(unsigned int)a3;
-- (void)setOnlineWeights:(unsigned int)a3;
+- (void)markInStep:(unsigned int)step;
+- (void)setOnlineWeights:(unsigned int)weights;
 @end
 
 @implementation ADInterSessionFilter
@@ -39,9 +39,9 @@
   return self;
 }
 
-- (BOOL)TtestStepWithCandidate:(unsigned int)a3
+- (BOOL)TtestStepWithCandidate:(unsigned int)candidate
 {
-  v3 = *&a3;
+  v3 = *&candidate;
   v5 = 0.0;
   if ([(NSArray *)self->_elementsNames count])
   {
@@ -62,13 +62,13 @@
   return v5 > v9;
 }
 
-- (double)TTESTWithCandidate:(unsigned int)a3 ByElement:(unsigned int)a4
+- (double)TTESTWithCandidate:(unsigned int)candidate ByElement:(unsigned int)element
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&element;
+  v5 = *&candidate;
   size = self->_nodes.__size_;
-  v8 = size - a3;
-  [(ADInterSessionFilter *)self samplesMeanFromIndex:0 ToIndex:a3 - 1 ByElement:*&a4];
+  v8 = size - candidate;
+  [(ADInterSessionFilter *)self samplesMeanFromIndex:0 ToIndex:candidate - 1 ByElement:*&element];
   v10 = v9;
   [(ADInterSessionFilter *)self samplesMeanFromIndex:v5 ToIndex:(size - 1) ByElement:v4];
   v12 = v10 - v11;
@@ -81,13 +81,13 @@
   return fabs(v12 / (v13 * sqrt(1.0 / v5 + 1.0 / v8)));
 }
 
-- (double)sigmaSWithCandidate:(unsigned int)a3 ByElement:(unsigned int)a4
+- (double)sigmaSWithCandidate:(unsigned int)candidate ByElement:(unsigned int)element
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&element;
+  v5 = *&candidate;
   size = self->_nodes.__size_;
-  v8 = a3 - 1;
-  [(ADInterSessionFilter *)self samplesMeanFromIndex:0 ToIndex:v8 ByElement:*&a4];
+  v8 = candidate - 1;
+  [(ADInterSessionFilter *)self samplesMeanFromIndex:0 ToIndex:v8 ByElement:*&element];
   [(ADInterSessionFilter *)self samplesVarianceFromIndex:0 ToIndex:v8 ByElement:v4 WithMean:?];
   v10 = v9;
   [(ADInterSessionFilter *)self samplesMeanFromIndex:v5 ToIndex:(size - 1) ByElement:v4];
@@ -95,31 +95,31 @@
   return sqrt((v11 * (size + ~v5) + v8 * v10) / (size - 2));
 }
 
-- (double)samplesVarianceFromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4 ByElement:(unsigned int)a5 WithMean:(double)a6
+- (double)samplesVarianceFromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex ByElement:(unsigned int)element WithMean:(double)mean
 {
-  v6 = *&a4;
-  v7 = *&a3;
+  v6 = *&toIndex;
+  v7 = *&index;
   v9 = 0.0;
-  if (a3 <= a4)
+  if (index <= toIndex)
   {
-    v10 = a3;
+    indexCopy = index;
     do
     {
-      v11 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + v10) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + v10) & 0x1FF];
+      v11 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + indexCopy) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + indexCopy) & 0x1FF];
       if (v11)
       {
         v12 = *v11;
-        v13 = *(*(v11 + 2) + 8 * a5);
-        v9 = v9 + v12 * ((*v13 - a6) * (*v13 - a6));
+        v13 = *(*(v11 + 2) + 8 * element);
+        v9 = v9 + v12 * ((*v13 - mean) * (*v13 - mean));
       }
 
-      ++v10;
+      ++indexCopy;
     }
 
-    while (v10 <= a4);
+    while (indexCopy <= toIndex);
   }
 
-  [(ADInterSessionFilter *)self V1FromIndex:*&a3 ToIndex:*&a4, *&a5, a6];
+  [(ADInterSessionFilter *)self V1FromIndex:*&index ToIndex:*&toIndex, *&element, mean];
   v15 = v14;
   [(ADInterSessionFilter *)self V2FromIndex:v7 ToIndex:v6];
   v17 = v15 - v16 / v15;
@@ -131,11 +131,11 @@
   return v9 / v17;
 }
 
-- (double)V2FromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4
+- (double)V2FromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex
 {
-  for (result = 0.0; a3 <= a4; ++a3)
+  for (result = 0.0; index <= toIndex; ++index)
   {
-    v5 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + a3) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + a3) & 0x1FF];
+    v5 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + index) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + index) & 0x1FF];
     if (v5)
     {
       result = result + *v5 * *v5;
@@ -145,11 +145,11 @@
   return result;
 }
 
-- (double)V1FromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4
+- (double)V1FromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex
 {
-  for (result = 0.0; a3 <= a4; ++a3)
+  for (result = 0.0; index <= toIndex; ++index)
   {
-    v5 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + a3) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + a3) & 0x1FF];
+    v5 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + index) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + index) & 0x1FF];
     if (v5)
     {
       result = result + *v5;
@@ -166,20 +166,20 @@
 
 - (unsigned)kIndexCandidate
 {
-  v3 = [(ADInterSessionFilterParameters *)self->_params minStepIndex];
+  minStepIndex = [(ADInterSessionFilterParameters *)self->_params minStepIndex];
   size = self->_nodes.__size_;
   v5 = ~[(ADInterSessionFilterParameters *)self->_params minStepSize]+ size;
-  v6 = [(ADInterSessionFilterParameters *)self->_params minStepIndex];
-  if (v6 <= v5)
+  minStepIndex2 = [(ADInterSessionFilterParameters *)self->_params minStepIndex];
+  if (minStepIndex2 <= v5)
   {
-    v7 = v6;
+    v7 = minStepIndex2;
     v8 = 1.0e20;
     do
     {
       [(ADInterSessionFilter *)self SLFromIndex:v7];
       if (v9 < v8)
       {
-        v3 = v7;
+        minStepIndex = v7;
         v8 = v9;
       }
 
@@ -189,22 +189,22 @@
     while (v7 <= v5);
   }
 
-  return v3;
+  return minStepIndex;
 }
 
-- (double)SLFromIndex:(unsigned int)a3
+- (double)SLFromIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  [(ADInterSessionFilter *)self LossFromIndex:0 ToIndex:a3 - 1];
+  v3 = *&index;
+  [(ADInterSessionFilter *)self LossFromIndex:0 ToIndex:index - 1];
   v6 = v5;
   [(ADInterSessionFilter *)self LossFromIndex:v3 ToIndex:(LODWORD(self->_nodes.__size_) - 1)];
   return v6 + v7;
 }
 
-- (double)LossFromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4
+- (double)LossFromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&toIndex;
+  v5 = *&index;
   v7 = 0.0;
   if ([(NSArray *)self->_elementsNames count])
   {
@@ -222,31 +222,31 @@
   return v7;
 }
 
-- (double)L2FromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4 ByElement:(unsigned int)a5 WithMean:(double)a6
+- (double)L2FromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex ByElement:(unsigned int)element WithMean:(double)mean
 {
-  for (i = 0.0; a3 <= a4; ++a3)
+  for (i = 0.0; index <= toIndex; ++index)
   {
-    v7 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + a3) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + a3) & 0x1FF];
+    v7 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + index) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + index) & 0x1FF];
     if (v7)
     {
       v8 = *v7;
-      v9 = *(*(v7 + 2) + 8 * a5);
-      i = i + v8 * ((*v9 - a6) * (*v9 - a6));
+      v9 = *(*(v7 + 2) + 8 * element);
+      i = i + v8 * ((*v9 - mean) * (*v9 - mean));
     }
   }
 
   return i;
 }
 
-- (double)samplesMeanFromIndex:(unsigned int)a3 ToIndex:(unsigned int)a4 ByElement:(unsigned int)a5
+- (double)samplesMeanFromIndex:(unsigned int)index ToIndex:(unsigned int)toIndex ByElement:(unsigned int)element
 {
   v5 = 0.0;
-  for (i = 0.0; a3 <= a4; ++a3)
+  for (i = 0.0; index <= toIndex; ++index)
   {
-    v7 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + a3) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + a3) & 0x1FF];
+    v7 = (*(self->_nodes.__map_.__begin_ + (((self->_nodes.__start_ + index) >> 6) & 0x3FFFFFFFFFFFFF8)))[(self->_nodes.__start_ + index) & 0x1FF];
     if (v7)
     {
-      i = i + *v7 * **(*(v7 + 2) + 8 * a5);
+      i = i + *v7 * **(*(v7 + 2) + 8 * element);
       v5 = v5 + *v7;
     }
   }
@@ -259,21 +259,21 @@
   return i / v5;
 }
 
-- (id)calculateInterSessionFilterResultFromIndex:(unsigned int)a3
+- (id)calculateInterSessionFilterResultFromIndex:(unsigned int)index
 {
   v5 = [(NSArray *)self->_elementsNames count];
   v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:v5];
   bzero(self->_weightedAverage, 8 * v5);
   bzero(self->_sumOfWeights, 8 * v5);
   size = self->_nodes.__size_;
-  if (size > a3)
+  if (size > index)
   {
-    v8 = a3;
+    indexCopy = index;
     start = self->_nodes.__start_;
     begin = self->_nodes.__map_.__begin_;
     do
     {
-      v11 = (*(begin + (((start + v8) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + v8) & 0x1FF];
+      v11 = (*(begin + (((start + indexCopy) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + indexCopy) & 0x1FF];
       v12 = *(v11 + 2);
       if (v12 != *(v11 + 3))
       {
@@ -293,17 +293,17 @@
           start = self->_nodes.__start_;
           begin = self->_nodes.__map_.__begin_;
           ++v12;
-          v11 = (*(begin + (((start + v8) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + v8) & 0x1FF];
+          v11 = (*(begin + (((start + indexCopy) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + indexCopy) & 0x1FF];
         }
 
         while (v12 != *(v11 + 3));
         size = self->_nodes.__size_;
       }
 
-      v8 = ++a3;
+      indexCopy = ++index;
     }
 
-    while (size > a3);
+    while (size > index);
   }
 
   if (v5)
@@ -319,10 +319,10 @@
   return v6;
 }
 
-- (int64_t)markOutliers:(unsigned int)a3
+- (int64_t)markOutliers:(unsigned int)outliers
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = [(ADInterSessionFilterParameters *)self->_params outlierNumber];
+  outlierNumber = [(ADInterSessionFilterParameters *)self->_params outlierNumber];
   size = self->_nodes.__size_;
   v39 = 0u;
   v40 = 0u;
@@ -332,7 +332,7 @@
   v7 = [(NSArray *)obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v7)
   {
-    v8 = vcvtpd_u64_f64(v5 * (size - a3) / size);
+    v8 = vcvtpd_u64_f64(outlierNumber * (size - outliers) / size);
     v36 = *v40;
     do
     {
@@ -534,17 +534,17 @@
   return 0;
 }
 
-- (void)markInStep:(unsigned int)a3
+- (void)markInStep:(unsigned int)step
 {
   size = self->_nodes.__size_;
-  if (size > a3)
+  if (size > step)
   {
-    v4 = a3;
+    stepCopy = step;
     start = self->_nodes.__start_;
     begin = self->_nodes.__map_.__begin_;
     do
     {
-      v7 = (*(begin + (((start + v4) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + v4) & 0x1FF];
+      v7 = (*(begin + (((start + stepCopy) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + stepCopy) & 0x1FF];
       v8 = *(v7 + 2);
       v9 = *(v7 + 3);
       while (v8 != v9)
@@ -553,19 +553,19 @@
         *(v10 + 17) = 1;
       }
 
-      v4 = ++a3;
+      stepCopy = ++step;
     }
 
-    while (size > a3);
+    while (size > step);
   }
 }
 
 - (unsigned)stepDetection
 {
-  v3 = [(ADInterSessionFilter *)self kIndexCandidate];
-  if ([(ADInterSessionFilter *)self TtestStepWithCandidate:v3])
+  kIndexCandidate = [(ADInterSessionFilter *)self kIndexCandidate];
+  if ([(ADInterSessionFilter *)self TtestStepWithCandidate:kIndexCandidate])
   {
-    return v3;
+    return kIndexCandidate;
   }
 
   else
@@ -574,34 +574,34 @@
   }
 }
 
-- (id)insertEntryAndCalculate:(id)a3 withWeight:(double)a4
+- (id)insertEntryAndCalculate:(id)calculate withWeight:(double)weight
 {
-  v6 = a3;
-  if ([(ADInterSessionFilter *)self insertEntry:v6 withWeight:a4])
+  calculateCopy = calculate;
+  if ([(ADInterSessionFilter *)self insertEntry:calculateCopy withWeight:weight])
   {
-    v7 = 0;
+    calculate = 0;
   }
 
   else
   {
-    v7 = [(ADInterSessionFilter *)self calculate];
+    calculate = [(ADInterSessionFilter *)self calculate];
   }
 
-  return v7;
+  return calculate;
 }
 
-- (void)setOnlineWeights:(unsigned int)a3
+- (void)setOnlineWeights:(unsigned int)weights
 {
   size = self->_nodes.__size_;
-  if (size > a3)
+  if (size > weights)
   {
-    v4 = a3;
-    v6 = a3;
+    weightsCopy = weights;
+    weightsCopy2 = weights;
     start = self->_nodes.__start_;
     begin = self->_nodes.__map_.__begin_;
     do
     {
-      v9 = (*(begin + (((start + v6) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + v6) & 0x1FF];
+      v9 = (*(begin + (((start + weightsCopy2) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + weightsCopy2) & 0x1FF];
       *(v9 + 1) = *v9;
       v10 = *(v9 + 2);
       v11 = *(v9 + 3);
@@ -613,17 +613,17 @@
           start = self->_nodes.__start_;
           size = self->_nodes.__size_;
           begin = self->_nodes.__map_.__begin_;
-          *((*(begin + (((start + v6) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + v6) & 0x1FF] + 1) = v12;
+          *((*(begin + (((start + weightsCopy2) >> 6) & 0x3FFFFFFFFFFFFF8)))[(start + weightsCopy2) & 0x1FF] + 1) = v12;
           break;
         }
 
         v10 += 8;
       }
 
-      v6 = ++v4;
+      weightsCopy2 = ++weightsCopy;
     }
 
-    while (size > v4);
+    while (size > weightsCopy);
   }
 }
 
@@ -634,18 +634,18 @@
   {
     if ([(ADInterSessionFilterParameters *)self->_params isStepDetectionActive])
     {
-      v5 = [(ADInterSessionFilter *)self stepDetection];
+      stepDetection = [(ADInterSessionFilter *)self stepDetection];
     }
 
     else
     {
-      v5 = 0;
+      stepDetection = 0;
     }
 
-    [(ADInterSessionFilter *)self markInStep:v5];
-    [(ADInterSessionFilter *)self markOutliers:v5];
-    [(ADInterSessionFilter *)self setOnlineWeights:v5];
-    v4 = [(ADInterSessionFilter *)self calculateInterSessionFilterResultFromIndex:v5];
+    [(ADInterSessionFilter *)self markInStep:stepDetection];
+    [(ADInterSessionFilter *)self markOutliers:stepDetection];
+    [(ADInterSessionFilter *)self setOnlineWeights:stepDetection];
+    v4 = [(ADInterSessionFilter *)self calculateInterSessionFilterResultFromIndex:stepDetection];
   }
 
   else
@@ -656,10 +656,10 @@
   return v4;
 }
 
-- (int64_t)insertEntry:(id)a3 withWeight:(double)a4
+- (int64_t)insertEntry:(id)entry withWeight:(double)weight
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  entryCopy = entry;
   v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSArray count](self->_elementsNames, "count")}];
   v19 = 0u;
   v20 = 0u;
@@ -686,7 +686,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v17 + 1) + 8 * v9);
-    v11 = [v16 objectForKey:v10];
+    v11 = [entryCopy objectForKey:v10];
     v12 = v11 == 0;
 
     if (v12)
@@ -694,7 +694,7 @@ LABEL_3:
       break;
     }
 
-    v13 = [v16 objectForKeyedSubscript:v10];
+    v13 = [entryCopy objectForKeyedSubscript:v10];
     [v15 setObject:v13 atIndexedSubscript:v7];
 
     ++v7;
@@ -724,7 +724,7 @@ LABEL_3:
   begin = self->_nodes.__map_.__begin_;
   end = self->_nodes.__map_.__end_;
   v23 = &begin[self->_nodes.__start_ >> 9];
-  v24 = self;
+  selfCopy = self;
   if (end == begin)
   {
     v6 = 0;
@@ -744,7 +744,7 @@ LABEL_3:
 
     else
     {
-      v7 = v24->_nodes.__size_ + v24->_nodes.__start_;
+      v7 = selfCopy->_nodes.__size_ + selfCopy->_nodes.__start_;
       v8 = &(*(begin + ((v7 >> 6) & 0x3FFFFFFFFFFFFF8)))[v7 & 0x1FF];
     }
 
@@ -759,7 +759,7 @@ LABEL_3:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = v24->_elementsNames;
+    v11 = selfCopy->_elementsNames;
     v12 = [(NSArray *)v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v12)
     {
@@ -797,8 +797,8 @@ LABEL_3:
       ++v23;
     }
 
-    begin = v24->_nodes.__map_.__begin_;
-    end = v24->_nodes.__map_.__end_;
+    begin = selfCopy->_nodes.__map_.__begin_;
+    end = selfCopy->_nodes.__map_.__end_;
   }
 
   [v21 setObject:v22 forKeyedSubscript:@"nodes"];
@@ -806,14 +806,14 @@ LABEL_3:
   return v21;
 }
 
-- (int64_t)fillWithEntry:(id)a3
+- (int64_t)fillWithEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v5 = -1;
   while (++v5 < [(ADInterSessionFilterParameters *)self->_params capacity])
   {
     [(ADInterSessionFilterParameters *)self->_params maximalWeight];
-    v7 = [(ADInterSessionFilter *)self insertEntry:v4 withWeight:v6];
+    v7 = [(ADInterSessionFilter *)self insertEntry:entryCopy withWeight:v6];
     if (v7)
     {
       goto LABEL_6;
@@ -826,12 +826,12 @@ LABEL_6:
   return v7;
 }
 
-- (int64_t)fillWithDictionaryRepresentation:(id)a3
+- (int64_t)fillWithDictionaryRepresentation:(id)representation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = [v16 objectForKeyedSubscript:@"nodes"];
-  v4 = [v16 objectForKeyedSubscript:@"version"];
+  representationCopy = representation;
+  v17 = [representationCopy objectForKeyedSubscript:@"nodes"];
+  v4 = [representationCopy objectForKeyedSubscript:@"version"];
   if ([v4 unsignedIntValue] != self->_version)
   {
 
@@ -839,9 +839,9 @@ LABEL_6:
   }
 
   v5 = [v17 count];
-  v6 = [(ADInterSessionFilterParameters *)self->_params capacity];
+  capacity = [(ADInterSessionFilterParameters *)self->_params capacity];
 
-  if (v5 != v6)
+  if (v5 != capacity)
   {
 LABEL_14:
     v14 = -22950;
@@ -1053,11 +1053,11 @@ LABEL_29:
   [(ADInterSessionFilter *)&v23 dealloc];
 }
 
-- (ADInterSessionFilter)initWithFieldNames:(id)a3 parameters:(id)a4
+- (ADInterSessionFilter)initWithFieldNames:(id)names parameters:(id)parameters
 {
   v13 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v7 = a4;
+  namesCopy = names;
+  parametersCopy = parameters;
   v12.receiver = self;
   v12.super_class = ADInterSessionFilter;
   v8 = [(ADInterSessionFilter *)&v12 init];
@@ -1065,8 +1065,8 @@ LABEL_29:
   if (v8)
   {
     v8->_version = 1;
-    objc_storeStrong(&v8->_params, a4);
-    objc_storeStrong(&v9->_elementsNames, a3);
+    objc_storeStrong(&v8->_params, parameters);
+    objc_storeStrong(&v9->_elementsNames, names);
     [(NSArray *)v9->_elementsNames count];
     operator new[]();
   }

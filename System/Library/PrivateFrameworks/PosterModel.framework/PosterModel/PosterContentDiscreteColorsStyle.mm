@@ -1,18 +1,18 @@
 @interface PosterContentDiscreteColorsStyle
 - (_TtC11PosterModel32PosterContentDiscreteColorsStyle)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PosterContentDiscreteColorsStyle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11PosterModel32PosterContentDiscreteColorsStyle_isVibrant);
-  v5 = a3;
-  v6 = self;
-  [v5 encodeBool:v4 forKey:@"vibrant"];
-  [v5 encodeBool:*(&v6->super.isa + OBJC_IVAR____TtC11PosterModel32PosterContentDiscreteColorsStyle_allowsVariation) forKey:@"supportsVariation"];
-  [v5 encodeDouble:@"variation" forKey:*(&v6->super.isa + OBJC_IVAR____TtC11PosterModel32PosterContentDiscreteColorsStyle_variation)];
+  coderCopy = coder;
+  selfCopy = self;
+  [coderCopy encodeBool:v4 forKey:@"vibrant"];
+  [coderCopy encodeBool:*(&selfCopy->super.isa + OBJC_IVAR____TtC11PosterModel32PosterContentDiscreteColorsStyle_allowsVariation) forKey:@"supportsVariation"];
+  [coderCopy encodeDouble:@"variation" forKey:*(&selfCopy->super.isa + OBJC_IVAR____TtC11PosterModel32PosterContentDiscreteColorsStyle_variation)];
 }
 
 - (_TtC11PosterModel32PosterContentDiscreteColorsStyle)init

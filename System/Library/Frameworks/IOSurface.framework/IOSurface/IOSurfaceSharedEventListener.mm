@@ -1,12 +1,12 @@
 @interface IOSurfaceSharedEventListener
-- (IOSurfaceSharedEventListener)initWithDispatchQueue:(id)a3;
-- (void)_notifyEventPort:(unsigned int)a3 event:(id)a4 atValue:(unint64_t)a5 block:(id)a6;
+- (IOSurfaceSharedEventListener)initWithDispatchQueue:(id)queue;
+- (void)_notifyEventPort:(unsigned int)port event:(id)event atValue:(unint64_t)value block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation IOSurfaceSharedEventListener
 
-- (IOSurfaceSharedEventListener)initWithDispatchQueue:(id)a3
+- (IOSurfaceSharedEventListener)initWithDispatchQueue:(id)queue
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -17,15 +17,15 @@
     goto LABEL_9;
   }
 
-  if (a3)
+  if (queue)
   {
-    dispatch_retain(a3);
+    dispatch_retain(queue);
   }
 
   else
   {
-    a3 = dispatch_queue_create("IOSurfaceEventNotification", 0);
-    if (!a3)
+    queue = dispatch_queue_create("IOSurfaceEventNotification", 0);
+    if (!queue)
     {
 LABEL_8:
 
@@ -34,7 +34,7 @@ LABEL_8:
     }
   }
 
-  *(v4 + 2) = a3;
+  *(v4 + 2) = queue;
   v5 = IONotificationPortCreate(*MEMORY[0x1E696CD60]);
   *(v4 + 1) = v5;
   if (!v5)
@@ -77,9 +77,9 @@ LABEL_9:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_notifyEventPort:(unsigned int)a3 event:(id)a4 atValue:(unint64_t)a5 block:(id)a6
+- (void)_notifyEventPort:(unsigned int)port event:(id)event atValue:(unint64_t)value block:(id)block
 {
-  v6 = IOSurfaceSharedEventNotifyEventListener(self, a4, a3, a5, a6);
+  v6 = IOSurfaceSharedEventNotifyEventListener(self, event, port, value, block);
   if (v6)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D920] format:{@"Internal error during notification request %08x", v6}];

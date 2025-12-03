@@ -1,10 +1,10 @@
 @interface UIViewAnimationStateAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityAnimationTracker;
-- (void)_accessibilityMarkAnimationNotInProgress:(void *)a1;
-- (void)_accessibilitySetAnimationTracker:(uint64_t)a1;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)_accessibilityMarkAnimationNotInProgress:(void *)progress;
+- (void)_accessibilitySetAnimationTracker:(uint64_t)tracker;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
 @end
 
@@ -12,9 +12,9 @@
 
 - (id)_accessibilityAnimationTracker
 {
-  if (a1)
+  if (self)
   {
-    v2 = objc_getAssociatedObject(a1, &__UIViewAnimationState___accessibilityAnimationTracker);
+    v2 = objc_getAssociatedObject(self, &__UIViewAnimationState___accessibilityAnimationTracker);
   }
 
   else
@@ -25,12 +25,12 @@
   return v2;
 }
 
-- (void)_accessibilitySetAnimationTracker:(uint64_t)a1
+- (void)_accessibilitySetAnimationTracker:(uint64_t)tracker
 {
-  v3 = a1;
+  trackerCopy = tracker;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (trackerCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -38,14 +38,14 @@
   objc_storeStrong(&location, 0);
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UIViewAnimationState";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   [location[0] validateClass:@"UIViewAnimationState" hasInstanceMethod:@"_outerPropertyAnimator:" withFullSignature:{"@", "B", 0}];
@@ -53,14 +53,14 @@
   objc_storeStrong(v5, obj);
 }
 
-- (void)_accessibilityMarkAnimationNotInProgress:(void *)a1
+- (void)_accessibilityMarkAnimationNotInProgress:(void *)progress
 {
-  v3 = a1;
+  progressCopy = progress;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (progressCopy)
   {
-    [v3 _accessibilitySetAnimationsInProgress:0];
+    [progressCopy _accessibilitySetAnimationsInProgress:0];
   }
 
   objc_storeStrong(&location, 0);
@@ -69,10 +69,10 @@
 - (void)dealloc
 {
   v19 = *MEMORY[0x29EDCA608];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   memset(__b, 0, sizeof(__b));
-  obj = [(UIViewAnimationStateAccessibility *)v16 _accessibilityAnimationTracker];
+  obj = [(UIViewAnimationStateAccessibility *)selfCopy _accessibilityAnimationTracker];
   v9 = [obj countByEnumeratingWithState:__b objects:v18 count:16];
   if (v9)
   {
@@ -93,12 +93,12 @@
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
       {
         log = oslog;
-        __os_log_helper_16_0_2_8_0_8_0(v17, v16, v14);
+        __os_log_helper_16_0_2_8_0_8_0(v17, selfCopy, v14);
         _os_log_impl(&dword_29C4D6000, log, type, "Animation tracker missed didStop, removing in dealloc: %p:%p", v17, 0x16u);
       }
 
       objc_storeStrong(&oslog, 0);
-      [(UIViewAnimationStateAccessibility *)v16 _accessibilityMarkAnimationNotInProgress:v14];
+      [(UIViewAnimationStateAccessibility *)selfCopy _accessibilityMarkAnimationNotInProgress:v14];
       ++v6;
       if (v4 + 1 >= v7)
       {
@@ -113,17 +113,17 @@
   }
 
   *&v2 = MEMORY[0x29EDC9740](obj).n128_u64[0];
-  v10.receiver = v16;
+  v10.receiver = selfCopy;
   v10.super_class = UIViewAnimationStateAccessibility;
   [(UIViewAnimationStateAccessibility *)&v10 dealloc];
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
-  v37 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, start);
   v35 = location[0] != 0;
   v33 = 0;
   objc_opt_class();
@@ -139,7 +139,7 @@
   v22 = __55__UIViewAnimationStateAccessibility_animationDidStart___block_invoke;
   v23 = &unk_29F30CC70;
   v24[1] = &v25;
-  v24[0] = MEMORY[0x29EDC9748](v37);
+  v24[0] = MEMORY[0x29EDC9748](selfCopy);
   AXPerformSafeBlock();
   v19 = MEMORY[0x29EDC9748](v26[5]);
   objc_storeStrong(v24, 0);
@@ -173,19 +173,19 @@
 
   if (_AXSAutomationEnabled())
   {
-    v11 = [(UIViewAnimationStateAccessibility *)v37 _accessibilityAnimationTracker];
-    *&v3 = MEMORY[0x29EDC9740](v11).n128_u64[0];
-    if (!v11)
+    _accessibilityAnimationTracker = [(UIViewAnimationStateAccessibility *)selfCopy _accessibilityAnimationTracker];
+    *&v3 = MEMORY[0x29EDC9740](_accessibilityAnimationTracker).n128_u64[0];
+    if (!_accessibilityAnimationTracker)
     {
-      v9 = v37;
+      v9 = selfCopy;
       v10 = [MEMORY[0x29EDB8E20] set];
       [(UIViewAnimationStateAccessibility *)v9 _accessibilitySetAnimationTracker:v10];
       MEMORY[0x29EDC9740](v10);
     }
 
-    v7 = [(UIViewAnimationStateAccessibility *)v37 _accessibilityAnimationTracker];
-    v8 = [v7 containsObject:location[0]];
-    MEMORY[0x29EDC9740](v7);
+    _accessibilityAnimationTracker2 = [(UIViewAnimationStateAccessibility *)selfCopy _accessibilityAnimationTracker];
+    v8 = [_accessibilityAnimationTracker2 containsObject:location[0]];
+    MEMORY[0x29EDC9740](_accessibilityAnimationTracker2);
     if (v8)
     {
       oslog = AXLogUIA();
@@ -203,18 +203,18 @@
 
     if (v35)
     {
-      v4 = [(UIViewAnimationStateAccessibility *)v37 _accessibilityAnimationTracker];
-      [v4 addObject:location[0]];
-      MEMORY[0x29EDC9740](v4);
+      _accessibilityAnimationTracker3 = [(UIViewAnimationStateAccessibility *)selfCopy _accessibilityAnimationTracker];
+      [_accessibilityAnimationTracker3 addObject:location[0]];
+      MEMORY[0x29EDC9740](_accessibilityAnimationTracker3);
     }
   }
 
   if (v35)
   {
-    [(UIViewAnimationStateAccessibility *)v37 _accessibilitySetAnimationsInProgress:1];
+    [(UIViewAnimationStateAccessibility *)selfCopy _accessibilitySetAnimationsInProgress:1];
   }
 
-  v13.receiver = v37;
+  v13.receiver = selfCopy;
   v13.super_class = UIViewAnimationStateAccessibility;
   [(UIViewAnimationStateAccessibility *)&v13 animationDidStart:location[0]];
   objc_storeStrong(&v34, 0);
@@ -231,17 +231,17 @@ double __55__UIViewAnimationStateAccessibility_animationDidStart___block_invoke(
   return result;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v10 = a4;
+  objc_storeStrong(location, stop);
+  finishedCopy = finished;
   v9 = 0;
   if (_AXSAutomationEnabled())
   {
-    v4 = [(UIViewAnimationStateAccessibility *)v12 safeValueForKey:@"_animationID"];
+    v4 = [(UIViewAnimationStateAccessibility *)selfCopy safeValueForKey:@"_animationID"];
     v5 = v9;
     v9 = v4;
     MEMORY[0x29EDC9740](v5);
@@ -249,15 +249,15 @@ double __55__UIViewAnimationStateAccessibility_animationDidStart___block_invoke(
 
   if (location[0])
   {
-    v6 = [(UIViewAnimationStateAccessibility *)v12 _accessibilityAnimationTracker];
-    [v6 removeObject:location[0]];
-    MEMORY[0x29EDC9740](v6);
-    [(UIViewAnimationStateAccessibility *)v12 _accessibilityMarkAnimationNotInProgress:?];
+    _accessibilityAnimationTracker = [(UIViewAnimationStateAccessibility *)selfCopy _accessibilityAnimationTracker];
+    [_accessibilityAnimationTracker removeObject:location[0]];
+    MEMORY[0x29EDC9740](_accessibilityAnimationTracker);
+    [(UIViewAnimationStateAccessibility *)selfCopy _accessibilityMarkAnimationNotInProgress:?];
   }
 
-  v8.receiver = v12;
+  v8.receiver = selfCopy;
   v8.super_class = UIViewAnimationStateAccessibility;
-  [(UIViewAnimationStateAccessibility *)&v8 animationDidStop:location[0] finished:v10];
+  [(UIViewAnimationStateAccessibility *)&v8 animationDidStop:location[0] finished:finishedCopy];
   if (_AXSAutomationEnabled())
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC75D0], v9);

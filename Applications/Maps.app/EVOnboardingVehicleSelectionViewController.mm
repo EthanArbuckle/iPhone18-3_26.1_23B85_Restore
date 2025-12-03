@@ -1,27 +1,27 @@
 @interface EVOnboardingVehicleSelectionViewController
-- (EVOnboardingVehicleSelectionViewController)initWithVehicles:(id)a3 delegate:(id)a4;
+- (EVOnboardingVehicleSelectionViewController)initWithVehicles:(id)vehicles delegate:(id)delegate;
 - (id)_selectedVehicles;
 - (id)obViewController;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_donePressed;
 - (void)_updateNextButton;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation EVOnboardingVehicleSelectionViewController
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[VehicleCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [(NSMutableSet *)self->_selectedIndexPaths containsObject:v6];
+  v10 = [(NSMutableSet *)self->_selectedIndexPaths containsObject:pathCopy];
   vehicles = self->_vehicles;
-  v12 = [v6 row];
+  v12 = [pathCopy row];
 
   v13 = [(NSArray *)vehicles objectAtIndexedSubscript:v12];
   [v9 setupWithVehicle:v13 cellStyle:0 isSelected:v10];
@@ -29,30 +29,30 @@
   return v9;
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[MKMapService sharedService];
   [v8 captureUserAction:447 onTarget:660 eventValue:0];
 
-  [(NSMutableSet *)self->_selectedIndexPaths removeObject:v6];
-  v9 = [v7 cellForRowAtIndexPath:v6];
+  [(NSMutableSet *)self->_selectedIndexPaths removeObject:pathCopy];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v9 setAccessoryType:0];
 
   [(EVOnboardingVehicleSelectionViewController *)self _updateNextButton];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[MKMapService sharedService];
   [v8 captureUserAction:2113 onTarget:660 eventValue:0];
 
-  [(NSMutableSet *)self->_selectedIndexPaths addObject:v6];
-  v9 = [v7 cellForRowAtIndexPath:v6];
+  [(NSMutableSet *)self->_selectedIndexPaths addObject:pathCopy];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v9 setAccessoryType:3];
 
@@ -64,19 +64,19 @@
   v3 = +[MKMapService sharedService];
   [v3 captureUserAction:41 onTarget:660 eventValue:0];
 
-  v4 = [(EVOnboardingVehicleSelectionViewController *)self _selectedVehicles];
+  _selectedVehicles = [(EVOnboardingVehicleSelectionViewController *)self _selectedVehicles];
   v5 = sub_100798370();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = v4;
+    v6 = _selectedVehicles;
     v7 = v6;
     if (v6)
     {
       if ([v6 count])
       {
         v25 = v5;
-        v26 = v4;
-        v27 = self;
+        v26 = _selectedVehicles;
+        selfCopy = self;
         v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
         v28 = 0u;
         v29 = 0u;
@@ -146,8 +146,8 @@ LABEL_21:
             v21 = [v9 componentsJoinedByString:{@", "}];
             v22 = [NSString stringWithFormat:@"<%p> [%@]", v9, v21];
 
-            v4 = v26;
-            self = v27;
+            _selectedVehicles = v26;
+            self = selfCopy;
             v7 = v24;
             v5 = v25;
             goto LABEL_24;
@@ -171,7 +171,7 @@ LABEL_24:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained vehicleSelectionViewController:self didSelectContinueWithVehicles:v4];
+  [WeakRetained vehicleSelectionViewController:self didSelectContinueWithVehicles:_selectedVehicles];
 }
 
 - (void)_updateNextButton
@@ -179,21 +179,21 @@ LABEL_24:
   if (MapsFeature_IsEnabled_EVRoutingEnhancements())
   {
     v3 = [(NSMutableSet *)self->_selectedIndexPaths count]!= 0;
-    v5 = [(EVOnboardingVehicleSelectionViewController *)self navigationItem];
-    v4 = [v5 rightBarButtonItem];
-    [v4 setEnabled:v3];
+    navigationItem = [(EVOnboardingVehicleSelectionViewController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
+    [rightBarButtonItem setEnabled:v3];
   }
 }
 
 - (id)_selectedVehicles
 {
-  v3 = [(NSMutableSet *)self->_selectedIndexPaths allObjects];
+  allObjects = [(NSMutableSet *)self->_selectedIndexPaths allObjects];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100EB05C4;
   v6[3] = &unk_101657A50;
   v6[4] = self;
-  v4 = sub_100021DB0(v3, v6);
+  v4 = sub_100021DB0(allObjects, v6);
 
   return v4;
 }
@@ -208,60 +208,60 @@ LABEL_24:
 
   v7 = [UIImage imageNamed:@"multipleEV"];
   v8 = [[OBTableWelcomeController alloc] initWithTitle:v4 detailText:v6 icon:v7 adoptTableViewScrollView:1];
-  v9 = [v8 view];
-  [v9 setAccessibilityIdentifier:@"EVOnboardingVehicleSelectionView"];
+  view = [v8 view];
+  [view setAccessibilityIdentifier:@"EVOnboardingVehicleSelectionView"];
 
   [v8 setModalPresentationStyle:2];
-  v10 = [v8 headerView];
-  [v10 setAllowFullWidthIcon:1];
+  headerView = [v8 headerView];
+  [headerView setAllowFullWidthIcon:1];
 
   v11 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   [v8 setTableView:v11];
 
-  v12 = [v8 tableView];
-  [v12 setAccessibilityIdentifier:@"EVOnboardingVehicleSelectionTableView"];
+  tableView = [v8 tableView];
+  [tableView setAccessibilityIdentifier:@"EVOnboardingVehicleSelectionTableView"];
 
-  v13 = [v8 tableView];
-  [v13 setAllowsMultipleSelection:1];
+  tableView2 = [v8 tableView];
+  [tableView2 setAllowsMultipleSelection:1];
 
-  v14 = [v8 tableView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView3 = [v8 tableView];
+  [tableView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [v8 tableView];
+  tableView4 = [v8 tableView];
   LODWORD(v16) = 1148846080;
-  [v15 setContentCompressionResistancePriority:1 forAxis:v16];
+  [tableView4 setContentCompressionResistancePriority:1 forAxis:v16];
 
-  v17 = [v8 tableView];
-  [v17 setDataSource:self];
+  tableView5 = [v8 tableView];
+  [tableView5 setDataSource:self];
 
-  v18 = [v8 tableView];
-  [v18 setDelegate:self];
+  tableView6 = [v8 tableView];
+  [tableView6 setDelegate:self];
 
   v19 = +[UIColor clearColor];
-  v20 = [v8 tableView];
-  [v20 setBackgroundColor:v19];
+  tableView7 = [v8 tableView];
+  [tableView7 setBackgroundColor:v19];
 
-  v21 = [v8 tableView];
+  tableView8 = [v8 tableView];
   v22 = objc_opt_class();
   v23 = +[VehicleCell reuseIdentifier];
-  [v21 registerClass:v22 forCellReuseIdentifier:v23];
+  [tableView8 registerClass:v22 forCellReuseIdentifier:v23];
 
   v24 = +[UIColor systemBackgroundColor];
-  v25 = [v8 view];
-  [v25 setBackgroundColor:v24];
+  view2 = [v8 view];
+  [view2 setBackgroundColor:v24];
 
-  v26 = [v8 tableView];
+  tableView9 = [v8 tableView];
   tableView = self->_tableView;
-  self->_tableView = v26;
+  self->_tableView = tableView9;
 
   return v8;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = EVOnboardingVehicleSelectionViewController;
-  [(EVOnboardingVehicleSelectionViewController *)&v13 viewDidAppear:a3];
+  [(EVOnboardingVehicleSelectionViewController *)&v13 viewDidAppear:appear];
   [(UITableView *)self->_tableView setDelegate:self];
   v11 = 0u;
   v12 = 0u;
@@ -295,18 +295,18 @@ LABEL_24:
   }
 }
 
-- (EVOnboardingVehicleSelectionViewController)initWithVehicles:(id)a3 delegate:(id)a4
+- (EVOnboardingVehicleSelectionViewController)initWithVehicles:(id)vehicles delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  vehiclesCopy = vehicles;
+  delegateCopy = delegate;
   v24.receiver = self;
   v24.super_class = EVOnboardingVehicleSelectionViewController;
-  v9 = [(EVOnboardingBaseViewController *)&v24 initWithDelegate:v8];
+  v9 = [(EVOnboardingBaseViewController *)&v24 initWithDelegate:delegateCopy];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v8);
-    objc_storeStrong(&v10->_vehicles, a3);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
+    objc_storeStrong(&v10->_vehicles, vehicles);
     v11 = +[NSMutableSet set];
     selectedIndexPaths = v10->_selectedIndexPaths;
     v10->_selectedIndexPaths = v11;
@@ -332,17 +332,17 @@ LABEL_24:
     if (IsEnabled_EVRoutingEnhancements)
     {
       v19 = +[NSBundle mainBundle];
-      v20 = [v19 localizedStringForKey:@"[EV Onboarding] Next" value:@"localized string not found" table:0];
-      v21 = [v18 initWithTitle:v20 style:2 target:v10 action:"_donePressed"];
-      v22 = [(EVOnboardingVehicleSelectionViewController *)v10 navigationItem];
-      [v22 setRightBarButtonItem:v21];
+      navigationItem2 = [v19 localizedStringForKey:@"[EV Onboarding] Next" value:@"localized string not found" table:0];
+      v21 = [v18 initWithTitle:navigationItem2 style:2 target:v10 action:"_donePressed"];
+      navigationItem = [(EVOnboardingVehicleSelectionViewController *)v10 navigationItem];
+      [navigationItem setRightBarButtonItem:v21];
     }
 
     else
     {
       v19 = [v17 initWithBarButtonSystemItem:0 target:v10 action:"_donePressed"];
-      v20 = [(EVOnboardingVehicleSelectionViewController *)v10 navigationItem];
-      [v20 setRightBarButtonItem:v19];
+      navigationItem2 = [(EVOnboardingVehicleSelectionViewController *)v10 navigationItem];
+      [navigationItem2 setRightBarButtonItem:v19];
     }
   }
 

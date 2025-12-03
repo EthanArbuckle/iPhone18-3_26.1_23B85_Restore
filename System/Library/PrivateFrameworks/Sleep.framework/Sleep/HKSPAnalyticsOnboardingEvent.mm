@@ -1,15 +1,15 @@
 @interface HKSPAnalyticsOnboardingEvent
-- (HKSPAnalyticsOnboardingEvent)initWithOnboardingInfo:(id)a3 provenanceInfo:(id)a4;
+- (HKSPAnalyticsOnboardingEvent)initWithOnboardingInfo:(id)info provenanceInfo:(id)provenanceInfo;
 - (NSString)description;
 @end
 
 @implementation HKSPAnalyticsOnboardingEvent
 
-- (HKSPAnalyticsOnboardingEvent)initWithOnboardingInfo:(id)a3 provenanceInfo:(id)a4
+- (HKSPAnalyticsOnboardingEvent)initWithOnboardingInfo:(id)info provenanceInfo:(id)provenanceInfo
 {
   v33[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  provenanceInfoCopy = provenanceInfo;
   v31.receiver = self;
   v31.super_class = HKSPAnalyticsOnboardingEvent;
   v8 = [(HKSPAnalyticsOnboardingEvent *)&v31 init];
@@ -17,18 +17,18 @@
   if (v8)
   {
     objc_storeStrong(&v8->_eventName, @"com.apple.SleepHealth.OnboardingSteps");
-    v10 = [v6 stepPayloadValue];
-    v11 = [v6 entryPointPayloadValue];
-    v12 = [v6 actionPayloadValue];
-    v13 = [v7 source];
-    v30 = v7;
-    v14 = [v7 presentation];
-    v15 = v12;
+    stepPayloadValue = [infoCopy stepPayloadValue];
+    entryPointPayloadValue = [infoCopy entryPointPayloadValue];
+    actionPayloadValue = [infoCopy actionPayloadValue];
+    source = [provenanceInfoCopy source];
+    v30 = provenanceInfoCopy;
+    presentation = [provenanceInfoCopy presentation];
+    v15 = actionPayloadValue;
     v16 = MEMORY[0x277CBEB38];
-    v17 = v14;
-    v18 = v13;
-    v19 = v11;
-    v20 = v10;
+    v17 = presentation;
+    v18 = source;
+    v19 = entryPointPayloadValue;
+    v20 = stepPayloadValue;
     v21 = [v16 alloc];
     v32[0] = @"step";
     v32[1] = @"entryPoint";
@@ -55,7 +55,7 @@
     v9->_eventPayload = v25;
 
     v27 = v9;
-    v7 = v30;
+    provenanceInfoCopy = v30;
   }
 
   v28 = *MEMORY[0x277D85DE8];

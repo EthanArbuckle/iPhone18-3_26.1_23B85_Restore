@@ -1,14 +1,14 @@
 @interface IQFMapsPersonalizationLookup
-+ (id)_aggregateLifeEvents:(id)a3;
-+ (id)_muidForKnosisAnswer:(id)a3 entityIDToMuid:(id)a4;
-+ (id)_parseECRRankedItem:(id)a3 locationMUIDs:(id)a4;
-+ (id)_parseKnosisAnswer:(id)a3 entityIDToMuid:(id)a4;
++ (id)_aggregateLifeEvents:(id)events;
++ (id)_muidForKnosisAnswer:(id)answer entityIDToMuid:(id)muid;
++ (id)_parseECRRankedItem:(id)item locationMUIDs:(id)ds;
++ (id)_parseKnosisAnswer:(id)answer entityIDToMuid:(id)muid;
 + (id)sharedMapsPersonalizationLookup;
-+ (void)_fetchResultsForEntityIds:(id)a3 knosisServer:(id)a4 completionHandler:(id)a5;
++ (void)_fetchResultsForEntityIds:(id)ids knosisServer:(id)server completionHandler:(id)handler;
 - (IQFMapsPersonalizationLookup)init;
-- (id)eventsAtLocations:(id)a3;
-- (void)_fetchECRResultForLocationMUIDs:(id)a3 completionHandler:(id)a4;
-- (void)eventsAtLocations:(id)a3 completionHandler:(id)a4;
+- (id)eventsAtLocations:(id)locations;
+- (void)_fetchECRResultForLocationMUIDs:(id)ds completionHandler:(id)handler;
+- (void)eventsAtLocations:(id)locations completionHandler:(id)handler;
 - (void)init;
 @end
 
@@ -32,9 +32,9 @@
 
   if (v2->_ecrClient)
   {
-    v6 = [objc_alloc(MEMORY[0x277D1F450]) initWithEntitySubgraphView];
+    initWithEntitySubgraphView = [objc_alloc(MEMORY[0x277D1F450]) initWithEntitySubgraphView];
     knosisServer = v2->_knosisServer;
-    v2->_knosisServer = v6;
+    v2->_knosisServer = initWithEntitySubgraphView;
 
 LABEL_4:
     v8 = v2;
@@ -71,9 +71,9 @@ LABEL_8:
   return v5;
 }
 
-- (id)eventsAtLocations:(id)a3
+- (id)eventsAtLocations:(id)locations
 {
-  v4 = a3;
+  locationsCopy = locations;
   v5 = dispatch_semaphore_create(0);
   v12 = 0;
   v13 = &v12;
@@ -88,7 +88,7 @@ LABEL_8:
   v11 = &v12;
   v6 = v5;
   v10 = v6;
-  [(IQFMapsPersonalizationLookup *)self eventsAtLocations:v4 completionHandler:v9];
+  [(IQFMapsPersonalizationLookup *)self eventsAtLocations:locationsCopy completionHandler:v9];
   dispatch_semaphore_wait(v6, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v13[5];
 
@@ -104,11 +104,11 @@ void __50__IQFMapsPersonalizationLookup_eventsAtLocations___block_invoke(uint64_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)eventsAtLocations:(id)a3 completionHandler:(id)a4
+- (void)eventsAtLocations:(id)locations completionHandler:(id)handler
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  locationsCopy = locations;
+  handlerCopy = handler;
   v8 = IQFLogCategoryDefault();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -120,7 +120,7 @@ void __50__IQFMapsPersonalizationLookup_eventsAtLocations___block_invoke(uint64_
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v6;
+  v10 = locationsCopy;
   v11 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v11)
   {
@@ -136,8 +136,8 @@ void __50__IQFMapsPersonalizationLookup_eventsAtLocations___block_invoke(uint64_
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v32 + 1) + 8 * v14) muid];
-        [v9 addObject:v15];
+        muid = [*(*(&v32 + 1) + 8 * v14) muid];
+        [v9 addObject:muid];
 
         ++v14;
       }
@@ -159,20 +159,20 @@ void __50__IQFMapsPersonalizationLookup_eventsAtLocations___block_invoke(uint64_
     _os_signpost_emit_with_name_impl(&dword_254B9D000, v19, OS_SIGNPOST_INTERVAL_BEGIN, v17, "ecrCallForLocations", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v20 = [v9 allObjects];
+  allObjects = [v9 allObjects];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __68__IQFMapsPersonalizationLookup_eventsAtLocations_completionHandler___block_invoke;
   v25[3] = &unk_2797ACDF0;
-  v29 = v7;
+  v29 = handlerCopy;
   v30 = v17;
   v26 = v19;
   v27 = v9;
-  v28 = self;
+  selfCopy = self;
   v21 = v9;
-  v22 = v7;
+  v22 = handlerCopy;
   v23 = v19;
-  [(IQFMapsPersonalizationLookup *)self _fetchECRResultForLocationMUIDs:v20 completionHandler:v25];
+  [(IQFMapsPersonalizationLookup *)self _fetchECRResultForLocationMUIDs:allObjects completionHandler:v25];
 
   v24 = *MEMORY[0x277D85DE8];
 }
@@ -340,10 +340,10 @@ void __68__IQFMapsPersonalizationLookup_eventsAtLocations_completionHandler___bl
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)_fetchECRResultForLocationMUIDs:(id)a3 completionHandler:(id)a4
+- (void)_fetchECRResultForLocationMUIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 componentsJoinedByString:{@", "}];
+  handlerCopy = handler;
+  v7 = [ds componentsJoinedByString:{@", "}];
   v8 = IQFLogCategoryDefault();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -360,20 +360,20 @@ void __68__IQFMapsPersonalizationLookup_eventsAtLocations_completionHandler___bl
     [IQFMapsPersonalizationLookup _fetchECRResultForLocationMUIDs:completionHandler:];
   }
 
-  [(GDEntityResolutionInProcessTextClient *)self->_ecrClient resolveEntitiesForRequest:v11 completionHandler:v6];
+  [(GDEntityResolutionInProcessTextClient *)self->_ecrClient resolveEntitiesForRequest:v11 completionHandler:handlerCopy];
 }
 
-+ (void)_fetchResultsForEntityIds:(id)a3 knosisServer:(id)a4 completionHandler:(id)a5
++ (void)_fetchResultsForEntityIds:(id)ids knosisServer:(id)server completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 allKeys];
-  if ([v11 count])
+  idsCopy = ids;
+  serverCopy = server;
+  handlerCopy = handler;
+  allKeys = [idsCopy allKeys];
+  if ([allKeys count])
   {
     v12 = objc_alloc(MEMORY[0x277D1F440]);
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v11 componentsJoinedByString:{@", "}];
+    v14 = [allKeys componentsJoinedByString:{@", "}];
     v15 = [v13 stringWithFormat:@"searchEntityByLocation([%@])", v14];
     v16 = [v12 initWithKGQ:v15 query:&stru_286709E90 limit:&unk_28670A840 offset:&unk_28670A858];
 
@@ -381,16 +381,16 @@ void __68__IQFMapsPersonalizationLookup_eventsAtLocations_completionHandler___bl
     v18[1] = 3221225472;
     v18[2] = __89__IQFMapsPersonalizationLookup__fetchResultsForEntityIds_knosisServer_completionHandler___block_invoke;
     v18[3] = &unk_2797ACE18;
-    v20 = v10;
-    v21 = a1;
-    v19 = v8;
-    [v9 executeKGQ:v16 completionHandler:v18];
+    v20 = handlerCopy;
+    selfCopy = self;
+    v19 = idsCopy;
+    [serverCopy executeKGQ:v16 completionHandler:v18];
   }
 
   else
   {
     v17 = objc_opt_new();
-    (*(v10 + 2))(v10, v17);
+    (*(handlerCopy + 2))(handlerCopy, v17);
   }
 }
 
@@ -464,14 +464,14 @@ void __89__IQFMapsPersonalizationLookup__fetchResultsForEntityIds_knosisServer_c
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_parseECRRankedItem:(id)a3 locationMUIDs:(id)a4
++ (id)_parseECRRankedItem:(id)item locationMUIDs:(id)ds
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 sourceID];
-  v8 = [v7 value];
+  itemCopy = item;
+  dsCopy = ds;
+  sourceID = [itemCopy sourceID];
+  value = [sourceID value];
 
-  if ([v8 length] && (objc_msgSend(v6, "containsObject:", v8) & 1) != 0)
+  if ([value length] && (objc_msgSend(dsCopy, "containsObject:", value) & 1) != 0)
   {
     v9 = IQFLogCategoryDefault();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -479,12 +479,12 @@ void __89__IQFMapsPersonalizationLookup__fetchResultsForEntityIds_knosisServer_c
       +[IQFMapsPersonalizationLookup _parseECRRankedItem:locationMUIDs:];
     }
 
-    v10 = [v5 features];
-    v11 = [v10 locationLastExecutionAge];
+    features = [itemCopy features];
+    locationLastExecutionAge = [features locationLastExecutionAge];
 
-    if (v11)
+    if (locationLastExecutionAge)
     {
-      [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-v11];
+      [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-locationLastExecutionAge];
     }
 
     else
@@ -494,17 +494,17 @@ void __89__IQFMapsPersonalizationLookup__fetchResultsForEntityIds_knosisServer_c
     v12 = ;
     v14 = [IQFMapsPersonalizationResult alloc];
     v15 = MEMORY[0x277CCABB0];
-    v16 = [v5 features];
-    [v16 locationTrendingPopularity];
+    features2 = [itemCopy features];
+    [features2 locationTrendingPopularity];
     v17 = [v15 numberWithDouble:?];
     v18 = MEMORY[0x277CCABB0];
-    v19 = [v5 features];
-    [v19 locationPopularityGivenSpecificGeoHash];
+    features3 = [itemCopy features];
+    [features3 locationPopularityGivenSpecificGeoHash];
     v20 = [v18 numberWithDouble:?];
     v21 = MEMORY[0x277CCABB0];
-    [v5 entityRelevance];
+    [itemCopy entityRelevance];
     v22 = [v21 numberWithDouble:?];
-    v13 = [(IQFMapsPersonalizationResult *)v14 initWithMUID:v8 resultType:10 eventName:0 startEventDate:0 endEventDate:0 terminal:0 flightCode:0 ticketNumber:0 numberOfVisits:v17 numberOfVisitsGivenLocation:v20 dateOfLastVisit:v12 entityRelevanceScore:v22 numberOfGuests:0];
+    v13 = [(IQFMapsPersonalizationResult *)v14 initWithMUID:value resultType:10 eventName:0 startEventDate:0 endEventDate:0 terminal:0 flightCode:0 ticketNumber:0 numberOfVisits:v17 numberOfVisitsGivenLocation:v20 dateOfLastVisit:v12 entityRelevanceScore:v22 numberOfGuests:0];
 
     v23 = IQFLogCategoryDefault();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
@@ -527,26 +527,26 @@ void __89__IQFMapsPersonalizationLookup__fetchResultsForEntityIds_knosisServer_c
   return v13;
 }
 
-+ (id)_parseKnosisAnswer:(id)a3 entityIDToMuid:(id)a4
++ (id)_parseKnosisAnswer:(id)answer entityIDToMuid:(id)muid
 {
   v89 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _muidForKnosisAnswer:v6 entityIDToMuid:v7];
+  answerCopy = answer;
+  muidCopy = muid;
+  v8 = [self _muidForKnosisAnswer:answerCopy entityIDToMuid:muidCopy];
   if (!v8)
   {
     v61 = 0;
     goto LABEL_67;
   }
 
-  v65 = v7;
+  v65 = muidCopy;
   v66 = v8;
   v84 = 0u;
   v85 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v9 = [v6 facts];
-  v10 = [v9 countByEnumeratingWithState:&v82 objects:v88 count:16];
+  facts = [answerCopy facts];
+  v10 = [facts countByEnumeratingWithState:&v82 objects:v88 count:16];
   if (!v10)
   {
 
@@ -570,7 +570,7 @@ LABEL_63:
   v12 = 0;
   v13 = 0;
   v70 = *v83;
-  v67 = v9;
+  v67 = facts;
   do
   {
     v14 = 0;
@@ -579,30 +579,30 @@ LABEL_63:
     {
       if (*v83 != v70)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(facts);
       }
 
       v71 = v14;
       v15 = *(*(&v82 + 1) + 8 * v14);
-      v16 = [v15 predicateId];
-      if ([v16 isEqualToString:@"PS33"])
+      predicateId = [v15 predicateId];
+      if ([predicateId isEqualToString:@"PS33"])
       {
-        v17 = [v15 objectID];
+        objectID = [v15 objectID];
 
-        v13 = v17;
+        v13 = objectID;
         goto LABEL_36;
       }
 
-      v18 = v16;
-      if ([v16 isEqualToString:@"nm_hasDate"])
+      v18 = predicateId;
+      if ([predicateId isEqualToString:@"nm_hasDate"])
       {
         v69 = v13;
         v80 = 0u;
         v81 = 0u;
         v78 = 0u;
         v79 = 0u;
-        v19 = [v15 qualifiers];
-        v20 = [v19 countByEnumeratingWithState:&v78 objects:v87 count:16];
+        qualifiers = [v15 qualifiers];
+        v20 = [qualifiers countByEnumeratingWithState:&v78 objects:v87 count:16];
         if (!v20)
         {
           goto LABEL_35;
@@ -616,18 +616,18 @@ LABEL_63:
           {
             if (*v79 != v22)
             {
-              objc_enumerationMutation(v19);
+              objc_enumerationMutation(qualifiers);
             }
 
             v24 = *(*(&v78 + 1) + 8 * i);
-            v25 = [v24 predicateId];
-            v26 = [v25 isEqualToString:@"nm_imputedStartTime"];
+            predicateId2 = [v24 predicateId];
+            v26 = [predicateId2 isEqualToString:@"nm_imputedStartTime"];
 
             if (v26)
             {
               v27 = MEMORY[0x277CBEAA8];
-              v28 = [v24 objectID];
-              [v28 doubleValue];
+              objectID2 = [v24 objectID];
+              [objectID2 doubleValue];
               v29 = [v27 dateWithTimeIntervalSinceReferenceDate:?];
               v30 = v12;
               v12 = v29;
@@ -635,8 +635,8 @@ LABEL_63:
 
             else
             {
-              v31 = [v24 predicateId];
-              v32 = [v31 isEqualToString:@"nm_imputedEndTime"];
+              predicateId3 = [v24 predicateId];
+              v32 = [predicateId3 isEqualToString:@"nm_imputedEndTime"];
 
               if (!v32)
               {
@@ -644,18 +644,18 @@ LABEL_63:
               }
 
               v33 = MEMORY[0x277CBEAA8];
-              v28 = [v24 objectID];
-              [v28 doubleValue];
+              objectID2 = [v24 objectID];
+              [objectID2 doubleValue];
               v34 = [v33 dateWithTimeIntervalSinceReferenceDate:?];
               v30 = v72;
               v72 = v34;
             }
 
 LABEL_20:
-            v16 = v18;
+            predicateId = v18;
           }
 
-          v21 = [v19 countByEnumeratingWithState:&v78 objects:v87 count:16];
+          v21 = [qualifiers countByEnumeratingWithState:&v78 objects:v87 count:16];
           if (!v21)
           {
             goto LABEL_35;
@@ -663,15 +663,15 @@ LABEL_20:
         }
       }
 
-      if ([v16 isEqualToString:@"PS72"])
+      if ([predicateId isEqualToString:@"PS72"])
       {
         v69 = v13;
         v76 = 0u;
         v77 = 0u;
         v74 = 0u;
         v75 = 0u;
-        v19 = [v15 qualifiers];
-        v35 = [v19 countByEnumeratingWithState:&v74 objects:v86 count:16];
+        qualifiers = [v15 qualifiers];
+        v35 = [qualifiers countByEnumeratingWithState:&v74 objects:v86 count:16];
         if (v35)
         {
           v36 = v35;
@@ -682,17 +682,17 @@ LABEL_20:
             {
               if (*v75 != v37)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(qualifiers);
               }
 
               v39 = *(*(&v74 + 1) + 8 * j);
-              v40 = [v39 predicateId];
-              v41 = [v40 isEqualToString:@"PS396"];
+              predicateId4 = [v39 predicateId];
+              v41 = [predicateId4 isEqualToString:@"PS396"];
 
               if (v41)
               {
-                v42 = [v39 objectID];
-                v43 = [v42 isEqual:@"EKCalendarItemIdentifier"];
+                objectID3 = [v39 objectID];
+                v43 = [objectID3 isEqual:@"EKCalendarItemIdentifier"];
 
                 v44 = v73;
                 if (v43)
@@ -703,10 +703,10 @@ LABEL_20:
                 v73 = v44;
               }
 
-              v16 = v18;
+              predicateId = v18;
             }
 
-            v36 = [v19 countByEnumeratingWithState:&v74 objects:v86 count:16];
+            v36 = [qualifiers countByEnumeratingWithState:&v74 objects:v86 count:16];
           }
 
           while (v36);
@@ -716,20 +716,20 @@ LABEL_35:
 
         v11 = v68;
         v13 = v69;
-        v9 = v67;
+        facts = v67;
       }
 
       else
       {
-        if (![v16 isEqual:@"nm_sgEventType"])
+        if (![predicateId isEqual:@"nm_sgEventType"])
         {
-          if (![v16 isEqualToString:@"PS1"])
+          if (![predicateId isEqualToString:@"PS1"])
           {
             goto LABEL_36;
           }
 
-          v48 = [v15 objectID];
-          v49 = [v48 isEqualToString:@"SB764"];
+          objectID4 = [v15 objectID];
+          v49 = [objectID4 isEqualToString:@"SB764"];
 
           v47 = v73;
           if (v49)
@@ -740,8 +740,8 @@ LABEL_35:
           goto LABEL_49;
         }
 
-        v45 = [v15 objectID];
-        v46 = [v45 isEqualToString:@"FlightReservation"];
+        objectID5 = [v15 objectID];
+        v46 = [objectID5 isEqualToString:@"FlightReservation"];
 
         if (v46)
         {
@@ -751,8 +751,8 @@ LABEL_49:
           goto LABEL_36;
         }
 
-        v50 = [v15 objectID];
-        v51 = [v50 isEqualToString:@"FoodEstablishmentReservation"];
+        objectID6 = [v15 objectID];
+        v51 = [objectID6 isEqualToString:@"FoodEstablishmentReservation"];
 
         if (v51)
         {
@@ -760,8 +760,8 @@ LABEL_49:
           goto LABEL_49;
         }
 
-        v52 = [v15 objectID];
-        v53 = [v52 isEqualToString:@"LodgingReservation"];
+        objectID7 = [v15 objectID];
+        v53 = [objectID7 isEqualToString:@"LodgingReservation"];
 
         if (v53)
         {
@@ -769,8 +769,8 @@ LABEL_49:
           goto LABEL_49;
         }
 
-        v54 = [v15 objectID];
-        v55 = [v54 isEqualToString:@"RentalCarReservation"];
+        objectID8 = [v15 objectID];
+        v55 = [objectID8 isEqualToString:@"RentalCarReservation"];
 
         v56 = v73;
         if (v55)
@@ -787,7 +787,7 @@ LABEL_36:
     }
 
     while (v71 + 1 != v11);
-    v57 = [v9 countByEnumeratingWithState:&v82 objects:v88 count:16];
+    v57 = [facts countByEnumeratingWithState:&v82 objects:v88 count:16];
     v11 = v57;
   }
 
@@ -824,7 +824,7 @@ LABEL_65:
   v61 = [[IQFMapsPersonalizationResult alloc] initWithMUID:v66 resultType:v73 eventName:v13 startEventDate:v12 endEventDate:v72 terminal:0 flightCode:0 ticketNumber:0 numberOfVisits:0 numberOfVisitsGivenLocation:0 dateOfLastVisit:0 entityRelevanceScore:&unk_28670A858 numberOfGuests:0];
 LABEL_66:
 
-  v7 = v65;
+  muidCopy = v65;
   v8 = v66;
 LABEL_67:
 
@@ -833,10 +833,10 @@ LABEL_67:
   return v61;
 }
 
-+ (id)_aggregateLifeEvents:(id)a3
++ (id)_aggregateLifeEvents:(id)events
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  eventsCopy = events;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v32 = objc_opt_new();
@@ -844,7 +844,7 @@ LABEL_67:
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v6 = [obj countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v6)
   {
@@ -862,8 +862,8 @@ LABEL_67:
         v10 = *(*(&v37 + 1) + 8 * i);
         if ([v10 resultType] == 1)
         {
-          v11 = [v10 muid];
-          v12 = [v4 objectForKeyedSubscript:v11];
+          muid = [v10 muid];
+          v12 = [v4 objectForKeyedSubscript:muid];
           if (v12)
           {
             v13 = v12;
@@ -875,18 +875,18 @@ LABEL_67:
             v14 = &unk_28670A870;
           }
 
-          [v4 setValue:v14 forKey:v11];
-          v15 = [v5 objectForKeyedSubscript:v11];
-          v16 = [v10 endEventDate];
-          v17 = v16;
+          [v4 setValue:v14 forKey:muid];
+          v15 = [v5 objectForKeyedSubscript:muid];
+          endEventDate = [v10 endEventDate];
+          v17 = endEventDate;
           if (v15)
           {
-            v18 = [v16 laterDate:v15];
+            v18 = [endEventDate laterDate:v15];
 
             v17 = v18;
           }
 
-          [v5 setValue:v17 forKey:v11];
+          [v5 setValue:v17 forKey:muid];
         }
 
         else
@@ -905,8 +905,8 @@ LABEL_67:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v30 = [v4 allKeys];
-  v19 = [v30 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  allKeys = [v4 allKeys];
+  v19 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v19)
   {
     v20 = v19;
@@ -917,7 +917,7 @@ LABEL_67:
       {
         if (*v34 != v21)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(allKeys);
         }
 
         v23 = *(*(&v33 + 1) + 8 * j);
@@ -929,7 +929,7 @@ LABEL_67:
         [v32 addObject:v27];
       }
 
-      v20 = [v30 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v20 = [allKeys countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v20);
@@ -940,21 +940,21 @@ LABEL_67:
   return v32;
 }
 
-+ (id)_muidForKnosisAnswer:(id)a3 entityIDToMuid:(id)a4
++ (id)_muidForKnosisAnswer:(id)answer entityIDToMuid:(id)muid
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  muidCopy = muid;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = [a3 parents];
-  v7 = [v6 countByEnumeratingWithState:&v43 objects:v49 count:16];
+  parents = [answer parents];
+  v7 = [parents countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v44;
-    v32 = v6;
+    v32 = parents;
     v28 = *v44;
     do
     {
@@ -962,7 +962,7 @@ LABEL_67:
       {
         if (*v44 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(parents);
         }
 
         v11 = *(*(&v43 + 1) + 8 * i);
@@ -970,14 +970,14 @@ LABEL_67:
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v12 = [v11 facts];
-        v33 = [v12 countByEnumeratingWithState:&v39 objects:v48 count:16];
+        facts = [v11 facts];
+        v33 = [facts countByEnumeratingWithState:&v39 objects:v48 count:16];
         if (v33)
         {
           v13 = *v40;
           v29 = i;
           v30 = v8;
-          v34 = v12;
+          v34 = facts;
           v31 = *v40;
           do
           {
@@ -985,7 +985,7 @@ LABEL_67:
             {
               if (*v40 != v13)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(facts);
               }
 
               v15 = *(*(&v39 + 1) + 8 * j);
@@ -993,8 +993,8 @@ LABEL_67:
               v36 = 0u;
               v37 = 0u;
               v38 = 0u;
-              v16 = [v15 qualifiers];
-              v17 = [v16 countByEnumeratingWithState:&v35 objects:v47 count:16];
+              qualifiers = [v15 qualifiers];
+              v17 = [qualifiers countByEnumeratingWithState:&v35 objects:v47 count:16];
               if (v17)
               {
                 v18 = v17;
@@ -1005,28 +1005,28 @@ LABEL_67:
                   {
                     if (*v36 != v19)
                     {
-                      objc_enumerationMutation(v16);
+                      objc_enumerationMutation(qualifiers);
                     }
 
                     v21 = *(*(&v35 + 1) + 8 * k);
-                    v22 = [v21 predicateId];
-                    v23 = [v22 isEqual:@"PS107"];
+                    predicateId = [v21 predicateId];
+                    v23 = [predicateId isEqual:@"PS107"];
 
                     if (v23)
                     {
-                      v24 = [v21 objectID];
-                      v25 = [v5 objectForKey:v24];
+                      objectID = [v21 objectID];
+                      v25 = [muidCopy objectForKey:objectID];
 
                       if (v25)
                       {
 
-                        v6 = v32;
+                        parents = v32;
                         goto LABEL_27;
                       }
                     }
                   }
 
-                  v18 = [v16 countByEnumeratingWithState:&v35 objects:v47 count:16];
+                  v18 = [qualifiers countByEnumeratingWithState:&v35 objects:v47 count:16];
                   if (v18)
                   {
                     continue;
@@ -1036,11 +1036,11 @@ LABEL_67:
                 }
               }
 
-              v12 = v34;
+              facts = v34;
               v13 = v31;
             }
 
-            v6 = v32;
+            parents = v32;
             v9 = v28;
             i = v29;
             v8 = v30;
@@ -1051,7 +1051,7 @@ LABEL_67:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v43 objects:v49 count:16];
+      v8 = [parents countByEnumeratingWithState:&v43 objects:v49 count:16];
       v25 = 0;
     }
 

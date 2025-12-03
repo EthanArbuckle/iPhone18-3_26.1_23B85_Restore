@@ -3,11 +3,11 @@
 + (id)remoteInterface;
 - (SPBeaconScanningSession)init;
 - (SPBeaconScanningXPCProtocol)proxy;
-- (void)discoveredObject:(id)a3;
-- (void)discoveryFinished:(id)a3 completion:(id)a4;
-- (void)interruptionHandler:(id)a3;
-- (void)invalidationHandler:(id)a3;
-- (void)startScanningIncludeServiceCharacteristics:(BOOL)a3;
+- (void)discoveredObject:(id)object;
+- (void)discoveryFinished:(id)finished completion:(id)completion;
+- (void)interruptionHandler:(id)handler;
+- (void)invalidationHandler:(id)handler;
+- (void)startScanningIncludeServiceCharacteristics:(BOOL)characteristics;
 - (void)stopScanning;
 @end
 
@@ -55,29 +55,29 @@
   return v2;
 }
 
-- (void)interruptionHandler:(id)a3
+- (void)interruptionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPBeaconScanningSession: interruptionHandler %@", buf, 0xCu);
   }
 
-  v6 = [(SPBeaconScanningSession *)self sessionInvalidatedCallback];
+  sessionInvalidatedCallback = [(SPBeaconScanningSession *)self sessionInvalidatedCallback];
 
-  if (v6)
+  if (sessionInvalidatedCallback)
   {
-    v7 = [(SPBeaconScanningSession *)self callbackQueue];
+    callbackQueue = [(SPBeaconScanningSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SPBeaconScanningSession_interruptionHandler___block_invoke;
     block[3] = &unk_279B58AE8;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(callbackQueue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -89,30 +89,30 @@ void __47__SPBeaconScanningSession_interruptionHandler___block_invoke(uint64_t a
   v1[2]();
 }
 
-- (void)invalidationHandler:(id)a3
+- (void)invalidationHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = LogCategory_AccessoryDiscovery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = handlerCopy;
     _os_log_impl(&dword_2643D0000, v5, OS_LOG_TYPE_DEFAULT, "SPBeaconScanningSession: invalidationHandler %@", buf, 0xCu);
   }
 
   [(SPBeaconScanningSession *)self setSession:0];
-  v6 = [(SPBeaconScanningSession *)self sessionInvalidatedCallback];
+  sessionInvalidatedCallback = [(SPBeaconScanningSession *)self sessionInvalidatedCallback];
 
-  if (v6)
+  if (sessionInvalidatedCallback)
   {
-    v7 = [(SPBeaconScanningSession *)self callbackQueue];
+    callbackQueue = [(SPBeaconScanningSession *)self callbackQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __47__SPBeaconScanningSession_invalidationHandler___block_invoke;
     block[3] = &unk_279B58AE8;
     block[4] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(callbackQueue, block);
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -127,38 +127,38 @@ void __47__SPBeaconScanningSession_invalidationHandler___block_invoke(uint64_t a
 - (SPBeaconScanningXPCProtocol)proxy
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(SPBeaconScanningSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(SPBeaconScanningSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(SPBeaconScanningSession *)self session];
+  session = [(SPBeaconScanningSession *)self session];
 
-  if (!v4)
+  if (!session)
   {
     v5 = objc_alloc(MEMORY[0x277D07BA8]);
-    v6 = [(SPBeaconScanningSession *)self serviceDescription];
-    v7 = [v5 initWithServiceDescription:v6];
+    serviceDescription = [(SPBeaconScanningSession *)self serviceDescription];
+    v7 = [v5 initWithServiceDescription:serviceDescription];
     [(SPBeaconScanningSession *)self setSession:v7];
 
     v8 = LogCategory_AccessoryDiscovery();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(SPBeaconScanningSession *)self serviceDescription];
-      v10 = [v9 machService];
+      serviceDescription2 = [(SPBeaconScanningSession *)self serviceDescription];
+      machService = [serviceDescription2 machService];
       v16 = 138412290;
-      v17 = v10;
+      v17 = machService;
       _os_log_impl(&dword_2643D0000, v8, OS_LOG_TYPE_DEFAULT, "SPBeaconScanningSession: Establishing XPC connection to %@", &v16, 0xCu);
     }
 
-    v11 = [(SPBeaconScanningSession *)self session];
-    [v11 resume];
+    session2 = [(SPBeaconScanningSession *)self session];
+    [session2 resume];
   }
 
-  v12 = [(SPBeaconScanningSession *)self session];
-  v13 = [v12 proxy];
+  session3 = [(SPBeaconScanningSession *)self session];
+  proxy = [session3 proxy];
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return proxy;
 }
 
 + (id)exportedInterface
@@ -199,13 +199,13 @@ uint64_t __42__SPBeaconScanningSession_remoteInterface__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)startScanningIncludeServiceCharacteristics:(BOOL)a3
+- (void)startScanningIncludeServiceCharacteristics:(BOOL)characteristics
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __70__SPBeaconScanningSession_startScanningIncludeServiceCharacteristics___block_invoke;
   v3[3] = &unk_279B58CC0;
-  v4 = a3;
+  characteristicsCopy = characteristics;
   v3[4] = self;
   _os_activity_initiate(&dword_2643D0000, "SPBeaconScanningSession.startScanningIncludeServiceCharacteristics", OS_ACTIVITY_FLAG_DEFAULT, v3);
 }
@@ -314,31 +314,31 @@ void __39__SPBeaconScanningSession_stopScanning__block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (void)discoveredObject:(id)a3
+- (void)discoveredObject:(id)object
 {
-  v6 = a3;
-  v4 = [(SPBeaconScanningSession *)self beaconDiscoveredCallback];
+  objectCopy = object;
+  beaconDiscoveredCallback = [(SPBeaconScanningSession *)self beaconDiscoveredCallback];
 
-  if (v4)
+  if (beaconDiscoveredCallback)
   {
-    v5 = [(SPBeaconScanningSession *)self beaconDiscoveredCallback];
-    (v5)[2](v5, v6);
+    beaconDiscoveredCallback2 = [(SPBeaconScanningSession *)self beaconDiscoveredCallback];
+    (beaconDiscoveredCallback2)[2](beaconDiscoveredCallback2, objectCopy);
   }
 }
 
-- (void)discoveryFinished:(id)a3 completion:(id)a4
+- (void)discoveryFinished:(id)finished completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(SPBeaconScanningSession *)self discoveryFinishedCallback];
+  finishedCopy = finished;
+  completionCopy = completion;
+  discoveryFinishedCallback = [(SPBeaconScanningSession *)self discoveryFinishedCallback];
 
-  if (v7)
+  if (discoveryFinishedCallback)
   {
-    v8 = [(SPBeaconScanningSession *)self discoveryFinishedCallback];
-    (v8)[2](v8, v9);
+    discoveryFinishedCallback2 = [(SPBeaconScanningSession *)self discoveryFinishedCallback];
+    (discoveryFinishedCallback2)[2](discoveryFinishedCallback2, finishedCopy);
   }
 
-  v6[2](v6);
+  completionCopy[2](completionCopy);
 }
 
 void __70__SPBeaconScanningSession_startScanningIncludeServiceCharacteristics___block_invoke_2_cold_1(uint64_t a1, NSObject *a2)

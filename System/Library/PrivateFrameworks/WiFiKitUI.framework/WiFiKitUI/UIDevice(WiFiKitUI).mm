@@ -6,8 +6,8 @@
 
 + (BOOL)currentIsIPad
 {
-  v0 = [MEMORY[0x277D75418] currentDevice];
-  v1 = [v0 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v1 = [currentDevice userInterfaceIdiom] == 1;
 
   return v1;
 }

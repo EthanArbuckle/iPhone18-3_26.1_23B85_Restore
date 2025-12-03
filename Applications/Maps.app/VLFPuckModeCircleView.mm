@@ -1,17 +1,17 @@
 @interface VLFPuckModeCircleView
 - (BOOL)isVisible;
-- (VLFPuckModeCircleView)initWithFrame:(CGRect)a3;
+- (VLFPuckModeCircleView)initWithFrame:(CGRect)frame;
 - (id)pulseAnimation;
 - (void)dealloc;
 - (void)hide;
-- (void)hideWithDuration:(double)a3 startingOpacity:(double)a4 shouldShrink:(BOOL)a5 suppressOtherAnimations:(BOOL)a6;
+- (void)hideWithDuration:(double)duration startingOpacity:(double)opacity shouldShrink:(BOOL)shrink suppressOtherAnimations:(BOOL)animations;
 - (void)pulseOnce;
 - (void)setupConstraints;
 - (void)show;
-- (void)showWithDuration:(double)a3 startingOpacity:(double)a4 shouldGrow:(BOOL)a5 suppressOtherAnimations:(BOOL)a6;
+- (void)showWithDuration:(double)duration startingOpacity:(double)opacity shouldGrow:(BOOL)grow suppressOtherAnimations:(BOOL)animations;
 - (void)startPulsing;
 - (void)stopPulsing;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateShadowForCurrentTraitCollection;
 @end
 
@@ -19,57 +19,57 @@
 
 - (void)updateShadowForCurrentTraitCollection
 {
-  v3 = [(VLFPuckModeCircleView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(VLFPuckModeCircleView *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 <= 2)
+  if (userInterfaceStyle <= 2)
   {
-    v5 = dword_101215C00[v4];
-    v7 = [(VLFPuckModeCircleView *)self layer];
+    v5 = dword_101215C00[userInterfaceStyle];
+    layer = [(VLFPuckModeCircleView *)self layer];
     LODWORD(v6) = v5;
-    [v7 setShadowOpacity:v6];
+    [layer setShadowOpacity:v6];
   }
 }
 
 - (void)setupConstraints
 {
   [(VLFPuckModeCircleView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v32 = [(VLFPuckModeCircleView *)self widthAnchor];
-  v31 = [v32 constraintEqualToConstant:44.0];
+  widthAnchor = [(VLFPuckModeCircleView *)self widthAnchor];
+  v31 = [widthAnchor constraintEqualToConstant:44.0];
   v33[0] = v31;
-  v30 = [(VLFPuckModeCircleView *)self heightAnchor];
-  v29 = [(VLFPuckModeCircleView *)self widthAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 multiplier:1.0];
+  heightAnchor = [(VLFPuckModeCircleView *)self heightAnchor];
+  widthAnchor2 = [(VLFPuckModeCircleView *)self widthAnchor];
+  v28 = [heightAnchor constraintEqualToAnchor:widthAnchor2 multiplier:1.0];
   v33[1] = v28;
-  v27 = [(VLFPuckModeCircleView *)self backgroundView];
-  v26 = [v27 leadingAnchor];
-  v25 = [(VLFPuckModeCircleView *)self leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  backgroundView = [(VLFPuckModeCircleView *)self backgroundView];
+  leadingAnchor = [backgroundView leadingAnchor];
+  leadingAnchor2 = [(VLFPuckModeCircleView *)self leadingAnchor];
+  v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v33[2] = v24;
-  v23 = [(VLFPuckModeCircleView *)self backgroundView];
-  v22 = [v23 trailingAnchor];
-  v21 = [(VLFPuckModeCircleView *)self trailingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  backgroundView2 = [(VLFPuckModeCircleView *)self backgroundView];
+  trailingAnchor = [backgroundView2 trailingAnchor];
+  trailingAnchor2 = [(VLFPuckModeCircleView *)self trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v33[3] = v20;
-  v19 = [(VLFPuckModeCircleView *)self backgroundView];
-  v18 = [v19 topAnchor];
-  v17 = [(VLFPuckModeCircleView *)self topAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17];
+  backgroundView3 = [(VLFPuckModeCircleView *)self backgroundView];
+  topAnchor = [backgroundView3 topAnchor];
+  topAnchor2 = [(VLFPuckModeCircleView *)self topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v33[4] = v16;
-  v15 = [(VLFPuckModeCircleView *)self backgroundView];
-  v14 = [v15 bottomAnchor];
-  v13 = [(VLFPuckModeCircleView *)self bottomAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  backgroundView4 = [(VLFPuckModeCircleView *)self backgroundView];
+  bottomAnchor = [backgroundView4 bottomAnchor];
+  bottomAnchor2 = [(VLFPuckModeCircleView *)self bottomAnchor];
+  v3 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v33[5] = v3;
-  v4 = [(VLFPuckModeCircleView *)self viewFinderImageView];
-  v5 = [v4 centerXAnchor];
-  v6 = [(VLFPuckModeCircleView *)self centerXAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  viewFinderImageView = [(VLFPuckModeCircleView *)self viewFinderImageView];
+  centerXAnchor = [viewFinderImageView centerXAnchor];
+  centerXAnchor2 = [(VLFPuckModeCircleView *)self centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v33[6] = v7;
-  v8 = [(VLFPuckModeCircleView *)self viewFinderImageView];
-  v9 = [v8 centerYAnchor];
-  v10 = [(VLFPuckModeCircleView *)self centerYAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  viewFinderImageView2 = [(VLFPuckModeCircleView *)self viewFinderImageView];
+  centerYAnchor = [viewFinderImageView2 centerYAnchor];
+  centerYAnchor2 = [(VLFPuckModeCircleView *)self centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v33[7] = v11;
   v12 = [NSArray arrayWithObjects:v33 count:8];
   [NSLayoutConstraint activateConstraints:v12];
@@ -77,9 +77,9 @@
 
 - (void)stopPulsing
 {
-  v3 = [(VLFPuckModeCircleView *)self viewFinderImageView];
-  v4 = [v3 layer];
-  v5 = [v4 animationForKey:@"transform.scale.xy.repeat"];
+  viewFinderImageView = [(VLFPuckModeCircleView *)self viewFinderImageView];
+  layer = [viewFinderImageView layer];
+  v5 = [layer animationForKey:@"transform.scale.xy.repeat"];
 
   if (v5)
   {
@@ -87,20 +87,20 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v9 = 134349056;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Stop pulsing", &v9, 0xCu);
     }
 
-    v7 = [(VLFPuckModeCircleView *)self viewFinderImageView];
-    v8 = [v7 layer];
-    [v8 removeAnimationForKey:@"transform.scale.xy.repeat"];
+    viewFinderImageView2 = [(VLFPuckModeCircleView *)self viewFinderImageView];
+    layer2 = [viewFinderImageView2 layer];
+    [layer2 removeAnimationForKey:@"transform.scale.xy.repeat"];
   }
 }
 
 - (void)hide
 {
-  v4 = [(VLFPuckModeCircleView *)self layer];
-  [v4 opacity];
+  layer = [(VLFPuckModeCircleView *)self layer];
+  [layer opacity];
   [(VLFPuckModeCircleView *)self hideWithDuration:1 startingOpacity:0 shouldShrink:0.200000003 suppressOtherAnimations:v3];
 }
 
@@ -122,10 +122,10 @@
   return v2;
 }
 
-- (void)hideWithDuration:(double)a3 startingOpacity:(double)a4 shouldShrink:(BOOL)a5 suppressOtherAnimations:(BOOL)a6
+- (void)hideWithDuration:(double)duration startingOpacity:(double)opacity shouldShrink:(BOOL)shrink suppressOtherAnimations:(BOOL)animations
 {
-  v6 = a6;
-  v7 = a5;
+  animationsCopy = animations;
+  shrinkCopy = shrink;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v12 = dispatch_queue_get_label(0);
   if (label != v12)
@@ -137,7 +137,7 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         v25 = 136316418;
-        v26 = "[VLFPuckModeCircleView hideWithDuration:startingOpacity:shouldShrink:suppressOtherAnimations:]";
+        selfCopy = "[VLFPuckModeCircleView hideWithDuration:startingOpacity:shouldShrink:suppressOtherAnimations:]";
         v27 = 2080;
         v28 = "VLFPuckModeCircleView.m";
         v29 = 1024;
@@ -158,25 +158,25 @@
         {
           v24 = +[NSThread callStackSymbols];
           v25 = 138412290;
-          v26 = v24;
+          selfCopy = v24;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%@", &v25, 0xCu);
         }
       }
     }
   }
 
-  if (fabs(a4) >= 0.00000011920929 && ![(VLFPuckModeCircleView *)self isSuppressingAnimations])
+  if (fabs(opacity) >= 0.00000011920929 && ![(VLFPuckModeCircleView *)self isSuppressingAnimations])
   {
     v14 = sub_10001EA64();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v25 = 134349056;
-      v26 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "[%{public}p] Hiding VLF puck UI", &v25, 0xCu);
     }
 
     v15 = +[NSMutableArray array];
-    if (v7)
+    if (shrinkCopy)
     {
       v16 = [CABasicAnimation animationWithKeyPath:@"transform.scale.xy"];
       [v16 setFromValue:&off_1016E9DD0];
@@ -185,36 +185,36 @@
     }
 
     v17 = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    v18 = [NSNumber numberWithDouble:a4];
+    v18 = [NSNumber numberWithDouble:opacity];
     [v17 setFromValue:v18];
 
     [v17 setToValue:&off_1016E9DB8];
     [v15 addObject:v17];
     v19 = +[CAAnimationGroup animation];
     [v19 setAnimations:v15];
-    [v19 setDuration:a3];
-    if (v6)
+    [v19 setDuration:duration];
+    if (animationsCopy)
     {
       [v19 setDelegate:self];
       [(VLFPuckModeCircleView *)self setSuppressAnimations:1];
     }
 
-    v20 = [(VLFPuckModeCircleView *)self layer];
-    [v20 addAnimation:v19 forKey:@"hide"];
+    layer = [(VLFPuckModeCircleView *)self layer];
+    [layer addAnimation:v19 forKey:@"hide"];
 
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    v21 = [(VLFPuckModeCircleView *)self layer];
-    [v21 setOpacity:0.0];
+    layer2 = [(VLFPuckModeCircleView *)self layer];
+    [layer2 setOpacity:0.0];
 
     +[CATransaction commit];
   }
 }
 
-- (void)showWithDuration:(double)a3 startingOpacity:(double)a4 shouldGrow:(BOOL)a5 suppressOtherAnimations:(BOOL)a6
+- (void)showWithDuration:(double)duration startingOpacity:(double)opacity shouldGrow:(BOOL)grow suppressOtherAnimations:(BOOL)animations
 {
-  v6 = a6;
-  v7 = a5;
+  animationsCopy = animations;
+  growCopy = grow;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v12 = dispatch_queue_get_label(0);
   if (label != v12)
@@ -226,7 +226,7 @@
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         v26 = 136316418;
-        v27 = "[VLFPuckModeCircleView showWithDuration:startingOpacity:shouldGrow:suppressOtherAnimations:]";
+        selfCopy = "[VLFPuckModeCircleView showWithDuration:startingOpacity:shouldGrow:suppressOtherAnimations:]";
         v28 = 2080;
         v29 = "VLFPuckModeCircleView.m";
         v30 = 1024;
@@ -247,25 +247,25 @@
         {
           v25 = +[NSThread callStackSymbols];
           v26 = 138412290;
-          v27 = v25;
+          selfCopy = v25;
           _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "%@", &v26, 0xCu);
         }
       }
     }
   }
 
-  if (fabs(a4 + -1.0) >= 0.00000011920929 && ![(VLFPuckModeCircleView *)self isSuppressingAnimations])
+  if (fabs(opacity + -1.0) >= 0.00000011920929 && ![(VLFPuckModeCircleView *)self isSuppressingAnimations])
   {
     v14 = sub_10001EA64();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v26 = 134349056;
-      v27 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "[%{public}p] Showing VLF puck UI", &v26, 0xCu);
     }
 
     v15 = +[NSMutableArray array];
-    if (v7)
+    if (growCopy)
     {
       v16 = [CABasicAnimation animationWithKeyPath:@"transform.scale.xy"];
       [v16 setFromValue:&off_1016E9DB8];
@@ -274,28 +274,28 @@
     }
 
     v17 = [CABasicAnimation animationWithKeyPath:@"opacity"];
-    v18 = [NSNumber numberWithDouble:a4];
+    v18 = [NSNumber numberWithDouble:opacity];
     [v17 setFromValue:v18];
 
     [v17 setToValue:&off_1016E9DD0];
     [v15 addObject:v17];
     v19 = +[CAAnimationGroup animation];
     [v19 setAnimations:v15];
-    [v19 setDuration:a3];
-    if (v6)
+    [v19 setDuration:duration];
+    if (animationsCopy)
     {
       [v19 setDelegate:self];
       [(VLFPuckModeCircleView *)self setSuppressAnimations:1];
     }
 
-    v20 = [(VLFPuckModeCircleView *)self layer];
-    [v20 addAnimation:v19 forKey:@"show"];
+    layer = [(VLFPuckModeCircleView *)self layer];
+    [layer addAnimation:v19 forKey:@"show"];
 
     +[CATransaction begin];
     [CATransaction setDisableActions:1];
-    v21 = [(VLFPuckModeCircleView *)self layer];
+    layer2 = [(VLFPuckModeCircleView *)self layer];
     LODWORD(v22) = 1.0;
-    [v21 setOpacity:v22];
+    [layer2 setOpacity:v22];
 
     +[CATransaction commit];
   }
@@ -303,15 +303,15 @@
 
 - (void)show
 {
-  v4 = [(VLFPuckModeCircleView *)self layer];
-  [v4 opacity];
+  layer = [(VLFPuckModeCircleView *)self layer];
+  [layer opacity];
   [(VLFPuckModeCircleView *)self showWithDuration:1 startingOpacity:0 shouldGrow:0.200000003 suppressOtherAnimations:v3];
 }
 
 - (BOOL)isVisible
 {
-  v2 = [(VLFPuckModeCircleView *)self layer];
-  [v2 opacity];
+  layer = [(VLFPuckModeCircleView *)self layer];
+  [layer opacity];
   v4 = fabsf(v3 + -1.0) < 0.00000011921;
 
   return v4;
@@ -323,33 +323,33 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v8 = 134349056;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Pulsing once", &v8, 0xCu);
   }
 
-  v4 = [(VLFPuckModeCircleView *)self pulseAnimation];
+  pulseAnimation = [(VLFPuckModeCircleView *)self pulseAnimation];
   LODWORD(v5) = 3.0;
-  [v4 setRepeatCount:v5];
-  v6 = [(VLFPuckModeCircleView *)self viewFinderImageView];
-  v7 = [v6 layer];
-  [v7 addAnimation:v4 forKey:@"transform.scale.xy.pulse"];
+  [pulseAnimation setRepeatCount:v5];
+  viewFinderImageView = [(VLFPuckModeCircleView *)self viewFinderImageView];
+  layer = [viewFinderImageView layer];
+  [layer addAnimation:pulseAnimation forKey:@"transform.scale.xy.pulse"];
 }
 
 - (void)startPulsing
 {
-  v3 = [(VLFPuckModeCircleView *)self viewFinderImageView];
-  v4 = [v3 layer];
-  v5 = [v4 animationForKey:@"transform.scale.xy.repeat"];
+  viewFinderImageView = [(VLFPuckModeCircleView *)self viewFinderImageView];
+  layer = [viewFinderImageView layer];
+  v5 = [layer animationForKey:@"transform.scale.xy.repeat"];
 
   v6 = sub_10001EA64();
-  v7 = v6;
+  pulseAnimation = v6;
   if (v5)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v11 = 134349056;
-      v12 = self;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] There's already an ongoing pulse animation; ignoring", &v11, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, pulseAnimation, OS_LOG_TYPE_DEBUG, "[%{public}p] There's already an ongoing pulse animation; ignoring", &v11, 0xCu);
     }
   }
 
@@ -358,24 +358,24 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v11 = 134349056;
-      v12 = self;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Start pulsing", &v11, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, pulseAnimation, OS_LOG_TYPE_INFO, "[%{public}p] Start pulsing", &v11, 0xCu);
     }
 
-    v7 = [(VLFPuckModeCircleView *)self pulseAnimation];
+    pulseAnimation = [(VLFPuckModeCircleView *)self pulseAnimation];
     LODWORD(v8) = 2139095040;
-    [v7 setRepeatCount:v8];
-    v9 = [(VLFPuckModeCircleView *)self viewFinderImageView];
-    v10 = [v9 layer];
-    [v10 addAnimation:v7 forKey:@"transform.scale.xy.repeat"];
+    [pulseAnimation setRepeatCount:v8];
+    viewFinderImageView2 = [(VLFPuckModeCircleView *)self viewFinderImageView];
+    layer2 = [viewFinderImageView2 layer];
+    [layer2 addAnimation:pulseAnimation forKey:@"transform.scale.xy.repeat"];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = VLFPuckModeCircleView;
-  [(VLFPuckModeCircleView *)&v4 traitCollectionDidChange:a3];
+  [(VLFPuckModeCircleView *)&v4 traitCollectionDidChange:change];
   [(VLFPuckModeCircleView *)self updateShadowForCurrentTraitCollection];
 }
 
@@ -385,7 +385,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -394,7 +394,7 @@
   [(VLFPuckModeCircleView *)&v4 dealloc];
 }
 
-- (VLFPuckModeCircleView)initWithFrame:(CGRect)a3
+- (VLFPuckModeCircleView)initWithFrame:(CGRect)frame
 {
   v30.receiver = self;
   v30.super_class = VLFPuckModeCircleView;
@@ -412,19 +412,19 @@
     v5 = +[UIColor clearColor];
     [(VLFPuckModeCircleView *)v3 setBackgroundColor:v5];
 
-    v6 = [(VLFPuckModeCircleView *)v3 layer];
-    [v6 setOpacity:0.0];
+    layer = [(VLFPuckModeCircleView *)v3 layer];
+    [layer setOpacity:0.0];
 
     v7 = +[UIColor blackColor];
-    v8 = [v7 CGColor];
-    v9 = [(VLFPuckModeCircleView *)v3 layer];
-    [v9 setShadowColor:v8];
+    cGColor = [v7 CGColor];
+    layer2 = [(VLFPuckModeCircleView *)v3 layer];
+    [layer2 setShadowColor:cGColor];
 
-    v10 = [(VLFPuckModeCircleView *)v3 layer];
-    [v10 setShadowOffset:{0.0, 1.0}];
+    layer3 = [(VLFPuckModeCircleView *)v3 layer];
+    [layer3 setShadowOffset:{0.0, 1.0}];
 
-    v11 = [(VLFPuckModeCircleView *)v3 layer];
-    [v11 setShadowRadius:4.0];
+    layer4 = [(VLFPuckModeCircleView *)v3 layer];
+    [layer4 setShadowRadius:4.0];
 
     v33.size.width = 44.0;
     v33.origin.x = 0.0;
@@ -432,8 +432,8 @@
     v33.size.height = 44.0;
     v12 = CGPathCreateWithEllipseInRect(v33, 0);
     CopyByStrokingPath = CGPathCreateCopyByStrokingPath(v12, 0, 4.0, kCGLineCapRound, kCGLineJoinRound, 0.0);
-    v14 = [(VLFPuckModeCircleView *)v3 layer];
-    [v14 setShadowPath:CopyByStrokingPath];
+    layer5 = [(VLFPuckModeCircleView *)v3 layer];
+    [layer5 setShadowPath:CopyByStrokingPath];
 
     CGPathRelease(CopyByStrokingPath);
     CGPathRelease(v12);
@@ -446,11 +446,11 @@
 
     [(UIVisualEffectView *)v3->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIVisualEffectView *)v3->_backgroundView _setGroupName:@"MapsTheme"];
-    v19 = [(UIVisualEffectView *)v3->_backgroundView layer];
-    [v19 setCornerRadius:22.0];
+    layer6 = [(UIVisualEffectView *)v3->_backgroundView layer];
+    [layer6 setCornerRadius:22.0];
 
-    v20 = [(UIVisualEffectView *)v3->_backgroundView layer];
-    [v20 setMasksToBounds:1];
+    layer7 = [(UIVisualEffectView *)v3->_backgroundView layer];
+    [layer7 setMasksToBounds:1];
 
     [(VLFPuckModeCircleView *)v3 addSubview:v3->_backgroundView];
     v21 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:27.0];
@@ -468,8 +468,8 @@
     [(UIImageView *)v3->_viewFinderImageView setBackgroundColor:v27];
 
     [(UIImageView *)v3->_viewFinderImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v28 = [(UIVisualEffectView *)v3->_backgroundView contentView];
-    [v28 addSubview:v3->_viewFinderImageView];
+    contentView = [(UIVisualEffectView *)v3->_backgroundView contentView];
+    [contentView addSubview:v3->_viewFinderImageView];
 
     [(VLFPuckModeCircleView *)v3 setupConstraints];
   }

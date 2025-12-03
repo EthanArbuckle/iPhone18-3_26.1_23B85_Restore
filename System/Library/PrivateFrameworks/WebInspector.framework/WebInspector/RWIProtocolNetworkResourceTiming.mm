@@ -1,5 +1,5 @@
 @interface RWIProtocolNetworkResourceTiming
-- (RWIProtocolNetworkResourceTiming)initWithStartTime:(double)a3 redirectStart:(double)a4 redirectEnd:(double)a5 fetchStart:(double)a6 domainLookupStart:(double)a7 domainLookupEnd:(double)a8 connectStart:(double)a9 connectEnd:(double)a10 secureConnectionStart:(double)a11 requestStart:(double)a12 responseStart:(double)a13 responseEnd:(double)a14;
+- (RWIProtocolNetworkResourceTiming)initWithStartTime:(double)time redirectStart:(double)start redirectEnd:(double)end fetchStart:(double)fetchStart domainLookupStart:(double)lookupStart domainLookupEnd:(double)lookupEnd connectStart:(double)connectStart connectEnd:(double)self0 secureConnectionStart:(double)self1 requestStart:(double)self2 responseStart:(double)self3 responseEnd:(double)self4;
 - (double)connectEnd;
 - (double)connectStart;
 - (double)domainLookupEnd;
@@ -12,23 +12,23 @@
 - (double)responseStart;
 - (double)secureConnectionStart;
 - (double)startTime;
-- (void)setConnectEnd:(double)a3;
-- (void)setConnectStart:(double)a3;
-- (void)setDomainLookupEnd:(double)a3;
-- (void)setDomainLookupStart:(double)a3;
-- (void)setFetchStart:(double)a3;
-- (void)setRedirectEnd:(double)a3;
-- (void)setRedirectStart:(double)a3;
-- (void)setRequestStart:(double)a3;
-- (void)setResponseEnd:(double)a3;
-- (void)setResponseStart:(double)a3;
-- (void)setSecureConnectionStart:(double)a3;
-- (void)setStartTime:(double)a3;
+- (void)setConnectEnd:(double)end;
+- (void)setConnectStart:(double)start;
+- (void)setDomainLookupEnd:(double)end;
+- (void)setDomainLookupStart:(double)start;
+- (void)setFetchStart:(double)start;
+- (void)setRedirectEnd:(double)end;
+- (void)setRedirectStart:(double)start;
+- (void)setRequestStart:(double)start;
+- (void)setResponseEnd:(double)end;
+- (void)setResponseStart:(double)start;
+- (void)setSecureConnectionStart:(double)start;
+- (void)setStartTime:(double)time;
 @end
 
 @implementation RWIProtocolNetworkResourceTiming
 
-- (RWIProtocolNetworkResourceTiming)initWithStartTime:(double)a3 redirectStart:(double)a4 redirectEnd:(double)a5 fetchStart:(double)a6 domainLookupStart:(double)a7 domainLookupEnd:(double)a8 connectStart:(double)a9 connectEnd:(double)a10 secureConnectionStart:(double)a11 requestStart:(double)a12 responseStart:(double)a13 responseEnd:(double)a14
+- (RWIProtocolNetworkResourceTiming)initWithStartTime:(double)time redirectStart:(double)start redirectEnd:(double)end fetchStart:(double)fetchStart domainLookupStart:(double)lookupStart domainLookupEnd:(double)lookupEnd connectStart:(double)connectStart connectEnd:(double)self0 secureConnectionStart:(double)self1 requestStart:(double)self2 responseStart:(double)self3 responseEnd:(double)self4
 {
   v26.receiver = self;
   v26.super_class = RWIProtocolNetworkResourceTiming;
@@ -36,29 +36,29 @@
   v23 = v22;
   if (v22)
   {
-    [(RWIProtocolNetworkResourceTiming *)v22 setStartTime:a3];
-    [(RWIProtocolNetworkResourceTiming *)v23 setRedirectStart:a4];
-    [(RWIProtocolNetworkResourceTiming *)v23 setRedirectEnd:a5];
-    [(RWIProtocolNetworkResourceTiming *)v23 setFetchStart:a6];
-    [(RWIProtocolNetworkResourceTiming *)v23 setDomainLookupStart:a7];
-    [(RWIProtocolNetworkResourceTiming *)v23 setDomainLookupEnd:a8];
-    [(RWIProtocolNetworkResourceTiming *)v23 setConnectStart:a9];
-    [(RWIProtocolNetworkResourceTiming *)v23 setConnectEnd:a10];
-    [(RWIProtocolNetworkResourceTiming *)v23 setSecureConnectionStart:a11];
-    [(RWIProtocolNetworkResourceTiming *)v23 setRequestStart:a12];
-    [(RWIProtocolNetworkResourceTiming *)v23 setResponseStart:a13];
-    [(RWIProtocolNetworkResourceTiming *)v23 setResponseEnd:a14];
+    [(RWIProtocolNetworkResourceTiming *)v22 setStartTime:time];
+    [(RWIProtocolNetworkResourceTiming *)v23 setRedirectStart:start];
+    [(RWIProtocolNetworkResourceTiming *)v23 setRedirectEnd:end];
+    [(RWIProtocolNetworkResourceTiming *)v23 setFetchStart:fetchStart];
+    [(RWIProtocolNetworkResourceTiming *)v23 setDomainLookupStart:lookupStart];
+    [(RWIProtocolNetworkResourceTiming *)v23 setDomainLookupEnd:lookupEnd];
+    [(RWIProtocolNetworkResourceTiming *)v23 setConnectStart:connectStart];
+    [(RWIProtocolNetworkResourceTiming *)v23 setConnectEnd:connectEnd];
+    [(RWIProtocolNetworkResourceTiming *)v23 setSecureConnectionStart:connectionStart];
+    [(RWIProtocolNetworkResourceTiming *)v23 setRequestStart:requestStart];
+    [(RWIProtocolNetworkResourceTiming *)v23 setResponseStart:responseStart];
+    [(RWIProtocolNetworkResourceTiming *)v23 setResponseEnd:responseEnd];
     v24 = v23;
   }
 
   return v23;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"startTime" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"startTime" forKey:time];
 }
 
 - (double)startTime
@@ -69,11 +69,11 @@
   return result;
 }
 
-- (void)setRedirectStart:(double)a3
+- (void)setRedirectStart:(double)start
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"redirectStart" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"redirectStart" forKey:start];
 }
 
 - (double)redirectStart
@@ -84,11 +84,11 @@
   return result;
 }
 
-- (void)setRedirectEnd:(double)a3
+- (void)setRedirectEnd:(double)end
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"redirectEnd" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"redirectEnd" forKey:end];
 }
 
 - (double)redirectEnd
@@ -99,11 +99,11 @@
   return result;
 }
 
-- (void)setFetchStart:(double)a3
+- (void)setFetchStart:(double)start
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"fetchStart" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"fetchStart" forKey:start];
 }
 
 - (double)fetchStart
@@ -114,11 +114,11 @@
   return result;
 }
 
-- (void)setDomainLookupStart:(double)a3
+- (void)setDomainLookupStart:(double)start
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"domainLookupStart" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"domainLookupStart" forKey:start];
 }
 
 - (double)domainLookupStart
@@ -129,11 +129,11 @@
   return result;
 }
 
-- (void)setDomainLookupEnd:(double)a3
+- (void)setDomainLookupEnd:(double)end
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"domainLookupEnd" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"domainLookupEnd" forKey:end];
 }
 
 - (double)domainLookupEnd
@@ -144,11 +144,11 @@
   return result;
 }
 
-- (void)setConnectStart:(double)a3
+- (void)setConnectStart:(double)start
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"connectStart" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"connectStart" forKey:start];
 }
 
 - (double)connectStart
@@ -159,11 +159,11 @@
   return result;
 }
 
-- (void)setConnectEnd:(double)a3
+- (void)setConnectEnd:(double)end
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"connectEnd" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"connectEnd" forKey:end];
 }
 
 - (double)connectEnd
@@ -174,11 +174,11 @@
   return result;
 }
 
-- (void)setSecureConnectionStart:(double)a3
+- (void)setSecureConnectionStart:(double)start
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"secureConnectionStart" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"secureConnectionStart" forKey:start];
 }
 
 - (double)secureConnectionStart
@@ -189,11 +189,11 @@
   return result;
 }
 
-- (void)setRequestStart:(double)a3
+- (void)setRequestStart:(double)start
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"requestStart" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"requestStart" forKey:start];
 }
 
 - (double)requestStart
@@ -204,11 +204,11 @@
   return result;
 }
 
-- (void)setResponseStart:(double)a3
+- (void)setResponseStart:(double)start
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseStart" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseStart" forKey:start];
 }
 
 - (double)responseStart
@@ -219,11 +219,11 @@
   return result;
 }
 
-- (void)setResponseEnd:(double)a3
+- (void)setResponseEnd:(double)end
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkResourceTiming;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseEnd" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"responseEnd" forKey:end];
 }
 
 - (double)responseEnd

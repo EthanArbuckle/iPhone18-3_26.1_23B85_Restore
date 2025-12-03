@@ -1,17 +1,17 @@
 @interface JavaUtilIdentityHashMap_KeySet_$1
-- (id)getWithJavaUtilMapEntry:(id)a3;
+- (id)getWithJavaUtilMapEntry:(id)entry;
 @end
 
 @implementation JavaUtilIdentityHashMap_KeySet_$1
 
-- (id)getWithJavaUtilMapEntry:(id)a3
+- (id)getWithJavaUtilMapEntry:(id)entry
 {
-  if (!a3)
+  if (!entry)
   {
     JreThrowNullPointerException();
   }
 
-  return *(a3 + 1);
+  return *(entry + 1);
 }
 
 @end

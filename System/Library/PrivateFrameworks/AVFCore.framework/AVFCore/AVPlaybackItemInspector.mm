@@ -1,18 +1,18 @@
 @interface AVPlaybackItemInspector
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
-- (AVPlaybackItemInspector)initWithPlaybackItem:(OpaqueFigPlaybackItem *)a3 trackIDs:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AVPlaybackItemInspector)initWithPlaybackItem:(OpaqueFigPlaybackItem *)item trackIDs:(id)ds;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)naturalSize;
 - (int64_t)trackCount;
 - (unint64_t)hash;
-- (void)_setPlaybackItem:(OpaqueFigPlaybackItem *)a3;
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3;
+- (void)_setPlaybackItem:(OpaqueFigPlaybackItem *)item;
+- (void)_valueAsCFTypeForProperty:(__CFString *)property;
 - (void)dealloc;
 @end
 
 @implementation AVPlaybackItemInspector
 
-- (AVPlaybackItemInspector)initWithPlaybackItem:(OpaqueFigPlaybackItem *)a3 trackIDs:(id)a4
+- (AVPlaybackItemInspector)initWithPlaybackItem:(OpaqueFigPlaybackItem *)item trackIDs:(id)ds
 {
   v9.receiver = self;
   v9.super_class = AVPlaybackItemInspector;
@@ -20,10 +20,10 @@
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (item)
     {
-      [(AVPlaybackItemInspector *)v6 _setPlaybackItem:a3];
-      v7->_trackIDs = a4;
+      [(AVPlaybackItemInspector *)v6 _setPlaybackItem:item];
+      v7->_trackIDs = ds;
     }
 
     else
@@ -44,7 +44,7 @@
   [(AVPlaybackItemInspector *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -52,20 +52,20 @@
     return 0;
   }
 
-  v5 = [(AVPlaybackItemInspector *)self _playbackItem];
-  v6 = [a3 _playbackItem];
-  if (v5 == v6)
+  _playbackItem = [(AVPlaybackItemInspector *)self _playbackItem];
+  _playbackItem2 = [equal _playbackItem];
+  if (_playbackItem == _playbackItem2)
   {
     return 1;
   }
 
-  v7 = v6;
+  v7 = _playbackItem2;
   result = 0;
-  if (v5)
+  if (_playbackItem)
   {
     if (v7)
     {
-      return CFEqual(v5, v7) != 0;
+      return CFEqual(_playbackItem, v7) != 0;
     }
   }
 
@@ -74,11 +74,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(AVPlaybackItemInspector *)self _playbackItem];
-  if (v3)
+  _playbackItem = [(AVPlaybackItemInspector *)self _playbackItem];
+  if (_playbackItem)
   {
 
-    return CFHash(v3);
+    return CFHash(_playbackItem);
   }
 
   else
@@ -89,11 +89,11 @@
   }
 }
 
-- (void)_setPlaybackItem:(OpaqueFigPlaybackItem *)a3
+- (void)_setPlaybackItem:(OpaqueFigPlaybackItem *)item
 {
-  if (a3)
+  if (item)
   {
-    CFRetain(a3);
+    CFRetain(item);
   }
 
   playbackItem = self->_playbackItem;
@@ -102,10 +102,10 @@
     CFRelease(playbackItem);
   }
 
-  self->_playbackItem = a3;
+  self->_playbackItem = item;
 }
 
-- (void)_valueAsCFTypeForProperty:(__CFString *)a3
+- (void)_valueAsCFTypeForProperty:(__CFString *)property
 {
   v7 = 0;
   result = [(AVPlaybackItemInspector *)self _playbackItem];
@@ -115,7 +115,7 @@
     v6 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     if (v6)
     {
-      v6(FigBaseObject, a3, *MEMORY[0x1E695E480], &v7);
+      v6(FigBaseObject, property, *MEMORY[0x1E695E480], &v7);
       return v7;
     }
 
@@ -151,10 +151,10 @@
 
 - (CGSize)naturalSize
 {
-  v2 = [(AVPlaybackItemInspector *)self _playbackItem];
+  _playbackItem = [(AVPlaybackItemInspector *)self _playbackItem];
   v8 = 0;
   v3 = 0.0;
-  if (v2 && (v4 = v2, (v5 = *(*(CMBaseObjectGetVTable() + 16) + 8)) != 0))
+  if (_playbackItem && (v4 = _playbackItem, (v5 = *(*(CMBaseObjectGetVTable() + 16) + 8)) != 0))
   {
     v5(v4, &v8 + 4, &v8, 0.0);
     v6 = *(&v8 + 1);

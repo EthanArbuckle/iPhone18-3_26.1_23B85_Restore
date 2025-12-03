@@ -1,12 +1,12 @@
 @interface ActiveAccountObserver
 + (ACAccount)activeAccount;
 + (ACAccount)activeSandboxAccount;
-+ (BOOL)_shouldNotifyChangeFromExistingAccount:(id)a3 toCurrentAccount:(id)a4;
++ (BOOL)_shouldNotifyChangeFromExistingAccount:(id)account toCurrentAccount:(id)currentAccount;
 + (id)sharedInstance;
-+ (void)_postAccountDidChangeFromOldAccount:(id)a3 withAccountStore:(id)a4;
++ (void)_postAccountDidChangeFromOldAccount:(id)account withAccountStore:(id)store;
 - (ActiveAccountObserver)init;
-- (void)handleAccountStoreDidChangeNotification:(id)a3;
-- (void)handleSandboxAccountDidChangeNotification:(id)a3;
+- (void)handleAccountStoreDidChangeNotification:(id)notification;
+- (void)handleSandboxAccountDidChangeNotification:(id)notification;
 @end
 
 @implementation ActiveAccountObserver
@@ -35,9 +35,9 @@
     v2->_dispatchQueue = v3;
 
     v5 = +[ACAccountStore ams_sharedAccountStore];
-    v6 = [v5 ams_activeiTunesAccount];
+    ams_activeiTunesAccount = [v5 ams_activeiTunesAccount];
     account = v2->_account;
-    v2->_account = v6;
+    v2->_account = ams_activeiTunesAccount;
 
     if (qword_1003D4978 != -1)
     {
@@ -51,11 +51,11 @@
       v10 = objc_opt_class();
       v11 = v2->_account;
       v12 = v10;
-      v13 = [(ACAccount *)v11 ams_DSID];
+      ams_DSID = [(ACAccount *)v11 ams_DSID];
       *buf = 138543619;
       v18 = v10;
       v19 = 2113;
-      v20 = v13;
+      v20 = ams_DSID;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Intialized with account: %{private}@", buf, 0x16u);
     }
 
@@ -70,22 +70,22 @@
 + (ACAccount)activeAccount
 {
   v2 = +[ACAccountStore ams_sharedAccountStore];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v2 ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
 + (ACAccount)activeSandboxAccount
 {
   v2 = [ACAccountStore ams_sharedAccountStoreForMediaType:AMSAccountMediaTypeAppStoreSandbox];
-  v3 = [v2 ams_activeiTunesAccount];
+  ams_activeiTunesAccount = [v2 ams_activeiTunesAccount];
 
-  return v3;
+  return ams_activeiTunesAccount;
 }
 
-- (void)handleSandboxAccountDidChangeNotification:(id)a3
+- (void)handleSandboxAccountDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (qword_1003D4978 != -1)
   {
     sub_1002D1320();
@@ -106,52 +106,52 @@
   block[1] = 3221225472;
   block[2] = sub_100073790;
   block[3] = &unk_100380818;
-  v11 = v4;
-  v9 = v4;
+  v11 = notificationCopy;
+  v9 = notificationCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)handleAccountStoreDidChangeNotification:(id)a3
+- (void)handleAccountStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100073904;
   v7[3] = &unk_10037F868;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-+ (void)_postAccountDidChangeFromOldAccount:(id)a3 withAccountStore:(id)a4
++ (void)_postAccountDidChangeFromOldAccount:(id)account withAccountStore:(id)store
 {
-  v5 = a3;
-  v6 = a4;
+  accountCopy = account;
+  storeCopy = store;
   v7 = dispatch_get_global_queue(21, 0);
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100073E58;
   v10[3] = &unk_10037F868;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = accountCopy;
+  v12 = storeCopy;
+  v8 = storeCopy;
+  v9 = accountCopy;
   dispatch_async(v7, v10);
 }
 
-+ (BOOL)_shouldNotifyChangeFromExistingAccount:(id)a3 toCurrentAccount:(id)a4
++ (BOOL)_shouldNotifyChangeFromExistingAccount:(id)account toCurrentAccount:(id)currentAccount
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!(v5 | v6))
+  accountCopy = account;
+  currentAccountCopy = currentAccount;
+  v7 = currentAccountCopy;
+  if (!(accountCopy | currentAccountCopy))
   {
     goto LABEL_2;
   }
 
-  if (!v5 && v6)
+  if (!accountCopy && currentAccountCopy)
   {
     if (qword_1003D4978 != -1)
     {
@@ -169,7 +169,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (v5 && !v6)
+  if (accountCopy && !currentAccountCopy)
   {
     if (qword_1003D4978 != -1)
     {
@@ -185,17 +185,17 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v12 = [v6 ams_DSID];
-  if (v12)
+  ams_DSID = [currentAccountCopy ams_DSID];
+  if (ams_DSID)
   {
-    v13 = v12;
-    v14 = [v5 ams_DSID];
-    if (v14)
+    v13 = ams_DSID;
+    ams_DSID2 = [accountCopy ams_DSID];
+    if (ams_DSID2)
     {
-      v15 = v14;
-      v16 = [v7 ams_DSID];
-      v17 = [v5 ams_DSID];
-      v18 = [v16 isEqualToNumber:v17];
+      v15 = ams_DSID2;
+      ams_DSID3 = [v7 ams_DSID];
+      ams_DSID4 = [accountCopy ams_DSID];
+      v18 = [ams_DSID3 isEqualToNumber:ams_DSID4];
 
       if ((v18 & 1) == 0)
       {

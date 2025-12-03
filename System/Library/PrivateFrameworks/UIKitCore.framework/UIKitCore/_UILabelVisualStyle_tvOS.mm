@@ -1,14 +1,14 @@
 @interface _UILabelVisualStyle_tvOS
-- (BOOL)shouldDisableUpdateTextColorOnTraitCollectionChangeForAttributedString:(id)a3 attributes:(id)a4;
-- (void)actionsForDeallocationOfLabel:(id)a3;
-- (void)actionsForInitializationOfLabel:(id)a3;
+- (BOOL)shouldDisableUpdateTextColorOnTraitCollectionChangeForAttributedString:(id)string attributes:(id)attributes;
+- (void)actionsForDeallocationOfLabel:(id)label;
+- (void)actionsForInitializationOfLabel:(id)label;
 @end
 
 @implementation _UILabelVisualStyle_tvOS
 
-- (void)actionsForInitializationOfLabel:(id)a3
+- (void)actionsForInitializationOfLabel:(id)label
 {
-  v11 = a3;
+  labelCopy = label;
   if (!_os_feature_enabled_impl())
   {
     goto LABEL_10;
@@ -38,48 +38,48 @@
       if (byte_1EA95E7F4)
       {
 LABEL_10:
-        v6 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v6 addObserver:v11 selector:sel__applicationWillResignActiveNotification_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
-        [v6 addObserver:v11 selector:sel__applicationDidBecomeActiveNotification_ name:@"UIApplicationDidBecomeActiveNotification" object:UIApp];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:labelCopy selector:sel__applicationWillResignActiveNotification_ name:@"UIApplicationWillResignActiveNotification" object:UIApp];
+        [defaultCenter addObserver:labelCopy selector:sel__applicationDidBecomeActiveNotification_ name:@"UIApplicationDidBecomeActiveNotification" object:UIApp];
       }
     }
   }
 
 LABEL_11:
-  v7 = [(_UILabelVisualStyle_tvOS *)self defaultFont];
-  [v11 setFont:v7];
+  defaultFont = [(_UILabelVisualStyle_tvOS *)self defaultFont];
+  [labelCopy setFont:defaultFont];
 
   v8 = +[UIColor blackColor];
-  [v11 _setFallbackTextColor:v8 forUserInterfaceStyle:1];
+  [labelCopy _setFallbackTextColor:v8 forUserInterfaceStyle:1];
 
   v9 = +[UIColor whiteColor];
-  [v11 _setFallbackTextColor:v9 forUserInterfaceStyle:2];
+  [labelCopy _setFallbackTextColor:v9 forUserInterfaceStyle:2];
 
   v10 = +[UIColor whiteColor];
-  [v11 _setFallbackTextColor:v10 forUserInterfaceStyle:1000];
+  [labelCopy _setFallbackTextColor:v10 forUserInterfaceStyle:1000];
 }
 
-- (void)actionsForDeallocationOfLabel:(id)a3
+- (void)actionsForDeallocationOfLabel:(id)label
 {
   v3 = MEMORY[0x1E696AD88];
-  v4 = a3;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4 name:@"UIApplicationWillResignActiveNotification" object:UIApp];
-  [v5 removeObserver:v4 name:@"UIApplicationDidBecomeActiveNotification" object:UIApp];
+  labelCopy = label;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:labelCopy name:@"UIApplicationWillResignActiveNotification" object:UIApp];
+  [defaultCenter removeObserver:labelCopy name:@"UIApplicationDidBecomeActiveNotification" object:UIApp];
 }
 
-- (BOOL)shouldDisableUpdateTextColorOnTraitCollectionChangeForAttributedString:(id)a3 attributes:(id)a4
+- (BOOL)shouldDisableUpdateTextColorOnTraitCollectionChangeForAttributedString:(id)string attributes:(id)attributes
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (_UILabelVisualStyleAttributedStringContainsForegroundColorAttribute(v5) & 1) != 0)
+  stringCopy = string;
+  attributesCopy = attributes;
+  if (stringCopy && (_UILabelVisualStyleAttributedStringContainsForegroundColorAttribute(stringCopy) & 1) != 0)
   {
     v7 = 1;
   }
 
-  else if (v6)
+  else if (attributesCopy)
   {
-    v8 = [v6 objectForKeyedSubscript:*off_1E70EC920];
+    v8 = [attributesCopy objectForKeyedSubscript:*off_1E70EC920];
     v7 = v8 != 0;
   }
 

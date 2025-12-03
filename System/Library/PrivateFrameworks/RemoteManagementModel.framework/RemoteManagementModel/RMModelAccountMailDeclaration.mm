@@ -1,12 +1,12 @@
 @interface RMModelAccountMailDeclaration
 + (NSSet)allowedPayloadKeys;
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 incomingServer:(id)a4 outgoingServer:(id)a5;
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 userIdentityAssetReference:(id)a5 incomingServer:(id)a6 outgoingServer:(id)a7 SMIME:(id)a8;
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier incomingServer:(id)server outgoingServer:(id)outgoingServer;
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name userIdentityAssetReference:(id)reference incomingServer:(id)server outgoingServer:(id)outgoingServer SMIME:(id)e;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
 - (id)assetReferences;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelAccountMailDeclaration
@@ -59,63 +59,63 @@ void __48__RMModelAccountMailDeclaration_assetReferences__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)buildWithIdentifier:(id)a3 visibleName:(id)a4 userIdentityAssetReference:(id)a5 incomingServer:(id)a6 outgoingServer:(id)a7 SMIME:(id)a8
++ (id)buildWithIdentifier:(id)identifier visibleName:(id)name userIdentityAssetReference:(id)reference incomingServer:(id)server outgoingServer:(id)outgoingServer SMIME:(id)e
 {
-  v13 = a3;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
+  identifierCopy = identifier;
+  eCopy = e;
+  outgoingServerCopy = outgoingServer;
+  serverCopy = server;
+  referenceCopy = reference;
+  nameCopy = name;
   v19 = objc_opt_new();
   [v19 setDeclarationType:@"com.apple.configuration.account.mail"];
-  if (v13)
+  if (identifierCopy)
   {
-    [v19 setDeclarationIdentifier:v13];
+    [v19 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v20 = [MEMORY[0x277CCAD78] UUID];
-    v21 = [v20 UUIDString];
-    [v19 setDeclarationIdentifier:v21];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v19 setDeclarationIdentifier:uUIDString];
   }
 
-  [v19 setPayloadVisibleName:v18];
+  [v19 setPayloadVisibleName:nameCopy];
 
-  [v19 setPayloadUserIdentityAssetReference:v17];
-  [v19 setPayloadIncomingServer:v16];
+  [v19 setPayloadUserIdentityAssetReference:referenceCopy];
+  [v19 setPayloadIncomingServer:serverCopy];
 
-  [v19 setPayloadOutgoingServer:v15];
-  [v19 setPayloadSMIME:v14];
+  [v19 setPayloadOutgoingServer:outgoingServerCopy];
+  [v19 setPayloadSMIME:eCopy];
 
   [v19 updateServerToken];
 
   return v19;
 }
 
-+ (id)buildRequiredOnlyWithIdentifier:(id)a3 incomingServer:(id)a4 outgoingServer:(id)a5
++ (id)buildRequiredOnlyWithIdentifier:(id)identifier incomingServer:(id)server outgoingServer:(id)outgoingServer
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  identifierCopy = identifier;
+  outgoingServerCopy = outgoingServer;
+  serverCopy = server;
   v10 = objc_opt_new();
   [v10 setDeclarationType:@"com.apple.configuration.account.mail"];
-  if (v7)
+  if (identifierCopy)
   {
-    [v10 setDeclarationIdentifier:v7];
+    [v10 setDeclarationIdentifier:identifierCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    [v10 setDeclarationIdentifier:v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    [v10 setDeclarationIdentifier:uUIDString];
   }
 
-  [v10 setPayloadIncomingServer:v9];
+  [v10 setPayloadIncomingServer:serverCopy];
 
-  [v10 setPayloadOutgoingServer:v8];
+  [v10 setPayloadOutgoingServer:outgoingServerCopy];
   [v10 updateServerToken];
 
   return v10;
@@ -159,12 +159,12 @@ void __48__RMModelAccountMailDeclaration_assetReferences__block_invoke()
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelAccountMailDeclaration allowedPayloadKeys];
   [v11 minusSet:v12];
@@ -172,10 +172,10 @@ void __48__RMModelAccountMailDeclaration_assetReferences__block_invoke()
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:a5]&& [(RMModelPayloadBase *)self loadStringFromDictionary:v8 usingKey:@"UserIdentityAssetReference" forKeyPath:@"payloadUserIdentityAssetReference" isRequired:0 defaultValue:0 error:a5]&& (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"IncomingServer" forKeyPath:@"payloadIncomingServer" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:a5]) && (LOWORD(v17) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"OutgoingServer" forKeyPath:@"payloadOutgoingServer" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v17 error:a5]))
+  if ([(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"VisibleName" forKeyPath:@"payloadVisibleName" isRequired:0 defaultValue:0 error:error]&& [(RMModelPayloadBase *)self loadStringFromDictionary:dictionaryCopy usingKey:@"UserIdentityAssetReference" forKeyPath:@"payloadUserIdentityAssetReference" isRequired:0 defaultValue:0 error:error]&& (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"IncomingServer" forKeyPath:@"payloadIncomingServer" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:error]) && (LOWORD(v17) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"OutgoingServer" forKeyPath:@"payloadOutgoingServer" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v17 error:error]))
   {
-    LOWORD(v18) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"SMIME" forKeyPath:@"payloadSMIME" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:a5];
+    LOWORD(v18) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"SMIME" forKeyPath:@"payloadSMIME" classType:objc_opt_class() isRequired:0 defaultValue:0 serializationType:v18 error:error];
   }
 
   else
@@ -186,49 +186,49 @@ void __48__RMModelAccountMailDeclaration_assetReferences__block_invoke()
   return v14;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelAccountMailDeclaration *)self payloadVisibleName];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"VisibleName" value:v6 isRequired:0 defaultValue:0];
+  payloadVisibleName = [(RMModelAccountMailDeclaration *)self payloadVisibleName];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"VisibleName" value:payloadVisibleName isRequired:0 defaultValue:0];
 
-  v7 = [(RMModelAccountMailDeclaration *)self payloadUserIdentityAssetReference];
-  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"UserIdentityAssetReference" value:v7 isRequired:0 defaultValue:0];
+  payloadUserIdentityAssetReference = [(RMModelAccountMailDeclaration *)self payloadUserIdentityAssetReference];
+  [(RMModelPayloadBase *)self serializeStringIntoDictionary:v5 usingKey:@"UserIdentityAssetReference" value:payloadUserIdentityAssetReference isRequired:0 defaultValue:0];
 
-  v8 = [(RMModelAccountMailDeclaration *)self payloadIncomingServer];
+  payloadIncomingServer = [(RMModelAccountMailDeclaration *)self payloadIncomingServer];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__RMModelAccountMailDeclaration_serializePayloadWithType___block_invoke;
   v17[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v18 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"IncomingServer" value:v8 dictSerializer:v17 isRequired:1 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"IncomingServer" value:payloadIncomingServer dictSerializer:v17 isRequired:1 defaultValue:0];
 
-  v9 = [(RMModelAccountMailDeclaration *)self payloadOutgoingServer];
+  payloadOutgoingServer = [(RMModelAccountMailDeclaration *)self payloadOutgoingServer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __58__RMModelAccountMailDeclaration_serializePayloadWithType___block_invoke_2;
   v15[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v16 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"OutgoingServer" value:v9 dictSerializer:v15 isRequired:1 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"OutgoingServer" value:payloadOutgoingServer dictSerializer:v15 isRequired:1 defaultValue:0];
 
-  v10 = [(RMModelAccountMailDeclaration *)self payloadSMIME];
+  payloadSMIME = [(RMModelAccountMailDeclaration *)self payloadSMIME];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__RMModelAccountMailDeclaration_serializePayloadWithType___block_invoke_3;
   v13[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v14 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"SMIME" value:v10 dictSerializer:v13 isRequired:0 defaultValue:0];
+  typeCopy3 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"SMIME" value:payloadSMIME dictSerializer:v13 isRequired:0 defaultValue:0];
 
   v11 = [v5 copy];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v16.receiver = self;
   v16.super_class = RMModelAccountMailDeclaration;
-  v4 = [(RMModelDeclarationBase *)&v16 copyWithZone:a3];
+  v4 = [(RMModelDeclarationBase *)&v16 copyWithZone:zone];
   v5 = [(NSString *)self->_payloadVisibleName copy];
   v6 = v4[6];
   v4[6] = v5;

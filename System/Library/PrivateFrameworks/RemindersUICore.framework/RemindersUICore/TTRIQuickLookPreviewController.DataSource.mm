@@ -1,12 +1,12 @@
 @interface TTRIQuickLookPreviewController.DataSource
 - (_TtCC15RemindersUICore30TTRIQuickLookPreviewControllerP33_5E2A18B72E000F5EB686E3810129004A10DataSource)init;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
 @end
 
 @implementation TTRIQuickLookPreviewController.DataSource
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtCC15RemindersUICore30TTRIQuickLookPreviewControllerP33_5E2A18B72E000F5EB686E3810129004A10DataSource_previewItems);
   if (v3 >> 62)
@@ -20,31 +20,31 @@
   }
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   v4 = *(self + OBJC_IVAR____TtCC15RemindersUICore30TTRIQuickLookPreviewControllerP33_5E2A18B72E000F5EB686E3810129004A10DataSource_previewItems);
   if ((v4 & 0xC000000000000001) != 0)
   {
-    v7 = self;
-    v5 = MEMORY[0x223D44740](a4, v4);
+    selfCopy = self;
+    v5 = MEMORY[0x223D44740](index, v4);
 
     goto LABEL_5;
   }
 
-  if (a4 < 0)
+  if (index < 0)
   {
     __break(1u);
     goto LABEL_10;
   }
 
-  if (*((v4 & 0xFFFFFFFFFFFFFF8) + 0x10) <= a4)
+  if (*((v4 & 0xFFFFFFFFFFFFFF8) + 0x10) <= index)
   {
 LABEL_10:
     __break(1u);
     return self;
   }
 
-  v5 = *(v4 + 8 * a4 + 32);
+  v5 = *(v4 + 8 * index + 32);
   swift_unknownObjectRetain();
 LABEL_5:
 

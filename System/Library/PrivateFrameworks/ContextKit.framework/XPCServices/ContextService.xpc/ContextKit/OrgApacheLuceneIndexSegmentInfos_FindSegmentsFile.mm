@@ -1,20 +1,20 @@
 @interface OrgApacheLuceneIndexSegmentInfos_FindSegmentsFile
-- (id)runWithOrgApacheLuceneIndexIndexCommit:(id)a3;
+- (id)runWithOrgApacheLuceneIndexIndexCommit:(id)commit;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexSegmentInfos_FindSegmentsFile
 
-- (id)runWithOrgApacheLuceneIndexIndexCommit:(id)a3
+- (id)runWithOrgApacheLuceneIndexIndexCommit:(id)commit
 {
   directory = self->directory_;
-  if (a3)
+  if (commit)
   {
-    if (directory == [a3 getDirectory])
+    if (directory == [commit getDirectory])
     {
-      v6 = [a3 getSegmentsFileName];
+      getSegmentsFileName = [commit getSegmentsFileName];
 
-      return [(OrgApacheLuceneIndexSegmentInfos_FindSegmentsFile *)self doBodyWithNSString:v6];
+      return [(OrgApacheLuceneIndexSegmentInfos_FindSegmentsFile *)self doBodyWithNSString:getSegmentsFileName];
     }
 
     v26 = new_JavaIoIOException_initWithNSString_(@"the specified commit does not match the specified Directory");
@@ -30,11 +30,11 @@ LABEL_21:
 
   while (1)
   {
-    v8 = [(OrgApacheLuceneStoreDirectory *)directory listAll];
-    v9 = [(OrgApacheLuceneStoreDirectory *)self->directory_ listAll];
-    JavaUtilArrays_sortWithNSObjectArray_(v8);
-    JavaUtilArrays_sortWithNSObjectArray_(v9);
-    if (JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(v8, v9))
+    listAll = [(OrgApacheLuceneStoreDirectory *)directory listAll];
+    listAll2 = [(OrgApacheLuceneStoreDirectory *)self->directory_ listAll];
+    JavaUtilArrays_sortWithNSObjectArray_(listAll);
+    JavaUtilArrays_sortWithNSObjectArray_(listAll2);
+    if (JavaUtilArrays_equalsWithNSObjectArray_withNSObjectArray_(listAll, listAll2))
     {
       break;
     }
@@ -46,7 +46,7 @@ LABEL_21:
     }
   }
 
-  LastCommitGenerationWithNSStringArray = OrgApacheLuceneIndexSegmentInfos_getLastCommitGenerationWithNSStringArray_(v8);
+  LastCommitGenerationWithNSStringArray = OrgApacheLuceneIndexSegmentInfos_getLastCommitGenerationWithNSStringArray_(listAll);
   if ((atomic_load_explicit(&OrgApacheLuceneIndexSegmentInfos__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_10001987C();
@@ -61,7 +61,7 @@ LABEL_21:
   if (LastCommitGenerationWithNSStringArray == -1)
   {
     v27 = self->directory_;
-    JavaUtilArrays_toStringWithNSObjectArray_(v8);
+    JavaUtilArrays_toStringWithNSObjectArray_(listAll);
     v35 = JreStrcat("$@$$", v28, v29, v30, v31, v32, v33, v34, @"no segments* file found in ");
     v26 = new_OrgApacheLuceneIndexIndexNotFoundException_initWithNSString_(v35);
     goto LABEL_24;

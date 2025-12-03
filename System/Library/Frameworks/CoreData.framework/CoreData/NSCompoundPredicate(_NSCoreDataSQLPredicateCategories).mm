@@ -8,7 +8,7 @@
 - (id)minimalFormInContext:()_NSCoreDataSQLPredicateCategories
 {
   v5 = objc_autoreleasePoolPush();
-  v6 = [objc_msgSend(a1 "predicateOperator")];
+  v6 = [objc_msgSend(self "predicateOperator")];
   v7 = v6;
   objc_autoreleasePoolPop(v5);
 
@@ -23,8 +23,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a1 subpredicates];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  subpredicates = [self subpredicates];
+  v5 = [subpredicates countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (!v5)
   {
     goto LABEL_14;
@@ -38,7 +38,7 @@
     {
       if (*v19 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(subpredicates);
       }
 
       v9 = [*(*(&v18 + 1) + 8 * i) _keypathsForDerivedPropertyValidation:&v22];
@@ -63,7 +63,7 @@
       }
     }
 
-    v5 = [v4 countByEnumeratingWithState:&v18 objects:v23 count:16];
+    v5 = [subpredicates countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v5)
     {
       continue;

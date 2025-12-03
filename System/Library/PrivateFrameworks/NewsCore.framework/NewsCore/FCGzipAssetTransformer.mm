@@ -1,6 +1,6 @@
 @interface FCGzipAssetTransformer
 + (id)sharedInstance;
-- (BOOL)transformAssetDataFromFilePath:(id)a3 toFilePath:(id)a4 error:(id *)a5;
+- (BOOL)transformAssetDataFromFilePath:(id)path toFilePath:(id)filePath error:(id *)error;
 @end
 
 @implementation FCGzipAssetTransformer
@@ -26,12 +26,12 @@ uint64_t __40__FCGzipAssetTransformer_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (BOOL)transformAssetDataFromFilePath:(id)a3 toFilePath:(id)a4 error:(id *)a5
+- (BOOL)transformAssetDataFromFilePath:(id)path toFilePath:(id)filePath error:(id *)error
 {
   v8 = MEMORY[0x1E695DF48];
-  v9 = a4;
-  v10 = [v8 inputStreamWithFileAtPath:a3];
-  v11 = [MEMORY[0x1E695DFC0] outputStreamToFileAtPath:v9 append:0];
+  filePathCopy = filePath;
+  v10 = [v8 inputStreamWithFileAtPath:path];
+  v11 = [MEMORY[0x1E695DFC0] outputStreamToFileAtPath:filePathCopy append:0];
 
   [v10 open];
   [v11 open];
@@ -48,7 +48,7 @@ uint64_t __40__FCGzipAssetTransformer_sharedInstance__block_invoke()
     if (inflateInit2_(&v27, 47, "1.2.12", 112))
     {
 LABEL_3:
-      v16 = 0;
+      streamError = 0;
     }
 
     else
@@ -65,15 +65,15 @@ LABEL_3:
 
           if (v27.avail_in)
           {
-            v21 = [v15 bytes];
-            if ([v13 write:v21 maxLength:{&v27.next_out[-objc_msgSend(v15, "bytes")]}] == -1)
+            bytes = [v15 bytes];
+            if ([v13 write:bytes maxLength:{&v27.next_out[-objc_msgSend(v15, "bytes")]}] == -1)
             {
               v26 = v13;
               goto LABEL_26;
             }
 
             v27.next_out = [v15 bytes];
-            LODWORD(v16) = [v15 length];
+            LODWORD(streamError) = [v15 length];
             p_avail_out = &v27.avail_out;
           }
 
@@ -86,7 +86,7 @@ LABEL_3:
               goto LABEL_26;
             }
 
-            v16 = v23;
+            streamError = v23;
             if (!v23)
             {
               goto LABEL_4;
@@ -96,7 +96,7 @@ LABEL_3:
             p_avail_out = &v27.avail_in;
           }
 
-          *p_avail_out = v16;
+          *p_avail_out = streamError;
         }
       }
 
@@ -106,18 +106,18 @@ LABEL_3:
         goto LABEL_3;
       }
 
-      v24 = [v15 bytes];
-      v25 = [v13 write:v24 maxLength:{&v27.next_out[-objc_msgSend(v15, "bytes")]}];
+      bytes2 = [v15 bytes];
+      v25 = [v13 write:bytes2 maxLength:{&v27.next_out[-objc_msgSend(v15, "bytes")]}];
       v26 = v13;
       if (v25 != -1)
       {
-        v16 = 0;
+        streamError = 0;
         v17 = 1;
         goto LABEL_5;
       }
 
 LABEL_26:
-      v16 = [v26 streamError];
+      streamError = [v26 streamError];
     }
 
 LABEL_4:
@@ -128,10 +128,10 @@ LABEL_5:
       v17 = 0;
     }
 
-    if (a5)
+    if (error)
     {
-      v18 = v16;
-      *a5 = v16;
+      v18 = streamError;
+      *error = streamError;
     }
   }
 

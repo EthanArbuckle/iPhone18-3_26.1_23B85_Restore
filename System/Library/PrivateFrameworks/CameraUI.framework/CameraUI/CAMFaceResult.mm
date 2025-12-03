@@ -1,5 +1,5 @@
 @interface CAMFaceResult
-- (CAMFaceResult)initWithFaceObject:(id)a3;
+- (CAMFaceResult)initWithFaceObject:(id)object;
 - (CGRect)bounds;
 - (NSString)description;
 - (NSString)metadataType;
@@ -9,22 +9,22 @@
 
 @implementation CAMFaceResult
 
-- (CAMFaceResult)initWithFaceObject:(id)a3
+- (CAMFaceResult)initWithFaceObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v18.receiver = self;
   v18.super_class = CAMFaceResult;
   v6 = [(CAMFaceResult *)&v18 init];
   if (v6)
   {
-    [v5 bounds];
+    [objectCopy bounds];
     v6->_bounds.origin.x = v7;
     v6->_bounds.origin.y = v8;
     v6->_bounds.size.width = v9;
     v6->_bounds.size.height = v10;
-    if ([v5 hasRollAngle])
+    if ([objectCopy hasRollAngle])
     {
-      [v5 rollAngle];
+      [objectCopy rollAngle];
     }
 
     else
@@ -33,10 +33,10 @@
     }
 
     *&v6->_rollAngle = v11;
-    objc_storeStrong(&v6->_underlyingFaceObject, a3);
+    objc_storeStrong(&v6->_underlyingFaceObject, object);
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v5 type];
-    v14 = [v12 stringWithFormat:@"%@ %ld", v13, objc_msgSend(v5, "faceID")];
+    type = [objectCopy type];
+    v14 = [v12 stringWithFormat:@"%@ %ld", type, objc_msgSend(objectCopy, "faceID")];
     uniqueIdentifier = v6->_uniqueIdentifier;
     v6->_uniqueIdentifier = v14;
 
@@ -51,34 +51,34 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CAMFaceResult *)self underlyingFaceObject];
-  v7 = [v6 faceID];
+  underlyingFaceObject = [(CAMFaceResult *)self underlyingFaceObject];
+  faceID = [underlyingFaceObject faceID];
   [(CAMFaceResult *)self rollAngle];
-  v9 = [v3 stringWithFormat:@"<%@: %p identifier: %ld roll: %f>", v5, self, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p identifier: %ld roll: %f>", v5, self, faceID, v8];
 
   return v9;
 }
 
 - (NSString)metadataType
 {
-  v2 = [(CAMFaceResult *)self underlyingFaceObject];
-  v3 = [v2 type];
+  underlyingFaceObject = [(CAMFaceResult *)self underlyingFaceObject];
+  type = [underlyingFaceObject type];
 
-  return v3;
+  return type;
 }
 
 - (id)burstMetadataRepresentation
 {
-  v2 = [(CAMFaceResult *)self underlyingFaceObject];
+  underlyingFaceObject = [(CAMFaceResult *)self underlyingFaceObject];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [v2 bounds];
+  [underlyingFaceObject bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  if (v2)
+  if (underlyingFaceObject)
   {
-    [v2 time];
+    [underlyingFaceObject time];
   }
 
   else
@@ -87,7 +87,7 @@
   }
 
   v12 = CMTimeCopyAsDictionary(&time, *MEMORY[0x1E695E480]);
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v2, "faceID")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(underlyingFaceObject, "faceID")}];
   [v3 setObject:v13 forKeyedSubscript:@"FaceID"];
 
   v45.origin.x = v5;
@@ -119,25 +119,25 @@
   [v3 setObject:v17 forKeyedSubscript:@"Height"];
 
   [v3 setObject:v12 forKeyedSubscript:@"Timestamp"];
-  if ([v2 hasRollAngle])
+  if ([underlyingFaceObject hasRollAngle])
   {
     v18 = MEMORY[0x1E696AD98];
-    [v2 rollAngle];
+    [underlyingFaceObject rollAngle];
     v19 = [v18 numberWithDouble:?];
     [v3 setObject:v19 forKeyedSubscript:@"RollAngle"];
   }
 
-  if ([v2 hasYawAngle])
+  if ([underlyingFaceObject hasYawAngle])
   {
     v20 = MEMORY[0x1E696AD98];
-    [v2 yawAngle];
+    [underlyingFaceObject yawAngle];
     v21 = [v20 numberWithDouble:?];
     [v3 setObject:v21 forKeyedSubscript:@"YawAngle"];
   }
 
-  if ([v2 hasLeftEyeBounds])
+  if ([underlyingFaceObject hasLeftEyeBounds])
   {
-    [v2 leftEyeBounds];
+    [underlyingFaceObject leftEyeBounds];
     x = v49.origin.x;
     y = v49.origin.y;
     width = v49.size.width;
@@ -166,16 +166,16 @@
     v29 = [MEMORY[0x1E696AD98] numberWithDouble:CGRectGetHeight(v52)];
     [v3 setObject:v29 forKeyedSubscript:@"LeftEyeHeight"];
 
-    if ([v2 hasLeftEyeClosedConfidence])
+    if ([underlyingFaceObject hasLeftEyeClosedConfidence])
     {
-      v30 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v2, "leftEyeClosedConfidence")}];
+      v30 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(underlyingFaceObject, "leftEyeClosedConfidence")}];
       [v3 setObject:v30 forKeyedSubscript:@"LeftEyeBlinkLevel"];
     }
   }
 
-  if ([v2 hasRightEyeBounds])
+  if ([underlyingFaceObject hasRightEyeBounds])
   {
-    [v2 rightEyeBounds];
+    [underlyingFaceObject rightEyeBounds];
     v31 = v53.origin.x;
     v32 = v53.origin.y;
     v33 = v53.size.width;
@@ -204,16 +204,16 @@
     v38 = [MEMORY[0x1E696AD98] numberWithDouble:CGRectGetHeight(v56)];
     [v3 setObject:v38 forKeyedSubscript:@"RightEyeHeight"];
 
-    if ([v2 hasRightEyeClosedConfidence])
+    if ([underlyingFaceObject hasRightEyeClosedConfidence])
     {
-      v39 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v2, "rightEyeClosedConfidence")}];
+      v39 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(underlyingFaceObject, "rightEyeClosedConfidence")}];
       [v3 setObject:v39 forKeyedSubscript:@"RightEyeBlinkLevel"];
     }
   }
 
-  if ([v2 hasSmileConfidence])
+  if ([underlyingFaceObject hasSmileConfidence])
   {
-    v40 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v2, "smileConfidence")}];
+    v40 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(underlyingFaceObject, "smileConfidence")}];
     [v3 setObject:v40 forKeyedSubscript:@"SmileLevel"];
   }
 
@@ -224,8 +224,8 @@
 
 - (unint64_t)syntheticFocusMode
 {
-  v2 = [(CAMFaceResult *)self underlyingMetadataObject];
-  v3 = +[CAMCaptureConversions CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:](CAMCaptureConversions, "CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:", [v2 syntheticFocusMode]);
+  underlyingMetadataObject = [(CAMFaceResult *)self underlyingMetadataObject];
+  v3 = +[CAMCaptureConversions CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:](CAMCaptureConversions, "CAMMetadataObjectSyntheticFocusModeForAVCaptureMetadataObjectSyntheticFocusMode:", [underlyingMetadataObject syntheticFocusMode]);
 
   return v3;
 }

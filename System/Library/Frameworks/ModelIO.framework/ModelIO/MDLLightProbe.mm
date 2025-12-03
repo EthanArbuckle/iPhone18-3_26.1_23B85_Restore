@@ -1,18 +1,18 @@
 @interface MDLLightProbe
-+ (CGColor)sampleSHAt:(id)a3 usingCoefficients:(unint64_t)a4 withLevel:;
++ (CGColor)sampleSHAt:(id)at usingCoefficients:(unint64_t)coefficients withLevel:;
 + (MDLLightProbe)lightProbeWithTextureSize:(NSInteger)textureSize forLocation:(MDLTransform *)transform lightsToConsider:(NSArray *)lightsToConsider objectsToConsider:(NSArray *)objectsToConsider reflectiveCubemap:(MDLTexture *)reflectiveCubemap irradianceCubemap:(MDLTexture *)irradianceCubemap;
-+ (__n128)calculateIrradianceGradientUsingSamples:(double *)a3 ofSize:(uint64_t)a4 fromSH:(void *)a5 withLevel:(uint64_t)a6;
++ (__n128)calculateIrradianceGradientUsingSamples:(double *)samples ofSize:(uint64_t)size fromSH:(void *)h withLevel:(uint64_t)level;
 - (MDLLightProbe)initWithReflectiveTexture:(MDLTexture *)reflectiveTexture irradianceTexture:(MDLTexture *)irradianceTexture;
 - (void)generateSphericalHarmonicsFromIrradiance:(NSUInteger)sphericalHarmonicsLevel;
-- (void)setSphericalHarmonicsCoefficients:(id)a3;
+- (void)setSphericalHarmonicsCoefficients:(id)coefficients;
 @end
 
 @implementation MDLLightProbe
 
-- (void)setSphericalHarmonicsCoefficients:(id)a3
+- (void)setSphericalHarmonicsCoefficients:(id)coefficients
 {
-  v7 = a3;
-  v5 = objc_msgSend_dataWithData_(MEMORY[0x277CBEB28], v4, v7);
+  coefficientsCopy = coefficients;
+  v5 = objc_msgSend_dataWithData_(MEMORY[0x277CBEB28], v4, coefficientsCopy);
   sphericalHarmonicsCoefficients = self->_sphericalHarmonicsCoefficients;
   self->_sphericalHarmonicsCoefficients = v5;
 }
@@ -172,28 +172,28 @@
   free(v21);
 }
 
-+ (__n128)calculateIrradianceGradientUsingSamples:(double *)a3 ofSize:(uint64_t)a4 fromSH:(void *)a5 withLevel:(uint64_t)a6
++ (__n128)calculateIrradianceGradientUsingSamples:(double *)samples ofSize:(uint64_t)size fromSH:(void *)h withLevel:(uint64_t)level
 {
-  v10 = a5;
+  hCopy = h;
   v11 = 0uLL;
-  if (v10 && a4)
+  if (hCopy && size)
   {
     v19 = xmmword_239F9C590;
     do
     {
       v20 = v11;
-      v12 = objc_msgSend_sampleSHAt_usingCoefficients_withLevel_(MDLLightProbe, v9, v10, a6, *a3, *&v19);
+      v12 = objc_msgSend_sampleSHAt_usingCoefficients_withLevel_(MDLLightProbe, v9, hCopy, level, *samples, *&v19);
       Components = CGColorGetComponents(v12);
       v14 = *Components;
       v15 = vmulq_f64(vcvtq_f64_f32(vcvt_f32_f64(*(Components + 1))), v19);
       v16 = v15.f64[0] + v14 * 0.2126 + v15.f64[1];
-      v17 = *a3;
-      a3 += 2;
+      v17 = *samples;
+      samples += 2;
       v11 = vmlaq_n_f32(v20, v17, v16);
-      --a4;
+      --size;
     }
 
-    while (a4);
+    while (size);
   }
 
   v21 = v11;
@@ -201,12 +201,12 @@
   return v21;
 }
 
-+ (CGColor)sampleSHAt:(id)a3 usingCoefficients:(unint64_t)a4 withLevel:
++ (CGColor)sampleSHAt:(id)at usingCoefficients:(unint64_t)coefficients withLevel:
 {
   v38 = v4;
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if (a4 >= 4)
+  atCopy = at;
+  if (coefficients >= 4)
   {
     v10 = MEMORY[0x277CBEAD8];
     v11 = objc_opt_class();
@@ -215,9 +215,9 @@
     objc_msgSend_raise_format_(v10, v14, @"ModelIOException", @"[%@ %@]: Spherical harmonics levels beyond 3 are not supported", v12, v13, *&v38);
   }
 
-  v15 = a4 + 1;
+  v15 = coefficients + 1;
   v16 = (v15 * v15);
-  if (objc_msgSend_length(v9, v7, v8) != 12 * v16)
+  if (objc_msgSend_length(atCopy, v7, v8) != 12 * v16)
   {
     v17 = MEMORY[0x277CBEAD8];
     v18 = objc_opt_class();
@@ -227,29 +227,29 @@
   }
 
   v22 = malloc_type_calloc((v15 * v15), 4uLL, 0x100004052888210uLL);
-  v23 = v9;
+  v23 = atCopy;
   v26 = objc_msgSend_bytes(v23, v24, v25);
   v27 = vmulq_f32(v38, v38);
   *&v28 = vaddv_f32(*v27.f32) + v27.f32[2];
   *v27.f32 = vrsqrte_f32(v28);
   *v27.f32 = vmul_f32(vrsqrts_f32(v28, vmul_f32(*v27.f32, *v27.f32)), *v27.f32);
   v29 = vmulq_n_f32(v38, vmul_f32(*v27.f32, vrsqrts_f32(v28, vmul_f32(*v27.f32, *v27.f32))).f32[0]);
-  if (a4 > 1)
+  if (coefficients > 1)
   {
-    if (a4 == 2)
+    if (coefficients == 2)
     {
       sub_239EE90DC(v22, v29);
     }
 
-    else if (a4 == 3)
+    else if (coefficients == 3)
     {
       sub_239EE91A4(v22, v29);
     }
   }
 
-  else if (a4)
+  else if (coefficients)
   {
-    if (a4 == 1)
+    if (coefficients == 1)
     {
       sub_239EE9094(v22, v29);
     }
@@ -260,7 +260,7 @@
     sub_239EE9084(v22);
   }
 
-  if (a4 == -1)
+  if (coefficients == -1)
   {
     v31 = 0uLL;
   }

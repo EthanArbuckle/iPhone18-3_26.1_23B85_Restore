@@ -1,23 +1,23 @@
 @interface TVLRGBColorDetector
-- (TVLRGBColorDetector)initWithThresholdsForHue:(double)a3 saturation:(double)a4 brightness:(double)a5;
+- (TVLRGBColorDetector)initWithThresholdsForHue:(double)hue saturation:(double)saturation brightness:(double)brightness;
 - (TVLRGBColorDetectorDelegate)delegate;
-- (id)_averageColorForSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (id)_averageColorForSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)_prepareForDetection;
 - (void)_resetRollingAverage;
 - (void)_setupCaptureSession;
 - (void)_startDetection;
 - (void)_stopDetection;
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
-- (void)captureSessionRuntimeErrorDidOccur:(id)a3;
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
+- (void)captureSessionRuntimeErrorDidOccur:(id)occur;
 - (void)dealloc;
 - (void)endDetection;
-- (void)setBacklightState:(BOOL)a3;
+- (void)setBacklightState:(BOOL)state;
 - (void)tearDown;
 @end
 
 @implementation TVLRGBColorDetector
 
-- (TVLRGBColorDetector)initWithThresholdsForHue:(double)a3 saturation:(double)a4 brightness:(double)a5
+- (TVLRGBColorDetector)initWithThresholdsForHue:(double)hue saturation:(double)saturation brightness:(double)brightness
 {
   v33.receiver = self;
   v33.super_class = TVLRGBColorDetector;
@@ -25,9 +25,9 @@
   v9 = v8;
   if (v8)
   {
-    *(v8 + 18) = a3;
-    *(v8 + 19) = a4;
-    *(v8 + 20) = a5;
+    *(v8 + 18) = hue;
+    *(v8 + 19) = saturation;
+    *(v8 + 20) = brightness;
     v8[8] = 1;
     __asm { FMOV            V0.2D, #5.0 }
 
@@ -156,20 +156,20 @@ void __70__TVLRGBColorDetector_initWithThresholdsForHue_saturation_brightness___
     self->_backlightNotificationToken = 0;
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277CE59C0] object:self->_session];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CE59C0] object:self->_session];
 
   v6.receiver = self;
   v6.super_class = TVLRGBColorDetector;
   [(TVLRGBColorDetector *)&v6 dealloc];
 }
 
-- (void)setBacklightState:(BOOL)a3
+- (void)setBacklightState:(BOOL)state
 {
-  if (self->_backlightState != a3)
+  if (self->_backlightState != state)
   {
-    self->_backlightState = a3;
-    if (!a3 || !self->_ignoreBacklightProximityState)
+    self->_backlightState = state;
+    if (!state || !self->_ignoreBacklightProximityState)
     {
       v7 = v3;
       v8 = v4;
@@ -178,7 +178,7 @@ void __70__TVLRGBColorDetector_initWithThresholdsForHue_saturation_brightness___
       v5[2] = __41__TVLRGBColorDetector_setBacklightState___block_invoke;
       v5[3] = &unk_279D6BD18;
       v5[4] = self;
-      v6 = a3;
+      stateCopy = state;
       dispatch_async(MEMORY[0x277D85CD0], v5);
     }
   }
@@ -226,10 +226,10 @@ uint64_t __31__TVLRGBColorDetector_tearDown__block_invoke(uint64_t a1)
   return [v2 setMotionManager:0];
 }
 
-- (void)captureOutput:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureOutput:(id)output didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = [(TVLRGBColorDetector *)self _averageColorForSampleBuffer:a4];
+  v6 = [(TVLRGBColorDetector *)self _averageColorForSampleBuffer:buffer];
   v7 = v6;
   if (v6 && (self->_proximityState && !self->_backlightState || self->_ignoreBacklightProximityState))
   {
@@ -324,10 +324,10 @@ void __74__TVLRGBColorDetector_captureOutput_didOutputSampleBuffer_fromConnectio
   [v2 colorDetector:*(a1 + 32) metThresholdConditionsWithColor:v3];
 }
 
-- (id)_averageColorForSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (id)_averageColorForSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v3 = [objc_alloc(MEMORY[0x277CBF758]) initWithCVPixelBuffer:CMSampleBufferGetImageBuffer(a3)];
+  v3 = [objc_alloc(MEMORY[0x277CBF758]) initWithCVPixelBuffer:CMSampleBufferGetImageBuffer(buffer)];
   [v3 extent];
   v8 = [objc_alloc(MEMORY[0x277CBF788]) initWithX:v4 Y:v5 Z:v6 W:v7];
   v9 = MEMORY[0x277CBF750];
@@ -339,16 +339,16 @@ void __74__TVLRGBColorDetector_captureOutput_didOutputSampleBuffer_fromConnectio
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
   v12 = [v9 filterWithName:@"CIAreaAverage" withInputParameters:v11];
 
-  v13 = [v12 outputImage];
-  v14 = v13;
+  outputImage = [v12 outputImage];
+  v14 = outputImage;
   v15 = 0;
-  if (v12 && v13)
+  if (v12 && outputImage)
   {
     v16 = malloc_type_calloc(4uLL, 1uLL, 0x100004077774924uLL);
     v17 = MEMORY[0x277CBF740];
     v27 = *MEMORY[0x277CBF948];
-    v18 = [MEMORY[0x277CBEB68] null];
-    v28 = v18;
+    null = [MEMORY[0x277CBEB68] null];
+    v28 = null;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v20 = [v17 contextWithOptions:v19];
 
@@ -484,15 +484,15 @@ LABEL_18:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26CD78000, a2, OS_LOG_TYPE_ERROR, "An error occured. %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (void)captureSessionRuntimeErrorDidOccur:(id)a3
+- (void)captureSessionRuntimeErrorDidOccur:(id)occur
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE5940]];
+  userInfo = [occur userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE5940]];
 
   if (_TVLLogDefault_onceToken_1 != -1)
   {

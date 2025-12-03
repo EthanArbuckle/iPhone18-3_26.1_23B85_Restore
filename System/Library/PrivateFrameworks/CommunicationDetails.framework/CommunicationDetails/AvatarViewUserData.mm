@@ -1,6 +1,6 @@
 @interface AvatarViewUserData
 - (_TtC20CommunicationDetails18AvatarViewUserData)init;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation AvatarViewUserData
@@ -13,9 +13,9 @@
   return [(AvatarViewUserData *)&v3 init];
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   AvatarViewUserData.copy(with:)(v6);
 
   __swift_project_boxed_opaque_existential_1Tm(v6, v6[3]);

@@ -1,5 +1,5 @@
 @interface CNVCardUserDefaults
-+ (id)objectForKey:(id)a3;
++ (id)objectForKey:(id)key;
 + (id)vCardPrivateFields;
 @end
 
@@ -7,7 +7,7 @@
 
 + (id)vCardPrivateFields
 {
-  v2 = [a1 objectForKey:@"ABPrivateVCardFields"];
+  v2 = [self objectForKey:@"ABPrivateVCardFields"];
   objc_opt_class();
   v3 = v2;
   if (objc_opt_isKindOfClass())
@@ -23,9 +23,9 @@
   v5 = v4;
 
   v6 = [v5 _cn_filter:&__block_literal_global_15];
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
 
-  return v7;
+  return allKeys;
 }
 
 uint64_t __41__CNVCardUserDefaults_vCardPrivateFields__block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -49,9 +49,9 @@ uint64_t __41__CNVCardUserDefaults_vCardPrivateFields__block_invoke(uint64_t a1,
   return v7;
 }
 
-+ (id)objectForKey:(id)a3
++ (id)objectForKey:(id)key
 {
-  v3 = CFPreferencesCopyAppValue(a3, @"com.apple.AddressBook");
+  v3 = CFPreferencesCopyAppValue(key, @"com.apple.AddressBook");
 
   return v3;
 }

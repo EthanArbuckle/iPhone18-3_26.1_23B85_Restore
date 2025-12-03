@@ -1,9 +1,9 @@
 @interface OS_axr_logical_image_list
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
-- (OS_axr_logical_image_list)initWithCoder:(id)a3;
+- (OS_axr_logical_image_list)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OS_axr_logical_image_list
@@ -36,9 +36,9 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
     v8.receiver = self;
     v8.super_class = OS_axr_logical_image_list;
@@ -55,7 +55,7 @@
         v6 = 0;
       }
 
-      LOBYTE(v5) = AXRLogicalImageList::IsEqual(v6, (a3 + 16));
+      LOBYTE(v5) = AXRLogicalImageList::IsEqual(v6, (equal + 16));
     }
   }
 
@@ -67,7 +67,7 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -148,12 +148,12 @@
 
     v15 = v9;
     v13 = objc_autoreleasePoolPush();
-    [a3 encodeDataObject:{objc_msgSend(MEMORY[0x29EDB8DA0], "dataWithBytesNoCopy:length:freeWhenDone:", v8, v6 - v15, 1, v14)}];
+    [coder encodeDataObject:{objc_msgSend(MEMORY[0x29EDB8DA0], "dataWithBytesNoCopy:length:freeWhenDone:", v8, v6 - v15, 1, v14)}];
     objc_autoreleasePoolPop(v13);
   }
 }
 
-- (OS_axr_logical_image_list)initWithCoder:(id)a3
+- (OS_axr_logical_image_list)initWithCoder:(id)coder
 {
   if (!self)
   {
@@ -164,14 +164,14 @@
   if (v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [a3 decodeDataObject];
-    if (v6)
+    decodeDataObject = [coder decodeDataObject];
+    if (decodeDataObject)
     {
-      v8 = v6;
-      v12 = [v6 bytes];
+      v8 = decodeDataObject;
+      bytes = [decodeDataObject bytes];
       v10 = 0;
       v11 = [v8 length];
-      AXRLogicalImageList::AXRLogicalImageList(&v4[2], &v12, &v11, &v10, 2, v9);
+      AXRLogicalImageList::AXRLogicalImageList(&v4[2], &bytes, &v11, &v10, 2, v9);
       if (!v10)
       {
         goto LABEL_5;

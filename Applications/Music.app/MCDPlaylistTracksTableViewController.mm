@@ -1,22 +1,22 @@
 @interface MCDPlaylistTracksTableViewController
-- (MCDPlaylistTracksTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
-- (MCDPlaylistTracksTableViewController)initWithPlaylist:(id)a3 showLocalContent:(BOOL)a4;
-- (id)shuffleContainerForContentManager:(id)a3;
+- (MCDPlaylistTracksTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
+- (MCDPlaylistTracksTableViewController)initWithPlaylist:(id)playlist showLocalContent:(BOOL)content;
+- (id)shuffleContainerForContentManager:(id)manager;
 - (id)sortingPreferenceKey;
-- (id)textForHeaderViewInContentManager:(id)a3;
+- (id)textForHeaderViewInContentManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDPlaylistTracksTableViewController
 
-- (MCDPlaylistTracksTableViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDPlaylistTracksTableViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
   v10.receiver = self;
   v10.super_class = MCDPlaylistTracksTableViewController;
-  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)&v10 initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   if (v8)
   {
@@ -26,18 +26,18 @@
   return v8;
 }
 
-- (MCDPlaylistTracksTableViewController)initWithPlaylist:(id)a3 showLocalContent:(BOOL)a4
+- (MCDPlaylistTracksTableViewController)initWithPlaylist:(id)playlist showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[MCDPlaylistTracksDataSource alloc] initWithPlaylist:v6];
+  contentCopy = content;
+  playlistCopy = playlist;
+  v7 = [[MCDPlaylistTracksDataSource alloc] initWithPlaylist:playlistCopy];
   v11.receiver = self;
   v11.super_class = MCDPlaylistTracksTableViewController;
-  v8 = [(MCDLibraryTableViewController *)&v11 initWithIdentifier:MCDPlaylistTracksViewControllerIdentifier showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)&v11 initWithIdentifier:MCDPlaylistTracksViewControllerIdentifier showLocalContent:contentCopy dataSource:v7];
   if (v8)
   {
-    v9 = [v6 name];
-    [(MCDPlaylistTracksTableViewController *)v8 setTitle:v9];
+    name = [playlistCopy name];
+    [(MCDPlaylistTracksTableViewController *)v8 setTitle:name];
 
     [(MCDPlaylistTracksTableViewController *)v8 setPlayActivityFeatureName:@"playlist_detail"];
   }
@@ -50,11 +50,11 @@
   v9.receiver = self;
   v9.super_class = MCDPlaylistTracksTableViewController;
   [(MCDLibraryTableViewController *)&v9 viewDidLoad];
-  v3 = [(MCDLibraryTableViewController *)self contentManager];
-  [v3 setShowShuffleAll:1];
+  contentManager = [(MCDLibraryTableViewController *)self contentManager];
+  [contentManager setShowShuffleAll:1];
 
-  v4 = [(MCDLibraryTableViewController *)self contentManager];
-  [v4 setShowSiriCellInLimitedUI:1];
+  contentManager2 = [(MCDLibraryTableViewController *)self contentManager];
+  [contentManager2 setShowSiriCellInLimitedUI:1];
 
   objc_initWeak(&location, self);
   objc_copyWeak(&v7, &location);
@@ -65,23 +65,23 @@
   objc_destroyWeak(&location);
 }
 
-- (id)shuffleContainerForContentManager:(id)a3
+- (id)shuffleContainerForContentManager:(id)manager
 {
-  v3 = [(MCDLibraryTableViewController *)self dataSource];
-  v4 = [v3 containerObject];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
+  containerObject = [dataSource containerObject];
 
-  return v4;
+  return containerObject;
 }
 
 - (id)sortingPreferenceKey
 {
-  v2 = [(MCDLibraryTableViewController *)self dataSource];
-  v3 = [v2 containerObject];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
+  containerObject = [dataSource containerObject];
 
-  v4 = [v3 sortStorageKeyDomain];
-  if ([v4 length])
+  sortStorageKeyDomain = [containerObject sortStorageKeyDomain];
+  if ([sortStorageKeyDomain length])
   {
-    v5 = [@"playlistDetailSortType-" stringByAppendingString:v4];
+    v5 = [@"playlistDetailSortType-" stringByAppendingString:sortStorageKeyDomain];
   }
 
   else
@@ -92,7 +92,7 @@
   return v5;
 }
 
-- (id)textForHeaderViewInContentManager:(id)a3
+- (id)textForHeaderViewInContentManager:(id)manager
 {
   if ([(MCDLibraryTableViewController *)self showLocalContent])
   {

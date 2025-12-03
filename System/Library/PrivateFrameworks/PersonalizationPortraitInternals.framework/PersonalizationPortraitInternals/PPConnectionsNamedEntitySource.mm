@@ -1,21 +1,21 @@
 @interface PPConnectionsNamedEntitySource
 + (PPConnectionsNamedEntitySource)sharedInstance;
-- (PPConnectionsNamedEntitySource)initWithNamedEntityStore:(id)a3 contactStore:(id)a4;
-- (id)locationItemsWithCriteria:(id)a3 earliest:(id)a4 latest:(id)a5 limit:(unint64_t)a6 consumer:(unint64_t)a7 explanationSet:(id)a8;
+- (PPConnectionsNamedEntitySource)initWithNamedEntityStore:(id)store contactStore:(id)contactStore;
+- (id)locationItemsWithCriteria:(id)criteria earliest:(id)earliest latest:(id)latest limit:(unint64_t)limit consumer:(unint64_t)consumer explanationSet:(id)set;
 @end
 
 @implementation PPConnectionsNamedEntitySource
 
-- (id)locationItemsWithCriteria:(id)a3 earliest:(id)a4 latest:(id)a5 limit:(unint64_t)a6 consumer:(unint64_t)a7 explanationSet:(id)a8
+- (id)locationItemsWithCriteria:(id)criteria earliest:(id)earliest latest:(id)latest limit:(unint64_t)limit consumer:(unint64_t)consumer explanationSet:(id)set
 {
   v83 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a8;
-  if ([v12 locationField] == 1)
+  criteriaCopy = criteria;
+  earliestCopy = earliest;
+  latestCopy = latest;
+  setCopy = set;
+  if ([criteriaCopy locationField] == 1)
   {
-    v58 = v15;
+    v58 = setCopy;
     v16 = objc_opt_new();
     v17 = objc_opt_new();
     v18 = objc_opt_new();
@@ -30,17 +30,17 @@
     objc_autoreleasePoolPop(v22);
     [v18 setMatchingCategories:v23];
 
-    [v18 setFromDate:v13];
+    [v18 setFromDate:earliestCopy];
     namedEntityStore = self->_namedEntityStore;
     v78 = 0;
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = __106__PPConnectionsNamedEntitySource_locationItemsWithCriteria_earliest_latest_limit_consumer_explanationSet___block_invoke;
     v73[3] = &unk_278977E08;
-    v74 = v12;
+    v74 = criteriaCopy;
     v62 = v17;
     v75 = v62;
-    v76 = self;
+    selfCopy = self;
     v25 = v16;
     v77 = v25;
     v57 = v18;
@@ -50,9 +50,9 @@
     v56 = v26;
     if (v16)
     {
-      v53 = v14;
-      v54 = v13;
-      v55 = v12;
+      v53 = latestCopy;
+      v54 = earliestCopy;
+      v55 = criteriaCopy;
       v71 = 0u;
       v72 = 0u;
       v69 = 0u;
@@ -79,12 +79,12 @@
 
             v33 = *(*(&v69 + 1) + 8 * v32);
             v34 = objc_autoreleasePoolPush();
-            v35 = [v33 documentID];
+            documentID = [v33 documentID];
 
-            if (v35)
+            if (documentID)
             {
-              v36 = [v33 documentID];
-              v37 = [v29 objectForKeyedSubscript:v36];
+              documentID2 = [v33 documentID];
+              v37 = [v29 objectForKeyedSubscript:documentID2];
 
               if (v37)
               {
@@ -109,8 +109,8 @@
                       }
 
                       v43 = *(*(&v65 + 1) + 8 * i);
-                      v44 = [v33 value];
-                      v45 = [v44 containsString:v43];
+                      value = [v33 value];
+                      v45 = [value containsString:v43];
 
                       if (v45)
                       {
@@ -143,9 +143,9 @@ LABEL_20:
                 v38 = pp_connections_log_handle();
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
                 {
-                  v46 = [v33 originatingBundleID];
+                  originatingBundleID = [v33 originatingBundleID];
                   *buf = 138412290;
-                  v82 = v46;
+                  v82 = originatingBundleID;
                   _os_log_impl(&dword_23224A000, v38, OS_LOG_TYPE_DEFAULT, "PPConnectionsNamedEntitySource found a full address from %@ with no corresponding street value", buf, 0xCu);
                 }
               }
@@ -163,10 +163,10 @@ LABEL_20:
       }
 
       v47 = [v27 sortedArrayUsingComparator:&__block_literal_global_22245];
-      v13 = v54;
-      v12 = v55;
-      v14 = v53;
-      v15 = v58;
+      earliestCopy = v54;
+      criteriaCopy = v55;
+      latestCopy = v53;
+      setCopy = v58;
     }
 
     else
@@ -181,7 +181,7 @@ LABEL_20:
       }
 
       v47 = 0;
-      v15 = v58;
+      setCopy = v58;
       v29 = v62;
     }
   }
@@ -193,7 +193,7 @@ LABEL_20:
     if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v82) = [v12 locationField];
+      LODWORD(v82) = [criteriaCopy locationField];
       _os_log_impl(&dword_23224A000, v48, OS_LOG_TYPE_DEFAULT, "PPConnectionsNamedEntitySource: ignoring query for %hhu", buf, 8u);
     }
 
@@ -484,18 +484,18 @@ LABEL_17:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (PPConnectionsNamedEntitySource)initWithNamedEntityStore:(id)a3 contactStore:(id)a4
+- (PPConnectionsNamedEntitySource)initWithNamedEntityStore:(id)store contactStore:(id)contactStore
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  contactStoreCopy = contactStore;
   v12.receiver = self;
   v12.super_class = PPConnectionsNamedEntitySource;
   v9 = [(PPConnectionsNamedEntitySource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_namedEntityStore, a3);
-    objc_storeStrong(&v10->_contactStore, a4);
+    objc_storeStrong(&v9->_namedEntityStore, store);
+    objc_storeStrong(&v10->_contactStore, contactStore);
   }
 
   return v10;

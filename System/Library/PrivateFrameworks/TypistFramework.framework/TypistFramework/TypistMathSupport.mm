@@ -1,15 +1,15 @@
 @interface TypistMathSupport
 - (TypistMathSupport)init;
-- (id)getBoundingBoxWithLatex:(id)a3 error:(id *)a4;
+- (id)getBoundingBoxWithLatex:(id)latex error:(id *)error;
 @end
 
 @implementation TypistMathSupport
 
-- (id)getBoundingBoxWithLatex:(id)a3 error:(id *)a4
+- (id)getBoundingBoxWithLatex:(id)latex error:(id *)error
 {
   v5 = sub_2701A00E8();
   v7 = v6;
-  v8 = self;
+  selfCopy = self;
   sub_27019F314(v5, v7);
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_2807C1F18, &qword_2701A4680);

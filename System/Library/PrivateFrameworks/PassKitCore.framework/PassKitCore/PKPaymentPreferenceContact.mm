@@ -1,24 +1,24 @@
 @interface PKPaymentPreferenceContact
-- (BOOL)preferenceObject:(id)a3 representsContact:(id)a4;
-- (PKPaymentPreferenceContact)initWithTitle:(id)a3 preferences:(id)a4 selectedIndex:(unint64_t)a5 readOnly:(BOOL)a6;
-- (id)_removeDuplicateContacts:(id)a3;
-- (id)errorsForPreference:(id)a3;
-- (int64_t)indexOfContact:(id)a3;
-- (void)_mergeContacts:(id)a3;
+- (BOOL)preferenceObject:(id)object representsContact:(id)contact;
+- (PKPaymentPreferenceContact)initWithTitle:(id)title preferences:(id)preferences selectedIndex:(unint64_t)index readOnly:(BOOL)only;
+- (id)_removeDuplicateContacts:(id)contacts;
+- (id)errorsForPreference:(id)preference;
+- (int64_t)indexOfContact:(id)contact;
+- (void)_mergeContacts:(id)contacts;
 - (void)_updateSelectedIndex;
-- (void)addHideMyEmailPreference:(BOOL)a3;
+- (void)addHideMyEmailPreference:(BOOL)preference;
 - (void)mergeRecentsAndMeCard;
-- (void)setContactKey:(id)a3;
-- (void)setErrors:(id)a3 forPreference:(id)a4;
+- (void)setContactKey:(id)key;
+- (void)setErrors:(id)errors forPreference:(id)preference;
 @end
 
 @implementation PKPaymentPreferenceContact
 
-- (PKPaymentPreferenceContact)initWithTitle:(id)a3 preferences:(id)a4 selectedIndex:(unint64_t)a5 readOnly:(BOOL)a6
+- (PKPaymentPreferenceContact)initWithTitle:(id)title preferences:(id)preferences selectedIndex:(unint64_t)index readOnly:(BOOL)only
 {
   v9.receiver = self;
   v9.super_class = PKPaymentPreferenceContact;
-  v6 = [(PKPaymentPreference *)&v9 initWithTitle:a3 preferences:a4 selectedIndex:a5 readOnly:a6];
+  v6 = [(PKPaymentPreference *)&v9 initWithTitle:title preferences:preferences selectedIndex:index readOnly:only];
   if (v6)
   {
     v7 = +[PKPaymentOptionsRecents defaultInstance];
@@ -28,14 +28,14 @@
   return v6;
 }
 
-- (void)setContactKey:(id)a3
+- (void)setContactKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   contactKeys = self->_contactKeys;
-  v15 = v4;
+  v15 = keyCopy;
   if (contactKeys)
   {
-    v6 = [(NSOrderedSet *)contactKeys indexOfObject:v4];
+    v6 = [(NSOrderedSet *)contactKeys indexOfObject:keyCopy];
     if (!v6)
     {
       goto LABEL_9;
@@ -45,8 +45,8 @@
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = [MEMORY[0x1E695DEC8] arrayWithObject:v15];
-      v9 = [(NSOrderedSet *)self->_contactKeys array];
-      v10 = [v8 arrayByAddingObjectsFromArray:v9];
+      array = [(NSOrderedSet *)self->_contactKeys array];
+      v10 = [v8 arrayByAddingObjectsFromArray:array];
 
       v11 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v10];
     }
@@ -66,7 +66,7 @@
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB8] orderedSetWithObject:v4];
+    v12 = [MEMORY[0x1E695DFB8] orderedSetWithObject:keyCopy];
     v10 = self->_contactKeys;
     self->_contactKeys = v12;
   }
@@ -74,16 +74,16 @@
 LABEL_9:
 }
 
-- (id)_removeDuplicateContacts:(id)a3
+- (id)_removeDuplicateContacts:(id)contacts
 {
   v44 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  contactsCopy = contacts;
+  array = [MEMORY[0x1E695DF70] array];
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v3;
+  obj = contactsCopy;
   v37 = [obj countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v37)
   {
@@ -109,30 +109,30 @@ LABEL_9:
         v38[3] = &unk_1E79C9A68;
         v38[4] = self;
         v38[5] = v6;
-        v7 = [v4 indexOfObjectPassingTest:{v38, v29}];
-        v8 = [(PKPaymentPreferenceContact *)self contactKeys];
-        if (![v8 count])
+        v7 = [array indexOfObjectPassingTest:{v38, v29}];
+        contactKeys = [(PKPaymentPreferenceContact *)self contactKeys];
+        if (![contactKeys count])
         {
           goto LABEL_18;
         }
 
-        if (![v8 containsObject:v34] || (objc_msgSend(v6, "phoneNumbers"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "value"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "stringValue"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v11, v10, v9, v13))
+        if (![contactKeys containsObject:v34] || (objc_msgSend(v6, "phoneNumbers"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "firstObject"), v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "value"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "stringValue"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v11, v10, v9, v13))
         {
-          if (![v8 containsObject:v32] || (objc_msgSend(v6, "emailAddresses"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "value"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, v15, v14, v17))
+          if (![contactKeys containsObject:v32] || (objc_msgSend(v6, "emailAddresses"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "firstObject"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v15, "value"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, v15, v14, v17))
           {
-            if (![v8 containsObject:v31] || (objc_msgSend(v6, "postalAddresses"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "firstObject"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "value"), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v18, v20))
+            if (![contactKeys containsObject:v31] || (objc_msgSend(v6, "postalAddresses"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "firstObject"), v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v19, "value"), v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v18, v20))
             {
-              if (([v8 containsObject:v30] & 1) != 0 || objc_msgSend(v8, "containsObject:", v29))
+              if (([contactKeys containsObject:v30] & 1) != 0 || objc_msgSend(contactKeys, "containsObject:", v29))
               {
-                v21 = [v6 familyName];
-                if ([v21 length])
+                familyName = [v6 familyName];
+                if ([familyName length])
                 {
                 }
 
                 else
                 {
-                  v22 = [v6 givenName];
-                  v23 = [v22 length];
+                  givenName = [v6 givenName];
+                  v23 = [givenName length];
 
                   if (!v23)
                   {
@@ -144,26 +144,26 @@ LABEL_9:
 LABEL_18:
               if (v7 == 0x7FFFFFFFFFFFFFFFLL)
               {
-                [v4 addObject:v6];
+                [array addObject:v6];
                 goto LABEL_26;
               }
 
-              v24 = [v4 objectAtIndex:v7];
+              v24 = [array objectAtIndex:v7];
               if ([v24 contactSource] == 3)
               {
-                [v4 removeObjectAtIndex:v7];
-                [v4 addObject:v6];
-                v25 = +[PKPaymentOptionsRecents defaultInstance];
-                v26 = [v24 recentContact];
-                [v25 deleteRecent:v26];
+                [array removeObjectAtIndex:v7];
+                [array addObject:v6];
+                recentContact2 = +[PKPaymentOptionsRecents defaultInstance];
+                recentContact = [v24 recentContact];
+                [recentContact2 deleteRecent:recentContact];
 
                 goto LABEL_24;
               }
 
               if ([v6 contactSource] == 3)
               {
-                v25 = [v6 recentContact];
-                [v24 setRecentContact:v25];
+                recentContact2 = [v6 recentContact];
+                [v24 setRecentContact:recentContact2];
 LABEL_24:
               }
             }
@@ -179,7 +179,7 @@ LABEL_26:
     while (v37);
   }
 
-  v27 = [v4 copy];
+  v27 = [array copy];
 
   return v27;
 }
@@ -188,30 +188,30 @@ LABEL_26:
 {
   if (![(PKPaymentPreference *)self isReadOnly])
   {
-    v3 = [(PKPaymentPreference *)self preferences];
-    v8 = [v3 mutableCopy];
+    preferences = [(PKPaymentPreference *)self preferences];
+    v8 = [preferences mutableCopy];
 
-    v4 = [(PKPaymentPreferenceContact *)self paymentOptionsRecents];
-    v5 = [v4 recentsForPreference:self];
+    paymentOptionsRecents = [(PKPaymentPreferenceContact *)self paymentOptionsRecents];
+    v5 = [paymentOptionsRecents recentsForPreference:self];
     [v8 addObjectsFromArray:v5];
 
-    v6 = [(PKPaymentPreferenceContact *)self paymentOptionsRecents];
-    v7 = [v6 meCardEntriesForPreference:self];
+    paymentOptionsRecents2 = [(PKPaymentPreferenceContact *)self paymentOptionsRecents];
+    v7 = [paymentOptionsRecents2 meCardEntriesForPreference:self];
     [v8 addObjectsFromArray:v7];
 
     [(PKPaymentPreferenceContact *)self _mergeContacts:v8];
   }
 }
 
-- (void)_mergeContacts:(id)a3
+- (void)_mergeContacts:(id)contacts
 {
-  v7 = a3;
+  contactsCopy = contacts;
   if (![(PKPaymentPreference *)self isReadOnly])
   {
-    v4 = [(PKPaymentPreference *)self preferences];
-    v5 = [v4 mutableCopy];
+    preferences = [(PKPaymentPreference *)self preferences];
+    v5 = [preferences mutableCopy];
 
-    [v5 addObjectsFromArray:v7];
+    [v5 addObjectsFromArray:contactsCopy];
     [v5 sortUsingComparator:&__block_literal_global_24];
     v6 = [(PKPaymentPreferenceContact *)self _removeDuplicateContacts:v5];
 
@@ -239,19 +239,19 @@ uint64_t __45__PKPaymentPreferenceContact__mergeContacts___block_invoke(uint64_t
 
 - (void)_updateSelectedIndex
 {
-  v3 = [(PKPaymentPreference *)self preferences];
-  v4 = [v3 count];
+  preferences = [(PKPaymentPreference *)self preferences];
+  v4 = [preferences count];
 
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if (v4)
   {
     if ([(PKPaymentPreference *)self selectedIndex]!= 0x7FFFFFFFFFFFFFFFLL)
     {
-      v6 = [(PKPaymentPreference *)self selectedIndex];
-      v7 = [(PKPaymentPreference *)self preferences];
-      v8 = [v7 count];
+      selectedIndex = [(PKPaymentPreference *)self selectedIndex];
+      preferences2 = [(PKPaymentPreference *)self preferences];
+      v8 = [preferences2 count];
 
-      if (v6 < v8)
+      if (selectedIndex < v8)
       {
         return;
       }
@@ -263,41 +263,41 @@ uint64_t __45__PKPaymentPreferenceContact__mergeContacts___block_invoke(uint64_t
   [(PKPaymentPreference *)self setSelectedIndex:v5];
 }
 
-- (int64_t)indexOfContact:(id)a3
+- (int64_t)indexOfContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(PKPaymentPreference *)self preferences];
+  contactCopy = contact;
+  preferences = [(PKPaymentPreference *)self preferences];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __45__PKPaymentPreferenceContact_indexOfContact___block_invoke;
   v9[3] = &unk_1E79C9A68;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 indexOfObjectPassingTest:v9];
+  v10 = contactCopy;
+  v6 = contactCopy;
+  v7 = [preferences indexOfObjectPassingTest:v9];
 
   return v7;
 }
 
-- (void)setErrors:(id)a3 forPreference:(id)a4
+- (void)setErrors:(id)errors forPreference:(id)preference
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKPaymentPreference *)self errors];
+  preferenceCopy = preference;
+  errorsCopy = errors;
+  errors = [(PKPaymentPreference *)self errors];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __54__PKPaymentPreferenceContact_setErrors_forPreference___block_invoke;
   v15[3] = &unk_1E79C9A40;
-  v9 = v6;
+  v9 = preferenceCopy;
   v16 = v9;
-  v10 = [v8 keysOfEntriesPassingTest:v15];
-  v11 = [v10 anyObject];
+  v10 = [errors keysOfEntriesPassingTest:v15];
+  anyObject = [v10 anyObject];
 
-  v12 = [(PKPaymentPreference *)self errors];
-  v13 = v12;
-  if (v11)
+  errors2 = [(PKPaymentPreference *)self errors];
+  v13 = errors2;
+  if (anyObject)
   {
-    v14 = v11;
+    v14 = anyObject;
   }
 
   else
@@ -305,26 +305,26 @@ uint64_t __45__PKPaymentPreferenceContact__mergeContacts___block_invoke(uint64_t
     v14 = v9;
   }
 
-  [v12 setObject:v7 forKey:v14];
+  [errors2 setObject:errorsCopy forKey:v14];
 }
 
-- (id)errorsForPreference:(id)a3
+- (id)errorsForPreference:(id)preference
 {
-  v4 = a3;
-  v5 = [(PKPaymentPreference *)self errors];
+  preferenceCopy = preference;
+  errors = [(PKPaymentPreference *)self errors];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __50__PKPaymentPreferenceContact_errorsForPreference___block_invoke;
   v12[3] = &unk_1E79C9A40;
-  v13 = v4;
-  v6 = v4;
-  v7 = [v5 keysOfEntriesPassingTest:v12];
-  v8 = [v7 anyObject];
+  v13 = preferenceCopy;
+  v6 = preferenceCopy;
+  v7 = [errors keysOfEntriesPassingTest:v12];
+  anyObject = [v7 anyObject];
 
-  if (v8)
+  if (anyObject)
   {
-    v9 = [(PKPaymentPreference *)self errors];
-    v10 = [v9 objectForKey:v8];
+    errors2 = [(PKPaymentPreference *)self errors];
+    v10 = [errors2 objectForKey:anyObject];
   }
 
   else
@@ -335,17 +335,17 @@ uint64_t __45__PKPaymentPreferenceContact__mergeContacts___block_invoke(uint64_t
   return v10;
 }
 
-- (BOOL)preferenceObject:(id)a3 representsContact:(id)a4
+- (BOOL)preferenceObject:(id)object representsContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contactCopy = contact;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     contactKeys = self->_contactKeys;
-    v9 = v6;
-    v10 = [(NSOrderedSet *)contactKeys array];
-    v11 = [v9 representsContact:v7 forContactKeys:v10];
+    v9 = objectCopy;
+    array = [(NSOrderedSet *)contactKeys array];
+    v11 = [v9 representsContact:contactCopy forContactKeys:array];
   }
 
   else
@@ -356,9 +356,9 @@ uint64_t __45__PKPaymentPreferenceContact__mergeContacts___block_invoke(uint64_t
   return v11;
 }
 
-- (void)addHideMyEmailPreference:(BOOL)a3
+- (void)addHideMyEmailPreference:(BOOL)preference
 {
-  v3 = a3;
+  preferenceCopy = preference;
   v14[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695CF18]);
   v6 = MEMORY[0x1E695CEE0];
@@ -370,14 +370,14 @@ uint64_t __45__PKPaymentPreferenceContact__mergeContacts___block_invoke(uint64_t
   [v5 setEmailAddresses:v10];
 
   [v5 setIsHideMyEmail:1];
-  v11 = [(PKPaymentPreference *)self preferences];
-  v12 = [v11 arrayByAddingObject:v5];
+  preferences = [(PKPaymentPreference *)self preferences];
+  v12 = [preferences arrayByAddingObject:v5];
   [(PKPaymentPreference *)self setPreferences:v12];
 
-  if (v3)
+  if (preferenceCopy)
   {
-    v13 = [(PKPaymentPreference *)self preferences];
-    -[PKPaymentPreference setSelectedIndex:](self, "setSelectedIndex:", [v13 count] - 1);
+    preferences2 = [(PKPaymentPreference *)self preferences];
+    -[PKPaymentPreference setSelectedIndex:](self, "setSelectedIndex:", [preferences2 count] - 1);
   }
 }
 

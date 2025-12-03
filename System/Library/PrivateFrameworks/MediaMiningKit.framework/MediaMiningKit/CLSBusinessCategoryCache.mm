@@ -1,43 +1,43 @@
 @interface CLSBusinessCategoryCache
-- (BOOL)hasRegion:(id)a3;
-- (CLSBusinessCategoryCache)initWithURL:(id)a3 dataModelName:(id)a4;
-- (id)_businessItemInRegion:(id)a3 matchingCategories:(id)a4 maximumDistance:(double)a5 forBusinessItems:(id)a6;
-- (id)_fetchBusinessItemsForMUIDs:(id)a3;
-- (id)_fetchedBusinessItemByMUIDForBusinessItems:(id)a3;
-- (id)businessItemFromManagedObject:(id)a3;
-- (id)businessItemsForMuid:(unint64_t)a3;
-- (id)businessItemsForMuids:(id)a3;
-- (id)businessItemsForRegion:(id)a3;
-- (id)businessItemsInRegion:(id)a3 categories:(id)a4 maximumDistance:(double)a5;
-- (id)nearestItemForRegion:(id)a3 inItems:(id)a4;
-- (id)predicateForEntryNearbyRegion:(id)a3;
-- (id)predicateForRegion:(id)a3;
-- (id)updateBusinessItems:(id)a3;
-- (unint64_t)numberOfBusinessItemsForRegion:(id)a3;
-- (void)_updateManagedBusinessItem:(id)a3 withBusinessItem:(id)a4;
-- (void)insertBatchesOfBusinessItems:(id)a3 forRegions:(id)a4;
-- (void)invalidateCacheForGeoServiceProviderChangeToProvider:(id)a3;
-- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)a3;
+- (BOOL)hasRegion:(id)region;
+- (CLSBusinessCategoryCache)initWithURL:(id)l dataModelName:(id)name;
+- (id)_businessItemInRegion:(id)region matchingCategories:(id)categories maximumDistance:(double)distance forBusinessItems:(id)items;
+- (id)_fetchBusinessItemsForMUIDs:(id)ds;
+- (id)_fetchedBusinessItemByMUIDForBusinessItems:(id)items;
+- (id)businessItemFromManagedObject:(id)object;
+- (id)businessItemsForMuid:(unint64_t)muid;
+- (id)businessItemsForMuids:(id)muids;
+- (id)businessItemsForRegion:(id)region;
+- (id)businessItemsInRegion:(id)region categories:(id)categories maximumDistance:(double)distance;
+- (id)nearestItemForRegion:(id)region inItems:(id)items;
+- (id)predicateForEntryNearbyRegion:(id)region;
+- (id)predicateForRegion:(id)region;
+- (id)updateBusinessItems:(id)items;
+- (unint64_t)numberOfBusinessItemsForRegion:(id)region;
+- (void)_updateManagedBusinessItem:(id)item withBusinessItem:(id)businessItem;
+- (void)insertBatchesOfBusinessItems:(id)items forRegions:(id)regions;
+- (void)invalidateCacheForGeoServiceProviderChangeToProvider:(id)provider;
+- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)timestamp;
 @end
 
 @implementation CLSBusinessCategoryCache
 
-- (id)updateBusinessItems:(id)a3
+- (id)updateBusinessItems:(id)items
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v6 = [(CLSDBCache *)self managedObjectContext];
+  itemsCopy = items;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __48__CLSBusinessCategoryCache_updateBusinessItems___block_invoke;
   v13[3] = &unk_2788A7350;
-  v14 = v4;
-  v15 = self;
+  v14 = itemsCopy;
+  selfCopy = self;
   v7 = v5;
   v16 = v7;
-  v17 = v6;
-  v8 = v6;
-  v9 = v4;
+  v17 = managedObjectContext;
+  v8 = managedObjectContext;
+  v9 = itemsCopy;
   [v8 performBlockAndWait:v13];
   v10 = v17;
   v11 = v7;
@@ -180,12 +180,12 @@ void __48__CLSBusinessCategoryCache_updateBusinessItems___block_invoke_2(uint64_
   }
 }
 
-- (void)_updateManagedBusinessItem:(id)a3 withBusinessItem:(id)a4
+- (void)_updateManagedBusinessItem:(id)item withBusinessItem:(id)businessItem
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 region];
-  v8 = [v6 categories];
+  itemCopy = item;
+  businessItemCopy = businessItem;
+  region = [businessItemCopy region];
+  categories = [businessItemCopy categories];
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -195,32 +195,32 @@ void __48__CLSBusinessCategoryCache_updateBusinessItems___block_invoke_2(uint64_
   v24 = 3221225472;
   v25 = ___CLSBusinessCategoryCacheSerializeCategories_block_invoke;
   v26 = &unk_2788A7418;
-  v10 = v8;
+  v10 = categories;
   v27 = v10;
   v28 = &v29;
   [v9 enumerateObjectsUsingBlock:&v23];
   v11 = *(v30 + 6);
 
   _Block_object_dispose(&v29, 8);
-  [v7 center];
+  [region center];
   v13 = v12;
   v15 = v14;
-  [v5 setMuid:{objc_msgSend(v6, "muid")}];
-  [v5 setVenueCapacity:{objc_msgSend(v6, "venueCapacity")}];
-  [v5 setLatitude:v13];
-  [v5 setLongitude:v15];
-  [v7 radius];
-  [v5 setRadius:?];
-  [v5 setCategories:v11];
-  v16 = [v6 name];
-  [v5 setName:v16];
+  [itemCopy setMuid:{objc_msgSend(businessItemCopy, "muid")}];
+  [itemCopy setVenueCapacity:{objc_msgSend(businessItemCopy, "venueCapacity")}];
+  [itemCopy setLatitude:v13];
+  [itemCopy setLongitude:v15];
+  [region radius];
+  [itemCopy setRadius:?];
+  [itemCopy setCategories:v11];
+  name = [businessItemCopy name];
+  [itemCopy setName:name];
 
-  v17 = [v6 businessCategories];
-  if ([v17 count])
+  businessCategories = [businessItemCopy businessCategories];
+  if ([businessCategories count])
   {
-    v18 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v17];
-    v19 = [v18 allObjects];
-    v20 = [v19 componentsJoinedByString:@"_#_"];
+    v18 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:businessCategories];
+    allObjects = [v18 allObjects];
+    v20 = [allObjects componentsJoinedByString:@"_#_"];
   }
 
   else
@@ -228,33 +228,33 @@ void __48__CLSBusinessCategoryCache_updateBusinessItems___block_invoke_2(uint64_
     v20 = 0;
   }
 
-  [v5 setBusinessCategories:v20];
+  [itemCopy setBusinessCategories:v20];
 
-  v21 = [v6 geoServiceProvider];
-  [v5 setGeoServiceProvider:v21];
+  geoServiceProvider = [businessItemCopy geoServiceProvider];
+  [itemCopy setGeoServiceProvider:geoServiceProvider];
 
-  v22 = [v6 isoCountryCode];
-  [v5 setIsoCountryCode:v22];
+  isoCountryCode = [businessItemCopy isoCountryCode];
+  [itemCopy setIsoCountryCode:isoCountryCode];
 }
 
-- (id)_fetchBusinessItemsForMUIDs:(id)a3
+- (id)_fetchBusinessItemsForMUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__1259;
   v18 = __Block_byref_object_dispose__1260;
   v19 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__CLSBusinessCategoryCache__fetchBusinessItemsForMUIDs___block_invoke;
   v10[3] = &unk_2788A73C8;
-  v6 = v4;
+  v6 = dsCopy;
   v11 = v6;
   v13 = &v14;
-  v7 = v5;
+  v7 = managedObjectContext;
   v12 = v7;
   [v7 performBlockAndWait:v10];
   v8 = v15[5];
@@ -282,22 +282,22 @@ void __56__CLSBusinessCategoryCache__fetchBusinessItemsForMUIDs___block_invoke(v
   *(v9 + 40) = v7;
 }
 
-- (unint64_t)numberOfBusinessItemsForRegion:(id)a3
+- (unint64_t)numberOfBusinessItemsForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__CLSBusinessCategoryCache_numberOfBusinessItemsForRegion___block_invoke;
   v10[3] = &unk_2788A88D8;
   v10[4] = self;
-  v6 = v4;
+  v6 = regionCopy;
   v11 = v6;
-  v7 = v5;
+  v7 = managedObjectContext;
   v12 = v7;
   v13 = &v14;
   [v7 performBlockAndWait:v10];
@@ -340,29 +340,29 @@ void __59__CLSBusinessCategoryCache_numberOfBusinessItemsForRegion___block_invok
   }
 }
 
-- (BOOL)hasRegion:(id)a3
+- (BOOL)hasRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __38__CLSBusinessCategoryCache_hasRegion___block_invoke;
   v9[3] = &unk_2788A88D8;
   v9[4] = self;
-  v6 = v4;
+  v6 = regionCopy;
   v10 = v6;
-  v7 = v5;
+  v7 = managedObjectContext;
   v11 = v7;
   v12 = &v13;
   [v7 performBlockAndWait:v9];
-  LOBYTE(v5) = *(v14 + 24);
+  LOBYTE(managedObjectContext) = *(v14 + 24);
 
   _Block_object_dispose(&v13, 8);
-  return v5;
+  return managedObjectContext;
 }
 
 void __38__CLSBusinessCategoryCache_hasRegion___block_invoke(uint64_t a1)
@@ -392,46 +392,46 @@ void __38__CLSBusinessCategoryCache_hasRegion___block_invoke(uint64_t a1)
   *(*(*(a1 + 56) + 8) + 24) = v10;
 }
 
-- (id)businessItemFromManagedObject:(id)a3
+- (id)businessItemFromManagedObject:(id)object
 {
-  v3 = a3;
-  v4 = [v3 name];
-  [v3 latitude];
+  objectCopy = object;
+  name = [objectCopy name];
+  [objectCopy latitude];
   v6 = v5;
-  [v3 longitude];
+  [objectCopy longitude];
   v8 = v7;
-  [v3 radius];
+  [objectCopy radius];
   v10 = v9;
-  v11 = [v3 muid];
+  muid = [objectCopy muid];
   v12 = CLLocationCoordinate2DMake(v6, v8);
   v13 = objc_alloc(MEMORY[0x277CBFBC8]);
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v15 = [v14 UUIDString];
-  v16 = [v13 initWithCenter:v15 radius:v12.latitude identifier:{v12.longitude, v10}];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v16 = [v13 initWithCenter:uUIDString radius:v12.latitude identifier:{v12.longitude, v10}];
 
-  LODWORD(v14) = [v3 categories];
-  v17 = [MEMORY[0x277CBEB18] array];
+  LODWORD(uUID) = [objectCopy categories];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = GEOSpatialLookupAllCategories();
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = ___CLSBusinessCategoryCacheDeserializeCategories_block_invoke;
   v32 = &unk_2788A7440;
-  v34 = v14;
-  v19 = v17;
+  v34 = uUID;
+  v19 = array;
   v33 = v19;
   [v18 enumerateObjectsUsingBlock:&v29];
 
   if (v19)
   {
     v20 = [CLSBusinessItem alloc];
-    v21 = [(CLSBusinessItem *)v20 initWithName:v4 region:v16 categories:v19, v29, v30, v31, v32];
-    [(CLSBusinessItem *)v21 setMuid:v11];
+    v21 = [(CLSBusinessItem *)v20 initWithName:name region:v16 categories:v19, v29, v30, v31, v32];
+    [(CLSBusinessItem *)v21 setMuid:muid];
     [(CLSBusinessItem *)v21 setCached:1];
-    v22 = [v3 businessCategories];
-    v23 = v22;
-    if (v22)
+    businessCategories = [objectCopy businessCategories];
+    v23 = businessCategories;
+    if (businessCategories)
     {
-      v24 = [v22 componentsSeparatedByString:@"_#_"];
+      v24 = [businessCategories componentsSeparatedByString:@"_#_"];
     }
 
     else
@@ -441,23 +441,23 @@ void __38__CLSBusinessCategoryCache_hasRegion___block_invoke(uint64_t a1)
 
     [(CLSBusinessItem *)v21 setBusinessCategories:v24];
 
-    -[CLSBusinessItem setVenueCapacity:](v21, "setVenueCapacity:", [v3 venueCapacity]);
-    v27 = [v3 geoServiceProvider];
-    [(CLSBusinessItem *)v21 setGeoServiceProvider:v27];
+    -[CLSBusinessItem setVenueCapacity:](v21, "setVenueCapacity:", [objectCopy venueCapacity]);
+    geoServiceProvider = [objectCopy geoServiceProvider];
+    [(CLSBusinessItem *)v21 setGeoServiceProvider:geoServiceProvider];
 
-    v26 = [v3 isoCountryCode];
-    [(CLSBusinessItem *)v21 setIsoCountryCode:v26];
+    isoCountryCode = [objectCopy isoCountryCode];
+    [(CLSBusinessItem *)v21 setIsoCountryCode:isoCountryCode];
   }
 
   else
   {
     v25 = [CLSLogging sharedLogging:v29];
-    v26 = [v25 loggingConnection];
+    isoCountryCode = [v25 loggingConnection];
 
-    if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(isoCountryCode, OS_LOG_TYPE_ERROR))
     {
       LOWORD(v29) = 0;
-      _os_log_error_impl(&dword_22F907000, v26, OS_LOG_TYPE_ERROR, "An error occurred unarchiving categories value for business item", &v29, 2u);
+      _os_log_error_impl(&dword_22F907000, isoCountryCode, OS_LOG_TYPE_ERROR, "An error occurred unarchiving categories value for business item", &v29, 2u);
     }
 
     v21 = 0;
@@ -466,24 +466,24 @@ void __38__CLSBusinessCategoryCache_hasRegion___block_invoke(uint64_t a1)
   return v21;
 }
 
-- (id)businessItemsForMuids:(id)a3
+- (id)businessItemsForMuids:(id)muids
 {
-  v4 = a3;
+  muidsCopy = muids;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__1259;
   v19 = __Block_byref_object_dispose__1260;
   v20 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__CLSBusinessCategoryCache_businessItemsForMuids___block_invoke;
   v10[3] = &unk_2788A88D8;
-  v6 = v4;
+  v6 = muidsCopy;
   v11 = v6;
-  v7 = v5;
-  v13 = self;
+  v7 = managedObjectContext;
+  selfCopy = self;
   v14 = &v15;
   v12 = v7;
   [v7 performBlockAndWait:v10];
@@ -553,7 +553,7 @@ void __50__CLSBusinessCategoryCache_businessItemsForMuids___block_invoke(uint64_
   }
 }
 
-- (id)businessItemsForMuid:(unint64_t)a3
+- (id)businessItemsForMuid:(unint64_t)muid
 {
   v14 = 0;
   v15 = &v14;
@@ -561,14 +561,14 @@ void __50__CLSBusinessCategoryCache_businessItemsForMuids___block_invoke(uint64_
   v17 = __Block_byref_object_copy__1259;
   v18 = __Block_byref_object_dispose__1260;
   v19 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__CLSBusinessCategoryCache_businessItemsForMuid___block_invoke;
   v9[3] = &unk_2788A73A0;
-  v13 = a3;
-  v6 = v5;
-  v11 = self;
+  muidCopy = muid;
+  v6 = managedObjectContext;
+  selfCopy = self;
   v12 = &v14;
   v10 = v6;
   [v6 performBlockAndWait:v9];
@@ -603,13 +603,13 @@ void __49__CLSBusinessCategoryCache_businessItemsForMuid___block_invoke(uint64_t
   }
 }
 
-- (id)_businessItemInRegion:(id)a3 matchingCategories:(id)a4 maximumDistance:(double)a5 forBusinessItems:(id)a6
+- (id)_businessItemInRegion:(id)region matchingCategories:(id)categories maximumDistance:(double)distance forBusinessItems:(id)items
 {
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = v10;
+  regionCopy = region;
+  categoriesCopy = categories;
+  itemsCopy = items;
+  v12 = categoriesCopy;
   v39.latitude = 0.0;
   *&v39.longitude = &v39;
   v40 = 0x2020000000;
@@ -627,14 +627,14 @@ void __49__CLSBusinessCategoryCache_businessItemsForMuid___block_invoke(uint64_t
 
   _Block_object_dispose(&v39, 8);
   v16 = [MEMORY[0x277CBEB58] set];
-  [v9 center];
+  [regionCopy center];
   v33 = v17;
   v34 = v18;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v19 = v11;
+  v19 = itemsCopy;
   v20 = [v19 countByEnumeratingWithState:&v29 objects:v42 count:16];
   if (v20)
   {
@@ -658,7 +658,7 @@ void __49__CLSBusinessCategoryCache_businessItemsForMuid___block_invoke(uint64_t
           [v23 longitude];
           v39 = CLLocationCoordinate2DMake(v25, v26);
           CLLocationCoordinate2DGetDistanceFrom();
-          if (v27 <= a5)
+          if (v27 <= distance)
           {
             [v16 addObject:v23];
           }
@@ -674,26 +674,26 @@ void __49__CLSBusinessCategoryCache_businessItemsForMuid___block_invoke(uint64_t
   return v16;
 }
 
-- (id)businessItemsInRegion:(id)a3 categories:(id)a4 maximumDistance:(double)a5
+- (id)businessItemsInRegion:(id)region categories:(id)categories maximumDistance:(double)distance
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v9 count])
+  regionCopy = region;
+  categoriesCopy = categories;
+  if ([categoriesCopy count])
   {
     v10 = [MEMORY[0x277CBEB58] set];
-    v11 = [(CLSDBCache *)self managedObjectContext];
+    managedObjectContext = [(CLSDBCache *)self managedObjectContext];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __77__CLSBusinessCategoryCache_businessItemsInRegion_categories_maximumDistance___block_invoke;
     v17[3] = &unk_2788A7378;
     v17[4] = self;
-    v18 = v8;
-    v19 = v11;
-    v20 = v9;
-    v22 = a5;
+    v18 = regionCopy;
+    v19 = managedObjectContext;
+    v20 = categoriesCopy;
+    distanceCopy = distance;
     v12 = v10;
     v21 = v12;
-    v13 = v11;
+    v13 = managedObjectContext;
     [v13 performBlockAndWait:v17];
     v14 = v21;
     v15 = v12;
@@ -784,24 +784,24 @@ void __77__CLSBusinessCategoryCache_businessItemsInRegion_categories_maximumDist
   }
 }
 
-- (id)businessItemsForRegion:(id)a3
+- (id)businessItemsForRegion:(id)region
 {
-  v4 = a3;
+  regionCopy = region;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__1259;
   v18 = __Block_byref_object_dispose__1260;
   v19 = 0;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __51__CLSBusinessCategoryCache_businessItemsForRegion___block_invoke;
   v10[3] = &unk_2788A88D8;
   v10[4] = self;
-  v6 = v4;
+  v6 = regionCopy;
   v11 = v6;
-  v7 = v5;
+  v7 = managedObjectContext;
   v12 = v7;
   v13 = &v14;
   [v7 performBlockAndWait:v10];
@@ -887,19 +887,19 @@ void __51__CLSBusinessCategoryCache_businessItemsForRegion___block_invoke(uint64
   }
 }
 
-- (id)nearestItemForRegion:(id)a3 inItems:(id)a4
+- (id)nearestItemForRegion:(id)region inItems:(id)items
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  [v5 center];
+  regionCopy = region;
+  itemsCopy = items;
+  [regionCopy center];
   v29 = v7;
   v30 = v8;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = v6;
+  v9 = itemsCopy;
   v10 = [v9 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v10)
   {
@@ -946,28 +946,28 @@ void __51__CLSBusinessCategoryCache_businessItemsForRegion___block_invoke(uint64
   return v12;
 }
 
-- (void)insertBatchesOfBusinessItems:(id)a3 forRegions:(id)a4
+- (void)insertBatchesOfBusinessItems:(id)items forRegions:(id)regions
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  itemsCopy = items;
+  regionsCopy = regions;
+  v8 = regionsCopy;
+  if (itemsCopy)
   {
-    if (v7)
+    if (regionsCopy)
     {
-      v9 = [v7 count];
-      if (v9 == [v6 count])
+      v9 = [regionsCopy count];
+      if (v9 == [itemsCopy count])
       {
-        v10 = [(CLSDBCache *)self managedObjectContext];
+        managedObjectContext = [(CLSDBCache *)self managedObjectContext];
         v12[0] = MEMORY[0x277D85DD0];
         v12[1] = 3221225472;
         v12[2] = __68__CLSBusinessCategoryCache_insertBatchesOfBusinessItems_forRegions___block_invoke;
         v12[3] = &unk_2788A7350;
-        v13 = v6;
+        v13 = itemsCopy;
         v14 = v8;
-        v15 = v10;
-        v16 = self;
-        v11 = v10;
+        v15 = managedObjectContext;
+        selfCopy = self;
+        v11 = managedObjectContext;
         [v11 performBlockAndWait:v12];
       }
     }
@@ -1075,16 +1075,16 @@ uint64_t __68__CLSBusinessCategoryCache_insertBatchesOfBusinessItems_forRegions_
   return [*(a1 + 56) _save];
 }
 
-- (id)_fetchedBusinessItemByMUIDForBusinessItems:(id)a3
+- (id)_fetchedBusinessItemByMUIDForBusinessItems:(id)items
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  itemsCopy = items;
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -1131,8 +1131,8 @@ uint64_t __68__CLSBusinessCategoryCache_insertBatchesOfBusinessItems_forRegions_
         }
 
         v19 = *(*(&v23 + 1) + 8 * j);
-        v20 = [v19 muid];
-        v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v20];
+        muid = [v19 muid];
+        v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:muid];
         [v13 setObject:v19 forKeyedSubscript:v21];
       }
 
@@ -1145,20 +1145,20 @@ uint64_t __68__CLSBusinessCategoryCache_insertBatchesOfBusinessItems_forRegions_
   return v13;
 }
 
-- (id)predicateForRegion:(id)a3
+- (id)predicateForRegion:(id)region
 {
   v15 = 0;
   v16 = 0;
   v13 = 0;
   v14 = 0;
-  v3 = a3;
-  CLSCalculateRangeCoordinateForRegion(v3, &v16, &v15, &v14, &v13);
+  regionCopy = region;
+  CLSCalculateRangeCoordinateForRegion(regionCopy, &v16, &v15, &v14, &v13);
   v4 = MEMORY[0x277CCAC30];
   v6 = v15;
   v5 = v16;
   v8 = v13;
   v7 = v14;
-  [v3 radius];
+  [regionCopy radius];
   v10 = v9;
 
   v11 = [v4 predicateWithFormat:@"(latitude >= %f) && (latitude <= %f) && (longitude >= %f) && (longitude <= %f) && (radius == %f)", v5, v7, v6, v8, v10];
@@ -1166,31 +1166,31 @@ uint64_t __68__CLSBusinessCategoryCache_insertBatchesOfBusinessItems_forRegions_
   return v11;
 }
 
-- (id)predicateForEntryNearbyRegion:(id)a3
+- (id)predicateForEntryNearbyRegion:(id)region
 {
   v7 = 0;
   v8 = 0;
   v6 = 0;
   v5 = 0;
-  CLSCalculateRangeCoordinateForRegion(a3, &v8, &v7, &v6, &v5);
+  CLSCalculateRangeCoordinateForRegion(region, &v8, &v7, &v6, &v5);
   v3 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(latitude >= %f) && (latitude <= %f) && (longitude >= %f) && (longitude <= %f)", v8, v6, v7, v5];
 
   return v3;
 }
 
-- (void)invalidateCacheForGeoServiceProviderChangeToProvider:(id)a3
+- (void)invalidateCacheForGeoServiceProviderChangeToProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  providerCopy = provider;
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__CLSBusinessCategoryCache_invalidateCacheForGeoServiceProviderChangeToProvider___block_invoke;
   v8[3] = &unk_2788A8900;
-  v9 = v4;
-  v10 = v5;
-  v11 = self;
-  v6 = v5;
-  v7 = v4;
+  v9 = providerCopy;
+  v10 = managedObjectContext;
+  selfCopy = self;
+  v6 = managedObjectContext;
+  v7 = providerCopy;
   [v6 performBlockAndWait:v8];
 }
 
@@ -1347,17 +1347,17 @@ void __81__CLSBusinessCategoryCache_invalidateCacheForGeoServiceProviderChangeTo
   }
 }
 
-- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)a3
+- (void)invalidateCacheItemsBeforeDateWithTimestamp:(double)timestamp
 {
-  v5 = [(CLSDBCache *)self managedObjectContext];
+  managedObjectContext = [(CLSDBCache *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __72__CLSBusinessCategoryCache_invalidateCacheItemsBeforeDateWithTimestamp___block_invoke;
   v7[3] = &unk_2788A8860;
-  v9 = a3;
+  timestampCopy = timestamp;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = managedObjectContext;
+  v6 = managedObjectContext;
   [v6 performBlockAndWait:v7];
 }
 
@@ -1418,11 +1418,11 @@ void __72__CLSBusinessCategoryCache_invalidateCacheItemsBeforeDateWithTimestamp_
   }
 }
 
-- (CLSBusinessCategoryCache)initWithURL:(id)a3 dataModelName:(id)a4
+- (CLSBusinessCategoryCache)initWithURL:(id)l dataModelName:(id)name
 {
   v8.receiver = self;
   v8.super_class = CLSBusinessCategoryCache;
-  v4 = [(CLSDBCache *)&v8 initWithURL:a3 dataModelName:a4];
+  v4 = [(CLSDBCache *)&v8 initWithURL:l dataModelName:name];
   if (v4)
   {
     v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(updateTimestamp <= $updateTimestamp)"];

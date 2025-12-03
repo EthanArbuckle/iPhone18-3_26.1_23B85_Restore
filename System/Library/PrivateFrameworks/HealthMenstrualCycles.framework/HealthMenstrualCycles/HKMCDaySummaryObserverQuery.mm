@@ -1,22 +1,22 @@
 @interface HKMCDaySummaryObserverQuery
-- (HKMCDaySummaryObserverQuery)initWithUpdateHandler:(id)a3;
-- (void)client_deliverUpdateWithQueryUUID:(id)a3;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
+- (HKMCDaySummaryObserverQuery)initWithUpdateHandler:(id)handler;
+- (void)client_deliverUpdateWithQueryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKMCDaySummaryObserverQuery
 
-- (HKMCDaySummaryObserverQuery)initWithUpdateHandler:(id)a3
+- (HKMCDaySummaryObserverQuery)initWithUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = HKMCDaySummaryObserverQuery;
   v5 = [(HKQuery *)&v9 _initWithObjectType:0 predicate:0];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     updateHandler = v5->_updateHandler;
     v5->_updateHandler = v6;
   }
@@ -24,18 +24,18 @@
   return v5;
 }
 
-- (void)client_deliverUpdateWithQueryUUID:(id)a3
+- (void)client_deliverUpdateWithQueryUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HKQuery *)self queue];
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65__HKMCDaySummaryObserverQuery_client_deliverUpdateWithQueryUUID___block_invoke;
   v7[3] = &unk_2796D4BD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_async(queue, v7);
 }
 
 void __65__HKMCDaySummaryObserverQuery_client_deliverUpdateWithQueryUUID___block_invoke(uint64_t a1)
@@ -76,21 +76,21 @@ uint64_t __65__HKMCDaySummaryObserverQuery_client_deliverUpdateWithQueryUUID___b
   return result;
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x253087260](self->_updateHandler);
   if (v5)
   {
-    v6 = [(HKQuery *)self clientQueue];
+    clientQueue = [(HKQuery *)self clientQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __50__HKMCDaySummaryObserverQuery_queue_deliverError___block_invoke;
     block[3] = &unk_2796D4BF8;
     v9 = v5;
     block[4] = self;
-    v8 = v4;
-    dispatch_async(v6, block);
+    v8 = errorCopy;
+    dispatch_async(clientQueue, block);
   }
 }
 
@@ -105,7 +105,7 @@ uint64_t __65__HKMCDaySummaryObserverQuery_client_deliverUpdateWithQueryUUID___b
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   updateHandler = self->_updateHandler;
   self->_updateHandler = 0;

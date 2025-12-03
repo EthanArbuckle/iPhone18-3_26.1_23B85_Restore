@@ -9,14 +9,14 @@
   v29 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 rings];
-  v5 = [v4 count];
+  rings = [v3 rings];
+  v5 = [rings count];
 
   if (v5 == &dword_0 + 3)
   {
     v6 = +[NSMutableArray array];
-    v7 = [v3 rings];
-    v8 = [v7 objectAtIndexedSubscript:2];
+    rings2 = [v3 rings];
+    v8 = [rings2 objectAtIndexedSubscript:2];
 
     [v8 opacity];
     if (v9 != 0.0)
@@ -28,8 +28,8 @@
       [v6 addObject:v12];
     }
 
-    v13 = [v3 rings];
-    v14 = [v13 objectAtIndexedSubscript:1];
+    rings3 = [v3 rings];
+    v14 = [rings3 objectAtIndexedSubscript:1];
 
     [v14 opacity];
     if (v15 != 0.0)
@@ -41,8 +41,8 @@
       [v6 addObject:v18];
     }
 
-    v19 = [v3 rings];
-    v20 = [v19 objectAtIndexedSubscript:0];
+    rings4 = [v3 rings];
+    v20 = [rings4 objectAtIndexedSubscript:0];
 
     [v20 opacity];
     if (v21 != 0.0)
@@ -64,17 +64,17 @@
       [v6 addObject:v25];
     }
 
-    v26 = UIAXLabelForElements();
+    accessibilityLabel = UIAXLabelForElements();
   }
 
   else
   {
     v28.receiver = self;
     v28.super_class = ARUIRingGroupAccessibility;
-    v26 = [(ARUIRingGroupAccessibility *)&v28 accessibilityLabel];
+    accessibilityLabel = [(ARUIRingGroupAccessibility *)&v28 accessibilityLabel];
   }
 
-  return v26;
+  return accessibilityLabel;
 }
 
 @end

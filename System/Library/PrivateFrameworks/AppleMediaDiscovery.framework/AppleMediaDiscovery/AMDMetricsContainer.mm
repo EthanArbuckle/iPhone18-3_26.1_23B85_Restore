@@ -1,34 +1,34 @@
 @interface AMDMetricsContainer
-- (AMDMetricsContainer)initWithLevel:(char)a3 andAction:(id)a4 andVersion:(id)a5 andBuild:(id)a6 andStorefrontId:(id)a7 withLoggingProbability:(id)a8;
+- (AMDMetricsContainer)initWithLevel:(char)level andAction:(id)action andVersion:(id)version andBuild:(id)build andStorefrontId:(id)id withLoggingProbability:(id)probability;
 @end
 
 @implementation AMDMetricsContainer
 
-- (AMDMetricsContainer)initWithLevel:(char)a3 andAction:(id)a4 andVersion:(id)a5 andBuild:(id)a6 andStorefrontId:(id)a7 withLoggingProbability:(id)a8
+- (AMDMetricsContainer)initWithLevel:(char)level andAction:(id)action andVersion:(id)version andBuild:(id)build andStorefrontId:(id)id withLoggingProbability:(id)probability
 {
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
-  v48 = a3;
+  levelCopy = level;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, action);
   v46 = 0;
-  objc_storeStrong(&v46, a5);
+  objc_storeStrong(&v46, version);
   v45 = 0;
-  objc_storeStrong(&v45, a6);
+  objc_storeStrong(&v45, build);
   v44 = 0;
-  objc_storeStrong(&v44, a7);
+  objc_storeStrong(&v44, id);
   v43 = 0;
-  objc_storeStrong(&v43, a8);
-  v8 = v50;
-  v50 = 0;
+  objc_storeStrong(&v43, probability);
+  v8 = selfCopy;
+  selfCopy = 0;
   v42.receiver = v8;
   v42.super_class = AMDMetricsContainer;
-  v50 = [(AMDMetricsContainer *)&v42 init];
-  objc_storeStrong(&v50, v50);
+  selfCopy = [(AMDMetricsContainer *)&v42 init];
+  objc_storeStrong(&selfCopy, selfCopy);
   v40 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [(AMDMetricsContainer *)v50 setLogData:?];
+  [(AMDMetricsContainer *)selfCopy setLogData:?];
   MEMORY[0x277D82BD8](v40);
-  v41 = [(AMDMetricsContainer *)v50 logData];
+  logData = [(AMDMetricsContainer *)selfCopy logData];
   if (location)
   {
     v35 = location;
@@ -39,9 +39,9 @@
     v35 = @"unknown";
   }
 
-  [(NSMutableDictionary *)v41 setObject:v35 forKey:@"eventType"];
-  MEMORY[0x277D82BD8](v41);
-  v34 = [(AMDMetricsContainer *)v50 logData];
+  [(NSMutableDictionary *)logData setObject:v35 forKey:@"eventType"];
+  MEMORY[0x277D82BD8](logData);
+  logData2 = [(AMDMetricsContainer *)selfCopy logData];
   if (v45)
   {
     v33 = v45;
@@ -52,24 +52,24 @@
     v33 = @"unknown";
   }
 
-  [(NSMutableDictionary *)v34 setObject:v33 forKey:@"osBuildNumber"];
-  MEMORY[0x277D82BD8](v34);
+  [(NSMutableDictionary *)logData2 setObject:v33 forKey:@"osBuildNumber"];
+  MEMORY[0x277D82BD8](logData2);
   v26 = [objc_alloc(MEMORY[0x277CEE5A8]) initWithTopic:@"xp_amp_odp_log"];
-  [(AMDMetricsContainer *)v50 setMetricEvent:?];
+  [(AMDMetricsContainer *)selfCopy setMetricEvent:?];
   MEMORY[0x277D82BD8](v26);
-  v27 = [(AMDMetricsContainer *)v50 metricEvent];
-  [(AMSMetricsEvent *)v27 setAnonymous:1];
-  MEMORY[0x277D82BD8](v27);
-  v31 = [(AMDMetricsContainer *)v50 metricEvent];
+  metricEvent = [(AMDMetricsContainer *)selfCopy metricEvent];
+  [(AMSMetricsEvent *)metricEvent setAnonymous:1];
+  MEMORY[0x277D82BD8](metricEvent);
+  metricEvent2 = [(AMDMetricsContainer *)selfCopy metricEvent];
   v28 = MEMORY[0x277CCABB0];
-  v30 = [MEMORY[0x277CBEAA8] date];
-  [v30 timeIntervalSince1970];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v29 = [v28 numberWithDouble:v9 * 1000.0];
-  [AMSMetricsEvent setProperty:v31 forBodyKey:"setProperty:forBodyKey:"];
+  [AMSMetricsEvent setProperty:metricEvent2 forBodyKey:"setProperty:forBodyKey:"];
   MEMORY[0x277D82BD8](v29);
-  MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  v32 = [(AMDMetricsContainer *)v50 metricEvent];
+  MEMORY[0x277D82BD8](date);
+  MEMORY[0x277D82BD8](metricEvent2);
+  metricEvent3 = [(AMDMetricsContainer *)selfCopy metricEvent];
   if (location)
   {
     v25 = location;
@@ -80,9 +80,9 @@
     v25 = @"unknown";
   }
 
-  [(AMSMetricsEvent *)v32 setProperty:v25 forBodyKey:@"eventType"];
-  MEMORY[0x277D82BD8](v32);
-  v24 = [(AMDMetricsContainer *)v50 metricEvent];
+  [(AMSMetricsEvent *)metricEvent3 setProperty:v25 forBodyKey:@"eventType"];
+  MEMORY[0x277D82BD8](metricEvent3);
+  metricEvent4 = [(AMDMetricsContainer *)selfCopy metricEvent];
   if (v46)
   {
     v23 = v46;
@@ -93,14 +93,14 @@
     v23 = &unk_2852BA968;
   }
 
-  [(AMSMetricsEvent *)v24 setProperty:v23 forBodyKey:@"eventVersion"];
-  MEMORY[0x277D82BD8](v24);
-  v21 = [(AMDMetricsContainer *)v50 metricEvent];
-  v20 = [(AMDMetricsContainer *)v50 logData];
-  [AMSMetricsEvent setProperty:v21 forBodyKey:"setProperty:forBodyKey:"];
-  MEMORY[0x277D82BD8](v20);
-  MEMORY[0x277D82BD8](v21);
-  v22 = [(AMDMetricsContainer *)v50 metricEvent];
+  [(AMSMetricsEvent *)metricEvent4 setProperty:v23 forBodyKey:@"eventVersion"];
+  MEMORY[0x277D82BD8](metricEvent4);
+  metricEvent5 = [(AMDMetricsContainer *)selfCopy metricEvent];
+  logData3 = [(AMDMetricsContainer *)selfCopy logData];
+  [AMSMetricsEvent setProperty:metricEvent5 forBodyKey:"setProperty:forBodyKey:"];
+  MEMORY[0x277D82BD8](logData3);
+  MEMORY[0x277D82BD8](metricEvent5);
+  metricEvent6 = [(AMDMetricsContainer *)selfCopy metricEvent];
   if (v45)
   {
     v19 = v45;
@@ -111,9 +111,9 @@
     v19 = @"unknown";
   }
 
-  [(AMSMetricsEvent *)v22 setProperty:v19 forBodyKey:@"osBuildNumber"];
-  MEMORY[0x277D82BD8](v22);
-  v18 = [(AMDMetricsContainer *)v50 metricEvent];
+  [(AMSMetricsEvent *)metricEvent6 setProperty:v19 forBodyKey:@"osBuildNumber"];
+  MEMORY[0x277D82BD8](metricEvent6);
+  metricEvent7 = [(AMDMetricsContainer *)selfCopy metricEvent];
   if (v44)
   {
     v17 = v44;
@@ -124,17 +124,17 @@
     v17 = &unk_2852BA980;
   }
 
-  [(AMSMetricsEvent *)v18 setProperty:v17 forBodyKey:@"storeFrontHeader"];
-  MEMORY[0x277D82BD8](v18);
-  v16 = [(AMDMetricsContainer *)v50 metricEvent];
+  [(AMSMetricsEvent *)metricEvent7 setProperty:v17 forBodyKey:@"storeFrontHeader"];
+  MEMORY[0x277D82BD8](metricEvent7);
+  metricEvent8 = [(AMDMetricsContainer *)selfCopy metricEvent];
   v13 = MEMORY[0x277CCABB0];
-  v15 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v14 = [v13 numberWithInteger:{objc_msgSend(v15, "secondsFromGMT") / 3600}];
-  [AMSMetricsEvent setProperty:v16 forBodyKey:"setProperty:forBodyKey:"];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  v14 = [v13 numberWithInteger:{objc_msgSend(localTimeZone, "secondsFromGMT") / 3600}];
+  [AMSMetricsEvent setProperty:metricEvent8 forBodyKey:"setProperty:forBodyKey:"];
   MEMORY[0x277D82BD8](v14);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
-  [(AMDMetricsContainer *)v50 setVerbosity:v48];
+  MEMORY[0x277D82BD8](localTimeZone);
+  MEMORY[0x277D82BD8](metricEvent8);
+  [(AMDMetricsContainer *)selfCopy setVerbosity:levelCopy];
   if (v43)
   {
     v12 = v43;
@@ -145,14 +145,14 @@
     v12 = &unk_2852BC670;
   }
 
-  [(AMDMetricsContainer *)v50 setLoggingProbability:v12];
-  v11 = MEMORY[0x277D82BE0](v50);
+  [(AMDMetricsContainer *)selfCopy setLoggingProbability:v12];
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v43, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(&v45, 0);
   objc_storeStrong(&v46, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v50, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v11;
 }
 

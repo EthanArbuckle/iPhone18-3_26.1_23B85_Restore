@@ -1,9 +1,9 @@
 @interface INRegistrationDigestCache
 + (id)sharedInstance;
-- (BOOL)removeRegistrationDigestForAccount:(id)a3 withError:(id *)a4;
-- (BOOL)updateRegistrationDigest:(id)a3 forAccount:(id)a4 withError:(id *)a5;
+- (BOOL)removeRegistrationDigestForAccount:(id)account withError:(id *)error;
+- (BOOL)updateRegistrationDigest:(id)digest forAccount:(id)account withError:(id *)error;
 - (INRegistrationDigestCache)init;
-- (id)registrationDigestForAccount:(id)a3 withError:(id *)a4;
+- (id)registrationDigestForAccount:(id)account withError:(id *)error;
 - (void)dealloc;
 @end
 
@@ -53,18 +53,18 @@
   [(INRegistrationDigestCache *)&v3 dealloc];
 }
 
-- (id)registrationDigestForAccount:(id)a3 withError:(id *)a4
+- (id)registrationDigestForAccount:(id)account withError:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_10000B444;
   v23 = sub_10000B454;
   v24 = 0;
-  v7 = [v6 identifier];
-  v8 = v7;
-  if (!v6)
+  identifier = [accountCopy identifier];
+  v8 = identifier;
+  if (!accountCopy)
   {
 
     v8 = @"logged-out";
@@ -76,10 +76,10 @@
   v14[2] = sub_10000B45C;
   v14[3] = &unk_100055510;
   v15 = v8;
-  v16 = v6;
+  v16 = accountCopy;
   v17 = &v19;
-  v18 = a4;
-  v10 = v6;
+  errorCopy = error;
+  v10 = accountCopy;
   v11 = v8;
   dispatch_sync(keychainQueue, v14);
   v12 = v20[5];
@@ -89,16 +89,16 @@
   return v12;
 }
 
-- (BOOL)removeRegistrationDigestForAccount:(id)a3 withError:(id *)a4
+- (BOOL)removeRegistrationDigestForAccount:(id)account withError:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v7 = [v6 identifier];
-  v8 = v7;
-  if (!v6)
+  identifier = [accountCopy identifier];
+  v8 = identifier;
+  if (!accountCopy)
   {
 
     v8 = @"logged-out";
@@ -110,10 +110,10 @@
   v14[2] = sub_10000B6F0;
   v14[3] = &unk_100055510;
   v15 = v8;
-  v16 = v6;
+  v16 = accountCopy;
   v17 = &v19;
-  v18 = a4;
-  v10 = v6;
+  errorCopy = error;
+  v10 = accountCopy;
   v11 = v8;
   dispatch_sync(keychainQueue, v14);
   v12 = *(v20 + 24);
@@ -122,17 +122,17 @@
   return v12;
 }
 
-- (BOOL)updateRegistrationDigest:(id)a3 forAccount:(id)a4 withError:(id *)a5
+- (BOOL)updateRegistrationDigest:(id)digest forAccount:(id)account withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  digestCopy = digest;
+  accountCopy = account;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v10 = [v9 identifier];
-  v11 = v10;
-  if (!v9)
+  identifier = [accountCopy identifier];
+  v11 = identifier;
+  if (!accountCopy)
   {
 
     v11 = @"logged-out";
@@ -143,14 +143,14 @@
   block[1] = 3221225472;
   block[2] = sub_10000B964;
   block[3] = &unk_100055538;
-  v19 = v8;
+  v19 = digestCopy;
   v20 = v11;
-  v21 = v9;
+  v21 = accountCopy;
   v22 = &v24;
-  v23 = a5;
-  v13 = v9;
+  errorCopy = error;
+  v13 = accountCopy;
   v14 = v11;
-  v15 = v8;
+  v15 = digestCopy;
   dispatch_sync(keychainQueue, block);
   v16 = *(v25 + 24);
 

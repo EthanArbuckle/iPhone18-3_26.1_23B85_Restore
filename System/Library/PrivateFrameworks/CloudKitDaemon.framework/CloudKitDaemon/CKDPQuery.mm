@@ -1,80 +1,80 @@
 @interface CKDPQuery
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)queryOperatorAsString:(int)a3;
-- (int)StringAsQueryOperator:(id)a3;
+- (id)queryOperatorAsString:(int)string;
+- (int)StringAsQueryOperator:(id)operator;
 - (int)queryOperator;
 - (unint64_t)hash;
-- (void)addFilters:(id)a3;
-- (void)addSorts:(id)a3;
-- (void)addTypes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDistinct:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFilters:(id)filters;
+- (void)addSorts:(id)sorts;
+- (void)addTypes:(id)types;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDistinct:(BOOL)distinct;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPQuery
 
-- (void)addTypes:(id)a3
+- (void)addTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   types = self->_types;
-  v8 = v4;
+  v8 = typesCopy;
   if (!types)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_types;
     self->_types = v6;
 
-    v4 = v8;
+    typesCopy = v8;
     types = self->_types;
   }
 
-  objc_msgSend_addObject_(types, v4, v4);
+  objc_msgSend_addObject_(types, typesCopy, typesCopy);
 }
 
-- (void)addFilters:(id)a3
+- (void)addFilters:(id)filters
 {
-  v4 = a3;
+  filtersCopy = filters;
   filters = self->_filters;
-  v8 = v4;
+  v8 = filtersCopy;
   if (!filters)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_filters;
     self->_filters = v6;
 
-    v4 = v8;
+    filtersCopy = v8;
     filters = self->_filters;
   }
 
-  objc_msgSend_addObject_(filters, v4, v4);
+  objc_msgSend_addObject_(filters, filtersCopy, filtersCopy);
 }
 
-- (void)addSorts:(id)a3
+- (void)addSorts:(id)sorts
 {
-  v4 = a3;
+  sortsCopy = sorts;
   sorts = self->_sorts;
-  v8 = v4;
+  v8 = sortsCopy;
   if (!sorts)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_sorts;
     self->_sorts = v6;
 
-    v4 = v8;
+    sortsCopy = v8;
     sorts = self->_sorts;
   }
 
-  objc_msgSend_addObject_(sorts, v4, v4);
+  objc_msgSend_addObject_(sorts, sortsCopy, sortsCopy);
 }
 
-- (void)setHasDistinct:(BOOL)a3
+- (void)setHasDistinct:(BOOL)distinct
 {
-  if (a3)
+  if (distinct)
   {
     v3 = 2;
   }
@@ -100,33 +100,33 @@
   }
 }
 
-- (id)queryOperatorAsString:(int)a3
+- (id)queryOperatorAsString:(int)string
 {
-  if (a3 == 1)
+  if (string == 1)
   {
     v4 = @"AND";
   }
 
-  else if (a3 == 2)
+  else if (string == 2)
   {
     v4 = @"OR";
   }
 
   else
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   return v4;
 }
 
-- (int)StringAsQueryOperator:(id)a3
+- (int)StringAsQueryOperator:(id)operator
 {
-  v3 = a3;
+  operatorCopy = operator;
   v6 = 1;
-  if ((objc_msgSend_isEqualToString_(v3, v4, @"AND") & 1) == 0)
+  if ((objc_msgSend_isEqualToString_(operatorCopy, v4, @"AND") & 1) == 0)
   {
-    if (objc_msgSend_isEqualToString_(v3, v5, @"OR"))
+    if (objc_msgSend_isEqualToString_(operatorCopy, v5, @"OR"))
     {
       v6 = 2;
     }
@@ -303,10 +303,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -411,12 +411,12 @@
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v35 = a3;
+  toCopy = to;
   if (objc_msgSend_typesCount(self, v4, v5))
   {
-    objc_msgSend_clearTypes(v35, v6, v7);
+    objc_msgSend_clearTypes(toCopy, v6, v7);
     v10 = objc_msgSend_typesCount(self, v8, v9);
     if (v10)
     {
@@ -424,14 +424,14 @@
       for (i = 0; i != v11; ++i)
       {
         v13 = objc_msgSend_typesAtIndex_(self, v6, i);
-        objc_msgSend_addTypes_(v35, v14, v13);
+        objc_msgSend_addTypes_(toCopy, v14, v13);
       }
     }
   }
 
   if (objc_msgSend_filtersCount(self, v6, v7))
   {
-    objc_msgSend_clearFilters(v35, v15, v16);
+    objc_msgSend_clearFilters(toCopy, v15, v16);
     v19 = objc_msgSend_filtersCount(self, v17, v18);
     if (v19)
     {
@@ -439,14 +439,14 @@
       for (j = 0; j != v20; ++j)
       {
         v22 = objc_msgSend_filtersAtIndex_(self, v15, j);
-        objc_msgSend_addFilters_(v35, v23, v22);
+        objc_msgSend_addFilters_(toCopy, v23, v22);
       }
     }
   }
 
   if (objc_msgSend_sortsCount(self, v15, v16))
   {
-    objc_msgSend_clearSorts(v35, v24, v25);
+    objc_msgSend_clearSorts(toCopy, v24, v25);
     v28 = objc_msgSend_sortsCount(self, v26, v27);
     if (v28)
     {
@@ -454,7 +454,7 @@
       for (k = 0; k != v30; ++k)
       {
         v32 = objc_msgSend_sortsAtIndex_(self, v29, k);
-        objc_msgSend_addSorts_(v35, v33, v32);
+        objc_msgSend_addSorts_(toCopy, v33, v32);
       }
     }
   }
@@ -462,23 +462,23 @@
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v35 + 40) = self->_distinct;
-    *(v35 + 44) |= 2u;
+    *(toCopy + 40) = self->_distinct;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v35 + 4) = self->_queryOperator;
-    *(v35 + 44) |= 1u;
+    *(toCopy + 4) = self->_queryOperator;
+    *(toCopy + 44) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v56 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v49 = 0u;
   v50 = 0u;
@@ -499,7 +499,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v49 + 1) + 8 * i), v14, a3);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v49 + 1) + 8 * i), v14, zone);
         objc_msgSend_addTypes_(v10, v19, v18);
       }
 
@@ -528,7 +528,7 @@
           objc_enumerationMutation(v20);
         }
 
-        v27 = objc_msgSend_copyWithZone_(*(*(&v45 + 1) + 8 * j), v23, a3);
+        v27 = objc_msgSend_copyWithZone_(*(*(&v45 + 1) + 8 * j), v23, zone);
         objc_msgSend_addFilters_(v10, v28, v27);
       }
 
@@ -557,7 +557,7 @@
           objc_enumerationMutation(v29);
         }
 
-        v36 = objc_msgSend_copyWithZone_(*(*(&v41 + 1) + 8 * k), v32, a3, v41);
+        v36 = objc_msgSend_copyWithZone_(*(*(&v41 + 1) + 8 * k), v32, zone, v41);
         objc_msgSend_addSorts_(v10, v37, v36);
       }
 
@@ -585,17 +585,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_15;
   }
 
   types = self->_types;
-  v9 = v4[4];
+  v9 = equalCopy[4];
   if (types | v9)
   {
     if (!objc_msgSend_isEqual_(types, v7, v9))
@@ -605,7 +605,7 @@
   }
 
   filters = self->_filters;
-  v11 = v4[1];
+  v11 = equalCopy[1];
   if (filters | v11)
   {
     if (!objc_msgSend_isEqual_(filters, v7, v11))
@@ -615,7 +615,7 @@
   }
 
   sorts = self->_sorts;
-  v13 = v4[3];
+  v13 = equalCopy[3];
   if (sorts | v13)
   {
     if (!objc_msgSend_isEqual_(sorts, v7, v13))
@@ -626,35 +626,35 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_15;
     }
 
-    v16 = *(v4 + 40);
+    v16 = *(equalCopy + 40);
     if (self->_distinct)
     {
-      if ((v4[5] & 1) == 0)
+      if ((equalCopy[5] & 1) == 0)
       {
         goto LABEL_15;
       }
     }
 
-    else if (v4[5])
+    else if (equalCopy[5])
     {
       goto LABEL_15;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_15;
   }
 
-  v14 = (*(v4 + 44) & 1) == 0;
+  v14 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) != 0 && self->_queryOperator == *(v4 + 4))
+    if ((*(equalCopy + 44) & 1) != 0 && self->_queryOperator == *(equalCopy + 4))
     {
       v14 = 1;
       goto LABEL_16;
@@ -698,15 +698,15 @@ LABEL_3:
   return v7 ^ v4 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v36, v42, 16);
   if (v7)
   {
@@ -734,7 +734,7 @@ LABEL_3:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v12 = *(v4 + 1);
+  v12 = *(fromCopy + 1);
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v12, v13, &v32, v41, 16);
   if (v14)
   {
@@ -762,7 +762,7 @@ LABEL_3:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = *(v4 + 3);
+  v19 = *(fromCopy + 3);
   v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v19, v20, &v28, v40, 16);
   if (v21)
   {
@@ -786,17 +786,17 @@ LABEL_3:
     while (v23);
   }
 
-  v26 = *(v4 + 44);
+  v26 = *(fromCopy + 44);
   if ((v26 & 2) != 0)
   {
-    self->_distinct = *(v4 + 40);
+    self->_distinct = *(fromCopy + 40);
     *&self->_has |= 2u;
-    v26 = *(v4 + 44);
+    v26 = *(fromCopy + 44);
   }
 
   if (v26)
   {
-    self->_queryOperator = *(v4 + 4);
+    self->_queryOperator = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 

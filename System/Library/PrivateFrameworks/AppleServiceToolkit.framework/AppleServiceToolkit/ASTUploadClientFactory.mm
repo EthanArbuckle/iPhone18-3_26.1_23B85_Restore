@@ -1,25 +1,25 @@
 @interface ASTUploadClientFactory
-+ (id)repairToolUploadClientWithASTSession:(id)a3 withUploadRequests:(id)a4 andDelegate:(id)a5;
-+ (id)repairToolUploadClientWithUploadRequests:(id)a3 andDelegate:(id)a4;
-+ (id)uploadClientWithASTSession:(id)a3 andFileMap:(id)a4 andUrlFactory:(id)a5 andDelegate:(id)a6;
++ (id)repairToolUploadClientWithASTSession:(id)session withUploadRequests:(id)requests andDelegate:(id)delegate;
++ (id)repairToolUploadClientWithUploadRequests:(id)requests andDelegate:(id)delegate;
++ (id)uploadClientWithASTSession:(id)session andFileMap:(id)map andUrlFactory:(id)factory andDelegate:(id)delegate;
 @end
 
 @implementation ASTUploadClientFactory
 
-+ (id)uploadClientWithASTSession:(id)a3 andFileMap:(id)a4 andUrlFactory:(id)a5 andDelegate:(id)a6
++ (id)uploadClientWithASTSession:(id)session andFileMap:(id)map andUrlFactory:(id)factory andDelegate:(id)delegate
 {
   v29 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v23 = v11;
-  v13 = [[ASTConfigurableUploadClient alloc] initWithASTSession:v9 withURLSession:0 withURLRequestFactory:v11 withDelegate:v12];
+  sessionCopy = session;
+  mapCopy = map;
+  factoryCopy = factory;
+  delegateCopy = delegate;
+  v23 = factoryCopy;
+  v13 = [[ASTConfigurableUploadClient alloc] initWithASTSession:sessionCopy withURLSession:0 withURLRequestFactory:factoryCopy withDelegate:delegateCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = v10;
+  v14 = mapCopy;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
@@ -63,25 +63,25 @@
   return v13;
 }
 
-+ (id)repairToolUploadClientWithASTSession:(id)a3 withUploadRequests:(id)a4 andDelegate:(id)a5
++ (id)repairToolUploadClientWithASTSession:(id)session withUploadRequests:(id)requests andDelegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[RepairToolURLFactory alloc] initWithRequestItems:v8];
+  delegateCopy = delegate;
+  requestsCopy = requests;
+  sessionCopy = session;
+  v10 = [[RepairToolURLFactory alloc] initWithRequestItems:requestsCopy];
 
-  v11 = [[ASTConfigurableUploadClient alloc] initWithASTSession:v9 withURLSession:0 withURLRequestFactory:v10 withDelegate:v7];
+  v11 = [[ASTConfigurableUploadClient alloc] initWithASTSession:sessionCopy withURLSession:0 withURLRequestFactory:v10 withDelegate:delegateCopy];
 
   return v11;
 }
 
-+ (id)repairToolUploadClientWithUploadRequests:(id)a3 andDelegate:(id)a4
++ (id)repairToolUploadClientWithUploadRequests:(id)requests andDelegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RepairToolURLFactory alloc] initWithRequestItems:v6];
+  delegateCopy = delegate;
+  requestsCopy = requests;
+  v7 = [[RepairToolURLFactory alloc] initWithRequestItems:requestsCopy];
 
-  v8 = [[ASTConfigurableUploadClient alloc] initWithURLSession:0 withURLRequestFactory:v7 withDelegate:v5];
+  v8 = [[ASTConfigurableUploadClient alloc] initWithURLSession:0 withURLRequestFactory:v7 withDelegate:delegateCopy];
 
   return v8;
 }

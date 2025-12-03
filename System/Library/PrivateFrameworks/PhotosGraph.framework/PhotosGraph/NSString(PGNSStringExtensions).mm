@@ -11,14 +11,14 @@
 - (unint64_t)pg_levenshteinDistanceToString:()PGNSStringExtensions
 {
   v4 = a3;
-  if ([a1 isEqualToString:v4])
+  if ([self isEqualToString:v4])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [a1 length];
+    v6 = [self length];
     v7 = [v4 length];
     v5 = v7;
     v29 = v6;
@@ -61,7 +61,7 @@
         {
           v18 = v16 + 1;
           *v10 = v16 + 1;
-          v19 = [a1 characterAtIndex:v16];
+          v19 = [self characterAtIndex:v16];
           v20 = 0;
           do
           {
@@ -131,16 +131,16 @@
   v6 = a3;
   if (!a4 || (a4 & 4) != 0)
   {
-    v7 = [a1 stringByTrimmingCharactersInSet:v6];
+    selfCopy = [self stringByTrimmingCharactersInSet:v6];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
     if (a4)
     {
-      v8 = [v6 invertedSet];
-      v9 = [v7 rangeOfCharacterFromSet:v8];
+      invertedSet = [v6 invertedSet];
+      v9 = [selfCopy rangeOfCharacterFromSet:invertedSet];
 
       if (v9 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -149,16 +149,16 @@
 
       else
       {
-        v10 = [v7 substringFromIndex:v9];
+        v10 = [selfCopy substringFromIndex:v9];
       }
 
-      v7 = v10;
+      selfCopy = v10;
     }
 
     if ((a4 & 2) != 0)
     {
-      v11 = [v6 invertedSet];
-      v12 = [v7 rangeOfCharacterFromSet:v11 options:4];
+      invertedSet2 = [v6 invertedSet];
+      v12 = [selfCopy rangeOfCharacterFromSet:invertedSet2 options:4];
 
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -167,31 +167,31 @@
 
       else
       {
-        v13 = [v7 substringToIndex:v12 + 1];
+        v13 = [selfCopy substringToIndex:v12 + 1];
       }
 
-      v7 = v13;
+      selfCopy = v13;
     }
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)pg_stringByRemovingDates
 {
   v21 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = [objc_alloc(MEMORY[0x277CCA948]) initWithTypes:8 error:0];
-  v3 = [v2 matchesInString:v1 options:0 range:{0, objc_msgSend(v1, "length")}];
+  v3 = [v2 matchesInString:selfCopy options:0 range:{0, objc_msgSend(selfCopy, "length")}];
   if ([v3 count])
   {
-    v4 = [v1 mutableCopy];
+    v4 = [selfCopy mutableCopy];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = [v3 reverseObjectEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    reverseObjectEnumerator = [v3 reverseObjectEnumerator];
+    v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -202,64 +202,64 @@
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
-          v10 = [*(*(&v16 + 1) + 8 * i) range];
-          [v4 replaceCharactersInRange:v10 withString:{v11, &stru_2843F5C58}];
+          range = [*(*(&v16 + 1) + 8 * i) range];
+          [v4 replaceCharactersInRange:range withString:{v11, &stru_2843F5C58}];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
     }
 
-    v12 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-    v13 = [v4 pg_stringByTrailingCharactersInSet:v12 options:3];
+    whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+    v13 = [v4 pg_stringByTrailingCharactersInSet:whitespaceCharacterSet options:3];
 
-    v1 = v13;
+    selfCopy = v13;
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)_pg_stringByRemovingRegExPattern:()PGNSStringExtensions
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a1;
+  selfCopy = self;
   v27 = 0;
   v5 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:a3 options:0 error:&v27];
   v6 = v27;
   if (v6)
   {
     v7 = +[PGLogging sharedLogging];
-    v8 = [v7 loggingConnection];
+    loggingConnection = [v7 loggingConnection];
 
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v30 = v6;
-      _os_log_error_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_ERROR, "Error when creating regex pattern: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Error when creating regex pattern: %@", buf, 0xCu);
     }
 
-    v9 = v4;
+    v9 = selfCopy;
   }
 
   else
   {
-    v10 = [v5 matchesInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+    v10 = [v5 matchesInString:selfCopy options:0 range:{0, objc_msgSend(selfCopy, "length")}];
     if ([v10 count])
     {
-      v11 = [v4 mutableCopy];
+      v11 = [selfCopy mutableCopy];
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v12 = [v10 reverseObjectEnumerator];
-      v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
+      reverseObjectEnumerator = [v10 reverseObjectEnumerator];
+      v13 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
       if (v13)
       {
         v14 = v13;
@@ -270,26 +270,26 @@
           {
             if (*v24 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(reverseObjectEnumerator);
             }
 
-            v17 = [*(*(&v23 + 1) + 8 * i) range];
-            [v11 replaceCharactersInRange:v17 withString:{v18, &stru_2843F5C58}];
+            range = [*(*(&v23 + 1) + 8 * i) range];
+            [v11 replaceCharactersInRange:range withString:{v18, &stru_2843F5C58}];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
+          v14 = [reverseObjectEnumerator countByEnumeratingWithState:&v23 objects:v28 count:16];
         }
 
         while (v14);
       }
 
-      v19 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-      v20 = [v11 pg_stringByTrailingCharactersInSet:v19 options:3];
+      whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+      v20 = [v11 pg_stringByTrailingCharactersInSet:whitespaceCharacterSet options:3];
 
-      v4 = v20;
+      selfCopy = v20;
     }
 
-    v9 = v4;
+    v9 = selfCopy;
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -299,7 +299,7 @@
 
 - (id)pg_stringByRemovingParentheses
 {
-  v1 = [a1 _pg_stringByRemovingRegExPattern:@" \\([^()]*\\)"];
+  v1 = [self _pg_stringByRemovingRegExPattern:@" \\([^()]*\\)"];
   v2 = [v1 _pg_stringByRemovingRegExPattern:@" \\(.*?\\)"];
 
   return v2;

@@ -1,33 +1,33 @@
 @interface ICASNoteEditContext
-- (ICASNoteEditContext)initWithNoteEditContext:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASNoteEditContext)initWithNoteEditContext:(int64_t)context;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASNoteEditContext
 
-- (ICASNoteEditContext)initWithNoteEditContext:(int64_t)a3
+- (ICASNoteEditContext)initWithNoteEditContext:(int64_t)context
 {
   v5.receiver = self;
   v5.super_class = ICASNoteEditContext;
   result = [(ICASNoteEditContext *)&v5 init];
   if (result)
   {
-    result->_noteEditContext = a3;
+    result->_noteEditContext = context;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASNoteEditContext *)self noteEditContext];
+  noteEditContext = [(ICASNoteEditContext *)self noteEditContext];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (noteEditContext == 1)
   {
     v4 = @"inNote";
   }
 
-  if (v3 == 2)
+  if (noteEditContext == 2)
   {
     return @"quickNote";
   }

@@ -1,11 +1,11 @@
 @interface _UIBackdropViewSettingsLightKeyboard
-- (id)_defaultColorTintColorWithOpacity:(double)a3;
+- (id)_defaultColorTintColorWithOpacity:(double)opacity;
 - (void)setDefaultValues;
 @end
 
 @implementation _UIBackdropViewSettingsLightKeyboard
 
-- (id)_defaultColorTintColorWithOpacity:(double)a3
+- (id)_defaultColorTintColorWithOpacity:(double)opacity
 {
   if ([(_UIBackdropViewSettings *)self graphicsQuality]== 40 || [(_UIBackdropViewSettings *)self graphicsQuality]== 10)
   {
@@ -21,7 +21,7 @@
     v7 = 0.968627451;
   }
 
-  v8 = [UIColor colorWithRed:v5 green:v6 blue:v7 alpha:a3];
+  v8 = [UIColor colorWithRed:v5 green:v6 blue:v7 alpha:opacity];
 
   return v8;
 }
@@ -48,17 +48,17 @@
 
   [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
   [(_UIBackdropViewSettings *)self setUsesColorTintView:1];
-  v6 = [(_UIBackdropViewSettings *)self graphicsQuality];
-  v7 = v6 == 100;
+  graphicsQuality = [(_UIBackdropViewSettings *)self graphicsQuality];
+  v7 = graphicsQuality == 100;
   [(_UIBackdropViewSettings *)self setUsesGrayscaleTintView:v7];
   [(_UIBackdropViewSettings *)self setUsesColorBurnTintView:v7];
-  v8 = 0;
-  if (v6 == 100)
+  _shouldUseDarkeningTintLayer = 0;
+  if (graphicsQuality == 100)
   {
-    v8 = [(_UIBackdropViewSettingsLightKeyboard *)self _shouldUseDarkeningTintLayer];
+    _shouldUseDarkeningTintLayer = [(_UIBackdropViewSettingsLightKeyboard *)self _shouldUseDarkeningTintLayer];
   }
 
-  [(_UIBackdropViewSettings *)self setUsesDarkeningTintView:v8];
+  [(_UIBackdropViewSettings *)self setUsesDarkeningTintView:_shouldUseDarkeningTintLayer];
   [(_UIBackdropViewSettings *)self setGrayscaleTintLevel:1.0];
   [(_UIBackdropViewSettings *)self setGrayscaleTintAlpha:0.5];
   [(_UIBackdropViewSettings *)self setLightenGrayscaleWithSourceOver:v4];
@@ -77,13 +77,13 @@
     [(_UIBackdropViewSettings *)self setDarkenWithSourceOver:1];
   }
 
-  v10 = [(_UIBackdropViewSettings *)self graphicsQuality];
+  graphicsQuality2 = [(_UIBackdropViewSettings *)self graphicsQuality];
   v11 = &_UIBackdropViewSettingsSaturationDeltaFactorStrong;
   v12 = &_UIBackdropViewSettingsBlurRadiusMedium;
   v13 = 1;
-  if (v10 != 100 && v10 != 40)
+  if (graphicsQuality2 != 100 && graphicsQuality2 != 40)
   {
-    if (v10 != 10)
+    if (graphicsQuality2 != 10)
     {
       return;
     }

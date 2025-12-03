@@ -4,17 +4,17 @@
 - (BOOL)needsInitialBlink;
 - (NSString)hintText;
 - (double)_continuousCornerRadius;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)blink;
 - (void)prepareForFocus;
 - (void)pulse;
-- (void)setDecrementButtonActionHandler:(id)a3;
-- (void)setEnabled:(BOOL)a3 forButton:(int64_t)a4;
-- (void)setHintText:(id)a3;
-- (void)setIncrementButtonActionHandler:(id)a3;
-- (void)setIsFocusedInPageMenu:(BOOL)a3;
-- (void)setNeedsInitialBlink:(BOOL)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setDecrementButtonActionHandler:(id)handler;
+- (void)setEnabled:(BOOL)enabled forButton:(int64_t)button;
+- (void)setHintText:(id)text;
+- (void)setIncrementButtonActionHandler:(id)handler;
+- (void)setIsFocusedInPageMenu:(BOOL)menu;
+- (void)setNeedsInitialBlink:(BOOL)blink;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation SFStepper
@@ -26,17 +26,17 @@
   return [(SFStepper *)&v3 isUserInteractionEnabled];
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v7.receiver = self;
   v7.super_class = SFStepper;
-  v4 = self;
-  v5 = [(SFStepper *)&v7 isUserInteractionEnabled];
-  v6.receiver = v4;
+  selfCopy = self;
+  isUserInteractionEnabled = [(SFStepper *)&v7 isUserInteractionEnabled];
+  v6.receiver = selfCopy;
   v6.super_class = SFStepper;
-  [(SFStepper *)&v6 setUserInteractionEnabled:v3];
-  sub_18BA27818(v5);
+  [(SFStepper *)&v6 setUserInteractionEnabled:enabledCopy];
+  sub_18BA27818(isUserInteractionEnabled);
 }
 
 - (double)_continuousCornerRadius
@@ -47,19 +47,19 @@
   return result;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
   v5.receiver = self;
   v5.super_class = SFStepper;
-  v4 = self;
-  [(SFStepper *)&v5 _setContinuousCornerRadius:a3];
-  [*(v4 + OBJC_IVAR___SFStepper_containerView) _setContinuousCornerRadius_];
-  [*(v4 + OBJC_IVAR___SFStepper_shadowView) _setContinuousCornerRadius_];
+  selfCopy = self;
+  [(SFStepper *)&v5 _setContinuousCornerRadius:radius];
+  [*(selfCopy + OBJC_IVAR___SFStepper_containerView) _setContinuousCornerRadius_];
+  [*(selfCopy + OBJC_IVAR___SFStepper_shadowView) _setContinuousCornerRadius_];
 }
 
-- (void)setDecrementButtonActionHandler:(id)a3
+- (void)setDecrementButtonActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -77,13 +77,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_18B7E0A10(v7);
 }
 
-- (void)setIncrementButtonActionHandler:(id)a3
+- (void)setIncrementButtonActionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -101,7 +101,7 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_18B7E0A10(v7);
 }
 
@@ -112,11 +112,11 @@
   return *(self + v3);
 }
 
-- (void)setIsFocusedInPageMenu:(BOOL)a3
+- (void)setIsFocusedInPageMenu:(BOOL)menu
 {
   v5 = OBJC_IVAR___SFStepper_isFocusedInPageMenu;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = menu;
 }
 
 - (NSString)hintText
@@ -137,9 +137,9 @@
   return v3;
 }
 
-- (void)setHintText:(id)a3
+- (void)setHintText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_18BC20BD8();
     v6 = v5;
@@ -151,7 +151,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   SFStepper.hintText.setter(v4, v6);
 }
 
@@ -162,34 +162,34 @@
   return *(self + v3);
 }
 
-- (void)setNeedsInitialBlink:(BOOL)a3
+- (void)setNeedsInitialBlink:(BOOL)blink
 {
-  v4 = self;
-  SFStepper.needsInitialBlink.setter(a3);
+  selfCopy = self;
+  SFStepper.needsInitialBlink.setter(blink);
 }
 
 - (void)blink
 {
-  v2 = self;
+  selfCopy = self;
   SFStepper.blink()();
 }
 
 - (void)pulse
 {
-  v2 = self;
+  selfCopy = self;
   sub_18BA28A14();
 }
 
 - (void)prepareForFocus
 {
-  v2 = self;
+  selfCopy = self;
   SFStepper.prepareForFocus()();
 }
 
-- (void)setEnabled:(BOOL)a3 forButton:(int64_t)a4
+- (void)setEnabled:(BOOL)enabled forButton:(int64_t)button
 {
-  v6 = self;
-  sub_18BA28FF8(a3, a4);
+  selfCopy = self;
+  sub_18BA28FF8(enabled, button);
 }
 
 @end

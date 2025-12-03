@@ -1,96 +1,96 @@
 @interface ICKeychain
-+ (BOOL)BOOLeanForIdentifier:(id)a3 account:(id)a4;
-+ (BOOL)deleteItemsForIdentifier:(id)a3 account:(id)a4 isSynced:(BOOL)a5 error:(id *)a6;
-+ (BOOL)deleteItemsOfType:(unint64_t)a3 account:(id)a4 isSynced:(BOOL)a5 error:(id *)a6;
-+ (BOOL)hasItemForIdentifier:(id)a3 account:(id)a4;
-+ (BOOL)isSyncAvailableForAccount:(id)a3;
-+ (BOOL)setBoolean:(BOOL)a3 forIdentifier:(id)a4 account:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7;
-+ (BOOL)setData:(id)a3 forIdentifier:(id)a4 account:(id)a5 error:(id *)a6;
-+ (BOOL)setData:(id)a3 forIdentifier:(id)a4 account:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7;
-+ (BOOL)setData:(id)a3 forIdentifier:(id)a4 account:(id)a5 type:(unint64_t)a6 shouldSync:(BOOL)a7 accessFlags:(unint64_t)a8 accessGroup:(id)a9 error:(id *)a10;
-+ (BOOL)setString:(id)a3 forIdentifier:(id)a4 account:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7;
-+ (BOOL)setUnsignedInteger:(unint64_t)a3 forIdentifier:(id)a4 account:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7;
-+ (BOOL)shouldFetchItemsWithError:(id *)a3;
-+ (id)accessControlObjectWithProtection:(void *)a3 flags:(unint64_t)a4 error:(id *)a5;
-+ (id)dataForIdentifier:(id)a3 account:(id)a4 isSynced:(BOOL)a5 authenticationContext:(id)a6;
-+ (id)itemsOfType:(unint64_t)a3 account:(id)a4 isSynced:(BOOL)a5 authenticationContext:(id)a6;
-+ (id)queryForItemClass:(id)a3 forIdentifier:(id)a4 account:(id)a5 isSynced:(BOOL)a6 type:(unint64_t)a7 authenticationContext:(id)a8 returnData:(BOOL)a9 limit:(id)a10;
-+ (id)stringForIdentifier:(id)a3 account:(id)a4 isSynced:(BOOL)a5;
-+ (unint64_t)unsignedIntegerForIdentifier:(id)a3 account:(id)a4;
-+ (void)fetchItemsWithCompletionHandler:(id)a3;
-+ (void)tests_setLastItemsError:(id)a3 lastItemsErrorDate:(id)a4 lastItemsFetchDate:(id)a5;
++ (BOOL)BOOLeanForIdentifier:(id)identifier account:(id)account;
++ (BOOL)deleteItemsForIdentifier:(id)identifier account:(id)account isSynced:(BOOL)synced error:(id *)error;
++ (BOOL)deleteItemsOfType:(unint64_t)type account:(id)account isSynced:(BOOL)synced error:(id *)error;
++ (BOOL)hasItemForIdentifier:(id)identifier account:(id)account;
++ (BOOL)isSyncAvailableForAccount:(id)account;
++ (BOOL)setBoolean:(BOOL)boolean forIdentifier:(id)identifier account:(id)account shouldSync:(BOOL)sync error:(id *)error;
++ (BOOL)setData:(id)data forIdentifier:(id)identifier account:(id)account error:(id *)error;
++ (BOOL)setData:(id)data forIdentifier:(id)identifier account:(id)account shouldSync:(BOOL)sync error:(id *)error;
++ (BOOL)setData:(id)data forIdentifier:(id)identifier account:(id)account type:(unint64_t)type shouldSync:(BOOL)sync accessFlags:(unint64_t)flags accessGroup:(id)group error:(id *)self0;
++ (BOOL)setString:(id)string forIdentifier:(id)identifier account:(id)account shouldSync:(BOOL)sync error:(id *)error;
++ (BOOL)setUnsignedInteger:(unint64_t)integer forIdentifier:(id)identifier account:(id)account shouldSync:(BOOL)sync error:(id *)error;
++ (BOOL)shouldFetchItemsWithError:(id *)error;
++ (id)accessControlObjectWithProtection:(void *)protection flags:(unint64_t)flags error:(id *)error;
++ (id)dataForIdentifier:(id)identifier account:(id)account isSynced:(BOOL)synced authenticationContext:(id)context;
++ (id)itemsOfType:(unint64_t)type account:(id)account isSynced:(BOOL)synced authenticationContext:(id)context;
++ (id)queryForItemClass:(id)class forIdentifier:(id)identifier account:(id)account isSynced:(BOOL)synced type:(unint64_t)type authenticationContext:(id)context returnData:(BOOL)data limit:(id)self0;
++ (id)stringForIdentifier:(id)identifier account:(id)account isSynced:(BOOL)synced;
++ (unint64_t)unsignedIntegerForIdentifier:(id)identifier account:(id)account;
++ (void)fetchItemsWithCompletionHandler:(id)handler;
++ (void)tests_setLastItemsError:(id)error lastItemsErrorDate:(id)date lastItemsFetchDate:(id)fetchDate;
 @end
 
 @implementation ICKeychain
 
-+ (id)stringForIdentifier:(id)a3 account:(id)a4 isSynced:(BOOL)a5
++ (id)stringForIdentifier:(id)identifier account:(id)account isSynced:(BOOL)synced
 {
-  v5 = [a1 dataForIdentifier:a3 account:a4 isSynced:a5 authenticationContext:0];
-  v6 = [v5 ic_stringValue];
+  v5 = [self dataForIdentifier:identifier account:account isSynced:synced authenticationContext:0];
+  ic_stringValue = [v5 ic_stringValue];
 
-  return v6;
+  return ic_stringValue;
 }
 
-+ (BOOL)setString:(id)a3 forIdentifier:(id)a4 account:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7
++ (BOOL)setString:(id)string forIdentifier:(id)identifier account:(id)account shouldSync:(BOOL)sync error:(id *)error
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = [a3 ic_dataValue];
-  LOBYTE(a7) = [a1 setData:v14 forIdentifier:v13 account:v12 shouldSync:v8 error:a7];
+  syncCopy = sync;
+  accountCopy = account;
+  identifierCopy = identifier;
+  ic_dataValue = [string ic_dataValue];
+  LOBYTE(error) = [self setData:ic_dataValue forIdentifier:identifierCopy account:accountCopy shouldSync:syncCopy error:error];
 
-  return a7;
+  return error;
 }
 
-+ (BOOL)BOOLeanForIdentifier:(id)a3 account:(id)a4
++ (BOOL)BOOLeanForIdentifier:(id)identifier account:(id)account
 {
-  v4 = [a1 dataForIdentifier:a3 account:a4];
-  v5 = [v4 ic_BOOLValue];
+  v4 = [self dataForIdentifier:identifier account:account];
+  ic_BOOLValue = [v4 ic_BOOLValue];
 
-  return v5;
+  return ic_BOOLValue;
 }
 
-+ (BOOL)setBoolean:(BOOL)a3 forIdentifier:(id)a4 account:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7
++ (BOOL)setBoolean:(BOOL)boolean forIdentifier:(id)identifier account:(id)account shouldSync:(BOOL)sync error:(id *)error
 {
-  v8 = a6;
-  v10 = a3;
+  syncCopy = sync;
+  booleanCopy = boolean;
   v12 = MEMORY[0x277CBEA90];
-  v13 = a5;
-  v14 = a4;
-  v15 = [v12 ic_dataWithBoolean:v10];
-  LOBYTE(a7) = [a1 setData:v15 forIdentifier:v14 account:v13 shouldSync:v8 error:a7];
+  accountCopy = account;
+  identifierCopy = identifier;
+  v15 = [v12 ic_dataWithBoolean:booleanCopy];
+  LOBYTE(error) = [self setData:v15 forIdentifier:identifierCopy account:accountCopy shouldSync:syncCopy error:error];
 
-  return a7;
+  return error;
 }
 
-+ (unint64_t)unsignedIntegerForIdentifier:(id)a3 account:(id)a4
++ (unint64_t)unsignedIntegerForIdentifier:(id)identifier account:(id)account
 {
-  v4 = [a1 dataForIdentifier:a3 account:a4];
-  v5 = [v4 ic_unsignedIntegerValue];
+  v4 = [self dataForIdentifier:identifier account:account];
+  ic_unsignedIntegerValue = [v4 ic_unsignedIntegerValue];
 
-  return v5;
+  return ic_unsignedIntegerValue;
 }
 
-+ (BOOL)setUnsignedInteger:(unint64_t)a3 forIdentifier:(id)a4 account:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7
++ (BOOL)setUnsignedInteger:(unint64_t)integer forIdentifier:(id)identifier account:(id)account shouldSync:(BOOL)sync error:(id *)error
 {
-  v8 = a6;
+  syncCopy = sync;
   v12 = MEMORY[0x277CBEA90];
-  v13 = a5;
-  v14 = a4;
-  v15 = [v12 ic_dataWithUnsignedInteger:a3];
-  LOBYTE(a7) = [a1 setData:v15 forIdentifier:v14 account:v13 shouldSync:v8 error:a7];
+  accountCopy = account;
+  identifierCopy = identifier;
+  v15 = [v12 ic_dataWithUnsignedInteger:integer];
+  LOBYTE(error) = [self setData:v15 forIdentifier:identifierCopy account:accountCopy shouldSync:syncCopy error:error];
 
-  return a7;
+  return error;
 }
 
-+ (id)dataForIdentifier:(id)a3 account:(id)a4 isSynced:(BOOL)a5 authenticationContext:(id)a6
++ (id)dataForIdentifier:(id)identifier account:(id)account isSynced:(BOOL)synced authenticationContext:(id)context
 {
-  v7 = a5;
+  syncedCopy = synced;
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  accountCopy = account;
   LOBYTE(v18) = 1;
-  v12 = [a1 queryForItemClass:*MEMORY[0x277CDC238] forIdentifier:v10 account:v11 isSynced:v7 type:0 authenticationContext:a6 returnData:v18 limit:0];
+  v12 = [self queryForItemClass:*MEMORY[0x277CDC238] forIdentifier:identifierCopy account:accountCopy isSynced:syncedCopy type:0 authenticationContext:context returnData:v18 limit:0];
   result = 0;
   v13 = SecItemCopyMatching(v12, &result);
   if (v13 != -25300)
@@ -106,9 +106,9 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v21 = v10;
+      v21 = identifierCopy;
       v22 = 2112;
-      v23 = v11;
+      v23 = accountCopy;
       v24 = 1024;
       v25 = v14;
       _os_log_error_impl(&dword_214D51000, v16, OS_LOG_TYPE_ERROR, "Failed getting item (%@) for account (%@) with code: %d", buf, 0x1Cu);
@@ -121,13 +121,13 @@ LABEL_8:
   return v15;
 }
 
-+ (id)itemsOfType:(unint64_t)a3 account:(id)a4 isSynced:(BOOL)a5 authenticationContext:(id)a6
++ (id)itemsOfType:(unint64_t)type account:(id)account isSynced:(BOOL)synced authenticationContext:(id)context
 {
-  v7 = a5;
+  syncedCopy = synced;
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a4;
+  accountCopy = account;
   LOBYTE(v17) = 1;
-  v11 = [a1 queryForItemClass:*MEMORY[0x277CDC238] forIdentifier:0 account:v10 isSynced:v7 type:a3 authenticationContext:a6 returnData:v17 limit:*MEMORY[0x277CDC430]];
+  v11 = [self queryForItemClass:*MEMORY[0x277CDC238] forIdentifier:0 account:accountCopy isSynced:syncedCopy type:type authenticationContext:context returnData:v17 limit:*MEMORY[0x277CDC430]];
   result = 0;
   v12 = SecItemCopyMatching(v11, &result);
   if (v12 != -25300)
@@ -143,9 +143,9 @@ LABEL_8:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v20 = a3;
+      typeCopy = type;
       v21 = 2112;
-      v22 = v10;
+      v22 = accountCopy;
       v23 = 1024;
       v24 = v13;
       _os_log_error_impl(&dword_214D51000, v15, OS_LOG_TYPE_ERROR, "Failed getting items of type (%lu) for account (%@) with code: %d", buf, 0x1Cu);
@@ -158,44 +158,44 @@ LABEL_8:
   return v14;
 }
 
-+ (BOOL)setData:(id)a3 forIdentifier:(id)a4 account:(id)a5 error:(id *)a6
++ (BOOL)setData:(id)data forIdentifier:(id)identifier account:(id)account error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  accountCopy = account;
+  identifierCopy = identifier;
+  dataCopy = data;
   v13 = ICGroupContainerIdentifier();
-  LOBYTE(a6) = [a1 setData:v12 forIdentifier:v11 account:v10 type:0 shouldSync:0 accessFlags:0 accessGroup:v13 error:a6];
+  LOBYTE(error) = [self setData:dataCopy forIdentifier:identifierCopy account:accountCopy type:0 shouldSync:0 accessFlags:0 accessGroup:v13 error:error];
 
-  return a6;
+  return error;
 }
 
-+ (BOOL)setData:(id)a3 forIdentifier:(id)a4 account:(id)a5 shouldSync:(BOOL)a6 error:(id *)a7
++ (BOOL)setData:(id)data forIdentifier:(id)identifier account:(id)account shouldSync:(BOOL)sync error:(id *)error
 {
-  v8 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  syncCopy = sync;
+  accountCopy = account;
+  identifierCopy = identifier;
+  dataCopy = data;
   v15 = ICGroupContainerIdentifier();
-  LOBYTE(a7) = [a1 setData:v14 forIdentifier:v13 account:v12 type:0 shouldSync:v8 accessFlags:0 accessGroup:v15 error:a7];
+  LOBYTE(error) = [self setData:dataCopy forIdentifier:identifierCopy account:accountCopy type:0 shouldSync:syncCopy accessFlags:0 accessGroup:v15 error:error];
 
-  return a7;
+  return error;
 }
 
-+ (BOOL)setData:(id)a3 forIdentifier:(id)a4 account:(id)a5 type:(unint64_t)a6 shouldSync:(BOOL)a7 accessFlags:(unint64_t)a8 accessGroup:(id)a9 error:(id *)a10
++ (BOOL)setData:(id)data forIdentifier:(id)identifier account:(id)account type:(unint64_t)type shouldSync:(BOOL)sync accessFlags:(unint64_t)flags accessGroup:(id)group error:(id *)self0
 {
-  v45 = a7;
+  syncCopy = sync;
   v56[5] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a9;
+  dataCopy = data;
+  identifierCopy = identifier;
+  accountCopy = account;
+  groupCopy = group;
   v19 = *MEMORY[0x277CDC238];
-  if (a10)
+  if (error)
   {
-    *a10 = 0;
+    *error = 0;
   }
 
-  if (v15)
+  if (dataCopy)
   {
     v20 = objc_alloc(MEMORY[0x277CBEB38]);
     v21 = *MEMORY[0x277CDC5E8];
@@ -207,19 +207,19 @@ LABEL_8:
     v55[3] = v22;
     v46 = v19;
     v56[0] = v19;
-    v56[1] = v15;
+    v56[1] = dataCopy;
     v55[4] = *MEMORY[0x277CDC140];
     v23 = MEMORY[0x277CBEC28];
     v56[2] = MEMORY[0x277CBEC38];
     v56[3] = MEMORY[0x277CBEC38];
-    if (v45)
+    if (syncCopy)
     {
       v23 = MEMORY[0x277CBEC38];
     }
 
     v56[4] = v23;
-    v44 = v16;
-    if (v45)
+    v44 = identifierCopy;
+    if (syncCopy)
     {
       v24 = MEMORY[0x277CDBF20];
     }
@@ -233,26 +233,26 @@ LABEL_8:
     v26 = [v20 initWithDictionary:v25];
 
     v27 = *v24;
-    v16 = v44;
+    identifierCopy = v44;
     [v26 setObject:v44 forKeyedSubscript:v27];
-    if (v17)
+    if (accountCopy)
     {
-      [v26 setObject:v17 forKeyedSubscript:*MEMORY[0x277CDC080]];
+      [v26 setObject:accountCopy forKeyedSubscript:*MEMORY[0x277CDC080]];
     }
 
-    if (a6)
+    if (type)
     {
-      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
       [v26 setObject:v28 forKeyedSubscript:*MEMORY[0x277CDC188]];
     }
 
     v29 = *MEMORY[0x277CDBEE0];
     v19 = v46;
-    if (a8)
+    if (flags)
     {
-      v30 = [a1 accessControlObjectWithProtection:v29 flags:a8 error:a10];
+      v30 = [self accessControlObjectWithProtection:v29 flags:flags error:error];
       v31 = v30;
-      if (!v30 || a10 && *a10)
+      if (!v30 || error && *error)
       {
 
         v32 = 0;
@@ -263,7 +263,7 @@ LABEL_33:
 
       [v26 setObject:v30 forKeyedSubscript:*MEMORY[0x277CDBEC0]];
 
-      if (!v18)
+      if (!groupCopy)
       {
 LABEL_21:
         v33 = [v26 copy];
@@ -272,17 +272,17 @@ LABEL_21:
         if (v34 == -25299)
         {
           LOBYTE(v42) = 0;
-          v35 = [a1 queryForItemClass:v46 forIdentifier:v44 account:v17 isSynced:v45 type:0 authenticationContext:0 returnData:v42 limit:0];
+          v35 = [self queryForItemClass:v46 forIdentifier:v44 account:accountCopy isSynced:syncCopy type:0 authenticationContext:0 returnData:v42 limit:0];
           v36 = objc_alloc(MEMORY[0x277CBEB38]);
           v53 = v43;
-          v54 = v15;
+          v54 = dataCopy;
           v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v54 forKeys:&v53 count:1];
           v38 = [v36 initWithDictionary:v37];
 
           v39 = [v38 copy];
           v34 = SecItemUpdate(v35, v39);
 
-          v16 = v44;
+          identifierCopy = v44;
           v26 = v38;
         }
 
@@ -294,17 +294,17 @@ LABEL_21:
             *buf = 138412802;
             v48 = v44;
             v49 = 2112;
-            v50 = v17;
+            v50 = accountCopy;
             v51 = 1024;
             v52 = v34;
             _os_log_error_impl(&dword_214D51000, v40, OS_LOG_TYPE_ERROR, "Failed writing item (%@) for account (%@) to keychain with code: %d", buf, 0x1Cu);
           }
 
           v19 = v46;
-          if (a10)
+          if (error)
           {
             [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v34 userInfo:0];
-            *a10 = v32 = 0;
+            *error = v32 = 0;
           }
 
           else
@@ -312,7 +312,7 @@ LABEL_21:
             v32 = 0;
           }
 
-          v16 = v44;
+          identifierCopy = v44;
         }
 
         else
@@ -328,42 +328,42 @@ LABEL_21:
     else
     {
       [v26 setObject:v29 forKeyedSubscript:*MEMORY[0x277CDBED8]];
-      if (!v18)
+      if (!groupCopy)
       {
         goto LABEL_21;
       }
     }
 
-    [v26 setObject:v18 forKeyedSubscript:*MEMORY[0x277CDBEC8]];
+    [v26 setObject:groupCopy forKeyedSubscript:*MEMORY[0x277CDBEC8]];
     goto LABEL_21;
   }
 
-  v32 = [a1 deleteItemsForIdentifier:v16 account:v17 error:a10];
+  v32 = [self deleteItemsForIdentifier:identifierCopy account:accountCopy error:error];
 LABEL_34:
 
   return v32;
 }
 
-+ (BOOL)hasItemForIdentifier:(id)a3 account:(id)a4
++ (BOOL)hasItemForIdentifier:(id)identifier account:(id)account
 {
-  v4 = [a1 dataForIdentifier:a3 account:a4];
+  v4 = [self dataForIdentifier:identifier account:account];
   v5 = v4 != 0;
 
   return v5;
 }
 
-+ (BOOL)deleteItemsForIdentifier:(id)a3 account:(id)a4 isSynced:(BOOL)a5 error:(id *)a6
++ (BOOL)deleteItemsForIdentifier:(id)identifier account:(id)account isSynced:(BOOL)synced error:(id *)error
 {
-  v7 = a5;
+  syncedCopy = synced;
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if (a6)
+  identifierCopy = identifier;
+  accountCopy = account;
+  if (error)
   {
-    *a6 = 0;
-    if (![v10 length])
+    *error = 0;
+    if (![identifierCopy length])
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.notes.keychain" code:3 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.notes.keychain" code:3 userInfo:0];
 LABEL_16:
       v12 = os_log_create("com.apple.notes", "Crypto");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -376,13 +376,13 @@ LABEL_16:
     }
   }
 
-  else if (![v10 length])
+  else if (![identifierCopy length])
   {
     goto LABEL_16;
   }
 
   LOBYTE(v19) = 0;
-  v12 = [a1 queryForItemClass:*MEMORY[0x277CDC238] forIdentifier:v10 account:v11 isSynced:v7 type:0 authenticationContext:0 returnData:v19 limit:0];
+  v12 = [self queryForItemClass:*MEMORY[0x277CDC238] forIdentifier:identifierCopy account:accountCopy isSynced:syncedCopy type:0 authenticationContext:0 returnData:v19 limit:0];
   v13 = [v12 copy];
   v14 = SecItemDelete(v13);
 
@@ -402,17 +402,17 @@ LABEL_16:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v21 = v10;
+      v21 = identifierCopy;
       v22 = 2112;
-      v23 = v11;
+      v23 = accountCopy;
       v24 = 1024;
       v25 = v14;
       _os_log_error_impl(&dword_214D51000, v17, OS_LOG_TYPE_ERROR, "Failed deleting keychain item (%@) for account (%@) with code: %d", buf, 0x1Cu);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v14 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v14 userInfo:0];
     }
   }
 
@@ -421,21 +421,21 @@ LABEL_19:
   return v15;
 }
 
-+ (BOOL)deleteItemsOfType:(unint64_t)a3 account:(id)a4 isSynced:(BOOL)a5 error:(id *)a6
++ (BOOL)deleteItemsOfType:(unint64_t)type account:(id)account isSynced:(BOOL)synced error:(id *)error
 {
-  v7 = a5;
+  syncedCopy = synced;
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = v10;
-  if (a6)
+  accountCopy = account;
+  v11 = accountCopy;
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  if (a3 || [v10 length])
+  if (type || [accountCopy length])
   {
     LOBYTE(v19) = 0;
-    v12 = [a1 queryForItemClass:*MEMORY[0x277CDC238] forIdentifier:0 account:v11 isSynced:v7 type:a3 authenticationContext:0 returnData:v19 limit:0];
+    v12 = [self queryForItemClass:*MEMORY[0x277CDC238] forIdentifier:0 account:v11 isSynced:syncedCopy type:type authenticationContext:0 returnData:v19 limit:0];
     v13 = [v12 copy];
     v14 = SecItemDelete(v13);
 
@@ -455,7 +455,7 @@ LABEL_19:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218498;
-        v21 = a3;
+        typeCopy = type;
         v22 = 2112;
         v23 = v11;
         v24 = 1024;
@@ -463,18 +463,18 @@ LABEL_19:
         _os_log_error_impl(&dword_214D51000, v17, OS_LOG_TYPE_ERROR, "Failed deleting keychain items of type (%lu) for account (%@) with code: %d", buf, 0x1Cu);
       }
 
-      if (a6)
+      if (error)
       {
-        *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v14 userInfo:0];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:v14 userInfo:0];
       }
     }
   }
 
   else
   {
-    if (a6)
+    if (error)
     {
-      *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.notes.keychain" code:3 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.notes.keychain" code:3 userInfo:0];
     }
 
     v12 = os_log_create("com.apple.notes", "Crypto");
@@ -489,21 +489,21 @@ LABEL_19:
   return v15;
 }
 
-+ (BOOL)isSyncAvailableForAccount:(id)a3
++ (BOOL)isSyncAvailableForAccount:(id)account
 {
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
-  if (v4)
+  accountCopy = account;
+  managedObjectContext = [accountCopy managedObjectContext];
+  if (managedObjectContext)
   {
-    v5 = v4;
-    v6 = [v3 isDeleted];
+    v5 = managedObjectContext;
+    isDeleted = [accountCopy isDeleted];
 
-    if ((v6 & 1) == 0)
+    if ((isDeleted & 1) == 0)
     {
-      if ([v3 isPrimaryiCloudAccount])
+      if ([accountCopy isPrimaryiCloudAccount])
       {
-        v8 = [v3 altDSID];
-        if (!v8)
+        altDSID = [accountCopy altDSID];
+        if (!altDSID)
         {
           goto LABEL_16;
         }
@@ -511,33 +511,33 @@ LABEL_19:
 
       else
       {
-        if ([v3 accountType] != 3)
+        if ([accountCopy accountType] != 3)
         {
           v23 = os_log_create("com.apple.notes", "Crypto");
           if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
           {
-            [ICKeychain isSyncAvailableForAccount:v3];
+            [ICKeychain isSyncAvailableForAccount:accountCopy];
           }
 
           goto LABEL_16;
         }
 
-        v9 = [MEMORY[0x277D36178] sharedInstance];
-        v10 = [v9 accountStore];
-        v11 = [v10 accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8BA0]];
+        mEMORY[0x277D36178] = [MEMORY[0x277D36178] sharedInstance];
+        accountStore = [mEMORY[0x277D36178] accountStore];
+        v11 = [accountStore accountTypeWithAccountTypeIdentifier:*MEMORY[0x277CB8BA0]];
 
-        v12 = [MEMORY[0x277D36178] sharedInstance];
-        v13 = [v12 accountStore];
-        v14 = [v13 accountsWithAccountType:v11];
+        mEMORY[0x277D36178]2 = [MEMORY[0x277D36178] sharedInstance];
+        accountStore2 = [mEMORY[0x277D36178]2 accountStore];
+        v14 = [accountStore2 accountsWithAccountType:v11];
 
         v15 = [v14 ic_objectPassingTest:&__block_literal_global_27];
-        v8 = [v15 aa_altDSID];
+        altDSID = [v15 aa_altDSID];
 
-        if (!v8)
+        if (!altDSID)
         {
 LABEL_16:
-          v8 = os_log_create("com.apple.notes", "Crypto");
-          if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+          altDSID = os_log_create("com.apple.notes", "Crypto");
+          if (os_log_type_enabled(altDSID, OS_LOG_TYPE_DEBUG))
           {
             +[ICKeychain isSyncAvailableForAccount:];
           }
@@ -549,7 +549,7 @@ LABEL_16:
 
       v16 = objc_alloc_init(MEMORY[0x277CDBD50]);
       [v16 setContext:*MEMORY[0x277CDBD90]];
-      [v16 setAltDSID:v8];
+      [v16 setAltDSID:altDSID];
       v17 = [objc_alloc(MEMORY[0x277CDBD48]) initWithContextData:v16];
       v18 = objc_alloc_init(MEMORY[0x277CDBD70]);
       [v18 setUseCachedAccountStatus:1];
@@ -561,7 +561,7 @@ LABEL_16:
         v21 = os_log_create("com.apple.notes", "Crypto");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          [ICKeychain isSyncAvailableForAccount:v3];
+          [ICKeychain isSyncAvailableForAccount:accountCopy];
         }
       }
 
@@ -577,7 +577,7 @@ LABEL_16:
             v21 = os_log_create("com.apple.notes", "Crypto");
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
-              [ICKeychain isSyncAvailableForAccount:v3];
+              [ICKeychain isSyncAvailableForAccount:accountCopy];
             }
           }
 
@@ -595,7 +595,7 @@ LABEL_32:
             v21 = os_log_create("com.apple.notes", "Crypto");
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
-              [ICKeychain isSyncAvailableForAccount:v3];
+              [ICKeychain isSyncAvailableForAccount:accountCopy];
             }
           }
 
@@ -607,7 +607,7 @@ LABEL_30:
         v21 = os_log_create("com.apple.notes", "Crypto");
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          [ICKeychain isSyncAvailableForAccount:v3];
+          [ICKeychain isSyncAvailableForAccount:accountCopy];
         }
       }
 
@@ -622,14 +622,14 @@ LABEL_33:
   return v7;
 }
 
-+ (BOOL)shouldFetchItemsWithError:(id *)a3
++ (BOOL)shouldFetchItemsWithError:(id *)error
 {
-  v4 = a1;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = +[ICCloudConfiguration sharedConfiguration];
-  v6 = [v5 keychainFetchingEnabled];
+  keychainFetchingEnabled = [v5 keychainFetchingEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((keychainFetchingEnabled & 1) == 0)
   {
     v15 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -637,7 +637,7 @@ LABEL_33:
       +[ICKeychain shouldFetchItemsWithError:];
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -648,10 +648,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v7 = [MEMORY[0x277D36240] sharedReachabilityForInternetConnection];
-  v8 = [v7 currentReachabilityStatus];
+  mEMORY[0x277D36240] = [MEMORY[0x277D36240] sharedReachabilityForInternetConnection];
+  currentReachabilityStatus = [mEMORY[0x277D36240] currentReachabilityStatus];
 
-  if (!v8)
+  if (!currentReachabilityStatus)
   {
     v17 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -659,7 +659,7 @@ LABEL_15:
       +[ICKeychain shouldFetchItemsWithError:];
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -707,7 +707,7 @@ LABEL_22:
     +[ICKeychain shouldFetchItemsWithError:];
   }
 
-  if (!a3)
+  if (!error)
   {
     goto LABEL_22;
   }
@@ -715,25 +715,25 @@ LABEL_22:
   v18 = lastItemsFetchError;
 LABEL_16:
   v19 = 0;
-  *a3 = v18;
+  *error = v18;
 LABEL_23:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v19;
 }
 
-+ (void)fetchItemsWithCompletionHandler:(id)a3
++ (void)fetchItemsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v18 = 0;
   v5 = [MEMORY[0x277CDBD00] controlObject:&v18];
   v6 = v18;
   if (v5)
   {
-    v7 = a1;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v17 = v6;
-    v8 = [v7 shouldFetchItemsWithError:&v17];
+    v8 = [selfCopy shouldFetchItemsWithError:&v17];
     v9 = v17;
 
     if (v8)
@@ -742,7 +742,7 @@ LABEL_23:
       v11 = lastItemsFetchFetchDate;
       lastItemsFetchFetchDate = v10;
 
-      objc_sync_exit(v7);
+      objc_sync_exit(selfCopy);
       v12 = os_log_create("com.apple.notes", "Crypto");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
@@ -753,19 +753,19 @@ LABEL_23:
       v14[1] = 3221225472;
       v14[2] = __46__ICKeychain_fetchItemsWithCompletionHandler___block_invoke;
       v14[3] = &unk_278196E90;
-      v16 = v7;
-      v15 = v4;
+      v16 = selfCopy;
+      v15 = handlerCopy;
       [v5 rpcFetchAndProcessChanges:0 reply:v14];
     }
 
     else
     {
-      if (v4)
+      if (handlerCopy)
       {
-        (*(v4 + 2))(v4, v9);
+        (*(handlerCopy + 2))(handlerCopy, v9);
       }
 
-      objc_sync_exit(v7);
+      objc_sync_exit(selfCopy);
     }
   }
 
@@ -777,9 +777,9 @@ LABEL_23:
       +[ICKeychain fetchItemsWithCompletionHandler:];
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      (*(v4 + 2))(v4, v6);
+      (*(handlerCopy + 2))(handlerCopy, v6);
     }
 
     v9 = v6;
@@ -833,42 +833,42 @@ void __46__ICKeychain_fetchItemsWithCompletionHandler___block_invoke(uint64_t a1
   }
 }
 
-+ (void)tests_setLastItemsError:(id)a3 lastItemsErrorDate:(id)a4 lastItemsFetchDate:(id)a5
++ (void)tests_setLastItemsError:(id)error lastItemsErrorDate:(id)date lastItemsFetchDate:(id)fetchDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  obj = a1;
+  errorCopy = error;
+  dateCopy = date;
+  fetchDateCopy = fetchDate;
+  obj = self;
   objc_sync_enter(obj);
   v11 = lastItemsFetchError;
-  lastItemsFetchError = v8;
-  v12 = v8;
+  lastItemsFetchError = errorCopy;
+  v12 = errorCopy;
 
   v13 = lastItemsFetchErrorDate;
-  lastItemsFetchErrorDate = v9;
-  v14 = v9;
+  lastItemsFetchErrorDate = dateCopy;
+  v14 = dateCopy;
 
   v15 = lastItemsFetchFetchDate;
-  lastItemsFetchFetchDate = v10;
+  lastItemsFetchFetchDate = fetchDateCopy;
 
   objc_sync_exit(obj);
 }
 
-+ (id)queryForItemClass:(id)a3 forIdentifier:(id)a4 account:(id)a5 isSynced:(BOOL)a6 type:(unint64_t)a7 authenticationContext:(id)a8 returnData:(BOOL)a9 limit:(id)a10
++ (id)queryForItemClass:(id)class forIdentifier:(id)identifier account:(id)account isSynced:(BOOL)synced type:(unint64_t)type authenticationContext:(id)context returnData:(BOOL)data limit:(id)self0
 {
-  v12 = a6;
+  syncedCopy = synced;
   v30[2] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a10;
+  classCopy = class;
+  identifierCopy = identifier;
+  accountCopy = account;
+  contextCopy = context;
+  limitCopy = limit;
   v20 = objc_alloc(MEMORY[0x277CBEB38]);
   v21 = *MEMORY[0x277CDC140];
   v29[0] = *MEMORY[0x277CDC5C8];
   v29[1] = v21;
   v22 = MEMORY[0x277CBEC28];
-  if (v12)
+  if (syncedCopy)
   {
     v22 = MEMORY[0x277CBEC38];
   }
@@ -878,46 +878,46 @@ void __46__ICKeychain_fetchItemsWithCompletionHandler___block_invoke(uint64_t a1
   v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
   v24 = [v20 initWithDictionary:v23];
 
-  if (v16)
+  if (identifierCopy)
   {
     v25 = MEMORY[0x277CDBF20];
-    if (!v12)
+    if (!syncedCopy)
     {
       v25 = MEMORY[0x277CDC120];
     }
 
-    [v24 setObject:v16 forKeyedSubscript:*v25];
+    [v24 setObject:identifierCopy forKeyedSubscript:*v25];
   }
 
-  if (v15)
+  if (classCopy)
   {
-    [v24 setObject:v15 forKeyedSubscript:*MEMORY[0x277CDC228]];
+    [v24 setObject:classCopy forKeyedSubscript:*MEMORY[0x277CDC228]];
   }
 
-  if (v17)
+  if (accountCopy)
   {
-    [v24 setObject:v17 forKeyedSubscript:*MEMORY[0x277CDC080]];
+    [v24 setObject:accountCopy forKeyedSubscript:*MEMORY[0x277CDC080]];
   }
 
-  if (a7)
+  if (type)
   {
-    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a7];
+    v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     [v24 setObject:v26 forKeyedSubscript:*MEMORY[0x277CDC188]];
   }
 
-  if (a9)
+  if (data)
   {
     [v24 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CDC558]];
   }
 
-  if (v19)
+  if (limitCopy)
   {
-    [v24 setObject:v19 forKeyedSubscript:*MEMORY[0x277CDC428]];
+    [v24 setObject:limitCopy forKeyedSubscript:*MEMORY[0x277CDC428]];
   }
 
-  if (v18)
+  if (contextCopy)
   {
-    [v24 setObject:v18 forKey:*MEMORY[0x277CDC5A0]];
+    [v24 setObject:contextCopy forKey:*MEMORY[0x277CDC5A0]];
   }
 
   v27 = [v24 copy];
@@ -925,16 +925,16 @@ void __46__ICKeychain_fetchItemsWithCompletionHandler___block_invoke(uint64_t a1
   return v27;
 }
 
-+ (id)accessControlObjectWithProtection:(void *)a3 flags:(unint64_t)a4 error:(id *)a5
++ (id)accessControlObjectWithProtection:(void *)protection flags:(unint64_t)flags error:(id *)error
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v13 = 0;
-  v6 = SecAccessControlCreateWithFlags(*MEMORY[0x277CBECE8], a3, a4, &v13);
+  v6 = SecAccessControlCreateWithFlags(*MEMORY[0x277CBECE8], protection, flags, &v13);
   if (v6)
   {
     v7 = v13 == 0;
@@ -953,7 +953,7 @@ void __46__ICKeychain_fetchItemsWithCompletionHandler___block_invoke(uint64_t a1
       +[ICKeychain accessControlObjectWithProtection:flags:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v9 = MEMORY[0x277CCA9B8];
       v10 = *MEMORY[0x277CCA7E8];
@@ -962,7 +962,7 @@ void __46__ICKeychain_fetchItemsWithCompletionHandler___block_invoke(uint64_t a1
       v15[0] = @"SecAccessControlCreateWithFlags() returned with an error";
       v15[1] = v13;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-      *a5 = [v9 errorWithDomain:@"com.apple.notes.keychain" code:1 userInfo:v11];
+      *error = [v9 errorWithDomain:@"com.apple.notes.keychain" code:1 userInfo:v11];
     }
 
     if (v6)

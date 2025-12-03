@@ -1,25 +1,25 @@
 @interface IDSQRProtoPropertyOverride
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)propertyNameAsString:(int)a3;
-- (id)propertyValueAsString:(int)a3;
-- (int)StringAsPropertyName:(id)a3;
-- (int)StringAsPropertyValue:(id)a3;
+- (id)propertyNameAsString:(int)string;
+- (id)propertyValueAsString:(int)string;
+- (int)StringAsPropertyName:(id)name;
+- (int)StringAsPropertyValue:(id)value;
 - (int)propertyName;
 - (int)propertyValue;
 - (unint64_t)hash;
 - (void)clearOneofValuesForPropertyValue;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setBoolValue:(BOOL)a3;
-- (void)setHasBoolValue:(BOOL)a3;
-- (void)setHasPropertyValue:(BOOL)a3;
-- (void)setHasUint32Value:(BOOL)a3;
-- (void)setStringValue:(id)a3;
-- (void)setUint32Value:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setBoolValue:(BOOL)value;
+- (void)setHasBoolValue:(BOOL)value;
+- (void)setHasPropertyValue:(BOOL)value;
+- (void)setHasUint32Value:(BOOL)value;
+- (void)setStringValue:(id)value;
+- (void)setUint32Value:(unsigned int)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoPropertyOverride
@@ -37,35 +37,35 @@
   }
 }
 
-- (id)propertyNameAsString:(int)a3
+- (id)propertyNameAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E77E1DB0[a3];
+    v4 = off_1E77E1DB0[string];
   }
 
   return v4;
 }
 
-- (int)StringAsPropertyName:(id)a3
+- (int)StringAsPropertyName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"server_enforced_disconnection_timeout_seconds"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"server_enforced_disconnection_timeout_seconds"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"multiway_participant_trust_guard_duration_in_millis"])
+  else if ([nameCopy isEqualToString:@"multiway_participant_trust_guard_duration_in_millis"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"disconnect_participant_landing_on_old_instance_during_resign"])
+  else if ([nameCopy isEqualToString:@"disconnect_participant_landing_on_old_instance_during_resign"])
   {
     v4 = 2;
   }
@@ -78,18 +78,18 @@
   return v4;
 }
 
-- (void)setBoolValue:(BOOL)a3
+- (void)setBoolValue:(BOOL)value
 {
   [(IDSQRProtoPropertyOverride *)self clearOneofValuesForPropertyValue];
   *&self->_has |= 2u;
   self->_propertyValue = 1;
   *&self->_has |= 8u;
-  self->_BOOLValue = a3;
+  self->_BOOLValue = value;
 }
 
-- (void)setHasBoolValue:(BOOL)a3
+- (void)setHasBoolValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 8;
   }
@@ -102,28 +102,28 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   [(IDSQRProtoPropertyOverride *)self clearOneofValuesForPropertyValue];
   *&self->_has |= 2u;
   self->_propertyValue = 2;
   stringValue = self->_stringValue;
-  self->_stringValue = v4;
+  self->_stringValue = valueCopy;
 }
 
-- (void)setUint32Value:(unsigned int)a3
+- (void)setUint32Value:(unsigned int)value
 {
   [(IDSQRProtoPropertyOverride *)self clearOneofValuesForPropertyValue];
   *&self->_has |= 2u;
   self->_propertyValue = 3;
   *&self->_has |= 4u;
-  self->_uint32Value = a3;
+  self->_uint32Value = value;
 }
 
-- (void)setHasUint32Value:(BOOL)a3
+- (void)setHasUint32Value:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 4;
   }
@@ -149,9 +149,9 @@
   }
 }
 
-- (void)setHasPropertyValue:(BOOL)a3
+- (void)setHasPropertyValue:(BOOL)value
 {
-  if (a3)
+  if (value)
   {
     v3 = 2;
   }
@@ -164,40 +164,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)propertyValueAsString:(int)a3
+- (id)propertyValueAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E77E1DC8[a3];
+    v4 = off_1E77E1DC8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsPropertyValue:(id)a3
+- (int)StringAsPropertyValue:(id)value
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  valueCopy = value;
+  if ([valueCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"BOOL_value"])
+  else if ([valueCopy isEqualToString:@"BOOL_value"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"string_value"])
+  else if ([valueCopy isEqualToString:@"string_value"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"uint32_value"])
+  else if ([valueCopy isEqualToString:@"uint32_value"])
   {
     v4 = 3;
   }
@@ -229,15 +229,15 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoPropertyOverride;
   v4 = [(IDSQRProtoPropertyOverride *)&v8 description];
-  v5 = [(IDSQRProtoPropertyOverride *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoPropertyOverride *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -252,7 +252,7 @@
       v6 = off_1E77E1DB0[propertyName];
     }
 
-    [v3 setObject:v6 forKey:@"property_name"];
+    [dictionary setObject:v6 forKey:@"property_name"];
 
     has = self->_has;
   }
@@ -260,20 +260,20 @@
   if ((has & 8) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_BOOLValue];
-    [v3 setObject:v7 forKey:@"BOOL_value"];
+    [dictionary setObject:v7 forKey:@"BOOL_value"];
   }
 
   stringValue = self->_stringValue;
   if (stringValue)
   {
-    [v3 setObject:stringValue forKey:@"string_value"];
+    [dictionary setObject:stringValue forKey:@"string_value"];
   }
 
   v9 = self->_has;
   if ((v9 & 4) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_uint32Value];
-    [v3 setObject:v10 forKey:@"uint32_value"];
+    [dictionary setObject:v10 forKey:@"uint32_value"];
 
     v9 = self->_has;
   }
@@ -291,15 +291,15 @@
       v12 = off_1E77E1DC8[propertyValue];
     }
 
-    [v3 setObject:v12 forKey:@"property_value"];
+    [dictionary setObject:v12 forKey:@"property_value"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -323,14 +323,14 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_propertyValue;
-    *(v4 + 32) |= 2u;
+    toCopy[3] = self->_propertyValue;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -349,33 +349,33 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_propertyName;
-  *(v4 + 32) |= 1u;
+  toCopy[2] = self->_propertyName;
+  *(toCopy + 32) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_4:
-    *(v4 + 28) = self->_BOOLValue;
-    *(v4 + 32) |= 8u;
+    *(toCopy + 28) = self->_BOOLValue;
+    *(toCopy + 32) |= 8u;
   }
 
 LABEL_5:
   if (self->_stringValue)
   {
-    v6 = v4;
-    [v4 setStringValue:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setStringValue:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[6] = self->_uint32Value;
-    *(v4 + 32) |= 4u;
+    toCopy[6] = self->_uint32Value;
+    *(toCopy + 32) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -410,7 +410,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_stringValue copyWithZone:a3];
+  v8 = [(NSString *)self->_stringValue copyWithZone:zone];
   v9 = *(v6 + 16);
   *(v6 + 16) = v8;
 
@@ -423,10 +423,10 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
@@ -434,58 +434,58 @@ LABEL_5:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_propertyValue != *(v4 + 3))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_propertyValue != *(equalCopy + 3))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
     goto LABEL_22;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_propertyName != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_propertyName != *(equalCopy + 2))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_22;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 32) & 8) == 0)
+    if ((*(equalCopy + 32) & 8) == 0)
     {
       goto LABEL_22;
     }
 
     if (self->_BOOLValue)
     {
-      if ((*(v4 + 28) & 1) == 0)
+      if ((*(equalCopy + 28) & 1) == 0)
       {
         goto LABEL_22;
       }
     }
 
-    else if (*(v4 + 28))
+    else if (*(equalCopy + 28))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 32) & 8) != 0)
+  else if ((*(equalCopy + 32) & 8) != 0)
   {
     goto LABEL_22;
   }
 
   stringValue = self->_stringValue;
-  if (!(stringValue | *(v4 + 2)))
+  if (!(stringValue | *(equalCopy + 2)))
   {
     goto LABEL_17;
   }
@@ -499,10 +499,10 @@ LABEL_22:
 
   has = self->_has;
 LABEL_17:
-  v7 = (*(v4 + 32) & 4) == 0;
+  v7 = (*(equalCopy + 32) & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_uint32Value != *(v4 + 6))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_uint32Value != *(equalCopy + 6))
     {
       goto LABEL_22;
     }
@@ -567,15 +567,15 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v7 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 32);
+  fromCopy = from;
+  v5 = *(fromCopy + 32);
   if ((v5 & 2) != 0)
   {
-    self->_propertyValue = *(v4 + 3);
+    self->_propertyValue = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 32);
+    v5 = *(fromCopy + 32);
     if ((v5 & 1) == 0)
     {
 LABEL_3:
@@ -588,31 +588,31 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 32) & 1) == 0)
+  else if ((*(fromCopy + 32) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_propertyName = *(v4 + 2);
+  self->_propertyName = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 32) & 8) != 0)
+  if ((*(fromCopy + 32) & 8) != 0)
   {
 LABEL_4:
-    self->_BOOLValue = *(v4 + 28);
+    self->_BOOLValue = *(fromCopy + 28);
     *&self->_has |= 8u;
   }
 
 LABEL_5:
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
-    v6 = v4;
+    v6 = fromCopy;
     [(IDSQRProtoPropertyOverride *)self setStringValue:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 32) & 4) != 0)
+  if ((*(fromCopy + 32) & 4) != 0)
   {
-    self->_uint32Value = *(v4 + 6);
+    self->_uint32Value = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 }

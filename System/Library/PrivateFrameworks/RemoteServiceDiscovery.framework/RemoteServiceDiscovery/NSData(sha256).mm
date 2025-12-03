@@ -6,10 +6,10 @@
 
 - (id)sha256
 {
-  if ([a1 bytes] && objc_msgSend(a1, "length"))
+  if ([self bytes] && objc_msgSend(self, "length"))
   {
     v2 = [MEMORY[0x277CBEB28] dataWithLength:32];
-    CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), objc_msgSend(v2, "mutableBytes"));
+    CC_SHA256([self bytes], objc_msgSend(self, "length"), objc_msgSend(v2, "mutableBytes"));
   }
 
   else

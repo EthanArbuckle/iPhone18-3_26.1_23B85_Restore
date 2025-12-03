@@ -1,45 +1,45 @@
 @interface EVChargerUtility
-+ (id)chargerStringForNonRealDataWithChargerNumber:(int64_t)a3;
-+ (id)realTimeEVChargerDisplayStringWithEvCharger:(id)a3 mapDisplay:(BOOL)a4;
-+ (int)realTimeEVChargerStatusWithEvCharger:(id)a3;
++ (id)chargerStringForNonRealDataWithChargerNumber:(int64_t)number;
++ (id)realTimeEVChargerDisplayStringWithEvCharger:(id)charger mapDisplay:(BOOL)display;
++ (int)realTimeEVChargerStatusWithEvCharger:(id)charger;
 - (_TtC4Maps16EVChargerUtility)init;
 @end
 
 @implementation EVChargerUtility
 
-+ (int)realTimeEVChargerStatusWithEvCharger:(id)a3
++ (int)realTimeEVChargerStatusWithEvCharger:(id)charger
 {
   v4 = objc_opt_self();
-  v5 = a3;
-  v6 = [v4 sharedSearchVirtualGarageManager];
-  v7 = [v6 virtualGarage];
+  chargerCopy = charger;
+  sharedSearchVirtualGarageManager = [v4 sharedSearchVirtualGarageManager];
+  virtualGarage = [sharedSearchVirtualGarageManager virtualGarage];
 
-  if (v7)
+  if (virtualGarage)
   {
-    v8 = [objc_opt_self() getRealTimeEVChargerInfo:v7 charger:v5];
-    v9 = [v8 status];
+    v8 = [objc_opt_self() getRealTimeEVChargerInfo:virtualGarage charger:chargerCopy];
+    status = [v8 status];
   }
 
   else
   {
-    v9 = [v5 _realTimePlugAvailabilityStatus];
+    status = [chargerCopy _realTimePlugAvailabilityStatus];
   }
 
-  return v9;
+  return status;
 }
 
-+ (id)chargerStringForNonRealDataWithChargerNumber:(int64_t)a3
++ (id)chargerStringForNonRealDataWithChargerNumber:(int64_t)number
 {
-  sub_1004CE920(a3);
+  sub_1004CE920(number);
   v3 = String._bridgeToObjectiveC()();
 
   return v3;
 }
 
-+ (id)realTimeEVChargerDisplayStringWithEvCharger:(id)a3 mapDisplay:(BOOL)a4
++ (id)realTimeEVChargerDisplayStringWithEvCharger:(id)charger mapDisplay:(BOOL)display
 {
-  v5 = a3;
-  sub_1004CE7A4(v5, a4);
+  chargerCopy = charger;
+  sub_1004CE7A4(chargerCopy, display);
 
   v6 = String._bridgeToObjectiveC()();
 

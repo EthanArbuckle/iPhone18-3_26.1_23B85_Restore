@@ -1,27 +1,27 @@
 @interface SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier
 - (NSString)roleA;
 - (NSString)roleB;
-- (SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier)initWithComponentOrder:(id)a3;
-- (void)updateStageParticipantsResolutionPolicies:(id)a3 context:(id)a4;
+- (SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier)initWithComponentOrder:(id)order;
+- (void)updateStageParticipantsResolutionPolicies:(id)policies context:(id)context;
 @end
 
 @implementation SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier
 
-- (SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier)initWithComponentOrder:(id)a3
+- (SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier)initWithComponentOrder:(id)order
 {
   v10.receiver = self;
   v10.super_class = SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier;
-  v3 = [(SBTraitsOrientationStageComponent *)&v10 initWithComponentOrder:a3];
+  v3 = [(SBTraitsOrientationStageComponent *)&v10 initWithComponentOrder:order];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier *)v3 roleA];
+    roleA = [(SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier *)v3 roleA];
     roleA = v4->_roleA;
-    v4->_roleA = v5;
+    v4->_roleA = roleA;
 
-    v7 = [(SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier *)v4 roleB];
+    roleB = [(SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier *)v4 roleB];
     roleB = v4->_roleB;
-    v4->_roleB = v7;
+    v4->_roleB = roleB;
 
     v4->_force = [(SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier *)v4 force];
     v4->_animate = [(SBTraitsRoleAFollowsRoleBOrientationPolicySpecifier *)v4 animate];
@@ -32,33 +32,33 @@
 
 - (NSString)roleA
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBTraitsOrientationStageComponents.m" lineNumber:451 description:{@"This class[%@] shouldn't be directly used, pick a subclass.", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBTraitsOrientationStageComponents.m" lineNumber:451 description:{@"This class[%@] shouldn't be directly used, pick a subclass.", v6}];
 
   return 0;
 }
 
 - (NSString)roleB
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBTraitsOrientationStageComponents.m" lineNumber:456 description:{@"This class[%@] shouldn't be directly used, pick a subclass.", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBTraitsOrientationStageComponents.m" lineNumber:456 description:{@"This class[%@] shouldn't be directly used, pick a subclass.", v6}];
 
   return 0;
 }
 
-- (void)updateStageParticipantsResolutionPolicies:(id)a3 context:(id)a4
+- (void)updateStageParticipantsResolutionPolicies:(id)policies context:(id)context
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  policiesCopy = policies;
+  v6 = [policiesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -69,12 +69,12 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(policiesCopy);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 role];
-        v12 = [v11 isEqualToString:self->_roleA];
+        role = [v10 role];
+        v12 = [role isEqualToString:self->_roleA];
 
         if (v12)
         {
@@ -97,7 +97,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [policiesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;

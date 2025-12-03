@@ -1,16 +1,16 @@
 @interface MapsSuggestionsVehicleSetupResumeRouteDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsVehicleSetupResumeRouteDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -39,7 +39,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -59,12 +59,12 @@ LABEL_18:
     goto LABEL_17;
   }
 
-  if (([v5 hasMultipleWaypointsLeft] & 1) != 0 || (objc_msgSend(v7, "hasMultipleWaypointsLeft") & 1) != 0 || !MapsSuggestionsEntriesShouldBeOfOneOfEachType(20, 11, v5, v7))
+  if (([entryCopy hasMultipleWaypointsLeft] & 1) != 0 || (objc_msgSend(v7, "hasMultipleWaypointsLeft") & 1) != 0 || !MapsSuggestionsEntriesShouldBeOfOneOfEachType(20, 11, entryCopy, v7))
   {
     goto LABEL_18;
   }
 
-  if (([v7 BOOLeanForKey:@"MapsSuggestionsIsResumingAnEVRoute" is:1] & 1) == 0 && (objc_msgSend(v5, "BOOLeanForKey:is:", @"MapsSuggestionsIsResumingAnEVRoute", 1) & 1) == 0)
+  if (([v7 BOOLeanForKey:@"MapsSuggestionsIsResumingAnEVRoute" is:1] & 1) == 0 && (objc_msgSend(entryCopy, "BOOLeanForKey:is:", @"MapsSuggestionsIsResumingAnEVRoute", 1) & 1) == 0)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -80,9 +80,9 @@ LABEL_18:
     goto LABEL_16;
   }
 
-  if ([v5 type] != 11)
+  if ([entryCopy type] != 11)
   {
-    [v5 replaceByEntry:v7];
+    [entryCopy replaceByEntry:v7];
   }
 
   v8 = 1;

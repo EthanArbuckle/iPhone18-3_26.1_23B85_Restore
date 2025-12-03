@@ -1,36 +1,36 @@
 @interface NNMKSyncEndpoint
-- (NNMKSyncEndpoint)initWithQueue:(id)a3;
-- (unint64_t)newResendIntervalForPreviousResendInterval:(unint64_t)a3 errorCode:(int64_t)a4;
+- (NNMKSyncEndpoint)initWithQueue:(id)queue;
+- (unint64_t)newResendIntervalForPreviousResendInterval:(unint64_t)interval errorCode:(int64_t)code;
 - (void)dealloc;
-- (void)enqueueIDSIdentifierForResend:(id)a3 atDate:(id)a4 silent:(BOOL)a5;
-- (void)enqueueIDSIdentifiersForResend:(id)a3;
+- (void)enqueueIDSIdentifierForResend:(id)resend atDate:(id)date silent:(BOOL)silent;
+- (void)enqueueIDSIdentifiersForResend:(id)resend;
 - (void)resendAllIDSIdentifiers;
 - (void)resendReadyIDSIdentifiers;
 @end
 
 @implementation NNMKSyncEndpoint
 
-- (NNMKSyncEndpoint)initWithQueue:(id)a3
+- (NNMKSyncEndpoint)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = NNMKSyncEndpoint;
   v6 = [(NNMKSyncEndpoint *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpointQueue, a3);
+    objc_storeStrong(&v6->_endpointQueue, queue);
     v8 = dispatch_queue_create("com.apple.NanoMail.resendingQueue", MEMORY[0x277D85CD8]);
     resendingQueue = v7->_resendingQueue;
     v7->_resendingQueue = v8;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     datesForIDSIdentifiersScheduledToBeResent = v7->_datesForIDSIdentifiersScheduledToBeResent;
-    v7->_datesForIDSIdentifiersScheduledToBeResent = v10;
+    v7->_datesForIDSIdentifiersScheduledToBeResent = dictionary;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     lastResendIntervalByIDSIdentifier = v7->_lastResendIntervalByIDSIdentifier;
-    v7->_lastResendIntervalByIDSIdentifier = v12;
+    v7->_lastResendIntervalByIDSIdentifier = dictionary2;
   }
 
   return v7;
@@ -58,12 +58,12 @@ uint64_t __27__NNMKSyncEndpoint_dealloc__block_invoke(uint64_t a1)
   return [v2 removeAllObjects];
 }
 
-- (void)enqueueIDSIdentifiersForResend:(id)a3
+- (void)enqueueIDSIdentifiersForResend:(id)resend
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (resend)
   {
-    v4 = [a3 mutableCopy];
+    v4 = [resend mutableCopy];
     datesForIDSIdentifiersScheduledToBeResent = self->_datesForIDSIdentifiersScheduledToBeResent;
     self->_datesForIDSIdentifiersScheduledToBeResent = v4;
 
@@ -71,8 +71,8 @@ uint64_t __27__NNMKSyncEndpoint_dealloc__block_invoke(uint64_t a1)
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent allKeys];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allKeys = [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent allKeys];
+    v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -83,7 +83,7 @@ uint64_t __27__NNMKSyncEndpoint_dealloc__block_invoke(uint64_t a1)
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -91,7 +91,7 @@ uint64_t __27__NNMKSyncEndpoint_dealloc__block_invoke(uint64_t a1)
           [(NNMKSyncEndpoint *)self enqueueIDSIdentifierForResend:v11 atDate:v12 silent:0];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v8);
@@ -101,15 +101,15 @@ uint64_t __27__NNMKSyncEndpoint_dealloc__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueIDSIdentifierForResend:(id)a3 atDate:(id)a4 silent:(BOOL)a5
+- (void)enqueueIDSIdentifierForResend:(id)resend atDate:(id)date silent:(BOOL)silent
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent objectForKeyedSubscript:v8];
+  resendCopy = resend;
+  dateCopy = date;
+  v10 = [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent objectForKeyedSubscript:resendCopy];
 
   if (v10)
   {
-    if (a5)
+    if (silent)
     {
       goto LABEL_9;
     }
@@ -117,8 +117,8 @@ uint64_t __27__NNMKSyncEndpoint_dealloc__block_invoke(uint64_t a1)
 
   else
   {
-    [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent setObject:v9 forKeyedSubscript:v8];
-    if (a5)
+    [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent setObject:dateCopy forKeyedSubscript:resendCopy];
+    if (silent)
     {
       goto LABEL_9;
     }
@@ -129,9 +129,9 @@ uint64_t __27__NNMKSyncEndpoint_dealloc__block_invoke(uint64_t a1)
   v17[2] = __64__NNMKSyncEndpoint_enqueueIDSIdentifierForResend_atDate_silent___block_invoke;
   v17[3] = &unk_279935CD8;
   v17[4] = self;
-  v18 = v8;
+  v18 = resendCopy;
   v11 = MEMORY[0x25F864490](v17);
-  [v9 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   if (v12 <= 0.0)
   {
     v11[2](v11);
@@ -191,8 +191,8 @@ void __64__NNMKSyncEndpoint_enqueueIDSIdentifierForResend_atDate_silent___block_
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -203,7 +203,7 @@ void __64__NNMKSyncEndpoint_enqueueIDSIdentifierForResend_atDate_silent___block_
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -215,7 +215,7 @@ void __64__NNMKSyncEndpoint_enqueueIDSIdentifierForResend_atDate_silent___block_
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -231,8 +231,8 @@ void __64__NNMKSyncEndpoint_enqueueIDSIdentifierForResend_atDate_silent___block_
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  allKeys = [(NSMutableDictionary *)self->_datesForIDSIdentifiersScheduledToBeResent allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -244,14 +244,14 @@ void __64__NNMKSyncEndpoint_enqueueIDSIdentifierForResend_atDate_silent___block_
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(NNMKSyncEndpoint *)self resendObjectsForIDSIdentifier:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -260,24 +260,24 @@ void __64__NNMKSyncEndpoint_enqueueIDSIdentifierForResend_atDate_silent___block_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)newResendIntervalForPreviousResendInterval:(unint64_t)a3 errorCode:(int64_t)a4
+- (unint64_t)newResendIntervalForPreviousResendInterval:(unint64_t)interval errorCode:(int64_t)code
 {
-  if (a4 == 27)
+  if (code == 27)
   {
     return 0xFFFFFFFFLL;
   }
 
-  if (!a3)
+  if (!interval)
   {
     return 1;
   }
 
-  if (5 * a3 >= 0xE10)
+  if (5 * interval >= 0xE10)
   {
     return 3600;
   }
 
-  return 5 * a3;
+  return 5 * interval;
 }
 
 @end

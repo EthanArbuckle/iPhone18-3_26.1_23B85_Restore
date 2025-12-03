@@ -1,26 +1,26 @@
 @interface _HKFeatureAvailabilityRequirementCountryCodeIsPresent
-- (BOOL)isEqual:(id)a3;
-- (id)isSatisfiedWithOnboardingEligibility:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (id)isSatisfiedWithOnboardingEligibility:(id)eligibility error:(id *)error;
 @end
 
 @implementation _HKFeatureAvailabilityRequirementCountryCodeIsPresent
 
-- (id)isSatisfiedWithOnboardingEligibility:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithOnboardingEligibility:(id)eligibility error:(id *)error
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = ([a3 ineligibilityReasons] & 1) == 0;
+  v5 = ([eligibility ineligibilityReasons] & 1) == 0;
 
   return [v4 numberWithInt:v5];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = _HKFeatureAvailabilityRequirementCountryCodeIsPresent;
-  if ([(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 isEqual:v4])
+  if ([(HKFeatureAvailabilityOnboardingEligibilityRequirement *)&v7 isEqual:equalCopy])
   {
-    v5 = [v4 isMemberOfClass:objc_opt_class()];
+    v5 = [equalCopy isMemberOfClass:objc_opt_class()];
   }
 
   else

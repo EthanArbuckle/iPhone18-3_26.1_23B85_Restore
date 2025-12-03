@@ -1,26 +1,26 @@
 @interface TDImageStackAsset
 - (BOOL)hasProduction;
-- (id)imageStackDataWithDocument:(id)a3;
+- (id)imageStackDataWithDocument:(id)document;
 @end
 
 @implementation TDImageStackAsset
 
-- (id)imageStackDataWithDocument:(id)a3
+- (id)imageStackDataWithDocument:(id)document
 {
-  v3 = [-[TDAsset fileURLWithDocument:](self fileURLWithDocument:{a3), "URLByAppendingPathComponent:isDirectory:", @"Contents.json", 0}];
+  v3 = [-[TDAsset fileURLWithDocument:](self fileURLWithDocument:{document), "URLByAppendingPathComponent:isDirectory:", @"Contents.json", 0}];
   v5 = 0;
   return [MEMORY[0x277CBEA90] dataWithContentsOfURL:v3 options:2 error:&v5];
 }
 
 - (BOOL)hasProduction
 {
-  v3 = [(TDImageStackAsset *)self renditions];
-  if (v3)
+  renditions = [(TDImageStackAsset *)self renditions];
+  if (renditions)
   {
-    LOBYTE(v3) = [-[TDImageStackAsset renditions](self "renditions")] != 0;
+    LOBYTE(renditions) = [-[TDImageStackAsset renditions](self "renditions")] != 0;
   }
 
-  return v3;
+  return renditions;
 }
 
 @end

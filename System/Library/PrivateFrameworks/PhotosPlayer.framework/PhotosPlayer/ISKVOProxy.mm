@@ -1,8 +1,8 @@
 @interface ISKVOProxy
-- (ISKVOProxy)initWithTarget:(id)a3 keyPaths:(id)a4 identifier:(id)a5 delegate:(id)a6;
+- (ISKVOProxy)initWithTarget:(id)target keyPaths:(id)paths identifier:(id)identifier delegate:(id)delegate;
 - (ISKVOProxyDelegate)delegate;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)startObservingTarget;
 - (void)stopObservingTarget;
 @end
@@ -55,12 +55,12 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ISKVOProxy *)self delegate];
-  [v10 observeChangeforKVOProxyIdentifier:self->_identifier keyPath:v9 change:v8];
+  changeCopy = change;
+  pathCopy = path;
+  delegate = [(ISKVOProxy *)self delegate];
+  [delegate observeChangeforKVOProxyIdentifier:self->_identifier keyPath:pathCopy change:changeCopy];
 }
 
 - (void)stopObservingTarget
@@ -141,25 +141,25 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (ISKVOProxy)initWithTarget:(id)a3 keyPaths:(id)a4 identifier:(id)a5 delegate:(id)a6
+- (ISKVOProxy)initWithTarget:(id)target keyPaths:(id)paths identifier:(id)identifier delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  targetCopy = target;
+  pathsCopy = paths;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = ISKVOProxy;
   v15 = [(ISKVOProxy *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeWeak(&v15->_delegate, v14);
-    objc_storeStrong(&v16->_target, a3);
-    v17 = [v12 copy];
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_target, target);
+    v17 = [pathsCopy copy];
     keyPaths = v16->_keyPaths;
     v16->_keyPaths = v17;
 
-    v19 = [v13 copy];
+    v19 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v19;
   }

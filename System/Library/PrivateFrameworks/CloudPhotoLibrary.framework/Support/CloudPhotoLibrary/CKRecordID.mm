@@ -1,8 +1,8 @@
 @interface CKRecordID
-- (CKRecordID)initWithCPLArchiver:(id)a3;
+- (CKRecordID)initWithCPLArchiver:(id)archiver;
 - (id)cplFullDescription;
-- (id)cpl_scopedIdentifierWithScopeIdentifier:(id)a3;
-- (id)plistArchiveWithCPLArchiver:(id)a3;
+- (id)cpl_scopedIdentifierWithScopeIdentifier:(id)identifier;
+- (id)plistArchiveWithCPLArchiver:(id)archiver;
 @end
 
 @implementation CKRecordID
@@ -10,37 +10,37 @@
 - (id)cplFullDescription
 {
   v3 = [NSString alloc];
-  v4 = [(CKRecordID *)self recordName];
-  v5 = [(CKRecordID *)self zoneID];
-  v6 = [v5 cpl_zoneName];
-  v7 = [v3 initWithFormat:@"%@#%@", v4, v6];
+  recordName = [(CKRecordID *)self recordName];
+  zoneID = [(CKRecordID *)self zoneID];
+  cpl_zoneName = [zoneID cpl_zoneName];
+  v7 = [v3 initWithFormat:@"%@#%@", recordName, cpl_zoneName];
 
   return v7;
 }
 
-- (id)cpl_scopedIdentifierWithScopeIdentifier:(id)a3
+- (id)cpl_scopedIdentifierWithScopeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CKRecordID *)self recordName];
-  v6 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:v4 identifier:v5];
+  identifierCopy = identifier;
+  recordName = [(CKRecordID *)self recordName];
+  v6 = [[CPLScopedIdentifier alloc] initWithScopeIdentifier:identifierCopy identifier:recordName];
 
   return v6;
 }
 
-- (id)plistArchiveWithCPLArchiver:(id)a3
+- (id)plistArchiveWithCPLArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [v4 archiveCursor];
-  [v4 setArchiveCursor:v5];
-  v7 = [(CKRecordID *)self recordName];
-  v8 = [(CKRecordID *)self zoneID];
-  v9 = [v8 zoneName];
-  v10 = [v8 ownerName];
-  [v8 databaseScope];
-  v11 = v9;
-  v12 = v10;
-  if ([v7 isEqualToString:CKCurrentUserDefaultName] && (objc_msgSend(v11, "isEqualToString:", CKRecordZoneDefaultName) & 1) != 0)
+  archiveCursor = [archiverCopy archiveCursor];
+  [archiverCopy setArchiveCursor:v5];
+  recordName = [(CKRecordID *)self recordName];
+  zoneID = [(CKRecordID *)self zoneID];
+  zoneName = [zoneID zoneName];
+  ownerName = [zoneID ownerName];
+  [zoneID databaseScope];
+  v11 = zoneName;
+  v12 = ownerName;
+  if ([recordName isEqualToString:CKCurrentUserDefaultName] && (objc_msgSend(v11, "isEqualToString:", CKRecordZoneDefaultName) & 1) != 0)
   {
     v13 = [v12 isEqualToString:CKCurrentUserDefaultName];
 
@@ -54,8 +54,8 @@
   {
   }
 
-  v14 = [(CKRecordID *)self recordName];
-  [v4 encodeObject:v14 forKey:@"recordName"];
+  recordName2 = [(CKRecordID *)self recordName];
+  [archiverCopy encodeObject:recordName2 forKey:@"recordName"];
 
   v15 = v12;
   if (([v11 isEqualToString:CPLPrimaryScopeIdentifier] & 1) == 0)
@@ -69,23 +69,23 @@
   if ((v16 & 1) == 0)
   {
 LABEL_10:
-    v17 = [(CKRecordID *)self zoneID];
-    [v4 encodeObject:v17 forKey:@"zoneID"];
+    zoneID2 = [(CKRecordID *)self zoneID];
+    [archiverCopy encodeObject:zoneID2 forKey:@"zoneID"];
   }
 
 LABEL_11:
-  [v4 setArchiveCursor:v6];
+  [archiverCopy setArchiveCursor:archiveCursor];
 
   return v5;
 }
 
-- (CKRecordID)initWithCPLArchiver:(id)a3
+- (CKRecordID)initWithCPLArchiver:(id)archiver
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recordName"];
+  archiverCopy = archiver;
+  v5 = [archiverCopy decodeObjectOfClass:objc_opt_class() forKey:@"recordName"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"zoneID"];
+    v6 = [archiverCopy decodeObjectOfClass:objc_opt_class() forKey:@"zoneID"];
     if (!v6)
     {
       if (qword_1002C5548 != -1)

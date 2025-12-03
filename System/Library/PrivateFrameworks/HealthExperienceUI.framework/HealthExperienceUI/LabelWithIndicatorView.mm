@@ -1,5 +1,5 @@
 @interface LabelWithIndicatorView
-- (_TtC18HealthExperienceUI22LabelWithIndicatorView)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI22LabelWithIndicatorView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA173EE0();
 }
 
-- (_TtC18HealthExperienceUI22LabelWithIndicatorView)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI22LabelWithIndicatorView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

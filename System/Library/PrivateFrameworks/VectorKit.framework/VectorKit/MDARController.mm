@@ -1,16 +1,16 @@
 @interface MDARController
 + (BOOL)isSupported;
-+ (unint64_t)vkARTrackingStateFromARTrackingState:(int64_t)a3;
-+ (unint64_t)vkARTrackingStateReasonFromARTrackingStateReason:(int64_t)a3;
++ (unint64_t)vkARTrackingStateFromARTrackingState:(int64_t)state;
++ (unint64_t)vkARTrackingStateReasonFromARTrackingStateReason:(int64_t)reason;
 - (MDARController)init;
 - (MDARControllerDelegate)delegate;
-- (void)_avCaptureSessionWasInterrupted:(id)a3;
+- (void)_avCaptureSessionWasInterrupted:(id)interrupted;
 - (void)dealloc;
-- (void)run:(BOOL)a3;
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)sessionInterruptionEnded:(id)a3;
-- (void)sessionWasInterrupted:(id)a3;
+- (void)run:(BOOL)run;
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)sessionInterruptionEnded:(id)ended;
+- (void)sessionWasInterrupted:(id)interrupted;
 @end
 
 @implementation MDARController
@@ -22,9 +22,9 @@
   return WeakRetained;
 }
 
-- (void)_avCaptureSessionWasInterrupted:(id)a3
+- (void)_avCaptureSessionWasInterrupted:(id)interrupted
 {
-  v4 = a3;
+  interruptedCopy = interrupted;
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitVKDefaultLog_onceToken, &__block_literal_global_5_15525);
@@ -37,25 +37,25 @@
     _os_log_impl(&dword_1B2754000, v5, OS_LOG_TYPE_INFO, "AR AV capture session was interrupted", v11, 2u);
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [interruptedCopy userInfo];
   v7 = getAVCaptureSessionInterruptionReasonKey();
-  v8 = [v6 objectForKey:v7];
-  v9 = [v8 integerValue];
+  v8 = [userInfo objectForKey:v7];
+  integerValue = [v8 integerValue];
 
-  if ((v9 - 1) >= 4)
+  if ((integerValue - 1) >= 4)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = qword_1B3415310[v9 - 1];
+    v10 = qword_1B3415310[integerValue - 1];
   }
 
   self->_sessionInterruptedReason = v10;
 }
 
-- (void)sessionInterruptionEnded:(id)a3
+- (void)sessionInterruptionEnded:(id)ended
 {
   self->_sessionInterruptedReason = 0;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -67,7 +67,7 @@
   }
 }
 
-- (void)sessionWasInterrupted:(id)a3
+- (void)sessionWasInterrupted:(id)interrupted
 {
   v11 = *MEMORY[0x1E69E9840];
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
@@ -94,10 +94,10 @@
   }
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  errorCopy = error;
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitVKDefaultLog_onceToken, &__block_literal_global_5_15525);
@@ -107,16 +107,16 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v5;
+    v14 = errorCopy;
     _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "AR did fail with error: %@", &v13, 0xCu);
   }
 
-  v7 = [v5 code];
-  if (v7 > 101)
+  code = [errorCopy code];
+  if (code > 101)
   {
-    if (v7 != 102)
+    if (code != 102)
     {
-      if (v7 == 200)
+      if (code == 200)
       {
         v8 = 4;
         goto LABEL_15;
@@ -130,9 +130,9 @@
 
   else
   {
-    if (v7 != 100)
+    if (code != 100)
     {
-      if (v7 == 101)
+      if (code == 101)
       {
         v8 = 2;
         goto LABEL_15;
@@ -158,10 +158,10 @@ LABEL_15:
   }
 }
 
-- (void)session:(id)a3 cameraDidChangeTrackingState:(id)a4
+- (void)session:(id)session cameraDidChangeTrackingState:(id)state
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  stateCopy = state;
   if (GEOGetVectorKitVKDefaultLog_onceToken != -1)
   {
     dispatch_once(&GEOGetVectorKitVKDefaultLog_onceToken, &__block_literal_global_5_15525);
@@ -171,14 +171,14 @@ LABEL_15:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v10 = 134218240;
-    v11 = [v5 trackingState];
+    trackingState = [stateCopy trackingState];
     v12 = 2048;
-    v13 = [v5 trackingStateReason];
+    trackingStateReason = [stateCopy trackingStateReason];
     _os_log_impl(&dword_1B2754000, v6, OS_LOG_TYPE_INFO, "AR Tracking state changed: %ld, reason: %ld", &v10, 0x16u);
   }
 
-  self->_trackingState = +[MDARController vkARTrackingStateFromARTrackingState:](MDARController, "vkARTrackingStateFromARTrackingState:", [v5 trackingState]);
-  self->_trackingStateReason = +[MDARController vkARTrackingStateReasonFromARTrackingStateReason:](MDARController, "vkARTrackingStateReasonFromARTrackingStateReason:", [v5 trackingStateReason]);
+  self->_trackingState = +[MDARController vkARTrackingStateFromARTrackingState:](MDARController, "vkARTrackingStateFromARTrackingState:", [stateCopy trackingState]);
+  self->_trackingStateReason = +[MDARController vkARTrackingStateReasonFromARTrackingStateReason:](MDARController, "vkARTrackingStateReasonFromARTrackingStateReason:", [stateCopy trackingStateReason]);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = WeakRetained == 0;
 
@@ -189,12 +189,12 @@ LABEL_15:
   }
 }
 
-- (void)run:(BOOL)a3
+- (void)run:(BOOL)run
 {
   if (self->_sessionConfiguration)
   {
     session = self->_session;
-    if (a3)
+    if (run)
     {
       [ARSession runWithConfiguration:"runWithConfiguration:options:" options:?];
     }
@@ -208,8 +208,8 @@ LABEL_15:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(ARSession *)self->_session pause];
   session = self->_session;
@@ -258,9 +258,9 @@ LABEL_15:
       v3->_sessionConfiguration = v7;
     }
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v10 = getAVCaptureSessionWasInterruptedNotification();
-    [v9 addObserver:v3 selector:sel__avCaptureSessionWasInterrupted_ name:v10 object:0];
+    [defaultCenter addObserver:v3 selector:sel__avCaptureSessionWasInterrupted_ name:v10 object:0];
 
     v11 = v3;
   }
@@ -268,15 +268,15 @@ LABEL_15:
   return v3;
 }
 
-+ (unint64_t)vkARTrackingStateFromARTrackingState:(int64_t)a3
++ (unint64_t)vkARTrackingStateFromARTrackingState:(int64_t)state
 {
   v3 = 1;
-  if (a3 != 1)
+  if (state != 1)
   {
     v3 = 2;
   }
 
-  if (a3)
+  if (state)
   {
     return v3;
   }
@@ -287,16 +287,16 @@ LABEL_15:
   }
 }
 
-+ (unint64_t)vkARTrackingStateReasonFromARTrackingStateReason:(int64_t)a3
++ (unint64_t)vkARTrackingStateReasonFromARTrackingStateReason:(int64_t)reason
 {
-  if ((a3 - 1) >= 3)
+  if ((reason - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return reason;
   }
 }
 

@@ -1,35 +1,35 @@
 @interface VCAudioStreamReceiveGroup
-- (BOOL)addSyncDestination:(id)a3;
+- (BOOL)addSyncDestination:(id)destination;
 - (BOOL)configureStreams;
-- (BOOL)removeSyncDestination:(id)a3;
-- (BOOL)setDeviceRole:(int)a3 operatingMode:(int)a4;
-- (VCAudioStreamReceiveGroup)initWithConfig:(id)a3;
+- (BOOL)removeSyncDestination:(id)destination;
+- (BOOL)setDeviceRole:(int)role operatingMode:(int)mode;
+- (VCAudioStreamReceiveGroup)initWithConfig:(id)config;
 - (VCMediaStreamSyncSource)syncSource;
 - (id)willStart;
 - (unint64_t)spatialAudioSourceID;
 - (unsigned)audioChannelIndex;
 - (unsigned)preferredOverlayToken;
-- (void)collectAndLogChannelMetrics:(id *)a3;
+- (void)collectAndLogChannelMetrics:(id *)metrics;
 - (void)dealloc;
 - (void)didStart;
 - (void)distributeOverlayToken;
-- (void)mediaStream:(id)a3 didReceiveNewMediaKeyIndex:(id)a4;
-- (void)setActiveStreamIDs:(id)a3;
-- (void)setAudioChannelIndex:(unsigned int)a3;
-- (void)setMuted:(BOOL)a3;
-- (void)setPowerSpectrumEnabled:(BOOL)a3;
-- (void)setReportingAgent:(opaqueRTCReporting *)a3;
-- (void)setSpatialAudioSourceID:(unint64_t)a3;
-- (void)setVADFilteringEnabled:(BOOL)a3;
-- (void)updateActiveVoiceOnly:(BOOL)a3;
-- (void)vcMediaStream:(id)a3 didReceiveFirstFrameWithTime:(id *)a4;
-- (void)vcMediaStream:(id)a3 didSwitchToAudioStreamWithID:(unsigned __int16)a4;
-- (void)vcMediaStream:(id)a3 remoteMediaStalled:(BOOL)a4 duration:(double)a5;
+- (void)mediaStream:(id)stream didReceiveNewMediaKeyIndex:(id)index;
+- (void)setActiveStreamIDs:(id)ds;
+- (void)setAudioChannelIndex:(unsigned int)index;
+- (void)setMuted:(BOOL)muted;
+- (void)setPowerSpectrumEnabled:(BOOL)enabled;
+- (void)setReportingAgent:(opaqueRTCReporting *)agent;
+- (void)setSpatialAudioSourceID:(unint64_t)d;
+- (void)setVADFilteringEnabled:(BOOL)enabled;
+- (void)updateActiveVoiceOnly:(BOOL)only;
+- (void)vcMediaStream:(id)stream didReceiveFirstFrameWithTime:(id *)time;
+- (void)vcMediaStream:(id)stream didSwitchToAudioStreamWithID:(unsigned __int16)d;
+- (void)vcMediaStream:(id)stream remoteMediaStalled:(BOOL)stalled duration:(double)duration;
 @end
 
 @implementation VCAudioStreamReceiveGroup
 
-- (VCAudioStreamReceiveGroup)initWithConfig:(id)a3
+- (VCAudioStreamReceiveGroup)initWithConfig:(id)config
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -40,7 +40,7 @@
     goto LABEL_7;
   }
 
-  v4->_common = [[VCAudioStreamGroupCommon alloc] initWithConfig:a3 audioCallback:VCAudioStreamReceiveGroup_PullAudioSamples context:v4 audioDirection:1 stateQueue:v4->super.super._stateQueue];
+  v4->_common = [[VCAudioStreamGroupCommon alloc] initWithConfig:config audioCallback:VCAudioStreamReceiveGroup_PullAudioSamples context:v4 audioDirection:1 stateQueue:v4->super.super._stateQueue];
   [(VCObject *)v4->_common setLogPrefix:[(VCObject *)v4 logPrefix]];
   if (!v4->_common)
   {
@@ -59,8 +59,8 @@ LABEL_7:
   }
 
   v4->_currentOverlayToken = 0;
-  v4->_didPullSamplesCallback = [objc_msgSend(a3 "audioStreamGroupConfig")];
-  v4->_didPullSamplesCallbackContext = [objc_msgSend(a3 "audioStreamGroupConfig")];
+  v4->_didPullSamplesCallback = [objc_msgSend(config "audioStreamGroupConfig")];
+  v4->_didPullSamplesCallbackContext = [objc_msgSend(config "audioStreamGroupConfig")];
   [(VCMediaStreamGroup *)v4 setCaptureController:v4];
   return v4;
 }
@@ -74,7 +74,7 @@ LABEL_7:
   [(VCMediaStreamReceiveGroup *)&v3 dealloc];
 }
 
-- (BOOL)setDeviceRole:(int)a3 operatingMode:(int)a4
+- (BOOL)setDeviceRole:(int)role operatingMode:(int)mode
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0;
@@ -88,8 +88,8 @@ LABEL_7:
   v7[3] = &unk_1E85F3930;
   v7[4] = self;
   v7[5] = &v10;
-  v8 = a3;
-  v9 = a4;
+  roleCopy = role;
+  modeCopy = mode;
   dispatch_sync(stateQueue, v7);
   v5 = *(v11 + 24);
   _Block_object_dispose(&v10, 8);
@@ -103,7 +103,7 @@ uint64_t __57__VCAudioStreamReceiveGroup_setDeviceRole_operatingMode___block_inv
   return result;
 }
 
-- (void)setPowerSpectrumEnabled:(BOOL)a3
+- (void)setPowerSpectrumEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -112,7 +112,7 @@ uint64_t __57__VCAudioStreamReceiveGroup_setDeviceRole_operatingMode___block_inv
   block[2] = __53__VCAudioStreamReceiveGroup_setPowerSpectrumEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(stateQueue, block);
 }
 
@@ -143,7 +143,7 @@ uint64_t __46__VCAudioStreamReceiveGroup_audioChannelIndex__block_invoke(uint64_
   return result;
 }
 
-- (void)setAudioChannelIndex:(unsigned int)a3
+- (void)setAudioChannelIndex:(unsigned int)index
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -152,7 +152,7 @@ uint64_t __46__VCAudioStreamReceiveGroup_audioChannelIndex__block_invoke(uint64_
   block[2] = __50__VCAudioStreamReceiveGroup_setAudioChannelIndex___block_invoke;
   block[3] = &unk_1E85F38B8;
   block[4] = self;
-  v5 = a3;
+  indexCopy = index;
   dispatch_sync(stateQueue, block);
 }
 
@@ -183,7 +183,7 @@ uint64_t __49__VCAudioStreamReceiveGroup_spatialAudioSourceID__block_invoke(uint
   return result;
 }
 
-- (void)setSpatialAudioSourceID:(unint64_t)a3
+- (void)setSpatialAudioSourceID:(unint64_t)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -192,11 +192,11 @@ uint64_t __49__VCAudioStreamReceiveGroup_spatialAudioSourceID__block_invoke(uint
   block[2] = __53__VCAudioStreamReceiveGroup_setSpatialAudioSourceID___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_sync(stateQueue, block);
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -205,24 +205,24 @@ uint64_t __49__VCAudioStreamReceiveGroup_spatialAudioSourceID__block_invoke(uint
   block[2] = __38__VCAudioStreamReceiveGroup_setMuted___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  mutedCopy = muted;
   dispatch_sync(stateQueue, block);
 }
 
-- (void)collectAndLogChannelMetrics:(id *)a3
+- (void)collectAndLogChannelMetrics:(id *)metrics
 {
   v26 = *MEMORY[0x1E69E9840];
   if ([(VCMediaStreamGroup *)self state]== 1)
   {
     *&v5 = self->_averageOutputPower;
-    [(VCAudioStreamGroupCommon *)self->_common collectAndLogChannelMetrics:a3 averagePower:v5];
+    [(VCAudioStreamGroupCommon *)self->_common collectAndLogChannelMetrics:metrics averagePower:v5];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v6 = VRTraceErrorLogLevelToCSTR();
       v7 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(VCObject *)self logPrefix];
+        logPrefix = [(VCObject *)self logPrefix];
         speakerProcsCalled = self->_speakerProcsCalled;
         syncTargetCalled = self->_syncTargetCalled;
         averageOutputPower = self->_averageOutputPower;
@@ -233,7 +233,7 @@ uint64_t __49__VCAudioStreamReceiveGroup_spatialAudioSourceID__block_invoke(uint
         v16 = 1024;
         v17 = 165;
         v18 = 2112;
-        v19 = v8;
+        v19 = logPrefix;
         v20 = 2048;
         v21 = speakerProcsCalled;
         v22 = 2048;
@@ -246,7 +246,7 @@ uint64_t __49__VCAudioStreamReceiveGroup_spatialAudioSourceID__block_invoke(uint
   }
 }
 
-- (void)setReportingAgent:(opaqueRTCReporting *)a3
+- (void)setReportingAgent:(opaqueRTCReporting *)agent
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -255,7 +255,7 @@ uint64_t __49__VCAudioStreamReceiveGroup_spatialAudioSourceID__block_invoke(uint
   block[2] = __47__VCAudioStreamReceiveGroup_setReportingAgent___block_invoke;
   block[3] = &unk_1E85F40E0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = agent;
   dispatch_sync(stateQueue, block);
 }
 
@@ -269,7 +269,7 @@ uint64_t __47__VCAudioStreamReceiveGroup_setReportingAgent___block_invoke(uint64
   return [*(*(a1 + 32) + 480) setReportingAgent:*(a1 + 40)];
 }
 
-- (void)setActiveStreamIDs:(id)a3
+- (void)setActiveStreamIDs:(id)ds
 {
   block[6] = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -277,7 +277,7 @@ uint64_t __47__VCAudioStreamReceiveGroup_setReportingAgent___block_invoke(uint64
   block[1] = 3221225472;
   block[2] = __48__VCAudioStreamReceiveGroup_setActiveStreamIDs___block_invoke;
   block[3] = &unk_1E85F37F0;
-  block[4] = a3;
+  block[4] = ds;
   block[5] = self;
   dispatch_sync(stateQueue, block);
 }
@@ -326,7 +326,7 @@ uint64_t __48__VCAudioStreamReceiveGroup_setActiveStreamIDs___block_invoke(uint6
   return result;
 }
 
-- (void)setVADFilteringEnabled:(BOOL)a3
+- (void)setVADFilteringEnabled:(BOOL)enabled
 {
   v6 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -335,13 +335,13 @@ uint64_t __48__VCAudioStreamReceiveGroup_setActiveStreamIDs___block_invoke(uint6
   block[2] = __52__VCAudioStreamReceiveGroup_setVADFilteringEnabled___block_invoke;
   block[3] = &unk_1E85F37A0;
   block[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(stateQueue, block);
 }
 
-- (void)updateActiveVoiceOnly:(BOOL)a3
+- (void)updateActiveVoiceOnly:(BOOL)only
 {
-  v3 = a3;
+  onlyCopy = only;
   v38 = *MEMORY[0x1E69E9840];
   v34 = 0u;
   v35 = 0u;
@@ -364,8 +364,8 @@ uint64_t __48__VCAudioStreamReceiveGroup_setActiveStreamIDs___block_invoke(uint6
           objc_enumerationMutation(obj);
         }
 
-        v10 = [*(*(&v34 + 1) + 8 * i) stream];
-        [v10 setSendActiveVoiceOnly:v3];
+        stream = [*(*(&v34 + 1) + 8 * i) stream];
+        [stream setSendActiveVoiceOnly:onlyCopy];
         if (objc_opt_class() == self)
         {
           if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -381,9 +381,9 @@ uint64_t __48__VCAudioStreamReceiveGroup_setActiveStreamIDs___block_invoke(uint6
               v25 = 1024;
               v26 = 204;
               v27 = 1024;
-              *v28 = v3;
+              *v28 = onlyCopy;
               *&v28[4] = 2112;
-              *&v28[6] = v10;
+              *&v28[6] = stream;
               v14 = v18;
               v15 = " [%s] %s:%d Send active voice only set to %d for stream=%@";
               v16 = 44;
@@ -417,9 +417,9 @@ uint64_t __48__VCAudioStreamReceiveGroup_setActiveStreamIDs___block_invoke(uint6
               *&v28[8] = 2048;
               *&v28[10] = self;
               v29 = 1024;
-              v30 = v3;
+              v30 = onlyCopy;
               v31 = 2112;
-              v32 = v10;
+              v32 = stream;
               v14 = v13;
               v15 = " [%s] %s:%d %@(%p) Send active voice only set to %d for stream=%@";
               v16 = 64;
@@ -449,7 +449,7 @@ LABEL_15:
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = 136315906;
-  v4 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_6_5();
   v5 = "[VCAudioStreamReceiveGroup didStart]";
   v6 = 1024;
@@ -459,7 +459,7 @@ LABEL_15:
   _os_log_error_impl(&dword_1DB56E000, v2, OS_LOG_TYPE_ERROR, " [%s] %s:%d System audio start capture failed on receive stream group with error=%@", &v3, 0x26u);
 }
 
-- (BOOL)addSyncDestination:(id)a3
+- (BOOL)addSyncDestination:(id)destination
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -473,7 +473,7 @@ LABEL_15:
   v6[3] = &unk_1E85F4108;
   v6[5] = self;
   v6[6] = &v7;
-  v6[4] = a3;
+  v6[4] = destination;
   dispatch_sync(stateQueue, v6);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -589,7 +589,7 @@ LABEL_13:
   }
 }
 
-- (BOOL)removeSyncDestination:(id)a3
+- (BOOL)removeSyncDestination:(id)destination
 {
   v11 = *MEMORY[0x1E69E9840];
   v7 = 0;
@@ -603,7 +603,7 @@ LABEL_13:
   v6[3] = &unk_1E85F4108;
   v6[5] = self;
   v6[6] = &v7;
-  v6[4] = a3;
+  v6[4] = destination;
   dispatch_sync(stateQueue, v6);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -720,11 +720,11 @@ LABEL_13:
 - (void)distributeOverlayToken
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(VCAudioStreamReceiveGroup *)self preferredOverlayToken];
-  if (v3 != self->_currentOverlayToken)
+  preferredOverlayToken = [(VCAudioStreamReceiveGroup *)self preferredOverlayToken];
+  if (preferredOverlayToken != self->_currentOverlayToken)
   {
-    v4 = v3;
-    self->_currentOverlayToken = v3;
+    v4 = preferredOverlayToken;
+    self->_currentOverlayToken = preferredOverlayToken;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
@@ -797,7 +797,7 @@ LABEL_9:
       v9[3] = &unk_1E85F4130;
       v9[4] = &v10;
       [(NSMutableDictionary *)syncGroupIdToOverlayTokenMap enumerateKeysAndObjectsUsingBlock:v9];
-      v6 = *(v11 + 6);
+      unsignedIntValue = *(v11 + 6);
       goto LABEL_10;
   }
 
@@ -807,11 +807,11 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = [v5 unsignedIntValue];
-  *(v11 + 6) = v6;
+  unsignedIntValue = [v5 unsignedIntValue];
+  *(v11 + 6) = unsignedIntValue;
 LABEL_10:
   _Block_object_dispose(&v10, 8);
-  return v6;
+  return unsignedIntValue;
 }
 
 uint64_t __50__VCAudioStreamReceiveGroup_preferredOverlayToken__block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)
@@ -822,7 +822,7 @@ uint64_t __50__VCAudioStreamReceiveGroup_preferredOverlayToken__block_invoke(uin
   return result;
 }
 
-- (void)vcMediaStream:(id)a3 remoteMediaStalled:(BOOL)a4 duration:(double)a5
+- (void)vcMediaStream:(id)stream remoteMediaStalled:(BOOL)stalled duration:(double)duration
 {
   v8 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -831,8 +831,8 @@ uint64_t __50__VCAudioStreamReceiveGroup_preferredOverlayToken__block_invoke(uin
   v6[2] = __71__VCAudioStreamReceiveGroup_vcMediaStream_remoteMediaStalled_duration___block_invoke;
   v6[3] = &unk_1E85F4180;
   v6[4] = self;
-  v7 = a4;
-  *&v6[5] = a5;
+  stalledCopy = stalled;
+  *&v6[5] = duration;
   dispatch_async(stateQueue, v6);
 }
 
@@ -920,7 +920,7 @@ uint64_t __71__VCAudioStreamReceiveGroup_vcMediaStream_remoteMediaStalled_durati
   return result;
 }
 
-- (void)vcMediaStream:(id)a3 didSwitchToAudioStreamWithID:(unsigned __int16)a4
+- (void)vcMediaStream:(id)stream didSwitchToAudioStreamWithID:(unsigned __int16)d
 {
   v7 = *MEMORY[0x1E69E9840];
   stateQueue = self->super.super._stateQueue;
@@ -928,7 +928,7 @@ uint64_t __71__VCAudioStreamReceiveGroup_vcMediaStream_remoteMediaStalled_durati
   block[1] = 3221225472;
   block[2] = __72__VCAudioStreamReceiveGroup_vcMediaStream_didSwitchToAudioStreamWithID___block_invoke;
   block[3] = &unk_1E85F41F8;
-  v6 = a4;
+  dCopy = d;
   block[4] = self;
   dispatch_async(stateQueue, block);
 }
@@ -964,7 +964,7 @@ uint64_t __72__VCAudioStreamReceiveGroup_vcMediaStream_didSwitchToAudioStreamWit
   return result;
 }
 
-- (void)vcMediaStream:(id)a3 didReceiveFirstFrameWithTime:(id *)a4
+- (void)vcMediaStream:(id)stream didReceiveFirstFrameWithTime:(id *)time
 {
   block[6] = *MEMORY[0x1E69E9840];
   v5 = micro();
@@ -997,13 +997,13 @@ uint64_t __72__VCAudioStreamReceiveGroup_vcMediaStream_didReceiveFirstFrameWithT
   return [v3 callDelegateWithBlock:v5];
 }
 
-- (void)mediaStream:(id)a3 didReceiveNewMediaKeyIndex:(id)a4
+- (void)mediaStream:(id)stream didReceiveNewMediaKeyIndex:(id)index
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = VCAudioStreamReceiveGroup;
-  [(VCMediaStreamGroup *)&v6 mediaStream:a3 didReceiveNewMediaKeyIndex:?];
-  [(VCMediaStreamGroup *)self setupPerfTimersWithMediaKeyIndex:a4 perfTimerIndexToStart:5];
+  [(VCMediaStreamGroup *)&v6 mediaStream:stream didReceiveNewMediaKeyIndex:?];
+  [(VCMediaStreamGroup *)self setupPerfTimersWithMediaKeyIndex:index perfTimerIndexToStart:5];
 }
 
 void __VCAudioStreamReceiveGroup_UpdateAudioPriority_block_invoke(uint64_t a1)

@@ -1,44 +1,44 @@
 @interface PXCuratedLibraryZoomLevelSegmentedControl
-- (PXCuratedLibraryZoomLevelSegmentedControl)initWithFrame:(CGRect)a3;
-- (void)_highlightSegment:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (PXCuratedLibraryZoomLevelSegmentedControl)initWithFrame:(CGRect)frame;
+- (void)_highlightSegment:(int64_t)segment;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation PXCuratedLibraryZoomLevelSegmentedControl
 
-- (void)_highlightSegment:(int64_t)a3
+- (void)_highlightSegment:(int64_t)segment
 {
-  if ((a3 & 0x8000000000000000) == 0 && [(PXCuratedLibraryZoomLevelSegmentedControl *)self selectedSegmentIndex]!= a3)
+  if ((segment & 0x8000000000000000) == 0 && [(PXCuratedLibraryZoomLevelSegmentedControl *)self selectedSegmentIndex]!= segment)
   {
     self->_lastTouchRemainedOnSelectedSegment = 0;
   }
 
   v5.receiver = self;
   v5.super_class = PXCuratedLibraryZoomLevelSegmentedControl;
-  [(PXCuratedLibraryZoomLevelSegmentedControl *)&v5 _highlightSegment:a3];
+  [(PXCuratedLibraryZoomLevelSegmentedControl *)&v5 _highlightSegment:segment];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   self->_lastTouchRemainedOnSelectedSegment = 0;
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryZoomLevelSegmentedControl;
-  [(PXCuratedLibraryZoomLevelSegmentedControl *)&v4 touchesCancelled:a3 withEvent:a4];
+  [(PXCuratedLibraryZoomLevelSegmentedControl *)&v4 touchesCancelled:cancelled withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
+  eventCopy = event;
+  endedCopy = ended;
   [(PXCuratedLibraryZoomLevelSegmentedControl *)self bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 anyObject];
-  [v16 locationInView:self];
+  anyObject = [endedCopy anyObject];
+  [anyObject locationInView:self];
   v21.x = v17;
   v21.y = v18;
   v22.origin.x = v9;
@@ -54,22 +54,22 @@
 
   v20.receiver = self;
   v20.super_class = PXCuratedLibraryZoomLevelSegmentedControl;
-  [(PXCuratedLibraryZoomLevelSegmentedControl *)&v20 touchesEnded:v7 withEvent:v6];
+  [(PXCuratedLibraryZoomLevelSegmentedControl *)&v20 touchesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   self->_lastTouchRemainedOnSelectedSegment = 1;
   v4.receiver = self;
   v4.super_class = PXCuratedLibraryZoomLevelSegmentedControl;
-  [(PXCuratedLibraryZoomLevelSegmentedControl *)&v4 touchesBegan:a3 withEvent:a4];
+  [(PXCuratedLibraryZoomLevelSegmentedControl *)&v4 touchesBegan:began withEvent:event];
 }
 
-- (PXCuratedLibraryZoomLevelSegmentedControl)initWithFrame:(CGRect)a3
+- (PXCuratedLibraryZoomLevelSegmentedControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PXCuratedLibraryZoomLevelSegmentedControl;
-  v3 = [(PXCuratedLibraryZoomLevelSegmentedControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXCuratedLibraryZoomLevelSegmentedControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

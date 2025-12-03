@@ -1,7 +1,7 @@
 @interface SUMarkupCellContext
-- (id)webViewForMarkup:(id)a3;
+- (id)webViewForMarkup:(id)markup;
 - (void)dealloc;
-- (void)webViewDidFinishLoading:(id)a3;
+- (void)webViewDidFinishLoading:(id)loading;
 @end
 
 @implementation SUMarkupCellContext
@@ -21,7 +21,7 @@
   [(SUItemCellContext *)&v4 dealloc];
 }
 
-- (id)webViewForMarkup:(id)a3
+- (id)webViewForMarkup:(id)markup
 {
   webViewCache = self->_webViewCache;
   if (!webViewCache)
@@ -30,7 +30,7 @@
     self->_webViewCache = webViewCache;
   }
 
-  Value = CFDictionaryGetValue(webViewCache, a3);
+  Value = CFDictionaryGetValue(webViewCache, markup);
   if (!Value)
   {
     [(SUMarkupCellContext *)self webViewWidth];
@@ -43,10 +43,10 @@
     [(SUWebDocumentView *)Value setLoadDelegate:self];
     [(SUWebDocumentView *)Value setLoadsSynchronously:1];
     [(SUWebDocumentView *)Value setUserInteractionEnabled:0];
-    CFDictionarySetValue(self->_webViewCache, a3, Value);
+    CFDictionarySetValue(self->_webViewCache, markup, Value);
     self->_pendingWebViewLoads += 2;
     [(SUWebDocumentView *)Value setStylesheet:[(SUMarkupCellContext *)self stylesheet]];
-    [(SUWebDocumentView *)Value setHTMLFragment:a3];
+    [(SUWebDocumentView *)Value setHTMLFragment:markup];
     [(SUWebDocumentView *)Value frame];
     v10 = v9;
     v12 = v11;
@@ -57,7 +57,7 @@
   return Value;
 }
 
-- (void)webViewDidFinishLoading:(id)a3
+- (void)webViewDidFinishLoading:(id)loading
 {
   pendingWebViewLoads = self->_pendingWebViewLoads;
   v6 = pendingWebViewLoads == 1;
@@ -68,9 +68,9 @@
     self->_pendingWebViewLoads = v8;
     if (v6)
     {
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-      [v9 postNotificationName:@"SUMarkupCellContextLoadedAllWebViewsNotifications" object:0];
+      [defaultCenter postNotificationName:@"SUMarkupCellContextLoadedAllWebViewsNotifications" object:0];
     }
   }
 }

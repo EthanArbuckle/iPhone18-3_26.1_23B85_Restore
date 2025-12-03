@@ -1,31 +1,31 @@
 @interface ActuationManager
-+ (id)playlistFromPlist:(id)a3 forRevision:(unint64_t)a4;
-+ (id)playlistFromV2OrV3Plist:(id)a3 forRevision:(unint64_t)a4 withPlistVersion:(unint64_t)a5;
-+ (id)plistV3FromPlaylist:(id)a3;
-- (ActuationManager)initWithService:(unsigned int)a3;
++ (id)playlistFromPlist:(id)plist forRevision:(unint64_t)revision;
++ (id)playlistFromV2OrV3Plist:(id)plist forRevision:(unint64_t)revision withPlistVersion:(unint64_t)version;
++ (id)plistV3FromPlaylist:(id)playlist;
+- (ActuationManager)initWithService:(unsigned int)service;
 - (NSDictionary)debug;
 - (NSDictionary)overridePlaylistPlist;
 - (NSDictionary)productionPlaylistPlist;
 - (id)productionPlist;
-- (int)actuateForDictionary:(id)a3 strength:(float)a4 timeDilation:(float)a5 device:(__MTActuator *)a6 actuatorLimits:(id)a7 options:(unsigned int)a8;
-- (int)actuateForID:(int)a3 strength:(float)a4 timeDilation:(float)a5 device:(__MTActuator *)a6 actuatorLimits:(id)a7 options:(unsigned int)a8;
-- (int)actuateWaveform:(id)a3 strength:(float)a4 timeDilation:(float)a5 device:(__MTActuator *)a6 actuatorLimits:(id)a7 options:(unsigned int)a8;
-- (void)setOverridePlaylistPlist:(id)a3;
+- (int)actuateForDictionary:(id)dictionary strength:(float)strength timeDilation:(float)dilation device:(__MTActuator *)device actuatorLimits:(id)limits options:(unsigned int)options;
+- (int)actuateForID:(int)d strength:(float)strength timeDilation:(float)dilation device:(__MTActuator *)device actuatorLimits:(id)limits options:(unsigned int)options;
+- (int)actuateWaveform:(id)waveform strength:(float)strength timeDilation:(float)dilation device:(__MTActuator *)device actuatorLimits:(id)limits options:(unsigned int)options;
+- (void)setOverridePlaylistPlist:(id)plist;
 @end
 
 @implementation ActuationManager
 
-- (ActuationManager)initWithService:(unsigned int)a3
+- (ActuationManager)initWithService:(unsigned int)service
 {
   v11.receiver = self;
   v11.super_class = ActuationManager;
   v4 = [(ActuationManager *)&v11 init];
   if (v4)
   {
-    CFProperty = IORegistryEntryCreateCFProperty(a3, @"ActuatorRevision", kCFAllocatorDefault, 0);
+    CFProperty = IORegistryEntryCreateCFProperty(service, @"ActuatorRevision", kCFAllocatorDefault, 0);
     v4->_actuatorRevision = [CFProperty unsignedIntValue];
-    v6 = [(ActuationManager *)v4 productionPlist];
-    v7 = [ActuationManager playlistFromPlist:v6 forRevision:[(ActuationManager *)v4 actuatorRevision]];
+    productionPlist = [(ActuationManager *)v4 productionPlist];
+    v7 = [ActuationManager playlistFromPlist:productionPlist forRevision:[(ActuationManager *)v4 actuatorRevision]];
     productionPlaylist = v4->_productionPlaylist;
     v4->_productionPlaylist = v7;
 
@@ -38,8 +38,8 @@
 
 - (NSDictionary)productionPlaylistPlist
 {
-  v3 = [(ActuationManager *)self productionPlaylist];
-  v4 = [ActuationManager plistV3FromPlaylist:v3];
+  productionPlaylist = [(ActuationManager *)self productionPlaylist];
+  v4 = [ActuationManager plistV3FromPlaylist:productionPlaylist];
   v5 = [v4 mutableCopy];
 
   v6 = [NSString stringWithFormat:@"Production Playlist(Rev. %lu)", [(ActuationManager *)self actuatorRevision]];
@@ -52,8 +52,8 @@
 
 - (NSDictionary)overridePlaylistPlist
 {
-  v2 = [(ActuationManager *)self overridePlaylist];
-  v3 = [ActuationManager plistV3FromPlaylist:v2];
+  overridePlaylist = [(ActuationManager *)self overridePlaylist];
+  v3 = [ActuationManager plistV3FromPlaylist:overridePlaylist];
   v4 = [v3 mutableCopy];
 
   [v4 setObject:@"Override Playlist" forKeyedSubscript:@"Name"];
@@ -62,11 +62,11 @@
   return v5;
 }
 
-- (void)setOverridePlaylistPlist:(id)a3
+- (void)setOverridePlaylistPlist:(id)plist
 {
-  v6 = a3;
-  v4 = [v6 objectForKeyedSubscript:@"Version"];
-  v5 = +[ActuationManager playlistFromPlist:forRevision:](ActuationManager, "playlistFromPlist:forRevision:", v6, [v4 unsignedIntegerValue]);
+  plistCopy = plist;
+  v4 = [plistCopy objectForKeyedSubscript:@"Version"];
+  v5 = +[ActuationManager playlistFromPlist:forRevision:](ActuationManager, "playlistFromPlist:forRevision:", plistCopy, [v4 unsignedIntegerValue]);
   [(ActuationManager *)self setOverridePlaylist:v5];
 }
 
@@ -74,11 +74,11 @@
 {
   v14 = @"ActuationPlaylists";
   v12[0] = @"Production";
-  v3 = [(ActuationManager *)self productionPlaylistPlist];
-  v4 = v3;
-  if (v3)
+  productionPlaylistPlist = [(ActuationManager *)self productionPlaylistPlist];
+  v4 = productionPlaylistPlist;
+  if (productionPlaylistPlist)
   {
-    v5 = v3;
+    v5 = productionPlaylistPlist;
   }
 
   else
@@ -88,11 +88,11 @@
 
   v12[1] = @"Override";
   v13[0] = v5;
-  v6 = [(ActuationManager *)self overridePlaylistPlist];
-  v7 = v6;
-  if (v6)
+  overridePlaylistPlist = [(ActuationManager *)self overridePlaylistPlist];
+  v7 = overridePlaylistPlist;
+  if (overridePlaylistPlist)
   {
-    v8 = v6;
+    v8 = overridePlaylistPlist;
   }
 
   else
@@ -108,11 +108,11 @@
   return v10;
 }
 
-- (int)actuateForID:(int)a3 strength:(float)a4 timeDilation:(float)a5 device:(__MTActuator *)a6 actuatorLimits:(id)a7 options:(unsigned int)a8
+- (int)actuateForID:(int)d strength:(float)strength timeDilation:(float)dilation device:(__MTActuator *)device actuatorLimits:(id)limits options:(unsigned int)options
 {
-  v8 = *&a8;
-  v12 = *&a3;
-  v14 = a7;
+  v8 = *&options;
+  v12 = *&d;
+  limitsCopy = limits;
   v15 = [NSNumber numberWithInt:v12];
   if ((v8 & 8) != 0)
   {
@@ -121,39 +121,39 @@
     v15 = v16;
   }
 
-  v17 = [(ActuationManager *)self overridePlaylist];
-  v18 = v17;
-  if (v17)
+  overridePlaylist = [(ActuationManager *)self overridePlaylist];
+  v18 = overridePlaylist;
+  if (overridePlaylist)
   {
-    v19 = v17;
+    productionPlaylist = overridePlaylist;
   }
 
   else
   {
-    v19 = [(ActuationManager *)self productionPlaylist];
+    productionPlaylist = [(ActuationManager *)self productionPlaylist];
   }
 
-  v20 = v19;
+  v20 = productionPlaylist;
 
   v21 = [v20 objectForKeyedSubscript:v15];
-  *&v22 = a4;
-  *&v23 = a5;
-  v24 = [(ActuationManager *)self actuateWaveform:v21 strength:a6 timeDilation:v14 device:v8 actuatorLimits:v22 options:v23];
+  *&v22 = strength;
+  *&v23 = dilation;
+  v24 = [(ActuationManager *)self actuateWaveform:v21 strength:device timeDilation:limitsCopy device:v8 actuatorLimits:v22 options:v23];
 
   return v24;
 }
 
-- (int)actuateForDictionary:(id)a3 strength:(float)a4 timeDilation:(float)a5 device:(__MTActuator *)a6 actuatorLimits:(id)a7 options:(unsigned int)a8
+- (int)actuateForDictionary:(id)dictionary strength:(float)strength timeDilation:(float)dilation device:(__MTActuator *)device actuatorLimits:(id)limits options:(unsigned int)options
 {
-  v8 = *&a8;
-  v14 = a3;
-  v15 = a7;
-  if (v14)
+  v8 = *&options;
+  dictionaryCopy = dictionary;
+  limitsCopy = limits;
+  if (dictionaryCopy)
   {
-    v16 = [[ActuationWaveform alloc] initWithDictionary:v14];
-    *&v17 = a4;
-    *&v18 = a5;
-    v19 = [(ActuationManager *)self actuateWaveform:v16 strength:a6 timeDilation:v15 device:v8 actuatorLimits:v17 options:v18];
+    v16 = [[ActuationWaveform alloc] initWithDictionary:dictionaryCopy];
+    *&v17 = strength;
+    *&v18 = dilation;
+    v19 = [(ActuationManager *)self actuateWaveform:v16 strength:device timeDilation:limitsCopy device:v8 actuatorLimits:v17 options:v18];
   }
 
   else
@@ -201,17 +201,17 @@
   return v3;
 }
 
-- (int)actuateWaveform:(id)a3 strength:(float)a4 timeDilation:(float)a5 device:(__MTActuator *)a6 actuatorLimits:(id)a7 options:(unsigned int)a8
+- (int)actuateWaveform:(id)waveform strength:(float)strength timeDilation:(float)dilation device:(__MTActuator *)device actuatorLimits:(id)limits options:(unsigned int)options
 {
-  v8 = *&a8;
+  v8 = *&options;
   v13 = -536870199;
-  v14 = a3;
-  v15 = a7;
-  if (a6 && (MTActuatorIsOpen() & 1) != 0)
+  waveformCopy = waveform;
+  limitsCopy = limits;
+  if (device && (MTActuatorIsOpen() & 1) != 0)
   {
-    *&v16 = a4;
-    *&v17 = a5;
-    v18 = [v14 parameterizeWaveformWithStrength:v15 timeDilation:v8 actuatorLimits:v16 options:v17];
+    *&v16 = strength;
+    *&v17 = dilation;
+    v18 = [waveformCopy parameterizeWaveformWithStrength:limitsCopy timeDilation:v8 actuatorLimits:v16 options:v17];
     v19 = v18;
     if (v18 && [v18 length] && objc_msgSend(v19, "length") <= 0x200)
     {
@@ -230,16 +230,16 @@
   return v13;
 }
 
-+ (id)playlistFromPlist:(id)a3 forRevision:(unint64_t)a4
++ (id)playlistFromPlist:(id)plist forRevision:(unint64_t)revision
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  plistCopy = plist;
+  v6 = plistCopy;
+  if (plistCopy)
   {
-    v7 = [v5 objectForKeyedSubscript:@"Version"];
+    v7 = [plistCopy objectForKeyedSubscript:@"Version"];
     if (([v7 intValue]& 0xFFFFFFFE) == 2)
     {
-      v8 = [ActuationManager playlistFromV2OrV3Plist:v6 forRevision:a4 withPlistVersion:[v7 unsignedIntegerValue]];
+      v8 = [ActuationManager playlistFromV2OrV3Plist:v6 forRevision:revision withPlistVersion:[v7 unsignedIntegerValue]];
       goto LABEL_10;
     }
 
@@ -265,12 +265,12 @@ LABEL_10:
   return v8;
 }
 
-+ (id)playlistFromV2OrV3Plist:(id)a3 forRevision:(unint64_t)a4 withPlistVersion:(unint64_t)a5
++ (id)playlistFromV2OrV3Plist:(id)plist forRevision:(unint64_t)revision withPlistVersion:(unint64_t)version
 {
-  v25 = a3;
-  v24 = [NSString stringWithFormat:@"Actuator_%d", a4];
-  v6 = [v25 objectForKeyedSubscript:?];
-  if (v6 || ([v25 objectForKeyedSubscript:@"Default"], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  plistCopy = plist;
+  revision = [NSString stringWithFormat:@"Actuator_%d", revision];
+  v6 = [plistCopy objectForKeyedSubscript:?];
+  if (v6 || ([plistCopy objectForKeyedSubscript:@"Default"], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v26 = objc_opt_new();
     v31 = 0u;
@@ -294,7 +294,7 @@ LABEL_10:
           v10 = *(*(&v29 + 1) + 8 * i);
           v11 = [v10 objectForKeyedSubscript:@"ActuationID"];
           v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", -[v11 intValue]);
-          if (a5 == 3)
+          if (version == 3)
           {
             v13 = [v10 objectForKeyedSubscript:@"Default"];
           }
@@ -326,7 +326,7 @@ LABEL_10:
               *&v34[4] = 1024;
               *&v34[6] = v14 == 0;
               v35 = 2048;
-              v36 = a5;
+              versionCopy = version;
               _os_log_error_impl(&dword_0, p_super, OS_LOG_TYPE_ERROR, "Error parsing click playlist, unable to determine actuation id(%d) or default waveform not defined(%d) playlistVersion=%lu", buf, 0x18u);
             }
           }
@@ -389,7 +389,7 @@ LABEL_10:
     obj = v23;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      [ActuationManager playlistFromV2OrV3Plist:a4 forRevision:v23 withPlistVersion:?];
+      [ActuationManager playlistFromV2OrV3Plist:revision forRevision:v23 withPlistVersion:?];
     }
 
     v21 = 0;
@@ -398,17 +398,17 @@ LABEL_10:
   return v21;
 }
 
-+ (id)plistV3FromPlaylist:(id)a3
++ (id)plistV3FromPlaylist:(id)playlist
 {
-  v23 = a3;
-  if (v23)
+  playlistCopy = playlist;
+  if (playlistCopy)
   {
     v3 = objc_opt_new();
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = [v23 allKeys];
+    obj = [playlistCopy allKeys];
     v4 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v4)
     {
@@ -423,15 +423,15 @@ LABEL_10:
           }
 
           v7 = *(*(&v24 + 1) + 8 * i);
-          v8 = [v7 intValue];
-          if (v8 >= 0)
+          intValue = [v7 intValue];
+          if (intValue >= 0)
           {
-            v9 = v8;
+            v9 = intValue;
           }
 
           else
           {
-            v9 = -v8;
+            v9 = -intValue;
           }
 
           v10 = [NSNumber numberWithInt:v9];
@@ -445,17 +445,17 @@ LABEL_10:
             [v3 setObject:v12 forKeyedSubscript:v10];
           }
 
-          v13 = [v7 intValue];
+          intValue2 = [v7 intValue];
           v14 = @"Default";
-          if (v13 < 0)
+          if (intValue2 < 0)
           {
             v14 = @"Silent";
           }
 
           v15 = v14;
-          v16 = [v23 objectForKeyedSubscript:v7];
-          v17 = [v16 dictionary];
-          [v12 setObject:v17 forKeyedSubscript:v15];
+          v16 = [playlistCopy objectForKeyedSubscript:v7];
+          dictionary = [v16 dictionary];
+          [v12 setObject:dictionary forKeyedSubscript:v15];
 
           v18 = [v12 copy];
           [v3 setObject:v18 forKeyedSubscript:v10];
@@ -472,8 +472,8 @@ LABEL_10:
       v28[0] = @"Version";
       v28[1] = @"Default";
       v29[0] = &off_111FF0;
-      v19 = [v3 allValues];
-      v29[1] = v19;
+      allValues = [v3 allValues];
+      v29[1] = allValues;
       v20 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:2];
     }
 

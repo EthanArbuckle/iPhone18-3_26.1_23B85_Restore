@@ -1,5 +1,5 @@
 @interface CCUISensorAttributionExpandedViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_accessibilityMoveToPrivacyHeaderView;
 - (void)viewDidLoad;
@@ -7,15 +7,15 @@
 
 @implementation CCUISensorAttributionExpandedViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CCUISensorAttributionExpandedViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CCUISensorAttributionExpandedViewController" hasInstanceMethod:@"setExpanded:animated:" withFullSignature:{"v", "B", "B", 0}];
-  [v3 validateClass:@"CCUISensorAttributionExpandedViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CCUISensorAttributionExpandedViewController" hasSwiftField:@"stackView" withSwiftType:"UIStackView"];
-  [v3 validateClass:@"CCUISensorAttributionPrivacyHeaderView"];
-  [v3 validateClass:@"BSUIScrollView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CCUISensorAttributionExpandedViewController" hasInstanceMethod:@"isExpanded" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CCUISensorAttributionExpandedViewController" hasInstanceMethod:@"setExpanded:animated:" withFullSignature:{"v", "B", "B", 0}];
+  [validationsCopy validateClass:@"CCUISensorAttributionExpandedViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CCUISensorAttributionExpandedViewController" hasSwiftField:@"stackView" withSwiftType:"UIStackView"];
+  [validationsCopy validateClass:@"CCUISensorAttributionPrivacyHeaderView"];
+  [validationsCopy validateClass:@"BSUIScrollView"];
 }
 
 - (void)viewDidLoad
@@ -38,13 +38,13 @@
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v5 = [v4 arrangedSubviews];
+  arrangedSubviews = [v4 arrangedSubviews];
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __97__CCUISensorAttributionExpandedViewControllerAccessibility__accessibilityMoveToPrivacyHeaderView__block_invoke;
   v6[3] = &unk_29F2B6DF8;
   v6[4] = &v7;
-  [v5 enumerateObjectsUsingBlock:v6];
+  [arrangedSubviews enumerateObjectsUsingBlock:v6];
 
   if (-[CCUISensorAttributionExpandedViewControllerAccessibility safeBoolForKey:](self, "safeBoolForKey:", @"isExpanded") && [v8[5] _accessibilityViewIsVisible])
   {
@@ -73,8 +73,8 @@ void __97__CCUISensorAttributionExpandedViewControllerAccessibility__accessibili
   LOBYTE(location) = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
-  v5 = [v4 _accessibilityDescendantOfType:MEMORY[0x29C2D22C0](@"BSUIScrollView")];
+  view = [v3 view];
+  v5 = [view _accessibilityDescendantOfType:MEMORY[0x29C2D22C0](@"BSUIScrollView")];
 
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x29EDCA5F8];

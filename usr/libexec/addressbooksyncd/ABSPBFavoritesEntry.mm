@@ -1,23 +1,23 @@
 @interface ABSPBFavoritesEntry
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDictionaryKeys:(id)a3;
-- (void)addDictionaryValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasEntryType:(BOOL)a3;
-- (void)setHasProperty:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addDictionaryKeys:(id)keys;
+- (void)addDictionaryValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasEntryType:(BOOL)type;
+- (void)setHasProperty:(BOOL)property;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBFavoritesEntry
 
-- (void)setHasEntryType:(BOOL)a3
+- (void)setHasEntryType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasProperty:(BOOL)a3
+- (void)setHasProperty:(BOOL)property
 {
-  if (a3)
+  if (property)
   {
     v3 = 4;
   }
@@ -45,40 +45,40 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addDictionaryKeys:(id)a3
+- (void)addDictionaryKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   dictionaryKeys = self->_dictionaryKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!dictionaryKeys)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_dictionaryKeys;
     self->_dictionaryKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     dictionaryKeys = self->_dictionaryKeys;
   }
 
-  [(NSMutableArray *)dictionaryKeys addObject:v4];
+  [(NSMutableArray *)dictionaryKeys addObject:keysCopy];
 }
 
-- (void)addDictionaryValues:(id)a3
+- (void)addDictionaryValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   dictionaryValues = self->_dictionaryValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!dictionaryValues)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_dictionaryValues;
     self->_dictionaryValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     dictionaryValues = self->_dictionaryValues;
   }
 
-  [(NSMutableArray *)dictionaryValues addObject:v4];
+  [(NSMutableArray *)dictionaryValues addObject:valuesCopy];
 }
 
 - (id)description
@@ -86,8 +86,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBFavoritesEntry;
   v3 = [(ABSPBFavoritesEntry *)&v7 description];
-  v4 = [(ABSPBFavoritesEntry *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBFavoritesEntry *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -187,9 +187,9 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -317,14 +317,14 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[12] = self->_entryType;
-    *(v4 + 104) |= 2u;
+    toCopy[12] = self->_entryType;
+    *(toCopy + 104) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -343,20 +343,20 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_abIdentifier;
-  *(v4 + 104) |= 1u;
+  toCopy[2] = self->_abIdentifier;
+  *(toCopy + 104) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[20] = self->_property;
-    *(v4 + 104) |= 4u;
+    toCopy[20] = self->_property;
+    *(toCopy + 104) |= 4u;
   }
 
 LABEL_5:
-  v14 = v4;
+  v14 = toCopy;
   if (self->_value)
   {
-    [v4 setValue:?];
+    [toCopy setValue:?];
   }
 
   if (self->_name)
@@ -392,10 +392,10 @@ LABEL_5:
   if ([(ABSPBFavoritesEntry *)self dictionaryKeysCount])
   {
     [v14 clearDictionaryKeys];
-    v6 = [(ABSPBFavoritesEntry *)self dictionaryKeysCount];
-    if (v6)
+    dictionaryKeysCount = [(ABSPBFavoritesEntry *)self dictionaryKeysCount];
+    if (dictionaryKeysCount)
     {
-      v7 = v6;
+      v7 = dictionaryKeysCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ABSPBFavoritesEntry *)self dictionaryKeysAtIndex:i];
@@ -407,10 +407,10 @@ LABEL_5:
   if ([(ABSPBFavoritesEntry *)self dictionaryValuesCount])
   {
     [v14 clearDictionaryValues];
-    v10 = [(ABSPBFavoritesEntry *)self dictionaryValuesCount];
-    if (v10)
+    dictionaryValuesCount = [(ABSPBFavoritesEntry *)self dictionaryValuesCount];
+    if (dictionaryValuesCount)
     {
-      v11 = v10;
+      v11 = dictionaryValuesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(ABSPBFavoritesEntry *)self dictionaryValuesAtIndex:j];
@@ -420,9 +420,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -457,31 +457,31 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_value copyWithZone:a3];
+  v8 = [(NSString *)self->_value copyWithZone:zone];
   v9 = v6[12];
   v6[12] = v8;
 
-  v10 = [(NSString *)self->_name copyWithZone:a3];
+  v10 = [(NSString *)self->_name copyWithZone:zone];
   v11 = v6[9];
   v6[9] = v10;
 
-  v12 = [(NSString *)self->_label copyWithZone:a3];
+  v12 = [(NSString *)self->_label copyWithZone:zone];
   v13 = v6[8];
   v6[8] = v12;
 
-  v14 = [(NSString *)self->_guid copyWithZone:a3];
+  v14 = [(NSString *)self->_guid copyWithZone:zone];
   v15 = v6[7];
   v6[7] = v14;
 
-  v16 = [(NSString *)self->_actionType copyWithZone:a3];
+  v16 = [(NSString *)self->_actionType copyWithZone:zone];
   v17 = v6[2];
   v6[2] = v16;
 
-  v18 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v19 = v6[3];
   v6[3] = v18;
 
-  v20 = [(NSString *)self->_propertyKey copyWithZone:a3];
+  v20 = [(NSString *)self->_propertyKey copyWithZone:zone];
   v21 = v6[11];
   v6[11] = v20;
 
@@ -504,7 +504,7 @@ LABEL_5:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v39 + 1) + 8 * i) copyWithZone:a3];
+        v27 = [*(*(&v39 + 1) + 8 * i) copyWithZone:zone];
         [v6 addDictionaryKeys:v27];
       }
 
@@ -533,7 +533,7 @@ LABEL_5:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v35 + 1) + 8 * j) copyWithZone:{a3, v35}];
+        v33 = [*(*(&v35 + 1) + 8 * j) copyWithZone:{zone, v35}];
         [v6 addDictionaryValues:v33];
       }
 
@@ -546,24 +546,24 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  v5 = *(v4 + 104);
+  v5 = *(equalCopy + 104);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 104) & 2) == 0 || self->_entryType != *(v4 + 12))
+    if ((*(equalCopy + 104) & 2) == 0 || self->_entryType != *(equalCopy + 12))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 104) & 2) != 0)
+  else if ((*(equalCopy + 104) & 2) != 0)
   {
 LABEL_35:
     v15 = 0;
@@ -572,38 +572,38 @@ LABEL_35:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 104) & 1) == 0 || self->_abIdentifier != *(v4 + 2))
+    if ((*(equalCopy + 104) & 1) == 0 || self->_abIdentifier != *(equalCopy + 2))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 104))
+  else if (*(equalCopy + 104))
   {
     goto LABEL_35;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 104) & 4) == 0 || self->_property != *(v4 + 20))
+    if ((*(equalCopy + 104) & 4) == 0 || self->_property != *(equalCopy + 20))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 104) & 4) != 0)
+  else if ((*(equalCopy + 104) & 4) != 0)
   {
     goto LABEL_35;
   }
 
   value = self->_value;
-  if (value | *(v4 + 12) && ![(NSString *)value isEqual:?])
+  if (value | *(equalCopy + 12) && ![(NSString *)value isEqual:?])
   {
     goto LABEL_35;
   }
 
   name = self->_name;
-  if (name | *(v4 + 9))
+  if (name | *(equalCopy + 9))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -612,7 +612,7 @@ LABEL_35:
   }
 
   label = self->_label;
-  if (label | *(v4 + 8))
+  if (label | *(equalCopy + 8))
   {
     if (![(NSString *)label isEqual:?])
     {
@@ -621,7 +621,7 @@ LABEL_35:
   }
 
   guid = self->_guid;
-  if (guid | *(v4 + 7))
+  if (guid | *(equalCopy + 7))
   {
     if (![(NSString *)guid isEqual:?])
     {
@@ -630,7 +630,7 @@ LABEL_35:
   }
 
   actionType = self->_actionType;
-  if (actionType | *(v4 + 2))
+  if (actionType | *(equalCopy + 2))
   {
     if (![(NSString *)actionType isEqual:?])
     {
@@ -639,7 +639,7 @@ LABEL_35:
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 3))
+  if (bundleIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)bundleIdentifier isEqual:?])
     {
@@ -648,7 +648,7 @@ LABEL_35:
   }
 
   propertyKey = self->_propertyKey;
-  if (propertyKey | *(v4 + 11))
+  if (propertyKey | *(equalCopy + 11))
   {
     if (![(NSString *)propertyKey isEqual:?])
     {
@@ -657,7 +657,7 @@ LABEL_35:
   }
 
   dictionaryKeys = self->_dictionaryKeys;
-  if (dictionaryKeys | *(v4 + 4))
+  if (dictionaryKeys | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)dictionaryKeys isEqual:?])
     {
@@ -666,7 +666,7 @@ LABEL_35:
   }
 
   dictionaryValues = self->_dictionaryValues;
-  if (dictionaryValues | *(v4 + 5))
+  if (dictionaryValues | *(equalCopy + 5))
   {
     v15 = [(NSMutableArray *)dictionaryValues isEqual:?];
   }
@@ -730,16 +730,16 @@ LABEL_8:
   return v11 ^ v13 ^ [(NSMutableArray *)self->_dictionaryValues hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 104);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 104);
   if ((v6 & 2) != 0)
   {
-    self->_entryType = v4[12];
+    self->_entryType = fromCopy[12];
     *&self->_has |= 2u;
-    v6 = *(v4 + 104);
+    v6 = *(fromCopy + 104);
     if ((v6 & 1) == 0)
     {
 LABEL_3:
@@ -752,22 +752,22 @@ LABEL_3:
     }
   }
 
-  else if ((v4[26] & 1) == 0)
+  else if ((fromCopy[26] & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_abIdentifier = v4[2];
+  self->_abIdentifier = fromCopy[2];
   *&self->_has |= 1u;
-  if ((v4[26] & 4) != 0)
+  if ((fromCopy[26] & 4) != 0)
   {
 LABEL_4:
-    self->_property = v4[20];
+    self->_property = fromCopy[20];
     *&self->_has |= 4u;
   }
 
 LABEL_5:
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(ABSPBFavoritesEntry *)self setValue:?];
   }

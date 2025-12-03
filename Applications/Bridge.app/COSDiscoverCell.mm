@@ -1,17 +1,17 @@
 @interface COSDiscoverCell
-- (COSDiscoverCell)initWithFrame:(CGRect)a3;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3 title:(id)a4 subtitle:(id)a5 wantsCellDivider:(BOOL)a6;
+- (COSDiscoverCell)initWithFrame:(CGRect)frame;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image title:(id)title subtitle:(id)subtitle wantsCellDivider:(BOOL)divider;
 @end
 
 @implementation COSDiscoverCell
 
-- (COSDiscoverCell)initWithFrame:(CGRect)a3
+- (COSDiscoverCell)initWithFrame:(CGRect)frame
 {
   v96.receiver = self;
   v96.super_class = COSDiscoverCell;
-  v3 = [(COSDiscoverCell *)&v96 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSDiscoverCell *)&v96 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,14 +26,14 @@
     [(UIImageView *)v4->_heroImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIImageView *)v4->_heroImageView setClipsToBounds:1];
     [(UIImageView *)v4->_heroImageView setContentMode:1];
-    v8 = [(UIImageView *)v4->_heroImageView layer];
-    [v8 setCornerCurve:kCACornerCurveContinuous];
+    layer = [(UIImageView *)v4->_heroImageView layer];
+    [layer setCornerCurve:kCACornerCurveContinuous];
 
-    v9 = [(COSDiscoverCell *)v4 traitCollection];
+    traitCollection = [(COSDiscoverCell *)v4 traitCollection];
     _UITableViewDefaultSectionCornerRadiusForTraitCollection();
     v11 = v10;
-    v12 = [(UIImageView *)v4->_heroImageView layer];
-    [v12 setCornerRadius:v11];
+    layer2 = [(UIImageView *)v4->_heroImageView layer];
+    [layer2 setCornerRadius:v11];
 
     [(COSDiscoverCell *)v4 addSubview:v4->_heroImageView];
     v13 = objc_opt_new();
@@ -47,8 +47,8 @@
     v4->_titleLabel = v15;
 
     v17 = v4->_titleLabel;
-    v18 = [(COSDiscoverCell *)v4 _titleLabelFont];
-    [(UILabel *)v17 setFont:v18];
+    _titleLabelFont = [(COSDiscoverCell *)v4 _titleLabelFont];
+    [(UILabel *)v17 setFont:_titleLabelFont];
 
     v19 = +[UIColor systemWhiteColor];
     [(UILabel *)v4->_titleLabel setColor:v19];
@@ -63,8 +63,8 @@
     v4->_subtitleLabel = v20;
 
     v22 = v4->_subtitleLabel;
-    v23 = [(COSDiscoverCell *)v4 _subtitleLabelFont];
-    [(UILabel *)v22 setFont:v23];
+    _subtitleLabelFont = [(COSDiscoverCell *)v4 _subtitleLabelFont];
+    [(UILabel *)v22 setFont:_subtitleLabelFont];
 
     v24 = v4->_subtitleLabel;
     v25 = +[UIColor systemGrayColor];
@@ -85,90 +85,90 @@
 
     [(UIView *)v4->_divider setTranslatesAutoresizingMaskIntoConstraints:0];
     [(COSDiscoverCell *)v4 addSubview:v4->_divider];
-    v95 = [(COSDiscoverCell *)v4 leadingAnchor];
-    v94 = [(UIImageView *)v4->_heroImageView leadingAnchor];
-    v93 = [v95 constraintEqualToAnchor:v94 constant:-20.0];
+    leadingAnchor = [(COSDiscoverCell *)v4 leadingAnchor];
+    leadingAnchor2 = [(UIImageView *)v4->_heroImageView leadingAnchor];
+    v93 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:-20.0];
     v97[0] = v93;
-    v92 = [(UIImageView *)v4->_heroImageView heightAnchor];
-    v91 = [v92 constraintEqualToConstant:102.0];
+    heightAnchor = [(UIImageView *)v4->_heroImageView heightAnchor];
+    v91 = [heightAnchor constraintEqualToConstant:102.0];
     v97[1] = v91;
-    v90 = [(UIImageView *)v4->_heroImageView widthAnchor];
-    v89 = [v90 constraintEqualToConstant:102.0];
+    widthAnchor = [(UIImageView *)v4->_heroImageView widthAnchor];
+    v89 = [widthAnchor constraintEqualToConstant:102.0];
     v97[2] = v89;
-    v88 = [(COSDiscoverCell *)v4 topAnchor];
-    v87 = [(UIView *)v4->_trayView topAnchor];
-    v86 = [v88 constraintLessThanOrEqualToAnchor:v87];
+    topAnchor = [(COSDiscoverCell *)v4 topAnchor];
+    topAnchor2 = [(UIView *)v4->_trayView topAnchor];
+    v86 = [topAnchor constraintLessThanOrEqualToAnchor:topAnchor2];
     v97[3] = v86;
-    v85 = [(UIView *)v4->_trayView leadingAnchor];
-    v84 = [(UIImageView *)v4->_heroImageView trailingAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84 constant:8.0];
+    leadingAnchor3 = [(UIView *)v4->_trayView leadingAnchor];
+    trailingAnchor = [(UIImageView *)v4->_heroImageView trailingAnchor];
+    v83 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
     v97[4] = v83;
-    v82 = [(COSDiscoverCell *)v4 layoutMarginsGuide];
-    v81 = [v82 trailingAnchor];
-    v80 = [(UIView *)v4->_trayView trailingAnchor];
-    v79 = [v81 constraintEqualToAnchor:v80];
+    layoutMarginsGuide = [(COSDiscoverCell *)v4 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+    trailingAnchor3 = [(UIView *)v4->_trayView trailingAnchor];
+    v79 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     v97[5] = v79;
-    v78 = [(COSDiscoverCell *)v4 bottomAnchor];
-    v77 = [(UIView *)v4->_trayView bottomAnchor];
-    v76 = [v78 constraintGreaterThanOrEqualToAnchor:v77];
+    bottomAnchor = [(COSDiscoverCell *)v4 bottomAnchor];
+    bottomAnchor2 = [(UIView *)v4->_trayView bottomAnchor];
+    v76 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
     v97[6] = v76;
-    v75 = [(COSDiscoverCell *)v4 topAnchor];
-    v74 = [(UIView *)v4->_divider topAnchor];
-    v73 = [v75 constraintLessThanOrEqualToAnchor:v74];
+    topAnchor3 = [(COSDiscoverCell *)v4 topAnchor];
+    topAnchor4 = [(UIView *)v4->_divider topAnchor];
+    v73 = [topAnchor3 constraintLessThanOrEqualToAnchor:topAnchor4];
     v97[7] = v73;
-    v72 = [(UIView *)v4->_divider leadingAnchor];
-    v71 = [(UIImageView *)v4->_heroImageView trailingAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71 constant:8.0];
+    leadingAnchor4 = [(UIView *)v4->_divider leadingAnchor];
+    trailingAnchor4 = [(UIImageView *)v4->_heroImageView trailingAnchor];
+    v70 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4 constant:8.0];
     v97[8] = v70;
-    v68 = [(UIView *)v4->_divider heightAnchor];
+    heightAnchor2 = [(UIView *)v4->_divider heightAnchor];
     v69 = +[UIScreen mainScreen];
-    v67 = [v69 traitCollection];
-    [v67 displayScale];
-    v66 = [v68 constraintEqualToConstant:1.0 / v30];
+    traitCollection2 = [v69 traitCollection];
+    [traitCollection2 displayScale];
+    v66 = [heightAnchor2 constraintEqualToConstant:1.0 / v30];
     v97[9] = v66;
-    v65 = [(COSDiscoverCell *)v4 trailingAnchor];
-    v64 = [(UIView *)v4->_divider trailingAnchor];
-    v63 = [v65 constraintEqualToAnchor:v64];
+    trailingAnchor5 = [(COSDiscoverCell *)v4 trailingAnchor];
+    trailingAnchor6 = [(UIView *)v4->_divider trailingAnchor];
+    v63 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
     v97[10] = v63;
-    v62 = [(COSDiscoverCell *)v4 bottomAnchor];
-    v61 = [(UIView *)v4->_divider bottomAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    bottomAnchor3 = [(COSDiscoverCell *)v4 bottomAnchor];
+    bottomAnchor4 = [(UIView *)v4->_divider bottomAnchor];
+    v60 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v97[11] = v60;
-    v59 = [(UILabel *)v4->_titleLabel topAnchor];
-    v58 = [(UIView *)v4->_trayView topAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    topAnchor5 = [(UILabel *)v4->_titleLabel topAnchor];
+    topAnchor6 = [(UIView *)v4->_trayView topAnchor];
+    v57 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v97[12] = v57;
-    v56 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v55 = [(UIView *)v4->_trayView leadingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    leadingAnchor5 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    leadingAnchor6 = [(UIView *)v4->_trayView leadingAnchor];
+    v54 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v97[13] = v54;
-    v53 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v52 = [(UIView *)v4->_trayView trailingAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    trailingAnchor7 = [(UILabel *)v4->_titleLabel trailingAnchor];
+    trailingAnchor8 = [(UIView *)v4->_trayView trailingAnchor];
+    v51 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
     v97[14] = v51;
-    v50 = [(UILabel *)v4->_subtitleLabel topAnchor];
-    v49 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v48 = [v50 constraintEqualToAnchor:v49];
+    topAnchor7 = [(UILabel *)v4->_subtitleLabel topAnchor];
+    bottomAnchor5 = [(UILabel *)v4->_titleLabel bottomAnchor];
+    v48 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5];
     v97[15] = v48;
-    v47 = [(UILabel *)v4->_subtitleLabel leadingAnchor];
-    v46 = [(UIView *)v4->_trayView leadingAnchor];
-    v45 = [v47 constraintEqualToAnchor:v46];
+    leadingAnchor7 = [(UILabel *)v4->_subtitleLabel leadingAnchor];
+    leadingAnchor8 = [(UIView *)v4->_trayView leadingAnchor];
+    v45 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v97[16] = v45;
-    v44 = [(UILabel *)v4->_subtitleLabel bottomAnchor];
-    v43 = [(UIView *)v4->_trayView bottomAnchor];
-    v42 = [v44 constraintEqualToAnchor:v43];
+    bottomAnchor6 = [(UILabel *)v4->_subtitleLabel bottomAnchor];
+    bottomAnchor7 = [(UIView *)v4->_trayView bottomAnchor];
+    v42 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
     v97[17] = v42;
-    v41 = [(UILabel *)v4->_subtitleLabel trailingAnchor];
-    v31 = [(UIView *)v4->_trayView trailingAnchor];
-    v32 = [v41 constraintEqualToAnchor:v31];
+    trailingAnchor9 = [(UILabel *)v4->_subtitleLabel trailingAnchor];
+    trailingAnchor10 = [(UIView *)v4->_trayView trailingAnchor];
+    v32 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
     v97[18] = v32;
-    v33 = [(UIImageView *)v4->_heroImageView centerYAnchor];
-    v34 = [(COSDiscoverCell *)v4 centerYAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    centerYAnchor = [(UIImageView *)v4->_heroImageView centerYAnchor];
+    centerYAnchor2 = [(COSDiscoverCell *)v4 centerYAnchor];
+    v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v97[19] = v35;
-    v36 = [(UIView *)v4->_trayView centerYAnchor];
-    v37 = [(UIImageView *)v4->_heroImageView centerYAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerYAnchor3 = [(UIView *)v4->_trayView centerYAnchor];
+    centerYAnchor4 = [(UIImageView *)v4->_heroImageView centerYAnchor];
+    v38 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v97[20] = v38;
     v39 = [NSArray arrayWithObjects:v97 count:21];
     [NSLayoutConstraint activateConstraints:v39];
@@ -177,28 +177,28 @@
   return v4;
 }
 
-- (void)setImage:(id)a3 title:(id)a4 subtitle:(id)a5 wantsCellDivider:(BOOL)a6
+- (void)setImage:(id)image title:(id)title subtitle:(id)subtitle wantsCellDivider:(BOOL)divider
 {
-  v6 = a6;
+  dividerCopy = divider;
   heroImageView = self->_heroImageView;
-  v11 = a5;
-  v12 = a4;
-  [(UIImageView *)heroImageView setImage:a3];
-  [(UILabel *)self->_titleLabel setText:v12];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  [(UIImageView *)heroImageView setImage:image];
+  [(UILabel *)self->_titleLabel setText:titleCopy];
 
-  [(UILabel *)self->_subtitleLabel setAttributedText:v11];
-  [(UIView *)self->_divider setHidden:!v6];
+  [(UILabel *)self->_subtitleLabel setAttributedText:subtitleCopy];
+  [(UIView *)self->_divider setHidden:!dividerCopy];
 
   [(COSDiscoverCell *)self layoutSubviews];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = COSDiscoverCell;
   [(COSDiscoverCell *)&v6 setHighlighted:?];
-  if (v3)
+  if (highlightedCopy)
   {
     +[UIColor tertiarySystemBackgroundColor];
   }
@@ -211,11 +211,11 @@
   [(COSDiscoverCell *)self setBackgroundColor:v5];
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = COSDiscoverCell;
-  v4 = [(COSDiscoverCell *)&v7 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(COSDiscoverCell *)&v7 preferredLayoutAttributesFittingAttributes:attributes];
   [(UIView *)self->_trayView systemLayoutSizeFittingSize:self->_preferredWidth + -102.0 + -8.0, UIViewNoIntrinsicMetric];
   [v4 setSize:{self->_preferredWidth, fmax(v5, 120.0)}];
 

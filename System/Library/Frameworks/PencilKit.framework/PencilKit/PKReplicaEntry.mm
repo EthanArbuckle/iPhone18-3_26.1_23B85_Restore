@@ -1,51 +1,51 @@
 @interface PKReplicaEntry
-- (PKReplicaEntry)initWithCoder:(id)a3;
-- (PKReplicaEntry)initWithReplicaUUIDIndex:(unsigned int)a3 clock:(unsigned int)a4 subclock:(unsigned int)a5 inUse:(BOOL)a6 forDrawing:(id)a7;
+- (PKReplicaEntry)initWithCoder:(id)coder;
+- (PKReplicaEntry)initWithReplicaUUIDIndex:(unsigned int)index clock:(unsigned int)clock subclock:(unsigned int)subclock inUse:(BOOL)use forDrawing:(id)drawing;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKReplicaEntry
 
-- (PKReplicaEntry)initWithReplicaUUIDIndex:(unsigned int)a3 clock:(unsigned int)a4 subclock:(unsigned int)a5 inUse:(BOOL)a6 forDrawing:(id)a7
+- (PKReplicaEntry)initWithReplicaUUIDIndex:(unsigned int)index clock:(unsigned int)clock subclock:(unsigned int)subclock inUse:(BOOL)use forDrawing:(id)drawing
 {
   v13.receiver = self;
   v13.super_class = PKReplicaEntry;
   result = [(PKReplicaEntry *)&v13 init];
   if (result)
   {
-    result->_replicaUUIDIndex = a3;
-    result->_clock = a4;
-    result->_subclock = a5;
-    result->_inUse = a6;
-    result->_drawing = a7;
+    result->_replicaUUIDIndex = index;
+    result->_clock = clock;
+    result->_subclock = subclock;
+    result->_inUse = use;
+    result->_drawing = drawing;
   }
 
   return result;
 }
 
-- (PKReplicaEntry)initWithCoder:(id)a3
+- (PKReplicaEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = PKReplicaEntry;
   v5 = [(PKReplicaEntry *)&v7 init];
   if (v5)
   {
-    v5->_replicaUUIDIndex = [v4 decodeInt64ForKey:@"ReplicaIndex"];
-    v5->_clock = [v4 decodeInt64ForKey:@"ReplicaClock"];
-    v5->_subclock = [v4 decodeInt64ForKey:@"ReplicaSubclock"];
+    v5->_replicaUUIDIndex = [coderCopy decodeInt64ForKey:@"ReplicaIndex"];
+    v5->_clock = [coderCopy decodeInt64ForKey:@"ReplicaClock"];
+    v5->_subclock = [coderCopy decodeInt64ForKey:@"ReplicaSubclock"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_replicaUUIDIndex forKey:@"ReplicaIndex"];
-  [v4 encodeInt64:self->_clock forKey:@"ReplicaClock"];
-  [v4 encodeInt64:self->_subclock forKey:@"ReplicaSubclock"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_replicaUUIDIndex forKey:@"ReplicaIndex"];
+  [coderCopy encodeInt64:self->_clock forKey:@"ReplicaClock"];
+  [coderCopy encodeInt64:self->_subclock forKey:@"ReplicaSubclock"];
 }
 
 - (id)description

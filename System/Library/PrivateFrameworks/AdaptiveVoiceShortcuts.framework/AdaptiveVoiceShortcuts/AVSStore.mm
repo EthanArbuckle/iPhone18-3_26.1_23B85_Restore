@@ -2,7 +2,7 @@
 + (NSArray)shortcuts;
 + (NSDictionary)shortcutsNamesDictionary;
 - (AVSStore)init;
-- (void)deleteShortcutWithIdentifier:(id)a3;
+- (void)deleteShortcutWithIdentifier:(id)identifier;
 @end
 
 @implementation AVSStore
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (void)deleteShortcutWithIdentifier:(id)a3
+- (void)deleteShortcutWithIdentifier:(id)identifier
 {
   v4 = sub_23E82EA6C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   _sSo8AVSStoreC22AdaptiveVoiceShortcutsE14deleteShortcut14withIdentifierySS_tF_0(v4, v6);
 }
 

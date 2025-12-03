@@ -1,8 +1,8 @@
 @interface MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams);
-  v5 = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self arg1];
-  [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self arg1];
+  [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self serverSideProcessingTimeout];
-  [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self serverSideProcessingTimeout];
+  [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,19 +54,19 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   LOBYTE(v23) = 0;
   v22[0] = 0;
   v22[1] = 0;
   v21 = v22;
-  v5 = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self arg1];
+  arg1 = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self arg1];
 
-  if (v5)
+  if (arg1)
   {
     v23 = 1;
-    v6 = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self arg1];
-    HIBYTE(v23) = [v6 BOOLValue];
+    arg12 = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self arg1];
+    HIBYTE(v23) = [arg12 BOOLValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v20);
@@ -88,8 +88,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v20);
-      v7 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v20);
+      v7 = sub_2393C7114(reader, 21, 256);
       v10 = v14;
       v9 = v7;
     }
@@ -117,19 +117,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRUnitTestingClusterTestSimpleOptionalArgumentRequestParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -140,7 +140,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0xBD8800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

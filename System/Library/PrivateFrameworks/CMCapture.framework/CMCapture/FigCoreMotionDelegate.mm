@@ -1,33 +1,33 @@
 @interface FigCoreMotionDelegate
 - (FigCoreMotionDelegate)init;
-- (FigCoreMotionDelegate)initWithAccelerometer:(BOOL)a3 gravityZ:(BOOL)a4 fusedMotion:(BOOL)a5 accelUpdateInterval:(float)a6 fusedMotionUpdateInterval:(float)a7 motionCallbackThreadPriority:(id)a8;
+- (FigCoreMotionDelegate)initWithAccelerometer:(BOOL)accelerometer gravityZ:(BOOL)z fusedMotion:(BOOL)motion accelUpdateInterval:(float)interval fusedMotionUpdateInterval:(float)updateInterval motionCallbackThreadPriority:(id)priority;
 - (id)copyAllFusedMotionData;
-- (id)copyFusedMotionData:(double)a3 endTime:(double)a4 timeoutValue:(double)a5 errOut:(int *)a6;
+- (id)copyFusedMotionData:(double)data endTime:(double)time timeoutValue:(double)value errOut:(int *)out;
 - (id)copyNewFusedMotionData;
-- (int)getFusedVectorX:(float *)a3 y:(float *)a4 z:(float *)a5 forTimeStamp:(double)a6;
-- (int)getGravityX:(float *)a3 y:(float *)a4 z:(float *)a5 forTimeStamp:(double)latestGravityDataTime;
-- (int)getLatestMotionDataTime:(double *)a3;
-- (int)getVectorX:(float *)a3 y:(float *)a4 z:(float *)a5 forTimeStamp:(double)a6;
-- (int)updateCurrentQuaternionForTimeStamp:(double)a3;
-- (int)updateCurrentQuaternionForTimeStamps:(double)a3 withEnd:(double)a4;
+- (int)getFusedVectorX:(float *)x y:(float *)y z:(float *)z forTimeStamp:(double)stamp;
+- (int)getGravityX:(float *)x y:(float *)y z:(float *)z forTimeStamp:(double)latestGravityDataTime;
+- (int)getLatestMotionDataTime:(double *)time;
+- (int)getVectorX:(float *)x y:(float *)y z:(float *)z forTimeStamp:(double)stamp;
+- (int)updateCurrentQuaternionForTimeStamp:(double)stamp;
+- (int)updateCurrentQuaternionForTimeStamps:(double)stamps withEnd:(double)end;
 - (void)dealloc;
-- (void)didUpdateAcceleration:(id)a3 time:(double)a4;
-- (void)didUpdateFusedMotionWithDeviceMotion:(id *)a3 time:(double)a4 ifsync:(BOOL)a5;
-- (void)didUpdateGravity:(id)a3 time:(double)a4;
-- (void)didUpdatePositionWithAcceleration:(id *)a3 forTimeStamp:(double)a4;
-- (void)didUpdatePositionWithTimeStamp:(double)a3;
-- (void)didUpdateVelocityWithAcceleration:(id *)a3 forTimeStamp:(double)a4;
-- (void)getCurrentAttitudeRoll:(double *)a3 pitch:(double *)a4 yaw:(double *)a5;
-- (void)getCurrentDeltaAttitudeRoll:(double *)a3 pitch:(double *)a4 yaw:(double *)a5;
-- (void)getCurrentDeltaQuaternion:(id *)a3;
-- (void)getPositionX:(float *)a3 y:(float *)a4 z:(float *)a5 forTimeStamp:(double)a6;
-- (void)updateDeviceCallback:(BOOL)a3 fusedMotionUpdateInterval:(float)a4;
-- (void)updateGyroInterval:(float)a3;
+- (void)didUpdateAcceleration:(id)acceleration time:(double)time;
+- (void)didUpdateFusedMotionWithDeviceMotion:(id *)motion time:(double)time ifsync:(BOOL)ifsync;
+- (void)didUpdateGravity:(id)gravity time:(double)time;
+- (void)didUpdatePositionWithAcceleration:(id *)acceleration forTimeStamp:(double)stamp;
+- (void)didUpdatePositionWithTimeStamp:(double)stamp;
+- (void)didUpdateVelocityWithAcceleration:(id *)acceleration forTimeStamp:(double)stamp;
+- (void)getCurrentAttitudeRoll:(double *)roll pitch:(double *)pitch yaw:(double *)yaw;
+- (void)getCurrentDeltaAttitudeRoll:(double *)roll pitch:(double *)pitch yaw:(double *)yaw;
+- (void)getCurrentDeltaQuaternion:(id *)quaternion;
+- (void)getPositionX:(float *)x y:(float *)y z:(float *)z forTimeStamp:(double)stamp;
+- (void)updateDeviceCallback:(BOOL)callback fusedMotionUpdateInterval:(float)interval;
+- (void)updateGyroInterval:(float)interval;
 @end
 
 @implementation FigCoreMotionDelegate
 
-- (FigCoreMotionDelegate)initWithAccelerometer:(BOOL)a3 gravityZ:(BOOL)a4 fusedMotion:(BOOL)a5 accelUpdateInterval:(float)a6 fusedMotionUpdateInterval:(float)a7 motionCallbackThreadPriority:(id)a8
+- (FigCoreMotionDelegate)initWithAccelerometer:(BOOL)accelerometer gravityZ:(BOOL)z fusedMotion:(BOOL)motion accelUpdateInterval:(float)interval fusedMotionUpdateInterval:(float)updateInterval motionCallbackThreadPriority:(id)priority
 {
   v21.receiver = self;
   v21.super_class = FigCoreMotionDelegate;
@@ -46,7 +46,7 @@
     }
 
     v15->dStartOfLogging = (v16 * MachTimeToMicroseconds_sTimebaseInfo / v17 / 0x3E8) / 1000000.0 + 2.0;
-    v15->dGyroUpdateInterval = a7;
+    v15->dGyroUpdateInterval = updateInterval;
     v15->currentQuaternion.w = 1.0;
     v15->currentQuaternion.x = 0.0;
     *&v15->currentQuaternion.y = 0u;
@@ -60,29 +60,29 @@
     v15->position.z = 0.0;
     v15->position.timestamp = -1.0;
     v15->computingPosition = 0;
-    v15->manageAccel = a3;
-    v15->manageGravity = a4;
-    v15->manageFusedMotion = a5;
+    v15->manageAccel = accelerometer;
+    v15->manageGravity = z;
+    v15->manageFusedMotion = motion;
     pthread_mutex_init(&v15->ringMutex, 0);
     v15->dataSemaphore = FigSemaphoreCreate();
     *&v15->latestMotionDataTime = 0u;
     if (v15->manageFusedMotion || v15->manageAccel)
     {
       MEMORY[0x1B26F02D0](&readUserDefaultsOnce_sReadFigCoreMotionDelegateUserDefaultsOnce, readUserDefaults);
-      v18 = [objc_alloc(MEMORY[0x1E69634D0]) initUsingGyroOnlySensorFusion];
-      v15->motionManager = v18;
-      if (v18)
+      initUsingGyroOnlySensorFusion = [objc_alloc(MEMORY[0x1E69634D0]) initUsingGyroOnlySensorFusion];
+      v15->motionManager = initUsingGyroOnlySensorFusion;
+      if (initUsingGyroOnlySensorFusion)
       {
-        if (a8)
+        if (priority)
         {
-          v19 = v18;
-          [a8 unsignedIntValue];
+          v19 = initUsingGyroOnlySensorFusion;
+          [priority unsignedIntValue];
           [v19 setMotionThreadPriority:FigThreadGetMachThreadPriorityValue()];
         }
 
         if (v15->manageAccel)
         {
-          [(CMMotionManager *)v15->motionManager setAccelerometerDataCallback:accelerometerDataCallback info:v15 interval:a6];
+          [(CMMotionManager *)v15->motionManager setAccelerometerDataCallback:accelerometerDataCallback info:v15 interval:interval];
         }
 
         if (v15->manageFusedMotion && [(CMMotionManager *)v15->motionManager isDeviceMotionAvailable])
@@ -96,20 +96,20 @@
   return v15;
 }
 
-- (void)updateDeviceCallback:(BOOL)a3 fusedMotionUpdateInterval:(float)a4
+- (void)updateDeviceCallback:(BOOL)callback fusedMotionUpdateInterval:(float)interval
 {
   motionManager = self->motionManager;
   if (motionManager)
   {
-    self->manageFusedMotion = a3;
+    self->manageFusedMotion = callback;
     if ([(CMMotionManager *)motionManager isDeviceMotionAvailable])
     {
       if (self->manageFusedMotion)
       {
-        self->dGyroUpdateInterval = a4;
+        self->dGyroUpdateInterval = interval;
         v7 = self->motionManager;
         v8 = deviceMotionCallback;
-        v9 = self;
+        selfCopy = self;
         v10 = 1;
       }
 
@@ -117,21 +117,21 @@
       {
         v7 = self->motionManager;
         v8 = 0;
-        v9 = 0;
+        selfCopy = 0;
         v10 = 0;
       }
 
-      [(CMMotionManager *)v7 setDeviceMotionCallback:v8 info:v9 interval:v10 fsync:?];
+      [(CMMotionManager *)v7 setDeviceMotionCallback:v8 info:selfCopy interval:v10 fsync:?];
     }
   }
 }
 
-- (void)updateGyroInterval:(float)a3
+- (void)updateGyroInterval:(float)interval
 {
   motionManager = self->motionManager;
   if (motionManager)
   {
-    [(CMMotionManager *)motionManager setGyroDataCallback:0 info:self interval:a3];
+    [(CMMotionManager *)motionManager setGyroDataCallback:0 info:self interval:interval];
   }
 }
 
@@ -165,16 +165,16 @@
   [(FigCoreMotionDelegate *)&v3 dealloc];
 }
 
-- (void)didUpdateAcceleration:(id)a3 time:(double)a4
+- (void)didUpdateAcceleration:(id)acceleration time:(double)time
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = acceleration.var2;
+  var1 = acceleration.var1;
+  var0 = acceleration.var0;
   if (!pthread_mutex_lock(&self->ringMutex))
   {
     accelRingIndex = self->accelRingIndex;
     self->accelRingIndex = (accelRingIndex + 1);
-    self->accelRingTime[accelRingIndex] = a4;
+    self->accelRingTime[accelRingIndex] = time;
     v10 = (self + 4 * accelRingIndex);
     v10[22] = var0;
     v10[278] = var1;
@@ -184,16 +184,16 @@
   }
 }
 
-- (void)didUpdateGravity:(id)a3 time:(double)a4
+- (void)didUpdateGravity:(id)gravity time:(double)time
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = gravity.var2;
+  var1 = gravity.var1;
+  var0 = gravity.var0;
   if (!pthread_mutex_lock(&self->ringMutex))
   {
     accelRingIndex = self->accelRingIndex;
     self->accelRingIndex = (accelRingIndex + 1);
-    self->accelRingTime[accelRingIndex] = a4;
+    self->accelRingTime[accelRingIndex] = time;
     v10 = var0;
     if (var0 > 1.0)
     {
@@ -234,13 +234,13 @@
 
     v16 = v15;
     v12[534] = v16;
-    self->latestGravityDataTime = a4;
+    self->latestGravityDataTime = time;
 
     pthread_mutex_unlock(&self->ringMutex);
   }
 }
 
-- (int)getVectorX:(float *)a3 y:(float *)a4 z:(float *)a5 forTimeStamp:(double)a6
+- (int)getVectorX:(float *)x y:(float *)y z:(float *)z forTimeStamp:(double)stamp
 {
   v11 = pthread_mutex_lock(&self->ringMutex);
   v12 = 0.0;
@@ -250,8 +250,8 @@
   if (!v11)
   {
     v16 = 0;
-    v17 = a6 + 0.0333333351;
-    v18 = self;
+    v17 = stamp + 0.0333333351;
+    selfCopy = self;
     do
     {
       v19 = self->accelRingTime[v16];
@@ -259,14 +259,14 @@
       {
         v20 = v17 - v19;
         v21 = expf(-((v20 * 15.0) * (v20 * 15.0)));
-        v12 = v12 + (v21 * v18->accelRingX[0]);
-        v13 = v13 + (v21 * v18->accelRingY[0]);
-        v14 = v14 + (v21 * v18->accelRingZ[0]);
+        v12 = v12 + (v21 * selfCopy->accelRingX[0]);
+        v13 = v13 + (v21 * selfCopy->accelRingY[0]);
+        v14 = v14 + (v21 * selfCopy->accelRingZ[0]);
         v15 = v15 + v21;
       }
 
       ++v16;
-      v18 = (v18 + 4);
+      selfCopy = (selfCopy + 4);
     }
 
     while (v16 != 256);
@@ -279,13 +279,13 @@
     v22 = v15;
   }
 
-  *a3 = v12 * v22;
-  *a4 = v13 * v22;
-  *a5 = v14 * v22;
+  *x = v12 * v22;
+  *y = v13 * v22;
+  *z = v14 * v22;
   return v11;
 }
 
-- (int)getGravityX:(float *)a3 y:(float *)a4 z:(float *)a5 forTimeStamp:(double)latestGravityDataTime
+- (int)getGravityX:(float *)x y:(float *)y z:(float *)z forTimeStamp:(double)latestGravityDataTime
 {
   v11 = pthread_mutex_lock(&self->ringMutex);
   if (v11)
@@ -301,7 +301,7 @@
   v13 = 0;
   v14 = 0;
   v15 = 0.0;
-  v16 = self;
+  selfCopy = self;
   v17 = 0.0;
   v18 = 0.0;
   do
@@ -311,14 +311,14 @@
     v21 = vabdd_f64(v19, latestGravityDataTime);
     if (!v20 && v21 < 0.5)
     {
-      v18 = v18 + v16->accelRingX[0];
-      v17 = v17 + v16->accelRingY[0];
-      v15 = v15 + v16->accelRingZ[0];
+      v18 = v18 + selfCopy->accelRingX[0];
+      v17 = v17 + selfCopy->accelRingY[0];
+      v15 = v15 + selfCopy->accelRingZ[0];
       ++v14;
     }
 
     ++v13;
-    v16 = (v16 + 4);
+    selfCopy = (selfCopy + 4);
   }
 
   while (v13 != 256);
@@ -326,23 +326,23 @@
   if (!v14)
   {
 LABEL_2:
-    *a3 = 0.0;
-    *a4 = 0.0;
+    *x = 0.0;
+    *y = 0.0;
     v12 = 0.0;
   }
 
   else
   {
-    *a3 = v18 / v14;
-    *a4 = v17 / v14;
+    *x = v18 / v14;
+    *y = v17 / v14;
     v12 = v15 / v14;
   }
 
-  *a5 = v12;
+  *z = v12;
   return v11;
 }
 
-- (int)getFusedVectorX:(float *)a3 y:(float *)a4 z:(float *)a5 forTimeStamp:(double)a6
+- (int)getFusedVectorX:(float *)x y:(float *)y z:(float *)z forTimeStamp:(double)stamp
 {
   v11 = pthread_mutex_lock(&self->ringMutex);
   v12 = 0.0;
@@ -352,7 +352,7 @@ LABEL_2:
   if (!v11)
   {
     fusedRingTime = self->fusedRingTime;
-    v17 = a6 + 0.0333333351;
+    v17 = stamp + 0.0333333351;
     p_z = &self->fusedRingAccel[0].z;
     v19 = 256;
     do
@@ -382,97 +382,97 @@ LABEL_2:
     v22 = v15;
   }
 
-  *a3 = v12 * v22;
-  *a4 = v13 * v22;
-  *a5 = v14 * v22;
+  *x = v12 * v22;
+  *y = v13 * v22;
+  *z = v14 * v22;
   return v11;
 }
 
-- (void)didUpdateFusedMotionWithDeviceMotion:(id *)a3 time:(double)a4 ifsync:(BOOL)a5
+- (void)didUpdateFusedMotionWithDeviceMotion:(id *)motion time:(double)time ifsync:(BOOL)ifsync
 {
   dLatestTimestamp = self->dLatestTimestamp;
-  if (dLatestTimestamp > 0.0 && a4 - dLatestTimestamp > self->dGyroUpdateInterval * 3.1 && self->dStartOfLogging < a4)
+  if (dLatestTimestamp > 0.0 && time - dLatestTimestamp > self->dGyroUpdateInterval * 3.1 && self->dStartOfLogging < time)
   {
     low_freq_error_logging_0();
   }
 
-  self->dLatestTimestamp = a4;
+  self->dLatestTimestamp = time;
   if (!pthread_mutex_lock(&self->ringMutex))
   {
     fusedRingIndex = self->fusedRingIndex;
     self->fusedRingIndex = (fusedRingIndex + 1);
-    self->fusedRingTime[fusedRingIndex] = a4;
-    self->fusedRingDoingBiasEstimation[fusedRingIndex] = a3->var6;
+    self->fusedRingTime[fusedRingIndex] = time;
+    self->fusedRingDoingBiasEstimation[fusedRingIndex] = motion->var6;
     v10 = self + 12 * fusedRingIndex;
-    v11 = *&a3->var1.var0;
-    *(v10 + 1882) = LODWORD(a3->var1.var2);
+    v11 = *&motion->var1.var0;
+    *(v10 + 1882) = LODWORD(motion->var1.var2);
     *(v10 + 940) = v11;
     v12 = self + 32 * fusedRingIndex;
-    v13 = *&a3->var0.var0;
-    *(v12 + 663) = *&a3->var0.var2;
+    v13 = *&motion->var0.var0;
+    *(v12 + 663) = *&motion->var0.var2;
     *(v12 + 662) = v13;
     if (self->computingPosition)
     {
-      [(FigCoreMotionDelegate *)self didUpdatePositionWithAcceleration:&a3->var1 forTimeStamp:a4];
+      [(FigCoreMotionDelegate *)self didUpdatePositionWithAcceleration:&motion->var1 forTimeStamp:time];
       v14 = self + 12 * fusedRingIndex;
       *(v14 + 2348) = *&self->position.x;
       *(v14 + 4698) = LODWORD(self->position.z);
     }
 
-    self->latestMotionDataTime = a4;
+    self->latestMotionDataTime = time;
 
     pthread_mutex_unlock(&self->ringMutex);
   }
 }
 
-- (void)didUpdatePositionWithAcceleration:(id *)a3 forTimeStamp:(double)a4
+- (void)didUpdatePositionWithAcceleration:(id *)acceleration forTimeStamp:(double)stamp
 {
   timestamp = self->position.timestamp;
   if (timestamp == -1.0)
   {
-    self->velocity.timestamp = a4;
+    self->velocity.timestamp = stamp;
     self->position.timestamp = -2.0;
   }
 
   else
   {
-    [(FigCoreMotionDelegate *)self didUpdateVelocityWithAcceleration:a3 forTimeStamp:a4];
+    [(FigCoreMotionDelegate *)self didUpdateVelocityWithAcceleration:acceleration forTimeStamp:stamp];
     if (timestamp == -2.0)
     {
-      self->position.timestamp = a4;
+      self->position.timestamp = stamp;
     }
 
     else
     {
 
-      [(FigCoreMotionDelegate *)self didUpdatePositionWithTimeStamp:a4];
+      [(FigCoreMotionDelegate *)self didUpdatePositionWithTimeStamp:stamp];
     }
   }
 }
 
-- (void)didUpdateVelocityWithAcceleration:(id *)a3 forTimeStamp:(double)a4
+- (void)didUpdateVelocityWithAcceleration:(id *)acceleration forTimeStamp:(double)stamp
 {
   timestamp = self->velocity.timestamp;
-  if (timestamp < a4)
+  if (timestamp < stamp)
   {
-    v5 = a4 - timestamp;
-    *&self->velocity.x = vcvt_f32_f64(vmlaq_n_f64(vcvtq_f64_f32(*&self->velocity.x), vcvtq_f64_f32(vmul_f32(*&a3->var0, vdup_n_s32(0x411CF5C3u))), v5));
-    *&v5 = self->velocity.z + (a3->var2 * 9.81) * v5;
+    v5 = stamp - timestamp;
+    *&self->velocity.x = vcvt_f32_f64(vmlaq_n_f64(vcvtq_f64_f32(*&self->velocity.x), vcvtq_f64_f32(vmul_f32(*&acceleration->var0, vdup_n_s32(0x411CF5C3u))), v5));
+    *&v5 = self->velocity.z + (acceleration->var2 * 9.81) * v5;
     self->velocity.z = *&v5;
-    self->velocity.timestamp = a4;
+    self->velocity.timestamp = stamp;
   }
 }
 
-- (void)didUpdatePositionWithTimeStamp:(double)a3
+- (void)didUpdatePositionWithTimeStamp:(double)stamp
 {
   timestamp = self->position.timestamp;
-  if (timestamp < a3 && self->velocity.timestamp <= a3)
+  if (timestamp < stamp && self->velocity.timestamp <= stamp)
   {
-    v4 = a3 - timestamp;
+    v4 = stamp - timestamp;
     *&self->position.x = vcvt_f32_f64(vmlaq_n_f64(vcvtq_f64_f32(*&self->position.x), vcvtq_f64_f32(*&self->velocity.x), v4));
     *&v4 = self->position.z + self->velocity.z * v4;
     self->position.z = *&v4;
-    self->position.timestamp = a3;
+    self->position.timestamp = stamp;
   }
 }
 
@@ -535,23 +535,23 @@ LABEL_2:
   return v3;
 }
 
-- (id)copyFusedMotionData:(double)a3 endTime:(double)a4 timeoutValue:(double)a5 errOut:(int *)a6
+- (id)copyFusedMotionData:(double)data endTime:(double)time timeoutValue:(double)value errOut:(int *)out
 {
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:256];
   if (v10)
   {
-    if (a3 < 0.0)
+    if (data < 0.0)
     {
-      a3 = 0.0;
+      data = 0.0;
     }
 
-    if (a4 < 0.0)
+    if (time < 0.0)
     {
-      a4 = 1.79769313e308;
+      time = 1.79769313e308;
     }
 
     v11 = pthread_mutex_lock(&self->ringMutex);
-    if (self->latestMotionDataTime < a4)
+    if (self->latestMotionDataTime < time)
     {
       pthread_mutex_unlock(&self->ringMutex);
       if (self->dataSemaphore)
@@ -570,7 +570,7 @@ LABEL_2:
       {
         v15 = (v13 + LOBYTE(self->fusedRingIndex));
         v16 = self->fusedRingTime[v15];
-        if (v16 >= a3 && v16 <= a4)
+        if (v16 >= data && v16 <= time)
         {
           v18 = [MEMORY[0x1E696AD98] numberWithDouble:?];
           v19 = [MEMORY[0x1E696AD98] numberWithBool:self->fusedRingDoingBiasEstimation[v15]];
@@ -616,11 +616,11 @@ LABEL_2:
 
   v10 = 0;
 LABEL_14:
-  *a6 = v11;
+  *out = v11;
   return v10;
 }
 
-- (int)updateCurrentQuaternionForTimeStamp:(double)a3
+- (int)updateCurrentQuaternionForTimeStamp:(double)stamp
 {
   if (pthread_mutex_lock(&self->ringMutex))
   {
@@ -632,7 +632,7 @@ LABEL_14:
   v8 = 1.0;
   do
   {
-    v9 = vabdd_f64(self->fusedRingTime[v6], a3);
+    v9 = vabdd_f64(self->fusedRingTime[v6], stamp);
     if (v9 >= v8)
     {
       v7 = v7;
@@ -680,7 +680,7 @@ LABEL_14:
   return v5;
 }
 
-- (int)updateCurrentQuaternionForTimeStamps:(double)a3 withEnd:(double)a4
+- (int)updateCurrentQuaternionForTimeStamps:(double)stamps withEnd:(double)end
 {
   if (pthread_mutex_lock(&self->ringMutex))
   {
@@ -689,7 +689,7 @@ LABEL_14:
 
   v10 = 0u;
   v11 = 0u;
-  v7 = FigMotionComputeAverageQuaternionForTimePeriod(self->fusedRingTime, &self->fusedRingQuaternion[0].w, &v10, a3, a4);
+  v7 = FigMotionComputeAverageQuaternionForTimePeriod(self->fusedRingTime, &self->fusedRingQuaternion[0].w, &v10, stamps, end);
   if (v7)
   {
     low_freq_error_logging_0();
@@ -706,7 +706,7 @@ LABEL_14:
   return v7;
 }
 
-- (void)getCurrentDeltaQuaternion:(id *)a3
+- (void)getCurrentDeltaQuaternion:(id *)quaternion
 {
   w = self->previousQuaternion.w;
   x = self->previousQuaternion.x;
@@ -716,21 +716,21 @@ LABEL_14:
   v8 = self->currentQuaternion.w;
   v9 = self->currentQuaternion.z;
   v10 = self->currentQuaternion.y;
-  a3->var0 = x * v7 + w * v8 + y * v10 + z * v9;
-  a3->var1 = w * v7 - x * v8 - y * v9 + z * v10;
-  a3->var2 = w * v10 - y * v8 - z * v7 + x * v9;
-  a3->var3 = w * v9 - z * v8 - x * v10 + y * v7;
+  quaternion->var0 = x * v7 + w * v8 + y * v10 + z * v9;
+  quaternion->var1 = w * v7 - x * v8 - y * v9 + z * v10;
+  quaternion->var2 = w * v10 - y * v8 - z * v7 + x * v9;
+  quaternion->var3 = w * v9 - z * v8 - x * v10 + y * v7;
   self->previousQuaternion = self->currentQuaternion;
 }
 
-- (void)getCurrentAttitudeRoll:(double *)a3 pitch:(double *)a4 yaw:(double *)a5
+- (void)getCurrentAttitudeRoll:(double *)roll pitch:(double *)pitch yaw:(double *)yaw
 {
-  *a3 = rollFromQuaternion(&self->currentQuaternion.w);
-  *a4 = asin(self->currentQuaternion.w * (self->currentQuaternion.x + self->currentQuaternion.x) + self->currentQuaternion.y * (self->currentQuaternion.z + self->currentQuaternion.z));
-  *a5 = yawFromQuaternion(&self->currentQuaternion.w);
+  *roll = rollFromQuaternion(&self->currentQuaternion.w);
+  *pitch = asin(self->currentQuaternion.w * (self->currentQuaternion.x + self->currentQuaternion.x) + self->currentQuaternion.y * (self->currentQuaternion.z + self->currentQuaternion.z));
+  *yaw = yawFromQuaternion(&self->currentQuaternion.w);
 }
 
-- (void)getCurrentDeltaAttitudeRoll:(double *)a3 pitch:(double *)a4 yaw:(double *)a5
+- (void)getCurrentDeltaAttitudeRoll:(double *)roll pitch:(double *)pitch yaw:(double *)yaw
 {
   v13 = 0u;
   v14 = 0u;
@@ -740,12 +740,12 @@ LABEL_14:
   v10 = v13;
   v11 = *(&v13 + 1) + *(&v13 + 1);
   v12 = 1.0 - *(&v13 + 1) * (*(&v13 + 1) + *(&v13 + 1));
-  *a3 = -atan2(*(&v13 + 1) * (*(&v14 + 1) + *(&v14 + 1)) - *&v13 * (*&v14 + *&v14), v12 - *&v14 * (*&v14 + *&v14));
-  *a4 = asin(v11 * *&v10 + *&v8 * v9);
-  *a5 = -atan2(*(&v10 + 1) * (*&v8 + *&v8) - *&v10 * v9, v12 - *(&v8 + 1) * v9);
+  *roll = -atan2(*(&v13 + 1) * (*(&v14 + 1) + *(&v14 + 1)) - *&v13 * (*&v14 + *&v14), v12 - *&v14 * (*&v14 + *&v14));
+  *pitch = asin(v11 * *&v10 + *&v8 * v9);
+  *yaw = -atan2(*(&v10 + 1) * (*&v8 + *&v8) - *&v10 * v9, v12 - *(&v8 + 1) * v9);
 }
 
-- (void)getPositionX:(float *)a3 y:(float *)a4 z:(float *)a5 forTimeStamp:(double)a6
+- (void)getPositionX:(float *)x y:(float *)y z:(float *)z forTimeStamp:(double)stamp
 {
   p_z = &self->fusedRingPosition[0].z;
   if (self->computingPosition)
@@ -757,7 +757,7 @@ LABEL_14:
     if (!pthread_mutex_lock(&self->ringMutex))
     {
       v16 = 0;
-      v17 = a6 + 0.0333333351;
+      v17 = stamp + 0.0333333351;
       do
       {
         v18 = self->fusedRingTime[v16];
@@ -785,27 +785,27 @@ LABEL_14:
       v21 = v14;
     }
 
-    *a3 = v15 * v21;
-    *a4 = v12 * v21;
+    *x = v15 * v21;
+    *y = v12 * v21;
     v22 = v13 * v21;
   }
 
   else
   {
-    *a3 = 0.0;
-    *a4 = 0.0;
+    *x = 0.0;
+    *y = 0.0;
     v22 = 0.0;
   }
 
-  *a5 = v22;
+  *z = v22;
 }
 
-- (int)getLatestMotionDataTime:(double *)a3
+- (int)getLatestMotionDataTime:(double *)time
 {
   v5 = pthread_mutex_lock(&self->ringMutex);
   if (!v5)
   {
-    *a3 = self->latestMotionDataTime;
+    *time = self->latestMotionDataTime;
     pthread_mutex_unlock(&self->ringMutex);
   }
 

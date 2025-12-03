@@ -1,6 +1,6 @@
 @interface NPHMagicPickupAutomaton
 - (NPHMagicPickupAutomaton)init;
-- (void)stateManager:(id)a3 callConfigurationUpdated:(id)a4;
+- (void)stateManager:(id)manager callConfigurationUpdated:(id)updated;
 @end
 
 @implementation NPHMagicPickupAutomaton
@@ -26,17 +26,17 @@
   return v2;
 }
 
-- (void)stateManager:(id)a3 callConfigurationUpdated:(id)a4
+- (void)stateManager:(id)manager callConfigurationUpdated:(id)updated
 {
-  v4 = [a4 incomingCall];
-  if (v4)
+  incomingCall = [updated incomingCall];
+  if (incomingCall)
   {
-    v7 = v4;
+    v7 = incomingCall;
     v5 = +[TUCallCenter sharedInstance];
-    v6 = [v7 onlyTUCall];
-    [v5 answerCall:v6];
+    onlyTUCall = [v7 onlyTUCall];
+    [v5 answerCall:onlyTUCall];
 
-    v4 = v7;
+    incomingCall = v7;
   }
 }
 

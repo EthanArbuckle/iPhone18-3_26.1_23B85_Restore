@@ -1,43 +1,43 @@
 @interface FAScreenTimeRequestProvider
-- (BOOL)areContactsManagedForDSID:(id)a3;
-- (BOOL)isScreenTimeSetupForDSID:(id)a3;
-- (void)cacheScreenTimeSettingToDiskWithDSID:(id)a3 screentimeObject:(id)a4 completionHandler:(id)a5;
-- (void)enableScreenTimeSettingsForDSID:(id)a3 screentimeObject:(id)a4 completionHandler:(id)a5;
-- (void)forceRefreshScreenTimeForDSID:(id)a3 completionHandler:(id)a4;
+- (BOOL)areContactsManagedForDSID:(id)d;
+- (BOOL)isScreenTimeSetupForDSID:(id)d;
+- (void)cacheScreenTimeSettingToDiskWithDSID:(id)d screentimeObject:(id)object completionHandler:(id)handler;
+- (void)enableScreenTimeSettingsForDSID:(id)d screentimeObject:(id)object completionHandler:(id)handler;
+- (void)forceRefreshScreenTimeForDSID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation FAScreenTimeRequestProvider
 
-- (void)cacheScreenTimeSettingToDiskWithDSID:(id)a3 screentimeObject:(id)a4 completionHandler:(id)a5
+- (void)cacheScreenTimeSettingToDiskWithDSID:(id)d screentimeObject:(id)object completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[FASaveScreenTimeSettingsCacheRequest alloc] initWithFamilyMemberDSID:v9 screentimeObject:v8];
+  handlerCopy = handler;
+  objectCopy = object;
+  dCopy = d;
+  v10 = [[FASaveScreenTimeSettingsCacheRequest alloc] initWithFamilyMemberDSID:dCopy screentimeObject:objectCopy];
 
-  [(FASaveScreenTimeSettingsCacheRequest *)v10 startRequestWithCompletionHandler:v7];
+  [(FASaveScreenTimeSettingsCacheRequest *)v10 startRequestWithCompletionHandler:handlerCopy];
 }
 
-- (void)enableScreenTimeSettingsForDSID:(id)a3 screentimeObject:(id)a4 completionHandler:(id)a5
+- (void)enableScreenTimeSettingsForDSID:(id)d screentimeObject:(id)object completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[FAEnableScreenTimeSettingsRequest alloc] initWithFamilyMemberDSID:v9 screentimeModelCache:v8];
+  handlerCopy = handler;
+  objectCopy = object;
+  dCopy = d;
+  v10 = [[FAEnableScreenTimeSettingsRequest alloc] initWithFamilyMemberDSID:dCopy screentimeModelCache:objectCopy];
 
-  [(FAEnableScreenTimeSettingsRequest *)v10 startRequestWithCompletionHandler:v7];
+  [(FAEnableScreenTimeSettingsRequest *)v10 startRequestWithCompletionHandler:handlerCopy];
 }
 
-- (void)forceRefreshScreenTimeForDSID:(id)a3 completionHandler:(id)a4
+- (void)forceRefreshScreenTimeForDSID:(id)d completionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v7 = _FALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138477827;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = dCopy;
     _os_log_impl(&dword_1B70B0000, v7, OS_LOG_TYPE_DEFAULT, "Force screentime refresh dsid: %{private}@", &buf, 0xCu);
   }
 
@@ -70,9 +70,9 @@
   v14[1] = 3221225472;
   v14[2] = __79__FAScreenTimeRequestProvider_forceRefreshScreenTimeForDSID_completionHandler___block_invoke;
   v14[3] = &unk_1E7CA5860;
-  v11 = v5;
+  v11 = dCopy;
   v15 = v11;
-  v12 = v6;
+  v12 = handlerCopy;
   v16 = v12;
   p_buf = &buf;
   [v10 forceFamilyFetchWithCompletionHandler:v14];
@@ -111,10 +111,10 @@ void __79__FAScreenTimeRequestProvider_forceRefreshScreenTimeForDSID_completionH
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isScreenTimeSetupForDSID:(id)a3
+- (BOOL)isScreenTimeSetupForDSID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_alloc(getSTUserIDClass()) initWithDSID:v3];
+  dCopy = d;
+  v4 = [objc_alloc(getSTUserIDClass()) initWithDSID:dCopy];
 
   getSTSetupClientClass();
   v5 = objc_opt_new();
@@ -125,10 +125,10 @@ void __79__FAScreenTimeRequestProvider_forceRefreshScreenTimeForDSID_completionH
   return v7;
 }
 
-- (BOOL)areContactsManagedForDSID:(id)a3
+- (BOOL)areContactsManagedForDSID:(id)d
 {
-  v3 = a3;
-  v4 = [objc_alloc(getSTUserIDClass()) initWithDSID:v3];
+  dCopy = d;
+  v4 = [objc_alloc(getSTUserIDClass()) initWithDSID:dCopy];
 
   getSTSetupClientClass();
   v5 = objc_opt_new();

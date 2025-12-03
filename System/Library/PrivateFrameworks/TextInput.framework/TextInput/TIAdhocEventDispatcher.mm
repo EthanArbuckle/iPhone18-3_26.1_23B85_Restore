@@ -1,22 +1,22 @@
 @interface TIAdhocEventDispatcher
 + (id)sharedInstance;
-- (id)initFromConfig:(id)a3;
-- (id)loadEventSpecMapFromConfig:(id)a3;
-- (void)dispatchEventForStatisticWithName:(id)a3 andValue:(int64_t)a4 withCompletionHandler:(id)a5;
+- (id)initFromConfig:(id)config;
+- (id)loadEventSpecMapFromConfig:(id)config;
+- (void)dispatchEventForStatisticWithName:(id)name andValue:(int64_t)value withCompletionHandler:(id)handler;
 @end
 
 @implementation TIAdhocEventDispatcher
 
-- (id)loadEventSpecMapFromConfig:(id)a3
+- (id)loadEventSpecMapFromConfig:(id)config
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configCopy = config;
   v5 = objc_opt_new();
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = [v4 allKeys];
+  obj = [configCopy allKeys];
   v26 = [obj countByEnumeratingWithState:&v37 objects:v43 count:16];
   if (v26)
   {
@@ -39,7 +39,7 @@
         v35 = 0u;
         v36 = 0u;
         v27 = v7;
-        v9 = [v4 objectForKey:v7];
+        v9 = [configCopy objectForKey:v7];
         v10 = [v9 countByEnumeratingWithState:&v33 objects:v42 count:16];
         if (v10)
         {
@@ -85,8 +85,8 @@
                 objc_enumerationMutation(v17);
               }
 
-              v22 = [*(*(&v29 + 1) + 8 * j) name];
-              [v5 setObject:v16 forKey:v22];
+              name = [*(*(&v29 + 1) + 8 * j) name];
+              [v5 setObject:v16 forKey:name];
             }
 
             v19 = [v17 countByEnumeratingWithState:&v29 objects:v41 count:16];
@@ -108,14 +108,14 @@
   return v5;
 }
 
-- (void)dispatchEventForStatisticWithName:(id)a3 andValue:(int64_t)a4 withCompletionHandler:(id)a5
+- (void)dispatchEventForStatisticWithName:(id)name andValue:(int64_t)value withCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(TIAdhocEventDispatcher *)self replacePeriodsInString:v8];
-  v11 = [(TIAdhocEventDispatcher *)self eventSpecMap];
-  v12 = [v11 objectForKey:v10];
+  nameCopy = name;
+  handlerCopy = handler;
+  v10 = [(TIAdhocEventDispatcher *)self replacePeriodsInString:nameCopy];
+  eventSpecMap = [(TIAdhocEventDispatcher *)self eventSpecMap];
+  v12 = [eventSpecMap objectForKey:v10];
 
   v13 = IXADefaultLogFacility();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
@@ -124,15 +124,15 @@
     if (v14)
     {
       v20 = MEMORY[0x1E696AEC0];
-      v21 = [v12 name];
-      v22 = [v20 stringWithFormat:@"%s Dispatching adhoc event: %@ %@", "-[TIAdhocEventDispatcher dispatchEventForStatisticWithName:andValue:withCompletionHandler:]", v21, v8];
+      name = [v12 name];
+      nameCopy = [v20 stringWithFormat:@"%s Dispatching adhoc event: %@ %@", "-[TIAdhocEventDispatcher dispatchEventForStatisticWithName:andValue:withCompletionHandler:]", name, nameCopy];
       *buf = 138412290;
-      v30 = v22;
+      v30 = nameCopy;
       _os_log_debug_impl(&dword_1863F7000, v13, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
     v27 = v10;
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:value];
     v28 = v15;
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
 
@@ -140,29 +140,29 @@
     [v17 registerEventSpec:v12];
 
     v18 = +[TIAnalyticsService sharedInstance];
-    v19 = [v12 name];
+    name2 = [v12 name];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __91__TIAdhocEventDispatcher_dispatchEventForStatisticWithName_andValue_withCompletionHandler___block_invoke;
     v24[3] = &unk_1E6F4DB30;
     v25 = v12;
-    v26 = v9;
-    [v18 dispatchEventWithName:v19 payload:v16 testingParameters:0 allowSparsePayload:1 withCompletionHandler:v24];
+    v26 = handlerCopy;
+    [v18 dispatchEventWithName:name2 payload:v16 testingParameters:0 allowSparsePayload:1 withCompletionHandler:v24];
   }
 
   else
   {
     if (v14)
     {
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Adhoc event not registered for statistic: %@", "-[TIAdhocEventDispatcher dispatchEventForStatisticWithName:andValue:withCompletionHandler:]", v8];
+      nameCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s Adhoc event not registered for statistic: %@", "-[TIAdhocEventDispatcher dispatchEventForStatisticWithName:andValue:withCompletionHandler:]", nameCopy];
       *buf = 138412290;
-      v30 = v23;
+      v30 = nameCopy2;
       _os_log_debug_impl(&dword_1863F7000, v13, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
@@ -212,16 +212,16 @@ LABEL_5:
   }
 }
 
-- (id)initFromConfig:(id)a3
+- (id)initFromConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v10.receiver = self;
   v10.super_class = TIAdhocEventDispatcher;
   v5 = [(TIAdhocEventDispatcher *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = [(TIAdhocEventDispatcher *)v5 loadEventSpecMapFromConfig:v4];
+    v7 = [(TIAdhocEventDispatcher *)v5 loadEventSpecMapFromConfig:configCopy];
     eventSpecMap = v6->_eventSpecMap;
     v6->_eventSpecMap = v7;
   }

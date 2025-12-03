@@ -1,27 +1,27 @@
 @interface PKPeerPaymentMessagesContentAmountEntryViewController
 - ($85E40A55691FE2F31975A98F57E3065D)pkui_navigationStatusBarStyleDescriptor;
 - (PKPeerPaymentMessagesContentAmountEntryViewController)init;
-- (PKPeerPaymentMessagesContentAmountEntryViewController)initWithContentDelegate:(id)a3;
+- (PKPeerPaymentMessagesContentAmountEntryViewController)initWithContentDelegate:(id)delegate;
 - (PKPeerPaymentMessagesContentAmountEntryViewControllerDelegate)delegate;
-- (id)_analyticsButtonTagForAction:(unint64_t)a3;
+- (id)_analyticsButtonTagForAction:(unint64_t)action;
 - (id)_currentBalance;
 - (id)_maximumTransferAmount;
 - (id)_minimumTransferAmount;
 - (void)_noteAmountChanged;
 - (void)_registerForPresentationSemanticContextChanges;
-- (void)_sendAnalyticsForEventName:(id)a3 orAction:(unint64_t)a4;
+- (void)_sendAnalyticsForEventName:(id)name orAction:(unint64_t)action;
 - (void)reloadContent;
-- (void)setAmount:(id)a3;
-- (void)setCenterAction:(unint64_t)a3;
-- (void)setContext:(unint64_t)a3;
-- (void)setLeadingAction:(unint64_t)a3;
-- (void)setRecipient:(id)a3;
-- (void)setTrailingAction:(unint64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setAmount:(id)amount;
+- (void)setCenterAction:(unint64_t)action;
+- (void)setContext:(unint64_t)context;
+- (void)setLeadingAction:(unint64_t)action;
+- (void)setRecipient:(id)recipient;
+- (void)setTrailingAction:(unint64_t)action;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -35,12 +35,12 @@
   if (v2)
   {
     v3 = [MEMORY[0x1E696AB90] one];
-    v4 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)v2 _currentBalance];
-    v5 = [v4 currency];
-    v6 = v5;
-    if (v5)
+    _currentBalance = [(PKPeerPaymentMessagesContentAmountEntryViewController *)v2 _currentBalance];
+    currency = [_currentBalance currency];
+    v6 = currency;
+    if (currency)
     {
-      v7 = v5;
+      v7 = currency;
     }
 
     else
@@ -52,27 +52,27 @@
     amount = v2->_amount;
     v2->_amount = v8;
 
-    v10 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)v2 navigationItem];
-    [v10 _setPreferredNavigationBarVisibility:1];
+    navigationItem = [(PKPeerPaymentMessagesContentAmountEntryViewController *)v2 navigationItem];
+    [navigationItem _setPreferredNavigationBarVisibility:1];
   }
 
   return v2;
 }
 
-- (PKPeerPaymentMessagesContentAmountEntryViewController)initWithContentDelegate:(id)a3
+- (PKPeerPaymentMessagesContentAmountEntryViewController)initWithContentDelegate:(id)delegate
 {
   v13.receiver = self;
   v13.super_class = PKPeerPaymentMessagesContentAmountEntryViewController;
-  v3 = [(PKPeerPaymentMessagesContentBaseViewController *)&v13 initWithContentDelegate:a3];
+  v3 = [(PKPeerPaymentMessagesContentBaseViewController *)&v13 initWithContentDelegate:delegate];
   if (v3)
   {
     v4 = [MEMORY[0x1E696AB90] one];
-    v5 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)v3 _currentBalance];
-    v6 = [v5 currency];
-    v7 = v6;
-    if (v6)
+    _currentBalance = [(PKPeerPaymentMessagesContentAmountEntryViewController *)v3 _currentBalance];
+    currency = [_currentBalance currency];
+    v7 = currency;
+    if (currency)
     {
-      v8 = v6;
+      v8 = currency;
     }
 
     else
@@ -84,8 +84,8 @@
     amount = v3->_amount;
     v3->_amount = v9;
 
-    v11 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)v3 navigationItem];
-    [v11 _setPreferredNavigationBarVisibility:1];
+    navigationItem = [(PKPeerPaymentMessagesContentAmountEntryViewController *)v3 navigationItem];
+    [navigationItem _setPreferredNavigationBarVisibility:1];
   }
 
   return v3;
@@ -97,30 +97,30 @@
   v41.super_class = PKPeerPaymentMessagesContentAmountEntryViewController;
   [(PKPeerPaymentMessagesContentAmountEntryViewController *)&v41 viewDidLoad];
   objc_initWeak(&location, self);
-  v3 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self view];
-  [v3 setMaximumContentSizeCategory:*MEMORY[0x1E69DDC40]];
+  view = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self view];
+  [view setMaximumContentSizeCategory:*MEMORY[0x1E69DDC40]];
 
   [(PKPeerPaymentMessagesContentAmountEntryViewController *)self setOverrideUserInterfaceStyle:2];
-  v4 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  self->_usesAccessibilityLayout = UIContentSizeCategoryCompareToCategory(v5, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
+  traitCollection = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  self->_usesAccessibilityLayout = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC38]) == NSOrderedDescending;
 
-  v6 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-  v7 = [v6 traitCollection];
-  v8 = [v7 _presentationSemanticContext];
+  contentDelegate = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+  traitCollection2 = [contentDelegate traitCollection];
+  _presentationSemanticContext = [traitCollection2 _presentationSemanticContext];
 
-  v9 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentView];
-  [v9 setContentAlignment:PKContentAlignmentMake()];
-  [v9 setVerticalPadding:0.0];
-  [v9 setContentInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
-  [v9 setIgnoreTopSafeArea:v8 == 2];
+  contentView = [(PKPeerPaymentMessagesContentBaseViewController *)self contentView];
+  [contentView setContentAlignment:PKContentAlignmentMake()];
+  [contentView setVerticalPadding:0.0];
+  [contentView setContentInset:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+  [contentView setIgnoreTopSafeArea:_presentationSemanticContext == 2];
   v10 = [PKPeerPaymentMessagesContentAmountEntryView alloc];
-  [v9 bounds];
+  [contentView bounds];
   v11 = [(PKPeerPaymentMessagesContentAmountEntryView *)v10 initWithFrame:?];
   mainView = self->_mainView;
   self->_mainView = v11;
 
-  [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView setPresentationContext:v8];
+  [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView setPresentationContext:_presentationSemanticContext];
   context = self->_context;
   switch(context)
   {
@@ -128,8 +128,8 @@
       goto LABEL_4;
     case 1uLL:
       [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView setSubtitleType:1];
-      v14 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView memoField];
-      [v14 setText:self->_memo];
+      memoField = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView memoField];
+      [memoField setText:self->_memo];
 
       v15 = self->_mainView;
       v38[0] = MEMORY[0x1E69E9820];
@@ -163,33 +163,33 @@ LABEL_4:
   }
 
   [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView setPercentExpanded:v17];
-  [v9 addSubview:self->_mainView];
+  [contentView addSubview:self->_mainView];
   v23 = self->_context;
-  v24 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
-  [v24 setAmount:self->_amount];
+  amountStepperView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
+  [amountStepperView setAmount:self->_amount];
   v36[0] = MEMORY[0x1E69E9820];
   v36[1] = 3221225472;
   v36[2] = __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__block_invoke_2;
   v36[3] = &unk_1E8020940;
   objc_copyWeak(&v37, &location);
   v36[4] = self;
-  [v24 setAmountChangedHandler:v36];
+  [amountStepperView setAmountChangedHandler:v36];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__block_invoke_3;
   v34[3] = &unk_1E8010998;
   objc_copyWeak(&v35, &location);
-  [v24 setAmountTappedHandler:v34];
-  [v24 setAllowOpenRequest:v23 == 2];
-  v25 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
-  v26 = v25;
+  [amountStepperView setAmountTappedHandler:v34];
+  [amountStepperView setAllowOpenRequest:v23 == 2];
+  actionView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
+  v26 = actionView;
   leadingAction = self->_leadingAction;
   trailingAction = self->_trailingAction;
   if (*&self->_leadingAction != 0)
   {
     if (self->_context == 2)
     {
-      [v25 setRecipient:self->_recipient];
+      [actionView setRecipient:self->_recipient];
     }
 
     if (leadingAction)
@@ -213,9 +213,9 @@ LABEL_4:
   v30[2] = __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__block_invoke_4;
   v30[3] = &unk_1E8020968;
   objc_copyWeak(&v33, &location);
-  v29 = v24;
+  v29 = amountStepperView;
   v31 = v29;
-  v32 = self;
+  selfCopy = self;
   [v26 setActionHandler:v30];
   [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _registerForPresentationSemanticContextChanges];
 
@@ -359,20 +359,20 @@ void __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__bl
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKPeerPaymentMessagesContentAmountEntryViewController;
-  [(PKPeerPaymentMessagesContentBaseViewController *)&v5 viewWillAppear:a3];
-  v4 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self navigationItem];
-  [v4 setBackButtonDisplayMode:2];
+  [(PKPeerPaymentMessagesContentBaseViewController *)&v5 viewWillAppear:appear];
+  navigationItem = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self navigationItem];
+  [navigationItem setBackButtonDisplayMode:2];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PKPeerPaymentMessagesContentAmountEntryViewController;
-  [(PKPeerPaymentMessagesContentAmountEntryViewController *)&v6 viewDidAppear:a3];
+  [(PKPeerPaymentMessagesContentAmountEntryViewController *)&v6 viewDidAppear:appear];
   [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView updateIsExpansionSupported];
   [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView updateIsKeypadSupported];
   v4 = *MEMORY[0x1E69BB6A8];
@@ -386,11 +386,11 @@ void __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__bl
   [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _sendAnalyticsForEventName:*MEMORY[0x1E69BA818] orAction:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentMessagesContentAmountEntryViewController;
-  [(PKPeerPaymentMessagesContentAmountEntryViewController *)&v4 viewDidDisappear:a3];
+  [(PKPeerPaymentMessagesContentAmountEntryViewController *)&v4 viewDidDisappear:disappear];
   [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _sendAnalyticsForEventName:*MEMORY[0x1E69BA820] orAction:0];
 }
 
@@ -399,9 +399,9 @@ void __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__bl
   v6.receiver = self;
   v6.super_class = PKPeerPaymentMessagesContentAmountEntryViewController;
   [(PKPeerPaymentMessagesContentAmountEntryViewController *)&v6 viewWillLayoutSubviews];
-  v3 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  [v4 frame];
+  navigationController = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   Height = CGRectGetHeight(v7);
 
   [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView setNavigationBarHeight:Height];
@@ -435,47 +435,47 @@ void __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__bl
 
 - (void)reloadContent
 {
-  v11 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _currentBalance];
-  v3 = [v11 amount];
-  v4 = [v11 currency];
+  _currentBalance = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _currentBalance];
+  amount = [_currentBalance amount];
+  currency = [_currentBalance currency];
   v5 = PKFormattedCurrencyStringFromNumber();
 
   v6 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentMes_26.isa, &stru_1F3BD5BF0.isa, v5);
-  v7 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView balanceLabel];
-  [v7 setText:v6];
+  balanceLabel = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView balanceLabel];
+  [balanceLabel setText:v6];
 
   [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView updateIsExpansionSupported];
   [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView updateIsKeypadSupported];
-  v8 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
-  v9 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _minimumTransferAmount];
-  [v8 setMinAmount:v9];
+  amountStepperView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
+  _minimumTransferAmount = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _minimumTransferAmount];
+  [amountStepperView setMinAmount:_minimumTransferAmount];
 
-  v10 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _maximumTransferAmount];
-  [v8 setMaxAmount:v10];
+  _maximumTransferAmount = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _maximumTransferAmount];
+  [amountStepperView setMaxAmount:_maximumTransferAmount];
 
   if (PKUIKeyboardIsHardwareKeyboardActive())
   {
-    [v8 becomeFirstResponder];
+    [amountStepperView becomeFirstResponder];
   }
 }
 
 - (void)_noteAmountChanged
 {
-  v11 = [(PKCurrencyAmount *)self->_amount amount];
-  v3 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _minimumTransferAmount];
-  if ([v11 compare:v3] == -1)
+  amount = [(PKCurrencyAmount *)self->_amount amount];
+  _minimumTransferAmount = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _minimumTransferAmount];
+  if ([amount compare:_minimumTransferAmount] == -1)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _maximumTransferAmount];
-    v5 = [v11 compare:v4] != 1;
+    _maximumTransferAmount = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _maximumTransferAmount];
+    v5 = [amount compare:_maximumTransferAmount] != 1;
   }
 
-  v6 = [MEMORY[0x1E696AB90] zero];
-  v7 = [v11 pk_isEqualToDecimalNumber:v6];
+  zero = [MEMORY[0x1E696AB90] zero];
+  v7 = [amount pk_isEqualToDecimalNumber:zero];
 
   v8 = v5 & (v7 ^ 1u);
   if (v5 & (v7 ^ 1))
@@ -488,43 +488,43 @@ void __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__bl
     v9 = (self->_context == 2) & v7;
   }
 
-  v10 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
-  [v10 setButtonEnabled:v8 forAction:1];
-  [v10 setButtonEnabled:v8 forAction:7];
-  [v10 setButtonEnabled:v9 forAction:2];
-  [v10 setButtonEnabled:v9 forAction:11];
+  actionView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
+  [actionView setButtonEnabled:v8 forAction:1];
+  [actionView setButtonEnabled:v8 forAction:7];
+  [actionView setButtonEnabled:v9 forAction:2];
+  [actionView setButtonEnabled:v9 forAction:11];
 }
 
 - (id)_minimumTransferAmount
 {
-  v3 = [MEMORY[0x1E696AB90] zero];
+  zero = [MEMORY[0x1E696AB90] zero];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_delegate);
-    v6 = [v5 minimumTransferAmount];
+    minimumTransferAmount = [v5 minimumTransferAmount];
 
-    v3 = v6;
+    zero = minimumTransferAmount;
   }
 
-  return v3;
+  return zero;
 }
 
 - (id)_maximumTransferAmount
 {
-  v3 = [MEMORY[0x1E696AB90] zero];
+  zero = [MEMORY[0x1E696AB90] zero];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_delegate);
-    v6 = [v5 maximumTransferAmount];
+    maximumTransferAmount = [v5 maximumTransferAmount];
 
-    v3 = v6;
+    zero = maximumTransferAmount;
   }
 
-  return v3;
+  return zero;
 }
 
 - (id)_currentBalance
@@ -534,39 +534,39 @@ void __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__bl
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v4 currentBalance];
+    currentBalance = [v4 currentBalance];
   }
 
   else
   {
-    v5 = 0;
+    currentBalance = 0;
   }
 
-  return v5;
+  return currentBalance;
 }
 
-- (id)_analyticsButtonTagForAction:(unint64_t)a3
+- (id)_analyticsButtonTagForAction:(unint64_t)action
 {
-  v5 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
-  v6 = [v5 usedKeypad];
+  amountStepperView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
+  usedKeypad = [amountStepperView usedKeypad];
   v7 = MEMORY[0x1E69BA170];
-  if (!v6)
+  if (!usedKeypad)
   {
     v7 = MEMORY[0x1E69BA178];
   }
 
   MEMORY[0x1BFB41980](*v7, 0);
   v8 = 0;
-  if (a3 > 6)
+  if (action > 6)
   {
-    if (a3 == 7)
+    if (action == 7)
     {
       v18 = MEMORY[0x1E69BB000];
     }
 
     else
     {
-      if (a3 != 11)
+      if (action != 11)
       {
         goto LABEL_21;
       }
@@ -577,7 +577,7 @@ void __68__PKPeerPaymentMessagesContentAmountEntryViewController_viewDidLoad__bl
     goto LABEL_17;
   }
 
-  if (a3 == 1)
+  if (action == 1)
   {
     v18 = MEMORY[0x1E69BAFF0];
 LABEL_17:
@@ -585,17 +585,17 @@ LABEL_17:
     goto LABEL_21;
   }
 
-  if (a3 == 2)
+  if (action == 2)
   {
-    v9 = [v5 amount];
-    v10 = [v9 amount];
+    amount = [amountStepperView amount];
+    v9Amount = [amount amount];
 
-    v11 = [v5 amount];
-    v12 = [v11 currency];
+    amount2 = [amountStepperView amount];
+    currency = [amount2 currency];
 
-    if (v10)
+    if (v9Amount)
     {
-      v13 = v12 == 0;
+      v13 = currency == 0;
     }
 
     else
@@ -609,7 +609,7 @@ LABEL_17:
       v15 = PKAnalyticsAmountCategoryForAmount();
       [v14 setObject:v15 forKey:*MEMORY[0x1E69BA268]];
 
-      [v14 setObject:v12 forKey:*MEMORY[0x1E69BA270]];
+      [v14 setObject:currency forKey:*MEMORY[0x1E69BA270]];
       v16 = self->_sourceType - 1;
       if (v16 > 2)
       {
@@ -633,28 +633,28 @@ LABEL_21:
   return v8;
 }
 
-- (void)_sendAnalyticsForEventName:(id)a3 orAction:(unint64_t)a4
+- (void)_sendAnalyticsForEventName:(id)name orAction:(unint64_t)action
 {
   v27[4] = *MEMORY[0x1E69E9840];
   mainView = self->_mainView;
-  v7 = a3;
-  v8 = [(PKPeerPaymentMessagesContentAmountEntryView *)mainView amountStepperView];
-  v9 = [v8 usedKeypad];
+  nameCopy = name;
+  amountStepperView = [(PKPeerPaymentMessagesContentAmountEntryView *)mainView amountStepperView];
+  usedKeypad = [amountStepperView usedKeypad];
   v10 = MEMORY[0x1E69BA170];
-  if (!v9)
+  if (!usedKeypad)
   {
     v10 = MEMORY[0x1E69BA178];
   }
 
   MEMORY[0x1BFB41980](*v10, 0);
-  v11 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _analyticsButtonTagForAction:a4];
+  v11 = [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _analyticsButtonTagForAction:action];
   v12 = *MEMORY[0x1E69BAF70];
   if (self->_sourceType == 2)
   {
     v13 = *MEMORY[0x1E69BAF68];
 
-    v14 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-    [v14 presentationStyle];
+    contentDelegate = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+    [contentDelegate presentationStyle];
 
     v12 = v13;
   }
@@ -675,17 +675,17 @@ LABEL_21:
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:4];
   v21 = [v19 dictionaryWithDictionary:v20];
 
-  [v21 safelySetObject:v7 forKey:*MEMORY[0x1E69BA680]];
+  [v21 safelySetObject:nameCopy forKey:*MEMORY[0x1E69BA680]];
   if ([v11 length])
   {
     [v21 safelySetObject:v11 forKey:*MEMORY[0x1E69BA440]];
   }
 
-  v22 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
-  v23 = [v22 analyticsMessagesContext];
+  contentDelegate2 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+  analyticsMessagesContext = [contentDelegate2 analyticsMessagesContext];
 
   v24 = MEMORY[0x1E69B8540];
-  v25 = [v23 copy];
+  v25 = [analyticsMessagesContext copy];
   [v24 reportAppleCashEvent:v21 withMessagesContext:v25];
 }
 
@@ -693,7 +693,7 @@ LABEL_21:
 {
   v9[1] = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
-  v3 = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
+  contentDelegate = [(PKPeerPaymentMessagesContentBaseViewController *)self contentDelegate];
   v9[0] = objc_opt_class();
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   v6[0] = MEMORY[0x1E69E9820];
@@ -701,7 +701,7 @@ LABEL_21:
   v6[2] = __103__PKPeerPaymentMessagesContentAmountEntryViewController__registerForPresentationSemanticContextChanges__block_invoke;
   v6[3] = &unk_1E801D4A0;
   objc_copyWeak(&v7, &location);
-  v5 = [v3 registerForTraitChanges:v4 withHandler:v6];
+  v5 = [contentDelegate registerForTraitChanges:v4 withHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -720,72 +720,72 @@ void __103__PKPeerPaymentMessagesContentAmountEntryViewController__registerForPr
   }
 }
 
-- (void)setAmount:(id)a3
+- (void)setAmount:(id)amount
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_amount] & 1) == 0)
+  amountCopy = amount;
+  if (([amountCopy isEqual:self->_amount] & 1) == 0)
   {
-    objc_storeStrong(&self->_amount, a3);
-    v5 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
-    [v5 setAmount:v6];
+    objc_storeStrong(&self->_amount, amount);
+    amountStepperView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
+    [amountStepperView setAmount:amountCopy];
 
     [(PKPeerPaymentMessagesContentAmountEntryViewController *)self _noteAmountChanged];
   }
 }
 
-- (void)setLeadingAction:(unint64_t)a3
+- (void)setLeadingAction:(unint64_t)action
 {
-  if (self->_leadingAction != a3)
+  if (self->_leadingAction != action)
   {
-    self->_leadingAction = a3;
-    v5 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
-    [v5 setLeadingAction:a3];
+    self->_leadingAction = action;
+    actionView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
+    [actionView setLeadingAction:action];
   }
 }
 
-- (void)setTrailingAction:(unint64_t)a3
+- (void)setTrailingAction:(unint64_t)action
 {
-  if (self->_trailingAction != a3)
+  if (self->_trailingAction != action)
   {
-    self->_trailingAction = a3;
-    v5 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
-    [v5 setTrailingAction:a3];
+    self->_trailingAction = action;
+    actionView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
+    [actionView setTrailingAction:action];
   }
 }
 
-- (void)setCenterAction:(unint64_t)a3
+- (void)setCenterAction:(unint64_t)action
 {
-  if (self->_centerAction != a3)
+  if (self->_centerAction != action)
   {
-    self->_centerAction = a3;
-    v5 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
-    [v5 setCenterAction:a3];
+    self->_centerAction = action;
+    actionView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
+    [actionView setCenterAction:action];
   }
 }
 
-- (void)setRecipient:(id)a3
+- (void)setRecipient:(id)recipient
 {
-  v6 = a3;
-  objc_storeStrong(&self->_recipient, a3);
+  recipientCopy = recipient;
+  objc_storeStrong(&self->_recipient, recipient);
   if (*&self->_leadingAction != 0 && self->_context == 2)
   {
-    v5 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
-    [v5 setRecipient:v6];
+    actionView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
+    [actionView setRecipient:recipientCopy];
   }
 }
 
-- (void)setContext:(unint64_t)a3
+- (void)setContext:(unint64_t)context
 {
-  if (self->_context != a3)
+  if (self->_context != context)
   {
-    self->_context = a3;
-    if (a3 == 2)
+    self->_context = context;
+    if (context == 2)
     {
-      v4 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
-      [v4 setAllowOpenRequest:1];
+      amountStepperView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView amountStepperView];
+      [amountStepperView setAllowOpenRequest:1];
 
-      v5 = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
-      [v5 setCenterAction:11];
+      actionView = [(PKPeerPaymentMessagesContentAmountEntryView *)self->_mainView actionView];
+      [actionView setCenterAction:11];
     }
   }
 }

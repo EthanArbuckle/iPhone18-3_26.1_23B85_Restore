@@ -1,7 +1,7 @@
 @interface SCRCGestureFactory
 - ($59F5B3D3FC56264B602E56EF9D3D8816)captureCurrentState;
-- ($59F5B3D3FC56264B602E56EF9D3D8816)handleGestureEvent:(SEL)a3;
-- (BOOL)_handleSplitEvent:(id)a3;
+- ($59F5B3D3FC56264B602E56EF9D3D8816)handleGestureEvent:(SEL)event;
+- (BOOL)_handleSplitEvent:(id)event;
 - (BOOL)_handleSplitTap;
 - (CGPoint)endLocation;
 - (CGPoint)rawAverageLocation;
@@ -14,38 +14,38 @@
 - (CGRect)mainFrame;
 - (CGRect)multiTapFrame;
 - (CGRect)tapFrame;
-- (SCRCGestureFactory)initWithSize:(CGSize)a3 delegate:(id)a4 threadKey:(id)a5;
+- (SCRCGestureFactory)initWithSize:(CGSize)size delegate:(id)delegate threadKey:(id)key;
 - (double)distance;
 - (double)vector;
 - (double)velocity;
 - (int64_t)direction;
 - (int64_t)gestureState;
-- (void)_down:(id)a3;
-- (void)_drag:(id)a3;
-- (void)_enterTrackingMode:(id)a3;
+- (void)_down:(id)_down;
+- (void)_drag:(id)_drag;
+- (void)_enterTrackingMode:(id)mode;
 - (void)_handleTap;
-- (void)_processUpAndPost:(BOOL)a3;
+- (void)_processUpAndPost:(BOOL)post;
 - (void)_resetSplit;
 - (void)_up;
 - (void)_updateMultiTapFrame;
-- (void)_updateStartWithPoint:(CGPoint)a3 time:(double)a4;
+- (void)_updateStartWithPoint:(CGPoint)point time:(double)time;
 - (void)_updateTapState;
 - (void)dealloc;
 - (void)reset;
-- (void)setFlickSpeed:(double)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setTapSpeed:(double)a3;
-- (void)setTapSpeedTimeThreshold:(double)a3 forRegion:(CGRect)a4 fingerCount:(int64_t)a5;
+- (void)setFlickSpeed:(double)speed;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setTapSpeed:(double)speed;
+- (void)setTapSpeedTimeThreshold:(double)threshold forRegion:(CGRect)region fingerCount:(int64_t)count;
 @end
 
 @implementation SCRCGestureFactory
 
-- (SCRCGestureFactory)initWithSize:(CGSize)a3 delegate:(id)a4 threadKey:(id)a5
+- (SCRCGestureFactory)initWithSize:(CGSize)size delegate:(id)delegate threadKey:(id)key
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a4;
-  v10 = a5;
+  height = size.height;
+  width = size.width;
+  delegateCopy = delegate;
+  keyCopy = key;
   v11 = [(SCRCGestureFactory *)self init];
   v12 = v11;
   if (v11)
@@ -74,38 +74,38 @@
     v12->_stallDistance = 10.0 / v13;
     v12->_maxDimension = v13;
     v12->_thumbRegion = v14 * 0.333333333;
-    v15 = [[SCRCTargetSelectorTimer alloc] initWithTarget:v12 selector:sel__enterTrackingMode_ threadKey:v10];
+    v15 = [[SCRCTargetSelectorTimer alloc] initWithTarget:v12 selector:sel__enterTrackingMode_ threadKey:keyCopy];
     trackingTimer = v12->_trackingTimer;
     v12->_trackingTimer = v15;
 
     if (objc_opt_respondsToSelector())
     {
-      objc_storeWeak(&v12->_trackDelegate, v9);
+      objc_storeWeak(&v12->_trackDelegate, delegateCopy);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      objc_storeWeak(&v12->_tapDelegate, v9);
-      v17 = [[SCRCTargetSelectorTimer alloc] initWithTarget:v12 selector:sel__handleTap threadKey:v10];
+      objc_storeWeak(&v12->_tapDelegate, delegateCopy);
+      v17 = [[SCRCTargetSelectorTimer alloc] initWithTarget:v12 selector:sel__handleTap threadKey:keyCopy];
       tapTimer = v12->_tapTimer;
       v12->_tapTimer = v17;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      objc_storeWeak(&v12->_didBeginSplitGestureDelegate, v9);
+      objc_storeWeak(&v12->_didBeginSplitGestureDelegate, delegateCopy);
     }
 
     if (objc_opt_respondsToSelector())
     {
-      objc_storeWeak(&v12->_splitTapDelegate, v9);
-      v19 = [[SCRCGestureFactory alloc] initWithSize:0 delegate:v10 threadKey:width, height];
+      objc_storeWeak(&v12->_splitTapDelegate, delegateCopy);
+      height = [[SCRCGestureFactory alloc] initWithSize:0 delegate:keyCopy threadKey:width, height];
       splitFactory = v12->_splitFactory;
-      v12->_splitFactory = v19;
+      v12->_splitFactory = height;
 
       if (objc_opt_respondsToSelector())
       {
-        objc_storeWeak(&v12->_canSplitTapDelegate, v9);
+        objc_storeWeak(&v12->_canSplitTapDelegate, delegateCopy);
       }
     }
   }
@@ -113,17 +113,17 @@
   return v12;
 }
 
-- (void)setFlickSpeed:(double)a3
+- (void)setFlickSpeed:(double)speed
 {
-  v3 = 1.0;
-  if (a3 <= 1.0)
+  speedCopy = 1.0;
+  if (speed <= 1.0)
   {
-    v3 = a3;
+    speedCopy = speed;
   }
 
-  if (a3 >= -1.0)
+  if (speed >= -1.0)
   {
-    v4 = v3;
+    v4 = speedCopy;
   }
 
   else
@@ -134,17 +134,17 @@
   self->_flickVelocityThreshold = v4 * 0.6 + 0.9;
 }
 
-- (void)setTapSpeed:(double)a3
+- (void)setTapSpeed:(double)speed
 {
-  v3 = 1.0;
-  if (a3 <= 1.0)
+  speedCopy = 1.0;
+  if (speed <= 1.0)
   {
-    v3 = a3;
+    speedCopy = speed;
   }
 
-  if (a3 >= -1.0)
+  if (speed >= -1.0)
   {
-    v4 = v3;
+    v4 = speedCopy;
   }
 
   else
@@ -157,20 +157,20 @@
   self->_echoWaitTime = v5;
 }
 
-- (void)setTapSpeedTimeThreshold:(double)a3 forRegion:(CGRect)a4 fingerCount:(int64_t)a5
+- (void)setTapSpeedTimeThreshold:(double)threshold forRegion:(CGRect)region fingerCount:(int64_t)count
 {
-  self->_tapSpeedRegion = a4;
-  self->_tapSpeedFingerCount = a5;
-  self->_tapVelocityThresholdForRegion = a3;
+  self->_tapSpeedRegion = region;
+  self->_tapSpeedFingerCount = count;
+  self->_tapVelocityThresholdForRegion = threshold;
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   [(SCRCGestureFactory *)self->_splitFactory setOrientation:?];
-  self->_orientation = a3;
+  self->_orientation = orientation;
   self->_directions[0] = 0;
-  v5 = a3 - 1;
-  if ((a3 - 1) > 2)
+  v5 = orientation - 1;
+  if ((orientation - 1) > 2)
   {
     v12 = 1.0;
     v11 = 6;
@@ -184,7 +184,7 @@
 
   else
   {
-    v6 = a3 + 1;
+    v6 = orientation + 1;
     v7 = qword_2648FE260[v5];
     v8 = qword_2648FE278[v5];
     v9 = qword_2648FE290[v5];
@@ -467,11 +467,11 @@ LABEL_18:
   self->_tapMultiFrame.size = v14;
 }
 
-- (void)_enterTrackingMode:(id)a3
+- (void)_enterTrackingMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   self->_tap.dead = 1;
-  if ((self->_state | 2) == 3 || [v5 BOOLValue])
+  if ((self->_state | 2) == 3 || [modeCopy BOOLValue])
   {
     self->_state = 2;
     WeakRetained = objc_loadWeakRetained(&self->_trackDelegate);
@@ -479,18 +479,18 @@ LABEL_18:
   }
 }
 
-- (void)_processUpAndPost:(BOOL)a3
+- (void)_processUpAndPost:(BOOL)post
 {
   lastFingerCount = self->_lastFingerCount;
   self->_tap.numFingersInCurrentGestureEvent = 0;
   self->_potentialTrackingStartTimestamp = -3061152000.0;
   if (lastFingerCount)
   {
-    v5 = a3;
+    postCopy = post;
     self->_tap.lastTime = self->_tap.thisTime;
     self->_lastFingerCount = 0;
     [(SCRCGestureFactory *)self _up];
-    if (v5)
+    if (postCopy)
     {
       WeakRetained = objc_loadWeakRetained(&self->_gutterUpDelegate);
       [WeakRetained gestureGutterUpCallbackWithFactory:self];
@@ -506,14 +506,14 @@ LABEL_18:
   self->_inTapSpeedRegionForDownEvent = 0;
 }
 
-- (void)_updateStartWithPoint:(CGPoint)a3 time:(double)a4
+- (void)_updateStartWithPoint:(CGPoint)point time:(double)time
 {
   if (self->_finger[0].dragStalled)
   {
-    self->_lastDownTime = a4;
+    self->_lastDownTime = time;
   }
 
-  if (self->_finger[0].distancePerSample.current >= self->_stallDistance || a4 - self->_lastDownTime <= 0.2)
+  if (self->_finger[0].distancePerSample.current >= self->_stallDistance || time - self->_lastDownTime <= 0.2)
   {
     v4 = 0;
   }
@@ -576,9 +576,9 @@ LABEL_18:
     *&self->_finger[0].normalizedVelocityPerSample.fifo[1] = 0u;
     *&self->_finger[0].normalizedVelocityPerSample.fifo[3] = 0u;
     *&self->_finger[0].normalizedVelocityPerSample.samples = 0u;
-    self->_finger[0].lastDownPoint = a3;
-    self->_finger[0].startTouchPoint = a3;
-    self->_lastDownTime = a4;
+    self->_finger[0].lastDownPoint = point;
+    self->_finger[0].startTouchPoint = point;
+    self->_lastDownTime = time;
     v4 = 1;
     self->_finger[0].distanceTraveledWithInertiaApplied = 0.0;
   }
@@ -608,39 +608,39 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)_handleSplitEvent:(id)a3
+- (BOOL)_handleSplitEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 fingerCount];
-  if (v5)
+  eventCopy = event;
+  fingerCount = [eventCopy fingerCount];
+  if (fingerCount)
   {
-    v6 = v5;
+    v6 = fingerCount;
     if (self->_split.isSplitting)
     {
-      v7 = [v4 fingerWithIdentifier:self->_split.fingerIdentifier];
+      v7 = [eventCopy fingerWithIdentifier:self->_split.fingerIdentifier];
 
       if (v7)
       {
-        v8 = [v4 fingerWithIdentifier:self->_split.fingerIdentifier];
+        v8 = [eventCopy fingerWithIdentifier:self->_split.fingerIdentifier];
         [v8 location];
         v10 = v9;
         v12 = v11;
 
-        [v4 removeFingerWithIdentifier:self->_split.fingerIdentifier];
-        [(SCRCGestureFactory *)self->_splitFactory handleGestureEvent:v4];
-        v13 = [(SCRCGestureFactory *)self->_splitFactory gestureState];
-        if (v13 > 7)
+        [eventCopy removeFingerWithIdentifier:self->_split.fingerIdentifier];
+        [(SCRCGestureFactory *)self->_splitFactory handleGestureEvent:eventCopy];
+        gestureState = [(SCRCGestureFactory *)self->_splitFactory gestureState];
+        if (gestureState > 7)
         {
-          if (v13 > 10)
+          if (gestureState > 10)
           {
-            if (v13 == 11)
+            if (gestureState == 11)
             {
               v14 = 1;
               v15 = 18;
               goto LABEL_67;
             }
 
-            if (v13 == 12)
+            if (gestureState == 12)
             {
               v14 = 1;
               v15 = 19;
@@ -650,14 +650,14 @@ LABEL_18:
 
           else
           {
-            if (v13 == 8)
+            if (gestureState == 8)
             {
               v14 = 1;
               v15 = 21;
               goto LABEL_67;
             }
 
-            if (v13 == 10)
+            if (gestureState == 10)
             {
               v14 = 1;
               v15 = 17;
@@ -666,16 +666,16 @@ LABEL_18:
           }
         }
 
-        else if (v13 > 4)
+        else if (gestureState > 4)
         {
-          if (v13 == 5)
+          if (gestureState == 5)
           {
             v14 = 1;
             v15 = 15;
             goto LABEL_67;
           }
 
-          if (v13 == 6)
+          if (gestureState == 6)
           {
             v14 = 1;
             v15 = 16;
@@ -685,14 +685,14 @@ LABEL_18:
 
         else
         {
-          if (v13 == 3)
+          if (gestureState == 3)
           {
             v14 = 1;
             v15 = 20;
             goto LABEL_67;
           }
 
-          if (v13 == 4)
+          if (gestureState == 4)
           {
             v14 = 1;
             v15 = 14;
@@ -740,7 +740,7 @@ LABEL_74:
 
         if (self->_split.isTapping)
         {
-          v39 = [v4 fingerWithoutIdentifier:self->_split.fingerIdentifier];
+          v39 = [eventCopy fingerWithoutIdentifier:self->_split.fingerIdentifier];
           [v39 location];
           self->_split.startTapLocation.x = v40;
           self->_split.startTapLocation.y = v41;
@@ -778,12 +778,12 @@ LABEL_56:
       goto LABEL_57;
     }
 
-    [v4 time];
+    [eventCopy time];
     v18 = v17;
-    v19 = [(SCRCGestureFactory *)self gestureState];
+    gestureState2 = [(SCRCGestureFactory *)self gestureState];
     if (!self->_split.isTapping && !self->_split.fingerIdentifier)
     {
-      v20 = [v4 fingerAtIndex:0];
+      v20 = [eventCopy fingerAtIndex:0];
       self->_split.fingerIdentifier = [v20 identifier];
       if (self->_split.fingerDownTime == -3061152000.0)
       {
@@ -796,7 +796,7 @@ LABEL_56:
 
     fingerDownTime = self->_split.fingerDownTime;
     v24 = v18 - fingerDownTime > 0.15 && fingerDownTime != -3061152000.0;
-    if (v6 == 1 && !self->_split.timedOut && (v24 & ~self->_split.didNotify & 1) != 0 && v19 <= 2)
+    if (v6 == 1 && !self->_split.timedOut && (v24 & ~self->_split.didNotify & 1) != 0 && gestureState2 <= 2)
     {
       WeakRetained = objc_loadWeakRetained(&self->_didBeginSplitGestureDelegate);
       [WeakRetained gestureFactoryDidBeginSplitGesture:self];
@@ -814,7 +814,7 @@ LABEL_56:
     {
       if (v24)
       {
-        if (v19 <= 2)
+        if (gestureState2 <= 2)
         {
           [(SCRCGestureFactory *)self velocity];
           if (v32 < 0.15)
@@ -822,7 +822,7 @@ LABEL_56:
             self->_split.tapDead = 1;
             *&self->_split.isSplitting = 1;
             self->_tap.dead = 1;
-            [v4 removeFingerWithIdentifier:self->_split.fingerIdentifier];
+            [eventCopy removeFingerWithIdentifier:self->_split.fingerIdentifier];
           }
         }
       }
@@ -859,7 +859,7 @@ LABEL_78:
       }
 
       self->_split.isTapping = 1;
-      v27 = [v4 fingerWithoutIdentifier:self->_split.fingerIdentifier];
+      v27 = [eventCopy fingerWithoutIdentifier:self->_split.fingerIdentifier];
       [v27 location];
       self->_split.startTapLocation.x = v28;
       self->_split.startTapLocation.y = v29;
@@ -867,12 +867,12 @@ LABEL_78:
       goto LABEL_61;
     }
 
-    v30 = [v4 fingerWithIdentifier:self->_split.fingerIdentifier];
+    v30 = [eventCopy fingerWithIdentifier:self->_split.fingerIdentifier];
 
     if (!v30)
     {
       self->_lastFingerCount = 0;
-      v33 = [v4 fingerAtIndex:0];
+      v33 = [eventCopy fingerAtIndex:0];
       self->_split.fingerIdentifier = [v33 identifier];
 
       self->_split.isTapping = 0;
@@ -921,7 +921,7 @@ LABEL_77:
       goto LABEL_78;
     }
 
-    v27 = [v4 fingerWithoutIdentifier:self->_split.fingerIdentifier];
+    v27 = [eventCopy fingerWithoutIdentifier:self->_split.fingerIdentifier];
     [v27 location];
     self->_split.lastTapLocation.x = v35;
     self->_split.lastTapLocation.y = v36;
@@ -938,20 +938,20 @@ LABEL_79:
   return isSplitting;
 }
 
-- ($59F5B3D3FC56264B602E56EF9D3D8816)handleGestureEvent:(SEL)a3
+- ($59F5B3D3FC56264B602E56EF9D3D8816)handleGestureEvent:(SEL)event
 {
   v19 = a4;
   [v19 time];
   v6 = v5;
-  v7 = [v19 fingerCount];
-  self->_absoluteFingerCount = v7;
-  if (self->_requireUp && v7 != 0)
+  fingerCount = [v19 fingerCount];
+  self->_absoluteFingerCount = fingerCount;
+  if (self->_requireUp && fingerCount != 0)
   {
     [(SCRCGestureFactory *)self captureCurrentState];
     goto LABEL_17;
   }
 
-  v9 = v7;
+  v9 = fingerCount;
   self->_split.fastTrack = 0;
   WeakRetained = objc_loadWeakRetained(&self->_canSplitTapDelegate);
   v11 = WeakRetained;
@@ -1052,10 +1052,10 @@ LABEL_17:
   return result;
 }
 
-- (void)_down:(id)a3
+- (void)_down:(id)_down
 {
   p_pressure = &self->_finger[1].pressure;
-  v61 = a3;
+  _downCopy = _down;
   bzero(self->_finger, 0xEB0uLL);
   self->_tap.locationPerTap[7] = 0u;
   self->_tap.locationPerTap[6] = 0u;
@@ -1065,7 +1065,7 @@ LABEL_17:
   self->_tap.locationPerTap[2] = 0u;
   self->_tap.locationPerTap[1] = 0u;
   self->_tap.locationPerTap[0] = 0u;
-  [v61 time];
+  [_downCopy time];
   v6 = v5;
   v7 = 0;
   self->_tap.thisTime = v5;
@@ -1079,7 +1079,7 @@ LABEL_17:
       break;
     }
 
-    v10 = [v61 fingerAtIndex:v7];
+    v10 = [_downCopy fingerAtIndex:v7];
     v11 = v10;
     if (v10)
     {
@@ -1139,7 +1139,7 @@ LABEL_17:
     p_y = &self->_tap.locationPerTap[v7].y;
     while (1)
     {
-      v24 = [v61 fingerAtIndex:v7];
+      v24 = [_downCopy fingerAtIndex:v7];
       if (!v24)
       {
         break;
@@ -1205,7 +1205,7 @@ LABEL_19:
       v39 = 0;
       while (1)
       {
-        v40 = [v61 fingerAtIndex:v39];
+        v40 = [_downCopy fingerAtIndex:v39];
         [v40 location];
         v63.x = v41;
         v63.y = v42;
@@ -1368,23 +1368,23 @@ LABEL_66:
   self->_lastDownTime = v6;
 }
 
-- (void)_drag:(id)a3
+- (void)_drag:(id)_drag
 {
   v116 = *MEMORY[0x277D85DE8];
   p_pressure = &self->_finger[1].pressure;
-  v113 = a3;
-  v5 = [v113 fingerWithIdentifier:self->_finger[0].identifier];
-  v6 = v113;
+  _dragCopy = _drag;
+  v5 = [_dragCopy fingerWithIdentifier:self->_finger[0].identifier];
+  v6 = _dragCopy;
   if (!v5)
   {
-    if (![v113 fingerCount])
+    if (![_dragCopy fingerCount])
     {
       *(p_pressure + 177) = 1;
       goto LABEL_150;
     }
 
-    v5 = [v113 fingerAtIndex:0];
-    v6 = v113;
+    v5 = [_dragCopy fingerAtIndex:0];
+    v6 = _dragCopy;
   }
 
   [v6 time];
@@ -1396,10 +1396,10 @@ LABEL_66:
   [v5 location];
   v13 = v12;
   v14 = self->_mainFrame.size.height;
-  v15 = [v5 type];
+  type = [v5 type];
   [v5 pressure];
   v17 = v16;
-  if (v15 == 1)
+  if (type == 1)
   {
     [v5 altitude];
     v19 = v18;
@@ -1458,7 +1458,7 @@ LABEL_66:
     *&v29->azimuth = v21;
     *v27 = v25;
     v27[1] = v26;
-    v38 = [v113 fingerWithIdentifier:finger[v23 + 1].identifier];
+    v38 = [_dragCopy fingerWithIdentifier:finger[v23 + 1].identifier];
 
     v5 = v38;
     if (v38)
@@ -1466,12 +1466,12 @@ LABEL_66:
       goto LABEL_14;
     }
 
-    if ([v113 fingerCount] < 2)
+    if ([_dragCopy fingerCount] < 2)
     {
       break;
     }
 
-    v5 = [v113 fingerAtIndex:1];
+    v5 = [_dragCopy fingerAtIndex:1];
 LABEL_14:
     [v5 location];
     v40 = v39;
@@ -1480,10 +1480,10 @@ LABEL_14:
     [v5 location];
     v44 = v43;
     v45 = self->_mainFrame.size.height;
-    v46 = [v5 type];
+    type2 = [v5 type];
     [v5 pressure];
     v17 = v47;
-    if (v46 == 1)
+    if (type2 == 1)
     {
       [v5 altitude];
       v19 = v48;
@@ -1678,9 +1678,9 @@ LABEL_143:
       }
 
       v88 = fabs(v82);
-      v89 = [(SCRCGestureFactory *)self usesAbsoluteDistanceForPinch];
+      usesAbsoluteDistanceForPinch = [(SCRCGestureFactory *)self usesAbsoluteDistanceForPinch];
       v90 = fabs(v63);
-      if (v89)
+      if (usesAbsoluteDistanceForPinch)
       {
         v91 = 7.8;
       }

@@ -1,29 +1,29 @@
 @interface PlaceSummaryContainmentGeoViewModel
-- (PlaceSummaryContainmentGeoViewModel)initWithMapItem:(id)a3;
+- (PlaceSummaryContainmentGeoViewModel)initWithMapItem:(id)item;
 @end
 
 @implementation PlaceSummaryContainmentGeoViewModel
 
-- (PlaceSummaryContainmentGeoViewModel)initWithMapItem:(id)a3
+- (PlaceSummaryContainmentGeoViewModel)initWithMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [[MUPlaceHeaderViewModel alloc] initWithMapItem:v4];
+  itemCopy = item;
+  v5 = [[MUPlaceHeaderViewModel alloc] initWithMapItem:itemCopy];
 
-  v6 = [v5 enclosingPlaceViewModel];
+  enclosingPlaceViewModel = [v5 enclosingPlaceViewModel];
 
-  v7 = [v6 labelValue];
-  if ([v7 length])
+  labelValue = [enclosingPlaceViewModel labelValue];
+  if ([labelValue length])
   {
   }
 
   else
   {
-    v8 = [v6 tokenValue];
-    v9 = [v8 length];
+    tokenValue = [enclosingPlaceViewModel tokenValue];
+    v9 = [tokenValue length];
 
     if (!v9)
     {
-      v15 = 0;
+      selfCopy = 0;
       goto LABEL_7;
     }
   }
@@ -33,20 +33,20 @@
   v10 = [(PlaceSummaryContainmentGeoViewModel *)&v17 init];
   if (v10)
   {
-    v11 = [v6 labelValue];
+    labelValue2 = [enclosingPlaceViewModel labelValue];
     prefix = v10->_prefix;
-    v10->_prefix = v11;
+    v10->_prefix = labelValue2;
 
-    v13 = [v6 tokenValue];
+    tokenValue2 = [enclosingPlaceViewModel tokenValue];
     containment = v10->_containment;
-    v10->_containment = v13;
+    v10->_containment = tokenValue2;
   }
 
   self = v10;
-  v15 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v15;
+  return selfCopy;
 }
 
 @end

@@ -1,48 +1,48 @@
 @interface BRDiskCheckerValidateTreeConsistencyOperation
 + (id)_classesForZoneState;
 - (BOOL)_processNextRootURL;
-- (BOOL)isEnhancedDrivePrivacyEnabledForZoneRowID:(id)a3 db:(id)a4;
-- (BRDiskCheckerValidateTreeConsistencyOperation)initWithDatabase:(id)a3 rootURLWrappers:(id)a4 fileChecksumRatePerThousand:(unsigned int)a5 packageChecksumRatePerThousand:(unsigned int)a6 maxEventCount:(unsigned int)a7;
-- (id)_directoryFileObjectIDFromURL:(id)a3;
-- (id)_injectionForFileObjectID:(id)a3;
-- (id)_mangledIDFromZoneRowID:(id)a3 db:(id)a4;
-- (id)_metricsFromDirectoryFileObjectID:(id)a3 db:(id)a4;
+- (BOOL)isEnhancedDrivePrivacyEnabledForZoneRowID:(id)d db:(id)db;
+- (BRDiskCheckerValidateTreeConsistencyOperation)initWithDatabase:(id)database rootURLWrappers:(id)wrappers fileChecksumRatePerThousand:(unsigned int)thousand packageChecksumRatePerThousand:(unsigned int)perThousand maxEventCount:(unsigned int)count;
+- (id)_directoryFileObjectIDFromURL:(id)l;
+- (id)_injectionForFileObjectID:(id)d;
+- (id)_mangledIDFromZoneRowID:(id)d db:(id)db;
+- (id)_metricsFromDirectoryFileObjectID:(id)d db:(id)db;
 - (id)keysToFetch;
-- (id)telemetryEventForFileReadErrorWithDocumentFileObjectID:(id)a3 error:(id)a4 db:(id)a5;
-- (id)telemetryEventFromChecksummingFile:(id)a3 db:(id)a4;
-- (id)telemetryEventValidatingSignature:(id)a3 againstDocumentFileObjectID:(id)a4 db:(id)a5;
+- (id)telemetryEventForFileReadErrorWithDocumentFileObjectID:(id)d error:(id)error db:(id)db;
+- (id)telemetryEventFromChecksummingFile:(id)file db:(id)db;
+- (id)telemetryEventValidatingSignature:(id)signature againstDocumentFileObjectID:(id)d db:(id)db;
 - (void)_processURLs;
 - (void)cancel;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
-- (void)validateDirectoryTelemetry:(id)a3 directoryStack:(id)a4 db:(id)a5 telemetryErrorEvents:(id)a6 telemetryWarningEvents:(id)a7;
+- (void)validateDirectoryTelemetry:(id)telemetry directoryStack:(id)stack db:(id)db telemetryErrorEvents:(id)events telemetryWarningEvents:(id)warningEvents;
 @end
 
 @implementation BRDiskCheckerValidateTreeConsistencyOperation
 
-- (BRDiskCheckerValidateTreeConsistencyOperation)initWithDatabase:(id)a3 rootURLWrappers:(id)a4 fileChecksumRatePerThousand:(unsigned int)a5 packageChecksumRatePerThousand:(unsigned int)a6 maxEventCount:(unsigned int)a7
+- (BRDiskCheckerValidateTreeConsistencyOperation)initWithDatabase:(id)database rootURLWrappers:(id)wrappers fileChecksumRatePerThousand:(unsigned int)thousand packageChecksumRatePerThousand:(unsigned int)perThousand maxEventCount:(unsigned int)count
 {
-  v13 = a3;
-  v14 = a4;
+  databaseCopy = database;
+  wrappersCopy = wrappers;
   v35.receiver = self;
   v35.super_class = BRDiskCheckerValidateTreeConsistencyOperation;
   v15 = [(BRDiskCheckerValidateTreeConsistencyOperation *)&v35 initWithName:@"check-tree-consistency"];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_db, a3);
-    v17 = [v14 mutableCopy];
+    objc_storeStrong(&v15->_db, database);
+    v17 = [wrappersCopy mutableCopy];
     rootURLWrappers = v16->_rootURLWrappers;
     v16->_rootURLWrappers = v17;
 
     currentRootURL = v16->_currentRootURL;
     v16->_currentRootURL = 0;
 
-    v16->_fileChecksumRate = a5;
-    v16->_packageChecksumRate = a6;
-    v16->_maxEventCount = a7;
-    v20 = [(BRCPQLConnection *)v16->_db serialQueue];
-    v21 = dispatch_source_create(&_dispatch_source_type_data_or, 0, 0, v20);
+    v16->_fileChecksumRate = thousand;
+    v16->_packageChecksumRate = perThousand;
+    v16->_maxEventCount = count;
+    serialQueue = [(BRCPQLConnection *)v16->_db serialQueue];
+    v21 = dispatch_source_create(&_dispatch_source_type_data_or, 0, 0, serialQueue);
     signalSource = v16->_signalSource;
     v16->_signalSource = v21;
 
@@ -80,9 +80,9 @@
   v3 = [(NSMutableArray *)self->_rootURLWrappers count];
   if (v3)
   {
-    v4 = [(NSMutableArray *)self->_rootURLWrappers lastObject];
+    lastObject = [(NSMutableArray *)self->_rootURLWrappers lastObject];
     [(NSMutableArray *)self->_rootURLWrappers removeLastObject];
-    v5 = [v4 url];
+    v5 = [lastObject url];
     [v5 startAccessingSecurityScopedResource];
     objc_storeStrong(&self->_currentRootURL, v5);
     v6 = [[BRDiskCheckerFilesystemDirectory alloc] initWithURL:v5 parentIsShared:0 db:self->_db];
@@ -93,15 +93,15 @@
     self->_directoryStack = v7;
 
     v9 = +[NSFileManager defaultManager];
-    v10 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self keysToFetch];
+    keysToFetch = [(BRDiskCheckerValidateTreeConsistencyOperation *)self keysToFetch];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100002F10;
     v15[3] = &unk_1000103D0;
     v16 = v5;
-    v17 = self;
+    selfCopy = self;
     v11 = v5;
-    v12 = [v9 enumeratorAtURL:v11 includingPropertiesForKeys:v10 options:2147483656 errorHandler:v15];
+    v12 = [v9 enumeratorAtURL:v11 includingPropertiesForKeys:keysToFetch options:2147483656 errorHandler:v15];
     directoryEnumerator = self->_directoryEnumerator;
     self->_directoryEnumerator = v12;
   }
@@ -123,16 +123,16 @@
 
 - (void)_processURLs
 {
-  v3 = [(NSDirectoryEnumerator *)self->_directoryEnumerator nextObject];
-  if (v3)
+  nextObject = [(NSDirectoryEnumerator *)self->_directoryEnumerator nextObject];
+  if (nextObject)
   {
-    v4 = v3;
+    v4 = nextObject;
     if (self->_previousURLWasPackage)
     {
       self->_previousURLWasPackage = 0;
-      v5 = [(NSDirectoryEnumerator *)self->_directoryEnumerator nextObject];
+      nextObject2 = [(NSDirectoryEnumerator *)self->_directoryEnumerator nextObject];
 
-      v4 = v5;
+      v4 = nextObject2;
     }
 
     if ([(NSMutableArray *)self->_telemetryErrorEvents count]>= self->_maxEventCount)
@@ -165,11 +165,11 @@
       goto LABEL_53;
     }
 
-    v12 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self keysToFetch];
-    v10 = [v4 resourceValuesForKeys:v12 error:0];
+    keysToFetch = [(BRDiskCheckerValidateTreeConsistencyOperation *)self keysToFetch];
+    v10 = [v4 resourceValuesForKeys:keysToFetch error:0];
 
     v13 = [v10 objectForKeyedSubscript:NSURLIsDirectoryKey];
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
 
     if ([v4 br_wouldBeExcludedFromSync])
     {
@@ -180,7 +180,7 @@
         sub_100007A54();
       }
 
-      if (v14)
+      if (bOOLValue)
       {
         v17 = brc_bread_crumbs();
         v18 = brc_default_log();
@@ -196,25 +196,25 @@
       goto LABEL_53;
     }
 
-    v20 = [(NSMutableArray *)self->_directoryStack lastObject];
+    lastObject = [(NSMutableArray *)self->_directoryStack lastObject];
     v21 = [v10 objectForKeyedSubscript:NSURLIsPackageKey];
-    v22 = [v21 BOOLValue];
+    bOOLValue2 = [v21 BOOLValue];
 
-    if (v22)
+    if (bOOLValue2)
     {
       [(NSDirectoryEnumerator *)self->_directoryEnumerator skipDescendants];
-      [v20 addPackage:v4];
+      [lastObject addPackage:v4];
       self->_previousURLWasPackage = 1;
-      v23 = [v10 objectForKeyedSubscript:NSURLUbiquitousItemDownloadingStatusKey];
-      v24 = v20;
-      if ([(BRDiskCheckerFilesystemDirectory *)v23 isEqualToString:NSURLUbiquitousItemDownloadingStatusCurrent])
+      lastObject2 = [v10 objectForKeyedSubscript:NSURLUbiquitousItemDownloadingStatusKey];
+      v24 = lastObject;
+      if ([(BRDiskCheckerFilesystemDirectory *)lastObject2 isEqualToString:NSURLUbiquitousItemDownloadingStatusCurrent])
       {
         v25 = arc4random() % 0x3E8;
         packageChecksumRate = self->_packageChecksumRate;
 
         if (v25 < packageChecksumRate)
         {
-          v23 = brc_bread_crumbs();
+          lastObject2 = brc_bread_crumbs();
           v27 = brc_default_log();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
           {
@@ -236,16 +236,16 @@ LABEL_51:
       goto LABEL_52;
     }
 
-    v28 = v20;
+    v28 = lastObject;
     v29 = [v10 objectForKeyedSubscript:NSURLIsRegularFileKey];
-    v30 = [v29 BOOLValue];
+    bOOLValue3 = [v29 BOOLValue];
 
-    if (v30)
+    if (bOOLValue3)
     {
-      v24 = v20;
-      [v20 addFlatFile:v4];
-      v23 = [v10 objectForKeyedSubscript:NSURLUbiquitousItemDownloadingStatusKey];
-      if (![(BRDiskCheckerFilesystemDirectory *)v23 isEqualToString:NSURLUbiquitousItemDownloadingStatusCurrent])
+      v24 = lastObject;
+      [lastObject addFlatFile:v4];
+      lastObject2 = [v10 objectForKeyedSubscript:NSURLUbiquitousItemDownloadingStatusKey];
+      if (![(BRDiskCheckerFilesystemDirectory *)lastObject2 isEqualToString:NSURLUbiquitousItemDownloadingStatusCurrent])
       {
         goto LABEL_51;
       }
@@ -265,8 +265,8 @@ LABEL_51:
         sub_10000791C();
       }
 
-      v23 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self telemetryEventFromChecksummingFile:v4 db:self->_db];
-      if (!v23)
+      lastObject2 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self telemetryEventFromChecksummingFile:v4 db:self->_db];
+      if (!lastObject2)
       {
         goto LABEL_51;
       }
@@ -277,22 +277,22 @@ LABEL_51:
     else
     {
       v36 = [v10 objectForKeyedSubscript:NSURLIsSymbolicLinkKey];
-      v37 = [v36 BOOLValue];
+      bOOLValue4 = [v36 BOOLValue];
 
-      if (v37)
+      if (bOOLValue4)
       {
-        v24 = v20;
-        [v20 addSymlink:v4];
+        v24 = lastObject;
+        [lastObject addSymlink:v4];
         goto LABEL_52;
       }
 
-      v24 = v20;
-      if (!v14)
+      v24 = lastObject;
+      if (!bOOLValue)
       {
         goto LABEL_52;
       }
 
-      v38 = [v20 url];
+      v38 = [lastObject url];
       v39 = [v38 isEqual:v4];
 
       if (v39)
@@ -301,17 +301,17 @@ LABEL_51:
         v41 = brc_default_log();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
         {
-          v44 = [v4 path];
-          v45 = [v44 fp_obfuscatedPath];
-          v46 = [v28 recursiveItemCount];
-          v47 = [v28 directChildCount];
+          path = [v4 path];
+          fp_obfuscatedPath = [path fp_obfuscatedPath];
+          recursiveItemCount = [v28 recursiveItemCount];
+          directChildCount = [v28 directChildCount];
           *buf = 138413058;
-          v49 = v45;
+          v49 = fp_obfuscatedPath;
           v50 = 1024;
-          v51 = v46;
+          v51 = recursiveItemCount;
           v24 = v28;
           v52 = 1024;
-          v53 = v47;
+          v53 = directChildCount;
           v54 = 2112;
           v55 = v40;
           _os_log_debug_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEBUG, "[DEBUG] Finishing processing %@ (rcc: %d, cc: %d)%@", buf, 0x22u);
@@ -319,8 +319,8 @@ LABEL_51:
 
         [(NSMutableArray *)self->_directoryStack removeLastObject];
         [(BRDiskCheckerValidateTreeConsistencyOperation *)self validateDirectoryTelemetry:v24 directoryStack:self->_directoryStack db:self->_db telemetryErrorEvents:self->_telemetryErrorEvents telemetryWarningEvents:self->_telemetryWarningEvents];
-        v23 = [(NSMutableArray *)self->_directoryStack lastObject];
-        [(BRDiskCheckerFilesystemDirectory *)v23 addSubdirectory:v24];
+        lastObject2 = [(NSMutableArray *)self->_directoryStack lastObject];
+        [(BRDiskCheckerFilesystemDirectory *)lastObject2 addSubdirectory:v24];
         goto LABEL_51;
       }
 
@@ -331,11 +331,11 @@ LABEL_51:
         sub_100007880();
       }
 
-      v23 = -[BRDiskCheckerFilesystemDirectory initWithURL:parentIsShared:db:]([BRDiskCheckerFilesystemDirectory alloc], "initWithURL:parentIsShared:db:", v4, [v20 isShared], self->_db);
+      lastObject2 = -[BRDiskCheckerFilesystemDirectory initWithURL:parentIsShared:db:]([BRDiskCheckerFilesystemDirectory alloc], "initWithURL:parentIsShared:db:", v4, [lastObject isShared], self->_db);
       telemetryErrorEvents = self->_directoryStack;
     }
 
-    [(NSMutableArray *)telemetryErrorEvents addObject:v23];
+    [(NSMutableArray *)telemetryErrorEvents addObject:lastObject2];
     goto LABEL_51;
   }
 
@@ -370,18 +370,18 @@ LABEL_51:
   dispatch_resume(signalSource);
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
   checkTelemetryCompletionBlock = self->_checkTelemetryCompletionBlock;
   telemetryErrorEvents = self->_telemetryErrorEvents;
   telemetryWarningEvents = self->_telemetryWarningEvents;
   v9 = checkTelemetryCompletionBlock[2];
-  v10 = a4;
-  v11 = a3;
-  v9(checkTelemetryCompletionBlock, telemetryErrorEvents, telemetryWarningEvents, v10);
+  errorCopy = error;
+  resultCopy = result;
+  v9(checkTelemetryCompletionBlock, telemetryErrorEvents, telemetryWarningEvents, errorCopy);
   v12.receiver = self;
   v12.super_class = BRDiskCheckerValidateTreeConsistencyOperation;
-  [(BRDiskCheckerValidateTreeConsistencyOperation *)&v12 finishWithResult:v11 error:v10];
+  [(BRDiskCheckerValidateTreeConsistencyOperation *)&v12 finishWithResult:resultCopy error:errorCopy];
 }
 
 + (id)_classesForZoneState
@@ -396,37 +396,37 @@ LABEL_51:
   return v3;
 }
 
-- (void)validateDirectoryTelemetry:(id)a3 directoryStack:(id)a4 db:(id)a5 telemetryErrorEvents:(id)a6 telemetryWarningEvents:(id)a7
+- (void)validateDirectoryTelemetry:(id)telemetry directoryStack:(id)stack db:(id)db telemetryErrorEvents:(id)events telemetryWarningEvents:(id)warningEvents
 {
-  v12 = a3;
-  v13 = a4;
-  v44 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v12 url];
+  telemetryCopy = telemetry;
+  stackCopy = stack;
+  dbCopy = db;
+  eventsCopy = events;
+  warningEventsCopy = warningEvents;
+  v16 = [telemetryCopy url];
   v17 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _directoryFileObjectIDFromURL:v16];
 
   if (v17)
   {
-    v18 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _metricsFromDirectoryFileObjectID:v17 db:v44];
+    v18 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _metricsFromDirectoryFileObjectID:v17 db:dbCopy];
     v41 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _injectionForFileObjectID:v17];
-    v19 = [v44 fetch:{@"SELECT item_id, zone_rowid FROM client_items WHERE %@ AND item_state IN (0)", v41}];
-    v43 = v15;
+    v19 = [dbCopy fetch:{@"SELECT item_id, zone_rowid FROM client_items WHERE %@ AND item_state IN (0)", v41}];
+    v43 = warningEventsCopy;
     v40 = v19;
     if ([v19 next])
     {
       v20 = [v19 objectOfClass:objc_opt_class() atIndex:0];
       v21 = [v19 numberAtIndex:1];
-      [(BRDiskCheckerValidateTreeConsistencyOperation *)self isEnhancedDrivePrivacyEnabledForZoneRowID:v21 db:v44];
-      [(BRDiskCheckerValidateTreeConsistencyOperation *)self _mangledIDFromZoneRowID:v21 db:v44];
-      v22 = v14;
-      v23 = v12;
-      v25 = v24 = v13;
+      [(BRDiskCheckerValidateTreeConsistencyOperation *)self isEnhancedDrivePrivacyEnabledForZoneRowID:v21 db:dbCopy];
+      [(BRDiskCheckerValidateTreeConsistencyOperation *)self _mangledIDFromZoneRowID:v21 db:dbCopy];
+      v22 = eventsCopy;
+      v23 = telemetryCopy;
+      v25 = v24 = stackCopy;
 
       v26 = v25;
-      v13 = v24;
-      v12 = v23;
-      v14 = v22;
+      stackCopy = v24;
+      telemetryCopy = v23;
+      eventsCopy = v22;
     }
 
     else
@@ -438,17 +438,17 @@ LABEL_51:
     v42 = v18;
     v38 = v26;
     v39 = v20;
-    v27 = [v12 generateTelemetryErrorEventsWithMetrics:v18 itemID:v20 zoneMangledID:? enhancedDrivePrivacyEnabled:?];
-    v28 = [v12 telemetryWarningEvents];
+    v27 = [telemetryCopy generateTelemetryErrorEventsWithMetrics:v18 itemID:v20 zoneMangledID:? enhancedDrivePrivacyEnabled:?];
+    telemetryWarningEvents = [telemetryCopy telemetryWarningEvents];
     if ([v27 count])
     {
-      v36 = v14;
-      v37 = v13;
+      v36 = eventsCopy;
+      v37 = stackCopy;
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v29 = v13;
+      v29 = stackCopy;
       v30 = [v29 countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (v30)
       {
@@ -472,14 +472,14 @@ LABEL_51:
         while (v31);
       }
 
-      v14 = v36;
+      eventsCopy = v36;
       [v36 addObjectsFromArray:v27];
-      v13 = v37;
+      stackCopy = v37;
     }
 
-    if ([v28 count])
+    if ([telemetryWarningEvents count])
     {
-      [v43 addObjectsFromArray:v28];
+      [v43 addObjectsFromArray:telemetryWarningEvents];
       v34 = [v43 count];
       maxEventCount = self->_maxEventCount;
       if (v34 > maxEventCount)
@@ -488,31 +488,31 @@ LABEL_51:
       }
     }
 
-    v15 = v43;
+    warningEventsCopy = v43;
   }
 }
 
-- (id)telemetryEventValidatingSignature:(id)a3 againstDocumentFileObjectID:(id)a4 db:(id)a5
+- (id)telemetryEventValidatingSignature:(id)signature againstDocumentFileObjectID:(id)d db:(id)db
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _injectionForFileObjectID:v9];
-  v12 = [v10 fetch:{@"SELECT version_content_signature, item_id, zone_rowid FROM client_items WHERE %@", v11}];
+  signatureCopy = signature;
+  dCopy = d;
+  dbCopy = db;
+  v11 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _injectionForFileObjectID:dCopy];
+  v12 = [dbCopy fetch:{@"SELECT version_content_signature, item_id, zone_rowid FROM client_items WHERE %@", v11}];
   if (![v12 next])
   {
     v14 = brc_bread_crumbs();
     v15 = brc_default_log();
     if (os_log_type_enabled(v15, 0x90u))
     {
-      sub_100007BA0(v9, v14, v15);
+      sub_100007BA0(dCopy, v14, v15);
     }
 
     goto LABEL_7;
   }
 
   v13 = [v12 objectOfClass:objc_opt_class() atIndex:0];
-  if ([v8 isEqualToData:v13])
+  if ([signatureCopy isEqualToData:v13])
   {
 
 LABEL_7:
@@ -525,18 +525,18 @@ LABEL_8:
 
   v17 = [v12 objectOfClass:objc_opt_class() atIndex:1];
   v21 = [v12 numberAtIndex:2];
-  v16 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _mangledIDFromZoneRowID:v21 db:v10];
-  v26 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self isEnhancedDrivePrivacyEnabledForZoneRowID:v21 db:v10];
+  v16 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _mangledIDFromZoneRowID:v21 db:dbCopy];
+  v26 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self isEnhancedDrivePrivacyEnabledForZoneRowID:v21 db:dbCopy];
   v27 = brc_bread_crumbs();
   v22 = brc_default_log();
   if (os_log_type_enabled(v22, 0x90u))
   {
     *buf = 138413314;
-    v29 = v9;
+    v29 = dCopy;
     v30 = 2112;
     v31 = v17;
     v32 = 2112;
-    v33 = v8;
+    v33 = signatureCopy;
     v34 = 2112;
     v35 = v13;
     v36 = 2112;
@@ -549,16 +549,16 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  v23 = [v8 brc_signatureIsPackage];
-  v24 = [v17 itemIDString];
-  if (v23)
+  brc_signatureIsPackage = [signatureCopy brc_signatureIsPackage];
+  itemIDString = [v17 itemIDString];
+  if (brc_signatureIsPackage)
   {
-    v25 = [AppTelemetryTimeSeriesEvent newPackageChecksumMismatchEventWithZoneMangledID:v16 enhancedDrivePrivacyEnabled:v26 itemIDString:v24];
+    v25 = [AppTelemetryTimeSeriesEvent newPackageChecksumMismatchEventWithZoneMangledID:v16 enhancedDrivePrivacyEnabled:v26 itemIDString:itemIDString];
   }
 
   else
   {
-    v25 = [AppTelemetryTimeSeriesEvent newFileChecksumMismatchEventWithZoneMangledID:v16 enhancedDrivePrivacyEnabled:v26 itemIDString:v24];
+    v25 = [AppTelemetryTimeSeriesEvent newFileChecksumMismatchEventWithZoneMangledID:v16 enhancedDrivePrivacyEnabled:v26 itemIDString:itemIDString];
   }
 
   v18 = v25;
@@ -569,9 +569,9 @@ LABEL_9:
   return v18;
 }
 
-- (BOOL)isEnhancedDrivePrivacyEnabledForZoneRowID:(id)a3 db:(id)a4
+- (BOOL)isEnhancedDrivePrivacyEnabledForZoneRowID:(id)d db:(id)db
 {
-  v4 = [a4 fetch:{@"SELECT zone_plist FROM client_zones WHERE rowid = %@", a3}];
+  v4 = [db fetch:{@"SELECT zone_plist FROM client_zones WHERE rowid = %@", d}];
   if ([v4 next])
   {
     v5 = _BRCClassesForContainerState();
@@ -584,9 +584,9 @@ LABEL_9:
       if (v7)
       {
         v8 = [v6 objectForKeyedSubscript:@"state"];
-        v9 = [v8 unsignedLongLongValue];
+        unsignedLongLongValue = [v8 unsignedLongLongValue];
 
-        v7 = ((v9 >> 22) & 1);
+        v7 = ((unsignedLongLongValue >> 22) & 1);
       }
     }
 
@@ -604,18 +604,18 @@ LABEL_9:
   return v7;
 }
 
-- (id)telemetryEventForFileReadErrorWithDocumentFileObjectID:(id)a3 error:(id)a4 db:(id)a5
+- (id)telemetryEventForFileReadErrorWithDocumentFileObjectID:(id)d error:(id)error db:(id)db
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _injectionForFileObjectID:a3];
-  v11 = [v8 fetch:{@"SELECT item_id, zone_rowid FROM client_items WHERE %@", v10}];
+  dbCopy = db;
+  errorCopy = error;
+  v10 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _injectionForFileObjectID:d];
+  v11 = [dbCopy fetch:{@"SELECT item_id, zone_rowid FROM client_items WHERE %@", v10}];
   if ([v11 next])
   {
     v12 = [v11 objectOfClass:objc_opt_class() atIndex:0];
     v13 = [v11 numberAtIndex:1];
-    v14 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _mangledIDFromZoneRowID:v13 db:v8];
-    v15 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self isEnhancedDrivePrivacyEnabledForZoneRowID:v13 db:v8];
+    v14 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _mangledIDFromZoneRowID:v13 db:dbCopy];
+    v15 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self isEnhancedDrivePrivacyEnabledForZoneRowID:v13 db:dbCopy];
   }
 
   else
@@ -625,17 +625,17 @@ LABEL_9:
     v14 = 0;
   }
 
-  v16 = [v12 itemIDString];
-  v17 = [AppTelemetryTimeSeriesEvent newFileReadErrorWithError:v9 zoneMangledID:v14 enhancedDrivePrivacyEnabled:v15 itemIDString:v16];
+  itemIDString = [v12 itemIDString];
+  v17 = [AppTelemetryTimeSeriesEvent newFileReadErrorWithError:errorCopy zoneMangledID:v14 enhancedDrivePrivacyEnabled:v15 itemIDString:itemIDString];
 
   return v17;
 }
 
-- (id)telemetryEventFromChecksummingFile:(id)a3 db:(id)a4
+- (id)telemetryEventFromChecksummingFile:(id)file db:(id)db
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = open([v6 fileSystemRepresentation], 0x8000);
+  fileCopy = file;
+  dbCopy = db;
+  v8 = open([fileCopy fileSystemRepresentation], 0x8000);
   if ((v8 & 0x80000000) != 0)
   {
     v12 = +[NSError br_errorFromErrno];
@@ -646,20 +646,20 @@ LABEL_9:
       sub_100007C28();
     }
 
-    v16 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self telemetryEventForFileReadErrorWithDocumentFileObjectID:0 error:v12 db:v7];
+    v16 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self telemetryEventForFileReadErrorWithDocumentFileObjectID:0 error:v12 db:dbCopy];
   }
 
   else
   {
     v9 = v8;
-    v10 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _directoryFileObjectIDFromURL:v6];
+    v10 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _directoryFileObjectIDFromURL:fileCopy];
     v22 = 0;
     v11 = [CKSignatureGenerator signatureWithFileDescriptor:v9 error:&v22];
     v12 = v22;
     close(v9);
     if (v11)
     {
-      v13 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self telemetryEventValidatingSignature:v11 againstDocumentFileObjectID:v10 db:v7];
+      v13 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self telemetryEventValidatingSignature:v11 againstDocumentFileObjectID:v10 db:dbCopy];
     }
 
     else
@@ -668,10 +668,10 @@ LABEL_9:
       v18 = brc_default_log();
       if (os_log_type_enabled(v18, 0x90u))
       {
-        v20 = [v6 path];
-        v21 = [v20 fp_obfuscatedPath];
+        path = [fileCopy path];
+        fp_obfuscatedPath = [path fp_obfuscatedPath];
         *buf = 138412802;
-        v24 = v21;
+        v24 = fp_obfuscatedPath;
         v25 = 2112;
         v26 = v12;
         v27 = 2112;
@@ -679,7 +679,7 @@ LABEL_9:
         _os_log_error_impl(&_mh_execute_header, v18, 0x90u, "[ERROR] Failed to generate a signature for file at %@ - %@%@", buf, 0x20u);
       }
 
-      v13 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self telemetryEventForFileReadErrorWithDocumentFileObjectID:v10 error:v12 db:v7];
+      v13 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self telemetryEventForFileReadErrorWithDocumentFileObjectID:v10 error:v12 db:dbCopy];
     }
 
     v16 = v13;
@@ -698,9 +698,9 @@ LABEL_9:
   [(BRDiskCheckerValidateTreeConsistencyOperation *)self completedWithResult:0 error:v3];
 }
 
-- (id)_mangledIDFromZoneRowID:(id)a3 db:(id)a4
+- (id)_mangledIDFromZoneRowID:(id)d db:(id)db
 {
-  v4 = [a4 fetch:{@"SELECT zone_name, zone_owner FROM client_zones WHERE rowid = %@", a3}];
+  v4 = [db fetch:{@"SELECT zone_name, zone_owner FROM client_zones WHERE rowid = %@", d}];
   if ([v4 next])
   {
     v5 = [BRMangledID alloc];
@@ -717,29 +717,29 @@ LABEL_9:
   return v8;
 }
 
-- (id)_metricsFromDirectoryFileObjectID:(id)a3 db:(id)a4
+- (id)_metricsFromDirectoryFileObjectID:(id)d db:(id)db
 {
-  v6 = a4;
-  v7 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _injectionForFileObjectID:a3];
-  v8 = [v6 fetchObject:&stru_100010450 sql:{@"SELECT si.item_id IS NULL, (SELECT sz.zone_owner = %@ FROM server_zones AS sz WHERE sz.rowid = si.zone_rowid), si.quota_used, si.recursive_child_count, si.shared_children_count, si.shared_alias_count, si.child_count FROM client_items AS ci LEFT JOIN server_items AS si ON (si.item_id = ci.item_id AND si.zone_rowid = ci.zone_rowid) WHERE ci.%@ AND ci.item_state IN (0)", CKCurrentUserDefaultName, v7}];
+  dbCopy = db;
+  v7 = [(BRDiskCheckerValidateTreeConsistencyOperation *)self _injectionForFileObjectID:d];
+  v8 = [dbCopy fetchObject:&stru_100010450 sql:{@"SELECT si.item_id IS NULL, (SELECT sz.zone_owner = %@ FROM server_zones AS sz WHERE sz.rowid = si.zone_rowid), si.quota_used, si.recursive_child_count, si.shared_children_count, si.shared_alias_count, si.child_count FROM client_items AS ci LEFT JOIN server_items AS si ON (si.item_id = ci.item_id AND si.zone_rowid = ci.zone_rowid) WHERE ci.%@ AND ci.item_state IN (0)", CKCurrentUserDefaultName, v7}];
 
   return v8;
 }
 
-- (id)_directoryFileObjectIDFromURL:(id)a3
+- (id)_directoryFileObjectIDFromURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = +[FPItemManager defaultManager];
   v18 = 0;
-  v5 = [v4 itemForURL:v3 error:&v18];
+  v5 = [v4 itemForURL:lCopy error:&v18];
   v6 = v18;
 
-  v7 = [v5 providerItemIdentifier];
+  providerItemIdentifier = [v5 providerItemIdentifier];
 
-  if (v7)
+  if (providerItemIdentifier)
   {
-    v8 = [v5 providerItemIdentifier];
-    v9 = [BRFileObjectID fileObjectIDWithString:v8];
+    providerItemIdentifier2 = [v5 providerItemIdentifier];
+    v9 = [BRFileObjectID fileObjectIDWithString:providerItemIdentifier2];
 
     if ([v9 isAppLibraryRoot])
     {
@@ -759,13 +759,13 @@ LABEL_9:
     v13 = brc_default_log();
     if (os_log_type_enabled(v13, 0x90u))
     {
-      v15 = [v3 path];
-      v16 = [v15 fp_obfuscatedPath];
-      v17 = [v6 fp_prettyDescription];
+      path = [lCopy path];
+      fp_obfuscatedPath = [path fp_obfuscatedPath];
+      fp_prettyDescription = [v6 fp_prettyDescription];
       *buf = 138413058;
-      v20 = v16;
+      v20 = fp_obfuscatedPath;
       v21 = 2112;
-      v22 = v17;
+      v22 = fp_prettyDescription;
       v23 = 1024;
       v24 = v11;
       v25 = 2112;
@@ -780,13 +780,13 @@ LABEL_9:
   return v10;
 }
 
-- (id)_injectionForFileObjectID:(id)a3
+- (id)_injectionForFileObjectID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy)
   {
-    if ([v3 type] == 4)
+    if ([dCopy type] == 4)
     {
       v5 = [BRCItemID alloc];
       v6 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 rawID]);

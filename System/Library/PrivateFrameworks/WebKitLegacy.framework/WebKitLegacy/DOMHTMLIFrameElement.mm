@@ -21,10 +21,10 @@
 - (void)setMarginHeight:(NSString *)marginHeight;
 - (void)setMarginWidth:(NSString *)marginWidth;
 - (void)setName:(NSString *)name;
-- (void)setSandbox:(id)a3;
+- (void)setSandbox:(id)sandbox;
 - (void)setScrolling:(NSString *)scrolling;
 - (void)setSrc:(NSString *)src;
-- (void)setSrcdoc:(id)a3;
+- (void)setSrcdoc:(id)srcdoc;
 - (void)setWidth:(NSString *)width;
 @end
 
@@ -475,10 +475,10 @@ LABEL_6:
   return v4;
 }
 
-- (void)setSandbox:(id)a3
+- (void)setSandbox:(id)sandbox
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, sandbox, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -630,10 +630,10 @@ LABEL_6:
   return v4;
 }
 
-- (void)setSrcdoc:(id)a3
+- (void)setSrcdoc:(id)srcdoc
 {
   WebCore::JSMainThreadNullState::JSMainThreadNullState(v7);
-  WTF::AtomStringImpl::add(&v8, a3, v4);
+  WTF::AtomStringImpl::add(&v8, srcdoc, v4);
   v6 = v8;
   WebCore::Element::setAttributeWithoutSynchronization();
   if (v6 && atomic_fetch_add_explicit(v6, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -723,9 +723,9 @@ LABEL_6:
 
 - (WebFrame)contentFrame
 {
-  v2 = [(DOMHTMLIFrameElement *)self contentDocument];
+  contentDocument = [(DOMHTMLIFrameElement *)self contentDocument];
 
-  return [(DOMDocument *)v2 webFrame];
+  return [(DOMDocument *)contentDocument webFrame];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface PKPaymentSession
-+ (BOOL)useSTSForPaymentApplication:(id)a3 subcredential:(id)a4 onSecureElementPass:(id)a5;
-+ (id)STSCredentialForPaymentApplication:(id)a3 subcredential:(id)a4 onSecureElementPass:(id)a5;
-+ (id)forceContactlessInterfaceSessionWithCompletion:(id)a3 targetQueue:(id)a4;
-+ (id)startApplePayTrustSessionWithCompletion:(id)a3 targetQueue:(id)a4;
-+ (id)startContactlessInterfaceSessionWithCompletion:(id)a3 targetQueue:(id)a4;
-+ (id)startDigitalCarKeySessionWithCompletion:(id)a3 targetQueue:(id)a4;
-+ (id)startInAppSessionWithCompletion:(id)a3 targetQueue:(id)a4;
-+ (id)startPeerPaymentSessionWithCompletion:(id)a3 targetQueue:(id)a4;
-+ (id)startReaderSessionWithCompletion:(id)a3 targetQueue:(id)a4;
-+ (id)startSTSContactlessInterfaceSessionWithDelegate:(id)a3 completion:(id)a4;
-+ (void)_STSCredentialTypeForPaymentApplication:(void *)a3 subcredential:(void *)a4 onSecureElementPass:(void *)a5 STSCredential:;
-- (PKPaymentSession)initWithInternalSession:(id)a3 targetQueue:(id)a4;
-- (void)createSessionHandoffTokenWithCompletion:(id)a3;
-- (void)invalidateSessionWithCompletion:(id)a3;
-- (void)performBlockAsyncOnInternalSession:(id)a3;
-- (void)performBlockSyncOnInternalSession:(id)a3;
++ (BOOL)useSTSForPaymentApplication:(id)application subcredential:(id)subcredential onSecureElementPass:(id)pass;
++ (id)STSCredentialForPaymentApplication:(id)application subcredential:(id)subcredential onSecureElementPass:(id)pass;
++ (id)forceContactlessInterfaceSessionWithCompletion:(id)completion targetQueue:(id)queue;
++ (id)startApplePayTrustSessionWithCompletion:(id)completion targetQueue:(id)queue;
++ (id)startContactlessInterfaceSessionWithCompletion:(id)completion targetQueue:(id)queue;
++ (id)startDigitalCarKeySessionWithCompletion:(id)completion targetQueue:(id)queue;
++ (id)startInAppSessionWithCompletion:(id)completion targetQueue:(id)queue;
++ (id)startPeerPaymentSessionWithCompletion:(id)completion targetQueue:(id)queue;
++ (id)startReaderSessionWithCompletion:(id)completion targetQueue:(id)queue;
++ (id)startSTSContactlessInterfaceSessionWithDelegate:(id)delegate completion:(id)completion;
++ (void)_STSCredentialTypeForPaymentApplication:(void *)application subcredential:(void *)subcredential onSecureElementPass:(void *)pass STSCredential:;
+- (PKPaymentSession)initWithInternalSession:(id)session targetQueue:(id)queue;
+- (void)createSessionHandoffTokenWithCompletion:(id)completion;
+- (void)invalidateSessionWithCompletion:(id)completion;
+- (void)performBlockAsyncOnInternalSession:(id)session;
+- (void)performBlockSyncOnInternalSession:(id)session;
 @end
 
 @implementation PKPaymentSession
 
-+ (id)startInAppSessionWithCompletion:(id)a3 targetQueue:(id)a4
++ (id)startInAppSessionWithCompletion:(id)completion targetQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -31,16 +31,16 @@
   }
 
   PKTimeProfileBegin(v7, @"in_app_session_start");
-  v8 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+  pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__PKPaymentSession_startInAppSessionWithCompletion_targetQueue___block_invoke;
   v14[3] = &unk_1E79CC5C0;
-  v15 = v6;
-  v16 = v5;
-  v9 = v5;
-  v10 = v6;
-  v11 = [v8 startECommercePaymentSession:v14];
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  v11 = [pKGetClassNFHardwareManager() startECommercePaymentSession:v14];
   v12 = [[PKPaymentSessionHandle alloc] initWithInternalNFSessionHandle:v11 targetQueue:v10];
 
   return v12;
@@ -89,11 +89,11 @@ void __64__PKPaymentSession_startInAppSessionWithCompletion_targetQueue___block_
   }
 }
 
-+ (id)startContactlessInterfaceSessionWithCompletion:(id)a3 targetQueue:(id)a4
++ (id)startContactlessInterfaceSessionWithCompletion:(id)completion targetQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  completionCopy = completion;
+  queueCopy = queue;
+  if (completionCopy)
   {
     v7 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -102,15 +102,15 @@ void __64__PKPaymentSession_startInAppSessionWithCompletion_targetQueue___block_
       _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKPaymentSession: starting contactless nearfield session...", buf, 2u);
     }
 
-    v8 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+    pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __79__PKPaymentSession_startContactlessInterfaceSessionWithCompletion_targetQueue___block_invoke;
     v13[3] = &unk_1E79CC5E8;
-    v9 = v6;
+    v9 = queueCopy;
     v14 = v9;
-    v15 = v5;
-    v10 = [v8 startLoyaltyAndContactlessPaymentSession:v13];
+    v15 = completionCopy;
+    v10 = [pKGetClassNFHardwareManager() startLoyaltyAndContactlessPaymentSession:v13];
     v11 = [[PKPaymentSessionHandle alloc] initWithInternalNFSessionHandle:v10 targetQueue:v9];
   }
 
@@ -158,11 +158,11 @@ void __79__PKPaymentSession_startContactlessInterfaceSessionWithCompletion_targe
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)startDigitalCarKeySessionWithCompletion:(id)a3 targetQueue:(id)a4
++ (id)startDigitalCarKeySessionWithCompletion:(id)completion targetQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  completionCopy = completion;
+  queueCopy = queue;
+  if (completionCopy)
   {
     v7 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -171,15 +171,15 @@ void __79__PKPaymentSession_startContactlessInterfaceSessionWithCompletion_targe
       _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKPaymentSession: starting car key session...", buf, 2u);
     }
 
-    v8 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+    pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __72__PKPaymentSession_startDigitalCarKeySessionWithCompletion_targetQueue___block_invoke;
     v13[3] = &unk_1E79CC610;
-    v9 = v6;
+    v9 = queueCopy;
     v14 = v9;
-    v15 = v5;
-    v10 = [v8 startDigitalCarKeySession:v13];
+    v15 = completionCopy;
+    v10 = [pKGetClassNFHardwareManager() startDigitalCarKeySession:v13];
     v11 = [[PKPaymentSessionHandle alloc] initWithInternalNFSessionHandle:v10 targetQueue:v9];
   }
 
@@ -227,11 +227,11 @@ void __72__PKPaymentSession_startDigitalCarKeySessionWithCompletion_targetQueue_
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)forceContactlessInterfaceSessionWithCompletion:(id)a3 targetQueue:(id)a4
++ (id)forceContactlessInterfaceSessionWithCompletion:(id)completion targetQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  completionCopy = completion;
+  queueCopy = queue;
+  if (completionCopy)
   {
     v7 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -240,15 +240,15 @@ void __72__PKPaymentSession_startDigitalCarKeySessionWithCompletion_targetQueue_
       _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKPaymentSession: force starting contactless nearfield session...", buf, 2u);
     }
 
-    v8 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+    pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __79__PKPaymentSession_forceContactlessInterfaceSessionWithCompletion_targetQueue___block_invoke;
     v13[3] = &unk_1E79CC5E8;
-    v9 = v6;
+    v9 = queueCopy;
     v14 = v9;
-    v15 = v5;
-    v10 = [v8 forceLoyaltyAndContactlessPaymentSession:v13];
+    v15 = completionCopy;
+    v10 = [pKGetClassNFHardwareManager() forceLoyaltyAndContactlessPaymentSession:v13];
     v11 = [[PKPaymentSessionHandle alloc] initWithInternalNFSessionHandle:v10 targetQueue:v9];
   }
 
@@ -296,14 +296,14 @@ void __79__PKPaymentSession_forceContactlessInterfaceSessionWithCompletion_targe
   (*(*(a1 + 40) + 16))();
 }
 
-+ (id)startSTSContactlessInterfaceSessionWithDelegate:(id)a3 completion:(id)a4
++ (id)startSTSContactlessInterfaceSessionWithDelegate:(id)delegate completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (v5)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v6 = getSTSSessionClass[0];
-    v7 = a3;
+    delegateCopy = delegate;
     v8 = objc_alloc_init(v6());
     v9 = PKLogFacilityTypeGetObject(7uLL);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -319,9 +319,9 @@ void __79__PKPaymentSession_forceContactlessInterfaceSessionWithCompletion_targe
     v21 = __79__PKPaymentSession_startSTSContactlessInterfaceSessionWithDelegate_completion___block_invoke;
     v22 = &unk_1E79C4860;
     v23 = v8;
-    v24 = v5;
+    v24 = completionCopy;
     v10 = v8;
-    [v10 startWithDelegate:v7 isFirstInQueue:buf completion:&v19];
+    [v10 startWithDelegate:delegateCopy isFirstInQueue:buf completion:&v19];
 
     v11 = [PKPaymentSessionHandle alloc];
     v12 = buf[0];
@@ -396,10 +396,10 @@ void __79__PKPaymentSession_startSTSContactlessInterfaceSessionWithDelegate_comp
   }
 }
 
-+ (id)startReaderSessionWithCompletion:(id)a3 targetQueue:(id)a4
++ (id)startReaderSessionWithCompletion:(id)completion targetQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -407,16 +407,16 @@ void __79__PKPaymentSession_startSTSContactlessInterfaceSessionWithDelegate_comp
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKPaymentSession: starting reader nearfield session...", buf, 2u);
   }
 
-  v8 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+  pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__PKPaymentSession_startReaderSessionWithCompletion_targetQueue___block_invoke;
   v14[3] = &unk_1E79CC638;
-  v15 = v6;
-  v16 = v5;
-  v9 = v5;
-  v10 = v6;
-  v11 = [v8 startReaderSession:v14];
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  v11 = [pKGetClassNFHardwareManager() startReaderSession:v14];
   v12 = [[PKPaymentSessionHandle alloc] initWithInternalNFSessionHandle:v11 targetQueue:v10];
 
   return v12;
@@ -462,10 +462,10 @@ void __65__PKPaymentSession_startReaderSessionWithCompletion_targetQueue___block
   }
 }
 
-+ (id)startPeerPaymentSessionWithCompletion:(id)a3 targetQueue:(id)a4
++ (id)startPeerPaymentSessionWithCompletion:(id)completion targetQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -474,16 +474,16 @@ void __65__PKPaymentSession_startReaderSessionWithCompletion_targetQueue___block
   }
 
   PKTimeProfileBegin(v7, @"peer_payment_session_start");
-  v8 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+  pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__PKPaymentSession_startPeerPaymentSessionWithCompletion_targetQueue___block_invoke;
   v14[3] = &unk_1E79CC660;
-  v15 = v6;
-  v16 = v5;
-  v9 = v5;
-  v10 = v6;
-  v11 = [v8 startPeerPaymentSession:v14];
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  v11 = [pKGetClassNFHardwareManager() startPeerPaymentSession:v14];
   v12 = [[PKPaymentSessionHandle alloc] initWithInternalNFSessionHandle:v11 targetQueue:v10];
 
   return v12;
@@ -532,10 +532,10 @@ void __70__PKPaymentSession_startPeerPaymentSessionWithCompletion_targetQueue___
   }
 }
 
-+ (id)startApplePayTrustSessionWithCompletion:(id)a3 targetQueue:(id)a4
++ (id)startApplePayTrustSessionWithCompletion:(id)completion targetQueue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  queueCopy = queue;
   v7 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -543,16 +543,16 @@ void __70__PKPaymentSession_startPeerPaymentSessionWithCompletion_targetQueue___
     _os_log_impl(&dword_1AD337000, v7, OS_LOG_TYPE_DEFAULT, "PKPaymentSession: starting trust session...", buf, 2u);
   }
 
-  v8 = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
+  pKGetClassNFHardwareManager() = [PKGetClassNFHardwareManager() sharedHardwareManagerWithNoUI];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __72__PKPaymentSession_startApplePayTrustSessionWithCompletion_targetQueue___block_invoke;
   v14[3] = &unk_1E79CC688;
-  v15 = v6;
-  v16 = v5;
-  v9 = v5;
-  v10 = v6;
-  v11 = [v8 startTrustSession:v14];
+  v15 = queueCopy;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  v10 = queueCopy;
+  v11 = [pKGetClassNFHardwareManager() startTrustSession:v14];
   v12 = [[PKPaymentSessionHandle alloc] initWithInternalNFSessionHandle:v11 targetQueue:v10];
 
   return v12;
@@ -598,56 +598,56 @@ void __72__PKPaymentSession_startApplePayTrustSessionWithCompletion_targetQueue_
   }
 }
 
-+ (void)_STSCredentialTypeForPaymentApplication:(void *)a3 subcredential:(void *)a4 onSecureElementPass:(void *)a5 STSCredential:
++ (void)_STSCredentialTypeForPaymentApplication:(void *)application subcredential:(void *)subcredential onSecureElementPass:(void *)pass STSCredential:
 {
   v41 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
+  applicationCopy = application;
+  subcredentialCopy = subcredential;
   objc_opt_self();
-  if (v10 && v8)
+  if (subcredentialCopy && v8)
   {
-    v11 = [v9 identifier];
-    v12 = v11;
-    if (v9 && !v11)
+    identifier = [applicationCopy identifier];
+    v12 = identifier;
+    if (applicationCopy && !identifier)
     {
-      if (a5)
+      if (pass)
       {
-        v13 = *a5;
-        *a5 = 0;
+        v13 = *pass;
+        *pass = 0;
       }
 
       goto LABEL_44;
     }
 
-    v14 = [v8 subcredentials];
-    v15 = v14;
-    if (!v9 || v14 && ([v14 containsObject:v9] & 1) != 0)
+    subcredentials = [v8 subcredentials];
+    v15 = subcredentials;
+    if (!applicationCopy || subcredentials && ([subcredentials containsObject:applicationCopy] & 1) != 0)
     {
-      v16 = [v8 applicationIdentifier];
-      if (!v16)
+      applicationIdentifier = [v8 applicationIdentifier];
+      if (!applicationIdentifier)
       {
-        if (a5)
+        if (pass)
         {
-          v27 = *a5;
-          *a5 = 0;
+          v27 = *pass;
+          *pass = 0;
         }
 
         goto LABEL_43;
       }
 
-      v17 = [v10 devicePaymentApplications];
-      if (v17)
+      devicePaymentApplications = [subcredentialCopy devicePaymentApplications];
+      if (devicePaymentApplications)
       {
         v32 = v15;
         v33 = v12;
-        v34 = v10;
-        v35 = a5;
+        v34 = subcredentialCopy;
+        passCopy = pass;
         v38 = 0u;
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v18 = v17;
+        v18 = devicePaymentApplications;
         v19 = [v18 countByEnumeratingWithState:&v36 objects:v40 count:16];
         if (v19)
         {
@@ -663,16 +663,16 @@ void __72__PKPaymentSession_startApplePayTrustSessionWithCompletion_targetQueue_
                 objc_enumerationMutation(v18);
               }
 
-              v24 = [*(*(&v36 + 1) + 8 * i) applicationIdentifier];
-              v25 = v16;
-              if (v24 == v25)
+              applicationIdentifier2 = [*(*(&v36 + 1) + 8 * i) applicationIdentifier];
+              v25 = applicationIdentifier;
+              if (applicationIdentifier2 == v25)
               {
                 v21 = 1;
               }
 
-              else if (v24)
+              else if (applicationIdentifier2)
               {
-                v21 |= [v24 isEqualToString:v25];
+                v21 |= [applicationIdentifier2 isEqualToString:v25];
               }
             }
 
@@ -683,12 +683,12 @@ void __72__PKPaymentSession_startApplePayTrustSessionWithCompletion_targetQueue_
 
           if (v21)
           {
-            v10 = v34;
+            subcredentialCopy = v34;
             if ([v34 isCarKeyPass])
             {
               v26 = 4;
               v12 = v33;
-              if (!v35)
+              if (!passCopy)
               {
                 goto LABEL_42;
               }
@@ -709,7 +709,7 @@ void __72__PKPaymentSession_startApplePayTrustSessionWithCompletion_targetQueue_
                   v26 = 2;
                 }
 
-                if (!v35)
+                if (!passCopy)
                 {
                   goto LABEL_42;
                 }
@@ -717,8 +717,8 @@ void __72__PKPaymentSession_startApplePayTrustSessionWithCompletion_targetQueue_
 
               else
               {
-                v28 = [v8 subcredentials];
-                v29 = [v28 count];
+                subcredentials2 = [v8 subcredentials];
+                v29 = [subcredentials2 count];
 
                 if (v29)
                 {
@@ -730,7 +730,7 @@ void __72__PKPaymentSession_startApplePayTrustSessionWithCompletion_targetQueue_
                   v26 = 1;
                 }
 
-                if (!v35)
+                if (!passCopy)
                 {
                   goto LABEL_42;
                 }
@@ -738,8 +738,8 @@ void __72__PKPaymentSession_startApplePayTrustSessionWithCompletion_targetQueue_
             }
 
             v30 = [objc_alloc(getSTSCredentialClass[0]()) initWithType:v26 identifier:v25 subIdentifier:v12];
-            v31 = *v35;
-            *v35 = v30;
+            v31 = *passCopy;
+            *passCopy = v30;
 
 LABEL_42:
             v15 = v32;
@@ -760,30 +760,30 @@ LABEL_44:
   __break(1u);
 }
 
-+ (BOOL)useSTSForPaymentApplication:(id)a3 subcredential:(id)a4 onSecureElementPass:(id)a5
++ (BOOL)useSTSForPaymentApplication:(id)application subcredential:(id)subcredential onSecureElementPass:(id)pass
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(PKPaymentSession *)a1 _STSCredentialTypeForPaymentApplication:v8 subcredential:v9 onSecureElementPass:v10 STSCredential:0];
-  LODWORD(a1) = 0x2Cu >> v11;
+  applicationCopy = application;
+  subcredentialCopy = subcredential;
+  passCopy = pass;
+  [(PKPaymentSession *)self _STSCredentialTypeForPaymentApplication:applicationCopy subcredential:subcredentialCopy onSecureElementPass:passCopy STSCredential:0];
+  LODWORD(self) = 0x2Cu >> v11;
 
-  return a1 & 1;
+  return self & 1;
 }
 
-+ (id)STSCredentialForPaymentApplication:(id)a3 subcredential:(id)a4 onSecureElementPass:(id)a5
++ (id)STSCredentialForPaymentApplication:(id)application subcredential:(id)subcredential onSecureElementPass:(id)pass
 {
   v7 = 0;
-  [(PKPaymentSession *)a1 _STSCredentialTypeForPaymentApplication:a3 subcredential:a4 onSecureElementPass:a5 STSCredential:&v7];
+  [(PKPaymentSession *)self _STSCredentialTypeForPaymentApplication:application subcredential:subcredential onSecureElementPass:pass STSCredential:&v7];
   v5 = v7;
 
   return v5;
 }
 
-- (PKPaymentSession)initWithInternalSession:(id)a3 targetQueue:(id)a4
+- (PKPaymentSession)initWithInternalSession:(id)session targetQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = PKPaymentSession;
   v9 = [(PKPaymentSession *)&v15 init];
@@ -796,34 +796,34 @@ LABEL_44:
     v13 = *(v9 + 1);
     *(v9 + 1) = v12;
 
-    if (v8)
+    if (queueCopy)
     {
-      dispatch_set_target_queue(*(v9 + 1), v8);
+      dispatch_set_target_queue(*(v9 + 1), queueCopy);
     }
 
     dispatch_activate(*(v9 + 1));
-    objc_storeStrong(v9 + 2, a3);
+    objc_storeStrong(v9 + 2, session);
     dispatch_queue_set_specific(*(v9 + 1), @"context", v9, 0);
   }
 
   else
   {
-    [v7 endSession];
+    [sessionCopy endSession];
   }
 
   return v9;
 }
 
-- (void)invalidateSessionWithCompletion:(id)a3
+- (void)invalidateSessionWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PKPaymentSession_invalidateSessionWithCompletion___block_invoke;
   v6[3] = &unk_1E79CC6B0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(PKPaymentSession *)self performBlockSyncOnInternalSession:v6];
 }
 
@@ -910,18 +910,18 @@ void __52__PKPaymentSession_invalidateSessionWithCompletion___block_invoke_100(v
   }
 }
 
-- (void)createSessionHandoffTokenWithCompletion:(id)a3
+- (void)createSessionHandoffTokenWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__PKPaymentSession_createSessionHandoffTokenWithCompletion___block_invoke;
     v6[3] = &unk_1E79CC6B0;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(PKPaymentSession *)self performBlockSyncOnInternalSession:v6];
   }
 }
@@ -955,11 +955,11 @@ void __60__PKPaymentSession_createSessionHandoffTokenWithCompletion___block_invo
   v6();
 }
 
-- (void)performBlockAsyncOnInternalSession:(id)a3
+- (void)performBlockAsyncOnInternalSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (sessionCopy)
   {
     internalSessionSerialQueue = self->_internalSessionSerialQueue;
     v8[0] = MEMORY[0x1E69E9820];
@@ -967,7 +967,7 @@ void __60__PKPaymentSession_createSessionHandoffTokenWithCompletion___block_invo
     v8[2] = __55__PKPaymentSession_performBlockAsyncOnInternalSession___block_invoke;
     v8[3] = &unk_1E79C44A0;
     v8[4] = self;
-    v9 = v4;
+    v9 = sessionCopy;
     v7 = v8;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -978,14 +978,14 @@ void __60__PKPaymentSession_createSessionHandoffTokenWithCompletion___block_invo
   }
 }
 
-- (void)performBlockSyncOnInternalSession:(id)a3
+- (void)performBlockSyncOnInternalSession:(id)session
 {
-  v4 = a3;
-  if (v4)
+  sessionCopy = session;
+  if (sessionCopy)
   {
     if (dispatch_get_specific(@"context") == self)
     {
-      v4[2](v4, self->_internalSession);
+      sessionCopy[2](sessionCopy, self->_internalSession);
     }
 
     else
@@ -996,7 +996,7 @@ void __60__PKPaymentSession_createSessionHandoffTokenWithCompletion___block_invo
       v6[2] = __54__PKPaymentSession_performBlockSyncOnInternalSession___block_invoke;
       v6[3] = &unk_1E79C44A0;
       v6[4] = self;
-      v7 = v4;
+      v7 = sessionCopy;
       dispatch_sync(internalSessionSerialQueue, v6);
     }
   }

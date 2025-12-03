@@ -1,5 +1,5 @@
 @interface CNContactViewCache
-+ (BOOL)isCandidatePolicy:(id)a3 ofContactInCandidateContainerWithType:(int64_t)a4 preferredOverPolicy:(id)a5 ofContactInContainerWithType:(int64_t)a6;
++ (BOOL)isCandidatePolicy:(id)policy ofContactInCandidateContainerWithType:(int64_t)type preferredOverPolicy:(id)overPolicy ofContactInContainerWithType:(int64_t)withType;
 - (CNCache)cachedAccounts;
 - (CNCache)cachedContactToContainerIDs;
 - (CNCache)cachedContainers;
@@ -7,21 +7,21 @@
 - (CNCache)cachedTopAccounts;
 - (CNContactStore)contactStore;
 - (CNContactViewCache)init;
-- (id)_accountForContainer:(id)a3;
-- (id)_policyForContact:(id)a3;
-- (id)_uncachedContainerForContact:(id)a3 inStore:(id)a4;
-- (id)accountForContact:(id)a3;
-- (id)accountForContainer:(id)a3 shouldUseTopLevelAccount:(BOOL)a4;
-- (id)bestPolicyForContact:(id)a3;
-- (id)containerForContact:(id)a3;
-- (id)containerIdentifierForContact:(id)a3;
+- (id)_accountForContainer:(id)container;
+- (id)_policyForContact:(id)contact;
+- (id)_uncachedContainerForContact:(id)contact inStore:(id)store;
+- (id)accountForContact:(id)contact;
+- (id)accountForContainer:(id)container shouldUseTopLevelAccount:(BOOL)account;
+- (id)bestPolicyForContact:(id)contact;
+- (id)containerForContact:(id)contact;
+- (id)containerIdentifierForContact:(id)contact;
 - (id)defaultContainerPolicy;
 - (id)nts_lazyContactStore;
-- (id)policyForContact:(id)a3;
-- (id)policyForContainer:(id)a3;
-- (id)policyForContainerWithIdentifier:(id)a3;
+- (id)policyForContact:(id)contact;
+- (id)policyForContainer:(id)container;
+- (id)policyForContainerWithIdentifier:(id)identifier;
 - (id)policyForDefaultContainer;
-- (id)predicateForContainerForContact:(id)a3 inStore:(id)a4;
+- (id)predicateForContainerForContact:(id)contact inStore:(id)store;
 - (void)resetCache;
 @end
 
@@ -41,48 +41,48 @@
   return v3;
 }
 
-- (id)_accountForContainer:(id)a3
+- (id)_accountForContainer:(id)container
 {
-  if (a3)
+  if (container)
   {
     v4 = MEMORY[0x1E695CD10];
-    v5 = [a3 identifier];
-    v6 = [v4 predicateForAccountForContainerWithIdentifier:v5];
+    identifier = [container identifier];
+    v6 = [v4 predicateForAccountForContainerWithIdentifier:identifier];
 
-    v7 = [(CNContactViewCache *)self contactStore];
-    v8 = [v7 accountsMatchingPredicate:v6 error:0];
+    contactStore = [(CNContactViewCache *)self contactStore];
+    v8 = [contactStore accountsMatchingPredicate:v6 error:0];
 
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (id)bestPolicyForContact:(id)a3
+- (id)bestPolicyForContact:(id)contact
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 isUnified])
+  contactCopy = contact;
+  if ([contactCopy isUnified])
   {
-    v5 = [v4 linkedContacts];
+    linkedContacts = [contactCopy linkedContacts];
   }
 
   else
   {
-    v27[0] = v4;
-    v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
+    v27[0] = contactCopy;
+    linkedContacts = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
   }
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v5;
+  v6 = linkedContacts;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v7)
   {
@@ -91,10 +91,10 @@
   }
 
   v8 = v7;
-  v20 = v4;
+  v20 = contactCopy;
   obj = v6;
-  v9 = 0;
-  v10 = 0;
+  mEMORY[0x1E695CF48]2 = 0;
+  type = 0;
   v11 = *v23;
   do
   {
@@ -108,27 +108,27 @@
       v13 = [(CNContactViewCache *)self containerForContact:*(*(&v22 + 1) + 8 * i), v20];
       if (v13)
       {
-        v14 = [(CNContactViewCache *)self contactStore];
-        v15 = [v13 identifier];
-        v16 = [v14 policyForContainerWithIdentifier:v15 error:0];
+        contactStore = [(CNContactViewCache *)self contactStore];
+        identifier = [v13 identifier];
+        v16 = [contactStore policyForContainerWithIdentifier:identifier error:0];
 
         if (v16)
         {
-          v17 = [objc_opt_class() isCandidatePolicy:v16 ofContactInCandidateContainerWithType:objc_msgSend(v13 preferredOverPolicy:"type") ofContactInContainerWithType:{v9, v10}];
+          v17 = [objc_opt_class() isCandidatePolicy:v16 ofContactInCandidateContainerWithType:objc_msgSend(v13 preferredOverPolicy:"type") ofContactInContainerWithType:{mEMORY[0x1E695CF48]2, type}];
           if ([objc_opt_class() shouldIgnorePolicyOfContactInGuarianRestrictedContainer:v13])
           {
-            v18 = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
-            v10 = 3;
+            mEMORY[0x1E695CF48] = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
+            type = 3;
             goto LABEL_15;
           }
 
           if (v17)
           {
-            v10 = [v13 type];
-            v18 = v16;
+            type = [v13 type];
+            mEMORY[0x1E695CF48] = v16;
 LABEL_15:
 
-            v9 = v18;
+            mEMORY[0x1E695CF48]2 = mEMORY[0x1E695CF48];
           }
         }
       }
@@ -140,46 +140,46 @@ LABEL_15:
 
   while (v8);
 
-  v4 = v20;
-  if (!v9)
+  contactCopy = v20;
+  if (!mEMORY[0x1E695CF48]2)
   {
 LABEL_22:
-    v9 = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
+    mEMORY[0x1E695CF48]2 = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
   }
 
-  return v9;
+  return mEMORY[0x1E695CF48]2;
 }
 
 - (id)defaultContainerPolicy
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
-  v4 = [(CNContactViewCache *)self contactStore];
-  v5 = [v4 defaultContainerIdentifier];
+  mEMORY[0x1E695CF48] = [MEMORY[0x1E695CF48] sharedPermissivePolicy];
+  contactStore = [(CNContactViewCache *)self contactStore];
+  defaultContainerIdentifier = [contactStore defaultContainerIdentifier];
 
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
-    v6 = v3;
+    v6 = mEMORY[0x1E695CF48];
   }
 
   else
   {
-    v7 = [(CNContactViewCache *)self contactStore];
-    v8 = [v7 policyForContainerWithIdentifier:v5 error:0];
+    contactStore2 = [(CNContactViewCache *)self contactStore];
+    v8 = [contactStore2 policyForContainerWithIdentifier:defaultContainerIdentifier error:0];
 
     if (v8)
     {
-      v9 = [(CNContactViewCache *)self contactStore];
+      contactStore3 = [(CNContactViewCache *)self contactStore];
       v10 = MEMORY[0x1E695CE48];
-      v17[0] = v5;
+      v17[0] = defaultContainerIdentifier;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
       v12 = [v10 predicateForContainersWithIdentifiers:v11];
-      v13 = [v9 containersMatchingPredicate:v12 error:0];
-      v14 = [v13 firstObject];
+      v13 = [contactStore3 containersMatchingPredicate:v12 error:0];
+      firstObject = [v13 firstObject];
 
-      if ([objc_opt_class() shouldIgnorePolicyOfContactInGuarianRestrictedContainer:v14])
+      if ([objc_opt_class() shouldIgnorePolicyOfContactInGuarianRestrictedContainer:firstObject])
       {
-        v15 = v3;
+        v15 = mEMORY[0x1E695CF48];
       }
 
       else
@@ -192,16 +192,16 @@ LABEL_22:
 
     else
     {
-      v6 = v3;
+      v6 = mEMORY[0x1E695CF48];
     }
   }
 
   return v6;
 }
 
-- (id)_policyForContact:(id)a3
+- (id)_policyForContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
     [(CNContactViewCache *)self bestPolicyForContact:?];
   }
@@ -215,44 +215,44 @@ LABEL_22:
   return v3;
 }
 
-- (id)_uncachedContainerForContact:(id)a3 inStore:(id)a4
+- (id)_uncachedContainerForContact:(id)contact inStore:(id)store
 {
-  v6 = a4;
-  v7 = [(CNContactViewCache *)self predicateForContainerForContact:a3 inStore:v6];
+  storeCopy = store;
+  v7 = [(CNContactViewCache *)self predicateForContainerForContact:contact inStore:storeCopy];
   if (v7)
   {
-    v8 = [v6 containersMatchingPredicate:v7 error:0];
-    v9 = [v8 firstObject];
+    v8 = [storeCopy containersMatchingPredicate:v7 error:0];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    firstObject = [MEMORY[0x1E695DFB0] null];
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (id)predicateForContainerForContact:(id)a3 inStore:(id)a4
+- (id)predicateForContainerForContact:(id)contact inStore:(id)store
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 hasBeenPersisted])
+  contactCopy = contact;
+  storeCopy = store;
+  if ([contactCopy hasBeenPersisted])
   {
     v7 = MEMORY[0x1E695CE48];
-    v8 = [v5 identifier];
-    v9 = [v7 predicateForContainerOfContactWithIdentifier:v8];
+    identifier = [contactCopy identifier];
+    v9 = [v7 predicateForContainerOfContactWithIdentifier:identifier];
   }
 
   else
   {
-    v10 = [v6 defaultContainerIdentifier];
-    v11 = v10;
-    if (v10)
+    defaultContainerIdentifier = [storeCopy defaultContainerIdentifier];
+    v11 = defaultContainerIdentifier;
+    if (defaultContainerIdentifier)
     {
       v12 = MEMORY[0x1E695CE48];
-      v15[0] = v10;
+      v15[0] = defaultContainerIdentifier;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
       v9 = [v12 predicateForContainersWithIdentifiers:v13];
     }
@@ -266,24 +266,24 @@ LABEL_22:
   return v9;
 }
 
-- (id)containerForContact:(id)a3
+- (id)containerForContact:(id)contact
 {
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v5 = [(CNContactViewCache *)self contactStore];
-    v6 = [(CNContactViewCache *)self containerIdentifierForContact:v4];
+    contactStore = [(CNContactViewCache *)self contactStore];
+    v6 = [(CNContactViewCache *)self containerIdentifierForContact:contactCopy];
     if (v6)
     {
-      v7 = [(CNContactViewCache *)self cachedContainers];
+      cachedContainers = [(CNContactViewCache *)self cachedContainers];
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __42__CNContactViewCache_containerForContact___block_invoke;
       v11[3] = &unk_1E74E5058;
       v11[4] = self;
-      v12 = v4;
-      v13 = v5;
-      v8 = [v7 objectForKey:v6 onCacheMiss:v11];
+      v12 = contactCopy;
+      v13 = contactStore;
+      v8 = [cachedContainers objectForKey:v6 onCacheMiss:v11];
 
       v9 = (*(*MEMORY[0x1E6996590] + 16))();
     }
@@ -315,9 +315,9 @@ id __42__CNContactViewCache_containerForContact___block_invoke(uint64_t a1)
   cachedTopAccounts = self->_cachedTopAccounts;
   if (!cachedTopAccounts)
   {
-    v4 = [MEMORY[0x1E6996660] cache];
+    cache = [MEMORY[0x1E6996660] cache];
     v5 = self->_cachedTopAccounts;
-    self->_cachedTopAccounts = v4;
+    self->_cachedTopAccounts = cache;
 
     cachedTopAccounts = self->_cachedTopAccounts;
   }
@@ -330,9 +330,9 @@ id __42__CNContactViewCache_containerForContact___block_invoke(uint64_t a1)
   cachedAccounts = self->_cachedAccounts;
   if (!cachedAccounts)
   {
-    v4 = [MEMORY[0x1E6996660] cache];
+    cache = [MEMORY[0x1E6996660] cache];
     v5 = self->_cachedAccounts;
-    self->_cachedAccounts = v4;
+    self->_cachedAccounts = cache;
 
     cachedAccounts = self->_cachedAccounts;
   }
@@ -345,9 +345,9 @@ id __42__CNContactViewCache_containerForContact___block_invoke(uint64_t a1)
   cachedPolicies = self->_cachedPolicies;
   if (!cachedPolicies)
   {
-    v4 = [MEMORY[0x1E6996660] cache];
+    cache = [MEMORY[0x1E6996660] cache];
     v5 = self->_cachedPolicies;
-    self->_cachedPolicies = v4;
+    self->_cachedPolicies = cache;
 
     cachedPolicies = self->_cachedPolicies;
   }
@@ -360,9 +360,9 @@ id __42__CNContactViewCache_containerForContact___block_invoke(uint64_t a1)
   cachedContainers = self->_cachedContainers;
   if (!cachedContainers)
   {
-    v4 = [MEMORY[0x1E6996660] cache];
+    cache = [MEMORY[0x1E6996660] cache];
     v5 = self->_cachedContainers;
-    self->_cachedContainers = v4;
+    self->_cachedContainers = cache;
 
     cachedContainers = self->_cachedContainers;
   }
@@ -375,9 +375,9 @@ id __42__CNContactViewCache_containerForContact___block_invoke(uint64_t a1)
   cachedContactToContainerIDs = self->_cachedContactToContainerIDs;
   if (!cachedContactToContainerIDs)
   {
-    v4 = [MEMORY[0x1E6996660] cache];
+    cache = [MEMORY[0x1E6996660] cache];
     v5 = self->_cachedContactToContainerIDs;
-    self->_cachedContactToContainerIDs = v4;
+    self->_cachedContactToContainerIDs = cache;
 
     cachedContactToContainerIDs = self->_cachedContactToContainerIDs;
   }
@@ -385,29 +385,29 @@ id __42__CNContactViewCache_containerForContact___block_invoke(uint64_t a1)
   return cachedContactToContainerIDs;
 }
 
-- (id)containerIdentifierForContact:(id)a3
+- (id)containerIdentifierForContact:(id)contact
 {
-  v4 = a3;
-  if ([v4 hasBeenPersisted])
+  contactCopy = contact;
+  if ([contactCopy hasBeenPersisted])
   {
-    v5 = [(CNContactViewCache *)self cachedContactToContainerIDs];
-    v6 = [v4 identifier];
+    cachedContactToContainerIDs = [(CNContactViewCache *)self cachedContactToContainerIDs];
+    identifier = [contactCopy identifier];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __52__CNContactViewCache_containerIdentifierForContact___block_invoke;
     v14[3] = &unk_1E74E5030;
     v14[4] = self;
-    v15 = v4;
-    v7 = [v5 objectForKey:v6 onCacheMiss:v14];
+    v15 = contactCopy;
+    defaultContainerIdentifier = [cachedContactToContainerIDs objectForKey:identifier onCacheMiss:v14];
   }
 
   else
   {
-    v11 = [(CNContactViewCache *)self contactStore];
-    v7 = [v11 defaultContainerIdentifier];
+    contactStore = [(CNContactViewCache *)self contactStore];
+    defaultContainerIdentifier = [contactStore defaultContainerIdentifier];
   }
 
-  v12 = (*(*MEMORY[0x1E6996590] + 16))(*MEMORY[0x1E6996590], v7, v8, v9, v10);
+  v12 = (*(*MEMORY[0x1E6996590] + 16))(*MEMORY[0x1E6996590], defaultContainerIdentifier, v8, v9, v10);
 
   return v12;
 }
@@ -443,12 +443,12 @@ id __52__CNContactViewCache_containerIdentifierForContact___block_invoke(uint64_
   [(CNContactViewCache *)self setCachedTopAccounts:0];
 }
 
-- (id)accountForContainer:(id)a3 shouldUseTopLevelAccount:(BOOL)a4
+- (id)accountForContainer:(id)container shouldUseTopLevelAccount:(BOOL)account
 {
-  v6 = a3;
-  if (v6)
+  containerCopy = container;
+  if (containerCopy)
   {
-    if (a4)
+    if (account)
     {
       [(CNContactViewCache *)self cachedTopAccounts];
     }
@@ -458,15 +458,15 @@ id __52__CNContactViewCache_containerIdentifierForContact___block_invoke(uint64_
       [(CNContactViewCache *)self cachedAccounts];
     }
     v8 = ;
-    v9 = [v6 identifier];
+    identifier = [containerCopy identifier];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __67__CNContactViewCache_accountForContainer_shouldUseTopLevelAccount___block_invoke;
     v12[3] = &unk_1E74E5008;
     v12[4] = self;
-    v13 = v6;
-    v14 = a4;
-    v10 = [v8 objectForKey:v9 onCacheMiss:v12];
+    v13 = containerCopy;
+    accountCopy = account;
+    v10 = [v8 objectForKey:identifier onCacheMiss:v12];
 
     v7 = (*(*MEMORY[0x1E6996590] + 16))();
   }
@@ -498,39 +498,39 @@ id __67__CNContactViewCache_accountForContainer_shouldUseTopLevelAccount___block
   return v7;
 }
 
-- (id)accountForContact:(id)a3
+- (id)accountForContact:(id)contact
 {
-  v4 = a3;
-  if (v4)
+  contactCopy = contact;
+  if (contactCopy)
   {
-    v5 = [(CNContactViewCache *)self containerIdentifierForContact:v4];
+    v5 = [(CNContactViewCache *)self containerIdentifierForContact:contactCopy];
     if (v5)
     {
-      v6 = [(CNContactViewCache *)self cachedContainers];
+      cachedContainers = [(CNContactViewCache *)self cachedContainers];
       v14 = MEMORY[0x1E69E9820];
       v15 = 3221225472;
       v16 = __40__CNContactViewCache_accountForContact___block_invoke;
       v17 = &unk_1E74E4FE0;
-      v18 = self;
-      v19 = v4;
-      v7 = [v6 objectForKey:v5 onCacheMiss:&v14];
+      selfCopy = self;
+      v19 = contactCopy;
+      v7 = [cachedContainers objectForKey:v5 onCacheMiss:&v14];
 
       v11 = (*(*MEMORY[0x1E6996590] + 16))(*MEMORY[0x1E6996590], v7, v8, v9, v10);
-      v12 = [(CNContactViewCache *)self accountForContainer:v11, v14, v15, v16, v17, v18];
+      selfCopy = [(CNContactViewCache *)self accountForContainer:v11, v14, v15, v16, v17, selfCopy];
     }
 
     else
     {
-      v12 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 id __40__CNContactViewCache_accountForContact___block_invoke(uint64_t a1)
@@ -545,18 +545,18 @@ id __40__CNContactViewCache_accountForContact___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)policyForContainerWithIdentifier:(id)a3
+- (id)policyForContainerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNContactViewCache *)self cachedPolicies];
+  identifierCopy = identifier;
+  cachedPolicies = [(CNContactViewCache *)self cachedPolicies];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__CNContactViewCache_policyForContainerWithIdentifier___block_invoke;
   v13[3] = &unk_1E74E4FB8;
   v13[4] = self;
-  v14 = v4;
-  v6 = v4;
-  v7 = [v5 objectForKey:v6 onCacheMiss:v13];
+  v14 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [cachedPolicies objectForKey:v6 onCacheMiss:v13];
 
   v11 = (*(*MEMORY[0x1E6996590] + 16))(*MEMORY[0x1E6996590], v7, v8, v9, v10);
 
@@ -575,34 +575,34 @@ id __55__CNContactViewCache_policyForContainerWithIdentifier___block_invoke(uint
 
 - (id)policyForDefaultContainer
 {
-  v3 = [(CNContactViewCache *)self contactStore];
-  v4 = [v3 defaultContainerIdentifier];
-  v5 = [(CNContactViewCache *)self policyForContainerWithIdentifier:v4];
+  contactStore = [(CNContactViewCache *)self contactStore];
+  defaultContainerIdentifier = [contactStore defaultContainerIdentifier];
+  v5 = [(CNContactViewCache *)self policyForContainerWithIdentifier:defaultContainerIdentifier];
 
   return v5;
 }
 
-- (id)policyForContainer:(id)a3
+- (id)policyForContainer:(id)container
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  containerCopy = container;
+  v5 = containerCopy;
+  if (containerCopy)
   {
-    v6 = [v4 identifier];
-    if (v6)
+    identifier = [containerCopy identifier];
+    if (identifier)
     {
 LABEL_3:
-      v7 = [(CNContactViewCache *)self policyForContainerWithIdentifier:v6];
+      v7 = [(CNContactViewCache *)self policyForContainerWithIdentifier:identifier];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v8 = [(CNContactViewCache *)self contactStore];
-    v6 = [v8 defaultContainerIdentifier];
+    contactStore = [(CNContactViewCache *)self contactStore];
+    identifier = [contactStore defaultContainerIdentifier];
 
-    if (v6)
+    if (identifier)
     {
       goto LABEL_3;
     }
@@ -614,20 +614,20 @@ LABEL_6:
   return v7;
 }
 
-- (id)policyForContact:(id)a3
+- (id)policyForContact:(id)contact
 {
-  v4 = a3;
-  v8 = [(CNContactViewCache *)self containerIdentifierForContact:v4];
+  contactCopy = contact;
+  v8 = [(CNContactViewCache *)self containerIdentifierForContact:contactCopy];
   if (v8)
   {
-    v9 = [(CNContactViewCache *)self cachedPolicies];
+    cachedPolicies = [(CNContactViewCache *)self cachedPolicies];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __39__CNContactViewCache_policyForContact___block_invoke;
     v13[3] = &unk_1E74E4FB8;
     v13[4] = self;
-    v14 = v4;
-    v10 = [v9 objectForKey:v8 onCacheMiss:v13];
+    v14 = contactCopy;
+    v10 = [cachedPolicies objectForKey:v8 onCacheMiss:v13];
   }
 
   else
@@ -671,12 +671,12 @@ id __39__CNContactViewCache_policyForContact___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (BOOL)isCandidatePolicy:(id)a3 ofContactInCandidateContainerWithType:(int64_t)a4 preferredOverPolicy:(id)a5 ofContactInContainerWithType:(int64_t)a6
++ (BOOL)isCandidatePolicy:(id)policy ofContactInCandidateContainerWithType:(int64_t)type preferredOverPolicy:(id)overPolicy ofContactInContainerWithType:(int64_t)withType
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (!v9 || v10)
+  policyCopy = policy;
+  overPolicyCopy = overPolicy;
+  v11 = overPolicyCopy;
+  if (!policyCopy || overPolicyCopy)
   {
     if (isCandidatePolicy_ofContactInCandidateContainerWithType_preferredOverPolicy_ofContactInContainerWithType__cn_once_token_6 != -1)
     {
@@ -686,7 +686,7 @@ id __39__CNContactViewCache_policyForContact___block_invoke(uint64_t a1)
     v13 = isCandidatePolicy_ofContactInCandidateContainerWithType_preferredOverPolicy_ofContactInContainerWithType__cn_once_object_6;
     if ([v11 isReadonly])
     {
-      v14 = [v9 isReadonly] ^ 1;
+      v14 = [policyCopy isReadonly] ^ 1;
     }
 
     else
@@ -694,9 +694,9 @@ id __39__CNContactViewCache_policyForContact___block_invoke(uint64_t a1)
       LOBYTE(v14) = 0;
     }
 
-    v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v15 = [MEMORY[0x1E696AD98] numberWithInteger:type];
     v16 = [v13 indexOfObject:v15];
-    v17 = [MEMORY[0x1E696AD98] numberWithInteger:a6];
+    v17 = [MEMORY[0x1E696AD98] numberWithInteger:withType];
     v18 = [v13 indexOfObject:v17];
 
     if (v16 < v18)

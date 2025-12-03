@@ -1,23 +1,23 @@
 @interface PISemanticStyleFilter
-+ (id)CMISmartStyleTuningParameterVariantFromKey:(id)a3;
-+ (id)_computeAlphaAwareHistogramForImage:(id)a3 context:(id)a4 colorSpace:(CGColorSpace *)a5 error:(id *)a6;
-+ (id)_computeSmartToneStatsFromHistogram:(id)a3;
-+ (id)stylePriorDataForCast:(id)a3 tone:(float)a4 color:(float)a5 intensity:(float)a6 priorStrength:(float)a7;
-+ (id)styleTuningParametersForCast:(id)a3;
-- (id)_lightMapImageWithData:(id)a3;
-- (id)curveImageWithData:(id)a3;
-- (id)extractDataToDictionary:(id)a3 options:(id)a4 context:(id)a5 colorSpace:(CGColorSpace *)a6 error:(id *)a7;
++ (id)CMISmartStyleTuningParameterVariantFromKey:(id)key;
++ (id)_computeAlphaAwareHistogramForImage:(id)image context:(id)context colorSpace:(CGColorSpace *)space error:(id *)error;
++ (id)_computeSmartToneStatsFromHistogram:(id)histogram;
++ (id)stylePriorDataForCast:(id)cast tone:(float)tone color:(float)color intensity:(float)intensity priorStrength:(float)strength;
++ (id)styleTuningParametersForCast:(id)cast;
+- (id)_lightMapImageWithData:(id)data;
+- (id)curveImageWithData:(id)data;
+- (id)extractDataToDictionary:(id)dictionary options:(id)options context:(id)context colorSpace:(CGColorSpace *)space error:(id *)error;
 - (id)gtcKernel;
 - (id)outputImage;
 @end
 
 @implementation PISemanticStyleFilter
 
-+ (id)styleTuningParametersForCast:(id)a3
++ (id)styleTuningParametersForCast:(id)cast
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  castCopy = cast;
+  if (!castCopy)
   {
     v7 = NUAssertLogger_22529();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -39,8 +39,8 @@
         v15 = dispatch_get_specific(*v9);
         v16 = MEMORY[0x1E696AF00];
         v17 = v15;
-        v18 = [v16 callStackSymbols];
-        v19 = [v18 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v16 callStackSymbols];
+        v19 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v21 = v15;
         v22 = 2114;
@@ -51,8 +51,8 @@
 
     else if (v12)
     {
-      v13 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [v13 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v14 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v21 = v14;
       _os_log_error_impl(&dword_1C7694000, v11, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -61,15 +61,15 @@
     _NUAssertFailHandler();
   }
 
-  v4 = v3;
-  v5 = [MEMORY[0x1E6991708] styleEngineSpecificTuningForTuningVariant:*MEMORY[0x1E69916A8] andCast:v3];
+  v4 = castCopy;
+  v5 = [MEMORY[0x1E6991708] styleEngineSpecificTuningForTuningVariant:*MEMORY[0x1E69916A8] andCast:castCopy];
 
   return v5;
 }
 
-+ (id)CMISmartStyleTuningParameterVariantFromKey:(id)a3
++ (id)CMISmartStyleTuningParameterVariantFromKey:(id)key
 {
-  v3 = [a3 intValue] - 2;
+  v3 = [key intValue] - 2;
   if (v3 > 6)
   {
     v4 = MEMORY[0x1E6991680];
@@ -85,21 +85,21 @@
   return v5;
 }
 
-+ (id)stylePriorDataForCast:(id)a3 tone:(float)a4 color:(float)a5 intensity:(float)a6 priorStrength:(float)a7
++ (id)stylePriorDataForCast:(id)cast tone:(float)tone color:(float)color intensity:(float)intensity priorStrength:(float)strength
 {
-  v11 = a3;
-  if ([v11 isEqualToString:@"None"])
+  castCopy = cast;
+  if ([castCopy isEqualToString:@"None"])
   {
     v16 = 0;
   }
 
   else
   {
-    *&v12 = a4;
-    *&v13 = a5;
-    *&v14 = a6;
-    *&v15 = a7;
-    [MEMORY[0x1E6991700] calculatePriorCCMforCast:v11 tone:v12 color:v13 intensity:v14 priorStrength:v15];
+    *&v12 = tone;
+    *&v13 = color;
+    *&v14 = intensity;
+    *&v15 = strength;
+    [MEMORY[0x1E6991700] calculatePriorCCMforCast:castCopy tone:v12 color:v13 intensity:v14 priorStrength:v15];
     v21[0] = v17;
     v21[1] = v18;
     v21[2] = v19;
@@ -109,14 +109,14 @@
   return v16;
 }
 
-+ (id)_computeSmartToneStatsFromHistogram:(id)a3
++ (id)_computeSmartToneStatsFromHistogram:(id)histogram
 {
   v43[10] = *MEMORY[0x1E69E9840];
-  v3 = [a3 luminance];
-  if ([v3 binCount] <= 512)
+  luminance = [histogram luminance];
+  if ([luminance binCount] <= 512)
   {
-    v4 = [v3 binCount];
-    if (v4 < 1)
+    binCount = [luminance binCount];
+    if (binCount < 1)
     {
       v8 = 0.0;
       v7 = 0.0;
@@ -126,18 +126,18 @@
 
   else
   {
-    v4 = 512;
+    binCount = 512;
   }
 
   v5 = 0;
-  v6 = v4;
+  v6 = binCount;
   v7 = 0.0;
   v8 = 0.0;
   do
   {
     v9 = fmin(v5 / 255.0, 1.0);
-    v10 = *([v3 values] + 8 * v5);
-    v11 = v10 / [v3 sampleCount];
+    v10 = *([luminance values] + 8 * v5);
+    v11 = v10 / [luminance sampleCount];
     v7 = v7 + v11 * log(v9 + 0.00392156863);
     v8 = v8 + v11 * log(1.0 - v9 + 0.00392156863);
     ++v5;
@@ -147,21 +147,21 @@
 LABEL_6:
   v12 = exp(v7);
   v13 = exp(v8);
-  [v3 percentile:0.02];
+  [luminance percentile:0.02];
   v15 = v14;
-  [v3 percentile:0.1];
+  [luminance percentile:0.1];
   v17 = v16;
-  [v3 percentile:0.25];
+  [luminance percentile:0.25];
   v19 = v18;
-  [v3 percentile:0.5];
+  [luminance percentile:0.5];
   v21 = v20;
-  [v3 percentile:0.75];
+  [luminance percentile:0.75];
   v38 = v22;
-  [v3 percentile:0.98];
+  [luminance percentile:0.98];
   v39 = v23;
-  [v3 percentile:0.001];
+  [luminance percentile:0.001];
   v25 = v24 * ((sqrt(v24) * -0.65 + 1.0) * 0.85);
-  [v3 percentile:1.0];
+  [luminance percentile:1.0];
   v27 = v26;
   v42[0] = @"tonalRange";
   v41 = [MEMORY[0x1E696AD98] numberWithDouble:v12];
@@ -198,12 +198,12 @@ LABEL_6:
   return v36;
 }
 
-+ (id)_computeAlphaAwareHistogramForImage:(id)a3 context:(id)a4 colorSpace:(CGColorSpace *)a5 error:(id *)a6
++ (id)_computeAlphaAwareHistogramForImage:(id)image context:(id)context colorSpace:(CGColorSpace *)space error:(id *)error
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!a6)
+  imageCopy = image;
+  contextCopy = context;
+  if (!error)
   {
     v30 = NUAssertLogger_22529();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -225,8 +225,8 @@ LABEL_6:
         v38 = dispatch_get_specific(*v32);
         v39 = MEMORY[0x1E696AF00];
         v40 = v38;
-        v41 = [v39 callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v39 callStackSymbols];
+        v42 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v38;
         *&buf[12] = 2114;
@@ -237,8 +237,8 @@ LABEL_6:
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v37 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v37 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v37;
       _os_log_error_impl(&dword_1C7694000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -247,7 +247,7 @@ LABEL_6:
     _NUAssertFailHandler();
   }
 
-  v11 = v10;
+  v11 = contextCopy;
   v12 = objc_alloc_init(MEMORY[0x1E69B3958]);
   LODWORD(v13) = *(MEMORY[0x1E69B38F0] + 48);
   LODWORD(v14) = *(MEMORY[0x1E69B38F0] + 52);
@@ -255,18 +255,18 @@ LABEL_6:
   LODWORD(v16) = *(MEMORY[0x1E69B38F0] + 60);
   [v12 setLuminanceWeights:{v13, v14, v15, v16}];
   memset(buf, 0, 32);
-  [v9 extent];
+  [imageCopy extent];
   NUPixelRectFromCGRect();
-  v17 = [MEMORY[0x1E69B3BF0] BGRA8];
-  v18 = [v17 alignedRowBytesForWidth:0];
+  bGRA8 = [MEMORY[0x1E69B3BF0] BGRA8];
+  v18 = [bGRA8 alignedRowBytesForWidth:0];
 
   v19 = [MEMORY[0x1E695DF88] dataWithLength:0];
-  v20 = [v19 mutableBytes];
-  [v9 extent];
-  [v11 render:v9 toBitmap:v20 rowBytes:v18 bounds:*MEMORY[0x1E695F8A8] format:a5 colorSpace:?];
+  mutableBytes = [v19 mutableBytes];
+  [imageCopy extent];
+  [v11 render:imageCopy toBitmap:mutableBytes rowBytes:v18 bounds:*MEMORY[0x1E695F8A8] format:space colorSpace:?];
   v21 = objc_alloc(MEMORY[0x1E69B3988]);
-  v22 = [MEMORY[0x1E69B3BF0] BGRA8];
-  v23 = [v21 initWithSize:0 format:v22 rowBytes:v18 bytes:{objc_msgSend(v19, "bytes")}];
+  bGRA82 = [MEMORY[0x1E69B3BF0] BGRA8];
+  v23 = [v21 initWithSize:0 format:bGRA82 rowBytes:v18 bytes:{objc_msgSend(v19, "bytes")}];
 
   v43 = 0;
   v24 = [v12 computeHistogramFromBuffer:v23 error:&v43];
@@ -277,20 +277,20 @@ LABEL_6:
     v27 = [v25 errorWithCode:1 reason:@"Failed to compute histogram" object:v12 underlyingError:v26];
     v28 = v27;
 
-    *a6 = v27;
+    *error = v27;
   }
 
   return v24;
 }
 
-- (id)extractDataToDictionary:(id)a3 options:(id)a4 context:(id)a5 colorSpace:(CGColorSpace *)a6 error:(id *)a7
+- (id)extractDataToDictionary:(id)dictionary options:(id)options context:(id)context colorSpace:(CGColorSpace *)space error:(id *)error
 {
   v54[3] = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  dictionaryCopy = dictionary;
+  optionsCopy = options;
+  contextCopy = context;
   v51 = 0;
-  v15 = [objc_opt_class() _computeAlphaAwareHistogramForImage:v12 context:v14 colorSpace:a6 error:&v51];
+  v15 = [objc_opt_class() _computeAlphaAwareHistogramForImage:dictionaryCopy context:contextCopy colorSpace:space error:&v51];
 
   v16 = v51;
   if (v15)
@@ -298,14 +298,14 @@ LABEL_6:
     v17 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v18 = [objc_opt_class() _computeSmartToneStatsFromHistogram:v15];
     [v17 addEntriesFromDictionary:v18];
-    v19 = [v13 objectForKeyedSubscript:PISemanticStyleFilterStatsLocalOption];
-    v20 = [v19 BOOLValue];
+    v19 = [optionsCopy objectForKeyedSubscript:PISemanticStyleFilterStatsLocalOption];
+    bOOLValue = [v19 BOOLValue];
 
-    if (v20)
+    if (bOOLValue)
     {
       v49 = v18;
       v50 = v16;
-      v21 = [v13 objectForKeyedSubscript:PISemanticStyleFilterStatsBaselineExposureOption];
+      v21 = [optionsCopy objectForKeyedSubscript:PISemanticStyleFilterStatsBaselineExposureOption];
       v48 = v21;
       if (v21)
       {
@@ -321,48 +321,48 @@ LABEL_6:
         v26 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:0.0 Z:v23 W:0.0];
         v54[2] = v26;
         v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:v53 count:3];
-        v28 = [v12 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v27];
+        v28 = [dictionaryCopy imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v27];
 
-        v12 = v28;
+        dictionaryCopy = v28;
       }
 
-      v29 = [v13 objectForKeyedSubscript:PISemanticStyleFilterStatsGlobalToneCurveOption];
+      v29 = [optionsCopy objectForKeyedSubscript:PISemanticStyleFilterStatsGlobalToneCurveOption];
       if (v29)
       {
         v30 = [(PISemanticStyleFilter *)self curveImageWithData:v29];
         v47 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:1.0];
         [v30 extent];
         v32 = [MEMORY[0x1E695F688] vectorWithX:(v31 + -1.0) / v31 Y:0.5 / v31];
-        v33 = [v12 imageByUnpremultiplyingAlpha];
+        imageByUnpremultiplyingAlpha = [dictionaryCopy imageByUnpremultiplyingAlpha];
 
-        v34 = [(PISemanticStyleFilter *)self gtcKernel];
-        [v33 extent];
+        gtcKernel = [(PISemanticStyleFilter *)self gtcKernel];
+        [imageByUnpremultiplyingAlpha extent];
         v36 = v35;
         v38 = v37;
         v40 = v39;
         v42 = v41;
-        v52[0] = v33;
+        v52[0] = imageByUnpremultiplyingAlpha;
         v52[1] = v30;
         v52[2] = v47;
         v52[3] = v32;
         v43 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:4];
-        v44 = [v34 applyWithExtent:v43 arguments:{v36, v38, v40, v42}];
+        v44 = [gtcKernel applyWithExtent:v43 arguments:{v36, v38, v40, v42}];
 
-        v12 = [v44 imageByPremultiplyingAlpha];
+        dictionaryCopy = [v44 imageByPremultiplyingAlpha];
       }
 
       v18 = v49;
-      v45 = [v12 localLightStatisticsNoProxy];
-      [v17 addEntriesFromDictionary:v45];
+      localLightStatisticsNoProxy = [dictionaryCopy localLightStatisticsNoProxy];
+      [v17 addEntriesFromDictionary:localLightStatisticsNoProxy];
 
       v16 = v50;
     }
   }
 
-  else if (a7)
+  else if (error)
   {
-    [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to compute histogram" object:v12 underlyingError:v16];
-    *a7 = v17 = 0;
+    [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to compute histogram" object:dictionaryCopy underlyingError:v16];
+    *error = v17 = 0;
   }
 
   else
@@ -397,9 +397,9 @@ uint64_t __34__PISemanticStyleFilter_gtcKernel__block_invoke()
 - (id)outputImage
 {
   v191 = *MEMORY[0x1E69E9840];
-  v3 = [(PISemanticStyleFilter *)self inputImage];
+  inputImage = [(PISemanticStyleFilter *)self inputImage];
 
-  if (!v3)
+  if (!inputImage)
   {
     v75 = NUAssertLogger_22529();
     if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
@@ -410,7 +410,7 @@ uint64_t __34__PISemanticStyleFilter_gtcKernel__block_invoke()
       _os_log_error_impl(&dword_1C7694000, v75, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v77 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v79 = NUAssertLogger_22529();
     v80 = os_log_type_enabled(v79, OS_LOG_TYPE_ERROR);
@@ -418,11 +418,11 @@ uint64_t __34__PISemanticStyleFilter_gtcKernel__block_invoke()
     {
       if (v80)
       {
-        v118 = dispatch_get_specific(*v77);
+        v118 = dispatch_get_specific(*callStackSymbols);
         v119 = MEMORY[0x1E696AF00];
         v120 = v118;
-        v77 = [v119 callStackSymbols];
-        v121 = [v77 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v119 callStackSymbols];
+        v121 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v188 = v118;
         v189 = 2114;
@@ -433,10 +433,10 @@ uint64_t __34__PISemanticStyleFilter_gtcKernel__block_invoke()
 
     else if (v80)
     {
-      v81 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v77 = [v81 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v188 = v77;
+      v188 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -444,9 +444,9 @@ uint64_t __34__PISemanticStyleFilter_gtcKernel__block_invoke()
     goto LABEL_85;
   }
 
-  v4 = [(PISemanticStyleFilter *)self inputSubjectMatteImage];
+  inputSubjectMatteImage = [(PISemanticStyleFilter *)self inputSubjectMatteImage];
 
-  if (!v4)
+  if (!inputSubjectMatteImage)
   {
     v82 = NUAssertLogger_22529();
     if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
@@ -457,7 +457,7 @@ uint64_t __34__PISemanticStyleFilter_gtcKernel__block_invoke()
       _os_log_error_impl(&dword_1C7694000, v82, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v77 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v84 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v79 = NUAssertLogger_22529();
     v85 = os_log_type_enabled(v79, OS_LOG_TYPE_ERROR);
@@ -465,10 +465,10 @@ uint64_t __34__PISemanticStyleFilter_gtcKernel__block_invoke()
     {
       if (v85)
       {
-        v86 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v77 = [v86 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v188 = v77;
+        v188 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -481,11 +481,11 @@ LABEL_87:
 LABEL_85:
     if (v85)
     {
-      v122 = dispatch_get_specific(*v77);
+      v122 = dispatch_get_specific(*callStackSymbols);
       v123 = MEMORY[0x1E696AF00];
       v124 = v122;
-      v77 = [v123 callStackSymbols];
-      v125 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v123 callStackSymbols];
+      v125 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v188 = v122;
       v189 = 2114;
@@ -496,9 +496,9 @@ LABEL_85:
     goto LABEL_87;
   }
 
-  v5 = [(PISemanticStyleFilter *)self inputSkinMatteImage];
+  inputSkinMatteImage = [(PISemanticStyleFilter *)self inputSkinMatteImage];
 
-  if (!v5)
+  if (!inputSkinMatteImage)
   {
     v87 = NUAssertLogger_22529();
     if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
@@ -509,7 +509,7 @@ LABEL_85:
       _os_log_error_impl(&dword_1C7694000, v87, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v77 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v89 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v79 = NUAssertLogger_22529();
     v90 = os_log_type_enabled(v79, OS_LOG_TYPE_ERROR);
@@ -517,10 +517,10 @@ LABEL_85:
     {
       if (v90)
       {
-        v91 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v77 = [v91 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v188 = v77;
+        v188 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -533,11 +533,11 @@ LABEL_90:
 LABEL_88:
     if (v90)
     {
-      v126 = dispatch_get_specific(*v77);
+      v126 = dispatch_get_specific(*callStackSymbols);
       v127 = MEMORY[0x1E696AF00];
       v128 = v126;
-      v77 = [v127 callStackSymbols];
-      v129 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v127 callStackSymbols];
+      v129 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v188 = v126;
       v189 = 2114;
@@ -548,9 +548,9 @@ LABEL_88:
     goto LABEL_90;
   }
 
-  v6 = [(PISemanticStyleFilter *)self inputSkyMatteImage];
+  inputSkyMatteImage = [(PISemanticStyleFilter *)self inputSkyMatteImage];
 
-  if (!v6)
+  if (!inputSkyMatteImage)
   {
     v92 = NUAssertLogger_22529();
     if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
@@ -561,7 +561,7 @@ LABEL_88:
       _os_log_error_impl(&dword_1C7694000, v92, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v77 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v94 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v79 = NUAssertLogger_22529();
     v95 = os_log_type_enabled(v79, OS_LOG_TYPE_ERROR);
@@ -569,10 +569,10 @@ LABEL_88:
     {
       if (v95)
       {
-        v96 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v77 = [v96 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v188 = v77;
+        v188 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -585,11 +585,11 @@ LABEL_93:
 LABEL_91:
     if (v95)
     {
-      v130 = dispatch_get_specific(*v77);
+      v130 = dispatch_get_specific(*callStackSymbols);
       v131 = MEMORY[0x1E696AF00];
       v132 = v130;
-      v77 = [v131 callStackSymbols];
-      v133 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v131 callStackSymbols];
+      v133 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v188 = v130;
       v189 = 2114;
@@ -600,9 +600,9 @@ LABEL_91:
     goto LABEL_93;
   }
 
-  v7 = [(PISemanticStyleFilter *)self inputLinearThumbnailImage];
+  inputLinearThumbnailImage = [(PISemanticStyleFilter *)self inputLinearThumbnailImage];
 
-  if (!v7)
+  if (!inputLinearThumbnailImage)
   {
     v97 = NUAssertLogger_22529();
     if (os_log_type_enabled(v97, OS_LOG_TYPE_ERROR))
@@ -613,7 +613,7 @@ LABEL_91:
       _os_log_error_impl(&dword_1C7694000, v97, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v77 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v99 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v79 = NUAssertLogger_22529();
     v100 = os_log_type_enabled(v79, OS_LOG_TYPE_ERROR);
@@ -621,10 +621,10 @@ LABEL_91:
     {
       if (v100)
       {
-        v101 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v77 = [v101 componentsJoinedByString:@"\n"];
+        callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols6 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v188 = v77;
+        v188 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -637,11 +637,11 @@ LABEL_96:
 LABEL_94:
     if (v100)
     {
-      v134 = dispatch_get_specific(*v77);
+      v134 = dispatch_get_specific(*callStackSymbols);
       v135 = MEMORY[0x1E696AF00];
       v136 = v134;
-      v77 = [v135 callStackSymbols];
-      v137 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v135 callStackSymbols];
+      v137 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v188 = v134;
       v189 = 2114;
@@ -652,9 +652,9 @@ LABEL_94:
     goto LABEL_96;
   }
 
-  v8 = [(PISemanticStyleFilter *)self inputGainMapImage];
+  inputGainMapImage = [(PISemanticStyleFilter *)self inputGainMapImage];
 
-  if (!v8)
+  if (!inputGainMapImage)
   {
     v102 = NUAssertLogger_22529();
     if (os_log_type_enabled(v102, OS_LOG_TYPE_ERROR))
@@ -665,7 +665,7 @@ LABEL_94:
       _os_log_error_impl(&dword_1C7694000, v102, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v77 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v104 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v79 = NUAssertLogger_22529();
     v105 = os_log_type_enabled(v79, OS_LOG_TYPE_ERROR);
@@ -673,10 +673,10 @@ LABEL_94:
     {
       if (v105)
       {
-        v106 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v77 = [v106 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v188 = v77;
+        v188 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -689,11 +689,11 @@ LABEL_99:
 LABEL_97:
     if (v105)
     {
-      v138 = dispatch_get_specific(*v77);
+      v138 = dispatch_get_specific(*callStackSymbols);
       v139 = MEMORY[0x1E696AF00];
       v140 = v138;
-      v77 = [v139 callStackSymbols];
-      v141 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v139 callStackSymbols];
+      v141 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v188 = v138;
       v189 = 2114;
@@ -704,9 +704,9 @@ LABEL_97:
     goto LABEL_99;
   }
 
-  v9 = [(PISemanticStyleFilter *)self inputTRCData];
+  inputTRCData = [(PISemanticStyleFilter *)self inputTRCData];
 
-  if (!v9)
+  if (!inputTRCData)
   {
     v107 = NUAssertLogger_22529();
     if (os_log_type_enabled(v107, OS_LOG_TYPE_ERROR))
@@ -717,7 +717,7 @@ LABEL_97:
       _os_log_error_impl(&dword_1C7694000, v107, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v77 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v109 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v79 = NUAssertLogger_22529();
     v110 = os_log_type_enabled(v79, OS_LOG_TYPE_ERROR);
@@ -725,10 +725,10 @@ LABEL_97:
     {
       if (v110)
       {
-        v111 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v77 = [v111 componentsJoinedByString:@"\n"];
+        callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols8 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v188 = v77;
+        v188 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -741,11 +741,11 @@ LABEL_102:
 LABEL_100:
     if (v110)
     {
-      v142 = dispatch_get_specific(*v77);
+      v142 = dispatch_get_specific(*callStackSymbols);
       v143 = MEMORY[0x1E696AF00];
       v144 = v142;
-      v77 = [v143 callStackSymbols];
-      v145 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v143 callStackSymbols];
+      v145 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v188 = v142;
       v189 = 2114;
@@ -756,8 +756,8 @@ LABEL_100:
     goto LABEL_102;
   }
 
-  v10 = [(PISemanticStyleFilter *)self inputTRCData];
-  v11 = [(PISemanticStyleFilter *)self curveImageWithData:v10];
+  inputTRCData2 = [(PISemanticStyleFilter *)self inputTRCData];
+  v11 = [(PISemanticStyleFilter *)self curveImageWithData:inputTRCData2];
 
   if (!v11)
   {
@@ -770,7 +770,7 @@ LABEL_100:
       _os_log_error_impl(&dword_1C7694000, v112, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v77 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v114 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v79 = NUAssertLogger_22529();
     v115 = os_log_type_enabled(v79, OS_LOG_TYPE_ERROR);
@@ -778,8 +778,8 @@ LABEL_100:
     {
       if (v115)
       {
-        v116 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v117 = [v116 componentsJoinedByString:@"\n"];
+        callStackSymbols9 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v117 = [callStackSymbols9 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v188 = v117;
         _os_log_error_impl(&dword_1C7694000, v79, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -794,11 +794,11 @@ LABEL_105:
 LABEL_103:
     if (v115)
     {
-      v146 = dispatch_get_specific(*v77);
+      v146 = dispatch_get_specific(*callStackSymbols);
       v147 = MEMORY[0x1E696AF00];
       v148 = v146;
-      v149 = [v147 callStackSymbols];
-      v150 = [v149 componentsJoinedByString:@"\n"];
+      callStackSymbols10 = [v147 callStackSymbols];
+      v150 = [callStackSymbols10 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v188 = v146;
       v189 = 2114;
@@ -809,14 +809,14 @@ LABEL_103:
     goto LABEL_105;
   }
 
-  v12 = [(PISemanticStyleFilter *)self inputLightMapData];
-  if (v12)
+  inputLightMapData = [(PISemanticStyleFilter *)self inputLightMapData];
+  if (inputLightMapData)
   {
-    v13 = [(PISemanticStyleFilter *)self inputLinearLightMapData];
-    if (v13)
+    inputLinearLightMapData = [(PISemanticStyleFilter *)self inputLinearLightMapData];
+    if (inputLinearLightMapData)
     {
-      v14 = [(PISemanticStyleFilter *)self inputStatistics];
-      v15 = v14 != 0;
+      inputStatistics = [(PISemanticStyleFilter *)self inputStatistics];
+      v15 = inputStatistics != 0;
     }
 
     else
@@ -830,11 +830,11 @@ LABEL_103:
     v15 = 0;
   }
 
-  v16 = [(PISemanticStyleFilter *)self inputLightMapData];
-  v17 = [(PISemanticStyleFilter *)self _lightMapImageWithData:v16];
+  inputLightMapData2 = [(PISemanticStyleFilter *)self inputLightMapData];
+  v17 = [(PISemanticStyleFilter *)self _lightMapImageWithData:inputLightMapData2];
 
-  v18 = [(PISemanticStyleFilter *)self inputLinearLightMapData];
-  v19 = [(PISemanticStyleFilter *)self _lightMapImageWithData:v18];
+  inputLinearLightMapData2 = [(PISemanticStyleFilter *)self inputLinearLightMapData];
+  v19 = [(PISemanticStyleFilter *)self _lightMapImageWithData:inputLinearLightMapData2];
 
   if (v15)
   {
@@ -854,7 +854,7 @@ LABEL_103:
         _os_log_error_impl(&dword_1C7694000, v158, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
       }
 
-      v153 = MEMORY[0x1E69B38E8];
+      callStackSymbols13 = MEMORY[0x1E69B38E8];
       v160 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
       v155 = NUAssertLogger_22529();
       v161 = os_log_type_enabled(v155, OS_LOG_TYPE_ERROR);
@@ -862,8 +862,8 @@ LABEL_103:
       {
         if (v161)
         {
-          v162 = [MEMORY[0x1E696AF00] callStackSymbols];
-          v163 = [v162 componentsJoinedByString:@"\n"];
+          callStackSymbols11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          v163 = [callStackSymbols11 componentsJoinedByString:@"\n"];
           *buf = 138543362;
           v188 = v163;
           _os_log_error_impl(&dword_1C7694000, v155, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -875,11 +875,11 @@ LABEL_103:
 LABEL_119:
       if (v161)
       {
-        v168 = dispatch_get_specific(*v153);
+        v168 = dispatch_get_specific(*callStackSymbols13);
         v169 = MEMORY[0x1E696AF00];
         v170 = v168;
-        v171 = [v169 callStackSymbols];
-        v172 = [v171 componentsJoinedByString:@"\n"];
+        callStackSymbols12 = [v169 callStackSymbols];
+        v172 = [callStackSymbols12 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v188 = v168;
         v189 = 2114;
@@ -902,7 +902,7 @@ LABEL_106:
       _os_log_error_impl(&dword_1C7694000, v151, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v153 = MEMORY[0x1E69B38E8];
+    callStackSymbols13 = MEMORY[0x1E69B38E8];
     v154 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v155 = NUAssertLogger_22529();
     v156 = os_log_type_enabled(v155, OS_LOG_TYPE_ERROR);
@@ -910,11 +910,11 @@ LABEL_106:
     {
       if (v156)
       {
-        v164 = dispatch_get_specific(*v153);
+        v164 = dispatch_get_specific(*callStackSymbols13);
         v165 = MEMORY[0x1E696AF00];
         v166 = v164;
-        v153 = [v165 callStackSymbols];
-        v167 = [v153 componentsJoinedByString:@"\n"];
+        callStackSymbols13 = [v165 callStackSymbols];
+        v167 = [callStackSymbols13 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v188 = v164;
         v189 = 2114;
@@ -925,10 +925,10 @@ LABEL_106:
 
     else if (v156)
     {
-      v157 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v153 = [v157 componentsJoinedByString:@"\n"];
+      callStackSymbols14 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols13 = [callStackSymbols14 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v188 = v153;
+      v188 = callStackSymbols13;
       _os_log_error_impl(&dword_1C7694000, v155, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -940,20 +940,20 @@ LABEL_18:
   v178 = v19;
   [(PISemanticStyleFilter *)self inputImage];
   v20 = v179 = v17;
-  v21 = [(PISemanticStyleFilter *)self inputSubjectMatteImage];
-  v22 = [(PISemanticStyleFilter *)self inputSkinMatteImage];
+  inputSubjectMatteImage2 = [(PISemanticStyleFilter *)self inputSubjectMatteImage];
+  inputSkinMatteImage2 = [(PISemanticStyleFilter *)self inputSkinMatteImage];
   [(PISemanticStyleFilter *)self inputSkyMatteImage];
   v23 = v180 = v11;
-  v24 = [(PISemanticStyleFilter *)self inputLinearThumbnailImage];
-  v25 = [(PISemanticStyleFilter *)self inputGainMapImage];
-  __36__PISemanticStyleFilter_outputImage__block_invoke(v21, v20);
+  inputLinearThumbnailImage2 = [(PISemanticStyleFilter *)self inputLinearThumbnailImage];
+  inputGainMapImage2 = [(PISemanticStyleFilter *)self inputGainMapImage];
+  __36__PISemanticStyleFilter_outputImage__block_invoke(inputSubjectMatteImage2, v20);
   v27 = v26 = v15;
 
-  v28 = __36__PISemanticStyleFilter_outputImage__block_invoke(v22, v20);
+  v28 = __36__PISemanticStyleFilter_outputImage__block_invoke(inputSkinMatteImage2, v20);
 
   v29 = __36__PISemanticStyleFilter_outputImage__block_invoke(v23, v20);
 
-  v30 = __36__PISemanticStyleFilter_outputImage__block_invoke(v25, v20);
+  v30 = __36__PISemanticStyleFilter_outputImage__block_invoke(inputGainMapImage2, v20);
 
   v31 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v175 = v20;
@@ -964,8 +964,8 @@ LABEL_18:
   [v31 addObject:v28];
   v173 = v29;
   [v31 addObject:v29];
-  v176 = v24;
-  v32 = v24;
+  v176 = inputLinearThumbnailImage2;
+  v32 = inputLinearThumbnailImage2;
   v33 = v30;
   [v31 addObject:v32];
   [v31 addObject:v30];
@@ -1020,19 +1020,19 @@ LABEL_18:
   v46 = [v45 numberWithDouble:?];
   [v42 setObject:v46 forKeyedSubscript:@"color"];
 
-  v47 = [(PISemanticStyleFilter *)self inputCast];
-  [v42 setObject:v47 forKeyedSubscript:@"cast"];
+  inputCast = [(PISemanticStyleFilter *)self inputCast];
+  [v42 setObject:inputCast forKeyedSubscript:@"cast"];
 
   v48 = MEMORY[0x1E696AD98];
   [(PISemanticStyleFilter *)self inputIntensity];
   v49 = [v48 numberWithDouble:?];
   [v42 setObject:v49 forKeyedSubscript:@"intensity"];
 
-  v50 = [(PISemanticStyleFilter *)self inputSRLCurveParameter];
-  v51 = v50;
-  if (v50)
+  inputSRLCurveParameter = [(PISemanticStyleFilter *)self inputSRLCurveParameter];
+  v51 = inputSRLCurveParameter;
+  if (inputSRLCurveParameter)
   {
-    v52 = v50;
+    v52 = inputSRLCurveParameter;
   }
 
   else
@@ -1042,11 +1042,11 @@ LABEL_18:
 
   [v42 setObject:v52 forKeyedSubscript:@"srlCurveParameter"];
 
-  v53 = [(PISemanticStyleFilter *)self inputSceneType];
-  v54 = v53;
-  if (v53)
+  inputSceneType = [(PISemanticStyleFilter *)self inputSceneType];
+  v54 = inputSceneType;
+  if (inputSceneType)
   {
-    v55 = v53;
+    v55 = inputSceneType;
   }
 
   else
@@ -1056,11 +1056,11 @@ LABEL_18:
 
   [v42 setObject:v55 forKeyedSubscript:@"sceneType"];
 
-  v56 = [(PISemanticStyleFilter *)self inputStatistics];
-  [v42 setObject:v56 forKeyedSubscript:@"stats"];
+  inputStatistics2 = [(PISemanticStyleFilter *)self inputStatistics];
+  [v42 setObject:inputStatistics2 forKeyedSubscript:@"stats"];
 
-  v57 = [(PISemanticStyleFilter *)self inputExtendedStatistics];
-  [v42 setObject:v57 forKeyedSubscript:@"xstats"];
+  inputExtendedStatistics = [(PISemanticStyleFilter *)self inputExtendedStatistics];
+  [v42 setObject:inputExtendedStatistics forKeyedSubscript:@"xstats"];
 
   v58 = MEMORY[0x1E696AD98];
   [(PISemanticStyleFilter *)self inputBaselineExposure];
@@ -1071,21 +1071,21 @@ LABEL_18:
   [v42 setObject:v60 forKeyedSubscript:@"useLightMap"];
 
   v61 = objc_opt_class();
-  v62 = [(PISemanticStyleFilter *)self tuningType];
-  v63 = [v61 CMISmartStyleTuningParameterVariantFromKey:v62];
+  tuningType = [(PISemanticStyleFilter *)self tuningType];
+  v63 = [v61 CMISmartStyleTuningParameterVariantFromKey:tuningType];
   [v42 setObject:v63 forKeyedSubscript:@"tuningType"];
 
   v64 = [MEMORY[0x1E696AD98] numberWithBool:{-[PISemanticStyleFilter useStyleEngine](self, "useStyleEngine")}];
   [v42 setObject:v64 forKeyedSubscript:@"useStyleEngine"];
 
-  v65 = [(PISemanticStyleFilter *)self brightnessValue];
-  [v42 setObject:v65 forKeyedSubscript:@"brightnessValue"];
+  brightnessValue = [(PISemanticStyleFilter *)self brightnessValue];
+  [v42 setObject:brightnessValue forKeyedSubscript:@"brightnessValue"];
 
-  v66 = [(PISemanticStyleFilter *)self baseGain];
-  v67 = v66;
-  if (v66)
+  baseGain = [(PISemanticStyleFilter *)self baseGain];
+  v67 = baseGain;
+  if (baseGain)
   {
-    v68 = v66;
+    v68 = baseGain;
   }
 
   else
@@ -1095,11 +1095,11 @@ LABEL_18:
 
   [v42 setObject:v68 forKeyedSubscript:@"baseGain"];
 
-  v69 = [(PISemanticStyleFilter *)self faceBasedGlobalExposureBoostRatio];
-  v70 = v69;
-  if (v69)
+  faceBasedGlobalExposureBoostRatio = [(PISemanticStyleFilter *)self faceBasedGlobalExposureBoostRatio];
+  v70 = faceBasedGlobalExposureBoostRatio;
+  if (faceBasedGlobalExposureBoostRatio)
   {
-    v71 = v69;
+    v71 = faceBasedGlobalExposureBoostRatio;
   }
 
   else
@@ -1109,8 +1109,8 @@ LABEL_18:
 
   [v42 setObject:v71 forKeyedSubscript:@"faceBasedGlobalExposureBoostRatio"];
 
-  v72 = [(PISemanticStyleFilter *)self inputImage];
-  [v72 extent];
+  inputImage2 = [(PISemanticStyleFilter *)self inputImage];
+  [inputImage2 extent];
   v181 = 0;
   v73 = [(CIImageProcessorKernel *)PISemanticStyleProcessor applyWithExtent:v35 inputs:v42 arguments:&v181 error:?];
 
@@ -1130,17 +1130,17 @@ id __36__PISemanticStyleFilter_outputImage__block_invoke(void *a1, void *a2)
   return v5;
 }
 
-- (id)_lightMapImageWithData:(id)a3
+- (id)_lightMapImageWithData:(id)data
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  dataCopy = data;
+  if (dataCopy)
   {
-    v5 = [(PISemanticStyleFilter *)self inputLightMapWidth];
-    v6 = v5;
-    if (v5)
+    inputLightMapWidth = [(PISemanticStyleFilter *)self inputLightMapWidth];
+    v6 = inputLightMapWidth;
+    if (inputLightMapWidth)
     {
-      v7 = v5;
+      v7 = inputLightMapWidth;
     }
 
     else
@@ -1150,11 +1150,11 @@ id __36__PISemanticStyleFilter_outputImage__block_invoke(void *a1, void *a2)
 
     v8 = v7;
 
-    v9 = [(PISemanticStyleFilter *)self inputLightMapHeight];
-    v10 = v9;
-    if (v9)
+    inputLightMapHeight = [(PISemanticStyleFilter *)self inputLightMapHeight];
+    v10 = inputLightMapHeight;
+    if (inputLightMapHeight)
     {
-      v11 = v9;
+      v11 = inputLightMapHeight;
     }
 
     else
@@ -1164,20 +1164,20 @@ id __36__PISemanticStyleFilter_outputImage__block_invoke(void *a1, void *a2)
 
     v12 = v11;
 
-    v13 = [v8 intValue];
-    v14 = [v12 intValue];
+    intValue = [v8 intValue];
+    intValue2 = [v12 intValue];
 
     v28[0] = *MEMORY[0x1E695F9A8];
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v28[1] = *MEMORY[0x1E695F9B8];
-    v29[0] = v15;
+    v29[0] = null;
     v29[1] = MEMORY[0x1E695E118];
     v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
 
-    v17 = 2 * v13;
-    if (v14 * v17 == [v4 length])
+    v17 = 2 * intValue;
+    if (intValue2 * v17 == [dataCopy length])
     {
-      v19 = [MEMORY[0x1E695F658] imageWithBitmapData:v4 bytesPerRow:2 * v13 size:*MEMORY[0x1E695F930] format:v16 options:{v13, v14}];
+      v19 = [MEMORY[0x1E695F658] imageWithBitmapData:dataCopy bytesPerRow:2 * intValue size:*MEMORY[0x1E695F930] format:v16 options:{intValue, intValue2}];
     }
 
     else
@@ -1192,11 +1192,11 @@ id __36__PISemanticStyleFilter_outputImage__block_invoke(void *a1, void *a2)
       {
         v21 = v18;
         v22 = 134218496;
-        v23 = [v4 length];
+        v23 = [dataCopy length];
         v24 = 2048;
         v25 = v17;
         v26 = 2048;
-        v27 = v14;
+        v27 = intValue2;
         _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Light Map dimension mismatch: %lu, expected %lu * %lu", &v22, 0x20u);
       }
 
@@ -1212,21 +1212,21 @@ id __36__PISemanticStyleFilter_outputImage__block_invoke(void *a1, void *a2)
   return v19;
 }
 
-- (id)curveImageWithData:(id)a3
+- (id)curveImageWithData:(id)data
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = ([v3 length] >> 2);
+  dataCopy = data;
+  v4 = ([dataCopy length] >> 2);
   v11[0] = *MEMORY[0x1E695F9A8];
-  v5 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v11[1] = *MEMORY[0x1E695F9B8];
-  v12[0] = v5;
+  v12[0] = null;
   v12[1] = MEMORY[0x1E695E110];
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
   v7 = MEMORY[0x1E695F658];
-  v8 = [v3 length];
-  v9 = [v7 imageWithBitmapData:v3 bytesPerRow:v8 size:*MEMORY[0x1E695F928] format:v6 options:{v4, 1.0}];
+  v8 = [dataCopy length];
+  v9 = [v7 imageWithBitmapData:dataCopy bytesPerRow:v8 size:*MEMORY[0x1E695F928] format:v6 options:{v4, 1.0}];
 
   return v9;
 }

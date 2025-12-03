@@ -1,12 +1,12 @@
 @interface WebGeolocationPosition
-- (WebGeolocationPosition)initWithGeolocationPosition:(void *)a3;
-- (WebGeolocationPosition)initWithTimestamp:(double)a3 latitude:(double)a4 longitude:(double)a5 accuracy:(double)a6;
+- (WebGeolocationPosition)initWithGeolocationPosition:(void *)position;
+- (WebGeolocationPosition)initWithTimestamp:(double)timestamp latitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy;
 - (void)dealloc;
 @end
 
 @implementation WebGeolocationPosition
 
-- (WebGeolocationPosition)initWithTimestamp:(double)a3 latitude:(double)a4 longitude:(double)a5 accuracy:(double)a6
+- (WebGeolocationPosition)initWithTimestamp:(double)timestamp latitude:(double)latitude longitude:(double)longitude accuracy:(double)accuracy
 {
   v24.receiver = self;
   v24.super_class = WebGeolocationPosition;
@@ -14,10 +14,10 @@
   if (result)
   {
     v11 = result;
-    *v13 = a3;
-    *&v13[1] = a4;
-    *&v13[2] = a5;
-    *&v13[3] = a6;
+    *v13 = timestamp;
+    *&v13[1] = latitude;
+    *&v13[2] = longitude;
+    *&v13[3] = accuracy;
     v14 = 0;
     v15 = 0;
     v16 = 0;
@@ -36,7 +36,7 @@
   return result;
 }
 
-- (WebGeolocationPosition)initWithGeolocationPosition:(void *)a3
+- (WebGeolocationPosition)initWithGeolocationPosition:(void *)position
 {
   v7.receiver = self;
   v7.super_class = WebGeolocationPosition;
@@ -44,7 +44,7 @@
   if (result)
   {
     v5 = result;
-    v6 = [[WebGeolocationPositionInternal alloc] initWithCoreGeolocationPosition:a3];
+    v6 = [[WebGeolocationPositionInternal alloc] initWithCoreGeolocationPosition:position];
     result = v5;
     v5->_internal = v6;
   }

@@ -1,81 +1,81 @@
 @interface IMServiceReachabilityResult
-+ (id)finalResultForService:(id)a3 handleIDs:(id)a4 allAreReachable:(BOOL)a5 allSupportEncryption:(BOOL)a6 handleIsReachable:(id)a7 handleSupportsEncryption:(id)a8 checkedServer:(BOOL)a9 error:(int64_t)a10;
-- (IMServiceReachabilityResult)initWithCoder:(id)a3;
-- (IMServiceReachabilityResult)initWithService:(id)a3 error:(int64_t)a4 handleResults:(id)a5 isFinal:(BOOL)a6 allAreReachable:(BOOL)a7 allSupportEncryption:(BOOL)a8 didCheckServer:(BOOL)a9;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)finalResultForService:(id)service handleIDs:(id)ds allAreReachable:(BOOL)reachable allSupportEncryption:(BOOL)encryption handleIsReachable:(id)isReachable handleSupportsEncryption:(id)supportsEncryption checkedServer:(BOOL)server error:(int64_t)self0;
+- (IMServiceReachabilityResult)initWithCoder:(id)coder;
+- (IMServiceReachabilityResult)initWithService:(id)service error:(int64_t)error handleResults:(id)results isFinal:(BOOL)final allAreReachable:(BOOL)reachable allSupportEncryption:(BOOL)encryption didCheckServer:(BOOL)server;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createDictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateBrandInfo:(id)a3 brandLogo:(id)a4 forHandle:(id)a5;
-- (void)updatePersistentMenu:(id)a3 forHandle:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateBrandInfo:(id)info brandLogo:(id)logo forHandle:(id)handle;
+- (void)updatePersistentMenu:(id)menu forHandle:(id)handle;
 @end
 
 @implementation IMServiceReachabilityResult
 
-- (IMServiceReachabilityResult)initWithService:(id)a3 error:(int64_t)a4 handleResults:(id)a5 isFinal:(BOOL)a6 allAreReachable:(BOOL)a7 allSupportEncryption:(BOOL)a8 didCheckServer:(BOOL)a9
+- (IMServiceReachabilityResult)initWithService:(id)service error:(int64_t)error handleResults:(id)results isFinal:(BOOL)final allAreReachable:(BOOL)reachable allSupportEncryption:(BOOL)encryption didCheckServer:(BOOL)server
 {
-  v16 = a3;
-  v17 = a5;
+  serviceCopy = service;
+  resultsCopy = results;
   v21.receiver = self;
   v21.super_class = IMServiceReachabilityResult;
   v18 = [(IMServiceReachabilityResult *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_service, a3);
-    v19->_error = a4;
-    objc_storeStrong(&v19->_handleResults, a5);
-    v19->_final = a6;
-    v19->_allAreReachable = a7;
-    v19->_allSupportEncryption = a8;
-    v19->_didCheckServer = a9;
+    objc_storeStrong(&v18->_service, service);
+    v19->_error = error;
+    objc_storeStrong(&v19->_handleResults, results);
+    v19->_final = final;
+    v19->_allAreReachable = reachable;
+    v19->_allSupportEncryption = encryption;
+    v19->_didCheckServer = server;
   }
 
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeObject:self->_service forKey:@"s"];
-  [v8 encodeInteger:self->_error forKey:@"e"];
-  [v8 encodeObject:self->_handleResults forKey:@"r"];
-  [v8 encodeBool:self->_final forKey:@"f"];
-  [v8 encodeBool:self->_allAreReachable forKey:@"ar"];
-  [v8 encodeBool:self->_allSupportEncryption forKey:@"en"];
-  [v8 encodeBool:self->_didCheckServer forKey:@"cs"];
-  [v8 encodeBool:self->_reachabilityOverriddenToSuccessByPolicy forKey:@"os"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_service forKey:@"s"];
+  [coderCopy encodeInteger:self->_error forKey:@"e"];
+  [coderCopy encodeObject:self->_handleResults forKey:@"r"];
+  [coderCopy encodeBool:self->_final forKey:@"f"];
+  [coderCopy encodeBool:self->_allAreReachable forKey:@"ar"];
+  [coderCopy encodeBool:self->_allSupportEncryption forKey:@"en"];
+  [coderCopy encodeBool:self->_didCheckServer forKey:@"cs"];
+  [coderCopy encodeBool:self->_reachabilityOverriddenToSuccessByPolicy forKey:@"os"];
   selfKTData = self->_selfKTData;
   if (selfKTData)
   {
     v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:selfKTData requiringSecureCoding:1 error:0];
-    [v8 encodeObject:v5 forKey:@"skd"];
+    [coderCopy encodeObject:v5 forKey:@"skd"];
   }
 
   ktData = self->_ktData;
   if (ktData)
   {
     v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:ktData requiringSecureCoding:1 error:0];
-    [v8 encodeObject:v7 forKey:@"kd"];
+    [coderCopy encodeObject:v7 forKey:@"kd"];
   }
 }
 
-- (IMServiceReachabilityResult)initWithCoder:(id)a3
+- (IMServiceReachabilityResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"s"];
-  v6 = [v4 decodeIntegerForKey:@"e"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"s"];
+  v6 = [coderCopy decodeIntegerForKey:@"e"];
   v7 = objc_opt_class();
-  v8 = [v4 decodeDictionaryWithKeysOfClass:v7 objectsOfClass:objc_opt_class() forKey:@"r"];
-  v9 = [v4 decodeBoolForKey:@"f"];
-  v10 = [v4 decodeBoolForKey:@"ar"];
-  v11 = [v4 decodeBoolForKey:@"en"];
-  LOBYTE(v30) = [v4 decodeBoolForKey:@"cs"];
+  v8 = [coderCopy decodeDictionaryWithKeysOfClass:v7 objectsOfClass:objc_opt_class() forKey:@"r"];
+  v9 = [coderCopy decodeBoolForKey:@"f"];
+  v10 = [coderCopy decodeBoolForKey:@"ar"];
+  v11 = [coderCopy decodeBoolForKey:@"en"];
+  LOBYTE(v30) = [coderCopy decodeBoolForKey:@"cs"];
   v12 = [(IMServiceReachabilityResult *)self initWithService:v5 error:v6 handleResults:v8 isFinal:v9 allAreReachable:v10 allSupportEncryption:v11 didCheckServer:v30];
 
   if (v12)
   {
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"skd"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"skd"];
     if (v13)
     {
       v14 = MEMORY[0x1E696ACD0];
@@ -88,7 +88,7 @@
       v12->_selfKTData = v18;
     }
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kd"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kd"];
     if (v20)
     {
       v21 = MEMORY[0x1E696ACD0];
@@ -102,41 +102,41 @@
       v12->_ktData = v27;
     }
 
-    v12->_reachabilityOverriddenToSuccessByPolicy = [v4 decodeBoolForKey:@"os"];
+    v12->_reachabilityOverriddenToSuccessByPolicy = [coderCopy decodeBoolForKey:@"os"];
   }
 
   return v12;
 }
 
-+ (id)finalResultForService:(id)a3 handleIDs:(id)a4 allAreReachable:(BOOL)a5 allSupportEncryption:(BOOL)a6 handleIsReachable:(id)a7 handleSupportsEncryption:(id)a8 checkedServer:(BOOL)a9 error:(int64_t)a10
++ (id)finalResultForService:(id)service handleIDs:(id)ds allAreReachable:(BOOL)reachable allSupportEncryption:(BOOL)encryption handleIsReachable:(id)isReachable handleSupportsEncryption:(id)supportsEncryption checkedServer:(BOOL)server error:(int64_t)self0
 {
-  v13 = a5;
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
+  reachableCopy = reachable;
+  serviceCopy = service;
+  dsCopy = ds;
+  isReachableCopy = isReachable;
+  supportsEncryptionCopy = supportsEncryption;
   v19 = objc_alloc_init(IMServiceReachabilityResult);
-  [(IMServiceReachabilityResult *)v19 setService:v15];
-  [(IMServiceReachabilityResult *)v19 setError:a10];
-  [(IMServiceReachabilityResult *)v19 setDidCheckServer:a9];
+  [(IMServiceReachabilityResult *)v19 setService:serviceCopy];
+  [(IMServiceReachabilityResult *)v19 setError:error];
+  [(IMServiceReachabilityResult *)v19 setDidCheckServer:server];
   [(IMServiceReachabilityResult *)v19 setFinal:1];
-  v20 = v13 && [v16 count] != 0;
+  v20 = reachableCopy && [dsCopy count] != 0;
   [(IMServiceReachabilityResult *)v19 setAllAreReachable:v20];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = sub_1A86870E4;
   v29[3] = &unk_1E7828950;
-  v32 = v17;
-  v34 = v13;
+  v32 = isReachableCopy;
+  v34 = reachableCopy;
   v21 = v19;
-  v33 = v18;
-  v35 = a6;
+  v33 = supportsEncryptionCopy;
+  encryptionCopy = encryption;
   v30 = v21;
-  v31 = v15;
-  v22 = v15;
-  v23 = v18;
-  v24 = v17;
-  v25 = [v16 __imMapToDictionary:v29];
+  v31 = serviceCopy;
+  v22 = serviceCopy;
+  v23 = supportsEncryptionCopy;
+  v24 = isReachableCopy;
+  v25 = [dsCopy __imMapToDictionary:v29];
   [(IMServiceReachabilityResult *)v21 setHandleResults:v25];
 
   v26 = v31;
@@ -145,7 +145,7 @@
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [IMServiceReachabilityResult alloc];
   LOBYTE(v7) = self->_didCheckServer;
@@ -181,8 +181,8 @@
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v9 = [(NSDictionary *)self->_handleResults allValues];
-    v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    allValues = [(NSDictionary *)self->_handleResults allValues];
+    v10 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v10)
     {
       v11 = v10;
@@ -193,16 +193,16 @@
         {
           if (*v23 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
-          v15 = [v14 createDictionary];
-          v16 = [v14 handleID];
-          [v8 setObject:v15 forKeyedSubscript:v16];
+          createDictionary = [v14 createDictionary];
+          handleID = [v14 handleID];
+          [v8 setObject:createDictionary forKeyedSubscript:handleID];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v11);
@@ -243,7 +243,7 @@
     v4 = @"NO";
   }
 
-  v5 = [(IMServiceReachabilityResult *)self service];
+  service = [(IMServiceReachabilityResult *)self service];
   if ([(IMServiceReachabilityResult *)self allAreReachable])
   {
     v6 = @"YES";
@@ -274,7 +274,7 @@
     v8 = @"NO";
   }
 
-  v9 = [(IMServiceReachabilityResult *)self handleResults];
+  handleResults = [(IMServiceReachabilityResult *)self handleResults];
   if ([(IMServiceReachabilityResult *)self reachabilityOverriddenToSuccessByPolicy])
   {
     v10 = @"YES";
@@ -285,47 +285,47 @@
     v10 = @"NO";
   }
 
-  v11 = [v13 stringWithFormat:@"<%@ %p [isFinal: %@ service: %@ allAreReachable: %@ allSupportEncryption: %@ didCheckServer: %@ handleResults: %@ overriddenToSuccess: %@]>", v3, self, v4, v5, v6, v7, v8, v9, v10];
+  v11 = [v13 stringWithFormat:@"<%@ %p [isFinal: %@ service: %@ allAreReachable: %@ allSupportEncryption: %@ didCheckServer: %@ handleResults: %@ overriddenToSuccess: %@]>", v3, self, v4, service, v6, v7, v8, handleResults, v10];
 
   return v11;
 }
 
-- (void)updatePersistentMenu:(id)a3 forHandle:(id)a4
+- (void)updatePersistentMenu:(id)menu forHandle:(id)handle
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(IMServiceReachabilityResult *)self handleResults];
-  if (v7)
+  menuCopy = menu;
+  handleCopy = handle;
+  handleResults = [(IMServiceReachabilityResult *)self handleResults];
+  if (handleResults)
   {
-    v8 = v7;
-    v9 = [(IMServiceReachabilityResult *)self handleResults];
-    v10 = [v9 objectForKeyedSubscript:v6];
+    v8 = handleResults;
+    handleResults2 = [(IMServiceReachabilityResult *)self handleResults];
+    v10 = [handleResults2 objectForKeyedSubscript:handleCopy];
 
     if (v10)
     {
-      v11 = [(IMServiceReachabilityResult *)self handleResults];
-      v12 = [v11 objectForKeyedSubscript:v6];
-      [v12 setPersistentMenuDictionary:v13];
+      handleResults3 = [(IMServiceReachabilityResult *)self handleResults];
+      v12 = [handleResults3 objectForKeyedSubscript:handleCopy];
+      [v12 setPersistentMenuDictionary:menuCopy];
     }
   }
 }
 
-- (void)updateBrandInfo:(id)a3 brandLogo:(id)a4 forHandle:(id)a5
+- (void)updateBrandInfo:(id)info brandLogo:(id)logo forHandle:(id)handle
 {
-  v14 = a3;
-  v7 = a5;
-  v8 = [(IMServiceReachabilityResult *)self handleResults];
-  if (v8)
+  infoCopy = info;
+  handleCopy = handle;
+  handleResults = [(IMServiceReachabilityResult *)self handleResults];
+  if (handleResults)
   {
-    v9 = v8;
-    v10 = [(IMServiceReachabilityResult *)self handleResults];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    v9 = handleResults;
+    handleResults2 = [(IMServiceReachabilityResult *)self handleResults];
+    v11 = [handleResults2 objectForKeyedSubscript:handleCopy];
 
     if (v11)
     {
-      v12 = [(IMServiceReachabilityResult *)self handleResults];
-      v13 = [v12 objectForKeyedSubscript:v7];
-      [v13 setBrandInfoDictionary:v14];
+      handleResults3 = [(IMServiceReachabilityResult *)self handleResults];
+      v13 = [handleResults3 objectForKeyedSubscript:handleCopy];
+      [v13 setBrandInfoDictionary:infoCopy];
     }
   }
 }

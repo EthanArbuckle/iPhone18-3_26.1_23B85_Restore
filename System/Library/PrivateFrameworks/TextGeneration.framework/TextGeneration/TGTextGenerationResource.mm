@@ -1,42 +1,42 @@
 @interface TGTextGenerationResource
-+ (id)createWithResourceDict:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TGTextGenerationResource)initWithType:(unint64_t)a3 url:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
++ (id)createWithResourceDict:(id)dict;
+- (BOOL)isEqual:(id)equal;
+- (TGTextGenerationResource)initWithType:(unint64_t)type url:(id)url;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation TGTextGenerationResource
 
-+ (id)createWithResourceDict:(id)a3
++ (id)createWithResourceDict:(id)dict
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"path"];
+  dictCopy = dict;
+  v4 = [dictCopy objectForKeyedSubscript:@"path"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v3 objectForKeyedSubscript:@"path"];
+    v5 = [dictCopy objectForKeyedSubscript:@"path"];
 
     if (v5)
     {
-      v6 = [v3 objectForKeyedSubscript:@"type"];
+      v6 = [dictCopy objectForKeyedSubscript:@"type"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = [v3 objectForKeyedSubscript:@"type"];
+        v7 = [dictCopy objectForKeyedSubscript:@"type"];
 
         if (v7)
         {
-          v8 = [v7 intValue];
-          v9 = v8;
-          if (v8 < 2)
+          intValue = [v7 intValue];
+          v9 = intValue;
+          if (intValue < 2)
           {
-            v10 = [v3 objectForKeyedSubscript:@"e5FunctionName"];
+            v10 = [dictCopy objectForKeyedSubscript:@"e5FunctionName"];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v11 = [v3 objectForKeyedSubscript:@"e5FunctionName"];
+              v11 = [dictCopy objectForKeyedSubscript:@"e5FunctionName"];
             }
 
             else
@@ -70,7 +70,7 @@
           v14 = _nlpDefaultLog();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            [(TGTextGenerationResource *)v3 createWithResourceDict:v9, v14];
+            [(TGTextGenerationResource *)dictCopy createWithResourceDict:v9, v14];
           }
 
 LABEL_15:
@@ -111,18 +111,18 @@ LABEL_17:
   return v12;
 }
 
-- (TGTextGenerationResource)initWithType:(unint64_t)a3 url:(id)a4
+- (TGTextGenerationResource)initWithType:(unint64_t)type url:(id)url
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  urlCopy = url;
   v18.receiver = self;
   v18.super_class = TGTextGenerationResource;
   v7 = [(TGTextGenerationResource *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    v7->_type = a3;
-    v9 = [v6 copy];
+    v7->_type = type;
+    v9 = [urlCopy copy];
     url = v8->_url;
     v8->_url = v9;
 
@@ -156,51 +156,51 @@ LABEL_17:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TGTextGenerationResource alloc];
-  v5 = [(TGTextGenerationResource *)self type];
+  type = [(TGTextGenerationResource *)self type];
   v6 = [(TGTextGenerationResource *)self url];
-  v7 = [(TGTextGenerationResource *)v4 initWithType:v5 url:v6];
+  v7 = [(TGTextGenerationResource *)v4 initWithType:type url:v6];
 
-  v8 = [(TGTextGenerationResource *)self e5FunctionName];
-  [(TGTextGenerationResource *)v7 setE5FunctionName:v8];
+  e5FunctionName = [(TGTextGenerationResource *)self e5FunctionName];
+  [(TGTextGenerationResource *)v7 setE5FunctionName:e5FunctionName];
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [TGMutableTextGenerationResource alloc];
-  v5 = [(TGTextGenerationResource *)self type];
+  type = [(TGTextGenerationResource *)self type];
   v6 = [(TGTextGenerationResource *)self url];
-  v7 = [(TGTextGenerationResource *)v4 initWithType:v5 url:v6];
+  v7 = [(TGTextGenerationResource *)v4 initWithType:type url:v6];
 
-  v8 = [(TGTextGenerationResource *)self e5FunctionName];
-  [(TGTextGenerationResource *)v7 setE5FunctionName:v8];
+  e5FunctionName = [(TGTextGenerationResource *)self e5FunctionName];
+  [(TGTextGenerationResource *)v7 setE5FunctionName:e5FunctionName];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(TGTextGenerationResource *)self type];
+  type = [(TGTextGenerationResource *)self type];
   v4 = [(TGTextGenerationResource *)self url];
-  v5 = [v4 hash] ^ v3;
+  v5 = [v4 hash] ^ type;
 
-  v6 = [(TGTextGenerationResource *)self e5FunctionName];
-  v7 = [v6 hash];
+  e5FunctionName = [(TGTextGenerationResource *)self e5FunctionName];
+  v7 = [e5FunctionName hash];
 
   return v5 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -215,9 +215,9 @@ LABEL_17:
     v9 = [v6 url];
     if ([v8 isEqual:v9])
     {
-      v10 = [(TGTextGenerationResource *)self e5FunctionName];
-      v11 = [v6 e5FunctionName];
-      v12 = TGTextGenerationEqualAllowingNil(v10, v11);
+      e5FunctionName = [(TGTextGenerationResource *)self e5FunctionName];
+      e5FunctionName2 = [v6 e5FunctionName];
+      v12 = TGTextGenerationEqualAllowingNil(e5FunctionName, e5FunctionName2);
     }
 
     else

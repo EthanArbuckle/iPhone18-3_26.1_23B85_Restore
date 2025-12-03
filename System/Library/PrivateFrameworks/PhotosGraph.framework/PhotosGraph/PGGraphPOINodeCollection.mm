@@ -1,19 +1,19 @@
 @interface PGGraphPOINodeCollection
-+ (id)poiNodesForLabel:(id)a3 inGraph:(id)a4;
-+ (id)poiNodesForLabels:(id)a3 inGraph:(id)a4;
++ (id)poiNodesForLabel:(id)label inGraph:(id)graph;
++ (id)poiNodesForLabels:(id)labels inGraph:(id)graph;
 - (NSSet)localizedNames;
 - (PGGraphMomentNodeCollection)momentNodes;
-- (id)nodesMatchingPOILabels:(id)a3;
+- (id)nodesMatchingPOILabels:(id)labels;
 @end
 
 @implementation PGGraphPOINodeCollection
 
-- (id)nodesMatchingPOILabels:(id)a3
+- (id)nodesMatchingPOILabels:(id)labels
 {
   v4 = MEMORY[0x277D22C78];
-  v5 = a3;
+  labelsCopy = labels;
   v6 = [v4 alloc];
-  v7 = [v6 initWithLabels:v5 domain:501 properties:MEMORY[0x277CBEC10]];
+  v7 = [v6 initWithLabels:labelsCopy domain:501 properties:MEMORY[0x277CBEC10]];
 
   v8 = [(MANodeCollection *)self nodesMatchingFilter:v7];
 
@@ -48,22 +48,22 @@ void __42__PGGraphPOINodeCollection_localizedNames__block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (id)poiNodesForLabels:(id)a3 inGraph:(id)a4
++ (id)poiNodesForLabels:(id)labels inGraph:(id)graph
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = [v6 setWithArray:a3];
+  graphCopy = graph;
+  v8 = [v6 setWithArray:labels];
   v9 = [PGGraphPOINode filterWithLabels:v8];
-  v10 = [a1 nodesMatchingFilter:v9 inGraph:v7];
+  v10 = [self nodesMatchingFilter:v9 inGraph:graphCopy];
 
   return v10;
 }
 
-+ (id)poiNodesForLabel:(id)a3 inGraph:(id)a4
++ (id)poiNodesForLabel:(id)label inGraph:(id)graph
 {
-  v6 = a4;
-  v7 = [PGGraphPOINode filterWithLabel:a3];
-  v8 = [a1 nodesMatchingFilter:v7 inGraph:v6];
+  graphCopy = graph;
+  v7 = [PGGraphPOINode filterWithLabel:label];
+  v8 = [self nodesMatchingFilter:v7 inGraph:graphCopy];
 
   return v8;
 }

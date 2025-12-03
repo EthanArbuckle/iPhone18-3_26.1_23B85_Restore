@@ -19,24 +19,24 @@
 - (double)inputLengthLimit;
 - (double)minimumTextHeight;
 - (unint64_t)computeDeviceType;
-- (void)setComputeDeviceType:(unint64_t)a3;
-- (void)setCustomModelPath:(id)a3;
-- (void)setDetectTables:(BOOL)a3;
-- (void)setDisableScriptDetection:(BOOL)a3;
-- (void)setDisableTextTypeDetection:(BOOL)a3;
-- (void)setExtractPolygons:(BOOL)a3;
-- (void)setInputLengthLimit:(double)a3;
-- (void)setLogIntermediateResults:(BOOL)a3;
-- (void)setMaximumInputSize:(CGSize)a3;
-- (void)setMergeFullTile:(BOOL)a3;
-- (void)setMetalDevice:(id)a3;
-- (void)setMinimumTextHeight:(double)a3;
-- (void)setPrioritization:(id)a3;
-- (void)setRunFineScale:(BOOL)a3;
-- (void)setRunFullTile:(BOOL)a3;
-- (void)setScriptRatioThresholds:(id)a3;
-- (void)setSkipVerticalText:(BOOL)a3;
-- (void)setUseScaleTraversal:(BOOL)a3;
+- (void)setComputeDeviceType:(unint64_t)type;
+- (void)setCustomModelPath:(id)path;
+- (void)setDetectTables:(BOOL)tables;
+- (void)setDisableScriptDetection:(BOOL)detection;
+- (void)setDisableTextTypeDetection:(BOOL)detection;
+- (void)setExtractPolygons:(BOOL)polygons;
+- (void)setInputLengthLimit:(double)limit;
+- (void)setLogIntermediateResults:(BOOL)results;
+- (void)setMaximumInputSize:(CGSize)size;
+- (void)setMergeFullTile:(BOOL)tile;
+- (void)setMetalDevice:(id)device;
+- (void)setMinimumTextHeight:(double)height;
+- (void)setPrioritization:(id)prioritization;
+- (void)setRunFineScale:(BOOL)scale;
+- (void)setRunFullTile:(BOOL)tile;
+- (void)setScriptRatioThresholds:(id)thresholds;
+- (void)setSkipVerticalText:(BOOL)text;
+- (void)setUseScaleTraversal:(BOOL)traversal;
 @end
 
 @implementation CRDetectorConfiguration
@@ -48,11 +48,11 @@
   return *(self + v3);
 }
 
-- (void)setDetectTables:(BOOL)a3
+- (void)setDetectTables:(BOOL)tables
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_detectTables;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = tables;
 }
 
 - (BOOL)skipVerticalText
@@ -62,11 +62,11 @@
   return *(self + v3);
 }
 
-- (void)setSkipVerticalText:(BOOL)a3
+- (void)setSkipVerticalText:(BOOL)text
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_skipVerticalText;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = text;
 }
 
 - (BOOL)logIntermediateResults
@@ -76,11 +76,11 @@
   return *(self + v3);
 }
 
-- (void)setLogIntermediateResults:(BOOL)a3
+- (void)setLogIntermediateResults:(BOOL)results
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_logIntermediateResults;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = results;
 }
 
 - (NSString)customModelPath
@@ -101,9 +101,9 @@
   return v3;
 }
 
-- (void)setCustomModelPath:(id)a3
+- (void)setCustomModelPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = sub_1B429FB98();
     v6 = v5;
@@ -128,11 +128,11 @@
   return *(self + v3);
 }
 
-- (void)setDisableScriptDetection:(BOOL)a3
+- (void)setDisableScriptDetection:(BOOL)detection
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_disableScriptDetection;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = detection;
 }
 
 - (BOOL)disableTextTypeDetection
@@ -142,11 +142,11 @@
   return *(self + v3);
 }
 
-- (void)setDisableTextTypeDetection:(BOOL)a3
+- (void)setDisableTextTypeDetection:(BOOL)detection
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_disableTextTypeDetection;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = detection;
 }
 
 - (BOOL)runFullTile
@@ -156,11 +156,11 @@
   return *(self + v3);
 }
 
-- (void)setRunFullTile:(BOOL)a3
+- (void)setRunFullTile:(BOOL)tile
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_runFullTile;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = tile;
 }
 
 - (BOOL)runFineScale
@@ -170,11 +170,11 @@
   return *(self + v3);
 }
 
-- (void)setRunFineScale:(BOOL)a3
+- (void)setRunFineScale:(BOOL)scale
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_runFineScale;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = scale;
 }
 
 - (BOOL)mergeFullTile
@@ -184,11 +184,11 @@
   return *(self + v3);
 }
 
-- (void)setMergeFullTile:(BOOL)a3
+- (void)setMergeFullTile:(BOOL)tile
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_mergeFullTile;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = tile;
 }
 
 - (BOOL)useScaleTraversal
@@ -198,11 +198,11 @@
   return *(self + v3);
 }
 
-- (void)setUseScaleTraversal:(BOOL)a3
+- (void)setUseScaleTraversal:(BOOL)traversal
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_useScaleTraversal;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = traversal;
 }
 
 - (BOOL)extractPolygons
@@ -212,11 +212,11 @@
   return *(self + v3);
 }
 
-- (void)setExtractPolygons:(BOOL)a3
+- (void)setExtractPolygons:(BOOL)polygons
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_extractPolygons;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = polygons;
 }
 
 - (CGSize)tileSize
@@ -237,7 +237,7 @@
   return v2;
 }
 
-- (void)setPrioritization:(id)a3
+- (void)setPrioritization:(id)prioritization
 {
   v4 = sub_1B429FB98();
   v6 = v5;
@@ -267,10 +267,10 @@
   return result;
 }
 
-- (void)setMaximumInputSize:(CGSize)a3
+- (void)setMaximumInputSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = (self + OBJC_IVAR___CRDetectorConfiguration_maximumInputSize);
   swift_beginAccess();
   *v5 = width;
@@ -284,11 +284,11 @@
   return *(self + v3);
 }
 
-- (void)setInputLengthLimit:(double)a3
+- (void)setInputLengthLimit:(double)limit
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_inputLengthLimit;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = limit;
 }
 
 - (double)minimumTextHeight
@@ -298,11 +298,11 @@
   return *(self + v3);
 }
 
-- (void)setMinimumTextHeight:(double)a3
+- (void)setMinimumTextHeight:(double)height
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_minimumTextHeight;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = height;
 }
 
 - (NSDictionary)scriptRatioThresholds
@@ -315,7 +315,7 @@
   return v2;
 }
 
-- (void)setScriptRatioThresholds:(id)a3
+- (void)setScriptRatioThresholds:(id)thresholds
 {
   sub_1B40E27B4(0, &qword_1ED95EE90);
   v4 = sub_1B429FAF8();
@@ -332,11 +332,11 @@
   return v2;
 }
 
-- (void)setMetalDevice:(id)a3
+- (void)setMetalDevice:(id)device
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_metalDevice;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = device;
   swift_unknownObjectRetain();
   swift_unknownObjectRelease();
 }
@@ -348,11 +348,11 @@
   return *(self + v3);
 }
 
-- (void)setComputeDeviceType:(unint64_t)a3
+- (void)setComputeDeviceType:(unint64_t)type
 {
   v5 = OBJC_IVAR___CRDetectorConfiguration_computeDeviceType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 @end

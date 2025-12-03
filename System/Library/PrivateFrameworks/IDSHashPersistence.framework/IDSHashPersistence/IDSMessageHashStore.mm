@@ -1,14 +1,14 @@
 @interface IDSMessageHashStore
 + (id)sharedInstance;
-- (BOOL)containsMessageHash:(id)a3;
+- (BOOL)containsMessageHash:(id)hash;
 - (IDSMessageHashStore)init;
 - (unint64_t)_currentLocalTime;
 - (void)_runCleanup;
 - (void)_setDatabaseCloseTimerOnIvarQueue;
 - (void)_startCleanupTimer;
-- (void)addMessageHash:(id)a3;
+- (void)addMessageHash:(id)hash;
 - (void)closeDatabase;
-- (void)updateCreationDateForHash:(id)a3;
+- (void)updateCreationDateForHash:(id)hash;
 @end
 
 @implementation IDSMessageHashStore
@@ -61,15 +61,15 @@
   return v2;
 }
 
-- (BOOL)containsMessageHash:(id)a3
+- (BOOL)containsMessageHash:(id)hash
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hashCopy = hash;
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = hashCopy;
     _os_log_impl(&dword_254737000, v5, OS_LOG_TYPE_DEFAULT, "Checking if message hash %@ is contained in the database", &buf, 0xCu);
   }
 
@@ -88,7 +88,7 @@
   v14[3] = &unk_279782458;
   p_buf = &buf;
   v14[4] = self;
-  v6 = v4;
+  v6 = hashCopy;
   v15 = v6;
   sub_254738470(v14);
   if (*(*(&buf + 1) + 24) == 1)
@@ -107,8 +107,8 @@
     }
 
     v8 = objc_alloc_init(MEMORY[0x277D189B8]);
-    v9 = [MEMORY[0x277D189A0] defaultLogger];
-    [v9 logMetric:v8];
+    defaultLogger = [MEMORY[0x277D189A0] defaultLogger];
+    [defaultLogger logMetric:v8];
 
     v10 = +[IDSHashPersistenceAWDLogging sharedInstance];
     [v10 duplicateMessageEncounted];
@@ -126,15 +126,15 @@
   return v11 & 1;
 }
 
-- (void)addMessageHash:(id)a3
+- (void)addMessageHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_254739874;
   v11[3] = &unk_279782480;
   v11[4] = self;
-  v5 = v4;
+  v5 = hashCopy;
   v12 = v5;
   sub_254738470(v11);
   ivarQueue = self->_ivarQueue;
@@ -143,22 +143,22 @@
   v8[2] = sub_2547399DC;
   v8[3] = &unk_279782480;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v7 = v5;
   dispatch_async(ivarQueue, v8);
 }
 
-- (void)updateCreationDateForHash:(id)a3
+- (void)updateCreationDateForHash:(id)hash
 {
-  v4 = a3;
+  hashCopy = hash;
   ivarQueue = self->_ivarQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_254739D4C;
   v7[3] = &unk_279782480;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = hashCopy;
+  v6 = hashCopy;
   dispatch_async(ivarQueue, v7);
 }
 
@@ -167,16 +167,16 @@
   info = 0xAAAAAAAAAAAAAAAALL;
   if (mach_timebase_info(&info))
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [v3 timeIntervalSince1970];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v5 = v4;
   }
 
   else
   {
     v6 = mach_continuous_time();
-    v7 = [(IDSMessageHashStore *)self initialProcessTime];
-    v8 = (v6 - v7) * info.numer / info.denom;
+    initialProcessTime = [(IDSMessageHashStore *)self initialProcessTime];
+    v8 = (v6 - initialProcessTime) * info.numer / info.denom;
     return [(IDSMessageHashStore *)self initialServerTime]+ v8 / 0x3B9ACA00;
   }
 

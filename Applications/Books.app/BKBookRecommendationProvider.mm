@@ -1,27 +1,27 @@
 @interface BKBookRecommendationProvider
 - (BKBookRecommendationProvider)init;
-- (void)postHydrationFilteredListWithPicks:(id)a3 collectionType:(id)a4 completion:(id)a5;
-- (void)postHydrationFilteredListWithPicks:(id)a3 completion:(id)a4;
+- (void)postHydrationFilteredListWithPicks:(id)picks collectionType:(id)type completion:(id)completion;
+- (void)postHydrationFilteredListWithPicks:(id)picks completion:(id)completion;
 @end
 
 @implementation BKBookRecommendationProvider
 
-- (void)postHydrationFilteredListWithPicks:(id)a3 completion:(id)a4
+- (void)postHydrationFilteredListWithPicks:(id)picks completion:(id)completion
 {
   v6 = sub_1007A25E4();
-  v7 = a4;
-  v8 = self;
-  sub_1006304E8(v6, 0, 0, v7);
+  completionCopy = completion;
+  selfCopy = self;
+  sub_1006304E8(v6, 0, 0, completionCopy);
 }
 
-- (void)postHydrationFilteredListWithPicks:(id)a3 collectionType:(id)a4 completion:(id)a5
+- (void)postHydrationFilteredListWithPicks:(id)picks collectionType:(id)type completion:(id)completion
 {
   v7 = sub_1007A25E4();
   v8 = sub_1007A2254();
   v10 = v9;
-  v11 = a5;
-  v12 = self;
-  sub_1006304E8(v7, v8, v10, v11);
+  completionCopy = completion;
+  selfCopy = self;
+  sub_1006304E8(v7, v8, v10, completionCopy);
 }
 
 - (BKBookRecommendationProvider)init

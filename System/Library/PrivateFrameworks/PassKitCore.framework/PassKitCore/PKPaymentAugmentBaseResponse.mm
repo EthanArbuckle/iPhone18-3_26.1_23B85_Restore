@@ -1,28 +1,28 @@
 @interface PKPaymentAugmentBaseResponse
-- (PKPaymentAugmentBaseResponse)initWithData:(id)a3;
+- (PKPaymentAugmentBaseResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentAugmentBaseResponse
 
-- (PKPaymentAugmentBaseResponse)initWithData:(id)a3
+- (PKPaymentAugmentBaseResponse)initWithData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = PKPaymentAugmentBaseResponse;
-  v3 = [(PKWebServiceResponse *)&v16 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v16 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 objectForKey:@"networkMerchantIdentifier"];
-      v7 = [v6 pk_decodeHexadecimal];
+      v6 = [jSONObject objectForKey:@"networkMerchantIdentifier"];
+      pk_decodeHexadecimal = [v6 pk_decodeHexadecimal];
       networkMerchantIdentifier = v4->_networkMerchantIdentifier;
-      v4->_networkMerchantIdentifier = v7;
+      v4->_networkMerchantIdentifier = pk_decodeHexadecimal;
 
-      v9 = [v5 objectForKey:@"cryptogramType"];
+      v9 = [jSONObject objectForKey:@"cryptogramType"];
       v4->_cryptogramType = PKPaymentCryptogramTypeFromString(v9);
     }
 

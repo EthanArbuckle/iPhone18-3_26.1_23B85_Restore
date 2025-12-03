@@ -1,5 +1,5 @@
 @interface CloudAuthenticateOperation
-- (CloudAuthenticateOperation)initWithConfiguration:(id)a3 mergeToCloudLibraryPreference:(id)a4 allowNoisyAuthPrompt:(BOOL)a5 enableLibraryReason:(int64_t)a6 clientIdentity:(id)a7;
+- (CloudAuthenticateOperation)initWithConfiguration:(id)configuration mergeToCloudLibraryPreference:(id)preference allowNoisyAuthPrompt:(BOOL)prompt enableLibraryReason:(int64_t)reason clientIdentity:(id)identity;
 - (void)main;
 @end
 
@@ -9,25 +9,25 @@
 {
   v68 = [[MSVXPCTransaction alloc] initWithName:@"CloudAuthenticateOperation"];
   [v68 beginTransaction];
-  v3 = [(CloudLibraryOperation *)self musicLibrary];
-  v4 = [(CloudLibraryOperation *)self clientIdentity];
-  [v3 setClientIdentity:v4];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  [musicLibrary setClientIdentity:clientIdentity];
 
   v5 = +[ICDServer server];
-  v6 = [(CloudLibraryOperation *)self configuration];
-  v7 = [v5 daemonOptionsForConfiguration:v6];
+  configuration = [(CloudLibraryOperation *)self configuration];
+  v7 = [v5 daemonOptionsForConfiguration:configuration];
   v8 = [v7 prohibitLibraryUpload] ^ 1;
 
-  v9 = [(CloudLibraryOperation *)self musicLibrary];
-  v10 = [v9 sagaCloudLibraryCUID];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+  sagaCloudLibraryCUID = [musicLibrary2 sagaCloudLibraryCUID];
 
-  v11 = [(CloudLibraryOperation *)self musicLibrary];
-  v12 = [v11 sagaCloudLibraryTroveID];
+  musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
+  sagaCloudLibraryTroveID = [musicLibrary3 sagaCloudLibraryTroveID];
 
-  v69 = v12;
-  if ([v10 length])
+  v69 = sagaCloudLibraryTroveID;
+  if ([sagaCloudLibraryCUID length])
   {
-    v13 = [v12 length] != 0;
+    v13 = [sagaCloudLibraryTroveID length] != 0;
   }
 
   else
@@ -40,7 +40,7 @@
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138544386;
-    v79 = self;
+    selfCopy7 = self;
     v80 = 1024;
     *v81 = v13;
     *&v81[4] = 1024;
@@ -48,39 +48,39 @@
     LOWORD(v82) = 1024;
     *(&v82 + 2) = v8 & !v13;
     HIWORD(v82) = 1024;
-    v83 = [(CloudAuthenticateOperation *)self enableReason];
+    enableReason = [(CloudAuthenticateOperation *)self enableReason];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - Starting authentication - Device registered with CUID and TroveID=%{BOOL}u, canPerformLibraryUpload=%{BOOL}u, requiresDeviceRegistration=%{BOOL}u, enableReason=%d", buf, 0x24u);
   }
 
-  v16 = [(CloudLibraryOperation *)self userIdentity];
+  userIdentity = [(CloudLibraryOperation *)self userIdentity];
   [(CloudLibraryOperation *)self userIdentityStore];
   v70 = v77 = 0;
-  v17 = [v70 getPropertiesForUserIdentity:v16 error:&v77];
+  v17 = [v70 getPropertiesForUserIdentity:userIdentity error:&v77];
   v18 = v77;
   if (v18)
   {
     v19 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      v20 = [v18 msv_description];
+      msv_description = [v18 msv_description];
       *buf = 138543874;
-      v79 = self;
+      selfCopy7 = self;
       v80 = 2114;
-      *v81 = v16;
+      *v81 = userIdentity;
       *&v81[8] = 2114;
-      v82 = v20;
+      v82 = msv_description;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@ - Failed to load identity properties for %{public}@ error=%{public}@", buf, 0x20u);
     }
   }
 
-  v21 = [v17 DSID];
-  if (!v21)
+  dSID = [v17 DSID];
+  if (!dSID)
   {
     v30 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v79 = self;
+      selfCopy7 = self;
       v31 = "%{public}@ - Not authenticating ... unable to get properties for specified account";
       v32 = v30;
       v33 = 12;
@@ -94,9 +94,9 @@ LABEL_24:
     [(CloudLibraryOperation *)self setError:v34];
 
     [(CloudLibraryOperation *)self setStatus:3];
-    v35 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary4 = [(CloudLibraryOperation *)self musicLibrary];
     v36 = MSVTCCIdentityForCurrentProcess();
-    [v35 setClientIdentity:v36];
+    [musicLibrary4 setClientIdentity:v36];
 
     v29 = v68;
     [v68 endTransaction];
@@ -109,9 +109,9 @@ LABEL_24:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v79 = self;
+      selfCopy7 = self;
       v80 = 2112;
-      *v81 = v21;
+      *v81 = dSID;
       v31 = "%{public}@ - Not authenticating ... account is not active. DSID=%@";
       v32 = v30;
       v33 = 22;
@@ -126,13 +126,13 @@ LABEL_24:
     goto LABEL_16;
   }
 
-  v66 = v10;
-  v22 = [v17 cloudLibraryStateReason];
-  v23 = [v22 objectForKey:@"CloudLibraryStateReasonKey"];
+  v66 = sagaCloudLibraryCUID;
+  cloudLibraryStateReason = [v17 cloudLibraryStateReason];
+  v23 = [cloudLibraryStateReason objectForKey:@"CloudLibraryStateReasonKey"];
   if ([v23 integerValue] != -1 || !self->_enableReason)
   {
 
-    v10 = v66;
+    sagaCloudLibraryCUID = v66;
 LABEL_16:
     v67 = dispatch_semaphore_create(0);
     if (([v17 isActiveLocker] & 1) == 0)
@@ -150,8 +150,8 @@ LABEL_16:
       v72[2] = sub_1000414B8;
       v72[3] = &unk_1001DAAD0;
       v72[4] = self;
-      v73 = v16;
-      v74 = v21;
+      v73 = userIdentity;
+      v74 = dSID;
       v25 = v67;
       v75 = v25;
       [v70 insertPropertiesForUserIdentity:v73 usingBlock:v76 completionHandler:v72];
@@ -161,9 +161,9 @@ LABEL_16:
         v26 = +[ICDServer server];
         [v26 setIgnoreAccountChanges:0];
 
-        v27 = [(CloudLibraryOperation *)self musicLibrary];
+        musicLibrary5 = [(CloudLibraryOperation *)self musicLibrary];
         v28 = MSVTCCIdentityForCurrentProcess();
-        [v27 setClientIdentity:v28];
+        [musicLibrary5 setClientIdentity:v28];
 
         v29 = v68;
         [v68 endTransaction];
@@ -190,9 +190,9 @@ LABEL_44:
         v58 = +[ICDServer server];
         [v58 setIgnoreAccountChanges:0];
 
-        v59 = [(CloudLibraryOperation *)self musicLibrary];
+        musicLibrary6 = [(CloudLibraryOperation *)self musicLibrary];
         v60 = MSVTCCIdentityForCurrentProcess();
-        [v59 setClientIdentity:v60];
+        [musicLibrary6 setClientIdentity:v60];
 
         v29 = v68;
         [v68 endTransaction];
@@ -200,7 +200,7 @@ LABEL_44:
       }
 
       *buf = 138543362;
-      v79 = self;
+      selfCopy7 = self;
       v41 = "%{public}@ - shouldTreatSagaAddComputerCallAsFailed is set. Will force SagaAddComputer call to fail.";
       v42 = v40;
       v43 = 12;
@@ -210,11 +210,11 @@ LABEL_44:
     {
       if (v14)
       {
-        v44 = v10;
-        v45 = [(CloudLibraryOperation *)self configuration];
+        v44 = sagaCloudLibraryCUID;
+        configuration2 = [(CloudLibraryOperation *)self configuration];
         allowNoisyAuthPrompt = self->_allowNoisyAuthPrompt;
         v71 = 0;
-        v47 = sub_1000E54B0(v45, allowNoisyAuthPrompt, &v71);
+        v47 = sub_1000E54B0(configuration2, allowNoisyAuthPrompt, &v71);
         v48 = v71;
 
         if ((v47 & 1) == 0)
@@ -229,30 +229,30 @@ LABEL_44:
           [(CloudAuthenticateOperation *)self setAuthenticateFailureCode:&off_1001ED1B0];
         }
 
-        v10 = v44;
+        sagaCloudLibraryCUID = v44;
       }
 
       if ([(CloudLibraryOperation *)self status]== 1)
       {
-        v49 = [(CloudLibraryOperation *)self musicLibrary];
-        [v49 setSagaAccountID:v21];
+        musicLibrary7 = [(CloudLibraryOperation *)self musicLibrary];
+        [musicLibrary7 setSagaAccountID:dSID];
 
         if ((MSVDeviceSupportsMultipleLibraries() & 1) == 0)
         {
           v50 = +[NSDate distantPast];
-          v51 = [(CloudLibraryOperation *)self musicLibrary];
-          [v51 setJaliscoLastGeniusUpdateDate:v50];
+          musicLibrary8 = [(CloudLibraryOperation *)self musicLibrary];
+          [musicLibrary8 setJaliscoLastGeniusUpdateDate:v50];
 
-          v52 = [(CloudLibraryOperation *)self musicLibrary];
-          LODWORD(v51) = [v52 jaliscoHasCloudGeniusData];
+          musicLibrary9 = [(CloudLibraryOperation *)self musicLibrary];
+          LODWORD(musicLibrary8) = [musicLibrary9 jaliscoHasCloudGeniusData];
 
-          if (v51)
+          if (musicLibrary8)
           {
-            v53 = [(CloudLibraryOperation *)self musicLibrary];
-            [v53 clearAllGeniusData];
+            musicLibrary10 = [(CloudLibraryOperation *)self musicLibrary];
+            [musicLibrary10 clearAllGeniusData];
 
-            v54 = [(CloudLibraryOperation *)self musicLibrary];
-            [v54 setJaliscoHasCloudGeniusData:0];
+            musicLibrary11 = [(CloudLibraryOperation *)self musicLibrary];
+            [musicLibrary11 setJaliscoHasCloudGeniusData:0];
           }
         }
 
@@ -267,12 +267,12 @@ LABEL_44:
         goto LABEL_44;
       }
 
-      v56 = [(CloudLibraryOperation *)self status];
+      status = [(CloudLibraryOperation *)self status];
       enableReason = self->_enableReason;
       *buf = 138543874;
-      v79 = self;
+      selfCopy7 = self;
       v80 = 1024;
-      *v81 = v56;
+      *v81 = status;
       *&v81[4] = 1024;
       *&v81[6] = enableReason;
       v41 = "%{public}@ - Completed authentication completed with status=%d for reason=%d";
@@ -289,7 +289,7 @@ LABEL_44:
   {
     v62 = self->_enableReason;
     *buf = 138543618;
-    v79 = self;
+    selfCopy7 = self;
     v80 = 1024;
     *v81 = v62;
     _os_log_impl(&_mh_execute_header, v61, OS_LOG_TYPE_ERROR, "%{public}@ - ICML was manually disabled by the user. Not retrying CloudAuthenticateOperation for reason=%d", buf, 0x12u);
@@ -299,27 +299,27 @@ LABEL_44:
   [(CloudLibraryOperation *)self setError:v63];
 
   [(CloudLibraryOperation *)self setStatus:3];
-  v64 = [(CloudLibraryOperation *)self musicLibrary];
+  musicLibrary12 = [(CloudLibraryOperation *)self musicLibrary];
   v65 = MSVTCCIdentityForCurrentProcess();
-  [v64 setClientIdentity:v65];
+  [musicLibrary12 setClientIdentity:v65];
 
   v29 = v68;
   [v68 endTransaction];
 
-  v10 = v66;
+  sagaCloudLibraryCUID = v66;
 LABEL_46:
 }
 
-- (CloudAuthenticateOperation)initWithConfiguration:(id)a3 mergeToCloudLibraryPreference:(id)a4 allowNoisyAuthPrompt:(BOOL)a5 enableLibraryReason:(int64_t)a6 clientIdentity:(id)a7
+- (CloudAuthenticateOperation)initWithConfiguration:(id)configuration mergeToCloudLibraryPreference:(id)preference allowNoisyAuthPrompt:(BOOL)prompt enableLibraryReason:(int64_t)reason clientIdentity:(id)identity
 {
   v11.receiver = self;
   v11.super_class = CloudAuthenticateOperation;
-  result = [(CloudLibraryOperation *)&v11 initWithConfiguration:a3 clientIdentity:a7];
+  result = [(CloudLibraryOperation *)&v11 initWithConfiguration:configuration clientIdentity:identity];
   if (result)
   {
-    result->_mergeToCloudLibraryPreference = a4;
-    result->_allowNoisyAuthPrompt = a5;
-    result->_enableReason = a6;
+    result->_mergeToCloudLibraryPreference = preference;
+    result->_allowNoisyAuthPrompt = prompt;
+    result->_enableReason = reason;
   }
 
   return result;

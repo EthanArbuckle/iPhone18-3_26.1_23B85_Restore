@@ -1,22 +1,22 @@
 @interface NSURL
 - (BOOL)rd_isExcludedFromBackup;
-- (void)setRd_isExcludedFromBackup:(BOOL)a3;
+- (void)setRd_isExcludedFromBackup:(BOOL)backup;
 @end
 
 @implementation NSURL
 
 - (BOOL)rd_isExcludedFromBackup
 {
-  v2 = self;
+  selfCopy = self;
   isExcludedFrom = NSURL.rd_isExcludedFromBackup.getter();
 
   return isExcludedFrom & 1;
 }
 
-- (void)setRd_isExcludedFromBackup:(BOOL)a3
+- (void)setRd_isExcludedFromBackup:(BOOL)backup
 {
-  v4 = self;
-  NSURL.rd_isExcludedFromBackup.setter(a3);
+  selfCopy = self;
+  NSURL.rd_isExcludedFromBackup.setter(backup);
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface CKDBackingMockAccount
-+ (id)mockAccountWithTestAccount:(id)a3 testDevice:(id)a4;
++ (id)mockAccountWithTestAccount:(id)account testDevice:(id)device;
 - (BOOL)isAccountSuspended;
 - (BOOL)isWarmingUp;
-- (id)_initMockAccountWithTestAccount:(id)a3 testDevice:(id)a4;
-- (id)cloudKitAuthTokenWithError:(id *)a3;
+- (id)_initMockAccountWithTestAccount:(id)account testDevice:(id)device;
+- (id)cloudKitAuthTokenWithError:(id *)error;
 - (id)dsid;
 - (id)fullName;
-- (id)iCloudAuthTokenWithError:(id *)a3;
+- (id)iCloudAuthTokenWithError:(id *)error;
 - (id)identifier;
 - (id)persona;
 - (id)primaryEmail;
 - (id)suspendedAccountIdentifier;
-- (void)renewAuthTokenWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)updateAccountPropertiesAndSaveAccountInStore:(id)a3 completionHandler:(id)a4;
-- (void)validateVettingToken:(id)a3 vettingEmail:(id)a4 vettingPhone:(id)a5 completionHandler:(id)a6;
+- (void)renewAuthTokenWithOptions:(id)options completionHandler:(id)handler;
+- (void)updateAccountPropertiesAndSaveAccountInStore:(id)store completionHandler:(id)handler;
+- (void)validateVettingToken:(id)token vettingEmail:(id)email vettingPhone:(id)phone completionHandler:(id)handler;
 @end
 
 @implementation CKDBackingMockAccount
 
-- (id)_initMockAccountWithTestAccount:(id)a3 testDevice:(id)a4
+- (id)_initMockAccountWithTestAccount:(id)account testDevice:(id)device
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = v9;
-  if (v8)
+  accountCopy = account;
+  deviceCopy = device;
+  v12 = deviceCopy;
+  if (accountCopy)
   {
-    if (v9)
+    if (deviceCopy)
     {
       goto LABEL_3;
     }
@@ -52,22 +52,22 @@ LABEL_3:
   p_isa = &v13->super.super.isa;
   if (v13)
   {
-    objc_storeStrong(&v13->_testAccount, a3);
-    objc_storeStrong(p_isa + 4, a4);
+    objc_storeStrong(&v13->_testAccount, account);
+    objc_storeStrong(p_isa + 4, device);
   }
 
   return p_isa;
 }
 
-+ (id)mockAccountWithTestAccount:(id)a3 testDevice:(id)a4
++ (id)mockAccountWithTestAccount:(id)account testDevice:(id)device
 {
   v47 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v11 = v8;
-  if (v7)
+  accountCopy = account;
+  deviceCopy = device;
+  v11 = deviceCopy;
+  if (accountCopy)
   {
-    if (v8)
+    if (deviceCopy)
     {
       goto LABEL_3;
     }
@@ -76,7 +76,7 @@ LABEL_3:
   else
   {
     v37 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v37, v38, a2, a1, @"CKDBackingMockAccount.m", 48, @"Invalid parameter not satisfying: %@", @"testAccount");
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v37, v38, a2, self, @"CKDBackingMockAccount.m", 48, @"Invalid parameter not satisfying: %@", @"testAccount");
 
     if (v11)
     {
@@ -85,7 +85,7 @@ LABEL_3:
   }
 
   v39 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
-  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v39, v40, a2, a1, @"CKDBackingMockAccount.m", 49, @"Invalid parameter not satisfying: %@", @"testDevice");
+  objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v39, v40, a2, self, @"CKDBackingMockAccount.m", 49, @"Invalid parameter not satisfying: %@", @"testDevice");
 
 LABEL_3:
   v12 = objc_msgSend_currentPersona(MEMORY[0x277CBC558], v9, v10);
@@ -93,13 +93,13 @@ LABEL_3:
   if (!CKBoolFromCKTernary())
   {
 LABEL_7:
-    v27 = [a1 alloc];
-    inited = objc_msgSend__initMockAccountWithTestAccount_testDevice_(v27, v28, v7, v11);
+    v27 = [self alloc];
+    inited = objc_msgSend__initMockAccountWithTestAccount_testDevice_(v27, v28, accountCopy, v11);
     goto LABEL_8;
   }
 
   v17 = objc_msgSend_identifier(v12, v15, v16);
-  v20 = objc_msgSend_accountOverrideInfo(v7, v18, v19);
+  v20 = objc_msgSend_accountOverrideInfo(accountCopy, v18, v19);
   v23 = objc_msgSend_accountPropertyOverrides(v20, v21, v22);
   v25 = objc_msgSend_objectForKeyedSubscript_(v23, v24, *MEMORY[0x277CB8B18]);
 
@@ -118,7 +118,7 @@ LABEL_7:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_INFO))
   {
     v33 = v32;
-    v36 = objc_msgSend_accountID(v7, v34, v35);
+    v36 = objc_msgSend_accountID(accountCopy, v34, v35);
     *buf = 138412802;
     v42 = v17;
     v43 = 2112;
@@ -136,43 +136,43 @@ LABEL_8:
   return inited;
 }
 
-- (void)updateAccountPropertiesAndSaveAccountInStore:(id)a3 completionHandler:(id)a4
+- (void)updateAccountPropertiesAndSaveAccountInStore:(id)store completionHandler:(id)handler
 {
   v5 = MEMORY[0x277CBC560];
   v6 = *MEMORY[0x277CBC120];
-  v7 = a4;
+  handlerCopy = handler;
   v9 = objc_msgSend_errorWithDomain_code_format_(v5, v8, v6, 1000, @"Mock account was asked to refresh account properties. This is unsupported");
-  (*(a4 + 2))(v7, 0, v9);
+  (*(handler + 2))(handlerCopy, 0, v9);
 }
 
-- (void)validateVettingToken:(id)a3 vettingEmail:(id)a4 vettingPhone:(id)a5 completionHandler:(id)a6
+- (void)validateVettingToken:(id)token vettingEmail:(id)email vettingPhone:(id)phone completionHandler:(id)handler
 {
   v7 = MEMORY[0x277CBC560];
   v8 = *MEMORY[0x277CBC120];
-  v9 = a6;
+  handlerCopy = handler;
   v11 = objc_msgSend_errorWithDomain_code_format_(v7, v10, v8, 1000, @"Mock account was asked to validate vetting token. This is unsupported");
-  (*(a6 + 2))(v9, 0, v11);
+  (*(handler + 2))(handlerCopy, 0, v11);
 }
 
 - (id)dsid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  dsid = v2->_dsid;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dsid = selfCopy->_dsid;
   if (!dsid)
   {
-    v6 = objc_msgSend_testAccount(v2, v3, v4);
+    v6 = objc_msgSend_testAccount(selfCopy, v3, v4);
     v9 = objc_msgSend_dsid(v6, v7, v8);
 
     v11 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v10, @"%lld", v9);
-    v12 = v2->_dsid;
-    v2->_dsid = v11;
+    v12 = selfCopy->_dsid;
+    selfCopy->_dsid = v11;
 
-    dsid = v2->_dsid;
+    dsid = selfCopy->_dsid;
   }
 
   v13 = dsid;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v13;
 }
@@ -227,14 +227,14 @@ LABEL_8:
   return v13;
 }
 
-- (id)cloudKitAuthTokenWithError:(id *)a3
+- (id)cloudKitAuthTokenWithError:(id *)error
 {
-  v5 = objc_msgSend_testDevice(self, a2, a3);
+  v5 = objc_msgSend_testDevice(self, a2, error);
   hasValidCredentials = objc_msgSend_hasValidCredentials(v5, v6, v7);
 
   if ((hasValidCredentials & 1) == 0)
   {
-    if (a3)
+    if (error)
     {
       objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v9, *MEMORY[0x277CBC120], 1002, @"TestDevice is withholding credentials for account");
       goto LABEL_7;
@@ -248,11 +248,11 @@ LABEL_8:
 
   if (v14)
   {
-    if (a3)
+    if (error)
     {
       objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v15, *MEMORY[0x277CBC120], 1004, @"TestAccount is simulating Needs to Verify Terms");
 LABEL_7:
-      *a3 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_10;
     }
 
@@ -272,9 +272,9 @@ LABEL_10:
   return v17;
 }
 
-- (id)iCloudAuthTokenWithError:(id *)a3
+- (id)iCloudAuthTokenWithError:(id *)error
 {
-  v5 = objc_msgSend_testDevice(self, a2, a3);
+  v5 = objc_msgSend_testDevice(self, a2, error);
   hasValidCredentials = objc_msgSend_hasValidCredentials(v5, v6, v7);
 
   if (hasValidCredentials)
@@ -286,10 +286,10 @@ LABEL_10:
     v20 = objc_msgSend_stringWithFormat_(v11, v19, @"ICAuthToken-%@-%zu", v18, qword_27D71F838);
   }
 
-  else if (a3)
+  else if (error)
   {
     objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v9, *MEMORY[0x277CBC120], 1002, @"TestDevice is withholding credentials for account");
-    *a3 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -334,10 +334,10 @@ LABEL_10:
   return [(CKDBackingAccount *)&v9 isAccountSuspended];
 }
 
-- (void)renewAuthTokenWithOptions:(id)a3 completionHandler:(id)a4
+- (void)renewAuthTokenWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -370,7 +370,7 @@ LABEL_10:
     v16 = objc_msgSend_length(v13, v19, v20);
   }
 
-  v7[2](v7, v16 != 0, v12);
+  handlerCopy[2](handlerCopy, v16 != 0, v12);
 }
 
 @end

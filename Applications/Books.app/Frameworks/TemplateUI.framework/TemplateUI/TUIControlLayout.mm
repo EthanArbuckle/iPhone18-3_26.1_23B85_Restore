@@ -7,9 +7,9 @@
 - (id)collectLinkEntities
 {
   v2 = [(TUILayout *)self box];
-  v3 = [v2 linkEntities];
+  linkEntities = [v2 linkEntities];
 
-  return v3;
+  return linkEntities;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface SSMetricsMutableEvent
 + (id)Topic;
-- (void)setStandardPropertiesWith:(id)a3 completionHandler:(id)a4;
+- (void)setStandardPropertiesWith:(id)with completionHandler:(id)handler;
 @end
 
 @implementation SSMetricsMutableEvent
 
-- (void)setStandardPropertiesWith:(id)a3 completionHandler:(id)a4
+- (void)setStandardPropertiesWith:(id)with completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10019BD80(a3, v8, v6);
+  withCopy = with;
+  selfCopy = self;
+  sub_10019BD80(with, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

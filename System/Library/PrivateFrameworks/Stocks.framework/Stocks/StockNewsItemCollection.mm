@@ -1,25 +1,25 @@
 @interface StockNewsItemCollection
-- (StockNewsItemCollection)initWithArchiveArray:(id)a3;
+- (StockNewsItemCollection)initWithArchiveArray:(id)array;
 - (id)archiveArray;
 @end
 
 @implementation StockNewsItemCollection
 
-- (StockNewsItemCollection)initWithArchiveArray:(id)a3
+- (StockNewsItemCollection)initWithArchiveArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   v22.receiver = self;
   v22.super_class = StockNewsItemCollection;
   v5 = [(StockNewsItemCollection *)&v22 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = v4;
+    v7 = arrayCopy;
     v8 = [v7 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v8)
     {
@@ -87,8 +87,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) archiveDictionary];
-        [v3 addObject:v9];
+        archiveDictionary = [*(*(&v11 + 1) + 8 * i) archiveDictionary];
+        [v3 addObject:archiveDictionary];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];

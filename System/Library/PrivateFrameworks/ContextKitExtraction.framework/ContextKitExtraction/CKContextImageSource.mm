@@ -1,18 +1,18 @@
 @interface CKContextImageSource
-+ (id)imageSourceForUIImage:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CKContextImageSource)initWithCoder:(id)a3;
-- (CKContextImageSource)initWithIOSurface:(id)a3;
-- (CKContextImageSource)initWithIOSurface:(id)a3 cameraIntrinsics:(id)a4;
++ (id)imageSourceForUIImage:(id)image;
+- (BOOL)isEqual:(id)equal;
+- (CKContextImageSource)initWithCoder:(id)coder;
+- (CKContextImageSource)initWithIOSurface:(id)surface;
+- (CKContextImageSource)initWithIOSurface:(id)surface cameraIntrinsics:(id)intrinsics;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKContextImageSource
 
-+ (id)imageSourceForUIImage:(id)a3
++ (id)imageSourceForUIImage:(id)image
 {
-  v3 = [CKContextExtractionUtil _renderImageToSurfaceWithImage:a3];
+  v3 = [CKContextExtractionUtil _renderImageToSurfaceWithImage:image];
   if (v3)
   {
     v4 = [[CKContextImageSource alloc] initWithIOSurface:v3];
@@ -26,56 +26,56 @@
   return v4;
 }
 
-- (CKContextImageSource)initWithIOSurface:(id)a3
+- (CKContextImageSource)initWithIOSurface:(id)surface
 {
-  v4 = a3;
+  surfaceCopy = surface;
   v8.receiver = self;
   v8.super_class = CKContextImageSource;
   v5 = [(CKContextImageSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CKContextImageSource *)v5 setIoSurface:v4];
+    [(CKContextImageSource *)v5 setIoSurface:surfaceCopy];
   }
 
   return v6;
 }
 
-- (CKContextImageSource)initWithIOSurface:(id)a3 cameraIntrinsics:(id)a4
+- (CKContextImageSource)initWithIOSurface:(id)surface cameraIntrinsics:(id)intrinsics
 {
-  v6 = a3;
-  v7 = a4;
+  surfaceCopy = surface;
+  intrinsicsCopy = intrinsics;
   v11.receiver = self;
   v11.super_class = CKContextImageSource;
   v8 = [(CKContextImageSource *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CKContextImageSource *)v8 setIoSurface:v6];
-    [(CKContextImageSource *)v9 setCameraIntrinsics:v7];
+    [(CKContextImageSource *)v8 setIoSurface:surfaceCopy];
+    [(CKContextImageSource *)v9 setCameraIntrinsics:intrinsicsCopy];
   }
 
   return v9;
 }
 
-- (CKContextImageSource)initWithCoder:(id)a3
+- (CKContextImageSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CKContextImageSource;
   v5 = [(CKContextImageSource *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orientation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orientation"];
     -[CKContextImageSource setOrientation:](v5, "setOrientation:", [v6 unsignedIntValue]);
-    -[CKContextImageSource setProfile:](v5, "setProfile:", [v4 decodeIntForKey:@"profile"]);
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cameraIntrinsics"];
+    -[CKContextImageSource setProfile:](v5, "setProfile:", [coderCopy decodeIntForKey:@"profile"]);
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cameraIntrinsics"];
     [(CKContextImageSource *)v5 setCameraIntrinsics:v7];
 
     v8 = NSClassFromString(&cfstr_Iosurface.isa);
     if (v8)
     {
-      v9 = [v4 decodeObjectOfClass:v8 forKey:@"iosurface"];
+      v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"iosurface"];
       [(CKContextImageSource *)v5 setIoSurface:v9];
     }
   }
@@ -83,31 +83,31 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   orientation = self->_orientation;
-  v7 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInt:orientation];
-  [v7 encodeObject:v6 forKey:@"orientation"];
+  [coderCopy encodeObject:v6 forKey:@"orientation"];
 
-  [v7 encodeInteger:self->_profile forKey:@"profile"];
-  [v7 encodeObject:self->_ioSurface forKey:@"iosurface"];
-  [v7 encodeObject:self->_cameraIntrinsics forKey:@"iosurface"];
+  [coderCopy encodeInteger:self->_profile forKey:@"profile"];
+  [coderCopy encodeObject:self->_ioSurface forKey:@"iosurface"];
+  [coderCopy encodeObject:self->_cameraIntrinsics forKey:@"iosurface"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CKContextImageSource *)self ioSurface];
-  v3 = 31 * [v2 hash];
+  ioSurface = [(CKContextImageSource *)self ioSurface];
+  v3 = 31 * [ioSurface hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -117,13 +117,13 @@
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v7 = v4;
+      v7 = equalCopy;
       v8 = [(CKContextImageSource *)self hash];
       if (v8 == [(CKContextImageSource *)v7 hash]&& (v9 = [(CKContextImageSource *)self orientation], v9 == [(CKContextImageSource *)v7 orientation]) && (v10 = [(CKContextImageSource *)self profile], v10 == [(CKContextImageSource *)v7 profile]))
       {
-        v11 = [(CKContextImageSource *)self cameraIntrinsics];
-        v12 = [(CKContextImageSource *)v7 cameraIntrinsics];
-        v6 = [v11 isEqual:v12];
+        cameraIntrinsics = [(CKContextImageSource *)self cameraIntrinsics];
+        cameraIntrinsics2 = [(CKContextImageSource *)v7 cameraIntrinsics];
+        v6 = [cameraIntrinsics isEqual:cameraIntrinsics2];
       }
 
       else

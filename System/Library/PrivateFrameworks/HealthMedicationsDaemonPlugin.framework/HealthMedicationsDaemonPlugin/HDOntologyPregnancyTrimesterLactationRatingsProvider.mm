@@ -1,12 +1,12 @@
 @interface HDOntologyPregnancyTrimesterLactationRatingsProvider
-+ (id)pregnancyTrimesterLactationRatingsForConcept:(id)a3;
++ (id)pregnancyTrimesterLactationRatingsForConcept:(id)concept;
 @end
 
 @implementation HDOntologyPregnancyTrimesterLactationRatingsProvider
 
-+ (id)pregnancyTrimesterLactationRatingsForConcept:(id)a3
++ (id)pregnancyTrimesterLactationRatingsForConcept:(id)concept
 {
-  v3 = [a3 firstAttributeForType:665];
+  v3 = [concept firstAttributeForType:665];
   if (v3)
   {
     v4 = [MEMORY[0x277D107D0] localizedUserDomainConceptPropertyStringForConceptAttribute:v3 locale:@"en_US" propertyType:180000];

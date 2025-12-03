@@ -1,6 +1,6 @@
 @interface CRLLocale
 + (CRLLocale)currentLocale;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CRLLocale)init;
 @end
 
@@ -28,22 +28,22 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, equalCopy);
 
   if (v6)
   {
-    v7 = [(CRLLocale *)self locale];
-    v8 = [v6 locale];
-    v9 = [v7 isEqual:v8];
+    locale = [(CRLLocale *)self locale];
+    locale2 = [v6 locale];
+    v9 = [locale isEqual:locale2];
   }
 
   else

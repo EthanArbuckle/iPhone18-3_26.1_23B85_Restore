@@ -3,8 +3,8 @@
 - (BOOL)start;
 - (BOOL)stop;
 - (MTRPlugin)init;
-- (void)_pairingStartedNotification:(id)a3;
-- (void)_pairingStoppedNotification:(id)a3;
+- (void)_pairingStartedNotification:(id)notification;
+- (void)_pairingStoppedNotification:(id)notification;
 @end
 
 @implementation MTRPlugin
@@ -50,17 +50,17 @@ uint64_t __27__MTRPlugin_sharedInstance__block_invoke()
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134217984;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25830F000, v3, OS_LOG_TYPE_DEFAULT, "Starting MTRPlugin: %p", &v8, 0xCu);
   }
 
   [MEMORY[0x277CD5318] swizzlePrewarm];
   [MEMORY[0x277CD5328] swizzlePrewarm];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel__pairingStartedNotification_ name:@"HMDHomeManagerFirstProcessDidBecomeActiveNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__pairingStartedNotification_ name:@"HMDHomeManagerFirstProcessDidBecomeActiveNotification" object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__pairingStoppedNotification_ name:@"HMDHomeManagerLastProcessDidBecomeInactiveNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__pairingStoppedNotification_ name:@"HMDHomeManagerLastProcessDidBecomeInactiveNotification" object:0];
 
   v6 = *MEMORY[0x277D85DE8];
   return 1;
@@ -73,7 +73,7 @@ uint64_t __27__MTRPlugin_sharedInstance__block_invoke()
   if (os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25830F000, v3, OS_LOG_TYPE_DEFAULT, "Stopping MTRPlugin: %p", &v6, 0xCu);
   }
 
@@ -81,12 +81,12 @@ uint64_t __27__MTRPlugin_sharedInstance__block_invoke()
   return 1;
 }
 
-- (void)_pairingStartedNotification:(id)a3
+- (void)_pairingStartedNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = _MTRValidateUserInfo(v4);
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = _MTRValidateUserInfo(userInfo);
 
   v6 = matterPluginLog_default;
   v7 = os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT);
@@ -95,8 +95,8 @@ uint64_t __27__MTRPlugin_sharedInstance__block_invoke()
     if (v7)
     {
       v8 = v6;
-      v9 = [v3 userInfo];
-      v10 = [v9 objectForKeyedSubscript:@"HMDXPCConnectionClientIdentifierKey"];
+      userInfo2 = [notificationCopy userInfo];
+      v10 = [userInfo2 objectForKeyedSubscript:@"HMDXPCConnectionClientIdentifierKey"];
       v15 = 138412290;
       v16 = v10;
       _os_log_impl(&dword_25830F000, v8, OS_LOG_TYPE_DEFAULT, "Process activation for %@", &v15, 0xCu);
@@ -108,8 +108,8 @@ uint64_t __27__MTRPlugin_sharedInstance__block_invoke()
   else if (v7)
   {
     v11 = v6;
-    v12 = [v3 userInfo];
-    v13 = [v12 objectForKeyedSubscript:@"HMDXPCConnectionClientIdentifierKey"];
+    userInfo3 = [notificationCopy userInfo];
+    v13 = [userInfo3 objectForKeyedSubscript:@"HMDXPCConnectionClientIdentifierKey"];
     v15 = 138412290;
     v16 = v13;
     _os_log_impl(&dword_25830F000, v11, OS_LOG_TYPE_DEFAULT, "Ignoring process activation for %@, not com.apple.Home.HomeUIService", &v15, 0xCu);
@@ -118,12 +118,12 @@ uint64_t __27__MTRPlugin_sharedInstance__block_invoke()
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_pairingStoppedNotification:(id)a3
+- (void)_pairingStoppedNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = _MTRValidateUserInfo(v4);
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v5 = _MTRValidateUserInfo(userInfo);
 
   v6 = matterPluginLog_default;
   v7 = os_log_type_enabled(matterPluginLog_default, OS_LOG_TYPE_DEFAULT);
@@ -132,8 +132,8 @@ uint64_t __27__MTRPlugin_sharedInstance__block_invoke()
     if (v7)
     {
       v8 = v6;
-      v9 = [v3 userInfo];
-      v10 = [v9 objectForKeyedSubscript:@"HMDXPCConnectionClientIdentifierKey"];
+      userInfo2 = [notificationCopy userInfo];
+      v10 = [userInfo2 objectForKeyedSubscript:@"HMDXPCConnectionClientIdentifierKey"];
       v15 = 138412290;
       v16 = v10;
       _os_log_impl(&dword_25830F000, v8, OS_LOG_TYPE_DEFAULT, "Process de-activation for %@", &v15, 0xCu);
@@ -145,8 +145,8 @@ uint64_t __27__MTRPlugin_sharedInstance__block_invoke()
   else if (v7)
   {
     v11 = v6;
-    v12 = [v3 userInfo];
-    v13 = [v12 objectForKeyedSubscript:@"HMDXPCConnectionClientIdentifierKey"];
+    userInfo3 = [notificationCopy userInfo];
+    v13 = [userInfo3 objectForKeyedSubscript:@"HMDXPCConnectionClientIdentifierKey"];
     v15 = 138412290;
     v16 = v13;
     _os_log_impl(&dword_25830F000, v11, OS_LOG_TYPE_DEFAULT, "Ignoring process de-activation for %@, not com.apple.Home.HomeUIService", &v15, 0xCu);

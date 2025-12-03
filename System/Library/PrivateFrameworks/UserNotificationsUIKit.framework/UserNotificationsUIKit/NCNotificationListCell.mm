@@ -2,55 +2,55 @@
 - (BOOL)_actionHandlerAllowsPerformingClipping;
 - (BOOL)_shouldPerformClipping;
 - (BOOL)isContentUserInteractionEnabled;
-- (BOOL)shouldContinuePresentingActionButtonsForSwipeInteraction:(id)a3;
-- (BOOL)shouldVerticallyStackButtonsForSwipeInteraction:(id)a3;
-- (BOOL)swipeInteraction:(id)a3 shouldRevealActionsFromLayoutLocation:(unint64_t)a4;
+- (BOOL)shouldContinuePresentingActionButtonsForSwipeInteraction:(id)interaction;
+- (BOOL)shouldVerticallyStackButtonsForSwipeInteraction:(id)interaction;
+- (BOOL)swipeInteraction:(id)interaction shouldRevealActionsFromLayoutLocation:(unint64_t)location;
 - (CGAffineTransform)contentTransform;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 withTraits:(id)a4;
-- (NCNotificationListCell)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits withTraits:(id)traits;
+- (NCNotificationListCell)initWithFrame:(CGRect)frame;
 - (NCNotificationListCellActionHandling)actionHandler;
 - (NCNotificationListCellActionProviding)actionProvider;
 - (NCNotificationListCellDynamicHeightTraits)currentTraits;
 - (NCNotificationViewController)notificationViewController;
-- (double)buttonsGlassLuminanceForSwipeInteraction:(id)a3;
+- (double)buttonsGlassLuminanceForSwipeInteraction:(id)interaction;
 - (id)_buttonCustomBackgroundColor;
-- (id)swipeInteraction:(id)a3 actionsToRevealFromLayoutLocation:(unint64_t)a4;
-- (int64_t)buttonsRecipeForSwipeInteraction:(id)a3;
+- (id)swipeInteraction:(id)interaction actionsToRevealFromLayoutLocation:(unint64_t)location;
+- (int64_t)buttonsRecipeForSwipeInteraction:(id)interaction;
 - (void)_configureClippingIfNecessary;
 - (void)_layoutContentView;
 - (void)_resetClipping;
 - (void)_setupClipping;
 - (void)_updateDebugViewFrame;
-- (void)addSubview:(id)a3;
-- (void)bringSubviewToFront:(id)a3;
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3;
+- (void)addSubview:(id)subview;
+- (void)bringSubviewToFront:(id)front;
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setAllowContentToCrossFade:(BOOL)a3;
-- (void)setApparentZDistanceToUser:(int64_t)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setBackgroundHidden:(BOOL)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setCompositeAlpha:(double)a3;
-- (void)setContentAlpha:(double)a3;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setContentUserInteractionEnabled:(BOOL)a3;
-- (void)setContentViewController:(id)a3;
-- (void)setDateAlpha:(double)a3;
-- (void)setDisableDimming:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGlassMode:(unint64_t)a3;
-- (void)setHideDate:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setRootScrollVelocity:(double)a3;
-- (void)setUnmanagedBackdropContrast:(BOOL)a3;
-- (void)swipeInteraction:(id)a3 didMoveToNewXPosition:(double)a4;
-- (void)swipeInteractionDidBeginHidingActions:(id)a3;
-- (void)swipeInteractionDidBeginRevealingActions:(id)a3;
-- (void)swipeInteractionDidSignificantUserInteraction:(id)a3;
+- (void)setAllowContentToCrossFade:(BOOL)fade;
+- (void)setApparentZDistanceToUser:(int64_t)user;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setBackgroundHidden:(BOOL)hidden;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCompositeAlpha:(double)alpha;
+- (void)setContentAlpha:(double)alpha;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setContentUserInteractionEnabled:(BOOL)enabled;
+- (void)setContentViewController:(id)controller;
+- (void)setDateAlpha:(double)alpha;
+- (void)setDisableDimming:(BOOL)dimming;
+- (void)setFrame:(CGRect)frame;
+- (void)setGlassMode:(unint64_t)mode;
+- (void)setHideDate:(BOOL)date;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setRootScrollVelocity:(double)velocity;
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast;
+- (void)swipeInteraction:(id)interaction didMoveToNewXPosition:(double)position;
+- (void)swipeInteractionDidBeginHidingActions:(id)actions;
+- (void)swipeInteractionDidBeginRevealingActions:(id)actions;
+- (void)swipeInteractionDidSignificantUserInteraction:(id)interaction;
 @end
 
 @implementation NCNotificationListCell
@@ -73,12 +73,12 @@
 
 - (NCNotificationListCellDynamicHeightTraits)currentTraits
 {
-  v2 = [(NCNotificationListCell *)self contentViewController];
-  v3 = [v2 view];
+  contentViewController = [(NCNotificationListCell *)self contentViewController];
+  view = [contentViewController view];
 
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 currentTraits];
+    currentTraits = [view currentTraits];
   }
 
   else
@@ -89,20 +89,20 @@
       [(NCDimmableView *)v5 currentTraits];
     }
 
-    v4 = objc_alloc_init(NCNotificationListCellDynamicHeightTraits);
+    currentTraits = objc_alloc_init(NCNotificationListCellDynamicHeightTraits);
   }
 
-  v6 = v4;
+  v6 = currentTraits;
 
   return v6;
 }
 
-- (NCNotificationListCell)initWithFrame:(CGRect)a3
+- (NCNotificationListCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v17.receiver = self;
   v17.super_class = NCNotificationListCell;
   v7 = [(NCNotificationListCell *)&v17 initWithFrame:?];
@@ -115,11 +115,11 @@
     [v7 setAccessibilityIdentifier:@"ListCell"];
     [*(v7 + 63) setAccessibilityIdentifier:@"ListCell.ContentView"];
     [v7 addSubview:*(v7 + 63)];
-    v10 = [MEMORY[0x277D75348] clearColor];
-    [v7 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v7 setBackgroundColor:clearColor];
 
-    v11 = [v7 layer];
-    [v11 setAllowsGroupOpacity:0];
+    layer = [v7 layer];
+    [layer setAllowsGroupOpacity:0];
 
     v7[417] = 0;
     *(v7 + 65) = 0x3FF0000000000000;
@@ -153,25 +153,25 @@
   [(NCNotificationListCell *)&v3 dealloc];
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   contentViewController = self->_contentViewController;
-  if (contentViewController != v5)
+  if (contentViewController != controllerCopy)
   {
-    v11 = v5;
-    v7 = [(NCNotificationListDimmable *)contentViewController view];
-    [v7 removeFromSuperview];
+    v11 = controllerCopy;
+    view = [(NCNotificationListDimmable *)contentViewController view];
+    [view removeFromSuperview];
 
-    objc_storeStrong(&self->_contentViewController, a3);
-    v8 = [(NCNotificationListCell *)self contentView];
-    v9 = [(NCNotificationListDimmable *)v11 view];
-    [v8 addSubview:v9];
+    objc_storeStrong(&self->_contentViewController, controller);
+    contentView = [(NCNotificationListCell *)self contentView];
+    view2 = [(NCNotificationListDimmable *)v11 view];
+    [contentView addSubview:view2];
 
     [(NCNotificationListCell *)self setOverrideUserInterfaceStyle:[(NCNotificationListDimmable *)self->_contentViewController overrideUserInterfaceStyle]];
     [(PLSwipeInteraction *)self->_swipeInteraction hideActionsAnimated:0 fastAnimation:0 completion:0];
-    v10 = [(NCNotificationListCell *)self notificationViewController];
-    [v10 setBackgroundAlpha:self->_backgroundAlpha];
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    [notificationViewController setBackgroundAlpha:self->_backgroundAlpha];
 
     contentViewController = [(NCNotificationListCell *)self setNeedsLayout];
   }
@@ -179,190 +179,190 @@
   MEMORY[0x2821F96F8](contentViewController);
 }
 
-- (void)setContentUserInteractionEnabled:(BOOL)a3
+- (void)setContentUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(NCNotificationListCell *)self notificationViewController];
-  v8 = v5;
-  if (v5)
+  enabledCopy = enabled;
+  notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+  v8 = notificationViewController;
+  if (notificationViewController)
   {
-    [v5 setInteractionEnabled:v3];
+    [notificationViewController setInteractionEnabled:enabledCopy];
   }
 
   else
   {
-    v6 = [(NCNotificationListCell *)self contentViewController];
-    v7 = [v6 view];
-    [v7 setUserInteractionEnabled:v3];
+    contentViewController = [(NCNotificationListCell *)self contentViewController];
+    view = [contentViewController view];
+    [view setUserInteractionEnabled:enabledCopy];
   }
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  if (self->_backgroundAlpha != a3)
+  if (self->_backgroundAlpha != alpha)
   {
-    self->_backgroundAlpha = a3;
-    v4 = [(NCNotificationListCell *)self notificationViewController];
-    [v4 setBackgroundAlpha:self->_backgroundAlpha];
+    self->_backgroundAlpha = alpha;
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    [notificationViewController setBackgroundAlpha:self->_backgroundAlpha];
 
     [(NCNotificationListCell *)self setNeedsLayout];
   }
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  if (self->_contentAlpha != a3)
+  if (self->_contentAlpha != alpha)
   {
-    self->_contentAlpha = a3;
-    v4 = [(NCNotificationListCell *)self notificationViewController];
-    [v4 setContentAlpha:self->_contentAlpha];
+    self->_contentAlpha = alpha;
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    [notificationViewController setContentAlpha:self->_contentAlpha];
 
     [(NCNotificationListCell *)self setNeedsLayout];
   }
 }
 
-- (void)setDisableDimming:(BOOL)a3
+- (void)setDisableDimming:(BOOL)dimming
 {
-  if (self->_disableDimming != a3)
+  if (self->_disableDimming != dimming)
   {
-    v4 = a3;
-    self->_disableDimming = a3;
-    v6 = [(NCNotificationListCell *)self notificationViewController];
-    [v6 setDisableDimming:v4];
+    dimmingCopy = dimming;
+    self->_disableDimming = dimming;
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    [notificationViewController setDisableDimming:dimmingCopy];
 
     [(NCNotificationListCell *)self setNeedsLayout];
   }
 }
 
-- (void)setHideDate:(BOOL)a3
+- (void)setHideDate:(BOOL)date
 {
-  if (self->_hideDate != a3)
+  if (self->_hideDate != date)
   {
-    v4 = a3;
-    self->_hideDate = a3;
-    v6 = [(NCNotificationListCell *)self notificationViewController];
-    [v6 setHideDate:v4];
+    dateCopy = date;
+    self->_hideDate = date;
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    [notificationViewController setHideDate:dateCopy];
 
     [(NCNotificationListCell *)self setNeedsLayout];
   }
 }
 
-- (void)setAllowContentToCrossFade:(BOOL)a3
+- (void)setAllowContentToCrossFade:(BOOL)fade
 {
-  if (self->_allowContentToCrossFade != a3)
+  if (self->_allowContentToCrossFade != fade)
   {
-    v4 = a3;
-    self->_allowContentToCrossFade = a3;
-    v6 = [(NCNotificationListCell *)self notificationViewController];
-    [v6 setAllowContentToCrossFade:v4];
+    fadeCopy = fade;
+    self->_allowContentToCrossFade = fade;
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    [notificationViewController setAllowContentToCrossFade:fadeCopy];
 
     [(NCNotificationListCell *)self setNeedsLayout];
   }
 }
 
-- (void)setDateAlpha:(double)a3
+- (void)setDateAlpha:(double)alpha
 {
-  if (self->_dateAlpha != a3)
+  if (self->_dateAlpha != alpha)
   {
-    self->_dateAlpha = a3;
-    v5 = [(NCNotificationListCell *)self notificationViewController];
-    [v5 setDateAlpha:a3];
+    self->_dateAlpha = alpha;
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    [notificationViewController setDateAlpha:alpha];
 
     [(NCNotificationListCell *)self setNeedsLayout];
   }
 }
 
-- (void)setCompositeAlpha:(double)a3
+- (void)setCompositeAlpha:(double)alpha
 {
-  if (self->_compositeAlpha != a3)
+  if (self->_compositeAlpha != alpha)
   {
-    self->_compositeAlpha = a3;
-    v5 = [(NCNotificationListCell *)self notificationViewController];
-    [v5 setCompositeAlpha:a3];
+    self->_compositeAlpha = alpha;
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    [notificationViewController setCompositeAlpha:alpha];
 
     [(NCNotificationListCell *)self setNeedsLayout];
   }
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
   p_contentTransform = &self->_contentTransform;
   v6 = *&self->_contentTransform.c;
   *&t1.a = *&self->_contentTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_contentTransform.tx;
-  v7 = *&a3->c;
-  *&v12.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v12.a = *&transform->a;
   *&v12.c = v7;
-  *&v12.tx = *&a3->tx;
+  *&v12.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v12))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_contentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_contentTransform->c = *&transform->c;
     *&p_contentTransform->tx = v9;
     *&p_contentTransform->a = v8;
-    v10 = [(NCNotificationListCell *)self notificationViewController];
-    v11 = *&a3->c;
-    *&t1.a = *&a3->a;
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    v11 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v11;
-    *&t1.tx = *&a3->tx;
-    [v10 setContentTransform:&t1];
+    *&t1.tx = *&transform->tx;
+    [notificationViewController setContentTransform:&t1];
 
     [(NCNotificationListCell *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundHidden:(BOOL)a3
+- (void)setBackgroundHidden:(BOOL)hidden
 {
-  if (self->_backgroundHidden != a3)
+  if (self->_backgroundHidden != hidden)
   {
-    v4 = a3;
-    self->_backgroundHidden = a3;
-    v5 = [(NCNotificationListCell *)self notificationViewController];
-    [v5 setBackgroundHidden:v4];
+    hiddenCopy = hidden;
+    self->_backgroundHidden = hidden;
+    notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+    [notificationViewController setBackgroundHidden:hiddenCopy];
   }
 }
 
 - (BOOL)isContentUserInteractionEnabled
 {
-  v3 = [(NCNotificationListCell *)self notificationViewController];
-  v4 = v3;
-  if (v3)
+  notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+  v4 = notificationViewController;
+  if (notificationViewController)
   {
-    v5 = [v3 isInteractionEnabled];
+    isInteractionEnabled = [notificationViewController isInteractionEnabled];
   }
 
   else
   {
-    v6 = [(NCNotificationListCell *)self contentViewController];
-    v7 = [v6 view];
-    v5 = [v7 isUserInteractionEnabled];
+    contentViewController = [(NCNotificationListCell *)self contentViewController];
+    view = [contentViewController view];
+    isInteractionEnabled = [view isUserInteractionEnabled];
   }
 
-  return v5;
+  return isInteractionEnabled;
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = NCNotificationListCell;
-  [(NCNotificationListCell *)&v4 addSubview:a3];
+  [(NCNotificationListCell *)&v4 addSubview:subview];
   if (self->_debugView)
   {
     [(NCNotificationListCell *)self bringSubviewToFront:?];
   }
 }
 
-- (void)bringSubviewToFront:(id)a3
+- (void)bringSubviewToFront:(id)front
 {
   v6.receiver = self;
   v6.super_class = NCNotificationListCell;
-  v4 = a3;
-  [(NCNotificationListCell *)&v6 bringSubviewToFront:v4];
+  frontCopy = front;
+  [(NCNotificationListCell *)&v6 bringSubviewToFront:frontCopy];
   debugView = self->_debugView;
 
-  if (debugView != v4)
+  if (debugView != frontCopy)
   {
     [(NCNotificationListCell *)self bringSubviewToFront:debugView, v6.receiver, v6.super_class];
   }
@@ -373,9 +373,9 @@
   v4.receiver = self;
   v4.super_class = NCNotificationListCell;
   [(NCNotificationListCell *)&v4 didMoveToSuperview];
-  v3 = [(NCNotificationListCell *)self superview];
+  superview = [(NCNotificationListCell *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [NCNotificationListDebugView configureDebugGuidesIfNecessaryForView:self];
   }
@@ -387,37 +387,37 @@
   v4.super_class = NCNotificationListCell;
   [(NCNotificationListCell *)&v4 layoutSubviews];
   [(NCNotificationListCell *)self _layoutContentView];
-  v3 = [(NCNotificationListCell *)self superview];
+  superview = [(NCNotificationListCell *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 subviewDidLayout];
+    [superview subviewDidLayout];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = NCNotificationListCell;
-  [(NCNotificationListCell *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NCNotificationListCell *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(NCNotificationListCell *)self _updateDebugViewFrame];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = NCNotificationListCell;
-  [(NCNotificationListCell *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NCNotificationListCell *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(NCNotificationListCell *)self _updateDebugViewFrame];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(NCNotificationListCell *)self contentViewController];
-  v6 = [v5 view];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  contentViewController = [(NCNotificationListCell *)self contentViewController];
+  view = [contentViewController view];
+  [view sizeThatFits:{width, height}];
   v8 = v7;
   v10 = v9;
 
@@ -435,9 +435,9 @@
   [(NCNotificationListCell *)self setApparentZDistanceToUser:0x7FFFFFFFFFFFFFFFLL];
   [(NCNotificationListCell *)self setGlassMode:0];
   [(NCNotificationListCell *)self setUnmanagedBackdropContrast:0];
-  v3 = [(NCNotificationListCell *)self notificationViewController];
-  [v3 setNotificationContentViewHidden:0];
-  [v3 _setNotificationRequest:0];
+  notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+  [notificationViewController setNotificationContentViewHidden:0];
+  [notificationViewController _setNotificationRequest:0];
 }
 
 - (void)_layoutContentView
@@ -450,72 +450,72 @@
   v6 = v5;
   v7 = *MEMORY[0x277CBF348];
   v8 = *(MEMORY[0x277CBF348] + 8);
-  v9 = [(NCNotificationListDimmable *)self->_contentViewController view];
-  [v9 setFrame:{v7, v8, v4, v6}];
+  view = [(NCNotificationListDimmable *)self->_contentViewController view];
+  [view setFrame:{v7, v8, v4, v6}];
 }
 
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform
 {
   contentViewController = self->_contentViewController;
   if (contentViewController)
   {
-    v4 = *&a3->c;
-    v5[0] = *&a3->a;
+    v4 = *&transform->c;
+    v5[0] = *&transform->a;
     v5[1] = v4;
-    v5[2] = *&a3->tx;
+    v5[2] = *&transform->tx;
     [(NCNotificationListDimmable *)contentViewController configureStackDimmingForTransform:v5];
   }
 }
 
-- (void)setApparentZDistanceToUser:(int64_t)a3
+- (void)setApparentZDistanceToUser:(int64_t)user
 {
-  if (self->_apparentZDistanceToUser != a3)
+  if (self->_apparentZDistanceToUser != user)
   {
-    self->_apparentZDistanceToUser = a3;
+    self->_apparentZDistanceToUser = user;
     [(NCNotificationListDimmable *)self->_contentViewController setApparentZDistanceToUser:?];
   }
 }
 
-- (void)setRootScrollVelocity:(double)a3
+- (void)setRootScrollVelocity:(double)velocity
 {
-  if (self->_rootScrollVelocity != a3)
+  if (self->_rootScrollVelocity != velocity)
   {
-    self->_rootScrollVelocity = a3;
+    self->_rootScrollVelocity = velocity;
     [(NCNotificationListDimmable *)self->_contentViewController setRootScrollVelocity:?];
   }
 }
 
-- (void)setGlassMode:(unint64_t)a3
+- (void)setGlassMode:(unint64_t)mode
 {
-  if (self->_glassMode != a3)
+  if (self->_glassMode != mode)
   {
-    self->_glassMode = a3;
+    self->_glassMode = mode;
     [(NCNotificationListDimmable *)self->_contentViewController setGlassMode:?];
   }
 }
 
-- (void)setUnmanagedBackdropContrast:(BOOL)a3
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast
 {
-  if (self->_unmanagedBackdropContrast != a3)
+  if (self->_unmanagedBackdropContrast != contrast)
   {
-    self->_unmanagedBackdropContrast = a3;
+    self->_unmanagedBackdropContrast = contrast;
     [(NCNotificationListDimmable *)self->_contentViewController setUnmanagedBackdropContrast:?];
   }
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  objc_storeStrong(&self->_materialGroupNameBase, a3);
-  v5 = a3;
-  [(PLSwipeInteraction *)self->_swipeInteraction setMaterialGroupNameBase:v5];
+  objc_storeStrong(&self->_materialGroupNameBase, base);
+  baseCopy = base;
+  [(PLSwipeInteraction *)self->_swipeInteraction setMaterialGroupNameBase:baseCopy];
 }
 
-- (BOOL)shouldContinuePresentingActionButtonsForSwipeInteraction:(id)a3
+- (BOOL)shouldContinuePresentingActionButtonsForSwipeInteraction:(id)interaction
 {
-  v4 = [(NCNotificationListCell *)self actionProvider];
+  actionProvider = [(NCNotificationListCell *)self actionProvider];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 shouldContinuePresentingActionButtonsForNotificationListCell:self];
+    v5 = [actionProvider shouldContinuePresentingActionButtonsForNotificationListCell:self];
   }
 
   else
@@ -526,22 +526,22 @@
   return v5;
 }
 
-- (id)swipeInteraction:(id)a3 actionsToRevealFromLayoutLocation:(unint64_t)a4
+- (id)swipeInteraction:(id)interaction actionsToRevealFromLayoutLocation:(unint64_t)location
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v6 = [(NCNotificationListCell *)self actionProvider];
-  if (a4 == 1)
+  actionProvider = [(NCNotificationListCell *)self actionProvider];
+  if (location == 1)
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v6 supplementaryActionsForNotificationListCell:self];
+      v9 = [actionProvider supplementaryActionsForNotificationListCell:self];
       goto LABEL_9;
     }
   }
 
-  else if (!a4 && (objc_opt_respondsToSelector() & 1) != 0)
+  else if (!location && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [v6 defaultActionForNotificationListCell:self];
+    v7 = [actionProvider defaultActionForNotificationListCell:self];
     v8 = v7;
     if (v7)
     {
@@ -563,14 +563,14 @@ LABEL_9:
   return v9;
 }
 
-- (BOOL)swipeInteraction:(id)a3 shouldRevealActionsFromLayoutLocation:(unint64_t)a4
+- (BOOL)swipeInteraction:(id)interaction shouldRevealActionsFromLayoutLocation:(unint64_t)location
 {
-  v6 = [(NCNotificationListCell *)self actionProvider];
-  if (a4 == 1)
+  actionProvider = [(NCNotificationListCell *)self actionProvider];
+  if (location == 1)
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v6 shouldShowSupplementaryActionsForNotificationListCell:self];
+      v7 = [actionProvider shouldShowSupplementaryActionsForNotificationListCell:self];
       goto LABEL_7;
     }
 
@@ -579,12 +579,12 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (a4 || (objc_opt_respondsToSelector() & 1) == 0)
+  if (location || (objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v7 = [v6 shouldShowDefaultActionForNotificationListCell:self];
+  v7 = [actionProvider shouldShowDefaultActionForNotificationListCell:self];
 LABEL_7:
   v8 = v7;
 LABEL_9:
@@ -592,10 +592,10 @@ LABEL_9:
   return v8;
 }
 
-- (int64_t)buttonsRecipeForSwipeInteraction:(id)a3
+- (int64_t)buttonsRecipeForSwipeInteraction:(id)interaction
 {
-  v4 = [(NCNotificationListCell *)self _buttonCustomBackgroundColor];
-  if (v4)
+  _buttonCustomBackgroundColor = [(NCNotificationListCell *)self _buttonCustomBackgroundColor];
+  if (_buttonCustomBackgroundColor)
   {
     materialRecipe = 0;
   }
@@ -608,47 +608,47 @@ LABEL_9:
   return materialRecipe;
 }
 
-- (double)buttonsGlassLuminanceForSwipeInteraction:(id)a3
+- (double)buttonsGlassLuminanceForSwipeInteraction:(id)interaction
 {
-  v3 = [(NCNotificationListCell *)self traitCollection];
-  [v3 glassLuminanceValue];
+  traitCollection = [(NCNotificationListCell *)self traitCollection];
+  [traitCollection glassLuminanceValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)swipeInteractionDidBeginHidingActions:(id)a3
+- (void)swipeInteractionDidBeginHidingActions:(id)actions
 {
   contentView = self->_contentView;
-  v5 = a3;
+  actionsCopy = actions;
   [(UIView *)contentView setUserInteractionEnabled:1];
   [(NCNotificationListCell *)self setContentUserInteractionEnabled:1];
-  v6 = [(NCNotificationListCell *)self actionHandler];
-  [v6 notificationListCell:self didBeginHidingActionsForSwipeInteraction:v5];
+  actionHandler = [(NCNotificationListCell *)self actionHandler];
+  [actionHandler notificationListCell:self didBeginHidingActionsForSwipeInteraction:actionsCopy];
 }
 
-- (void)swipeInteractionDidBeginRevealingActions:(id)a3
+- (void)swipeInteractionDidBeginRevealingActions:(id)actions
 {
   contentViewController = self->_contentViewController;
-  v5 = a3;
+  actionsCopy = actions;
   [(NCNotificationListDimmable *)contentViewController removeLightEffectsIfNeeded];
   [(UIView *)self->_contentView setUserInteractionEnabled:0];
   [(NCNotificationListCell *)self setContentUserInteractionEnabled:0];
-  v6 = [(NCNotificationListCell *)self actionHandler];
-  [v6 notificationListCell:self didBeginRevealingActionsForSwipeInteraction:v5];
+  actionHandler = [(NCNotificationListCell *)self actionHandler];
+  [actionHandler notificationListCell:self didBeginRevealingActionsForSwipeInteraction:actionsCopy];
 }
 
-- (void)swipeInteractionDidSignificantUserInteraction:(id)a3
+- (void)swipeInteractionDidSignificantUserInteraction:(id)interaction
 {
-  v4 = [(NCNotificationListCell *)self actionHandler];
-  [v4 notificationListCellDidSignificantUserInteraction:self];
+  actionHandler = [(NCNotificationListCell *)self actionHandler];
+  [actionHandler notificationListCellDidSignificantUserInteraction:self];
 }
 
-- (void)swipeInteraction:(id)a3 didMoveToNewXPosition:(double)a4
+- (void)swipeInteraction:(id)interaction didMoveToNewXPosition:(double)position
 {
-  v6 = [(NCNotificationListCell *)self actionHandler];
-  [v6 notificationListCell:self didMoveToNewXPosition:a4];
-  if (a4 == 0.0)
+  actionHandler = [(NCNotificationListCell *)self actionHandler];
+  [actionHandler notificationListCell:self didMoveToNewXPosition:position];
+  if (position == 0.0)
   {
     [(NCNotificationListCell *)self _resetClipping];
   }
@@ -658,17 +658,17 @@ LABEL_9:
     [(NCNotificationListCell *)self _configureClippingIfNecessary];
   }
 
-  [(NCNotificationListCell *)self setSupportsMitosis:a4 != 0.0];
+  [(NCNotificationListCell *)self setSupportsMitosis:position != 0.0];
 }
 
-- (BOOL)shouldVerticallyStackButtonsForSwipeInteraction:(id)a3
+- (BOOL)shouldVerticallyStackButtonsForSwipeInteraction:(id)interaction
 {
-  v4 = [*MEMORY[0x277D76620] preferredContentSizeCategory];
-  IsAX = _NCSizeCategoryIsAX(v4);
+  preferredContentSizeCategory = [*MEMORY[0x277D76620] preferredContentSizeCategory];
+  IsAX = _NCSizeCategoryIsAX(preferredContentSizeCategory);
 
-  v6 = [(NCNotificationListCell *)self actionProvider];
-  v7 = v6;
-  if ((IsAX & 1) == 0 && v6)
+  actionProvider = [(NCNotificationListCell *)self actionProvider];
+  v7 = actionProvider;
+  if ((IsAX & 1) == 0 && actionProvider)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -684,14 +684,14 @@ LABEL_9:
   return IsAX;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 withTraits:(id)a4
+- (CGSize)sizeThatFits:(CGSize)fits withTraits:(id)traits
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(NCNotificationListCell *)self contentViewController];
-  v9 = [v8 view];
-  v10 = NCSizeThatFits(v9, v7, width, height);
+  height = fits.height;
+  width = fits.width;
+  traitsCopy = traits;
+  contentViewController = [(NCNotificationListCell *)self contentViewController];
+  view = [contentViewController view];
+  v10 = NCSizeThatFits(view, traitsCopy, width, height);
   v12 = v11;
 
   v13 = v10;
@@ -718,8 +718,8 @@ LABEL_9:
 
 - (void)_setupClipping
 {
-  v3 = [(NCNotificationListCell *)self layer];
-  [v3 setMaskedCorners:15];
+  layer = [(NCNotificationListCell *)self layer];
+  [layer setMaskedCorners:15];
 
   [(NCNotificationListCell *)self _setContinuousCornerRadius:23.5];
 
@@ -728,15 +728,15 @@ LABEL_9:
 
 - (void)_resetClipping
 {
-  v3 = [(NCNotificationListCell *)self layer];
-  [v3 setMaskedCorners:0];
+  layer = [(NCNotificationListCell *)self layer];
+  [layer setMaskedCorners:0];
 
   [(NCNotificationListCell *)self setClipsToBounds:0];
 }
 
 - (BOOL)_shouldPerformClipping
 {
-  v3 = [(NCNotificationListCell *)self traitCollection];
+  traitCollection = [(NCNotificationListCell *)self traitCollection];
   v4 = _NCShouldPlatterClipped();
 
   if (!v4)
@@ -749,10 +749,10 @@ LABEL_9:
 
 - (BOOL)_actionHandlerAllowsPerformingClipping
 {
-  v3 = [(NCNotificationListCell *)self actionHandler];
+  actionHandler = [(NCNotificationListCell *)self actionHandler];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 shouldPerformClippingForNotificationListCell:self];
+    v4 = [actionHandler shouldPerformClippingForNotificationListCell:self];
   }
 
   else
@@ -776,12 +776,12 @@ LABEL_9:
 
 - (id)_buttonCustomBackgroundColor
 {
-  v2 = [(NCNotificationListCell *)self notificationViewController];
-  v3 = [v2 _lookView];
+  notificationViewController = [(NCNotificationListCell *)self notificationViewController];
+  _lookView = [notificationViewController _lookView];
 
-  if ([v3 conformsToProtocol:&unk_2830310E0])
+  if ([_lookView conformsToProtocol:&unk_2830310E0])
   {
-    v4 = v3;
+    v4 = _lookView;
   }
 
   else
@@ -789,10 +789,10 @@ LABEL_9:
     v4 = 0;
   }
 
-  v5 = [v4 customPlatterBackgroundView];
-  v6 = [v5 backgroundColor];
+  customPlatterBackgroundView = [v4 customPlatterBackgroundView];
+  backgroundColor = [customPlatterBackgroundView backgroundColor];
 
-  return v6;
+  return backgroundColor;
 }
 
 - (NCNotificationListCellActionHandling)actionHandler

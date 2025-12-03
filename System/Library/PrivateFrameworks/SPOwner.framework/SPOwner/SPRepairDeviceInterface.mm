@@ -1,66 +1,66 @@
 @interface SPRepairDeviceInterface
-- (void)deviceAttributesForContext:(id)a3 completion:(id)a4;
-- (void)deviceForBeaconIdentifier:(id)a3 completion:(id)a4;
-- (void)deviceForFindMyId:(id)a3 completion:(id)a4;
-- (void)deviceForSerialNumber:(id)a3 completion:(id)a4;
-- (void)updateRepairStateForSerialNumber:(id)a3 updateBlock:(id)a4;
+- (void)deviceAttributesForContext:(id)context completion:(id)completion;
+- (void)deviceForBeaconIdentifier:(id)identifier completion:(id)completion;
+- (void)deviceForFindMyId:(id)id completion:(id)completion;
+- (void)deviceForSerialNumber:(id)number completion:(id)completion;
+- (void)updateRepairStateForSerialNumber:(id)number updateBlock:(id)block;
 @end
 
 @implementation SPRepairDeviceInterface
 
-- (void)deviceAttributesForContext:(id)a3 completion:(id)a4
+- (void)deviceAttributesForContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = objc_opt_new();
-  v9 = [v6 serialNumbers];
-  v10 = [v9 count];
+  serialNumbers = [contextCopy serialNumbers];
+  v10 = [serialNumbers count];
 
   if (v10)
   {
     v11 = [SPSimpleBeaconContext alloc];
-    v12 = [v6 serialNumbers];
-    v13 = [v12 allObjects];
-    v14 = [(SPSimpleBeaconContext *)v11 initWithFetchProperties:0x2000 matchingSerialNumbers:v13];
+    serialNumbers2 = [contextCopy serialNumbers];
+    allObjects = [serialNumbers2 allObjects];
+    v14 = [(SPSimpleBeaconContext *)v11 initWithFetchProperties:0x2000 matchingSerialNumbers:allObjects];
   }
 
   else
   {
-    v15 = [v6 findMyIds];
-    v16 = [v15 count];
+    findMyIds = [contextCopy findMyIds];
+    v16 = [findMyIds count];
 
     if (v16)
     {
       v17 = [SPSimpleBeaconContext alloc];
-      v12 = [v6 findMyIds];
-      v13 = [v12 allObjects];
-      v14 = [(SPSimpleBeaconContext *)v17 initWithFetchProperties:0x2000 matchingFindMyIds:v13];
+      serialNumbers2 = [contextCopy findMyIds];
+      allObjects = [serialNumbers2 allObjects];
+      v14 = [(SPSimpleBeaconContext *)v17 initWithFetchProperties:0x2000 matchingFindMyIds:allObjects];
     }
 
     else
     {
-      v18 = [v6 beaconIdentifiers];
-      v19 = [v18 count];
+      beaconIdentifiers = [contextCopy beaconIdentifiers];
+      v19 = [beaconIdentifiers count];
 
       if (!v19)
       {
         v23 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.icloud.searchpartyd.SPOwnerSession.ErrorDomain" code:5 userInfo:0];
-        v7[2](v7, 0, v23);
+        completionCopy[2](completionCopy, 0, v23);
 
         goto LABEL_8;
       }
 
       v20 = [SPSimpleBeaconContext alloc];
-      v12 = [v6 beaconIdentifiers];
-      v13 = [v12 allObjects];
-      v14 = [(SPSimpleBeaconContext *)v20 initWithFetchProperties:0x2000 matchingBeaconUUIDs:v13];
+      serialNumbers2 = [contextCopy beaconIdentifiers];
+      allObjects = [serialNumbers2 allObjects];
+      v14 = [(SPSimpleBeaconContext *)v20 initWithFetchProperties:0x2000 matchingBeaconUUIDs:allObjects];
     }
   }
 
   v21 = v14;
 
-  v22 = [v6 type];
-  [v21 setRepairContextType:v22];
+  type = [contextCopy type];
+  [v21 setRepairContextType:type];
 
   [(SPRepairDeviceInterface *)self setBeaconSession:v8];
   objc_initWeak(&location, self);
@@ -69,7 +69,7 @@
   v24[2] = __65__SPRepairDeviceInterface_deviceAttributesForContext_completion___block_invoke;
   v24[3] = &unk_279B58A48;
   objc_copyWeak(&v26, &location);
-  v25 = v7;
+  v25 = completionCopy;
   [v8 setSimpleBeaconDifferenceBlock:v24];
   [v8 startUpdatingSimpleBeaconsWithContext:v21 completion:&__block_literal_global];
 
@@ -192,14 +192,14 @@ void __65__SPRepairDeviceInterface_deviceAttributesForContext_completion___block
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceForSerialNumber:(id)a3 completion:(id)a4
+- (void)deviceForSerialNumber:(id)number completion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  completionCopy = completion;
   v8 = objc_opt_new();
   v9 = [SPSimpleBeaconContext alloc];
-  v23[0] = v6;
+  v23[0] = numberCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   v11 = [(SPSimpleBeaconContext *)v9 initWithFetchProperties:0x2000 matchingSerialNumbers:v10];
 
@@ -211,9 +211,9 @@ void __65__SPRepairDeviceInterface_deviceAttributesForContext_completion___block
   v18[2] = __60__SPRepairDeviceInterface_deviceForSerialNumber_completion___block_invoke;
   v18[3] = &unk_279B58AB8;
   objc_copyWeak(&v21, &location);
-  v12 = v7;
+  v12 = completionCopy;
   v20 = v12;
-  v13 = v6;
+  v13 = numberCopy;
   v19 = v13;
   [v8 setSimpleBeaconDifferenceBlock:v18];
   v16[0] = MEMORY[0x277D85DD0];
@@ -312,14 +312,14 @@ void __60__SPRepairDeviceInterface_deviceForSerialNumber_completion___block_invo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceForFindMyId:(id)a3 completion:(id)a4
+- (void)deviceForFindMyId:(id)id completion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8 = objc_opt_new();
   v9 = [SPSimpleBeaconContext alloc];
-  v23[0] = v6;
+  v23[0] = idCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   v11 = [(SPSimpleBeaconContext *)v9 initWithFetchProperties:0x2000 matchingFindMyIds:v10];
 
@@ -331,9 +331,9 @@ void __60__SPRepairDeviceInterface_deviceForSerialNumber_completion___block_invo
   v18[2] = __56__SPRepairDeviceInterface_deviceForFindMyId_completion___block_invoke;
   v18[3] = &unk_279B58AB8;
   objc_copyWeak(&v21, &location);
-  v12 = v7;
+  v12 = completionCopy;
   v20 = v12;
-  v13 = v6;
+  v13 = idCopy;
   v19 = v13;
   [v8 setSimpleBeaconDifferenceBlock:v18];
   v16[0] = MEMORY[0x277D85DD0];
@@ -432,14 +432,14 @@ void __56__SPRepairDeviceInterface_deviceForFindMyId_completion___block_invoke_1
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceForBeaconIdentifier:(id)a3 completion:(id)a4
+- (void)deviceForBeaconIdentifier:(id)identifier completion:(id)completion
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = objc_opt_new();
   v9 = [SPSimpleBeaconContext alloc];
-  v23[0] = v6;
+  v23[0] = identifierCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   v11 = [(SPSimpleBeaconContext *)v9 initWithFetchProperties:0x2000 matchingBeaconUUIDs:v10];
 
@@ -451,9 +451,9 @@ void __56__SPRepairDeviceInterface_deviceForFindMyId_completion___block_invoke_1
   v18[2] = __64__SPRepairDeviceInterface_deviceForBeaconIdentifier_completion___block_invoke;
   v18[3] = &unk_279B58AB8;
   objc_copyWeak(&v21, &location);
-  v12 = v7;
+  v12 = completionCopy;
   v20 = v12;
-  v13 = v6;
+  v13 = identifierCopy;
   v19 = v13;
   [v8 setSimpleBeaconDifferenceBlock:v18];
   v16[0] = MEMORY[0x277D85DD0];
@@ -552,14 +552,14 @@ void __64__SPRepairDeviceInterface_deviceForBeaconIdentifier_completion___block_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRepairStateForSerialNumber:(id)a3 updateBlock:(id)a4
+- (void)updateRepairStateForSerialNumber:(id)number updateBlock:(id)block
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  blockCopy = block;
   v8 = objc_opt_new();
   v9 = [SPSimpleBeaconContext alloc];
-  v23[0] = v6;
+  v23[0] = numberCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
   v11 = [(SPSimpleBeaconContext *)v9 initWithFetchProperties:0x2000 matchingSerialNumbers:v10];
 
@@ -571,9 +571,9 @@ void __64__SPRepairDeviceInterface_deviceForBeaconIdentifier_completion___block_
   v18[2] = __72__SPRepairDeviceInterface_updateRepairStateForSerialNumber_updateBlock___block_invoke;
   v18[3] = &unk_279B58AB8;
   objc_copyWeak(&v21, &location);
-  v12 = v7;
+  v12 = blockCopy;
   v20 = v12;
-  v13 = v6;
+  v13 = numberCopy;
   v19 = v13;
   [v8 setSimpleBeaconDifferenceBlock:v18];
   v16[0] = MEMORY[0x277D85DD0];

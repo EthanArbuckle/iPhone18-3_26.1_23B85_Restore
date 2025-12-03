@@ -1,17 +1,17 @@
 @interface BYODGetDnsRecordsResponse
-- (BYODGetDnsRecordsResponse)initWithDictionary:(id)a3;
-- (BYODGetDnsRecordsResponse)initWithHTTPResponse:(id)a3 data:(id)a4;
+- (BYODGetDnsRecordsResponse)initWithDictionary:(id)dictionary;
+- (BYODGetDnsRecordsResponse)initWithHTTPResponse:(id)response data:(id)data;
 @end
 
 @implementation BYODGetDnsRecordsResponse
 
-- (BYODGetDnsRecordsResponse)initWithHTTPResponse:(id)a3 data:(id)a4
+- (BYODGetDnsRecordsResponse)initWithHTTPResponse:(id)response data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  dataCopy = data;
   v11.receiver = self;
   v11.super_class = BYODGetDnsRecordsResponse;
-  v8 = [(BYODGetDnsRecordsResponse *)&v11 initWithHTTPResponse:v6 data:v7 bodyIsPlist:0];
+  v8 = [(BYODGetDnsRecordsResponse *)&v11 initWithHTTPResponse:responseCopy data:dataCopy bodyIsPlist:0];
   v9 = v8;
   if (v8 && [*&v8->super.AAResponse_opaque[OBJC_IVAR___AAResponse__httpResponse] statusCode] == stru_B8.segname)
   {
@@ -21,20 +21,20 @@
   return v9;
 }
 
-- (BYODGetDnsRecordsResponse)initWithDictionary:(id)a3
+- (BYODGetDnsRecordsResponse)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = BYODGetDnsRecordsResponse;
-  v5 = [(BYODBaseResponse *)&v24 initWithDictionary:v4];
+  v5 = [(BYODBaseResponse *)&v24 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"result"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"result"];
     v7 = v6 == 0;
 
     if (!v7)
     {
-      v8 = [v4 objectForKeyedSubscript:@"result"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"result"];
       v9 = [v8 objectForKeyedSubscript:@"records"];
 
       v10 = objc_alloc_init(NSMutableArray);

@@ -3,15 +3,15 @@
 - (NSDate)time;
 - (NSUUID)tuConversationUUID;
 - (TUConversation)tuConversation;
-- (id)_initWithItem:(id)a3 conversationInitiator:(id)a4;
+- (id)_initWithItem:(id)item conversationInitiator:(id)initiator;
 - (id)activeCall;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)conversationAVMode;
 @end
 
 @implementation IMTUConversationChatItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -20,19 +20,19 @@
   return v9;
 }
 
-- (id)_initWithItem:(id)a3 conversationInitiator:(id)a4
+- (id)_initWithItem:(id)item conversationInitiator:(id)initiator
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  initiatorCopy = initiator;
   v18.receiver = self;
   v18.super_class = IMTUConversationChatItem;
-  v8 = [(IMChatItem *)&v18 _initWithItem:v6];
+  v8 = [(IMChatItem *)&v18 _initWithItem:itemCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(v8 + 7, a4);
-    v12 = objc_msgSend_guid(v6, v10, v11);
+    objc_storeStrong(v8 + 7, initiator);
+    v12 = objc_msgSend_guid(itemCopy, v10, v11);
     v13 = sub_1A83AC604();
 
     if (IMOSLoggingEnabled())
@@ -43,7 +43,7 @@
         *buf = 138412546;
         v20 = v13;
         v21 = 2112;
-        v22 = v6;
+        v22 = itemCopy;
         _os_log_impl(&dword_1A823F000, v15, OS_LOG_TYPE_INFO, "Creating new IMTranscriptChatItem with GUID %@ from IMTUConversationItem %@", buf, 0x16u);
       }
     }

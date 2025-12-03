@@ -1,6 +1,6 @@
 @interface PLContinuityAgent
 + (id)entryEventPointDefinitions;
-+ (int64_t)unlockPeerTypeStringToEnum:(id)a3;
++ (int64_t)unlockPeerTypeStringToEnum:(id)enum;
 + (void)load;
 - (PLContinuityAgent)init;
 @end
@@ -9,7 +9,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLContinuityAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -18,8 +18,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"AutoUnlock";
-  v2 = [a1 entryEventPointDefinitionAutoUnlock];
-  v7[0] = v2;
+  entryEventPointDefinitionAutoUnlock = [self entryEventPointDefinitionAutoUnlock];
+  v7[0] = entryEventPointDefinitionAutoUnlock;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -34,15 +34,15 @@
   return [(PLAgent *)&v3 init];
 }
 
-+ (int64_t)unlockPeerTypeStringToEnum:(id)a3
++ (int64_t)unlockPeerTypeStringToEnum:(id)enum
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Phone"])
+  enumCopy = enum;
+  if ([enumCopy isEqualToString:@"Phone"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Mac"])
+  else if ([enumCopy isEqualToString:@"Mac"])
   {
     v4 = 1;
   }

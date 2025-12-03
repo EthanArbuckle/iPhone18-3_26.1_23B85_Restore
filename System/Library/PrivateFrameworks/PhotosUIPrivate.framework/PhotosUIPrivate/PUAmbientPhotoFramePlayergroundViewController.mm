@@ -1,54 +1,54 @@
 @interface PUAmbientPhotoFramePlayergroundViewController
-- (PUAmbientPhotoFramePlayergroundViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleLongPress:(id)a3;
-- (void)handleTap:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (PUAmbientPhotoFramePlayergroundViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleLongPress:(id)press;
+- (void)handleTap:(id)tap;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PUAmbientPhotoFramePlayergroundViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B3895B4C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1B3895C34(a3);
+  selfCopy = self;
+  sub_1B3895C34(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1B3895D24(a3);
+  selfCopy = self;
+  sub_1B3895D24(disappear);
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B3896088(v4);
+  tapCopy = tap;
+  selfCopy = self;
+  sub_1B3896088(tapCopy);
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B38961E0(v4);
+  pressCopy = press;
+  selfCopy = self;
+  sub_1B38961E0(pressCopy);
 }
 
-- (PUAmbientPhotoFramePlayergroundViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUAmbientPhotoFramePlayergroundViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1B3C9C5E8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1B3898498();
 }
 

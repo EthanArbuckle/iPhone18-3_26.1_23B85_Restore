@@ -1,31 +1,31 @@
 @interface WFREPBRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation WFREPBRequest
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(WFREPBRequest *)self setIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_version = v4[6];
-  if (*(v4 + 2))
+  self->_version = fromCopy[6];
+  if (*(fromCopy + 2))
   {
     [(WFREPBRequest *)self setMessage:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -36,13 +36,13 @@
   return v4 ^ v3 ^ [(NSData *)self->_message hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | v4[1])) || -[NSString isEqual:](identifier, "isEqual:")) && self->_version == *(v4 + 6))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((identifier = self->_identifier, !(identifier | equalCopy[1])) || -[NSString isEqual:](identifier, "isEqual:")) && self->_version == *(equalCopy + 6))
   {
     message = self->_message;
-    if (message | v4[2])
+    if (message | equalCopy[2])
     {
       v7 = [(NSData *)message isEqual:?];
     }
@@ -61,33 +61,33 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
   *(v5 + 24) = self->_version;
-  v8 = [(NSData *)self->_message copyWithZone:a3];
+  v8 = [(NSData *)self->_message copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 setIdentifier:identifier];
-  v5[6] = self->_version;
-  [v5 setMessage:self->_message];
+  toCopy = to;
+  [toCopy setIdentifier:identifier];
+  toCopy[6] = self->_version;
+  [toCopy setMessage:self->_message];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   if (!self->_identifier)
   {
     __assert_rtn("[WFREPBRequest writeTo:]", "WFREPBRequest.m", 90, "nil != self->_identifier");
@@ -106,12 +106,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_version];
@@ -132,8 +132,8 @@
   v8.receiver = self;
   v8.super_class = WFREPBRequest;
   v4 = [(WFREPBRequest *)&v8 description];
-  v5 = [(WFREPBRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(WFREPBRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

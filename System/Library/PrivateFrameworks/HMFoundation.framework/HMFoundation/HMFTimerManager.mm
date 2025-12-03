@@ -1,23 +1,23 @@
 @interface HMFTimerManager
 - (BOOL)_cancelTimerManagerIfEmpty;
-- (HMFTimerManager)initWithOptions:(unsigned int)a3 dataSource:(id)a4;
+- (HMFTimerManager)initWithOptions:(unsigned int)options dataSource:(id)source;
 - (HMFTimerManagerDelegate)delegate;
 - (id)_removeExpiredTimerContextsAndRefreshNextTimer;
-- (id)startTimerWithTimeInterval:(double)a3 object:(id)a4 shouldReplace:(BOOL)a5;
-- (void)_addTimerContext:(id)a3;
-- (void)_refreshNextTimerIfNeededWithTimeInterval:(double)a3;
-- (void)_removeTimerContext:(id)a3;
-- (void)_removeTimerContextsWithMatchingObject:(id)a3;
-- (void)cancelTimerForContext:(id)a3;
-- (void)notifyDidFireForTimerContexts:(id)a3 shouldDispatch:(BOOL)a4;
-- (void)timerDidFire:(id)a3;
+- (id)startTimerWithTimeInterval:(double)interval object:(id)object shouldReplace:(BOOL)replace;
+- (void)_addTimerContext:(id)context;
+- (void)_refreshNextTimerIfNeededWithTimeInterval:(double)interval;
+- (void)_removeTimerContext:(id)context;
+- (void)_removeTimerContextsWithMatchingObject:(id)object;
+- (void)cancelTimerForContext:(id)context;
+- (void)notifyDidFireForTimerContexts:(id)contexts shouldDispatch:(BOOL)dispatch;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMFTimerManager
 
-- (HMFTimerManager)initWithOptions:(unsigned int)a3 dataSource:(id)a4
+- (HMFTimerManager)initWithOptions:(unsigned int)options dataSource:(id)source
 {
-  v7 = a4;
+  sourceCopy = source;
   v18.receiver = self;
   v18.super_class = HMFTimerManager;
   v8 = [(HMFTimerManager *)&v18 init];
@@ -35,8 +35,8 @@
     nextTimerContext = v9->_nextTimerContext;
     v9->_nextTimerContext = 0;
 
-    v9->_options = a3;
-    objc_storeStrong(&v9->_dataSource, a4);
+    v9->_options = options;
+    objc_storeStrong(&v9->_dataSource, source);
     v14 = HMFDispatchQueueName(v9, 0);
     v15 = dispatch_queue_create(v14, 0);
     delegateQueue = v9->_delegateQueue;
@@ -46,58 +46,58 @@
   return v9;
 }
 
-- (id)startTimerWithTimeInterval:(double)a3 object:(id)a4 shouldReplace:(BOOL)a5
+- (id)startTimerWithTimeInterval:(double)interval object:(id)object shouldReplace:(BOOL)replace
 {
-  v5 = a5;
-  v8 = a4;
+  replaceCopy = replace;
+  objectCopy = object;
   v9 = [HMFTimerManagerTimerContext alloc];
   [(HMFTimerManagerDataSource *)self->_dataSource currentTime];
-  v11 = [(HMFTimerManagerTimerContext *)v9 initWithObject:v8 expirationTime:v10 + a3];
+  interval = [(HMFTimerManagerTimerContext *)v9 initWithObject:objectCopy expirationTime:v10 + interval];
   os_unfair_lock_lock_with_options();
-  if (v8 && v5)
+  if (objectCopy && replaceCopy)
   {
-    [(HMFTimerManager *)self _removeTimerContextsWithMatchingObject:v8];
+    [(HMFTimerManager *)self _removeTimerContextsWithMatchingObject:objectCopy];
   }
 
-  [(HMFTimerManager *)self _addTimerContext:v11];
+  [(HMFTimerManager *)self _addTimerContext:interval];
   os_unfair_lock_unlock(&self->_lock);
   [(HMFTimerManager *)self refreshTimerManager];
 
-  return v11;
+  return interval;
 }
 
-- (void)cancelTimerForContext:(id)a3
+- (void)cancelTimerForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock_with_options();
-  [(HMFTimerManager *)self _removeTimerContext:v4];
+  [(HMFTimerManager *)self _removeTimerContext:contextCopy];
   os_unfair_lock_unlock(&self->_lock);
   [(HMFTimerManager *)self refreshTimerManager];
 }
 
-- (void)_addTimerContext:(id)a3
+- (void)_addTimerContext:(id)context
 {
-  v8 = a3;
+  contextCopy = context;
   os_unfair_lock_assert_owner(&self->_lock);
   sortedTimerContexts = self->_sortedTimerContexts;
   v5 = [(NSMutableArray *)sortedTimerContexts count];
   v6 = +[HMFTimerManagerTimerContext comparator];
-  v7 = [(NSMutableArray *)sortedTimerContexts indexOfObject:v8 inSortedRange:0 options:v5 usingComparator:1024, v6];
+  v7 = [(NSMutableArray *)sortedTimerContexts indexOfObject:contextCopy inSortedRange:0 options:v5 usingComparator:1024, v6];
 
-  [(NSMutableArray *)self->_sortedTimerContexts insertObject:v8 atIndex:v7];
+  [(NSMutableArray *)self->_sortedTimerContexts insertObject:contextCopy atIndex:v7];
 }
 
-- (void)_removeTimerContextsWithMatchingObject:(id)a3
+- (void)_removeTimerContextsWithMatchingObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_assert_owner(&self->_lock);
   sortedTimerContexts = self->_sortedTimerContexts;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__HMFTimerManager__removeTimerContextsWithMatchingObject___block_invoke;
   v8[3] = &unk_2786E6CF0;
-  v9 = v4;
-  v6 = v4;
+  v9 = objectCopy;
+  v6 = objectCopy;
   v7 = [(NSMutableArray *)sortedTimerContexts indexesOfObjectsPassingTest:v8];
   [(NSMutableArray *)self->_sortedTimerContexts removeObjectsAtIndexes:v7];
 }
@@ -120,14 +120,14 @@ uint64_t __58__HMFTimerManager__removeTimerContextsWithMatchingObject___block_in
   return v6;
 }
 
-- (void)_removeTimerContext:(id)a3
+- (void)_removeTimerContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_assert_owner(&self->_lock);
   sortedTimerContexts = self->_sortedTimerContexts;
   v6 = [(NSMutableArray *)sortedTimerContexts count];
   v7 = +[HMFTimerManagerTimerContext comparator];
-  v8 = [(NSMutableArray *)sortedTimerContexts indexOfObject:v4 inSortedRange:0 options:v6 usingComparator:256, v7];
+  v8 = [(NSMutableArray *)sortedTimerContexts indexOfObject:contextCopy inSortedRange:0 options:v6 usingComparator:256, v7];
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -154,7 +154,7 @@ uint64_t __58__HMFTimerManager__removeTimerContextsWithMatchingObject___block_in
   return v3 == 0;
 }
 
-- (void)_refreshNextTimerIfNeededWithTimeInterval:(double)a3
+- (void)_refreshNextTimerIfNeededWithTimeInterval:(double)interval
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (![(HMFTimerManager *)self _cancelTimerManagerIfEmpty])
@@ -162,11 +162,11 @@ uint64_t __58__HMFTimerManager__removeTimerContextsWithMatchingObject___block_in
     nextTimerContext = self->_nextTimerContext;
     if (!nextTimerContext || ([(NSMutableArray *)self->_sortedTimerContexts firstObject], v6 = objc_claimAutoreleasedReturnValue(), v6, nextTimerContext != v6))
     {
-      v7 = [(NSMutableArray *)self->_sortedTimerContexts firstObject];
+      firstObject = [(NSMutableArray *)self->_sortedTimerContexts firstObject];
       v8 = self->_nextTimerContext;
-      self->_nextTimerContext = v7;
+      self->_nextTimerContext = firstObject;
 
-      v9 = [(HMFTimerManagerDataSource *)self->_dataSource timerWithTimeInterval:self->_options options:a3];
+      v9 = [(HMFTimerManagerDataSource *)self->_dataSource timerWithTimeInterval:self->_options options:interval];
       nextTimer = self->_nextTimer;
       self->_nextTimer = v9;
 
@@ -243,35 +243,35 @@ LABEL_3:
   return v3;
 }
 
-- (void)notifyDidFireForTimerContexts:(id)a3 shouldDispatch:(BOOL)a4
+- (void)notifyDidFireForTimerContexts:(id)contexts shouldDispatch:(BOOL)dispatch
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 count])
+  dispatchCopy = dispatch;
+  contextsCopy = contexts;
+  if ([contextsCopy count])
   {
-    v7 = [(HMFTimerManager *)self delegateQueue];
-    v8 = v7;
-    if (v4)
+    delegateQueue = [(HMFTimerManager *)self delegateQueue];
+    v8 = delegateQueue;
+    if (dispatchCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __64__HMFTimerManager_notifyDidFireForTimerContexts_shouldDispatch___block_invoke;
       block[3] = &unk_2786E6D18;
       block[4] = self;
-      v11 = v6;
+      v11 = contextsCopy;
       dispatch_async(v8, block);
     }
 
     else
     {
-      dispatch_assert_queue_V2(v7);
+      dispatch_assert_queue_V2(delegateQueue);
 
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __64__HMFTimerManager_notifyDidFireForTimerContexts_shouldDispatch___block_invoke_2;
       v9[3] = &unk_2786E6D40;
       v9[4] = self;
-      [v6 na_each:v9];
+      [contextsCopy na_each:v9];
     }
   }
 }
@@ -284,10 +284,10 @@ void __64__HMFTimerManager_notifyDidFireForTimerContexts_shouldDispatch___block_
   [v5 timerManager:*(a1 + 32) didFireForTimerContext:v4];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = [(HMFTimerManager *)self delegateQueue];
-  dispatch_assert_queue_V2(v4);
+  delegateQueue = [(HMFTimerManager *)self delegateQueue];
+  dispatch_assert_queue_V2(delegateQueue);
 
   [(HMFTimerManager *)self refreshTimerManagerWithShouldDispatchNotifications:0];
 }

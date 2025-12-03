@@ -1,21 +1,21 @@
 @interface StocksSyncBridgePreferences
 - (BOOL)hasComplicationDisplayModeBeenSet;
 - (NSString)defaultStockSymbol;
-- (StocksSyncBridgePreferences)initWithPersistence:(id)a3 delegate:(id)a4;
+- (StocksSyncBridgePreferences)initWithPersistence:(id)persistence delegate:(id)delegate;
 - (unint64_t)complicationDisplayMode;
 - (void)_notifyDelegateOfUpdate;
 - (void)dealloc;
-- (void)setComplicationDisplayMode:(unint64_t)a3;
-- (void)setDefaultStockSymbol:(id)a3;
+- (void)setComplicationDisplayMode:(unint64_t)mode;
+- (void)setDefaultStockSymbol:(id)symbol;
 @end
 
 @implementation StocksSyncBridgePreferences
 
-- (StocksSyncBridgePreferences)initWithPersistence:(id)a3 delegate:(id)a4
+- (StocksSyncBridgePreferences)initWithPersistence:(id)persistence delegate:(id)delegate
 {
   v8.receiver = self;
   v8.super_class = StocksSyncBridgePreferences;
-  v4 = [(StocksSyncPreferences *)&v8 initWithPersistence:a3 delegate:a4];
+  v4 = [(StocksSyncPreferences *)&v8 initWithPersistence:persistence delegate:delegate];
   if (v4)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -39,17 +39,17 @@
 - (void)_notifyDelegateOfUpdate
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v3 = [(StocksSyncPreferences *)self delegate];
-  [v3 preferencesUpdated:self];
+  delegate = [(StocksSyncPreferences *)self delegate];
+  [delegate preferencesUpdated:self];
 }
 
 - (unint64_t)complicationDisplayMode
 {
-  v3 = [(StocksSyncPreferences *)self persistence];
-  [v3 synchronize];
+  persistence = [(StocksSyncPreferences *)self persistence];
+  [persistence synchronize];
 
-  v4 = [(StocksSyncPreferences *)self persistence];
-  v5 = [v4 integerForKey:@"DefaultComplication"];
+  persistence2 = [(StocksSyncPreferences *)self persistence];
+  v5 = [persistence2 integerForKey:@"DefaultComplication"];
 
   if (v5 <= 3)
   {
@@ -62,46 +62,46 @@
   }
 }
 
-- (void)setComplicationDisplayMode:(unint64_t)a3
+- (void)setComplicationDisplayMode:(unint64_t)mode
 {
-  v5 = [(StocksSyncPreferences *)self persistence];
-  [v5 setInteger:a3 forKey:@"DefaultComplication"];
+  persistence = [(StocksSyncPreferences *)self persistence];
+  [persistence setInteger:mode forKey:@"DefaultComplication"];
 
-  v6 = [(StocksSyncPreferences *)self persistence];
-  [v6 synchronize];
+  persistence2 = [(StocksSyncPreferences *)self persistence];
+  [persistence2 synchronize];
 }
 
 - (NSString)defaultStockSymbol
 {
-  v3 = [(StocksSyncPreferences *)self persistence];
-  [v3 synchronize];
+  persistence = [(StocksSyncPreferences *)self persistence];
+  [persistence synchronize];
 
-  v4 = [(StocksSyncPreferences *)self persistence];
-  v5 = [v4 stringForKey:@"DefaultStock"];
+  persistence2 = [(StocksSyncPreferences *)self persistence];
+  v5 = [persistence2 stringForKey:@"DefaultStock"];
 
   return v5;
 }
 
-- (void)setDefaultStockSymbol:(id)a3
+- (void)setDefaultStockSymbol:(id)symbol
 {
-  v4 = a3;
-  v5 = [(StocksSyncPreferences *)self persistence];
-  [v5 setObject:v4 forKey:@"DefaultStock"];
+  symbolCopy = symbol;
+  persistence = [(StocksSyncPreferences *)self persistence];
+  [persistence setObject:symbolCopy forKey:@"DefaultStock"];
 
-  v6 = [(StocksSyncPreferences *)self persistence];
-  [v6 synchronize];
+  persistence2 = [(StocksSyncPreferences *)self persistence];
+  [persistence2 synchronize];
 }
 
 - (BOOL)hasComplicationDisplayModeBeenSet
 {
-  v3 = [(StocksSyncPreferences *)self persistence];
-  [v3 synchronize];
+  persistence = [(StocksSyncPreferences *)self persistence];
+  [persistence synchronize];
 
-  v4 = [(StocksSyncPreferences *)self persistence];
-  v5 = [v4 objectForKey:@"DefaultComplication"];
-  LOBYTE(v3) = v5 != 0;
+  persistence2 = [(StocksSyncPreferences *)self persistence];
+  v5 = [persistence2 objectForKey:@"DefaultComplication"];
+  LOBYTE(persistence) = v5 != 0;
 
-  return v3;
+  return persistence;
 }
 
 @end

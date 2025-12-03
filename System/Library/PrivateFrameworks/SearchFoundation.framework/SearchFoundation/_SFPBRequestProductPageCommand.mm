@@ -1,38 +1,38 @@
 @interface _SFPBRequestProductPageCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRequestProductPageCommand)initWithDictionary:(id)a3;
-- (_SFPBRequestProductPageCommand)initWithFacade:(id)a3;
-- (_SFPBRequestProductPageCommand)initWithJSON:(id)a3;
+- (_SFPBRequestProductPageCommand)initWithDictionary:(id)dictionary;
+- (_SFPBRequestProductPageCommand)initWithFacade:(id)facade;
+- (_SFPBRequestProductPageCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setDistributorBundleIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setDistributorBundleIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRequestProductPageCommand
 
-- (_SFPBRequestProductPageCommand)initWithFacade:(id)a3
+- (_SFPBRequestProductPageCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRequestProductPageCommand *)self init];
   if (v5)
   {
-    v6 = [v4 distributorBundleIdentifier];
+    distributorBundleIdentifier = [facadeCopy distributorBundleIdentifier];
 
-    if (v6)
+    if (distributorBundleIdentifier)
     {
-      v7 = [v4 distributorBundleIdentifier];
-      [(_SFPBRequestProductPageCommand *)v5 setDistributorBundleIdentifier:v7];
+      distributorBundleIdentifier2 = [facadeCopy distributorBundleIdentifier];
+      [(_SFPBRequestProductPageCommand *)v5 setDistributorBundleIdentifier:distributorBundleIdentifier2];
     }
 
-    if ([v4 hasItemIdentifier])
+    if ([facadeCopy hasItemIdentifier])
     {
-      -[_SFPBRequestProductPageCommand setItemIdentifier:](v5, "setItemIdentifier:", [v4 itemIdentifier]);
+      -[_SFPBRequestProductPageCommand setItemIdentifier:](v5, "setItemIdentifier:", [facadeCopy itemIdentifier]);
     }
 
-    if ([v4 hasVersionIdentifier])
+    if ([facadeCopy hasVersionIdentifier])
     {
-      -[_SFPBRequestProductPageCommand setVersionIdentifier:](v5, "setVersionIdentifier:", [v4 versionIdentifier]);
+      -[_SFPBRequestProductPageCommand setVersionIdentifier:](v5, "setVersionIdentifier:", [facadeCopy versionIdentifier]);
     }
 
     v8 = v5;
@@ -41,15 +41,15 @@
   return v5;
 }
 
-- (_SFPBRequestProductPageCommand)initWithDictionary:(id)a3
+- (_SFPBRequestProductPageCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBRequestProductPageCommand;
   v5 = [(_SFPBRequestProductPageCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"distributorBundleIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"distributorBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,14 +57,14 @@
       [(_SFPBRequestProductPageCommand *)v5 setDistributorBundleIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"itemIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"itemIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBRequestProductPageCommand setItemIdentifier:](v5, "setItemIdentifier:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"versionIdentifier"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"versionIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,30 +77,30 @@
   return v5;
 }
 
-- (_SFPBRequestProductPageCommand)initWithJSON:(id)a3
+- (_SFPBRequestProductPageCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRequestProductPageCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRequestProductPageCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRequestProductPageCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -113,53 +113,53 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_distributorBundleIdentifier)
   {
-    v4 = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"distributorBundleIdentifier"];
+    distributorBundleIdentifier = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
+    v5 = [distributorBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"distributorBundleIdentifier"];
   }
 
   if (self->_itemIdentifier)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_SFPBRequestProductPageCommand itemIdentifier](self, "itemIdentifier")}];
-    [v3 setObject:v6 forKeyedSubscript:@"itemIdentifier"];
+    [dictionary setObject:v6 forKeyedSubscript:@"itemIdentifier"];
   }
 
   if (self->_versionIdentifier)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[_SFPBRequestProductPageCommand versionIdentifier](self, "versionIdentifier")}];
-    [v3 setObject:v7 forKeyedSubscript:@"versionIdentifier"];
+    [dictionary setObject:v7 forKeyedSubscript:@"versionIdentifier"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
-  v5 = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
-  v6 = [v4 distributorBundleIdentifier];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  distributorBundleIdentifier = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
+  distributorBundleIdentifier2 = [equalCopy distributorBundleIdentifier];
+  v7 = distributorBundleIdentifier2;
+  if ((distributorBundleIdentifier != 0) == (distributorBundleIdentifier2 == 0))
   {
 
     goto LABEL_10;
   }
 
-  v8 = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
-  if (v8)
+  distributorBundleIdentifier3 = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
+  if (distributorBundleIdentifier3)
   {
-    v9 = v8;
-    v10 = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
-    v11 = [v4 distributorBundleIdentifier];
-    v12 = [v10 isEqual:v11];
+    v9 = distributorBundleIdentifier3;
+    distributorBundleIdentifier4 = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
+    distributorBundleIdentifier5 = [equalCopy distributorBundleIdentifier];
+    v12 = [distributorBundleIdentifier4 isEqual:distributorBundleIdentifier5];
 
     if (!v12)
     {
@@ -172,7 +172,7 @@
   }
 
   itemIdentifier = self->_itemIdentifier;
-  if (itemIdentifier != [v4 itemIdentifier])
+  if (itemIdentifier != [equalCopy itemIdentifier])
   {
 LABEL_10:
     v15 = 0;
@@ -180,17 +180,17 @@ LABEL_10:
   }
 
   versionIdentifier = self->_versionIdentifier;
-  v15 = versionIdentifier == [v4 versionIdentifier];
+  v15 = versionIdentifier == [equalCopy versionIdentifier];
 LABEL_11:
 
   return v15;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
-  if (v4)
+  toCopy = to;
+  distributorBundleIdentifier = [(_SFPBRequestProductPageCommand *)self distributorBundleIdentifier];
+  if (distributorBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -200,18 +200,18 @@ LABEL_11:
     PBDataWriterWriteUint64Field();
   }
 
-  v5 = [(_SFPBRequestProductPageCommand *)self versionIdentifier];
-  v6 = v7;
-  if (v5)
+  versionIdentifier = [(_SFPBRequestProductPageCommand *)self versionIdentifier];
+  v6 = toCopy;
+  if (versionIdentifier)
   {
     PBDataWriterWriteUint64Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setDistributorBundleIdentifier:(id)a3
+- (void)setDistributorBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   distributorBundleIdentifier = self->_distributorBundleIdentifier;
   self->_distributorBundleIdentifier = v4;
 

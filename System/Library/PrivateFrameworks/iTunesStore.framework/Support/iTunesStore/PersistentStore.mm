@@ -1,26 +1,26 @@
 @interface PersistentStore
-- (BOOL)_loadStoreCoordinatorWithIntegrityCheck:(BOOL)a3 error:(id *)a4;
-- (BOOL)loadStoreCoordinatorWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)performLightweightMigration:(id *)a3;
-- (BOOL)resetStore:(id *)a3;
+- (BOOL)_loadStoreCoordinatorWithIntegrityCheck:(BOOL)check error:(id *)error;
+- (BOOL)loadStoreCoordinatorWithOptions:(id)options error:(id *)error;
+- (BOOL)performLightweightMigration:(id *)migration;
+- (BOOL)resetStore:(id *)store;
 - (NSURL)databaseFileURL;
 - (NSURL)modelFileURL;
-- (PersistentStore)initWithConfiguration:(id)a3 error:(id *)a4;
+- (PersistentStore)initWithConfiguration:(id)configuration error:(id *)error;
 - (PersistentStoreConfiguration)configuration;
 - (id)_baseFilePath;
 - (id)_newLegacyManagedObjectModel;
 - (id)beginThreadContextSession;
 - (id)managedObjectModel;
-- (void)checkIntegrityWithInitializationBlock:(id)a3;
+- (void)checkIntegrityWithInitializationBlock:(id)block;
 - (void)dealloc;
 - (void)endThreadContextSession;
 @end
 
 @implementation PersistentStore
 
-- (PersistentStore)initWithConfiguration:(id)a3 error:(id *)a4
+- (PersistentStore)initWithConfiguration:(id)configuration error:(id *)error
 {
-  if (!a3)
+  if (!configuration)
   {
     sub_100272248(a2, self);
   }
@@ -30,12 +30,12 @@
   v7 = [(PersistentStore *)&v10 init];
   if (v7)
   {
-    v7->_configuration = [a3 copy];
-    if ([(PersistentStore *)v7 _loadStoreCoordinatorWithIntegrityCheck:0 error:a4])
+    v7->_configuration = [configuration copy];
+    if ([(PersistentStore *)v7 _loadStoreCoordinatorWithIntegrityCheck:0 error:error])
     {
-      v8 = [(PersistentStoreConfiguration *)v7->_configuration storeType];
-      v7->_threadContextKey = [[NSString alloc] initWithFormat:@"itunesstored.store-context.%d", v8];
-      v7->_threadCountKey = [[NSString alloc] initWithFormat:@"itunesstored.store-count.%d", v8];
+      storeType = [(PersistentStoreConfiguration *)v7->_configuration storeType];
+      v7->_threadContextKey = [[NSString alloc] initWithFormat:@"itunesstored.store-context.%d", storeType];
+      v7->_threadCountKey = [[NSString alloc] initWithFormat:@"itunesstored.store-count.%d", storeType];
     }
 
     else
@@ -57,8 +57,8 @@
 
 - (id)beginThreadContextSession
 {
-  v3 = [+[NSThread currentThread](NSThread threadDictionary];
-  v4 = [(NSMutableDictionary *)v3 objectForKey:self->_threadContextKey];
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
+  v4 = [(NSMutableDictionary *)threadDictionary objectForKey:self->_threadContextKey];
   if (!v4)
   {
     v5 = [NSManagedObjectContext alloc];
@@ -71,10 +71,10 @@
 
     [v6 setPersistentStoreCoordinator:self->_storeCoordinator];
     [v4 setUndoManager:0];
-    [(NSMutableDictionary *)v3 setObject:v4 forKey:self->_threadContextKey];
+    [(NSMutableDictionary *)threadDictionary setObject:v4 forKey:self->_threadContextKey];
   }
 
-  v7 = [(NSMutableDictionary *)v3 objectForKey:self->_threadCountKey];
+  v7 = [(NSMutableDictionary *)threadDictionary objectForKey:self->_threadCountKey];
   v8 = [NSNumber alloc];
   if (v7)
   {
@@ -87,12 +87,12 @@
   }
 
   v10 = [v8 initWithInteger:v9];
-  [(NSMutableDictionary *)v3 setObject:v10 forKey:self->_threadCountKey];
+  [(NSMutableDictionary *)threadDictionary setObject:v10 forKey:self->_threadCountKey];
 
   return v4;
 }
 
-- (void)checkIntegrityWithInitializationBlock:(id)a3
+- (void)checkIntegrityWithInitializationBlock:(id)block
 {
   v5 = [-[PersistentStore _baseFilePath](self "_baseFilePath")];
   if (v5)
@@ -104,15 +104,15 @@
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_INFO))
@@ -148,15 +148,15 @@
         v14 = +[SSLogConfig sharedConfig];
       }
 
-      v15 = [v14 shouldLog];
+      shouldLog2 = [v14 shouldLog];
       if ([v14 shouldLogToDisk])
       {
-        v16 = v15 | 2;
+        v16 = shouldLog2 | 2;
       }
 
       else
       {
-        v16 = v15;
+        v16 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -187,7 +187,7 @@
     }
 
     [v13 createFileAtPath:v6 contents:0 attributes:{0, v21}];
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
     [v13 removeItemAtPath:v6 error:0];
   }
 }
@@ -213,22 +213,22 @@
 
 - (void)endThreadContextSession
 {
-  v3 = [+[NSThread currentThread](NSThread threadDictionary];
-  v4 = [-[NSMutableDictionary objectForKey:](v3 objectForKey:{self->_threadCountKey), "integerValue"}];
+  threadDictionary = [+[NSThread currentThread](NSThread threadDictionary];
+  v4 = [-[NSMutableDictionary objectForKey:](threadDictionary objectForKey:{self->_threadCountKey), "integerValue"}];
   if (v4 >= 1)
   {
     if (v4 == 1)
     {
-      [(NSMutableDictionary *)v3 removeObjectForKey:self->_threadCountKey];
+      [(NSMutableDictionary *)threadDictionary removeObjectForKey:self->_threadCountKey];
       threadContextKey = self->_threadContextKey;
 
-      [(NSMutableDictionary *)v3 removeObjectForKey:threadContextKey];
+      [(NSMutableDictionary *)threadDictionary removeObjectForKey:threadContextKey];
     }
 
     else
     {
       v6 = [[NSNumber alloc] initWithInteger:v4 - 1];
-      [(NSMutableDictionary *)v3 setObject:v6 forKey:self->_threadCountKey];
+      [(NSMutableDictionary *)threadDictionary setObject:v6 forKey:self->_threadCountKey];
     }
   }
 }
@@ -245,12 +245,12 @@
   return result;
 }
 
-- (BOOL)performLightweightMigration:(id *)a3
+- (BOOL)performLightweightMigration:(id *)migration
 {
   v38 = 0;
-  v5 = [(PersistentStore *)self managedObjectModel];
-  v6 = [(PersistentStore *)self _newLegacyManagedObjectModel];
-  if (!v6)
+  managedObjectModel = [(PersistentStore *)self managedObjectModel];
+  _newLegacyManagedObjectModel = [(PersistentStore *)self _newLegacyManagedObjectModel];
+  if (!_newLegacyManagedObjectModel)
   {
     v21 = +[SSLogConfig sharedDaemonConfig];
     if (!v21)
@@ -258,15 +258,15 @@
       v21 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v21 shouldLog];
+    shouldLog = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog;
     }
 
     if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -296,7 +296,7 @@ LABEL_35:
     goto LABEL_55;
   }
 
-  v7 = [NSMappingModel inferredMappingModelForSourceModel:v6 destinationModel:v5 error:&v38];
+  v7 = [NSMappingModel inferredMappingModelForSourceModel:_newLegacyManagedObjectModel destinationModel:managedObjectModel error:&v38];
   if (!v7)
   {
     v24 = +[SSLogConfig sharedDaemonConfig];
@@ -305,15 +305,15 @@ LABEL_35:
       v24 = +[SSLogConfig sharedConfig];
     }
 
-    v25 = [v24 shouldLog];
+    shouldLog2 = [v24 shouldLog];
     if ([v24 shouldLogToDisk])
     {
-      v26 = v25 | 2;
+      v26 = shouldLog2 | 2;
     }
 
     else
     {
-      v26 = v25;
+      v26 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -336,9 +336,9 @@ LABEL_35:
   }
 
   v8 = v7;
-  v37 = a3;
-  v9 = [(PersistentStore *)self databaseFileURL];
-  v10 = [(NSURL *)v9 URLByAppendingPathExtension:@"migrated"];
+  migrationCopy = migration;
+  databaseFileURL = [(PersistentStore *)self databaseFileURL];
+  v10 = [(NSURL *)databaseFileURL URLByAppendingPathExtension:@"migrated"];
   v11 = objc_alloc_init(NSFileManager);
   [v11 removeItemAtURL:v10 error:0];
   v12 = +[SSLogConfig sharedDaemonConfig];
@@ -347,24 +347,24 @@ LABEL_35:
     v12 = +[SSLogConfig sharedConfig];
   }
 
-  v13 = [v12 shouldLog];
+  shouldLog3 = [v12 shouldLog];
   if ([v12 shouldLogToDisk])
   {
-    v13 |= 2u;
+    shouldLog3 |= 2u;
   }
 
   if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_INFO))
   {
-    v13 &= 2u;
+    shouldLog3 &= 2u;
   }
 
-  if (v13)
+  if (shouldLog3)
   {
     v14 = objc_opt_class();
     v39 = 138412546;
     v40 = v14;
     v41 = 2112;
-    v42 = v9;
+    v42 = databaseFileURL;
     LODWORD(v35) = 22;
     v34 = &v39;
     v15 = _os_log_send_and_compose_impl();
@@ -378,8 +378,8 @@ LABEL_35:
     }
   }
 
-  v18 = [objc_alloc(objc_msgSend(objc_msgSend(-[NSDictionary objectForKey:](+[NSPersistentStoreCoordinator registeredStoreTypes](NSPersistentStoreCoordinator registeredStoreTypes];
-  if (([v18 migrateStoreFromURL:v9 type:NSSQLiteStoreType options:0 withMappingModel:v8 toDestinationURL:v10 destinationType:NSSQLiteStoreType destinationOptions:0 error:&v38] & 1) == 0)
+  registeredStoreTypes = [objc_alloc(objc_msgSend(objc_msgSend(-[NSDictionary objectForKey:](+[NSPersistentStoreCoordinator registeredStoreTypes](NSPersistentStoreCoordinator registeredStoreTypes];
+  if (([registeredStoreTypes migrateStoreFromURL:databaseFileURL type:NSSQLiteStoreType options:0 withMappingModel:v8 toDestinationURL:v10 destinationType:NSSQLiteStoreType destinationOptions:0 error:&v38] & 1) == 0)
   {
     v28 = +[SSLogConfig sharedDaemonConfig];
     v19 = v11;
@@ -388,19 +388,19 @@ LABEL_35:
       v28 = +[SSLogConfig sharedConfig];
     }
 
-    v29 = [v28 shouldLog];
+    shouldLog4 = [v28 shouldLog];
     if ([v28 shouldLogToDisk])
     {
-      v29 |= 2u;
+      shouldLog4 |= 2u;
     }
 
     if (!os_log_type_enabled([v28 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
-      v29 &= 2u;
+      shouldLog4 &= 2u;
     }
 
-    a3 = v37;
-    if (!v29)
+    migration = migrationCopy;
+    if (!shouldLog4)
     {
       goto LABEL_53;
     }
@@ -427,8 +427,8 @@ LABEL_53:
   }
 
   v19 = v11;
-  [v11 removeItemAtURL:v9 error:0];
-  if (([v11 moveItemAtURL:v10 toURL:v9 error:&v38] & 1) == 0)
+  [v11 removeItemAtURL:databaseFileURL error:0];
+  if (([v11 moveItemAtURL:v10 toURL:databaseFileURL error:&v38] & 1) == 0)
   {
     v30 = +[SSLogConfig sharedDaemonConfig];
     if (!v30)
@@ -436,19 +436,19 @@ LABEL_53:
       v30 = +[SSLogConfig sharedConfig];
     }
 
-    v31 = [v30 shouldLog];
+    shouldLog5 = [v30 shouldLog];
     if ([v30 shouldLogToDisk])
     {
-      v31 |= 2u;
+      shouldLog5 |= 2u;
     }
 
     if (!os_log_type_enabled([v30 OSLogObject], OS_LOG_TYPE_DEFAULT))
     {
-      v31 &= 2u;
+      shouldLog5 &= 2u;
     }
 
-    a3 = v37;
-    if (!v31)
+    migration = migrationCopy;
+    if (!shouldLog5)
     {
       goto LABEL_53;
     }
@@ -457,23 +457,23 @@ LABEL_53:
   }
 
   LOBYTE(v20) = 1;
-  a3 = v37;
+  migration = migrationCopy;
 LABEL_54:
 
 LABEL_55:
-  if (a3)
+  if (migration)
   {
-    *a3 = v38;
+    *migration = v38;
   }
 
   return v20;
 }
 
-- (BOOL)resetStore:(id *)a3
+- (BOOL)resetStore:(id *)store
 {
   v26 = 0;
-  v5 = [(PersistentStore *)self databaseFileURL];
-  v6 = v5;
+  databaseFileURL = [(PersistentStore *)self databaseFileURL];
+  v6 = databaseFileURL;
   if (self->_storeCoordinator)
   {
     v7 = +[SSLogConfig sharedDaemonConfig];
@@ -482,15 +482,15 @@ LABEL_55:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
     if (!os_log_type_enabled([v7 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -518,33 +518,33 @@ LABEL_55:
     }
 
     v13 = [(NSPersistentStoreCoordinator *)self->_storeCoordinator destroyPersistentStoreAtURL:v6 withType:NSSQLiteStoreType options:0 error:&v26, v24];
-    if (a3)
+    if (store)
     {
 LABEL_13:
-      *a3 = v26;
+      *store = v26;
     }
   }
 
   else
   {
-    v15 = [(NSURL *)v5 path];
+    path = [(NSURL *)databaseFileURL path];
     v16 = objc_alloc_init(NSFileManager);
-    v17 = [(NSString *)v15 stringByAppendingPathExtension:@"bad"];
+    v17 = [(NSString *)path stringByAppendingPathExtension:@"bad"];
     v18 = +[SSLogConfig sharedDaemonConfig];
     if (!v18)
     {
       v18 = +[SSLogConfig sharedConfig];
     }
 
-    v19 = [v18 shouldLog];
+    shouldLog2 = [v18 shouldLog];
     if ([v18 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog2 | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -557,7 +557,7 @@ LABEL_13:
       v27 = 138412802;
       v28 = objc_opt_class();
       v29 = 2112;
-      p_isa = v15;
+      p_isa = path;
       v31 = 2112;
       v32 = v17;
       LODWORD(v25) = 32;
@@ -574,9 +574,9 @@ LABEL_13:
     }
 
     [v16 removeItemAtPath:v17 error:{0, v24}];
-    v13 = [v16 moveItemAtPath:v15 toPath:v17 error:&v26];
+    v13 = [v16 moveItemAtPath:path toPath:v17 error:&v26];
 
-    if (a3)
+    if (store)
     {
       goto LABEL_13;
     }
@@ -585,11 +585,11 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)loadStoreCoordinatorWithOptions:(id)a3 error:(id *)a4
+- (BOOL)loadStoreCoordinatorWithOptions:(id)options error:(id *)error
 {
   v46 = 0;
-  v7 = [(PersistentStore *)self managedObjectModel];
-  if (!v7)
+  managedObjectModel = [(PersistentStore *)self managedObjectModel];
+  if (!managedObjectModel)
   {
     v20 = +[SSLogConfig sharedDaemonConfig];
     if (!v20)
@@ -597,15 +597,15 @@ LABEL_13:
       v20 = +[SSLogConfig sharedConfig];
     }
 
-    v21 = [v20 shouldLog];
+    shouldLog = [v20 shouldLog];
     if ([v20 shouldLogToDisk])
     {
-      v22 = v21 | 2;
+      v22 = shouldLog | 2;
     }
 
     else
     {
-      v22 = v21;
+      v22 = shouldLog;
     }
 
     if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -633,17 +633,17 @@ LABEL_13:
 LABEL_40:
     SSFileLog();
 LABEL_41:
-    if (a4)
+    if (error)
     {
-      *a4 = v46;
+      *error = v46;
     }
 
     return self->_storeCoordinator != 0;
   }
 
-  v8 = v7;
-  v9 = [(PersistentStore *)self databaseFileURL];
-  v10 = [NSFileManager ensureDirectoryExists:[(NSString *)[(NSURL *)v9 path] stringByDeletingLastPathComponent]];
+  v8 = managedObjectModel;
+  databaseFileURL = [(PersistentStore *)self databaseFileURL];
+  v10 = [NSFileManager ensureDirectoryExists:[(NSString *)[(NSURL *)databaseFileURL path] stringByDeletingLastPathComponent]];
   v11 = +[SSLogConfig sharedDaemonConfig];
   v12 = v11;
   if ((v10 & 1) == 0)
@@ -653,15 +653,15 @@ LABEL_41:
       v12 = +[SSLogConfig sharedConfig];
     }
 
-    v25 = [v12 shouldLog];
+    shouldLog2 = [v12 shouldLog];
     if ([v12 shouldLogToDisk])
     {
-      v26 = v25 | 2;
+      v26 = shouldLog2 | 2;
     }
 
     else
     {
-      v26 = v25;
+      v26 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -677,7 +677,7 @@ LABEL_41:
     v49 = 138412546;
     v50 = objc_opt_class();
     v51 = 2112;
-    v52 = v9;
+    v52 = databaseFileURL;
     LODWORD(v44) = 22;
     v27 = _os_log_send_and_compose_impl();
     if (!v27)
@@ -696,15 +696,15 @@ LABEL_41:
     v12 = +[SSLogConfig sharedConfig];
   }
 
-  v13 = [v12 shouldLog];
+  shouldLog3 = [v12 shouldLog];
   if ([v12 shouldLogToDisk])
   {
-    v14 = v13 | 2;
+    v14 = shouldLog3 | 2;
   }
 
   else
   {
-    v14 = v13;
+    v14 = shouldLog3;
   }
 
   if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_INFO))
@@ -717,7 +717,7 @@ LABEL_41:
     v49 = 138412546;
     v50 = objc_opt_class();
     v51 = 2112;
-    v52 = v9;
+    v52 = databaseFileURL;
     LODWORD(v44) = 22;
     v15 = _os_log_send_and_compose_impl();
     if (v15)
@@ -732,14 +732,14 @@ LABEL_41:
   v17 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:v8];
   v18 = [[NSMutableDictionary alloc] initWithObjectsAndKeys:{NSFileProtectionCompleteUntilFirstUserAuthentication, NSPersistentStoreFileProtectionKey, 0}];
   v19 = v18;
-  if (a3)
+  if (options)
   {
-    [v18 addEntriesFromDictionary:a3];
+    [v18 addEntriesFromDictionary:options];
   }
 
   if (([objc_msgSend(v19 objectForKeyedSubscript:{NSPersistentStoreFileProtectionKey), "isEqualToString:", NSFileProtectionNone}] & 1) != 0 || MKBDeviceUnlockedSinceBoot())
   {
-    if ([v17 addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:v9 options:v19 error:&v46])
+    if ([v17 addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:databaseFileURL options:v19 error:&v46])
     {
       goto LABEL_18;
     }
@@ -755,15 +755,15 @@ LABEL_41:
       v30 = +[SSLogConfig sharedConfig];
     }
 
-    v31 = [v30 shouldLog];
+    shouldLog4 = [v30 shouldLog];
     if ([v30 shouldLogToDisk])
     {
-      v32 = v31 | 2;
+      v32 = shouldLog4 | 2;
     }
 
     else
     {
-      v32 = v31;
+      v32 = shouldLog4;
     }
 
     if (!os_log_type_enabled([v30 OSLogObject], OS_LOG_TYPE_INFO))
@@ -789,7 +789,7 @@ LABEL_41:
       }
     }
 
-    if (-[PersistentStore performLightweightMigration:](self, "performLightweightMigration:", &v46, v43) && [v17 addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:v9 options:0 error:&v46])
+    if (-[PersistentStore performLightweightMigration:](self, "performLightweightMigration:", &v46, v43) && [v17 addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:databaseFileURL options:0 error:&v46])
     {
 LABEL_18:
 
@@ -805,15 +805,15 @@ LABEL_57:
         v37 = +[SSLogConfig sharedConfig];
       }
 
-      v38 = [v37 shouldLog];
+      shouldLog5 = [v37 shouldLog];
       if ([v37 shouldLogToDisk])
       {
-        v39 = v38 | 2;
+        v39 = shouldLog5 | 2;
       }
 
       else
       {
-        v39 = v38;
+        v39 = shouldLog5;
       }
 
       if (!os_log_type_enabled([v37 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -843,11 +843,11 @@ LABEL_57:
     goto LABEL_41;
   }
 
-  if (a4)
+  if (error)
   {
     v47 = NSSQLiteErrorDomain;
     v48 = &off_10034BE98;
-    *a4 = [NSError errorWithDomain:NSCocoaErrorDomain code:256 userInfo:[NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1]];
+    *error = [NSError errorWithDomain:NSCocoaErrorDomain code:256 userInfo:[NSDictionary dictionaryWithObjects:&v48 forKeys:&v47 count:1]];
   }
 
   return 0;
@@ -863,15 +863,15 @@ LABEL_57:
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_INFO))
@@ -884,7 +884,7 @@ LABEL_57:
       v20 = 138412546;
       v21 = objc_opt_class();
       v22 = 2112;
-      v23 = [(PersistentStore *)self modelFileURL];
+      modelFileURL = [(PersistentStore *)self modelFileURL];
       LODWORD(v19) = 22;
       v18 = &v20;
       v6 = _os_log_send_and_compose_impl();
@@ -908,15 +908,15 @@ LABEL_57:
         v11 = +[SSLogConfig sharedConfig];
       }
 
-      v12 = [v11 shouldLog];
+      shouldLog2 = [v11 shouldLog];
       if ([v11 shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog2 | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -927,11 +927,11 @@ LABEL_57:
       if (v13)
       {
         v14 = objc_opt_class();
-        v15 = [(PersistentStore *)self modelFileURL];
+        modelFileURL2 = [(PersistentStore *)self modelFileURL];
         v20 = 138412546;
         v21 = v14;
         v22 = 2112;
-        v23 = v15;
+        modelFileURL = modelFileURL2;
         LODWORD(v19) = 22;
         v16 = _os_log_send_and_compose_impl();
         if (v16)
@@ -955,11 +955,11 @@ LABEL_57:
   return [v2 stringByAppendingPathComponent:@"com.apple.itunesstored"];
 }
 
-- (BOOL)_loadStoreCoordinatorWithIntegrityCheck:(BOOL)a3 error:(id *)a4
+- (BOOL)_loadStoreCoordinatorWithIntegrityCheck:(BOOL)check error:(id *)error
 {
   v6 = 0;
   v10 = 0;
-  if (a3)
+  if (check)
   {
     v7 = [[NSDictionary alloc] initWithObjectsAndKeys:{+[NSNull null](NSNull, "null"), @"integrity_check", 0}];
     v6 = [[NSDictionary alloc] initWithObjectsAndKeys:{v7, NSSQLitePragmasOption, 0}];
@@ -981,9 +981,9 @@ LABEL_57:
     v8 = [(PersistentStore *)self loadStoreCoordinatorWithOptions:v6 error:&v10];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v10;
+    *error = v10;
   }
 
   return v8;
@@ -995,12 +995,12 @@ LABEL_57:
   if (v3)
   {
     v4 = v3;
-    v5 = [(PersistentStoreConfiguration *)self->_configuration legacyModelVersionIdentifiers];
+    legacyModelVersionIdentifiers = [(PersistentStoreConfiguration *)self->_configuration legacyModelVersionIdentifiers];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [(NSArray *)legacyModelVersionIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1012,7 +1012,7 @@ LABEL_57:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(legacyModelVersionIdentifiers);
           }
 
           v10 = [[NSManagedObjectModel alloc] initWithContentsOfURL:{-[NSURL URLByAppendingPathExtension:](-[NSURL URLByAppendingPathComponent:](-[PersistentStore modelFileURL](self, "modelFileURL"), "URLByAppendingPathComponent:", *(*(&v13 + 1) + 8 * v9)), "URLByAppendingPathExtension:", @"mom"}];
@@ -1034,7 +1034,7 @@ LABEL_57:
         }
 
         while (v7 != v9);
-        v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [(NSArray *)legacyModelVersionIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);

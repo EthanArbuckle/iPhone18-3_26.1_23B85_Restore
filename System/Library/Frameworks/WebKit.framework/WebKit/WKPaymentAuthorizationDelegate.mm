@@ -1,27 +1,27 @@
 @interface WKPaymentAuthorizationDelegate
 - (id).cxx_construct;
-- (id)_initWithRequest:(id)a3 presenter:(void *)a4;
-- (void)_didAuthorizePayment:(id)a3 completion:(id)a4;
-- (void)_didChangeCouponCode:(id)a3 completion:(id)a4;
+- (id)_initWithRequest:(id)request presenter:(void *)presenter;
+- (void)_didAuthorizePayment:(id)payment completion:(id)completion;
+- (void)_didChangeCouponCode:(id)code completion:(id)completion;
 - (void)_didFinish;
-- (void)_didRequestMerchantSession:(id)a3;
-- (void)_didSelectPaymentMethod:(id)a3 completion:(id)a4;
-- (void)_didSelectShippingContact:(id)a3 completion:(id)a4;
-- (void)_didSelectShippingMethod:(id)a3 completion:(id)a4;
-- (void)_willFinishWithError:(id)a3;
-- (void)completeCouponCodeChange:(id)a3;
-- (void)completeMerchantValidation:(id)a3 error:(id)a4;
-- (void)completePaymentMethodSelection:(id)a3;
-- (void)completePaymentSession:(int64_t)a3 errors:(id)a4;
-- (void)completePaymentSession:(int64_t)a3 errors:(id)a4 orderDetails:(id)a5;
-- (void)completeShippingContactSelection:(id)a3;
-- (void)completeShippingMethodSelection:(id)a3;
+- (void)_didRequestMerchantSession:(id)session;
+- (void)_didSelectPaymentMethod:(id)method completion:(id)completion;
+- (void)_didSelectShippingContact:(id)contact completion:(id)completion;
+- (void)_didSelectShippingMethod:(id)method completion:(id)completion;
+- (void)_willFinishWithError:(id)error;
+- (void)completeCouponCodeChange:(id)change;
+- (void)completeMerchantValidation:(id)validation error:(id)error;
+- (void)completePaymentMethodSelection:(id)selection;
+- (void)completePaymentSession:(int64_t)session errors:(id)errors;
+- (void)completePaymentSession:(int64_t)session errors:(id)errors orderDetails:(id)details;
+- (void)completeShippingContactSelection:(id)selection;
+- (void)completeShippingMethodSelection:(id)selection;
 - (void)invalidate;
 @end
 
 @implementation WKPaymentAuthorizationDelegate
 
-- (void)completeMerchantValidation:(id)a3 error:(id)a4
+- (void)completeMerchantValidation:(id)validation error:(id)error
 {
   m_block = self->_didRequestMerchantSessionCompletion.m_block;
   self->_didRequestMerchantSessionCompletion.m_block = 0;
@@ -29,25 +29,25 @@
   _Block_release(self->_didRequestMerchantSessionCompletion.m_block);
   self->_didRequestMerchantSessionCompletion.m_block = v8;
   _Block_release(0);
-  m_block[2](m_block, a3, a4);
+  m_block[2](m_block, validation, error);
 
   _Block_release(m_block);
 }
 
-- (void)completePaymentMethodSelection:(id)a3
+- (void)completePaymentMethodSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
-    v11 = a3;
-    v4 = a3;
-    v5 = [objc_msgSend(v11 "paymentSummaryItems")];
+    selectionCopy = selection;
+    selectionCopy2 = selection;
+    v5 = [objc_msgSend(selectionCopy "paymentSummaryItems")];
     m_ptr = self->_summaryItems.m_ptr;
     self->_summaryItems.m_ptr = v5;
     if (m_ptr)
     {
     }
 
-    v7 = [objc_msgSend(v11 "availableShippingMethods")];
+    v7 = [objc_msgSend(selectionCopy "availableShippingMethods")];
     v8 = self->_availableShippingMethods.m_ptr;
     self->_availableShippingMethods.m_ptr = v7;
     if (v8)
@@ -57,8 +57,8 @@
 
   else
   {
-    v11 = [objc_alloc((*MEMORY[0x1E69E2430])(self a2))];
-    [v11 setAvailableShippingMethods:self->_availableShippingMethods.m_ptr];
+    selectionCopy = [objc_alloc((*MEMORY[0x1E69E2430])(self a2))];
+    [selectionCopy setAvailableShippingMethods:self->_availableShippingMethods.m_ptr];
   }
 
   m_block = self->_didSelectPaymentMethodCompletion.m_block;
@@ -67,14 +67,14 @@
   _Block_release(self->_didSelectPaymentMethodCompletion.m_block);
   self->_didSelectPaymentMethodCompletion.m_block = v10;
   _Block_release(0);
-  m_block[2](m_block, v11);
+  m_block[2](m_block, selectionCopy);
   _Block_release(m_block);
-  if (v11)
+  if (selectionCopy)
   {
   }
 }
 
-- (void)completePaymentSession:(int64_t)a3 errors:(id)a4
+- (void)completePaymentSession:(int64_t)session errors:(id)errors
 {
   v7 = [objc_alloc((*MEMORY[0x1E69E23F0])(self a2))];
   m_block = self->_didAuthorizePaymentCompletion.m_block;
@@ -90,10 +90,10 @@
   }
 }
 
-- (void)completePaymentSession:(int64_t)a3 errors:(id)a4 orderDetails:(id)a5
+- (void)completePaymentSession:(int64_t)session errors:(id)errors orderDetails:(id)details
 {
   v9 = [objc_alloc((*MEMORY[0x1E69E23F0])(self a2))];
-  [v9 setOrderDetails:a5];
+  [v9 setOrderDetails:details];
   m_block = self->_didAuthorizePaymentCompletion.m_block;
   self->_didAuthorizePaymentCompletion.m_block = 0;
   v8 = _Block_copy(0);
@@ -107,20 +107,20 @@
   }
 }
 
-- (void)completeShippingContactSelection:(id)a3
+- (void)completeShippingContactSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
-    v11 = a3;
-    v4 = a3;
-    v5 = [objc_msgSend(v11 "paymentSummaryItems")];
+    selectionCopy = selection;
+    selectionCopy2 = selection;
+    v5 = [objc_msgSend(selectionCopy "paymentSummaryItems")];
     m_ptr = self->_summaryItems.m_ptr;
     self->_summaryItems.m_ptr = v5;
     if (m_ptr)
     {
     }
 
-    v7 = [objc_msgSend(v11 "availableShippingMethods")];
+    v7 = [objc_msgSend(selectionCopy "availableShippingMethods")];
     v8 = self->_availableShippingMethods.m_ptr;
     self->_availableShippingMethods.m_ptr = v7;
     if (v8)
@@ -130,8 +130,8 @@
 
   else
   {
-    v11 = [objc_alloc((*MEMORY[0x1E69E2450])(self a2))];
-    [v11 setAvailableShippingMethods:self->_availableShippingMethods.m_ptr];
+    selectionCopy = [objc_alloc((*MEMORY[0x1E69E2450])(self a2))];
+    [selectionCopy setAvailableShippingMethods:self->_availableShippingMethods.m_ptr];
   }
 
   m_block = self->_didSelectShippingContactCompletion.m_block;
@@ -140,27 +140,27 @@
   _Block_release(self->_didSelectShippingContactCompletion.m_block);
   self->_didSelectShippingContactCompletion.m_block = v10;
   _Block_release(0);
-  m_block[2](m_block, v11);
+  m_block[2](m_block, selectionCopy);
   _Block_release(m_block);
-  if (v11)
+  if (selectionCopy)
   {
   }
 }
 
-- (void)completeShippingMethodSelection:(id)a3
+- (void)completeShippingMethodSelection:(id)selection
 {
-  if (a3)
+  if (selection)
   {
-    v11 = a3;
-    v4 = a3;
-    v5 = [objc_msgSend(v11 "paymentSummaryItems")];
+    selectionCopy = selection;
+    selectionCopy2 = selection;
+    v5 = [objc_msgSend(selectionCopy "paymentSummaryItems")];
     m_ptr = self->_summaryItems.m_ptr;
     self->_summaryItems.m_ptr = v5;
     if (m_ptr)
     {
     }
 
-    v7 = [objc_msgSend(v11 "availableShippingMethods")];
+    v7 = [objc_msgSend(selectionCopy "availableShippingMethods")];
     v8 = self->_availableShippingMethods.m_ptr;
     self->_availableShippingMethods.m_ptr = v7;
     if (v8)
@@ -170,8 +170,8 @@
 
   else
   {
-    v11 = [objc_alloc((*MEMORY[0x1E69E2448])(self a2))];
-    [v11 setAvailableShippingMethods:self->_availableShippingMethods.m_ptr];
+    selectionCopy = [objc_alloc((*MEMORY[0x1E69E2448])(self a2))];
+    [selectionCopy setAvailableShippingMethods:self->_availableShippingMethods.m_ptr];
   }
 
   m_block = self->_didSelectShippingMethodCompletion.m_block;
@@ -180,27 +180,27 @@
   _Block_release(self->_didSelectShippingMethodCompletion.m_block);
   self->_didSelectShippingMethodCompletion.m_block = v10;
   _Block_release(0);
-  m_block[2](m_block, v11);
+  m_block[2](m_block, selectionCopy);
   _Block_release(m_block);
-  if (v11)
+  if (selectionCopy)
   {
   }
 }
 
-- (void)completeCouponCodeChange:(id)a3
+- (void)completeCouponCodeChange:(id)change
 {
-  if (a3)
+  if (change)
   {
-    v11 = a3;
-    v4 = a3;
-    v5 = [objc_msgSend(v11 "paymentSummaryItems")];
+    changeCopy = change;
+    changeCopy2 = change;
+    v5 = [objc_msgSend(changeCopy "paymentSummaryItems")];
     m_ptr = self->_summaryItems.m_ptr;
     self->_summaryItems.m_ptr = v5;
     if (m_ptr)
     {
     }
 
-    v7 = [objc_msgSend(v11 "availableShippingMethods")];
+    v7 = [objc_msgSend(changeCopy "availableShippingMethods")];
     v8 = self->_availableShippingMethods.m_ptr;
     self->_availableShippingMethods.m_ptr = v7;
     if (v8)
@@ -210,8 +210,8 @@
 
   else
   {
-    v11 = [objc_alloc((*MEMORY[0x1E69E2418])(self a2))];
-    [v11 setAvailableShippingMethods:self->_availableShippingMethods.m_ptr];
+    changeCopy = [objc_alloc((*MEMORY[0x1E69E2418])(self a2))];
+    [changeCopy setAvailableShippingMethods:self->_availableShippingMethods.m_ptr];
   }
 
   m_block = self->_didChangeCouponCodeCompletion.m_block;
@@ -220,9 +220,9 @@
   _Block_release(self->_didChangeCouponCodeCompletion.m_block);
   self->_didChangeCouponCodeCompletion.m_block = v10;
   _Block_release(0);
-  m_block[2](m_block, v11);
+  m_block[2](m_block, changeCopy);
   _Block_release(m_block);
-  if (v11)
+  if (changeCopy)
   {
   }
 }
@@ -246,7 +246,7 @@
   return self;
 }
 
-- (id)_initWithRequest:(id)a3 presenter:(void *)a4
+- (id)_initWithRequest:(id)request presenter:(void *)presenter
 {
   v23.receiver = self;
   v23.super_class = WKPaymentAuthorizationDelegate;
@@ -256,13 +256,13 @@
     return v7;
   }
 
-  if (!*(a4 + 1))
+  if (!*(presenter + 1))
   {
     v8 = WTF::fastCompactMalloc(0x10);
     *v8 = 1;
-    *(v8 + 8) = a4;
-    v9 = *(a4 + 1);
-    *(a4 + 1) = v8;
+    *(v8 + 8) = presenter;
+    v9 = *(presenter + 1);
+    *(presenter + 1) = v8;
     if (v9)
     {
       if (atomic_fetch_add(v9, 0xFFFFFFFF) == 1)
@@ -273,7 +273,7 @@
     }
   }
 
-  v10 = *(a4 + 1);
+  v10 = *(presenter + 1);
   atomic_fetch_add(v10, 1u);
   m_ptr = v7->_presenter.m_impl.m_ptr;
   v7->_presenter.m_impl.m_ptr = v10;
@@ -281,7 +281,7 @@
   {
     atomic_store(1u, m_ptr);
     WTF::fastFree(m_ptr, v6);
-    if (!a3)
+    if (!request)
     {
       goto LABEL_10;
     }
@@ -289,24 +289,24 @@
     goto LABEL_9;
   }
 
-  if (a3)
+  if (request)
   {
 LABEL_9:
-    v12 = a3;
+    requestCopy = request;
   }
 
 LABEL_10:
   v13 = v7->_request.m_ptr;
-  v7->_request.m_ptr = a3;
+  v7->_request.m_ptr = request;
   if (v13)
   {
   }
 
-  v14 = [a3 availableShippingMethods];
-  v15 = v14;
-  if (v14)
+  availableShippingMethods = [request availableShippingMethods];
+  v15 = availableShippingMethods;
+  if (availableShippingMethods)
   {
-    v16 = v14;
+    v16 = availableShippingMethods;
   }
 
   v17 = v7->_availableShippingMethods.m_ptr;
@@ -315,11 +315,11 @@ LABEL_10:
   {
   }
 
-  v18 = [a3 paymentSummaryItems];
-  v19 = v18;
-  if (v18)
+  paymentSummaryItems = [request paymentSummaryItems];
+  v19 = paymentSummaryItems;
+  if (paymentSummaryItems)
   {
-    v20 = v18;
+    v20 = paymentSummaryItems;
   }
 
   v21 = v7->_summaryItems.m_ptr;
@@ -331,9 +331,9 @@ LABEL_10:
   return v7;
 }
 
-- (void)_didAuthorizePayment:(id)a3 completion:(id)a4
+- (void)_didAuthorizePayment:(id)payment completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_release(self->_didAuthorizePaymentCompletion.m_block);
   self->_didAuthorizePaymentCompletion.m_block = v6;
   _Block_release(0);
@@ -345,15 +345,15 @@ LABEL_10:
     if (v9 && (v10 = *(v9 + 8)) != 0)
     {
       (**v10)(v10);
-      if (a3)
+      if (payment)
       {
-        v11 = a3;
+        paymentCopy = payment;
       }
 
       WebCore::Payment::Payment();
       (*(*v10 + 32))(v10, v8, v13);
       WebCore::Payment::~Payment(v13);
-      if (a3)
+      if (payment)
       {
       }
 
@@ -433,9 +433,9 @@ LABEL_10:
   }
 }
 
-- (void)_didRequestMerchantSession:(id)a3
+- (void)_didRequestMerchantSession:(id)session
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(session);
   _Block_release(self->_didRequestMerchantSessionCompletion.m_block);
   self->_didRequestMerchantSessionCompletion.m_block = v4;
   _Block_release(0);
@@ -477,9 +477,9 @@ uint64_t __72__WKPaymentAuthorizationDelegate_Protected___didRequestMerchantSess
   return result;
 }
 
-- (void)_didSelectPaymentMethod:(id)a3 completion:(id)a4
+- (void)_didSelectPaymentMethod:(id)method completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_release(self->_didSelectPaymentMethodCompletion.m_block);
   self->_didSelectPaymentMethodCompletion.m_block = v6;
   _Block_release(0);
@@ -491,15 +491,15 @@ uint64_t __72__WKPaymentAuthorizationDelegate_Protected___didRequestMerchantSess
     if (v9 && (v10 = *(v9 + 8)) != 0)
     {
       (**v10)(v10);
-      if (a3)
+      if (method)
       {
-        v11 = a3;
+        methodCopy = method;
       }
 
       WebCore::PaymentMethod::PaymentMethod();
       (*(*v10 + 48))(v10, v8, v12);
       WebCore::PaymentMethod::~PaymentMethod(v12);
-      if (a3)
+      if (method)
       {
       }
 
@@ -529,9 +529,9 @@ uint64_t __72__WKPaymentAuthorizationDelegate_Protected___didRequestMerchantSess
   }
 }
 
-- (void)_didSelectShippingContact:(id)a3 completion:(id)a4
+- (void)_didSelectShippingContact:(id)contact completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_release(self->_didSelectShippingContactCompletion.m_block);
   self->_didSelectShippingContactCompletion.m_block = v6;
   _Block_release(0);
@@ -543,15 +543,15 @@ uint64_t __72__WKPaymentAuthorizationDelegate_Protected___didRequestMerchantSess
     if (v9 && (v10 = *(v9 + 8)) != 0)
     {
       (**v10)(v10);
-      if (a3)
+      if (contact)
       {
-        v11 = a3;
+        contactCopy = contact;
       }
 
       WebCore::PaymentContact::PaymentContact();
       (*(*v10 + 56))(v10, v8, v12);
       WebCore::PaymentContact::~PaymentContact(v12);
-      if (a3)
+      if (contact)
       {
       }
 
@@ -581,9 +581,9 @@ uint64_t __72__WKPaymentAuthorizationDelegate_Protected___didRequestMerchantSess
   }
 }
 
-- (void)_didSelectShippingMethod:(id)a3 completion:(id)a4
+- (void)_didSelectShippingMethod:(id)method completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_release(self->_didSelectShippingMethodCompletion.m_block);
   self->_didSelectShippingMethodCompletion.m_block = v6;
   _Block_release(0);
@@ -598,38 +598,38 @@ uint64_t __72__WKPaymentAuthorizationDelegate_Protected___didRequestMerchantSess
       v41 = 0;
       v42 = 0;
       LOBYTE(v25) = 0;
-      MEMORY[0x19EB02040](&v43, [objc_msgSend(a3 "amount")]);
+      MEMORY[0x19EB02040](&v43, [objc_msgSend(method "amount")]);
       v24[0] = v43;
-      MEMORY[0x19EB02040](&v43, [a3 detail]);
+      MEMORY[0x19EB02040](&v43, [method detail]);
       v23[1] = v43;
-      MEMORY[0x19EB02040](&v43, [a3 identifier]);
+      MEMORY[0x19EB02040](&v43, [method identifier]);
       v24[1] = v43;
-      MEMORY[0x19EB02040](&v43, [a3 label]);
+      MEMORY[0x19EB02040](&v43, [method label]);
       v23[0] = v43;
-      if ([a3 dateComponentsRange])
+      if ([method dateComponentsRange])
       {
-        v11 = [a3 dateComponentsRange];
-        v12 = [v11 startDateComponents];
-        v13 = [v12 year];
-        v14 = [v12 month];
-        v15 = [v12 day];
-        v16 = [v12 hour];
-        v17 = [v11 endDateComponents];
-        v25 = v13;
+        dateComponentsRange = [method dateComponentsRange];
+        startDateComponents = [dateComponentsRange startDateComponents];
+        year = [startDateComponents year];
+        month = [startDateComponents month];
+        v15 = [startDateComponents day];
+        hour = [startDateComponents hour];
+        endDateComponents = [dateComponentsRange endDateComponents];
+        v25 = year;
         v26 = 1;
-        v27 = v14;
+        v27 = month;
         v28 = 1;
         v29 = v15;
         v30 = 1;
-        v31 = v16;
+        v31 = hour;
         v32 = 1;
-        v33 = [v17 year];
+        year2 = [endDateComponents year];
         v34 = 1;
-        v35 = [v17 month];
+        month2 = [endDateComponents month];
         v36 = 1;
-        v37 = [v17 day];
+        v37 = [endDateComponents day];
         v38 = 1;
-        v39 = [v17 hour];
+        hour2 = [endDateComponents hour];
         v40 = 1;
         v41 = 1;
       }
@@ -690,9 +690,9 @@ uint64_t __72__WKPaymentAuthorizationDelegate_Protected___didRequestMerchantSess
   }
 }
 
-- (void)_didChangeCouponCode:(id)a3 completion:(id)a4
+- (void)_didChangeCouponCode:(id)code completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_release(self->_didChangeCouponCodeCompletion.m_block);
   self->_didChangeCouponCodeCompletion.m_block = v6;
   _Block_release(0);
@@ -704,7 +704,7 @@ uint64_t __72__WKPaymentAuthorizationDelegate_Protected___didRequestMerchantSess
     if (v9 && (v10 = *(v9 + 8)) != 0)
     {
       (**v10)(v10);
-      MEMORY[0x19EB02040](&v13, a3);
+      MEMORY[0x19EB02040](&v13, code);
       (*(*v10 + 72))(v10, v8, &v13);
       v12 = v13;
       v13 = 0;
@@ -739,13 +739,13 @@ uint64_t __72__WKPaymentAuthorizationDelegate_Protected___didRequestMerchantSess
   }
 }
 
-- (void)_willFinishWithError:(id)a3
+- (void)_willFinishWithError:(id)error
 {
-  v5 = [a3 domain];
-  if ([v5 isEqualToString:PAL::get_PassKitCore_PKPassKitErrorDomain(v5)])
+  domain = [error domain];
+  if ([domain isEqualToString:PAL::get_PassKitCore_PKPassKitErrorDomain(domain)])
   {
 
-    WTF::RetainPtr<NSError>::operator=(&self->_sessionError.m_ptr, a3);
+    WTF::RetainPtr<NSError>::operator=(&self->_sessionError.m_ptr, error);
   }
 }
 

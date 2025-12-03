@@ -1,7 +1,7 @@
 @interface MDLVoxelArray
 - (BOOL)voxelExistsAtIndex:(MDLVoxelIndex)index allowAnyX:(BOOL)allowAnyX allowAnyY:(BOOL)allowAnyY allowAnyZ:(BOOL)allowAnyZ allowAnyShell:(BOOL)allowAnyShell;
 - (MDLAxisAlignedBoundingBox)boundingBox;
-- (MDLAxisAlignedBoundingBox)voxelBoundingBoxAtIndex:(SEL)a3;
+- (MDLAxisAlignedBoundingBox)voxelBoundingBoxAtIndex:(SEL)index;
 - (MDLMesh)coarseMeshUsingAllocator:(id)allocator;
 - (MDLMesh)meshUsingAllocator:(id)allocator;
 - (MDLVoxelArray)init;
@@ -11,13 +11,13 @@
 - (NSData)voxelIndices;
 - (NSData)voxelsWithinExtent:(MDLVoxelIndexExtent)extent;
 - (id).cxx_construct;
-- (id)coarseVoxelMeshWithStyle:(unint64_t)a3;
+- (id)coarseVoxelMeshWithStyle:(unint64_t)style;
 - (vector<int,)boxesPerLayer;
 - (vector_float3)spatialLocationOfIndex:(MDLVoxelIndex)index;
 - (void)convertToSignedShellField;
 - (void)differenceWithVoxels:(MDLVoxelArray *)voxels;
-- (void)dilateNarrowBandInteriorWidthTo:(float)a3 AndExteriorWidthTo:(float)a4;
-- (void)erodeNarrowBandInteriorWidthTo:(float)a3 AndExteriorWidthTo:(float)a4 selector:(SEL)a5;
+- (void)dilateNarrowBandInteriorWidthTo:(float)to AndExteriorWidthTo:(float)widthTo;
+- (void)erodeNarrowBandInteriorWidthTo:(float)to AndExteriorWidthTo:(float)widthTo selector:(SEL)selector;
 - (void)intersectWithVoxels:(MDLVoxelArray *)voxels;
 - (void)recalculateExtents;
 - (void)setVoxelAtIndex:(MDLVoxelIndex)index;
@@ -894,9 +894,9 @@
   return result;
 }
 
-- (MDLAxisAlignedBoundingBox)voxelBoundingBoxAtIndex:(SEL)a3
+- (MDLAxisAlignedBoundingBox)voxelBoundingBoxAtIndex:(SEL)index
 {
-  result = objc_msgSend_spatialLocationOfIndex_(self, a3, v4, *index.i64);
+  result = objc_msgSend_spatialLocationOfIndex_(self, index, v4, *index.i64);
   v7 = self->_voxelExtent * 0.5;
   return result;
 }
@@ -924,12 +924,12 @@
   }
 }
 
-- (void)dilateNarrowBandInteriorWidthTo:(float)a3 AndExteriorWidthTo:(float)a4
+- (void)dilateNarrowBandInteriorWidthTo:(float)to AndExteriorWidthTo:(float)widthTo
 {
   ptr = self->_octreeData.__ptr_;
   if (ptr && *ptr && self->_levelSet)
   {
-    sub_239E77B30(ptr, a3, a4);
+    sub_239E77B30(ptr, to, widthTo);
     sub_239E77598(self->_octreeData.__ptr_);
     v8 = 0u;
     v9 = 0u;
@@ -946,30 +946,30 @@
   }
 }
 
-- (void)erodeNarrowBandInteriorWidthTo:(float)a3 AndExteriorWidthTo:(float)a4 selector:(SEL)a5
+- (void)erodeNarrowBandInteriorWidthTo:(float)to AndExteriorWidthTo:(float)widthTo selector:(SEL)selector
 {
-  if (a3 < 0.0)
+  if (to < 0.0)
   {
     v9 = MEMORY[0x277CBEAD8];
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
-    v12 = NSStringFromSelector(a5);
+    v12 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v9, v13, @"ModelIOException", @"[%@ %@]: interiorNBWidth must be greater or equal to 0", v11, v12);
   }
 
-  if (a4 < 0.0)
+  if (widthTo < 0.0)
   {
     v14 = MEMORY[0x277CBEAD8];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = NSStringFromSelector(a5);
+    v17 = NSStringFromSelector(selector);
     objc_msgSend_raise_format_(v14, v18, @"ModelIOException", @"[%@ %@]: exteriorNBWidth must be greater or equal to 0", v16, v17);
   }
 
   ptr = self->_octreeData.__ptr_;
   if (ptr && *ptr && self->_levelSet)
   {
-    sub_239E78130(ptr, a3, a4);
+    sub_239E78130(ptr, to, widthTo);
     v22 = 0u;
     v23 = 0u;
     v24 = 1065353216;
@@ -1761,7 +1761,7 @@ LABEL_85:
     v201 = v25;
     objc_msgSend_voxelIndexExtent(self, v26, v27);
     v199 = v28;
-    v208 = self;
+    selfCopy = self;
     v29 = vsubq_s32(v204, v201);
     v30 = v29.i32[1];
     v207 = v29.i32[2];
@@ -1851,9 +1851,9 @@ LABEL_85:
                       v58 = v57;
                       v39.i32[2] = v52;
                       v59 = vaddq_s32(v39, v205);
-                      p_mortonCoder = &v208->mortonCoder;
+                      p_mortonCoder = &selfCopy->mortonCoder;
                       *&v212 = p_mortonCoder->mortonkeyZ.__begin_[v59.u8[8]] | ((p_mortonCoder->mortonkeyY.__begin_[v59.u8[5]] | p_mortonCoder->mortonkeyZ.__begin_[v59.u8[9]] | p_mortonCoder->mortonkeyX.__begin_[v59.u8[1]]) << 24) | p_mortonCoder->mortonkeyY.__begin_[v59.u8[4]] | p_mortonCoder->mortonkeyX.__begin_[v59.u8[0]];
-                      v60 = sub_239E7C134((&v208->super.super.isa + v44), &v212);
+                      v60 = sub_239E7C134((&selfCopy->super.super.isa + v44), &v212);
                       v57 = 0;
                       if (v60)
                       {
@@ -2212,12 +2212,12 @@ LABEL_85:
   return v5;
 }
 
-- (id)coarseVoxelMeshWithStyle:(unint64_t)a3
+- (id)coarseVoxelMeshWithStyle:(unint64_t)style
 {
   ptr = self->_octreeData.__ptr_;
   v5 = log2f(*(ptr + 2));
 
-  return sub_239E71D1C(ptr, v5, a3 == 2, a3 == 1);
+  return sub_239E71D1C(ptr, v5, style == 2, style == 1);
 }
 
 - (vector<int,)boxesPerLayer

@@ -1,90 +1,90 @@
 @interface _UIColorPickerActionHostToClient
-+ (id)actionForConfiguration:(id)a3;
-+ (id)actionForDismissEyeDropper:(BOOL)a3;
-+ (id)actionForSelectedColor:(id)a3 withColorSpace:(id)a4;
-- (void)performActionForHostedWindowScene:(id)a3;
++ (id)actionForConfiguration:(id)configuration;
++ (id)actionForDismissEyeDropper:(BOOL)dropper;
++ (id)actionForSelectedColor:(id)color withColorSpace:(id)space;
+- (void)performActionForHostedWindowScene:(id)scene;
 @end
 
 @implementation _UIColorPickerActionHostToClient
 
-+ (id)actionForSelectedColor:(id)a3 withColorSpace:(id)a4
++ (id)actionForSelectedColor:(id)color withColorSpace:(id)space
 {
   v6 = MEMORY[0x1E695DEF0];
-  v7 = a4;
-  v8 = [v6 bs_secureDataFromObject:a3];
+  spaceCopy = space;
+  v8 = [v6 bs_secureDataFromObject:color];
   v9 = objc_alloc_init(MEMORY[0x1E698E700]);
   [v9 setObject:&unk_1EFE303D0 forSetting:0];
   [v9 setObject:v8 forSetting:1];
-  [v9 setObject:v7 forSetting:2];
+  [v9 setObject:spaceCopy forSetting:2];
 
-  v10 = [[a1 alloc] initWithInfo:v9 responder:0];
+  v10 = [[self alloc] initWithInfo:v9 responder:0];
 
   return v10;
 }
 
-+ (id)actionForConfiguration:(id)a3
++ (id)actionForConfiguration:(id)configuration
 {
-  v4 = [MEMORY[0x1E695DEF0] bs_secureDataFromObject:a3];
+  v4 = [MEMORY[0x1E695DEF0] bs_secureDataFromObject:configuration];
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
   [v5 setObject:&unk_1EFE303E8 forSetting:0];
   [v5 setObject:v4 forSetting:3];
-  v6 = [[a1 alloc] initWithInfo:v5 responder:0];
+  v6 = [[self alloc] initWithInfo:v5 responder:0];
 
   return v6;
 }
 
-+ (id)actionForDismissEyeDropper:(BOOL)a3
++ (id)actionForDismissEyeDropper:(BOOL)dropper
 {
-  v3 = a3;
+  dropperCopy = dropper;
   v5 = objc_alloc_init(MEMORY[0x1E698E700]);
   [v5 setObject:&unk_1EFE30400 forSetting:0];
-  [v5 setFlag:v3 forSetting:4];
-  v6 = [[a1 alloc] initWithInfo:v5 responder:0];
+  [v5 setFlag:dropperCopy forSetting:4];
+  v6 = [[self alloc] initWithInfo:v5 responder:0];
 
   return v6;
 }
 
-- (void)performActionForHostedWindowScene:(id)a3
+- (void)performActionForHostedWindowScene:(id)scene
 {
-  v22 = [a3 delegate];
-  if (([v22 conformsToProtocol:&unk_1F016C6F0] & 1) == 0)
+  delegate = [scene delegate];
+  if (([delegate conformsToProtocol:&unk_1F016C6F0] & 1) == 0)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"_UIColorPickerActionHostToClient.m" lineNumber:62 description:{@"Scene's delegate (%@) does not conform to _UIHostedWindowSceneDelegate", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIColorPickerActionHostToClient.m" lineNumber:62 description:{@"Scene's delegate (%@) does not conform to _UIHostedWindowSceneDelegate", objc_opt_class()}];
   }
 
-  v5 = [v22 window];
-  v6 = [v5 rootViewController];
+  window = [delegate window];
+  rootViewController = [window rootViewController];
 
-  if (([v6 conformsToProtocol:&unk_1F016C750] & 1) == 0)
+  if (([rootViewController conformsToProtocol:&unk_1F016C750] & 1) == 0)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"_UIColorPickerActionHostToClient.m" lineNumber:65 description:{@"Scene delegate's root view controller (%@) does not conform to _UIColorPickerViewProviding", objc_opt_class()}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIColorPickerActionHostToClient.m" lineNumber:65 description:{@"Scene delegate's root view controller (%@) does not conform to _UIColorPickerViewProviding", objc_opt_class()}];
   }
 
-  v7 = v6;
-  v8 = [(_UIColorPickerActionHostToClient *)self info];
-  v9 = [v8 objectForSetting:0];
-  v10 = [v9 integerValue];
+  v7 = rootViewController;
+  info = [(_UIColorPickerActionHostToClient *)self info];
+  v9 = [info objectForSetting:0];
+  integerValue = [v9 integerValue];
 
-  if (v10)
+  if (integerValue)
   {
-    if (v10 == 2)
+    if (integerValue == 2)
     {
-      v14 = [(_UIColorPickerActionHostToClient *)self info];
-      v15 = [v14 BOOLForSetting:4];
+      info2 = [(_UIColorPickerActionHostToClient *)self info];
+      v15 = [info2 BOOLForSetting:4];
 
       [v7 dismissEyedropper:v15];
       goto LABEL_12;
     }
 
-    if (v10 != 1)
+    if (integerValue != 1)
     {
       goto LABEL_12;
     }
 
-    v11 = [(_UIColorPickerActionHostToClient *)self info];
-    v12 = [v11 objectForSetting:3];
+    info3 = [(_UIColorPickerActionHostToClient *)self info];
+    v12 = [info3 objectForSetting:3];
     v13 = [_UIColorPickerViewControllerConfiguration bs_secureDecodedFromData:v12];
 
     [v7 _setConfiguration:v13];
@@ -92,12 +92,12 @@
 
   else
   {
-    v16 = [(_UIColorPickerActionHostToClient *)self info];
-    v17 = [v16 objectForSetting:1];
+    info4 = [(_UIColorPickerActionHostToClient *)self info];
+    v17 = [info4 objectForSetting:1];
     v13 = [UIColor bs_secureDecodedFromData:v17];
 
-    v18 = [(_UIColorPickerActionHostToClient *)self info];
-    v19 = [v18 objectForSetting:2];
+    info5 = [(_UIColorPickerActionHostToClient *)self info];
+    v19 = [info5 objectForSetting:2];
 
     [v7 _setSelectedColor:v13 colorSpace:v19];
   }

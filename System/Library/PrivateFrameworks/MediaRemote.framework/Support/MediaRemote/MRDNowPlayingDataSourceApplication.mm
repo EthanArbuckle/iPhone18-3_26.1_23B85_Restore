@@ -1,5 +1,5 @@
 @interface MRDNowPlayingDataSourceApplication
-- (MRDNowPlayingDataSourceApplication)initWithPID:(int)a3 audioSessionID:(id)a4 mxSessionIDs:(id)a5 isEligible:(BOOL)a6;
+- (MRDNowPlayingDataSourceApplication)initWithPID:(int)d audioSessionID:(id)iD mxSessionIDs:(id)ds isEligible:(BOOL)eligible;
 - (NSString)nowPlayingApplicationDisplayID;
 - (id)description;
 - (id)dictionaryRepresentation;
@@ -9,8 +9,8 @@
 
 - (id)description
 {
-  v2 = [(MRDNowPlayingDataSourceApplication *)self dictionaryRepresentation];
-  v3 = [v2 description];
+  dictionaryRepresentation = [(MRDNowPlayingDataSourceApplication *)self dictionaryRepresentation];
+  v3 = [dictionaryRepresentation description];
 
   return v3;
 }
@@ -18,18 +18,18 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(MRDNowPlayingDataSourceApplication *)self nowPlayingApplicationDisplayID];
-  [v3 setObject:v4 forKeyedSubscript:@"bundleID"];
+  nowPlayingApplicationDisplayID = [(MRDNowPlayingDataSourceApplication *)self nowPlayingApplicationDisplayID];
+  [v3 setObject:nowPlayingApplicationDisplayID forKeyedSubscript:@"bundleID"];
 
-  v5 = [(MRDNowPlayingDataSourceApplication *)self audioSessionID];
-  [v3 setObject:v5 forKeyedSubscript:@"audioSessionID"];
+  audioSessionID = [(MRDNowPlayingDataSourceApplication *)self audioSessionID];
+  [v3 setObject:audioSessionID forKeyedSubscript:@"audioSessionID"];
 
   v6 = [NSNumber numberWithInt:[(MRDNowPlayingDataSourceApplication *)self pid]];
   [v3 setObject:v6 forKeyedSubscript:@"pid"];
 
-  v7 = [(MRDNowPlayingDataSourceApplication *)self mxSessionIDs];
-  v8 = [v7 allObjects];
-  [v3 setObject:v8 forKeyedSubscript:@"mxSessionIDs"];
+  mxSessionIDs = [(MRDNowPlayingDataSourceApplication *)self mxSessionIDs];
+  allObjects = [mxSessionIDs allObjects];
+  [v3 setObject:allObjects forKeyedSubscript:@"mxSessionIDs"];
 
   return v3;
 }
@@ -42,20 +42,20 @@
   return v3;
 }
 
-- (MRDNowPlayingDataSourceApplication)initWithPID:(int)a3 audioSessionID:(id)a4 mxSessionIDs:(id)a5 isEligible:(BOOL)a6
+- (MRDNowPlayingDataSourceApplication)initWithPID:(int)d audioSessionID:(id)iD mxSessionIDs:(id)ds isEligible:(BOOL)eligible
 {
-  v11 = a4;
-  v12 = a5;
+  iDCopy = iD;
+  dsCopy = ds;
   v16.receiver = self;
   v16.super_class = MRDNowPlayingDataSourceApplication;
   v13 = [(MRDNowPlayingDataSourceApplication *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_pid = a3;
-    objc_storeStrong(&v13->_audioSessionID, a4);
-    objc_storeStrong(&v14->_mxSessionIDs, a5);
-    v14->_isEligible = a6;
+    v13->_pid = d;
+    objc_storeStrong(&v13->_audioSessionID, iD);
+    objc_storeStrong(&v14->_mxSessionIDs, ds);
+    v14->_isEligible = eligible;
   }
 
   return v14;

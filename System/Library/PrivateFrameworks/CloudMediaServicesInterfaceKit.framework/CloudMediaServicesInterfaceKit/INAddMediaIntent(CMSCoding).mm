@@ -26,18 +26,18 @@
 
 - (id)cmsCoded
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &off_2856BA2B0;
   v2 = objc_msgSendSuper2(&v7, sel_cmsCoded);
   [v2 setObject:@"AddMediaIntent" forKey:@"class"];
-  v3 = [a1 mediaItems];
-  [v2 cmsSetOptionalCodedObject:v3 forKey:@"mediaItems"];
+  mediaItems = [self mediaItems];
+  [v2 cmsSetOptionalCodedObject:mediaItems forKey:@"mediaItems"];
 
-  v4 = [a1 mediaSearch];
-  [v2 cmsSetOptionalCodedObject:v4 forKey:@"mediaSearch"];
+  mediaSearch = [self mediaSearch];
+  [v2 cmsSetOptionalCodedObject:mediaSearch forKey:@"mediaSearch"];
 
-  v5 = [a1 mediaDestination];
-  [v2 cmsSetOptionalCodedObject:v5 forKey:@"mediaDestination"];
+  mediaDestination = [self mediaDestination];
+  [v2 cmsSetOptionalCodedObject:mediaDestination forKey:@"mediaDestination"];
 
   return v2;
 }

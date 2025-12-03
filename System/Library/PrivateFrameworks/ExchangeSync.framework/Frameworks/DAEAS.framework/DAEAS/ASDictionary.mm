@@ -4,10 +4,10 @@
 + (BOOL)notifyOfUnknownTokens;
 + (BOOL)parsingLeafNode;
 + (BOOL)parsingWithSubItems;
-- (ASDictionary)initWithSubclassRuleSet:(id)a3;
+- (ASDictionary)initWithSubclassRuleSet:(id)set;
 - (id)commonValue;
 - (id)description;
-- (void)_setItems:(id)a3;
+- (void)_setItems:(id)items;
 - (void)clearPlaceHolder;
 @end
 
@@ -22,7 +22,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_25 = v2;
     acceptsTopLevelLeaves___haveChecked_25 = 1;
   }
@@ -39,7 +39,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_25 = v2;
     parsingLeafNode___haveChecked_25 = 1;
   }
@@ -56,7 +56,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_25 = v2;
     parsingWithSubItems___haveChecked_25 = 1;
   }
@@ -73,7 +73,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_25 = v2;
     frontingBasicTypes___haveChecked_25 = 1;
   }
@@ -90,7 +90,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_25 = v2;
     notifyOfUnknownTokens___haveChecked_25 = 1;
   }
@@ -98,9 +98,9 @@
   return v2 & 1;
 }
 
-- (ASDictionary)initWithSubclassRuleSet:(id)a3
+- (ASDictionary)initWithSubclassRuleSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v10.receiver = self;
   v10.super_class = ASDictionary;
   v6 = [(ASItem *)&v10 init];
@@ -110,7 +110,7 @@
     placeHolder = v6->_placeHolder;
     v6->_placeHolder = v7;
 
-    objc_storeStrong(&v6->_subclassRuleSet, a3);
+    objc_storeStrong(&v6->_subclassRuleSet, set);
   }
 
   return v6;
@@ -126,14 +126,14 @@
   return v6;
 }
 
-- (void)_setItems:(id)a3
+- (void)_setItems:(id)items
 {
-  v5 = a3;
-  if (self->_items != v5)
+  itemsCopy = items;
+  if (self->_items != itemsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_items, a3);
-    v5 = v6;
+    v6 = itemsCopy;
+    objc_storeStrong(&self->_items, items);
+    itemsCopy = v6;
   }
 }
 

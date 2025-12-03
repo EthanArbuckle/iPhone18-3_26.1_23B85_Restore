@@ -1,5 +1,5 @@
 @interface ServicesGridView
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
 @end
 
@@ -7,17 +7,17 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_117ADC();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
-  height = a3.height;
-  width = a3.width;
+  height = fitting.height;
+  width = fitting.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  v9 = sub_117CC4(a4, width, height);
+  selfCopy = self;
+  v9 = sub_117CC4(in, width, height);
   v11 = v10;
   v13 = v12;
   v15 = v14;

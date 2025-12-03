@@ -83,12 +83,12 @@
   v41 = v7;
   v42 = v6;
 
-  v8 = [(NUNIAstronomyRotationModel *)self interactionSettings];
-  v9 = v8;
-  var1 = v8[1].var1;
+  interactionSettings = [(NUNIAstronomyRotationModel *)self interactionSettings];
+  v9 = interactionSettings;
+  var1 = interactionSettings[1].var1;
   if (var1 == 0.0)
   {
-    var0 = v8[1].var0;
+    var0 = interactionSettings[1].var0;
 LABEL_9:
     self->_effectivePushDeceleration = var0;
     goto LABEL_10;
@@ -102,11 +102,11 @@ LABEL_9:
 
   else
   {
-    v13 = v8[1].var1;
+    v13 = interactionSettings[1].var1;
   }
 
   var0 = self->_effectivePushDeceleration;
-  v14 = v8[1].var0;
+  v14 = interactionSettings[1].var0;
   if (var0 > v14 && v13 > 0.001)
   {
     var0 = 1.0 - powf(1.0 - v14, var1 / v13);
@@ -206,9 +206,9 @@ LABEL_20:
 - (void)push:(NUNIAstronomyRotationModel *)self
 {
   v3 = v2;
-  v5 = [(NUNIAstronomyRotationModel *)self interactionSettings];
+  interactionSettings = [(NUNIAstronomyRotationModel *)self interactionSettings];
   v6 = CACurrentMediaTime();
-  self->_effectivePullAcceleration = v5[1].var2 * 0.01;
+  self->_effectivePullAcceleration = interactionSettings[1].var2 * 0.01;
   *self->_accumulatedPushVector = vadd_f32(*self->_accumulatedPushVector, v3);
   self->_effectivePushDeceleration = 1.0;
   self->_pushStartTime = v6;
@@ -236,8 +236,8 @@ LABEL_20:
       self->_displayLink = v15;
 
       v17 = self->_displayLink;
-      v18 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [(CADisplayLink *)v17 addToRunLoop:v18 forMode:*MEMORY[0x277CBE738]];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [(CADisplayLink *)v17 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
       self->_previousDisplayLinkCallbackTime = v6;
       self->_state = 1;

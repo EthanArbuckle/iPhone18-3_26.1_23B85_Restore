@@ -16,18 +16,18 @@
   [v6 setAllowsFloats:1];
   [v6 setUsesGroupingSeparator:0];
   [v6 setRoundingMode:3];
-  v7 = fabs(a1);
+  v7 = fabs(self);
   if (v7 >= 1.0)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a1];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:self];
     v10 = @" s";
   }
 
   else if (v7 >= 0.001)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [MEMORY[0x277CCABB0] numberWithDouble:a1 * 1000.0];
+    v9 = [MEMORY[0x277CCABB0] numberWithDouble:self * 1000.0];
     v10 = @" ms";
   }
 
@@ -36,13 +36,13 @@
     v8 = MEMORY[0x277CCACA8];
     if (v7 >= 0.000001)
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithDouble:a1 * 1000000.0];
+      v9 = [MEMORY[0x277CCABB0] numberWithDouble:self * 1000000.0];
       v10 = @" μs";
     }
 
     else
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithDouble:a1 * 1000000000.0];
+      v9 = [MEMORY[0x277CCABB0] numberWithDouble:self * 1000000000.0];
       v10 = @" ns";
     }
   }
@@ -61,12 +61,12 @@
 
 - (id)dy_removeWhiteSpaceCharacters
 {
-  v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v3 = [a1 mutableCopy];
-  v4 = [v3 rangeOfCharacterFromSet:v2];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v3 = [self mutableCopy];
+  v4 = [v3 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v4; i != 0x7FFFFFFFFFFFFFFFLL; i = [v3 rangeOfCharacterFromSet:v2])
+    for (i = v4; i != 0x7FFFFFFFFFFFFFFFLL; i = [v3 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet])
     {
       [v3 deleteCharactersInRange:{i, v5}];
     }
@@ -77,7 +77,7 @@
 
 - (uint64_t)dy_scanBuildPrefix:()DYNSStringAdditions number:
 {
-  v7 = [MEMORY[0x277CCAC80] scannerWithString:a1];
+  v7 = [MEMORY[0x277CCAC80] scannerWithString:self];
   if (![v7 scanInteger:0] || !objc_msgSend(v7, "scanCharactersFromSet:intoString:", objc_msgSend(MEMORY[0x277CCA900], "characterSetWithCharactersInString:", @"ABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0))
   {
     return 0;
@@ -85,7 +85,7 @@
 
   if (a3)
   {
-    *a3 = [a1 substringToIndex:{objc_msgSend(v7, "scanLocation")}];
+    *a3 = [self substringToIndex:{objc_msgSend(v7, "scanLocation")}];
   }
 
   return [v7 scanInteger:a4];
@@ -94,9 +94,9 @@
 - (uint64_t)dy_appendComponents:()DYNSStringAdditions usingSeparator:unique:
 {
   v27 = *MEMORY[0x277D85DE8];
-  if ([a1 length])
+  if ([self length])
   {
-    v9 = [a1 componentsSeparatedByString:a4];
+    v9 = [self componentsSeparatedByString:a4];
     if (a5)
     {
       goto LABEL_3;
@@ -177,24 +177,24 @@ LABEL_19:
 {
   if (![a3 length])
   {
-    return a1;
+    return self;
   }
 
   v9 = [a3 componentsSeparatedByString:a4];
 
-  return [a1 dy_appendComponents:v9 usingSeparator:a4 unique:a5];
+  return [self dy_appendComponents:v9 usingSeparator:a4 unique:a5];
 }
 
 - (uint64_t)simplifiedTestFileName:()DYNSStringAdditions
 {
-  if (![a1 length])
+  if (![self length])
   {
     *a3 = 0;
     return 0;
   }
 
-  v5 = malloc_type_malloc([a1 length] + 1, 0xFFBD8F91uLL);
-  v6 = [a1 cStringUsingEncoding:1];
+  v5 = malloc_type_malloc([self length] + 1, 0xFFBD8F91uLL);
+  v6 = [self cStringUsingEncoding:1];
   v7 = v5;
   while (1)
   {

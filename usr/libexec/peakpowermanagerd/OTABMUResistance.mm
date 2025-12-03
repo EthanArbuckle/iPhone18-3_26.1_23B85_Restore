@@ -1,27 +1,27 @@
 @interface OTABMUResistance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDownstreamNorthResistance:(BOOL)a3;
-- (void)setHasResistanceCellTabToGG:(BOOL)a3;
-- (void)setHasResistanceGGToVcut:(BOOL)a3;
-- (void)setHasResistancePMUToVcut:(BOOL)a3;
-- (void)setHasResistanceVcutToPmax:(BOOL)a3;
-- (void)setHasSystemEquivalentResistance:(BOOL)a3;
-- (void)setHasTraceResistance25C:(BOOL)a3;
-- (void)setHasTraceResistanceTemperatureCoeff:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDownstreamNorthResistance:(BOOL)resistance;
+- (void)setHasResistanceCellTabToGG:(BOOL)g;
+- (void)setHasResistanceGGToVcut:(BOOL)vcut;
+- (void)setHasResistancePMUToVcut:(BOOL)vcut;
+- (void)setHasResistanceVcutToPmax:(BOOL)pmax;
+- (void)setHasSystemEquivalentResistance:(BOOL)resistance;
+- (void)setHasTraceResistance25C:(BOOL)c;
+- (void)setHasTraceResistanceTemperatureCoeff:(BOOL)coeff;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTABMUResistance
 
-- (void)setHasTraceResistance25C:(BOOL)a3
+- (void)setHasTraceResistance25C:(BOOL)c
 {
-  if (a3)
+  if (c)
   {
     v3 = 128;
   }
@@ -34,9 +34,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasTraceResistanceTemperatureCoeff:(BOOL)a3
+- (void)setHasTraceResistanceTemperatureCoeff:(BOOL)coeff
 {
-  if (a3)
+  if (coeff)
   {
     v3 = 256;
   }
@@ -49,9 +49,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasSystemEquivalentResistance:(BOOL)a3
+- (void)setHasSystemEquivalentResistance:(BOOL)resistance
 {
-  if (a3)
+  if (resistance)
   {
     v3 = 64;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasDownstreamNorthResistance:(BOOL)a3
+- (void)setHasDownstreamNorthResistance:(BOOL)resistance
 {
-  if (a3)
+  if (resistance)
   {
     v3 = 2;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasResistanceGGToVcut:(BOOL)a3
+- (void)setHasResistanceGGToVcut:(BOOL)vcut
 {
-  if (a3)
+  if (vcut)
   {
     v3 = 8;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasResistancePMUToVcut:(BOOL)a3
+- (void)setHasResistancePMUToVcut:(BOOL)vcut
 {
-  if (a3)
+  if (vcut)
   {
     v3 = 16;
   }
@@ -109,9 +109,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasResistanceVcutToPmax:(BOOL)a3
+- (void)setHasResistanceVcutToPmax:(BOOL)pmax
 {
-  if (a3)
+  if (pmax)
   {
     v3 = 32;
   }
@@ -124,9 +124,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasResistanceCellTabToGG:(BOOL)a3
+- (void)setHasResistanceCellTabToGG:(BOOL)g
 {
-  if (a3)
+  if (g)
   {
     v3 = 4;
   }
@@ -144,8 +144,8 @@
   v7.receiver = self;
   v7.super_class = OTABMUResistance;
   v3 = [(OTABMUResistance *)&v7 description];
-  v4 = [(OTABMUResistance *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(OTABMUResistance *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -297,9 +297,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x80) != 0)
   {
@@ -425,14 +425,14 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x80) != 0)
   {
-    v4[9] = LODWORD(self->_traceResistance25C);
-    *(v4 + 22) |= 0x80u;
+    toCopy[9] = LODWORD(self->_traceResistance25C);
+    *(toCopy + 22) |= 0x80u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -451,8 +451,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[10] = LODWORD(self->_traceResistanceTemperatureCoeff);
-  *(v4 + 22) |= 0x100u;
+  toCopy[10] = LODWORD(self->_traceResistanceTemperatureCoeff);
+  *(toCopy + 22) |= 0x100u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -466,8 +466,8 @@ LABEL_4:
   }
 
 LABEL_16:
-  v4[8] = LODWORD(self->_systemEquivalentResistance);
-  *(v4 + 22) |= 0x40u;
+  toCopy[8] = LODWORD(self->_systemEquivalentResistance);
+  *(toCopy + 22) |= 0x40u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -481,8 +481,8 @@ LABEL_5:
   }
 
 LABEL_17:
-  v4[2] = LODWORD(self->_downstreamCommonResistance);
-  *(v4 + 22) |= 1u;
+  toCopy[2] = LODWORD(self->_downstreamCommonResistance);
+  *(toCopy + 22) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -496,8 +496,8 @@ LABEL_6:
   }
 
 LABEL_18:
-  v4[3] = LODWORD(self->_downstreamNorthResistance);
-  *(v4 + 22) |= 2u;
+  toCopy[3] = LODWORD(self->_downstreamNorthResistance);
+  *(toCopy + 22) |= 2u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -511,8 +511,8 @@ LABEL_7:
   }
 
 LABEL_19:
-  v4[5] = LODWORD(self->_resistanceGGToVcut);
-  *(v4 + 22) |= 8u;
+  toCopy[5] = LODWORD(self->_resistanceGGToVcut);
+  *(toCopy + 22) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -526,8 +526,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  v4[6] = LODWORD(self->_resistancePMUToVcut);
-  *(v4 + 22) |= 0x10u;
+  toCopy[6] = LODWORD(self->_resistancePMUToVcut);
+  *(toCopy + 22) |= 0x10u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -541,21 +541,21 @@ LABEL_9:
   }
 
 LABEL_21:
-  v4[7] = LODWORD(self->_resistanceVcutToPmax);
-  *(v4 + 22) |= 0x20u;
+  toCopy[7] = LODWORD(self->_resistanceVcutToPmax);
+  *(toCopy + 22) |= 0x20u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_10:
-    v4[4] = LODWORD(self->_resistanceCellTabToGG);
-    *(v4 + 22) |= 4u;
+    toCopy[4] = LODWORD(self->_resistanceCellTabToGG);
+    *(toCopy + 22) |= 4u;
   }
 
 LABEL_11:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x80) != 0)
   {
@@ -682,19 +682,19 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_46;
   }
 
   has = self->_has;
-  v6 = *(v4 + 22);
+  v6 = *(equalCopy + 22);
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_traceResistance25C != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_traceResistance25C != *(equalCopy + 9))
     {
       goto LABEL_46;
     }
@@ -709,20 +709,20 @@ LABEL_46:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 22) & 0x100) == 0 || self->_traceResistanceTemperatureCoeff != *(v4 + 10))
+    if ((*(equalCopy + 22) & 0x100) == 0 || self->_traceResistanceTemperatureCoeff != *(equalCopy + 10))
     {
       goto LABEL_46;
     }
   }
 
-  else if ((*(v4 + 22) & 0x100) != 0)
+  else if ((*(equalCopy + 22) & 0x100) != 0)
   {
     goto LABEL_46;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_systemEquivalentResistance != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_systemEquivalentResistance != *(equalCopy + 8))
     {
       goto LABEL_46;
     }
@@ -735,7 +735,7 @@ LABEL_46:
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_downstreamCommonResistance != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_downstreamCommonResistance != *(equalCopy + 2))
     {
       goto LABEL_46;
     }
@@ -748,7 +748,7 @@ LABEL_46:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_downstreamNorthResistance != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_downstreamNorthResistance != *(equalCopy + 3))
     {
       goto LABEL_46;
     }
@@ -761,7 +761,7 @@ LABEL_46:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_resistanceGGToVcut != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_resistanceGGToVcut != *(equalCopy + 5))
     {
       goto LABEL_46;
     }
@@ -774,7 +774,7 @@ LABEL_46:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_resistancePMUToVcut != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_resistancePMUToVcut != *(equalCopy + 6))
     {
       goto LABEL_46;
     }
@@ -787,7 +787,7 @@ LABEL_46:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_resistanceVcutToPmax != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_resistanceVcutToPmax != *(equalCopy + 7))
     {
       goto LABEL_46;
     }
@@ -801,7 +801,7 @@ LABEL_46:
   v7 = (v6 & 4) == 0;
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_resistanceCellTabToGG != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_resistanceCellTabToGG != *(equalCopy + 4))
     {
       goto LABEL_46;
     }
@@ -1125,15 +1125,15 @@ LABEL_47:
   return v9 ^ v5 ^ v13 ^ v17 ^ v21 ^ v25 ^ v29 ^ v33 ^ v37;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 22);
+  fromCopy = from;
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x80) != 0)
   {
-    self->_traceResistance25C = *(v4 + 9);
+    self->_traceResistance25C = *(fromCopy + 9);
     *&self->_has |= 0x80u;
-    v5 = *(v4 + 22);
+    v5 = *(fromCopy + 22);
     if ((v5 & 0x100) == 0)
     {
 LABEL_3:
@@ -1146,14 +1146,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 22) & 0x100) == 0)
+  else if ((*(fromCopy + 22) & 0x100) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_traceResistanceTemperatureCoeff = *(v4 + 10);
+  self->_traceResistanceTemperatureCoeff = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x40) == 0)
   {
 LABEL_4:
@@ -1166,9 +1166,9 @@ LABEL_4:
   }
 
 LABEL_16:
-  self->_systemEquivalentResistance = *(v4 + 8);
+  self->_systemEquivalentResistance = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -1181,9 +1181,9 @@ LABEL_5:
   }
 
 LABEL_17:
-  self->_downstreamCommonResistance = *(v4 + 2);
+  self->_downstreamCommonResistance = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 2) == 0)
   {
 LABEL_6:
@@ -1196,9 +1196,9 @@ LABEL_6:
   }
 
 LABEL_18:
-  self->_downstreamNorthResistance = *(v4 + 3);
+  self->_downstreamNorthResistance = *(fromCopy + 3);
   *&self->_has |= 2u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 8) == 0)
   {
 LABEL_7:
@@ -1211,9 +1211,9 @@ LABEL_7:
   }
 
 LABEL_19:
-  self->_resistanceGGToVcut = *(v4 + 5);
+  self->_resistanceGGToVcut = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x10) == 0)
   {
 LABEL_8:
@@ -1226,9 +1226,9 @@ LABEL_8:
   }
 
 LABEL_20:
-  self->_resistancePMUToVcut = *(v4 + 6);
+  self->_resistancePMUToVcut = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 22);
+  v5 = *(fromCopy + 22);
   if ((v5 & 0x20) == 0)
   {
 LABEL_9:
@@ -1241,12 +1241,12 @@ LABEL_9:
   }
 
 LABEL_21:
-  self->_resistanceVcutToPmax = *(v4 + 7);
+  self->_resistanceVcutToPmax = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 22) & 4) != 0)
+  if ((*(fromCopy + 22) & 4) != 0)
   {
 LABEL_10:
-    self->_resistanceCellTabToGG = *(v4 + 4);
+    self->_resistanceCellTabToGG = *(fromCopy + 4);
     *&self->_has |= 4u;
   }
 

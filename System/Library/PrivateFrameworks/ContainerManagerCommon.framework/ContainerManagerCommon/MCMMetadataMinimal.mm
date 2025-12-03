@@ -1,11 +1,11 @@
 @interface MCMMetadataMinimal
-- (BOOL)_initFromMetadataInDictionary:(id)a3 containerPath:(id)a4 userIdentity:(id)a5 containerClass:(unint64_t)a6 fsNode:(id)a7 fileURL:(id)a8 userIdentityCache:(id)a9 error:(id *)a10;
+- (BOOL)_initFromMetadataInDictionary:(id)dictionary containerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class fsNode:(id)node fileURL:(id)l userIdentityCache:(id)cache error:(id *)self0;
 - (BOOL)_persisted;
 - (BOOL)existed;
 - (BOOL)transient;
 - (MCMConcreteContainerIdentityForLibsystem)containerIdentity;
 - (MCMContainerPath)containerPath;
-- (MCMMetadataMinimal)initWithContainerIdentity:(id)a3 containerPath:(id)a4 schemaVersion:(id)a5 userIdentityCache:(id)a6;
+- (MCMMetadataMinimal)initWithContainerIdentity:(id)identity containerPath:(id)path schemaVersion:(id)version userIdentityCache:(id)cache;
 - (MCMUserIdentity)userIdentity;
 - (MCMUserIdentityCache)userIdentityCache;
 - (NSNumber)schemaVersion;
@@ -14,14 +14,14 @@
 - (NSString)identifier;
 - (NSString)shortDescription;
 - (NSUUID)uuid;
-- (container_object_s)createLibsystemContainerWithError:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initByReadingAndValidatingMetadataAtContainerPath:(id)a3 userIdentity:(id)a4 containerClass:(unint64_t)a5 userIdentityCache:(id)a6 error:(id *)a7;
-- (id)initByReadingAndValidatingMetadataAtFileURL:(id)a3 containerPath:(id)a4 userIdentity:(id)a5 containerClass:(unint64_t)a6 userIdentityCache:(id)a7 error:(id *)a8;
-- (id)metadataByChangingContainerIdentity:(id)a3;
-- (id)metadataByChangingContainerPath:(id)a3;
-- (id)metadataByChangingSchemaVersion:(id)a3;
-- (id)metadataByChangingUUID:(id)a3;
+- (container_object_s)createLibsystemContainerWithError:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initByReadingAndValidatingMetadataAtContainerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class userIdentityCache:(id)cache error:(id *)error;
+- (id)initByReadingAndValidatingMetadataAtFileURL:(id)l containerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class userIdentityCache:(id)cache error:(id *)error;
+- (id)metadataByChangingContainerIdentity:(id)identity;
+- (id)metadataByChangingContainerPath:(id)path;
+- (id)metadataByChangingSchemaVersion:(id)version;
+- (id)metadataByChangingUUID:(id)d;
 - (unint64_t)containerClass;
 - (unsigned)platform;
 @end
@@ -112,20 +112,20 @@
   return 0;
 }
 
-- (BOOL)_initFromMetadataInDictionary:(id)a3 containerPath:(id)a4 userIdentity:(id)a5 containerClass:(unint64_t)a6 fsNode:(id)a7 fileURL:(id)a8 userIdentityCache:(id)a9 error:(id *)a10
+- (BOOL)_initFromMetadataInDictionary:(id)dictionary containerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class fsNode:(id)node fileURL:(id)l userIdentityCache:(id)cache error:(id *)self0
 {
   v134 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v122 = a4;
-  v121 = a5;
-  v16 = a8;
-  v123 = a9;
-  v17 = [v15 objectForKeyedSubscript:@"MCMMetadataIdentifier"];
-  v18 = [v15 objectForKeyedSubscript:@"MCMMetadataVersion"];
-  objc_storeStrong(&self->_userIdentityCache, a9);
-  objc_storeStrong(&self->_containerPath, a4);
+  dictionaryCopy = dictionary;
+  pathCopy = path;
+  identityCopy = identity;
+  lCopy = l;
+  cacheCopy = cache;
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataIdentifier"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataVersion"];
+  objc_storeStrong(&self->_userIdentityCache, cache);
+  objc_storeStrong(&self->_containerPath, path);
   v124 = v17;
-  v125 = v16;
+  v125 = lCopy;
   if (v18)
   {
     objc_opt_class();
@@ -139,8 +139,8 @@
       if ([v18 integerValue] > 5)
       {
         v22 = [MCMError alloc];
-        v23 = [v16 path];
-        v24 = [(MCMError *)v22 initWithErrorType:29 category:5 path:v23 POSIXerrno:0];
+        path = [lCopy path];
+        v24 = [(MCMError *)v22 initWithErrorType:29 category:5 path:path POSIXerrno:0];
 
         v25 = container_log_handle_for_category();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -148,7 +148,7 @@
           v76 = objc_opt_class();
           v77 = NSStringFromClass(v76);
           *buf = 138412546;
-          v129 = v77;
+          classCopy = v77;
           v130 = 2112;
           *v131 = v18;
           _os_log_error_impl(&dword_1DF2C3000, v25, OS_LOG_TYPE_ERROR, "Invalid metadata version: (%@) %@", buf, 0x16u);
@@ -166,8 +166,8 @@
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v26 = [MCMError alloc];
-        v27 = [v16 path];
-        v24 = [(MCMError *)v26 initWithErrorType:29 category:5 path:v27 POSIXerrno:0];
+        path2 = [lCopy path];
+        v24 = [(MCMError *)v26 initWithErrorType:29 category:5 path:path2 POSIXerrno:0];
 
         v21 = container_log_handle_for_category();
         if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -178,7 +178,7 @@
         v28 = objc_opt_class();
         v25 = NSStringFromClass(v28);
         *buf = 138412546;
-        v129 = v25;
+        classCopy = v25;
         v130 = 2112;
         *v131 = v18;
         v29 = "Invalid metadata version: (%@) %@";
@@ -209,21 +209,21 @@
   if (!v33)
   {
     v37 = [MCMError alloc];
-    v38 = [v16 path];
-    v24 = [(MCMError *)v37 initWithErrorType:29 category:5 path:v38 POSIXerrno:0];
+    path3 = [lCopy path];
+    v24 = [(MCMError *)v37 initWithErrorType:29 category:5 path:path3 POSIXerrno:0];
 
     v21 = container_log_handle_for_category();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v129 = v32;
+      classCopy = v32;
       _os_log_error_impl(&dword_1DF2C3000, v21, OS_LOG_TYPE_ERROR, "Invalid metadata Identifier: %@", buf, 0xCu);
     }
 
     goto LABEL_25;
   }
 
-  v34 = [v15 objectForKeyedSubscript:@"MCMMetadataUUID"];
+  v34 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataUUID"];
   objc_opt_class();
   v35 = v34;
   if (objc_opt_isKindOfClass())
@@ -239,8 +239,8 @@
   if (!v36)
   {
     v44 = [MCMError alloc];
-    v45 = [v16 path];
-    v24 = [(MCMError *)v44 initWithErrorType:29 category:5 path:v45 POSIXerrno:0];
+    path4 = [lCopy path];
+    v24 = [(MCMError *)v44 initWithErrorType:29 category:5 path:path4 POSIXerrno:0];
 
     v21 = container_log_handle_for_category();
     if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -248,9 +248,9 @@
       goto LABEL_25;
     }
 
-    v25 = [v15 objectForKeyedSubscript:@"MCMMetadataUUID"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataUUID"];
     *buf = 138412290;
-    v129 = v25;
+    classCopy = v25;
     v29 = "Invalid metadata UUID String: %@";
     v30 = v21;
     v31 = 12;
@@ -261,17 +261,17 @@ LABEL_6:
 LABEL_25:
     v120 = 0;
     v46 = 0;
-    v47 = 0;
+    globalBundleUserIdentity = 0;
     v42 = 0;
 LABEL_53:
-    v64 = v122;
+    v64 = pathCopy;
 LABEL_54:
 
-    if (a10)
+    if (error)
     {
       v69 = v24;
       v70 = 0;
-      *a10 = v24;
+      *error = v24;
     }
 
     else
@@ -285,7 +285,7 @@ LABEL_54:
   }
 
   v39 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v40 = [v15 objectForKeyedSubscript:@"MCMMetadataUUID"];
+  v40 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataUUID"];
   v41 = [v39 initWithUUIDString:v40];
 
   objc_opt_class();
@@ -303,21 +303,21 @@ LABEL_54:
   if (!v43)
   {
     v51 = [MCMError alloc];
-    v52 = [v16 path];
-    v24 = [(MCMError *)v51 initWithErrorType:29 category:5 path:v52 POSIXerrno:0];
+    path5 = [lCopy path];
+    v24 = [(MCMError *)v51 initWithErrorType:29 category:5 path:path5 POSIXerrno:0];
 
     v21 = container_log_handle_for_category();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v129 = v42;
+      classCopy = v42;
       _os_log_error_impl(&dword_1DF2C3000, v21, OS_LOG_TYPE_ERROR, "Invalid metadata UUID: %@", buf, 0xCu);
     }
 
     goto LABEL_49;
   }
 
-  v48 = [v15 objectForKeyedSubscript:@"MCMMetadataContentClass"];
+  v48 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataContentClass"];
   objc_opt_class();
   v49 = v48;
   if (objc_opt_isKindOfClass())
@@ -333,15 +333,15 @@ LABEL_54:
   if (!v50)
   {
     v65 = [MCMError alloc];
-    v66 = [v16 path];
-    v24 = [(MCMError *)v65 initWithErrorType:29 category:5 path:v66 POSIXerrno:0];
+    path6 = [lCopy path];
+    v24 = [(MCMError *)v65 initWithErrorType:29 category:5 path:path6 POSIXerrno:0];
 
     v21 = container_log_handle_for_category();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v101 = [v15 objectForKeyedSubscript:@"MCMMetadataContentClass"];
+      v101 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataContentClass"];
       *buf = 138412290;
-      v129 = v101;
+      classCopy = v101;
       _os_log_error_impl(&dword_1DF2C3000, v21, OS_LOG_TYPE_ERROR, "Invalid metadata Class: %@", buf, 0xCu);
     }
 
@@ -349,57 +349,57 @@ LABEL_49:
     v120 = 0;
 LABEL_52:
     v46 = 0;
-    v47 = 0;
+    globalBundleUserIdentity = 0;
     goto LABEL_53;
   }
 
   v120 = v50;
-  v53 = [v50 unsignedLongLongValue];
-  if ((v53 - 1) >= 0xE)
+  unsignedLongLongValue = [v50 unsignedLongLongValue];
+  if ((unsignedLongLongValue - 1) >= 0xE)
   {
     v67 = [MCMError alloc];
-    v68 = [v16 path];
-    v24 = [(MCMError *)v67 initWithErrorType:29 category:5 path:v68 POSIXerrno:0];
+    path7 = [lCopy path];
+    v24 = [(MCMError *)v67 initWithErrorType:29 category:5 path:path7 POSIXerrno:0];
 
     v21 = container_log_handle_for_category();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v129 = a6;
+      classCopy = class;
       _os_log_error_impl(&dword_1DF2C3000, v21, OS_LOG_TYPE_ERROR, "Invalid metadata Content Class: %ld", buf, 0xCu);
     }
 
     goto LABEL_52;
   }
 
-  v54 = v53;
-  if (container_class_normalized() != a6)
+  v54 = unsignedLongLongValue;
+  if (container_class_normalized() != class)
   {
     v55 = container_log_handle_for_category();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v129 = v32;
+      classCopy = v32;
       v130 = 2050;
       *v131 = v54;
       *&v131[8] = 2050;
-      *&v131[10] = a6;
+      *&v131[10] = class;
       _os_log_error_impl(&dword_1DF2C3000, v55, OS_LOG_TYPE_ERROR, "Container [%@] declares its class to be [%{public}llu] while scanning for class [%{public}llu]", buf, 0x20u);
     }
   }
 
   v56 = containermanager_copy_global_configuration();
-  v57 = [v56 staticConfig];
-  v46 = [v57 configForContainerClass:a6];
+  staticConfig = [v56 staticConfig];
+  v46 = [staticConfig configForContainerClass:class];
 
   if ([v46 personaAndUserSpecific])
   {
-    v21 = [v15 objectForKeyedSubscript:@"MCMMetadataPersona"];
-    v58 = [v121 posixUser];
-    v59 = [MCMContainerClassPath posixOwnerForContainerClass:a6 user:v58];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataPersona"];
+    posixUser = [identityCopy posixUser];
+    v59 = [MCMContainerClassPath posixOwnerForContainerClass:class user:posixUser];
 
     v119 = v59;
-    if (a6 <= 0xB && ((1 << a6) & 0xED4) != 0)
+    if (class <= 0xB && ((1 << class) & 0xED4) != 0)
     {
       if (v21)
       {
@@ -407,15 +407,15 @@ LABEL_52:
         if (v60 != [v21 unsignedIntValue])
         {
           v61 = [MCMError alloc];
-          v62 = [v125 path];
-          v24 = [(MCMError *)v61 initWithErrorType:29 category:5 path:v62 POSIXerrno:0];
+          path8 = [v125 path];
+          v24 = [(MCMError *)v61 initWithErrorType:29 category:5 path:path8 POSIXerrno:0];
 
           v63 = container_log_handle_for_category();
           if (os_log_type_enabled(v63, OS_LOG_TYPE_ERROR))
           {
             v107 = [v119 UID];
             *buf = 138412802;
-            v129 = v21;
+            classCopy = v21;
             v130 = 1024;
             *v131 = v107;
             *&v131[4] = 2112;
@@ -423,8 +423,8 @@ LABEL_52:
             _os_log_error_impl(&dword_1DF2C3000, v63, OS_LOG_TYPE_ERROR, "Incorrect UserId: %@, expecting: %u for %@", buf, 0x1Cu);
           }
 
-          v47 = 0;
-          v64 = v122;
+          globalBundleUserIdentity = 0;
+          v64 = pathCopy;
           goto LABEL_103;
         }
       }
@@ -435,45 +435,45 @@ LABEL_52:
       }
     }
 
-    v78 = [v15 objectForKeyedSubscript:@"MCMMetadataUserIdentity"];
+    v78 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataUserIdentity"];
 
     if (!v78)
     {
-      v84 = [v21 unsignedIntValue];
-      if (v84 == 499)
+      unsignedIntValue = [v21 unsignedIntValue];
+      if (unsignedIntValue == 499)
       {
         v85 = 0;
       }
 
       else
       {
-        v85 = v84;
+        v85 = unsignedIntValue;
       }
 
       v86 = [MCMPOSIXUser posixUserWithUID:v85];
-      v47 = [v123 userIdentityForPersonalPersonaWithPOSIXUser:v86];
+      globalBundleUserIdentity = [cacheCopy userIdentityForPersonalPersonaWithPOSIXUser:v86];
 
       goto LABEL_78;
     }
 
     v127 = 1;
-    v79 = [v15 objectForKeyedSubscript:@"MCMMetadataUserIdentity"];
-    v47 = [MCMUserIdentity userIdentityWithPlist:v79 cache:v123 error:&v127];
+    v79 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataUserIdentity"];
+    globalBundleUserIdentity = [MCMUserIdentity userIdentityWithPlist:v79 cache:cacheCopy error:&v127];
 
     v80 = v125;
-    if (v47)
+    if (globalBundleUserIdentity)
     {
 LABEL_68:
-      if (([v47 isEqual:v121] & 1) == 0)
+      if (([globalBundleUserIdentity isEqual:identityCopy] & 1) == 0)
       {
         v117 = containermanager_copy_global_configuration();
         if ([v117 runmode] == 2)
         {
           v113 = containermanager_copy_global_configuration();
-          v115 = [v113 currentUser];
+          currentUser = [v113 currentUser];
           v110 = containermanager_copy_global_configuration();
-          v81 = [v110 defaultUser];
-          v111 = [v115 isEqual:v81];
+          defaultUser = [v110 defaultUser];
+          v111 = [currentUser isEqual:defaultUser];
 
           v80 = v125;
           if (v111)
@@ -482,14 +482,14 @@ LABEL_68:
             if (os_log_type_enabled(v82, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              v129 = v32;
+              classCopy = v32;
               v130 = 2048;
-              *v131 = a6;
+              *v131 = class;
               _os_log_impl(&dword_1DF2C3000, v82, OS_LOG_TYPE_DEFAULT, "User identity reconstructed from metadata for [%@(%llu)] doesn't match expected, assuming the current user identity.", buf, 0x16u);
             }
 
-            v83 = v121;
-            v47 = v83;
+            v83 = identityCopy;
+            globalBundleUserIdentity = v83;
             goto LABEL_78;
           }
         }
@@ -499,17 +499,17 @@ LABEL_68:
         }
 
         v105 = [MCMError alloc];
-        v106 = [v80 path];
-        v24 = [(MCMError *)v105 initWithErrorType:29 category:5 path:v106 POSIXerrno:0];
+        path9 = [v80 path];
+        v24 = [(MCMError *)v105 initWithErrorType:29 category:5 path:path9 POSIXerrno:0];
 
         v104 = container_log_handle_for_category();
-        v64 = v122;
+        v64 = pathCopy;
         if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
         {
           *buf = 138413058;
-          v129 = v47;
+          classCopy = globalBundleUserIdentity;
           v130 = 2112;
-          *v131 = v121;
+          *v131 = identityCopy;
           *&v131[8] = 2112;
           *&v131[10] = v32;
           v132 = 2048;
@@ -524,7 +524,7 @@ LABEL_103:
       }
 
 LABEL_78:
-      v75 = v122;
+      v75 = pathCopy;
 
       goto LABEL_81;
     }
@@ -536,8 +536,8 @@ LABEL_78:
       [v118 currentUser];
       v98 = v116 = v97;
       v112 = containermanager_copy_global_configuration();
-      v99 = [v112 defaultUser];
-      v114 = [v98 isEqual:v99];
+      defaultUser2 = [v112 defaultUser];
+      v114 = [v98 isEqual:defaultUser2];
 
       v80 = v125;
       if (v114)
@@ -546,13 +546,13 @@ LABEL_78:
         if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v129 = v32;
+          classCopy = v32;
           v130 = 2048;
-          *v131 = a6;
+          *v131 = class;
           _os_log_impl(&dword_1DF2C3000, v100, OS_LOG_TYPE_DEFAULT, "Could not reconstruct user identity from metadata for [%@(%llu)], assuming the current user identity.", buf, 0x16u);
         }
 
-        v47 = v121;
+        globalBundleUserIdentity = identityCopy;
         goto LABEL_68;
       }
     }
@@ -562,15 +562,15 @@ LABEL_78:
     }
 
     v102 = [MCMError alloc];
-    v103 = [v80 path];
-    v24 = [(MCMError *)v102 initWithErrorType:29 category:5 path:v103 POSIXerrno:0];
+    path10 = [v80 path];
+    v24 = [(MCMError *)v102 initWithErrorType:29 category:5 path:path10 POSIXerrno:0];
 
     v104 = container_log_handle_for_category();
     if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
     {
-      v108 = [v15 objectForKeyedSubscript:@"MCMMetadataUserIdentity"];
+      v108 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataUserIdentity"];
       *buf = 138412802;
-      v129 = v108;
+      classCopy = v108;
       v130 = 2112;
       *v131 = v32;
       *&v131[8] = 2048;
@@ -578,64 +578,64 @@ LABEL_78:
       _os_log_error_impl(&dword_1DF2C3000, v104, OS_LOG_TYPE_ERROR, "Invalid metadata User Identity: %@ for %@: %llu", buf, 0x20u);
     }
 
-    v47 = 0;
-    v64 = v122;
+    globalBundleUserIdentity = 0;
+    v64 = pathCopy;
     goto LABEL_102;
   }
 
   if ([v46 usesGlobalBundleUserIdentity])
   {
-    v47 = [v123 globalBundleUserIdentity];
-    v75 = v122;
+    globalBundleUserIdentity = [cacheCopy globalBundleUserIdentity];
+    v75 = pathCopy;
   }
 
   else
   {
-    v75 = v122;
+    v75 = pathCopy;
     if ([v46 usesGlobalSystemUserIdentity])
     {
-      [v123 globalSystemUserIdentity];
+      [cacheCopy globalSystemUserIdentity];
     }
 
     else
     {
-      [v123 defaultUserIdentity];
+      [cacheCopy defaultUserIdentity];
     }
-    v47 = ;
+    globalBundleUserIdentity = ;
   }
 
 LABEL_81:
-  v87 = [(MCMContainerPath *)self->_containerPath containerClassPath];
-  [v87 setExists:1];
+  containerClassPath = [(MCMContainerPath *)self->_containerPath containerClassPath];
+  [containerClassPath setExists:1];
 
   [(MCMContainerPath *)self->_containerPath setExists:1];
   v126 = 1;
-  LOBYTE(v87) = [v75 transient];
-  v88 = [v75 containerPathIdentifier];
-  BYTE1(v109) = v87;
+  LOBYTE(containerClassPath) = [v75 transient];
+  containerPathIdentifier = [v75 containerPathIdentifier];
+  BYTE1(v109) = containerClassPath;
   LOBYTE(v109) = 1;
-  v89 = [MCMConcreteContainerIdentityForLibsystem containerIdentityWithUUID:v42 userIdentity:v47 identifier:v32 containerConfig:v46 platform:0 containerPathIdentifier:v88 existed:v109 transient:v123 userIdentityCache:&v126 error:?];
+  v89 = [MCMConcreteContainerIdentityForLibsystem containerIdentityWithUUID:v42 userIdentity:globalBundleUserIdentity identifier:v32 containerConfig:v46 platform:0 containerPathIdentifier:containerPathIdentifier existed:v109 transient:cacheCopy userIdentityCache:&v126 error:?];
   containerIdentity = self->_containerIdentity;
   self->_containerIdentity = v89;
 
   if (!self->_containerIdentity)
   {
     v94 = [MCMError alloc];
-    v95 = [v125 path];
-    v24 = [(MCMError *)v94 initWithErrorType:29 category:5 path:v95 POSIXerrno:0];
+    path11 = [v125 path];
+    v24 = [(MCMError *)v94 initWithErrorType:29 category:5 path:path11 POSIXerrno:0];
 
     v21 = container_log_handle_for_category();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v129 = v126;
+      classCopy = v126;
       _os_log_error_impl(&dword_1DF2C3000, v21, OS_LOG_TYPE_ERROR, "Could not create container identity: %llu", buf, 0xCu);
     }
 
     goto LABEL_53;
   }
 
-  v91 = [v15 objectForKeyedSubscript:@"MCMMetadataSchemaVersion"];
+  v91 = [dictionaryCopy objectForKeyedSubscript:@"MCMMetadataSchemaVersion"];
   objc_opt_class();
   v92 = v91;
   if (objc_opt_isKindOfClass())
@@ -648,7 +648,7 @@ LABEL_81:
     v93 = 0;
   }
 
-  v64 = v122;
+  v64 = pathCopy;
   v72 = v124;
 
   schemaVersion = self->_schemaVersion;
@@ -809,10 +809,10 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -826,13 +826,13 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
   return v5;
 }
 
-- (id)metadataByChangingContainerIdentity:(id)a3
+- (id)metadataByChangingContainerIdentity:(id)identity
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v5 = [(MCMMetadataMinimal *)self copy];
   v6 = v5[3];
-  v5[3] = v4;
+  v5[3] = identityCopy;
 
   [v5 _clearPersistedStatus];
   v7 = *MEMORY[0x1E69E9840];
@@ -840,13 +840,13 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
   return v5;
 }
 
-- (id)metadataByChangingSchemaVersion:(id)a3
+- (id)metadataByChangingSchemaVersion:(id)version
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  versionCopy = version;
   v5 = [(MCMMetadataMinimal *)self copy];
   v6 = v5[2];
-  v5[2] = v4;
+  v5[2] = versionCopy;
 
   [v5 _clearPersistedStatus];
   v7 = *MEMORY[0x1E69E9840];
@@ -854,13 +854,13 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
   return v5;
 }
 
-- (id)metadataByChangingUUID:(id)a3
+- (id)metadataByChangingUUID:(id)d
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = [(MCMMetadataMinimal *)self copy];
-  v6 = [(MCMMetadataMinimal *)self containerIdentity];
-  v7 = [v6 identityByChangingUUID:v4];
+  containerIdentity = [(MCMMetadataMinimal *)self containerIdentity];
+  v7 = [containerIdentity identityByChangingUUID:dCopy];
 
   v8 = v5[3];
   v5[3] = v7;
@@ -871,18 +871,18 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
   return v5;
 }
 
-- (id)metadataByChangingContainerPath:(id)a3
+- (id)metadataByChangingContainerPath:(id)path
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v5 = [(MCMMetadataMinimal *)self copy];
   v6 = v5[1];
-  v5[1] = v4;
-  v7 = v4;
+  v5[1] = pathCopy;
+  v7 = pathCopy;
 
   v8 = v5[3];
-  v9 = [v7 containerPathIdentifier];
-  v10 = [v8 identityByChangingContainerPathIdentifier:v9];
+  containerPathIdentifier = [v7 containerPathIdentifier];
+  v10 = [v8 identityByChangingContainerPathIdentifier:containerPathIdentifier];
   v11 = v5[3];
   v5[3] = v10;
 
@@ -910,39 +910,39 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
   return [(MCMContainerIdentity *)containerIdentity transient];
 }
 
-- (container_object_s)createLibsystemContainerWithError:(id *)a3
+- (container_object_s)createLibsystemContainerWithError:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v12[0] = 1;
-  v5 = [(MCMMetadataMinimal *)self containerIdentity];
-  v6 = [(MCMMetadataMinimal *)self containerPath];
-  v7 = [v6 containerPathIdentifier];
-  v8 = [v5 createLibsystemContainerWithContainerPathIdentifier:v7 existed:-[MCMMetadataMinimal existed](self error:{"existed"), v12}];
+  containerIdentity = [(MCMMetadataMinimal *)self containerIdentity];
+  containerPath = [(MCMMetadataMinimal *)self containerPath];
+  containerPathIdentifier = [containerPath containerPathIdentifier];
+  v8 = [containerIdentity createLibsystemContainerWithContainerPathIdentifier:containerPathIdentifier existed:-[MCMMetadataMinimal existed](self error:{"existed"), v12}];
 
-  if (a3 && !v8)
+  if (error && !v8)
   {
     v9 = [MCMError alloc];
-    *a3 = [(MCMError *)v9 initWithErrorType:v12[0]];
+    *error = [(MCMError *)v9 initWithErrorType:v12[0]];
   }
 
   v10 = *MEMORY[0x1E69E9840];
   return v8;
 }
 
-- (id)initByReadingAndValidatingMetadataAtFileURL:(id)a3 containerPath:(id)a4 userIdentity:(id)a5 containerClass:(unint64_t)a6 userIdentityCache:(id)a7 error:(id *)a8
+- (id)initByReadingAndValidatingMetadataAtFileURL:(id)l containerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class userIdentityCache:(id)cache error:(id *)error
 {
   v95 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v63 = a4;
-  v14 = a5;
-  v15 = a7;
+  lCopy = l;
+  pathCopy = path;
+  identityCopy = identity;
+  cacheCopy = cache;
   v75 = 0;
   v76 = &v75;
   v77 = 0x3032000000;
   v78 = __Block_byref_object_copy__3288;
   v79 = __Block_byref_object_dispose__3289;
   v80 = 0;
-  v64 = [v13 URLByDeletingLastPathComponent];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
   v69 = 0;
   v70 = &v69;
   v71 = 0x3032000000;
@@ -959,7 +959,7 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
     goto LABEL_36;
   }
 
-  v62 = [v15 libraryRepairForUserIdentity:v14];
+  v62 = [cacheCopy libraryRepairForUserIdentity:identityCopy];
   v66[0] = MEMORY[0x1E69E9820];
   v66[1] = 3221225472;
   v66[2] = __132__MCMMetadataMinimal_initByReadingAndValidatingMetadataAtFileURL_containerPath_userIdentity_containerClass_userIdentityCache_error___block_invoke;
@@ -967,7 +967,7 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
   v66[4] = &v75;
   v66[5] = &v69;
   v67 = 0;
-  [v62 fixAndRetryIfPermissionsErrorWithURL:v13 containerRootURL:v64 error:&v67 duringBlock:v66];
+  [v62 fixAndRetryIfPermissionsErrorWithURL:lCopy containerRootURL:uRLByDeletingLastPathComponent error:&v67 duringBlock:v66];
   v17 = v67;
   v18 = v17;
   if (v76[5])
@@ -978,24 +978,24 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
 
   if (v17)
   {
-    v21 = [(MCMError *)v17 domain];
-    if ([v21 isEqual:*MEMORY[0x1E696A250]])
+    domain = [(MCMError *)v17 domain];
+    if ([domain isEqual:*MEMORY[0x1E696A250]])
     {
       v22 = [(MCMError *)v18 code]== 2048;
 
       if (v22)
       {
         v23 = [MCMError alloc];
-        v24 = [v13 path];
-        v20 = [(MCMError *)v23 initWithErrorType:108 category:5 path:v24 POSIXerrno:0];
+        path = [lCopy path];
+        v20 = [(MCMError *)v23 initWithErrorType:108 category:5 path:path POSIXerrno:0];
 
-        v25 = container_log_handle_for_category();
-        if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+        path3 = container_log_handle_for_category();
+        if (os_log_type_enabled(path3, OS_LOG_TYPE_ERROR))
         {
-          v26 = [v13 path];
+          path2 = [lCopy path];
           *buf = 138543362;
-          v82 = v26;
-          _os_log_error_impl(&dword_1DF2C3000, v25, OS_LOG_TYPE_ERROR, "Metadata file at [%{public}@] is corrupt.", buf, 0xCu);
+          v82 = path2;
+          _os_log_error_impl(&dword_1DF2C3000, path3, OS_LOG_TYPE_ERROR, "Metadata file at [%{public}@] is corrupt.", buf, 0xCu);
         }
 
         goto LABEL_23;
@@ -1007,14 +1007,14 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
     }
   }
 
-  v27 = [(MCMError *)v18 domain];
+  domain2 = [(MCMError *)v18 domain];
   v28 = *MEMORY[0x1E696A798];
-  v29 = [v27 isEqual:*MEMORY[0x1E696A798]];
+  v29 = [domain2 isEqual:*MEMORY[0x1E696A798]];
 
   if (v29)
   {
-    v30 = [(MCMError *)v18 domain];
-    if ([v30 isEqualToString:v28])
+    domain3 = [(MCMError *)v18 domain];
+    if ([domain3 isEqualToString:v28])
     {
       v31 = [(MCMError *)v18 code]== 2;
 
@@ -1022,8 +1022,8 @@ id __38__MCMMetadataMinimal_debugDescription__block_invoke(uint64_t a1, int a2)
       {
 LABEL_22:
         v34 = [MCMError alloc];
-        v25 = [v13 path];
-        v20 = [(MCMError *)v34 initWithErrorType:127 category:1 path:v25 POSIXerrno:[(MCMError *)v18 code]];
+        path3 = [lCopy path];
+        v20 = [(MCMError *)v34 initWithErrorType:127 category:1 path:path3 POSIXerrno:[(MCMError *)v18 code]];
 LABEL_23:
 
         goto LABEL_24;
@@ -1037,9 +1037,9 @@ LABEL_23:
     v33 = container_log_handle_for_category();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      v52 = [v13 path];
+      path4 = [lCopy path];
       *buf = 138543618;
-      v82 = v52;
+      v82 = path4;
       v83 = 2112;
       v84 = v18;
       _os_log_error_impl(&dword_1DF2C3000, v33, OS_LOG_TYPE_ERROR, "Could not read metadata file at [%{public}@]; error = %@", buf, 0x16u);
@@ -1051,9 +1051,9 @@ LABEL_23:
   v32 = container_log_handle_for_category();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
   {
-    v51 = [v13 path];
+    path5 = [lCopy path];
     *buf = 138543618;
-    v82 = v51;
+    v82 = path5;
     v83 = 2112;
     v84 = v18;
     _os_log_error_impl(&dword_1DF2C3000, v32, OS_LOG_TYPE_ERROR, "Could not read metadata file at [%{public}@]; error = %@", buf, 0x16u);
@@ -1067,7 +1067,7 @@ LABEL_24:
 LABEL_26:
     v35 = v70[5];
     v65 = v19;
-    v36 = [MCMMetadataMinimal _initFromMetadataInDictionary:v16 containerPath:"_initFromMetadataInDictionary:containerPath:userIdentity:containerClass:fsNode:fileURL:userIdentityCache:error:" userIdentity:v15 containerClass:&v65 fsNode:? fileURL:? userIdentityCache:? error:?];
+    v36 = [MCMMetadataMinimal _initFromMetadataInDictionary:v16 containerPath:"_initFromMetadataInDictionary:containerPath:userIdentity:containerClass:fsNode:fileURL:userIdentityCache:error:" userIdentity:cacheCopy containerClass:&v65 fsNode:? fileURL:? userIdentityCache:? error:?];
     v20 = v65;
 
     if (v36)
@@ -1080,39 +1080,39 @@ LABEL_26:
         v39 = container_log_handle_for_category();
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
         {
-          v50 = [(MCMMetadataMinimal *)v16 uuid];
-          v61 = [(MCMMetadataMinimal *)v16 containerPath];
-          v59 = [v61 containerPathIdentifier];
-          v58 = [(MCMMetadataMinimal *)v16 identifier];
-          v57 = [(MCMMetadataMinimal *)v16 containerClass];
+          uuid = [(MCMMetadataMinimal *)v16 uuid];
+          containerPath = [(MCMMetadataMinimal *)v16 containerPath];
+          containerPathIdentifier = [containerPath containerPathIdentifier];
+          identifier = [(MCMMetadataMinimal *)v16 identifier];
+          containerClass = [(MCMMetadataMinimal *)v16 containerClass];
           v60 = [(MCMMetadataMinimal *)v16 conformsToProtocol:&unk_1F5A81C70];
           if (v60)
           {
-            v55 = [(MCMMetadataMinimal *)v16 fsNode];
-            v56 = [v55 inode];
+            fsNode = [(MCMMetadataMinimal *)v16 fsNode];
+            inode = [fsNode inode];
           }
 
           else
           {
-            v56 = 0;
+            inode = 0;
           }
 
-          v53 = [v13 path];
-          v54 = [(MCMMetadataMinimal *)v16 shortDescription];
+          path6 = [lCopy path];
+          shortDescription = [(MCMMetadataMinimal *)v16 shortDescription];
           *buf = 138544898;
-          v82 = v50;
+          v82 = uuid;
           v83 = 2114;
-          v84 = v59;
+          v84 = containerPathIdentifier;
           v85 = 2112;
-          v86 = v58;
+          v86 = identifier;
           v87 = 2050;
-          v88 = v57;
+          v88 = containerClass;
           v89 = 2048;
-          v90 = v56;
+          v90 = inode;
           v91 = 2112;
-          v92 = v53;
+          v92 = path6;
           v93 = 2112;
-          v94 = v54;
+          v94 = shortDescription;
           _os_log_debug_impl(&dword_1DF2C3000, v39, OS_LOG_TYPE_DEBUG, "[u %{public}@:p %{public}@:c %@(%{public}llu):i%llu] Read metadata from [%@]: %@", buf, 0x48u);
 
           if (v60)
@@ -1129,14 +1129,14 @@ LABEL_26:
 
   if (!v20)
   {
-    v40 = [(MCMError *)v18 domain];
-    v41 = [v40 isEqualToString:*MEMORY[0x1E696A798]];
+    domain4 = [(MCMError *)v18 domain];
+    v41 = [domain4 isEqualToString:*MEMORY[0x1E696A798]];
 
     if (v41)
     {
       v42 = [MCMError alloc];
-      v43 = [v13 path];
-      v20 = [(MCMError *)v42 initWithErrorType:127 category:1 path:v43 POSIXerrno:[(MCMError *)v18 code]];
+      path7 = [lCopy path];
+      v20 = [(MCMError *)v42 initWithErrorType:127 category:1 path:path7 POSIXerrno:[(MCMError *)v18 code]];
     }
 
     else
@@ -1153,20 +1153,20 @@ LABEL_36:
     v44 = container_log_handle_for_category();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
     {
-      v49 = [v13 path];
+      path8 = [lCopy path];
       *buf = 138412546;
-      v82 = v49;
+      v82 = path8;
       v83 = 2112;
       v84 = v20;
       _os_log_error_impl(&dword_1DF2C3000, v44, OS_LOG_TYPE_ERROR, "Failed to read container metadata [%@]: %@", buf, 0x16u);
     }
   }
 
-  if (a8)
+  if (error)
   {
     v45 = v20;
     v16 = 0;
-    *a8 = v20;
+    *error = v20;
   }
 
   else
@@ -1199,37 +1199,37 @@ BOOL __132__MCMMetadataMinimal_initByReadingAndValidatingMetadataAtFileURL_conta
   return result;
 }
 
-- (id)initByReadingAndValidatingMetadataAtContainerPath:(id)a3 userIdentity:(id)a4 containerClass:(unint64_t)a5 userIdentityCache:(id)a6 error:(id *)a7
+- (id)initByReadingAndValidatingMetadataAtContainerPath:(id)path userIdentity:(id)identity containerClass:(unint64_t)class userIdentityCache:(id)cache error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v14 metadataURL];
-  v16 = [(MCMMetadataMinimal *)self initByReadingAndValidatingMetadataAtFileURL:v15 containerPath:v14 userIdentity:v13 containerClass:a5 userIdentityCache:v12 error:a7];
+  cacheCopy = cache;
+  identityCopy = identity;
+  pathCopy = path;
+  metadataURL = [pathCopy metadataURL];
+  v16 = [(MCMMetadataMinimal *)self initByReadingAndValidatingMetadataAtFileURL:metadataURL containerPath:pathCopy userIdentity:identityCopy containerClass:class userIdentityCache:cacheCopy error:error];
 
   v17 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (MCMMetadataMinimal)initWithContainerIdentity:(id)a3 containerPath:(id)a4 schemaVersion:(id)a5 userIdentityCache:(id)a6
+- (MCMMetadataMinimal)initWithContainerIdentity:(id)identity containerPath:(id)path schemaVersion:(id)version userIdentityCache:(id)cache
 {
   v21 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  identityCopy = identity;
+  pathCopy = path;
+  versionCopy = version;
+  cacheCopy = cache;
   v20.receiver = self;
   v20.super_class = MCMMetadataMinimal;
   v15 = [(MCMMetadataMinimal *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_containerPath, a4);
-    objc_storeStrong(&v16->_containerIdentity, a3);
-    if (v13)
+    objc_storeStrong(&v15->_containerPath, path);
+    objc_storeStrong(&v16->_containerIdentity, identity);
+    if (versionCopy)
     {
-      v17 = v13;
+      v17 = versionCopy;
     }
 
     else
@@ -1238,7 +1238,7 @@ BOOL __132__MCMMetadataMinimal_initByReadingAndValidatingMetadataAtFileURL_conta
     }
 
     objc_storeStrong(&v16->_schemaVersion, v17);
-    objc_storeStrong(&v16->_userIdentityCache, a6);
+    objc_storeStrong(&v16->_userIdentityCache, cache);
   }
 
   v18 = *MEMORY[0x1E69E9840];

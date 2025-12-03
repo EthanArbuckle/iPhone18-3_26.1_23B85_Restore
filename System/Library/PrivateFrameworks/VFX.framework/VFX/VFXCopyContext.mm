@@ -1,5 +1,5 @@
 @interface VFXCopyContext
-- (void)_remapEntityReferencesToVFXObjects:(id)a3;
+- (void)_remapEntityReferencesToVFXObjects:(id)objects;
 - (void)dealloc;
 @end
 
@@ -19,7 +19,7 @@
   [(VFXCopyContext *)&v4 dealloc];
 }
 
-- (void)_remapEntityReferencesToVFXObjects:(id)a3
+- (void)_remapEntityReferencesToVFXObjects:(id)objects
 {
   v4 = sub_1AFDF5054(self);
   objc_opt_class();
@@ -30,12 +30,12 @@
     v23 = sub_1AF2BEC88;
     v24 = &unk_1E7A79810;
     v25 = v4;
-    objc_msgSend_enumerateHierarchyUsingBlock_(a3, v5, v21, v6);
+    objc_msgSend_enumerateHierarchyUsingBlock_(objects, v5, v21, v6);
   }
 
   else if (objc_opt_respondsToSelector())
   {
-    v10 = objc_msgSend_behaviorGraph(a3, v7, v8, v9);
+    v10 = objc_msgSend_behaviorGraph(objects, v7, v8, v9);
     v14 = objc_msgSend_coreEntityHandle(v10, v11, v12, v13);
     v18 = objc_msgSend_entityObject(v14, v15, v16, v17);
 

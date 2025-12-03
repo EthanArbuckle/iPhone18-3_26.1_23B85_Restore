@@ -1,33 +1,33 @@
 @interface AWDRadioStatsS
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasReceivingTime:(BOOL)a3;
-- (void)setHasRetryInterval90perc:(BOOL)a3;
-- (void)setHasRetryIntervalAvg:(BOOL)a3;
-- (void)setHasRetryIntervalMax:(BOOL)a3;
-- (void)setHasRetryIntervalMin:(BOOL)a3;
-- (void)setHasRtt90perc:(BOOL)a3;
-- (void)setHasRttAvgVal:(BOOL)a3;
-- (void)setHasRttMaxVal:(BOOL)a3;
-- (void)setHasRttMinVal:(BOOL)a3;
-- (void)setHasTransmittingTime:(BOOL)a3;
-- (void)setHasTxDelay90perc:(BOOL)a3;
-- (void)setHasTxDelayAvg:(BOOL)a3;
-- (void)setHasTxDelayMax:(BOOL)a3;
-- (void)setHasTxDelayMin:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasReceivingTime:(BOOL)time;
+- (void)setHasRetryInterval90perc:(BOOL)interval90perc;
+- (void)setHasRetryIntervalAvg:(BOOL)avg;
+- (void)setHasRetryIntervalMax:(BOOL)max;
+- (void)setHasRetryIntervalMin:(BOOL)min;
+- (void)setHasRtt90perc:(BOOL)rtt90perc;
+- (void)setHasRttAvgVal:(BOOL)val;
+- (void)setHasRttMaxVal:(BOOL)val;
+- (void)setHasRttMinVal:(BOOL)val;
+- (void)setHasTransmittingTime:(BOOL)time;
+- (void)setHasTxDelay90perc:(BOOL)delay90perc;
+- (void)setHasTxDelayAvg:(BOOL)avg;
+- (void)setHasTxDelayMax:(BOOL)max;
+- (void)setHasTxDelayMin:(BOOL)min;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDRadioStatsS
 
-- (void)setHasRttMinVal:(BOOL)a3
+- (void)setHasRttMinVal:(BOOL)val
 {
-  if (a3)
+  if (val)
   {
     v3 = 512;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasRttMaxVal:(BOOL)a3
+- (void)setHasRttMaxVal:(BOOL)val
 {
-  if (a3)
+  if (val)
   {
     v3 = 256;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasRttAvgVal:(BOOL)a3
+- (void)setHasRttAvgVal:(BOOL)val
 {
-  if (a3)
+  if (val)
   {
     v3 = 128;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRtt90perc:(BOOL)a3
+- (void)setHasRtt90perc:(BOOL)rtt90perc
 {
-  if (a3)
+  if (rtt90perc)
   {
     v3 = 64;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasRetryIntervalMin:(BOOL)a3
+- (void)setHasRetryIntervalMin:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 32;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasRetryIntervalMax:(BOOL)a3
+- (void)setHasRetryIntervalMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 16;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasRetryIntervalAvg:(BOOL)a3
+- (void)setHasRetryIntervalAvg:(BOOL)avg
 {
-  if (a3)
+  if (avg)
   {
     v3 = 8;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRetryInterval90perc:(BOOL)a3
+- (void)setHasRetryInterval90perc:(BOOL)interval90perc
 {
-  if (a3)
+  if (interval90perc)
   {
     v3 = 4;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasTxDelayMin:(BOOL)a3
+- (void)setHasTxDelayMin:(BOOL)min
 {
-  if (a3)
+  if (min)
   {
     v3 = 0x4000;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasTxDelayMax:(BOOL)a3
+- (void)setHasTxDelayMax:(BOOL)max
 {
-  if (a3)
+  if (max)
   {
     v3 = 0x2000;
   }
@@ -175,9 +175,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasTxDelayAvg:(BOOL)a3
+- (void)setHasTxDelayAvg:(BOOL)avg
 {
-  if (a3)
+  if (avg)
   {
     v3 = 4096;
   }
@@ -190,9 +190,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasTxDelay90perc:(BOOL)a3
+- (void)setHasTxDelay90perc:(BOOL)delay90perc
 {
-  if (a3)
+  if (delay90perc)
   {
     v3 = 2048;
   }
@@ -205,9 +205,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasReceivingTime:(BOOL)a3
+- (void)setHasReceivingTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -220,9 +220,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasTransmittingTime:(BOOL)a3
+- (void)setHasTransmittingTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 1024;
   }
@@ -240,8 +240,8 @@
   v7.receiver = self;
   v7.super_class = AWDRadioStatsS;
   v3 = [(AWDRadioStatsS *)&v7 description];
-  v4 = [(AWDRadioStatsS *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDRadioStatsS *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -480,9 +480,9 @@ LABEL_17:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v21 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -691,7 +691,7 @@ LABEL_32:
   if ((*&self->_has & 0x400) == 0)
   {
 LABEL_16:
-    v5 = v21;
+    v5 = toCopy;
 
     goto LABEL_18;
   }
@@ -699,19 +699,19 @@ LABEL_16:
 LABEL_33:
   transmittingTime = self->_transmittingTime;
   PBDataWriterWriteUint32Field();
-  v5 = v21;
+  v5 = toCopy;
 
 LABEL_18:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    v4[11] = self->_rttMinVal;
-    *(v4 + 34) |= 0x200u;
+    toCopy[11] = self->_rttMinVal;
+    *(toCopy + 34) |= 0x200u;
     has = self->_has;
     if ((has & 0x100) == 0)
     {
@@ -730,8 +730,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[10] = self->_rttMaxVal;
-  *(v4 + 34) |= 0x100u;
+  toCopy[10] = self->_rttMaxVal;
+  *(toCopy + 34) |= 0x100u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -745,8 +745,8 @@ LABEL_4:
   }
 
 LABEL_21:
-  v4[9] = self->_rttAvgVal;
-  *(v4 + 34) |= 0x80u;
+  toCopy[9] = self->_rttAvgVal;
+  *(toCopy + 34) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -760,8 +760,8 @@ LABEL_5:
   }
 
 LABEL_22:
-  v4[8] = self->_rtt90perc;
-  *(v4 + 34) |= 0x40u;
+  toCopy[8] = self->_rtt90perc;
+  *(toCopy + 34) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -775,8 +775,8 @@ LABEL_6:
   }
 
 LABEL_23:
-  v4[7] = self->_retryIntervalMin;
-  *(v4 + 34) |= 0x20u;
+  toCopy[7] = self->_retryIntervalMin;
+  *(toCopy + 34) |= 0x20u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -790,8 +790,8 @@ LABEL_7:
   }
 
 LABEL_24:
-  v4[6] = self->_retryIntervalMax;
-  *(v4 + 34) |= 0x10u;
+  toCopy[6] = self->_retryIntervalMax;
+  *(toCopy + 34) |= 0x10u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -805,8 +805,8 @@ LABEL_8:
   }
 
 LABEL_25:
-  v4[5] = self->_retryIntervalAvg;
-  *(v4 + 34) |= 8u;
+  toCopy[5] = self->_retryIntervalAvg;
+  *(toCopy + 34) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -820,8 +820,8 @@ LABEL_9:
   }
 
 LABEL_26:
-  v4[4] = self->_retryInterval90perc;
-  *(v4 + 34) |= 4u;
+  toCopy[4] = self->_retryInterval90perc;
+  *(toCopy + 34) |= 4u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -835,8 +835,8 @@ LABEL_10:
   }
 
 LABEL_27:
-  v4[16] = self->_txDelayMin;
-  *(v4 + 34) |= 0x4000u;
+  toCopy[16] = self->_txDelayMin;
+  *(toCopy + 34) |= 0x4000u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -850,8 +850,8 @@ LABEL_11:
   }
 
 LABEL_28:
-  v4[15] = self->_txDelayMax;
-  *(v4 + 34) |= 0x2000u;
+  toCopy[15] = self->_txDelayMax;
+  *(toCopy + 34) |= 0x2000u;
   has = self->_has;
   if ((has & 0x1000) == 0)
   {
@@ -865,8 +865,8 @@ LABEL_12:
   }
 
 LABEL_29:
-  v4[14] = self->_txDelayAvg;
-  *(v4 + 34) |= 0x1000u;
+  toCopy[14] = self->_txDelayAvg;
+  *(toCopy + 34) |= 0x1000u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -880,8 +880,8 @@ LABEL_13:
   }
 
 LABEL_30:
-  v4[13] = self->_txDelay90perc;
-  *(v4 + 34) |= 0x800u;
+  toCopy[13] = self->_txDelay90perc;
+  *(toCopy + 34) |= 0x800u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -895,8 +895,8 @@ LABEL_14:
   }
 
 LABEL_31:
-  v4[2] = self->_listeningTime;
-  *(v4 + 34) |= 1u;
+  toCopy[2] = self->_listeningTime;
+  *(toCopy + 34) |= 1u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -910,8 +910,8 @@ LABEL_15:
   }
 
 LABEL_32:
-  v4[3] = self->_receivingTime;
-  *(v4 + 34) |= 2u;
+  toCopy[3] = self->_receivingTime;
+  *(toCopy + 34) |= 2u;
   if ((*&self->_has & 0x400) == 0)
   {
 LABEL_16:
@@ -920,15 +920,15 @@ LABEL_16:
   }
 
 LABEL_33:
-  v4[12] = self->_transmittingTime;
-  *(v4 + 34) |= 0x400u;
+  toCopy[12] = self->_transmittingTime;
+  *(toCopy + 34) |= 0x400u;
 
 LABEL_18:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x200) != 0)
   {
@@ -1145,45 +1145,45 @@ LABEL_30:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_77;
   }
 
   has = self->_has;
-  v6 = *(v4 + 34);
+  v6 = *(equalCopy + 34);
   if ((has & 0x200) != 0)
   {
-    if ((*(v4 + 34) & 0x200) == 0 || self->_rttMinVal != *(v4 + 11))
+    if ((*(equalCopy + 34) & 0x200) == 0 || self->_rttMinVal != *(equalCopy + 11))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x200) != 0)
+  else if ((*(equalCopy + 34) & 0x200) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 34) & 0x100) == 0 || self->_rttMaxVal != *(v4 + 10))
+    if ((*(equalCopy + 34) & 0x100) == 0 || self->_rttMaxVal != *(equalCopy + 10))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x100) != 0)
+  else if ((*(equalCopy + 34) & 0x100) != 0)
   {
     goto LABEL_77;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v6 & 0x80) == 0 || self->_rttAvgVal != *(v4 + 9))
+    if ((v6 & 0x80) == 0 || self->_rttAvgVal != *(equalCopy + 9))
     {
       goto LABEL_77;
     }
@@ -1196,7 +1196,7 @@ LABEL_30:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_rtt90perc != *(v4 + 8))
+    if ((v6 & 0x40) == 0 || self->_rtt90perc != *(equalCopy + 8))
     {
       goto LABEL_77;
     }
@@ -1209,7 +1209,7 @@ LABEL_30:
 
   if ((has & 0x20) != 0)
   {
-    if ((v6 & 0x20) == 0 || self->_retryIntervalMin != *(v4 + 7))
+    if ((v6 & 0x20) == 0 || self->_retryIntervalMin != *(equalCopy + 7))
     {
       goto LABEL_77;
     }
@@ -1222,7 +1222,7 @@ LABEL_30:
 
   if ((has & 0x10) != 0)
   {
-    if ((v6 & 0x10) == 0 || self->_retryIntervalMax != *(v4 + 6))
+    if ((v6 & 0x10) == 0 || self->_retryIntervalMax != *(equalCopy + 6))
     {
       goto LABEL_77;
     }
@@ -1235,7 +1235,7 @@ LABEL_30:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_retryIntervalAvg != *(v4 + 5))
+    if ((v6 & 8) == 0 || self->_retryIntervalAvg != *(equalCopy + 5))
     {
       goto LABEL_77;
     }
@@ -1248,7 +1248,7 @@ LABEL_30:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_retryInterval90perc != *(v4 + 4))
+    if ((v6 & 4) == 0 || self->_retryInterval90perc != *(equalCopy + 4))
     {
       goto LABEL_77;
     }
@@ -1261,59 +1261,59 @@ LABEL_30:
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 34) & 0x4000) == 0 || self->_txDelayMin != *(v4 + 16))
+    if ((*(equalCopy + 34) & 0x4000) == 0 || self->_txDelayMin != *(equalCopy + 16))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x4000) != 0)
+  else if ((*(equalCopy + 34) & 0x4000) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 34) & 0x2000) == 0 || self->_txDelayMax != *(v4 + 15))
+    if ((*(equalCopy + 34) & 0x2000) == 0 || self->_txDelayMax != *(equalCopy + 15))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x2000) != 0)
+  else if ((*(equalCopy + 34) & 0x2000) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x1000) != 0)
   {
-    if ((*(v4 + 34) & 0x1000) == 0 || self->_txDelayAvg != *(v4 + 14))
+    if ((*(equalCopy + 34) & 0x1000) == 0 || self->_txDelayAvg != *(equalCopy + 14))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x1000) != 0)
+  else if ((*(equalCopy + 34) & 0x1000) != 0)
   {
     goto LABEL_77;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 34) & 0x800) == 0 || self->_txDelay90perc != *(v4 + 13))
+    if ((*(equalCopy + 34) & 0x800) == 0 || self->_txDelay90perc != *(equalCopy + 13))
     {
       goto LABEL_77;
     }
   }
 
-  else if ((*(v4 + 34) & 0x800) != 0)
+  else if ((*(equalCopy + 34) & 0x800) != 0)
   {
     goto LABEL_77;
   }
 
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_listeningTime != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_listeningTime != *(equalCopy + 2))
     {
       goto LABEL_77;
     }
@@ -1326,7 +1326,7 @@ LABEL_30:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_receivingTime != *(v4 + 3))
+    if ((v6 & 2) == 0 || self->_receivingTime != *(equalCopy + 3))
     {
       goto LABEL_77;
     }
@@ -1344,7 +1344,7 @@ LABEL_30:
     return v7;
   }
 
-  if ((*(v4 + 34) & 0x400) != 0 && self->_transmittingTime == *(v4 + 12))
+  if ((*(equalCopy + 34) & 0x400) != 0 && self->_transmittingTime == *(equalCopy + 12))
   {
 
     return 1;
@@ -1564,15 +1564,15 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 34);
+  fromCopy = from;
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x200) != 0)
   {
-    self->_rttMinVal = *(v4 + 11);
+    self->_rttMinVal = *(fromCopy + 11);
     *&self->_has |= 0x200u;
-    v5 = *(v4 + 34);
+    v5 = *(fromCopy + 34);
     if ((v5 & 0x100) == 0)
     {
 LABEL_3:
@@ -1585,14 +1585,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 34) & 0x100) == 0)
+  else if ((*(fromCopy + 34) & 0x100) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_rttMaxVal = *(v4 + 10);
+  self->_rttMaxVal = *(fromCopy + 10);
   *&self->_has |= 0x100u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x80) == 0)
   {
 LABEL_4:
@@ -1605,9 +1605,9 @@ LABEL_4:
   }
 
 LABEL_21:
-  self->_rttAvgVal = *(v4 + 9);
+  self->_rttAvgVal = *(fromCopy + 9);
   *&self->_has |= 0x80u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x40) == 0)
   {
 LABEL_5:
@@ -1620,9 +1620,9 @@ LABEL_5:
   }
 
 LABEL_22:
-  self->_rtt90perc = *(v4 + 8);
+  self->_rtt90perc = *(fromCopy + 8);
   *&self->_has |= 0x40u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x20) == 0)
   {
 LABEL_6:
@@ -1635,9 +1635,9 @@ LABEL_6:
   }
 
 LABEL_23:
-  self->_retryIntervalMin = *(v4 + 7);
+  self->_retryIntervalMin = *(fromCopy + 7);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x10) == 0)
   {
 LABEL_7:
@@ -1650,9 +1650,9 @@ LABEL_7:
   }
 
 LABEL_24:
-  self->_retryIntervalMax = *(v4 + 6);
+  self->_retryIntervalMax = *(fromCopy + 6);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 8) == 0)
   {
 LABEL_8:
@@ -1665,9 +1665,9 @@ LABEL_8:
   }
 
 LABEL_25:
-  self->_retryIntervalAvg = *(v4 + 5);
+  self->_retryIntervalAvg = *(fromCopy + 5);
   *&self->_has |= 8u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 4) == 0)
   {
 LABEL_9:
@@ -1680,9 +1680,9 @@ LABEL_9:
   }
 
 LABEL_26:
-  self->_retryInterval90perc = *(v4 + 4);
+  self->_retryInterval90perc = *(fromCopy + 4);
   *&self->_has |= 4u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x4000) == 0)
   {
 LABEL_10:
@@ -1695,9 +1695,9 @@ LABEL_10:
   }
 
 LABEL_27:
-  self->_txDelayMin = *(v4 + 16);
+  self->_txDelayMin = *(fromCopy + 16);
   *&self->_has |= 0x4000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x2000) == 0)
   {
 LABEL_11:
@@ -1710,9 +1710,9 @@ LABEL_11:
   }
 
 LABEL_28:
-  self->_txDelayMax = *(v4 + 15);
+  self->_txDelayMax = *(fromCopy + 15);
   *&self->_has |= 0x2000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x1000) == 0)
   {
 LABEL_12:
@@ -1725,9 +1725,9 @@ LABEL_12:
   }
 
 LABEL_29:
-  self->_txDelayAvg = *(v4 + 14);
+  self->_txDelayAvg = *(fromCopy + 14);
   *&self->_has |= 0x1000u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 0x800) == 0)
   {
 LABEL_13:
@@ -1740,9 +1740,9 @@ LABEL_13:
   }
 
 LABEL_30:
-  self->_txDelay90perc = *(v4 + 13);
+  self->_txDelay90perc = *(fromCopy + 13);
   *&self->_has |= 0x800u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 1) == 0)
   {
 LABEL_14:
@@ -1755,9 +1755,9 @@ LABEL_14:
   }
 
 LABEL_31:
-  self->_listeningTime = *(v4 + 2);
+  self->_listeningTime = *(fromCopy + 2);
   *&self->_has |= 1u;
-  v5 = *(v4 + 34);
+  v5 = *(fromCopy + 34);
   if ((v5 & 2) == 0)
   {
 LABEL_15:
@@ -1770,9 +1770,9 @@ LABEL_15:
   }
 
 LABEL_32:
-  self->_receivingTime = *(v4 + 3);
+  self->_receivingTime = *(fromCopy + 3);
   *&self->_has |= 2u;
-  if ((*(v4 + 34) & 0x400) == 0)
+  if ((*(fromCopy + 34) & 0x400) == 0)
   {
 LABEL_16:
 
@@ -1780,7 +1780,7 @@ LABEL_16:
   }
 
 LABEL_33:
-  self->_transmittingTime = *(v4 + 12);
+  self->_transmittingTime = *(fromCopy + 12);
   *&self->_has |= 0x400u;
 
 LABEL_18:

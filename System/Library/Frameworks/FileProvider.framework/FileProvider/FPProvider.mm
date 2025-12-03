@@ -1,62 +1,62 @@
 @interface FPProvider
-+ (id)beginMonitoringProviderChangesWithHandler:(id)a3;
-+ (void)endMonitoringProviderChanges:(id)a3;
-+ (void)fetchProviderForItem:(id)a3 completionHandler:(id)a4;
-- (FPProvider)initWithCoder:(id)a3;
++ (id)beginMonitoringProviderChangesWithHandler:(id)handler;
++ (void)endMonitoringProviderChanges:(id)changes;
++ (void)fetchProviderForItem:(id)item completionHandler:(id)handler;
+- (FPProvider)initWithCoder:(id)coder;
 - (NSURL)storageURL;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPProvider
 
-- (FPProvider)initWithCoder:(id)a3
+- (FPProvider)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = FPProvider;
-  return [(FPProviderDomain *)&v4 initWithCoder:a3];
+  return [(FPProviderDomain *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = FPProvider;
-  [(FPProviderDomain *)&v3 encodeWithCoder:a3];
+  [(FPProviderDomain *)&v3 encodeWithCoder:coder];
 }
 
-+ (id)beginMonitoringProviderChangesWithHandler:(id)a3
++ (id)beginMonitoringProviderChangesWithHandler:(id)handler
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___FPProvider;
-  v3 = objc_msgSendSuper2(&v5, sel_beginMonitoringProviderDomainChangesWithHandler_, a3);
+  v3 = objc_msgSendSuper2(&v5, sel_beginMonitoringProviderDomainChangesWithHandler_, handler);
 
   return v3;
 }
 
-+ (void)endMonitoringProviderChanges:(id)a3
++ (void)endMonitoringProviderChanges:(id)changes
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___FPProvider;
-  objc_msgSendSuper2(&v3, sel_endMonitoringProviderDomainChanges_, a3);
+  objc_msgSendSuper2(&v3, sel_endMonitoringProviderDomainChanges_, changes);
 }
 
-+ (void)fetchProviderForItem:(id)a3 completionHandler:(id)a4
++ (void)fetchProviderForItem:(id)item completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__FPProvider_fetchProviderForItem_completionHandler___block_invoke;
   v8[3] = &unk_1E793A150;
-  v9 = v6;
-  v7 = v6;
-  [a1 fetchProviderDomainForItem:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [self fetchProviderDomainForItem:item completionHandler:v8];
 }
 
 - (NSURL)storageURL
 {
-  v2 = [(FPProviderDomain *)self storageURLs];
-  v3 = [v2 firstObject];
+  storageURLs = [(FPProviderDomain *)self storageURLs];
+  firstObject = [storageURLs firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 @end

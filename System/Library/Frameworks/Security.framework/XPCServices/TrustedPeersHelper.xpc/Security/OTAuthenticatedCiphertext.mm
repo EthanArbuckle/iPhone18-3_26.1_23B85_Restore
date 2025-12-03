@@ -1,38 +1,38 @@
 @interface OTAuthenticatedCiphertext
-+ (id)fromSFAuthenticatedCiphertext:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)fromSFAuthenticatedCiphertext:(id)ciphertext;
+- (BOOL)isEqual:(id)equal;
 - (id)asSFAuthenticatedCiphertext;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation OTAuthenticatedCiphertext
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[2])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[2])
   {
     [(OTAuthenticatedCiphertext *)self setCiphertext:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(OTAuthenticatedCiphertext *)self setAuthenticationCode:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(OTAuthenticatedCiphertext *)self setInitializationVector:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 
@@ -43,13 +43,13 @@
   return v4 ^ [(NSData *)self->_initializationVector hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((ciphertext = self->_ciphertext, !(ciphertext | v4[2])) || -[NSData isEqual:](ciphertext, "isEqual:")) && ((authenticationCode = self->_authenticationCode, !(authenticationCode | v4[1])) || -[NSData isEqual:](authenticationCode, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((ciphertext = self->_ciphertext, !(ciphertext | equalCopy[2])) || -[NSData isEqual:](ciphertext, "isEqual:")) && ((authenticationCode = self->_authenticationCode, !(authenticationCode | equalCopy[1])) || -[NSData isEqual:](authenticationCode, "isEqual:")))
   {
     initializationVector = self->_initializationVector;
-    if (initializationVector | v4[3])
+    if (initializationVector | equalCopy[3])
     {
       v8 = [(NSData *)initializationVector isEqual:?];
     }
@@ -68,37 +68,37 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_ciphertext copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_ciphertext copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSData *)self->_authenticationCode copyWithZone:a3];
+  v8 = [(NSData *)self->_authenticationCode copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSData *)self->_initializationVector copyWithZone:a3];
+  v10 = [(NSData *)self->_initializationVector copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   ciphertext = self->_ciphertext;
-  v5 = a3;
-  [v5 setCiphertext:ciphertext];
-  [v5 setAuthenticationCode:self->_authenticationCode];
-  [v5 setInitializationVector:self->_initializationVector];
+  toCopy = to;
+  [toCopy setCiphertext:ciphertext];
+  [toCopy setAuthenticationCode:self->_authenticationCode];
+  [toCopy setInitializationVector:self->_initializationVector];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   ciphertext = self->_ciphertext;
-  v7 = a3;
+  toCopy = to;
   PBDataWriterWriteDataField();
   authenticationCode = self->_authenticationCode;
   PBDataWriterWriteDataField();
@@ -136,8 +136,8 @@
   v7.receiver = self;
   v7.super_class = OTAuthenticatedCiphertext;
   v3 = [(OTAuthenticatedCiphertext *)&v7 description];
-  v4 = [(OTAuthenticatedCiphertext *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(OTAuthenticatedCiphertext *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -145,27 +145,27 @@
 - (id)asSFAuthenticatedCiphertext
 {
   v3 = [_SFAuthenticatedCiphertext alloc];
-  v4 = [(OTAuthenticatedCiphertext *)self ciphertext];
-  v5 = [(OTAuthenticatedCiphertext *)self authenticationCode];
-  v6 = [(OTAuthenticatedCiphertext *)self initializationVector];
-  v7 = [v3 initWithCiphertext:v4 authenticationCode:v5 initializationVector:v6];
+  ciphertext = [(OTAuthenticatedCiphertext *)self ciphertext];
+  authenticationCode = [(OTAuthenticatedCiphertext *)self authenticationCode];
+  initializationVector = [(OTAuthenticatedCiphertext *)self initializationVector];
+  v7 = [v3 initWithCiphertext:ciphertext authenticationCode:authenticationCode initializationVector:initializationVector];
 
   return v7;
 }
 
-+ (id)fromSFAuthenticatedCiphertext:(id)a3
++ (id)fromSFAuthenticatedCiphertext:(id)ciphertext
 {
-  v3 = a3;
+  ciphertextCopy = ciphertext;
   v4 = objc_opt_new();
-  v5 = [v3 ciphertext];
-  [v4 setCiphertext:v5];
+  ciphertext = [ciphertextCopy ciphertext];
+  [v4 setCiphertext:ciphertext];
 
-  v6 = [v3 authenticationCode];
-  [v4 setAuthenticationCode:v6];
+  authenticationCode = [ciphertextCopy authenticationCode];
+  [v4 setAuthenticationCode:authenticationCode];
 
-  v7 = [v3 initializationVector];
+  initializationVector = [ciphertextCopy initializationVector];
 
-  [v4 setInitializationVector:v7];
+  [v4 setInitializationVector:initializationVector];
 
   return v4;
 }

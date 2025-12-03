@@ -1,16 +1,16 @@
 @interface PSPointerSystemClientController
 - (PSPointerSystemClientController)init;
 - (PSPointerSystemClientControllerDelegate)delegate;
-- (id)_sceneIdentifierForIdentifierPrefix:(id)a3 displayConfiguration:(id)a4;
-- (void)_invalidateSceneForIdentifierPrefix:(id)a3 displayConfiguration:(id)a4;
-- (void)_prepareSceneForIdentifierPrefix:(id)a3 displayConfiguration:(id)a4;
-- (void)_setRootWindowTransform:(CGAffineTransform *)a3 sceneForIdentifierPrefix:(id)a4 displayConfiguration:(id)a5;
-- (void)invalidateScenesForPointerForDisplayConfiguration:(id)a3;
-- (void)prepareScenesForPointerForDisplayConfiguration:(id)a3;
-- (void)sceneDidActivate:(id)a3;
-- (void)sceneWillDeactivate:(id)a3 withError:(id)a4;
-- (void)setRootWindowTransform:(CGAffineTransform *)a3 forDisplayConfiguration:(id)a4;
-- (void)workspace:(id)a3 clientDidConnectWithHandshake:(id)a4;
+- (id)_sceneIdentifierForIdentifierPrefix:(id)prefix displayConfiguration:(id)configuration;
+- (void)_invalidateSceneForIdentifierPrefix:(id)prefix displayConfiguration:(id)configuration;
+- (void)_prepareSceneForIdentifierPrefix:(id)prefix displayConfiguration:(id)configuration;
+- (void)_setRootWindowTransform:(CGAffineTransform *)transform sceneForIdentifierPrefix:(id)prefix displayConfiguration:(id)configuration;
+- (void)invalidateScenesForPointerForDisplayConfiguration:(id)configuration;
+- (void)prepareScenesForPointerForDisplayConfiguration:(id)configuration;
+- (void)sceneDidActivate:(id)activate;
+- (void)sceneWillDeactivate:(id)deactivate withError:(id)error;
+- (void)setRootWindowTransform:(CGAffineTransform *)transform forDisplayConfiguration:(id)configuration;
+- (void)workspace:(id)workspace clientDidConnectWithHandshake:(id)handshake;
 @end
 
 @implementation PSPointerSystemClientController
@@ -30,32 +30,32 @@
   return v2;
 }
 
-- (void)prepareScenesForPointerForDisplayConfiguration:(id)a3
+- (void)prepareScenesForPointerForDisplayConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = PSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 hardwareIdentifier];
+    hardwareIdentifier = [configurationCopy hardwareIdentifier];
     v8 = 138543618;
-    v9 = v6;
+    v9 = hardwareIdentifier;
     v10 = 2112;
-    v11 = v4;
+    v11 = configurationCopy;
     _os_log_impl(&dword_25EA35000, v5, OS_LOG_TYPE_DEFAULT, "Preparing scenes for display with hardware identifier: %{public}@ displayConfiguration: %@", &v8, 0x16u);
   }
 
-  [(PSPointerSystemClientController *)self _prepareSceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.pointerRenderingScene" displayConfiguration:v4];
-  [(PSPointerSystemClientController *)self _prepareSceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.systemPointerScene" displayConfiguration:v4];
+  [(PSPointerSystemClientController *)self _prepareSceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.pointerRenderingScene" displayConfiguration:configurationCopy];
+  [(PSPointerSystemClientController *)self _prepareSceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.systemPointerScene" displayConfiguration:configurationCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_prepareSceneForIdentifierPrefix:(id)a3 displayConfiguration:(id)a4
+- (void)_prepareSceneForIdentifierPrefix:(id)prefix displayConfiguration:(id)configuration
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  prefixCopy = prefix;
+  configurationCopy = configuration;
   if (!self->_sceneWorkspace)
   {
     v8 = [objc_alloc(MEMORY[0x277D0AAE8]) initWithIdentifier:@"PSPointerClientControllerWorkspaceIdentifier"];
@@ -65,7 +65,7 @@
     [(FBSceneWorkspace *)self->_sceneWorkspace setDelegate:self];
   }
 
-  v10 = [(PSPointerSystemClientController *)self _sceneIdentifierForIdentifierPrefix:v6 displayConfiguration:v7];
+  v10 = [(PSPointerSystemClientController *)self _sceneIdentifierForIdentifierPrefix:prefixCopy displayConfiguration:configurationCopy];
   v11 = [(FBSceneWorkspace *)self->_sceneWorkspace sceneWithIdentifier:v10];
   v12 = PSLogCommon();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -82,13 +82,13 @@
     v27[1] = 3221225472;
     v27[2] = __89__PSPointerSystemClientController__prepareSceneForIdentifierPrefix_displayConfiguration___block_invoke_14;
     v27[3] = &unk_279A47238;
-    v28 = v7;
-    v14 = v7;
+    v28 = configurationCopy;
+    settings = configurationCopy;
     [v11 updateSettingsWithBlock:v27];
     [v11 activateWithTransitionContext:0];
     [v11 setDelegate:self];
-    v15 = [(PSPointerSystemClientController *)self delegate];
-    [v15 pointerClientController:self sceneDidActivate:v11];
+    delegate = [(PSPointerSystemClientController *)self delegate];
+    [delegate pointerClientController:self sceneDidActivate:v11];
 
     v16 = v28;
   }
@@ -115,18 +115,18 @@
 
     [v17 setPreferredLevel:v18];
     [v17 setPreferredInterfaceOrientation:1];
-    v14 = [MEMORY[0x277D0AD58] settings];
-    [v14 setDisplayConfiguration:v7];
-    [v7 bounds];
-    [v14 setFrame:?];
-    [v14 setLevel:v18];
-    [v14 setInterfaceOrientation:1];
-    [v14 setForeground:1];
+    settings = [MEMORY[0x277D0AD58] settings];
+    [settings setDisplayConfiguration:configurationCopy];
+    [configurationCopy bounds];
+    [settings setFrame:?];
+    [settings setLevel:v18];
+    [settings setInterfaceOrientation:1];
+    [settings setForeground:1];
     v19 = MEMORY[0x277D0AD50];
-    v20 = [MEMORY[0x277D0ADF8] specification];
-    v16 = [v19 parametersForSpecification:v20];
+    specification = [MEMORY[0x277D0ADF8] specification];
+    v16 = [v19 parametersForSpecification:specification];
 
-    [v16 setSettings:v14];
+    [v16 setSettings:settings];
     [v16 setClientSettings:v17];
     v21 = self->_pointerUIDProcessIdentity;
     v22 = self->_sceneWorkspace;
@@ -143,10 +143,10 @@
     v29[2] = __89__PSPointerSystemClientController__prepareSceneForIdentifierPrefix_displayConfiguration___block_invoke_2;
     v29[3] = &unk_279A47210;
     v30 = v17;
-    v31 = v7;
+    v31 = configurationCopy;
     v32 = v18;
     v33 = 1;
-    v24 = v7;
+    v24 = configurationCopy;
     v25 = v17;
     [v11 configureParameters:v29];
     [v11 addExtension:objc_opt_class()];
@@ -204,34 +204,34 @@ void __89__PSPointerSystemClientController__prepareSceneForIdentifierPrefix_disp
   [v4 setFrame:?];
 }
 
-- (void)invalidateScenesForPointerForDisplayConfiguration:(id)a3
+- (void)invalidateScenesForPointerForDisplayConfiguration:(id)configuration
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = PSLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 hardwareIdentifier];
+    hardwareIdentifier = [configurationCopy hardwareIdentifier];
     v8 = 138543618;
-    v9 = v6;
+    v9 = hardwareIdentifier;
     v10 = 2112;
-    v11 = v4;
+    v11 = configurationCopy;
     _os_log_impl(&dword_25EA35000, v5, OS_LOG_TYPE_DEFAULT, "Invalidating scenes for display with hardware identifier: %{public}@ displayConfiguration: %@", &v8, 0x16u);
   }
 
-  [(PSPointerSystemClientController *)self _invalidateSceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.pointerRenderingScene" displayConfiguration:v4];
-  [(PSPointerSystemClientController *)self _invalidateSceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.systemPointerScene" displayConfiguration:v4];
+  [(PSPointerSystemClientController *)self _invalidateSceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.pointerRenderingScene" displayConfiguration:configurationCopy];
+  [(PSPointerSystemClientController *)self _invalidateSceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.systemPointerScene" displayConfiguration:configurationCopy];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateSceneForIdentifierPrefix:(id)a3 displayConfiguration:(id)a4
+- (void)_invalidateSceneForIdentifierPrefix:(id)prefix displayConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  prefixCopy = prefix;
+  configurationCopy = configuration;
   if (self->_sceneWorkspace)
   {
-    v8 = [(PSPointerSystemClientController *)self _sceneIdentifierForIdentifierPrefix:v6 displayConfiguration:v7];
+    v8 = [(PSPointerSystemClientController *)self _sceneIdentifierForIdentifierPrefix:prefixCopy displayConfiguration:configurationCopy];
     v9 = [(FBSceneWorkspace *)self->_sceneWorkspace sceneWithIdentifier:v8];
     v10 = v9;
     if (v9)
@@ -244,7 +244,7 @@ void __89__PSPointerSystemClientController__prepareSceneForIdentifierPrefix_disp
       v11 = PSLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [PSPointerSystemClientController _invalidateSceneForIdentifierPrefix:v6 displayConfiguration:v11];
+        [PSPointerSystemClientController _invalidateSceneForIdentifierPrefix:prefixCopy displayConfiguration:v11];
       }
     }
   }
@@ -254,18 +254,18 @@ void __89__PSPointerSystemClientController__prepareSceneForIdentifierPrefix_disp
     v8 = PSLogCommon();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(PSPointerSystemClientController *)v6 _invalidateSceneForIdentifierPrefix:v7 displayConfiguration:v8];
+      [(PSPointerSystemClientController *)prefixCopy _invalidateSceneForIdentifierPrefix:configurationCopy displayConfiguration:v8];
     }
   }
 }
 
-- (id)_sceneIdentifierForIdentifierPrefix:(id)a3 displayConfiguration:(id)a4
+- (id)_sceneIdentifierForIdentifierPrefix:(id)prefix displayConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [a4 hardwareIdentifier];
-  if (v6)
+  prefixCopy = prefix;
+  hardwareIdentifier = [configuration hardwareIdentifier];
+  if (hardwareIdentifier)
   {
-    v7 = v6;
+    v7 = hardwareIdentifier;
   }
 
   else
@@ -273,30 +273,30 @@ void __89__PSPointerSystemClientController__prepareSceneForIdentifierPrefix_disp
     v7 = @"Main";
   }
 
-  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v5, v7];
+  v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", prefixCopy, v7];
 
   return v8;
 }
 
-- (void)setRootWindowTransform:(CGAffineTransform *)a3 forDisplayConfiguration:(id)a4
+- (void)setRootWindowTransform:(CGAffineTransform *)transform forDisplayConfiguration:(id)configuration
 {
-  v6 = *&a3->c;
-  v9 = *&a3->a;
+  v6 = *&transform->c;
+  v9 = *&transform->a;
   v10 = v6;
-  v11 = *&a3->tx;
-  v7 = a4;
-  [(PSPointerSystemClientController *)self _setRootWindowTransform:&v9 sceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.pointerRenderingScene" displayConfiguration:v7];
-  v8 = *&a3->c;
-  v9 = *&a3->a;
+  v11 = *&transform->tx;
+  configurationCopy = configuration;
+  [(PSPointerSystemClientController *)self _setRootWindowTransform:&v9 sceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.pointerRenderingScene" displayConfiguration:configurationCopy];
+  v8 = *&transform->c;
+  v9 = *&transform->a;
   v10 = v8;
-  v11 = *&a3->tx;
-  [(PSPointerSystemClientController *)self _setRootWindowTransform:&v9 sceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.systemPointerScene" displayConfiguration:v7];
+  v11 = *&transform->tx;
+  [(PSPointerSystemClientController *)self _setRootWindowTransform:&v9 sceneForIdentifierPrefix:@"com.apple.PointerUI.pointeruid.systemPointerScene" displayConfiguration:configurationCopy];
 }
 
-- (void)_setRootWindowTransform:(CGAffineTransform *)a3 sceneForIdentifierPrefix:(id)a4 displayConfiguration:(id)a5
+- (void)_setRootWindowTransform:(CGAffineTransform *)transform sceneForIdentifierPrefix:(id)prefix displayConfiguration:(id)configuration
 {
-  v8 = a4;
-  v9 = [(PSPointerSystemClientController *)self _sceneIdentifierForIdentifierPrefix:v8 displayConfiguration:a5];
+  prefixCopy = prefix;
+  v9 = [(PSPointerSystemClientController *)self _sceneIdentifierForIdentifierPrefix:prefixCopy displayConfiguration:configuration];
   v10 = [(FBSceneWorkspace *)self->_sceneWorkspace sceneWithIdentifier:v9];
   v11 = v10;
   if (v10)
@@ -305,10 +305,10 @@ void __89__PSPointerSystemClientController__prepareSceneForIdentifierPrefix_disp
     v14[1] = 3221225472;
     v14[2] = __105__PSPointerSystemClientController__setRootWindowTransform_sceneForIdentifierPrefix_displayConfiguration___block_invoke;
     v14[3] = &__block_descriptor_80_e33_v16__0__FBSMutableSceneSettings_8l;
-    v12 = *&a3->c;
-    v15 = *&a3->a;
+    v12 = *&transform->c;
+    v15 = *&transform->a;
     v16 = v12;
-    v17 = *&a3->tx;
+    v17 = *&transform->tx;
     [v10 updateSettingsWithBlock:v14];
   }
 
@@ -317,7 +317,7 @@ void __89__PSPointerSystemClientController__prepareSceneForIdentifierPrefix_disp
     v13 = PSLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [PSPointerSystemClientController _setRootWindowTransform:v8 sceneForIdentifierPrefix:v13 displayConfiguration:?];
+      [PSPointerSystemClientController _setRootWindowTransform:prefixCopy sceneForIdentifierPrefix:v13 displayConfiguration:?];
     }
   }
 }
@@ -335,11 +335,11 @@ void __105__PSPointerSystemClientController__setRootWindowTransform_sceneForIden
   }
 }
 
-- (void)workspace:(id)a3 clientDidConnectWithHandshake:(id)a4
+- (void)workspace:(id)workspace clientDidConnectWithHandshake:(id)handshake
 {
-  v5 = [a4 handle];
-  v6 = [v5 identity];
-  v7 = [v6 isEqual:self->_pointerUIDProcessIdentity];
+  handle = [handshake handle];
+  identity = [handle identity];
+  v7 = [identity isEqual:self->_pointerUIDProcessIdentity];
 
   if (v7)
   {
@@ -350,8 +350,8 @@ void __105__PSPointerSystemClientController__setRootWindowTransform_sceneForIden
       _os_log_impl(&dword_25EA35000, v8, OS_LOG_TYPE_DEFAULT, "pointeruid wants workspace handshake", v10, 2u);
     }
 
-    v9 = [(FBSceneWorkspace *)self->_sceneWorkspace allScenes];
-    [v9 enumerateObjectsUsingBlock:&__block_literal_global];
+    allScenes = [(FBSceneWorkspace *)self->_sceneWorkspace allScenes];
+    [allScenes enumerateObjectsUsingBlock:&__block_literal_global];
   }
 }
 
@@ -376,18 +376,18 @@ void __75__PSPointerSystemClientController_workspace_clientDidConnectWithHandsha
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sceneDidActivate:(id)a3
+- (void)sceneDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = [(PSPointerSystemClientController *)self delegate];
-  [v5 pointerClientController:self sceneDidActivate:v4];
+  activateCopy = activate;
+  delegate = [(PSPointerSystemClientController *)self delegate];
+  [delegate pointerClientController:self sceneDidActivate:activateCopy];
 }
 
-- (void)sceneWillDeactivate:(id)a3 withError:(id)a4
+- (void)sceneWillDeactivate:(id)deactivate withError:(id)error
 {
-  v5 = a3;
-  v6 = [(PSPointerSystemClientController *)self delegate];
-  [v6 pointerClientController:self sceneWillDeactivate:v5];
+  deactivateCopy = deactivate;
+  delegate = [(PSPointerSystemClientController *)self delegate];
+  [delegate pointerClientController:self sceneWillDeactivate:deactivateCopy];
 }
 
 - (PSPointerSystemClientControllerDelegate)delegate

@@ -1,10 +1,10 @@
 @interface OBAnimationController
-+ (id)packageForURL:(id)a3;
-- (OBAnimationController)initWithUrlToPackage:(id)a3 animationView:(id)a4 sizingTransformScale:(double)a5 animatedStates:(id)a6 startAtFirstState:(id)a7;
-- (id)_caStateForAnimationState:(id)a3;
-- (void)_initializeStartingStateForStopAnimation:(BOOL)a3;
-- (void)_startAnimationForLayer:(id)a3;
-- (void)_stepAnimationStatesForLayer:(id)a3;
++ (id)packageForURL:(id)l;
+- (OBAnimationController)initWithUrlToPackage:(id)package animationView:(id)view sizingTransformScale:(double)scale animatedStates:(id)states startAtFirstState:(id)state;
+- (id)_caStateForAnimationState:(id)state;
+- (void)_initializeStartingStateForStopAnimation:(BOOL)animation;
+- (void)_startAnimationForLayer:(id)layer;
+- (void)_stepAnimationStatesForLayer:(id)layer;
 - (void)startAnimation;
 - (void)stopAnimation;
 - (void)updateAnimationForAppearanceChange;
@@ -12,32 +12,32 @@
 
 @implementation OBAnimationController
 
-- (OBAnimationController)initWithUrlToPackage:(id)a3 animationView:(id)a4 sizingTransformScale:(double)a5 animatedStates:(id)a6 startAtFirstState:(id)a7
+- (OBAnimationController)initWithUrlToPackage:(id)package animationView:(id)view sizingTransformScale:(double)scale animatedStates:(id)states startAtFirstState:(id)state
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  packageCopy = package;
+  viewCopy = view;
+  statesCopy = states;
+  stateCopy = state;
   v26.receiver = self;
   v26.super_class = OBAnimationController;
   v16 = [(OBAnimationController *)&v26 init];
   if (v16)
   {
-    v17 = [objc_opt_class() packageForURL:v12];
+    v17 = [objc_opt_class() packageForURL:packageCopy];
     package = v16->_package;
     v16->_package = v17;
 
-    objc_storeStrong(&v16->_animationView, a4);
+    objc_storeStrong(&v16->_animationView, view);
     [(OBAnimationView *)v16->_animationView setAppearanceChangeDelegate:v16];
-    [v13 setPackage:v16->_package sizingTransformScale:a5];
-    v19 = [v14 copy];
+    [viewCopy setPackage:v16->_package sizingTransformScale:scale];
+    v19 = [statesCopy copy];
     animatedStates = v16->_animatedStates;
     v16->_animatedStates = v19;
 
-    objc_storeStrong(&v16->_firstState, a7);
+    objc_storeStrong(&v16->_firstState, state);
     v21 = objc_alloc(MEMORY[0x1E69794D0]);
-    v22 = [(CAPackage *)v16->_package rootLayer];
-    v23 = [v21 initWithLayer:v22];
+    rootLayer = [(CAPackage *)v16->_package rootLayer];
+    v23 = [v21 initWithLayer:rootLayer];
     stateController = v16->_stateController;
     v16->_stateController = v23;
 
@@ -50,23 +50,23 @@
 - (void)startAnimation
 {
   [(OBAnimationController *)self setCanceled:0];
-  v4 = [(OBAnimationController *)self package];
-  v3 = [v4 rootLayer];
-  [(OBAnimationController *)self _startAnimationForLayer:v3];
+  package = [(OBAnimationController *)self package];
+  rootLayer = [package rootLayer];
+  [(OBAnimationController *)self _startAnimationForLayer:rootLayer];
 }
 
 - (void)stopAnimation
 {
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
-  v3 = [(OBAnimationController *)self stateController];
+  stateController = [(OBAnimationController *)self stateController];
 
-  if (v3)
+  if (stateController)
   {
-    v4 = [(OBAnimationController *)self stateController];
-    [v4 cancelTimers];
+    stateController2 = [(OBAnimationController *)self stateController];
+    [stateController2 cancelTimers];
 
-    v5 = [(OBAnimationController *)self stateController];
-    v6 = [v5 removeAllStateChanges];
+    stateController3 = [(OBAnimationController *)self stateController];
+    removeAllStateChanges = [stateController3 removeAllStateChanges];
   }
 
   [(OBAnimationController *)self setStateIndex:0];
@@ -75,17 +75,17 @@
   [(OBAnimationController *)self _initializeStartingStateForStopAnimation:1];
 }
 
-- (void)_initializeStartingStateForStopAnimation:(BOOL)a3
+- (void)_initializeStartingStateForStopAnimation:(BOOL)animation
 {
-  v5 = [(OBAnimationController *)self animationView];
-  v6 = [v5 traitCollection];
+  animationView = [(OBAnimationController *)self animationView];
+  traitCollection = [animationView traitCollection];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__OBAnimationController__initializeStartingStateForStopAnimation___block_invoke;
   v7[3] = &unk_1E7C15608;
   v7[4] = self;
-  v8 = a3;
-  [v6 performAsCurrentTraitCollection:v7];
+  animationCopy = animation;
+  [traitCollection performAsCurrentTraitCollection:v7];
 }
 
 void __66__OBAnimationController__initializeStartingStateForStopAnimation___block_invoke(uint64_t a1)
@@ -141,51 +141,51 @@ void __66__OBAnimationController__initializeStartingStateForStopAnimation___bloc
   }
 }
 
-- (void)_startAnimationForLayer:(id)a3
+- (void)_startAnimationForLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self];
-  v5 = [(OBAnimationController *)self animationView];
-  v6 = [v5 traitCollection];
+  animationView = [(OBAnimationController *)self animationView];
+  traitCollection = [animationView traitCollection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__OBAnimationController__startAnimationForLayer___block_invoke;
   v8[3] = &unk_1E7C15630;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 performAsCurrentTraitCollection:v8];
+  v9 = layerCopy;
+  v7 = layerCopy;
+  [traitCollection performAsCurrentTraitCollection:v8];
 }
 
-- (void)_stepAnimationStatesForLayer:(id)a3
+- (void)_stepAnimationStatesForLayer:(id)layer
 {
-  v4 = a3;
-  v5 = [(OBAnimationController *)self stateIndex];
-  v6 = [(OBAnimationController *)self animatedStates];
-  if (v5 >= [v6 count])
+  layerCopy = layer;
+  stateIndex = [(OBAnimationController *)self stateIndex];
+  animatedStates = [(OBAnimationController *)self animatedStates];
+  if (stateIndex >= [animatedStates count])
   {
   }
 
   else
   {
-    v7 = [(OBAnimationController *)self canceled];
+    canceled = [(OBAnimationController *)self canceled];
 
-    if (!v7)
+    if (!canceled)
     {
-      v8 = [(OBAnimationController *)self animatedStates];
-      v9 = [v8 objectAtIndexedSubscript:{-[OBAnimationController stateIndex](self, "stateIndex")}];
+      animatedStates2 = [(OBAnimationController *)self animatedStates];
+      v9 = [animatedStates2 objectAtIndexedSubscript:{-[OBAnimationController stateIndex](self, "stateIndex")}];
 
-      v10 = [(OBAnimationController *)self animationView];
-      v11 = [v10 traitCollection];
+      animationView = [(OBAnimationController *)self animationView];
+      traitCollection = [animationView traitCollection];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __54__OBAnimationController__stepAnimationStatesForLayer___block_invoke;
       v13[3] = &unk_1E7C15658;
       v13[4] = self;
       v14 = v9;
-      v15 = v4;
+      v15 = layerCopy;
       v12 = v9;
-      [v11 performAsCurrentTraitCollection:v13];
+      [traitCollection performAsCurrentTraitCollection:v13];
     }
   }
 }
@@ -210,19 +210,19 @@ void __54__OBAnimationController__stepAnimationStatesForLayer___block_invoke(uin
   }
 }
 
-+ (id)packageForURL:(id)a3
++ (id)packageForURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = *MEMORY[0x1E6979EF8];
   v10 = 0;
-  v5 = [MEMORY[0x1E6979400] packageWithContentsOfURL:v3 type:v4 options:0 error:&v10];
+  v5 = [MEMORY[0x1E6979400] packageWithContentsOfURL:lCopy type:v4 options:0 error:&v10];
   v6 = v10;
   if (v6)
   {
     v7 = _OBLoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(OBAnimationController *)v3 packageForURL:v6, v7];
+      [(OBAnimationController *)lCopy packageForURL:v6, v7];
     }
 
     v8 = 0;
@@ -236,40 +236,40 @@ void __54__OBAnimationController__stepAnimationStatesForLayer___block_invoke(uin
   return v8;
 }
 
-- (id)_caStateForAnimationState:(id)a3
+- (id)_caStateForAnimationState:(id)state
 {
-  v4 = a3;
-  v5 = [(OBAnimationController *)self package];
-  v6 = [v5 rootLayer];
-  v7 = [v4 stateForLayer:v6];
+  stateCopy = state;
+  package = [(OBAnimationController *)self package];
+  rootLayer = [package rootLayer];
+  v7 = [stateCopy stateForLayer:rootLayer];
 
   return v7;
 }
 
 - (void)updateAnimationForAppearanceChange
 {
-  v3 = [(OBAnimationController *)self animatedStates];
-  v4 = [(OBAnimationController *)self stateIndex];
-  v5 = [(OBAnimationController *)self animatedStates];
-  v6 = [v5 count] - 1;
+  animatedStates = [(OBAnimationController *)self animatedStates];
+  stateIndex = [(OBAnimationController *)self stateIndex];
+  animatedStates2 = [(OBAnimationController *)self animatedStates];
+  v6 = [animatedStates2 count] - 1;
 
-  if (v4 >= v6)
+  if (stateIndex >= v6)
   {
     v7 = v6;
   }
 
   else
   {
-    v7 = v4;
+    v7 = stateIndex;
   }
 
-  v12 = [v3 objectAtIndexedSubscript:v7];
+  v12 = [animatedStates objectAtIndexedSubscript:v7];
 
   v8 = [(OBAnimationController *)self _caStateForAnimationState:v12];
-  v9 = [(OBAnimationController *)self stateController];
-  v10 = [(OBAnimationController *)self package];
-  v11 = [v10 rootLayer];
-  [v9 setState:v8 ofLayer:v11 transitionSpeed:0.0];
+  stateController = [(OBAnimationController *)self stateController];
+  package = [(OBAnimationController *)self package];
+  rootLayer = [package rootLayer];
+  [stateController setState:v8 ofLayer:rootLayer transitionSpeed:0.0];
 }
 
 + (void)packageForURL:(NSObject *)a3 .cold.1(void *a1, void *a2, NSObject *a3)

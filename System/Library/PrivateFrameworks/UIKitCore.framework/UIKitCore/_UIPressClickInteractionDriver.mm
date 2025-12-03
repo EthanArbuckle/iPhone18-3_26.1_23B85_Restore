@@ -1,16 +1,16 @@
 @interface _UIPressClickInteractionDriver
-- (CGPoint)locationInCoordinateSpace:(id)a3;
+- (CGPoint)locationInCoordinateSpace:(id)space;
 - (UIView)view;
 - (_UIClickInteractionDriverDelegate)delegate;
 - (_UIPressClickInteractionDriver)init;
 - (unint64_t)driverStyle;
-- (void)_addToView:(id)a3;
-- (void)_gestureRecognizerFailed:(id)a3;
-- (void)_handlePressGesture:(id)a3;
+- (void)_addToView:(id)view;
+- (void)_gestureRecognizerFailed:(id)failed;
+- (void)_handlePressGesture:(id)gesture;
 - (void)_removeFromView;
 - (void)cancelInteraction;
-- (void)setTriggers:(id)a3;
-- (void)setView:(id)a3;
+- (void)setTriggers:(id)triggers;
+- (void)setView:(id)view;
 @end
 
 @implementation _UIPressClickInteractionDriver
@@ -40,15 +40,15 @@
 
 - (void)_removeFromView
 {
-  v5 = [(_UIPressClickInteractionDriver *)self pressGR];
-  v3 = [v5 view];
-  v4 = [(_UIPressClickInteractionDriver *)self pressGR];
-  [v3 removeGestureRecognizer:v4];
+  pressGR = [(_UIPressClickInteractionDriver *)self pressGR];
+  view = [pressGR view];
+  pressGR2 = [(_UIPressClickInteractionDriver *)self pressGR];
+  [view removeGestureRecognizer:pressGR2];
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = obj;
@@ -69,38 +69,38 @@
   }
 }
 
-- (void)setTriggers:(id)a3
+- (void)setTriggers:(id)triggers
 {
-  v5 = a3;
-  if (self->_triggers != v5)
+  triggersCopy = triggers;
+  if (self->_triggers != triggersCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_triggers, a3);
-    v6 = [(_UIPressClickInteractionDriver *)self pressGR];
-    v7 = [(_UIPressClickInteractionDriver *)self triggers];
-    [v6 setTriggers:v7];
+    v8 = triggersCopy;
+    objc_storeStrong(&self->_triggers, triggers);
+    pressGR = [(_UIPressClickInteractionDriver *)self pressGR];
+    triggers = [(_UIPressClickInteractionDriver *)self triggers];
+    [pressGR setTriggers:triggers];
 
-    v5 = v8;
+    triggersCopy = v8;
   }
 }
 
-- (CGPoint)locationInCoordinateSpace:(id)a3
+- (CGPoint)locationInCoordinateSpace:(id)space
 {
-  v4 = a3;
-  v5 = [(_UIPressClickInteractionDriver *)self view];
-  [v5 bounds];
+  spaceCopy = space;
+  view = [(_UIPressClickInteractionDriver *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v5 _focusSystem];
-  v15 = [v14 focusedItem];
+  _focusSystem = [view _focusSystem];
+  focusedItem = [_focusSystem focusedItem];
 
-  if (v15)
+  if (focusedItem)
   {
-    v16 = _UIParentCoordinateSpaceForFocusItem(v15);
+    v16 = _UIParentCoordinateSpaceForFocusItem(focusedItem);
 
-    [v15 frame];
+    [focusedItem frame];
     v19 = v18 + v17 * 0.5;
     v22 = v21 + v20 * 0.5;
   }
@@ -109,10 +109,10 @@
   {
     v19 = v7 + v11 * 0.5;
     v22 = v9 + v13 * 0.5;
-    v16 = v5;
+    v16 = view;
   }
 
-  [v16 convertPoint:v4 toCoordinateSpace:{v19, v22}];
+  [v16 convertPoint:spaceCopy toCoordinateSpace:{v19, v22}];
   v24 = v23;
   v26 = v25;
 
@@ -125,21 +125,21 @@
 
 - (void)cancelInteraction
 {
-  v3 = [(_UIPressClickInteractionDriver *)self pressGR];
-  [v3 setEnabled:0];
+  pressGR = [(_UIPressClickInteractionDriver *)self pressGR];
+  [pressGR setEnabled:0];
 
-  v4 = [(_UIPressClickInteractionDriver *)self pressGR];
-  [v4 setEnabled:1];
+  pressGR2 = [(_UIPressClickInteractionDriver *)self pressGR];
+  [pressGR2 setEnabled:1];
 }
 
 - (unint64_t)driverStyle
 {
-  v2 = [(_UIPressClickInteractionDriver *)self pressGR];
-  v3 = [v2 activeTrigger];
-  v4 = v3;
-  if (v3)
+  pressGR = [(_UIPressClickInteractionDriver *)self pressGR];
+  activeTrigger = [pressGR activeTrigger];
+  v4 = activeTrigger;
+  if (activeTrigger)
   {
-    [v3 _UIPressTriggerValue];
+    [activeTrigger _UIPressTriggerValue];
     v5 = v7;
   }
 
@@ -151,54 +151,54 @@
   return v5;
 }
 
-- (void)_addToView:(id)a3
+- (void)_addToView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIPressClickInteractionDriver *)self pressGR];
+  viewCopy = view;
+  pressGR = [(_UIPressClickInteractionDriver *)self pressGR];
 
-  if (!v5)
+  if (!pressGR)
   {
     v6 = [[_UISimplePressGestureRecognizer alloc] initWithTarget:self action:sel__handlePressGesture_];
     [(_UIPressClickInteractionDriver *)self setPressGR:v6];
 
-    v7 = [(_UIPressClickInteractionDriver *)self pressGR];
-    [v7 setName:@"com.apple.UIKit.keyPressClickDriverPrimary"];
+    pressGR2 = [(_UIPressClickInteractionDriver *)self pressGR];
+    [pressGR2 setName:@"com.apple.UIKit.keyPressClickDriverPrimary"];
 
-    v8 = [(_UIPressClickInteractionDriver *)self pressGR];
-    [v8 setDelegate:self];
+    pressGR3 = [(_UIPressClickInteractionDriver *)self pressGR];
+    [pressGR3 setDelegate:self];
 
-    v9 = [(_UIPressClickInteractionDriver *)self pressGR];
-    v10 = [(_UIPressClickInteractionDriver *)self triggers];
-    [v9 setTriggers:v10];
+    pressGR4 = [(_UIPressClickInteractionDriver *)self pressGR];
+    triggers = [(_UIPressClickInteractionDriver *)self triggers];
+    [pressGR4 setTriggers:triggers];
   }
 
-  v11 = [(_UIPressClickInteractionDriver *)self pressGR];
-  [v4 addGestureRecognizer:v11];
+  pressGR5 = [(_UIPressClickInteractionDriver *)self pressGR];
+  [viewCopy addGestureRecognizer:pressGR5];
 }
 
-- (void)_handlePressGesture:(id)a3
+- (void)_handlePressGesture:(id)gesture
 {
-  if ([a3 state] == 1)
+  if ([gesture state] == 1)
   {
-    v4 = [(_UIPressClickInteractionDriver *)self delegate];
+    delegate = [(_UIPressClickInteractionDriver *)self delegate];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __54___UIPressClickInteractionDriver__handlePressGesture___block_invoke;
     v5[3] = &unk_1E7105EF8;
     v5[4] = self;
-    [v4 clickDriver:self shouldBegin:v5];
+    [delegate clickDriver:self shouldBegin:v5];
   }
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  v4 = a3;
-  v5 = [(_UIPressClickInteractionDriver *)self pressGR];
+  failedCopy = failed;
+  pressGR = [(_UIPressClickInteractionDriver *)self pressGR];
 
-  if (v5 == v4)
+  if (pressGR == failedCopy)
   {
-    v6 = [(_UIPressClickInteractionDriver *)self delegate];
-    [v6 clickDriver:self didPerformEvent:3];
+    delegate = [(_UIPressClickInteractionDriver *)self delegate];
+    [delegate clickDriver:self didPerformEvent:3];
   }
 }
 

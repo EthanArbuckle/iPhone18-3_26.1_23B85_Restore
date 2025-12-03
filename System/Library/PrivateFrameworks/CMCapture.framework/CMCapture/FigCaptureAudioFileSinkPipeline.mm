@@ -1,6 +1,6 @@
 @interface FigCaptureAudioFileSinkPipeline
-- (id)_buildAudioFileSinkPipeline:(uint64_t)a3 graph:(uint64_t)a4 sourceAudioOutput:(uint64_t)a5 recordingStatusDelegate:;
-- (id)initWithConfiguration:(uint64_t)a3 graph:(uint64_t)a4 name:(uint64_t)a5 sourceAudioOutput:(uint64_t)a6 recordingStatusDelegate:;
+- (id)_buildAudioFileSinkPipeline:(uint64_t)pipeline graph:(uint64_t)graph sourceAudioOutput:(uint64_t)output recordingStatusDelegate:;
+- (id)initWithConfiguration:(uint64_t)configuration graph:(uint64_t)graph name:(uint64_t)name sourceAudioOutput:(uint64_t)output recordingStatusDelegate:;
 - (uint64_t)audioFileSinkNode;
 - (uint64_t)fileCoordinatorNode;
 - (void)dealloc;
@@ -17,18 +17,18 @@
   [(FigCaptureSinkPipeline *)&v3 dealloc];
 }
 
-- (id)initWithConfiguration:(uint64_t)a3 graph:(uint64_t)a4 name:(uint64_t)a5 sourceAudioOutput:(uint64_t)a6 recordingStatusDelegate:
+- (id)initWithConfiguration:(uint64_t)configuration graph:(uint64_t)graph name:(uint64_t)name sourceAudioOutput:(uint64_t)output recordingStatusDelegate:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = FigCaptureAudioFileSinkPipeline;
-  v9 = objc_msgSendSuper2(&v13, sel_initWithGraph_name_sinkID_, a3, a4, [objc_msgSend(a2 "sinkConfiguration")]);
+  v9 = objc_msgSendSuper2(&v13, sel_initWithGraph_name_sinkID_, configuration, graph, [objc_msgSend(a2 "sinkConfiguration")]);
   v11 = v9;
-  if (v9 && [(FigCaptureAudioFileSinkPipeline *)v9 _buildAudioFileSinkPipeline:v10 graph:a3 sourceAudioOutput:a5 recordingStatusDelegate:a6])
+  if (v9 && [(FigCaptureAudioFileSinkPipeline *)v9 _buildAudioFileSinkPipeline:v10 graph:configuration sourceAudioOutput:name recordingStatusDelegate:output])
   {
     fig_log_get_emitter();
     FigDebugAssert3();
@@ -39,7 +39,7 @@
   return v11;
 }
 
-- (id)_buildAudioFileSinkPipeline:(uint64_t)a3 graph:(uint64_t)a4 sourceAudioOutput:(uint64_t)a5 recordingStatusDelegate:
+- (id)_buildAudioFileSinkPipeline:(uint64_t)pipeline graph:(uint64_t)graph sourceAudioOutput:(uint64_t)output recordingStatusDelegate:
 {
   if (result)
   {
@@ -51,7 +51,7 @@
     {
       v16 = v8;
       v7[6] = v16;
-      if (!a4)
+      if (!graph)
       {
 LABEL_6:
         v17 = objc_alloc_init(BWAudioConverterNode);
@@ -62,7 +62,7 @@ LABEL_6:
           if (OUTLINED_FUNCTION_2_125(&v42, v27, v28, v29, v30, v31, v32, v33, v36, v38, v41, v7, FigCaptureAudioFileSinkPipeline, v43.receiver, v43.super_class, v44.receiver, v44.super_class, v45[0]))
           {
             v7[8] = v26;
-            [(BWFileSinkNode *)v26 setRecordingStatusDelegate:a5];
+            [(BWFileSinkNode *)v26 setRecordingStatusDelegate:output];
             if (OUTLINED_FUNCTION_1_132([v7[8] input]))
             {
               goto LABEL_10;

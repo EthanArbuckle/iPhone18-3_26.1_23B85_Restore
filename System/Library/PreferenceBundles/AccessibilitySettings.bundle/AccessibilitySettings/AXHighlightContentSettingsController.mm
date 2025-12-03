@@ -1,40 +1,40 @@
 @interface AXHighlightContentSettingsController
 - (BOOL)shouldShowSentenceItems;
 - (BOOL)shouldShowWordColorItems;
-- (id)_colorForStyle:(id)a3;
-- (id)highlightEnabled:(id)a3;
+- (id)_colorForStyle:(id)style;
+- (id)highlightEnabled:(id)enabled;
 - (id)specifiers;
 - (void)_insertColorGroupingHeaderIfNecessary;
 - (void)_reloadHighlightContentSpecifier;
 - (void)loadView;
-- (void)setContentHighlightItemsHidden:(BOOL)a3;
-- (void)setHighlightEnabled:(id)a3 specifier:(id)a4;
-- (void)setShowSentenceItems:(BOOL)a3;
-- (void)setShowWordColorItems:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setContentHighlightItemsHidden:(BOOL)hidden;
+- (void)setHighlightEnabled:(id)enabled specifier:(id)specifier;
+- (void)setShowSentenceItems:(BOOL)items;
+- (void)setShowWordColorItems:(BOOL)items;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)updateLayout;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 @end
 
 @implementation AXHighlightContentSettingsController
 
-- (void)setContentHighlightItemsHidden:(BOOL)a3
+- (void)setContentHighlightItemsHidden:(BOOL)hidden
 {
-  if (self->_contentHighlightItemsHidden != a3)
+  if (self->_contentHighlightItemsHidden != hidden)
   {
-    v3 = a3;
-    self->_contentHighlightItemsHidden = a3;
+    hiddenCopy = hidden;
+    self->_contentHighlightItemsHidden = hidden;
     [(AXHighlightContentSettingsController *)self beginUpdates];
-    if (v3)
+    if (hiddenCopy)
     {
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v5 = [(AXHighlightContentSettingsController *)self sentenceColorHighlightItems];
-      v6 = [v5 countByEnumeratingWithState:&v46 objects:v54 count:16];
+      sentenceColorHighlightItems = [(AXHighlightContentSettingsController *)self sentenceColorHighlightItems];
+      v6 = [sentenceColorHighlightItems countByEnumeratingWithState:&v46 objects:v54 count:16];
       if (v6)
       {
         v7 = v6;
@@ -45,13 +45,13 @@
           {
             if (*v47 != v8)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(sentenceColorHighlightItems);
             }
 
             [(AXHighlightContentSettingsController *)self removeSpecifier:*(*(&v46 + 1) + 8 * i) animated:1];
           }
 
-          v7 = [v5 countByEnumeratingWithState:&v46 objects:v54 count:16];
+          v7 = [sentenceColorHighlightItems countByEnumeratingWithState:&v46 objects:v54 count:16];
         }
 
         while (v7);
@@ -61,8 +61,8 @@
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v10 = [(AXHighlightContentSettingsController *)self wordColorHighlightItems];
-      v11 = [v10 countByEnumeratingWithState:&v42 objects:v53 count:16];
+      wordColorHighlightItems = [(AXHighlightContentSettingsController *)self wordColorHighlightItems];
+      v11 = [wordColorHighlightItems countByEnumeratingWithState:&v42 objects:v53 count:16];
       if (v11)
       {
         v12 = v11;
@@ -73,13 +73,13 @@
           {
             if (*v43 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(wordColorHighlightItems);
             }
 
             [(AXHighlightContentSettingsController *)self removeSpecifier:*(*(&v42 + 1) + 8 * j) animated:1];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v42 objects:v53 count:16];
+          v12 = [wordColorHighlightItems countByEnumeratingWithState:&v42 objects:v53 count:16];
         }
 
         while (v12);
@@ -89,8 +89,8 @@
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v15 = [(AXHighlightContentSettingsController *)self colorHighlightItems];
-      v16 = [v15 countByEnumeratingWithState:&v38 objects:v52 count:16];
+      colorHighlightItems = [(AXHighlightContentSettingsController *)self colorHighlightItems];
+      v16 = [colorHighlightItems countByEnumeratingWithState:&v38 objects:v52 count:16];
       if (v16)
       {
         v17 = v16;
@@ -101,13 +101,13 @@
           {
             if (*v39 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(colorHighlightItems);
             }
 
             [(AXHighlightContentSettingsController *)self removeSpecifier:*(*(&v38 + 1) + 8 * k) animated:1];
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v38 objects:v52 count:16];
+          v17 = [colorHighlightItems countByEnumeratingWithState:&v38 objects:v52 count:16];
         }
 
         while (v17);
@@ -117,8 +117,8 @@
       v37 = 0u;
       v34 = 0u;
       v35 = 0u;
-      v20 = [(AXHighlightContentSettingsController *)self sentenceHighlightItems];
-      v21 = [v20 countByEnumeratingWithState:&v34 objects:v51 count:16];
+      sentenceHighlightItems = [(AXHighlightContentSettingsController *)self sentenceHighlightItems];
+      v21 = [sentenceHighlightItems countByEnumeratingWithState:&v34 objects:v51 count:16];
       if (v21)
       {
         v22 = v21;
@@ -129,13 +129,13 @@
           {
             if (*v35 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(sentenceHighlightItems);
             }
 
             [(AXHighlightContentSettingsController *)self removeSpecifier:*(*(&v34 + 1) + 8 * m) animated:1];
           }
 
-          v22 = [v20 countByEnumeratingWithState:&v34 objects:v51 count:16];
+          v22 = [sentenceHighlightItems countByEnumeratingWithState:&v34 objects:v51 count:16];
         }
 
         while (v22);
@@ -145,8 +145,8 @@
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v25 = [(AXHighlightContentSettingsController *)self contentHighlightItems];
-      v26 = [v25 countByEnumeratingWithState:&v30 objects:v50 count:16];
+      contentHighlightItems = [(AXHighlightContentSettingsController *)self contentHighlightItems];
+      v26 = [contentHighlightItems countByEnumeratingWithState:&v30 objects:v50 count:16];
       if (v26)
       {
         v27 = v26;
@@ -157,13 +157,13 @@
           {
             if (*v31 != v28)
             {
-              objc_enumerationMutation(v25);
+              objc_enumerationMutation(contentHighlightItems);
             }
 
             [(AXHighlightContentSettingsController *)self removeSpecifier:*(*(&v30 + 1) + 8 * n) animated:1];
           }
 
-          v27 = [v25 countByEnumeratingWithState:&v30 objects:v50 count:16];
+          v27 = [contentHighlightItems countByEnumeratingWithState:&v30 objects:v50 count:16];
         }
 
         while (v27);
@@ -172,8 +172,8 @@
 
     else
     {
-      v25 = [(AXHighlightContentSettingsController *)self contentHighlightItems];
-      [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:v25 afterSpecifierID:@"HighlightContent" animated:1];
+      contentHighlightItems = [(AXHighlightContentSettingsController *)self contentHighlightItems];
+      [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:contentHighlightItems afterSpecifierID:@"HighlightContent" animated:1];
     }
 
     [(AXHighlightContentSettingsController *)self endUpdates];
@@ -182,31 +182,31 @@
 
 - (void)_insertColorGroupingHeaderIfNecessary
 {
-  v3 = [(AXHighlightContentSettingsController *)self specifiers];
-  v4 = [v3 indexOfSpecifierWithID:@"COLOR_CHOICE"];
+  specifiers = [(AXHighlightContentSettingsController *)self specifiers];
+  v4 = [specifiers indexOfSpecifierWithID:@"COLOR_CHOICE"];
 
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(AXHighlightContentSettingsController *)self colorHighlightItems];
-    v5 = [(AXHighlightContentSettingsController *)self contentHighlightItems];
-    v6 = [v5 lastObject];
-    v7 = [v6 propertyForKey:PSIDKey];
-    [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:v8 afterSpecifierID:v7 animated:1];
+    colorHighlightItems = [(AXHighlightContentSettingsController *)self colorHighlightItems];
+    contentHighlightItems = [(AXHighlightContentSettingsController *)self contentHighlightItems];
+    lastObject = [contentHighlightItems lastObject];
+    v7 = [lastObject propertyForKey:PSIDKey];
+    [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:colorHighlightItems afterSpecifierID:v7 animated:1];
   }
 }
 
-- (void)setShowWordColorItems:(BOOL)a3
+- (void)setShowWordColorItems:(BOOL)items
 {
-  v3 = a3;
+  itemsCopy = items;
   [(AXHighlightContentSettingsController *)self beginUpdates];
-  if (!v3)
+  if (!itemsCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [(AXHighlightContentSettingsController *)self wordColorHighlightItems];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    wordColorHighlightItems = [(AXHighlightContentSettingsController *)self wordColorHighlightItems];
+    v10 = [wordColorHighlightItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = v10;
@@ -218,7 +218,7 @@
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(wordColorHighlightItems);
           }
 
           [(AXHighlightContentSettingsController *)self removeSpecifier:*(*(&v14 + 1) + 8 * v13) animated:1];
@@ -226,7 +226,7 @@
         }
 
         while (v11 != v13);
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [wordColorHighlightItems countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v11);
@@ -235,33 +235,33 @@
     goto LABEL_11;
   }
 
-  v5 = [(AXHighlightContentSettingsController *)self specifiers];
-  v6 = [(AXHighlightContentSettingsController *)self wordColorHighlightItems];
-  v7 = [v6 firstObject];
-  v8 = [v5 containsObject:v7];
+  specifiers = [(AXHighlightContentSettingsController *)self specifiers];
+  wordColorHighlightItems2 = [(AXHighlightContentSettingsController *)self wordColorHighlightItems];
+  firstObject = [wordColorHighlightItems2 firstObject];
+  v8 = [specifiers containsObject:firstObject];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(AXHighlightContentSettingsController *)self wordColorHighlightItems];
-    [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:v9 afterSpecifierID:@"COLOR_CHOICE" animated:1];
+    wordColorHighlightItems = [(AXHighlightContentSettingsController *)self wordColorHighlightItems];
+    [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:wordColorHighlightItems afterSpecifierID:@"COLOR_CHOICE" animated:1];
 LABEL_11:
   }
 
   [(AXHighlightContentSettingsController *)self endUpdates];
 }
 
-- (void)setShowSentenceItems:(BOOL)a3
+- (void)setShowSentenceItems:(BOOL)items
 {
-  v3 = a3;
+  itemsCopy = items;
   [(AXHighlightContentSettingsController *)self beginUpdates];
-  if (!v3)
+  if (!itemsCopy)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v15 = [(AXHighlightContentSettingsController *)self sentenceColorHighlightItems];
-    v16 = [v15 countByEnumeratingWithState:&v28 objects:v33 count:16];
+    sentenceColorHighlightItems = [(AXHighlightContentSettingsController *)self sentenceColorHighlightItems];
+    v16 = [sentenceColorHighlightItems countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v16)
     {
       v17 = v16;
@@ -273,7 +273,7 @@ LABEL_11:
         {
           if (*v29 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(sentenceColorHighlightItems);
           }
 
           [(AXHighlightContentSettingsController *)self removeSpecifier:*(*(&v28 + 1) + 8 * v19) animated:1];
@@ -281,7 +281,7 @@ LABEL_11:
         }
 
         while (v17 != v19);
-        v17 = [v15 countByEnumeratingWithState:&v28 objects:v33 count:16];
+        v17 = [sentenceColorHighlightItems countByEnumeratingWithState:&v28 objects:v33 count:16];
       }
 
       while (v17);
@@ -291,8 +291,8 @@ LABEL_11:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v14 = [(AXHighlightContentSettingsController *)self sentenceHighlightItems];
-    v20 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+    sentenceHighlightItems = [(AXHighlightContentSettingsController *)self sentenceHighlightItems];
+    v20 = [sentenceHighlightItems countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v20)
     {
       v21 = v20;
@@ -304,7 +304,7 @@ LABEL_11:
         {
           if (*v25 != v22)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(sentenceHighlightItems);
           }
 
           [(AXHighlightContentSettingsController *)self removeSpecifier:*(*(&v24 + 1) + 8 * v23) animated:1];
@@ -312,7 +312,7 @@ LABEL_11:
         }
 
         while (v21 != v23);
-        v21 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        v21 = [sentenceHighlightItems countByEnumeratingWithState:&v24 objects:v32 count:16];
       }
 
       while (v21);
@@ -321,26 +321,26 @@ LABEL_11:
     goto LABEL_20;
   }
 
-  v5 = [(AXHighlightContentSettingsController *)self specifiers];
-  v6 = [(AXHighlightContentSettingsController *)self sentenceHighlightItems];
-  v7 = [v6 firstObject];
-  v8 = [v5 containsObject:v7];
+  specifiers = [(AXHighlightContentSettingsController *)self specifiers];
+  sentenceHighlightItems2 = [(AXHighlightContentSettingsController *)self sentenceHighlightItems];
+  firstObject = [sentenceHighlightItems2 firstObject];
+  v8 = [specifiers containsObject:firstObject];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(AXHighlightContentSettingsController *)self sentenceHighlightItems];
-    [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:v9 afterSpecifierID:@"HighlightSentenceOption" animated:1];
+    sentenceHighlightItems3 = [(AXHighlightContentSettingsController *)self sentenceHighlightItems];
+    [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:sentenceHighlightItems3 afterSpecifierID:@"HighlightSentenceOption" animated:1];
   }
 
-  v10 = [(AXHighlightContentSettingsController *)self specifiers];
-  v11 = [(AXHighlightContentSettingsController *)self sentenceColorHighlightItems];
-  v12 = [v11 firstObject];
-  v13 = [v10 containsObject:v12];
+  specifiers2 = [(AXHighlightContentSettingsController *)self specifiers];
+  sentenceColorHighlightItems2 = [(AXHighlightContentSettingsController *)self sentenceColorHighlightItems];
+  firstObject2 = [sentenceColorHighlightItems2 firstObject];
+  v13 = [specifiers2 containsObject:firstObject2];
 
   if ((v13 & 1) == 0)
   {
-    v14 = [(AXHighlightContentSettingsController *)self sentenceColorHighlightItems];
-    [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:v14 afterSpecifierID:@"WordHighlightColor" animated:1];
+    sentenceHighlightItems = [(AXHighlightContentSettingsController *)self sentenceColorHighlightItems];
+    [(AXHighlightContentSettingsController *)self insertContiguousSpecifiers:sentenceHighlightItems afterSpecifierID:@"WordHighlightColor" animated:1];
 LABEL_20:
   }
 
@@ -353,7 +353,7 @@ LABEL_20:
   if (!v3)
   {
     v34 = OBJC_IVAR___PSListController__specifiers;
-    v35 = self;
+    selfCopy = self;
     v4 = [(AXHighlightContentSettingsController *)self loadSpecifiersFromPlistName:@"HighlightContentSettings" target:?];
     v40 = +[NSMutableArray array];
     v39 = +[NSMutableArray array];
@@ -392,41 +392,41 @@ LABEL_20:
           }
 
           v14 = [v10 propertyForKey:@"hideWhenHighlightContentDisabled"];
-          v15 = [v14 BOOLValue];
+          bOOLValue = [v14 BOOLValue];
 
-          if (v15)
+          if (bOOLValue)
           {
             [v40 addObject:v10];
           }
 
           v16 = [v10 propertyForKey:@"hideWhenColorHighlightContentDisabled"];
-          v17 = [v16 BOOLValue];
+          bOOLValue2 = [v16 BOOLValue];
 
-          if (v17)
+          if (bOOLValue2)
           {
             [v38 addObject:v10];
           }
 
           v18 = [v10 propertyForKey:@"hideWhenWordColorHighlightContentDisabled"];
-          v19 = [v18 BOOLValue];
+          bOOLValue3 = [v18 BOOLValue];
 
-          if (v19)
+          if (bOOLValue3)
           {
             [v36 addObject:v10];
           }
 
           v20 = [v10 propertyForKey:@"hideWhenSentenceColorHighlightContentDisabled"];
-          v21 = [v20 BOOLValue];
+          bOOLValue4 = [v20 BOOLValue];
 
-          if (v21)
+          if (bOOLValue4)
           {
             [v37 addObject:v10];
           }
 
           v22 = [v10 propertyForKey:@"hideWhenSentenceHighlightDisabled"];
-          v23 = [v22 BOOLValue];
+          bOOLValue5 = [v22 BOOLValue];
 
-          if (v23)
+          if (bOOLValue5)
           {
             [v39 addObject:v10];
           }
@@ -443,50 +443,50 @@ LABEL_20:
       v7 = 0;
     }
 
-    [(AXHighlightContentSettingsController *)v35 setWordColorHighlightItems:v36];
-    [(AXHighlightContentSettingsController *)v35 setSentenceColorHighlightItems:v37];
-    [(AXHighlightContentSettingsController *)v35 setColorHighlightItems:v38];
-    [(AXHighlightContentSettingsController *)v35 setContentHighlightItems:v40];
-    [(AXHighlightContentSettingsController *)v35 setSentenceHighlightItems:v39];
-    v35->_contentHighlightItemsHidden = _AXSQuickSpeakHighlightTextEnabled() == 0;
-    v35->_sentenceHighlightItemsHidden = ![(AXHighlightContentSettingsController *)v35 shouldShowSentenceItems];
-    v24 = [(AXHighlightContentSettingsController *)v35 shouldShowWordColorItems];
-    if (v35->_contentHighlightItemsHidden)
+    [(AXHighlightContentSettingsController *)selfCopy setWordColorHighlightItems:v36];
+    [(AXHighlightContentSettingsController *)selfCopy setSentenceColorHighlightItems:v37];
+    [(AXHighlightContentSettingsController *)selfCopy setColorHighlightItems:v38];
+    [(AXHighlightContentSettingsController *)selfCopy setContentHighlightItems:v40];
+    [(AXHighlightContentSettingsController *)selfCopy setSentenceHighlightItems:v39];
+    selfCopy->_contentHighlightItemsHidden = _AXSQuickSpeakHighlightTextEnabled() == 0;
+    selfCopy->_sentenceHighlightItemsHidden = ![(AXHighlightContentSettingsController *)selfCopy shouldShowSentenceItems];
+    shouldShowWordColorItems = [(AXHighlightContentSettingsController *)selfCopy shouldShowWordColorItems];
+    if (selfCopy->_contentHighlightItemsHidden)
     {
-      v25 = [(AXHighlightContentSettingsController *)v35 contentHighlightItems];
-      [obj removeObjectsInArray:v25];
+      contentHighlightItems = [(AXHighlightContentSettingsController *)selfCopy contentHighlightItems];
+      [obj removeObjectsInArray:contentHighlightItems];
 
-      v26 = [(AXHighlightContentSettingsController *)v35 colorHighlightItems];
-      [obj removeObjectsInArray:v26];
+      colorHighlightItems = [(AXHighlightContentSettingsController *)selfCopy colorHighlightItems];
+      [obj removeObjectsInArray:colorHighlightItems];
     }
 
-    if (v35->_sentenceHighlightItemsHidden)
+    if (selfCopy->_sentenceHighlightItemsHidden)
     {
-      v27 = [(AXHighlightContentSettingsController *)v35 sentenceHighlightItems];
-      [obj removeObjectsInArray:v27];
+      sentenceHighlightItems = [(AXHighlightContentSettingsController *)selfCopy sentenceHighlightItems];
+      [obj removeObjectsInArray:sentenceHighlightItems];
 
-      v28 = [(AXHighlightContentSettingsController *)v35 sentenceColorHighlightItems];
-      [obj removeObjectsInArray:v28];
+      sentenceColorHighlightItems = [(AXHighlightContentSettingsController *)selfCopy sentenceColorHighlightItems];
+      [obj removeObjectsInArray:sentenceColorHighlightItems];
     }
 
-    if ((v24 & 1) == 0)
+    if ((shouldShowWordColorItems & 1) == 0)
     {
-      v29 = [(AXHighlightContentSettingsController *)v35 wordColorHighlightItems];
-      [obj removeObjectsInArray:v29];
+      wordColorHighlightItems = [(AXHighlightContentSettingsController *)selfCopy wordColorHighlightItems];
+      [obj removeObjectsInArray:wordColorHighlightItems];
     }
 
-    if ([(AXHighlightContentSettingsController *)v35 shouldShowFooterText]&& v7)
+    if ([(AXHighlightContentSettingsController *)selfCopy shouldShowFooterText]&& v7)
     {
       v30 = settingsLocString(@"HighlightContentFooterText", @"HighlightContentSettings");
       [v7 setProperty:v30 forKey:PSFooterTextGroupKey];
     }
 
-    [(AXHighlightContentSettingsController *)v35 setAllSpecifiersUnsearchable:obj];
-    v31 = *&v35->AXUISettingsSetupCapableListController_opaque[v34];
-    *&v35->AXUISettingsSetupCapableListController_opaque[v34] = obj;
+    [(AXHighlightContentSettingsController *)selfCopy setAllSpecifiersUnsearchable:obj];
+    v31 = *&selfCopy->AXUISettingsSetupCapableListController_opaque[v34];
+    *&selfCopy->AXUISettingsSetupCapableListController_opaque[v34] = obj;
     v32 = obj;
 
-    v3 = *&v35->AXUISettingsSetupCapableListController_opaque[v34];
+    v3 = *&selfCopy->AXUISettingsSetupCapableListController_opaque[v34];
   }
 
   return v3;
@@ -569,32 +569,32 @@ void __48__AXHighlightContentSettingsController_loadView__block_invoke_3(uint64_
   [(AXHighlightContentSettingsController *)self updateLayout];
 }
 
-- (id)_colorForStyle:(id)a3
+- (id)_colorForStyle:(id)style
 {
-  v3 = [a3 propertyForKey:PSIDKey];
+  v3 = [style propertyForKey:PSIDKey];
   v4 = [v3 isEqualToString:@"WordHighlightColor"];
   v5 = +[AXSettings sharedInstance];
   v6 = v5;
   if (v4)
   {
-    v7 = [v5 quickSpeakWordHighlightColor];
+    quickSpeakWordHighlightColor = [v5 quickSpeakWordHighlightColor];
   }
 
   else
   {
-    v7 = [v5 quickSpeakSentenceHighlightColor];
+    quickSpeakWordHighlightColor = [v5 quickSpeakSentenceHighlightColor];
   }
 
-  v8 = v7;
+  v8 = quickSpeakWordHighlightColor;
 
   return [AXSpeakHighlightColorController nameForColor:v8];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXHighlightContentSettingsController;
-  [(AXHighlightContentSettingsController *)&v4 viewWillAppear:a3];
+  [(AXHighlightContentSettingsController *)&v4 viewWillAppear:appear];
   [(AXHighlightContentSettingsController *)self updateLayout];
 }
 
@@ -645,13 +645,13 @@ void __48__AXHighlightContentSettingsController_loadView__block_invoke_3(uint64_
 - (void)updateLayout
 {
   [(AXHighlightContentSettingsController *)self setContentHighlightItemsHidden:_AXSQuickSpeakHighlightTextEnabled() == 0];
-  v3 = [(AXHighlightContentSettingsController *)self shouldShowWordColorItems];
-  v4 = [(AXHighlightContentSettingsController *)self shouldShowSentenceItems];
-  if (v4 || v3)
+  shouldShowWordColorItems = [(AXHighlightContentSettingsController *)self shouldShowWordColorItems];
+  shouldShowSentenceItems = [(AXHighlightContentSettingsController *)self shouldShowSentenceItems];
+  if (shouldShowSentenceItems || shouldShowWordColorItems)
   {
     [(AXHighlightContentSettingsController *)self _insertColorGroupingHeaderIfNecessary];
-    [(AXHighlightContentSettingsController *)self setShowWordColorItems:v3];
-    [(AXHighlightContentSettingsController *)self setShowSentenceItems:v4];
+    [(AXHighlightContentSettingsController *)self setShowWordColorItems:shouldShowWordColorItems];
+    [(AXHighlightContentSettingsController *)self setShowSentenceItems:shouldShowSentenceItems];
     [(AXHighlightContentSettingsController *)self beginUpdates];
   }
 
@@ -664,8 +664,8 @@ void __48__AXHighlightContentSettingsController_loadView__block_invoke_3(uint64_
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(AXHighlightContentSettingsController *)self colorHighlightItems];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    colorHighlightItems = [(AXHighlightContentSettingsController *)self colorHighlightItems];
+    v6 = [colorHighlightItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -677,7 +677,7 @@ void __48__AXHighlightContentSettingsController_loadView__block_invoke_3(uint64_
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(colorHighlightItems);
           }
 
           [(AXHighlightContentSettingsController *)self removeSpecifier:*(*(&v10 + 1) + 8 * v9) animated:1];
@@ -685,7 +685,7 @@ void __48__AXHighlightContentSettingsController_loadView__block_invoke_3(uint64_
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [colorHighlightItems countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -695,55 +695,55 @@ void __48__AXHighlightContentSettingsController_loadView__block_invoke_3(uint64_
   [(AXHighlightContentSettingsController *)self endUpdates];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v12 = a4;
-  v5 = [v12 specifier];
-  v6 = [v5 propertyForKey:@"_highlightOption"];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  v6 = [specifier propertyForKey:@"_highlightOption"];
   if (v6)
   {
     v7 = +[AXSettings sharedInstance];
-    v8 = [v7 quickSpeakHighlightOption];
+    quickSpeakHighlightOption = [v7 quickSpeakHighlightOption];
 
-    [v12 setChecked:{v8 == objc_msgSend(v6, "intValue")}];
+    [cellCopy setChecked:{quickSpeakHighlightOption == objc_msgSend(v6, "intValue")}];
   }
 
-  v9 = [v5 propertyForKey:@"_sentenceHighlightOption"];
+  v9 = [specifier propertyForKey:@"_sentenceHighlightOption"];
   if (v9)
   {
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 quickSpeakSentenceHighlightOption];
+    quickSpeakSentenceHighlightOption = [v10 quickSpeakSentenceHighlightOption];
 
-    [v12 setChecked:{v11 == objc_msgSend(v9, "intValue")}];
+    [cellCopy setChecked:{quickSpeakSentenceHighlightOption == objc_msgSend(v9, "intValue")}];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v47.receiver = self;
   v47.super_class = AXHighlightContentSettingsController;
-  [(AXHighlightContentSettingsController *)&v47 tableView:v6 didSelectRowAtIndexPath:v7];
-  v36 = v7;
-  v8 = [(AXHighlightContentSettingsController *)self specifierAtIndex:[(AXHighlightContentSettingsController *)self indexForIndexPath:v7]];
+  [(AXHighlightContentSettingsController *)&v47 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v36 = pathCopy;
+  v8 = [(AXHighlightContentSettingsController *)self specifierAtIndex:[(AXHighlightContentSettingsController *)self indexForIndexPath:pathCopy]];
   v9 = [v8 propertyForKey:@"_highlightOption"];
   v10 = v9;
   v37 = v9;
   v38 = v8;
   if (v9)
   {
-    v11 = [v9 intValue];
+    intValue = [v9 intValue];
     v12 = +[AXSettings sharedInstance];
-    [v12 setQuickSpeakHighlightOption:v11];
+    [v12 setQuickSpeakHighlightOption:intValue];
 
     [(AXHighlightContentSettingsController *)self updateLayout];
     v45 = 0u;
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v13 = [v6 visibleCells];
-    v14 = [v13 countByEnumeratingWithState:&v43 objects:v49 count:16];
+    visibleCells = [viewCopy visibleCells];
+    v14 = [visibleCells countByEnumeratingWithState:&v43 objects:v49 count:16];
     if (v14)
     {
       v15 = v14;
@@ -754,20 +754,20 @@ void __48__AXHighlightContentSettingsController_loadView__block_invoke_3(uint64_
         {
           if (*v44 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(visibleCells);
           }
 
           v18 = *(*(&v43 + 1) + 8 * i);
-          v19 = [v18 specifier];
-          v20 = [v19 propertyForKey:@"_highlightOption"];
+          specifier = [v18 specifier];
+          v20 = [specifier propertyForKey:@"_highlightOption"];
           v21 = v20;
           if (v20)
           {
-            [v18 setChecked:{objc_msgSend(v20, "intValue") == v11}];
+            [v18 setChecked:{objc_msgSend(v20, "intValue") == intValue}];
           }
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v43 objects:v49 count:16];
+        v15 = [visibleCells countByEnumeratingWithState:&v43 objects:v49 count:16];
       }
 
       while (v15);
@@ -781,17 +781,17 @@ void __48__AXHighlightContentSettingsController_loadView__block_invoke_3(uint64_
   v23 = v22;
   if (v22)
   {
-    v24 = [v22 intValue];
+    intValue2 = [v22 intValue];
     v25 = +[AXSettings sharedInstance];
-    [v25 setQuickSpeakSentenceHighlightOption:v24];
+    [v25 setQuickSpeakSentenceHighlightOption:intValue2];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v35 = v6;
-    v26 = [v6 visibleCells];
-    v27 = [v26 countByEnumeratingWithState:&v39 objects:v48 count:16];
+    v35 = viewCopy;
+    visibleCells2 = [viewCopy visibleCells];
+    v27 = [visibleCells2 countByEnumeratingWithState:&v39 objects:v48 count:16];
     if (v27)
     {
       v28 = v27;
@@ -802,41 +802,41 @@ void __48__AXHighlightContentSettingsController_loadView__block_invoke_3(uint64_
         {
           if (*v40 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(visibleCells2);
           }
 
           v31 = *(*(&v39 + 1) + 8 * j);
-          v32 = [v31 specifier];
-          v33 = [v32 propertyForKey:@"_sentenceHighlightOption"];
+          specifier2 = [v31 specifier];
+          v33 = [specifier2 propertyForKey:@"_sentenceHighlightOption"];
           v34 = v33;
           if (v33)
           {
-            [v31 setChecked:{objc_msgSend(v33, "intValue") == v24}];
+            [v31 setChecked:{objc_msgSend(v33, "intValue") == intValue2}];
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v39 objects:v48 count:16];
+        v28 = [visibleCells2 countByEnumeratingWithState:&v39 objects:v48 count:16];
       }
 
       while (v28);
     }
 
-    v6 = v35;
+    viewCopy = v35;
     v10 = v37;
     v8 = v38;
   }
 }
 
-- (id)highlightEnabled:(id)a3
+- (id)highlightEnabled:(id)enabled
 {
   v3 = _AXSQuickSpeakHighlightTextEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (void)setHighlightEnabled:(id)a3 specifier:(id)a4
+- (void)setHighlightEnabled:(id)enabled specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [enabled BOOLValue];
   _AXSQuickSpeakSetHighlightTextEnabled();
 
   [(AXHighlightContentSettingsController *)self updateLayout];

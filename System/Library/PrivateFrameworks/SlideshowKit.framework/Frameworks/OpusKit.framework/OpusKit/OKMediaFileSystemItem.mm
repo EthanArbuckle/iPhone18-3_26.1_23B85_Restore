@@ -1,42 +1,42 @@
 @interface OKMediaFileSystemItem
-+ (id)urlForMediaObject:(id)a3;
-- (OKMediaFileSystemItem)initWithFileURL:(id)a3;
-- (id)avAssetWithCompletionHandler:(id)a3;
-- (id)createMetadataWithCompletionHandler:(id)a3;
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5;
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4;
-- (id)parseDate:(id)a3;
-- (id)resourceURLWithCompletionHandler:(id)a3;
++ (id)urlForMediaObject:(id)object;
+- (OKMediaFileSystemItem)initWithFileURL:(id)l;
+- (id)avAssetWithCompletionHandler:(id)handler;
+- (id)createMetadataWithCompletionHandler:(id)handler;
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler;
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler;
+- (id)parseDate:(id)date;
+- (id)resourceURLWithCompletionHandler:(id)handler;
 @end
 
 @implementation OKMediaFileSystemItem
 
-+ (id)urlForMediaObject:(id)a3
++ (id)urlForMediaObject:(id)object
 {
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || ([a3 isFileURL] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || ([object isFileURL] & 1) == 0)
   {
     return 0;
   }
 
-  return a3;
+  return object;
 }
 
-- (OKMediaFileSystemItem)initWithFileURL:(id)a3
+- (OKMediaFileSystemItem)initWithFileURL:(id)l
 {
   v4.receiver = self;
   v4.super_class = OKMediaFileSystemItem;
-  return [(OKMediaItem *)&v4 initWithUniqueURL:a3];
+  return [(OKMediaItem *)&v4 initWithUniqueURL:l];
 }
 
-- (id)createMetadataWithCompletionHandler:(id)a3
+- (id)createMetadataWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __61__OKMediaFileSystemItem_createMetadataWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C8F720;
   v4[4] = self;
-  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:a3];
+  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:handler];
 }
 
 uint64_t __61__OKMediaFileSystemItem_createMetadataWithCompletionHandler___block_invoke(uint64_t a1, void *a2, OKMediaItemMetadata **a3)
@@ -203,16 +203,16 @@ LABEL_26:
   }
 }
 
-- (id)createThumbnailImageForResolution:(unint64_t)a3 withMetadata:(id)a4 completionHandler:(id)a5
+- (id)createThumbnailImageForResolution:(unint64_t)resolution withMetadata:(id)metadata completionHandler:(id)handler
 {
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __90__OKMediaFileSystemItem_createThumbnailImageForResolution_withMetadata_completionHandler___block_invoke;
   v6[3] = &unk_279C8FAB0;
-  v6[4] = a4;
+  v6[4] = metadata;
   v6[5] = self;
-  v6[6] = a3;
-  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:a5];
+  v6[6] = resolution;
+  return [(OKMediaItem *)self operationWithBlock:v6 completionHandlerWithObject:handler];
 }
 
 void __90__OKMediaFileSystemItem_createThumbnailImageForResolution_withMetadata_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -297,15 +297,15 @@ uint64_t __90__OKMediaFileSystemItem_createThumbnailImageForResolution_withMetad
   return result;
 }
 
-- (id)importMediaToDirectoryURL:(id)a3 completionHandler:(id)a4
+- (id)importMediaToDirectoryURL:(id)l completionHandler:(id)handler
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __69__OKMediaFileSystemItem_importMediaToDirectoryURL_completionHandler___block_invoke;
   v5[3] = &unk_279C8F930;
-  v5[4] = a3;
+  v5[4] = l;
   v5[5] = self;
-  return [(OKMediaItem *)self operationWithBlock:v5 completionHandlerWithObject:a4];
+  return [(OKMediaItem *)self operationWithBlock:v5 completionHandlerWithObject:handler];
 }
 
 void __69__OKMediaFileSystemItem_importMediaToDirectoryURL_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -390,14 +390,14 @@ uint64_t __69__OKMediaFileSystemItem_importMediaToDirectoryURL_completionHandler
   return result;
 }
 
-- (id)resourceURLWithCompletionHandler:(id)a3
+- (id)resourceURLWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __58__OKMediaFileSystemItem_resourceURLWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C8F720;
   v4[4] = self;
-  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:a3];
+  return [(OKMediaItem *)self operationWithBlock:v4 completionHandlerWithObject:handler];
 }
 
 uint64_t __58__OKMediaFileSystemItem_resourceURLWithCompletionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -407,14 +407,14 @@ uint64_t __58__OKMediaFileSystemItem_resourceURLWithCompletionHandler___block_in
   return [a2 finish];
 }
 
-- (id)avAssetWithCompletionHandler:(id)a3
+- (id)avAssetWithCompletionHandler:(id)handler
 {
   v4.receiver = self;
   v4.super_class = OKMediaFileSystemItem;
-  return [(OKMediaItem *)&v4 avAssetWithCompletionHandler:a3];
+  return [(OKMediaItem *)&v4 avAssetWithCompletionHandler:handler];
 }
 
-- (id)parseDate:(id)a3
+- (id)parseDate:(id)date
 {
   if (parseDate__onceToken != -1)
   {
@@ -423,7 +423,7 @@ uint64_t __58__OKMediaFileSystemItem_resourceURLWithCompletionHandler___block_in
 
   v4 = parseDate___exifDateFormatter;
 
-  return [v4 dateFromString:a3];
+  return [v4 dateFromString:date];
 }
 
 uint64_t __35__OKMediaFileSystemItem_parseDate___block_invoke()

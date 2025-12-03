@@ -7,7 +7,7 @@
 
 - (id)normalizedDSID
 {
-  v2 = [a1 accountPropertyForKey:*MEMORY[0x1E698C210]];
+  v2 = [self accountPropertyForKey:*MEMORY[0x1E698C210]];
   if (!v2)
   {
     goto LABEL_5;
@@ -20,29 +20,29 @@
     goto LABEL_10;
   }
 
-  v4 = [v3 stringValue];
+  stringValue = [v3 stringValue];
 
-  if (v4)
+  if (stringValue)
   {
-    v3 = v4;
+    v3 = stringValue;
   }
 
   else
   {
 LABEL_5:
-    v5 = [a1 accountType];
-    v6 = [v5 identifier];
-    v7 = [v6 isEqualToString:*MEMORY[0x1E69598B0]];
+    accountType = [self accountType];
+    identifier = [accountType identifier];
+    v7 = [identifier isEqualToString:*MEMORY[0x1E69598B0]];
 
-    if (!v7 || ([a1 accountPropertyForKey:@"profile-id"], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "stringByReplacingOccurrencesOfString:withString:", @"D:", &stru_1F2EF6280), v3 = objc_claimAutoreleasedReturnValue(), v8, !v3))
+    if (!v7 || ([self accountPropertyForKey:@"profile-id"], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "stringByReplacingOccurrencesOfString:withString:", @"D:", &stru_1F2EF6280), v3 = objc_claimAutoreleasedReturnValue(), v8, !v3))
     {
-      v9 = [a1 accountType];
-      v10 = [v9 identifier];
-      v11 = [v10 isEqualToString:*MEMORY[0x1E69597F8]];
+      accountType2 = [self accountType];
+      identifier2 = [accountType2 identifier];
+      v11 = [identifier2 isEqualToString:*MEMORY[0x1E69597F8]];
 
       if (v11)
       {
-        v3 = [a1 accountPropertyForKey:@"personID"];
+        v3 = [self accountPropertyForKey:@"personID"];
       }
 
       else
@@ -59,8 +59,8 @@ LABEL_10:
 
 - (BOOL)canRemoveAccount
 {
-  v1 = [a1 _registeredBundles];
-  v2 = [v1 count] == 0;
+  _registeredBundles = [self _registeredBundles];
+  v2 = [_registeredBundles count] == 0;
 
   return v2;
 }

@@ -1,6 +1,6 @@
 @interface MapsPushManager
 + (id)defaultManager;
-+ (id)fakeDevicesFromNames:(id)a3;
++ (id)fakeDevicesFromNames:(id)names;
 - (BOOL)shouldUseDevAPNS;
 - (MapsPushDelegate)delegate;
 - (MapsPushManager)init;
@@ -10,21 +10,21 @@
 - (id)_simulatedProblemResolutionResponse;
 - (id)_simulatedProblemStatus;
 - (id)devicePushToken;
-- (int64_t)_priorityForMessageOfType:(int64_t)a3;
-- (void)_handleGenericIDSMessage:(id)a3;
+- (int64_t)_priorityForMessageOfType:(int64_t)type;
+- (void)_handleGenericIDSMessage:(id)message;
 - (void)_updateDevices;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier;
 - (void)dealloc;
-- (void)fetchProblemStatus:(id)a3 problemReportIDs:(id)a4 manifestToken:(id)a5;
-- (void)mapsInstallStateDidChange:(BOOL)a3;
-- (void)propagateIDSMessageOfType:(int64_t)a3 message:(id)a4;
-- (void)pushItem:(id)a3 toDevice:(id)a4;
+- (void)fetchProblemStatus:(id)status problemReportIDs:(id)ds manifestToken:(id)token;
+- (void)mapsInstallStateDidChange:(BOOL)change;
+- (void)propagateIDSMessageOfType:(int64_t)type message:(id)message;
+- (void)pushItem:(id)item toDevice:(id)device;
 - (void)registerForMapsICloudPushTopic;
-- (void)sendRAPStatusChangeNotification:(id)a3;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
+- (void)sendRAPStatusChangeNotification:(id)notification;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
 - (void)setUpPushConnection;
 - (void)simulateProblemResolution;
 - (void)simulateRAPStatusChange;
@@ -40,9 +40,9 @@
   v3 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(IDSService *)self->_service devices];
+    devices = [(IDSService *)self->_service devices];
     *buf = 138412290;
-    v35 = v4;
+    v35 = devices;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Updating devices from full list: %@", buf, 0xCu);
   }
 
@@ -50,7 +50,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v20 = self;
+  selfCopy = self;
   obj = [(IDSService *)self->_service devices];
   v5 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v5)
@@ -67,8 +67,8 @@
         }
 
         v8 = *(*(&v28 + 1) + 8 * i);
-        v9 = [v8 modelIdentifier];
-        v10 = [v9 length];
+        modelIdentifier = [v8 modelIdentifier];
+        v10 = [modelIdentifier length];
 
         v26 = 0u;
         v27 = 0u;
@@ -89,8 +89,8 @@ LABEL_10:
             }
 
             v15 = *(*(&v24 + 1) + 8 * v14);
-            v16 = [v8 modelIdentifier];
-            LOBYTE(v15) = [v16 hasPrefix:v15];
+            modelIdentifier2 = [v8 modelIdentifier];
+            LOBYTE(v15) = [modelIdentifier2 hasPrefix:v15];
 
             if (v15)
             {
@@ -146,8 +146,8 @@ LABEL_22:
     while (v6);
   }
 
-  devices = v20->_devices;
-  v20->_devices = v22;
+  devices = selfCopy->_devices;
+  selfCopy->_devices = v22;
 }
 
 + (id)defaultManager
@@ -156,7 +156,7 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = sub_1000078E8;
   block[3] = &unk_10003CB88;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10004AC10 != -1)
   {
     dispatch_once(&qword_10004AC10, block);
@@ -199,39 +199,39 @@ LABEL_22:
   [(MapsPushManager *)&v4 dealloc];
 }
 
-- (void)pushItem:(id)a3 toDevice:(id)a4
+- (void)pushItem:(id)item toDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7 || ([v7 isFake] & 1) == 0)
+  itemCopy = item;
+  deviceCopy = device;
+  v8 = deviceCopy;
+  if (!deviceCopy || ([deviceCopy isFake] & 1) == 0)
   {
     v9 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v8 device];
+      device = [v8 device];
       *buf = 138412546;
-      v32 = v6;
+      v32 = itemCopy;
       v33 = 2112;
-      v34 = v10;
+      v34 = device;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "Pushing item: %@ to device %@", buf, 0x16u);
     }
 
-    v11 = [(IDSService *)self->_service accounts];
-    v12 = [v11 anyObject];
+    accounts = [(IDSService *)self->_service accounts];
+    anyObject = [accounts anyObject];
 
-    if (v12)
+    if (anyObject)
     {
-      v13 = [v6 pushSubmissionData];
-      v14 = v13;
-      if (v13)
+      pushSubmissionData = [itemCopy pushSubmissionData];
+      v14 = pushSubmissionData;
+      if (pushSubmissionData)
       {
         v29 = @"syncedBookmarkData";
-        v30 = v13;
+        v30 = pushSubmissionData;
         v15 = [NSDictionary dictionaryWithObjects:&v30 forKeys:&v29 count:1];
         if (v8)
         {
-          v16 = [v8 device];
+          device2 = [v8 device];
           v17 = IDSCopyForDevice();
         }
 
@@ -271,7 +271,7 @@ LABEL_22:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v32 = v6;
+          v32 = itemCopy;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "No sync data for item: %@", buf, 0xCu);
         }
 
@@ -293,17 +293,17 @@ LABEL_22:
   }
 }
 
-- (void)propagateIDSMessageOfType:(int64_t)a3 message:(id)a4
+- (void)propagateIDSMessageOfType:(int64_t)type message:(id)message
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  messageCopy = message;
+  v7 = messageCopy;
+  if (messageCopy)
   {
-    v21 = v6;
+    v21 = messageCopy;
     v38[0] = @"GenericIDSMessageData";
     v38[1] = @"GenericIDSMessageType";
-    v39[0] = v6;
-    v8 = [NSNumber numberWithInteger:a3];
+    v39[0] = messageCopy;
+    v8 = [NSNumber numberWithInteger:type];
     v39[1] = v8;
     v9 = [NSDictionary dictionaryWithObjects:v39 forKeys:v38 count:2];
 
@@ -340,8 +340,8 @@ LABEL_22:
 
           service = self->_service;
           v15 = [NSSet setWithObject:v12];
-          v16 = a3;
-          v17 = [(MapsPushManager *)self _priorityForMessageOfType:a3];
+          typeCopy = type;
+          v17 = [(MapsPushManager *)self _priorityForMessageOfType:type];
           v31 = v23;
           v32 = &__kCFBooleanTrue;
           v18 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
@@ -360,7 +360,7 @@ LABEL_22:
             }
           }
 
-          a3 = v16;
+          type = typeCopy;
         }
 
         v25 = [obj countByEnumeratingWithState:&v27 objects:v37 count:16];
@@ -383,24 +383,24 @@ LABEL_22:
   }
 }
 
-- (void)_handleGenericIDSMessage:(id)a3
+- (void)_handleGenericIDSMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"GenericIDSMessageType"];
-  v6 = [v5 integerValue];
+  messageCopy = message;
+  v5 = [messageCopy objectForKeyedSubscript:@"GenericIDSMessageType"];
+  integerValue = [v5 integerValue];
 
-  if (v6 == 2)
+  if (integerValue == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained clearRAPStatusChangeNotificationWithManager:self];
     goto LABEL_9;
   }
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v9 = [GEORPRapInfo alloc];
-    v10 = [v4 objectForKeyedSubscript:@"GenericIDSMessageData"];
+    v10 = [messageCopy objectForKeyedSubscript:@"GenericIDSMessageData"];
     v11 = [v9 initWithData:v10];
     [WeakRetained pushManager:self receivedRAPStatusChangeNotification:v11];
 
@@ -408,13 +408,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6)
+  if (!integerValue)
   {
     v7 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = messageCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Received unknown generic message: %@", &v12, 0xCu);
     }
   }
@@ -422,9 +422,9 @@ LABEL_9:
 LABEL_10:
 }
 
-- (int64_t)_priorityForMessageOfType:(int64_t)a3
+- (int64_t)_priorityForMessageOfType:(int64_t)type
 {
-  if ((a3 - 1) >= 2)
+  if ((type - 1) >= 2)
   {
     return 200;
   }
@@ -435,45 +435,45 @@ LABEL_10:
   }
 }
 
-- (void)connection:(id)a3 didReceiveToken:(id)a4 forTopic:(id)a5 identifier:(id)a6
+- (void)connection:(id)connection didReceiveToken:(id)token forTopic:(id)topic identifier:(id)identifier
 {
-  v9 = a4;
-  v7 = [(MapsPushManager *)self devicePushTokenCompletion];
+  tokenCopy = token;
+  devicePushTokenCompletion = [(MapsPushManager *)self devicePushTokenCompletion];
 
-  if (v7)
+  if (devicePushTokenCompletion)
   {
-    v8 = [(MapsPushManager *)self devicePushTokenCompletion];
-    (v8)[2](v8, v9);
+    devicePushTokenCompletion2 = [(MapsPushManager *)self devicePushTokenCompletion];
+    (devicePushTokenCompletion2)[2](devicePushTokenCompletion2, tokenCopy);
   }
 
   [(MapsPushManager *)self setDevicePushTokenCompletion:0];
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v5 = a4;
-  v6 = [v5 topic];
-  v7 = [v6 isEqualToString:@"com.apple.maps.icloud"];
+  messageCopy = message;
+  topic = [messageCopy topic];
+  v7 = [topic isEqualToString:@"com.apple.maps.icloud"];
 
   if (v7)
   {
-    v8 = [v5 userInfo];
-    v9 = [v8 objectForKeyedSubscript:@"nid"];
+    userInfo = [messageCopy userInfo];
+    v9 = [userInfo objectForKeyedSubscript:@"nid"];
 
-    v10 = [v9 firstObject];
-    v11 = [v5 userInfo];
-    v12 = [v11 objectForKeyedSubscript:@"prid"];
+    firstObject = [v9 firstObject];
+    userInfo2 = [messageCopy userInfo];
+    v12 = [userInfo2 objectForKeyedSubscript:@"prid"];
 
-    v13 = [v5 userInfo];
-    v14 = [v13 objectForKeyedSubscript:@"mftoken"];
+    userInfo3 = [messageCopy userInfo];
+    v14 = [userInfo3 objectForKeyedSubscript:@"mftoken"];
 
-    v15 = [v5 userInfo];
-    v16 = [v15 objectForKey:@"aps"];
+    userInfo4 = [messageCopy userInfo];
+    v16 = [userInfo4 objectForKey:@"aps"];
 
     if (v16)
     {
-      v17 = [v5 userInfo];
-      v18 = [v17 objectForKeyedSubscript:@"aps"];
+      userInfo5 = [messageCopy userInfo];
+      v18 = [userInfo5 objectForKeyedSubscript:@"aps"];
     }
 
     else
@@ -481,17 +481,17 @@ LABEL_10:
       v18 = 0;
     }
 
-    v19 = [v5 userInfo];
-    v20 = [v19 objectForKey:@"photoLiveness"];
+    userInfo6 = [messageCopy userInfo];
+    v20 = [userInfo6 objectForKey:@"photoLiveness"];
 
     if (v20)
     {
       v42 = v14;
       v38 = v12;
-      v39 = v10;
+      v39 = firstObject;
       v40 = v9;
-      v21 = [v5 userInfo];
-      v22 = [v21 objectForKeyedSubscript:@"photoLiveness"];
+      userInfo7 = [messageCopy userInfo];
+      v22 = [userInfo7 objectForKeyedSubscript:@"photoLiveness"];
 
       v23 = [v22 objectForKeyedSubscript:@"muid"];
       v24 = objc_alloc_init(NSNumberFormatter);
@@ -517,7 +517,7 @@ LABEL_10:
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       [WeakRetained pushManager:self receivedPhotoLivenessMUID:v23 title:v28 message:v29 actionURL:v26];
 
-      v10 = v39;
+      firstObject = v39;
       v9 = v40;
       v12 = v38;
       goto LABEL_9;
@@ -545,7 +545,7 @@ LABEL_15:
       }
     }
 
-    [(MapsPushManager *)self fetchProblemStatus:v10 problemReportIDs:v12 manifestToken:v14];
+    [(MapsPushManager *)self fetchProblemStatus:firstObject problemReportIDs:v12 manifestToken:v14];
 
     goto LABEL_15;
   }
@@ -555,9 +555,9 @@ LABEL_16:
 
 - (void)setUpPushConnection
 {
-  v3 = [(MapsPushManager *)self shouldUseDevAPNS];
+  shouldUseDevAPNS = [(MapsPushManager *)self shouldUseDevAPNS];
   v4 = &APSEnvironmentDevelopment;
-  if (!v3)
+  if (!shouldUseDevAPNS)
   {
     v4 = &APSEnvironmentProduction;
   }
@@ -575,7 +575,7 @@ LABEL_16:
 {
   v2 = +[NSFileManager defaultManager];
   v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
-  v4 = [v3 path];
+  path = [v3 path];
   v5 = _CFPreferencesGetAppBooleanValueWithContainer() != 0;
 
   return v5;
@@ -604,13 +604,13 @@ LABEL_16:
     [(MapsPushManager *)self setUpPushConnection];
   }
 
-  v5 = [(MapsPushManager *)self apsConnection];
-  [v5 invalidateTokenForTopic:@"com.apple.maps.icloud" identifier:0];
+  apsConnection = [(MapsPushManager *)self apsConnection];
+  [apsConnection invalidateTokenForTopic:@"com.apple.maps.icloud" identifier:0];
 
-  v6 = [(MapsPushManager *)self devicePushTokenCompletion];
-  v7 = [(MapsPushManager *)self apsConnection];
-  v8 = [v7 publicToken];
-  (v6)[2](v6, v8);
+  devicePushTokenCompletion = [(MapsPushManager *)self devicePushTokenCompletion];
+  apsConnection2 = [(MapsPushManager *)self apsConnection];
+  publicToken = [apsConnection2 publicToken];
+  (devicePushTokenCompletion)[2](devicePushTokenCompletion, publicToken);
 
   v9 = dispatch_time(0, 1000000000);
   dispatch_semaphore_wait(v3, v9);
@@ -626,17 +626,17 @@ LABEL_16:
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MapsPushManager *)self apsConnection];
+    apsConnection = [(MapsPushManager *)self apsConnection];
 
-    if (!v3)
+    if (!apsConnection)
     {
       [(MapsPushManager *)self setUpPushConnection];
     }
 
     v6 = @"com.apple.maps.icloud";
     v4 = [NSArray arrayWithObjects:&v6 count:1];
-    v5 = [(MapsPushManager *)self apsConnection];
-    [v5 _setEnabledTopics:v4];
+    apsConnection2 = [(MapsPushManager *)self apsConnection];
+    [apsConnection2 _setEnabledTopics:v4];
   }
 }
 
@@ -659,20 +659,20 @@ LABEL_16:
   v4 = objc_alloc_init(GEOMapRegion);
   [v3 setDisplayRegion:v4];
 
-  v5 = [v3 displayRegion];
-  [v5 setEastLng:-0.109615239];
+  displayRegion = [v3 displayRegion];
+  [displayRegion setEastLng:-0.109615239];
 
-  v6 = [v3 displayRegion];
-  [v6 setNorthLat:51.5208347];
+  displayRegion2 = [v3 displayRegion];
+  [displayRegion2 setNorthLat:51.5208347];
 
-  v7 = [v3 displayRegion];
-  [v7 setSouthLat:51.5195643];
+  displayRegion3 = [v3 displayRegion];
+  [displayRegion3 setSouthLat:51.5195643];
 
-  v8 = [v3 displayRegion];
-  [v8 setWestLng:-0.111656927];
+  displayRegion4 = [v3 displayRegion];
+  [displayRegion4 setWestLng:-0.111656927];
 
-  v9 = [(MapsPushManager *)self _simulatedPlace];
-  [v3 addPlace:v9];
+  _simulatedPlace = [(MapsPushManager *)self _simulatedPlace];
+  [v3 addPlace:_simulatedPlace];
 
   return v3;
 }
@@ -688,11 +688,11 @@ LABEL_16:
   [v3 setCreationDate:?];
 
   [v3 setProblemState:2];
-  v6 = [(MapsPushManager *)self _simulatedNotification];
-  [v3 setNotification:v6];
+  _simulatedNotification = [(MapsPushManager *)self _simulatedNotification];
+  [v3 setNotification:_simulatedNotification];
 
-  v7 = [(MapsPushManager *)self _simulatedDetails];
-  [v3 setDetails:v7];
+  _simulatedDetails = [(MapsPushManager *)self _simulatedDetails];
+  [v3 setDetails:_simulatedDetails];
 
   return v3;
 }
@@ -710,16 +710,16 @@ LABEL_16:
 {
   v3 = objc_alloc_init(GEORPProblemStatusResponse);
   [v3 setStatusCode:0];
-  v4 = [(MapsPushManager *)self _simulatedProblemStatus];
-  [v3 addProblemStatus:v4];
+  _simulatedProblemStatus = [(MapsPushManager *)self _simulatedProblemStatus];
+  [v3 addProblemStatus:_simulatedProblemStatus];
 
   return v3;
 }
 
 - (void)simulateProblemResolution
 {
-  v3 = [(MapsPushManager *)self _simulatedProblemResolutionResponse];
-  if (v3)
+  _simulatedProblemResolutionResponse = [(MapsPushManager *)self _simulatedProblemResolutionResponse];
+  if (_simulatedProblemResolutionResponse)
   {
     v4 = dispatch_time(0, 10000000000);
     v5[0] = _NSConcreteStackBlock;
@@ -727,7 +727,7 @@ LABEL_16:
     v5[2] = sub_100009190;
     v5[3] = &unk_10003C9D8;
     v5[4] = self;
-    v6 = v3;
+    v6 = _simulatedProblemResolutionResponse;
     dispatch_after(v4, &_dispatch_main_q, v5);
   }
 }
@@ -793,25 +793,25 @@ LABEL_16:
   [WeakRetained pushManager:self receivedClearedPhotoAttributionNotificationWithTitle:@"Choose a Different Nickname" message:@"The nickname you chose for photo credit isn’t available. Choose a different nickname."];
 }
 
-- (void)sendRAPStatusChangeNotification:(id)a3
+- (void)sendRAPStatusChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 data];
-  [(MapsPushManager *)self propagateIDSMessageOfType:1 message:v5];
+  notificationCopy = notification;
+  data = [notificationCopy data];
+  [(MapsPushManager *)self propagateIDSMessageOfType:1 message:data];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained pushManager:self receivedRAPStatusChangeNotification:v4];
+  [WeakRetained pushManager:self receivedRAPStatusChangeNotification:notificationCopy];
 }
 
-- (void)fetchProblemStatus:(id)a3 problemReportIDs:(id)a4 manifestToken:(id)a5
+- (void)fetchProblemStatus:(id)status problemReportIDs:(id)ds manifestToken:(id)token
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  tokenCopy = token;
+  dsCopy = ds;
+  statusCopy = status;
   v11 = objc_alloc_init(GEORPProblemStatusRequest);
-  [v11 setStatusNotificationId:v10];
+  [v11 setStatusNotificationId:statusCopy];
 
-  v12 = [v9 mutableCopy];
+  v12 = [dsCopy mutableCopy];
   [v11 setProblemIds:v12];
 
   v13 = +[GEORPUserCredentials _credentialsForPrimaryICloudAccount];
@@ -820,17 +820,17 @@ LABEL_16:
   v14 = objc_alloc_init(GEORPClientCapabilities);
   [v11 setClientCapabilities:v14];
 
-  v15 = [v11 clientCapabilities];
-  [v15 setHasConstrainedProblemStatusSize:0];
+  clientCapabilities = [v11 clientCapabilities];
+  [clientCapabilities setHasConstrainedProblemStatusSize:0];
 
-  v16 = [v11 clientCapabilities];
-  [v16 setHasNoOptInRequest:1];
+  clientCapabilities2 = [v11 clientCapabilities];
+  [clientCapabilities2 setHasNoOptInRequest:1];
 
   v17 = +[GEOPlatform sharedPlatform];
-  v18 = [v17 clientCapabilities];
-  v19 = [v18 transitMarketSupport];
-  v20 = [v11 clientCapabilities];
-  [v20 setTransitMarketSupport:v19];
+  clientCapabilities3 = [v17 clientCapabilities];
+  transitMarketSupport = [clientCapabilities3 transitMarketSupport];
+  clientCapabilities4 = [v11 clientCapabilities];
+  [clientCapabilities4 setTransitMarketSupport:transitMarketSupport];
 
   [v11 populateAnalyticsMetadata];
   v21 = +[GEOUtilityService sharedService];
@@ -839,22 +839,22 @@ LABEL_16:
   v24[2] = sub_1000098AC;
   v24[3] = &unk_10003CC68;
   v25 = v11;
-  v26 = self;
-  v27 = v8;
-  v22 = v8;
+  selfCopy = self;
+  v27 = tokenCopy;
+  v22 = tokenCopy;
   v23 = v11;
   [v21 getCurrentGeoServicesState:&_dispatch_main_q callback:v24];
 }
 
-+ (id)fakeDevicesFromNames:(id)a3
++ (id)fakeDevicesFromNames:(id)names
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  namesCopy = names;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [namesCopy count]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = v3;
+  obj = namesCopy;
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
@@ -870,8 +870,8 @@ LABEL_16:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 lowercaseString];
-        v11 = [v10 hasSuffix:@"ipad"];
+        lowercaseString = [v9 lowercaseString];
+        v11 = [lowercaseString hasSuffix:@"ipad"];
 
         if (v11)
         {
@@ -896,7 +896,7 @@ LABEL_16:
   return v4;
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -908,7 +908,7 @@ LABEL_16:
   [(MapsPushManager *)self _updateDevices];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -920,31 +920,31 @@ LABEL_16:
   [(MapsPushManager *)self _updateDevices];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
   v40 = DefaultLoggingSubsystem;
   v13 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v55 = v11;
+    v55 = messageCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "Received message: %@", buf, 0xCu);
   }
 
-  v42 = v12;
-  v43 = v9;
-  v14 = [v9 deviceForFromID:v12];
+  v42 = dCopy;
+  v43 = serviceCopy;
+  v14 = [serviceCopy deviceForFromID:dCopy];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v15 = v10;
-  v16 = [v10 nearbyDevices];
-  v17 = [v16 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  v15 = accountCopy;
+  nearbyDevices = [accountCopy nearbyDevices];
+  v17 = [nearbyDevices countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v17)
   {
     v18 = v17;
@@ -955,12 +955,12 @@ LABEL_5:
     {
       if (*v49 != v19)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(nearbyDevices);
       }
 
-      v21 = [*(*(&v48 + 1) + 8 * v20) uniqueID];
-      v22 = [v14 uniqueID];
-      v23 = [v21 isEqualToString:v22];
+      uniqueID = [*(*(&v48 + 1) + 8 * v20) uniqueID];
+      uniqueID2 = [v14 uniqueID];
+      v23 = [uniqueID isEqualToString:uniqueID2];
 
       if (v23)
       {
@@ -969,7 +969,7 @@ LABEL_5:
 
       if (v18 == ++v20)
       {
-        v18 = [v16 countByEnumeratingWithState:&v48 objects:v53 count:16];
+        v18 = [nearbyDevices countByEnumeratingWithState:&v48 objects:v53 count:16];
         if (v18)
         {
           goto LABEL_5;
@@ -988,8 +988,8 @@ LABEL_11:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v16 = [v15 devices];
-    v24 = [v16 countByEnumeratingWithState:&v44 objects:v52 count:16];
+    nearbyDevices = [v15 devices];
+    v24 = [nearbyDevices countByEnumeratingWithState:&v44 objects:v52 count:16];
     if (!v24)
     {
 LABEL_19:
@@ -1013,12 +1013,12 @@ LABEL_13:
     {
       if (*v45 != v26)
       {
-        objc_enumerationMutation(v16);
+        objc_enumerationMutation(nearbyDevices);
       }
 
-      v28 = [*(*(&v44 + 1) + 8 * v27) uniqueID];
-      v29 = [v14 uniqueID];
-      v30 = [v28 isEqualToString:v29];
+      uniqueID3 = [*(*(&v44 + 1) + 8 * v27) uniqueID];
+      uniqueID4 = [v14 uniqueID];
+      v30 = [uniqueID3 isEqualToString:uniqueID4];
 
       if (v30)
       {
@@ -1027,7 +1027,7 @@ LABEL_13:
 
       if (v25 == ++v27)
       {
-        v25 = [v16 countByEnumeratingWithState:&v44 objects:v52 count:16];
+        v25 = [nearbyDevices countByEnumeratingWithState:&v44 objects:v52 count:16];
         if (v25)
         {
           goto LABEL_13;
@@ -1038,23 +1038,23 @@ LABEL_13:
     }
   }
 
-  v32 = [v11 objectForKeyedSubscript:@"GenericIDSMessageType"];
+  v32 = [messageCopy objectForKeyedSubscript:@"GenericIDSMessageType"];
 
   if (v32)
   {
-    [(MapsPushManager *)self _handleGenericIDSMessage:v11];
+    [(MapsPushManager *)self _handleGenericIDSMessage:messageCopy];
 LABEL_24:
     v33 = v43;
     v34 = v15;
     goto LABEL_32;
   }
 
-  v35 = [v11 objectForKeyedSubscript:@"syncedBookmarkData"];
+  v35 = [messageCopy objectForKeyedSubscript:@"syncedBookmarkData"];
 
   v34 = v15;
   if (v35)
   {
-    v36 = [v11 objectForKeyedSubscript:@"syncedBookmarkData"];
+    v36 = [messageCopy objectForKeyedSubscript:@"syncedBookmarkData"];
     v37 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
@@ -1084,9 +1084,9 @@ LABEL_24:
 LABEL_32:
 }
 
-- (void)mapsInstallStateDidChange:(BOOL)a3
+- (void)mapsInstallStateDidChange:(BOOL)change
 {
-  if (a3)
+  if (change)
   {
 
     [(MapsPushManager *)self registerForMapsICloudPushTopic];
@@ -1096,8 +1096,8 @@ LABEL_32:
   {
     v6 = @"com.apple.maps.icloud";
     v4 = [NSArray arrayWithObjects:&v6 count:1];
-    v5 = [(MapsPushManager *)self apsConnection];
-    [v5 _setIgnoredTopics:v4];
+    apsConnection = [(MapsPushManager *)self apsConnection];
+    [apsConnection _setIgnoredTopics:v4];
   }
 }
 

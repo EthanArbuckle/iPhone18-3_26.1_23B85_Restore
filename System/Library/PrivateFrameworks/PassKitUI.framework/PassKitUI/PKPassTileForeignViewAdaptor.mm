@@ -1,11 +1,11 @@
 @interface PKPassTileForeignViewAdaptor
-- (BOOL)isViewEqualToOther:(id)a3 withAdaptor:(id)a4;
+- (BOOL)isViewEqualToOther:(id)other withAdaptor:(id)adaptor;
 - (NSString)viewIdentifier;
 - (_TtC9PassKitUI28PKPassTileForeignViewAdaptor)init;
-- (_TtC9PassKitUI28PKPassTileForeignViewAdaptor)initWithView:(id)a3;
+- (_TtC9PassKitUI28PKPassTileForeignViewAdaptor)initWithView:(id)view;
 - (int64_t)viewPreferredSizing;
-- (void)setViewIdentifier:(id)a3;
-- (void)setViewPreferredSizing:(int64_t)a3;
+- (void)setViewIdentifier:(id)identifier;
+- (void)setViewPreferredSizing:(int64_t)sizing;
 @end
 
 @implementation PKPassTileForeignViewAdaptor
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (void)setViewIdentifier:(id)a3
+- (void)setViewIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1BE052434();
     v6 = v5;
@@ -55,34 +55,34 @@
   return *(self + v3);
 }
 
-- (void)setViewPreferredSizing:(int64_t)a3
+- (void)setViewPreferredSizing:(int64_t)sizing
 {
   v5 = OBJC_IVAR____TtC9PassKitUI28PKPassTileForeignViewAdaptor_viewPreferredSizing;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = sizing;
 }
 
-- (_TtC9PassKitUI28PKPassTileForeignViewAdaptor)initWithView:(id)a3
+- (_TtC9PassKitUI28PKPassTileForeignViewAdaptor)initWithView:(id)view
 {
   v4 = (self + OBJC_IVAR____TtC9PassKitUI28PKPassTileForeignViewAdaptor_viewIdentifier);
   *v4 = 0;
   v4[1] = 0;
   *(self + OBJC_IVAR____TtC9PassKitUI28PKPassTileForeignViewAdaptor_viewPreferredSizing) = 0;
-  *(self + OBJC_IVAR____TtC9PassKitUI28PKPassTileForeignViewAdaptor_view) = a3;
+  *(self + OBJC_IVAR____TtC9PassKitUI28PKPassTileForeignViewAdaptor_view) = view;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PKPassTileForeignViewAdaptor();
-  v5 = a3;
+  viewCopy = view;
   return [(PKPassTileForeignViewAdaptor *)&v7 init];
 }
 
-- (BOOL)isViewEqualToOther:(id)a3 withAdaptor:(id)a4
+- (BOOL)isViewEqualToOther:(id)other withAdaptor:(id)adaptor
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(a4) = sub_1BD1C3A8C(a3, a4);
+  otherCopy = other;
+  adaptorCopy = adaptor;
+  selfCopy = self;
+  LOBYTE(adaptor) = sub_1BD1C3A8C(other, adaptor);
 
-  return a4 & 1;
+  return adaptor & 1;
 }
 
 - (_TtC9PassKitUI28PKPassTileForeignViewAdaptor)init

@@ -1,10 +1,10 @@
 @interface __RKEntityTransformAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityTransformAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntityTransformAction.copy(with:)(v5);

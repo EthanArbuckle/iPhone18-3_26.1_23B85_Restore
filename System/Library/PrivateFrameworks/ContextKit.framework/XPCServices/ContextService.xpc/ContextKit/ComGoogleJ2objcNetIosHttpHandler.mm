@@ -1,12 +1,12 @@
 @interface ComGoogleJ2objcNetIosHttpHandler
-- (id)openConnectionWithJavaNetURL:(id)a3;
+- (id)openConnectionWithJavaNetURL:(id)l;
 @end
 
 @implementation ComGoogleJ2objcNetIosHttpHandler
 
-- (id)openConnectionWithJavaNetURL:(id)a3
+- (id)openConnectionWithJavaNetURL:(id)l
 {
-  v3 = new_ComGoogleJ2objcNetIosHttpURLConnection_initWithJavaNetURL_(a3);
+  v3 = new_ComGoogleJ2objcNetIosHttpURLConnection_initWithJavaNetURL_(l);
 
   return v3;
 }

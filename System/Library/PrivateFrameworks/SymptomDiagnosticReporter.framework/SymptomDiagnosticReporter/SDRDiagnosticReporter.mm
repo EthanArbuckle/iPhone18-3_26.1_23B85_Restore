@@ -3,43 +3,43 @@
 + (id)newXPCConnection;
 + (void)initialize;
 + (void)isABCEnabled;
-- (BOOL)addSignatureContentForSession:(id)a3 key:(id)a4 content:(id)a5 reply:(id)a6;
-- (BOOL)addToSession:(id)a3 event:(id)a4 payload:(id)a5 reply:(id)a6;
-- (BOOL)addToSession:(id)a3 events:(id)a4 payload:(id)a5 reply:(id)a6;
-- (BOOL)cancelSession:(id)a3;
-- (BOOL)endSession:(id)a3;
-- (BOOL)getDiagnosticPayloadsForSignatures:(id)a3 reply:(id)a4;
-- (BOOL)groupCaseIdentifierForSignature:(id)a3 reply:(id)a4;
-- (BOOL)snapshotWithSignature:(id)a3 delay:(double)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 wantsRemoteCase:(BOOL)a8 reply:(id)a9;
-- (BOOL)snapshotWithSignature:(id)a3 duration:(double)a4 event:(id)a5 payload:(id)a6 reply:(id)a7;
-- (BOOL)snapshotWithSignature:(id)a3 withIDSDestinations:(id)a4 validFor:(double)a5 delay:(double)a6 events:(id)a7 payload:(id)a8 actions:(id)a9 reply:(id)a10;
-- (BOOL)startSessionWithSignature:(id)a3 duration:(double)a4 event:(id)a5 payload:(id)a6 reply:(id)a7;
-- (BOOL)startSessionWithSignature:(id)a3 duration:(double)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 wantsRemoteCase:(BOOL)a8 reply:(id)a9;
-- (BOOL)startSessionWithSignature:(id)a3 withIDSDestinations:(id)a4 validFor:(double)a5 duration:(double)a6 events:(id)a7 payload:(id)a8 actions:(id)a9 reply:(id)a10;
-- (BOOL)triggerRemoteSessionForSignature:(id)a3 caseGroupID:(id)a4 reply:(id)a5;
+- (BOOL)addSignatureContentForSession:(id)session key:(id)key content:(id)content reply:(id)reply;
+- (BOOL)addToSession:(id)session event:(id)event payload:(id)payload reply:(id)reply;
+- (BOOL)addToSession:(id)session events:(id)events payload:(id)payload reply:(id)reply;
+- (BOOL)cancelSession:(id)session;
+- (BOOL)endSession:(id)session;
+- (BOOL)getDiagnosticPayloadsForSignatures:(id)signatures reply:(id)reply;
+- (BOOL)groupCaseIdentifierForSignature:(id)signature reply:(id)reply;
+- (BOOL)snapshotWithSignature:(id)signature delay:(double)delay events:(id)events payload:(id)payload actions:(id)actions wantsRemoteCase:(BOOL)case reply:(id)reply;
+- (BOOL)snapshotWithSignature:(id)signature duration:(double)duration event:(id)event payload:(id)payload reply:(id)reply;
+- (BOOL)snapshotWithSignature:(id)signature withIDSDestinations:(id)destinations validFor:(double)for delay:(double)delay events:(id)events payload:(id)payload actions:(id)actions reply:(id)self0;
+- (BOOL)startSessionWithSignature:(id)signature duration:(double)duration event:(id)event payload:(id)payload reply:(id)reply;
+- (BOOL)startSessionWithSignature:(id)signature duration:(double)duration events:(id)events payload:(id)payload actions:(id)actions wantsRemoteCase:(BOOL)case reply:(id)reply;
+- (BOOL)startSessionWithSignature:(id)signature withIDSDestinations:(id)destinations validFor:(double)for duration:(double)duration events:(id)events payload:(id)payload actions:(id)actions reply:(id)self0;
+- (BOOL)triggerRemoteSessionForSignature:(id)signature caseGroupID:(id)d reply:(id)reply;
 - (SDRDiagnosticReporter)init;
-- (SDRDiagnosticReporter)initWithQueue:(id)a3;
+- (SDRDiagnosticReporter)initWithQueue:(id)queue;
 - (SDRDiagnosticReporterDelegate)delegate;
-- (id)_payloadAugmentedWithSandboxExtensionTokensDict:(id)a3;
-- (id)actionsDictionary:(id)a3 withIDSDestinations:(id)a4 validFor:(double)a5;
-- (id)buildDiagnosticIncidentEventForCaseSignature:(id)a3 handledResult:(unint64_t)a4 dampeningResult:(unint64_t)a5 closureType:(unint64_t)a6;
-- (id)signatureWithDomain:(id)a3 type:(id)a4 subType:(id)a5 subtypeContext:(id)a6 detectedProcess:(id)a7 triggerThresholdValues:(id)a8;
-- (int)checkSignatureValidity:(id)a3;
-- (void)_replyOnQueueToBlock:(void *)a3 withConfig:;
-- (void)caseSummariesListCallbackWithResult:(id)a3 service:(id)a4 caseSummaryType:(id)a5 count:(unint64_t)a6 container:(id)a7 reply:(id)a8;
-- (void)casesListCallbackWithResult:(id)a3 service:(id)a4 identifier:(id)a5 count:(unint64_t)a6 container:(id)a7 reply:(id)a8;
-- (void)commonPreflightChecksForSignature:(id)a3 payload:(id)a4 callback:(id)a5;
+- (id)_payloadAugmentedWithSandboxExtensionTokensDict:(id)dict;
+- (id)actionsDictionary:(id)dictionary withIDSDestinations:(id)destinations validFor:(double)for;
+- (id)buildDiagnosticIncidentEventForCaseSignature:(id)signature handledResult:(unint64_t)result dampeningResult:(unint64_t)dampeningResult closureType:(unint64_t)type;
+- (id)signatureWithDomain:(id)domain type:(id)type subType:(id)subType subtypeContext:(id)context detectedProcess:(id)process triggerThresholdValues:(id)values;
+- (int)checkSignatureValidity:(id)validity;
+- (void)_replyOnQueueToBlock:(void *)block withConfig:;
+- (void)caseSummariesListCallbackWithResult:(id)result service:(id)service caseSummaryType:(id)type count:(unint64_t)count container:(id)container reply:(id)reply;
+- (void)casesListCallbackWithResult:(id)result service:(id)service identifier:(id)identifier count:(unint64_t)count container:(id)container reply:(id)reply;
+- (void)commonPreflightChecksForSignature:(id)signature payload:(id)payload callback:(id)callback;
 - (void)dealloc;
-- (void)getAllDiagnosticCasesWithReply:(id)a3;
-- (void)getAutoBugCaptureConfiguration:(id)a3;
-- (void)getDiagnosticCaseSummariesOfType:(id)a3 reply:(id)a4;
-- (void)getDiagnosticCaseSummariesWithIdentifiers:(id)a3 reply:(id)a4;
-- (void)parseCaseTriggerResponse:(id)a3;
-- (void)purgeAutoBugCaptureFilesWithSubPaths:(id)a3 reply:(id)a4;
+- (void)getAllDiagnosticCasesWithReply:(id)reply;
+- (void)getAutoBugCaptureConfiguration:(id)configuration;
+- (void)getDiagnosticCaseSummariesOfType:(id)type reply:(id)reply;
+- (void)getDiagnosticCaseSummariesWithIdentifiers:(id)identifiers reply:(id)reply;
+- (void)parseCaseTriggerResponse:(id)response;
+- (void)purgeAutoBugCaptureFilesWithSubPaths:(id)paths reply:(id)reply;
 - (void)resetAPIRateLimit;
 - (void)resetDailyCaseLimit;
 - (void)setupXPCInterface;
-- (void)submitDiagnosticIncidentEventForCaseSignature:(id)a3 handledResult:(unint64_t)a4 dampeningResult:(unint64_t)a5 closureType:(unint64_t)a6;
+- (void)submitDiagnosticIncidentEventForCaseSignature:(id)signature handledResult:(unint64_t)result dampeningResult:(unint64_t)dampeningResult closureType:(unint64_t)type;
 @end
 
 @implementation SDRDiagnosticReporter
@@ -145,17 +145,17 @@ uint64_t __35__SDRDiagnosticReporter_initialize__block_invoke()
   return [v2 initWithMachServiceName:@"com.apple.symptom_diagnostics" options:4096];
 }
 
-- (SDRDiagnosticReporter)initWithQueue:(id)a3
+- (SDRDiagnosticReporter)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = SDRDiagnosticReporter;
   v5 = [(SDRDiagnosticReporter *)&v9 init];
   if (v5)
   {
-    if (v4)
+    if (queueCopy)
     {
-      v6 = v4;
+      v6 = queueCopy;
     }
 
     else
@@ -254,10 +254,10 @@ void __42__SDRDiagnosticReporter_setupXPCInterface__block_invoke_2(uint64_t a1)
 LABEL_5:
 }
 
-- (int)checkSignatureValidity:(id)a3
+- (int)checkSignatureValidity:(id)validity
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"domain"];
+  validityCopy = validity;
+  v4 = [validityCopy objectForKeyedSubscript:@"domain"];
   v5 = v4;
   if (!v4 || ![v4 length])
   {
@@ -267,13 +267,13 @@ LABEL_5:
 
   if ([v5 length] < 0x101)
   {
-    v9 = [v3 objectForKeyedSubscript:@"type"];
+    v9 = [validityCopy objectForKeyedSubscript:@"type"];
     v10 = v9;
     if (v9 && [v9 length])
     {
       if ([v10 length] < 0x101)
       {
-        v12 = [v3 objectForKeyedSubscript:@"subtype"];
+        v12 = [validityCopy objectForKeyedSubscript:@"subtype"];
         v13 = v12;
         if (v12 && [v12 length] >= 0x101)
         {
@@ -282,7 +282,7 @@ LABEL_5:
 
         else
         {
-          v14 = [v3 objectForKeyedSubscript:@"additional"];
+          v14 = [validityCopy objectForKeyedSubscript:@"additional"];
           v15 = v14;
           if (v14 && [v14 length] >= 0x101)
           {
@@ -291,7 +291,7 @@ LABEL_5:
 
           else
           {
-            v16 = [v3 objectForKeyedSubscript:@"detected"];
+            v16 = [validityCopy objectForKeyedSubscript:@"detected"];
             v17 = v16;
             if (v16 && [v16 length] > 0x100)
             {
@@ -332,68 +332,68 @@ LABEL_7:
   return v7;
 }
 
-- (id)actionsDictionary:(id)a3 withIDSDestinations:(id)a4 validFor:(double)a5
+- (id)actionsDictionary:(id)dictionary withIDSDestinations:(id)destinations validFor:(double)for
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7)
+  dictionaryCopy = dictionary;
+  destinationsCopy = destinations;
+  if (dictionaryCopy)
   {
-    v9 = [v7 mutableCopy];
+    dictionary = [dictionaryCopy mutableCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v10 = v9;
-  v11 = [v8 allObjects];
-  [v10 setObject:v11 forKey:@"idsdest"];
+  v10 = dictionary;
+  allObjects = [destinationsCopy allObjects];
+  [v10 setObject:allObjects forKey:@"idsdest"];
 
-  v12 = 3600.0;
-  if (a5 >= 1.0)
+  forCopy = 3600.0;
+  if (for >= 1.0)
   {
-    v12 = a5;
+    forCopy = for;
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
+  v13 = [MEMORY[0x277CCABB0] numberWithDouble:forCopy];
   [v10 setObject:v13 forKey:@"remotewindow"];
 
   return v10;
 }
 
-- (id)signatureWithDomain:(id)a3 type:(id)a4 subType:(id)a5 subtypeContext:(id)a6 detectedProcess:(id)a7 triggerThresholdValues:(id)a8
+- (id)signatureWithDomain:(id)domain type:(id)type subType:(id)subType subtypeContext:(id)context detectedProcess:(id)process triggerThresholdValues:(id)values
 {
-  v13 = a5;
-  v14 = a6;
-  v15 = a8;
-  v16 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{a3, @"domain", a4, @"type", a7, @"detected", 0}];
-  if ([v13 length])
+  subTypeCopy = subType;
+  contextCopy = context;
+  valuesCopy = values;
+  v16 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{domain, @"domain", type, @"type", process, @"detected", 0}];
+  if ([subTypeCopy length])
   {
-    [v16 setObject:v13 forKey:@"subtype"];
+    [v16 setObject:subTypeCopy forKey:@"subtype"];
   }
 
-  if ([v14 length])
+  if ([contextCopy length])
   {
-    [v16 setObject:v14 forKey:@"additional"];
+    [v16 setObject:contextCopy forKey:@"additional"];
   }
 
-  if ([v15 length])
+  if ([valuesCopy length])
   {
-    [v16 setObject:v15 forKey:@"threshval"];
+    [v16 setObject:valuesCopy forKey:@"threshval"];
   }
 
   return v16;
 }
 
-- (BOOL)groupCaseIdentifierForSignature:(id)a3 reply:(id)a4
+- (BOOL)groupCaseIdentifierForSignature:(id)signature reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  signatureCopy = signature;
+  replyCopy = reply;
+  v8 = replyCopy;
   if (isEnabled == 1)
   {
-    v9 = [(SDRDiagnosticReporter *)self checkSignatureValidity:v6];
+    v9 = [(SDRDiagnosticReporter *)self checkSignatureValidity:signatureCopy];
     if (v9)
     {
       if (!v8)
@@ -434,7 +434,7 @@ LABEL_13:
         v23[3] = &unk_279D2CE88;
         v23[4] = self;
         v24 = v12;
-        [v13 requestGroupCaseIdentifierForSignature:v6 reply:v23];
+        [v13 requestGroupCaseIdentifierForSignature:signatureCopy reply:v23];
       }
 
       else
@@ -446,14 +446,14 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (v7)
+  if (replyCopy)
   {
     v14 = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__SDRDiagnosticReporter_groupCaseIdentifierForSignature_reply___block_invoke_5;
     block[3] = &unk_279D2CE10;
-    v19 = v7;
+    v19 = replyCopy;
     dispatch_async(v14, block);
   }
 
@@ -522,18 +522,18 @@ void __63__SDRDiagnosticReporter_groupCaseIdentifierForSignature_reply___block_i
   (*(v1 + 16))(v1, v2);
 }
 
-- (id)_payloadAugmentedWithSandboxExtensionTokensDict:(id)a3
+- (id)_payloadAugmentedWithSandboxExtensionTokensDict:(id)dict
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictCopy = dict;
+  v4 = dictCopy;
+  if (dictCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"path"];
+    v5 = [dictCopy objectForKeyedSubscript:@"path"];
     if ([v5 count])
     {
       v27 = v4;
-      v6 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
@@ -570,7 +570,7 @@ void __63__SDRDiagnosticReporter_groupCaseIdentifierForSignature_reply___block_i
               }
 
               v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:{v16, v26}];
-              [v6 setObject:v17 forKeyedSubscript:v13];
+              [dictionary setObject:v17 forKeyedSubscript:v13];
 
               free(v16);
             }
@@ -594,12 +594,12 @@ void __63__SDRDiagnosticReporter_groupCaseIdentifierForSignature_reply___block_i
         while (v9);
       }
 
-      v21 = [v6 count];
+      v21 = [dictionary count];
       if (v21 == [v7 count])
       {
         v4 = v27;
         v22 = [v27 mutableCopy];
-        [v22 setObject:v6 forKeyedSubscript:@"sandbox_ext_token_dict"];
+        [v22 setObject:dictionary forKeyedSubscript:@"sandbox_ext_token_dict"];
       }
 
       else
@@ -608,7 +608,7 @@ void __63__SDRDiagnosticReporter_groupCaseIdentifierForSignature_reply___block_i
         v4 = v27;
         if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
         {
-          [(SDRDiagnosticReporter *)v23 _payloadAugmentedWithSandboxExtensionTokensDict:v7, v6];
+          [(SDRDiagnosticReporter *)v23 _payloadAugmentedWithSandboxExtensionTokensDict:v7, dictionary];
         }
 
         v22 = 0;
@@ -633,23 +633,23 @@ void __63__SDRDiagnosticReporter_groupCaseIdentifierForSignature_reply___block_i
   return v22;
 }
 
-- (void)commonPreflightChecksForSignature:(id)a3 payload:(id)a4 callback:(id)a5
+- (void)commonPreflightChecksForSignature:(id)signature payload:(id)payload callback:(id)callback
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  signatureCopy = signature;
+  payloadCopy = payload;
+  callbackCopy = callback;
+  v11 = callbackCopy;
+  if (callbackCopy)
   {
     if (isEnabled)
     {
-      v12 = [(SDRDiagnosticReporter *)self checkSignatureValidity:v8];
+      v12 = [(SDRDiagnosticReporter *)self checkSignatureValidity:signatureCopy];
       if (!v12)
       {
-        v13 = [(SDRDiagnosticReporter *)self _payloadAugmentedWithSandboxExtensionTokensDict:v9];
+        v13 = [(SDRDiagnosticReporter *)self _payloadAugmentedWithSandboxExtensionTokensDict:payloadCopy];
         v14 = v13;
-        if (v9 && !v13)
+        if (payloadCopy && !v13)
         {
           v15 = &kSymptomDiagnosticErrorPayloadSandboxTokenError;
 LABEL_7:
@@ -659,7 +659,7 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        if ([CaseDampeningExceptions allowDampeningExceptionFor:v8])
+        if ([CaseDampeningExceptions allowDampeningExceptionFor:signatureCopy])
         {
           v17 = logHandle;
           if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
@@ -671,8 +671,8 @@ LABEL_16:
 
         else
         {
-          v19 = [MEMORY[0x277CBEAA8] date];
-          [v19 timeIntervalSince1970];
+          date = [MEMORY[0x277CBEAA8] date];
+          [date timeIntervalSince1970];
           v21 = v20;
 
           if (v21 < *&_dailyCaseLimitActiveUntil)
@@ -690,7 +690,7 @@ LABEL_16:
               [SDRDiagnosticReporter commonPreflightChecksForSignature:payload:callback:];
             }
 
-            [(SDRDiagnosticReporter *)self submitDiagnosticIncidentEventForCaseSignature:v8 handledResult:2 dampeningResult:2 closureType:3];
+            [(SDRDiagnosticReporter *)self submitDiagnosticIncidentEventForCaseSignature:signatureCopy handledResult:2 dampeningResult:2 closureType:3];
             v15 = &kSymptomDiagnosticErrorDailyLimitExceeded;
             goto LABEL_7;
           }
@@ -715,7 +715,7 @@ LABEL_16:
               [SDRDiagnosticReporter commonPreflightChecksForSignature:payload:callback:];
             }
 
-            [(SDRDiagnosticReporter *)self submitDiagnosticIncidentEventForCaseSignature:v8 handledResult:2 dampeningResult:8 closureType:3];
+            [(SDRDiagnosticReporter *)self submitDiagnosticIncidentEventForCaseSignature:signatureCopy handledResult:2 dampeningResult:8 closureType:3];
             v15 = &kSymptomDiagnosticErrorRequestThrottled;
             goto LABEL_7;
           }
@@ -734,7 +734,7 @@ LABEL_16:
       if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 138477827;
-        v25 = v8;
+        v25 = signatureCopy;
         _os_log_impl(&dword_26C35F000, v16, OS_LOG_TYPE_DEFAULT, "SDRDiagnosticReporter: Failed signature validation check for %{private}@", &v24, 0xCu);
       }
 
@@ -743,7 +743,7 @@ LABEL_16:
 
     else
     {
-      (*(v10 + 2))(v10, 1, 0);
+      (*(callbackCopy + 2))(callbackCopy, 1, 0);
     }
   }
 
@@ -752,23 +752,23 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)parseCaseTriggerResponse:(id)a3
+- (void)parseCaseTriggerResponse:(id)response
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"success"];
-  v5 = [v4 BOOLValue];
+  responseCopy = response;
+  v4 = [responseCopy objectForKeyedSubscript:@"success"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [v3 objectForKeyedSubscript:@"reason"];
-  v7 = [v6 intValue];
+  v6 = [responseCopy objectForKeyedSubscript:@"reason"];
+  intValue = [v6 intValue];
 
-  if ((v5 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = v8;
-    if (v7 == 31)
+    date = [MEMORY[0x277CBEAA8] date];
+    v9 = date;
+    if (intValue == 31)
     {
-      [v8 timeIntervalSince1970];
+      [date timeIntervalSince1970];
       v11 = v10;
       [v9 timeIntervalSince1970];
       *&_dailyCaseLimitActiveUntil = (v11 + 86400 + 86400 * (v12 / 0x15180) - v12);
@@ -781,9 +781,9 @@ LABEL_17:
       }
     }
 
-    else if (v7 == 41)
+    else if (intValue == 41)
     {
-      v14 = [v3 objectForKeyedSubscript:@"expiresIn"];
+      v14 = [responseCopy objectForKeyedSubscript:@"expiresIn"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -837,12 +837,12 @@ LABEL_17:
   }
 }
 
-- (void)submitDiagnosticIncidentEventForCaseSignature:(id)a3 handledResult:(unint64_t)a4 dampeningResult:(unint64_t)a5 closureType:(unint64_t)a6
+- (void)submitDiagnosticIncidentEventForCaseSignature:(id)signature handledResult:(unint64_t)result dampeningResult:(unint64_t)dampeningResult closureType:(unint64_t)type
 {
-  v10 = a3;
-  v13 = [(SDRDiagnosticReporter *)self buildDiagnosticIncidentEventForCaseSignature:v10 handledResult:a4 dampeningResult:a5 closureType:a6];
+  signatureCopy = signature;
+  v13 = [(SDRDiagnosticReporter *)self buildDiagnosticIncidentEventForCaseSignature:signatureCopy handledResult:result dampeningResult:dampeningResult closureType:type];
   v11 = v13;
-  v12 = v10;
+  v12 = signatureCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -875,35 +875,35 @@ id __113__SDRDiagnosticReporter_submitDiagnosticIncidentEventForCaseSignature_ha
   return v9;
 }
 
-- (id)buildDiagnosticIncidentEventForCaseSignature:(id)a3 handledResult:(unint64_t)a4 dampeningResult:(unint64_t)a5 closureType:(unint64_t)a6
+- (id)buildDiagnosticIncidentEventForCaseSignature:(id)signature handledResult:(unint64_t)result dampeningResult:(unint64_t)dampeningResult closureType:(unint64_t)type
 {
   v9 = MEMORY[0x277CBEB38];
-  v10 = a3;
+  signatureCopy = signature;
   v11 = objc_alloc_init(v9);
-  v12 = [v10 objectForKeyedSubscript:@"domain"];
+  v12 = [signatureCopy objectForKeyedSubscript:@"domain"];
   [v11 setObject:v12 forKeyedSubscript:@"caseDomain"];
 
-  v13 = [v10 objectForKeyedSubscript:@"type"];
+  v13 = [signatureCopy objectForKeyedSubscript:@"type"];
   [v11 setObject:v13 forKeyedSubscript:@"caseType"];
 
-  v14 = [v10 objectForKeyedSubscript:@"subtype"];
+  v14 = [signatureCopy objectForKeyedSubscript:@"subtype"];
   [v11 setObject:v14 forKeyedSubscript:@"caseSubtype"];
 
-  v15 = [v10 objectForKeyedSubscript:@"additional"];
+  v15 = [signatureCopy objectForKeyedSubscript:@"additional"];
   [v11 setObject:v15 forKeyedSubscript:@"caseSubtypeContext"];
 
-  v16 = [v10 objectForKeyedSubscript:@"detected"];
+  v16 = [signatureCopy objectForKeyedSubscript:@"detected"];
 
   [v11 setObject:v16 forKeyedSubscript:@"caseDetectedProcess"];
   [v11 setObject:&stru_287CE89F8 forKeyedSubscript:@"caseIdentifier"];
   [v11 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"hasGroupIdentifier"];
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:result];
   [v11 setObject:v17 forKeyedSubscript:@"handledResult"];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:dampeningResult];
   [v11 setObject:v18 forKeyedSubscript:@"dampeningResult"];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   [v11 setObject:v19 forKeyedSubscript:@"closureType"];
 
   if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEBUG))
@@ -914,19 +914,19 @@ id __113__SDRDiagnosticReporter_submitDiagnosticIncidentEventForCaseSignature_ha
   return v11;
 }
 
-- (BOOL)snapshotWithSignature:(id)a3 duration:(double)a4 event:(id)a5 payload:(id)a6 reply:(id)a7
+- (BOOL)snapshotWithSignature:(id)signature duration:(double)duration event:(id)event payload:(id)payload reply:(id)reply
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
+  signatureCopy = signature;
+  eventCopy = event;
+  payloadCopy = payload;
+  replyCopy = reply;
+  v16 = replyCopy;
   if (isEnabled == 1)
   {
-    if (v13)
+    if (eventCopy)
     {
-      v24[0] = v13;
+      v24[0] = eventCopy;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     }
 
@@ -935,12 +935,12 @@ id __113__SDRDiagnosticReporter_submitDiagnosticIncidentEventForCaseSignature_ha
       v17 = 0;
     }
 
-    v19 = [(SDRDiagnosticReporter *)self snapshotWithSignature:v12 delay:v17 events:v14 payload:0 actions:0 wantsRemoteCase:v16 reply:a4];
+    v19 = [(SDRDiagnosticReporter *)self snapshotWithSignature:signatureCopy delay:v17 events:payloadCopy payload:0 actions:0 wantsRemoteCase:v16 reply:duration];
   }
 
   else
   {
-    if (!v15)
+    if (!replyCopy)
     {
       v19 = 0;
       goto LABEL_9;
@@ -951,7 +951,7 @@ id __113__SDRDiagnosticReporter_submitDiagnosticIncidentEventForCaseSignature_ha
     block[1] = 3221225472;
     block[2] = __76__SDRDiagnosticReporter_snapshotWithSignature_duration_event_payload_reply___block_invoke;
     block[3] = &unk_279D2CE10;
-    v23 = v15;
+    v23 = replyCopy;
     dispatch_async(queue, block);
     v19 = 0;
     v17 = v23;
@@ -969,13 +969,13 @@ void __76__SDRDiagnosticReporter_snapshotWithSignature_duration_event_payload_re
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)snapshotWithSignature:(id)a3 delay:(double)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 wantsRemoteCase:(BOOL)a8 reply:(id)a9
+- (BOOL)snapshotWithSignature:(id)signature delay:(double)delay events:(id)events payload:(id)payload actions:(id)actions wantsRemoteCase:(BOOL)case reply:(id)reply
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  signatureCopy = signature;
+  eventsCopy = events;
+  payloadCopy = payload;
+  actionsCopy = actions;
+  replyCopy = reply;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -986,17 +986,17 @@ void __76__SDRDiagnosticReporter_snapshotWithSignature_duration_event_payload_re
   v26[3] = &unk_279D2CF00;
   v26[4] = self;
   v31 = &v34;
-  v21 = v20;
+  v21 = replyCopy;
   v30 = v21;
-  v22 = v16;
+  v22 = signatureCopy;
   v27 = v22;
-  v32 = a4;
-  v23 = v17;
+  delayCopy = delay;
+  v23 = eventsCopy;
   v28 = v23;
-  v24 = v19;
+  v24 = actionsCopy;
   v29 = v24;
-  v33 = a8;
-  [(SDRDiagnosticReporter *)self commonPreflightChecksForSignature:v22 payload:v18 callback:v26];
+  caseCopy = case;
+  [(SDRDiagnosticReporter *)self commonPreflightChecksForSignature:v22 payload:payloadCopy callback:v26];
   LOBYTE(self) = *(v35 + 24);
 
   _Block_object_dispose(&v34, 8);
@@ -1118,42 +1118,42 @@ void __98__SDRDiagnosticReporter_snapshotWithSignature_delay_events_payload_acti
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)snapshotWithSignature:(id)a3 withIDSDestinations:(id)a4 validFor:(double)a5 delay:(double)a6 events:(id)a7 payload:(id)a8 actions:(id)a9 reply:(id)a10
+- (BOOL)snapshotWithSignature:(id)signature withIDSDestinations:(id)destinations validFor:(double)for delay:(double)delay events:(id)events payload:(id)payload actions:(id)actions reply:(id)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = v23;
+  signatureCopy = signature;
+  destinationsCopy = destinations;
+  eventsCopy = events;
+  payloadCopy = payload;
+  actionsCopy = actions;
+  replyCopy = reply;
+  v24 = replyCopy;
   if (isEnabled == 1)
   {
-    v25 = [v19 count];
+    v25 = [destinationsCopy count];
     if (v25)
     {
-      v26 = [(SDRDiagnosticReporter *)self actionsDictionary:v22 withIDSDestinations:v19 validFor:a5];
+      v26 = [(SDRDiagnosticReporter *)self actionsDictionary:actionsCopy withIDSDestinations:destinationsCopy validFor:for];
     }
 
     else
     {
-      v26 = v22;
+      v26 = actionsCopy;
     }
 
     v29 = v26;
-    v28 = [(SDRDiagnosticReporter *)self snapshotWithSignature:v18 delay:v20 events:v21 payload:v26 actions:v25 != 0 wantsRemoteCase:v24 reply:a6];
+    v28 = [(SDRDiagnosticReporter *)self snapshotWithSignature:signatureCopy delay:eventsCopy events:payloadCopy payload:v26 actions:v25 != 0 wantsRemoteCase:v24 reply:delay];
   }
 
   else
   {
-    if (v23)
+    if (replyCopy)
     {
       queue = self->_queue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __111__SDRDiagnosticReporter_snapshotWithSignature_withIDSDestinations_validFor_delay_events_payload_actions_reply___block_invoke;
       block[3] = &unk_279D2CE10;
-      v32 = v23;
+      v32 = replyCopy;
       dispatch_async(queue, block);
     }
 
@@ -1170,19 +1170,19 @@ void __111__SDRDiagnosticReporter_snapshotWithSignature_withIDSDestinations_vali
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)startSessionWithSignature:(id)a3 duration:(double)a4 event:(id)a5 payload:(id)a6 reply:(id)a7
+- (BOOL)startSessionWithSignature:(id)signature duration:(double)duration event:(id)event payload:(id)payload reply:(id)reply
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
+  signatureCopy = signature;
+  eventCopy = event;
+  payloadCopy = payload;
+  replyCopy = reply;
+  v16 = replyCopy;
   if (isEnabled == 1)
   {
-    if (v13)
+    if (eventCopy)
     {
-      v24[0] = v13;
+      v24[0] = eventCopy;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
     }
 
@@ -1191,12 +1191,12 @@ void __111__SDRDiagnosticReporter_snapshotWithSignature_withIDSDestinations_vali
       v17 = 0;
     }
 
-    v19 = [(SDRDiagnosticReporter *)self startSessionWithSignature:v12 duration:v17 events:v14 payload:0 actions:0 wantsRemoteCase:v16 reply:a4];
+    v19 = [(SDRDiagnosticReporter *)self startSessionWithSignature:signatureCopy duration:v17 events:payloadCopy payload:0 actions:0 wantsRemoteCase:v16 reply:duration];
   }
 
   else
   {
-    if (!v15)
+    if (!replyCopy)
     {
       v19 = 0;
       goto LABEL_9;
@@ -1207,7 +1207,7 @@ void __111__SDRDiagnosticReporter_snapshotWithSignature_withIDSDestinations_vali
     block[1] = 3221225472;
     block[2] = __80__SDRDiagnosticReporter_startSessionWithSignature_duration_event_payload_reply___block_invoke;
     block[3] = &unk_279D2CE10;
-    v23 = v15;
+    v23 = replyCopy;
     dispatch_async(queue, block);
     v19 = 0;
     v17 = v23;
@@ -1225,13 +1225,13 @@ void __80__SDRDiagnosticReporter_startSessionWithSignature_duration_event_payloa
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)startSessionWithSignature:(id)a3 duration:(double)a4 events:(id)a5 payload:(id)a6 actions:(id)a7 wantsRemoteCase:(BOOL)a8 reply:(id)a9
+- (BOOL)startSessionWithSignature:(id)signature duration:(double)duration events:(id)events payload:(id)payload actions:(id)actions wantsRemoteCase:(BOOL)case reply:(id)reply
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  signatureCopy = signature;
+  eventsCopy = events;
+  payloadCopy = payload;
+  actionsCopy = actions;
+  replyCopy = reply;
   v34 = 0;
   v35 = &v34;
   v36 = 0x2020000000;
@@ -1241,18 +1241,18 @@ void __80__SDRDiagnosticReporter_startSessionWithSignature_duration_event_payloa
   v26[2] = __105__SDRDiagnosticReporter_startSessionWithSignature_duration_events_payload_actions_wantsRemoteCase_reply___block_invoke;
   v26[3] = &unk_279D2CF28;
   v26[4] = self;
-  v21 = v20;
+  v21 = replyCopy;
   v30 = v21;
   v31 = &v34;
-  v22 = v16;
+  v22 = signatureCopy;
   v27 = v22;
-  v32 = a4;
-  v23 = v17;
+  durationCopy = duration;
+  v23 = eventsCopy;
   v28 = v23;
-  v24 = v19;
+  v24 = actionsCopy;
   v29 = v24;
-  v33 = a8;
-  [(SDRDiagnosticReporter *)self commonPreflightChecksForSignature:v22 payload:v18 callback:v26];
+  caseCopy = case;
+  [(SDRDiagnosticReporter *)self commonPreflightChecksForSignature:v22 payload:payloadCopy callback:v26];
   LOBYTE(self) = *(v35 + 24);
 
   _Block_object_dispose(&v34, 8);
@@ -1398,42 +1398,42 @@ void __105__SDRDiagnosticReporter_startSessionWithSignature_duration_events_payl
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)startSessionWithSignature:(id)a3 withIDSDestinations:(id)a4 validFor:(double)a5 duration:(double)a6 events:(id)a7 payload:(id)a8 actions:(id)a9 reply:(id)a10
+- (BOOL)startSessionWithSignature:(id)signature withIDSDestinations:(id)destinations validFor:(double)for duration:(double)duration events:(id)events payload:(id)payload actions:(id)actions reply:(id)self0
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = v23;
+  signatureCopy = signature;
+  destinationsCopy = destinations;
+  eventsCopy = events;
+  payloadCopy = payload;
+  actionsCopy = actions;
+  replyCopy = reply;
+  v24 = replyCopy;
   if (isEnabled == 1)
   {
-    v25 = [v19 count];
+    v25 = [destinationsCopy count];
     if (v25)
     {
-      v26 = [(SDRDiagnosticReporter *)self actionsDictionary:v22 withIDSDestinations:v19 validFor:a5];
+      v26 = [(SDRDiagnosticReporter *)self actionsDictionary:actionsCopy withIDSDestinations:destinationsCopy validFor:for];
     }
 
     else
     {
-      v26 = v22;
+      v26 = actionsCopy;
     }
 
     v29 = v26;
-    v28 = [(SDRDiagnosticReporter *)self startSessionWithSignature:v18 duration:v20 events:v21 payload:v26 actions:v25 != 0 wantsRemoteCase:v24 reply:a6];
+    v28 = [(SDRDiagnosticReporter *)self startSessionWithSignature:signatureCopy duration:eventsCopy events:payloadCopy payload:v26 actions:v25 != 0 wantsRemoteCase:v24 reply:duration];
   }
 
   else
   {
-    if (v23)
+    if (replyCopy)
     {
       queue = self->_queue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __118__SDRDiagnosticReporter_startSessionWithSignature_withIDSDestinations_validFor_duration_events_payload_actions_reply___block_invoke;
       block[3] = &unk_279D2CE10;
-      v32 = v23;
+      v32 = replyCopy;
       dispatch_async(queue, block);
     }
 
@@ -1450,11 +1450,11 @@ void __118__SDRDiagnosticReporter_startSessionWithSignature_withIDSDestinations_
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)endSession:(id)a3
+- (BOOL)endSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (isEnabled == 1 && [v4 length])
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (isEnabled == 1 && [sessionCopy length])
   {
     v6 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_175];
     v7 = v6;
@@ -1482,11 +1482,11 @@ void __36__SDRDiagnosticReporter_endSession___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (BOOL)cancelSession:(id)a3
+- (BOOL)cancelSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (isEnabled == 1 && [v4 length])
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (isEnabled == 1 && [sessionCopy length])
   {
     v6 = [(NSXPCConnection *)self->_connection remoteObjectProxyWithErrorHandler:&__block_literal_global_177];
     v7 = v6;
@@ -1514,36 +1514,36 @@ void __39__SDRDiagnosticReporter_cancelSession___block_invoke(uint64_t a1, void 
   }
 }
 
-- (BOOL)addToSession:(id)a3 event:(id)a4 payload:(id)a5 reply:(id)a6
+- (BOOL)addToSession:(id)session event:(id)event payload:(id)payload reply:(id)reply
 {
   v19 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4)
+  sessionCopy = session;
+  payloadCopy = payload;
+  replyCopy = reply;
+  if (event)
   {
-    v18 = a4;
+    eventCopy = event;
     v13 = MEMORY[0x277CBEA60];
-    v14 = a4;
-    a4 = [v13 arrayWithObjects:&v18 count:1];
+    eventCopy2 = event;
+    event = [v13 arrayWithObjects:&eventCopy count:1];
   }
 
-  v15 = [(SDRDiagnosticReporter *)self addToSession:v10 events:a4 payload:v11 reply:v12, v18, v19];
+  v15 = [(SDRDiagnosticReporter *)self addToSession:sessionCopy events:event payload:payloadCopy reply:replyCopy, eventCopy, v19];
 
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (BOOL)addToSession:(id)a3 events:(id)a4 payload:(id)a5 reply:(id)a6
+- (BOOL)addToSession:(id)session events:(id)events payload:(id)payload reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  sessionCopy = session;
+  eventsCopy = events;
+  payloadCopy = payload;
+  replyCopy = reply;
+  v14 = replyCopy;
   if (isEnabled == 1)
   {
-    if (v11 | v12 && [v10 length])
+    if (eventsCopy | payloadCopy && [sessionCopy length])
     {
       connection = self->_connection;
       v29[0] = MEMORY[0x277D85DD0];
@@ -1564,7 +1564,7 @@ void __39__SDRDiagnosticReporter_cancelSession___block_invoke(uint64_t a1, void 
         v27[3] = &unk_279D2CE88;
         v27[4] = self;
         v28 = v17;
-        [v18 addToSession:v10 events:v11 payload:v12 reply:v27];
+        [v18 addToSession:sessionCopy events:eventsCopy payload:payloadCopy reply:v27];
       }
 
       goto LABEL_12;
@@ -1588,7 +1588,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (!v13)
+  if (!replyCopy)
   {
     goto LABEL_13;
   }
@@ -1599,7 +1599,7 @@ LABEL_13:
   v23[2] = __59__SDRDiagnosticReporter_addToSession_events_payload_reply___block_invoke_5;
   v23[3] = &unk_279D2CE10;
   v16 = &v24;
-  v24 = v13;
+  v24 = replyCopy;
   v21 = v23;
 LABEL_11:
   dispatch_async(queue, v21);
@@ -1669,16 +1669,16 @@ void __59__SDRDiagnosticReporter_addToSession_events_payload_reply___block_invok
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)addSignatureContentForSession:(id)a3 key:(id)a4 content:(id)a5 reply:(id)a6
+- (BOOL)addSignatureContentForSession:(id)session key:(id)key content:(id)content reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  sessionCopy = session;
+  keyCopy = key;
+  contentCopy = content;
+  replyCopy = reply;
+  v14 = replyCopy;
   if (isEnabled == 1)
   {
-    if ([v11 length] && objc_msgSend(v12, "length") && objc_msgSend(v10, "length"))
+    if ([keyCopy length] && objc_msgSend(contentCopy, "length") && objc_msgSend(sessionCopy, "length"))
     {
       connection = self->_connection;
       v29[0] = MEMORY[0x277D85DD0];
@@ -1699,7 +1699,7 @@ void __59__SDRDiagnosticReporter_addToSession_events_payload_reply___block_invok
         v27[3] = &unk_279D2CE88;
         v27[4] = self;
         v28 = v17;
-        [v18 addSignatureContentForSession:v10 key:v11 content:v12 reply:v27];
+        [v18 addSignatureContentForSession:sessionCopy key:keyCopy content:contentCopy reply:v27];
       }
 
       goto LABEL_13;
@@ -1723,7 +1723,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v13)
+  if (!replyCopy)
   {
     goto LABEL_14;
   }
@@ -1734,7 +1734,7 @@ LABEL_14:
   v23[2] = __73__SDRDiagnosticReporter_addSignatureContentForSession_key_content_reply___block_invoke_5;
   v23[3] = &unk_279D2CE10;
   v16 = &v24;
-  v24 = v13;
+  v24 = replyCopy;
   v21 = v23;
 LABEL_12:
   dispatch_async(queue, v21);
@@ -1804,11 +1804,11 @@ void __73__SDRDiagnosticReporter_addSignatureContentForSession_key_content_reply
   (*(v1 + 16))(v1, v2);
 }
 
-- (BOOL)getDiagnosticPayloadsForSignatures:(id)a3 reply:(id)a4
+- (BOOL)getDiagnosticPayloadsForSignatures:(id)signatures reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  signaturesCopy = signatures;
+  replyCopy = reply;
+  v8 = replyCopy;
   if (isEnabled == 1)
   {
     connection = self->_connection;
@@ -1817,7 +1817,7 @@ void __73__SDRDiagnosticReporter_addSignatureContentForSession_key_content_reply
     v24[2] = __66__SDRDiagnosticReporter_getDiagnosticPayloadsForSignatures_reply___block_invoke;
     v24[3] = &unk_279D2CE38;
     v10 = &v25;
-    v11 = v7;
+    v11 = replyCopy;
     v24[4] = self;
     v25 = v11;
     v12 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v24];
@@ -1831,7 +1831,7 @@ void __73__SDRDiagnosticReporter_addSignatureContentForSession_key_content_reply
       v14 = &v23;
       v22[4] = self;
       v23 = v11;
-      [v12 getDiagnosticPayloadsForSignatures:v6 reply:v22];
+      [v12 getDiagnosticPayloadsForSignatures:signaturesCopy reply:v22];
     }
 
     else
@@ -1856,7 +1856,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!replyCopy)
   {
     v13 = 0;
     goto LABEL_11;
@@ -1868,7 +1868,7 @@ LABEL_9:
   v18[2] = __66__SDRDiagnosticReporter_getDiagnosticPayloadsForSignatures_reply___block_invoke_5;
   v18[3] = &unk_279D2CE10;
   v10 = &v19;
-  v19 = v7;
+  v19 = replyCopy;
   dispatch_async(v15, v18);
   v13 = 0;
 LABEL_10:
@@ -1938,29 +1938,29 @@ void __66__SDRDiagnosticReporter_getDiagnosticPayloadsForSignatures_reply___bloc
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (BOOL)triggerRemoteSessionForSignature:(id)a3 caseGroupID:(id)a4 reply:(id)a5
+- (BOOL)triggerRemoteSessionForSignature:(id)signature caseGroupID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  signatureCopy = signature;
+  dCopy = d;
+  replyCopy = reply;
+  v11 = replyCopy;
   if (isEnabled != 1)
   {
-    if (v10)
+    if (replyCopy)
     {
       queue = self->_queue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __76__SDRDiagnosticReporter_triggerRemoteSessionForSignature_caseGroupID_reply___block_invoke_4;
       block[3] = &unk_279D2CE10;
-      v20 = v10;
+      v20 = replyCopy;
       dispatch_async(queue, block);
     }
 
     goto LABEL_11;
   }
 
-  if (![v8 count] || !objc_msgSend(v9, "length"))
+  if (![signatureCopy count] || !objc_msgSend(dCopy, "length"))
   {
     if (v11)
     {
@@ -1991,7 +1991,7 @@ LABEL_11:
     v21[3] = &unk_279D2CE88;
     v21[4] = self;
     v22 = v13;
-    [v14 triggerRemoteSessionForSignature:v8 groupIdentifier:v9 reply:v21];
+    [v14 triggerRemoteSessionForSignature:signatureCopy groupIdentifier:dCopy reply:v21];
   }
 
 LABEL_12:
@@ -2050,56 +2050,56 @@ void __76__SDRDiagnosticReporter_triggerRemoteSessionForSignature_caseGroupID_re
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)casesListCallbackWithResult:(id)a3 service:(id)a4 identifier:(id)a5 count:(unint64_t)a6 container:(id)a7 reply:(id)a8
+- (void)casesListCallbackWithResult:(id)result service:(id)service identifier:(id)identifier count:(unint64_t)count container:(id)container reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if ([v14 count])
+  resultCopy = result;
+  serviceCopy = service;
+  identifierCopy = identifier;
+  containerCopy = container;
+  replyCopy = reply;
+  if ([resultCopy count])
   {
-    [v17 addObjectsFromArray:v14];
-    v19 = [v17 lastObject];
-    v20 = [v19 objectForKeyedSubscript:@"case_identifier"];
+    [containerCopy addObjectsFromArray:resultCopy];
+    lastObject = [containerCopy lastObject];
+    v20 = [lastObject objectForKeyedSubscript:@"case_identifier"];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __94__SDRDiagnosticReporter_casesListCallbackWithResult_service_identifier_count_container_reply___block_invoke;
     v25[3] = &unk_279D2CFC0;
     v25[4] = self;
-    v26 = v15;
-    v27 = v16;
-    v30 = a6;
-    v28 = v17;
-    v29 = v18;
-    [v26 getCasesListFromIdentifier:v20 count:a6 reply:v25];
+    v26 = serviceCopy;
+    v27 = identifierCopy;
+    countCopy = count;
+    v28 = containerCopy;
+    v29 = replyCopy;
+    [v26 getCasesListFromIdentifier:v20 count:count reply:v25];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v18)
+  if (replyCopy)
   {
     queue = self->_queue;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __94__SDRDiagnosticReporter_casesListCallbackWithResult_service_identifier_count_container_reply___block_invoke_2;
     v22[3] = &unk_279D2CE60;
-    v24 = v18;
-    v23 = v17;
+    v24 = replyCopy;
+    v23 = containerCopy;
     dispatch_async(queue, v22);
 
-    v19 = v24;
+    lastObject = v24;
     goto LABEL_5;
   }
 
 LABEL_6:
 }
 
-- (void)getAllDiagnosticCasesWithReply:(id)a3
+- (void)getAllDiagnosticCasesWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = v4;
+  replyCopy = reply;
+  v5 = replyCopy;
   if (isEnabled == 1)
   {
     connection = self->_connection;
@@ -2108,7 +2108,7 @@ LABEL_6:
     v23[2] = __56__SDRDiagnosticReporter_getAllDiagnosticCasesWithReply___block_invoke;
     v23[3] = &unk_279D2CE38;
     v7 = &v24;
-    v8 = v4;
+    v8 = replyCopy;
     v23[4] = self;
     v24 = v8;
     v9 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v23];
@@ -2150,7 +2150,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v4)
+  if (replyCopy)
   {
     v12 = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
@@ -2158,7 +2158,7 @@ LABEL_9:
     block[2] = __56__SDRDiagnosticReporter_getAllDiagnosticCasesWithReply___block_invoke_4;
     block[3] = &unk_279D2CE10;
     v7 = &v15;
-    v15 = v4;
+    v15 = replyCopy;
     dispatch_async(v12, block);
 LABEL_10:
   }
@@ -2206,57 +2206,57 @@ void __56__SDRDiagnosticReporter_getAllDiagnosticCasesWithReply___block_invoke_4
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)caseSummariesListCallbackWithResult:(id)a3 service:(id)a4 caseSummaryType:(id)a5 count:(unint64_t)a6 container:(id)a7 reply:(id)a8
+- (void)caseSummariesListCallbackWithResult:(id)result service:(id)service caseSummaryType:(id)type count:(unint64_t)count container:(id)container reply:(id)reply
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if ([v14 count])
+  resultCopy = result;
+  serviceCopy = service;
+  typeCopy = type;
+  containerCopy = container;
+  replyCopy = reply;
+  if ([resultCopy count])
   {
-    [v17 addObjectsFromArray:v14];
-    v19 = [v14 lastObject];
-    v20 = [v19 objectForKeyedSubscript:@"caseID"];
+    [containerCopy addObjectsFromArray:resultCopy];
+    lastObject = [resultCopy lastObject];
+    v20 = [lastObject objectForKeyedSubscript:@"caseID"];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __107__SDRDiagnosticReporter_caseSummariesListCallbackWithResult_service_caseSummaryType_count_container_reply___block_invoke;
     v25[3] = &unk_279D2CFC0;
     v25[4] = self;
-    v26 = v15;
-    v27 = v16;
-    v30 = a6;
-    v28 = v17;
-    v29 = v18;
-    [v26 listCaseSummariesOfType:v27 fromIdentifier:v20 count:a6 reply:v25];
+    v26 = serviceCopy;
+    v27 = typeCopy;
+    countCopy = count;
+    v28 = containerCopy;
+    v29 = replyCopy;
+    [v26 listCaseSummariesOfType:v27 fromIdentifier:v20 count:count reply:v25];
 
 LABEL_5:
     goto LABEL_6;
   }
 
-  if (v18)
+  if (replyCopy)
   {
     queue = self->_queue;
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __107__SDRDiagnosticReporter_caseSummariesListCallbackWithResult_service_caseSummaryType_count_container_reply___block_invoke_2;
     v22[3] = &unk_279D2CE60;
-    v24 = v18;
-    v23 = v17;
+    v24 = replyCopy;
+    v23 = containerCopy;
     dispatch_async(queue, v22);
 
-    v19 = v24;
+    lastObject = v24;
     goto LABEL_5;
   }
 
 LABEL_6:
 }
 
-- (void)getDiagnosticCaseSummariesOfType:(id)a3 reply:(id)a4
+- (void)getDiagnosticCaseSummariesOfType:(id)type reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  typeCopy = type;
+  replyCopy = reply;
+  v8 = replyCopy;
   if (isEnabled == 1)
   {
     connection = self->_connection;
@@ -2264,7 +2264,7 @@ LABEL_6:
     v28[1] = 3221225472;
     v28[2] = __64__SDRDiagnosticReporter_getDiagnosticCaseSummariesOfType_reply___block_invoke;
     v28[3] = &unk_279D2CE38;
-    v10 = v7;
+    v10 = replyCopy;
     v28[4] = self;
     v29 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v28];
@@ -2284,7 +2284,7 @@ LABEL_6:
       v21 = v11;
       v24 = v26;
       v25 = 10;
-      v22 = v6;
+      v22 = typeCopy;
       v23 = v10;
       [v21 listCaseSummariesOfType:v22 fromIdentifier:0 count:10 reply:v20];
 
@@ -2315,7 +2315,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v7)
+  if (replyCopy)
   {
     v13 = self->_queue;
     v16[0] = MEMORY[0x277D85DD0];
@@ -2323,7 +2323,7 @@ LABEL_9:
     v16[2] = __64__SDRDiagnosticReporter_getDiagnosticCaseSummariesOfType_reply___block_invoke_4;
     v16[3] = &unk_279D2CE10;
     v14 = &v17;
-    v17 = v7;
+    v17 = replyCopy;
     dispatch_async(v13, v16);
 LABEL_10:
   }
@@ -2371,11 +2371,11 @@ void __64__SDRDiagnosticReporter_getDiagnosticCaseSummariesOfType_reply___block_
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)getDiagnosticCaseSummariesWithIdentifiers:(id)a3 reply:(id)a4
+- (void)getDiagnosticCaseSummariesWithIdentifiers:(id)identifiers reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  identifiersCopy = identifiers;
+  replyCopy = reply;
+  v8 = replyCopy;
   if (isEnabled == 1)
   {
     connection = self->_connection;
@@ -2384,7 +2384,7 @@ void __64__SDRDiagnosticReporter_getDiagnosticCaseSummariesOfType_reply___block_
     v22[2] = __73__SDRDiagnosticReporter_getDiagnosticCaseSummariesWithIdentifiers_reply___block_invoke;
     v22[3] = &unk_279D2CE38;
     v10 = &v23;
-    v11 = v7;
+    v11 = replyCopy;
     v22[4] = self;
     v23 = v11;
     v12 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v22];
@@ -2397,7 +2397,7 @@ void __64__SDRDiagnosticReporter_getDiagnosticCaseSummariesOfType_reply___block_
       v13 = &v21;
       v20[4] = self;
       v21 = v11;
-      [v12 listCaseSummariesWithIdentifiers:v6 reply:v20];
+      [v12 listCaseSummariesWithIdentifiers:identifiersCopy reply:v20];
     }
 
     else
@@ -2422,7 +2422,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v7)
+  if (replyCopy)
   {
     v14 = self->_queue;
     v16[0] = MEMORY[0x277D85DD0];
@@ -2430,7 +2430,7 @@ LABEL_9:
     v16[2] = __73__SDRDiagnosticReporter_getDiagnosticCaseSummariesWithIdentifiers_reply___block_invoke_5;
     v16[3] = &unk_279D2CE10;
     v10 = &v17;
-    v17 = v7;
+    v17 = replyCopy;
     dispatch_async(v14, v16);
 LABEL_10:
   }
@@ -2495,11 +2495,11 @@ void __73__SDRDiagnosticReporter_getDiagnosticCaseSummariesWithIdentifiers_reply
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)purgeAutoBugCaptureFilesWithSubPaths:(id)a3 reply:(id)a4
+- (void)purgeAutoBugCaptureFilesWithSubPaths:(id)paths reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  pathsCopy = paths;
+  replyCopy = reply;
+  v8 = replyCopy;
   if (isEnabled == 1)
   {
     connection = self->_connection;
@@ -2507,7 +2507,7 @@ void __73__SDRDiagnosticReporter_getDiagnosticCaseSummariesWithIdentifiers_reply
     v14[1] = 3221225472;
     v14[2] = __68__SDRDiagnosticReporter_purgeAutoBugCaptureFilesWithSubPaths_reply___block_invoke;
     v14[3] = &unk_279D2D060;
-    v10 = v7;
+    v10 = replyCopy;
     v15 = v10;
     v11 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v14];
     if (v11)
@@ -2517,7 +2517,7 @@ void __73__SDRDiagnosticReporter_getDiagnosticCaseSummariesWithIdentifiers_reply
       v12[2] = __68__SDRDiagnosticReporter_purgeAutoBugCaptureFilesWithSubPaths_reply___block_invoke_192;
       v12[3] = &unk_279D2D088;
       v13 = v10;
-      [v11 purgeAutoBugCaptureFilesWithSubPaths:v6 reply:v12];
+      [v11 purgeAutoBugCaptureFilesWithSubPaths:pathsCopy reply:v12];
 
 LABEL_9:
       goto LABEL_10;
@@ -2541,9 +2541,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v7)
+  if (replyCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(replyCopy + 2))(replyCopy, 0);
   }
 
 LABEL_10:
@@ -2575,9 +2575,9 @@ uint64_t __68__SDRDiagnosticReporter_purgeAutoBugCaptureFilesWithSubPaths_reply_
   return result;
 }
 
-- (void)getAutoBugCaptureConfiguration:(id)a3
+- (void)getAutoBugCaptureConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   if (isEnabled == 1)
   {
     objc_initWeak(&location, self);
@@ -2587,7 +2587,7 @@ uint64_t __68__SDRDiagnosticReporter_purgeAutoBugCaptureFilesWithSubPaths_reply_
     v11[2] = __56__SDRDiagnosticReporter_getAutoBugCaptureConfiguration___block_invoke;
     v11[3] = &unk_279D2D0B0;
     objc_copyWeak(&v13, &location);
-    v6 = v4;
+    v6 = configurationCopy;
     v12 = v6;
     v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
     if (v7)
@@ -2627,7 +2627,7 @@ uint64_t __68__SDRDiagnosticReporter_purgeAutoBugCaptureFilesWithSubPaths_reply_
       [SDRDiagnosticReporter getAutoBugCaptureConfiguration:];
     }
 
-    [(SDRDiagnosticReporter *)self _replyOnQueueToBlock:v4 withConfig:0];
+    [(SDRDiagnosticReporter *)self _replyOnQueueToBlock:configurationCopy withConfig:0];
   }
 }
 
@@ -2643,29 +2643,29 @@ void __56__SDRDiagnosticReporter_getAutoBugCaptureConfiguration___block_invoke(u
   [(SDRDiagnosticReporter *)WeakRetained _replyOnQueueToBlock:0 withConfig:?];
 }
 
-- (void)_replyOnQueueToBlock:(void *)a3 withConfig:
+- (void)_replyOnQueueToBlock:(void *)block withConfig:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1 && v5)
+  blockCopy = block;
+  if (self && v5)
   {
-    v7 = [a1 queue];
+    queue = [self queue];
 
-    if (v7)
+    if (queue)
     {
-      v8 = [a1 queue];
+      queue2 = [self queue];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __57__SDRDiagnosticReporter__replyOnQueueToBlock_withConfig___block_invoke;
       v9[3] = &unk_279D2CE60;
       v11 = v5;
-      v10 = v6;
-      dispatch_async(v8, v9);
+      v10 = blockCopy;
+      dispatch_async(queue2, v9);
     }
 
     else
     {
-      (*(v5 + 2))(v5, v6);
+      (*(v5 + 2))(v5, blockCopy);
     }
   }
 }

@@ -2,70 +2,70 @@
 - (BOOL)responseClientError;
 - (BOOL)responseOk;
 - (BOOL)responseTimeout;
-- (MCLURLDataLoaderTask)initWithCoder:(id)a3;
-- (MCLURLDataLoaderTask)initWithURLRequest:(id)a3 targetPath:(id)a4 category:(id)a5 completionHandler:(id)a6 receiveData:(id)a7;
+- (MCLURLDataLoaderTask)initWithCoder:(id)coder;
+- (MCLURLDataLoaderTask)initWithURLRequest:(id)request targetPath:(id)path category:(id)category completionHandler:(id)handler receiveData:(id)data;
 - (id)completion;
 - (id)contentType;
 - (id)description;
 - (id)receiveDataHandler;
-- (void)applyFileExtension:(id)a3;
+- (void)applyFileExtension:(id)extension;
 - (void)applyMimeType;
-- (void)dispatchCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCategory:(id)a3;
-- (void)setRequest:(id)a3;
-- (void)setResponse:(id)a3;
-- (void)setResponseData:(id)a3;
+- (void)dispatchCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCategory:(id)category;
+- (void)setRequest:(id)request;
+- (void)setResponse:(id)response;
+- (void)setResponseData:(id)data;
 @end
 
 @implementation MCLURLDataLoaderTask
 
-- (MCLURLDataLoaderTask)initWithURLRequest:(id)a3 targetPath:(id)a4 category:(id)a5 completionHandler:(id)a6 receiveData:(id)a7
+- (MCLURLDataLoaderTask)initWithURLRequest:(id)request targetPath:(id)path category:(id)category completionHandler:(id)handler receiveData:(id)data
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, path);
   v23 = 0;
-  objc_storeStrong(&v23, a5);
+  objc_storeStrong(&v23, category);
   v22 = 0;
-  objc_storeStrong(&v22, a6);
+  objc_storeStrong(&v22, handler);
   v21 = 0;
-  objc_storeStrong(&v21, a7);
-  v7 = v26;
-  v26 = 0;
+  objc_storeStrong(&v21, data);
+  v7 = selfCopy;
+  selfCopy = 0;
   v20.receiver = v7;
   v20.super_class = MCLURLDataLoaderTask;
-  v26 = [(MCLURLDataLoaderTask *)&v20 init];
-  objc_storeStrong(&v26, v26);
-  if (v26)
+  selfCopy = [(MCLURLDataLoaderTask *)&v20 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v8 = [location[0] copy];
-    originalRequest = v26->_originalRequest;
-    v26->_originalRequest = v8;
+    originalRequest = selfCopy->_originalRequest;
+    selfCopy->_originalRequest = v8;
     MEMORY[0x277D82BD8](originalRequest);
-    objc_storeStrong(&v26->_request, v26->_originalRequest);
-    objc_storeStrong(&v26->_category, v23);
-    objc_storeStrong(&v26->_targetPath, v24);
+    objc_storeStrong(&selfCopy->_request, selfCopy->_originalRequest);
+    objc_storeStrong(&selfCopy->_category, v23);
+    objc_storeStrong(&selfCopy->_targetPath, v24);
     v10 = _Block_copy(v22);
-    completion = v26->_completion;
-    v26->_completion = v10;
+    completion = selfCopy->_completion;
+    selfCopy->_completion = v10;
     MEMORY[0x277D82BD8](completion);
     v12 = _Block_copy(v21);
-    receiveDataHandler = v26->_receiveDataHandler;
-    v26->_receiveDataHandler = v12;
+    receiveDataHandler = selfCopy->_receiveDataHandler;
+    selfCopy->_receiveDataHandler = v12;
     MEMORY[0x277D82BD8](receiveDataHandler);
   }
 
-  v15 = MEMORY[0x277D82BE0](v26);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
   objc_storeStrong(&v24, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v26, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v15;
 }
 
@@ -105,14 +105,14 @@
 
 - (BOOL)responseTimeout
 {
-  v3 = [(NSError *)self->_error domain];
+  domain = [(NSError *)self->_error domain];
   v4 = 0;
-  if ([(NSString *)v3 isEqualToString:*MEMORY[0x277CCA738]])
+  if ([(NSString *)domain isEqualToString:*MEMORY[0x277CCA738]])
   {
     v4 = [(NSError *)self->_error code]== -1001;
   }
 
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](domain);
   return v4;
 }
 
@@ -120,9 +120,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v5 = [(NSURLRequest *)self->_request URL];
-  v4 = [(NSURL *)v5 absoluteString];
-  v6 = [v3 stringWithFormat:@"%@ - %@", v4, self->_category];
-  MEMORY[0x277D82BD8](v4);
+  absoluteString = [(NSURL *)v5 absoluteString];
+  v6 = [v3 stringWithFormat:@"%@ - %@", absoluteString, self->_category];
+  MEMORY[0x277D82BD8](absoluteString);
   MEMORY[0x277D82BD8](v5);
 
   return v6;
@@ -135,74 +135,74 @@
   return v2;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v3 = [location[0] copy];
-  request = v6->_request;
-  v6->_request = v3;
+  request = selfCopy->_request;
+  selfCopy->_request = v3;
   MEMORY[0x277D82BD8](request);
   objc_storeStrong(location, 0);
 }
 
-- (void)setResponse:(id)a3
+- (void)setResponse:(id)response
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v3 = [location[0] copy];
-  response = v6->_response;
-  v6->_response = v3;
+  response = selfCopy->_response;
+  selfCopy->_response = v3;
   MEMORY[0x277D82BD8](response);
   objc_storeStrong(location, 0);
 }
 
-- (void)setResponseData:(id)a3
+- (void)setResponseData:(id)data
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_responseData, location[0]);
+  objc_storeStrong(location, data);
+  objc_storeStrong(&selfCopy->_responseData, location[0]);
   objc_storeStrong(location, 0);
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, category);
   v3 = [location[0] copy];
-  category = v6->_category;
-  v6->_category = v3;
+  category = selfCopy->_category;
+  selfCopy->_category = v3;
   MEMORY[0x277D82BD8](category);
   objc_storeStrong(location, 0);
 }
 
-- (void)dispatchCompletion:(id)a3
+- (void)dispatchCompletion:(id)completion
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v6->_error, location[0]);
-  if (v6->_completion)
+  objc_storeStrong(location, completion);
+  objc_storeStrong(&selfCopy->_error, location[0]);
+  if (selfCopy->_completion)
   {
-    (*(v6->_completion + 2))();
-    completion = v6->_completion;
-    v6->_completion = 0;
+    (*(selfCopy->_completion + 2))();
+    completion = selfCopy->_completion;
+    selfCopy->_completion = 0;
     MEMORY[0x277D82BD8](completion);
   }
 
   if (!location[0])
   {
     LODWORD(v3) = 1.0;
-    [(MCLURLDataLoaderTask *)v6 setProgress:v3];
+    [(MCLURLDataLoaderTask *)selfCopy setProgress:v3];
   }
 
   objc_storeStrong(location, 0);
@@ -217,99 +217,99 @@
 
 - (id)contentType
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   response = self->_response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(NSHTTPURLResponse *)v8->_response allHeaderFields];
-    v7[0] = [(NSDictionary *)v4 objectForKeyedSubscript:@"Content-Type"];
-    MEMORY[0x277D82BD8](v4);
+    allHeaderFields = [(NSHTTPURLResponse *)selfCopy->_response allHeaderFields];
+    v7[0] = [(NSDictionary *)allHeaderFields objectForKeyedSubscript:@"Content-Type"];
+    MEMORY[0x277D82BD8](allHeaderFields);
     v5 = [v7[0] componentsSeparatedByString:@";"];
-    v9 = [v5 firstObject];
+    firstObject = [v5 firstObject];
     MEMORY[0x277D82BD8](v5);
     objc_storeStrong(v7, 0);
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  v2 = v9;
+  v2 = firstObject;
 
   return v2;
 }
 
 - (void)applyMimeType
 {
-  v4 = self;
+  selfCopy = self;
   v3[1] = a2;
   if ([(NSString *)self->_targetPath hasSuffix:@"[content_type]"])
   {
-    v2 = [(MCLURLDataLoaderTask *)v4 contentType];
+    contentType = [(MCLURLDataLoaderTask *)selfCopy contentType];
     v3[0] = [MCLURLDataLoader fileExtensionForMimeType:?];
-    MEMORY[0x277D82BD8](v2);
-    [(MCLURLDataLoaderTask *)v4 applyFileExtension:v3[0]];
+    MEMORY[0x277D82BD8](contentType);
+    [(MCLURLDataLoaderTask *)selfCopy applyFileExtension:v3[0]];
     objc_storeStrong(v3, 0);
   }
 }
 
-- (void)applyFileExtension:(id)a3
+- (void)applyFileExtension:(id)extension
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(NSString *)v7->_targetPath stringByDeletingPathExtension];
-  v3 = [(NSString *)v5 stringByAppendingPathExtension:location[0]];
-  targetPath = v7->_targetPath;
-  v7->_targetPath = v3;
+  objc_storeStrong(location, extension);
+  stringByDeletingPathExtension = [(NSString *)selfCopy->_targetPath stringByDeletingPathExtension];
+  v3 = [(NSString *)stringByDeletingPathExtension stringByAppendingPathExtension:location[0]];
+  targetPath = selfCopy->_targetPath;
+  selfCopy->_targetPath = v3;
   MEMORY[0x277D82BD8](targetPath);
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](stringByDeletingPathExtension);
   objc_storeStrong(location, 0);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_category forKey:@"category"];
-  [location[0] encodeObject:v4->_originalRequest forKey:@"request"];
-  [location[0] encodeObject:v4->_targetPath forKey:@"targetPath"];
-  [location[0] encodeObject:v4->_userInfo forKey:@"userInfo"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_category forKey:@"category"];
+  [location[0] encodeObject:selfCopy->_originalRequest forKey:@"request"];
+  [location[0] encodeObject:selfCopy->_targetPath forKey:@"targetPath"];
+  [location[0] encodeObject:selfCopy->_userInfo forKey:@"userInfo"];
   objc_storeStrong(location, 0);
 }
 
-- (MCLURLDataLoaderTask)initWithCoder:(id)a3
+- (MCLURLDataLoaderTask)initWithCoder:(id)coder
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, coder);
   v9 = [location[0] decodeObjectForKey:@"category"];
   v8 = [location[0] decodeObjectForKey:@"request"];
   v7 = [location[0] decodeObjectForKey:@"targetPath"];
-  v3 = v11;
-  v11 = 0;
-  v11 = [(MCLURLDataLoaderTask *)v3 initWithURLRequest:v8 targetPath:v7 category:v9 completionHandler:0 receiveData:?];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  v3 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(MCLURLDataLoaderTask *)v3 initWithURLRequest:v8 targetPath:v7 category:v9 completionHandler:0 receiveData:?];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v6 = [location[0] decodeObjectForKey:@"userInfo"];
-    [(MCLURLDataLoaderTask *)v11 setUserInfo:?];
+    [(MCLURLDataLoaderTask *)selfCopy setUserInfo:?];
     MEMORY[0x277D82BD8](v6);
   }
 
-  v5 = MEMORY[0x277D82BE0](v11);
+  v5 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 

@@ -1,13 +1,13 @@
 @interface SKUIChartColumnHeaderView
 - (NSArray)titles;
 - (double)edgePadding;
-- (void)_buttonAction:(id)a3;
+- (void)_buttonAction:(id)action;
 - (void)_reloadSelectedButton;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setSelectedTitleIndex:(int64_t)a3;
-- (void)setTitles:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setSelectedTitleIndex:(int64_t)index;
+- (void)setTitles:(id)titles;
 - (void)sizeToFit;
 @end
 
@@ -51,7 +51,7 @@
   [(SKUIChartColumnHeaderView *)&v8 dealloc];
 }
 
-- (void)setSelectedTitleIndex:(int64_t)a3
+- (void)setSelectedTitleIndex:(int64_t)index
 {
   if (os_variant_has_internal_content())
   {
@@ -65,17 +65,17 @@
     }
   }
 
-  if (self->_selectedTitleIndex != a3)
+  if (self->_selectedTitleIndex != index)
   {
-    self->_selectedTitleIndex = a3;
+    self->_selectedTitleIndex = index;
     [(SKUIChartColumnHeaderView *)self _reloadSelectedButton];
   }
 }
 
-- (void)setTitles:(id)a3
+- (void)setTitles:(id)titles
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  titlesCopy = titles;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -89,12 +89,12 @@
   }
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v14 = [(SKUIChartColumnHeaderView *)self tintColor];
+  tintColor = [(SKUIChartColumnHeaderView *)self tintColor];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v4;
+  obj = titlesCopy;
   v15 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v15)
   {
@@ -112,18 +112,18 @@
         v19 = *(*(&v38 + 1) + 8 * i);
         v20 = objc_alloc_init(MEMORY[0x277D75220]);
         [v20 addTarget:self action:sel__buttonAction_ forControlEvents:64];
-        v21 = [(SKUIChartColumnHeaderView *)self backgroundColor];
-        [v20 setBackgroundColor:v21];
+        backgroundColor = [(SKUIChartColumnHeaderView *)self backgroundColor];
+        [v20 setBackgroundColor:backgroundColor];
 
         [v20 setTitle:v19 forState:0];
-        [v20 setTitleColor:v14 forState:1];
-        [v20 setTitleColor:v14 forState:4];
-        v22 = [MEMORY[0x277D75348] labelColor];
-        [v20 setTitleColor:v22 forState:0];
+        [v20 setTitleColor:tintColor forState:1];
+        [v20 setTitleColor:tintColor forState:4];
+        labelColor = [MEMORY[0x277D75348] labelColor];
+        [v20 setTitleColor:labelColor forState:0];
 
-        v23 = [v20 titleLabel];
+        titleLabel = [v20 titleLabel];
         v24 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-        [v23 setFont:v24];
+        [titleLabel setFont:v24];
 
         [v20 sizeToFit];
         [v13 addObject:v20];
@@ -188,7 +188,7 @@
     }
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -209,7 +209,7 @@
         }
 
         v17 = [*(*(&v19 + 1) + 8 * i) titleForState:{0, v19}];
-        [v11 addObject:v17];
+        [array addObject:v17];
       }
 
       v14 = [(NSArray *)v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -218,7 +218,7 @@
     while (v14);
   }
 
-  return v11;
+  return array;
 }
 
 - (void)layoutSubviews
@@ -304,9 +304,9 @@ CGFloat __43__SKUIChartColumnHeaderView_layoutSubviews__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -319,10 +319,10 @@ CGFloat __43__SKUIChartColumnHeaderView_layoutSubviews__block_invoke(uint64_t a1
     }
   }
 
-  [(NSArray *)self->_buttons makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:v4];
+  [(NSArray *)self->_buttons makeObjectsPerformSelector:sel_setBackgroundColor_ withObject:colorCopy];
   v13.receiver = self;
   v13.super_class = SKUIChartColumnHeaderView;
-  [(SKUIChartColumnHeaderView *)&v13 setBackgroundColor:v4];
+  [(SKUIChartColumnHeaderView *)&v13 setBackgroundColor:colorCopy];
 }
 
 - (void)sizeToFit
@@ -378,9 +378,9 @@ CGFloat __43__SKUIChartColumnHeaderView_layoutSubviews__block_invoke(uint64_t a1
   [(SKUIChartColumnHeaderView *)self setFrame:v4, v6, v17, 44.0, v18];
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v4 = [(NSArray *)self->_buttons indexOfObjectIdenticalTo:a3];
+  v4 = [(NSArray *)self->_buttons indexOfObjectIdenticalTo:action];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     self->_selectedTitleIndex = v4;

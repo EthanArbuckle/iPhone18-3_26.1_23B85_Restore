@@ -1,32 +1,32 @@
 @interface AMSFinanceAuthenticateResponse
-+ (id)_authenticateRequestWithAuthType:(unint64_t)a3 taskInfo:(id)a4 dialogResponse:(id)a5 serviceIdentifier:(id)a6;
-+ (id)_handleAuthResult:(id)a3 authError:(id)a4 originalRequest:(id)a5 actionResult:(id)a6 redirectURL:(id)a7 taskInfo:(id)a8;
-+ (id)_performAuthRequest:(id)a3 actionResult:(id)a4 redirectURL:(id)a5 taskInfo:(id)a6;
-+ (id)_presentAuthRequest:(id)a3 taskInfo:(id)a4;
-+ (id)_serviceIdentifierForResponse:(id)a3 taskInfo:(id)a4;
-+ (id)performAuthFromResponse:(id)a3 taskInfo:(id)a4;
-+ (unint64_t)authenticationTypeForResponse:(id)a3 responseDictionary:(id)a4;
-+ (void)_handleDialogFromAuthError:(id)a3 taskInfo:(id)a4;
-+ (void)_updateTaskWithAuthedAccount:(id)a3 taskInfo:(id)a4;
-+ (void)_updateTaskWithLastCredentialSource:(id)a3 taskInfo:(id)a4;
-- (AMSFinanceAuthenticateResponse)initWithResponseDictionary:(id)a3 taskInfo:(id)a4;
-- (id)_locateActionableButtonUsingDialogResponse:(id)a3;
-- (id)performWithTaskInfo:(id)a3;
-- (void)performWithTaskInfo:(id)a3 completionHandler:(id)a4;
++ (id)_authenticateRequestWithAuthType:(unint64_t)type taskInfo:(id)info dialogResponse:(id)response serviceIdentifier:(id)identifier;
++ (id)_handleAuthResult:(id)result authError:(id)error originalRequest:(id)request actionResult:(id)actionResult redirectURL:(id)l taskInfo:(id)info;
++ (id)_performAuthRequest:(id)request actionResult:(id)result redirectURL:(id)l taskInfo:(id)info;
++ (id)_presentAuthRequest:(id)request taskInfo:(id)info;
++ (id)_serviceIdentifierForResponse:(id)response taskInfo:(id)info;
++ (id)performAuthFromResponse:(id)response taskInfo:(id)info;
++ (unint64_t)authenticationTypeForResponse:(id)response responseDictionary:(id)dictionary;
++ (void)_handleDialogFromAuthError:(id)error taskInfo:(id)info;
++ (void)_updateTaskWithAuthedAccount:(id)account taskInfo:(id)info;
++ (void)_updateTaskWithLastCredentialSource:(id)source taskInfo:(id)info;
+- (AMSFinanceAuthenticateResponse)initWithResponseDictionary:(id)dictionary taskInfo:(id)info;
+- (id)_locateActionableButtonUsingDialogResponse:(id)response;
+- (id)performWithTaskInfo:(id)info;
+- (void)performWithTaskInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation AMSFinanceAuthenticateResponse
 
-- (AMSFinanceAuthenticateResponse)initWithResponseDictionary:(id)a3 taskInfo:(id)a4
+- (AMSFinanceAuthenticateResponse)initWithResponseDictionary:(id)dictionary taskInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  infoCopy = info;
   v23.receiver = self;
   v23.super_class = AMSFinanceAuthenticateResponse;
   v8 = [(AMSFinanceAuthenticateResponse *)&v23 init];
   if (v8)
   {
-    v9 = [AMSFinanceResponse valueForProtocolKey:@"dialog" inResponse:v6];
+    v9 = [AMSFinanceResponse valueForProtocolKey:@"dialog" inResponse:dictionaryCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,20 +43,20 @@
 
     if (v8->_dialogDictionary)
     {
-      v12 = [[AMSFinanceDialogResponse alloc] initWithResponseDictionary:v6 kind:2 taskInfo:v7];
+      v12 = [[AMSFinanceDialogResponse alloc] initWithResponseDictionary:dictionaryCopy kind:2 taskInfo:infoCopy];
       dialogResponse = v8->_dialogResponse;
       v8->_dialogResponse = v12;
     }
 
     v14 = objc_opt_class();
-    v15 = [v7 response];
-    v16 = [v14 authenticationTypeForResponse:v15 responseDictionary:v6];
+    response = [infoCopy response];
+    v16 = [v14 authenticationTypeForResponse:response responseDictionary:dictionaryCopy];
 
     v17 = objc_opt_class();
-    v18 = [v7 response];
-    v19 = [v17 _serviceIdentifierForResponse:v18 taskInfo:v7];
+    response2 = [infoCopy response];
+    v19 = [v17 _serviceIdentifierForResponse:response2 taskInfo:infoCopy];
 
-    v20 = [objc_opt_class() _authenticateRequestWithAuthType:v16 taskInfo:v7 dialogResponse:v8->_dialogResponse serviceIdentifier:v19];
+    v20 = [objc_opt_class() _authenticateRequestWithAuthType:v16 taskInfo:infoCopy dialogResponse:v8->_dialogResponse serviceIdentifier:v19];
     authenticateRequest = v8->_authenticateRequest;
     v8->_authenticateRequest = v20;
   }
@@ -64,20 +64,20 @@
   return v8;
 }
 
-+ (unint64_t)authenticationTypeForResponse:(id)a3 responseDictionary:(id)a4
++ (unint64_t)authenticationTypeForResponse:(id)response responseDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 ams_valueForHTTPHeaderField:@"X-Apple-Allow-Auth-Types"];
+  dictionaryCopy = dictionary;
+  responseCopy = response;
+  v7 = [responseCopy ams_valueForHTTPHeaderField:@"X-Apple-Allow-Auth-Types"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = [v7 componentsSeparatedByString:@" "];
   v10 = [v8 setWithArray:v9];
 
   v11 = [v10 containsObject:@"loud"];
   v12 = [v10 containsObject:@"silent"];
-  v13 = [v6 ams_statusCode];
+  ams_statusCode = [responseCopy ams_statusCode];
 
-  if (v13 != 401)
+  if (ams_statusCode != 401)
   {
     if (v12)
     {
@@ -86,13 +86,13 @@ LABEL_10:
       goto LABEL_16;
     }
 
-    v16 = [v5 objectForKeyedSubscript:@"failureType"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"failureType"];
     if (objc_opt_respondsToSelector())
     {
-      v17 = [v5 objectForKeyedSubscript:@"failureType"];
-      v18 = [v17 longLongValue];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"failureType"];
+      longLongValue = [v17 longLongValue];
 
-      if (v18 == 2002)
+      if (longLongValue == 2002)
       {
         goto LABEL_10;
       }
@@ -132,11 +132,11 @@ LABEL_16:
   return v15;
 }
 
-+ (id)performAuthFromResponse:(id)a3 taskInfo:(id)a4
++ (id)performAuthFromResponse:(id)response taskInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 authenticationTypeForResponse:v6 responseDictionary:0];
+  responseCopy = response;
+  infoCopy = info;
+  v8 = [self authenticationTypeForResponse:responseCopy responseDictionary:0];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = +[AMSOptional optionalWithNil];
@@ -146,25 +146,25 @@ LABEL_16:
   else
   {
     v11 = v8;
-    v9 = [objc_opt_class() _serviceIdentifierForResponse:v6 taskInfo:v7];
-    v12 = [a1 _authenticateRequestWithAuthType:v11 taskInfo:v7 dialogResponse:0 serviceIdentifier:v9];
-    v13 = [v7 properties];
-    v14 = [v13 bag];
+    v9 = [objc_opt_class() _serviceIdentifierForResponse:responseCopy taskInfo:infoCopy];
+    v12 = [self _authenticateRequestWithAuthType:v11 taskInfo:infoCopy dialogResponse:0 serviceIdentifier:v9];
+    properties = [infoCopy properties];
+    v14 = [properties bag];
     v15 = [v14 stringForKey:@"skip-authenticate-header"];
     v16 = [v15 valueWithError:0];
 
     if (v16)
     {
-      v17 = [v6 ams_valueForHTTPHeaderField:v16];
+      v17 = [responseCopy ams_valueForHTTPHeaderField:v16];
 
       if (v17)
       {
-        v18 = [v12 options];
-        [v18 setServiceTokenOnly:1];
+        options = [v12 options];
+        [options setServiceTokenOnly:1];
       }
     }
 
-    v19 = [v6 ams_valueForHTTPHeaderField:@"Location"];
+    v19 = [responseCopy ams_valueForHTTPHeaderField:@"Location"];
     if (v19)
     {
       v20 = [MEMORY[0x1E695DFF8] URLWithString:v19];
@@ -175,15 +175,15 @@ LABEL_16:
       v20 = 0;
     }
 
-    v10 = [a1 _performAuthRequest:v12 actionResult:0 redirectURL:v20 taskInfo:v7];
+    v10 = [self _performAuthRequest:v12 actionResult:0 redirectURL:v20 taskInfo:infoCopy];
   }
 
   return v10;
 }
 
-- (id)performWithTaskInfo:(id)a3
+- (id)performWithTaskInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(AMSMutablePromise);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -191,12 +191,12 @@ LABEL_16:
   v10[3] = &unk_1E73B7C48;
   v11 = v5;
   v6 = v5;
-  [(AMSFinanceAuthenticateResponse *)self performWithTaskInfo:v4 completionHandler:v10];
+  [(AMSFinanceAuthenticateResponse *)self performWithTaskInfo:infoCopy completionHandler:v10];
 
   v7 = [(AMSPromise *)v6 resultWithError:0];
-  v8 = [v7 value];
+  value = [v7 value];
 
-  return v8;
+  return value;
 }
 
 void __54__AMSFinanceAuthenticateResponse_performWithTaskInfo___block_invoke(uint64_t a1, void *a2)
@@ -208,51 +208,51 @@ void __54__AMSFinanceAuthenticateResponse_performWithTaskInfo___block_invoke(uin
   [v2 finishWithResult:v4];
 }
 
-- (void)performWithTaskInfo:(id)a3 completionHandler:(id)a4
+- (void)performWithTaskInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AMSFinanceAuthenticateResponse *)self dialogResponse];
-  v9 = [(AMSFinanceAuthenticateResponse *)self _locateActionableButtonUsingDialogResponse:v8];
+  infoCopy = info;
+  handlerCopy = handler;
+  dialogResponse = [(AMSFinanceAuthenticateResponse *)self dialogResponse];
+  v9 = [(AMSFinanceAuthenticateResponse *)self _locateActionableButtonUsingDialogResponse:dialogResponse];
 
   v10 = [AMSDialogResult alloc];
-  v11 = [(AMSFinanceAuthenticateResponse *)self dialogResponse];
-  v12 = [v11 dialogRequest];
-  v13 = [v9 identifier];
-  v14 = [(AMSDialogResult *)v10 initWithOriginalRequest:v12 selectedActionIdentifier:v13];
+  dialogResponse2 = [(AMSFinanceAuthenticateResponse *)self dialogResponse];
+  dialogRequest = [dialogResponse2 dialogRequest];
+  identifier = [v9 identifier];
+  v14 = [(AMSDialogResult *)v10 initWithOriginalRequest:dialogRequest selectedActionIdentifier:identifier];
 
-  v15 = [v9 deepLink];
+  deepLink = [v9 deepLink];
 
-  if (v15)
+  if (deepLink)
   {
-    v16 = [v9 ams_rawURL];
-    v17 = v16;
-    if (v16)
+    ams_rawURL = [v9 ams_rawURL];
+    v17 = ams_rawURL;
+    if (ams_rawURL)
     {
-      v18 = v16;
+      deepLink2 = ams_rawURL;
     }
 
     else
     {
-      v18 = [v9 deepLink];
+      deepLink2 = [v9 deepLink];
     }
 
-    v15 = v18;
+    deepLink = deepLink2;
   }
 
   v19 = objc_opt_class();
-  v20 = [(AMSFinanceAuthenticateResponse *)self authenticateRequest];
-  v21 = [v19 _performAuthRequest:v20 actionResult:v14 redirectURL:v15 taskInfo:v6];
+  authenticateRequest = [(AMSFinanceAuthenticateResponse *)self authenticateRequest];
+  v21 = [v19 _performAuthRequest:authenticateRequest actionResult:v14 redirectURL:deepLink taskInfo:infoCopy];
 
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __72__AMSFinanceAuthenticateResponse_performWithTaskInfo_completionHandler___block_invoke;
   v24[3] = &unk_1E73B7C70;
   v24[4] = self;
-  v25 = v6;
-  v26 = v7;
-  v22 = v7;
-  v23 = v6;
+  v25 = infoCopy;
+  v26 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = infoCopy;
   [v21 resultWithCompletion:v24];
 }
 
@@ -292,23 +292,23 @@ void __72__AMSFinanceAuthenticateResponse_performWithTaskInfo_completionHandler_
   (*(v15 + 16))(v15, v16);
 }
 
-+ (id)_authenticateRequestWithAuthType:(unint64_t)a3 taskInfo:(id)a4 dialogResponse:(id)a5 serviceIdentifier:(id)a6
++ (id)_authenticateRequestWithAuthType:(unint64_t)type taskInfo:(id)info dialogResponse:(id)response serviceIdentifier:(id)identifier
 {
   v79 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 properties];
-  if ([v12 dialogOptions])
+  infoCopy = info;
+  responseCopy = response;
+  identifierCopy = identifier;
+  properties = [infoCopy properties];
+  if ([properties dialogOptions])
   {
   }
 
   else
   {
-    v13 = [v9 properties];
-    v14 = [v13 dialogOptions];
+    properties2 = [infoCopy properties];
+    dialogOptions = [properties2 dialogOptions];
 
-    if ((v14 & 4) == 0)
+    if ((dialogOptions & 4) == 0)
     {
       goto LABEL_10;
     }
@@ -320,87 +320,87 @@ void __72__AMSFinanceAuthenticateResponse_performWithTaskInfo_completionHandler_
     v15 = +[AMSLogConfig sharedConfig];
   }
 
-  v16 = [v15 OSLogObject];
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v15 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v17 = objc_opt_class();
     v64 = v17;
-    [v9 properties];
-    v18 = v11;
-    v20 = v19 = v9;
+    [infoCopy properties];
+    v18 = identifierCopy;
+    v20 = v19 = infoCopy;
     [v20 logUUID];
-    v22 = v21 = v10;
+    v22 = v21 = responseCopy;
     *buf = 138544130;
     v72 = v17;
     v73 = 2114;
     v74 = v22;
     v75 = 2048;
-    v76 = a3;
+    typeCopy = type;
     v77 = 2048;
     v78 = 1;
-    _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overriding the authentication type. originalAuthenticationType = %lu | newAuthenticationType = %lu", buf, 0x2Au);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Overriding the authentication type. originalAuthenticationType = %lu | newAuthenticationType = %lu", buf, 0x2Au);
 
-    v10 = v21;
-    v9 = v19;
-    v11 = v18;
+    responseCopy = v21;
+    infoCopy = v19;
+    identifierCopy = v18;
   }
 
-  a3 = 1;
+  type = 1;
 LABEL_10:
   v23 = objc_alloc_init(AMSAuthenticateOptions);
-  [(AMSAuthenticateOptions *)v23 setAuthenticationType:a3];
-  [(AMSAuthenticateOptions *)v23 setAllowServerDialogs:a3 != 1];
+  [(AMSAuthenticateOptions *)v23 setAuthenticationType:type];
+  [(AMSAuthenticateOptions *)v23 setAllowServerDialogs:type != 1];
   [(AMSAuthenticateOptions *)v23 setAllowSecondaryCredentialSource:0];
   [(AMSAuthenticateOptions *)v23 setCanMakeAccountActive:0];
-  v24 = [v9 properties];
-  v25 = [v24 clientInfo];
+  properties3 = [infoCopy properties];
+  clientInfo = [properties3 clientInfo];
 
-  if (v25)
+  if (clientInfo)
   {
-    v26 = [v9 properties];
-    v27 = [v26 clientInfo];
-    [(AMSAuthenticateOptions *)v23 setClientInfo:v27];
+    properties4 = [infoCopy properties];
+    clientInfo2 = [properties4 clientInfo];
+    [(AMSAuthenticateOptions *)v23 setClientInfo:clientInfo2];
   }
 
-  v65 = v11;
-  [(AMSAuthenticateOptions *)v23 setServiceIdentifier:v11];
-  if (v10)
+  v65 = identifierCopy;
+  [(AMSAuthenticateOptions *)v23 setServiceIdentifier:identifierCopy];
+  if (responseCopy)
   {
-    v28 = [v10 dialogRequest];
-    v29 = [v28 title];
-    [(AMSAuthenticateOptions *)v23 setPromptTitle:v29];
+    dialogRequest = [responseCopy dialogRequest];
+    title = [dialogRequest title];
+    [(AMSAuthenticateOptions *)v23 setPromptTitle:title];
 
-    v30 = [v10 dialogRequest];
-    v31 = [v30 message];
-    [(AMSAuthenticateOptions *)v23 setReason:v31];
+    dialogRequest2 = [responseCopy dialogRequest];
+    message = [dialogRequest2 message];
+    [(AMSAuthenticateOptions *)v23 setReason:message];
 
-    v62 = v10;
+    v62 = responseCopy;
     v32 = MEMORY[0x1E696AEC0];
-    v33 = [v9 response];
-    v34 = [v33 URL];
+    response = [infoCopy response];
+    v34 = [response URL];
     v35 = AMSLogableURL(v34);
-    v36 = v9;
+    v36 = infoCopy;
     v37 = MEMORY[0x1E696AD98];
-    v38 = [v36 response];
-    v39 = [v37 numberWithInteger:{objc_msgSend(v38, "ams_statusCode")}];
+    response2 = [v36 response];
+    v39 = [v37 numberWithInteger:{objc_msgSend(response2, "ams_statusCode")}];
     v63 = v36;
-    v40 = [v36 response];
-    v41 = [v40 ams_valueForHTTPHeaderField:@"X-Apple-Jingle-Correlation-Key"];
+    response3 = [v36 response];
+    v41 = [response3 ams_valueForHTTPHeaderField:@"X-Apple-Jingle-Correlation-Key"];
     v42 = AMSHashIfNeeded(v41);
     v43 = [v32 stringWithFormat:@"url: %@ status: %@; correlation: %@", v35, v39, v42];;
     [(AMSAuthenticateOptions *)v23 setDebugReason:v43];
 
-    v10 = v62;
-    v44 = [v62 dialogRequest];
-    v45 = [v44 buttonActions];
+    responseCopy = v62;
+    dialogRequest3 = [v62 dialogRequest];
+    buttonActions = [dialogRequest3 buttonActions];
 
-    if ([v45 count] <= 2)
+    if ([buttonActions count] <= 2)
     {
       v68 = 0u;
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v46 = v45;
+      v46 = buttonActions;
       v47 = [v46 countByEnumeratingWithState:&v66 objects:v70 count:16];
       if (v47)
       {
@@ -418,8 +418,8 @@ LABEL_10:
             v51 = *(*(&v66 + 1) + 8 * i);
             if ([v51 ams_actionType] && objc_msgSend(v51, "ams_actionType") != 6)
             {
-              v52 = [v51 title];
-              [(AMSAuthenticateOptions *)v23 setDefaultButtonString:v52];
+              title2 = [v51 title];
+              [(AMSAuthenticateOptions *)v23 setDefaultButtonString:title2];
 
               goto LABEL_26;
             }
@@ -438,7 +438,7 @@ LABEL_10:
 LABEL_26:
     }
 
-    v9 = v63;
+    infoCopy = v63;
   }
 
   else
@@ -446,43 +446,43 @@ LABEL_26:
     [(AMSAuthenticateOptions *)v23 setDebugReason:@"no dialogResponse in AMSFinanceAuthenticateResponse"];
   }
 
-  v53 = [v9 properties];
-  v54 = [v53 account];
-  v55 = [v54 ams_isLocalAccount];
+  properties5 = [infoCopy properties];
+  account = [properties5 account];
+  ams_isLocalAccount = [account ams_isLocalAccount];
 
-  if (v55)
+  if (ams_isLocalAccount)
   {
-    v56 = 0;
+    account2 = 0;
   }
 
   else
   {
-    v57 = [v9 properties];
-    v56 = [v57 account];
+    properties6 = [infoCopy properties];
+    account2 = [properties6 account];
   }
 
-  v58 = [[AMSAuthenticateRequest alloc] initWithAccount:v56 options:v23];
-  v59 = [v9 properties];
-  v60 = [v59 logUUID];
-  [(AMSAuthenticateRequest *)v58 setLogKey:v60];
+  v58 = [[AMSAuthenticateRequest alloc] initWithAccount:account2 options:v23];
+  properties7 = [infoCopy properties];
+  logUUID = [properties7 logUUID];
+  [(AMSAuthenticateRequest *)v58 setLogKey:logUUID];
 
   [(AMSAuthenticateRequest *)v58 setIsServerRequested:1];
 
   return v58;
 }
 
-- (id)_locateActionableButtonUsingDialogResponse:(id)a3
+- (id)_locateActionableButtonUsingDialogResponse:(id)response
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  responseCopy = response;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 dialogRequest];
-  v5 = [v4 buttonActions];
+  dialogRequest = [responseCopy dialogRequest];
+  buttonActions = [dialogRequest buttonActions];
 
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [buttonActions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -494,7 +494,7 @@ LABEL_3:
     {
       if (*v18 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(buttonActions);
       }
 
       v11 = *(*(&v17 + 1) + 8 * v10);
@@ -507,9 +507,9 @@ LABEL_3:
 
       if ([v11 ams_actionType] == 1)
       {
-        v13 = [v11 ams_subtarget];
-        v14 = [v13 lowercaseString];
-        v15 = [v14 containsString:@"signup"];
+        ams_subtarget = [v11 ams_subtarget];
+        lowercaseString = [ams_subtarget lowercaseString];
+        v15 = [lowercaseString containsString:@"signup"];
 
         if (!v15)
         {
@@ -519,7 +519,7 @@ LABEL_3:
 
       if (v7 == ++v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v7 = [buttonActions countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -538,77 +538,77 @@ LABEL_3:
   return v8;
 }
 
-+ (id)_performAuthRequest:(id)a3 actionResult:(id)a4 redirectURL:(id)a5 taskInfo:(id)a6
++ (id)_performAuthRequest:(id)request actionResult:(id)result redirectURL:(id)l taskInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 _presentAuthRequest:v10 taskInfo:v13];
+  requestCopy = request;
+  resultCopy = result;
+  lCopy = l;
+  infoCopy = info;
+  v14 = [self _presentAuthRequest:requestCopy taskInfo:infoCopy];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __88__AMSFinanceAuthenticateResponse__performAuthRequest_actionResult_redirectURL_taskInfo___block_invoke;
   v21[3] = &unk_1E73B7C98;
-  v25 = v13;
-  v26 = a1;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v25 = infoCopy;
+  selfCopy = self;
+  v22 = requestCopy;
+  v23 = resultCopy;
+  v24 = lCopy;
+  v15 = infoCopy;
+  v16 = lCopy;
+  v17 = resultCopy;
+  v18 = requestCopy;
   v19 = [v14 continueWithBlock:v21];
 
   return v19;
 }
 
-+ (id)_handleAuthResult:(id)a3 authError:(id)a4 originalRequest:(id)a5 actionResult:(id)a6 redirectURL:(id)a7 taskInfo:(id)a8
++ (id)_handleAuthResult:(id)result authError:(id)error originalRequest:(id)request actionResult:(id)actionResult redirectURL:(id)l taskInfo:(id)info
 {
   v87 = *MEMORY[0x1E69E9840];
-  v77 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v76 = a7;
-  v17 = a8;
+  resultCopy = result;
+  errorCopy = error;
+  requestCopy = request;
+  actionResultCopy = actionResult;
+  lCopy = l;
+  infoCopy = info;
   v18 = +[AMSLogConfig sharedAccountsConfig];
   if (!v18)
   {
     v18 = +[AMSLogConfig sharedConfig];
   }
 
-  v19 = [v18 OSLogObject];
-  v20 = v77;
-  v74 = a1;
-  if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v18 OSLogObject];
+  v20 = resultCopy;
+  selfCopy = self;
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = v16;
-    v22 = v15;
+    v21 = actionResultCopy;
+    v22 = requestCopy;
     v23 = objc_opt_class();
     v72 = v23;
-    v24 = [v17 properties];
-    [v24 logUUID];
-    v26 = v25 = v17;
+    properties = [infoCopy properties];
+    [properties logUUID];
+    v26 = v25 = infoCopy;
     *buf = 138543874;
     v80 = v23;
-    v15 = v22;
-    v16 = v21;
+    requestCopy = v22;
+    actionResultCopy = v21;
     v81 = 2114;
     v82 = v26;
     v83 = 1024;
-    LODWORD(v84) = v77 != 0;
-    _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Authentication finished (success: %d)", buf, 0x1Cu);
+    LODWORD(v84) = resultCopy != 0;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Authentication finished (success: %d)", buf, 0x1Cu);
 
-    v17 = v25;
-    a1 = v74;
+    infoCopy = v25;
+    self = selfCopy;
   }
 
-  v75 = v14;
-  if (v14)
+  v75 = errorCopy;
+  if (errorCopy)
   {
-    [a1 _handleDialogFromAuthError:v14 taskInfo:v17];
-    v27 = [AMSURLAction actionWithError:v14];
+    [self _handleDialogFromAuthError:errorCopy taskInfo:infoCopy];
+    v27 = [AMSURLAction actionWithError:errorCopy];
     v28 = v27;
     if (v27)
     {
@@ -622,25 +622,25 @@ LABEL_3:
 
   else
   {
-    [a1 _updateTaskWithAuthedAccount:v77 taskInfo:v17];
-    [a1 _updateTaskWithLastCredentialSource:v77 taskInfo:v17];
+    [self _updateTaskWithAuthedAccount:resultCopy taskInfo:infoCopy];
+    [self _updateTaskWithLastCredentialSource:resultCopy taskInfo:infoCopy];
     v28 = 0;
   }
 
   v30 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v31 = [v16 originalRequest];
-  v32 = [v16 selectedActionIdentifier];
-  v33 = [v31 locateActionWithIdentifier:v32];
+  originalRequest = [actionResultCopy originalRequest];
+  selectedActionIdentifier = [actionResultCopy selectedActionIdentifier];
+  v33 = [originalRequest locateActionWithIdentifier:selectedActionIdentifier];
 
   v73 = v33;
   if ([v33 ams_URLType] == 1 || objc_msgSend(v33, "ams_actionType") == 5)
   {
-    v34 = [AMSFinanceDialogResponse handleDialogResult:v16 taskInfo:v17];
+    v34 = [AMSFinanceDialogResponse handleDialogResult:actionResultCopy taskInfo:infoCopy];
   }
 
   else
   {
-    if (v76)
+    if (lCopy)
     {
       [AMSURLAction redirectActionWithURL:?];
     }
@@ -656,53 +656,53 @@ LABEL_3:
 
   [v29 setRetryIdentifier:0x1F071ED58];
   [v29 setReason:@"authentication"];
-  [v29 setDialogResult:v16];
-  [v29 setAuthenticateResult:v77];
-  v35 = [v15 options];
-  v36 = [v35 serviceIdentifier];
+  [v29 setDialogResult:actionResultCopy];
+  [v29 setAuthenticateResult:resultCopy];
+  options = [requestCopy options];
+  serviceIdentifier = [options serviceIdentifier];
 
-  if (v36)
+  if (serviceIdentifier)
   {
-    v71 = v36;
+    v71 = serviceIdentifier;
     v37 = +[AMSLogConfig sharedConfig];
     if (!v37)
     {
       v37 = +[AMSLogConfig sharedConfig];
     }
 
-    v38 = [v37 OSLogObject];
-    v67 = v17;
-    v68 = v15;
-    if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v37 OSLogObject];
+    v67 = infoCopy;
+    v68 = requestCopy;
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v39 = objc_opt_class();
       v40 = AMSLogKey();
-      v41 = [v77 authKitUpdateResult];
-      [v41 authenticationResults];
-      v42 = v69 = v16;
-      v43 = [v42 ak_redactedCopy];
-      v44 = AMSHashIfNeeded(v43);
+      authKitUpdateResult = [resultCopy authKitUpdateResult];
+      [authKitUpdateResult authenticationResults];
+      v42 = v69 = actionResultCopy;
+      ak_redactedCopy = [v42 ak_redactedCopy];
+      v44 = AMSHashIfNeeded(ak_redactedCopy);
       *buf = 138544130;
       v80 = v39;
-      v20 = v77;
+      v20 = resultCopy;
       v81 = 2114;
       v82 = v40;
       v83 = 2112;
       v84 = v71;
       v85 = 2112;
       v86 = v44;
-      _os_log_impl(&dword_192869000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Auth request service identifier: %@. Authentication results: %@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Auth request service identifier: %@. Authentication results: %@", buf, 0x2Au);
 
-      v16 = v69;
+      actionResultCopy = v69;
     }
 
-    v45 = [MEMORY[0x1E698B890] currentInfo];
-    v78 = [v45 clientInfoHeader];
+    currentInfo = [MEMORY[0x1E698B890] currentInfo];
+    clientInfoHeader = [currentInfo clientInfoHeader];
 
     v70 = +[AMSDevice uniqueDeviceId];
-    v46 = [v20 authKitUpdateResult];
-    v47 = [v46 authenticationResults];
-    v48 = [v47 objectForKeyedSubscript:*MEMORY[0x1E698DB98]];
+    authKitUpdateResult2 = [v20 authKitUpdateResult];
+    authenticationResults = [authKitUpdateResult2 authenticationResults];
+    v48 = [authenticationResults objectForKeyedSubscript:*MEMORY[0x1E698DB98]];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -715,10 +715,10 @@ LABEL_3:
       v49 = 0;
     }
 
-    v36 = v71;
+    serviceIdentifier = v71;
 
     v50 = [v49 objectForKeyedSubscript:v71];
-    [v30 setObject:v78 forKeyedSubscript:@"X-MMe-Client-Info"];
+    [v30 setObject:clientInfoHeader forKeyedSubscript:@"X-MMe-Client-Info"];
     [v30 setObject:v70 forKeyedSubscript:@"X-Mme-Device-Id"];
     [v30 setObject:v50 forKeyedSubscript:@"X-Apple-GS-Token"];
     [v30 setObject:v71 forKeyedSubscript:@"X-Apple-GS-Token-Identifier"];
@@ -731,15 +731,15 @@ LABEL_3:
         v52 = +[AMSLogConfig sharedConfig];
       }
 
-      v53 = [v52 OSLogObject];
-      if (!os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v52 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_34;
       }
 
       v54 = objc_opt_class();
       AMSLogKey();
-      v56 = v55 = v16;
+      v56 = v55 = actionResultCopy;
       *buf = 138543874;
       v80 = v54;
       v81 = 2114;
@@ -747,7 +747,7 @@ LABEL_3:
       v83 = 2112;
       v84 = v50;
       v57 = "%{public}@: [%{public}@] Received an updated GrandSlam token %@";
-      v58 = v53;
+      v58 = oSLogObject3;
       v59 = OS_LOG_TYPE_DEFAULT;
     }
 
@@ -758,15 +758,15 @@ LABEL_3:
         v52 = +[AMSLogConfig sharedConfig];
       }
 
-      v53 = [v52 OSLogObject];
-      if (!os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
+      oSLogObject3 = [v52 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_34;
       }
 
       v60 = objc_opt_class();
       AMSLogKey();
-      v56 = v55 = v16;
+      v56 = v55 = actionResultCopy;
       *buf = 138543874;
       v80 = v60;
       v81 = 2114;
@@ -774,22 +774,22 @@ LABEL_3:
       v83 = 2112;
       v84 = v20;
       v57 = "%{public}@: [%{public}@] Unable to locate GrandSlam token in auth result: %@";
-      v58 = v53;
+      v58 = oSLogObject3;
       v59 = OS_LOG_TYPE_ERROR;
     }
 
     _os_log_impl(&dword_192869000, v58, v59, v57, buf, 0x20u);
 
-    v16 = v55;
-    v36 = v71;
+    actionResultCopy = v55;
+    serviceIdentifier = v71;
 LABEL_34:
 
-    v17 = v67;
-    v15 = v68;
+    infoCopy = v67;
+    requestCopy = v68;
   }
 
-  v61 = [v20 account];
-  v62 = [AMSBiometrics stateForAccount:v61];
+  account = [v20 account];
+  v62 = [AMSBiometrics stateForAccount:account];
 
   if (v20 && v62 == 1)
   {
@@ -806,13 +806,13 @@ LABEL_39:
   return v65;
 }
 
-+ (void)_handleDialogFromAuthError:(id)a3 taskInfo:(id)a4
++ (void)_handleDialogFromAuthError:(id)error taskInfo:(id)info
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"AMSAuthenticateErrorDialog"];
+  errorCopy = error;
+  infoCopy = info;
+  userInfo = [errorCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:@"AMSAuthenticateErrorDialog"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -828,21 +828,21 @@ LABEL_7:
         v14 = +[AMSLogConfig sharedConfig];
       }
 
-      v15 = [v14 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v14 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v16 = objc_opt_class();
         v17 = v16;
-        v18 = [v6 properties];
-        v19 = [v18 logUUID];
+        properties = [infoCopy properties];
+        logUUID = [properties logUUID];
         v21 = 138543618;
         v22 = v16;
         v23 = 2114;
-        v24 = v19;
-        _os_log_impl(&dword_192869000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Authentication returned a dialog.", &v21, 0x16u);
+        v24 = logUUID;
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Authentication returned a dialog.", &v21, 0x16u);
       }
 
-      v20 = [AMSFinanceDialogResponse performFinanceDialog:v9 taskInfo:v6];
+      v20 = [AMSFinanceDialogResponse performFinanceDialog:v9 taskInfo:infoCopy];
       goto LABEL_13;
     }
   }
@@ -851,11 +851,11 @@ LABEL_7:
   {
   }
 
-  v10 = [v5 userInfo];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+  userInfo2 = [errorCopy userInfo];
+  v11 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-  v12 = [v11 userInfo];
-  v13 = [v12 objectForKeyedSubscript:@"AMSAuthenticateErrorDialog"];
+  userInfo3 = [v11 userInfo];
+  v13 = [userInfo3 objectForKeyedSubscript:@"AMSAuthenticateErrorDialog"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -874,13 +874,13 @@ LABEL_7:
 LABEL_13:
 }
 
-+ (id)_presentAuthRequest:(id)a3 taskInfo:(id)a4
++ (id)_presentAuthRequest:(id)request taskInfo:(id)info
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 session];
-  v8 = [v7 delegate];
+  requestCopy = request;
+  infoCopy = info;
+  session = [infoCopy session];
+  delegate = [session delegate];
   v9 = objc_opt_respondsToSelector();
   v10 = objc_opt_respondsToSelector();
   if (v9 & 1) != 0 || (v10)
@@ -891,26 +891,26 @@ LABEL_13:
       v18 = +[AMSLogConfig sharedConfig];
     }
 
-    v19 = [v18 OSLogObject];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v18 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v20 = objc_opt_class();
       v30 = v20;
-      v21 = [v6 properties];
-      v22 = [v21 logUUID];
+      properties = [infoCopy properties];
+      logUUID = [properties logUUID];
       *buf = 138543618;
       v33 = v20;
       v34 = 2114;
-      v35 = v22;
-      _os_log_impl(&dword_192869000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing authentication", buf, 0x16u);
+      v35 = logUUID;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Performing authentication", buf, 0x16u);
     }
 
     v17 = objc_alloc_init(AMSPromise);
     if (v9)
     {
-      v16 = [v6 task];
-      v23 = [(AMSPromise *)v17 completionHandlerAdapter];
-      [v8 AMSURLSession:v7 task:v16 handleAuthenticateRequest:v5 completion:v23];
+      task = [infoCopy task];
+      completionHandlerAdapter = [(AMSPromise *)v17 completionHandlerAdapter];
+      [delegate AMSURLSession:session task:task handleAuthenticateRequest:requestCopy completion:completionHandlerAdapter];
     }
 
     else
@@ -921,99 +921,99 @@ LABEL_13:
         v24 = +[AMSLogConfig sharedConfig];
       }
 
-      v25 = [v24 OSLogObject];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+      oSLogObject2 = [v24 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
       {
         v26 = objc_opt_class();
         v31 = v26;
-        v27 = [v6 properties];
-        v28 = [v27 logUUID];
+        properties2 = [infoCopy properties];
+        logUUID2 = [properties2 logUUID];
         *buf = 138543618;
         v33 = v26;
         v34 = 2114;
-        v35 = v28;
-        _os_log_impl(&dword_192869000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Calling legacy delegate for authentication handling", buf, 0x16u);
+        v35 = logUUID2;
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Calling legacy delegate for authentication handling", buf, 0x16u);
       }
 
-      v16 = [(AMSPromise *)v17 completionHandlerAdapter];
-      [v8 AMSURLSession:v7 handleAuthenticateRequest:v5 completion:v16];
+      task = [(AMSPromise *)v17 completionHandlerAdapter];
+      [delegate AMSURLSession:session handleAuthenticateRequest:requestCopy completion:task];
     }
   }
 
   else
   {
-    v16 = AMSErrorWithFormat(2, @"Finance Authentication Error", @"No delegate to perform authentication: %@", v11, v12, v13, v14, v15, v5);
-    v17 = [AMSPromise promiseWithError:v16];
+    task = AMSErrorWithFormat(2, @"Finance Authentication Error", @"No delegate to perform authentication: %@", v11, v12, v13, v14, v15, requestCopy);
+    v17 = [AMSPromise promiseWithError:task];
   }
 
   return v17;
 }
 
-+ (id)_serviceIdentifierForResponse:(id)a3 taskInfo:(id)a4
++ (id)_serviceIdentifierForResponse:(id)response taskInfo:(id)info
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  responseCopy = response;
+  infoCopy = info;
   v7 = +[AMSLogConfig sharedAccountsConfig];
   if (!v7)
   {
     v7 = +[AMSLogConfig sharedConfig];
   }
 
-  v8 = [v7 OSLogObject];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v7 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v9 = objc_opt_class();
     v10 = v9;
-    v11 = [v6 properties];
-    v12 = [v11 logUUID];
+    properties = [infoCopy properties];
+    logUUID = [properties logUUID];
     *buf = 138543618;
     v59 = v9;
     v60 = 2114;
-    v61 = v12;
-    _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Getting service identifier from response", buf, 0x16u);
+    v61 = logUUID;
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Getting service identifier from response", buf, 0x16u);
   }
 
-  v13 = [v5 ams_valueForHTTPHeaderField:@"X-Apple-Auth-Services"];
+  v13 = [responseCopy ams_valueForHTTPHeaderField:@"X-Apple-Auth-Services"];
   v14 = MEMORY[0x1E695DFD8];
   v15 = [v13 componentsSeparatedByString:@" "];
   v16 = [v14 setWithArray:v15];
 
   v17 = [v16 containsObject:@"GS"];
-  v18 = [v5 ams_statusCode];
+  ams_statusCode = [responseCopy ams_statusCode];
   v19 = +[AMSLogConfig sharedAccountsConfig];
   v20 = v19;
-  if (v18 == 401 && v17)
+  if (ams_statusCode == 401 && v17)
   {
     if (!v19)
     {
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v22 = objc_opt_class();
       v55 = v22;
-      [v6 properties];
-      v23 = v5;
+      [infoCopy properties];
+      v23 = responseCopy;
       v24 = v16;
       v25 = v13;
-      v27 = v26 = v6;
-      v28 = [v27 logUUID];
+      v27 = v26 = infoCopy;
+      logUUID2 = [v27 logUUID];
       *buf = 138543618;
       v59 = v22;
       v60 = 2114;
-      v61 = v28;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Auth services header contain GS", buf, 0x16u);
+      v61 = logUUID2;
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Auth services header contain GS", buf, 0x16u);
 
-      v6 = v26;
+      infoCopy = v26;
       v13 = v25;
       v16 = v24;
-      v5 = v23;
+      responseCopy = v23;
     }
 
-    v29 = [v5 ams_valueForHTTPHeaderField:@"X-Apple-GS-Token-Identifier"];
+    v29 = [responseCopy ams_valueForHTTPHeaderField:@"X-Apple-GS-Token-Identifier"];
     v30 = +[AMSLogConfig sharedAccountsConfig];
     v31 = v30;
     if (v29)
@@ -1023,33 +1023,33 @@ LABEL_13:
         v31 = +[AMSLogConfig sharedConfig];
       }
 
-      v32 = [v31 OSLogObject];
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [v31 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v33 = objc_opt_class();
         v56 = v33;
-        v34 = [v6 properties];
-        [v34 logUUID];
-        v35 = v5;
+        properties2 = [infoCopy properties];
+        [properties2 logUUID];
+        v35 = responseCopy;
         v36 = v16;
         v37 = v13;
-        v39 = v38 = v6;
+        v39 = v38 = infoCopy;
         *buf = 138543874;
         v59 = v33;
         v60 = 2114;
         v61 = v39;
         v62 = 2112;
         v63 = v29;
-        _os_log_impl(&dword_192869000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found GS token header: %@", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found GS token header: %@", buf, 0x20u);
 
-        v6 = v38;
+        infoCopy = v38;
         v13 = v37;
         v16 = v36;
-        v5 = v35;
+        responseCopy = v35;
       }
 
       v20 = v29;
-      v40 = v20;
+      gsTokenIdentifier2 = v20;
     }
 
     else
@@ -1059,29 +1059,29 @@ LABEL_13:
         v31 = +[AMSLogConfig sharedConfig];
       }
 
-      v46 = [v31 OSLogObject];
-      if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
+      oSLogObject4 = [v31 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
       {
-        v47 = [v6 properties];
-        v48 = [v47 logUUID];
+        properties3 = [infoCopy properties];
+        logUUID3 = [properties3 logUUID];
         v49 = objc_opt_class();
         v54 = v49;
-        [v6 properties];
-        v50 = v57 = v6;
-        v51 = [v50 gsTokenIdentifier];
+        [infoCopy properties];
+        v50 = v57 = infoCopy;
+        gsTokenIdentifier = [v50 gsTokenIdentifier];
         *buf = 138543874;
-        v59 = v48;
+        v59 = logUUID3;
         v60 = 2114;
         v61 = v49;
         v62 = 2112;
-        v63 = v51;
-        _os_log_impl(&dword_192869000, v46, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No GS token header. Falling back to that of the task info: %@", buf, 0x20u);
+        v63 = gsTokenIdentifier;
+        _os_log_impl(&dword_192869000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No GS token header. Falling back to that of the task info: %@", buf, 0x20u);
 
-        v6 = v57;
+        infoCopy = v57;
       }
 
-      v52 = [v6 properties];
-      v40 = [v52 gsTokenIdentifier];
+      properties4 = [infoCopy properties];
+      gsTokenIdentifier2 = [properties4 gsTokenIdentifier];
 
       v20 = 0;
     }
@@ -1094,32 +1094,32 @@ LABEL_13:
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v41 = [v20 OSLogObject];
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+    oSLogObject5 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
     {
       v42 = objc_opt_class();
       v43 = v42;
-      v44 = [v6 properties];
-      v45 = [v44 logUUID];
+      properties5 = [infoCopy properties];
+      logUUID4 = [properties5 logUUID];
       *buf = 138543618;
       v59 = v42;
       v60 = 2114;
-      v61 = v45;
-      _os_log_impl(&dword_192869000, v41, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Auth services missing GS", buf, 0x16u);
+      v61 = logUUID4;
+      _os_log_impl(&dword_192869000, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Auth services missing GS", buf, 0x16u);
     }
 
-    v40 = 0;
+    gsTokenIdentifier2 = 0;
   }
 
-  return v40;
+  return gsTokenIdentifier2;
 }
 
-+ (void)_updateTaskWithAuthedAccount:(id)a3 taskInfo:(id)a4
++ (void)_updateTaskWithAuthedAccount:(id)account taskInfo:(id)info
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [a3 account];
-  if (v8)
+  infoCopy = info;
+  account = [account account];
+  if (account)
   {
     v9 = +[AMSLogConfig sharedAccountsConfig];
     if (!v9)
@@ -1127,61 +1127,61 @@ LABEL_13:
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 properties];
-      v12 = [v11 logUUID];
+      properties = [infoCopy properties];
+      logUUID = [properties logUUID];
       v13 = MEMORY[0x1E696AEC0];
       v14 = objc_opt_class();
       v15 = v14;
-      if (v12)
+      if (logUUID)
       {
-        a1 = [v7 properties];
-        v4 = [a1 logUUID];
-        [v13 stringWithFormat:@"%@: [%@] ", v15, v4];
+        self = [infoCopy properties];
+        logUUID2 = [self logUUID];
+        [v13 stringWithFormat:@"%@: [%@] ", v15, logUUID2];
       }
 
       else
       {
         [v13 stringWithFormat:@"%@: ", v14];
       }
-      v16 = ;
-      v17 = AMSHashIfNeeded(v8);
+      selfCopy = ;
+      v17 = AMSHashIfNeeded(account);
       *buf = 138543618;
-      v25 = v16;
+      v25 = selfCopy;
       v26 = 2114;
       v27 = v17;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Updating account on URL task. account = %{public}@", buf, 0x16u);
-      if (v12)
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Updating account on URL task. account = %{public}@", buf, 0x16u);
+      if (logUUID)
       {
 
-        v16 = a1;
+        selfCopy = self;
       }
     }
 
-    v18 = [v7 properties];
-    [v18 setAccount:v8];
+    properties2 = [infoCopy properties];
+    [properties2 setAccount:account];
 
-    v19 = [v7 properties];
-    v20 = [v19 purchaseInfo];
-    v21 = [v20 purchase];
-    [v21 setAccount:v8];
+    properties3 = [infoCopy properties];
+    purchaseInfo = [properties3 purchaseInfo];
+    purchase = [purchaseInfo purchase];
+    [purchase setAccount:account];
 
-    v22 = [v7 properties];
-    v23 = [v22 purchaseInfo];
-    [v23 setAccount:v8];
+    properties4 = [infoCopy properties];
+    purchaseInfo2 = [properties4 purchaseInfo];
+    [purchaseInfo2 setAccount:account];
   }
 }
 
-+ (void)_updateTaskWithLastCredentialSource:(id)a3 taskInfo:(id)a4
++ (void)_updateTaskWithLastCredentialSource:(id)source taskInfo:(id)info
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [a3 account];
-  [v5 setPreviousAuthorizationCredentialSource:{objc_msgSend(v6, "ams_lastAuthenticationCredentialSource")}];
+  infoCopy = info;
+  account = [source account];
+  [infoCopy setPreviousAuthorizationCredentialSource:{objc_msgSend(account, "ams_lastAuthenticationCredentialSource")}];
 
-  if (![v5 previousAuthorizationCredentialSource])
+  if (![infoCopy previousAuthorizationCredentialSource])
   {
     v7 = +[AMSLogConfig sharedAccountsConfig];
     if (!v7)
@@ -1189,18 +1189,18 @@ LABEL_13:
       v7 = +[AMSLogConfig sharedConfig];
     }
 
-    v8 = [v7 OSLogObject];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [v5 properties];
-      v12 = [v11 logUUID];
+      properties = [infoCopy properties];
+      logUUID = [properties logUUID];
       v13 = 138543618;
       v14 = v9;
       v15 = 2114;
-      v16 = v12;
-      _os_log_impl(&dword_192869000, v8, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine the credential source from authentication.", &v13, 0x16u);
+      v16 = logUUID;
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Failed to determine the credential source from authentication.", &v13, 0x16u);
     }
   }
 }

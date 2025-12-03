@@ -1,16 +1,16 @@
 @interface CUSPAKEProver
-- (CUSPAKEProver)initWithPasswordCString:(const char *)a3;
-- (CUSPAKEProver)initWithPasswordPtr:(const void *)a3 passwordLength:(unint64_t)a4;
-- (CUSPAKEProver)initWithPasswordString:(id)a3;
-- (id)finishAndReturnError:(id *)a3;
-- (id)generateM1AndReturnError:(id *)a3;
-- (id)generateM3WithM2:(id)a3 error:(id *)a4;
+- (CUSPAKEProver)initWithPasswordCString:(const char *)string;
+- (CUSPAKEProver)initWithPasswordPtr:(const void *)ptr passwordLength:(unint64_t)length;
+- (CUSPAKEProver)initWithPasswordString:(id)string;
+- (id)finishAndReturnError:(id *)error;
+- (id)generateM1AndReturnError:(id *)error;
+- (id)generateM3WithM2:(id)m2 error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation CUSPAKEProver
 
-- (id)finishAndReturnError:(id *)a3
+- (id)finishAndReturnError:(id *)error
 {
   v10 = self->_sessionKey;
   if (v10)
@@ -21,21 +21,21 @@
     v12 = v10;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960551, "no session key", v5, v6, v7, v8, v9, v14);
+    *error = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960551, "no session key", v5, v6, v7, v8, v9, v14);
   }
 
   return v10;
 }
 
-- (id)generateM3WithM2:(id)a3 error:(id *)a4
+- (id)generateM3WithM2:(id)m2 error:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  m2Copy = m2;
   if (!self->_spakeContext)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -45,20 +45,20 @@
     v26 = 4294960551;
 LABEL_21:
     NSErrorF_safe(v24, v26, v25, v6, v7, v8, v9, v10, v27);
-    *a4 = v21 = 0;
+    *error = v21 = 0;
     goto LABEL_7;
   }
 
   ccspake_cp_256_rfc();
-  v12 = [v11 shareVData];
-  [v12 length];
-  v13 = [v11 shareVData];
-  [v13 bytes];
+  shareVData = [m2Copy shareVData];
+  [shareVData length];
+  shareVData2 = [m2Copy shareVData];
+  [shareVData2 bytes];
   v14 = ccspake_kex_process();
 
   if (v14)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -72,7 +72,7 @@ LABEL_21:
   v15 = ccspake_mac_compute();
   if (v15)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -83,15 +83,15 @@ LABEL_21:
     goto LABEL_18;
   }
 
-  v16 = [v11 confirmVData];
-  [v16 length];
-  v17 = [v11 confirmVData];
-  [v17 bytes];
+  confirmVData = [m2Copy confirmVData];
+  [confirmVData length];
+  confirmVData2 = [m2Copy confirmVData];
+  [confirmVData2 bytes];
   session_key = ccspake_mac_verify_and_get_session_key();
 
   if (session_key)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -122,7 +122,7 @@ LABEL_18:
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
     v24 = *MEMORY[0x1E696A768];
     v25 = "generate session key failed";
@@ -137,7 +137,7 @@ LABEL_7:
   return v21;
 }
 
-- (id)generateM1AndReturnError:(id *)a3
+- (id)generateM1AndReturnError:(id *)error
 {
   v41[1] = *MEMORY[0x1E69E9840];
   ccspake_cp_256_rfc();
@@ -149,7 +149,7 @@ LABEL_7:
   v5 = ccspake_reduce_w();
   if (v5)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -162,7 +162,7 @@ LABEL_7:
   v11 = ccspake_reduce_w();
   if (v11)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -183,12 +183,12 @@ LABEL_7:
   self->_spakeContext = v18;
   if (!v18)
   {
-    if (a3)
+    if (error)
     {
       v40 = NSErrorF_safe(*MEMORY[0x1E696A768], 4294960568, "ccspake_ctx malloc failed", v19, v20, v21, v22, v23, v41[0]);
 LABEL_24:
       v37 = 0;
-      *a3 = v40;
+      *error = v40;
       goto LABEL_10;
     }
 
@@ -200,7 +200,7 @@ LABEL_24:
   v24 = ccspake_prover_initialize();
   if (v24)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_25;
     }
@@ -220,7 +220,7 @@ LABEL_24:
     goto LABEL_10;
   }
 
-  if (a3)
+  if (error)
   {
     NSErrorF_safe(*MEMORY[0x1E696A768], 4294960596, "ccspake_kex_generate failed: %d", v32, v33, v34, v35, v36, v31);
     goto LABEL_23;
@@ -249,16 +249,16 @@ LABEL_10:
   [(CUSPAKEProver *)&v3 dealloc];
 }
 
-- (CUSPAKEProver)initWithPasswordString:(id)a3
+- (CUSPAKEProver)initWithPasswordString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v11.receiver = self;
   v11.super_class = CUSPAKEProver;
   v5 = [(CUSPAKEProver *)&v11 init];
   if (v5)
   {
-    v6 = [v4 UTF8String];
-    v7 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:v6 length:strlen(v6)];
+    uTF8String = [stringCopy UTF8String];
+    v7 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:uTF8String length:strlen(uTF8String)];
     passwordData = v5->_passwordData;
     v5->_passwordData = v7;
 
@@ -268,14 +268,14 @@ LABEL_10:
   return v5;
 }
 
-- (CUSPAKEProver)initWithPasswordPtr:(const void *)a3 passwordLength:(unint64_t)a4
+- (CUSPAKEProver)initWithPasswordPtr:(const void *)ptr passwordLength:(unint64_t)length
 {
   v11.receiver = self;
   v11.super_class = CUSPAKEProver;
   v6 = [(CUSPAKEProver *)&v11 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:a3 length:a4];
+    v7 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:ptr length:length];
     passwordData = v6->_passwordData;
     v6->_passwordData = v7;
 
@@ -285,14 +285,14 @@ LABEL_10:
   return v6;
 }
 
-- (CUSPAKEProver)initWithPasswordCString:(const char *)a3
+- (CUSPAKEProver)initWithPasswordCString:(const char *)string
 {
   v9.receiver = self;
   v9.super_class = CUSPAKEProver;
   v4 = [(CUSPAKEProver *)&v9 init];
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:a3 length:strlen(a3)];
+    v5 = [MEMORY[0x1E695DEF0] _newZeroingDataWithBytes:string length:strlen(string)];
     passwordData = v4->_passwordData;
     v4->_passwordData = v5;
 

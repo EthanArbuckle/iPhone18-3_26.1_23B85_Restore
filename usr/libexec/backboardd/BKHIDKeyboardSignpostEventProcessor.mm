@@ -1,14 +1,14 @@
 @interface BKHIDKeyboardSignpostEventProcessor
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
 @end
 
 @implementation BKHIDKeyboardSignpostEventProcessor
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v7 = a4;
-  v8 = a5;
-  if (*a3)
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  if (*event)
   {
     IOHIDEventGetTimeStamp();
     IOHIDEventGetIntegerValue();
@@ -23,7 +23,7 @@
     v11 = sub_100008528();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      [v7 eventSource];
+      [senderCopy eventSource];
       v12 = _BKSHIDEventGetConciseDescriptionKeyboard();
       v15 = 138543362;
       v16 = v12;
@@ -31,7 +31,7 @@
     }
   }
 
-  v13 = [v7 displayUUID];
+  displayUUID = [senderCopy displayUUID];
   _BKHIDNoteUserEventOccurredOnDisplay();
 
   return 0;

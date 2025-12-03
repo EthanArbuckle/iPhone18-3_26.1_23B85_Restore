@@ -1,20 +1,20 @@
 @interface AMSUIAgeVerificationCore
-+ (id)_messageForResult:(id)a3 withBag:(id)a4 expiration:(id)a5 dateFormatter:(id)a6 bundle:(id)a7;
-+ (id)_promiseResultForCancelWithVerificationResult:(id)a3;
-+ (id)_timestampOfExpiryFrom:(id)a3;
-+ (id)_titleForResult:(id)a3 withBag:(id)a4 bundle:(id)a5;
++ (id)_messageForResult:(id)result withBag:(id)bag expiration:(id)expiration dateFormatter:(id)formatter bundle:(id)bundle;
++ (id)_promiseResultForCancelWithVerificationResult:(id)result;
++ (id)_timestampOfExpiryFrom:(id)from;
++ (id)_titleForResult:(id)result withBag:(id)bag bundle:(id)bundle;
 @end
 
 @implementation AMSUIAgeVerificationCore
 
-+ (id)_promiseResultForCancelWithVerificationResult:(id)a3
++ (id)_promiseResultForCancelWithVerificationResult:(id)result
 {
   v3 = MEMORY[0x1E698CAD8];
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 requiredType];
+  requiredType = [resultCopy requiredType];
 
-  if (v6 == 3)
+  if (requiredType == 3)
   {
     v7 = objc_alloc_init(MEMORY[0x1E698C798]);
     [v7 setSuccessType:3];
@@ -30,40 +30,40 @@
   return v5;
 }
 
-+ (id)_messageForResult:(id)a3 withBag:(id)a4 expiration:(id)a5 dateFormatter:(id)a6 bundle:(id)a7
++ (id)_messageForResult:(id)result withBag:(id)bag expiration:(id)expiration dateFormatter:(id)formatter bundle:(id)bundle
 {
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
-  v14 = a4;
-  if ([a3 requiredType] == 3)
+  expirationCopy = expiration;
+  formatterCopy = formatter;
+  bundleCopy = bundle;
+  bagCopy = bag;
+  if ([result requiredType] == 3)
   {
-    v15 = [v12 stringFromDate:v11];
+    v15 = [formatterCopy stringFromDate:expirationCopy];
     v16 = MEMORY[0x1E696AEC0];
     v17 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-    v18 = AMSUILocalizedStringFromBundle(@"AGE_VERIFICATION_SOON_DIALOG_MESSAGE", v14, v13);
+    v18 = AMSUILocalizedStringFromBundle(@"AGE_VERIFICATION_SOON_DIALOG_MESSAGE", bagCopy, bundleCopy);
 
     v19 = [v16 stringWithFormat:v18, v15];
-    v13 = v18;
-    v14 = v15;
+    bundleCopy = v18;
+    bagCopy = v15;
   }
 
   else
   {
     v20 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-    v19 = AMSUILocalizedStringFromBundle(@"AGE_VERIFICATION_DIALOG_MESSAGE", v14, v13);
+    v19 = AMSUILocalizedStringFromBundle(@"AGE_VERIFICATION_DIALOG_MESSAGE", bagCopy, bundleCopy);
   }
 
   return v19;
 }
 
-+ (id)_titleForResult:(id)a3 withBag:(id)a4 bundle:(id)a5
++ (id)_titleForResult:(id)result withBag:(id)bag bundle:(id)bundle
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 requiredType];
+  bundleCopy = bundle;
+  bagCopy = bag;
+  requiredType = [result requiredType];
   v10 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleMediaServicesUI"];
-  if (v9 == 3)
+  if (requiredType == 3)
   {
     v11 = @"AGE_VERIFICATION_SOON_DIALOG_TITLE";
   }
@@ -73,17 +73,17 @@
     v11 = @"AGE_VERIFICATION_DIALOG_TITLE";
   }
 
-  v12 = AMSUILocalizedStringFromBundle(v11, v8, v7);
+  v12 = AMSUILocalizedStringFromBundle(v11, bagCopy, bundleCopy);
 
   return v12;
 }
 
-+ (id)_timestampOfExpiryFrom:(id)a3
++ (id)_timestampOfExpiryFrom:(id)from
 {
-  v3 = a3;
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  fromCopy = from;
+  if (fromCopy && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{(objc_msgSend(v3, "longLongValue") / 1000)}];
+    v4 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:{(objc_msgSend(fromCopy, "longLongValue") / 1000)}];
   }
 
   else

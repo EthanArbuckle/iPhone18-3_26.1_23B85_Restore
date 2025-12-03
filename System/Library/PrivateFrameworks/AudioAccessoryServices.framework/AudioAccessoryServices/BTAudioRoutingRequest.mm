@@ -1,6 +1,6 @@
 @interface BTAudioRoutingRequest
 - (BTAudioRoutingRequest)init;
-- (BTAudioRoutingRequest)initWithCoder:(id)a3;
+- (BTAudioRoutingRequest)initWithCoder:(id)coder;
 - (id)_activateSync;
 - (id)_ensureXPCStarted;
 - (id)description;
@@ -8,11 +8,11 @@
 - (void)_handleServerDied;
 - (void)_interrupted;
 - (void)_invalidated;
-- (void)_reportError:(id)a3;
+- (void)_reportError:(id)error;
 - (void)activate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)invalidate;
-- (void)updateAudioState:(id)a3 withState:(unsigned int)a4;
+- (void)updateAudioState:(id)state withState:(unsigned int)withState;
 @end
 
 @implementation BTAudioRoutingRequest
@@ -32,9 +32,9 @@
   return v2;
 }
 
-- (BTAudioRoutingRequest)initWithCoder:(id)a3
+- (BTAudioRoutingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BTAudioRoutingRequest *)self init];
   if (v5)
   {
@@ -43,7 +43,7 @@
       v5->_audioScore = 0;
     }
 
-    v6 = v4;
+    v6 = coderCopy;
     objc_opt_class();
     NSDecodeObjectIfPresent();
 
@@ -71,50 +71,50 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   audioScore = self->_audioScore;
-  v11 = v4;
+  v11 = coderCopy;
   if (audioScore)
   {
-    [v4 encodeInteger:audioScore forKey:@"auSc"];
-    v4 = v11;
+    [coderCopy encodeInteger:audioScore forKey:@"auSc"];
+    coderCopy = v11;
   }
 
   appBundleID = self->_appBundleID;
   if (appBundleID)
   {
     [v11 encodeObject:appBundleID forKey:@"aid"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   clientID = self->_clientID;
   if (clientID)
   {
     [v11 encodeInt64:clientID forKey:@"cid"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   deviceAddress = self->_deviceAddress;
   if (deviceAddress)
   {
     [v11 encodeObject:deviceAddress forKey:@"dAdr"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   flags = self->_flags;
   if (flags)
   {
     [v11 encodeInt64:flags forKey:@"flgs"];
-    v4 = v11;
+    coderCopy = v11;
   }
 
   options = self->_options;
   if (options)
   {
     [v11 encodeObject:options forKey:@"opts"];
-    v4 = v11;
+    coderCopy = v11;
   }
 }
 
@@ -147,10 +147,10 @@
     [(BTAudioRoutingRequest *)self _activate];
   }
 
-  v3 = [(BTAudioRoutingRequest *)self _ensureXPCStarted];
-  if (v3)
+  _ensureXPCStarted = [(BTAudioRoutingRequest *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    [(BTAudioRoutingRequest *)self _reportError:v3];
+    [(BTAudioRoutingRequest *)self _reportError:_ensureXPCStarted];
   }
 
   else
@@ -234,10 +234,10 @@ void __34__BTAudioRoutingRequest__activate__block_invoke_2(uint64_t a1, void *a2
     LogPrintF();
   }
 
-  v3 = [(BTAudioRoutingRequest *)self _ensureXPCStarted];
-  if (v3)
+  _ensureXPCStarted = [(BTAudioRoutingRequest *)self _ensureXPCStarted];
+  if (_ensureXPCStarted)
   {
-    [(BTAudioRoutingRequest *)self _reportError:v3];
+    [(BTAudioRoutingRequest *)self _reportError:_ensureXPCStarted];
     v4 = 0;
   }
 
@@ -482,18 +482,18 @@ uint64_t __35__BTAudioRoutingRequest_invalidate__block_invoke(uint64_t result)
   }
 }
 
-- (void)updateAudioState:(id)a3 withState:(unsigned int)a4
+- (void)updateAudioState:(id)state withState:(unsigned int)withState
 {
-  v6 = a3;
+  stateCopy = state;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__BTAudioRoutingRequest_updateAudioState_withState___block_invoke;
   block[3] = &unk_278CDDF10;
-  v11 = a4;
+  withStateCopy = withState;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = stateCopy;
+  v8 = stateCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -551,9 +551,9 @@ void __52__BTAudioRoutingRequest_updateAudioState_withState___block_invoke_2(uin
   [*(a1 + 32) _reportError:v3];
 }
 
-- (void)_reportError:(id)a3
+- (void)_reportError:(id)error
 {
-  v7 = a3;
+  errorCopy = error;
   if (gLogCategory_BTAudioRoutingRequest <= 90 && (gLogCategory_BTAudioRoutingRequest != -1 || _LogCategory_Initialize()))
   {
     [BTAudioRoutingRequest _reportError:];
@@ -566,7 +566,7 @@ void __52__BTAudioRoutingRequest_updateAudioState_withState___block_invoke_2(uin
     self->_responseHandler = 0;
 
     v6 = objc_alloc_init(BTAudioRoutingResponse);
-    [(BTAudioRoutingResponse *)v6 setError:v7];
+    [(BTAudioRoutingResponse *)v6 setError:errorCopy];
     (v4)[2](v4, v6);
   }
 }

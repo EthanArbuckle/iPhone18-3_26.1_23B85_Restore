@@ -1,91 +1,91 @@
 @interface MADSceneClassification
-+ (id)entryWithLabel:(id)a3 confidence:(double)a4 boundingBox:(CGRect)a5;
-+ (id)entryWithLabel:(id)a3 confidence:(double)a4 boundingBox:(CGRect)a5 videoEntries:(id)a6;
++ (id)entryWithLabel:(id)label confidence:(double)confidence boundingBox:(CGRect)box;
++ (id)entryWithLabel:(id)label confidence:(double)confidence boundingBox:(CGRect)box videoEntries:(id)entries;
 - (CGRect)boundingBox;
-- (MADSceneClassification)initWithCoder:(id)a3;
-- (MADSceneClassification)initWithLabel:(id)a3 confidence:(double)a4 boundingBox:(CGRect)a5 videoEntries:(id)a6;
+- (MADSceneClassification)initWithCoder:(id)coder;
+- (MADSceneClassification)initWithLabel:(id)label confidence:(double)confidence boundingBox:(CGRect)box videoEntries:(id)entries;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADSceneClassification
 
-- (MADSceneClassification)initWithLabel:(id)a3 confidence:(double)a4 boundingBox:(CGRect)a5 videoEntries:(id)a6
+- (MADSceneClassification)initWithLabel:(id)label confidence:(double)confidence boundingBox:(CGRect)box videoEntries:(id)entries
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a3;
-  v15 = a6;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  labelCopy = label;
+  entriesCopy = entries;
   v19.receiver = self;
   v19.super_class = MADSceneClassification;
   v16 = [(MADSceneClassification *)&v19 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_label, a3);
-    v17->_confidence = a4;
+    objc_storeStrong(&v16->_label, label);
+    v17->_confidence = confidence;
     v17->_boundingBox.origin.x = x;
     v17->_boundingBox.origin.y = y;
     v17->_boundingBox.size.width = width;
     v17->_boundingBox.size.height = height;
-    objc_storeStrong(&v17->_videoEntries, a6);
+    objc_storeStrong(&v17->_videoEntries, entries);
   }
 
   return v17;
 }
 
-+ (id)entryWithLabel:(id)a3 confidence:(double)a4 boundingBox:(CGRect)a5
++ (id)entryWithLabel:(id)label confidence:(double)confidence boundingBox:(CGRect)box
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = [[a1 alloc] initWithLabel:v11 confidence:0 boundingBox:a4 videoEntries:{x, y, width, height}];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  labelCopy = label;
+  v12 = [[self alloc] initWithLabel:labelCopy confidence:0 boundingBox:confidence videoEntries:{x, y, width, height}];
 
   return v12;
 }
 
-+ (id)entryWithLabel:(id)a3 confidence:(double)a4 boundingBox:(CGRect)a5 videoEntries:(id)a6
++ (id)entryWithLabel:(id)label confidence:(double)confidence boundingBox:(CGRect)box videoEntries:(id)entries
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = a6;
-  v15 = [[a1 alloc] initWithLabel:v13 confidence:v14 boundingBox:a4 videoEntries:{x, y, width, height}];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  labelCopy = label;
+  entriesCopy = entries;
+  v15 = [[self alloc] initWithLabel:labelCopy confidence:entriesCopy boundingBox:confidence videoEntries:{x, y, width, height}];
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_label forKey:@"Label"];
-  [v4 encodeDouble:@"Confidence" forKey:self->_confidence];
-  [v4 encodeRect:@"BoundingBox" forKey:{self->_boundingBox.origin.x, self->_boundingBox.origin.y, self->_boundingBox.size.width, self->_boundingBox.size.height}];
-  [v4 encodeObject:self->_videoEntries forKey:@"VideoEntries"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_label forKey:@"Label"];
+  [coderCopy encodeDouble:@"Confidence" forKey:self->_confidence];
+  [coderCopy encodeRect:@"BoundingBox" forKey:{self->_boundingBox.origin.x, self->_boundingBox.origin.y, self->_boundingBox.size.width, self->_boundingBox.size.height}];
+  [coderCopy encodeObject:self->_videoEntries forKey:@"VideoEntries"];
 }
 
-- (MADSceneClassification)initWithCoder:(id)a3
+- (MADSceneClassification)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MADSceneClassification;
   v5 = [(MADSceneClassification *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
     label = v5->_label;
     v5->_label = v6;
 
-    [v4 decodeDoubleForKey:@"Confidence"];
+    [coderCopy decodeDoubleForKey:@"Confidence"];
     v5->_confidence = v8;
-    [v4 decodeRectForKey:@"BoundingBox"];
+    [coderCopy decodeRectForKey:@"BoundingBox"];
     v5->_boundingBox.origin.x = v9;
     v5->_boundingBox.origin.y = v10;
     v5->_boundingBox.size.width = v11;
@@ -96,7 +96,7 @@
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
     v15 = [v13 setWithArray:v14];
 
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"VideoEntries"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"VideoEntries"];
     videoEntries = v5->_videoEntries;
     v5->_videoEntries = v16;
   }
@@ -106,28 +106,28 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  v6 = [(MADSceneClassification *)self label];
-  [v3 appendFormat:@"%@: %@, ", @"Label", v6];
+  label = [(MADSceneClassification *)self label];
+  [string appendFormat:@"%@: %@, ", @"Label", label];
 
   [(MADSceneClassification *)self boundingBox];
   if (v7 != 0.0)
   {
     [(MADSceneClassification *)self boundingBox];
     v8 = NSStringFromRect(v13);
-    [v3 appendFormat:@"%@: %@, ", @"BoundingBox", v8];
+    [string appendFormat:@"%@: %@, ", @"BoundingBox", v8];
   }
 
   [(MADSceneClassification *)self confidence];
-  [v3 appendFormat:@"%@: %.2f ", @"Confidence", v9];
-  v10 = [(MADSceneClassification *)self videoEntries];
-  [v3 appendFormat:@"%@: %lu count>", @"VideoEntries", objc_msgSend(v10, "count")];
+  [string appendFormat:@"%@: %.2f ", @"Confidence", v9];
+  videoEntries = [(MADSceneClassification *)self videoEntries];
+  [string appendFormat:@"%@: %lu count>", @"VideoEntries", objc_msgSend(videoEntries, "count")];
 
-  return v3;
+  return string;
 }
 
 - (CGRect)boundingBox

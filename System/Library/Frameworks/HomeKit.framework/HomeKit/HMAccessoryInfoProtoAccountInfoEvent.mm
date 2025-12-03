@@ -1,41 +1,41 @@
 @interface HMAccessoryInfoProtoAccountInfoEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryInfoProtoAccountInfoEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(HMAccessoryInfoProtoAccountInfoEvent *)self setUsername:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(HMAccessoryInfoProtoAccountInfoEvent *)self setAaAltDSID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HMAccessoryInfoProtoAccountInfoEvent *)self setAmsAltDSID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[36])
+  if (fromCopy[36])
   {
-    self->_signedIn = v4[32];
+    self->_signedIn = fromCopy[32];
     *&self->_has |= 1u;
   }
 }
@@ -58,16 +58,16 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   username = self->_username;
-  if (username | *(v4 + 3))
+  if (username | *(equalCopy + 3))
   {
     if (![(NSString *)username isEqual:?])
     {
@@ -76,7 +76,7 @@
   }
 
   aaAltDSID = self->_aaAltDSID;
-  if (aaAltDSID | *(v4 + 1))
+  if (aaAltDSID | *(equalCopy + 1))
   {
     if (![(NSString *)aaAltDSID isEqual:?])
     {
@@ -85,7 +85,7 @@
   }
 
   amsAltDSID = self->_amsAltDSID;
-  if (amsAltDSID | *(v4 + 2))
+  if (amsAltDSID | *(equalCopy + 2))
   {
     if (![(NSString *)amsAltDSID isEqual:?])
     {
@@ -93,10 +93,10 @@
     }
   }
 
-  v8 = (*(v4 + 36) & 1) == 0;
+  v8 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0)
+    if ((*(equalCopy + 36) & 1) == 0)
     {
 LABEL_10:
       v8 = 0;
@@ -105,13 +105,13 @@ LABEL_10:
 
     if (self->_signedIn)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_10;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_10;
     }
@@ -124,18 +124,18 @@ LABEL_11:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_username copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_username copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_aaAltDSID copyWithZone:a3];
+  v8 = [(NSString *)self->_aaAltDSID copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(NSString *)self->_amsAltDSID copyWithZone:a3];
+  v10 = [(NSString *)self->_amsAltDSID copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -148,73 +148,73 @@ LABEL_11:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_username)
   {
-    [v4 setUsername:?];
-    v4 = v5;
+    [toCopy setUsername:?];
+    toCopy = v5;
   }
 
   if (self->_aaAltDSID)
   {
     [v5 setAaAltDSID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_amsAltDSID)
   {
     [v5 setAmsAltDSID:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[32] = self->_signedIn;
-    v4[36] |= 1u;
+    toCopy[32] = self->_signedIn;
+    toCopy[36] |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_username)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_aaAltDSID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_amsAltDSID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     signedIn = self->_signedIn;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   username = self->_username;
   if (username)
   {
-    [v3 setObject:username forKey:@"username"];
+    [dictionary setObject:username forKey:@"username"];
   }
 
   aaAltDSID = self->_aaAltDSID;
@@ -244,8 +244,8 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = HMAccessoryInfoProtoAccountInfoEvent;
   v4 = [(HMAccessoryInfoProtoAccountInfoEvent *)&v8 description];
-  v5 = [(HMAccessoryInfoProtoAccountInfoEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryInfoProtoAccountInfoEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

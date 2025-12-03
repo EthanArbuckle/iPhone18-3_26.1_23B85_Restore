@@ -1,7 +1,7 @@
 @interface RemoteExtensionScene
 - (UIViewController)viewController;
 - (_TtC13iCloudQuotaUI20RemoteExtensionScene)init;
-- (void)setViewController:(id)a3;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation RemoteExtensionScene
@@ -13,13 +13,13 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
   v5 = OBJC_IVAR____TtC13iCloudQuotaUI20RemoteExtensionScene_viewController;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = controller;
+  controllerCopy = controller;
 }
 
 - (_TtC13iCloudQuotaUI20RemoteExtensionScene)init

@@ -1,17 +1,17 @@
 @interface RootTestSuite
 - (_TtC7NewsUI213RootTestSuite)init;
-- (void)setupTestWithContext:(id)a3 completion:(id)a4;
+- (void)setupTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation RootTestSuite
 
-- (void)setupTestWithContext:(id)a3 completion:(id)a4
+- (void)setupTestWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_219B7E140(v7, v8, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_219B7E140(contextCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }

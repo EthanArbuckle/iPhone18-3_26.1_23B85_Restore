@@ -7,8 +7,8 @@
 - (void)startTest
 {
   [(PPTBasicTest *)self setRunning:1];
-  v3 = [(PPTBasicTest *)self bookController];
-  [THTestDriver goToFirstChapterWithController:v3];
+  bookController = [(PPTBasicTest *)self bookController];
+  [THTestDriver goToFirstChapterWithController:bookController];
 
   v4 = dispatch_time(0, 3000000000);
   block[0] = _NSConcreteStackBlock;

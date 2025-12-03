@@ -1,7 +1,7 @@
 @interface PBUIReplicaSourceObserverBox
-- (PBUIReplicaSourceObserverBox)initWithIdentifier:(id)a3 activeStateDidChangeHandler:(id)a4;
-- (id)registerSourceObserver:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (PBUIReplicaSourceObserverBox)initWithIdentifier:(id)identifier activeStateDidChangeHandler:(id)handler;
+- (id)registerSourceObserver:(id)observer;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
 - (void)invalidate;
 - (void)setNeedsSourceUpdate;
@@ -9,10 +9,10 @@
 
 @implementation PBUIReplicaSourceObserverBox
 
-- (PBUIReplicaSourceObserverBox)initWithIdentifier:(id)a3 activeStateDidChangeHandler:(id)a4
+- (PBUIReplicaSourceObserverBox)initWithIdentifier:(id)identifier activeStateDidChangeHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v20.receiver = self;
   v20.super_class = PBUIReplicaSourceObserverBox;
   v8 = [(PBUIReplicaSourceObserverBox *)&v20 init];
@@ -20,7 +20,7 @@
   if (v8)
   {
     v8->_wasLastActive = 0;
-    if (v7)
+    if (handlerCopy)
     {
       objc_initWeak(&location, v8);
       v10 = MEMORY[0x277CF0BD0];
@@ -29,8 +29,8 @@
       v16[2] = __79__PBUIReplicaSourceObserverBox_initWithIdentifier_activeStateDidChangeHandler___block_invoke;
       v16[3] = &unk_278363F48;
       objc_copyWeak(&v18, &location);
-      v17 = v7;
-      v11 = [v10 assertionWithIdentifier:v6 stateDidChangeHandler:v16];
+      v17 = handlerCopy;
+      v11 = [v10 assertionWithIdentifier:identifierCopy stateDidChangeHandler:v16];
       sharedUpdateAssertion = v9->_sharedUpdateAssertion;
       v9->_sharedUpdateAssertion = v11;
 
@@ -40,7 +40,7 @@
 
     else
     {
-      v13 = [MEMORY[0x277CF0BD0] assertionWithIdentifier:v6];
+      v13 = [MEMORY[0x277CF0BD0] assertionWithIdentifier:identifierCopy];
       v14 = v9->_sharedUpdateAssertion;
       v9->_sharedUpdateAssertion = v13;
     }
@@ -91,7 +91,7 @@ void __79__PBUIReplicaSourceObserverBox_initWithIdentifier_activeStateDidChangeH
     v7 = 138543618;
     v8 = v5;
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_21E67D000, v3, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Invalidating", &v7, 0x16u);
   }
 
@@ -100,12 +100,12 @@ void __79__PBUIReplicaSourceObserverBox_initWithIdentifier_activeStateDidChangeH
   self->_sharedUpdateAssertion = 0;
 }
 
-- (id)registerSourceObserver:(id)a3
+- (id)registerSourceObserver:(id)observer
 {
   v4 = MEMORY[0x277CF0C00];
-  v5 = a3;
-  v6 = [v4 succinctDescriptionForObject:v5];
-  v7 = [(BSCompoundAssertion *)self->_sharedUpdateAssertion acquireForReason:v6 withContext:v5];
+  observerCopy = observer;
+  v6 = [v4 succinctDescriptionForObject:observerCopy];
+  v7 = [(BSCompoundAssertion *)self->_sharedUpdateAssertion acquireForReason:v6 withContext:observerCopy];
 
   return v7;
 }
@@ -117,8 +117,8 @@ void __79__PBUIReplicaSourceObserverBox_initWithIdentifier_activeStateDidChangeH
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = self;
-  v3 = [(PBUIReplicaSourceObserverBox *)v2 countByEnumeratingWithState:&v11 objects:v21 count:16];
+  selfCopy = self;
+  v3 = [(PBUIReplicaSourceObserverBox *)selfCopy countByEnumeratingWithState:&v11 objects:v21 count:16];
   if (v3)
   {
     v4 = v3;
@@ -129,7 +129,7 @@ void __79__PBUIReplicaSourceObserverBox_initWithIdentifier_activeStateDidChangeH
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -141,7 +141,7 @@ void __79__PBUIReplicaSourceObserverBox_initWithIdentifier_activeStateDidChangeH
           *buf = 138543874;
           v16 = v10;
           v17 = 2048;
-          v18 = v2;
+          v18 = selfCopy;
           v19 = 2114;
           v20 = v7;
           _os_log_impl(&dword_21E67D000, v8, OS_LOG_TYPE_INFO, "<%{public}@:%p> Set source needs update for observer: %{public}@", buf, 0x20u);
@@ -150,17 +150,17 @@ void __79__PBUIReplicaSourceObserverBox_initWithIdentifier_activeStateDidChangeH
         [v7 setNeedsSourceUpdate];
       }
 
-      v4 = [(PBUIReplicaSourceObserverBox *)v2 countByEnumeratingWithState:&v11 objects:v21 count:16];
+      v4 = [(PBUIReplicaSourceObserverBox *)selfCopy countByEnumeratingWithState:&v11 objects:v21 count:16];
     }
 
     while (v4);
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  v8 = [(BSCompoundAssertion *)self->_sharedUpdateAssertion context];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  context = [(BSCompoundAssertion *)self->_sharedUpdateAssertion context];
+  v9 = [context countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }

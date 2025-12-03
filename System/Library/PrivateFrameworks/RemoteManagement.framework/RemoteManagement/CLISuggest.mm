@@ -1,25 +1,25 @@
 @interface CLISuggest
-+ (id)correctionForWord:(id)a3 fromCorpus:(id)a4;
-- (CLISuggest)initWithDistanceFunction:(unint64_t)a3;
-- (id)correctionForWord:(id)a3;
-- (void)addCorpusWordsFromArray:(id)a3;
++ (id)correctionForWord:(id)word fromCorpus:(id)corpus;
+- (CLISuggest)initWithDistanceFunction:(unint64_t)function;
+- (id)correctionForWord:(id)word;
+- (void)addCorpusWordsFromArray:(id)array;
 @end
 
 @implementation CLISuggest
 
-+ (id)correctionForWord:(id)a3 fromCorpus:(id)a4
++ (id)correctionForWord:(id)word fromCorpus:(id)corpus
 {
-  v5 = a4;
-  v6 = a3;
+  corpusCopy = corpus;
+  wordCopy = word;
   v7 = objc_opt_new();
-  [v7 addCorpusWordsFromArray:v5];
+  [v7 addCorpusWordsFromArray:corpusCopy];
 
-  v8 = [v7 correctionForWord:v6];
+  v8 = [v7 correctionForWord:wordCopy];
 
   return v8;
 }
 
-- (CLISuggest)initWithDistanceFunction:(unint64_t)a3
+- (CLISuggest)initWithDistanceFunction:(unint64_t)function
 {
   v8.receiver = self;
   v8.super_class = CLISuggest;
@@ -30,29 +30,29 @@
     corpus = v4->_corpus;
     v4->_corpus = v5;
 
-    v4->_distanceFunction = a3;
+    v4->_distanceFunction = function;
   }
 
   return v4;
 }
 
-- (void)addCorpusWordsFromArray:(id)a3
+- (void)addCorpusWordsFromArray:(id)array
 {
-  v4 = [(NSSet *)self->_corpus setByAddingObjectsFromArray:a3];
+  v4 = [(NSSet *)self->_corpus setByAddingObjectsFromArray:array];
   corpus = self->_corpus;
   self->_corpus = v4;
 
   _objc_release_x1();
 }
 
-- (id)correctionForWord:(id)a3
+- (id)correctionForWord:(id)word
 {
-  v4 = a3;
+  wordCopy = word;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = self;
+  selfCopy = self;
   v5 = self->_corpus;
   v6 = [(NSSet *)v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
@@ -71,8 +71,8 @@
         }
 
         v12 = *(*(&v20 + 1) + 8 * i);
-        v13 = sub_100010E10(v19, v12, v4);
-        v14 = v13 - [v12 hasPrefix:v4];
+        v13 = sub_100010E10(selfCopy, v12, wordCopy);
+        v14 = v13 - [v12 hasPrefix:wordCopy];
         if (v14 >= v10)
         {
           if (v10 != v14)

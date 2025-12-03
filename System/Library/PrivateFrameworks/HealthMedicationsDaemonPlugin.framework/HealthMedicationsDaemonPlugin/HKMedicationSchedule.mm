@@ -1,6 +1,6 @@
 @interface HKMedicationSchedule
-+ (id)_codableArrayForMedicationScheduleIntervalDatas:(uint64_t)a1;
-+ (id)_medicationScheduleIntervalDataFromCodable:(uint64_t)a1;
++ (id)_codableArrayForMedicationScheduleIntervalDatas:(uint64_t)datas;
++ (id)_medicationScheduleIntervalDataFromCodable:(uint64_t)codable;
 @end
 
 @implementation HKMedicationSchedule
@@ -126,7 +126,7 @@ LABEL_12:
   return 1;
 }
 
-+ (id)_medicationScheduleIntervalDataFromCodable:(uint64_t)a1
++ (id)_medicationScheduleIntervalDataFromCodable:(uint64_t)codable
 {
   v2 = a2;
   objc_opt_self();
@@ -135,7 +135,7 @@ LABEL_12:
   return v3;
 }
 
-+ (id)_codableArrayForMedicationScheduleIntervalDatas:(uint64_t)a1
++ (id)_codableArrayForMedicationScheduleIntervalDatas:(uint64_t)datas
 {
   v2 = a2;
   objc_opt_self();

@@ -1,18 +1,18 @@
 @interface CKDSaveUserPrivacySettingsURLRequest
-- (CKDSaveUserPrivacySettingsURLRequest)initWithOperation:(id)a3;
+- (CKDSaveUserPrivacySettingsURLRequest)initWithOperation:(id)operation;
 - (id)generateRequestOperations;
 - (id)requestOperationClasses;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)setDiscoverable:(BOOL)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)setDiscoverable:(BOOL)discoverable;
 @end
 
 @implementation CKDSaveUserPrivacySettingsURLRequest
 
-- (CKDSaveUserPrivacySettingsURLRequest)initWithOperation:(id)a3
+- (CKDSaveUserPrivacySettingsURLRequest)initWithOperation:(id)operation
 {
   v4.receiver = self;
   v4.super_class = CKDSaveUserPrivacySettingsURLRequest;
-  result = [(CKDURLRequest *)&v4 initWithOperation:a3];
+  result = [(CKDURLRequest *)&v4 initWithOperation:operation];
   if (result)
   {
     result->_discoverableTrinary = -1;
@@ -21,19 +21,19 @@
   return result;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v12.receiver = self;
   v12.super_class = CKDSaveUserPrivacySettingsURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v12 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v12 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v5 = MEMORY[0x277CCABB0];
   v8 = objc_msgSend_discoverableTrinary(self, v6, v7, v12.receiver, v12.super_class);
   v10 = objc_msgSend_numberWithInteger_(v5, v9, v8);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v11, v10, @"discoverable");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v11, v10, @"discoverable");
 }
 
-- (void)setDiscoverable:(BOOL)a3
+- (void)setDiscoverable:(BOOL)discoverable
 {
   v4 = CKTernaryFromBOOL();
 

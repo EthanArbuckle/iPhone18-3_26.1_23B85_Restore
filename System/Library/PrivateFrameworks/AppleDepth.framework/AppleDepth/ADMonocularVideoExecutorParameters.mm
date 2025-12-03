@@ -1,18 +1,18 @@
 @interface ADMonocularVideoExecutorParameters
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 @end
 
 @implementation ADMonocularVideoExecutorParameters
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ADMonocularVideoExecutorParameters;
-  v5 = [(ADExecutorParameters *)&v9 initForDevice:v4];
+  v5 = [(ADExecutorParameters *)&v9 initForDevice:deviceCopy];
   if (v5)
   {
-    v6 = [(ADPipelineParameters *)[ADMonocularVideoPipelineParameters alloc] initForDevice:v4];
+    v6 = [(ADPipelineParameters *)[ADMonocularVideoPipelineParameters alloc] initForDevice:deviceCopy];
     v7 = v5[7];
     v5[7] = v6;
 

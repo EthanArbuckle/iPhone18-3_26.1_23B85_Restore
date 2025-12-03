@@ -1,71 +1,71 @@
 @interface VUISidebandMediaLibrary
 + (void)initialize;
-- (BOOL)_invalidateKeysForVideoManagedObject:(id)a3 saveWhenDone:(BOOL)a4 invalidateImmediately:(BOOL)a5;
-- (BOOL)_removeDownloadedMediaForVideoManagedObject:(id)a3 markAsDeleted:(BOOL)a4 saveWhenDone:(BOOL)a5 invalidateImmediately:(BOOL)a6;
-- (BOOL)hasDownloadingVideosWithSeasonCanonicalId:(id)a3;
-- (VUISidebandMediaLibrary)initWithManager:(id)a3;
+- (BOOL)_invalidateKeysForVideoManagedObject:(id)object saveWhenDone:(BOOL)done invalidateImmediately:(BOOL)immediately;
+- (BOOL)_removeDownloadedMediaForVideoManagedObject:(id)object markAsDeleted:(BOOL)deleted saveWhenDone:(BOOL)done invalidateImmediately:(BOOL)immediately;
+- (BOOL)hasDownloadingVideosWithSeasonCanonicalId:(id)id;
+- (VUISidebandMediaLibrary)initWithManager:(id)manager;
 - (id)_availableComingSoonVideos;
-- (id)_comingSoonVideoForCanonicalID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5;
+- (id)_comingSoonVideoForCanonicalID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
 - (id)_downloadedVideosForNonSignedInUsers;
-- (id)_imageLoadOperationWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5;
-- (id)_imageLoadParamsForImageLoaderObject:(id)a3;
-- (id)_mainContextManagedObjectsForObjects:(id)a3;
-- (id)_managedObjectWithEntityName:(id)a3 predicate:(id)a4 createIfNeeded:(BOOL)a5 wasCreated:(BOOL *)a6;
-- (id)_movieForAdamID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5;
-- (id)_objectsWithFetchRequest:(id)a3 usingMainThreadContext:(BOOL)a4;
-- (id)_tvEpisodeForAdamID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5;
-- (id)_tvSeasonForAdamID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5;
-- (id)_tvSeasonForCanonicalID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5;
-- (id)_tvSeriesForAdamID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5;
-- (id)_tvSeriesForCanonicalID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5;
+- (id)_imageLoadOperationWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit;
+- (id)_imageLoadParamsForImageLoaderObject:(id)object;
+- (id)_mainContextManagedObjectsForObjects:(id)objects;
+- (id)_managedObjectWithEntityName:(id)name predicate:(id)predicate createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
+- (id)_movieForAdamID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
+- (id)_objectsWithFetchRequest:(id)request usingMainThreadContext:(BOOL)context;
+- (id)_tvEpisodeForAdamID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
+- (id)_tvSeasonForAdamID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
+- (id)_tvSeasonForCanonicalID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
+- (id)_tvSeriesForAdamID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
+- (id)_tvSeriesForCanonicalID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
 - (id)_videosMarkedAsDeleted;
-- (id)_videosWithDownloadStates:(id)a3 downloadTrigger:(int64_t)a4 shouldDeleteAfterCompletion:(id)a5 useMainThreadContext:(BOOL)a6;
+- (id)_videosWithDownloadStates:(id)states downloadTrigger:(int64_t)trigger shouldDeleteAfterCompletion:(id)completion useMainThreadContext:(BOOL)context;
 - (id)allFpsKeyDeletionInfos;
-- (id)comingSoonObjectWithCanonicalID:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)enqueueFetchRequests:(id)a3 completionHandler:(id)a4;
-- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)a3;
-- (id)episodesWithDownloadStates:(id)a3 seasonCanonicalId:(id)a4 usingMainThreadContext:(BOOL)a5;
-- (id)episodesWithDownloadStates:(id)a3 showCanonicalId:(id)a4 usingMainThreadContext:(BOOL)a5;
-- (id)episodesWithSeasonCanonicalIds:(id)a3 usingMainThreadContext:(BOOL)a4;
-- (id)existingFpsKeyInfoForKeyURI:(id)a3;
-- (id)fpsKeyInfoForVideo:(id)a3 keyURI:(id)a4 createIfNeeded:(BOOL)a5 wasCreated:(BOOL *)a6;
-- (id)imageInfoForSeries:(id)a3 imageType:(unint64_t)a4 createIfNeeded:(BOOL)a5 wasCreated:(BOOL *)a6;
-- (id)imageInfoForVideo:(id)a3 imageType:(unint64_t)a4 createIfNeeded:(BOOL)a5 wasCreated:(BOOL *)a6;
-- (id)mainContextVideoForVideo:(id)a3;
-- (id)performFetch:(id)a3;
-- (id)saveMediaEntity:(id)a3 completionHandler:(id)a4;
-- (id)seasonForCanonicalIDOrAdamID:(id)a3 createIfNeeded:(BOOL)a4;
-- (id)seriesForCanonicalIDOrAdamID:(id)a3;
+- (id)comingSoonObjectWithCanonicalID:(id)d createIfNeeded:(BOOL)needed;
+- (id)enqueueFetchRequests:(id)requests completionHandler:(id)handler;
+- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)handler;
+- (id)episodesWithDownloadStates:(id)states seasonCanonicalId:(id)id usingMainThreadContext:(BOOL)context;
+- (id)episodesWithDownloadStates:(id)states showCanonicalId:(id)id usingMainThreadContext:(BOOL)context;
+- (id)episodesWithSeasonCanonicalIds:(id)ids usingMainThreadContext:(BOOL)context;
+- (id)existingFpsKeyInfoForKeyURI:(id)i;
+- (id)fpsKeyInfoForVideo:(id)video keyURI:(id)i createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
+- (id)imageInfoForSeries:(id)series imageType:(unint64_t)type createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
+- (id)imageInfoForVideo:(id)video imageType:(unint64_t)type createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created;
+- (id)mainContextVideoForVideo:(id)video;
+- (id)performFetch:(id)fetch;
+- (id)saveMediaEntity:(id)entity completionHandler:(id)handler;
+- (id)seasonForCanonicalIDOrAdamID:(id)d createIfNeeded:(BOOL)needed;
+- (id)seriesForCanonicalIDOrAdamID:(id)d;
 - (id)title;
-- (id)videoForAdamID:(id)a3 useMainThreadContext:(BOOL)a4;
-- (id)videoForMPMediaItem:(id)a3;
-- (id)videoForPlayable:(id)a3;
-- (id)videosForAdamIDs:(id)a3 useMainThreadContext:(BOOL)a4;
-- (id)videosWithDownloadState:(int64_t)a3 entitlementTypes:(id)a4 sortDescriptors:(id)a5 useMainThreadContext:(BOOL)a6;
-- (id)videosWithDownloadStates:(id)a3 downloadTrigger:(int64_t)a4 shouldDeleteAfterCompletion:(BOOL)a5 useMainThreadContext:(BOOL)a6;
-- (id)videosWithDownloadStates:(id)a3 entitlementTypes:(id)a4 sortDescriptors:(id)a5 useMainThreadContext:(BOOL)a6;
-- (id)videosWithExpiredDownloadsUsingMainThreadContext:(BOOL)a3;
-- (unint64_t)_countForFetchRequest:(id)a3 usingMainThreadContext:(BOOL)a4;
-- (unint64_t)countOfComingSoonVideosWithSeasonCanonicalId:(id)a3;
-- (unint64_t)countOfComingSoonVideosWithShowCanonicalId:(id)a3;
+- (id)videoForAdamID:(id)d useMainThreadContext:(BOOL)context;
+- (id)videoForMPMediaItem:(id)item;
+- (id)videoForPlayable:(id)playable;
+- (id)videosForAdamIDs:(id)ds useMainThreadContext:(BOOL)context;
+- (id)videosWithDownloadState:(int64_t)state entitlementTypes:(id)types sortDescriptors:(id)descriptors useMainThreadContext:(BOOL)context;
+- (id)videosWithDownloadStates:(id)states downloadTrigger:(int64_t)trigger shouldDeleteAfterCompletion:(BOOL)completion useMainThreadContext:(BOOL)context;
+- (id)videosWithDownloadStates:(id)states entitlementTypes:(id)types sortDescriptors:(id)descriptors useMainThreadContext:(BOOL)context;
+- (id)videosWithExpiredDownloadsUsingMainThreadContext:(BOOL)context;
+- (unint64_t)_countForFetchRequest:(id)request usingMainThreadContext:(BOOL)context;
+- (unint64_t)countOfComingSoonVideosWithSeasonCanonicalId:(id)id;
+- (unint64_t)countOfComingSoonVideosWithShowCanonicalId:(id)id;
 - (unint64_t)countOfDownloadedOrDownloadingOrEnqueuedSubscriptionVideosForNonMainQueue;
-- (unint64_t)countOfDownloadedOrDownloadingVideosWithSeasonCanonicalId:(id)a3;
-- (unint64_t)countOfDownloadedVideosWithSeasonCanonicalId:(id)a3;
-- (void)_activeAccountDidChange:(id)a3;
-- (void)_deleteComingSoonVideoManagedObjects:(id)a3;
+- (unint64_t)countOfDownloadedOrDownloadingVideosWithSeasonCanonicalId:(id)id;
+- (unint64_t)countOfDownloadedVideosWithSeasonCanonicalId:(id)id;
+- (void)_activeAccountDidChange:(id)change;
+- (void)_deleteComingSoonVideoManagedObjects:(id)objects;
 - (void)_deleteOrphanedDownloads;
-- (void)_deleteVideoManagedObjects:(id)a3;
-- (void)_mainQueueManagedObjectContextDidSave:(id)a3;
+- (void)_deleteVideoManagedObjects:(id)objects;
+- (void)_mainQueueManagedObjectContextDidSave:(id)save;
 - (void)_migrateVideoExpirationDateAndAllowsManualRenewal;
-- (void)_pruneVideosAtAppLaunchWithCompletion:(id)a3;
+- (void)_pruneVideosAtAppLaunchWithCompletion:(id)completion;
 - (void)_removeDownloadsForNonSignedInUsers;
 - (void)dealloc;
-- (void)deleteFPSKeyDeletionInfo:(id)a3;
-- (void)deleteFPSKeyDeletionInfos:(id)a3;
-- (void)invalidateKeysForVideoManagedObject:(id)a3;
-- (void)invalidateKeysForVideoManagedObjects:(id)a3;
-- (void)removeDownloadedMediaForVideoManagedObject:(id)a3 markAsDeleted:(BOOL)a4 invalidateImmediately:(BOOL)a5;
-- (void)removeDownloadedMediaForVideoManagedObjects:(id)a3 markAsDeleted:(BOOL)a4 invalidateImmediately:(BOOL)a5;
+- (void)deleteFPSKeyDeletionInfo:(id)info;
+- (void)deleteFPSKeyDeletionInfos:(id)infos;
+- (void)invalidateKeysForVideoManagedObject:(id)object;
+- (void)invalidateKeysForVideoManagedObjects:(id)objects;
+- (void)removeDownloadedMediaForVideoManagedObject:(id)object markAsDeleted:(BOOL)deleted invalidateImmediately:(BOOL)immediately;
+- (void)removeDownloadedMediaForVideoManagedObjects:(id)objects markAsDeleted:(BOOL)deleted invalidateImmediately:(BOOL)immediately;
 - (void)saveChangesToManagedObjects;
 @end
 
@@ -96,15 +96,15 @@ void __37__VUISidebandMediaLibrary_initialize__block_invoke()
   v45 = __Block_byref_object_copy__1;
   v46 = __Block_byref_object_dispose__1;
   v47 = 0;
-  v3 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__VUISidebandMediaLibrary__migrateVideoExpirationDateAndAllowsManualRenewal__block_invoke;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v42;
-  v23 = self;
-  dispatch_sync(v3, block);
+  selfCopy = self;
+  dispatch_sync(serialQueue, block);
 
   [v43[5] executeFetchRequest:v24 error:0];
   v39 = 0u;
@@ -133,8 +133,8 @@ void __37__VUISidebandMediaLibrary_initialize__block_invoke()
           v36 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v7 = [(__CFString *)v6 fpsKeyInfo];
-          v8 = [v7 countByEnumeratingWithState:&v33 objects:v53 count:16];
+          fpsKeyInfo = [(__CFString *)v6 fpsKeyInfo];
+          v8 = [fpsKeyInfo countByEnumeratingWithState:&v33 objects:v53 count:16];
           if (v8)
           {
             v9 = *v34;
@@ -144,11 +144,11 @@ void __37__VUISidebandMediaLibrary_initialize__block_invoke()
               {
                 if (*v34 != v9)
                 {
-                  objc_enumerationMutation(v7);
+                  objc_enumerationMutation(fpsKeyInfo);
                 }
 
-                v11 = [*(*(&v33 + 1) + 8 * j) expirationDate];
-                v12 = v11 == 0;
+                expirationDate = [*(*(&v33 + 1) + 8 * j) expirationDate];
+                v12 = expirationDate == 0;
 
                 if (!v12)
                 {
@@ -166,7 +166,7 @@ void __37__VUISidebandMediaLibrary_initialize__block_invoke()
                 }
               }
 
-              v8 = [v7 countByEnumeratingWithState:&v33 objects:v53 count:16];
+              v8 = [fpsKeyInfo countByEnumeratingWithState:&v33 objects:v53 count:16];
               if (v8)
               {
                 continue;
@@ -183,8 +183,8 @@ LABEL_19:
         v32 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v14 = [(__CFString *)v6 fpsKeyInfo];
-        v15 = [v14 countByEnumeratingWithState:&v29 objects:v52 count:16];
+        fpsKeyInfo2 = [(__CFString *)v6 fpsKeyInfo];
+        v15 = [fpsKeyInfo2 countByEnumeratingWithState:&v29 objects:v52 count:16];
         if (v15)
         {
           v16 = *v30;
@@ -194,20 +194,20 @@ LABEL_19:
             {
               if (*v30 != v16)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(fpsKeyInfo2);
               }
 
               v18 = *(*(&v29 + 1) + 8 * k);
-              v19 = [(__CFString *)v6 allowsManualRenewal];
-              if (v19 != [v18 allowsManualRenewal])
+              allowsManualRenewal = [(__CFString *)v6 allowsManualRenewal];
+              if (allowsManualRenewal != [v18 allowsManualRenewal])
               {
                 v20 = sLogObject_2;
                 if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
                 {
-                  v21 = [v18 allowsManualRenewal];
+                  allowsManualRenewal2 = [v18 allowsManualRenewal];
                   *buf = 138412546;
                   v22 = @"NO";
-                  if (v21)
+                  if (allowsManualRenewal2)
                   {
                     v22 = @"YES";
                   }
@@ -223,7 +223,7 @@ LABEL_19:
               }
             }
 
-            v15 = [v14 countByEnumeratingWithState:&v29 objects:v52 count:16];
+            v15 = [fpsKeyInfo2 countByEnumeratingWithState:&v29 objects:v52 count:16];
           }
 
           while (v15);
@@ -237,7 +237,7 @@ LABEL_19:
 
     if (v5)
     {
-      [(VUISidebandMediaLibrary *)v23 saveChangesToManagedObjects];
+      [(VUISidebandMediaLibrary *)selfCopy saveChangesToManagedObjects];
     }
   }
 
@@ -268,14 +268,14 @@ void __76__VUISidebandMediaLibrary__migrateVideoExpirationDateAndAllowsManualRen
   v13 = __Block_byref_object_dispose__1;
   v14 = 0;
   [v3 setPredicate:v4];
-  v5 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __49__VUISidebandMediaLibrary__videosMarkedAsDeleted__block_invoke;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v9;
-  dispatch_sync(v5, block);
+  dispatch_sync(serialQueue, block);
 
   v6 = [v10[5] executeFetchRequest:v3 error:0];
   _Block_object_dispose(&v9, 8);
@@ -309,8 +309,8 @@ void __49__VUISidebandMediaLibrary__videosMarkedAsDeleted__block_invoke(uint64_t
 
   else
   {
-    v5 = [MEMORY[0x1E69D5920] activeAccount];
-    v6 = [v5 ams_DSID];
+    activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+    ams_DSID = [activeAccount ams_DSID];
 
     v7 = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:@"Video"];
     *buf = 0;
@@ -321,12 +321,12 @@ void __49__VUISidebandMediaLibrary__videosMarkedAsDeleted__block_invoke(uint64_t
     v21 = 0;
     v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %ld", @"downloadState", 2];
     v9 = v8;
-    if (v6)
+    if (ams_DSID)
     {
       v9 = v8;
-      if (([v6 isEqualToNumber:&unk_1F5E5CD38] & 1) == 0)
+      if (([ams_DSID isEqualToNumber:&unk_1F5E5CD38] & 1) == 0)
       {
-        v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %@", @"dsid", v6];
+        v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K != %@", @"dsid", ams_DSID];
         v11 = MEMORY[0x1E696AB28];
         v22[0] = v8;
         v22[1] = v10;
@@ -336,14 +336,14 @@ void __49__VUISidebandMediaLibrary__videosMarkedAsDeleted__block_invoke(uint64_t
     }
 
     [v7 setPredicate:v9];
-    v13 = [(VUISidebandMediaLibrary *)self serialQueue];
+    serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __63__VUISidebandMediaLibrary__downloadedVideosForNonSignedInUsers__block_invoke;
     block[3] = &unk_1E872E5B0;
     block[4] = self;
     block[5] = buf;
-    dispatch_sync(v13, block);
+    dispatch_sync(serialQueue, block);
 
     v4 = [*(v17 + 5) executeFetchRequest:v7 error:0];
 
@@ -365,8 +365,8 @@ void __63__VUISidebandMediaLibrary__downloadedVideosForNonSignedInUsers__block_i
 - (id)_availableComingSoonVideos
 {
   v3 = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:@"ComingSoonVideo"];
-  v4 = [MEMORY[0x1E695DF00] date];
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K < %@", @"availabilityStartDate", v4];
+  date = [MEMORY[0x1E695DF00] date];
+  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K < %@", @"availabilityStartDate", date];
   [v3 setPredicate:v5];
   v10 = 0;
   v11 = &v10;
@@ -374,14 +374,14 @@ void __63__VUISidebandMediaLibrary__downloadedVideosForNonSignedInUsers__block_i
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
   v15 = 0;
-  v6 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__VUISidebandMediaLibrary__availableComingSoonVideos__block_invoke;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v10;
-  dispatch_sync(v6, block);
+  dispatch_sync(serialQueue, block);
 
   v7 = [v11[5] executeFetchRequest:v3 error:0];
   _Block_object_dispose(&v10, 8);
@@ -407,7 +407,7 @@ void __53__VUISidebandMediaLibrary__availableComingSoonVideos__block_invoke(uint
   v6[2] = __51__VUISidebandMediaLibrary__deleteOrphanedDownloads__block_invoke;
   v6[3] = &unk_1E872D990;
   v7 = v3;
-  v8 = self;
+  selfCopy = self;
   v5 = v3;
   dispatch_async(v4, v6);
 }
@@ -421,14 +421,14 @@ void __53__VUISidebandMediaLibrary__availableComingSoonVideos__block_invoke(uint
   v11 = __Block_byref_object_copy__1;
   v12 = __Block_byref_object_dispose__1;
   v13 = 0;
-  v4 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__VUISidebandMediaLibrary_allFpsKeyDeletionInfos__block_invoke;
   v7[3] = &unk_1E872E5B0;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(serialQueue, v7);
 
   v5 = [v9[5] executeFetchRequest:v3 error:0];
   _Block_object_dispose(&v8, 8);
@@ -754,14 +754,14 @@ void __51__VUISidebandMediaLibrary__deleteOrphanedDownloads__block_invoke_263(ui
   }
 }
 
-- (VUISidebandMediaLibrary)initWithManager:(id)a3
+- (VUISidebandMediaLibrary)initWithManager:(id)manager
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(VUISidebandLibraryIdentifier);
   v22.receiver = self;
   v22.super_class = VUISidebandMediaLibrary;
-  v6 = [(VUIMediaLibrary *)&v22 initWithIdentifier:v5 type:0 manager:v4];
+  v6 = [(VUIMediaLibrary *)&v22 initWithIdentifier:v5 type:0 manager:managerCopy];
   if (v6)
   {
     v7 = dispatch_queue_create("Sideband media library serial queue", 0);
@@ -778,8 +778,8 @@ void __51__VUISidebandMediaLibrary__deleteOrphanedDownloads__block_invoke_263(ui
     }
 
     objc_initWeak(&location, v6);
-    v11 = [(NSPersistentContainer *)v6->_persistentContainer persistentStoreDescriptions];
-    v12 = [v11 count] == 0;
+    persistentStoreDescriptions = [(NSPersistentContainer *)v6->_persistentContainer persistentStoreDescriptions];
+    v12 = [persistentStoreDescriptions count] == 0;
 
     v13 = sLogObject_2;
     if (v12)
@@ -926,60 +926,60 @@ void __43__VUISidebandMediaLibrary_initWithManager___block_invoke_65(uint64_t a1
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = VUISidebandMediaLibrary;
   [(VUIMediaLibraryImageLoader *)&v4 dealloc];
 }
 
-- (id)videoForPlayable:(id)a3
+- (id)videoForPlayable:(id)playable
 {
   v154 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 adamID];
-  v6 = [v4 playbackURL];
-  if (v5 && [v5 length] && v6)
+  playableCopy = playable;
+  adamID = [playableCopy adamID];
+  playbackURL = [playableCopy playbackURL];
+  if (adamID && [adamID length] && playbackURL)
   {
-    v7 = [v4 canonicalID];
-    v8 = [v4 mediaType];
+    canonicalID = [playableCopy canonicalID];
+    mediaType = [playableCopy mediaType];
     v151 = 0;
-    v9 = [v4 downloadURL];
-    v10 = [VUIMediaInfo playbackURLOverrideForOriginalURL:v6 adamID:v5 canonicalID:v7];
+    downloadURL = [playableCopy downloadURL];
+    v10 = [VUIMediaInfo playbackURLOverrideForOriginalURL:playbackURL adamID:adamID canonicalID:canonicalID];
     v139 = v10;
     if (v10)
     {
       v11 = v10;
 
-      v6 = v11;
-      v9 = v6;
+      playbackURL = v11;
+      downloadURL = playbackURL;
     }
 
-    v141 = v7;
-    v142 = v6;
-    v143 = v9;
-    v144 = self;
-    v140 = v8;
-    if ([v8 isEqualToString:@"Movie"])
+    v141 = canonicalID;
+    v142 = playbackURL;
+    v143 = downloadURL;
+    selfCopy = self;
+    v140 = mediaType;
+    if ([mediaType isEqualToString:@"Movie"])
     {
-      v12 = [(VUISidebandMediaLibrary *)self _movieForAdamID:v5 createIfNeeded:1 wasCreated:&v151];
+      v12 = [(VUISidebandMediaLibrary *)self _movieForAdamID:adamID createIfNeeded:1 wasCreated:&v151];
       [v12 setCoverArtHasBeenUpdated:1];
       goto LABEL_59;
     }
 
-    if (![v8 isEqualToString:@"Episode"])
+    if (![mediaType isEqualToString:@"Episode"])
     {
       v12 = 0;
       goto LABEL_59;
     }
 
-    v13 = [v4 showCanonicalID];
-    v14 = [v4 seasonCanonicalID];
-    v15 = [v4 showAdamID];
-    v135 = [v4 seasonAdamID];
-    v137 = v15;
-    if (![v13 length] && !objc_msgSend(v15, "length"))
+    showCanonicalID = [playableCopy showCanonicalID];
+    seasonCanonicalID = [playableCopy seasonCanonicalID];
+    showAdamID = [playableCopy showAdamID];
+    seasonAdamID = [playableCopy seasonAdamID];
+    v137 = showAdamID;
+    if (![showCanonicalID length] && !objc_msgSend(showAdamID, "length"))
     {
       if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_ERROR))
       {
@@ -991,19 +991,19 @@ void __43__VUISidebandMediaLibrary_initWithManager___block_invoke_65(uint64_t a1
     }
 
     v150 = 0;
-    v16 = [(VUISidebandMediaLibrary *)self _tvEpisodeForAdamID:v5 createIfNeeded:1 wasCreated:&v151];
-    if (![v13 length] || (-[VUISidebandMediaLibrary _tvSeriesForCanonicalID:createIfNeeded:wasCreated:](self, "_tvSeriesForCanonicalID:createIfNeeded:wasCreated:", v13, 0, 0), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+    v16 = [(VUISidebandMediaLibrary *)self _tvEpisodeForAdamID:adamID createIfNeeded:1 wasCreated:&v151];
+    if (![showCanonicalID length] || (-[VUISidebandMediaLibrary _tvSeriesForCanonicalID:createIfNeeded:wasCreated:](self, "_tvSeriesForCanonicalID:createIfNeeded:wasCreated:", showCanonicalID, 0, 0), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      if (![v15 length] || (-[VUISidebandMediaLibrary _tvSeriesForAdamID:createIfNeeded:wasCreated:](self, "_tvSeriesForAdamID:createIfNeeded:wasCreated:", v15, 0, 0), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (![showAdamID length] || (-[VUISidebandMediaLibrary _tvSeriesForAdamID:createIfNeeded:wasCreated:](self, "_tvSeriesForAdamID:createIfNeeded:wasCreated:", showAdamID, 0, 0), (v17 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        if ([v13 length])
+        if ([showCanonicalID length])
         {
-          [(VUISidebandMediaLibrary *)self _tvSeriesForCanonicalID:v13 createIfNeeded:1 wasCreated:&v150];
+          [(VUISidebandMediaLibrary *)self _tvSeriesForCanonicalID:showCanonicalID createIfNeeded:1 wasCreated:&v150];
         }
 
         else
         {
-          [(VUISidebandMediaLibrary *)self _tvSeriesForAdamID:v15 createIfNeeded:1 wasCreated:&v150];
+          [(VUISidebandMediaLibrary *)self _tvSeriesForAdamID:showAdamID createIfNeeded:1 wasCreated:&v150];
         }
         v17 = ;
       }
@@ -1039,45 +1039,45 @@ void __43__VUISidebandMediaLibrary_initWithManager___block_invoke_65(uint64_t a1
     _os_log_impl(&dword_1E323F000, v20, OS_LOG_TYPE_DEFAULT, v22, buf, 2u);
 LABEL_32:
 
-    v23 = [v4 metadata];
-    v24 = [v23 episodeNumber];
-    [v12 setEpisodeNumberInSeason:v24];
+    metadata = [playableCopy metadata];
+    episodeNumber = [metadata episodeNumber];
+    [v12 setEpisodeNumberInSeason:episodeNumber];
 
-    v25 = [v4 metadata];
-    v26 = [v25 fractionalEpisodeNumber];
-    [v12 setFractionalEpisodeNumberInSeason:v26];
+    metadata2 = [playableCopy metadata];
+    fractionalEpisodeNumber = [metadata2 fractionalEpisodeNumber];
+    [v12 setFractionalEpisodeNumberInSeason:fractionalEpisodeNumber];
 
-    v27 = [v4 metadata];
-    v28 = [v27 episodeIndexInSeries];
-    [v12 setEpisodeNumberInSeries:v28];
+    metadata3 = [playableCopy metadata];
+    episodeIndexInSeries = [metadata3 episodeIndexInSeries];
+    [v12 setEpisodeNumberInSeries:episodeIndexInSeries];
 
-    [v18 setCanonicalID:v13];
+    [v18 setCanonicalID:showCanonicalID];
     [v18 setAdamID:v137];
-    v29 = [v4 metadata];
-    v30 = [v29 showTitle];
-    [v18 setTitle:v30];
+    metadata4 = [playableCopy metadata];
+    showTitle = [metadata4 showTitle];
+    [v18 setTitle:showTitle];
 
     [v18 setCoverArtHasBeenUpdated:1];
     [v18 addEpisodesObject:v12];
-    v31 = [v4 metadata];
-    v32 = [v31 showArtworkURLFormat];
+    metadata5 = [playableCopy metadata];
+    showArtworkURLFormat = [metadata5 showArtworkURLFormat];
 
-    v33 = [v4 metadata];
-    v133 = [v33 showArtworkWidth];
+    metadata6 = [playableCopy metadata];
+    showArtworkWidth = [metadata6 showArtworkWidth];
 
-    v34 = [v4 metadata];
-    v131 = [v34 showArtworkHeight];
+    metadata7 = [playableCopy metadata];
+    showArtworkHeight = [metadata7 showArtworkHeight];
 
     if (v18)
     {
-      if ([v32 length] && (objc_msgSend(v133, "doubleValue"), v35 > 0.0) && (objc_msgSend(v131, "doubleValue"), v36 > 0.0))
+      if ([showArtworkURLFormat length] && (objc_msgSend(showArtworkWidth, "doubleValue"), v35 > 0.0) && (objc_msgSend(showArtworkHeight, "doubleValue"), v36 > 0.0))
       {
-        v37 = [(VUISidebandMediaLibrary *)v144 imageInfoForSeries:v18 imageType:0 createIfNeeded:1 wasCreated:0];
+        v37 = [(VUISidebandMediaLibrary *)selfCopy imageInfoForSeries:v18 imageType:0 createIfNeeded:1 wasCreated:0];
         [v37 setImageType:0];
-        [v37 setUrlFormat:v32];
-        [v133 doubleValue];
+        [v37 setUrlFormat:showArtworkURLFormat];
+        [showArtworkWidth doubleValue];
         [v37 setCanonicalWidth:?];
-        [v131 doubleValue];
+        [showArtworkHeight doubleValue];
         [v37 setCanonicalHeight:?];
         [v37 setSeries:v18];
       }
@@ -1092,25 +1092,25 @@ LABEL_32:
       }
     }
 
-    v15 = v137;
-    if (![v14 length] && !objc_msgSend(v135, "length"))
+    showAdamID = v137;
+    if (![seasonCanonicalID length] && !objc_msgSend(seasonAdamID, "length"))
     {
       goto LABEL_57;
     }
 
     v149 = 0;
-    if (![v14 length] || (-[VUISidebandMediaLibrary _tvSeasonForCanonicalID:createIfNeeded:wasCreated:](v144, "_tvSeasonForCanonicalID:createIfNeeded:wasCreated:", v14, 0, 0), (v38 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (![seasonCanonicalID length] || (-[VUISidebandMediaLibrary _tvSeasonForCanonicalID:createIfNeeded:wasCreated:](selfCopy, "_tvSeasonForCanonicalID:createIfNeeded:wasCreated:", seasonCanonicalID, 0, 0), (v38 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      if (![v135 length] || (-[VUISidebandMediaLibrary _tvSeasonForAdamID:createIfNeeded:wasCreated:](v144, "_tvSeasonForAdamID:createIfNeeded:wasCreated:", v135, 0, 0), (v38 = objc_claimAutoreleasedReturnValue()) == 0))
+      if (![seasonAdamID length] || (-[VUISidebandMediaLibrary _tvSeasonForAdamID:createIfNeeded:wasCreated:](selfCopy, "_tvSeasonForAdamID:createIfNeeded:wasCreated:", seasonAdamID, 0, 0), (v38 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        if ([v14 length])
+        if ([seasonCanonicalID length])
         {
-          [(VUISidebandMediaLibrary *)v144 _tvSeasonForCanonicalID:v14 createIfNeeded:1 wasCreated:&v149];
+          [(VUISidebandMediaLibrary *)selfCopy _tvSeasonForCanonicalID:seasonCanonicalID createIfNeeded:1 wasCreated:&v149];
         }
 
         else
         {
-          [(VUISidebandMediaLibrary *)v144 _tvSeasonForAdamID:v135 createIfNeeded:1 wasCreated:&v149];
+          [(VUISidebandMediaLibrary *)selfCopy _tvSeasonForAdamID:seasonAdamID createIfNeeded:1 wasCreated:&v149];
         }
         v38 = ;
       }
@@ -1122,7 +1122,7 @@ LABEL_32:
     v42 = os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
     if (v40 == 1)
     {
-      v43 = v135;
+      v43 = seasonAdamID;
       if (v42)
       {
         *buf = 0;
@@ -1134,7 +1134,7 @@ LABEL_55:
 
     else
     {
-      v43 = v135;
+      v43 = seasonAdamID;
       if (v42)
       {
         *buf = 0;
@@ -1143,145 +1143,145 @@ LABEL_55:
       }
     }
 
-    [v39 setCanonicalID:v14];
+    [v39 setCanonicalID:seasonCanonicalID];
     [v39 setAdamID:v43];
-    v45 = [v4 metadata];
-    v46 = [v45 seasonNumber];
-    [v39 setSeasonNumber:v46];
+    metadata8 = [playableCopy metadata];
+    seasonNumber = [metadata8 seasonNumber];
+    [v39 setSeasonNumber:seasonNumber];
 
-    v47 = [v4 metadata];
-    v48 = [v47 seasonTitle];
-    [v39 setTitle:v48];
+    metadata9 = [playableCopy metadata];
+    seasonTitle = [metadata9 seasonTitle];
+    [v39 setTitle:seasonTitle];
 
     [v18 addSeasonsObject:v39];
     [v12 setSeason:v39];
 
-    v15 = v137;
+    showAdamID = v137;
 LABEL_57:
 
-    v7 = v141;
-    v6 = v142;
-    v9 = v143;
+    canonicalID = v141;
+    playbackURL = v142;
+    downloadURL = v143;
 LABEL_58:
 
 LABEL_59:
-    [v12 setCanonicalID:v7];
-    v49 = [v4 fpsCertificateURL];
-    [v12 setFpsCertificateURL:v49];
+    [v12 setCanonicalID:canonicalID];
+    fpsCertificateURL = [playableCopy fpsCertificateURL];
+    [v12 setFpsCertificateURL:fpsCertificateURL];
 
-    v50 = [v4 fpsKeyServerURL];
-    [v12 setFpsKeyServerURL:v50];
+    fpsKeyServerURL = [playableCopy fpsKeyServerURL];
+    [v12 setFpsKeyServerURL:fpsKeyServerURL];
 
-    v51 = [v4 fpsNonceURL];
-    [v12 setFpsNonceURL:v51];
+    fpsNonceURL = [playableCopy fpsNonceURL];
+    [v12 setFpsNonceURL:fpsNonceURL];
 
-    [v12 setPlaybackURL:v6];
-    [v12 setDownloadURL:v9];
-    v52 = [v4 metadata];
-    v53 = [v52 title];
-    [v12 setTitle:v53];
+    [v12 setPlaybackURL:playbackURL];
+    [v12 setDownloadURL:downloadURL];
+    metadata10 = [playableCopy metadata];
+    title = [metadata10 title];
+    [v12 setTitle:title];
 
-    v54 = [v4 metadata];
-    v55 = [v54 mediaDescription];
-    [v12 setMediaDescription:v55];
+    metadata11 = [playableCopy metadata];
+    mediaDescription = [metadata11 mediaDescription];
+    [v12 setMediaDescription:mediaDescription];
 
-    [v12 setAdamID:v5];
-    v56 = [v4 externalID];
-    [v12 setExternalID:v56];
+    [v12 setAdamID:adamID];
+    externalID = [playableCopy externalID];
+    [v12 setExternalID:externalID];
 
-    v57 = [v4 channelID];
-    [v12 setBrandID:v57];
+    channelID = [playableCopy channelID];
+    [v12 setBrandID:channelID];
 
-    v58 = [v4 channelName];
-    [v12 setBrandName:v58];
+    channelName = [playableCopy channelName];
+    [v12 setBrandName:channelName];
 
-    v59 = [v4 metadata];
-    v60 = [v59 ratingValue];
-    [v12 setContentRatingRank:v60];
+    metadata12 = [playableCopy metadata];
+    ratingValue = [metadata12 ratingValue];
+    [v12 setContentRatingRank:ratingValue];
 
-    v61 = [v4 metadata];
-    v62 = [v61 ratingDomain];
-    [v12 setContentRatingDomain:v62];
+    metadata13 = [playableCopy metadata];
+    ratingDomain = [metadata13 ratingDomain];
+    [v12 setContentRatingDomain:ratingDomain];
 
-    v63 = [v4 metadata];
-    v64 = [v63 duration];
-    [v12 setDuration:v64];
+    metadata14 = [playableCopy metadata];
+    duration = [metadata14 duration];
+    [v12 setDuration:duration];
 
-    v65 = [v4 referenceID];
-    [v12 setReferenceID:v65];
+    referenceID = [playableCopy referenceID];
+    [v12 setReferenceID:referenceID];
 
-    v66 = [v4 playablePassThrough];
-    [v12 setPlayablePassThrough:v66];
+    playablePassThrough = [playableCopy playablePassThrough];
+    [v12 setPlayablePassThrough:playablePassThrough];
 
-    v67 = [v4 hlsProgramID];
-    [v12 setProgramID:v67];
+    hlsProgramID = [playableCopy hlsProgramID];
+    [v12 setProgramID:hlsProgramID];
 
-    v68 = [v4 metadata];
-    v69 = [v68 genre];
-    v70 = [v69 length];
+    metadata15 = [playableCopy metadata];
+    genre = [metadata15 genre];
+    v70 = [genre length];
 
-    v71 = [v4 metadata];
-    v72 = v71;
+    metadata16 = [playableCopy metadata];
+    v72 = metadata16;
     if (v70)
     {
-      [v71 genre];
+      [metadata16 genre];
     }
 
     else
     {
-      [v71 sportName];
+      [metadata16 sportName];
     }
     v73 = ;
     [v12 setGenreName:v73];
 
-    v74 = [v4 metadata];
-    v75 = [v74 type];
-    [v12 setIsSportingEvent:{objc_msgSend(v75, "isEqualToString:", @"SportingEvent"}];
+    metadata17 = [playableCopy metadata];
+    type = [metadata17 type];
+    [v12 setIsSportingEvent:{objc_msgSend(type, "isEqualToString:", @"SportingEvent"}];
 
-    v76 = [v4 metadata];
-    v77 = [v76 releasedDate];
-    [v12 setReleaseDate:v77];
+    metadata18 = [playableCopy metadata];
+    releasedDate = [metadata18 releasedDate];
+    [v12 setReleaseDate:releasedDate];
 
-    v78 = [v4 metadata];
-    [v12 setIsAdultContent:{objc_msgSend(v78, "isAdultContent")}];
+    metadata19 = [playableCopy metadata];
+    [v12 setIsAdultContent:{objc_msgSend(metadata19, "isAdultContent")}];
 
-    v79 = [MEMORY[0x1E69D5920] activeAccount];
-    v80 = [v79 ams_DSID];
-    [v12 setDsid:v80];
+    activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+    ams_DSID = [activeAccount ams_DSID];
+    [v12 setDsid:ams_DSID];
 
-    v81 = [v4 requiredAgeForPlayback];
-    [v12 setRequiredAgeForPlayback:v81];
+    requiredAgeForPlayback = [playableCopy requiredAgeForPlayback];
+    [v12 setRequiredAgeForPlayback:requiredAgeForPlayback];
 
-    v82 = [v4 frequencyOfAgeConfirmation];
-    [v12 setFrequencyOfAgeConfirmation:v82];
+    frequencyOfAgeConfirmation = [playableCopy frequencyOfAgeConfirmation];
+    [v12 setFrequencyOfAgeConfirmation:frequencyOfAgeConfirmation];
 
-    v83 = [v4 rtcServiceIdentifier];
-    [v12 setRtcServiceIdentifier:v83];
+    rtcServiceIdentifier = [playableCopy rtcServiceIdentifier];
+    [v12 setRtcServiceIdentifier:rtcServiceIdentifier];
 
     [v12 setMarkedAsDeleted:0];
-    v84 = [v4 tvAppDeeplinkURL];
-    [v12 setShareURL:v84];
+    tvAppDeeplinkURL = [playableCopy tvAppDeeplinkURL];
+    [v12 setShareURL:tvAppDeeplinkURL];
 
-    v85 = [v4 buyParams];
-    [v12 setBuyParams:v85];
+    buyParams = [playableCopy buyParams];
+    [v12 setBuyParams:buyParams];
 
-    v86 = [v4 rentalID];
-    [v12 setRentalID:v86];
+    rentalID = [playableCopy rentalID];
+    [v12 setRentalID:rentalID];
 
     [v12 setDownloadedPlaybackMode:0];
-    if ([v4 isSubscription])
+    if ([playableCopy isSubscription])
     {
       v87 = 1;
     }
 
-    else if ([v4 isiTunesPurchaseOrRental])
+    else if ([playableCopy isiTunesPurchaseOrRental])
     {
-      if ([v4 isRental])
+      if ([playableCopy isRental])
       {
         v87 = 3;
       }
 
-      else if ([v4 isFamilySharingContent])
+      else if ([playableCopy isFamilySharingContent])
       {
         v87 = 4;
       }
@@ -1307,11 +1307,11 @@ LABEL_59:
     v89 = [MEMORY[0x1E696AD98] numberWithLongLong:v87];
     [v12 setEntitlementType:v89];
 
-    v90 = [v4 fpsAdditionalServerParams];
-    if (v90 && [MEMORY[0x1E696ACB0] isValidJSONObject:v90])
+    fpsAdditionalServerParams = [playableCopy fpsAdditionalServerParams];
+    if (fpsAdditionalServerParams && [MEMORY[0x1E696ACB0] isValidJSONObject:fpsAdditionalServerParams])
     {
       v148 = 0;
-      v91 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v90 options:0 error:&v148];
+      v91 = [MEMORY[0x1E696ACB0] dataWithJSONObject:fpsAdditionalServerParams options:0 error:&v148];
       v92 = v148;
       if ([v91 length])
       {
@@ -1328,11 +1328,11 @@ LABEL_59:
       }
     }
 
-    v94 = [v4 vpafMetrics];
-    if (v94 && [MEMORY[0x1E696ACB0] isValidJSONObject:v94])
+    vpafMetrics = [playableCopy vpafMetrics];
+    if (vpafMetrics && [MEMORY[0x1E696ACB0] isValidJSONObject:vpafMetrics])
     {
       v147 = 0;
-      v95 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v94 options:0 error:&v147];
+      v95 = [MEMORY[0x1E696ACB0] dataWithJSONObject:vpafMetrics options:0 error:&v147];
       v96 = v147;
       if ([v95 length])
       {
@@ -1349,12 +1349,12 @@ LABEL_59:
       }
     }
 
-    v136 = v94;
-    v98 = [v4 mediaMetrics];
-    if (v98 && [MEMORY[0x1E696ACB0] isValidJSONObject:v98])
+    v136 = vpafMetrics;
+    mediaMetrics = [playableCopy mediaMetrics];
+    if (mediaMetrics && [MEMORY[0x1E696ACB0] isValidJSONObject:mediaMetrics])
     {
       v146 = 0;
-      v99 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v98 options:0 error:&v146];
+      v99 = [MEMORY[0x1E696ACB0] dataWithJSONObject:mediaMetrics options:0 error:&v146];
       v100 = v146;
       if ([v99 length])
       {
@@ -1373,11 +1373,11 @@ LABEL_59:
       }
     }
 
-    v102 = [v4 playbackModes];
-    if (v102 && [MEMORY[0x1E696ACB0] isValidJSONObject:v102])
+    playbackModes = [playableCopy playbackModes];
+    if (playbackModes && [MEMORY[0x1E696ACB0] isValidJSONObject:playbackModes])
     {
       v145 = 0;
-      v103 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v102 options:0 error:&v145];
+      v103 = [MEMORY[0x1E696ACB0] dataWithJSONObject:playbackModes options:0 error:&v145];
       v104 = v145;
       if ([v103 length])
       {
@@ -1396,26 +1396,26 @@ LABEL_59:
       }
     }
 
-    v138 = v90;
-    v106 = [v4 metadata];
-    v107 = [v106 artworkURLFormat];
+    v138 = fpsAdditionalServerParams;
+    metadata20 = [playableCopy metadata];
+    artworkURLFormat = [metadata20 artworkURLFormat];
 
-    v108 = [v4 metadata];
-    v109 = [v108 artworkWidth];
+    metadata21 = [playableCopy metadata];
+    artworkWidth = [metadata21 artworkWidth];
 
-    v110 = [v4 metadata];
-    v111 = [v110 artworkHeight];
+    metadata22 = [playableCopy metadata];
+    artworkHeight = [metadata22 artworkHeight];
 
     if (v12)
     {
-      if ([v107 length] && (objc_msgSend(v109, "doubleValue"), v112 > 0.0) && (objc_msgSend(v111, "doubleValue"), v113 > 0.0))
+      if ([artworkURLFormat length] && (objc_msgSend(artworkWidth, "doubleValue"), v112 > 0.0) && (objc_msgSend(artworkHeight, "doubleValue"), v113 > 0.0))
       {
-        v114 = [(VUISidebandMediaLibrary *)v144 imageInfoForVideo:v12 imageType:0 createIfNeeded:1 wasCreated:0];
+        v114 = [(VUISidebandMediaLibrary *)selfCopy imageInfoForVideo:v12 imageType:0 createIfNeeded:1 wasCreated:0];
         [v114 setImageType:0];
-        [v114 setUrlFormat:v107];
-        [v109 doubleValue];
+        [v114 setUrlFormat:artworkURLFormat];
+        [artworkWidth doubleValue];
         [v114 setCanonicalWidth:?];
-        [v111 doubleValue];
+        [artworkHeight doubleValue];
         [v114 setCanonicalHeight:?];
         [v114 setVideo:v12];
       }
@@ -1430,27 +1430,27 @@ LABEL_59:
       }
     }
 
-    v132 = v111;
-    v134 = v109;
-    v115 = [v4 metadata];
-    v116 = [v115 previewFrameURLFormat];
+    v132 = artworkHeight;
+    v134 = artworkWidth;
+    metadata23 = [playableCopy metadata];
+    previewFrameURLFormat = [metadata23 previewFrameURLFormat];
 
-    v117 = [v4 metadata];
-    v118 = [v117 previewFrameWidth];
+    metadata24 = [playableCopy metadata];
+    previewFrameWidth = [metadata24 previewFrameWidth];
 
-    v119 = [v4 metadata];
-    v120 = [v119 previewFrameHeight];
+    metadata25 = [playableCopy metadata];
+    previewFrameHeight = [metadata25 previewFrameHeight];
 
     if (v12)
     {
-      if ([v116 length] && (objc_msgSend(v118, "doubleValue"), v121 > 0.0) && (objc_msgSend(v120, "doubleValue"), v122 > 0.0))
+      if ([previewFrameURLFormat length] && (objc_msgSend(previewFrameWidth, "doubleValue"), v121 > 0.0) && (objc_msgSend(previewFrameHeight, "doubleValue"), v122 > 0.0))
       {
-        v123 = [(VUISidebandMediaLibrary *)v144 imageInfoForVideo:v12 imageType:1 createIfNeeded:1 wasCreated:0];
+        v123 = [(VUISidebandMediaLibrary *)selfCopy imageInfoForVideo:v12 imageType:1 createIfNeeded:1 wasCreated:0];
         [v123 setImageType:1];
-        [v123 setUrlFormat:v116];
-        [v118 doubleValue];
+        [v123 setUrlFormat:previewFrameURLFormat];
+        [previewFrameWidth doubleValue];
         [v123 setCanonicalWidth:?];
-        [v120 doubleValue];
+        [previewFrameHeight doubleValue];
         [v123 setCanonicalHeight:?];
         [v123 setVideo:v12];
       }
@@ -1464,14 +1464,14 @@ LABEL_59:
         }
       }
 
-      if ([v116 length] && (objc_msgSend(v118, "doubleValue"), v124 > 0.0) && (objc_msgSend(v120, "doubleValue"), v125 > 0.0))
+      if ([previewFrameURLFormat length] && (objc_msgSend(previewFrameWidth, "doubleValue"), v124 > 0.0) && (objc_msgSend(previewFrameHeight, "doubleValue"), v125 > 0.0))
       {
-        v126 = [(VUISidebandMediaLibrary *)v144 imageInfoForVideo:v12 imageType:2 createIfNeeded:1 wasCreated:0];
+        v126 = [(VUISidebandMediaLibrary *)selfCopy imageInfoForVideo:v12 imageType:2 createIfNeeded:1 wasCreated:0];
         [v126 setImageType:2];
-        [v126 setUrlFormat:v116];
-        [v118 doubleValue];
+        [v126 setUrlFormat:previewFrameURLFormat];
+        [previewFrameWidth doubleValue];
         [v126 setCanonicalWidth:?];
-        [v120 doubleValue];
+        [previewFrameHeight doubleValue];
         [v126 setCanonicalHeight:?];
         [v126 setVideo:v12];
       }
@@ -1487,11 +1487,11 @@ LABEL_59:
 
       if ((v151 & 1) == 0)
       {
-        v127 = sLogObject_2;
-        if (os_log_type_enabled(v127, OS_LOG_TYPE_DEFAULT))
+        date = sLogObject_2;
+        if (os_log_type_enabled(date, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
-          _os_log_impl(&dword_1E323F000, v127, OS_LOG_TYPE_DEFAULT, "Using existing managed object for video but updating its metadata", buf, 2u);
+          _os_log_impl(&dword_1E323F000, date, OS_LOG_TYPE_DEFAULT, "Using existing managed object for video but updating its metadata", buf, 2u);
         }
 
 LABEL_133:
@@ -1503,9 +1503,9 @@ LABEL_133:
     else if (v151 != 1)
     {
 LABEL_134:
-      [(VUISidebandMediaLibrary *)v144 saveChangesToManagedObjects];
+      [(VUISidebandMediaLibrary *)selfCopy saveChangesToManagedObjects];
 
-      v6 = v142;
+      playbackURL = v142;
       goto LABEL_135;
     }
 
@@ -1517,8 +1517,8 @@ LABEL_134:
     }
 
     [v12 setDownloadState:0];
-    v127 = [MEMORY[0x1E695DF00] date];
-    [v12 setDateAdded:v127];
+    date = [MEMORY[0x1E695DF00] date];
+    [v12 setDateAdded:date];
     goto LABEL_133;
   }
 
@@ -1534,16 +1534,16 @@ LABEL_135:
   return v12;
 }
 
-- (id)videoForMPMediaItem:(id)a3
+- (id)videoForMPMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 valueForProperty:*MEMORY[0x1E696FB60]];
+  itemCopy = item;
+  v5 = [itemCopy valueForProperty:*MEMORY[0x1E696FB60]];
   v6 = v5;
   if (v5 && [v5 longLongValue])
   {
     v31 = 0;
-    v7 = [v6 stringValue];
-    v8 = [v4 valueForProperty:*MEMORY[0x1E696F9E8]];
+    stringValue = [v6 stringValue];
+    v8 = [itemCopy valueForProperty:*MEMORY[0x1E696F9E8]];
     v9 = [v8 length];
     if (v9)
     {
@@ -1551,8 +1551,8 @@ LABEL_135:
     }
 
     v10 = v9;
-    v11 = [v4 mediaType];
-    v12 = [VUIMediaInfo playbackURLOverrideForOriginalURL:v10 adamID:v7 canonicalID:0];
+    mediaType = [itemCopy mediaType];
+    v12 = [VUIMediaInfo playbackURLOverrideForOriginalURL:v10 adamID:stringValue canonicalID:0];
     v13 = v12;
     if (v12)
     {
@@ -1562,38 +1562,38 @@ LABEL_135:
       v10 = v15;
     }
 
-    if ((v11 & 0x100) != 0)
+    if ((mediaType & 0x100) != 0)
     {
-      v17 = [(VUISidebandMediaLibrary *)self _movieForAdamID:v7 createIfNeeded:1 wasCreated:&v31];
+      v17 = [(VUISidebandMediaLibrary *)self _movieForAdamID:stringValue createIfNeeded:1 wasCreated:&v31];
     }
 
     else
     {
-      if ((v11 & 0x200) == 0)
+      if ((mediaType & 0x200) == 0)
       {
         v16 = 0;
 LABEL_16:
-        v18 = [v4 valueForProperty:*MEMORY[0x1E696FB88]];
+        v18 = [itemCopy valueForProperty:*MEMORY[0x1E696FB88]];
         [v16 setTitle:v18];
 
-        v19 = [v4 valueForProperty:*MEMORY[0x1E696FB70]];
+        v19 = [itemCopy valueForProperty:*MEMORY[0x1E696FB70]];
         [v16 setBuyParams:v19];
 
-        if ([v4 isRental])
+        if ([itemCopy isRental])
         {
-          v20 = [v4 valueForProperty:*MEMORY[0x1E696FB78]];
+          v20 = [itemCopy valueForProperty:*MEMORY[0x1E696FB78]];
           [v16 setRentalID:v20];
         }
 
         [v16 setPlaybackURL:v10];
         [v16 setDownloadURL:v10];
-        [v16 setAdamID:v7];
-        v21 = [MEMORY[0x1E69D5920] activeAccount];
-        v22 = [v21 ams_DSID];
-        [v16 setDsid:v22];
+        [v16 setAdamID:stringValue];
+        activeAccount = [MEMORY[0x1E69D5920] activeAccount];
+        ams_DSID = [activeAccount ams_DSID];
+        [v16 setDsid:ams_DSID];
 
         [v16 setMarkedAsDeleted:0];
-        if ([v4 isRental])
+        if ([itemCopy isRental])
         {
           v23 = 3;
         }
@@ -1616,8 +1616,8 @@ LABEL_16:
           }
 
           [v16 setDownloadState:0];
-          v26 = [MEMORY[0x1E695DF00] date];
-          [v16 setDateAdded:v26];
+          date = [MEMORY[0x1E695DF00] date];
+          [v16 setDateAdded:date];
         }
 
         else if (v16)
@@ -1635,7 +1635,7 @@ LABEL_16:
         goto LABEL_29;
       }
 
-      v17 = [(VUISidebandMediaLibrary *)self _tvEpisodeForAdamID:v7 createIfNeeded:1 wasCreated:&v31];
+      v17 = [(VUISidebandMediaLibrary *)self _tvEpisodeForAdamID:stringValue createIfNeeded:1 wasCreated:&v31];
     }
 
     v16 = v17;
@@ -1653,41 +1653,41 @@ LABEL_29:
   return v16;
 }
 
-- (id)videoForAdamID:(id)a3 useMainThreadContext:(BOOL)a4
+- (id)videoForAdamID:(id)d useMainThreadContext:(BOOL)context
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (d)
   {
-    v4 = a4;
-    v12 = a3;
+    contextCopy = context;
+    dCopy = d;
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a3;
-    v8 = [v6 arrayWithObjects:&v12 count:1];
+    dCopy2 = d;
+    v8 = [v6 arrayWithObjects:&dCopy count:1];
 
-    v9 = [(VUISidebandMediaLibrary *)self videosForAdamIDs:v8 useMainThreadContext:v4, v12, v13];
-    v10 = [v9 firstObject];
+    v9 = [(VUISidebandMediaLibrary *)self videosForAdamIDs:v8 useMainThreadContext:contextCopy, dCopy, v13];
+    firstObject = [v9 firstObject];
   }
 
   else
   {
-    v10 = 0;
+    firstObject = 0;
   }
 
-  return v10;
+  return firstObject;
 }
 
-- (id)videosForAdamIDs:(id)a3 useMainThreadContext:(BOOL)a4
+- (id)videosForAdamIDs:(id)ds useMainThreadContext:(BOOL)context
 {
-  v4 = a4;
-  v6 = a3;
+  contextCopy = context;
+  dsCopy = ds;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__1;
   v32 = __Block_byref_object_dispose__1;
   v33 = 0;
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"adamID", v6];
-  if (v4)
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"adamID", dsCopy];
+  if (contextCopy)
   {
     v8 = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:@"Video"];
     v22 = 0;
@@ -1696,16 +1696,16 @@ LABEL_29:
     v25 = __Block_byref_object_copy__1;
     v26 = __Block_byref_object_dispose__1;
     v27 = 0;
-    v9 = [(VUISidebandMediaLibrary *)self serialQueue];
+    serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__VUISidebandMediaLibrary_videosForAdamIDs_useMainThreadContext___block_invoke;
     block[3] = &unk_1E872E5B0;
     block[4] = self;
     block[5] = &v22;
-    dispatch_sync(v9, block);
+    dispatch_sync(serialQueue, block);
 
-    [v8 setPredicate:v7];
+    [v8 setPredicate:dsCopy];
     v10 = [v23[5] executeFetchRequest:v8 error:0];
     v11 = v29[5];
     v29[5] = v10;
@@ -1721,14 +1721,14 @@ LABEL_29:
     v25 = __Block_byref_object_copy__1;
     v26 = __Block_byref_object_dispose__1;
     v27 = 0;
-    v12 = [(VUISidebandMediaLibrary *)self serialQueue];
+    serialQueue2 = [(VUISidebandMediaLibrary *)self serialQueue];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __65__VUISidebandMediaLibrary_videosForAdamIDs_useMainThreadContext___block_invoke_2;
     v20[3] = &unk_1E872E5B0;
     v20[4] = self;
     v20[5] = &v22;
-    dispatch_sync(v12, v20);
+    dispatch_sync(serialQueue2, v20);
 
     v13 = v23[5];
     if (v13)
@@ -1737,7 +1737,7 @@ LABEL_29:
       v16[1] = 3221225472;
       v16[2] = __65__VUISidebandMediaLibrary_videosForAdamIDs_useMainThreadContext___block_invoke_3;
       v16[3] = &unk_1E872EBD8;
-      v17 = v7;
+      v17 = dsCopy;
       v18 = &v28;
       v19 = &v22;
       [v13 performBlockAndWait:v16];
@@ -1780,24 +1780,24 @@ void __65__VUISidebandMediaLibrary_videosForAdamIDs_useMainThreadContext___block
   *(v3 + 40) = v2;
 }
 
-- (id)fpsKeyInfoForVideo:(id)a3 keyURI:(id)a4 createIfNeeded:(BOOL)a5 wasCreated:(BOOL *)a6
+- (id)fpsKeyInfoForVideo:(id)video keyURI:(id)i createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  neededCopy = needed;
+  videoCopy = video;
+  iCopy = i;
   v27 = 0;
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ && %K == %@", @"video", v10, @"keyURI", v11];
-  v13 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"FPSKeyInfo" predicate:v12 createIfNeeded:v7 wasCreated:&v27];
+  iCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ && %K == %@", @"video", videoCopy, @"keyURI", iCopy];
+  v13 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"FPSKeyInfo" predicate:iCopy createIfNeeded:neededCopy wasCreated:&v27];
   v14 = v27;
-  if (a6)
+  if (created)
   {
-    *a6 = v27;
+    *created = v27;
   }
 
   if (v14)
   {
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"keyURI", v11];
-    v16 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"FPSKeyDeletionInfo" predicate:v15 createIfNeeded:0 wasCreated:0];
+    iCopy2 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"keyURI", iCopy];
+    v16 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"FPSKeyDeletionInfo" predicate:iCopy2 createIfNeeded:0 wasCreated:0];
     if (v16)
     {
       v17 = sLogObject_2;
@@ -1813,14 +1813,14 @@ void __65__VUISidebandMediaLibrary_videosForAdamIDs_useMainThreadContext___block
       v24 = __Block_byref_object_copy__1;
       v25 = __Block_byref_object_dispose__1;
       v26 = 0;
-      v18 = [(VUISidebandMediaLibrary *)self serialQueue];
+      serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __79__VUISidebandMediaLibrary_fpsKeyInfoForVideo_keyURI_createIfNeeded_wasCreated___block_invoke;
       block[3] = &unk_1E872E5B0;
       block[4] = self;
       block[5] = buf;
-      dispatch_sync(v18, block);
+      dispatch_sync(serialQueue, block);
 
       [*(v22 + 5) deleteObject:v16];
       _Block_object_dispose(buf, 8);
@@ -1839,22 +1839,22 @@ void __79__VUISidebandMediaLibrary_fpsKeyInfoForVideo_keyURI_createIfNeeded_wasC
   *(v3 + 40) = v2;
 }
 
-- (id)existingFpsKeyInfoForKeyURI:(id)a3
+- (id)existingFpsKeyInfoForKeyURI:(id)i
 {
-  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"keyURI", a3];
+  v4 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"keyURI", i];
   v5 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"FPSKeyInfo" predicate:v4 createIfNeeded:0 wasCreated:0];
 
   return v5;
 }
 
-- (id)imageInfoForVideo:(id)a3 imageType:(unint64_t)a4 createIfNeeded:(BOOL)a5 wasCreated:(BOOL *)a6
+- (id)imageInfoForVideo:(id)video imageType:(unint64_t)type createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v7 = a5;
+  neededCopy = needed;
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ && %K == %lu", @"video", v10, @"imageType", a4];
+  videoCopy = video;
+  type = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ && %K == %lu", @"video", videoCopy, @"imageType", type];
   v24 = 0;
-  v12 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"VideoImageInfo" predicate:v11 createIfNeeded:v7 wasCreated:&v24];
+  v12 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"VideoImageInfo" predicate:type createIfNeeded:neededCopy wasCreated:&v24];
   if (v24)
   {
     v18 = 0;
@@ -1863,14 +1863,14 @@ void __79__VUISidebandMediaLibrary_fpsKeyInfoForVideo_keyURI_createIfNeeded_wasC
     v21 = __Block_byref_object_copy__1;
     v22 = __Block_byref_object_dispose__1;
     v23 = 0;
-    v13 = [(VUISidebandMediaLibrary *)self serialQueue];
+    serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __81__VUISidebandMediaLibrary_imageInfoForVideo_imageType_createIfNeeded_wasCreated___block_invoke;
     block[3] = &unk_1E872E5B0;
     block[4] = self;
     block[5] = &v18;
-    dispatch_sync(v13, block);
+    dispatch_sync(serialQueue, block);
 
     v14 = sLogObject_2;
     if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT))
@@ -1886,9 +1886,9 @@ void __79__VUISidebandMediaLibrary_fpsKeyInfoForVideo_keyURI_createIfNeeded_wasC
     _Block_object_dispose(&v18, 8);
   }
 
-  if (a6)
+  if (created)
   {
-    *a6 = v24;
+    *created = v24;
   }
 
   return v12;
@@ -1903,14 +1903,14 @@ void __81__VUISidebandMediaLibrary_imageInfoForVideo_imageType_createIfNeeded_wa
   *(v3 + 40) = v2;
 }
 
-- (id)imageInfoForSeries:(id)a3 imageType:(unint64_t)a4 createIfNeeded:(BOOL)a5 wasCreated:(BOOL *)a6
+- (id)imageInfoForSeries:(id)series imageType:(unint64_t)type createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v7 = a5;
+  neededCopy = needed;
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ && %K == %lu", @"series", v10, @"imageType", a4];
+  seriesCopy = series;
+  type = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ && %K == %lu", @"series", seriesCopy, @"imageType", type];
   v24 = 0;
-  v12 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeriesImageInfo" predicate:v11 createIfNeeded:v7 wasCreated:&v24];
+  v12 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeriesImageInfo" predicate:type createIfNeeded:neededCopy wasCreated:&v24];
   if (v24)
   {
     v18 = 0;
@@ -1919,14 +1919,14 @@ void __81__VUISidebandMediaLibrary_imageInfoForVideo_imageType_createIfNeeded_wa
     v21 = __Block_byref_object_copy__1;
     v22 = __Block_byref_object_dispose__1;
     v23 = 0;
-    v13 = [(VUISidebandMediaLibrary *)self serialQueue];
+    serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __82__VUISidebandMediaLibrary_imageInfoForSeries_imageType_createIfNeeded_wasCreated___block_invoke;
     block[3] = &unk_1E872E5B0;
     block[4] = self;
     block[5] = &v18;
-    dispatch_sync(v13, block);
+    dispatch_sync(serialQueue, block);
 
     v14 = sLogObject_2;
     if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT))
@@ -1942,9 +1942,9 @@ void __81__VUISidebandMediaLibrary_imageInfoForVideo_imageType_createIfNeeded_wa
     _Block_object_dispose(&v18, 8);
   }
 
-  if (a6)
+  if (created)
   {
-    *a6 = v24;
+    *created = v24;
   }
 
   return v12;
@@ -1959,25 +1959,25 @@ void __82__VUISidebandMediaLibrary_imageInfoForSeries_imageType_createIfNeeded_w
   *(v3 + 40) = v2;
 }
 
-- (void)deleteFPSKeyDeletionInfo:(id)a3
+- (void)deleteFPSKeyDeletionInfo:(id)info
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (info)
   {
-    v7 = a3;
+    infoCopy = info;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    infoCopy2 = info;
+    v6 = [v4 arrayWithObjects:&infoCopy count:1];
 
-    [(VUISidebandMediaLibrary *)self deleteFPSKeyDeletionInfos:v6, v7, v8];
+    [(VUISidebandMediaLibrary *)self deleteFPSKeyDeletionInfos:v6, infoCopy, v8];
   }
 }
 
-- (void)deleteFPSKeyDeletionInfos:(id)a3
+- (void)deleteFPSKeyDeletionInfos:(id)infos
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  infosCopy = infos;
+  if ([infosCopy count])
   {
     v18 = 0;
     v19 = &v18;
@@ -1985,21 +1985,21 @@ void __82__VUISidebandMediaLibrary_imageInfoForSeries_imageType_createIfNeeded_w
     v21 = __Block_byref_object_copy__1;
     v22 = __Block_byref_object_dispose__1;
     v23 = 0;
-    v5 = [(VUISidebandMediaLibrary *)self serialQueue];
+    serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __53__VUISidebandMediaLibrary_deleteFPSKeyDeletionInfos___block_invoke;
     block[3] = &unk_1E872E5B0;
     block[4] = self;
     block[5] = &v18;
-    dispatch_sync(v5, block);
+    dispatch_sync(serialQueue, block);
 
-    v12 = self;
+    selfCopy = self;
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = v4;
+    v6 = infosCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v26 count:16];
     if (v7)
     {
@@ -2031,7 +2031,7 @@ void __82__VUISidebandMediaLibrary_imageInfoForSeries_imageType_createIfNeeded_w
       while (v7);
     }
 
-    [(VUISidebandMediaLibrary *)v12 saveChangesToManagedObjects];
+    [(VUISidebandMediaLibrary *)selfCopy saveChangesToManagedObjects];
     _Block_object_dispose(&v18, 8);
   }
 }
@@ -2045,29 +2045,29 @@ void __53__VUISidebandMediaLibrary_deleteFPSKeyDeletionInfos___block_invoke(uint
   *(v3 + 40) = v2;
 }
 
-- (id)videosWithDownloadState:(int64_t)a3 entitlementTypes:(id)a4 sortDescriptors:(id)a5 useMainThreadContext:(BOOL)a6
+- (id)videosWithDownloadState:(int64_t)state entitlementTypes:(id)types sortDescriptors:(id)descriptors useMainThreadContext:(BOOL)context
 {
-  v6 = a6;
+  contextCopy = context;
   v10 = MEMORY[0x1E695DFD8];
   v11 = MEMORY[0x1E696AD98];
-  v12 = a5;
-  v13 = a4;
-  v14 = [v11 numberWithLongLong:a3];
+  descriptorsCopy = descriptors;
+  typesCopy = types;
+  v14 = [v11 numberWithLongLong:state];
   v15 = [v10 setWithObject:v14];
-  v16 = [(VUISidebandMediaLibrary *)self videosWithDownloadStates:v15 entitlementTypes:v13 sortDescriptors:v12 useMainThreadContext:v6];
+  v16 = [(VUISidebandMediaLibrary *)self videosWithDownloadStates:v15 entitlementTypes:typesCopy sortDescriptors:descriptorsCopy useMainThreadContext:contextCopy];
 
   return v16;
 }
 
-- (id)videosWithDownloadStates:(id)a3 entitlementTypes:(id)a4 sortDescriptors:(id)a5 useMainThreadContext:(BOOL)a6
+- (id)videosWithDownloadStates:(id)states entitlementTypes:(id)types sortDescriptors:(id)descriptors useMainThreadContext:(BOOL)context
 {
-  v6 = a6;
+  contextCopy = context;
   v44[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  statesCopy = states;
+  typesCopy = types;
+  descriptorsCopy = descriptors;
   v13 = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:@"Video"];
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"downloadState", v10];
+  statesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"downloadState", statesCopy];
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -2080,26 +2080,26 @@ void __53__VUISidebandMediaLibrary_deleteFPSKeyDeletionInfos___block_invoke(uint
   v35 = __Block_byref_object_copy__1;
   v36 = __Block_byref_object_dispose__1;
   v37 = 0;
-  if (v11)
+  if (typesCopy)
   {
-    v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"entitlementType", v11];
+    typesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@", @"entitlementType", typesCopy];
     v16 = MEMORY[0x1E696AB28];
-    v44[0] = v14;
-    v44[1] = v15;
+    v44[0] = statesCopy;
+    v44[1] = typesCopy;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
     v18 = [v16 andPredicateWithSubpredicates:v17];
 
-    v14 = v18;
+    statesCopy = v18;
   }
 
-  [v13 setPredicate:v14];
-  if (v12)
+  [v13 setPredicate:statesCopy];
+  if (descriptorsCopy)
   {
-    [v13 setSortDescriptors:v12];
+    [v13 setSortDescriptors:descriptorsCopy];
   }
 
   [(VUISidebandMediaLibrary *)self serialQueue];
-  if (v6)
+  if (contextCopy)
     v19 = {;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -2169,38 +2169,38 @@ void __106__VUISidebandMediaLibrary_videosWithDownloadStates_entitlementTypes_so
   *(v3 + 40) = v2;
 }
 
-- (id)videosWithDownloadStates:(id)a3 downloadTrigger:(int64_t)a4 shouldDeleteAfterCompletion:(BOOL)a5 useMainThreadContext:(BOOL)a6
+- (id)videosWithDownloadStates:(id)states downloadTrigger:(int64_t)trigger shouldDeleteAfterCompletion:(BOOL)completion useMainThreadContext:(BOOL)context
 {
-  v6 = a6;
-  v7 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = MEMORY[0x1E696AD98];
-  v11 = a3;
-  v12 = [v10 numberWithBool:v7];
-  v13 = [(VUISidebandMediaLibrary *)self _videosWithDownloadStates:v11 downloadTrigger:a4 shouldDeleteAfterCompletion:v12 useMainThreadContext:v6];
+  statesCopy = states;
+  v12 = [v10 numberWithBool:completionCopy];
+  v13 = [(VUISidebandMediaLibrary *)self _videosWithDownloadStates:statesCopy downloadTrigger:trigger shouldDeleteAfterCompletion:v12 useMainThreadContext:contextCopy];
 
   return v13;
 }
 
-- (id)videosWithExpiredDownloadsUsingMainThreadContext:(BOOL)a3
+- (id)videosWithExpiredDownloadsUsingMainThreadContext:(BOOL)context
 {
-  v3 = a3;
+  contextCopy = context;
   v5 = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:@"Video"];
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == YES AND %K == NO AND %K == %ld", @"hasExpirationDate", @"markedAsDeleted", @"downloadState", 0];
   [v5 setPredicate:v6];
-  v7 = [(VUISidebandMediaLibrary *)self _objectsWithFetchRequest:v5 usingMainThreadContext:v3];
+  v7 = [(VUISidebandMediaLibrary *)self _objectsWithFetchRequest:v5 usingMainThreadContext:contextCopy];
 
   return v7;
 }
 
-- (id)seriesForCanonicalIDOrAdamID:(id)a3
+- (id)seriesForCanonicalIDOrAdamID:(id)d
 {
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    v5 = [(VUISidebandMediaLibrary *)self _tvSeriesForCanonicalID:v4 createIfNeeded:0 wasCreated:0];
+    v5 = [(VUISidebandMediaLibrary *)self _tvSeriesForCanonicalID:dCopy createIfNeeded:0 wasCreated:0];
     if (!v5)
     {
-      v5 = [(VUISidebandMediaLibrary *)self _tvSeriesForAdamID:v4 createIfNeeded:0 wasCreated:0];
+      v5 = [(VUISidebandMediaLibrary *)self _tvSeriesForAdamID:dCopy createIfNeeded:0 wasCreated:0];
     }
   }
 
@@ -2212,16 +2212,16 @@ void __106__VUISidebandMediaLibrary_videosWithDownloadStates_entitlementTypes_so
   return v5;
 }
 
-- (id)seasonForCanonicalIDOrAdamID:(id)a3 createIfNeeded:(BOOL)a4
+- (id)seasonForCanonicalIDOrAdamID:(id)d createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 length])
+  neededCopy = needed;
+  dCopy = d;
+  if ([dCopy length])
   {
-    v7 = [(VUISidebandMediaLibrary *)self _tvSeasonForCanonicalID:v6 createIfNeeded:v4 wasCreated:0];
+    v7 = [(VUISidebandMediaLibrary *)self _tvSeasonForCanonicalID:dCopy createIfNeeded:neededCopy wasCreated:0];
     if (!v7)
     {
-      v7 = [(VUISidebandMediaLibrary *)self _tvSeasonForAdamID:v6 createIfNeeded:v4 wasCreated:0];
+      v7 = [(VUISidebandMediaLibrary *)self _tvSeasonForAdamID:dCopy createIfNeeded:neededCopy wasCreated:0];
     }
   }
 
@@ -2233,13 +2233,13 @@ void __106__VUISidebandMediaLibrary_videosWithDownloadStates_entitlementTypes_so
   return v7;
 }
 
-- (id)comingSoonObjectWithCanonicalID:(id)a3 createIfNeeded:(BOOL)a4
+- (id)comingSoonObjectWithCanonicalID:(id)d createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 length])
+  neededCopy = needed;
+  dCopy = d;
+  if ([dCopy length])
   {
-    v7 = [(VUISidebandMediaLibrary *)self _comingSoonVideoForCanonicalID:v6 createIfNeeded:v4 wasCreated:0];
+    v7 = [(VUISidebandMediaLibrary *)self _comingSoonVideoForCanonicalID:dCopy createIfNeeded:neededCopy wasCreated:0];
   }
 
   else
@@ -2250,79 +2250,79 @@ void __106__VUISidebandMediaLibrary_videosWithDownloadStates_entitlementTypes_so
   return v7;
 }
 
-- (id)episodesWithDownloadStates:(id)a3 seasonCanonicalId:(id)a4 usingMainThreadContext:(BOOL)a5
+- (id)episodesWithDownloadStates:(id)states seasonCanonicalId:(id)id usingMainThreadContext:(BOOL)context
 {
-  v5 = a5;
+  contextCopy = context;
   v8 = MEMORY[0x1E695D5E0];
-  v9 = a4;
-  v10 = a3;
+  idCopy = id;
+  statesCopy = states;
   v11 = [[v8 alloc] initWithEntityName:@"TVEpisode"];
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K IN %@ AND season.canonicalID == %@", @"markedAsDeleted", @"downloadState", v10, v9];
+  idCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K IN %@ AND season.canonicalID == %@", @"markedAsDeleted", @"downloadState", statesCopy, idCopy];
 
-  [v11 setPredicate:v12];
-  v13 = [(VUISidebandMediaLibrary *)self _objectsWithFetchRequest:v11 usingMainThreadContext:v5];
+  [v11 setPredicate:idCopy];
+  v13 = [(VUISidebandMediaLibrary *)self _objectsWithFetchRequest:v11 usingMainThreadContext:contextCopy];
 
   return v13;
 }
 
-- (id)episodesWithDownloadStates:(id)a3 showCanonicalId:(id)a4 usingMainThreadContext:(BOOL)a5
+- (id)episodesWithDownloadStates:(id)states showCanonicalId:(id)id usingMainThreadContext:(BOOL)context
 {
-  v5 = a5;
+  contextCopy = context;
   v8 = MEMORY[0x1E695D5E0];
-  v9 = a4;
-  v10 = a3;
+  idCopy = id;
+  statesCopy = states;
   v11 = [[v8 alloc] initWithEntityName:@"TVEpisode"];
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K IN %@ AND series.canonicalID == %@", @"markedAsDeleted", @"downloadState", v10, v9];
+  idCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K IN %@ AND series.canonicalID == %@", @"markedAsDeleted", @"downloadState", statesCopy, idCopy];
 
-  [v11 setPredicate:v12];
-  v13 = [(VUISidebandMediaLibrary *)self _objectsWithFetchRequest:v11 usingMainThreadContext:v5];
+  [v11 setPredicate:idCopy];
+  v13 = [(VUISidebandMediaLibrary *)self _objectsWithFetchRequest:v11 usingMainThreadContext:contextCopy];
 
   return v13;
 }
 
-- (id)episodesWithSeasonCanonicalIds:(id)a3 usingMainThreadContext:(BOOL)a4
+- (id)episodesWithSeasonCanonicalIds:(id)ids usingMainThreadContext:(BOOL)context
 {
-  v4 = a4;
+  contextCopy = context;
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
+  idsCopy = ids;
   v8 = [[v6 alloc] initWithEntityName:@"TVEpisode"];
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND season.canonicalID IN %@", @"markedAsDeleted", v7];
+  idsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND season.canonicalID IN %@", @"markedAsDeleted", idsCopy];
 
-  [v8 setPredicate:v9];
-  v10 = [(VUISidebandMediaLibrary *)self _objectsWithFetchRequest:v8 usingMainThreadContext:v4];
+  [v8 setPredicate:idsCopy];
+  v10 = [(VUISidebandMediaLibrary *)self _objectsWithFetchRequest:v8 usingMainThreadContext:contextCopy];
 
   return v10;
 }
 
-- (void)removeDownloadedMediaForVideoManagedObject:(id)a3 markAsDeleted:(BOOL)a4 invalidateImmediately:(BOOL)a5
+- (void)removeDownloadedMediaForVideoManagedObject:(id)object markAsDeleted:(BOOL)deleted invalidateImmediately:(BOOL)immediately
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
-    v5 = a5;
-    v6 = a4;
-    v11 = a3;
+    immediatelyCopy = immediately;
+    deletedCopy = deleted;
+    objectCopy = object;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a3;
-    v10 = [v8 arrayWithObjects:&v11 count:1];
+    objectCopy2 = object;
+    v10 = [v8 arrayWithObjects:&objectCopy count:1];
 
-    [(VUISidebandMediaLibrary *)self removeDownloadedMediaForVideoManagedObjects:v10 markAsDeleted:v6 invalidateImmediately:v5, v11, v12];
+    [(VUISidebandMediaLibrary *)self removeDownloadedMediaForVideoManagedObjects:v10 markAsDeleted:deletedCopy invalidateImmediately:immediatelyCopy, objectCopy, v12];
   }
 }
 
-- (void)removeDownloadedMediaForVideoManagedObjects:(id)a3 markAsDeleted:(BOOL)a4 invalidateImmediately:(BOOL)a5
+- (void)removeDownloadedMediaForVideoManagedObjects:(id)objects markAsDeleted:(BOOL)deleted invalidateImmediately:(BOOL)immediately
 {
-  v5 = a5;
-  v6 = a4;
+  immediatelyCopy = immediately;
+  deletedCopy = deleted;
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if ([v8 count])
+  objectsCopy = objects;
+  if ([objectsCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v9 = v8;
+    v9 = objectsCopy;
     v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v10)
     {
@@ -2339,7 +2339,7 @@ void __106__VUISidebandMediaLibrary_videosWithDownloadStates_entitlementTypes_so
           }
 
           v14 = [(VUISidebandMediaLibrary *)self mainContextVideoForVideo:*(*(&v15 + 1) + 8 * v13), v15];
-          [(VUISidebandMediaLibrary *)self _removeDownloadedMediaForVideoManagedObject:v14 markAsDeleted:v6 saveWhenDone:0 invalidateImmediately:v5];
+          [(VUISidebandMediaLibrary *)self _removeDownloadedMediaForVideoManagedObject:v14 markAsDeleted:deletedCopy saveWhenDone:0 invalidateImmediately:immediatelyCopy];
 
           ++v13;
         }
@@ -2365,31 +2365,31 @@ void __106__VUISidebandMediaLibrary_videosWithDownloadStates_entitlementTypes_so
   return v5;
 }
 
-- (void)invalidateKeysForVideoManagedObject:(id)a3
+- (void)invalidateKeysForVideoManagedObject:(id)object
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (object)
   {
-    v7 = a3;
+    objectCopy = object;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v7 count:1];
+    objectCopy2 = object;
+    v6 = [v4 arrayWithObjects:&objectCopy count:1];
 
-    [(VUISidebandMediaLibrary *)self invalidateKeysForVideoManagedObjects:v6, v7, v8];
+    [(VUISidebandMediaLibrary *)self invalidateKeysForVideoManagedObjects:v6, objectCopy, v8];
   }
 }
 
-- (void)invalidateKeysForVideoManagedObjects:(id)a3
+- (void)invalidateKeysForVideoManagedObjects:(id)objects
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  objectsCopy = objects;
+  if ([objectsCopy count])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = v4;
+    v5 = objectsCopy;
     v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
@@ -2438,26 +2438,26 @@ void __54__VUISidebandMediaLibrary_saveChangesToManagedObjects__block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (id)mainContextVideoForVideo:(id)a3
+- (id)mainContextVideoForVideo:(id)video
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (video)
   {
-    v10 = a3;
+    videoCopy = video;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v10 count:1];
+    videoCopy2 = video;
+    v6 = [v4 arrayWithObjects:&videoCopy count:1];
 
-    v7 = [(VUISidebandMediaLibrary *)self _mainContextManagedObjectsForObjects:v6, v10, v11];
-    v8 = [v7 firstObject];
+    v7 = [(VUISidebandMediaLibrary *)self _mainContextManagedObjectsForObjects:v6, videoCopy, v11];
+    firstObject = [v7 firstObject];
   }
 
   else
   {
-    v8 = 0;
+    firstObject = 0;
   }
 
-  return v8;
+  return firstObject;
 }
 
 - (id)title
@@ -2468,9 +2468,9 @@ void __54__VUISidebandMediaLibrary_saveChangesToManagedObjects__block_invoke(uin
   return v3;
 }
 
-- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)a3
+- (id)enqueueMediaItemEntityTypesFetchWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   objc_initWeak(&location, self);
   v19 = 0;
@@ -2479,14 +2479,14 @@ void __54__VUISidebandMediaLibrary_saveChangesToManagedObjects__block_invoke(uin
   v22 = __Block_byref_object_copy__1;
   v23 = __Block_byref_object_dispose__1;
   v24 = 0;
-  v6 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __81__VUISidebandMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompletionHandler___block_invoke;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v19;
-  dispatch_sync(v6, block);
+  dispatch_sync(serialQueue, block);
 
   v7 = v20[5];
   if (v7)
@@ -2498,7 +2498,7 @@ void __54__VUISidebandMediaLibrary_saveChangesToManagedObjects__block_invoke(uin
     objc_copyWeak(&v15, &location);
     v14 = &v19;
     v12 = v5;
-    v13 = v4;
+    v13 = handlerCopy;
     [v7 performBlock:v11];
 
     objc_destroyWeak(&v15);
@@ -2506,13 +2506,13 @@ void __54__VUISidebandMediaLibrary_saveChangesToManagedObjects__block_invoke(uin
 
   else
   {
-    v8 = [(VUIMediaLibrary *)self manager];
+    manager = [(VUIMediaLibrary *)self manager];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __81__VUISidebandMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompletionHandler___block_invoke_2;
     v16[3] = &unk_1E872D7E0;
-    v17 = v4;
-    [v8 _enqueueCompletionQueueBlock:v16];
+    v17 = handlerCopy;
+    [manager _enqueueCompletionQueueBlock:v16];
   }
 
   v9 = [objc_alloc(MEMORY[0x1E69DF690]) initWithOperation:0];
@@ -2612,10 +2612,10 @@ uint64_t __81__VUISidebandMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompl
   return result;
 }
 
-- (id)enqueueFetchRequests:(id)a3 completionHandler:(id)a4
+- (id)enqueueFetchRequests:(id)requests completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  requestsCopy = requests;
+  handlerCopy = handler;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   objc_initWeak(&location, self);
   v23 = 0;
@@ -2624,14 +2624,14 @@ uint64_t __81__VUISidebandMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompl
   v26 = __Block_byref_object_copy__1;
   v27 = __Block_byref_object_dispose__1;
   v28 = 0;
-  v9 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__VUISidebandMediaLibrary_enqueueFetchRequests_completionHandler___block_invoke;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v23;
-  dispatch_sync(v9, block);
+  dispatch_sync(serialQueue, block);
 
   v10 = v24[5];
   if (v10)
@@ -2641,10 +2641,10 @@ uint64_t __81__VUISidebandMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompl
     v14[2] = __66__VUISidebandMediaLibrary_enqueueFetchRequests_completionHandler___block_invoke_3;
     v14[3] = &unk_1E872EC50;
     objc_copyWeak(&v19, &location);
-    v15 = v6;
+    v15 = requestsCopy;
     v18 = &v23;
     v16 = v8;
-    v17 = v7;
+    v17 = handlerCopy;
     [v10 performBlock:v14];
 
     objc_destroyWeak(&v19);
@@ -2652,13 +2652,13 @@ uint64_t __81__VUISidebandMediaLibrary_enqueueMediaItemEntityTypesFetchWithCompl
 
   else
   {
-    v11 = [(VUIMediaLibrary *)self manager];
+    manager = [(VUIMediaLibrary *)self manager];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __66__VUISidebandMediaLibrary_enqueueFetchRequests_completionHandler___block_invoke_2;
     v20[3] = &unk_1E872D7E0;
-    v21 = v7;
-    [v11 _enqueueCompletionQueueBlock:v20];
+    v21 = handlerCopy;
+    [manager _enqueueCompletionQueueBlock:v20];
   }
 
   v12 = [objc_alloc(MEMORY[0x1E69DF690]) initWithOperation:0];
@@ -3183,18 +3183,18 @@ uint64_t __66__VUISidebandMediaLibrary_enqueueFetchRequests_completionHandler___
   return result;
 }
 
-- (id)saveMediaEntity:(id)a3 completionHandler:(id)a4
+- (id)saveMediaEntity:(id)entity completionHandler:(id)handler
 {
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v6 = [(VUIMediaLibrary *)self manager];
+    manager = [(VUIMediaLibrary *)self manager];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __61__VUISidebandMediaLibrary_saveMediaEntity_completionHandler___block_invoke;
     v9[3] = &unk_1E872D7E0;
-    v10 = v5;
-    [v6 _enqueueCompletionQueueBlock:v9];
+    v10 = handlerCopy;
+    [manager _enqueueCompletionQueueBlock:v9];
   }
 
   v7 = [objc_alloc(MEMORY[0x1E69DF690]) initWithOperation:0];
@@ -3202,11 +3202,11 @@ uint64_t __66__VUISidebandMediaLibrary_enqueueFetchRequests_completionHandler___
   return v7;
 }
 
-- (id)_imageLoadParamsForImageLoaderObject:(id)a3
+- (id)_imageLoadParamsForImageLoaderObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || (v4 = v3) == 0)
+  if ((objc_opt_isKindOfClass() & 1) == 0 || (v4 = objectCopy) == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The imageLoaderObject parameter must be an instance of VUISidebandMediaEntityImageLoadParams"];
     v4 = 0;
@@ -3215,98 +3215,98 @@ uint64_t __66__VUISidebandMediaLibrary_enqueueFetchRequests_completionHandler___
   return v4;
 }
 
-- (id)_imageLoadOperationWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5
+- (id)_imageLoadOperationWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
-  v9 = [(VUIImageLoadParamsOperation *)[VUISidebandMediaEntityImageLoadOperation alloc] initWithParams:v8 scaleToSize:v5 cropToFit:width, height];
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  paramsCopy = params;
+  height = [(VUIImageLoadParamsOperation *)[VUISidebandMediaEntityImageLoadOperation alloc] initWithParams:paramsCopy scaleToSize:fitCopy cropToFit:width, height];
+
+  return height;
+}
+
+- (id)_movieForAdamID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
+{
+  neededCopy = needed;
+  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"adamID", d];
+  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"Movie" predicate:v8 createIfNeeded:neededCopy wasCreated:created];
 
   return v9;
 }
 
-- (id)_movieForAdamID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5
+- (id)_tvEpisodeForAdamID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v6 = a4;
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"adamID", a3];
-  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"Movie" predicate:v8 createIfNeeded:v6 wasCreated:a5];
+  neededCopy = needed;
+  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"adamID", d];
+  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVEpisode" predicate:v8 createIfNeeded:neededCopy wasCreated:created];
 
   return v9;
 }
 
-- (id)_tvEpisodeForAdamID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5
+- (id)_tvSeasonForCanonicalID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v6 = a4;
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"adamID", a3];
-  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVEpisode" predicate:v8 createIfNeeded:v6 wasCreated:a5];
+  neededCopy = needed;
+  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"canonicalID", d];
+  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeason" predicate:v8 createIfNeeded:neededCopy wasCreated:created];
 
   return v9;
 }
 
-- (id)_tvSeasonForCanonicalID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5
+- (id)_tvSeasonForAdamID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v6 = a4;
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"canonicalID", a3];
-  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeason" predicate:v8 createIfNeeded:v6 wasCreated:a5];
+  neededCopy = needed;
+  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"adamID", d];
+  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeason" predicate:v8 createIfNeeded:neededCopy wasCreated:created];
 
   return v9;
 }
 
-- (id)_tvSeasonForAdamID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5
+- (id)_comingSoonVideoForCanonicalID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v6 = a4;
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"adamID", a3];
-  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeason" predicate:v8 createIfNeeded:v6 wasCreated:a5];
+  neededCopy = needed;
+  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"canonicalID", d];
+  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"ComingSoonVideo" predicate:v8 createIfNeeded:neededCopy wasCreated:created];
 
   return v9;
 }
 
-- (id)_comingSoonVideoForCanonicalID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5
+- (id)_tvSeriesForCanonicalID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v6 = a4;
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"canonicalID", a3];
-  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"ComingSoonVideo" predicate:v8 createIfNeeded:v6 wasCreated:a5];
+  neededCopy = needed;
+  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"canonicalID", d];
+  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeries" predicate:v8 createIfNeeded:neededCopy wasCreated:created];
 
   return v9;
 }
 
-- (id)_tvSeriesForCanonicalID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5
+- (id)_tvSeriesForAdamID:(id)d createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v6 = a4;
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"canonicalID", a3];
-  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeries" predicate:v8 createIfNeeded:v6 wasCreated:a5];
+  neededCopy = needed;
+  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"adamID", d];
+  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeries" predicate:v8 createIfNeeded:neededCopy wasCreated:created];
 
   return v9;
 }
 
-- (id)_tvSeriesForAdamID:(id)a3 createIfNeeded:(BOOL)a4 wasCreated:(BOOL *)a5
+- (id)_videosWithDownloadStates:(id)states downloadTrigger:(int64_t)trigger shouldDeleteAfterCompletion:(id)completion useMainThreadContext:(BOOL)context
 {
-  v6 = a4;
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"adamID", a3];
-  v9 = [(VUISidebandMediaLibrary *)self _managedObjectWithEntityName:@"TVSeries" predicate:v8 createIfNeeded:v6 wasCreated:a5];
-
-  return v9;
-}
-
-- (id)_videosWithDownloadStates:(id)a3 downloadTrigger:(int64_t)a4 shouldDeleteAfterCompletion:(id)a5 useMainThreadContext:(BOOL)a6
-{
-  v6 = a6;
+  contextCopy = context;
   v43[2] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
+  statesCopy = states;
+  completionCopy = completion;
   v12 = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:@"Video"];
-  v13 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND %K == %ld", @"downloadState", v10, @"downloadTriggerType", a4];
-  if (v11)
+  trigger = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND %K == %ld", @"downloadState", statesCopy, @"downloadTriggerType", trigger];
+  if (completionCopy)
   {
-    v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"shouldDeleteAfterCompletion", v11];
+    completionCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@", @"shouldDeleteAfterCompletion", completionCopy];
     v15 = MEMORY[0x1E696AB28];
-    v43[0] = v13;
-    v43[1] = v14;
+    v43[0] = trigger;
+    v43[1] = completionCopy;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
     v17 = [v15 andPredicateWithSubpredicates:v16];
 
-    v13 = v17;
+    trigger = v17;
   }
 
   v37 = 0;
@@ -3321,9 +3321,9 @@ uint64_t __66__VUISidebandMediaLibrary_enqueueFetchRequests_completionHandler___
   v34 = __Block_byref_object_copy__1;
   v35 = __Block_byref_object_dispose__1;
   v36 = 0;
-  [v12 setPredicate:v13];
+  [v12 setPredicate:trigger];
   [(VUISidebandMediaLibrary *)self serialQueue];
-  if (v6)
+  if (contextCopy)
     v18 = {;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -3393,10 +3393,10 @@ void __118__VUISidebandMediaLibrary__videosWithDownloadStates_downloadTrigger_sh
   *(v3 + 40) = v2;
 }
 
-- (id)_objectsWithFetchRequest:(id)a3 usingMainThreadContext:(BOOL)a4
+- (id)_objectsWithFetchRequest:(id)request usingMainThreadContext:(BOOL)context
 {
-  v4 = a4;
-  v6 = a3;
+  contextCopy = context;
+  requestCopy = request;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -3410,7 +3410,7 @@ void __118__VUISidebandMediaLibrary__videosWithDownloadStates_downloadTrigger_sh
   v24 = __Block_byref_object_dispose__1;
   v25 = 0;
   [(VUISidebandMediaLibrary *)self serialQueue];
-  if (v4)
+  if (contextCopy)
     v7 = {;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -3420,7 +3420,7 @@ void __118__VUISidebandMediaLibrary__videosWithDownloadStates_downloadTrigger_sh
     block[5] = &v20;
     dispatch_sync(v7, block);
 
-    v8 = [v21[5] executeFetchRequest:v6 error:0];
+    v8 = [v21[5] executeFetchRequest:requestCopy error:0];
     v9 = v27[5];
     v27[5] = v8;
   }
@@ -3442,7 +3442,7 @@ void __118__VUISidebandMediaLibrary__videosWithDownloadStates_downloadTrigger_sh
     v14[3] = &unk_1E872EC00;
     v16 = &v26;
     v17 = &v20;
-    v15 = v6;
+    v15 = requestCopy;
     [v11 performBlockAndWait:v14];
     v9 = v15;
   }
@@ -3480,10 +3480,10 @@ void __75__VUISidebandMediaLibrary__objectsWithFetchRequest_usingMainThreadConte
   *(v3 + 40) = v2;
 }
 
-- (unint64_t)_countForFetchRequest:(id)a3 usingMainThreadContext:(BOOL)a4
+- (unint64_t)_countForFetchRequest:(id)request usingMainThreadContext:(BOOL)context
 {
-  v4 = a4;
-  v6 = a3;
+  contextCopy = context;
+  requestCopy = request;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -3494,18 +3494,18 @@ void __75__VUISidebandMediaLibrary__objectsWithFetchRequest_usingMainThreadConte
   v22 = __Block_byref_object_copy__1;
   v23 = __Block_byref_object_dispose__1;
   v24 = 0;
-  if (v4)
+  if (contextCopy)
   {
-    v7 = [(VUISidebandMediaLibrary *)self serialQueue];
+    serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __72__VUISidebandMediaLibrary__countForFetchRequest_usingMainThreadContext___block_invoke;
     block[3] = &unk_1E872E5B0;
     block[4] = self;
     block[5] = &v19;
-    dispatch_sync(v7, block);
+    dispatch_sync(serialQueue, block);
 
-    v8 = [v20[5] countForFetchRequest:v6 error:0];
+    v8 = [v20[5] countForFetchRequest:requestCopy error:0];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v26[3] = v8;
@@ -3514,14 +3514,14 @@ void __75__VUISidebandMediaLibrary__objectsWithFetchRequest_usingMainThreadConte
 
   else
   {
-    v9 = [(VUISidebandMediaLibrary *)self serialQueue];
+    serialQueue2 = [(VUISidebandMediaLibrary *)self serialQueue];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __72__VUISidebandMediaLibrary__countForFetchRequest_usingMainThreadContext___block_invoke_2;
     v17[3] = &unk_1E872E5B0;
     v17[4] = self;
     v17[5] = &v19;
-    dispatch_sync(v9, v17);
+    dispatch_sync(serialQueue2, v17);
 
     v10 = v20[5];
     v13[0] = MEMORY[0x1E69E9820];
@@ -3529,7 +3529,7 @@ void __75__VUISidebandMediaLibrary__objectsWithFetchRequest_usingMainThreadConte
     v13[2] = __72__VUISidebandMediaLibrary__countForFetchRequest_usingMainThreadContext___block_invoke_3;
     v13[3] = &unk_1E872EC78;
     v15 = &v19;
-    v14 = v6;
+    v14 = requestCopy;
     v16 = &v25;
     [v10 performBlockAndWait:v13];
   }
@@ -3569,56 +3569,56 @@ uint64_t __72__VUISidebandMediaLibrary__countForFetchRequest_usingMainThreadCont
   return result;
 }
 
-- (id)_managedObjectWithEntityName:(id)a3 predicate:(id)a4 createIfNeeded:(BOOL)a5 wasCreated:(BOOL *)a6
+- (id)_managedObjectWithEntityName:(id)name predicate:(id)predicate createIfNeeded:(BOOL)needed wasCreated:(BOOL *)created
 {
-  v7 = a5;
+  neededCopy = needed;
   v27 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  if (a6)
+  nameCopy = name;
+  predicateCopy = predicate;
+  if (created)
   {
-    *a6 = 0;
+    *created = 0;
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:v10];
+  v12 = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:nameCopy];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__1;
   v23 = __Block_byref_object_dispose__1;
   v24 = 0;
-  v13 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __92__VUISidebandMediaLibrary__managedObjectWithEntityName_predicate_createIfNeeded_wasCreated___block_invoke;
   v18[3] = &unk_1E872E5B0;
   v18[4] = self;
   v18[5] = &v19;
-  dispatch_sync(v13, v18);
+  dispatch_sync(serialQueue, v18);
 
-  [v12 setPredicate:v11];
+  [v12 setPredicate:predicateCopy];
   v14 = [v20[5] executeFetchRequest:v12 error:0];
-  v15 = [v14 firstObject];
-  if (!v15 && v7)
+  firstObject = [v14 firstObject];
+  if (!firstObject && neededCopy)
   {
     v16 = sLogObject_2;
     if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v10;
+      v26 = nameCopy;
       _os_log_impl(&dword_1E323F000, v16, OS_LOG_TYPE_DEFAULT, "Creating managed object for entity name %@", buf, 0xCu);
     }
 
-    v15 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:v10 inManagedObjectContext:v20[5]];
-    if (a6)
+    firstObject = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:nameCopy inManagedObjectContext:v20[5]];
+    if (created)
     {
-      *a6 = 1;
+      *created = 1;
     }
   }
 
   _Block_object_dispose(&v19, 8);
 
-  return v15;
+  return firstObject;
 }
 
 void __92__VUISidebandMediaLibrary__managedObjectWithEntityName_predicate_createIfNeeded_wasCreated___block_invoke(uint64_t a1)
@@ -3630,25 +3630,25 @@ void __92__VUISidebandMediaLibrary__managedObjectWithEntityName_predicate_create
   *(v3 + 40) = v2;
 }
 
-- (BOOL)_removeDownloadedMediaForVideoManagedObject:(id)a3 markAsDeleted:(BOOL)a4 saveWhenDone:(BOOL)a5 invalidateImmediately:(BOOL)a6
+- (BOOL)_removeDownloadedMediaForVideoManagedObject:(id)object markAsDeleted:(BOOL)deleted saveWhenDone:(BOOL)done invalidateImmediately:(BOOL)immediately
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  immediatelyCopy = immediately;
+  doneCopy = done;
+  deletedCopy = deleted;
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = v10;
-  if (v10)
+  objectCopy = object;
+  v11 = objectCopy;
+  if (objectCopy)
   {
-    v12 = [v10 localPlaybackURL];
+    localPlaybackURL = [objectCopy localPlaybackURL];
     v13 = sLogObject_2;
     v14 = os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (localPlaybackURL)
     {
       if (v14)
       {
         *buf = 138412290;
-        v24 = v12;
+        v24 = localPlaybackURL;
         _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_DEFAULT, "Deleting downloaded video at %@", buf, 0xCu);
       }
 
@@ -3658,7 +3658,7 @@ void __92__VUISidebandMediaLibrary__managedObjectWithEntityName_predicate_create
       block[1] = 3221225472;
       block[2] = __120__VUISidebandMediaLibrary__removeDownloadedMediaForVideoManagedObject_markAsDeleted_saveWhenDone_invalidateImmediately___block_invoke;
       block[3] = &unk_1E872D768;
-      v22 = v12;
+      v22 = localPlaybackURL;
       dispatch_async(v15, block);
     }
 
@@ -3670,7 +3670,7 @@ void __92__VUISidebandMediaLibrary__managedObjectWithEntityName_predicate_create
 
     v17 = sLogObject_2;
     v18 = os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT);
-    if (v8)
+    if (deletedCopy)
     {
       if (v18)
       {
@@ -3691,7 +3691,7 @@ void __92__VUISidebandMediaLibrary__managedObjectWithEntityName_predicate_create
       _os_log_impl(&dword_1E323F000, v17, OS_LOG_TYPE_DEFAULT, "NOT marking video as deleted", buf, 2u);
     }
 
-    v16 = [(VUISidebandMediaLibrary *)self _invalidateKeysForVideoManagedObject:v11 saveWhenDone:0 invalidateImmediately:v6];
+    v16 = [(VUISidebandMediaLibrary *)self _invalidateKeysForVideoManagedObject:v11 saveWhenDone:0 invalidateImmediately:immediatelyCopy];
     v19 = sLogObject_2;
     if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT))
     {
@@ -3702,7 +3702,7 @@ void __92__VUISidebandMediaLibrary__managedObjectWithEntityName_predicate_create
     [v11 setDownloadState:0];
     [v11 setEnqueuedOrder:0];
     [v11 setShouldDeleteAfterCompletion:0];
-    if (v7)
+    if (doneCopy)
     {
       [(VUISidebandMediaLibrary *)self saveChangesToManagedObjects];
     }
@@ -3746,12 +3746,12 @@ void __120__VUISidebandMediaLibrary__removeDownloadedMediaForVideoManagedObject_
   }
 }
 
-- (BOOL)_invalidateKeysForVideoManagedObject:(id)a3 saveWhenDone:(BOOL)a4 invalidateImmediately:(BOOL)a5
+- (BOOL)_invalidateKeysForVideoManagedObject:(id)object saveWhenDone:(BOOL)done invalidateImmediately:(BOOL)immediately
 {
-  v5 = a5;
+  immediatelyCopy = immediately;
   v73 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  if (!v54)
+  objectCopy = object;
+  if (!objectCopy)
   {
     if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_ERROR))
     {
@@ -3762,28 +3762,28 @@ void __120__VUISidebandMediaLibrary__removeDownloadedMediaForVideoManagedObject_
     goto LABEL_43;
   }
 
-  v53 = v5;
+  v53 = immediatelyCopy;
   v64 = 0;
   v65 = &v64;
   v66 = 0x3032000000;
   v67 = __Block_byref_object_copy__1;
   v68 = __Block_byref_object_dispose__1;
   v69 = 0;
-  v7 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __99__VUISidebandMediaLibrary__invalidateKeysForVideoManagedObject_saveWhenDone_invalidateImmediately___block_invoke;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v64;
-  v52 = self;
-  dispatch_sync(v7, block);
+  selfCopy = self;
+  dispatch_sync(serialQueue, block);
 
   v8 = sLogObject_2;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v54 fpsKeyInfo];
-    v10 = [v9 count];
+    fpsKeyInfo = [objectCopy fpsKeyInfo];
+    v10 = [fpsKeyInfo count];
     *buf = 134217984;
     v72 = v10;
     _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "Found %lu key info(s) for this video.  Finding one to use for invalidation", buf, 0xCu);
@@ -3793,8 +3793,8 @@ void __120__VUISidebandMediaLibrary__removeDownloadedMediaForVideoManagedObject_
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v11 = [v54 fpsKeyInfo];
-  v12 = [v11 countByEnumeratingWithState:&v59 objects:v70 count:16];
+  fpsKeyInfo2 = [objectCopy fpsKeyInfo];
+  v12 = [fpsKeyInfo2 countByEnumeratingWithState:&v59 objects:v70 count:16];
   if (!v12)
   {
 LABEL_20:
@@ -3809,7 +3809,7 @@ LABEL_6:
   {
     if (*v60 != v13)
     {
-      objc_enumerationMutation(v11);
+      objc_enumerationMutation(fpsKeyInfo2);
     }
 
     v15 = *(*(&v59 + 1) + 8 * v14);
@@ -3829,7 +3829,7 @@ LABEL_6:
 LABEL_18:
     if (v12 == ++v14)
     {
-      v12 = [v11 countByEnumeratingWithState:&v59 objects:v70 count:16];
+      v12 = [fpsKeyInfo2 countByEnumeratingWithState:&v59 objects:v70 count:16];
       if (v12)
       {
         goto LABEL_6;
@@ -3839,14 +3839,14 @@ LABEL_18:
     }
   }
 
-  v17 = [v15 expirationDate];
-  v18 = v17;
-  if (v17)
+  expirationDate = [v15 expirationDate];
+  v18 = expirationDate;
+  if (expirationDate)
   {
-    if (([v17 vui_isInTheFuture] & 1) == 0)
+    if (([expirationDate vui_isInTheFuture] & 1) == 0)
     {
-      v19 = [v15 playbackExpirationStartDate];
-      v20 = v19 == 0;
+      playbackExpirationStartDate = [v15 playbackExpirationStartDate];
+      v20 = playbackExpirationStartDate == 0;
 
       if (v20)
       {
@@ -3876,36 +3876,36 @@ LABEL_18:
   if (v23)
   {
     v24 = MEMORY[0x1E696AE18];
-    v25 = [v23 contentID];
-    v26 = [v24 predicateWithFormat:@"%K == %@", @"contentID", v25];
+    contentID = [v23 contentID];
+    v26 = [v24 predicateWithFormat:@"%K == %@", @"contentID", contentID];
 
-    v27 = [(VUISidebandMediaLibrary *)v52 _managedObjectWithEntityName:@"FPSKeyDeletionInfo" predicate:v26 createIfNeeded:1 wasCreated:0];
-    v28 = [v54 fpsKeyServerURL];
-    [v27 setFpsKeyServerURL:v28];
+    v27 = [(VUISidebandMediaLibrary *)selfCopy _managedObjectWithEntityName:@"FPSKeyDeletionInfo" predicate:v26 createIfNeeded:1 wasCreated:0];
+    fpsKeyServerURL = [objectCopy fpsKeyServerURL];
+    [v27 setFpsKeyServerURL:fpsKeyServerURL];
 
-    v29 = [v54 fpsNonceURL];
-    [v27 setFpsNonceURL:v29];
+    fpsNonceURL = [objectCopy fpsNonceURL];
+    [v27 setFpsNonceURL:fpsNonceURL];
 
-    v30 = [v54 additionalFPSRequestParamsJSONData];
-    [v27 setAdditionalFPSRequestParamsJSONData:v30];
+    additionalFPSRequestParamsJSONData = [objectCopy additionalFPSRequestParamsJSONData];
+    [v27 setAdditionalFPSRequestParamsJSONData:additionalFPSRequestParamsJSONData];
 
-    v31 = [v54 dsid];
-    [v27 setDsid:v31];
+    dsid = [objectCopy dsid];
+    [v27 setDsid:dsid];
 
-    v32 = [v23 keyURI];
-    [v27 setKeyURI:v32];
+    keyURI = [v23 keyURI];
+    [v27 setKeyURI:keyURI];
 
-    v33 = [v23 keyData];
-    [v27 setKeyData:v33];
+    keyData = [v23 keyData];
+    [v27 setKeyData:keyData];
 
-    v34 = [v23 expirationDate];
-    [v27 setExpirationDate:v34];
+    expirationDate2 = [v23 expirationDate];
+    [v27 setExpirationDate:expirationDate2];
 
-    v35 = [v23 playbackExpirationStartDate];
-    [v27 setPlaybackExpirationStartDate:v35];
+    playbackExpirationStartDate2 = [v23 playbackExpirationStartDate];
+    [v27 setPlaybackExpirationStartDate:playbackExpirationStartDate2];
 
-    v36 = [v23 contentID];
-    [v27 setContentID:v36];
+    contentID2 = [v23 contentID];
+    [v27 setContentID:contentID2];
 
     if (!v53)
     {
@@ -3946,8 +3946,8 @@ LABEL_37:
 
   v40 = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:@"FPSKeyDeletionInfo"];
   v41 = MEMORY[0x1E696AE18];
-  v42 = [v54 adamID];
-  v43 = [v41 predicateWithFormat:@"%K == %@", @"contentID", v42];
+  adamID = [objectCopy adamID];
+  v43 = [v41 predicateWithFormat:@"%K == %@", @"contentID", adamID];
 
   [v40 setPredicate:v43];
   v44 = [v65[5] executeFetchRequest:v40 error:0];
@@ -3965,8 +3965,8 @@ LABEL_37:
   }
 
   v46 = +[VUISecureInvalidationManager sharedInstance];
-  v47 = [v44 firstObject];
-  [v46 removeDeletionInfoFromPenaltyBox:v47];
+  firstObject = [v44 firstObject];
+  [v46 removeDeletionInfoFromPenaltyBox:firstObject];
 
   dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_242);
 LABEL_39:
@@ -3980,13 +3980,13 @@ LABEL_40:
     _os_log_impl(&dword_1E323F000, v49, OS_LOG_TYPE_DEFAULT, "Removing offline FPS keys from database", buf, 2u);
   }
 
-  v50 = [v54 fpsKeyInfo];
+  fpsKeyInfo3 = [objectCopy fpsKeyInfo];
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __99__VUISidebandMediaLibrary__invalidateKeysForVideoManagedObject_saveWhenDone_invalidateImmediately___block_invoke_243;
   v55[3] = &unk_1E872ECC8;
   v55[4] = &v64;
-  [v50 enumerateObjectsUsingBlock:v55];
+  [fpsKeyInfo3 enumerateObjectsUsingBlock:v55];
 
   _Block_object_dispose(&v64, 8);
 LABEL_43:
@@ -4040,18 +4040,18 @@ void __99__VUISidebandMediaLibrary__invalidateKeysForVideoManagedObject_saveWhen
   [v4 performSelector:sel_updateKeyRenewalAndExpiration withObject:0 afterDelay:0.0];
 }
 
-- (void)_mainQueueManagedObjectContextDidSave:(id)a3
+- (void)_mainQueueManagedObjectContextDidSave:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   v5 = objc_alloc_init(MEMORY[0x1E695DFD8]);
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKey:*MEMORY[0x1E695D328]];
+  userInfo = [saveCopy userInfo];
+  v7 = [userInfo objectForKey:*MEMORY[0x1E695D328]];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:*MEMORY[0x1E695D4D0]];
+  userInfo2 = [saveCopy userInfo];
+  v9 = [userInfo2 objectForKey:*MEMORY[0x1E695D4D0]];
 
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKey:*MEMORY[0x1E695D2F8]];
+  userInfo3 = [saveCopy userInfo];
+  v11 = [userInfo3 objectForKey:*MEMORY[0x1E695D2F8]];
 
   if ([v7 count])
   {
@@ -4090,14 +4090,14 @@ void __99__VUISidebandMediaLibrary__invalidateKeysForVideoManagedObject_saveWhen
   v28 = __Block_byref_object_copy__1;
   v29 = __Block_byref_object_dispose__1;
   v30 = 0;
-  v15 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __65__VUISidebandMediaLibrary__mainQueueManagedObjectContextDidSave___block_invoke_2;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v25;
-  dispatch_sync(v15, block);
+  dispatch_sync(serialQueue, block);
 
   objc_initWeak(&location, self);
   v16 = v26[5];
@@ -4106,7 +4106,7 @@ void __99__VUISidebandMediaLibrary__invalidateKeysForVideoManagedObject_saveWhen
   v18[2] = __65__VUISidebandMediaLibrary__mainQueueManagedObjectContextDidSave___block_invoke_3;
   v18[3] = &unk_1E872ED18;
   v20 = &v25;
-  v17 = v4;
+  v17 = saveCopy;
   v19 = v17;
   v21 = v32;
   objc_copyWeak(&v22, &location);
@@ -4168,10 +4168,10 @@ void __65__VUISidebandMediaLibrary__mainQueueManagedObjectContextDidSave___block
   [WeakRetained _postContentsDidChangeNotification];
 }
 
-- (id)_mainContextManagedObjectsForObjects:(id)a3
+- (id)_mainContextManagedObjectsForObjects:(id)objects
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectsCopy = objects;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v19 = 0;
   v20 = &v19;
@@ -4179,20 +4179,20 @@ void __65__VUISidebandMediaLibrary__mainQueueManagedObjectContextDidSave___block
   v22 = __Block_byref_object_copy__1;
   v23 = __Block_byref_object_dispose__1;
   v24 = 0;
-  v6 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__VUISidebandMediaLibrary__mainContextManagedObjectsForObjects___block_invoke;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v19;
-  dispatch_sync(v6, block);
+  dispatch_sync(serialQueue, block);
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = objectsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v25 count:16];
   if (v8)
   {
@@ -4206,8 +4206,8 @@ void __65__VUISidebandMediaLibrary__mainQueueManagedObjectContextDidSave___block
           objc_enumerationMutation(v7);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * i) objectID];
-        v12 = [v20[5] objectWithID:v11];
+        objectID = [*(*(&v14 + 1) + 8 * i) objectID];
+        v12 = [v20[5] objectWithID:objectID];
         if (v12)
         {
           [v5 addObject:v12];
@@ -4234,10 +4234,10 @@ void __64__VUISidebandMediaLibrary__mainContextManagedObjectsForObjects___block_
   *(v3 + 40) = v2;
 }
 
-- (void)_deleteVideoManagedObjects:(id)a3
+- (void)_deleteVideoManagedObjects:(id)objects
 {
   v79 = *MEMORY[0x1E69E9840];
-  v41 = a3;
+  objectsCopy = objects;
   v3 = [(VUISidebandMediaLibrary *)self _mainContextManagedObjectsForObjects:?];
   v70 = 0u;
   v71 = 0u;
@@ -4290,16 +4290,16 @@ void __64__VUISidebandMediaLibrary__mainContextManagedObjectsForObjects___block_
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 series];
-          v16 = [v14 season];
-          if (v15)
+          series = [v14 series];
+          season = [v14 season];
+          if (series)
           {
-            [v8 addObject:v15];
+            [v8 addObject:series];
           }
 
-          if (v16)
+          if (season)
           {
-            [v9 addObject:v16];
+            [v9 addObject:season];
           }
         }
       }
@@ -4316,14 +4316,14 @@ void __64__VUISidebandMediaLibrary__mainContextManagedObjectsForObjects___block_
   v61 = __Block_byref_object_copy__1;
   v62 = __Block_byref_object_dispose__1;
   v63 = 0;
-  v17 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __54__VUISidebandMediaLibrary__deleteVideoManagedObjects___block_invoke;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v58;
-  dispatch_sync(v17, block);
+  dispatch_sync(serialQueue, block);
 
   v42 = v9;
   v55 = 0u;
@@ -4382,8 +4382,8 @@ void __64__VUISidebandMediaLibrary__mainContextManagedObjectsForObjects___block_
         }
 
         v27 = *(*(&v49 + 1) + 8 * m);
-        v28 = [v27 episodes];
-        v29 = [v28 count] == 0;
+        episodes = [v27 episodes];
+        v29 = [episodes count] == 0;
 
         if (v29)
         {
@@ -4424,8 +4424,8 @@ void __64__VUISidebandMediaLibrary__mainContextManagedObjectsForObjects___block_
         }
 
         v35 = *(*(&v45 + 1) + 8 * n);
-        v36 = [v35 episodes];
-        v37 = [v36 count] == 0;
+        episodes2 = [v35 episodes];
+        v37 = [episodes2 count] == 0;
 
         if (v37)
         {
@@ -4457,8 +4457,8 @@ void __64__VUISidebandMediaLibrary__mainContextManagedObjectsForObjects___block_
       _os_log_impl(&dword_1E323F000, v39, OS_LOG_TYPE_DEFAULT, "Posting secure invalidation complete notification because no videos will be invalidated", buf, 2u);
     }
 
-    v40 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v40 postNotificationName:@"VUITellAppRemovalServiceThatSecureInvalidationDidCompleteNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"VUITellAppRemovalServiceThatSecureInvalidationDidCompleteNotification" object:0];
   }
 
   _Block_object_dispose(&v58, 8);
@@ -4473,10 +4473,10 @@ void __54__VUISidebandMediaLibrary__deleteVideoManagedObjects___block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-- (void)_deleteComingSoonVideoManagedObjects:(id)a3
+- (void)_deleteComingSoonVideoManagedObjects:(id)objects
 {
   v27 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  objectsCopy = objects;
   v4 = [(VUISidebandMediaLibrary *)self _mainContextManagedObjectsForObjects:?];
   v18 = 0;
   v19 = &v18;
@@ -4484,14 +4484,14 @@ void __54__VUISidebandMediaLibrary__deleteVideoManagedObjects___block_invoke(uin
   v21 = __Block_byref_object_copy__1;
   v22 = __Block_byref_object_dispose__1;
   v23 = 0;
-  v5 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__VUISidebandMediaLibrary__deleteComingSoonVideoManagedObjects___block_invoke;
   block[3] = &unk_1E872E5B0;
   block[4] = self;
   block[5] = &v18;
-  dispatch_sync(v5, block);
+  dispatch_sync(serialQueue, block);
 
   v15 = 0u;
   v16 = 0u;
@@ -4543,13 +4543,13 @@ void __64__VUISidebandMediaLibrary__deleteComingSoonVideoManagedObjects___block_
   *(v3 + 40) = v2;
 }
 
-- (void)_pruneVideosAtAppLaunchWithCompletion:(id)a3
+- (void)_pruneVideosAtAppLaunchWithCompletion:(id)completion
 {
   v68 = *MEMORY[0x1E69E9840];
-  v34 = a3;
+  completionCopy = completion;
   if (sDeleteAllEntriesOnInitialization == 1)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = sLogObject_2;
     if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT))
     {
@@ -4564,21 +4564,21 @@ void __64__VUISidebandMediaLibrary__deleteComingSoonVideoManagedObjects___block_
     v63 = __Block_byref_object_copy__1;
     v64 = __Block_byref_object_dispose__1;
     v65 = 0;
-    v7 = [(VUISidebandMediaLibrary *)v4 serialQueue];
+    serialQueue = [(VUISidebandMediaLibrary *)selfCopy serialQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __65__VUISidebandMediaLibrary__pruneVideosAtAppLaunchWithCompletion___block_invoke;
     block[3] = &unk_1E872E5B0;
-    block[4] = v4;
+    block[4] = selfCopy;
     block[5] = buf;
-    dispatch_sync(v7, block);
+    dispatch_sync(serialQueue, block);
 
     v8 = [*(v61 + 5) executeFetchRequest:v6 error:0];
     obj = [objc_alloc(MEMORY[0x1E695D5E0]) initWithEntityName:@"ComingSoonVideo"];
 
     v9 = [*(v61 + 5) executeFetchRequest:obj error:0];
-    [(VUISidebandMediaLibrary *)v4 _deleteVideoManagedObjects:v8];
-    [(VUISidebandMediaLibrary *)v4 _deleteComingSoonVideoManagedObjects:v9];
+    [(VUISidebandMediaLibrary *)selfCopy _deleteVideoManagedObjects:v8];
+    [(VUISidebandMediaLibrary *)selfCopy _deleteComingSoonVideoManagedObjects:v9];
 
     _Block_object_dispose(buf, 8);
   }
@@ -4586,10 +4586,10 @@ void __64__VUISidebandMediaLibrary__deleteComingSoonVideoManagedObjects___block_
   else
   {
     val = self;
-    v33 = [(VUISidebandMediaLibrary *)self _videosMarkedAsDeleted];
-    v32 = [(VUISidebandMediaLibrary *)self _downloadedVideosForNonSignedInUsers];
+    _videosMarkedAsDeleted = [(VUISidebandMediaLibrary *)self _videosMarkedAsDeleted];
+    _downloadedVideosForNonSignedInUsers = [(VUISidebandMediaLibrary *)self _downloadedVideosForNonSignedInUsers];
     v10 = [(VUISidebandMediaLibrary *)self videosWithDownloadState:2 entitlementTypes:0 sortDescriptors:0 useMainThreadContext:1];
-    v31 = [(VUISidebandMediaLibrary *)val _availableComingSoonVideos];
+    _availableComingSoonVideos = [(VUISidebandMediaLibrary *)val _availableComingSoonVideos];
     v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v39 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -4617,8 +4617,8 @@ void __64__VUISidebandMediaLibrary__deleteComingSoonVideoManagedObjects___block_
           v52 = 0u;
           v53 = 0u;
           v54 = 0u;
-          v16 = [v15 fpsKeyInfo];
-          v17 = [v16 countByEnumeratingWithState:&v51 objects:v66 count:16];
+          fpsKeyInfo = [v15 fpsKeyInfo];
+          v17 = [fpsKeyInfo countByEnumeratingWithState:&v51 objects:v66 count:16];
           if (v17)
           {
             v18 = *v52;
@@ -4628,12 +4628,12 @@ void __64__VUISidebandMediaLibrary__deleteComingSoonVideoManagedObjects___block_
               {
                 if (*v52 != v18)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(fpsKeyInfo);
                 }
 
-                v20 = [*(*(&v51 + 1) + 8 * j) expirationDate];
-                v21 = v20;
-                if (v20 && [v20 vui_isInThePast])
+                expirationDate = [*(*(&v51 + 1) + 8 * j) expirationDate];
+                v21 = expirationDate;
+                if (expirationDate && [expirationDate vui_isInThePast])
                 {
                   [v38 addObject:v15];
 
@@ -4641,7 +4641,7 @@ void __64__VUISidebandMediaLibrary__deleteComingSoonVideoManagedObjects___block_
                 }
               }
 
-              v17 = [v16 countByEnumeratingWithState:&v51 objects:v66 count:16];
+              v17 = [fpsKeyInfo countByEnumeratingWithState:&v51 objects:v66 count:16];
               if (v17)
               {
                 continue;
@@ -4653,11 +4653,11 @@ void __64__VUISidebandMediaLibrary__deleteComingSoonVideoManagedObjects___block_
 
 LABEL_21:
 
-          v22 = [v15 localPlaybackURL];
-          if (v22)
+          localPlaybackURL = [v15 localPlaybackURL];
+          if (localPlaybackURL)
           {
             [v39 addObject:v15];
-            [v11 addObject:v22];
+            [v11 addObject:localPlaybackURL];
           }
 
           else
@@ -4685,16 +4685,16 @@ LABEL_21:
     v25 = v39;
     v26 = v11;
     objc_copyWeak(&v50, buf);
-    v44 = v33;
-    v45 = v32;
+    v44 = _videosMarkedAsDeleted;
+    v45 = _downloadedVideosForNonSignedInUsers;
     v46 = v38;
     v47 = val;
-    v48 = v31;
-    v49 = v34;
-    v27 = v31;
+    v48 = _availableComingSoonVideos;
+    v49 = completionCopy;
+    v27 = _availableComingSoonVideos;
     v28 = v38;
-    v29 = v32;
-    v30 = v33;
+    v29 = _downloadedVideosForNonSignedInUsers;
+    v30 = _videosMarkedAsDeleted;
     dispatch_async(v23, v40);
 
     objc_destroyWeak(&v50);
@@ -4949,23 +4949,23 @@ LABEL_27:
 - (void)_removeDownloadsForNonSignedInUsers
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(VUISidebandMediaLibrary *)self _downloadedVideosForNonSignedInUsers];
+  _downloadedVideosForNonSignedInUsers = [(VUISidebandMediaLibrary *)self _downloadedVideosForNonSignedInUsers];
   v4 = sLogObject_2;
   if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
     *buf = 134217984;
-    v17 = [v3 count];
+    v17 = [_downloadedVideosForNonSignedInUsers count];
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_DEFAULT, "Removing %lu downloads for users that are not signed in", buf, 0xCu);
   }
 
-  if ([v3 count])
+  if ([_downloadedVideosForNonSignedInUsers count])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = v3;
+    v6 = _downloadedVideosForNonSignedInUsers;
     v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
@@ -4995,7 +4995,7 @@ LABEL_27:
   }
 }
 
-- (void)_activeAccountDidChange:(id)a3
+- (void)_activeAccountDidChange:(id)change
 {
   v4 = sLogObject_2;
   if (os_log_type_enabled(sLogObject_2, OS_LOG_TYPE_DEFAULT))
@@ -5021,25 +5021,25 @@ void __51__VUISidebandMediaLibrary__activeAccountDidChange___block_invoke(uint64
   [WeakRetained _removeDownloadsForNonSignedInUsers];
 }
 
-- (id)performFetch:(id)a3
+- (id)performFetch:(id)fetch
 {
-  v4 = a3;
+  fetchCopy = fetch;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
   v12 = __Block_byref_object_copy__1;
   v13 = __Block_byref_object_dispose__1;
   v14 = 0;
-  v5 = [(VUISidebandMediaLibrary *)self serialQueue];
+  serialQueue = [(VUISidebandMediaLibrary *)self serialQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__VUISidebandMediaLibrary_performFetch___block_invoke;
   v8[3] = &unk_1E872E5B0;
   v8[4] = self;
   v8[5] = &v9;
-  dispatch_sync(v5, v8);
+  dispatch_sync(serialQueue, v8);
 
-  v6 = [v10[5] executeFetchRequest:v4 error:0];
+  v6 = [v10[5] executeFetchRequest:fetchCopy error:0];
   _Block_object_dispose(&v9, 8);
 
   return v6;
@@ -5054,58 +5054,58 @@ void __40__VUISidebandMediaLibrary_performFetch___block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (unint64_t)countOfDownloadedVideosWithSeasonCanonicalId:(id)a3
+- (unint64_t)countOfDownloadedVideosWithSeasonCanonicalId:(id)id
 {
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  idCopy = id;
   v6 = [[v4 alloc] initWithEntityName:@"TVEpisode"];
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K == %@ AND season.canonicalID == %@", @"markedAsDeleted", @"downloadState", &unk_1F5E5E628, v5];
+  idCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K == %@ AND season.canonicalID == %@", @"markedAsDeleted", @"downloadState", &unk_1F5E5E628, idCopy];
 
-  [v6 setPredicate:v7];
+  [v6 setPredicate:idCopy];
   v8 = [(VUISidebandMediaLibrary *)self countForFetchRequest:v6 usingMainThreadContext:1];
 
   return v8;
 }
 
-- (unint64_t)countOfDownloadedOrDownloadingVideosWithSeasonCanonicalId:(id)a3
+- (unint64_t)countOfDownloadedOrDownloadingVideosWithSeasonCanonicalId:(id)id
 {
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  idCopy = id;
   v6 = [[v4 alloc] initWithEntityName:@"TVEpisode"];
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F5E5E628, &unk_1F5E5E640, &unk_1F5E5E658, 0}];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K IN %@ AND season.canonicalID == %@", @"markedAsDeleted", @"downloadState", v7, v5];
+  idCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K IN %@ AND season.canonicalID == %@", @"markedAsDeleted", @"downloadState", v7, idCopy];
 
-  [v6 setPredicate:v8];
+  [v6 setPredicate:idCopy];
   v9 = [(VUISidebandMediaLibrary *)self countForFetchRequest:v6 usingMainThreadContext:1];
 
   return v9;
 }
 
-- (BOOL)hasDownloadingVideosWithSeasonCanonicalId:(id)a3
+- (BOOL)hasDownloadingVideosWithSeasonCanonicalId:(id)id
 {
   v4 = MEMORY[0x1E695D5E0];
-  v5 = a3;
+  idCopy = id;
   v6 = [[v4 alloc] initWithEntityName:@"TVEpisode"];
   [v6 setFetchLimit:1];
   v7 = [MEMORY[0x1E695DFD8] setWithObjects:{&unk_1F5E5E640, &unk_1F5E5E658, 0}];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K IN %@ AND season.canonicalID == %@", @"markedAsDeleted", @"downloadState", v7, v5];
+  idCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == NO AND %K IN %@ AND season.canonicalID == %@", @"markedAsDeleted", @"downloadState", v7, idCopy];
 
-  [v6 setPredicate:v8];
+  [v6 setPredicate:idCopy];
   LOBYTE(self) = [(VUISidebandMediaLibrary *)self countForFetchRequest:v6 usingMainThreadContext:1]!= 0;
 
   return self;
 }
 
-- (unint64_t)countOfComingSoonVideosWithShowCanonicalId:(id)a3
+- (unint64_t)countOfComingSoonVideosWithShowCanonicalId:(id)id
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(VUISidebandMediaLibrary *)self seriesForCanonicalIDOrAdamID:a3];
+  v3 = [(VUISidebandMediaLibrary *)self seriesForCanonicalIDOrAdamID:id];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 seasons];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  seasons = [v3 seasons];
+  v5 = [seasons countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -5117,14 +5117,14 @@ void __40__VUISidebandMediaLibrary_performFetch___block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(seasons);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) comingSoonVideos];
-        v7 += [v10 count];
+        comingSoonVideos = [*(*(&v12 + 1) + 8 * i) comingSoonVideos];
+        v7 += [comingSoonVideos count];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [seasons countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -5138,11 +5138,11 @@ void __40__VUISidebandMediaLibrary_performFetch___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (unint64_t)countOfComingSoonVideosWithSeasonCanonicalId:(id)a3
+- (unint64_t)countOfComingSoonVideosWithSeasonCanonicalId:(id)id
 {
-  v3 = [(VUISidebandMediaLibrary *)self seasonForCanonicalIDOrAdamID:a3 createIfNeeded:0];
-  v4 = [v3 comingSoonVideos];
-  v5 = [v4 count];
+  v3 = [(VUISidebandMediaLibrary *)self seasonForCanonicalIDOrAdamID:id createIfNeeded:0];
+  comingSoonVideos = [v3 comingSoonVideos];
+  v5 = [comingSoonVideos count];
 
   return v5;
 }

@@ -1,53 +1,53 @@
 @interface PUAdjustmentsViewController
-- (BOOL)canToggleCell:(id)a3;
+- (BOOL)canToggleCell:(id)cell;
 - (CGSize)controlSize;
 - (NSArray)pocketableViews;
 - (PUAdjustmentViewControllerDelegate)delegate;
-- (PUAdjustmentsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PUAdjustmentsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (PUAdjustmentsViewDataSource)dataSource;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (double)ppt_sliderValueIncrement;
 - (double)ppt_sliderVisibleScaleValue;
-- (id)_backgroundImageForItemAtIndexPath:(id)a3;
-- (id)_circularImageWithSize:(CGSize)a3 color:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (id)_backgroundImageForItemAtIndexPath:(id)path;
+- (id)_circularImageWithSize:(CGSize)size color:(id)color;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (void)_performFeedbackIfNeeded;
-- (void)_resetControlsAtIndexPath:(id)a3;
+- (void)_resetControlsAtIndexPath:(id)path;
 - (void)_setupCellBackgroundImagesIfNeeded;
 - (void)_sliderDidEndScrolling;
-- (void)_updateCell:(id)a3 withInfo:(id)a4;
-- (void)_updateCollectionViewLayoutDirection:(int64_t)a3;
+- (void)_updateCell:(id)cell withInfo:(id)info;
+- (void)_updateCollectionViewLayoutDirection:(int64_t)direction;
 - (void)_updateSelectedInfo;
-- (void)_updateSliderForControlAtIndexPath:(id)a3;
+- (void)_updateSliderForControlAtIndexPath:(id)path;
 - (void)_updateViewLayout;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)decreaseAdjustmentValue:(BOOL)a3;
-- (void)didToggleCell:(id)a3;
-- (void)hideUnselectedAdjustments:(BOOL)a3;
-- (void)increaseAdjustmentValue:(BOOL)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)decreaseAdjustmentValue:(BOOL)value;
+- (void)didToggleCell:(id)cell;
+- (void)hideUnselectedAdjustments:(BOOL)adjustments;
+- (void)increaseAdjustmentValue:(BOOL)value;
 - (void)ppt_selectNextAdjustment;
 - (void)resetControls;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)selectAdjustmentInfoAtIndexPath:(id)a3;
-- (void)setLayoutDirection:(int64_t)a3;
-- (void)setSelectedIndexPath:(id)a3;
-- (void)sliderDidEndScrolling:(id)a3;
-- (void)sliderValueChanged:(id)a3;
-- (void)sliderWillBeginScrolling:(id)a3;
-- (void)sliderWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)selectAdjustmentInfoAtIndexPath:(id)path;
+- (void)setLayoutDirection:(int64_t)direction;
+- (void)setSelectedIndexPath:(id)path;
+- (void)sliderDidEndScrolling:(id)scrolling;
+- (void)sliderValueChanged:(id)changed;
+- (void)sliderWillBeginScrolling:(id)scrolling;
+- (void)sliderWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
 - (void)updateControls;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUAdjustmentsViewController
@@ -77,19 +77,19 @@
 
 - (double)ppt_sliderValueIncrement
 {
-  v3 = [(PUAdjustmentsViewController *)self slider];
-  [v3 minimumValue];
+  slider = [(PUAdjustmentsViewController *)self slider];
+  [slider minimumValue];
   v5 = v4;
 
-  v6 = [(PUAdjustmentsViewController *)self slider];
-  [v6 maximumValue];
+  slider2 = [(PUAdjustmentsViewController *)self slider];
+  [slider2 maximumValue];
   v8 = v7;
 
-  v9 = [(PUAdjustmentsViewController *)self slider];
-  v10 = [v9 tickMarkCount] - 1;
+  slider3 = [(PUAdjustmentsViewController *)self slider];
+  v10 = [slider3 tickMarkCount] - 1;
 
-  v11 = [(PUAdjustmentsViewController *)self slider];
-  [v11 maximumValue];
+  slider4 = [(PUAdjustmentsViewController *)self slider];
+  [slider4 maximumValue];
   v13 = (v8 - v5) / fmax(v10, 1.0) * 100.0 / v12;
 
   return v13;
@@ -97,11 +97,11 @@
 
 - (double)ppt_sliderVisibleScaleValue
 {
-  v3 = [(PUAdjustmentsViewController *)self slider];
-  [v3 value];
+  slider = [(PUAdjustmentsViewController *)self slider];
+  [slider value];
   v5 = v4 * 100.0;
-  v6 = [(PUAdjustmentsViewController *)self slider];
-  [v6 maximumValue];
+  slider2 = [(PUAdjustmentsViewController *)self slider];
+  [slider2 maximumValue];
   v8 = v5 / v7;
 
   return v8;
@@ -109,30 +109,30 @@
 
 - (void)ppt_selectNextAdjustment
 {
-  v3 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-  v4 = [v3 section];
+  selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  section = [selectedIndexPath section];
 
-  v5 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-  v6 = [v5 item] + 1;
+  selectedIndexPath2 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  v6 = [selectedIndexPath2 item] + 1;
 
-  v7 = [(PUAdjustmentsViewController *)self dataSource];
-  v8 = [v7 numberOfItemsInSection:v4];
+  dataSource = [(PUAdjustmentsViewController *)self dataSource];
+  v8 = [dataSource numberOfItemsInSection:section];
 
   if (v6 < v8)
   {
     v9 = MEMORY[0x1E696AC88];
     v10 = v6;
 LABEL_5:
-    v13 = v4;
+    v13 = section;
     goto LABEL_7;
   }
 
-  ++v4;
-  v11 = [(PUAdjustmentsViewController *)self dataSource];
-  v12 = [v11 numberOfSections] - 1;
+  ++section;
+  dataSource2 = [(PUAdjustmentsViewController *)self dataSource];
+  v12 = [dataSource2 numberOfSections] - 1;
 
   v9 = MEMORY[0x1E696AC88];
-  if (v4 < v12)
+  if (section < v12)
   {
     v10 = 0;
     goto LABEL_5;
@@ -142,90 +142,90 @@ LABEL_5:
   v13 = 0;
 LABEL_7:
   v16 = [v9 indexPathForItem:v10 inSection:v13];
-  v14 = [(PUAdjustmentsViewController *)self collectionView];
-  [v14 scrollToItemAtIndexPath:v16 atScrollPosition:16 animated:1];
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView scrollToItemAtIndexPath:v16 atScrollPosition:16 animated:1];
 
-  v15 = [(PUAdjustmentsViewController *)self collectionView];
-  [(PUAdjustmentsViewController *)self collectionView:v15 didSelectItemAtIndexPath:v16];
+  collectionView2 = [(PUAdjustmentsViewController *)self collectionView];
+  [(PUAdjustmentsViewController *)self collectionView:collectionView2 didSelectItemAtIndexPath:v16];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-  [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:v4];
+  selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:selectedIndexPath];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  if (([a3 isDragging] & 1) == 0)
+  if (([decelerating isDragging] & 1) == 0)
   {
-    v4 = [(PUAdjustmentsViewController *)self collectionView];
-    v5 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-    [v4 selectItemAtIndexPath:v5 animated:0 scrollPosition:0];
+    collectionView = [(PUAdjustmentsViewController *)self collectionView];
+    selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
+    [collectionView selectItemAtIndexPath:selectedIndexPath animated:0 scrollPosition:0];
 
-    v6 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-    [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:v6];
+    selectedIndexPath2 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+    [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:selectedIndexPath2];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v10 = a3;
-  if (!a4)
+  draggingCopy = dragging;
+  if (!decelerate)
   {
-    v6 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-    [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:v6];
+    selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
+    [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:selectedIndexPath];
   }
 
-  v7 = [(PUAdjustmentsViewController *)self delegate];
+  delegate = [(PUAdjustmentsViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PUAdjustmentsViewController *)self delegate];
-    [v9 adjustmentsViewControllerToolDidEndScrubbing:self];
+    delegate2 = [(PUAdjustmentsViewController *)self delegate];
+    [delegate2 adjustmentsViewControllerToolDidEndScrubbing:self];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(PUAdjustmentsViewController *)self slider];
-  [v4 setEnabled:0 dimmed:1 animated:1];
+  slider = [(PUAdjustmentsViewController *)self slider];
+  [slider setEnabled:0 dimmed:1 animated:1];
 
-  v5 = [(PUAdjustmentsViewController *)self selectionFeedbackGenerator];
-  [v5 prepareFeedback];
+  selectionFeedbackGenerator = [(PUAdjustmentsViewController *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator prepareFeedback];
 
-  v6 = [(PUAdjustmentsViewController *)self delegate];
+  delegate = [(PUAdjustmentsViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PUAdjustmentsViewController *)self delegate];
-    [v8 adjustmentsViewControllerToolWillBeginScrubbing:self];
+    delegate2 = [(PUAdjustmentsViewController *)self delegate];
+    [delegate2 adjustmentsViewControllerToolWillBeginScrubbing:self];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v27 = a3;
-  if (!-[PUAdjustmentsViewController isAnimatingScroll](self, "isAnimatingScroll") && (([v27 isTracking] & 1) != 0 || objc_msgSend(v27, "isDecelerating")))
+  scrollCopy = scroll;
+  if (!-[PUAdjustmentsViewController isAnimatingScroll](self, "isAnimatingScroll") && (([scrollCopy isTracking] & 1) != 0 || objc_msgSend(scrollCopy, "isDecelerating")))
   {
     Current = CFAbsoluteTimeGetCurrent();
     v5 = Current - self->_previousTimeStamp;
-    [v27 contentOffset];
+    [scrollCopy contentOffset];
     v7 = fabs((v6 - self->_lastOffset.x) / v5) / 100.0;
-    [v27 contentOffset];
+    [scrollCopy contentOffset];
     self->_lastOffset.x = v8;
     self->_lastOffset.y = v9;
     self->_previousTimeStamp = Current;
-    v10 = [(PUAdjustmentsViewController *)self collectionViewLayout];
-    [v27 bounds];
+    collectionViewLayout = [(PUAdjustmentsViewController *)self collectionViewLayout];
+    [scrollCopy bounds];
     PXRectGetCenter();
-    v11 = [v10 nearestIndexPathForVisibleItemAtPoint:?];
+    v11 = [collectionViewLayout nearestIndexPathForVisibleItemAtPoint:?];
 
-    v12 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+    selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
 
-    if (v11 != v12)
+    if (v11 != selectedIndexPath)
     {
       [(PUAdjustmentsViewController *)self setSelectedIndexPath:v11];
       [(PUAdjustmentsViewController *)self setDidPerformHapticFeedback:0];
@@ -235,14 +235,14 @@ LABEL_7:
       }
     }
 
-    [v27 bounds];
+    [scrollCopy bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(PUAdjustmentsViewController *)self collectionView];
-    v22 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-    v23 = [v21 layoutAttributesForItemAtIndexPath:v22];
+    collectionView = [(PUAdjustmentsViewController *)self collectionView];
+    selectedIndexPath2 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+    v23 = [collectionView layoutAttributesForItemAtIndexPath:selectedIndexPath2];
 
     [v23 frame];
     MidX = CGRectGetMidX(v29);
@@ -262,14 +262,14 @@ LABEL_7:
 {
   if (![(PUAdjustmentsViewController *)self didPerformHapticFeedback])
   {
-    v3 = [(PUAdjustmentsViewController *)self selectionFeedbackGenerator];
-    [v3 performFeedback];
+    selectionFeedbackGenerator = [(PUAdjustmentsViewController *)self selectionFeedbackGenerator];
+    [selectionFeedbackGenerator performFeedback];
 
     [(PUAdjustmentsViewController *)self setDidPerformHapticFeedback:1];
   }
 }
 
-- (void)sliderDidEndScrolling:(id)a3
+- (void)sliderDidEndScrolling:(id)scrolling
 {
   [(PUAdjustmentsViewController *)self _sliderDidEndScrolling];
   if (![(PUAdjustmentsViewController *)self updatingControls])
@@ -278,22 +278,22 @@ LABEL_7:
     self->_sliderScrubbingLevel = v4;
     if (!v4)
     {
-      v5 = [(PUAdjustmentsViewController *)self dataSource];
-      [v5 endInteractiveChange];
+      dataSource = [(PUAdjustmentsViewController *)self dataSource];
+      [dataSource endInteractiveChange];
     }
   }
 }
 
-- (void)sliderWillEndScrolling:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)sliderWillEndScrolling:(id)scrolling withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v7 = [(PUAdjustmentsViewController *)self delegate:a3];
+  x = velocity.x;
+  v7 = [(PUAdjustmentsViewController *)self delegate:scrolling];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PUAdjustmentsViewController *)self delegate];
-    [v9 adjustmentsViewControllerSliderWillEndScrubbing:self];
+    delegate = [(PUAdjustmentsViewController *)self delegate];
+    [delegate adjustmentsViewControllerSliderWillEndScrubbing:self];
   }
 
   if (x == 0.0)
@@ -305,13 +305,13 @@ LABEL_7:
 
 - (void)_sliderDidEndScrolling
 {
-  v3 = [(PUAdjustmentsViewController *)self delegate];
+  delegate = [(PUAdjustmentsViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PUAdjustmentsViewController *)self delegate];
-    [v5 adjustmentsViewControllerSliderDidEndScrubbing:self];
+    delegate2 = [(PUAdjustmentsViewController *)self delegate];
+    [delegate2 adjustmentsViewControllerSliderDidEndScrubbing:self];
   }
 
   snappingController = self->_snappingController;
@@ -319,15 +319,15 @@ LABEL_7:
   [(PXUISnappingController *)snappingController interactionEnded];
 }
 
-- (void)sliderWillBeginScrolling:(id)a3
+- (void)sliderWillBeginScrolling:(id)scrolling
 {
   if (![(PUAdjustmentsViewController *)self updatingControls])
   {
     sliderScrubbingLevel = self->_sliderScrubbingLevel;
     if (!sliderScrubbingLevel)
     {
-      v5 = [(PUAdjustmentsViewController *)self dataSource];
-      [v5 beginInteractiveChange];
+      dataSource = [(PUAdjustmentsViewController *)self dataSource];
+      [dataSource beginInteractiveChange];
 
       sliderScrubbingLevel = self->_sliderScrubbingLevel;
     }
@@ -335,13 +335,13 @@ LABEL_7:
     self->_sliderScrubbingLevel = sliderScrubbingLevel + 1;
   }
 
-  v6 = [(PUAdjustmentsViewController *)self delegate];
+  delegate = [(PUAdjustmentsViewController *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(PUAdjustmentsViewController *)self delegate];
-    [v8 adjustmentsViewControllerSliderWillBeginScrubbing:self];
+    delegate2 = [(PUAdjustmentsViewController *)self delegate];
+    [delegate2 adjustmentsViewControllerSliderWillBeginScrubbing:self];
   }
 
   snappingController = self->_snappingController;
@@ -349,30 +349,30 @@ LABEL_7:
   [(PXUISnappingController *)snappingController interactionBegan];
 }
 
-- (void)sliderValueChanged:(id)a3
+- (void)sliderValueChanged:(id)changed
 {
-  v11 = a3;
+  changedCopy = changed;
   if (![(PUAdjustmentsViewController *)self isAnimatingScroll])
   {
-    v4 = [(PUAdjustmentsViewController *)self collectionView];
-    v5 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-    v6 = [v4 cellForItemAtIndexPath:v5];
+    collectionView = [(PUAdjustmentsViewController *)self collectionView];
+    selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
+    v6 = [collectionView cellForItemAtIndexPath:selectedIndexPath];
 
     if (([v6 isEnabled] & 1) == 0)
     {
       [v6 setEnabled:1];
-      [v11 setEnabled:1 dimmed:0 animated:1];
+      [changedCopy setEnabled:1 dimmed:0 animated:1];
     }
 
     [v6 setIsUserModifying:1];
-    [v11 value];
+    [changedCopy value];
     [v6 setValue:?];
     self->_isUserModified = 1;
-    v7 = [(PUAdjustmentsViewController *)self dataSource];
-    [v11 value];
+    dataSource = [(PUAdjustmentsViewController *)self dataSource];
+    [changedCopy value];
     v9 = v8;
-    v10 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-    [v7 modifyValue:v10 atIndexPath:v9];
+    selectedIndexPath2 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+    [dataSource modifyValue:selectedIndexPath2 atIndexPath:v9];
 
     self->_isUserModified = 0;
   }
@@ -381,37 +381,37 @@ LABEL_7:
 - (NSArray)pocketableViews
 {
   v7[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PUAdjustmentsViewController *)self slider];
-  v7[0] = v3;
-  v4 = [(PUAdjustmentsViewController *)self collectionView];
-  v7[1] = v4;
+  slider = [(PUAdjustmentsViewController *)self slider];
+  v7[0] = slider;
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  v7[1] = collectionView;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
 
   return v5;
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(PUAdjustmentsViewController *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(PUAdjustmentsViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(PUAdjustmentsViewController *)self updateControls];
   }
 }
 
-- (void)selectAdjustmentInfoAtIndexPath:(id)a3
+- (void)selectAdjustmentInfoAtIndexPath:(id)path
 {
-  v8 = a3;
-  v4 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-  v5 = [v8 isEqual:v4];
+  pathCopy = path;
+  selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  v5 = [pathCopy isEqual:selectedIndexPath];
 
   if ((v5 & 1) == 0)
   {
-    [(PUAdjustmentsViewController *)self setSelectedIndexPath:v8];
+    [(PUAdjustmentsViewController *)self setSelectedIndexPath:pathCopy];
     if ([(PUAdjustmentsViewController *)self layoutDirection])
     {
       v6 = 2;
@@ -422,43 +422,43 @@ LABEL_7:
       v6 = 16;
     }
 
-    v7 = [(PUAdjustmentsViewController *)self collectionView];
-    [v7 scrollToItemAtIndexPath:v8 atScrollPosition:v6 animated:1];
+    collectionView = [(PUAdjustmentsViewController *)self collectionView];
+    [collectionView scrollToItemAtIndexPath:pathCopy atScrollPosition:v6 animated:1];
   }
 }
 
-- (void)hideUnselectedAdjustments:(BOOL)a3
+- (void)hideUnselectedAdjustments:(BOOL)adjustments
 {
-  v3 = a3;
+  adjustmentsCopy = adjustments;
   v23 = *MEMORY[0x1E69E9840];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(PUAdjustmentsViewController *)self collectionView];
-  v6 = [v5 indexPathsForVisibleItems];
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v7 = [indexPathsForVisibleItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v19;
-    v10 = !v3;
+    v10 = !adjustmentsCopy;
     do
     {
       for (i = 0; i != v8; ++i)
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-        v14 = [v13 compare:v12];
+        selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
+        v14 = [selectedIndexPath compare:v12];
 
-        v15 = [(PUAdjustmentsViewController *)self collectionView];
-        v16 = [v15 cellForItemAtIndexPath:v12];
+        collectionView2 = [(PUAdjustmentsViewController *)self collectionView];
+        v16 = [collectionView2 cellForItemAtIndexPath:v12];
 
         if (v14)
         {
@@ -473,27 +473,27 @@ LABEL_7:
         [v16 setAlpha:v17];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [indexPathsForVisibleItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)decreaseAdjustmentValue:(BOOL)a3
+- (void)decreaseAdjustmentValue:(BOOL)value
 {
-  v3 = a3;
-  v5 = [(PUAdjustmentsViewController *)self slider];
-  [PUPhotoEditSupport changeValueOfSlider:v5 reverse:1 coarse:v3];
-  [(PUAdjustmentsViewController *)self sliderValueChanged:v5];
+  valueCopy = value;
+  slider = [(PUAdjustmentsViewController *)self slider];
+  [PUPhotoEditSupport changeValueOfSlider:slider reverse:1 coarse:valueCopy];
+  [(PUAdjustmentsViewController *)self sliderValueChanged:slider];
 }
 
-- (void)increaseAdjustmentValue:(BOOL)a3
+- (void)increaseAdjustmentValue:(BOOL)value
 {
-  v3 = a3;
-  v5 = [(PUAdjustmentsViewController *)self slider];
-  [PUPhotoEditSupport changeValueOfSlider:v5 reverse:0 coarse:v3];
-  [(PUAdjustmentsViewController *)self sliderValueChanged:v5];
+  valueCopy = value;
+  slider = [(PUAdjustmentsViewController *)self slider];
+  [PUPhotoEditSupport changeValueOfSlider:slider reverse:0 coarse:valueCopy];
+  [(PUAdjustmentsViewController *)self sliderValueChanged:slider];
 }
 
 - (void)resetControls
@@ -503,10 +503,10 @@ LABEL_7:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(PUAdjustmentsViewController *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -518,25 +518,25 @@ LABEL_7:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        v10 = [(PUAdjustmentsViewController *)self dataSource];
-        v11 = [v10 infoForItemAtIndexPath:v9];
+        dataSource = [(PUAdjustmentsViewController *)self dataSource];
+        v11 = [dataSource infoForItemAtIndexPath:v9];
 
-        v12 = [(PUAdjustmentsViewController *)self collectionView];
-        v13 = [v12 cellForItemAtIndexPath:v9];
+        collectionView2 = [(PUAdjustmentsViewController *)self collectionView];
+        v13 = [collectionView2 cellForItemAtIndexPath:v9];
 
         [(PUAdjustmentsViewController *)self _updateCell:v13 withInfo:v11];
-        v14 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-        [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:v14];
+        selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
+        [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:selectedIndexPath];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
@@ -551,10 +551,10 @@ LABEL_7:
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(PUAdjustmentsViewController *)self collectionView];
-  v4 = [v3 indexPathsForVisibleItems];
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [indexPathsForVisibleItems countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -566,15 +566,15 @@ LABEL_7:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(indexPathsForVisibleItems);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
-        v10 = [(PUAdjustmentsViewController *)self dataSource];
-        v11 = [v10 infoForItemAtIndexPath:v9];
+        dataSource = [(PUAdjustmentsViewController *)self dataSource];
+        v11 = [dataSource infoForItemAtIndexPath:v9];
 
-        v12 = [(PUAdjustmentsViewController *)self collectionView];
-        v13 = [v12 cellForItemAtIndexPath:v9];
+        collectionView2 = [(PUAdjustmentsViewController *)self collectionView];
+        v13 = [collectionView2 cellForItemAtIndexPath:v9];
 
         [(PUAdjustmentsViewController *)self _updateCell:v13 withInfo:v11];
         if (!self->_isUserModified)
@@ -586,7 +586,7 @@ LABEL_7:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [indexPathsForVisibleItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -595,61 +595,61 @@ LABEL_7:
   [(PUAdjustmentsViewController *)self setUpdatingControls:0];
 }
 
-- (void)_updateCell:(id)a3 withInfo:(id)a4
+- (void)_updateCell:(id)cell withInfo:(id)info
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14 && v6)
+  cellCopy = cell;
+  infoCopy = info;
+  if (cellCopy && infoCopy)
   {
-    v7 = [v6 iconName];
-    [v14 setImageTransformBlock:0];
-    v8 = [(PUAdjustmentsViewController *)self traitCollection];
-    v9 = [v8 userInterfaceStyle];
+    iconName = [infoCopy iconName];
+    [cellCopy setImageTransformBlock:0];
+    traitCollection = [(PUAdjustmentsViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v9 == 1)
+    if (userInterfaceStyle == 1)
     {
-      v10 = [v6 altIconName];
+      altIconName = [infoCopy altIconName];
 
-      if (v10)
+      if (altIconName)
       {
-        v11 = [v6 altIconName];
+        altIconName2 = [infoCopy altIconName];
 
-        v7 = v11;
+        iconName = altIconName2;
       }
 
-      v12 = [v6 altImageTransformBlock];
+      altImageTransformBlock = [infoCopy altImageTransformBlock];
 
-      if (v12)
+      if (altImageTransformBlock)
       {
-        v13 = [v6 altImageTransformBlock];
-        [v14 setImageTransformBlock:v13];
+        altImageTransformBlock2 = [infoCopy altImageTransformBlock];
+        [cellCopy setImageTransformBlock:altImageTransformBlock2];
       }
     }
 
-    [v14 setImageName:v7];
-    [v14 setImageIsColor:{objc_msgSend(v6, "iconIsColor")}];
-    [v14 setEnabled:{objc_msgSend(v6, "enabled")}];
-    [v6 minimumLevel];
-    [v14 setMinValue:?];
-    [v6 maximumLevel];
-    [v14 setMaxValue:?];
-    [v6 defaultLevel];
-    [v14 setDefaultValue:?];
-    [v6 identityLevel];
-    [v14 setIdentityValue:?];
-    [v6 currentLevel];
-    [v14 setValue:?];
+    [cellCopy setImageName:iconName];
+    [cellCopy setImageIsColor:{objc_msgSend(infoCopy, "iconIsColor")}];
+    [cellCopy setEnabled:{objc_msgSend(infoCopy, "enabled")}];
+    [infoCopy minimumLevel];
+    [cellCopy setMinValue:?];
+    [infoCopy maximumLevel];
+    [cellCopy setMaxValue:?];
+    [infoCopy defaultLevel];
+    [cellCopy setDefaultValue:?];
+    [infoCopy identityLevel];
+    [cellCopy setIdentityValue:?];
+    [infoCopy currentLevel];
+    [cellCopy setValue:?];
   }
 }
 
-- (id)_backgroundImageForItemAtIndexPath:(id)a3
+- (id)_backgroundImageForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(PUAdjustmentsViewController *)self _setupCellBackgroundImagesIfNeeded];
-  v5 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
 
   v6 = &OBJC_IVAR___PUAdjustmentsViewController__itemBackgroundImage;
-  if (v5 == v4)
+  if (selectedIndexPath == pathCopy)
   {
     v6 = &OBJC_IVAR___PUAdjustmentsViewController__selectedItemBackgroundImage;
   }
@@ -663,8 +663,8 @@ LABEL_7:
 {
   if (!self->_itemBackgroundImage)
   {
-    v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v4 = [v3 colorWithAlphaComponent:0.3];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    v4 = [systemBackgroundColor colorWithAlphaComponent:0.3];
 
     v5 = [(PUAdjustmentsViewController *)self _circularImageWithSize:v4 color:51.0, 51.0];
     itemBackgroundImage = self->_itemBackgroundImage;
@@ -673,8 +673,8 @@ LABEL_7:
 
   if (!self->_selectedItemBackgroundImage)
   {
-    v7 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v10 = [v7 colorWithAlphaComponent:0.9];
+    systemBackgroundColor2 = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    v10 = [systemBackgroundColor2 colorWithAlphaComponent:0.9];
 
     v8 = [(PUAdjustmentsViewController *)self _circularImageWithSize:v10 color:53.0, 53.0];
     selectedItemBackgroundImage = self->_selectedItemBackgroundImage;
@@ -682,20 +682,20 @@ LABEL_7:
   }
 }
 
-- (id)_circularImageWithSize:(CGSize)a3 color:(id)a4
+- (id)_circularImageWithSize:(CGSize)size color:(id)color
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
+  height = size.height;
+  width = size.width;
+  colorCopy = color;
   v7 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:{width, height}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __60__PUAdjustmentsViewController__circularImageWithSize_color___block_invoke;
   v11[3] = &unk_1E7B74BD0;
-  v12 = v6;
+  v12 = colorCopy;
   v13 = width;
   v14 = height;
-  v8 = v6;
+  v8 = colorCopy;
   v9 = [v7 imageWithActions:v11];
 
   return v9;
@@ -716,29 +716,29 @@ void __60__PUAdjustmentsViewController__circularImageWithSize_color___block_invo
   CGContextFillEllipseInRect(v5, *&v8);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v10 = a4;
-  v7 = a5;
-  v8 = [(PUAdjustmentsViewController *)self dataSource];
-  v9 = [v8 infoForItemAtIndexPath:v7];
+  cellCopy = cell;
+  pathCopy = path;
+  dataSource = [(PUAdjustmentsViewController *)self dataSource];
+  v9 = [dataSource infoForItemAtIndexPath:pathCopy];
 
-  [(PUAdjustmentsViewController *)self _updateCell:v10 withInfo:v9];
+  [(PUAdjustmentsViewController *)self _updateCell:cellCopy withInfo:v9];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUAdjustmentsViewController *)self dataSource];
-  v9 = [v8 infoForItemAtIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  dataSource = [(PUAdjustmentsViewController *)self dataSource];
+  v9 = [dataSource infoForItemAtIndexPath:pathCopy];
 
-  v10 = [v9 identifier];
+  identifier = [v9 identifier];
   v11 = *MEMORY[0x1E69BDF98];
 
-  if (v10 == v11)
+  if (identifier == v11)
   {
-    v13 = [v7 dequeueReusableCellWithReuseIdentifier:@"PUEditAutoEnhanceCellReuseIdentifier" forIndexPath:v6];
+    v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PUEditAutoEnhanceCellReuseIdentifier" forIndexPath:pathCopy];
 
     autoEnhanceCell = self->_autoEnhanceCell;
     self->_autoEnhanceCell = v13;
@@ -749,7 +749,7 @@ void __60__PUAdjustmentsViewController__circularImageWithSize_color___block_invo
 
   else
   {
-    v12 = [v7 dequeueReusableCellWithReuseIdentifier:@"PUEditAdjustmentsCellReuseIdentifier" forIndexPath:v6];
+    v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:@"PUEditAdjustmentsCellReuseIdentifier" forIndexPath:pathCopy];
 
     [(PUPhotoEditAutoAdjustmentCell *)v12 setDelegate:self];
     [(PUPhotoEditAutoAdjustmentCell *)v12 setShouldDisplayValueLabel:[(PUAdjustmentsViewController *)self shouldDisplayControlValues]];
@@ -761,46 +761,46 @@ void __60__PUAdjustmentsViewController__circularImageWithSize_color___block_invo
   return v12;
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v4 = [(PUAdjustmentsViewController *)self dataSource];
+  dataSource = [(PUAdjustmentsViewController *)self dataSource];
 
-  if (!v4)
+  if (!dataSource)
   {
     return 0;
   }
 
-  v5 = [(PUAdjustmentsViewController *)self dataSource];
-  v6 = [v5 numberOfSections];
+  dataSource2 = [(PUAdjustmentsViewController *)self dataSource];
+  numberOfSections = [dataSource2 numberOfSections];
 
-  return v6;
+  return numberOfSections;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v6 = [(PUAdjustmentsViewController *)self dataSource];
+  dataSource = [(PUAdjustmentsViewController *)self dataSource];
 
-  if (!v6)
+  if (!dataSource)
   {
     return 0;
   }
 
-  v7 = [(PUAdjustmentsViewController *)self dataSource];
-  v8 = [v7 numberOfItemsInSection:a4];
+  dataSource2 = [(PUAdjustmentsViewController *)self dataSource];
+  v8 = [dataSource2 numberOfItemsInSection:section];
 
   return v8;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  pathCopy = path;
+  selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
 
-  if (v6 != v5)
+  if (selectedIndexPath != pathCopy)
   {
-    [(PUAdjustmentsViewController *)self setSelectedIndexPath:v5];
-    v7 = [(PUAdjustmentsViewController *)self slider];
-    [v7 setEnabled:0 dimmed:1 animated:1];
+    [(PUAdjustmentsViewController *)self setSelectedIndexPath:pathCopy];
+    slider = [(PUAdjustmentsViewController *)self slider];
+    [slider setEnabled:0 dimmed:1 animated:1];
 
     [(PUAdjustmentsViewController *)self setIsAnimatingScroll:1];
     if ([(PUAdjustmentsViewController *)self layoutDirection])
@@ -819,7 +819,7 @@ void __60__PUAdjustmentsViewController__circularImageWithSize_color___block_invo
     v12[2] = __71__PUAdjustmentsViewController_collectionView_didSelectItemAtIndexPath___block_invoke;
     v12[3] = &unk_1E7B7F350;
     v12[4] = self;
-    v13 = v5;
+    v13 = pathCopy;
     v14 = v8;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -845,13 +845,13 @@ uint64_t __71__PUAdjustmentsViewController_collectionView_didSelectItemAtIndexPa
   return [v2 setIsAnimatingScroll:0];
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  viewCopy = view;
+  layoutCopy = layout;
+  if (index)
   {
-    if (a5 < 1)
+    if (index < 1)
     {
       v12 = *(MEMORY[0x1E69DDCE0] + 16);
       v11 = *(MEMORY[0x1E69DDCE0] + 24);
@@ -861,8 +861,8 @@ uint64_t __71__PUAdjustmentsViewController_collectionView_didSelectItemAtIndexPa
 
     else
     {
-      v10 = [(PUAdjustmentsViewController *)self layoutDirection];
-      if (v10)
+      layoutDirection = [(PUAdjustmentsViewController *)self layoutDirection];
+      if (layoutDirection)
       {
         v11 = 0.0;
       }
@@ -872,7 +872,7 @@ uint64_t __71__PUAdjustmentsViewController_collectionView_didSelectItemAtIndexPa
         v11 = 10.0;
       }
 
-      if (v10)
+      if (layoutDirection)
       {
         v12 = 10.0;
       }
@@ -882,7 +882,7 @@ uint64_t __71__PUAdjustmentsViewController_collectionView_didSelectItemAtIndexPa
         v12 = 0.0;
       }
 
-      if (v10)
+      if (layoutDirection)
       {
         v13 = 0.0;
       }
@@ -892,7 +892,7 @@ uint64_t __71__PUAdjustmentsViewController_collectionView_didSelectItemAtIndexPa
         v13 = 10.0;
       }
 
-      if (v10)
+      if (layoutDirection)
       {
         v14 = 10.0;
       }
@@ -906,9 +906,9 @@ uint64_t __71__PUAdjustmentsViewController_collectionView_didSelectItemAtIndexPa
 
   else
   {
-    v15 = [(PUAdjustmentsViewController *)self layoutDirection];
+    layoutDirection2 = [(PUAdjustmentsViewController *)self layoutDirection];
     v13 = 0.0;
-    if (v15)
+    if (layoutDirection2)
     {
       v11 = 0.0;
     }
@@ -918,7 +918,7 @@ uint64_t __71__PUAdjustmentsViewController_collectionView_didSelectItemAtIndexPa
       v11 = 10.0;
     }
 
-    if (v15)
+    if (layoutDirection2)
     {
       v12 = 10.0;
     }
@@ -942,25 +942,25 @@ uint64_t __71__PUAdjustmentsViewController_collectionView_didSelectItemAtIndexPa
   return result;
 }
 
-- (void)didToggleCell:(id)a3
+- (void)didToggleCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(PUAdjustmentsViewController *)self collectionView];
-  v6 = [v5 indexPathForCell:v4];
+  cellCopy = cell;
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  v6 = [collectionView indexPathForCell:cellCopy];
 
   self->_isUserModified = 1;
-  v7 = [(PUAdjustmentsViewController *)self dataSource];
-  v8 = [v4 isEnabled];
+  dataSource = [(PUAdjustmentsViewController *)self dataSource];
+  isEnabled = [cellCopy isEnabled];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__PUAdjustmentsViewController_didToggleCell___block_invoke;
   v11[3] = &unk_1E7B76EA8;
   v11[4] = self;
   v12 = v6;
-  v13 = v4;
-  v9 = v4;
+  v13 = cellCopy;
+  v9 = cellCopy;
   v10 = v6;
-  [v7 setAdjustmentEnabled:v8 atIndexPath:v10 completionHandler:v11];
+  [dataSource setAdjustmentEnabled:isEnabled atIndexPath:v10 completionHandler:v11];
 
   self->_isUserModified = 0;
 }
@@ -979,135 +979,135 @@ void __45__PUAdjustmentsViewController_didToggleCell___block_invoke(uint64_t a1,
   }
 }
 
-- (BOOL)canToggleCell:(id)a3
+- (BOOL)canToggleCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(PUAdjustmentsViewController *)self dataSource];
-  v6 = [(PUAdjustmentsViewController *)self collectionView];
-  v7 = [v6 indexPathForCell:v4];
+  cellCopy = cell;
+  dataSource = [(PUAdjustmentsViewController *)self dataSource];
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  v7 = [collectionView indexPathForCell:cellCopy];
 
-  LOBYTE(v4) = [v5 canModifyAdjustmentAtIndexPath:v7];
-  return v4;
+  LOBYTE(cellCopy) = [dataSource canModifyAdjustmentAtIndexPath:v7];
+  return cellCopy;
 }
 
-- (void)_resetControlsAtIndexPath:(id)a3
+- (void)_resetControlsAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUAdjustmentsViewController *)self collectionView];
-  v7 = [v5 cellForItemAtIndexPath:v4];
+  pathCopy = path;
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  v7 = [collectionView cellForItemAtIndexPath:pathCopy];
 
   [v7 resetToDefault];
-  v6 = [(PUAdjustmentsViewController *)self slider];
-  [v6 resetToDefault];
+  slider = [(PUAdjustmentsViewController *)self slider];
+  [slider resetToDefault];
 }
 
-- (void)setSelectedIndexPath:(id)a3
+- (void)setSelectedIndexPath:(id)path
 {
-  v5 = a3;
-  if (self->_selectedIndexPath != v5)
+  pathCopy = path;
+  if (self->_selectedIndexPath != pathCopy)
   {
-    v8 = v5;
-    v6 = [(PUAdjustmentsViewController *)self collectionView];
-    v7 = [v6 cellForItemAtIndexPath:self->_selectedIndexPath];
+    v8 = pathCopy;
+    collectionView = [(PUAdjustmentsViewController *)self collectionView];
+    v7 = [collectionView cellForItemAtIndexPath:self->_selectedIndexPath];
 
     [v7 setIsUserModifying:0];
-    objc_storeStrong(&self->_selectedIndexPath, a3);
+    objc_storeStrong(&self->_selectedIndexPath, path);
     [(PUAdjustmentsViewController *)self _updateSelectedInfo];
 
-    v5 = v8;
+    pathCopy = v8;
   }
 }
 
 - (void)_updateSelectedInfo
 {
-  v3 = [(PUAdjustmentsViewController *)self dataSource];
-  v4 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-  obj = [v3 infoForItemAtIndexPath:v4];
+  dataSource = [(PUAdjustmentsViewController *)self dataSource];
+  selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  obj = [dataSource infoForItemAtIndexPath:selectedIndexPath];
 
   v5 = obj;
   if (obj)
   {
     objc_storeStrong(&self->_selectedAdjustmentInfo, obj);
-    v6 = [(PUAdjustmentsViewController *)self delegate];
+    delegate = [(PUAdjustmentsViewController *)self delegate];
 
     v5 = obj;
-    if (v6)
+    if (delegate)
     {
-      v7 = [(PUAdjustmentsViewController *)self delegate];
-      [v7 adjustmentsViewControllerDidUpdateSelectedControl:self];
+      delegate2 = [(PUAdjustmentsViewController *)self delegate];
+      [delegate2 adjustmentsViewControllerDidUpdateSelectedControl:self];
 
       v5 = obj;
     }
   }
 }
 
-- (void)setLayoutDirection:(int64_t)a3
+- (void)setLayoutDirection:(int64_t)direction
 {
-  if (self->_layoutDirection != a3)
+  if (self->_layoutDirection != direction)
   {
-    self->_layoutDirection = a3;
+    self->_layoutDirection = direction;
     [(PUAdjustmentsViewController *)self _updateCollectionViewLayoutDirection:?];
   }
 }
 
-- (void)_updateCollectionViewLayoutDirection:(int64_t)a3
+- (void)_updateCollectionViewLayoutDirection:(int64_t)direction
 {
-  v4 = a3 == 0;
-  v5 = [(PUAdjustmentsViewController *)self collectionViewLayout];
-  [v5 setScrollDirection:v4];
+  v4 = direction == 0;
+  collectionViewLayout = [(PUAdjustmentsViewController *)self collectionViewLayout];
+  [collectionViewLayout setScrollDirection:v4];
 
-  v6 = [(PUAdjustmentsViewController *)self collectionViewLayout];
-  [v6 invalidateLayout];
+  collectionViewLayout2 = [(PUAdjustmentsViewController *)self collectionViewLayout];
+  [collectionViewLayout2 invalidateLayout];
 }
 
-- (void)_updateSliderForControlAtIndexPath:(id)a3
+- (void)_updateSliderForControlAtIndexPath:(id)path
 {
-  v33 = a3;
-  v4 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  pathCopy = path;
+  selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
 
-  v5 = v33;
-  if (v4 == v33)
+  v5 = pathCopy;
+  if (selectedIndexPath == pathCopy)
   {
-    v6 = [(PUAdjustmentsViewController *)self dataSource];
-    v7 = [v6 infoForItemAtIndexPath:v33];
+    dataSource = [(PUAdjustmentsViewController *)self dataSource];
+    v7 = [dataSource infoForItemAtIndexPath:pathCopy];
 
     if (v7)
     {
-      v8 = [v7 enabled];
-      v9 = [v7 identifier];
-      v10 = v9 != *MEMORY[0x1E69BDF98];
+      enabled = [v7 enabled];
+      identifier = [v7 identifier];
+      v10 = identifier != *MEMORY[0x1E69BDF98];
 
-      v11 = v10 | v8;
-      v12 = [(PUAdjustmentsViewController *)self slider];
-      [v12 setEnabled:v11 & 1 dimmed:v8 ^ 1u animated:1];
+      v11 = v10 | enabled;
+      slider = [(PUAdjustmentsViewController *)self slider];
+      [slider setEnabled:v11 & 1 dimmed:enabled ^ 1u animated:1];
 
       [v7 minimumLevel];
       v14 = v13;
-      v15 = [(PUAdjustmentsViewController *)self slider];
-      [v15 setMinimumValue:v14];
+      slider2 = [(PUAdjustmentsViewController *)self slider];
+      [slider2 setMinimumValue:v14];
 
       [v7 maximumLevel];
       v17 = v16;
-      v18 = [(PUAdjustmentsViewController *)self slider];
-      [v18 setMaximumValue:v17];
+      slider3 = [(PUAdjustmentsViewController *)self slider];
+      [slider3 setMaximumValue:v17];
 
       [v7 defaultLevel];
       v20 = v19;
-      v21 = [(PUAdjustmentsViewController *)self slider];
-      [v21 setDefaultValue:v20];
+      slider4 = [(PUAdjustmentsViewController *)self slider];
+      [slider4 setDefaultValue:v20];
 
-      v22 = [(PUAdjustmentsViewController *)self slider];
-      [v22 defaultValue];
+      slider5 = [(PUAdjustmentsViewController *)self slider];
+      [slider5 defaultValue];
       v24 = v23;
-      v25 = [(PUAdjustmentsViewController *)self slider];
-      [v25 setMarkedValue:v24];
+      slider6 = [(PUAdjustmentsViewController *)self slider];
+      [slider6 setMarkedValue:v24];
 
       if (!self->_snappingController)
       {
         v26 = objc_alloc(MEMORY[0x1E69C3C28]);
-        v27 = [(PUAdjustmentsViewController *)self slider];
+        slider7 = [(PUAdjustmentsViewController *)self slider];
         [v7 defaultLevel];
-        [v27 xOffsetForValue:?];
+        [slider7 xOffsetForValue:?];
         v28 = [v26 initWithSnappingTarget:?];
         snappingController = self->_snappingController;
         self->_snappingController = v28;
@@ -1120,32 +1120,32 @@ void __45__PUAdjustmentsViewController_didToggleCell___block_invoke(uint64_t a1,
 
       [v7 currentLevel];
       v31 = v30;
-      v32 = [(PUAdjustmentsViewController *)self slider];
-      [v32 setValue:v31];
+      slider8 = [(PUAdjustmentsViewController *)self slider];
+      [slider8 setValue:v31];
     }
 
-    v5 = v33;
+    v5 = pathCopy;
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v11.receiver = self;
   v11.super_class = PUAdjustmentsViewController;
-  v7 = a4;
-  [(PUAdjustmentsViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(PUAdjustmentsViewController *)self collectionView];
-  v9 = [v8 collectionViewLayout];
-  [v9 invalidateLayout];
+  coordinatorCopy = coordinator;
+  [(PUAdjustmentsViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v10[3] = &unk_1E7B7DC38;
   v10[4] = self;
-  [v7 animateAlongsideTransition:v10 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v10 completion:0];
 }
 
 void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -1174,20 +1174,20 @@ void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCo
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = PUAdjustmentsViewController;
-  [(PUAdjustmentsViewController *)&v16 viewDidAppear:a3];
-  v4 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  [(PUAdjustmentsViewController *)&v16 viewDidAppear:appear];
+  selectedIndexPath = [(PUAdjustmentsViewController *)self selectedIndexPath];
 
-  if (!v4)
+  if (!selectedIndexPath)
   {
-    v5 = [(PUAdjustmentsViewController *)self collectionViewLayout];
-    v6 = [(PUAdjustmentsViewController *)self collectionView];
-    [v6 bounds];
+    collectionViewLayout = [(PUAdjustmentsViewController *)self collectionViewLayout];
+    collectionView = [(PUAdjustmentsViewController *)self collectionView];
+    [collectionView bounds];
     UIRectGetCenter();
-    v7 = [v5 nearestIndexPathForVisibleItemAtPoint:?];
+    v7 = [collectionViewLayout nearestIndexPathForVisibleItemAtPoint:?];
     [(PUAdjustmentsViewController *)self setSelectedIndexPath:v7];
   }
 
@@ -1201,24 +1201,24 @@ void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCo
     v8 = 16;
   }
 
-  v9 = [(PUAdjustmentsViewController *)self collectionView];
-  v10 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-  [v9 selectItemAtIndexPath:v10 animated:0 scrollPosition:0];
+  collectionView2 = [(PUAdjustmentsViewController *)self collectionView];
+  selectedIndexPath2 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  [collectionView2 selectItemAtIndexPath:selectedIndexPath2 animated:0 scrollPosition:0];
 
-  v11 = [(PUAdjustmentsViewController *)self collectionView];
-  v12 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-  [v11 scrollToItemAtIndexPath:v12 atScrollPosition:v8 animated:0];
+  collectionView3 = [(PUAdjustmentsViewController *)self collectionView];
+  selectedIndexPath3 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  [collectionView3 scrollToItemAtIndexPath:selectedIndexPath3 atScrollPosition:v8 animated:0];
 
-  v13 = [(PUAdjustmentsViewController *)self selectedIndexPath];
-  [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:v13];
+  selectedIndexPath4 = [(PUAdjustmentsViewController *)self selectedIndexPath];
+  [(PUAdjustmentsViewController *)self _updateSliderForControlAtIndexPath:selectedIndexPath4];
 
-  v14 = [(PUAdjustmentsViewController *)self delegate];
-  LOBYTE(v11) = objc_opt_respondsToSelector();
+  delegate = [(PUAdjustmentsViewController *)self delegate];
+  LOBYTE(collectionView3) = objc_opt_respondsToSelector();
 
-  if (v11)
+  if (collectionView3)
   {
-    v15 = [(PUAdjustmentsViewController *)self delegate];
-    [v15 adjustmentsViewControllerDidAppear:self];
+    delegate2 = [(PUAdjustmentsViewController *)self delegate];
+    [delegate2 adjustmentsViewControllerDidAppear:self];
   }
 }
 
@@ -1232,36 +1232,36 @@ void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCo
 
 - (void)_updateViewLayout
 {
-  v3 = [(PUAdjustmentsViewController *)self view];
-  [v3 bounds];
+  view = [(PUAdjustmentsViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(PUAdjustmentsViewController *)self slider];
+  slider = [(PUAdjustmentsViewController *)self slider];
   v13 = *(MEMORY[0x1E695EFD0] + 16);
   *&v48.a = *MEMORY[0x1E695EFD0];
   *&v48.c = v13;
   *&v48.tx = *(MEMORY[0x1E695EFD0] + 32);
-  [v12 setTransform:&v48];
+  [slider setTransform:&v48];
 
-  v14 = [(PUAdjustmentsViewController *)self view];
-  v15 = [v14 window];
+  view2 = [(PUAdjustmentsViewController *)self view];
+  window = [view2 window];
 
   if ([(PUAdjustmentsViewController *)self layoutDirection])
   {
-    v16 = [(PUAdjustmentsViewController *)self view];
-    [v15 convertPoint:v16 fromView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+    view3 = [(PUAdjustmentsViewController *)self view];
+    [window convertPoint:view3 fromView:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
     v18 = v17;
 
-    v19 = [(PUAdjustmentsViewController *)self slider];
-    [v19 setFrame:{0.0, 0.0, v11, 66.0}];
+    slider2 = [(PUAdjustmentsViewController *)self slider];
+    [slider2 setFrame:{0.0, 0.0, v11, 66.0}];
 
     CGAffineTransformMakeRotation(&v47, -1.57079633);
-    v20 = [(PUAdjustmentsViewController *)self slider];
+    slider3 = [(PUAdjustmentsViewController *)self slider];
     v48 = v47;
-    [v20 setTransform:&v48];
+    [slider3 setTransform:&v48];
 
     v49.origin.x = v5;
     v49.origin.y = v7;
@@ -1273,8 +1273,8 @@ void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCo
     v50.size.width = v9;
     v50.size.height = v11;
     v22 = CGRectGetMidY(v50) - v18 * 0.5;
-    v23 = [(PUAdjustmentsViewController *)self slider];
-    [v23 setCenter:{v21, v22}];
+    slider4 = [(PUAdjustmentsViewController *)self slider];
+    [slider4 setCenter:{v21, v22}];
 
     v51.origin.x = v5;
     v51.origin.y = v7;
@@ -1282,16 +1282,16 @@ void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCo
     v51.size.height = v11;
     v24 = CGRectGetMaxX(v51) + -51.0 + -57.0;
     v25 = v11 - v18;
-    v26 = [(PUAdjustmentsViewController *)self collectionView];
-    [v26 setFrame:{v24, 0.0, 51.0, v25}];
+    collectionView = [(PUAdjustmentsViewController *)self collectionView];
+    [collectionView setFrame:{v24, 0.0, 51.0, v25}];
 
     v27 = v25 * 0.5;
     [(PUAdjustmentsViewController *)self controlSize];
     v29 = v27 - v28 * 0.5;
     [(PUAdjustmentsViewController *)self controlSize];
     v31 = v27 - v30 * 0.5;
-    v32 = [(PUAdjustmentsViewController *)self collectionView];
-    v33 = v32;
+    collectionView2 = [(PUAdjustmentsViewController *)self collectionView];
+    v33 = collectionView2;
     v34 = 0.0;
     v35 = 0.0;
     v36 = v29;
@@ -1305,31 +1305,31 @@ void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCo
     v52.size.width = v9;
     v52.size.height = v11;
     v38 = CGRectGetMaxY(v52) + -66.0 + -5.0;
-    v39 = [(PUAdjustmentsViewController *)self slider];
-    [v39 setFrame:{0.0, v38, v9, 66.0}];
+    slider5 = [(PUAdjustmentsViewController *)self slider];
+    [slider5 setFrame:{0.0, v38, v9, 66.0}];
 
     v53.origin.x = v5;
     v53.origin.y = v7;
     v53.size.width = v9;
     v53.size.height = v11;
     v40 = CGRectGetMaxY(v53) + -51.0 + -62.0;
-    v41 = [(PUAdjustmentsViewController *)self collectionView];
-    [v41 setFrame:{0.0, v40, v9, 51.0}];
+    collectionView3 = [(PUAdjustmentsViewController *)self collectionView];
+    [collectionView3 setFrame:{0.0, v40, v9, 51.0}];
 
     v42 = v9 * 0.5;
     [(PUAdjustmentsViewController *)self controlSize];
     v44 = v9 * 0.5 - v43 * 0.5;
     [(PUAdjustmentsViewController *)self controlSize];
     v46 = v42 - v45 * 0.5;
-    v32 = [(PUAdjustmentsViewController *)self collectionView];
-    v33 = v32;
+    collectionView2 = [(PUAdjustmentsViewController *)self collectionView];
+    v33 = collectionView2;
     v36 = 0.0;
     v37 = 0.0;
     v34 = v44;
     v35 = v46;
   }
 
-  [v32 setContentInset:{v36, v34, v37, v35}];
+  [collectionView2 setContentInset:{v36, v34, v37, v35}];
 }
 
 - (void)viewDidLoad
@@ -1339,9 +1339,9 @@ void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCo
   v37.super_class = PUAdjustmentsViewController;
   [(PUAdjustmentsViewController *)&v37 viewDidLoad];
   [(PUAdjustmentsViewController *)self setLayoutDirection:0];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(PUAdjustmentsViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(PUAdjustmentsViewController *)self view];
+  [view setBackgroundColor:clearColor];
 
   [(PUAdjustmentsViewController *)self setControlSize:51.0, 51.0];
   v5 = objc_alloc_init(PUAdjustmentsViewFlowLayout);
@@ -1357,69 +1357,69 @@ void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCo
   v8 = [v7 initWithFrame:self->_collectionViewLayout collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(PUAdjustmentsViewController *)self setCollectionView:v8];
 
-  v9 = [(PUAdjustmentsViewController *)self view];
-  v10 = [(PUAdjustmentsViewController *)self collectionView];
-  [v9 addSubview:v10];
+  view2 = [(PUAdjustmentsViewController *)self view];
+  collectionView = [(PUAdjustmentsViewController *)self collectionView];
+  [view2 addSubview:collectionView];
 
-  v11 = [MEMORY[0x1E69DC888] clearColor];
-  v12 = [(PUAdjustmentsViewController *)self collectionView];
-  [v12 setBackgroundColor:v11];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  collectionView2 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView2 setBackgroundColor:clearColor2];
 
-  v13 = [(PUAdjustmentsViewController *)self collectionView];
-  [v13 setShowsHorizontalScrollIndicator:0];
+  collectionView3 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView3 setShowsHorizontalScrollIndicator:0];
 
-  v14 = [(PUAdjustmentsViewController *)self collectionView];
-  [v14 setAllowsKeyboardScrolling:0];
+  collectionView4 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView4 setAllowsKeyboardScrolling:0];
 
-  v15 = [(PUAdjustmentsViewController *)self collectionView];
-  [v15 setShowsVerticalScrollIndicator:0];
+  collectionView5 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView5 setShowsVerticalScrollIndicator:0];
 
-  v16 = [(PUAdjustmentsViewController *)self collectionView];
-  [v16 setSemanticContentAttribute:3];
+  collectionView6 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView6 setSemanticContentAttribute:3];
 
-  v17 = [(PUAdjustmentsViewController *)self collectionView];
-  [v17 setContentInsetAdjustmentBehavior:2];
+  collectionView7 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView7 setContentInsetAdjustmentBehavior:2];
 
-  v18 = [(PUAdjustmentsViewController *)self collectionView];
-  [v18 setSelectionFollowsFocus:1];
+  collectionView8 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView8 setSelectionFollowsFocus:1];
 
-  v19 = [(PUAdjustmentsViewController *)self collectionView];
-  [v19 _setSupportsPointerDragScrolling:1];
+  collectionView9 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView9 _setSupportsPointerDragScrolling:1];
 
-  v20 = [(PUAdjustmentsViewController *)self collectionView];
-  [v20 setDelegate:self];
+  collectionView10 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView10 setDelegate:self];
 
-  v21 = [(PUAdjustmentsViewController *)self collectionView];
-  [v21 setDataSource:self];
+  collectionView11 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView11 setDataSource:self];
 
-  v22 = [(PUAdjustmentsViewController *)self collectionView];
-  [v22 setClipsToBounds:0];
+  collectionView12 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView12 setClipsToBounds:0];
 
-  v23 = [(PUAdjustmentsViewController *)self collectionView];
-  [v23 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUEditAdjustmentsCellReuseIdentifier"];
+  collectionView13 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView13 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUEditAdjustmentsCellReuseIdentifier"];
 
-  v24 = [(PUAdjustmentsViewController *)self collectionView];
-  [v24 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUEditAutoEnhanceCellReuseIdentifier"];
+  collectionView14 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView14 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUEditAutoEnhanceCellReuseIdentifier"];
 
   v25 = *MEMORY[0x1E69DE3A0];
-  v26 = [(PUAdjustmentsViewController *)self collectionView];
-  [v26 setDecelerationRate:v25];
+  collectionView15 = [(PUAdjustmentsViewController *)self collectionView];
+  [collectionView15 setDecelerationRate:v25];
 
   v27 = +[PUPhotoEditSupport createEditSlider];
   [(PUAdjustmentsViewController *)self setSlider:v27];
 
-  v28 = [(PUAdjustmentsViewController *)self slider];
-  [v28 setDelegate:self];
+  slider = [(PUAdjustmentsViewController *)self slider];
+  [slider setDelegate:self];
 
-  v29 = [(PUAdjustmentsViewController *)self slider];
-  [v29 addTarget:self action:sel_sliderValueChanged_ forControlEvents:4096];
+  slider2 = [(PUAdjustmentsViewController *)self slider];
+  [slider2 addTarget:self action:sel_sliderValueChanged_ forControlEvents:4096];
 
-  v30 = [(PUAdjustmentsViewController *)self slider];
-  [v30 setEnabled:0 dimmed:1 animated:0];
+  slider3 = [(PUAdjustmentsViewController *)self slider];
+  [slider3 setEnabled:0 dimmed:1 animated:0];
 
-  v31 = [(PUAdjustmentsViewController *)self view];
-  v32 = [(PUAdjustmentsViewController *)self slider];
-  [v31 addSubview:v32];
+  view3 = [(PUAdjustmentsViewController *)self view];
+  slider4 = [(PUAdjustmentsViewController *)self slider];
+  [view3 addSubview:slider4];
 
   if (PUHapticsAllowed_onceToken != -1)
   {
@@ -1439,11 +1439,11 @@ void __82__PUAdjustmentsViewController_viewWillTransitionToSize_withTransitionCo
   v36 = [(PUAdjustmentsViewController *)self registerForTraitChanges:v35 withAction:sel_traitEnvironment_didChangeTraitCollection_];
 }
 
-- (PUAdjustmentsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUAdjustmentsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = PUAdjustmentsViewController;
-  result = [(PUAdjustmentsViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(PUAdjustmentsViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->_shouldDisplayControlValues = 1;

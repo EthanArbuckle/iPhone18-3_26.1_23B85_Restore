@@ -1,6 +1,6 @@
 @interface OKWidgetContentBlackAndWhiteFilter
 + (id)filter;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)outputImage;
 @end
 
@@ -14,12 +14,12 @@
   return [v2 valueForKey:v3];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentBlackAndWhiteFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentBlackAndWhiteFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
 + (id)filter

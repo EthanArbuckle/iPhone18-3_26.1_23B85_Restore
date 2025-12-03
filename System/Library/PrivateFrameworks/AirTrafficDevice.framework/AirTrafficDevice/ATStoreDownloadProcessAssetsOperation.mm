@@ -1,5 +1,5 @@
 @interface ATStoreDownloadProcessAssetsOperation
-- (ATStoreDownloadProcessAssetsOperation)initWithAsset:(id)a3 assetsOperationResult:(id)a4;
+- (ATStoreDownloadProcessAssetsOperation)initWithAsset:(id)asset assetsOperationResult:(id)result;
 - (void)execute;
 @end
 
@@ -11,16 +11,16 @@
   [(ATStoreDownloadOperation *)self finishWithError:0 operationResult:v3];
 }
 
-- (ATStoreDownloadProcessAssetsOperation)initWithAsset:(id)a3 assetsOperationResult:(id)a4
+- (ATStoreDownloadProcessAssetsOperation)initWithAsset:(id)asset assetsOperationResult:(id)result
 {
-  v7 = a4;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = ATStoreDownloadProcessAssetsOperation;
-  v8 = [(ATStoreDownloadOperation *)&v11 initWithAsset:a3];
+  v8 = [(ATStoreDownloadOperation *)&v11 initWithAsset:asset];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_assetsOperationResult, a4);
+    objc_storeStrong(&v8->_assetsOperationResult, result);
   }
 
   return v9;

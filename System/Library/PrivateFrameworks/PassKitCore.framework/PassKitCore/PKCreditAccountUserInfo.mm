@@ -1,20 +1,20 @@
 @interface PKCreditAccountUserInfo
-- (PKCreditAccountUserInfo)initWithCoder:(id)a3;
-- (PKCreditAccountUserInfo)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKCreditAccountUserInfo)initWithCoder:(id)coder;
+- (PKCreditAccountUserInfo)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKCreditAccountUserInfo
 
-- (PKCreditAccountUserInfo)initWithDictionary:(id)a3
+- (PKCreditAccountUserInfo)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = PKCreditAccountUserInfo;
   v5 = [(PKCreditAccountUserInfo *)&v9 init];
   if (v5)
   {
-    v6 = [PKAccountUserInfo primaryUserFromDictionary:v4];
+    v6 = [PKAccountUserInfo primaryUserFromDictionary:dictionaryCopy];
     primaryUser = v5->_primaryUser;
     v5->_primaryUser = v6;
   }
@@ -22,15 +22,15 @@
   return v5;
 }
 
-- (PKCreditAccountUserInfo)initWithCoder:(id)a3
+- (PKCreditAccountUserInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKCreditAccountUserInfo;
   v5 = [(PKCreditAccountUserInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryUser"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryUser"];
     primaryUser = v5->_primaryUser;
     v5->_primaryUser = v6;
   }
@@ -38,10 +38,10 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(CNContact *)self->_primaryUser copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(CNContact *)self->_primaryUser copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 

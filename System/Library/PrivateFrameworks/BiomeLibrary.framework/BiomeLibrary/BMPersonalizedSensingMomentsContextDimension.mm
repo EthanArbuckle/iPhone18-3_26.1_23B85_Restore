@@ -1,39 +1,39 @@
 @interface BMPersonalizedSensingMomentsContextDimension
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMPersonalizedSensingMomentsContextDimension)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMPersonalizedSensingMomentsContextDimension)initWithName:(id)a3 queries:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMPersonalizedSensingMomentsContextDimension)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMPersonalizedSensingMomentsContextDimension)initWithName:(id)name queries:(id)queries;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_queriesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPersonalizedSensingMomentsContextDimension
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMPersonalizedSensingMomentsContextDimension *)self name];
-    v7 = [v5 name];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    name = [(BMPersonalizedSensingMomentsContextDimension *)self name];
+    name2 = [v5 name];
+    v8 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v9 = [(BMPersonalizedSensingMomentsContextDimension *)self name];
-      v10 = [v5 name];
-      v11 = [v9 isEqual:v10];
+      name3 = [(BMPersonalizedSensingMomentsContextDimension *)self name];
+      name4 = [v5 name];
+      v11 = [name3 isEqual:name4];
 
       if (!v11)
       {
@@ -44,18 +44,18 @@ LABEL_11:
       }
     }
 
-    v13 = [(BMPersonalizedSensingMomentsContextDimension *)self queries];
-    v14 = [v5 queries];
-    if (v13 == v14)
+    queries = [(BMPersonalizedSensingMomentsContextDimension *)self queries];
+    queries2 = [v5 queries];
+    if (queries == queries2)
     {
       v12 = 1;
     }
 
     else
     {
-      v15 = [(BMPersonalizedSensingMomentsContextDimension *)self queries];
-      v16 = [v5 queries];
-      v12 = [v15 isEqual:v16];
+      queries3 = [(BMPersonalizedSensingMomentsContextDimension *)self queries];
+      queries4 = [v5 queries];
+      v12 = [queries3 isEqual:queries4];
     }
 
     goto LABEL_11;
@@ -70,28 +70,28 @@ LABEL_12:
 - (id)jsonDictionary
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v3 = [(BMPersonalizedSensingMomentsContextDimension *)self name];
-  v4 = [(BMPersonalizedSensingMomentsContextDimension *)self _queriesJSONArray];
+  name = [(BMPersonalizedSensingMomentsContextDimension *)self name];
+  _queriesJSONArray = [(BMPersonalizedSensingMomentsContextDimension *)self _queriesJSONArray];
   v10[0] = @"name";
-  v5 = v3;
-  if (!v3)
+  null = name;
+  if (!name)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v10[1] = @"queries";
-  v11[0] = v5;
-  v6 = v4;
-  if (!v4)
+  v11[0] = null;
+  null2 = _queriesJSONArray;
+  if (!_queriesJSONArray)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
-  if (v4)
+  if (_queriesJSONArray)
   {
-    if (v3)
+    if (name)
     {
       goto LABEL_7;
     }
@@ -100,7 +100,7 @@ LABEL_12:
   else
   {
 
-    if (v3)
+    if (name)
     {
       goto LABEL_7;
     }
@@ -120,8 +120,8 @@ LABEL_7:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMPersonalizedSensingMomentsContextDimension *)self queries];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  queries = [(BMPersonalizedSensingMomentsContextDimension *)self queries];
+  v5 = [queries countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -132,13 +132,13 @@ LABEL_7:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(queries);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [queries countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -149,18 +149,18 @@ LABEL_7:
   return v3;
 }
 
-- (BMPersonalizedSensingMomentsContextDimension)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMPersonalizedSensingMomentsContextDimension)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"name"];
-  v41 = v6;
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+  v41 = dictionaryCopy;
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
         v30 = objc_alloc(MEMORY[0x1E696ABC0]);
         v31 = *MEMORY[0x1E698F240];
@@ -170,13 +170,13 @@ LABEL_7:
         v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v54 forKeys:&v53 count:1];
         v32 = [v30 initWithDomain:v31 code:2 userInfo:v14];
         v8 = 0;
-        v20 = 0;
-        *a4 = v32;
+        selfCopy2 = 0;
+        *error = v32;
         goto LABEL_27;
       }
 
       v8 = 0;
-      v20 = 0;
+      selfCopy2 = 0;
       goto LABEL_29;
     }
 
@@ -188,15 +188,15 @@ LABEL_7:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"queries"];
-  v10 = [MEMORY[0x1E695DFB0] null];
-  v11 = [v9 isEqual:v10];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"queries"];
+  null = [MEMORY[0x1E695DFB0] null];
+  v11 = [v9 isEqual:null];
 
   if (v11)
   {
     v12 = v7;
     v13 = v8;
-    v40 = a4;
+    errorCopy2 = error;
 
     v9 = 0;
 LABEL_9:
@@ -214,7 +214,7 @@ LABEL_9:
 
     v16 = v15;
     v17 = *v43;
-    v39 = self;
+    selfCopy = self;
 LABEL_11:
     v18 = 0;
     while (1)
@@ -234,10 +234,10 @@ LABEL_11:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v21 = v40;
+        v21 = errorCopy2;
         v8 = v13;
         v7 = v12;
-        if (v40)
+        if (errorCopy2)
         {
           v27 = objc_alloc(MEMORY[0x1E696ABC0]);
           v23 = *MEMORY[0x1E698F240];
@@ -257,7 +257,7 @@ LABEL_25:
       if (v16 == ++v18)
       {
         v16 = [v9 countByEnumeratingWithState:&v42 objects:v50 count:16];
-        self = v39;
+        self = selfCopy;
         if (v16)
         {
           goto LABEL_11;
@@ -267,7 +267,7 @@ LABEL_18:
 
         v8 = v13;
         self = [(BMPersonalizedSensingMomentsContextDimension *)self initWithName:v13 queries:v14];
-        v20 = self;
+        selfCopy2 = self;
         v7 = v12;
 LABEL_27:
 
@@ -275,10 +275,10 @@ LABEL_27:
       }
     }
 
-    v21 = v40;
+    v21 = errorCopy2;
     v8 = v13;
     v7 = v12;
-    if (v40)
+    if (errorCopy2)
     {
       v22 = objc_alloc(MEMORY[0x1E696ABC0]);
       v23 = *MEMORY[0x1E698F240];
@@ -292,8 +292,8 @@ LABEL_27:
 
 LABEL_26:
 
-    v20 = 0;
-    self = v39;
+    selfCopy2 = 0;
+    self = selfCopy;
     goto LABEL_27;
   }
 
@@ -301,50 +301,50 @@ LABEL_26:
   {
     v12 = v7;
     v13 = v8;
-    v40 = a4;
+    errorCopy2 = error;
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     v33 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v34 = a4;
-    v35 = self;
+    errorCopy3 = error;
+    selfCopy3 = self;
     v36 = *MEMORY[0x1E698F240];
     v51 = *MEMORY[0x1E696A578];
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Expecting %@ as an array", @"queries"];
     v52 = v14;
     v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v52 forKeys:&v51 count:1];
     v38 = v36;
-    self = v35;
-    *v34 = [v33 initWithDomain:v38 code:2 userInfo:v37];
+    self = selfCopy3;
+    *errorCopy3 = [v33 initWithDomain:v38 code:2 userInfo:v37];
 
-    v20 = 0;
+    selfCopy2 = 0;
     goto LABEL_27;
   }
 
-  v20 = 0;
+  selfCopy2 = 0;
 LABEL_28:
-  v6 = v41;
+  dictionaryCopy = v41;
 
 LABEL_29:
   v28 = *MEMORY[0x1E69E9840];
-  return v20;
+  return selfCopy2;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMPersonalizedSensingMomentsContextDimension *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -385,9 +385,9 @@ LABEL_29:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v25.receiver = self;
   v25.super_class = BMPersonalizedSensingMomentsContextDimension;
   v5 = [(BMEventBase *)&v25 init];
@@ -397,12 +397,12 @@ LABEL_29:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_26;
       }
@@ -413,18 +413,18 @@ LABEL_29:
       while (1)
       {
         v26 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v26 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v26 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v26 & 0x7F) << v8;
@@ -441,9 +441,9 @@ LABEL_29:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_26;
       }
@@ -471,8 +471,8 @@ LABEL_30:
       }
 
 LABEL_25:
-      v19 = [v4 position];
-      if (v19 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_26;
       }
@@ -494,8 +494,8 @@ LABEL_26:
   queries = v5->_queries;
   v5->_queries = v20;
 
-  v22 = [v4 hasError];
-  if (v22)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_27:
     v23 = 0;
@@ -513,25 +513,25 @@ LABEL_28:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMPersonalizedSensingMomentsContextDimension *)self name];
-  v5 = [(BMPersonalizedSensingMomentsContextDimension *)self queries];
-  v6 = [v3 initWithFormat:@"BMPersonalizedSensingMomentsContextDimension with name: %@, queries: %@", v4, v5];
+  name = [(BMPersonalizedSensingMomentsContextDimension *)self name];
+  queries = [(BMPersonalizedSensingMomentsContextDimension *)self queries];
+  v6 = [v3 initWithFormat:@"BMPersonalizedSensingMomentsContextDimension with name: %@, queries: %@", name, queries];
 
   return v6;
 }
 
-- (BMPersonalizedSensingMomentsContextDimension)initWithName:(id)a3 queries:(id)a4
+- (BMPersonalizedSensingMomentsContextDimension)initWithName:(id)name queries:(id)queries
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  queriesCopy = queries;
   v11.receiver = self;
   v11.super_class = BMPersonalizedSensingMomentsContextDimension;
   v9 = [(BMEventBase *)&v11 init];
   if (v9)
   {
     v9->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v9->_name, a3);
-    objc_storeStrong(&v9->_queries, a4);
+    objc_storeStrong(&v9->_name, name);
+    objc_storeStrong(&v9->_queries, queries);
   }
 
   return v9;
@@ -574,9 +574,9 @@ id __55__BMPersonalizedSensingMomentsContextDimension_columns__block_invoke(uint
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -584,8 +584,8 @@ id __55__BMPersonalizedSensingMomentsContextDimension_columns__block_invoke(uint
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMPersonalizedSensingMomentsContextDimension alloc] initByReadFrom:v7];
     v4 = v8;

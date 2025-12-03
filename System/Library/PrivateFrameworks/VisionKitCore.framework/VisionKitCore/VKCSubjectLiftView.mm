@@ -1,17 +1,17 @@
 @interface VKCSubjectLiftView
 - (CALayer)diffuseShadowLayer;
 - (CALayer)rimShadowLayer;
-- (void)setShadowsVisible:(BOOL)a3;
+- (void)setShadowsVisible:(BOOL)visible;
 @end
 
 @implementation VKCSubjectLiftView
 
-- (void)setShadowsVisible:(BOOL)a3
+- (void)setShadowsVisible:(BOOL)visible
 {
-  if (self->_shadowsVisible != a3)
+  if (self->_shadowsVisible != visible)
   {
-    self->_shadowsVisible = a3;
-    if (a3)
+    self->_shadowsVisible = visible;
+    if (visible)
     {
       v4 = 0.2;
     }
@@ -21,9 +21,9 @@
       v4 = 0.0;
     }
 
-    v5 = [(VKCSubjectLiftView *)self diffuseShadowLayer];
+    diffuseShadowLayer = [(VKCSubjectLiftView *)self diffuseShadowLayer];
     *&v6 = v4;
-    [v5 setShadowOpacity:v6];
+    [diffuseShadowLayer setShadowOpacity:v6];
 
     if (self->_shadowsVisible)
     {
@@ -35,9 +35,9 @@
       v7 = 0.0;
     }
 
-    v9 = [(VKCSubjectLiftView *)self rimShadowLayer];
+    rimShadowLayer = [(VKCSubjectLiftView *)self rimShadowLayer];
     *&v8 = v7;
-    [v9 setShadowOpacity:v8];
+    [rimShadowLayer setShadowOpacity:v8];
   }
 }
 

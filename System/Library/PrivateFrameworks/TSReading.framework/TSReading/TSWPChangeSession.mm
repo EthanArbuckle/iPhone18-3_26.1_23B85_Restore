@@ -1,25 +1,25 @@
 @interface TSWPChangeSession
 - (void)dealloc;
-- (void)setAuthor:(id)a3;
-- (void)setDate:(id)a3;
+- (void)setAuthor:(id)author;
+- (void)setDate:(id)date;
 @end
 
 @implementation TSWPChangeSession
 
-- (void)setAuthor:(id)a3
+- (void)setAuthor:(id)author
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  authorCopy = author;
 
-  self->_author = a3;
+  self->_author = author;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   [(TSPObject *)self willModify];
-  v5 = a3;
+  dateCopy = date;
 
-  self->_date = a3;
+  self->_date = date;
 }
 
 - (void)dealloc

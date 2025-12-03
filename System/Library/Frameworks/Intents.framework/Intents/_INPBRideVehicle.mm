@@ -1,51 +1,51 @@
 @interface _INPBRideVehicle
-- (BOOL)isEqual:(id)a3;
-- (_INPBRideVehicle)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRideVehicle)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setManufacturer:(id)a3;
-- (void)setModel:(id)a3;
-- (void)setRegistrationPlate:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setManufacturer:(id)manufacturer;
+- (void)setModel:(id)model;
+- (void)setRegistrationPlate:(id)plate;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRideVehicle
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRideVehicle *)self location];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"location"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  location = [(_INPBRideVehicle *)self location];
+  dictionaryRepresentation = [location dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"location"];
 
   if (self->_manufacturer)
   {
-    v6 = [(_INPBRideVehicle *)self manufacturer];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"manufacturer"];
+    manufacturer = [(_INPBRideVehicle *)self manufacturer];
+    v7 = [manufacturer copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"manufacturer"];
   }
 
-  v8 = [(_INPBRideVehicle *)self mapAnnotationImage];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"mapAnnotationImage"];
+  mapAnnotationImage = [(_INPBRideVehicle *)self mapAnnotationImage];
+  dictionaryRepresentation2 = [mapAnnotationImage dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"mapAnnotationImage"];
 
   if (self->_model)
   {
-    v10 = [(_INPBRideVehicle *)self model];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"model"];
+    model = [(_INPBRideVehicle *)self model];
+    v11 = [model copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"model"];
   }
 
   if (self->_registrationPlate)
   {
-    v12 = [(_INPBRideVehicle *)self registrationPlate];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"registrationPlate"];
+    registrationPlate = [(_INPBRideVehicle *)self registrationPlate];
+    v13 = [registrationPlate copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"registrationPlate"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -57,28 +57,28 @@
   return v6 ^ [(NSString *)self->_registrationPlate hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_INPBRideVehicle *)self location];
-  v6 = [v4 location];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_INPBRideVehicle *)self location];
+  location2 = [equalCopy location];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_INPBRideVehicle *)self location];
-  if (v7)
+  location3 = [(_INPBRideVehicle *)self location];
+  if (location3)
   {
-    v8 = v7;
-    v9 = [(_INPBRideVehicle *)self location];
-    v10 = [v4 location];
-    v11 = [v9 isEqual:v10];
+    v8 = location3;
+    location4 = [(_INPBRideVehicle *)self location];
+    location5 = [equalCopy location];
+    v11 = [location4 isEqual:location5];
 
     if (!v11)
     {
@@ -90,20 +90,20 @@
   {
   }
 
-  v5 = [(_INPBRideVehicle *)self manufacturer];
-  v6 = [v4 manufacturer];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_INPBRideVehicle *)self manufacturer];
+  location2 = [equalCopy manufacturer];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_INPBRideVehicle *)self manufacturer];
-  if (v12)
+  manufacturer = [(_INPBRideVehicle *)self manufacturer];
+  if (manufacturer)
   {
-    v13 = v12;
-    v14 = [(_INPBRideVehicle *)self manufacturer];
-    v15 = [v4 manufacturer];
-    v16 = [v14 isEqual:v15];
+    v13 = manufacturer;
+    manufacturer2 = [(_INPBRideVehicle *)self manufacturer];
+    manufacturer3 = [equalCopy manufacturer];
+    v16 = [manufacturer2 isEqual:manufacturer3];
 
     if (!v16)
     {
@@ -115,20 +115,20 @@
   {
   }
 
-  v5 = [(_INPBRideVehicle *)self mapAnnotationImage];
-  v6 = [v4 mapAnnotationImage];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_INPBRideVehicle *)self mapAnnotationImage];
+  location2 = [equalCopy mapAnnotationImage];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_INPBRideVehicle *)self mapAnnotationImage];
-  if (v17)
+  mapAnnotationImage = [(_INPBRideVehicle *)self mapAnnotationImage];
+  if (mapAnnotationImage)
   {
-    v18 = v17;
-    v19 = [(_INPBRideVehicle *)self mapAnnotationImage];
-    v20 = [v4 mapAnnotationImage];
-    v21 = [v19 isEqual:v20];
+    v18 = mapAnnotationImage;
+    mapAnnotationImage2 = [(_INPBRideVehicle *)self mapAnnotationImage];
+    mapAnnotationImage3 = [equalCopy mapAnnotationImage];
+    v21 = [mapAnnotationImage2 isEqual:mapAnnotationImage3];
 
     if (!v21)
     {
@@ -140,20 +140,20 @@
   {
   }
 
-  v5 = [(_INPBRideVehicle *)self model];
-  v6 = [v4 model];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_INPBRideVehicle *)self model];
+  location2 = [equalCopy model];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_INPBRideVehicle *)self model];
-  if (v22)
+  model = [(_INPBRideVehicle *)self model];
+  if (model)
   {
-    v23 = v22;
-    v24 = [(_INPBRideVehicle *)self model];
-    v25 = [v4 model];
-    v26 = [v24 isEqual:v25];
+    v23 = model;
+    model2 = [(_INPBRideVehicle *)self model];
+    model3 = [equalCopy model];
+    v26 = [model2 isEqual:model3];
 
     if (!v26)
     {
@@ -165,12 +165,12 @@
   {
   }
 
-  v5 = [(_INPBRideVehicle *)self registrationPlate];
-  v6 = [v4 registrationPlate];
-  if ((v5 != 0) != (v6 == 0))
+  location = [(_INPBRideVehicle *)self registrationPlate];
+  location2 = [equalCopy registrationPlate];
+  if ((location != 0) != (location2 == 0))
   {
-    v27 = [(_INPBRideVehicle *)self registrationPlate];
-    if (!v27)
+    registrationPlate = [(_INPBRideVehicle *)self registrationPlate];
+    if (!registrationPlate)
     {
 
 LABEL_30:
@@ -178,10 +178,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_INPBRideVehicle *)self registrationPlate];
-    v30 = [v4 registrationPlate];
-    v31 = [v29 isEqual:v30];
+    v28 = registrationPlate;
+    registrationPlate2 = [(_INPBRideVehicle *)self registrationPlate];
+    registrationPlate3 = [equalCopy registrationPlate];
+    v31 = [registrationPlate2 isEqual:registrationPlate3];
 
     if (v31)
     {
@@ -201,118 +201,118 @@ LABEL_28:
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRideVehicle allocWithZone:](_INPBRideVehicle init];
-  v6 = [(GEOLocation *)self->_location copyWithZone:a3];
+  v6 = [(GEOLocation *)self->_location copyWithZone:zone];
   [(_INPBRideVehicle *)v5 setLocation:v6];
 
-  v7 = [(NSString *)self->_manufacturer copyWithZone:a3];
+  v7 = [(NSString *)self->_manufacturer copyWithZone:zone];
   [(_INPBRideVehicle *)v5 setManufacturer:v7];
 
-  v8 = [(_INPBImageValue *)self->_mapAnnotationImage copyWithZone:a3];
+  v8 = [(_INPBImageValue *)self->_mapAnnotationImage copyWithZone:zone];
   [(_INPBRideVehicle *)v5 setMapAnnotationImage:v8];
 
-  v9 = [(NSString *)self->_model copyWithZone:a3];
+  v9 = [(NSString *)self->_model copyWithZone:zone];
   [(_INPBRideVehicle *)v5 setModel:v9];
 
-  v10 = [(NSString *)self->_registrationPlate copyWithZone:a3];
+  v10 = [(NSString *)self->_registrationPlate copyWithZone:zone];
   [(_INPBRideVehicle *)v5 setRegistrationPlate:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRideVehicle *)self data];
+  coderCopy = coder;
+  data = [(_INPBRideVehicle *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRideVehicle)initWithCoder:(id)a3
+- (_INPBRideVehicle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRideVehicle *)self initWithData:v6];
+    self = [(_INPBRideVehicle *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(_INPBRideVehicle *)self location];
+  toCopy = to;
+  location = [(_INPBRideVehicle *)self location];
 
-  if (v4)
+  if (location)
   {
-    v5 = [(_INPBRideVehicle *)self location];
+    location2 = [(_INPBRideVehicle *)self location];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBRideVehicle *)self manufacturer];
+  manufacturer = [(_INPBRideVehicle *)self manufacturer];
 
-  if (v6)
+  if (manufacturer)
   {
     manufacturer = self->_manufacturer;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_INPBRideVehicle *)self mapAnnotationImage];
+  mapAnnotationImage = [(_INPBRideVehicle *)self mapAnnotationImage];
 
-  if (v8)
+  if (mapAnnotationImage)
   {
-    v9 = [(_INPBRideVehicle *)self mapAnnotationImage];
+    mapAnnotationImage2 = [(_INPBRideVehicle *)self mapAnnotationImage];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBRideVehicle *)self model];
+  model = [(_INPBRideVehicle *)self model];
 
-  if (v10)
+  if (model)
   {
     model = self->_model;
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_INPBRideVehicle *)self registrationPlate];
+  registrationPlate = [(_INPBRideVehicle *)self registrationPlate];
 
-  v13 = v15;
-  if (v12)
+  v13 = toCopy;
+  if (registrationPlate)
   {
     registrationPlate = self->_registrationPlate;
     PBDataWriterWriteStringField();
-    v13 = v15;
+    v13 = toCopy;
   }
 }
 
-- (void)setRegistrationPlate:(id)a3
+- (void)setRegistrationPlate:(id)plate
 {
-  v4 = [a3 copy];
+  v4 = [plate copy];
   registrationPlate = self->_registrationPlate;
   self->_registrationPlate = v4;
 
   MEMORY[0x1EEE66BB8](v4, registrationPlate);
 }
 
-- (void)setModel:(id)a3
+- (void)setModel:(id)model
 {
-  v4 = [a3 copy];
+  v4 = [model copy];
   model = self->_model;
   self->_model = v4;
 
   MEMORY[0x1EEE66BB8](v4, model);
 }
 
-- (void)setManufacturer:(id)a3
+- (void)setManufacturer:(id)manufacturer
 {
-  v4 = [a3 copy];
+  v4 = [manufacturer copy];
   manufacturer = self->_manufacturer;
   self->_manufacturer = v4;
 

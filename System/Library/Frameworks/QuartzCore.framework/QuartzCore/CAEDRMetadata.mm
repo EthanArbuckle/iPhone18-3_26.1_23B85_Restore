@@ -4,23 +4,23 @@
 + (CAEDRMetadata)HDR10MetadataWithMinLuminance:(float)minNits maxLuminance:(float)maxNits opticalOutputScale:(float)scale;
 + (CAEDRMetadata)HLGMetadata;
 + (CAEDRMetadata)HLGMetadataWithAmbientViewingEnvironment:(NSData *)data;
-+ (void)setMetadata:(id)a3 onSurface:(__IOSurface *)a4;
-- (BOOL)isEqual:(id)a3;
++ (void)setMetadata:(id)metadata onSurface:(__IOSurface *)surface;
+- (BOOL)isEqual:(id)equal;
 - (CAEDRMetadata)initWithBT2100HLG;
-- (CAEDRMetadata)initWithCoder:(id)a3;
-- (CAEDRMetadata)initWithMasteringDisplayMinNits:(float)a3 maxNits:(float)a4 opticalOutputScale:(float)a5;
-- (CAEDRMetadata)initWithSEIAmbientViewingEnvironment:(id)a3;
-- (CAEDRMetadata)initWithSEIMasteringDisplayData:(id)a3 contentLightLevelData:(id)a4 opticalOutputScale:(float)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CAEDRMetadata)initWithCoder:(id)coder;
+- (CAEDRMetadata)initWithMasteringDisplayMinNits:(float)nits maxNits:(float)maxNits opticalOutputScale:(float)scale;
+- (CAEDRMetadata)initWithSEIAmbientViewingEnvironment:(id)environment;
+- (CAEDRMetadata)initWithSEIMasteringDisplayData:(id)data contentLightLevelData:(id)levelData opticalOutputScale:(float)scale;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CAEDRMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -33,7 +33,7 @@
 
   priv = self->_priv;
   v6 = *(priv + 40);
-  v7 = *(a3 + 1);
+  v7 = *(equal + 1);
   v8 = *(v7 + 40);
   if ((v6 & 1) == 0 && (v8 & 1) == 0)
   {
@@ -101,7 +101,7 @@
   return v2;
 }
 
-- (CAEDRMetadata)initWithSEIAmbientViewingEnvironment:(id)a3
+- (CAEDRMetadata)initWithSEIAmbientViewingEnvironment:(id)environment
 {
   v11 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -113,9 +113,9 @@
     v4->_priv = priv;
     if (priv)
     {
-      if (a3)
+      if (environment)
       {
-        if ([a3 length] <= 7)
+        if ([environment length] <= 7)
         {
 
           if (x_log_get_api::once[0] != -1)
@@ -133,7 +133,7 @@
           return 0;
         }
 
-        v7 = [a3 copy];
+        v7 = [environment copy];
         priv = v4->_priv;
         *(priv + 4) = v7;
       }
@@ -148,7 +148,7 @@
   return v4;
 }
 
-- (CAEDRMetadata)initWithMasteringDisplayMinNits:(float)a3 maxNits:(float)a4 opticalOutputScale:(float)a5
+- (CAEDRMetadata)initWithMasteringDisplayMinNits:(float)nits maxNits:(float)maxNits opticalOutputScale:(float)scale
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -160,8 +160,8 @@
     v6->_priv = v7;
     if (v7)
     {
-      *(v7 + 2) = vcvt_u32_f32(vmul_f32(__PAIR64__(LODWORD(a3), LODWORD(a4)), vdup_n_s32(0x461C4000u)));
-      *(v7 + 11) = a5;
+      *(v7 + 2) = vcvt_u32_f32(vmul_f32(__PAIR64__(LODWORD(nits), LODWORD(maxNits)), vdup_n_s32(0x461C4000u)));
+      *(v7 + 11) = scale;
     }
 
     else
@@ -174,7 +174,7 @@
   return v6;
 }
 
-- (CAEDRMetadata)initWithSEIMasteringDisplayData:(id)a3 contentLightLevelData:(id)a4 opticalOutputScale:(float)a5
+- (CAEDRMetadata)initWithSEIMasteringDisplayData:(id)data contentLightLevelData:(id)levelData opticalOutputScale:(float)scale
 {
   v29 = *MEMORY[0x1E69E9840];
   v27.receiver = self;
@@ -190,9 +190,9 @@
       return 0;
     }
 
-    if (a3)
+    if (data)
     {
-      if ([a3 length] <= 0x17)
+      if ([data length] <= 0x17)
       {
 
         if (x_log_get_api::once[0] != -1)
@@ -211,8 +211,8 @@
         goto LABEL_45;
       }
 
-      v12 = [a3 bytes];
-      v13 = bswap32(*v12) >> 16;
+      bytes = [data bytes];
+      v13 = bswap32(*bytes) >> 16;
       if (v13 >= 0xC350)
       {
         LOWORD(v13) = -15536;
@@ -220,63 +220,63 @@
 
       priv = v8->_priv;
       *priv = v13;
-      v14 = bswap32(v12[1]) >> 16;
+      v14 = bswap32(bytes[1]) >> 16;
       if (v14 >= 0xC350)
       {
         LOWORD(v14) = -15536;
       }
 
       *(priv + 1) = v14;
-      v15 = bswap32(v12[2]) >> 16;
+      v15 = bswap32(bytes[2]) >> 16;
       if (v15 >= 0xC350)
       {
         LOWORD(v15) = -15536;
       }
 
       *(priv + 2) = v15;
-      v16 = bswap32(v12[3]) >> 16;
+      v16 = bswap32(bytes[3]) >> 16;
       if (v16 >= 0xC350)
       {
         LOWORD(v16) = -15536;
       }
 
       *(priv + 3) = v16;
-      v17 = bswap32(v12[4]) >> 16;
+      v17 = bswap32(bytes[4]) >> 16;
       if (v17 >= 0xC350)
       {
         LOWORD(v17) = -15536;
       }
 
       *(priv + 4) = v17;
-      v18 = bswap32(v12[5]) >> 16;
+      v18 = bswap32(bytes[5]) >> 16;
       if (v18 >= 0xC350)
       {
         LOWORD(v18) = -15536;
       }
 
       *(priv + 5) = v18;
-      v19 = bswap32(v12[6]) >> 16;
+      v19 = bswap32(bytes[6]) >> 16;
       if (v19 >= 0xC350)
       {
         LOWORD(v19) = -15536;
       }
 
       *(priv + 6) = v19;
-      v20 = bswap32(v12[7]) >> 16;
+      v20 = bswap32(bytes[7]) >> 16;
       if (v20 >= 0xC350)
       {
         LOWORD(v20) = -15536;
       }
 
       *(priv + 7) = v20;
-      v21 = bswap32(*(v12 + 4));
+      v21 = bswap32(*(bytes + 4));
       if (v21 >= 0x5F5E100)
       {
         v21 = 100000000;
       }
 
       *(priv + 4) = v21;
-      v22 = bswap32(*(v12 + 5));
+      v22 = bswap32(*(bytes + 5));
       if (v22 >= 0x5F5E100)
       {
         v22 = 100000000;
@@ -285,9 +285,9 @@
       *(priv + 5) = v22;
     }
 
-    if (a4)
+    if (levelData)
     {
-      if ([a4 length] <= 3)
+      if ([levelData length] <= 3)
       {
 
         if (x_log_get_api::once[0] != -1)
@@ -308,8 +308,8 @@ LABEL_45:
         return 0;
       }
 
-      v23 = [a4 bytes];
-      v24 = bswap32(*v23) >> 16;
+      bytes2 = [levelData bytes];
+      v24 = bswap32(*bytes2) >> 16;
       if (v24 >= 0x2710)
       {
         LOWORD(v24) = 10000;
@@ -317,7 +317,7 @@ LABEL_45:
 
       priv = v8->_priv;
       *(priv + 12) = v24;
-      v25 = bswap32(v23[1]) >> 16;
+      v25 = bswap32(bytes2[1]) >> 16;
       if (v25 >= 0x2710)
       {
         LOWORD(v25) = 10000;
@@ -326,15 +326,15 @@ LABEL_45:
       *(priv + 13) = v25;
     }
 
-    *(priv + 11) = a5;
+    *(priv + 11) = scale;
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v4)
   {
     v5 = malloc_type_malloc(0x30uLL, 0x1080040C86E0577uLL);
@@ -350,9 +350,9 @@ LABEL_45:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (a3)
+  if (coder)
   {
     priv = self->_priv;
     if (priv)
@@ -361,13 +361,13 @@ LABEL_45:
       if (v5)
       {
 
-        [a3 encodeObject:v5 forKey:@"CA_EDR_Metadata"];
+        [coder encodeObject:v5 forKey:@"CA_EDR_Metadata"];
       }
     }
   }
 }
 
-- (CAEDRMetadata)initWithCoder:(id)a3
+- (CAEDRMetadata)initWithCoder:(id)coder
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -375,7 +375,7 @@ LABEL_45:
   v4 = [(CAEDRMetadata *)&v8 init];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"CA_EDR_Metadata"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"CA_EDR_Metadata"];
     if ([v5 length] == 48)
     {
       v6 = malloc_type_calloc(1uLL, 0x30uLL, 0x1080040C86E0577uLL);
@@ -393,51 +393,51 @@ LABEL_45:
   return v4;
 }
 
-+ (void)setMetadata:(id)a3 onSurface:(__IOSurface *)a4
++ (void)setMetadata:(id)metadata onSurface:(__IOSurface *)surface
 {
-  if (!a4)
+  if (!surface)
   {
     return;
   }
 
-  if (!a3)
+  if (!metadata)
   {
-    IOSurfaceRemoveValue(a4, @"isHLG");
+    IOSurfaceRemoveValue(surface, @"isHLG");
 LABEL_9:
-    IOSurfaceRemoveValue(a4, *MEMORY[0x1E6965CD8]);
+    IOSurfaceRemoveValue(surface, *MEMORY[0x1E6965CD8]);
     goto LABEL_10;
   }
 
-  if (*(*(a3 + 1) + 40) == 1)
+  if (*(*(metadata + 1) + 40) == 1)
   {
-    IOSurfaceSetValue(a4, @"isHLG", *MEMORY[0x1E695E4D0]);
+    IOSurfaceSetValue(surface, @"isHLG", *MEMORY[0x1E695E4D0]);
   }
 
   else
   {
-    IOSurfaceRemoveValue(a4, @"isHLG");
+    IOSurfaceRemoveValue(surface, @"isHLG");
   }
 
-  v6 = *(*(a3 + 1) + 32);
+  v6 = *(*(metadata + 1) + 32);
   if (!v6)
   {
     goto LABEL_9;
   }
 
-  IOSurfaceSetValue(a4, *MEMORY[0x1E6965CD8], v6);
+  IOSurfaceSetValue(surface, *MEMORY[0x1E6965CD8], v6);
 LABEL_10:
-  PixelFormat = IOSurfaceGetPixelFormat(a4);
+  PixelFormat = IOSurfaceGetPixelFormat(surface);
   if (CA::Render::fourcc_compressed_of_type(PixelFormat, 0, 0) == 1380411457)
   {
-    if (a3 && (v9 = *(a3 + 1), (*(v9 + 40) & 1) == 0))
+    if (metadata && (v9 = *(metadata + 1), (*(v9 + 40) & 1) == 0))
     {
       LODWORD(v8) = *(v9 + 44);
-      IOSurfaceSetValue(a4, @"SDRBrightnessInNits", [MEMORY[0x1E696AD98] numberWithFloat:v8]);
+      IOSurfaceSetValue(surface, @"SDRBrightnessInNits", [MEMORY[0x1E696AD98] numberWithFloat:v8]);
     }
 
     else
     {
-      IOSurfaceRemoveValue(a4, @"SDRBrightnessInNits");
+      IOSurfaceRemoveValue(surface, @"SDRBrightnessInNits");
     }
   }
 
@@ -489,9 +489,9 @@ LABEL_10:
     }
   }
 
-  v2 = [[CAEDRMetadata alloc] initWithBT2100HLG];
+  initWithBT2100HLG = [[CAEDRMetadata alloc] initWithBT2100HLG];
 
-  return v2;
+  return initWithBT2100HLG;
 }
 
 + (CAEDRMetadata)HLGMetadataWithAmbientViewingEnvironment:(NSData *)data

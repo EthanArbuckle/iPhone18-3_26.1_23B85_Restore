@@ -1,11 +1,11 @@
 @interface ICSUbiquityAccessManager
 + (ICSUbiquityAccessManager)sharedInstance;
-- (BOOL)isAccessGrantedForBundleID:(id)a3;
+- (BOOL)isAccessGrantedForBundleID:(id)d;
 - (ICSUbiquityAccessManager)init;
-- (__CFBundle)_bundleForBundleID:(id)a3;
-- (id)_serviceNamesForBundleID:(id)a3;
-- (id)_servicesForBundleID:(id)a3;
-- (void)_addAccessInfo:(id)a3 forServiceName:(id)a4;
+- (__CFBundle)_bundleForBundleID:(id)d;
+- (id)_serviceNamesForBundleID:(id)d;
+- (id)_servicesForBundleID:(id)d;
+- (void)_addAccessInfo:(id)info forServiceName:(id)name;
 - (void)reloadAccessInfo;
 @end
 
@@ -60,17 +60,17 @@ uint64_t __42__ICSUbiquityAccessManager_sharedInstance__block_invoke()
   [(ICSUbiquityAccessManager *)self _addAccessInfo:v9 forServiceName:*v7];
 }
 
-- (void)_addAccessInfo:(id)a3 forServiceName:(id)a4
+- (void)_addAccessInfo:(id)info forServiceName:(id)name
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v26 = a4;
+  infoCopy = info;
+  nameCopy = name;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v6;
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  obj = infoCopy;
+  v7 = [infoCopy countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
@@ -122,15 +122,15 @@ uint64_t __42__ICSUbiquityAccessManager_sharedInstance__block_invoke()
             {
 LABEL_11:
               v20 = v10;
-              v21 = self;
+              selfCopy = self;
               v22 = v9;
               v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
               [v23 setObject:v16 forKey:@"granted"];
-              [v23 setObject:v26 forKey:@"serviceName"];
+              [v23 setObject:nameCopy forKey:@"serviceName"];
               [v19 addObject:v23];
 
               v9 = v22;
-              self = v21;
+              self = selfCopy;
               v10 = v20;
               v8 = v27;
             }
@@ -151,35 +151,35 @@ LABEL_11:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (__CFBundle)_bundleForBundleID:(id)a3
+- (__CFBundle)_bundleForBundleID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_accessInfoCacheByBundleID objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_accessInfoCacheByBundleID objectForKeyedSubscript:d];
   v4 = [v3 objectForKey:@"bundle"];
 
   return v4;
 }
 
-- (id)_servicesForBundleID:(id)a3
+- (id)_servicesForBundleID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_accessInfoCacheByBundleID objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_accessInfoCacheByBundleID objectForKeyedSubscript:d];
   v4 = [v3 objectForKey:@"services"];
 
   return v4;
 }
 
-- (id)_serviceNamesForBundleID:(id)a3
+- (id)_serviceNamesForBundleID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_accessInfoCacheByBundleID objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_accessInfoCacheByBundleID objectForKeyedSubscript:d];
   v4 = [v3 objectForKey:@"services"];
   v5 = [v4 valueForKey:@"serviceName"];
 
   return v5;
 }
 
-- (BOOL)isAccessGrantedForBundleID:(id)a3
+- (BOOL)isAccessGrantedForBundleID:(id)d
 {
   v18 = *MEMORY[0x277D85DE8];
-  [(ICSUbiquityAccessManager *)self _servicesForBundleID:a3];
+  [(ICSUbiquityAccessManager *)self _servicesForBundleID:d];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -199,9 +199,9 @@ LABEL_11:
         }
 
         v8 = [*(*(&v13 + 1) + 8 * i) objectForKey:{@"granted", v13}];
-        v9 = [v8 BOOLValue];
+        bOOLValue = [v8 BOOLValue];
 
-        if (v9)
+        if (bOOLValue)
         {
           v10 = 1;
           goto LABEL_11;

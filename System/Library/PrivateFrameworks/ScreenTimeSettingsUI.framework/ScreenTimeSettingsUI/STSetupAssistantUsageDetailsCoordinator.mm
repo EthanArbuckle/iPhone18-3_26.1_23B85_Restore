@@ -1,6 +1,6 @@
 @interface STSetupAssistantUsageDetailsCoordinator
 - (STSetupAssistantUsageDetailsCoordinator)init;
-- (id)_introUsageItemsWithStartDate:(id)a3;
+- (id)_introUsageItemsWithStartDate:(id)date;
 - (id)categoryConfigByIdentifier;
 @end
 
@@ -18,23 +18,23 @@
     viewModel = v2->_viewModel;
     v2->_viewModel = v3;
 
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 name];
-    [(STUsageDetailsViewModel *)v2->_viewModel setSelectedItemDisplayName:v6];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    name = [currentDevice name];
+    [(STUsageDetailsViewModel *)v2->_viewModel setSelectedItemDisplayName:name];
 
-    v7 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v8 = objc_opt_new();
-    v9 = [v7 startOfDayForDate:v8];
-    v10 = [v7 dateByAddingUnit:0x2000 value:-1 toDate:v9 options:0];
-    v11 = [v7 maximumRangeOfUnit:512];
-    if ([v7 component:512 fromDate:v10] == v11)
+    v9 = [currentCalendar startOfDayForDate:v8];
+    v10 = [currentCalendar dateByAddingUnit:0x2000 value:-1 toDate:v9 options:0];
+    v11 = [currentCalendar maximumRangeOfUnit:512];
+    if ([currentCalendar component:512 fromDate:v10] == v11)
     {
       v12 = v10;
     }
 
     else
     {
-      v12 = [v7 nextDateAfterDate:v10 matchingUnit:512 value:v11 options:260];
+      v12 = [currentCalendar nextDateAfterDate:v10 matchingUnit:512 value:v11 options:260];
     }
 
     v13 = v12;
@@ -68,17 +68,17 @@
   return v4;
 }
 
-- (id)_introUsageItemsWithStartDate:(id)a3
+- (id)_introUsageItemsWithStartDate:(id)date
 {
   v67 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v6 = objc_opt_new();
   for (i = 0; i != 8; ++i)
   {
     [v6 setDay:i];
-    v8 = [v5 dateByAddingComponents:v6 toDate:v3 options:0];
+    v8 = [currentCalendar dateByAddingComponents:v6 toDate:dateCopy options:0];
     v9 = objc_opt_new();
     [v9 setItemType:1];
     [v9 setIdentifier:@"ScreenTime"];
@@ -90,8 +90,8 @@
     [v4 addObject:v9];
   }
 
-  v53 = v5;
-  v54 = v3;
+  v53 = currentCalendar;
+  v54 = dateCopy;
   [(STSetupAssistantUsageDetailsCoordinator *)self appConfigByIdentifier];
   v60 = 0u;
   v61 = 0u;
@@ -117,7 +117,7 @@
         v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"App Item %@", v13];
         v15 = [obj objectForKeyedSubscript:v13];
         v16 = [v15 objectForKeyedSubscript:@"total"];
-        v17 = [v16 unsignedIntegerValue];
+        unsignedIntegerValue = [v16 unsignedIntegerValue];
 
         for (j = 0; j != 8; ++j)
         {
@@ -131,7 +131,7 @@
 
           [v20 setTimePeriod:0];
           [v20 setStartDate:v19];
-          v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
+          v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
           [v20 setTotalUsage:v22];
 
           v11 = 0x277D4B000;
@@ -159,16 +159,16 @@
   v65[2] = &unk_28769DA50;
   v65[3] = &unk_28769DA78;
   v57 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:v64 count:4];
-  v25 = [v57 allKeys];
-  v52 = v25;
-  if ([v25 count])
+  allKeys = [v57 allKeys];
+  v52 = allKeys;
+  if ([allKeys count])
   {
     v26 = 0;
     do
     {
       v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"Category Item %d", v26];
       v59 = v26;
-      v28 = [v25 objectAtIndexedSubscript:v26];
+      v28 = [allKeys objectAtIndexedSubscript:v26];
       v29 = [v57 objectForKeyedSubscript:v28];
       v30 = [v29 objectForKeyedSubscript:@"total"];
       [v30 doubleValue];
@@ -198,7 +198,7 @@
       while (v33 != 8);
 
       ++v26;
-      v25 = v52;
+      allKeys = v52;
     }
 
     while (v59 + 1 < [v52 count]);

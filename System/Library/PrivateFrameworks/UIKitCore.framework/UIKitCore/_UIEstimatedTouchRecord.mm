@@ -1,51 +1,51 @@
 @interface _UIEstimatedTouchRecord
 - (BOOL)hasRemainingUpdates;
-- (_UIEstimatedTouchRecord)initWithLiveTouch:(id)a3 freezeTouch:(id)a4 contextID:(id)a5;
+- (_UIEstimatedTouchRecord)initWithLiveTouch:(id)touch freezeTouch:(id)freezeTouch contextID:(id)d;
 - (void)_dispatchWithCurrentUpdates;
-- (void)addTouchable:(id)a3;
-- (void)dispatchUpdateWithPressure:(double)a3 stillEstimated:(BOOL)a4;
-- (void)dispatchUpdateWithRollAngle:(double)a3 stillEstimated:(BOOL)a4;
+- (void)addTouchable:(id)touchable;
+- (void)dispatchUpdateWithPressure:(double)pressure stillEstimated:(BOOL)estimated;
+- (void)dispatchUpdateWithRollAngle:(double)angle stillEstimated:(BOOL)estimated;
 @end
 
 @implementation _UIEstimatedTouchRecord
 
-- (_UIEstimatedTouchRecord)initWithLiveTouch:(id)a3 freezeTouch:(id)a4 contextID:(id)a5
+- (_UIEstimatedTouchRecord)initWithLiveTouch:(id)touch freezeTouch:(id)freezeTouch contextID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  touchCopy = touch;
+  freezeTouchCopy = freezeTouch;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = _UIEstimatedTouchRecord;
   v12 = [(_UIEstimatedTouchRecord *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_liveTouch, a3);
-    objc_storeStrong(&v13->_frozenTouch, a4);
-    objc_storeStrong(&v13->_contextID, a5);
-    *&v13->_stateFlags = *&v13->_stateFlags & 0xFE | [v10 estimatedPropertiesExpectingUpdates] & 1;
-    *&v13->_stateFlags = ([v10 estimatedPropertiesExpectingUpdates] >> 1) & 8 | *&v13->_stateFlags & 0xF7;
+    objc_storeStrong(&v12->_liveTouch, touch);
+    objc_storeStrong(&v13->_frozenTouch, freezeTouch);
+    objc_storeStrong(&v13->_contextID, d);
+    *&v13->_stateFlags = *&v13->_stateFlags & 0xFE | [freezeTouchCopy estimatedPropertiesExpectingUpdates] & 1;
+    *&v13->_stateFlags = ([freezeTouchCopy estimatedPropertiesExpectingUpdates] >> 1) & 8 | *&v13->_stateFlags & 0xF7;
   }
 
   return v13;
 }
 
-- (void)addTouchable:(id)a3
+- (void)addTouchable:(id)touchable
 {
-  v4 = a3;
+  touchableCopy = touchable;
   touchables = self->_touchables;
-  v8 = v4;
+  v8 = touchableCopy;
   if (!touchables)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_touchables;
     self->_touchables = v6;
 
-    v4 = v8;
+    touchableCopy = v8;
     touchables = self->_touchables;
   }
 
-  [(NSMutableArray *)touchables addObject:v4];
+  [(NSMutableArray *)touchables addObject:touchableCopy];
 }
 
 - (BOOL)hasRemainingUpdates
@@ -59,7 +59,7 @@
 - (void)_dispatchWithCurrentUpdates
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(UITouch *)self->_liveTouch _clone];
+  _clone = [(UITouch *)self->_liveTouch _clone];
   [(UITouch *)self->_frozenTouch _clonePropertiesToTouch:self->_liveTouch];
   stateFlags = self->_stateFlags;
   liveTouch = self->_liveTouch;
@@ -138,15 +138,15 @@
     while (v15);
   }
 
-  [v3 _clonePropertiesToTouch:self->_liveTouch];
+  [_clone _clonePropertiesToTouch:self->_liveTouch];
 }
 
-- (void)dispatchUpdateWithPressure:(double)a3 stillEstimated:(BOOL)a4
+- (void)dispatchUpdateWithPressure:(double)pressure stillEstimated:(BOOL)estimated
 {
   stateFlags = self->_stateFlags;
-  self->_updatedPressure = a3;
+  self->_updatedPressure = pressure;
   v6 = stateFlags & 0xF9;
-  if (a4)
+  if (estimated)
   {
     v7 = 6;
   }
@@ -164,12 +164,12 @@
   }
 }
 
-- (void)dispatchUpdateWithRollAngle:(double)a3 stillEstimated:(BOOL)a4
+- (void)dispatchUpdateWithRollAngle:(double)angle stillEstimated:(BOOL)estimated
 {
   stateFlags = self->_stateFlags;
-  self->_updatedRollAngle = a3;
+  self->_updatedRollAngle = angle;
   v6 = stateFlags & 0xCF;
-  if (a4)
+  if (estimated)
   {
     v7 = 48;
   }

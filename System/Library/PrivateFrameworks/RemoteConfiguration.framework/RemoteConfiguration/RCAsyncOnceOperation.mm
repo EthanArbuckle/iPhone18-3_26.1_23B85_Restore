@@ -1,21 +1,21 @@
 @interface RCAsyncOnceOperation
 - (BOOL)finishedExecuting;
 - (BOOL)finishedExecutingWithFailure;
-- (RCAsyncOnceOperation)initWithBlock:(id)a3;
-- (RCAsyncOnceOperation)initWithTarget:(id)a3 selector:(SEL)a4;
-- (id)executeWithCompletionHandler:(id)a3;
-- (void)setRelativePriority:(int64_t)a3;
+- (RCAsyncOnceOperation)initWithBlock:(id)block;
+- (RCAsyncOnceOperation)initWithTarget:(id)target selector:(SEL)selector;
+- (id)executeWithCompletionHandler:(id)handler;
+- (void)setRelativePriority:(int64_t)priority;
 @end
 
 @implementation RCAsyncOnceOperation
 
-- (RCAsyncOnceOperation)initWithBlock:(id)a3
+- (RCAsyncOnceOperation)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(RCAsyncOnceOperation *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     workBlock = v5->_workBlock;
     v5->_workBlock = v6;
 
@@ -27,16 +27,16 @@
   return v5;
 }
 
-- (RCAsyncOnceOperation)initWithTarget:(id)a3 selector:(SEL)a4
+- (RCAsyncOnceOperation)initWithTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
-  objc_initWeak(&location, v6);
+  targetCopy = target;
+  objc_initWeak(&location, targetCopy);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __48__RCAsyncOnceOperation_initWithTarget_selector___block_invoke;
   aBlock[3] = &unk_27822F378;
   objc_copyWeak(v11, &location);
-  v11[1] = a4;
+  v11[1] = selector;
   v7 = _Block_copy(aBlock);
   v8 = [(RCAsyncOnceOperation *)self initWithBlock:v7];
 
@@ -65,9 +65,9 @@ id __48__RCAsyncOnceOperation_initWithTarget_selector___block_invoke(uint64_t a1
   return v6;
 }
 
-- (id)executeWithCompletionHandler:(id)a3
+- (id)executeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(RCMutexLock *)self->_lock lock];
   if ([(RCAsyncOnceOperation *)self finished])
   {
@@ -79,16 +79,16 @@ id __48__RCAsyncOnceOperation_initWithTarget_selector___block_invoke(uint64_t a1
   {
     if (![(RCAsyncOnceOperation *)self interest])
     {
-      v6 = [(RCAsyncOnceOperation *)self activeGroup];
+      activeGroup = [(RCAsyncOnceOperation *)self activeGroup];
 
-      if (v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+      if (activeGroup && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [RCAsyncOnceOperation executeWithCompletionHandler:];
       }
 
-      v7 = [(RCAsyncOnceOperation *)self activeOperation];
+      activeOperation = [(RCAsyncOnceOperation *)self activeOperation];
 
-      if (v7 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+      if (activeOperation && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         [RCAsyncOnceOperation executeWithCompletionHandler:];
       }
@@ -96,21 +96,21 @@ id __48__RCAsyncOnceOperation_initWithTarget_selector___block_invoke(uint64_t a1
       v8 = dispatch_group_create();
       dispatch_group_enter(v8);
       [(RCAsyncOnceOperation *)self setActiveGroup:v8];
-      v9 = [(RCAsyncOnceOperation *)self workBlock];
+      workBlock = [(RCAsyncOnceOperation *)self workBlock];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __53__RCAsyncOnceOperation_executeWithCompletionHandler___block_invoke;
       v18[3] = &unk_27822F3A0;
       v18[4] = self;
       v19 = v8;
-      v10 = v9[2];
+      v10 = workBlock[2];
       v11 = v8;
-      v12 = v10(v9, v18);
+      v12 = v10(workBlock, v18);
       [(RCAsyncOnceOperation *)self setActiveOperation:v12];
 
-      v13 = [(RCAsyncOnceOperation *)self relativePriority];
-      v14 = [(RCAsyncOnceOperation *)self activeOperation];
-      [v14 setRelativePriority:v13];
+      relativePriority = [(RCAsyncOnceOperation *)self relativePriority];
+      activeOperation2 = [(RCAsyncOnceOperation *)self activeOperation];
+      [activeOperation2 setRelativePriority:relativePriority];
     }
 
     [(RCAsyncOnceOperation *)self setInterest:[(RCAsyncOnceOperation *)self interest]+ 1];
@@ -120,17 +120,17 @@ id __48__RCAsyncOnceOperation_initWithTarget_selector___block_invoke(uint64_t a1
     v17[3] = &unk_27822F2B0;
     v17[4] = self;
     v5 = [RCCancelHandler cancelHandlerWithBlock:v17];
-    v15 = [(RCAsyncOnceOperation *)self activeGroup];
+    activeGroup2 = [(RCAsyncOnceOperation *)self activeGroup];
     [(RCMutexLock *)self->_lock unlock];
-    if (v15)
+    if (activeGroup2)
     {
-      dispatch_group_notify(v15, MEMORY[0x277D85CD0], v4);
+      dispatch_group_notify(activeGroup2, MEMORY[0x277D85CD0], handlerCopy);
 
       goto LABEL_14;
     }
   }
 
-  v4[2](v4);
+  handlerCopy[2](handlerCopy);
 LABEL_14:
 
   return v5;
@@ -179,9 +179,9 @@ uint64_t __53__RCAsyncOnceOperation_executeWithCompletionHandler___block_invoke_
 - (BOOL)finishedExecuting
 {
   [(RCMutexLock *)self->_lock lock];
-  v3 = [(RCAsyncOnceOperation *)self finished];
+  finished = [(RCAsyncOnceOperation *)self finished];
   [(RCMutexLock *)self->_lock unlock];
-  return v3;
+  return finished;
 }
 
 - (BOOL)finishedExecutingWithFailure
@@ -201,12 +201,12 @@ uint64_t __53__RCAsyncOnceOperation_executeWithCompletionHandler___block_invoke_
   return v3;
 }
 
-- (void)setRelativePriority:(int64_t)a3
+- (void)setRelativePriority:(int64_t)priority
 {
   [(RCMutexLock *)self->_lock lock];
-  self->_relativePriority = a3;
-  v5 = [(RCAsyncOnceOperation *)self activeOperation];
-  [v5 setRelativePriority:a3];
+  self->_relativePriority = priority;
+  activeOperation = [(RCAsyncOnceOperation *)self activeOperation];
+  [activeOperation setRelativePriority:priority];
 
   lock = self->_lock;
 

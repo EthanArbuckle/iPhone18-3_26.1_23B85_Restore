@@ -7,8 +7,8 @@
 
 + (id)_ISMutableStoreIndex_mappedDataWithURL:()ISMutableStoreIndex
 {
-  v3 = [a3 path];
-  v4 = open_dprotected_np([v3 UTF8String], 2, 4, 0, 384);
+  path = [a3 path];
+  v4 = open_dprotected_np([path UTF8String], 2, 4, 0, 384);
   if (v4 == -1)
   {
     v8 = 0;
@@ -47,11 +47,11 @@
 - (uint64_t)_ISMutableStoreIndex_makeBackedByFileAtURL:()ISMutableStoreIndex
 {
   v4 = a3;
-  v5 = [v4 path];
-  v6 = [v5 stringByAppendingPathExtension:@"tmp"];
+  path = [v4 path];
+  v6 = [path stringByAppendingPathExtension:@"tmp"];
 
-  v7 = [a1 length];
-  v8 = [a1 bytes];
+  v7 = [self length];
+  bytes = [self bytes];
   v9 = open_dprotected_np([v6 UTF8String], 1538, 4, 0, 420);
   if (v9 == -1)
   {
@@ -93,7 +93,7 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v17 = vm_copy(*MEMORY[0x1E69E9A60], v8, v7, v11);
+    v17 = vm_copy(*MEMORY[0x1E69E9A60], bytes, v7, v11);
     if (v17)
     {
       v18 = v17;
@@ -109,7 +109,7 @@ LABEL_23:
       goto LABEL_11;
     }
 
-    if (mmap(v8, v7, 3, 17, v10, 0) != v8)
+    if (mmap(bytes, v7, 3, 17, v10, 0) != bytes)
     {
       v19 = _ISDefaultLog();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
@@ -122,13 +122,13 @@ LABEL_23:
 
     munmap(v12, v7);
     close(v10);
-    v20 = [v6 UTF8String];
-    v21 = [v4 path];
-    v22 = [v21 UTF8String];
-    rename(v20, v22, v23);
-    LODWORD(v20) = v24;
+    uTF8String = [v6 UTF8String];
+    path2 = [v4 path];
+    uTF8String2 = [path2 UTF8String];
+    rename(uTF8String, uTF8String2, v23);
+    LODWORD(uTF8String) = v24;
 
-    if (v20 != -1)
+    if (uTF8String != -1)
     {
       v15 = 1;
       goto LABEL_16;

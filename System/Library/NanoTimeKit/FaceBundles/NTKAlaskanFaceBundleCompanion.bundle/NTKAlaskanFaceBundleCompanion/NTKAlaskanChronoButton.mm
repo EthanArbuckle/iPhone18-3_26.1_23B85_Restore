@@ -1,27 +1,27 @@
 @interface NTKAlaskanChronoButton
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation NTKAlaskanChronoButton
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v17.receiver = self;
   v17.super_class = NTKAlaskanChronoButton;
   [(NTKAlaskanChronoButton *)&v17 setHighlighted:?];
-  v5 = [(NTKAlaskanChronoButton *)self imageView];
-  v6 = [v5 layer];
-  v7 = [v6 animationForKey:@"NTKAlaskanChronoButtonAnimation"];
+  imageView = [(NTKAlaskanChronoButton *)self imageView];
+  layer = [imageView layer];
+  v7 = [layer animationForKey:@"NTKAlaskanChronoButtonAnimation"];
 
   if (v7)
   {
-    v8 = [(NTKAlaskanChronoButton *)self imageView];
-    v9 = [v8 layer];
-    [v9 removeAnimationForKey:@"NTKAlaskanChronoButtonAnimation"];
+    imageView2 = [(NTKAlaskanChronoButton *)self imageView];
+    layer2 = [imageView2 layer];
+    [layer2 removeAnimationForKey:@"NTKAlaskanChronoButtonAnimation"];
   }
 
-  if (v3)
+  if (highlightedCopy)
   {
     v10 = 0.3;
   }
@@ -31,7 +31,7 @@
     v10 = 0.2;
   }
 
-  if (v3)
+  if (highlightedCopy)
   {
     v11 = &off_3ADE0;
   }
@@ -41,7 +41,7 @@
     v11 = &off_3ADF0;
   }
 
-  if (v3)
+  if (highlightedCopy)
   {
     v12 = &off_3ADF0;
   }
@@ -55,14 +55,14 @@
   v14 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
   [v13 setTimingFunction:v14];
 
-  [v13 setRemovedOnCompletion:!v3];
+  [v13 setRemovedOnCompletion:!highlightedCopy];
   [v13 setFillMode:kCAFillModeForwards];
   [v13 setFromValue:v12];
   [v13 setToValue:v11];
   [v13 setDuration:v10];
-  v15 = [(NTKAlaskanChronoButton *)self imageView];
-  v16 = [v15 layer];
-  [v16 addAnimation:v13 forKey:@"NTKAlaskanChronoButtonAnimation"];
+  imageView3 = [(NTKAlaskanChronoButton *)self imageView];
+  layer3 = [imageView3 layer];
+  [layer3 addAnimation:v13 forKey:@"NTKAlaskanChronoButtonAnimation"];
 }
 
 @end

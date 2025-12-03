@@ -1,29 +1,29 @@
 @interface DDUIAction
 - (void)dd_performAction;
-- (void)dd_performActionWithRect:(CGRect)a3;
+- (void)dd_performActionWithRect:(CGRect)rect;
 @end
 
 @implementation DDUIAction
 
 - (void)dd_performAction
 {
-  v3 = [(DDUIAction *)self dd_handler];
+  dd_handler = [(DDUIAction *)self dd_handler];
 
-  if (v3)
+  if (dd_handler)
   {
-    v4 = [(DDUIAction *)self dd_handler];
-    v4[2](v4, self);
+    dd_handler2 = [(DDUIAction *)self dd_handler];
+    dd_handler2[2](dd_handler2, self);
   }
 }
 
-- (void)dd_performActionWithRect:(CGRect)a3
+- (void)dd_performActionWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(DDUIAction *)self dd_action];
-  [v8 updateSourceRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  dd_action = [(DDUIAction *)self dd_action];
+  [dd_action updateSourceRect:{x, y, width, height}];
 
   [(DDUIAction *)self dd_performAction];
 }

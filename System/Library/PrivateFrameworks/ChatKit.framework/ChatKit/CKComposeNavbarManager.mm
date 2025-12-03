@@ -1,21 +1,21 @@
 @interface CKComposeNavbarManager
 - (CKComposeNavbarManagerDelegate)delegate;
 - (UIButton)cancelButton;
-- (id)initForBusinessChat:(BOOL)a3;
-- (void)_setupAvatarNavBarViewControllerWithConversation:(id)a3 shouldShowBackButtonView:(BOOL)a4;
-- (void)_setupDefaultNavbarCanvasViewControllerForBusinessChat:(BOOL)a3;
-- (void)commitTransitionAnimationWithConversation:(id)a3 shouldShowBackButtonView:(BOOL)a4;
+- (id)initForBusinessChat:(BOOL)chat;
+- (void)_setupAvatarNavBarViewControllerWithConversation:(id)conversation shouldShowBackButtonView:(BOOL)view;
+- (void)_setupDefaultNavbarCanvasViewControllerForBusinessChat:(BOOL)chat;
+- (void)commitTransitionAnimationWithConversation:(id)conversation shouldShowBackButtonView:(BOOL)view;
 - (void)dealloc;
-- (void)setCanvasViewControllerDelegate:(id)a3;
-- (void)updateContentsForConversation:(id)a3;
-- (void)updateTitle:(id)a3 animated:(BOOL)a4;
+- (void)setCanvasViewControllerDelegate:(id)delegate;
+- (void)updateContentsForConversation:(id)conversation;
+- (void)updateTitle:(id)title animated:(BOOL)animated;
 @end
 
 @implementation CKComposeNavbarManager
 
-- (id)initForBusinessChat:(BOOL)a3
+- (id)initForBusinessChat:(BOOL)chat
 {
-  v3 = a3;
+  chatCopy = chat;
   v9.receiver = self;
   v9.super_class = CKComposeNavbarManager;
   v4 = [(CKComposeNavbarManager *)&v9 init];
@@ -24,13 +24,13 @@
     v5 = objc_alloc_init(CKComposeNavbarManagerContentView);
     [(CKComposeNavbarManagerContentView *)v5 setAutoresizingMask:18];
     [(CKComposeNavbarManager *)v4 setComposeContentView:v5];
-    [(CKComposeNavbarManager *)v4 _setupDefaultNavbarCanvasViewControllerForBusinessChat:v3];
-    v6 = [(CKComposeNavbarManager *)v4 defaultNavbarCanvasViewController];
-    v7 = [v6 view];
+    [(CKComposeNavbarManager *)v4 _setupDefaultNavbarCanvasViewControllerForBusinessChat:chatCopy];
+    defaultNavbarCanvasViewController = [(CKComposeNavbarManager *)v4 defaultNavbarCanvasViewController];
+    view = [defaultNavbarCanvasViewController view];
 
-    [v7 setEnforceLeftItemViewsAlignmentToCenter:1];
-    [(CKComposeNavbarManagerContentView *)v5 setCanvasView:v7];
-    [(CKComposeNavbarManagerContentView *)v5 addSubview:v7];
+    [view setEnforceLeftItemViewsAlignmentToCenter:1];
+    [(CKComposeNavbarManagerContentView *)v5 setCanvasView:view];
+    [(CKComposeNavbarManagerContentView *)v5 addSubview:view];
   }
 
   return v4;
@@ -38,48 +38,48 @@
 
 - (void)dealloc
 {
-  v3 = [(CKComposeNavbarManager *)self customStatusBackgroundView];
-  [v3 removeFromSuperview];
+  customStatusBackgroundView = [(CKComposeNavbarManager *)self customStatusBackgroundView];
+  [customStatusBackgroundView removeFromSuperview];
 
   v4.receiver = self;
   v4.super_class = CKComposeNavbarManager;
   [(CKComposeNavbarManager *)&v4 dealloc];
 }
 
-- (void)updateContentsForConversation:(id)a3
+- (void)updateContentsForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
-  [v5 updateContentsForConversation:v4];
+  conversationCopy = conversation;
+  defaultNavbarCanvasViewController = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
+  [defaultNavbarCanvasViewController updateContentsForConversation:conversationCopy];
 }
 
-- (void)updateTitle:(id)a3 animated:(BOOL)a4
+- (void)updateTitle:(id)title animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
-  [v7 updateTitle:v6 animated:v4];
+  animatedCopy = animated;
+  titleCopy = title;
+  defaultNavbarCanvasViewController = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
+  [defaultNavbarCanvasViewController updateTitle:titleCopy animated:animatedCopy];
 }
 
 - (UIButton)cancelButton
 {
-  v2 = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
-  v3 = [v2 cancelButton];
+  defaultNavbarCanvasViewController = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
+  cancelButton = [defaultNavbarCanvasViewController cancelButton];
 
-  return v3;
+  return cancelButton;
 }
 
-- (void)setCanvasViewControllerDelegate:(id)a3
+- (void)setCanvasViewControllerDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  defaultNavbarCanvasViewController = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
+  [defaultNavbarCanvasViewController setDelegate:delegateCopy];
 }
 
-- (void)_setupDefaultNavbarCanvasViewControllerForBusinessChat:(BOOL)a3
+- (void)_setupDefaultNavbarCanvasViewControllerForBusinessChat:(BOOL)chat
 {
   v4 = off_1E72E4AF0;
-  if (!a3)
+  if (!chat)
   {
     v4 = off_1E72E4AF8;
   }
@@ -88,94 +88,94 @@
   [(CKComposeNavbarManager *)self setDefaultNavbarCanvasViewController:v5];
 }
 
-- (void)_setupAvatarNavBarViewControllerWithConversation:(id)a3 shouldShowBackButtonView:(BOOL)a4
+- (void)_setupAvatarNavBarViewControllerWithConversation:(id)conversation shouldShowBackButtonView:(BOOL)view
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[CKNavbarCanvasViewController alloc] initWithConversation:v6 navigationController:0];
+  viewCopy = view;
+  conversationCopy = conversation;
+  v7 = [[CKNavbarCanvasViewController alloc] initWithConversation:conversationCopy navigationController:0];
 
-  [(CKNavbarCanvasViewController *)v7 setCanShowBackButtonView:v4];
+  [(CKNavbarCanvasViewController *)v7 setCanShowBackButtonView:viewCopy];
   [(CKComposeNavbarManager *)self setAvatarNavbarCanvasViewController:v7];
 }
 
-- (void)commitTransitionAnimationWithConversation:(id)a3 shouldShowBackButtonView:(BOOL)a4
+- (void)commitTransitionAnimationWithConversation:(id)conversation shouldShowBackButtonView:(BOOL)view
 {
-  v4 = a4;
-  v6 = a3;
-  [(CKComposeNavbarManager *)self _setupAvatarNavBarViewControllerWithConversation:v6 shouldShowBackButtonView:v4];
-  v7 = [(CKComposeNavbarManager *)self avatarNavbarCanvasViewController];
-  v8 = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
-  v9 = [v8 delegate];
-  [v7 setDelegate:v9];
+  viewCopy = view;
+  conversationCopy = conversation;
+  [(CKComposeNavbarManager *)self _setupAvatarNavBarViewControllerWithConversation:conversationCopy shouldShowBackButtonView:viewCopy];
+  avatarNavbarCanvasViewController = [(CKComposeNavbarManager *)self avatarNavbarCanvasViewController];
+  defaultNavbarCanvasViewController = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
+  delegate = [defaultNavbarCanvasViewController delegate];
+  [avatarNavbarCanvasViewController setDelegate:delegate];
 
-  v10 = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
-  v11 = [v10 view];
+  defaultNavbarCanvasViewController2 = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
+  view = [defaultNavbarCanvasViewController2 view];
 
-  v12 = [(CKComposeNavbarManager *)self avatarNavbarCanvasViewController];
-  v13 = [v12 view];
+  avatarNavbarCanvasViewController2 = [(CKComposeNavbarManager *)self avatarNavbarCanvasViewController];
+  view2 = [avatarNavbarCanvasViewController2 view];
 
-  v14 = [(CKComposeNavbarManager *)self composeContentView];
-  [v14 setCanvasView:v13];
+  composeContentView = [(CKComposeNavbarManager *)self composeContentView];
+  [composeContentView setCanvasView:view2];
 
-  if ([v6 isBusinessConversation])
+  if ([conversationCopy isBusinessConversation])
   {
     v15 = +[CKUIBehavior sharedBehaviors];
-    v16 = [v15 theme];
-    v17 = [v6 chat];
-    v18 = [v16 primaryBrandColorForBusinessChat:v17];
-    [v13 setBackgroundColor:v18];
+    theme = [v15 theme];
+    chat = [conversationCopy chat];
+    v18 = [theme primaryBrandColorForBusinessChat:chat];
+    [view2 setBackgroundColor:v18];
 
-    [v13 setAlpha:1.0];
+    [view2 setAlpha:1.0];
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    v21 = [v6 chat];
-    v22 = [v20 secondaryBrandColorForBusinessChat:v21];
-    [v13 setTintColor:v22];
+    theme2 = [v19 theme];
+    chat2 = [conversationCopy chat];
+    v22 = [theme2 secondaryBrandColorForBusinessChat:chat2];
+    [view2 setTintColor:v22];
 
-    v23 = [(CKComposeNavbarManager *)self avatarNavbarCanvasViewController];
-    v24 = [v23 conversationIdentityView];
+    avatarNavbarCanvasViewController3 = [(CKComposeNavbarManager *)self avatarNavbarCanvasViewController];
+    conversationIdentityView = [avatarNavbarCanvasViewController3 conversationIdentityView];
     v25 = +[CKUIBehavior sharedBehaviors];
-    v26 = [v25 theme];
-    [v6 chat];
-    v27 = v70 = v11;
-    [v24 setStyle:{objc_msgSend(v26, "navBarTextStyleForBusinessChat:", v27)}];
+    theme3 = [v25 theme];
+    [conversationCopy chat];
+    v27 = v70 = view;
+    [conversationIdentityView setStyle:{objc_msgSend(theme3, "navBarTextStyleForBusinessChat:", v27)}];
 
     v28 = objc_alloc(MEMORY[0x1E69DD250]);
-    v29 = [MEMORY[0x1E69DC668] sharedApplication];
-    v30 = [v29 keyWindow];
-    [v30 frame];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    keyWindow = [mEMORY[0x1E69DC668] keyWindow];
+    [keyWindow frame];
     v32 = v31;
-    v33 = [(CKComposeNavbarManager *)self contentView];
-    [v33 frame];
+    contentView = [(CKComposeNavbarManager *)self contentView];
+    [contentView frame];
     v35 = v32 - v34;
-    v36 = [(CKComposeNavbarManager *)self contentView];
-    [v36 frame];
+    contentView2 = [(CKComposeNavbarManager *)self contentView];
+    [contentView2 frame];
     v38 = v37;
-    v39 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v39 statusBarFrame];
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668]2 statusBarFrame];
     v40 = [v28 initWithFrame:{v35, 0.0, v38}];
     customStatusBackgroundView = self->_customStatusBackgroundView;
     self->_customStatusBackgroundView = v40;
 
     v42 = v40;
     v43 = +[CKUIBehavior sharedBehaviors];
-    v44 = [v43 theme];
-    v45 = [v6 chat];
-    v46 = [v44 primaryBrandColorForBusinessChat:v45];
+    theme4 = [v43 theme];
+    chat3 = [conversationCopy chat];
+    v46 = [theme4 primaryBrandColorForBusinessChat:chat3];
     [(UIView *)v42 setBackgroundColor:v46];
 
-    v11 = v70;
+    view = v70;
     [(UIView *)v42 setAlpha:0.0];
     [(UIView *)v42 setAccessibilityIgnoresInvertColors:1];
-    v47 = [MEMORY[0x1E69DC668] sharedApplication];
-    v48 = [v47 keyWindow];
-    [v48 addSubview:v42];
+    mEMORY[0x1E69DC668]3 = [MEMORY[0x1E69DC668] sharedApplication];
+    keyWindow2 = [mEMORY[0x1E69DC668]3 keyWindow];
+    [keyWindow2 addSubview:v42];
 
-    v49 = [(CKComposeNavbarManager *)self avatarNavbarCanvasViewController];
-    [v49 updateTitle:&stru_1F04268F8 animated:0];
+    avatarNavbarCanvasViewController4 = [(CKComposeNavbarManager *)self avatarNavbarCanvasViewController];
+    [avatarNavbarCanvasViewController4 updateTitle:&stru_1F04268F8 animated:0];
 
-    v50 = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
-    [v50 updateTitle:&stru_1F04268F8 animated:0];
+    defaultNavbarCanvasViewController3 = [(CKComposeNavbarManager *)self defaultNavbarCanvasViewController];
+    [defaultNavbarCanvasViewController3 updateTitle:&stru_1F04268F8 animated:0];
   }
 
   else
@@ -183,26 +183,26 @@
     v42 = 0;
   }
 
-  v51 = [(CKComposeNavbarManager *)self contentView];
-  [v51 insertSubview:v13 belowSubview:v11];
+  contentView3 = [(CKComposeNavbarManager *)self contentView];
+  [contentView3 insertSubview:view2 belowSubview:view];
 
-  v52 = [(CKComposeNavbarManager *)self contentView];
-  [v52 bounds];
-  [v13 setFrame:?];
+  contentView4 = [(CKComposeNavbarManager *)self contentView];
+  [contentView4 bounds];
+  [view2 setFrame:?];
 
   v53 = +[CKUIBehavior sharedBehaviors];
   [v53 sendAnimationDuration];
   v55 = v54 * 0.5;
 
-  if ([v6 isBusinessConversation])
+  if ([conversationCopy isBusinessConversation])
   {
-    v56 = [v13 leftItemView];
-    [v56 setAlpha:0.0];
+    leftItemView = [view2 leftItemView];
+    [leftItemView setAlpha:0.0];
 
-    v57 = [v13 rightItemView];
-    [v57 setAlpha:0.0];
+    rightItemView = [view2 rightItemView];
+    [rightItemView setAlpha:0.0];
 
-    [v13 setAlpha:0.0];
+    [view2 setAlpha:0.0];
     v58 = MEMORY[0x1E69DD250];
     v80[0] = MEMORY[0x1E69E9820];
     v80[1] = 3221225472;
@@ -211,7 +211,7 @@
     v59 = &v81;
     v81 = v42;
     v60 = v82;
-    v82[0] = v11;
+    v82[0] = view;
     v82[1] = self;
     v77[0] = MEMORY[0x1E69E9820];
     v77[1] = 3221225472;
@@ -220,9 +220,9 @@
     v61 = &v78;
     v62 = v79;
     v78 = v82[0];
-    v79[0] = v13;
+    v79[0] = view2;
     *&v79[1] = v55;
-    v63 = v13;
+    v63 = view2;
     v64 = v42;
     v65 = v80;
     v66 = v77;
@@ -230,7 +230,7 @@
 
   else
   {
-    [v13 setAlpha:0.0];
+    [view2 setAlpha:0.0];
     v58 = MEMORY[0x1E69DD250];
     v74[0] = MEMORY[0x1E69E9820];
     v74[1] = 3221225472;
@@ -239,7 +239,7 @@
     v59 = &v75;
     v75 = v42;
     v60 = v76;
-    v76[0] = v11;
+    v76[0] = view;
     v76[1] = self;
     v71[0] = MEMORY[0x1E69E9820];
     v71[1] = 3221225472;
@@ -250,8 +250,8 @@
     *&v73[1] = v55;
     v62 = v73;
     v72 = v67;
-    v73[0] = v13;
-    v68 = v13;
+    v73[0] = view2;
+    v68 = view2;
     v69 = v42;
     v65 = v74;
     v66 = v71;

@@ -1,27 +1,27 @@
 @interface ICHashtagController
-+ (BOOL)isBeginningHashtagAtSelectionRange:(_NSRange)a3 inString:(id)a4 languageHasSpaces:(BOOL)a5;
-+ (BOOL)isValidPostfixCharacter:(unsigned __int16)a3;
-+ (BOOL)isValidPrefixCharacter:(unsigned __int16)a3 languageHasSpaces:(BOOL)a4;
-+ (BOOL)range:(_NSRange)a3 hasValidPostfixCharacterForString:(id)a4;
-+ (BOOL)range:(_NSRange)a3 hasValidPrefixCharacterForString:(id)a4 languageHasSpaces:(BOOL)a5;
-+ (BOOL)range:(_NSRange)a3 isPrefixedWithHashtagForString:(id)a4;
++ (BOOL)isBeginningHashtagAtSelectionRange:(_NSRange)range inString:(id)string languageHasSpaces:(BOOL)spaces;
++ (BOOL)isValidPostfixCharacter:(unsigned __int16)character;
++ (BOOL)isValidPrefixCharacter:(unsigned __int16)character languageHasSpaces:(BOOL)spaces;
++ (BOOL)range:(_NSRange)range hasValidPostfixCharacterForString:(id)string;
++ (BOOL)range:(_NSRange)range hasValidPrefixCharacterForString:(id)string languageHasSpaces:(BOOL)spaces;
++ (BOOL)range:(_NSRange)range isPrefixedWithHashtagForString:(id)string;
 + (BOOL)shouldAutoConvertToTag;
-+ (_NSRange)range:(_NSRange)a3 appendingSubstringRange:(_NSRange)a4;
-+ (_NSRange)rangeOfLastCharacterInRange:(_NSRange)a3;
++ (_NSRange)range:(_NSRange)range appendingSubstringRange:(_NSRange)substringRange;
++ (_NSRange)rangeOfLastCharacterInRange:(_NSRange)range;
 - (BOOL)allowsHashtag;
 - (ICAttachmentInsertionController)attachmentInsertionController;
 - (ICHashtagAnalyticsDelegate)analyticsDelegate;
-- (ICHashtagController)initWithNote:(id)a3;
+- (ICHashtagController)initWithNote:(id)note;
 - (ICHashtagKeyboardDelegate)hashtagKeyboardDelegate;
 - (ICHashtagKeyboardDelegate)hashtagTableKeyboardDelegate;
 - (ICNote)note;
 - (ICTableColumnTextView)tableTextView;
 - (UITextView)textView;
 - (_NSRange)editedRange;
-- (id)checkForHashtagInString:(id)a3 inRange:(_NSRange)a4 selectionRange:(_NSRange)a5 languageHasSpaces:(BOOL)a6;
-- (id)hashtagSuggestionsForKey:(id)a3;
-- (void)associateHashtagSuggestion:(id)a3 withKey:(id)a4;
-- (void)crossAppHashtagDidChange:(id)a3;
+- (id)checkForHashtagInString:(id)string inRange:(_NSRange)range selectionRange:(_NSRange)selectionRange languageHasSpaces:(BOOL)spaces;
+- (id)hashtagSuggestionsForKey:(id)key;
+- (void)associateHashtagSuggestion:(id)suggestion withKey:(id)key;
+- (void)crossAppHashtagDidChange:(id)change;
 - (void)dealloc;
 - (void)updateHashtagsAssociations;
 @end
@@ -33,10 +33,10 @@
   v28 = *MEMORY[0x277D85DE8];
   if ([(ICHashtagController *)self allowsHashtag])
   {
-    v3 = [(ICHashtagController *)self note];
-    v4 = [v3 account];
-    v5 = [v4 managedObjectContext];
-    v6 = [ICHashtag allVisibleHashtagsInContext:v5];
+    note = [(ICHashtagController *)self note];
+    account = [note account];
+    managedObjectContext = [account managedObjectContext];
+    v6 = [ICHashtag allVisibleHashtagsInContext:managedObjectContext];
 
     v7 = [ICHashtagSuggestionItem suggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:v6];
     [(ICHashtagController *)self setMaxNameLength:0];
@@ -69,17 +69,17 @@
           }
 
           v16 = *(*(&v23 + 1) + 8 * i);
-          v17 = [v16 displayText];
-          v18 = [v17 ic_tokenSafeText];
-          [(ICHashtagController *)self associateHashtagSuggestion:v16 withKey:v18];
+          displayText = [v16 displayText];
+          ic_tokenSafeText = [displayText ic_tokenSafeText];
+          [(ICHashtagController *)self associateHashtagSuggestion:v16 withKey:ic_tokenSafeText];
 
-          v19 = [v16 displayText];
-          v20 = [v19 length];
+          displayText2 = [v16 displayText];
+          v20 = [displayText2 length];
 
-          v21 = [(ICHashtagController *)self maxNameLength];
-          if (v20 <= v21)
+          maxNameLength = [(ICHashtagController *)self maxNameLength];
+          if (v20 <= maxNameLength)
           {
-            v22 = v21;
+            v22 = maxNameLength;
           }
 
           else
@@ -100,16 +100,16 @@
 
 - (BOOL)allowsHashtag
 {
-  v3 = [(ICHashtagController *)self note];
-  if ([v3 isPasswordProtected])
+  note = [(ICHashtagController *)self note];
+  if ([note isPasswordProtected])
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v5 = [(ICHashtagController *)self note];
-    v4 = [v5 isSharedReadOnly] ^ 1;
+    note2 = [(ICHashtagController *)self note];
+    v4 = [note2 isSharedReadOnly] ^ 1;
   }
 
   return v4;
@@ -122,22 +122,22 @@
   return WeakRetained;
 }
 
-- (ICHashtagController)initWithNote:(id)a3
+- (ICHashtagController)initWithNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   v10.receiver = self;
   v10.super_class = ICHashtagController;
   v5 = [(ICHashtagController *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_note, v4);
+    objc_storeWeak(&v5->_note, noteCopy);
     [(ICHashtagController *)v6 updateHashtagsAssociations];
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v6 selector:sel_crossAppHashtagDidChange_ name:@"ICCrossAppHashtagDisplayTextUpdatedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v6 selector:sel_crossAppHashtagDidChange_ name:@"ICCrossAppHashtagDisplayTextUpdatedNotification" object:0];
 
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 addObserver:v6 selector:sel_accountWasDeleted_ name:@"ICAccountWasDeletedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel_accountWasDeleted_ name:@"ICAccountWasDeletedNotification" object:0];
   }
 
   return v6;
@@ -145,23 +145,23 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = ICHashtagController;
   [(ICHashtagController *)&v4 dealloc];
 }
 
-- (id)checkForHashtagInString:(id)a3 inRange:(_NSRange)a4 selectionRange:(_NSRange)a5 languageHasSpaces:(BOOL)a6
+- (id)checkForHashtagInString:(id)string inRange:(_NSRange)range selectionRange:(_NSRange)selectionRange languageHasSpaces:(BOOL)spaces
 {
-  v6 = a6;
-  length = a5.length;
-  location = a5.location;
-  v9 = a4.length;
-  v10 = a4.location;
-  v12 = a3;
-  if (-[ICHashtagController allowsHashtag](self, "allowsHashtag") && ([v12 string], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v10 + v9 <= v14))
+  spacesCopy = spaces;
+  length = selectionRange.length;
+  location = selectionRange.location;
+  v9 = range.length;
+  v10 = range.location;
+  stringCopy = string;
+  if (-[ICHashtagController allowsHashtag](self, "allowsHashtag") && ([stringCopy string], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v10 + v9 <= v14))
   {
     v42[0] = 0;
     v42[1] = v42;
@@ -170,16 +170,16 @@
     v43 = xmmword_2150C0620;
     v16 = objc_alloc_init(ICHashtagsCheckResults);
     v17 = objc_opt_class();
-    v18 = [v12 string];
-    v19 = [v17 isBeginningHashtagAtSelectionRange:location inString:length languageHasSpaces:{v18, v6}];
+    string = [stringCopy string];
+    v19 = [v17 isBeginningHashtagAtSelectionRange:location inString:length languageHasSpaces:{string, spacesCopy}];
 
     if (v19)
     {
       [(ICHashtagsCheckResults *)v16 setRangeOfHashtag:location - 1, 1];
-      v20 = [(ICHashtagController *)self note];
-      v21 = [v20 account];
-      v22 = [v21 managedObjectContext];
-      v23 = [ICHashtag allVisibleHashtagsInContext:v22];
+      note = [(ICHashtagController *)self note];
+      account = [note account];
+      managedObjectContext = [account managedObjectContext];
+      v23 = [ICHashtag allVisibleHashtagsInContext:managedObjectContext];
 
       v24 = [ICHashtagSuggestionItem suggestionItemsWithHashtagsIncludingHashtagsFromOtherApps:v23];
       v25 = [MEMORY[0x277CBEB98] setWithArray:v24];
@@ -195,8 +195,8 @@
       v40[2] = 0x3032000000;
       v40[3] = __Block_byref_object_copy__2;
       v40[4] = __Block_byref_object_dispose__2;
-      v41 = [(ICHashtagController *)self hashtagsTree];
-      v26 = [v12 string];
+      hashtagsTree = [(ICHashtagController *)self hashtagsTree];
+      string2 = [stringCopy string];
       v34[0] = MEMORY[0x277D85DD0];
       v34[1] = 3221225472;
       v34[2] = __88__ICHashtagController_checkForHashtagInString_inRange_selectionRange_languageHasSpaces___block_invoke;
@@ -204,18 +204,18 @@
       v37 = v40;
       v38 = v42;
       v34[4] = self;
-      v35 = v12;
-      v39 = v6;
+      v35 = stringCopy;
+      v39 = spacesCopy;
       v27 = v16;
       v36 = v27;
-      [v26 enumerateSubstringsInRange:v10 options:v9 usingBlock:{2, v34}];
+      [string2 enumerateSubstringsInRange:v10 options:v9 usingBlock:{2, v34}];
 
       if ([(ICHashtagsCheckResults *)v27 rangeOfHashtag]!= 0x7FFFFFFFFFFFFFFFLL)
       {
         [(ICHashtagsCheckResults *)v27 rangeOfHashtag];
-        v28 = [(ICHashtagsCheckResults *)v27 rangeOfHashtag];
+        rangeOfHashtag = [(ICHashtagsCheckResults *)v27 rangeOfHashtag];
         [(ICHashtagsCheckResults *)v27 rangeOfHashtag];
-        [(ICHashtagsCheckResults *)v27 setRangeOfHashtag:v28 - 1, v29 + 1];
+        [(ICHashtagsCheckResults *)v27 setRangeOfHashtag:rangeOfHashtag - 1, v29 + 1];
       }
 
       if ([(ICHashtagsCheckResults *)v27 rangeOfHashtag]== 0x7FFFFFFFFFFFFFFFLL || ([(ICHashtagsCheckResults *)v27 rangeOfHashtag], !v30))
@@ -225,8 +225,8 @@
 
       else
       {
-        v31 = [(ICHashtagsCheckResults *)v27 matchingHashtagSuggestions];
-        v32 = [v31 count];
+        matchingHashtagSuggestions = [(ICHashtagsCheckResults *)v27 matchingHashtagSuggestions];
+        v32 = [matchingHashtagSuggestions count];
 
         if (!v32)
         {
@@ -345,7 +345,7 @@ LABEL_10:
 LABEL_14:
 }
 
-- (void)crossAppHashtagDidChange:(id)a3
+- (void)crossAppHashtagDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -355,34 +355,34 @@ LABEL_14:
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)associateHashtagSuggestion:(id)a3 withKey:(id)a4
+- (void)associateHashtagSuggestion:(id)suggestion withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && [v7 length])
+  suggestionCopy = suggestion;
+  keyCopy = key;
+  v8 = keyCopy;
+  if (keyCopy && [keyCopy length])
   {
-    v9 = [(ICHashtagController *)self hashtagsNames];
-    [v9 addObject:v8];
+    hashtagsNames = [(ICHashtagController *)self hashtagsNames];
+    [hashtagsNames addObject:v8];
 
     v18 = 0;
     v19 = &v18;
     v20 = 0x3032000000;
     v21 = __Block_byref_object_copy__2;
     v22 = __Block_byref_object_dispose__2;
-    v23 = [(ICHashtagController *)self hashtagsTree];
+    hashtagsTree = [(ICHashtagController *)self hashtagsTree];
     v10 = [v8 length];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __58__ICHashtagController_associateHashtagSuggestion_withKey___block_invoke;
     v15[3] = &unk_278195058;
     v17 = &v18;
-    v11 = v6;
+    v11 = suggestionCopy;
     v16 = v11;
     [v8 enumerateSubstringsInRange:0 options:v10 usingBlock:{2, v15}];
     [v19[5] addHashtagSuggestion:v11];
-    v12 = [(ICHashtagController *)self hashtagSuggestionsDictionary];
-    v13 = [v12 objectForKey:v8];
+    hashtagSuggestionsDictionary = [(ICHashtagController *)self hashtagSuggestionsDictionary];
+    v13 = [hashtagSuggestionsDictionary objectForKey:v8];
 
     if (v13)
     {
@@ -394,8 +394,8 @@ LABEL_14:
       v13 = [objc_alloc(MEMORY[0x277CBEB58]) initWithObjects:{v11, 0}];
     }
 
-    v14 = [(ICHashtagController *)self hashtagSuggestionsDictionary];
-    [v14 setObject:v13 forKey:v8];
+    hashtagSuggestionsDictionary2 = [(ICHashtagController *)self hashtagSuggestionsDictionary];
+    [hashtagSuggestionsDictionary2 setObject:v13 forKey:v8];
 
     _Block_object_dispose(&v18, 8);
   }
@@ -420,24 +420,24 @@ void __58__ICHashtagController_associateHashtagSuggestion_withKey___block_invoke
   *(v5 + 40) = v4;
 }
 
-- (id)hashtagSuggestionsForKey:(id)a3
+- (id)hashtagSuggestionsForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(ICHashtagController *)self hashtagSuggestionsDictionary];
-  v6 = [v4 ic_tokenSafeText];
+  keyCopy = key;
+  hashtagSuggestionsDictionary = [(ICHashtagController *)self hashtagSuggestionsDictionary];
+  ic_tokenSafeText = [keyCopy ic_tokenSafeText];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [hashtagSuggestionsDictionary objectForKey:ic_tokenSafeText];
   v8 = [v7 copy];
 
   return v8;
 }
 
-+ (_NSRange)rangeOfLastCharacterInRange:(_NSRange)a3
++ (_NSRange)rangeOfLastCharacterInRange:(_NSRange)range
 {
-  v3 = a3.length != 0;
-  if (a3.length)
+  v3 = range.length != 0;
+  if (range.length)
   {
-    v4 = a3.length + a3.location - 1;
+    v4 = range.length + range.location - 1;
   }
 
   else
@@ -450,35 +450,35 @@ void __58__ICHashtagController_associateHashtagSuggestion_withKey___block_invoke
   return result;
 }
 
-+ (_NSRange)range:(_NSRange)a3 appendingSubstringRange:(_NSRange)a4
++ (_NSRange)range:(_NSRange)range appendingSubstringRange:(_NSRange)substringRange
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
-    location = a4.location;
+    location = substringRange.location;
   }
 
   else
   {
-    location = a3.location;
+    location = range.location;
   }
 
-  v5 = a4.location + a4.length - location;
+  v5 = substringRange.location + substringRange.length - location;
   result.length = v5;
   result.location = location;
   return result;
 }
 
-+ (BOOL)isBeginningHashtagAtSelectionRange:(_NSRange)a3 inString:(id)a4 languageHasSpaces:(BOOL)a5
++ (BOOL)isBeginningHashtagAtSelectionRange:(_NSRange)range inString:(id)string languageHasSpaces:(BOOL)spaces
 {
-  v5 = a5;
-  length = a3.length;
-  location = a3.location;
-  v9 = a4;
-  v10 = v9;
+  spacesCopy = spaces;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  v10 = stringCopy;
   v11 = 0;
   if (location && !length)
   {
-    if (location - 1 >= [v9 length])
+    if (location - 1 >= [stringCopy length])
     {
       v11 = 0;
     }
@@ -490,8 +490,8 @@ void __58__ICHashtagController_associateHashtagSuggestion_withKey___block_invoke
       v18 = 1;
       v19 = [MEMORY[0x277CCACA8] stringWithCharacters:&v20 length:1];
       v13 = [v19 stringByApplyingTransform:*MEMORY[0x277CBE750] reverse:0];
-      v14 = [MEMORY[0x277CCACA8] ic_hashtagCharacterString];
-      v15 = [v13 isEqualToString:v14];
+      ic_hashtagCharacterString = [MEMORY[0x277CCACA8] ic_hashtagCharacterString];
+      v15 = [v13 isEqualToString:ic_hashtagCharacterString];
 
       if (v12 == 35)
       {
@@ -500,10 +500,10 @@ void __58__ICHashtagController_associateHashtagSuggestion_withKey___block_invoke
 
       if (location < [v10 length])
       {
-        v18 = [a1 range:location hasValidPostfixCharacterForString:{0, v10}];
+        v18 = [self range:location hasValidPostfixCharacterForString:{0, v10}];
       }
 
-      v16 = [a1 range:location - 1 hasValidPrefixCharacterForString:0 languageHasSpaces:{v10, v5}];
+      v16 = [self range:location - 1 hasValidPrefixCharacterForString:0 languageHasSpaces:{v10, spacesCopy}];
       if (v15)
       {
         v11 = v18 & v16;
@@ -519,34 +519,34 @@ void __58__ICHashtagController_associateHashtagSuggestion_withKey___block_invoke
   return v11;
 }
 
-+ (BOOL)range:(_NSRange)a3 isPrefixedWithHashtagForString:(id)a4
++ (BOOL)range:(_NSRange)range isPrefixedWithHashtagForString:(id)string
 {
-  location = a3.location;
-  v5 = a4;
-  v6 = v5;
+  location = range.location;
+  stringCopy = string;
+  v6 = stringCopy;
   v7 = location < 1;
   v8 = location - 1;
-  v9 = !v7 && v8 < [v5 length] && objc_msgSend(v6, "characterAtIndex:", v8) == 35;
+  v9 = !v7 && v8 < [stringCopy length] && objc_msgSend(v6, "characterAtIndex:", v8) == 35;
 
   return v9;
 }
 
-+ (BOOL)range:(_NSRange)a3 hasValidPrefixCharacterForString:(id)a4 languageHasSpaces:(BOOL)a5
++ (BOOL)range:(_NSRange)range hasValidPrefixCharacterForString:(id)string languageHasSpaces:(BOOL)spaces
 {
-  v5 = a5;
-  location = a3.location;
-  v8 = a4;
-  v9 = v8;
+  spacesCopy = spaces;
+  location = range.location;
+  stringCopy = string;
+  v9 = stringCopy;
   if (location)
   {
-    if (location < 1 || (v10 = location - 1, v10 >= [v8 length]))
+    if (location < 1 || (v10 = location - 1, v10 >= [stringCopy length]))
     {
       v11 = 0;
     }
 
     else
     {
-      v11 = [a1 isValidPrefixCharacter:objc_msgSend(v9 languageHasSpaces:{"characterAtIndex:", v10), v5}];
+      v11 = [self isValidPrefixCharacter:objc_msgSend(v9 languageHasSpaces:{"characterAtIndex:", v10), spacesCopy}];
     }
   }
 
@@ -558,62 +558,62 @@ void __58__ICHashtagController_associateHashtagSuggestion_withKey___block_invoke
   return v11;
 }
 
-+ (BOOL)isValidPrefixCharacter:(unsigned __int16)a3 languageHasSpaces:(BOOL)a4
++ (BOOL)isValidPrefixCharacter:(unsigned __int16)character languageHasSpaces:(BOOL)spaces
 {
-  if (!a4)
+  if (!spaces)
   {
     return 1;
   }
 
-  v4 = a3;
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  if ([v5 characterIsMember:v4])
+  characterCopy = character;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  if ([whitespaceAndNewlineCharacterSet characterIsMember:characterCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-    v6 = [v7 characterIsMember:v4];
+    punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+    v6 = [punctuationCharacterSet characterIsMember:characterCopy];
   }
 
   return v6;
 }
 
-+ (BOOL)range:(_NSRange)a3 hasValidPostfixCharacterForString:(id)a4
++ (BOOL)range:(_NSRange)range hasValidPostfixCharacterForString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = v7;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  v8 = stringCopy;
   v9 = location + length;
-  if (v9 < 0 || v9 >= [v7 length])
+  if (v9 < 0 || v9 >= [stringCopy length])
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [a1 isValidPostfixCharacter:{objc_msgSend(v8, "characterAtIndex:", v9)}];
+    v10 = [self isValidPostfixCharacter:{objc_msgSend(v8, "characterAtIndex:", v9)}];
   }
 
   return v10;
 }
 
-+ (BOOL)isValidPostfixCharacter:(unsigned __int16)a3
++ (BOOL)isValidPostfixCharacter:(unsigned __int16)character
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  if ([v4 characterIsMember:v3])
+  characterCopy = character;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  if ([whitespaceAndNewlineCharacterSet characterIsMember:characterCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-    v5 = [v6 characterIsMember:v3];
+    punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+    v5 = [punctuationCharacterSet characterIsMember:characterCopy];
   }
 
   return v5;
@@ -627,15 +627,15 @@ void __58__ICHashtagController_associateHashtagSuggestion_withKey___block_invoke
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (ICHashtagKeyboardDelegate)hashtagKeyboardDelegate

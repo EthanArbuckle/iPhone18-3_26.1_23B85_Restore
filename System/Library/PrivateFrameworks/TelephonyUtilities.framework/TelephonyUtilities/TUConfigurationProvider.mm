@@ -2,7 +2,7 @@
 - (BOOL)isAutomaticProminenceAvailable;
 - (BOOL)isBlockedContactsAvailable;
 - (BOOL)isBrandedCallingAvailable;
-- (BOOL)isBrandedCallingEnabled:(BOOL)a3;
+- (BOOL)isBrandedCallingEnabled:(BOOL)enabled;
 - (BOOL)isBusinessConnectCallingAvailable;
 - (BOOL)isBusinessConnectCallingEnabled;
 - (BOOL)isCallAnnouncementAvailableForPhone;
@@ -42,27 +42,27 @@
 - (BOOL)isSilenceUnknownCallersEnabledForFaceTime;
 - (BOOL)isSilenceUnknownCallersEnabledForPhone;
 - (BOOL)isSpamFilterEnabledForFaceTime;
-- (BOOL)isSystemCapabilityAvailableForName:(id)a3;
+- (BOOL)isSystemCapabilityAvailableForName:(id)name;
 - (BOOL)isUplevelFTAAvailable;
 - (BOOL)isUplevelFTAEnabled;
 - (BOOL)isWiFiCallingAvailable;
-- (BOOL)supportsBrandedCallingForSubscriptionContext:(id)a3;
-- (BOOL)supportsBusinessConnectCallingForSubscriptionContext:(id)a3;
-- (BOOL)supportsCallBlockingForSubscriptionContext:(id)a3;
-- (BOOL)supportsDialAssistForSubscriptionContext:(id)a3;
-- (BOOL)supportsSystemCapabilityWithName:(id)a3 subscriptionContext:(id)a4;
+- (BOOL)supportsBrandedCallingForSubscriptionContext:(id)context;
+- (BOOL)supportsBusinessConnectCallingForSubscriptionContext:(id)context;
+- (BOOL)supportsCallBlockingForSubscriptionContext:(id)context;
+- (BOOL)supportsDialAssistForSubscriptionContext:(id)context;
+- (BOOL)supportsSystemCapabilityWithName:(id)name subscriptionContext:(id)context;
 - (TUConfigurationProvider)init;
-- (TUConfigurationProvider)initWithNotifier:(id)a3;
+- (TUConfigurationProvider)initWithNotifier:(id)notifier;
 - (TUConfigurationProviderDelegate)delegate;
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (id)stringForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5;
-- (id)systemCapabilitiesForSubscriptionContext:(id)a3;
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
+- (id)stringForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error;
+- (id)systemCapabilitiesForSubscriptionContext:(id)context;
 - (int64_t)getSelectedIntelligentCallScreeningMenuOptionForFaceTime;
 - (int64_t)getSelectedIntelligentCallScreeningMenuOptionForPhone;
 - (void)dealloc;
 - (void)postConfigurationChangedNotification;
-- (void)setSelectedIntelligentCallScreeningMenuOptionForFaceTime:(int64_t)a3;
-- (void)setSelectedIntelligentCallScreeningMenuOptionForPhone:(int64_t)a3;
+- (void)setSelectedIntelligentCallScreeningMenuOptionForFaceTime:(int64_t)time;
+- (void)setSelectedIntelligentCallScreeningMenuOptionForPhone:(int64_t)phone;
 @end
 
 @implementation TUConfigurationProvider
@@ -80,10 +80,10 @@
 
 - (BOOL)isFilterAsNewCallersEnabledForFaceTime
 {
-  v2 = [(TUConfigurationProvider *)self userConfiguration];
-  v3 = [v2 isFilterAsNewCallersEnabledForFaceTime];
+  userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+  isFilterAsNewCallersEnabledForFaceTime = [userConfiguration isFilterAsNewCallersEnabledForFaceTime];
 
-  return v3;
+  return isFilterAsNewCallersEnabledForFaceTime;
 }
 
 - (void)dealloc
@@ -96,15 +96,15 @@
 
 - (BOOL)isFilterAsNewCallersEnabledForPhone
 {
-  v2 = [(TUConfigurationProvider *)self userConfiguration];
-  v3 = [v2 isFilterAsNewCallersEnabledForPhone];
+  userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+  isFilterAsNewCallersEnabledForPhone = [userConfiguration isFilterAsNewCallersEnabledForPhone];
 
-  return v3;
+  return isFilterAsNewCallersEnabledForPhone;
 }
 
-- (TUConfigurationProvider)initWithNotifier:(id)a3
+- (TUConfigurationProvider)initWithNotifier:(id)notifier
 {
-  v5 = a3;
+  notifierCopy = notifier;
   v24.receiver = self;
   v24.super_class = TUConfigurationProvider;
   v6 = [(TUConfigurationProvider *)&v24 init];
@@ -114,7 +114,7 @@
     userConfiguration = v6->_userConfiguration;
     v6->_userConfiguration = v7;
 
-    objc_storeStrong(&v6->_configurationProviderNotifier, a3);
+    objc_storeStrong(&v6->_configurationProviderNotifier, notifier);
     v26 = 0;
     v27 = &v26;
     v28 = 0x2050000000;
@@ -184,9 +184,9 @@ void __44__TUConfigurationProvider_initWithNotifier___block_invoke(uint64_t a1)
 
 - (BOOL)isSIMAvailable
 {
-  v2 = [(TUConfigurationProvider *)self carrierBundleController];
-  v3 = [v2 activeSubscriptions];
-  v4 = v3 != 0;
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
+  v4 = activeSubscriptions != 0;
 
   return v4;
 }
@@ -198,8 +198,8 @@ void __44__TUConfigurationProvider_initWithNotifier___block_invoke(uint64_t a1)
     return 0;
   }
 
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v3 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v3;
 }
@@ -211,8 +211,8 @@ void __44__TUConfigurationProvider_initWithNotifier___block_invoke(uint64_t a1)
     return 0;
   }
 
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v3 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v3;
 }
@@ -224,8 +224,8 @@ void __44__TUConfigurationProvider_initWithNotifier___block_invoke(uint64_t a1)
     return 0;
   }
 
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v3 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v3;
 }
@@ -237,35 +237,35 @@ void __44__TUConfigurationProvider_initWithNotifier___block_invoke(uint64_t a1)
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v2 = [(TUConfigurationProvider *)self carrierBundleController];
-  v3 = [v2 activeSubscriptions];
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
 
-  v4 = [v3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v4 = [activeSubscriptions countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v30;
     v7 = 0x1E7423000uLL;
     v23 = *v30;
-    v24 = v3;
+    v24 = activeSubscriptions;
     do
     {
       for (i = 0; i != v5; ++i)
       {
         if (*v30 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(activeSubscriptions);
         }
 
         v9 = *(*(&v29 + 1) + 8 * i);
         if (([v9 isSimHidden] & 1) == 0)
         {
-          v10 = [*(v7 + 2696) senderIdentityCapabilities];
+          senderIdentityCapabilities = [*(v7 + 2696) senderIdentityCapabilities];
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v11 = v10;
+          v11 = senderIdentityCapabilities;
           v12 = [v11 countByEnumeratingWithState:&v25 objects:v33 count:16];
           if (v12)
           {
@@ -281,17 +281,17 @@ void __44__TUConfigurationProvider_initWithNotifier___block_invoke(uint64_t a1)
                 }
 
                 v16 = *(*(&v25 + 1) + 8 * j);
-                v17 = [v16 senderIdentityUUID];
-                v18 = [v9 uuid];
-                if ([v17 isEqual:v18])
+                senderIdentityUUID = [v16 senderIdentityUUID];
+                uuid = [v9 uuid];
+                if ([senderIdentityUUID isEqual:uuid])
                 {
-                  v19 = [v16 supportsWiFiCalling];
+                  supportsWiFiCalling = [v16 supportsWiFiCalling];
 
-                  if (v19)
+                  if (supportsWiFiCalling)
                   {
 
                     v20 = 1;
-                    v3 = v24;
+                    activeSubscriptions = v24;
                     goto LABEL_23;
                   }
                 }
@@ -308,12 +308,12 @@ void __44__TUConfigurationProvider_initWithNotifier___block_invoke(uint64_t a1)
           }
 
           v6 = v23;
-          v3 = v24;
+          activeSubscriptions = v24;
           v7 = 0x1E7423000;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v5 = [activeSubscriptions countByEnumeratingWithState:&v29 objects:v34 count:16];
       v20 = 0;
     }
 
@@ -338,10 +338,10 @@ LABEL_23:
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(TUConfigurationProvider *)self carrierBundleController];
-  v4 = [v3 activeSubscriptions];
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
 
-  v5 = [v4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  v5 = [activeSubscriptions countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v5)
   {
     v7 = v5;
@@ -354,23 +354,23 @@ LABEL_23:
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeSubscriptions);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
         if (([v10 isSimHidden] & 1) == 0)
         {
-          v11 = [(TUConfigurationProvider *)self carrierBundleController];
-          v12 = [v11 telephonyClient];
+          carrierBundleController2 = [(TUConfigurationProvider *)self carrierBundleController];
+          telephonyClient = [carrierBundleController2 telephonyClient];
           v22 = 0;
-          v13 = [v12 isNetworkSelectionMenuAvailable:v10 error:&v22];
+          v13 = [telephonyClient isNetworkSelectionMenuAvailable:v10 error:&v22];
           v14 = v22;
 
           if (!v13)
           {
-            v15 = [v14 domain];
+            domain = [v14 domain];
 
-            if (v15)
+            if (domain)
             {
               v16 = TUDefaultLog();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -384,9 +384,9 @@ LABEL_23:
             }
           }
 
-          v17 = [v13 BOOLValue];
+          bOOLValue = [v13 BOOLValue];
 
-          if (v17)
+          if (bOOLValue)
           {
             v18 = 1;
             goto LABEL_17;
@@ -394,7 +394,7 @@ LABEL_23:
         }
       }
 
-      v7 = [v4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v7 = [activeSubscriptions countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v7)
       {
         continue;
@@ -418,8 +418,8 @@ LABEL_17:
     return 0;
   }
 
-  v3 = [MEMORY[0x1E699BE70] sharedInstance];
-  v4 = [v3 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v4 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v4;
 }
@@ -436,27 +436,27 @@ LABEL_17:
 
 - (BOOL)isRelaySecondaryAvailable
 {
-  v2 = [(TUConfigurationProvider *)self isFaceTimeEnabledInSettings];
-  if (v2)
+  isFaceTimeEnabledInSettings = [(TUConfigurationProvider *)self isFaceTimeEnabledInSettings];
+  if (isFaceTimeEnabledInSettings)
   {
     if (+[TUCallCapabilities supportsPrimaryCalling])
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(isFaceTimeEnabledInSettings) = 0;
     }
 
     else if (+[TUCallCapabilities supportsThumperCalling])
     {
-      LOBYTE(v2) = 1;
+      LOBYTE(isFaceTimeEnabledInSettings) = 1;
     }
 
     else
     {
 
-      LOBYTE(v2) = +[TUCallCapabilities supportsRelayCalling];
+      LOBYTE(isFaceTimeEnabledInSettings) = +[TUCallCapabilities supportsRelayCalling];
     }
   }
 
-  return v2;
+  return isFaceTimeEnabledInSettings;
 }
 
 - (BOOL)isDialAssistAvailable
@@ -466,10 +466,10 @@ LABEL_17:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(TUConfigurationProvider *)self carrierBundleController];
-  v4 = [v3 activeSubscriptions];
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [activeSubscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -480,15 +480,15 @@ LABEL_17:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeSubscriptions);
         }
 
         if ([(TUConfigurationProvider *)self supportsDialAssistForSubscriptionContext:*(*(&v14 + 1) + 8 * i)])
         {
-          v9 = [MEMORY[0x1E699BE70] sharedInstance];
-          v10 = [v9 deviceType];
+          mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+          deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-          if (v10 == 2)
+          if (deviceType == 2)
           {
             v11 = 1;
             goto LABEL_12;
@@ -496,7 +496,7 @@ LABEL_17:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [activeSubscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -520,8 +520,8 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [MEMORY[0x1E699BE70] sharedInstance];
-  v4 = [v3 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v4 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v4;
 }
@@ -533,8 +533,8 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [MEMORY[0x1E699BE70] sharedInstance];
-  v4 = [v3 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v4 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v4;
 }
@@ -546,8 +546,8 @@ LABEL_12:
     return 0;
   }
 
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v3 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v3;
 }
@@ -559,8 +559,8 @@ LABEL_12:
     return 0;
   }
 
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v3 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v3;
 }
@@ -572,8 +572,8 @@ LABEL_12:
     return 0;
   }
 
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v3 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v3;
 }
@@ -595,8 +595,8 @@ LABEL_12:
     return 0;
   }
 
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v3 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v3;
 }
@@ -608,35 +608,35 @@ LABEL_12:
     return 0;
   }
 
-  v2 = [MEMORY[0x1E699BE70] sharedInstance];
-  v3 = [v2 deviceType] == 2;
+  mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+  v3 = [mEMORY[0x1E699BE70] deviceType] == 2;
 
   return v3;
 }
 
 - (BOOL)isAutomaticProminenceAvailable
 {
-  v2 = [(TUConfigurationProvider *)self isFaceTimeEnabledInSettings];
-  if (v2)
+  isFaceTimeEnabledInSettings = [(TUConfigurationProvider *)self isFaceTimeEnabledInSettings];
+  if (isFaceTimeEnabledInSettings)
   {
-    v3 = [MEMORY[0x1E699BE70] sharedInstance];
-    v4 = [v3 multiwaySupported];
+    mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+    multiwaySupported = [mEMORY[0x1E699BE70] multiwaySupported];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isFaceTimeEnabledInSettings) = multiwaySupported;
   }
 
-  return v2;
+  return isFaceTimeEnabledInSettings;
 }
 
 - (BOOL)isLivePhotosAvailable
 {
-  v2 = [(TUConfigurationProvider *)self isFaceTimeEnabledInSettings];
-  if (v2)
+  isFaceTimeEnabledInSettings = [(TUConfigurationProvider *)self isFaceTimeEnabledInSettings];
+  if (isFaceTimeEnabledInSettings)
   {
-    LOBYTE(v2) = !+[TUMomentsController isFaceTimePhotosRestricted];
+    LOBYTE(isFaceTimeEnabledInSettings) = !+[TUMomentsController isFaceTimePhotosRestricted];
   }
 
-  return v2;
+  return isFaceTimeEnabledInSettings;
 }
 
 - (BOOL)isCallIdentificationAppsAvailable
@@ -690,11 +690,11 @@ intptr_t __60__TUConfigurationProvider_isCallIdentificationAppsAvailable__block_
 
 - (BOOL)isLiveLookupAvailable
 {
-  v3 = [(TUConfigurationProvider *)self liveLookupExtensionManager];
-  v4 = [v3 extensionCount];
+  liveLookupExtensionManager = [(TUConfigurationProvider *)self liveLookupExtensionManager];
+  extensionCount = [liveLookupExtensionManager extensionCount];
 
   result = [(TUConfigurationProvider *)self isSIMAvailable];
-  if (!v4)
+  if (!extensionCount)
   {
     return 0;
   }
@@ -716,45 +716,45 @@ intptr_t __60__TUConfigurationProvider_isCallIdentificationAppsAvailable__block_
 {
   v2 = objc_alloc(MEMORY[0x1E69A48B8]);
   v3 = [v2 initWithQueue:MEMORY[0x1E69E96A0]];
-  v4 = [v3 isFaceTimeEnabled];
+  isFaceTimeEnabled = [v3 isFaceTimeEnabled];
 
-  return v4;
+  return isFaceTimeEnabled;
 }
 
 - (BOOL)isCallRecordingEnabled
 {
-  v3 = [(TUConfigurationProvider *)self isCallRecordingAvailable];
-  if (v3)
+  isCallRecordingAvailable = [(TUConfigurationProvider *)self isCallRecordingAvailable];
+  if (isCallRecordingAvailable)
   {
-    v4 = [(TUConfigurationProvider *)self userConfiguration];
-    v5 = [v4 isCallRecordingEnabled];
+    userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+    isCallRecordingEnabled = [userConfiguration isCallRecordingEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isCallRecordingAvailable) = isCallRecordingEnabled;
   }
 
-  return v3;
+  return isCallRecordingAvailable;
 }
 
 - (BOOL)isCallScreeningEnabled
 {
-  v3 = [(TUConfigurationProvider *)self isCallScreeningAvailable];
-  if (v3)
+  isCallScreeningAvailable = [(TUConfigurationProvider *)self isCallScreeningAvailable];
+  if (isCallScreeningAvailable)
   {
-    v4 = [(TUConfigurationProvider *)self userConfiguration];
-    v5 = [v4 isCallScreeningEnabled];
+    userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+    isCallScreeningEnabled = [userConfiguration isCallScreeningEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isCallScreeningAvailable) = isCallScreeningEnabled;
   }
 
-  return v3;
+  return isCallScreeningAvailable;
 }
 
 - (BOOL)isReceptionistAvailable
 {
-  v3 = [(TUConfigurationProvider *)self featureFlags];
-  v4 = [v3 receptionistEnabled];
+  featureFlags = [(TUConfigurationProvider *)self featureFlags];
+  receptionistEnabled = [featureFlags receptionistEnabled];
 
-  if (v4)
+  if (receptionistEnabled)
   {
     if ([(TUConfigurationProvider *)self isCallScreeningAvailable])
     {
@@ -774,16 +774,16 @@ intptr_t __60__TUConfigurationProvider_isCallIdentificationAppsAvailable__block_
 
 - (BOOL)isReceptionistEnabled
 {
-  v3 = [(TUConfigurationProvider *)self isReceptionistAvailable];
-  if (v3)
+  isReceptionistAvailable = [(TUConfigurationProvider *)self isReceptionistAvailable];
+  if (isReceptionistAvailable)
   {
-    v4 = [(TUConfigurationProvider *)self userConfiguration];
-    v5 = [v4 isReceptionistEnabled];
+    userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+    isReceptionistEnabled = [userConfiguration isReceptionistEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isReceptionistAvailable) = isReceptionistEnabled;
   }
 
-  return v3;
+  return isReceptionistAvailable;
 }
 
 - (BOOL)isEligibleForReceptionistOnboardingNotification
@@ -793,10 +793,10 @@ intptr_t __60__TUConfigurationProvider_isCallIdentificationAppsAvailable__block_
     return 0;
   }
 
-  v4 = [(TUConfigurationProvider *)self userConfiguration];
-  v5 = [v4 isEligibleForReceptionistOnboardingNotification];
+  userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+  isEligibleForReceptionistOnboardingNotification = [userConfiguration isEligibleForReceptionistOnboardingNotification];
 
-  return v5;
+  return isEligibleForReceptionistOnboardingNotification;
 }
 
 - (int64_t)getSelectedIntelligentCallScreeningMenuOptionForFaceTime
@@ -812,38 +812,38 @@ intptr_t __60__TUConfigurationProvider_isCallIdentificationAppsAvailable__block_
   }
 }
 
-- (void)setSelectedIntelligentCallScreeningMenuOptionForFaceTime:(int64_t)a3
+- (void)setSelectedIntelligentCallScreeningMenuOptionForFaceTime:(int64_t)time
 {
   v13 = *MEMORY[0x1E69E9840];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = a3;
+    timeCopy = time;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Intelligent Call Screening: setSelectedIntelligentCallScreeningMenuOptionForFaceTime %ld", &v11, 0xCu);
   }
 
-  if (a3)
+  if (time)
   {
-    if (a3 != 2)
+    if (time != 2)
     {
       goto LABEL_7;
     }
 
-    a3 = 1;
+    time = 1;
   }
 
-  v6 = [(TUConfigurationProvider *)self userConfiguration];
-  [v6 setSilenceUnknownCallersEnabledForFaceTime:a3];
+  userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+  [userConfiguration setSilenceUnknownCallersEnabledForFaceTime:time];
 
 LABEL_7:
   v7 = TUDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(TUConfigurationProvider *)self userConfiguration];
-    v9 = [v8 isSilenceUnknownCallersEnabledForFaceTime];
+    userConfiguration2 = [(TUConfigurationProvider *)self userConfiguration];
+    isSilenceUnknownCallersEnabledForFaceTime = [userConfiguration2 isSilenceUnknownCallersEnabledForFaceTime];
     v11 = 67109120;
-    LODWORD(v12) = v9;
+    LODWORD(timeCopy) = isSilenceUnknownCallersEnabledForFaceTime;
     _os_log_impl(&dword_1956FD000, v7, OS_LOG_TYPE_DEFAULT, "Intelligent Call Screening: setSelectedIntelligentCallScreeningMenuOptionForFaceTime DONE, now we have silenceUnknownCallersEnabledForFaceTime = %d", &v11, 8u);
   }
 
@@ -870,18 +870,18 @@ LABEL_7:
   return 2;
 }
 
-- (void)setSelectedIntelligentCallScreeningMenuOptionForPhone:(int64_t)a3
+- (void)setSelectedIntelligentCallScreeningMenuOptionForPhone:(int64_t)phone
 {
   *&v15[5] = *MEMORY[0x1E69E9840];
   v5 = TUDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134217984;
-    *v15 = a3;
+    *v15 = phone;
     _os_log_impl(&dword_1956FD000, v5, OS_LOG_TYPE_DEFAULT, "Intelligent Call Screening: setSelectedIntelligentCallScreeningMenuOptionForPhone %ld", &v14, 0xCu);
   }
 
-  if (a3 == 2)
+  if (phone == 2)
   {
     [(TUConfigurationProvider *)self setReceptionistEnabled:0];
     v7 = 1;
@@ -889,15 +889,15 @@ LABEL_7:
 
   else
   {
-    if (a3 == 1)
+    if (phone == 1)
     {
-      v6 = [(TUConfigurationProvider *)self userConfiguration];
-      [v6 setReceptionistEnabled:1];
+      userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+      [userConfiguration setReceptionistEnabled:1];
     }
 
     else
     {
-      if (a3)
+      if (phone)
       {
         goto LABEL_11;
       }
@@ -913,14 +913,14 @@ LABEL_11:
   v8 = TUDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(TUConfigurationProvider *)self userConfiguration];
-    v10 = [v9 isReceptionistEnabled];
-    v11 = [(TUConfigurationProvider *)self userConfiguration];
-    v12 = [v11 isSilenceUnknownCallersEnabledForPhone];
+    userConfiguration2 = [(TUConfigurationProvider *)self userConfiguration];
+    isReceptionistEnabled = [userConfiguration2 isReceptionistEnabled];
+    userConfiguration3 = [(TUConfigurationProvider *)self userConfiguration];
+    isSilenceUnknownCallersEnabledForPhone = [userConfiguration3 isSilenceUnknownCallersEnabledForPhone];
     v14 = 67109376;
-    v15[0] = v10;
+    v15[0] = isReceptionistEnabled;
     LOWORD(v15[1]) = 1024;
-    *(&v15[1] + 2) = v12;
+    *(&v15[1] + 2) = isSilenceUnknownCallersEnabledForPhone;
     _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Intelligent Call Screening: setSelectedIntelligentCallScreeningMenuOptionForPhone DONE, now we have receptionistEnabled = %d, silenceUnknownCallersEnabledForPhone = %d", &v14, 0xEu);
   }
 
@@ -929,40 +929,40 @@ LABEL_11:
 
 - (BOOL)isHoldAssistAvailable
 {
-  v2 = [(TUConfigurationProvider *)self featureFlags];
-  v3 = [v2 waitOnHoldEnabled];
+  featureFlags = [(TUConfigurationProvider *)self featureFlags];
+  waitOnHoldEnabled = [featureFlags waitOnHoldEnabled];
 
-  return v3;
+  return waitOnHoldEnabled;
 }
 
 - (BOOL)isHoldAssistDetectionEnabled
 {
-  v3 = [(TUConfigurationProvider *)self isHoldAssistAvailable];
-  if (v3)
+  isHoldAssistAvailable = [(TUConfigurationProvider *)self isHoldAssistAvailable];
+  if (isHoldAssistAvailable)
   {
-    v4 = [(TUConfigurationProvider *)self userConfiguration];
-    v5 = [v4 isHoldAssistDetectionEnabled];
+    userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+    isHoldAssistDetectionEnabled = [userConfiguration isHoldAssistDetectionEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isHoldAssistAvailable) = isHoldAssistDetectionEnabled;
   }
 
-  return v3;
+  return isHoldAssistAvailable;
 }
 
 - (BOOL)isSilenceUnknownCallersEnabledForFaceTime
 {
-  v2 = [(TUConfigurationProvider *)self userConfiguration];
-  v3 = [v2 isSilenceUnknownCallersEnabledForFaceTime];
+  userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+  isSilenceUnknownCallersEnabledForFaceTime = [userConfiguration isSilenceUnknownCallersEnabledForFaceTime];
 
-  return v3;
+  return isSilenceUnknownCallersEnabledForFaceTime;
 }
 
 - (BOOL)isSilenceUnknownCallersEnabledForPhone
 {
-  v2 = [(TUConfigurationProvider *)self userConfiguration];
-  v3 = [v2 isSilenceUnknownCallersEnabledForPhone];
+  userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+  isSilenceUnknownCallersEnabledForPhone = [userConfiguration isSilenceUnknownCallersEnabledForPhone];
 
-  return v3;
+  return isSilenceUnknownCallersEnabledForPhone;
 }
 
 - (BOOL)isBrandedCallingAvailable
@@ -972,10 +972,10 @@ LABEL_11:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(TUConfigurationProvider *)self carrierBundleController];
-  v4 = [v3 activeSubscriptions];
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [activeSubscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -986,15 +986,15 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeSubscriptions);
         }
 
         if ([(TUConfigurationProvider *)self supportsBrandedCallingForSubscriptionContext:*(*(&v14 + 1) + 8 * i)])
         {
-          v9 = [MEMORY[0x1E699BE70] sharedInstance];
-          v10 = [v9 deviceType];
+          mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+          deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-          if (v10 == 2)
+          if (deviceType == 2)
           {
             v11 = 1;
             goto LABEL_12;
@@ -1002,7 +1002,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [activeSubscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1019,12 +1019,12 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)isBrandedCallingEnabled:(BOOL)a3
+- (BOOL)isBrandedCallingEnabled:(BOOL)enabled
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
-  if (a3)
+  if (enabled)
   {
     v4 = 1;
   }
@@ -1036,10 +1036,10 @@ LABEL_12:
 
   v18 = 0uLL;
   v19 = 0uLL;
-  v5 = [(TUConfigurationProvider *)self carrierBundleController];
-  v6 = [v5 activeSubscriptions];
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [activeSubscriptions countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1050,20 +1050,20 @@ LABEL_12:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeSubscriptions);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         if (-[TUConfigurationProvider supportsBrandedCallingForSubscriptionContext:](self, "supportsBrandedCallingForSubscriptionContext:", v11) && [v11 slotID] == v4)
         {
-          v13 = [(TUConfigurationProvider *)self userConfiguration];
-          v12 = [v13 isBrandedCallingEnabled:v11];
+          userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+          v12 = [userConfiguration isBrandedCallingEnabled:v11];
 
           goto LABEL_15;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [activeSubscriptions countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -1087,10 +1087,10 @@ LABEL_15:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(TUConfigurationProvider *)self carrierBundleController];
-  v4 = [v3 activeSubscriptions];
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [activeSubscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1101,15 +1101,15 @@ LABEL_15:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeSubscriptions);
         }
 
         if ([(TUConfigurationProvider *)self supportsBusinessConnectCallingForSubscriptionContext:*(*(&v14 + 1) + 8 * i)])
         {
-          v9 = [MEMORY[0x1E699BE70] sharedInstance];
-          v10 = [v9 deviceType];
+          mEMORY[0x1E699BE70] = [MEMORY[0x1E699BE70] sharedInstance];
+          deviceType = [mEMORY[0x1E699BE70] deviceType];
 
-          if (v10 == 2)
+          if (deviceType == 2)
           {
             v11 = 1;
             goto LABEL_12;
@@ -1117,7 +1117,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [activeSubscriptions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1136,16 +1136,16 @@ LABEL_12:
 
 - (BOOL)isBusinessConnectCallingEnabled
 {
-  v3 = [(TUConfigurationProvider *)self isBusinessConnectCallingAvailable];
-  if (v3)
+  isBusinessConnectCallingAvailable = [(TUConfigurationProvider *)self isBusinessConnectCallingAvailable];
+  if (isBusinessConnectCallingAvailable)
   {
-    v4 = [(TUConfigurationProvider *)self userConfiguration];
-    v5 = [v4 isBusinessConnectCallingEnabled];
+    userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+    isBusinessConnectCallingEnabled = [userConfiguration isBusinessConnectCallingEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isBusinessConnectCallingAvailable) = isBusinessConnectCallingEnabled;
   }
 
-  return v3;
+  return isBusinessConnectCallingAvailable;
 }
 
 - (BOOL)isSilenceJunkCallingAvailable
@@ -1155,10 +1155,10 @@ LABEL_12:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(TUConfigurationProvider *)self carrierBundleController];
-  v4 = [v3 activeSubscriptions];
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [activeSubscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1169,7 +1169,7 @@ LABEL_12:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(activeSubscriptions);
         }
 
         if ([(TUConfigurationProvider *)self supportsCallBlockingForSubscriptionContext:*(*(&v12 + 1) + 8 * i)])
@@ -1179,7 +1179,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [activeSubscriptions countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1198,22 +1198,22 @@ LABEL_11:
 
 - (BOOL)isSilenceJunkCallingEnabled
 {
-  v3 = [(TUConfigurationProvider *)self isSilenceJunkCallingAvailable];
-  if (v3)
+  isSilenceJunkCallingAvailable = [(TUConfigurationProvider *)self isSilenceJunkCallingAvailable];
+  if (isSilenceJunkCallingAvailable)
   {
-    v4 = [(TUConfigurationProvider *)self userConfiguration];
-    v5 = [v4 isSilenceJunkCallingEnabled];
+    userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+    isSilenceJunkCallingEnabled = [userConfiguration isSilenceJunkCallingEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isSilenceJunkCallingAvailable) = isSilenceJunkCallingEnabled;
   }
 
-  return v3;
+  return isSilenceJunkCallingAvailable;
 }
 
 - (BOOL)isUplevelFTAAvailable
 {
-  v2 = [(TUConfigurationProvider *)self featureFlags];
-  if ([v2 uplevelFTAEnabled])
+  featureFlags = [(TUConfigurationProvider *)self featureFlags];
+  if ([featureFlags uplevelFTAEnabled])
   {
     v3 = TUDeviceHasChinaSKU() ^ 1;
   }
@@ -1228,57 +1228,57 @@ LABEL_11:
 
 - (BOOL)isUplevelFTAEnabled
 {
-  v3 = [(TUConfigurationProvider *)self isUplevelFTAAvailable];
-  if (v3)
+  isUplevelFTAAvailable = [(TUConfigurationProvider *)self isUplevelFTAAvailable];
+  if (isUplevelFTAAvailable)
   {
-    v4 = [(TUConfigurationProvider *)self userConfiguration];
-    v5 = [v4 isUplevelFTAEnabled];
+    userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+    isUplevelFTAEnabled = [userConfiguration isUplevelFTAEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isUplevelFTAAvailable) = isUplevelFTAEnabled;
   }
 
-  return v3;
+  return isUplevelFTAAvailable;
 }
 
 - (BOOL)isSpamFilterEnabledForFaceTime
 {
-  v2 = [(TUConfigurationProvider *)self userConfiguration];
-  v3 = [v2 isSpamFilterEnabledForFaceTime];
+  userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+  isSpamFilterEnabledForFaceTime = [userConfiguration isSpamFilterEnabledForFaceTime];
 
-  return v3;
+  return isSpamFilterEnabledForFaceTime;
 }
 
 - (BOOL)isCallHapticsAvailable
 {
-  v2 = [(TUConfigurationProvider *)self featureFlags];
-  v3 = [v2 callConnectHapticsEnabled];
+  featureFlags = [(TUConfigurationProvider *)self featureFlags];
+  callConnectHapticsEnabled = [featureFlags callConnectHapticsEnabled];
 
-  return v3;
+  return callConnectHapticsEnabled;
 }
 
 - (BOOL)isCallHapticsEnabled
 {
-  v3 = [(TUConfigurationProvider *)self isCallHapticsAvailable];
-  if (v3)
+  isCallHapticsAvailable = [(TUConfigurationProvider *)self isCallHapticsAvailable];
+  if (isCallHapticsAvailable)
   {
-    v4 = [(TUConfigurationProvider *)self userConfiguration];
-    v5 = [v4 isCallHapticsEnabled];
+    userConfiguration = [(TUConfigurationProvider *)self userConfiguration];
+    isCallHapticsEnabled = [userConfiguration isCallHapticsEnabled];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isCallHapticsAvailable) = isCallHapticsEnabled;
   }
 
-  return v3;
+  return isCallHapticsAvailable;
 }
 
-- (BOOL)supportsBrandedCallingForSubscriptionContext:(id)a3
+- (BOOL)supportsBrandedCallingForSubscriptionContext:(id)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v16 = 0;
   coreTelephonyClient = self->_coreTelephonyClient;
   v6 = *MEMORY[0x1E6965158];
   v15 = 0;
-  v7 = [(CoreTelephonyClient *)coreTelephonyClient context:v4 canSetCapability:v6 allowed:&v16 with:&v15];
+  v7 = [(CoreTelephonyClient *)coreTelephonyClient context:contextCopy canSetCapability:v6 allowed:&v16 with:&v15];
   v8 = v15;
   v9 = TUDefaultLog();
   v10 = v9;
@@ -1303,7 +1303,7 @@ LABEL_11:
       }
 
       *buf = 138412546;
-      v18 = v4;
+      v18 = contextCopy;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "kCTCapabilityBrandedCallingInfo fetched for context: %@, capability enabled: %@", buf, 0x16u);
@@ -1316,19 +1316,19 @@ LABEL_11:
   return v11 & 1;
 }
 
-- (id)systemCapabilitiesForSubscriptionContext:(id)a3
+- (id)systemCapabilitiesForSubscriptionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(TUConfigurationProvider *)self coreTelephonyClient];
+  contextCopy = context;
+  coreTelephonyClient = [(TUConfigurationProvider *)self coreTelephonyClient];
   v11 = 0;
-  v6 = [v5 context:v4 getSystemCapabilities:&v11];
+  v6 = [coreTelephonyClient context:contextCopy getSystemCapabilities:&v11];
   v7 = v11;
 
   if (!v6)
   {
-    v8 = [v7 domain];
+    domain = [v7 domain];
 
-    if (v8)
+    if (domain)
     {
       v9 = TUDefaultLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1341,12 +1341,12 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)supportsBusinessConnectCallingForSubscriptionContext:(id)a3
+- (BOOL)supportsBusinessConnectCallingForSubscriptionContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v13 = 0;
-  v5 = [(TUConfigurationProvider *)self stringForKeyHierarchy:&unk_1F09C6508 subscriptionContext:v4 error:&v13];
+  v5 = [(TUConfigurationProvider *)self stringForKeyHierarchy:&unk_1F09C6508 subscriptionContext:contextCopy error:&v13];
   v6 = v13;
   v7 = v6;
   if (v5)
@@ -1357,7 +1357,7 @@ LABEL_11:
       *buf = 138412546;
       v15 = v5;
       v16 = 2112;
-      v17 = v4;
+      v17 = contextCopy;
       _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, "Retrieved verstat feature capability value '%@' for subscription %@", buf, 0x16u);
     }
 
@@ -1372,7 +1372,7 @@ LABEL_11:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v15 = v4;
+        v15 = contextCopy;
         v16 = 2112;
         v17 = v7;
         _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "Retrieving verstat feature capability value for subscription %@ failed with error %@", buf, 0x16u);
@@ -1386,12 +1386,12 @@ LABEL_11:
   return v9;
 }
 
-- (BOOL)supportsCallBlockingForSubscriptionContext:(id)a3
+- (BOOL)supportsCallBlockingForSubscriptionContext:(id)context
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v13 = 0;
-  v5 = [(TUConfigurationProvider *)self stringForKeyHierarchy:&unk_1F09C6520 subscriptionContext:v4 error:&v13];
+  v5 = [(TUConfigurationProvider *)self stringForKeyHierarchy:&unk_1F09C6520 subscriptionContext:contextCopy error:&v13];
   v6 = v13;
   v7 = v6;
   if (v5)
@@ -1402,7 +1402,7 @@ LABEL_11:
       *buf = 138412546;
       v15 = v5;
       v16 = 2112;
-      v17 = v4;
+      v17 = contextCopy;
       v9 = "Retrieved call blocking value '%@' for subscription %@";
 LABEL_7:
       _os_log_impl(&dword_1956FD000, v8, OS_LOG_TYPE_DEFAULT, v9, buf, 0x16u);
@@ -1420,7 +1420,7 @@ LABEL_7:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = v4;
+      v15 = contextCopy;
       v16 = 2112;
       v17 = v7;
       v9 = "Retrieving call blocking value for subscription %@ failed with error %@";
@@ -1443,11 +1443,11 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)supportsDialAssistForSubscriptionContext:(id)a3
+- (BOOL)supportsDialAssistForSubscriptionContext:(id)context
 {
   v20 = *MEMORY[0x1E69E9840];
   v13 = 0;
-  v4 = [(TUConfigurationProvider *)self objectForKeyHierarchy:&unk_1F09C6538 subscriptionContext:a3 error:&v13];
+  v4 = [(TUConfigurationProvider *)self objectForKeyHierarchy:&unk_1F09C6538 subscriptionContext:context error:&v13];
   v5 = v13;
   if (v5)
   {
@@ -1471,41 +1471,41 @@ LABEL_9:
   {
     if (!v4)
     {
-      v7 = 1;
+      bOOLValue = 1;
       goto LABEL_6;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
       goto LABEL_6;
     }
   }
 
-  v7 = 0;
+  bOOLValue = 0;
 LABEL_6:
 
   v8 = *MEMORY[0x1E69E9840];
-  return v7;
+  return bOOLValue;
 }
 
-- (id)objectForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)objectForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
   v8 = MEMORY[0x1E6964F68];
-  v9 = a4;
-  v10 = a3;
+  contextCopy = context;
+  hierarchyCopy = hierarchy;
   v11 = [[v8 alloc] initWithBundleType:1];
-  v12 = [(TUConfigurationProvider *)self carrierBundleController];
-  v13 = [v12 telephonyClient];
-  v14 = [v13 copyCarrierBundleValue:v9 keyHierarchy:v10 bundleType:v11 error:a5];
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  telephonyClient = [carrierBundleController telephonyClient];
+  v14 = [telephonyClient copyCarrierBundleValue:contextCopy keyHierarchy:hierarchyCopy bundleType:v11 error:error];
 
   return v14;
 }
 
-- (id)stringForKeyHierarchy:(id)a3 subscriptionContext:(id)a4 error:(id *)a5
+- (id)stringForKeyHierarchy:(id)hierarchy subscriptionContext:(id)context error:(id *)error
 {
-  v5 = [(TUConfigurationProvider *)self objectForKeyHierarchy:a3 subscriptionContext:a4 error:a5];
+  v5 = [(TUConfigurationProvider *)self objectForKeyHierarchy:hierarchy subscriptionContext:context error:error];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1520,46 +1520,46 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)supportsSystemCapabilityWithName:(id)a3 subscriptionContext:(id)a4
+- (BOOL)supportsSystemCapabilityWithName:(id)name subscriptionContext:(id)context
 {
-  v6 = a3;
-  v7 = [(TUConfigurationProvider *)self systemCapabilitiesForSubscriptionContext:a4];
+  nameCopy = name;
+  v7 = [(TUConfigurationProvider *)self systemCapabilitiesForSubscriptionContext:context];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 objectForKeyedSubscript:v6];
+    v9 = [v7 objectForKeyedSubscript:nameCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v9 BOOLValue];
+      bOOLValue = [v9 BOOLValue];
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (BOOL)isSystemCapabilityAvailableForName:(id)a3
+- (BOOL)isSystemCapabilityAvailableForName:(id)name
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nameCopy = name;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(TUConfigurationProvider *)self carrierBundleController];
-  v6 = [v5 activeSubscriptions];
+  carrierBundleController = [(TUConfigurationProvider *)self carrierBundleController];
+  activeSubscriptions = [carrierBundleController activeSubscriptions];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [activeSubscriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1570,18 +1570,18 @@ LABEL_6:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(activeSubscriptions);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (([v11 isSimHidden] & 1) == 0 && -[TUConfigurationProvider supportsSystemCapabilityWithName:subscriptionContext:](self, "supportsSystemCapabilityWithName:subscriptionContext:", v4, v11))
+        if (([v11 isSimHidden] & 1) == 0 && -[TUConfigurationProvider supportsSystemCapabilityWithName:subscriptionContext:](self, "supportsSystemCapabilityWithName:subscriptionContext:", nameCopy, v11))
         {
           v12 = 1;
           goto LABEL_12;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [activeSubscriptions countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -1610,8 +1610,8 @@ LABEL_12:
     _os_log_impl(&dword_1956FD000, v3, OS_LOG_TYPE_DEFAULT, "%@ postConfigurationChangedNotification", &v7, 0xCu);
   }
 
-  v5 = [(TUConfigurationProvider *)self configurationProviderNotifier];
-  [v5 postConfigurationChanged];
+  configurationProviderNotifier = [(TUConfigurationProvider *)self configurationProviderNotifier];
+  [configurationProviderNotifier postConfigurationChanged];
 
   v6 = *MEMORY[0x1E69E9840];
 }

@@ -1,24 +1,24 @@
 @interface ICAttachmentSystemPaperModelHelper
-+ (BOOL)canDisplayPaperAtURL:(id)a3;
-+ (int64_t)minimumSupportedNotesVersionForPaperAtURL:(id)a3 greaterOrEqualToVersion:(int64_t)a4;
++ (BOOL)canDisplayPaperAtURL:(id)l;
++ (int64_t)minimumSupportedNotesVersionForPaperAtURL:(id)l greaterOrEqualToVersion:(int64_t)version;
 - (_TtC11NotesShared34ICAttachmentSystemPaperModelHelper)init;
 @end
 
 @implementation ICAttachmentSystemPaperModelHelper
 
-+ (int64_t)minimumSupportedNotesVersionForPaperAtURL:(id)a3 greaterOrEqualToVersion:(int64_t)a4
++ (int64_t)minimumSupportedNotesVersionForPaperAtURL:(id)l greaterOrEqualToVersion:(int64_t)version
 {
   v5 = sub_2150A3750();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2150A36F0();
-  v9 = _s11NotesShared34ICAttachmentSystemPaperModelHelperC016minimumSupporteda10VersionForE02at04baseJ0So07ICNotesJ0V10Foundation3URLV_AHtFZ_0(v8, a4);
+  v9 = _s11NotesShared34ICAttachmentSystemPaperModelHelperC016minimumSupporteda10VersionForE02at04baseJ0So07ICNotesJ0V10Foundation3URLV_AHtFZ_0(v8, version);
   (*(v6 + 8))(v8, v5);
   return v9;
 }
 
-+ (BOOL)canDisplayPaperAtURL:(id)a3
++ (BOOL)canDisplayPaperAtURL:(id)l
 {
   v3 = sub_2150A3750();
   v4 = *(v3 - 8);

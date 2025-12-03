@@ -1,20 +1,20 @@
 @interface MCMApplicationTerminationAssertion
-- (MCMApplicationTerminationAssertion)initWithBundleIdentifier:(id)a3 reason:(id)a4;
+- (MCMApplicationTerminationAssertion)initWithBundleIdentifier:(id)identifier reason:(id)reason;
 - (RBSTerminationAssertion)termAssertion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setTermAssertion:(id)a3;
+- (void)setTermAssertion:(id)assertion;
 @end
 
 @implementation MCMApplicationTerminationAssertion
 
-- (void)setTermAssertion:(id)a3
+- (void)setTermAssertion:(id)assertion
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
   p_termAssertion = &self->_termAssertion;
 
-  objc_storeStrong(p_termAssertion, a3);
+  objc_storeStrong(p_termAssertion, assertion);
 }
 
 - (RBSTerminationAssertion)termAssertion
@@ -43,23 +43,23 @@
 - (void)invalidate
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMApplicationTerminationAssertion *)self termAssertion];
-  if (v3)
+  termAssertion = [(MCMApplicationTerminationAssertion *)self termAssertion];
+  if (termAssertion)
   {
-    v5 = v3;
-    [v3 invalidate];
+    v5 = termAssertion;
+    [termAssertion invalidate];
     [(MCMApplicationTerminationAssertion *)self setTermAssertion:0];
-    v3 = v5;
+    termAssertion = v5;
   }
 
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (MCMApplicationTerminationAssertion)initWithBundleIdentifier:(id)a3 reason:(id)a4
+- (MCMApplicationTerminationAssertion)initWithBundleIdentifier:(id)identifier reason:(id)reason
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  reasonCopy = reason;
   v24.receiver = self;
   v24.super_class = MCMApplicationTerminationAssertion;
   v8 = [(MCMApplicationTerminationAssertion *)&v24 init];
@@ -70,14 +70,14 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v9 = [MEMORY[0x1E69C7608] predicateMatchingBundleIdentifier:v6];
+  v9 = [MEMORY[0x1E69C7608] predicateMatchingBundleIdentifier:identifierCopy];
   if (!v9)
   {
     v10 = container_log_handle_for_category();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v26 = v6;
+      v26 = identifierCopy;
       _os_log_error_impl(&dword_1DF2C3000, v10, OS_LOG_TYPE_ERROR, "Failed to generate predicate for termination assertion for [%@]", buf, 0xCu);
     }
 
@@ -85,14 +85,14 @@ LABEL_21:
   }
 
   v10 = v9;
-  v11 = [objc_alloc(MEMORY[0x1E69C7658]) initWithExplanation:v7];
+  v11 = [objc_alloc(MEMORY[0x1E69C7658]) initWithExplanation:reasonCopy];
   if (!v11)
   {
     v12 = container_log_handle_for_category();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v26 = v6;
+      v26 = identifierCopy;
       _os_log_error_impl(&dword_1DF2C3000, v12, OS_LOG_TYPE_ERROR, "Failed to generate context for termination assertion for [%@]", buf, 0xCu);
     }
 
@@ -108,7 +108,7 @@ LABEL_21:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v26 = v6;
+      v26 = identifierCopy;
       _os_log_error_impl(&dword_1DF2C3000, v19, OS_LOG_TYPE_ERROR, "Failed to init termination assertion for [%@]", buf, 0xCu);
     }
 
@@ -135,7 +135,7 @@ LABEL_16:
     if (os_log_type_enabled(termAssertion, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v26 = v6;
+      v26 = identifierCopy;
       v27 = 2112;
       v28 = v16;
       _os_log_error_impl(&dword_1DF2C3000, termAssertion, OS_LOG_TYPE_ERROR, "Failed to acquire termination assertion for [%@]: %@", buf, 0x16u);

@@ -1,20 +1,20 @@
 @interface MobileTimerAssistantTimerGet
-- (void)_performWithCompletion:(id)a3;
-- (void)performWithCompletion:(id)a3;
+- (void)_performWithCompletion:(id)completion;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MobileTimerAssistantTimerGet
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_D2EC(v5);
   }
 
-  [(MobileTimerAssistantTimerGet *)self _performWithCompletion:v4];
+  [(MobileTimerAssistantTimerGet *)self _performWithCompletion:completionCopy];
   v6 = MTLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -22,9 +22,9 @@
   }
 }
 
-- (void)_performWithCompletion:(id)a3
+- (void)_performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -34,7 +34,7 @@
   }
 
   v6 = objc_opt_new();
-  v7 = [v6 currentTimer];
+  currentTimer = [v6 currentTimer];
   objc_initWeak(&location, self);
   v8 = dispatch_semaphore_create(0);
   *&buf = 0;
@@ -51,7 +51,7 @@
   p_buf = &buf;
   v9 = v8;
   v23 = v9;
-  v10 = [v7 addSuccessBlock:v22];
+  v10 = [currentTimer addSuccessBlock:v22];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_7DC0;
@@ -60,23 +60,23 @@
   v20 = &buf;
   v11 = v9;
   v19 = v11;
-  v12 = [v7 addFailureBlock:v18];
+  v12 = [currentTimer addFailureBlock:v18];
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   v13 = MTLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [*(*(&buf + 1) + 40) dictionary];
-    sub_D3F4(self, v14, v28);
+    dictionary = [*(*(&buf + 1) + 40) dictionary];
+    sub_D3F4(self, dictionary, v28);
   }
 
-  v15 = [*(*(&buf + 1) + 40) dictionary];
-  v4[2](v4, v15);
+  dictionary2 = [*(*(&buf + 1) + 40) dictionary];
+  completionCopy[2](completionCopy, dictionary2);
 
   v16 = MTLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [*(*(&buf + 1) + 40) dictionary];
-    sub_D458(self, v17, v27);
+    dictionary3 = [*(*(&buf + 1) + 40) dictionary];
+    sub_D458(self, dictionary3, v27);
   }
 
   [MTAnalytics incrementEventCount:kMTCASiriTimerSearches];

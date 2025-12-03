@@ -1,8 +1,8 @@
 @interface PXGFocusableViewConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PXGFocusableViewConfiguration)initWithConfiguration:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PXGFocusableViewConfiguration)initWithConfiguration:(id)configuration;
 - (PXGFocusableViewDelegate)delegate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -15,17 +15,17 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithConfiguration:self];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -35,21 +35,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXGFocusableViewConfiguration *)self delegate];
-      v7 = [(PXGFocusableViewConfiguration *)v5 delegate];
-      if (v6 == v7 && (v8 = [(PXGFocusableViewConfiguration *)self focusability], v8 == [(PXGFocusableViewConfiguration *)v5 focusability]))
+      v5 = equalCopy;
+      delegate = [(PXGFocusableViewConfiguration *)self delegate];
+      delegate2 = [(PXGFocusableViewConfiguration *)v5 delegate];
+      if (delegate == delegate2 && (v8 = [(PXGFocusableViewConfiguration *)self focusability], v8 == [(PXGFocusableViewConfiguration *)v5 focusability]))
       {
-        v9 = [(PXGFocusableViewConfiguration *)self debugName];
-        v10 = [(PXGFocusableViewConfiguration *)v5 debugName];
-        if (v9 == v10)
+        debugName = [(PXGFocusableViewConfiguration *)self debugName];
+        debugName2 = [(PXGFocusableViewConfiguration *)v5 debugName];
+        if (debugName == debugName2)
         {
           v11 = 1;
         }
 
         else
         {
-          v11 = [v9 isEqual:v10];
+          v11 = [debugName isEqual:debugName2];
         }
       }
 
@@ -70,30 +70,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXGFocusableViewConfiguration *)self delegate];
+  delegate = [(PXGFocusableViewConfiguration *)self delegate];
 
-  v4 = v3 ^ (2 * [(PXGFocusableViewConfiguration *)self focusability]);
-  v5 = [(PXGFocusableViewConfiguration *)self debugName];
-  v6 = v4 ^ (4 * [v5 hash]);
+  v4 = delegate ^ (2 * [(PXGFocusableViewConfiguration *)self focusability]);
+  debugName = [(PXGFocusableViewConfiguration *)self debugName];
+  v6 = v4 ^ (4 * [debugName hash]);
 
   return v6;
 }
 
-- (PXGFocusableViewConfiguration)initWithConfiguration:(id)a3
+- (PXGFocusableViewConfiguration)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = PXGFocusableViewConfiguration;
   v5 = [(PXGFocusableViewConfiguration *)&v10 init];
   if (v5)
   {
-    v6 = [v4 delegate];
-    objc_storeWeak(&v5->_delegate, v6);
+    delegate = [configurationCopy delegate];
+    objc_storeWeak(&v5->_delegate, delegate);
 
-    v5->_focusability = [v4 focusability];
-    v7 = [v4 debugName];
+    v5->_focusability = [configurationCopy focusability];
+    debugName = [configurationCopy debugName];
     debugName = v5->_debugName;
-    v5->_debugName = v7;
+    v5->_debugName = debugName;
   }
 
   return v5;

@@ -1,20 +1,20 @@
 @interface TransactionRelationshipChangesObserver
-- (void)contextDidChangeNotificationWithNotification:(id)a3;
-- (void)contextWillSaveNotificationWithNotification:(id)a3;
+- (void)contextDidChangeNotificationWithNotification:(id)notification;
+- (void)contextWillSaveNotificationWithNotification:(id)notification;
 @end
 
 @implementation TransactionRelationshipChangesObserver
 
-- (void)contextDidChangeNotificationWithNotification:(id)a3
+- (void)contextDidChangeNotificationWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
-  sub_1B76B152C(v3);
+  sub_1B76B152C(notificationCopy);
 }
 
-- (void)contextWillSaveNotificationWithNotification:(id)a3
+- (void)contextWillSaveNotificationWithNotification:(id)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
 
   sub_1B76B5694();
 }

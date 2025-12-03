@@ -1,42 +1,42 @@
 @interface AppleIDVClient
-+ (id)prepareUnboundACLForBinding:(__SecAccessControl *)a3 withConstraints:(id)a4;
-+ (unsigned)appleIDVAuthorizePresentment:(id)a3 withLAContextData:(id)a4 onSESlot:(int64_t)a5 andPayloadDigest:(id)a6;
-+ (unsigned)appleIDVAuthorizePresentment:(id)a3 withLAContextData:(id)a4 onSESlot:(int64_t)a5 andPublicKey:(id)a6;
++ (id)prepareUnboundACLForBinding:(__SecAccessControl *)binding withConstraints:(id)constraints;
++ (unsigned)appleIDVAuthorizePresentment:(id)presentment withLAContextData:(id)data onSESlot:(int64_t)slot andPayloadDigest:(id)digest;
++ (unsigned)appleIDVAuthorizePresentment:(id)presentment withLAContextData:(id)data onSESlot:(int64_t)slot andPublicKey:(id)key;
 + (unsigned)appleIDVCredentialAuthenticationTokenStatus;
-+ (unsigned)appleIDVEstablishPrearmTrustWithCertificate:(id)a3 protectedPublicKey:(id *)a4;
-+ (unsigned)appleIDVGenerateNonceOnWatch:(id *)a3;
-+ (unsigned)appleIDVGeneratePhoneTokenWithNonce:(id)a3 withReferenceACLBlob:(id)a4 keyBlob:(id)a5 keyAttestation:(id)a6 casdCertificate:(id)a7 phoneToken:(id *)a8;
-+ (unsigned)appleIDVGeneratePrearmTrustKeyForWatchAndCopyPrivateKey:(id)a3 progenitorPublicKey:(id)a4 encryptedPrivateKey:(id *)a5 attestation:(id *)a6 publicKey:(id *)a7 keyBlob:(id *)a8;
-+ (unsigned)appleIDVGetPrearmTrustKeyFromExistingKeyBlob:(id)a3 nonce:(id)a4 progenitorPublicKey:(id)a5 encryptedPrivateKey:(id *)a6 attestation:(id *)a7 publicKey:(id *)a8 keyBlob:(id *)a9;
-+ (unsigned)appleIDVGetStatus:(int64_t *)a3 andSIDVVersion:(id *)a4 andAppleIDVVersion:(id *)a5;
-+ (unsigned)appleIDVGetStatus:(int64_t *)a3 andVersion:(id *)a4;
-+ (unsigned)appleIDVPersistACLBlob:(id)a3 intoBlob:(id *)a4 returnBioUUIDs:(id *)a5 andRequireDoublePress:(unsigned __int8)a6;
-+ (unsigned)appleIDVPersistModifiedACLBlob:(id)a3 withReferenceACLBlob:(id)a4 withLAContextData:(id)a5 intoBlob:(id *)a6 returnBioUUIDs:(id *)a7;
-+ (unsigned)appleIDVPersistModifiedSESlot:(int64_t)a3 withReferenceBlob:(id)a4 withLAContextData:(id)a5 intoBlob:(id *)a6;
-+ (unsigned)appleIDVRecoverPersistedACLBlob:(id)a3 intoBlob:(id *)a4;
++ (unsigned)appleIDVEstablishPrearmTrustWithCertificate:(id)certificate protectedPublicKey:(id *)key;
++ (unsigned)appleIDVGenerateNonceOnWatch:(id *)watch;
++ (unsigned)appleIDVGeneratePhoneTokenWithNonce:(id)nonce withReferenceACLBlob:(id)blob keyBlob:(id)keyBlob keyAttestation:(id)attestation casdCertificate:(id)certificate phoneToken:(id *)token;
++ (unsigned)appleIDVGeneratePrearmTrustKeyForWatchAndCopyPrivateKey:(id)key progenitorPublicKey:(id)publicKey encryptedPrivateKey:(id *)privateKey attestation:(id *)attestation publicKey:(id *)a7 keyBlob:(id *)blob;
++ (unsigned)appleIDVGetPrearmTrustKeyFromExistingKeyBlob:(id)blob nonce:(id)nonce progenitorPublicKey:(id)key encryptedPrivateKey:(id *)privateKey attestation:(id *)attestation publicKey:(id *)publicKey keyBlob:(id *)keyBlob;
++ (unsigned)appleIDVGetStatus:(int64_t *)status andSIDVVersion:(id *)version andAppleIDVVersion:(id *)vVersion;
++ (unsigned)appleIDVGetStatus:(int64_t *)status andVersion:(id *)version;
++ (unsigned)appleIDVPersistACLBlob:(id)blob intoBlob:(id *)intoBlob returnBioUUIDs:(id *)ds andRequireDoublePress:(unsigned __int8)press;
++ (unsigned)appleIDVPersistModifiedACLBlob:(id)blob withReferenceACLBlob:(id)lBlob withLAContextData:(id)data intoBlob:(id *)intoBlob returnBioUUIDs:(id *)ds;
++ (unsigned)appleIDVPersistModifiedSESlot:(int64_t)slot withReferenceBlob:(id)blob withLAContextData:(id)data intoBlob:(id *)intoBlob;
++ (unsigned)appleIDVRecoverPersistedACLBlob:(id)blob intoBlob:(id *)intoBlob;
 + (unsigned)appleIDVRevokeCredentialAuthorizationToken;
-+ (unsigned)appleIDVUpdatePrearmTrustKeyForWatch:(id)a3 progenitorPublicKey:(id)a4 encryptedPrivateKey:(id *)a5 attestation:(id *)a6 publicKey:(id *)a7 keyBlob:(id *)a8;
-+ (unsigned)getUUIDsFromACL:(id)a3 intoArray:(id *)a4;
-+ (unsigned)prepareACL:(id *)a3 aclType:(unsigned int)a4 forAclUsage:(unsigned int)a5 forBioUUID:(id)a6;
-+ (unsigned)prepareACLForPhoneDecryption:(id *)a3 withSubType:(unsigned int)a4 forBioUUID:(id)a5;
-+ (unsigned)prepareACLForWatchDecryption:(id *)a3 withSubType:(unsigned int)a4 forAclUsage:(unsigned int)a5;
-+ (unsigned)prepareUnboundACLForBioBinding:(id *)a3;
-+ (unsigned)prepareUnboundACLForPasscodeBinding:(id *)a3;
-+ (unsigned)prepareUnboundACLForWatch:(id *)a3 withAccessibilityEnabled:(BOOL)a4;
-+ (unsigned)removeDoublePressOnACL:(id)a3 intoACL:(id *)a4;
-+ (unsigned)requireDoublePressOnACL:(id)a3 intoACL:(id *)a4;
++ (unsigned)appleIDVUpdatePrearmTrustKeyForWatch:(id)watch progenitorPublicKey:(id)key encryptedPrivateKey:(id *)privateKey attestation:(id *)attestation publicKey:(id *)publicKey keyBlob:(id *)blob;
++ (unsigned)getUUIDsFromACL:(id)l intoArray:(id *)array;
++ (unsigned)prepareACL:(id *)l aclType:(unsigned int)type forAclUsage:(unsigned int)usage forBioUUID:(id)d;
++ (unsigned)prepareACLForPhoneDecryption:(id *)decryption withSubType:(unsigned int)type forBioUUID:(id)d;
++ (unsigned)prepareACLForWatchDecryption:(id *)decryption withSubType:(unsigned int)type forAclUsage:(unsigned int)usage;
++ (unsigned)prepareUnboundACLForBioBinding:(id *)binding;
++ (unsigned)prepareUnboundACLForPasscodeBinding:(id *)binding;
++ (unsigned)prepareUnboundACLForWatch:(id *)watch withAccessibilityEnabled:(BOOL)enabled;
++ (unsigned)removeDoublePressOnACL:(id)l intoACL:(id *)cL;
++ (unsigned)requireDoublePressOnACL:(id)l intoACL:(id *)cL;
 + (void)appleIDVCredentialAuthenticationTokenStatus;
 + (void)appleIDVRevokeCredentialAuthorizationToken;
 @end
 
 @implementation AppleIDVClient
 
-+ (unsigned)getUUIDsFromACL:(id)a3 intoArray:(id *)a4
++ (unsigned)getUUIDsFromACL:(id)l intoArray:(id *)array
 {
-  v5 = a3;
+  lCopy = l;
   v24 = 0;
   v6 = objc_opt_new();
-  if (a4)
+  if (array)
   {
     v7 = SecAccessControlCreateFromData();
     if (v7)
@@ -54,17 +54,17 @@
 
         if (v14)
         {
-          v15 = [v14 bytes];
+          bytes = [v14 bytes];
           if ([v14 length])
           {
             v16 = 0;
             do
             {
-              v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:v15];
+              v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDBytes:bytes];
               [v6 addObject:v17];
 
               v16 += 16;
-              v15 += 16;
+              bytes += 16;
             }
 
             while ([v14 length] > v16);
@@ -86,7 +86,7 @@
 
       v22 = v6;
 LABEL_15:
-      *a4 = v6;
+      *array = v6;
       CFRelease(v8);
 
       goto LABEL_16;
@@ -95,7 +95,7 @@ LABEL_15:
     v20 = APPLEIDV_LOG_CLIENT();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [AppleIDVClient getUUIDsFromACL:v5 intoArray:&v24];
+      [AppleIDVClient getUUIDsFromACL:lCopy intoArray:&v24];
     }
 
     v19 = 13;
@@ -107,41 +107,41 @@ LABEL_15:
   }
 
   v21 = v6;
-  *a4 = v6;
+  *array = v6;
 LABEL_16:
 
   return v19;
 }
 
-+ (unsigned)prepareACL:(id *)a3 aclType:(unsigned int)a4 forAclUsage:(unsigned int)a5 forBioUUID:(id)a6
++ (unsigned)prepareACL:(id *)l aclType:(unsigned int)type forAclUsage:(unsigned int)usage forBioUUID:(id)d
 {
-  v7 = *&a4;
-  v9 = a6;
-  v10 = v9;
-  if (a5 == 2)
+  v7 = *&type;
+  dCopy = d;
+  v10 = dCopy;
+  if (usage == 2)
   {
     if ((v7 - 2) >= 2)
     {
-      if (v7 != 1 && (v7 || !v9))
+      if (v7 != 1 && (v7 || !dCopy))
       {
         goto LABEL_17;
       }
 
-      v13 = a3;
+      lCopy3 = l;
       v14 = v7;
-      v15 = v9;
+      v15 = dCopy;
       goto LABEL_16;
     }
 
-    v18 = a3;
+    lCopy4 = l;
     v19 = v7;
     v20 = 2;
 LABEL_23:
-    v12 = [AppleIDVClient prepareACLForWatchDecryption:v18 withSubType:v19 forAclUsage:v20];
+    v12 = [AppleIDVClient prepareACLForWatchDecryption:lCopy4 withSubType:v19 forAclUsage:v20];
     goto LABEL_27;
   }
 
-  if (a5 == 1)
+  if (usage == 1)
   {
     if ((v7 - 2) >= 2)
     {
@@ -150,21 +150,21 @@ LABEL_23:
         goto LABEL_17;
       }
 
-      v13 = a3;
+      lCopy3 = l;
       v14 = v7;
       v15 = 0;
 LABEL_16:
-      v12 = [AppleIDVClient prepareACLForPhoneDecryption:v13 withSubType:v14 forBioUUID:v15];
+      v12 = [AppleIDVClient prepareACLForPhoneDecryption:lCopy3 withSubType:v14 forBioUUID:v15];
       goto LABEL_27;
     }
 
-    v18 = a3;
+    lCopy4 = l;
     v19 = v7;
     v20 = 1;
     goto LABEL_23;
   }
 
-  if (a5)
+  if (usage)
   {
 LABEL_17:
     v11 = 1;
@@ -176,7 +176,7 @@ LABEL_17:
   {
     if (v7 == 2)
     {
-      v16 = a3;
+      lCopy6 = l;
       v17 = 0;
     }
 
@@ -187,23 +187,23 @@ LABEL_17:
         goto LABEL_28;
       }
 
-      v16 = a3;
+      lCopy6 = l;
       v17 = 1;
     }
 
-    v12 = [AppleIDVClient prepareUnboundACLForWatch:v16 withAccessibilityEnabled:v17];
+    v12 = [AppleIDVClient prepareUnboundACLForWatch:lCopy6 withAccessibilityEnabled:v17];
     goto LABEL_27;
   }
 
   if (!v7)
   {
-    v12 = [AppleIDVClient prepareUnboundACLForBioBinding:a3];
+    v12 = [AppleIDVClient prepareUnboundACLForBioBinding:l];
     goto LABEL_27;
   }
 
   if (v7 == 1)
   {
-    v12 = [AppleIDVClient prepareUnboundACLForPasscodeBinding:a3];
+    v12 = [AppleIDVClient prepareUnboundACLForPasscodeBinding:l];
 LABEL_27:
     v11 = v12;
   }
@@ -213,11 +213,11 @@ LABEL_28:
   return v11;
 }
 
-+ (unsigned)prepareACLForPhoneDecryption:(id *)a3 withSubType:(unsigned int)a4 forBioUUID:(id)a5
++ (unsigned)prepareACLForPhoneDecryption:(id *)decryption withSubType:(unsigned int)type forBioUUID:(id)d
 {
-  v7 = a5;
+  dCopy = d;
   error = 0;
-  if (a4)
+  if (type)
   {
     v8 = 16;
   }
@@ -245,7 +245,7 @@ LABEL_28:
     }
 
     v12 = v11;
-    if (v7)
+    if (dCopy)
     {
       v13 = [v11 objectForKeyedSubscript:@"od"];
       v14 = [v13 mutableCopy];
@@ -277,7 +277,7 @@ LABEL_28:
         goto LABEL_27;
       }
 
-      [v16 setObject:v7 forKey:@"pbiou"];
+      [v16 setObject:dCopy forKey:@"pbiou"];
       [v14 setObject:v16 forKey:@"cbio"];
       v17 = [v12 mutableCopy];
       [v17 setObject:v14 forKey:@"od"];
@@ -307,7 +307,7 @@ LABEL_28:
     }
 
     SecAccessControlSetConstraints();
-    *a3 = SecAccessControlCopyData();
+    *decryption = SecAccessControlCopyData();
 
     v20 = 0;
 LABEL_27:
@@ -328,7 +328,7 @@ LABEL_28:
   return v20;
 }
 
-+ (unsigned)prepareACLForWatchDecryption:(id *)a3 withSubType:(unsigned int)a4 forAclUsage:(unsigned int)a5
++ (unsigned)prepareACLForWatchDecryption:(id *)decryption withSubType:(unsigned int)type forAclUsage:(unsigned int)usage
 {
   v8 = SecAccessControlCreate();
   if (v8)
@@ -336,7 +336,7 @@ LABEL_28:
     v9 = v8;
     if (SecAccessControlSetProtection())
     {
-      if (a4 == 2 && a5 == 1 || a4 == 3 && a5 == 1 || a4 == 2 && a5 == 2 || a4 == 3 && a5 == 2)
+      if (type == 2 && usage == 1 || type == 3 && usage == 1 || type == 2 && usage == 2 || type == 3 && usage == 2)
       {
         v13 = APPLEIDV_LOG_CLIENT();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -346,7 +346,7 @@ LABEL_28:
 
         SecAccessControlSetConstraints();
         v11 = 0;
-        *a3 = SecAccessControlCopyData();
+        *decryption = SecAccessControlCopyData();
         goto LABEL_21;
       }
 
@@ -381,7 +381,7 @@ LABEL_21:
   return 13;
 }
 
-+ (unsigned)prepareUnboundACLForBioBinding:(id *)a3
++ (unsigned)prepareUnboundACLForBioBinding:(id *)binding
 {
   v29 = *MEMORY[0x277D85DE8];
   error = 0;
@@ -423,7 +423,7 @@ LABEL_21:
             v18 = [v12 mutableCopy];
             [v18 setObject:v14 forKey:@"od"];
             SecAccessControlSetConstraints();
-            *a3 = [a1 prepareUnboundACLForBinding:v7 withConstraints:v18];
+            *binding = [self prepareUnboundACLForBinding:v7 withConstraints:v18];
 
             v19 = 0;
           }
@@ -492,7 +492,7 @@ LABEL_21:
   return v19;
 }
 
-+ (unsigned)prepareUnboundACLForPasscodeBinding:(id *)a3
++ (unsigned)prepareUnboundACLForPasscodeBinding:(id *)binding
 {
   error = 0;
   v5 = objc_opt_new();
@@ -522,7 +522,7 @@ LABEL_21:
 
           if (v16)
           {
-            *a3 = [a1 prepareUnboundACLForBinding:v7 withConstraints:v12];
+            *binding = [self prepareUnboundACLForBinding:v7 withConstraints:v12];
 
             v17 = 0;
           }
@@ -591,11 +591,11 @@ LABEL_21:
   return v17;
 }
 
-+ (id)prepareUnboundACLForBinding:(__SecAccessControl *)a3 withConstraints:(id)a4
++ (id)prepareUnboundACLForBinding:(__SecAccessControl *)binding withConstraints:(id)constraints
 {
-  v4 = a4;
-  v5 = [v4 mutableCopy];
-  v6 = [v4 objectForKeyedSubscript:@"od"];
+  constraintsCopy = constraints;
+  v5 = [constraintsCopy mutableCopy];
+  v6 = [constraintsCopy objectForKeyedSubscript:@"od"];
 
   v7 = [v6 mutableCopy];
   [v5 setObject:v7 forKey:@"osgn"];
@@ -706,10 +706,10 @@ LABEL_21:
   return v7;
 }
 
-+ (unsigned)requireDoublePressOnACL:(id)a3 intoACL:(id *)a4
++ (unsigned)requireDoublePressOnACL:(id)l intoACL:(id *)cL
 {
-  v6 = a3;
-  if (a4)
+  lCopy = l;
+  if (cL)
   {
     v7 = OUTLINED_FUNCTION_62();
     if (v7)
@@ -726,7 +726,7 @@ LABEL_21:
         [v10 setObject:v12 forKey:@"od"];
       }
 
-      *a4 = [a1 prepareUnboundACLForBinding:v8 withConstraints:v10];
+      *cL = [self prepareUnboundACLForBinding:v8 withConstraints:v10];
       CFRelease(v8);
 
       v13 = 0;
@@ -754,10 +754,10 @@ LABEL_21:
   return v13;
 }
 
-+ (unsigned)removeDoublePressOnACL:(id)a3 intoACL:(id *)a4
++ (unsigned)removeDoublePressOnACL:(id)l intoACL:(id *)cL
 {
-  v6 = a3;
-  if (a4)
+  lCopy = l;
+  if (cL)
   {
     v7 = OUTLINED_FUNCTION_62();
     if (v7)
@@ -774,7 +774,7 @@ LABEL_21:
         [v10 setObject:v12 forKey:@"od"];
       }
 
-      *a4 = [a1 prepareUnboundACLForBinding:v8 withConstraints:v10];
+      *cL = [self prepareUnboundACLForBinding:v8 withConstraints:v10];
       CFRelease(v8);
 
       v13 = 0;
@@ -802,13 +802,13 @@ LABEL_21:
   return v13;
 }
 
-+ (unsigned)appleIDVGetStatus:(int64_t *)a3 andVersion:(id *)a4
++ (unsigned)appleIDVGetStatus:(int64_t *)status andVersion:(id *)version
 {
-  if (a4)
+  if (version)
   {
     v11 = 0;
     v12 = 0;
-    v5 = [AppleIDVClient appleIDVGetStatus:a3 andSIDVVersion:&v12 andAppleIDVVersion:&v11];
+    v5 = [AppleIDVClient appleIDVGetStatus:status andSIDVVersion:&v12 andAppleIDVVersion:&v11];
     v6 = v12;
     v7 = v11;
     if (!v5)
@@ -819,7 +819,7 @@ LABEL_21:
       [v8 appendData:v9];
 
       [v8 appendData:v7];
-      *a4 = [MEMORY[0x277CBEA90] dataWithData:v8];
+      *version = [MEMORY[0x277CBEA90] dataWithData:v8];
 
       v5 = 0;
     }
@@ -835,7 +835,7 @@ LABEL_21:
   return v5;
 }
 
-+ (unsigned)appleIDVGetStatus:(int64_t *)a3 andSIDVVersion:(id *)a4 andAppleIDVVersion:(id *)a5
++ (unsigned)appleIDVGetStatus:(int64_t *)status andSIDVVersion:(id *)version andAppleIDVVersion:(id *)vVersion
 {
   v42 = *MEMORY[0x277D85DE8];
   v9 = DIV_LOG_KEXT();
@@ -850,7 +850,7 @@ LABEL_21:
   }
 
   v14 = 5;
-  if (a3 && a4 && a5)
+  if (status && version && vVersion)
   {
     v40 = 256;
     OUTLINED_FUNCTION_0();
@@ -877,10 +877,10 @@ LABEL_21:
 
         else
         {
-          *a3 = *&v17[v20 + 2];
-          *a4 = [MEMORY[0x277CBEA90] dataWithBytes:&v17[v20 + 6] length:?];
+          *status = *&v17[v20 + 2];
+          *version = [MEMORY[0x277CBEA90] dataWithBytes:&v17[v20 + 6] length:?];
           [MEMORY[0x277CBEA90] dataWithBytes:v17 + 1 length:v20];
-          *a5 = v18 = 0;
+          *vVersion = v18 = 0;
         }
       }
 
@@ -932,12 +932,12 @@ LABEL_21:
   return v14;
 }
 
-+ (unsigned)appleIDVAuthorizePresentment:(id)a3 withLAContextData:(id)a4 onSESlot:(int64_t)a5 andPayloadDigest:(id)a6
++ (unsigned)appleIDVAuthorizePresentment:(id)presentment withLAContextData:(id)data onSESlot:(int64_t)slot andPayloadDigest:(id)digest
 {
   v61 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  presentmentCopy = presentment;
+  dataCopy = data;
+  digestCopy = digest;
   *&v13 = OUTLINED_FUNCTION_35();
   *v49 = v13;
   v50 = v13;
@@ -948,12 +948,12 @@ LABEL_21:
   v17 = v16;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    OUTLINED_FUNCTION_47(&dword_2259A7000, v18, v19, v20, "appleIDV.authorizePresentment", "enableTelemetry=YES", v21, v22, v49[0], v49[1], v50, *(&v50 + 1), v51, v52, v53, v54, v55, v56, v57, v58, 0);
+    OUTLINED_FUNCTION_47(&dword_2259A7000, v18, v19, v20, "appleIDV.authorizePresentment", "enableTelemetry=YES", v21, v22, v49[0], v49[1], v50, *(&v50 + 1), v51, slotCopy, v53, v54, v55, v56, v57, v58, 0);
   }
 
-  if (v10)
+  if (presentmentCopy)
   {
-    v23 = v10;
+    v23 = presentmentCopy;
     v53 = 0;
     v54 = 0;
     v49[1] = [v23 length];
@@ -966,8 +966,8 @@ LABEL_21:
       _os_log_debug_impl(v37, v38, v39, v40, v41, 0xCu);
     }
 
-    *(&v50 + 1) = [v11 bytes];
-    v51 = [v11 length];
+    *(&v50 + 1) = [dataCopy bytes];
+    v51 = [dataCopy length];
     if (v51 >> 31)
     {
       v26 = 10;
@@ -975,8 +975,8 @@ LABEL_21:
 
     else
     {
-      v52 = a5;
-      v25 = buildMetadataBuffer(v49, v12, 1);
+      slotCopy = slot;
+      v25 = buildMetadataBuffer(v49, digestCopy, 1);
       if (v25)
       {
         v26 = v25;
@@ -1028,12 +1028,12 @@ LABEL_21:
   return v26;
 }
 
-+ (unsigned)appleIDVAuthorizePresentment:(id)a3 withLAContextData:(id)a4 onSESlot:(int64_t)a5 andPublicKey:(id)a6
++ (unsigned)appleIDVAuthorizePresentment:(id)presentment withLAContextData:(id)data onSESlot:(int64_t)slot andPublicKey:(id)key
 {
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  presentmentCopy = presentment;
+  dataCopy = data;
+  keyCopy = key;
   *&v13 = OUTLINED_FUNCTION_35();
   *v50 = v13;
   v51 = v13;
@@ -1044,12 +1044,12 @@ LABEL_21:
   v17 = v16;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
-    OUTLINED_FUNCTION_47(&dword_2259A7000, v18, v19, v20, "appleIDV.authorizePresentment", "enableTelemetry=YES", v21, v22, v50[0], v50[1], v51, *(&v51 + 1), v52, v53, v54, v55, v56, v57, v58, v59, 0);
+    OUTLINED_FUNCTION_47(&dword_2259A7000, v18, v19, v20, "appleIDV.authorizePresentment", "enableTelemetry=YES", v21, v22, v50[0], v50[1], v51, *(&v51 + 1), v52, slotCopy, v54, v55, v56, v57, v58, v59, 0);
   }
 
-  if (v10)
+  if (presentmentCopy)
   {
-    v23 = v10;
+    v23 = presentmentCopy;
     v54 = 0;
     v55 = 0;
     v50[1] = [v23 length];
@@ -1062,8 +1062,8 @@ LABEL_21:
       _os_log_debug_impl(v38, v39, v40, v41, v42, 0xCu);
     }
 
-    *(&v51 + 1) = [v11 bytes];
-    v52 = [v11 length];
+    *(&v51 + 1) = [dataCopy bytes];
+    v52 = [dataCopy length];
     if (v52 >> 31)
     {
       v28 = 10;
@@ -1071,7 +1071,7 @@ LABEL_21:
 
     else
     {
-      v25 = buildMetadataBuffer(v50, v12, 2);
+      v25 = buildMetadataBuffer(v50, keyCopy, 2);
       if (v25)
       {
         v28 = v25;
@@ -1079,7 +1079,7 @@ LABEL_21:
 
       else
       {
-        v53 = a5;
+        slotCopy = slot;
         v26 = AuthorizePresentmentFromAppleIDV(v50);
         v27 = APPLEIDV_LOG_CLIENT();
         if (OUTLINED_FUNCTION_46(v27))
@@ -1134,11 +1134,11 @@ LABEL_21:
   return v28;
 }
 
-+ (unsigned)appleIDVPersistACLBlob:(id)a3 intoBlob:(id *)a4 returnBioUUIDs:(id *)a5 andRequireDoublePress:(unsigned __int8)a6
++ (unsigned)appleIDVPersistACLBlob:(id)blob intoBlob:(id *)intoBlob returnBioUUIDs:(id *)ds andRequireDoublePress:(unsigned __int8)press
 {
-  v6 = a6;
+  pressCopy = press;
   v140 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  blobCopy = blob;
   v130 = 0;
   v10 = DIV_LOG_KEXT();
   v11 = os_signpost_id_generate(v10);
@@ -1156,16 +1156,16 @@ LABEL_21:
   spid = v11;
 
   v21 = 0;
-  v22 = 5;
+  spid = 5;
   v23 = 0;
-  if (v9 && a4)
+  if (blobCopy && intoBlob)
   {
     v23 = [MEMORY[0x277CBEB28] dataWithLength:0x4000];
     v130 = [v23 length];
-    v24 = [AppleIDVClient getUUIDsFromACL:v9 intoArray:a5];
+    v24 = [AppleIDVClient getUUIDsFromACL:blobCopy intoArray:ds];
     if (v24)
     {
-      v22 = v24;
+      spid = v24;
       v21 = 0;
       goto LABEL_37;
     }
@@ -1173,12 +1173,12 @@ LABEL_21:
     v129 = 0;
     *&v25 = OUTLINED_FUNCTION_35();
     v120 = v25;
-    if (v6)
+    if (pressCopy)
     {
       v119 = 0;
-      v22 = [AppleIDVClient requireDoublePressOnACL:v9 intoACL:&v119, spid];
+      spid = [AppleIDVClient requireDoublePressOnACL:blobCopy intoACL:&v119, spid];
       v21 = v119;
-      if (v22)
+      if (spid)
       {
         goto LABEL_37;
       }
@@ -1186,22 +1186,22 @@ LABEL_21:
 
     else
     {
-      v21 = v9;
+      v21 = blobCopy;
     }
 
     *&v120 = [v21 bytes];
     *(&v120 + 1) = [v21 length];
     v26 = extractACLForSCRD(v120, *(&v120 + 1), &v121, &v122);
-    if (v26 || (v123 = [v9 bytes], v124 = objc_msgSend(v9, "length"), (v26 = extractACLForSCRD(v123, v124, &v125, &v126)) != 0))
+    if (v26 || (v123 = [blobCopy bytes], v124 = objc_msgSend(blobCopy, "length"), (v26 = extractACLForSCRD(v123, v124, &v125, &v126)) != 0))
     {
-      v22 = v26;
+      spid = v26;
       goto LABEL_37;
     }
 
     v128 = 0;
     v129 = 0;
     v127 = 255;
-    v27 = [v23 mutableBytes];
+    mutableBytes = [v23 mutableBytes];
     v132 = 0;
     if (v120)
     {
@@ -1216,15 +1216,15 @@ LABEL_21:
         OUTLINED_FUNCTION_33();
         if (!(!v29 & v28))
         {
-          a5 = 4096;
+          ds = 4096;
           OUTLINED_FUNCTION_0();
-          v6 = malloc_type_malloc(0x1000uLL, v30);
-          if (v6)
+          pressCopy = malloc_type_malloc(0x1000uLL, v30);
+          if (pressCopy)
           {
-            a5 = 4096;
+            ds = 4096;
             v131 = 4096;
             OUTLINED_FUNCTION_18();
-            v35 = tlvEncodeWithCheck(v6, 32, v31, v32, v33, v34);
+            v35 = tlvEncodeWithCheck(pressCopy, 32, v31, v32, v33, v34);
             if (v35)
             {
               v92 = v35;
@@ -1238,14 +1238,14 @@ LABEL_21:
               if (v47 || (OUTLINED_FUNCTION_52(v47, v48, v49, v50, v51, v52, v53, v54, spid, v119, v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132), OUTLINED_FUNCTION_18(), LODWORD(v47) = tlvEncodeWithCheck(v55, 34, v56, 8u, v57, v58), v47) || (OUTLINED_FUNCTION_18(), v47 = tlvEncodeWithCheck(v59, 35, v60, v61, v62, v63), v47) || (OUTLINED_FUNCTION_52(v47, v64, v65, v66, v67, v68, v69, v70, spid, v119, v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132), OUTLINED_FUNCTION_18(), v47 = tlvEncodeWithCheck(v71, 36, v72, 8u, v73, v74), v47) || (OUTLINED_FUNCTION_52(v47, v75, v76, v77, v78, v79, v80, v81, spid, v119, v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132), OUTLINED_FUNCTION_18(), LODWORD(v47) = tlvEncodeWithCheck(v82, 37, v83, 8u, v84, v85), v47) || (OUTLINED_FUNCTION_18(), LODWORD(v47) = tlvEncodeWithCheck(v86, 31, v87, 8u, v88, v89), v47))
               {
                 v92 = v47;
-                a5 = 4096;
+                ds = 4096;
               }
 
               else
               {
                 v90 = APPLEIDV_LOG_CLIENT();
                 v91 = os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG);
-                a5 = v132;
+                ds = v132;
                 if (v91)
                 {
                   *buf = 136315906;
@@ -1282,8 +1282,8 @@ LABEL_26:
 
           if (v92)
           {
-            v22 = 5;
-            if (!v6)
+            spid = 5;
+            if (!pressCopy)
             {
               goto LABEL_31;
             }
@@ -1291,8 +1291,8 @@ LABEL_26:
 
           else
           {
-            v22 = GenericAppleIDVCall(1u, v6, a5, v27, &v130);
-            if (!v6)
+            spid = GenericAppleIDVCall(1u, pressCopy, ds, mutableBytes, &v130);
+            if (!pressCopy)
             {
 LABEL_31:
               v94 = APPLEIDV_LOG_CLIENT();
@@ -1300,7 +1300,7 @@ LABEL_31:
               {
                 *buf = 67109632;
                 OUTLINED_FUNCTION_24();
-                *&v134[6] = v22;
+                *&v134[6] = spid;
                 OUTLINED_FUNCTION_23();
                 OUTLINED_FUNCTION_21();
                 _os_log_debug_impl(v107, v108, v109, v110, v111, 0x18u);
@@ -1311,34 +1311,34 @@ LABEL_31:
               {
                 *buf = 67109632;
                 OUTLINED_FUNCTION_24();
-                *&v134[6] = v22;
+                *&v134[6] = spid;
                 OUTLINED_FUNCTION_23();
                 OUTLINED_FUNCTION_21();
                 _os_log_debug_impl(v112, v113, v114, v115, v116, 0x18u);
               }
 
-              if (v22)
+              if (spid)
               {
                 OUTLINED_FUNCTION_12();
-                if (v22 == v117)
+                if (spid == v117)
                 {
-                  v22 = 11;
+                  spid = 11;
                 }
               }
 
               else
               {
                 v96 = MEMORY[0x277CBEA90];
-                v97 = [v23 mutableBytes];
-                [v96 dataWithBytes:v97 length:v130];
-                *a4 = v22 = 0;
+                mutableBytes2 = [v23 mutableBytes];
+                [v96 dataWithBytes:mutableBytes2 length:v130];
+                *intoBlob = spid = 0;
               }
 
               goto LABEL_37;
             }
           }
 
-          free(v6);
+          free(pressCopy);
           goto LABEL_31;
         }
 
@@ -1364,10 +1364,10 @@ LABEL_37:
     _os_signpost_emit_with_name_impl(v100, v101, v102, spid, v103, v104, v105, 2u);
   }
 
-  return v22;
+  return spid;
 }
 
-+ (unsigned)appleIDVRecoverPersistedACLBlob:(id)a3 intoBlob:(id *)a4
++ (unsigned)appleIDVRecoverPersistedACLBlob:(id)blob intoBlob:(id *)intoBlob
 {
   OUTLINED_FUNCTION_58();
   v62 = v4;
@@ -1390,17 +1390,17 @@ LABEL_37:
   if (v9 && v7)
   {
     v21 = [MEMORY[0x277CBEB28] dataWithLength:0x4000];
-    v22 = [v9 bytes];
+    bytes = [v9 bytes];
     v23 = [v9 length];
-    v24 = [v21 mutableBytes];
-    v58 = v24;
+    mutableBytes = [v21 mutableBytes];
+    v58 = mutableBytes;
     v59 = 0x4000;
-    if (v24)
+    if (mutableBytes)
     {
       v25 = 5;
-      if (v22 && v23 <= 0xFFFFFFFE)
+      if (bytes && v23 <= 0xFFFFFFFE)
       {
-        v26 = v24;
+        v26 = mutableBytes;
         OUTLINED_FUNCTION_0();
         v28 = malloc_type_malloc(0x1000uLL, v27);
         if (v28)
@@ -1490,11 +1490,11 @@ LABEL_37:
   return result;
 }
 
-+ (unsigned)appleIDVPersistModifiedSESlot:(int64_t)a3 withReferenceBlob:(id)a4 withLAContextData:(id)a5 intoBlob:(id *)a6
++ (unsigned)appleIDVPersistModifiedSESlot:(int64_t)slot withReferenceBlob:(id)blob withLAContextData:(id)data intoBlob:(id *)intoBlob
 {
   v76 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
+  blobCopy = blob;
+  dataCopy = data;
   v11 = DIV_LOG_KEXT();
   v12 = os_signpost_id_generate(v11);
 
@@ -1509,24 +1509,24 @@ LABEL_37:
   }
 
   v22 = 5;
-  if (v9 && v10 && a6)
+  if (blobCopy && dataCopy && intoBlob)
   {
-    v67 = a6;
+    intoBlobCopy = intoBlob;
     v68 = v12 - 1;
     v23 = [MEMORY[0x277CBEB28] dataWithLength:0x4000];
-    v24 = [v9 bytes];
-    v69[1] = v24;
-    v25 = [v9 length];
+    bytes = [blobCopy bytes];
+    v69[1] = bytes;
+    v25 = [blobCopy length];
     v69[2] = v25;
-    v26 = [v23 mutableBytes];
-    v70 = v26;
+    mutableBytes = [v23 mutableBytes];
+    v70 = mutableBytes;
     v71[0] = 0x4000;
-    v27 = [v10 bytes];
-    v71[1] = v27;
-    v28 = [v10 length];
+    bytes2 = [dataCopy bytes];
+    v71[1] = bytes2;
+    v28 = [dataCopy length];
     v71[2] = v28;
-    v69[0] = a3;
-    if (!v26)
+    v69[0] = slot;
+    if (!mutableBytes)
     {
       v38 = 18;
       v15 = v12 - 1;
@@ -1570,7 +1570,7 @@ LABEL_26:
       else
       {
         [MEMORY[0x277CBEA90] dataWithBytes:v70 length:v71[0]];
-        *v67 = v22 = 0;
+        *intoBlobCopy = v22 = 0;
       }
 
       goto LABEL_33;
@@ -1578,14 +1578,14 @@ LABEL_26:
 
     v73 = 0;
     v66 = v12;
-    if (v24)
+    if (bytes)
     {
       if (!v25)
       {
         goto LABEL_38;
       }
 
-      if (v27)
+      if (bytes2)
       {
         v29 = v28;
         OUTLINED_FUNCTION_26();
@@ -1594,15 +1594,15 @@ LABEL_26:
           v12 = 4096;
           OUTLINED_FUNCTION_0();
           v33 = malloc_type_malloc(0x1000uLL, v32);
-          a3 = v33;
+          slot = v33;
           if (v33)
           {
             v12 = 4096;
             v72 = 4096;
-            v34 = tlvEncodeWithCheck(v33, 21, v27, v29, &v72, &v73);
+            v34 = tlvEncodeWithCheck(v33, 21, bytes2, v29, &v72, &v73);
             if (!v34)
             {
-              v35 = tlvEncodeWithCheck(a3 + v73, 70, v24, v25, &v72, &v73);
+              v35 = tlvEncodeWithCheck(slot + v73, 70, bytes, v25, &v72, &v73);
               if (v35)
               {
                 v36 = v35;
@@ -1611,7 +1611,7 @@ LABEL_26:
 
               else
               {
-                v36 = tlvEncodeWithCheck(a3 + v73, 31, v69, 8u, &v72, &v73);
+                v36 = tlvEncodeWithCheck(slot + v73, 31, v69, 8u, &v72, &v73);
                 if (v36)
                 {
                   v12 = 4096;
@@ -1655,13 +1655,13 @@ LABEL_19:
 
           else
           {
-            v38 = GenericAppleIDVCall(0xBu, a3, v12, v26, v71);
+            v38 = GenericAppleIDVCall(0xBu, slot, v12, mutableBytes, v71);
           }
 
           v12 = v66;
-          if (a3)
+          if (slot)
           {
-            free(a3);
+            free(slot);
           }
 
           goto LABEL_26;
@@ -1692,12 +1692,12 @@ LABEL_33:
   return v22;
 }
 
-+ (unsigned)appleIDVPersistModifiedACLBlob:(id)a3 withReferenceACLBlob:(id)a4 withLAContextData:(id)a5 intoBlob:(id *)a6 returnBioUUIDs:(id *)a7
++ (unsigned)appleIDVPersistModifiedACLBlob:(id)blob withReferenceACLBlob:(id)lBlob withLAContextData:(id)data intoBlob:(id *)intoBlob returnBioUUIDs:(id *)ds
 {
   v86 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  blobCopy = blob;
+  lBlobCopy = lBlob;
+  dataCopy = data;
   v14 = DIV_LOG_KEXT();
   v15 = os_signpost_id_generate(v14);
 
@@ -1712,23 +1712,23 @@ LABEL_33:
 
   v19 = 0;
   v20 = 5;
-  if (v11 && v12 && v13 && a6 && a7)
+  if (blobCopy && lBlobCopy && dataCopy && intoBlob && ds)
   {
     v19 = [MEMORY[0x277CBEB28] dataWithLength:0x4000];
-    v21 = [AppleIDVClient getUUIDsFromACL:v11 intoArray:a7];
-    if (v21 || (v79 = 0, v78 = 0u, v77 = 0u, v76 = 0u, v75 = 0u, v73 = [v11 bytes], v74 = objc_msgSend(v11, "length"), (v21 = extractACLForSCRD(v73, v74, &v75, &v75 + 1)) != 0))
+    v21 = [AppleIDVClient getUUIDsFromACL:blobCopy intoArray:ds];
+    if (v21 || (v79 = 0, v78 = 0u, v77 = 0u, v76 = 0u, v75 = 0u, v73 = [blobCopy bytes], v74 = objc_msgSend(blobCopy, "length"), (v21 = extractACLForSCRD(v73, v74, &v75, &v75 + 1)) != 0))
     {
       v20 = v21;
       goto LABEL_34;
     }
 
     v72 = v15 - 1;
-    *(&v76 + 1) = [v12 bytes];
-    *&v77 = [v12 length];
+    *(&v76 + 1) = [lBlobCopy bytes];
+    *&v77 = [lBlobCopy length];
     *(&v77 + 1) = [v19 mutableBytes];
     *&v78 = 0x4000;
-    *(&v78 + 1) = [v13 bytes];
-    v79 = [v13 length];
+    *(&v78 + 1) = [dataCopy bytes];
+    v79 = [dataCopy length];
     v22 = *(&v77 + 1);
     v23 = 18;
     if (!*(&v77 + 1) || v78 < 0x4000)
@@ -1864,7 +1864,7 @@ LABEL_27:
               else
               {
                 [MEMORY[0x277CBEA90] dataWithBytes:*(&v77 + 1) length:v78];
-                *a6 = v20 = 0;
+                *intoBlob = v20 = 0;
               }
 
               v18 = v72;
@@ -1908,7 +1908,7 @@ LABEL_34:
   return v20;
 }
 
-+ (unsigned)appleIDVGeneratePrearmTrustKeyForWatchAndCopyPrivateKey:(id)a3 progenitorPublicKey:(id)a4 encryptedPrivateKey:(id *)a5 attestation:(id *)a6 publicKey:(id *)a7 keyBlob:(id *)a8
++ (unsigned)appleIDVGeneratePrearmTrustKeyForWatchAndCopyPrivateKey:(id)key progenitorPublicKey:(id)publicKey encryptedPrivateKey:(id *)privateKey attestation:(id *)attestation publicKey:(id *)a7 keyBlob:(id *)blob
 {
   OUTLINED_FUNCTION_48();
   MEMORY[0x28223BE20](v13, v14);
@@ -1941,16 +1941,16 @@ LABEL_34:
         v91 = v11;
         if (v11)
         {
-          v30 = [v17 bytes];
+          bytes = [v17 bytes];
           v31 = [v17 length];
-          v32 = [v8 bytes];
+          bytes2 = [v8 bytes];
           [v8 length];
           OUTLINED_FUNCTION_44();
-          if (v30 && v31 <= 0xFFFFFFFE && (v12 = v33, OUTLINED_FUNCTION_0(), malloc_type_malloc(0x1000uLL, v34)))
+          if (bytes && v31 <= 0xFFFFFFFE && (v12 = v33, OUTLINED_FUNCTION_0(), malloc_type_malloc(0x1000uLL, v34)))
           {
             OUTLINED_FUNCTION_41();
-            v38 = tlvEncodeWithCheck(v35, 130, v30, v31, v36, v37);
-            if (v38 || (v46 = OUTLINED_FUNCTION_57(v38, v39, v40, v41, v42, v43, v44, v45, v89, spid, v91, v92, v30, v31, v32, v93, v94, v95[0], v95[1], v96), tlvEncodeWithCheck(v46, 131, v32, v12, v47, v48)))
+            v38 = tlvEncodeWithCheck(v35, 130, bytes, v31, v36, v37);
+            if (v38 || (v46 = OUTLINED_FUNCTION_57(v38, v39, v40, v41, v42, v43, v44, v45, v89, spid, v91, v92, bytes, v31, bytes2, v93, v94, v95[0], v95[1], v96), tlvEncodeWithCheck(v46, 131, bytes2, v12, v47, v48)))
             {
               v50 = 5;
             }
@@ -2039,7 +2039,7 @@ LABEL_34:
   return result;
 }
 
-+ (unsigned)appleIDVGetPrearmTrustKeyFromExistingKeyBlob:(id)a3 nonce:(id)a4 progenitorPublicKey:(id)a5 encryptedPrivateKey:(id *)a6 attestation:(id *)a7 publicKey:(id *)a8 keyBlob:(id *)a9
++ (unsigned)appleIDVGetPrearmTrustKeyFromExistingKeyBlob:(id)blob nonce:(id)nonce progenitorPublicKey:(id)key encryptedPrivateKey:(id *)privateKey attestation:(id *)attestation publicKey:(id *)publicKey keyBlob:(id *)keyBlob
 {
   OUTLINED_FUNCTION_48();
   MEMORY[0x28223BE20](v9, v10);
@@ -2083,21 +2083,21 @@ LABEL_34:
             {
               v94 = v12;
               v95 = v26 - 1;
-              v36 = [v22 bytes];
+              bytes = [v22 bytes];
               v37 = [v22 length];
-              v38 = [v23 bytes];
+              bytes2 = [v23 bytes];
               v39 = [v23 length];
-              v40 = [v24 bytes];
+              bytes3 = [v24 bytes];
               v41 = [v24 length];
               *&v98 = &v101;
               *(&v98 + 1) = 4096;
               v100 = 0;
-              if (v36 && v37 <= 0xFFFFFFFE && v38 && v39 <= 0xFFFFFFFE && v40 && (v28 = v41, OUTLINED_FUNCTION_26(), v43 || !v42) && (OUTLINED_FUNCTION_0(), (v45 = malloc_type_malloc(0x1000uLL, v44)) != 0))
+              if (bytes && v37 <= 0xFFFFFFFE && bytes2 && v39 <= 0xFFFFFFFE && bytes3 && (v28 = v41, OUTLINED_FUNCTION_26(), v43 || !v42) && (OUTLINED_FUNCTION_0(), (v45 = malloc_type_malloc(0x1000uLL, v44)) != 0))
               {
                 v46 = v45;
                 v99 = 4096;
                 OUTLINED_FUNCTION_18();
-                if (tlvEncodeWithCheck(v47, 151, v36, v37, v48, v49) || (OUTLINED_FUNCTION_18(), tlvEncodeWithCheck(v50, 152, v38, v39, v51, v52)) || (OUTLINED_FUNCTION_18(), tlvEncodeWithCheck(v53, 153, v40, v28, v54, v55)))
+                if (tlvEncodeWithCheck(v47, 151, bytes, v37, v48, v49) || (OUTLINED_FUNCTION_18(), tlvEncodeWithCheck(v50, 152, bytes2, v39, v51, v52)) || (OUTLINED_FUNCTION_18(), tlvEncodeWithCheck(v53, 153, bytes3, v28, v54, v55)))
                 {
                   v57 = 5;
                 }
@@ -2190,7 +2190,7 @@ LABEL_34:
   return result;
 }
 
-+ (unsigned)appleIDVUpdatePrearmTrustKeyForWatch:(id)a3 progenitorPublicKey:(id)a4 encryptedPrivateKey:(id *)a5 attestation:(id *)a6 publicKey:(id *)a7 keyBlob:(id *)a8
++ (unsigned)appleIDVUpdatePrearmTrustKeyForWatch:(id)watch progenitorPublicKey:(id)key encryptedPrivateKey:(id *)privateKey attestation:(id *)attestation publicKey:(id *)publicKey keyBlob:(id *)blob
 {
   OUTLINED_FUNCTION_48();
   MEMORY[0x28223BE20](v12, v13);
@@ -2225,16 +2225,16 @@ LABEL_34:
           v90 = v11;
           if (v15)
           {
-            v29 = [v17 bytes];
+            bytes = [v17 bytes];
             v30 = [v17 length];
-            v31 = [v8 bytes];
+            bytes2 = [v8 bytes];
             [v8 length];
             OUTLINED_FUNCTION_44();
-            if (v29 && v30 <= 0xFFFFFFFE && v31 && (v22 = v32, OUTLINED_FUNCTION_26(), v34 || !v33) && (OUTLINED_FUNCTION_0(), malloc_type_malloc(0x1000uLL, v35)))
+            if (bytes && v30 <= 0xFFFFFFFE && bytes2 && (v22 = v32, OUTLINED_FUNCTION_26(), v34 || !v33) && (OUTLINED_FUNCTION_0(), malloc_type_malloc(0x1000uLL, v35)))
             {
               OUTLINED_FUNCTION_41();
-              v39 = tlvEncodeWithCheck(v36, 132, v29, v30, v37, v38);
-              if (v39 || (v47 = OUTLINED_FUNCTION_57(v39, v40, v41, v42, v43, v44, v45, v46, v88, spid, v90, v91, v29, v30, v31, v92, v93, v94[0], v94[1], v95), tlvEncodeWithCheck(v47, 133, v31, v22, v48, v49)))
+              v39 = tlvEncodeWithCheck(v36, 132, bytes, v30, v37, v38);
+              if (v39 || (v47 = OUTLINED_FUNCTION_57(v39, v40, v41, v42, v43, v44, v45, v46, v88, spid, v90, v91, bytes, v30, bytes2, v92, v93, v94[0], v94[1], v95), tlvEncodeWithCheck(v47, 133, bytes2, v22, v48, v49)))
               {
                 v51 = 5;
               }
@@ -2299,9 +2299,9 @@ LABEL_34:
               if (!v58 && (v60 & 1) == 0 && v59 <= 0xFF4)
               {
                 *v15 = [OUTLINED_FUNCTION_45() dataWithBytes:? length:?];
-                *v10 = [v29[338] dataWithBytes:2 length:v55];
-                *v9 = [v29[338] dataWithBytes:v55 + 2 length:v54];
-                *v90 = [v29[338] dataWithBytes:v55 + 2 + v54 length:v56];
+                *v10 = [bytes[338] dataWithBytes:2 length:v55];
+                *v9 = [bytes[338] dataWithBytes:v55 + 2 length:v54];
+                *v90 = [bytes[338] dataWithBytes:v55 + 2 + v54 length:v56];
               }
             }
           }
@@ -2323,7 +2323,7 @@ LABEL_34:
   return result;
 }
 
-+ (unsigned)appleIDVGeneratePhoneTokenWithNonce:(id)a3 withReferenceACLBlob:(id)a4 keyBlob:(id)a5 keyAttestation:(id)a6 casdCertificate:(id)a7 phoneToken:(id *)a8
++ (unsigned)appleIDVGeneratePhoneTokenWithNonce:(id)nonce withReferenceACLBlob:(id)blob keyBlob:(id)keyBlob keyAttestation:(id)attestation casdCertificate:(id)certificate phoneToken:(id *)token
 {
   OUTLINED_FUNCTION_48();
   MEMORY[0x28223BE20](v8, v9);
@@ -2358,51 +2358,51 @@ LABEL_34:
     v99 = v11;
     v104 = v24;
     v97 = objc_opt_new();
-    v32 = [v97 externalizedContext];
+    externalizedContext = [v97 externalizedContext];
     *&v106 = v108;
     *(&v106 + 1) = 4096;
-    v103 = [v32 bytes];
-    v96 = v32;
-    v33 = [v32 length];
-    v34 = [v22 bytes];
+    bytes = [externalizedContext bytes];
+    v96 = externalizedContext;
+    v33 = [externalizedContext length];
+    bytes2 = [v22 bytes];
     v101 = v22;
     v35 = [v22 length];
-    v36 = [v21 bytes];
+    bytes3 = [v21 bytes];
     v102 = v21;
     v37 = [v21 length];
-    v38 = [v23 bytes];
+    bytes4 = [v23 bytes];
     v39 = [v23 length];
     if (v105)
     {
-      v95 = [v105 bytes];
+      bytes5 = [v105 bytes];
       v40 = [v105 length];
     }
 
     else
     {
-      v95 = 0;
+      bytes5 = 0;
       v40 = 0;
     }
 
     v100 = v23;
     if (v104)
     {
-      v94 = [v104 bytes];
+      bytes6 = [v104 bytes];
       v41 = [v104 length];
     }
 
     else
     {
-      v94 = 0;
+      bytes6 = 0;
       v41 = 0;
     }
 
     v109 = 0;
-    if (v36 && (!v34 ? (v42 = v35 == 0) : (v42 = 1), v42 && v103 && v38 && (v35 <= 0xFFFFFFFE ? (v43 = v37 > 0xFFFFFFFE) : (v43 = 1), !v43 ? (v44 = v33 > 0xFFFFFFFE) : (v44 = 1), !v44 ? (v45 = v39 > 0xFFFFFFFE) : (v45 = 1), !v45 ? (v46 = v40 > 0xFFFFFFFE) : (v46 = 1), !v46 ? (v47 = v41 > 0xFFFFFFFE) : (v47 = 1), !v47 && (OUTLINED_FUNCTION_0(), (v49 = malloc_type_malloc(0x1000uLL, v48)) != 0))))
+    if (bytes3 && (!bytes2 ? (v42 = v35 == 0) : (v42 = 1), v42 && bytes && bytes4 && (v35 <= 0xFFFFFFFE ? (v43 = v37 > 0xFFFFFFFE) : (v43 = 1), !v43 ? (v44 = v33 > 0xFFFFFFFE) : (v44 = 1), !v44 ? (v45 = v39 > 0xFFFFFFFE) : (v45 = 1), !v45 ? (v46 = v40 > 0xFFFFFFFE) : (v46 = 1), !v46 ? (v47 = v41 > 0xFFFFFFFE) : (v47 = 1), !v47 && (OUTLINED_FUNCTION_0(), (v49 = malloc_type_malloc(0x1000uLL, v48)) != 0))))
     {
       v50 = v49;
       v107 = 4096;
-      if (tlvEncodeWithCheck(v49, 100, v36, v37, &v107, &v109) || (v51 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v51, 101, v34, v35, v52, v53)) || (v54 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v54, 102, v103, v33, v55, v56)) || (v57 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v57, 103, v38, v39, v58, v59)) || (v60 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v60, 105, v95, v40, v61, v62)) || (v63 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v63, 106, v94, v41, v64, v65)))
+      if (tlvEncodeWithCheck(v49, 100, bytes3, v37, &v107, &v109) || (v51 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v51, 101, bytes2, v35, v52, v53)) || (v54 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v54, 102, bytes, v33, v55, v56)) || (v57 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v57, 103, bytes4, v39, v58, v59)) || (v60 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v60, 105, bytes5, v40, v61, v62)) || (v63 = OUTLINED_FUNCTION_6(), tlvEncodeWithCheck(v63, 106, bytes6, v41, v64, v65)))
       {
         v68 = 5;
       }
@@ -2484,7 +2484,7 @@ LABEL_34:
   return result;
 }
 
-+ (unsigned)appleIDVEstablishPrearmTrustWithCertificate:(id)a3 protectedPublicKey:(id *)a4
++ (unsigned)appleIDVEstablishPrearmTrustWithCertificate:(id)certificate protectedPublicKey:(id *)key
 {
   OUTLINED_FUNCTION_48();
   MEMORY[0x28223BE20](v4, v5);
@@ -2508,14 +2508,14 @@ LABEL_34:
   {
     *&v54 = v57;
     *(&v54 + 1) = 4096;
-    v21 = [v9 bytes];
+    bytes = [v9 bytes];
     v22 = [v9 length];
     v56 = 0;
-    if (v21 && (v23 = v22, OUTLINED_FUNCTION_26(), !(!v25 & v24)) && (OUTLINED_FUNCTION_0(), (v27 = malloc_type_malloc(0x1000uLL, v26)) != 0))
+    if (bytes && (v23 = v22, OUTLINED_FUNCTION_26(), !(!v25 & v24)) && (OUTLINED_FUNCTION_0(), (v27 = malloc_type_malloc(0x1000uLL, v26)) != 0))
     {
       v28 = v27;
       v55 = 4096;
-      if (tlvEncodeWithCheck(v27, 90, v21, v23, &v55, &v56))
+      if (tlvEncodeWithCheck(v27, 90, bytes, v23, &v55, &v56))
       {
         v32 = 5;
       }
@@ -2594,7 +2594,7 @@ LABEL_34:
   return result;
 }
 
-+ (unsigned)appleIDVGenerateNonceOnWatch:(id *)a3
++ (unsigned)appleIDVGenerateNonceOnWatch:(id *)watch
 {
   v43 = *MEMORY[0x277D85DE8];
   v40 = 32;
@@ -2610,7 +2610,7 @@ LABEL_34:
     OUTLINED_FUNCTION_66(v9, v10, v11, v12, v13, v14, v15);
   }
 
-  if (a3)
+  if (watch)
   {
     v16 = GenericAppleIDVCall(7u, 0, 0, v41, &v40);
     v17 = APPLEIDV_LOG_CLIENT();
@@ -2642,7 +2642,7 @@ LABEL_34:
 
     else
     {
-      *a3 = [MEMORY[0x277CBEA90] dataWithBytes:v41 length:v40];
+      *watch = [MEMORY[0x277CBEA90] dataWithBytes:v41 length:v40];
     }
   }
 
@@ -2663,9 +2663,9 @@ LABEL_34:
   return v16;
 }
 
-+ (unsigned)prepareUnboundACLForWatch:(id *)a3 withAccessibilityEnabled:(BOOL)a4
++ (unsigned)prepareUnboundACLForWatch:(id *)watch withAccessibilityEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v40[1] = *MEMORY[0x277D85DE8];
   error = 0;
   v6 = objc_opt_new();
@@ -2673,7 +2673,7 @@ LABEL_34:
   v37[0] = @"cpo";
   v37[1] = @"pidvaccess";
   v7 = MEMORY[0x277CBEC28];
-  if (v4)
+  if (enabledCopy)
   {
     v7 = MEMORY[0x277CBEC38];
   }
@@ -2684,7 +2684,7 @@ LABEL_34:
   v40[0] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:&v39 count:1];
 
-  if (a3)
+  if (watch)
   {
     v10 = SecAccessControlCreateWithFlags(*MEMORY[0x277CBECE8], *MEMORY[0x277CDBEE8], 0x10uLL, &error);
     if (v10)
@@ -2702,7 +2702,7 @@ LABEL_34:
         {
           v15 = v14;
           v16 = 0;
-          *a3 = v14;
+          *watch = v14;
         }
 
         else
@@ -2921,9 +2921,9 @@ LABEL_34:
   v2[0] = 67109632;
   v2[1] = 1198;
   v3 = 1024;
-  v4 = a1;
+  selfCopy = self;
   v5 = 1024;
-  v6 = a1;
+  selfCopy2 = self;
   _os_log_debug_impl(&dword_2259A7000, a2, OS_LOG_TYPE_DEBUG, "[line %d] kret = %d %x", v2, 0x14u);
 }
 

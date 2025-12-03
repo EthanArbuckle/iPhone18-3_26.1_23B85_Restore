@@ -1,18 +1,18 @@
 @interface MurmurHasher
-+ ($7DEDF3842AEFB7F1E6DF5AF62E424A02)hash128WithKey:(const void *)a3 length:(unint64_t)a4 seed:(unsigned int)a5;
++ ($7DEDF3842AEFB7F1E6DF5AF62E424A02)hash128WithKey:(const void *)key length:(unint64_t)length seed:(unsigned int)seed;
 @end
 
 @implementation MurmurHasher
 
-+ ($7DEDF3842AEFB7F1E6DF5AF62E424A02)hash128WithKey:(const void *)a3 length:(unint64_t)a4 seed:(unsigned int)a5
++ ($7DEDF3842AEFB7F1E6DF5AF62E424A02)hash128WithKey:(const void *)key length:(unint64_t)length seed:(unsigned int)seed
 {
-  v5 = a5;
-  v6 = a5;
+  seedCopy = seed;
+  seedCopy2 = seed;
   while (2)
   {
-    v9 = a3 + (a4 & 0xFFFFFFFFFFFFFFF0);
+    v9 = key + (length & 0xFFFFFFFFFFFFFFF0);
     v10 = 0;
-    switch(a4)
+    switch(length)
     {
       case 0uLL:
         goto LABEL_20;
@@ -57,7 +57,7 @@ LABEL_9:
 LABEL_10:
         v10 ^= v9[9] << 8;
 LABEL_11:
-        v6 ^= 0x87C37B91114253D5 * ((0x4E8B26FE00000000 * (v10 ^ v9[8])) | ((0x4CF5AD432745937FLL * (v10 ^ v9[8])) >> 31));
+        seedCopy2 ^= 0x87C37B91114253D5 * ((0x4E8B26FE00000000 * (v10 ^ v9[8])) | ((0x4CF5AD432745937FLL * (v10 ^ v9[8])) >> 31));
 LABEL_12:
         v10 = v9[7] << 56;
 LABEL_13:
@@ -73,10 +73,10 @@ LABEL_17:
 LABEL_18:
         v10 ^= v9[1] << 8;
 LABEL_19:
-        v5 ^= 0x4CF5AD432745937FLL * ((0x88A129EA80000000 * (v10 ^ *v9)) | ((0x87C37B91114253D5 * (v10 ^ *v9)) >> 33));
+        seedCopy ^= 0x4CF5AD432745937FLL * ((0x88A129EA80000000 * (v10 ^ *v9)) | ((0x87C37B91114253D5 * (v10 ^ *v9)) >> 33));
 LABEL_20:
-        v11 = (v5 ^ a4) + (v6 ^ a4);
-        v12 = v11 + (v6 ^ a4);
+        v11 = (seedCopy ^ length) + (seedCopy2 ^ length);
+        v12 = v11 + (seedCopy2 ^ length);
         v13 = 0xC4CEB9FE1A85EC53 * ((0xFF51AFD7ED558CCDLL * (v11 ^ (v11 >> 33))) ^ ((0xFF51AFD7ED558CCDLL * (v11 ^ (v11 >> 33))) >> 33));
         v14 = v13 ^ (v13 >> 33);
         v15 = 0xC4CEB9FE1A85EC53 * ((0xFF51AFD7ED558CCDLL * (v12 ^ (v12 >> 33))) ^ ((0xFF51AFD7ED558CCDLL * (v12 ^ (v12 >> 33))) >> 33));
@@ -87,13 +87,13 @@ LABEL_20:
         result.var0 = v17;
         return result;
       default:
-        v7 = a4 >> 4;
-        v8 = a3 + 8;
-        v6 = v5;
+        v7 = length >> 4;
+        v8 = key + 8;
+        seedCopy2 = seedCopy;
         do
         {
-          v5 = 5 * (__ROR8__((0x4CF5AD432745937FLL * ((0x88A129EA80000000 * *(v8 - 1)) | ((0x87C37B91114253D5 * *(v8 - 1)) >> 33))) ^ v5, 37) + v6) + 1390208809;
-          v6 = 5 * (v5 + __ROR8__((0x87C37B91114253D5 * ((0x4E8B26FE00000000 * *v8) | ((0x4CF5AD432745937FLL * *v8) >> 31))) ^ v6, 33)) + 944331445;
+          seedCopy = 5 * (__ROR8__((0x4CF5AD432745937FLL * ((0x88A129EA80000000 * *(v8 - 1)) | ((0x87C37B91114253D5 * *(v8 - 1)) >> 33))) ^ seedCopy, 37) + seedCopy2) + 1390208809;
+          seedCopy2 = 5 * (seedCopy + __ROR8__((0x87C37B91114253D5 * ((0x4E8B26FE00000000 * *v8) | ((0x4CF5AD432745937FLL * *v8) >> 31))) ^ seedCopy2, 33)) + 944331445;
           v8 += 2;
           --v7;
         }

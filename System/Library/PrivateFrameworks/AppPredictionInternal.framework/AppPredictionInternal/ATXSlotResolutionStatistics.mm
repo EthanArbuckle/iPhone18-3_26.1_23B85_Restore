@@ -1,15 +1,15 @@
 @interface ATXSlotResolutionStatistics
-- (ATXSlotResolutionStatistics)initWithActionKey:(id)a3;
+- (ATXSlotResolutionStatistics)initWithActionKey:(id)key;
 - (double)_totalConfirmRatioStandardDeviation;
-- (void)_updateConfirmRatioStatisticsForNewConfirmRatio:(double)a3;
+- (void)_updateConfirmRatioStatisticsForNewConfirmRatio:(double)ratio;
 @end
 
 @implementation ATXSlotResolutionStatistics
 
-- (ATXSlotResolutionStatistics)initWithActionKey:(id)a3
+- (ATXSlotResolutionStatistics)initWithActionKey:(id)key
 {
-  v6 = a3;
-  if (!v6)
+  keyCopy = key;
+  if (!keyCopy)
   {
     [(ATXSlotResolutionStatistics *)a2 initWithActionKey:?];
   }
@@ -20,7 +20,7 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_actionKey, a3);
+    objc_storeStrong(&v7->_actionKey, key);
     v9 = objc_opt_new();
     statisticsForParameters = v8->_statisticsForParameters;
     v8->_statisticsForParameters = v9;
@@ -89,15 +89,15 @@
   return v8;
 }
 
-- (void)_updateConfirmRatioStatisticsForNewConfirmRatio:(double)a3
+- (void)_updateConfirmRatioStatisticsForNewConfirmRatio:(double)ratio
 {
   v3 = self->_totalConfirmRatioCount + 1;
   self->_totalConfirmRatioCount = v3;
   totalConfirmRatioMean = self->_totalConfirmRatioMean;
-  v5 = a3 - totalConfirmRatioMean;
-  v6 = totalConfirmRatioMean + (a3 - totalConfirmRatioMean) / v3;
+  v5 = ratio - totalConfirmRatioMean;
+  v6 = totalConfirmRatioMean + (ratio - totalConfirmRatioMean) / v3;
   self->_totalConfirmRatioMean = v6;
-  self->_totalConfirmRatioSumOfSquaresOfDifferencesFromMean = self->_totalConfirmRatioSumOfSquaresOfDifferencesFromMean + v5 * (a3 - v6);
+  self->_totalConfirmRatioSumOfSquaresOfDifferencesFromMean = self->_totalConfirmRatioSumOfSquaresOfDifferencesFromMean + v5 * (ratio - v6);
 }
 
 - (double)_totalConfirmRatioStandardDeviation

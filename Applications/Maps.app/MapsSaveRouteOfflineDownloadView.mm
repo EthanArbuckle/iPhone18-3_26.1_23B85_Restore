@@ -1,6 +1,6 @@
 @interface MapsSaveRouteOfflineDownloadView
 - (BOOL)shouldDownload;
-- (MapsSaveRouteOfflineDownloadView)initWithRegion:(id)a3 existingSubscription:(id)a4;
+- (MapsSaveRouteOfflineDownloadView)initWithRegion:(id)region existingSubscription:(id)subscription;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (void)_determineOfflineRegionInfo;
@@ -81,9 +81,9 @@ LABEL_12:
       v5 = 1;
       break;
     case 4:
-      v6 = [(MapDataSubscriptionInfo *)self->_existingSubscription subscription];
-      v7 = [v6 region];
-      v8 = [TwoLinesContentViewModelComposer cellModelForSavedRouteOfflineRegion:v7 coveredByExistingSubscription:self->_existingSubscription];
+      subscription = [(MapDataSubscriptionInfo *)self->_existingSubscription subscription];
+      region = [subscription region];
+      v8 = [TwoLinesContentViewModelComposer cellModelForSavedRouteOfflineRegion:region coveredByExistingSubscription:self->_existingSubscription];
       [(TwoLinesContentView *)self->_offlineDownloadView setViewModel:v8];
 
       v9 = +[UIColor systemGreenColor];
@@ -175,10 +175,10 @@ LABEL_13:
   {
     if ([(UISwitch *)self->_switch isEnabled])
     {
-      v4 = [(UISwitch *)self->_switch isOn];
+      isOn = [(UISwitch *)self->_switch isOn];
       v5 = +[NSBundle mainBundle];
       v6 = v5;
-      if (v4)
+      if (isOn)
       {
         v7 = @"[Route Creation] Download On";
       }
@@ -204,63 +204,63 @@ LABEL_13:
 
 - (id)accessibilityLabel
 {
-  v3 = [(TwoLinesContentView *)self->_offlineDownloadView viewModel];
-  v4 = [v3 titleText];
-  v5 = [(TwoLinesContentView *)self->_offlineDownloadView viewModel];
-  v6 = [v5 subtitleText];
-  v7 = [NSString stringWithFormat:@"%@\n%@", v4, v6];
+  viewModel = [(TwoLinesContentView *)self->_offlineDownloadView viewModel];
+  titleText = [viewModel titleText];
+  viewModel2 = [(TwoLinesContentView *)self->_offlineDownloadView viewModel];
+  subtitleText = [viewModel2 subtitleText];
+  v7 = [NSString stringWithFormat:@"%@\n%@", titleText, subtitleText];
 
   return v7;
 }
 
 - (void)_setupConstraints
 {
-  v37 = [(TwoLinesContentView *)self->_offlineDownloadView topAnchor];
-  v36 = [(MapsSaveRouteOfflineDownloadView *)self topAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  topAnchor = [(TwoLinesContentView *)self->_offlineDownloadView topAnchor];
+  topAnchor2 = [(MapsSaveRouteOfflineDownloadView *)self topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v40[0] = v35;
-  v34 = [(TwoLinesContentView *)self->_offlineDownloadView bottomAnchor];
-  v33 = [(MapsSaveRouteOfflineDownloadView *)self bottomAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33];
+  bottomAnchor = [(TwoLinesContentView *)self->_offlineDownloadView bottomAnchor];
+  bottomAnchor2 = [(MapsSaveRouteOfflineDownloadView *)self bottomAnchor];
+  v32 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v40[1] = v32;
-  v31 = [(TwoLinesContentView *)self->_offlineDownloadView leadingAnchor];
-  v30 = [(MapsSaveRouteOfflineDownloadView *)self leadingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30 constant:16.0];
+  leadingAnchor = [(TwoLinesContentView *)self->_offlineDownloadView leadingAnchor];
+  leadingAnchor2 = [(MapsSaveRouteOfflineDownloadView *)self leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v40[2] = v29;
-  v28 = [(TwoLinesContentView *)self->_offlineDownloadView trailingAnchor];
-  v27 = [(MapsSaveRouteOfflineDownloadView *)self trailingAnchor];
-  v26 = [v28 constraintLessThanOrEqualToAnchor:v27 constant:-16.0];
+  trailingAnchor = [(TwoLinesContentView *)self->_offlineDownloadView trailingAnchor];
+  trailingAnchor2 = [(MapsSaveRouteOfflineDownloadView *)self trailingAnchor];
+  v26 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-16.0];
   v40[3] = v26;
-  v25 = [(UISwitch *)self->_switch centerYAnchor];
-  v24 = [(MapsSaveRouteOfflineDownloadView *)self centerYAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  centerYAnchor = [(UISwitch *)self->_switch centerYAnchor];
+  centerYAnchor2 = [(MapsSaveRouteOfflineDownloadView *)self centerYAnchor];
+  v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v40[4] = v23;
-  v22 = [(UISwitch *)self->_switch trailingAnchor];
-  v3 = [(MapsSaveRouteOfflineDownloadView *)self trailingAnchor];
-  v4 = [v22 constraintEqualToAnchor:v3 constant:-16.0];
+  trailingAnchor3 = [(UISwitch *)self->_switch trailingAnchor];
+  trailingAnchor4 = [(MapsSaveRouteOfflineDownloadView *)self trailingAnchor];
+  v4 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-16.0];
   v40[5] = v4;
-  v5 = [(UIImageView *)self->_trailingImageView centerYAnchor];
-  v6 = [(MapsSaveRouteOfflineDownloadView *)self centerYAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  centerYAnchor3 = [(UIImageView *)self->_trailingImageView centerYAnchor];
+  centerYAnchor4 = [(MapsSaveRouteOfflineDownloadView *)self centerYAnchor];
+  v7 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   v40[6] = v7;
-  v8 = [(UIImageView *)self->_trailingImageView trailingAnchor];
-  v9 = [(MapsSaveRouteOfflineDownloadView *)self trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:-16.0];
+  trailingAnchor5 = [(UIImageView *)self->_trailingImageView trailingAnchor];
+  trailingAnchor6 = [(MapsSaveRouteOfflineDownloadView *)self trailingAnchor];
+  v10 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   v40[7] = v10;
   v11 = [NSArray arrayWithObjects:v40 count:8];
   [NSLayoutConstraint activateConstraints:v11];
 
-  v12 = [(UISwitch *)self->_switch leadingAnchor];
-  v13 = [(TwoLinesContentView *)self->_offlineDownloadView trailingAnchor];
-  v14 = [v12 constraintEqualToSystemSpacingAfterAnchor:v13 multiplier:1.0];
+  leadingAnchor3 = [(UISwitch *)self->_switch leadingAnchor];
+  trailingAnchor7 = [(TwoLinesContentView *)self->_offlineDownloadView trailingAnchor];
+  v14 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor7 multiplier:1.0];
   v39 = v14;
   v15 = [NSArray arrayWithObjects:&v39 count:1];
   switchConstraints = self->_switchConstraints;
   self->_switchConstraints = v15;
 
-  v17 = [(UIImageView *)self->_trailingImageView leadingAnchor];
-  v18 = [(TwoLinesContentView *)self->_offlineDownloadView trailingAnchor];
-  v19 = [v17 constraintEqualToSystemSpacingAfterAnchor:v18 multiplier:1.0];
+  leadingAnchor4 = [(UIImageView *)self->_trailingImageView leadingAnchor];
+  trailingAnchor8 = [(TwoLinesContentView *)self->_offlineDownloadView trailingAnchor];
+  v19 = [leadingAnchor4 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor8 multiplier:1.0];
   v38 = v19;
   v20 = [NSArray arrayWithObjects:&v38 count:1];
   trailingImageConstraints = self->_trailingImageConstraints;
@@ -304,18 +304,18 @@ LABEL_13:
   [(MapsSaveRouteOfflineDownloadView *)self addGestureRecognizer:v12];
 }
 
-- (MapsSaveRouteOfflineDownloadView)initWithRegion:(id)a3 existingSubscription:(id)a4
+- (MapsSaveRouteOfflineDownloadView)initWithRegion:(id)region existingSubscription:(id)subscription
 {
-  v7 = a3;
-  v8 = a4;
+  regionCopy = region;
+  subscriptionCopy = subscription;
   v13.receiver = self;
   v13.super_class = MapsSaveRouteOfflineDownloadView;
   v9 = [(MapsSaveRouteOfflineDownloadView *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_region, a3);
-    objc_storeStrong(&v10->_existingSubscription, a4);
+    objc_storeStrong(&v9->_region, region);
+    objc_storeStrong(&v10->_existingSubscription, subscription);
     [(MapsSaveRouteOfflineDownloadView *)v10 _setupSubviews];
     [(MapsSaveRouteOfflineDownloadView *)v10 _setupConstraints];
     [(MapsSaveRouteOfflineDownloadView *)v10 _determineOfflineRegionInfo];

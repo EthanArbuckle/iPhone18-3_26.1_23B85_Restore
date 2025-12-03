@@ -4,16 +4,16 @@
 - (void)_update;
 - (void)pauseAnimations;
 - (void)resumeAnimations;
-- (void)setElapsedTime:(double)a3;
+- (void)setElapsedTime:(double)time;
 @end
 
 @implementation PUTimedAnimationGroup
 
 - (void)_update
 {
-  v3 = [(PUAnimationGroup *)self isPaused];
-  v4 = v3;
-  if (self->_areAnimationsPaused != v3 || [(PUAnimationGroup *)self isPaused])
+  isPaused = [(PUAnimationGroup *)self isPaused];
+  v4 = isPaused;
+  if (self->_areAnimationsPaused != isPaused || [(PUAnimationGroup *)self isPaused])
   {
     self->_areAnimationsPaused = v4;
     [(PUTimedAnimationGroup *)self updateAnimations];
@@ -44,17 +44,17 @@
   [(PUTimedAnimationGroup *)self _update];
 }
 
-- (void)setElapsedTime:(double)a3
+- (void)setElapsedTime:(double)time
 {
   if (![(PUAnimationGroup *)self isPaused])
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUTimedAnimationGroup.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"[self isPaused]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUTimedAnimationGroup.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"[self isPaused]"}];
   }
 
-  if (self->_pausedElapsedTime != a3)
+  if (self->_pausedElapsedTime != time)
   {
-    self->_pausedElapsedTime = a3;
+    self->_pausedElapsedTime = time;
 
     [(PUTimedAnimationGroup *)self _update];
   }

@@ -3,9 +3,9 @@
 - (CGRect)imageContentsRect;
 - (CGRect)originalBounds;
 - (OFUIWindowDraggingItem)init;
-- (OFUIWindowDraggingItem)initWithObject:(id)a3 image:(id)a4;
+- (OFUIWindowDraggingItem)initWithObject:(id)object image:(id)image;
 - (void)dealloc;
-- (void)setOriginalTransform:(CGAffineTransform *)a3;
+- (void)setOriginalTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation OFUIWindowDraggingItem
@@ -39,14 +39,14 @@
   return result;
 }
 
-- (OFUIWindowDraggingItem)initWithObject:(id)a3 image:(id)a4
+- (OFUIWindowDraggingItem)initWithObject:(id)object image:(id)image
 {
   v6 = [(OFUIWindowDraggingItem *)self init];
   v7 = v6;
   if (v6)
   {
-    [(OFUIWindowDraggingItem *)v6 setObject:a3];
-    v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:a4];
+    [(OFUIWindowDraggingItem *)v6 setObject:object];
+    v8 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:image];
     v7->_imageView = v8;
     [(UIImageView *)v8 setContentMode:0];
     [(UIImageView *)v7->_imageView setUserInteractionEnabled:0];
@@ -144,11 +144,11 @@
   return self;
 }
 
-- (void)setOriginalTransform:(CGAffineTransform *)a3
+- (void)setOriginalTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_originalTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_originalTransform.c = *&transform->c;
   *&self->_originalTransform.tx = v4;
   *&self->_originalTransform.a = v3;
 }

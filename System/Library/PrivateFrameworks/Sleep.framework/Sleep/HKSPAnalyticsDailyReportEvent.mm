@@ -107,99 +107,99 @@
   v4 = MEMORY[0x277CCABB0];
   if ([(HKSPAnalyticsDailyReportEvent *)self scheduleFriday])
   {
-    v5 = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleFriday];
+    isDefaultScheduleFriday = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleFriday];
   }
 
   else
   {
-    v5 = 0;
+    isDefaultScheduleFriday = 0;
   }
 
-  v114 = [v4 numberWithInt:v5];
+  v114 = [v4 numberWithInt:isDefaultScheduleFriday];
   v148[31] = v114;
   v147[32] = @"defaultScheduleMonday";
   v6 = MEMORY[0x277CCABB0];
   if ([(HKSPAnalyticsDailyReportEvent *)self scheduleMonday])
   {
-    v7 = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleMonday];
+    isDefaultScheduleMonday = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleMonday];
   }
 
   else
   {
-    v7 = 0;
+    isDefaultScheduleMonday = 0;
   }
 
-  v113 = [v6 numberWithInt:v7];
+  v113 = [v6 numberWithInt:isDefaultScheduleMonday];
   v148[32] = v113;
   v147[33] = @"defaultScheduleSaturday";
   v8 = MEMORY[0x277CCABB0];
   if ([(HKSPAnalyticsDailyReportEvent *)self scheduleSaturday])
   {
-    v9 = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleSaturday];
+    isDefaultScheduleSaturday = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleSaturday];
   }
 
   else
   {
-    v9 = 0;
+    isDefaultScheduleSaturday = 0;
   }
 
-  v112 = [v8 numberWithInt:v9];
+  v112 = [v8 numberWithInt:isDefaultScheduleSaturday];
   v148[33] = v112;
   v147[34] = @"defaultScheduleSunday";
   v10 = MEMORY[0x277CCABB0];
   if ([(HKSPAnalyticsDailyReportEvent *)self scheduleSunday])
   {
-    v11 = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleSunday];
+    isDefaultScheduleSunday = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleSunday];
   }
 
   else
   {
-    v11 = 0;
+    isDefaultScheduleSunday = 0;
   }
 
-  v111 = [v10 numberWithInt:v11];
+  v111 = [v10 numberWithInt:isDefaultScheduleSunday];
   v148[34] = v111;
   v147[35] = @"defaultScheduleThursday";
   v12 = MEMORY[0x277CCABB0];
   if ([(HKSPAnalyticsDailyReportEvent *)self scheduleThursday])
   {
-    v13 = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleThursday];
+    isDefaultScheduleThursday = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleThursday];
   }
 
   else
   {
-    v13 = 0;
+    isDefaultScheduleThursday = 0;
   }
 
-  v110 = [v12 numberWithInt:v13];
+  v110 = [v12 numberWithInt:isDefaultScheduleThursday];
   v148[35] = v110;
   v147[36] = @"defaultScheduleTuesday";
   v14 = MEMORY[0x277CCABB0];
   if ([(HKSPAnalyticsDailyReportEvent *)self scheduleTuesday])
   {
-    v15 = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleTuesday];
+    isDefaultScheduleTuesday = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleTuesday];
   }
 
   else
   {
-    v15 = 0;
+    isDefaultScheduleTuesday = 0;
   }
 
-  v109 = [v14 numberWithInt:v15];
+  v109 = [v14 numberWithInt:isDefaultScheduleTuesday];
   v148[36] = v109;
   v147[37] = @"defaultScheduleWednesday";
   v16 = MEMORY[0x277CCABB0];
   if ([(HKSPAnalyticsDailyReportEvent *)self scheduleWednesday])
   {
-    v17 = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleWednesday];
+    isDefaultScheduleWednesday = [(HKSPAnalyticsDailyReportEvent *)self isDefaultScheduleWednesday];
   }
 
   else
   {
-    v17 = 0;
+    isDefaultScheduleWednesday = 0;
   }
 
-  v108 = [v16 numberWithInt:v17];
+  v108 = [v16 numberWithInt:isDefaultScheduleWednesday];
   v148[37] = v108;
   v147[38] = @"daysWornWatchToSleepInLast7Days";
   v107 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HKSPAnalyticsDailyReportEvent daysWornWatchToSleepInLast7Days](self, "daysWornWatchToSleepInLast7Days")}];
@@ -244,278 +244,278 @@
   v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v148 forKeys:v147 count:48];
   v31 = [v136 initWithDictionary:v30];
 
-  v32 = [(HKSPAnalyticsDailyReportEvent *)self userAge];
+  userAge = [(HKSPAnalyticsDailyReportEvent *)self userAge];
 
-  if (v32)
+  if (userAge)
   {
-    v33 = [(HKSPAnalyticsDailyReportEvent *)self userAge];
-    [(NSDictionary *)v31 setObject:v33 forKeyedSubscript:@"userAge"];
+    userAge2 = [(HKSPAnalyticsDailyReportEvent *)self userAge];
+    [(NSDictionary *)v31 setObject:userAge2 forKeyedSubscript:@"userAge"];
   }
 
-  v34 = [(HKSPAnalyticsDailyReportEvent *)self biologicalSex];
+  biologicalSex = [(HKSPAnalyticsDailyReportEvent *)self biologicalSex];
 
-  if (v34)
+  if (biologicalSex)
   {
-    v35 = [(HKSPAnalyticsDailyReportEvent *)self biologicalSex];
-    [(NSDictionary *)v31 setObject:v35 forKeyedSubscript:@"biologicalSex"];
+    biologicalSex2 = [(HKSPAnalyticsDailyReportEvent *)self biologicalSex];
+    [(NSDictionary *)v31 setObject:biologicalSex2 forKeyedSubscript:@"biologicalSex"];
   }
 
-  v36 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierFriday];
+  hapticToneIdentifierFriday = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierFriday];
 
-  if (v36)
+  if (hapticToneIdentifierFriday)
   {
-    v37 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierFriday];
-    [(NSDictionary *)v31 setObject:v37 forKeyedSubscript:@"hapticToneIdentifierFriday"];
+    hapticToneIdentifierFriday2 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierFriday];
+    [(NSDictionary *)v31 setObject:hapticToneIdentifierFriday2 forKeyedSubscript:@"hapticToneIdentifierFriday"];
   }
 
-  v38 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierMonday];
+  hapticToneIdentifierMonday = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierMonday];
 
-  if (v38)
+  if (hapticToneIdentifierMonday)
   {
-    v39 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierMonday];
-    [(NSDictionary *)v31 setObject:v39 forKeyedSubscript:@"hapticToneIdentifierMonday"];
+    hapticToneIdentifierMonday2 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierMonday];
+    [(NSDictionary *)v31 setObject:hapticToneIdentifierMonday2 forKeyedSubscript:@"hapticToneIdentifierMonday"];
   }
 
-  v40 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierSaturday];
+  hapticToneIdentifierSaturday = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierSaturday];
 
-  if (v40)
+  if (hapticToneIdentifierSaturday)
   {
-    v41 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierSaturday];
-    [(NSDictionary *)v31 setObject:v41 forKeyedSubscript:@"hapticToneIdentifierSaturday"];
+    hapticToneIdentifierSaturday2 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierSaturday];
+    [(NSDictionary *)v31 setObject:hapticToneIdentifierSaturday2 forKeyedSubscript:@"hapticToneIdentifierSaturday"];
   }
 
-  v42 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierSunday];
+  hapticToneIdentifierSunday = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierSunday];
 
-  if (v42)
+  if (hapticToneIdentifierSunday)
   {
-    v43 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierSunday];
-    [(NSDictionary *)v31 setObject:v43 forKeyedSubscript:@"hapticToneIdentifierSunday"];
+    hapticToneIdentifierSunday2 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierSunday];
+    [(NSDictionary *)v31 setObject:hapticToneIdentifierSunday2 forKeyedSubscript:@"hapticToneIdentifierSunday"];
   }
 
-  v44 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierThursday];
+  hapticToneIdentifierThursday = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierThursday];
 
-  if (v44)
+  if (hapticToneIdentifierThursday)
   {
-    v45 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierThursday];
-    [(NSDictionary *)v31 setObject:v45 forKeyedSubscript:@"hapticToneIdentifierThursday"];
+    hapticToneIdentifierThursday2 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierThursday];
+    [(NSDictionary *)v31 setObject:hapticToneIdentifierThursday2 forKeyedSubscript:@"hapticToneIdentifierThursday"];
   }
 
-  v46 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierTuesday];
+  hapticToneIdentifierTuesday = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierTuesday];
 
-  if (v46)
+  if (hapticToneIdentifierTuesday)
   {
-    v47 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierTuesday];
-    [(NSDictionary *)v31 setObject:v47 forKeyedSubscript:@"hapticToneIdentifierTuesday"];
+    hapticToneIdentifierTuesday2 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierTuesday];
+    [(NSDictionary *)v31 setObject:hapticToneIdentifierTuesday2 forKeyedSubscript:@"hapticToneIdentifierTuesday"];
   }
 
-  v48 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierWednesday];
+  hapticToneIdentifierWednesday = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierWednesday];
 
-  if (v48)
+  if (hapticToneIdentifierWednesday)
   {
-    v49 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierWednesday];
-    [(NSDictionary *)v31 setObject:v49 forKeyedSubscript:@"hapticToneIdentifierWednesday"];
+    hapticToneIdentifierWednesday2 = [(HKSPAnalyticsDailyReportEvent *)self hapticToneIdentifierWednesday];
+    [(NSDictionary *)v31 setObject:hapticToneIdentifierWednesday2 forKeyedSubscript:@"hapticToneIdentifierWednesday"];
   }
 
-  v50 = [(HKSPAnalyticsDailyReportEvent *)self activeWatchProductType];
+  activeWatchProductType = [(HKSPAnalyticsDailyReportEvent *)self activeWatchProductType];
 
-  if (v50)
+  if (activeWatchProductType)
   {
-    v51 = [(HKSPAnalyticsDailyReportEvent *)self activeWatchProductType];
-    [(NSDictionary *)v31 setObject:v51 forKeyedSubscript:@"activeWatchProductType"];
+    activeWatchProductType2 = [(HKSPAnalyticsDailyReportEvent *)self activeWatchProductType];
+    [(NSDictionary *)v31 setObject:activeWatchProductType2 forKeyedSubscript:@"activeWatchProductType"];
   }
 
-  v52 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedSleepSchedule];
+  weeksSinceOnboardedSleepSchedule = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedSleepSchedule];
 
-  if (v52)
+  if (weeksSinceOnboardedSleepSchedule)
   {
-    v53 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedSleepSchedule];
-    [(NSDictionary *)v31 setObject:v53 forKeyedSubscript:@"weeksSinceOnboardedSleepSchedule"];
+    weeksSinceOnboardedSleepSchedule2 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedSleepSchedule];
+    [(NSDictionary *)v31 setObject:weeksSinceOnboardedSleepSchedule2 forKeyedSubscript:@"weeksSinceOnboardedSleepSchedule"];
   }
 
-  v54 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedSleepTracking];
+  weeksSinceOnboardedSleepTracking = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedSleepTracking];
 
-  if (v54)
+  if (weeksSinceOnboardedSleepTracking)
   {
-    v55 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedSleepTracking];
-    [(NSDictionary *)v31 setObject:v55 forKeyedSubscript:@"weeksSinceOnboardedSleepTracking"];
+    weeksSinceOnboardedSleepTracking2 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedSleepTracking];
+    [(NSDictionary *)v31 setObject:weeksSinceOnboardedSleepTracking2 forKeyedSubscript:@"weeksSinceOnboardedSleepTracking"];
   }
 
-  v56 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedWindDownActions];
+  weeksSinceOnboardedWindDownActions = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedWindDownActions];
 
-  if (v56)
+  if (weeksSinceOnboardedWindDownActions)
   {
-    v57 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedWindDownActions];
-    [(NSDictionary *)v31 setObject:v57 forKeyedSubscript:@"weeksSinceOnboardedWindDownActions"];
+    weeksSinceOnboardedWindDownActions2 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedWindDownActions];
+    [(NSDictionary *)v31 setObject:weeksSinceOnboardedWindDownActions2 forKeyedSubscript:@"weeksSinceOnboardedWindDownActions"];
   }
 
-  v58 = [(HKSPAnalyticsDailyReportEvent *)self stddevActualTimeAsleep];
+  stddevActualTimeAsleep = [(HKSPAnalyticsDailyReportEvent *)self stddevActualTimeAsleep];
 
-  if (v58)
+  if (stddevActualTimeAsleep)
   {
-    v59 = [(HKSPAnalyticsDailyReportEvent *)self stddevActualTimeAsleep];
-    [(NSDictionary *)v31 setObject:v59 forKeyedSubscript:@"stddevActualTimeAsleep"];
+    stddevActualTimeAsleep2 = [(HKSPAnalyticsDailyReportEvent *)self stddevActualTimeAsleep];
+    [(NSDictionary *)v31 setObject:stddevActualTimeAsleep2 forKeyedSubscript:@"stddevActualTimeAsleep"];
   }
 
-  v60 = [(HKSPAnalyticsDailyReportEvent *)self stddevScheduledTimeAsleep];
+  stddevScheduledTimeAsleep = [(HKSPAnalyticsDailyReportEvent *)self stddevScheduledTimeAsleep];
 
-  if (v60)
+  if (stddevScheduledTimeAsleep)
   {
-    v61 = [(HKSPAnalyticsDailyReportEvent *)self stddevScheduledTimeAsleep];
-    [(NSDictionary *)v31 setObject:v61 forKeyedSubscript:@"stddevScheduledTimeAsleep"];
+    stddevScheduledTimeAsleep2 = [(HKSPAnalyticsDailyReportEvent *)self stddevScheduledTimeAsleep];
+    [(NSDictionary *)v31 setObject:stddevScheduledTimeAsleep2 forKeyedSubscript:@"stddevScheduledTimeAsleep"];
   }
 
-  v62 = [(HKSPAnalyticsDailyReportEvent *)self stddevActualVsScheduledTimeAsleep];
+  stddevActualVsScheduledTimeAsleep = [(HKSPAnalyticsDailyReportEvent *)self stddevActualVsScheduledTimeAsleep];
 
-  if (v62)
+  if (stddevActualVsScheduledTimeAsleep)
   {
-    v63 = [(HKSPAnalyticsDailyReportEvent *)self stddevActualVsScheduledTimeAsleep];
-    [(NSDictionary *)v31 setObject:v63 forKeyedSubscript:@"stddevActualVsScheduledTimeAsleep"];
+    stddevActualVsScheduledTimeAsleep2 = [(HKSPAnalyticsDailyReportEvent *)self stddevActualVsScheduledTimeAsleep];
+    [(NSDictionary *)v31 setObject:stddevActualVsScheduledTimeAsleep2 forKeyedSubscript:@"stddevActualVsScheduledTimeAsleep"];
   }
 
-  v64 = [(HKSPAnalyticsDailyReportEvent *)self isOnboardedBD];
+  isOnboardedBD = [(HKSPAnalyticsDailyReportEvent *)self isOnboardedBD];
 
-  if (v64)
+  if (isOnboardedBD)
   {
     v65 = MEMORY[0x277CCABB0];
-    v66 = [(HKSPAnalyticsDailyReportEvent *)self isOnboardedBD];
-    v67 = [v65 numberWithBool:{objc_msgSend(v66, "BOOLValue")}];
+    isOnboardedBD2 = [(HKSPAnalyticsDailyReportEvent *)self isOnboardedBD];
+    v67 = [v65 numberWithBool:{objc_msgSend(isOnboardedBD2, "BOOLValue")}];
     [(NSDictionary *)v31 setObject:v67 forKeyedSubscript:@"isOnboardedBD"];
   }
 
-  v68 = [(HKSPAnalyticsDailyReportEvent *)self meanTimeBetweenBDSessionsPastNight];
+  meanTimeBetweenBDSessionsPastNight = [(HKSPAnalyticsDailyReportEvent *)self meanTimeBetweenBDSessionsPastNight];
 
-  if (v68)
+  if (meanTimeBetweenBDSessionsPastNight)
   {
-    v69 = [(HKSPAnalyticsDailyReportEvent *)self meanTimeBetweenBDSessionsPastNight];
-    [(NSDictionary *)v31 setObject:v69 forKeyedSubscript:@"meanTimeBetweenSessionsPastNight"];
+    meanTimeBetweenBDSessionsPastNight2 = [(HKSPAnalyticsDailyReportEvent *)self meanTimeBetweenBDSessionsPastNight];
+    [(NSDictionary *)v31 setObject:meanTimeBetweenBDSessionsPastNight2 forKeyedSubscript:@"meanTimeBetweenSessionsPastNight"];
   }
 
-  v70 = [(HKSPAnalyticsDailyReportEvent *)self maxTimeBetweenBDSessionsPastNight];
+  maxTimeBetweenBDSessionsPastNight = [(HKSPAnalyticsDailyReportEvent *)self maxTimeBetweenBDSessionsPastNight];
 
-  if (v70)
+  if (maxTimeBetweenBDSessionsPastNight)
   {
-    v71 = [(HKSPAnalyticsDailyReportEvent *)self maxTimeBetweenBDSessionsPastNight];
-    [(NSDictionary *)v31 setObject:v71 forKeyedSubscript:@"maxTimeBetweenSessionsPastNight"];
+    maxTimeBetweenBDSessionsPastNight2 = [(HKSPAnalyticsDailyReportEvent *)self maxTimeBetweenBDSessionsPastNight];
+    [(NSDictionary *)v31 setObject:maxTimeBetweenBDSessionsPastNight2 forKeyedSubscript:@"maxTimeBetweenSessionsPastNight"];
   }
 
-  v72 = [(HKSPAnalyticsDailyReportEvent *)self minTimeBetweenBDSessionsPastNight];
+  minTimeBetweenBDSessionsPastNight = [(HKSPAnalyticsDailyReportEvent *)self minTimeBetweenBDSessionsPastNight];
 
-  if (v72)
+  if (minTimeBetweenBDSessionsPastNight)
   {
-    v73 = [(HKSPAnalyticsDailyReportEvent *)self minTimeBetweenBDSessionsPastNight];
-    [(NSDictionary *)v31 setObject:v73 forKeyedSubscript:@"minTimeBetweenSessionsPastNight"];
+    minTimeBetweenBDSessionsPastNight2 = [(HKSPAnalyticsDailyReportEvent *)self minTimeBetweenBDSessionsPastNight];
+    [(NSDictionary *)v31 setObject:minTimeBetweenBDSessionsPastNight2 forKeyedSubscript:@"minTimeBetweenSessionsPastNight"];
   }
 
-  v74 = [(HKSPAnalyticsDailyReportEvent *)self numBDValuesInPastNight];
+  numBDValuesInPastNight = [(HKSPAnalyticsDailyReportEvent *)self numBDValuesInPastNight];
 
-  if (v74)
+  if (numBDValuesInPastNight)
   {
-    v75 = [(HKSPAnalyticsDailyReportEvent *)self numBDValuesInPastNight];
-    [(NSDictionary *)v31 setObject:v75 forKeyedSubscript:@"numBDValuesInPastNight"];
+    numBDValuesInPastNight2 = [(HKSPAnalyticsDailyReportEvent *)self numBDValuesInPastNight];
+    [(NSDictionary *)v31 setObject:numBDValuesInPastNight2 forKeyedSubscript:@"numBDValuesInPastNight"];
   }
 
-  v76 = [(HKSPAnalyticsDailyReportEvent *)self numBDValuesInPast30Days];
+  numBDValuesInPast30Days = [(HKSPAnalyticsDailyReportEvent *)self numBDValuesInPast30Days];
 
-  if (v76)
+  if (numBDValuesInPast30Days)
   {
-    v77 = [(HKSPAnalyticsDailyReportEvent *)self numBDValuesInPast30Days];
-    [(NSDictionary *)v31 setObject:v77 forKeyedSubscript:@"numBDValuesInPast30Days"];
+    numBDValuesInPast30Days2 = [(HKSPAnalyticsDailyReportEvent *)self numBDValuesInPast30Days];
+    [(NSDictionary *)v31 setObject:numBDValuesInPast30Days2 forKeyedSubscript:@"numBDValuesInPast30Days"];
   }
 
-  v78 = [(HKSPAnalyticsDailyReportEvent *)self numSleepSessionsWithBDsOverThresholdLast30Days];
+  numSleepSessionsWithBDsOverThresholdLast30Days = [(HKSPAnalyticsDailyReportEvent *)self numSleepSessionsWithBDsOverThresholdLast30Days];
 
-  if (v78)
+  if (numSleepSessionsWithBDsOverThresholdLast30Days)
   {
-    v79 = [(HKSPAnalyticsDailyReportEvent *)self numSleepSessionsWithBDsOverThresholdLast30Days];
-    [(NSDictionary *)v31 setObject:v79 forKeyedSubscript:@"numSleepSessionsWithBDsOverThresholdLast30Days"];
+    numSleepSessionsWithBDsOverThresholdLast30Days2 = [(HKSPAnalyticsDailyReportEvent *)self numSleepSessionsWithBDsOverThresholdLast30Days];
+    [(NSDictionary *)v31 setObject:numSleepSessionsWithBDsOverThresholdLast30Days2 forKeyedSubscript:@"numSleepSessionsWithBDsOverThresholdLast30Days"];
   }
 
-  v80 = [(HKSPAnalyticsDailyReportEvent *)self maxBDValueInPast30Days];
+  maxBDValueInPast30Days = [(HKSPAnalyticsDailyReportEvent *)self maxBDValueInPast30Days];
 
-  if (v80)
+  if (maxBDValueInPast30Days)
   {
-    v81 = [(HKSPAnalyticsDailyReportEvent *)self maxBDValueInPast30Days];
-    [(NSDictionary *)v31 setObject:v81 forKeyedSubscript:@"maxBDValueInPast30Days"];
+    maxBDValueInPast30Days2 = [(HKSPAnalyticsDailyReportEvent *)self maxBDValueInPast30Days];
+    [(NSDictionary *)v31 setObject:maxBDValueInPast30Days2 forKeyedSubscript:@"maxBDValueInPast30Days"];
   }
 
-  v82 = [(HKSPAnalyticsDailyReportEvent *)self numSleepDaysWithBDsOverThresholdLast30Days];
+  numSleepDaysWithBDsOverThresholdLast30Days = [(HKSPAnalyticsDailyReportEvent *)self numSleepDaysWithBDsOverThresholdLast30Days];
 
-  if (v82)
+  if (numSleepDaysWithBDsOverThresholdLast30Days)
   {
-    v83 = [(HKSPAnalyticsDailyReportEvent *)self numSleepDaysWithBDsOverThresholdLast30Days];
-    [(NSDictionary *)v31 setObject:v83 forKeyedSubscript:@"numSleepDaysWithBDsOverThresholdLast30Days"];
+    numSleepDaysWithBDsOverThresholdLast30Days2 = [(HKSPAnalyticsDailyReportEvent *)self numSleepDaysWithBDsOverThresholdLast30Days];
+    [(NSDictionary *)v31 setObject:numSleepDaysWithBDsOverThresholdLast30Days2 forKeyedSubscript:@"numSleepDaysWithBDsOverThresholdLast30Days"];
   }
 
-  v84 = [(HKSPAnalyticsDailyReportEvent *)self numSleepDaysWithMultipleBDinPast30Days];
+  numSleepDaysWithMultipleBDinPast30Days = [(HKSPAnalyticsDailyReportEvent *)self numSleepDaysWithMultipleBDinPast30Days];
 
-  if (v84)
+  if (numSleepDaysWithMultipleBDinPast30Days)
   {
-    v85 = [(HKSPAnalyticsDailyReportEvent *)self numSleepDaysWithMultipleBDinPast30Days];
-    [(NSDictionary *)v31 setObject:v85 forKeyedSubscript:@"numSleepDaysWithMultipleBDinPast30Days"];
+    numSleepDaysWithMultipleBDinPast30Days2 = [(HKSPAnalyticsDailyReportEvent *)self numSleepDaysWithMultipleBDinPast30Days];
+    [(NSDictionary *)v31 setObject:numSleepDaysWithMultipleBDinPast30Days2 forKeyedSubscript:@"numSleepDaysWithMultipleBDinPast30Days"];
   }
 
-  v86 = [(HKSPAnalyticsDailyReportEvent *)self BDOnboardingCountryCode];
+  bDOnboardingCountryCode = [(HKSPAnalyticsDailyReportEvent *)self BDOnboardingCountryCode];
 
-  if (v86)
+  if (bDOnboardingCountryCode)
   {
-    v87 = [(HKSPAnalyticsDailyReportEvent *)self BDOnboardingCountryCode];
-    [(NSDictionary *)v31 setObject:v87 forKeyedSubscript:@"BDOnboardingCountryCode"];
+    bDOnboardingCountryCode2 = [(HKSPAnalyticsDailyReportEvent *)self BDOnboardingCountryCode];
+    [(NSDictionary *)v31 setObject:bDOnboardingCountryCode2 forKeyedSubscript:@"BDOnboardingCountryCode"];
   }
 
-  v88 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedBD];
+  weeksSinceOnboardedBD = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedBD];
 
-  if (v88)
+  if (weeksSinceOnboardedBD)
   {
-    v89 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedBD];
-    [(NSDictionary *)v31 setObject:v89 forKeyedSubscript:@"weeksSinceOnboardedBD"];
+    weeksSinceOnboardedBD2 = [(HKSPAnalyticsDailyReportEvent *)self weeksSinceOnboardedBD];
+    [(NSDictionary *)v31 setObject:weeksSinceOnboardedBD2 forKeyedSubscript:@"weeksSinceOnboardedBD"];
   }
 
-  v90 = [(HKSPAnalyticsDailyReportEvent *)self areHealthNotificationsAuthorized];
+  areHealthNotificationsAuthorized = [(HKSPAnalyticsDailyReportEvent *)self areHealthNotificationsAuthorized];
 
-  if (v90)
+  if (areHealthNotificationsAuthorized)
   {
-    v91 = [(HKSPAnalyticsDailyReportEvent *)self areHealthNotificationsAuthorized];
-    [(NSDictionary *)v31 setObject:v91 forKeyedSubscript:@"areHealthNotificationsAuthorized"];
+    areHealthNotificationsAuthorized2 = [(HKSPAnalyticsDailyReportEvent *)self areHealthNotificationsAuthorized];
+    [(NSDictionary *)v31 setObject:areHealthNotificationsAuthorized2 forKeyedSubscript:@"areHealthNotificationsAuthorized"];
   }
 
-  v92 = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPastNight];
+  numBDNotificationsInPastNight = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPastNight];
 
-  if (v92)
+  if (numBDNotificationsInPastNight)
   {
-    v93 = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPastNight];
-    [(NSDictionary *)v31 setObject:v93 forKeyedSubscript:@"numBDNotificationsInPastNight"];
+    numBDNotificationsInPastNight2 = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPastNight];
+    [(NSDictionary *)v31 setObject:numBDNotificationsInPastNight2 forKeyedSubscript:@"numBDNotificationsInPastNight"];
   }
 
-  v94 = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPast30Nights];
+  numBDNotificationsInPast30Nights = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPast30Nights];
 
-  if (v94)
+  if (numBDNotificationsInPast30Nights)
   {
-    v95 = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPast30Nights];
-    [(NSDictionary *)v31 setObject:v95 forKeyedSubscript:@"numBDNotificationsInPast30Nights"];
+    numBDNotificationsInPast30Nights2 = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPast30Nights];
+    [(NSDictionary *)v31 setObject:numBDNotificationsInPast30Nights2 forKeyedSubscript:@"numBDNotificationsInPast30Nights"];
   }
 
-  v96 = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPast180Nights];
+  numBDNotificationsInPast180Nights = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPast180Nights];
 
-  if (v96)
+  if (numBDNotificationsInPast180Nights)
   {
-    v97 = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPast180Nights];
-    [(NSDictionary *)v31 setObject:v97 forKeyedSubscript:@"numBDNotificationsInPast180Nights"];
+    numBDNotificationsInPast180Nights2 = [(HKSPAnalyticsDailyReportEvent *)self numBDNotificationsInPast180Nights];
+    [(NSDictionary *)v31 setObject:numBDNotificationsInPast180Nights2 forKeyedSubscript:@"numBDNotificationsInPast180Nights"];
   }
 
-  v98 = [(HKSPAnalyticsDailyReportEvent *)self numDaysSinceLastBDNotification];
+  numDaysSinceLastBDNotification = [(HKSPAnalyticsDailyReportEvent *)self numDaysSinceLastBDNotification];
 
-  if (v98)
+  if (numDaysSinceLastBDNotification)
   {
-    v99 = [(HKSPAnalyticsDailyReportEvent *)self numDaysSinceLastBDNotification];
-    [(NSDictionary *)v31 setObject:v99 forKeyedSubscript:@"numDaysSinceLastBDNotification"];
+    numDaysSinceLastBDNotification2 = [(HKSPAnalyticsDailyReportEvent *)self numDaysSinceLastBDNotification];
+    [(NSDictionary *)v31 setObject:numDaysSinceLastBDNotification2 forKeyedSubscript:@"numDaysSinceLastBDNotification"];
   }
 
-  v100 = [(HKSPAnalyticsDailyReportEvent *)self numDaysSinceLastAnalysis];
+  numDaysSinceLastAnalysis = [(HKSPAnalyticsDailyReportEvent *)self numDaysSinceLastAnalysis];
 
-  if (v100)
+  if (numDaysSinceLastAnalysis)
   {
-    v101 = [(HKSPAnalyticsDailyReportEvent *)self numDaysSinceLastAnalysis];
-    [(NSDictionary *)v31 setObject:v101 forKeyedSubscript:@"numDaysSinceLastAnalysis"];
+    numDaysSinceLastAnalysis2 = [(HKSPAnalyticsDailyReportEvent *)self numDaysSinceLastAnalysis];
+    [(NSDictionary *)v31 setObject:numDaysSinceLastAnalysis2 forKeyedSubscript:@"numDaysSinceLastAnalysis"];
   }
 
   v102 = v31;

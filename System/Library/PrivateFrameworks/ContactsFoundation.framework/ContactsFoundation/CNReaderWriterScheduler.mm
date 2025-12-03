@@ -1,36 +1,36 @@
 @interface CNReaderWriterScheduler
 - (BOOL)isSuspended;
 - (CNReaderWriterScheduler)init;
-- (CNReaderWriterScheduler)initWithQueue:(id)a3;
+- (CNReaderWriterScheduler)initWithQueue:(id)queue;
 - (NSString)description;
-- (id)performReaderBlock:(id)a3;
-- (id)performWriterBlock:(id)a3;
-- (void)activateReader:(id)a3;
-- (void)activateWriter:(id)a3;
-- (void)addReaderWithIdentifier:(id)a3;
-- (void)addWriterWithIdentifier:(id)a3;
-- (void)appendDescriptionToBuilder:(id)a3;
-- (void)performSynchronousReaderBlock:(id)a3;
-- (void)performSynchronousWriterBlock:(id)a3;
-- (void)removeReader:(id)a3;
-- (void)removeWriter:(id)a3;
+- (id)performReaderBlock:(id)block;
+- (id)performWriterBlock:(id)block;
+- (void)activateReader:(id)reader;
+- (void)activateWriter:(id)writer;
+- (void)addReaderWithIdentifier:(id)identifier;
+- (void)addWriterWithIdentifier:(id)identifier;
+- (void)appendDescriptionToBuilder:(id)builder;
+- (void)performSynchronousReaderBlock:(id)block;
+- (void)performSynchronousWriterBlock:(id)block;
+- (void)removeReader:(id)reader;
+- (void)removeWriter:(id)writer;
 - (void)resume;
-- (void)setSuspended:(BOOL)a3;
+- (void)setSuspended:(BOOL)suspended;
 - (void)suspend;
 @end
 
 @implementation CNReaderWriterScheduler
 
-- (CNReaderWriterScheduler)initWithQueue:(id)a3
+- (CNReaderWriterScheduler)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = CNReaderWriterScheduler;
   v6 = [(CNReaderWriterScheduler *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     activeReaders = v7->_activeReaders;
     v7->_activeReaders = v8;
@@ -67,30 +67,30 @@
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   [(CNReaderWriterScheduler *)self appendDescriptionToBuilder:v3];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)performReaderBlock:(id)a3
+- (id)performReaderBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(CNCancelationToken);
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  [(CNReaderWriterScheduler *)self addReaderWithIdentifier:v6];
-  v7 = [(CNReaderWriterScheduler *)self queue];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(CNReaderWriterScheduler *)self addReaderWithIdentifier:uUID];
+  queue = [(CNReaderWriterScheduler *)self queue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__CNReaderWriterScheduler_performReaderBlock___block_invoke;
   v14[3] = &unk_1E6ED6078;
   v14[4] = self;
-  v15 = v6;
-  v17 = v4;
+  v15 = uUID;
+  v17 = blockCopy;
   v8 = v5;
   v16 = v8;
-  v9 = v4;
-  v10 = v6;
-  dispatch_async(v7, v14);
+  v9 = blockCopy;
+  v10 = uUID;
+  dispatch_async(queue, v14);
 
   v11 = v16;
   v12 = v8;
@@ -109,25 +109,25 @@ uint64_t __46__CNReaderWriterScheduler_performReaderBlock___block_invoke(uint64_
   return [v3 removeReader:v4];
 }
 
-- (id)performWriterBlock:(id)a3
+- (id)performWriterBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(CNCancelationToken);
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  [(CNReaderWriterScheduler *)self addWriterWithIdentifier:v6];
-  v7 = [(CNReaderWriterScheduler *)self queue];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(CNReaderWriterScheduler *)self addWriterWithIdentifier:uUID];
+  queue = [(CNReaderWriterScheduler *)self queue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __46__CNReaderWriterScheduler_performWriterBlock___block_invoke;
   v14[3] = &unk_1E6ED6078;
   v14[4] = self;
-  v15 = v6;
-  v17 = v4;
+  v15 = uUID;
+  v17 = blockCopy;
   v8 = v5;
   v16 = v8;
-  v9 = v4;
-  v10 = v6;
-  dispatch_barrier_async(v7, v14);
+  v9 = blockCopy;
+  v10 = uUID;
+  dispatch_barrier_async(queue, v14);
 
   v11 = v16;
   v12 = v8;
@@ -146,22 +146,22 @@ uint64_t __46__CNReaderWriterScheduler_performWriterBlock___block_invoke(uint64_
   return [v3 removeWriter:v4];
 }
 
-- (void)performSynchronousReaderBlock:(id)a3
+- (void)performSynchronousReaderBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  [(CNReaderWriterScheduler *)self addReaderWithIdentifier:v5];
-  v6 = [(CNReaderWriterScheduler *)self queue];
+  blockCopy = block;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(CNReaderWriterScheduler *)self addReaderWithIdentifier:uUID];
+  queue = [(CNReaderWriterScheduler *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__CNReaderWriterScheduler_performSynchronousReaderBlock___block_invoke;
   block[3] = &unk_1E6ED60A0;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  dispatch_sync(v6, block);
+  v10 = uUID;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = uUID;
+  dispatch_sync(queue, block);
 }
 
 uint64_t __57__CNReaderWriterScheduler_performSynchronousReaderBlock___block_invoke(uint64_t a1)
@@ -174,22 +174,22 @@ uint64_t __57__CNReaderWriterScheduler_performSynchronousReaderBlock___block_inv
   return [v2 removeReader:v3];
 }
 
-- (void)performSynchronousWriterBlock:(id)a3
+- (void)performSynchronousWriterBlock:(id)block
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  [(CNReaderWriterScheduler *)self addWriterWithIdentifier:v5];
-  v6 = [(CNReaderWriterScheduler *)self queue];
+  blockCopy = block;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(CNReaderWriterScheduler *)self addWriterWithIdentifier:uUID];
+  queue = [(CNReaderWriterScheduler *)self queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__CNReaderWriterScheduler_performSynchronousWriterBlock___block_invoke;
   block[3] = &unk_1E6ED60A0;
   block[4] = self;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  dispatch_barrier_sync(v6, block);
+  v10 = uUID;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = uUID;
+  dispatch_barrier_sync(queue, block);
 }
 
 uint64_t __57__CNReaderWriterScheduler_performSynchronousWriterBlock___block_invoke(uint64_t a1)
@@ -207,8 +207,8 @@ uint64_t __57__CNReaderWriterScheduler_performSynchronousWriterBlock___block_inv
   obj = self;
   objc_sync_enter(obj);
   ++obj->_suspendedCount;
-  v2 = [(CNReaderWriterScheduler *)obj queue];
-  dispatch_suspend(v2);
+  queue = [(CNReaderWriterScheduler *)obj queue];
+  dispatch_suspend(queue);
 
   objc_sync_exit(obj);
 }
@@ -225,70 +225,70 @@ uint64_t __57__CNReaderWriterScheduler_performSynchronousWriterBlock___block_inv
   }
 
   obj->_suspendedCount = suspendedCount - 1;
-  v3 = [(CNReaderWriterScheduler *)obj queue];
-  dispatch_resume(v3);
+  queue = [(CNReaderWriterScheduler *)obj queue];
+  dispatch_resume(queue);
 
   objc_sync_exit(obj);
 }
 
-- (void)appendDescriptionToBuilder:(id)a3
+- (void)appendDescriptionToBuilder:(id)builder
 {
-  v18 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CNReaderWriterScheduler *)v4 activeWriters];
-  v6 = [v5 count];
+  builderCopy = builder;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeWriters = [(CNReaderWriterScheduler *)selfCopy activeWriters];
+  v6 = [activeWriters count];
 
   if (v6)
   {
-    v7 = [v18 appendName:@"active writers" unsignedInteger:v6];
+    v7 = [builderCopy appendName:@"active writers" unsignedInteger:v6];
   }
 
-  v8 = [(CNReaderWriterScheduler *)v4 pendingWriters];
-  v9 = [v8 count];
+  pendingWriters = [(CNReaderWriterScheduler *)selfCopy pendingWriters];
+  v9 = [pendingWriters count];
 
   if (v9)
   {
-    v10 = [v18 appendName:@"pending writers" unsignedInteger:v9];
+    v10 = [builderCopy appendName:@"pending writers" unsignedInteger:v9];
   }
 
-  v11 = [(CNReaderWriterScheduler *)v4 activeReaders];
-  v12 = [v11 count];
+  activeReaders = [(CNReaderWriterScheduler *)selfCopy activeReaders];
+  v12 = [activeReaders count];
 
   if (v12)
   {
-    v13 = [v18 appendName:@"active readers" unsignedInteger:v12];
+    v13 = [builderCopy appendName:@"active readers" unsignedInteger:v12];
   }
 
-  v14 = [(CNReaderWriterScheduler *)v4 pendingReaders];
-  v15 = [v14 count];
+  pendingReaders = [(CNReaderWriterScheduler *)selfCopy pendingReaders];
+  v15 = [pendingReaders count];
 
   if (v15)
   {
-    v16 = [v18 appendName:@"pending readers" unsignedInteger:v15];
+    v16 = [builderCopy appendName:@"pending readers" unsignedInteger:v15];
   }
 
-  if (v4->_suspendedCount)
+  if (selfCopy->_suspendedCount)
   {
-    v17 = [v18 appendName:@"suspended" integerValue:?];
+    v17 = [builderCopy appendName:@"suspended" integerValue:?];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)isSuspended
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_suspendedCount != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_suspendedCount != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  if (a3)
+  if (suspended)
   {
     [(CNReaderWriterScheduler *)self suspend];
   }
@@ -299,82 +299,82 @@ uint64_t __57__CNReaderWriterScheduler_performSynchronousWriterBlock___block_inv
   }
 }
 
-- (void)addReaderWithIdentifier:(id)a3
+- (void)addReaderWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CNReaderWriterScheduler *)v4 pendingReaders];
-  [v5 addObject:v6];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingReaders = [(CNReaderWriterScheduler *)selfCopy pendingReaders];
+  [pendingReaders addObject:identifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)activateReader:(id)a3
+- (void)activateReader:(id)reader
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CNReaderWriterScheduler *)v4 pendingReaders];
-  [v5 removeObject:v7];
+  readerCopy = reader;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingReaders = [(CNReaderWriterScheduler *)selfCopy pendingReaders];
+  [pendingReaders removeObject:readerCopy];
 
-  v6 = [(CNReaderWriterScheduler *)v4 activeReaders];
-  [v6 addObject:v7];
+  activeReaders = [(CNReaderWriterScheduler *)selfCopy activeReaders];
+  [activeReaders addObject:readerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeReader:(id)a3
+- (void)removeReader:(id)reader
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CNReaderWriterScheduler *)v4 pendingReaders];
-  [v5 removeObject:v7];
+  readerCopy = reader;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingReaders = [(CNReaderWriterScheduler *)selfCopy pendingReaders];
+  [pendingReaders removeObject:readerCopy];
 
-  v6 = [(CNReaderWriterScheduler *)v4 activeReaders];
-  [v6 removeObject:v7];
+  activeReaders = [(CNReaderWriterScheduler *)selfCopy activeReaders];
+  [activeReaders removeObject:readerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addWriterWithIdentifier:(id)a3
+- (void)addWriterWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CNReaderWriterScheduler *)v4 pendingWriters];
-  [v5 addObject:v6];
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingWriters = [(CNReaderWriterScheduler *)selfCopy pendingWriters];
+  [pendingWriters addObject:identifierCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)activateWriter:(id)a3
+- (void)activateWriter:(id)writer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CNReaderWriterScheduler *)v4 pendingWriters];
-  [v5 removeObject:v7];
+  writerCopy = writer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingWriters = [(CNReaderWriterScheduler *)selfCopy pendingWriters];
+  [pendingWriters removeObject:writerCopy];
 
-  v6 = [(CNReaderWriterScheduler *)v4 activeWriters];
-  [v6 addObject:v7];
+  activeWriters = [(CNReaderWriterScheduler *)selfCopy activeWriters];
+  [activeWriters addObject:writerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeWriter:(id)a3
+- (void)removeWriter:(id)writer
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CNReaderWriterScheduler *)v4 pendingWriters];
-  [v5 removeObject:v7];
+  writerCopy = writer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  pendingWriters = [(CNReaderWriterScheduler *)selfCopy pendingWriters];
+  [pendingWriters removeObject:writerCopy];
 
-  v6 = [(CNReaderWriterScheduler *)v4 activeWriters];
-  [v6 removeObject:v7];
+  activeWriters = [(CNReaderWriterScheduler *)selfCopy activeWriters];
+  [activeWriters removeObject:writerCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 @end

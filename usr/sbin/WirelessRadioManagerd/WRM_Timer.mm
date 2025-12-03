@@ -1,6 +1,6 @@
 @interface WRM_Timer
 + (unint64_t)getTimeStamp;
-- (WRM_Timer)initWithFireTimeIntervalSinceNow:(double)a3 queue:(id)a4 block:(id)a5;
+- (WRM_Timer)initWithFireTimeIntervalSinceNow:(double)now queue:(id)queue block:(id)block;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -15,9 +15,9 @@
   return 1000 * v3.tv_sec + v3.tv_usec / 0x3E8uLL;
 }
 
-- (WRM_Timer)initWithFireTimeIntervalSinceNow:(double)a3 queue:(id)a4 block:(id)a5
+- (WRM_Timer)initWithFireTimeIntervalSinceNow:(double)now queue:(id)queue block:(id)block
 {
-  if (!a4)
+  if (!queue)
   {
     sub_10015F384(a2, self);
   }
@@ -27,7 +27,7 @@
   v10 = [(WRM_Timer *)&v16 init];
   if (v10)
   {
-    v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, a4);
+    v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
     *(v10 + 1) = v11;
     if (!v11)
     {
@@ -35,7 +35,7 @@
       v11 = *(v10 + 1);
     }
 
-    v12 = dispatch_walltime(0, (a3 * 1000000000.0));
+    v12 = dispatch_walltime(0, (now * 1000000000.0));
     dispatch_source_set_timer(v11, v12, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     v13 = *(v10 + 1);
     v15[0] = _NSConcreteStackBlock;
@@ -43,7 +43,7 @@
     v15[2] = sub_100068034;
     v15[3] = &unk_10023F188;
     v15[4] = v10;
-    v15[5] = a5;
+    v15[5] = block;
     dispatch_source_set_event_handler(v13, v15);
     *(v10 + 4) = 1;
     dispatch_resume(*(v10 + 1));

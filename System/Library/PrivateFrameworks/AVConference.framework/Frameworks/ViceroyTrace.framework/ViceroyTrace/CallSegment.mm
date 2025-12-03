@@ -1,43 +1,43 @@
 @interface CallSegment
-- (CallSegment)initWithDictionary:(id)a3;
-- (CallSegment)initWithSegmentName:(id)a3 previousSegmentName:(id)a4 mode:(unsigned __int16)a5 deviceRole:(unsigned __int16)a6 transportType:(unsigned __int16)a7 relayServer:(id)a8 relayType:(unsigned __int16)a9 accessToken:(id)a10 duplicationType:(unsigned __int8)a11 switchConfig:(id)a12 linkProbingConfig:(id *)a13 nwActivity:(id)a14 conversationTimeBase:(id)a15 isInitiator:(BOOL)a16 delegate:(id)a17;
+- (CallSegment)initWithDictionary:(id)dictionary;
+- (CallSegment)initWithSegmentName:(id)name previousSegmentName:(id)segmentName mode:(unsigned __int16)mode deviceRole:(unsigned __int16)role transportType:(unsigned __int16)type relayServer:(id)server relayType:(unsigned __int16)relayType accessToken:(id)self0 duplicationType:(unsigned __int8)self1 switchConfig:(id)self2 linkProbingConfig:(id *)self3 nwActivity:(id)self4 conversationTimeBase:(id)self5 isInitiator:(BOOL)self6 delegate:(id)self7;
 - (id)celltechTelemetry;
-- (id)duplicationCategoryForSegmentName:(id)a3;
+- (id)duplicationCategoryForSegmentName:(id)name;
 - (id)reportingClientExperimentSettingsDictionary;
 - (id)segmentQRReport;
 - (id)segmentReport;
-- (void)addProtocolStackDescriptionTelemetry:(id)a3;
-- (void)addQRServerTelemetryToDictionary:(id)a3;
-- (void)addSegmentWRMReportStats:(id)a3;
+- (void)addProtocolStackDescriptionTelemetry:(id)telemetry;
+- (void)addQRServerTelemetryToDictionary:(id)dictionary;
+- (void)addSegmentWRMReportStats:(id)stats;
 - (void)assertCleanCellTech;
-- (void)changeDuplicationWithType:(unsigned __int16)a3 payload:(id)a4;
+- (void)changeDuplicationWithType:(unsigned __int16)type payload:(id)payload;
 - (void)dealloc;
-- (void)merge:(id)a3;
-- (void)processSmartBrakeEvent:(id)a3;
-- (void)reportSpatialAudioSupport:(id)a3;
-- (void)reportVideoFeatureStatus:(id)a3;
+- (void)merge:(id)merge;
+- (void)processSmartBrakeEvent:(id)event;
+- (void)reportSpatialAudioSupport:(id)support;
+- (void)reportVideoFeatureStatus:(id)status;
 - (void)segmentReport;
-- (void)setNWActivityReportingEnabled:(BOOL)a3;
-- (void)updateMaxVideoStallInterval:(double)a3 withDelta:(double)a4;
+- (void)setNWActivityReportingEnabled:(BOOL)enabled;
+- (void)updateMaxVideoStallInterval:(double)interval withDelta:(double)delta;
 @end
 
 @implementation CallSegment
 
-- (CallSegment)initWithSegmentName:(id)a3 previousSegmentName:(id)a4 mode:(unsigned __int16)a5 deviceRole:(unsigned __int16)a6 transportType:(unsigned __int16)a7 relayServer:(id)a8 relayType:(unsigned __int16)a9 accessToken:(id)a10 duplicationType:(unsigned __int8)a11 switchConfig:(id)a12 linkProbingConfig:(id *)a13 nwActivity:(id)a14 conversationTimeBase:(id)a15 isInitiator:(BOOL)a16 delegate:(id)a17
+- (CallSegment)initWithSegmentName:(id)name previousSegmentName:(id)segmentName mode:(unsigned __int16)mode deviceRole:(unsigned __int16)role transportType:(unsigned __int16)type relayServer:(id)server relayType:(unsigned __int16)relayType accessToken:(id)self0 duplicationType:(unsigned __int8)self1 switchConfig:(id)self2 linkProbingConfig:(id *)self3 nwActivity:(id)self4 conversationTimeBase:(id)self5 isInitiator:(BOOL)self6 delegate:(id)self7
 {
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
+  typeCopy = type;
+  roleCopy = role;
+  modeCopy = mode;
   v28.receiver = self;
   v28.super_class = CallSegment;
   v23 = [(VCReportingCommon *)&v28 init];
   v24 = v23;
   if (v23)
   {
-    if (a3)
+    if (name)
     {
-      v23->_segmentName = [a3 copy];
-      v24->_previousSegmentName = [a4 copy];
+      v23->_segmentName = [name copy];
+      v24->_previousSegmentName = [segmentName copy];
       v24->_RTT = [[VCReportingHistogram alloc] initWithType:0 bucketValues:0];
       v24->_abnormalRTT = [[VCReportingHistogram alloc] initWithType:1 bucketValues:0];
       v24->_JBQSize = [[VCReportingHistogram alloc] initWithType:10 bucketValues:0];
@@ -101,14 +101,14 @@
       v24->_reactionActiveDuration = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
       v24->_eyeContactDuration = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
       v24->_backgroundReplacementDuration = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
-      v24->_callMode = v20;
-      v24->_callDeviceRole = v19;
-      v24->_callTransportType = v18;
-      v24->_isInitiator = a16;
+      v24->_callMode = modeCopy;
+      v24->_callDeviceRole = roleCopy;
+      v24->_callTransportType = typeCopy;
+      v24->_isInitiator = initiator;
       v24->_speechErasureTotalTime = 0.0;
-      v24->_relayServer = [a8 copy];
-      v24->_relayType = a9;
-      v24->_accessToken = [a10 copy];
+      v24->_relayServer = [server copy];
+      v24->_relayType = relayType;
+      v24->_accessToken = [token copy];
       v24->_fecStatsHolder = objc_alloc_init(VCVideoFECStatsHolder);
       v24->_lossPattern = [[VCReportingHistogram alloc] initWithType:41 bucketValues:0];
       v24->_lossHistogram = [[VCReportingHistogram2D alloc] initWithType:42 bucketValues:0];
@@ -121,15 +121,15 @@
       v24->_smartBrakeTargetBitrateAfter15 = [[VCReportingHistogram alloc] initWithType:80 bucketValues:0];
       v24->_smartBrakeTargetBitrateAfter30 = [[VCReportingHistogram alloc] initWithType:80 bucketValues:0];
       reportingGetDefaults(&v24->_interval, &v24->_frequency);
-      objc_storeWeak(&v24->_delegate, a17);
+      objc_storeWeak(&v24->_delegate, delegate);
       v24->_duration = 0;
       v24->_adjustedDuration = 0;
       v24->_minBWE = -1;
-      v24->_duplicationType = a11;
-      v24->_negotiatedSwitches = [objc_msgSend(a12 objectForKeyedSubscript:{@"NegSw", "unsignedIntValue"}];
-      if ([a12 objectForKey:@"RemSw"])
+      v24->_duplicationType = duplicationType;
+      v24->_negotiatedSwitches = [objc_msgSend(config objectForKeyedSubscript:{@"NegSw", "unsignedIntValue"}];
+      if ([config objectForKey:@"RemSw"])
       {
-        v24->_remoteSwitches = [objc_msgSend(a12 objectForKeyedSubscript:{@"RemSw", "unsignedIntValue"}];
+        v24->_remoteSwitches = [objc_msgSend(config objectForKeyedSubscript:{@"RemSw", "unsignedIntValue"}];
         v24->_remoteFaceTimeSwitchesAvailable = 1;
       }
 
@@ -138,21 +138,21 @@
       v24->_dynamicDupeLinkCount = 0;
       v24->_rttMeanTotalDelta = 0.0;
       v24->_plrTierTotalDelta = 0;
-      v25 = *&a13->var0;
-      v24->_linkProbingConfig.remoteAlertDuration = a13->var3;
+      v25 = *&probingConfig->var0;
+      v24->_linkProbingConfig.remoteAlertDuration = probingConfig->var3;
       *&v24->_linkProbingConfig.linkProbingVersion = v25;
-      v24->_nwActivity = a14;
-      if (a14)
+      v24->_nwActivity = activity;
+      if (activity)
       {
-        nw_retain(a14);
+        nw_retain(activity);
       }
 
       v24->_useNwActivitySubmitMetrics = _os_feature_enabled_impl();
       v24->_minAVSyncOffset = 0x7FFFFFFF;
       v24->_maxAVSyncOffset = 0x80000000;
-      if (a15)
+      if (base)
       {
-        v24->_conversationTimeBase = [a15 copy];
+        v24->_conversationTimeBase = [base copy];
         [objc_msgSend(MEMORY[0x277CBEAA8] "date")];
         v24->_startDate = v26;
       }
@@ -170,9 +170,9 @@
   return v24;
 }
 
-- (CallSegment)initWithDictionary:(id)a3
+- (CallSegment)initWithDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
     return 0;
   }
@@ -185,7 +185,7 @@
     return v4;
   }
 
-  v5 = [objc_msgSend(a3 objectForKeyedSubscript:{@"CONFIG", "copy"}];
+  v5 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"CONFIG", "copy"}];
   v4->_segmentName = v5;
   if (!v5)
   {
@@ -193,48 +193,48 @@
     return 0;
   }
 
-  v4->_previousSegmentName = [objc_msgSend(a3 objectForKeyedSubscript:{@"PREVCONFIG", "copy"}];
-  v4->_RTT = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 0, [a3 objectForKeyedSubscript:@"RTT"]);
-  v4->_abnormalRTT = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 1, [a3 objectForKeyedSubscript:@"ABRTT"]);
-  v4->_JBQSize = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 10, [a3 objectForKeyedSubscript:@"JBQS"]);
-  v4->_WANVJBQSize = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 44, [a3 objectForKeyedSubscript:@"WVJBQS"]);
-  v4->_JBQSizeDeltaVidLarger = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 45, [a3 objectForKeyedSubscript:@"JBQSDV"]);
-  v4->_JBQSizeDeltaAudLarger = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 45, [a3 objectForKeyedSubscript:@"JBQSDA"]);
-  v4->_JBTarget = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 12, [a3 objectForKeyedSubscript:@"JBT"]);
-  v4->_JBUnclippedTarget = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 12, [a3 objectForKeyedSubscript:@"AUJBL"]);
-  v4->_PLR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 2, [a3 objectForKeyedSubscript:@"PLR"]);
-  v4->_VPLR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 3, [a3 objectForKeyedSubscript:@"VPLR"]);
-  v4->_abnormalPLR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 4, [a3 objectForKeyedSubscript:@"ABPLR"]);
-  v4->_abnormalBPL = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 5, [a3 objectForKeyedSubscript:@"ABBPL"]);
-  v4->_latency = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 9, [a3 objectForKeyedSubscript:@"LAT"]);
-  v4->_TBR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [a3 objectForKeyedSubscript:@"TBR"]);
-  v4->_RBR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 7, [a3 objectForKeyedSubscript:@"RBR"]);
-  v4->_SBR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 8, [a3 objectForKeyedSubscript:@"SBR"]);
-  v4->_TVidMedBR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 61, [a3 objectForKeyedSubscript:@"TVMBR"]);
-  v4->_TVidCodecPayload = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 63, [a3 objectForKeyedSubscript:@"TVPAY"]);
-  v4->_framerate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 15, [a3 objectForKeyedSubscript:@"FR"]);
-  v4->_jitterErasures = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 16, [a3 objectForKeyedSubscript:@"JE"]);
-  v4->_audioErasures = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 16, [a3 objectForKeyedSubscript:@"AE"]);
-  v4->_speechErasures = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 16, [a3 objectForKeyedSubscript:@"SERCNT"]);
-  v4->_maxConsAudioErasuresHistogram = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 68, [a3 objectForKeyedSubscript:@"MCAEH"]);
-  v4->_timescaleRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 73, [a3 objectForKeyedSubscript:@"JBTS"]);
-  v4->_silenceTimescaleRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 76, [a3 objectForKeyedSubscript:@"JBSITS"]);
-  v4->_speechTimescaleRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 77, [a3 objectForKeyedSubscript:@"JBSPTS"]);
-  v4->_videoQualityScore = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 17, [a3 objectForKeyedSubscript:@"VQS"]);
-  v4->_poorConnection = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 18, [a3 objectForKeyedSubscript:@"PCON"]);
-  v4->_videoResolution = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 19, [a3 objectForKeyedSubscript:@"VRES"]);
-  v4->_videoEncodingBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 20, [a3 objectForKeyedSubscript:@"VEBR"]);
-  v4->_videoJitter = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 14, [a3 objectForKeyedSubscript:@"VJ"]);
-  v4->_REDErasureCompensationRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 22, [a3 objectForKeyedSubscript:@"REDECR"]);
-  v4->_REDReceivedCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 23, [a3 objectForKeyedSubscript:@"REDRC"]);
-  v4->_REDDiscardedCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 24, [a3 objectForKeyedSubscript:@"REDDC"]);
-  v4->_REDNumPayloadsUsed = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 27, [a3 objectForKeyedSubscript:@"REDNPU"]);
-  v4->_REDMaxDelay = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 28, [a3 objectForKeyedSubscript:@"REDMD"]);
-  v4->_videoStall = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 30, [a3 objectForKeyedSubscript:@"SVSH"]);
-  v4->_mediaStall = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 32, [a3 objectForKeyedSubscript:@"TMST"]);
-  v4->_continuousHighRTTReportCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 47, [a3 objectForKeyedSubscript:@"CHRC"]);
-  v4->_continuousHighPLRReportCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 48, [a3 objectForKeyedSubscript:@"CHPC"]);
-  v4->_continuousHighRTTPLRReportCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 49, [a3 objectForKeyedSubscript:@"CHRPC"]);
+  v4->_previousSegmentName = [objc_msgSend(dictionary objectForKeyedSubscript:{@"PREVCONFIG", "copy"}];
+  v4->_RTT = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 0, [dictionary objectForKeyedSubscript:@"RTT"]);
+  v4->_abnormalRTT = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 1, [dictionary objectForKeyedSubscript:@"ABRTT"]);
+  v4->_JBQSize = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 10, [dictionary objectForKeyedSubscript:@"JBQS"]);
+  v4->_WANVJBQSize = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 44, [dictionary objectForKeyedSubscript:@"WVJBQS"]);
+  v4->_JBQSizeDeltaVidLarger = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 45, [dictionary objectForKeyedSubscript:@"JBQSDV"]);
+  v4->_JBQSizeDeltaAudLarger = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 45, [dictionary objectForKeyedSubscript:@"JBQSDA"]);
+  v4->_JBTarget = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 12, [dictionary objectForKeyedSubscript:@"JBT"]);
+  v4->_JBUnclippedTarget = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 12, [dictionary objectForKeyedSubscript:@"AUJBL"]);
+  v4->_PLR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 2, [dictionary objectForKeyedSubscript:@"PLR"]);
+  v4->_VPLR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 3, [dictionary objectForKeyedSubscript:@"VPLR"]);
+  v4->_abnormalPLR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 4, [dictionary objectForKeyedSubscript:@"ABPLR"]);
+  v4->_abnormalBPL = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 5, [dictionary objectForKeyedSubscript:@"ABBPL"]);
+  v4->_latency = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 9, [dictionary objectForKeyedSubscript:@"LAT"]);
+  v4->_TBR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [dictionary objectForKeyedSubscript:@"TBR"]);
+  v4->_RBR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 7, [dictionary objectForKeyedSubscript:@"RBR"]);
+  v4->_SBR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 8, [dictionary objectForKeyedSubscript:@"SBR"]);
+  v4->_TVidMedBR = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 61, [dictionary objectForKeyedSubscript:@"TVMBR"]);
+  v4->_TVidCodecPayload = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 63, [dictionary objectForKeyedSubscript:@"TVPAY"]);
+  v4->_framerate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 15, [dictionary objectForKeyedSubscript:@"FR"]);
+  v4->_jitterErasures = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 16, [dictionary objectForKeyedSubscript:@"JE"]);
+  v4->_audioErasures = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 16, [dictionary objectForKeyedSubscript:@"AE"]);
+  v4->_speechErasures = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 16, [dictionary objectForKeyedSubscript:@"SERCNT"]);
+  v4->_maxConsAudioErasuresHistogram = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 68, [dictionary objectForKeyedSubscript:@"MCAEH"]);
+  v4->_timescaleRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 73, [dictionary objectForKeyedSubscript:@"JBTS"]);
+  v4->_silenceTimescaleRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 76, [dictionary objectForKeyedSubscript:@"JBSITS"]);
+  v4->_speechTimescaleRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 77, [dictionary objectForKeyedSubscript:@"JBSPTS"]);
+  v4->_videoQualityScore = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 17, [dictionary objectForKeyedSubscript:@"VQS"]);
+  v4->_poorConnection = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 18, [dictionary objectForKeyedSubscript:@"PCON"]);
+  v4->_videoResolution = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 19, [dictionary objectForKeyedSubscript:@"VRES"]);
+  v4->_videoEncodingBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 20, [dictionary objectForKeyedSubscript:@"VEBR"]);
+  v4->_videoJitter = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 14, [dictionary objectForKeyedSubscript:@"VJ"]);
+  v4->_REDErasureCompensationRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 22, [dictionary objectForKeyedSubscript:@"REDECR"]);
+  v4->_REDReceivedCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 23, [dictionary objectForKeyedSubscript:@"REDRC"]);
+  v4->_REDDiscardedCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 24, [dictionary objectForKeyedSubscript:@"REDDC"]);
+  v4->_REDNumPayloadsUsed = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 27, [dictionary objectForKeyedSubscript:@"REDNPU"]);
+  v4->_REDMaxDelay = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 28, [dictionary objectForKeyedSubscript:@"REDMD"]);
+  v4->_videoStall = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 30, [dictionary objectForKeyedSubscript:@"SVSH"]);
+  v4->_mediaStall = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 32, [dictionary objectForKeyedSubscript:@"TMST"]);
+  v4->_continuousHighRTTReportCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 47, [dictionary objectForKeyedSubscript:@"CHRC"]);
+  v4->_continuousHighPLRReportCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 48, [dictionary objectForKeyedSubscript:@"CHPC"]);
+  v4->_continuousHighRTTPLRReportCount = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 49, [dictionary objectForKeyedSubscript:@"CHRPC"]);
   v4->_pipThermalDurations = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
   v4->_studioLightDuration = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
   v4->_centerStageDuration = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
@@ -242,35 +242,35 @@
   v4->_reactionActiveDuration = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
   v4->_eyeContactDuration = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
   v4->_backgroundReplacementDuration = [(VCReportingHistogram *)[VCDurationHistogram alloc] initWithType:88 bucketValues:0];
-  v4->_nacksRTXResponseTime = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 50, [a3 objectForKeyedSubscript:@"NACKAVGRSPT"]);
-  v4->_nacksRTXLateTime = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 50, [a3 objectForKeyedSubscript:@"NACKAVGLATET"]);
-  v4->_nacksRTXMediaBitRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 51, [a3 objectForKeyedSubscript:@"NACKMBR"]);
-  v4->_nacksRTXRetransmittedMediaBitRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 51, [a3 objectForKeyedSubscript:@"NACKRTXMBR"]);
-  v4->_nacksPLRWithRTX = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 3, [a3 objectForKeyedSubscript:@"NACKPLRWRTX"]);
-  v4->_nacksPLRWithoutRTX = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 3, [a3 objectForKeyedSubscript:@"NACKPLRWORTX"]);
-  v4->super._retransmissionResponseTime = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 50, [a3 objectForKeyedSubscript:@"ULNACKAVGRESP"]);
-  v4->super._retransmissionLateTime = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 50, [a3 objectForKeyedSubscript:@"ULNACKAVGLATE"]);
-  v4->super._retransmissionActualMediaBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 51, [a3 objectForKeyedSubscript:@"ULNACKMBR"]);
-  v4->super._retransmissionBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 51, [a3 objectForKeyedSubscript:@"ULNACKRBR"]);
-  v4->_evictedFramesLatePacketDelayHist = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 79, [a3 objectForKeyedSubscript:@"VPBEVLPDHIST"]);
-  v4->_audioCodecPayload = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 66, [a3 objectForKeyedSubscript:@"TAPAY"]);
-  v4->_audioFrameBundling = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 67, [a3 objectForKeyedSubscript:@"AATBH"]);
-  v4->_audioMediaBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 64, [a3 objectForKeyedSubscript:@"TAMBR"]);
-  v4->_redPayloadBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 64, [a3 objectForKeyedSubscript:@"TRPBR"]);
-  v4->_smartBrakeDuration = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 1, [a3 objectForKeyedSubscript:@"SBCGSTDRTN"]);
-  v4->_smartBrakeTargetBitrateStart = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [a3 objectForKeyedSubscript:@"SBTTXRS"]);
-  v4->_smartBrakeBandwidthStart = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [a3 objectForKeyedSubscript:@"SBBWES"]);
-  v4->_smartBrakeBandwidthEnd = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [a3 objectForKeyedSubscript:@"SBBWEE"]);
-  v4->_smartBrakeTargetBitrateAfter5 = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [a3 objectForKeyedSubscript:@"SBTTXR5"]);
-  v4->_smartBrakeTargetBitrateAfter15 = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [a3 objectForKeyedSubscript:@"SBTTXR15"]);
-  v4->_smartBrakeTargetBitrateAfter30 = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [a3 objectForKeyedSubscript:@"SBTTXR30"]);
-  v4->_callMode = [objc_msgSend(a3 objectForKeyedSubscript:{@"MODE", "intValue"}];
-  v4->_callDeviceRole = [objc_msgSend(a3 objectForKeyedSubscript:{@"DEVROLE", "intValue"}];
-  v4->_callTransportType = [objc_msgSend(a3 objectForKeyedSubscript:{@"TT", "intValue"}];
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"TSERT", "floatValue"}];
+  v4->_nacksRTXResponseTime = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 50, [dictionary objectForKeyedSubscript:@"NACKAVGRSPT"]);
+  v4->_nacksRTXLateTime = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 50, [dictionary objectForKeyedSubscript:@"NACKAVGLATET"]);
+  v4->_nacksRTXMediaBitRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 51, [dictionary objectForKeyedSubscript:@"NACKMBR"]);
+  v4->_nacksRTXRetransmittedMediaBitRate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 51, [dictionary objectForKeyedSubscript:@"NACKRTXMBR"]);
+  v4->_nacksPLRWithRTX = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 3, [dictionary objectForKeyedSubscript:@"NACKPLRWRTX"]);
+  v4->_nacksPLRWithoutRTX = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 3, [dictionary objectForKeyedSubscript:@"NACKPLRWORTX"]);
+  v4->super._retransmissionResponseTime = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 50, [dictionary objectForKeyedSubscript:@"ULNACKAVGRESP"]);
+  v4->super._retransmissionLateTime = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 50, [dictionary objectForKeyedSubscript:@"ULNACKAVGLATE"]);
+  v4->super._retransmissionActualMediaBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 51, [dictionary objectForKeyedSubscript:@"ULNACKMBR"]);
+  v4->super._retransmissionBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 51, [dictionary objectForKeyedSubscript:@"ULNACKRBR"]);
+  v4->_evictedFramesLatePacketDelayHist = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 79, [dictionary objectForKeyedSubscript:@"VPBEVLPDHIST"]);
+  v4->_audioCodecPayload = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 66, [dictionary objectForKeyedSubscript:@"TAPAY"]);
+  v4->_audioFrameBundling = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 67, [dictionary objectForKeyedSubscript:@"AATBH"]);
+  v4->_audioMediaBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 64, [dictionary objectForKeyedSubscript:@"TAMBR"]);
+  v4->_redPayloadBitrate = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 64, [dictionary objectForKeyedSubscript:@"TRPBR"]);
+  v4->_smartBrakeDuration = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 1, [dictionary objectForKeyedSubscript:@"SBCGSTDRTN"]);
+  v4->_smartBrakeTargetBitrateStart = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [dictionary objectForKeyedSubscript:@"SBTTXRS"]);
+  v4->_smartBrakeBandwidthStart = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [dictionary objectForKeyedSubscript:@"SBBWES"]);
+  v4->_smartBrakeBandwidthEnd = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [dictionary objectForKeyedSubscript:@"SBBWEE"]);
+  v4->_smartBrakeTargetBitrateAfter5 = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [dictionary objectForKeyedSubscript:@"SBTTXR5"]);
+  v4->_smartBrakeTargetBitrateAfter15 = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [dictionary objectForKeyedSubscript:@"SBTTXR15"]);
+  v4->_smartBrakeTargetBitrateAfter30 = -[VCReportingHistogram initWithType:bucketValues:]([VCReportingHistogram alloc], "initWithType:bucketValues:", 6, [dictionary objectForKeyedSubscript:@"SBTTXR30"]);
+  v4->_callMode = [objc_msgSend(dictionary objectForKeyedSubscript:{@"MODE", "intValue"}];
+  v4->_callDeviceRole = [objc_msgSend(dictionary objectForKeyedSubscript:{@"DEVROLE", "intValue"}];
+  v4->_callTransportType = [objc_msgSend(dictionary objectForKeyedSubscript:{@"TT", "intValue"}];
+  [objc_msgSend(dictionary objectForKeyedSubscript:{@"TSERT", "floatValue"}];
   v4->_speechErasureTotalTime = v6;
   reportingGetDefaults(&v4->_interval, &v4->_frequency);
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{@"DRTN", "intValue"}];
+  v7 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"DRTN", "intValue"}];
   v8 = v7 / [(CallSegment *)v4 RTPeriod];
   v4->_duration = v8;
   v9 = v8 - 1;
@@ -280,29 +280,29 @@
   }
 
   v4->_adjustedDuration = v9;
-  v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"TVSP", "intValue"}] / 10000.0 * v4->_adjustedDuration;
+  v10 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"TVSP", "intValue"}] / 10000.0 * v4->_adjustedDuration;
   v4->_totalVideoStallTime = v10 * [(CallSegment *)v4 RTPeriod];
-  v4->_maxVideoStallInterval = [objc_msgSend(a3 objectForKeyedSubscript:{@"MVSI", "intValue"}] / 100.0;
-  v11 = [objc_msgSend(a3 objectForKeyedSubscript:{@"TASP", "intValue"}] / 10000.0 * v4->_adjustedDuration;
+  v4->_maxVideoStallInterval = [objc_msgSend(dictionary objectForKeyedSubscript:{@"MVSI", "intValue"}] / 100.0;
+  v11 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"TASP", "intValue"}] / 10000.0 * v4->_adjustedDuration;
   v4->_totalAudioStallTime = v11 * [(CallSegment *)v4 RTPeriod];
-  v4->_maxAudioStallInterval = [objc_msgSend(a3 objectForKeyedSubscript:{@"MASI", "intValue"}] / 100.0;
-  v4->_maxNoRemotePacketsInterval = [objc_msgSend(a3 objectForKeyedSubscript:{@"MNRPI", "intValue"}] / 100.0;
-  v12 = [objc_msgSend(a3 objectForKeyedSubscript:{@"TNRPP", "intValue"}] / 10000.0 * v4->_adjustedDuration;
+  v4->_maxAudioStallInterval = [objc_msgSend(dictionary objectForKeyedSubscript:{@"MASI", "intValue"}] / 100.0;
+  v4->_maxNoRemotePacketsInterval = [objc_msgSend(dictionary objectForKeyedSubscript:{@"MNRPI", "intValue"}] / 100.0;
+  v12 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"TNRPP", "intValue"}] / 10000.0 * v4->_adjustedDuration;
   v4->_totalNoRemotePacketsTime = v12 * [(CallSegment *)v4 RTPeriod];
-  v13 = [objc_msgSend(a3 objectForKeyedSubscript:{@"BBQTL", "intValue"}] / 10000.0 * v4->_adjustedDuration;
+  v13 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"BBQTL", "intValue"}] / 10000.0 * v4->_adjustedDuration;
   v4->_BBQueueTooLargeCount = (v13 * [(CallSegment *)v4 RTPeriod]);
-  v14 = [objc_msgSend(a3 objectForKeyedSubscript:{@"BBRTL", "intValue"}] / 10000.0 * v4->_adjustedDuration;
+  v14 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"BBRTL", "intValue"}] / 10000.0 * v4->_adjustedDuration;
   v4->_BBRateTooLowCount = (v14 * [(CallSegment *)v4 RTPeriod]);
   v4->_audioSentPacketCount = 10000 * v4->_adjustedDuration;
-  v15 = [objc_msgSend(a3 objectForKeyedSubscript:{@"AFP", "intValue"}];
+  v15 = [objc_msgSend(dictionary objectForKeyedSubscript:{@"AFP", "intValue"}];
   adjustedDuration = v4->_adjustedDuration;
   v4->_audioFlushPacketCount = (v15 * adjustedDuration);
   v4->_videoSentPacketCount = 10000 * adjustedDuration;
-  v4->_videoFlushPacketCount = ([objc_msgSend(a3 objectForKeyedSubscript:{@"VFP", "intValue"}] * v4->_adjustedDuration);
-  v4->_averageBWE = [objc_msgSend(a3 objectForKeyedSubscript:{@"SABWE", "intValue"}] * v4->_adjustedDuration;
-  v4->_maxBWE = [objc_msgSend(a3 objectForKeyedSubscript:{@"SMAXBWE", "intValue"}];
-  v4->_minBWE = [objc_msgSend(a3 objectForKeyedSubscript:{@"SMINBWE", "intValue"}];
-  v4->_averageRTT = [objc_msgSend(a3 objectForKeyedSubscript:{@"SARTT", "intValue"}] / 100.0 * v4->_adjustedDuration;
+  v4->_videoFlushPacketCount = ([objc_msgSend(dictionary objectForKeyedSubscript:{@"VFP", "intValue"}] * v4->_adjustedDuration);
+  v4->_averageBWE = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SABWE", "intValue"}] * v4->_adjustedDuration;
+  v4->_maxBWE = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SMAXBWE", "intValue"}];
+  v4->_minBWE = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SMINBWE", "intValue"}];
+  v4->_averageRTT = [objc_msgSend(dictionary objectForKeyedSubscript:{@"SARTT", "intValue"}] / 100.0 * v4->_adjustedDuration;
   return v4;
 }
 
@@ -322,127 +322,127 @@
   [(VCReportingCommon *)&v4 dealloc];
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
-  -[VCHistogram merge:](self->_RTT, "merge:", [a3 RTT]);
-  -[VCHistogram merge:](self->_abnormalRTT, "merge:", [a3 abnormalRTT]);
-  -[VCHistogram merge:](self->_JBQSize, "merge:", [a3 JBQSize]);
-  -[VCHistogram merge:](self->_WANVJBQSize, "merge:", [a3 WANVJBQSize]);
-  -[VCHistogram merge:](self->_JBQSizeDeltaVidLarger, "merge:", [a3 JBQSizeDeltaVidLarger]);
-  -[VCHistogram merge:](self->_JBQSizeDeltaAudLarger, "merge:", [a3 JBQSizeDeltaAudLarger]);
-  -[VCHistogram merge:](self->_JBTarget, "merge:", [a3 JBTarget]);
-  -[VCHistogram merge:](self->_JBUnclippedTarget, "merge:", [a3 JBUnclippedTarget]);
-  -[VCHistogram merge:](self->_PLR, "merge:", [a3 PLR]);
-  -[VCHistogram merge:](self->_VPLR, "merge:", [a3 VPLR]);
-  -[VCHistogram merge:](self->_abnormalPLR, "merge:", [a3 abnormalPLR]);
-  -[VCHistogram merge:](self->_abnormalBPL, "merge:", [a3 abnormalBPL]);
-  -[VCHistogram merge:](self->_latency, "merge:", [a3 latency]);
-  -[VCHistogram merge:](self->_TBR, "merge:", [a3 TBR]);
-  -[VCHistogram merge:](self->_RBR, "merge:", [a3 RBR]);
-  -[VCHistogram merge:](self->_SBR, "merge:", [a3 SBR]);
-  -[VCHistogram merge:](self->_TVidMedBR, "merge:", [a3 TVidMedBR]);
-  -[VCHistogram merge:](self->_TVidCodecPayload, "merge:", [a3 TVidCodecPayload]);
-  -[VCHistogram merge:](self->_evictedFramesLatePacketDelayHist, "merge:", [a3 evictedFramesLatePacketDelayHist]);
-  -[VCHistogram merge:](self->_framerate, "merge:", [a3 framerate]);
-  -[VCHistogram merge:](self->_jitterErasures, "merge:", [a3 jitterErasures]);
-  -[VCHistogram merge:](self->_audioErasures, "merge:", [a3 audioErasures]);
-  -[VCHistogram merge:](self->_speechErasures, "merge:", [a3 speechErasures]);
-  -[VCHistogram merge:](self->_maxConsAudioErasuresHistogram, "merge:", [a3 maxConsAudioErasuresHistogram]);
-  -[VCHistogram merge:](self->_videoQualityScore, "merge:", [a3 videoQualityScore]);
-  -[VCHistogram merge:](self->_poorConnection, "merge:", [a3 poorConnection]);
-  -[VCHistogram merge:](self->_videoResolution, "merge:", [a3 videoResolution]);
-  -[VCHistogram merge:](self->_videoEncodingBitrate, "merge:", [a3 videoEncodingBitrate]);
-  -[VCHistogram merge:](self->_videoJitter, "merge:", [a3 videoJitter]);
-  -[VCHistogram merge:](self->_REDErasureCompensationRate, "merge:", [a3 REDErasureCompensationRate]);
-  -[VCHistogram merge:](self->_REDReceivedCount, "merge:", [a3 REDReceivedCount]);
-  -[VCHistogram merge:](self->_REDDiscardedCount, "merge:", [a3 REDDiscardedCount]);
-  -[VCHistogram merge:](self->_REDNumPayloadsUsed, "merge:", [a3 REDNumPayloadsUsed]);
-  -[VCHistogram merge:](self->_REDMaxDelay, "merge:", [a3 REDMaxDelay]);
-  -[VCHistogram merge:](self->_videoStall, "merge:", [a3 videoStall]);
-  -[VCHistogram merge:](self->_mediaStall, "merge:", [a3 mediaStall]);
-  -[VCHistogram merge:](self->_audioCodecPayload, "merge:", [a3 audioCodecPayload]);
-  -[VCHistogram merge:](self->_audioFrameBundling, "merge:", [a3 audioFrameBundling]);
-  -[VCHistogram merge:](self->_audioMediaBitrate, "merge:", [a3 audioMediaBitrate]);
-  -[VCHistogram merge:](self->_redPayloadBitrate, "merge:", [a3 redPayloadBitrate]);
-  -[VCHistogram merge:](self->_timescaleRate, "merge:", [a3 timescaleRate]);
-  -[VCHistogram merge:](self->_silenceTimescaleRate, "merge:", [a3 silenceTimescaleRate]);
-  -[VCHistogram merge:](self->_speechTimescaleRate, "merge:", [a3 speechTimescaleRate]);
-  -[VCHistogram merge:](self->_pipThermalDurations, "merge:", [a3 pipThermalDurations]);
-  [a3 speechErasureTotalTime];
+  -[VCHistogram merge:](self->_RTT, "merge:", [merge RTT]);
+  -[VCHistogram merge:](self->_abnormalRTT, "merge:", [merge abnormalRTT]);
+  -[VCHistogram merge:](self->_JBQSize, "merge:", [merge JBQSize]);
+  -[VCHistogram merge:](self->_WANVJBQSize, "merge:", [merge WANVJBQSize]);
+  -[VCHistogram merge:](self->_JBQSizeDeltaVidLarger, "merge:", [merge JBQSizeDeltaVidLarger]);
+  -[VCHistogram merge:](self->_JBQSizeDeltaAudLarger, "merge:", [merge JBQSizeDeltaAudLarger]);
+  -[VCHistogram merge:](self->_JBTarget, "merge:", [merge JBTarget]);
+  -[VCHistogram merge:](self->_JBUnclippedTarget, "merge:", [merge JBUnclippedTarget]);
+  -[VCHistogram merge:](self->_PLR, "merge:", [merge PLR]);
+  -[VCHistogram merge:](self->_VPLR, "merge:", [merge VPLR]);
+  -[VCHistogram merge:](self->_abnormalPLR, "merge:", [merge abnormalPLR]);
+  -[VCHistogram merge:](self->_abnormalBPL, "merge:", [merge abnormalBPL]);
+  -[VCHistogram merge:](self->_latency, "merge:", [merge latency]);
+  -[VCHistogram merge:](self->_TBR, "merge:", [merge TBR]);
+  -[VCHistogram merge:](self->_RBR, "merge:", [merge RBR]);
+  -[VCHistogram merge:](self->_SBR, "merge:", [merge SBR]);
+  -[VCHistogram merge:](self->_TVidMedBR, "merge:", [merge TVidMedBR]);
+  -[VCHistogram merge:](self->_TVidCodecPayload, "merge:", [merge TVidCodecPayload]);
+  -[VCHistogram merge:](self->_evictedFramesLatePacketDelayHist, "merge:", [merge evictedFramesLatePacketDelayHist]);
+  -[VCHistogram merge:](self->_framerate, "merge:", [merge framerate]);
+  -[VCHistogram merge:](self->_jitterErasures, "merge:", [merge jitterErasures]);
+  -[VCHistogram merge:](self->_audioErasures, "merge:", [merge audioErasures]);
+  -[VCHistogram merge:](self->_speechErasures, "merge:", [merge speechErasures]);
+  -[VCHistogram merge:](self->_maxConsAudioErasuresHistogram, "merge:", [merge maxConsAudioErasuresHistogram]);
+  -[VCHistogram merge:](self->_videoQualityScore, "merge:", [merge videoQualityScore]);
+  -[VCHistogram merge:](self->_poorConnection, "merge:", [merge poorConnection]);
+  -[VCHistogram merge:](self->_videoResolution, "merge:", [merge videoResolution]);
+  -[VCHistogram merge:](self->_videoEncodingBitrate, "merge:", [merge videoEncodingBitrate]);
+  -[VCHistogram merge:](self->_videoJitter, "merge:", [merge videoJitter]);
+  -[VCHistogram merge:](self->_REDErasureCompensationRate, "merge:", [merge REDErasureCompensationRate]);
+  -[VCHistogram merge:](self->_REDReceivedCount, "merge:", [merge REDReceivedCount]);
+  -[VCHistogram merge:](self->_REDDiscardedCount, "merge:", [merge REDDiscardedCount]);
+  -[VCHistogram merge:](self->_REDNumPayloadsUsed, "merge:", [merge REDNumPayloadsUsed]);
+  -[VCHistogram merge:](self->_REDMaxDelay, "merge:", [merge REDMaxDelay]);
+  -[VCHistogram merge:](self->_videoStall, "merge:", [merge videoStall]);
+  -[VCHistogram merge:](self->_mediaStall, "merge:", [merge mediaStall]);
+  -[VCHistogram merge:](self->_audioCodecPayload, "merge:", [merge audioCodecPayload]);
+  -[VCHistogram merge:](self->_audioFrameBundling, "merge:", [merge audioFrameBundling]);
+  -[VCHistogram merge:](self->_audioMediaBitrate, "merge:", [merge audioMediaBitrate]);
+  -[VCHistogram merge:](self->_redPayloadBitrate, "merge:", [merge redPayloadBitrate]);
+  -[VCHistogram merge:](self->_timescaleRate, "merge:", [merge timescaleRate]);
+  -[VCHistogram merge:](self->_silenceTimescaleRate, "merge:", [merge silenceTimescaleRate]);
+  -[VCHistogram merge:](self->_speechTimescaleRate, "merge:", [merge speechTimescaleRate]);
+  -[VCHistogram merge:](self->_pipThermalDurations, "merge:", [merge pipThermalDurations]);
+  [merge speechErasureTotalTime];
   self->_speechErasureTotalTime = v5 + self->_speechErasureTotalTime;
-  [a3 totalMediaStallTime];
+  [merge totalMediaStallTime];
   self->_totalMediaStallTime = v6 + self->_totalMediaStallTime;
   maxMediaStallTime = self->_maxMediaStallTime;
-  [a3 maxMediaStallTime];
+  [merge maxMediaStallTime];
   if (maxMediaStallTime >= v8)
   {
     v8 = maxMediaStallTime;
   }
 
   self->_maxMediaStallTime = v8;
-  self->_mediaStallCount += [a3 mediaStallCount];
-  [a3 totalVideoStallTime];
+  self->_mediaStallCount += [merge mediaStallCount];
+  [merge totalVideoStallTime];
   self->_totalVideoStallTime = v9 + self->_totalVideoStallTime;
   maxVideoStallInterval = self->_maxVideoStallInterval;
-  [a3 maxVideoStallInterval];
+  [merge maxVideoStallInterval];
   if (maxVideoStallInterval >= v11)
   {
     v11 = maxVideoStallInterval;
   }
 
   self->_maxVideoStallInterval = v11;
-  [a3 totalAudioStallTime];
+  [merge totalAudioStallTime];
   self->_totalAudioStallTime = v12 + self->_totalAudioStallTime;
   maxAudioStallInterval = self->_maxAudioStallInterval;
-  [a3 maxAudioStallInterval];
+  [merge maxAudioStallInterval];
   if (maxAudioStallInterval >= v14)
   {
     v14 = maxAudioStallInterval;
   }
 
   self->_maxAudioStallInterval = v14;
-  [a3 totalNoRemotePacketsTime];
+  [merge totalNoRemotePacketsTime];
   self->_totalNoRemotePacketsTime = v15 + self->_totalNoRemotePacketsTime;
   maxNoRemotePacketsInterval = self->_maxNoRemotePacketsInterval;
-  [a3 maxNoRemotePacketsInterval];
+  [merge maxNoRemotePacketsInterval];
   if (maxNoRemotePacketsInterval >= v17)
   {
     v17 = maxNoRemotePacketsInterval;
   }
 
   self->_maxNoRemotePacketsInterval = v17;
-  self->_BBQueueTooLargeCount += [a3 BBQueueTooLargeCount];
-  self->_BBRateTooLowCount += [a3 BBRateTooLowCount];
-  self->_audioFlushPacketCount += [a3 audioFlushPacketCount];
-  self->_audioSentPacketCount += [a3 audioSentPacketCount];
-  self->_videoFlushPacketCount += [a3 videoFlushPacketCount];
-  self->_videoSentPacketCount += [a3 videoSentPacketCount];
-  self->_duration += [a3 duration];
-  self->_adjustedDuration += [a3 adjustedDuration];
-  [a3 poorConnectionTotalLength];
+  self->_BBQueueTooLargeCount += [merge BBQueueTooLargeCount];
+  self->_BBRateTooLowCount += [merge BBRateTooLowCount];
+  self->_audioFlushPacketCount += [merge audioFlushPacketCount];
+  self->_audioSentPacketCount += [merge audioSentPacketCount];
+  self->_videoFlushPacketCount += [merge videoFlushPacketCount];
+  self->_videoSentPacketCount += [merge videoSentPacketCount];
+  self->_duration += [merge duration];
+  self->_adjustedDuration += [merge adjustedDuration];
+  [merge poorConnectionTotalLength];
   self->_poorConnectionTotalLength = v18 + self->_poorConnectionTotalLength;
   poorConnectionMaxLength = self->_poorConnectionMaxLength;
-  [a3 poorConnectionMaxLength];
+  [merge poorConnectionMaxLength];
   if (poorConnectionMaxLength >= v20)
   {
     v20 = poorConnectionMaxLength;
   }
 
   self->_poorConnectionMaxLength = v20;
-  self->_poorConnectionFrequency += [a3 poorConnectionFrequency];
-  [a3 averageTargetBitrate];
+  self->_poorConnectionFrequency += [merge poorConnectionFrequency];
+  [merge averageTargetBitrate];
   self->_averageTargetBitrate = v21 + self->_averageTargetBitrate;
-  [a3 averageJitterErasuresRate];
+  [merge averageJitterErasuresRate];
   self->_averageJitterErasuresRate = v22 + self->_averageJitterErasuresRate;
-  [a3 averageAudioErasuresRate];
+  [merge averageAudioErasuresRate];
   self->_averageAudioErasuresRate = v23 + self->_averageAudioErasuresRate;
-  [a3 averageSpeechErasuresRate];
+  [merge averageSpeechErasuresRate];
   self->_averageSpeechErasuresRate = v24 + self->_averageSpeechErasuresRate;
   maxConsecutiveAudioErasures = self->_maxConsecutiveAudioErasures;
-  v26 = [a3 maxConsecutiveAudioErasures];
-  if (maxConsecutiveAudioErasures <= v26)
+  maxConsecutiveAudioErasures = [merge maxConsecutiveAudioErasures];
+  if (maxConsecutiveAudioErasures <= maxConsecutiveAudioErasures)
   {
-    v27 = v26;
+    v27 = maxConsecutiveAudioErasures;
   }
 
   else
@@ -451,13 +451,13 @@
   }
 
   self->_maxConsecutiveAudioErasures = v27;
-  [a3 averageBWE];
+  [merge averageBWE];
   self->_averageBWE = v28 + self->_averageBWE;
   maxBWE = self->_maxBWE;
-  v30 = [a3 maxBWE];
-  if (maxBWE <= v30)
+  maxBWE = [merge maxBWE];
+  if (maxBWE <= maxBWE)
   {
-    v31 = v30;
+    v31 = maxBWE;
   }
 
   else
@@ -467,10 +467,10 @@
 
   self->_maxBWE = v31;
   minBWE = self->_minBWE;
-  v33 = [a3 minBWE];
-  if (minBWE >= v33)
+  minBWE = [merge minBWE];
+  if (minBWE >= minBWE)
   {
-    v34 = v33;
+    v34 = minBWE;
   }
 
   else
@@ -479,39 +479,39 @@
   }
 
   self->_minBWE = v34;
-  self->_totalSuddenBandwidthDropCount += [a3 totalSuddenBandwidthDropCount];
-  self->_totalMBLRampDownCount += [a3 totalMBLRampDownCount];
-  [a3 averageRTT];
+  self->_totalSuddenBandwidthDropCount += [merge totalSuddenBandwidthDropCount];
+  self->_totalMBLRampDownCount += [merge totalMBLRampDownCount];
+  [merge averageRTT];
   self->_averageRTT = v35 + self->_averageRTT;
-  self->_overshootSendBitrate += [a3 overshootSendBitrate];
-  self->_undershootSendBitrate += [a3 undershootSendBitrate];
-  self->_overUtilizedBandwidth += [a3 overUtilizedBandwidth];
-  self->_underUtilizedBandwidth += [a3 underUtilizedBandwidth];
-  [a3 evictedFramesAverageLatePacketDelay];
+  self->_overshootSendBitrate += [merge overshootSendBitrate];
+  self->_undershootSendBitrate += [merge undershootSendBitrate];
+  self->_overUtilizedBandwidth += [merge overUtilizedBandwidth];
+  self->_underUtilizedBandwidth += [merge underUtilizedBandwidth];
+  [merge evictedFramesAverageLatePacketDelay];
   self->_evictedFramesAverageLatePacketDelay = v36 + self->_evictedFramesAverageLatePacketDelay;
   evictedFramesMaxLatePacketDelay = self->_evictedFramesMaxLatePacketDelay;
-  [a3 evictedFramesMaxLatePacketDelay];
+  [merge evictedFramesMaxLatePacketDelay];
   if (evictedFramesMaxLatePacketDelay >= v38)
   {
     v38 = evictedFramesMaxLatePacketDelay;
   }
 
   self->_evictedFramesMaxLatePacketDelay = v38;
-  self->_ecnEnabledCount += [a3 ecnEnabledCount];
+  self->_ecnEnabledCount += [merge ecnEnabledCount];
   fecStatsHolder = self->_fecStatsHolder;
-  v40 = [a3 fecStatsHolder];
+  fecStatsHolder = [merge fecStatsHolder];
 
-  [(VCVideoFECStatsHolder *)fecStatsHolder merge:v40];
+  [(VCVideoFECStatsHolder *)fecStatsHolder merge:fecStatsHolder];
 }
 
 - (void)assertCleanCellTech
 {
   if (!self->_isLocalCelltechDirty)
   {
-    v3 = [(NSNumber *)self->_localCelltech intValue];
-    if ((v3 - 8) >= 2)
+    intValue = [(NSNumber *)self->_localCelltech intValue];
+    if ((intValue - 8) >= 2)
     {
-      if (v3 != 5)
+      if (intValue != 5)
       {
         return;
       }
@@ -528,13 +528,13 @@
   }
 }
 
-- (void)addQRServerTelemetryToDictionary:(id)a3
+- (void)addQRServerTelemetryToDictionary:(id)dictionary
 {
   qrExperiments = self->_qrExperiments;
   if (qrExperiments)
   {
 
-    [a3 addEntriesFromDictionary:qrExperiments];
+    [dictionary addEntriesFromDictionary:qrExperiments];
   }
 
   else
@@ -592,18 +592,18 @@
   return v4;
 }
 
-- (void)addProtocolStackDescriptionTelemetry:(id)a3
+- (void)addProtocolStackDescriptionTelemetry:(id)telemetry
 {
   relayProtocolStack = self->_relayProtocolStack;
   if (relayProtocolStack)
   {
-    [a3 setObject:relayProtocolStack forKeyedSubscript:@"RPS"];
+    [telemetry setObject:relayProtocolStack forKeyedSubscript:@"RPS"];
   }
 
   if (self->_channelProtocolStack)
   {
 
-    [a3 setObject:? forKeyedSubscript:?];
+    [telemetry setObject:? forKeyedSubscript:?];
   }
 }
 
@@ -621,24 +621,24 @@
   return result;
 }
 
-- (void)reportVideoFeatureStatus:(id)a3
+- (void)reportVideoFeatureStatus:(id)status
 {
-  [VCAggregator addVideoFeatureStatus:self->_centerStageStatus histogramKey:@"CSDUR" histogram:self->_centerStageDuration statusKey:@"CSFENB" report:a3];
-  [VCAggregator addVideoFeatureStatus:self->_portraitModeStatus histogramKey:@"PMDUR" histogram:self->_portraitModeDuration statusKey:@"PMFENB" report:a3];
-  [VCAggregator addVideoFeatureStatus:self->_studioLightStatus histogramKey:@"SLDUR" histogram:self->_studioLightDuration statusKey:@"SLFENB" report:a3];
-  [VCAggregator addVideoFeatureStatus:self->_reactionsStatus histogramKey:@"REACDUR" histogram:self->_reactionActiveDuration statusKey:@"REFENB" report:a3];
-  [VCAggregator addVideoFeatureStatus:self->_eyeContactStatus histogramKey:@"ECDUR" histogram:self->_eyeContactDuration statusKey:@"ECFENB" report:a3];
+  [VCAggregator addVideoFeatureStatus:self->_centerStageStatus histogramKey:@"CSDUR" histogram:self->_centerStageDuration statusKey:@"CSFENB" report:status];
+  [VCAggregator addVideoFeatureStatus:self->_portraitModeStatus histogramKey:@"PMDUR" histogram:self->_portraitModeDuration statusKey:@"PMFENB" report:status];
+  [VCAggregator addVideoFeatureStatus:self->_studioLightStatus histogramKey:@"SLDUR" histogram:self->_studioLightDuration statusKey:@"SLFENB" report:status];
+  [VCAggregator addVideoFeatureStatus:self->_reactionsStatus histogramKey:@"REACDUR" histogram:self->_reactionActiveDuration statusKey:@"REFENB" report:status];
+  [VCAggregator addVideoFeatureStatus:self->_eyeContactStatus histogramKey:@"ECDUR" histogram:self->_eyeContactDuration statusKey:@"ECFENB" report:status];
   backgroundReplacementStatus = self->_backgroundReplacementStatus;
   backgroundReplacementDuration = self->_backgroundReplacementDuration;
 
-  [VCAggregator addVideoFeatureStatus:backgroundReplacementStatus histogramKey:@"BGRDUR" histogram:backgroundReplacementDuration statusKey:@"BGRFENB" report:a3];
+  [VCAggregator addVideoFeatureStatus:backgroundReplacementStatus histogramKey:@"BGRDUR" histogram:backgroundReplacementDuration statusKey:@"BGRFENB" report:status];
 }
 
-- (void)reportSpatialAudioSupport:(id)a3
+- (void)reportSpatialAudioSupport:(id)support
 {
   v4 = [MEMORY[0x277CCABA8] numberWithChar:self->_spatialAudioSupported];
 
-  [a3 setObject:v4 forKeyedSubscript:@"SAFSUP"];
+  [support setObject:v4 forKeyedSubscript:@"SAFSUP"];
 }
 
 - (id)segmentReport
@@ -650,13 +650,13 @@
     {
       nw_activity_complete_with_reason();
       nw_release(self->_nwActivity);
-      v3 = 0;
+      dispatchedAggregatedReportCommon = 0;
       self->_nwActivity = 0;
     }
 
     else
     {
-      v3 = 0;
+      dispatchedAggregatedReportCommon = 0;
     }
 
     goto LABEL_200;
@@ -809,7 +809,7 @@
     v161 = 0;
   }
 
-  v37 = [(VCAdaptiveLearningDelegate *)self->_delegate initialSettledBitrate];
+  initialSettledBitrate = [(VCAdaptiveLearningDelegate *)self->_delegate initialSettledBitrate];
   v38 = [(NSString *)self->_segmentName substringToIndex:3];
   v160 = [(VCAdaptiveLearningDelegate *)self->_delegate previousISBRForSegment:v38];
   if ([(VCAdaptiveLearningDelegate *)self->_delegate adaptiveLearningState])
@@ -867,7 +867,7 @@
         }
       }
 
-      [(VCAdaptiveLearningDelegate *)self->_delegate updateSegment:v38 TBR:v162 ISBTR:v37 SATXBR:v163 SARBR:HIDWORD(v162) BWE:v161];
+      [(VCAdaptiveLearningDelegate *)self->_delegate updateSegment:v38 TBR:v162 ISBTR:initialSettledBitrate SATXBR:v163 SARBR:HIDWORD(v162) BWE:v161];
     }
   }
 
@@ -1075,7 +1075,7 @@ LABEL_63:
   v70 = [(CallSegment *)self RTPeriod]* v62;
   v168.receiver = self;
   v168.super_class = CallSegment;
-  v3 = [(VCReportingCommon *)&v168 dispatchedAggregatedReportCommon];
+  dispatchedAggregatedReportCommon = [(VCReportingCommon *)&v168 dispatchedAggregatedReportCommon];
   v71 = self->_segmentName;
   if (!v71)
   {
@@ -1481,20 +1481,20 @@ LABEL_63:
   v191[130] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:v93];
   v190[131] = @"DIAFELD";
   v191[131] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:self->_reportingClientExperimentSettings.detectInactiveAudioFramesAACELD];
-  [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v191, v190, 132)}];
+  [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v191, v190, 132)}];
   if (self->_remoteFaceTimeSwitchesAvailable)
   {
     v188 = @"REMSW";
     v189 = [MEMORY[0x277CCABA8] numberWithUnsignedInt:self->_remoteSwitches];
-    [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v189, &v188, 1)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v189, &v188, 1)}];
   }
 
   if ([(VCDurationHistogram *)self->_pipThermalDurations totalDuration])
   {
-    [v3 setObject:-[VCHistogram description](self->_pipThermalDurations forKeyedSubscript:{"description"), @"PIPDUR"}];
+    [dispatchedAggregatedReportCommon setObject:-[VCHistogram description](self->_pipThermalDurations forKeyedSubscript:{"description"), @"PIPDUR"}];
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithBool:", -[CallSegment isApplePersonalHotspot](self, "isApplePersonalHotspot")), @"PHS"}];
+  [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithBool:", -[CallSegment isApplePersonalHotspot](self, "isApplePersonalHotspot")), @"PHS"}];
   if (self->_linkPreferSuggestion != 255)
   {
     v186[0] = @"LNKSUG";
@@ -1503,14 +1503,14 @@ LABEL_63:
     v187[1] = [MEMORY[0x277CCABA8] numberWithUnsignedChar:self->_linkConfidenceScore];
     v186[2] = @"LNKDEC";
     v187[2] = [MEMORY[0x277CCABA8] numberWithUnsignedChar:self->_linkPreferDecision];
-    [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v187, v186, 3)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v187, v186, 3)}];
   }
 
   if (self->_linkIPPreference != 255)
   {
     v184 = @"LNKIP";
     v185 = [MEMORY[0x277CCABA8] numberWithUnsignedChar:?];
-    [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v185, &v184, 1)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v185, &v184, 1)}];
   }
 
   if (self->_isRTXTelemetryAvailable)
@@ -1595,69 +1595,69 @@ LABEL_63:
     v183[15] = [(VCHistogram *)self->_nacksPLRWithRTX description];
     v182[16] = @"NACKPLRWORTX";
     v183[16] = [(VCHistogram *)self->_nacksPLRWithoutRTX description];
-    [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v183, v182, 17)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v183, v182, 17)}];
   }
 
-  [v3 addEntriesFromDictionary:{-[CallSegment reportingClientExperimentSettingsDictionary](self, "reportingClientExperimentSettingsDictionary")}];
-  [v3 addEntriesFromDictionary:{-[VCReportingCommon getUplinkRTXelemetryWithDuration:](self, "getUplinkRTXelemetryWithDuration:", v70)}];
-  [v3 addEntriesFromDictionary:{-[CallSegment celltechTelemetry](self, "celltechTelemetry")}];
+  [dispatchedAggregatedReportCommon addEntriesFromDictionary:{-[CallSegment reportingClientExperimentSettingsDictionary](self, "reportingClientExperimentSettingsDictionary")}];
+  [dispatchedAggregatedReportCommon addEntriesFromDictionary:{-[VCReportingCommon getUplinkRTXelemetryWithDuration:](self, "getUplinkRTXelemetryWithDuration:", v70)}];
+  [dispatchedAggregatedReportCommon addEntriesFromDictionary:{-[CallSegment celltechTelemetry](self, "celltechTelemetry")}];
   if (self->_conversationTimeBase)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_startDate), @"StartDate"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithInt:", self->_startDate), @"StartDate"}];
     v101 = MEMORY[0x277CCABA8];
     [objc_msgSend(MEMORY[0x277CBEAA8] "date")];
-    [v3 setObject:objc_msgSend(v101 forKeyedSubscript:{"numberWithInt:", v102), @"EndDate"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(v101 forKeyedSubscript:{"numberWithInt:", v102), @"EndDate"}];
   }
 
   remoteOSBuild = self->_remoteOSBuild;
   if (remoteOSBuild)
   {
-    [v3 setObject:remoteOSBuild forKeyedSubscript:@"REMBUILD"];
+    [dispatchedAggregatedReportCommon setObject:remoteOSBuild forKeyedSubscript:@"REMBUILD"];
   }
 
   duplicationConnectionConfig = self->_duplicationConnectionConfig;
   v105 = &off_23D598000;
   if (duplicationConnectionConfig)
   {
-    [v3 setObject:duplicationConnectionConfig forKeyedSubscript:@"DCCFG"];
+    [dispatchedAggregatedReportCommon setObject:duplicationConnectionConfig forKeyedSubscript:@"DCCFG"];
   }
 
   duplicationConnectionFamily = self->_duplicationConnectionFamily;
   if (duplicationConnectionFamily)
   {
-    [v3 setObject:duplicationConnectionFamily forKeyedSubscript:@"DCF"];
+    [dispatchedAggregatedReportCommon setObject:duplicationConnectionFamily forKeyedSubscript:@"DCF"];
   }
 
   activeConnectionRegistry = self->_activeConnectionRegistry;
   if (activeConnectionRegistry)
   {
-    [v3 setObject:activeConnectionRegistry forKeyedSubscript:@"ACAS"];
+    [dispatchedAggregatedReportCommon setObject:activeConnectionRegistry forKeyedSubscript:@"ACAS"];
   }
 
   suggestedLinkTypeCombo = self->_suggestedLinkTypeCombo;
   if (suggestedLinkTypeCombo)
   {
-    [v3 setObject:suggestedLinkTypeCombo forKeyedSubscript:@"SLTS"];
+    [dispatchedAggregatedReportCommon setObject:suggestedLinkTypeCombo forKeyedSubscript:@"SLTS"];
   }
 
   relayedCallTypeIndicator = self->_relayedCallTypeIndicator;
   if (relayedCallTypeIndicator)
   {
-    [v3 setObject:relayedCallTypeIndicator forKeyedSubscript:@"RELAYEDCALLTYPE"];
+    [dispatchedAggregatedReportCommon setObject:relayedCallTypeIndicator forKeyedSubscript:@"RELAYEDCALLTYPE"];
   }
 
   if ([-[CallSegment duplicationCategoryForSegmentName:](self duplicationCategoryForSegmentName:{self->_segmentName), "isEqualToString:", @"D"}])
   {
-    [v3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithDouble:", self->_linkProbingConfig.localAlertDuration), 3), @"LOCALRTDUR"}];
+    [dispatchedAggregatedReportCommon setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithDouble:", self->_linkProbingConfig.localAlertDuration), 3), @"LOCALRTDUR"}];
     v105 = &off_23D598000;
-    [v3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithDouble:", self->_linkProbingConfig.remoteAlertDuration), 3), @"REMALRTDUR"}];
+    [dispatchedAggregatedReportCommon setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", objc_msgSend(MEMORY[0x277CCABA8], "numberWithDouble:", self->_linkProbingConfig.remoteAlertDuration), 3), @"REMALRTDUR"}];
   }
 
   if ([(NSString *)self->_segmentName hasPrefix:@"W"])
   {
     v180 = @"WiFi5GHz";
     v181 = [MEMORY[0x277CCABA8] numberWithInt:self->_is5GHz];
-    [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v181, &v180, 1)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", &v181, &v180, 1)}];
   }
 
   if (self->_isSmartBrakeHistogramPopulated)
@@ -1676,12 +1676,12 @@ LABEL_63:
     v179[5] = [(VCHistogram *)self->_smartBrakeTargetBitrateAfter15 description];
     v178[6] = @"SBTTXR30";
     v179[6] = [(VCHistogram *)self->_smartBrakeTargetBitrateAfter30 description];
-    [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v179, v178, 7)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v179, v178, 7)}];
   }
 
   if (self->_rateControlSmartBrakeTrialVersion)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:"), @"SBVERS"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:"), @"SBVERS"}];
   }
 
   if (self->_callMode == 1)
@@ -1800,7 +1800,7 @@ LABEL_63:
     v177[34] = [(VCHistogram *)self->_TVidMedBR description];
     v176[35] = @"TVPAY";
     v177[35] = [(VCHistogram *)self->_TVidCodecPayload description];
-    [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v177, v176, 36)}];
+    [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v177, v176, 36)}];
     avSyncOffsetSamplesCount = self->_avSyncOffsetSamplesCount;
     if (avSyncOffsetSamplesCount)
     {
@@ -1832,11 +1832,11 @@ LABEL_63:
       }
 
       v175[2] = [MEMORY[0x277CCABA8] numberWithInt:v120];
-      [v3 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v175, v174, 3)}];
+      [dispatchedAggregatedReportCommon addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v175, v174, 3)}];
     }
 
-    [(CallSegment *)self addProtocolStackDescriptionTelemetry:v3];
-    [(CallSegment *)self addSegmentWRMReportStats:v3];
+    [(CallSegment *)self addProtocolStackDescriptionTelemetry:dispatchedAggregatedReportCommon];
+    [(CallSegment *)self addSegmentWRMReportStats:dispatchedAggregatedReportCommon];
     lossPattern = self->_lossPattern;
     *buf = self->_fecStatsHolder;
     *&buf[8] = lossPattern;
@@ -1849,7 +1849,7 @@ LABEL_63:
     LODWORD(lossFecHistogram) = self->_fecProcessingTime;
     v172 = self->_adjustedDuration;
     v173 = lossFecHistogram;
-    [(VCAdaptiveLearningDelegate *)self->_delegate addFECStats:v3 parameters:buf];
+    [(VCAdaptiveLearningDelegate *)self->_delegate addFECStats:dispatchedAggregatedReportCommon parameters:buf];
     if (self->_nwActivity)
     {
       if (self->_useNwActivitySubmitMetrics && self->_isNWActivityReportingEnabled)
@@ -1866,12 +1866,12 @@ LABEL_63:
       self->_nwActivity = 0;
     }
 
-    [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithBool:", self->_isQUICPod), @"TLE"}];
+    [dispatchedAggregatedReportCommon setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithBool:", self->_isQUICPod), @"TLE"}];
   }
 
-  [(CallSegment *)self addQRServerTelemetryToDictionary:v3];
-  [(CallSegment *)self reportVideoFeatureStatus:v3];
-  [(CallSegment *)self reportSpatialAudioSupport:v3];
+  [(CallSegment *)self addQRServerTelemetryToDictionary:dispatchedAggregatedReportCommon];
+  [(CallSegment *)self reportVideoFeatureStatus:dispatchedAggregatedReportCommon];
+  [(CallSegment *)self reportSpatialAudioSupport:dispatchedAggregatedReportCommon];
   v166 = 0u;
   v167 = 0u;
   v164 = 0u;
@@ -1891,7 +1891,7 @@ LABEL_63:
           objc_enumerationMutation(thermalDataCollectors);
         }
 
-        [*(*(&v164 + 1) + 8 * i) updateReport:v3];
+        [*(*(&v164 + 1) + 8 * i) updateReport:dispatchedAggregatedReportCommon];
       }
 
       v128 = [(NSSet *)thermalDataCollectors countByEnumeratingWithState:&v164 objects:v169 count:16];
@@ -1902,14 +1902,14 @@ LABEL_63:
 
 LABEL_200:
   v131 = *MEMORY[0x277D85DE8];
-  return v3;
+  return dispatchedAggregatedReportCommon;
 }
 
-- (void)updateMaxVideoStallInterval:(double)a3 withDelta:(double)a4
+- (void)updateMaxVideoStallInterval:(double)interval withDelta:(double)delta
 {
-  self->_totalVideoStallTime = self->_totalVideoStallTime + a4;
+  self->_totalVideoStallTime = self->_totalVideoStallTime + delta;
   lastReceivedVideoStallTime = self->_lastReceivedVideoStallTime;
-  if (lastReceivedVideoStallTime == a3)
+  if (lastReceivedVideoStallTime == interval)
   {
     currentStallTime = self->_currentStallTime;
     if (currentStallTime == 0.0)
@@ -1934,73 +1934,73 @@ LABEL_200:
   else
   {
     v5 = 0;
-    self->_currentStallTime = a3 - lastReceivedVideoStallTime + self->_currentStallTime;
-    self->_lastReceivedVideoStallTime = a3;
+    self->_currentStallTime = interval - lastReceivedVideoStallTime + self->_currentStallTime;
+    self->_lastReceivedVideoStallTime = interval;
   }
 
   [(VCHistogram *)self->_videoStall addValue:v5];
 }
 
-- (void)addSegmentWRMReportStats:(id)a3
+- (void)addSegmentWRMReportStats:(id)stats
 {
   wrmLinkTypeSuggestion = self->_wrmLinkTypeSuggestion;
   if (wrmLinkTypeSuggestion)
   {
-    [a3 setObject:wrmLinkTypeSuggestion forKeyedSubscript:@"WRMLTS"];
+    [stats setObject:wrmLinkTypeSuggestion forKeyedSubscript:@"WRMLTS"];
   }
 
   wrmLinkTypeChangeReasonCode = self->_wrmLinkTypeChangeReasonCode;
   if (wrmLinkTypeChangeReasonCode)
   {
-    [a3 setObject:wrmLinkTypeChangeReasonCode forKeyedSubscript:@"WRMLTCRC"];
+    [stats setObject:wrmLinkTypeChangeReasonCode forKeyedSubscript:@"WRMLTCRC"];
   }
 
   wrmLinkTypeWifiRSSI = self->_wrmLinkTypeWifiRSSI;
   if (wrmLinkTypeWifiRSSI)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiRSSI, 3), @"WRMLTCWRSSI"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiRSSI, 3), @"WRMLTCWRSSI"}];
   }
 
   wrmLinkTypeWifiRSSIThreshold = self->_wrmLinkTypeWifiRSSIThreshold;
   if (wrmLinkTypeWifiRSSIThreshold)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiRSSIThreshold, 3), @"WRMLTCWRSSITH"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiRSSIThreshold, 3), @"WRMLTCWRSSITH"}];
   }
 
   wrmLinkTypeWifiSNR = self->_wrmLinkTypeWifiSNR;
   if (wrmLinkTypeWifiSNR)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiSNR, 3), @"WRMLTCWSNR"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiSNR, 3), @"WRMLTCWSNR"}];
   }
 
   wrmLinkTypeWifiCCA = self->_wrmLinkTypeWifiCCA;
   if (wrmLinkTypeWifiCCA)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiCCA, 3), @"WRMLTCWCCA"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiCCA, 3), @"WRMLTCWCCA"}];
   }
 
   wrmLinkTypeWifiPacketLoss = self->_wrmLinkTypeWifiPacketLoss;
   if (wrmLinkTypeWifiPacketLoss)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiPacketLoss, 3), @"WRMLTCWPL"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeWifiPacketLoss, 3), @"WRMLTCWPL"}];
   }
 
   wrmLinkTypeCellSignalStrength = self->_wrmLinkTypeCellSignalStrength;
   if (wrmLinkTypeCellSignalStrength)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellSignalStrength, 3), @"WRMLTCCSS"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellSignalStrength, 3), @"WRMLTCCSS"}];
   }
 
   wrmLinkTypeCellSignalBar = self->_wrmLinkTypeCellSignalBar;
   if (wrmLinkTypeCellSignalBar)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellSignalBar, 3), @"WRMLTCCSB"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellSignalBar, 3), @"WRMLTCCSB"}];
   }
 
   wrmLinkTypeCellServingCellType = self->_wrmLinkTypeCellServingCellType;
   if (wrmLinkTypeCellServingCellType)
   {
-    [a3 setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellServingCellType, 3), @"WRMLTCCSCT"}];
+    [stats setObject:+[VCAggregatorUtils safeRoundOffNumber:toSignificantDigits:](VCAggregatorUtils forKeyedSubscript:{"safeRoundOffNumber:toSignificantDigits:", wrmLinkTypeCellServingCellType, 3), @"WRMLTCCSCT"}];
   }
 
   wrmLinkTypeWifiRemoteRSSIThreshold = self->_wrmLinkTypeWifiRemoteRSSIThreshold;
@@ -2008,7 +2008,7 @@ LABEL_200:
   {
     v16 = [VCAggregatorUtils safeRoundOffNumber:wrmLinkTypeWifiRemoteRSSIThreshold toSignificantDigits:3];
 
-    [a3 setObject:v16 forKeyedSubscript:@"RWRMLTCWRSSITH"];
+    [stats setObject:v16 forKeyedSubscript:@"RWRMLTCWRSSITH"];
   }
 }
 
@@ -2156,50 +2156,50 @@ LABEL_200:
   return result;
 }
 
-- (id)duplicationCategoryForSegmentName:(id)a3
+- (id)duplicationCategoryForSegmentName:(id)name
 {
-  if (![a3 length])
+  if (![name length])
   {
     return &stru_284F80940;
   }
 
-  v4 = [a3 length] - 1;
+  v4 = [name length] - 1;
 
-  return [a3 substringToIndex:v4];
+  return [name substringToIndex:v4];
 }
 
-- (void)changeDuplicationWithType:(unsigned __int16)a3 payload:(id)a4
+- (void)changeDuplicationWithType:(unsigned __int16)type payload:(id)payload
 {
-  if (!a3 || a3 == 3)
+  if (!type || type == 3)
   {
-    if ([a4 objectForKeyedSubscript:@"ConnectionType"] && objc_msgSend(a4, "objectForKeyedSubscript:", @"LocalInterfaceType") && objc_msgSend(a4, "objectForKeyedSubscript:", @"RemoteInterfaceType") && objc_msgSend(a4, "objectForKeyedSubscript:", @"ConnFmly") && objc_msgSend(a4, "objectForKeyedSubscript:", @"SLTS"))
+    if ([payload objectForKeyedSubscript:@"ConnectionType"] && objc_msgSend(payload, "objectForKeyedSubscript:", @"LocalInterfaceType") && objc_msgSend(payload, "objectForKeyedSubscript:", @"RemoteInterfaceType") && objc_msgSend(payload, "objectForKeyedSubscript:", @"ConnFmly") && objc_msgSend(payload, "objectForKeyedSubscript:", @"SLTS"))
     {
 
-      self->_duplicationConnectionConfig = +[CallSegment newSegmentNameWithComponents:remoteInterface:connectionType:duplicationIndicator:](CallSegment, "newSegmentNameWithComponents:remoteInterface:connectionType:duplicationIndicator:", +[VCAggregator interfaceCategoryForType:](VCAggregator, "interfaceCategoryForType:", [a4 objectForKeyedSubscript:@"LocalInterfaceType"]), +[VCAggregator interfaceCategoryForType:](VCAggregator, "interfaceCategoryForType:", objc_msgSend(a4, "objectForKeyedSubscript:", @"RemoteInterfaceType")), +[VCAggregator connectionCategoryForType:](VCAggregator, "connectionCategoryForType:", objc_msgSend(a4, "objectForKeyedSubscript:", @"ConnectionType")), @"D");
-      -[CallSegment setDuplicationConnectionFamily:](self, "setDuplicationConnectionFamily:", [a4 objectForKeyedSubscript:@"ConnFmly"]);
-      -[CallSegment setSuggestedLinkTypeCombo:](self, "setSuggestedLinkTypeCombo:", [a4 objectForKeyedSubscript:@"SLTS"]);
+      self->_duplicationConnectionConfig = +[CallSegment newSegmentNameWithComponents:remoteInterface:connectionType:duplicationIndicator:](CallSegment, "newSegmentNameWithComponents:remoteInterface:connectionType:duplicationIndicator:", +[VCAggregator interfaceCategoryForType:](VCAggregator, "interfaceCategoryForType:", [payload objectForKeyedSubscript:@"LocalInterfaceType"]), +[VCAggregator interfaceCategoryForType:](VCAggregator, "interfaceCategoryForType:", objc_msgSend(payload, "objectForKeyedSubscript:", @"RemoteInterfaceType")), +[VCAggregator connectionCategoryForType:](VCAggregator, "connectionCategoryForType:", objc_msgSend(payload, "objectForKeyedSubscript:", @"ConnectionType")), @"D");
+      -[CallSegment setDuplicationConnectionFamily:](self, "setDuplicationConnectionFamily:", [payload objectForKeyedSubscript:@"ConnFmly"]);
+      -[CallSegment setSuggestedLinkTypeCombo:](self, "setSuggestedLinkTypeCombo:", [payload objectForKeyedSubscript:@"SLTS"]);
     }
 
-    if ([a4 objectForKeyedSubscript:@"DuplicationType"])
+    if ([payload objectForKeyedSubscript:@"DuplicationType"])
     {
-      self->_duplicationType = [objc_msgSend(a4 objectForKeyedSubscript:{@"DuplicationType", "intValue"}];
+      self->_duplicationType = [objc_msgSend(payload objectForKeyedSubscript:{@"DuplicationType", "intValue"}];
     }
 
-    if ([a4 objectForKeyedSubscript:@"lnkPrbRTTMeanDelta"] && objc_msgSend(a4, "objectForKeyedSubscript:", @"lnkPrbPLRTierDelta"))
+    if ([payload objectForKeyedSubscript:@"lnkPrbRTTMeanDelta"] && objc_msgSend(payload, "objectForKeyedSubscript:", @"lnkPrbPLRTierDelta"))
     {
       ++self->_dynamicDupeLinkCount;
-      [objc_msgSend(a4 objectForKeyedSubscript:{@"lnkPrbRTTMeanDelta", "doubleValue"}];
+      [objc_msgSend(payload objectForKeyedSubscript:{@"lnkPrbRTTMeanDelta", "doubleValue"}];
       self->_rttMeanTotalDelta = v10 + self->_rttMeanTotalDelta;
-      self->_plrTierTotalDelta += [objc_msgSend(a4 objectForKeyedSubscript:{@"lnkPrbPLRTierDelta", "unsignedIntValue"}];
+      self->_plrTierTotalDelta += [objc_msgSend(payload objectForKeyedSubscript:{@"lnkPrbPLRTierDelta", "unsignedIntValue"}];
     }
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    if ([a4 objectForKeyedSubscript:@"MAXNRPT"])
+    if ([payload objectForKeyedSubscript:@"MAXNRPT"])
     {
       duplicationMaxNoRemotePacketTime = self->_duplicationMaxNoRemotePacketTime;
-      [objc_msgSend(a4 objectForKeyedSubscript:{@"MAXNRPT", "doubleValue"}];
+      [objc_msgSend(payload objectForKeyedSubscript:{@"MAXNRPT", "doubleValue"}];
       if (duplicationMaxNoRemotePacketTime >= v7)
       {
         v7 = duplicationMaxNoRemotePacketTime;
@@ -2208,10 +2208,10 @@ LABEL_200:
       self->_duplicationMaxNoRemotePacketTime = v7;
     }
 
-    if ([a4 objectForKeyedSubscript:@"MAXRNRPT"])
+    if ([payload objectForKeyedSubscript:@"MAXRNRPT"])
     {
       duplicationMaxRemoteNoRemotePacketTime = self->_duplicationMaxRemoteNoRemotePacketTime;
-      [objc_msgSend(a4 objectForKeyedSubscript:{@"MAXRNRPT", "doubleValue"}];
+      [objc_msgSend(payload objectForKeyedSubscript:{@"MAXRNRPT", "doubleValue"}];
       if (duplicationMaxRemoteNoRemotePacketTime >= v9)
       {
         v9 = duplicationMaxRemoteNoRemotePacketTime;
@@ -2222,10 +2222,10 @@ LABEL_200:
   }
 }
 
-- (void)setNWActivityReportingEnabled:(BOOL)a3
+- (void)setNWActivityReportingEnabled:(BOOL)enabled
 {
   v16 = *MEMORY[0x277D85DE8];
-  self->_isNWActivityReportingEnabled = a3;
+  self->_isNWActivityReportingEnabled = enabled;
   if (VRTraceGetErrorLogLevelForModule("") >= 8)
   {
     v4 = VRTraceErrorLogLevelToCSTR(8u);
@@ -2256,37 +2256,37 @@ LABEL_200:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processSmartBrakeEvent:(id)a3
+- (void)processSmartBrakeEvent:(id)event
 {
   if (!self->_isSmartBrakeHistogramPopulated)
   {
     self->_isSmartBrakeHistogramPopulated = 1;
   }
 
-  if ([a3 objectForKeyedSubscript:@"EndBWE"] && objc_msgSend(a3, "objectForKeyedSubscript:", @"StartBWE") && objc_msgSend(a3, "objectForKeyedSubscript:", @"StartTargetTxR") && objc_msgSend(a3, "objectForKeyedSubscript:", @"CongestionDuration"))
+  if ([event objectForKeyedSubscript:@"EndBWE"] && objc_msgSend(event, "objectForKeyedSubscript:", @"StartBWE") && objc_msgSend(event, "objectForKeyedSubscript:", @"StartTargetTxR") && objc_msgSend(event, "objectForKeyedSubscript:", @"CongestionDuration"))
   {
     smartBrakeDuration = self->_smartBrakeDuration;
-    [objc_msgSend(a3 objectForKeyedSubscript:{@"CongestionDuration", "doubleValue"}];
+    [objc_msgSend(event objectForKeyedSubscript:{@"CongestionDuration", "doubleValue"}];
     [(VCHistogram *)smartBrakeDuration addValue:v6];
-    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateStart, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"StartTargetTxR", "unsignedIntValue"}]);
-    -[VCHistogram addValue:](self->_smartBrakeBandwidthStart, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"StartBWE", "unsignedIntValue"}]);
-    -[VCHistogram addValue:](self->_smartBrakeBandwidthEnd, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"EndBWE", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateStart, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"StartTargetTxR", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeBandwidthStart, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"StartBWE", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeBandwidthEnd, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"EndBWE", "unsignedIntValue"}]);
   }
 
-  if ([a3 objectForKeyedSubscript:@"BWETTxRRatio5"])
+  if ([event objectForKeyedSubscript:@"BWETTxRRatio5"])
   {
-    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateAfter5, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"BWETTxRRatio5", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateAfter5, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"BWETTxRRatio5", "unsignedIntValue"}]);
   }
 
-  if ([a3 objectForKeyedSubscript:@"BWETTxRRatio15"])
+  if ([event objectForKeyedSubscript:@"BWETTxRRatio15"])
   {
-    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateAfter15, "addValue:", [objc_msgSend(a3 objectForKeyedSubscript:{@"BWETTxRRatio15", "unsignedIntValue"}]);
+    -[VCHistogram addValue:](self->_smartBrakeTargetBitrateAfter15, "addValue:", [objc_msgSend(event objectForKeyedSubscript:{@"BWETTxRRatio15", "unsignedIntValue"}]);
   }
 
-  if ([a3 objectForKeyedSubscript:@"BWETTxRRatio30"])
+  if ([event objectForKeyedSubscript:@"BWETTxRRatio30"])
   {
     smartBrakeTargetBitrateAfter30 = self->_smartBrakeTargetBitrateAfter30;
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"BWETTxRRatio30", "unsignedIntValue"}];
+    v8 = [objc_msgSend(event objectForKeyedSubscript:{@"BWETTxRRatio30", "unsignedIntValue"}];
 
     [(VCHistogram *)smartBrakeTargetBitrateAfter30 addValue:v8];
   }

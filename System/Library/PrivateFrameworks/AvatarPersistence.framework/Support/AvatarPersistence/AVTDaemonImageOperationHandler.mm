@@ -1,106 +1,106 @@
 @interface AVTDaemonImageOperationHandler
-- (AVTDaemonImageOperationHandler)initWithLogger:(id)a3;
-- (BOOL)deleteThumbnailsForAvatarRecordsWithIdentifiers:(id)a3 error:(id *)a4;
-- (BOOL)removeImagesAtLocation:(id)a3 forIdentifiers:(id)a4 error:(id *)a5;
-- (void)clearContentAtLocation:(id)a3;
-- (void)clearStickersForAvatarRecordIdentifier:(id)a3 withEnvironment:(id)a4;
-- (void)deleteImagesForAvatarRecordIdentifier:(id)a3 error:(id *)a4;
-- (void)updateThumbnailsForChangesWithTracker:(id)a3 recordProvider:(id)a4;
+- (AVTDaemonImageOperationHandler)initWithLogger:(id)logger;
+- (BOOL)deleteThumbnailsForAvatarRecordsWithIdentifiers:(id)identifiers error:(id *)error;
+- (BOOL)removeImagesAtLocation:(id)location forIdentifiers:(id)identifiers error:(id *)error;
+- (void)clearContentAtLocation:(id)location;
+- (void)clearStickersForAvatarRecordIdentifier:(id)identifier withEnvironment:(id)environment;
+- (void)deleteImagesForAvatarRecordIdentifier:(id)identifier error:(id *)error;
+- (void)updateThumbnailsForChangesWithTracker:(id)tracker recordProvider:(id)provider;
 @end
 
 @implementation AVTDaemonImageOperationHandler
 
-- (AVTDaemonImageOperationHandler)initWithLogger:(id)a3
+- (AVTDaemonImageOperationHandler)initWithLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v9.receiver = self;
   v9.super_class = AVTDaemonImageOperationHandler;
   v6 = [(AVTDaemonImageOperationHandler *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logger, a3);
+    objc_storeStrong(&v6->_logger, logger);
   }
 
   return v7;
 }
 
-- (void)clearContentAtLocation:(id)a3
+- (void)clearContentAtLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = objc_alloc_init(NSFileManager);
   v10 = 0;
-  v6 = [v5 removeItemAtURL:v4 error:&v10];
+  v6 = [v5 removeItemAtURL:locationCopy error:&v10];
 
   v7 = v10;
   if ((v6 & 1) == 0)
   {
-    v8 = [(AVTDaemonImageOperationHandler *)self logger];
+    logger = [(AVTDaemonImageOperationHandler *)self logger];
     v9 = [v7 description];
-    [v8 logFileSystemError:v9];
+    [logger logFileSystemError:v9];
   }
 }
 
-- (BOOL)deleteThumbnailsForAvatarRecordsWithIdentifiers:(id)a3 error:(id *)a4
+- (BOOL)deleteThumbnailsForAvatarRecordsWithIdentifiers:(id)identifiers error:(id *)error
 {
-  v6 = a3;
+  identifiersCopy = identifiers;
   v7 = +[AVTCoreEnvironment defaultEnvironment];
-  v8 = [v7 imageStoreLocation];
+  imageStoreLocation = [v7 imageStoreLocation];
 
-  LOBYTE(a4) = [(AVTDaemonImageOperationHandler *)self removeImagesAtLocation:v8 forIdentifiers:v6 error:a4];
-  return a4;
+  LOBYTE(error) = [(AVTDaemonImageOperationHandler *)self removeImagesAtLocation:imageStoreLocation forIdentifiers:identifiersCopy error:error];
+  return error;
 }
 
-- (void)clearStickersForAvatarRecordIdentifier:(id)a3 withEnvironment:(id)a4
+- (void)clearStickersForAvatarRecordIdentifier:(id)identifier withEnvironment:(id)environment
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = +[AVTCoreEnvironment defaultEnvironment];
-  v7 = [v6 stickerImageStoreLocation];
+  stickerImageStoreLocation = [v6 stickerImageStoreLocation];
 
-  v9 = v5;
+  v9 = identifierCopy;
   v8 = [NSArray arrayWithObjects:&v9 count:1];
 
-  [(AVTDaemonImageOperationHandler *)self removeImagesAtLocation:v7 forIdentifiers:v8 error:0];
+  [(AVTDaemonImageOperationHandler *)self removeImagesAtLocation:stickerImageStoreLocation forIdentifiers:v8 error:0];
 }
 
-- (void)deleteImagesForAvatarRecordIdentifier:(id)a3 error:(id *)a4
+- (void)deleteImagesForAvatarRecordIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = +[AVTCoreEnvironment defaultEnvironment];
-  v8 = [v7 imageStoreLocation];
+  imageStoreLocation = [v7 imageStoreLocation];
 
-  v10 = v6;
+  v10 = identifierCopy;
   v9 = [NSArray arrayWithObjects:&v10 count:1];
 
-  [(AVTDaemonImageOperationHandler *)self removeImagesAtLocation:v8 forIdentifiers:v9 error:a4];
+  [(AVTDaemonImageOperationHandler *)self removeImagesAtLocation:imageStoreLocation forIdentifiers:v9 error:error];
 }
 
-- (BOOL)removeImagesAtLocation:(id)a3 forIdentifiers:(id)a4 error:(id *)a5
+- (BOOL)removeImagesAtLocation:(id)location forIdentifiers:(id)identifiers error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  locationCopy = location;
+  identifiersCopy = identifiers;
   v10 = objc_alloc_init(NSFileManager);
-  v11 = [v8 path];
-  v12 = [v10 fileExistsAtPath:v11];
+  path = [locationCopy path];
+  v12 = [v10 fileExistsAtPath:path];
 
   if (v12)
   {
-    v13 = [v10 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:&__NSArray0__struct options:0 error:a5];
+    v13 = [v10 contentsOfDirectoryAtURL:locationCopy includingPropertiesForKeys:&__NSArray0__struct options:0 error:error];
     if (v13)
     {
       v43 = 0u;
       v44 = 0u;
       v41 = 0u;
       v42 = 0u;
-      v14 = v9;
+      v14 = identifiersCopy;
       v31 = [v14 countByEnumeratingWithState:&v41 objects:v46 count:16];
       if (v31)
       {
         v15 = *v42;
-        v35 = v9;
-        v36 = v8;
+        v35 = identifiersCopy;
+        v36 = locationCopy;
         v29 = *v42;
-        v30 = self;
+        selfCopy = self;
         v33 = v14;
         v34 = v13;
         do
@@ -138,15 +138,15 @@
                   }
 
                   v24 = *(*(&v37 + 1) + 8 * i);
-                  v25 = [v24 lastPathComponent];
-                  v26 = [v25 hasPrefix:v17];
+                  lastPathComponent = [v24 lastPathComponent];
+                  v26 = [lastPathComponent hasPrefix:v17];
 
-                  if (v26 && ![v10 removeItemAtURL:v24 error:a5])
+                  if (v26 && ![v10 removeItemAtURL:v24 error:error])
                   {
 
                     v27 = 0;
-                    v9 = v35;
-                    v8 = v36;
+                    identifiersCopy = v35;
+                    locationCopy = v36;
                     v14 = v33;
                     v13 = v34;
                     goto LABEL_24;
@@ -164,10 +164,10 @@
             }
 
             v16 = v32 + 1;
-            v9 = v35;
-            v8 = v36;
+            identifiersCopy = v35;
+            locationCopy = v36;
             v15 = v29;
-            self = v30;
+            self = selfCopy;
             v14 = v33;
             v13 = v34;
           }
@@ -202,11 +202,11 @@ LABEL_24:
   return v27;
 }
 
-- (void)updateThumbnailsForChangesWithTracker:(id)a3 recordProvider:(id)a4
+- (void)updateThumbnailsForChangesWithTracker:(id)tracker recordProvider:(id)provider
 {
-  v5 = a3;
+  trackerCopy = tracker;
   v6 = +[AVTCoreEnvironment defaultEnvironment];
-  v7 = [v6 imageStoreLocation];
+  imageStoreLocation = [v6 imageStoreLocation];
 
   +[NSMutableArray array];
   v19[0] = _NSConcreteStackBlock;
@@ -216,19 +216,19 @@ LABEL_24:
   v20 = v19[4] = self;
   v8 = v20;
   v9 = objc_retainBlock(v19);
-  v10 = [(AVTDaemonImageOperationHandler *)self logger];
+  logger = [(AVTDaemonImageOperationHandler *)self logger];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000015B0;
   v14[3] = &unk_1000041C8;
-  v15 = v5;
-  v16 = v7;
-  v17 = self;
+  v15 = trackerCopy;
+  v16 = imageStoreLocation;
+  selfCopy = self;
   v18 = v9;
   v11 = v9;
-  v12 = v7;
-  v13 = v5;
-  [v10 updatingThumbnailsForRemoteChanges:v14];
+  v12 = imageStoreLocation;
+  v13 = trackerCopy;
+  [logger updatingThumbnailsForRemoteChanges:v14];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface SBBannerUnfurlToFullScreenSwitcherModifier
-- (BOOL)_isAppLayout:(id)a3 atIndex:(unint64_t)a4;
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBBannerUnfurlToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 bannerUnfurlSourceContext:(id)a6;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleTimerEvent:(id)a3;
+- (BOOL)_isAppLayout:(id)layout atIndex:(unint64_t)index;
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBBannerUnfurlToFullScreenSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout bannerUnfurlSourceContext:(id)context;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleTimerEvent:(id)event;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
 - (id)visibleAppLayouts;
@@ -16,24 +16,24 @@
 
 @implementation SBBannerUnfurlToFullScreenSwitcherModifier
 
-- (SBBannerUnfurlToFullScreenSwitcherModifier)initWithTransitionID:(id)a3 fromAppLayout:(id)a4 toAppLayout:(id)a5 bannerUnfurlSourceContext:(id)a6
+- (SBBannerUnfurlToFullScreenSwitcherModifier)initWithTransitionID:(id)d fromAppLayout:(id)layout toAppLayout:(id)appLayout bannerUnfurlSourceContext:(id)context
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = SBBannerUnfurlToFullScreenSwitcherModifier;
-  v15 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:a3];
+  v15 = [(SBTransitionSwitcherModifier *)&v17 initWithTransitionID:d];
   if (v15)
   {
-    if (!v13)
+    if (!appLayoutCopy)
     {
       [SBBannerUnfurlToFullScreenSwitcherModifier initWithTransitionID:a2 fromAppLayout:v15 toAppLayout:? bannerUnfurlSourceContext:?];
     }
 
-    objc_storeStrong(&v15->_fromAppLayout, a4);
-    objc_storeStrong(&v15->_toAppLayout, a5);
-    objc_storeStrong(&v15->_bannerUnfurlSourceContext, a6);
+    objc_storeStrong(&v15->_fromAppLayout, layout);
+    objc_storeStrong(&v15->_toAppLayout, appLayout);
+    objc_storeStrong(&v15->_bannerUnfurlSourceContext, context);
   }
 
   return v15;
@@ -43,7 +43,7 @@
 {
   v22.receiver = self;
   v22.super_class = SBBannerUnfurlToFullScreenSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v22 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v22 transitionWillBegin];
   v4 = objc_alloc_init(SBSwitcherModifierEventResponse);
   v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:6 updateMode:2];
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v5];
@@ -51,10 +51,10 @@
   [(SBBannerUnfurlSourceContext *)self->_bannerUnfurlSourceContext referenceVelocity];
   v7 = v6;
   v9 = v8;
-  v10 = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self switcherInterfaceOrientation];
+  switcherInterfaceOrientation = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self switcherInterfaceOrientation];
   v11 = -v9;
   v12 = -v7;
-  if (v10 == 2)
+  if (switcherInterfaceOrientation == 2)
   {
     v13 = -v9;
   }
@@ -64,7 +64,7 @@
     v13 = v9;
   }
 
-  if (v10 == 2)
+  if (switcherInterfaceOrientation == 2)
   {
     v14 = -v7;
   }
@@ -74,7 +74,7 @@
     v14 = v7;
   }
 
-  if (v10 == 3)
+  if (switcherInterfaceOrientation == 3)
   {
     v15 = v9;
   }
@@ -85,7 +85,7 @@
     v15 = v14;
   }
 
-  if (v10 != 4)
+  if (switcherInterfaceOrientation != 4)
   {
     v7 = v12;
     v11 = v15;
@@ -99,7 +99,7 @@
     [(SBChainableModifierEventResponse *)v4 addChildResponse:v19];
   }
 
-  v20 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+  v20 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
   return v20;
 }
@@ -108,16 +108,16 @@
 {
   v18.receiver = self;
   v18.super_class = SBBannerUnfurlToFullScreenSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v18 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v18 transitionWillUpdate];
   if (self->_fromAppLayout && !self->_isScalingDown)
   {
     self->_isScalingDown = 1;
-    v4 = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self switcherSettings];
-    v5 = [v4 animationSettings];
+    switcherSettings = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
 
     objc_initWeak(&location, self);
     v6 = [SBTimerEventSwitcherEventResponse alloc];
-    [v5 dosidoScaleUpDelay];
+    [animationSettings dosidoScaleUpDelay];
     v8 = v7;
     v12 = MEMORY[0x277D85DD0];
     v13 = 3221225472;
@@ -125,15 +125,15 @@
     v15 = &unk_2783AD4A0;
     objc_copyWeak(&v16, &location);
     v9 = [(SBTimerEventSwitcherEventResponse *)v6 initWithDelay:&v12 validator:@"_SBBannerUnfurlToFullScreenSwitcherModifierTimerReasonScaleUp" reason:v8];
-    v10 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v9 toResponse:v3, v12, v13, v14, v15];
+    v10 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v9 toResponse:transitionWillUpdate, v12, v13, v14, v15];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
 
-    v3 = v10;
+    transitionWillUpdate = v10;
   }
 
-  return v3;
+  return transitionWillUpdate;
 }
 
 BOOL __66__SBBannerUnfurlToFullScreenSwitcherModifier_transitionWillUpdate__block_invoke(uint64_t a1)
@@ -145,16 +145,16 @@ BOOL __66__SBBannerUnfurlToFullScreenSwitcherModifier_transitionWillUpdate__bloc
   return v3;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = SBBannerUnfurlToFullScreenSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v10 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:@"_SBBannerUnfurlToFullScreenSwitcherModifierTimerReasonScaleUp"];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:@"_SBBannerUnfurlToFullScreenSwitcherModifierTimerReasonScaleUp"];
+  if (eventCopy)
   {
     self->_isScalingDown = 0;
     v7 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:30 updateMode:3];
@@ -166,7 +166,7 @@ BOOL __66__SBBannerUnfurlToFullScreenSwitcherModifier_transitionWillUpdate__bloc
   return v5;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v21.receiver = self;
   v21.super_class = SBBannerUnfurlToFullScreenSwitcherModifier;
@@ -175,7 +175,7 @@ BOOL __66__SBBannerUnfurlToFullScreenSwitcherModifier_transitionWillUpdate__bloc
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if ([(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_toAppLayout atIndex:a3])
+  if ([(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_toAppLayout atIndex:index])
   {
     if ([(SBTransitionSwitcherModifier *)self isPreparingLayout])
     {
@@ -191,7 +191,7 @@ LABEL_6:
     }
   }
 
-  else if ([(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_fromAppLayout atIndex:a3])
+  else if ([(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_fromAppLayout atIndex:index])
   {
     [(SBBannerUnfurlToFullScreenSwitcherModifier *)self containerViewBounds];
     goto LABEL_6;
@@ -208,22 +208,22 @@ LABEL_6:
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v12.receiver = self;
   v12.super_class = SBBannerUnfurlToFullScreenSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:v4];
-  v6 = [v4 switcherLayoutElementType];
+  elementCopy = element;
+  v5 = [(SBTransitionSwitcherModifier *)&v12 animationAttributesForLayoutElement:elementCopy];
+  switcherLayoutElementType = [elementCopy switcherLayoutElementType];
 
-  if (!v6)
+  if (!switcherLayoutElementType)
   {
-    v7 = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self switcherSettings];
-    v8 = [v7 animationSettings];
+    switcherSettings = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
 
     v9 = [v5 mutableCopy];
-    v10 = [v8 bannerUnfurlSettings];
-    [v9 setLayoutSettings:v10];
+    bannerUnfurlSettings = [animationSettings bannerUnfurlSettings];
+    [v9 setLayoutSettings:bannerUnfurlSettings];
 
     v5 = v9;
   }
@@ -248,8 +248,8 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = SBBannerUnfurlToFullScreenSwitcherModifier;
-  v3 = [(SBBannerUnfurlToFullScreenSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 mutableCopy];
+  visibleAppLayouts = [(SBBannerUnfurlToFullScreenSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts mutableCopy];
 
   [v4 addObject:self->_toAppLayout];
   if (self->_fromAppLayout)
@@ -260,29 +260,29 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)a3
+- (BOOL)shouldScaleOverlayToFillBoundsAtIndex:(unint64_t)index
 {
-  if ([(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_toAppLayout atIndex:a3])
+  if ([(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_toAppLayout atIndex:index])
   {
     return 0;
   }
 
   v6.receiver = self;
   v6.super_class = SBBannerUnfurlToFullScreenSwitcherModifier;
-  return [(SBBannerUnfurlToFullScreenSwitcherModifier *)&v6 shouldScaleOverlayToFillBoundsAtIndex:a3];
+  return [(SBBannerUnfurlToFullScreenSwitcherModifier *)&v6 shouldScaleOverlayToFillBoundsAtIndex:index];
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
   v12.receiver = self;
   v12.super_class = SBBannerUnfurlToFullScreenSwitcherModifier;
-  [(SBBannerUnfurlToFullScreenSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:a4 atIndex:?];
+  [(SBBannerUnfurlToFullScreenSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layout atIndex:?];
   v8 = v7;
-  if (![(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_toAppLayout atIndex:a5]|| (v10 = [(SBTransitionSwitcherModifier *)self isPreparingLayout], result = 1.0, !v10))
+  if (![(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_toAppLayout atIndex:index]|| (v10 = [(SBTransitionSwitcherModifier *)self isPreparingLayout], result = 1.0, !v10))
   {
-    v11 = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_fromAppLayout atIndex:a5, result];
+    result = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_fromAppLayout atIndex:index, result];
     result = 1.0;
-    if (!v11)
+    if (!result)
     {
       return v8;
     }
@@ -291,9 +291,9 @@ LABEL_6:
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  if ([(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_toAppLayout atIndex:a3]&& [(SBTransitionSwitcherModifier *)self isPreparingLayout])
+  if ([(SBBannerUnfurlToFullScreenSwitcherModifier *)self _isAppLayout:self->_toAppLayout atIndex:index]&& [(SBTransitionSwitcherModifier *)self isPreparingLayout])
   {
     [(SBBannerUnfurlSourceContext *)self->_bannerUnfurlSourceContext cornerRadius];
   }
@@ -311,9 +311,9 @@ LABEL_6:
   return result;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  if (self->_toAppLayout == a3)
+  if (self->_toAppLayout == layout)
   {
 
     return SBSwitcherAsyncRenderingAttributesMake(0, 0);
@@ -329,14 +329,14 @@ LABEL_6:
   }
 }
 
-- (BOOL)_isAppLayout:(id)a3 atIndex:(unint64_t)a4
+- (BOOL)_isAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self appLayouts];
-  v8 = [v7 objectAtIndex:a4];
+  layoutCopy = layout;
+  appLayouts = [(SBBannerUnfurlToFullScreenSwitcherModifier *)self appLayouts];
+  v8 = [appLayouts objectAtIndex:index];
 
-  LOBYTE(v7) = [v8 isEqual:v6];
-  return v7;
+  LOBYTE(appLayouts) = [v8 isEqual:layoutCopy];
+  return appLayouts;
 }
 
 - (void)initWithTransitionID:(uint64_t)a1 fromAppLayout:(uint64_t)a2 toAppLayout:bannerUnfurlSourceContext:.cold.1(uint64_t a1, uint64_t a2)

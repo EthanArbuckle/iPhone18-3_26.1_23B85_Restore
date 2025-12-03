@@ -1,11 +1,11 @@
 @interface APUIRouteManager
-+ (unint64_t)discoveryFeatures:(BOOL)a3;
++ (unint64_t)discoveryFeatures:(BOOL)features;
 - (APUIRouteManager)init;
-- (void)_addOutputDeviceToSystemMusicContext:(id)a3 authString:(id)a4 completion:(id)a5;
-- (void)_createSilentConnectionToDevice:(id)a3 authString:(id)a4 completion:(id)a5;
+- (void)_addOutputDeviceToSystemMusicContext:(id)context authString:(id)string completion:(id)completion;
+- (void)_createSilentConnectionToDevice:(id)device authString:(id)string completion:(id)completion;
 - (void)invalidate;
-- (void)pickRouteWithRouteID:(id)a3 authString:(id)a4 useRemoteControl:(BOOL)a5 completion:(id)a6;
-- (void)session:(id)a3 didSpotOnLocationComplete:(id)a4;
+- (void)pickRouteWithRouteID:(id)d authString:(id)string useRemoteControl:(BOOL)control completion:(id)completion;
+- (void)session:(id)session didSpotOnLocationComplete:(id)complete;
 - (void)startIntelligentRoutingLocationSensing;
 @end
 
@@ -50,14 +50,14 @@
   [(IRSession *)irSession invalidate];
 }
 
-- (void)pickRouteWithRouteID:(id)a3 authString:(id)a4 useRemoteControl:(BOOL)a5 completion:(id)a6
+- (void)pickRouteWithRouteID:(id)d authString:(id)string useRemoteControl:(BOOL)control completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  stringCopy = string;
+  completionCopy = completion;
   if (dword_1000222E0 <= 50 && (dword_1000222E0 != -1 || _LogCategory_Initialize()))
   {
-    sub_10000B350(v10);
+    sub_10000B350(dCopy);
   }
 
   queue = self->_queue;
@@ -66,31 +66,31 @@
   block[2] = sub_100001E2C;
   block[3] = &unk_10001C590;
   block[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = dCopy;
+  controlCopy = control;
+  v19 = stringCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = stringCopy;
+  v16 = dCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_addOutputDeviceToSystemMusicContext:(id)a3 authString:(id)a4 completion:(id)a5
+- (void)_addOutputDeviceToSystemMusicContext:(id)context authString:(id)string completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  stringCopy = string;
+  completionCopy = completion;
   v11 = +[NSMutableDictionary dictionary];
   [v11 setObject:&__kCFBooleanTrue forKeyedSubscript:AVOutputContextAddOutputDeviceOptionCancelIfAuthRequired];
-  if (v9)
+  if (stringCopy)
   {
-    [v11 setObject:v9 forKeyedSubscript:AVOutputContextAddOutputDeviceOptionAuthorizationToken];
+    [v11 setObject:stringCopy forKeyedSubscript:AVOutputContextAddOutputDeviceOptionAuthorizationToken];
   }
 
   if (dword_1000222E0 <= 50 && (dword_1000222E0 != -1 || _LogCategory_Initialize()))
   {
-    sub_10000B3D8(v8);
+    sub_10000B3D8(contextCopy);
   }
 
   v12 = +[AVOutputContext sharedAudioPresentationOutputContext];
@@ -99,23 +99,23 @@
   v15[2] = sub_100001FC8;
   v15[3] = &unk_10001C5E0;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v13 = v10;
-  v14 = v8;
+  v16 = contextCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = contextCopy;
   [v12 addOutputDevice:v14 options:v11 completionHandler:v15];
 }
 
-- (void)_createSilentConnectionToDevice:(id)a3 authString:(id)a4 completion:(id)a5
+- (void)_createSilentConnectionToDevice:(id)device authString:(id)string completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  deviceCopy = device;
+  stringCopy = string;
+  completionCopy = completion;
   v11 = +[NSMutableDictionary dictionary];
   [v11 setObject:&__kCFBooleanTrue forKeyedSubscript:AVOutputDeviceCommunicationChannelOptionCancelIfAuthRequired];
-  if (v9)
+  if (stringCopy)
   {
-    [v11 setObject:v9 forKeyedSubscript:AVOutputContextAddOutputDeviceOptionAuthorizationToken];
+    [v11 setObject:stringCopy forKeyedSubscript:AVOutputContextAddOutputDeviceOptionAuthorizationToken];
   }
 
   v12 = AVOutputDeviceCommunicationChannelDataDestinationFitness;
@@ -124,18 +124,18 @@
   v15[2] = sub_100002348;
   v15[3] = &unk_10001C608;
   v15[4] = self;
-  v16 = v8;
-  v17 = v10;
-  v13 = v10;
-  v14 = v8;
+  v16 = deviceCopy;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = deviceCopy;
   [v14 openCommunicationChannelToDestination:v12 options:v11 completionHandler:v15];
 }
 
-- (void)session:(id)a3 didSpotOnLocationComplete:(id)a4
+- (void)session:(id)session didSpotOnLocationComplete:(id)complete
 {
-  v12 = a3;
-  v6 = a4;
-  if (v6)
+  sessionCopy = session;
+  completeCopy = complete;
+  if (completeCopy)
   {
     v7 = 50;
   }
@@ -151,14 +151,14 @@
     LogPrintF();
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  spotOnLocationError = v8->_spotOnLocationError;
-  v8->_spotOnLocationError = v6;
-  v10 = v6;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  spotOnLocationError = selfCopy->_spotOnLocationError;
+  selfCopy->_spotOnLocationError = completeCopy;
+  v10 = completeCopy;
 
-  objc_sync_exit(v8);
-  dispatch_semaphore_signal(v8->_spotOnLocationSemaphore);
+  objc_sync_exit(selfCopy);
+  dispatch_semaphore_signal(selfCopy->_spotOnLocationSemaphore);
 }
 
 - (void)startIntelligentRoutingLocationSensing
@@ -185,12 +185,12 @@
       [v10 setResetAllBrokerDiscoveredCandidates:1];
       if (dword_1000222E0 <= 50 && (dword_1000222E0 != -1 || _LogCategory_Initialize()))
       {
-        v12 = self;
+        selfCopy = self;
         v13 = self->_irSession;
         LogPrintF();
       }
 
-      [(IRSession *)self->_irSession setSpotOnLocationWithParameters:v10, v12, v13];
+      [(IRSession *)self->_irSession setSpotOnLocationWithParameters:v10, selfCopy, v13];
       irQueue = self->_irQueue;
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
@@ -228,9 +228,9 @@
 LABEL_12:
 }
 
-+ (unint64_t)discoveryFeatures:(BOOL)a3
++ (unint64_t)discoveryFeatures:(BOOL)features
 {
-  if (a3)
+  if (features)
   {
     return 8;
   }

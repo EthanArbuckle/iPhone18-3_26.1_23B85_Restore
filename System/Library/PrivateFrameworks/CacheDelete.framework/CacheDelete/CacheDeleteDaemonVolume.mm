@@ -1,23 +1,23 @@
 @interface CacheDeleteDaemonVolume
-+ (CacheDeleteDaemonVolume)volumeWithMountpoint:(id)a3;
-+ (CacheDeleteDaemonVolume)volumeWithPath:(id)a3;
-+ (id)createVolume:(id)a3 isPrimary:(BOOL)a4;
-+ (void)invalidateVolumesCache:(id)a3;
-- (BOOL)containerTotalSize:(unint64_t *)a3 andFreespace:(unint64_t *)a4;
-- (BOOL)hasSnapshotsExcludingRegularExpression:(id)a3;
++ (CacheDeleteDaemonVolume)volumeWithMountpoint:(id)mountpoint;
++ (CacheDeleteDaemonVolume)volumeWithPath:(id)path;
++ (id)createVolume:(id)volume isPrimary:(BOOL)primary;
++ (void)invalidateVolumesCache:(id)cache;
+- (BOOL)containerTotalSize:(unint64_t *)size andFreespace:(unint64_t *)freespace;
+- (BOOL)hasSnapshotsExcludingRegularExpression:(id)expression;
 - (BOOL)hasSnapshotsExcludingTimeMachine;
-- (BOOL)hasSnapshotsMatchingRegularExpression:(id)a3;
+- (BOOL)hasSnapshotsMatchingRegularExpression:(id)expression;
 - (BOOL)isSpecialVolume;
 - (BOOL)validate;
-- (CacheDeleteDaemonVolume)initWithPath:(id)a3 isPrimary:(BOOL)a4;
-- (CacheDeleteDaemonVolume)initWithVolume:(id)a3;
+- (CacheDeleteDaemonVolume)initWithPath:(id)path isPrimary:(BOOL)primary;
+- (CacheDeleteDaemonVolume)initWithVolume:(id)volume;
 - (NSArray)siblings;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)snapshots;
-- (id)snapshotsExcludingRegularExpression:(id)a3;
+- (id)snapshotsExcludingRegularExpression:(id)expression;
 - (id)snapshotsExcludingTimeMachine;
-- (id)snapshotsMatchingRegularExpression:(id)a3;
+- (id)snapshotsMatchingRegularExpression:(id)expression;
 @end
 
 @implementation CacheDeleteDaemonVolume
@@ -52,17 +52,17 @@
 
 - (BOOL)isSpecialVolume
 {
-  v2 = [(CacheDeleteDaemonVolume *)self role];
+  role = [(CacheDeleteDaemonVolume *)self role];
 
-  return _isSpecialAPFSVolume(v2);
+  return _isSpecialAPFSVolume(role);
 }
 
 - (NSArray)siblings
 {
   v3 = +[NSMutableArray array];
-  v27 = self;
-  v4 = [(CacheDeleteDaemonVolume *)self bsdName];
-  v5 = IOBSDNameMatching(kIOMainPortDefault, 0, [v4 UTF8String] + 5);
+  selfCopy = self;
+  bsdName = [(CacheDeleteDaemonVolume *)self bsdName];
+  v5 = IOBSDNameMatching(kIOMainPortDefault, 0, [bsdName UTF8String] + 5);
   MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v5);
 
   if (MatchingService)
@@ -103,8 +103,8 @@
         v15 = v14;
         if (v14)
         {
-          v16 = [v14 bsdName];
-          v17 = IOBSDNameMatching(kIOMainPortDefault, 0, [v16 UTF8String] + 5);
+          bsdName2 = [v14 bsdName];
+          v17 = IOBSDNameMatching(kIOMainPortDefault, 0, [bsdName2 UTF8String] + 5);
           v18 = IOServiceGetMatchingService(kIOMainPortDefault, v17);
 
           if (v18)
@@ -115,14 +115,14 @@
               v20 = CDGetLogHandle();
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
               {
-                v21 = [v15 bsdName];
-                v22 = [(CacheDeleteDaemonVolume *)v27 bsdName];
+                bsdName3 = [v15 bsdName];
+                bsdName4 = [(CacheDeleteDaemonVolume *)selfCopy bsdName];
                 *buf = v24;
                 v34 = v13;
                 v35 = 2112;
-                v36 = v21;
+                v36 = bsdName3;
                 v37 = 2112;
-                v38 = v22;
+                v38 = bsdName4;
                 _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "adding %@ %@ %@", buf, 0x20u);
 
                 v3 = v26;
@@ -146,18 +146,18 @@
 
 - (BOOL)hasSnapshotsExcludingTimeMachine
 {
-  v2 = self;
-  v3 = [(CacheDeleteDaemonVolume *)self timeMachineSnapshotRegex];
-  LOBYTE(v2) = [(CacheDeleteDaemonVolume *)v2 hasSnapshotsExcludingRegularExpression:v3];
+  selfCopy = self;
+  timeMachineSnapshotRegex = [(CacheDeleteDaemonVolume *)self timeMachineSnapshotRegex];
+  LOBYTE(selfCopy) = [(CacheDeleteDaemonVolume *)selfCopy hasSnapshotsExcludingRegularExpression:timeMachineSnapshotRegex];
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)snapshots
 {
   v3 = objc_opt_new();
-  v4 = [(CacheDeleteDaemonVolume *)self mountPoint];
-  [v4 fileSystemRepresentation];
+  mountPoint = [(CacheDeleteDaemonVolume *)self mountPoint];
+  [mountPoint fileSystemRepresentation];
   v5 = v3;
   v6 = enumerate_snapshots();
 
@@ -166,11 +166,11 @@
     v7 = CDGetLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(CacheDeleteDaemonVolume *)self mountPoint];
+      mountPoint2 = [(CacheDeleteDaemonVolume *)self mountPoint];
       v10 = __error();
       v11 = strerror(*v10);
       *buf = 138412546;
-      v13 = v9;
+      v13 = mountPoint2;
       v14 = 2080;
       v15 = v11;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to enumerate snapshots for volume %@: %s", buf, 0x16u);
@@ -188,17 +188,17 @@ void __47__CacheDeleteDaemonVolume_Snapshots__snapshots__block_invoke(uint64_t a
   [v4 addObject:v5];
 }
 
-- (BOOL)hasSnapshotsMatchingRegularExpression:(id)a3
+- (BOOL)hasSnapshotsMatchingRegularExpression:(id)expression
 {
-  v4 = a3;
+  expressionCopy = expression;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [(CacheDeleteDaemonVolume *)self mountPoint];
-  v6 = v5;
-  [v5 fileSystemRepresentation];
-  v7 = v4;
+  mountPoint = [(CacheDeleteDaemonVolume *)self mountPoint];
+  v6 = mountPoint;
+  [mountPoint fileSystemRepresentation];
+  v7 = expressionCopy;
   v15 = v7;
   v8 = enumerate_snapshots();
 
@@ -234,15 +234,15 @@ void __76__CacheDeleteDaemonVolume_Snapshots__hasSnapshotsMatchingRegularExpress
   }
 }
 
-- (id)snapshotsMatchingRegularExpression:(id)a3
+- (id)snapshotsMatchingRegularExpression:(id)expression
 {
-  v4 = a3;
+  expressionCopy = expression;
   v5 = objc_opt_new();
-  v6 = [(CacheDeleteDaemonVolume *)self mountPoint];
-  [v6 fileSystemRepresentation];
-  v16 = v4;
+  mountPoint = [(CacheDeleteDaemonVolume *)self mountPoint];
+  [mountPoint fileSystemRepresentation];
+  v16 = expressionCopy;
   v7 = v5;
-  v8 = v4;
+  v8 = expressionCopy;
   v9 = enumerate_snapshots();
 
   if (v9)
@@ -277,17 +277,17 @@ void __73__CacheDeleteDaemonVolume_Snapshots__snapshotsMatchingRegularExpression
   }
 }
 
-- (BOOL)hasSnapshotsExcludingRegularExpression:(id)a3
+- (BOOL)hasSnapshotsExcludingRegularExpression:(id)expression
 {
-  v4 = a3;
+  expressionCopy = expression;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v5 = [(CacheDeleteDaemonVolume *)self mountPoint];
-  v6 = v5;
-  [v5 fileSystemRepresentation];
-  v7 = v4;
+  mountPoint = [(CacheDeleteDaemonVolume *)self mountPoint];
+  v6 = mountPoint;
+  [mountPoint fileSystemRepresentation];
+  v7 = expressionCopy;
   v8 = enumerate_snapshots();
 
   if (v8)
@@ -295,11 +295,11 @@ void __73__CacheDeleteDaemonVolume_Snapshots__snapshotsMatchingRegularExpression
     v9 = CDGetLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(CacheDeleteDaemonVolume *)self mountPoint];
+      mountPoint2 = [(CacheDeleteDaemonVolume *)self mountPoint];
       v13 = __error();
       v14 = strerror(*v13);
       *buf = 138412546;
-      v20 = v12;
+      v20 = mountPoint2;
       v21 = 2080;
       v22 = v14;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Failed to enumerate snapshots for volume %@: %s", buf, 0x16u);
@@ -333,15 +333,15 @@ void __77__CacheDeleteDaemonVolume_Snapshots__hasSnapshotsExcludingRegularExpres
   }
 }
 
-- (id)snapshotsExcludingRegularExpression:(id)a3
+- (id)snapshotsExcludingRegularExpression:(id)expression
 {
-  v4 = a3;
+  expressionCopy = expression;
   v5 = objc_opt_new();
-  v6 = [(CacheDeleteDaemonVolume *)self mountPoint];
-  [v6 fileSystemRepresentation];
-  v16 = v4;
+  mountPoint = [(CacheDeleteDaemonVolume *)self mountPoint];
+  [mountPoint fileSystemRepresentation];
+  v16 = expressionCopy;
   v7 = v5;
-  v8 = v4;
+  v8 = expressionCopy;
   v9 = enumerate_snapshots();
 
   if (v9)
@@ -378,26 +378,26 @@ void __74__CacheDeleteDaemonVolume_Snapshots__snapshotsExcludingRegularExpressio
 
 - (id)snapshotsExcludingTimeMachine
 {
-  v3 = [(CacheDeleteDaemonVolume *)self timeMachineSnapshotRegex];
-  v4 = [(CacheDeleteDaemonVolume *)self snapshotsExcludingRegularExpression:v3];
+  timeMachineSnapshotRegex = [(CacheDeleteDaemonVolume *)self timeMachineSnapshotRegex];
+  v4 = [(CacheDeleteDaemonVolume *)self snapshotsExcludingRegularExpression:timeMachineSnapshotRegex];
 
   return v4;
 }
 
-- (CacheDeleteDaemonVolume)initWithPath:(id)a3 isPrimary:(BOOL)a4
+- (CacheDeleteDaemonVolume)initWithPath:(id)path isPrimary:(BOOL)primary
 {
   v20.receiver = self;
   v20.super_class = CacheDeleteDaemonVolume;
-  v5 = [(CacheDeleteDaemonVolume *)&v20 initWithPath:a3];
+  v5 = [(CacheDeleteDaemonVolume *)&v20 initWithPath:path];
   v6 = v5;
   if (v5)
   {
-    v7 = [(CacheDeleteDaemonVolume *)v5 fsType];
+    fsType = [(CacheDeleteDaemonVolume *)v5 fsType];
 
-    if (v7)
+    if (fsType)
     {
-      v8 = [(CacheDeleteDaemonVolume *)v6 fsType];
-      v6->_isAPFSVolume = strcmp([v8 UTF8String], "apfs") == 0;
+      fsType2 = [(CacheDeleteDaemonVolume *)v6 fsType];
+      v6->_isAPFSVolume = strcmp([fsType2 UTF8String], "apfs") == 0;
     }
 
     else
@@ -405,12 +405,12 @@ void __74__CacheDeleteDaemonVolume_Snapshots__snapshotsExcludingRegularExpressio
       v6->_isAPFSVolume = 1;
     }
 
-    v9 = [(CacheDeleteDaemonVolume *)v6 bsdName];
-    if (v9)
+    bsdName = [(CacheDeleteDaemonVolume *)v6 bsdName];
+    if (bsdName)
     {
-      v10 = v9;
-      v11 = [(CacheDeleteDaemonVolume *)v6 bsdName];
-      [v11 UTF8String];
+      v10 = bsdName;
+      bsdName2 = [(CacheDeleteDaemonVolume *)v6 bsdName];
+      [bsdName2 UTF8String];
       v12 = APFSVolumeRole();
 
       if (v12)
@@ -419,15 +419,15 @@ void __74__CacheDeleteDaemonVolume_Snapshots__snapshotsExcludingRegularExpressio
       }
     }
 
-    v13 = [(CacheDeleteDaemonVolume *)v6 mountPoint];
-    [v13 UTF8String];
+    mountPoint = [(CacheDeleteDaemonVolume *)v6 mountPoint];
+    [mountPoint UTF8String];
     v14 = VolUUID();
     uuid = v6->_uuid;
     v6->_uuid = v14;
 
-    v6->_primary = a4;
-    v16 = [(CacheDeleteDaemonVolume *)v6 mountPoint];
-    [v16 UTF8String];
+    v6->_primary = primary;
+    mountPoint2 = [(CacheDeleteDaemonVolume *)v6 mountPoint];
+    [mountPoint2 UTF8String];
     v17 = thresholdsForMountPoint();
     thresholds = v6->__thresholds;
     v6->__thresholds = v17;
@@ -438,25 +438,25 @@ void __74__CacheDeleteDaemonVolume_Snapshots__snapshotsExcludingRegularExpressio
   return v6;
 }
 
-- (CacheDeleteDaemonVolume)initWithVolume:(id)a3
+- (CacheDeleteDaemonVolume)initWithVolume:(id)volume
 {
-  v4 = a3;
+  volumeCopy = volume;
   v12.receiver = self;
   v12.super_class = CacheDeleteDaemonVolume;
-  v5 = [(CacheDeleteDaemonVolume *)&v12 initWithVolume:v4];
+  v5 = [(CacheDeleteDaemonVolume *)&v12 initWithVolume:volumeCopy];
   if (v5)
   {
-    v6 = [v4 uuid];
+    uuid = [volumeCopy uuid];
     uuid = v5->_uuid;
-    v5->_uuid = v6;
+    v5->_uuid = uuid;
 
-    v5->_primary = [v4 primary];
-    v5->_reserve = [v4 reserve];
-    v5->_quota = [v4 quota];
-    v5->_isAPFSVolume = [v4 isAPFSVolume];
-    v5->_role = [v4 role];
-    v8 = [v4 _thresholds];
-    v9 = [v8 copy];
+    v5->_primary = [volumeCopy primary];
+    v5->_reserve = [volumeCopy reserve];
+    v5->_quota = [volumeCopy quota];
+    v5->_isAPFSVolume = [volumeCopy isAPFSVolume];
+    v5->_role = [volumeCopy role];
+    _thresholds = [volumeCopy _thresholds];
+    v9 = [_thresholds copy];
     thresholds = v5->__thresholds;
     v5->__thresholds = v9;
   }
@@ -464,17 +464,17 @@ void __74__CacheDeleteDaemonVolume_Snapshots__snapshotsExcludingRegularExpressio
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CacheDeleteDaemonVolume alloc];
 
   return [(CacheDeleteDaemonVolume *)v4 initWithVolume:self];
 }
 
-+ (CacheDeleteDaemonVolume)volumeWithPath:(id)a3
++ (CacheDeleteDaemonVolume)volumeWithPath:(id)path
 {
-  v3 = a3;
-  v4 = [CacheDeleteDaemonVolume validateVolumeAtPath:v3];
+  pathCopy = path;
+  v4 = [CacheDeleteDaemonVolume validateVolumeAtPath:pathCopy];
   if (v4)
   {
     v5 = [CacheDeleteDaemonVolume createVolume:v4 isPrimary:1];
@@ -486,7 +486,7 @@ void __74__CacheDeleteDaemonVolume_Snapshots__snapshotsExcludingRegularExpressio
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = pathCopy;
       _os_log_debug_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "CacheDeleteDaemonVolume volumeWithPath Unable to validate mount point for: %@", &v8, 0xCu);
     }
 
@@ -496,9 +496,9 @@ void __74__CacheDeleteDaemonVolume_Snapshots__snapshotsExcludingRegularExpressio
   return v5;
 }
 
-+ (id)createVolume:(id)a3 isPrimary:(BOOL)a4
++ (id)createVolume:(id)volume isPrimary:(BOOL)primary
 {
-  v5 = a3;
+  volumeCopy = volume;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -521,11 +521,11 @@ void __74__CacheDeleteDaemonVolume_Snapshots__snapshotsExcludingRegularExpressio
   v10[1] = 3221225472;
   v10[2] = __50__CacheDeleteDaemonVolume_createVolume_isPrimary___block_invoke_2;
   v10[3] = &unk_100061FE0;
-  v11 = v5;
+  v11 = volumeCopy;
   v12 = v15;
   v13 = &v17;
-  v14 = a4;
-  v7 = v5;
+  primaryCopy = primary;
+  v7 = volumeCopy;
   dispatch_sync(v6, v10);
   v8 = v18[5];
 
@@ -609,14 +609,14 @@ LABEL_7:
   }
 }
 
-+ (void)invalidateVolumesCache:(id)a3
++ (void)invalidateVolumesCache:(id)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v4 = CDGetLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v9 = v3;
+    v9 = cacheCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "CacheDeleteDaemonVolume invalidateVolumesCache  UUID %@", buf, 0xCu);
   }
 
@@ -627,7 +627,7 @@ LABEL_7:
     block[1] = 3221225472;
     block[2] = __50__CacheDeleteDaemonVolume_invalidateVolumesCache___block_invoke;
     block[3] = &unk_100060D58;
-    v7 = v3;
+    v7 = cacheCopy;
     dispatch_sync(v5, block);
   }
 }
@@ -705,16 +705,16 @@ void __50__CacheDeleteDaemonVolume_invalidateVolumesCache___block_invoke(uint64_
   }
 }
 
-+ (CacheDeleteDaemonVolume)volumeWithMountpoint:(id)a3
++ (CacheDeleteDaemonVolume)volumeWithMountpoint:(id)mountpoint
 {
-  v3 = a3;
-  v4 = [CacheDeleteDaemonVolume volumeWithPath:v3];
-  v5 = [v4 mountPoint];
-  v6 = [v5 stringByStandardizingPath];
-  v7 = [v3 stringByStandardizingPath];
+  mountpointCopy = mountpoint;
+  v4 = [CacheDeleteDaemonVolume volumeWithPath:mountpointCopy];
+  mountPoint = [v4 mountPoint];
+  stringByStandardizingPath = [mountPoint stringByStandardizingPath];
+  stringByStandardizingPath2 = [mountpointCopy stringByStandardizingPath];
 
-  LODWORD(v3) = [v6 isEqualToString:v7];
-  if (v3)
+  LODWORD(mountpointCopy) = [stringByStandardizingPath isEqualToString:stringByStandardizingPath2];
+  if (mountpointCopy)
   {
     v8 = v4;
   }
@@ -727,7 +727,7 @@ void __50__CacheDeleteDaemonVolume_invalidateVolumesCache___block_invoke(uint64_
   return v8;
 }
 
-- (BOOL)containerTotalSize:(unint64_t *)a3 andFreespace:(unint64_t *)a4
+- (BOOL)containerTotalSize:(unint64_t *)size andFreespace:(unint64_t *)freespace
 {
   [@"disk0s1" UTF8String];
   SpaceInfo = APFSContainerGetSpaceInfo();

@@ -1,21 +1,21 @@
 @interface HKMHPromptedAssessmentsManager
 + (id)taskIdentifier;
-- (BOOL)_synchronouslyStartObservingWithError:(id *)a3;
-- (HKMHPromptedAssessmentsManager)initWithHealthStore:(id)a3;
-- (id)promptedAssessmentsWithError:(id *)a3;
+- (BOOL)_synchronouslyStartObservingWithError:(id *)error;
+- (HKMHPromptedAssessmentsManager)initWithHealthStore:(id)store;
+- (id)promptedAssessmentsWithError:(id *)error;
 - (void)_handleAutomaticProxyReconnection;
 - (void)_notifyObserversForPromptedAssessmentUpdate;
-- (void)_startObservingWithActivationHandler:(id)a3;
+- (void)_startObservingWithActivationHandler:(id)handler;
 - (void)client_promptedAssessmentsManagerDidUpdatePromptedAssessments;
-- (void)registerObserver:(id)a3 queue:(id)a4 activationHandler:(id)a5;
-- (void)unregisterObserver:(id)a3;
+- (void)registerObserver:(id)observer queue:(id)queue activationHandler:(id)handler;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation HKMHPromptedAssessmentsManager
 
-- (HKMHPromptedAssessmentsManager)initWithHealthStore:(id)a3
+- (HKMHPromptedAssessmentsManager)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = HKMHPromptedAssessmentsManager;
   v5 = [(HKMHPromptedAssessmentsManager *)&v16 init];
@@ -27,9 +27,9 @@
     v5->_observers = v7;
 
     v9 = objc_alloc(MEMORY[0x277CCDAA0]);
-    v10 = [objc_opt_class() taskIdentifier];
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v9 initWithHealthStore:v4 taskIdentifier:v10 exportedObject:v5 taskUUID:v11];
+    taskIdentifier = [objc_opt_class() taskIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v12 = [v9 initWithHealthStore:storeCopy taskIdentifier:taskIdentifier exportedObject:v5 taskUUID:uUID];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v12;
 
@@ -48,7 +48,7 @@
   return NSStringFromClass(v2);
 }
 
-- (id)promptedAssessmentsWithError:(id *)a3
+- (id)promptedAssessmentsWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -79,10 +79,10 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -123,11 +123,11 @@ void __63__HKMHPromptedAssessmentsManager_promptedAssessmentsWithError___block_i
   *(v9 + 40) = v6;
 }
 
-- (void)registerObserver:(id)a3 queue:(id)a4 activationHandler:(id)a5
+- (void)registerObserver:(id)observer queue:(id)queue activationHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  observerCopy = observer;
+  queueCopy = queue;
+  v10 = [(HKTaskServerProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:handler];
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -141,7 +141,7 @@ void __63__HKMHPromptedAssessmentsManager_promptedAssessmentsWithError___block_i
   v15 = &v16;
   v12 = v10;
   v14 = v12;
-  [(HKObserverSet *)observers registerObserver:v8 queue:v9 runIfFirstObserver:v13];
+  [(HKObserverSet *)observers registerObserver:observerCopy queue:queueCopy runIfFirstObserver:v13];
   if ((v17[3] & 1) == 0)
   {
     (*(v12 + 2))(v12, 1, 0);
@@ -184,7 +184,7 @@ void __75__HKMHPromptedAssessmentsManager_registerObserver_queue_activationHandl
   [WeakRetained _handleAutomaticProxyReconnection];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x277D85DD0];
@@ -192,7 +192,7 @@ void __75__HKMHPromptedAssessmentsManager_registerObserver_queue_activationHandl
   v4[2] = __53__HKMHPromptedAssessmentsManager_unregisterObserver___block_invoke;
   v4[3] = &unk_2798A9B88;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 uint64_t __53__HKMHPromptedAssessmentsManager_unregisterObserver___block_invoke(uint64_t a1)
@@ -231,15 +231,15 @@ void __53__HKMHPromptedAssessmentsManager_unregisterObserver___block_invoke_2(ui
   }
 }
 
-- (void)_startObservingWithActivationHandler:(id)a3
+- (void)_startObservingWithActivationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__HKMHPromptedAssessmentsManager__startObservingWithActivationHandler___block_invoke;
   v9[3] = &unk_2798A9BB0;
-  v10 = v4;
+  v10 = handlerCopy;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__HKMHPromptedAssessmentsManager__startObservingWithActivationHandler___block_invoke_2;
@@ -262,7 +262,7 @@ void __71__HKMHPromptedAssessmentsManager__startObservingWithActivationHandler__
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)_synchronouslyStartObservingWithError:(id *)a3
+- (BOOL)_synchronouslyStartObservingWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -292,10 +292,10 @@ void __71__HKMHPromptedAssessmentsManager__startObservingWithActivationHandler__
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v7 = v5;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -338,7 +338,7 @@ void __72__HKMHPromptedAssessmentsManager__synchronouslyStartObservingWithError_
 - (void)_handleAutomaticProxyReconnection
 {
   *v4 = 138543618;
-  *&v4[4] = a1;
+  *&v4[4] = self;
   *&v4[12] = 2114;
   *&v4[14] = a2;
   OUTLINED_FUNCTION_1_0(&dword_25895E000, a2, a3, "[%{public}@] Failed to resume observation on server reconnection: %{public}@", *v4, *&v4[8], *&v4[16], *MEMORY[0x277D85DE8]);
@@ -353,7 +353,7 @@ void __72__HKMHPromptedAssessmentsManager__synchronouslyStartObservingWithError_
   if (os_log_type_enabled(*MEMORY[0x277CCC2F0], OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25895E000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received server notification of prompted assessment update", &v5, 0xCu);
   }
 
@@ -373,7 +373,7 @@ void __72__HKMHPromptedAssessmentsManager__synchronouslyStartObservingWithError_
     v6 = v3;
     v7 = [v4 numberWithUnsignedInteger:{-[HKObserverSet count](observers, "count")}];
     *buf = 138543618;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v7;
     _os_log_impl(&dword_25895E000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notifying %@ observers of prompted assessment update", buf, 0x16u);

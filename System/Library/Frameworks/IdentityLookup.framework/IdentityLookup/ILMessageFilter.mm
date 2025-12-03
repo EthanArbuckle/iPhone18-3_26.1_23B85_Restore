@@ -1,12 +1,12 @@
 @interface ILMessageFilter
 - (ILMessageFilter)init;
 - (NSXPCConnection)connection;
-- (id)remoteObjectProxyWithErrorHandler:(id)a3;
+- (id)remoteObjectProxyWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)performCapabilitiesQueryRequest:(id)a3 completion:(id)a4;
-- (void)performClassificationReportRequest:(id)a3 completion:(id)a4;
-- (void)performQueryRequest:(id)a3 completion:(id)a4;
-- (void)performReportRequest:(id)a3 completion:(id)a4;
+- (void)performCapabilitiesQueryRequest:(id)request completion:(id)completion;
+- (void)performClassificationReportRequest:(id)request completion:(id)completion;
+- (void)performQueryRequest:(id)request completion:(id)completion;
+- (void)performReportRequest:(id)request completion:(id)completion;
 @end
 
 @implementation ILMessageFilter
@@ -43,8 +43,8 @@
     v5 = self->_connection;
     self->_connection = v4;
 
-    v6 = [MEMORY[0x277CCAE90] il_messageFilterHostInterface];
-    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:v6];
+    il_messageFilterHostInterface = [MEMORY[0x277CCAE90] il_messageFilterHostInterface];
+    [(NSXPCConnection *)self->_connection setRemoteObjectInterface:il_messageFilterHostInterface];
 
     objc_initWeak(&location, self);
     v10[0] = MEMORY[0x277D85DD0];
@@ -132,30 +132,30 @@ void __29__ILMessageFilter_connection__block_invoke_10(uint64_t a1)
   *(v1 + 8) = 0;
 }
 
-- (id)remoteObjectProxyWithErrorHandler:(id)a3
+- (id)remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ILMessageFilter *)self connection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  connection = [(ILMessageFilter *)self connection];
+  v6 = [connection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)performQueryRequest:(id)a3 completion:(id)a4
+- (void)performQueryRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ILMessageFilter *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(ILMessageFilter *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__ILMessageFilter_performQueryRequest_completion___block_invoke;
   block[3] = &unk_278A5E528;
-  v12 = v6;
-  v13 = v7;
+  v12 = requestCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = requestCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __50__ILMessageFilter_performQueryRequest_completion___block_invoke(uint64_t a1)
@@ -182,21 +182,21 @@ void __50__ILMessageFilter_performQueryRequest_completion___block_invoke_2(uint6
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)performReportRequest:(id)a3 completion:(id)a4
+- (void)performReportRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ILMessageFilter *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(ILMessageFilter *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __51__ILMessageFilter_performReportRequest_completion___block_invoke;
   block[3] = &unk_278A5E528;
-  v12 = v6;
-  v13 = v7;
+  v12 = requestCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = requestCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __51__ILMessageFilter_performReportRequest_completion___block_invoke(uint64_t a1)
@@ -223,21 +223,21 @@ void __51__ILMessageFilter_performReportRequest_completion___block_invoke_2(uint
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)performCapabilitiesQueryRequest:(id)a3 completion:(id)a4
+- (void)performCapabilitiesQueryRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ILMessageFilter *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(ILMessageFilter *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__ILMessageFilter_performCapabilitiesQueryRequest_completion___block_invoke;
   block[3] = &unk_278A5E528;
-  v12 = v6;
-  v13 = v7;
+  v12 = requestCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = requestCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __62__ILMessageFilter_performCapabilitiesQueryRequest_completion___block_invoke(uint64_t a1)
@@ -264,21 +264,21 @@ void __62__ILMessageFilter_performCapabilitiesQueryRequest_completion___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)performClassificationReportRequest:(id)a3 completion:(id)a4
+- (void)performClassificationReportRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ILMessageFilter *)self queue];
+  requestCopy = request;
+  completionCopy = completion;
+  queue = [(ILMessageFilter *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ILMessageFilter_performClassificationReportRequest_completion___block_invoke;
   block[3] = &unk_278A5E528;
-  v12 = v6;
-  v13 = v7;
+  v12 = requestCopy;
+  v13 = completionCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = requestCopy;
+  v10 = completionCopy;
+  dispatch_async(queue, block);
 }
 
 void __65__ILMessageFilter_performClassificationReportRequest_completion___block_invoke(uint64_t a1)

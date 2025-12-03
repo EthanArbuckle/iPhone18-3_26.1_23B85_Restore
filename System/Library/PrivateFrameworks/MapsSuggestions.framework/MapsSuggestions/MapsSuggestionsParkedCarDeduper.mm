@@ -1,16 +1,16 @@
 @interface MapsSuggestionsParkedCarDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsParkedCarDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v12 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -53,23 +53,23 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!MapsSuggestionsEntriesAreBothOfType(7, v6, v5))
+  if (!MapsSuggestionsEntriesAreBothOfType(7, withEntryCopy, entryCopy))
   {
 LABEL_15:
     v14 = 0;
     goto LABEL_16;
   }
 
-  v8 = [v5 BOOLeanForKey:@"MapsSuggestionsRoutineIsBackedByVehicleEventKey"];
+  v8 = [entryCopy BOOLeanForKey:@"MapsSuggestionsRoutineIsBackedByVehicleEventKey"];
   v9 = [v7 BOOLeanForKey:@"MapsSuggestionsRoutineIsBackedByVehicleEventKey"];
   if (v8 && v9)
   {
-    v10 = [v5 dateForKey:@"MapsSuggestionsWhenItHappenedKey"];
+    v10 = [entryCopy dateForKey:@"MapsSuggestionsWhenItHappenedKey"];
     v11 = [v7 dateForKey:@"MapsSuggestionsWhenItHappenedKey"];
     if (([v10 compare:v11] + 1) <= 1)
     {
       LOWORD(v16) = 257;
-      [v5 mergeFromSuggestionEntry:v7 behavior:1 protectTitles:0 protectTitleDecorations:1 protectMapItem:0 protectWeight:0 protectExpiration:v16 protectIcon:?];
+      [entryCopy mergeFromSuggestionEntry:v7 behavior:1 protectTitles:0 protectTitleDecorations:1 protectMapItem:0 protectWeight:0 protectExpiration:v16 protectIcon:?];
     }
   }
 
@@ -78,10 +78,10 @@ LABEL_15:
     if (v9)
     {
       LOWORD(v16) = 257;
-      [v5 mergeFromSuggestionEntry:v7 behavior:1 protectTitles:0 protectTitleDecorations:1 protectMapItem:0 protectWeight:0 protectExpiration:v16 protectIcon:?];
+      [entryCopy mergeFromSuggestionEntry:v7 behavior:1 protectTitles:0 protectTitleDecorations:1 protectMapItem:0 protectWeight:0 protectExpiration:v16 protectIcon:?];
     }
 
-    [v5 replaceByEntry:v7];
+    [entryCopy replaceByEntry:v7];
   }
 
   v14 = 1;

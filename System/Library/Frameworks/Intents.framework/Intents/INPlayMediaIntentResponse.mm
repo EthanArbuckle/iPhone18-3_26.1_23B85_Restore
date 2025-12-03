@@ -1,18 +1,18 @@
 @interface INPlayMediaIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INPlayMediaIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INPlayMediaIntentResponse)initWithBackingStore:(id)store;
 - (INPlayMediaIntentResponse)initWithCode:(INPlayMediaIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INPlayMediaIntentResponse)initWithCoder:(id)a3;
+- (INPlayMediaIntentResponse)initWithCoder:(id)coder;
 - (INPlayMediaIntentResponseCode)code;
 - (NSDictionary)nowPlayingInfo;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
 - (void)_intents_prepareResponse;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setNowPlayingInfo:(NSDictionary *)nowPlayingInfo;
 @end
 
@@ -22,32 +22,32 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"code";
-  v3 = [(INPlayMediaIntentResponse *)self code];
-  v4 = v3;
-  if (v3 < (INPlayMediaIntentResponseCodeFailureUnknownMediaType|INPlayMediaIntentResponseCodeSuccess))
+  code = [(INPlayMediaIntentResponse *)self code];
+  v4 = code;
+  if (code < (INPlayMediaIntentResponseCodeFailureUnknownMediaType|INPlayMediaIntentResponseCodeSuccess))
   {
-    v5 = off_1E7285E60[v3];
-    v6 = v5;
+    null = off_1E7285E60[code];
+    v6 = null;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v6 = 0;
   }
 
   v12[1] = @"nowPlayingInfo";
-  v13[0] = v5;
-  v7 = [(INPlayMediaIntentResponse *)self nowPlayingInfo];
-  v8 = v7;
-  if (!v7)
+  v13[0] = null;
+  nowPlayingInfo = [(INPlayMediaIntentResponse *)self nowPlayingInfo];
+  null2 = nowPlayingInfo;
+  if (!nowPlayingInfo)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v8;
+  v13[1] = null2;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  if (!v7)
+  if (!nowPlayingInfo)
   {
   }
 
@@ -63,70 +63,70 @@
 - (void)setNowPlayingInfo:(NSDictionary *)nowPlayingInfo
 {
   v4 = nowPlayingInfo;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDictionary(v4);
 
-  [v5 setNowPlayingInfo:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setNowPlayingInfo:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSDictionary)nowPlayingInfo
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 nowPlayingInfo];
-  v4 = INIntentSlotValueTransformFromDictionary(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  nowPlayingInfo = [_responseMessagePBRepresentation nowPlayingInfo];
+  v4 = INIntentSlotValueTransformFromDictionary(nowPlayingInfo);
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INPlayMediaIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INPlayMediaIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeContinueInApp"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeContinueInApp"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeInProgress"])
+  if ([nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeInProgress"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeSuccess"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeHandleInApp"])
+  if ([nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeHandleInApp"])
   {
     v4 = 5;
   }
 
-  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeFailure"])
   {
     v4 = 6;
   }
 
-  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v4 = 7;
   }
 
-  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureUnknownMediaType"])
+  if ([nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeFailureUnknownMediaType"])
   {
     v4 = 8;
   }
 
-  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureNoUnplayedContent"])
+  if ([nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeFailureNoUnplayedContent"])
   {
     v4 = 9;
   }
 
-  if ([v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureRestrictedContent"])
+  if ([nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeFailureRestrictedContent"])
   {
     v5 = 10;
   }
@@ -136,7 +136,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INPlayMediaIntentResponseCodeFailureMaxStreamLimitReached"];
+  v6 = [nameCopy isEqualToString:@"INPlayMediaIntentResponseCodeFailureMaxStreamLimitReached"];
 
   if (v6)
   {
@@ -151,30 +151,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INPlayMediaIntentResponse *)self code];
-  if ((v2 - 1) > 0xA)
+  code = [(INPlayMediaIntentResponse *)self code];
+  if ((code - 1) > 0xA)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F1C8[v2 - 1];
+    return qword_18EE5F1C8[code - 1];
   }
 }
 
-- (INPlayMediaIntentResponse)initWithCoder:(id)a3
+- (INPlayMediaIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INPlayMediaIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INPlayMediaIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INPlayMediaIntentResponseCode)code
@@ -184,18 +184,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INPlayMediaIntentResponse)initWithBackingStore:(id)a3
+- (INPlayMediaIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INPlayMediaIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INPlayMediaIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INPlayMediaIntentResponse)initWithCode:(INPlayMediaIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -236,11 +236,11 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if ((a3 - 8) < 4)
+  if ((code - 8) < 4)
   {
-    return a3 - 7;
+    return code - 7;
   }
 
   else
@@ -249,37 +249,37 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 0xA)
+  if ((code - 1) > 0xA)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5F198[a3 - 1];
+    return dword_18EE5F198[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 3;
   v6 = 2;
-  if (a3 != 4)
+  if (type != 4)
   {
-    v6 = a3 == 5;
+    v6 = type == 5;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     v5 = v6;
   }
 
   v7 = 4;
-  v8 = a4 - 1;
+  v8 = code - 1;
   v9 = 6;
-  if (a5)
+  if (requested)
   {
     v9 = 7;
   }
@@ -294,17 +294,17 @@
     v10 = v8 | 8;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v10 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v7 = v10;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v7;
   }
@@ -318,23 +318,23 @@
 - (void)_intents_prepareResponse
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [(INPlayMediaIntentResponse *)self nowPlayingInfo];
-  if (![v3 count] || !MediaRemoteLibrary() || !MediaPlayerLibrary())
+  nowPlayingInfo = [(INPlayMediaIntentResponse *)self nowPlayingInfo];
+  if (![nowPlayingInfo count] || !MediaRemoteLibrary() || !MediaPlayerLibrary())
   {
     goto LABEL_29;
   }
 
   v4 = getMPMediaItemPropertyArtwork();
-  v25 = [v3 objectForKeyedSubscript:v4];
+  v25 = [nowPlayingInfo objectForKeyedSubscript:v4];
 
   if (!v25)
   {
-    v5 = [v3 objectForKeyedSubscript:getkMRMediaRemoteNowPlayingInfoArtworkData()];
+    v5 = [nowPlayingInfo objectForKeyedSubscript:getkMRMediaRemoteNowPlayingInfoArtworkData()];
     if (v5)
     {
       v25 = [INImage imageWithImageData:v5];
-      v6 = [v3 objectForKeyedSubscript:getkMRMediaRemoteNowPlayingInfoArtworkDataWidth()];
-      v7 = [v3 objectForKeyedSubscript:getkMRMediaRemoteNowPlayingInfoArtworkDataHeight()];
+      v6 = [nowPlayingInfo objectForKeyedSubscript:getkMRMediaRemoteNowPlayingInfoArtworkDataWidth()];
+      v7 = [nowPlayingInfo objectForKeyedSubscript:getkMRMediaRemoteNowPlayingInfoArtworkDataHeight()];
       if (v7 && v6)
       {
         [v6 doubleValue];
@@ -350,7 +350,7 @@
     }
   }
 
-  v11 = [v3 mutableCopy];
+  v11 = [nowPlayingInfo mutableCopy];
   v12 = getMPMediaItemPropertyArtwork();
   [v11 removeObjectForKey:v12];
 
@@ -388,7 +388,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v15 = v3;
+  v15 = nowPlayingInfo;
   v16 = [v15 countByEnumeratingWithState:&v26 objects:v39 count:16];
   if (v16)
   {

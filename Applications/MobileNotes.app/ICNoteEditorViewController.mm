@@ -1,17 +1,17 @@
 @interface ICNoteEditorViewController
 - (BOOL)collaborationButtons_updateCollaborationStateIfNeeded;
 - (BOOL)isDarkModeForActivityItemsConfiguration;
-- (BOOL)noteEditorActionMenuCanScanDocuments:(id)a3;
-- (id)app_systemPaperInkPaletteButtonView:(id)a3;
+- (BOOL)noteEditorActionMenuCanScanDocuments:(id)documents;
+- (id)app_systemPaperInkPaletteButtonView:(id)view;
 - (id)app_systemPaperNavigationBar;
 - (id)collaborationButtons_collaborationBarButtonItem;
-- (id)notePreview:(id)a3;
+- (id)notePreview:(id)preview;
 - (id)realtimeCollaborationSelectionController;
-- (void)app_createAndPresentCloudSharingControllerBySender:(id)a3;
-- (void)app_shareButtonPressed:(id)a3;
+- (void)app_createAndPresentCloudSharingControllerBySender:(id)sender;
+- (void)app_shareButtonPressed:(id)pressed;
 - (void)app_showMoveToFolder;
 - (void)app_showRecoverNoteAlert;
-- (void)collaborationButtons_acceptInviteWithShareURL:(id)a3 invitationViewController:(id)a4;
+- (void)collaborationButtons_acceptInviteWithShareURL:(id)l invitationViewController:(id)controller;
 - (void)collaborationButtons_registerForSharedWithYouHighlightUpdates;
 - (void)collaborationButtons_setupCollaborationController;
 - (void)collaboration_setupActivityItemsConfigurationProvider;
@@ -20,12 +20,12 @@
 - (void)link_addCreateNoteInteraction;
 - (void)link_addReplaceSelectionInteraction;
 - (void)link_removeLinkActionInteractions;
-- (void)noteCursorVisibilityChanged:(id)a3;
-- (void)noteEditorActionMenuShouldScanDocuments:(id)a3;
-- (void)noteEditorActionMenuShouldShowHandwritingDebug:(id)a3;
-- (void)noteEditorActionMenuWillShow:(id)a3;
-- (void)paperKitViewDidAppear:(id)a3;
-- (void)paperKitViewWillDisappear:(id)a3;
+- (void)noteCursorVisibilityChanged:(id)changed;
+- (void)noteEditorActionMenuShouldScanDocuments:(id)documents;
+- (void)noteEditorActionMenuShouldShowHandwritingDebug:(id)debug;
+- (void)noteEditorActionMenuWillShow:(id)show;
+- (void)paperKitViewDidAppear:(id)appear;
+- (void)paperKitViewWillDisappear:(id)disappear;
 - (void)ppt_didEditorBeginEditing;
 - (void)ppt_didFinishExtendedLaunch;
 - (void)ppt_didShowNoteEditor;
@@ -33,12 +33,12 @@
 - (void)ppt_noteEditorDidLayoutSubviews;
 - (void)ppt_textViewDidChange;
 - (void)ppt_willLoadNoteIntoEditor;
-- (void)rcc_updatePaperKitMessengerForAttachment:(id)a3 layoutManager:(id)a4;
-- (void)rcc_updatePaperKitMessengerForAttachment:(id)a3 textLayoutManager:(id)a4;
-- (void)realtimeCollaborationControllerDidChangeSelectionState:(id)a3;
-- (void)realtimeCollaborationControllerSessionDidTerminate:(id)a3;
-- (void)realtimeCollaborationControllerSessionWillBegin:(id)a3;
-- (void)updateFastSyncParticipantCursorsForNote:(id)a3;
+- (void)rcc_updatePaperKitMessengerForAttachment:(id)attachment layoutManager:(id)manager;
+- (void)rcc_updatePaperKitMessengerForAttachment:(id)attachment textLayoutManager:(id)manager;
+- (void)realtimeCollaborationControllerDidChangeSelectionState:(id)state;
+- (void)realtimeCollaborationControllerSessionDidTerminate:(id)terminate;
+- (void)realtimeCollaborationControllerSessionWillBegin:(id)begin;
+- (void)updateFastSyncParticipantCursorsForNote:(id)note;
 - (void)updateViewAnnotation;
 @end
 
@@ -58,21 +58,21 @@
 
 - (void)updateViewAnnotation
 {
-  v4 = [(ICNoteEditorViewController *)self view];
-  v3 = [(ICNoteEditorViewController *)self note];
-  [v4 ic_annotateWithNote:v3];
+  view = [(ICNoteEditorViewController *)self view];
+  note = [(ICNoteEditorViewController *)self note];
+  [view ic_annotateWithNote:note];
 }
 
 - (void)link_addCreateNoteInteraction
 {
   objc_initWeak(&location, self);
-  v3 = [(ICNoteEditorViewController *)self view];
+  view = [(ICNoteEditorViewController *)self view];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000CE618;
   v4[3] = &unk_100648E68;
   objc_copyWeak(&v5, &location);
-  [v3 ic_addCreateNoteInteractionWithFolderHandler:v4];
+  [view ic_addCreateNoteInteractionWithFolderHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -83,12 +83,12 @@
   *(swift_allocObject() + 16) = self;
   objc_allocWithZone(type metadata accessor for UIAppIntentInteraction());
   sub_100024048();
-  v7 = self;
+  selfCopy = self;
   v3 = UIAppIntentInteraction.init<A>(intent:perform:)();
-  v4 = [(ICNoteEditorViewController *)v7 view];
-  if (v4)
+  view = [(ICNoteEditorViewController *)selfCopy view];
+  if (view)
   {
-    v5 = v4;
+    v5 = view;
     v6 = v3;
     [v5 addInteraction:v6];
   }
@@ -102,13 +102,13 @@
 - (void)link_addReplaceSelectionInteraction
 {
   objc_initWeak(&location, self);
-  v3 = [(ICNoteEditorViewController *)self view];
+  view = [(ICNoteEditorViewController *)self view];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1000CE6FC;
   v4[3] = &unk_100648E90;
   objc_copyWeak(&v5, &location);
-  [v3 ic_addReplaceSelectionInteractionWithTextHandler:v4];
+  [view ic_addReplaceSelectionInteractionWithTextHandler:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -116,30 +116,30 @@
 
 - (BOOL)collaborationButtons_updateCollaborationStateIfNeeded
 {
-  v3 = [(ICNoteEditorViewController *)self note];
-  if (v3)
+  note = [(ICNoteEditorViewController *)self note];
+  if (note)
   {
   }
 
   else
   {
-    v4 = [(ICNoteEditorViewController *)self collaborationButtonsController];
-    v5 = [v4 cloudObject];
+    collaborationButtonsController = [(ICNoteEditorViewController *)self collaborationButtonsController];
+    cloudObject = [collaborationButtonsController cloudObject];
 
-    if (!v5)
+    if (!cloudObject)
     {
       return 0;
     }
   }
 
-  v6 = [(ICNoteEditorViewController *)self collaborationButtonsController];
-  if (v6)
+  collaborationButtonsController2 = [(ICNoteEditorViewController *)self collaborationButtonsController];
+  if (collaborationButtonsController2)
   {
-    v7 = v6;
-    v8 = [(ICNoteEditorViewController *)self note];
-    v9 = [(ICNoteEditorViewController *)self collaborationButtonsController];
-    v10 = [v9 cloudObject];
-    v11 = [v8 isEqual:v10];
+    v7 = collaborationButtonsController2;
+    note2 = [(ICNoteEditorViewController *)self note];
+    collaborationButtonsController3 = [(ICNoteEditorViewController *)self collaborationButtonsController];
+    cloudObject2 = [collaborationButtonsController3 cloudObject];
+    v11 = [note2 isEqual:cloudObject2];
 
     if (v11)
     {
@@ -155,9 +155,9 @@
 {
   objc_initWeak(&location, self);
   v3 = [ICCollaborationButtonsController alloc];
-  v4 = [(ICNoteEditorViewController *)self note];
-  v5 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v6 = [(ICCollaborationButtonsController *)v3 initWithCloudObject:v4 coordinator:v5];
+  note = [(ICNoteEditorViewController *)self note];
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  v6 = [(ICCollaborationButtonsController *)v3 initWithCloudObject:note coordinator:viewControllerManager];
   [(ICNoteEditorViewController *)self setCollaborationButtonsController:v6];
 
   objc_copyWeak(&v9, &location);
@@ -173,9 +173,9 @@
   v4 = +[UIApplication sharedApplication];
   if ([v4 isRunningTest])
   {
-    v3 = [(ICNoteEditorViewController *)self _appearState];
+    _appearState = [(ICNoteEditorViewController *)self _appearState];
 
-    if (v3 != 1)
+    if (_appearState != 1)
     {
       return;
     }
@@ -200,9 +200,9 @@
 - (void)ppt_didShowNoteEditor
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isRunningTest];
+  isRunningTest = [v2 isRunningTest];
 
-  if (v3)
+  if (isRunningTest)
   {
     v4 = +[ICAppDelegate sharedInstance];
     [v4 didShowNoteEditor];
@@ -212,9 +212,9 @@
 - (void)ppt_didEditorBeginEditing
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isRunningTest];
+  isRunningTest = [v2 isRunningTest];
 
-  if (v3)
+  if (isRunningTest)
   {
     v4 = +[ICAppDelegate sharedInstance];
     [v4 didEditorBeginEditing];
@@ -224,9 +224,9 @@
 - (void)ppt_textViewDidChange
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isRunningTest];
+  isRunningTest = [v2 isRunningTest];
 
-  if (v3)
+  if (isRunningTest)
   {
     v4 = +[ICAppDelegate sharedInstance];
     [v4 textViewDidChange];
@@ -236,9 +236,9 @@
 - (void)ppt_inkPickerDidShow
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isRunningTest];
+  isRunningTest = [v2 isRunningTest];
 
-  if (v3)
+  if (isRunningTest)
   {
     v4 = +[ICAppDelegate sharedInstance];
     [v4 inkPickerDidShow];
@@ -254,17 +254,17 @@
   return v4;
 }
 
-- (void)realtimeCollaborationControllerSessionWillBegin:(id)a3
+- (void)realtimeCollaborationControllerSessionWillBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v5 = [(ICNoteEditorViewController *)self note];
-  v6 = [v5 attachments];
+  note = [(ICNoteEditorViewController *)self note];
+  attachments = [note attachments];
 
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  v7 = [attachments countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -275,29 +275,29 @@
       {
         if (*v29 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(attachments);
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [v11 paperBundleModel];
+        paperBundleModel = [v11 paperBundleModel];
 
-        if (v12)
+        if (paperBundleModel)
         {
-          v13 = [(ICNoteEditorViewController *)self textView];
-          v14 = [v13 textLayoutManager];
-          if (v14)
+          textView = [(ICNoteEditorViewController *)self textView];
+          textLayoutManager = [textView textLayoutManager];
+          if (textLayoutManager)
           {
-            v15 = v14;
+            v15 = textLayoutManager;
             IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
 
             if (IsTextKit2Enabled)
             {
               objc_opt_class();
-              v17 = [(ICNoteEditorViewController *)self textView];
-              v18 = [v17 textLayoutManager];
-              v19 = ICCheckedDynamicCast();
+              textView2 = [(ICNoteEditorViewController *)self textView];
+              textLayoutManager2 = [textView2 textLayoutManager];
+              textView3 = ICCheckedDynamicCast();
 
-              [v4 updatePaperKitMessengerForAttachment:v11 textLayoutManager:v19];
+              [beginCopy updatePaperKitMessengerForAttachment:v11 textLayoutManager:textView3];
 LABEL_14:
 
               continue;
@@ -308,11 +308,11 @@ LABEL_14:
           {
           }
 
-          v19 = [(ICNoteEditorViewController *)self textView];
-          v20 = [v19 layoutManager];
-          if (v20)
+          textView3 = [(ICNoteEditorViewController *)self textView];
+          layoutManager = [textView3 layoutManager];
+          if (layoutManager)
           {
-            v21 = v20;
+            v21 = layoutManager;
             v22 = ICInternalSettingsIsTextKit2Enabled();
 
             if (v22)
@@ -321,18 +321,18 @@ LABEL_14:
             }
 
             objc_opt_class();
-            v23 = [(ICNoteEditorViewController *)self textView];
-            v24 = [v23 layoutManager];
-            v19 = ICCheckedDynamicCast();
+            textView4 = [(ICNoteEditorViewController *)self textView];
+            layoutManager2 = [textView4 layoutManager];
+            textView3 = ICCheckedDynamicCast();
 
-            [v4 updatePaperKitMessengerForAttachment:v11 layoutManager:v19];
+            [beginCopy updatePaperKitMessengerForAttachment:v11 layoutManager:textView3];
           }
 
           goto LABEL_14;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
+      v8 = [attachments countByEnumeratingWithState:&v28 objects:v32 count:16];
     }
 
     while (v8);
@@ -348,9 +348,9 @@ LABEL_14:
   [v27 addObserver:self selector:"noteCursorVisibilityChanged:" name:ICNoteShowsCollaboratorCursorsDidChangeNotification object:0];
 }
 
-- (void)realtimeCollaborationControllerSessionDidTerminate:(id)a3
+- (void)realtimeCollaborationControllerSessionDidTerminate:(id)terminate
 {
-  v22 = a3;
+  terminateCopy = terminate;
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:ICSystemPaperTextAttachmentDidAppearNotification object:0];
 
@@ -365,10 +365,10 @@ LABEL_14:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [(ICNoteEditorViewController *)self note];
-  v8 = [v7 attachments];
+  note = [(ICNoteEditorViewController *)self note];
+  attachments = [note attachments];
 
-  v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v9 = [attachments countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -380,91 +380,91 @@ LABEL_14:
       {
         if (*v24 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(attachments);
         }
 
         v14 = *(*(&v23 + 1) + 8 * i);
-        v15 = [v14 typeUTI];
-        v16 = [v15 isEqualToString:v12];
+        typeUTI = [v14 typeUTI];
+        v16 = [typeUTI isEqualToString:v12];
 
         if (v16)
         {
           if (ICInternalSettingsIsTextKit2Enabled())
           {
             objc_opt_class();
-            v17 = [(ICNoteEditorViewController *)self textView];
-            v18 = [v17 textLayoutManager];
+            textView = [(ICNoteEditorViewController *)self textView];
+            textLayoutManager = [textView textLayoutManager];
             v19 = ICCheckedDynamicCast();
 
-            [v22 removePaperKitMessengerForAttachmentIfNecessary:v14 textLayoutManager:v19];
+            [terminateCopy removePaperKitMessengerForAttachmentIfNecessary:v14 textLayoutManager:v19];
           }
 
           else
           {
             objc_opt_class();
-            v20 = [(ICNoteEditorViewController *)self textView];
-            v21 = [v20 layoutManager];
+            textView2 = [(ICNoteEditorViewController *)self textView];
+            layoutManager = [textView2 layoutManager];
             v19 = ICCheckedDynamicCast();
 
-            [v22 removePaperKitMessengerForAttachmentIfNecessary:v14 layoutManager:v19];
+            [terminateCopy removePaperKitMessengerForAttachmentIfNecessary:v14 layoutManager:v19];
           }
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v10 = [attachments countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)realtimeCollaborationControllerDidChangeSelectionState:(id)a3
+- (void)realtimeCollaborationControllerDidChangeSelectionState:(id)state
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self realtimeCollaborationSelectionController];
-  [v5 realtimeCollaborationControllerDidChangeSelectionState:v4];
+  stateCopy = state;
+  realtimeCollaborationSelectionController = [(ICNoteEditorViewController *)self realtimeCollaborationSelectionController];
+  [realtimeCollaborationSelectionController realtimeCollaborationControllerDidChangeSelectionState:stateCopy];
 }
 
-- (void)paperKitViewDidAppear:(id)a3
+- (void)paperKitViewDidAppear:(id)appear
 {
-  v4 = a3;
+  appearCopy = appear;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [appearCopy object];
 
   v7 = ICCheckedDynamicCast();
 
-  v6 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-  [v6 configurePaperKitAttachmentViewIfNecessary:v7];
+  realtimeCollaborationController = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+  [realtimeCollaborationController configurePaperKitAttachmentViewIfNecessary:v7];
 }
 
-- (void)paperKitViewWillDisappear:(id)a3
+- (void)paperKitViewWillDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   objc_opt_class();
-  v5 = [v4 object];
+  object = [disappearCopy object];
 
   v7 = ICCheckedDynamicCast();
 
-  v6 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-  [v6 removePaperKitMessengerForViewIfNecessary:v7];
+  realtimeCollaborationController = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+  [realtimeCollaborationController removePaperKitMessengerForViewIfNecessary:v7];
 }
 
-- (void)noteCursorVisibilityChanged:(id)a3
+- (void)noteCursorVisibilityChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_opt_class();
-  v22 = v4;
-  v5 = [v4 object];
+  v22 = changedCopy;
+  object = [changedCopy object];
   v23 = ICDynamicCast();
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [(ICNoteEditorViewController *)self note];
-  v7 = [v6 attachments];
+  note = [(ICNoteEditorViewController *)self note];
+  attachments = [note attachments];
 
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  v8 = [attachments countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -476,26 +476,26 @@ LABEL_14:
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(attachments);
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 typeUTI];
-        v15 = [v14 isEqualToString:v11];
+        typeUTI = [v13 typeUTI];
+        v15 = [typeUTI isEqualToString:v11];
 
         if (v15)
         {
           if (ICInternalSettingsIsTextKit2Enabled())
           {
             objc_opt_class();
-            v16 = [(ICNoteEditorViewController *)self textView];
-            v17 = [v16 textLayoutManager];
+            textView = [(ICNoteEditorViewController *)self textView];
+            textLayoutManager = [textView textLayoutManager];
             v18 = ICCheckedDynamicCast();
 
             if (v18)
             {
-              v19 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-              [v19 setShowsCursors:objc_msgSend(v23 forPaperKitAttachment:"showsCollaboratorCursors") textLayoutManager:{v13, v18}];
+              realtimeCollaborationController = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+              [realtimeCollaborationController setShowsCursors:objc_msgSend(v23 forPaperKitAttachment:"showsCollaboratorCursors") textLayoutManager:{v13, v18}];
               goto LABEL_12;
             }
           }
@@ -503,14 +503,14 @@ LABEL_14:
           else
           {
             objc_opt_class();
-            v20 = [(ICNoteEditorViewController *)self textView];
-            v21 = [v20 layoutManager];
+            textView2 = [(ICNoteEditorViewController *)self textView];
+            layoutManager = [textView2 layoutManager];
             v18 = ICCheckedDynamicCast();
 
             if (v18)
             {
-              v19 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-              [v19 setShowsCursors:objc_msgSend(v23 forPaperKitAttachment:"showsCollaboratorCursors") layoutManager:{v13, v18}];
+              realtimeCollaborationController = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+              [realtimeCollaborationController setShowsCursors:objc_msgSend(v23 forPaperKitAttachment:"showsCollaboratorCursors") layoutManager:{v13, v18}];
 LABEL_12:
             }
           }
@@ -519,69 +519,69 @@ LABEL_12:
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v9 = [attachments countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)rcc_updatePaperKitMessengerForAttachment:(id)a3 layoutManager:(id)a4
+- (void)rcc_updatePaperKitMessengerForAttachment:(id)attachment layoutManager:(id)manager
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-  v8 = [v7 hasActiveSession];
+  attachmentCopy = attachment;
+  managerCopy = manager;
+  realtimeCollaborationController = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+  hasActiveSession = [realtimeCollaborationController hasActiveSession];
 
-  if (v8)
+  if (hasActiveSession)
   {
-    v9 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-    [v9 updatePaperKitMessengerForAttachment:v10 layoutManager:v6];
+    realtimeCollaborationController2 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+    [realtimeCollaborationController2 updatePaperKitMessengerForAttachment:attachmentCopy layoutManager:managerCopy];
   }
 }
 
-- (void)rcc_updatePaperKitMessengerForAttachment:(id)a3 textLayoutManager:(id)a4
+- (void)rcc_updatePaperKitMessengerForAttachment:(id)attachment textLayoutManager:(id)manager
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-  v8 = [v7 hasActiveSession];
+  attachmentCopy = attachment;
+  managerCopy = manager;
+  realtimeCollaborationController = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+  hasActiveSession = [realtimeCollaborationController hasActiveSession];
 
-  if (v8)
+  if (hasActiveSession)
   {
-    v9 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-    [v9 updatePaperKitMessengerForAttachment:v10 textLayoutManager:v6];
+    realtimeCollaborationController2 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+    [realtimeCollaborationController2 updatePaperKitMessengerForAttachment:attachmentCopy textLayoutManager:managerCopy];
   }
 }
 
 - (void)groupActivityDidChange
 {
-  v3 = [(ICNoteEditorViewController *)self note];
-  [(ICNoteEditorViewController *)self updateFastSyncParticipantCursorsForNote:v3];
+  note = [(ICNoteEditorViewController *)self note];
+  [(ICNoteEditorViewController *)self updateFastSyncParticipantCursorsForNote:note];
 }
 
-- (void)updateFastSyncParticipantCursorsForNote:(id)a3
+- (void)updateFastSyncParticipantCursorsForNote:(id)note
 {
-  v18 = a3;
-  v4 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-  if (!v4)
+  noteCopy = note;
+  realtimeCollaborationController = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+  if (!realtimeCollaborationController)
   {
     goto LABEL_7;
   }
 
-  v5 = v4;
-  v6 = [v18 identifier];
-  if (!v6)
+  v5 = realtimeCollaborationController;
+  identifier = [noteCopy identifier];
+  if (!identifier)
   {
 
     goto LABEL_7;
   }
 
-  v7 = v6;
-  v8 = [v18 identifier];
-  v9 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-  v10 = [v9 currentNoteIdentifier];
-  v11 = [v8 isEqualToString:v10];
+  v7 = identifier;
+  identifier2 = [noteCopy identifier];
+  realtimeCollaborationController2 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+  currentNoteIdentifier = [realtimeCollaborationController2 currentNoteIdentifier];
+  v11 = [identifier2 isEqualToString:currentNoteIdentifier];
 
   if (!v11)
   {
@@ -590,15 +590,15 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [(ICNoteEditorViewController *)self realtimeCollaborationSelectionController];
-  v13 = [v12 realtimeCollaborationController];
-  v14 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+  realtimeCollaborationSelectionController = [(ICNoteEditorViewController *)self realtimeCollaborationSelectionController];
+  realtimeCollaborationController3 = [realtimeCollaborationSelectionController realtimeCollaborationController];
+  realtimeCollaborationController4 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
 
-  if (v13 != v14)
+  if (realtimeCollaborationController3 != realtimeCollaborationController4)
   {
     v15 = [ICRealtimeCollaborationSelectionController alloc];
-    v16 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
-    v17 = [(ICRealtimeCollaborationSelectionController *)v15 initWithEditorController:self realtimeCollaborationController:v16];
+    realtimeCollaborationController5 = [(ICNoteEditorViewController *)self realtimeCollaborationController];
+    v17 = [(ICRealtimeCollaborationSelectionController *)v15 initWithEditorController:self realtimeCollaborationController:realtimeCollaborationController5];
     [(ICNoteEditorViewController *)self setRealtimeCollaborationSelectionController:v17];
   }
 
@@ -608,8 +608,8 @@ LABEL_8:
 - (void)app_showRecoverNoteAlert
 {
   v3 = [ICRecoverNoteAlertController alloc];
-  v4 = [(ICNoteEditorViewController *)self note];
-  v5 = [(ICRecoverNoteAlertController *)v3 initWithNote:v4];
+  note = [(ICNoteEditorViewController *)self note];
+  v5 = [(ICRecoverNoteAlertController *)v3 initWithNote:note];
 
   [(ICRecoverNoteAlertController *)v5 showFromViewController:self];
 }
@@ -617,138 +617,138 @@ LABEL_8:
 - (void)app_showMoveToFolder
 {
   v3 = [ICMoveNoteActivity alloc];
-  v4 = [(ICNoteEditorViewController *)self note];
-  v5 = [(ICMoveNoteActivity *)v3 initWithNote:v4 presentingViewController:self];
+  note = [(ICNoteEditorViewController *)self note];
+  v5 = [(ICMoveNoteActivity *)v3 initWithNote:note presentingViewController:self];
 
   [(ICMoveNoteActivity *)v5 performActivityWithCompletion:0];
 }
 
-- (id)app_systemPaperInkPaletteButtonView:(id)a3
+- (id)app_systemPaperInkPaletteButtonView:(id)view
 {
-  v4 = a3;
-  v5 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v6 = [v5 systemPaperViewController];
+  viewCopy = view;
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  systemPaperViewController = [viewControllerManager systemPaperViewController];
 
-  v7 = [v6 inkPaletteButtonViewWithInkPaletteController:v4];
+  v7 = [systemPaperViewController inkPaletteButtonViewWithInkPaletteController:viewCopy];
 
   return v7;
 }
 
 - (id)app_systemPaperNavigationBar
 {
-  v2 = [(ICNoteEditorViewController *)self viewControllerManager];
-  v3 = [v2 systemPaperViewController];
+  viewControllerManager = [(ICNoteEditorViewController *)self viewControllerManager];
+  systemPaperViewController = [viewControllerManager systemPaperViewController];
 
-  v4 = [v3 systemPaperNavigationBar];
+  systemPaperNavigationBar = [systemPaperViewController systemPaperNavigationBar];
 
-  return v4;
+  return systemPaperNavigationBar;
 }
 
-- (void)app_shareButtonPressed:(id)a3
+- (void)app_shareButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v9 = +[ICCollaborationUIController sharedInstance];
-  v5 = [(ICNoteEditorViewController *)self view];
-  v6 = [v5 window];
-  v7 = [(ICNoteEditorViewController *)self note];
-  v8 = [(ICNoteEditorViewController *)self eventReporter];
-  [v9 presentSendNoteActivityViewControllerWithPresentingWindow:v6 presentingViewController:self sourceItem:v4 sourceView:0 sourceRect:v7 note:&__NSArray0__struct excludedTypes:CGRectNull.origin.x eventReporter:CGRectNull.origin.y didPresentActivityHandler:{CGRectNull.size.width, CGRectNull.size.height, v8, 0}];
+  view = [(ICNoteEditorViewController *)self view];
+  window = [view window];
+  note = [(ICNoteEditorViewController *)self note];
+  eventReporter = [(ICNoteEditorViewController *)self eventReporter];
+  [v9 presentSendNoteActivityViewControllerWithPresentingWindow:window presentingViewController:self sourceItem:pressedCopy sourceView:0 sourceRect:note note:&__NSArray0__struct excludedTypes:CGRectNull.origin.x eventReporter:CGRectNull.origin.y didPresentActivityHandler:{CGRectNull.size.width, CGRectNull.size.height, eventReporter, 0}];
 }
 
 - (id)collaborationButtons_collaborationBarButtonItem
 {
-  v3 = [(ICNoteEditorViewController *)self collaborationButtonsController];
+  collaborationButtonsController = [(ICNoteEditorViewController *)self collaborationButtonsController];
 
-  if (!v3)
+  if (!collaborationButtonsController)
   {
     [(ICNoteEditorViewController *)self collaborationButtons_setupCollaborationController];
   }
 
-  v4 = [(ICNoteEditorViewController *)self collaborationButtonsController];
-  v5 = [v4 buttonItem];
-  [(ICNoteEditorViewController *)self setCollaborationBarButtonItem:v5];
+  collaborationButtonsController2 = [(ICNoteEditorViewController *)self collaborationButtonsController];
+  buttonItem = [collaborationButtonsController2 buttonItem];
+  [(ICNoteEditorViewController *)self setCollaborationBarButtonItem:buttonItem];
 
   return [(ICNoteEditorViewController *)self collaborationBarButtonItem];
 }
 
-- (void)collaborationButtons_acceptInviteWithShareURL:(id)a3 invitationViewController:(id)a4
+- (void)collaborationButtons_acceptInviteWithShareURL:(id)l invitationViewController:(id)controller
 {
-  v6 = a3;
+  lCopy = l;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000CE05C;
   block[3] = &unk_100645E30;
-  v7 = a4;
-  v16 = v7;
+  controllerCopy = controller;
+  v16 = controllerCopy;
   dispatch_async(&_dispatch_main_q, block);
   v8 = dispatch_get_global_queue(2, 0);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000CE068;
   v11[3] = &unk_100645D40;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = controllerCopy;
+  selfCopy = self;
+  v9 = controllerCopy;
+  v10 = lCopy;
   dispatch_async(v8, v11);
 }
 
-- (void)app_createAndPresentCloudSharingControllerBySender:(id)a3
+- (void)app_createAndPresentCloudSharingControllerBySender:(id)sender
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  senderCopy = sender;
+  v5 = senderCopy;
+  if (senderCopy)
   {
-    v6 = v4;
+    iCloudShareBarButtonItem = senderCopy;
   }
 
   else
   {
-    v6 = [(ICNoteEditorViewController *)self iCloudShareBarButtonItem];
+    iCloudShareBarButtonItem = [(ICNoteEditorViewController *)self iCloudShareBarButtonItem];
   }
 
-  v7 = v6;
+  v7 = iCloudShareBarButtonItem;
   v8 = +[ICCollaborationUIController sharedInstance];
-  v9 = [(ICNoteEditorViewController *)self note];
+  note = [(ICNoteEditorViewController *)self note];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000CE588;
   v10[3] = &unk_100645E30;
   v10[4] = self;
-  [v8 showCloudSharingControllerForNote:v9 presentingViewController:self popoverBarButtonItem:v7 presented:v10 dismissed:0];
+  [v8 showCloudSharingControllerForNote:note presentingViewController:self popoverBarButtonItem:v7 presented:v10 dismissed:0];
 }
 
 - (BOOL)isDarkModeForActivityItemsConfiguration
 {
-  v2 = [(ICNoteEditorViewController *)self traitCollection];
-  v3 = [v2 ic_isDark];
+  traitCollection = [(ICNoteEditorViewController *)self traitCollection];
+  ic_isDark = [traitCollection ic_isDark];
 
-  return v3;
+  return ic_isDark;
 }
 
 - (void)link_removeLinkActionInteractions
 {
-  v2 = [(ICNoteEditorViewController *)self view];
-  [v2 ic_removeLinkActionInteractions];
+  view = [(ICNoteEditorViewController *)self view];
+  [view ic_removeLinkActionInteractions];
 }
 
-- (id)notePreview:(id)a3
+- (id)notePreview:(id)preview
 {
-  v3 = a3;
-  v4 = [[ICNotePreviewViewController alloc] initWithNote:v3];
+  previewCopy = preview;
+  v4 = [[ICNotePreviewViewController alloc] initWithNote:previewCopy];
 
   return v4;
 }
 
-- (BOOL)noteEditorActionMenuCanScanDocuments:(id)a3
+- (BOOL)noteEditorActionMenuCanScanDocuments:(id)documents
 {
   if (+[UIDevice ic_isVision])
   {
-    v4 = [(ICNoteEditorViewController *)self navigationItemConfiguration];
-    v5 = [v4 mediaBarButtonItem];
-    v6 = [v5 menu];
-    v7 = v6 != 0;
+    navigationItemConfiguration = [(ICNoteEditorViewController *)self navigationItemConfiguration];
+    mediaBarButtonItem = [navigationItemConfiguration mediaBarButtonItem];
+    menu = [mediaBarButtonItem menu];
+    v7 = menu != 0;
 
     return v7;
   }
@@ -760,7 +760,7 @@ LABEL_8:
   }
 }
 
-- (void)noteEditorActionMenuShouldScanDocuments:(id)a3
+- (void)noteEditorActionMenuShouldScanDocuments:(id)documents
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -770,7 +770,7 @@ LABEL_8:
   [(ICNoteEditorViewController *)self ic_dismissPresentedViewControllerAnimated:1 completion:v3];
 }
 
-- (void)noteEditorActionMenuShouldShowHandwritingDebug:(id)a3
+- (void)noteEditorActionMenuShouldShowHandwritingDebug:(id)debug
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
@@ -780,15 +780,15 @@ LABEL_8:
   [(ICNoteEditorViewController *)self ic_dismissPresentedViewControllerAnimated:1 completion:v3];
 }
 
-- (void)noteEditorActionMenuWillShow:(id)a3
+- (void)noteEditorActionMenuWillShow:(id)show
 {
-  v4 = [(ICNoteEditorViewController *)self delegate];
+  delegate = [(ICNoteEditorViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(ICNoteEditorViewController *)self delegate];
-    [v6 noteEditorDidTapActionMenu:self];
+    delegate2 = [(ICNoteEditorViewController *)self delegate];
+    [delegate2 noteEditorDidTapActionMenu:self];
   }
 
   if (!_UISolariumEnabled() || (-[ICNoteEditorViewController traitCollection](self, "traitCollection"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 ic_hasCompactSize], v7, (v8 & 1) == 0))

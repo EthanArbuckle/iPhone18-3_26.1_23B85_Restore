@@ -1,7 +1,7 @@
 @interface VSWebServerResponse
-+ (id)responseToRequest:(id)a3 withCode:(int64_t)a4 headers:(id)a5 bodyData:(id)a6;
-+ (id)responseToRequest:(id)a3 withCode:(int64_t)a4 headers:(id)a5 bodyStream:(id)a6;
-- (VSWebServerResponse)initWithResponse:(_CFHTTPServerResponse *)a3;
++ (id)responseToRequest:(id)request withCode:(int64_t)code headers:(id)headers bodyData:(id)data;
++ (id)responseToRequest:(id)request withCode:(int64_t)code headers:(id)headers bodyStream:(id)stream;
+- (VSWebServerResponse)initWithResponse:(_CFHTTPServerResponse *)response;
 - (__CFHTTPMessage)message;
 - (id)connection;
 - (id)description;
@@ -11,53 +11,53 @@
 
 @implementation VSWebServerResponse
 
-+ (id)responseToRequest:(id)a3 withCode:(int64_t)a4 headers:(id)a5 bodyData:(id)a6
++ (id)responseToRequest:(id)request withCode:(int64_t)code headers:(id)headers bodyData:(id)data
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  if (!v8)
+  requestCopy = request;
+  headersCopy = headers;
+  dataCopy = data;
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The request parameter must not be nil."];
   }
 
-  [v8 request];
+  [requestCopy request];
   ResponseMessage = _CFHTTPServerRequestCreateResponseMessage();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __67__VSWebServerResponse_responseToRequest_withCode_headers_bodyData___block_invoke;
   v14[3] = &__block_descriptor_40_e35_v32__0__NSString_8__NSString_16_B24l;
   v14[4] = ResponseMessage;
-  [v9 enumerateKeysAndObjectsUsingBlock:v14];
+  [headersCopy enumerateKeysAndObjectsUsingBlock:v14];
   v12 = [[VSWebServerResponse alloc] initWithResponse:_CFHTTPServerResponseCreateWithData()];
 
   return v12;
 }
 
-+ (id)responseToRequest:(id)a3 withCode:(int64_t)a4 headers:(id)a5 bodyStream:(id)a6
++ (id)responseToRequest:(id)request withCode:(int64_t)code headers:(id)headers bodyStream:(id)stream
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a6;
-  if (!v8)
+  requestCopy = request;
+  headersCopy = headers;
+  streamCopy = stream;
+  if (!requestCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The request parameter must not be nil."];
   }
 
-  [v8 request];
+  [requestCopy request];
   ResponseMessage = _CFHTTPServerRequestCreateResponseMessage();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __69__VSWebServerResponse_responseToRequest_withCode_headers_bodyStream___block_invoke;
   v14[3] = &__block_descriptor_40_e35_v32__0__NSString_8__NSString_16_B24l;
   v14[4] = ResponseMessage;
-  [v9 enumerateKeysAndObjectsUsingBlock:v14];
+  [headersCopy enumerateKeysAndObjectsUsingBlock:v14];
   v12 = [[VSWebServerResponse alloc] initWithResponse:_CFHTTPServerResponseCreateWithBodyStream()];
 
   return v12;
 }
 
-- (VSWebServerResponse)initWithResponse:(_CFHTTPServerResponse *)a3
+- (VSWebServerResponse)initWithResponse:(_CFHTTPServerResponse *)response
 {
   v7.receiver = self;
   v7.super_class = VSWebServerResponse;
@@ -65,7 +65,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_response = a3;
+    v4->_response = response;
     _CFHTTPServerResponseSetClient();
   }
 
@@ -140,9 +140,9 @@
 
 - (void)enqueue
 {
-  v2 = [(VSWebServerResponse *)self response];
+  response = [(VSWebServerResponse *)self response];
 
-  MEMORY[0x28210D150](v2);
+  MEMORY[0x28210D150](response);
 }
 
 - (id)description

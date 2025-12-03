@@ -1,51 +1,51 @@
 @interface NTKInfinityListing
-+ (id)listingForDevice:(id)a3 withFilename:(id)a4;
-+ (id)listingForDevice:(id)a3 withFilename:(id)a4 type:(unint64_t)a5 attributes:(id)a6;
-- (BOOL)snapshotDiffers:(id)a3;
++ (id)listingForDevice:(id)device withFilename:(id)filename;
++ (id)listingForDevice:(id)device withFilename:(id)filename type:(unint64_t)type attributes:(id)attributes;
+- (BOOL)snapshotDiffers:(id)differs;
 - (CLKVideo)video;
 - (NSString)debugDescription;
 - (id)complicationColor;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initForDevice:(id)a3 withFilename:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initForDevice:(id)device withFilename:(id)filename;
 - (void)discardAssets;
 @end
 
 @implementation NTKInfinityListing
 
-+ (id)listingForDevice:(id)a3 withFilename:(id)a4
++ (id)listingForDevice:(id)device withFilename:(id)filename
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[NTKInfinityListing alloc] initForDevice:v6 withFilename:v5];
+  filenameCopy = filename;
+  deviceCopy = device;
+  v7 = [[NTKInfinityListing alloc] initForDevice:deviceCopy withFilename:filenameCopy];
 
   return v7;
 }
 
-+ (id)listingForDevice:(id)a3 withFilename:(id)a4 type:(unint64_t)a5 attributes:(id)a6
++ (id)listingForDevice:(id)device withFilename:(id)filename type:(unint64_t)type attributes:(id)attributes
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[NTKInfinityListing alloc] initForDevice:v11 withFilename:v10];
+  attributesCopy = attributes;
+  filenameCopy = filename;
+  deviceCopy = device;
+  v12 = [[NTKInfinityListing alloc] initForDevice:deviceCopy withFilename:filenameCopy];
 
-  [v12 setType:a5];
-  [v12 setAttributes:v9];
+  [v12 setType:type];
+  [v12 setAttributes:attributesCopy];
 
   return v12;
 }
 
-- (id)initForDevice:(id)a3 withFilename:(id)a4
+- (id)initForDevice:(id)device withFilename:(id)filename
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  filenameCopy = filename;
   v12.receiver = self;
   v12.super_class = NTKInfinityListing;
   v9 = [(NTKInfinityListing *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_filename, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_filename, filename);
     v10->_playback = 0;
   }
 
@@ -70,7 +70,7 @@
   return video;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   device = self->_device;
@@ -79,13 +79,13 @@
   return [v4 initForDevice:device withFilename:filename];
 }
 
-- (BOOL)snapshotDiffers:(id)a3
+- (BOOL)snapshotDiffers:(id)differs
 {
-  v4 = a3;
+  differsCopy = differs;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = ![(NSString *)self->_filename isEqualToString:v4[2]];
+    v5 = ![(NSString *)self->_filename isEqualToString:differsCopy[2]];
   }
 
   else

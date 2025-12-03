@@ -1,17 +1,17 @@
 @interface BSBlockSentinel
-+ (id)sentinelWithCompletion:(id)a3;
-+ (id)sentinelWithExceptionReason:(id)a3;
-+ (id)sentinelWithQueue:(id)a3 completion:(id)a4;
-+ (id)sentinelWithQueue:(id)a3 signalCount:(unint64_t)a4 completion:(id)a5;
-+ (id)sentinelWithQueue:(id)a3 signalCount:(unint64_t)a4 signalHandler:(id)a5;
-+ (id)sentinelWithQueue:(id)a3 signalHandler:(id)a4;
-+ (id)sentinelWithSignalCount:(unint64_t)a3 exceptionReason:(id)a4;
-+ (id)sentinelWithSignalCount:(unint64_t)a3 signalHandler:(id)a4;
-+ (id)sentinelWithSignalHandler:(id)a3;
-- (BOOL)signalWithContext:(id)a3;
++ (id)sentinelWithCompletion:(id)completion;
++ (id)sentinelWithExceptionReason:(id)reason;
++ (id)sentinelWithQueue:(id)queue completion:(id)completion;
++ (id)sentinelWithQueue:(id)queue signalCount:(unint64_t)count completion:(id)completion;
++ (id)sentinelWithQueue:(id)queue signalCount:(unint64_t)count signalHandler:(id)handler;
++ (id)sentinelWithQueue:(id)queue signalHandler:(id)handler;
++ (id)sentinelWithSignalCount:(unint64_t)count exceptionReason:(id)reason;
++ (id)sentinelWithSignalCount:(unint64_t)count signalHandler:(id)handler;
++ (id)sentinelWithSignalHandler:(id)handler;
+- (BOOL)signalWithContext:(id)context;
 - (void)dealloc;
-- (void)initWithCount:(void *)a3 queue:(void *)a4 block:;
-- (void)setIdentifier:(id)a3;
+- (void)initWithCount:(void *)count queue:(void *)queue block:;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation BSBlockSentinel
@@ -100,18 +100,18 @@ LABEL_20:
   [(BSBlockSentinel *)&v17 dealloc];
 }
 
-+ (id)sentinelWithQueue:(id)a3 completion:(id)a4
++ (id)sentinelWithQueue:(id)queue completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v7 = [BSBlockSentinel alloc];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __48__BSBlockSentinel_sentinelWithQueue_completion___block_invoke;
   v11[3] = &unk_1E72CBA20;
-  v8 = v6;
+  v8 = completionCopy;
   v12 = v8;
-  v9 = [(BSBlockSentinel *)&v7->super.isa initWithCount:v5 queue:v11 block:?];
+  v9 = [(BSBlockSentinel *)&v7->super.isa initWithCount:queueCopy queue:v11 block:?];
 
   return v9;
 }
@@ -125,15 +125,15 @@ void __48__BSBlockSentinel_sentinelWithQueue_completion___block_invoke(uint64_t 
   }
 }
 
-- (void)initWithCount:(void *)a3 queue:(void *)a4 block:
+- (void)initWithCount:(void *)count queue:(void *)queue block:
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a1)
+  countCopy = count;
+  queueCopy = queue;
+  v10 = queueCopy;
+  if (self)
   {
-    if (!v9)
+    if (!queueCopy)
     {
       v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"block"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -146,7 +146,7 @@ void __48__BSBlockSentinel_sentinelWithQueue_completion___block_invoke(uint64_t 
         v31 = 2114;
         v32 = v26;
         v33 = 2048;
-        v34 = a1;
+        selfCopy = self;
         v35 = 2114;
         v36 = @"BSBlockSentinel.m";
         v37 = 1024;
@@ -162,55 +162,55 @@ void __48__BSBlockSentinel_sentinelWithQueue_completion___block_invoke(uint64_t 
       JUMPOUT(0x18FF62224);
     }
 
-    v28.receiver = a1;
+    v28.receiver = self;
     v28.super_class = BSBlockSentinel;
     v11 = objc_msgSendSuper2(&v28, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       *(v11 + 2) = 0;
-      objc_storeStrong(v11 + 6, a3);
+      objc_storeStrong(v11 + 6, count);
       v12 = [v10 copy];
-      v13 = a1[2];
-      a1[2] = v12;
+      v13 = self[2];
+      self[2] = v12;
 
-      a1[3] = 0;
-      a1[4] = a2;
+      self[3] = 0;
+      self[4] = a2;
       v14 = BSStackFrameInfoForAddresss(*(vars0 + 8));
-      v15 = [v14 className];
-      v16 = v15;
-      if (v15)
+      className = [v14 className];
+      v16 = className;
+      if (className)
       {
-        v17 = v15;
+        executableName = className;
       }
 
       else
       {
-        v17 = [v14 executableName];
+        executableName = [v14 executableName];
       }
 
-      v19 = a1 + 5;
-      v18 = a1[5];
-      a1[5] = v17;
+      v19 = self + 5;
+      v18 = self[5];
+      self[5] = executableName;
 
-      if (!a1[5])
+      if (!self[5])
       {
-        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", a1];
+        v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", self];
         v21 = *v19;
         *v19 = v20;
       }
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)sentinelWithQueue:(id)a3 signalCount:(unint64_t)a4 completion:(id)a5
++ (id)sentinelWithQueue:(id)queue signalCount:(unint64_t)count completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!a4)
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!count)
   {
     v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"count > 0"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -223,7 +223,7 @@ void __48__BSBlockSentinel_sentinelWithQueue_completion___block_invoke(uint64_t 
       v24 = 2114;
       v25 = v18;
       v26 = 2048;
-      v27 = a1;
+      selfCopy = self;
       v28 = 2114;
       v29 = @"BSBlockSentinel.m";
       v30 = 1024;
@@ -244,9 +244,9 @@ void __48__BSBlockSentinel_sentinelWithQueue_completion___block_invoke(uint64_t 
   v20[1] = 3221225472;
   v20[2] = __60__BSBlockSentinel_sentinelWithQueue_signalCount_completion___block_invoke;
   v20[3] = &unk_1E72CBA20;
-  v12 = v10;
+  v12 = completionCopy;
   v21 = v12;
-  v13 = [(BSBlockSentinel *)&v11->super.isa initWithCount:a4 queue:v9 block:v20];
+  v13 = [(BSBlockSentinel *)&v11->super.isa initWithCount:count queue:queueCopy block:v20];
 
   return v13;
 }
@@ -264,21 +264,21 @@ void __60__BSBlockSentinel_sentinelWithQueue_signalCount_completion___block_invo
   }
 }
 
-+ (id)sentinelWithQueue:(id)a3 signalHandler:(id)a4
++ (id)sentinelWithQueue:(id)queue signalHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[BSBlockSentinel alloc] initWithCount:v5 queue:v6 block:?];
+  queueCopy = queue;
+  handlerCopy = handler;
+  v7 = [[BSBlockSentinel alloc] initWithCount:queueCopy queue:handlerCopy block:?];
 
   return v7;
 }
 
-+ (id)sentinelWithQueue:(id)a3 signalCount:(unint64_t)a4 signalHandler:(id)a5
++ (id)sentinelWithQueue:(id)queue signalCount:(unint64_t)count signalHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
-  if (!a4)
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (!count)
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"count > 0"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -291,7 +291,7 @@ void __60__BSBlockSentinel_sentinelWithQueue_signalCount_completion___block_invo
       v20 = 2114;
       v21 = v16;
       v22 = 2048;
-      v23 = a1;
+      selfCopy = self;
       v24 = 2114;
       v25 = @"BSBlockSentinel.m";
       v26 = 1024;
@@ -307,23 +307,23 @@ void __60__BSBlockSentinel_sentinelWithQueue_signalCount_completion___block_invo
     JUMPOUT(0x18FF627BCLL);
   }
 
-  v11 = [[BSBlockSentinel alloc] initWithCount:a4 queue:v9 block:v10];
+  v11 = [[BSBlockSentinel alloc] initWithCount:count queue:queueCopy block:handlerCopy];
 
   return v11;
 }
 
-+ (id)sentinelWithExceptionReason:(id)a3
++ (id)sentinelWithExceptionReason:(id)reason
 {
-  v3 = [a1 sentinelWithSignalCount:1 exceptionReason:a3];
+  v3 = [self sentinelWithSignalCount:1 exceptionReason:reason];
 
   return v3;
 }
 
-+ (id)sentinelWithSignalCount:(unint64_t)a3 exceptionReason:(id)a4
++ (id)sentinelWithSignalCount:(unint64_t)count exceptionReason:(id)reason
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!a3)
+  reasonCopy = reason;
+  if (!count)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"count > 0"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -336,7 +336,7 @@ void __60__BSBlockSentinel_sentinelWithQueue_signalCount_completion___block_invo
       v21 = 2114;
       v22 = v15;
       v23 = 2048;
-      v24 = a1;
+      selfCopy = self;
       v25 = 2114;
       v26 = @"BSBlockSentinel.m";
       v27 = 1024;
@@ -352,14 +352,14 @@ void __60__BSBlockSentinel_sentinelWithQueue_signalCount_completion___block_invo
     JUMPOUT(0x18FF62A44);
   }
 
-  v8 = [a1 alloc];
+  v8 = [self alloc];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __59__BSBlockSentinel_sentinelWithSignalCount_exceptionReason___block_invoke;
   v17[3] = &unk_1E72CBA48;
-  v9 = v7;
+  v9 = reasonCopy;
   v18 = v9;
-  v10 = [(BSBlockSentinel *)v8 initWithCount:a3 queue:0 block:v17];
+  v10 = [(BSBlockSentinel *)v8 initWithCount:count queue:0 block:v17];
 
   return v10;
 }
@@ -384,19 +384,19 @@ void __59__BSBlockSentinel_sentinelWithSignalCount_exceptionReason___block_invok
   }
 }
 
-+ (id)sentinelWithCompletion:(id)a3
++ (id)sentinelWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [[BSBlockSentinel alloc] initWithCount:0 queue:v3 block:?];
+  completionCopy = completion;
+  v4 = [[BSBlockSentinel alloc] initWithCount:0 queue:completionCopy block:?];
 
   return v4;
 }
 
-+ (id)sentinelWithSignalCount:(unint64_t)a3 signalHandler:(id)a4
++ (id)sentinelWithSignalCount:(unint64_t)count signalHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!a3)
+  handlerCopy = handler;
+  if (!count)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"count > 0"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -409,7 +409,7 @@ void __59__BSBlockSentinel_sentinelWithSignalCount_exceptionReason___block_invok
       v17 = 2114;
       v18 = v13;
       v19 = 2048;
-      v20 = a1;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"BSBlockSentinel.m";
       v23 = 1024;
@@ -425,34 +425,34 @@ void __59__BSBlockSentinel_sentinelWithSignalCount_exceptionReason___block_invok
     JUMPOUT(0x18FF62D5CLL);
   }
 
-  v8 = [[BSBlockSentinel alloc] initWithCount:a3 queue:0 block:v7];
+  v8 = [[BSBlockSentinel alloc] initWithCount:count queue:0 block:handlerCopy];
 
   return v8;
 }
 
-+ (id)sentinelWithSignalHandler:(id)a3
++ (id)sentinelWithSignalHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [[BSBlockSentinel alloc] initWithCount:0 queue:v3 block:?];
+  handlerCopy = handler;
+  v4 = [[BSBlockSentinel alloc] initWithCount:0 queue:handlerCopy block:?];
 
   return v4;
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v4 = [v6 copy];
+  v4 = [identifierCopy copy];
   lock_identifier = self->_lock_identifier;
   self->_lock_identifier = v4;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)signalWithContext:(id)a3
+- (BOOL)signalWithContext:(id)context
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   explicitQueue = self->_explicitQueue;
   if (explicitQueue)
   {
@@ -506,7 +506,7 @@ void __59__BSBlockSentinel_sentinelWithSignalCount_exceptionReason___block_invok
     v11 = v13 == v12;
     v14 = MEMORY[0x193AE5AC0](self->_lock_handler);
     v15 = v13 != v12;
-    if (v5)
+    if (contextCopy)
     {
       v15 = 0;
     }
@@ -523,13 +523,13 @@ void __59__BSBlockSentinel_sentinelWithSignalCount_exceptionReason___block_invok
       if (v16)
       {
         v16->_complete = v13 == v12;
-        v18 = v5;
-        objc_storeStrong(&v17->_context, a3);
+        v18 = contextCopy;
+        objc_storeStrong(&v17->_context, context);
       }
 
       else
       {
-        v28 = v5;
+        v28 = contextCopy;
       }
 
       v19 = v17;

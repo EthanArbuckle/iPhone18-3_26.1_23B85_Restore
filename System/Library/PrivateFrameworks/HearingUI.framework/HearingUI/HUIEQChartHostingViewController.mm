@@ -1,15 +1,15 @@
 @interface HUIEQChartHostingViewController
-+ (id)createWith:(id)a3 width:(double)a4 height:(double)a5;
++ (id)createWith:(id)with width:(double)width height:(double)height;
 - (_TtC9HearingUI31HUIEQChartHostingViewController)init;
 @end
 
 @implementation HUIEQChartHostingViewController
 
-+ (id)createWith:(id)a3 width:(double)a4 height:(double)a5
++ (id)createWith:(id)with width:(double)width height:(double)height
 {
   type metadata accessor for HUIEQChartModel();
   sub_2521A49D4(&qword_27F4D4390, type metadata accessor for HUIEQChartModel);
-  v6 = a3;
+  withCopy = with;
   sub_2521A512C();
   v8 = v7;
   objc_allocWithZone(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F4D4398));

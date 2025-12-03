@@ -1,30 +1,30 @@
 @interface ImageStore
-+ (CGImage)cgImageFromImage:(id)a3 forContentsScale:(double)a4;
-+ (double)informationDiagramBaseImageCenterOffset:(unsigned int)a3 small:(BOOL)a4;
-+ (double)informationDiagramBaseImageRightEdgeInset:(unsigned int)a3 small:(BOOL)a4;
-+ (id)imageForBaseStationWithProductID:(unsigned int)a3 subProductID:(unsigned int)a4 deviceKind:(int)a5 small:(BOOL)a6 cropped:(BOOL)a7 threeDee:(BOOL)a8;
-+ (id)imageForInformationalDiagram:(unsigned int)a3 subProductID:(unsigned int)a4 deviceKind:(int)a5 audioImage:(BOOL)a6 small:(BOOL)a7;
-+ (id)imageForInformationalDiagramNamed:(id)a3 small:(BOOL)a4;
-+ (id)imageNameForInformationalDiagram:(unsigned int)a3 subProductID:(unsigned int)a4 deviceKind:(int)a5 audioImage:(BOOL)a6 small:(BOOL)a7 useDataCache:(BOOL *)a8;
-+ (id)imageNameForProductID:(unsigned int)a3 subProductID:(unsigned int)a4 deviceKind:(int)a5 small:(BOOL)a6 cropped:(BOOL)a7 threeDee:(BOOL)a8;
-+ (id)imageNamed:(id)a3;
-+ (id)imageNamed:(id)a3 inBundle:(id)a4;
-+ (id)insetImageForInformationalDiagram:(unsigned int)a3 deviceKind:(int)a4 audioImage:(BOOL)a5 small:(BOOL)a6;
-+ (id)kitImageOfType:(int64_t)a3;
++ (CGImage)cgImageFromImage:(id)image forContentsScale:(double)scale;
++ (double)informationDiagramBaseImageCenterOffset:(unsigned int)offset small:(BOOL)small;
++ (double)informationDiagramBaseImageRightEdgeInset:(unsigned int)inset small:(BOOL)small;
++ (id)imageForBaseStationWithProductID:(unsigned int)d subProductID:(unsigned int)iD deviceKind:(int)kind small:(BOOL)small cropped:(BOOL)cropped threeDee:(BOOL)dee;
++ (id)imageForInformationalDiagram:(unsigned int)diagram subProductID:(unsigned int)d deviceKind:(int)kind audioImage:(BOOL)image small:(BOOL)small;
++ (id)imageForInformationalDiagramNamed:(id)named small:(BOOL)small;
++ (id)imageNameForInformationalDiagram:(unsigned int)diagram subProductID:(unsigned int)d deviceKind:(int)kind audioImage:(BOOL)image small:(BOOL)small useDataCache:(BOOL *)cache;
++ (id)imageNameForProductID:(unsigned int)d subProductID:(unsigned int)iD deviceKind:(int)kind small:(BOOL)small cropped:(BOOL)cropped threeDee:(BOOL)dee;
++ (id)imageNamed:(id)named;
++ (id)imageNamed:(id)named inBundle:(id)bundle;
++ (id)insetImageForInformationalDiagram:(unsigned int)diagram deviceKind:(int)kind audioImage:(BOOL)image small:(BOOL)small;
++ (id)kitImageOfType:(int64_t)type;
 + (id)sharedImageStore;
 @end
 
 @implementation ImageStore
 
-+ (id)kitImageOfType:(int64_t)a3
++ (id)kitImageOfType:(int64_t)type
 {
   v3 = @"UIPreferencesWhiteCheck.png";
-  if (a3 != 2)
+  if (type != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v4 = @"UIPreferencesBlueCheck.png";
   }
@@ -49,24 +49,24 @@
   return result;
 }
 
-+ (id)imageNamed:(id)a3
++ (id)imageNamed:(id)named
 {
   v4 = objc_opt_class();
   v5 = MEMORY[0x277CCA8D8];
   v6 = objc_opt_class();
   v9 = objc_msgSend_bundleForClass_(v5, v7, v6);
 
-  return objc_msgSend_imageNamed_inBundle_(v4, v8, a3, v9);
+  return objc_msgSend_imageNamed_inBundle_(v4, v8, named, v9);
 }
 
-+ (id)imageNamed:(id)a3 inBundle:(id)a4
++ (id)imageNamed:(id)named inBundle:(id)bundle
 {
-  v6 = objc_msgSend_pathExtension(a3, a2, a3);
-  v9 = objc_msgSend_stringByDeletingPathExtension(a3, v7, v8);
-  result = objc_msgSend_imageNamed_inBundle_ofType_(ImageStore, v10, v9, a4, v6);
+  v6 = objc_msgSend_pathExtension(named, a2, named);
+  v9 = objc_msgSend_stringByDeletingPathExtension(named, v7, v8);
+  result = objc_msgSend_imageNamed_inBundle_ofType_(ImageStore, v10, v9, bundle, v6);
   if (!result)
   {
-    if (sub_23EC13760(a3, v12, v13, v14, v15, v16, v17, v18))
+    if (sub_23EC13760(named, v12, v13, v14, v15, v16, v17, v18))
     {
       result = sub_23EC13744();
       if (result)
@@ -85,13 +85,13 @@
   return result;
 }
 
-+ (id)imageNameForProductID:(unsigned int)a3 subProductID:(unsigned int)a4 deviceKind:(int)a5 small:(BOOL)a6 cropped:(BOOL)a7 threeDee:(BOOL)a8
++ (id)imageNameForProductID:(unsigned int)d subProductID:(unsigned int)iD deviceKind:(int)kind small:(BOOL)small cropped:(BOOL)cropped threeDee:(BOOL)dee
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v12 = *&a3;
-  v13 = sub_23EB4BDDC(*&a3);
+  deeCopy = dee;
+  croppedCopy = cropped;
+  smallCopy = small;
+  v12 = *&d;
+  v13 = sub_23EB4BDDC(*&d);
   if (v13 > 5)
   {
     if ((v13 - 7) < 2)
@@ -137,9 +137,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if ((a5 - 3) >= 2)
+  if ((kind - 3) >= 2)
   {
-    if (a5 == 2)
+    if (kind == 2)
     {
       v15 = objc_msgSend_stringWithString_(MEMORY[0x277CCAB68], v14, @"GenericAirPlay");
     }
@@ -154,7 +154,7 @@ LABEL_17:
 
   v16 = 0;
 LABEL_18:
-  if (v8)
+  if (deeCopy)
   {
     objc_msgSend_appendString_(v16, v14, @"-3D");
   }
@@ -164,9 +164,9 @@ LABEL_18:
     objc_msgSend_appendString_(v16, v14, @"-2D");
   }
 
-  if (v9)
+  if (croppedCopy)
   {
-    if (v10)
+    if (smallCopy)
     {
       objc_msgSend_appendString_(v16, v17, @"-cropped");
     }
@@ -186,17 +186,17 @@ LABEL_18:
   return v16;
 }
 
-+ (id)imageForInformationalDiagram:(unsigned int)a3 subProductID:(unsigned int)a4 deviceKind:(int)a5 audioImage:(BOOL)a6 small:(BOOL)a7
++ (id)imageForInformationalDiagram:(unsigned int)diagram subProductID:(unsigned int)d deviceKind:(int)kind audioImage:(BOOL)image small:(BOOL)small
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = *&a5;
-  v10 = *&a4;
-  v11 = *&a3;
+  smallCopy = small;
+  imageCopy = image;
+  v9 = *&kind;
+  v10 = *&d;
+  v11 = *&diagram;
   v27 = 0;
   do
   {
-    v12 = objc_msgSend_imageNameForInformationalDiagram_subProductID_deviceKind_audioImage_small_useDataCache_(ImageStore, a2, v11, v10, v9, v8, v7, &v27);
+    v12 = objc_msgSend_imageNameForInformationalDiagram_subProductID_deviceKind_audioImage_small_useDataCache_(ImageStore, a2, v11, v10, v9, imageCopy, smallCopy, &v27);
     if (v27 == 1)
     {
       v13 = sub_23EC13744();
@@ -230,10 +230,10 @@ LABEL_18:
   return v25;
 }
 
-+ (double)informationDiagramBaseImageCenterOffset:(unsigned int)a3 small:(BOOL)a4
++ (double)informationDiagramBaseImageCenterOffset:(unsigned int)offset small:(BOOL)small
 {
-  v4 = a4;
-  if (a4)
+  smallCopy = small;
+  if (small)
   {
     v5 = 0.539473712;
   }
@@ -243,23 +243,23 @@ LABEL_18:
     v5 = 0.545454562;
   }
 
-  v6 = sub_23EB4BDDC(*&a3);
+  v6 = sub_23EB4BDDC(*&offset);
   if (v6 <= 5)
   {
     switch(v6)
     {
       case 3:
-        v7 = !v4;
+        v7 = !smallCopy;
         v8 = 0.55799371;
         v9 = 0.552631557;
         break;
       case 4:
-        v7 = !v4;
+        v7 = !smallCopy;
         v8 = 0.492163002;
         v9 = 0.491228074;
         break;
       case 5:
-        v7 = !v4;
+        v7 = !smallCopy;
         v8 = 0.50470221;
         v9 = 0.495614022;
         break;
@@ -272,7 +272,7 @@ LABEL_18:
 
   if ((v6 - 7) < 2)
   {
-    v7 = !v4;
+    v7 = !smallCopy;
     v8 = 0.420062691;
     v9 = 0.412280709;
 LABEL_16:
@@ -289,7 +289,7 @@ LABEL_16:
 
   if (v6 == 6 || v6 == 10)
   {
-    v7 = !v4;
+    v7 = !smallCopy;
     v8 = 0.470219433;
     v9 = 0.469298244;
     goto LABEL_16;
@@ -298,10 +298,10 @@ LABEL_16:
   return v5;
 }
 
-+ (double)informationDiagramBaseImageRightEdgeInset:(unsigned int)a3 small:(BOOL)a4
++ (double)informationDiagramBaseImageRightEdgeInset:(unsigned int)inset small:(BOOL)small
 {
-  v4 = a4;
-  if (a4)
+  smallCopy = small;
+  if (small)
   {
     v5 = 16.0;
   }
@@ -311,19 +311,19 @@ LABEL_16:
     v5 = 23.0;
   }
 
-  v6 = sub_23EB4BDDC(*&a3);
+  v6 = sub_23EB4BDDC(*&inset);
   if (v6 > 5)
   {
     if ((v6 - 7) < 2)
     {
-      v7 = !v4;
+      v7 = !smallCopy;
       v8 = 72.5;
       v9 = 52.5;
     }
 
     else if (v6 == 6)
     {
-      v7 = !v4;
+      v7 = !smallCopy;
       v8 = 16.0;
       v9 = 11.5;
     }
@@ -335,7 +335,7 @@ LABEL_16:
         return v5;
       }
 
-      v7 = !v4;
+      v7 = !smallCopy;
       v8 = 48.0;
       v9 = 35.0;
     }
@@ -346,17 +346,17 @@ LABEL_16:
     switch(v6)
     {
       case 3:
-        v7 = !v4;
+        v7 = !smallCopy;
         v8 = 13.0;
         v9 = 9.0;
         break;
       case 4:
-        v7 = !v4;
+        v7 = !smallCopy;
         v8 = 54.0;
         v9 = 38.5;
         break;
       case 5:
-        v7 = !v4;
+        v7 = !smallCopy;
         v8 = 23.5;
         v9 = 16.5;
         break;
@@ -376,27 +376,27 @@ LABEL_16:
   }
 }
 
-+ (id)imageForInformationalDiagramNamed:(id)a3 small:(BOOL)a4
++ (id)imageForInformationalDiagramNamed:(id)named small:(BOOL)small
 {
-  v4 = a4;
+  smallCopy = small;
   v7 = objc_opt_class();
-  if (v4)
+  if (smallCopy)
   {
-    a3 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, @"%@-Small", a3);
+    named = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v6, @"%@-Small", named);
   }
 
-  return objc_msgSend_imageNamed_(v7, v6, a3);
+  return objc_msgSend_imageNamed_(v7, v6, named);
 }
 
-+ (id)imageNameForInformationalDiagram:(unsigned int)a3 subProductID:(unsigned int)a4 deviceKind:(int)a5 audioImage:(BOOL)a6 small:(BOOL)a7 useDataCache:(BOOL *)a8
++ (id)imageNameForInformationalDiagram:(unsigned int)diagram subProductID:(unsigned int)d deviceKind:(int)kind audioImage:(BOOL)image small:(BOOL)small useDataCache:(BOOL *)cache
 {
-  v9 = a7;
-  v10 = a6;
-  v12 = *&a3;
-  v13 = sub_23EB4BDDC(*&a3);
-  if (a8)
+  smallCopy = small;
+  imageCopy = image;
+  v12 = *&diagram;
+  v13 = sub_23EB4BDDC(*&diagram);
+  if (cache)
   {
-    *a8 = 0;
+    *cache = 0;
   }
 
   if (v13 <= 5)
@@ -424,7 +424,7 @@ LABEL_32:
     v17 = @"AirPort-Express";
     v18 = @"AirPort-Express-Audio";
 LABEL_15:
-    if (v10)
+    if (imageCopy)
     {
       v15 = objc_msgSend_stringWithString_(v16, v14, v18);
     }
@@ -464,17 +464,17 @@ LABEL_18:
   }
 
   v19 = sub_23EC13744();
-  if (a8)
+  if (cache)
   {
-    *a8 = v19 != 0;
+    *cache = v19 != 0;
   }
 
-  if (!v19 || (!v10 ? (v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], v14, @"%d%s%s", v12, "-", "Info")) : (v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], v14, @"%d%s%s%s%s", v12, "-", "Info", "-", "Audio")), (v21 = v20) == 0))
+  if (!v19 || (!imageCopy ? (v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], v14, @"%d%s%s", v12, "-", "Info")) : (v20 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], v14, @"%d%s%s%s%s", v12, "-", "Info", "-", "Audio")), (v21 = v20) == 0))
   {
 LABEL_27:
-    if ((a5 - 2) >= 2)
+    if ((kind - 2) >= 2)
     {
-      if (a5 == 1)
+      if (kind == 1)
       {
         v15 = objc_msgSend_stringWithString_(MEMORY[0x277CCAB68], v14, @"Unknown-Device");
       }
@@ -494,7 +494,7 @@ LABEL_27:
   }
 
 LABEL_33:
-  if (v9)
+  if (smallCopy)
   {
     objc_msgSend_appendString_(v21, v14, @"-Small");
   }
@@ -503,11 +503,11 @@ LABEL_33:
   return v21;
 }
 
-+ (id)insetImageForInformationalDiagram:(unsigned int)a3 deviceKind:(int)a4 audioImage:(BOOL)a5 small:(BOOL)a6
++ (id)insetImageForInformationalDiagram:(unsigned int)diagram deviceKind:(int)kind audioImage:(BOOL)image small:(BOOL)small
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = *&a3;
+  smallCopy = small;
+  imageCopy = image;
+  v9 = *&diagram;
   v10 = MEMORY[0x277CCA8D8];
   v11 = objc_opt_class();
   v13 = objc_msgSend_bundleForClass_(v10, v12, v11);
@@ -527,7 +527,7 @@ LABEL_7:
     if (((1 << v14) & 0x410) != 0)
     {
       v17 = MEMORY[0x277CCAB68];
-      if (v7)
+      if (imageCopy)
       {
 LABEL_5:
         v18 = objc_msgSend_stringWithString_(v17, v15, @"Inset-Regular-Audio");
@@ -555,7 +555,7 @@ LABEL_8:
 
 LABEL_11:
       v22 = v18;
-      if (!v6)
+      if (!smallCopy)
       {
         goto LABEL_13;
       }
@@ -568,7 +568,7 @@ LABEL_11:
   if (!v25)
   {
     v17 = MEMORY[0x277CCAB68];
-    if ((a4 & 0xFFFFFFFE) == 2)
+    if ((kind & 0xFFFFFFFE) == 2)
     {
       goto LABEL_5;
     }
@@ -577,7 +577,7 @@ LABEL_11:
   }
 
   v26 = v25;
-  if (v7)
+  if (imageCopy)
   {
     v27 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCAB68], v15, @"%d%s%s%s%s", v9, "-", "Inset", "-", "Audio");
   }
@@ -589,7 +589,7 @@ LABEL_11:
 
   v22 = v27;
   v13 = v26;
-  if (!v6)
+  if (!smallCopy)
   {
     goto LABEL_13;
   }
@@ -602,17 +602,17 @@ LABEL_13:
   return objc_msgSend_imageNamed_inBundle_ofType_(ImageStore, v23, v22, v13, @"png");
 }
 
-+ (id)imageForBaseStationWithProductID:(unsigned int)a3 subProductID:(unsigned int)a4 deviceKind:(int)a5 small:(BOOL)a6 cropped:(BOOL)a7 threeDee:(BOOL)a8
++ (id)imageForBaseStationWithProductID:(unsigned int)d subProductID:(unsigned int)iD deviceKind:(int)kind small:(BOOL)small cropped:(BOOL)cropped threeDee:(BOOL)dee
 {
-  v8 = a8;
-  v9 = a7;
-  v10 = a6;
-  v11 = *&a5;
-  v12 = *&a4;
-  v13 = *&a3;
+  deeCopy = dee;
+  croppedCopy = cropped;
+  smallCopy = small;
+  v11 = *&kind;
+  v12 = *&iD;
+  v13 = *&d;
   do
   {
-    v14 = objc_msgSend_imageNameForProductID_subProductID_deviceKind_small_cropped_threeDee_(ImageStore, a2, v13, v12, v11, v10, v9, v8);
+    v14 = objc_msgSend_imageNameForProductID_subProductID_deviceKind_small_cropped_threeDee_(ImageStore, a2, v13, v12, v11, smallCopy, croppedCopy, deeCopy);
     v15 = objc_opt_class();
     v16 = MEMORY[0x277CCA8D8];
     v17 = objc_opt_class();
@@ -636,18 +636,18 @@ LABEL_13:
   return v26;
 }
 
-+ (CGImage)cgImageFromImage:(id)a3 forContentsScale:(double)a4
++ (CGImage)cgImageFromImage:(id)image forContentsScale:(double)scale
 {
   if (dword_27E381698 <= 800 && (dword_27E381698 != -1 || sub_23EB74AC8(&dword_27E381698, 0x320u)))
   {
-    objc_msgSend_size(a3, a2, a3);
+    objc_msgSend_size(image, a2, image);
     v6 = v5;
-    objc_msgSend_size(a3, v7, v8);
-    objc_msgSend_scale(a3, v9, v10);
+    objc_msgSend_size(image, v7, v8);
+    objc_msgSend_scale(image, v9, v10);
     sub_23EB75374(&dword_27E381698, "+[ImageStore cgImageFromImage:forContentsScale:]", 800, "image width = %.1f  height = %.1f  scale = %.1f\n", v11, v12, v13, v14, v6);
   }
 
-  v19 = objc_msgSend_CGImage(a3, a2, a3);
+  v19 = objc_msgSend_CGImage(image, a2, image);
   if (dword_27E381698 <= 800 && (dword_27E381698 != -1 || sub_23EB74AC8(&dword_27E381698, 0x320u)))
   {
     sub_23EB75374(&dword_27E381698, "+[ImageStore cgImageFromImage:forContentsScale:]", 800, "returning cgImage %@\n", v15, v16, v17, v18, v19);

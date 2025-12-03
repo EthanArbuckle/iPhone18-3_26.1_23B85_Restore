@@ -1,30 +1,30 @@
 @interface HMDRPIdentity
-+ (id)identityWithRPIdentity:(id)a3;
++ (id)identityWithRPIdentity:(id)identity;
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRPIdentity:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRPIdentity:(id)identity;
 - (HMDRPIdentity)init;
-- (HMDRPIdentity)initWithCoder:(id)a3;
-- (HMDRPIdentity)initWithDeviceIRK:(id)a3;
+- (HMDRPIdentity)initWithCoder:(id)coder;
+- (HMDRPIdentity)initWithDeviceIRK:(id)k;
 - (id)logIdentifier;
 - (id)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDRPIdentity
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDRPIdentity *)self deviceIRK];
-  [v4 encodeObject:v5 forKey:*MEMORY[0x277CCFC68]];
+  coderCopy = coder;
+  deviceIRK = [(HMDRPIdentity *)self deviceIRK];
+  [coderCopy encodeObject:deviceIRK forKey:*MEMORY[0x277CCFC68]];
 }
 
-- (HMDRPIdentity)initWithCoder:(id)a3
+- (HMDRPIdentity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCFC68]];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCFC68]];
 
   v6 = [(HMDRPIdentity *)self initWithDeviceIRK:v5];
   return v6;
@@ -37,20 +37,20 @@
   return [v2 shortDescription];
 }
 
-- (BOOL)isEqualToRPIdentity:(id)a3
+- (BOOL)isEqualToRPIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [(HMDRPIdentity *)self deviceIRK];
-  v6 = [v4 deviceIRKData];
+  identityCopy = identity;
+  deviceIRK = [(HMDRPIdentity *)self deviceIRK];
+  deviceIRKData = [identityCopy deviceIRKData];
 
-  LOBYTE(v4) = [v5 isEqualToData:v6];
-  return v4;
+  LOBYTE(identityCopy) = [deviceIRK isEqualToData:deviceIRKData];
+  return identityCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -60,7 +60,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -72,8 +72,8 @@
     v7 = v6;
     if (v6)
     {
-      v8 = [(HMDRPIdentity *)v6 deviceIRK];
-      v9 = [(HMDRPIdentity *)self deviceIRK];
+      deviceIRK = [(HMDRPIdentity *)v6 deviceIRK];
+      deviceIRK2 = [(HMDRPIdentity *)self deviceIRK];
       v10 = HMFEqualObjects();
     }
 
@@ -88,8 +88,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDRPIdentity *)self deviceIRK];
-  v3 = [v2 hash];
+  deviceIRK = [(HMDRPIdentity *)self deviceIRK];
+  v3 = [deviceIRK hash];
 
   return v3;
 }
@@ -101,31 +101,31 @@
   return [v2 shortDescription];
 }
 
-- (HMDRPIdentity)initWithDeviceIRK:(id)a3
+- (HMDRPIdentity)initWithDeviceIRK:(id)k
 {
-  v4 = a3;
-  if (v4)
+  kCopy = k;
+  if (kCopy)
   {
     v10.receiver = self;
     v10.super_class = HMDRPIdentity;
     v5 = [(HMDRPIdentity *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [kCopy copy];
       deviceIRK = v5->_deviceIRK;
       v5->_deviceIRK = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (HMDRPIdentity)init
@@ -163,18 +163,18 @@ uint64_t __28__HMDRPIdentity_logCategory__block_invoke()
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-+ (id)identityWithRPIdentity:(id)a3
++ (id)identityWithRPIdentity:(id)identity
 {
-  if (a3)
+  if (identity)
   {
     v3 = MEMORY[0x277D0F7F8];
-    v4 = a3;
+    identityCopy = identity;
     v5 = [v3 alloc];
     v6 = *MEMORY[0x277D0F1B8];
     v7 = *MEMORY[0x277D0F1B0];
-    v8 = [v4 deviceIRKData];
+    deviceIRKData = [identityCopy deviceIRKData];
 
-    v9 = [v5 initWithType:v6 size:v7 data:v8];
+    v9 = [v5 initWithType:v6 size:v7 data:deviceIRKData];
     v10 = [objc_alloc(objc_opt_class()) initWithDeviceIRK:v9];
   }
 

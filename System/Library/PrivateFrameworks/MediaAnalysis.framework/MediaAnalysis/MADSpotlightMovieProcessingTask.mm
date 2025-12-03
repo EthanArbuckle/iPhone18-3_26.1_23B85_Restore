@@ -1,29 +1,29 @@
 @interface MADSpotlightMovieProcessingTask
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5;
-- (BOOL)run:(id *)a3;
-- (MADSpotlightMovieProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5;
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (BOOL)run:(id *)run;
+- (MADSpotlightMovieProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler;
 - (int)_processAssets;
-- (int)_processAssetsInBatch:(id)a3;
+- (int)_processAssetsInBatch:(id)batch;
 @end
 
 @implementation MADSpotlightMovieProcessingTask
 
-- (MADSpotlightMovieProcessingTask)initWithCancelBlock:(id)a3 progressHandler:(id)a4 andCompletionHandler:(id)a5
+- (MADSpotlightMovieProcessingTask)initWithCancelBlock:(id)block progressHandler:(id)handler andCompletionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10018AEE4;
   v25[3] = &unk_100284038;
-  v10 = a5;
-  v26 = v10;
+  completionHandlerCopy = completionHandler;
+  v26 = completionHandlerCopy;
   v24.receiver = self;
   v24.super_class = MADSpotlightMovieProcessingTask;
   v11 = [(MADSpotlightMovieProcessingTask *)&v24 initWithCompletionHandler:v25];
   if (v11)
   {
-    v12 = objc_retainBlock(v9);
+    v12 = objc_retainBlock(handlerCopy);
     progressHandler = v11->_progressHandler;
     v11->_progressHandler = v12;
 
@@ -35,7 +35,7 @@
     publishQueue = v11->_publishQueue;
     v11->_publishQueue = v16;
 
-    [(MADSpotlightMovieProcessingTask *)v11 setCancelBlock:v8];
+    [(MADSpotlightMovieProcessingTask *)v11 setCancelBlock:blockCopy];
     v23 = 0;
     v18 = [MADManagedSpotlightEntry countForMediaType:2 error:&v23];
     v19 = v23;
@@ -57,21 +57,21 @@
   return v11;
 }
 
-+ (id)taskWithCancelBlock:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5
++ (id)taskWithCancelBlock:(id)block progressHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithCancelBlock:v8 progressHandler:v9 andCompletionHandler:v10];
+  blockCopy = block;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  v11 = [[self alloc] initWithCancelBlock:blockCopy progressHandler:handlerCopy andCompletionHandler:completionHandlerCopy];
 
   return v11;
 }
 
-- (int)_processAssetsInBatch:(id)a3
+- (int)_processAssetsInBatch:(id)batch
 {
-  v4 = a3;
-  v5 = [v4 prepare];
-  if (v5)
+  batchCopy = batch;
+  prepare = [batchCopy prepare];
+  if (prepare)
   {
     if (MediaAnalysisLogLevel() >= 3)
     {
@@ -79,7 +79,7 @@
       if (os_log_type_enabled(&_os_log_default, v6))
       {
         *buf = 138412290;
-        v16 = v4;
+        v16 = batchCopy;
         v7 = "Failed to prepare batch: %@";
 LABEL_5:
         _os_log_impl(&_mh_execute_header, &_os_log_default, v6, v7, buf, 0xCu);
@@ -89,9 +89,9 @@ LABEL_5:
 
   else
   {
-    v8 = [v4 process];
-    v5 = v8;
-    if (v8 != -128 && v8)
+    process = [batchCopy process];
+    prepare = process;
+    if (process != -128 && process)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -99,7 +99,7 @@ LABEL_5:
         if (os_log_type_enabled(&_os_log_default, v6))
         {
           *buf = 138412290;
-          v16 = v4;
+          v16 = batchCopy;
           v7 = "Failed to process batch: %@";
           goto LABEL_5;
         }
@@ -117,21 +117,21 @@ LABEL_5:
         v12[1] = 3221225472;
         v12[2] = sub_10018B208;
         v12[3] = &unk_100282BC8;
-        v13 = v4;
-        v14 = self;
+        v13 = batchCopy;
+        selfCopy = self;
         dispatch_group_async(publishGroup, publishQueue, v12);
       }
     }
   }
 
-  return v5;
+  return prepare;
 }
 
 - (int)_processAssets
 {
-  v3 = [(MADSpotlightMovieProcessingTask *)self isCanceled];
+  isCanceled = [(MADSpotlightMovieProcessingTask *)self isCanceled];
   v4 = MediaAnalysisLogLevel();
-  if (v3)
+  if (isCanceled)
   {
     if (v4 >= 3)
     {
@@ -191,8 +191,8 @@ LABEL_5:
         break;
       }
 
-      v13 = [(MADSpotlightMovieProcessingTask *)self cancelBlock];
-      v14 = [MADSpotlightMovieAssetBatch batchWithCancelBlock:v13];
+      cancelBlock = [(MADSpotlightMovieProcessingTask *)self cancelBlock];
+      v14 = [MADSpotlightMovieAssetBatch batchWithCancelBlock:cancelBlock];
 
       v24 = 0u;
       v25 = 0u;
@@ -234,7 +234,7 @@ LABEL_5:
   }
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
   (*(self->_progressHandler + 2))(0.0);
   v5 = VCPSignPostLog();
@@ -286,14 +286,14 @@ LABEL_5:
 
   if (!publishError)
   {
-    v15 = [(MADSpotlightMovieProcessingTask *)self completionHandler];
-    v15[2](v15, 0, 0);
+    completionHandler = [(MADSpotlightMovieProcessingTask *)self completionHandler];
+    completionHandler[2](completionHandler, 0, 0);
 LABEL_21:
 
     return publishError == 0;
   }
 
-  if (a3)
+  if (run)
   {
     v20 = NSLocalizedDescriptionKey;
     v14 = "failed";
@@ -302,12 +302,12 @@ LABEL_21:
       v14 = "canceled";
     }
 
-    v15 = [NSString stringWithFormat:@"[Spotlight|Movie] Processing %s", v14];
-    v21 = v15;
+    completionHandler = [NSString stringWithFormat:@"[Spotlight|Movie] Processing %s", v14];
+    v21 = completionHandler;
     v16 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
     v17 = [NSError errorWithDomain:NSOSStatusErrorDomain code:publishError userInfo:v16];
-    v18 = *a3;
-    *a3 = v17;
+    v18 = *run;
+    *run = v17;
 
     goto LABEL_21;
   }

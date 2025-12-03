@@ -1,22 +1,22 @@
 @interface City
 + (id)_ISO8601Calendar;
-+ (id)cityContainingLocation:(id)a3 expectedName:(id)a4 fromCities:(id)a5;
++ (id)cityContainingLocation:(id)location expectedName:(id)name fromCities:(id)cities;
 - (BOOL)_dataIsValid;
 - (BOOL)_isUpdating;
-- (BOOL)_isValidLearnMoreURLForSevereEvent:(id)a3;
+- (BOOL)_isValidLearnMoreURLForSevereEvent:(id)event;
 - (BOOL)airQualityCanUseDefaultAttribution;
 - (BOOL)airQualityForceHideRecommendation;
 - (BOOL)airQualityScaleIsAscending;
 - (BOOL)airQualityScaleIsNumerical;
 - (BOOL)isDay;
-- (BOOL)isDuplicateOfCity:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)populateWithDataFromCity:(id)a3;
+- (BOOL)isDuplicateOfCity:(id)city;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)populateWithDataFromCity:(id)city;
 - (BOOL)timeZoneIsFresh;
 - (BOOL)update;
 - (CLLocationCoordinate2D)coordinate;
 - (City)init;
-- (City)initWithDictionaryRepresentation:(id)a3;
+- (City)initWithDictionaryRepresentation:(id)representation;
 - (NSArray)dayForecasts;
 - (NSArray)hourlyForecasts;
 - (NSDictionary)urlComponents;
@@ -28,19 +28,19 @@
 - (NSString)locationID;
 - (NSString)weatherLocationCitationName;
 - (WFAQIScale)airQualityScale;
-- (double)distanceToLatitude:(double)a3 longitude:(double)a4;
-- (double)distanceToLocation:(id)a3;
+- (double)distanceToLatitude:(double)latitude longitude:(double)longitude;
+- (double)distanceToLocation:(id)location;
 - (double)latitude;
 - (double)longitude;
 - (id)cityAndState;
 - (id)detailedDescription;
 - (id)displayName;
 - (id)getName;
-- (id)naturalLanguageDescriptionWithDescribedCondition:(int64_t *)a3;
-- (id)windDirectionAsString:(double)a3;
+- (id)naturalLanguageDescriptionWithDescribedCondition:(int64_t *)condition;
+- (id)windDirectionAsString:(double)string;
 - (int64_t)conditionCode;
-- (int64_t)locationOfTime:(int64_t)a3;
-- (int64_t)primaryConditionForRange:(_NSRange)a3;
+- (int64_t)locationOfTime:(int64_t)time;
+- (int64_t)primaryConditionForRange:(_NSRange)range;
 - (int64_t)timeDigit;
 - (unint64_t)airQualitySignificance;
 - (unint64_t)aqiDataAvailabilityStatus;
@@ -52,29 +52,29 @@
 - (void)_generateLocalizableStrings;
 - (void)_notifyDidStartWeatherUpdate;
 - (void)_updateTimeZone;
-- (void)addUpdateObserver:(id)a3;
-- (void)cityDidFinishUpdatingWithError:(id)a3;
+- (void)addUpdateObserver:(id)observer;
+- (void)cityDidFinishUpdatingWithError:(id)error;
 - (void)clearForecasts;
 - (void)dealloc;
 - (void)discardDataIfNeeded;
 - (void)localWeatherDidBeginUpdate;
-- (void)removeUpdateObserver:(id)a3;
-- (void)setAutoUpdate:(BOOL)a3;
-- (void)setConditionCode:(int64_t)a3;
-- (void)setCoordinate:(CLLocationCoordinate2D)a3;
-- (void)setDayForecasts:(id)a3;
-- (void)setHourlyForecasts:(id)a3;
-- (void)setIsDay:(BOOL)a3;
-- (void)setLatitude:(double)a3;
-- (void)setLongitude:(double)a3;
-- (void)setName:(id)a3;
-- (void)setTemperature:(id)a3;
-- (void)setUpdateTime:(id)a3;
-- (void)setWfLocation:(id)a3;
+- (void)removeUpdateObserver:(id)observer;
+- (void)setAutoUpdate:(BOOL)update;
+- (void)setConditionCode:(int64_t)code;
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)setDayForecasts:(id)forecasts;
+- (void)setHourlyForecasts:(id)forecasts;
+- (void)setIsDay:(BOOL)day;
+- (void)setLatitude:(double)latitude;
+- (void)setLongitude:(double)longitude;
+- (void)setName:(id)name;
+- (void)setTemperature:(id)temperature;
+- (void)setUpdateTime:(id)time;
+- (void)setWfLocation:(id)location;
 - (void)update;
-- (void)updateCityForModel:(id)a3;
-- (void)updateCityForSevereWeatherEvents:(id)a3;
-- (void)updateTimeZoneWithCompletionBlock:(id)a3;
+- (void)updateCityForModel:(id)model;
+- (void)updateCityForSevereWeatherEvents:(id)events;
+- (void)updateTimeZoneWithCompletionBlock:(id)block;
 @end
 
 @implementation City
@@ -110,9 +110,9 @@ uint64_t __24__City__ISO8601Calendar__block_invoke()
   {
     v3 = +[WeatherInternalPreferences sharedInternalPreferences];
     v4 = [v3 objectForKey:@"ShouldWeatherUpdateRapidly"];
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
     v6 = 300;
-    if (v5)
+    if (bOOLValue)
     {
       v6 = 5;
     }
@@ -128,9 +128,9 @@ uint64_t __24__City__ISO8601Calendar__block_invoke()
   return v2;
 }
 
-- (City)initWithDictionaryRepresentation:(id)a3
+- (City)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = [CityPersistenceConversions cityFromDictionary:a3];
+  v4 = [CityPersistenceConversions cityFromDictionary:representation];
 
   return v4;
 }
@@ -143,13 +143,13 @@ uint64_t __24__City__ISO8601Calendar__block_invoke()
   [(City *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -158,29 +158,29 @@ uint64_t __24__City__ISO8601Calendar__block_invoke()
   }
 
   v6 = v5;
-  v7 = [(City *)self locationID];
+  locationID = [(City *)self locationID];
 
-  if (v7)
+  if (locationID)
   {
-    v8 = [(City *)self locationID];
+    locationID2 = [(City *)self locationID];
     [v6 locationID];
   }
 
   else
   {
-    v8 = [(City *)self name];
+    locationID2 = [(City *)self name];
     [v6 name];
   }
   v9 = ;
 
-  v10 = [v8 isEqual:v9];
+  v10 = [locationID2 isEqual:v9];
   return v10;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(City *)self locationID];
-  v3 = [v2 hash];
+  locationID = [(City *)self locationID];
+  v3 = [locationID hash];
 
   return v3;
 }
@@ -193,10 +193,10 @@ uint64_t __24__City__ISO8601Calendar__block_invoke()
   }
 
   v3 = +[WeatherInternalPreferences sharedInternalPreferences];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
   v5 = conditionCode_forceUnsetConditionCode;
 
-  if (v4 && (v5 & 1) != 0)
+  if (isInternalInstall && (v5 & 1) != 0)
   {
     return 3200;
   }
@@ -220,9 +220,9 @@ void __21__City_conditionCode__block_invoke()
   v9.receiver = self;
   v9.super_class = City;
   v4 = [(City *)&v9 description];
-  v5 = [(City *)self name];
-  v6 = [(City *)self locationID];
-  v7 = [v3 stringWithFormat:@"<%@ -- Name: %@, LocationID: %@", v4, v5, v6];
+  name = [(City *)self name];
+  locationID = [(City *)self locationID];
+  v7 = [v3 stringWithFormat:@"<%@ -- Name: %@, LocationID: %@", v4, name, locationID];
 
   return v7;
 }
@@ -248,15 +248,15 @@ void __21__City_conditionCode__block_invoke()
   [(City *)self heatIndex];
   v42 = [v7 initWithTemperatureUnit:2 value:v8];
   v9 = MEMORY[0x277CCABB0];
-  v10 = [(City *)self feelsLike];
-  [v10 temperatureForUnit:v3];
+  feelsLike = [(City *)self feelsLike];
+  [feelsLike temperatureForUnit:v3];
   v11 = [v9 numberWithDouble:?];
-  v12 = [v11 stringValue];
+  stringValue = [v11 stringValue];
   v13 = MEMORY[0x277CCABB0];
   [v42 temperatureForUnit:v3];
   v14 = [v13 numberWithDouble:?];
-  v15 = [v14 stringValue];
-  [v5 appendFormat:@"\nFeels Like: %@, Heat Index: %@", v12, v15];
+  stringValue2 = [v14 stringValue];
+  [v5 appendFormat:@"\nFeels Like: %@, Heat Index: %@", stringValue, stringValue2];
 
   v16 = objc_alloc(MEMORY[0x277D7B2C0]);
   [(City *)self windChill];
@@ -270,8 +270,8 @@ void __21__City_conditionCode__block_invoke()
   v24 = MEMORY[0x277CCABB0];
   [v41 temperatureForUnit:v3];
   v25 = [v24 numberWithDouble:?];
-  v26 = [v25 stringValue];
-  [v5 appendFormat:@"\nWind Chill: %@, Wind: %@", v26, v23];
+  stringValue3 = [v25 stringValue];
+  [v5 appendFormat:@"\nWind Chill: %@, Wind: %@", stringValue3, v23];
 
   v27 = objc_alloc(MEMORY[0x277D7B2C0]);
   [(City *)self dewPoint];
@@ -285,47 +285,47 @@ void __21__City_conditionCode__block_invoke()
   v35 = MEMORY[0x277CCABB0];
   [v29 temperatureForUnit:v3];
   v36 = [v35 numberWithDouble:?];
-  v37 = [v36 stringValue];
-  [v5 appendFormat:@"\nHumidity %f%%, Visibility: %@, Pressure: %@, Dewpoint: %@, UV Index: %lu", *&v31, v33, v34, v37, -[City uvIndex](self, "uvIndex")];
+  stringValue4 = [v36 stringValue];
+  [v5 appendFormat:@"\nHumidity %f%%, Visibility: %@, Pressure: %@, Dewpoint: %@, UV Index: %lu", *&v31, v33, v34, stringValue4, -[City uvIndex](self, "uvIndex")];
 
   [v5 appendFormat:@"\nObservation Time: %lu Sunrise: %lu, Sunset: %lu, Moonphase: %lu", -[City observationTime](self, "observationTime"), -[City sunriseTime](self, "sunriseTime"), -[City sunsetTime](self, "sunsetTime"), -[City moonPhase](self, "moonPhase")];
-  v38 = [(City *)self dayForecasts];
-  [v5 appendFormat:@"\nForecasts: %@", v38];
+  dayForecasts = [(City *)self dayForecasts];
+  [v5 appendFormat:@"\nForecasts: %@", dayForecasts];
 
-  v39 = [(City *)self hourlyForecasts];
-  [v5 appendFormat:@"\nHourly Forecasts: %@>", v39];
+  hourlyForecasts = [(City *)self hourlyForecasts];
+  [v5 appendFormat:@"\nHourly Forecasts: %@>", hourlyForecasts];
 
   return v5;
 }
 
-- (void)addUpdateObserver:(id)a3
+- (void)addUpdateObserver:(id)observer
 {
-  v9 = a3;
-  v4 = [(City *)self cityUpdateObservers];
-  v5 = [v4 containsObject:v9];
+  observerCopy = observer;
+  cityUpdateObservers = [(City *)self cityUpdateObservers];
+  v5 = [cityUpdateObservers containsObject:observerCopy];
 
   if (v5)
   {
     NSLog(&cfstr_Cityupdateobse.isa);
   }
 
-  v6 = [(City *)self cityUpdateObservers];
+  cityUpdateObservers2 = [(City *)self cityUpdateObservers];
 
-  if (!v6)
+  if (!cityUpdateObservers2)
   {
-    v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    [(City *)self setCityUpdateObservers:v7];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    [(City *)self setCityUpdateObservers:weakObjectsHashTable];
   }
 
-  v8 = [(City *)self cityUpdateObservers];
-  [v8 addObject:v9];
+  cityUpdateObservers3 = [(City *)self cityUpdateObservers];
+  [cityUpdateObservers3 addObject:observerCopy];
 }
 
-- (void)removeUpdateObserver:(id)a3
+- (void)removeUpdateObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(City *)self cityUpdateObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  cityUpdateObservers = [(City *)self cityUpdateObservers];
+  [cityUpdateObservers removeObject:observerCopy];
 }
 
 - (void)_clearAutoUpdateTimer
@@ -335,11 +335,11 @@ void __21__City_conditionCode__block_invoke()
   self->_autoUpdateTimer = 0;
 }
 
-- (void)setAutoUpdate:(BOOL)a3
+- (void)setAutoUpdate:(BOOL)update
 {
-  if (self->_autoUpdate != a3)
+  if (self->_autoUpdate != update)
   {
-    self->_autoUpdate = a3;
+    self->_autoUpdate = update;
     [(City *)self _clearAutoUpdateTimer];
     if (self->_autoUpdate && ![(City *)self isLocalWeatherCity])
     {
@@ -352,9 +352,9 @@ void __21__City_conditionCode__block_invoke()
 
 - (id)displayName
 {
-  v3 = [(City *)self name];
+  name = [(City *)self name];
 
-  if (v3)
+  if (name)
   {
     [(City *)self name];
   }
@@ -368,26 +368,26 @@ void __21__City_conditionCode__block_invoke()
   return v4;
 }
 
-- (void)setTemperature:(id)a3
+- (void)setTemperature:(id)temperature
 {
-  v7 = a3;
+  temperatureCopy = temperature;
   if (![(City *)self lockedForDemoMode])
   {
     temperature = self->_temperature;
     p_temperature = &self->_temperature;
-    if (([v7 isEqual:temperature] & 1) == 0)
+    if (([temperatureCopy isEqual:temperature] & 1) == 0)
     {
-      objc_storeStrong(p_temperature, a3);
+      objc_storeStrong(p_temperature, temperature);
     }
   }
 }
 
-- (void)setDayForecasts:(id)a3
+- (void)setDayForecasts:(id)forecasts
 {
-  v6 = a3;
+  forecastsCopy = forecasts;
   if (![(City *)self lockedForDemoMode])
   {
-    v4 = [v6 copy];
+    v4 = [forecastsCopy copy];
     dayForecasts = self->_dayForecasts;
     self->_dayForecasts = v4;
   }
@@ -406,12 +406,12 @@ void __21__City_conditionCode__block_invoke()
   }
 }
 
-- (void)setHourlyForecasts:(id)a3
+- (void)setHourlyForecasts:(id)forecasts
 {
-  v6 = a3;
+  forecastsCopy = forecasts;
   if (![(City *)self lockedForDemoMode])
   {
-    v4 = [v6 copy];
+    v4 = [forecastsCopy copy];
     hourlyForecasts = self->_hourlyForecasts;
     self->_hourlyForecasts = v4;
   }
@@ -432,17 +432,17 @@ void __21__City_conditionCode__block_invoke()
 
 - (int64_t)timeDigit
 {
-  v2 = [(City *)self timeZone];
-  v3 = CityTimeDigitForTimeZone(v2);
+  timeZone = [(City *)self timeZone];
+  v3 = CityTimeDigitForTimeZone(timeZone);
 
   return v3;
 }
 
-- (void)setIsDay:(BOOL)a3
+- (void)setIsDay:(BOOL)day
 {
   if (![(City *)self lockedForDemoMode])
   {
-    self->_isDay = a3;
+    self->_isDay = day;
   }
 }
 
@@ -458,49 +458,49 @@ void __21__City_conditionCode__block_invoke()
     return 1;
   }
 
-  v5 = [(City *)self timeDigit];
-  if (v5 - [(City *)self observationTime]> 5)
+  timeDigit = [(City *)self timeDigit];
+  if (timeDigit - [(City *)self observationTime]> 5)
   {
-    [(City *)self setObservationTime:v5];
+    [(City *)self setObservationTime:timeDigit];
   }
 
-  v6 = [(City *)self sunsetTime];
-  v7 = [(City *)self sunriseTime];
-  v8 = [(City *)self observationTime];
-  if (v6 <= v7)
+  sunsetTime = [(City *)self sunsetTime];
+  sunriseTime = [(City *)self sunriseTime];
+  observationTime = [(City *)self observationTime];
+  if (sunsetTime <= sunriseTime)
   {
-    if (v8 > [(City *)self sunsetTime])
+    if (observationTime > [(City *)self sunsetTime])
     {
-      v10 = [(City *)self observationTime];
-      return v10 >= [(City *)self sunriseTime];
+      observationTime2 = [(City *)self observationTime];
+      return observationTime2 >= [(City *)self sunriseTime];
     }
 
     return 1;
   }
 
-  if (v8 <= [(City *)self sunriseTime])
+  if (observationTime <= [(City *)self sunriseTime])
   {
     return 0;
   }
 
   else
   {
-    v9 = [(City *)self observationTime];
-    return v9 < [(City *)self sunsetTime];
+    observationTime3 = [(City *)self observationTime];
+    return observationTime3 < [(City *)self sunsetTime];
   }
 }
 
 - (unint64_t)weatherDataAge
 {
-  v3 = [(City *)self updateTime];
+  updateTime = [(City *)self updateTime];
 
-  if (!v3)
+  if (!updateTime)
   {
     return 2;
   }
 
-  v4 = [(City *)self updateTime];
-  [v4 timeIntervalSinceNow];
+  updateTime2 = [(City *)self updateTime];
+  [updateTime2 timeIntervalSinceNow];
   v6 = v5;
 
   v7 = -v6;
@@ -524,9 +524,9 @@ void __21__City_conditionCode__block_invoke()
     return 0;
   }
 
-  v10 = [(City *)self updateTime];
-  v11 = [(City *)self timeZone];
-  IsTodayInTimezone = DateIsTodayInTimezone(v10, v11);
+  updateTime3 = [(City *)self updateTime];
+  timeZone = [(City *)self timeZone];
+  IsTodayInTimezone = DateIsTodayInTimezone(updateTime3, timeZone);
 
   if (IsTodayInTimezone)
   {
@@ -542,14 +542,14 @@ void __21__City_conditionCode__block_invoke()
 - (void)localWeatherDidBeginUpdate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(City *)self cityUpdateObservers];
-  v4 = [v3 allObjects];
+  cityUpdateObservers = [(City *)self cityUpdateObservers];
+  allObjects = [cityUpdateObservers allObjects];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = allObjects;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -640,10 +640,10 @@ void __21__City_conditionCode__block_invoke()
     }
 
     [(City *)self _updateTimeZone];
-    v8 = [(City *)self isUpdating];
+    isUpdating = [(City *)self isUpdating];
   }
 
-  return v8;
+  return isUpdating;
 }
 
 - (void)_notifyDidStartWeatherUpdate
@@ -660,8 +660,8 @@ void __21__City_conditionCode__block_invoke()
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(City *)self cityUpdateObservers];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  cityUpdateObservers = [(City *)self cityUpdateObservers];
+  v6 = [cityUpdateObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -673,7 +673,7 @@ void __21__City_conditionCode__block_invoke()
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(cityUpdateObservers);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -686,7 +686,7 @@ void __21__City_conditionCode__block_invoke()
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [cityUpdateObservers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -697,11 +697,11 @@ void __21__City_conditionCode__block_invoke()
 
 - (BOOL)timeZoneIsFresh
 {
-  v3 = [(City *)self timeZone];
-  if (v3)
+  timeZone = [(City *)self timeZone];
+  if (timeZone)
   {
-    v4 = [(City *)self timeZoneUpdateDate];
-    [v4 timeIntervalSinceNow];
+    timeZoneUpdateDate = [(City *)self timeZoneUpdateDate];
+    [timeZoneUpdateDate timeIntervalSinceNow];
     v6 = v5 >= -86400.0;
   }
 
@@ -722,26 +722,26 @@ void __21__City_conditionCode__block_invoke()
   }
 }
 
-- (void)updateTimeZoneWithCompletionBlock:(id)a3
+- (void)updateTimeZoneWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(City *)self isLocalWeatherCity]|| ([(City *)self coordinate], !CLLocationCoordinate2DIsValid(v21)))
   {
-    if (v4)
+    if (blockCopy)
     {
-      v4[2](v4, 1, self);
+      blockCopy[2](blockCopy, 1, self);
     }
   }
 
   else
   {
-    v5 = [(City *)self activeGeocodeRequest];
+    activeGeocodeRequest = [(City *)self activeGeocodeRequest];
 
-    if (v5)
+    if (activeGeocodeRequest)
     {
-      if (v4)
+      if (blockCopy)
       {
-        v4[2](v4, 2, self);
+        blockCopy[2](blockCopy, 2, self);
       }
     }
 
@@ -757,13 +757,13 @@ void __21__City_conditionCode__block_invoke()
       v15 = __42__City_updateTimeZoneWithCompletionBlock___block_invoke;
       v16 = &unk_279E68258;
       objc_copyWeak(&v19, &location);
-      v17 = self;
-      v18 = v4;
+      selfCopy = self;
+      v18 = blockCopy;
       v11 = [v6 initWithCoordinate:&v13 resultHandler:{v8, v10}];
       [(City *)self setActiveGeocodeRequest:v11, v13, v14, v15, v16];
 
-      v12 = [(City *)self activeGeocodeRequest];
-      [v12 start];
+      activeGeocodeRequest2 = [(City *)self activeGeocodeRequest];
+      [activeGeocodeRequest2 start];
 
       objc_destroyWeak(&v19);
       objc_destroyWeak(&location);
@@ -838,10 +838,10 @@ void __42__City_updateTimeZoneWithCompletionBlock___block_invoke_2(uint64_t a1)
   [(City *)self setAirQualityCategory:0];
 }
 
-- (void)setUpdateTime:(id)a3
+- (void)setUpdateTime:(id)time
 {
-  v5 = a3;
-  objc_storeStrong(&self->_updateTime, a3);
+  timeCopy = time;
+  objc_storeStrong(&self->_updateTime, time);
   updateTimeString = self->_updateTimeString;
   self->_updateTimeString = 0;
 
@@ -882,10 +882,10 @@ LABEL_4:
 LABEL_9:
 }
 
-- (void)cityDidFinishUpdatingWithError:(id)a3
+- (void)cityDidFinishUpdatingWithError:(id)error
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = WALogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -906,27 +906,27 @@ LABEL_9:
     }
   }
 
-  if ([v4 code] == 3072)
+  if ([errorCopy code] == 3072)
   {
     [(City *)self setLastUpdateStatus:2];
-    [(City *)self setLastUpdateError:v4];
+    [(City *)self setLastUpdateError:errorCopy];
 LABEL_10:
     [(City *)self discardDataIfNeeded];
     goto LABEL_11;
   }
 
-  [(City *)self setLastUpdateStatus:v4 != 0];
-  [(City *)self setLastUpdateError:v4];
-  if (v4)
+  [(City *)self setLastUpdateStatus:errorCopy != 0];
+  [(City *)self setLastUpdateError:errorCopy];
+  if (errorCopy)
   {
     goto LABEL_10;
   }
 
-  v16 = [MEMORY[0x277CBEAA8] date];
-  [(City *)self setUpdateTime:v16];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(City *)self setUpdateTime:date];
 
-  v17 = [(City *)self dayForecasts];
-  v18 = [v17 sortedArrayUsingSelector:sel_compareDayNumberToDayForecast_];
+  dayForecasts = [(City *)self dayForecasts];
+  v18 = [dayForecasts sortedArrayUsingSelector:sel_compareDayNumberToDayForecast_];
   [(City *)self setDayForecasts:v18];
 
 LABEL_11:
@@ -934,8 +934,8 @@ LABEL_11:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(City *)self cityUpdateObservers];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  cityUpdateObservers = [(City *)self cityUpdateObservers];
+  v9 = [cityUpdateObservers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -947,7 +947,7 @@ LABEL_11:
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(cityUpdateObservers);
         }
 
         v13 = *(*(&v19 + 1) + 8 * v12);
@@ -960,14 +960,14 @@ LABEL_11:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [cityUpdateObservers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 postNotificationName:@"CityDidUpdate" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"CityDidUpdate" object:self];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -985,173 +985,173 @@ LABEL_11:
   if (self->_state)
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [(City *)self name];
-    v5 = [v3 stringWithFormat:@"%@, %@", v4, self->_state];
+    name = [(City *)self name];
+    name2 = [v3 stringWithFormat:@"%@, %@", name, self->_state];
   }
 
   else
   {
-    v5 = [(City *)self name];
+    name2 = [(City *)self name];
   }
 
-  return v5;
+  return name2;
 }
 
 - (NSString)weatherLocationCitationName
 {
   if ([(City *)self isLocalWeatherCity]&& ([(City *)self weatherLocationName], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(City *)self weatherLocationName];
+    weatherLocationName = [(City *)self weatherLocationName];
   }
 
   else if ([(City *)self isLocalWeatherCity]|| ([(City *)self searchTitle], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    v4 = [(City *)self name];
+    weatherLocationName = [(City *)self name];
   }
 
   else
   {
-    v4 = [(City *)self searchTitle];
+    weatherLocationName = [(City *)self searchTitle];
   }
 
-  return v4;
+  return weatherLocationName;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (![(City *)v4 lockedForDemoMode])
+  nameCopy = name;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(City *)selfCopy lockedForDemoMode])
   {
-    v5 = [v7 copy];
-    name = v4->_name;
-    v4->_name = v5;
+    v5 = [nameCopy copy];
+    name = selfCopy->_name;
+    selfCopy->_name = v5;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)getName
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_name;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_name;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setConditionCode:(int64_t)a3
+- (void)setConditionCode:(int64_t)code
 {
   if (![(City *)self lockedForDemoMode])
   {
-    self->_conditionCode = a3;
+    self->_conditionCode = code;
   }
 }
 
-- (void)setWfLocation:(id)a3
+- (void)setWfLocation:(id)location
 {
-  v29 = a3;
-  v5 = [(City *)self lockedForDemoMode];
-  v6 = v29;
-  if ((v5 & 1) == 0)
+  locationCopy = location;
+  lockedForDemoMode = [(City *)self lockedForDemoMode];
+  v6 = locationCopy;
+  if ((lockedForDemoMode & 1) == 0)
   {
-    if (!v29 || ([v29 geoLocation], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+    if (!locationCopy || ([locationCopy geoLocation], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
     {
       wfLocation = self->_wfLocation;
       self->_wfLocation = 0;
 
       [(City *)self setTimeZone:0];
       [(City *)self setTimeZoneUpdateDate:0];
-      v5 = [(City *)self setISO3166CountryAbbreviation:0];
+      lockedForDemoMode = [(City *)self setISO3166CountryAbbreviation:0];
 LABEL_16:
-      v6 = v29;
+      v6 = locationCopy;
       goto LABEL_17;
     }
 
-    v8 = [v29 isEqual:self->_wfLocation];
-    v6 = v29;
+    v8 = [locationCopy isEqual:self->_wfLocation];
+    v6 = locationCopy;
     if (!v8)
     {
       goto LABEL_14;
     }
 
-    v9 = [v29 geoLocation];
-    v10 = [(WFLocation *)self->_wfLocation geoLocation];
-    [v9 distanceFromLocation:v10];
+    geoLocation = [locationCopy geoLocation];
+    geoLocation2 = [(WFLocation *)self->_wfLocation geoLocation];
+    [geoLocation distanceFromLocation:geoLocation2];
     v12 = v11;
     v13 = *&CityMinimumContainmentDistance;
 
-    v6 = v29;
+    v6 = locationCopy;
     if (v12 >= v13)
     {
       goto LABEL_14;
     }
 
-    v14 = [v29 countryAbbreviation];
-    v15 = [(City *)self ISO3166CountryAbbreviation];
-    if ([v14 isEqualToString:v15])
+    countryAbbreviation = [locationCopy countryAbbreviation];
+    iSO3166CountryAbbreviation = [(City *)self ISO3166CountryAbbreviation];
+    if ([countryAbbreviation isEqualToString:iSO3166CountryAbbreviation])
     {
-      v16 = [v29 timeZone];
-      v17 = [(City *)self timeZone];
-      if ([v16 isEqualToTimeZone:v17])
+      timeZone = [locationCopy timeZone];
+      timeZone2 = [(City *)self timeZone];
+      if ([timeZone isEqualToTimeZone:timeZone2])
       {
-        v18 = [v29 weatherLocationName];
-        if (!v18)
+        weatherLocationName = [locationCopy weatherLocationName];
+        if (!weatherLocationName)
         {
 
           goto LABEL_15;
         }
 
-        v19 = v18;
-        v20 = [v29 weatherLocationName];
-        v21 = [(WFLocation *)self->_wfLocation weatherLocationName];
-        v22 = [v20 isEqualToString:v21];
+        v19 = weatherLocationName;
+        weatherLocationName2 = [locationCopy weatherLocationName];
+        weatherLocationName3 = [(WFLocation *)self->_wfLocation weatherLocationName];
+        v22 = [weatherLocationName2 isEqualToString:weatherLocationName3];
 
-        v6 = v29;
+        v6 = locationCopy;
         if (v22)
         {
           goto LABEL_17;
         }
 
 LABEL_14:
-        v14 = [v6 timeZone];
-        objc_storeStrong(&self->_wfLocation, a3);
-        v24 = [v29 geoLocation];
-        [(City *)self setLocation:v24];
+        countryAbbreviation = [v6 timeZone];
+        objc_storeStrong(&self->_wfLocation, location);
+        geoLocation3 = [locationCopy geoLocation];
+        [(City *)self setLocation:geoLocation3];
 
-        [(City *)self setTimeZone:v14];
-        v25 = [MEMORY[0x277CBEAA8] date];
-        [(City *)self setTimeZoneUpdateDate:v25];
+        [(City *)self setTimeZone:countryAbbreviation];
+        date = [MEMORY[0x277CBEAA8] date];
+        [(City *)self setTimeZoneUpdateDate:date];
 
-        v26 = [v29 countryAbbreviation];
-        [(City *)self setISO3166CountryAbbreviation:v26];
+        countryAbbreviation2 = [locationCopy countryAbbreviation];
+        [(City *)self setISO3166CountryAbbreviation:countryAbbreviation2];
 
-        v27 = [v29 weatherDisplayName];
-        [(City *)self setWeatherDisplayName:v27];
+        weatherDisplayName = [locationCopy weatherDisplayName];
+        [(City *)self setWeatherDisplayName:weatherDisplayName];
 
-        v28 = [v29 weatherLocationName];
-        [(City *)self setWeatherLocationName:v28];
+        weatherLocationName4 = [locationCopy weatherLocationName];
+        [(City *)self setWeatherLocationName:weatherLocationName4];
 
 LABEL_15:
         goto LABEL_16;
       }
     }
 
-    v6 = v29;
+    v6 = locationCopy;
     goto LABEL_14;
   }
 
 LABEL_17:
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](lockedForDemoMode, v6);
 }
 
-- (void)setCoordinate:(CLLocationCoordinate2D)a3
+- (void)setCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   if (![(City *)self lockedForDemoMode])
   {
     v6 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:latitude longitude:longitude];
@@ -1161,12 +1161,12 @@ LABEL_17:
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v3 = [(City *)self location];
+  location = [(City *)self location];
 
-  if (v3)
+  if (location)
   {
-    v4 = [(City *)self location];
-    [v4 coordinate];
+    location2 = [(City *)self location];
+    [location2 coordinate];
     v6 = v5;
     v8 = v7;
   }
@@ -1186,64 +1186,64 @@ LABEL_17:
 
 - (double)latitude
 {
-  v3 = [(City *)self location];
+  location = [(City *)self location];
 
-  if (!v3)
+  if (!location)
   {
     return *MEMORY[0x277CE4278];
   }
 
-  v4 = [(City *)self location];
-  [v4 coordinate];
+  location2 = [(City *)self location];
+  [location2 coordinate];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setLatitude:(double)a3
+- (void)setLatitude:(double)latitude
 {
   [(City *)self longitude];
-  v6 = CLLocationCoordinate2DMake(a3, v5);
+  v6 = CLLocationCoordinate2DMake(latitude, v5);
 
   [(City *)self setCoordinate:v6.latitude, v6.longitude];
 }
 
 - (double)longitude
 {
-  v3 = [(City *)self location];
+  location = [(City *)self location];
 
-  if (!v3)
+  if (!location)
   {
     return *(MEMORY[0x277CE4278] + 8);
   }
 
-  v4 = [(City *)self location];
-  [v4 coordinate];
+  location2 = [(City *)self location];
+  [location2 coordinate];
   v6 = v5;
 
   return v6;
 }
 
-- (void)setLongitude:(double)a3
+- (void)setLongitude:(double)longitude
 {
   [(City *)self latitude];
-  v6 = CLLocationCoordinate2DMake(v5, a3);
+  v6 = CLLocationCoordinate2DMake(v5, longitude);
 
   [(City *)self setCoordinate:v6.latitude, v6.longitude];
 }
 
 - (NSString)locationID
 {
-  v3 = [(City *)self location];
+  location = [(City *)self location];
 
-  if (v3)
+  if (location)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(City *)self location];
-    [v5 coordinate];
+    location2 = [(City *)self location];
+    [location2 coordinate];
     v7 = v6;
-    v8 = [(City *)self location];
-    [v8 coordinate];
+    location3 = [(City *)self location];
+    [location3 coordinate];
     v10 = [v4 stringWithFormat:@"%f, %f", v7, v9];
   }
 
@@ -1255,9 +1255,9 @@ LABEL_17:
   return v10;
 }
 
-- (BOOL)populateWithDataFromCity:(id)a3
+- (BOOL)populateWithDataFromCity:(id)city
 {
-  v4 = a3;
+  cityCopy = city;
   if ([(City *)self lockedForDemoMode])
   {
     LOBYTE(v5) = 0;
@@ -1265,58 +1265,58 @@ LABEL_17:
 
   else
   {
-    v6 = [v4 name];
-    [(City *)self setName:v6];
+    name = [cityCopy name];
+    [(City *)self setName:name];
 
-    v7 = [v4 state];
-    [(City *)self setState:v7];
+    state = [cityCopy state];
+    [(City *)self setState:state];
 
-    v8 = [v4 deeplink];
-    [(City *)self setDeeplink:v8];
+    deeplink = [cityCopy deeplink];
+    [(City *)self setDeeplink:deeplink];
 
-    v9 = [v4 timeZone];
-    [(City *)self setTimeZone:v9];
+    timeZone = [cityCopy timeZone];
+    [(City *)self setTimeZone:timeZone];
 
-    v10 = [v4 temperature];
-    [(City *)self setTemperature:v10];
+    temperature = [cityCopy temperature];
+    [(City *)self setTemperature:temperature];
 
-    [v4 heatIndex];
+    [cityCopy heatIndex];
     [(City *)self setHeatIndex:?];
-    [v4 visibility];
+    [cityCopy visibility];
     [(City *)self setVisibility:?];
-    [v4 windChill];
+    [cityCopy windChill];
     [(City *)self setWindChill:?];
-    [v4 windDirection];
+    [cityCopy windDirection];
     [(City *)self setWindDirection:?];
-    [v4 windSpeed];
+    [cityCopy windSpeed];
     [(City *)self setWindSpeed:?];
-    [v4 heatIndex];
+    [cityCopy heatIndex];
     [(City *)self setHeatIndex:?];
-    -[City setConditionCode:](self, "setConditionCode:", [v4 conditionCode]);
-    v11 = [v4 dayForecasts];
-    [(City *)self setDayForecasts:v11];
+    -[City setConditionCode:](self, "setConditionCode:", [cityCopy conditionCode]);
+    dayForecasts = [cityCopy dayForecasts];
+    [(City *)self setDayForecasts:dayForecasts];
 
-    v12 = [v4 hourlyForecasts];
-    [(City *)self setHourlyForecasts:v12];
+    hourlyForecasts = [cityCopy hourlyForecasts];
+    [(City *)self setHourlyForecasts:hourlyForecasts];
 
-    -[City setObservationTime:](self, "setObservationTime:", [v4 observationTime]);
-    -[City setSunsetTime:](self, "setSunsetTime:", [v4 sunsetTime]);
-    -[City setSunriseTime:](self, "setSunriseTime:", [v4 sunriseTime]);
-    -[City setMoonPhase:](self, "setMoonPhase:", [v4 moonPhase]);
-    v13 = [(City *)self updateTime];
-    v14 = [v4 updateTime];
-    v15 = [v13 isEqualToDate:v14];
+    -[City setObservationTime:](self, "setObservationTime:", [cityCopy observationTime]);
+    -[City setSunsetTime:](self, "setSunsetTime:", [cityCopy sunsetTime]);
+    -[City setSunriseTime:](self, "setSunriseTime:", [cityCopy sunriseTime]);
+    -[City setMoonPhase:](self, "setMoonPhase:", [cityCopy moonPhase]);
+    updateTime = [(City *)self updateTime];
+    updateTime2 = [cityCopy updateTime];
+    v15 = [updateTime isEqualToDate:updateTime2];
 
-    v16 = [v4 updateTime];
-    [(City *)self setUpdateTime:v16];
+    updateTime3 = [cityCopy updateTime];
+    [(City *)self setUpdateTime:updateTime3];
 
-    -[City setLastUpdateStatus:](self, "setLastUpdateStatus:", [v4 lastUpdateStatus]);
-    v17 = [(City *)self locationID];
-    v18 = [v4 locationID];
-    v5 = v15 & [v17 isEqualToString:v18] ^ 1;
+    -[City setLastUpdateStatus:](self, "setLastUpdateStatus:", [cityCopy lastUpdateStatus]);
+    locationID = [(City *)self locationID];
+    locationID2 = [cityCopy locationID];
+    v5 = v15 & [locationID isEqualToString:locationID2] ^ 1;
 
-    v19 = [v4 location];
-    [(City *)self setLocation:v19];
+    location = [cityCopy location];
+    [(City *)self setLocation:location];
   }
 
   return v5;
@@ -1325,16 +1325,16 @@ LABEL_17:
 - (void)discardDataIfNeeded
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 displayName];
+  displayName = [self displayName];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0(&dword_272ACF000, v2, v3, "Weather data is outdated for %@; dumping data...", v4, v5, v6, v7, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)windDirectionAsString:(double)a3
+- (id)windDirectionAsString:(double)string
 {
-  v3 = a3 + 22.5;
+  v3 = string + 22.5;
   v4 = vcvtms_s32_f32(v3 / 45.0);
   if (v4 > 8)
   {
@@ -1347,15 +1347,15 @@ LABEL_17:
   }
 }
 
-- (double)distanceToLocation:(id)a3
+- (double)distanceToLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(City *)self location];
+  locationCopy = location;
+  location = [(City *)self location];
 
-  if (v5)
+  if (location)
   {
-    v6 = [(City *)self location];
-    [v6 distanceFromLocation:v4];
+    location2 = [(City *)self location];
+    [location2 distanceFromLocation:locationCopy];
     v8 = v7;
   }
 
@@ -1367,26 +1367,26 @@ LABEL_17:
   return v8;
 }
 
-- (double)distanceToLatitude:(double)a3 longitude:(double)a4
+- (double)distanceToLatitude:(double)latitude longitude:(double)longitude
 {
-  v5 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:a3 longitude:a4];
+  v5 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:latitude longitude:longitude];
   [(City *)self distanceToLocation:v5];
   v7 = v6;
 
   return v7;
 }
 
-+ (id)cityContainingLocation:(id)a3 expectedName:(id)a4 fromCities:(id)a5
++ (id)cityContainingLocation:(id)location expectedName:(id)name fromCities:(id)cities
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  locationCopy = location;
+  nameCopy = name;
+  citiesCopy = cities;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v10 = [citiesCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1399,14 +1399,14 @@ LABEL_17:
       {
         if (*v26 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(citiesCopy);
         }
 
         v16 = *(*(&v25 + 1) + 8 * i);
-        [v16 distanceToLocation:v7];
+        [v16 distanceToLocation:locationCopy];
         v18 = v17;
-        v19 = [v16 name];
-        v20 = [v19 isEqualToString:v8];
+        name = [v16 name];
+        v20 = [name isEqualToString:nameCopy];
 
         if (v18 <= v14)
         {
@@ -1426,7 +1426,7 @@ LABEL_17:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v11 = [citiesCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v11);
@@ -1442,11 +1442,11 @@ LABEL_17:
   return v12;
 }
 
-- (BOOL)isDuplicateOfCity:(id)a3
+- (BOOL)isDuplicateOfCity:(id)city
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (-[City isLocalWeatherCity](self, "isLocalWeatherCity") || ([v4 isLocalWeatherCity] & 1) != 0 || (-[City name](self, "name"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "name"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, !v7))
+  cityCopy = city;
+  if (-[City isLocalWeatherCity](self, "isLocalWeatherCity") || ([cityCopy isLocalWeatherCity] & 1) != 0 || (-[City name](self, "name"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(cityCopy, "name"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, v5, !v7))
   {
     v13 = 0;
   }
@@ -1454,11 +1454,11 @@ LABEL_17:
   else
   {
     v8 = objc_opt_class();
-    v9 = [(City *)self location];
-    v10 = [(City *)self name];
-    v16[0] = v4;
+    location = [(City *)self location];
+    name = [(City *)self name];
+    v16[0] = cityCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    v12 = [v8 cityContainingLocation:v9 expectedName:v10 fromCities:v11];
+    v12 = [v8 cityContainingLocation:location expectedName:name fromCities:v11];
     v13 = v12 != 0;
   }
 
@@ -1466,15 +1466,15 @@ LABEL_17:
   return v13;
 }
 
-- (int64_t)primaryConditionForRange:(_NSRange)a3
+- (int64_t)primaryConditionForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v27 = *MEMORY[0x277D85DE8];
   v26 = 0;
   memset(v25, 0, sizeof(v25));
   p_hourlyForecasts = &self->_hourlyForecasts;
-  if (a3.location < [(NSArray *)self->_hourlyForecasts count]&& location + length <= [(NSArray *)*p_hourlyForecasts count])
+  if (range.location < [(NSArray *)self->_hourlyForecasts count]&& location + length <= [(NSArray *)*p_hourlyForecasts count])
   {
     v7 = [(NSArray *)*p_hourlyForecasts subarrayWithRange:location, length];
   }
@@ -1514,8 +1514,8 @@ LABEL_17:
         v13 = *(*(&v20 + 1) + 8 * i);
         if ([v13 conditionCode] <= 47)
         {
-          v14 = [v13 conditionCode];
-          ++*(v25 + v14);
+          conditionCode = [v13 conditionCode];
+          ++*(v25 + conditionCode);
         }
       }
 
@@ -1545,7 +1545,7 @@ LABEL_17:
   return v17;
 }
 
-- (int64_t)locationOfTime:(int64_t)a3
+- (int64_t)locationOfTime:(int64_t)time
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -1570,10 +1570,10 @@ LABEL_3:
         objc_enumerationMutation(v4);
       }
 
-      v11 = [*(*(&v15 + 1) + 8 * v9) time];
-      v12 = [WAHourlyForecast TimeValueFromString:v11];
+      time = [*(*(&v15 + 1) + 8 * v9) time];
+      v12 = [WAHourlyForecast TimeValueFromString:time];
 
-      if (v12 == a3)
+      if (v12 == time)
       {
         break;
       }
@@ -1602,16 +1602,16 @@ LABEL_9:
   return v10;
 }
 
-- (id)naturalLanguageDescriptionWithDescribedCondition:(int64_t *)a3
+- (id)naturalLanguageDescriptionWithDescribedCondition:(int64_t *)condition
 {
   v118[2] = *MEMORY[0x277D85DE8];
-  v5 = [(City *)self isDay];
+  isDay = [(City *)self isDay];
   v6 = WAUserTemperatureUnit();
   conditionCode = self->_conditionCode;
   if (conditionCode == 3200 || (v8 = v6, -[City locationID](self, "locationID"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 length], v9, !v10))
   {
-    v14 = &stru_2882270E8;
-    if (!a3)
+    v105 = &stru_2882270E8;
+    if (!condition)
     {
       goto LABEL_7;
     }
@@ -1619,17 +1619,17 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  v105 = LocalizedWeatherDescription(self->_conditionCode, v5, 1);
+  v105 = LocalizedWeatherDescription(self->_conditionCode, isDay, 1);
   v11 = [(NSArray *)self->_dayForecasts count];
   v12 = [(NSArray *)self->_hourlyForecasts count];
   if (v11)
   {
-    v13 = [(NSArray *)self->_dayForecasts firstObject];
+    firstObject = [(NSArray *)self->_dayForecasts firstObject];
   }
 
   else
   {
-    v13 = 0;
+    firstObject = 0;
   }
 
   if (self->_conditionCode <= 2)
@@ -1637,14 +1637,14 @@ LABEL_9:
     v17 = MEMORY[0x277CCACA8];
     v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v19 = [v18 localizedStringForKey:@"MAJOR_EVENT_FORMAT" value:&stru_2882270E8 table:@"WeatherFrameworkLocalizableStrings"];
-    v14 = [v17 stringWithFormat:v19, v105];
+    v105 = [v17 stringWithFormat:v19, v105];
 
     goto LABEL_95;
   }
 
-  v20 = [MEMORY[0x277CCAB68] string];
-  v103 = [MEMORY[0x277CBEB18] array];
-  v102 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
+  array = [MEMORY[0x277CBEB18] array];
+  string2 = [MEMORY[0x277CCAB68] string];
   [(WFTemperature *)self->_feelsLike temperatureForUnit:2];
   v22 = v21;
   [(WFTemperature *)self->_temperature temperatureForUnit:2];
@@ -1672,7 +1672,7 @@ LABEL_9:
   }
 
   v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"TEMP_UNIT_%@", v31];
-  v104 = v20;
+  v104 = string;
   v99 = v32;
   if (WAIsChinaSKUAndSimplifiedChinese())
   {
@@ -1684,18 +1684,18 @@ LABEL_9:
     v34 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v33 = [v34 localizedStringForKey:v32 value:&stru_2882270E8 table:@"WeatherFrameworkLocalizableStrings"];
 
-    v20 = v104;
+    string = v104;
   }
 
   v100 = v33;
-  v101 = v13;
+  v101 = firstObject;
   if (v25 || v26 || windSpeed >= 25.0 || v30)
   {
-    [v20 appendString:@"CONDITION_NOW_"];
-    [v103 addObject:v105];
+    [string appendString:@"CONDITION_NOW_"];
+    [array addObject:v105];
     if (v25)
     {
-      [v20 appendString:@"WINDCHILL_"];
+      [string appendString:@"WINDCHILL_"];
       v35 = WATemperatureStringForOutputUnit(self->_feelsLike, v8);
       v118[0] = v35;
       v36 = v118;
@@ -1708,7 +1708,7 @@ LABEL_9:
 LABEL_38:
         if (windSpeed >= 25.0)
         {
-          [v20 appendString:@"WIND_"];
+          [string appendString:@"WIND_"];
           v38 = +[WeatherWindSpeedFormatter convenienceFormatter];
           *&v39 = self->_windSpeed;
           v96 = [MEMORY[0x277CCABB0] numberWithFloat:v39];
@@ -1719,23 +1719,23 @@ LABEL_38:
           v42 = [v40 localizedStringForKey:v41 value:&stru_2882270E8 table:@"WeatherFrameworkLocalizableStrings"];
           v116[1] = v42;
           v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v116 count:2];
-          [v103 addObjectsFromArray:v43];
+          [array addObjectsFromArray:v43];
 
-          v20 = v104;
+          string = v104;
           v33 = v100;
 
-          v13 = v101;
+          firstObject = v101;
         }
 
         if (v30)
         {
-          [v20 appendString:@"VISIBILITY_"];
+          [string appendString:@"VISIBILITY_"];
         }
 
         goto LABEL_42;
       }
 
-      [v20 appendString:@"HEAT_INDEX_"];
+      [string appendString:@"HEAT_INDEX_"];
       v35 = WATemperatureStringForOutputUnit(self->_feelsLike, v8);
       v117 = v35;
       v36 = &v117;
@@ -1743,9 +1743,9 @@ LABEL_38:
 
     v36[1] = v33;
     v37 = [MEMORY[0x277CBEA60] arrayWithObjects:? count:?];
-    [v103 addObjectsFromArray:v37];
+    [array addObjectsFromArray:v37];
 
-    v20 = v104;
+    string = v104;
     goto LABEL_38;
   }
 
@@ -1754,38 +1754,38 @@ LABEL_42:
   if (observationTime - 400 <= 0x258)
   {
     v45 = WALogForCategory(0);
-    v46 = v102;
+    v46 = string2;
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
     {
       [City naturalLanguageDescriptionWithDescribedCondition:];
     }
 
-    [v102 appendFormat:@"Forecast Type %d to %d", 400, 1000];
+    [string2 appendFormat:@"Forecast Type %d to %d", 400, 1000];
     v47 = [(City *)self primaryConditionForRange:0, v97];
     if (![v104 length] && v47 != 3200)
     {
       [v104 appendString:@"TODAY_CONDITION_"];
       v48 = LocalizedWeatherDescription(v47, 1, 1);
-      [v103 addObject:v48];
+      [array addObject:v48];
 
       [v104 appendString:@"IT_IS_CURRENTLY_HIGH_WILL_BE"];
       v49 = WATemperatureStringForOutputUnit(self->_temperature, v8);
       v115[0] = v49;
       v115[1] = v33;
-      v50 = [v101 high];
+      high = [v101 high];
       v51 = v8;
-      v52 = v103;
-      v53 = WATemperatureStringForOutputUnit(v50, v51);
+      v52 = array;
+      v53 = WATemperatureStringForOutputUnit(high, v51);
       v115[2] = v53;
       v115[3] = v33;
       v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v115 count:4];
-      [v103 addObjectsFromArray:v54];
+      [array addObjectsFromArray:v54];
 
       conditionCode = v47;
 LABEL_91:
 
-      v13 = v101;
-      v46 = v102;
+      firstObject = v101;
+      v46 = string2;
       goto LABEL_92;
     }
 
@@ -1799,8 +1799,8 @@ LABEL_91:
     v49 = WATemperatureStringForOutputUnit(self->_temperature, v8);
     v114[1] = v49;
     v114[2] = v33;
-    v50 = [v101 high];
-    v53 = WATemperatureStringForOutputUnit(v50, v8);
+    high = [v101 high];
+    v53 = WATemperatureStringForOutputUnit(high, v8);
     v114[3] = v53;
     v114[4] = v33;
     v74 = MEMORY[0x277CBEA60];
@@ -1808,7 +1808,7 @@ LABEL_91:
     goto LABEL_82;
   }
 
-  v46 = v102;
+  v46 = string2;
   if (observationTime - 1001 <= 0x31F)
   {
     v55 = WALogForCategory(0);
@@ -1817,7 +1817,7 @@ LABEL_91:
       [City naturalLanguageDescriptionWithDescribedCondition:];
     }
 
-    [v102 appendFormat:@"Forecast Type %d to %d", 1000, 1800];
+    [string2 appendFormat:@"Forecast Type %d to %d", 1000, 1800];
     v56 = [(City *)self locationOfTime:1800];
     v57 = [(City *)self locationOfTime:0];
     v58 = [v104 length];
@@ -1826,7 +1826,7 @@ LABEL_91:
       if (!v58)
       {
         [v104 appendString:@"CURRENTLY_NOW_"];
-        [v103 addObject:v105];
+        [array addObject:v105];
       }
 
       v59 = v97;
@@ -1839,28 +1839,28 @@ LABEL_91:
       if (self->_conditionCode == v60)
       {
         [v104 appendString:@"MIDDAY_SAME"];
-        [v13 high];
-        v49 = v61 = v13;
-        v50 = WATemperatureStringForOutputUnit(v49, v8);
-        v113[0] = v50;
+        [firstObject high];
+        v49 = v61 = firstObject;
+        high = WATemperatureStringForOutputUnit(v49, v8);
+        v113[0] = high;
         v113[1] = v33;
         v53 = [v61 low];
         v62 = WATemperatureStringForOutputUnit(v53, v8);
         v113[2] = v62;
         v113[3] = v33;
         v63 = [MEMORY[0x277CBEA60] arrayWithObjects:v113 count:4];
-        v52 = v103;
-        [v103 addObjectsFromArray:v63];
+        v52 = array;
+        [array addObjectsFromArray:v63];
       }
 
       else
       {
         v83 = v60;
         [v104 appendString:@"MIDDAY_DIFFERENT"];
-        [v13 high];
-        v49 = v84 = v13;
-        v50 = WATemperatureStringForOutputUnit(v49, v8);
-        v112[0] = v50;
+        [firstObject high];
+        v49 = v84 = firstObject;
+        high = WATemperatureStringForOutputUnit(v49, v8);
+        v112[0] = high;
         v112[1] = v33;
         v53 = LocalizedWeatherDescription(v83, 0, 1);
         v112[2] = v53;
@@ -1869,8 +1869,8 @@ LABEL_91:
         v112[3] = v63;
         v112[4] = v33;
         v85 = [MEMORY[0x277CBEA60] arrayWithObjects:v112 count:5];
-        v52 = v103;
-        [v103 addObjectsFromArray:v85];
+        v52 = array;
+        [array addObjectsFromArray:v85];
       }
 
       goto LABEL_90;
@@ -1884,12 +1884,12 @@ LABEL_91:
     [v104 appendString:@"CURRENTLY_NOW_IT_IS_CURRENTLY_HIGH_WILL_BE"];
     v111[0] = v105;
     v72 = WATemperatureStringForOutputUnit(self->_temperature, v8);
-    v73 = v13;
+    v73 = firstObject;
     v49 = v72;
     v111[1] = v72;
     v111[2] = v33;
-    v50 = [v73 high];
-    v53 = WATemperatureStringForOutputUnit(v50, v8);
+    high = [v73 high];
+    v53 = WATemperatureStringForOutputUnit(high, v8);
     v111[3] = v53;
     v111[4] = v33;
     v74 = MEMORY[0x277CBEA60];
@@ -1907,7 +1907,7 @@ LABEL_91:
       [City naturalLanguageDescriptionWithDescribedCondition:];
     }
 
-    [v102 appendFormat:@"Forecast Type %d to %d", 1800, 2359];
+    [string2 appendFormat:@"Forecast Type %d to %d", 1800, 2359];
     v67 = [(City *)self locationOfTime:2359];
     v68 = [(City *)self locationOfTime:0];
     v69 = [v104 length];
@@ -1916,7 +1916,7 @@ LABEL_91:
       if (!v69)
       {
         [v104 appendFormat:@"CURRENTLY_COMMA_"];
-        [v103 addObject:v105];
+        [array addObject:v105];
       }
 
       v70 = v97;
@@ -1929,24 +1929,24 @@ LABEL_91:
       if (self->_conditionCode == v71)
       {
         [v104 appendFormat:@"AFTERNOON_SAME"];
-        v49 = [v13 low];
-        v50 = WATemperatureStringForOutputUnit(v49, v8);
-        v110[0] = v50;
+        v49 = [firstObject low];
+        high = WATemperatureStringForOutputUnit(v49, v8);
+        v110[0] = high;
         v110[1] = v33;
         v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v110 count:2];
-        v52 = v103;
-        [v103 addObjectsFromArray:v53];
+        v52 = array;
+        [array addObjectsFromArray:v53];
         goto LABEL_91;
       }
 
       v90 = v71;
       [v104 appendFormat:@"AFTERNOON_DIFFERENT"];
       v91 = LocalizedWeatherDescription(v90, 0, 0);
-      v92 = v13;
+      v92 = firstObject;
       v49 = v91;
       v109[0] = v91;
-      v50 = [v92 low];
-      v53 = WATemperatureStringForOutputUnit(v50, v8);
+      high = [v92 low];
+      v53 = WATemperatureStringForOutputUnit(high, v8);
       v109[1] = v53;
       v109[2] = v33;
       v74 = MEMORY[0x277CBEA60];
@@ -1963,12 +1963,12 @@ LABEL_91:
     [v104 appendString:@"CURRENTLY_NOW_IT_IS_CURRENTLY_HIGH_WAS"];
     v108[0] = v105;
     v93 = WATemperatureStringForOutputUnit(self->_temperature, v8);
-    v94 = v13;
+    v94 = firstObject;
     v49 = v93;
     v108[1] = v93;
     v108[2] = v33;
-    v50 = [v94 high];
-    v53 = WATemperatureStringForOutputUnit(v50, v8);
+    high = [v94 high];
+    v53 = WATemperatureStringForOutputUnit(high, v8);
     v108[3] = v53;
     v108[4] = v33;
     v74 = MEMORY[0x277CBEA60];
@@ -1977,8 +1977,8 @@ LABEL_82:
     v82 = 5;
 LABEL_83:
     v62 = [v74 arrayWithObjects:v75 count:v82];
-    v52 = v103;
-    [v103 addObjectsFromArray:v62];
+    v52 = array;
+    [array addObjectsFromArray:v62];
 LABEL_90:
 
     goto LABEL_91;
@@ -1989,7 +1989,7 @@ LABEL_90:
     [City naturalLanguageDescriptionWithDescribedCondition:];
   }
 
-  [v102 appendFormat:@"Forecast Type %d to %d", 2359, 400];
+  [string2 appendFormat:@"Forecast Type %d to %d", 2359, 400];
   v76 = [(City *)self locationOfTime:400];
   v77 = [(City *)self locationOfTime:2400];
   if (v76 != 0x7FFFFFFFFFFFFFFFLL && v77 != 0x7FFFFFFFFFFFFFFFLL)
@@ -2005,8 +2005,8 @@ LABEL_90:
 
     v49 = LocalizedWeatherDescription(conditionCode, 1, 1);
     v107[0] = v49;
-    v50 = [v101 high];
-    v53 = WATemperatureStringForOutputUnit(v50, v8);
+    high = [v101 high];
+    v53 = WATemperatureStringForOutputUnit(high, v8);
     v107[1] = v53;
     v107[2] = v33;
     v79 = [v101 low];
@@ -2014,8 +2014,8 @@ LABEL_90:
     v107[3] = v80;
     v107[4] = v100;
     v81 = [MEMORY[0x277CBEA60] arrayWithObjects:v107 count:5];
-    v52 = v103;
-    [v103 addObjectsFromArray:v81];
+    v52 = array;
+    [array addObjectsFromArray:v81];
 
     v104 = v98;
     goto LABEL_91;
@@ -2028,8 +2028,8 @@ LABEL_90:
     v49 = WATemperatureStringForOutputUnit(self->_temperature, v8);
     v106[1] = v49;
     v106[2] = v33;
-    v50 = [v101 high];
-    v53 = WATemperatureStringForOutputUnit(v50, v8);
+    high = [v101 high];
+    v53 = WATemperatureStringForOutputUnit(high, v8);
     v106[3] = v53;
     v106[4] = v33;
     v74 = MEMORY[0x277CBEA60];
@@ -2038,17 +2038,17 @@ LABEL_90:
   }
 
 LABEL_60:
-  v13 = v101;
+  firstObject = v101;
 LABEL_85:
-  v52 = v103;
+  v52 = array;
 LABEL_92:
   [v46 appendFormat:@" - wc %f hi %f w %f v %f / hours %d / ", self->_windChill, self->_heatIndex, self->_windSpeed, self->_visibility, -[NSArray count](self->_hourlyForecasts, "count")];
   v86 = MEMORY[0x277CCACA8];
   v87 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v88 = [v87 localizedStringForKey:v104 value:&stru_2882270E8 table:@"WeatherFrameworkLocalizableStrings"];
-  v14 = [v86 stringWithFormat:v88 andArguments:v52];
+  v105 = [v86 stringWithFormat:v88 andArguments:v52];
 
-  [v46 appendString:v14];
+  [v46 appendString:v105];
   v89 = WALogForCategory(1);
   if (os_log_type_enabled(v89, OS_LOG_TYPE_DEBUG))
   {
@@ -2056,16 +2056,16 @@ LABEL_92:
   }
 
 LABEL_95:
-  if (a3)
+  if (condition)
   {
 LABEL_6:
-    *a3 = conditionCode;
+    *condition = conditionCode;
   }
 
 LABEL_7:
   v15 = *MEMORY[0x277D85DE8];
 
-  return v14;
+  return v105;
 }
 
 - (unint64_t)precipitationForecast
@@ -2102,13 +2102,13 @@ LABEL_32:
       }
 
       v12 = *(*(&v22 + 1) + 8 * i);
-      v13 = [v12 conditionCode];
-      if (((0x1017FFF80001uLL >> v13) & 1) == 0)
+      conditionCode = [v12 conditionCode];
+      if (((0x1017FFF80001uLL >> conditionCode) & 1) == 0)
       {
-        v14 = PrecipitationTypeMap_0[v13];
+        v14 = PrecipitationTypeMap_0[conditionCode];
         if (!v7)
         {
-          v7 = PrecipitationTypeMap_0[v13];
+          v7 = PrecipitationTypeMap_0[conditionCode];
         }
 
         if (v14 == 4)
@@ -2152,8 +2152,8 @@ LABEL_32:
         }
       }
 
-      v17 = [v12 temperature];
-      [v17 temperatureForUnit:2];
+      temperature = [v12 temperature];
+      [temperature temperatureForUnit:2];
       v19 = v18;
 
       if (v19 < 0.0)
@@ -2218,11 +2218,11 @@ LABEL_33:
   v130[1] = v3;
   v129[2] = @"CURRENTLY_COMMA";
   v123[0] = @"AFTERNOON_SAME";
-  v4 = [@"The low tonight will be %8$@%9$@. " lowercaseString];
-  v124[0] = v4;
+  lowercaseString = [@"The low tonight will be %8$@%9$@. " lowercaseString];
+  v124[0] = lowercaseString;
   v123[1] = @"AFTERNOON_DIFFERENT";
-  v5 = [@"%8$@ tonight with a low of %9$@%10$@. " lowercaseString];
-  v124[1] = v5;
+  lowercaseString2 = [@"%8$@ tonight with a low of %9$@%10$@. " lowercaseString];
+  v124[1] = lowercaseString2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v124 forKeys:v123 count:2];
   v129[3] = @"CONDITION_LIKELY_TOMORROW";
   v130[2] = v6;
@@ -2534,11 +2534,11 @@ LABEL_33:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCityForModel:(id)a3
+- (void)updateCityForModel:(id)model
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  modelCopy = model;
+  if (!modelCopy)
   {
     goto LABEL_34;
   }
@@ -2547,38 +2547,38 @@ LABEL_33:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v54 = 136315650;
-    v55 = "[City updateCityForModel:]";
+    selfCopy7 = "[City updateCityForModel:]";
     v56 = 2112;
-    v57 = v4;
+    selfCopy2 = modelCopy;
     v58 = 2112;
-    v59 = self;
+    selfCopy = self;
     _os_log_impl(&dword_272ACF000, v5, OS_LOG_TYPE_DEFAULT, "%s, forecastModel:%@, city:%@, airQualityCondition", &v54, 0x20u);
   }
 
   [(City *)self clearForecasts];
-  v6 = [(City *)v4 location];
+  location = [(City *)modelCopy location];
 
-  if (v6)
+  if (location)
   {
-    v7 = [(City *)v4 location];
-    [(City *)self setWfLocation:v7];
+    location2 = [(City *)modelCopy location];
+    [(City *)self setWfLocation:location2];
   }
 
-  v8 = [(City *)v4 link];
-  [(City *)self setLink:v8];
+  link = [(City *)modelCopy link];
+  [(City *)self setLink:link];
 
-  v9 = [(City *)v4 deepLink];
-  [(City *)self setDeeplink:v9];
+  deepLink = [(City *)modelCopy deepLink];
+  [(City *)self setDeeplink:deepLink];
 
-  v10 = [(City *)v4 currentConditions];
-  v11 = v10;
-  if (v10)
+  currentConditions = [(City *)modelCopy currentConditions];
+  v11 = currentConditions;
+  if (currentConditions)
   {
-    v12 = [v10 temperature];
-    [(City *)self setTemperature:v12];
+    temperature = [currentConditions temperature];
+    [(City *)self setTemperature:temperature];
 
-    v13 = [v11 feelsLike];
-    [(City *)self setFeelsLike:v13];
+    feelsLike = [v11 feelsLike];
+    [(City *)self setFeelsLike:feelsLike];
 
     [v11 windDirection];
     [(City *)self setWindDirection:?];
@@ -2600,63 +2600,63 @@ LABEL_33:
     -[City setObservationTime:](self, "setObservationTime:", [v11 observationTime]);
   }
 
-  v15 = [(City *)v4 airQualityConditions];
-  v16 = [(City *)v15 localizedAirQualityScaleCategory];
-  if (v15)
+  airQualityConditions = [(City *)modelCopy airQualityConditions];
+  localizedAirQualityScaleCategory = [(City *)airQualityConditions localizedAirQualityScaleCategory];
+  if (airQualityConditions)
   {
     v17 = WALogForCategory(0);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v54 = 138412546;
-      v55 = v15;
+      selfCopy7 = airQualityConditions;
       v56 = 2112;
-      v57 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_272ACF000, v17, OS_LOG_TYPE_DEFAULT, "airCondition=%@, city: %@", &v54, 0x16u);
     }
 
-    v18 = [(City *)v15 scaleIdentifier];
-    if (!v18)
+    scaleIdentifier = [(City *)airQualityConditions scaleIdentifier];
+    if (!scaleIdentifier)
     {
       v19 = WALogForCategory(0);
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v54 = 138412290;
-        v55 = self;
+        selfCopy7 = self;
         _os_log_impl(&dword_272ACF000, v19, OS_LOG_TYPE_DEFAULT, "error airCondition.scaleIdentifier was NULL for city: %@, using default", &v54, 0xCu);
       }
 
-      v18 = @"AQI";
+      scaleIdentifier = @"AQI";
     }
 
-    [(City *)self setAirQualityScaleIdentifier:v18];
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[City airQualityIndex](v15, "airQualityIndex")}];
+    [(City *)self setAirQualityScaleIdentifier:scaleIdentifier];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[City airQualityIndex](airQualityConditions, "airQualityIndex")}];
     [(City *)self setAirQualityIdx:v20];
 
-    [(City *)self setAirQualityScaleCategory:v16];
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:WAAirQualityCategoryFromConditions(v15)];
+    [(City *)self setAirQualityScaleCategory:localizedAirQualityScaleCategory];
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:WAAirQualityCategoryFromConditions(airQualityConditions)];
     [(City *)self setAirQualityCategory:v21];
 
-    [(City *)self setAirQualitySignificance:[(City *)v15 significance]];
-    [(City *)self setAirQualityTemporarilyUnavailable:[(City *)v15 temporarilyUnavailable]];
-    v22 = [(City *)v15 scale];
-    [(City *)self setAirQualityScale:v22];
+    [(City *)self setAirQualitySignificance:[(City *)airQualityConditions significance]];
+    [(City *)self setAirQualityTemporarilyUnavailable:[(City *)airQualityConditions temporarilyUnavailable]];
+    scale = [(City *)airQualityConditions scale];
+    [(City *)self setAirQualityScale:scale];
 
-    v23 = [(City *)v15 currentScaleCategory];
-    [(City *)self setAirQualityCurrentScaleCategory:v23];
+    currentScaleCategory = [(City *)airQualityConditions currentScaleCategory];
+    [(City *)self setAirQualityCurrentScaleCategory:currentScaleCategory];
 
-    v24 = [(City *)v15 currentScaleCategory];
-    v25 = [v24 recommendation];
-    [(City *)self setAirQualityRecommendation:v25];
+    currentScaleCategory2 = [(City *)airQualityConditions currentScaleCategory];
+    recommendation = [currentScaleCategory2 recommendation];
+    [(City *)self setAirQualityRecommendation:recommendation];
 
-    v26 = [(City *)v15 providerAttribution];
-    v27 = [v26 name];
-    v28 = [v27 length];
+    providerAttribution = [(City *)airQualityConditions providerAttribution];
+    name = [providerAttribution name];
+    v28 = [name length];
 
     if (v28)
     {
-      v29 = [[WeatherAQIAttribution alloc] initWithFoundationAttribution:v26];
+      v29 = [[WeatherAQIAttribution alloc] initWithFoundationAttribution:providerAttribution];
       [(City *)self setAirQualityAttribution:v29];
-      v30 = [(City *)v15 learnMoreURL];
+      learnMoreURL = [(City *)airQualityConditions learnMoreURL];
     }
 
     else
@@ -2668,16 +2668,16 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      v31 = [MEMORY[0x277D7B270] sharedManager];
-      v32 = [v31 defaultProviderAttribution];
+      mEMORY[0x277D7B270] = [MEMORY[0x277D7B270] sharedManager];
+      defaultProviderAttribution = [mEMORY[0x277D7B270] defaultProviderAttribution];
 
-      v29 = [[WeatherAQIAttribution alloc] initWithFoundationAttribution:v32];
+      v29 = [[WeatherAQIAttribution alloc] initWithFoundationAttribution:defaultProviderAttribution];
       [(City *)self setAirQualityAttribution:v29];
-      v30 = [MEMORY[0x277CBEBC0] URLWithString:@"http://www.weather.com/wx/today/"];
-      v26 = v32;
+      learnMoreURL = [MEMORY[0x277CBEBC0] URLWithString:@"http://www.weather.com/wx/today/"];
+      providerAttribution = defaultProviderAttribution;
     }
 
-    [(City *)self setAirQualityLearnMoreURL:v30];
+    [(City *)self setAirQualityLearnMoreURL:learnMoreURL];
 
     goto LABEL_20;
   }
@@ -2695,88 +2695,88 @@ LABEL_21:
   v34 = WALogForCategory(0);
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [(City *)v4 hourlyForecasts];
+    hourlyForecasts = [(City *)modelCopy hourlyForecasts];
     v54 = 138543618;
-    v55 = self;
+    selfCopy7 = self;
     v56 = 2114;
-    v57 = v35;
+    selfCopy2 = hourlyForecasts;
     _os_log_impl(&dword_272ACF000, v34, OS_LOG_TYPE_DEFAULT, "Updating city with hourly forecast, city: %{public}@, hourlyForecast=%{public}@", &v54, 0x16u);
   }
 
-  v36 = [(City *)v4 hourlyForecasts];
-  [(City *)self setHourlyForecasts:v36];
+  hourlyForecasts2 = [(City *)modelCopy hourlyForecasts];
+  [(City *)self setHourlyForecasts:hourlyForecasts2];
 
   v37 = WALogForCategory(0);
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
   {
-    v38 = [(City *)v4 dailyForecasts];
+    dailyForecasts = [(City *)modelCopy dailyForecasts];
     v54 = 138543618;
-    v55 = self;
+    selfCopy7 = self;
     v56 = 2114;
-    v57 = v38;
+    selfCopy2 = dailyForecasts;
     _os_log_impl(&dword_272ACF000, v37, OS_LOG_TYPE_DEFAULT, "Updating city with daily forecast, city: %{public}@, dailyForecast=%{public}@", &v54, 0x16u);
   }
 
-  v39 = [(City *)v4 dailyForecasts];
-  [(City *)self setDayForecasts:v39];
+  dailyForecasts2 = [(City *)modelCopy dailyForecasts];
+  [(City *)self setDayForecasts:dailyForecasts2];
 
-  v40 = [objc_opt_class() _ISO8601Calendar];
-  v41 = [(City *)self timeZone];
-  [v40 setTimeZone:v41];
+  _ISO8601Calendar = [objc_opt_class() _ISO8601Calendar];
+  timeZone = [(City *)self timeZone];
+  [_ISO8601Calendar setTimeZone:timeZone];
 
-  v42 = [(City *)v4 sunrise];
-  v43 = [v40 components:96 fromDate:v42];
+  sunrise = [(City *)modelCopy sunrise];
+  v43 = [_ISO8601Calendar components:96 fromDate:sunrise];
 
   -[City setSunriseTime:](self, "setSunriseTime:", [v43 minute] + 100 * objc_msgSend(v43, "hour"));
-  v44 = [(City *)v4 sunset];
-  v45 = [v40 components:96 fromDate:v44];
+  sunset = [(City *)modelCopy sunset];
+  v45 = [_ISO8601Calendar components:96 fromDate:sunset];
 
   -[City setSunsetTime:](self, "setSunsetTime:", [v45 minute] + 100 * objc_msgSend(v45, "hour"));
   v46 = WALogForCategory(0);
   if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
   {
-    v47 = [(City *)v4 severeWeatherEvents];
+    severeWeatherEvents = [(City *)modelCopy severeWeatherEvents];
     v54 = 138543618;
-    v55 = self;
+    selfCopy7 = self;
     v56 = 2114;
-    v57 = v47;
+    selfCopy2 = severeWeatherEvents;
     _os_log_impl(&dword_272ACF000, v46, OS_LOG_TYPE_DEFAULT, "Updating city with severe weather events, city: %{public}@, severeWeatherEvents=%{public}@", &v54, 0x16u);
   }
 
-  v48 = [(City *)v4 severeWeatherEvents];
-  [(City *)self updateCityForSevereWeatherEvents:v48];
+  severeWeatherEvents2 = [(City *)modelCopy severeWeatherEvents];
+  [(City *)self updateCityForSevereWeatherEvents:severeWeatherEvents2];
 
   v49 = WALogForCategory(0);
   if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
   {
-    v50 = [(City *)v4 nextHourPrecipitation];
+    nextHourPrecipitation = [(City *)modelCopy nextHourPrecipitation];
     v54 = 138543618;
-    v55 = self;
+    selfCopy7 = self;
     v56 = 2114;
-    v57 = v50;
+    selfCopy2 = nextHourPrecipitation;
     _os_log_impl(&dword_272ACF000, v49, OS_LOG_TYPE_DEFAULT, "Updating city with next hour precipitation model, city: %{public}@, nextHourPrecipitation=%{public}@", &v54, 0x16u);
   }
 
-  v51 = [(City *)v4 nextHourPrecipitation];
-  [(City *)self setNextHourPrecipitation:v51];
+  nextHourPrecipitation2 = [(City *)modelCopy nextHourPrecipitation];
+  [(City *)self setNextHourPrecipitation:nextHourPrecipitation2];
 
-  v52 = [MEMORY[0x277CBEAA8] date];
-  [(City *)self setUpdateTime:v52];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(City *)self setUpdateTime:date];
 
 LABEL_34:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateCityForSevereWeatherEvents:(id)a3
+- (void)updateCityForSevereWeatherEvents:(id)events
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v16 = [MEMORY[0x277CBEB18] array];
+  eventsCopy = events;
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  obj = v4;
+  obj = eventsCopy;
   v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -2793,13 +2793,13 @@ LABEL_34:
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 expirationDate];
-        v12 = [MEMORY[0x277CBEAA8] date];
-        v13 = [v11 compare:v12];
+        expirationDate = [v10 expirationDate];
+        date = [MEMORY[0x277CBEAA8] date];
+        v13 = [expirationDate compare:date];
 
         if (v13 == 1)
         {
-          [v16 addObject:v10];
+          [array addObject:v10];
         }
 
         if ([(City *)self _isValidLearnMoreURLForSevereEvent:v10])
@@ -2821,22 +2821,22 @@ LABEL_34:
     v7 = 0;
   }
 
-  [(City *)self setSevereWeatherEvents:v16];
+  [(City *)self setSevereWeatherEvents:array];
   [(City *)self setSevereWeatherEventLearnMoreURL:v7];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isValidLearnMoreURLForSevereEvent:(id)a3
+- (BOOL)_isValidLearnMoreURLForSevereEvent:(id)event
 {
-  v3 = [a3 URL];
+  v3 = [event URL];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 scheme];
-    v6 = [v5 uppercaseString];
+    scheme = [v3 scheme];
+    uppercaseString = [scheme uppercaseString];
 
-    if ([v6 isEqualToString:@"HTTPS"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"HTTP"))
+    if ([uppercaseString isEqualToString:@"HTTPS"] & 1) != 0 || (objc_msgSend(uppercaseString, "isEqualToString:", @"HTTP"))
     {
       v7 = 1;
     }
@@ -2863,17 +2863,17 @@ LABEL_34:
 
 - (BOOL)_dataIsValid
 {
-  v3 = [(City *)self timeZone];
-  if (v3)
+  timeZone = [(City *)self timeZone];
+  if (timeZone)
   {
-    v4 = [(City *)self hourlyForecasts];
-    if ([v4 count])
+    hourlyForecasts = [(City *)self hourlyForecasts];
+    if ([hourlyForecasts count])
     {
-      v5 = [(City *)self dayForecasts];
-      if ([v5 count])
+      dayForecasts = [(City *)self dayForecasts];
+      if ([dayForecasts count])
       {
-        v6 = [(City *)self temperature];
-        v7 = v6 != 0;
+        temperature = [(City *)self temperature];
+        v7 = temperature != 0;
       }
 
       else
@@ -2907,10 +2907,10 @@ LABEL_34:
 
 - (NSString)countryCode
 {
-  v2 = [(City *)self wfLocation];
-  v3 = [v2 countryAbbreviation];
+  wfLocation = [(City *)self wfLocation];
+  countryAbbreviation = [wfLocation countryAbbreviation];
 
-  return v3;
+  return countryAbbreviation;
 }
 
 - (unint64_t)aqiDataAvailabilityStatus
@@ -2921,14 +2921,14 @@ LABEL_34:
   {
     if ([(City *)self aqiDataAvailabilityStatusOverride])
     {
-      v5 = [(City *)self aqiDataAvailabilityStatusOverride];
+      aqiDataAvailabilityStatusOverride = [(City *)self aqiDataAvailabilityStatusOverride];
 LABEL_9:
-      v8 = v5;
+      v8 = aqiDataAvailabilityStatusOverride;
       goto LABEL_12;
     }
 
 LABEL_8:
-    v5 = [(City *)self aqiDataAvailabilityStatusFromAppConfig];
+    aqiDataAvailabilityStatusOverride = [(City *)self aqiDataAvailabilityStatusFromAppConfig];
     goto LABEL_9;
   }
 
@@ -2940,15 +2940,15 @@ LABEL_8:
   v6 = [v3 objectForKey:@"feature.enhancedAQIView.airQualityAvailabilityForCountryOverride"];
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
   {
-    v7 = [(City *)self aqiDataAvailabilityStatusFromAppConfig];
+    integerValue = [(City *)self aqiDataAvailabilityStatusFromAppConfig];
   }
 
-  v8 = v7;
+  v8 = integerValue;
 
 LABEL_12:
   return v8;
@@ -2956,26 +2956,26 @@ LABEL_12:
 
 - (unint64_t)aqiDataAvailabilityStatusFromAppConfig
 {
-  v3 = [MEMORY[0x277D7B2B0] sharedInstance];
-  v4 = [v3 settings];
-  v5 = [v4 aqiEnabledCountryCodes];
+  mEMORY[0x277D7B2B0] = [MEMORY[0x277D7B2B0] sharedInstance];
+  settings = [mEMORY[0x277D7B2B0] settings];
+  aqiEnabledCountryCodes = [settings aqiEnabledCountryCodes];
 
-  v6 = [(City *)self countryCode];
-  LODWORD(v4) = [v5 containsObject:v6];
+  countryCode = [(City *)self countryCode];
+  LODWORD(settings) = [aqiEnabledCountryCodes containsObject:countryCode];
 
-  if (!v4)
+  if (!settings)
   {
     goto LABEL_6;
   }
 
   if (![(City *)self airQualityTemporarilyUnavailable])
   {
-    v8 = [(City *)self airQualityIdx];
-    if (v8)
+    airQualityIdx = [(City *)self airQualityIdx];
+    if (airQualityIdx)
     {
-      v9 = v8;
-      v10 = [(City *)self airQualityCategory];
-      v11 = v10 != 0;
+      v9 = airQualityIdx;
+      airQualityCategory = [(City *)self airQualityCategory];
+      v11 = airQualityCategory != 0;
 
       v7 = 2 * v11;
       goto LABEL_7;
@@ -3118,17 +3118,17 @@ LABEL_8:
 
 - (BOOL)airQualityScaleIsAscending
 {
-  v3 = [(City *)self airQualityScale];
+  airQualityScale = [(City *)self airQualityScale];
 
-  if (v3)
+  if (airQualityScale)
   {
-    v4 = [(City *)self airQualityScale];
-    v5 = [v4 isAscending];
+    airQualityScale2 = [(City *)self airQualityScale];
+    isAscending = [airQualityScale2 isAscending];
   }
 
   else
   {
-    v5 = 1;
+    isAscending = 1;
   }
 
   v6 = +[WeatherInternalPreferences sharedInternalPreferences];
@@ -3142,36 +3142,36 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 integerValue];
-        if (v10 == 1)
+        integerValue = [v9 integerValue];
+        if (integerValue == 1)
         {
-          v5 = 0;
+          isAscending = 0;
         }
 
-        else if (!v10)
+        else if (!integerValue)
         {
-          v5 = 1;
+          isAscending = 1;
         }
       }
     }
   }
 
-  return v5;
+  return isAscending;
 }
 
 - (BOOL)airQualityScaleIsNumerical
 {
-  v3 = [(City *)self airQualityScale];
+  airQualityScale = [(City *)self airQualityScale];
 
-  if (v3)
+  if (airQualityScale)
   {
-    v4 = [(City *)self airQualityScale];
-    v5 = [v4 isNumerical];
+    airQualityScale2 = [(City *)self airQualityScale];
+    isNumerical = [airQualityScale2 isNumerical];
   }
 
   else
   {
-    v5 = 1;
+    isNumerical = 1;
   }
 
   v6 = +[WeatherInternalPreferences sharedInternalPreferences];
@@ -3185,72 +3185,72 @@ LABEL_8:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 integerValue];
-        if (v10 == 1)
+        integerValue = [v9 integerValue];
+        if (integerValue == 1)
         {
-          v5 = 0;
+          isNumerical = 0;
         }
 
-        else if (!v10)
+        else if (!integerValue)
         {
-          v5 = 1;
+          isNumerical = 1;
         }
       }
     }
   }
 
-  return v5;
+  return isNumerical;
 }
 
 - (WFAQIScale)airQualityScale
 {
-  v2 = self->_airQualityScale;
-  if (!v2)
+  defaultScale = self->_airQualityScale;
+  if (!defaultScale)
   {
     v3 = +[WeatherInternalPreferences sharedInternalPreferences];
     if ([v3 BOOLForKey:@"feature.enhancedAQIView.allowUseDefaultScaleIfCacheEmpty"])
     {
-      v4 = [MEMORY[0x277D7B228] sharedManager];
-      v2 = [v4 defaultScale];
+      mEMORY[0x277D7B228] = [MEMORY[0x277D7B228] sharedManager];
+      defaultScale = [mEMORY[0x277D7B228] defaultScale];
     }
 
     else
     {
-      v2 = 0;
+      defaultScale = 0;
     }
   }
 
-  return v2;
+  return defaultScale;
 }
 
 - (NSDictionary)urlComponents
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CCABB0];
   [(City *)self latitude];
   v5 = [v4 numberWithDouble:?];
-  [v3 na_safeSetObject:v5 forKey:@"lat"];
+  [dictionary na_safeSetObject:v5 forKey:@"lat"];
 
   v6 = MEMORY[0x277CCABB0];
   [(City *)self longitude];
   v7 = [v6 numberWithDouble:?];
-  [v3 na_safeSetObject:v7 forKey:@"long"];
+  [dictionary na_safeSetObject:v7 forKey:@"long"];
 
-  v8 = [(City *)self name];
-  [v3 na_safeSetObject:v8 forKey:@"city"];
+  name = [(City *)self name];
+  [dictionary na_safeSetObject:name forKey:@"city"];
 
   if ([(City *)self isLocalWeatherCity])
   {
-    [v3 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"isLocal"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"isLocal"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)update
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 displayName];
+  displayName = [self displayName];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0(&dword_272ACF000, v2, v3, "update of %@ aborted; weather is up to date.", v4, v5, v6, v7, v9);
 

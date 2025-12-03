@@ -1,18 +1,18 @@
 @interface CLLocationProviderAdapter
-- (BOOL)syncgetLocation:(id *)a3;
-- (BOOL)syncgetLocationPrivate:(void *)a3;
+- (BOOL)syncgetLocation:(id *)location;
+- (BOOL)syncgetLocationPrivate:(void *)private;
 - (BOOL)syncgetLocationUnavailable;
-- (BOOL)syncgetNotification:(const int *)a3 data:(void *)a4;
+- (BOOL)syncgetNotification:(const int *)notification data:(void *)data;
 - (id)syncgetName;
-- (void)fetchLocationWithReply:(id)a3;
+- (void)fetchLocationWithReply:(id)reply;
 - (void)locationProvider;
-- (void)register:(id)a3 forNotification:(int)a4 distanceFilter:(double)a5;
-- (void)sendSimulatedLocation:(id)a3;
+- (void)register:(id)register forNotification:(int)notification distanceFilter:(double)filter;
+- (void)sendSimulatedLocation:(id)location;
 - (void)sendSimulatedLocationUnavailable;
-- (void)setSimulationEnabled:(BOOL)a3;
+- (void)setSimulationEnabled:(BOOL)enabled;
 - (void)shutdown;
 - (void)start;
-- (void)updateNotification:(int)a3 withRegistrationInfo:(id)a4 forClient:(id)a5;
+- (void)updateNotification:(int)notification withRegistrationInfo:(id)info forClient:(id)client;
 @end
 
 @implementation CLLocationProviderAdapter
@@ -27,17 +27,17 @@
   return result;
 }
 
-- (void)updateNotification:(int)a3 withRegistrationInfo:(id)a4 forClient:(id)a5
+- (void)updateNotification:(int)notification withRegistrationInfo:(id)info forClient:(id)client
 {
-  v8 = sub_100044180(a4);
+  v8 = sub_100044180(info);
   if (v8)
   {
     v9 = v8;
-    v10 = [(CLNotifierServiceAdapter *)self notifierClientNumForCoparty:a5];
-    v11 = [(CLLocationProviderAdapter *)self locationProvider];
-    v12 = v11;
-    v14 = a3;
-    if (!v11 || ((*(*v11 + 216))(v11, v10, &v14, v9) & 1) == 0)
+    v10 = [(CLNotifierServiceAdapter *)self notifierClientNumForCoparty:client];
+    locationProvider = [(CLLocationProviderAdapter *)self locationProvider];
+    v12 = locationProvider;
+    notificationCopy = notification;
+    if (!locationProvider || ((*(*locationProvider + 216))(locationProvider, v10, &notificationCopy, v9) & 1) == 0)
     {
       if (qword_1025D4600 != -1)
       {
@@ -62,14 +62,14 @@
   }
 }
 
-- (void)register:(id)a3 forNotification:(int)a4 distanceFilter:(double)a5
+- (void)register:(id)register forNotification:(int)notification distanceFilter:(double)filter
 {
-  v13 = a5;
-  v7 = [(CLNotifierServiceAdapter *)self notifierClientNumForCoparty:a3];
-  v8 = [(CLLocationProviderAdapter *)self locationProvider];
-  v9 = v8;
-  v12 = a4;
-  if (!v8 || ((*(*v8 + 224))(v8, v7, &v12, &v13) & 1) == 0)
+  filterCopy = filter;
+  v7 = [(CLNotifierServiceAdapter *)self notifierClientNumForCoparty:register];
+  locationProvider = [(CLLocationProviderAdapter *)self locationProvider];
+  v9 = locationProvider;
+  notificationCopy = notification;
+  if (!locationProvider || ((*(*locationProvider + 224))(locationProvider, v7, &notificationCopy, &filterCopy) & 1) == 0)
   {
     if (qword_1025D4600 != -1)
     {
@@ -84,9 +84,9 @@
       v24 = 1026;
       v25 = v7;
       v26 = 1026;
-      v27 = a4;
+      notificationCopy2 = notification;
       v28 = 2050;
-      v29 = v13;
+      v29 = filterCopy;
       _os_log_impl(dword_100000000, v10, OS_LOG_TYPE_FAULT, "LocationProvider,Failed to registerForFilteredLocation %{public}p (%{public}d, %{public}d, %{public}f)", buf, 0x22u);
     }
 
@@ -103,9 +103,9 @@
       v16 = 1026;
       v17 = v7;
       v18 = 1026;
-      v19 = a4;
+      notificationCopy3 = notification;
       v20 = 2050;
-      v21 = v13;
+      v21 = filterCopy;
       v11 = _os_log_send_and_compose_impl();
       sub_100152C7C("Generic", 1, 0, 0, "[CLLocationProviderAdapter register:forNotification:distanceFilter:]", "%s\n", v11);
       if (v11 != buf)
@@ -136,7 +136,7 @@
   }
 }
 
-- (void)setSimulationEnabled:(BOOL)a3
+- (void)setSimulationEnabled:(BOOL)enabled
 {
   if ([(CLLocationProviderAdapter *)self locationProvider])
   {
@@ -146,20 +146,20 @@
   }
 }
 
-- (void)sendSimulatedLocation:(id)a3
+- (void)sendSimulatedLocation:(id)location
 {
-  [objc_msgSend(a3 gnssOdometerInfo];
+  [objc_msgSend(location gnssOdometerInfo];
   v21[0] = v5;
-  [objc_msgSend(a3 "gnssOdometerInfo")];
+  [objc_msgSend(location "gnssOdometerInfo")];
   v21[1] = v6;
-  [objc_msgSend(a3 "gnssOdometerInfo")];
+  [objc_msgSend(location "gnssOdometerInfo")];
   v21[2] = v7;
-  [a3 trustedTimestamp];
+  [location trustedTimestamp];
   v21[3] = v8;
-  v9 = [(CLLocationProviderAdapter *)self locationProvider];
-  if (a3)
+  locationProvider = [(CLLocationProviderAdapter *)self locationProvider];
+  if (location)
   {
-    [a3 clientLocation];
+    [location clientLocation];
   }
 
   else
@@ -185,7 +185,7 @@
   v19[6] = v16;
   v19[0] = v10;
   v19[1] = v11;
-  (*(*v9 + 264))(v9, v19, v21);
+  (*(*locationProvider + 264))(locationProvider, v19, v21);
   if (v22)
   {
     sub_100008080(v22);
@@ -199,28 +199,28 @@
   v2();
 }
 
-- (BOOL)syncgetNotification:(const int *)a3 data:(void *)a4
+- (BOOL)syncgetNotification:(const int *)notification data:(void *)data
 {
   v4 = *(*[(CLLocationProviderAdapter *)self locationProvider]+ 128);
 
   return v4();
 }
 
-- (BOOL)syncgetLocation:(id *)a3
+- (BOOL)syncgetLocation:(id *)location
 {
   v3 = *(*[(CLLocationProviderAdapter *)self locationProvider]+ 232);
 
   return v3();
 }
 
-- (BOOL)syncgetLocationPrivate:(void *)a3
+- (BOOL)syncgetLocationPrivate:(void *)private
 {
   v3 = *(*[(CLLocationProviderAdapter *)self locationProvider]+ 240);
 
   return v3();
 }
 
-- (void)fetchLocationWithReply:(id)a3
+- (void)fetchLocationWithReply:(id)reply
 {
   *v11 = 0xFFFF;
   *&v11[4] = 0uLL;
@@ -237,8 +237,8 @@
   *(&v13 + 4) = 0xBFF0000000000000;
   HIDWORD(v13) = 0x7FFFFFFF;
   memset(v14, 0, 25);
-  v9 = [(CLLocationProviderAdapter *)self locationProvider];
-  v10 = (*(*v9 + 248))(v9, v11);
+  locationProvider = [(CLLocationProviderAdapter *)self locationProvider];
+  v10 = (*(*locationProvider + 248))(locationProvider, v11);
   v22 = v12;
   v23 = v13;
   v24[0] = *v14;
@@ -253,7 +253,7 @@
   v15[1] = 3221225472;
   v15[2] = sub_1006A6CBC;
   v15[3] = &unk_10246A7A0;
-  (*(a3 + 2))(a3, v10, [v15 copy]);
+  (*(reply + 2))(reply, v10, [v15 copy]);
 }
 
 - (BOOL)syncgetLocationUnavailable
@@ -265,16 +265,16 @@
 
 - (id)syncgetName
 {
-  v2 = [(CLLocationProviderAdapter *)self locationProvider];
-  if (v2[31] < 0)
+  locationProvider = [(CLLocationProviderAdapter *)self locationProvider];
+  if (locationProvider[31] < 0)
   {
-    sub_100007244(__p, *(v2 + 1), *(v2 + 2));
+    sub_100007244(__p, *(locationProvider + 1), *(locationProvider + 2));
   }
 
   else
   {
-    v3 = *(v2 + 8);
-    v8 = *(v2 + 3);
+    v3 = *(locationProvider + 8);
+    v8 = *(locationProvider + 3);
     *__p = v3;
   }
 

@@ -1,14 +1,14 @@
 @interface ManagedUserNotification
-- (_TtC10FinanceKit23ManagedUserNotification)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit23ManagedUserNotification)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedUserNotification
 
-- (_TtC10FinanceKit23ManagedUserNotification)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit23ManagedUserNotification)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedUserNotification *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedUserNotification *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

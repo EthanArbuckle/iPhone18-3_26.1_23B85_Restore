@@ -1,32 +1,32 @@
 @interface PowerUISmartChargeClientAudioAccessories
 + (id)remoteInterface;
-- (BOOL)connectAndDisableOBCforDevice:(id)a3 withError:(id *)a4;
-- (BOOL)setState:(unint64_t)a3 forDevice:(id)a4 withError:(id *)a5;
-- (BOOL)updateOBCDeadline:(id)a3 forDevice:(id)a4 withError:(id *)a5;
-- (PowerUISmartChargeClientAudioAccessories)initWithClientName:(id)a3;
-- (id)fullChargeDeadlineForDevice:(id)a3 withError:(id *)a4;
+- (BOOL)connectAndDisableOBCforDevice:(id)device withError:(id *)error;
+- (BOOL)setState:(unint64_t)state forDevice:(id)device withError:(id *)error;
+- (BOOL)updateOBCDeadline:(id)deadline forDevice:(id)device withError:(id *)error;
+- (PowerUISmartChargeClientAudioAccessories)initWithClientName:(id)name;
+- (id)fullChargeDeadlineForDevice:(id)device withError:(id *)error;
 - (id)getAvailableDevices;
-- (id)getStatusForDevice:(id)a3;
-- (id)lastUsedLeewayWithError:(id *)a3;
-- (id)unfilteredDeadlineForDevice:(id)a3 withError:(id *)a4;
-- (unint64_t)isSmartChargingCurrentlyEnabledForDevice:(id)a3 withError:(id *)a4;
-- (unint64_t)lastActionForDevice:(id)a3;
-- (void)clearLastActionForDevice:(id)a3;
-- (void)connectAndDisableOBCforDevice:(id)a3 withHandler:(id)a4;
+- (id)getStatusForDevice:(id)device;
+- (id)lastUsedLeewayWithError:(id *)error;
+- (id)unfilteredDeadlineForDevice:(id)device withError:(id *)error;
+- (unint64_t)isSmartChargingCurrentlyEnabledForDevice:(id)device withError:(id *)error;
+- (unint64_t)lastActionForDevice:(id)device;
+- (void)clearLastActionForDevice:(id)device;
+- (void)connectAndDisableOBCforDevice:(id)device withHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteRecordsForDevice:(id)a3;
-- (void)disableSmartChargingForDevice:(id)a3 withHandler:(id)a4;
-- (void)enableSmartChargingForDevice:(id)a3 withHandler:(id)a4;
-- (void)fakeConnectionForDevice:(id)a3;
-- (void)fullChargeDeadlineForDevice:(id)a3 withHandler:(id)a4;
-- (void)isSmartChargingCurrentlyEnabledForDevice:(id)a3 withHandler:(id)a4;
-- (void)startMockingBluetoothForFakeDevice:(id)a3;
+- (void)deleteRecordsForDevice:(id)device;
+- (void)disableSmartChargingForDevice:(id)device withHandler:(id)handler;
+- (void)enableSmartChargingForDevice:(id)device withHandler:(id)handler;
+- (void)fakeConnectionForDevice:(id)device;
+- (void)fullChargeDeadlineForDevice:(id)device withHandler:(id)handler;
+- (void)isSmartChargingCurrentlyEnabledForDevice:(id)device withHandler:(id)handler;
+- (void)startMockingBluetoothForFakeDevice:(id)device;
 - (void)stopMockingBluetooth;
-- (void)temporarilyDisableSmartChargingForDevice:(id)a3 withHandler:(id)a4;
-- (void)temporarilyEnableChargingForDevice:(id)a3 withHandler:(id)a4;
-- (void)timeSeriesForDevice:(id)a3;
-- (void)unfilteredDeadlineForDevice:(id)a3 withHandler:(id)a4;
-- (void)updateOBCDeadline:(id)a3 forDevice:(id)a4 withHandler:(id)a5;
+- (void)temporarilyDisableSmartChargingForDevice:(id)device withHandler:(id)handler;
+- (void)temporarilyEnableChargingForDevice:(id)device withHandler:(id)handler;
+- (void)timeSeriesForDevice:(id)device;
+- (void)unfilteredDeadlineForDevice:(id)device withHandler:(id)handler;
+- (void)updateOBCDeadline:(id)deadline forDevice:(id)device withHandler:(id)handler;
 @end
 
 @implementation PowerUISmartChargeClientAudioAccessories
@@ -50,17 +50,17 @@
   return v2;
 }
 
-- (PowerUISmartChargeClientAudioAccessories)initWithClientName:(id)a3
+- (PowerUISmartChargeClientAudioAccessories)initWithClientName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = PowerUISmartChargeClientAudioAccessories;
   v6 = [(PowerUISmartChargeClientAudioAccessories *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientName, a3);
-    v8 = os_log_create("com.apple.powerui.smartcharging.AudioAccessory", [v5 UTF8String]);
+    objc_storeStrong(&v6->_clientName, name);
+    v8 = os_log_create("com.apple.powerui.smartcharging.AudioAccessory", [nameCopy UTF8String]);
     log = v7->_log;
     v7->_log = v8;
 
@@ -69,8 +69,8 @@
     v7->_connection = v10;
 
     v12 = v7->_connection;
-    v13 = [objc_opt_class() remoteInterface];
-    [(NSXPCConnection *)v12 setRemoteObjectInterface:v13];
+    remoteInterface = [objc_opt_class() remoteInterface];
+    [(NSXPCConnection *)v12 setRemoteObjectInterface:remoteInterface];
 
     [(NSXPCConnection *)v7->_connection resume];
   }
@@ -86,18 +86,18 @@
   [(PowerUISmartChargeClientAudioAccessories *)&v3 dealloc];
 }
 
-- (void)connectAndDisableOBCforDevice:(id)a3 withHandler:(id)a4
+- (void)connectAndDisableOBCforDevice:(id)device withHandler:(id)handler
 {
   connection = self->_connection;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v9 client:self->_clientName connectAndDisableOBCforDevice:v8 withHandler:v7];
+  handlerCopy = handler;
+  deviceCopy = device;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy client:self->_clientName connectAndDisableOBCforDevice:deviceCopy withHandler:handlerCopy];
 }
 
-- (BOOL)connectAndDisableOBCforDevice:(id)a3 withError:(id *)a4
+- (BOOL)connectAndDisableOBCforDevice:(id)device withError:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -123,11 +123,11 @@
   v12[3] = &unk_2782D46A0;
   v12[4] = &v18;
   v12[5] = &v14;
-  [v8 client:clientName connectAndDisableOBCforDevice:v6 withHandler:v12];
+  [v8 client:clientName connectAndDisableOBCforDevice:deviceCopy withHandler:v12];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v10 = *(v15 + 24);
@@ -151,17 +151,17 @@ void __84__PowerUISmartChargeClientAudioAccessories_connectAndDisableOBCforDevic
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (BOOL)setState:(unint64_t)a3 forDevice:(id)a4 withError:(id *)a5
+- (BOOL)setState:(unint64_t)state forDevice:(id)device withError:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  deviceCopy = device;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     clientName = self->_clientName;
     v11 = MEMORY[0x277CCABB0];
     v12 = log;
-    v13 = [v11 numberWithUnsignedInteger:a3];
+    v13 = [v11 numberWithUnsignedInteger:state];
     *buf = 138412546;
     *&buf[4] = clientName;
     *&buf[12] = 2112;
@@ -194,11 +194,11 @@ void __84__PowerUISmartChargeClientAudioAccessories_connectAndDisableOBCforDevic
   v20[3] = &unk_2782D46A0;
   v20[4] = buf;
   v20[5] = &v22;
-  [v15 client:v16 setState:a3 forDevice:v8 withHandler:v20];
+  [v15 client:v16 setState:state forDevice:deviceCopy withHandler:v20];
 
-  if (a5)
+  if (error)
   {
-    *a5 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   v17 = *(v23 + 24);
@@ -223,9 +223,9 @@ void __73__PowerUISmartChargeClientAudioAccessories_setState_forDevice_withError
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (unint64_t)isSmartChargingCurrentlyEnabledForDevice:(id)a3 withError:(id *)a4
+- (unint64_t)isSmartChargingCurrentlyEnabledForDevice:(id)device withError:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -249,11 +249,11 @@ void __73__PowerUISmartChargeClientAudioAccessories_setState_forDevice_withError
   v11[3] = &unk_2782D4498;
   v11[4] = &v17;
   v11[5] = &v13;
-  [v8 isSmartChargingCurrentlyEnabledForDevice:v6 withHandler:v11];
+  [v8 isSmartChargingCurrentlyEnabledForDevice:deviceCopy withHandler:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v9 = v14[3];
@@ -270,47 +270,47 @@ void __95__PowerUISmartChargeClientAudioAccessories_isSmartChargingCurrentlyEnab
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (void)isSmartChargingCurrentlyEnabledForDevice:(id)a3 withHandler:(id)a4
+- (void)isSmartChargingCurrentlyEnabledForDevice:(id)device withHandler:(id)handler
 {
   connection = self->_connection;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v8 isSmartChargingCurrentlyEnabledForDevice:v7 withHandler:v6];
+  handlerCopy = handler;
+  deviceCopy = device;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy isSmartChargingCurrentlyEnabledForDevice:deviceCopy withHandler:handlerCopy];
 }
 
-- (void)disableSmartChargingForDevice:(id)a3 withHandler:(id)a4
+- (void)disableSmartChargingForDevice:(id)device withHandler:(id)handler
 {
   connection = self->_connection;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v9 client:self->_clientName setState:0 forDevice:v8 withHandler:v7];
+  handlerCopy = handler;
+  deviceCopy = device;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy client:self->_clientName setState:0 forDevice:deviceCopy withHandler:handlerCopy];
 }
 
-- (void)temporarilyDisableSmartChargingForDevice:(id)a3 withHandler:(id)a4
+- (void)temporarilyDisableSmartChargingForDevice:(id)device withHandler:(id)handler
 {
   connection = self->_connection;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v9 client:self->_clientName setState:3 forDevice:v8 withHandler:v7];
+  handlerCopy = handler;
+  deviceCopy = device;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy client:self->_clientName setState:3 forDevice:deviceCopy withHandler:handlerCopy];
 }
 
-- (void)enableSmartChargingForDevice:(id)a3 withHandler:(id)a4
+- (void)enableSmartChargingForDevice:(id)device withHandler:(id)handler
 {
   connection = self->_connection;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v9 client:self->_clientName setState:1 forDevice:v8 withHandler:v7];
+  handlerCopy = handler;
+  deviceCopy = device;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy client:self->_clientName setState:1 forDevice:deviceCopy withHandler:handlerCopy];
 }
 
-- (void)temporarilyEnableChargingForDevice:(id)a3 withHandler:(id)a4
+- (void)temporarilyEnableChargingForDevice:(id)device withHandler:(id)handler
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -320,15 +320,15 @@ void __95__PowerUISmartChargeClientAudioAccessories_isSmartChargingCurrentlyEnab
     _os_log_impl(&dword_21B766000, log, OS_LOG_TYPE_DEFAULT, "Client '%@'requests temporarilyEnableChargingWithHandler.", &v12, 0xCu);
   }
 
-  v10 = [(NSXPCConnection *)self->_connection remoteObjectProxy];
-  [v10 client:self->_clientName setState:2 forDevice:v6 withHandler:v7];
+  remoteObjectProxy = [(NSXPCConnection *)self->_connection remoteObjectProxy];
+  [remoteObjectProxy client:self->_clientName setState:2 forDevice:deviceCopy withHandler:handlerCopy];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fullChargeDeadlineForDevice:(id)a3 withError:(id *)a4
+- (id)fullChargeDeadlineForDevice:(id)device withError:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -354,11 +354,11 @@ void __95__PowerUISmartChargeClientAudioAccessories_isSmartChargingCurrentlyEnab
   v11[3] = &unk_2782D4588;
   v11[4] = &v19;
   v11[5] = &v13;
-  [v8 fullChargeDeadlineForDevice:v6 withHandler:v11];
+  [v8 fullChargeDeadlineForDevice:deviceCopy withHandler:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = v20[5];
@@ -383,24 +383,24 @@ void __82__PowerUISmartChargeClientAudioAccessories_fullChargeDeadlineForDevice_
   *(v9 + 40) = v6;
 }
 
-- (void)fullChargeDeadlineForDevice:(id)a3 withHandler:(id)a4
+- (void)fullChargeDeadlineForDevice:(id)device withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   connection = self->_connection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__PowerUISmartChargeClientAudioAccessories_fullChargeDeadlineForDevice_withHandler___block_invoke;
   v11[3] = &unk_2782D45B0;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  deviceCopy = device;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
-  [v10 fullChargeDeadlineForDevice:v9 withHandler:v8];
+  [v10 fullChargeDeadlineForDevice:deviceCopy withHandler:v8];
 }
 
-- (id)unfilteredDeadlineForDevice:(id)a3 withError:(id *)a4
+- (id)unfilteredDeadlineForDevice:(id)device withError:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -426,11 +426,11 @@ void __82__PowerUISmartChargeClientAudioAccessories_fullChargeDeadlineForDevice_
   v11[3] = &unk_2782D4588;
   v11[4] = &v19;
   v11[5] = &v13;
-  [v8 unfilteredDeadlineForDevice:v6 withHandler:v11];
+  [v8 unfilteredDeadlineForDevice:deviceCopy withHandler:v11];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v14[5];
+    *error = v14[5];
   }
 
   v9 = v20[5];
@@ -455,25 +455,25 @@ void __82__PowerUISmartChargeClientAudioAccessories_unfilteredDeadlineForDevice_
   *(v9 + 40) = v6;
 }
 
-- (void)unfilteredDeadlineForDevice:(id)a3 withHandler:(id)a4
+- (void)unfilteredDeadlineForDevice:(id)device withHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   connection = self->_connection;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __84__PowerUISmartChargeClientAudioAccessories_unfilteredDeadlineForDevice_withHandler___block_invoke;
   v11[3] = &unk_2782D45B0;
-  v12 = v6;
-  v8 = v6;
-  v9 = a3;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  deviceCopy = device;
   v10 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
-  [v10 unfilteredDeadlineForDevice:v9 withHandler:v8];
+  [v10 unfilteredDeadlineForDevice:deviceCopy withHandler:v8];
 }
 
-- (BOOL)updateOBCDeadline:(id)a3 forDevice:(id)a4 withError:(id *)a5
+- (BOOL)updateOBCDeadline:(id)deadline forDevice:(id)device withError:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  deadlineCopy = deadline;
+  deviceCopy = device;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -499,11 +499,11 @@ void __82__PowerUISmartChargeClientAudioAccessories_unfilteredDeadlineForDevice_
   v15[3] = &unk_2782D46A0;
   v15[4] = &v21;
   v15[5] = &v17;
-  [v11 client:clientName updateOBCDeadline:v8 forDevice:v9 withHandler:v15];
+  [v11 client:clientName updateOBCDeadline:deadlineCopy forDevice:deviceCopy withHandler:v15];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v22[5];
+    *error = v22[5];
   }
 
   v13 = *(v18 + 24);
@@ -527,14 +527,14 @@ void __82__PowerUISmartChargeClientAudioAccessories_updateOBCDeadline_forDevice_
   *(*(*(a1 + 40) + 8) + 24) = a2;
 }
 
-- (void)updateOBCDeadline:(id)a3 forDevice:(id)a4 withHandler:(id)a5
+- (void)updateOBCDeadline:(id)deadline forDevice:(id)device withHandler:(id)handler
 {
   connection = self->_connection;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v11 updateOBCDeadline:v10 forDevice:v9 withHandler:v8];
+  handlerCopy = handler;
+  deviceCopy = device;
+  deadlineCopy = deadline;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy updateOBCDeadline:deadlineCopy forDevice:deviceCopy withHandler:handlerCopy];
 }
 
 void __85__PowerUISmartChargeClientAudioAccessories_engageUntil_forDevice_overrideAllSignals___block_invoke(uint64_t a1, void *a2)
@@ -646,9 +646,9 @@ void __63__PowerUISmartChargeClientAudioAccessories_getAvailableDevices__block_i
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getStatusForDevice:(id)a3
+- (id)getStatusForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -668,7 +668,7 @@ void __63__PowerUISmartChargeClientAudioAccessories_getAvailableDevices__block_i
   v10[2] = __63__PowerUISmartChargeClientAudioAccessories_getStatusForDevice___block_invoke_110;
   v10[3] = &unk_2782D4538;
   v10[4] = &v12;
-  [v7 getStatusForDevice:v5 withHandler:v10];
+  [v7 getStatusForDevice:deviceCopy withHandler:v10];
 
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -699,9 +699,9 @@ void __63__PowerUISmartChargeClientAudioAccessories_getStatusForDevice___block_i
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)lastActionForDevice:(id)a3
+- (unint64_t)lastActionForDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -719,7 +719,7 @@ void __63__PowerUISmartChargeClientAudioAccessories_getStatusForDevice___block_i
   v10[2] = __64__PowerUISmartChargeClientAudioAccessories_lastActionForDevice___block_invoke_112;
   v10[3] = &unk_2782D4A18;
   v10[4] = &v12;
-  [v7 lastActionForDevice:v5 withHandler:v10];
+  [v7 lastActionForDevice:deviceCopy withHandler:v10];
 
   v8 = v13[3];
   _Block_object_dispose(&v12, 8);
@@ -750,18 +750,18 @@ void __64__PowerUISmartChargeClientAudioAccessories_lastActionForDevice___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearLastActionForDevice:(id)a3
+- (void)clearLastActionForDevice:(id)device
 {
   connection = self->_connection;
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __69__PowerUISmartChargeClientAudioAccessories_clearLastActionForDevice___block_invoke;
   v9 = &unk_2782D4510;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&v6];
-  [v5 clearLastActionForDevice:{v4, v6, v7, v8, v9, v10, v11}];
+  [v5 clearLastActionForDevice:{deviceCopy, v6, v7, v8, v9, selfCopy, v11}];
 }
 
 void __69__PowerUISmartChargeClientAudioAccessories_clearLastActionForDevice___block_invoke(uint64_t a1, void *a2)
@@ -787,18 +787,18 @@ void __69__PowerUISmartChargeClientAudioAccessories_clearLastActionForDevice___b
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startMockingBluetoothForFakeDevice:(id)a3
+- (void)startMockingBluetoothForFakeDevice:(id)device
 {
   connection = self->_connection;
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __79__PowerUISmartChargeClientAudioAccessories_startMockingBluetoothForFakeDevice___block_invoke;
   v9 = &unk_2782D4510;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&v6];
-  [v5 startMockingBluetoothForFakeDevice:{v4, v6, v7, v8, v9, v10, v11}];
+  [v5 startMockingBluetoothForFakeDevice:{deviceCopy, v6, v7, v8, v9, selfCopy, v11}];
 }
 
 void __79__PowerUISmartChargeClientAudioAccessories_startMockingBluetoothForFakeDevice___block_invoke(uint64_t a1, void *a2)
@@ -860,9 +860,9 @@ void __64__PowerUISmartChargeClientAudioAccessories_stopMockingBluetooth__block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteRecordsForDevice:(id)a3
+- (void)deleteRecordsForDevice:(id)device
 {
-  v5 = [MEMORY[0x277CBEA60] arrayWithObject:a3];
+  v5 = [MEMORY[0x277CBEA60] arrayWithObject:device];
   connection = self->_connection;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -897,18 +897,18 @@ void __67__PowerUISmartChargeClientAudioAccessories_deleteRecordsForDevice___blo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fakeConnectionForDevice:(id)a3
+- (void)fakeConnectionForDevice:(id)device
 {
   connection = self->_connection;
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __68__PowerUISmartChargeClientAudioAccessories_fakeConnectionForDevice___block_invoke;
   v9 = &unk_2782D4510;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&v6];
-  [v5 fakeConnectionForDevice:{v4, v6, v7, v8, v9, v10, v11}];
+  [v5 fakeConnectionForDevice:{deviceCopy, v6, v7, v8, v9, selfCopy, v11}];
 }
 
 void __68__PowerUISmartChargeClientAudioAccessories_fakeConnectionForDevice___block_invoke(uint64_t a1, void *a2)
@@ -957,7 +957,7 @@ void __70__PowerUISmartChargeClientAudioAccessories_setFakeConnectionStatusTo___
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)lastUsedLeewayWithError:(id *)a3
+- (id)lastUsedLeewayWithError:(id *)error
 {
   v18 = 0;
   v19 = &v18;
@@ -989,9 +989,9 @@ void __70__PowerUISmartChargeClientAudioAccessories_setFakeConnectionStatusTo___
   v10[7] = a2;
   [v7 currentLeewayWithHandler:v10];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v19[5];
@@ -1028,18 +1028,18 @@ void __68__PowerUISmartChargeClientAudioAccessories_lastUsedLeewayWithError___bl
   }
 }
 
-- (void)timeSeriesForDevice:(id)a3
+- (void)timeSeriesForDevice:(id)device
 {
   connection = self->_connection;
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __64__PowerUISmartChargeClientAudioAccessories_timeSeriesForDevice___block_invoke;
   v9 = &unk_2782D4510;
-  v10 = self;
+  selfCopy = self;
   v11 = a2;
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(NSXPCConnection *)connection synchronousRemoteObjectProxyWithErrorHandler:&v6];
-  [v5 timeSeriesForDevice:{v4, v6, v7, v8, v9, v10, v11}];
+  [v5 timeSeriesForDevice:{deviceCopy, v6, v7, v8, v9, selfCopy, v11}];
 }
 
 void __64__PowerUISmartChargeClientAudioAccessories_timeSeriesForDevice___block_invoke(uint64_t a1, void *a2)

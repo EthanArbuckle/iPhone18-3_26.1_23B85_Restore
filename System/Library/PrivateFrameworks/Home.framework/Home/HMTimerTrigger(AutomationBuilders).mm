@@ -37,7 +37,7 @@
   else
   {
     v14 = NSStringFromSelector(a2);
-    NSLog(&cfstr_WasPassedABuil.isa, a1, v14, v9);
+    NSLog(&cfstr_WasPassedABuil.isa, self, v14, v9);
 
     v15 = MEMORY[0x277D2C900];
     v16 = [MEMORY[0x277CCA9B8] hf_errorWithCode:33];

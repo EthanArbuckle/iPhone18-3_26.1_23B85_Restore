@@ -1,8 +1,8 @@
 @interface PUActivityItemSourceController
-- ($9D9B13A340AA60ED2DD68408BD7D962F)synthesizedSharingPreferencesForAssetItem:(id)a3;
-- (BOOL)_prepareForPerformWithActivityType:(id)a3 error:(id *)a4;
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5;
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4;
+- ($9D9B13A340AA60ED2DD68408BD7D962F)synthesizedSharingPreferencesForAssetItem:(id)item;
+- (BOOL)_prepareForPerformWithActivityType:(id)type error:(id *)error;
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler;
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller;
 - (BOOL)isPreparingIndividualItems;
 - (NSArray)activeItemSources;
 - (NSArray)activityItems;
@@ -10,32 +10,32 @@
 - (PUActivityItemSourceControllerDelegate)delegate;
 - (PUActivityViewController)activityViewController;
 - (PXAssetMediaTypeCount)requestAssetsMediaTypeCount;
-- (id)activityItemSourceForAsset:(id)a3;
-- (id)presentationEnvironmentForActionPerformer:(id)a3;
+- (id)activityItemSourceForAsset:(id)asset;
+- (id)presentationEnvironmentForActionPerformer:(id)performer;
 - (void)_cleanupAfterPerform;
-- (void)_didPublishMomentShareLinkToURL:(id)a3 error:(id)a4 completionHandler:(id)a5;
-- (void)_prepareIndividualItemSourcesForActivity:(id)a3;
-- (void)_prepareMomentShareLinkFromIndividualItemSourcesForActivity:(id)a3;
-- (void)addAssetItem:(id)a3;
+- (void)_didPublishMomentShareLinkToURL:(id)l error:(id)error completionHandler:(id)handler;
+- (void)_prepareIndividualItemSourcesForActivity:(id)activity;
+- (void)_prepareMomentShareLinkFromIndividualItemSourcesForActivity:(id)activity;
+- (void)addAssetItem:(id)item;
 - (void)cancel;
 - (void)cleanUpExportedFiles;
-- (void)cmmActivityItemSource:(id)a3 didFinishPreparationForActivityType:(id)a4 preparationType:(unint64_t)a5 withItems:(id)a6 didCancel:(BOOL)a7 error:(id)a8 completion:(id)a9;
-- (void)cmmActivityItemSource:(id)a3 willBeginPreparationWithActivityType:(id)a4 preparationType:(unint64_t)a5;
-- (void)configureItemSourcesForActivityIfNeeded:(id)a3 forcePreparationAsMomentShareLink:(BOOL)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)publishLinkForActivityType:(id)a3 completionHandler:(id)a4;
-- (void)removeAssetItem:(id)a3;
-- (void)runExplicitly:(BOOL)a3 withActivityType:(id)a4 completionHandler:(id)a5;
-- (void)setActiveItemSources:(id)a3;
-- (void)setAssetItems:(id)a3;
-- (void)setPreferredExportFormat:(int64_t)a3;
-- (void)setShouldExcludeAccessibilityDescriptionInAllItemSources:(BOOL)a3;
-- (void)setShouldExcludeCaptionInAllItemSources:(BOOL)a3;
-- (void)setShouldExcludeLivenessInAllItemSources:(BOOL)a3;
-- (void)setShouldExcludeLocationInAllItemSources:(BOOL)a3;
-- (void)setShouldShareAsAssetBundles:(BOOL)a3;
-- (void)setShouldShareAsUnmodifiedOriginals:(BOOL)a3;
-- (void)setState:(unint64_t)a3;
+- (void)cmmActivityItemSource:(id)source didFinishPreparationForActivityType:(id)type preparationType:(unint64_t)preparationType withItems:(id)items didCancel:(BOOL)cancel error:(id)error completion:(id)completion;
+- (void)cmmActivityItemSource:(id)source willBeginPreparationWithActivityType:(id)type preparationType:(unint64_t)preparationType;
+- (void)configureItemSourcesForActivityIfNeeded:(id)needed forcePreparationAsMomentShareLink:(BOOL)link;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)publishLinkForActivityType:(id)type completionHandler:(id)handler;
+- (void)removeAssetItem:(id)item;
+- (void)runExplicitly:(BOOL)explicitly withActivityType:(id)type completionHandler:(id)handler;
+- (void)setActiveItemSources:(id)sources;
+- (void)setAssetItems:(id)items;
+- (void)setPreferredExportFormat:(int64_t)format;
+- (void)setShouldExcludeAccessibilityDescriptionInAllItemSources:(BOOL)sources;
+- (void)setShouldExcludeCaptionInAllItemSources:(BOOL)sources;
+- (void)setShouldExcludeLivenessInAllItemSources:(BOOL)sources;
+- (void)setShouldExcludeLocationInAllItemSources:(BOOL)sources;
+- (void)setShouldShareAsAssetBundles:(BOOL)bundles;
+- (void)setShouldShareAsUnmodifiedOriginals:(BOOL)originals;
+- (void)setState:(unint64_t)state;
 - (void)updateSharingPreferencesInItemSources;
 - (void)updateState;
 @end
@@ -56,14 +56,14 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v10 = a3;
-  if (((v6 & 1) == 0 || PUActivityItemSourceControllerItemSourceObserverContext != a5) && ((v6 & 1) == 0 || PUActivityItemSourceControllerCMMSourceObserverContext != a5))
+  changeCopy = change;
+  observableCopy = observable;
+  if (((changeCopy & 1) == 0 || PUActivityItemSourceControllerItemSourceObserverContext != context) && ((changeCopy & 1) == 0 || PUActivityItemSourceControllerCMMSourceObserverContext != context))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:1003 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:1003 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -71,22 +71,22 @@
   [(PUActivityItemSourceController *)self updateState];
 }
 
-- (void)cmmActivityItemSource:(id)a3 didFinishPreparationForActivityType:(id)a4 preparationType:(unint64_t)a5 withItems:(id)a6 didCancel:(BOOL)a7 error:(id)a8 completion:(id)a9
+- (void)cmmActivityItemSource:(id)source didFinishPreparationForActivityType:(id)type preparationType:(unint64_t)preparationType withItems:(id)items didCancel:(BOOL)cancel error:(id)error completion:(id)completion
 {
-  v10 = a7;
+  cancelCopy = cancel;
   v24[1] = *MEMORY[0x1E69E9840];
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
-  v18 = [(PUActivityItemSourceController *)self delegate];
+  typeCopy = type;
+  itemsCopy = items;
+  errorCopy = error;
+  completionCopy = completion;
+  delegate = [(PUActivityItemSourceController *)self delegate];
   v19 = objc_opt_respondsToSelector();
 
   if (v19)
   {
-    if (v16)
+    if (errorCopy)
     {
-      v24[0] = v16;
+      v24[0] = errorCopy;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     }
 
@@ -95,68 +95,68 @@
       v20 = 0;
     }
 
-    v21 = [(PUActivityItemSourceController *)self delegate];
+    delegate2 = [(PUActivityItemSourceController *)self delegate];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __145__PUActivityItemSourceController_cmmActivityItemSource_didFinishPreparationForActivityType_preparationType_withItems_didCancel_error_completion___block_invoke;
     v22[3] = &unk_1E7B80C88;
-    v23 = v17;
-    [v21 activityItemSourceController:self didFinishPreparationForActivityType:v14 preparationType:a5 withItems:v15 didCancel:v10 errors:v20 completion:v22];
+    v23 = completionCopy;
+    [delegate2 activityItemSourceController:self didFinishPreparationForActivityType:typeCopy preparationType:preparationType withItems:itemsCopy didCancel:cancelCopy errors:v20 completion:v22];
   }
 
   else
   {
-    v17[2](v17);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)cmmActivityItemSource:(id)a3 willBeginPreparationWithActivityType:(id)a4 preparationType:(unint64_t)a5
+- (void)cmmActivityItemSource:(id)source willBeginPreparationWithActivityType:(id)type preparationType:(unint64_t)preparationType
 {
-  v10 = a4;
-  v7 = [(PUActivityItemSourceController *)self delegate];
+  typeCopy = type;
+  delegate = [(PUActivityItemSourceController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PUActivityItemSourceController *)self delegate];
-    [v9 activityItemSourceController:self willBeginPreparationWithActivityType:v10 preparationType:a5];
+    delegate2 = [(PUActivityItemSourceController *)self delegate];
+    [delegate2 activityItemSourceController:self willBeginPreparationWithActivityType:typeCopy preparationType:preparationType];
   }
 }
 
-- (BOOL)actionPerformer:(id)a3 dismissViewController:(id)a4 completionHandler:(id)a5
+- (BOOL)actionPerformer:(id)performer dismissViewController:(id)controller completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 presentingViewController];
-  if (!v9)
+  controllerCopy = controller;
+  handlerCopy = handler;
+  presentingViewController = [controllerCopy presentingViewController];
+  if (!presentingViewController)
   {
-    v9 = [(PUActivityItemSourceController *)self activityViewController];
-    if (v9)
+    presentingViewController = [(PUActivityItemSourceController *)self activityViewController];
+    if (presentingViewController)
     {
       do
       {
-        v12 = [v9 presentedViewController];
+        presentedViewController = [presentingViewController presentedViewController];
 
-        if (v12 == v7)
+        if (presentedViewController == controllerCopy)
         {
           break;
         }
 
-        v13 = [v9 presentedViewController];
+        presentedViewController2 = [presentingViewController presentedViewController];
 
-        v9 = v13;
+        presentingViewController = presentedViewController2;
       }
 
-      while (v13);
+      while (presentedViewController2);
     }
   }
 
-  v10 = [v9 presentedViewController];
+  presentedViewController3 = [presentingViewController presentedViewController];
 
-  if (v10 == v7)
+  if (presentedViewController3 == controllerCopy)
   {
-    [v9 dismissViewControllerAnimated:1 completion:v8];
+    [presentingViewController dismissViewControllerAnimated:1 completion:handlerCopy];
   }
 
   else
@@ -165,46 +165,46 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_DEFAULT, "PUActivityItemSourceController=%@: Did not find a parent view controller for dismissing the CMM progress alert.", &v15, 0xCu);
     }
 
-    v8[2](v8);
+    handlerCopy[2](handlerCopy);
   }
 
-  return v10 == v7;
+  return presentedViewController3 == controllerCopy;
 }
 
-- (BOOL)actionPerformer:(id)a3 presentViewController:(id)a4
+- (BOOL)actionPerformer:(id)performer presentViewController:(id)controller
 {
-  if (a4)
+  if (controller)
   {
-    v6 = a4;
-    v7 = [(PUActivityItemSourceController *)self activityViewController];
-    [v7 px_presentOverTopmostPresentedViewController:v6 animated:1 completion:0];
+    controllerCopy = controller;
+    activityViewController = [(PUActivityItemSourceController *)self activityViewController];
+    [activityViewController px_presentOverTopmostPresentedViewController:controllerCopy animated:1 completion:0];
   }
 
-  return a4 != 0;
+  return controller != 0;
 }
 
-- (id)presentationEnvironmentForActionPerformer:(id)a3
+- (id)presentationEnvironmentForActionPerformer:(id)performer
 {
   v3 = MEMORY[0x1E69C4608];
-  v4 = [(PUActivityItemSourceController *)self activityViewController];
-  v5 = [v3 defaultPresenterWithViewController:v4];
+  activityViewController = [(PUActivityItemSourceController *)self activityViewController];
+  v5 = [v3 defaultPresenterWithViewController:activityViewController];
 
   return v5;
 }
 
-- (id)activityItemSourceForAsset:(id)a3
+- (id)activityItemSourceForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   assetItemSources = self->_assetItemSources;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__PUActivityItemSourceController_activityItemSourceForAsset___block_invoke;
   v10[3] = &unk_1E7B744E8;
-  v6 = v4;
+  v6 = assetCopy;
   v11 = v6;
   v7 = [(NSMutableOrderedSet *)assetItemSources indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -233,8 +233,8 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
   v19 = *MEMORY[0x1E69E9840];
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:884 description:@"expect main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:884 description:@"expect main thread"];
   }
 
   atomic_fetch_add(&self->_taskId, 1u);
@@ -242,19 +242,19 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B36F3000, v4, OS_LOG_TYPE_DEFAULT, "cancel PUActivityItemSourceController=%@", buf, 0xCu);
   }
 
-  v5 = [(PUActivityItemSourceController *)self activeItemSources];
-  if (v5)
+  activeItemSources = [(PUActivityItemSourceController *)self activeItemSources];
+  if (activeItemSources)
   {
     [(PUActivityItemSourceController *)self setActiveItemSources:0];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v5;
+    v6 = activeItemSources;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
@@ -289,22 +289,22 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
   [(PUActivityItemSourceController *)self setActiveActivityType:0];
 }
 
-- (void)_didPublishMomentShareLinkToURL:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)_didPublishMomentShareLinkToURL:(id)l error:(id)error completionHandler:(id)handler
 {
   v35 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  errorCopy = error;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:861 description:{@"%s must be called on the main thread", "-[PUActivityItemSourceController _didPublishMomentShareLinkToURL:error:completionHandler:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:861 description:{@"%s must be called on the main thread", "-[PUActivityItemSourceController _didPublishMomentShareLinkToURL:error:completionHandler:]"}];
   }
 
-  v12 = [v10 domain];
-  if ([v12 isEqualToString:*MEMORY[0x1E69C3FE0]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E69C3FE0]])
   {
-    v13 = [v10 code] == -1001;
+    v13 = [errorCopy code] == -1001;
   }
 
   else
@@ -315,8 +315,8 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
   v14 = PLShareSheetGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v9 pl_redactedShareURL];
-    v16 = [(PUActivityItemSourceController *)self activeActivityType];
+    pl_redactedShareURL = [lCopy pl_redactedShareURL];
+    activeActivityType = [(PUActivityItemSourceController *)self activeActivityType];
     v17 = @"NO";
     if (v13)
     {
@@ -325,29 +325,29 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
 
     v18 = v17;
     *buf = 138544386;
-    v26 = v15;
+    v26 = pl_redactedShareURL;
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     v29 = 2112;
-    v30 = v16;
+    v30 = activeActivityType;
     v31 = 2112;
     v32 = v18;
     v33 = 2112;
-    v34 = v10;
+    v34 = errorCopy;
     _os_log_impl(&dword_1B36F3000, v14, OS_LOG_TYPE_DEFAULT, "Share Sheet: Finished publishing moment share link: %{public}@ PUActivityItemSourceController=%@ activityType=%@ didCancel=%@ error=%@", buf, 0x34u);
   }
 
-  if (v11)
+  if (handlerCopy)
   {
-    [(PUActivityItemSourceController *)self _setPublishedURL:v9];
+    [(PUActivityItemSourceController *)self _setPublishedURL:lCopy];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __90__PUActivityItemSourceController__didPublishMomentShareLinkToURL_error_completionHandler___block_invoke;
     block[3] = &unk_1E7B7B478;
-    v23 = v11;
-    v21 = v9;
+    v23 = handlerCopy;
+    v21 = lCopy;
     v24 = v13;
-    v22 = v10;
+    v22 = errorCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
@@ -360,26 +360,26 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
   [(PUActivityItemSourceController *)self updateState];
 }
 
-- (void)publishLinkForActivityType:(id)a3 completionHandler:(id)a4
+- (void)publishLinkForActivityType:(id)type completionHandler:(id)handler
 {
   v55 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v35 = a4;
+  typeCopy = type;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:809 description:{@"%s must be called on the main thread", "-[PUActivityItemSourceController publishLinkForActivityType:completionHandler:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:809 description:{@"%s must be called on the main thread", "-[PUActivityItemSourceController publishLinkForActivityType:completionHandler:]"}];
   }
 
   v46 = 0;
-  v34 = v7;
-  v8 = [(PUActivityItemSourceController *)self _prepareForPerformWithActivityType:v7 error:&v46];
+  v34 = typeCopy;
+  v8 = [(PUActivityItemSourceController *)self _prepareForPerformWithActivityType:typeCopy error:&v46];
   v9 = v46;
   v32 = v9;
   if (v8)
   {
-    v10 = [(NSMutableOrderedSet *)self->_assetItemSources array];
-    v33 = [v10 copy];
+    array = [(NSMutableOrderedSet *)self->_assetItemSources array];
+    v33 = [array copy];
 
     v11 = [v33 count] == 0;
     v12 = PLShareSheetGetLog();
@@ -392,8 +392,8 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
         _os_log_impl(&dword_1B36F3000, v13, OS_LOG_TYPE_ERROR, "Share Sheet: Attempted to publish a link with no items selected", buf, 2u);
       }
 
-      v31 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"No items selected for moment share link"];
-      (*(v35 + 2))(v35, 0, 0, v31);
+      array2 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"No items selected for moment share link"];
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, array2);
     }
 
     else
@@ -401,7 +401,7 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v50 = self;
+        selfCopy = self;
         v51 = 2112;
         v52 = v34;
         v53 = 2112;
@@ -439,17 +439,17 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
         while (v15);
       }
 
-      v18 = [(PUActivityItemSourceController *)self assets];
-      v31 = [v18 array];
+      assets = [(PUActivityItemSourceController *)self assets];
+      array2 = [assets array];
 
       objc_initWeak(buf, self);
-      v19 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v31, "count")}];
+      v19 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(array2, "count")}];
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v20 = [(PUActivityItemSourceController *)self activeItemSources];
-      v21 = [v20 countByEnumeratingWithState:&v38 objects:v47 count:16];
+      activeItemSources = [(PUActivityItemSourceController *)self activeItemSources];
+      v21 = [activeItemSources countByEnumeratingWithState:&v38 objects:v47 count:16];
       if (v21)
       {
         v22 = *v39;
@@ -459,32 +459,32 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
           {
             if (*v39 != v22)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(activeItemSources);
             }
 
             v24 = *(*(&v38 + 1) + 8 * j);
-            v25 = [v24 sharingPreferences];
-            v26 = v25;
-            if ((v25 & 0x100000000) != 0 || (v25 & 1) != 0 || (v25 & 0x100) != 0)
+            sharingPreferences = [v24 sharingPreferences];
+            v26 = sharingPreferences;
+            if ((sharingPreferences & 0x100000000) != 0 || (sharingPreferences & 1) != 0 || (sharingPreferences & 0x100) != 0)
             {
               v27 = objc_alloc_init(MEMORY[0x1E69C3398]);
               [v27 setPublishAsOriginal:HIDWORD(v26) & 1];
               [v27 setPublishLivePhotoAsStill:v26 & 1];
               [v27 setRemoveLocationData:(v26 >> 8) & 1];
-              v28 = [v24 asset];
-              v29 = [v28 uuid];
-              [v19 setObject:v27 forKeyedSubscript:v29];
+              asset = [v24 asset];
+              uuid = [asset uuid];
+              [v19 setObject:v27 forKeyedSubscript:uuid];
             }
           }
 
-          v21 = [v20 countByEnumeratingWithState:&v38 objects:v47 count:16];
+          v21 = [activeItemSources countByEnumeratingWithState:&v38 objects:v47 count:16];
         }
 
         while (v21);
       }
 
       objc_copyWeak(&v37, buf);
-      v36 = v35;
+      v36 = handlerCopy;
       PXPublishMomentShareWithCompletion();
 
       objc_destroyWeak(&v37);
@@ -494,7 +494,7 @@ uint64_t __61__PUActivityItemSourceController_activityItemSourceForAsset___block
 
   else
   {
-    (*(v35 + 2))(v35, 0, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v9);
   }
 }
 
@@ -517,42 +517,42 @@ void __79__PUActivityItemSourceController_publishLinkForActivityType_completionH
   [WeakRetained _didPublishMomentShareLinkToURL:*(a1 + 32) error:*(a1 + 40) completionHandler:*(a1 + 48)];
 }
 
-- (void)runExplicitly:(BOOL)a3 withActivityType:(id)a4 completionHandler:(id)a5
+- (void)runExplicitly:(BOOL)explicitly withActivityType:(id)type completionHandler:(id)handler
 {
-  v38 = a3;
+  explicitlyCopy = explicitly;
   v93[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v40 = a5;
+  typeCopy = type;
+  handlerCopy = handler;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:658 description:{@"%s must be called on the main thread", "-[PUActivityItemSourceController runExplicitly:withActivityType:completionHandler:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:658 description:{@"%s must be called on the main thread", "-[PUActivityItemSourceController runExplicitly:withActivityType:completionHandler:]"}];
   }
 
   v86 = 0;
-  v50 = self;
-  v41 = v7;
-  v8 = [(PUActivityItemSourceController *)self _prepareForPerformWithActivityType:v7 error:&v86];
+  selfCopy = self;
+  v41 = typeCopy;
+  v8 = [(PUActivityItemSourceController *)self _prepareForPerformWithActivityType:typeCopy error:&v86];
   v9 = v86;
   v39 = v9;
   if (v8)
   {
-    v10 = [MEMORY[0x1E69C3928] sharedController];
-    [v10 addPowerAssertionForIdentifier:-[PUActivityItemSourceController powerAssertionIdentifier](self withReason:"powerAssertionIdentifier") completion:{8, 0}];
+    mEMORY[0x1E69C3928] = [MEMORY[0x1E69C3928] sharedController];
+    [mEMORY[0x1E69C3928] addPowerAssertionForIdentifier:-[PUActivityItemSourceController powerAssertionIdentifier](self withReason:"powerAssertionIdentifier") completion:{8, 0}];
 
-    v11 = [(NSMutableOrderedSet *)self->_assetItemSources array];
-    obj = [v11 copy];
+    array = [(NSMutableOrderedSet *)self->_assetItemSources array];
+    obj = [array copy];
 
     v12 = PLShareSheetGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = [obj count];
       *buf = 138413314;
-      *&buf[4] = v50;
+      *&buf[4] = selfCopy;
       *&buf[12] = 1024;
-      *&buf[14] = v38;
+      *&buf[14] = explicitlyCopy;
       *&buf[18] = 2112;
-      *&buf[20] = v7;
+      *&buf[20] = typeCopy;
       *&buf[28] = 2048;
       *&buf[30] = v13;
       v91 = 2112;
@@ -560,18 +560,18 @@ void __79__PUActivityItemSourceController_publishLinkForActivityType_completionH
       _os_log_impl(&dword_1B36F3000, v12, OS_LOG_TYPE_DEFAULT, "begin running PUActivityItemSourceController=%@ runExplicitly=%i for activityType=%@ with %lu activeItemSources=%@", buf, 0x30u);
     }
 
-    [(PUActivityItemSourceController *)v50 setActiveItemSources:obj];
-    [(PUActivityItemSourceController *)v50 setActiveActivityType:v7];
+    [(PUActivityItemSourceController *)selfCopy setActiveItemSources:obj];
+    [(PUActivityItemSourceController *)selfCopy setActiveActivityType:typeCopy];
     v46 = [obj count];
     v49 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v46];
     v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:v46];
-    [(PUActivityItemSourceController *)v50 setErrors:v14];
+    [(PUActivityItemSourceController *)selfCopy setErrors:v14];
 
-    v15 = v50;
-    v16 = atomic_load(&v50->_taskId);
+    v15 = selfCopy;
+    v16 = atomic_load(&selfCopy->_taskId);
     v44 = v16;
-    v45 = [(PUActivityItemSourceController *)v15 progressHandler];
-    if (v45)
+    progressHandler = [(PUActivityItemSourceController *)v15 progressHandler];
+    if (progressHandler)
     {
       *buf = 0;
       *&buf[8] = buf;
@@ -605,12 +605,12 @@ void __79__PUActivityItemSourceController_publishLinkForActivityType_completionH
             v74[2] = __83__PUActivityItemSourceController_runExplicitly_withActivityType_completionHandler___block_invoke;
             v74[3] = &unk_1E7B745A8;
             v80 = v44;
-            v74[4] = v50;
+            v74[4] = selfCopy;
             v76 = v85;
             v77 = buf;
             v78 = a2;
             v79 = v46;
-            v75 = v45;
+            v75 = progressHandler;
             [v21 setProgressHandler:v74];
           }
 
@@ -661,7 +661,7 @@ void __79__PUActivityItemSourceController_publishLinkForActivityType_completionH
           v29 = v48;
           v69 = buf;
           v65 = v29;
-          v66 = v50;
+          v66 = selfCopy;
           v67 = v49;
           v68 = v22;
           [v28 setCompletionHandler:v64];
@@ -678,7 +678,7 @@ void __79__PUActivityItemSourceController_publishLinkForActivityType_completionH
       while (v23);
     }
 
-    if (v38)
+    if (explicitlyCopy)
     {
       v62 = 0u;
       v63 = 0u;
@@ -716,10 +716,10 @@ void __79__PUActivityItemSourceController_publishLinkForActivityType_completionH
     v58 = v46;
     v59 = v44;
     v52 = v22;
-    v53 = v50;
+    v53 = selfCopy;
     v54 = v49;
     v55 = v41;
-    v56 = v40;
+    v56 = handlerCopy;
     v34 = v49;
     v35 = v22;
     dispatch_async(queue, block);
@@ -731,7 +731,7 @@ void __79__PUActivityItemSourceController_publishLinkForActivityType_completionH
   {
     v93[0] = v9;
     obja = [MEMORY[0x1E695DEC8] arrayWithObjects:v93 count:1];
-    (*(v40 + 2))(v40, 0, 0, obja);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, obja);
   }
 }
 
@@ -980,8 +980,8 @@ void __83__PUActivityItemSourceController_runExplicitly_withActivityType_complet
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(PUActivityItemSourceController *)self assetItemSources];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  assetItemSources = [(PUActivityItemSourceController *)self assetItemSources];
+  v5 = [assetItemSources countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -993,14 +993,14 @@ void __83__PUActivityItemSourceController_runExplicitly_withActivityType_complet
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetItemSources);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) cleanUpExportedFiles];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v6 = [assetItemSources countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v6);
@@ -1016,22 +1016,22 @@ void __83__PUActivityItemSourceController_runExplicitly_withActivityType_complet
   [(PUActivityItemSourceController *)self setActiveActivityType:0];
 }
 
-- (BOOL)_prepareForPerformWithActivityType:(id)a3 error:(id *)a4
+- (BOOL)_prepareForPerformWithActivityType:(id)type error:(id *)error
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PUActivityItemSourceController *)self activeItemSources];
+  typeCopy = type;
+  activeItemSources = [(PUActivityItemSourceController *)self activeItemSources];
 
-  if (v7)
+  if (activeItemSources)
   {
     v8 = MEMORY[0x1E696AEC0];
-    v9 = [(PUActivityItemSourceController *)self activeItemSources];
-    v10 = [(PUActivityItemSourceController *)self activeActivityType];
-    v11 = [v8 stringWithFormat:@"unexpected previous task with activeItemSources=%@, activeActivityType=%@, new activityType %@", v9, v10, v6];
+    activeItemSources2 = [(PUActivityItemSourceController *)self activeItemSources];
+    activeActivityType = [(PUActivityItemSourceController *)self activeActivityType];
+    typeCopy = [v8 stringWithFormat:@"unexpected previous task with activeItemSources=%@, activeActivityType=%@, new activityType %@", activeItemSources2, activeActivityType, typeCopy];
 
     v12 = MEMORY[0x1E696ABC0];
     v23 = *MEMORY[0x1E696A278];
-    v24[0] = v11;
+    v24[0] = typeCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v14 = [v12 errorWithDomain:@"com.apple.PUActivityItemSourceController" code:-1 userInfo:v13];
 
@@ -1039,7 +1039,7 @@ void __83__PUActivityItemSourceController_runExplicitly_withActivityType_complet
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v20 = self;
+      selfCopy = self;
       v21 = 2112;
       v22 = v14;
       _os_log_impl(&dword_1B36F3000, v15, OS_LOG_TYPE_ERROR, "failed running PUActivityItemSourceController=%@ with error=%@", buf, 0x16u);
@@ -1049,14 +1049,14 @@ void __83__PUActivityItemSourceController_runExplicitly_withActivityType_complet
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v20 = v11;
+      selfCopy = typeCopy;
       _os_log_fault_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_FAULT, "%@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v17 = v14;
-      *a4 = v14;
+      *error = v14;
     }
   }
 
@@ -1066,13 +1066,13 @@ void __83__PUActivityItemSourceController_runExplicitly_withActivityType_complet
     [(PUActivityItemSourceController *)self updateState];
   }
 
-  return v7 == 0;
+  return activeItemSources == 0;
 }
 
-- (void)_prepareMomentShareLinkFromIndividualItemSourcesForActivity:(id)a3
+- (void)_prepareMomentShareLinkFromIndividualItemSourcesForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
   v6 = PLShareSheetGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1080,39 +1080,39 @@ void __83__PUActivityItemSourceController_runExplicitly_withActivityType_complet
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "Preparing moment-share link from individual item sources", buf, 2u);
   }
 
-  v7 = [(PUActivityItemSourceController *)self delegate];
+  delegate = [(PUActivityItemSourceController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PUActivityItemSourceController *)self delegate];
-    [v9 activityItemSourceController:self willBeginPreparationWithActivityType:v5 preparationType:1];
+    delegate2 = [(PUActivityItemSourceController *)self delegate];
+    [delegate2 activityItemSourceController:self willBeginPreparationWithActivityType:activityType preparationType:1];
   }
 
   self->_momentSharePublishAttempted = 1;
-  v10 = [(PUActivityItemSourceController *)self assetItemSources];
-  v11 = [v10 lastObject];
+  assetItemSources = [(PUActivityItemSourceController *)self assetItemSources];
+  lastObject = [assetItemSources lastObject];
 
-  [v11 setShouldAnchorPreparation:1];
+  [lastObject setShouldAnchorPreparation:1];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __94__PUActivityItemSourceController__prepareMomentShareLinkFromIndividualItemSourcesForActivity___block_invoke;
   aBlock[3] = &unk_1E7B809F0;
-  v21 = v11;
-  v22 = self;
-  v23 = v4;
-  v12 = v4;
-  v13 = v11;
+  v21 = lastObject;
+  selfCopy = self;
+  v23 = activityCopy;
+  v12 = activityCopy;
+  v13 = lastObject;
   v14 = _Block_copy(aBlock);
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __94__PUActivityItemSourceController__prepareMomentShareLinkFromIndividualItemSourcesForActivity___block_invoke_238;
   v17[3] = &unk_1E7B74580;
   v17[4] = self;
-  v18 = v5;
+  v18 = activityType;
   v19 = v14;
   v15 = v14;
-  v16 = v5;
+  v16 = activityType;
   [(PUActivityItemSourceController *)self publishLinkForActivityType:v16 completionHandler:v17];
 }
 
@@ -1188,10 +1188,10 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_prepareIndividualItemSourcesForActivity:(id)a3
+- (void)_prepareIndividualItemSourcesForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [v4 activityType];
+  activityCopy = activity;
+  activityType = [activityCopy activityType];
   v6 = PLShareSheetGetLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1199,20 +1199,20 @@ LABEL_9:
     _os_log_impl(&dword_1B36F3000, v6, OS_LOG_TYPE_DEFAULT, "Performing per-item preparations", buf, 2u);
   }
 
-  v7 = [(PUActivityItemSourceController *)self delegate];
+  delegate = [(PUActivityItemSourceController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(PUActivityItemSourceController *)self delegate];
-    [v9 activityItemSourceController:self willBeginPreparationWithActivityType:v5 preparationType:0];
+    delegate2 = [(PUActivityItemSourceController *)self delegate];
+    [delegate2 activityItemSourceController:self willBeginPreparationWithActivityType:activityType preparationType:0];
   }
 
   self->_momentSharePublishAttempted = 0;
-  v10 = [(PUActivityItemSourceController *)self assetItemSources];
-  v11 = [v10 lastObject];
+  assetItemSources = [(PUActivityItemSourceController *)self assetItemSources];
+  lastObject = [assetItemSources lastObject];
 
-  if (v11)
+  if (lastObject)
   {
     v12 = dispatch_semaphore_create(0);
     v26[0] = MEMORY[0x1E69E9820];
@@ -1221,7 +1221,7 @@ LABEL_9:
     v26[3] = &unk_1E7B80DD0;
     v13 = v12;
     v27 = v13;
-    [v11 setPostCompletionHandler:v26];
+    [lastObject setPostCompletionHandler:v26];
   }
 
   else
@@ -1234,9 +1234,9 @@ LABEL_9:
   aBlock[2] = __75__PUActivityItemSourceController__prepareIndividualItemSourcesForActivity___block_invoke_2;
   aBlock[3] = &unk_1E7B809F0;
   v23 = v13;
-  v24 = self;
-  v25 = v4;
-  v14 = v4;
+  selfCopy = self;
+  v25 = activityCopy;
+  v14 = activityCopy;
   v15 = v13;
   v16 = _Block_copy(aBlock);
   v19[0] = MEMORY[0x1E69E9820];
@@ -1244,10 +1244,10 @@ LABEL_9:
   v19[2] = __75__PUActivityItemSourceController__prepareIndividualItemSourcesForActivity___block_invoke_233;
   v19[3] = &unk_1E7B74558;
   v19[4] = self;
-  v20 = v5;
+  v20 = activityType;
   v21 = v16;
   v17 = v16;
-  v18 = v5;
+  v18 = activityType;
   [(PUActivityItemSourceController *)self runExplicitly:0 withActivityType:v18 completionHandler:v19];
 }
 
@@ -1303,15 +1303,15 @@ void __75__PUActivityItemSourceController__prepareIndividualItemSourcesForActivi
   }
 }
 
-- (void)configureItemSourcesForActivityIfNeeded:(id)a3 forcePreparationAsMomentShareLink:(BOOL)a4
+- (void)configureItemSourcesForActivityIfNeeded:(id)needed forcePreparationAsMomentShareLink:(BOOL)link
 {
-  v4 = a4;
+  linkCopy = link;
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  neededCopy = needed;
   if (![(PUActivityItemSourceController *)self preferredPreparationType])
   {
-    v7 = [(PUActivityItemSourceController *)self assetItemSources];
-    v8 = [v7 count];
+    assetItemSources = [(PUActivityItemSourceController *)self assetItemSources];
+    v8 = [assetItemSources count];
 
     v9 = PLShareSheetGetLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1323,33 +1323,33 @@ void __75__PUActivityItemSourceController__prepareIndividualItemSourcesForActivi
       *&v13[22] = 2048;
       v14 = v8;
       LOWORD(v15) = 2114;
-      *(&v15 + 2) = v6;
+      *(&v15 + 2) = neededCopy;
       v10 = *&v13[4];
       _os_log_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_DEFAULT, "<%@:%p>: Begin preparing %ld assets for activity: %{public}@", v13, 0x2Au);
     }
 
-    v11 = [v6 activityType];
-    v12 = [PUActivityItemSourceConfiguration isIndividualItemPreparationSupportedByActivityType:v11];
+    activityType = [neededCopy activityType];
+    v12 = [PUActivityItemSourceConfiguration isIndividualItemPreparationSupportedByActivityType:activityType];
 
-    if (!v12 || v4)
+    if (!v12 || linkCopy)
     {
-      [(PUActivityItemSourceController *)self _prepareMomentShareLinkFromIndividualItemSourcesForActivity:v6, *v13, *&v13[16], v14, v15];
+      [(PUActivityItemSourceController *)self _prepareMomentShareLinkFromIndividualItemSourcesForActivity:neededCopy, *v13, *&v13[16], v14, v15];
     }
 
     else
     {
-      [(PUActivityItemSourceController *)self _prepareIndividualItemSourcesForActivity:v6];
+      [(PUActivityItemSourceController *)self _prepareIndividualItemSourcesForActivity:neededCopy];
     }
   }
 }
 
 - (BOOL)isPreparingIndividualItems
 {
-  v3 = [(PUActivityItemSourceController *)self preferredPreparationType];
-  v4 = [(PUActivityItemSourceController *)self assets];
-  v5 = [v4 count];
+  preferredPreparationType = [(PUActivityItemSourceController *)self preferredPreparationType];
+  assets = [(PUActivityItemSourceController *)self assets];
+  v5 = [assets count];
 
-  if (v3)
+  if (preferredPreparationType)
   {
     v6 = 1;
   }
@@ -1509,25 +1509,25 @@ LABEL_17:
 - (void)updateState
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PUActivityItemSourceController *)self cmmActivityItemSource];
-  v4 = [v3 state];
+  cmmActivityItemSource = [(PUActivityItemSourceController *)self cmmActivityItemSource];
+  state = [cmmActivityItemSource state];
 
-  if ((v4 - 1) >= 2)
+  if ((state - 1) >= 2)
   {
-    if (v4)
+    if (state)
     {
-      v4 = 0;
+      state = 0;
     }
 
     else
     {
-      v5 = [(PUActivityItemSourceController *)self activeItemSources];
-      v4 = [v5 count];
+      activeItemSources = [(PUActivityItemSourceController *)self activeItemSources];
+      state = [activeItemSources count];
       v14 = 0u;
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v6 = v5;
+      v6 = activeItemSources;
       v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
@@ -1569,21 +1569,21 @@ LABEL_17:
         v12 = 2;
       }
 
-      if (v4)
+      if (state)
       {
-        if (v4 == 1)
+        if (state == 1)
         {
-          v4 = v12;
+          state = v12;
         }
 
         else if ([(PUActivityItemSourceController *)self state]== 1)
         {
-          v4 = 1;
+          state = 1;
         }
 
         else
         {
-          v4 = v12;
+          state = v12;
         }
       }
     }
@@ -1593,11 +1593,11 @@ LABEL_17:
   v13[1] = 3221225472;
   v13[2] = __45__PUActivityItemSourceController_updateState__block_invoke;
   v13[3] = &__block_descriptor_40_e49_v16__0___PUMutableActivityItemSourceController__8l;
-  v13[4] = v4;
+  v13[4] = state;
   [(PUActivityItemSourceController *)self performChanges:v13];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   externalIsolation = self->_externalIsolation;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1605,7 +1605,7 @@ LABEL_17:
   v4[2] = __43__PUActivityItemSourceController_setState___block_invoke;
   v4[3] = &unk_1E7B7FF70;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_sync(externalIsolation, v4);
 }
 
@@ -1654,14 +1654,14 @@ uint64_t __43__PUActivityItemSourceController_setState___block_invoke(uint64_t r
   return result;
 }
 
-- (void)setActiveItemSources:(id)a3
+- (void)setActiveItemSources:(id)sources
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  activeItemSources = v5->_activeItemSources;
-  if (activeItemSources != v4)
+  sourcesCopy = sources;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  activeItemSources = selfCopy->_activeItemSources;
+  if (activeItemSources != sourcesCopy)
   {
     v23 = 0u;
     v24 = 0u;
@@ -1682,7 +1682,7 @@ uint64_t __43__PUActivityItemSourceController_setState___block_invoke(uint64_t r
             objc_enumerationMutation(v7);
           }
 
-          [*(*(&v21 + 1) + 8 * v10++) unregisterChangeObserver:v5 context:&PUActivityItemSourceControllerItemSourceObserverContext];
+          [*(*(&v21 + 1) + 8 * v10++) unregisterChangeObserver:selfCopy context:&PUActivityItemSourceControllerItemSourceObserverContext];
         }
 
         while (v8 != v10);
@@ -1692,15 +1692,15 @@ uint64_t __43__PUActivityItemSourceController_setState___block_invoke(uint64_t r
       while (v8);
     }
 
-    v11 = [(NSArray *)v4 copy];
-    v12 = v5->_activeItemSources;
-    v5->_activeItemSources = v11;
+    v11 = [(NSArray *)sourcesCopy copy];
+    v12 = selfCopy->_activeItemSources;
+    selfCopy->_activeItemSources = v11;
 
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v13 = v5->_activeItemSources;
+    v13 = selfCopy->_activeItemSources;
     v14 = [(NSArray *)v13 countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (v14)
     {
@@ -1715,7 +1715,7 @@ uint64_t __43__PUActivityItemSourceController_setState___block_invoke(uint64_t r
             objc_enumerationMutation(v13);
           }
 
-          [*(*(&v17 + 1) + 8 * v16++) registerChangeObserver:v5 context:{&PUActivityItemSourceControllerItemSourceObserverContext, v17}];
+          [*(*(&v17 + 1) + 8 * v16++) registerChangeObserver:selfCopy context:{&PUActivityItemSourceControllerItemSourceObserverContext, v17}];
         }
 
         while (v14 != v16);
@@ -1726,30 +1726,30 @@ uint64_t __43__PUActivityItemSourceController_setState___block_invoke(uint64_t r
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)activeItemSources
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeItemSources;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeItemSources;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)removeAssetItem:(id)a3
+- (void)removeAssetItem:(id)item
 {
-  v5 = a3;
-  if (![(NSMutableOrderedSet *)self->_assetItems containsObject:v5])
+  itemCopy = item;
+  if (![(NSMutableOrderedSet *)self->_assetItems containsObject:itemCopy])
   {
     goto LABEL_13;
   }
 
-  [(NSMutableOrderedSet *)self->_assetItems removeObject:v5];
-  v6 = [v5 asset];
-  if ([v6 sourceType] == 2)
+  [(NSMutableOrderedSet *)self->_assetItems removeObject:itemCopy];
+  asset = [itemCopy asset];
+  if ([asset sourceType] == 2)
   {
     p_cloudSharedAssetCount = &self->_cloudSharedAssetCount;
     cloudSharedAssetCount = self->_cloudSharedAssetCount;
@@ -1758,7 +1758,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  cloudSharedAssetCount = [v6 sourceType];
+  cloudSharedAssetCount = [asset sourceType];
   p_cloudSharedAssetCount = &self->_momentShareAssetCount;
   if (cloudSharedAssetCount == self->_momentShareAssetCount)
   {
@@ -1766,18 +1766,18 @@ LABEL_5:
   }
 
 LABEL_6:
-  if ([v6 px_isUnsavedSyndicatedAsset])
+  if ([asset px_isUnsavedSyndicatedAsset])
   {
     --self->_unsavedSyndicatedAssetCount;
   }
 
-  v9 = [(PUActivityItemSourceController *)self appPhotoLibrary];
-  v10 = [v9 photoLibraryURL];
+  appPhotoLibrary = [(PUActivityItemSourceController *)self appPhotoLibrary];
+  photoLibraryURL = [appPhotoLibrary photoLibraryURL];
 
-  v11 = [v6 photoLibrary];
-  v12 = [v11 photoLibraryURL];
+  photoLibrary = [asset photoLibrary];
+  photoLibraryURL2 = [photoLibrary photoLibraryURL];
 
-  if (([v12 isEqual:v10] & 1) == 0)
+  if (([photoLibraryURL2 isEqual:photoLibraryURL] & 1) == 0)
   {
     --self->_externalLibraryAssetCount;
   }
@@ -1787,12 +1787,12 @@ LABEL_6:
   v17 = 3221225472;
   v18 = __50__PUActivityItemSourceController_removeAssetItem___block_invoke;
   v19 = &unk_1E7B744E8;
-  v20 = v5;
+  v20 = itemCopy;
   v14 = [(NSMutableOrderedSet *)assetItemSources indexOfObjectPassingTest:&v16];
   if (v14 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"idx != NSNotFound", v16, v17, v18, v19}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"idx != NSNotFound", v16, v17, v18, v19}];
   }
 
   [(NSMutableOrderedSet *)self->_assetItemSources removeObjectAtIndex:v14];
@@ -1809,60 +1809,60 @@ uint64_t __50__PUActivityItemSourceController_removeAssetItem___block_invoke(uin
   return v5;
 }
 
-- (void)addAssetItem:(id)a3
+- (void)addAssetItem:(id)item
 {
-  v5 = a3;
-  v19 = v5;
-  if (!v5)
+  itemCopy = item;
+  v19 = itemCopy;
+  if (!itemCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:303 description:{@"Invalid parameter not satisfying: %@", @"assetItem"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUActivityItemSourceController.m" lineNumber:303 description:{@"Invalid parameter not satisfying: %@", @"assetItem"}];
 
-    v5 = 0;
+    itemCopy = 0;
   }
 
-  if (([(NSMutableOrderedSet *)self->_assetItems containsObject:v5]& 1) == 0)
+  if (([(NSMutableOrderedSet *)self->_assetItems containsObject:itemCopy]& 1) == 0)
   {
     assetItems = self->_assetItems;
     if (!assetItems)
     {
-      v7 = [MEMORY[0x1E695DFA0] orderedSet];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
       v8 = self->_assetItems;
-      self->_assetItems = v7;
+      self->_assetItems = orderedSet;
 
       assetItems = self->_assetItems;
     }
 
     [(NSMutableOrderedSet *)assetItems addObject:v19];
-    v9 = [v19 asset];
-    if ([v9 sourceType] == 2)
+    asset = [v19 asset];
+    if ([asset sourceType] == 2)
     {
       v10 = &OBJC_IVAR___PUActivityItemSourceController__cloudSharedAssetCount;
     }
 
     else
     {
-      if ([v9 sourceType] != 8)
+      if ([asset sourceType] != 8)
       {
 LABEL_11:
-        if ([v9 px_isUnsavedSyndicatedAsset])
+        if ([asset px_isUnsavedSyndicatedAsset])
         {
           ++self->_unsavedSyndicatedAssetCount;
         }
 
-        v11 = [(PUActivityItemSourceController *)self appPhotoLibrary];
-        v12 = [v11 photoLibraryURL];
+        appPhotoLibrary = [(PUActivityItemSourceController *)self appPhotoLibrary];
+        photoLibraryURL = [appPhotoLibrary photoLibraryURL];
 
-        v13 = [v9 photoLibrary];
-        v14 = [v13 photoLibraryURL];
+        photoLibrary = [asset photoLibrary];
+        photoLibraryURL2 = [photoLibrary photoLibraryURL];
 
-        if (([v14 isEqual:v12] & 1) == 0)
+        if (([photoLibraryURL2 isEqual:photoLibraryURL] & 1) == 0)
         {
           ++self->_externalLibraryAssetCount;
         }
 
         v15 = [(PUActivityItemSourceController *)self synthesizedSharingPreferencesForAssetItem:v19];
-        v17 = [[PUActivityItemSource alloc] initWithAsset:v9 sharingPreferences:v15, v16];
+        v17 = [[PUActivityItemSource alloc] initWithAsset:asset sharingPreferences:v15, v16];
         [(NSMutableOrderedSet *)self->_assetItemSources addObject:v17];
 
         goto LABEL_16;
@@ -1878,20 +1878,20 @@ LABEL_11:
 LABEL_16:
 }
 
-- ($9D9B13A340AA60ED2DD68408BD7D962F)synthesizedSharingPreferencesForAssetItem:(id)a3
+- ($9D9B13A340AA60ED2DD68408BD7D962F)synthesizedSharingPreferencesForAssetItem:(id)item
 {
-  v4 = a3;
-  if ([v4 excludeLiveness])
+  itemCopy = item;
+  if ([itemCopy excludeLiveness])
   {
-    v5 = 1;
+    shouldExcludeLivenessInAllItemSources = 1;
   }
 
   else
   {
-    v5 = [(PUActivityItemSourceController *)self shouldExcludeLivenessInAllItemSources];
+    shouldExcludeLivenessInAllItemSources = [(PUActivityItemSourceController *)self shouldExcludeLivenessInAllItemSources];
   }
 
-  if ([v4 excludeLocation])
+  if ([itemCopy excludeLocation])
   {
     v6 = 256;
   }
@@ -1906,7 +1906,7 @@ LABEL_16:
     v6 = 0;
   }
 
-  if ([v4 excludeCaption])
+  if ([itemCopy excludeCaption])
   {
     v7 = 0x10000;
   }
@@ -1921,7 +1921,7 @@ LABEL_16:
     v7 = 0;
   }
 
-  if ([v4 excludeAccessibilityDescription])
+  if ([itemCopy excludeAccessibilityDescription])
   {
     v8 = 0x1000000;
   }
@@ -1936,10 +1936,10 @@ LABEL_16:
     v8 = 0;
   }
 
-  v9 = [(PUActivityItemSourceController *)self shouldShareAsAssetBundles];
-  v10 = [(PUActivityItemSourceController *)self shouldShareAsUnmodifiedOriginals];
-  v11 = [(PUActivityItemSourceController *)self preferredExportFormat];
-  if (v10)
+  shouldShareAsAssetBundles = [(PUActivityItemSourceController *)self shouldShareAsAssetBundles];
+  shouldShareAsUnmodifiedOriginals = [(PUActivityItemSourceController *)self shouldShareAsUnmodifiedOriginals];
+  preferredExportFormat = [(PUActivityItemSourceController *)self preferredExportFormat];
+  if (shouldShareAsUnmodifiedOriginals)
   {
     v12 = 0x10000000000;
   }
@@ -1950,15 +1950,15 @@ LABEL_16:
   }
 
   v13 = 0x100000000;
-  if (!v9)
+  if (!shouldShareAsAssetBundles)
   {
     v13 = 0;
   }
 
-  v14 = v6 | v5 | v7 | v8 | v13;
+  v14 = v6 | shouldExcludeLivenessInAllItemSources | v7 | v8 | v13;
 
   v15 = v14 | v12;
-  v16 = v11;
+  v16 = preferredExportFormat;
   result.var6 = v16;
   result.var0 = v15;
   result.var1 = BYTE1(v15);
@@ -1997,75 +1997,75 @@ void __71__PUActivityItemSourceController_updateSharingPreferencesInItemSources_
   [v7 performChanges:v11];
 }
 
-- (void)setPreferredExportFormat:(int64_t)a3
+- (void)setPreferredExportFormat:(int64_t)format
 {
-  if (self->_preferredExportFormat != a3)
+  if (self->_preferredExportFormat != format)
   {
-    self->_preferredExportFormat = a3;
+    self->_preferredExportFormat = format;
     [(PUActivityItemSourceController *)self updateSharingPreferencesInItemSources];
   }
 }
 
-- (void)setShouldShareAsUnmodifiedOriginals:(BOOL)a3
+- (void)setShouldShareAsUnmodifiedOriginals:(BOOL)originals
 {
-  if (self->_shouldShareAsUnmodifiedOriginals != a3)
+  if (self->_shouldShareAsUnmodifiedOriginals != originals)
   {
-    self->_shouldShareAsUnmodifiedOriginals = a3;
+    self->_shouldShareAsUnmodifiedOriginals = originals;
     [(PUActivityItemSourceController *)self updateSharingPreferencesInItemSources];
   }
 }
 
-- (void)setShouldShareAsAssetBundles:(BOOL)a3
+- (void)setShouldShareAsAssetBundles:(BOOL)bundles
 {
-  if (self->_shouldShareAsAssetBundles != a3)
+  if (self->_shouldShareAsAssetBundles != bundles)
   {
-    self->_shouldShareAsAssetBundles = a3;
+    self->_shouldShareAsAssetBundles = bundles;
     [(PUActivityItemSourceController *)self updateSharingPreferencesInItemSources];
   }
 }
 
-- (void)setShouldExcludeAccessibilityDescriptionInAllItemSources:(BOOL)a3
+- (void)setShouldExcludeAccessibilityDescriptionInAllItemSources:(BOOL)sources
 {
-  if (self->_shouldExcludeAccessibilityDescriptionInAllItemSources != a3)
+  if (self->_shouldExcludeAccessibilityDescriptionInAllItemSources != sources)
   {
-    self->_shouldExcludeAccessibilityDescriptionInAllItemSources = a3;
+    self->_shouldExcludeAccessibilityDescriptionInAllItemSources = sources;
     [(PUActivityItemSourceController *)self updateSharingPreferencesInItemSources];
   }
 }
 
-- (void)setShouldExcludeCaptionInAllItemSources:(BOOL)a3
+- (void)setShouldExcludeCaptionInAllItemSources:(BOOL)sources
 {
-  if (self->_shouldExcludeCaptionInAllItemSources != a3)
+  if (self->_shouldExcludeCaptionInAllItemSources != sources)
   {
-    self->_shouldExcludeCaptionInAllItemSources = a3;
+    self->_shouldExcludeCaptionInAllItemSources = sources;
     [(PUActivityItemSourceController *)self updateSharingPreferencesInItemSources];
   }
 }
 
-- (void)setShouldExcludeLocationInAllItemSources:(BOOL)a3
+- (void)setShouldExcludeLocationInAllItemSources:(BOOL)sources
 {
-  if (self->_shouldExcludeLocationInAllItemSources != a3)
+  if (self->_shouldExcludeLocationInAllItemSources != sources)
   {
-    self->_shouldExcludeLocationInAllItemSources = a3;
+    self->_shouldExcludeLocationInAllItemSources = sources;
     [(PUActivityItemSourceController *)self updateSharingPreferencesInItemSources];
   }
 }
 
-- (void)setShouldExcludeLivenessInAllItemSources:(BOOL)a3
+- (void)setShouldExcludeLivenessInAllItemSources:(BOOL)sources
 {
-  if (self->_shouldExcludeLivenessInAllItemSources != a3)
+  if (self->_shouldExcludeLivenessInAllItemSources != sources)
   {
-    self->_shouldExcludeLivenessInAllItemSources = a3;
+    self->_shouldExcludeLivenessInAllItemSources = sources;
     [(PUActivityItemSourceController *)self updateSharingPreferencesInItemSources];
   }
 }
 
-- (void)setAssetItems:(id)a3
+- (void)setAssetItems:(id)items
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = self->_assetItems;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = v6;
   if (v5 == v6)
   {
@@ -2183,8 +2183,8 @@ LABEL_22:
       self->_unsavedSyndicatedAssetCount = 0;
       v48 = v7;
       self->_externalLibraryAssetCount = 0;
-      v26 = [(PUActivityItemSourceController *)self appPhotoLibrary];
-      v50 = [v26 photoLibraryURL];
+      appPhotoLibrary = [(PUActivityItemSourceController *)self appPhotoLibrary];
+      photoLibraryURL = [appPhotoLibrary photoLibraryURL];
 
       v27 = PLShareSheetGetLog();
       v28 = os_signpost_id_generate(v27);
@@ -2219,29 +2219,29 @@ LABEL_22:
             }
 
             v36 = *(*(&v56 + 1) + 8 * k);
-            v37 = [v36 asset];
-            v38 = [v37 sourceType];
+            asset = [v36 asset];
+            sourceType = [asset sourceType];
             p_cloudSharedAssetCount = &self->_cloudSharedAssetCount;
-            if (v38 == 2 || (v40 = [v37 sourceType], p_cloudSharedAssetCount = &self->_momentShareAssetCount, v40 == 8))
+            if (sourceType == 2 || (v40 = [asset sourceType], p_cloudSharedAssetCount = &self->_momentShareAssetCount, v40 == 8))
             {
               ++*p_cloudSharedAssetCount;
             }
 
-            if ([v37 px_isUnsavedSyndicatedAsset])
+            if ([asset px_isUnsavedSyndicatedAsset])
             {
               ++self->_unsavedSyndicatedAssetCount;
             }
 
-            v41 = [v37 photoLibrary];
-            v42 = [v41 photoLibraryURL];
+            photoLibrary = [asset photoLibrary];
+            photoLibraryURL2 = [photoLibrary photoLibraryURL];
 
-            if (([v42 isEqual:v50] & 1) == 0)
+            if (([photoLibraryURL2 isEqual:photoLibraryURL] & 1) == 0)
             {
               ++self->_externalLibraryAssetCount;
             }
 
             v43 = [(PUActivityItemSourceController *)self synthesizedSharingPreferencesForAssetItem:v36];
-            v45 = [[PUActivityItemSource alloc] initWithAsset:v37 sharingPreferences:v43, v44];
+            v45 = [[PUActivityItemSource alloc] initWithAsset:asset sharingPreferences:v43, v44];
             dispatch_group_enter(v31);
             v54[0] = MEMORY[0x1E69E9820];
             v54[1] = 3221225472;
@@ -2289,16 +2289,16 @@ void __48__PUActivityItemSourceController_setAssetItems___block_invoke_2(uint64_
   v7[1] = *MEMORY[0x1E69E9840];
   if ([(PUActivityItemSourceController *)self preferredPreparationType]== 1)
   {
-    v3 = [(PUActivityItemSourceController *)self cmmActivityItemSource];
-    v7[0] = v3;
+    cmmActivityItemSource = [(PUActivityItemSourceController *)self cmmActivityItemSource];
+    v7[0] = cmmActivityItemSource;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   }
 
   else
   {
-    v3 = [(PUActivityItemSourceController *)self assetItemSources];
-    v5 = [v3 array];
-    v4 = [v5 copy];
+    cmmActivityItemSource = [(PUActivityItemSourceController *)self assetItemSources];
+    array = [cmmActivityItemSource array];
+    v4 = [array copy];
   }
 
   return v4;
@@ -2326,8 +2326,8 @@ void __48__PUActivityItemSourceController_setAssetItems___block_invoke_2(uint64_
     v2->_momentShareAssetCount = 0;
     v2->_unsavedSyndicatedAssetCount = 0;
     v2->_externalLibraryAssetCount = 0;
-    v8 = [MEMORY[0x1E69C3928] sharedController];
-    v2->_powerAssertionIdentifier = [v8 generateAssertionIdentifier];
+    mEMORY[0x1E69C3928] = [MEMORY[0x1E69C3928] sharedController];
+    v2->_powerAssertionIdentifier = [mEMORY[0x1E69C3928] generateAssertionIdentifier];
   }
 
   return v2;

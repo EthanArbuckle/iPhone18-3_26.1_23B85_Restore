@@ -1,34 +1,34 @@
 @interface _ActivityGoalLineSeries
-- (BOOL)_lineSeriesCoordinateIsPaused:(id)a3;
-- (_ActivityGoalLineSeries)initWithColor:(id)a3;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
+- (BOOL)_lineSeriesCoordinateIsPaused:(id)paused;
+- (_ActivityGoalLineSeries)initWithColor:(id)color;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
 @end
 
 @implementation _ActivityGoalLineSeries
 
-- (_ActivityGoalLineSeries)initWithColor:(id)a3
+- (_ActivityGoalLineSeries)initWithColor:(id)color
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  colorCopy = color;
   v28.receiver = self;
   v28.super_class = _ActivityGoalLineSeries;
   v5 = [(HKLineSeries *)&v28 init];
   if (v5)
   {
     v6 = [HKGradientFillStyle alloc];
-    v7 = [v4 colorWithAlphaComponent:0.3];
-    v8 = [v4 colorWithAlphaComponent:0.0];
+    v7 = [colorCopy colorWithAlphaComponent:0.3];
+    v8 = [colorCopy colorWithAlphaComponent:0.0];
     v26 = [(HKGradientFillStyle *)v6 initWithFirstColor:v7 secondColor:v8];
 
     v9 = [HKGradientFillStyle alloc];
-    v10 = [v4 colorWithAlphaComponent:0.3];
-    v11 = [v4 colorWithAlphaComponent:0.0];
+    v10 = [colorCopy colorWithAlphaComponent:0.3];
+    v11 = [colorCopy colorWithAlphaComponent:0.0];
     v27 = [(HKGradientFillStyle *)v9 initWithFirstColor:v10 secondColor:v11];
 
-    v12 = [HKStrokeStyle strokeStyleWithColor:v4 lineWidth:1.0];
+    v12 = [HKStrokeStyle strokeStyleWithColor:colorCopy lineWidth:1.0];
     [v12 setDashStyle:1];
     v13 = objc_alloc_init(HKAxisLabelStyle);
-    [(HKAxisLabelStyle *)v13 setTextColor:v4];
+    [(HKAxisLabelStyle *)v13 setTextColor:colorCopy];
     v14 = objc_alloc_init(_ActivityGoalLineAnnotationFormatter);
     [(HKAxisLabelStyle *)v13 setNumberFormatter:v14];
 
@@ -46,7 +46,7 @@
 
     [v19 setDashStyle:2];
     [(HKLineSeriesPresentationStyle *)v17 setStrokeStyle:v19];
-    v20 = [[HKLineSeriesPointMarkerStyle alloc] initWithColor:v4 radius:0 style:3.0];
+    v20 = [[HKLineSeriesPointMarkerStyle alloc] initWithColor:colorCopy radius:0 style:3.0];
     [(HKLineSeriesPresentationStyle *)v17 setPointMarkerStyle:v20];
     [(HKLineSeriesPresentationStyle *)v17 setFillStyle:v27];
     [(HKLineSeriesPresentationStyle *)v17 setWaveForm:0];
@@ -63,7 +63,7 @@
     [(HKLineSeries *)v5 setSelectedPresentationStyles:v23];
 
     [(HKLineSeries *)v5 setInactivePresentationStyle:v15];
-    v24 = [[HKLineSeriesPointMarkerStyle alloc] initWithColor:v4 radius:0 style:5.0];
+    v24 = [[HKLineSeriesPointMarkerStyle alloc] initWithColor:colorCopy radius:0 style:5.0];
     [(HKLineSeries *)v5 setSelectedPointMarkerStyle:v24];
     [(HKLineSeries *)v5 setFlatLastValue:1];
     [(HKGraphSeries *)v5 setAllowsSelection:0];
@@ -72,16 +72,16 @@
   return v5;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v19 = a3;
-  v20 = a5;
-  v21 = a8;
-  v22 = a9;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  renderContextCopy = renderContext;
+  delegateCopy = delegate;
   v55.origin.x = x;
   v55.origin.y = y;
   v55.size.width = width;
@@ -108,9 +108,9 @@
   v42 = __Block_byref_object_copy__19;
   v43 = __Block_byref_object_dispose__19;
   v44 = 0;
-  v25 = [(HKLineSeries *)self unhighlightedPresentationStyles];
-  v26 = [v25 firstObject];
-  v27 = [v26 strokeStyle];
+  unhighlightedPresentationStyles = [(HKLineSeries *)self unhighlightedPresentationStyles];
+  firstObject = [unhighlightedPresentationStyles firstObject];
+  strokeStyle = [firstObject strokeStyle];
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
@@ -120,21 +120,21 @@
   *&v38[9] = MaxX;
   v38[4] = self;
   v38[5] = &v49;
-  v38[10] = a7;
+  v38[10] = context;
   v38[6] = &v45;
   v38[7] = &v39;
-  v28 = *&a6->c;
-  v37[0] = *&a6->a;
+  v28 = *&transform->c;
+  v37[0] = *&transform->a;
   v37[1] = v28;
-  v37[2] = *&a6->tx;
-  [v19 enumerateCoordinatesWithTransform:v37 roundToViewScale:1 block:v38];
+  v37[2] = *&transform->tx;
+  [coordinatesCopy enumerateCoordinatesWithTransform:v37 roundToViewScale:1 block:v38];
   v29 = v50[5];
   if (v29)
   {
     [v29 coordinate];
     v31 = v30;
-    CGContextMoveToPoint(a7, v32, v30);
-    CGContextAddLineToPoint(a7, MaxX, v31);
+    CGContextMoveToPoint(context, v32, v30);
+    CGContextAddLineToPoint(context, MaxX, v31);
     v33 = v46[3] + 1;
     v46[3] = v33;
   }
@@ -146,11 +146,11 @@
 
   if (v33 >= 1)
   {
-    [v27 applyToContext:a7];
-    CGContextStrokePath(a7);
+    [strokeStyle applyToContext:context];
+    CGContextStrokePath(context);
   }
 
-  v34 = [v22 axisAnnotationDelegateForSeries:self];
+  v34 = [delegateCopy axisAnnotationDelegateForSeries:self];
   v35 = v40[5];
   if (v35)
   {
@@ -168,22 +168,22 @@
   _Block_object_dispose(&v49, 8);
 }
 
-- (BOOL)_lineSeriesCoordinateIsPaused:(id)a3
+- (BOOL)_lineSeriesCoordinateIsPaused:(id)paused
 {
-  v3 = [a3 userInfo];
+  userInfo = [paused userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 activitySummaryData];
-    v5 = [v4 isPaused];
+    activitySummaryData = [userInfo activitySummaryData];
+    isPaused = [activitySummaryData isPaused];
   }
 
   else
   {
-    v5 = 0;
+    isPaused = 0;
   }
 
-  return v5;
+  return isPaused;
 }
 
 @end

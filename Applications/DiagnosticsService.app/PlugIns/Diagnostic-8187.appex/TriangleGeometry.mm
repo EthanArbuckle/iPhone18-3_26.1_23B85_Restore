@@ -1,9 +1,9 @@
 @interface TriangleGeometry
 - (id).cxx_construct;
-- (id)addCubeWithFaces:(float32x4_t)a3 color:(float32x4_t)a4 transform:(float32x4_t)a5 inwardNormals:(float32x4_t)a6;
+- (id)addCubeWithFaces:(float32x4_t)faces color:(float32x4_t)color transform:(float32x4_t)transform inwardNormals:(float32x4_t)normals;
 - (id)geometryDescriptor;
 - (id)resources;
-- (void)addCubeFaceWithCubeVertices:(TriangleGeometry *)self color:(SEL)a2 i0:i1:i2:i3:inwardNormals:;
+- (void)addCubeFaceWithCubeVertices:(TriangleGeometry *)self color:(SEL)color i0:i1:i2:i3:inwardNormals:;
 - (void)clear;
 - (void)uploadToBuffers;
 @end
@@ -12,24 +12,24 @@
 
 - (void)uploadToBuffers
 {
-  v13 = [(Geometry *)self device];
-  v3 = [v13 newBufferWithLength:self->_indices.__end_ - self->_indices.__begin_ options:0];
+  device = [(Geometry *)self device];
+  v3 = [device newBufferWithLength:self->_indices.__end_ - self->_indices.__begin_ options:0];
   indexBuffer = self->_indexBuffer;
   self->_indexBuffer = v3;
 
-  v5 = [v13 newBufferWithLength:*&self->_anon_50[8] - *self->_anon_50 options:0];
+  v5 = [device newBufferWithLength:*&self->_anon_50[8] - *self->_anon_50 options:0];
   vertexPositionBuffer = self->_vertexPositionBuffer;
   self->_vertexPositionBuffer = v5;
 
-  v7 = [v13 newBufferWithLength:*&self->_anon_68[8] - *self->_anon_68 options:0];
+  v7 = [device newBufferWithLength:*&self->_anon_68[8] - *self->_anon_68 options:0];
   vertexNormalBuffer = self->_vertexNormalBuffer;
   self->_vertexNormalBuffer = v7;
 
-  v9 = [v13 newBufferWithLength:*&self->_anon_80[8] - *self->_anon_80 options:0];
+  v9 = [device newBufferWithLength:*&self->_anon_80[8] - *self->_anon_80 options:0];
   vertexColorBuffer = self->_vertexColorBuffer;
   self->_vertexColorBuffer = v9;
 
-  v11 = [v13 newBufferWithLength:self->_triangles.__end_ - self->_triangles.__begin_ options:0];
+  v11 = [device newBufferWithLength:self->_triangles.__end_ - self->_triangles.__begin_ options:0];
   perPrimitiveDataBuffer = self->_perPrimitiveDataBuffer;
   self->_perPrimitiveDataBuffer = v11;
 
@@ -49,7 +49,7 @@
   self->_triangles.__end_ = self->_triangles.__begin_;
 }
 
-- (void)addCubeFaceWithCubeVertices:(TriangleGeometry *)self color:(SEL)a2 i0:i1:i2:i3:inwardNormals:
+- (void)addCubeFaceWithCubeVertices:(TriangleGeometry *)self color:(SEL)color i0:i1:i2:i3:inwardNormals:
 {
   v74 = *(v2 + 16 * v3);
   v75 = v8;
@@ -235,7 +235,7 @@
   while ((v44 & 1) != 0);
 }
 
-- (id)addCubeWithFaces:(float32x4_t)a3 color:(float32x4_t)a4 transform:(float32x4_t)a5 inwardNormals:(float32x4_t)a6
+- (id)addCubeWithFaces:(float32x4_t)faces color:(float32x4_t)color transform:(float32x4_t)transform inwardNormals:(float32x4_t)normals
 {
   v11 = result;
   v12 = 0;
@@ -253,7 +253,7 @@
   v18[7] = v14;
   do
   {
-    v18[v12] = vaddq_f32(a6, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a3, COERCE_FLOAT(v18[v12])), a4, *&v18[v12], 1), a5, v18[v12], 2));
+    v18[v12] = vaddq_f32(normals, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(faces, COERCE_FLOAT(v18[v12])), color, *&v18[v12], 1), transform, v18[v12], 2));
     ++v12;
   }
 

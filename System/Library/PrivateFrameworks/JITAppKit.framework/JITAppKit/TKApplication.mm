@@ -1,34 +1,34 @@
 @interface TKApplication
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)shared;
-- (Class)loadClass:(id)a3;
+- (Class)loadClass:(id)class;
 - (TKApplicationDelegate)delegate;
-- (id)absoluteURL:(id)a3;
-- (id)loadObject:(id)a3;
-- (id)loadPage:(id)a3;
-- (id)loadPage:(id)a3 withData:(id)a4;
-- (id)loadPage:(id)a3 withDataRequest:(id)a4;
-- (id)loadPageWithDataRequest:(id)a3;
-- (id)loadView:(id)a3;
-- (id)newErrorViewController:(id)a3;
+- (id)absoluteURL:(id)l;
+- (id)loadObject:(id)object;
+- (id)loadPage:(id)page;
+- (id)loadPage:(id)page withData:(id)data;
+- (id)loadPage:(id)page withDataRequest:(id)request;
+- (id)loadPageWithDataRequest:(id)request;
+- (id)loadView:(id)view;
+- (id)newErrorViewController:(id)controller;
 - (id)newLoadingViewController;
-- (id)tmlPathForName:(id)a3;
-- (void)didLoadRepository:(id)a3;
-- (void)loadBundle:(id)a3 completion:(id)a4;
+- (id)tmlPathForName:(id)name;
+- (void)didLoadRepository:(id)repository;
+- (void)loadBundle:(id)bundle completion:(id)completion;
 @end
 
 @implementation TKApplication
 
 + (id)shared
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   obj = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __23__TKApplication_shared__block_invoke;
   v8 = &__block_descriptor_40_e5_v8__0l;
-  v9 = a1;
+  selfCopy2 = self;
   v13 = &shared_onceToken_0;
   location = 0;
   objc_storeStrong(&location, &obj);
@@ -66,31 +66,31 @@ void __23__TKApplication_shared__block_invoke_2(void *a1, void *a2)
   objc_storeStrong(location, 0);
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 shared];
+  shared = [self shared];
 
-  return v3;
+  return shared;
 }
 
-- (void)loadBundle:(id)a3 completion:(id)a4
+- (void)loadBundle:(id)bundle completion:(id)completion
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bundle);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  [(TKApplication *)v14 willChangeValueForKey:?];
-  v14->_ready = 0;
-  objc_storeStrong(&v14->_repository, 0);
-  [(TKApplication *)v14 didChangeValueForKey:@"ready"];
+  objc_storeStrong(&v12, completion);
+  [(TKApplication *)selfCopy willChangeValueForKey:?];
+  selfCopy->_ready = 0;
+  objc_storeStrong(&selfCopy->_repository, 0);
+  [(TKApplication *)selfCopy didChangeValueForKey:@"ready"];
   v5 = location[0];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __39__TKApplication_loadBundle_completion___block_invoke;
   v9 = &unk_2797EE538;
-  v10 = MEMORY[0x277D82BE0](v14);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   v11 = MEMORY[0x277D82BE0](v12);
   [TKRepository loadWithURL:v5 completion:?];
   objc_storeStrong(&v11, 0);
@@ -116,70 +116,70 @@ void __39__TKApplication_loadBundle_completion___block_invoke(uint64_t a1, void 
   objc_storeStrong(location, 0);
 }
 
-- (void)didLoadRepository:(id)a3
+- (void)didLoadRepository:(id)repository
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(TKApplication *)v4 willChangeValueForKey:?];
-  objc_storeStrong(&v4->_repository, location[0]);
-  v4->_ready = 1;
-  [(TKApplication *)v4 didChangeValueForKey:@"ready"];
+  objc_storeStrong(location, repository);
+  [(TKApplication *)selfCopy willChangeValueForKey:?];
+  objc_storeStrong(&selfCopy->_repository, location[0]);
+  selfCopy->_ready = 1;
+  [(TKApplication *)selfCopy didChangeValueForKey:@"ready"];
   objc_storeStrong(location, 0);
 }
 
-- (id)loadPageWithDataRequest:(id)a3
+- (id)loadPageWithDataRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v3 = [TKDefaultPage alloc];
   v7 = [(TKDefaultPage *)v3 initWithDataRequest:location[0]];
-  v6 = [(TKPage *)v7 viewController];
+  viewController = [(TKPage *)v7 viewController];
   [(TKPage *)v7 load];
-  v5 = MEMORY[0x277D82BE0](v6);
-  objc_storeStrong(&v6, 0);
+  v5 = MEMORY[0x277D82BE0](viewController);
+  objc_storeStrong(&viewController, 0);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)loadPage:(id)a3
+- (id)loadPage:(id)page
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, page);
   v3 = [TKPage alloc];
   v7 = [(TKPage *)v3 initWithViewName:location[0]];
-  v6 = [(TKPage *)v7 viewController];
+  viewController = [(TKPage *)v7 viewController];
   [(TKPage *)v7 load];
-  v5 = MEMORY[0x277D82BE0](v6);
-  objc_storeStrong(&v6, 0);
+  v5 = MEMORY[0x277D82BE0](viewController);
+  objc_storeStrong(&viewController, 0);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(location, 0);
 
   return v5;
 }
 
-- (id)loadPage:(id)a3 withData:(id)a4
+- (id)loadPage:(id)page withData:(id)data
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, page);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, data);
   v4 = [TKPage alloc];
   v9 = [(TKPage *)v4 initWithViewName:location[0]];
   [(TKPage *)v9 setData:v10];
-  v8 = [(TKPage *)v9 viewController];
+  viewController = [(TKPage *)v9 viewController];
   [(TKPage *)v9 load];
-  v7 = MEMORY[0x277D82BE0](v8);
-  objc_storeStrong(&v8, 0);
+  v7 = MEMORY[0x277D82BE0](viewController);
+  objc_storeStrong(&viewController, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
@@ -187,21 +187,21 @@ void __39__TKApplication_loadBundle_completion___block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (id)loadPage:(id)a3 withDataRequest:(id)a4
+- (id)loadPage:(id)page withDataRequest:(id)request
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, page);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, request);
   v4 = [TKPage alloc];
   v9 = [(TKPage *)v4 initWithViewName:location[0]];
   [(TKPage *)v9 setDataRequest:v10];
-  v8 = [(TKPage *)v9 viewController];
+  viewController = [(TKPage *)v9 viewController];
   [(TKPage *)v9 load];
-  v7 = MEMORY[0x277D82BE0](v8);
-  objc_storeStrong(&v8, 0);
+  v7 = MEMORY[0x277D82BE0](viewController);
+  objc_storeStrong(&viewController, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
@@ -209,16 +209,16 @@ void __39__TKApplication_loadBundle_completion___block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (id)loadView:(id)a3
+- (id)loadView:(id)view
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v9 = +[TKApplication shared];
-  v8 = [v9 repository];
-  v11 = [v8 tmlPathForName:location[0]];
-  MEMORY[0x277D82BD8](v8);
+  repository = [v9 repository];
+  v11 = [repository tmlPathForName:location[0]];
+  MEMORY[0x277D82BD8](repository);
   MEMORY[0x277D82BD8](v9);
   if ([v11 length])
   {
@@ -248,16 +248,16 @@ void __39__TKApplication_loadBundle_completion___block_invoke(uint64_t a1, void 
   return v4;
 }
 
-- (id)loadObject:(id)a3
+- (id)loadObject:(id)object
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v5 = +[TKApplication shared];
-  v4 = [v5 repository];
-  v7 = [v4 tmlPathForName:location[0]];
-  MEMORY[0x277D82BD8](v4);
+  repository = [v5 repository];
+  v7 = [repository tmlPathForName:location[0]];
+  MEMORY[0x277D82BD8](repository);
   MEMORY[0x277D82BD8](v5);
   v6 = [MEMORY[0x277D82BB8] tmlLoadObjectFromPath:v7];
   objc_storeStrong(&v7, 0);
@@ -266,16 +266,16 @@ void __39__TKApplication_loadBundle_completion___block_invoke(uint64_t a1, void 
   return v6;
 }
 
-- (Class)loadClass:(id)a3
+- (Class)loadClass:(id)class
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, class);
   v6 = +[TKApplication shared];
-  v5 = [v6 repository];
-  v7 = [v5 tmlPathForName:location[0]];
-  MEMORY[0x277D82BD8](v5);
+  repository = [v6 repository];
+  v7 = [repository tmlPathForName:location[0]];
+  MEMORY[0x277D82BD8](repository);
   MEMORY[0x277D82BD8](v6);
   if ([v7 length])
   {
@@ -301,25 +301,25 @@ void __39__TKApplication_loadBundle_completion___block_invoke(uint64_t a1, void 
   location[0] = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v4 = [location[0] newLoadingViewController];
+    newLoadingViewController = [location[0] newLoadingViewController];
   }
 
   else
   {
-    v4 = 0;
+    newLoadingViewController = 0;
   }
 
   objc_storeStrong(location, 0);
-  return v4;
+  return newLoadingViewController;
 }
 
-- (id)newErrorViewController:(id)a3
+- (id)newErrorViewController:(id)controller
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  WeakRetained = objc_loadWeakRetained(&v6->_delegate);
+  objc_storeStrong(location, controller);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   if (objc_opt_respondsToSelector())
   {
     v7 = [WeakRetained newErrorViewController:location[0]];
@@ -335,32 +335,32 @@ void __39__TKApplication_loadBundle_completion___block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (id)absoluteURL:(id)a3
+- (id)absoluteURL:(id)l
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = [location[0] scheme];
+  objc_storeStrong(location, l);
+  scheme = [location[0] scheme];
   v12 = 0;
-  if (![v11 length])
+  if (![scheme length])
   {
-    v12 = v14->_baseURL != 0;
+    v12 = selfCopy->_baseURL != 0;
   }
 
-  MEMORY[0x277D82BD8](v11);
+  MEMORY[0x277D82BD8](scheme);
   if (v12)
   {
     v8 = MEMORY[0x277CBEBC0];
-    v10 = [location[0] absoluteString];
-    baseURL = v14->_baseURL;
+    absoluteString = [location[0] absoluteString];
+    baseURL = selfCopy->_baseURL;
     v9 = [v8 URLWithString:? relativeToURL:?];
-    v4 = [v9 absoluteURL];
+    absoluteURL = [v9 absoluteURL];
     v5 = location[0];
-    location[0] = v4;
+    location[0] = absoluteURL;
     MEMORY[0x277D82BD8](v5);
     MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](absoluteString);
   }
 
   v7 = MEMORY[0x277D82BE0](location[0]);
@@ -369,16 +369,16 @@ void __39__TKApplication_loadBundle_completion___block_invoke(uint64_t a1, void 
   return v7;
 }
 
-- (id)tmlPathForName:(id)a3
+- (id)tmlPathForName:(id)name
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v5 = +[TKApplication shared];
-  v4 = [v5 repository];
-  v6 = [v4 tmlPathForName:location[0]];
-  MEMORY[0x277D82BD8](v4);
+  repository = [v5 repository];
+  v6 = [repository tmlPathForName:location[0]];
+  MEMORY[0x277D82BD8](repository);
   MEMORY[0x277D82BD8](v5);
   objc_storeStrong(location, 0);
 

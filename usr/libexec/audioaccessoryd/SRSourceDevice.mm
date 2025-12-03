@@ -1,23 +1,23 @@
 @interface SRSourceDevice
-- (void)setActiveHRMDevice:(id)a3;
-- (void)setHijackedByPhoneCall:(BOOL)a3;
-- (void)setIncomingCallRingtone:(BOOL)a3;
-- (void)setIsSystemEligibleForSiriHijack:(BOOL)a3;
-- (void)setShouldStayOnVirtual:(BOOL)a3;
-- (void)updateHijackBlockingClientWithBundleID:(id)a3 mode:(BOOL)a4;
+- (void)setActiveHRMDevice:(id)device;
+- (void)setHijackedByPhoneCall:(BOOL)call;
+- (void)setIncomingCallRingtone:(BOOL)ringtone;
+- (void)setIsSystemEligibleForSiriHijack:(BOOL)hijack;
+- (void)setShouldStayOnVirtual:(BOOL)virtual;
+- (void)updateHijackBlockingClientWithBundleID:(id)d mode:(BOOL)mode;
 @end
 
 @implementation SRSourceDevice
 
-- (void)setActiveHRMDevice:(id)a3
+- (void)setActiveHRMDevice:(id)device
 {
-  v13 = a3;
+  deviceCopy = device;
   activeHRMDevice = self->_activeHRMDevice;
   p_activeHRMDevice = &self->_activeHRMDevice;
-  v6 = [(SRDiscoveredDevice *)activeHRMDevice btAddress];
-  v7 = [v13 btAddress];
-  v8 = v6;
-  v9 = v7;
+  btAddress = [(SRDiscoveredDevice *)activeHRMDevice btAddress];
+  btAddress2 = [deviceCopy btAddress];
+  v8 = btAddress;
+  v9 = btAddress2;
   v10 = v9;
   if (v8 == v9)
   {
@@ -32,10 +32,10 @@ LABEL_11:
 LABEL_7:
     if (dword_1002F6270 <= 30 && (dword_1002F6270 != -1 || _LogCategory_Initialize()))
     {
-      sub_1001D4BA0(p_activeHRMDevice, v13);
+      sub_1001D4BA0(p_activeHRMDevice, deviceCopy);
     }
 
-    v12 = v13;
+    v12 = deviceCopy;
     v8 = *p_activeHRMDevice;
     *p_activeHRMDevice = v12;
     goto LABEL_11;
@@ -51,9 +51,9 @@ LABEL_7:
 LABEL_12:
 }
 
-- (void)setHijackedByPhoneCall:(BOOL)a3
+- (void)setHijackedByPhoneCall:(BOOL)call
 {
-  if (self->_hijackedByPhoneCall != a3)
+  if (self->_hijackedByPhoneCall != call)
   {
     if (dword_1002F6270 <= 30)
     {
@@ -71,13 +71,13 @@ LABEL_12:
     }
 
 LABEL_6:
-    self->_hijackedByPhoneCall = a3;
+    self->_hijackedByPhoneCall = call;
   }
 }
 
-- (void)setIncomingCallRingtone:(BOOL)a3
+- (void)setIncomingCallRingtone:(BOOL)ringtone
 {
-  if (self->_incomingCallRingtone != a3)
+  if (self->_incomingCallRingtone != ringtone)
   {
     if (dword_1002F6270 <= 30)
     {
@@ -95,13 +95,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_incomingCallRingtone = a3;
+    self->_incomingCallRingtone = ringtone;
   }
 }
 
-- (void)setIsSystemEligibleForSiriHijack:(BOOL)a3
+- (void)setIsSystemEligibleForSiriHijack:(BOOL)hijack
 {
-  if (self->_isSystemEligibleForSiriHijack != a3)
+  if (self->_isSystemEligibleForSiriHijack != hijack)
   {
     if (dword_1002F6270 <= 30)
     {
@@ -119,13 +119,13 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_isSystemEligibleForSiriHijack = a3;
+    self->_isSystemEligibleForSiriHijack = hijack;
   }
 }
 
-- (void)setShouldStayOnVirtual:(BOOL)a3
+- (void)setShouldStayOnVirtual:(BOOL)virtual
 {
-  if (self->_shouldStayOnVirtual != a3)
+  if (self->_shouldStayOnVirtual != virtual)
   {
     if (dword_1002F6270 <= 30)
     {
@@ -143,17 +143,17 @@ LABEL_6:
     }
 
 LABEL_6:
-    self->_shouldStayOnVirtual = a3;
+    self->_shouldStayOnVirtual = virtual;
   }
 }
 
-- (void)updateHijackBlockingClientWithBundleID:(id)a3 mode:(BOOL)a4
+- (void)updateHijackBlockingClientWithBundleID:(id)d mode:(BOOL)mode
 {
-  v4 = a4;
-  v6 = a3;
+  modeCopy = mode;
+  dCopy = d;
   hijackBlockingClientSet = self->_hijackBlockingClientSet;
-  v12 = v6;
-  if (v4)
+  v12 = dCopy;
+  if (modeCopy)
   {
     if (!hijackBlockingClientSet)
     {
@@ -161,16 +161,16 @@ LABEL_6:
       v9 = self->_hijackBlockingClientSet;
       self->_hijackBlockingClientSet = v8;
 
-      v6 = v12;
+      dCopy = v12;
       hijackBlockingClientSet = self->_hijackBlockingClientSet;
     }
 
-    [(NSMutableSet *)hijackBlockingClientSet addObject:v6];
+    [(NSMutableSet *)hijackBlockingClientSet addObject:dCopy];
   }
 
   else
   {
-    [(NSMutableSet *)hijackBlockingClientSet removeObject:v6];
+    [(NSMutableSet *)hijackBlockingClientSet removeObject:dCopy];
     if (![(NSMutableSet *)self->_hijackBlockingClientSet count])
     {
       v10 = self->_hijackBlockingClientSet;

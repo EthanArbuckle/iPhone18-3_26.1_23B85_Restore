@@ -1,82 +1,82 @@
 @interface DelegateRelay
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
 - (_TtC7JournalP33_983DA0FAA101D0BE16C06EFC3D547C6313DelegateRelay)init;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)completerDidFail:(id)a3 error:(id)a4;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)completerDidFail:(id)fail error:(id)error;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
 @end
 
 @implementation DelegateRelay
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = a3;
-    v8 = self;
-    sub_10010D14C(v7);
+    editingCopy = editing;
+    selfCopy = self;
+    sub_10010D14C(editingCopy);
   }
 
   return 1;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v7 = Strong;
-    v8 = a3;
-    v9 = self;
-    sub_10010D250(v8);
+    barCopy = bar;
+    selfCopy = self;
+    sub_10010D250(barCopy);
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = a3;
-    v8 = self;
-    sub_10010D478(v7);
+    clickedCopy = clicked;
+    selfCopy = self;
+    sub_10010D478(clickedCopy);
   }
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v6 = Strong;
-    v7 = a3;
-    v8 = self;
+    clickedCopy = clicked;
+    selfCopy = self;
 
-    [v7 resignFirstResponder];
+    [clickedCopy resignFirstResponder];
   }
 }
 
-- (void)completerDidFail:(id)a3 error:(id)a4
+- (void)completerDidFail:(id)fail error:(id)error
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v7 = Strong;
-    v8 = a4;
-    v9 = self;
+    errorCopy = error;
+    selfCopy = self;
     sub_10010DEB4();
   }
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
   result = swift_unknownObjectWeakLoadStrong();
   if (result)
@@ -88,7 +88,7 @@
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (!Strong)
@@ -101,7 +101,7 @@
   return v5;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -112,9 +112,9 @@
   if (Strong)
   {
     v11 = Strong;
-    v12 = a3;
-    v13 = self;
-    v14 = sub_10010E060(v12);
+    viewCopy = view;
+    selfCopy = self;
+    v14 = sub_10010E060(viewCopy);
   }
 
   else
@@ -127,7 +127,7 @@
   return v14;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
@@ -138,7 +138,7 @@
   if (Strong)
   {
     v10 = Strong;
-    v11 = self;
+    selfCopy = self;
     sub_10010E320(v8);
   }
 

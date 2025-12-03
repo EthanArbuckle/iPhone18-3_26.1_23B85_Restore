@@ -1,21 +1,21 @@
 @interface SHTimeAndPlaceServerResponseParser
-+ (id)regionAffinityGroupsFromServerData:(id)a3 error:(id *)a4;
++ (id)regionAffinityGroupsFromServerData:(id)data error:(id *)error;
 @end
 
 @implementation SHTimeAndPlaceServerResponseParser
 
-+ (id)regionAffinityGroupsFromServerData:(id)a3 error:(id *)a4
++ (id)regionAffinityGroupsFromServerData:(id)data error:(id *)error
 {
   v62 = *MEMORY[0x277D85DE8];
   v56 = 0;
-  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:&v56];
+  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:&v56];
   v6 = v56;
   v7 = v6;
   if (v5)
   {
     v35 = v6;
     v43 = [v5 objectForKeyedSubscript:@"geoHash"];
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
@@ -27,7 +27,7 @@
     {
       v40 = *v53;
       v9 = *MEMORY[0x277CDC750];
-      v37 = v8;
+      v37 = array;
       do
       {
         v10 = 0;
@@ -78,7 +78,7 @@
           }
 
           v23 = [v11 objectForKeyedSubscript:@"geoHashSuffixes"];
-          v24 = [MEMORY[0x277CBEB18] array];
+          array2 = [MEMORY[0x277CBEB18] array];
           if ([v23 count])
           {
             v46 = 0u;
@@ -103,14 +103,14 @@
 
                   v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v43, *(*(&v44 + 1) + 8 * j)];
                   v31 = [[SHRegion alloc] initWithGeohash:v30];
-                  [v24 addObject:v31];
+                  [array2 addObject:v31];
                 }
 
                 v27 = [(SHRegion *)v25 countByEnumeratingWithState:&v44 objects:v57 count:16];
               }
 
               while (v27);
-              v8 = v37;
+              array = v37;
               v23 = v39;
             }
           }
@@ -118,11 +118,11 @@
           else
           {
             v25 = [[SHRegion alloc] initWithGeohash:v43];
-            [v24 addObject:v25];
+            [array2 addObject:v25];
           }
 
-          v32 = [[SHTimeAndPlaceAffinityGroup alloc] initWithRegions:v24 affinityGroup:v13];
-          [v8 addObject:v32];
+          v32 = [[SHTimeAndPlaceAffinityGroup alloc] initWithRegions:array2 affinityGroup:v13];
+          [array addObject:v32];
 
           v10 = v42 + 1;
         }
@@ -138,20 +138,20 @@
     v5 = v36;
   }
 
-  else if (a4)
+  else if (error)
   {
     [SHInsightsError errorWithCode:200 underlyingError:v6];
-    *a4 = v8 = 0;
+    *error = array = 0;
   }
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
   v33 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return array;
 }
 
 @end

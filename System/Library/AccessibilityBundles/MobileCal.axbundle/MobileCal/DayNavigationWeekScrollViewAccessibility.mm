@@ -1,25 +1,25 @@
 @interface DayNavigationWeekScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)_accessibilityScrollStatus;
 - (id)_axVisibleCells;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 - (int64_t)accessibilityElementCount;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
-- (void)setSelectedDate:(id)a3 animated:(BOOL)a4;
+- (int64_t)indexOfAccessibilityElement:(id)element;
+- (void)setSelectedDate:(id)date animated:(BOOL)animated;
 @end
 
 @implementation DayNavigationWeekScrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DayNavigationWeekScrollView" hasInstanceMethod:@"_weekStartForDate:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"DayNavigationWeekScrollView" hasInstanceMethod:@"selectedDate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DayNavigationWeekScrollView" hasInstanceMethod:@"setSelectedDate: animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"DayNavigationWeekScrollView" hasInstanceMethod:@"didFinishScrolling" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"DayNavigationWeekScrollView" hasInstanceVariable:@"_cells" withType:"NSMutableArray"];
-  [v3 validateClass:@"DayNavigationView" hasInstanceMethod:@"dayNavigationWeekScrollView:selectedDateChanged:" withFullSignature:{"v", "@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DayNavigationWeekScrollView" hasInstanceMethod:@"_weekStartForDate:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"DayNavigationWeekScrollView" hasInstanceMethod:@"selectedDate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DayNavigationWeekScrollView" hasInstanceMethod:@"setSelectedDate: animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"DayNavigationWeekScrollView" hasInstanceMethod:@"didFinishScrolling" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"DayNavigationWeekScrollView" hasInstanceVariable:@"_cells" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"DayNavigationView" hasInstanceMethod:@"dayNavigationWeekScrollView:selectedDateChanged:" withFullSignature:{"v", "@", "@", 0}];
 }
 
 - (id)_axVisibleCells
@@ -100,25 +100,25 @@ BOOL __59__DayNavigationWeekScrollViewAccessibility__axVisibleCells__block_invok
 
 - (int64_t)accessibilityElementCount
 {
-  v2 = [(DayNavigationWeekScrollViewAccessibility *)self _axVisibleCells];
-  v3 = [v2 count];
+  _axVisibleCells = [(DayNavigationWeekScrollViewAccessibility *)self _axVisibleCells];
+  v3 = [_axVisibleCells count];
 
   return v3;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v4 = a3;
-  v5 = [(DayNavigationWeekScrollViewAccessibility *)self _axVisibleCells];
-  v6 = [v5 indexOfObject:v4];
+  elementCopy = element;
+  _axVisibleCells = [(DayNavigationWeekScrollViewAccessibility *)self _axVisibleCells];
+  v6 = [_axVisibleCells indexOfObject:elementCopy];
 
   return v6;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
-  v4 = [(DayNavigationWeekScrollViewAccessibility *)self _axVisibleCells];
-  v5 = [v4 objectAtIndex:a3];
+  _axVisibleCells = [(DayNavigationWeekScrollViewAccessibility *)self _axVisibleCells];
+  v5 = [_axVisibleCells objectAtIndex:index];
 
   return v5;
 }
@@ -152,21 +152,21 @@ void __70__DayNavigationWeekScrollViewAccessibility__accessibilityScrollStatus__
   *(v4 + 40) = v3;
 }
 
-- (void)setSelectedDate:(id)a3 animated:(BOOL)a4
+- (void)setSelectedDate:(id)date animated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = DayNavigationWeekScrollViewAccessibility;
-  [(DayNavigationWeekScrollViewAccessibility *)&v4 setSelectedDate:a3 animated:a4];
+  [(DayNavigationWeekScrollViewAccessibility *)&v4 setSelectedDate:date animated:animated];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   objc_opt_class();
   v5 = [(DayNavigationWeekScrollViewAccessibility *)self safeValueForKey:@"selectedDate"];
   v6 = __UIAccessibilityCastAsClass();
 
-  v7 = a3 == 4 || a3 == 1;
+  v7 = scroll == 4 || scroll == 1;
   v8 = 604800.0;
   if (v7)
   {

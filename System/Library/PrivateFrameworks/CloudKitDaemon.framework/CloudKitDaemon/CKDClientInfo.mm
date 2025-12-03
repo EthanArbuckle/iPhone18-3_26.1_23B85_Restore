@@ -23,16 +23,16 @@
 
 - (NSString)hostname
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_cachedHostname)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_cachedHostname)
   {
-    objc_msgSend__refreshHostname(v2, v3, v4);
+    objc_msgSend__refreshHostname(selfCopy, v3, v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  cachedHostname = v2->_cachedHostname;
+  cachedHostname = selfCopy->_cachedHostname;
 
   return cachedHostname;
 }
@@ -87,21 +87,21 @@
 - (void)_refreshHostname
 {
   objc_msgSend_willChangeValueForKey_(self, a2, @"hostname");
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = MGCopyAnswer();
-  cachedHostname = v3->_cachedHostname;
-  v3->_cachedHostname = v4;
+  cachedHostname = selfCopy->_cachedHostname;
+  selfCopy->_cachedHostname = v4;
 
-  if (objc_msgSend_maximumLengthOfBytesUsingEncoding_(v3->_cachedHostname, v6, 4) >= 0x3E9)
+  if (objc_msgSend_maximumLengthOfBytesUsingEncoding_(selfCopy->_cachedHostname, v6, 4) >= 0x3E9)
   {
     v7 = 10;
     v9 = objc_autoreleasePoolPush();
-    while (objc_msgSend_lengthOfBytesUsingEncoding_(v3->_cachedHostname, v8, 4) >= 0x3E9)
+    while (objc_msgSend_lengthOfBytesUsingEncoding_(selfCopy->_cachedHostname, v8, 4) >= 0x3E9)
     {
-      v11 = objc_msgSend_substringToIndex_(v3->_cachedHostname, v10, 1010 - v7);
-      v12 = v3->_cachedHostname;
-      v3->_cachedHostname = v11;
+      v11 = objc_msgSend_substringToIndex_(selfCopy->_cachedHostname, v10, 1010 - v7);
+      v12 = selfCopy->_cachedHostname;
+      selfCopy->_cachedHostname = v11;
 
       v7 *= 2;
     }
@@ -109,9 +109,9 @@
     objc_autoreleasePoolPop(v9);
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
-  MEMORY[0x2821F9670](v3, sel_didChangeValueForKey_, @"hostname");
+  MEMORY[0x2821F9670](selfCopy, sel_didChangeValueForKey_, @"hostname");
 }
 
 @end

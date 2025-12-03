@@ -1,6 +1,6 @@
 @interface ICUITextViewDebuggingViewController
 - (UITextView)textView;
-- (void)dismiss:(id)a3;
+- (void)dismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
@@ -11,18 +11,18 @@
   v5.receiver = self;
   v5.super_class = ICUITextViewDebuggingViewController;
   [(ICUITextViewDebuggingViewController *)&v5 viewDidLoad];
-  v3 = [(ICUITextViewDebuggingViewController *)self textView];
-  [v3 setTextContainerInset:{16.0, 16.0, 16.0, 16.0}];
+  textView = [(ICUITextViewDebuggingViewController *)self textView];
+  [textView setTextContainerInset:{16.0, 16.0, 16.0, 16.0}];
 
-  v4 = [(ICUITextViewDebuggingViewController *)self navigationItem];
-  [v4 setTitle:@"UITextView"];
+  navigationItem = [(ICUITextViewDebuggingViewController *)self navigationItem];
+  [navigationItem setTitle:@"UITextView"];
 }
 
-- (void)dismiss:(id)a3
+- (void)dismiss:(id)dismiss
 {
-  v4 = [(ICUITextViewDebuggingViewController *)self navigationController];
-  v3 = [v4 presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  navigationController = [(ICUITextViewDebuggingViewController *)self navigationController];
+  presentingViewController = [navigationController presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (UITextView)textView

@@ -8,17 +8,17 @@
 + (NSString)cloudSyncVersion;
 + (void)markAsAgreedToLatestTerms;
 + (void)resetToInitialState;
-+ (void)setAccountAgreedTermsVersion:(id)a3;
-+ (void)setCloudSyncIsDirty:(BOOL)a3;
-+ (void)setCloudSyncVersion:(id)a3;
-+ (void)setDeviceAgreedTermsVersion:(id)a3;
++ (void)setAccountAgreedTermsVersion:(id)version;
++ (void)setCloudSyncIsDirty:(BOOL)dirty;
++ (void)setCloudSyncVersion:(id)version;
++ (void)setDeviceAgreedTermsVersion:(id)version;
 @end
 
 @implementation MTPrivacyUtil
 
 + (BOOL)privacyAcknowledgementNeeded
 {
-  if ([a1 shouldShowPodcastsTermsScreen])
+  if ([self shouldShowPodcastsTermsScreen])
   {
     return 1;
   }
@@ -30,8 +30,8 @@
 
 + (BOOL)shouldShowPodcastsTermsScreen
 {
-  v2 = [a1 deviceAgreedTermsVersion];
-  v3 = [v2 integerValue] < 2;
+  deviceAgreedTermsVersion = [self deviceAgreedTermsVersion];
+  v3 = [deviceAgreedTermsVersion integerValue] < 2;
 
   return v3;
 }
@@ -54,13 +54,13 @@
 
 + (void)markAsAgreedToLatestTerms
 {
-  v3 = [a1 deviceAgreedTermsVersion];
-  v4 = [v3 integerValue];
+  deviceAgreedTermsVersion = [self deviceAgreedTermsVersion];
+  integerValue = [deviceAgreedTermsVersion integerValue];
 
-  if (v4 <= 1)
+  if (integerValue <= 1)
   {
-    [a1 setDeviceAgreedTermsVersion:&off_100501108];
-    [a1 setCloudSyncIsDirty:1];
+    [self setDeviceAgreedTermsVersion:&off_100501108];
+    [self setCloudSyncIsDirty:1];
     v5 = +[_TtC8Podcasts21SyncControllerFactory resolvedSyncController];
     [v5 syncTermsVersion];
   }
@@ -68,29 +68,29 @@
 
 + (void)resetToInitialState
 {
-  [a1 setDeviceAgreedTermsVersion:0];
-  [a1 setAccountAgreedTermsVersion:0];
-  [a1 setCloudSyncVersion:0];
+  [self setDeviceAgreedTermsVersion:0];
+  [self setAccountAgreedTermsVersion:0];
+  [self setCloudSyncVersion:0];
 
-  [a1 setCloudSyncIsDirty:0];
+  [self setCloudSyncIsDirty:0];
 }
 
 + (BOOL)allowReporting
 {
-  v2 = [a1 deviceAgreedTermsVersion];
-  v3 = [v2 integerValue] > 1;
+  deviceAgreedTermsVersion = [self deviceAgreedTermsVersion];
+  v3 = [deviceAgreedTermsVersion integerValue] > 1;
 
   return v3;
 }
 
-+ (void)setDeviceAgreedTermsVersion:(id)a3
++ (void)setDeviceAgreedTermsVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v3 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
   v4 = v3;
-  if (v5)
+  if (versionCopy)
   {
-    [v3 setObject:v5 forKey:@"MTDeviceAgreedTermsVersion"];
+    [v3 setObject:versionCopy forKey:@"MTDeviceAgreedTermsVersion"];
   }
 
   else
@@ -107,14 +107,14 @@
   return v3;
 }
 
-+ (void)setAccountAgreedTermsVersion:(id)a3
++ (void)setAccountAgreedTermsVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v3 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
   v4 = v3;
-  if (v5)
+  if (versionCopy)
   {
-    [v3 setObject:v5 forKey:@"MTAccountAgreedTermsVersion"];
+    [v3 setObject:versionCopy forKey:@"MTAccountAgreedTermsVersion"];
   }
 
   else
@@ -131,21 +131,21 @@
   return v3;
 }
 
-+ (void)setCloudSyncIsDirty:(BOOL)a3
++ (void)setCloudSyncIsDirty:(BOOL)dirty
 {
-  v3 = a3;
+  dirtyCopy = dirty;
   v4 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
-  [v4 setBool:v3 forKey:@"MTAgreedTermsCloudSyncIsDirty"];
+  [v4 setBool:dirtyCopy forKey:@"MTAgreedTermsCloudSyncIsDirty"];
 }
 
-+ (void)setCloudSyncVersion:(id)a3
++ (void)setCloudSyncVersion:(id)version
 {
-  v5 = a3;
+  versionCopy = version;
   v3 = +[NSUserDefaults _applePodcastsFoundationSharedUserDefaults];
   v4 = v3;
-  if (v5)
+  if (versionCopy)
   {
-    [v3 setObject:v5 forKey:@"MTAgreedTermsCloudSyncVersion"];
+    [v3 setObject:versionCopy forKey:@"MTAgreedTermsCloudSyncVersion"];
   }
 
   else

@@ -1,16 +1,16 @@
 @interface WFDropboxDeleteMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFDropboxDeleteMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"142") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"142") == 3)
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.dropbox.delete", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.dropbox.delete", migrationCopy);
   }
 
   else
@@ -28,8 +28,8 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 copy];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions copy];
 
   obj = v4;
   v5 = [v4 countByEnumeratingWithState:&v33 objects:v37 count:16];
@@ -50,44 +50,44 @@
         }
 
         v9 = *(*(&v33 + 1) + 8 * v8);
-        v10 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v11 = [v9 objectForKeyedSubscript:v10];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v11 = [v9 objectForKeyedSubscript:actionIdentifierKey];
         v12 = [v11 isEqualToString:@"is.workflow.actions.dropbox.delete"];
 
         if (v12)
         {
-          v13 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v9 setObject:@"is.workflow.actions.dropbox.delete2" forKeyedSubscript:v13];
+          actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v9 setObject:@"is.workflow.actions.dropbox.delete2" forKeyedSubscript:actionIdentifierKey2];
 
-          v14 = [(WFWorkflowMigration *)self actionParametersKey];
-          v15 = [v9 objectForKeyedSubscript:v14];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v15 = [v9 objectForKeyedSubscript:actionParametersKey];
 
           v16 = objc_opt_new();
-          v17 = [(WFWorkflowMigration *)self actionParametersKey];
-          v18 = [v9 objectForKeyedSubscript:v17];
+          actionParametersKey2 = [(WFWorkflowMigration *)self actionParametersKey];
+          v18 = [v9 objectForKeyedSubscript:actionParametersKey2];
           v19 = [v18 objectForKey:@"WFDropboxFilePath"];
           [v16 setValue:v19 forKey:@"WFDropboxFilePath"];
 
-          v20 = [(WFWorkflowMigration *)self actionParametersKey];
-          v21 = [v9 objectForKeyedSubscript:v20];
+          actionParametersKey3 = [(WFWorkflowMigration *)self actionParametersKey];
+          v21 = [v9 objectForKeyedSubscript:actionParametersKey3];
           v22 = [v21 objectForKey:@"WFDropboxShowPicker"];
           [v16 setValue:v22 forKey:@"WFDropboxShowPicker"];
 
           [v15 removeObjectForKey:@"WFDropboxFilePath"];
           [v15 removeObjectForKey:@"WFDropboxShowPicker"];
           v23 = objc_opt_new();
-          v24 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v23 setObject:@"is.workflow.actions.dropbox.pick" forKeyedSubscript:v24];
+          actionIdentifierKey3 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v23 setObject:@"is.workflow.actions.dropbox.pick" forKeyedSubscript:actionIdentifierKey3];
 
-          v25 = [(WFWorkflowMigration *)self actionParametersKey];
-          [v23 setObject:v16 forKeyedSubscript:v25];
+          actionParametersKey4 = [(WFWorkflowMigration *)self actionParametersKey];
+          [v23 setObject:v16 forKeyedSubscript:actionParametersKey4];
 
-          v26 = [MEMORY[0x1E696AFB0] UUID];
-          [v9 setObject:v26 forKeyedSubscript:@"WFActionUUID"];
+          uUID = [MEMORY[0x1E696AFB0] UUID];
+          [v9 setObject:uUID forKeyedSubscript:@"WFActionUUID"];
 
-          v27 = [(WFWorkflowMigration *)self actions];
-          v28 = [(WFWorkflowMigration *)self actions];
-          [v27 insertObject:v23 atIndex:{objc_msgSend(v28, "indexOfObject:", v9)}];
+          actions2 = [(WFWorkflowMigration *)self actions];
+          actions3 = [(WFWorkflowMigration *)self actions];
+          [actions2 insertObject:v23 atIndex:{objc_msgSend(actions3, "indexOfObject:", v9)}];
 
           v7 = v30;
           v6 = v31;

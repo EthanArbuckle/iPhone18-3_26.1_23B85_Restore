@@ -1,14 +1,14 @@
 @interface PUPhotoEditToolPickerController
-- (PUPhotoEditToolPickerController)initWithLayoutDirection:(int64_t)a3 style:(int64_t)a4 blurredBackground:(BOOL)a5;
+- (PUPhotoEditToolPickerController)initWithLayoutDirection:(int64_t)direction style:(int64_t)style blurredBackground:(BOOL)background;
 - (UIView)contentView;
 - (void)_updateBackgroundColor;
 - (void)loadView;
-- (void)setBackgroundColor:(id)a3;
-- (void)setLayoutDirection:(int64_t)a3;
-- (void)setParentSpec:(id)a3;
-- (void)setSelectedToolTag:(int64_t)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setToolButtons:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setLayoutDirection:(int64_t)direction;
+- (void)setParentSpec:(id)spec;
+- (void)setSelectedToolTag:(int64_t)tag;
+- (void)setStyle:(int64_t)style;
+- (void)setToolButtons:(id)buttons;
 - (void)updateViewConstraints;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -16,17 +16,17 @@
 
 @implementation PUPhotoEditToolPickerController
 
-- (void)setParentSpec:(id)a3
+- (void)setParentSpec:(id)spec
 {
-  objc_storeStrong(&self->_parentSpec, a3);
-  v5 = a3;
-  v6 = [(PUPhotoEditToolPickerController *)self toolPickerSpec];
+  objc_storeStrong(&self->_parentSpec, spec);
+  specCopy = spec;
+  toolPickerSpec = [(PUPhotoEditToolPickerController *)self toolPickerSpec];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__PUPhotoEditToolPickerController_setParentSpec___block_invoke;
   v7[3] = &unk_1E7B80DD0;
   v7[4] = self;
-  [v6 performChanges:v7];
+  [toolPickerSpec performChanges:v7];
 
   [(PUPhotoEditToolPickerController *)self updateViewConstraints];
 }
@@ -42,11 +42,11 @@ void __49__PUPhotoEditToolPickerController_setParentSpec___block_invoke(uint64_t
   [v4 setLayoutReferenceSize:?];
 }
 
-- (void)setSelectedToolTag:(int64_t)a3
+- (void)setSelectedToolTag:(int64_t)tag
 {
-  if ([(PUPhotoEditToolPickerController *)self selectedToolTag]!= a3)
+  if ([(PUPhotoEditToolPickerController *)self selectedToolTag]!= tag)
   {
-    self->_selectedToolTag = a3;
+    self->_selectedToolTag = tag;
   }
 }
 
@@ -55,60 +55,60 @@ void __49__PUPhotoEditToolPickerController_setParentSpec___block_invoke(uint64_t
   v15.receiver = self;
   v15.super_class = PUPhotoEditToolPickerController;
   [(PUPhotoEditToolPickerController *)&v15 viewDidLayoutSubviews];
-  v3 = [(PUPhotoEditToolPickerController *)self toolPickerSpec];
-  v4 = [v3 currentLayoutStyle];
+  toolPickerSpec = [(PUPhotoEditToolPickerController *)self toolPickerSpec];
+  currentLayoutStyle = [toolPickerSpec currentLayoutStyle];
 
-  if (v4 == 4)
+  if (currentLayoutStyle == 4)
   {
-    v5 = [(PUPhotoEditToolPickerController *)self view];
-    v6 = [v5 layer];
-    [v6 setCornerRadius:20.0];
+    view = [(PUPhotoEditToolPickerController *)self view];
+    layer = [view layer];
+    [layer setCornerRadius:20.0];
 
     v7 = *MEMORY[0x1E69796E8];
-    v8 = [(PUPhotoEditToolPickerController *)self view];
-    v9 = [v8 layer];
-    [v9 setCornerCurve:v7];
+    view2 = [(PUPhotoEditToolPickerController *)self view];
+    layer2 = [view2 layer];
+    [layer2 setCornerCurve:v7];
 
-    v10 = [(PUPhotoEditToolPickerController *)self blurEffectView];
+    blurEffectView = [(PUPhotoEditToolPickerController *)self blurEffectView];
 
-    if (v10)
+    if (blurEffectView)
     {
-      v11 = [(PUPhotoEditToolPickerController *)self blurEffectView];
-      v12 = [v11 layer];
-      [v12 setCornerRadius:20.0];
+      blurEffectView2 = [(PUPhotoEditToolPickerController *)self blurEffectView];
+      layer3 = [blurEffectView2 layer];
+      [layer3 setCornerRadius:20.0];
 
-      v13 = [(PUPhotoEditToolPickerController *)self blurEffectView];
-      v14 = [v13 layer];
-      [v14 setCornerCurve:v7];
+      blurEffectView3 = [(PUPhotoEditToolPickerController *)self blurEffectView];
+      layer4 = [blurEffectView3 layer];
+      [layer4 setCornerCurve:v7];
     }
   }
 }
 
 - (void)updateViewConstraints
 {
-  v2 = self;
+  selfCopy = self;
   v66 = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolPickerController *)self view];
-  v4 = [(PUPhotoEditToolPickerController *)v2 toolButtonConstraints];
+  view = [(PUPhotoEditToolPickerController *)self view];
+  toolButtonConstraints = [(PUPhotoEditToolPickerController *)selfCopy toolButtonConstraints];
 
-  if (v4)
+  if (toolButtonConstraints)
   {
-    v5 = [(PUPhotoEditToolPickerController *)v2 toolButtonConstraints];
-    [v3 removeConstraints:v5];
+    toolButtonConstraints2 = [(PUPhotoEditToolPickerController *)selfCopy toolButtonConstraints];
+    [view removeConstraints:toolButtonConstraints2];
 
-    [(PUPhotoEditToolPickerController *)v2 setToolButtonConstraints:0];
+    [(PUPhotoEditToolPickerController *)selfCopy setToolButtonConstraints:0];
   }
 
   v6 = objc_opt_new();
-  v7 = [(PUPhotoEditToolPickerController *)v2 toolButtons];
-  v57 = [v7 lastObject];
+  toolButtons = [(PUPhotoEditToolPickerController *)selfCopy toolButtons];
+  lastObject = [toolButtons lastObject];
 
-  v58 = [(PUPhotoEditToolPickerController *)v2 toolPickerSpec];
+  toolPickerSpec = [(PUPhotoEditToolPickerController *)selfCopy toolPickerSpec];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obj = [(PUPhotoEditToolPickerController *)v2 toolButtons];
+  obj = [(PUPhotoEditToolPickerController *)selfCopy toolButtons];
   v8 = [obj countByEnumeratingWithState:&v60 objects:v65 count:16];
   if (!v8)
   {
@@ -118,7 +118,7 @@ void __49__PUPhotoEditToolPickerController_setParentSpec___block_invoke(uint64_t
 
   v9 = v8;
   v10 = 0;
-  v53 = v2;
+  v53 = selfCopy;
   v55 = *v61;
   do
   {
@@ -132,76 +132,76 @@ void __49__PUPhotoEditToolPickerController_setParentSpec___block_invoke(uint64_t
 
       v13 = *(*(&v60 + 1) + 8 * i);
       [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
-      if ([(PUPhotoEditToolPickerController *)v2 layoutDirection])
+      if ([(PUPhotoEditToolPickerController *)selfCopy layoutDirection])
       {
-        v14 = [v13 topAnchor];
+        topAnchor = [v13 topAnchor];
         if (v12)
         {
-          v15 = [v12 bottomAnchor];
-          v16 = [(PUPhotoEditToolPickerController *)v2 toolButtons];
-          [v58 interToolVerticalSpacingForToolCount:{objc_msgSend(v16, "count")}];
-          v17 = [v14 constraintEqualToAnchor:v15 constant:?];
+          bottomAnchor = [v12 bottomAnchor];
+          toolButtons2 = [(PUPhotoEditToolPickerController *)selfCopy toolButtons];
+          [toolPickerSpec interToolVerticalSpacingForToolCount:{objc_msgSend(toolButtons2, "count")}];
+          v17 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
           [v6 addObject:v17];
         }
 
         else
         {
-          v15 = [v3 topAnchor];
-          [v58 toolParentViewEdgeSpacing];
-          v16 = [v14 constraintEqualToAnchor:v15 constant:?];
-          [v6 addObject:v16];
+          bottomAnchor = [view topAnchor];
+          [toolPickerSpec toolParentViewEdgeSpacing];
+          toolButtons2 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:?];
+          [v6 addObject:toolButtons2];
         }
 
-        v20 = [v13 leftAnchor];
-        v21 = [v3 leftAnchor];
-        v22 = [v20 constraintEqualToAnchor:v21 constant:23.0];
+        leftAnchor = [v13 leftAnchor];
+        leftAnchor2 = [view leftAnchor];
+        v22 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:23.0];
         [v6 addObject:v22];
 
-        v23 = [v13 rightAnchor];
-        v24 = [v3 rightAnchor];
-        v25 = [v23 constraintEqualToAnchor:v24 constant:-23.0];
+        rightAnchor = [v13 rightAnchor];
+        rightAnchor2 = [view rightAnchor];
+        v25 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-23.0];
         [v6 addObject:v25];
 
-        v2 = v53;
-        if (v13 == v57)
+        selfCopy = v53;
+        if (v13 == lastObject)
         {
-          v26 = [v13 bottomAnchor];
-          v27 = [v3 bottomAnchor];
+          bottomAnchor2 = [v13 bottomAnchor];
+          bottomAnchor3 = [view bottomAnchor];
 LABEL_19:
-          v32 = v27;
-          [v58 toolParentViewEdgeSpacing];
-          v34 = [v26 constraintEqualToAnchor:v32 constant:-v33];
+          v32 = bottomAnchor3;
+          [toolPickerSpec toolParentViewEdgeSpacing];
+          v34 = [bottomAnchor2 constraintEqualToAnchor:v32 constant:-v33];
           [v6 addObject:v34];
         }
       }
 
       else
       {
-        v18 = [v13 leftAnchor];
+        leftAnchor3 = [v13 leftAnchor];
         if (v12)
         {
-          v19 = [v12 rightAnchor];
-          [v58 interToolSpacing];
+          rightAnchor3 = [v12 rightAnchor];
+          [toolPickerSpec interToolSpacing];
         }
 
         else
         {
-          v19 = [v3 leftAnchor];
-          [v58 toolParentViewEdgeSpacing];
+          rightAnchor3 = [view leftAnchor];
+          [toolPickerSpec toolParentViewEdgeSpacing];
         }
 
-        v28 = [v18 constraintEqualToAnchor:v19 constant:?];
+        v28 = [leftAnchor3 constraintEqualToAnchor:rightAnchor3 constant:?];
         [v6 addObject:v28];
 
-        v29 = [v13 centerYAnchor];
-        v30 = [v3 centerYAnchor];
-        v31 = [v29 constraintEqualToAnchor:v30];
+        centerYAnchor = [v13 centerYAnchor];
+        centerYAnchor2 = [view centerYAnchor];
+        v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         [v6 addObject:v31];
 
-        if (v13 == v57)
+        if (v13 == lastObject)
         {
-          v26 = [v13 rightAnchor];
-          v27 = [v3 rightAnchor];
+          bottomAnchor2 = [v13 rightAnchor];
+          bottomAnchor3 = [view rightAnchor];
           goto LABEL_19;
         }
       }
@@ -215,37 +215,37 @@ LABEL_19:
   while (v9);
 LABEL_24:
 
-  [(PUPhotoEditToolPickerController *)v2 blurEffectView];
-  v36 = v35 = v2;
+  [(PUPhotoEditToolPickerController *)selfCopy blurEffectView];
+  v36 = v35 = selfCopy;
 
   if (v36)
   {
-    v56 = [(PUPhotoEditToolPickerController *)v35 blurEffectView];
-    v54 = [v56 leftAnchor];
-    obja = [v3 leftAnchor];
-    v50 = [v54 constraintEqualToAnchor:obja];
+    blurEffectView = [(PUPhotoEditToolPickerController *)v35 blurEffectView];
+    leftAnchor4 = [blurEffectView leftAnchor];
+    obja = [view leftAnchor];
+    v50 = [leftAnchor4 constraintEqualToAnchor:obja];
     v64[0] = v50;
-    v49 = [(PUPhotoEditToolPickerController *)v35 blurEffectView];
-    v48 = [v49 rightAnchor];
-    v47 = [v3 rightAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    blurEffectView2 = [(PUPhotoEditToolPickerController *)v35 blurEffectView];
+    rightAnchor4 = [blurEffectView2 rightAnchor];
+    rightAnchor5 = [view rightAnchor];
+    v46 = [rightAnchor4 constraintEqualToAnchor:rightAnchor5];
     v64[1] = v46;
-    v45 = [(PUPhotoEditToolPickerController *)v35 blurEffectView];
-    v44 = [v45 topAnchor];
-    v43 = [v3 topAnchor];
-    v37 = [v44 constraintEqualToAnchor:v43];
+    blurEffectView3 = [(PUPhotoEditToolPickerController *)v35 blurEffectView];
+    topAnchor2 = [blurEffectView3 topAnchor];
+    topAnchor3 = [view topAnchor];
+    v37 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
     v64[2] = v37;
-    v38 = [(PUPhotoEditToolPickerController *)v35 blurEffectView];
-    v39 = [v38 bottomAnchor];
-    v40 = [v3 bottomAnchor];
-    v41 = [v39 constraintEqualToAnchor:v40];
+    blurEffectView4 = [(PUPhotoEditToolPickerController *)v35 blurEffectView];
+    bottomAnchor4 = [blurEffectView4 bottomAnchor];
+    bottomAnchor5 = [view bottomAnchor];
+    v41 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
     v64[3] = v41;
     v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:4];
     [v6 addObjectsFromArray:v42];
   }
 
   [(PUPhotoEditToolPickerController *)v35 setToolButtonConstraints:v6];
-  [v3 addConstraints:v6];
+  [view addConstraints:v6];
   v59.receiver = v35;
   v59.super_class = PUPhotoEditToolPickerController;
   [(PUPhotoEditToolPickerController *)&v59 updateViewConstraints];
@@ -253,61 +253,61 @@ LABEL_24:
 
 - (UIView)contentView
 {
-  v3 = [(PUPhotoEditToolPickerController *)self view];
-  v4 = [(PUPhotoEditToolPickerController *)self blurEffectView];
-  v5 = [v4 contentView];
-  v6 = v5;
-  if (v5)
+  view = [(PUPhotoEditToolPickerController *)self view];
+  blurEffectView = [(PUPhotoEditToolPickerController *)self blurEffectView];
+  contentView = [blurEffectView contentView];
+  v6 = contentView;
+  if (contentView)
   {
-    v7 = v5;
+    view2 = contentView;
   }
 
   else
   {
-    v7 = [(PUPhotoEditToolPickerController *)self view];
+    view2 = [(PUPhotoEditToolPickerController *)self view];
   }
 
-  v8 = v7;
+  v8 = view2;
 
   return v8;
 }
 
 - (void)_updateBackgroundColor
 {
-  v3 = [(PUPhotoEditToolPickerController *)self blurredBackground];
-  v6 = [(PUPhotoEditToolPickerController *)self backgroundColor];
-  if (v3)
+  blurredBackground = [(PUPhotoEditToolPickerController *)self blurredBackground];
+  backgroundColor = [(PUPhotoEditToolPickerController *)self backgroundColor];
+  if (blurredBackground)
   {
-    v4 = [(PUPhotoEditToolPickerController *)self blurEffectView];
-    [v4 setBackgroundColor:v6];
+    blurEffectView = [(PUPhotoEditToolPickerController *)self blurEffectView];
+    [blurEffectView setBackgroundColor:backgroundColor];
 
-    v6 = [(PUPhotoEditToolPickerController *)self view];
-    [v6 setBackgroundColor:0];
+    backgroundColor = [(PUPhotoEditToolPickerController *)self view];
+    [backgroundColor setBackgroundColor:0];
   }
 
   else
   {
-    v5 = [(PUPhotoEditToolPickerController *)self view];
-    [v5 setBackgroundColor:v6];
+    view = [(PUPhotoEditToolPickerController *)self view];
+    [view setBackgroundColor:backgroundColor];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_backgroundColor != v5)
+  colorCopy = color;
+  if (self->_backgroundColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_backgroundColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_backgroundColor, color);
     [(PUPhotoEditToolPickerController *)self _updateBackgroundColor];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setToolButtons:(id)a3
+- (void)setToolButtons:(id)buttons
 {
   v42 = *MEMORY[0x1E69E9840];
-  v27 = a3;
+  buttonsCopy = buttons;
   val = self;
   v36 = 0u;
   v37 = 0u;
@@ -336,19 +336,19 @@ LABEL_24:
     while (v5);
   }
 
-  v8 = [v27 copy];
+  v8 = [buttonsCopy copy];
   toolButtons = val->_toolButtons;
   val->_toolButtons = v8;
 
-  v10 = [(PUPhotoEditToolPickerController *)val toolPickerSpec];
-  [v10 toolButtonPointerInteractionHighlightPadding];
+  toolPickerSpec = [(PUPhotoEditToolPickerController *)val toolPickerSpec];
+  [toolPickerSpec toolButtonPointerInteractionHighlightPadding];
 
   PXEdgeInsetsMake();
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(PUPhotoEditToolPickerController *)val contentView];
+  contentView = [(PUPhotoEditToolPickerController *)val contentView];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
@@ -368,7 +368,7 @@ LABEL_24:
         }
 
         v24 = *(*(&v32 + 1) + 8 * j);
-        [v19 addSubview:{v24, v27}];
+        [contentView addSubview:{v24, buttonsCopy}];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -395,8 +395,8 @@ LABEL_24:
     while (v21);
   }
 
-  v26 = [(PUPhotoEditToolPickerController *)val view];
-  [v26 setNeedsUpdateConstraints];
+  view = [(PUPhotoEditToolPickerController *)val view];
+  [view setNeedsUpdateConstraints];
 }
 
 id __50__PUPhotoEditToolPickerController_setToolButtons___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -420,21 +420,21 @@ id __50__PUPhotoEditToolPickerController_setToolButtons___block_invoke(uint64_t 
   return v20;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
-  if (self->_style != a3)
+  if (self->_style != style)
   {
-    self->_style = a3;
-    v4 = [(PUPhotoEditToolPickerController *)self view];
-    [v4 setNeedsUpdateConstraints];
+    self->_style = style;
+    view = [(PUPhotoEditToolPickerController *)self view];
+    [view setNeedsUpdateConstraints];
   }
 }
 
-- (void)setLayoutDirection:(int64_t)a3
+- (void)setLayoutDirection:(int64_t)direction
 {
-  self->_layoutDirection = a3;
-  v3 = [(PUPhotoEditToolPickerController *)self view];
-  [v3 setNeedsUpdateConstraints];
+  self->_layoutDirection = direction;
+  view = [(PUPhotoEditToolPickerController *)self view];
+  [view setNeedsUpdateConstraints];
 }
 
 - (void)viewDidLoad
@@ -462,7 +462,7 @@ id __50__PUPhotoEditToolPickerController_setToolButtons___block_invoke(uint64_t 
   }
 }
 
-- (PUPhotoEditToolPickerController)initWithLayoutDirection:(int64_t)a3 style:(int64_t)a4 blurredBackground:(BOOL)a5
+- (PUPhotoEditToolPickerController)initWithLayoutDirection:(int64_t)direction style:(int64_t)style blurredBackground:(BOOL)background
 {
   v14.receiver = self;
   v14.super_class = PUPhotoEditToolPickerController;
@@ -470,13 +470,13 @@ id __50__PUPhotoEditToolPickerController_setToolButtons___block_invoke(uint64_t 
   v9 = v8;
   if (v8)
   {
-    v8->_layoutDirection = a3;
-    v8->_style = a4;
+    v8->_layoutDirection = direction;
+    v8->_style = style;
     v10 = objc_alloc_init(PUPhotoEditToolPickerSpec);
     toolPickerSpec = v9->_toolPickerSpec;
     v9->_toolPickerSpec = v10;
 
-    v9->_blurredBackground = a5;
+    v9->_blurredBackground = background;
     v12 = v9;
   }
 

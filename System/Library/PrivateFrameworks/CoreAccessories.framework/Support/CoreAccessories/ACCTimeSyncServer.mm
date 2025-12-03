@@ -2,14 +2,14 @@
 + (id)sharedServer;
 - (ACCTimeSyncServer)init;
 - (BOOL)_initXPC;
-- (void)_connectPeer:(id)a3;
-- (void)_formSNTPPacket:(id)a3;
-- (void)_getAccessoryTime:(id)a3;
+- (void)_connectPeer:(id)peer;
+- (void)_formSNTPPacket:(id)packet;
+- (void)_getAccessoryTime:(id)time;
 - (void)_notifyServerActive;
-- (void)_sendHostTimeToAccessory:(id)a3;
-- (void)_setSystemTime:(__CFData *)a3;
+- (void)_sendHostTimeToAccessory:(id)accessory;
+- (void)_setSystemTime:(__CFData *)time;
 - (void)dealloc;
-- (void)setSystemTime:(__CFData *)a3;
+- (void)setSystemTime:(__CFData *)time;
 @end
 
 @implementation ACCTimeSyncServer
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __33__ACCTimeSyncServer_sharedServer__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedServer_once_5 != -1)
   {
     dispatch_once(&sharedServer_once_5, block);
@@ -51,12 +51,12 @@ uint64_t __33__ACCTimeSyncServer_sharedServer__block_invoke(uint64_t a1)
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "in init", buf, 2u);
     }
 
-    v3 = [(ACCTimeSyncServer *)v2 _initXPC];
-    v2->_isActive = v3;
+    _initXPC = [(ACCTimeSyncServer *)v2 _initXPC];
+    v2->_isActive = _initXPC;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v7 = v3;
+      v7 = _initXPC;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "ACCTimeSyncServer: init finished with :%d", buf, 8u);
     }
   }
@@ -77,7 +77,7 @@ uint64_t __33__ACCTimeSyncServer_sharedServer__block_invoke(uint64_t a1)
   [(ACCTimeSyncServer *)&v3 dealloc];
 }
 
-- (void)setSystemTime:(__CFData *)a3
+- (void)setSystemTime:(__CFData *)time
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -85,12 +85,12 @@ uint64_t __33__ACCTimeSyncServer_sharedServer__block_invoke(uint64_t a1)
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "ACCTimeSyncServer setSystemTime", v5, 2u);
   }
 
-  [(ACCTimeSyncServer *)self _setSystemTime:a3];
+  [(ACCTimeSyncServer *)self _setSystemTime:time];
 }
 
-- (void)_setSystemTime:(__CFData *)a3
+- (void)_setSystemTime:(__CFData *)time
 {
-  Length = CFDataGetLength(a3);
+  Length = CFDataGetLength(time);
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -99,7 +99,7 @@ uint64_t __33__ACCTimeSyncServer_sharedServer__block_invoke(uint64_t a1)
 
   v6 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_string(v6, "xpcEventName", "setSystemTime");
-  BytePtr = CFDataGetBytePtr(a3);
+  BytePtr = CFDataGetBytePtr(time);
   xpc_dictionary_set_data(v6, "sntpPacket", BytePtr, Length);
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
@@ -152,14 +152,14 @@ void __36__ACCTimeSyncServer__setSystemTime___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_formSNTPPacket:(id)a3
+- (void)_formSNTPPacket:(id)packet
 {
-  v3 = a3;
+  packetCopy = packet;
   v4 = malloc_type_calloc(1uLL, 0x30uLL, 0x1000040EED21634uLL);
   if (v4)
   {
     v5 = v4;
-    if (!xpc_data_get_bytes(v3, v4, 0, 0x30uLL))
+    if (!xpc_data_get_bytes(packetCopy, v4, 0, 0x30uLL))
     {
       free(v5);
       v5 = 0;
@@ -175,9 +175,9 @@ void __36__ACCTimeSyncServer__setSystemTime___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)_getAccessoryTime:(id)a3
+- (void)_getAccessoryTime:(id)time
 {
-  v3 = [(ACCTimeSyncServer *)self _formSNTPPacket:a3];
+  v3 = [(ACCTimeSyncServer *)self _formSNTPPacket:time];
   if (v3)
   {
     v4 = v3;
@@ -194,9 +194,9 @@ void __36__ACCTimeSyncServer__setSystemTime___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_sendHostTimeToAccessory:(id)a3
+- (void)_sendHostTimeToAccessory:(id)accessory
 {
-  v3 = [(ACCTimeSyncServer *)self _formSNTPPacket:a3];
+  v3 = [(ACCTimeSyncServer *)self _formSNTPPacket:accessory];
   if (v3)
   {
     v4 = v3;
@@ -365,9 +365,9 @@ LABEL_16:
 LABEL_9:
 }
 
-- (void)_connectPeer:(id)a3
+- (void)_connectPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_queue);
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -385,7 +385,7 @@ LABEL_9:
     peers = self->_peers;
   }
 
-  [(NSMutableArray *)peers addObject:v4];
+  [(NSMutableArray *)peers addObject:peerCopy];
   v8 = [(NSMutableArray *)self->_peers count];
   if (v8 >= 2)
   {
@@ -398,14 +398,14 @@ LABEL_9:
     }
   }
 
-  xpc_connection_set_target_queue(v4, self->_queue);
+  xpc_connection_set_target_queue(peerCopy, self->_queue);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __34__ACCTimeSyncServer__connectPeer___block_invoke;
   v11[3] = &unk_100228A08;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
+  v12 = peerCopy;
+  v10 = peerCopy;
   xpc_connection_set_event_handler(v10, v11);
   xpc_connection_resume(v10);
 }

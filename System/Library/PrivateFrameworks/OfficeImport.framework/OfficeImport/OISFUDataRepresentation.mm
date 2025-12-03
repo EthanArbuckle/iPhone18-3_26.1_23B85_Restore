@@ -1,16 +1,16 @@
 @interface OISFUDataRepresentation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGDataProvider)cgDataProvider;
 - (_xmlDoc)xmlDocument;
-- (_xmlTextReader)xmlReaderForGzippedDataWithInputStream:(id *)a3;
-- (_xmlTextReader)xmlReaderWithReadCallback:(void *)a3;
+- (_xmlTextReader)xmlReaderForGzippedDataWithInputStream:(id *)stream;
+- (_xmlTextReader)xmlReaderWithReadCallback:(void *)callback;
 - (id)bufferedInputStream;
-- (id)bufferedInputStreamWithBufferSize:(unint64_t)a3;
+- (id)bufferedInputStreamWithBufferSize:(unint64_t)size;
 - (id)inputStream;
 - (id)sha1Hash;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (int64_t)dataLength;
-- (unint64_t)readIntoData:(id)a3;
+- (unint64_t)readIntoData:(id)data;
 - (unsigned)uint32Hash;
 @end
 
@@ -39,9 +39,9 @@
   return v2;
 }
 
-- (id)bufferedInputStreamWithBufferSize:(unint64_t)a3
+- (id)bufferedInputStreamWithBufferSize:(unint64_t)size
 {
-  v3 = [[OISFUBufferedInputStream alloc] initWithStream:[(OISFUDataRepresentation *)self inputStream] bufferSize:a3];
+  v3 = [[OISFUBufferedInputStream alloc] initWithStream:[(OISFUDataRepresentation *)self inputStream] bufferSize:size];
 
   return v3;
 }
@@ -54,9 +54,9 @@
     [OISFUDataRepresentation xmlDocument];
   }
 
-  v3 = [(OISFUDataRepresentation *)self bufferedInputStream];
+  bufferedInputStream = [(OISFUDataRepresentation *)self bufferedInputStream];
   chunk = 0;
-  v4 = [v3 readToOwnBuffer:&chunk size:-1];
+  v4 = [bufferedInputStream readToOwnBuffer:&chunk size:-1];
   v5 = v4;
   if (v4 >> 31)
   {
@@ -73,7 +73,7 @@
 
   while (1)
   {
-    v8 = [v3 readToOwnBuffer:&chunk size:-1];
+    v8 = [bufferedInputStream readToOwnBuffer:&chunk size:-1];
     v9 = v8;
     if (!v8)
     {
@@ -107,23 +107,23 @@
   }
 
   xmlFreeParserCtxt(PushParserCtxt);
-  [v3 close];
+  [bufferedInputStream close];
   objc_autoreleasePoolPop(context);
   return myDoc;
 }
 
-- (_xmlTextReader)xmlReaderWithReadCallback:(void *)a3
+- (_xmlTextReader)xmlReaderWithReadCallback:(void *)callback
 {
-  v4 = [(OISFUDataRepresentation *)self inputStream];
+  inputStream = [(OISFUDataRepresentation *)self inputStream];
 
-  return xmlReaderForIO(a3, SFUXmlReaderIOClose, v4, 0, 0, 0);
+  return xmlReaderForIO(callback, SFUXmlReaderIOClose, inputStream, 0, 0, 0);
 }
 
-- (_xmlTextReader)xmlReaderForGzippedDataWithInputStream:(id *)a3
+- (_xmlTextReader)xmlReaderForGzippedDataWithInputStream:(id *)stream
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = [(OISFUDataRepresentation *)self inputStream];
-  if ([v4 readToBuffer:v10 size:10] != 10)
+  inputStream = [(OISFUDataRepresentation *)self inputStream];
+  if ([inputStream readToBuffer:v10 size:10] != 10)
   {
     return 0;
   }
@@ -132,7 +132,7 @@
   if ((v11 & 4) != 0)
   {
     v9 = 0;
-    if ([v4 readToBuffer:&v9 size:2] != 2)
+    if ([inputStream readToBuffer:&v9 size:2] != 2)
     {
       return 0;
     }
@@ -140,7 +140,7 @@
     if (v9)
     {
       v8 = 0;
-      while ([v4 readToBuffer:v10 size:1] == 1)
+      while ([inputStream readToBuffer:v10 size:1] == 1)
       {
         if (++v8 >= v9)
         {
@@ -156,7 +156,7 @@ LABEL_3:
   if ((v5 & 8) != 0)
   {
     v10[0] = 1;
-    while ([v4 readToBuffer:v10 size:1] == 1)
+    while ([inputStream readToBuffer:v10 size:1] == 1)
     {
       if (!v10[0])
       {
@@ -171,7 +171,7 @@ LABEL_7:
   if ((v5 & 0x10) != 0)
   {
     v10[0] = 1;
-    while ([v4 readToBuffer:v10 size:1] == 1)
+    while ([inputStream readToBuffer:v10 size:1] == 1)
     {
       if (!v10[0])
       {
@@ -183,15 +183,15 @@ LABEL_7:
   }
 
 LABEL_11:
-  if ((v5 & 2) != 0 && [v4 readToBuffer:v10 size:2] != 2)
+  if ((v5 & 2) != 0 && [inputStream readToBuffer:v10 size:2] != 2)
   {
     return 0;
   }
 
-  v6 = [[OISFUZipInflateInputStream alloc] initWithInput:v4];
-  if (a3)
+  v6 = [[OISFUZipInflateInputStream alloc] initWithInput:inputStream];
+  if (stream)
   {
-    *a3 = v6;
+    *stream = v6;
   }
 
   return xmlReaderForIO(SFUXmlReaderIORead, SFUXmlReaderIOClose, v6, 0, 0, 0);
@@ -199,32 +199,32 @@ LABEL_11:
 
 - (CGDataProvider)cgDataProvider
 {
-  v2 = [(OISFUDataRepresentation *)self inputStream];
-  if (([v2 canSeek] & 1) == 0)
+  inputStream = [(OISFUDataRepresentation *)self inputStream];
+  if (([inputStream canSeek] & 1) == 0)
   {
     v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OISFUDataRepresentation cgDataProvider]"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v3, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/sf/SFUDataRepresentation.m"], 244, 0, "Need a seekable input stream for -cgDataProvider");
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  return CGDataProviderCreateSequential(v2, &SFUCGDataProviderCallbacks);
+  return CGDataProviderCreateSequential(inputStream, &SFUCGDataProviderCallbacks);
 }
 
-- (unint64_t)readIntoData:(id)a3
+- (unint64_t)readIntoData:(id)data
 {
-  v5 = [a3 length];
-  v6 = [(OISFUDataRepresentation *)self bufferedInputStream];
-  for (i = 0; ; [a3 appendBytes:i length:v7])
+  v5 = [data length];
+  bufferedInputStream = [(OISFUDataRepresentation *)self bufferedInputStream];
+  for (i = 0; ; [data appendBytes:i length:v7])
   {
-    v7 = [v6 readToOwnBuffer:&i size:-1];
+    v7 = [bufferedInputStream readToOwnBuffer:&i size:-1];
     if (!v7)
     {
       break;
     }
   }
 
-  [v6 close];
-  return [a3 length] - v5;
+  [bufferedInputStream close];
+  return [data length] - v5;
 }
 
 - (unsigned)uint32Hash
@@ -235,16 +235,16 @@ LABEL_11:
     if (!self->mHasHash && [(OISFUDataRepresentation *)self isReadable])
     {
       v3 = objc_autoreleasePoolPush();
-      v4 = [(OISFUDataRepresentation *)self dataLength];
-      v5 = [(OISFUDataRepresentation *)self inputStream];
+      dataLength = [(OISFUDataRepresentation *)self dataLength];
+      inputStream = [(OISFUDataRepresentation *)self inputStream];
       v6 = malloc_type_malloc(0x1008uLL, 0x100004077774924uLL);
       if (!v6)
       {
         [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE728] format:@"Failed to allocate hash buffer for SFEData"];
       }
 
-      v7 = [v5 readToBuffer:v6 size:4096];
-      *&v6[v7] = v4;
+      v7 = [inputStream readToBuffer:v6 size:4096];
+      *&v6[v7] = dataLength;
       self->mHash = SFUHash(v6, v7 + 8);
       free(v6);
       __dmb(0xBu);
@@ -278,9 +278,9 @@ LABEL_11:
   return self->mSha1Hash;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -291,28 +291,28 @@ LABEL_11:
     return 0;
   }
 
-  v5 = [(OISFUDataRepresentation *)self dataLength];
-  if (v5 != [a3 dataLength])
+  dataLength = [(OISFUDataRepresentation *)self dataLength];
+  if (dataLength != [equal dataLength])
   {
     return 0;
   }
 
-  if ([(OISFUDataRepresentation *)self hasSameLocationAs:a3])
+  if ([(OISFUDataRepresentation *)self hasSameLocationAs:equal])
   {
     return 1;
   }
 
-  if (!-[OISFUDataRepresentation isReadable](self, "isReadable") || ![a3 isReadable])
+  if (!-[OISFUDataRepresentation isReadable](self, "isReadable") || ![equal isReadable])
   {
     return 0;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = [(OISFUDataRepresentation *)self bufferedInputStream];
-  v9 = [a3 bufferedInputStream];
+  bufferedInputStream = [(OISFUDataRepresentation *)self bufferedInputStream];
+  bufferedInputStream2 = [equal bufferedInputStream];
   v19 = 0;
   v20 = 0;
-  if (v5 < 1)
+  if (dataLength < 1)
   {
 LABEL_20:
     v6 = 1;
@@ -320,7 +320,7 @@ LABEL_20:
 
   else
   {
-    v10 = v9;
+    v10 = bufferedInputStream2;
     v11 = 0;
     v12 = 0;
     v13 = 0;
@@ -329,7 +329,7 @@ LABEL_20:
     {
       if (v12 == v13)
       {
-        v15 = [v8 readToOwnBuffer:&v20 size:-1];
+        v15 = [bufferedInputStream readToOwnBuffer:&v20 size:-1];
         v11 = v19;
         v12 = v20;
         v13 = &v20[v15];
@@ -353,8 +353,8 @@ LABEL_20:
       v11 += v17;
       v19 = v11;
       v20 = v12;
-      v5 -= v17;
-      if (v5 <= 0)
+      dataLength -= v17;
+      if (dataLength <= 0)
       {
         goto LABEL_20;
       }
@@ -367,36 +367,36 @@ LABEL_20:
   return v6;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  if (self == a3)
+  if (self == compare)
   {
     return 0;
   }
 
-  v5 = [(OISFUDataRepresentation *)self dataLength];
-  v6 = [a3 dataLength];
-  if (v5 < v6)
+  dataLength = [(OISFUDataRepresentation *)self dataLength];
+  dataLength2 = [compare dataLength];
+  if (dataLength < dataLength2)
   {
     return -1;
   }
 
-  if (v5 > v6)
+  if (dataLength > dataLength2)
   {
     return 1;
   }
 
-  if ([(OISFUDataRepresentation *)self hasSameLocationAs:a3])
+  if ([(OISFUDataRepresentation *)self hasSameLocationAs:compare])
   {
     return 0;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [(OISFUDataRepresentation *)self bufferedInputStream];
-  v11 = [a3 bufferedInputStream];
+  bufferedInputStream = [(OISFUDataRepresentation *)self bufferedInputStream];
+  bufferedInputStream2 = [compare bufferedInputStream];
   v21 = 0;
   v22 = 0;
-  if (v5 < 1)
+  if (dataLength < 1)
   {
 LABEL_26:
     v7 = 0;
@@ -404,7 +404,7 @@ LABEL_26:
 
   else
   {
-    v12 = v11;
+    v12 = bufferedInputStream2;
     v13 = 0;
     v14 = 0;
     v15 = 0;
@@ -414,7 +414,7 @@ LABEL_26:
     {
       if (v14 == v15)
       {
-        v17 = [v10 readToOwnBuffer:&v22 size:-1];
+        v17 = [bufferedInputStream readToOwnBuffer:&v22 size:-1];
         v13 = v21;
         v14 = v22;
         v15 = &v22[v17];
@@ -468,8 +468,8 @@ LABEL_26:
       v13 += v19;
       v21 = v13;
       v22 = v14;
-      v5 -= v19;
-      if (v5 <= 0)
+      dataLength -= v19;
+      if (dataLength <= 0)
       {
         goto LABEL_26;
       }

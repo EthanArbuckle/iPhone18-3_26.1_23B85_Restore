@@ -1,21 +1,21 @@
 @interface SBMainSwitcherControllerCoordinator
 + (SBMainSwitcherControllerCoordinator)sharedInstance;
 + (id)_shim_activeSwitcherController;
-- (BOOL)_contentControllerIsEmbeddedDisplayContentController:(id)a3;
-- (BOOL)_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:(id)a3;
-- (BOOL)_hasAppLayoutContainingDisplayItem:(id)a3;
-- (BOOL)_isBestAppSuggestionEligibleForSwitcher:(id)a3;
-- (BOOL)_isPerformingModelTransitionForReplacementAppLayout:(id)a3;
+- (BOOL)_contentControllerIsEmbeddedDisplayContentController:(id)controller;
+- (BOOL)_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:(id)scene;
+- (BOOL)_hasAppLayoutContainingDisplayItem:(id)item;
+- (BOOL)_isBestAppSuggestionEligibleForSwitcher:(id)switcher;
+- (BOOL)_isPerformingModelTransitionForReplacementAppLayout:(id)layout;
 - (BOOL)_keyboardIsSuppressedForMedusaKeyboardScene;
-- (BOOL)_shouldMorphFromPIPForTransitionContext:(id)a3 outForLayoutRole:(int64_t *)a4;
-- (BOOL)_shouldMorphToPIPForTransitionContext:(id)a3 outForLayoutRole:(int64_t *)a4;
+- (BOOL)_shouldMorphFromPIPForTransitionContext:(id)context outForLayoutRole:(int64_t *)role;
+- (BOOL)_shouldMorphToPIPForTransitionContext:(id)context outForLayoutRole:(int64_t *)role;
 - (BOOL)_shouldTakeKeyboardHomeAffordanceAssertion;
-- (BOOL)_shouldTakeStatusBarAssertionForSwitcherController:(id)a3;
-- (BOOL)_shouldZoomFromSystemApertureForTransitionContext:(id)a3;
-- (BOOL)_windowManagementContextIsSingleAppModeForSwitcherCorrespondingToDisplayOrdinal:(int64_t)a3;
-- (BOOL)canPerformKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4 orSceneIdentifier:(id)a5 windowScene:(id)a6;
-- (BOOL)deleteAppLayoutForDisplayItem:(id)a3;
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)_shouldTakeStatusBarAssertionForSwitcherController:(id)controller;
+- (BOOL)_shouldZoomFromSystemApertureForTransitionContext:(id)context;
+- (BOOL)_windowManagementContextIsSingleAppModeForSwitcherCorrespondingToDisplayOrdinal:(int64_t)ordinal;
+- (BOOL)canPerformKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier orSceneIdentifier:(id)sceneIdentifier windowScene:(id)scene;
+- (BOOL)deleteAppLayoutForDisplayItem:(id)item;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)handleHomeButtonDoublePress;
 - (BOOL)handleHomeButtonLongPress;
 - (BOOL)handleHomeButtonPress;
@@ -23,217 +23,217 @@
 - (BOOL)handleVoiceCommandButtonPress;
 - (BOOL)handleVolumeDownButtonPress;
 - (BOOL)handleVolumeUpButtonPress;
-- (BOOL)hasAppLayoutForDisplayItem:(id)a3;
-- (BOOL)hasAppLayoutForTransientOverlayViewController:(id)a3 windowScene:(id)a4;
-- (BOOL)isAcquiredTransientOverlayViewController:(id)a3 windowScene:(id)a4;
+- (BOOL)hasAppLayoutForDisplayItem:(id)item;
+- (BOOL)hasAppLayoutForTransientOverlayViewController:(id)controller windowScene:(id)scene;
+- (BOOL)isAcquiredTransientOverlayViewController:(id)controller windowScene:(id)scene;
 - (BOOL)isAnySwitcherVisible;
-- (BOOL)isDisplayEmbeddedForSwitcherContentController:(id)a3;
-- (BOOL)isInAppStatusBarRequestedHiddenForSwitcherContentController:(id)a3;
-- (BOOL)prioritizesSortOrderForAppLayout:(id)a3;
-- (BOOL)shouldPerformPreTransitionInsertionOfAppLayout:(id)a3 forTransitionWithContext:(id)a4;
-- (BOOL)switcherContentController:(id)a3 displayItemSupportsCenterRole:(id)a4;
-- (BOOL)switcherContentController:(id)a3 shouldResignActiveForStartOfTransition:(id)a4;
-- (BOOL)switcherContentController:(id)a3 supportsKillingOfAppLayout:(id)a4;
-- (BOOL)switcherContentController:(id)a3 supportsTitleItemsForAppLayout:(id)a4;
-- (BOOL)switcherContentControllerControlsHomeScreenContents:(id)a3;
-- (BOOL)switcherContentControllerControlsWallpaper:(id)a3;
-- (BOOL)switcherContentControllerHasMultipleDisplays:(id)a3;
-- (CGAffineTransform)switcherContentController:(SEL)a3 transformForCardUnderSheetForBoundsSize:(id)a4;
-- (CGRect)leadingStatusBarPartFrameForSwitcherContentController:(id)a3;
-- (CGRect)switcherContentController:(id)a3 frameForCenterItemWithConfiguration:(int64_t)a4 interfaceOrientation:(int64_t)a5;
-- (CGRect)switcherContentController:(id)a3 frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a4 floatingConfiguration:(int64_t)a5;
-- (CGRect)switcherContentController:(id)a3 frameForItemWithRole:(int64_t)a4 inMainAppLayout:(id)a5 interfaceOrientation:(int64_t)a6;
-- (CGRect)trailingStatusBarPartFrameForSwitcherContentController:(id)a3;
-- (SBDisplayItemSlideOverConfiguration)slideOverConfigurationOnAnySwitcherForDisplayItem:(SEL)a3;
+- (BOOL)isDisplayEmbeddedForSwitcherContentController:(id)controller;
+- (BOOL)isInAppStatusBarRequestedHiddenForSwitcherContentController:(id)controller;
+- (BOOL)prioritizesSortOrderForAppLayout:(id)layout;
+- (BOOL)shouldPerformPreTransitionInsertionOfAppLayout:(id)layout forTransitionWithContext:(id)context;
+- (BOOL)switcherContentController:(id)controller displayItemSupportsCenterRole:(id)role;
+- (BOOL)switcherContentController:(id)controller shouldResignActiveForStartOfTransition:(id)transition;
+- (BOOL)switcherContentController:(id)controller supportsKillingOfAppLayout:(id)layout;
+- (BOOL)switcherContentController:(id)controller supportsTitleItemsForAppLayout:(id)layout;
+- (BOOL)switcherContentControllerControlsHomeScreenContents:(id)contents;
+- (BOOL)switcherContentControllerControlsWallpaper:(id)wallpaper;
+- (BOOL)switcherContentControllerHasMultipleDisplays:(id)displays;
+- (CGAffineTransform)switcherContentController:(SEL)controller transformForCardUnderSheetForBoundsSize:(id)size;
+- (CGRect)leadingStatusBarPartFrameForSwitcherContentController:(id)controller;
+- (CGRect)switcherContentController:(id)controller frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation;
+- (CGRect)switcherContentController:(id)controller frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration;
+- (CGRect)switcherContentController:(id)controller frameForItemWithRole:(int64_t)role inMainAppLayout:(id)layout interfaceOrientation:(int64_t)orientation;
+- (CGRect)trailingStatusBarPartFrameForSwitcherContentController:(id)controller;
+- (SBDisplayItemSlideOverConfiguration)slideOverConfigurationOnAnySwitcherForDisplayItem:(SEL)item;
 - (id)_activeDisplaySwitcherController;
-- (id)_appLayoutContainingDisplayItem:(id)a3;
-- (id)_appLayoutFromPrimaryLayoutItem:(id)a3 sideLayoutElement:(id)a4 configuration:(int64_t)a5;
+- (id)_appLayoutContainingDisplayItem:(id)item;
+- (id)_appLayoutFromPrimaryLayoutItem:(id)item sideLayoutElement:(id)element configuration:(int64_t)configuration;
 - (id)_centerWindowSheetMetricsCache;
 - (id)_defaultSwitcherController;
 - (id)_embeddedDisplaySwitcherController;
-- (id)_entityForDisplayItem:(id)a3 displayIdentity:(id)a4;
-- (id)_entityForDisplayItem:(id)a3 sceneHandleProvider:(id)a4 displayIdentity:(id)a5;
-- (id)_entityForDisplayItem:(id)a3 switcherController:(id)a4;
-- (id)_homeScreenAppearanceControllerForSwitcherContentController:(id)a3;
+- (id)_entityForDisplayItem:(id)item displayIdentity:(id)identity;
+- (id)_entityForDisplayItem:(id)item sceneHandleProvider:(id)provider displayIdentity:(id)identity;
+- (id)_entityForDisplayItem:(id)item switcherController:(id)controller;
+- (id)_homeScreenAppearanceControllerForSwitcherContentController:(id)controller;
 - (id)_init;
 - (id)_medusaKeyboardSceneHandle;
-- (id)_modelRemovalRequestForDisplayItemResolutionResults:(id)a3;
-- (id)_nonHiddenAppLayoutsForDisplayItem:(id)a3;
-- (id)_persistenceIdentifiersForBundleIdentifier:(id)a3 onlyIncludeLaunchableIdentifiers:(BOOL)a4;
-- (id)_resultsForDisplayItemRemovalResolutionRequest:(id)a3 preferredAppLayoutForRemovalAnimationIfAny:(id)a4;
-- (id)_switcherControllerForContentViewController:(id)a3;
-- (id)_switcherControllerForDisplayItem:(id)a3;
-- (id)_switcherControllerForTransitionRequest:(id)a3;
-- (id)_switcherControllerPassingTest:(id)a3;
-- (id)_switcherModelRemovalResultsForDisplayItemRemovalResolutionRequest:(id)a3;
-- (id)_switcherModelRemovalResultsForRequest:(id)a3 forReason:(int64_t)a4;
+- (id)_modelRemovalRequestForDisplayItemResolutionResults:(id)results;
+- (id)_nonHiddenAppLayoutsForDisplayItem:(id)item;
+- (id)_persistenceIdentifiersForBundleIdentifier:(id)identifier onlyIncludeLaunchableIdentifiers:(BOOL)identifiers;
+- (id)_resultsForDisplayItemRemovalResolutionRequest:(id)request preferredAppLayoutForRemovalAnimationIfAny:(id)any;
+- (id)_switcherControllerForContentViewController:(id)controller;
+- (id)_switcherControllerForDisplayItem:(id)item;
+- (id)_switcherControllerForTransitionRequest:(id)request;
+- (id)_switcherControllerPassingTest:(id)test;
+- (id)_switcherModelRemovalResultsForDisplayItemRemovalResolutionRequest:(id)request;
+- (id)_switcherModelRemovalResultsForRequest:(id)request forReason:(int64_t)reason;
 - (id)_transientOverlayPresentationManager;
-- (id)acquireAllowHiddenAppAssertionForBundleIdentifier:(id)a3 reason:(id)a4;
-- (id)activeTransientOverlayPresentedAppLayoutForSwitcherContentController:(id)a3;
-- (id)activeTransientOverlayPresentedAppLayoutForWindowScene:(id)a3;
-- (id)animationControllerForTransitionRequest:(id)a3;
-- (id)animationControllerForTransitionRequest:(id)a3 ancillaryTransitionRequests:(id)a4;
-- (id)appLayoutForSwitcherContentControllerCorrespondingToDisplayOrdinal:(int64_t)a3;
-- (id)appLayoutForWorkspaceTransientOverlay:(id)a3 windowScene:(id)a4;
-- (id)appLayoutsForSwitcherContentController:(id)a3;
-- (id)appLayoutsForSwitcherController:(id)a3;
-- (id)convertAppLayout:(id)a3 fromSwitcherController:(id)a4 toSwitcherController:(id)a5;
-- (id)createWorkspaceTransientOverlayForAppLayout:(id)a3;
-- (id)desktopSpaceItemsForSwitcherContentController:(id)a3;
-- (id)displayConfigurationsOfOtherDisplaysForSwitcherContentController:(id)a3;
+- (id)acquireAllowHiddenAppAssertionForBundleIdentifier:(id)identifier reason:(id)reason;
+- (id)activeTransientOverlayPresentedAppLayoutForSwitcherContentController:(id)controller;
+- (id)activeTransientOverlayPresentedAppLayoutForWindowScene:(id)scene;
+- (id)animationControllerForTransitionRequest:(id)request;
+- (id)animationControllerForTransitionRequest:(id)request ancillaryTransitionRequests:(id)requests;
+- (id)appLayoutForSwitcherContentControllerCorrespondingToDisplayOrdinal:(int64_t)ordinal;
+- (id)appLayoutForWorkspaceTransientOverlay:(id)overlay windowScene:(id)scene;
+- (id)appLayoutsForSwitcherContentController:(id)controller;
+- (id)appLayoutsForSwitcherController:(id)controller;
+- (id)convertAppLayout:(id)layout fromSwitcherController:(id)controller toSwitcherController:(id)switcherController;
+- (id)createWorkspaceTransientOverlayForAppLayout:(id)layout;
+- (id)desktopSpaceItemsForSwitcherContentController:(id)controller;
+- (id)displayConfigurationsOfOtherDisplaysForSwitcherContentController:(id)controller;
 - (id)draggingAppLayouts;
-- (id)guardedForegroundDisplayItemsForSwitcherContentController:(id)a3;
-- (id)knownWindowsForAppBundleIdentifier:(id)a3;
-- (id)matchingIconViewForIconView:(id)a3;
-- (id)proposedAppLayoutsForWindowDragForSwitcherContentController:(id)a3;
-- (id)sceneRelevancyManagerForSwitcherContentController:(id)a3;
-- (id)slideOverItemForSwitcherContentController:(id)a3;
-- (id)switcherContentController:(id)a3 demoLayoutAttributesForDisplayItem:(id)a4;
-- (id)switcherContentController:(id)a3 deviceApplicationSceneHandleForDisplayItem:(id)a4;
-- (id)switcherContentController:(id)a3 hiddenAppLayoutsForBundleIdentifier:(id)a4;
-- (id)switcherContentController:(id)a3 visibleAppLayoutsForBundleIdentifier:(id)a4;
-- (id)switcherContentController:(id)a3 visibleDisplayItemsForBundleIdentifier:(id)a4;
-- (id)switcherControllerForAppLayout:(id)a3;
-- (id)switcherControllerForDisplayItem:(id)a3;
-- (id)switcherControllerForWindowScene:(id)a3;
-- (id)switcherGestureManagerForSwitcherContentController:(id)a3;
-- (id)transitionEventForContext:(id)a3 identifier:(id)a4 phase:(unint64_t)a5 animated:(BOOL)a6;
-- (id)windowManagementContextForSwitcherContentController:(id)a3;
-- (id)windowSceneForSwitcherContentController:(id)a3;
-- (id)windowingConfigurationForSwitcherContentControllerCorrespondingToDisplayOrdinal:(int64_t)a3;
+- (id)guardedForegroundDisplayItemsForSwitcherContentController:(id)controller;
+- (id)knownWindowsForAppBundleIdentifier:(id)identifier;
+- (id)matchingIconViewForIconView:(id)view;
+- (id)proposedAppLayoutsForWindowDragForSwitcherContentController:(id)controller;
+- (id)sceneRelevancyManagerForSwitcherContentController:(id)controller;
+- (id)slideOverItemForSwitcherContentController:(id)controller;
+- (id)switcherContentController:(id)controller demoLayoutAttributesForDisplayItem:(id)item;
+- (id)switcherContentController:(id)controller deviceApplicationSceneHandleForDisplayItem:(id)item;
+- (id)switcherContentController:(id)controller hiddenAppLayoutsForBundleIdentifier:(id)identifier;
+- (id)switcherContentController:(id)controller visibleAppLayoutsForBundleIdentifier:(id)identifier;
+- (id)switcherContentController:(id)controller visibleDisplayItemsForBundleIdentifier:(id)identifier;
+- (id)switcherControllerForAppLayout:(id)layout;
+- (id)switcherControllerForDisplayItem:(id)item;
+- (id)switcherControllerForWindowScene:(id)scene;
+- (id)switcherGestureManagerForSwitcherContentController:(id)controller;
+- (id)transitionEventForContext:(id)context identifier:(id)identifier phase:(unint64_t)phase animated:(BOOL)animated;
+- (id)windowManagementContextForSwitcherContentController:(id)controller;
+- (id)windowSceneForSwitcherContentController:(id)controller;
+- (id)windowingConfigurationForSwitcherContentControllerCorrespondingToDisplayOrdinal:(int64_t)ordinal;
 - (int64_t)_overrideWindowActiveInterfaceOrientation;
-- (int64_t)_switcherDisplayItemRemovalIntentTypeForEntity:(id)a3 removalContext:(id)a4;
-- (int64_t)homeScreenInterfaceOrientationForContentController:(id)a3;
-- (int64_t)nextDisplayItemInteractionTimeForSwitcherContentController:(id)a3;
-- (int64_t)switcherInterfaceOrientationForSwitcherContentController:(id)a3;
-- (unint64_t)maximumNumberOfScenesOnStageForSwitcherContentController:(id)a3;
-- (void)_acquireAssertion:(id)a3;
-- (void)_activateBetaLaunchHandlesIfNeededWithAppInfo:(id)a3 processHandle:(id)a4;
-- (void)_activateNeighboringAppLayoutRequiringActiveAppLayout:(BOOL)a3 appLayoutEnvironment:(int64_t)a4 inForwardDirection:(BOOL)a5 windowScene:(id)a6 eventLabel:(id)a7;
-- (void)_addAppLayoutToFront:(id)a3 removeAppLayout:(id)a4;
-- (void)_applicationDidExit:(id)a3;
-- (void)_asyncOnStoreAppLaunchUIActivationQueue:(id)a3;
-- (void)_beginDisplayLayoutTransitionForSwitcherController:(id)a3 reason:(id)a4;
+- (int64_t)_switcherDisplayItemRemovalIntentTypeForEntity:(id)entity removalContext:(id)context;
+- (int64_t)homeScreenInterfaceOrientationForContentController:(id)controller;
+- (int64_t)nextDisplayItemInteractionTimeForSwitcherContentController:(id)controller;
+- (int64_t)switcherInterfaceOrientationForSwitcherContentController:(id)controller;
+- (unint64_t)maximumNumberOfScenesOnStageForSwitcherContentController:(id)controller;
+- (void)_acquireAssertion:(id)assertion;
+- (void)_activateBetaLaunchHandlesIfNeededWithAppInfo:(id)info processHandle:(id)handle;
+- (void)_activateNeighboringAppLayoutRequiringActiveAppLayout:(BOOL)layout appLayoutEnvironment:(int64_t)environment inForwardDirection:(BOOL)direction windowScene:(id)scene eventLabel:(id)label;
+- (void)_addAppLayoutToFront:(id)front removeAppLayout:(id)layout;
+- (void)_applicationDidExit:(id)exit;
+- (void)_asyncOnStoreAppLaunchUIActivationQueue:(id)queue;
+- (void)_beginDisplayLayoutTransitionForSwitcherController:(id)controller reason:(id)reason;
 - (void)_buildAppLayoutCache;
-- (void)_cancelPIPForDisplayItem:(id)a3;
-- (void)_clearLayoutStateSnapshotForWindowScene:(id)a3;
-- (void)_configureRequest:(id)a3 forSwitcherTransitionRequest:(id)a4 withEventLabel:(id)a5;
-- (void)_deleteAppLayoutsMatchingBundleIdentifier:(id)a3;
-- (void)_endDisplayLayoutTransitionForSwitcherController:(id)a3;
-- (void)_focusNewlyAddedApplicationIfNeededTransitioningFromLayoutState:(id)a3 toLayoutState:(id)a4 windowScene:(id)a5;
-- (void)_handleFocusedIconSwitcherShortcutAction:(int64_t)a3 bundleIdentifier:(id)a4 windowScene:(id)a5;
-- (void)_insertAppLayout:(id)a3 atIndex:(unint64_t)a4 contentViewController:(id)a5 modelMutationBlock:(id)a6 completion:(id)a7;
-- (void)_insertAppLayouts:(id)a3 atIndexes:(id)a4 contentViewController:(id)a5 modelMutationBlock:(id)a6 completion:(id)a7;
-- (void)_insertCardForDisplayIdentifier:(id)a3 atIndex:(unint64_t)a4;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_lockKeyboardFocusForSwitcherController:(id)a3;
-- (void)_modifyModelWithDropContext:(id)a3;
+- (void)_cancelPIPForDisplayItem:(id)item;
+- (void)_clearLayoutStateSnapshotForWindowScene:(id)scene;
+- (void)_configureRequest:(id)request forSwitcherTransitionRequest:(id)transitionRequest withEventLabel:(id)label;
+- (void)_deleteAppLayoutsMatchingBundleIdentifier:(id)identifier;
+- (void)_endDisplayLayoutTransitionForSwitcherController:(id)controller;
+- (void)_focusNewlyAddedApplicationIfNeededTransitioningFromLayoutState:(id)state toLayoutState:(id)layoutState windowScene:(id)scene;
+- (void)_handleFocusedIconSwitcherShortcutAction:(int64_t)action bundleIdentifier:(id)identifier windowScene:(id)scene;
+- (void)_insertAppLayout:(id)layout atIndex:(unint64_t)index contentViewController:(id)controller modelMutationBlock:(id)block completion:(id)completion;
+- (void)_insertAppLayouts:(id)layouts atIndexes:(id)indexes contentViewController:(id)controller modelMutationBlock:(id)block completion:(id)completion;
+- (void)_insertCardForDisplayIdentifier:(id)identifier atIndex:(unint64_t)index;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_lockKeyboardFocusForSwitcherController:(id)controller;
+- (void)_modifyModelWithDropContext:(id)context;
 - (void)_noteUIWillLock;
-- (void)_performSceneDestructionForModelRemovalResults:(id)a3;
-- (void)_presentStoreKitSheetIfNeededWithAppInfo:(id)a3 processHandle:(id)a4;
+- (void)_performSceneDestructionForModelRemovalResults:(id)results;
+- (void)_presentStoreKitSheetIfNeededWithAppInfo:(id)info processHandle:(id)handle;
 - (void)_purgeHiddenAppLayoutsForUILock;
 - (void)_rebuildAppListCache;
 - (void)_rebuildCurrentWindowingModeCompatibleAppLayoutsIfNecessary;
 - (void)_releaseKeyboardFocus;
-- (void)_removeAcquiredTransientOverlayViewController:(id)a3 windowScene:(id)a4;
-- (void)_removeAppLayout:(id)a3 forReason:(int64_t)a4;
-- (void)_removeCardForDisplayIdentifier:(id)a3;
-- (void)_removeDisplayItem:(id)a3 forReason:(int64_t)a4 preferredAppLayoutForRemovalAnimationIfAny:(id)a5 originatingSwitcherContentController:(id)a6;
-- (void)_reqlinquishAssertion:(id)a3;
-- (void)_requestAutomaticUpdateAuthorizationIfNecessaryWithAppInfo:(id)a3 processHandle:(id)a4;
-- (void)_restoreLayoutStateSnapshotForWindowScene:(id)a3 completion:(id)a4;
-- (void)_setAsynchronousRenderingEnabled:(BOOL)a3 withMinificationFilter:(BOOL)a4 forLayerTarget:(id)a5 presentationManager:(id)a6;
-- (void)_setContainerStatusBarHidden:(BOOL)a3 partsHidden:(unint64_t)a4 animationDuration:(double)a5 usingAssertion:(id *)a6 reason:(id)a7 windowScene:(id)a8;
-- (void)_setInterfaceOrientationFromUserResizingIfSupported:(int64_t)a3 forSceneHandle:(id)a4;
-- (void)_switcherModelChanged:(id)a3;
-- (void)_switcherServiceAdded:(id)a3;
-- (void)_switcherServiceRemoved:(id)a3;
-- (void)_takeLayoutStateSnapshotForWindowScene:(id)a3 withPreviousLayoutState:(id)a4;
-- (void)_updateAssertion:(id)a3;
+- (void)_removeAcquiredTransientOverlayViewController:(id)controller windowScene:(id)scene;
+- (void)_removeAppLayout:(id)layout forReason:(int64_t)reason;
+- (void)_removeCardForDisplayIdentifier:(id)identifier;
+- (void)_removeDisplayItem:(id)item forReason:(int64_t)reason preferredAppLayoutForRemovalAnimationIfAny:(id)any originatingSwitcherContentController:(id)controller;
+- (void)_reqlinquishAssertion:(id)assertion;
+- (void)_requestAutomaticUpdateAuthorizationIfNecessaryWithAppInfo:(id)info processHandle:(id)handle;
+- (void)_restoreLayoutStateSnapshotForWindowScene:(id)scene completion:(id)completion;
+- (void)_setAsynchronousRenderingEnabled:(BOOL)enabled withMinificationFilter:(BOOL)filter forLayerTarget:(id)target presentationManager:(id)manager;
+- (void)_setContainerStatusBarHidden:(BOOL)hidden partsHidden:(unint64_t)partsHidden animationDuration:(double)duration usingAssertion:(id *)assertion reason:(id)reason windowScene:(id)scene;
+- (void)_setInterfaceOrientationFromUserResizingIfSupported:(int64_t)supported forSceneHandle:(id)handle;
+- (void)_switcherModelChanged:(id)changed;
+- (void)_switcherServiceAdded:(id)added;
+- (void)_switcherServiceRemoved:(id)removed;
+- (void)_takeLayoutStateSnapshotForWindowScene:(id)scene withPreviousLayoutState:(id)state;
+- (void)_updateAssertion:(id)assertion;
 - (void)_updateBestAppSuggestion;
-- (void)_updateHomeScreenDisplayLayoutElementForLayoutState:(id)a3 switcherController:(id)a4;
+- (void)_updateHomeScreenDisplayLayoutElementForLayoutState:(id)state switcherController:(id)controller;
 - (void)_updateKeyboardHomeAffordanceAssertion;
 - (void)_warmAppInfoForAppsInList;
-- (void)addAcquiredTransientOverlayViewController:(id)a3 forAppLayout:(id)a4 windowScene:(id)a5;
-- (void)addAppLayoutForDisplayItem:(id)a3 windowScene:(id)a4 completion:(id)a5;
-- (void)addAppLayoutForTransientOverlayViewController:(id)a3 windowScene:(id)a4;
-- (void)addCenterRoleAppLayoutForDisplayItem:(id)a3 windowScene:(id)a4 completion:(id)a5;
-- (void)appSwitcherModel:(id)a3 didMoveAppLayoutToFront:(id)a4;
-- (void)appSwitcherModel:(id)a3 didRemoveAppLayoutForFallingOffList:(id)a4;
-- (void)beginCoordinatingSwitcherController:(id)a3 options:(unint64_t)a4;
-- (void)betaLaunchHandle:(id)a3 activateIfNeededEndedWithResult:(BOOL)a4;
-- (void)cancelActiveGestureForSwitcherContentController:(id)a3;
-- (void)cleanUpAfterCoordinatedLayoutStateTransitionWithContext:(id)a3;
-- (void)configureSwitcherStateForAccidentalActivationMitigationSession:(id)a3 completion:(id)a4;
+- (void)addAcquiredTransientOverlayViewController:(id)controller forAppLayout:(id)layout windowScene:(id)scene;
+- (void)addAppLayoutForDisplayItem:(id)item windowScene:(id)scene completion:(id)completion;
+- (void)addAppLayoutForTransientOverlayViewController:(id)controller windowScene:(id)scene;
+- (void)addCenterRoleAppLayoutForDisplayItem:(id)item windowScene:(id)scene completion:(id)completion;
+- (void)appSwitcherModel:(id)model didMoveAppLayoutToFront:(id)front;
+- (void)appSwitcherModel:(id)model didRemoveAppLayoutForFallingOffList:(id)list;
+- (void)beginCoordinatingSwitcherController:(id)controller options:(unint64_t)options;
+- (void)betaLaunchHandle:(id)handle activateIfNeededEndedWithResult:(BOOL)result;
+- (void)cancelActiveGestureForSwitcherContentController:(id)controller;
+- (void)cleanUpAfterCoordinatedLayoutStateTransitionWithContext:(id)context;
+- (void)configureSwitcherStateForAccidentalActivationMitigationSession:(id)session completion:(id)completion;
 - (void)dealloc;
-- (void)endCoordinatingSwitcherController:(id)a3 options:(unint64_t)a4;
-- (void)enumerateSwitcherControllersWithBlock:(id)a3;
-- (void)eventSource:(id)a3 userDeletedWebBookmark:(id)a4;
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4;
-- (void)failMultitaskingGesturesForReason:(id)a3;
-- (void)fluidSwitcherGestureManager:(id)a3 clickReceivedForHomeGrabberView:(id)a4;
-- (void)fluidSwitcherGestureManager:(id)a3 didBeginDraggingWindowWithSceneIdentifier:(id)a4;
-- (void)fluidSwitcherGestureManager:(id)a3 didBeginGesture:(id)a4;
-- (void)fluidSwitcherGestureManager:(id)a3 didEndGesture:(id)a4;
-- (void)fluidSwitcherGestureManager:(id)a3 didPlatterizeWindowDragWithSceneIdentifier:(id)a4;
-- (void)fluidSwitcherGestureManager:(id)a3 didUpdateGesture:(id)a4;
-- (void)fluidSwitcherGestureManager:(id)a3 tapReceivedForGrabberTongueAtEdge:(unint64_t)a4;
-- (void)fluidSwitcherGestureManager:(id)a3 willEndDraggingWindowWithSceneIdentifier:(id)a4;
-- (void)handleApplicationSceneEntityDestructionIntent:(id)a3 forEntities:(id)a4;
-- (void)keyboardFocusController:(id)a3 externalSceneDidAcquireFocus:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4;
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4;
-- (void)noteKeyboardIsForMedusaWithOwningScene:(id)a3;
+- (void)endCoordinatingSwitcherController:(id)controller options:(unint64_t)options;
+- (void)enumerateSwitcherControllersWithBlock:(id)block;
+- (void)eventSource:(id)source userDeletedWebBookmark:(id)bookmark;
+- (void)eventSource:(id)source userTouchedApplication:(id)application;
+- (void)failMultitaskingGesturesForReason:(id)reason;
+- (void)fluidSwitcherGestureManager:(id)manager clickReceivedForHomeGrabberView:(id)view;
+- (void)fluidSwitcherGestureManager:(id)manager didBeginDraggingWindowWithSceneIdentifier:(id)identifier;
+- (void)fluidSwitcherGestureManager:(id)manager didBeginGesture:(id)gesture;
+- (void)fluidSwitcherGestureManager:(id)manager didEndGesture:(id)gesture;
+- (void)fluidSwitcherGestureManager:(id)manager didPlatterizeWindowDragWithSceneIdentifier:(id)identifier;
+- (void)fluidSwitcherGestureManager:(id)manager didUpdateGesture:(id)gesture;
+- (void)fluidSwitcherGestureManager:(id)manager tapReceivedForGrabberTongueAtEdge:(unint64_t)edge;
+- (void)fluidSwitcherGestureManager:(id)manager willEndDraggingWindowWithSceneIdentifier:(id)identifier;
+- (void)handleApplicationSceneEntityDestructionIntent:(id)intent forEntities:(id)entities;
+- (void)keyboardFocusController:(id)controller externalSceneDidAcquireFocus:(id)focus;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context;
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context;
+- (void)noteKeyboardIsForMedusaWithOwningScene:(id)scene;
 - (void)noteKeyboardIsNotForMedusa;
-- (void)performKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4 orSceneIdentifier:(id)a5 windowScene:(id)a6;
-- (void)prepareForCoordinatedLayoutStateTransitionWithContext:(id)a3;
-- (void)presentContinuousExposeStripRevealGrabberTongueImmediatelyForSwitcherContentController:(id)a3;
+- (void)performKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier orSceneIdentifier:(id)sceneIdentifier windowScene:(id)scene;
+- (void)prepareForCoordinatedLayoutStateTransitionWithContext:(id)context;
+- (void)presentContinuousExposeStripRevealGrabberTongueImmediatelyForSwitcherContentController:(id)controller;
 - (void)programmaticSwitchAppGestureMoveToLeft;
 - (void)programmaticSwitchAppGestureMoveToRight;
-- (void)removeAppLayoutForDisplayItem:(id)a3 shouldDestroyScene:(BOOL)a4;
-- (void)removeAppLayoutTransientOverlayViewController:(id)a3 windowScene:(id)a4;
-- (void)resetLayoutAttributesWithCompletion:(id)a3;
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5;
-- (void)setActiveGestureTransaction:(id)a3;
-- (void)setLiveContentOverlayUpdatesSuspended:(BOOL)a3;
-- (void)switcherContentController:(id)a3 activatedBestAppSuggestion:(id)a4;
-- (void)switcherContentController:(id)a3 deletedDisplayItem:(id)a4 inAppLayout:(id)a5 forReason:(int64_t)a6;
-- (void)switcherContentController:(id)a3 layoutStateTransitionDidEndWithTransitionContext:(id)a4;
-- (void)switcherContentController:(id)a3 moveDisplayItemFromOtherDisplay:(id)a4;
-- (void)switcherContentController:(id)a3 moveDisplayItemOutOfSlideOver:(id)a4;
-- (void)switcherContentController:(id)a3 moveDisplayItemToSlideOver:(id)a4;
-- (void)switcherContentController:(id)a3 performTransitionWithRequest:(id)a4 gestureInitiated:(BOOL)a5;
-- (void)switcherContentController:(id)a3 removeDisplayItemsFromDesktop:(id)a4;
-- (void)switcherContentController:(id)a3 reopenHiddenAppLayoutsWithBundleIdentifier:(id)a4;
-- (void)switcherContentController:(id)a3 requestDismissalForHomeScreenBackgroundTaps:(BOOL)a4;
-- (void)switcherContentController:(id)a3 requestNewWindowForBundleIdentifier:(id)a4;
-- (void)switcherContentController:(id)a3 setCacheAsynchronousRenderingSurfaces:(BOOL)a4;
-- (void)switcherContentController:(id)a3 setContainerStatusBarHidden:(BOOL)a4 partsHidden:(unint64_t)a5 animationDuration:(double)a6;
-- (void)switcherContentController:(id)a3 setHomeScreenAlpha:(double)a4 withAnimationMode:(int64_t)a5 completion:(id)a6;
-- (void)switcherContentController:(id)a3 setHomeScreenBackdropBlurMaterialRecipeName:(id)a4 withAnimationMode:(int64_t)a5 completion:(id)a6;
-- (void)switcherContentController:(id)a3 setHomeScreenBackdropBlurProgress:(double)a4 withAnimationMode:(int64_t)a5 completion:(id)a6;
-- (void)switcherContentController:(id)a3 setHomeScreenBackdropBlurType:(int64_t)a4;
-- (void)switcherContentController:(id)a3 setHomeScreenDimmingAlpha:(double)a4 withSettings:(id)a5 animationMode:(int64_t)a6 completion:(id)a7;
-- (void)switcherContentController:(id)a3 setHomeScreenScale:(double)a4 withAnimationMode:(int64_t)a5 completion:(id)a6;
-- (void)switcherContentController:(id)a3 setInterfaceOrientation:(int64_t)a4;
-- (void)switcherContentController:(id)a3 setInterfaceOrientationFromUserResizing:(int64_t)a4 forDisplayItem:(id)a5;
-- (void)switcherContentController:(id)a3 setPointerInteractionsEnabled:(BOOL)a4;
-- (void)switcherContentController:(id)a3 setWallpaperScale:(double)a4 withAnimationMode:(int64_t)a5 completion:(id)a6;
-- (void)switcherContentController:(id)a3 setWallpaperStyle:(int64_t)a4;
-- (void)switcherContentControllerDidUpdateVisibleHomeAffordances:(id)a3;
-- (void)switcherContentControllerWantsToDismissMenuBar:(id)a3;
-- (void)switcherContentControllerWantsToPeekMenuBar:(id)a3;
-- (void)switcherContentControllerWantsToUpdateMenuBarVisibility:(id)a3;
-- (void)switcherControllerViewWillAppear:(id)a3 animated:(BOOL)a4;
-- (void)switcherDemoFilteringControllerDidChangeHiddenApplicationBundleIDs:(id)a3;
-- (void)tickleContinuousExposeStripRevealGrabberTongueIfVisibleForSwitcherContentController:(id)a3;
-- (void)transactionDidComplete:(id)a3;
-- (void)updateUserInteractionEnabledForSwitcherContentController:(id)a3;
-- (void)updateWindowVisibilityForSwitcherContentController:(id)a3;
-- (void)watchdog:(id)a3 requestsTerminationOf:(id)a4 forReason:(id)a5;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (void)removeAppLayoutForDisplayItem:(id)item shouldDestroyScene:(BOOL)scene;
+- (void)removeAppLayoutTransientOverlayViewController:(id)controller windowScene:(id)scene;
+- (void)resetLayoutAttributesWithCompletion:(id)completion;
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings;
+- (void)setActiveGestureTransaction:(id)transaction;
+- (void)setLiveContentOverlayUpdatesSuspended:(BOOL)suspended;
+- (void)switcherContentController:(id)controller activatedBestAppSuggestion:(id)suggestion;
+- (void)switcherContentController:(id)controller deletedDisplayItem:(id)item inAppLayout:(id)layout forReason:(int64_t)reason;
+- (void)switcherContentController:(id)controller layoutStateTransitionDidEndWithTransitionContext:(id)context;
+- (void)switcherContentController:(id)controller moveDisplayItemFromOtherDisplay:(id)display;
+- (void)switcherContentController:(id)controller moveDisplayItemOutOfSlideOver:(id)over;
+- (void)switcherContentController:(id)controller moveDisplayItemToSlideOver:(id)over;
+- (void)switcherContentController:(id)controller performTransitionWithRequest:(id)request gestureInitiated:(BOOL)initiated;
+- (void)switcherContentController:(id)controller removeDisplayItemsFromDesktop:(id)desktop;
+- (void)switcherContentController:(id)controller reopenHiddenAppLayoutsWithBundleIdentifier:(id)identifier;
+- (void)switcherContentController:(id)controller requestDismissalForHomeScreenBackgroundTaps:(BOOL)taps;
+- (void)switcherContentController:(id)controller requestNewWindowForBundleIdentifier:(id)identifier;
+- (void)switcherContentController:(id)controller setCacheAsynchronousRenderingSurfaces:(BOOL)surfaces;
+- (void)switcherContentController:(id)controller setContainerStatusBarHidden:(BOOL)hidden partsHidden:(unint64_t)partsHidden animationDuration:(double)duration;
+- (void)switcherContentController:(id)controller setHomeScreenAlpha:(double)alpha withAnimationMode:(int64_t)mode completion:(id)completion;
+- (void)switcherContentController:(id)controller setHomeScreenBackdropBlurMaterialRecipeName:(id)name withAnimationMode:(int64_t)mode completion:(id)completion;
+- (void)switcherContentController:(id)controller setHomeScreenBackdropBlurProgress:(double)progress withAnimationMode:(int64_t)mode completion:(id)completion;
+- (void)switcherContentController:(id)controller setHomeScreenBackdropBlurType:(int64_t)type;
+- (void)switcherContentController:(id)controller setHomeScreenDimmingAlpha:(double)alpha withSettings:(id)settings animationMode:(int64_t)mode completion:(id)completion;
+- (void)switcherContentController:(id)controller setHomeScreenScale:(double)scale withAnimationMode:(int64_t)mode completion:(id)completion;
+- (void)switcherContentController:(id)controller setInterfaceOrientation:(int64_t)orientation;
+- (void)switcherContentController:(id)controller setInterfaceOrientationFromUserResizing:(int64_t)resizing forDisplayItem:(id)item;
+- (void)switcherContentController:(id)controller setPointerInteractionsEnabled:(BOOL)enabled;
+- (void)switcherContentController:(id)controller setWallpaperScale:(double)scale withAnimationMode:(int64_t)mode completion:(id)completion;
+- (void)switcherContentController:(id)controller setWallpaperStyle:(int64_t)style;
+- (void)switcherContentControllerDidUpdateVisibleHomeAffordances:(id)affordances;
+- (void)switcherContentControllerWantsToDismissMenuBar:(id)bar;
+- (void)switcherContentControllerWantsToPeekMenuBar:(id)bar;
+- (void)switcherContentControllerWantsToUpdateMenuBarVisibility:(id)visibility;
+- (void)switcherControllerViewWillAppear:(id)appear animated:(BOOL)animated;
+- (void)switcherDemoFilteringControllerDidChangeHiddenApplicationBundleIDs:(id)ds;
+- (void)tickleContinuousExposeStripRevealGrabberTongueIfVisibleForSwitcherContentController:(id)controller;
+- (void)transactionDidComplete:(id)complete;
+- (void)updateUserInteractionEnabledForSwitcherContentController:(id)controller;
+- (void)updateWindowVisibilityForSwitcherContentController:(id)controller;
+- (void)watchdog:(id)watchdog requestsTerminationOf:(id)of forReason:(id)reason;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBMainSwitcherControllerCoordinator
@@ -263,8 +263,8 @@
 
     if (*(v8 + 24) == 1)
     {
-      v4 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v4 postNotificationName:@"SBMainSwitcherSwitcherSharedInstanceCreatedNotification" object:a1];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:@"SBMainSwitcherSwitcherSharedInstanceCreatedNotification" object:self];
     }
 
     v3 = __sharedInstance_2;
@@ -293,12 +293,12 @@
   v2 = [(SBAppSwitcherModel *)self->_mainSwitcherModel appLayoutsIncludingHiddenAppLayouts:0];
   v130 = [v2 mutableCopy];
 
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v6 = [MEMORY[0x277CBEB58] set];
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v121 = 0;
   v122 = &v121;
   v123 = 0x2020000000;
@@ -307,19 +307,19 @@
   v114[1] = 3221225472;
   v114[2] = __59__SBMainSwitcherControllerCoordinator__buildAppLayoutCache__block_invoke;
   v114[3] = &unk_2783B97D0;
-  v78 = v4;
+  v78 = array2;
   v115 = v78;
   v9 = v6;
   v116 = v9;
-  v83 = v8;
+  v83 = dictionary;
   v117 = v83;
-  v75 = v5;
+  v75 = array3;
   v118 = v75;
   v10 = v7;
   v119 = v10;
   v120 = &v121;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v114];
-  v11 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v12 = v126[5];
   v107[0] = MEMORY[0x277D85DD0];
   v107[1] = 3221225472;
@@ -328,36 +328,36 @@
   v72 = v9;
   v108 = v72;
   v113 = &v121;
-  v13 = v11;
+  v13 = indexSet;
   v109 = v13;
   v73 = v10;
   v110 = v73;
-  v111 = self;
-  v84 = v3;
+  selfCopy = self;
+  v84 = array;
   v112 = v84;
   [v12 enumerateObjectsUsingBlock:v107];
   [v126[5] removeObjectsAtIndexes:v13];
   v74 = v13;
-  v14 = [(SBMainSwitcherControllerCoordinator *)self activeGestureTransaction];
-  v76 = [v14 layoutTransaction];
+  activeGestureTransaction = [(SBMainSwitcherControllerCoordinator *)self activeGestureTransaction];
+  layoutTransaction = [activeGestureTransaction layoutTransaction];
 
   v15 = objc_opt_class();
-  v16 = [v76 transitionRequest];
-  v77 = SBSafeCast(v15, v16);
+  transitionRequest = [layoutTransaction transitionRequest];
+  v77 = SBSafeCast(v15, transitionRequest);
 
   if ([v77 isCrossingDisplays])
   {
-    v17 = [v77 applicationContext];
-    v18 = [v17 layoutState];
-    v86 = [v18 appLayout];
+    applicationContext = [v77 applicationContext];
+    layoutState = [applicationContext layoutState];
+    appLayout = [layoutState appLayout];
   }
 
   else
   {
-    v86 = [v126[5] firstObject];
+    appLayout = [v126[5] firstObject];
   }
 
-  if ([v78 containsObject:v86])
+  if ([v78 containsObject:appLayout])
   {
     v19 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v78, "count")}];
     v105 = 0u;
@@ -379,7 +379,7 @@
           }
 
           v24 = *(*(&v103 + 1) + 8 * i);
-          if (([v24 isEqual:v86] & 1) != 0 || !objc_msgSend(v24, "containsAnyItemFromAppLayout:", v86))
+          if (([v24 isEqual:appLayout] & 1) != 0 || !objc_msgSend(v24, "containsAnyItemFromAppLayout:", appLayout))
           {
             [v19 addObject:v24];
           }
@@ -390,7 +390,7 @@
             v101[1] = 3221225472;
             v101[2] = __59__SBMainSwitcherControllerCoordinator__buildAppLayoutCache__block_invoke_4;
             v101[3] = &unk_2783A8C90;
-            v102 = v86;
+            v102 = appLayout;
             v25 = [v24 appLayoutWithItemsPassingTest:v101];
             if (v25)
             {
@@ -439,12 +439,12 @@
         if ((([v126[5] containsObject:v31] | v32) & 1) == 0 && (v122[3] & 1) == 0 && (objc_msgSend(v84, "containsObject:", v31) & 1) == 0)
         {
           v33 = [v83 objectForKey:v31];
-          v34 = [v33 _slideOverDisplayItem];
-          v35 = [v33 windowManagementContext];
-          v36 = [v35 isFlexibleWindowingEnabled];
-          if (v34)
+          _slideOverDisplayItem = [v33 _slideOverDisplayItem];
+          windowManagementContext = [v33 windowManagementContext];
+          isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
+          if (_slideOverDisplayItem)
           {
-            v37 = v36;
+            v37 = isFlexibleWindowingEnabled;
           }
 
           else
@@ -454,7 +454,7 @@
 
           if (v37)
           {
-            v38 = [v31 appLayoutByRemovingItemInLayoutRole:{objc_msgSend(v31, "layoutRoleForItem:", v34)}];
+            v38 = [v31 appLayoutByRemovingItemInLayoutRole:{objc_msgSend(v31, "layoutRoleForItem:", _slideOverDisplayItem)}];
             if (([v126[5] indexOfObject:v38] - 1) > 0x7FFFFFFFFFFFFFFDLL)
             {
               v40 = 0;
@@ -512,11 +512,11 @@
   }
 
   v46 = +[SBAppSwitcherServiceManager sharedInstance];
-  v47 = [v46 registeredServicesSnapshot];
+  registeredServicesSnapshot = [v46 registeredServicesSnapshot];
   switcherServices = self->_switcherServices;
-  self->_switcherServices = v47;
+  self->_switcherServices = registeredServicesSnapshot;
 
-  v49 = self;
+  selfCopy3 = self;
   v79 = [(SBAppSwitcherServiceSet *)self->_switcherServices count];
   if (v79)
   {
@@ -524,9 +524,9 @@
     do
     {
       v80 = v50;
-      v51 = [(SBAppSwitcherServiceSet *)v49->_switcherServices serviceAtIndex:?];
-      v52 = [v51 bundleIdentifier];
-      v81 = [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:v52];
+      v51 = [(SBAppSwitcherServiceSet *)selfCopy3->_switcherServices serviceAtIndex:?];
+      bundleIdentifier = [v51 bundleIdentifier];
+      v81 = [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:bundleIdentifier];
 
       v82 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutFromPrimaryLayoutItem:v81 sideLayoutElement:0 configuration:1];
       v53 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -549,9 +549,9 @@
             }
 
             v58 = *(*(&v91 + 1) + 8 * k);
-            v59 = [v58 bundleIdentifier];
-            v60 = [v51 bundleIdentifier];
-            v61 = [v59 isEqualToString:v60];
+            bundleIdentifier2 = [v58 bundleIdentifier];
+            bundleIdentifier3 = [v51 bundleIdentifier];
+            v61 = [bundleIdentifier2 isEqualToString:bundleIdentifier3];
 
             if (v61)
             {
@@ -572,19 +572,19 @@
       }
 
       v50 = v80 + 1;
-      v49 = self;
+      selfCopy3 = self;
     }
 
     while (v80 + 1 != v79);
   }
 
-  if (v49->_testItemForInsertion)
+  if (selfCopy3->_testItemForInsertion)
   {
-    testItemInsertionIndex = v49->_testItemInsertionIndex;
+    testItemInsertionIndex = selfCopy3->_testItemInsertionIndex;
     if (testItemInsertionIndex <= [v126[5] count])
     {
-      [v126[5] removeObject:v49->_testItemForInsertion];
-      [v126[5] insertObject:v49->_testItemForInsertion atIndex:v49->_testItemInsertionIndex];
+      [v126[5] removeObject:selfCopy3->_testItemForInsertion];
+      [v126[5] insertObject:selfCopy3->_testItemForInsertion atIndex:selfCopy3->_testItemInsertionIndex];
     }
   }
 
@@ -593,17 +593,17 @@
   v90[1] = 3221225472;
   v90[2] = __59__SBMainSwitcherControllerCoordinator__buildAppLayoutCache__block_invoke_8;
   v90[3] = &unk_2783AE1A0;
-  v90[4] = v49;
+  v90[4] = selfCopy3;
   v64 = [v63 indexOfObjectPassingTest:v90];
   if (v64 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v64 = [v126[5] count];
   }
 
-  v65 = [(NSMutableDictionary *)self->_appLayoutToEligibleTransientOverlayViewController allKeys];
+  allKeys = [(NSMutableDictionary *)self->_appLayoutToEligibleTransientOverlayViewController allKeys];
   v66 = v126[5];
-  v67 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v64, objc_msgSend(v65, "count")}];
-  [v66 insertObjects:v65 atIndexes:v67];
+  v67 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v64, objc_msgSend(allKeys, "count")}];
+  [v66 insertObjects:allKeys atIndexes:v67];
 
   v68 = v126[5];
   v69 = [MEMORY[0x277CCAA78] indexSetWithIndexesInRange:{v64, objc_msgSend(v84, "count")}];
@@ -773,13 +773,13 @@ void __84__SBMainSwitcherControllerCoordinator__notifySwitcherControllersAppLayo
 - (void)_updateBestAppSuggestion
 {
   v3 = +[SBAppSuggestionManager sharedInstance];
-  v4 = [v3 currentSuggestedApp];
+  currentSuggestedApp = [v3 currentSuggestedApp];
 
-  v5 = [v4 bundleIdentifier];
-  if ([(SBMainSwitcherControllerCoordinator *)self _isBestAppSuggestionEligibleForSwitcher:v4])
+  bundleIdentifier = [currentSuggestedApp bundleIdentifier];
+  if ([(SBMainSwitcherControllerCoordinator *)self _isBestAppSuggestionEligibleForSwitcher:currentSuggestedApp])
   {
     v6 = +[SBApplicationController sharedInstance];
-    v7 = [v6 applicationWithBundleIdentifier:v5];
+    v7 = [v6 applicationWithBundleIdentifier:bundleIdentifier];
     if (v7)
     {
       v8 = 1;
@@ -787,7 +787,7 @@ void __84__SBMainSwitcherControllerCoordinator__notifySwitcherControllersAppLayo
 
     else
     {
-      v8 = [v5 isEqualToString:@"com.apple.Siri"];
+      v8 = [bundleIdentifier isEqualToString:@"com.apple.Siri"];
     }
   }
 
@@ -796,7 +796,7 @@ void __84__SBMainSwitcherControllerCoordinator__notifySwitcherControllersAppLayo
     v8 = 0;
   }
 
-  if (v4)
+  if (currentSuggestedApp)
   {
     v9 = v8 == 0;
   }
@@ -812,7 +812,7 @@ void __84__SBMainSwitcherControllerCoordinator__notifySwitcherControllersAppLayo
     v10[1] = 3221225472;
     v10[2] = __63__SBMainSwitcherControllerCoordinator__updateBestAppSuggestion__block_invoke;
     v10[3] = &unk_2783B9578;
-    v11 = v4;
+    v11 = currentSuggestedApp;
     [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v10];
   }
 }
@@ -825,26 +825,26 @@ void __63__SBMainSwitcherControllerCoordinator__updateBestAppSuggestion__block_i
 
 - (id)_embeddedDisplaySwitcherController
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 embeddedDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
 
-  v5 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v4];
+  v5 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:embeddedDisplayWindowScene];
 
   return v5;
 }
 
 + (id)_shim_activeSwitcherController
 {
-  v2 = [a1 sharedInstanceIfExists];
-  v3 = [v2 _activeDisplaySwitcherController];
+  sharedInstanceIfExists = [self sharedInstanceIfExists];
+  _activeDisplaySwitcherController = [sharedInstanceIfExists _activeDisplaySwitcherController];
 
-  return v3;
+  return _activeDisplaySwitcherController;
 }
 
 - (void)noteKeyboardIsNotForMedusa
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _medusaKeyboardSceneHandle];
-  [v3 removeObserver:self];
+  _medusaKeyboardSceneHandle = [(SBMainSwitcherControllerCoordinator *)self _medusaKeyboardSceneHandle];
+  [_medusaKeyboardSceneHandle removeObserver:self];
 
   medusaKeyboardScene = self->_medusaKeyboardScene;
   self->_medusaKeyboardScene = 0;
@@ -854,14 +854,14 @@ void __63__SBMainSwitcherControllerCoordinator__updateBestAppSuggestion__block_i
 
 - (id)_medusaKeyboardSceneHandle
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 activeDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-  v5 = [v4 sceneManager];
-  v6 = v5;
+  sceneManager = [activeDisplayWindowScene sceneManager];
+  v6 = sceneManager;
   if (self->_medusaKeyboardScene)
   {
-    v7 = [v5 existingSceneHandleForScene:?];
+    v7 = [sceneManager existingSceneHandleForScene:?];
   }
 
   else
@@ -874,25 +874,25 @@ void __63__SBMainSwitcherControllerCoordinator__updateBestAppSuggestion__block_i
 
 - (void)_updateKeyboardHomeAffordanceAssertion
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _shouldTakeKeyboardHomeAffordanceAssertion];
+  _shouldTakeKeyboardHomeAffordanceAssertion = [(SBMainSwitcherControllerCoordinator *)self _shouldTakeKeyboardHomeAffordanceAssertion];
   keyboardHomeAffordanceAssertion = self->_keyboardHomeAffordanceAssertion;
-  if (v3)
+  if (_shouldTakeKeyboardHomeAffordanceAssertion)
   {
     if (keyboardHomeAffordanceAssertion)
     {
       return;
     }
 
-    v5 = [SBApp windowSceneManager];
-    v11 = [v5 activeDisplayWindowScene];
+    windowSceneManager = [SBApp windowSceneManager];
+    activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-    v6 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v11];
-    v7 = [v6 switcherWindow];
-    v8 = [SBKeyboardHomeAffordanceAssertion assertionForGestureWindow:v7];
+    v6 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:activeDisplayWindowScene];
+    switcherWindow = [v6 switcherWindow];
+    v8 = [SBKeyboardHomeAffordanceAssertion assertionForGestureWindow:switcherWindow];
     v9 = self->_keyboardHomeAffordanceAssertion;
     self->_keyboardHomeAffordanceAssertion = v8;
 
-    v10 = v11;
+    v10 = activeDisplayWindowScene;
   }
 
   else
@@ -911,9 +911,9 @@ void __63__SBMainSwitcherControllerCoordinator__updateBestAppSuggestion__block_i
 - (BOOL)_shouldTakeKeyboardHomeAffordanceAssertion
 {
   v3 = SBFEffectiveHomeButtonType();
-  v4 = [(SBFHomeGrabberSettings *)self->_homeGrabberSettings isEnabled];
+  isEnabled = [(SBFHomeGrabberSettings *)self->_homeGrabberSettings isEnabled];
   result = 0;
-  if (v3 == 2 && v4)
+  if (v3 == 2 && isEnabled)
   {
     if (self->_isKeyboardShowing && self->_medusaKeyboardScene)
     {
@@ -938,18 +938,18 @@ void __63__SBMainSwitcherControllerCoordinator__updateBestAppSuggestion__block_i
 
 - (BOOL)handleHomeButtonDoublePress
 {
-  v2 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v3 = [v2 handleHomeButtonDoublePress];
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  handleHomeButtonDoublePress = [_embeddedDisplaySwitcherController handleHomeButtonDoublePress];
 
-  return v3;
+  return handleHomeButtonDoublePress;
 }
 
 - (id)_activeDisplaySwitcherController
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 activeDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-  v5 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v4];
+  v5 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:activeDisplayWindowScene];
 
   return v5;
 }
@@ -976,10 +976,10 @@ void __53__SBMainSwitcherControllerCoordinator_sharedInstance__block_invoke(uint
     v2->_mainSwitcherModel = v3;
 
     [(SBAppSwitcherModel *)v2->_mainSwitcherModel setDelegate:v2];
-    v5 = [(SBAppSwitcherModel *)v2->_mainSwitcherModel _recentAppLayoutsController];
-    v6 = [v5 layoutAttributesProvider];
+    _recentAppLayoutsController = [(SBAppSwitcherModel *)v2->_mainSwitcherModel _recentAppLayoutsController];
+    layoutAttributesProvider = [_recentAppLayoutsController layoutAttributesProvider];
     v7 = objc_opt_class();
-    v8 = v6;
+    v8 = layoutAttributesProvider;
     if (v7)
     {
       if (objc_opt_isKindOfClass())
@@ -1001,34 +1001,34 @@ void __53__SBMainSwitcherControllerCoordinator_sharedInstance__block_invoke(uint
     v10 = v9;
 
     [v10 setDelegate:v2];
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     servicesRemovedWhileAwayFromSwitcher = v2->_servicesRemovedWhileAwayFromSwitcher;
-    v2->_servicesRemovedWhileAwayFromSwitcher = v11;
+    v2->_servicesRemovedWhileAwayFromSwitcher = array;
 
     v13 = objc_opt_new();
     liveDisplayItemsBeingTerminated = v2->_liveDisplayItemsBeingTerminated;
     v2->_liveDisplayItemsBeingTerminated = v13;
 
     v15 = +[SBDefaults localDefaults];
-    v16 = [v15 appSwitcherDefaults];
+    appSwitcherDefaults = [v15 appSwitcherDefaults];
     defaults = v2->_defaults;
-    v2->_defaults = v16;
+    v2->_defaults = appSwitcherDefaults;
 
     v18 = +[SBAppSwitcherDomain rootSettings];
     settings = v2->_settings;
     v2->_settings = v18;
 
-    v20 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     coordinatedSwitcherControllers = v2->_coordinatedSwitcherControllers;
-    v2->_coordinatedSwitcherControllers = v20;
+    v2->_coordinatedSwitcherControllers = weakObjectsPointerArray;
 
-    v22 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     switcherControllersByWindowScene = v2->_switcherControllersByWindowScene;
-    v2->_switcherControllersByWindowScene = v22;
+    v2->_switcherControllersByWindowScene = weakToStrongObjectsMapTable;
 
-    v24 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     lastMeaningfullyDifferentLayoutStatesByWindowScene = v2->_lastMeaningfullyDifferentLayoutStatesByWindowScene;
-    v2->_lastMeaningfullyDifferentLayoutStatesByWindowScene = v24;
+    v2->_lastMeaningfullyDifferentLayoutStatesByWindowScene = weakToStrongObjectsMapTable2;
 
     v26 = objc_alloc_init(MEMORY[0x277CCA940]);
     draggingAppLayouts = v2->_draggingAppLayouts;
@@ -1040,8 +1040,8 @@ void __53__SBMainSwitcherControllerCoordinator_sharedInstance__block_invoke(uint
 
     [(SBSwitcherDemoFilteringController *)v2->_demoFilteringController addObserver:v2];
     v30 = [SBSwitcherDemoCommandsServer alloc];
-    v31 = [(SBAppSwitcherModel *)v2->_mainSwitcherModel _recentAppLayoutsController];
-    v32 = [(SBSwitcherDemoCommandsServer *)v30 initWithRecentAppLayouts:v31 demoFilteringController:v2->_demoFilteringController];
+    _recentAppLayoutsController2 = [(SBAppSwitcherModel *)v2->_mainSwitcherModel _recentAppLayoutsController];
+    v32 = [(SBSwitcherDemoCommandsServer *)v30 initWithRecentAppLayouts:_recentAppLayoutsController2 demoFilteringController:v2->_demoFilteringController];
     demoCommandsServer = v2->_demoCommandsServer;
     v2->_demoCommandsServer = v32;
 
@@ -1051,9 +1051,9 @@ void __53__SBMainSwitcherControllerCoordinator_sharedInstance__block_invoke(uint
 
     [(SBMainSwitcherControllerCoordinator *)v2 _warmAppInfoForAppsInList];
     v36 = +[(SBWorkspace *)SBMainWorkspace];
-    v37 = [v36 keyboardFocusController];
+    keyboardFocusController = [v36 keyboardFocusController];
     keyboardFocusController = v2->_keyboardFocusController;
-    v2->_keyboardFocusController = v37;
+    v2->_keyboardFocusController = keyboardFocusController;
 
     v39 = [(SBKeyboardFocusControlling *)v2->_keyboardFocusController addKeyboardFocusObserver:v2];
     keyboardFocusObserver = v2->_keyboardFocusObserver;
@@ -1063,20 +1063,20 @@ void __53__SBMainSwitcherControllerCoordinator_sharedInstance__block_invoke(uint
     recentSwipeUpToKillTimestampsForAppLayouts = v2->_recentSwipeUpToKillTimestampsForAppLayouts;
     v2->_recentSwipeUpToKillTimestampsForAppLayouts = v41;
 
-    v43 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v43 addObserver:v2 selector:sel__applicationDidExit_ name:@"SBApplicationDidExitNotification" object:0];
-    [v43 addObserver:v2 selector:sel__noteUIWillLock name:@"SBLockScreenUIWillLockNotification" object:0];
-    [v43 addObserver:v2 selector:sel__noteUIWillLock name:@"SBRestartManagerWillRebootNotification" object:0];
-    [v43 addObserver:v2 selector:sel__switcherServiceAdded_ name:@"AppSwitcherServiceAdded" object:0];
-    [v43 addObserver:v2 selector:sel__switcherServiceRemoved_ name:@"AppSwitcherServiceRemoved" object:0];
-    [v43 addObserver:v2 selector:sel__continuityAppSuggestionChanged_ name:@"SBSuggestedAppChangedNotification" object:0];
-    [v43 addObserver:v2 selector:sel__switcherModelChanged_ name:@"SBAppSwitcherModelDidChangeNotification" object:0];
-    [v43 addObserver:v2 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-    [v43 addObserver:v2 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
-    [v43 addObserver:v2 selector:sel__appProtectionHiddenAppsDidChange_ name:@"SBAppProtectionCoordinatorHiddenAppsDidChange" object:0];
-    v44 = [MEMORY[0x277D65E80] rootSettings];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationDidExit_ name:@"SBApplicationDidExitNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__noteUIWillLock name:@"SBLockScreenUIWillLockNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__noteUIWillLock name:@"SBRestartManagerWillRebootNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__switcherServiceAdded_ name:@"AppSwitcherServiceAdded" object:0];
+    [defaultCenter addObserver:v2 selector:sel__switcherServiceRemoved_ name:@"AppSwitcherServiceRemoved" object:0];
+    [defaultCenter addObserver:v2 selector:sel__continuityAppSuggestionChanged_ name:@"SBSuggestedAppChangedNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__switcherModelChanged_ name:@"SBAppSwitcherModelDidChangeNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    [defaultCenter addObserver:v2 selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    [defaultCenter addObserver:v2 selector:sel__appProtectionHiddenAppsDidChange_ name:@"SBAppProtectionCoordinatorHiddenAppsDidChange" object:0];
+    rootSettings = [MEMORY[0x277D65E80] rootSettings];
     homeGrabberSettings = v2->_homeGrabberSettings;
-    v2->_homeGrabberSettings = v44;
+    v2->_homeGrabberSettings = rootSettings;
 
     v46 = [MEMORY[0x277CCAB00] mapTableWithKeyOptions:512 valueOptions:0];
     displayLayoutTransitionsBySwitcherController = v2->_displayLayoutTransitionsBySwitcherController;
@@ -1101,18 +1101,18 @@ void __53__SBMainSwitcherControllerCoordinator_sharedInstance__block_invoke(uint
     v2->_outstandingAccidentalActivationMitigationTransitionCount = 0;
     if (([(SBAppSwitcherDefaults *)v2->_defaults hasEverUsedMultiAppConfiguration]& 1) == 0)
     {
-      v55 = [(SBMainSwitcherControllerCoordinator *)v2 recentAppLayouts];
-      v56 = [v55 bs_containsObjectPassingTest:&__block_literal_global_209];
+      recentAppLayouts = [(SBMainSwitcherControllerCoordinator *)v2 recentAppLayouts];
+      v56 = [recentAppLayouts bs_containsObjectPassingTest:&__block_literal_global_209];
 
       [(SBAppSwitcherDefaults *)v2->_defaults setHasEverUsedMultiAppConfiguration:v56];
     }
 
-    v57 = [(SBAppSwitcherDefaults *)v2->_defaults lastMultitaskingModeSwitchDate];
-    if (!v57)
+    lastMultitaskingModeSwitchDate = [(SBAppSwitcherDefaults *)v2->_defaults lastMultitaskingModeSwitchDate];
+    if (!lastMultitaskingModeSwitchDate)
     {
       v58 = v2->_defaults;
-      v59 = [MEMORY[0x277CBEAA8] date];
-      [(SBAppSwitcherDefaults *)v58 setLastMultitaskingModeSwitchDate:v59];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(SBAppSwitcherDefaults *)v58 setLastMultitaskingModeSwitchDate:date];
     }
 
     v60 = v2->_defaults;
@@ -1150,18 +1150,18 @@ void __44__SBMainSwitcherControllerCoordinator__init__block_invoke_2(uint64_t a1
 - (void)dealloc
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(SBSwitcherDemoFilteringController *)self->_demoFilteringController removeObserver:self];
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = [SBApp windowSceneManager];
-  v5 = [v4 connectedWindowScenes];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-  v6 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+  v6 = [connectedWindowScenes countByEnumeratingWithState:&v32 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1173,17 +1173,17 @@ void __44__SBMainSwitcherControllerCoordinator__init__block_invoke_2(uint64_t a1
       {
         if (*v33 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedWindowScenes);
         }
 
-        v10 = [*(*(&v32 + 1) + 8 * v9) appInteractionEventSource];
-        [v10 removeObserver:self];
+        appInteractionEventSource = [*(*(&v32 + 1) + 8 * v9) appInteractionEventSource];
+        [appInteractionEventSource removeObserver:self];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v32 objects:v38 count:16];
+      v7 = [connectedWindowScenes countByEnumeratingWithState:&v32 objects:v38 count:16];
     }
 
     while (v7);
@@ -1293,13 +1293,13 @@ uint64_t __59__SBMainSwitcherControllerCoordinator_isAnySwitcherVisible__block_i
   return result;
 }
 
-- (void)resetLayoutAttributesWithCompletion:(id)a3
+- (void)resetLayoutAttributesWithCompletion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v19 = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
-  v18 = [v19 layoutAttributesProvider];
-  [v18 updateEntriesWithBlock:&__block_literal_global_119];
+  completionCopy = completion;
+  _recentAppLayoutsController = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
+  layoutAttributesProvider = [_recentAppLayoutsController layoutAttributesProvider];
+  [layoutAttributesProvider updateEntriesWithBlock:&__block_literal_global_119];
   v17 = +[SBApplicationController sharedInstance];
   v37 = 0u;
   v38 = 0u;
@@ -1357,11 +1357,11 @@ uint64_t __59__SBMainSwitcherControllerCoordinator_isAnySwitcherVisible__block_i
     while (v22);
   }
 
-  v11 = [(SBMainSwitcherControllerCoordinator *)self coordinatedSwitcherControllers];
-  v12 = [v11 count];
+  coordinatedSwitcherControllers = [(SBMainSwitcherControllerCoordinator *)self coordinatedSwitcherControllers];
+  v12 = [coordinatedSwitcherControllers count];
   if (v12 < 1)
   {
-    [v19 _persistSynchronously];
+    [_recentAppLayoutsController _persistSynchronously];
   }
 
   else
@@ -1376,8 +1376,8 @@ uint64_t __59__SBMainSwitcherControllerCoordinator_isAnySwitcherVisible__block_i
     v25[3] = &unk_2783B93C8;
     v28 = v30;
     v29 = v12;
-    v26 = v19;
-    v27 = v16;
+    v26 = _recentAppLayoutsController;
+    v27 = completionCopy;
     v13 = MEMORY[0x223D6F7F0](v25);
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
@@ -1385,7 +1385,7 @@ uint64_t __59__SBMainSwitcherControllerCoordinator_isAnySwitcherVisible__block_i
     v23[3] = &unk_2783B93F0;
     v14 = v13;
     v24 = v14;
-    [v11 enumerateObjectsUsingBlock:v23];
+    [coordinatedSwitcherControllers enumerateObjectsUsingBlock:v23];
 
     _Block_object_dispose(v30, 8);
   }
@@ -1499,16 +1499,16 @@ void __75__SBMainSwitcherControllerCoordinator_resetLayoutAttributesWithCompleti
   }
 }
 
-- (id)knownWindowsForAppBundleIdentifier:(id)a3
+- (id)knownWindowsForAppBundleIdentifier:(id)identifier
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [SBMainSwitcherControllerCoordinator knownWindowsForAppBundleIdentifier:];
   }
 
-  v5 = [(SBAppSwitcherModel *)self->_mainSwitcherModel recentDisplayItemsForBundleIdentifier:v4 includingHiddenAppLayouts:0];
+  v5 = [(SBAppSwitcherModel *)self->_mainSwitcherModel recentDisplayItemsForBundleIdentifier:identifierCopy includingHiddenAppLayouts:0];
   v6 = v5;
   if (!v5 || (v51 = 0u, v52 = 0u, v49 = 0u, v50 = 0u, (v7 = [v5 countByEnumeratingWithState:&v49 objects:v59 count:16]) == 0))
   {
@@ -1520,8 +1520,8 @@ void __75__SBMainSwitcherControllerCoordinator_resetLayoutAttributesWithCompleti
   v44 = 0;
   v48 = 0;
   v9 = *v50;
-  v41 = self;
-  v42 = v4;
+  selfCopy = self;
+  v42 = identifierCopy;
   v39 = *v50;
   v40 = v6;
   do
@@ -1536,39 +1536,39 @@ void __75__SBMainSwitcherControllerCoordinator_resetLayoutAttributesWithCompleti
       }
 
       v11 = *(*(&v49 + 1) + 8 * v10);
-      v12 = [v11 type];
-      if (v12 == 5 || v12 == 0)
+      type = [v11 type];
+      if (type == 5 || type == 0)
       {
         if (!v48)
         {
           v48 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
         }
 
-        v14 = [v11 uniqueIdentifier];
-        if (v14)
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        if (uniqueIdentifier)
         {
           v15 = +[SBApplicationController sharedInstance];
-          v16 = [v15 applicationWithBundleIdentifier:v4];
+          v16 = [v15 applicationWithBundleIdentifier:identifierCopy];
 
           v47 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForDisplayItem:v11];
-          v17 = [v47 windowScene];
-          v18 = [v17 sceneManager];
-          v19 = [MEMORY[0x277D0ADC0] identityForIdentifier:v14];
-          v20 = [v17 _fbsDisplayIdentity];
+          windowScene = [v47 windowScene];
+          sceneManager = [windowScene sceneManager];
+          v19 = [MEMORY[0x277D0ADC0] identityForIdentifier:uniqueIdentifier];
+          _fbsDisplayIdentity = [windowScene _fbsDisplayIdentity];
           v45 = v19;
-          v21 = [SBApplicationSceneHandleRequest defaultRequestForApplication:v16 sceneIdentity:v19 displayIdentity:v20];
+          v21 = [SBApplicationSceneHandleRequest defaultRequestForApplication:v16 sceneIdentity:v19 displayIdentity:_fbsDisplayIdentity];
 
           v22 = objc_opt_class();
-          v46 = v18;
-          v23 = [v18 fetchOrCreateApplicationSceneHandleForRequest:v21];
+          v46 = sceneManager;
+          v23 = [sceneManager fetchOrCreateApplicationSceneHandleForRequest:v21];
           v24 = SBSafeCast(v22, v23);
 
           if (v24)
           {
-            v25 = [v24 sceneTitle];
-            v26 = v25;
+            sceneTitle = [v24 sceneTitle];
+            v26 = sceneTitle;
             v27 = 0x277CCA000;
-            if (!v25 || ![v25 length])
+            if (!sceneTitle || ![sceneTitle length])
             {
               goto LABEL_24;
             }
@@ -1590,16 +1590,16 @@ LABEL_24:
             }
 
             v30 = *(v27 + 3240);
-            v31 = [v16 displayName];
-            v32 = [v30 stringWithFormat:@"%@%@", v31, v29];
+            displayName = [v16 displayName];
+            v32 = [v30 stringWithFormat:@"%@%@", displayName, v29];
 
             v44 = (v44 + 1);
             v26 = v32;
           }
 
-          v33 = [v47 menuBarRecipientScene];
-          v34 = [v33 identifier];
-          v35 = [v34 isEqualToString:v14];
+          menuBarRecipientScene = [v47 menuBarRecipientScene];
+          identifier = [menuBarRecipientScene identifier];
+          v35 = [identifier isEqualToString:uniqueIdentifier];
           v36 = MEMORY[0x277CBEC28];
           if (v35)
           {
@@ -1611,14 +1611,14 @@ LABEL_24:
           v57[0] = @"SBSwitcherCoordinatorOpenWindowForAppTitleUserInfoKey";
           v57[1] = @"SBSwitcherCoordinatorOpenWindowForAppSceneIDUserInfoKey";
           v58[0] = v26;
-          v58[1] = v14;
+          v58[1] = uniqueIdentifier;
           v57[2] = @"kSBSwitcherCoordinatorOpenWindowForAppIsMenuBarRecipientKey";
           v58[2] = v28;
           v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:v57 count:3];
           [v48 addObject:v37];
 
-          self = v41;
-          v4 = v42;
+          self = selfCopy;
+          identifierCopy = v42;
           v9 = v39;
           v6 = v40;
           v8 = v43;
@@ -1630,7 +1630,7 @@ LABEL_24:
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543618;
-            v54 = v4;
+            v54 = identifierCopy;
             v55 = 2114;
             v56 = v11;
             _os_log_impl(&dword_21ED4E000, v28, OS_LOG_TYPE_DEFAULT, "Error looking up open windows for App: %{public}@. Missing unique identifier on display item: %{public}@", buf, 0x16u);
@@ -1651,81 +1651,81 @@ LABEL_36:
   return v48;
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  v4 = [a3 appInteractionEventSource];
-  [v4 addObserver:self];
+  appInteractionEventSource = [connect appInteractionEventSource];
+  [appInteractionEventSource addObserver:self];
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
-  v4 = [a3 appInteractionEventSource];
-  [v4 removeObserver:self];
+  appInteractionEventSource = [disconnect appInteractionEventSource];
+  [appInteractionEventSource removeObserver:self];
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidBeginWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidBeginWithTransitionContext:(id)context
 {
   v170 = *MEMORY[0x277D85DE8];
-  v111 = a3;
-  v113 = a4;
-  v118 = [v113 toLayoutState];
-  v117 = [v113 fromLayoutState];
-  v115 = [v111 windowScene];
-  v116 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v115];
-  if ([v118 isMeaningfullyDifferentFromLayoutState:v117])
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  toLayoutState = [contextCopy toLayoutState];
+  fromLayoutState = [contextCopy fromLayoutState];
+  windowScene = [coordinatorCopy windowScene];
+  v116 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:windowScene];
+  if ([toLayoutState isMeaningfullyDifferentFromLayoutState:fromLayoutState])
   {
-    [(NSMapTable *)self->_lastMeaningfullyDifferentLayoutStatesByWindowScene setObject:v117 forKey:v115];
+    [(NSMapTable *)self->_lastMeaningfullyDifferentLayoutStatesByWindowScene setObject:fromLayoutState forKey:windowScene];
   }
 
-  v123 = [v113 applicationTransitionContext];
-  v114 = [v123 request];
-  v107 = [v117 appLayout];
-  v109 = [v118 appLayout];
-  v112 = [v114 source];
-  v106 = [v118 unlockedEnvironmentMode];
-  v5 = [v118 elements];
-  v105 = [v5 count] == 0;
+  applicationTransitionContext = [contextCopy applicationTransitionContext];
+  request = [applicationTransitionContext request];
+  appLayout = [fromLayoutState appLayout];
+  appLayout2 = [toLayoutState appLayout];
+  source = [request source];
+  unlockedEnvironmentMode = [toLayoutState unlockedEnvironmentMode];
+  elements = [toLayoutState elements];
+  v105 = [elements count] == 0;
 
-  v104 = [v118 isFloatingSwitcherVisible];
-  v108 = [v117 unlockedEnvironmentMode] != 2;
-  v6 = [v117 elements];
-  v103 = [v6 count] != 0;
+  isFloatingSwitcherVisible = [toLayoutState isFloatingSwitcherVisible];
+  v108 = [fromLayoutState unlockedEnvironmentMode] != 2;
+  elements2 = [fromLayoutState elements];
+  v103 = [elements2 count] != 0;
 
-  v7 = [v117 elements];
-  v101 = [v7 count] == 0;
+  elements3 = [fromLayoutState elements];
+  v101 = [elements3 count] == 0;
 
-  v100 = [v114 source];
-  v8 = [v117 bundleIDShowingAppExpose];
-  if (v8)
+  source2 = [request source];
+  bundleIDShowingAppExpose = [fromLayoutState bundleIDShowingAppExpose];
+  if (bundleIDShowingAppExpose)
   {
     v102 = 0;
   }
 
   else
   {
-    v9 = [v118 bundleIDShowingAppExpose];
-    v102 = v9 != 0;
+    bundleIDShowingAppExpose2 = [toLayoutState bundleIDShowingAppExpose];
+    v102 = bundleIDShowingAppExpose2 != 0;
   }
 
-  v110 = SBMainWorkspaceMapInternalTransitionSourceToExternalTransitionSource([v114 source]);
+  v110 = SBMainWorkspaceMapInternalTransitionSourceToExternalTransitionSource([request source]);
   [(SBMainSwitcherControllerCoordinator *)self _beginDisplayLayoutTransitionForSwitcherController:v116 reason:v110];
-  if (v112 == 70)
+  if (source == 70)
   {
     [(SBAppSwitcherModel *)self->_mainSwitcherModel takeAppLayoutsSnapshot];
-    [(SBMainSwitcherControllerCoordinator *)self _takeLayoutStateSnapshotForWindowScene:v115 withPreviousLayoutState:v117];
+    [(SBMainSwitcherControllerCoordinator *)self _takeLayoutStateSnapshotForWindowScene:windowScene withPreviousLayoutState:fromLayoutState];
   }
 
   else if (!self->_outstandingAccidentalActivationMitigationTransitionCount)
   {
     [(SBAppSwitcherModel *)self->_mainSwitcherModel clearAppLayoutsSnapshot];
-    [(SBMainSwitcherControllerCoordinator *)self _clearLayoutStateSnapshotForWindowScene:v115];
+    [(SBMainSwitcherControllerCoordinator *)self _clearLayoutStateSnapshotForWindowScene:windowScene];
   }
 
   v162 = 0u;
   v163 = 0u;
   v160 = 0u;
   v161 = 0u;
-  obj = [v123 entitiesWithRemovalContexts];
+  obj = [applicationTransitionContext entitiesWithRemovalContexts];
   v10 = [obj countByEnumeratingWithState:&v160 objects:v169 count:16];
   if (v10)
   {
@@ -1742,8 +1742,8 @@ LABEL_36:
         }
 
         v13 = *(*(&v160 + 1) + 8 * i);
-        v14 = [v123 removalContextForEntity:v13];
-        v15 = [v13 displayItemRepresentation];
+        v14 = [applicationTransitionContext removalContextForEntity:v13];
+        displayItemRepresentation = [v13 displayItemRepresentation];
         v16 = [(SBMainSwitcherControllerCoordinator *)self _switcherDisplayItemRemovalIntentTypeForEntity:v13 removalContext:v14];
         if (v16)
         {
@@ -1754,15 +1754,15 @@ LABEL_36:
           }
 
           v124 = v17;
-          [(SBSwitcherDisplayItemRemovalResolutionRequest *)v17 setRemovalIntentType:v16 forDisplayItem:v15];
-          v18 = v125;
+          [(SBSwitcherDisplayItemRemovalResolutionRequest *)v17 setRemovalIntentType:v16 forDisplayItem:displayItemRepresentation];
+          strongToStrongObjectsMapTable = v125;
           if (!v125)
           {
-            v18 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+            strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
           }
 
-          v125 = v18;
-          [v18 setObject:v15 forKey:v13];
+          v125 = strongToStrongObjectsMapTable;
+          [strongToStrongObjectsMapTable setObject:displayItemRepresentation forKey:v13];
         }
       }
 
@@ -1786,8 +1786,8 @@ LABEL_36:
     v159 = 0u;
     v156 = 0u;
     v157 = 0u;
-    v21 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
-    v22 = [v21 countByEnumeratingWithState:&v156 objects:v168 count:16];
+    appLayouts = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
+    v22 = [appLayouts countByEnumeratingWithState:&v156 objects:v168 count:16];
     if (v22)
     {
       v23 = *v157;
@@ -1797,13 +1797,13 @@ LABEL_36:
         {
           if (*v157 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(appLayouts);
           }
 
           [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults executeActionForAppLayout:*(*(&v156 + 1) + 8 * j)];
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v156 objects:v168 count:16];
+        v22 = [appLayouts countByEnumeratingWithState:&v156 objects:v168 count:16];
       }
 
       while (v22);
@@ -1836,7 +1836,7 @@ LABEL_36:
           v121 = v27;
           v29 = *(*(&v152 + 1) + 8 * v27);
           v30 = [v26 objectForKey:v29];
-          v31 = [v123 removalContextForEntity:v29];
+          v31 = [applicationTransitionContext removalContextForEntity:v29];
           v32 = [obj actionsForDisplayItem:v30];
           v150 = 0u;
           v151 = 0u;
@@ -1856,21 +1856,21 @@ LABEL_36:
                   objc_enumerationMutation(v33);
                 }
 
-                v37 = [*(*(&v148 + 1) + 8 * k) appLayout];
-                v38 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
-                v39 = [v38 containsObject:v37];
+                appLayout3 = [*(*(&v148 + 1) + 8 * k) appLayout];
+                appLayouts2 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
+                v39 = [appLayouts2 containsObject:appLayout3];
 
                 if (v39)
                 {
-                  v40 = [v31 animationStyle];
-                  if ((v40 - 1) >= 3)
+                  animationStyle = [v31 animationStyle];
+                  if ((animationStyle - 1) >= 3)
                   {
                     v41 = 0;
                   }
 
                   else
                   {
-                    v41 = v40;
+                    v41 = animationStyle;
                   }
 
                   v42 = [[SBTransitionSwitcherModifierRemovalContext alloc] initWithAnimationStyle:v41 displayItem:v30];
@@ -1879,7 +1879,7 @@ LABEL_36:
                     v25 = objc_alloc_init(MEMORY[0x277CBEB38]);
                   }
 
-                  [v25 setObject:v42 forKey:v37];
+                  [v25 setObject:v42 forKey:appLayout3];
                 }
               }
 
@@ -1918,12 +1918,12 @@ LABEL_36:
 
 LABEL_58:
   v43 = v103 && v108;
-  if (!((v106 == 2) | v104 & 1))
+  if (!((unlockedEnvironmentMode == 2) | isFloatingSwitcherVisible & 1))
   {
-    if (SBPeekConfigurationIsValid([v117 peekConfiguration]))
+    if (SBPeekConfigurationIsValid([fromLayoutState peekConfiguration]))
     {
-      v49 = !SBPeekConfigurationIsValid([v118 peekConfiguration]);
-      if (v105 || v106 == 2)
+      v49 = !SBPeekConfigurationIsValid([toLayoutState peekConfiguration]);
+      if (v105 || unlockedEnvironmentMode == 2)
       {
         goto LABEL_80;
       }
@@ -1932,43 +1932,43 @@ LABEL_58:
     else
     {
       v49 = 0;
-      if (v105 || v106 == 2)
+      if (v105 || unlockedEnvironmentMode == 2)
       {
         goto LABEL_80;
       }
     }
 
-    if (v112 != 11 && v112 != 12 && v112 != 27 && v43)
+    if (source != 11 && source != 12 && source != 27 && v43)
     {
-      v50 = [v118 elements];
-      v51 = [v117 elements];
-      if ([v50 isEqual:v51] & 1 | (v100 == 15) || ((v49 | -[SBMainSwitcherControllerCoordinator _isPerformingModelTransitionForReplacementAppLayout:](self, "_isPerformingModelTransitionForReplacementAppLayout:", v109)) & 1) != 0 || v112 == 52 || v112 == 35)
+      elements4 = [toLayoutState elements];
+      elements5 = [fromLayoutState elements];
+      if ([elements4 isEqual:elements5] & 1 | (source2 == 15) || ((v49 | -[SBMainSwitcherControllerCoordinator _isPerformingModelTransitionForReplacementAppLayout:](self, "_isPerformingModelTransitionForReplacementAppLayout:", appLayout2)) & 1) != 0 || source == 52 || source == 35)
       {
 
 LABEL_75:
         goto LABEL_76;
       }
 
-      v93 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
-      v94 = [v93 containsObject:v107];
+      appLayouts3 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
+      v94 = [appLayouts3 containsObject:appLayout];
 
-      if ((v94 & 1) == 0 && v112 != 63 && v112 != 71)
+      if ((v94 & 1) == 0 && source != 63 && source != 71)
       {
-        v50 = [v116 windowManagementContext];
-        if ([v50 isFlexibleWindowingEnabled] && (objc_msgSend(v50, "isAutomaticStageCreationEnabled") & 1) == 0)
+        elements4 = [v116 windowManagementContext];
+        if ([elements4 isFlexibleWindowingEnabled] && (objc_msgSend(elements4, "isAutomaticStageCreationEnabled") & 1) == 0)
         {
-          v95 = [v116 _desktopSpaceItems];
-          if ([v95 count])
+          _desktopSpaceItems = [v116 _desktopSpaceItems];
+          if ([_desktopSpaceItems count])
           {
-            v96 = [v107 allItems];
+            allItems = [appLayout allItems];
             v144[0] = MEMORY[0x277D85DD0];
             v144[1] = 3221225472;
             v144[2] = __112__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator_transitionDidBeginWithTransitionContext___block_invoke;
             v144[3] = &unk_2783B9418;
-            v145 = v109;
-            v146 = v95;
+            v145 = appLayout2;
+            v146 = _desktopSpaceItems;
             v147 = v116;
-            v97 = [v96 bs_filter:v144];
+            v97 = [allItems bs_filter:v144];
 
             v142[0] = MEMORY[0x277D85DD0];
             v142[1] = 3221225472;
@@ -1976,13 +1976,13 @@ LABEL_75:
             v142[3] = &unk_2783A8C90;
             v98 = v97;
             v143 = v98;
-            v99 = [v107 appLayoutWithItemsPassingTest:v142];
+            v99 = [appLayout appLayoutWithItemsPassingTest:v142];
 
-            v107 = v99;
+            appLayout = v99;
           }
         }
 
-        if (v107)
+        if (appLayout)
         {
           [(SBMainSwitcherControllerCoordinator *)self _addAppLayoutToFront:?];
         }
@@ -1992,21 +1992,21 @@ LABEL_75:
     }
 
 LABEL_76:
-    if ([v109 type] != 4)
+    if ([appLayout2 type] != 4)
     {
-      v52 = [v116 contentViewController];
-      v53 = [v52 bestAppSuggestion];
-      if (v53)
+      contentViewController = [v116 contentViewController];
+      bestAppSuggestion = [contentViewController bestAppSuggestion];
+      if (bestAppSuggestion)
       {
         v54 = +[SBAppSuggestionManager sharedInstance];
-        [v54 noteNotActivatingForAppSuggestion:v53 fromSource:1];
+        [v54 noteNotActivatingForAppSuggestion:bestAppSuggestion fromSource:1];
       }
     }
 
 LABEL_80:
-    v55 = [v117 peekConfiguration];
-    v56 = SBPeekConfigurationIsValid([v118 peekConfiguration]) && !SBPeekConfigurationIsValid(v55);
-    if (v102 && (v112 == 33 || v112 == 51))
+    peekConfiguration = [fromLayoutState peekConfiguration];
+    v56 = SBPeekConfigurationIsValid([toLayoutState peekConfiguration]) && !SBPeekConfigurationIsValid(peekConfiguration);
+    if (v102 && (source == 33 || source == 51))
     {
       [(SBMainSwitcherControllerCoordinator *)self _lockKeyboardFocusForSwitcherController:v116];
       if (!v56)
@@ -2028,10 +2028,10 @@ LABEL_97:
       [(SBMainSwitcherControllerCoordinator *)self _lockKeyboardFocusForSwitcherController:v116];
     }
 
-    v57 = [v109 itemForLayoutRole:1];
+    v57 = [appLayout2 itemForLayoutRole:1];
     v58 = v57 != 0;
 
-    v59 = [v109 itemForLayoutRole:1];
+    v59 = [appLayout2 itemForLayoutRole:1];
     if (v59)
     {
       v60 = 1;
@@ -2039,25 +2039,25 @@ LABEL_97:
 
     else
     {
-      v60 = v107 == 0;
+      v60 = appLayout == 0;
     }
 
     v61 = !v60;
 
 LABEL_98:
     v62 = +[SBDefaults localDefaults];
-    v63 = [v62 appSwitcherDefaults];
+    appSwitcherDefaults = [v62 appSwitcherDefaults];
 
     if (v58)
     {
-      if ([v63 shouldShowSplitPeekEducation])
+      if ([appSwitcherDefaults shouldShowSplitPeekEducation])
       {
-        [v63 setShouldShowSplitPeekEducation:0];
+        [appSwitcherDefaults setShouldShowSplitPeekEducation:0];
         [v116 setIdleTouchAwarenessClientEnabled:0];
         [v116 _presentMedusaEducationBanner];
 LABEL_108:
-        v64 = [(SBMainSwitcherControllerCoordinator *)self suspendWallpaperAnimationAssertion];
-        [v64 invalidate];
+        suspendWallpaperAnimationAssertion = [(SBMainSwitcherControllerCoordinator *)self suspendWallpaperAnimationAssertion];
+        [suspendWallpaperAnimationAssertion invalidate];
 
         [(SBMainSwitcherControllerCoordinator *)self setSuspendWallpaperAnimationAssertion:0];
         goto LABEL_109;
@@ -2081,9 +2081,9 @@ LABEL_107:
       goto LABEL_108;
     }
 
-    if ([v63 shouldShowSlideOverPeekEducation])
+    if ([appSwitcherDefaults shouldShowSlideOverPeekEducation])
     {
-      [v63 setShouldShowSlideOverPeekEducation:0];
+      [appSwitcherDefaults setShouldShowSlideOverPeekEducation:0];
       [v116 setIdleTouchAwarenessClientEnabled:0];
       [v116 _presentMedusaEducationBanner];
       goto LABEL_108;
@@ -2092,18 +2092,18 @@ LABEL_107:
     goto LABEL_107;
   }
 
-  if (v106 == 2)
+  if (unlockedEnvironmentMode == 2)
   {
-    v44 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v44 postNotificationName:@"SBUIAppSwitcherWillRevealNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBUIAppSwitcherWillRevealNotification" object:0];
   }
 
   v45 = +[SBReachabilityManager sharedInstance];
   [v45 deactivateReachability];
 
   [(SBMainSwitcherControllerCoordinator *)self _lockKeyboardFocusForSwitcherController:v116];
-  v46 = [(SBMainSwitcherControllerCoordinator *)self suspendWallpaperAnimationAssertion];
-  [v46 invalidate];
+  suspendWallpaperAnimationAssertion2 = [(SBMainSwitcherControllerCoordinator *)self suspendWallpaperAnimationAssertion];
+  [suspendWallpaperAnimationAssertion2 invalidate];
 
   v47 = +[SBWallpaperController sharedInstance];
   v48 = [v47 suspendWallpaperAnimationForReason:@"kSBAppSwitcherWallpaperAnimationDisablingReason"];
@@ -2111,15 +2111,15 @@ LABEL_107:
 
   [(SBMainSwitcherControllerCoordinator *)self _updateBestAppSuggestion];
 LABEL_109:
-  if (([v123 animationDisabled] & 1) == 0)
+  if (([applicationTransitionContext animationDisabled] & 1) == 0)
   {
     v65 = [MEMORY[0x277CBEB58] set];
     v140 = 0u;
     v141 = 0u;
     v138 = 0u;
     v139 = 0u;
-    v66 = [v117 elements];
-    v67 = [v66 countByEnumeratingWithState:&v138 objects:v165 count:16];
+    elements6 = [fromLayoutState elements];
+    v67 = [elements6 countByEnumeratingWithState:&v138 objects:v165 count:16];
     if (v67)
     {
       v68 = *v139;
@@ -2129,14 +2129,14 @@ LABEL_109:
         {
           if (*v139 != v68)
           {
-            objc_enumerationMutation(v66);
+            objc_enumerationMutation(elements6);
           }
 
-          v70 = [*(*(&v138 + 1) + 8 * m) uniqueIdentifier];
-          [v65 addObject:v70];
+          uniqueIdentifier = [*(*(&v138 + 1) + 8 * m) uniqueIdentifier];
+          [v65 addObject:uniqueIdentifier];
         }
 
-        v67 = [v66 countByEnumeratingWithState:&v138 objects:v165 count:16];
+        v67 = [elements6 countByEnumeratingWithState:&v138 objects:v165 count:16];
       }
 
       while (v67);
@@ -2146,8 +2146,8 @@ LABEL_109:
     v137 = 0u;
     v134 = 0u;
     v135 = 0u;
-    v71 = [v118 elements];
-    v72 = [v71 countByEnumeratingWithState:&v134 objects:v164 count:16];
+    elements7 = [toLayoutState elements];
+    v72 = [elements7 countByEnumeratingWithState:&v134 objects:v164 count:16];
     if (v72)
     {
       v73 = *v135;
@@ -2157,14 +2157,14 @@ LABEL_109:
         {
           if (*v135 != v73)
           {
-            objc_enumerationMutation(v71);
+            objc_enumerationMutation(elements7);
           }
 
-          v75 = [*(*(&v134 + 1) + 8 * n) uniqueIdentifier];
-          [v65 removeObject:v75];
+          uniqueIdentifier2 = [*(*(&v134 + 1) + 8 * n) uniqueIdentifier];
+          [v65 removeObject:uniqueIdentifier2];
         }
 
-        v72 = [v71 countByEnumeratingWithState:&v134 objects:v164 count:16];
+        v72 = [elements7 countByEnumeratingWithState:&v134 objects:v164 count:16];
       }
 
       while (v72);
@@ -2172,7 +2172,7 @@ LABEL_109:
 
     if ([v65 count])
     {
-      if (v112 == 11)
+      if (source == 11)
       {
         v76 = 0;
       }
@@ -2183,8 +2183,8 @@ LABEL_109:
       }
 
       v77 = +[SBSceneManagerCoordinator sharedInstance];
-      v78 = [v77 sceneDeactivationManager];
-      v79 = [v78 newAssertionWithReason:v76];
+      sceneDeactivationManager = [v77 sceneDeactivationManager];
+      v79 = [sceneDeactivationManager newAssertionWithReason:v76];
       deactivatingScenesResignActiveAssertion = self->_deactivatingScenesResignActiveAssertion;
       self->_deactivatingScenesResignActiveAssertion = v79;
 
@@ -2198,23 +2198,23 @@ LABEL_109:
     }
   }
 
-  [v116 _updateDisplayLayoutElementForLayoutState:v118];
-  if (v112 != 11 && (v101 && v108 || !v105 && v106 != 2 && (v43 & 1) != 0 && v107 != v109))
+  [v116 _updateDisplayLayoutElementForLayoutState:toLayoutState];
+  if (source != 11 && (v101 && v108 || !v105 && unlockedEnvironmentMode != 2 && (v43 & 1) != 0 && appLayout != appLayout2))
   {
-    [v116 _updateContentViewInterfaceOrientation:{objc_msgSend(v118, "interfaceOrientation")}];
+    [v116 _updateContentViewInterfaceOrientation:{objc_msgSend(toLayoutState, "interfaceOrientation")}];
   }
 
   v128 = 0;
   v129 = &v128;
   v130 = 0x2020000000;
   v131 = 0;
-  v82 = [v123 applicationSceneEntities];
+  applicationSceneEntities = [applicationTransitionContext applicationSceneEntities];
   v127[0] = MEMORY[0x277D85DD0];
   v127[1] = 3221225472;
   v127[2] = __112__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator_transitionDidBeginWithTransitionContext___block_invoke_4;
   v127[3] = &unk_2783A9D88;
   v127[4] = &v128;
-  [v82 enumerateObjectsUsingBlock:v127];
+  [applicationSceneEntities enumerateObjectsUsingBlock:v127];
 
   if (*(v129 + 24) == 1)
   {
@@ -2229,31 +2229,31 @@ LABEL_109:
   }
 
   [(SBMainSwitcherControllerCoordinator *)self _evaluateAsynchronousRenderingEnablement];
-  v84 = [v115 layoutStateProvider];
-  [v84 setLayoutState:v118];
+  layoutStateProvider = [windowScene layoutStateProvider];
+  [layoutStateProvider setLayoutState:toLayoutState];
 
-  v85 = [v115 layoutStateProvider];
-  [v85 setPreviousLayoutState:v117];
+  layoutStateProvider2 = [windowScene layoutStateProvider];
+  [layoutStateProvider2 setPreviousLayoutState:fromLayoutState];
 
-  v86 = [v118 appLayout];
-  v87 = [v118 layoutAttributesMap];
-  v88 = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
-  v89 = [v88 layoutAttributesProvider];
+  appLayout4 = [toLayoutState appLayout];
+  layoutAttributesMap = [toLayoutState layoutAttributesMap];
+  _recentAppLayoutsController = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
+  layoutAttributesProvider = [_recentAppLayoutsController layoutAttributesProvider];
 
-  v90 = [v118 displayOrdinal];
-  v91 = [v118 interfaceOrientation];
-  if ((v91 - 1) < 2)
+  displayOrdinal = [toLayoutState displayOrdinal];
+  interfaceOrientation = [toLayoutState interfaceOrientation];
+  if ((interfaceOrientation - 1) < 2)
   {
     v92 = 1;
   }
 
   else
   {
-    v92 = 2 * ((v91 - 3) < 2);
+    v92 = 2 * ((interfaceOrientation - 3) < 2);
   }
 
-  [v89 updateLayoutAttributesMap:v87 forAppLayout:v86 displayOrdinal:v90 orientation:v92];
-  [(SBMainSwitcherControllerCoordinator *)self _updateHomeScreenDisplayLayoutElementForLayoutState:v118 switcherController:v116];
+  [layoutAttributesProvider updateLayoutAttributesMap:layoutAttributesMap forAppLayout:appLayout4 displayOrdinal:displayOrdinal orientation:v92];
+  [(SBMainSwitcherControllerCoordinator *)self _updateHomeScreenDisplayLayoutElementForLayoutState:toLayoutState switcherController:v116];
 
   _Block_object_dispose(&v128, 8);
 }
@@ -2293,10 +2293,10 @@ void __112__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator
   }
 }
 
-- (void)switcherContentController:(id)a3 layoutStateTransitionDidEndWithTransitionContext:(id)a4
+- (void)switcherContentController:(id)controller layoutStateTransitionDidEndWithTransitionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  contextCopy = context;
   if (self->_activeTransitionModelRemovalResults)
   {
     [(SBMainSwitcherControllerCoordinator *)self _performSceneDestructionForModelRemovalResults:?];
@@ -2308,19 +2308,19 @@ void __112__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator
   self->_activeTransitionModelRemovalAppLayoutToRemovalContext = 0;
 
   v10 = objc_opt_class();
-  v11 = [v7 toLayoutState];
-  v12 = SBSafeCast(v10, v11);
+  toLayoutState = [contextCopy toLayoutState];
+  v12 = SBSafeCast(v10, toLayoutState);
 
-  v13 = [v7 fromLayoutState];
-  if (([v7 isInterrupted] & 1) == 0 && (objc_msgSend(v13, "isEqual:", v12) & 1) == 0 && objc_msgSend(v12, "unlockedEnvironmentMode") == 3)
+  fromLayoutState = [contextCopy fromLayoutState];
+  if (([contextCopy isInterrupted] & 1) == 0 && (objc_msgSend(fromLayoutState, "isEqual:", v12) & 1) == 0 && objc_msgSend(v12, "unlockedEnvironmentMode") == 3)
   {
-    v14 = [v12 appLayout];
+    appLayout = [v12 appLayout];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __114__SBMainSwitcherControllerCoordinator_switcherContentController_layoutStateTransitionDidEndWithTransitionContext___block_invoke;
     v15[3] = &unk_2783AE1C8;
     v15[4] = self;
-    [v14 enumerate:v15];
+    [appLayout enumerate:v15];
   }
 }
 
@@ -2346,10 +2346,10 @@ void __114__SBMainSwitcherControllerCoordinator_switcherContentController_layout
   }
 }
 
-- (void)_activateBetaLaunchHandlesIfNeededWithAppInfo:(id)a3 processHandle:(id)a4
+- (void)_activateBetaLaunchHandlesIfNeededWithAppInfo:(id)info processHandle:(id)handle
 {
-  v6 = a4;
-  if ([a3 isBeta])
+  handleCopy = handle;
+  if ([info isBeta])
   {
     if (!self->_activeBetaLaunchHandles)
     {
@@ -2358,7 +2358,7 @@ void __114__SBMainSwitcherControllerCoordinator_switcherContentController_layout
       self->_activeBetaLaunchHandles = v7;
     }
 
-    v9 = [objc_alloc(MEMORY[0x277D6F1E0]) initWithProcessHandle:v6];
+    v9 = [objc_alloc(MEMORY[0x277D6F1E0]) initWithProcessHandle:handleCopy];
     [v9 setActivationDelegate:self];
     [(NSMutableSet *)self->_activeBetaLaunchHandles addObject:v9];
     v11[0] = MEMORY[0x277D85DD0];
@@ -2371,16 +2371,16 @@ void __114__SBMainSwitcherControllerCoordinator_switcherContentController_layout
   }
 }
 
-- (void)_presentStoreKitSheetIfNeededWithAppInfo:(id)a3 processHandle:(id)a4
+- (void)_presentStoreKitSheetIfNeededWithAppInfo:(id)info processHandle:(id)handle
 {
-  v6 = a4;
-  if ([a3 triggersStoreKitMessaging])
+  handleCopy = handle;
+  if ([info triggersStoreKitMessaging])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __94__SBMainSwitcherControllerCoordinator__presentStoreKitSheetIfNeededWithAppInfo_processHandle___block_invoke;
     v7[3] = &unk_2783A8C18;
-    v8 = v6;
+    v8 = handleCopy;
     [(SBMainSwitcherControllerCoordinator *)self _asyncOnStoreAppLaunchUIActivationQueue:v7];
   }
 }
@@ -2400,16 +2400,16 @@ void __94__SBMainSwitcherControllerCoordinator__presentStoreKitSheetIfNeededWith
   }
 }
 
-- (void)_requestAutomaticUpdateAuthorizationIfNecessaryWithAppInfo:(id)a3 processHandle:(id)a4
+- (void)_requestAutomaticUpdateAuthorizationIfNecessaryWithAppInfo:(id)info processHandle:(id)handle
 {
-  v6 = a4;
-  if ([a3 requiresAuthorizationForAutoUpdates])
+  handleCopy = handle;
+  if ([info requiresAuthorizationForAutoUpdates])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __112__SBMainSwitcherControllerCoordinator__requestAutomaticUpdateAuthorizationIfNecessaryWithAppInfo_processHandle___block_invoke;
     v7[3] = &unk_2783A8C18;
-    v8 = v6;
+    v8 = handleCopy;
     [(SBMainSwitcherControllerCoordinator *)self _asyncOnStoreAppLaunchUIActivationQueue:v7];
   }
 }
@@ -2439,9 +2439,9 @@ void __112__SBMainSwitcherControllerCoordinator__requestAutomaticUpdateAuthoriza
   }
 }
 
-- (void)_asyncOnStoreAppLaunchUIActivationQueue:(id)a3
+- (void)_asyncOnStoreAppLaunchUIActivationQueue:(id)queue
 {
-  v7 = a3;
+  queueCopy = queue;
   if (!self->_storeAppLaunchUIActivationQueue)
   {
     v4 = dispatch_queue_create("com.apple.springboard.activateStoreAppLaunchUI", 0);
@@ -2453,19 +2453,19 @@ void __112__SBMainSwitcherControllerCoordinator__requestAutomaticUpdateAuthoriza
   dispatch_async(self->_storeAppLaunchUIActivationQueue, v6);
 }
 
-- (CGAffineTransform)switcherContentController:(SEL)a3 transformForCardUnderSheetForBoundsSize:(id)a4
+- (CGAffineTransform)switcherContentController:(SEL)controller transformForCardUnderSheetForBoundsSize:(id)size
 {
   height = a5.height;
   width = a5.width;
   *&retstr->c = 0u;
   *&retstr->tx = 0u;
   *&retstr->a = 0u;
-  v8 = [(SBMainSwitcherControllerCoordinator *)self _centerWindowSheetMetricsCache];
-  if (v8)
+  _centerWindowSheetMetricsCache = [(SBMainSwitcherControllerCoordinator *)self _centerWindowSheetMetricsCache];
+  if (_centerWindowSheetMetricsCache)
   {
-    v10 = v8;
-    [v8 transformForCardUnderSheetForBoundsSize:{width, height}];
-    v8 = v10;
+    v10 = _centerWindowSheetMetricsCache;
+    [_centerWindowSheetMetricsCache transformForCardUnderSheetForBoundsSize:{width, height}];
+    _centerWindowSheetMetricsCache = v10;
   }
 
   else
@@ -2493,64 +2493,64 @@ void __112__SBMainSwitcherControllerCoordinator__requestAutomaticUpdateAuthoriza
   return sheetMetricsCache;
 }
 
-- (void)_focusNewlyAddedApplicationIfNeededTransitioningFromLayoutState:(id)a3 toLayoutState:(id)a4 windowScene:(id)a5
+- (void)_focusNewlyAddedApplicationIfNeededTransitioningFromLayoutState:(id)state toLayoutState:(id)layoutState windowScene:(id)scene
 {
   v98 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 elementWithRole:3];
-  v12 = [v8 elementWithRole:4];
-  v13 = [v9 elementWithRole:3];
-  v14 = [v9 elementWithRole:4];
+  stateCopy = state;
+  layoutStateCopy = layoutState;
+  sceneCopy = scene;
+  v11 = [stateCopy elementWithRole:3];
+  v12 = [stateCopy elementWithRole:4];
+  v13 = [layoutStateCopy elementWithRole:3];
+  v14 = [layoutStateCopy elementWithRole:4];
   v92 = v11;
   v15 = BSEqualObjects();
   v16 = BSEqualObjects();
-  v17 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v10];
+  v17 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
   v93 = v17;
   if (v16 && (v15 & 1) != 0)
   {
-    v18 = [v17 windowManagementContext];
-    v19 = [v18 isChamoisOrFlexibleWindowing];
+    windowManagementContext = [v17 windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-    if (v19)
+    if (isChamoisOrFlexibleWindowing)
     {
-      v20 = [v8 appLayout];
-      v21 = [v9 appLayout];
-      v22 = [v21 allItems];
-      if (![v22 count])
+      appLayout = [stateCopy appLayout];
+      appLayout2 = [layoutStateCopy appLayout];
+      allItems = [appLayout2 allItems];
+      if (![allItems count])
       {
 LABEL_46:
 
         goto LABEL_47;
       }
 
-      v89 = v10;
-      v23 = self;
-      v24 = [v20 allItems];
-      v25 = v22;
-      v26 = v24;
+      v89 = sceneCopy;
+      selfCopy = self;
+      allItems2 = [appLayout allItems];
+      v25 = allItems;
+      v26 = allItems2;
       v91 = v25;
-      v27 = [v25 sb_arrayByRemovingObjects:v24];
+      v27 = [v25 sb_arrayByRemovingObjects:allItems2];
 
-      v87 = v20;
-      v88 = v21;
+      v87 = appLayout;
+      v88 = appLayout2;
       v86 = v27;
       if ([v27 count] == 1)
       {
-        v28 = [v27 firstObject];
-        v29 = v21;
-        v30 = v28;
-        v31 = [v29 layoutRoleForItem:v28];
-        p_isa = &v23->super.isa;
+        firstObject = [v27 firstObject];
+        v29 = appLayout2;
+        v30 = firstObject;
+        v31 = [v29 layoutRoleForItem:firstObject];
+        p_isa = &selfCopy->super.isa;
         if (SBLayoutRoleIsValidForSplitView(v31))
         {
-          v33 = [v9 elementWithRole:v31];
-          v34 = [v33 workspaceEntity];
-          v35 = [v34 applicationSceneEntity];
+          v33 = [layoutStateCopy elementWithRole:v31];
+          workspaceEntity = [v33 workspaceEntity];
+          applicationSceneEntity = [workspaceEntity applicationSceneEntity];
 
-          v36 = [v35 sceneHandle];
-          v37 = [v36 sceneIfExists];
+          sceneHandle = [applicationSceneEntity sceneHandle];
+          sceneIfExists = [sceneHandle sceneIfExists];
 
           v84 = @"added single app to stage";
         }
@@ -2558,33 +2558,33 @@ LABEL_46:
         else
         {
           v84 = 0;
-          v37 = 0;
+          sceneIfExists = 0;
         }
 
-        v10 = v89;
+        sceneCopy = v89;
 
-        v21 = v88;
+        appLayout2 = v88;
 LABEL_40:
-        v90 = v37;
-        v75 = [v37 settings];
-        v76 = [v75 isForeground];
+        v90 = sceneIfExists;
+        settings = [sceneIfExists settings];
+        isForeground = [settings isForeground];
 
-        v22 = v91;
-        if (!v76)
+        allItems = v91;
+        if (!isForeground)
         {
 LABEL_45:
 
-          v20 = v87;
+          appLayout = v87;
           goto LABEL_46;
         }
 
-        v77 = [p_isa[33] windowSceneWithFocus];
-        v78 = v77;
-        if (v84 != @"update top most app on existing stage" || v77 && [v10 isEqual:v77])
+        windowSceneWithFocus = [p_isa[33] windowSceneWithFocus];
+        v78 = windowSceneWithFocus;
+        if (v84 != @"update top most app on existing stage" || windowSceneWithFocus && [sceneCopy isEqual:windowSceneWithFocus])
         {
           v79 = +[(SBWorkspace *)SBMainWorkspace];
-          v80 = [v79 keyboardFocusController];
-          [v80 userFocusRequestForScene:v90 reason:v84 completion:0];
+          keyboardFocusController = [v79 keyboardFocusController];
+          [keyboardFocusController userFocusRequestForScene:v90 reason:v84 completion:0];
         }
 
         else
@@ -2595,51 +2595,51 @@ LABEL_45:
             goto LABEL_44;
           }
 
-          v80 = [v10 _sceneIdentifier];
+          keyboardFocusController = [sceneCopy _sceneIdentifier];
           *buf = 138543362;
-          v97 = v80;
+          v97 = keyboardFocusController;
           _os_log_impl(&dword_21ED4E000, v79, OS_LOG_TYPE_DEFAULT, "layout update isn't a sufficient reason to switch the focused window scene to %{public}@", buf, 0xCu);
         }
 
-        v22 = v91;
+        allItems = v91;
 LABEL_44:
 
-        v21 = v88;
+        appLayout2 = v88;
         goto LABEL_45;
       }
 
       v47 = [v27 count];
-      p_isa = &v23->super.isa;
+      p_isa = &selfCopy->super.isa;
       if (v47)
       {
-        v48 = [(SBMainSwitcherControllerCoordinator *)v23 displayItemLayoutAttributesProvider];
-        v49 = [v9 interfaceOrientation];
-        if ((v49 - 1) < 2)
+        displayItemLayoutAttributesProvider = [(SBMainSwitcherControllerCoordinator *)selfCopy displayItemLayoutAttributesProvider];
+        interfaceOrientation = [layoutStateCopy interfaceOrientation];
+        if ((interfaceOrientation - 1) < 2)
         {
           v50 = 1;
         }
 
         else
         {
-          v50 = 2 * ((v49 - 3) < 2);
+          v50 = 2 * ((interfaceOrientation - 3) < 2);
         }
 
-        v51 = [v48 lastInteractedDisplayItemsInAppLayout:v21 orientation:v50];
-        v52 = [v51 firstObject];
+        v51 = [displayItemLayoutAttributesProvider lastInteractedDisplayItemsInAppLayout:appLayout2 orientation:v50];
+        firstObject2 = [v51 firstObject];
 
-        v53 = v52;
-        v10 = v89;
-        if (v53 && SBLayoutRoleIsValidForSplitView([v21 layoutRoleForItem:v53]))
+        v53 = firstObject2;
+        sceneCopy = v89;
+        if (v53 && SBLayoutRoleIsValidForSplitView([appLayout2 layoutRoleForItem:v53]))
         {
-          v85 = [v89 sceneManager];
+          sceneManager = [v89 sceneManager];
           v54 = MEMORY[0x277D0ADC0];
-          v55 = [v53 uniqueIdentifier];
-          v56 = [v54 identityForIdentifier:v55];
-          [v85 existingSceneHandleForSceneIdentity:v56];
+          uniqueIdentifier = [v53 uniqueIdentifier];
+          v56 = [v54 identityForIdentifier:uniqueIdentifier];
+          [sceneManager existingSceneHandleForSceneIdentity:v56];
           v57 = v82 = v53;
 
-          v21 = v88;
-          v37 = [v57 sceneIfExists];
+          appLayout2 = v88;
+          sceneIfExists = [v57 sceneIfExists];
 
           v53 = v82;
           v84 = @"added multiple apps to stage";
@@ -2648,62 +2648,62 @@ LABEL_44:
         else
         {
           v84 = 0;
-          v37 = 0;
+          sceneIfExists = 0;
         }
 
         goto LABEL_40;
       }
 
-      v10 = v89;
-      if (![v21 isEqual:v20])
+      sceneCopy = v89;
+      if (![appLayout2 isEqual:appLayout])
       {
         v84 = 0;
-        v37 = 0;
+        sceneIfExists = 0;
         goto LABEL_40;
       }
 
       v83 = p_isa;
-      v58 = [p_isa displayItemLayoutAttributesProvider];
-      v59 = [v9 interfaceOrientation];
-      if ((v59 - 1) < 2)
+      displayItemLayoutAttributesProvider2 = [p_isa displayItemLayoutAttributesProvider];
+      interfaceOrientation2 = [layoutStateCopy interfaceOrientation];
+      if ((interfaceOrientation2 - 1) < 2)
       {
         v60 = 1;
       }
 
       else
       {
-        v60 = 2 * ((v59 - 3) < 2);
+        v60 = 2 * ((interfaceOrientation2 - 3) < 2);
       }
 
-      v61 = [v58 lastInteractedDisplayItemsInAppLayout:v21 orientation:v60];
-      v62 = [v61 firstObject];
+      v61 = [displayItemLayoutAttributesProvider2 lastInteractedDisplayItemsInAppLayout:appLayout2 orientation:v60];
+      firstObject3 = [v61 firstObject];
 
-      v63 = v62;
-      if (!v62)
+      v63 = firstObject3;
+      if (!firstObject3)
       {
         v84 = 0;
-        v37 = 0;
+        sceneIfExists = 0;
         goto LABEL_39;
       }
 
-      v64 = [v93 windowManagementContext];
-      v65 = [v64 isFlexibleWindowingEnabled];
+      windowManagementContext2 = [v93 windowManagementContext];
+      isFlexibleWindowingEnabled = [windowManagementContext2 isFlexibleWindowingEnabled];
 
-      if (v65)
+      if (isFlexibleWindowingEnabled)
       {
         if ([v91 count] < 2)
         {
           goto LABEL_34;
         }
 
-        v66 = [v93 _autoLayoutSpaceForAppLayout:v21];
-        v67 = [v66 groups];
+        v66 = [v93 _autoLayoutSpaceForAppLayout:appLayout2];
+        groups = [v66 groups];
         v94[0] = MEMORY[0x277D85DD0];
         v94[1] = 3221225472;
         v94[2] = __129__SBMainSwitcherControllerCoordinator__focusNewlyAddedApplicationIfNeededTransitioningFromLayoutState_toLayoutState_windowScene___block_invoke;
         v94[3] = &unk_2783B54E0;
-        v95 = v62;
-        v68 = [v67 bs_containsObjectPassingTest:v94];
+        v95 = firstObject3;
+        v68 = [groups bs_containsObjectPassingTest:v94];
 
         if ((v68 & 1) == 0)
         {
@@ -2711,22 +2711,22 @@ LABEL_44:
         }
       }
 
-      else if (([v21 isSplitConfiguration] & 1) == 0)
+      else if (([appLayout2 isSplitConfiguration] & 1) == 0)
       {
 LABEL_34:
-        v69 = [v89 sceneManager];
+        sceneManager2 = [v89 sceneManager];
         v70 = MEMORY[0x277D0ADC0];
-        v81 = v62;
-        v71 = [v62 uniqueIdentifier];
-        v72 = [v70 identityForIdentifier:v71];
-        v73 = v69;
-        v74 = [v69 existingSceneHandleForSceneIdentity:v72];
+        v81 = firstObject3;
+        uniqueIdentifier2 = [firstObject3 uniqueIdentifier];
+        v72 = [v70 identityForIdentifier:uniqueIdentifier2];
+        v73 = sceneManager2;
+        v74 = [sceneManager2 existingSceneHandleForSceneIdentity:v72];
 
-        v37 = [v74 sceneIfExists];
+        sceneIfExists = [v74 sceneIfExists];
 
         v63 = v81;
         v84 = @"update top most app on existing stage";
-        v21 = v88;
+        appLayout2 = v88;
 LABEL_39:
         p_isa = v83;
 
@@ -2734,9 +2734,9 @@ LABEL_39:
       }
 
       v84 = 0;
-      v37 = 0;
-      v21 = v88;
-      v63 = v62;
+      sceneIfExists = 0;
+      appLayout2 = v88;
+      v63 = firstObject3;
       goto LABEL_39;
     }
   }
@@ -2753,20 +2753,20 @@ LABEL_39:
       v38 = v14;
     }
 
-    v39 = [v38 workspaceEntity];
-    v40 = [v39 applicationSceneEntity];
+    workspaceEntity2 = [v38 workspaceEntity];
+    applicationSceneEntity2 = [workspaceEntity2 applicationSceneEntity];
 
-    v41 = [v40 sceneHandle];
-    v42 = [v41 sceneIfExists];
+    sceneHandle2 = [applicationSceneEntity2 sceneHandle];
+    sceneIfExists2 = [sceneHandle2 sceneIfExists];
 
-    v43 = [v42 settings];
-    v44 = [v43 isForeground];
+    settings2 = [sceneIfExists2 settings];
+    isForeground2 = [settings2 isForeground];
 
-    if (v44)
+    if (isForeground2)
     {
       v45 = +[(SBWorkspace *)SBMainWorkspace];
-      v46 = [v45 keyboardFocusController];
-      [v46 userFocusRequestForScene:v42 reason:@"floating or center app is foreground" completion:0];
+      keyboardFocusController2 = [v45 keyboardFocusController];
+      [keyboardFocusController2 userFocusRequestForScene:sceneIfExists2 reason:@"floating or center app is foreground" completion:0];
     }
   }
 
@@ -2781,56 +2781,56 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__focusNewlyAddedApplicationI
   return v4;
 }
 
-- (void)layoutStateTransitionCoordinator:(id)a3 transitionDidEndWithTransitionContext:(id)a4
+- (void)layoutStateTransitionCoordinator:(id)coordinator transitionDidEndWithTransitionContext:(id)context
 {
   v181 = *MEMORY[0x277D85DE8];
-  v118 = a3;
-  v5 = a4;
-  v6 = [v5 isInterrupted];
-  v121 = v5;
-  v7 = [v5 toLayoutState];
-  v122 = [v121 fromLayoutState];
-  v120 = [v118 windowScene];
-  v119 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v120];
-  v8 = [v121 error];
+  coordinatorCopy = coordinator;
+  contextCopy = context;
+  isInterrupted = [contextCopy isInterrupted];
+  v121 = contextCopy;
+  toLayoutState = [contextCopy toLayoutState];
+  fromLayoutState = [v121 fromLayoutState];
+  windowScene = [coordinatorCopy windowScene];
+  v119 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:windowScene];
+  error = [v121 error];
 
-  if (v8)
+  if (error)
   {
-    v124 = v122;
+    v124 = fromLayoutState;
 
-    v9 = [v120 layoutStateProvider];
-    [v9 setLayoutState:v124];
+    layoutStateProvider = [windowScene layoutStateProvider];
+    [layoutStateProvider setLayoutState:v124];
 
-    v10 = [v120 layoutStateProvider];
-    [v10 setPreviousLayoutState:v124];
+    layoutStateProvider2 = [windowScene layoutStateProvider];
+    [layoutStateProvider2 setPreviousLayoutState:v124];
   }
 
   else
   {
-    v124 = v7;
+    v124 = toLayoutState;
   }
 
-  v123 = [v121 applicationTransitionContext];
-  v117 = [v123 request];
-  v114 = [v117 source];
-  v11 = [v123 previousLayoutState];
-  v116 = [v11 appLayout];
+  applicationTransitionContext = [v121 applicationTransitionContext];
+  request = [applicationTransitionContext request];
+  source = [request source];
+  previousLayoutState = [applicationTransitionContext previousLayoutState];
+  appLayout = [previousLayoutState appLayout];
 
-  v12 = [v123 previousLayoutState];
-  v115 = [v12 floatingAppLayout];
+  previousLayoutState2 = [applicationTransitionContext previousLayoutState];
+  floatingAppLayout = [previousLayoutState2 floatingAppLayout];
 
-  v13 = [v123 layoutState];
-  v130 = [v13 appLayout];
+  layoutState = [applicationTransitionContext layoutState];
+  appLayout2 = [layoutState appLayout];
 
-  v14 = [v123 layoutState];
-  v129 = [v14 floatingAppLayout];
+  layoutState2 = [applicationTransitionContext layoutState];
+  floatingAppLayout2 = [layoutState2 floatingAppLayout];
 
   v164 = 0u;
   v165 = 0u;
   v162 = 0u;
   v163 = 0u;
-  v15 = [v116 allItems];
-  v16 = [v15 countByEnumeratingWithState:&v162 objects:v180 count:16];
+  allItems = [appLayout allItems];
+  v16 = [allItems countByEnumeratingWithState:&v162 objects:v180 count:16];
   if (v16)
   {
     v17 = *v163;
@@ -2840,17 +2840,17 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__focusNewlyAddedApplicationI
       {
         if (*v163 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allItems);
         }
 
         v19 = *(*(&v162 + 1) + 8 * i);
-        if (([v130 containsItem:v19] & 1) == 0 && -[NSMutableSet containsObject:](self->_liveDisplayItemsBeingTerminated, "containsObject:", v19))
+        if (([appLayout2 containsItem:v19] & 1) == 0 && -[NSMutableSet containsObject:](self->_liveDisplayItemsBeingTerminated, "containsObject:", v19))
         {
           [(NSMutableSet *)self->_liveDisplayItemsBeingTerminated removeObject:v19];
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v162 objects:v180 count:16];
+      v16 = [allItems countByEnumeratingWithState:&v162 objects:v180 count:16];
     }
 
     while (v16);
@@ -2860,8 +2860,8 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__focusNewlyAddedApplicationI
   v161 = 0u;
   v158 = 0u;
   v159 = 0u;
-  v20 = [v115 allItems];
-  v21 = [v20 countByEnumeratingWithState:&v158 objects:v179 count:16];
+  allItems2 = [floatingAppLayout allItems];
+  v21 = [allItems2 countByEnumeratingWithState:&v158 objects:v179 count:16];
   if (v21)
   {
     v22 = *v159;
@@ -2871,48 +2871,48 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__focusNewlyAddedApplicationI
       {
         if (*v159 != v22)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allItems2);
         }
 
         v24 = *(*(&v158 + 1) + 8 * j);
-        if (([v129 containsItem:v24] & 1) == 0 && -[NSMutableSet containsObject:](self->_liveDisplayItemsBeingTerminated, "containsObject:", v24))
+        if (([floatingAppLayout2 containsItem:v24] & 1) == 0 && -[NSMutableSet containsObject:](self->_liveDisplayItemsBeingTerminated, "containsObject:", v24))
         {
           [(NSMutableSet *)self->_liveDisplayItemsBeingTerminated removeObject:v24];
         }
       }
 
-      v21 = [v20 countByEnumeratingWithState:&v158 objects:v179 count:16];
+      v21 = [allItems2 countByEnumeratingWithState:&v158 objects:v179 count:16];
     }
 
     while (v21);
   }
 
-  if ((v6 & 1) == 0)
+  if ((isInterrupted & 1) == 0)
   {
-    v25 = [v122 unlockedEnvironmentMode];
-    v26 = [v122 isFloatingSwitcherVisible];
-    v27 = [v124 unlockedEnvironmentMode];
-    v28 = [v124 isFloatingSwitcherVisible];
-    v29 = [v122 bundleIDShowingAppExpose];
-    if (v29)
+    unlockedEnvironmentMode = [fromLayoutState unlockedEnvironmentMode];
+    isFloatingSwitcherVisible = [fromLayoutState isFloatingSwitcherVisible];
+    unlockedEnvironmentMode2 = [v124 unlockedEnvironmentMode];
+    isFloatingSwitcherVisible2 = [v124 isFloatingSwitcherVisible];
+    bundleIDShowingAppExpose = [fromLayoutState bundleIDShowingAppExpose];
+    if (bundleIDShowingAppExpose)
     {
       v30 = 0;
     }
 
     else
     {
-      v31 = [v124 bundleIDShowingAppExpose];
-      v30 = v31 != 0;
+      bundleIDShowingAppExpose2 = [v124 bundleIDShowingAppExpose];
+      v30 = bundleIDShowingAppExpose2 != 0;
     }
 
-    v128 = [v123 request];
-    v32 = [v122 peekConfiguration];
+    request2 = [applicationTransitionContext request];
+    peekConfiguration = [fromLayoutState peekConfiguration];
     IsValid = SBPeekConfigurationIsValid([v124 peekConfiguration]);
     v34 = IsValid;
-    v35 = IsValid && !SBPeekConfigurationIsValid(v32);
-    if ((v27 == 2) | v28 & 1)
+    v35 = IsValid && !SBPeekConfigurationIsValid(peekConfiguration);
+    if ((unlockedEnvironmentMode2 == 2) | isFloatingSwitcherVisible2 & 1)
     {
-      if (v27 == 2)
+      if (unlockedEnvironmentMode2 == 2)
       {
         v36 = [(NSMutableArray *)self->_servicesRemovedWhileAwayFromSwitcher copy];
         [(NSMutableArray *)self->_servicesRemovedWhileAwayFromSwitcher removeAllObjects];
@@ -2920,8 +2920,8 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__focusNewlyAddedApplicationI
         v157 = 0u;
         v154 = 0u;
         v155 = 0u;
-        v37 = v36;
-        v38 = [v37 countByEnumeratingWithState:&v154 objects:v178 count:16];
+        defaultCenter2 = v36;
+        v38 = [defaultCenter2 countByEnumeratingWithState:&v154 objects:v178 count:16];
         if (v38)
         {
           v39 = *v155;
@@ -2931,11 +2931,11 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__focusNewlyAddedApplicationI
             {
               if (*v155 != v39)
               {
-                objc_enumerationMutation(v37);
+                objc_enumerationMutation(defaultCenter2);
               }
 
-              v41 = [*(*(&v154 + 1) + 8 * k) bundleIdentifier];
-              v42 = [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:v41];
+              bundleIdentifier = [*(*(&v154 + 1) + 8 * k) bundleIdentifier];
+              v42 = [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:bundleIdentifier];
 
               v43 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutFromPrimaryLayoutItem:v42 sideLayoutElement:0 configuration:1];
               v44 = objc_alloc_init(SBSwitcherModelRemovalRequest);
@@ -2946,15 +2946,15 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__focusNewlyAddedApplicationI
               [(SBMainSwitcherControllerCoordinator *)self _performSceneDestructionForModelRemovalResults:v46];
             }
 
-            v38 = [v37 countByEnumeratingWithState:&v154 objects:v178 count:16];
+            v38 = [defaultCenter2 countByEnumeratingWithState:&v154 objects:v178 count:16];
           }
 
           while (v38);
         }
 
         pid_hibernate();
-        v47 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v47 postNotificationName:@"SBUIAppSwitcherRevealedNotification" object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"SBUIAppSwitcherRevealedNotification" object:0];
 
         goto LABEL_52;
       }
@@ -2962,51 +2962,51 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__focusNewlyAddedApplicationI
 
     else
     {
-      if ((!v30 || v114 != 33 && v114 != 51) && !v34)
+      if ((!v30 || source != 33 && source != 51) && !v34)
       {
         [(SBMainSwitcherControllerCoordinator *)self _releaseKeyboardFocus];
-        [(SBMainSwitcherControllerCoordinator *)self _focusNewlyAddedApplicationIfNeededTransitioningFromLayoutState:v122 toLayoutState:v124 windowScene:v120];
+        [(SBMainSwitcherControllerCoordinator *)self _focusNewlyAddedApplicationIfNeededTransitioningFromLayoutState:fromLayoutState toLayoutState:v124 windowScene:windowScene];
       }
 
       if (v35)
       {
-        v48 = [v120 homeScreenController];
-        v49 = [v48 window];
-        [v49 makeKeyWindow];
+        homeScreenController = [windowScene homeScreenController];
+        window = [homeScreenController window];
+        [window makeKeyWindow];
       }
 
-      if ((v25 == 2) | v26 & 1)
+      if ((unlockedEnvironmentMode == 2) | isFloatingSwitcherVisible & 1)
       {
-        v50 = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
-        [v50 _persistSoon];
+        _recentAppLayoutsController = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
+        [_recentAppLayoutsController _persistSoon];
       }
 
-      v51 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v120];
+      v51 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:windowScene];
       [v51 _updateContentViewInterfaceOrientation:{objc_msgSend(v124, "interfaceOrientation")}];
     }
 
-    v37 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v37 postNotificationName:@"SBUIAppSwitcherObscuredNotification" object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"SBUIAppSwitcherObscuredNotification" object:0];
 LABEL_52:
 
     if ([v124 unlockedEnvironmentMode] == 3)
     {
-      v52 = [v124 appLayout];
-      v53 = [v120 switcherController];
-      v54 = [v53 contentViewController];
+      appLayout3 = [v124 appLayout];
+      switcherController = [windowScene switcherController];
+      contentViewController = [switcherController contentViewController];
 
-      if (v52)
+      if (appLayout3)
       {
-        if ([v54 shouldAddAppLayoutToFront:v52 forTransitionWithContext:v123 transitionCompleted:1])
+        if ([contentViewController shouldAddAppLayoutToFront:appLayout3 forTransitionWithContext:applicationTransitionContext transitionCompleted:1])
         {
-          if ([v52 environment] == 1)
+          if ([appLayout3 environment] == 1)
           {
             appLayouts = self->_appLayouts;
             v152[0] = MEMORY[0x277D85DD0];
             v152[1] = 3221225472;
             v152[2] = __110__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator_transitionDidEndWithTransitionContext___block_invoke;
             v152[3] = &unk_2783A8CB8;
-            v153 = v52;
+            v153 = appLayout3;
             v56 = [(NSArray *)appLayouts bs_firstObjectPassingTest:v152];
           }
 
@@ -3015,55 +3015,55 @@ LABEL_52:
             v56 = 0;
           }
 
-          [(SBMainSwitcherControllerCoordinator *)self _addAppLayoutToFront:v52 removeAppLayout:v56];
+          [(SBMainSwitcherControllerCoordinator *)self _addAppLayoutToFront:appLayout3 removeAppLayout:v56];
         }
 
-        v57 = [v124 elements];
-        v58 = [v57 count] == 0;
+        elements = [v124 elements];
+        v58 = [elements count] == 0;
 
         if (!v58)
         {
           [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
-          if (![(NSArray *)self->_appLayouts containsObject:v52])
+          if (![(NSArray *)self->_appLayouts containsObject:appLayout3])
           {
             v59 = SBLogAppSwitcher();
             if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
             {
-              v109 = [v52 succinctDescription];
-              v110 = [v122 appLayout];
-              v111 = [v110 succinctDescription];
-              v112 = [v123 itemsCrossingToOtherDisplay];
+              succinctDescription = [appLayout3 succinctDescription];
+              appLayout4 = [fromLayoutState appLayout];
+              succinctDescription2 = [appLayout4 succinctDescription];
+              itemsCrossingToOtherDisplay = [applicationTransitionContext itemsCrossingToOtherDisplay];
               v113 = [(NSPointerArray *)self->_coordinatedSwitcherControllers count];
               *location = 138544386;
-              *&location[4] = v109;
+              *&location[4] = succinctDescription;
               v170 = 2114;
-              v171 = v111;
+              v171 = succinctDescription2;
               v172 = 2048;
-              v173 = v114;
+              v173 = source;
               v174 = 2114;
-              v175 = v112;
+              v175 = itemsCrossingToOtherDisplay;
               v176 = 2048;
               v177 = v113;
               _os_log_error_impl(&dword_21ED4E000, v59, OS_LOG_TYPE_ERROR, "The appLayouts array doesn't contain %{public}@, was transitioning from %{public}@ with source %lu, items crossing to other displays was %{public}@, number of switchers %lu", location, 0x34u);
             }
 
-            v60 = [MEMORY[0x277CCA890] currentHandler];
-            [v60 handleFailureInMethod:a2 object:self file:@"SBMainSwitcherControllerCoordinator.m" lineNumber:1191 description:@"The appLayouts array MUST contain the app layout we're transitioning to."];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"SBMainSwitcherControllerCoordinator.m" lineNumber:1191 description:@"The appLayouts array MUST contain the app layout we're transitioning to."];
           }
         }
       }
 
-      v61 = [v124 floatingAppLayout];
-      if (v61 && ([v124 isFloatingSwitcherVisible] & 1) == 0 && objc_msgSend(v54, "shouldAddAppLayoutToFront:forTransitionWithContext:transitionCompleted:", v61, v123, 1))
+      floatingAppLayout3 = [v124 floatingAppLayout];
+      if (floatingAppLayout3 && ([v124 isFloatingSwitcherVisible] & 1) == 0 && objc_msgSend(contentViewController, "shouldAddAppLayoutToFront:forTransitionWithContext:transitionCompleted:", floatingAppLayout3, applicationTransitionContext, 1))
       {
-        [(SBMainSwitcherControllerCoordinator *)self _addAppLayoutToFront:v61];
+        [(SBMainSwitcherControllerCoordinator *)self _addAppLayoutToFront:floatingAppLayout3];
       }
     }
 
     v62 = [MEMORY[0x277CBEB58] set];
     if ([v124 unlockedEnvironmentMode] == 3 || objc_msgSend(v124, "unlockedEnvironmentMode") == 2)
     {
-      v63 = [v124 appLayout];
+      appLayout5 = [v124 appLayout];
       v149[0] = MEMORY[0x277D85DD0];
       v149[1] = 3221225472;
       v149[2] = __110__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator_transitionDidEndWithTransitionContext___block_invoke_197;
@@ -3073,9 +3073,9 @@ LABEL_52:
       v150 = v64;
       v65 = v62;
       v151 = v65;
-      [v63 enumerate:v149];
+      [appLayout5 enumerate:v149];
 
-      v66 = [v124 floatingAppLayout];
+      floatingAppLayout4 = [v124 floatingAppLayout];
       v146[0] = MEMORY[0x277D85DD0];
       v146[1] = 3221225472;
       v146[2] = __110__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator_transitionDidEndWithTransitionContext___block_invoke_2;
@@ -3083,7 +3083,7 @@ LABEL_52:
       v146[4] = self;
       v147 = v64;
       v148 = v65;
-      [v66 enumerate:v146];
+      [floatingAppLayout4 enumerate:v146];
     }
 
     v67 = [MEMORY[0x277CBEB58] set];
@@ -3111,10 +3111,10 @@ LABEL_52:
           v139 = 0u;
           v140 = 0u;
           v141 = 0u;
-          v72 = [v128 applicationContext];
-          v73 = [v72 entities];
+          applicationContext = [request2 applicationContext];
+          entities = [applicationContext entities];
 
-          v74 = [v73 countByEnumeratingWithState:&v138 objects:v167 count:16];
+          v74 = [entities countByEnumeratingWithState:&v138 objects:v167 count:16];
           if (v74)
           {
             v75 = *v139;
@@ -3124,7 +3124,7 @@ LABEL_52:
               {
                 if (*v139 != v75)
                 {
-                  objc_enumerationMutation(v73);
+                  objc_enumerationMutation(entities);
                 }
 
                 v77 = *(*(&v138 + 1) + 8 * n);
@@ -3135,7 +3135,7 @@ LABEL_52:
                 }
               }
 
-              v74 = [v73 countByEnumeratingWithState:&v138 objects:v167 count:16];
+              v74 = [entities countByEnumeratingWithState:&v138 objects:v167 count:16];
             }
 
             while (v74);
@@ -3154,33 +3154,33 @@ LABEL_52:
   }
 
   [(SBMainSwitcherControllerCoordinator *)self _evaluateAsynchronousRenderingEnablement];
-  v78 = [v121 error];
-  if (v78)
+  error2 = [v121 error];
+  if (error2)
   {
   }
 
   else
   {
-    v79 = [v122 elements];
-    v80 = [v124 elements];
-    v81 = [v79 isEqualToSet:v80];
+    elements2 = [fromLayoutState elements];
+    elements3 = [v124 elements];
+    v81 = [elements2 isEqualToSet:elements3];
 
     if ((v81 & 1) == 0)
     {
-      v82 = self;
+      selfCopy2 = self;
       if (!self->_preventSupplementalSnapshotsAssertion)
       {
-        v83 = [v120 sceneManager];
+        sceneManager = [windowScene sceneManager];
         v84 = objc_opt_class();
         v85 = NSStringFromClass(v84);
-        v86 = [v83 preventTakingSupplementalSnapshotsForBackgroundingScenesWithReason:v85];
+        v86 = [sceneManager preventTakingSupplementalSnapshotsForBackgroundingScenesWithReason:v85];
         preventSupplementalSnapshotsAssertion = self->_preventSupplementalSnapshotsAssertion;
         self->_preventSupplementalSnapshotsAssertion = v86;
 
-        v82 = self;
+        selfCopy2 = self;
       }
 
-      objc_initWeak(location, v82);
+      objc_initWeak(location, selfCopy2);
       [(BSAbsoluteMachTimer *)self->_preventSupplementalSnapshotsInvalidationTimer invalidate];
       v88 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:@"SBMainSwitcherCoordinator.preventSupplementalSnapshotsInvalidationTimer"];
       preventSupplementalSnapshotsInvalidationTimer = self->_preventSupplementalSnapshotsInvalidationTimer;
@@ -3206,17 +3206,17 @@ LABEL_52:
   deactivatingScenesResignActiveAssertion = self->_deactivatingScenesResignActiveAssertion;
   self->_deactivatingScenesResignActiveAssertion = 0;
 
-  if ([v124 unlockedEnvironmentMode] == 1 && objc_msgSend(v122, "unlockedEnvironmentMode") == 3 && v114 != 71)
+  if ([v124 unlockedEnvironmentMode] == 1 && objc_msgSend(fromLayoutState, "unlockedEnvironmentMode") == 3 && source != 71)
   {
-    v95 = [v122 appLayout];
-    if (v95)
+    appLayout6 = [fromLayoutState appLayout];
+    if (appLayout6)
     {
-      v96 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
-      v97 = [v96 containsObject:v95];
+      appLayouts = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
+      v97 = [appLayouts containsObject:appLayout6];
 
       if ((v97 & 1) == 0 && !SBPeekConfigurationIsValid([v124 peekConfiguration]))
       {
-        [v95 allItems];
+        [appLayout6 allItems];
         v134 = 0u;
         v135 = 0u;
         v132 = 0u;
@@ -3235,10 +3235,10 @@ LABEL_52:
               }
 
               v102 = [(SBAppSwitcherModel *)self->_mainSwitcherModel appLayoutContainingDisplayItem:*(*(&v132 + 1) + 8 * ii) includingHiddenAppLayouts:0];
-              v103 = [v102 preferredDisplayOrdinal];
-              LODWORD(v103) = v103 == [v95 preferredDisplayOrdinal];
+              preferredDisplayOrdinal = [v102 preferredDisplayOrdinal];
+              LODWORD(preferredDisplayOrdinal) = preferredDisplayOrdinal == [appLayout6 preferredDisplayOrdinal];
 
-              if (!v103)
+              if (!preferredDisplayOrdinal)
               {
 
                 goto LABEL_111;
@@ -3255,26 +3255,26 @@ LABEL_52:
           }
         }
 
-        [(SBMainSwitcherControllerCoordinator *)self _addAppLayoutToFront:v95];
+        [(SBMainSwitcherControllerCoordinator *)self _addAppLayoutToFront:appLayout6];
       }
     }
 
 LABEL_111:
-    v104 = [v122 floatingAppLayout];
-    if (v104)
+    floatingAppLayout5 = [fromLayoutState floatingAppLayout];
+    if (floatingAppLayout5)
     {
-      v105 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
-      v106 = [v105 containsObject:v104];
+      appLayouts2 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
+      v106 = [appLayouts2 containsObject:floatingAppLayout5];
 
       if ((v106 & 1) == 0)
       {
-        [(SBMainSwitcherControllerCoordinator *)self _addAppLayoutToFront:v104];
+        [(SBMainSwitcherControllerCoordinator *)self _addAppLayoutToFront:floatingAppLayout5];
       }
     }
   }
 
-  v107 = [v119 windowManagementContext];
-  v108 = [v107 baseStyle] == 0;
+  windowManagementContext = [v119 windowManagementContext];
+  v108 = [windowManagementContext baseStyle] == 0;
 
   if (!v108)
   {
@@ -3343,13 +3343,13 @@ void __110__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator
   }
 }
 
-- (void)watchdog:(id)a3 requestsTerminationOf:(id)a4 forReason:(id)a5
+- (void)watchdog:(id)watchdog requestsTerminationOf:(id)of forReason:(id)reason
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a5;
+  ofCopy = of;
+  reasonCopy = reason;
   v8 = objc_opt_class();
-  v9 = v6;
+  v9 = ofCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -3370,21 +3370,21 @@ void __110__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator
 
   v11 = v10;
 
-  v12 = [v11 applicationSceneEntity];
+  applicationSceneEntity = [v11 applicationSceneEntity];
 
-  v13 = [v12 sceneHandle];
-  v14 = [v13 sceneIfExists];
-  v15 = [v14 clientHandle];
+  sceneHandle = [applicationSceneEntity sceneHandle];
+  sceneIfExists = [sceneHandle sceneIfExists];
+  clientHandle = [sceneIfExists clientHandle];
 
-  if (v15)
+  if (clientHandle)
   {
-    v16 = [v15 processHandle];
-    if (v16)
+    processHandle = [clientHandle processHandle];
+    if (processHandle)
     {
-      v17 = [MEMORY[0x277D46FA0] predicateMatchingIdentifier:v16];
+      v17 = [MEMORY[0x277D46FA0] predicateMatchingIdentifier:processHandle];
       v18 = objc_alloc(MEMORY[0x277D47010]);
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"Capture Application Requirements Unmet: %@", v7];
-      v20 = [v18 initWithExplanation:v19];
+      reasonCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Capture Application Requirements Unmet: %@", reasonCopy];
+      v20 = [v18 initWithExplanation:reasonCopy];
 
       [v20 setReportType:1];
       [v20 setMaximumTerminationResistance:40];
@@ -3392,12 +3392,12 @@ void __110__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator
       v22 = SBLogCaptureApplication();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v16 bundle];
-        v24 = [v23 identifier];
+        bundle = [processHandle bundle];
+        identifier = [bundle identifier];
         *buf = 138543618;
-        v32 = v24;
+        v32 = identifier;
         v33 = 2114;
-        v34 = v7;
+        v34 = reasonCopy;
         _os_log_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_DEFAULT, "Unlocked capture watchdog requesting termination of %{public}@ for reason: %{public}@", buf, 0x16u);
       }
 
@@ -3416,33 +3416,33 @@ void __110__SBMainSwitcherControllerCoordinator_layoutStateTransitionCoordinator
       }
 
       v28 = +[SBCaptureApplicationCenter sharedInstance];
-      v29 = [v16 name];
-      [v28 promptLaunchTerminationAlertIfNecessaryForProcess:v29 afterDelay:v7 reason:1.0];
+      name = [processHandle name];
+      [v28 promptLaunchTerminationAlertIfNecessaryForProcess:name afterDelay:reasonCopy reason:1.0];
     }
   }
 }
 
-- (void)eventSource:(id)a3 userTouchedApplication:(id)a4
+- (void)eventSource:(id)source userTouchedApplication:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  applicationCopy = application;
   if (self->_preventSupplementalSnapshotsAssertion)
   {
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = 0;
-    v8 = [(SBMainSwitcherControllerCoordinator *)self _activeDisplaySwitcherController];
-    v9 = [v8 layoutState];
+    _activeDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _activeDisplaySwitcherController];
+    layoutState = [_activeDisplaySwitcherController layoutState];
 
-    v10 = [v9 elements];
+    elements = [layoutState elements];
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __74__SBMainSwitcherControllerCoordinator_eventSource_userTouchedApplication___block_invoke;
     v16 = &unk_2783B9440;
-    v17 = v7;
+    v17 = applicationCopy;
     v18 = &v19;
-    [v10 enumerateObjectsUsingBlock:&v13];
+    [elements enumerateObjectsUsingBlock:&v13];
 
     if (*(v20 + 24) == 1)
     {
@@ -3474,50 +3474,50 @@ void __74__SBMainSwitcherControllerCoordinator_eventSource_userTouchedApplicatio
   }
 }
 
-- (void)eventSource:(id)a3 userDeletedWebBookmark:(id)a4
+- (void)eventSource:(id)source userDeletedWebBookmark:(id)bookmark
 {
-  v10 = a4;
-  v5 = [v10 webClip];
-  if ([v5 isAppClip])
+  bookmarkCopy = bookmark;
+  webClip = [bookmarkCopy webClip];
+  if ([webClip isAppClip])
   {
-    v6 = [v10 webClip];
-    v7 = [v6 applicationBundleIdentifier];
+    webClip2 = [bookmarkCopy webClip];
+    applicationBundleIdentifier = [webClip2 applicationBundleIdentifier];
 
-    [(SBMainSwitcherControllerCoordinator *)self _deleteAppLayoutsMatchingBundleIdentifier:v7];
+    [(SBMainSwitcherControllerCoordinator *)self _deleteAppLayoutsMatchingBundleIdentifier:applicationBundleIdentifier];
   }
 
   else
   {
-    v8 = [v5 identifier];
-    v9 = [SBWebApplication _webAppIdentifierFromWebClipIdentifier:v8];
-    v7 = [SBDisplayItem webAppDisplayItemWithWebAppIdentifier:v9];
+    identifier = [webClip identifier];
+    v9 = [SBWebApplication _webAppIdentifierFromWebClipIdentifier:identifier];
+    applicationBundleIdentifier = [SBDisplayItem webAppDisplayItemWithWebAppIdentifier:v9];
 
-    [(SBMainSwitcherControllerCoordinator *)self deleteAppLayoutForDisplayItem:v7];
+    [(SBMainSwitcherControllerCoordinator *)self deleteAppLayoutForDisplayItem:applicationBundleIdentifier];
   }
 }
 
-- (id)animationControllerForTransitionRequest:(id)a3
+- (id)animationControllerForTransitionRequest:(id)request
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  requestCopy = request;
   v6 = [v4 set];
-  v7 = [(SBMainSwitcherControllerCoordinator *)self animationControllerForTransitionRequest:v5 ancillaryTransitionRequests:v6];
+  v7 = [(SBMainSwitcherControllerCoordinator *)self animationControllerForTransitionRequest:requestCopy ancillaryTransitionRequests:v6];
 
   return v7;
 }
 
-- (id)animationControllerForTransitionRequest:(id)a3 ancillaryTransitionRequests:(id)a4
+- (id)animationControllerForTransitionRequest:(id)request ancillaryTransitionRequests:(id)requests
 {
   v43 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v5 = a4;
-  v6 = [SBApp windowSceneManager];
-  v7 = [v31 displayIdentity];
-  v28 = [v6 windowSceneForDisplayIdentity:v7];
+  requestCopy = request;
+  requestsCopy = requests;
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [requestCopy displayIdentity];
+  v28 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
-  v30 = [v28 switcherController];
-  v29 = [v30 contentViewController];
-  v27 = [v29 animationControllerForTransitionRequest:v31];
+  switcherController = [v28 switcherController];
+  contentViewController = [switcherController contentViewController];
+  v27 = [contentViewController animationControllerForTransitionRequest:requestCopy];
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = v8;
   if (v27)
@@ -3529,7 +3529,7 @@ void __74__SBMainSwitcherControllerCoordinator_eventSource_userTouchedApplicatio
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = v5;
+  v10 = requestsCopy;
   v11 = [v10 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v11)
   {
@@ -3544,14 +3544,14 @@ void __74__SBMainSwitcherControllerCoordinator_eventSource_userTouchedApplicatio
         }
 
         v14 = *(*(&v38 + 1) + 8 * i);
-        v15 = [SBApp windowSceneManager];
-        v16 = [v14 displayIdentity];
-        v17 = [v15 windowSceneForDisplayIdentity:v16];
+        windowSceneManager2 = [SBApp windowSceneManager];
+        displayIdentity2 = [v14 displayIdentity];
+        v17 = [windowSceneManager2 windowSceneForDisplayIdentity:displayIdentity2];
 
-        v18 = [v17 switcherController];
-        v19 = [v18 contentViewController];
+        switcherController2 = [v17 switcherController];
+        contentViewController2 = [switcherController2 contentViewController];
 
-        v20 = [v19 animationControllerForTransitionRequest:v14];
+        v20 = [contentViewController2 animationControllerForTransitionRequest:v14];
         if (v20)
         {
           [v9 addObject:v20];
@@ -3571,12 +3571,12 @@ void __74__SBMainSwitcherControllerCoordinator_eventSource_userTouchedApplicatio
   v32[2] = __107__SBMainSwitcherControllerCoordinator_animationControllerForTransitionRequest_ancillaryTransitionRequests___block_invoke;
   v32[3] = &unk_2783B9468;
   objc_copyWeak(&v36, &location);
-  v22 = v29;
+  v22 = contentViewController;
   v33 = v22;
-  v34 = self;
-  v23 = v30;
+  selfCopy = self;
+  v23 = switcherController;
   v35 = v23;
-  v24 = [(SBUISwitcherAnimationController *)v21 initWithWorkspaceTransitionRequest:v31 contentViewController:v22 childAnimationControllers:v9 animationBlock:v32];
+  v24 = [(SBUISwitcherAnimationController *)v21 initWithWorkspaceTransitionRequest:requestCopy contentViewController:v22 childAnimationControllers:v9 animationBlock:v32];
 
   objc_destroyWeak(&v36);
   objc_destroyWeak(&location);
@@ -3711,16 +3711,16 @@ uint64_t __107__SBMainSwitcherControllerCoordinator_animationControllerForTransi
   return v6;
 }
 
-- (BOOL)_isPerformingModelTransitionForReplacementAppLayout:(id)a3
+- (BOOL)_isPerformingModelTransitionForReplacementAppLayout:(id)layout
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  layoutCopy = layout;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  appLayouts = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults appLayouts];
+  v6 = [appLayouts countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3731,11 +3731,11 @@ uint64_t __107__SBMainSwitcherControllerCoordinator_animationControllerForTransi
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(appLayouts);
         }
 
         v10 = [(SBSwitcherModelRemovalResults *)self->_activeTransitionModelRemovalResults replacementAppLayoutForAppLayout:*(*(&v14 + 1) + 8 * i)];
-        v11 = [v10 isEqual:v4];
+        v11 = [v10 isEqual:layoutCopy];
 
         if (v11)
         {
@@ -3744,7 +3744,7 @@ uint64_t __107__SBMainSwitcherControllerCoordinator_animationControllerForTransi
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [appLayouts countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -3760,23 +3760,23 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)shouldPerformPreTransitionInsertionOfAppLayout:(id)a3 forTransitionWithContext:(id)a4
+- (BOOL)shouldPerformPreTransitionInsertionOfAppLayout:(id)layout forTransitionWithContext:(id)context
 {
-  v6 = a4;
-  v7 = [v6 request];
-  v8 = [v7 source];
-  v9 = [(SBAppSwitcherSettings *)self->_settings effectiveSwitcherStyle];
-  if (v8 == 10 && v9 == 1)
+  contextCopy = context;
+  request = [contextCopy request];
+  source = [request source];
+  effectiveSwitcherStyle = [(SBAppSwitcherSettings *)self->_settings effectiveSwitcherStyle];
+  if (source == 10 && effectiveSwitcherStyle == 1)
   {
     v12 = 0;
   }
 
   else
   {
-    if (v8 > 0x33 || ((1 << v8) & 0xC002008000800) == 0)
+    if (source > 0x33 || ((1 << source) & 0xC002008000800) == 0)
     {
-      v4 = [v6 layoutState];
-      v12 = [v4 unlockedEnvironmentMode] == 2;
+      layoutState = [contextCopy layoutState];
+      v12 = [layoutState unlockedEnvironmentMode] == 2;
     }
 
     else
@@ -3784,7 +3784,7 @@ LABEL_11:
       v12 = 0;
     }
 
-    if (v8 > 0x33 || ((1 << v8) & 0xC002008000800) == 0)
+    if (source > 0x33 || ((1 << source) & 0xC002008000800) == 0)
     {
     }
   }
@@ -3792,19 +3792,19 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)canPerformKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4 orSceneIdentifier:(id)a5 windowScene:(id)a6
+- (BOOL)canPerformKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier orSceneIdentifier:(id)sceneIdentifier windowScene:(id)scene
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v10];
-  v14 = [v13 contentViewController];
-  v15 = [v13 windowManagementContext];
-  v16 = [v14 canPerformKeyboardShortcutAction:a3 forBundleIdentifier:v12 orSceneIdentifier:v11];
+  sceneCopy = scene;
+  sceneIdentifierCopy = sceneIdentifier;
+  identifierCopy = identifier;
+  v13 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
+  contentViewController = [v13 contentViewController];
+  windowManagementContext = [v13 windowManagementContext];
+  v16 = [contentViewController canPerformKeyboardShortcutAction:action forBundleIdentifier:identifierCopy orSceneIdentifier:sceneIdentifierCopy];
 
-  if (a3 <= 10)
+  if (action <= 10)
   {
-    if ((a3 - 4) >= 2 && (a3 - 9) >= 2 && a3 != 6)
+    if ((action - 4) >= 2 && (action - 9) >= 2 && action != 6)
     {
       goto LABEL_20;
     }
@@ -3812,33 +3812,33 @@ LABEL_11:
 
   else
   {
-    if (a3 > 0x12)
+    if (action > 0x12)
     {
       goto LABEL_20;
     }
 
-    if (((1 << a3) & 0x6800) != 0)
+    if (((1 << action) & 0x6800) != 0)
     {
-      v17 = (v12 == 0) & v16;
-      if (v12 && ((v16 ^ 1) & 1) == 0)
+      v17 = (identifierCopy == 0) & v16;
+      if (identifierCopy && ((v16 ^ 1) & 1) == 0)
       {
-        v18 = [v15 isMedusaEnabled];
+        isMedusaEnabled = [windowManagementContext isMedusaEnabled];
         goto LABEL_18;
       }
 
       goto LABEL_19;
     }
 
-    if (((1 << a3) & 0x18000) == 0)
+    if (((1 << action) & 0x18000) == 0)
     {
-      if (a3 == 18)
+      if (action == 18)
       {
-        v17 = (v12 == 0) & v16;
-        if (v12 && ((v16 ^ 1) & 1) == 0)
+        v17 = (identifierCopy == 0) & v16;
+        if (identifierCopy && ((v16 ^ 1) & 1) == 0)
         {
-          v18 = [v15 isAutomaticStageCreationEnabled];
+          isMedusaEnabled = [windowManagementContext isAutomaticStageCreationEnabled];
 LABEL_18:
-          v17 = v18;
+          v17 = isMedusaEnabled;
           goto LABEL_19;
         }
 
@@ -3853,7 +3853,7 @@ LABEL_20:
 
   if (v16)
   {
-    v18 = [v10 supportsMultitasking];
+    isMedusaEnabled = [sceneCopy supportsMultitasking];
     goto LABEL_18;
   }
 
@@ -3863,28 +3863,28 @@ LABEL_19:
   return v17;
 }
 
-- (void)performKeyboardShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4 orSceneIdentifier:(id)a5 windowScene:(id)a6
+- (void)performKeyboardShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier orSceneIdentifier:(id)sceneIdentifier windowScene:(id)scene
 {
-  v20 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v11];
-  v13 = [v12 contentViewController];
-  v14 = v13;
-  switch(a3)
+  identifierCopy = identifier;
+  sceneIdentifierCopy = sceneIdentifier;
+  sceneCopy = scene;
+  v12 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
+  contentViewController = [v12 contentViewController];
+  v14 = contentViewController;
+  switch(action)
   {
     case 0:
       [v12 toggleMainSwitcherWithSource:51 animated:1];
       break;
     case 1:
       v15 = @"KeyboardShortcutActivateNextSwitcherSpace";
-      v16 = self;
+      selfCopy4 = self;
       v17 = 0;
       v18 = 1;
       goto LABEL_14;
     case 2:
       v15 = @"KeyboardShortcutActivateNextSwitcherSpace";
-      v16 = self;
+      selfCopy4 = self;
       v17 = 1;
       v18 = 1;
       goto LABEL_12;
@@ -3893,12 +3893,12 @@ LABEL_19:
     case 13:
     case 14:
     case 18:
-      if (!v20)
+      if (!identifierCopy)
       {
         goto LABEL_2;
       }
 
-      [(SBMainSwitcherControllerCoordinator *)self _handleFocusedIconSwitcherShortcutAction:a3 bundleIdentifier:v20 windowScene:v11];
+      [(SBMainSwitcherControllerCoordinator *)self _handleFocusedIconSwitcherShortcutAction:action bundleIdentifier:identifierCopy windowScene:sceneCopy];
       break;
     case 4:
     case 5:
@@ -3929,11 +3929,11 @@ LABEL_19:
     case 36:
     case 37:
 LABEL_2:
-      [v13 performKeyboardShortcutAction:a3 withSceneIdentifier:v10];
+      [contentViewController performKeyboardShortcutAction:action withSceneIdentifier:sceneIdentifierCopy];
       break;
     case 9:
       v15 = @"KeyboardShortcutActivateNextFloatingApp";
-      v16 = self;
+      selfCopy4 = self;
       v17 = 1;
       v18 = 2;
 LABEL_14:
@@ -3941,38 +3941,38 @@ LABEL_14:
       goto LABEL_15;
     case 10:
       v15 = @"KeyboardShortcutActivatePreviousFloatingApp";
-      v16 = self;
+      selfCopy4 = self;
       v17 = 1;
       v18 = 2;
 LABEL_12:
       v19 = 0;
 LABEL_15:
-      [(SBMainSwitcherControllerCoordinator *)v16 _activateNeighboringAppLayoutRequiringActiveAppLayout:v17 appLayoutEnvironment:v18 inForwardDirection:v19 windowScene:v11 eventLabel:v15];
+      [(SBMainSwitcherControllerCoordinator *)selfCopy4 _activateNeighboringAppLayoutRequiringActiveAppLayout:v17 appLayoutEnvironment:v18 inForwardDirection:v19 windowScene:sceneCopy eventLabel:v15];
       break;
     default:
       break;
   }
 }
 
-- (void)_handleFocusedIconSwitcherShortcutAction:(int64_t)a3 bundleIdentifier:(id)a4 windowScene:(id)a5
+- (void)_handleFocusedIconSwitcherShortcutAction:(int64_t)action bundleIdentifier:(id)identifier windowScene:(id)scene
 {
-  v8 = a4;
-  v9 = a5;
-  v50 = [v9 sceneManager];
+  identifierCopy = identifier;
+  sceneCopy = scene;
+  sceneManager = [sceneCopy sceneManager];
   v10 = +[SBApplicationController sharedInstance];
-  v11 = [v10 applicationWithBundleIdentifier:v8];
+  v11 = [v10 applicationWithBundleIdentifier:identifierCopy];
 
-  v12 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v9];
+  v12 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
   v13 = v12;
   v14 = 0;
-  v48 = v8;
+  v48 = identifierCopy;
   v49 = v11;
-  if (a3 <= 12)
+  if (action <= 12)
   {
     v17 = v12;
-    if (a3 == 3)
+    if (action == 3)
     {
-      v23 = v8;
+      v23 = identifierCopy;
       v14 = 0;
       v18 = 0;
       v22 = 0;
@@ -3985,11 +3985,11 @@ LABEL_15:
       v23 = 0;
       v22 = 0;
       v21 = 0;
-      if (a3 == 11)
+      if (action == 11)
       {
         v24 = [SBDeviceApplicationSceneEntity alloc];
-        v25 = [v50 displayIdentity];
-        v21 = [(SBDeviceApplicationSceneEntity *)v24 initWithApplication:v49 sceneHandleProvider:v50 displayIdentity:v25];
+        displayIdentity = [sceneManager displayIdentity];
+        v21 = [(SBDeviceApplicationSceneEntity *)v24 initWithApplication:v49 sceneHandleProvider:sceneManager displayIdentity:displayIdentity];
 
         v22 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
         v14 = 0;
@@ -4002,9 +4002,9 @@ LABEL_33:
 
   else
   {
-    if ((a3 - 13) < 2)
+    if ((action - 13) < 2)
     {
-      v15 = [v12 _currentLayoutState];
+      _currentLayoutState = [v12 _currentLayoutState];
       if ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 1)
       {
         v16 = 14;
@@ -4015,10 +4015,10 @@ LABEL_33:
         v16 = 13;
       }
 
-      if ([v15 unlockedEnvironmentMode] == 1)
+      if ([_currentLayoutState unlockedEnvironmentMode] == 1)
       {
         v17 = v13;
-        if (v16 == a3)
+        if (v16 == action)
         {
           v18 = 2;
         }
@@ -4029,8 +4029,8 @@ LABEL_33:
         }
 
         v19 = [SBDeviceApplicationSceneEntity alloc];
-        v20 = [v50 displayIdentity];
-        v21 = [(SBDeviceApplicationSceneEntity *)v19 initWithApplication:v11 sceneHandleProvider:v50 displayIdentity:v20];
+        displayIdentity2 = [sceneManager displayIdentity];
+        v21 = [(SBDeviceApplicationSceneEntity *)v19 initWithApplication:v11 sceneHandleProvider:sceneManager displayIdentity:displayIdentity2];
 
         v22 = +[(SBWorkspaceEntity *)SBEmptyWorkspaceEntity];
         v14 = 0;
@@ -4038,35 +4038,35 @@ LABEL_33:
 
       else
       {
-        v47 = v15;
+        v47 = _currentLayoutState;
         v28 = [v13 activeAndVisibleSceneIdentifiersForApplication:v11];
-        v29 = [v11 info];
-        v30 = [v29 supportsMultiwindow];
+        info = [v11 info];
+        supportsMultiwindow = [info supportsMultiwindow];
 
         v46 = v28;
-        if (v30)
+        if (supportsMultiwindow)
         {
-          [v50 sceneIdentityForApplication:v11 targetContentIdentifier:0 allowCanMatches:0 preferNewScene:1 visibleIdentifiers:v28];
+          [sceneManager sceneIdentityForApplication:v11 targetContentIdentifier:0 allowCanMatches:0 preferNewScene:1 visibleIdentifiers:v28];
         }
 
         else
         {
-          [v50 sceneIdentityForApplication:v11 excludingIdentifiers:v28];
+          [sceneManager sceneIdentityForApplication:v11 excludingIdentifiers:v28];
         }
         v31 = ;
         if (v31)
         {
           v45 = v13;
-          v44 = [v13 layoutState];
+          layoutState = [v13 layoutState];
           v32 = [SBDeviceApplicationSceneEntity alloc];
-          v33 = [v31 identifier];
-          v34 = [v50 displayIdentity];
-          v21 = [(SBDeviceApplicationSceneEntity *)v32 initWithApplication:v11 uniqueIdentifier:v33 sceneHandleProvider:v50 displayIdentity:v34];
+          identifier = [v31 identifier];
+          displayIdentity3 = [sceneManager displayIdentity];
+          v21 = [(SBDeviceApplicationSceneEntity *)v32 initWithApplication:v11 uniqueIdentifier:identifier sceneHandleProvider:sceneManager displayIdentity:displayIdentity3];
 
-          if (v16 == a3)
+          if (v16 == action)
           {
-            v35 = v44;
-            v36 = [v44 elementWithRole:2];
+            v35 = layoutState;
+            v36 = [layoutState elementWithRole:2];
 
             if (v36)
             {
@@ -4084,8 +4084,8 @@ LABEL_33:
           else
           {
             v37 = +[(SBWorkspaceEntity *)SBPreviousWorkspaceEntity];
-            v35 = v44;
-            v38 = [v44 elementWithRole:2];
+            v35 = layoutState;
+            v38 = [layoutState elementWithRole:2];
 
             if (v38)
             {
@@ -4114,7 +4114,7 @@ LABEL_33:
         v17 = v13;
 
         v18 = 0;
-        v15 = v47;
+        _currentLayoutState = v47;
       }
 
       goto LABEL_33;
@@ -4125,11 +4125,11 @@ LABEL_33:
     v23 = 0;
     v22 = 0;
     v21 = 0;
-    if (a3 == 18)
+    if (action == 18)
     {
       v26 = [SBDeviceApplicationSceneEntity alloc];
-      v27 = [v50 displayIdentity];
-      v21 = [(SBDeviceApplicationSceneEntity *)v26 initWithApplication:v49 sceneHandleProvider:v50 displayIdentity:v27];
+      displayIdentity4 = [sceneManager displayIdentity];
+      v21 = [(SBDeviceApplicationSceneEntity *)v26 initWithApplication:v49 sceneHandleProvider:sceneManager displayIdentity:displayIdentity4];
 
       v14 = 0;
       v18 = 0;
@@ -4139,7 +4139,7 @@ LABEL_33:
   }
 
   v39 = +[SBWorkspace mainWorkspace];
-  v40 = [v9 _fbsDisplayConfiguration];
+  _fbsDisplayConfiguration = [sceneCopy _fbsDisplayConfiguration];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __109__SBMainSwitcherControllerCoordinator__handleFocusedIconSwitcherShortcutAction_bundleIdentifier_windowScene___block_invoke;
@@ -4147,13 +4147,13 @@ LABEL_33:
   v52 = v21;
   v53 = v22;
   v54 = v23;
-  v55 = a3;
+  actionCopy = action;
   v56 = v18;
   v57 = v14;
   v41 = v23;
   v42 = v22;
   v43 = v21;
-  [v39 requestTransitionWithOptions:0 displayConfiguration:v40 builder:v51];
+  [v39 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v51];
 }
 
 void __109__SBMainSwitcherControllerCoordinator__handleFocusedIconSwitcherShortcutAction_bundleIdentifier_windowScene___block_invoke(uint64_t a1, void *a2)
@@ -4200,17 +4200,17 @@ void __109__SBMainSwitcherControllerCoordinator__handleFocusedIconSwitcherShortc
   }
 }
 
-- (void)handleApplicationSceneEntityDestructionIntent:(id)a3 forEntities:(id)a4
+- (void)handleApplicationSceneEntityDestructionIntent:(id)intent forEntities:(id)entities
 {
   v54 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  intentCopy = intent;
+  entitiesCopy = entities;
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  obj = v6;
+  obj = entitiesCopy;
   v8 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v8)
   {
@@ -4226,15 +4226,15 @@ void __109__SBMainSwitcherControllerCoordinator__handleFocusedIconSwitcherShortc
         }
 
         v12 = *(*(&v48 + 1) + 8 * i);
-        v13 = [SBApp windowSceneManager];
-        v14 = [v12 sceneHandle];
-        v15 = [v13 windowSceneForSceneHandle:v14];
+        windowSceneManager = [SBApp windowSceneManager];
+        sceneHandle = [v12 sceneHandle];
+        v15 = [windowSceneManager windowSceneForSceneHandle:sceneHandle];
 
-        v16 = [v7 objectForKey:v15];
+        v16 = [strongToStrongObjectsMapTable objectForKey:v15];
         if (!v16)
         {
           v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
-          [v7 setObject:v16 forKey:v15];
+          [strongToStrongObjectsMapTable setObject:v16 forKey:v15];
         }
 
         [v16 addObject:v12];
@@ -4250,7 +4250,7 @@ void __109__SBMainSwitcherControllerCoordinator__handleFocusedIconSwitcherShortc
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v17 = v7;
+  v17 = strongToStrongObjectsMapTable;
   v18 = [v17 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v18)
   {
@@ -4266,14 +4266,14 @@ void __109__SBMainSwitcherControllerCoordinator__handleFocusedIconSwitcherShortc
         }
 
         v21 = *(*(&v44 + 1) + 8 * j);
-        v22 = [v21 _fbsDisplayConfiguration];
+        _fbsDisplayConfiguration = [v21 _fbsDisplayConfiguration];
         v23 = [v17 objectForKey:v21];
         v41[0] = MEMORY[0x277D85DD0];
         v41[1] = 3221225472;
         v41[2] = __97__SBMainSwitcherControllerCoordinator_handleApplicationSceneEntityDestructionIntent_forEntities___block_invoke;
         v41[3] = &unk_2783AAA48;
         v42 = v23;
-        v43 = v32;
+        v43 = intentCopy;
         v24 = v23;
         v25 = MEMORY[0x223D6F7F0](v41);
         v38[0] = MEMORY[0x277D85DD0];
@@ -4281,7 +4281,7 @@ void __109__SBMainSwitcherControllerCoordinator__handleFocusedIconSwitcherShortc
         v38[2] = __97__SBMainSwitcherControllerCoordinator_handleApplicationSceneEntityDestructionIntent_forEntities___block_invoke_3;
         v38[3] = &unk_2783B9500;
         v39 = obj;
-        v40 = self;
+        selfCopy = self;
         v26 = MEMORY[0x223D6F7F0](v38);
         v27 = +[SBWorkspace mainWorkspace];
         v34[0] = MEMORY[0x277D85DD0];
@@ -4290,11 +4290,11 @@ void __109__SBMainSwitcherControllerCoordinator__handleFocusedIconSwitcherShortc
         v34[3] = &unk_2783B9550;
         v34[4] = self;
         v34[5] = v21;
-        v35 = v22;
+        v35 = _fbsDisplayConfiguration;
         v36 = v26;
         v37 = v25;
         v28 = v25;
-        v29 = v22;
+        v29 = _fbsDisplayConfiguration;
         v30 = v26;
         [v27 requestTransitionWithOptions:0 displayConfiguration:v29 builder:v28 validator:v34];
       }
@@ -5001,15 +5001,15 @@ void __97__SBMainSwitcherControllerCoordinator_handleApplicationSceneEntityDestr
   }
 }
 
-- (void)failMultitaskingGesturesForReason:(id)a3
+- (void)failMultitaskingGesturesForReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__SBMainSwitcherControllerCoordinator_failMultitaskingGesturesForReason___block_invoke;
   v6[3] = &unk_2783B9578;
-  v7 = v4;
-  v5 = v4;
+  v7 = reasonCopy;
+  v5 = reasonCopy;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v6];
 }
 
@@ -5021,27 +5021,27 @@ void __73__SBMainSwitcherControllerCoordinator_failMultitaskingGesturesForReason
 
 - (void)programmaticSwitchAppGestureMoveToLeft
 {
-  v4 = [SBApp windowSceneManager];
-  v3 = [v4 activeDisplayWindowScene];
-  [(SBMainSwitcherControllerCoordinator *)self _activateNeighboringAppLayoutRequiringActiveAppLayout:1 appLayoutEnvironment:1 inForwardDirection:0 windowScene:v3 eventLabel:@"ProgrammaticSwitchAppGestureMoveToRight"];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
+  [(SBMainSwitcherControllerCoordinator *)self _activateNeighboringAppLayoutRequiringActiveAppLayout:1 appLayoutEnvironment:1 inForwardDirection:0 windowScene:activeDisplayWindowScene eventLabel:@"ProgrammaticSwitchAppGestureMoveToRight"];
 }
 
 - (void)programmaticSwitchAppGestureMoveToRight
 {
-  v4 = [SBApp windowSceneManager];
-  v3 = [v4 activeDisplayWindowScene];
-  [(SBMainSwitcherControllerCoordinator *)self _activateNeighboringAppLayoutRequiringActiveAppLayout:1 appLayoutEnvironment:1 inForwardDirection:1 windowScene:v3 eventLabel:@"ProgrammaticSwitchAppGestureMoveToRight"];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
+  [(SBMainSwitcherControllerCoordinator *)self _activateNeighboringAppLayoutRequiringActiveAppLayout:1 appLayoutEnvironment:1 inForwardDirection:1 windowScene:activeDisplayWindowScene eventLabel:@"ProgrammaticSwitchAppGestureMoveToRight"];
 }
 
-- (void)_activateNeighboringAppLayoutRequiringActiveAppLayout:(BOOL)a3 appLayoutEnvironment:(int64_t)a4 inForwardDirection:(BOOL)a5 windowScene:(id)a6 eventLabel:(id)a7
+- (void)_activateNeighboringAppLayoutRequiringActiveAppLayout:(BOOL)layout appLayoutEnvironment:(int64_t)environment inForwardDirection:(BOOL)direction windowScene:(id)scene eventLabel:(id)label
 {
-  v9 = a3;
-  v11 = a6;
-  v12 = a7;
-  v13 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v11];
-  v14 = [v13 contentViewController];
+  layoutCopy = layout;
+  sceneCopy = scene;
+  labelCopy = label;
+  v13 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
+  contentViewController = [v13 contentViewController];
   v15 = objc_opt_class();
-  v16 = v14;
+  v16 = contentViewController;
   if (v15)
   {
     if (objc_opt_isKindOfClass())
@@ -5063,25 +5063,25 @@ void __73__SBMainSwitcherControllerCoordinator_failMultitaskingGesturesForReason
   v48 = v17;
 
   v18 = [(SBMainSwitcherControllerCoordinator *)self appLayoutsForSwitcherController:v13];
-  if ((a4 - 3) <= 0xFFFFFFFFFFFFFFFDLL)
+  if ((environment - 3) <= 0xFFFFFFFFFFFFFFFDLL)
   {
     [SBMainSwitcherControllerCoordinator _activateNeighboringAppLayoutRequiringActiveAppLayout:appLayoutEnvironment:inForwardDirection:windowScene:eventLabel:];
   }
 
-  else if (a4 == 2)
+  else if (environment == 2)
   {
-    v19 = [v13 _currentFloatingAppLayout];
+    _currentFloatingAppLayout = [v13 _currentFloatingAppLayout];
     goto LABEL_11;
   }
 
-  v19 = [v13 _currentMainAppLayout];
+  _currentFloatingAppLayout = [v13 _currentMainAppLayout];
 LABEL_11:
-  v20 = v19;
-  if (v19)
+  v20 = _currentFloatingAppLayout;
+  if (_currentFloatingAppLayout)
   {
-    v21 = [v18 indexOfObject:v19];
+    v21 = [v18 indexOfObject:_currentFloatingAppLayout];
     v22 = v21;
-    if (v9)
+    if (layoutCopy)
     {
       v23 = 0x7FFFFFFFFFFFFFFFLL;
     }
@@ -5097,7 +5097,7 @@ LABEL_11:
     }
   }
 
-  else if (v9)
+  else if (layoutCopy)
   {
     v22 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -5107,25 +5107,25 @@ LABEL_11:
     v22 = -1;
   }
 
-  v24 = [v13 windowManagementContext];
+  windowManagementContext = [v13 windowManagementContext];
   v46 = v20;
   v47 = v13;
-  v45 = v24;
-  if ([v24 isFlexibleWindowingEnabled])
+  v45 = windowManagementContext;
+  if ([windowManagementContext isFlexibleWindowingEnabled])
   {
-    v25 = [v24 isAutomaticStageCreationEnabled];
+    isAutomaticStageCreationEnabled = [windowManagementContext isAutomaticStageCreationEnabled];
   }
 
   else
   {
-    v25 = 1;
+    isAutomaticStageCreationEnabled = 1;
   }
 
   v26 = v48;
   if (v22 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v27 = [v18 count];
-    if (!a5)
+    if (!direction)
     {
       if (v22 < 1)
       {
@@ -5136,10 +5136,10 @@ LABEL_11:
       while (1)
       {
         v30 = [v18 objectAtIndex:v36 - 2];
-        v37 = [v30 environment];
-        if ((v37 != a4) | v25 & 1)
+        environment = [v30 environment];
+        if ((environment != environment) | isAutomaticStageCreationEnabled & 1)
         {
-          if (v37 == a4)
+          if (environment == environment)
           {
             goto LABEL_41;
           }
@@ -5156,17 +5156,17 @@ LABEL_41:
             if (v30)
             {
               v40 = +[SBWorkspace mainWorkspace];
-              v41 = [v11 _fbsDisplayConfiguration];
+              _fbsDisplayConfiguration = [sceneCopy _fbsDisplayConfiguration];
               v49[0] = MEMORY[0x277D85DD0];
               v49[1] = 3221225472;
               v49[2] = __156__SBMainSwitcherControllerCoordinator__activateNeighboringAppLayoutRequiringActiveAppLayout_appLayoutEnvironment_inForwardDirection_windowScene_eventLabel___block_invoke;
               v49[3] = &unk_2783B95A0;
               v49[4] = v43;
               v50 = v30;
-              v51 = v12;
-              v52 = a5;
+              v51 = labelCopy;
+              directionCopy = direction;
               v42 = v30;
-              [v40 requestTransitionWithOptions:0 displayConfiguration:v41 builder:v49];
+              [v40 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v49];
             }
 
             goto LABEL_24;
@@ -5187,10 +5187,10 @@ LABEL_41:
       do
       {
         v30 = [v18 objectAtIndex:v29];
-        v31 = [v30 environment];
-        if ((v31 != a4) | v25 & 1)
+        environment2 = [v30 environment];
+        if ((environment2 != environment) | isAutomaticStageCreationEnabled & 1)
         {
-          if (v31 == a4)
+          if (environment2 == environment)
           {
             goto LABEL_41;
           }
@@ -5199,12 +5199,12 @@ LABEL_41:
         else
         {
           [v26 maximizedCenteredAndUnoccludedDisplayItemsInAppLayout:v30 ignoreOcclusion:1 ignoreCentering:0];
-          v32 = v12;
-          v34 = v33 = v11;
+          v32 = labelCopy;
+          v34 = v33 = sceneCopy;
           v35 = [v34 count];
 
-          v11 = v33;
-          v12 = v32;
+          sceneCopy = v33;
+          labelCopy = v32;
           v26 = v48;
           if (v35)
           {
@@ -5245,20 +5245,20 @@ void __156__SBMainSwitcherControllerCoordinator__activateNeighboringAppLayoutReq
   [v2 setTransitioningToLessRecentSpace:BSSettingFlagForBool()];
 }
 
-- (id)activeTransientOverlayPresentedAppLayoutForWindowScene:(id)a3
+- (id)activeTransientOverlayPresentedAppLayoutForWindowScene:(id)scene
 {
-  v4 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:a3];
-  v5 = [v4 contentViewController];
-  v6 = [(SBMainSwitcherControllerCoordinator *)self activeTransientOverlayPresentedAppLayoutForSwitcherContentController:v5];
+  v4 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:scene];
+  contentViewController = [v4 contentViewController];
+  v6 = [(SBMainSwitcherControllerCoordinator *)self activeTransientOverlayPresentedAppLayoutForSwitcherContentController:contentViewController];
 
   return v6;
 }
 
-- (void)addAppLayoutForTransientOverlayViewController:(id)a3 windowScene:(id)a4
+- (void)addAppLayoutForTransientOverlayViewController:(id)controller windowScene:(id)scene
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  sceneCopy = scene;
   v29 = 0;
   v30 = &v29;
   v31 = 0x2020000000;
@@ -5268,23 +5268,23 @@ void __156__SBMainSwitcherControllerCoordinator__activateNeighboringAppLayoutReq
   v26[1] = 3221225472;
   v26[2] = __97__SBMainSwitcherControllerCoordinator_addAppLayoutForTransientOverlayViewController_windowScene___block_invoke;
   v26[3] = &unk_2783B95C8;
-  v9 = v6;
+  v9 = controllerCopy;
   v27 = v9;
   v28 = &v29;
   [(NSMutableDictionary *)appLayoutToEligibleTransientOverlayViewController enumerateKeysAndObjectsUsingBlock:v26];
   if ((v30[3] & 1) == 0)
   {
-    v10 = [v9 representedDisplayItem];
-    if (v10)
+    representedDisplayItem = [v9 representedDisplayItem];
+    if (representedDisplayItem)
     {
-      v11 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v7];
+      v11 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
       v12 = [SBAppLayout alloc];
       v13 = [MEMORY[0x277CCABB0] numberWithInteger:1];
       v33 = v13;
-      v34[0] = v10;
+      v34[0] = representedDisplayItem;
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:&v33 count:1];
-      v15 = [v11 layoutState];
-      v16 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:](v12, "initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:", v14, 1, 1, [v15 displayOrdinal]);
+      layoutState = [v11 layoutState];
+      v16 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:](v12, "initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:", v14, 1, 1, [layoutState displayOrdinal]);
 
       v17 = self->_appLayoutToEligibleTransientOverlayViewController;
       if (!v17)
@@ -5297,11 +5297,11 @@ void __156__SBMainSwitcherControllerCoordinator__activateNeighboringAppLayoutReq
       }
 
       [(NSMutableDictionary *)v17 setObject:v9 forKey:v16];
-      v20 = [v11 _currentLayoutState];
-      v21 = [v20 unlockedEnvironmentMode];
+      _currentLayoutState = [v11 _currentLayoutState];
+      unlockedEnvironmentMode = [_currentLayoutState unlockedEnvironmentMode];
 
-      v22 = [v11 contentViewController];
-      if ((v21 & 0xFFFFFFFFFFFFFFFELL) != 2 && ([(SBMainSwitcherControllerCoordinator *)self activeTransientOverlayPresentedAppLayoutForSwitcherContentController:v22], v23 = objc_claimAutoreleasedReturnValue(), v24 = v23 == 0, v23, v24))
+      contentViewController = [v11 contentViewController];
+      if ((unlockedEnvironmentMode & 0xFFFFFFFFFFFFFFFELL) != 2 && ([(SBMainSwitcherControllerCoordinator *)self activeTransientOverlayPresentedAppLayoutForSwitcherContentController:contentViewController], v23 = objc_claimAutoreleasedReturnValue(), v24 = v23 == 0, v23, v24))
       {
         [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
       }
@@ -5313,7 +5313,7 @@ void __156__SBMainSwitcherControllerCoordinator__activateNeighboringAppLayoutReq
         v25[2] = __97__SBMainSwitcherControllerCoordinator_addAppLayoutForTransientOverlayViewController_windowScene___block_invoke_2;
         v25[3] = &unk_2783A8C18;
         v25[4] = self;
-        [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v16 atIndex:0 contentViewController:v22 modelMutationBlock:v25 completion:0];
+        [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v16 atIndex:0 contentViewController:contentViewController modelMutationBlock:v25 completion:0];
       }
     }
   }
@@ -5332,17 +5332,17 @@ uint64_t __97__SBMainSwitcherControllerCoordinator_addAppLayoutForTransientOverl
   return result;
 }
 
-- (BOOL)_hasAppLayoutContainingDisplayItem:(id)a3
+- (BOOL)_hasAppLayoutContainingDisplayItem:(id)item
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   mainSwitcherModel = self->_mainSwitcherModel;
-  v6 = [v4 bundleIdentifier];
-  v7 = [(SBAppSwitcherModel *)mainSwitcherModel appLayoutsForBundleIdentifier:v6 includingHiddenAppLayouts:0];
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  v7 = [(SBAppSwitcherModel *)mainSwitcherModel appLayoutsForBundleIdentifier:bundleIdentifier includingHiddenAppLayouts:0];
 
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
@@ -5357,7 +5357,7 @@ uint64_t __97__SBMainSwitcherControllerCoordinator_addAppLayoutForTransientOverl
           objc_enumerationMutation(v7);
         }
 
-        if ([*(*(&v12 + 1) + 8 * i) containsItem:v4])
+        if ([*(*(&v12 + 1) + 8 * i) containsItem:itemCopy])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
@@ -5379,30 +5379,30 @@ LABEL_11:
   return v8;
 }
 
-- (void)addAppLayoutForDisplayItem:(id)a3 windowScene:(id)a4 completion:(id)a5
+- (void)addAppLayoutForDisplayItem:(id)item windowScene:(id)scene completion:(id)completion
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(SBMainSwitcherControllerCoordinator *)self _hasAppLayoutContainingDisplayItem:v8])
+  itemCopy = item;
+  sceneCopy = scene;
+  completionCopy = completion;
+  if ([(SBMainSwitcherControllerCoordinator *)self _hasAppLayoutContainingDisplayItem:itemCopy])
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v11 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v9];
-    v12 = [v11 contentViewController];
+    v11 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
+    contentViewController = [v11 contentViewController];
     v13 = [SBAppLayout alloc];
     v20 = &unk_283371318;
-    v21[0] = v8;
+    v21[0] = itemCopy;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    v15 = [v11 layoutState];
-    v16 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:](v13, "initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:", v14, 1, 1, [v15 displayOrdinal]);
+    layoutState = [v11 layoutState];
+    v16 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:](v13, "initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:", v14, 1, 1, [layoutState displayOrdinal]);
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -5411,20 +5411,20 @@ LABEL_11:
     v18[4] = self;
     v19 = v16;
     v17 = v16;
-    [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v17 atIndex:0 contentViewController:v12 modelMutationBlock:v18 completion:v10];
+    [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v17 atIndex:0 contentViewController:contentViewController modelMutationBlock:v18 completion:completionCopy];
   }
 }
 
-- (void)removeAppLayoutForDisplayItem:(id)a3 shouldDestroyScene:(BOOL)a4
+- (void)removeAppLayoutForDisplayItem:(id)item shouldDestroyScene:(BOOL)scene
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutContainingDisplayItem:v7];
+  itemCopy = item;
+  v8 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutContainingDisplayItem:itemCopy];
   if (v8)
   {
-    if (a4)
+    if (scene)
     {
-      [(SBMainSwitcherControllerCoordinator *)self deleteAppLayoutForDisplayItem:v7];
+      [(SBMainSwitcherControllerCoordinator *)self deleteAppLayoutForDisplayItem:itemCopy];
     }
 
     else
@@ -5444,31 +5444,31 @@ LABEL_11:
   }
 }
 
-- (void)addCenterRoleAppLayoutForDisplayItem:(id)a3 windowScene:(id)a4 completion:(id)a5
+- (void)addCenterRoleAppLayoutForDisplayItem:(id)item windowScene:(id)scene completion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(SBMainSwitcherControllerCoordinator *)self _hasAppLayoutContainingDisplayItem:v8])
+  itemCopy = item;
+  sceneCopy = scene;
+  completionCopy = completion;
+  if ([(SBMainSwitcherControllerCoordinator *)self _hasAppLayoutContainingDisplayItem:itemCopy])
   {
-    if (v10)
+    if (completionCopy)
     {
-      v10[2](v10, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
   else
   {
-    v11 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v9];
-    v12 = [v11 contentViewController];
+    v11 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
+    contentViewController = [v11 contentViewController];
     v13 = [SBAppLayout alloc];
     v14 = [MEMORY[0x277CCABB0] numberWithInteger:1];
     v21 = v14;
-    v22[0] = v8;
+    v22[0] = itemCopy;
     v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-    v16 = [v11 layoutState];
-    v17 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:centerConfiguration:environment:hidden:preferredDisplayOrdinal:](v13, "initWithItemsForLayoutRoles:configuration:centerConfiguration:environment:hidden:preferredDisplayOrdinal:", v15, 1, 1, 3, 0, [v16 displayOrdinal]);
+    layoutState = [v11 layoutState];
+    v17 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:centerConfiguration:environment:hidden:preferredDisplayOrdinal:](v13, "initWithItemsForLayoutRoles:configuration:centerConfiguration:environment:hidden:preferredDisplayOrdinal:", v15, 1, 1, 3, 0, [layoutState displayOrdinal]);
 
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -5477,31 +5477,31 @@ LABEL_11:
     v19[4] = self;
     v20 = v17;
     v18 = v17;
-    [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v18 atIndex:0 contentViewController:v12 modelMutationBlock:v19 completion:v10];
+    [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v18 atIndex:0 contentViewController:contentViewController modelMutationBlock:v19 completion:completionCopy];
   }
 }
 
-- (BOOL)hasAppLayoutForDisplayItem:(id)a3
+- (BOOL)hasAppLayoutForDisplayItem:(id)item
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutContainingDisplayItem:a3];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutContainingDisplayItem:item];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (BOOL)deleteAppLayoutForDisplayItem:(id)a3
+- (BOOL)deleteAppLayoutForDisplayItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = objc_alloc_init(SBSwitcherDisplayItemRemovalResolutionRequest);
-  [(SBSwitcherDisplayItemRemovalResolutionRequest *)v5 setRemovalIntentType:1 forDisplayItem:v4];
+  [(SBSwitcherDisplayItemRemovalResolutionRequest *)v5 setRemovalIntentType:1 forDisplayItem:itemCopy];
 
   v6 = [(SBMainSwitcherControllerCoordinator *)self _resultsForDisplayItemRemovalResolutionRequest:v5 preferredAppLayoutForRemovalAnimationIfAny:0];
   if (v6)
   {
     v7 = [(SBMainSwitcherControllerCoordinator *)self _modelRemovalRequestForDisplayItemResolutionResults:v6];
     v8 = [(SBMainSwitcherControllerCoordinator *)self _switcherModelRemovalResultsForRequest:v7 forReason:0];
-    v9 = [v8 appLayouts];
-    v10 = [v9 count];
+    appLayouts = [v8 appLayouts];
+    v10 = [appLayouts count];
     v11 = v10 != 0;
 
     if (v10)
@@ -5518,21 +5518,21 @@ LABEL_11:
   return v11;
 }
 
-- (id)acquireAllowHiddenAppAssertionForBundleIdentifier:(id)a3 reason:(id)a4
+- (id)acquireAllowHiddenAppAssertionForBundleIdentifier:(id)identifier reason:(id)reason
 {
   mainSwitcherModel = self->_mainSwitcherModel;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SBAppSwitcherModel *)mainSwitcherModel _recentAppLayoutsController];
-  v9 = [v8 _acquireAllowHiddenAppAssertionForBundleIdentifier:v7 reason:v6];
+  reasonCopy = reason;
+  identifierCopy = identifier;
+  _recentAppLayoutsController = [(SBAppSwitcherModel *)mainSwitcherModel _recentAppLayoutsController];
+  v9 = [_recentAppLayoutsController _acquireAllowHiddenAppAssertionForBundleIdentifier:identifierCopy reason:reasonCopy];
 
   return v9;
 }
 
-- (BOOL)hasAppLayoutForTransientOverlayViewController:(id)a3 windowScene:(id)a4
+- (BOOL)hasAppLayoutForTransientOverlayViewController:(id)controller windowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  sceneCopy = scene;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -5544,14 +5544,14 @@ LABEL_11:
   v11[1] = 3221225472;
   v11[2] = __97__SBMainSwitcherControllerCoordinator_hasAppLayoutForTransientOverlayViewController_windowScene___block_invoke;
   v11[3] = &unk_2783B95C8;
-  v9 = v6;
+  v9 = controllerCopy;
   v12 = v9;
   v13 = &v14;
   [(NSMutableDictionary *)appLayoutToEligibleTransientOverlayViewController enumerateKeysAndObjectsUsingBlock:v11];
-  LOBYTE(v6) = v15[5] != 0;
+  LOBYTE(controllerCopy) = v15[5] != 0;
 
   _Block_object_dispose(&v14, 8);
-  return v6;
+  return controllerCopy;
 }
 
 void __97__SBMainSwitcherControllerCoordinator_hasAppLayoutForTransientOverlayViewController_windowScene___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -5566,10 +5566,10 @@ void __97__SBMainSwitcherControllerCoordinator_hasAppLayoutForTransientOverlayVi
   }
 }
 
-- (void)removeAppLayoutTransientOverlayViewController:(id)a3 windowScene:(id)a4
+- (void)removeAppLayoutTransientOverlayViewController:(id)controller windowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  sceneCopy = scene;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -5581,7 +5581,7 @@ void __97__SBMainSwitcherControllerCoordinator_hasAppLayoutForTransientOverlayVi
   v15 = 3221225472;
   v16 = __97__SBMainSwitcherControllerCoordinator_removeAppLayoutTransientOverlayViewController_windowScene___block_invoke;
   v17 = &unk_2783B95C8;
-  v9 = v6;
+  v9 = controllerCopy;
   v18 = v9;
   v19 = &v20;
   [(NSMutableDictionary *)appLayoutToEligibleTransientOverlayViewController enumerateKeysAndObjectsUsingBlock:&v14];
@@ -5602,7 +5602,7 @@ void __97__SBMainSwitcherControllerCoordinator_hasAppLayoutForTransientOverlayVi
     [(SBMainSwitcherControllerCoordinator *)self _performSceneDestructionForModelRemovalResults:v13];
   }
 
-  [(SBMainSwitcherControllerCoordinator *)self _removeAcquiredTransientOverlayViewController:v9 windowScene:v7, v14, v15, v16, v17];
+  [(SBMainSwitcherControllerCoordinator *)self _removeAcquiredTransientOverlayViewController:v9 windowScene:sceneCopy, v14, v15, v16, v17];
 
   _Block_object_dispose(&v20, 8);
 }
@@ -5619,14 +5619,14 @@ void __97__SBMainSwitcherControllerCoordinator_removeAppLayoutTransientOverlayVi
   }
 }
 
-- (void)configureSwitcherStateForAccidentalActivationMitigationSession:(id)a3 completion:(id)a4
+- (void)configureSwitcherStateForAccidentalActivationMitigationSession:(id)session completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a3 state];
-  if (v7 == 3)
+  completionCopy = completion;
+  state = [session state];
+  if (state == 3)
   {
-    v17 = v6;
+    v17 = completionCopy;
     v9 = dispatch_group_create();
     self->_outstandingAccidentalActivationMitigationTransitionCount = [(NSMapTable *)self->_previousLayoutStatesByWindowScene count];
     v22 = 0u;
@@ -5634,9 +5634,9 @@ void __97__SBMainSwitcherControllerCoordinator_removeAppLayoutTransientOverlayVi
     v24 = 0u;
     v25 = 0u;
     v10 = [(NSMapTable *)self->_previousLayoutStatesByWindowScene copy];
-    v11 = [v10 keyEnumerator];
+    keyEnumerator = [v10 keyEnumerator];
 
-    v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    v12 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v12)
     {
       v13 = v12;
@@ -5648,7 +5648,7 @@ void __97__SBMainSwitcherControllerCoordinator_removeAppLayoutTransientOverlayVi
         {
           if (*v23 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v16 = *(*(&v22 + 1) + 8 * v15);
@@ -5665,7 +5665,7 @@ void __97__SBMainSwitcherControllerCoordinator_removeAppLayoutTransientOverlayVi
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v13 = [keyEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v13);
@@ -5675,18 +5675,18 @@ void __97__SBMainSwitcherControllerCoordinator_removeAppLayoutTransientOverlayVi
     block[1] = 3221225472;
     block[2] = __113__SBMainSwitcherControllerCoordinator_configureSwitcherStateForAccidentalActivationMitigationSession_completion___block_invoke_2;
     block[3] = &unk_2783A9348;
-    v6 = v17;
+    completionCopy = v17;
     v19 = v17;
     dispatch_group_notify(v9, MEMORY[0x277D85CD0], block);
   }
 
-  else if (v7 == 2)
+  else if (state == 2)
   {
     [(SBAppSwitcherModel *)self->_mainSwitcherModel clearAppLayoutsSnapshot];
     previousLayoutStatesByWindowScene = self->_previousLayoutStatesByWindowScene;
     self->_previousLayoutStatesByWindowScene = 0;
 
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -5719,36 +5719,36 @@ uint64_t __113__SBMainSwitcherControllerCoordinator_configureSwitcherStateForAcc
   return result;
 }
 
-- (void)_takeLayoutStateSnapshotForWindowScene:(id)a3 withPreviousLayoutState:(id)a4
+- (void)_takeLayoutStateSnapshotForWindowScene:(id)scene withPreviousLayoutState:(id)state
 {
-  v10 = a3;
-  v6 = a4;
+  sceneCopy = scene;
+  stateCopy = state;
   previousLayoutStatesByWindowScene = self->_previousLayoutStatesByWindowScene;
   if (!previousLayoutStatesByWindowScene)
   {
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v9 = self->_previousLayoutStatesByWindowScene;
-    self->_previousLayoutStatesByWindowScene = v8;
+    self->_previousLayoutStatesByWindowScene = weakToStrongObjectsMapTable;
 
     previousLayoutStatesByWindowScene = self->_previousLayoutStatesByWindowScene;
   }
 
-  [(NSMapTable *)previousLayoutStatesByWindowScene setObject:v6 forKey:v10];
+  [(NSMapTable *)previousLayoutStatesByWindowScene setObject:stateCopy forKey:sceneCopy];
 }
 
-- (void)_restoreLayoutStateSnapshotForWindowScene:(id)a3 completion:(id)a4
+- (void)_restoreLayoutStateSnapshotForWindowScene:(id)scene completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_previousLayoutStatesByWindowScene objectForKey:v6];
+  sceneCopy = scene;
+  completionCopy = completion;
+  v8 = [(NSMapTable *)self->_previousLayoutStatesByWindowScene objectForKey:sceneCopy];
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = [v8 elements];
-  v11 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  elements = [v8 elements];
+  v11 = [elements countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v11)
   {
     v12 = v11;
@@ -5759,16 +5759,16 @@ uint64_t __113__SBMainSwitcherControllerCoordinator_configureSwitcherStateForAcc
       {
         if (*v37 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(elements);
         }
 
-        v15 = [*(*(&v36 + 1) + 8 * i) entityGenerator];
-        v16 = v15[2]();
+        entityGenerator = [*(*(&v36 + 1) + 8 * i) entityGenerator];
+        v16 = entityGenerator[2]();
 
         [v9 addObject:v16];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v12 = [elements countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v12);
@@ -5778,8 +5778,8 @@ uint64_t __113__SBMainSwitcherControllerCoordinator_configureSwitcherStateForAcc
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 entityGenerator];
-    v20 = v19[2]();
+    entityGenerator2 = [v17 entityGenerator];
+    v20 = entityGenerator2[2]();
   }
 
   else
@@ -5791,8 +5791,8 @@ uint64_t __113__SBMainSwitcherControllerCoordinator_configureSwitcherStateForAcc
   v22 = v21;
   if (v21)
   {
-    v23 = [v21 entityGenerator];
-    v24 = v23[2]();
+    entityGenerator3 = [v21 entityGenerator];
+    v24 = entityGenerator3[2]();
   }
 
   else
@@ -5801,7 +5801,7 @@ uint64_t __113__SBMainSwitcherControllerCoordinator_configureSwitcherStateForAcc
   }
 
   v25 = +[SBWorkspace mainWorkspace];
-  v26 = [v6 _fbsDisplayConfiguration];
+  _fbsDisplayConfiguration = [sceneCopy _fbsDisplayConfiguration];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __92__SBMainSwitcherControllerCoordinator__restoreLayoutStateSnapshotForWindowScene_completion___block_invoke;
@@ -5809,12 +5809,12 @@ uint64_t __113__SBMainSwitcherControllerCoordinator_configureSwitcherStateForAcc
   v32 = v9;
   v33 = v20;
   v34 = v24;
-  v35 = v7;
-  v27 = v7;
+  v35 = completionCopy;
+  v27 = completionCopy;
   v28 = v24;
   v29 = v20;
   v30 = v9;
-  [v25 requestTransitionWithOptions:0 displayConfiguration:v26 builder:v31];
+  [v25 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v31];
 }
 
 void __92__SBMainSwitcherControllerCoordinator__restoreLayoutStateSnapshotForWindowScene_completion___block_invoke(id *a1, void *a2)
@@ -5851,9 +5851,9 @@ void __92__SBMainSwitcherControllerCoordinator__restoreLayoutStateSnapshotForWin
   [v3 setResultBlock:v4];
 }
 
-- (void)_clearLayoutStateSnapshotForWindowScene:(id)a3
+- (void)_clearLayoutStateSnapshotForWindowScene:(id)scene
 {
-  [(NSMapTable *)self->_previousLayoutStatesByWindowScene removeObjectForKey:a3];
+  [(NSMapTable *)self->_previousLayoutStatesByWindowScene removeObjectForKey:scene];
   if (![(NSMapTable *)self->_previousLayoutStatesByWindowScene count])
   {
     previousLayoutStatesByWindowScene = self->_previousLayoutStatesByWindowScene;
@@ -5861,18 +5861,18 @@ void __92__SBMainSwitcherControllerCoordinator__restoreLayoutStateSnapshotForWin
   }
 }
 
-- (void)addAcquiredTransientOverlayViewController:(id)a3 forAppLayout:(id)a4 windowScene:(id)a5
+- (void)addAcquiredTransientOverlayViewController:(id)controller forAppLayout:(id)layout windowScene:(id)scene
 {
-  v17 = a3;
+  controllerCopy = controller;
   appLayoutToAcquiredTransientOverlayViewController = self->_appLayoutToAcquiredTransientOverlayViewController;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(NSMutableDictionary *)appLayoutToAcquiredTransientOverlayViewController allValues];
-  LOBYTE(appLayoutToAcquiredTransientOverlayViewController) = [v11 containsObject:v17];
+  sceneCopy = scene;
+  layoutCopy = layout;
+  allValues = [(NSMutableDictionary *)appLayoutToAcquiredTransientOverlayViewController allValues];
+  LOBYTE(appLayoutToAcquiredTransientOverlayViewController) = [allValues containsObject:controllerCopy];
 
   if ((appLayoutToAcquiredTransientOverlayViewController & 1) == 0)
   {
-    [v17 beginIgnoringContentOverlayInsetUpdates];
+    [controllerCopy beginIgnoringContentOverlayInsetUpdates];
   }
 
   v12 = self->_appLayoutToAcquiredTransientOverlayViewController;
@@ -5885,17 +5885,17 @@ void __92__SBMainSwitcherControllerCoordinator__restoreLayoutStateSnapshotForWin
     v12 = self->_appLayoutToAcquiredTransientOverlayViewController;
   }
 
-  [(NSMutableDictionary *)v12 setObject:v17 forKey:v10];
-  v15 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v9];
+  [(NSMutableDictionary *)v12 setObject:controllerCopy forKey:layoutCopy];
+  v15 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
 
-  v16 = [v15 contentViewController];
-  [v16 acquiredViewController:v17 forTransientOverlayAppLayout:v10];
+  contentViewController = [v15 contentViewController];
+  [contentViewController acquiredViewController:controllerCopy forTransientOverlayAppLayout:layoutCopy];
 }
 
-- (BOOL)isAcquiredTransientOverlayViewController:(id)a3 windowScene:(id)a4
+- (BOOL)isAcquiredTransientOverlayViewController:(id)controller windowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  sceneCopy = scene;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -5905,14 +5905,14 @@ void __92__SBMainSwitcherControllerCoordinator__restoreLayoutStateSnapshotForWin
   v11[1] = 3221225472;
   v11[2] = __92__SBMainSwitcherControllerCoordinator_isAcquiredTransientOverlayViewController_windowScene___block_invoke;
   v11[3] = &unk_2783B95C8;
-  v9 = v6;
+  v9 = controllerCopy;
   v12 = v9;
   v13 = &v14;
   [(NSMutableDictionary *)appLayoutToAcquiredTransientOverlayViewController enumerateKeysAndObjectsUsingBlock:v11];
-  LOBYTE(v6) = *(v15 + 24);
+  LOBYTE(controllerCopy) = *(v15 + 24);
 
   _Block_object_dispose(&v14, 8);
-  return v6;
+  return controllerCopy;
 }
 
 uint64_t __92__SBMainSwitcherControllerCoordinator_isAcquiredTransientOverlayViewController_windowScene___block_invoke(uint64_t result, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -5926,10 +5926,10 @@ uint64_t __92__SBMainSwitcherControllerCoordinator_isAcquiredTransientOverlayVie
   return result;
 }
 
-- (void)_removeAcquiredTransientOverlayViewController:(id)a3 windowScene:(id)a4
+- (void)_removeAcquiredTransientOverlayViewController:(id)controller windowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  sceneCopy = scene;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -5941,7 +5941,7 @@ uint64_t __92__SBMainSwitcherControllerCoordinator_isAcquiredTransientOverlayVie
   v16 = 3221225472;
   v17 = __97__SBMainSwitcherControllerCoordinator__removeAcquiredTransientOverlayViewController_windowScene___block_invoke;
   v18 = &unk_2783B95C8;
-  v9 = v6;
+  v9 = controllerCopy;
   v19 = v9;
   v20 = &v21;
   [(NSMutableDictionary *)appLayoutToAcquiredTransientOverlayViewController enumerateKeysAndObjectsUsingBlock:&v15];
@@ -5954,17 +5954,17 @@ uint64_t __92__SBMainSwitcherControllerCoordinator_isAcquiredTransientOverlayVie
       self->_appLayoutToAcquiredTransientOverlayViewController = 0;
     }
 
-    v11 = [(NSMutableDictionary *)self->_appLayoutToAcquiredTransientOverlayViewController allValues];
-    v12 = [v11 containsObject:v9];
+    allValues = [(NSMutableDictionary *)self->_appLayoutToAcquiredTransientOverlayViewController allValues];
+    v12 = [allValues containsObject:v9];
 
     if ((v12 & 1) == 0)
     {
       [v9 endIgnoringContentOverlayInsetUpdates];
     }
 
-    v13 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v7];
-    v14 = [v13 contentViewController];
-    [v14 relinquishTransientOverlayViewController:v9];
+    v13 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:sceneCopy];
+    contentViewController = [v13 contentViewController];
+    [contentViewController relinquishTransientOverlayViewController:v9];
   }
 
   _Block_object_dispose(&v21, 8);
@@ -5982,93 +5982,93 @@ void __97__SBMainSwitcherControllerCoordinator__removeAcquiredTransientOverlayVi
   }
 }
 
-- (void)_configureRequest:(id)a3 forSwitcherTransitionRequest:(id)a4 withEventLabel:(id)a5
+- (void)_configureRequest:(id)request forSwitcherTransitionRequest:(id)transitionRequest withEventLabel:(id)label
 {
   v168 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v133 = a5;
-  v10 = [SBApp windowSceneManager];
-  v11 = [v8 displayIdentity];
-  v12 = [v10 windowSceneForDisplayIdentity:v11];
+  requestCopy = request;
+  transitionRequestCopy = transitionRequest;
+  labelCopy = label;
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [requestCopy displayIdentity];
+  v12 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   v128 = v12;
   v13 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v12];
-  v131 = [v13 contentViewController];
-  v14 = [v9 appLayout];
+  contentViewController = [v13 contentViewController];
+  appLayout = [transitionRequestCopy appLayout];
   v145 = v13;
-  v15 = [v13 windowManagementContext];
-  v136 = self;
-  if (([v15 isMedusaEnabled] & 1) == 0)
+  windowManagementContext = [v13 windowManagementContext];
+  selfCopy = self;
+  if (([windowManagementContext isMedusaEnabled] & 1) == 0)
   {
-    v16 = [v14 environment];
+    environment = [appLayout environment];
 
-    if (v16 != 2)
+    if (environment != 2)
     {
       goto LABEL_5;
     }
 
-    [v14 appLayoutByModifyingEnvironment:1];
-    v14 = v15 = v14;
+    [appLayout appLayoutByModifyingEnvironment:1];
+    appLayout = windowManagementContext = appLayout;
   }
 
 LABEL_5:
-  v17 = [v9 appLayoutEnvironment];
-  v18 = [v9 unlockedEnvironmentMode];
-  v146 = [v9 floatingConfiguration];
-  v19 = [v9 displayItemLayoutAttributesMap];
-  v20 = [v19 allKeys];
-  v21 = [v20 bs_compactMap:&__block_literal_global_256];
+  appLayoutEnvironment = [transitionRequestCopy appLayoutEnvironment];
+  unlockedEnvironmentMode = [transitionRequestCopy unlockedEnvironmentMode];
+  floatingConfiguration = [transitionRequestCopy floatingConfiguration];
+  displayItemLayoutAttributesMap = [transitionRequestCopy displayItemLayoutAttributesMap];
+  allKeys = [displayItemLayoutAttributesMap allKeys];
+  v21 = [allKeys bs_compactMap:&__block_literal_global_256];
 
   v22 = objc_alloc(MEMORY[0x277CBEAC0]);
-  v127 = v19;
-  v23 = [v19 allValues];
+  v127 = displayItemLayoutAttributesMap;
+  allValues = [displayItemLayoutAttributesMap allValues];
   v126 = v21;
-  v24 = [v22 initWithObjects:v23 forKeys:v21];
+  v24 = [v22 initWithObjects:allValues forKeys:v21];
 
-  v25 = [v9 floatingSwitcherVisible];
-  v26 = [v9 peekConfiguration];
-  v27 = [v9 bundleIdentifierForAppExpose];
-  v28 = v8;
-  v132 = [v8 displayIdentity];
-  v138 = [v9 activatingDisplayItem];
-  v139 = [v14 itemForLayoutRole:?];
-  v130 = [v14 itemForLayoutRole:?];
-  v129 = [v14 itemForLayoutRole:?];
-  v141 = v17;
-  if (!v17)
+  floatingSwitcherVisible = [transitionRequestCopy floatingSwitcherVisible];
+  peekConfiguration = [transitionRequestCopy peekConfiguration];
+  bundleIdentifierForAppExpose = [transitionRequestCopy bundleIdentifierForAppExpose];
+  v28 = requestCopy;
+  displayIdentity2 = [requestCopy displayIdentity];
+  activatingDisplayItem = [transitionRequestCopy activatingDisplayItem];
+  v139 = [appLayout itemForLayoutRole:?];
+  v130 = [appLayout itemForLayoutRole:?];
+  v129 = [appLayout itemForLayoutRole:?];
+  environment2 = appLayoutEnvironment;
+  if (!appLayoutEnvironment)
   {
-    v141 = [v14 environment];
+    environment2 = [appLayout environment];
   }
 
   v29 = objc_alloc_init(SBWorkspaceApplicationSceneTransitionContext);
   v134 = v28;
   [v28 setApplicationContext:v29];
   v137 = objc_alloc_init(SBWorkspaceTransientOverlayTransitionContext);
-  v140 = v18;
-  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedUnlockedEnvironmentMode:v18];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedFloatingConfiguration:v146];
+  v140 = unlockedEnvironmentMode;
+  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedUnlockedEnvironmentMode:unlockedEnvironmentMode];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedFloatingConfiguration:floatingConfiguration];
   [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedEntityIdentifierToLayoutAttributes:v24];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedFloatingSwitcherVisible:v25];
-  [v9 animationDisabled];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedFloatingSwitcherVisible:floatingSwitcherVisible];
+  [transitionRequestCopy animationDisabled];
   [(SBWorkspaceTransitionContext *)v29 setAnimationDisabled:BSSettingFlagIsYes()];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedPeekConfiguration:v26];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedAppExposeBundleID:v27];
-  [v9 autoPIPDisabled];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedPeekConfiguration:peekConfiguration];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setRequestedAppExposeBundleID:bundleIdentifierForAppExpose];
+  [transitionRequestCopy autoPIPDisabled];
   [(SBWorkspaceApplicationSceneTransitionContext *)v29 setDisablesAutoPIP:BSSettingFlagIsYes()];
-  -[SBWorkspaceApplicationSceneTransitionContext setFencesAnimations:](v29, "setFencesAnimations:", [v9 fenceSceneUpdate]);
-  -[SBWorkspaceApplicationSceneTransitionContext setRetainsSiri:](v29, "setRetainsSiri:", [v9 retainsSiri]);
-  v30 = [v9 minimizingDisplayItem];
-  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setMinimizingDisplayItem:v30];
+  -[SBWorkspaceApplicationSceneTransitionContext setFencesAnimations:](v29, "setFencesAnimations:", [transitionRequestCopy fenceSceneUpdate]);
+  -[SBWorkspaceApplicationSceneTransitionContext setRetainsSiri:](v29, "setRetainsSiri:", [transitionRequestCopy retainsSiri]);
+  minimizingDisplayItem = [transitionRequestCopy minimizingDisplayItem];
+  [(SBWorkspaceApplicationSceneTransitionContext *)v29 setMinimizingDisplayItem:minimizingDisplayItem];
 
-  -[SBWorkspaceApplicationSceneTransitionContext setPrefersZoomDownAnimation:](v29, "setPrefersZoomDownAnimation:", [v9 prefersZoomDownAnimation]);
-  v31 = [v9 animationSettings];
-  v32 = v31;
-  if (v31)
+  -[SBWorkspaceApplicationSceneTransitionContext setPrefersZoomDownAnimation:](v29, "setPrefersZoomDownAnimation:", [transitionRequestCopy prefersZoomDownAnimation]);
+  animationSettings = [transitionRequestCopy animationSettings];
+  v32 = animationSettings;
+  if (animationSettings)
   {
     v163 = 0;
     v164 = 0;
-    [v31 dampingRatio];
+    [animationSettings dampingRatio];
     [v32 response];
     convertDampingRatioAndResponseToTensionAndFriction();
     v33 = [MEMORY[0x277CF0CF0] settingsWithMass:1.0 stiffness:0.0 damping:0.0];
@@ -6078,12 +6078,12 @@ LABEL_5:
   v147 = v29;
   v34 = 0x27839E000;
   v35 = v139;
-  v135 = v9;
+  v135 = transitionRequestCopy;
   v125 = v24;
-  if (v18 == 2)
+  if (unlockedEnvironmentMode == 2)
   {
     v36 = 1;
-    v37 = v138;
+    v37 = activatingDisplayItem;
     v38 = v134;
   }
 
@@ -6091,25 +6091,25 @@ LABEL_5:
   {
     IsYes = BSSettingFlagIsYes();
     v38 = v134;
-    v40 = v141;
+    v40 = environment2;
     if (v140 == 1)
     {
 LABEL_16:
-      v44 = +[(SBWorkspaceEntity *)SBHomeScreenEntity];
-      [(SBWorkspaceApplicationSceneTransitionContext *)v147 setActivatingEntity:v44];
+      sceneManager = +[(SBWorkspaceEntity *)SBHomeScreenEntity];
+      [(SBWorkspaceApplicationSceneTransitionContext *)v147 setActivatingEntity:sceneManager];
       goto LABEL_17;
     }
 
     v36 = IsYes;
-    v37 = v138;
+    v37 = activatingDisplayItem;
     v34 = 0x27839E000uLL;
   }
 
-  v41 = [*(v34 + 2744) homeScreenAppLayout];
-  if ([v14 isEqual:v41])
+  homeScreenAppLayout = [*(v34 + 2744) homeScreenAppLayout];
+  if ([appLayout isEqual:homeScreenAppLayout])
   {
 
-    v40 = v141;
+    v40 = environment2;
     goto LABEL_16;
   }
 
@@ -6117,7 +6117,7 @@ LABEL_16:
   v43 = [(SBDisplayItem *)v37 isEqualToItem:v42];
 
   v35 = v139;
-  v40 = v141;
+  v40 = environment2;
   if (v43)
   {
     goto LABEL_16;
@@ -6125,10 +6125,10 @@ LABEL_16:
 
   if (v36)
   {
-    v44 = [(SBMainSwitcherControllerCoordinator *)v136 activeTransientOverlayPresentedAppLayoutForSwitcherContentController:v131];
-    if (v44)
+    sceneManager = [(SBMainSwitcherControllerCoordinator *)selfCopy activeTransientOverlayPresentedAppLayoutForSwitcherContentController:contentViewController];
+    if (sceneManager)
     {
-      v49 = [(SBMainSwitcherControllerCoordinator *)v136 createWorkspaceTransientOverlayForAppLayout:v44];
+      v49 = [(SBMainSwitcherControllerCoordinator *)selfCopy createWorkspaceTransientOverlayForAppLayout:sceneManager];
       v45 = v49 != 0;
       if (v49)
       {
@@ -6150,19 +6150,19 @@ LABEL_19:
   }
 
   v45 = 0;
-  if (!v138)
+  if (!activatingDisplayItem)
   {
     goto LABEL_19;
   }
 
   v46 = v135;
-  if (v14)
+  if (appLayout)
   {
-    if ([v14 containsItem:v138])
+    if ([appLayout containsItem:activatingDisplayItem])
     {
-      v44 = [v128 sceneManager];
-      v54 = [v44 displayIdentity];
-      v55 = [(SBMainSwitcherControllerCoordinator *)v136 _entityForDisplayItem:v138 sceneHandleProvider:v44 displayIdentity:v54];
+      sceneManager = [v128 sceneManager];
+      displayIdentity3 = [sceneManager displayIdentity];
+      v55 = [(SBMainSwitcherControllerCoordinator *)selfCopy _entityForDisplayItem:activatingDisplayItem sceneHandleProvider:sceneManager displayIdentity:displayIdentity3];
 
       [(SBWorkspaceApplicationSceneTransitionContext *)v147 setActivatingEntity:v55];
       v161[0] = MEMORY[0x277D85DD0];
@@ -6188,8 +6188,8 @@ LABEL_20:
 
   if ([v35 type] == 2)
   {
-    v47 = [(SBMainSwitcherControllerCoordinator *)v136 _entityForDisplayItem:v35 displayIdentity:v132];
-    [(SBWorkspaceTransientOverlayTransitionContext *)v137 setTransientOverlay:v47];
+    appSuggestion = [(SBMainSwitcherControllerCoordinator *)selfCopy _entityForDisplayItem:v35 displayIdentity:displayIdentity2];
+    [(SBWorkspaceTransientOverlayTransitionContext *)v137 setTransientOverlay:appSuggestion];
     [(SBWorkspaceTransientOverlayTransitionContext *)v137 setTransitionType:0];
     v45 = 1;
 LABEL_69:
@@ -6199,8 +6199,8 @@ LABEL_69:
 
   if ([v35 type] == 4)
   {
-    v47 = [v35 appSuggestion];
-    if ([v47 isSiriSuggestion])
+    appSuggestion = [v35 appSuggestion];
+    if ([appSuggestion isSiriSuggestion])
     {
       v122 = v45;
       v48 = +[(SBWorkspaceEntity *)SBHomeScreenEntity];
@@ -6210,16 +6210,16 @@ LABEL_67:
       goto LABEL_68;
     }
 
-    if ([v47 isCallContinuitySuggestion] && !+[SBInCallPresentationManager isSpecializedAPISupported](SBInCallPresentationManager, "isSpecializedAPISupported"))
+    if ([appSuggestion isCallContinuitySuggestion] && !+[SBInCallPresentationManager isSpecializedAPISupported](SBInCallPresentationManager, "isSpecializedAPISupported"))
     {
-      v48 = [(SBMainSwitcherControllerCoordinator *)v136 _entityForDisplayItem:v35 displayIdentity:v132];
+      v48 = [(SBMainSwitcherControllerCoordinator *)selfCopy _entityForDisplayItem:v35 displayIdentity:displayIdentity2];
       [(SBWorkspaceTransientOverlayTransitionContext *)v137 setTransientOverlay:v48];
       [(SBWorkspaceTransientOverlayTransitionContext *)v137 setTransitionType:0];
       v159[0] = MEMORY[0x277D85DD0];
       v159[1] = 3221225472;
       v159[2] = __101__SBMainSwitcherControllerCoordinator__configureRequest_forSwitcherTransitionRequest_withEventLabel___block_invoke_3;
       v159[3] = &unk_2783A9398;
-      v160 = v47;
+      v160 = appSuggestion;
       v68 = [v38 addCompletionHandler:v159];
 
       v122 = 1;
@@ -6228,60 +6228,60 @@ LABEL_67:
     else
     {
       v122 = v45;
-      if (![v47 isCallContinuitySuggestion])
+      if (![appSuggestion isCallContinuitySuggestion])
       {
-        v48 = [(SBMainSwitcherControllerCoordinator *)v136 _entityForDisplayItem:v35 displayIdentity:v132];
-        v62 = [v47 launchURL];
+        v48 = [(SBMainSwitcherControllerCoordinator *)selfCopy _entityForDisplayItem:v35 displayIdentity:displayIdentity2];
+        launchURL = [appSuggestion launchURL];
 
         v63 = 0x27839E000uLL;
-        if (v62)
+        if (launchURL)
         {
-          v64 = [v47 launchURL];
-          if ([v47 launchURLRequiresInboxCopy])
+          launchURL2 = [appSuggestion launchURL];
+          if ([appSuggestion launchURLRequiresInboxCopy])
           {
-            v65 = [v48 application];
-            v66 = [v65 info];
-            v67 = [v66 documentInboxURL];
-            v142 = [v47 makeInboxCopyOfLaunchURLToInboxURL:v67];
+            application = [v48 application];
+            info = [application info];
+            documentInboxURL = [info documentInboxURL];
+            v142 = [appSuggestion makeInboxCopyOfLaunchURLToInboxURL:documentInboxURL];
 
             v46 = v135;
             v35 = v139;
 
             v63 = 0x27839E000;
-            v64 = v142;
+            launchURL2 = v142;
           }
 
-          [v48 setObject:v64 forActivationSetting:5];
+          [v48 setObject:launchURL2 forActivationSetting:5];
         }
 
         else
         {
           v76 = objc_alloc(MEMORY[0x277D750D8]);
-          v143 = [v47 uniqueIdentifier];
-          v77 = [v143 UUIDString];
-          v78 = [v47 activityType];
-          v64 = [v76 initWithIdentifier:v77 activityTypeIdentifier:v78 appSuggestion:v47];
+          uniqueIdentifier = [appSuggestion uniqueIdentifier];
+          uUIDString = [uniqueIdentifier UUIDString];
+          activityType = [appSuggestion activityType];
+          launchURL2 = [v76 initWithIdentifier:uUIDString activityTypeIdentifier:activityType appSuggestion:appSuggestion];
 
           v35 = v139;
-          v79 = [MEMORY[0x277CBEB98] setWithObject:v64];
+          v79 = [MEMORY[0x277CBEB98] setWithObject:launchURL2];
           [v48 addActions:v79];
 
           v80 = +[SBAppSuggestionManager sharedInstance];
-          [v80 startFetchingPayloadForAppSuggestion:v47];
+          [v80 startFetchingPayloadForAppSuggestion:appSuggestion];
 
           v46 = v135;
         }
 
-        v81 = [*(v63 + 2840) sharedInstance];
-        [v81 noteActivatingForAppSuggestion:v47 fromSource:1];
+        sharedInstance = [*(v63 + 2840) sharedInstance];
+        [sharedInstance noteActivatingForAppSuggestion:appSuggestion fromSource:1];
 
         goto LABEL_67;
       }
 
       v48 = +[SBWorkspace mainWorkspace];
-      v58 = [v48 inCallPresentationManager];
-      v59 = [v47 uniqueIdentifier];
-      [v58 handlePresentationForActivityContinuationIdentifier:v59];
+      inCallPresentationManager = [v48 inCallPresentationManager];
+      uniqueIdentifier2 = [appSuggestion uniqueIdentifier];
+      [inCallPresentationManager handlePresentationForActivityContinuationIdentifier:uniqueIdentifier2];
 
       v46 = v135;
     }
@@ -6298,8 +6298,8 @@ LABEL_68:
 
   if (![v35 type] || objc_msgSend(v35, "type") == 5 || objc_msgSend(v35, "type") == 3)
   {
-    v50 = [v38 displayIdentity];
-    v47 = [(SBMainSwitcherControllerCoordinator *)v136 _entityForDisplayItem:v35 displayIdentity:v50];
+    displayIdentity4 = [v38 displayIdentity];
+    appSuggestion = [(SBMainSwitcherControllerCoordinator *)selfCopy _entityForDisplayItem:v35 displayIdentity:displayIdentity4];
 
     switch(v40)
     {
@@ -6311,15 +6311,15 @@ LABEL_68:
         v60 = v147;
         v153 = v60;
         SBLayoutRoleEnumerateAppLayoutRoles(v152);
-        v61 = [(SBMainSwitcherControllerCoordinator *)v136 _entityForDisplayItem:v35 displayIdentity:v132];
+        v61 = [(SBMainSwitcherControllerCoordinator *)selfCopy _entityForDisplayItem:v35 displayIdentity:displayIdentity2];
         [(SBWorkspaceApplicationSceneTransitionContext *)v60 setEntity:v61 forLayoutRole:4];
-        -[SBWorkspaceApplicationSceneTransitionContext setRequestedCenterConfiguration:](v60, "setRequestedCenterConfiguration:", SBMainDisplayLayoutStateCenterConfigurationFromAppLayoutCenterConfiguration([v14 centerConfiguration]));
+        -[SBWorkspaceApplicationSceneTransitionContext setRequestedCenterConfiguration:](v60, "setRequestedCenterConfiguration:", SBMainDisplayLayoutStateCenterConfigurationFromAppLayoutCenterConfiguration([appLayout centerConfiguration]));
 
         v46 = v135;
         v53 = v153;
         break;
       case 2:
-        [(SBWorkspaceApplicationSceneTransitionContext *)v147 setEntity:v47 forLayoutRole:3];
+        [(SBWorkspaceApplicationSceneTransitionContext *)v147 setEntity:appSuggestion forLayoutRole:3];
         v154[0] = MEMORY[0x277D85DD0];
         v154[1] = 3221225472;
         v154[2] = __101__SBMainSwitcherControllerCoordinator__configureRequest_forSwitcherTransitionRequest_withEventLabel___block_invoke_5;
@@ -6329,23 +6329,23 @@ LABEL_68:
         v53 = v155;
         break;
       case 1:
-        v120 = v27;
+        v120 = bundleIdentifierForAppExpose;
         v51 = objc_opt_new();
         v156[0] = MEMORY[0x277D85DD0];
         v156[1] = 3221225472;
         v156[2] = __101__SBMainSwitcherControllerCoordinator__configureRequest_forSwitcherTransitionRequest_withEventLabel___block_invoke_4;
         v156[3] = &unk_2783AED40;
-        v156[4] = v136;
-        v52 = v132;
+        v156[4] = selfCopy;
+        v52 = displayIdentity2;
         v157 = v52;
         v53 = v51;
         v158 = v53;
-        [v14 enumerate:v156];
-        -[SBWorkspaceApplicationSceneTransitionContext setRequestedSpaceConfiguration:](v147, "setRequestedSpaceConfiguration:", SBMainDisplayLayoutStateSpaceConfigurationFromAppLayoutConfiguration([v14 configuration]));
+        [appLayout enumerate:v156];
+        -[SBWorkspaceApplicationSceneTransitionContext setRequestedSpaceConfiguration:](v147, "setRequestedSpaceConfiguration:", SBMainDisplayLayoutStateSpaceConfigurationFromAppLayoutConfiguration([appLayout configuration]));
         if (v130)
         {
-          v119 = [(SBMainSwitcherControllerCoordinator *)v136 _entityForDisplayItem:v130 displayIdentity:v52];
-          -[SBWorkspaceApplicationSceneTransitionContext setRequestedCenterConfiguration:](v147, "setRequestedCenterConfiguration:", SBMainDisplayLayoutStateCenterConfigurationFromAppLayoutCenterConfiguration([v14 centerConfiguration]));
+          v119 = [(SBMainSwitcherControllerCoordinator *)selfCopy _entityForDisplayItem:v130 displayIdentity:v52];
+          -[SBWorkspaceApplicationSceneTransitionContext setRequestedCenterConfiguration:](v147, "setRequestedCenterConfiguration:", SBMainDisplayLayoutStateCenterConfigurationFromAppLayoutCenterConfiguration([appLayout centerConfiguration]));
         }
 
         else
@@ -6353,10 +6353,10 @@ LABEL_68:
           v119 = 0;
         }
 
-        v40 = v141;
+        v40 = environment2;
         if (v129)
         {
-          [(SBMainSwitcherControllerCoordinator *)v136 _entityForDisplayItem:v129 displayIdentity:v52];
+          [(SBMainSwitcherControllerCoordinator *)selfCopy _entityForDisplayItem:v129 displayIdentity:v52];
         }
 
         else
@@ -6364,20 +6364,20 @@ LABEL_68:
           [SBPreviousWorkspaceEntity entityWithPreviousLayoutRole:3];
         }
         v70 = ;
-        v71 = [v46 entityInsertionPolicy];
+        entityInsertionPolicy = [v46 entityInsertionPolicy];
         v72 = v70;
-        [(SBWorkspaceApplicationSceneTransitionContext *)v147 setEntities:v53 withPolicy:v71 centerEntity:v119 floatingEntity:v70];
-        v73 = [v145 windowManagementContext];
-        v74 = [v73 isChamoisOrFlexibleWindowing];
+        [(SBWorkspaceApplicationSceneTransitionContext *)v147 setEntities:v53 withPolicy:entityInsertionPolicy centerEntity:v119 floatingEntity:v70];
+        windowManagementContext2 = [v145 windowManagementContext];
+        isChamoisOrFlexibleWindowing = [windowManagementContext2 isChamoisOrFlexibleWindowing];
 
-        if (v71 == 1 && v74)
+        if (entityInsertionPolicy == 1 && isChamoisOrFlexibleWindowing)
         {
-          v75 = [(SBWorkspaceApplicationSceneTransitionContext *)v53 firstObject];
-          [(SBWorkspaceApplicationSceneTransitionContext *)v147 _setRequestedFrontmostEntity:v75];
+          firstObject = [(SBWorkspaceApplicationSceneTransitionContext *)v53 firstObject];
+          [(SBWorkspaceApplicationSceneTransitionContext *)v147 _setRequestedFrontmostEntity:firstObject];
         }
 
         v46 = v135;
-        v27 = v120;
+        bundleIdentifierForAppExpose = v120;
         v35 = v139;
         break;
       default:
@@ -6388,18 +6388,18 @@ LABEL_68:
   }
 
 LABEL_70:
-  v83 = v133;
+  v83 = labelCopy;
   if (v40 == 1)
   {
     v123 = v45;
-    v121 = v27;
-    v144 = [(SBMainSwitcherControllerCoordinator *)v136 displayItemLayoutAttributesProvider];
+    v121 = bundleIdentifierForAppExpose;
+    displayItemLayoutAttributesProvider = [(SBMainSwitcherControllerCoordinator *)selfCopy displayItemLayoutAttributesProvider];
     v148 = 0u;
     v149 = 0u;
     v150 = 0u;
     v151 = 0u;
-    v84 = [v14 allItems];
-    v85 = [v84 countByEnumeratingWithState:&v148 objects:v167 count:16];
+    allItems = [appLayout allItems];
+    v85 = [allItems countByEnumeratingWithState:&v148 objects:v167 count:16];
     v86 = v147;
     if (v85)
     {
@@ -6411,11 +6411,11 @@ LABEL_70:
         {
           if (*v149 != v88)
           {
-            objc_enumerationMutation(v84);
+            objc_enumerationMutation(allItems);
           }
 
           v90 = *(*(&v148 + 1) + 8 * i);
-          v91 = -[SBWorkspaceApplicationSceneTransitionContext entityForLayoutRole:](v86, "entityForLayoutRole:", [v14 layoutRoleForItem:v90]);
+          v91 = -[SBWorkspaceApplicationSceneTransitionContext entityForLayoutRole:](v86, "entityForLayoutRole:", [appLayout layoutRoleForItem:v90]);
           v92 = v91;
           if (v91)
           {
@@ -6425,21 +6425,21 @@ LABEL_70:
 
               if (!v93)
               {
-                v94 = [v145 layoutState];
-                v95 = [v94 displayOrdinal];
+                layoutState = [v145 layoutState];
+                displayOrdinal = [layoutState displayOrdinal];
                 v86 = v147;
-                v96 = [v145 interfaceOrientation];
-                if ((v96 - 1) < 2)
+                interfaceOrientation = [v145 interfaceOrientation];
+                if ((interfaceOrientation - 1) < 2)
                 {
                   v97 = 1;
                 }
 
                 else
                 {
-                  v97 = 2 * ((v96 - 3) < 2);
+                  v97 = 2 * ((interfaceOrientation - 3) < 2);
                 }
 
-                v98 = [v144 layoutAttributesForDisplayItem:v90 inAppLayout:v14 displayOrdinal:v95 orientation:v97];
+                v98 = [displayItemLayoutAttributesProvider layoutAttributesForDisplayItem:v90 inAppLayout:appLayout displayOrdinal:displayOrdinal orientation:v97];
 
                 [(SBWorkspaceApplicationSceneTransitionContext *)v147 setRequestedLayoutAttributes:v98 forEntity:v92];
               }
@@ -6447,7 +6447,7 @@ LABEL_70:
           }
         }
 
-        v87 = [v84 countByEnumeratingWithState:&v148 objects:v167 count:16];
+        v87 = [allItems countByEnumeratingWithState:&v148 objects:v167 count:16];
       }
 
       while (v87);
@@ -6455,23 +6455,23 @@ LABEL_70:
 
     v38 = v134;
     v46 = v135;
-    v83 = v133;
-    v27 = v121;
+    v83 = labelCopy;
+    bundleIdentifierForAppExpose = v121;
     v35 = v139;
     v45 = v123;
   }
 
-  v99 = [v46 source];
-  if (v99)
+  source = [v46 source];
+  if (source)
   {
-    v100 = v99;
-    [v38 setSource:v99];
+    v100 = source;
+    [v38 setSource:source];
     if (v100 == 51)
     {
       [v38 applicationContext];
       v102 = v101 = v45;
-      v103 = [v102 activatingEntity];
-      [v103 setFlag:1 forActivationSetting:62];
+      activatingEntity = [v102 activatingEntity];
+      [activatingEntity setFlag:1 forActivationSetting:62];
 
       v45 = v101;
     }
@@ -6479,7 +6479,7 @@ LABEL_70:
 
   else
   {
-    if ([v14 type] == 4)
+    if ([appLayout type] == 4)
     {
       v104 = v38;
       v105 = 10;
@@ -6523,7 +6523,7 @@ LABEL_70:
 
   -[SBWorkspaceApplicationSceneTransitionContext setSettlesMultiAppFullScreenSpacesImmediately:](v147, "setSettlesMultiAppFullScreenSpacesImmediately:", [v46 settlesMultiAppFullScreenSpacesImmediately]);
   v110 = +[SBAppLayout homeScreenAppLayout];
-  v111 = [v14 isEqual:v110];
+  v111 = [appLayout isEqual:v110];
 
   if (v111)
   {
@@ -6532,7 +6532,7 @@ LABEL_70:
 
   else
   {
-    v113 = [(NSArray *)v136->_appLayouts indexOfObject:v14];
+    v113 = [(NSArray *)selfCopy->_appLayouts indexOfObject:appLayout];
     if (v113 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v112 = -1;
@@ -6552,8 +6552,8 @@ LABEL_70:
   v115 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v166 forKeys:v165 count:2];
   v116 = MEMORY[0x277D65DD0];
   v117 = v115;
-  v118 = [v116 sharedInstance];
-  [v118 emitEvent:14 withPayload:v117];
+  sharedInstance2 = [v116 sharedInstance];
+  [sharedInstance2 emitEvent:14 withPayload:v117];
 }
 
 void __101__SBMainSwitcherControllerCoordinator__configureRequest_forSwitcherTransitionRequest_withEventLabel___block_invoke_2(uint64_t a1, int a2)
@@ -6613,42 +6613,42 @@ void __101__SBMainSwitcherControllerCoordinator__configureRequest_forSwitcherTra
   [v3 setEntity:v4 forLayoutRole:a2];
 }
 
-- (id)_appLayoutFromPrimaryLayoutItem:(id)a3 sideLayoutElement:(id)a4 configuration:(int64_t)a5
+- (id)_appLayoutFromPrimaryLayoutItem:(id)item sideLayoutElement:(id)element configuration:(int64_t)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  elementCopy = element;
   v9 = +[SBDisplayItem homeScreenDisplayItem];
-  v10 = [(SBDisplayItem *)v7 isEqualToItem:v9];
+  v10 = [(SBDisplayItem *)itemCopy isEqualToItem:v9];
 
   if (v10)
   {
     v11 = +[SBAppLayout homeScreenAppLayout];
   }
 
-  else if (v7 | v8)
+  else if (itemCopy | elementCopy)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    if (v7)
+    if (itemCopy)
     {
       v13 = [MEMORY[0x277CCABB0] numberWithInteger:1];
-      [v12 setObject:v7 forKeyedSubscript:v13];
+      [v12 setObject:itemCopy forKeyedSubscript:v13];
 
       v14 = [MEMORY[0x277CCABB0] numberWithInteger:2];
-      [v12 setObject:v8 forKeyedSubscript:v14];
+      [v12 setObject:elementCopy forKeyedSubscript:v14];
     }
 
     v15 = 4;
-    if (!v8)
+    if (!elementCopy)
     {
       v15 = 1;
     }
 
-    if (!a5)
+    if (!configuration)
     {
-      a5 = v15;
+      configuration = v15;
     }
 
-    v11 = [[SBAppLayout alloc] initWithItemsForLayoutRoles:v12 configuration:a5 environment:1 preferredDisplayOrdinal:0];
+    v11 = [[SBAppLayout alloc] initWithItemsForLayoutRoles:v12 configuration:configuration environment:1 preferredDisplayOrdinal:0];
   }
 
   else
@@ -6659,10 +6659,10 @@ void __101__SBMainSwitcherControllerCoordinator__configureRequest_forSwitcherTra
   return v11;
 }
 
-- (id)_appLayoutContainingDisplayItem:(id)a3
+- (id)_appLayoutContainingDisplayItem:(id)item
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -6682,7 +6682,7 @@ void __101__SBMainSwitcherControllerCoordinator__configureRequest_forSwitcherTra
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v9 containsItem:{v4, v11}])
+        if ([v9 containsItem:{itemCopy, v11}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -6704,54 +6704,54 @@ LABEL_11:
   return v6;
 }
 
-- (id)_entityForDisplayItem:(id)a3 displayIdentity:(id)a4
+- (id)_entityForDisplayItem:(id)item displayIdentity:(id)identity
 {
-  v6 = a4;
-  v7 = a3;
+  identityCopy = identity;
+  itemCopy = item;
   v8 = +[SBSceneManagerCoordinator sharedInstance];
-  v9 = [v8 sceneManagerForDisplayIdentity:v6];
+  v9 = [v8 sceneManagerForDisplayIdentity:identityCopy];
 
-  v10 = [(SBMainSwitcherControllerCoordinator *)self _entityForDisplayItem:v7 sceneHandleProvider:v9 displayIdentity:v6];
-
-  return v10;
-}
-
-- (id)_entityForDisplayItem:(id)a3 switcherController:(id)a4
-{
-  v6 = a3;
-  v7 = [a4 windowScene];
-  v8 = [v7 sceneManager];
-
-  v9 = [v8 displayIdentity];
-  v10 = [(SBMainSwitcherControllerCoordinator *)self _entityForDisplayItem:v6 sceneHandleProvider:v8 displayIdentity:v9];
+  v10 = [(SBMainSwitcherControllerCoordinator *)self _entityForDisplayItem:itemCopy sceneHandleProvider:v9 displayIdentity:identityCopy];
 
   return v10;
 }
 
-- (id)_entityForDisplayItem:(id)a3 sceneHandleProvider:(id)a4 displayIdentity:(id)a5
+- (id)_entityForDisplayItem:(id)item switcherController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 bundleIdentifier];
-  if (![v9 type] || objc_msgSend(v9, "type") == 5)
+  itemCopy = item;
+  windowScene = [controller windowScene];
+  sceneManager = [windowScene sceneManager];
+
+  displayIdentity = [sceneManager displayIdentity];
+  v10 = [(SBMainSwitcherControllerCoordinator *)self _entityForDisplayItem:itemCopy sceneHandleProvider:sceneManager displayIdentity:displayIdentity];
+
+  return v10;
+}
+
+- (id)_entityForDisplayItem:(id)item sceneHandleProvider:(id)provider displayIdentity:(id)identity
+{
+  itemCopy = item;
+  providerCopy = provider;
+  identityCopy = identity;
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  if (![itemCopy type] || objc_msgSend(itemCopy, "type") == 5)
   {
     v13 = +[SBApplicationController sharedInstance];
-    v14 = [v13 applicationForDisplayItem:v9];
+    appSuggestion = [v13 applicationForDisplayItem:itemCopy];
 
-    v15 = [v14 bundleIdentifier];
-    v16 = [SBAppClipPlaceholderWorkspaceEntity isAppClipUpdateAvailableForBundleIdentifier:v15];
+    bundleIdentifier2 = [appSuggestion bundleIdentifier];
+    v16 = [SBAppClipPlaceholderWorkspaceEntity isAppClipUpdateAvailableForBundleIdentifier:bundleIdentifier2];
 
-    if (!v14 || v16)
+    if (!appSuggestion || v16)
     {
       v20 = +[SBApplicationPlaceholderController sharedInstance];
-      v18 = [v20 placeholderForDisplayID:v12];
+      uniqueIdentifier2 = [v20 placeholderForDisplayID:bundleIdentifier];
 
-      if ([v18 isAppClip] | v16)
+      if ([uniqueIdentifier2 isAppClip] | v16)
       {
         v21 = [SBAppClipPlaceholderWorkspaceEntity alloc];
-        v22 = [v9 uniqueIdentifier];
-        v19 = [(SBAppClipPlaceholderWorkspaceEntity *)v21 initWithBundleIdentifier:v12 futureSceneIdentifier:v22 needsUpdate:v16];
+        uniqueIdentifier = [itemCopy uniqueIdentifier];
+        v19 = [(SBAppClipPlaceholderWorkspaceEntity *)v21 initWithBundleIdentifier:bundleIdentifier futureSceneIdentifier:uniqueIdentifier needsUpdate:v16];
       }
 
       else
@@ -6763,17 +6763,17 @@ LABEL_11:
     else
     {
       v17 = [SBDeviceApplicationSceneEntity alloc];
-      v18 = [v9 uniqueIdentifier];
-      v19 = [(SBDeviceApplicationSceneEntity *)v17 initWithApplication:v14 uniqueIdentifier:v18 sceneHandleProvider:v10 displayIdentity:v11];
+      uniqueIdentifier2 = [itemCopy uniqueIdentifier];
+      v19 = [(SBDeviceApplicationSceneEntity *)v17 initWithApplication:appSuggestion uniqueIdentifier:uniqueIdentifier2 sceneHandleProvider:providerCopy displayIdentity:identityCopy];
     }
 
     goto LABEL_13;
   }
 
-  if ([v9 type] == 4)
+  if ([itemCopy type] == 4)
   {
-    v14 = [v9 appSuggestion];
-    if ([v12 isEqual:@"com.apple.Siri"])
+    appSuggestion = [itemCopy appSuggestion];
+    if ([bundleIdentifier isEqual:@"com.apple.Siri"])
     {
       v23 = +[(SBWorkspaceEntity *)SBHomeScreenEntity];
 LABEL_26:
@@ -6783,26 +6783,26 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    if (![v14 isCallContinuitySuggestion])
+    if (![appSuggestion isCallContinuitySuggestion])
     {
       v29 = +[SBApplicationController sharedInstance];
-      v27 = [v29 applicationWithBundleIdentifier:v12];
+      uniqueIdentifier4 = [v29 applicationWithBundleIdentifier:bundleIdentifier];
 
       v30 = [SBDeviceApplicationSceneEntity alloc];
-      v31 = [v9 uniqueIdentifier];
-      v19 = [(SBDeviceApplicationSceneEntity *)v30 initWithApplication:v27 uniqueIdentifier:v31 sceneHandleProvider:v10 displayIdentity:v11];
+      uniqueIdentifier3 = [itemCopy uniqueIdentifier];
+      v19 = [(SBDeviceApplicationSceneEntity *)v30 initWithApplication:uniqueIdentifier4 uniqueIdentifier:uniqueIdentifier3 sceneHandleProvider:providerCopy displayIdentity:identityCopy];
 
       goto LABEL_35;
     }
 
-    v27 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutContainingDisplayItem:v9];
-    if (!v27)
+    uniqueIdentifier4 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutContainingDisplayItem:itemCopy];
+    if (!uniqueIdentifier4)
     {
       v19 = 0;
       goto LABEL_35;
     }
 
-    v28 = [(SBMainSwitcherControllerCoordinator *)self createWorkspaceTransientOverlayForAppLayout:v27];
+    v28 = [(SBMainSwitcherControllerCoordinator *)self createWorkspaceTransientOverlayForAppLayout:uniqueIdentifier4];
 LABEL_22:
     v19 = v28;
 LABEL_35:
@@ -6810,23 +6810,23 @@ LABEL_35:
     goto LABEL_13;
   }
 
-  if ([v9 type] == 3)
+  if ([itemCopy type] == 3)
   {
     v25 = +[SBApplicationController sharedInstance];
-    v14 = [v25 applicationWithBundleIdentifier:v12];
+    appSuggestion = [v25 applicationWithBundleIdentifier:bundleIdentifier];
 
     v26 = [SBDeviceApplicationSceneEntity alloc];
-    v27 = [v9 uniqueIdentifier];
-    v28 = [(SBDeviceApplicationSceneEntity *)v26 initWithApplication:v14 uniqueIdentifier:v27 sceneHandleProvider:v10 displayIdentity:v11];
+    uniqueIdentifier4 = [itemCopy uniqueIdentifier];
+    v28 = [(SBDeviceApplicationSceneEntity *)v26 initWithApplication:appSuggestion uniqueIdentifier:uniqueIdentifier4 sceneHandleProvider:providerCopy displayIdentity:identityCopy];
     goto LABEL_22;
   }
 
-  if ([v9 type] == 2)
+  if ([itemCopy type] == 2)
   {
-    v14 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutContainingDisplayItem:v9];
-    if (v14)
+    appSuggestion = [(SBMainSwitcherControllerCoordinator *)self _appLayoutContainingDisplayItem:itemCopy];
+    if (appSuggestion)
     {
-      v23 = [(SBMainSwitcherControllerCoordinator *)self createWorkspaceTransientOverlayForAppLayout:v14];
+      v23 = [(SBMainSwitcherControllerCoordinator *)self createWorkspaceTransientOverlayForAppLayout:appSuggestion];
       goto LABEL_26;
     }
 
@@ -6835,7 +6835,7 @@ LABEL_33:
     goto LABEL_13;
   }
 
-  if ([v9 type] == 1)
+  if ([itemCopy type] == 1)
   {
     v19 = 0;
   }
@@ -6843,10 +6843,10 @@ LABEL_33:
   else
   {
     v19 = 0;
-    if ([v9 type] != 7 && v9)
+    if ([itemCopy type] != 7 && itemCopy)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"SBMainSwitcherControllerCoordinator.m" lineNumber:2608 description:@"Unhandled display item type"];
+      appSuggestion = [MEMORY[0x277CCA890] currentHandler];
+      [appSuggestion handleFailureInMethod:a2 object:self file:@"SBMainSwitcherControllerCoordinator.m" lineNumber:2608 description:@"Unhandled display item type"];
       goto LABEL_33;
     }
   }
@@ -6856,33 +6856,33 @@ LABEL_14:
   return v19;
 }
 
-- (id)switcherContentController:(id)a3 deviceApplicationSceneHandleForDisplayItem:(id)a4
+- (id)switcherContentController:(id)controller deviceApplicationSceneHandleForDisplayItem:(id)item
 {
-  v6 = a4;
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v8 = [v7 _deviceApplicationSceneHandleForDisplayItem:v6];
+  itemCopy = item;
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  v8 = [v7 _deviceApplicationSceneHandleForDisplayItem:itemCopy];
 
   return v8;
 }
 
-- (BOOL)isDisplayEmbeddedForSwitcherContentController:(id)a3
+- (BOOL)isDisplayEmbeddedForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 windowScene];
-  v5 = [v4 isExtendedDisplayWindowScene];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  windowScene = [v3 windowScene];
+  isExtendedDisplayWindowScene = [windowScene isExtendedDisplayWindowScene];
 
-  return v5 ^ 1;
+  return isExtendedDisplayWindowScene ^ 1;
 }
 
-- (id)windowManagementContextForSwitcherContentController:(id)a3
+- (id)windowManagementContextForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 windowManagementContext];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  windowManagementContext = [v3 windowManagementContext];
 
-  return v4;
+  return windowManagementContext;
 }
 
-- (id)proposedAppLayoutsForWindowDragForSwitcherContentController:(id)a3
+- (id)proposedAppLayoutsForWindowDragForSwitcherContentController:(id)controller
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v7[0] = MEMORY[0x277D85DD0];
@@ -6931,79 +6931,79 @@ void __99__SBMainSwitcherControllerCoordinator_proposedAppLayoutsForWindowDragFo
   }
 }
 
-- (id)windowSceneForSwitcherContentController:(id)a3
+- (id)windowSceneForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 windowScene];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  windowScene = [v3 windowScene];
 
-  return v4;
+  return windowScene;
 }
 
-- (id)appLayoutsForSwitcherContentController:(id)a3
+- (id)appLayoutsForSwitcherContentController:(id)controller
 {
-  v4 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
+  v4 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
   v5 = [(SBMainSwitcherControllerCoordinator *)self appLayoutsForSwitcherController:v4];
 
   return v5;
 }
 
-- (int64_t)nextDisplayItemInteractionTimeForSwitcherContentController:(id)a3
+- (int64_t)nextDisplayItemInteractionTimeForSwitcherContentController:(id)controller
 {
   mainSwitcherModel = self->_mainSwitcherModel;
-  v4 = a3;
-  v5 = [(SBAppSwitcherModel *)mainSwitcherModel _recentAppLayoutsController];
-  v6 = [v4 contentOrientation];
+  controllerCopy = controller;
+  _recentAppLayoutsController = [(SBAppSwitcherModel *)mainSwitcherModel _recentAppLayoutsController];
+  contentOrientation = [controllerCopy contentOrientation];
 
-  if ((v6 - 1) < 2)
+  if ((contentOrientation - 1) < 2)
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = 2 * ((v6 - 3) < 2);
+    v7 = 2 * ((contentOrientation - 3) < 2);
   }
 
-  v8 = [v5 _nextInteractionTimeInOrientation:v7];
+  v8 = [_recentAppLayoutsController _nextInteractionTimeInOrientation:v7];
 
   return v8;
 }
 
-- (id)switcherGestureManagerForSwitcherContentController:(id)a3
+- (id)switcherGestureManagerForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 gestureManager];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  gestureManager = [v3 gestureManager];
 
-  return v4;
+  return gestureManager;
 }
 
-- (id)sceneRelevancyManagerForSwitcherContentController:(id)a3
+- (id)sceneRelevancyManagerForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 sceneRelevancyManager];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  sceneRelevancyManager = [v3 sceneRelevancyManager];
 
-  return v4;
+  return sceneRelevancyManager;
 }
 
-- (id)activeTransientOverlayPresentedAppLayoutForSwitcherContentController:(id)a3
+- (id)activeTransientOverlayPresentedAppLayoutForSwitcherContentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v4];
+  controllerCopy = controller;
+  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controllerCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__72;
   v19 = __Block_byref_object_dispose__72;
   v20 = 0;
-  v6 = [v5 windowScene];
-  v7 = [v6 transientOverlayPresenter];
+  windowScene = [v5 windowScene];
+  transientOverlayPresenter = [windowScene transientOverlayPresenter];
 
   appLayoutToEligibleTransientOverlayViewController = self->_appLayoutToEligibleTransientOverlayViewController;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __108__SBMainSwitcherControllerCoordinator_activeTransientOverlayPresentedAppLayoutForSwitcherContentController___block_invoke;
   v12[3] = &unk_2783B95C8;
-  v9 = v7;
+  v9 = transientOverlayPresenter;
   v13 = v9;
   v14 = &v15;
   [(NSMutableDictionary *)appLayoutToEligibleTransientOverlayViewController enumerateKeysAndObjectsUsingBlock:v12];
@@ -7024,11 +7024,11 @@ void __108__SBMainSwitcherControllerCoordinator_activeTransientOverlayPresentedA
   }
 }
 
-- (id)appLayoutForWorkspaceTransientOverlay:(id)a3 windowScene:(id)a4
+- (id)appLayoutForWorkspaceTransientOverlay:(id)overlay windowScene:(id)scene
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 viewController];
+  overlayCopy = overlay;
+  sceneCopy = scene;
+  viewController = [overlayCopy viewController];
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -7040,7 +7040,7 @@ void __108__SBMainSwitcherControllerCoordinator_activeTransientOverlayPresentedA
   v13[1] = 3221225472;
   v13[2] = __89__SBMainSwitcherControllerCoordinator_appLayoutForWorkspaceTransientOverlay_windowScene___block_invoke;
   v13[3] = &unk_2783B95C8;
-  v10 = v8;
+  v10 = viewController;
   v14 = v10;
   v15 = &v16;
   [(NSMutableDictionary *)appLayoutToEligibleTransientOverlayViewController enumerateKeysAndObjectsUsingBlock:v13];
@@ -7063,9 +7063,9 @@ void __89__SBMainSwitcherControllerCoordinator_appLayoutForWorkspaceTransientOve
   }
 }
 
-- (id)createWorkspaceTransientOverlayForAppLayout:(id)a3
+- (id)createWorkspaceTransientOverlayForAppLayout:(id)layout
 {
-  v3 = [(NSMutableDictionary *)self->_appLayoutToEligibleTransientOverlayViewController objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_appLayoutToEligibleTransientOverlayViewController objectForKey:layout];
   if (v3)
   {
     v4 = [[SBWorkspaceTransientOverlay alloc] initWithViewController:v3];
@@ -7079,11 +7079,11 @@ void __89__SBMainSwitcherControllerCoordinator_appLayoutForWorkspaceTransientOve
   return v4;
 }
 
-- (id)matchingIconViewForIconView:(id)a3
+- (id)matchingIconViewForIconView:(id)view
 {
-  v3 = [a3 matchingIconZoomingViewOverlay];
+  matchingIconZoomingViewOverlay = [view matchingIconZoomingViewOverlay];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = matchingIconZoomingViewOverlay;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -7102,11 +7102,11 @@ void __89__SBMainSwitcherControllerCoordinator_appLayoutForWorkspaceTransientOve
   return v4;
 }
 
-- (CGRect)switcherContentController:(id)a3 frameForItemWithRole:(int64_t)a4 inMainAppLayout:(id)a5 interfaceOrientation:(int64_t)a6
+- (CGRect)switcherContentController:(id)controller frameForItemWithRole:(int64_t)role inMainAppLayout:(id)layout interfaceOrientation:(int64_t)orientation
 {
-  v10 = a5;
-  v11 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  [v11 frameForItemWithRole:a4 inMainAppLayout:v10 interfaceOrientation:a6];
+  layoutCopy = layout;
+  v11 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  [v11 frameForItemWithRole:role inMainAppLayout:layoutCopy interfaceOrientation:orientation];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -7123,10 +7123,10 @@ void __89__SBMainSwitcherControllerCoordinator_appLayoutForWorkspaceTransientOve
   return result;
 }
 
-- (CGRect)switcherContentController:(id)a3 frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)a4 floatingConfiguration:(int64_t)a5
+- (CGRect)switcherContentController:(id)controller frameForFloatingAppLayoutInInterfaceOrientation:(int64_t)orientation floatingConfiguration:(int64_t)configuration
 {
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  [v7 frameForFloatingAppLayoutInInterfaceOrientation:a4 floatingConfiguration:a5];
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  [v7 frameForFloatingAppLayoutInInterfaceOrientation:orientation floatingConfiguration:configuration];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -7143,10 +7143,10 @@ void __89__SBMainSwitcherControllerCoordinator_appLayoutForWorkspaceTransientOve
   return result;
 }
 
-- (CGRect)switcherContentController:(id)a3 frameForCenterItemWithConfiguration:(int64_t)a4 interfaceOrientation:(int64_t)a5
+- (CGRect)switcherContentController:(id)controller frameForCenterItemWithConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation
 {
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  [v7 frameForCenterItemWithConfiguration:a4 interfaceOrientation:a5];
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  [v7 frameForCenterItemWithConfiguration:configuration interfaceOrientation:orientation];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -7163,75 +7163,75 @@ void __89__SBMainSwitcherControllerCoordinator_appLayoutForWorkspaceTransientOve
   return result;
 }
 
-- (id)transitionEventForContext:(id)a3 identifier:(id)a4 phase:(unint64_t)a5 animated:(BOOL)a6
+- (id)transitionEventForContext:(id)context identifier:(id)identifier phase:(unint64_t)phase animated:(BOOL)animated
 {
-  v127 = a6;
+  animatedCopy = animated;
   v152 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v134 = a4;
+  contextCopy = context;
+  identifierCopy = identifier;
   v9 = objc_opt_class();
-  v10 = [v8 previousLayoutState];
-  v11 = SBSafeCast(v9, v10);
+  previousLayoutState = [contextCopy previousLayoutState];
+  v11 = SBSafeCast(v9, previousLayoutState);
 
-  v125 = [v11 unlockedEnvironmentMode];
+  unlockedEnvironmentMode = [v11 unlockedEnvironmentMode];
   v12 = objc_opt_class();
-  v13 = [v8 layoutState];
-  v14 = SBSafeCast(v12, v13);
+  layoutState = [contextCopy layoutState];
+  v14 = SBSafeCast(v12, layoutState);
 
-  v138 = [v14 unlockedEnvironmentMode];
-  v15 = [v8 request];
-  v16 = [v15 source];
-  v17 = [v15 transientOverlayContext];
-  v18 = [SBApp windowSceneManager];
-  v19 = [v15 displayIdentity];
-  v20 = [v18 windowSceneForDisplayIdentity:v19];
+  unlockedEnvironmentMode2 = [v14 unlockedEnvironmentMode];
+  request = [contextCopy request];
+  source = [request source];
+  transientOverlayContext = [request transientOverlayContext];
+  windowSceneManager = [SBApp windowSceneManager];
+  displayIdentity = [request displayIdentity];
+  v20 = [windowSceneManager windowSceneForDisplayIdentity:displayIdentity];
 
   v123 = v20;
-  v135 = [v20 switcherController];
-  v21 = [v135 windowManagementContext];
-  v122 = [v21 isChamoisOrFlexibleWindowing];
+  switcherController = [v20 switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-  v22 = [v11 appLayout];
-  v130 = [v11 floatingAppLayout];
+  appLayout = [v11 appLayout];
+  floatingAppLayout = [v11 floatingAppLayout];
   [v14 invalidateAppLayout];
   [v14 invalidateFloatingAppLayout];
-  v141 = [v14 appLayout];
-  v140 = [v14 floatingAppLayout];
-  v131 = v8;
-  v132 = self;
-  v133 = v15;
-  v124 = v17;
-  if (v17)
+  appLayout2 = [v14 appLayout];
+  floatingAppLayout2 = [v14 floatingAppLayout];
+  v131 = contextCopy;
+  selfCopy = self;
+  v133 = request;
+  v124 = transientOverlayContext;
+  if (transientOverlayContext)
   {
     v120 = v14;
     v23 = v11;
-    v24 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForTransitionRequest:v15];
-    v25 = [v24 windowScene];
-    v26 = [v17 transitionType];
-    v27 = [v17 transientOverlay];
-    v28 = [(SBMainSwitcherControllerCoordinator *)self appLayoutForWorkspaceTransientOverlay:v27 windowScene:v25];
+    v24 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForTransitionRequest:request];
+    windowScene = [v24 windowScene];
+    transitionType = [transientOverlayContext transitionType];
+    transientOverlay = [transientOverlayContext transientOverlay];
+    v28 = [(SBMainSwitcherControllerCoordinator *)self appLayoutForWorkspaceTransientOverlay:transientOverlay windowScene:windowScene];
 
-    v29 = self;
-    v30 = v125;
+    selfCopy3 = self;
+    v30 = unlockedEnvironmentMode;
     if (v28)
     {
-      if (v26)
+      if (transitionType)
       {
         v30 = 3;
       }
 
-      v31 = v138;
-      if (!v26)
+      v31 = unlockedEnvironmentMode2;
+      if (!transitionType)
       {
         v31 = 3;
       }
 
-      v138 = v31;
-      v32 = v22;
-      if (v26)
+      unlockedEnvironmentMode2 = v31;
+      v32 = appLayout;
+      if (transitionType)
       {
-        v22 = v28;
-        v33 = v141;
+        appLayout = v28;
+        v33 = appLayout2;
       }
 
       else
@@ -7239,70 +7239,70 @@ void __89__SBMainSwitcherControllerCoordinator_appLayoutForWorkspaceTransientOve
         v33 = v28;
       }
 
-      if (v26)
+      if (transitionType)
       {
         v34 = v32;
       }
 
       else
       {
-        v34 = v141;
+        v34 = appLayout2;
       }
 
       v35 = v28;
 
-      v141 = v33;
-      v29 = v132;
+      appLayout2 = v33;
+      selfCopy3 = selfCopy;
     }
 
     v11 = v23;
     v14 = v120;
-    v8 = v131;
-    v36 = v127;
+    contextCopy = v131;
+    v36 = animatedCopy;
   }
 
   else
   {
-    v29 = self;
-    v36 = v127;
-    v30 = v125;
+    selfCopy3 = self;
+    v36 = animatedCopy;
+    v30 = unlockedEnvironmentMode;
   }
 
-  v37 = [[SBTransitionSwitcherModifierEvent alloc] initWithTransitionID:v134 phase:a5 animated:v36];
-  [(SBTransitionSwitcherModifierEvent *)v37 setFromAppLayout:v22];
+  v37 = [[SBTransitionSwitcherModifierEvent alloc] initWithTransitionID:identifierCopy phase:phase animated:v36];
+  [(SBTransitionSwitcherModifierEvent *)v37 setFromAppLayout:appLayout];
   [(SBTransitionSwitcherModifierEvent *)v37 setFromEnvironmentMode:v30];
   -[SBTransitionSwitcherModifierEvent setFromInterfaceOrientation:](v37, "setFromInterfaceOrientation:", [v11 interfaceOrientation]);
   v38 = [v11 elementWithRole:1];
   -[SBTransitionSwitcherModifierEvent setFromAppLayoutWantsExclusiveForeground:](v37, "setFromAppLayoutWantsExclusiveForeground:", [v38 hasLayoutAttributes:2]);
 
-  v39 = [v11 bundleIDShowingAppExpose];
-  [(SBTransitionSwitcherModifierEvent *)v37 setFromAppExposeBundleID:v39];
+  bundleIDShowingAppExpose = [v11 bundleIDShowingAppExpose];
+  [(SBTransitionSwitcherModifierEvent *)v37 setFromAppExposeBundleID:bundleIDShowingAppExpose];
 
-  v40 = [v8 activatingEntity];
-  v41 = [v40 applicationSceneEntity];
-  if (v41)
+  activatingEntity = [contextCopy activatingEntity];
+  applicationSceneEntity = [activatingEntity applicationSceneEntity];
+  if (applicationSceneEntity)
   {
-    v42 = v41;
+    v42 = applicationSceneEntity;
 
     goto LABEL_19;
   }
 
-  v43 = [v8 entityForLayoutRole:1];
-  v44 = [v43 applicationSceneEntity];
+  v43 = [contextCopy entityForLayoutRole:1];
+  applicationSceneEntity2 = [v43 applicationSceneEntity];
 
-  v42 = v44;
-  if (v44)
+  v42 = applicationSceneEntity2;
+  if (applicationSceneEntity2)
   {
 LABEL_19:
-    v45 = [(SBMainSwitcherControllerCoordinator *)v29 _recentAppLayoutsController];
-    v46 = [v45 _transitionContextRepresentsAmbiguousLaunch:v8 forApplicationSceneEntity:v42];
+    _recentAppLayoutsController = [(SBMainSwitcherControllerCoordinator *)selfCopy3 _recentAppLayoutsController];
+    v46 = [_recentAppLayoutsController _transitionContextRepresentsAmbiguousLaunch:contextCopy forApplicationSceneEntity:v42];
 
     v121 = v42;
     if (v46)
     {
-      v47 = [v42 application];
-      v48 = [v47 bundleIdentifier];
-      [(SBTransitionSwitcherModifierEvent *)v37 setAmbiguouslyLaunchedBundleIDIfAny:v48];
+      application = [v42 application];
+      bundleIdentifier = [application bundleIdentifier];
+      [(SBTransitionSwitcherModifierEvent *)v37 setAmbiguouslyLaunchedBundleIDIfAny:bundleIdentifier];
     }
 
     goto LABEL_22;
@@ -7310,22 +7310,22 @@ LABEL_19:
 
   v121 = 0;
 LABEL_22:
-  [(SBTransitionSwitcherModifierEvent *)v37 setToAppLayout:v141];
-  [(SBTransitionSwitcherModifierEvent *)v37 setToEnvironmentMode:v138];
+  [(SBTransitionSwitcherModifierEvent *)v37 setToAppLayout:appLayout2];
+  [(SBTransitionSwitcherModifierEvent *)v37 setToEnvironmentMode:unlockedEnvironmentMode2];
   -[SBTransitionSwitcherModifierEvent setToInterfaceOrientation:](v37, "setToInterfaceOrientation:", [v14 interfaceOrientation]);
   v49 = [v14 elementWithRole:1];
   -[SBTransitionSwitcherModifierEvent setToAppLayoutWantsExclusiveForeground:](v37, "setToAppLayoutWantsExclusiveForeground:", [v49 hasLayoutAttributes:2]);
 
-  v50 = [v14 bundleIDShowingAppExpose];
-  [(SBTransitionSwitcherModifierEvent *)v37 setToAppExposeBundleID:v50];
+  bundleIDShowingAppExpose2 = [v14 bundleIDShowingAppExpose];
+  [(SBTransitionSwitcherModifierEvent *)v37 setToAppExposeBundleID:bundleIDShowingAppExpose2];
 
-  v51 = [v11 floatingAppLayout];
-  [(SBTransitionSwitcherModifierEvent *)v37 setFromFloatingAppLayout:v51];
+  floatingAppLayout3 = [v11 floatingAppLayout];
+  [(SBTransitionSwitcherModifierEvent *)v37 setFromFloatingAppLayout:floatingAppLayout3];
 
   -[SBTransitionSwitcherModifierEvent setFromFloatingConfiguration:](v37, "setFromFloatingConfiguration:", [v11 floatingConfiguration]);
   -[SBTransitionSwitcherModifierEvent setFromFloatingSwitcherVisible:](v37, "setFromFloatingSwitcherVisible:", [v11 isFloatingSwitcherVisible]);
   -[SBTransitionSwitcherModifierEvent setToFloatingSwitcherVisible:](v37, "setToFloatingSwitcherVisible:", [v14 isFloatingSwitcherVisible]);
-  [(SBTransitionSwitcherModifierEvent *)v37 setToFloatingAppLayout:v140];
+  [(SBTransitionSwitcherModifierEvent *)v37 setToFloatingAppLayout:floatingAppLayout2];
   -[SBTransitionSwitcherModifierEvent setToFloatingConfiguration:](v37, "setToFloatingConfiguration:", [v14 floatingConfiguration]);
   -[SBTransitionSwitcherModifierEvent setFromPeekConfiguration:](v37, "setFromPeekConfiguration:", [v11 peekConfiguration]);
   -[SBTransitionSwitcherModifierEvent setToPeekConfiguration:](v37, "setToPeekConfiguration:", [v14 peekConfiguration]);
@@ -7334,7 +7334,7 @@ LABEL_22:
   v126 = v11;
   -[SBTransitionSwitcherModifierEvent setFromWindowPickerRole:](v37, "setFromWindowPickerRole:", [v11 windowPickerRole]);
   -[SBTransitionSwitcherModifierEvent setToWindowPickerRole:](v37, "setToWindowPickerRole:", [v14 windowPickerRole]);
-  liveDisplayItemsBeingTerminated = v29->_liveDisplayItemsBeingTerminated;
+  liveDisplayItemsBeingTerminated = selfCopy3->_liveDisplayItemsBeingTerminated;
   v149[0] = MEMORY[0x277D85DD0];
   v149[1] = 3221225472;
   v149[2] = __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_identifier_phase_animated___block_invoke;
@@ -7345,32 +7345,32 @@ LABEL_22:
   [(SBTransitionSwitcherModifierEvent *)v53 setFromDisplayItemsPendingTermination:v54];
 
   v55 = v133;
-  v56 = [v133 bannerUnfurlSourceContextProvider];
-  v57 = [v56 bannerUnfurlSourceContextForTransitionRequest:v133];
+  bannerUnfurlSourceContextProvider = [v133 bannerUnfurlSourceContextProvider];
+  v57 = [bannerUnfurlSourceContextProvider bannerUnfurlSourceContextForTransitionRequest:v133];
   [(SBTransitionSwitcherModifierEvent *)v53 setBannerUnfurlSourceContext:v57];
 
-  -[SBTransitionSwitcherModifierEvent setPrefersCrossfadeTransition:](v53, "setPrefersCrossfadeTransition:", [v8 prefersCrossfadeTransition]);
-  -[SBTransitionSwitcherModifierEvent setPrefersCenterZoomTransition:](v53, "setPrefersCenterZoomTransition:", [v8 prefersCenterZoomTransition]);
-  -[SBTransitionSwitcherModifierEvent setPrefersZoomDownAnimation:](v53, "setPrefersZoomDownAnimation:", [v8 prefersZoomDownAnimation]);
-  v58 = [v8 preludeAnimationTokenWrapper];
-  v59 = [v58 isTokenAvailable];
+  -[SBTransitionSwitcherModifierEvent setPrefersCrossfadeTransition:](v53, "setPrefersCrossfadeTransition:", [contextCopy prefersCrossfadeTransition]);
+  -[SBTransitionSwitcherModifierEvent setPrefersCenterZoomTransition:](v53, "setPrefersCenterZoomTransition:", [contextCopy prefersCenterZoomTransition]);
+  -[SBTransitionSwitcherModifierEvent setPrefersZoomDownAnimation:](v53, "setPrefersZoomDownAnimation:", [contextCopy prefersZoomDownAnimation]);
+  preludeAnimationTokenWrapper = [contextCopy preludeAnimationTokenWrapper];
+  isTokenAvailable = [preludeAnimationTokenWrapper isTokenAvailable];
 
-  if (a5 == 1 && v59)
+  if (phase == 1 && isTokenAvailable)
   {
-    v60 = [v8 preludeAnimationTokenWrapper];
-    v61 = [v60 consumeToken];
+    preludeAnimationTokenWrapper2 = [contextCopy preludeAnimationTokenWrapper];
+    consumeToken = [preludeAnimationTokenWrapper2 consumeToken];
 
-    v62 = [SBConsumableTokenWrapper consumableTokenWrapperWithToken:v61];
+    v62 = [SBConsumableTokenWrapper consumableTokenWrapperWithToken:consumeToken];
     [(SBTransitionSwitcherModifierEvent *)v53 setZoomFromHardwareButtonPreludeTokenWrapper:v62];
   }
 
-  v137 = v22;
+  v137 = appLayout;
   v147 = 0u;
   v148 = 0u;
   v145 = 0u;
   v146 = 0u;
-  v63 = [v8 applicationSceneEntities];
-  v64 = [v63 countByEnumeratingWithState:&v145 objects:v151 count:16];
+  applicationSceneEntities = [contextCopy applicationSceneEntities];
+  v64 = [applicationSceneEntities countByEnumeratingWithState:&v145 objects:v151 count:16];
   if (!v64)
   {
     v74 = 0;
@@ -7387,42 +7387,42 @@ LABEL_22:
     {
       if (*v146 != v66)
       {
-        objc_enumerationMutation(v63);
+        objc_enumerationMutation(applicationSceneEntities);
       }
 
       v69 = *(*(&v145 + 1) + 8 * v68);
-      v70 = [v69 activationSettings];
-      v71 = [v70 objectForActivationSetting:46];
-      if (v71 || [v70 flagForActivationSetting:56] == 1)
+      activationSettings = [v69 activationSettings];
+      v71 = [activationSettings objectForActivationSetting:46];
+      if (v71 || [activationSettings flagForActivationSetting:56] == 1)
       {
 
 LABEL_33:
-        v72 = [v69 displayItemRepresentation];
-        if ([v141 containsItem:v72])
+        displayItemRepresentation = [v69 displayItemRepresentation];
+        if ([appLayout2 containsItem:displayItemRepresentation])
         {
-          v75 = v141;
+          v75 = appLayout2;
         }
 
         else
         {
-          if (([v140 containsItem:v72] & 1) == 0)
+          if (([floatingAppLayout2 containsItem:displayItemRepresentation] & 1) == 0)
           {
 
             goto LABEL_36;
           }
 
-          v75 = v140;
+          v75 = floatingAppLayout2;
         }
 
-        v74 = [v75 leafAppLayoutForRole:{objc_msgSend(v75, "layoutRoleForItem:", v72)}];
+        v74 = [v75 leafAppLayoutForRole:{objc_msgSend(v75, "layoutRoleForItem:", displayItemRepresentation)}];
 
         v14 = v67;
-        v8 = v131;
+        contextCopy = v131;
         v55 = v133;
         goto LABEL_46;
       }
 
-      if ([v70 flagForActivationSetting:11] == 1)
+      if ([activationSettings flagForActivationSetting:11] == 1)
       {
         goto LABEL_33;
       }
@@ -7433,11 +7433,11 @@ LABEL_36:
     }
 
     while (v65 != v68);
-    v73 = [v63 countByEnumeratingWithState:&v145 objects:v151 count:16];
+    v73 = [applicationSceneEntities countByEnumeratingWithState:&v145 objects:v151 count:16];
     v65 = v73;
     v74 = 0;
     v14 = v67;
-    v8 = v131;
+    contextCopy = v131;
     v55 = v133;
   }
 
@@ -7447,30 +7447,30 @@ LABEL_46:
   v76 = v74;
   if (v74)
   {
-    v77 = v135;
+    v77 = switcherController;
   }
 
   else
   {
-    v77 = v135;
-    if (v16 == 52)
+    v77 = switcherController;
+    if (source == 52)
     {
       v76 = 0;
-      if (v137 == v141 && v130 == v140)
+      if (v137 == appLayout2 && floatingAppLayout == floatingAppLayout2)
       {
-        v78 = [v8 requestedWindowPickerRole];
-        if (v78)
+        requestedWindowPickerRole = [contextCopy requestedWindowPickerRole];
+        if (requestedWindowPickerRole)
         {
-          v80 = v78;
-          if (v78 == 3)
+          v80 = requestedWindowPickerRole;
+          if (requestedWindowPickerRole == 3)
           {
-            v81 = v140;
+            v81 = floatingAppLayout2;
             v80 = 1;
           }
 
           else
           {
-            v81 = v141;
+            v81 = appLayout2;
           }
 
           v79 = [v81 leafAppLayoutForRole:v80];
@@ -7478,7 +7478,7 @@ LABEL_46:
 
         else
         {
-          v79 = v141;
+          v79 = appLayout2;
         }
 
         v76 = v79;
@@ -7488,40 +7488,40 @@ LABEL_46:
 
   v119 = v76;
   [(SBTransitionSwitcherModifierEvent *)v53 setActivatingAppLayout:v76];
-  v82 = v16 == 27 || v16 == 11;
+  v82 = source == 27 || source == 11;
   [(SBTransitionSwitcherModifierEvent *)v53 setGestureInitiated:v82];
-  v84 = v16 == 51 || v16 == 12;
+  v84 = source == 51 || source == 12;
   [(SBTransitionSwitcherModifierEvent *)v53 setKeyboardShortcutInitiated:v84];
-  [(SBTransitionSwitcherModifierEvent *)v53 setTopAffordanceInitiated:v16 == 50];
-  [(SBTransitionSwitcherModifierEvent *)v53 setDragAndDropTransition:v16 == 27];
-  [(SBTransitionSwitcherModifierEvent *)v53 setBreadcrumbTransition:v16 == 15];
+  [(SBTransitionSwitcherModifierEvent *)v53 setTopAffordanceInitiated:source == 50];
+  [(SBTransitionSwitcherModifierEvent *)v53 setDragAndDropTransition:source == 27];
+  [(SBTransitionSwitcherModifierEvent *)v53 setBreadcrumbTransition:source == 15];
   v144 = 0;
-  if ([(SBMainSwitcherControllerCoordinator *)v132 _shouldMorphFromPIPForTransitionContext:v8 outForLayoutRole:&v144])
+  if ([(SBMainSwitcherControllerCoordinator *)selfCopy _shouldMorphFromPIPForTransitionContext:contextCopy outForLayoutRole:&v144])
   {
     [(SBTransitionSwitcherModifierEvent *)v53 setMorphFromPIPTransition:1];
   }
 
   else
   {
-    [(SBTransitionSwitcherModifierEvent *)v53 setMorphToPIPTransition:[(SBMainSwitcherControllerCoordinator *)v132 _shouldMorphToPIPForTransitionContext:v8 outForLayoutRole:&v144]];
+    [(SBTransitionSwitcherModifierEvent *)v53 setMorphToPIPTransition:[(SBMainSwitcherControllerCoordinator *)selfCopy _shouldMorphToPIPForTransitionContext:contextCopy outForLayoutRole:&v144]];
   }
 
   [(SBTransitionSwitcherModifierEvent *)v53 setMorphingPIPLayoutRole:v144];
-  v85 = [v8 coverSheetFlyInContext];
-  [(SBTransitionSwitcherModifierEvent *)v53 setCoverSheetFlyInContext:v85];
+  coverSheetFlyInContext = [contextCopy coverSheetFlyInContext];
+  [(SBTransitionSwitcherModifierEvent *)v53 setCoverSheetFlyInContext:coverSheetFlyInContext];
 
-  [(SBTransitionSwitcherModifierEvent *)v53 setZoomFromSystemApertureTransition:[(SBMainSwitcherControllerCoordinator *)v132 _shouldZoomFromSystemApertureForTransitionContext:v8]];
-  [(SBTransitionSwitcherModifierEvent *)v53 setContinuityTransition:v16 == 10];
-  [(SBTransitionSwitcherModifierEvent *)v53 setBannerUnfurlTransition:v16 == 37];
-  [(SBTransitionSwitcherModifierEvent *)v53 setSpotlightTransition:v16 == 2];
-  [(SBTransitionSwitcherModifierEvent *)v53 setShelfTransition:v16 == 52];
-  [(SBTransitionSwitcherModifierEvent *)v53 setShelfRequestTransition:v16 == 54];
-  [(SBTransitionSwitcherModifierEvent *)v53 setMorphFromInAppView:v16 == 55];
-  [(SBTransitionSwitcherModifierEvent *)v53 setQuickActionTransition:v16 == 33];
-  [(SBTransitionSwitcherModifierEvent *)v53 setNewSceneTransition:v16 == 35];
+  [(SBTransitionSwitcherModifierEvent *)v53 setZoomFromSystemApertureTransition:[(SBMainSwitcherControllerCoordinator *)selfCopy _shouldZoomFromSystemApertureForTransitionContext:contextCopy]];
+  [(SBTransitionSwitcherModifierEvent *)v53 setContinuityTransition:source == 10];
+  [(SBTransitionSwitcherModifierEvent *)v53 setBannerUnfurlTransition:source == 37];
+  [(SBTransitionSwitcherModifierEvent *)v53 setSpotlightTransition:source == 2];
+  [(SBTransitionSwitcherModifierEvent *)v53 setShelfTransition:source == 52];
+  [(SBTransitionSwitcherModifierEvent *)v53 setShelfRequestTransition:source == 54];
+  [(SBTransitionSwitcherModifierEvent *)v53 setMorphFromInAppView:source == 55];
+  [(SBTransitionSwitcherModifierEvent *)v53 setQuickActionTransition:source == 33];
+  [(SBTransitionSwitcherModifierEvent *)v53 setNewSceneTransition:source == 35];
   if ([v55 isCrossingDisplays])
   {
-    v86 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)v132->_currentCoordinatedLayoutStateTransitionContext hasTransitioningDisplayItemsForSwitcherController:v77];
+    v86 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)selfCopy->_currentCoordinatedLayoutStateTransitionContext hasTransitioningDisplayItemsForSwitcherController:v77];
   }
 
   else
@@ -7530,22 +7530,22 @@ LABEL_46:
   }
 
   [(SBTransitionSwitcherModifierEvent *)v53 setMoveDisplaysTransition:v86];
-  [(SBTransitionSwitcherModifierEvent *)v53 setContinuousExposeConfigurationChangeEvent:v16 == 65];
-  [(SBTransitionSwitcherModifierEvent *)v53 setiPadOSWindowingModeChangeEvent:v16 == 64];
-  [(SBTransitionSwitcherModifierEvent *)v53 setCommandTabTransition:v16 == 16];
-  [(SBTransitionSwitcherModifierEvent *)v53 setLaunchingFromDockTransition:(v16 & 0xFFFFFFFFFFFFFFFELL) == 24];
-  [(SBTransitionSwitcherModifierEvent *)v53 setAppLaunchDuringWindowDragGestureTransition:v16 == 68];
-  [(SBTransitionSwitcherModifierEvent *)v53 setUnstashFromHomeTransition:v16 == 77];
-  [(SBTransitionSwitcherModifierEvent *)v53 setRotationTransition:v16 == 14];
-  v87 = [v77 _previousDesktopSpaceItems];
-  [(SBTransitionSwitcherModifierEvent *)v53 setPreviousDesktopItems:v87];
+  [(SBTransitionSwitcherModifierEvent *)v53 setContinuousExposeConfigurationChangeEvent:source == 65];
+  [(SBTransitionSwitcherModifierEvent *)v53 setiPadOSWindowingModeChangeEvent:source == 64];
+  [(SBTransitionSwitcherModifierEvent *)v53 setCommandTabTransition:source == 16];
+  [(SBTransitionSwitcherModifierEvent *)v53 setLaunchingFromDockTransition:(source & 0xFFFFFFFFFFFFFFFELL) == 24];
+  [(SBTransitionSwitcherModifierEvent *)v53 setAppLaunchDuringWindowDragGestureTransition:source == 68];
+  [(SBTransitionSwitcherModifierEvent *)v53 setUnstashFromHomeTransition:source == 77];
+  [(SBTransitionSwitcherModifierEvent *)v53 setRotationTransition:source == 14];
+  _previousDesktopSpaceItems = [v77 _previousDesktopSpaceItems];
+  [(SBTransitionSwitcherModifierEvent *)v53 setPreviousDesktopItems:_previousDesktopSpaceItems];
 
-  v88 = [v8 minimizingDisplayItem];
-  [(SBTransitionSwitcherModifierEvent *)v53 setMinimizingDisplayItem:v88];
+  minimizingDisplayItem = [contextCopy minimizingDisplayItem];
+  [(SBTransitionSwitcherModifierEvent *)v53 setMinimizingDisplayItem:minimizingDisplayItem];
 
-  v89 = [v8 isTransitioningToLessRecentSpace];
-  v90 = v89 != 0x7FFFFFFFFFFFFFFFLL;
-  if (v89 != 0x7FFFFFFFFFFFFFFFLL)
+  isTransitioningToLessRecentSpace = [contextCopy isTransitioningToLessRecentSpace];
+  isAppClipPlaceholderEntity = isTransitioningToLessRecentSpace != 0x7FFFFFFFFFFFFFFFLL;
+  if (isTransitioningToLessRecentSpace != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (BSSettingFlagIsYes())
     {
@@ -7560,7 +7560,7 @@ LABEL_46:
     [(SBTransitionSwitcherModifierEvent *)v53 setDosidoTransitionDirection:v91];
   }
 
-  activeTransitionModelRemovalAppLayoutToRemovalContext = v132->_activeTransitionModelRemovalAppLayoutToRemovalContext;
+  activeTransitionModelRemovalAppLayoutToRemovalContext = selfCopy->_activeTransitionModelRemovalAppLayoutToRemovalContext;
   v142[0] = MEMORY[0x277D85DD0];
   v142[1] = 3221225472;
   v142[2] = __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_identifier_phase_animated___block_invoke_2;
@@ -7568,74 +7568,74 @@ LABEL_46:
   v93 = v53;
   v143 = v93;
   [(NSDictionary *)activeTransitionModelRemovalAppLayoutToRemovalContext enumerateKeysAndObjectsUsingBlock:v142];
-  if (v89 == 0x7FFFFFFFFFFFFFFFLL)
+  if (isTransitioningToLessRecentSpace == 0x7FFFFFFFFFFFFFFFLL)
   {
     v94 = v126;
-    v95 = v135;
-    if (v137 && v138 == 1 && ![v137 type])
+    v95 = switcherController;
+    if (v137 && unlockedEnvironmentMode2 == 1 && ![v137 type])
     {
       v96 = [v126 elementWithRole:1];
-      v97 = [v96 workspaceEntity];
+      workspaceEntity = [v96 workspaceEntity];
 
-      v98 = [v8 removalContextForEntity:v97];
+      v98 = [contextCopy removalContextForEntity:workspaceEntity];
 
-      if (v97)
+      if (workspaceEntity)
       {
-        if (![v97 isDeviceApplicationSceneEntity] || v98)
+        if (![workspaceEntity isDeviceApplicationSceneEntity] || v98)
         {
-          v90 = [v97 isAppClipPlaceholderEntity];
+          isAppClipPlaceholderEntity = [workspaceEntity isAppClipPlaceholderEntity];
         }
 
         else
         {
-          v99 = [v97 application];
-          if (v99 && (v100 = v99, [v99 info], v101 = objc_claimAutoreleasedReturnValue(), v128 = objc_msgSend(v101, "isAppClip"), v101, v99 = v100, (v128 & 1) != 0))
+          application2 = [workspaceEntity application];
+          if (application2 && (v100 = application2, [application2 info], v101 = objc_claimAutoreleasedReturnValue(), v128 = objc_msgSend(v101, "isAppClip"), v101, application2 = v100, (v128 & 1) != 0))
           {
-            v90 = 1;
+            isAppClipPlaceholderEntity = 1;
           }
 
           else
           {
-            v139 = v99;
-            v102 = [SBApp windowSceneManager];
-            v103 = [v55 displayIdentity];
-            v104 = [v102 windowSceneForDisplayIdentity:v103];
+            v139 = application2;
+            windowSceneManager2 = [SBApp windowSceneManager];
+            displayIdentity2 = [v55 displayIdentity];
+            v104 = [windowSceneManager2 windowSceneForDisplayIdentity:displayIdentity2];
 
-            v129 = [(SBMainSwitcherControllerCoordinator *)v132 switcherControllerForWindowScene:v104];
-            v105 = [v129 contentViewController];
-            v106 = [v105 iconForAppLayout:v137];
+            v129 = [(SBMainSwitcherControllerCoordinator *)selfCopy switcherControllerForWindowScene:v104];
+            contentViewController = [v129 contentViewController];
+            v106 = [contentViewController iconForAppLayout:v137];
             if ([v106 isBookmarkIcon])
             {
               [v106 bookmark];
               v107 = v118 = v104;
               [v107 webClip];
-              v108 = v8;
+              v108 = contextCopy;
               v109 = v14;
               v111 = v110 = v55;
-              v90 = [v111 isAppClip];
+              isAppClipPlaceholderEntity = [v111 isAppClip];
 
               v55 = v110;
               v14 = v109;
-              v8 = v108;
+              contextCopy = v108;
 
               v104 = v118;
             }
 
             else
             {
-              v90 = 0;
+              isAppClipPlaceholderEntity = 0;
             }
 
             v94 = v126;
-            v95 = v135;
-            v99 = v139;
+            v95 = switcherController;
+            application2 = v139;
           }
         }
       }
 
       else
       {
-        v90 = 0;
+        isAppClipPlaceholderEntity = 0;
       }
     }
   }
@@ -7643,22 +7643,22 @@ LABEL_46:
   else
   {
     v94 = v126;
-    v95 = v135;
+    v95 = switcherController;
   }
 
-  [(SBTransitionSwitcherModifierEvent *)v93 setIconZoomDisabled:v90];
-  if (v122)
+  [(SBTransitionSwitcherModifierEvent *)v93 setIconZoomDisabled:isAppClipPlaceholderEntity];
+  if (isChamoisOrFlexibleWindowing)
   {
-    v112 = [v94 displayItemLayoutAttributesMap];
-    [(SBTransitionSwitcherModifierEvent *)v93 setFromDisplayItemLayoutAttributesMap:v112];
+    displayItemLayoutAttributesMap = [v94 displayItemLayoutAttributesMap];
+    [(SBTransitionSwitcherModifierEvent *)v93 setFromDisplayItemLayoutAttributesMap:displayItemLayoutAttributesMap];
 
-    v113 = [v14 displayItemLayoutAttributesMap];
-    [(SBTransitionSwitcherModifierEvent *)v93 setToDisplayItemLayoutAttributesMap:v113];
+    displayItemLayoutAttributesMap2 = [v14 displayItemLayoutAttributesMap];
+    [(SBTransitionSwitcherModifierEvent *)v93 setToDisplayItemLayoutAttributesMap:displayItemLayoutAttributesMap2];
   }
 
   if ([(SBTransitionSwitcherModifierEvent *)v93 isMoveDisplaysTransition])
   {
-    v114 = [SBTransitionSwitcherModifierMoveDisplaysContext moveDisplaysContextWithCoordinatedLayoutStateTransitionContext:v132->_currentCoordinatedLayoutStateTransitionContext relativeToSwitcherController:v95];
+    v114 = [SBTransitionSwitcherModifierMoveDisplaysContext moveDisplaysContextWithCoordinatedLayoutStateTransitionContext:selfCopy->_currentCoordinatedLayoutStateTransitionContext relativeToSwitcherController:v95];
     [(SBTransitionSwitcherModifierEvent *)v93 setMoveDisplaysContext:v114];
   }
 
@@ -7686,12 +7686,12 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   return v5;
 }
 
-- (BOOL)_shouldMorphToPIPForTransitionContext:(id)a3 outForLayoutRole:(int64_t *)a4
+- (BOOL)_shouldMorphToPIPForTransitionContext:(id)context outForLayoutRole:(int64_t *)role
 {
-  v5 = a3;
-  if (a4)
+  contextCopy = context;
+  if (role)
   {
-    *a4 = 0;
+    *role = 0;
   }
 
   if (SBReduceMotion())
@@ -7702,26 +7702,26 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   else
   {
     v7 = objc_opt_class();
-    v8 = [v5 previousLayoutState];
-    v9 = SBSafeCast(v7, v8);
+    previousLayoutState = [contextCopy previousLayoutState];
+    v9 = SBSafeCast(v7, previousLayoutState);
 
     v10 = objc_opt_class();
-    v11 = [v5 layoutState];
-    v12 = SBSafeCast(v10, v11);
+    layoutState = [contextCopy layoutState];
+    v12 = SBSafeCast(v10, layoutState);
 
     v30 = v9;
-    v13 = [v9 unlockedEnvironmentMode];
+    unlockedEnvironmentMode = [v9 unlockedEnvironmentMode];
     v29 = v12;
-    v14 = [v12 unlockedEnvironmentMode];
-    v15 = [v5 request];
-    v16 = [v15 transientOverlayContext];
-    v17 = [v15 source];
-    v18 = (v13 & 0xFFFFFFFFFFFFFFFELL) == 2;
-    if (v13 == 1)
+    unlockedEnvironmentMode2 = [v12 unlockedEnvironmentMode];
+    request = [contextCopy request];
+    transientOverlayContext = [request transientOverlayContext];
+    source = [request source];
+    v18 = (unlockedEnvironmentMode & 0xFFFFFFFFFFFFFFFELL) == 2;
+    if (unlockedEnvironmentMode == 1)
     {
-      if (v16)
+      if (transientOverlayContext)
       {
-        v18 = [v16 transitionType] == 1;
+        v18 = [transientOverlayContext transitionType] == 1;
       }
 
       else
@@ -7730,26 +7730,26 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
       }
     }
 
-    v19 = [v5 previousLayoutState];
-    v20 = [v19 interfaceOrientation];
+    previousLayoutState2 = [contextCopy previousLayoutState];
+    interfaceOrientation = [previousLayoutState2 interfaceOrientation];
 
-    v21 = [v5 layoutState];
-    v22 = [v21 interfaceOrientation];
+    layoutState2 = [contextCopy layoutState];
+    interfaceOrientation2 = [layoutState2 interfaceOrientation];
 
     v6 = 0;
-    v24 = v22 <= 1 || v17 == 11 || v20 == v22;
-    if (v24 && v18 && v14 == 1)
+    v24 = interfaceOrientation2 <= 1 || source == 11 || interfaceOrientation == interfaceOrientation2;
+    if (v24 && v18 && unlockedEnvironmentMode2 == 1)
     {
       v31 = 0;
       v32 = 0;
-      v25 = [SBAutoPIPWorkspaceTransaction shouldAutoPIPEnteringBackgroundForRequest:v15 foundEntity:&v31 transitionStyle:&v32];
+      v25 = [SBAutoPIPWorkspaceTransaction shouldAutoPIPEnteringBackgroundForRequest:request foundEntity:&v31 transitionStyle:&v32];
       v26 = v31;
       v27 = v26;
       if (v25 && v26 && v32 == 3)
       {
-        if (a4)
+        if (role)
         {
-          *a4 = [v26 layoutRole];
+          *role = [v26 layoutRole];
         }
 
         v6 = 1;
@@ -7765,32 +7765,32 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   return v6;
 }
 
-- (BOOL)_shouldMorphFromPIPForTransitionContext:(id)a3 outForLayoutRole:(int64_t *)a4
+- (BOOL)_shouldMorphFromPIPForTransitionContext:(id)context outForLayoutRole:(int64_t *)role
 {
-  v5 = a3;
-  v6 = [v5 request];
-  v7 = [v6 source];
+  contextCopy = context;
+  request = [contextCopy request];
+  source = [request source];
 
-  if (a4)
+  if (role)
   {
-    if (v7 == 45)
+    if (source == 45)
     {
-      v8 = [v5 requestedActivatingWorkspaceEntity];
-      *a4 = [v8 layoutRole];
+      requestedActivatingWorkspaceEntity = [contextCopy requestedActivatingWorkspaceEntity];
+      *role = [requestedActivatingWorkspaceEntity layoutRole];
     }
 
     else
     {
-      *a4 = 0;
+      *role = 0;
     }
   }
 
-  return v7 == 45;
+  return source == 45;
 }
 
-- (BOOL)_shouldZoomFromSystemApertureForTransitionContext:(id)a3
+- (BOOL)_shouldZoomFromSystemApertureForTransitionContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (SBReduceMotion() || !SBSIsSystemApertureAvailable())
   {
     v6 = 0;
@@ -7798,12 +7798,12 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
 
   else
   {
-    v4 = [v3 request];
-    v5 = [v4 source];
+    request = [contextCopy request];
+    source = [request source];
 
-    if ((v5 - 22) <= 0x2D)
+    if ((source - 22) <= 0x2D)
     {
-      v6 = 0x208000000001uLL >> (v5 - 22);
+      v6 = 0x208000000001uLL >> (source - 22);
     }
 
     else
@@ -7815,50 +7815,50 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   return v6 & 1;
 }
 
-- (int64_t)switcherInterfaceOrientationForSwitcherContentController:(id)a3
+- (int64_t)switcherInterfaceOrientationForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 interfaceOrientation];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  interfaceOrientation = [v3 interfaceOrientation];
 
-  return v4;
+  return interfaceOrientation;
 }
 
-- (int64_t)homeScreenInterfaceOrientationForContentController:(id)a3
+- (int64_t)homeScreenInterfaceOrientationForContentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v4];
-  v6 = [v5 windowScene];
-  if (([v6 isMainDisplayWindowScene] & 1) != 0 || objc_msgSend(v6, "isContinuityDisplayWindowScene"))
+  controllerCopy = controller;
+  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controllerCopy];
+  windowScene = [v5 windowScene];
+  if (([windowScene isMainDisplayWindowScene] & 1) != 0 || objc_msgSend(windowScene, "isContinuityDisplayWindowScene"))
   {
-    v7 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:v4];
-    v8 = [v7 window];
-    v9 = [v8 interfaceOrientation];
+    v7 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:controllerCopy];
+    window = [v7 window];
+    interfaceOrientation = [window interfaceOrientation];
   }
 
   else
   {
-    v9 = [(SBMainSwitcherControllerCoordinator *)self switcherInterfaceOrientationForSwitcherContentController:v4];
+    interfaceOrientation = [(SBMainSwitcherControllerCoordinator *)self switcherInterfaceOrientationForSwitcherContentController:controllerCopy];
   }
 
-  return v9;
+  return interfaceOrientation;
 }
 
-- (BOOL)isInAppStatusBarRequestedHiddenForSwitcherContentController:(id)a3
+- (BOOL)isInAppStatusBarRequestedHiddenForSwitcherContentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v4];
-  v6 = [v5 isInAppStatusBarRequestedHiddenForSwitcherContentController:v4];
+  controllerCopy = controller;
+  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controllerCopy];
+  v6 = [v5 isInAppStatusBarRequestedHiddenForSwitcherContentController:controllerCopy];
 
   return v6;
 }
 
-- (CGRect)leadingStatusBarPartFrameForSwitcherContentController:(id)a3
+- (CGRect)leadingStatusBarPartFrameForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self windowSceneForSwitcherContentController:a3];
-  v4 = [v3 statusBarManager];
-  v5 = [v4 statusBar];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self windowSceneForSwitcherContentController:controller];
+  statusBarManager = [v3 statusBarManager];
+  statusBar = [statusBarManager statusBar];
 
-  [v5 frameForPartWithIdentifier:*MEMORY[0x277D775C0]];
+  [statusBar frameForPartWithIdentifier:*MEMORY[0x277D775C0]];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -7875,13 +7875,13 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   return result;
 }
 
-- (CGRect)trailingStatusBarPartFrameForSwitcherContentController:(id)a3
+- (CGRect)trailingStatusBarPartFrameForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self windowSceneForSwitcherContentController:a3];
-  v4 = [v3 statusBarManager];
-  v5 = [v4 statusBar];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self windowSceneForSwitcherContentController:controller];
+  statusBarManager = [v3 statusBarManager];
+  statusBar = [statusBarManager statusBar];
 
-  [v5 frameForPartWithIdentifier:*MEMORY[0x277D775C8]];
+  [statusBar frameForPartWithIdentifier:*MEMORY[0x277D775C8]];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -7898,10 +7898,10 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   return result;
 }
 
-- (id)switcherContentController:(id)a3 visibleAppLayoutsForBundleIdentifier:(id)a4
+- (id)switcherContentController:(id)controller visibleAppLayoutsForBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(SBAppSwitcherModel *)self->_mainSwitcherModel appLayoutsForBundleIdentifier:a4 includingHiddenAppLayouts:0];
+  controllerCopy = controller;
+  v7 = [(SBAppSwitcherModel *)self->_mainSwitcherModel appLayoutsForBundleIdentifier:identifier includingHiddenAppLayouts:0];
   if ([(NSMapTable *)self->_switcherControllersByWindowScene count]== 1)
   {
     v8 = v7;
@@ -7910,7 +7910,7 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   else
   {
     v9 = MEMORY[0x277CBEB98];
-    v10 = [(SBMainSwitcherControllerCoordinator *)self appLayoutsForSwitcherContentController:v6];
+    v10 = [(SBMainSwitcherControllerCoordinator *)self appLayoutsForSwitcherContentController:controllerCopy];
     v11 = [v9 setWithArray:v10];
 
     v14[0] = MEMORY[0x277D85DD0];
@@ -7925,11 +7925,11 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   return v8;
 }
 
-- (id)switcherContentController:(id)a3 visibleDisplayItemsForBundleIdentifier:(id)a4
+- (id)switcherContentController:(id)controller visibleDisplayItemsForBundleIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SBAppSwitcherModel *)self->_mainSwitcherModel recentDisplayItemsForBundleIdentifier:a4 includingHiddenAppLayouts:0];
+  controllerCopy = controller;
+  v7 = [(SBAppSwitcherModel *)self->_mainSwitcherModel recentDisplayItemsForBundleIdentifier:identifier includingHiddenAppLayouts:0];
   if ([(NSMapTable *)self->_switcherControllersByWindowScene count]== 1)
   {
     v8 = v7;
@@ -7942,7 +7942,7 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [(SBMainSwitcherControllerCoordinator *)self appLayoutsForSwitcherContentController:v6, 0];
+    v10 = [(SBMainSwitcherControllerCoordinator *)self appLayoutsForSwitcherContentController:controllerCopy, 0];
     v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v11)
     {
@@ -7957,8 +7957,8 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * i) allItems];
-          [v9 addObjectsFromArray:v15];
+          allItems = [*(*(&v17 + 1) + 8 * i) allItems];
+          [v9 addObjectsFromArray:allItems];
         }
 
         v12 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -7974,19 +7974,19 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   return v8;
 }
 
-- (id)switcherContentController:(id)a3 hiddenAppLayoutsForBundleIdentifier:(id)a4
+- (id)switcherContentController:(id)controller hiddenAppLayoutsForBundleIdentifier:(id)identifier
 {
-  v4 = [(SBAppSwitcherModel *)self->_mainSwitcherModel appLayoutsForBundleIdentifier:a4 includingHiddenAppLayouts:1];
+  v4 = [(SBAppSwitcherModel *)self->_mainSwitcherModel appLayoutsForBundleIdentifier:identifier includingHiddenAppLayouts:1];
   v5 = [v4 bs_filter:&__block_literal_global_283];
 
   return v5;
 }
 
-- (BOOL)switcherContentController:(id)a3 supportsKillingOfAppLayout:(id)a4
+- (BOOL)switcherContentController:(id)controller supportsKillingOfAppLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v6];
+  controllerCopy = controller;
+  layoutCopy = layout;
+  v8 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controllerCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -7998,7 +7998,7 @@ uint64_t __91__SBMainSwitcherControllerCoordinator_transitionEventForContext_ide
   v9 = v8;
   v13 = v9;
   v14 = &v15;
-  [v7 enumerate:v12];
+  [layoutCopy enumerate:v12];
   v10 = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
@@ -8024,30 +8024,30 @@ void __92__SBMainSwitcherControllerCoordinator_switcherContentController_support
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (BOOL)switcherContentController:(id)a3 displayItemSupportsCenterRole:(id)a4
+- (BOOL)switcherContentController:(id)controller displayItemSupportsCenterRole:(id)role
 {
-  v6 = a4;
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v8 = [v7 _deviceApplicationSceneHandleForDisplayItem:v6];
+  roleCopy = role;
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  v8 = [v7 _deviceApplicationSceneHandleForDisplayItem:roleCopy];
 
   if (v8)
   {
-    v9 = [v8 supportsCenterWindow];
+    supportsCenterWindow = [v8 supportsCenterWindow];
   }
 
   else
   {
-    v9 = 0;
+    supportsCenterWindow = 0;
   }
 
-  return v9;
+  return supportsCenterWindow;
 }
 
-- (BOOL)switcherContentController:(id)a3 supportsTitleItemsForAppLayout:(id)a4
+- (BOOL)switcherContentController:(id)controller supportsTitleItemsForAppLayout:(id)layout
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v6];
+  controllerCopy = controller;
+  layoutCopy = layout;
+  v8 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controllerCopy];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -8059,7 +8059,7 @@ void __92__SBMainSwitcherControllerCoordinator_switcherContentController_support
   v9 = v8;
   v17 = v9;
   v18 = &v19;
-  [v7 enumerate:&v13];
+  [layoutCopy enumerate:&v13];
   if (v20[3])
   {
     v10 = 0;
@@ -8067,15 +8067,15 @@ void __92__SBMainSwitcherControllerCoordinator_switcherContentController_support
 
   else
   {
-    v11 = [v7 type];
-    if (v11 >= 5)
+    type = [layoutCopy type];
+    if (type >= 5)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = 0x19u >> v11;
+      v10 = 0x19u >> type;
     }
   }
 
@@ -8101,42 +8101,42 @@ void __96__SBMainSwitcherControllerCoordinator_switcherContentController_support
   *a4 = *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (BOOL)switcherContentControllerHasMultipleDisplays:(id)a3
+- (BOOL)switcherContentControllerHasMultipleDisplays:(id)displays
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self coordinatedSwitcherControllers];
-  v4 = [v3 count] > 1;
+  coordinatedSwitcherControllers = [(SBMainSwitcherControllerCoordinator *)self coordinatedSwitcherControllers];
+  v4 = [coordinatedSwitcherControllers count] > 1;
 
   return v4;
 }
 
-- (unint64_t)maximumNumberOfScenesOnStageForSwitcherContentController:(id)a3
+- (unint64_t)maximumNumberOfScenesOnStageForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 maximumNumberOfScenesOnStage];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  maximumNumberOfScenesOnStage = [v3 maximumNumberOfScenesOnStage];
 
-  return v4;
+  return maximumNumberOfScenesOnStage;
 }
 
-- (id)windowingConfigurationForSwitcherContentControllerCorrespondingToDisplayOrdinal:(int64_t)a3
+- (id)windowingConfigurationForSwitcherContentControllerCorrespondingToDisplayOrdinal:(int64_t)ordinal
 {
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __119__SBMainSwitcherControllerCoordinator_windowingConfigurationForSwitcherContentControllerCorrespondingToDisplayOrdinal___block_invoke;
   v12[3] = &__block_descriptor_40_e30_B16__0__SBSwitcherController_8l;
-  v12[4] = a3;
+  v12[4] = ordinal;
   v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerPassingTest:v12];
   v4 = v3;
   if (v3 && (([v3 contentViewController], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_opt_class(), v7 = v5, !v6) ? (v8 = 0) : (objc_opt_isKindOfClass() & 1) == 0 ? (v8 = 0) : (v8 = v7), v9 = v8, v7, v7, v9))
   {
-    v10 = [v9 windowingConfiguration];
+    windowingConfiguration = [v9 windowingConfiguration];
   }
 
   else
   {
-    v10 = 0;
+    windowingConfiguration = 0;
   }
 
-  return v10;
+  return windowingConfiguration;
 }
 
 BOOL __119__SBMainSwitcherControllerCoordinator_windowingConfigurationForSwitcherContentControllerCorrespondingToDisplayOrdinal___block_invoke(uint64_t a1, void *a2)
@@ -8147,27 +8147,27 @@ BOOL __119__SBMainSwitcherControllerCoordinator_windowingConfigurationForSwitche
   return v4;
 }
 
-- (id)appLayoutForSwitcherContentControllerCorrespondingToDisplayOrdinal:(int64_t)a3
+- (id)appLayoutForSwitcherContentControllerCorrespondingToDisplayOrdinal:(int64_t)ordinal
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __106__SBMainSwitcherControllerCoordinator_appLayoutForSwitcherContentControllerCorrespondingToDisplayOrdinal___block_invoke;
   v8[3] = &__block_descriptor_40_e30_B16__0__SBSwitcherController_8l;
-  v8[4] = a3;
+  v8[4] = ordinal;
   v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerPassingTest:v8];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 layoutState];
-    v6 = [v5 appLayout];
+    layoutState = [v3 layoutState];
+    appLayout = [layoutState appLayout];
   }
 
   else
   {
-    v6 = 0;
+    appLayout = 0;
   }
 
-  return v6;
+  return appLayout;
 }
 
 BOOL __106__SBMainSwitcherControllerCoordinator_appLayoutForSwitcherContentControllerCorrespondingToDisplayOrdinal___block_invoke(uint64_t a1, void *a2)
@@ -8178,19 +8178,19 @@ BOOL __106__SBMainSwitcherControllerCoordinator_appLayoutForSwitcherContentContr
   return v4;
 }
 
-- (id)displayConfigurationsOfOtherDisplaysForSwitcherContentController:(id)a3
+- (id)displayConfigurationsOfOtherDisplaysForSwitcherContentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBMainSwitcherControllerCoordinator *)self coordinatedSwitcherControllers];
-  v6 = [v5 bs_compactMap:&__block_literal_global_288_0];
+  controllerCopy = controller;
+  coordinatedSwitcherControllers = [(SBMainSwitcherControllerCoordinator *)self coordinatedSwitcherControllers];
+  v6 = [coordinatedSwitcherControllers bs_compactMap:&__block_literal_global_288_0];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __104__SBMainSwitcherControllerCoordinator_displayConfigurationsOfOtherDisplaysForSwitcherContentController___block_invoke_2;
   v10[3] = &unk_2783B9660;
   v10[4] = self;
-  v11 = v4;
-  v7 = v4;
+  v11 = controllerCopy;
+  v7 = controllerCopy;
   v8 = [v6 bs_filter:v10];
 
   return v8;
@@ -8217,12 +8217,12 @@ uint64_t __104__SBMainSwitcherControllerCoordinator_displayConfigurationsOfOther
   return v8 ^ 1u;
 }
 
-- (id)guardedForegroundDisplayItemsForSwitcherContentController:(id)a3
+- (id)guardedForegroundDisplayItemsForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 layoutState];
-  v5 = [v4 elements];
-  v6 = [v5 bs_compactMap:&__block_literal_global_292_0];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  layoutState = [v3 layoutState];
+  elements = [layoutState elements];
+  v6 = [elements bs_compactMap:&__block_literal_global_292_0];
 
   v7 = [v6 bs_map:&__block_literal_global_295];
 
@@ -8250,55 +8250,55 @@ id __97__SBMainSwitcherControllerCoordinator_guardedForegroundDisplayItemsForSwi
   return v6;
 }
 
-- (id)desktopSpaceItemsForSwitcherContentController:(id)a3
+- (id)desktopSpaceItemsForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 _desktopSpaceItems];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  _desktopSpaceItems = [v3 _desktopSpaceItems];
 
-  return v4;
+  return _desktopSpaceItems;
 }
 
-- (id)slideOverItemForSwitcherContentController:(id)a3
+- (id)slideOverItemForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 _slideOverDisplayItem];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  _slideOverDisplayItem = [v3 _slideOverDisplayItem];
 
-  return v4;
+  return _slideOverDisplayItem;
 }
 
-- (void)switcherContentController:(id)a3 performTransitionWithRequest:(id)a4 gestureInitiated:(BOOL)a5
+- (void)switcherContentController:(id)controller performTransitionWithRequest:(id)request gestureInitiated:(BOOL)initiated
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
+  initiatedCopy = initiated;
+  requestCopy = request;
+  v9 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
   v10 = v9;
-  if (v5)
+  if (initiatedCopy)
   {
-    v11 = [v9 gestureManager];
-    if ([v8 sceneUpdatesOnly])
+    gestureManager = [v9 gestureManager];
+    if ([requestCopy sceneUpdatesOnly])
     {
-      [v11 handleTransitionRequestForGestureUpdate:v8];
+      [gestureManager handleTransitionRequestForGestureUpdate:requestCopy];
     }
 
     else
     {
-      [v11 handleTransitionRequestForGestureComplete:v8];
+      [gestureManager handleTransitionRequestForGestureComplete:requestCopy];
     }
   }
 
   else
   {
-    v12 = [v8 displayConfiguration];
-    v13 = v12;
-    if (v12)
+    displayConfiguration = [requestCopy displayConfiguration];
+    v13 = displayConfiguration;
+    if (displayConfiguration)
     {
-      v14 = v12;
+      _fbsDisplayConfiguration = displayConfiguration;
     }
 
     else
     {
-      v15 = [v10 windowScene];
-      v14 = [v15 _fbsDisplayConfiguration];
+      windowScene = [v10 windowScene];
+      _fbsDisplayConfiguration = [windowScene _fbsDisplayConfiguration];
     }
 
     v16 = +[SBWorkspace mainWorkspace];
@@ -8306,7 +8306,7 @@ id __97__SBMainSwitcherControllerCoordinator_guardedForegroundDisplayItemsForSwi
     v21[1] = 3221225472;
     v21[2] = __111__SBMainSwitcherControllerCoordinator_switcherContentController_performTransitionWithRequest_gestureInitiated___block_invoke;
     v21[3] = &unk_2783A98F0;
-    v22 = v8;
+    v22 = requestCopy;
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __111__SBMainSwitcherControllerCoordinator_switcherContentController_performTransitionWithRequest_gestureInitiated___block_invoke_2;
@@ -8315,7 +8315,7 @@ id __97__SBMainSwitcherControllerCoordinator_guardedForegroundDisplayItemsForSwi
     v19 = v22;
     v20 = v10;
     v17 = v10;
-    [v16 requestTransitionWithOptions:0 displayConfiguration:v14 builder:v21 validator:v18];
+    [v16 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v21 validator:v18];
   }
 }
 
@@ -8401,23 +8401,23 @@ uint64_t __111__SBMainSwitcherControllerCoordinator_switcherContentController_pe
   return 1;
 }
 
-- (void)switcherContentController:(id)a3 deletedDisplayItem:(id)a4 inAppLayout:(id)a5 forReason:(int64_t)a6
+- (void)switcherContentController:(id)controller deletedDisplayItem:(id)item inAppLayout:(id)layout forReason:(int64_t)reason
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (a6 == 1)
+  controllerCopy = controller;
+  itemCopy = item;
+  layoutCopy = layout;
+  if (reason == 1)
   {
-    v12 = [(NSArray *)self->_appLayouts firstObject];
-    if ([v11 isEqual:v12])
+    firstObject = [(NSArray *)self->_appLayouts firstObject];
+    if ([layoutCopy isEqual:firstObject])
     {
     }
 
     else
     {
-      v13 = [(SBMainSwitcherControllerCoordinator *)self recentAppLayouts];
-      v14 = [v13 firstObject];
-      v15 = [v11 isEqual:v14];
+      recentAppLayouts = [(SBMainSwitcherControllerCoordinator *)self recentAppLayouts];
+      firstObject2 = [recentAppLayouts firstObject];
+      v15 = [layoutCopy isEqual:firstObject2];
 
       if (!v15)
       {
@@ -8425,40 +8425,40 @@ uint64_t __111__SBMainSwitcherControllerCoordinator_switcherContentController_pe
       }
     }
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 postNotificationName:@"SBUserSwipedToKillRecentAppLayoutNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBUserSwipedToKillRecentAppLayoutNotification" object:self];
   }
 
 LABEL_6:
-  [(SBMainSwitcherControllerCoordinator *)self _removeDisplayItem:v10 forReason:a6 preferredAppLayoutForRemovalAnimationIfAny:v11 originatingSwitcherContentController:v17];
+  [(SBMainSwitcherControllerCoordinator *)self _removeDisplayItem:itemCopy forReason:reason preferredAppLayoutForRemovalAnimationIfAny:layoutCopy originatingSwitcherContentController:controllerCopy];
 }
 
-- (void)switcherContentController:(id)a3 activatedBestAppSuggestion:(id)a4
+- (void)switcherContentController:(id)controller activatedBestAppSuggestion:(id)suggestion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 bundleIdentifier];
-  v11 = [SBContinuityDisplayItem continuityAppDisplayItemWithBundleIdentifier:v8 appSuggestion:v6];
+  suggestionCopy = suggestion;
+  controllerCopy = controller;
+  bundleIdentifier = [suggestionCopy bundleIdentifier];
+  v11 = [SBContinuityDisplayItem continuityAppDisplayItemWithBundleIdentifier:bundleIdentifier appSuggestion:suggestionCopy];
 
   v9 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutFromPrimaryLayoutItem:v11 sideLayoutElement:0 configuration:1];
   v10 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
   [(SBSwitcherTransitionRequest *)v10 setAppLayout:v9];
   [(SBSwitcherTransitionRequest *)v10 setSource:10];
-  [(SBMainSwitcherControllerCoordinator *)self switcherContentController:v7 performTransitionWithRequest:v10 gestureInitiated:0];
+  [(SBMainSwitcherControllerCoordinator *)self switcherContentController:controllerCopy performTransitionWithRequest:v10 gestureInitiated:0];
 }
 
-- (void)switcherContentController:(id)a3 requestNewWindowForBundleIdentifier:(id)a4
+- (void)switcherContentController:(id)controller requestNewWindowForBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v8 = [v7 windowScene];
-  v9 = [v8 _fbsDisplayConfiguration];
+  identifierCopy = identifier;
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  windowScene = [v7 windowScene];
+  _fbsDisplayConfiguration = [windowScene _fbsDisplayConfiguration];
   v10 = +[SBApplicationController sharedInstance];
-  v11 = [v10 applicationWithBundleIdentifier:v6];
+  v11 = [v10 applicationWithBundleIdentifier:identifierCopy];
 
-  v12 = [v8 sceneManager];
-  v13 = [v8 _fbsDisplayIdentity];
-  v14 = [SBDeviceApplicationSceneEntity newEntityWithApplication:v11 sceneHandleProvider:v12 displayIdentity:v13];
+  sceneManager = [windowScene sceneManager];
+  _fbsDisplayIdentity = [windowScene _fbsDisplayIdentity];
+  v14 = [SBDeviceApplicationSceneEntity newEntityWithApplication:v11 sceneHandleProvider:sceneManager displayIdentity:_fbsDisplayIdentity];
   v15 = +[SBWorkspace mainWorkspace];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -8466,7 +8466,7 @@ LABEL_6:
   v17[3] = &unk_2783A98F0;
   v18 = v14;
   v16 = v14;
-  [v15 requestTransitionWithOptions:0 displayConfiguration:v9 builder:v17];
+  [v15 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v17];
 }
 
 void __101__SBMainSwitcherControllerCoordinator_switcherContentController_requestNewWindowForBundleIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -8482,31 +8482,31 @@ void __101__SBMainSwitcherControllerCoordinator_switcherContentController_reques
   [v3 modifyApplicationContext:v4];
 }
 
-- (void)updateUserInteractionEnabledForSwitcherContentController:(id)a3
+- (void)updateUserInteractionEnabledForSwitcherContentController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 isUserInteractionEnabled];
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v4];
+  controllerCopy = controller;
+  isUserInteractionEnabled = [controllerCopy isUserInteractionEnabled];
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controllerCopy];
 
-  v6 = [v7 switcherWindow];
-  [v6 bs_setHitTestingDisabled:v5 ^ 1u];
+  switcherWindow = [v7 switcherWindow];
+  [switcherWindow bs_setHitTestingDisabled:isUserInteractionEnabled ^ 1u];
 }
 
-- (void)updateWindowVisibilityForSwitcherContentController:(id)a3
+- (void)updateWindowVisibilityForSwitcherContentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v4];
-  [v5 updateWindowVisibilityForSwitcherContentController:v4];
+  controllerCopy = controller;
+  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controllerCopy];
+  [v5 updateWindowVisibilityForSwitcherContentController:controllerCopy];
 }
 
-- (void)switcherContentController:(id)a3 setContainerStatusBarHidden:(BOOL)a4 partsHidden:(unint64_t)a5 animationDuration:(double)a6
+- (void)switcherContentController:(id)controller setContainerStatusBarHidden:(BOOL)hidden partsHidden:(unint64_t)partsHidden animationDuration:(double)duration
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = [(SBMainSwitcherControllerCoordinator *)self _contentControllerIsEmbeddedDisplayContentController:v10];
-  v15 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v10];
+  hiddenCopy = hidden;
+  controllerCopy = controller;
+  v11 = [(SBMainSwitcherControllerCoordinator *)self _contentControllerIsEmbeddedDisplayContentController:controllerCopy];
+  v15 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controllerCopy];
 
-  v12 = [v15 windowScene];
+  windowScene = [v15 windowScene];
   v13 = 296;
   if (v11)
   {
@@ -8519,34 +8519,34 @@ void __101__SBMainSwitcherControllerCoordinator_switcherContentController_reques
     v14 = @"kSBFloatingAppSwitcherStatusBarReason";
   }
 
-  [(SBMainSwitcherControllerCoordinator *)self _setContainerStatusBarHidden:v8 partsHidden:a5 animationDuration:self + v13 usingAssertion:v14 reason:v12 windowScene:a6];
+  [(SBMainSwitcherControllerCoordinator *)self _setContainerStatusBarHidden:hiddenCopy partsHidden:partsHidden animationDuration:self + v13 usingAssertion:v14 reason:windowScene windowScene:duration];
 }
 
-- (BOOL)_shouldTakeStatusBarAssertionForSwitcherController:(id)a3
+- (BOOL)_shouldTakeStatusBarAssertionForSwitcherController:(id)controller
 {
-  v3 = [a3 layoutState];
-  v4 = ([v3 unlockedEnvironmentMode] & 0xFFFFFFFFFFFFFFFELL) == 2;
+  layoutState = [controller layoutState];
+  v4 = ([layoutState unlockedEnvironmentMode] & 0xFFFFFFFFFFFFFFFELL) == 2;
 
   return v4;
 }
 
-- (void)_setContainerStatusBarHidden:(BOOL)a3 partsHidden:(unint64_t)a4 animationDuration:(double)a5 usingAssertion:(id *)a6 reason:(id)a7 windowScene:(id)a8
+- (void)_setContainerStatusBarHidden:(BOOL)hidden partsHidden:(unint64_t)partsHidden animationDuration:(double)duration usingAssertion:(id *)assertion reason:(id)reason windowScene:(id)scene
 {
-  v12 = a3;
-  v14 = a7;
-  v15 = a8;
-  v16 = *a6;
-  v17 = [v16 settings];
-  v18 = [v15 switcherController];
-  v19 = [(SBMainSwitcherControllerCoordinator *)self _shouldTakeStatusBarAssertionForSwitcherController:v18];
+  hiddenCopy = hidden;
+  reasonCopy = reason;
+  sceneCopy = scene;
+  v16 = *assertion;
+  settings = [v16 settings];
+  switcherController = [sceneCopy switcherController];
+  v19 = [(SBMainSwitcherControllerCoordinator *)self _shouldTakeStatusBarAssertionForSwitcherController:switcherController];
 
   if (v16)
   {
-    v20 = [v17 alpha];
-    [v20 doubleValue];
+    alpha = [settings alpha];
+    [alpha doubleValue];
     v22 = v21 == 0.0;
 
-    v23 = [v17 hiddenParts] != a4;
+    v23 = [settings hiddenParts] != partsHidden;
   }
 
   else
@@ -8555,10 +8555,10 @@ void __101__SBMainSwitcherControllerCoordinator_switcherContentController_reques
     v23 = 0;
   }
 
-  if ((((v16 != 0) ^ v19) & 1) != 0 || v22 != v12 || v23)
+  if ((((v16 != 0) ^ v19) & 1) != 0 || v22 != hiddenCopy || v23)
   {
-    v24 = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
-    [v24 setDuration:a5];
+    initWithDefaultParameters = [objc_alloc(MEMORY[0x277D75AA0]) initWithDefaultParameters];
+    [initWithDefaultParameters setDuration:duration];
     if (v19)
     {
       if (v16)
@@ -8567,37 +8567,37 @@ void __101__SBMainSwitcherControllerCoordinator_switcherContentController_reques
         v28[1] = 3221225472;
         v28[2] = __132__SBMainSwitcherControllerCoordinator__setContainerStatusBarHidden_partsHidden_animationDuration_usingAssertion_reason_windowScene___block_invoke_2;
         v28[3] = &__block_descriptor_41_e36_v16__0__SBMutableStatusBarSettings_8l;
-        v29 = v12;
-        v28[4] = a4;
-        [v16 modifySettingsWithBlock:v28 animationParameters:v24];
+        v29 = hiddenCopy;
+        v28[4] = partsHidden;
+        [v16 modifySettingsWithBlock:v28 animationParameters:initWithDefaultParameters];
       }
 
       else
       {
-        v25 = [v15 statusBarManager];
-        v26 = [v25 assertionManager];
+        statusBarManager = [sceneCopy statusBarManager];
+        assertionManager = [statusBarManager assertionManager];
 
-        v16 = [v26 newSettingsAssertionWithStatusBarHidden:v12 atLevel:6 reason:v14];
+        v16 = [assertionManager newSettingsAssertionWithStatusBarHidden:hiddenCopy atLevel:6 reason:reasonCopy];
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __132__SBMainSwitcherControllerCoordinator__setContainerStatusBarHidden_partsHidden_animationDuration_usingAssertion_reason_windowScene___block_invoke;
         v30[3] = &__block_descriptor_40_e36_v16__0__SBMutableStatusBarSettings_8l;
-        v30[4] = a4;
+        v30[4] = partsHidden;
         [v16 modifySettingsWithBlock:v30];
-        [v16 acquireWithAnimationParameters:v24];
+        [v16 acquireWithAnimationParameters:initWithDefaultParameters];
       }
     }
 
     else
     {
-      [v16 invalidateWithAnimationParameters:v24];
+      [v16 invalidateWithAnimationParameters:initWithDefaultParameters];
 
       v16 = 0;
     }
   }
 
-  v27 = *a6;
-  *a6 = v16;
+  v27 = *assertion;
+  *assertion = v16;
 }
 
 void __132__SBMainSwitcherControllerCoordinator__setContainerStatusBarHidden_partsHidden_animationDuration_usingAssertion_reason_windowScene___block_invoke_2(uint64_t a1, void *a2)
@@ -8611,95 +8611,95 @@ void __132__SBMainSwitcherControllerCoordinator__setContainerStatusBarHidden_par
   [v6 setHiddenParts:*(a1 + 32)];
 }
 
-- (void)switcherContentControllerWantsToDismissMenuBar:(id)a3
+- (void)switcherContentControllerWantsToDismissMenuBar:(id)bar
 {
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v3 = [v5 windowScene];
-  v4 = [v3 menuBarManager];
-  [v4 requestMenuBarVisibility:0];
+  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:bar];
+  windowScene = [v5 windowScene];
+  menuBarManager = [windowScene menuBarManager];
+  [menuBarManager requestMenuBarVisibility:0];
 }
 
-- (void)switcherContentControllerWantsToPeekMenuBar:(id)a3
+- (void)switcherContentControllerWantsToPeekMenuBar:(id)bar
 {
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v3 = [v5 windowScene];
-  v4 = [v3 menuBarManager];
-  [v4 peekMenuBar];
+  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:bar];
+  windowScene = [v5 windowScene];
+  menuBarManager = [windowScene menuBarManager];
+  [menuBarManager peekMenuBar];
 }
 
-- (void)switcherContentControllerWantsToUpdateMenuBarVisibility:(id)a3
+- (void)switcherContentControllerWantsToUpdateMenuBarVisibility:(id)visibility
 {
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v3 = [v5 windowScene];
-  v4 = [v3 menuBarManager];
-  [v4 updateMenuBarVisibility];
+  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:visibility];
+  windowScene = [v5 windowScene];
+  menuBarManager = [windowScene menuBarManager];
+  [menuBarManager updateMenuBarVisibility];
 }
 
-- (id)switcherContentController:(id)a3 demoLayoutAttributesForDisplayItem:(id)a4
+- (id)switcherContentController:(id)controller demoLayoutAttributesForDisplayItem:(id)item
 {
-  v6 = a4;
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v8 = [v7 windowScene];
-  v9 = [v8 menuBarManager];
-  v10 = [v9 demoLayoutAttributesForDisplayItem:v6];
+  itemCopy = item;
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  windowScene = [v7 windowScene];
+  menuBarManager = [windowScene menuBarManager];
+  v10 = [menuBarManager demoLayoutAttributesForDisplayItem:itemCopy];
 
   return v10;
 }
 
-- (BOOL)switcherContentController:(id)a3 shouldResignActiveForStartOfTransition:(id)a4
+- (BOOL)switcherContentController:(id)controller shouldResignActiveForStartOfTransition:(id)transition
 {
-  v11 = a4;
-  v4 = [v11 applicationTransitionContext];
-  v5 = [v4 request];
-  v6 = [v11 toLayoutState];
-  v7 = [v11 fromLayoutState];
+  transitionCopy = transition;
+  applicationTransitionContext = [transitionCopy applicationTransitionContext];
+  request = [applicationTransitionContext request];
+  toLayoutState = [transitionCopy toLayoutState];
+  fromLayoutState = [transitionCopy fromLayoutState];
 
-  v8 = [v6 unlockedEnvironmentMode];
-  v9 = [v5 source];
-  v10 = [v5 source];
-  LOBYTE(v11) = 0;
-  if (([v4 animationDisabled] & 1) == 0 && v9 != 11 && v10 != 27 && v8 == 3)
+  unlockedEnvironmentMode = [toLayoutState unlockedEnvironmentMode];
+  source = [request source];
+  source2 = [request source];
+  LOBYTE(transitionCopy) = 0;
+  if (([applicationTransitionContext animationDisabled] & 1) == 0 && source != 11 && source2 != 27 && unlockedEnvironmentMode == 3)
   {
-    v12 = [v7 elements];
-    v13 = [v6 elements];
-    LODWORD(v11) = [v12 isEqualToSet:v13] ^ 1;
+    elements = [fromLayoutState elements];
+    elements2 = [toLayoutState elements];
+    LODWORD(transitionCopy) = [elements isEqualToSet:elements2] ^ 1;
   }
 
-  return v11;
+  return transitionCopy;
 }
 
-- (void)switcherContentController:(id)a3 setCacheAsynchronousRenderingSurfaces:(BOOL)a4
+- (void)switcherContentController:(id)controller setCacheAsynchronousRenderingSurfaces:(BOOL)surfaces
 {
-  v4 = a4;
-  v6 = a3;
+  surfacesCopy = surfaces;
+  controllerCopy = controller;
   asynchronousRenderingCachedSurfacesReasons = self->_asynchronousRenderingCachedSurfacesReasons;
   if (!asynchronousRenderingCachedSurfacesReasons)
   {
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v9 = self->_asynchronousRenderingCachedSurfacesReasons;
-    self->_asynchronousRenderingCachedSurfacesReasons = v8;
+    self->_asynchronousRenderingCachedSurfacesReasons = weakObjectsHashTable;
 
     asynchronousRenderingCachedSurfacesReasons = self->_asynchronousRenderingCachedSurfacesReasons;
   }
 
   v10 = [(NSHashTable *)asynchronousRenderingCachedSurfacesReasons count];
   v11 = self->_asynchronousRenderingCachedSurfacesReasons;
-  if (v4)
+  if (surfacesCopy)
   {
-    [(NSHashTable *)v11 addObject:v6];
+    [(NSHashTable *)v11 addObject:controllerCopy];
   }
 
   else
   {
-    [(NSHashTable *)v11 removeObject:v6];
+    [(NSHashTable *)v11 removeObject:controllerCopy];
   }
 
   v12 = [(NSHashTable *)self->_asynchronousRenderingCachedSurfacesReasons count];
   v13 = +[SBDefaults localDefaults];
-  v14 = [v13 miscellaneousDefaults];
-  v15 = [v14 disableAsyncRenderingSurfaceRetention];
+  miscellaneousDefaults = [v13 miscellaneousDefaults];
+  disableAsyncRenderingSurfaceRetention = [miscellaneousDefaults disableAsyncRenderingSurfaceRetention];
 
-  if (v15)
+  if (disableAsyncRenderingSurfaceRetention)
   {
     v16 = SBLogAppSwitcher();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -8789,45 +8789,45 @@ void __103__SBMainSwitcherControllerCoordinator_switcherContentController_setCac
   }
 }
 
-- (void)cancelActiveGestureForSwitcherContentController:(id)a3
+- (void)cancelActiveGestureForSwitcherContentController:(id)controller
 {
-  v6 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v3 = [v6 gestureManager];
-  v4 = [v3 activeGestureTransaction];
-  v5 = [v4 gestureRecognizer];
+  v6 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  gestureManager = [v6 gestureManager];
+  activeGestureTransaction = [gestureManager activeGestureTransaction];
+  gestureRecognizer = [activeGestureTransaction gestureRecognizer];
 
-  if ([v5 state] <= 2)
+  if ([gestureRecognizer state] <= 2)
   {
-    [v5 setEnabled:0];
-    [v5 setEnabled:1];
+    [gestureRecognizer setEnabled:0];
+    [gestureRecognizer setEnabled:1];
   }
 }
 
-- (void)switcherContentController:(id)a3 reopenHiddenAppLayoutsWithBundleIdentifier:(id)a4
+- (void)switcherContentController:(id)controller reopenHiddenAppLayoutsWithBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v6];
-  v9 = [(SBAppSwitcherModel *)self->_mainSwitcherModel appLayoutsForBundleIdentifier:v7 includingHiddenAppLayouts:1];
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  v8 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controllerCopy];
+  v9 = [(SBAppSwitcherModel *)self->_mainSwitcherModel appLayoutsForBundleIdentifier:identifierCopy includingHiddenAppLayouts:1];
   v10 = objc_alloc(MEMORY[0x277CBEB18]);
   v11 = [v9 bs_filter:&__block_literal_global_310];
   v12 = [v10 initWithArray:v11];
 
   if ([v12 count] == 1)
   {
-    v13 = [v12 firstObject];
-    if ([v13 environment] != 2)
+    firstObject = [v12 firstObject];
+    if ([firstObject environment] != 2)
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v14 = [v8 _currentMainAppLayout];
+    _currentMainAppLayout = [v8 _currentMainAppLayout];
 
-    if (!v14)
+    if (!_currentMainAppLayout)
     {
-      v26 = [v12 firstObject];
+      firstObject2 = [v12 firstObject];
       v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v38[0] = MEMORY[0x277D85DD0];
       v38[1] = 3221225472;
@@ -8835,13 +8835,13 @@ LABEL_5:
       v38[3] = &unk_2783AE1C8;
       v39 = v15;
       v16 = v15;
-      [v26 enumerate:v38];
+      [firstObject2 enumerate:v38];
       v17 = [SBAppLayout alloc];
-      v18 = [v8 layoutState];
-      v19 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:](v17, "initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:", v16, 1, 1, [v18 displayOrdinal]);
+      layoutState = [v8 layoutState];
+      v19 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:](v17, "initWithItemsForLayoutRoles:configuration:environment:preferredDisplayOrdinal:", v16, 1, 1, [layoutState displayOrdinal]);
 
-      v13 = v26;
-      [v12 removeObject:v26];
+      firstObject = firstObject2;
+      [v12 removeObject:firstObject2];
       [v12 addObject:v19];
 
       goto LABEL_5;
@@ -8876,8 +8876,8 @@ LABEL_6:
   v25 = v33;
   v28 = v25;
   objc_copyWeak(&v30, &location);
-  v29 = self;
-  [(SBMainSwitcherControllerCoordinator *)self _insertAppLayouts:v25 atIndexes:v22 contentViewController:v6 modelMutationBlock:v31 completion:v27];
+  selfCopy = self;
+  [(SBMainSwitcherControllerCoordinator *)self _insertAppLayouts:v25 atIndexes:v22 contentViewController:controllerCopy modelMutationBlock:v31 completion:v27];
   objc_destroyWeak(&v30);
 
   objc_destroyWeak(&location);
@@ -9043,24 +9043,24 @@ uint64_t __108__SBMainSwitcherControllerCoordinator_switcherContentController_re
   return 1;
 }
 
-- (void)switcherContentController:(id)a3 moveDisplayItemFromOtherDisplay:(id)a4
+- (void)switcherContentController:(id)controller moveDisplayItemFromOtherDisplay:(id)display
 {
-  v6 = a4;
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v8 = [(SBMainSwitcherControllerCoordinator *)self coordinatedSwitcherControllers];
+  displayCopy = display;
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  coordinatedSwitcherControllers = [(SBMainSwitcherControllerCoordinator *)self coordinatedSwitcherControllers];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __97__SBMainSwitcherControllerCoordinator_switcherContentController_moveDisplayItemFromOtherDisplay___block_invoke;
   v16[3] = &unk_2783B9710;
   v9 = v7;
   v17 = v9;
-  v10 = [v8 bs_firstObjectPassingTest:v16];
+  v10 = [coordinatedSwitcherControllers bs_firstObjectPassingTest:v16];
 
   if (v10)
   {
-    v11 = [v10 contentViewController];
+    contentViewController = [v10 contentViewController];
     v12 = objc_opt_class();
-    v13 = v11;
+    v13 = contentViewController;
     if (v12)
     {
       if (objc_opt_isKindOfClass())
@@ -9081,23 +9081,23 @@ uint64_t __108__SBMainSwitcherControllerCoordinator_switcherContentController_re
 
     v15 = v14;
 
-    [v15 moveDisplayItemFromOtherDisplay:v6];
+    [v15 moveDisplayItemFromOtherDisplay:displayCopy];
   }
 }
 
-- (void)switcherContentController:(id)a3 setInterfaceOrientation:(int64_t)a4
+- (void)switcherContentController:(id)controller setInterfaceOrientation:(int64_t)orientation
 {
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  [v5 _updateContentViewInterfaceOrientation:a4];
+  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  [v5 _updateContentViewInterfaceOrientation:orientation];
 }
 
-- (void)switcherContentController:(id)a3 setInterfaceOrientationFromUserResizing:(int64_t)a4 forDisplayItem:(id)a5
+- (void)switcherContentController:(id)controller setInterfaceOrientationFromUserResizing:(int64_t)resizing forDisplayItem:(id)item
 {
-  v10 = a3;
-  v8 = a5;
-  if (v10)
+  controllerCopy = controller;
+  itemCopy = item;
+  if (controllerCopy)
   {
-    if (v8)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -9106,7 +9106,7 @@ uint64_t __108__SBMainSwitcherControllerCoordinator_switcherContentController_re
   else
   {
     [SBMainSwitcherControllerCoordinator switcherContentController:setInterfaceOrientationFromUserResizing:forDisplayItem:];
-    if (v8)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -9114,117 +9114,117 @@ uint64_t __108__SBMainSwitcherControllerCoordinator_switcherContentController_re
 
   [SBMainSwitcherControllerCoordinator switcherContentController:setInterfaceOrientationFromUserResizing:forDisplayItem:];
 LABEL_3:
-  v9 = [(SBMainSwitcherControllerCoordinator *)self switcherContentController:v10 deviceApplicationSceneHandleForDisplayItem:v8];
+  v9 = [(SBMainSwitcherControllerCoordinator *)self switcherContentController:controllerCopy deviceApplicationSceneHandleForDisplayItem:itemCopy];
   if (v9)
   {
-    [(SBMainSwitcherControllerCoordinator *)self _setInterfaceOrientationFromUserResizingIfSupported:a4 forSceneHandle:v9];
+    [(SBMainSwitcherControllerCoordinator *)self _setInterfaceOrientationFromUserResizingIfSupported:resizing forSceneHandle:v9];
   }
 }
 
-- (void)presentContinuousExposeStripRevealGrabberTongueImmediatelyForSwitcherContentController:(id)a3
+- (void)presentContinuousExposeStripRevealGrabberTongueImmediatelyForSwitcherContentController:(id)controller
 {
-  v4 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v3 = [v4 gestureManager];
-  [v3 presentContinuousExposeStripRevealGrabberTongueImmediately];
+  v4 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  gestureManager = [v4 gestureManager];
+  [gestureManager presentContinuousExposeStripRevealGrabberTongueImmediately];
 }
 
-- (void)tickleContinuousExposeStripRevealGrabberTongueIfVisibleForSwitcherContentController:(id)a3
+- (void)tickleContinuousExposeStripRevealGrabberTongueIfVisibleForSwitcherContentController:(id)controller
 {
-  v4 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v3 = [v4 gestureManager];
-  [v3 tickleContinuousExposeStripRevealGrabberTongueIfVisible];
+  v4 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  gestureManager = [v4 gestureManager];
+  [gestureManager tickleContinuousExposeStripRevealGrabberTongueIfVisible];
 }
 
-- (void)switcherContentControllerDidUpdateVisibleHomeAffordances:(id)a3
+- (void)switcherContentControllerDidUpdateVisibleHomeAffordances:(id)affordances
 {
-  v4 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v3 = [v4 gestureManager];
-  [v3 noteVisibleHomeAffordancesChanged];
+  v4 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:affordances];
+  gestureManager = [v4 gestureManager];
+  [gestureManager noteVisibleHomeAffordancesChanged];
 }
 
-- (void)switcherContentController:(id)a3 removeDisplayItemsFromDesktop:(id)a4
+- (void)switcherContentController:(id)controller removeDisplayItemsFromDesktop:(id)desktop
 {
-  v6 = a4;
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  [v7 _removeDisplayItemsFromDesktop:v6];
+  desktopCopy = desktop;
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  [v7 _removeDisplayItemsFromDesktop:desktopCopy];
 }
 
-- (void)switcherContentController:(id)a3 requestDismissalForHomeScreenBackgroundTaps:(BOOL)a4
+- (void)switcherContentController:(id)controller requestDismissalForHomeScreenBackgroundTaps:(BOOL)taps
 {
-  v4 = a4;
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  [v5 _requestDismissalForHomeScreenBackgroundTaps:v4];
+  tapsCopy = taps;
+  v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  [v5 _requestDismissalForHomeScreenBackgroundTaps:tapsCopy];
 }
 
-- (void)switcherContentController:(id)a3 moveDisplayItemToSlideOver:(id)a4
+- (void)switcherContentController:(id)controller moveDisplayItemToSlideOver:(id)over
 {
-  v6 = a4;
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  [v7 _moveDisplayItemToSlideOver:v6];
+  overCopy = over;
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  [v7 _moveDisplayItemToSlideOver:overCopy];
 }
 
-- (void)switcherContentController:(id)a3 moveDisplayItemOutOfSlideOver:(id)a4
+- (void)switcherContentController:(id)controller moveDisplayItemOutOfSlideOver:(id)over
 {
-  v6 = a4;
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  [v7 _moveDisplayItemOutOfSlideOver:v6];
+  overCopy = over;
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  [v7 _moveDisplayItemOutOfSlideOver:overCopy];
 }
 
-- (BOOL)switcherContentControllerControlsHomeScreenContents:(id)a3
+- (BOOL)switcherContentControllerControlsHomeScreenContents:(id)contents
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 windowScene];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:contents];
+  windowScene = [v3 windowScene];
 
-  if ([v4 isMainDisplayWindowScene])
+  if ([windowScene isMainDisplayWindowScene])
   {
-    v5 = 1;
+    isContinuityDisplayWindowScene = 1;
   }
 
   else
   {
-    v5 = [v4 isContinuityDisplayWindowScene];
+    isContinuityDisplayWindowScene = [windowScene isContinuityDisplayWindowScene];
   }
 
-  return v5;
+  return isContinuityDisplayWindowScene;
 }
 
-- (void)switcherContentController:(id)a3 setHomeScreenScale:(double)a4 withAnimationMode:(int64_t)a5 completion:(id)a6
+- (void)switcherContentController:(id)controller setHomeScreenScale:(double)scale withAnimationMode:(int64_t)mode completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:a3];
-  [v11 setHomeScreenScale:a5 behaviorMode:v10 completion:a4];
+  completionCopy = completion;
+  v11 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:controller];
+  [v11 setHomeScreenScale:mode behaviorMode:completionCopy completion:scale];
 }
 
-- (void)switcherContentController:(id)a3 setHomeScreenAlpha:(double)a4 withAnimationMode:(int64_t)a5 completion:(id)a6
+- (void)switcherContentController:(id)controller setHomeScreenAlpha:(double)alpha withAnimationMode:(int64_t)mode completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:a3];
-  [v11 setHomeScreenAlpha:a5 behaviorMode:v10 completion:a4];
+  completionCopy = completion;
+  v11 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:controller];
+  [v11 setHomeScreenAlpha:mode behaviorMode:completionCopy completion:alpha];
 }
 
-- (void)switcherContentController:(id)a3 setHomeScreenDimmingAlpha:(double)a4 withSettings:(id)a5 animationMode:(int64_t)a6 completion:(id)a7
+- (void)switcherContentController:(id)controller setHomeScreenDimmingAlpha:(double)alpha withSettings:(id)settings animationMode:(int64_t)mode completion:(id)completion
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:a3];
-  [v14 setHomeScreenDimmingAlpha:v13 settings:a6 behaviorMode:v12 completion:a4];
+  completionCopy = completion;
+  settingsCopy = settings;
+  v14 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:controller];
+  [v14 setHomeScreenDimmingAlpha:settingsCopy settings:mode behaviorMode:completionCopy completion:alpha];
 }
 
-- (void)switcherContentController:(id)a3 setHomeScreenBackdropBlurProgress:(double)a4 withAnimationMode:(int64_t)a5 completion:(id)a6
+- (void)switcherContentController:(id)controller setHomeScreenBackdropBlurProgress:(double)progress withAnimationMode:(int64_t)mode completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:a3];
-  [v11 setHomeScreenBlurProgress:a5 behaviorMode:v10 completion:a4];
+  completionCopy = completion;
+  v11 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:controller];
+  [v11 setHomeScreenBlurProgress:mode behaviorMode:completionCopy completion:progress];
 }
 
-- (void)switcherContentController:(id)a3 setHomeScreenBackdropBlurType:(int64_t)a4
+- (void)switcherContentController:(id)controller setHomeScreenBackdropBlurType:(int64_t)type
 {
-  v5 = a4 & 0xFFFFFFFFFFFFFFFELL;
-  v7 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:a3];
+  v5 = type & 0xFFFFFFFFFFFFFFFELL;
+  v7 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:controller];
   if (v5 == 2)
   {
     [v7 beginRequiringBackdropViewForReason:@"SBAppSwitcherBackdropRequiringReason"];
-    if (a4 == 3)
+    if (type == 3)
     {
       [v7 beginRequiringLiveBackdropViewForReason:@"SBAppSwitcherBackdropRequiringReason"];
       goto LABEL_7;
@@ -9243,37 +9243,37 @@ LABEL_3:
 LABEL_7:
 }
 
-- (void)switcherContentController:(id)a3 setHomeScreenBackdropBlurMaterialRecipeName:(id)a4 withAnimationMode:(int64_t)a5 completion:(id)a6
+- (void)switcherContentController:(id)controller setHomeScreenBackdropBlurMaterialRecipeName:(id)name withAnimationMode:(int64_t)mode completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:a3];
-  [v12 setHomeScreenBackdropBlurMaterialRecipeName:v11 behaviorMode:a5 completion:v10];
+  completionCopy = completion;
+  nameCopy = name;
+  v12 = [(SBMainSwitcherControllerCoordinator *)self _homeScreenAppearanceControllerForSwitcherContentController:controller];
+  [v12 setHomeScreenBackdropBlurMaterialRecipeName:nameCopy behaviorMode:mode completion:completionCopy];
 }
 
-- (BOOL)switcherContentControllerControlsWallpaper:(id)a3
+- (BOOL)switcherContentControllerControlsWallpaper:(id)wallpaper
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 windowScene];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:wallpaper];
+  windowScene = [v3 windowScene];
 
-  LOBYTE(v3) = [v4 isMainDisplayWindowScene];
+  LOBYTE(v3) = [windowScene isMainDisplayWindowScene];
   return v3;
 }
 
-- (void)switcherContentController:(id)a3 setWallpaperScale:(double)a4 withAnimationMode:(int64_t)a5 completion:(id)a6
+- (void)switcherContentController:(id)controller setWallpaperScale:(double)scale withAnimationMode:(int64_t)mode completion:(id)completion
 {
   v9 = MEMORY[0x277D75D18];
   settings = self->_settings;
-  v11 = a6;
-  v12 = [(SBAppSwitcherSettings *)settings animationSettings];
-  v13 = [v12 wallpaperScaleSettings];
+  completionCopy = completion;
+  animationSettings = [(SBAppSwitcherSettings *)settings animationSettings];
+  wallpaperScaleSettings = [animationSettings wallpaperScaleSettings];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __112__SBMainSwitcherControllerCoordinator_switcherContentController_setWallpaperScale_withAnimationMode_completion___block_invoke;
   v14[3] = &unk_2783A8BC8;
-  *&v14[5] = a4;
+  *&v14[5] = scale;
   v14[4] = self;
-  [v9 sb_animateWithSettings:v13 mode:a5 animations:v14 completion:v11];
+  [v9 sb_animateWithSettings:wallpaperScaleSettings mode:mode animations:v14 completion:completionCopy];
 }
 
 void __112__SBMainSwitcherControllerCoordinator_switcherContentController_setWallpaperScale_withAnimationMode_completion___block_invoke(uint64_t a1)
@@ -9287,17 +9287,17 @@ void __112__SBMainSwitcherControllerCoordinator_switcherContentController_setWal
   *(v4 + 200) = v3;
 }
 
-- (void)switcherContentController:(id)a3 setWallpaperStyle:(int64_t)a4
+- (void)switcherContentController:(id)controller setWallpaperStyle:(int64_t)style
 {
-  if (a4 > 2)
+  if (style > 2)
   {
     v5 = 2;
-    if (a4 != 4)
+    if (style != 4)
     {
       v5 = 0;
     }
 
-    if (a4 == 3)
+    if (style == 3)
     {
       v4 = 13;
     }
@@ -9310,9 +9310,9 @@ void __112__SBMainSwitcherControllerCoordinator_switcherContentController_setWal
     goto LABEL_11;
   }
 
-  if (a4 != 1)
+  if (style != 1)
   {
-    if (a4 == 2)
+    if (style == 2)
     {
       v4 = 20;
     }
@@ -9333,28 +9333,28 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)switcherContentController:(id)a3 setPointerInteractionsEnabled:(BOOL)a4
+- (void)switcherContentController:(id)controller setPointerInteractionsEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v5 = +[SBUIController sharedInstance];
-  [v5 setPointerInteractionsEnabled:v4];
+  [v5 setPointerInteractionsEnabled:enabledCopy];
 }
 
-- (void)fluidSwitcherGestureManager:(id)a3 didBeginGesture:(id)a4
+- (void)fluidSwitcherGestureManager:(id)manager didBeginGesture:(id)gesture
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 switcherController];
-  if ([v7 type] == 8)
+  managerCopy = manager;
+  gestureCopy = gesture;
+  switcherController = [managerCopy switcherController];
+  if ([gestureCopy type] == 8)
   {
-    v9 = [v8 windowManagementContext];
-    v10 = [v9 isChamoisOrFlexibleWindowing];
+    windowManagementContext = [switcherController windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-    if (v10)
+    if (isChamoisOrFlexibleWindowing)
     {
       draggingAppLayouts = self->_draggingAppLayouts;
-      v12 = [v7 selectedAppLayout];
-      [(NSCountedSet *)draggingAppLayouts addObject:v12];
+      selectedAppLayout = [gestureCopy selectedAppLayout];
+      [(NSCountedSet *)draggingAppLayouts addObject:selectedAppLayout];
 
       [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
     }
@@ -9364,12 +9364,12 @@ LABEL_12:
   v16[1] = 3221225472;
   v16[2] = __83__SBMainSwitcherControllerCoordinator_fluidSwitcherGestureManager_didBeginGesture___block_invoke;
   v16[3] = &unk_2783B03A0;
-  v17 = v8;
-  v18 = v7;
-  v19 = v6;
-  v13 = v6;
-  v14 = v7;
-  v15 = v8;
+  v17 = switcherController;
+  v18 = gestureCopy;
+  v19 = managerCopy;
+  v13 = managerCopy;
+  v14 = gestureCopy;
+  v15 = switcherController;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v16];
 }
 
@@ -9403,21 +9403,21 @@ LABEL_2:
   }
 }
 
-- (void)fluidSwitcherGestureManager:(id)a3 didUpdateGesture:(id)a4
+- (void)fluidSwitcherGestureManager:(id)manager didUpdateGesture:(id)gesture
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 switcherController];
+  managerCopy = manager;
+  gestureCopy = gesture;
+  switcherController = [managerCopy switcherController];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __84__SBMainSwitcherControllerCoordinator_fluidSwitcherGestureManager_didUpdateGesture___block_invoke;
   v12[3] = &unk_2783B03A0;
-  v13 = v8;
-  v14 = v7;
-  v15 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = v8;
+  v13 = switcherController;
+  v14 = gestureCopy;
+  v15 = managerCopy;
+  v9 = managerCopy;
+  v10 = gestureCopy;
+  v11 = switcherController;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v12];
 }
 
@@ -9451,33 +9451,33 @@ LABEL_2:
   }
 }
 
-- (void)fluidSwitcherGestureManager:(id)a3 didEndGesture:(id)a4
+- (void)fluidSwitcherGestureManager:(id)manager didEndGesture:(id)gesture
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 switcherController];
+  managerCopy = manager;
+  gestureCopy = gesture;
+  switcherController = [managerCopy switcherController];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __81__SBMainSwitcherControllerCoordinator_fluidSwitcherGestureManager_didEndGesture___block_invoke;
   v15[3] = &unk_2783B03A0;
-  v9 = v8;
+  v9 = switcherController;
   v16 = v9;
-  v10 = v7;
+  v10 = gestureCopy;
   v17 = v10;
-  v11 = v6;
+  v11 = managerCopy;
   v18 = v11;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v15];
   if ([v10 type] == 8)
   {
-    v12 = [v9 windowManagementContext];
-    v13 = [v12 isChamoisOrFlexibleWindowing];
+    windowManagementContext = [v9 windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-    if (v13)
+    if (isChamoisOrFlexibleWindowing)
     {
-      v14 = [v10 selectedAppLayout];
-      if (v14)
+      selectedAppLayout = [v10 selectedAppLayout];
+      if (selectedAppLayout)
       {
-        [(NSCountedSet *)self->_draggingAppLayouts removeObject:v14];
+        [(NSCountedSet *)self->_draggingAppLayouts removeObject:selectedAppLayout];
       }
 
       [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
@@ -9515,11 +9515,11 @@ LABEL_2:
   }
 }
 
-- (void)fluidSwitcherGestureManager:(id)a3 didBeginDraggingWindowWithSceneIdentifier:(id)a4
+- (void)fluidSwitcherGestureManager:(id)manager didBeginDraggingWindowWithSceneIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  managerCopy = manager;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [SBMainSwitcherControllerCoordinator fluidSwitcherGestureManager:didBeginDraggingWindowWithSceneIdentifier:];
   }
@@ -9534,24 +9534,24 @@ LABEL_2:
     windowDragSceneIdentifiers = self->_windowDragSceneIdentifiers;
   }
 
-  [(NSMutableSet *)windowDragSceneIdentifiers addObject:v7];
+  [(NSMutableSet *)windowDragSceneIdentifiers addObject:identifierCopy];
   [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __109__SBMainSwitcherControllerCoordinator_fluidSwitcherGestureManager_didBeginDraggingWindowWithSceneIdentifier___block_invoke;
   v13[3] = &unk_2783B9738;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = managerCopy;
+  v15 = identifierCopy;
+  v11 = identifierCopy;
+  v12 = managerCopy;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v13];
 }
 
-- (void)fluidSwitcherGestureManager:(id)a3 didPlatterizeWindowDragWithSceneIdentifier:(id)a4
+- (void)fluidSwitcherGestureManager:(id)manager didPlatterizeWindowDragWithSceneIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(NSMutableSet *)self->_windowDragSceneIdentifiers containsObject:v7])
+  managerCopy = manager;
+  identifierCopy = identifier;
+  if ([(NSMutableSet *)self->_windowDragSceneIdentifiers containsObject:identifierCopy])
   {
     [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
   }
@@ -9560,25 +9560,25 @@ LABEL_2:
   v10[1] = 3221225472;
   v10[2] = __110__SBMainSwitcherControllerCoordinator_fluidSwitcherGestureManager_didPlatterizeWindowDragWithSceneIdentifier___block_invoke;
   v10[3] = &unk_2783B9738;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = managerCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = managerCopy;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v10];
 }
 
-- (void)fluidSwitcherGestureManager:(id)a3 willEndDraggingWindowWithSceneIdentifier:(id)a4
+- (void)fluidSwitcherGestureManager:(id)manager willEndDraggingWindowWithSceneIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  managerCopy = manager;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [SBMainSwitcherControllerCoordinator fluidSwitcherGestureManager:willEndDraggingWindowWithSceneIdentifier:];
   }
 
-  if ([(NSMutableSet *)self->_windowDragSceneIdentifiers containsObject:v7])
+  if ([(NSMutableSet *)self->_windowDragSceneIdentifiers containsObject:identifierCopy])
   {
-    [(NSMutableSet *)self->_windowDragSceneIdentifiers removeObject:v7];
+    [(NSMutableSet *)self->_windowDragSceneIdentifiers removeObject:identifierCopy];
     [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
   }
 
@@ -9586,42 +9586,42 @@ LABEL_2:
   v10[1] = 3221225472;
   v10[2] = __108__SBMainSwitcherControllerCoordinator_fluidSwitcherGestureManager_willEndDraggingWindowWithSceneIdentifier___block_invoke;
   v10[3] = &unk_2783B9738;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = managerCopy;
+  v12 = identifierCopy;
+  v8 = identifierCopy;
+  v9 = managerCopy;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v10];
 }
 
-- (void)fluidSwitcherGestureManager:(id)a3 clickReceivedForHomeGrabberView:(id)a4
+- (void)fluidSwitcherGestureManager:(id)manager clickReceivedForHomeGrabberView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  viewCopy = view;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __99__SBMainSwitcherControllerCoordinator_fluidSwitcherGestureManager_clickReceivedForHomeGrabberView___block_invoke;
   v10[3] = &unk_2783B9738;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = managerCopy;
+  v12 = viewCopy;
+  v8 = viewCopy;
+  v9 = managerCopy;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v10];
 }
 
-- (void)fluidSwitcherGestureManager:(id)a3 tapReceivedForGrabberTongueAtEdge:(unint64_t)a4
+- (void)fluidSwitcherGestureManager:(id)manager tapReceivedForGrabberTongueAtEdge:(unint64_t)edge
 {
-  v6 = a3;
+  managerCopy = manager;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __101__SBMainSwitcherControllerCoordinator_fluidSwitcherGestureManager_tapReceivedForGrabberTongueAtEdge___block_invoke;
   v8[3] = &unk_2783B9760;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = managerCopy;
+  edgeCopy = edge;
+  v7 = managerCopy;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v8];
 }
 
-- (void)switcherDemoFilteringControllerDidChangeHiddenApplicationBundleIDs:(id)a3
+- (void)switcherDemoFilteringControllerDidChangeHiddenApplicationBundleIDs:(id)ds
 {
   v27 = *MEMORY[0x277D85DE8];
   v20 = 0;
@@ -9630,8 +9630,8 @@ LABEL_2:
   v23 = __Block_byref_object_copy__72;
   v24 = __Block_byref_object_dispose__72;
   v25 = 0;
-  v12 = a3;
-  [v12 hiddenApplicationBundleIDs];
+  dsCopy = ds;
+  [dsCopy hiddenApplicationBundleIDs];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
@@ -9703,80 +9703,80 @@ void __106__SBMainSwitcherControllerCoordinator_switcherDemoFilteringControllerD
   }
 }
 
-- (void)_updateHomeScreenDisplayLayoutElementForLayoutState:(id)a3 switcherController:(id)a4
+- (void)_updateHomeScreenDisplayLayoutElementForLayoutState:(id)state switcherController:(id)controller
 {
-  v12 = a4;
+  controllerCopy = controller;
   homeScreenDisplayLayoutElementAssertionsBySwitcherController = self->_homeScreenDisplayLayoutElementAssertionsBySwitcherController;
-  v7 = a3;
-  v8 = [(NSMapTable *)homeScreenDisplayLayoutElementAssertionsBySwitcherController objectForKey:v12];
-  v9 = [v12 windowScene];
-  v10 = [v7 effectivelyRepresentsHomeScreen];
+  stateCopy = state;
+  v8 = [(NSMapTable *)homeScreenDisplayLayoutElementAssertionsBySwitcherController objectForKey:controllerCopy];
+  windowScene = [controllerCopy windowScene];
+  effectivelyRepresentsHomeScreen = [stateCopy effectivelyRepresentsHomeScreen];
 
-  if (v10)
+  if (effectivelyRepresentsHomeScreen)
   {
     if (!v8)
     {
-      v11 = [v9 displayLayoutPublisher];
-      v8 = [v11 addElement:self->_homeScreenDisplayLayoutElement];
+      displayLayoutPublisher = [windowScene displayLayoutPublisher];
+      v8 = [displayLayoutPublisher addElement:self->_homeScreenDisplayLayoutElement];
 
-      [(NSMapTable *)self->_homeScreenDisplayLayoutElementAssertionsBySwitcherController setObject:v8 forKey:v12];
+      [(NSMapTable *)self->_homeScreenDisplayLayoutElementAssertionsBySwitcherController setObject:v8 forKey:controllerCopy];
     }
   }
 
   else
   {
     [v8 invalidate];
-    [(NSMapTable *)self->_homeScreenDisplayLayoutElementAssertionsBySwitcherController removeObjectForKey:v12];
+    [(NSMapTable *)self->_homeScreenDisplayLayoutElementAssertionsBySwitcherController removeObjectForKey:controllerCopy];
   }
 }
 
-- (void)_beginDisplayLayoutTransitionForSwitcherController:(id)a3 reason:(id)a4
+- (void)_beginDisplayLayoutTransitionForSwitcherController:(id)controller reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 windowScene];
-  v9 = [v8 displayLayoutPublisher];
-  v10 = [v9 transitionAssertionWithReason:v7];
+  controllerCopy = controller;
+  reasonCopy = reason;
+  windowScene = [controllerCopy windowScene];
+  displayLayoutPublisher = [windowScene displayLayoutPublisher];
+  v10 = [displayLayoutPublisher transitionAssertionWithReason:reasonCopy];
 
-  v11 = [(NSMapTable *)self->_displayLayoutTransitionsBySwitcherController objectForKey:v6];
+  v11 = [(NSMapTable *)self->_displayLayoutTransitionsBySwitcherController objectForKey:controllerCopy];
   if (v11)
   {
     v12 = SBLogAppSwitcher();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(SBMainSwitcherControllerCoordinator *)self _beginDisplayLayoutTransitionForSwitcherController:v7 reason:v12];
+      [(SBMainSwitcherControllerCoordinator *)self _beginDisplayLayoutTransitionForSwitcherController:reasonCopy reason:v12];
     }
 
     [v11 invalidate];
   }
 
-  [(NSMapTable *)self->_displayLayoutTransitionsBySwitcherController setObject:v10 forKey:v6];
+  [(NSMapTable *)self->_displayLayoutTransitionsBySwitcherController setObject:v10 forKey:controllerCopy];
 }
 
-- (void)_endDisplayLayoutTransitionForSwitcherController:(id)a3
+- (void)_endDisplayLayoutTransitionForSwitcherController:(id)controller
 {
   displayLayoutTransitionsBySwitcherController = self->_displayLayoutTransitionsBySwitcherController;
-  v5 = a3;
-  v6 = [(NSMapTable *)displayLayoutTransitionsBySwitcherController objectForKey:v5];
-  [(NSMapTable *)self->_displayLayoutTransitionsBySwitcherController removeObjectForKey:v5];
+  controllerCopy = controller;
+  v6 = [(NSMapTable *)displayLayoutTransitionsBySwitcherController objectForKey:controllerCopy];
+  [(NSMapTable *)self->_displayLayoutTransitionsBySwitcherController removeObjectForKey:controllerCopy];
 
   [v6 invalidate];
 }
 
-- (void)_lockKeyboardFocusForSwitcherController:(id)a3
+- (void)_lockKeyboardFocusForSwitcherController:(id)controller
 {
   if (!self->_lockKeyboardFocusAssertion)
   {
     keyboardFocusController = self->_keyboardFocusController;
-    v9 = [a3 windowScene];
+    windowScene = [controller windowScene];
     v6 = +[SBKeyboardFocusLockReason appSwitcher];
-    v7 = [(SBKeyboardFocusControlling *)keyboardFocusController focusLockSpringBoardWindowScene:v9 forReason:v6];
+    v7 = [(SBKeyboardFocusControlling *)keyboardFocusController focusLockSpringBoardWindowScene:windowScene forReason:v6];
     lockKeyboardFocusAssertion = self->_lockKeyboardFocusAssertion;
     self->_lockKeyboardFocusAssertion = v7;
   }
 }
 
-- (void)_switcherModelChanged:(id)a3
+- (void)_switcherModelChanged:(id)changed
 {
   if (!self->_ignoreModelUpdates)
   {
@@ -9831,16 +9831,16 @@ void __64__SBMainSwitcherControllerCoordinator__warmAppInfoForAppsInList__block_
   }
 }
 
-- (void)_applicationDidExit:(id)a3
+- (void)_applicationDidExit:(id)exit
 {
-  v4 = [a3 object];
-  v5 = v4;
-  if (v4)
+  object = [exit object];
+  v5 = object;
+  if (object)
   {
-    v6 = [v4 lastExitContext];
-    v7 = [v6 terminationReason];
+    lastExitContext = [object lastExitContext];
+    terminationReason = [lastExitContext terminationReason];
 
-    if (v7 != 1)
+    if (terminationReason != 1)
     {
       v8 = MEMORY[0x277D0AB18];
       v12 = MEMORY[0x277D85DD0];
@@ -9848,11 +9848,11 @@ void __64__SBMainSwitcherControllerCoordinator__warmAppInfoForAppsInList__block_
       v14 = __59__SBMainSwitcherControllerCoordinator__applicationDidExit___block_invoke;
       v15 = &unk_2783A92D8;
       v16 = v5;
-      v17 = self;
+      selfCopy = self;
       v9 = [v8 eventWithName:@"SBMainSwitcherCoordinatorFloatingExitSanityCheck" handler:&v12];
       v10 = [SBWorkspace mainWorkspace:v12];
-      v11 = [v10 eventQueue];
-      [v11 executeOrAppendEvent:v9];
+      eventQueue = [v10 eventQueue];
+      [eventQueue executeOrAppendEvent:v9];
     }
   }
 }
@@ -9900,22 +9900,22 @@ void __59__SBMainSwitcherControllerCoordinator__applicationDidExit___block_invok
   }
 }
 
-- (void)_addAppLayoutToFront:(id)a3 removeAppLayout:(id)a4
+- (void)_addAppLayoutToFront:(id)front removeAppLayout:(id)layout
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (![(SBMainSwitcherControllerCoordinator *)self _shouldAddAppLayoutToFront:v6])
+  frontCopy = front;
+  layoutCopy = layout;
+  if (![(SBMainSwitcherControllerCoordinator *)self _shouldAddAppLayoutToFront:frontCopy])
   {
     goto LABEL_21;
   }
 
-  if (!-[SBAppSwitcherSettings shouldDisableSwitcherModelUpdatesForDemo](self->_settings, "shouldDisableSwitcherModelUpdatesForDemo") || [v6 environment] != 1)
+  if (!-[SBAppSwitcherSettings shouldDisableSwitcherModelUpdatesForDemo](self->_settings, "shouldDisableSwitcherModelUpdatesForDemo") || [frontCopy environment] != 1)
   {
     goto LABEL_18;
   }
 
-  v19 = v7;
+  v19 = layoutCopy;
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -9927,20 +9927,20 @@ void __59__SBMainSwitcherControllerCoordinator__applicationDidExit___block_invok
 LABEL_12:
 
 LABEL_17:
-    v7 = v19;
-    if ([(NSArray *)self->_appLayouts containsObject:v6])
+    layoutCopy = v19;
+    if ([(NSArray *)self->_appLayouts containsObject:frontCopy])
     {
       goto LABEL_21;
     }
 
 LABEL_18:
     self->_ignoreModelUpdates = 1;
-    if (v7)
+    if (layoutCopy)
     {
-      [(SBAppSwitcherModel *)self->_mainSwitcherModel remove:v7];
+      [(SBAppSwitcherModel *)self->_mainSwitcherModel remove:layoutCopy];
     }
 
-    [(SBAppSwitcherModel *)self->_mainSwitcherModel addToFront:v6];
+    [(SBAppSwitcherModel *)self->_mainSwitcherModel addToFront:frontCopy];
     [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
     self->_ignoreModelUpdates = 0;
     goto LABEL_21;
@@ -9959,8 +9959,8 @@ LABEL_6:
 
     v13 = *(*(&v20 + 1) + 8 * v12);
     v14 = MEMORY[0x277CBEB98];
-    v15 = [v6 allItems];
-    v16 = [v14 setWithArray:v15];
+    allItems = [frontCopy allItems];
+    v16 = [v14 setWithArray:allItems];
     v17 = [v13 containsAnyItemFromSet:v16];
 
     if (v17)
@@ -9988,13 +9988,13 @@ LABEL_6:
   }
 
   self->_ignoreModelUpdates = 1;
-  v7 = v19;
+  layoutCopy = v19;
   if (v19)
   {
     [(SBAppSwitcherModel *)self->_mainSwitcherModel remove:v19];
   }
 
-  [(SBAppSwitcherModel *)self->_mainSwitcherModel replaceAppLayout:v18 withAppLayout:v6];
+  [(SBAppSwitcherModel *)self->_mainSwitcherModel replaceAppLayout:v18 withAppLayout:frontCopy];
   [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
   self->_ignoreModelUpdates = 0;
 
@@ -10004,81 +10004,81 @@ LABEL_21:
 - (id)_transientOverlayPresentationManager
 {
   v2 = +[SBWorkspace mainWorkspace];
-  v3 = [v2 transientOverlayPresentationManager];
+  transientOverlayPresentationManager = [v2 transientOverlayPresentationManager];
 
-  return v3;
+  return transientOverlayPresentationManager;
 }
 
-- (BOOL)prioritizesSortOrderForAppLayout:(id)a3
+- (BOOL)prioritizesSortOrderForAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [v4 allItems];
-  v6 = [v4 type];
+  layoutCopy = layout;
+  allItems = [layoutCopy allItems];
+  type = [layoutCopy type];
 
-  if (!v6 && [v5 count] == 1 && (objc_msgSend(v5, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), -[SBMainSwitcherControllerCoordinator _switcherControllerForDisplayItem:](self, "_switcherControllerForDisplayItem:", v7), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "_deviceApplicationSceneHandleForDisplayItem:", v7), v9 = objc_claimAutoreleasedReturnValue(), v8, v7, v9))
+  if (!type && [allItems count] == 1 && (objc_msgSend(allItems, "firstObject"), v7 = objc_claimAutoreleasedReturnValue(), -[SBMainSwitcherControllerCoordinator _switcherControllerForDisplayItem:](self, "_switcherControllerForDisplayItem:", v7), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "_deviceApplicationSceneHandleForDisplayItem:", v7), v9 = objc_claimAutoreleasedReturnValue(), v8, v7, v9))
   {
-    v10 = [v9 shouldPrioritizeForSwitcherOrdering];
+    shouldPrioritizeForSwitcherOrdering = [v9 shouldPrioritizeForSwitcherOrdering];
   }
 
   else
   {
-    v10 = 0;
+    shouldPrioritizeForSwitcherOrdering = 0;
   }
 
-  return v10;
+  return shouldPrioritizeForSwitcherOrdering;
 }
 
-- (void)_setInterfaceOrientationFromUserResizingIfSupported:(int64_t)a3 forSceneHandle:(id)a4
+- (void)_setInterfaceOrientationFromUserResizingIfSupported:(int64_t)supported forSceneHandle:(id)handle
 {
-  v14 = a4;
-  v5 = [v14 application];
-  v6 = [v5 isMedusaCapable];
+  handleCopy = handle;
+  application = [handleCopy application];
+  isMedusaCapable = [application isMedusaCapable];
 
-  if ((v6 & 1) == 0)
+  if ((isMedusaCapable & 1) == 0)
   {
-    v7 = [v14 application];
-    v8 = [v7 classicAppPhoneAppRunningOnPad];
+    application2 = [handleCopy application];
+    classicAppPhoneAppRunningOnPad = [application2 classicAppPhoneAppRunningOnPad];
 
-    if ((v8 & 1) == 0)
+    if ((classicAppPhoneAppRunningOnPad & 1) == 0)
     {
-      v9 = [v14 _windowScene];
-      if (([v9 isExternalDisplayWindowScene] & 1) == 0)
+      _windowScene = [handleCopy _windowScene];
+      if (([_windowScene isExternalDisplayWindowScene] & 1) == 0)
       {
         v10 = objc_opt_class();
-        v11 = [v9 switcherController];
-        v12 = [v11 contentViewController];
-        v13 = SBSafeCast(v10, v12);
+        switcherController = [_windowScene switcherController];
+        contentViewController = [switcherController contentViewController];
+        v13 = SBSafeCast(v10, contentViewController);
 
         if (v13)
         {
-          if ([v13 contentOrientation] == a3)
+          if ([v13 contentOrientation] == supported)
           {
-            a3 = 0;
+            supported = 0;
           }
         }
 
         else
         {
-          a3 = 0;
+          supported = 0;
         }
       }
     }
 
-    [v14 _setInterfaceOrientationFromUserResizing:a3];
+    [handleCopy _setInterfaceOrientationFromUserResizing:supported];
   }
 }
 
-- (id)_homeScreenAppearanceControllerForSwitcherContentController:(id)a3
+- (id)_homeScreenAppearanceControllerForSwitcherContentController:(id)controller
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:a3];
-  v4 = [v3 windowScene];
+  v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:controller];
+  windowScene = [v3 windowScene];
 
-  v5 = [v4 homeScreenController];
+  homeScreenController = [windowScene homeScreenController];
 
-  return v5;
+  return homeScreenController;
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
   if (!self->_isKeyboardShowing)
   {
@@ -10087,7 +10087,7 @@ LABEL_21:
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
   if (self->_isKeyboardShowing)
   {
@@ -10096,31 +10096,31 @@ LABEL_21:
   }
 }
 
-- (void)noteKeyboardIsForMedusaWithOwningScene:(id)a3
+- (void)noteKeyboardIsForMedusaWithOwningScene:(id)scene
 {
-  v5 = a3;
-  if (self->_medusaKeyboardScene != v5)
+  sceneCopy = scene;
+  if (self->_medusaKeyboardScene != sceneCopy)
   {
-    v8 = v5;
-    v6 = [(SBMainSwitcherControllerCoordinator *)self _medusaKeyboardSceneHandle];
-    [v6 removeObserver:self];
+    v8 = sceneCopy;
+    _medusaKeyboardSceneHandle = [(SBMainSwitcherControllerCoordinator *)self _medusaKeyboardSceneHandle];
+    [_medusaKeyboardSceneHandle removeObserver:self];
 
-    objc_storeStrong(&self->_medusaKeyboardScene, a3);
-    v7 = [(SBMainSwitcherControllerCoordinator *)self _medusaKeyboardSceneHandle];
-    [v7 addObserver:self];
+    objc_storeStrong(&self->_medusaKeyboardScene, scene);
+    _medusaKeyboardSceneHandle2 = [(SBMainSwitcherControllerCoordinator *)self _medusaKeyboardSceneHandle];
+    [_medusaKeyboardSceneHandle2 addObserver:self];
 
     [(SBMainSwitcherControllerCoordinator *)self _updateKeyboardHomeAffordanceAssertion];
-    v5 = v8;
+    sceneCopy = v8;
   }
 }
 
 - (BOOL)_keyboardIsSuppressedForMedusaKeyboardScene
 {
-  v2 = [(FBScene *)self->_medusaKeyboardScene settings];
+  settings = [(FBScene *)self->_medusaKeyboardScene settings];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = ([v2 deactivationReasons] >> 8) & 1;
+    v3 = ([settings deactivationReasons] >> 8) & 1;
   }
 
   else
@@ -10131,52 +10131,52 @@ LABEL_21:
   return v3;
 }
 
-- (void)sceneHandle:(id)a3 didUpdateSettingsWithDiff:(id)a4 previousSettings:(id)a5
+- (void)sceneHandle:(id)handle didUpdateSettingsWithDiff:(id)diff previousSettings:(id)settings
 {
-  v6 = [a3 scene];
+  scene = [handle scene];
   medusaKeyboardScene = self->_medusaKeyboardScene;
 
-  if (v6 == medusaKeyboardScene)
+  if (scene == medusaKeyboardScene)
   {
 
     [(SBMainSwitcherControllerCoordinator *)self _updateKeyboardHomeAffordanceAssertion];
   }
 }
 
-- (void)_switcherServiceAdded:(id)a3
+- (void)_switcherServiceAdded:(id)added
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"AppSwitcherService"];
+  userInfo = [added userInfo];
+  v5 = [userInfo objectForKey:@"AppSwitcherService"];
 
-  v6 = [v5 bundleIdentifier];
-  v7 = [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:v6];
+  bundleIdentifier = [v5 bundleIdentifier];
+  v7 = [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:bundleIdentifier];
   v8 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutFromPrimaryLayoutItem:v7 sideLayoutElement:0 configuration:1];
-  v9 = [SBApp windowSceneManager];
-  v10 = [v9 activeDisplayWindowScene];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
 
-  v11 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:v10];
-  v12 = [v11 contentViewController];
+  v11 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForWindowScene:activeDisplayWindowScene];
+  contentViewController = [v11 contentViewController];
   v13 = [(NSArray *)self->_appLayouts indexOfObject:v8];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__SBMainSwitcherControllerCoordinator__switcherServiceAdded___block_invoke;
   v14[3] = &unk_2783A8C18;
   v14[4] = self;
-  [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v8 atIndex:v13 contentViewController:v12 modelMutationBlock:v14 completion:0];
+  [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v8 atIndex:v13 contentViewController:contentViewController modelMutationBlock:v14 completion:0];
 }
 
-- (void)_switcherServiceRemoved:(id)a3
+- (void)_switcherServiceRemoved:(id)removed
 {
-  v4 = a3;
-  v5 = [(SBMainSwitcherControllerCoordinator *)self isAnySwitcherVisible];
-  v6 = [v4 userInfo];
+  removedCopy = removed;
+  isAnySwitcherVisible = [(SBMainSwitcherControllerCoordinator *)self isAnySwitcherVisible];
+  userInfo = [removedCopy userInfo];
 
-  v13 = [v6 objectForKey:@"AppSwitcherService"];
+  v13 = [userInfo objectForKey:@"AppSwitcherService"];
 
-  if (v5)
+  if (isAnySwitcherVisible)
   {
-    v7 = [v13 bundleIdentifier];
-    v8 = [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:v7];
+    bundleIdentifier = [v13 bundleIdentifier];
+    v8 = [SBDisplayItem switcherServiceDisplayItemWithServiceIdentifier:bundleIdentifier];
 
     v9 = [(SBMainSwitcherControllerCoordinator *)self _appLayoutFromPrimaryLayoutItem:v8 sideLayoutElement:0 configuration:1];
     v10 = objc_alloc_init(SBSwitcherModelRemovalRequest);
@@ -10193,15 +10193,15 @@ LABEL_21:
   }
 }
 
-- (BOOL)_isBestAppSuggestionEligibleForSwitcher:(id)a3
+- (BOOL)_isBestAppSuggestionEligibleForSwitcher:(id)switcher
 {
-  if (!a3)
+  if (!switcher)
   {
     return 0;
   }
 
-  v3 = [a3 bundleIdentifier];
-  v4 = [v3 length] != 0;
+  bundleIdentifier = [switcher bundleIdentifier];
+  v4 = [bundleIdentifier length] != 0;
 
   return v4;
 }
@@ -10545,53 +10545,53 @@ void __104__SBMainSwitcherControllerCoordinator__notifySwitcherControllersCoordi
   [v2 noteCoordinatedSwitcherControllersDidChange];
 }
 
-- (void)_insertAppLayout:(id)a3 atIndex:(unint64_t)a4 contentViewController:(id)a5 modelMutationBlock:(id)a6 completion:(id)a7
+- (void)_insertAppLayout:(id)layout atIndex:(unint64_t)index contentViewController:(id)controller modelMutationBlock:(id)block completion:(id)completion
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v21[0] = a3;
+  v21[0] = layout;
   v12 = MEMORY[0x277CBEA60];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a3;
+  completionCopy = completion;
+  blockCopy = block;
+  controllerCopy = controller;
+  layoutCopy = layout;
   v17 = [v12 arrayWithObjects:v21 count:1];
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v20 = v18;
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v20 count:1];
 
-  [(SBMainSwitcherControllerCoordinator *)self _insertAppLayouts:v17 atIndexes:v19 contentViewController:v15 modelMutationBlock:v14 completion:v13];
+  [(SBMainSwitcherControllerCoordinator *)self _insertAppLayouts:v17 atIndexes:v19 contentViewController:controllerCopy modelMutationBlock:blockCopy completion:completionCopy];
 }
 
-- (void)_insertAppLayouts:(id)a3 atIndexes:(id)a4 contentViewController:(id)a5 modelMutationBlock:(id)a6 completion:(id)a7
+- (void)_insertAppLayouts:(id)layouts atIndexes:(id)indexes contentViewController:(id)controller modelMutationBlock:(id)block completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if ([v13 shouldAnimateInsertionOfAppLayouts:v11 atIndexes:v12])
+  layoutsCopy = layouts;
+  indexesCopy = indexes;
+  controllerCopy = controller;
+  blockCopy = block;
+  completionCopy = completion;
+  if ([controllerCopy shouldAnimateInsertionOfAppLayouts:layoutsCopy atIndexes:indexesCopy])
   {
-    [v13 prepareAnimatedInsertionOfAppLayouts:v11 atIndexes:v12];
-    v14[2](v14);
-    [v13 noteModelDidMutateForInsertionOfAppLayouts:v11 atIndexes:v12 willAnimate:1];
+    [controllerCopy prepareAnimatedInsertionOfAppLayouts:layoutsCopy atIndexes:indexesCopy];
+    blockCopy[2](blockCopy);
+    [controllerCopy noteModelDidMutateForInsertionOfAppLayouts:layoutsCopy atIndexes:indexesCopy willAnimate:1];
     v16 = MEMORY[0x277D65DA0];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __119__SBMainSwitcherControllerCoordinator__insertAppLayouts_atIndexes_contentViewController_modelMutationBlock_completion___block_invoke;
     v17[3] = &unk_2783AE908;
-    v18 = v13;
-    v19 = v11;
-    v20 = v12;
-    [v16 perform:v17 finalCompletion:v15];
+    v18 = controllerCopy;
+    v19 = layoutsCopy;
+    v20 = indexesCopy;
+    [v16 perform:v17 finalCompletion:completionCopy];
   }
 
   else
   {
-    v14[2](v14);
-    [v13 noteModelDidMutateForInsertionOfAppLayouts:v11 atIndexes:v12 willAnimate:0];
-    if (v15)
+    blockCopy[2](blockCopy);
+    [controllerCopy noteModelDidMutateForInsertionOfAppLayouts:layoutsCopy atIndexes:indexesCopy willAnimate:0];
+    if (completionCopy)
     {
-      v15[2](v15, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 }
@@ -10605,31 +10605,31 @@ void __119__SBMainSwitcherControllerCoordinator__insertAppLayouts_atIndexes_cont
   [v2 performAnimatedInsertionOfAppLayouts:v3 atIndexes:v4 completion:v5];
 }
 
-- (void)_cancelPIPForDisplayItem:(id)a3
+- (void)_cancelPIPForDisplayItem:(id)item
 {
-  v4 = a3;
-  v12 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForDisplayItem:v4];
-  v5 = [v12 _deviceApplicationSceneHandleForDisplayItem:v4];
+  itemCopy = item;
+  v12 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForDisplayItem:itemCopy];
+  v5 = [v12 _deviceApplicationSceneHandleForDisplayItem:itemCopy];
 
   if (v5)
   {
     v6 = +[SBWorkspace mainWorkspace];
     v7 = [v6 pipControllerForType:0];
 
-    v8 = [v5 application];
-    v9 = [v8 processState];
-    v10 = [v9 pid];
-    v11 = [v5 persistenceIdentifier];
-    [v7 cancelPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:v10 scenePersistenceIdentifier:v11];
+    application = [v5 application];
+    processState = [application processState];
+    v10 = [processState pid];
+    persistenceIdentifier = [v5 persistenceIdentifier];
+    [v7 cancelPictureInPictureForApplicationWithProcessIdentifierEnteringBackground:v10 scenePersistenceIdentifier:persistenceIdentifier];
   }
 }
 
-- (void)_deleteAppLayoutsMatchingBundleIdentifier:(id)a3
+- (void)_deleteAppLayoutsMatchingBundleIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
-  v6 = [v5 recentDisplayItemsForBundleIdentifier:v4 includingHiddenAppLayouts:1];
+  identifierCopy = identifier;
+  _recentAppLayoutsController = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
+  v6 = [_recentAppLayoutsController recentDisplayItemsForBundleIdentifier:identifierCopy includingHiddenAppLayouts:1];
 
   v14 = 0u;
   v15 = 0u;
@@ -10662,9 +10662,9 @@ void __119__SBMainSwitcherControllerCoordinator__insertAppLayouts_atIndexes_cont
   }
 }
 
-- (BOOL)_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:(id)a3
+- (BOOL)_hasAppLayoutBeenUserKilledWithinThresholdToCreateNewScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -10675,7 +10675,7 @@ void __119__SBMainSwitcherControllerCoordinator__insertAppLayouts_atIndexes_cont
   v6[3] = &unk_2783B19C0;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 enumerate:v6];
+  [sceneCopy enumerate:v6];
   LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -10705,15 +10705,15 @@ void __98__SBMainSwitcherControllerCoordinator__hasAppLayoutBeenUserKilledWithin
   }
 }
 
-- (id)_persistenceIdentifiersForBundleIdentifier:(id)a3 onlyIncludeLaunchableIdentifiers:(BOOL)a4
+- (id)_persistenceIdentifiersForBundleIdentifier:(id)identifier onlyIncludeLaunchableIdentifiers:(BOOL)identifiers
 {
-  v4 = a4;
+  identifiersCopy = identifiers;
   v73 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB40] orderedSet];
+  identifierCopy = identifier;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
   v8 = MEMORY[0x277CBEB40];
-  v9 = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
-  v10 = [v9 recentsForBundleIdentifier:v6 includingHiddenAppLayouts:0];
+  _recentAppLayoutsController = [(SBAppSwitcherModel *)self->_mainSwitcherModel _recentAppLayoutsController];
+  v10 = [_recentAppLayoutsController recentsForBundleIdentifier:identifierCopy includingHiddenAppLayouts:0];
   v11 = v10;
   if (v10)
   {
@@ -10727,7 +10727,7 @@ void __98__SBMainSwitcherControllerCoordinator__hasAppLayoutBeenUserKilledWithin
 
   v13 = [v8 orderedSetWithArray:v12];
 
-  v44 = self;
+  selfCopy = self;
   [v13 addObjectsFromArray:self->_appLayouts];
   v67 = 0u;
   v68 = 0u;
@@ -10754,8 +10754,8 @@ void __98__SBMainSwitcherControllerCoordinator__hasAppLayoutBeenUserKilledWithin
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
-        v16 = [v15 allItems];
-        v17 = [v16 countByEnumeratingWithState:&v61 objects:v71 count:16];
+        allItems = [v15 allItems];
+        v17 = [allItems countByEnumeratingWithState:&v61 objects:v71 count:16];
         if (v17)
         {
           v18 = v17;
@@ -10766,22 +10766,22 @@ void __98__SBMainSwitcherControllerCoordinator__hasAppLayoutBeenUserKilledWithin
             {
               if (*v62 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(allItems);
               }
 
               v21 = *(*(&v61 + 1) + 8 * i);
-              v22 = [v21 uniqueIdentifier];
-              if (v22 && ![v21 type])
+              uniqueIdentifier = [v21 uniqueIdentifier];
+              if (uniqueIdentifier && ![v21 type])
               {
                 v23 = +[SBApplicationController sharedInstance];
                 v24 = [v23 applicationForDisplayItem:v21];
 
-                v25 = [SBApplicationSceneHandle lookupOrCreatePersistenceIDFromApplication:v24 sceneID:v22];
-                [v7 addObject:v25];
+                v25 = [SBApplicationSceneHandle lookupOrCreatePersistenceIDFromApplication:v24 sceneID:uniqueIdentifier];
+                [orderedSet addObject:v25];
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v61 objects:v71 count:16];
+            v18 = [allItems countByEnumeratingWithState:&v61 objects:v71 count:16];
           }
 
           while (v18);
@@ -10797,8 +10797,8 @@ void __98__SBMainSwitcherControllerCoordinator__hasAppLayoutBeenUserKilledWithin
     while (v49);
   }
 
-  v26 = [(SBAppSwitcherModel *)v44->_mainSwitcherModel _recentAppLayoutsController];
-  v27 = [v26 recentsForBundleIdentifier:v6 includingHiddenAppLayouts:1];
+  _recentAppLayoutsController2 = [(SBAppSwitcherModel *)selfCopy->_mainSwitcherModel _recentAppLayoutsController];
+  v27 = [_recentAppLayoutsController2 recentsForBundleIdentifier:identifierCopy includingHiddenAppLayouts:1];
   v28 = [v27 bs_filter:&__block_literal_global_359];
 
   v59 = 0u;
@@ -10826,8 +10826,8 @@ void __98__SBMainSwitcherControllerCoordinator__hasAppLayoutBeenUserKilledWithin
         v54 = 0u;
         v55 = 0u;
         v56 = 0u;
-        v31 = [v30 allItems];
-        v32 = [v31 countByEnumeratingWithState:&v53 objects:v69 count:16];
+        allItems2 = [v30 allItems];
+        v32 = [allItems2 countByEnumeratingWithState:&v53 objects:v69 count:16];
         if (v32)
         {
           v33 = v32;
@@ -10838,22 +10838,22 @@ void __98__SBMainSwitcherControllerCoordinator__hasAppLayoutBeenUserKilledWithin
             {
               if (*v54 != v34)
               {
-                objc_enumerationMutation(v31);
+                objc_enumerationMutation(allItems2);
               }
 
               v36 = *(*(&v53 + 1) + 8 * j);
-              v37 = [v36 uniqueIdentifier];
-              if (v37 && ![v36 type] && (!v4 || !objc_msgSend(v7, "count")))
+              uniqueIdentifier2 = [v36 uniqueIdentifier];
+              if (uniqueIdentifier2 && ![v36 type] && (!identifiersCopy || !objc_msgSend(orderedSet, "count")))
               {
                 v38 = +[SBApplicationController sharedInstance];
                 v39 = [v38 applicationForDisplayItem:v36];
 
-                v40 = [SBApplicationSceneHandle lookupOrCreatePersistenceIDFromApplication:v39 sceneID:v37];
-                [v7 addObject:v40];
+                v40 = [SBApplicationSceneHandle lookupOrCreatePersistenceIDFromApplication:v39 sceneID:uniqueIdentifier2];
+                [orderedSet addObject:v40];
               }
             }
 
-            v33 = [v31 countByEnumeratingWithState:&v53 objects:v69 count:16];
+            v33 = [allItems2 countByEnumeratingWithState:&v53 objects:v69 count:16];
           }
 
           while (v33);
@@ -10869,9 +10869,9 @@ void __98__SBMainSwitcherControllerCoordinator__hasAppLayoutBeenUserKilledWithin
     while (v50);
   }
 
-  if ([v7 count])
+  if ([orderedSet count])
   {
-    v41 = v7;
+    v41 = orderedSet;
   }
 
   else
@@ -10928,8 +10928,8 @@ void __87__SBMainSwitcherControllerCoordinator__activateHomeScreenForProtectedHi
         }
 
         v11 = *(*(&v69 + 1) + 8 * i);
-        v12 = [v11 allItems];
-        [v5 addObjectsFromArray:v12];
+        allItems = [v11 allItems];
+        [v5 addObjectsFromArray:allItems];
 
         if ([v11 isHidden])
         {
@@ -10973,32 +10973,32 @@ void __87__SBMainSwitcherControllerCoordinator__activateHomeScreenForProtectedHi
 
         v18 = *(*(&v65 + 1) + 8 * v17);
         mainSwitcherModel = self->_mainSwitcherModel;
-        v20 = [v18 bundleIdentifier];
-        v21 = [(SBAppSwitcherModel *)mainSwitcherModel appLayoutsForBundleIdentifier:v20 includingHiddenAppLayouts:1];
+        bundleIdentifier = [v18 bundleIdentifier];
+        v21 = [(SBAppSwitcherModel *)mainSwitcherModel appLayoutsForBundleIdentifier:bundleIdentifier includingHiddenAppLayouts:1];
 
         v22 = self->_mainSwitcherModel;
-        v23 = [v18 bundleIdentifier];
-        v24 = [(SBAppSwitcherModel *)v22 appLayoutsForBundleIdentifier:v23 includingHiddenAppLayouts:0];
+        bundleIdentifier2 = [v18 bundleIdentifier];
+        v24 = [(SBAppSwitcherModel *)v22 appLayoutsForBundleIdentifier:bundleIdentifier2 includingHiddenAppLayouts:0];
 
         if (![v24 count] && objc_msgSend(v21, "count"))
         {
-          v25 = [v21 firstObject];
-          v26 = [v25 allItems];
-          v27 = [v26 count];
+          firstObject = [v21 firstObject];
+          allItems2 = [firstObject allItems];
+          v27 = [allItems2 count];
 
           if (v27 < 2)
           {
-            [v53 addObject:v25];
+            [v53 addObject:firstObject];
           }
 
           else
           {
-            v28 = [v25 itemForLayoutRole:1];
-            v29 = [v25 itemForLayoutRole:2];
+            v28 = [firstObject itemForLayoutRole:1];
+            v29 = [firstObject itemForLayoutRole:2];
             v54 = v28;
-            v30 = [v28 bundleIdentifier];
-            v31 = [v29 bundleIdentifier];
-            v32 = [v30 isEqualToString:v31];
+            bundleIdentifier3 = [v28 bundleIdentifier];
+            bundleIdentifier4 = [v29 bundleIdentifier];
+            v32 = [bundleIdentifier3 isEqualToString:bundleIdentifier4];
 
             if ((v32 & 1) == 0)
             {
@@ -11007,7 +11007,7 @@ void __87__SBMainSwitcherControllerCoordinator__activateHomeScreenForProtectedHi
               v75 = v34;
               v76 = v18;
               v35 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v76 forKeys:&v75 count:1];
-              v36 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:environment:hidden:preferredDisplayOrdinal:](v33, "initWithItemsForLayoutRoles:configuration:environment:hidden:preferredDisplayOrdinal:", v35, 1, [v25 environment], 1, objc_msgSend(v25, "preferredDisplayOrdinal"));
+              v36 = -[SBAppLayout initWithItemsForLayoutRoles:configuration:environment:hidden:preferredDisplayOrdinal:](v33, "initWithItemsForLayoutRoles:configuration:environment:hidden:preferredDisplayOrdinal:", v35, 1, [firstObject environment], 1, objc_msgSend(firstObject, "preferredDisplayOrdinal"));
 
               [v50 addObject:v36];
             }
@@ -11106,15 +11106,15 @@ void __70__SBMainSwitcherControllerCoordinator__purgeHiddenAppLayoutsForUILock__
   SBWorkspaceDestroyApplicationEntity(v7);
 }
 
-- (void)_performSceneDestructionForModelRemovalResults:(id)a3
+- (void)_performSceneDestructionForModelRemovalResults:(id)results
 {
   v161 = *MEMORY[0x277D85DE8];
-  v98 = a3;
-  v4 = [v98 originatingSwitcherContentController];
-  v86 = v4;
-  if (v4)
+  resultsCopy = results;
+  originatingSwitcherContentController = [resultsCopy originatingSwitcherContentController];
+  v86 = originatingSwitcherContentController;
+  if (originatingSwitcherContentController)
   {
-    v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v4];
+    v5 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:originatingSwitcherContentController];
   }
 
   else
@@ -11126,12 +11126,12 @@ void __70__SBMainSwitcherControllerCoordinator__purgeHiddenAppLayoutsForUILock__
   v148 = 0u;
   v145 = 0u;
   v146 = 0u;
-  obj = [v98 appLayouts];
+  obj = [resultsCopy appLayouts];
   v90 = [obj countByEnumeratingWithState:&v145 objects:v160 count:16];
   if (v90)
   {
     v88 = *v146;
-    v110 = self;
+    selfCopy = self;
     v89 = v5;
     do
     {
@@ -11155,21 +11155,21 @@ void __70__SBMainSwitcherControllerCoordinator__purgeHiddenAppLayoutsForUILock__
         }
 
         v9 = v8;
-        v102 = [v8 _currentMainAppLayout];
+        _currentMainAppLayout = [v8 _currentMainAppLayout];
         v92 = v9;
-        v101 = [v9 _currentFloatingAppLayout];
-        v10 = [v98 replacementAppLayoutForAppLayout:v7];
-        v11 = [v7 allItems];
+        _currentFloatingAppLayout = [v9 _currentFloatingAppLayout];
+        v10 = [resultsCopy replacementAppLayoutForAppLayout:v7];
+        allItems = [v7 allItems];
         v93 = v6;
         if (v10)
         {
-          v12 = [v7 allItems];
-          v13 = [v12 mutableCopy];
+          allItems2 = [v7 allItems];
+          v13 = [allItems2 mutableCopy];
 
-          v14 = [v10 allItems];
-          [v13 removeObjectsInArray:v14];
+          allItems3 = [v10 allItems];
+          [v13 removeObjectsInArray:allItems3];
 
-          v11 = v13;
+          allItems = v13;
         }
 
         v95 = objc_opt_new();
@@ -11179,7 +11179,7 @@ void __70__SBMainSwitcherControllerCoordinator__purgeHiddenAppLayoutsForUILock__
         v142 = 0u;
         v143 = 0u;
         v144 = 0u;
-        v16 = v11;
+        v16 = allItems;
         v17 = [v16 countByEnumeratingWithState:&v141 objects:v159 count:16];
         if (v17)
         {
@@ -11195,8 +11195,8 @@ void __70__SBMainSwitcherControllerCoordinator__purgeHiddenAppLayoutsForUILock__
               }
 
               v21 = *(*(&v141 + 1) + 8 * i);
-              v22 = [v7 preferredDisplayIdentity];
-              v23 = [(SBMainSwitcherControllerCoordinator *)v110 _entityForDisplayItem:v21 displayIdentity:v22];
+              preferredDisplayIdentity = [v7 preferredDisplayIdentity];
+              v23 = [(SBMainSwitcherControllerCoordinator *)selfCopy _entityForDisplayItem:v21 displayIdentity:preferredDisplayIdentity];
 
               if (v23)
               {
@@ -11216,8 +11216,8 @@ void __70__SBMainSwitcherControllerCoordinator__purgeHiddenAppLayoutsForUILock__
         v97 = objc_opt_new();
         v96 = objc_opt_new();
         v25 = +[SBSceneManagerCoordinator sharedInstance];
-        v26 = [v25 sceneDeactivationManager];
-        v27 = [v26 newAssertionWithReason:3];
+        sceneDeactivationManager = [v25 sceneDeactivationManager];
+        v27 = [sceneDeactivationManager newAssertionWithReason:3];
 
         v139[0] = MEMORY[0x277D85DD0];
         v139[1] = 3221225472;
@@ -11228,7 +11228,7 @@ void __70__SBMainSwitcherControllerCoordinator__purgeHiddenAppLayoutsForUILock__
         v91 = v27;
         [v27 acquireWithPredicate:v139 transitionContext:0];
         v105 = v7;
-        [v98 executeActionForAppLayout:v7];
+        [resultsCopy executeActionForAppLayout:v7];
         v137 = 0u;
         v138 = 0u;
         v135 = 0u;
@@ -11250,18 +11250,18 @@ void __70__SBMainSwitcherControllerCoordinator__purgeHiddenAppLayoutsForUILock__
               }
 
               v30 = *(*(&v135 + 1) + 8 * j);
-              v31 = [v30 bundleIdentifier];
-              if (v31)
+              bundleIdentifier = [v30 bundleIdentifier];
+              if (bundleIdentifier)
               {
                 v32 = [v107 objectForKey:v30];
                 if ([v32 isDeviceApplicationSceneEntity])
                 {
-                  v33 = [v32 deviceApplicationSceneEntity];
-                  v34 = [v33 sceneHandle];
+                  deviceApplicationSceneEntity = [v32 deviceApplicationSceneEntity];
+                  sceneHandle = [deviceApplicationSceneEntity sceneHandle];
 
-                  if (v34)
+                  if (sceneHandle)
                   {
-                    v35 = [v34 prefersKillingInSwitcherDisabled];
+                    prefersKillingInSwitcherDisabled = [sceneHandle prefersKillingInSwitcherDisabled];
                     if (v10)
                     {
                       goto LABEL_32;
@@ -11270,18 +11270,18 @@ void __70__SBMainSwitcherControllerCoordinator__purgeHiddenAppLayoutsForUILock__
 
                   else
                   {
-                    v35 = 0;
+                    prefersKillingInSwitcherDisabled = 0;
                     if (v10)
                     {
 LABEL_32:
-                      v36 = [v30 bundleIdentifier];
-                      v37 = [v10 containsItemWithBundleIdentifier:v36];
+                      bundleIdentifier2 = [v30 bundleIdentifier];
+                      v37 = [v10 containsItemWithBundleIdentifier:bundleIdentifier2];
 
-                      v35 |= v37;
+                      prefersKillingInSwitcherDisabled |= v37;
                     }
                   }
 
-                  if ([v98 willHideDisplayItem:v30])
+                  if ([resultsCopy willHideDisplayItem:v30])
                   {
                     v38 = v97;
                   }
@@ -11292,10 +11292,10 @@ LABEL_32:
                   }
 
                   [v38 addObject:v32];
-                  if ((v35 & 1) == 0)
+                  if ((prefersKillingInSwitcherDisabled & 1) == 0)
                   {
 LABEL_38:
-                    v39 = [(SBAppSwitcherModel *)v110->_mainSwitcherModel appLayoutsForBundleIdentifier:v31 includingHiddenAppLayouts:0];
+                    v39 = [(SBAppSwitcherModel *)selfCopy->_mainSwitcherModel appLayoutsForBundleIdentifier:bundleIdentifier includingHiddenAppLayouts:0];
                     v40 = v39;
                     if (v39)
                     {
@@ -11307,10 +11307,10 @@ LABEL_38:
                       v41 = 1;
                     }
 
-                    v42 = [v102 isEqual:v105];
-                    if ([v101 isEqual:v105])
+                    v42 = [_currentMainAppLayout isEqual:v105];
+                    if ([_currentFloatingAppLayout isEqual:v105])
                     {
-                      v43 = [v102 containsItemWithBundleIdentifier:v31] ^ 1;
+                      v43 = [_currentMainAppLayout containsItemWithBundleIdentifier:bundleIdentifier] ^ 1;
                     }
 
                     else
@@ -11327,22 +11327,22 @@ LABEL_38:
 
                       if (v45)
                       {
-                        v46 = [(NSMutableDictionary *)v110->_appLayoutToEligibleTransientOverlayViewController objectForKey:v105];
+                        v46 = [(NSMutableDictionary *)selfCopy->_appLayoutToEligibleTransientOverlayViewController objectForKey:v105];
                         if (v46)
                         {
                         }
 
                         else
                         {
-                          v47 = [v45 processState];
-                          v48 = [v47 isRunning];
+                          processState = [v45 processState];
+                          isRunning = [processState isRunning];
 
-                          if (v48)
+                          if (isRunning)
                           {
                             [v95 addObject:v45];
-                            if (v34)
+                            if (sceneHandle)
                             {
-                              [v94 addObject:v34];
+                              [v94 addObject:sceneHandle];
                             }
                           }
                         }
@@ -11353,7 +11353,7 @@ LABEL_38:
                   goto LABEL_57;
                 }
 
-                v34 = 0;
+                sceneHandle = 0;
                 goto LABEL_38;
               }
 
@@ -11372,7 +11372,7 @@ LABEL_57:
         v132 = 0u;
         v49 = v94;
         v50 = [v49 countByEnumeratingWithState:&v131 objects:v155 count:16];
-        self = v110;
+        self = selfCopy;
         if (v50)
         {
           v51 = v50;
@@ -11386,8 +11386,8 @@ LABEL_57:
                 objc_enumerationMutation(v49);
               }
 
-              v54 = [*(*(&v131 + 1) + 8 * k) sceneIfExists];
-              [v54 updateSettingsWithBlock:&__block_literal_global_364];
+              sceneIfExists = [*(*(&v131 + 1) + 8 * k) sceneIfExists];
+              [sceneIfExists updateSettingsWithBlock:&__block_literal_global_364];
             }
 
             v51 = [v49 countByEnumeratingWithState:&v131 objects:v155 count:16];
@@ -11433,8 +11433,8 @@ LABEL_57:
         v126 = 0u;
         v123 = 0u;
         v124 = 0u;
-        v63 = [v107 allValues];
-        v64 = [v63 countByEnumeratingWithState:&v123 objects:v153 count:16];
+        allValues = [v107 allValues];
+        v64 = [allValues countByEnumeratingWithState:&v123 objects:v153 count:16];
         if (v64)
         {
           v65 = v64;
@@ -11445,7 +11445,7 @@ LABEL_57:
             {
               if (*v124 != v66)
               {
-                objc_enumerationMutation(v63);
+                objc_enumerationMutation(allValues);
               }
 
               v68 = *(*(&v123 + 1) + 8 * n);
@@ -11455,7 +11455,7 @@ LABEL_57:
               }
             }
 
-            v65 = [v63 countByEnumeratingWithState:&v123 objects:v153 count:16];
+            v65 = [allValues countByEnumeratingWithState:&v123 objects:v153 count:16];
           }
 
           while (v65);
@@ -11480,7 +11480,7 @@ LABEL_57:
                 objc_enumerationMutation(v69);
               }
 
-              [(SBMainSwitcherControllerCoordinator *)v110 _cancelPIPForDisplayItem:*(*(&v119 + 1) + 8 * ii)];
+              [(SBMainSwitcherControllerCoordinator *)selfCopy _cancelPIPForDisplayItem:*(*(&v119 + 1) + 8 * ii)];
             }
 
             v71 = [v69 countByEnumeratingWithState:&v119 objects:v152 count:16];
@@ -11517,21 +11517,21 @@ LABEL_57:
 
                 v81 = *(*(&v115 + 1) + 8 * jj);
                 dispatch_group_enter(v75);
-                v82 = [v81 bundleIdentifier];
+                bundleIdentifier3 = [v81 bundleIdentifier];
                 v113[0] = MEMORY[0x277D85DD0];
                 v113[1] = 3221225472;
                 v113[2] = __86__SBMainSwitcherControllerCoordinator__performSceneDestructionForModelRemovalResults___block_invoke_373;
                 v113[3] = &unk_2783A9398;
                 v114 = v75;
                 SBWorkspaceKillApplication(v81, 1, @"killed from app switcher", v113);
-                v83 = [MEMORY[0x277CCAB98] defaultCenter];
+                defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
                 v149 = @"SBAppSwitcherQuitAppBundleIdentifierKey";
-                v150 = v82;
+                v150 = bundleIdentifier3;
                 v84 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v150 forKeys:&v149 count:1];
-                [v83 postNotificationName:@"SBAppSwitcherQuitAppNotification" object:0 userInfo:v84];
+                [defaultCenter postNotificationName:@"SBAppSwitcherQuitAppNotification" object:0 userInfo:v84];
 
-                self = v110;
-                [(SBApplicationUserQuitMonitorServer *)v110->_userQuitMonitorServer userClosedLastSceneOfApplicationWithBundleID:v82];
+                self = selfCopy;
+                [(SBApplicationUserQuitMonitorServer *)selfCopy->_userQuitMonitorServer userClosedLastSceneOfApplicationWithBundleID:bundleIdentifier3];
               }
 
               v78 = [v76 countByEnumeratingWithState:&v115 objects:v151 count:16];
@@ -11639,19 +11639,19 @@ void __86__SBMainSwitcherControllerCoordinator__performSceneDestructionForModelR
   }
 }
 
-- (id)_resultsForDisplayItemRemovalResolutionRequest:(id)a3 preferredAppLayoutForRemovalAnimationIfAny:(id)a4
+- (id)_resultsForDisplayItemRemovalResolutionRequest:(id)request preferredAppLayoutForRemovalAnimationIfAny:(id)any
 {
   v75 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v41 = a4;
+  requestCopy = request;
+  anyCopy = any;
   v51 = [MEMORY[0x277CBEB58] set];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v48 = v5;
-  v6 = [v5 displayItems];
-  v7 = [v6 countByEnumeratingWithState:&v67 objects:v74 count:16];
+  v48 = requestCopy;
+  displayItems = [requestCopy displayItems];
+  v7 = [displayItems countByEnumeratingWithState:&v67 objects:v74 count:16];
   if (v7)
   {
     v8 = v7;
@@ -11662,14 +11662,14 @@ void __86__SBMainSwitcherControllerCoordinator__performSceneDestructionForModelR
       {
         if (*v68 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(displayItems);
         }
 
-        v11 = [*(*(&v67 + 1) + 8 * i) uniqueIdentifier];
-        [v51 addObject:v11];
+        uniqueIdentifier = [*(*(&v67 + 1) + 8 * i) uniqueIdentifier];
+        [v51 addObject:uniqueIdentifier];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v67 objects:v74 count:16];
+      v8 = [displayItems countByEnumeratingWithState:&v67 objects:v74 count:16];
     }
 
     while (v8);
@@ -11719,17 +11719,17 @@ void __86__SBMainSwitcherControllerCoordinator__performSceneDestructionForModelR
 
         else
         {
-          if (v41)
+          if (anyCopy)
           {
-            v17 = v41;
+            firstObject = anyCopy;
           }
 
           else
           {
-            v17 = [v16 firstObject];
+            firstObject = [v16 firstObject];
           }
 
-          v19 = v17;
+          v19 = firstObject;
           v60 = 0u;
           v61 = 0u;
           v58 = 0u;
@@ -11856,9 +11856,9 @@ LABEL_54:
               }
 
               [(SBSwitcherDisplayItemRemovalResolutionResults *)v38 setActions:v30 forDisplayItem:v47];
-              v39 = [v48 originatingSwitcherContentController];
+              originatingSwitcherContentController = [v48 originatingSwitcherContentController];
               v44 = v38;
-              [(SBSwitcherDisplayItemRemovalResolutionResults *)v38 setOriginatingSwitcherContentController:v39];
+              [(SBSwitcherDisplayItemRemovalResolutionResults *)v38 setOriginatingSwitcherContentController:originatingSwitcherContentController];
             }
 
             j = v50;
@@ -11893,13 +11893,13 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__resultsForDisplayItemRemova
   return v4;
 }
 
-- (id)_nonHiddenAppLayoutsForDisplayItem:(id)a3
+- (id)_nonHiddenAppLayoutsForDisplayItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   mainSwitcherModel = self->_mainSwitcherModel;
-  v6 = [v4 bundleIdentifier];
-  v7 = [(SBAppSwitcherModel *)mainSwitcherModel appLayoutsForBundleIdentifier:v6 includingHiddenAppLayouts:0];
+  bundleIdentifier = [itemCopy bundleIdentifier];
+  v7 = [(SBAppSwitcherModel *)mainSwitcherModel appLayoutsForBundleIdentifier:bundleIdentifier includingHiddenAppLayouts:0];
 
   if (!v7)
   {
@@ -11924,7 +11924,7 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__resultsForDisplayItemRemova
           }
 
           v14 = *(*(&v16 + 1) + 8 * i);
-          if ([v14 containsItem:{v4, v16}])
+          if ([v14 containsItem:{itemCopy, v16}])
           {
             if (v11)
             {
@@ -11955,18 +11955,18 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__resultsForDisplayItemRemova
   return v7;
 }
 
-- (id)_switcherModelRemovalResultsForRequest:(id)a3 forReason:(int64_t)a4
+- (id)_switcherModelRemovalResultsForRequest:(id)request forReason:(int64_t)reason
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   v47 = objc_alloc_init(SBSwitcherModelRemovalResults);
-  v42 = v6;
-  v7 = [v6 originatingSwitcherContentController];
-  v37 = v7;
-  if (v7)
+  v42 = requestCopy;
+  originatingSwitcherContentController = [requestCopy originatingSwitcherContentController];
+  v37 = originatingSwitcherContentController;
+  if (originatingSwitcherContentController)
   {
-    v8 = v7;
-    v9 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:v7, v7];
+    v8 = originatingSwitcherContentController;
+    v9 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerForContentViewController:originatingSwitcherContentController, originatingSwitcherContentController];
     [(SBSwitcherModelRemovalResults *)v47 setOriginatingSwitcherContentController:v8];
   }
 
@@ -11984,7 +11984,7 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__resultsForDisplayItemRemova
   if (v43)
   {
     v40 = *v71;
-    v51 = self;
+    selfCopy = self;
     v41 = v9;
     do
     {
@@ -12009,14 +12009,14 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__resultsForDisplayItemRemova
 
         v13 = v12;
         v45 = v10;
-        v49 = [v12 _currentMainAppLayout];
-        v48 = [v13 _currentFloatingAppLayout];
+        _currentMainAppLayout = [v12 _currentMainAppLayout];
+        _currentFloatingAppLayout = [v13 _currentFloatingAppLayout];
         v44 = [v42 actionForAppLayout:v11];
-        v14 = [v44 replacementAppLayout];
+        replacementAppLayout = [v44 replacementAppLayout];
         v15 = v11;
-        if (v14)
+        if (replacementAppLayout)
         {
-          [(SBSwitcherModelRemovalResults *)v47 setReplacementAppLayout:v14 forAppLayout:v11];
+          [(SBSwitcherModelRemovalResults *)v47 setReplacementAppLayout:replacementAppLayout forAppLayout:v11];
         }
 
         v50 = v13;
@@ -12024,48 +12024,48 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__resultsForDisplayItemRemova
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v46 = [v11 allItems];
-        v54 = [v46 countByEnumeratingWithState:&v66 objects:v74 count:16];
+        allItems = [v11 allItems];
+        v54 = [allItems countByEnumeratingWithState:&v66 objects:v74 count:16];
         v16 = 0;
         if (v54)
         {
           v52 = v11;
           v53 = *v67;
-          v56 = v14;
+          v56 = replacementAppLayout;
           do
           {
             for (i = 0; i != v54; ++i)
             {
               if (*v67 != v53)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(allItems);
               }
 
               v18 = *(*(&v66 + 1) + 8 * i);
-              if (!v14 || ([v14 containsItem:*(*(&v66 + 1) + 8 * i)] & 1) == 0)
+              if (!replacementAppLayout || ([replacementAppLayout containsItem:*(*(&v66 + 1) + 8 * i)] & 1) == 0)
               {
                 v55 = v16;
-                v19 = [v15 preferredDisplayIdentity];
-                v20 = [(SBMainSwitcherControllerCoordinator *)self _entityForDisplayItem:v18 displayIdentity:v19];
-                v21 = [v20 deviceApplicationSceneEntity];
+                preferredDisplayIdentity = [v15 preferredDisplayIdentity];
+                v20 = [(SBMainSwitcherControllerCoordinator *)self _entityForDisplayItem:v18 displayIdentity:preferredDisplayIdentity];
+                deviceApplicationSceneEntity = [v20 deviceApplicationSceneEntity];
 
-                if (v21)
+                if (deviceApplicationSceneEntity)
                 {
-                  v22 = [v21 application];
-                  v23 = [v22 info];
-                  v24 = [v23 supportsMultiwindow];
+                  application = [deviceApplicationSceneEntity application];
+                  info = [application info];
+                  supportsMultiwindow = [info supportsMultiwindow];
                   v25 = 0;
-                  if (a4 == 1 && v24)
+                  if (reason == 1 && supportsMultiwindow)
                   {
-                    v26 = [v21 sceneHandle];
-                    v27 = [v26 sceneIfExists];
-                    v28 = [v27 uiClientSettings];
-                    v25 = [v28 discardSessionOnUserDisconnect] ^ 1;
+                    sceneHandle = [deviceApplicationSceneEntity sceneHandle];
+                    sceneIfExists = [sceneHandle sceneIfExists];
+                    uiClientSettings = [sceneIfExists uiClientSettings];
+                    v25 = [uiClientSettings discardSessionOnUserDisconnect] ^ 1;
 
-                    a4 = 1;
+                    reason = 1;
                     v15 = v52;
 
-                    self = v51;
+                    self = selfCopy;
                   }
                 }
 
@@ -12082,11 +12082,11 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__resultsForDisplayItemRemova
                 v57[3] = &unk_2783B98B8;
                 v30 = v29;
                 v63 = v30;
-                v64 = a4;
+                reasonCopy = reason;
                 v57[4] = self;
                 v57[5] = v18;
-                v58 = v49;
-                v59 = v48;
+                v58 = _currentMainAppLayout;
+                v59 = _currentFloatingAppLayout;
                 v60 = v15;
                 v31 = v50;
                 v61 = v31;
@@ -12094,23 +12094,23 @@ uint64_t __129__SBMainSwitcherControllerCoordinator__resultsForDisplayItemRemova
                 v65 = v25;
                 v16 = MEMORY[0x223D6F7F0](v57);
 
-                v32 = [v31 activeAppLayoutWhenActivatingMainSwitcher];
+                activeAppLayoutWhenActivatingMainSwitcher = [v31 activeAppLayoutWhenActivatingMainSwitcher];
                 v33 = v15;
-                v34 = v32;
-                v35 = [v32 isOrContainsAppLayout:v33];
+                v34 = activeAppLayoutWhenActivatingMainSwitcher;
+                v35 = [activeAppLayoutWhenActivatingMainSwitcher isOrContainsAppLayout:v33];
 
                 if (v35)
                 {
                   [v31 setActiveAppLayoutWhenActivatingMainSwitcher:0];
                 }
 
-                self = v51;
+                self = selfCopy;
                 v15 = v52;
-                v14 = v56;
+                replacementAppLayout = v56;
               }
             }
 
-            v54 = [v46 countByEnumeratingWithState:&v66 objects:v74 count:16];
+            v54 = [allItems countByEnumeratingWithState:&v66 objects:v74 count:16];
           }
 
           while (v54);
@@ -12224,15 +12224,15 @@ uint64_t __88__SBMainSwitcherControllerCoordinator__switcherModelRemovalResultsF
   return result;
 }
 
-- (id)_modelRemovalRequestForDisplayItemResolutionResults:(id)a3
+- (id)_modelRemovalRequestForDisplayItemResolutionResults:(id)results
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  resultsCopy = results;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = [v3 displayItems];
+  obj = [resultsCopy displayItems];
   v20 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   v4 = 0;
   if (v20)
@@ -12249,7 +12249,7 @@ uint64_t __88__SBMainSwitcherControllerCoordinator__switcherModelRemovalResultsF
         }
 
         v21 = v5;
-        v6 = [v3 actionsForDisplayItem:*(*(&v26 + 1) + 8 * v5)];
+        v6 = [resultsCopy actionsForDisplayItem:*(*(&v26 + 1) + 8 * v5)];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
@@ -12269,11 +12269,11 @@ uint64_t __88__SBMainSwitcherControllerCoordinator__switcherModelRemovalResultsF
               }
 
               v11 = *(*(&v22 + 1) + 8 * i);
-              v12 = [v11 actionType];
-              if (v12 == 2)
+              actionType = [v11 actionType];
+              if (actionType == 2)
               {
-                v14 = [v11 replacementAppLayout];
-                v13 = [SBSwitcherModelRemovalRequestAction replacementActionWithAppLayout:v14];
+                replacementAppLayout = [v11 replacementAppLayout];
+                v13 = [SBSwitcherModelRemovalRequestAction replacementActionWithAppLayout:replacementAppLayout];
 
                 if (!v13)
                 {
@@ -12283,7 +12283,7 @@ uint64_t __88__SBMainSwitcherControllerCoordinator__switcherModelRemovalResultsF
 
               else
               {
-                if (v12 != 1)
+                if (actionType != 1)
                 {
                   continue;
                 }
@@ -12300,11 +12300,11 @@ uint64_t __88__SBMainSwitcherControllerCoordinator__switcherModelRemovalResultsF
                 v4 = objc_alloc_init(SBSwitcherModelRemovalRequest);
               }
 
-              v15 = [v11 appLayout];
-              [(SBSwitcherModelRemovalRequest *)v4 setAction:v13 forAppLayout:v15];
+              appLayout = [v11 appLayout];
+              [(SBSwitcherModelRemovalRequest *)v4 setAction:v13 forAppLayout:appLayout];
 
-              v16 = [v3 originatingSwitcherContentController];
-              [(SBSwitcherModelRemovalRequest *)v4 setOriginatingSwitcherContentController:v16];
+              originatingSwitcherContentController = [resultsCopy originatingSwitcherContentController];
+              [(SBSwitcherModelRemovalRequest *)v4 setOriginatingSwitcherContentController:originatingSwitcherContentController];
             }
 
             v8 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
@@ -12326,21 +12326,21 @@ uint64_t __88__SBMainSwitcherControllerCoordinator__switcherModelRemovalResultsF
   return v4;
 }
 
-- (int64_t)_switcherDisplayItemRemovalIntentTypeForEntity:(id)a3 removalContext:(id)a4
+- (int64_t)_switcherDisplayItemRemovalIntentTypeForEntity:(id)entity removalContext:(id)context
 {
-  v5 = a4;
-  v6 = [a3 displayItemRepresentation];
-  if (v6)
+  contextCopy = context;
+  displayItemRepresentation = [entity displayItemRepresentation];
+  if (displayItemRepresentation)
   {
-    v7 = [v5 removalActionType];
-    if (v7 == 2)
+    removalActionType = [contextCopy removalActionType];
+    if (removalActionType == 2)
     {
       v8 = 1;
     }
 
     else
     {
-      v8 = 2 * (v7 == 1);
+      v8 = 2 * (removalActionType == 1);
     }
   }
 
@@ -12352,11 +12352,11 @@ uint64_t __88__SBMainSwitcherControllerCoordinator__switcherModelRemovalResultsF
   return v8;
 }
 
-- (id)_switcherModelRemovalResultsForDisplayItemRemovalResolutionRequest:(id)a3
+- (id)_switcherModelRemovalResultsForDisplayItemRemovalResolutionRequest:(id)request
 {
-  if (a3)
+  if (request)
   {
-    v4 = [(SBMainSwitcherControllerCoordinator *)self _resultsForDisplayItemRemovalResolutionRequest:a3 preferredAppLayoutForRemovalAnimationIfAny:0];
+    v4 = [(SBMainSwitcherControllerCoordinator *)self _resultsForDisplayItemRemovalResolutionRequest:request preferredAppLayoutForRemovalAnimationIfAny:0];
     v5 = [(SBMainSwitcherControllerCoordinator *)self _modelRemovalRequestForDisplayItemResolutionResults:v4];
     v6 = [(SBMainSwitcherControllerCoordinator *)self _switcherModelRemovalResultsForRequest:v5 forReason:3];
   }
@@ -12369,52 +12369,52 @@ uint64_t __88__SBMainSwitcherControllerCoordinator__switcherModelRemovalResultsF
   return v6;
 }
 
-- (void)_removeAppLayout:(id)a3 forReason:(int64_t)a4
+- (void)_removeAppLayout:(id)layout forReason:(int64_t)reason
 {
-  v6 = a3;
+  layoutCopy = layout;
   v9 = objc_alloc_init(SBSwitcherModelRemovalRequest);
   v7 = +[SBSwitcherModelRemovalRequestAction defaultRemovalPolicyAction];
-  [(SBSwitcherModelRemovalRequest *)v9 setAction:v7 forAppLayout:v6];
+  [(SBSwitcherModelRemovalRequest *)v9 setAction:v7 forAppLayout:layoutCopy];
 
-  v8 = [(SBMainSwitcherControllerCoordinator *)self _switcherModelRemovalResultsForRequest:v9 forReason:a4];
+  v8 = [(SBMainSwitcherControllerCoordinator *)self _switcherModelRemovalResultsForRequest:v9 forReason:reason];
   [(SBMainSwitcherControllerCoordinator *)self _performSceneDestructionForModelRemovalResults:v8];
 }
 
-- (void)_removeDisplayItem:(id)a3 forReason:(int64_t)a4 preferredAppLayoutForRemovalAnimationIfAny:(id)a5 originatingSwitcherContentController:(id)a6
+- (void)_removeDisplayItem:(id)item forReason:(int64_t)reason preferredAppLayoutForRemovalAnimationIfAny:(id)any originatingSwitcherContentController:(id)controller
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  controllerCopy = controller;
+  anyCopy = any;
+  itemCopy = item;
   v16 = objc_alloc_init(SBSwitcherDisplayItemRemovalResolutionRequest);
-  [(SBSwitcherDisplayItemRemovalResolutionRequest *)v16 setRemovalIntentType:2 forDisplayItem:v12];
+  [(SBSwitcherDisplayItemRemovalResolutionRequest *)v16 setRemovalIntentType:2 forDisplayItem:itemCopy];
 
-  [(SBSwitcherDisplayItemRemovalResolutionRequest *)v16 setOriginatingSwitcherContentController:v10];
-  v13 = [(SBMainSwitcherControllerCoordinator *)self _resultsForDisplayItemRemovalResolutionRequest:v16 preferredAppLayoutForRemovalAnimationIfAny:v11];
+  [(SBSwitcherDisplayItemRemovalResolutionRequest *)v16 setOriginatingSwitcherContentController:controllerCopy];
+  v13 = [(SBMainSwitcherControllerCoordinator *)self _resultsForDisplayItemRemovalResolutionRequest:v16 preferredAppLayoutForRemovalAnimationIfAny:anyCopy];
 
   v14 = [(SBMainSwitcherControllerCoordinator *)self _modelRemovalRequestForDisplayItemResolutionResults:v13];
-  v15 = [(SBMainSwitcherControllerCoordinator *)self _switcherModelRemovalResultsForRequest:v14 forReason:a4];
+  v15 = [(SBMainSwitcherControllerCoordinator *)self _switcherModelRemovalResultsForRequest:v14 forReason:reason];
   [(SBMainSwitcherControllerCoordinator *)self _performSceneDestructionForModelRemovalResults:v15];
 }
 
-- (void)_modifyModelWithDropContext:(id)a3
+- (void)_modifyModelWithDropContext:(id)context
 {
   ignoreModelUpdates = self->_ignoreModelUpdates;
   self->_ignoreModelUpdates = 1;
-  [(SBAppSwitcherModel *)self->_mainSwitcherModel modifyWithDropContext:a3];
+  [(SBAppSwitcherModel *)self->_mainSwitcherModel modifyWithDropContext:context];
   self->_ignoreModelUpdates = ignoreModelUpdates;
 
   [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache];
 }
 
-- (void)keyboardFocusController:(id)a3 externalSceneDidAcquireFocus:(id)a4
+- (void)keyboardFocusController:(id)controller externalSceneDidAcquireFocus:(id)focus
 {
-  v5 = a4;
+  focusCopy = focus;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __92__SBMainSwitcherControllerCoordinator_keyboardFocusController_externalSceneDidAcquireFocus___block_invoke;
   v7[3] = &unk_2783B9578;
-  v8 = v5;
-  v6 = v5;
+  v8 = focusCopy;
+  v6 = focusCopy;
   [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v7];
 }
 
@@ -12425,17 +12425,17 @@ void __92__SBMainSwitcherControllerCoordinator_keyboardFocusController_externalS
   [v4 noteKeyboardFocusDidChangeToSceneID:v3];
 }
 
-- (void)appSwitcherModel:(id)a3 didRemoveAppLayoutForFallingOffList:(id)a4
+- (void)appSwitcherModel:(id)model didRemoveAppLayoutForFallingOffList:(id)list
 {
-  v5 = a4;
-  if ([v5 isHidden])
+  listCopy = list;
+  if ([listCopy isHidden])
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __92__SBMainSwitcherControllerCoordinator_appSwitcherModel_didRemoveAppLayoutForFallingOffList___block_invoke;
     v6[3] = &unk_2783A8FF8;
     v6[4] = self;
-    v7 = v5;
+    v7 = listCopy;
     [v7 enumerate:v6];
   }
 }
@@ -12451,74 +12451,74 @@ void __92__SBMainSwitcherControllerCoordinator_appSwitcherModel_didRemoveAppLayo
   SBWorkspaceDestroyApplicationEntity(v7);
 }
 
-- (void)appSwitcherModel:(id)a3 didMoveAppLayoutToFront:(id)a4
+- (void)appSwitcherModel:(id)model didMoveAppLayoutToFront:(id)front
 {
-  v5 = a4;
-  v6 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForAppLayout:v5];
-  [v6 _noteAppLayoutMovedToFront:v5];
+  frontCopy = front;
+  v6 = [(SBMainSwitcherControllerCoordinator *)self switcherControllerForAppLayout:frontCopy];
+  [v6 _noteAppLayoutMovedToFront:frontCopy];
 }
 
 - (BOOL)handleHomeButtonPress
 {
-  v2 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v3 = [v2 handleHomeButtonPress];
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  handleHomeButtonPress = [_embeddedDisplaySwitcherController handleHomeButtonPress];
 
-  return v3;
+  return handleHomeButtonPress;
 }
 
 - (BOOL)handleHomeButtonLongPress
 {
-  v2 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v3 = [v2 handleHomeButtonLongPress];
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  handleHomeButtonLongPress = [_embeddedDisplaySwitcherController handleHomeButtonLongPress];
 
-  return v3;
+  return handleHomeButtonLongPress;
 }
 
 - (BOOL)handleLockButtonPress
 {
-  v2 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v3 = [v2 handleLockButtonPress];
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  handleLockButtonPress = [_embeddedDisplaySwitcherController handleLockButtonPress];
 
-  return v3;
+  return handleLockButtonPress;
 }
 
 - (BOOL)handleVoiceCommandButtonPress
 {
-  v2 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v3 = [v2 handleVoiceCommandButtonPress];
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  handleVoiceCommandButtonPress = [_embeddedDisplaySwitcherController handleVoiceCommandButtonPress];
 
-  return v3;
+  return handleVoiceCommandButtonPress;
 }
 
 - (BOOL)handleVolumeUpButtonPress
 {
-  v2 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v3 = [v2 handleVolumeUpButtonPress];
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  handleVolumeUpButtonPress = [_embeddedDisplaySwitcherController handleVolumeUpButtonPress];
 
-  return v3;
+  return handleVolumeUpButtonPress;
 }
 
 - (BOOL)handleVolumeDownButtonPress
 {
-  v2 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v3 = [v2 handleVolumeDownButtonPress];
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  handleVolumeDownButtonPress = [_embeddedDisplaySwitcherController handleVolumeDownButtonPress];
 
-  return v3;
+  return handleVolumeDownButtonPress;
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  v3 = a3;
-  v4 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  LOBYTE(v3) = [v4 handleHeadsetButtonPress:v3];
+  pressCopy = press;
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  LOBYTE(pressCopy) = [_embeddedDisplaySwitcherController handleHeadsetButtonPress:pressCopy];
 
-  return v3;
+  return pressCopy;
 }
 
-- (void)betaLaunchHandle:(id)a3 activateIfNeededEndedWithResult:(BOOL)a4
+- (void)betaLaunchHandle:(id)handle activateIfNeededEndedWithResult:(BOOL)result
 {
-  v5 = a3;
-  v4 = v5;
+  handleCopy = handle;
+  v4 = handleCopy;
   BSDispatchMain();
 }
 
@@ -12535,17 +12535,17 @@ void __88__SBMainSwitcherControllerCoordinator_betaLaunchHandle_activateIfNeeded
 
 - (int64_t)_overrideWindowActiveInterfaceOrientation
 {
-  v3 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v4 = [v3 contentViewController];
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  contentViewController = [_embeddedDisplaySwitcherController contentViewController];
 
-  v5 = [(SBMainSwitcherControllerCoordinator *)self switcherInterfaceOrientationForSwitcherContentController:v4];
+  v5 = [(SBMainSwitcherControllerCoordinator *)self switcherInterfaceOrientationForSwitcherContentController:contentViewController];
   return v5;
 }
 
-- (void)_insertCardForDisplayIdentifier:(id)a3 atIndex:(unint64_t)a4
+- (void)_insertCardForDisplayIdentifier:(id)identifier atIndex:(unint64_t)index
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:a3 sceneIdentifier:@"_SB_TEST_"];
+  v6 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:identifier sceneIdentifier:@"_SB_TEST_"];
   v7 = [SBAppLayout alloc];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:1];
   v16 = v8;
@@ -12557,20 +12557,20 @@ void __88__SBMainSwitcherControllerCoordinator_betaLaunchHandle_activateIfNeeded
   self->_testItemForInsertion = v10;
   v12 = v10;
 
-  self->_testItemInsertionIndex = a4;
-  v13 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v14 = [v13 contentViewController];
+  self->_testItemInsertionIndex = index;
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  contentViewController = [_embeddedDisplaySwitcherController contentViewController];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __79__SBMainSwitcherControllerCoordinator__insertCardForDisplayIdentifier_atIndex___block_invoke;
   v15[3] = &unk_2783A8C18;
   v15[4] = self;
-  [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v12 atIndex:a4 contentViewController:v14 modelMutationBlock:v15 completion:0];
+  [(SBMainSwitcherControllerCoordinator *)self _insertAppLayout:v12 atIndex:index contentViewController:contentViewController modelMutationBlock:v15 completion:0];
 }
 
-- (void)_removeCardForDisplayIdentifier:(id)a3
+- (void)_removeCardForDisplayIdentifier:(id)identifier
 {
-  v11 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:a3 sceneIdentifier:@"_SB_TEST_"];
+  v11 = [SBDisplayItem applicationDisplayItemWithBundleIdentifier:identifier sceneIdentifier:@"_SB_TEST_"];
   v4 = [(SBAppLayout *)self->_testItemForInsertion itemForLayoutRole:1];
   v5 = [(SBDisplayItem *)v11 isEqualToItem:v4];
 
@@ -12589,10 +12589,10 @@ void __88__SBMainSwitcherControllerCoordinator_betaLaunchHandle_activateIfNeeded
   }
 }
 
-- (void)_acquireAssertion:(id)a3
+- (void)_acquireAssertion:(id)assertion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   asynchronousRenderingAssertions = self->_asynchronousRenderingAssertions;
   if (!asynchronousRenderingAssertions)
   {
@@ -12603,14 +12603,14 @@ void __88__SBMainSwitcherControllerCoordinator_betaLaunchHandle_activateIfNeeded
     asynchronousRenderingAssertions = self->_asynchronousRenderingAssertions;
   }
 
-  [(NSMutableSet *)asynchronousRenderingAssertions addObject:v4];
+  [(NSMutableSet *)asynchronousRenderingAssertions addObject:assertionCopy];
   v8 = SBLogAppSwitcher();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 reason];
+    reason = [assertionCopy reason];
     v10 = [(NSMutableSet *)self->_asynchronousRenderingAssertions count];
     v11 = 138543618;
-    v12 = v9;
+    v12 = reason;
     v13 = 2048;
     v14 = v10;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Acquiring asynchronous rendering assertion: %{public}@, assertion count: %lu", &v11, 0x16u);
@@ -12619,17 +12619,17 @@ void __88__SBMainSwitcherControllerCoordinator_betaLaunchHandle_activateIfNeeded
   [(SBMainSwitcherControllerCoordinator *)self _evaluateAsynchronousRenderingEnablement];
 }
 
-- (void)_updateAssertion:(id)a3
+- (void)_updateAssertion:(id)assertion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = SBLogAppSwitcher();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 reason];
+    reason = [assertionCopy reason];
     v7 = [(NSMutableSet *)self->_asynchronousRenderingAssertions count];
     v8 = 138543618;
-    v9 = v6;
+    v9 = reason;
     v10 = 2048;
     v11 = v7;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Updating asynchronous rendering assertion: %{public}@, assertion count: %lu", &v8, 0x16u);
@@ -12638,18 +12638,18 @@ void __88__SBMainSwitcherControllerCoordinator_betaLaunchHandle_activateIfNeeded
   [(SBMainSwitcherControllerCoordinator *)self _evaluateAsynchronousRenderingEnablement];
 }
 
-- (void)_reqlinquishAssertion:(id)a3
+- (void)_reqlinquishAssertion:(id)assertion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMutableSet *)self->_asynchronousRenderingAssertions removeObject:v4];
+  assertionCopy = assertion;
+  [(NSMutableSet *)self->_asynchronousRenderingAssertions removeObject:assertionCopy];
   v5 = SBLogAppSwitcher();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 reason];
+    reason = [assertionCopy reason];
     v7 = [(NSMutableSet *)self->_asynchronousRenderingAssertions count];
     v8 = 138543618;
-    v9 = v6;
+    v9 = reason;
     v10 = 2048;
     v11 = v7;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Relinquishing asynchronous rendering assertion: %{public}@, assertion count: %lu", &v8, 0x16u);
@@ -12658,18 +12658,18 @@ void __88__SBMainSwitcherControllerCoordinator_betaLaunchHandle_activateIfNeeded
   [(SBMainSwitcherControllerCoordinator *)self _evaluateAsynchronousRenderingEnablement];
 }
 
-- (void)_setAsynchronousRenderingEnabled:(BOOL)a3 withMinificationFilter:(BOOL)a4 forLayerTarget:(id)a5 presentationManager:(id)a6
+- (void)_setAsynchronousRenderingEnabled:(BOOL)enabled withMinificationFilter:(BOOL)filter forLayerTarget:(id)target presentationManager:(id)manager
 {
-  v9 = a5;
+  targetCopy = target;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __130__SBMainSwitcherControllerCoordinator__setAsynchronousRenderingEnabled_withMinificationFilter_forLayerTarget_presentationManager___block_invoke;
   v11[3] = &unk_2783B9900;
-  v12 = v9;
-  v13 = a3;
-  v14 = a4;
-  v10 = v9;
-  [a6 modifyDefaultPresentationContext:v11];
+  v12 = targetCopy;
+  enabledCopy = enabled;
+  filterCopy = filter;
+  v10 = targetCopy;
+  [manager modifyDefaultPresentationContext:v11];
 }
 
 uint64_t __130__SBMainSwitcherControllerCoordinator__setAsynchronousRenderingEnabled_withMinificationFilter_forLayerTarget_presentationManager___block_invoke(uint64_t a1, void *a2)
@@ -12701,20 +12701,20 @@ void __130__SBMainSwitcherControllerCoordinator__setAsynchronousRenderingEnabled
   [v5 _setMinificationFilterName:v4];
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
-  if (self->_activeGestureTransaction == a3)
+  if (self->_activeGestureTransaction == complete)
   {
     [(SBMainSwitcherControllerCoordinator *)self setActiveGestureTransaction:0];
   }
 }
 
-- (void)beginCoordinatingSwitcherController:(id)a3 options:(unint64_t)a4
+- (void)beginCoordinatingSwitcherController:(id)controller options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 windowScene];
-  [v6 willBeginCoordinationWithCoordinator:self];
+  optionsCopy = options;
+  controllerCopy = controller;
+  windowScene = [controllerCopy windowScene];
+  [controllerCopy willBeginCoordinationWithCoordinator:self];
   v8 = [(NSPointerArray *)self->_coordinatedSwitcherControllers count];
   if (!v8)
   {
@@ -12727,7 +12727,7 @@ void __130__SBMainSwitcherControllerCoordinator__setAsynchronousRenderingEnabled
   {
     v11 = [(NSPointerArray *)self->_coordinatedSwitcherControllers pointerAtIndex:v10];
 
-    if (v11 == v6)
+    if (v11 == controllerCopy)
     {
       break;
     }
@@ -12741,55 +12741,55 @@ void __130__SBMainSwitcherControllerCoordinator__setAsynchronousRenderingEnabled
   if (v10 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_7:
-    [(NSPointerArray *)self->_coordinatedSwitcherControllers addPointer:v6];
+    [(NSPointerArray *)self->_coordinatedSwitcherControllers addPointer:controllerCopy];
     [(NSPointerArray *)self->_coordinatedSwitcherControllers compact];
   }
 
-  [(NSMapTable *)self->_switcherControllersByWindowScene setObject:v6 forKey:v7];
+  [(NSMapTable *)self->_switcherControllersByWindowScene setObject:controllerCopy forKey:windowScene];
   [(SBMainSwitcherControllerCoordinator *)self _rebuildCurrentWindowingModeCompatibleAppLayoutsIfNecessary];
-  v12 = [v7 layoutStateProvider];
-  v13 = [v12 layoutState];
-  [(SBMainSwitcherControllerCoordinator *)self _updateHomeScreenDisplayLayoutElementForLayoutState:v13 switcherController:v6];
+  layoutStateProvider = [windowScene layoutStateProvider];
+  layoutState = [layoutStateProvider layoutState];
+  [(SBMainSwitcherControllerCoordinator *)self _updateHomeScreenDisplayLayoutElementForLayoutState:layoutState switcherController:controllerCopy];
 
-  [v6 didBeginCoordinationWithCoordinator:self];
+  [controllerCopy didBeginCoordinationWithCoordinator:self];
   [(SBMainSwitcherControllerCoordinator *)self _notifySwitcherControllersAppLayoutsDidChange];
   [(SBMainSwitcherControllerCoordinator *)self _notifySwitcherControllersCoordinatedSwitcherControllersDidChange];
-  if (v4)
+  if (optionsCopy)
   {
-    v14 = [(SBMainSwitcherControllerCoordinator *)self _defaultSwitcherController];
-    v27 = [v14 windowScene];
-    v28 = v14;
-    v15 = [v14 layoutStatePrimaryElement];
-    v16 = [v15 workspaceEntity];
-    v17 = [v16 applicationSceneEntity];
-    v18 = [v17 sceneHandle];
-    v19 = [v18 application];
-    v20 = [v19 bundleIdentifier];
-    LODWORD(v14) = [v20 isEqualToString:@"com.apple.ist.demoloop"];
+    _defaultSwitcherController = [(SBMainSwitcherControllerCoordinator *)self _defaultSwitcherController];
+    windowScene2 = [_defaultSwitcherController windowScene];
+    v28 = _defaultSwitcherController;
+    layoutStatePrimaryElement = [_defaultSwitcherController layoutStatePrimaryElement];
+    workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+    applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+    sceneHandle = [applicationSceneEntity sceneHandle];
+    application = [sceneHandle application];
+    bundleIdentifier = [application bundleIdentifier];
+    LODWORD(_defaultSwitcherController) = [bundleIdentifier isEqualToString:@"com.apple.ist.demoloop"];
 
     v21 = +[SBWorkspace mainWorkspace];
-    if (v14)
+    if (_defaultSwitcherController)
     {
-      v22 = v27;
-      v23 = [v27 _fbsDisplayConfiguration];
-      [v21 requestTransitionWithOptions:0 displayConfiguration:v23 builder:&__block_literal_global_385];
+      v22 = windowScene2;
+      _fbsDisplayConfiguration = [windowScene2 _fbsDisplayConfiguration];
+      [v21 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:&__block_literal_global_385];
 
       v24 = +[SBWorkspace mainWorkspace];
-      v25 = [v7 _fbsDisplayConfiguration];
-      [v24 requestTransitionWithOptions:0 displayConfiguration:v25 builder:&__block_literal_global_392];
+      _fbsDisplayConfiguration2 = [windowScene _fbsDisplayConfiguration];
+      [v24 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration2 builder:&__block_literal_global_392];
     }
 
     else
     {
-      v26 = [v7 _fbsDisplayConfiguration];
+      _fbsDisplayConfiguration3 = [windowScene _fbsDisplayConfiguration];
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
       v29[2] = __83__SBMainSwitcherControllerCoordinator_beginCoordinatingSwitcherController_options___block_invoke_5;
       v29[3] = &unk_2783A98F0;
       v29[4] = self;
-      [v21 requestTransitionWithOptions:0 displayConfiguration:v26 builder:v29];
+      [v21 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration3 builder:v29];
 
-      v22 = v27;
+      v22 = windowScene2;
     }
   }
 }
@@ -12834,26 +12834,26 @@ void __83__SBMainSwitcherControllerCoordinator_beginCoordinatingSwitcherControll
   [*(a1 + 32) _configureRequest:v4 forSwitcherTransitionRequest:v7 withEventLabel:@"ContinuityScreenConnect"];
 }
 
-- (void)endCoordinatingSwitcherController:(id)a3 options:(unint64_t)a4
+- (void)endCoordinatingSwitcherController:(id)controller options:(unint64_t)options
 {
-  v41 = a4;
+  optionsCopy = options;
   v68 = *MEMORY[0x277D85DE8];
-  v43 = a3;
-  [v43 willEndCoordinationWithCoordinator:self];
+  controllerCopy = controller;
+  [controllerCopy willEndCoordinationWithCoordinator:self];
   val = self;
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _defaultSwitcherController];
-  v6 = v43;
-  v7 = [v43 isEqual:v5];
+  _defaultSwitcherController = [(SBMainSwitcherControllerCoordinator *)self _defaultSwitcherController];
+  v6 = controllerCopy;
+  v7 = [controllerCopy isEqual:_defaultSwitcherController];
 
   if ((v7 & 1) == 0)
   {
     objc_initWeak(&location, val);
-    v38 = [(SBMainSwitcherControllerCoordinator *)val _defaultSwitcherController];
-    v39 = [v38 windowScene];
-    v8 = [v39 sceneManager];
-    v9 = v43;
-    v10 = [v9 windowScene];
-    v11 = [v10 sceneManager];
+    _defaultSwitcherController2 = [(SBMainSwitcherControllerCoordinator *)val _defaultSwitcherController];
+    windowScene = [_defaultSwitcherController2 windowScene];
+    sceneManager = [windowScene sceneManager];
+    v9 = controllerCopy;
+    windowScene2 = [v9 windowScene];
+    sceneManager2 = [windowScene2 sceneManager];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __81__SBMainSwitcherControllerCoordinator_endCoordinatingSwitcherController_options___block_invoke;
@@ -12861,7 +12861,7 @@ void __83__SBMainSwitcherControllerCoordinator_beginCoordinatingSwitcherControll
     objc_copyWeak(&v64, &location);
     v12 = v9;
     v62 = v12;
-    v37 = v10;
+    v37 = windowScene2;
     v63 = v37;
     v40 = MEMORY[0x223D6F7F0](v61);
     v59 = 0u;
@@ -12890,8 +12890,8 @@ void __83__SBMainSwitcherControllerCoordinator_beginCoordinatingSwitcherControll
           v54 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v17 = [v16 allItems];
-          v18 = [v17 countByEnumeratingWithState:&v53 objects:v66 count:16];
+          allItems = [v16 allItems];
+          v18 = [allItems countByEnumeratingWithState:&v53 objects:v66 count:16];
           if (v18)
           {
             v19 = *v54;
@@ -12901,24 +12901,24 @@ void __83__SBMainSwitcherControllerCoordinator_beginCoordinatingSwitcherControll
               {
                 if (*v54 != v19)
                 {
-                  objc_enumerationMutation(v17);
+                  objc_enumerationMutation(allItems);
                 }
 
                 v21 = [v12 _deviceApplicationSceneHandleForDisplayItem:*(*(&v53 + 1) + 8 * j)];
                 v22 = v21;
                 if (v21)
                 {
-                  v23 = [v21 _sceneIdentity];
-                  [v11 transferOwnershipOfSceneWithIdentity:v23 toSceneManager:v8];
+                  _sceneIdentity = [v21 _sceneIdentity];
+                  [sceneManager2 transferOwnershipOfSceneWithIdentity:_sceneIdentity toSceneManager:sceneManager];
 
-                  v24 = [v22 sceneIfExists];
-                  LOBYTE(v23) = v24 != 0;
+                  sceneIfExists = [v22 sceneIfExists];
+                  LOBYTE(_sceneIdentity) = sceneIfExists != 0;
 
-                  v15 |= v23;
+                  v15 |= _sceneIdentity;
                 }
               }
 
-              v18 = [v17 countByEnumeratingWithState:&v53 objects:v66 count:16];
+              v18 = [allItems countByEnumeratingWithState:&v53 objects:v66 count:16];
             }
 
             while (v18);
@@ -12930,20 +12930,20 @@ void __83__SBMainSwitcherControllerCoordinator_beginCoordinatingSwitcherControll
 
       while (v46);
 
-      if ((v41 & 1) == 0)
+      if ((optionsCopy & 1) == 0)
       {
         if (v15)
         {
           v25 = +[(SBWorkspace *)SBMainWorkspace];
-          v26 = [v39 _fbsDisplayConfiguration];
+          _fbsDisplayConfiguration = [windowScene _fbsDisplayConfiguration];
           v27 = v48;
           v48[0] = MEMORY[0x277D85DD0];
           v48[1] = 3221225472;
           v48[2] = __81__SBMainSwitcherControllerCoordinator_endCoordinatingSwitcherController_options___block_invoke_5;
           v48[3] = &unk_2783AB410;
-          v48[4] = v39;
+          v48[4] = windowScene;
           v49 = v40;
-          [v25 requestTransitionWithOptions:0 displayConfiguration:v26 builder:v48];
+          [v25 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration builder:v48];
 
 LABEL_26:
           goto LABEL_27;
@@ -12955,7 +12955,7 @@ LABEL_27:
 
         objc_destroyWeak(&v64);
         objc_destroyWeak(&location);
-        v6 = v43;
+        v6 = controllerCopy;
         goto LABEL_28;
       }
     }
@@ -12963,22 +12963,22 @@ LABEL_27:
     else
     {
 
-      if ((v41 & 1) == 0)
+      if ((optionsCopy & 1) == 0)
       {
         goto LABEL_22;
       }
     }
 
-    v28 = [v12 layoutStatePrimaryElement];
-    v29 = [v28 workspaceEntity];
-    v30 = [v29 applicationSceneEntity];
-    v31 = [v30 sceneHandle];
-    v32 = [v31 application];
-    v33 = [v32 bundleIdentifier];
-    v34 = [v33 isEqualToString:@"com.apple.ist.demoloop"];
+    layoutStatePrimaryElement = [v12 layoutStatePrimaryElement];
+    workspaceEntity = [layoutStatePrimaryElement workspaceEntity];
+    applicationSceneEntity = [workspaceEntity applicationSceneEntity];
+    sceneHandle = [applicationSceneEntity sceneHandle];
+    application = [sceneHandle application];
+    bundleIdentifier = [application bundleIdentifier];
+    v34 = [bundleIdentifier isEqualToString:@"com.apple.ist.demoloop"];
 
     v35 = +[SBWorkspace mainWorkspace];
-    v36 = [v39 _fbsDisplayConfiguration];
+    _fbsDisplayConfiguration2 = [windowScene _fbsDisplayConfiguration];
     if (v34)
     {
       v27 = v52;
@@ -12987,7 +12987,7 @@ LABEL_27:
       v52[2] = __81__SBMainSwitcherControllerCoordinator_endCoordinatingSwitcherController_options___block_invoke_2;
       v52[3] = &unk_2783AB528;
       v52[4] = v40;
-      [v35 requestTransitionWithOptions:0 displayConfiguration:v36 builder:v52];
+      [v35 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration2 builder:v52];
     }
 
     else
@@ -13000,7 +13000,7 @@ LABEL_27:
       v50[4] = v12;
       v50[5] = val;
       v51 = v40;
-      [v35 requestTransitionWithOptions:0 displayConfiguration:v36 builder:v50];
+      [v35 requestTransitionWithOptions:0 displayConfiguration:_fbsDisplayConfiguration2 builder:v50];
     }
 
     goto LABEL_26;
@@ -13166,10 +13166,10 @@ void __81__SBMainSwitcherControllerCoordinator_endCoordinatingSwitcherController
   }
 }
 
-- (void)enumerateSwitcherControllersWithBlock:(id)a3
+- (void)enumerateSwitcherControllersWithBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
@@ -13191,7 +13191,7 @@ LABEL_3:
       }
 
       v10 = [(NSMapTable *)self->_switcherControllersByWindowScene objectForKey:*(*(&v12 + 1) + 8 * v9), v12];
-      v4[2](v4, v10, &v16);
+      blockCopy[2](blockCopy, v10, &v16);
       v11 = v16;
 
       if (v11)
@@ -13213,17 +13213,17 @@ LABEL_3:
   }
 }
 
-- (id)appLayoutsForSwitcherController:(id)a3
+- (id)appLayoutsForSwitcherController:(id)controller
 {
   v136 = *MEMORY[0x277D85DE8];
-  v89 = a3;
+  controllerCopy = controller;
   v4 = self->_appLayouts;
-  v88 = self;
+  selfCopy = self;
   if ((SBFIsChamoisWindowingUIAvailable() & 1) != 0 || SBFIsFlexibleWindowingUIAvailable())
   {
     currentWindowingModeCompatibleAppLayoutsByWindowScene = self->_currentWindowingModeCompatibleAppLayoutsByWindowScene;
-    v6 = [v89 windowScene];
-    v7 = [(NSMapTable *)currentWindowingModeCompatibleAppLayoutsByWindowScene objectForKey:v6];
+    windowScene = [controllerCopy windowScene];
+    v7 = [(NSMapTable *)currentWindowingModeCompatibleAppLayoutsByWindowScene objectForKey:windowScene];
 
     if (v7)
     {
@@ -13279,9 +13279,9 @@ LABEL_3:
     v14 = 0;
 LABEL_18:
 
-    v15 = [v89 windowScene];
-    v16 = v15;
-    if (v14 && (([v15 isMainDisplayWindowScene] & 1) != 0 || objc_msgSend(v16, "isContinuityDisplayWindowScene")))
+    windowScene2 = [controllerCopy windowScene];
+    v16 = windowScene2;
+    if (v14 && (([windowScene2 isMainDisplayWindowScene] & 1) != 0 || objc_msgSend(v16, "isContinuityDisplayWindowScene")))
     {
       v92 = v4;
     }
@@ -13295,8 +13295,8 @@ LABEL_18:
         v123 = 0u;
         v120 = 0u;
         v121 = 0u;
-        v17 = v88->_coordinatedSwitcherControllers;
-        v18 = [(NSPointerArray *)v17 countByEnumeratingWithState:&v120 objects:v134 count:16];
+        layoutState2 = selfCopy->_coordinatedSwitcherControllers;
+        v18 = [(NSPointerArray *)layoutState2 countByEnumeratingWithState:&v120 objects:v134 count:16];
         if (v18)
         {
           v19 = v18;
@@ -13308,19 +13308,19 @@ LABEL_18:
             {
               if (*v121 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(layoutState2);
               }
 
-              v23 = [*(*(&v120 + 1) + 8 * j) windowScene];
-              if (([v23 isMainDisplayWindowScene] & 1) == 0)
+              windowScene3 = [*(*(&v120 + 1) + 8 * j) windowScene];
+              if (([windowScene3 isMainDisplayWindowScene] & 1) == 0)
               {
-                v24 = [v23 layoutStateProvider];
-                v25 = [v24 layoutState];
-                v21 &= ~(1 << [v25 displayOrdinal]);
+                layoutStateProvider = [windowScene3 layoutStateProvider];
+                layoutState = [layoutStateProvider layoutState];
+                v21 &= ~(1 << [layoutState displayOrdinal]);
               }
             }
 
-            v19 = [(NSPointerArray *)v17 countByEnumeratingWithState:&v120 objects:v134 count:16];
+            v19 = [(NSPointerArray *)layoutState2 countByEnumeratingWithState:&v120 objects:v134 count:16];
           }
 
           while (v19);
@@ -13334,8 +13334,8 @@ LABEL_18:
 
       else
       {
-        v17 = [v89 layoutState];
-        v21 = 1 << [(NSPointerArray *)v17 displayOrdinal];
+        layoutState2 = [controllerCopy layoutState];
+        v21 = 1 << [(NSPointerArray *)layoutState2 displayOrdinal];
       }
 
       v92 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -13377,7 +13377,7 @@ LABEL_18:
       v115 = 0u;
       v112 = 0u;
       v113 = 0u;
-      obj = v88->_draggingAppLayouts;
+      obj = selfCopy->_draggingAppLayouts;
       v32 = [(NSCountedSet *)obj countByEnumeratingWithState:&v112 objects:v132 count:16];
       if (v32)
       {
@@ -13404,17 +13404,17 @@ LABEL_18:
             v111 = v38;
             if (([(NSArray *)v92 bs_containsObjectPassingTest:v110]& 1) == 0)
             {
-              v39 = [(NSMapTable *)v88->_switcherControllersByWindowScene objectEnumerator];
-              v40 = [v39 allObjects];
+              objectEnumerator = [(NSMapTable *)selfCopy->_switcherControllersByWindowScene objectEnumerator];
+              allObjects = [objectEnumerator allObjects];
               v109[0] = MEMORY[0x277D85DD0];
               v109[1] = 3221225472;
               v109[2] = __71__SBMainSwitcherControllerCoordinator_appLayoutsForSwitcherController___block_invoke_2;
               v109[3] = &unk_2783B9710;
               v109[4] = v36;
-              [v40 bs_firstObjectPassingTest:v109];
+              [allObjects bs_firstObjectPassingTest:v109];
               v42 = v41 = v34;
 
-              v43 = [(SBMainSwitcherControllerCoordinator *)v88 convertAppLayout:v36 fromSwitcherController:v42 toSwitcherController:v89];
+              v43 = [(SBMainSwitcherControllerCoordinator *)selfCopy convertAppLayout:v36 fromSwitcherController:v42 toSwitcherController:controllerCopy];
               [(NSArray *)v92 addObject:v43];
 
               v33 = v90;
@@ -13431,18 +13431,18 @@ LABEL_18:
         while (v33);
       }
 
-      v44 = v88;
-      currentCoordinatedLayoutStateTransitionContext = v88->_currentCoordinatedLayoutStateTransitionContext;
+      v44 = selfCopy;
+      currentCoordinatedLayoutStateTransitionContext = selfCopy->_currentCoordinatedLayoutStateTransitionContext;
       if (currentCoordinatedLayoutStateTransitionContext)
       {
-        v46 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)currentCoordinatedLayoutStateTransitionContext fromSwitcherController];
-        v47 = [v89 isEqual:v46];
+        fromSwitcherController = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)currentCoordinatedLayoutStateTransitionContext fromSwitcherController];
+        v47 = [controllerCopy isEqual:fromSwitcherController];
 
         v4 = v87;
         if (v47)
         {
-          v48 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)v88->_currentCoordinatedLayoutStateTransitionContext displayItems];
-          v49 = [v48 mutableCopy];
+          displayItems = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)selfCopy->_currentCoordinatedLayoutStateTransitionContext displayItems];
+          v49 = [displayItems mutableCopy];
 
           v107 = 0u;
           v108 = 0u;
@@ -13464,8 +13464,8 @@ LABEL_18:
                 }
 
                 v55 = MEMORY[0x277CBEB98];
-                v56 = [*(*(&v105 + 1) + 8 * m) allItems];
-                v57 = [v55 setWithArray:v56];
+                allItems = [*(*(&v105 + 1) + 8 * m) allItems];
+                v57 = [v55 setWithArray:allItems];
                 [v49 minusSet:v57];
               }
 
@@ -13481,7 +13481,7 @@ LABEL_18:
           v102 = 0u;
           v58 = v49;
           v59 = [v58 countByEnumeratingWithState:&v101 objects:v130 count:16];
-          v44 = v88;
+          v44 = selfCopy;
           if (v59)
           {
             v60 = v59;
@@ -13496,8 +13496,8 @@ LABEL_18:
                 }
 
                 v63 = *(*(&v101 + 1) + 8 * n);
-                v64 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)v88->_currentCoordinatedLayoutStateTransitionContext fromAppLayout];
-                v65 = [v64 leafAppLayoutForItem:v63];
+                fromAppLayout = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)selfCopy->_currentCoordinatedLayoutStateTransitionContext fromAppLayout];
+                v65 = [fromAppLayout leafAppLayoutForItem:v63];
                 [(NSArray *)v50 addObject:v65];
               }
 
@@ -13508,13 +13508,13 @@ LABEL_18:
           }
         }
 
-        v66 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)v44->_currentCoordinatedLayoutStateTransitionContext toSwitcherController];
-        v67 = [v89 isEqual:v66];
+        toSwitcherController = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)v44->_currentCoordinatedLayoutStateTransitionContext toSwitcherController];
+        v67 = [controllerCopy isEqual:toSwitcherController];
 
         if (v67)
         {
-          v68 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)v44->_currentCoordinatedLayoutStateTransitionContext displayItems];
-          v69 = [v68 mutableCopy];
+          displayItems2 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)v44->_currentCoordinatedLayoutStateTransitionContext displayItems];
+          v69 = [displayItems2 mutableCopy];
 
           v99 = 0u;
           v100 = 0u;
@@ -13536,8 +13536,8 @@ LABEL_18:
                 }
 
                 v74 = MEMORY[0x277CBEB98];
-                v75 = [*(*(&v97 + 1) + 8 * ii) allItems];
-                v76 = [v74 setWithArray:v75];
+                allItems2 = [*(*(&v97 + 1) + 8 * ii) allItems];
+                v76 = [v74 setWithArray:allItems2];
                 [v69 minusSet:v76];
               }
 
@@ -13567,8 +13567,8 @@ LABEL_18:
                 }
 
                 v82 = *(*(&v93 + 1) + 8 * jj);
-                v83 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)v88->_currentCoordinatedLayoutStateTransitionContext toAppLayout];
-                v84 = [v83 leafAppLayoutForItem:v82];
+                toAppLayout = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)selfCopy->_currentCoordinatedLayoutStateTransitionContext toAppLayout];
+                v84 = [toAppLayout leafAppLayoutForItem:v82];
                 [(NSArray *)v92 addObject:v84];
               }
 
@@ -13601,13 +13601,13 @@ BOOL __71__SBMainSwitcherControllerCoordinator_appLayoutsForSwitcherController__
   return v5;
 }
 
-- (id)switcherControllerForAppLayout:(id)a3
+- (id)switcherControllerForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if ([(NSMapTable *)self->_switcherControllersByWindowScene count]== 1)
   {
-    v5 = [(NSMapTable *)self->_switcherControllersByWindowScene objectEnumerator];
-    v6 = [v5 nextObject];
+    objectEnumerator = [(NSMapTable *)self->_switcherControllersByWindowScene objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
   }
 
   else
@@ -13623,15 +13623,15 @@ BOOL __71__SBMainSwitcherControllerCoordinator_appLayoutsForSwitcherController__
     v8[2] = __70__SBMainSwitcherControllerCoordinator_switcherControllerForAppLayout___block_invoke;
     v8[3] = &unk_2783B9950;
     v8[4] = self;
-    v9 = v4;
+    v9 = layoutCopy;
     v10 = &v11;
     [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v8];
-    v6 = v12[5];
+    nextObject = v12[5];
 
     _Block_object_dispose(&v11, 8);
   }
 
-  return v6;
+  return nextObject;
 }
 
 void __70__SBMainSwitcherControllerCoordinator_switcherControllerForAppLayout___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -13650,13 +13650,13 @@ void __70__SBMainSwitcherControllerCoordinator_switcherControllerForAppLayout___
   }
 }
 
-- (id)switcherControllerForDisplayItem:(id)a3
+- (id)switcherControllerForDisplayItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(NSMapTable *)self->_switcherControllersByWindowScene count]== 1)
   {
-    v5 = [(NSMapTable *)self->_switcherControllersByWindowScene objectEnumerator];
-    v6 = [v5 nextObject];
+    objectEnumerator = [(NSMapTable *)self->_switcherControllersByWindowScene objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
   }
 
   else
@@ -13671,15 +13671,15 @@ void __70__SBMainSwitcherControllerCoordinator_switcherControllerForAppLayout___
     v8[1] = 3221225472;
     v8[2] = __72__SBMainSwitcherControllerCoordinator_switcherControllerForDisplayItem___block_invoke;
     v8[3] = &unk_2783B0A70;
-    v9 = v4;
+    v9 = itemCopy;
     v10 = &v11;
     [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v8];
-    v6 = v12[5];
+    nextObject = v12[5];
 
     _Block_object_dispose(&v11, 8);
   }
 
-  return v6;
+  return nextObject;
 }
 
 void __72__SBMainSwitcherControllerCoordinator_switcherControllerForDisplayItem___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -13695,33 +13695,33 @@ void __72__SBMainSwitcherControllerCoordinator_switcherControllerForDisplayItem_
   }
 }
 
-- (id)convertAppLayout:(id)a3 fromSwitcherController:(id)a4 toSwitcherController:(id)a5
+- (id)convertAppLayout:(id)layout fromSwitcherController:(id)controller toSwitcherController:(id)switcherController
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v8 isEqual:v9])
+  layoutCopy = layout;
+  controllerCopy = controller;
+  switcherControllerCopy = switcherController;
+  if ([controllerCopy isEqual:switcherControllerCopy])
   {
-    v10 = v7;
+    v10 = layoutCopy;
     goto LABEL_7;
   }
 
-  v11 = [v9 layoutState];
-  v10 = [v7 appLayoutByModifyingPreferredDisplayOrdinal:{objc_msgSend(v11, "displayOrdinal")}];
+  layoutState = [switcherControllerCopy layoutState];
+  v10 = [layoutCopy appLayoutByModifyingPreferredDisplayOrdinal:{objc_msgSend(layoutState, "displayOrdinal")}];
 
-  v12 = [v8 windowManagementContext];
-  if (([v12 isChamoisOrFlexibleWindowing] & 1) == 0)
+  windowManagementContext = [controllerCopy windowManagementContext];
+  if (([windowManagementContext isChamoisOrFlexibleWindowing] & 1) == 0)
   {
-    v13 = [v9 windowManagementContext];
-    v14 = [v13 isChamoisOrFlexibleWindowing];
+    windowManagementContext2 = [switcherControllerCopy windowManagementContext];
+    isChamoisOrFlexibleWindowing = [windowManagementContext2 isChamoisOrFlexibleWindowing];
 
-    if (!v14)
+    if (!isChamoisOrFlexibleWindowing)
     {
       goto LABEL_7;
     }
 
     [v10 appLayoutByAdjustingCenterWindowItemsForFlexibleWindowing];
-    v10 = v12 = v10;
+    v10 = windowManagementContext = v10;
   }
 
 LABEL_7:
@@ -13729,7 +13729,7 @@ LABEL_7:
   return v10;
 }
 
-- (SBDisplayItemSlideOverConfiguration)slideOverConfigurationOnAnySwitcherForDisplayItem:(SEL)a3
+- (SBDisplayItemSlideOverConfiguration)slideOverConfigurationOnAnySwitcherForDisplayItem:(SEL)item
 {
   v6 = a4;
   v7 = v6;
@@ -13746,7 +13746,7 @@ LABEL_7:
     v11[1] = 3221225472;
     v11[2] = __89__SBMainSwitcherControllerCoordinator_slideOverConfigurationOnAnySwitcherForDisplayItem___block_invoke;
     v11[3] = &unk_2783B9978;
-    v13 = self;
+    selfCopy = self;
     v14 = &v15;
     v12 = v6;
     [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v11];
@@ -13801,27 +13801,27 @@ void __89__SBMainSwitcherControllerCoordinator_slideOverConfigurationOnAnySwitch
   }
 }
 
-- (void)switcherControllerViewWillAppear:(id)a3 animated:(BOOL)a4
+- (void)switcherControllerViewWillAppear:(id)appear animated:(BOOL)animated
 {
-  [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache:a3];
+  [(SBMainSwitcherControllerCoordinator *)self _rebuildAppListCache:appear];
 
   [(SBMainSwitcherControllerCoordinator *)self _updateBestAppSuggestion];
 }
 
-- (void)setActiveGestureTransaction:(id)a3
+- (void)setActiveGestureTransaction:(id)transaction
 {
-  v5 = a3;
+  transactionCopy = transaction;
   activeGestureTransaction = self->_activeGestureTransaction;
-  if (activeGestureTransaction != v5)
+  if (activeGestureTransaction != transactionCopy)
   {
     [(SBFluidSwitcherGestureWorkspaceTransaction *)activeGestureTransaction removeObserver:self];
-    objc_storeStrong(&self->_activeGestureTransaction, a3);
+    objc_storeStrong(&self->_activeGestureTransaction, transaction);
     [(SBFluidSwitcherGestureWorkspaceTransaction *)self->_activeGestureTransaction addObserver:self];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __67__SBMainSwitcherControllerCoordinator_setActiveGestureTransaction___block_invoke;
     v7[3] = &unk_2783B9578;
-    v8 = v5;
+    v8 = transactionCopy;
     [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v7];
   }
 }
@@ -13832,18 +13832,18 @@ void __67__SBMainSwitcherControllerCoordinator_setActiveGestureTransaction___blo
   [v3 setActiveGestureTransaction:*(a1 + 32)];
 }
 
-- (void)setLiveContentOverlayUpdatesSuspended:(BOOL)a3
+- (void)setLiveContentOverlayUpdatesSuspended:(BOOL)suspended
 {
-  if (self->_liveContentOverlayUpdatesSuspended != a3)
+  if (self->_liveContentOverlayUpdatesSuspended != suspended)
   {
     v7 = v3;
     v8 = v4;
-    self->_liveContentOverlayUpdatesSuspended = a3;
+    self->_liveContentOverlayUpdatesSuspended = suspended;
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __77__SBMainSwitcherControllerCoordinator_setLiveContentOverlayUpdatesSuspended___block_invoke;
     v5[3] = &__block_descriptor_33_e34_v24__0__SBSwitcherController_8_B16l;
-    v6 = a3;
+    suspendedCopy = suspended;
     [(SBMainSwitcherControllerCoordinator *)self enumerateSwitcherControllersWithBlock:v5];
   }
 }
@@ -13883,38 +13883,38 @@ void __77__SBMainSwitcherControllerCoordinator_setLiveContentOverlayUpdatesSuspe
   return v2;
 }
 
-- (void)prepareForCoordinatedLayoutStateTransitionWithContext:(id)a3
+- (void)prepareForCoordinatedLayoutStateTransitionWithContext:(id)context
 {
-  objc_storeStrong(&self->_currentCoordinatedLayoutStateTransitionContext, a3);
-  v5 = a3;
-  v6 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self->_currentCoordinatedLayoutStateTransitionContext fromSwitcherController];
-  [v6 prepareForCoordinatedLayoutStateTransitionWithContext:self->_currentCoordinatedLayoutStateTransitionContext];
+  objc_storeStrong(&self->_currentCoordinatedLayoutStateTransitionContext, context);
+  contextCopy = context;
+  fromSwitcherController = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self->_currentCoordinatedLayoutStateTransitionContext fromSwitcherController];
+  [fromSwitcherController prepareForCoordinatedLayoutStateTransitionWithContext:self->_currentCoordinatedLayoutStateTransitionContext];
 
-  v7 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self->_currentCoordinatedLayoutStateTransitionContext toSwitcherController];
-  [v7 prepareForCoordinatedLayoutStateTransitionWithContext:self->_currentCoordinatedLayoutStateTransitionContext];
+  toSwitcherController = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self->_currentCoordinatedLayoutStateTransitionContext toSwitcherController];
+  [toSwitcherController prepareForCoordinatedLayoutStateTransitionWithContext:self->_currentCoordinatedLayoutStateTransitionContext];
 }
 
-- (void)cleanUpAfterCoordinatedLayoutStateTransitionWithContext:(id)a3
+- (void)cleanUpAfterCoordinatedLayoutStateTransitionWithContext:(id)context
 {
-  v4 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self->_currentCoordinatedLayoutStateTransitionContext fromSwitcherController];
-  [v4 cleanUpAfterCoordinatedLayoutStateTransitionWithContext:self->_currentCoordinatedLayoutStateTransitionContext];
+  fromSwitcherController = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self->_currentCoordinatedLayoutStateTransitionContext fromSwitcherController];
+  [fromSwitcherController cleanUpAfterCoordinatedLayoutStateTransitionWithContext:self->_currentCoordinatedLayoutStateTransitionContext];
 
-  v5 = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self->_currentCoordinatedLayoutStateTransitionContext toSwitcherController];
-  [v5 cleanUpAfterCoordinatedLayoutStateTransitionWithContext:self->_currentCoordinatedLayoutStateTransitionContext];
+  toSwitcherController = [(SBSwitcherCoordinatedLayoutStateTransitionContext *)self->_currentCoordinatedLayoutStateTransitionContext toSwitcherController];
+  [toSwitcherController cleanUpAfterCoordinatedLayoutStateTransitionWithContext:self->_currentCoordinatedLayoutStateTransitionContext];
 
   currentCoordinatedLayoutStateTransitionContext = self->_currentCoordinatedLayoutStateTransitionContext;
   self->_currentCoordinatedLayoutStateTransitionContext = 0;
 }
 
-- (id)_switcherControllerForTransitionRequest:(id)a3
+- (id)_switcherControllerForTransitionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__SBMainSwitcherControllerCoordinator__switcherControllerForTransitionRequest___block_invoke;
   v8[3] = &unk_2783B9710;
-  v9 = v4;
-  v5 = v4;
+  v9 = requestCopy;
+  v5 = requestCopy;
   v6 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerPassingTest:v8];
 
   return v6;
@@ -13931,15 +13931,15 @@ uint64_t __79__SBMainSwitcherControllerCoordinator__switcherControllerForTransit
   return v6;
 }
 
-- (id)_switcherControllerForContentViewController:(id)a3
+- (id)_switcherControllerForContentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __83__SBMainSwitcherControllerCoordinator__switcherControllerForContentViewController___block_invoke;
   v8[3] = &unk_2783B9710;
-  v9 = v4;
-  v5 = v4;
+  v9 = controllerCopy;
+  v5 = controllerCopy;
   v6 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerPassingTest:v8];
 
   return v6;
@@ -13953,15 +13953,15 @@ uint64_t __83__SBMainSwitcherControllerCoordinator__switcherControllerForContent
   return v4;
 }
 
-- (id)_switcherControllerForDisplayItem:(id)a3
+- (id)_switcherControllerForDisplayItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__SBMainSwitcherControllerCoordinator__switcherControllerForDisplayItem___block_invoke;
   v8[3] = &unk_2783B9710;
-  v9 = v4;
-  v5 = v4;
+  v9 = itemCopy;
+  v5 = itemCopy;
   v6 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerPassingTest:v8];
 
   return v6;
@@ -13984,24 +13984,24 @@ BOOL __73__SBMainSwitcherControllerCoordinator__switcherControllerForDisplayItem
   return v10;
 }
 
-- (BOOL)_contentControllerIsEmbeddedDisplayContentController:(id)a3
+- (BOOL)_contentControllerIsEmbeddedDisplayContentController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
-  v6 = [v5 contentViewController];
+  controllerCopy = controller;
+  _embeddedDisplaySwitcherController = [(SBMainSwitcherControllerCoordinator *)self _embeddedDisplaySwitcherController];
+  contentViewController = [_embeddedDisplaySwitcherController contentViewController];
 
-  return v6 == v4;
+  return contentViewController == controllerCopy;
 }
 
-- (id)switcherControllerForWindowScene:(id)a3
+- (id)switcherControllerForWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__SBMainSwitcherControllerCoordinator_switcherControllerForWindowScene___block_invoke;
   v8[3] = &unk_2783B9710;
-  v9 = v4;
-  v5 = v4;
+  v9 = sceneCopy;
+  v5 = sceneCopy;
   v6 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerPassingTest:v8];
 
   return v6;
@@ -14015,10 +14015,10 @@ uint64_t __72__SBMainSwitcherControllerCoordinator_switcherControllerForWindowSc
   return v4;
 }
 
-- (id)_switcherControllerPassingTest:(id)a3
+- (id)_switcherControllerPassingTest:(id)test
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  testCopy = test;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -14038,7 +14038,7 @@ uint64_t __72__SBMainSwitcherControllerCoordinator_switcherControllerForWindowSc
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if (v4[2](v4, v9))
+        if (testCopy[2](testCopy, v9))
         {
           v6 = v9;
           goto LABEL_11;
@@ -14071,19 +14071,19 @@ LABEL_11:
   return v3;
 }
 
-- (BOOL)_windowManagementContextIsSingleAppModeForSwitcherCorrespondingToDisplayOrdinal:(int64_t)a3
+- (BOOL)_windowManagementContextIsSingleAppModeForSwitcherCorrespondingToDisplayOrdinal:(int64_t)ordinal
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __119__SBMainSwitcherControllerCoordinator__windowManagementContextIsSingleAppModeForSwitcherCorrespondingToDisplayOrdinal___block_invoke;
   v7[3] = &__block_descriptor_40_e30_B16__0__SBSwitcherController_8l;
-  v7[4] = a3;
+  v7[4] = ordinal;
   v3 = [(SBMainSwitcherControllerCoordinator *)self _switcherControllerPassingTest:v7];
-  v4 = [v3 windowManagementContext];
+  windowManagementContext = [v3 windowManagementContext];
 
-  if (v4)
+  if (windowManagementContext)
   {
-    v5 = [v4 baseStyle] == 0;
+    v5 = [windowManagementContext baseStyle] == 0;
   }
 
   else

@@ -16,7 +16,7 @@
       *buf = 136446466;
       v6 = "[NWConcrete_nw_masque_connection dealloc]";
       v7 = 2114;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_181A37000, v3, OS_LOG_TYPE_DEBUG, "%{public}s %{public}@", buf, 0x16u);
     }
   }
@@ -29,8 +29,8 @@
 - (NSString)description
 {
   v26 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  if (!v2)
+  selfCopy = self;
+  if (!selfCopy)
   {
     v12 = __nwlog_obj();
     *buf = 136446210;
@@ -104,18 +104,18 @@ LABEL_57:
     goto LABEL_59;
   }
 
-  v3 = v2;
+  v3 = selfCopy;
   *buf = 0;
-  v4 = *(v2 + 1);
-  v5 = *(v2 + 112);
+  v4 = *(selfCopy + 1);
+  v5 = *(selfCopy + 112);
   if (v5 <= 4)
   {
-    if (*(v2 + 112) <= 1u)
+    if (*(selfCopy + 112) <= 1u)
     {
-      if (*(v2 + 112))
+      if (*(selfCopy + 112))
       {
         v6 = "initial";
-        v7 = *(v2 + 6);
+        v7 = *(selfCopy + 6);
         if (v7)
         {
           goto LABEL_24;
@@ -125,7 +125,7 @@ LABEL_57:
       else
       {
         v6 = "invalid";
-        v7 = *(v2 + 6);
+        v7 = *(selfCopy + 6);
         if (v7)
         {
           goto LABEL_24;
@@ -141,7 +141,7 @@ LABEL_22:
     {
       case 2u:
         v6 = "connected";
-        v7 = *(v2 + 6);
+        v7 = *(selfCopy + 6);
         if (!v7)
         {
           goto LABEL_22;
@@ -150,7 +150,7 @@ LABEL_22:
         goto LABEL_24;
       case 3u:
         v6 = "got_vers";
-        v7 = *(v2 + 6);
+        v7 = *(selfCopy + 6);
         if (!v7)
         {
           goto LABEL_22;
@@ -159,7 +159,7 @@ LABEL_22:
         goto LABEL_24;
       case 4u:
         v6 = "got_methods";
-        v7 = *(v2 + 6);
+        v7 = *(selfCopy + 6);
         if (!v7)
         {
           goto LABEL_22;
@@ -170,7 +170,7 @@ LABEL_22:
 
 LABEL_39:
     v6 = "unknown";
-    v7 = *(v2 + 6);
+    v7 = *(selfCopy + 6);
     if (!v7)
     {
       goto LABEL_22;
@@ -179,13 +179,13 @@ LABEL_39:
     goto LABEL_24;
   }
 
-  if (*(v2 + 112) > 7u)
+  if (*(selfCopy + 112) > 7u)
   {
     switch(v5)
     {
       case 8u:
         v6 = "out_connected";
-        v7 = *(v2 + 6);
+        v7 = *(selfCopy + 6);
         if (!v7)
         {
           goto LABEL_22;
@@ -194,7 +194,7 @@ LABEL_39:
         goto LABEL_24;
       case 0xC8u:
         v6 = "ready";
-        v7 = *(v2 + 6);
+        v7 = *(selfCopy + 6);
         if (!v7)
         {
           goto LABEL_22;
@@ -203,7 +203,7 @@ LABEL_39:
         goto LABEL_24;
       case 0xFFu:
         v6 = "cancelled";
-        v7 = *(v2 + 6);
+        v7 = *(selfCopy + 6);
         if (!v7)
         {
           goto LABEL_22;
@@ -218,7 +218,7 @@ LABEL_39:
   if (v5 == 5)
   {
     v6 = "got_address_type";
-    v7 = *(v2 + 6);
+    v7 = *(selfCopy + 6);
     if (!v7)
     {
       goto LABEL_22;
@@ -230,7 +230,7 @@ LABEL_39:
   if (v5 == 6)
   {
     v6 = "got_address";
-    v7 = *(v2 + 6);
+    v7 = *(selfCopy + 6);
     if (!v7)
     {
       goto LABEL_22;
@@ -245,7 +245,7 @@ LABEL_39:
   }
 
   v6 = "got_request";
-  v7 = *(v2 + 6);
+  v7 = *(selfCopy + 6);
   if (!v7)
   {
     goto LABEL_22;

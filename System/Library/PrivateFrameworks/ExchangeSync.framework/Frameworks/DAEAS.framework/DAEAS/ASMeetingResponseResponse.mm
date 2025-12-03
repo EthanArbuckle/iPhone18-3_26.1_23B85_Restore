@@ -7,7 +7,7 @@
 + (id)asParseRules;
 - (ASMeetingResponseResponse)init;
 - (id)description;
-- (void)_addSingularResponse:(id)a3;
+- (void)_addSingularResponse:(id)response;
 @end
 
 @implementation ASMeetingResponseResponse
@@ -21,7 +21,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_68 = v2;
     acceptsTopLevelLeaves___haveChecked_67 = 1;
   }
@@ -38,7 +38,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_70 = v2;
     parsingLeafNode___haveChecked_69 = 1;
   }
@@ -55,7 +55,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_72 = v2;
     parsingWithSubItems___haveChecked_71 = 1;
   }
@@ -72,7 +72,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_74 = v2;
     frontingBasicTypes___haveChecked_73 = 1;
   }
@@ -89,7 +89,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_76 = v2;
     notifyOfUnknownTokens___haveChecked_75 = 1;
   }
@@ -111,17 +111,17 @@
   return v2;
 }
 
-- (void)_addSingularResponse:(id)a3
+- (void)_addSingularResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(ASMeetingResponseResponse *)self mSingularResponses];
-  [v5 addObject:v4];
+  responseCopy = response;
+  mSingularResponses = [(ASMeetingResponseResponse *)self mSingularResponses];
+  [mSingularResponses addObject:responseCopy];
 }
 
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -132,7 +132,7 @@
     v5 = [v6 dictionaryWithObjectsAndKeys:{v7, v8, 0}];
 
     v9 = +[ASItem parseRuleCache];
-    v10 = NSStringFromClass(a1);
+    v10 = NSStringFromClass(self);
     [v9 setObject:v5 forKey:v10];
   }
 
@@ -145,8 +145,8 @@
   v8.receiver = self;
   v8.super_class = ASMeetingResponseResponse;
   v4 = [(ASMeetingResponseResponse *)&v8 description];
-  v5 = [(ASMeetingResponseResponse *)self mSingularResponses];
-  v6 = [v3 stringWithFormat:@"%@: Responses %@", v4, v5];
+  mSingularResponses = [(ASMeetingResponseResponse *)self mSingularResponses];
+  v6 = [v3 stringWithFormat:@"%@: Responses %@", v4, mSingularResponses];
 
   return v6;
 }

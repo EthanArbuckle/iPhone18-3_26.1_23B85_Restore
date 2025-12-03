@@ -1,6 +1,6 @@
 @interface AKPopupAdornmentLayer
 - (void)updateAdornmentElements;
-- (void)updateSublayersWithScale:(double)a3;
+- (void)updateSublayersWithScale:(double)scale;
 @end
 
 @implementation AKPopupAdornmentLayer
@@ -14,8 +14,8 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v3 = [(AKPopupAdornmentLayer *)self sublayers];
-  v4 = [v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+  sublayers = [(AKPopupAdornmentLayer *)self sublayers];
+  v4 = [sublayers countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v4)
   {
     v5 = v4;
@@ -26,7 +26,7 @@ LABEL_3:
     {
       if (*v35 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(sublayers);
       }
 
       v8 = *(*(&v34 + 1) + 8 * v7);
@@ -38,7 +38,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v34 objects:v38 count:16];
+        v5 = [sublayers countByEnumeratingWithState:&v34 objects:v38 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -65,35 +65,35 @@ LABEL_9:
   [(AKMiniNoteLayer *)v9 setBorderWidth:1.0];
   [(AKPopupAdornmentLayer *)self addSublayer:v9];
 LABEL_12:
-  v10 = [(AKAdornmentLayer *)self annotation];
-  v11 = [v10 parentAnnotation];
+  annotation = [(AKAdornmentLayer *)self annotation];
+  parentAnnotation = [annotation parentAnnotation];
   v12 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v14 = v11;
-    v15 = [v14 color];
-    v16 = [AKHighlightAppearanceHelper attributeTagForHighlightOfColor:v15];
+    v14 = parentAnnotation;
+    color = [v14 color];
+    v16 = [AKHighlightAppearanceHelper attributeTagForHighlightOfColor:color];
 
     if (v16 == 763000)
     {
-      v17 = [v14 color];
-      v18 = v17;
+      color2 = [v14 color];
+      v18 = color2;
     }
 
     else
     {
       v18 = [AKHighlightAppearanceHelper colorForNoteOfHighlightAttributeTag:v16];
-      v17 = [AKHighlightAppearanceHelper borderColorForNoteOfHighlightAttributeTag:v16];
+      color2 = [AKHighlightAppearanceHelper borderColorForNoteOfHighlightAttributeTag:v16];
     }
 
     -[AKMiniNoteLayer setBackgroundColor:](v9, "setBackgroundColor:", [v18 CGColor]);
-    -[AKMiniNoteLayer setBorderColor:](v9, "setBorderColor:", [v17 CGColor]);
+    -[AKMiniNoteLayer setBorderColor:](v9, "setBorderColor:", [color2 CGColor]);
   }
 
-  v19 = [(AKAdornmentLayer *)self pageController];
-  [v10 rectangle];
+  pageController = [(AKAdornmentLayer *)self pageController];
+  [annotation rectangle];
   x = v40.origin.x;
   y = v40.origin.y;
   width = v40.size.width;
@@ -104,8 +104,8 @@ LABEL_12:
   v41.size.width = width;
   v41.size.height = height;
   MidY = CGRectGetMidY(v41);
-  v26 = [v19 geometryHelper];
-  [v26 convertPoint:self fromModelToLayer:{MidX, MidY}];
+  geometryHelper = [pageController geometryHelper];
+  [geometryHelper convertPoint:self fromModelToLayer:{MidX, MidY}];
   v28 = v27;
   v30 = v29;
 
@@ -125,15 +125,15 @@ LABEL_12:
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (void)updateSublayersWithScale:(double)a3
+- (void)updateSublayersWithScale:(double)scale
 {
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(AKPopupAdornmentLayer *)self sublayers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [(AKPopupAdornmentLayer *)self sublayers];
+  v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = *v12;
@@ -143,7 +143,7 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -155,7 +155,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -167,10 +167,10 @@ LABEL_12:
 
 LABEL_11:
 
-  [v6 setBorderWidth:1.0 / a3];
+  [v6 setBorderWidth:1.0 / scale];
   v10.receiver = self;
   v10.super_class = AKPopupAdornmentLayer;
-  [(AKAdornmentLayer *)&v10 updateSublayersWithScale:a3];
+  [(AKAdornmentLayer *)&v10 updateSublayersWithScale:scale];
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface _CPLCloudKitTaskGroupThrottler
-- (BOOL)shouldRunOperationsNow:(id)a3 error:(id *)a4;
-- (_CPLCloudKitTaskGroupThrottler)initWithGroupName:(id)a3 minimumThrottlingInterval:(double)a4;
-- (id)statusWithNow:(id)a3;
-- (void)_adjustThrottlingDateWithNow:(id)a3 andError:(id)a4;
+- (BOOL)shouldRunOperationsNow:(id)now error:(id *)error;
+- (_CPLCloudKitTaskGroupThrottler)initWithGroupName:(id)name minimumThrottlingInterval:(double)interval;
+- (id)statusWithNow:(id)now;
+- (void)_adjustThrottlingDateWithNow:(id)now andError:(id)error;
 - (void)_incrementThrottledCount;
-- (void)operationDidFinishNow:(id)a3 withError:(id)a4;
+- (void)operationDidFinishNow:(id)now withError:(id)error;
 @end
 
 @implementation _CPLCloudKitTaskGroupThrottler
 
-- (_CPLCloudKitTaskGroupThrottler)initWithGroupName:(id)a3 minimumThrottlingInterval:(double)a4
+- (_CPLCloudKitTaskGroupThrottler)initWithGroupName:(id)name minimumThrottlingInterval:(double)interval
 {
-  v6 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = _CPLCloudKitTaskGroupThrottler;
   v7 = [(_CPLCloudKitTaskGroupThrottler *)&v17 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     groupName = v7->_groupName;
     v7->_groupName = v8;
 
-    v7->_minimumThrottlingInterval = a4;
+    v7->_minimumThrottlingInterval = interval;
     v10 = CPLCopyDefaultSerialQueueAttributes();
     v11 = dispatch_queue_create("com.apple.cpl.cloudkit.throttling", v10);
     logQueue = v7->_logQueue;
@@ -41,17 +41,17 @@
   return v7;
 }
 
-- (void)_adjustThrottlingDateWithNow:(id)a3 andError:(id)a4
+- (void)_adjustThrottlingDateWithNow:(id)now andError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  nowCopy = now;
+  errorCopy = error;
   throttlingDate = self->_throttlingDate;
   if (!throttlingDate)
   {
     goto LABEL_14;
   }
 
-  [(NSDate *)throttlingDate timeIntervalSinceDate:v6];
+  [(NSDate *)throttlingDate timeIntervalSinceDate:nowCopy];
   if (v9 <= 0.0)
   {
     v11 = 0;
@@ -61,7 +61,7 @@
   v10 = fmax(self->_minimumThrottlingInterval, 604800.0);
   if (v9 > v10)
   {
-    v11 = [v6 dateByAddingTimeInterval:v10];
+    v11 = [nowCopy dateByAddingTimeInterval:v10];
 LABEL_6:
     v12 = self->_throttlingDate;
     self->_throttlingDate = v11;
@@ -72,7 +72,7 @@ LABEL_6:
 
   if (self->_throttlingDate && !self->_throttlingError)
   {
-    if (v7 && ![v7 isCPLErrorWithCode:1004])
+    if (errorCopy && ![errorCopy isCPLErrorWithCode:1004])
     {
       v14 = @"Server is unavailable for %@";
       v15 = 1000;
@@ -114,19 +114,19 @@ LABEL_14:
   dispatch_async(logQueue, block);
 }
 
-- (void)operationDidFinishNow:(id)a3 withError:(id)a4
+- (void)operationDidFinishNow:(id)now withError:(id)error
 {
-  v28 = a3;
-  v7 = a4;
-  if ([CPLCloudKitErrors isOperationThrottledError:v7])
+  nowCopy = now;
+  errorCopy = error;
+  if ([CPLCloudKitErrors isOperationThrottledError:errorCopy])
   {
     [(_CPLCloudKitTaskGroupThrottler *)self _incrementThrottledCount];
     throttlingError = self->_throttlingError;
     self->_throttlingError = 0;
 
-    v9 = [v7 userInfo];
+    userInfo = [errorCopy userInfo];
     v10 = CPLErrorRetryAfterDateKey;
-    v11 = [v9 objectForKeyedSubscript:CPLErrorRetryAfterDateKey];
+    v11 = [userInfo objectForKeyedSubscript:CPLErrorRetryAfterDateKey];
     throttlingDate = self->_throttlingDate;
     self->_throttlingDate = v11;
 
@@ -161,8 +161,8 @@ LABEL_14:
 
     else
     {
-      v19 = [v7 userInfo];
-      v20 = [v19 objectForKeyedSubscript:CKErrorRetryAfterKey];
+      userInfo2 = [errorCopy userInfo];
+      v20 = [userInfo2 objectForKeyedSubscript:CKErrorRetryAfterKey];
 
       if (v20)
       {
@@ -200,17 +200,17 @@ LABEL_28:
 
     if (!self->_throttlingDate)
     {
-      v23 = [v28 dateByAddingTimeInterval:3600.0];
+      v23 = [nowCopy dateByAddingTimeInterval:3600.0];
       v24 = self->_throttlingDate;
       self->_throttlingDate = v23;
     }
 
-    [(_CPLCloudKitTaskGroupThrottler *)self _adjustThrottlingDateWithNow:v28 andError:v7];
+    [(_CPLCloudKitTaskGroupThrottler *)self _adjustThrottlingDateWithNow:nowCopy andError:errorCopy];
   }
 
-  else if (v7)
+  else if (errorCopy)
   {
-    if ([CPLCloudKitErrors isOperationCancelledOrDeferredError:v7])
+    if ([CPLCloudKitErrors isOperationCancelledOrDeferredError:errorCopy])
     {
       ++self->_cancelledCount;
     }
@@ -222,11 +222,11 @@ LABEL_28:
   }
 }
 
-- (BOOL)shouldRunOperationsNow:(id)a3 error:(id *)a4
+- (BOOL)shouldRunOperationsNow:(id)now error:(id *)error
 {
-  v7 = a3;
-  [(_CPLCloudKitTaskGroupThrottler *)self _adjustThrottlingDateWithNow:v7 andError:0];
-  if (self->_throttlingDate && [v7 compare:?] == -1)
+  nowCopy = now;
+  [(_CPLCloudKitTaskGroupThrottler *)self _adjustThrottlingDateWithNow:nowCopy andError:0];
+  if (self->_throttlingDate && [nowCopy compare:?] == -1)
   {
     [(_CPLCloudKitTaskGroupThrottler *)self _incrementThrottledCount];
     throttlingError = self->_throttlingError;
@@ -236,9 +236,9 @@ LABEL_28:
     }
 
     v8 = 0;
-    if (a4)
+    if (error)
     {
-      *a4 = throttlingError;
+      *error = throttlingError;
     }
   }
 
@@ -252,10 +252,10 @@ LABEL_28:
   return v8;
 }
 
-- (id)statusWithNow:(id)a3
+- (id)statusWithNow:(id)now
 {
-  v4 = a3;
-  [(_CPLCloudKitTaskGroupThrottler *)self _adjustThrottlingDateWithNow:v4 andError:0];
+  nowCopy = now;
+  [(_CPLCloudKitTaskGroupThrottler *)self _adjustThrottlingDateWithNow:nowCopy andError:0];
   v5 = [NSMutableString alloc];
   count = self->_count;
   v7 = objc_msgSend(v5, "initWithFormat:", @"%@: %lu (failed: %lu"), self->_groupName, count, self->_failedCount;
@@ -268,7 +268,7 @@ LABEL_28:
   throttlingDate = self->_throttlingDate;
   if (throttlingDate)
   {
-    [(NSDate *)throttlingDate timeIntervalSinceDate:v4];
+    [(NSDate *)throttlingDate timeIntervalSinceDate:nowCopy];
     v10 = [CPLDateFormatter stringForTimeInterval:?];
     [v8 appendFormat:@" - throttled: %lu - throttled for %@"], self->_throttledCount, v10);
   }

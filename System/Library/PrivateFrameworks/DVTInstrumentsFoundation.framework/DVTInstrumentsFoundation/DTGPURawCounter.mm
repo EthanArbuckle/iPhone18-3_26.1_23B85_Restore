@@ -1,34 +1,34 @@
 @interface DTGPURawCounter
-- (BOOL)isEqual:(id)a3;
-- (DTGPURawCounter)initWithName:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DTGPURawCounter)initWithName:(id)name;
 @end
 
 @implementation DTGPURawCounter
 
-- (DTGPURawCounter)initWithName:(id)a3
+- (DTGPURawCounter)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = DTGPURawCounter;
   v6 = [(DTGPURawCounter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     name = self->_name;
-    v6 = [v4 name];
-    v7 = [(NSString *)name isEqualToString:v6];
+    name = [equalCopy name];
+    v7 = [(NSString *)name isEqualToString:name];
   }
 
   else

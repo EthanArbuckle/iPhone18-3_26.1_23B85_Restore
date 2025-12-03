@@ -1,17 +1,17 @@
 @interface DirectionsStepsListNavigationProvider
 - (DirectionsStepsListNavigationDelegate)delegate;
-- (DirectionsStepsListNavigationProvider)initWithDelegate:(id)a3;
-- (double)_progressAlongRouteWithDistanceInfo:(id)a3;
+- (DirectionsStepsListNavigationProvider)initWithDelegate:(id)delegate;
+- (double)_progressAlongRouteWithDistanceInfo:(id)info;
 - (double)elapsedDistance;
 - (void)_startObservingNavigation;
 - (void)_stopObservingNavigation;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didReceiveRealtimeUpdates:(id)a4;
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6;
-- (void)navigationService:(id)a3 didUpdateDisplayedStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4;
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didReceiveRealtimeUpdates:(id)updates;
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info;
+- (void)navigationService:(id)service didUpdateDisplayedStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location;
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex;
 @end
 
 @implementation DirectionsStepsListNavigationProvider
@@ -23,50 +23,50 @@
   return WeakRetained;
 }
 
-- (double)_progressAlongRouteWithDistanceInfo:(id)a3
+- (double)_progressAlongRouteWithDistanceInfo:(id)info
 {
-  if (!a3)
+  if (!info)
   {
     return 0.0;
   }
 
   navigationService = self->_navigationService;
-  v4 = a3;
-  v5 = [(MNNavigationService *)navigationService route];
-  [v5 distance];
+  infoCopy = info;
+  route = [(MNNavigationService *)navigationService route];
+  [route distance];
   v7 = v6;
-  [v4 distanceRemainingToEndOfLeg];
+  [infoCopy distanceRemainingToEndOfLeg];
   v9 = v8;
 
   return fmax(v7 - v9, 0.0);
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayETA:(id)a4 remainingDistance:(id)a5 batteryChargeInfo:(id)a6
+- (void)navigationService:(id)service didUpdateDisplayETA:(id)a remainingDistance:(id)distance batteryChargeInfo:(id)info
 {
-  v10 = a5;
-  v7 = [(DirectionsStepsListNavigationProvider *)self delegate];
+  distanceCopy = distance;
+  delegate = [(DirectionsStepsListNavigationProvider *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(DirectionsStepsListNavigationProvider *)self delegate];
-    [(DirectionsStepsListNavigationProvider *)self _progressAlongRouteWithDistanceInfo:v10];
-    [v9 navigationProvider:self didUpdateElapsedDistanceAlongRoute:?];
+    delegate2 = [(DirectionsStepsListNavigationProvider *)self delegate];
+    [(DirectionsStepsListNavigationProvider *)self _progressAlongRouteWithDistanceInfo:distanceCopy];
+    [delegate2 navigationProvider:self didUpdateElapsedDistanceAlongRoute:?];
   }
 }
 
-- (void)navigationService:(id)a3 didReceiveRealtimeUpdates:(id)a4
+- (void)navigationService:(id)service didReceiveRealtimeUpdates:(id)updates
 {
-  v5 = a4;
-  v6 = [a3 route];
-  v7 = [v6 uniqueRouteID];
+  updatesCopy = updates;
+  route = [service route];
+  uniqueRouteID = [route uniqueRouteID];
 
-  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(updatesCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v9 = v5;
+  v9 = updatesCopy;
   v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v10)
   {
@@ -86,18 +86,18 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 routeID];
-          v16 = [v7 isEqual:v15];
+          routeID = [v14 routeID];
+          v16 = [uniqueRouteID isEqual:routeID];
 
           if (v16)
           {
             v17 = v14;
-            v18 = [v17 transitUpdate];
+            transitUpdate = [v17 transitUpdate];
 
-            if (v18)
+            if (transitUpdate)
             {
-              v19 = [v17 transitUpdate];
-              [v8 addObject:v19];
+              transitUpdate2 = [v17 transitUpdate];
+              [v8 addObject:transitUpdate2];
             }
           }
         }
@@ -112,27 +112,27 @@
     while (v11);
   }
 
-  v20 = [(DirectionsStepsListNavigationProvider *)self delegate];
+  delegate = [(DirectionsStepsListNavigationProvider *)self delegate];
   v21 = [v8 copy];
-  [v20 navigationProvider:self didReceiveRealtimeUpdates:v21];
+  [delegate navigationProvider:self didReceiveRealtimeUpdates:v21];
 }
 
-- (void)navigationService:(id)a3 didUpdateMatchedLocation:(id)a4
+- (void)navigationService:(id)service didUpdateMatchedLocation:(id)location
 {
-  v5 = a4;
-  v6 = [(DirectionsStepsListNavigationProvider *)self delegate];
-  [v6 navigationProvider:self didUpdateMatchedLocation:v5];
+  locationCopy = location;
+  delegate = [(DirectionsStepsListNavigationProvider *)self delegate];
+  [delegate navigationProvider:self didUpdateMatchedLocation:locationCopy];
 }
 
-- (void)navigationService:(id)a3 didUpdateDisplayedStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateDisplayedStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  v7 = [(DirectionsStepsListNavigationProvider *)self delegate:a3];
-  [v7 navigationProvider:self didUpdateDisplayedStepIndex:a4];
+  v7 = [(DirectionsStepsListNavigationProvider *)self delegate:service];
+  [v7 navigationProvider:self didUpdateDisplayedStepIndex:index];
 }
 
-- (void)navigationService:(id)a3 didUpdateStepIndex:(unint64_t)a4 segmentIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdateStepIndex:(unint64_t)index segmentIndex:(unint64_t)segmentIndex
 {
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = sub_100799650();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -144,25 +144,25 @@
 
   else
   {
-    v8 = [(DirectionsStepsListNavigationProvider *)self delegate:a3];
-    [v8 navigationProvider:self didUpdateActiveStepIndex:a4];
+    v8 = [(DirectionsStepsListNavigationProvider *)self delegate:service];
+    [v8 navigationProvider:self didUpdateActiveStepIndex:index];
   }
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v6 = a3;
-  v9 = [(DirectionsStepsListNavigationProvider *)self delegate];
+  serviceCopy = service;
+  delegate = [(DirectionsStepsListNavigationProvider *)self delegate];
   IsNavigating = MNNavigationServiceStateIsNavigating();
-  v8 = [v6 route];
+  route = [serviceCopy route];
 
-  [v9 navigationProvider:self didChangeToNavigating:IsNavigating withRoute:v8];
+  [delegate navigationProvider:self didChangeToNavigating:IsNavigating withRoute:route];
 }
 
 - (double)elapsedDistance
 {
-  v3 = [(MNNavigationService *)self->_navigationService remainingDistanceInfo];
-  [(DirectionsStepsListNavigationProvider *)self _progressAlongRouteWithDistanceInfo:v3];
+  remainingDistanceInfo = [(MNNavigationService *)self->_navigationService remainingDistanceInfo];
+  [(DirectionsStepsListNavigationProvider *)self _progressAlongRouteWithDistanceInfo:remainingDistanceInfo];
   v5 = v4;
 
   return v5;
@@ -193,16 +193,16 @@
   }
 }
 
-- (DirectionsStepsListNavigationProvider)initWithDelegate:(id)a3
+- (DirectionsStepsListNavigationProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = DirectionsStepsListNavigationProvider;
   v5 = [(DirectionsStepsListNavigationProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(DirectionsStepsListNavigationProvider *)v5 setDelegate:v4];
+    [(DirectionsStepsListNavigationProvider *)v5 setDelegate:delegateCopy];
     [(DirectionsStepsListNavigationProvider *)v6 _startObservingNavigation];
   }
 

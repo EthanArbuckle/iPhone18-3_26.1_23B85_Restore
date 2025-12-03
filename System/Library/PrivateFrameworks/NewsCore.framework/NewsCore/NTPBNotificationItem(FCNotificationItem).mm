@@ -17,7 +17,7 @@
   v21 = a7;
   v22 = a10;
   v23 = a12;
-  v24 = [a1 init];
+  v24 = [self init];
   v25 = v24;
   if (v24)
   {
@@ -51,45 +51,45 @@
   v8 = a3;
   v27 = a4;
   v9 = a6;
-  v25 = [v8 base];
-  v26 = [v25 identifier];
-  v10 = [v8 notificationID];
-  v11 = [v8 clusterID];
-  v12 = v11;
-  if (!v11)
+  base = [v8 base];
+  identifier = [base identifier];
+  notificationID = [v8 notificationID];
+  clusterID = [v8 clusterID];
+  clusterID2 = clusterID;
+  if (!clusterID)
   {
-    v12 = [v27 clusterID];
+    clusterID2 = [v27 clusterID];
   }
 
-  v13 = [v8 notabilityScores];
-  v14 = v13;
-  if (!v13)
+  notabilityScores = [v8 notabilityScores];
+  v14 = notabilityScores;
+  if (!notabilityScores)
   {
     v14 = objc_opt_new();
   }
 
-  v15 = [v8 suppressIfFollowingTagIDs];
-  v16 = v15;
-  if (!v15)
+  suppressIfFollowingTagIDs = [v8 suppressIfFollowingTagIDs];
+  v16 = suppressIfFollowingTagIDs;
+  if (!suppressIfFollowingTagIDs)
   {
     v16 = objc_opt_new();
   }
 
-  v17 = [v8 targetMinNewsVersion];
+  targetMinNewsVersion = [v8 targetMinNewsVersion];
   LODWORD(v22) = a5;
   LODWORD(v21) = [v8 targetDeviceTypes];
-  v18 = [a1 initWithIdentifier:v26 canonicalID:v10 clusterID:v12 notabilityScores:v14 suppressIfFollowingTagIDs:v16 targetMinNewsVersion:v17 targetDeviceTypes:v21 feedItem:v27 source:v22 algoID:v9];
+  v18 = [self initWithIdentifier:identifier canonicalID:notificationID clusterID:clusterID2 notabilityScores:v14 suppressIfFollowingTagIDs:v16 targetMinNewsVersion:targetMinNewsVersion targetDeviceTypes:v21 feedItem:v27 source:v22 algoID:v9];
 
   v19 = v18;
-  if (!v15)
+  if (!suppressIfFollowingTagIDs)
   {
   }
 
-  if (!v13)
+  if (!notabilityScores)
   {
   }
 
-  if (!v11)
+  if (!clusterID)
   {
   }
 
@@ -98,37 +98,37 @@
 
 - (id)description
 {
-  v2 = [[FCDescription alloc] initWithObject:a1];
-  v3 = [a1 identifier];
-  [(FCDescription *)v2 addField:@"identifier" value:v3];
+  v2 = [[FCDescription alloc] initWithObject:self];
+  identifier = [self identifier];
+  [(FCDescription *)v2 addField:@"identifier" value:identifier];
 
-  v4 = [a1 canonicalID];
-  [(FCDescription *)v2 addField:@"canonicalID" value:v4];
+  canonicalID = [self canonicalID];
+  [(FCDescription *)v2 addField:@"canonicalID" value:canonicalID];
 
-  v5 = [a1 articleID];
-  [(FCDescription *)v2 addField:@"articleID" value:v5];
+  articleID = [self articleID];
+  [(FCDescription *)v2 addField:@"articleID" value:articleID];
 
-  v6 = [(FCDescription *)v2 descriptionString];
+  descriptionString = [(FCDescription *)v2 descriptionString];
 
-  return v6;
+  return descriptionString;
 }
 
 - (id)articleID
 {
-  v1 = [a1 feedItem];
-  v2 = [v1 articleID];
+  feedItem = [self feedItem];
+  articleID = [feedItem articleID];
 
-  return v2;
+  return articleID;
 }
 
 - (__CFString)channelID
 {
-  v1 = [a1 feedItem];
-  v2 = [v1 sourceChannelID];
-  v3 = v2;
-  if (v2)
+  feedItem = [self feedItem];
+  sourceChannelID = [feedItem sourceChannelID];
+  v3 = sourceChannelID;
+  if (sourceChannelID)
   {
-    v4 = v2;
+    v4 = sourceChannelID;
   }
 
   else

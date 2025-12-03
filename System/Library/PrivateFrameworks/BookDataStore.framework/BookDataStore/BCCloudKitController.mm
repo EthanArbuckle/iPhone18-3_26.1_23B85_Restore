@@ -1,34 +1,34 @@
 @interface BCCloudKitController
 + (BCCloudKitController)sharedInstance;
-+ (id)databaseFolderURLForConfiguration:(id)a3;
-+ (id)instanceForCKNotification:(id)a3;
-+ (id)p_createDatabaseArchiveDirectoryForConfiguration:(id)a3;
-+ (id)p_privateDatabaseArchiveURLForConfiguration:(id)a3;
++ (id)databaseFolderURLForConfiguration:(id)configuration;
++ (id)instanceForCKNotification:(id)notification;
++ (id)p_createDatabaseArchiveDirectoryForConfiguration:(id)configuration;
++ (id)p_privateDatabaseArchiveURLForConfiguration:(id)configuration;
 + (id)secureSharedInstance;
-+ (void)deleteCloudDataWithCompletion:(id)a3;
++ (void)deleteCloudDataWithCompletion:(id)completion;
 + (void)registerForSecureNotifications;
-- (BCCloudKitController)initWithConfiguration:(id)a3;
-- (void)_attachOrSignalFetchChangesTransaction:(id)a3 reason:(id)a4;
+- (BCCloudKitController)initWithConfiguration:(id)configuration;
+- (void)_attachOrSignalFetchChangesTransaction:(id)transaction reason:(id)reason;
 - (void)_reestablishSyncEngineSalt;
 - (void)_reestablishSyncEngineSaltIfNeeded;
-- (void)_updateAccountCacheWithCompletionBlock:(id)a3;
+- (void)_updateAccountCacheWithCompletionBlock:(id)block;
 - (void)applicationDidBecomeActive;
-- (void)aq_requestUpdateAttachmentWithCompletion:(id)a3;
-- (void)aq_setGettingAccountInfo:(BOOL)a3 willRetryUpdateAttachment:(BOOL)a4;
-- (void)attachOrSignalFetchChangesTransaction:(id)a3 reason:(id)a4;
-- (void)handleRemoteCKNotification:(id)a3;
-- (void)handleRemoteNotification:(id)a3;
-- (void)p_accountChanged:(id)a3;
-- (void)p_accountReallyChangedWithCompletion:(id)a3;
+- (void)aq_requestUpdateAttachmentWithCompletion:(id)completion;
+- (void)aq_setGettingAccountInfo:(BOOL)info willRetryUpdateAttachment:(BOOL)attachment;
+- (void)attachOrSignalFetchChangesTransaction:(id)transaction reason:(id)reason;
+- (void)handleRemoteCKNotification:(id)notification;
+- (void)handleRemoteNotification:(id)notification;
+- (void)p_accountChanged:(id)changed;
+- (void)p_accountReallyChangedWithCompletion:(id)completion;
 - (void)p_flushPendingRequestUpdateAttachmentCompletionBlocks;
-- (void)p_getAccountInfoWithCompletion:(id)a3;
-- (void)p_getNecessaryAccountInfoFromContainer:(id)a3 completion:(id)a4;
-- (void)p_identityChanged:(id)a3;
-- (void)p_testAccountChanged:(id)a3;
+- (void)p_getAccountInfoWithCompletion:(id)completion;
+- (void)p_getNecessaryAccountInfoFromContainer:(id)container completion:(id)completion;
+- (void)p_identityChanged:(id)changed;
+- (void)p_testAccountChanged:(id)changed;
 - (void)p_updateAttachment;
-- (void)requestUpdateAttachmentWithCompletion:(id)a3;
-- (void)setEnableCloudSync:(BOOL)a3 serviceMode:(BOOL)a4;
-- (void)setGettingAccountInfo:(BOOL)a3;
+- (void)requestUpdateAttachmentWithCompletion:(id)completion;
+- (void)setEnableCloudSync:(BOOL)sync serviceMode:(BOOL)mode;
+- (void)setGettingAccountInfo:(BOOL)info;
 @end
 
 @implementation BCCloudKitController
@@ -68,15 +68,15 @@
 
   v4 = +[BCCloudKitSecureConfiguration configuration];
   v5 = [BCCloudKitDatabaseController alloc];
-  v6 = [a1 p_privateDatabaseArchiveURLForConfiguration:v4];
+  v6 = [self p_privateDatabaseArchiveURLForConfiguration:v4];
   v7 = [(BCCloudKitDatabaseController *)v5 initWithConfiguration:v4 archiveURL:v6];
 
   if (![(BCCloudKitDatabaseController *)v7 hasSubscription])
   {
-    v8 = [v4 queueIdentifier];
-    v9 = [v8 UTF8String];
+    queueIdentifier = [v4 queueIdentifier];
+    uTF8String = [queueIdentifier UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -84,21 +84,21 @@
     v13[3] = &unk_1E875AE20;
     v14 = v4;
     v15 = v11;
-    v17 = a1;
+    selfCopy = self;
     v16 = v7;
     v12 = v11;
     dispatch_async(v12, v13);
   }
 }
 
-+ (id)instanceForCKNotification:(id)a3
++ (id)instanceForCKNotification:(id)notification
 {
-  v3 = [a3 containerIdentifier];
+  containerIdentifier = [notification containerIdentifier];
   v4 = +[BCCloudKitController sharedInstance];
   v5 = +[BCCloudKitSecureConfiguration configuration];
-  v6 = [v4 configuration];
-  v7 = [v6 containerIdentifier];
-  v8 = [v3 isEqualToString:v7];
+  configuration = [v4 configuration];
+  containerIdentifier2 = [configuration containerIdentifier];
+  v8 = [containerIdentifier isEqualToString:containerIdentifier2];
 
   if (v8)
   {
@@ -108,8 +108,8 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  v10 = [v5 containerIdentifier];
-  v11 = [v3 isEqualToString:v10];
+  containerIdentifier3 = [v5 containerIdentifier];
+  v11 = [containerIdentifier isEqualToString:containerIdentifier3];
 
   if (v11)
   {
@@ -123,16 +123,16 @@ LABEL_7:
   return v12;
 }
 
-- (BCCloudKitController)initWithConfiguration:(id)a3
+- (BCCloudKitController)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v42.receiver = self;
   v42.super_class = BCCloudKitController;
   v5 = [(BCCloudKitController *)&v42 init];
   v6 = v5;
   if (v5)
   {
-    [(BCCloudKitController *)v5 setConfiguration:v4];
+    [(BCCloudKitController *)v5 setConfiguration:configurationCopy];
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     pendingGetAccountInfoCompletionBlocks = v6->_pendingGetAccountInfoCompletionBlocks;
     v6->_pendingGetAccountInfoCompletionBlocks = v7;
@@ -142,34 +142,34 @@ LABEL_7:
     v6->_pendingRequestUpdateAttachmentCompletionBlocks = v9;
 
     v6->_currentStatus = 0;
-    v11 = [v4 queueIdentifier];
-    v12 = [v11 UTF8String];
+    queueIdentifier = [configurationCopy queueIdentifier];
+    uTF8String = [queueIdentifier UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v14 = dispatch_queue_create(v12, v13);
+    v14 = dispatch_queue_create(uTF8String, v13);
 
     objc_storeStrong(&v6->_accessQueue, v14);
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    v16 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v16 addObserver:v6 selector:sel_p_testAccountChanged_ name:@"com.apple.BDSService.BCCloudAccountChanged" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 addObserver:v6 selector:sel_p_testAccountChanged_ name:@"com.apple.BDSService.BCCloudAccountChanged" object:0];
 
-    [v15 addObserver:v6 selector:sel_p_accountChanged_ name:*MEMORY[0x1E695B710] object:0];
-    [v15 addObserver:v6 selector:sel_p_identityChanged_ name:*MEMORY[0x1E695B770] object:0];
+    [defaultCenter addObserver:v6 selector:sel_p_accountChanged_ name:*MEMORY[0x1E695B710] object:0];
+    [defaultCenter addObserver:v6 selector:sel_p_identityChanged_ name:*MEMORY[0x1E695B770] object:0];
     v17 = [BCCloudKitDatabaseController alloc];
-    v18 = [objc_opt_class() p_privateDatabaseArchiveURLForConfiguration:v4];
-    v19 = [(BCCloudKitDatabaseController *)v17 initWithConfiguration:v4 archiveURL:v18];
+    v18 = [objc_opt_class() p_privateDatabaseArchiveURLForConfiguration:configurationCopy];
+    v19 = [(BCCloudKitDatabaseController *)v17 initWithConfiguration:configurationCopy archiveURL:v18];
     privateCloudDatabaseController = v6->_privateCloudDatabaseController;
     v6->_privateCloudDatabaseController = v19;
 
     v21 = v6->_privateCloudDatabaseController;
-    v22 = [v4 containerIdentifier];
-    v23 = [(BCCloudKitController *)v6 serviceMode];
+    containerIdentifier = [configurationCopy containerIdentifier];
+    serviceMode = [(BCCloudKitController *)v6 serviceMode];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = sub_1E4635350;
     v40[3] = &unk_1E875AE48;
     v24 = v6;
     v41 = v24;
-    [(BCCloudKitDatabaseController *)v21 willAttachToContainer:v22 serviceMode:v23 completion:v40];
+    [(BCCloudKitDatabaseController *)v21 willAttachToContainer:containerIdentifier serviceMode:serviceMode completion:v40];
 
     objc_initWeak(&location, v24);
     v25 = objc_alloc(MEMORY[0x1E698F548]);
@@ -202,19 +202,19 @@ LABEL_7:
   return v6;
 }
 
-- (void)setEnableCloudSync:(BOOL)a3 serviceMode:(BOOL)a4
+- (void)setEnableCloudSync:(BOOL)sync serviceMode:(BOOL)mode
 {
-  v4 = a4;
-  v5 = a3;
+  modeCopy = mode;
+  syncCopy = sync;
   v24 = *MEMORY[0x1E69E9840];
   v7 = BDSCloudKitLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(BCCloudKitController *)self configuration];
-    v9 = [v8 containerIdentifier];
-    v10 = v9;
+    configuration = [(BCCloudKitController *)self configuration];
+    containerIdentifier = [configuration containerIdentifier];
+    v10 = containerIdentifier;
     v11 = @"NO";
-    if (v5)
+    if (syncCopy)
     {
       v12 = @"YES";
     }
@@ -225,10 +225,10 @@ LABEL_7:
     }
 
     *buf = 138543874;
-    v19 = v9;
+    v19 = containerIdentifier;
     v21 = v12;
     v20 = 2114;
-    if (v4)
+    if (modeCopy)
     {
       v11 = @"YES";
     }
@@ -238,46 +238,46 @@ LABEL_7:
     _os_log_impl(&dword_1E45E0000, v7, OS_LOG_TYPE_DEFAULT, "BCCloudKitController (%{public}@) #enableCloudSync setEnableCloudSync %{public}@ serviceMode:%{public}@", buf, 0x20u);
   }
 
-  v13 = [(BCCloudKitController *)self accessQueue];
+  accessQueue = [(BCCloudKitController *)self accessQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_1E4635AFC;
   v15[3] = &unk_1E875AE70;
   v15[4] = self;
-  v16 = v4;
-  v17 = v5;
-  dispatch_async(v13, v15);
+  v16 = modeCopy;
+  v17 = syncCopy;
+  dispatch_async(accessQueue, v15);
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)requestUpdateAttachmentWithCompletion:(id)a3
+- (void)requestUpdateAttachmentWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BCCloudKitController *)self accessQueue];
+  completionCopy = completion;
+  accessQueue = [(BCCloudKitController *)self accessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1E4635C14;
   v7[3] = &unk_1E875A3D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(accessQueue, v7);
 }
 
-- (void)aq_requestUpdateAttachmentWithCompletion:(id)a3
+- (void)aq_requestUpdateAttachmentWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    v4 = a3;
-    v5 = [(BCCloudKitController *)self pendingRequestUpdateAttachmentCompletionBlocks];
-    v6 = _Block_copy(v4);
+    completionCopy = completion;
+    pendingRequestUpdateAttachmentCompletionBlocks = [(BCCloudKitController *)self pendingRequestUpdateAttachmentCompletionBlocks];
+    v6 = _Block_copy(completionCopy);
 
-    [v5 addObject:v6];
+    [pendingRequestUpdateAttachmentCompletionBlocks addObject:v6];
   }
 
-  v7 = [(BCCloudKitController *)self coalescedAttachment];
-  [v7 signalWithCompletion:&unk_1F5E621C8];
+  coalescedAttachment = [(BCCloudKitController *)self coalescedAttachment];
+  [coalescedAttachment signalWithCompletion:&unk_1F5E621C8];
 }
 
 - (void)p_flushPendingRequestUpdateAttachmentCompletionBlocks
@@ -286,22 +286,22 @@ LABEL_7:
   v3 = BDSCloudKitLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(BCCloudKitController *)self configuration];
-    v5 = [v4 containerIdentifier];
+    configuration = [(BCCloudKitController *)self configuration];
+    containerIdentifier = [configuration containerIdentifier];
     *buf = 138543362;
-    v11 = v5;
+    v11 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v3, OS_LOG_TYPE_INFO, "BCCloudKitController (%{public}@) - p_flushPendingRequestUpdateAttachmentCompletionBlocks", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v6 = [(BCCloudKitController *)self privateCloudDatabaseController];
+  privateCloudDatabaseController = [(BCCloudKitController *)self privateCloudDatabaseController];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1E4635E58;
   v8[3] = &unk_1E875AEC0;
   objc_copyWeak(&v9, buf);
   v8[4] = self;
-  [v6 getAttached:v8];
+  [privateCloudDatabaseController getAttached:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);
@@ -315,62 +315,62 @@ LABEL_7:
   v3 = BDSCloudKitSyncLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(BCCloudKitController *)self configuration];
-    v5 = [v4 containerIdentifier];
+    configuration = [(BCCloudKitController *)self configuration];
+    containerIdentifier = [configuration containerIdentifier];
     *buf = 138543362;
-    v12 = v5;
+    v12 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v3, OS_LOG_TYPE_DEFAULT, "BCCloudKitController (%{public}@) - p_updateAttachment", buf, 0xCu);
   }
 
-  v6 = [(BCCloudKitController *)self privateCloudDatabaseController];
+  privateCloudDatabaseController = [(BCCloudKitController *)self privateCloudDatabaseController];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = sub_1E46363F4;
   v8[3] = &unk_1E875AEC0;
   objc_copyWeak(&v9, &location);
   v8[4] = self;
-  [v6 getAttached:v8];
+  [privateCloudDatabaseController getAttached:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)deleteCloudDataWithCompletion:(id)a3
++ (void)deleteCloudDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[BCCloudKitController sharedInstance];
-  v6 = [v5 configuration];
-  v7 = [a1 databaseFolderURLForConfiguration:v6];
+  configuration = [v5 configuration];
+  v7 = [self databaseFolderURLForConfiguration:configuration];
 
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v17 = 0;
-  [v8 removeItemAtURL:v7 error:&v17];
+  [defaultManager removeItemAtURL:v7 error:&v17];
   v9 = v17;
 
   v10 = +[BCCloudKitController secureSharedInstance];
-  v11 = [v10 configuration];
-  v12 = [a1 databaseFolderURLForConfiguration:v11];
+  configuration2 = [v10 configuration];
+  v12 = [self databaseFolderURLForConfiguration:configuration2];
 
-  v13 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v16 = v9;
-  [v13 removeItemAtURL:v12 error:&v16];
+  [defaultManager2 removeItemAtURL:v12 error:&v16];
   v14 = v16;
 
-  v15 = _Block_copy(v4);
+  v15 = _Block_copy(completionCopy);
   if (v15)
   {
     v15[2](v15, v14 == 0, v14);
   }
 }
 
-+ (id)databaseFolderURLForConfiguration:(id)a3
++ (id)databaseFolderURLForConfiguration:(id)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v4 = +[BDSApplication applicationDocumentsDirectory];
-  v5 = [v3 dbArchiveFolderName];
+  dbArchiveFolderName = [configurationCopy dbArchiveFolderName];
 
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  v6 = [v4 stringByAppendingPathComponent:dbArchiveFolderName];
 
   if (v6)
   {
@@ -385,9 +385,9 @@ LABEL_7:
   return v7;
 }
 
-+ (id)p_createDatabaseArchiveDirectoryForConfiguration:(id)a3
++ (id)p_createDatabaseArchiveDirectoryForConfiguration:(id)configuration
 {
-  v3 = [a1 databaseFolderURLForConfiguration:a3];
+  v3 = [self databaseFolderURLForConfiguration:configuration];
   if (v3 && ([MEMORY[0x1E696AC08] defaultManager], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v3, 1, 0, 0), v4, v5))
   {
     v6 = v3;
@@ -401,15 +401,15 @@ LABEL_7:
   return v6;
 }
 
-+ (id)p_privateDatabaseArchiveURLForConfiguration:(id)a3
++ (id)p_privateDatabaseArchiveURLForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [a1 p_createDatabaseArchiveDirectoryForConfiguration:v4];
+  configurationCopy = configuration;
+  v5 = [self p_createDatabaseArchiveDirectoryForConfiguration:configurationCopy];
   if (v5)
   {
-    v6 = [v4 dbArchiveFilename];
-    v7 = [v4 dbArchiveExtension];
-    v8 = [v6 stringByAppendingPathExtension:v7];
+    dbArchiveFilename = [configurationCopy dbArchiveFilename];
+    dbArchiveExtension = [configurationCopy dbArchiveExtension];
+    v8 = [dbArchiveFilename stringByAppendingPathExtension:dbArchiveExtension];
 
     v9 = [v5 URLByAppendingPathComponent:v8];
   }
@@ -422,47 +422,47 @@ LABEL_7:
   return v9;
 }
 
-- (void)p_getNecessaryAccountInfoFromContainer:(id)a3 completion:(id)a4
+- (void)p_getNecessaryAccountInfoFromContainer:(id)container completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BCCloudKitController *)self configuration];
-  v9 = [v8 requiresDeviceToDeviceEncryption];
+  containerCopy = container;
+  completionCopy = completion;
+  configuration = [(BCCloudKitController *)self configuration];
+  requiresDeviceToDeviceEncryption = [configuration requiresDeviceToDeviceEncryption];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = sub_1E4636ED4;
   v12[3] = &unk_1E875AF60;
-  v15 = v9;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v15 = requiresDeviceToDeviceEncryption;
+  v13 = containerCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = containerCopy;
   [v11 accountStatusWithCompletionHandler:v12];
 }
 
-- (void)p_getAccountInfoWithCompletion:(id)a3
+- (void)p_getAccountInfoWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(BCCloudKitController *)self accessQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  accessQueue = [(BCCloudKitController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
   v6 = BDSCloudKitLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(BCCloudKitController *)self configuration];
-    v8 = [v7 containerIdentifier];
+    configuration = [(BCCloudKitController *)self configuration];
+    containerIdentifier = [configuration containerIdentifier];
     *buf = 138543362;
-    v25 = v8;
+    v25 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v6, OS_LOG_TYPE_INFO, "BCCloudKitController (%{public}@) - p_getAccountInfo", buf, 0xCu);
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v9 = [(BCCloudKitController *)self pendingGetAccountInfoCompletionBlocks];
-    v10 = _Block_copy(v4);
-    [v9 addObject:v10];
+    pendingGetAccountInfoCompletionBlocks = [(BCCloudKitController *)self pendingGetAccountInfoCompletionBlocks];
+    v10 = _Block_copy(completionCopy);
+    [pendingGetAccountInfoCompletionBlocks addObject:v10];
   }
 
   if (![(BCCloudKitController *)self gettingAccountInfo])
@@ -471,21 +471,21 @@ LABEL_7:
     v11 = BDSCloudKitSyncLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(BCCloudKitController *)self configuration];
-      v13 = [v12 containerIdentifier];
+      configuration2 = [(BCCloudKitController *)self configuration];
+      containerIdentifier2 = [configuration2 containerIdentifier];
       *buf = 138543362;
-      v25 = v13;
+      v25 = containerIdentifier2;
       _os_log_impl(&dword_1E45E0000, v11, OS_LOG_TYPE_INFO, "BCCloudKitController (%{public}@) - getAccountInfo self.gettingAccountInfo=YES", buf, 0xCu);
     }
 
     v14 = MEMORY[0x1E695B888];
-    v15 = [(BCCloudKitController *)self configuration];
-    v16 = [v15 containerIdentifier];
-    v17 = [v14 containerWithIdentifier:v16];
+    configuration3 = [(BCCloudKitController *)self configuration];
+    containerIdentifier3 = [configuration3 containerIdentifier];
+    v17 = [v14 containerWithIdentifier:containerIdentifier3];
 
-    v18 = [(BCCloudKitController *)self configuration];
-    v19 = [v18 appBundleIdentifier];
-    [v17 setSourceApplicationBundleIdentifier:v19];
+    configuration4 = [(BCCloudKitController *)self configuration];
+    appBundleIdentifier = [configuration4 appBundleIdentifier];
+    [v17 setSourceApplicationBundleIdentifier:appBundleIdentifier];
 
     [(BCCloudKitController *)self setContainer:v17];
     if (v17)
@@ -512,28 +512,28 @@ LABEL_7:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setGettingAccountInfo:(BOOL)a3
+- (void)setGettingAccountInfo:(BOOL)info
 {
-  self->_gettingAccountInfo = a3;
-  if (!a3)
+  self->_gettingAccountInfo = info;
+  if (!info)
   {
-    v4 = [(BCCloudKitController *)self accessQueue];
+    accessQueue = [(BCCloudKitController *)self accessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = sub_1E4637D40;
     block[3] = &unk_1E875A008;
     block[4] = self;
-    dispatch_async(v4, block);
+    dispatch_async(accessQueue, block);
   }
 }
 
-- (void)aq_setGettingAccountInfo:(BOOL)a3 willRetryUpdateAttachment:(BOOL)a4
+- (void)aq_setGettingAccountInfo:(BOOL)info willRetryUpdateAttachment:(BOOL)attachment
 {
-  v6 = [(BCCloudKitController *)self accessQueue];
-  dispatch_assert_queue_V2(v6);
+  accessQueue = [(BCCloudKitController *)self accessQueue];
+  dispatch_assert_queue_V2(accessQueue);
 
-  self->_gettingAccountInfo = a3;
-  if (!a3)
+  self->_gettingAccountInfo = info;
+  if (!info)
   {
 
     MEMORY[0x1EEE66B58](self, sel_aq_flushPendingGetAccountInfoCompletionBlocksWithWillRetryUpdateAttachment_);
@@ -546,99 +546,99 @@ LABEL_7:
   v3 = BDSCloudKitLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(BCCloudKitController *)self configuration];
-    v5 = [v4 containerIdentifier];
+    configuration = [(BCCloudKitController *)self configuration];
+    containerIdentifier = [configuration containerIdentifier];
     *buf = 138543362;
-    v10 = v5;
+    v10 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v3, OS_LOG_TYPE_INFO, "BCCloudKitController (%{public}@) - applicationDidBecomeActive", buf, 0xCu);
   }
 
-  v6 = [(BCCloudKitController *)self accessQueue];
+  accessQueue = [(BCCloudKitController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E46380FC;
   block[3] = &unk_1E875A008;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(accessQueue, block);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleRemoteNotification:(id)a3
+- (void)handleRemoteNotification:(id)notification
 {
-  v4 = [MEMORY[0x1E695B9D8] notificationFromRemoteNotificationDictionary:a3];
+  v4 = [MEMORY[0x1E695B9D8] notificationFromRemoteNotificationDictionary:notification];
   [(BCCloudKitController *)self handleRemoteCKNotification:v4];
 }
 
-- (void)handleRemoteCKNotification:(id)a3
+- (void)handleRemoteCKNotification:(id)notification
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = BDSCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BCCloudKitController *)self container];
-    v7 = [v6 containerIdentifier];
+    container = [(BCCloudKitController *)self container];
+    containerIdentifier = [container containerIdentifier];
     v11 = 138543362;
-    v12 = v7;
+    v12 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v5, OS_LOG_TYPE_DEFAULT, "(%{public}@) handleRemoteNotification:", &v11, 0xCu);
   }
 
-  v8 = [v4 subscriptionID];
+  subscriptionID = [notificationCopy subscriptionID];
 
-  v9 = [v8 copy];
+  v9 = [subscriptionID copy];
   [(BCCloudKitController *)self _attachOrSignalFetchChangesTransaction:v9 reason:@"handleRemoteNotification"];
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_attachOrSignalFetchChangesTransaction:(id)a3 reason:(id)a4
+- (void)_attachOrSignalFetchChangesTransaction:(id)transaction reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  transactionCopy = transaction;
+  reasonCopy = reason;
   objc_initWeak(&location, self);
-  v8 = [(BCCloudKitController *)self privateCloudDatabaseController];
+  privateCloudDatabaseController = [(BCCloudKitController *)self privateCloudDatabaseController];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = sub_1E4638470;
   v14[3] = &unk_1E875B000;
   objc_copyWeak(&v17, &location);
-  v9 = v6;
+  v9 = transactionCopy;
   v15 = v9;
-  v10 = v7;
+  v10 = reasonCopy;
   v16 = v10;
-  [v8 getAttached:v14];
+  [privateCloudDatabaseController getAttached:v14];
 
-  v11 = [(BCCloudKitController *)self accessQueue];
+  accessQueue = [(BCCloudKitController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E4638678;
   block[3] = &unk_1E8759750;
   objc_copyWeak(&v13, &location);
-  dispatch_async(v11, block);
+  dispatch_async(accessQueue, block);
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 }
 
-- (void)attachOrSignalFetchChangesTransaction:(id)a3 reason:(id)a4
+- (void)attachOrSignalFetchChangesTransaction:(id)transaction reason:(id)reason
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(BCCloudKitController *)self privateCloudDatabaseController];
-  v8 = [v7 subscriptionID];
-  v9 = [v8 isEqualToString:v10];
+  transactionCopy = transaction;
+  reasonCopy = reason;
+  privateCloudDatabaseController = [(BCCloudKitController *)self privateCloudDatabaseController];
+  subscriptionID = [privateCloudDatabaseController subscriptionID];
+  v9 = [subscriptionID isEqualToString:transactionCopy];
 
   if (v9)
   {
-    [(BCCloudKitController *)self _attachOrSignalFetchChangesTransaction:v10 reason:v6];
+    [(BCCloudKitController *)self _attachOrSignalFetchChangesTransaction:transactionCopy reason:reasonCopy];
   }
 }
 
-- (void)_updateAccountCacheWithCompletionBlock:(id)a3
+- (void)_updateAccountCacheWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = BDSCloudKitSyncLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -650,31 +650,31 @@ LABEL_7:
   v13[2] = 0x2020000000;
   v14 = 0;
   objc_initWeak(&location, self);
-  v6 = [(BCCloudKitController *)self accessQueue];
+  accessQueue = [(BCCloudKitController *)self accessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1E46388C4;
   block[3] = &unk_1E875B0C8;
   objc_copyWeak(&v11, &location);
-  v9 = v4;
+  v9 = blockCopy;
   v10 = v13;
   block[4] = self;
-  v7 = v4;
-  dispatch_async(v6, block);
+  v7 = blockCopy;
+  dispatch_async(accessQueue, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
   _Block_object_dispose(v13, 8);
 }
 
-- (void)p_testAccountChanged:(id)a3
+- (void)p_testAccountChanged:(id)changed
 {
-  v4 = [MEMORY[0x1E698F550] shared];
-  v5 = [v4 verboseLoggingEnabled];
+  mEMORY[0x1E698F550] = [MEMORY[0x1E698F550] shared];
+  verboseLoggingEnabled = [mEMORY[0x1E698F550] verboseLoggingEnabled];
 
   v6 = BDSCloudKitLog();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_ERROR);
-  if (v5)
+  if (verboseLoggingEnabled)
   {
     if (v7)
     {
@@ -687,10 +687,10 @@ LABEL_7:
     sub_1E47081E8(self);
   }
 
-  v8 = [MEMORY[0x1E698F550] shared];
-  v9 = [v8 verboseLoggingEnabled];
+  mEMORY[0x1E698F550]2 = [MEMORY[0x1E698F550] shared];
+  verboseLoggingEnabled2 = [mEMORY[0x1E698F550]2 verboseLoggingEnabled];
 
-  if (v9)
+  if (verboseLoggingEnabled2)
   {
     v10 = BDSCloudKitDevelopmentLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -706,39 +706,39 @@ LABEL_7:
     sub_1E4708330(self);
   }
 
-  v12 = [(BCCloudKitController *)self coalescedChangeAttachment];
-  [v12 signalWithCompletion:&unk_1F5E621E8];
+  coalescedChangeAttachment = [(BCCloudKitController *)self coalescedChangeAttachment];
+  [coalescedChangeAttachment signalWithCompletion:&unk_1F5E621E8];
 }
 
-- (void)p_accountChanged:(id)a3
+- (void)p_accountChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = BDSCloudKitSyncLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     sub_1E47083D4(self);
   }
 
-  v6 = [(BCCloudKitController *)self coalescedChangeAttachment];
-  [v6 signalWithCompletion:&unk_1F5E62208];
+  coalescedChangeAttachment = [(BCCloudKitController *)self coalescedChangeAttachment];
+  [coalescedChangeAttachment signalWithCompletion:&unk_1F5E62208];
 }
 
-- (void)p_accountReallyChangedWithCompletion:(id)a3
+- (void)p_accountReallyChangedWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = BDSCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BCCloudKitController *)self configuration];
-    v7 = [v6 containerIdentifier];
-    v8 = [(BCCloudKitController *)self currentUserIDName];
+    configuration = [(BCCloudKitController *)self configuration];
+    containerIdentifier = [configuration containerIdentifier];
+    currentUserIDName = [(BCCloudKitController *)self currentUserIDName];
     *buf = 138543874;
-    v21 = v7;
+    v21 = containerIdentifier;
     v22 = 2112;
-    v23 = v8;
+    v23 = currentUserIDName;
     v24 = 2048;
-    v25 = [(BCCloudKitController *)self currentStatus];
+    currentStatus = [(BCCloudKitController *)self currentStatus];
     _os_log_impl(&dword_1E45E0000, v5, OS_LOG_TYPE_DEFAULT, "p_accountChanged (%{public}@) account=%@ status=%ld", buf, 0x20u);
   }
 
@@ -749,15 +749,15 @@ LABEL_7:
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v11 = [v9 errorWithDomain:@"BDSCloudKitClientError" code:2001 userInfo:v10];
 
-  v12 = [(BCCloudKitController *)self privateCloudDatabaseController];
+  privateCloudDatabaseController = [(BCCloudKitController *)self privateCloudDatabaseController];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = sub_1E46396E4;
   v15[3] = &unk_1E87596B0;
   objc_copyWeak(&v17, buf);
-  v13 = v4;
+  v13 = completionCopy;
   v16 = v13;
-  [v12 detachWithError:v11 completion:v15];
+  [privateCloudDatabaseController detachWithError:v11 completion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);
@@ -765,30 +765,30 @@ LABEL_7:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)p_identityChanged:(id)a3
+- (void)p_identityChanged:(id)changed
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changedCopy = changed;
   v5 = BDSCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(BCCloudKitController *)self configuration];
-    v7 = [v6 containerIdentifier];
+    configuration = [(BCCloudKitController *)self configuration];
+    containerIdentifier = [configuration containerIdentifier];
     *buf = 138543362;
-    v14 = v7;
+    v14 = containerIdentifier;
     _os_log_impl(&dword_1E45E0000, v5, OS_LOG_TYPE_DEFAULT, "p_identityChanged (%{public}@)", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
   v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BDSCloudKitClientError" code:2005 userInfo:0];
-  v9 = [(BCCloudKitController *)self privateCloudDatabaseController];
+  privateCloudDatabaseController = [(BCCloudKitController *)self privateCloudDatabaseController];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = sub_1E4639A18;
   v11[3] = &unk_1E875A178;
   objc_copyWeak(&v12, buf);
   v11[4] = self;
-  [v9 detachWithError:v8 completion:v11];
+  [privateCloudDatabaseController detachWithError:v8 completion:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);

@@ -1,16 +1,16 @@
 @interface KNPdfGridExporter
 - (BOOL)incrementPage;
-- (KNPdfGridExporter)initWithDocumentRoot:(id)a3;
-- (void)drawPolyPageBodyInContext:(CGContext *)a3 scaledClipRect:(CGRect)a4;
+- (KNPdfGridExporter)initWithDocumentRoot:(id)root;
+- (void)drawPolyPageBodyInContext:(CGContext *)context scaledClipRect:(CGRect)rect;
 @end
 
 @implementation KNPdfGridExporter
 
-- (KNPdfGridExporter)initWithDocumentRoot:(id)a3
+- (KNPdfGridExporter)initWithDocumentRoot:(id)root
 {
   v4.receiver = self;
   v4.super_class = KNPdfGridExporter;
-  result = [(KNRenderingExporter *)&v4 initWithDocumentRoot:a3];
+  result = [(KNRenderingExporter *)&v4 initWithDocumentRoot:root];
   result->super.super.super._slidesPerPage = 4;
   return result;
 }
@@ -84,23 +84,23 @@
   {
     v51.receiver = self;
     v51.super_class = KNPdfGridExporter;
-    v49 = [(KNRenderingExporter *)&v51 incrementPage];
+    incrementPage = [(KNRenderingExporter *)&v51 incrementPage];
   }
 
   else
   {
-    v49 = 0;
+    incrementPage = 0;
   }
 
-  return v49;
+  return incrementPage;
 }
 
-- (void)drawPolyPageBodyInContext:(CGContext *)a3 scaledClipRect:(CGRect)a4
+- (void)drawPolyPageBodyInContext:(CGContext *)context scaledClipRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v82 = *(&self->super.super.super.super.super.isa + *MEMORY[0x277D7FFD8]);
   v12 = objc_msgSend_show(v82, v10, v11);
   objc_msgSend_size(v12, v13, v14);
@@ -187,7 +187,7 @@
       v61 = v60;
 
       v64 = objc_msgSend_cyanColor(MEMORY[0x277D81180], v62, v63);
-      nullsub_1(a3, v64, v55, v57, v59, v61);
+      nullsub_1(context, v64, v55, v57, v59, v61);
 
       objc_msgSend_isPrintingSlideNumbers(self, v65, v66);
       objc_msgSend_size(v12, v67, v68);
@@ -196,9 +196,9 @@
       v72 = v71;
       v74 = v73;
       v76 = v75;
-      objc_msgSend_drawImageForSlideNode_event_slideSize_intoRect_annotationFlagsScale_context_(self, v77, v43, v49, a3, v73, v75, v69, v71, v73, v75, 0.0);
-      objc_msgSend_drawBorderForRect_context_(self, v78, a3, v70, v72, v74, v76);
-      objc_msgSend_drawSlideNumberForNode_buildIndex_forRect_context_position_(self, v79, v43, v49, a3, 2, v70, v72, v74, v76);
+      objc_msgSend_drawImageForSlideNode_event_slideSize_intoRect_annotationFlagsScale_context_(self, v77, v43, v49, context, v73, v75, v69, v71, v73, v75, 0.0);
+      objc_msgSend_drawBorderForRect_context_(self, v78, context, v70, v72, v74, v76);
+      objc_msgSend_drawSlideNumberForNode_buildIndex_forRect_context_position_(self, v79, v43, v49, context, 2, v70, v72, v74, v76);
 
       ++v39;
     }

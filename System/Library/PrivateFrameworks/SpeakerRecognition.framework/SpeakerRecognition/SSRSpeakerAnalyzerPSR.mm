@@ -1,15 +1,15 @@
 @interface SSRSpeakerAnalyzerPSR
-- (BOOL)_isSpeakerVectorValid:(id)a3 speakerVectorSize:(unint64_t)a4 fromPsrAudioProcessor:(id)a5;
-- (SSRSpeakerAnalyzerPSR)initWithVoiceRecognitionContext:(id)a3 delegate:(id)a4;
+- (BOOL)_isSpeakerVectorValid:(id)valid speakerVectorSize:(unint64_t)size fromPsrAudioProcessor:(id)processor;
+- (SSRSpeakerAnalyzerPSR)initWithVoiceRecognitionContext:(id)context delegate:(id)delegate;
 - (SSRSpeakerAnalyzerPSRDelegate)delegate;
-- (id)_processSpeakerVector:(id)a3 withSize:(unint64_t)a4 processedAudioDurationMs:(unint64_t)a5;
+- (id)_processSpeakerVector:(id)vector withSize:(unint64_t)size processedAudioDurationMs:(unint64_t)ms;
 - (id)getVoiceRecognizerResults;
 - (id)resetForNewRequest;
 - (void)dealloc;
 - (void)endAudio;
-- (void)processAudioData:(id)a3;
-- (void)psrAudioProcessor:(id)a3 finishedWithFinalSpeakerVector:(id)a4 speakerVectorSize:(unint64_t)a5 processedAudioDurationMs:(unint64_t)a6;
-- (void)psrAudioProcessor:(id)a3 hasSpeakerVector:(id)a4 speakerVectorSize:(unint64_t)a5 processedAudioDurationMs:(unint64_t)a6;
+- (void)processAudioData:(id)data;
+- (void)psrAudioProcessor:(id)processor finishedWithFinalSpeakerVector:(id)vector speakerVectorSize:(unint64_t)size processedAudioDurationMs:(unint64_t)ms;
+- (void)psrAudioProcessor:(id)processor hasSpeakerVector:(id)vector speakerVectorSize:(unint64_t)size processedAudioDurationMs:(unint64_t)ms;
 @end
 
 @implementation SSRSpeakerAnalyzerPSR
@@ -21,12 +21,12 @@
   return WeakRetained;
 }
 
-- (void)psrAudioProcessor:(id)a3 finishedWithFinalSpeakerVector:(id)a4 speakerVectorSize:(unint64_t)a5 processedAudioDurationMs:(unint64_t)a6
+- (void)psrAudioProcessor:(id)processor finishedWithFinalSpeakerVector:(id)vector speakerVectorSize:(unint64_t)size processedAudioDurationMs:(unint64_t)ms
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([(SSRSpeakerAnalyzerPSR *)self _isSpeakerVectorValid:v11 speakerVectorSize:a5 fromPsrAudioProcessor:v10])
+  processorCopy = processor;
+  vectorCopy = vector;
+  if ([(SSRSpeakerAnalyzerPSR *)self _isSpeakerVectorValid:vectorCopy speakerVectorSize:size fromPsrAudioProcessor:processorCopy])
   {
     v12 = *MEMORY[0x277D015C8];
     if (os_log_type_enabled(*MEMORY[0x277D015C8], OS_LOG_TYPE_DEFAULT))
@@ -35,17 +35,17 @@
       v20 = 136316162;
       v21 = "[SSRSpeakerAnalyzerPSR psrAudioProcessor:finishedWithFinalSpeakerVector:speakerVectorSize:processedAudioDurationMs:]";
       v22 = 2114;
-      v23 = v10;
+      v23 = processorCopy;
       v24 = 2050;
-      v25 = a5;
+      sizeCopy = size;
       v26 = 2050;
-      v27 = a6;
+      msCopy = ms;
       v28 = 2050;
       v29 = numSamplesProecssed;
       _os_log_impl(&dword_225E12000, v12, OS_LOG_TYPE_DEFAULT, "%s FINISHED processing: psrAudioProcessor:%{public}@ finishedWithFinalSpeakerVector: speakerVectorSize:%{public}lu processedAudioDurationMs: %{public}lu %{public}lu", &v20, 0x34u);
     }
 
-    v14 = [(SSRSpeakerAnalyzerPSR *)self _processSpeakerVector:v11 withSize:a5 processedAudioDurationMs:a6];
+    v14 = [(SSRSpeakerAnalyzerPSR *)self _processSpeakerVector:vectorCopy withSize:size processedAudioDurationMs:ms];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v16 = objc_opt_respondsToSelector();
 
@@ -64,7 +64,7 @@
       v20 = 136315394;
       v21 = "[SSRSpeakerAnalyzerPSR psrAudioProcessor:finishedWithFinalSpeakerVector:speakerVectorSize:processedAudioDurationMs:]";
       v22 = 1024;
-      LODWORD(v23) = a5;
+      LODWORD(v23) = size;
       _os_log_error_impl(&dword_225E12000, v18, OS_LOG_TYPE_ERROR, "%s Invalid speaker vector with size %d - Skipping", &v20, 0x12u);
     }
   }
@@ -72,25 +72,25 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)psrAudioProcessor:(id)a3 hasSpeakerVector:(id)a4 speakerVectorSize:(unint64_t)a5 processedAudioDurationMs:(unint64_t)a6
+- (void)psrAudioProcessor:(id)processor hasSpeakerVector:(id)vector speakerVectorSize:(unint64_t)size processedAudioDurationMs:(unint64_t)ms
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  if ([(SSRSpeakerAnalyzerPSR *)self _isSpeakerVectorValid:v11 speakerVectorSize:a5 fromPsrAudioProcessor:v10])
+  processorCopy = processor;
+  vectorCopy = vector;
+  if ([(SSRSpeakerAnalyzerPSR *)self _isSpeakerVectorValid:vectorCopy speakerVectorSize:size fromPsrAudioProcessor:processorCopy])
   {
-    v12 = [(SSRSpeakerAnalyzerPSR *)self _processSpeakerVector:v11 withSize:a5 processedAudioDurationMs:a6];
+    v12 = [(SSRSpeakerAnalyzerPSR *)self _processSpeakerVector:vectorCopy withSize:size processedAudioDurationMs:ms];
     v13 = *MEMORY[0x277D015C8];
     if (os_log_type_enabled(*MEMORY[0x277D015C8], OS_LOG_TYPE_DEFAULT))
     {
       v19 = 136315906;
       v20 = "[SSRSpeakerAnalyzerPSR psrAudioProcessor:hasSpeakerVector:speakerVectorSize:processedAudioDurationMs:]";
       v21 = 2114;
-      v22 = v10;
+      v22 = processorCopy;
       v23 = 2050;
-      v24 = a5;
+      sizeCopy = size;
       v25 = 2050;
-      v26 = a6;
+      msCopy = ms;
       _os_log_impl(&dword_225E12000, v13, OS_LOG_TYPE_DEFAULT, "%s processing: psrAudioProcessor:%{public}@ speakerVectorSize:%{public}lu processedAudioDurationMs: %{public}lu", &v19, 0x2Au);
     }
 
@@ -112,7 +112,7 @@
       v19 = 136315394;
       v20 = "[SSRSpeakerAnalyzerPSR psrAudioProcessor:hasSpeakerVector:speakerVectorSize:processedAudioDurationMs:]";
       v21 = 1024;
-      LODWORD(v22) = a5;
+      LODWORD(v22) = size;
       _os_log_error_impl(&dword_225E12000, v17, OS_LOG_TYPE_ERROR, "%s Invalid speaker vector with size %d - Skipping", &v19, 0x12u);
     }
   }
@@ -120,15 +120,15 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isSpeakerVectorValid:(id)a3 speakerVectorSize:(unint64_t)a4 fromPsrAudioProcessor:(id)a5
+- (BOOL)_isSpeakerVectorValid:(id)valid speakerVectorSize:(unint64_t)size fromPsrAudioProcessor:(id)processor
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  validCopy = valid;
+  processorCopy = processor;
   psrAudioProcessor = self->_psrAudioProcessor;
-  if (psrAudioProcessor == v9)
+  if (psrAudioProcessor == processorCopy)
   {
-    if (!v8)
+    if (!validCopy)
     {
       v18 = *MEMORY[0x277D015C8];
       if (!os_log_type_enabled(*MEMORY[0x277D015C8], OS_LOG_TYPE_DEFAULT))
@@ -144,7 +144,7 @@
       goto LABEL_4;
     }
 
-    if (a4)
+    if (size)
     {
       v15 = 1;
       goto LABEL_6;
@@ -172,7 +172,7 @@
       v20 = 136315650;
       v21 = "[SSRSpeakerAnalyzerPSR _isSpeakerVectorValid:speakerVectorSize:fromPsrAudioProcessor:]";
       v22 = 2112;
-      v23 = v9;
+      v23 = processorCopy;
       v24 = 2112;
       v25 = psrAudioProcessor;
       v12 = "%s ERR: Reporting psrAudioProcessor(%@) != _psrAudioProcessor(%@)";
@@ -191,13 +191,13 @@ LABEL_6:
   return v15;
 }
 
-- (id)_processSpeakerVector:(id)a3 withSize:(unint64_t)a4 processedAudioDurationMs:(unint64_t)a5
+- (id)_processSpeakerVector:(id)vector withSize:(unint64_t)size processedAudioDurationMs:(unint64_t)ms
 {
   v35 = *MEMORY[0x277D85DE8];
-  v25 = a3;
+  vectorCopy = vector;
   v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](self->_psrScorers, "count")}];
   v9 = [(SSRSpeakerRecognitionContext *)self->_context recognitionStyle]== 1 && !self->_triggerPhraseDetectedOnTap;
-  v24 = a5;
+  msCopy = ms;
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -217,10 +217,10 @@ LABEL_6:
         }
 
         v14 = *(*(&v26 + 1) + 8 * i);
-        [v14 scoreSpeakerVector:v25 withDimensions:a4 withThresholdType:v9];
+        [v14 scoreSpeakerVector:vectorCopy withDimensions:size withThresholdType:v9];
         v15 = [MEMORY[0x277CCABB0] numberWithFloat:?];
-        v16 = [v14 profileID];
-        [v8 setObject:v15 forKeyedSubscript:v16];
+        profileID = [v14 profileID];
+        [v8 setObject:v15 forKeyedSubscript:profileID];
       }
 
       v11 = [(NSArray *)v10 countByEnumeratingWithState:&v26 objects:v34 count:16];
@@ -230,8 +230,8 @@ LABEL_6:
   }
 
   v32 = @"configPath";
-  v17 = [(NSURL *)self->_configFilePath path];
-  v33 = v17;
+  path = [(NSURL *)self->_configFilePath path];
+  v33 = path;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v33 forKeys:&v32 count:1];
 
   v31[0] = v8;
@@ -240,7 +240,7 @@ LABEL_6:
   v19 = [MEMORY[0x277CCABB0] numberWithInt:0xFFFFFFFFLL];
   v31[1] = v19;
   v30[2] = @"spIdAudioProcessedDuration";
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v24];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:msCopy];
   v30[3] = @"psrContext";
   v31[2] = v20;
   v31[3] = v18;
@@ -259,8 +259,8 @@ LABEL_6:
   v35 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](*p_psrScorers, "count")}];
   v37 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSArray count](self->_psrScorers, "count")}];
   v4 = [(SSRSpeakerRecognitionContext *)self->_context recognitionStyle]== 1 && !self->_triggerPhraseDetectedOnTap;
-  v5 = [(EARSyncPSRAudioProcessor *)self->_psrAudioProcessor getLatestSuperVector];
-  v6 = [v5 length];
+  getLatestSuperVector = [(EARSyncPSRAudioProcessor *)self->_psrAudioProcessor getLatestSuperVector];
+  v6 = [getLatestSuperVector length];
   if (v6 > 3)
   {
     v41 = 0u;
@@ -283,39 +283,39 @@ LABEL_6:
           }
 
           v13 = *(*(&v39 + 1) + 8 * i);
-          [v13 scoreSpeakerVector:v5 withDimensions:v10 withThresholdType:v4];
+          [v13 scoreSpeakerVector:getLatestSuperVector withDimensions:v10 withThresholdType:v4];
           v14 = [MEMORY[0x277CCABB0] numberWithFloat:?];
-          v15 = [v13 profileID];
-          [v38 setObject:v14 forKeyedSubscript:v15];
+          profileID = [v13 profileID];
+          [v38 setObject:v14 forKeyedSubscript:profileID];
 
           v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v13, "getSATVectorCount")}];
-          v17 = [v13 profileID];
-          [v37 setObject:v16 forKeyedSubscript:v17];
+          profileID2 = [v13 profileID];
+          [v37 setObject:v16 forKeyedSubscript:profileID2];
 
           voiceProfilesExpModelFilePaths = self->_voiceProfilesExpModelFilePaths;
           if (voiceProfilesExpModelFilePaths)
           {
-            v19 = [v13 profileID];
-            v20 = [(NSDictionary *)voiceProfilesExpModelFilePaths objectForKeyedSubscript:v19];
+            profileID3 = [v13 profileID];
+            v20 = [(NSDictionary *)voiceProfilesExpModelFilePaths objectForKeyedSubscript:profileID3];
             v21 = v20 == 0;
 
             if (!v21)
             {
               v22 = self->_voiceProfilesExpModelFilePaths;
-              v23 = [v13 profileID];
-              v24 = [(NSDictionary *)v22 objectForKeyedSubscript:v23];
+              profileID4 = [v13 profileID];
+              v24 = [(NSDictionary *)v22 objectForKeyedSubscript:profileID4];
               [v13 resetScorerWithModelFilePath:v24];
 
-              [v13 scoreSpeakerVector:v5 withDimensions:v10 withThresholdType:v4];
+              [v13 scoreSpeakerVector:getLatestSuperVector withDimensions:v10 withThresholdType:v4];
               v25 = [MEMORY[0x277CCABB0] numberWithFloat:?];
-              v26 = [v13 profileID];
-              [v35 setObject:v25 forKeyedSubscript:v26];
+              profileID5 = [v13 profileID];
+              [v35 setObject:v25 forKeyedSubscript:profileID5];
             }
           }
 
           voiceProfilesModelFilePaths = self->_voiceProfilesModelFilePaths;
-          v28 = [v13 profileID];
-          v29 = [(NSDictionary *)voiceProfilesModelFilePaths objectForKeyedSubscript:v28];
+          profileID6 = [v13 profileID];
+          v29 = [(NSDictionary *)voiceProfilesModelFilePaths objectForKeyedSubscript:profileID6];
           [v13 resetScorerWithModelFilePath:v29];
         }
 
@@ -326,9 +326,9 @@ LABEL_6:
     }
 
     v45[0] = @"configPath";
-    v30 = [(NSURL *)self->_configFilePath path];
+    path = [(NSURL *)self->_configFilePath path];
     v45[1] = @"numSpeakerVectors";
-    v46[0] = v30;
+    v46[0] = path;
     v46[1] = v37;
     v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:2];
 
@@ -346,8 +346,8 @@ LABEL_6:
 
   else
   {
-    v7 = [(SSRSpeakerRecognitionContext *)self->_context logAggregator];
-    [v7 setSpeakerRecognitionPSRProcessingStatus:743];
+    logAggregator = [(SSRSpeakerRecognitionContext *)self->_context logAggregator];
+    [logAggregator setSpeakerRecognitionPSRProcessingStatus:743];
 
     v8 = 0;
   }
@@ -360,14 +360,14 @@ LABEL_6:
 - (id)resetForNewRequest
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   [(EARSyncPSRAudioProcessor *)self->_psrAudioProcessor resetForNewRequestSync];
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date2 = [MEMORY[0x277CBEAA8] date];
   v5 = *MEMORY[0x277D015C8];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     psrAudioProcessor = self->_psrAudioProcessor;
-    [v4 timeIntervalSinceDate:v3];
+    [date2 timeIntervalSinceDate:date];
     *buf = 136315650;
     v11 = "[SSRSpeakerAnalyzerPSR resetForNewRequest]";
     v12 = 2114;
@@ -394,16 +394,16 @@ LABEL_6:
   }
 
   [(EARSyncPSRAudioProcessor *)self->_psrAudioProcessor endAudio];
-  v4 = [(EARSyncPSRAudioProcessor *)self->_psrAudioProcessor getLatestSuperVector];
+  getLatestSuperVector = [(EARSyncPSRAudioProcessor *)self->_psrAudioProcessor getLatestSuperVector];
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processAudioData:(id)a3
+- (void)processAudioData:(id)data
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 bytes] && objc_msgSend(v5, "length"))
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && [dataCopy bytes] && objc_msgSend(v5, "length"))
   {
     [(EARSyncPSRAudioProcessor *)self->_psrAudioProcessor addAudioSync:v5];
     self->_numSamplesProecssed += [v5 length] >> 1;
@@ -421,7 +421,7 @@ LABEL_6:
     *buf = 136315394;
     v7 = "[SSRSpeakerAnalyzerPSR dealloc]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_225E12000, v3, OS_LOG_TYPE_DEFAULT, "%s %@: dealloc", buf, 0x16u);
   }
 
@@ -431,11 +431,11 @@ LABEL_6:
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRSpeakerAnalyzerPSR)initWithVoiceRecognitionContext:(id)a3 delegate:(id)a4
+- (SSRSpeakerAnalyzerPSR)initWithVoiceRecognitionContext:(id)context delegate:(id)delegate
 {
   v46 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v43.receiver = self;
   v43.super_class = SSRSpeakerAnalyzerPSR;
   v9 = [(SSRSpeakerAnalyzerPSR *)&v43 init];
@@ -444,13 +444,13 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v10 = [v7 modelsContext];
+  modelsContext = [contextCopy modelsContext];
   v11 = [SSRUtils stringForSpeakerRecognizerType:1];
-  v12 = [v10 objectForKeyedSubscript:v11];
+  v12 = [modelsContext objectForKeyedSubscript:v11];
 
-  v13 = [v7 expModelsContext];
+  expModelsContext = [contextCopy expModelsContext];
   v14 = [SSRUtils stringForSpeakerRecognizerType:1];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  v15 = [expModelsContext objectForKeyedSubscript:v14];
 
   if (!v12)
   {
@@ -465,25 +465,25 @@ LABEL_6:
     goto LABEL_12;
   }
 
-  objc_storeWeak(&v9->_delegate, v8);
-  v16 = [v12 configFilePath];
+  objc_storeWeak(&v9->_delegate, delegateCopy);
+  configFilePath = [v12 configFilePath];
   configFilePath = v9->_configFilePath;
-  v9->_configFilePath = v16;
+  v9->_configFilePath = configFilePath;
 
-  v18 = [v7 resourceFilePath];
+  resourceFilePath = [contextCopy resourceFilePath];
   resourceFilePath = v9->_resourceFilePath;
-  v9->_resourceFilePath = v18;
+  v9->_resourceFilePath = resourceFilePath;
 
-  v20 = [v12 voiceProfilesModelFilePaths];
+  voiceProfilesModelFilePaths = [v12 voiceProfilesModelFilePaths];
   voiceProfilesModelFilePaths = v9->_voiceProfilesModelFilePaths;
-  v9->_voiceProfilesModelFilePaths = v20;
+  v9->_voiceProfilesModelFilePaths = voiceProfilesModelFilePaths;
 
-  v22 = [v15 voiceProfilesModelFilePaths];
+  voiceProfilesModelFilePaths2 = [v15 voiceProfilesModelFilePaths];
   voiceProfilesExpModelFilePaths = v9->_voiceProfilesExpModelFilePaths;
-  v9->_voiceProfilesExpModelFilePaths = v22;
+  v9->_voiceProfilesExpModelFilePaths = voiceProfilesModelFilePaths2;
 
-  objc_storeStrong(&v9->_context, a3);
-  v24 = +[SSRSpeakerRecognitionScorer createVoiceScorersWithVoiceProfiles:withConfigFile:withResourceFile:withOffsetsType:forRetraining:](SSRSpeakerRecognitionScorer, "createVoiceScorersWithVoiceProfiles:withConfigFile:withResourceFile:withOffsetsType:forRetraining:", v9->_voiceProfilesModelFilePaths, v9->_configFilePath, v9->_resourceFilePath, [v7 recognitionStyle] != 0, 0);
+  objc_storeStrong(&v9->_context, context);
+  v24 = +[SSRSpeakerRecognitionScorer createVoiceScorersWithVoiceProfiles:withConfigFile:withResourceFile:withOffsetsType:forRetraining:](SSRSpeakerRecognitionScorer, "createVoiceScorersWithVoiceProfiles:withConfigFile:withResourceFile:withOffsetsType:forRetraining:", v9->_voiceProfilesModelFilePaths, v9->_configFilePath, v9->_resourceFilePath, [contextCopy recognitionStyle] != 0, 0);
   psrScorers = v9->_psrScorers;
   v9->_psrScorers = v24;
 
@@ -498,8 +498,8 @@ LABEL_6:
       _os_log_impl(&dword_225E12000, v37, OS_LOG_TYPE_DEFAULT, "%s ERR: Cannot create SAT analyzers", buf, 0xCu);
     }
 
-    v38 = [v7 logAggregator];
-    [v38 setSpeakerRecognitionPSRProcessingStatus:106];
+    logAggregator = [contextCopy logAggregator];
+    [logAggregator setSpeakerRecognitionPSRProcessingStatus:106];
 
 LABEL_12:
     goto LABEL_13;
@@ -508,18 +508,18 @@ LABEL_12:
   v42 = [MEMORY[0x277D018F8] getSerialQueueWithQOS:33 name:@"com.apple.ssr.psrq" fixedPriority:*MEMORY[0x277D019B0]];
   v27 = objc_alloc(MEMORY[0x277D071F0]);
   v28 = [(NSArray *)v9->_psrScorers objectAtIndexedSubscript:0];
-  v29 = [v28 psrConfigFilePath];
+  psrConfigFilePath = [v28 psrConfigFilePath];
   v30 = [(NSArray *)v9->_psrScorers objectAtIndexedSubscript:0];
-  v31 = [v30 psrConfigRoot];
+  psrConfigRoot = [v30 psrConfigRoot];
   [MEMORY[0x277D016E0] inputRecordingSampleRate];
-  v33 = [v27 initWithConfigFile:v29 configRoot:v31 sampleRate:v32 delegate:v9 queue:v42 outputLastRowOnly:1];
+  v33 = [v27 initWithConfigFile:psrConfigFilePath configRoot:psrConfigRoot sampleRate:v32 delegate:v9 queue:v42 outputLastRowOnly:1];
   psrAudioProcessor = v9->_psrAudioProcessor;
   v9->_psrAudioProcessor = v33;
 
-  v35 = [(SSRSpeakerAnalyzerPSR *)v9 resetForNewRequest];
-  LOBYTE(v31) = v35 == 0;
+  resetForNewRequest = [(SSRSpeakerAnalyzerPSR *)v9 resetForNewRequest];
+  LOBYTE(psrConfigRoot) = resetForNewRequest == 0;
 
-  if ((v31 & 1) == 0)
+  if ((psrConfigRoot & 1) == 0)
   {
 LABEL_13:
     v36 = 0;

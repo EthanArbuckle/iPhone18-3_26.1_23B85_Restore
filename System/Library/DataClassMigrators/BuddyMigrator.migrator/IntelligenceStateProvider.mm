@@ -4,20 +4,20 @@
 - (BOOL)wasOfferedIntelligence;
 - (_TtC13BuddyMigrator25IntelligenceStateProvider)init;
 - (id)stashableNotificationOnboardingDefaults;
-- (void)applyStashedIsIntelligenceEnabled:(BOOL)a3;
-- (void)applyStashedNotificationOnboardingDefaults:(id)a3;
-- (void)isIntelligenceEnabledWithCompletionHandler:(id)a3;
+- (void)applyStashedIsIntelligenceEnabled:(BOOL)enabled;
+- (void)applyStashedNotificationOnboardingDefaults:(id)defaults;
+- (void)isIntelligenceEnabledWithCompletionHandler:(id)handler;
 @end
 
 @implementation IntelligenceStateProvider
 
-- (void)isIntelligenceEnabledWithCompletionHandler:(id)a3
+- (void)isIntelligenceEnabledWithCompletionHandler:(id)handler
 {
   v5 = sub_ED0C(&qword_30030, "&w");
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8, v7);
   v9 = &v16 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   *(v11 + 24) = self;
@@ -33,11 +33,11 @@
   v14[3] = 0;
   v14[4] = &unk_1D1C0;
   v14[5] = v13;
-  v15 = self;
+  selfCopy = self;
   sub_17E1C(0, 0, v9, &unk_1D110, v14);
 }
 
-- (void)applyStashedIsIntelligenceEnabled:(BOOL)a3
+- (void)applyStashedIsIntelligenceEnabled:(BOOL)enabled
 {
   sub_19300();
   v3 = sub_192F0();
@@ -46,7 +46,7 @@
 
 - (BOOL)wasOfferedIntelligence
 {
-  v2 = self;
+  selfCopy = self;
   sub_D544();
   if (v3)
   {
@@ -88,10 +88,10 @@
   return v4;
 }
 
-- (void)applyStashedNotificationOnboardingDefaults:(id)a3
+- (void)applyStashedNotificationOnboardingDefaults:(id)defaults
 {
-  v4 = a3;
-  v8 = self;
+  defaultsCopy = defaults;
+  selfCopy = self;
   v5 = sub_191C0();
   v7 = v6;
 
@@ -106,7 +106,7 @@
   v5 = v3[4];
   sub_ECC8(v3, v4);
   v6 = *(v5 + 8);
-  v7 = self;
+  selfCopy = self;
   v8 = v6(v4, v5);
   sub_ED0C(&qword_2FF60, &qword_1D078);
   v9 = sub_191D0();

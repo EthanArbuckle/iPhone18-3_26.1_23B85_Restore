@@ -1,44 +1,44 @@
 @interface ATXPredictionContext
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXPredictionContext)initWithCoder:(id)a3;
-- (ATXPredictionContext)initWithDeviceStateContext:(id)a3 timeContext:(id)a4 locationMotionContext:(id)a5 ambientLightContext:(id)a6 userContext:(id)a7 isOverridden:(BOOL)a8;
-- (ATXPredictionContext)initWithProto:(id)a3;
-- (ATXPredictionContext)initWithProtoData:(id)a3;
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXPredictionContext:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXPredictionContext)initWithCoder:(id)coder;
+- (ATXPredictionContext)initWithDeviceStateContext:(id)context timeContext:(id)timeContext locationMotionContext:(id)motionContext ambientLightContext:(id)lightContext userContext:(id)userContext isOverridden:(BOOL)overridden;
+- (ATXPredictionContext)initWithProto:(id)proto;
+- (ATXPredictionContext)initWithProtoData:(id)data;
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXPredictionContext:(id)context;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateTimeContextWithDate:(id)a3;
-- (void)updateWithInjectedContext:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateTimeContextWithDate:(id)date;
+- (void)updateWithInjectedContext:(id)context;
 @end
 
 @implementation ATXPredictionContext
 
-- (ATXPredictionContext)initWithDeviceStateContext:(id)a3 timeContext:(id)a4 locationMotionContext:(id)a5 ambientLightContext:(id)a6 userContext:(id)a7 isOverridden:(BOOL)a8
+- (ATXPredictionContext)initWithDeviceStateContext:(id)context timeContext:(id)timeContext locationMotionContext:(id)motionContext ambientLightContext:(id)lightContext userContext:(id)userContext isOverridden:(BOOL)overridden
 {
-  v22 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  contextCopy = context;
+  timeContextCopy = timeContext;
+  motionContextCopy = motionContext;
+  lightContextCopy = lightContext;
+  userContextCopy = userContext;
   v23.receiver = self;
   v23.super_class = ATXPredictionContext;
   v18 = [(ATXPredictionContext *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_deviceStateContext, a3);
-    objc_storeStrong(&v19->_timeContext, a4);
-    objc_storeStrong(&v19->_locationMotionContext, a5);
-    objc_storeStrong(&v19->_ambientLightContext, a6);
-    objc_storeStrong(&v19->_userContext, a7);
-    v19->_isOverridden = a8;
+    objc_storeStrong(&v18->_deviceStateContext, context);
+    objc_storeStrong(&v19->_timeContext, timeContext);
+    objc_storeStrong(&v19->_locationMotionContext, motionContext);
+    objc_storeStrong(&v19->_ambientLightContext, lightContext);
+    objc_storeStrong(&v19->_userContext, userContext);
+    v19->_isOverridden = overridden;
   }
 
   return v19;
@@ -46,21 +46,21 @@
 
 - (NSString)description
 {
-  v2 = [(ATXPredictionContext *)self jsonDict];
-  v3 = [v2 description];
+  jsonDict = [(ATXPredictionContext *)self jsonDict];
+  v3 = [jsonDict description];
 
   return v3;
 }
 
-- (void)updateWithInjectedContext:(id)a3
+- (void)updateWithInjectedContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
     p_deviceStateContext = &self->_deviceStateContext;
 LABEL_14:
-    objc_storeStrong(p_deviceStateContext, a3);
+    objc_storeStrong(p_deviceStateContext, context);
     goto LABEL_15;
   }
 
@@ -102,51 +102,51 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)updateTimeContextWithDate:(id)a3
+- (void)updateTimeContextWithDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v4 = a3;
-    v5 = [[ATXPredictionTimeContext alloc] initWithDate:v4];
+    dateCopy = date;
+    v5 = [[ATXPredictionTimeContext alloc] initWithDate:dateCopy];
 
     [(ATXPredictionContext *)self updateWithInjectedContext:v5];
   }
 }
 
-- (ATXPredictionContext)initWithProtoData:(id)a3
+- (ATXPredictionContext)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBPredictionContext alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBPredictionContext alloc] initWithData:dataCopy];
 
     self = [(ATXPredictionContext *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXPredictionContext *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXPredictionContext *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXPredictionContext)initWithProto:(id)a3
+- (ATXPredictionContext)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -162,63 +162,63 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   v6 = [ATXPredictionDeviceStateContext alloc];
-  v7 = [v5 deviceStateContext];
-  v8 = [(ATXPredictionDeviceStateContext *)v6 initWithProto:v7];
+  deviceStateContext = [v5 deviceStateContext];
+  v8 = [(ATXPredictionDeviceStateContext *)v6 initWithProto:deviceStateContext];
 
   v9 = [ATXPredictionTimeContext alloc];
-  v10 = [v5 timeContext];
-  v11 = [(ATXPredictionTimeContext *)v9 initWithProto:v10];
+  timeContext = [v5 timeContext];
+  v11 = [(ATXPredictionTimeContext *)v9 initWithProto:timeContext];
 
   v12 = [ATXPredictionLocationMotionContext alloc];
-  v13 = [v5 locationMotionContext];
-  v14 = [(ATXPredictionLocationMotionContext *)v12 initWithProto:v13];
+  locationMotionContext = [v5 locationMotionContext];
+  v14 = [(ATXPredictionLocationMotionContext *)v12 initWithProto:locationMotionContext];
 
   v15 = [ATXPredictionAmbientLightContext alloc];
-  v16 = [v5 ambientLightContext];
-  v17 = [(ATXPredictionAmbientLightContext *)v15 initWithProto:v16];
+  ambientLightContext = [v5 ambientLightContext];
+  v17 = [(ATXPredictionAmbientLightContext *)v15 initWithProto:ambientLightContext];
 
   v18 = [ATXPredictionUserContext alloc];
-  v19 = [v5 userContext];
-  v20 = [(ATXPredictionUserContext *)v18 initWithProto:v19];
+  userContext = [v5 userContext];
+  v20 = [(ATXPredictionUserContext *)v18 initWithProto:userContext];
 
-  v21 = [v5 isOverridden];
-  self = [(ATXPredictionContext *)self initWithDeviceStateContext:v8 timeContext:v11 locationMotionContext:v14 ambientLightContext:v17 userContext:v20 isOverridden:v21];
+  isOverridden = [v5 isOverridden];
+  self = [(ATXPredictionContext *)self initWithDeviceStateContext:v8 timeContext:v11 locationMotionContext:v14 ambientLightContext:v17 userContext:v20 isOverridden:isOverridden];
 
-  v22 = self;
+  selfCopy = self;
 LABEL_8:
 
-  return v22;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(ATXPredictionDeviceStateContext *)self->_deviceStateContext proto];
-  [v3 setDeviceStateContext:v4];
+  proto = [(ATXPredictionDeviceStateContext *)self->_deviceStateContext proto];
+  [v3 setDeviceStateContext:proto];
 
-  v5 = [(ATXPredictionTimeContext *)self->_timeContext proto];
-  [v3 setTimeContext:v5];
+  proto2 = [(ATXPredictionTimeContext *)self->_timeContext proto];
+  [v3 setTimeContext:proto2];
 
-  v6 = [(ATXPredictionLocationMotionContext *)self->_locationMotionContext proto];
-  [v3 setLocationMotionContext:v6];
+  proto3 = [(ATXPredictionLocationMotionContext *)self->_locationMotionContext proto];
+  [v3 setLocationMotionContext:proto3];
 
-  v7 = [(ATXPredictionAmbientLightContext *)self->_ambientLightContext proto];
-  [v3 setAmbientLightContext:v7];
+  proto4 = [(ATXPredictionAmbientLightContext *)self->_ambientLightContext proto];
+  [v3 setAmbientLightContext:proto4];
 
-  v8 = [(ATXPredictionUserContext *)self->_userContext proto];
-  [v3 setUserContext:v8];
+  proto5 = [(ATXPredictionUserContext *)self->_userContext proto];
+  [v3 setUserContext:proto5];
 
   [v3 setIsOverridden:self->_isOverridden];
 
   return v3;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
@@ -227,20 +227,20 @@ LABEL_8:
 {
   v25 = *MEMORY[0x277D85DE8];
   v19[0] = @"deviceStateContext";
-  v3 = [(ATXPredictionDeviceStateContext *)self->_deviceStateContext jsonDict];
-  v20[0] = v3;
+  jsonDict = [(ATXPredictionDeviceStateContext *)self->_deviceStateContext jsonDict];
+  v20[0] = jsonDict;
   v19[1] = @"timeContext";
-  v4 = [(ATXPredictionTimeContext *)self->_timeContext jsonDict];
-  v20[1] = v4;
+  jsonDict2 = [(ATXPredictionTimeContext *)self->_timeContext jsonDict];
+  v20[1] = jsonDict2;
   v19[2] = @"locationMotionContext";
-  v5 = [(ATXPredictionLocationMotionContext *)self->_locationMotionContext jsonDict];
-  v20[2] = v5;
+  jsonDict3 = [(ATXPredictionLocationMotionContext *)self->_locationMotionContext jsonDict];
+  v20[2] = jsonDict3;
   v19[3] = @"ambientLightContext";
-  v6 = [(ATXPredictionAmbientLightContext *)self->_ambientLightContext jsonDict];
-  v20[3] = v6;
+  jsonDict4 = [(ATXPredictionAmbientLightContext *)self->_ambientLightContext jsonDict];
+  v20[3] = jsonDict4;
   v19[4] = @"userContext";
-  v7 = [(ATXPredictionUserContext *)self->_userContext jsonDict];
-  v8 = v7;
+  jsonDict5 = [(ATXPredictionUserContext *)self->_userContext jsonDict];
+  v8 = jsonDict5;
   v9 = @"nil";
   v10 = vdupq_n_s64(@"nil");
   v11 = vbslq_s8(vceqzq_s64(*&self->_candidateIdentifiersLaunchAge), v10, *&self->_candidateIdentifiersLaunchAge);
@@ -251,7 +251,7 @@ LABEL_8:
     v13 = @"YES";
   }
 
-  v20[4] = v7;
+  v20[4] = jsonDict5;
   v20[5] = v13;
   v19[5] = @"isOverridden";
   v19[6] = @"candidateIdentifiersLaunchAge";
@@ -286,39 +286,39 @@ LABEL_8:
 - (id)json
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(ATXPredictionContext *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXPredictionContext *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)a3 key:(id)a4 coder:(id)a5 errorDomain:(id)a6 errorCode:(int64_t)a7
+- (BOOL)checkAndReportDecodingFailureIfNeededForid:(id)forid key:(id)key coder:(id)coder errorDomain:(id)domain errorCode:(int64_t)code
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  keyCopy = key;
+  coderCopy = coder;
+  domainCopy = domain;
+  if (!forid)
   {
-    v15 = [v12 error];
+    error = [coderCopy error];
 
-    if (v15)
+    if (error)
     {
       v14 = 1;
       goto LABEL_7;
     }
 
-    if (([v12 containsValueForKey:v11] & 1) == 0)
+    if (([coderCopy containsValueForKey:keyCopy] & 1) == 0)
     {
       v16 = objc_alloc(MEMORY[0x277CCA9B8]);
       v22 = *MEMORY[0x277CCA450];
-      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", v11, v22];
+      v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"Failed to decode key %@", keyCopy, v22];
       v23[0] = v17;
       v14 = 1;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      v19 = [v16 initWithDomain:v13 code:a7 userInfo:v18];
+      v19 = [v16 initWithDomain:domainCopy code:code userInfo:v18];
 
-      [v12 failWithError:v19];
+      [coderCopy failWithError:v19];
       goto LABEL_7;
     }
   }
@@ -330,56 +330,56 @@ LABEL_7:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXPredictionContext *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"predictionContext"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXPredictionContext *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"predictionContext"];
 }
 
-- (ATXPredictionContext)initWithCoder:(id)a3
+- (ATXPredictionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"predictionContext"];
-  v6 = [(ATXPredictionContext *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"predictionContext" coder:v4 errorDomain:@"com.apple.duetexpertd.ATXPredictionContext" errorCode:-1];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"predictionContext"];
+  v6 = [(ATXPredictionContext *)self checkAndReportDecodingFailureIfNeededForid:v5 key:@"predictionContext" coder:coderCopy errorDomain:@"com.apple.duetexpertd.ATXPredictionContext" errorCode:-1];
 
   if (v6)
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ATXPredictionContext *)self initWithProtoData:v5];
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionContext *)self isEqualToATXPredictionContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXPredictionContext *)self isEqualToATXPredictionContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXPredictionContext:(id)a3
+- (BOOL)isEqualToATXPredictionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = self->_deviceStateContext;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == contextCopy[2])
   {
   }
 
@@ -395,7 +395,7 @@ LABEL_7:
 
   v8 = self->_timeContext;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == contextCopy[3])
   {
   }
 
@@ -411,7 +411,7 @@ LABEL_7:
 
   v11 = self->_locationMotionContext;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == contextCopy[4])
   {
   }
 
@@ -427,7 +427,7 @@ LABEL_7:
 
   v14 = self->_ambientLightContext;
   v15 = v14;
-  if (v14 == v4[5])
+  if (v14 == contextCopy[5])
   {
   }
 
@@ -443,7 +443,7 @@ LABEL_7:
 
   v17 = self->_userContext;
   v18 = v17;
-  if (v17 == v4[6])
+  if (v17 == contextCopy[6])
   {
 
     goto LABEL_22;
@@ -454,7 +454,7 @@ LABEL_7:
   if (v19)
   {
 LABEL_22:
-    v20 = self->_isOverridden == *(v4 + 8);
+    v20 = self->_isOverridden == *(contextCopy + 8);
     goto LABEL_20;
   }
 
@@ -465,26 +465,26 @@ LABEL_20:
   return v20;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ATXPredictionContext allocWithZone:?]timeContext:"initWithDeviceStateContext:timeContext:locationMotionContext:ambientLightContext:userContext:isOverridden:" locationMotionContext:self->_deviceStateContext ambientLightContext:self->_timeContext userContext:self->_locationMotionContext isOverridden:self->_ambientLightContext, self->_userContext, self->_isOverridden];
-  v5 = [(ATXPredictionContext *)self candidateIdentifiersLaunchAge];
-  [(ATXPredictionContext *)v4 setCandidateIdentifiersLaunchAge:v5];
+  candidateIdentifiersLaunchAge = [(ATXPredictionContext *)self candidateIdentifiersLaunchAge];
+  [(ATXPredictionContext *)v4 setCandidateIdentifiersLaunchAge:candidateIdentifiersLaunchAge];
 
-  v6 = [(ATXPredictionContext *)self inferredModeEvent];
-  [(ATXPredictionContext *)v4 setInferredModeEvent:v6];
+  inferredModeEvent = [(ATXPredictionContext *)self inferredModeEvent];
+  [(ATXPredictionContext *)v4 setInferredModeEvent:inferredModeEvent];
 
-  v7 = [(ATXPredictionContext *)self userFocusComputedModeEvent];
-  [(ATXPredictionContext *)v4 setUserFocusComputedModeEvent:v7];
+  userFocusComputedModeEvent = [(ATXPredictionContext *)self userFocusComputedModeEvent];
+  [(ATXPredictionContext *)v4 setUserFocusComputedModeEvent:userFocusComputedModeEvent];
 
-  v8 = [(ATXPredictionContext *)self poiCategory];
-  [(ATXPredictionContext *)v4 setPoiCategory:v8];
+  poiCategory = [(ATXPredictionContext *)self poiCategory];
+  [(ATXPredictionContext *)v4 setPoiCategory:poiCategory];
 
-  v9 = [(ATXPredictionContext *)self bluetoothEvent];
-  [(ATXPredictionContext *)v4 setBluetoothEvent:v9];
+  bluetoothEvent = [(ATXPredictionContext *)self bluetoothEvent];
+  [(ATXPredictionContext *)v4 setBluetoothEvent:bluetoothEvent];
 
-  v10 = [(ATXPredictionContext *)self microlocationVisitEvent];
-  [(ATXPredictionContext *)v4 setMicrolocationVisitEvent:v10];
+  microlocationVisitEvent = [(ATXPredictionContext *)self microlocationVisitEvent];
+  [(ATXPredictionContext *)v4 setMicrolocationVisitEvent:microlocationVisitEvent];
 
   return v4;
 }

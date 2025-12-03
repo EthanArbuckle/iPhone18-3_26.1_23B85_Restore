@@ -1,16 +1,16 @@
 @interface FooterLockupView
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore16FooterLockupView)initWithCoder:(id)a3;
-- (_TtC8AppStore16FooterLockupView)initWithEffect:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore16FooterLockupView)initWithCoder:(id)coder;
+- (_TtC8AppStore16FooterLockupView)initWithEffect:(id)effect;
 - (void)clickActionHandlerTrampoline;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation FooterLockupView
 
-- (_TtC8AppStore16FooterLockupView)initWithCoder:(id)a3
+- (_TtC8AppStore16FooterLockupView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore16FooterLockupView_lockupView) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore16FooterLockupView_arcadeLockupView) = 0;
@@ -28,7 +28,7 @@
   v2 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC8AppStore16FooterLockupView_clickActionHandler);
   if (v2)
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10000827C(v2);
     v2(v4);
 
@@ -36,21 +36,21 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10021C1E4(v7);
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  selfCopy = self;
+  v9 = sub_10021C1E4(touchCopy);
 
   return v9 & 1;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_10021B2A0(width, height);
   v8 = v7;
 
@@ -63,27 +63,27 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021B6BC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
   v4 = v9.receiver;
-  v5 = a3;
-  [(FooterLockupView *)&v9 traitCollectionDidChange:v5];
+  changeCopy = change;
+  [(FooterLockupView *)&v9 traitCollectionDidChange:changeCopy];
   v6 = *&v4[OBJC_IVAR____TtC8AppStore16FooterLockupView_lockupView];
   if (v6)
   {
     v7 = v6;
-    v8 = [v4 traitCollection];
-    sub_100140A4C(v8);
+    traitCollection = [v4 traitCollection];
+    sub_100140A4C(traitCollection);
   }
 }
 
-- (_TtC8AppStore16FooterLockupView)initWithEffect:(id)a3
+- (_TtC8AppStore16FooterLockupView)initWithEffect:(id)effect
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

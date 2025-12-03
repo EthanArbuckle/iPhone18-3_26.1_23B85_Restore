@@ -50,7 +50,7 @@
 - (id)contentItemCollectionInfo;
 - (id)humanDescription;
 - (id)newKeepLocalStatusObserverConfiguration;
-- (id)songPopularityForIdentifiers:(id)a3;
+- (id)songPopularityForIdentifiers:(id)identifiers;
 - (id)staticTallEditorialArtworkCatalog;
 - (id)superHeroTallEditorialArtworkCatalog;
 - (int64_t)libraryRemovalSupportedOptions;
@@ -58,14 +58,14 @@
 
 @implementation MPModelAlbum
 
-- (id)songPopularityForIdentifiers:(id)a3
+- (id)songPopularityForIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(MPModelAlbum *)self songPopularityBlock];
-  v6 = v5;
-  if (v5)
+  identifiersCopy = identifiers;
+  songPopularityBlock = [(MPModelAlbum *)self songPopularityBlock];
+  v6 = songPopularityBlock;
+  if (songPopularityBlock)
   {
-    v7 = (*(v5 + 16))(v5, self, v4);
+    v7 = (*(songPopularityBlock + 16))(songPopularityBlock, self, identifiersCopy);
   }
 
   else
@@ -78,11 +78,11 @@
 
 - (id)superHeroTallEditorialArtworkCatalog
 {
-  v3 = [(MPModelAlbum *)self superHeroTallEditorialArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  superHeroTallEditorialArtworkCatalogBlock = [(MPModelAlbum *)self superHeroTallEditorialArtworkCatalogBlock];
+  v4 = superHeroTallEditorialArtworkCatalogBlock;
+  if (superHeroTallEditorialArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(superHeroTallEditorialArtworkCatalogBlock + 16))(superHeroTallEditorialArtworkCatalogBlock, self);
   }
 
   else
@@ -95,11 +95,11 @@
 
 - (id)staticTallEditorialArtworkCatalog
 {
-  v3 = [(MPModelAlbum *)self staticTallEditorialArtworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  staticTallEditorialArtworkCatalogBlock = [(MPModelAlbum *)self staticTallEditorialArtworkCatalogBlock];
+  v4 = staticTallEditorialArtworkCatalogBlock;
+  if (staticTallEditorialArtworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(staticTallEditorialArtworkCatalogBlock + 16))(staticTallEditorialArtworkCatalogBlock, self);
   }
 
   else
@@ -112,11 +112,11 @@
 
 - (id)artworkCatalog
 {
-  v3 = [(MPModelAlbum *)self artworkCatalogBlock];
-  v4 = v3;
-  if (v3)
+  artworkCatalogBlock = [(MPModelAlbum *)self artworkCatalogBlock];
+  v4 = artworkCatalogBlock;
+  if (artworkCatalogBlock)
   {
-    v5 = (*(v3 + 16))(v3, self);
+    v5 = (*(artworkCatalogBlock + 16))(artworkCatalogBlock, self);
   }
 
   else
@@ -130,15 +130,15 @@
 - (id)humanDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(MPModelObject *)self identifiers];
-  v5 = [v4 humanDescription];
-  v6 = [v3 stringWithFormat:@"album %@", v5];
+  identifiers = [(MPModelObject *)self identifiers];
+  humanDescription = [identifiers humanDescription];
+  v6 = [v3 stringWithFormat:@"album %@", humanDescription];
 
   if ([(MPModelObject *)self hasLoadedValueForKey:@"MPModelPropertyAlbumTitle"])
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = [(MPModelAlbum *)self title];
-    v9 = [v7 stringWithFormat:@"“%@” ", v8];
+    title = [(MPModelAlbum *)self title];
+    v9 = [v7 stringWithFormat:@"“%@” ", title];
 
     [v6 insertString:v9 atIndex:0];
   }
@@ -148,282 +148,282 @@
 
 + (void)__MPModelPropertyAlbumCleanDownloadedTrackCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:179 description:@"Translator was missing mapping for MPModelPropertyAlbumCleanDownloadedTrackCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:179 description:@"Translator was missing mapping for MPModelPropertyAlbumCleanDownloadedTrackCount"];
 }
 
 + (void)__MPModelPropertyAlbumIsPinned__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:178 description:@"Translator was missing mapping for MPModelPropertyAlbumIsPinned"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:178 description:@"Translator was missing mapping for MPModelPropertyAlbumIsPinned"];
 }
 
 + (void)__MPModelPropertyAlbumDownloadedTrackCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:177 description:@"Translator was missing mapping for MPModelPropertyAlbumDownloadedTrackCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:177 description:@"Translator was missing mapping for MPModelPropertyAlbumDownloadedTrackCount"];
 }
 
 + (void)__MPModelPropertyAlbumIsStoreRedownloadable__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:176 description:@"Translator was missing mapping for MPModelPropertyAlbumIsStoreRedownloadable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:176 description:@"Translator was missing mapping for MPModelPropertyAlbumIsStoreRedownloadable"];
 }
 
 + (void)__MPModelPropertyAlbumDateFavorited__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:175 description:@"Translator was missing mapping for MPModelPropertyAlbumDateFavorited"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:175 description:@"Translator was missing mapping for MPModelPropertyAlbumDateFavorited"];
 }
 
 + (void)__MPModelPropertyAlbumIsDisliked__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:174 description:@"Translator was missing mapping for MPModelPropertyAlbumIsDisliked"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:174 description:@"Translator was missing mapping for MPModelPropertyAlbumIsDisliked"];
 }
 
 + (void)__MPModelPropertyAlbumIsFavorite__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:173 description:@"Translator was missing mapping for MPModelPropertyAlbumIsFavorite"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:173 description:@"Translator was missing mapping for MPModelPropertyAlbumIsFavorite"];
 }
 
 + (void)__MPModelPropertyAlbumVersionHash__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:172 description:@"Translator was missing mapping for MPModelPropertyAlbumVersionHash"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:172 description:@"Translator was missing mapping for MPModelPropertyAlbumVersionHash"];
 }
 
 + (void)__MPModelPropertyAlbumClassicalExperienceAvailable__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:171 description:@"Translator was missing mapping for MPModelPropertyAlbumClassicalExperienceAvailable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:171 description:@"Translator was missing mapping for MPModelPropertyAlbumClassicalExperienceAvailable"];
 }
 
 + (void)__MPModelPropertyAlbumTraits__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:170 description:@"Translator was missing mapping for MPModelPropertyAlbumTraits"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:170 description:@"Translator was missing mapping for MPModelPropertyAlbumTraits"];
 }
 
 + (void)__MPModelPropertyAlbumDownloadedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:169 description:@"Translator was missing mapping for MPModelPropertyAlbumDownloadedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:169 description:@"Translator was missing mapping for MPModelPropertyAlbumDownloadedDate"];
 }
 
 + (void)__MPModelPropertyAlbumSongPopularity__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:168 description:@"Translator was missing mapping for MPModelPropertyAlbumSongPopularity"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:168 description:@"Translator was missing mapping for MPModelPropertyAlbumSongPopularity"];
 }
 
 + (void)__MPModelPropertyAlbumShortEditorNotes__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:167 description:@"Translator was missing mapping for MPModelPropertyAlbumShortEditorNotes"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:167 description:@"Translator was missing mapping for MPModelPropertyAlbumShortEditorNotes"];
 }
 
 + (void)__MPModelPropertyAlbumEditorNotes__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:166 description:@"Translator was missing mapping for MPModelPropertyAlbumEditorNotes"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:166 description:@"Translator was missing mapping for MPModelPropertyAlbumEditorNotes"];
 }
 
 + (void)__MPModelPropertyAlbumPreorder__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:165 description:@"Translator was missing mapping for MPModelPropertyAlbumPreorder"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:165 description:@"Translator was missing mapping for MPModelPropertyAlbumPreorder"];
 }
 
 + (void)__MPModelPropertyAlbumLastDevicePlaybackDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:164 description:@"Translator was missing mapping for MPModelPropertyAlbumLastDevicePlaybackDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:164 description:@"Translator was missing mapping for MPModelPropertyAlbumLastDevicePlaybackDate"];
 }
 
 + (void)__MPModelPropertyAlbumLibraryAddEligible__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:163 description:@"Translator was missing mapping for MPModelPropertyAlbumLibraryAddEligible"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:163 description:@"Translator was missing mapping for MPModelPropertyAlbumLibraryAddEligible"];
 }
 
 + (void)__MPModelPropertyAlbumKeepLocalConstraints__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:162 description:@"Translator was missing mapping for MPModelPropertyAlbumKeepLocalConstraints"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:162 description:@"Translator was missing mapping for MPModelPropertyAlbumKeepLocalConstraints"];
 }
 
 + (void)__MPModelPropertyAlbumKeepLocalManagedStatusReason__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:161 description:@"Translator was missing mapping for MPModelPropertyAlbumKeepLocalManagedStatusReason"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:161 description:@"Translator was missing mapping for MPModelPropertyAlbumKeepLocalManagedStatusReason"];
 }
 
 + (void)__MPModelPropertyAlbumKeepLocalManagedStatus__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:160 description:@"Translator was missing mapping for MPModelPropertyAlbumKeepLocalManagedStatus"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:160 description:@"Translator was missing mapping for MPModelPropertyAlbumKeepLocalManagedStatus"];
 }
 
 + (void)__MPModelPropertyAlbumKeepLocalEnableState__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:159 description:@"Translator was missing mapping for MPModelPropertyAlbumKeepLocalEnableState"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:159 description:@"Translator was missing mapping for MPModelPropertyAlbumKeepLocalEnableState"];
 }
 
 + (void)__MPModelPropertyAlbumVolumeNormalization__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:158 description:@"Translator was missing mapping for MPModelPropertyAlbumVolumeNormalization"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:158 description:@"Translator was missing mapping for MPModelPropertyAlbumVolumeNormalization"];
 }
 
 + (void)__MPModelPropertyAlbumLibraryAdded__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:157 description:@"Translator was missing mapping for MPModelPropertyAlbumLibraryAdded"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:157 description:@"Translator was missing mapping for MPModelPropertyAlbumLibraryAdded"];
 }
 
 + (void)__MPModelPropertyAlbumYear__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:156 description:@"Translator was missing mapping for MPModelPropertyAlbumYear"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:156 description:@"Translator was missing mapping for MPModelPropertyAlbumYear"];
 }
 
 + (void)__MPModelPropertyAlbumLibraryAddedDate__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:155 description:@"Translator was missing mapping for MPModelPropertyAlbumLibraryAddedDate"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:155 description:@"Translator was missing mapping for MPModelPropertyAlbumLibraryAddedDate"];
 }
 
 + (void)__MPModelPropertyAlbumCopyrightText__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:154 description:@"Translator was missing mapping for MPModelPropertyAlbumCopyrightText"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:154 description:@"Translator was missing mapping for MPModelPropertyAlbumCopyrightText"];
 }
 
 + (void)__MPModelPropertyAlbumSuperHeroTallEditorialArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:153 description:@"Translator was missing mapping for MPModelPropertyAlbumSuperHeroTallEditorialArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:153 description:@"Translator was missing mapping for MPModelPropertyAlbumSuperHeroTallEditorialArtwork"];
 }
 
 + (void)__MPModelPropertyAlbumStaticTallEditorialArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:152 description:@"Translator was missing mapping for MPModelPropertyAlbumStaticTallEditorialArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:152 description:@"Translator was missing mapping for MPModelPropertyAlbumStaticTallEditorialArtwork"];
 }
 
 + (void)__MPModelPropertyAlbumArtwork__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:151 description:@"Translator was missing mapping for MPModelPropertyAlbumArtwork"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:151 description:@"Translator was missing mapping for MPModelPropertyAlbumArtwork"];
 }
 
 + (void)__MPModelPropertyAlbumReleaseDateComponents__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:150 description:@"Translator was missing mapping for MPModelPropertyAlbumReleaseDateComponents"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:150 description:@"Translator was missing mapping for MPModelPropertyAlbumReleaseDateComponents"];
 }
 
 + (void)__MPModelPropertyAlbumIsClassical__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:149 description:@"Translator was missing mapping for MPModelPropertyAlbumIsClassical"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:149 description:@"Translator was missing mapping for MPModelPropertyAlbumIsClassical"];
 }
 
 + (void)__MPModelPropertyAlbumIsCompilation__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:148 description:@"Translator was missing mapping for MPModelPropertyAlbumIsCompilation"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:148 description:@"Translator was missing mapping for MPModelPropertyAlbumIsCompilation"];
 }
 
 + (void)__MPModelPropertyAlbumHasExplicitContent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:147 description:@"Translator was missing mapping for MPModelPropertyAlbumHasExplicitContent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:147 description:@"Translator was missing mapping for MPModelPropertyAlbumHasExplicitContent"];
 }
 
 + (void)__MPModelPropertyAlbumHasCleanContent__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:146 description:@"Translator was missing mapping for MPModelPropertyAlbumHasCleanContent"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:146 description:@"Translator was missing mapping for MPModelPropertyAlbumHasCleanContent"];
 }
 
 + (void)__MPModelPropertyAlbumDiscCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:145 description:@"Translator was missing mapping for MPModelPropertyAlbumDiscCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:145 description:@"Translator was missing mapping for MPModelPropertyAlbumDiscCount"];
 }
 
 + (void)__MPModelPropertyAlbumMaximumItemTrackNumber__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:144 description:@"Translator was missing mapping for MPModelPropertyAlbumMaximumItemTrackNumber"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:144 description:@"Translator was missing mapping for MPModelPropertyAlbumMaximumItemTrackNumber"];
 }
 
 + (void)__MPModelPropertyAlbumCleanSongCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:143 description:@"Translator was missing mapping for MPModelPropertyAlbumCleanSongCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:143 description:@"Translator was missing mapping for MPModelPropertyAlbumCleanSongCount"];
 }
 
 + (void)__MPModelPropertyAlbumTrackCount__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:142 description:@"Translator was missing mapping for MPModelPropertyAlbumTrackCount"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:142 description:@"Translator was missing mapping for MPModelPropertyAlbumTrackCount"];
 }
 
 + (void)__MPModelRelationshipAlbumRepresentativeSong__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:141 description:@"Translator was missing mapping for MPModelRelationshipAlbumRepresentativeSong"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:141 description:@"Translator was missing mapping for MPModelRelationshipAlbumRepresentativeSong"];
 }
 
 + (void)__MPModelRelationshipAlbumGenre__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:140 description:@"Translator was missing mapping for MPModelRelationshipAlbumGenre"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:140 description:@"Translator was missing mapping for MPModelRelationshipAlbumGenre"];
 }
 
 + (void)__MPModelRelationshipAlbumArtist__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:139 description:@"Translator was missing mapping for MPModelRelationshipAlbumArtist"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:139 description:@"Translator was missing mapping for MPModelRelationshipAlbumArtist"];
 }
 
 + (void)__MPModelPropertyAlbumTitle__MAPPING_MISSING__
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"MPModelAlbum.m" lineNumber:138 description:@"Translator was missing mapping for MPModelPropertyAlbumTitle"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPModelAlbum.m" lineNumber:138 description:@"Translator was missing mapping for MPModelPropertyAlbumTitle"];
 }
 
 - (MPLibraryAddStatusObserverConfiguration)libraryAddStatusObserverConfiguration
 {
-  v3 = [(MPModelAlbum *)self isLibraryAdded];
-  v4 = [(MPModelAlbum *)self hasCleanContent];
-  v5 = [(MPModelAlbum *)self hasExplicitContent];
-  v6 = [(MPModelAlbum *)self isLibraryAddEligible];
+  isLibraryAdded = [(MPModelAlbum *)self isLibraryAdded];
+  hasCleanContent = [(MPModelAlbum *)self hasCleanContent];
+  hasExplicitContent = [(MPModelAlbum *)self hasExplicitContent];
+  isLibraryAddEligible = [(MPModelAlbum *)self isLibraryAddEligible];
   v7 = 0x100000000;
-  if (!v6)
+  if (!isLibraryAddEligible)
   {
     v7 = 0;
   }
 
   v8 = 0x1000000;
-  if (!v5)
+  if (!hasExplicitContent)
   {
     v8 = 0;
   }
 
   v9 = 0x10000;
-  if (!v4)
+  if (!hasCleanContent)
   {
     v9 = 0;
   }
 
   v10 = 257;
-  if (!v3)
+  if (!isLibraryAdded)
   {
     v10 = 1;
   }

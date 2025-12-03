@@ -1,13 +1,13 @@
 @interface CRLWPPadding
 + (id)padding;
-+ (id)paddingWithTopInset:(double)a3 leftInset:(double)a4 bottomInset:(double)a5 rightInset:(double)a6;
-- (BOOL)isEqual:(id)a3;
-- (CRLWPPadding)initWithTopInset:(double)a3 leftInset:(double)a4 bottomInset:(double)a5 rightInset:(double)a6;
++ (id)paddingWithTopInset:(double)inset leftInset:(double)leftInset bottomInset:(double)bottomInset rightInset:(double)rightInset;
+- (BOOL)isEqual:(id)equal;
+- (CRLWPPadding)initWithTopInset:(double)inset leftInset:(double)leftInset bottomInset:(double)bottomInset rightInset:(double)rightInset;
 - (UIEdgeInsets)edgeInsets;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)paddingByMirroringHorizontal;
-- (void)transform:(CGAffineTransform *)a3;
+- (void)transform:(CGAffineTransform *)transform;
 @end
 
 @implementation CRLWPPadding
@@ -19,22 +19,22 @@
   return v2;
 }
 
-+ (id)paddingWithTopInset:(double)a3 leftInset:(double)a4 bottomInset:(double)a5 rightInset:(double)a6
++ (id)paddingWithTopInset:(double)inset leftInset:(double)leftInset bottomInset:(double)bottomInset rightInset:(double)rightInset
 {
-  v6 = [[a1 alloc] initWithTopInset:a3 leftInset:a4 bottomInset:a5 rightInset:a6];
+  v6 = [[self alloc] initWithTopInset:inset leftInset:leftInset bottomInset:bottomInset rightInset:rightInset];
 
   return v6;
 }
 
-- (CRLWPPadding)initWithTopInset:(double)a3 leftInset:(double)a4 bottomInset:(double)a5 rightInset:(double)a6
+- (CRLWPPadding)initWithTopInset:(double)inset leftInset:(double)leftInset bottomInset:(double)bottomInset rightInset:(double)rightInset
 {
   v24.receiver = self;
   v24.super_class = CRLWPPadding;
   v6 = [(CRLWPPadding *)&v24 init];
   if (v6)
   {
-    v7 = a3;
-    if (a3 > 50000000.0 || (v7 = a4, a4 > 50000000.0) || (v7 = a5, a5 > 50000000.0) || (v7 = a6, a6 > 50000000.0))
+    insetCopy = inset;
+    if (inset > 50000000.0 || (insetCopy = leftInset, leftInset > 50000000.0) || (insetCopy = bottomInset, bottomInset > 50000000.0) || (insetCopy = rightInset, rightInset > 50000000.0))
     {
       v8 = [CRLAssertionHandler _atomicIncrementAssertCount:50000000.0];
       if (qword_101AD5A10 != -1)
@@ -65,13 +65,13 @@
       [CRLAssertionHandler handleFailureInFunction:v12 file:v13 lineNumber:53 isFatal:0 description:"Illegal huge padding value"];
     }
 
-    v14.f64[0] = a3;
-    v14.f64[1] = a4;
+    v14.f64[0] = inset;
+    v14.f64[1] = leftInset;
     v15 = vmaxnmq_f64(v14, 0);
     v16 = vdupq_n_s64(0x4187D78400000000uLL);
     *(v6 + 8) = vbslq_s8(vcgtq_f64(v15, v16), v16, v15);
-    v17.f64[0] = a5;
-    v17.f64[1] = a6;
+    v17.f64[0] = bottomInset;
+    v17.f64[1] = rightInset;
     v18 = vmaxnmq_f64(v17, 0);
     *(v6 + 24) = vbslq_s8(vcgtq_f64(v18, v16), v16, v18);
   }
@@ -79,9 +79,9 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   topInset = self->_topInset;
   leftInset = self->_leftInset;
   bottomInset = self->_bottomInset;
@@ -90,12 +90,12 @@
   return [v4 initWithTopInset:topInset leftInset:leftInset bottomInset:bottomInset rightInset:rightInset];
 }
 
-- (void)transform:(CGAffineTransform *)a3
+- (void)transform:(CGAffineTransform *)transform
 {
-  a = a3->a;
-  if (a3->a >= a3->d)
+  a = transform->a;
+  if (transform->a >= transform->d)
   {
-    a = a3->d;
+    a = transform->d;
   }
 
   *&self->_topInset = vmulq_n_f64(*&self->_topInset, a);
@@ -135,12 +135,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[1];
     topInset = self->_topInset;
     if ((v6 == topInset || vabdd_f64(v6, topInset) < fabs(topInset * 0.000000999999997)) && ((v8 = v5[2], leftInset = self->_leftInset, v8 == leftInset) || vabdd_f64(v8, leftInset) < fabs(leftInset * 0.000000999999997)) && ((v10 = v5[3], bottomInset = self->_bottomInset, v10 == bottomInset) || vabdd_f64(v10, bottomInset) < fabs(bottomInset * 0.000000999999997)))

@@ -1,16 +1,16 @@
 @interface _CLKUIColorManager
 - (void)_updateFilterColor;
-- (void)setColor:(id)a3;
+- (void)setColor:(id)color;
 @end
 
 @implementation _CLKUIColorManager
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if (([(UIColor *)self->_color isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_color, a3);
+    objc_storeStrong(&self->_color, color);
     [(_CLKUIColorManager *)self _updateFilterColor];
   }
 }
@@ -18,9 +18,9 @@
 - (void)_updateFilterColor
 {
   layer = self->_layer;
-  v3 = [(UIColor *)self->_color CGColor];
+  cGColor = [(UIColor *)self->_color CGColor];
 
-  [(CALayer *)layer setContentsMultiplyColor:v3];
+  [(CALayer *)layer setContentsMultiplyColor:cGColor];
 }
 
 @end

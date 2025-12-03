@@ -1,12 +1,12 @@
 @interface FileWithAttributes
-- (FileWithAttributes)initWithFile:(id)a3;
+- (FileWithAttributes)initWithFile:(id)file;
 @end
 
 @implementation FileWithAttributes
 
-- (FileWithAttributes)initWithFile:(id)a3
+- (FileWithAttributes)initWithFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v17.receiver = self;
   v17.super_class = FileWithAttributes;
   v6 = [(FileWithAttributes *)&v17 init];
@@ -16,7 +16,7 @@
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v6->_filePath, a3);
+  objc_storeStrong(&v6->_filePath, file);
   if (!v7->_filePath)
   {
     goto LABEL_8;
@@ -24,7 +24,7 @@
 
   v8 = +[NSFileManager defaultManager];
   v16 = 0;
-  v9 = [v8 attributesOfItemAtPath:v5 error:&v16];
+  v9 = [v8 attributesOfItemAtPath:fileCopy error:&v16];
   v10 = v16;
 
   if (!v9 || v10)

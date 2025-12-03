@@ -1,49 +1,49 @@
 @interface TUSmartHoldingSessionRequest
-- (TUSmartHoldingSessionRequest)initWithCallUUID:(id)a3;
-- (TUSmartHoldingSessionRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (TUSmartHoldingSessionRequest)initWithCallUUID:(id)d;
+- (TUSmartHoldingSessionRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUSmartHoldingSessionRequest
 
-- (TUSmartHoldingSessionRequest)initWithCallUUID:(id)a3
+- (TUSmartHoldingSessionRequest)initWithCallUUID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = TUSmartHoldingSessionRequest;
   v6 = [(TUSmartHoldingSessionRequest *)&v10 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v6->_uuid;
-    v6->_uuid = v7;
+    v6->_uuid = uUID;
 
-    objc_storeStrong(&v6->_callUUID, a3);
+    objc_storeStrong(&v6->_callUUID, d);
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_callUUID forKey:@"callUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_callUUID forKey:@"callUUID"];
 }
 
-- (TUSmartHoldingSessionRequest)initWithCoder:(id)a3
+- (TUSmartHoldingSessionRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(TUSmartHoldingSessionRequest *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
     callUUID = v5->_callUUID;
     v5->_callUUID = v8;
   }
@@ -51,16 +51,16 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(TUSmartHoldingSessionRequest *)self uuid];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  uuid = [(TUSmartHoldingSessionRequest *)self uuid];
   v6 = v4[1];
-  v4[1] = v5;
+  v4[1] = uuid;
 
-  v7 = [(TUSmartHoldingSessionRequest *)self callUUID];
+  callUUID = [(TUSmartHoldingSessionRequest *)self callUUID];
   v8 = v4[2];
-  v4[2] = v7;
+  v4[2] = callUUID;
 
   return v4;
 }

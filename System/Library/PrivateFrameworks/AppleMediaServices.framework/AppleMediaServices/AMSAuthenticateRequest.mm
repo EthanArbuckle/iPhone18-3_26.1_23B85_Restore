@@ -1,122 +1,122 @@
 @interface AMSAuthenticateRequest
-- (AMSAuthenticateRequest)initWithAccount:(id)a3 options:(id)a4;
-- (AMSAuthenticateRequest)initWithCoder:(id)a3;
-- (AMSAuthenticateRequest)initWithDSID:(id)a3 altDSID:(id)a4 username:(id)a5 options:(id)a6;
+- (AMSAuthenticateRequest)initWithAccount:(id)account options:(id)options;
+- (AMSAuthenticateRequest)initWithCoder:(id)coder;
+- (AMSAuthenticateRequest)initWithDSID:(id)d altDSID:(id)iD username:(id)username options:(id)options;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AMSAuthenticateRequest
 
-- (AMSAuthenticateRequest)initWithAccount:(id)a3 options:(id)a4
+- (AMSAuthenticateRequest)initWithAccount:(id)account options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = AMSAuthenticateRequest;
   v9 = [(AMSAuthenticateRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_options, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_options, options);
   }
 
   return v10;
 }
 
-- (AMSAuthenticateRequest)initWithDSID:(id)a3 altDSID:(id)a4 username:(id)a5 options:(id)a6
+- (AMSAuthenticateRequest)initWithDSID:(id)d altDSID:(id)iD username:(id)username options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-  v15 = [v14 ams_iTunesAccountWithAltDSID:v11 DSID:v10 username:v12];
+  dCopy = d;
+  iDCopy = iD;
+  usernameCopy = username;
+  optionsCopy = options;
+  ams_sharedAccountStore = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+  v15 = [ams_sharedAccountStore ams_iTunesAccountWithAltDSID:iDCopy DSID:dCopy username:usernameCopy];
 
   if (!v15)
   {
-    v16 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
-    v17 = [v16 _ams_accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959930] error:0];
+    ams_sharedAccountStore2 = [MEMORY[0x1E6959A48] ams_sharedAccountStore];
+    v17 = [ams_sharedAccountStore2 _ams_accountTypeWithAccountTypeIdentifier:*MEMORY[0x1E6959930] error:0];
 
     v15 = [objc_alloc(MEMORY[0x1E6959A28]) initWithAccountType:v17];
-    [v15 setUsername:v12];
-    [v15 ams_setDSID:v10];
-    [v15 ams_setAltDSID:v11];
+    [v15 setUsername:usernameCopy];
+    [v15 ams_setDSID:dCopy];
+    [v15 ams_setAltDSID:iDCopy];
   }
 
-  v18 = [(AMSAuthenticateRequest *)self initWithAccount:v15 options:v13];
+  v18 = [(AMSAuthenticateRequest *)self initWithAccount:v15 options:optionsCopy];
 
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(AMSAuthenticateRequest *)self account];
+  coderCopy = coder;
+  account = [(AMSAuthenticateRequest *)self account];
 
-  if (v4)
+  if (account)
   {
-    v5 = [(AMSAuthenticateRequest *)self account];
-    [v13 encodeObject:v5 forKey:@"kCodingKeyAccount"];
+    account2 = [(AMSAuthenticateRequest *)self account];
+    [coderCopy encodeObject:account2 forKey:@"kCodingKeyAccount"];
   }
 
   if ([(AMSAuthenticateRequest *)self isServerRequested])
   {
-    [v13 encodeBool:-[AMSAuthenticateRequest isServerRequested](self forKey:{"isServerRequested"), @"kCodingKeyIsServerRequested"}];
+    [coderCopy encodeBool:-[AMSAuthenticateRequest isServerRequested](self forKey:{"isServerRequested"), @"kCodingKeyIsServerRequested"}];
   }
 
-  v6 = [(AMSAuthenticateRequest *)self logKey];
+  logKey = [(AMSAuthenticateRequest *)self logKey];
 
-  if (v6)
+  if (logKey)
   {
-    v7 = [(AMSAuthenticateRequest *)self logKey];
-    [v13 encodeObject:v7 forKey:@"kCodingKeyLogKey"];
+    logKey2 = [(AMSAuthenticateRequest *)self logKey];
+    [coderCopy encodeObject:logKey2 forKey:@"kCodingKeyLogKey"];
   }
 
-  v8 = [(AMSAuthenticateRequest *)self options];
+  options = [(AMSAuthenticateRequest *)self options];
 
-  if (v8)
+  if (options)
   {
-    v9 = [(AMSAuthenticateRequest *)self options];
-    [v13 encodeObject:v9 forKey:@"kCodingKeyOptions"];
+    options2 = [(AMSAuthenticateRequest *)self options];
+    [coderCopy encodeObject:options2 forKey:@"kCodingKeyOptions"];
   }
 
-  v10 = [(AMSAuthenticateRequest *)self userInfo];
+  userInfo = [(AMSAuthenticateRequest *)self userInfo];
 
-  v11 = v13;
-  if (v10)
+  v11 = coderCopy;
+  if (userInfo)
   {
-    v12 = [(AMSAuthenticateRequest *)self userInfo];
-    [v13 encodeObject:v12 forKey:@"kCodingKeyUserInfo"];
+    userInfo2 = [(AMSAuthenticateRequest *)self userInfo];
+    [coderCopy encodeObject:userInfo2 forKey:@"kCodingKeyUserInfo"];
 
-    v11 = v13;
+    v11 = coderCopy;
   }
 }
 
-- (AMSAuthenticateRequest)initWithCoder:(id)a3
+- (AMSAuthenticateRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = AMSAuthenticateRequest;
   v5 = [(AMSAuthenticateRequest *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAccount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyAccount"];
     account = v5->_account;
     v5->_account = v6;
 
-    v5->_isServerRequested = [v4 decodeBoolForKey:@"kCodingKeyIsServerRequested"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyLogKey"];
+    v5->_isServerRequested = [coderCopy decodeBoolForKey:@"kCodingKeyIsServerRequested"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyLogKey"];
     logKey = v5->_logKey;
     v5->_logKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyOptions"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCodingKeyOptions"];
     options = v5->_options;
     v5->_options = v10;
 
-    v12 = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"kCodingKeyUserInfo"];
+    ams_PLISTClasses = [MEMORY[0x1E695DFD8] ams_PLISTClasses];
+    v13 = [coderCopy decodeObjectOfClasses:ams_PLISTClasses forKey:@"kCodingKeyUserInfo"];
     userInfo = v5->_userInfo;
     v5->_userInfo = v13;
   }
@@ -127,20 +127,20 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AMSAuthenticateRequest *)self account];
-  [v3 ams_setNullableObject:v4 forKey:@"account"];
+  account = [(AMSAuthenticateRequest *)self account];
+  [v3 ams_setNullableObject:account forKey:@"account"];
 
   v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[AMSAuthenticateRequest isServerRequested](self, "isServerRequested")}];
   [v3 ams_setNullableObject:v5 forKey:@"server requested"];
 
-  v6 = [(AMSAuthenticateRequest *)self logKey];
-  [v3 ams_setNullableObject:v6 forKey:@"logKey"];
+  logKey = [(AMSAuthenticateRequest *)self logKey];
+  [v3 ams_setNullableObject:logKey forKey:@"logKey"];
 
-  v7 = [(AMSAuthenticateRequest *)self options];
-  [v3 ams_setNullableObject:v7 forKey:@"options"];
+  options = [(AMSAuthenticateRequest *)self options];
+  [v3 ams_setNullableObject:options forKey:@"options"];
 
-  v8 = [(AMSAuthenticateRequest *)self userInfo];
-  [v3 ams_setNullableObject:v8 forKey:@"userInfo"];
+  userInfo = [(AMSAuthenticateRequest *)self userInfo];
+  [v3 ams_setNullableObject:userInfo forKey:@"userInfo"];
 
   v9 = [self ams_generateDescriptionWithSubObjects:v3];
 

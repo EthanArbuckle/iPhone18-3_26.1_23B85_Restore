@@ -1,39 +1,39 @@
 @interface SXComponentVisiblePercentageProvider
-- (SXComponentVisiblePercentageProvider)initWithViewport:(id)a3;
-- (double)visiblePercentageOfObject:(id)a3;
+- (SXComponentVisiblePercentageProvider)initWithViewport:(id)viewport;
+- (double)visiblePercentageOfObject:(id)object;
 @end
 
 @implementation SXComponentVisiblePercentageProvider
 
-- (SXComponentVisiblePercentageProvider)initWithViewport:(id)a3
+- (SXComponentVisiblePercentageProvider)initWithViewport:(id)viewport
 {
-  v5 = a3;
+  viewportCopy = viewport;
   v9.receiver = self;
   v9.super_class = SXComponentVisiblePercentageProvider;
   v6 = [(SXComponentVisiblePercentageProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewport, a3);
+    objc_storeStrong(&v6->_viewport, viewport);
   }
 
   return v7;
 }
 
-- (double)visiblePercentageOfObject:(id)a3
+- (double)visiblePercentageOfObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   v5 = 0.0;
   if (objc_opt_isKindOfClass())
   {
-    [v4 absoluteFrame];
+    [objectCopy absoluteFrame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(SXComponentVisiblePercentageProvider *)self viewport];
-    [v14 dynamicBounds];
+    viewport = [(SXComponentVisiblePercentageProvider *)self viewport];
+    [viewport dynamicBounds];
     v25.origin.x = v7;
     v25.origin.y = v9;
     v25.size.width = v11;

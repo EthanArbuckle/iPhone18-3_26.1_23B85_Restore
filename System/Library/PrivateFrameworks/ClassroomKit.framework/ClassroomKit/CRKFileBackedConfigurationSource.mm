@@ -1,39 +1,39 @@
 @interface CRKFileBackedConfigurationSource
-- (BOOL)deleteConfigurationAtURL:(id)a3 inDirectory:(id)a4 error:(id *)a5;
-- (BOOL)isReadErrorBenign:(id)a3;
+- (BOOL)deleteConfigurationAtURL:(id)l inDirectory:(id)directory error:(id *)error;
+- (BOOL)isReadErrorBenign:(id)benign;
 - (CRKFileBackedConfigurationSource)init;
-- (CRKFileBackedConfigurationSource)initWithFileURL:(id)a3 callbackQueue:(id)a4;
+- (CRKFileBackedConfigurationSource)initWithFileURL:(id)l callbackQueue:(id)queue;
 - (CRKFileBackedConfigurationSourceDelegate)delegate;
-- (void)delegateDidDeleteConfigurationAtURL:(id)a3 inDirectory:(id)a4;
-- (void)executeIntents:(id)a3 accessBlock:(id)a4;
-- (void)fetchConfiguration:(id)a3;
-- (void)invokeCompletionBlock:(id)a3 withConfiguration:(id)a4 error:(id)a5;
-- (void)invokeCompletionBlock:(id)a3 withError:(id)a4;
-- (void)setConfiguration:(id)a3 completion:(id)a4;
+- (void)delegateDidDeleteConfigurationAtURL:(id)l inDirectory:(id)directory;
+- (void)executeIntents:(id)intents accessBlock:(id)block;
+- (void)fetchConfiguration:(id)configuration;
+- (void)invokeCompletionBlock:(id)block withConfiguration:(id)configuration error:(id)error;
+- (void)invokeCompletionBlock:(id)block withError:(id)error;
+- (void)setConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation CRKFileBackedConfigurationSource
 
 - (CRKFileBackedConfigurationSource)init
 {
-  v3 = [MEMORY[0x277CBEBC0] crk_uniqueTemporaryFileURL];
-  v4 = [(CRKFileBackedConfigurationSource *)self initWithFileURL:v3];
+  crk_uniqueTemporaryFileURL = [MEMORY[0x277CBEBC0] crk_uniqueTemporaryFileURL];
+  v4 = [(CRKFileBackedConfigurationSource *)self initWithFileURL:crk_uniqueTemporaryFileURL];
 
   return v4;
 }
 
-- (CRKFileBackedConfigurationSource)initWithFileURL:(id)a3 callbackQueue:(id)a4
+- (CRKFileBackedConfigurationSource)initWithFileURL:(id)l callbackQueue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = CRKFileBackedConfigurationSource;
   v9 = [(CRKFileBackedConfigurationSource *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mFileURL, a3);
-    objc_storeStrong(&v10->mCallbackQueue, a4);
+    objc_storeStrong(&v9->mFileURL, l);
+    objc_storeStrong(&v10->mCallbackQueue, queue);
     v11 = objc_opt_new();
     mFileOperationQueue = v10->mFileOperationQueue;
     v10->mFileOperationQueue = v11;
@@ -42,66 +42,66 @@
   return v10;
 }
 
-- (void)executeIntents:(id)a3 accessBlock:(id)a4
+- (void)executeIntents:(id)intents accessBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  intentsCopy = intents;
   v8 = objc_opt_new();
-  [v8 coordinateAccessWithIntents:v7 queue:self->mFileOperationQueue byAccessor:v6];
+  [v8 coordinateAccessWithIntents:intentsCopy queue:self->mFileOperationQueue byAccessor:blockCopy];
 }
 
-- (void)invokeCompletionBlock:(id)a3 withError:(id)a4
+- (void)invokeCompletionBlock:(id)block withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  errorCopy = error;
   mCallbackQueue = self->mCallbackQueue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__CRKFileBackedConfigurationSource_invokeCompletionBlock_withError___block_invoke;
   v11[3] = &unk_278DC0FB8;
-  v12 = v7;
-  v13 = v6;
-  v9 = v7;
-  v10 = v6;
+  v12 = errorCopy;
+  v13 = blockCopy;
+  v9 = errorCopy;
+  v10 = blockCopy;
   dispatch_async(mCallbackQueue, v11);
 }
 
-- (void)invokeCompletionBlock:(id)a3 withConfiguration:(id)a4 error:(id)a5
+- (void)invokeCompletionBlock:(id)block withConfiguration:(id)configuration error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  configurationCopy = configuration;
+  errorCopy = error;
   mCallbackQueue = self->mCallbackQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__CRKFileBackedConfigurationSource_invokeCompletionBlock_withConfiguration_error___block_invoke;
   block[3] = &unk_278DC1630;
-  v17 = v10;
-  v18 = v8;
-  v16 = v9;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v17 = errorCopy;
+  v18 = blockCopy;
+  v16 = configurationCopy;
+  v12 = errorCopy;
+  v13 = configurationCopy;
+  v14 = blockCopy;
   dispatch_async(mCallbackQueue, block);
 }
 
-- (void)delegateDidDeleteConfigurationAtURL:(id)a3 inDirectory:(id)a4
+- (void)delegateDidDeleteConfigurationAtURL:(id)l inDirectory:(id)directory
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(CRKFileBackedConfigurationSource *)self delegate];
+  lCopy = l;
+  directoryCopy = directory;
+  delegate = [(CRKFileBackedConfigurationSource *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v7 fileBackedConfigurationSource:self didDeleteConfigurationAtURL:v8 inDirectory:v6];
+    [delegate fileBackedConfigurationSource:self didDeleteConfigurationAtURL:lCopy inDirectory:directoryCopy];
   }
 }
 
-- (void)setConfiguration:(id)a3 completion:(id)a4
+- (void)setConfiguration:(id)configuration completion:(id)completion
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (configurationCopy)
   {
     v8 = 8;
   }
@@ -113,8 +113,8 @@
 
   v9 = [MEMORY[0x277CCA9E0] writingIntentWithURL:self->mFileURL options:v8];
   v10 = MEMORY[0x277CCA9E0];
-  v11 = [(CRKFileBackedConfigurationSource *)self directoryURL];
-  v12 = [v10 writingIntentWithURL:v11 options:v8];
+  directoryURL = [(CRKFileBackedConfigurationSource *)self directoryURL];
+  v12 = [v10 writingIntentWithURL:directoryURL options:v8];
 
   v23[0] = v9;
   v23[1] = v12;
@@ -124,14 +124,14 @@
   v18[2] = __64__CRKFileBackedConfigurationSource_setConfiguration_completion___block_invoke;
   v18[3] = &unk_278DC31D0;
   v21 = v12;
-  v22 = v7;
+  v22 = completionCopy;
   v18[4] = self;
-  v19 = v6;
+  v19 = configurationCopy;
   v20 = v9;
   v14 = v12;
   v15 = v9;
-  v16 = v6;
-  v17 = v7;
+  v16 = configurationCopy;
+  v17 = completionCopy;
   [(CRKFileBackedConfigurationSource *)self executeIntents:v13 accessBlock:v18];
 }
 
@@ -190,17 +190,17 @@ LABEL_3:
 LABEL_4:
 }
 
-- (BOOL)deleteConfigurationAtURL:(id)a3 inDirectory:(id)a4 error:(id *)a5
+- (BOOL)deleteConfigurationAtURL:(id)l inDirectory:(id)directory error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  lCopy = l;
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v18 = 0;
-  v11 = [v10 removeItemAtURL:v8 error:&v18];
+  v11 = [defaultManager removeItemAtURL:lCopy error:&v18];
   v12 = v18;
 
-  v13 = [v12 domain];
-  if ([v13 isEqualToString:*MEMORY[0x277CCA050]])
+  domain = [v12 domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
     v14 = [v12 code] == 4;
   }
@@ -213,26 +213,26 @@ LABEL_4:
   v15 = v11 | v14;
   if (v15)
   {
-    [(CRKFileBackedConfigurationSource *)self delegateDidDeleteConfigurationAtURL:v8 inDirectory:v9];
+    [(CRKFileBackedConfigurationSource *)self delegateDidDeleteConfigurationAtURL:lCopy inDirectory:directoryCopy];
   }
 
-  else if (a5)
+  else if (error)
   {
     v16 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   return v15 & 1;
 }
 
-- (void)fetchConfiguration:(id)a3
+- (void)fetchConfiguration:(id)configuration
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [MEMORY[0x277CCA9E0] readingIntentWithURL:self->mFileURL options:3];
   v6 = MEMORY[0x277CCA9E0];
-  v7 = [(CRKFileBackedConfigurationSource *)self directoryURL];
-  v8 = [v6 readingIntentWithURL:v7 options:3];
+  directoryURL = [(CRKFileBackedConfigurationSource *)self directoryURL];
+  v8 = [v6 readingIntentWithURL:directoryURL options:3];
 
   v15[0] = v5;
   v15[1] = v8;
@@ -242,10 +242,10 @@ LABEL_4:
   v12[2] = __55__CRKFileBackedConfigurationSource_fetchConfiguration___block_invoke;
   v12[3] = &unk_278DC31F8;
   v13 = v5;
-  v14 = v4;
+  v14 = configurationCopy;
   v12[4] = self;
   v10 = v5;
-  v11 = v4;
+  v11 = configurationCopy;
   [(CRKFileBackedConfigurationSource *)self executeIntents:v9 accessBlock:v12];
 }
 
@@ -292,13 +292,13 @@ void __55__CRKFileBackedConfigurationSource_fetchConfiguration___block_invoke(ui
   }
 }
 
-- (BOOL)isReadErrorBenign:(id)a3
+- (BOOL)isReadErrorBenign:(id)benign
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x277CCA050]])
+  benignCopy = benign;
+  domain = [benignCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277CCA050]])
   {
-    v5 = [v3 code] == 260;
+    v5 = [benignCopy code] == 260;
   }
 
   else

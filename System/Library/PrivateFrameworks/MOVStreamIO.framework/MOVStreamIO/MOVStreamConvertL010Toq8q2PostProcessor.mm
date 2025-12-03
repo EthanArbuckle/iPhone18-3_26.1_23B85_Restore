@@ -1,14 +1,14 @@
 @interface MOVStreamConvertL010Toq8q2PostProcessor
-- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)a3 metadata:(id)a4 error:(id *)a5;
+- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)from metadata:(id)metadata error:(id *)error;
 @end
 
 @implementation MOVStreamConvertL010Toq8q2PostProcessor
 
-- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)a3 metadata:(id)a4 error:(id *)a5
+- (__CVBuffer)processedPixelBufferFrom:(__CVBuffer *)from metadata:(id)metadata error:(id *)error
 {
-  v8 = a4;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  metadataCopy = metadata;
+  Width = CVPixelBufferGetWidth(from);
+  Height = CVPixelBufferGetHeight(from);
   pool = self->_pool;
   if (!pool)
   {
@@ -24,44 +24,44 @@
     }
   }
 
-  v14 = [(MIOPixelBufferPool *)pool getPixelBuffer];
-  if (![MIOPixelBufferUtility transferL010PixelBuffer:a3 toq8q2PixelBuffer:v14])
+  getPixelBuffer = [(MIOPixelBufferPool *)pool getPixelBuffer];
+  if (![MIOPixelBufferUtility transferL010PixelBuffer:from toq8q2PixelBuffer:getPixelBuffer])
   {
-    CVPixelBufferRelease(v14);
-    CVPixelBufferRelease(a3);
+    CVPixelBufferRelease(getPixelBuffer);
+    CVPixelBufferRelease(from);
     v16 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot convert L010 to q8q2 buffer." code:20];
 LABEL_11:
-    if (a5)
+    if (error)
     {
       v16 = v16;
-      *a5 = v16;
+      *error = v16;
     }
 
-    v14 = 0;
+    getPixelBuffer = 0;
     goto LABEL_14;
   }
 
-  if ([(MOVStreamDefaultPostProcessor *)self shouldRemovePaddingOfPixelBuffer:v14 metadata:v8])
+  if ([(MOVStreamDefaultPostProcessor *)self shouldRemovePaddingOfPixelBuffer:getPixelBuffer metadata:metadataCopy])
   {
-    v15 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithoutPaddingFromPixelBuffer:v14 error:a5];
-    CVPixelBufferRelease(v14);
+    v15 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithoutPaddingFromPixelBuffer:getPixelBuffer error:error];
+    CVPixelBufferRelease(getPixelBuffer);
 LABEL_9:
-    v14 = v15;
+    getPixelBuffer = v15;
     goto LABEL_14;
   }
 
-  if ([(MOVStreamDefaultPostProcessor *)self shouldChangeBytesPerRowOfPixelBuffer:a3])
+  if ([(MOVStreamDefaultPostProcessor *)self shouldChangeBytesPerRowOfPixelBuffer:from])
   {
-    v17 = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
-    v15 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithExactBytesPerRow:v17 fromPixelBuffer:v14 error:a5];
+    exactBytesPerRow = [(MOVStreamDefaultPostProcessor *)self exactBytesPerRow];
+    v15 = [(MOVStreamDefaultPostProcessor *)self pixelBufferWithExactBytesPerRow:exactBytesPerRow fromPixelBuffer:getPixelBuffer error:error];
 
-    CVPixelBufferRelease(v14);
+    CVPixelBufferRelease(getPixelBuffer);
     goto LABEL_9;
   }
 
 LABEL_14:
 
-  return v14;
+  return getPixelBuffer;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface REContentRanker
-- (BOOL)load:(id)a3 error:(id *)a4;
-- (BOOL)save:(id)a3 error:(id *)a4;
-- (BOOL)train:(id)a3 isPositive:(BOOL)a4;
+- (BOOL)load:(id)load error:(id *)error;
+- (BOOL)save:(id)save error:(id *)error;
+- (BOOL)train:(id)train isPositive:(BOOL)positive;
 - (NSString)negativeContent;
 - (NSString)positiveContent;
 - (REContentRanker)init;
-- (id)predict:(id)a3;
+- (id)predict:(id)predict;
 @end
 
 @implementation REContentRanker
@@ -17,11 +17,11 @@
   return [(REContentRanker *)&v3 init];
 }
 
-- (BOOL)load:(id)a3 error:(id *)a4
+- (BOOL)load:(id)load error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 stringByAppendingPathComponent:@"PositiveContent.dic"];
-  v8 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v7 encoding:4 error:a4];
+  loadCopy = load;
+  v7 = [loadCopy stringByAppendingPathComponent:@"PositiveContent.dic"];
+  v8 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v7 encoding:4 error:error];
   v9 = v8;
   if (!v8)
   {
@@ -50,8 +50,8 @@ LABEL_8:
   }
 
 LABEL_4:
-  v12 = [v6 stringByAppendingPathComponent:@"NegativeContent.dic"];
-  v13 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v12 encoding:4 error:a4];
+  v12 = [loadCopy stringByAppendingPathComponent:@"NegativeContent.dic"];
+  v13 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:v12 encoding:4 error:error];
   v14 = v13;
   if (v13)
   {
@@ -72,11 +72,11 @@ LABEL_11:
   return v15;
 }
 
-- (BOOL)save:(id)a3 error:(id *)a4
+- (BOOL)save:(id)save error:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 stringByAppendingPathComponent:@"PositiveContent.dic"];
+  saveCopy = save;
+  v6 = [saveCopy stringByAppendingPathComponent:@"PositiveContent.dic"];
   MEMORY[0x22AABBC00](__sb);
   v7 = v6;
   [v6 UTF8String];
@@ -98,7 +98,7 @@ LABEL_11:
   std::filebuf::close();
   if (v8)
   {
-    v9 = [v5 stringByAppendingPathComponent:@"NegativeContent.dic"];
+    v9 = [saveCopy stringByAppendingPathComponent:@"NegativeContent.dic"];
     MEMORY[0x22AABBC00](&v17);
     v10 = v9;
     [v9 UTF8String];
@@ -127,24 +127,24 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)train:(id)a3 isPositive:(BOOL)a4
+- (BOOL)train:(id)train isPositive:(BOOL)positive
 {
-  v4 = a4;
-  v6 = a3;
-  if ([v6 count])
+  positiveCopy = positive;
+  trainCopy = train;
+  if ([trainCopy count])
   {
-    std::vector<std::string>::vector[abi:ne200100](v13, [v6 count]);
+    std::vector<std::string>::vector[abi:ne200100](v13, [trainCopy count]);
     v7 = 0;
-    for (i = 0; i < [v6 count]; ++i)
+    for (i = 0; i < [trainCopy count]; ++i)
     {
-      v9 = [v6 objectAtIndexedSubscript:i];
-      v10 = [v9 UTF8String];
-      MEMORY[0x22AABBBA0](&v13[0][v7], v10);
+      v9 = [trainCopy objectAtIndexedSubscript:i];
+      uTF8String = [v9 UTF8String];
+      MEMORY[0x22AABBBA0](&v13[0][v7], uTF8String);
 
       v7 += 3;
     }
 
-    v11 = REContentFeatureExtractor::train(&self->_extractor.m_rwlock, v13, v4);
+    v11 = REContentFeatureExtractor::train(&self->_extractor.m_rwlock, v13, positiveCopy);
     v14 = v13;
     std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v14);
   }
@@ -157,19 +157,19 @@ LABEL_11:
   return v11;
 }
 
-- (id)predict:(id)a3
+- (id)predict:(id)predict
 {
-  v4 = a3;
+  predictCopy = predict;
   v5 = objc_opt_new();
-  if ([v4 count])
+  if ([predictCopy count])
   {
-    std::vector<std::string>::vector[abi:ne200100](v15, [v4 count]);
+    std::vector<std::string>::vector[abi:ne200100](v15, [predictCopy count]);
     v6 = 0;
-    for (i = 0; i < [v4 count]; ++i)
+    for (i = 0; i < [predictCopy count]; ++i)
     {
-      v8 = [v4 objectAtIndexedSubscript:i];
-      v9 = [v8 UTF8String];
-      MEMORY[0x22AABBBA0](&v15[0][v6], v9);
+      v8 = [predictCopy objectAtIndexedSubscript:i];
+      uTF8String = [v8 UTF8String];
+      MEMORY[0x22AABBBA0](&v15[0][v6], uTF8String);
 
       v6 += 3;
     }

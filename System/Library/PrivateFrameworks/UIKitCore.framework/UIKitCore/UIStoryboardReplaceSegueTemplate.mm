@@ -1,41 +1,41 @@
 @interface UIStoryboardReplaceSegueTemplate
-- (UIStoryboardReplaceSegueTemplate)initWithCoder:(id)a3;
-- (id)newDefaultPerformHandlerForSegue:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UIStoryboardReplaceSegueTemplate)initWithCoder:(id)coder;
+- (id)newDefaultPerformHandlerForSegue:(id)segue;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIStoryboardReplaceSegueTemplate
 
-- (UIStoryboardReplaceSegueTemplate)initWithCoder:(id)a3
+- (UIStoryboardReplaceSegueTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = UIStoryboardReplaceSegueTemplate;
-  v5 = [(UIStoryboardSegueTemplate *)&v7 initWithCoder:v4];
+  v5 = [(UIStoryboardSegueTemplate *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_destinationContainmentContext = [v4 decodeIntegerForKey:@"UIDestinationContainmentContext"];
-    v5->_splitViewControllerIndex = [v4 decodeIntegerForKey:@"UISplitViewControllerIndex"];
+    v5->_destinationContainmentContext = [coderCopy decodeIntegerForKey:@"UIDestinationContainmentContext"];
+    v5->_splitViewControllerIndex = [coderCopy decodeIntegerForKey:@"UISplitViewControllerIndex"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = UIStoryboardReplaceSegueTemplate;
-  v4 = a3;
-  [(UIStoryboardSegueTemplate *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:-[UIStoryboardReplaceSegueTemplate destinationContainmentContext](self forKey:{"destinationContainmentContext", v5.receiver, v5.super_class), @"UIDestinationContainmentContext"}];
-  [v4 encodeInteger:-[UIStoryboardReplaceSegueTemplate splitViewControllerIndex](self forKey:{"splitViewControllerIndex"), @"UISplitViewControllerIndex"}];
+  coderCopy = coder;
+  [(UIStoryboardSegueTemplate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[UIStoryboardReplaceSegueTemplate destinationContainmentContext](self forKey:{"destinationContainmentContext", v5.receiver, v5.super_class), @"UIDestinationContainmentContext"}];
+  [coderCopy encodeInteger:-[UIStoryboardReplaceSegueTemplate splitViewControllerIndex](self forKey:{"splitViewControllerIndex"), @"UISplitViewControllerIndex"}];
 }
 
-- (id)newDefaultPerformHandlerForSegue:(id)a3
+- (id)newDefaultPerformHandlerForSegue:(id)segue
 {
   destinationContainmentContext = self->_destinationContainmentContext;
   splitViewControllerIndex = self->_splitViewControllerIndex;
-  objc_initWeak(&location, a3);
+  objc_initWeak(&location, segue);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__UIStoryboardReplaceSegueTemplate_newDefaultPerformHandlerForSegue___block_invoke;

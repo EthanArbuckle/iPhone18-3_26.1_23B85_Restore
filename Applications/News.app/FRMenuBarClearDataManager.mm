@@ -1,6 +1,6 @@
 @interface FRMenuBarClearDataManager
 - (BOOL)isSyncingEnabled;
-- (FRMenuBarClearDataManager)initWithAccount:(id)a3 clearReadingHistoryManager:(id)a4 personalizationData:(id)a5 analyticsController:(id)a6 newsletterManager:(id)a7 userEventHistoryStorage:(id)a8 userActivityManager:(id)a9 clearableUserEmbedding:(id)a10;
+- (FRMenuBarClearDataManager)initWithAccount:(id)account clearReadingHistoryManager:(id)manager personalizationData:(id)data analyticsController:(id)controller newsletterManager:(id)newsletterManager userEventHistoryStorage:(id)storage userActivityManager:(id)activityManager clearableUserEmbedding:(id)self0;
 - (void)clearAllData;
 - (void)clearHistory;
 - (void)clearRecommendations;
@@ -9,30 +9,30 @@
 
 @implementation FRMenuBarClearDataManager
 
-- (FRMenuBarClearDataManager)initWithAccount:(id)a3 clearReadingHistoryManager:(id)a4 personalizationData:(id)a5 analyticsController:(id)a6 newsletterManager:(id)a7 userEventHistoryStorage:(id)a8 userActivityManager:(id)a9 clearableUserEmbedding:(id)a10
+- (FRMenuBarClearDataManager)initWithAccount:(id)account clearReadingHistoryManager:(id)manager personalizationData:(id)data analyticsController:(id)controller newsletterManager:(id)newsletterManager userEventHistoryStorage:(id)storage userActivityManager:(id)activityManager clearableUserEmbedding:(id)self0
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v22 = a8;
-  v17 = a9;
-  v18 = a10;
+  accountCopy = account;
+  managerCopy = manager;
+  dataCopy = data;
+  controllerCopy = controller;
+  newsletterManagerCopy = newsletterManager;
+  storageCopy = storage;
+  activityManagerCopy = activityManager;
+  embeddingCopy = embedding;
   v28.receiver = self;
   v28.super_class = FRMenuBarClearDataManager;
   v19 = [(FRMenuBarClearDataManager *)&v28 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_account, a3);
-    objc_storeStrong(&v20->_clearReadingHistoryManager, a4);
-    objc_storeStrong(&v20->_personalizationData, a5);
-    objc_storeStrong(&v20->_analyticsController, a6);
-    objc_storeStrong(&v20->_newsletterManager, a7);
-    objc_storeStrong(&v20->_userEventHistoryStorage, a8);
-    objc_storeStrong(&v20->_userActivityManager, a9);
-    objc_storeStrong(&v20->_clearableUserEmbedding, a10);
+    objc_storeStrong(&v19->_account, account);
+    objc_storeStrong(&v20->_clearReadingHistoryManager, manager);
+    objc_storeStrong(&v20->_personalizationData, data);
+    objc_storeStrong(&v20->_analyticsController, controller);
+    objc_storeStrong(&v20->_newsletterManager, newsletterManager);
+    objc_storeStrong(&v20->_userEventHistoryStorage, storage);
+    objc_storeStrong(&v20->_userActivityManager, activityManager);
+    objc_storeStrong(&v20->_clearableUserEmbedding, embedding);
   }
 
   return v20;
@@ -40,10 +40,10 @@
 
 - (BOOL)isSyncingEnabled
 {
-  v2 = [(FRMenuBarClearDataManager *)self account];
-  v3 = [v2 isPrivateDataSyncingEnabled];
+  account = [(FRMenuBarClearDataManager *)self account];
+  isPrivateDataSyncingEnabled = [account isPrivateDataSyncingEnabled];
 
-  return v3;
+  return isPrivateDataSyncingEnabled;
 }
 
 - (void)clearAllData
@@ -51,51 +51,51 @@
   [(FRMenuBarClearDataManager *)self clearHistory];
   [(FRMenuBarClearDataManager *)self clearRecommendations];
   [(FRMenuBarClearDataManager *)self resetIdentifier];
-  v3 = [(FRMenuBarClearDataManager *)self userActivityManager];
-  [v3 clearAllSavedUserActivities];
+  userActivityManager = [(FRMenuBarClearDataManager *)self userActivityManager];
+  [userActivityManager clearAllSavedUserActivities];
 }
 
 - (void)clearHistory
 {
-  v3 = [(FRMenuBarClearDataManager *)self clearReadingHistoryManager];
-  [v3 clearHistory];
+  clearReadingHistoryManager = [(FRMenuBarClearDataManager *)self clearReadingHistoryManager];
+  [clearReadingHistoryManager clearHistory];
 
   [(FRMenuBarClearDataManager *)self clearRecommendations];
-  v4 = [(FRMenuBarClearDataManager *)self userActivityManager];
-  [v4 clearAllSavedUserActivities];
+  userActivityManager = [(FRMenuBarClearDataManager *)self userActivityManager];
+  [userActivityManager clearAllSavedUserActivities];
 }
 
 - (void)clearRecommendations
 {
-  v3 = [(FRMenuBarClearDataManager *)self personalizationData];
-  [v3 clearPersonalizationData];
+  personalizationData = [(FRMenuBarClearDataManager *)self personalizationData];
+  [personalizationData clearPersonalizationData];
 
-  v4 = [(FRMenuBarClearDataManager *)self userEventHistoryStorage];
-  [v4 clearHistory];
+  userEventHistoryStorage = [(FRMenuBarClearDataManager *)self userEventHistoryStorage];
+  [userEventHistoryStorage clearHistory];
 
-  v5 = [(FRMenuBarClearDataManager *)self clearableUserEmbedding];
-  [v5 clearHistory];
+  clearableUserEmbedding = [(FRMenuBarClearDataManager *)self clearableUserEmbedding];
+  [clearableUserEmbedding clearHistory];
 
-  v6 = [(FRMenuBarClearDataManager *)self newsletterManager];
-  [v6 deletePersonalizationVector];
+  newsletterManager = [(FRMenuBarClearDataManager *)self newsletterManager];
+  [newsletterManager deletePersonalizationVector];
 
-  v7 = [(FRMenuBarClearDataManager *)self userActivityManager];
-  [v7 clearAllSavedUserActivities];
+  userActivityManager = [(FRMenuBarClearDataManager *)self userActivityManager];
+  [userActivityManager clearAllSavedUserActivities];
 }
 
 - (void)resetIdentifier
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 key_window];
-  v5 = [v4 windowScene];
-  v6 = [v5 session];
-  v9 = [v6 persistentIdentifier];
+  key_window = [v3 key_window];
+  windowScene = [key_window windowScene];
+  session = [windowScene session];
+  persistentIdentifier = [session persistentIdentifier];
 
-  v7 = [(FRMenuBarClearDataManager *)self analyticsController];
-  [v7 endSessionForReason:1 byStartingNewSession:1 resetUserID:1 forSceneID:v9];
+  analyticsController = [(FRMenuBarClearDataManager *)self analyticsController];
+  [analyticsController endSessionForReason:1 byStartingNewSession:1 resetUserID:1 forSceneID:persistentIdentifier];
 
-  v8 = [(FRMenuBarClearDataManager *)self userActivityManager];
-  [v8 clearAllSavedUserActivities];
+  userActivityManager = [(FRMenuBarClearDataManager *)self userActivityManager];
+  [userActivityManager clearAllSavedUserActivities];
 }
 
 @end

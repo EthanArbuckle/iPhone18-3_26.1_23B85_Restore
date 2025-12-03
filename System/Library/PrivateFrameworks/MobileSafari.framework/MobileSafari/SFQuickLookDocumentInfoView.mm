@@ -1,21 +1,21 @@
 @interface SFQuickLookDocumentInfoView
-- (SFQuickLookDocumentInfoView)initWithFrame:(CGRect)a3;
+- (SFQuickLookDocumentInfoView)initWithFrame:(CGRect)frame;
 - (void)_updateDocumentSizeLabel;
 - (void)_updateOrientationBasedConstraints;
 - (void)_updatePropertiesDefinedByContentSizeCategory;
-- (void)setFileName:(id)a3;
-- (void)setFileSize:(id)a3;
-- (void)setFileType:(id)a3;
+- (void)setFileName:(id)name;
+- (void)setFileSize:(id)size;
+- (void)setFileType:(id)type;
 @end
 
 @implementation SFQuickLookDocumentInfoView
 
-- (SFQuickLookDocumentInfoView)initWithFrame:(CGRect)a3
+- (SFQuickLookDocumentInfoView)initWithFrame:(CGRect)frame
 {
   v48[7] = *MEMORY[0x1E69E9840];
   v46.receiver = self;
   v46.super_class = SFQuickLookDocumentInfoView;
-  v3 = [(SFQuickLookDocumentInfoView *)&v46 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFQuickLookDocumentInfoView *)&v46 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCF90]);
@@ -50,8 +50,8 @@
 
     [(UILabel *)v3->_fileNameLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_fileNameLabel setLineBreakMode:5];
-    v12 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v3->_fileNameLabel setTextColor:v12];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v3->_fileNameLabel setTextColor:labelColor];
 
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_fileNameLabel];
     v13 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -59,41 +59,41 @@
     v3->_fileSizeLabel = v13;
 
     [(UILabel *)v3->_fileSizeLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v3->_fileSizeLabel setTextColor:v15];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v3->_fileSizeLabel setTextColor:secondaryLabelColor];
 
     [(UIStackView *)v3->_stackView addArrangedSubview:v3->_fileSizeLabel];
-    v16 = [(UIImageView *)v3->_iconImageView heightAnchor];
-    v17 = [v16 constraintEqualToConstant:0.0];
+    heightAnchor = [(UIImageView *)v3->_iconImageView heightAnchor];
+    v17 = [heightAnchor constraintEqualToConstant:0.0];
     iconHeightConstraint = v3->_iconHeightConstraint;
     v3->_iconHeightConstraint = v17;
 
-    v19 = [(UIImageView *)v3->_iconImageView widthAnchor];
-    v20 = [v19 constraintEqualToConstant:0.0];
+    widthAnchor = [(UIImageView *)v3->_iconImageView widthAnchor];
+    v20 = [widthAnchor constraintEqualToConstant:0.0];
     iconWidthConstraint = v3->_iconWidthConstraint;
     v3->_iconWidthConstraint = v20;
 
-    v22 = [(UIView *)v3->_spacingView heightAnchor];
-    v23 = [v22 constraintEqualToConstant:0.0];
+    heightAnchor2 = [(UIView *)v3->_spacingView heightAnchor];
+    v23 = [heightAnchor2 constraintEqualToConstant:0.0];
     lineHeightBetweenIconAndFileNameLabelConstraint = v3->_lineHeightBetweenIconAndFileNameLabelConstraint;
     v3->_lineHeightBetweenIconAndFileNameLabelConstraint = v23;
 
     v40 = MEMORY[0x1E696ACD8];
-    v45 = [(UIStackView *)v3->_stackView widthAnchor];
-    v44 = [(SFQuickLookDocumentInfoView *)v3 widthAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44];
+    widthAnchor2 = [(UIStackView *)v3->_stackView widthAnchor];
+    widthAnchor3 = [(SFQuickLookDocumentInfoView *)v3 widthAnchor];
+    v43 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
     v48[0] = v43;
-    v42 = [(UIStackView *)v3->_stackView heightAnchor];
-    v41 = [(SFQuickLookDocumentInfoView *)v3 heightAnchor];
-    v25 = [v42 constraintEqualToAnchor:v41];
+    heightAnchor3 = [(UIStackView *)v3->_stackView heightAnchor];
+    heightAnchor4 = [(SFQuickLookDocumentInfoView *)v3 heightAnchor];
+    v25 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
     v48[1] = v25;
-    v26 = [(UIStackView *)v3->_stackView centerXAnchor];
-    v27 = [(SFQuickLookDocumentInfoView *)v3 centerXAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    centerXAnchor = [(UIStackView *)v3->_stackView centerXAnchor];
+    centerXAnchor2 = [(SFQuickLookDocumentInfoView *)v3 centerXAnchor];
+    v28 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v48[2] = v28;
-    v29 = [(UIStackView *)v3->_stackView centerYAnchor];
-    v30 = [(SFQuickLookDocumentInfoView *)v3 centerYAnchor];
-    v31 = [v29 constraintEqualToAnchor:v30];
+    centerYAnchor = [(UIStackView *)v3->_stackView centerYAnchor];
+    centerYAnchor2 = [(SFQuickLookDocumentInfoView *)v3 centerYAnchor];
+    v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v48[3] = v31;
     v48[4] = v3->_iconHeightConstraint;
     v48[5] = v3->_iconWidthConstraint;
@@ -106,8 +106,8 @@
     [(UILabel *)v3->_fileNameLabel setContentCompressionResistancePriority:0 forAxis:v33];
     LODWORD(v34) = 1148846080;
     [(UILabel *)v3->_fileNameLabel setContentHuggingPriority:0 forAxis:v34];
-    v35 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v35 addObserver:v3 selector:sel__updatePropertiesDefinedByContentSizeCategory name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__updatePropertiesDefinedByContentSizeCategory name:*MEMORY[0x1E69DDC48] object:0];
 
     [(SFQuickLookDocumentInfoView *)v3 _updatePropertiesDefinedByContentSizeCategory];
     v47 = objc_opt_class();
@@ -122,10 +122,10 @@
 
 - (void)_updateOrientationBasedConstraints
 {
-  v3 = [(SFQuickLookDocumentInfoView *)self traitCollection];
-  v4 = [v3 verticalSizeClass];
+  traitCollection = [(SFQuickLookDocumentInfoView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
 
-  if (v4 == 1)
+  if (verticalSizeClass == 1)
   {
     v5 = 96.0;
   }
@@ -135,7 +135,7 @@
     v5 = 128.0;
   }
 
-  if (v4 == 1)
+  if (verticalSizeClass == 1)
   {
     v6 = 16.0;
   }
@@ -190,32 +190,32 @@
   [(UILabel *)self->_fileSizeLabel setText:v7];
 }
 
-- (void)setFileName:(id)a3
+- (void)setFileName:(id)name
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_fileName] & 1) == 0)
+  nameCopy = name;
+  if (([nameCopy isEqualToString:self->_fileName] & 1) == 0)
   {
-    objc_storeStrong(&self->_fileName, a3);
+    objc_storeStrong(&self->_fileName, name);
     [(UILabel *)self->_fileNameLabel setText:self->_fileName];
   }
 }
 
-- (void)setFileSize:(id)a3
+- (void)setFileSize:(id)size
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_fileSize] & 1) == 0)
+  sizeCopy = size;
+  if (([sizeCopy isEqualToString:self->_fileSize] & 1) == 0)
   {
-    objc_storeStrong(&self->_fileSize, a3);
+    objc_storeStrong(&self->_fileSize, size);
     [(SFQuickLookDocumentInfoView *)self _updateDocumentSizeLabel];
   }
 }
 
-- (void)setFileType:(id)a3
+- (void)setFileType:(id)type
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_fileType] & 1) == 0)
+  typeCopy = type;
+  if (([typeCopy isEqualToString:self->_fileType] & 1) == 0)
   {
-    objc_storeStrong(&self->_fileType, a3);
+    objc_storeStrong(&self->_fileType, type);
     [(SFQuickLookDocumentInfoView *)self _updateDocumentSizeLabel];
   }
 }

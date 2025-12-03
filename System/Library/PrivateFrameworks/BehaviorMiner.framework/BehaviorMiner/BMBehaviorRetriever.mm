@@ -1,10 +1,10 @@
 @interface BMBehaviorRetriever
 - (BMBehaviorRetriever)init;
-- (BMBehaviorRetriever)initWithURL:(id)a3;
-- (BMBehaviorRetriever)initWithURL:(id)a3 taskSpecificItemTypes:(id)a4;
-- (id)retrieveRulesWithAbsoluteSupport:(unint64_t)a3 support:(double)a4 confidence:(double)a5 conviction:(double)a6 lift:(double)a7 rulePowerFactor:(double)a8 uniqueDaysLastWeek:(unint64_t)a9 uniqueDaysTotal:(unint64_t)a10 filters:(id)a11 error:(id *)a12;
-- (id)retrieveRulesWithSupport:(double)a3 confidence:(double)a4 filters:(id)a5;
-- (id)retrieveRulesWithSupport:(double)a3 confidence:(double)a4 filters:(id)a5 error:(id *)a6;
+- (BMBehaviorRetriever)initWithURL:(id)l;
+- (BMBehaviorRetriever)initWithURL:(id)l taskSpecificItemTypes:(id)types;
+- (id)retrieveRulesWithAbsoluteSupport:(unint64_t)support support:(double)a4 confidence:(double)confidence conviction:(double)conviction lift:(double)lift rulePowerFactor:(double)factor uniqueDaysLastWeek:(unint64_t)week uniqueDaysTotal:(unint64_t)self0 filters:(id)self1 error:(id *)self2;
+- (id)retrieveRulesWithSupport:(double)support confidence:(double)confidence filters:(id)filters;
+- (id)retrieveRulesWithSupport:(double)support confidence:(double)confidence filters:(id)filters error:(id *)error;
 @end
 
 @implementation BMBehaviorRetriever
@@ -17,27 +17,27 @@
   return v4;
 }
 
-- (BMBehaviorRetriever)initWithURL:(id)a3
+- (BMBehaviorRetriever)initWithURL:(id)l
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  lCopy = l;
   v6 = [v4 set];
-  v7 = [(BMBehaviorRetriever *)self initWithURL:v5 taskSpecificItemTypes:v6];
+  v7 = [(BMBehaviorRetriever *)self initWithURL:lCopy taskSpecificItemTypes:v6];
 
   return v7;
 }
 
-- (BMBehaviorRetriever)initWithURL:(id)a3 taskSpecificItemTypes:(id)a4
+- (BMBehaviorRetriever)initWithURL:(id)l taskSpecificItemTypes:(id)types
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  typesCopy = types;
   v22.receiver = self;
   v22.super_class = BMBehaviorRetriever;
   v8 = [(BMBehaviorRetriever *)&v22 init];
   if (v8)
   {
-    v9 = [[BMBehaviorStorage alloc] initWithURL:v6 readOnly:1];
+    v9 = [[BMBehaviorStorage alloc] initWithURL:lCopy readOnly:1];
     storage = v8->_storage;
     v8->_storage = v9;
 
@@ -45,7 +45,7 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = v7;
+    v11 = typesCopy;
     v12 = [v11 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v12)
     {
@@ -78,17 +78,17 @@
   return v8;
 }
 
-- (id)retrieveRulesWithSupport:(double)a3 confidence:(double)a4 filters:(id)a5
+- (id)retrieveRulesWithSupport:(double)support confidence:(double)confidence filters:(id)filters
 {
-  if (a5)
+  if (filters)
   {
-    v8 = [(BMBehaviorRetriever *)self retrieveRulesWithSupport:a5 confidence:0 filters:a3 error:a4];
+    v8 = [(BMBehaviorRetriever *)self retrieveRulesWithSupport:filters confidence:0 filters:support error:confidence];
   }
 
   else
   {
     v9 = [MEMORY[0x277CBEB98] set];
-    v8 = [(BMBehaviorRetriever *)self retrieveRulesWithSupport:v9 confidence:0 filters:a3 error:a4];
+    v8 = [(BMBehaviorRetriever *)self retrieveRulesWithSupport:v9 confidence:0 filters:support error:confidence];
   }
 
   if (v8)
@@ -106,20 +106,20 @@
   return v10;
 }
 
-- (id)retrieveRulesWithSupport:(double)a3 confidence:(double)a4 filters:(id)a5 error:(id *)a6
+- (id)retrieveRulesWithSupport:(double)support confidence:(double)confidence filters:(id)filters error:(id *)error
 {
-  v10 = a5;
-  v11 = [(BMBehaviorRetriever *)self storage];
-  v12 = [v11 fetchRulesWithSupport:v10 confidence:self->_fetchLimit filters:a6 limit:a3 error:a4];
+  filtersCopy = filters;
+  storage = [(BMBehaviorRetriever *)self storage];
+  v12 = [storage fetchRulesWithSupport:filtersCopy confidence:self->_fetchLimit filters:error limit:support error:confidence];
 
   return v12;
 }
 
-- (id)retrieveRulesWithAbsoluteSupport:(unint64_t)a3 support:(double)a4 confidence:(double)a5 conviction:(double)a6 lift:(double)a7 rulePowerFactor:(double)a8 uniqueDaysLastWeek:(unint64_t)a9 uniqueDaysTotal:(unint64_t)a10 filters:(id)a11 error:(id *)a12
+- (id)retrieveRulesWithAbsoluteSupport:(unint64_t)support support:(double)a4 confidence:(double)confidence conviction:(double)conviction lift:(double)lift rulePowerFactor:(double)factor uniqueDaysLastWeek:(unint64_t)week uniqueDaysTotal:(unint64_t)self0 filters:(id)self1 error:(id *)self2
 {
-  v22 = a11;
-  v23 = [(BMBehaviorRetriever *)self storage];
-  v24 = [v23 fetchRulesWithAbsoluteSupport:a3 support:a9 confidence:a10 conviction:v22 lift:self->_fetchLimit rulePowerFactor:a12 uniqueDaysLastWeek:a4 uniqueDaysTotal:a5 filters:a6 limit:a7 error:a8];
+  filtersCopy = filters;
+  storage = [(BMBehaviorRetriever *)self storage];
+  v24 = [storage fetchRulesWithAbsoluteSupport:support support:week confidence:total conviction:filtersCopy lift:self->_fetchLimit rulePowerFactor:error uniqueDaysLastWeek:a4 uniqueDaysTotal:confidence filters:conviction limit:lift error:factor];
 
   return v24;
 }

@@ -1,26 +1,26 @@
 @interface AFMediaRemoteDeviceInfo
 + (id)localDeviceInfo;
 - (AFMediaRemoteDeviceInfo)init;
-- (void)_activeDeviceInfoChanged:(id)a3;
-- (void)_getMRDeviceInfoWithCompletion:(id)a3;
-- (void)_updateWithRouteIdentifier:(id)a3 groupIdentifier:(id)a4;
-- (void)getGroupIdentifierWithCompletion:(id)a3;
-- (void)getRouteIdentifierWithCompletion:(id)a3;
+- (void)_activeDeviceInfoChanged:(id)changed;
+- (void)_getMRDeviceInfoWithCompletion:(id)completion;
+- (void)_updateWithRouteIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier;
+- (void)getGroupIdentifierWithCompletion:(id)completion;
+- (void)getRouteIdentifierWithCompletion:(id)completion;
 @end
 
 @implementation AFMediaRemoteDeviceInfo
 
-- (void)getGroupIdentifierWithCompletion:(id)a3
+- (void)getGroupIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__AFMediaRemoteDeviceInfo_getGroupIdentifierWithCompletion___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -56,17 +56,17 @@ void __60__AFMediaRemoteDeviceInfo_getGroupIdentifierWithCompletion___block_invo
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getRouteIdentifierWithCompletion:(id)a3
+- (void)getRouteIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __60__AFMediaRemoteDeviceInfo_getRouteIdentifierWithCompletion___block_invoke;
   v7[3] = &unk_1E7349838;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -106,15 +106,15 @@ void __60__AFMediaRemoteDeviceInfo_getRouteIdentifierWithCompletion___block_invo
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_getMRDeviceInfoWithCompletion:(id)a3
+- (void)_getMRDeviceInfoWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__AFMediaRemoteDeviceInfo__getMRDeviceInfoWithCompletion___block_invoke;
   v11[3] = &unk_1E7344978;
-  v5 = v4;
+  v5 = completionCopy;
   v12 = v5;
   v6 = MEMORY[0x193AFB7B0](v11);
   v7 = AFSiriLogContextConnection;
@@ -126,8 +126,8 @@ void __60__AFMediaRemoteDeviceInfo_getRouteIdentifierWithCompletion___block_invo
   }
 
   v8 = MEMORY[0x1E69B0A20];
-  v9 = [MEMORY[0x1E69B0AA0] localOrigin];
-  [v8 deviceInfoForOrigin:v9 queue:self->_serialQueue completion:v6];
+  localOrigin = [MEMORY[0x1E69B0AA0] localOrigin];
+  [v8 deviceInfoForOrigin:localOrigin queue:self->_serialQueue completion:v6];
 
   v10 = *MEMORY[0x1E69E9840];
 }
@@ -162,20 +162,20 @@ void __58__AFMediaRemoteDeviceInfo__getMRDeviceInfoWithCompletion___block_invoke
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateWithRouteIdentifier:(id)a3 groupIdentifier:(id)a4
+- (void)_updateWithRouteIdentifier:(id)identifier groupIdentifier:(id)groupIdentifier
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
   routeIdentifier = self->_routeIdentifier;
-  if (routeIdentifier == v6 || [(NSString *)routeIdentifier isEqualToString:v6])
+  if (routeIdentifier == identifierCopy || [(NSString *)routeIdentifier isEqualToString:identifierCopy])
   {
     v9 = 0;
   }
 
   else
   {
-    v19 = [(NSString *)v6 copy];
+    v19 = [(NSString *)identifierCopy copy];
     v20 = self->_routeIdentifier;
     self->_routeIdentifier = v19;
 
@@ -193,14 +193,14 @@ void __58__AFMediaRemoteDeviceInfo__getMRDeviceInfoWithCompletion___block_invoke
   }
 
   groupIdentifier = self->_groupIdentifier;
-  if (groupIdentifier == v7 || [(NSString *)groupIdentifier isEqualToString:v7])
+  if (groupIdentifier == groupIdentifierCopy || [(NSString *)groupIdentifier isEqualToString:groupIdentifierCopy])
   {
     v11 = 0;
   }
 
   else
   {
-    v23 = [(NSString *)v7 copy];
+    v23 = [(NSString *)groupIdentifierCopy copy];
     v24 = self->_groupIdentifier;
     self->_groupIdentifier = v23;
 
@@ -219,38 +219,38 @@ void __58__AFMediaRemoteDeviceInfo__getMRDeviceInfoWithCompletion___block_invoke
 
   if (v9)
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v29 = @"identifier";
-    v13 = v6;
-    if (!v6)
+    null = identifierCopy;
+    if (!identifierCopy)
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v30 = v13;
+    v30 = null;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
-    [v12 postNotificationName:@"AFMediaRemoteDeviceInfoRouteIdentifierDidChangeNotification" object:self userInfo:v14];
+    [defaultCenter postNotificationName:@"AFMediaRemoteDeviceInfoRouteIdentifierDidChangeNotification" object:self userInfo:v14];
 
-    if (!v6)
+    if (!identifierCopy)
     {
     }
   }
 
   if (v11)
   {
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v27 = @"identifier";
-    v16 = v7;
-    if (!v7)
+    null2 = groupIdentifierCopy;
+    if (!groupIdentifierCopy)
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
     }
 
-    v28 = v16;
+    v28 = null2;
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-    [v15 postNotificationName:@"AFMediaRemoteDeviceInfoGroupIdentifierDidChangeNotification" object:self userInfo:v17];
+    [defaultCenter2 postNotificationName:@"AFMediaRemoteDeviceInfoGroupIdentifierDidChangeNotification" object:self userInfo:v17];
 
-    if (!v7)
+    if (!groupIdentifierCopy)
     {
     }
   }
@@ -258,7 +258,7 @@ void __58__AFMediaRemoteDeviceInfo__getMRDeviceInfoWithCompletion___block_invoke
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_activeDeviceInfoChanged:(id)a3
+- (void)_activeDeviceInfoChanged:(id)changed
 {
   v10 = *MEMORY[0x1E69E9840];
   v4 = AFSiriLogContextConnection;
@@ -343,13 +343,13 @@ void __52__AFMediaRemoteDeviceInfo__activeDeviceInfoChanged___block_invoke_2(uin
 
     if (!v2->_instanceContext)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[AFMediaRemoteDeviceInfo init]"];
-      [v12 handleFailureInFunction:v13 file:@"AFMediaRemoteDeviceInfo.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"_instanceContext != nil"}];
+      [currentHandler handleFailureInFunction:v13 file:@"AFMediaRemoteDeviceInfo.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"_instanceContext != nil"}];
     }
 
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 addObserver:v2 selector:sel__activeDeviceInfoChanged_ name:*MEMORY[0x1E69B0B68] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__activeDeviceInfoChanged_ name:*MEMORY[0x1E69B0B68] object:0];
 
     MRMediaRemoteRegisterWantsSystemAppDidSkipTrackNotifications();
     v10 = v2->_serialQueue;

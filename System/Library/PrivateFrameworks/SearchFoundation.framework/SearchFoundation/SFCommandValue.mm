@@ -1,50 +1,50 @@
 @interface SFCommandValue
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCommandValue)initWithCoder:(id)a3;
-- (SFCommandValue)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCommandValue)initWithCoder:(id)coder;
+- (SFCommandValue)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCommandValue
 
 - (unint64_t)hash
 {
-  v2 = [(SFCommandValue *)self referentialCommand];
-  v3 = [v2 hash];
+  referentialCommand = [(SFCommandValue *)self referentialCommand];
+  v3 = [referentialCommand hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFCommandValue *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFCommandValue *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFCommandValue *)self referentialCommand];
-    v7 = [(SFCommandValue *)v5 referentialCommand];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    referentialCommand = [(SFCommandValue *)self referentialCommand];
+    referentialCommand2 = [(SFCommandValue *)v5 referentialCommand];
+    if ((referentialCommand != 0) == (referentialCommand2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFCommandValue *)self referentialCommand];
-      if (v8)
+      referentialCommand3 = [(SFCommandValue *)self referentialCommand];
+      if (referentialCommand3)
       {
-        v9 = [(SFCommandValue *)self referentialCommand];
-        v10 = [(SFCommandValue *)v5 referentialCommand];
-        v11 = [v9 isEqual:v10];
+        referentialCommand4 = [(SFCommandValue *)self referentialCommand];
+        referentialCommand5 = [(SFCommandValue *)v5 referentialCommand];
+        v11 = [referentialCommand4 isEqual:referentialCommand5];
       }
 
       else
@@ -62,11 +62,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFCommandValue *)self referentialCommand];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  referentialCommand = [(SFCommandValue *)self referentialCommand];
+  v6 = [referentialCommand copy];
   [v4 setReferentialCommand:v6];
 
   return v4;
@@ -75,31 +75,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBCommandValue alloc] initWithFacade:self];
-  v3 = [(_SFPBCommandValue *)v2 jsonData];
+  jsonData = [(_SFPBCommandValue *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCommandValue alloc] initWithFacade:self];
-  v3 = [(_SFPBCommandValue *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCommandValue *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBCommandValue alloc] initWithFacade:self];
-  v5 = [(_SFPBCommandValue *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBCommandValue *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFCommandValue)initWithCoder:(id)a3
+- (SFCommandValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBCommandValue alloc] initWithData:v5];
   v7 = [(SFCommandValue *)self initWithProtobuf:v6];
@@ -107,21 +107,21 @@
   return v7;
 }
 
-- (SFCommandValue)initWithProtobuf:(id)a3
+- (SFCommandValue)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFCommandValue;
   v5 = [(SFCommandValue *)&v12 init];
   if (v5)
   {
-    v6 = [v4 referentialCommand];
+    referentialCommand = [protobufCopy referentialCommand];
 
-    if (v6)
+    if (referentialCommand)
     {
       v7 = [SFReferentialCommand alloc];
-      v8 = [v4 referentialCommand];
-      v9 = [(SFReferentialCommand *)v7 initWithProtobuf:v8];
+      referentialCommand2 = [protobufCopy referentialCommand];
+      v9 = [(SFReferentialCommand *)v7 initWithProtobuf:referentialCommand2];
       [(SFCommandValue *)v5 setReferentialCommand:v9];
     }
 

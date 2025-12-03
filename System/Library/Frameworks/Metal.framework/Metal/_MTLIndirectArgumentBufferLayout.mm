@@ -1,10 +1,10 @@
 @interface _MTLIndirectArgumentBufferLayout
 - (_MTLIndirectArgumentBufferLayout)init;
-- (id)bufferLayoutForResourceAtIndex:(unint64_t)a3;
-- (unint64_t)uniqueIdentifierForInstanceAccelerationStructureAtIndex:(unint64_t)a3 inIndirectArgumentBuffer:(id)a4 atOffset:(unint64_t)a5;
-- (unint64_t)uniqueIdentifierForIntersectionFunctionTableAtIndex:(unint64_t)a3 inIndirectArgumentBuffer:(id)a4 atOffset:(unint64_t)a5;
-- (unint64_t)uniqueIdentifierForPrimitiveAccelerationStructureAtIndex:(unint64_t)a3 inIndirectArgumentBuffer:(id)a4 atOffset:(unint64_t)a5;
-- (unint64_t)uniqueIdentifierForVisibleFunctionTableAtIndex:(unint64_t)a3 inIndirectArgumentBuffer:(id)a4 atOffset:(unint64_t)a5;
+- (id)bufferLayoutForResourceAtIndex:(unint64_t)index;
+- (unint64_t)uniqueIdentifierForInstanceAccelerationStructureAtIndex:(unint64_t)index inIndirectArgumentBuffer:(id)buffer atOffset:(unint64_t)offset;
+- (unint64_t)uniqueIdentifierForIntersectionFunctionTableAtIndex:(unint64_t)index inIndirectArgumentBuffer:(id)buffer atOffset:(unint64_t)offset;
+- (unint64_t)uniqueIdentifierForPrimitiveAccelerationStructureAtIndex:(unint64_t)index inIndirectArgumentBuffer:(id)buffer atOffset:(unint64_t)offset;
+- (unint64_t)uniqueIdentifierForVisibleFunctionTableAtIndex:(unint64_t)index inIndirectArgumentBuffer:(id)buffer atOffset:(unint64_t)offset;
 - (void)dealloc;
 @end
 
@@ -31,12 +31,12 @@
   [(_MTLIndirectArgumentBufferLayout *)&v4 dealloc];
 }
 
-- (unint64_t)uniqueIdentifierForVisibleFunctionTableAtIndex:(unint64_t)a3 inIndirectArgumentBuffer:(id)a4 atOffset:(unint64_t)a5
+- (unint64_t)uniqueIdentifierForVisibleFunctionTableAtIndex:(unint64_t)index inIndirectArgumentBuffer:(id)buffer atOffset:(unint64_t)offset
 {
-  if ([(MTLDeviceSPI *)[(_MTLIndirectArgumentBufferLayout *)self device:a3] requiresRaytracingEmulation])
+  if ([(MTLDeviceSPI *)[(_MTLIndirectArgumentBufferLayout *)self device:index] requiresRaytracingEmulation])
   {
-    v9 = [a4 contents];
-    return *(v9 + [self->_private offsetForVisibleFunctionTable:a3]);
+    contents = [buffer contents];
+    return *(contents + [self->_private offsetForVisibleFunctionTable:index]);
   }
 
   else
@@ -46,12 +46,12 @@
   }
 }
 
-- (unint64_t)uniqueIdentifierForIntersectionFunctionTableAtIndex:(unint64_t)a3 inIndirectArgumentBuffer:(id)a4 atOffset:(unint64_t)a5
+- (unint64_t)uniqueIdentifierForIntersectionFunctionTableAtIndex:(unint64_t)index inIndirectArgumentBuffer:(id)buffer atOffset:(unint64_t)offset
 {
-  if ([(MTLDeviceSPI *)[(_MTLIndirectArgumentBufferLayout *)self device:a3] requiresRaytracingEmulation])
+  if ([(MTLDeviceSPI *)[(_MTLIndirectArgumentBufferLayout *)self device:index] requiresRaytracingEmulation])
   {
-    v9 = [a4 contents];
-    return *(v9 + [self->_private offsetForIntersectionFunctionTable:a3]);
+    contents = [buffer contents];
+    return *(contents + [self->_private offsetForIntersectionFunctionTable:index]);
   }
 
   else
@@ -61,12 +61,12 @@
   }
 }
 
-- (unint64_t)uniqueIdentifierForInstanceAccelerationStructureAtIndex:(unint64_t)a3 inIndirectArgumentBuffer:(id)a4 atOffset:(unint64_t)a5
+- (unint64_t)uniqueIdentifierForInstanceAccelerationStructureAtIndex:(unint64_t)index inIndirectArgumentBuffer:(id)buffer atOffset:(unint64_t)offset
 {
-  if ([(MTLDeviceSPI *)[(_MTLIndirectArgumentBufferLayout *)self device:a3] requiresRaytracingEmulation])
+  if ([(MTLDeviceSPI *)[(_MTLIndirectArgumentBufferLayout *)self device:index] requiresRaytracingEmulation])
   {
-    v9 = [a4 contents];
-    return *(v9 + [self->_private offsetForInstanceAccelerationStructure:a3]);
+    contents = [buffer contents];
+    return *(contents + [self->_private offsetForInstanceAccelerationStructure:index]);
   }
 
   else
@@ -76,12 +76,12 @@
   }
 }
 
-- (unint64_t)uniqueIdentifierForPrimitiveAccelerationStructureAtIndex:(unint64_t)a3 inIndirectArgumentBuffer:(id)a4 atOffset:(unint64_t)a5
+- (unint64_t)uniqueIdentifierForPrimitiveAccelerationStructureAtIndex:(unint64_t)index inIndirectArgumentBuffer:(id)buffer atOffset:(unint64_t)offset
 {
-  if ([(MTLDeviceSPI *)[(_MTLIndirectArgumentBufferLayout *)self device:a3] requiresRaytracingEmulation])
+  if ([(MTLDeviceSPI *)[(_MTLIndirectArgumentBufferLayout *)self device:index] requiresRaytracingEmulation])
   {
-    v9 = [a4 contents];
-    return *(v9 + [self->_private offsetForPrimitiveAccelerationStructure:a3]);
+    contents = [buffer contents];
+    return *(contents + [self->_private offsetForPrimitiveAccelerationStructure:index]);
   }
 
   else
@@ -91,11 +91,11 @@
   }
 }
 
-- (id)bufferLayoutForResourceAtIndex:(unint64_t)a3
+- (id)bufferLayoutForResourceAtIndex:(unint64_t)index
 {
   v3 = self->_private;
-  v5 = a3;
-  result = std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(v3 + 1, &v5);
+  indexCopy = index;
+  result = std::__hash_table<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::__unordered_map_hasher<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::hash<unsigned long>,std::equal_to<unsigned long>,true>,std::__unordered_map_equal<unsigned long,std::__hash_value_type<unsigned long,MTLStructTypeInternal *>,std::equal_to<unsigned long>,std::hash<unsigned long>,true>,std::allocator<std::__hash_value_type<unsigned long,MTLStructTypeInternal *>>>::find<unsigned long>(v3 + 1, &indexCopy);
   if (result)
   {
     return *(result + 3);

@@ -1,47 +1,47 @@
 @interface _INPBTransferMoneyIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBTransferMoneyIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBTransferMoneyIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTransactionNote:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTransactionNote:(id)note;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBTransferMoneyIntentResponse
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"fromAccount"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  fromAccount = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
+  dictionaryRepresentation = [fromAccount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"fromAccount"];
 
-  v6 = [(_INPBTransferMoneyIntentResponse *)self toAccount];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"toAccount"];
+  toAccount = [(_INPBTransferMoneyIntentResponse *)self toAccount];
+  dictionaryRepresentation2 = [toAccount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"toAccount"];
 
-  v8 = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"transactionAmount"];
+  transactionAmount = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
+  dictionaryRepresentation3 = [transactionAmount dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"transactionAmount"];
 
   if (self->_transactionNote)
   {
-    v10 = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"transactionNote"];
+    transactionNote = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
+    v11 = [transactionNote copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"transactionNote"];
   }
 
-  v12 = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
-  v13 = [v12 dictionaryRepresentation];
-  [v3 setObject:v13 forKeyedSubscript:@"transactionScheduledDate"];
+  transactionScheduledDate = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
+  dictionaryRepresentation4 = [transactionScheduledDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"transactionScheduledDate"];
 
-  v14 = [(_INPBTransferMoneyIntentResponse *)self transferFee];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"transferFee"];
+  transferFee = [(_INPBTransferMoneyIntentResponse *)self transferFee];
+  dictionaryRepresentation5 = [transferFee dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"transferFee"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -54,28 +54,28 @@
   return v6 ^ v7 ^ [(_INPBCurrencyAmountValue *)self->_transferFee hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_32;
   }
 
-  v5 = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
-  v6 = [v4 fromAccount];
-  if ((v5 != 0) == (v6 == 0))
+  fromAccount = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
+  fromAccount2 = [equalCopy fromAccount];
+  if ((fromAccount != 0) == (fromAccount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v7 = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
-  if (v7)
+  fromAccount3 = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
+  if (fromAccount3)
   {
-    v8 = v7;
-    v9 = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
-    v10 = [v4 fromAccount];
-    v11 = [v9 isEqual:v10];
+    v8 = fromAccount3;
+    fromAccount4 = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
+    fromAccount5 = [equalCopy fromAccount];
+    v11 = [fromAccount4 isEqual:fromAccount5];
 
     if (!v11)
     {
@@ -87,20 +87,20 @@
   {
   }
 
-  v5 = [(_INPBTransferMoneyIntentResponse *)self toAccount];
-  v6 = [v4 toAccount];
-  if ((v5 != 0) == (v6 == 0))
+  fromAccount = [(_INPBTransferMoneyIntentResponse *)self toAccount];
+  fromAccount2 = [equalCopy toAccount];
+  if ((fromAccount != 0) == (fromAccount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v12 = [(_INPBTransferMoneyIntentResponse *)self toAccount];
-  if (v12)
+  toAccount = [(_INPBTransferMoneyIntentResponse *)self toAccount];
+  if (toAccount)
   {
-    v13 = v12;
-    v14 = [(_INPBTransferMoneyIntentResponse *)self toAccount];
-    v15 = [v4 toAccount];
-    v16 = [v14 isEqual:v15];
+    v13 = toAccount;
+    toAccount2 = [(_INPBTransferMoneyIntentResponse *)self toAccount];
+    toAccount3 = [equalCopy toAccount];
+    v16 = [toAccount2 isEqual:toAccount3];
 
     if (!v16)
     {
@@ -112,20 +112,20 @@
   {
   }
 
-  v5 = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
-  v6 = [v4 transactionAmount];
-  if ((v5 != 0) == (v6 == 0))
+  fromAccount = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
+  fromAccount2 = [equalCopy transactionAmount];
+  if ((fromAccount != 0) == (fromAccount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v17 = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
-  if (v17)
+  transactionAmount = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
+  if (transactionAmount)
   {
-    v18 = v17;
-    v19 = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
-    v20 = [v4 transactionAmount];
-    v21 = [v19 isEqual:v20];
+    v18 = transactionAmount;
+    transactionAmount2 = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
+    transactionAmount3 = [equalCopy transactionAmount];
+    v21 = [transactionAmount2 isEqual:transactionAmount3];
 
     if (!v21)
     {
@@ -137,20 +137,20 @@
   {
   }
 
-  v5 = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
-  v6 = [v4 transactionNote];
-  if ((v5 != 0) == (v6 == 0))
+  fromAccount = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
+  fromAccount2 = [equalCopy transactionNote];
+  if ((fromAccount != 0) == (fromAccount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v22 = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
-  if (v22)
+  transactionNote = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
+  if (transactionNote)
   {
-    v23 = v22;
-    v24 = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
-    v25 = [v4 transactionNote];
-    v26 = [v24 isEqual:v25];
+    v23 = transactionNote;
+    transactionNote2 = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
+    transactionNote3 = [equalCopy transactionNote];
+    v26 = [transactionNote2 isEqual:transactionNote3];
 
     if (!v26)
     {
@@ -162,20 +162,20 @@
   {
   }
 
-  v5 = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
-  v6 = [v4 transactionScheduledDate];
-  if ((v5 != 0) == (v6 == 0))
+  fromAccount = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
+  fromAccount2 = [equalCopy transactionScheduledDate];
+  if ((fromAccount != 0) == (fromAccount2 == 0))
   {
     goto LABEL_31;
   }
 
-  v27 = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
-  if (v27)
+  transactionScheduledDate = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
+  if (transactionScheduledDate)
   {
-    v28 = v27;
-    v29 = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
-    v30 = [v4 transactionScheduledDate];
-    v31 = [v29 isEqual:v30];
+    v28 = transactionScheduledDate;
+    transactionScheduledDate2 = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
+    transactionScheduledDate3 = [equalCopy transactionScheduledDate];
+    v31 = [transactionScheduledDate2 isEqual:transactionScheduledDate3];
 
     if (!v31)
     {
@@ -187,12 +187,12 @@
   {
   }
 
-  v5 = [(_INPBTransferMoneyIntentResponse *)self transferFee];
-  v6 = [v4 transferFee];
-  if ((v5 != 0) != (v6 == 0))
+  fromAccount = [(_INPBTransferMoneyIntentResponse *)self transferFee];
+  fromAccount2 = [equalCopy transferFee];
+  if ((fromAccount != 0) != (fromAccount2 == 0))
   {
-    v32 = [(_INPBTransferMoneyIntentResponse *)self transferFee];
-    if (!v32)
+    transferFee = [(_INPBTransferMoneyIntentResponse *)self transferFee];
+    if (!transferFee)
     {
 
 LABEL_35:
@@ -200,10 +200,10 @@ LABEL_35:
       goto LABEL_33;
     }
 
-    v33 = v32;
-    v34 = [(_INPBTransferMoneyIntentResponse *)self transferFee];
-    v35 = [v4 transferFee];
-    v36 = [v34 isEqual:v35];
+    v33 = transferFee;
+    transferFee2 = [(_INPBTransferMoneyIntentResponse *)self transferFee];
+    transferFee3 = [equalCopy transferFee];
+    v36 = [transferFee2 isEqual:transferFee3];
 
     if (v36)
     {
@@ -223,112 +223,112 @@ LABEL_33:
   return v37;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBTransferMoneyIntentResponse allocWithZone:](_INPBTransferMoneyIntentResponse init];
-  v6 = [(_INPBFinancialAccountValue *)self->_fromAccount copyWithZone:a3];
+  v6 = [(_INPBFinancialAccountValue *)self->_fromAccount copyWithZone:zone];
   [(_INPBTransferMoneyIntentResponse *)v5 setFromAccount:v6];
 
-  v7 = [(_INPBFinancialAccountValue *)self->_toAccount copyWithZone:a3];
+  v7 = [(_INPBFinancialAccountValue *)self->_toAccount copyWithZone:zone];
   [(_INPBTransferMoneyIntentResponse *)v5 setToAccount:v7];
 
-  v8 = [(_INPBPaymentAmountValue *)self->_transactionAmount copyWithZone:a3];
+  v8 = [(_INPBPaymentAmountValue *)self->_transactionAmount copyWithZone:zone];
   [(_INPBTransferMoneyIntentResponse *)v5 setTransactionAmount:v8];
 
-  v9 = [(NSString *)self->_transactionNote copyWithZone:a3];
+  v9 = [(NSString *)self->_transactionNote copyWithZone:zone];
   [(_INPBTransferMoneyIntentResponse *)v5 setTransactionNote:v9];
 
-  v10 = [(_INPBDateTimeRange *)self->_transactionScheduledDate copyWithZone:a3];
+  v10 = [(_INPBDateTimeRange *)self->_transactionScheduledDate copyWithZone:zone];
   [(_INPBTransferMoneyIntentResponse *)v5 setTransactionScheduledDate:v10];
 
-  v11 = [(_INPBCurrencyAmountValue *)self->_transferFee copyWithZone:a3];
+  v11 = [(_INPBCurrencyAmountValue *)self->_transferFee copyWithZone:zone];
   [(_INPBTransferMoneyIntentResponse *)v5 setTransferFee:v11];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBTransferMoneyIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBTransferMoneyIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBTransferMoneyIntentResponse)initWithCoder:(id)a3
+- (_INPBTransferMoneyIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBTransferMoneyIntentResponse *)self initWithData:v6];
+    self = [(_INPBTransferMoneyIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v17 = a3;
-  v4 = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
+  toCopy = to;
+  fromAccount = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
 
-  if (v4)
+  if (fromAccount)
   {
-    v5 = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
+    fromAccount2 = [(_INPBTransferMoneyIntentResponse *)self fromAccount];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBTransferMoneyIntentResponse *)self toAccount];
+  toAccount = [(_INPBTransferMoneyIntentResponse *)self toAccount];
 
-  if (v6)
+  if (toAccount)
   {
-    v7 = [(_INPBTransferMoneyIntentResponse *)self toAccount];
+    toAccount2 = [(_INPBTransferMoneyIntentResponse *)self toAccount];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
+  transactionAmount = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
 
-  if (v8)
+  if (transactionAmount)
   {
-    v9 = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
+    transactionAmount2 = [(_INPBTransferMoneyIntentResponse *)self transactionAmount];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
+  transactionNote = [(_INPBTransferMoneyIntentResponse *)self transactionNote];
 
-  if (v10)
+  if (transactionNote)
   {
     transactionNote = self->_transactionNote;
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
+  transactionScheduledDate = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
 
-  if (v12)
+  if (transactionScheduledDate)
   {
-    v13 = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
+    transactionScheduledDate2 = [(_INPBTransferMoneyIntentResponse *)self transactionScheduledDate];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBTransferMoneyIntentResponse *)self transferFee];
+  transferFee = [(_INPBTransferMoneyIntentResponse *)self transferFee];
 
-  v15 = v17;
-  if (v14)
+  v15 = toCopy;
+  if (transferFee)
   {
-    v16 = [(_INPBTransferMoneyIntentResponse *)self transferFee];
+    transferFee2 = [(_INPBTransferMoneyIntentResponse *)self transferFee];
     PBDataWriterWriteSubmessage();
 
-    v15 = v17;
+    v15 = toCopy;
   }
 }
 
-- (void)setTransactionNote:(id)a3
+- (void)setTransactionNote:(id)note
 {
-  v4 = [a3 copy];
+  v4 = [note copy];
   transactionNote = self->_transactionNote;
   self->_transactionNote = v4;
 

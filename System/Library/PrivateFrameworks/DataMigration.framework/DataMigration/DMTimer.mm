@@ -1,5 +1,5 @@
 @interface DMTimer
-- (DMTimer)initWithSecondsBeforeFirstFire:(unint64_t)a3 secondsOfLeeway:(unint64_t)a4 fireBlock:(id)a5;
+- (DMTimer)initWithSecondsBeforeFirstFire:(unint64_t)fire secondsOfLeeway:(unint64_t)leeway fireBlock:(id)block;
 - (void)cancel;
 - (void)cancelSynchronously;
 - (void)resume;
@@ -7,9 +7,9 @@
 
 @implementation DMTimer
 
-- (DMTimer)initWithSecondsBeforeFirstFire:(unint64_t)a3 secondsOfLeeway:(unint64_t)a4 fireBlock:(id)a5
+- (DMTimer)initWithSecondsBeforeFirstFire:(unint64_t)fire secondsOfLeeway:(unint64_t)leeway fireBlock:(id)block
 {
-  v8 = a5;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = DMTimer;
   v9 = [(DMTimer *)&v12 init];
@@ -17,9 +17,9 @@
   if (v9)
   {
     [(DMTimer *)v9 setTimer:0];
-    [(DMTimer *)v10 setFireBlock:v8];
-    [(DMTimer *)v10 setSecondsBeforeFirstFire:a3];
-    [(DMTimer *)v10 setSecondsOfLeeway:a4];
+    [(DMTimer *)v10 setFireBlock:blockCopy];
+    [(DMTimer *)v10 setSecondsBeforeFirstFire:fire];
+    [(DMTimer *)v10 setSecondsOfLeeway:leeway];
   }
 
   return v10;
@@ -36,20 +36,20 @@
   v3 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, MEMORY[0x277D85CD0]);
   [(DMTimer *)self setTimer:v3];
 
-  v4 = [(DMTimer *)self timer];
+  timer = [(DMTimer *)self timer];
   v5 = dispatch_time(0, 1000000000 * [(DMTimer *)self secondsBeforeFirstFire]);
-  dispatch_source_set_timer(v4, v5, 0xFFFFFFFFFFFFFFFFLL, 1000000000 * [(DMTimer *)self secondsOfLeeway]);
+  dispatch_source_set_timer(timer, v5, 0xFFFFFFFFFFFFFFFFLL, 1000000000 * [(DMTimer *)self secondsOfLeeway]);
 
-  v6 = [(DMTimer *)self timer];
+  timer2 = [(DMTimer *)self timer];
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __17__DMTimer_resume__block_invoke;
   handler[3] = &unk_278855148;
   handler[4] = self;
-  dispatch_source_set_event_handler(v6, handler);
+  dispatch_source_set_event_handler(timer2, handler);
 
-  v7 = [(DMTimer *)self timer];
-  dispatch_resume(v7);
+  timer3 = [(DMTimer *)self timer];
+  dispatch_resume(timer3);
 }
 
 void __17__DMTimer_resume__block_invoke(uint64_t a1)
@@ -70,8 +70,8 @@ void __17__DMTimer_resume__block_invoke(uint64_t a1)
 
 - (void)cancel
 {
-  v2 = [(DMTimer *)self timer];
-  dispatch_source_cancel(v2);
+  timer = [(DMTimer *)self timer];
+  dispatch_source_cancel(timer);
 }
 
 - (void)cancelSynchronously

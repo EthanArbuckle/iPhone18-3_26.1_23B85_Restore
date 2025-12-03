@@ -1,30 +1,30 @@
 @interface UIPDFSelection
 - ($0AC6E346AE4835514AAA8AC86D8F4844)extent;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)stringRange;
-- ($88E5F8DBFD3EF82B558D000E19B2526A)rectangleAtIndex:(SEL)a3 scale:(unint64_t)a4 inset:(double)a5;
-- (BOOL)getBounds:(CGRect *)a3 transform:(CGAffineTransform *)a4 index:(unint64_t)a5;
+- ($88E5F8DBFD3EF82B558D000E19B2526A)rectangleAtIndex:(SEL)index scale:(unint64_t)scale inset:(double)inset;
+- (BOOL)getBounds:(CGRect *)bounds transform:(CGAffineTransform *)transform index:(unint64_t)index;
 - (BOOL)isEmpty;
 - (BOOL)isNonEmpty;
 - (BOOL)isWord;
 - (CGAffineTransform)transform;
 - (CGRect)bounds;
 - (UIPDFSelection)init;
-- (UIPDFSelection)initWithPage:(id)a3 cgSelection:(CGPDFSelection *)a4;
-- (UIPDFSelection)initWithPage:(id)a3 fromArchive:(id)a4;
-- (UIPDFSelection)initWithPage:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5;
-- (UIPDFSelection)initWithSelection:(id)a3;
-- (double)baseLineAtIndex:(unint64_t)a3;
+- (UIPDFSelection)initWithPage:(id)page cgSelection:(CGPDFSelection *)selection;
+- (UIPDFSelection)initWithPage:(id)page fromArchive:(id)archive;
+- (UIPDFSelection)initWithPage:(id)page fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex;
+- (UIPDFSelection)initWithSelection:(id)selection;
+- (double)baseLineAtIndex:(unint64_t)index;
 - (id)archive;
-- (id)attributedStringAtIndex:(unint64_t)a3;
+- (id)attributedStringAtIndex:(unint64_t)index;
 - (id)containingTextLine;
 - (id)description;
-- (id)htmlAtIndex:(unint64_t)a3;
+- (id)htmlAtIndex:(unint64_t)index;
 - (id)selectionExtendedToLineBoundaries;
 - (id)string;
-- (id)textAtIndex:(unint64_t)a3;
+- (id)textAtIndex:(unint64_t)index;
 - (unint64_t)endIndex;
-- (unint64_t)extendAtEnd:(unint64_t)a3;
-- (unint64_t)extendAtStart:(unint64_t)a3;
+- (unint64_t)extendAtEnd:(unint64_t)end;
+- (unint64_t)extendAtStart:(unint64_t)start;
 - (unint64_t)numberOfRectangles;
 - (unint64_t)startIndex;
 - (void)copyToPasteboard;
@@ -51,13 +51,13 @@
   return result;
 }
 
-- (UIPDFSelection)initWithPage:(id)a3 fromArchive:(id)a4
+- (UIPDFSelection)initWithPage:(id)page fromArchive:(id)archive
 {
   v6 = [(UIPDFSelection *)self init];
   if (v6)
   {
-    v6->_page = a3;
-    v7 = [a4 dataUsingEncoding:4];
+    v6->_page = page;
+    v7 = [archive dataUsingEncoding:4];
     v8 = [objc_alloc(MEMORY[0x1E696B0A8]) initWithData:v7];
     v9 = objc_alloc_init(UIPDFParserDelegate);
     [v8 setDelegate:v9];
@@ -74,7 +74,7 @@
 
     if (MutableCopy)
     {
-      [a3 CGPage];
+      [page CGPage];
       v6->_cgSelection = CGPDFSelectionCreateInPath();
       CGPathRelease(MutableCopy);
     }
@@ -83,26 +83,26 @@
   return v6;
 }
 
-- (UIPDFSelection)initWithSelection:(id)a3
+- (UIPDFSelection)initWithSelection:(id)selection
 {
   v4 = [(UIPDFSelection *)self init];
   if (v4)
   {
-    v4->_page = [a3 page];
-    [a3 CGSelection];
+    v4->_page = [selection page];
+    [selection CGSelection];
     v4->_cgSelection = CGPDFSelectionCreateFromSelection();
   }
 
   return v4;
 }
 
-- (UIPDFSelection)initWithPage:(id)a3 fromIndex:(unint64_t)a4 toIndex:(unint64_t)a5
+- (UIPDFSelection)initWithPage:(id)page fromIndex:(unint64_t)index toIndex:(unint64_t)toIndex
 {
   v6 = [(UIPDFSelection *)self init];
   if (v6)
   {
-    v6->_page = a3;
-    [a3 CGPage];
+    v6->_page = page;
+    [page CGPage];
     v6->_cgSelection = CGPDFSelectionCreateForRange();
   }
 
@@ -250,7 +250,7 @@ LABEL_7:
   return result;
 }
 
-- (id)attributedStringAtIndex:(unint64_t)a3
+- (id)attributedStringAtIndex:(unint64_t)index
 {
   CGPDFSelectionGetRangeForRectIndex();
   if (!v3)
@@ -383,7 +383,7 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)getBounds:(CGRect *)a3 transform:(CGAffineTransform *)a4 index:(unint64_t)a5
+- (BOOL)getBounds:(CGRect *)bounds transform:(CGAffineTransform *)transform index:(unint64_t)index
 {
   cgSelection = self->_cgSelection;
   if (cgSelection)
@@ -394,19 +394,19 @@ LABEL_16:
   else
   {
     v6 = *(MEMORY[0x1E695F058] + 16);
-    a3->origin = *MEMORY[0x1E695F058];
-    a3->size = v6;
+    bounds->origin = *MEMORY[0x1E695F058];
+    bounds->size = v6;
     v7 = MEMORY[0x1E695EFD0];
     v8 = *(MEMORY[0x1E695EFD0] + 16);
-    *&a4->a = *MEMORY[0x1E695EFD0];
-    *&a4->c = v8;
-    *&a4->tx = *(v7 + 32);
+    *&transform->a = *MEMORY[0x1E695EFD0];
+    *&transform->c = v8;
+    *&transform->tx = *(v7 + 32);
   }
 
   return cgSelection;
 }
 
-- (id)textAtIndex:(unint64_t)a3
+- (id)textAtIndex:(unint64_t)index
 {
   CGPDFSelectionGetRangeForRectIndex();
   if (v3)
@@ -430,7 +430,7 @@ LABEL_16:
   }
 }
 
-- (id)htmlAtIndex:(unint64_t)a3
+- (id)htmlAtIndex:(unint64_t)index
 {
   CGPDFSelectionGetRangeForRectIndex();
   if (v3)
@@ -454,25 +454,25 @@ LABEL_16:
   }
 }
 
-- ($88E5F8DBFD3EF82B558D000E19B2526A)rectangleAtIndex:(SEL)a3 scale:(unint64_t)a4 inset:(double)a5
+- ($88E5F8DBFD3EF82B558D000E19B2526A)rectangleAtIndex:(SEL)index scale:(unint64_t)scale inset:(double)inset
 {
   retstr->var2 = 0u;
   retstr->var3 = 0u;
   retstr->var0 = 0u;
   retstr->var1 = 0u;
   result = [(UIPDFSelection *)self numberOfRectangles];
-  if (result > a4)
+  if (result > scale)
   {
     memset(&v45, 0, sizeof(v45));
     memset(&v44, 0, sizeof(v44));
-    [(UIPDFSelection *)self getBounds:&v45 transform:&v44 index:a4];
+    [(UIPDFSelection *)self getBounds:&v45 transform:&v44 index:scale];
     v45 = CGRectInset(v45, -1.0, -1.0);
     MidX = CGRectGetMidX(v45);
     MidY = CGRectGetMidY(v45);
     v14 = v44.tx + MidX * v44.a + MidY * v44.c;
     v15 = v44.ty + MidX * v44.b + MidY * v44.d;
     memset(&v43, 0, sizeof(v43));
-    CGAffineTransformMakeScale(&v43, a5, a5);
+    CGAffineTransformMakeScale(&v43, inset, inset);
     v42 = v43;
     v46 = CGRectApplyAffineTransform(v45, &v42);
     width = v46.size.width;
@@ -573,20 +573,20 @@ LABEL_16:
   return v3;
 }
 
-- (unint64_t)extendAtStart:(unint64_t)a3
+- (unint64_t)extendAtStart:(unint64_t)start
 {
   self->_dirty = 1;
   self->_cachedStartIndex = -1;
   self->_cachedEndIndex = -1;
-  return MEMORY[0x1EEDBA970](self->_cgSelection, a3);
+  return MEMORY[0x1EEDBA970](self->_cgSelection, start);
 }
 
-- (unint64_t)extendAtEnd:(unint64_t)a3
+- (unint64_t)extendAtEnd:(unint64_t)end
 {
   self->_dirty = 1;
   self->_cachedStartIndex = -1;
   self->_cachedEndIndex = -1;
-  return MEMORY[0x1EEDBA968](self->_cgSelection, a3);
+  return MEMORY[0x1EEDBA968](self->_cgSelection, end);
 }
 
 - (void)copyToPasteboard
@@ -642,7 +642,7 @@ LABEL_16:
   return result;
 }
 
-- (double)baseLineAtIndex:(unint64_t)a3
+- (double)baseLineAtIndex:(unint64_t)index
 {
   [(UIPDFPage *)self->_page CGPage];
   CGPDFPageGetLayout();
@@ -697,12 +697,12 @@ LABEL_16:
   return result;
 }
 
-- (UIPDFSelection)initWithPage:(id)a3 cgSelection:(CGPDFSelection *)a4
+- (UIPDFSelection)initWithPage:(id)page cgSelection:(CGPDFSelection *)selection
 {
   v5 = [(UIPDFSelection *)self init];
   if (v5)
   {
-    v5->_page = a3;
+    v5->_page = page;
     v5->_cgSelection = CGPDFSelectionRetain();
   }
 

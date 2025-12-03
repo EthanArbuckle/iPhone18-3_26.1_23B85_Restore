@@ -1,28 +1,28 @@
 @interface EMDEEventExtractor
-+ (id)postProcessTitle:(id)a3 messageBody:(id)a4;
-- (BOOL)isEndTimeSignificantForEvent:(id)a3;
-- (BOOL)isStartTimeSignificantForEvent:(id)a3;
-- (EMDEEventExtractor)initWithConfigFile:(id)a3 assetFolderPath:(id)a4 error:(id *)a5;
-- (id)createEventResultForTravelCategory:(id)a3 title:(id)a4 date:(id)a5;
-- (id)createEventResultFromTitle:(id)a3 date:(id)a4 messageBody:(id)a5;
-- (id)dateStringForDate:(id)a3;
++ (id)postProcessTitle:(id)title messageBody:(id)body;
+- (BOOL)isEndTimeSignificantForEvent:(id)event;
+- (BOOL)isStartTimeSignificantForEvent:(id)event;
+- (EMDEEventExtractor)initWithConfigFile:(id)file assetFolderPath:(id)path error:(id *)error;
+- (id)createEventResultForTravelCategory:(id)category title:(id)title date:(id)date;
+- (id)createEventResultFromTitle:(id)title date:(id)date messageBody:(id)body;
+- (id)dateStringForDate:(id)date;
 - (id)extractDates;
-- (id)extractEventDatesFromModelDateOutput:(id)a3;
-- (id)extractEventFromMessage:(id)a3 error:(id *)a4;
-- (id)extractTitleFromMessage:(id)a3 error:(id *)a4;
+- (id)extractEventDatesFromModelDateOutput:(id)output;
+- (id)extractEventFromMessage:(id)message error:(id *)error;
+- (id)extractTitleFromMessage:(id)message error:(id *)error;
 - (id)extractTitles;
-- (id)formatString:(id)a3;
-- (id)getDateFromString:(id)a3;
+- (id)formatString:(id)string;
+- (id)getDateFromString:(id)string;
 @end
 
 @implementation EMDEEventExtractor
 
-- (EMDEEventExtractor)initWithConfigFile:(id)a3 assetFolderPath:(id)a4 error:(id *)a5
+- (EMDEEventExtractor)initWithConfigFile:(id)file assetFolderPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (!v8 || !v9)
+  fileCopy = file;
+  pathCopy = path;
+  v10 = pathCopy;
+  if (!fileCopy || !pathCopy)
   {
     v15 = extractionLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@
     v27 = v16;
     v17 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
-    *a5 = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v17];
+    *error = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v17];
 
     goto LABEL_16;
   }
@@ -61,66 +61,66 @@
     v25 = v20;
     v21 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
 
-    *a5 = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v21];
+    *error = [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v21];
 
     goto LABEL_16;
   }
 
-  [(EMDEModelWrapper *)v13 loadConfigFromFile:v8 assetFolderPath:v10 error:a5];
-  if (a5 && *a5)
+  [(EMDEModelWrapper *)v13 loadConfigFromFile:fileCopy assetFolderPath:v10 error:error];
+  if (error && *error)
   {
     v14 = extractionLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      sub_10008B2D8(a5);
+      sub_10008B2D8(error);
     }
 
 LABEL_16:
-    v18 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
   self->_extractionFailureCode = -1;
   self = self;
-  v18 = self;
+  selfCopy = self;
 LABEL_17:
 
-  return v18;
+  return selfCopy;
 }
 
-- (BOOL)isStartTimeSignificantForEvent:(id)a3
+- (BOOL)isStartTimeSignificantForEvent:(id)event
 {
-  v4 = [a3 objectForKeyedSubscript:@"EMDE_START_TIME_IS_SIGNIFICANT"];
-  v5 = [v4 BOOLValue];
+  v4 = [event objectForKeyedSubscript:@"EMDE_START_TIME_IS_SIGNIFICANT"];
+  bOOLValue = [v4 BOOLValue];
 
-  return (a3 != 0) & v5;
+  return (event != 0) & bOOLValue;
 }
 
-- (BOOL)isEndTimeSignificantForEvent:(id)a3
+- (BOOL)isEndTimeSignificantForEvent:(id)event
 {
-  v4 = [a3 objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
-  v5 = [v4 BOOLValue];
+  v4 = [event objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
+  bOOLValue = [v4 BOOLValue];
 
-  return (a3 != 0) & v5;
+  return (event != 0) & bOOLValue;
 }
 
-- (id)dateStringForDate:(id)a3
+- (id)dateStringForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = objc_opt_new();
   v5 = +[NSTimeZone localTimeZone];
   [v4 setTimeZone:v5];
 
-  v6 = [v4 stringFromDate:v3];
+  v6 = [v4 stringFromDate:dateCopy];
 
   return v6;
 }
 
-- (id)formatString:(id)a3
+- (id)formatString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  stringCopy = string;
+  v4 = stringCopy;
+  if (stringCopy && [stringCopy length])
   {
     v5 = +[NSCharacterSet whitespaceCharacterSet];
     v6 = [v4 stringByTrimmingCharactersInSet:v5];
@@ -128,8 +128,8 @@ LABEL_17:
     if ([v6 length])
     {
       v7 = [v6 substringWithRange:{0, 1}];
-      v8 = [v7 uppercaseString];
-      v9 = [v6 stringByReplacingCharactersInRange:0 withString:{1, v8}];
+      uppercaseString = [v7 uppercaseString];
+      v9 = [v6 stringByReplacingCharactersInRange:0 withString:{1, uppercaseString}];
 
       v6 = v9;
     }
@@ -146,20 +146,20 @@ LABEL_17:
   return v11;
 }
 
-+ (id)postProcessTitle:(id)a3 messageBody:(id)a4
++ (id)postProcessTitle:(id)title messageBody:(id)body
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  titleCopy = title;
+  bodyCopy = body;
+  if (titleCopy)
   {
-    v7 = [v5 length];
-    if (v6)
+    v7 = [titleCopy length];
+    if (bodyCopy)
     {
-      if (v7 && [v6 length] && objc_msgSend(v5, "rangeOfString:options:", @"Travel booking", 1) != 0x7FFFFFFFFFFFFFFFLL)
+      if (v7 && [bodyCopy length] && objc_msgSend(titleCopy, "rangeOfString:options:", @"Travel booking", 1) != 0x7FFFFFFFFFFFFFFFLL)
       {
         v19 = objc_alloc_init(DDScannerHelper);
         v8 = +[NSLocale currentLocale];
-        v9 = [(DDScannerHelper *)v19 runDataDetectorsOnBody:v6 locale:v8];
+        v9 = [(DDScannerHelper *)v19 runDataDetectorsOnBody:bodyCopy locale:v8];
 
         v10 = [v9 objectForKeyedSubscript:@"error"];
 
@@ -188,7 +188,7 @@ LABEL_17:
 
                 if (v18)
                 {
-                  v11 = [v5 stringByReplacingOccurrencesOfString:@"Travel booking from" withString:@"Flight:" options:1 range:{0, objc_msgSend(v5, "length")}];
+                  v11 = [titleCopy stringByReplacingOccurrencesOfString:@"Travel booking from" withString:@"Flight:" options:1 range:{0, objc_msgSend(titleCopy, "length")}];
 
                   goto LABEL_9;
                 }
@@ -208,7 +208,7 @@ LABEL_17:
     }
   }
 
-  v11 = v5;
+  v11 = titleCopy;
 LABEL_9:
 
   return v11;
@@ -216,17 +216,17 @@ LABEL_9:
 
 - (id)extractDates
 {
-  v3 = [(EMDEModelWrapper *)self->_modelWrapper runBeamInferenceForDate];
-  if (v3)
+  runBeamInferenceForDate = [(EMDEModelWrapper *)self->_modelWrapper runBeamInferenceForDate];
+  if (runBeamInferenceForDate)
   {
     v4 = extractionLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v5 = [v3 objectForKey:@"prediction"];
+      v5 = [runBeamInferenceForDate objectForKey:@"prediction"];
       sub_10008B404(v5, v9, v4);
     }
 
-    v6 = [(EMDEEventExtractor *)self extractEventDatesFromModelDateOutput:v3];
+    v6 = [(EMDEEventExtractor *)self extractEventDatesFromModelDateOutput:runBeamInferenceForDate];
   }
 
   else
@@ -245,13 +245,13 @@ LABEL_9:
   return v6;
 }
 
-- (id)extractEventDatesFromModelDateOutput:(id)a3
+- (id)extractEventDatesFromModelDateOutput:(id)output
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  outputCopy = output;
+  v5 = outputCopy;
+  if (outputCopy)
   {
-    v6 = [v4 objectForKey:@"score"];
+    v6 = [outputCopy objectForKey:@"score"];
     [v6 floatValue];
     v8 = v7;
 
@@ -297,10 +297,10 @@ LABEL_9:
     {
       v25 = [(EMDEEventExtractor *)self getDateFromString:v18];
       v26 = [v25 objectForKeyedSubscript:@"EMDE_EXTRACTION_TYPE"];
-      v27 = [v26 integerValue];
+      integerValue = [v26 integerValue];
 
       v28 = [(EMDEEventExtractor *)self isStartTimeSignificantForEvent:v25];
-      if (v27 <= 5 && ((1 << v27) & 0x36) != 0 && v28)
+      if (integerValue <= 5 && ((1 << integerValue) & 0x36) != 0 && v28)
       {
         [v97 addObject:v25];
 LABEL_32:
@@ -350,10 +350,10 @@ LABEL_88:
       v33 = [(EMDEEventExtractor *)self getDateFromString:v32];
 
       v34 = [v33 objectForKeyedSubscript:@"EMDE_EXTRACTION_TYPE"];
-      v35 = [v34 integerValue];
+      integerValue2 = [v34 integerValue];
 
       v36 = [(EMDEEventExtractor *)self isStartTimeSignificantForEvent:v33];
-      if ((v35 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      if ((integerValue2 & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
         v37 = v36;
       }
@@ -381,13 +381,13 @@ LABEL_88:
             v44 = [(EMDEEventExtractor *)self getDateFromString:v43];
 
             v45 = [v44 objectForKeyedSubscript:@"EMDE_EXTRACTION_TYPE"];
-            v46 = [v45 integerValue];
+            integerValue3 = [v45 integerValue];
 
             v47 = [v44 objectForKeyedSubscript:@"EMDE_START_DATE"];
             v48 = [v33 objectForKeyedSubscript:@"EMDE_START_DATE"];
             v49 = [v47 compare:v48];
 
-            if (v44 && (v46 - 6) >= 0xFFFFFFFFFFFFFFFDLL && v49 == 1)
+            if (v44 && (integerValue3 - 6) >= 0xFFFFFFFFFFFFFFFDLL && v49 == 1)
             {
               v50 = [v44 objectForKeyedSubscript:@"EMDE_START_DATE"];
               [v31 setObject:v50 forKeyedSubscript:@"EMDE_END_DATE"];
@@ -454,10 +454,10 @@ LABEL_89:
     v60 = [(EMDEEventExtractor *)self getDateFromString:v59];
 
     v61 = [v60 objectForKeyedSubscript:@"EMDE_EXTRACTION_TYPE"];
-    v62 = [v61 integerValue];
+    integerValue4 = [v61 integerValue];
 
     v63 = [(EMDEEventExtractor *)self isStartTimeSignificantForEvent:v60];
-    if ((v62 & 0xFFFFFFFFFFFFFFFELL) == 4)
+    if ((integerValue4 & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
       v64 = v63;
     }
@@ -481,10 +481,10 @@ LABEL_87:
       v66 = [(EMDEEventExtractor *)self getDateFromString:v65];
 
       v67 = [v66 objectForKeyedSubscript:@"EMDE_EXTRACTION_TYPE"];
-      v68 = [v67 integerValue];
+      integerValue5 = [v67 integerValue];
 
       v69 = [(EMDEEventExtractor *)self isStartTimeSignificantForEvent:v66];
-      if ((v68 & 0xFFFFFFFFFFFFFFFELL) == 4)
+      if ((integerValue5 & 0xFFFFFFFFFFFFFFFELL) == 4)
       {
         v70 = v69;
       }
@@ -502,7 +502,7 @@ LABEL_86:
         goto LABEL_87;
       }
 
-      if (v68 - 1 < 2)
+      if (integerValue5 - 1 < 2)
       {
         v76 = v69;
       }
@@ -641,11 +641,11 @@ LABEL_90:
 
 - (id)extractTitles
 {
-  v3 = [(EMDEModelWrapper *)self->_modelWrapper runBeamInferenceForTitle];
-  v4 = v3;
-  if (v3)
+  runBeamInferenceForTitle = [(EMDEModelWrapper *)self->_modelWrapper runBeamInferenceForTitle];
+  v4 = runBeamInferenceForTitle;
+  if (runBeamInferenceForTitle)
   {
-    v5 = [v3 objectForKey:@"prediction"];
+    v5 = [runBeamInferenceForTitle objectForKey:@"prediction"];
     v6 = [v4 objectForKey:@"score"];
     [v6 floatValue];
     v8 = v7;
@@ -729,19 +729,19 @@ LABEL_16:
   return v17;
 }
 
-- (id)extractTitleFromMessage:(id)a3 error:(id *)a4
+- (id)extractTitleFromMessage:(id)message error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  messageCopy = message;
+  if (messageCopy)
   {
     self->_extractionFailureCode = -1;
     v7 = extractionLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_10008B520(v6, v7);
+      sub_10008B520(messageCopy, v7);
     }
 
-    if ([(EMDEModelWrapper *)self->_modelWrapper prepareInputsForText:v6 error:a4]&& ([(EMDEEventExtractor *)self extractTitles], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([(EMDEModelWrapper *)self->_modelWrapper prepareInputsForText:messageCopy error:error]&& ([(EMDEEventExtractor *)self extractTitles], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v9 = v8;
       if (self->_extractionFailureCode == -1)
@@ -776,7 +776,7 @@ LABEL_16:
     sub_10008B598();
   }
 
-  if (a4)
+  if (error)
   {
     v21 = NSLocalizedDescriptionKey;
     v15 = [NSString stringWithFormat:@"Found nil in inputMessage for extractEventFromMessage"];
@@ -784,7 +784,7 @@ LABEL_16:
     v9 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
 
     [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v9];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
 LABEL_14:
 
     goto LABEL_15;
@@ -796,17 +796,17 @@ LABEL_15:
   return v12;
 }
 
-- (id)extractEventFromMessage:(id)a3 error:(id *)a4
+- (id)extractEventFromMessage:(id)message error:(id *)error
 {
-  v70 = a3;
-  if (v70)
+  messageCopy = message;
+  if (messageCopy)
   {
-    v67 = self;
+    selfCopy = self;
     self->_extractionFailureCode = -1;
     v5 = extractionLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_10008B5D4(v70, v5);
+      sub_10008B5D4(messageCopy, v5);
     }
 
     v78 = 0u;
@@ -814,7 +814,7 @@ LABEL_15:
     v76 = 0u;
     v77 = 0u;
     v6 = [&off_1000B0170 countByEnumeratingWithState:&v76 objects:v87 count:16];
-    v7 = v67;
+    v7 = selfCopy;
     if (v6)
     {
       v8 = *v77;
@@ -827,11 +827,11 @@ LABEL_15:
             objc_enumerationMutation(&off_1000B0170);
           }
 
-          if ([v70 rangeOfString:*(*(&v76 + 1) + 8 * i) options:1] != 0x7FFFFFFFFFFFFFFFLL)
+          if ([messageCopy rangeOfString:*(*(&v76 + 1) + 8 * i) options:1] != 0x7FFFFFFFFFFFFFFFLL)
           {
             v68 = objc_alloc_init(DDScannerHelper);
             v10 = +[NSLocale currentLocale];
-            v69 = [(DDScannerHelper *)v68 runDataDetectorsOnBody:v70 locale:v10];
+            v69 = [(DDScannerHelper *)v68 runDataDetectorsOnBody:messageCopy locale:v10];
 
             v11 = [v69 objectForKeyedSubscript:@"error"];
             LOBYTE(v10) = v11 == 0;
@@ -839,7 +839,7 @@ LABEL_15:
             if ((v10 & 1) == 0)
             {
 
-              v7 = v67;
+              v7 = selfCopy;
               continue;
             }
 
@@ -867,12 +867,12 @@ LABEL_22:
               v20 = [*(*(&v72 + 1) + 8 * v19) objectForKeyedSubscript:@"ddType"];
               if ([v20 integerValue] == 8)
               {
-                v21 = [v70 rangeOfString:@"Flight" options:1] == 0x7FFFFFFFFFFFFFFFLL;
+                v21 = [messageCopy rangeOfString:@"Flight" options:1] == 0x7FFFFFFFFFFFFFFFLL;
 
                 if (v21)
                 {
-                  [@"Flight " stringByAppendingString:v70];
-                  v70 = v20 = v70;
+                  [@"Flight " stringByAppendingString:messageCopy];
+                  messageCopy = v20 = messageCopy;
                   goto LABEL_27;
                 }
               }
@@ -889,7 +889,7 @@ LABEL_27:
                 {
 LABEL_30:
 
-                  v7 = v67;
+                  v7 = selfCopy;
                   goto LABEL_31;
                 }
 
@@ -908,18 +908,18 @@ LABEL_30:
     }
 
 LABEL_31:
-    if ([(EMDEModelWrapper *)v7->_modelWrapper prepareInputsForText:v70 error:a4])
+    if ([(EMDEModelWrapper *)v7->_modelWrapper prepareInputsForText:messageCopy error:error])
     {
-      v22 = [(EMDEEventExtractor *)v67 extractDates];
-      v23 = v22;
-      if (v22)
+      extractDates = [(EMDEEventExtractor *)selfCopy extractDates];
+      v23 = extractDates;
+      if (extractDates)
       {
-        if ([v22 count])
+        if ([extractDates count])
         {
-          v24 = [(EMDEEventExtractor *)v67 extractTitles];
-          if (v24)
+          extractTitles = [(EMDEEventExtractor *)selfCopy extractTitles];
+          if (extractTitles)
           {
-            v25 = v24;
+            v25 = extractTitles;
             if ([v23 count] == 2 && objc_msgSend(v25, "count") == 2)
             {
               v26 = [v23 objectAtIndexedSubscript:0];
@@ -956,13 +956,13 @@ LABEL_31:
                     {
                       v40 = [v25 objectAtIndexedSubscript:0];
                       v41 = [v23 objectAtIndexedSubscript:0];
-                      v42 = [(EMDEEventExtractor *)v67 createEventResultFromTitle:v40 date:v41 messageBody:v70];
+                      v42 = [(EMDEEventExtractor *)selfCopy createEventResultFromTitle:v40 date:v41 messageBody:messageCopy];
 
                       v43 = [v25 objectAtIndexedSubscript:1];
                       v44 = [v23 objectAtIndexedSubscript:1];
-                      v45 = [(EMDEEventExtractor *)v67 createEventResultFromTitle:v43 date:v44 messageBody:v70];
+                      v45 = [(EMDEEventExtractor *)selfCopy createEventResultFromTitle:v43 date:v44 messageBody:messageCopy];
 
-                      v67->_extractionFailureCode = 0;
+                      selfCopy->_extractionFailureCode = 0;
                       v85[0] = v42;
                       v85[1] = v45;
                       v46 = [NSArray arrayWithObjects:v85 count:2];
@@ -973,7 +973,7 @@ LABEL_49:
                         v82[1] = @"errorCode";
                         v83[0] = v46;
                         v82[0] = @"events";
-                        v49 = [NSNumber numberWithInteger:v67->_extractionFailureCode];
+                        v49 = [NSNumber numberWithInteger:selfCopy->_extractionFailureCode];
                         v83[1] = v49;
                         [NSDictionary dictionaryWithObjects:v83 forKeys:v82 count:2];
                       }
@@ -981,13 +981,13 @@ LABEL_49:
                       else
                       {
                         v80 = @"errorCode";
-                        v49 = [NSNumber numberWithInteger:v67->_extractionFailureCode];
+                        v49 = [NSNumber numberWithInteger:selfCopy->_extractionFailureCode];
                         v81 = v49;
                         [NSDictionary dictionaryWithObjects:&v81 forKeys:&v80 count:1];
                       }
                       v15 = ;
 
-                      v14 = v70;
+                      v14 = messageCopy;
                       goto LABEL_53;
                     }
                   }
@@ -1031,9 +1031,9 @@ LABEL_49:
                 {
                   v63 = [v25 objectAtIndexedSubscript:0];
                   v64 = [v23 objectAtIndexedSubscript:0];
-                  v65 = [(EMDEEventExtractor *)v67 createEventResultFromTitle:v63 date:v64 messageBody:v70];
+                  v65 = [(EMDEEventExtractor *)selfCopy createEventResultFromTitle:v63 date:v64 messageBody:messageCopy];
 
-                  v67->_extractionFailureCode = 0;
+                  selfCopy->_extractionFailureCode = 0;
                   v84 = v65;
                   v46 = [NSArray arrayWithObjects:&v84 count:1];
 
@@ -1066,7 +1066,7 @@ LABEL_74:
               v46 = 0;
               v62 = 8;
 LABEL_80:
-              v67->_extractionFailureCode = v62;
+              selfCopy->_extractionFailureCode = v62;
               goto LABEL_49;
             }
 
@@ -1090,7 +1090,7 @@ LABEL_48:
       v47 = extractionLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
       {
-        sub_10008B64C(a4);
+        sub_10008B64C(error);
       }
 
       v23 = 0;
@@ -1113,7 +1113,7 @@ LABEL_48:
     sub_10008B6C4();
   }
 
-  if (a4)
+  if (error)
   {
     v88 = NSLocalizedDescriptionKey;
     v13 = [NSString stringWithFormat:@"Found nil in inputMessage for extractEventFromMessage"];
@@ -1121,7 +1121,7 @@ LABEL_48:
     v14 = [NSDictionary dictionaryWithObjects:&v89 forKeys:&v88 count:1];
 
     [NSError errorWithDomain:@"com.apple.eventMetaDataExtractor.eventMetaDataExtractorPlugin" code:500 userInfo:v14];
-    *a4 = v15 = 0;
+    *error = v15 = 0;
 LABEL_53:
 
     goto LABEL_54;
@@ -1133,12 +1133,12 @@ LABEL_54:
   return v15;
 }
 
-- (id)getDateFromString:(id)a3
+- (id)getDateFromString:(id)string
 {
-  v33 = a3;
+  stringCopy = string;
   v35 = objc_alloc_init(DDScannerHelper);
   v3 = +[NSLocale currentLocale];
-  v4 = [(DDScannerHelper *)v35 runDataDetectorsOnBody:v33 locale:v3];
+  v4 = [(DDScannerHelper *)v35 runDataDetectorsOnBody:stringCopy locale:v3];
 
   v34 = v4;
   v5 = [v4 objectForKeyedSubscript:@"error"];
@@ -1271,15 +1271,15 @@ LABEL_22:
   return v9;
 }
 
-- (id)createEventResultForTravelCategory:(id)a3 title:(id)a4 date:(id)a5
+- (id)createEventResultForTravelCategory:(id)category title:(id)title date:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v31 = v8;
-  v32 = a5;
-  v29 = v9;
-  v10 = [NSString stringWithFormat:@"%@:", v8];
-  v11 = [v9 stringByReplacingOccurrencesOfString:v10 withString:&stru_1000AF768];
+  categoryCopy = category;
+  titleCopy = title;
+  v31 = categoryCopy;
+  dateCopy = date;
+  v29 = titleCopy;
+  categoryCopy = [NSString stringWithFormat:@"%@:", categoryCopy];
+  v11 = [titleCopy stringByReplacingOccurrencesOfString:categoryCopy withString:&stru_1000AF768];
 
   v30 = v11;
   v12 = [v11 componentsSeparatedByString:@" to "];
@@ -1326,22 +1326,22 @@ LABEL_7:
 
   v33[0] = @"EventMetaDataExtractor_ML_EVENT__CATEGORY";
   v33[1] = @"EventMetaDataExtractor_ML_EVENT__DEPARTURE_LOCATION";
-  v34[0] = v8;
+  v34[0] = categoryCopy;
   v34[1] = v14;
   v33[2] = @"EventMetaDataExtractor_ML_EVENT__ARRIVAL_LOCATION";
   v33[3] = @"EventMetaDataExtractor_ML_EVENT__TITLE";
   v34[2] = v16;
   v34[3] = v19;
   v33[4] = @"EventMetaDataExtractor_ML_EVENT__START_DATETIME";
-  v21 = [v32 objectForKeyedSubscript:@"EMDE_START_DATE"];
+  v21 = [dateCopy objectForKeyedSubscript:@"EMDE_START_DATE"];
   v22 = [(EMDEEventExtractor *)self dateStringForDate:v21];
   v34[4] = v22;
   v33[5] = @"EventMetaDataExtractor_ML_EVENT__END_DATETIME";
-  v23 = [v32 objectForKeyedSubscript:@"EMDE_END_DATE"];
+  v23 = [dateCopy objectForKeyedSubscript:@"EMDE_END_DATE"];
   v24 = [(EMDEEventExtractor *)self dateStringForDate:v23];
   v34[5] = v24;
   v33[6] = @"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT";
-  v25 = [v32 objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
+  v25 = [dateCopy objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
   v34[6] = v25;
   v26 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:7];
 
@@ -1350,34 +1350,34 @@ LABEL_7:
   return v27;
 }
 
-- (id)createEventResultFromTitle:(id)a3 date:(id)a4 messageBody:(id)a5
+- (id)createEventResultFromTitle:(id)title date:(id)date messageBody:(id)body
 {
-  v7 = a3;
-  v28 = a4;
-  v29 = v7;
-  if ([v7 hasPrefix:@"Flight:"])
+  titleCopy = title;
+  dateCopy = date;
+  v29 = titleCopy;
+  if ([titleCopy hasPrefix:@"Flight:"])
   {
     v8 = @"Flight";
 LABEL_7:
-    v9 = [(EMDEEventExtractor *)self createEventResultForTravelCategory:v8 title:v7 date:v28];
+    v9 = [(EMDEEventExtractor *)self createEventResultForTravelCategory:v8 title:titleCopy date:dateCopy];
     goto LABEL_8;
   }
 
-  if ([v7 hasPrefix:@"Train:"])
+  if ([titleCopy hasPrefix:@"Train:"])
   {
     v8 = @"Train";
     goto LABEL_7;
   }
 
-  if ([v7 hasPrefix:@"Bus:"])
+  if ([titleCopy hasPrefix:@"Bus:"])
   {
     v8 = @"Bus";
     goto LABEL_7;
   }
 
-  if ([v7 hasPrefix:@"Stay:"])
+  if ([titleCopy hasPrefix:@"Stay:"])
   {
-    v18 = [v7 stringByReplacingOccurrencesOfString:@"Stay:" withString:&stru_1000AF768];
+    v18 = [titleCopy stringByReplacingOccurrencesOfString:@"Stay:" withString:&stru_1000AF768];
     v19 = [(EMDEEventExtractor *)self formatString:v18];
     v20 = @"Booking";
     if ([v19 length])
@@ -1392,15 +1392,15 @@ LABEL_7:
     v40[2] = v20;
     v39[2] = @"EventMetaDataExtractor_ML_EVENT__TITLE";
     v39[3] = @"EventMetaDataExtractor_ML_EVENT__START_DATETIME";
-    v21 = [v28 objectForKeyedSubscript:@"EMDE_START_DATE"];
+    v21 = [dateCopy objectForKeyedSubscript:@"EMDE_START_DATE"];
     v22 = [(EMDEEventExtractor *)self dateStringForDate:v21];
     v40[3] = v22;
     v39[4] = @"EventMetaDataExtractor_ML_EVENT__END_DATETIME";
-    v23 = [v28 objectForKeyedSubscript:@"EMDE_END_DATE"];
+    v23 = [dateCopy objectForKeyedSubscript:@"EMDE_END_DATE"];
     v24 = [(EMDEEventExtractor *)self dateStringForDate:v23];
     v40[4] = v24;
     v39[5] = @"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT";
-    v25 = [v28 objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
+    v25 = [dateCopy objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
     v40[5] = v25;
     v26 = [NSDictionary dictionaryWithObjects:v40 forKeys:v39 count:6];
     v27 = [v26 mutableCopy];
@@ -1408,29 +1408,29 @@ LABEL_7:
 
   else
   {
-    if (![v7 hasPrefix:@"Movie:"])
+    if (![titleCopy hasPrefix:@"Movie:"])
     {
       v35[0] = @"EventMetaDataExtractor_ML_EVENT__CATEGORY";
       v35[1] = @"EventMetaDataExtractor_ML_EVENT__TITLE";
       v36[0] = @"GenericEvent";
-      v36[1] = v7;
+      v36[1] = titleCopy;
       v35[2] = @"EventMetaDataExtractor_ML_EVENT__START_DATETIME";
-      v19 = [v28 objectForKeyedSubscript:@"EMDE_START_DATE"];
+      v19 = [dateCopy objectForKeyedSubscript:@"EMDE_START_DATE"];
       v18 = [(EMDEEventExtractor *)self dateStringForDate:v19];
       v36[2] = v18;
       v35[3] = @"EventMetaDataExtractor_ML_EVENT__END_DATETIME";
-      v20 = [v28 objectForKeyedSubscript:@"EMDE_END_DATE"];
+      v20 = [dateCopy objectForKeyedSubscript:@"EMDE_END_DATE"];
       v21 = [(EMDEEventExtractor *)self dateStringForDate:v20];
       v36[3] = v21;
       v35[4] = @"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT";
-      v22 = [v28 objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
+      v22 = [dateCopy objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
       v36[4] = v22;
       v23 = [NSDictionary dictionaryWithObjects:v36 forKeys:v35 count:5];
       v9 = [v23 mutableCopy];
       goto LABEL_31;
     }
 
-    v18 = [v7 stringByReplacingOccurrencesOfString:@"Movie:" withString:&stru_1000AF768];
+    v18 = [titleCopy stringByReplacingOccurrencesOfString:@"Movie:" withString:&stru_1000AF768];
     v19 = [(EMDEEventExtractor *)self formatString:v18];
     v20 = @"Booking";
     if ([v19 length])
@@ -1445,15 +1445,15 @@ LABEL_7:
     v38[2] = v20;
     v37[2] = @"EventMetaDataExtractor_ML_EVENT__TITLE";
     v37[3] = @"EventMetaDataExtractor_ML_EVENT__START_DATETIME";
-    v21 = [v28 objectForKeyedSubscript:@"EMDE_START_DATE"];
+    v21 = [dateCopy objectForKeyedSubscript:@"EMDE_START_DATE"];
     v22 = [(EMDEEventExtractor *)self dateStringForDate:v21];
     v38[3] = v22;
     v37[4] = @"EventMetaDataExtractor_ML_EVENT__END_DATETIME";
-    v23 = [v28 objectForKeyedSubscript:@"EMDE_END_DATE"];
+    v23 = [dateCopy objectForKeyedSubscript:@"EMDE_END_DATE"];
     v24 = [(EMDEEventExtractor *)self dateStringForDate:v23];
     v38[4] = v24;
     v37[5] = @"EventMetaDataExtractor_ML_EVENT__END_DATETIME_IS_SIGNIFICANT";
-    v25 = [v28 objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
+    v25 = [dateCopy objectForKeyedSubscript:@"EMDE_END_TIME_IS_SIGNIFICANT"];
     v38[5] = v25;
     v26 = [NSDictionary dictionaryWithObjects:v38 forKeys:v37 count:6];
     v27 = [v26 mutableCopy];

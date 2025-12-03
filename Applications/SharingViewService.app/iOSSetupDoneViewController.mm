@@ -1,13 +1,13 @@
 @interface iOSSetupDoneViewController
-- (void)handleDismissButton:(id)a3;
-- (void)handleReportBugButton:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleDismissButton:(id)button;
+- (void)handleReportBugButton:(id)button;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation iOSSetupDoneViewController
 
-- (void)handleReportBugButton:(id)a3
+- (void)handleReportBugButton:(id)button
 {
   v23[0] = @"Classification";
   v23[1] = @"ComponentID";
@@ -73,9 +73,9 @@
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -84,9 +84,9 @@
   [self->super.super._mainController dismiss:5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -94,12 +94,12 @@
 
   v5.receiver = self;
   v5.super_class = iOSSetupDoneViewController;
-  [(iOSSetupDoneViewController *)&v5 viewDidDisappear:v3];
+  [(iOSSetupDoneViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -107,7 +107,7 @@
 
   v30.receiver = self;
   v30.super_class = iOSSetupDoneViewController;
-  [(SVSBaseViewController *)&v30 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v30 viewWillAppear:appearCopy];
   if (*(&self->_doneButton + 1))
   {
     v5 = NSErrorToOSStatus();
@@ -144,8 +144,8 @@
     v18 = sub_10012794C(@"Localizable", v17);
     [*(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) setText:v18];
 
-    v19 = [self->super.super._mainController myAppleID];
-    v20 = [v19 length];
+    myAppleID = [self->super.super._mainController myAppleID];
+    v20 = [myAppleID length];
     v21 = @"IOS_SETUP_FINISH_INFO";
     if (!v20)
     {
@@ -182,8 +182,8 @@
   }
 
   [*(&self->_infoLabel + 1) setHidden:v27];
-  v28 = [(SVSBaseViewController *)self containerView];
-  [v28 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 }
 
 @end

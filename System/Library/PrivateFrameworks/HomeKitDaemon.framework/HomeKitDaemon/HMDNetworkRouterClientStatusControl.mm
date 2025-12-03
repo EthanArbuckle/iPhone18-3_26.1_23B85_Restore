@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterClientStatusControl
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HMDNetworkRouterClientStatusControl)init;
-- (HMDNetworkRouterClientStatusControl)initWithOperation:(id)a3 clientStatusIdentifierList:(id)a4;
+- (HMDNetworkRouterClientStatusControl)initWithOperation:(id)operation clientStatusIdentifierList:(id)list;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HMDNetworkRouterClientStatusControl
@@ -14,17 +14,17 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDNetworkRouterClientStatusControl *)self operation];
-  v5 = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
-  v6 = [v3 stringWithFormat:@"<HMDNetworkRouterClientStatusControl operation=%@, clientStatusIdentifierList=%@>", v4, v5];
+  operation = [(HMDNetworkRouterClientStatusControl *)self operation];
+  clientStatusIdentifierList = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
+  v6 = [v3 stringWithFormat:@"<HMDNetworkRouterClientStatusControl operation=%@, clientStatusIdentifierList=%@>", operation, clientStatusIdentifierList];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -34,14 +34,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HMDNetworkRouterClientStatusControl *)self operation];
-      v8 = [(HMDNetworkRouterClientStatusControl *)v6 operation];
-      if (v7 != v8)
+      v6 = equalCopy;
+      operation = [(HMDNetworkRouterClientStatusControl *)self operation];
+      operation2 = [(HMDNetworkRouterClientStatusControl *)v6 operation];
+      if (operation != operation2)
       {
-        v9 = [(HMDNetworkRouterClientStatusControl *)self operation];
-        v3 = [(HMDNetworkRouterClientStatusControl *)v6 operation];
-        if (![v9 isEqual:v3])
+        operation3 = [(HMDNetworkRouterClientStatusControl *)self operation];
+        operation4 = [(HMDNetworkRouterClientStatusControl *)v6 operation];
+        if (![operation3 isEqual:operation4])
         {
           v10 = 0;
 LABEL_13:
@@ -50,25 +50,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = operation3;
       }
 
-      v11 = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
-      v12 = [(HMDNetworkRouterClientStatusControl *)v6 clientStatusIdentifierList];
-      if (v11 == v12)
+      clientStatusIdentifierList = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
+      clientStatusIdentifierList2 = [(HMDNetworkRouterClientStatusControl *)v6 clientStatusIdentifierList];
+      if (clientStatusIdentifierList == clientStatusIdentifierList2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
-        v14 = [(HMDNetworkRouterClientStatusControl *)v6 clientStatusIdentifierList];
-        v10 = [v13 isEqual:v14];
+        clientStatusIdentifierList3 = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
+        clientStatusIdentifierList4 = [(HMDNetworkRouterClientStatusControl *)v6 clientStatusIdentifierList];
+        v10 = [clientStatusIdentifierList3 isEqual:clientStatusIdentifierList4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      operation3 = v16;
+      if (operation == operation2)
       {
         goto LABEL_14;
       }
@@ -84,17 +84,17 @@ LABEL_15:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HMDNetworkRouterClientStatusControl allocWithZone:a3];
-  v5 = [(HMDNetworkRouterClientStatusControl *)self operation];
-  v6 = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
-  v7 = [(HMDNetworkRouterClientStatusControl *)v4 initWithOperation:v5 clientStatusIdentifierList:v6];
+  v4 = [HMDNetworkRouterClientStatusControl allocWithZone:zone];
+  operation = [(HMDNetworkRouterClientStatusControl *)self operation];
+  clientStatusIdentifierList = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
+  v7 = [(HMDNetworkRouterClientStatusControl *)v4 initWithOperation:operation clientStatusIdentifierList:clientStatusIdentifierList];
 
   return v7;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
   v38 = 0u;
@@ -119,13 +119,13 @@ LABEL_15:
   v21 = 0u;
   v19 = 0u;
   TLV8BufferInit();
-  v5 = [(HMDNetworkRouterClientStatusControl *)self operation];
+  operation = [(HMDNetworkRouterClientStatusControl *)self operation];
 
-  if (v5)
+  if (operation)
   {
-    v6 = [(HMDNetworkRouterClientStatusControl *)self operation];
+    operation2 = [(HMDNetworkRouterClientStatusControl *)self operation];
     v18 = 0;
-    v7 = [v6 serializeWithError:&v18];
+    v7 = [operation2 serializeWithError:&v18];
     v8 = v18;
 
     if (v8)
@@ -140,11 +140,11 @@ LABEL_15:
     if (v9)
     {
 LABEL_9:
-      if (a3)
+      if (error)
       {
         HMErrorFromOSStatus();
         v8 = 0;
-        *a3 = v13 = 0;
+        *error = v13 = 0;
         goto LABEL_14;
       }
 
@@ -153,9 +153,9 @@ LABEL_9:
     }
   }
 
-  v10 = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
+  clientStatusIdentifierList = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
 
-  if (!v10)
+  if (!clientStatusIdentifierList)
   {
 LABEL_11:
     v13 = [MEMORY[0x277CBEA90] dataWithBytes:v19 length:?];
@@ -163,9 +163,9 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v11 = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
+  clientStatusIdentifierList2 = [(HMDNetworkRouterClientStatusControl *)self clientStatusIdentifierList];
   v17 = 0;
-  v7 = [v11 serializeWithError:&v17];
+  v7 = [clientStatusIdentifierList2 serializeWithError:&v17];
   v8 = v17;
 
   if (!v8)
@@ -184,11 +184,11 @@ LABEL_11:
 
 LABEL_6:
 
-  if (a3)
+  if (error)
   {
     v12 = v8;
     v13 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_14;
   }
 
@@ -202,16 +202,16 @@ LABEL_14:
   return v13;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  dataCopy = data;
+  v7 = dataCopy;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v8 = [v6 bytes];
+  bytes = [dataCopy bytes];
   v9 = [v7 length];
   if (!v9)
   {
@@ -220,11 +220,11 @@ LABEL_14:
     goto LABEL_25;
   }
 
-  v22 = self;
+  selfCopy = self;
   v10 = 0;
   v11 = 0;
   v12 = 0;
-  v13 = v8 + v9;
+  v13 = bytes + v9;
   do
   {
     v29 = 0;
@@ -234,10 +234,10 @@ LABEL_14:
     v26 = 0;
     if (TLV8GetNext() || TLV8GetOrCopyCoalesced())
     {
-      if (a4)
+      if (error)
       {
         HMErrorFromOSStatus();
-        *a4 = v19 = 0;
+        *error = v19 = 0;
         goto LABEL_26;
       }
 
@@ -294,11 +294,11 @@ LABEL_13:
   if (v12)
   {
 LABEL_17:
-    if (a4)
+    if (error)
     {
       v18 = v12;
       v19 = 0;
-      *a4 = v12;
+      *error = v12;
       goto LABEL_26;
     }
 
@@ -308,9 +308,9 @@ LABEL_22:
   }
 
 LABEL_24:
-  self = v22;
+  self = selfCopy;
 LABEL_25:
-  [(HMDNetworkRouterClientStatusControl *)self setOperation:v11, v22];
+  [(HMDNetworkRouterClientStatusControl *)self setOperation:v11, selfCopy];
   [(HMDNetworkRouterClientStatusControl *)self setClientStatusIdentifierList:v10];
   v12 = 0;
   v19 = 1;
@@ -319,18 +319,18 @@ LABEL_26:
   return v19;
 }
 
-- (HMDNetworkRouterClientStatusControl)initWithOperation:(id)a3 clientStatusIdentifierList:(id)a4
+- (HMDNetworkRouterClientStatusControl)initWithOperation:(id)operation clientStatusIdentifierList:(id)list
 {
-  v7 = a3;
-  v8 = a4;
+  operationCopy = operation;
+  listCopy = list;
   v12.receiver = self;
   v12.super_class = HMDNetworkRouterClientStatusControl;
   v9 = [(HMDNetworkRouterClientStatusControl *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_operation, a3);
-    objc_storeStrong(&v10->_clientStatusIdentifierList, a4);
+    objc_storeStrong(&v9->_operation, operation);
+    objc_storeStrong(&v10->_clientStatusIdentifierList, list);
   }
 
   return v10;
@@ -343,24 +343,24 @@ LABEL_26:
   return [(HMDNetworkRouterClientStatusControl *)&v3 init];
 }
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HMDNetworkRouterClientStatusControl);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HMDNetworkRouterClientStatusControl *)v6 parseFromData:v5 error:&v11];
+    [(HMDNetworkRouterClientStatusControl *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else

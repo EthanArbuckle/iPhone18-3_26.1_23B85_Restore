@@ -1,5 +1,5 @@
 @interface tvOS_AVInfoPanelAudioCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityHeaderElements;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,25 +8,25 @@
 
 @implementation tvOS_AVInfoPanelAudioCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVInfoPanelAudioCollectionViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"AVInfoPanelAudioCollectionViewCell" hasInstanceVariable:@"_checkmarkImageView" withType:"UIImageView"];
-  [v3 validateClass:@"AVInfoPanelAudioCollectionViewCell" hasInstanceVariable:@"_mediaOption" withType:"AVInfoPanelMediaOption"];
-  [v3 validateClass:@"AVInfoPanelAudioCollectionViewCell" hasInstanceVariable:@"_displayAsSelected" withType:"B"];
-  [v3 validateClass:@"AVInfoPanelMediaOption" hasClassMethod:@"_imageForRoute:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"AVInfoPanelMediaOption" hasInstanceMethod:@"route" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVInfoPanelCollectionReusableHeaderView"];
-  [v3 validateClass:@"AVInfoPanelCollectionReusableHeaderView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVInfoPanelAudioCollectionViewCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"AVInfoPanelAudioCollectionViewCell" hasInstanceVariable:@"_checkmarkImageView" withType:"UIImageView"];
+  [validationsCopy validateClass:@"AVInfoPanelAudioCollectionViewCell" hasInstanceVariable:@"_mediaOption" withType:"AVInfoPanelMediaOption"];
+  [validationsCopy validateClass:@"AVInfoPanelAudioCollectionViewCell" hasInstanceVariable:@"_displayAsSelected" withType:"B"];
+  [validationsCopy validateClass:@"AVInfoPanelMediaOption" hasClassMethod:@"_imageForRoute:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"AVInfoPanelMediaOption" hasInstanceMethod:@"route" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVInfoPanelCollectionReusableHeaderView"];
+  [validationsCopy validateClass:@"AVInfoPanelCollectionReusableHeaderView" isKindOfClass:@"UIView"];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(tvOS_AVInfoPanelAudioCollectionViewCellAccessibility *)self safeValueForKey:@"_titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
@@ -44,18 +44,18 @@
   v5 = v11[5];
 
   _Block_object_dispose(&v10, 8);
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel = [v5 accessibilityLabel];
 
-  v7 = [(tvOS_AVInfoPanelAudioCollectionViewCellAccessibility *)self accessibilityLabel];
-  LODWORD(v5) = [v6 isEqualToString:v7];
+  accessibilityLabel2 = [(tvOS_AVInfoPanelAudioCollectionViewCellAccessibility *)self accessibilityLabel];
+  LODWORD(v5) = [accessibilityLabel isEqualToString:accessibilityLabel2];
 
   if (v5)
   {
 
-    v6 = 0;
+    accessibilityLabel = 0;
   }
 
-  return v6;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits

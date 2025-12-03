@@ -1,14 +1,14 @@
 @interface JSGroupedTextListViewController
-- (_TtC16MusicApplication31JSGroupedTextListViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication31JSGroupedTextListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC16MusicApplication31JSGroupedTextListViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication31JSGroupedTextListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation JSGroupedTextListViewController
 
-- (_TtC16MusicApplication31JSGroupedTextListViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication31JSGroupedTextListViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication31JSGroupedTextListViewController_verticalStackItemPrefersTopHairline) = 1;
   v4 = OBJC_IVAR____TtC16MusicApplication31JSGroupedTextListViewController_textDrawingCache;
@@ -29,11 +29,11 @@
   v2 = v6.receiver;
   [(JSGroupedTextListViewController *)&v6 viewDidLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC16MusicApplication31JSGroupedTextListViewController_textListView];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     [v3 setFrame:?];
   }
 
@@ -45,18 +45,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21F090();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_21F55C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_21F55C(change);
 }
 
-- (_TtC16MusicApplication31JSGroupedTextListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication31JSGroupedTextListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

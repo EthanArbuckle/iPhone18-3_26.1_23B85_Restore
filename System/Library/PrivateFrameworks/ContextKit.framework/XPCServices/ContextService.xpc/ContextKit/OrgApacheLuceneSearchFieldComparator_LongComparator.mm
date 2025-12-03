@@ -1,26 +1,26 @@
 @interface OrgApacheLuceneSearchFieldComparator_LongComparator
-- (OrgApacheLuceneSearchFieldComparator_LongComparator)initWithInt:(int)a3 withNSString:(id)a4 withJavaLangLong:(id)a5;
+- (OrgApacheLuceneSearchFieldComparator_LongComparator)initWithInt:(int)int withNSString:(id)string withJavaLangLong:(id)long;
 - (void)dealloc;
-- (void)setTopValueWithId:(id)a3;
+- (void)setTopValueWithId:(id)id;
 @end
 
 @implementation OrgApacheLuceneSearchFieldComparator_LongComparator
 
-- (OrgApacheLuceneSearchFieldComparator_LongComparator)initWithInt:(int)a3 withNSString:(id)a4 withJavaLangLong:(id)a5
+- (OrgApacheLuceneSearchFieldComparator_LongComparator)initWithInt:(int)int withNSString:(id)string withJavaLangLong:(id)long
 {
-  OrgApacheLuceneSearchFieldComparator_NumericComparator_initWithNSString_withNSNumber_(self, a4, a5);
-  JreStrongAssignAndConsume(&self->values_, [IOSLongArray newArrayWithLength:a3]);
+  OrgApacheLuceneSearchFieldComparator_NumericComparator_initWithNSString_withNSNumber_(self, string, long);
+  JreStrongAssignAndConsume(&self->values_, [IOSLongArray newArrayWithLength:int]);
   return self;
 }
 
-- (void)setTopValueWithId:(id)a3
+- (void)setTopValueWithId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     JreThrowNullPointerException();
   }
 
-  self->topValue_ = [a3 longLongValue];
+  self->topValue_ = [id longLongValue];
 }
 
 - (void)dealloc

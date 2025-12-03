@@ -1,12 +1,12 @@
 @interface AMSMultiUserService
 + (AMSMultiUserServiceProtocol)proxyObject;
 + (AMSMultiUserServiceProtocol)proxyObjectAsync;
-+ (BOOL)isConnectionEntitled:(id)a3;
++ (BOOL)isConnectionEntitled:(id)entitled;
 + (NSXPCConnection)sharedConnection;
 + (NSXPCInterface)serviceInterface;
 + (OS_dispatch_queue)sharedConnectionAccessQueue;
 + (id)_createXPCConnection;
-+ (void)setSharedConnection:(id)a3;
++ (void)setSharedConnection:(id)connection;
 @end
 
 @implementation AMSMultiUserService
@@ -15,9 +15,9 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = +[AMSProcessInfo currentProcess];
-  v5 = [v4 isAMSAccountsDaemon];
+  isAMSAccountsDaemon = [v4 isAMSAccountsDaemon];
 
-  if (v5)
+  if (isAMSAccountsDaemon)
   {
     v6 = +[AMSLogConfig sharedAccountsMultiUserConfig];
     if (!v6)
@@ -25,8 +25,8 @@
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -37,7 +37,7 @@
       *&buf[14] = v9;
       *&buf[22] = 2114;
       v16 = v10;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@ is unavailable from amsaccountsd.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@ is unavailable from amsaccountsd.", buf, 0x20u);
     }
 
     v11 = 0;
@@ -51,14 +51,14 @@
     v16 = __Block_byref_object_copy__49;
     v17 = __Block_byref_object_dispose__49;
     v18 = 0;
-    v12 = [a1 sharedConnectionAccessQueue];
+    sharedConnectionAccessQueue = [self sharedConnectionAccessQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __34__AMSMultiUserService_proxyObject__block_invoke;
     v14[3] = &unk_1E73B5F60;
     v14[4] = buf;
-    v14[5] = a1;
-    dispatch_sync(v12, v14);
+    v14[5] = self;
+    dispatch_sync(sharedConnectionAccessQueue, v14);
 
     v11 = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
@@ -120,9 +120,9 @@ void __34__AMSMultiUserService_proxyObject__block_invoke_2(uint64_t a1, void *a2
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = +[AMSProcessInfo currentProcess];
-  v5 = [v4 isAMSAccountsDaemon];
+  isAMSAccountsDaemon = [v4 isAMSAccountsDaemon];
 
-  if (v5)
+  if (isAMSAccountsDaemon)
   {
     v6 = +[AMSLogConfig sharedAccountsMultiUserConfig];
     if (!v6)
@@ -130,8 +130,8 @@ void __34__AMSMultiUserService_proxyObject__block_invoke_2(uint64_t a1, void *a2
       v6 = +[AMSLogConfig sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -142,7 +142,7 @@ void __34__AMSMultiUserService_proxyObject__block_invoke_2(uint64_t a1, void *a2
       *&buf[14] = v9;
       *&buf[22] = 2114;
       v16 = v10;
-      _os_log_impl(&dword_192869000, v7, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@ is unavailable from amsaccountsd.", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] %{public}@ is unavailable from amsaccountsd.", buf, 0x20u);
     }
 
     v11 = 0;
@@ -156,14 +156,14 @@ void __34__AMSMultiUserService_proxyObject__block_invoke_2(uint64_t a1, void *a2
     v16 = __Block_byref_object_copy__49;
     v17 = __Block_byref_object_dispose__49;
     v18 = 0;
-    v12 = [a1 sharedConnectionAccessQueue];
+    sharedConnectionAccessQueue = [self sharedConnectionAccessQueue];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __39__AMSMultiUserService_proxyObjectAsync__block_invoke;
     v14[3] = &unk_1E73B5F60;
     v14[4] = buf;
-    v14[5] = a1;
-    dispatch_sync(v12, v14);
+    v14[5] = self;
+    dispatch_sync(sharedConnectionAccessQueue, v14);
 
     v11 = *(*&buf[8] + 40);
     _Block_object_dispose(buf, 8);
@@ -221,27 +221,27 @@ void __39__AMSMultiUserService_proxyObjectAsync__block_invoke_2(uint64_t a1, voi
   }
 }
 
-+ (void)setSharedConnection:(id)a3
++ (void)setSharedConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [a1 sharedConnectionAccessQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionCopy = connection;
+  sharedConnectionAccessQueue = [self sharedConnectionAccessQueue];
+  dispatch_assert_queue_V2(sharedConnectionAccessQueue);
 
   v6 = kSharedConnection_0;
-  kSharedConnection_0 = v4;
+  kSharedConnection_0 = connectionCopy;
 }
 
 + (NSXPCConnection)sharedConnection
 {
-  v3 = [a1 sharedConnectionAccessQueue];
-  dispatch_assert_queue_V2(v3);
+  sharedConnectionAccessQueue = [self sharedConnectionAccessQueue];
+  dispatch_assert_queue_V2(sharedConnectionAccessQueue);
 
   v4 = kSharedConnection_0;
   if (!kSharedConnection_0)
   {
-    v5 = [a1 _createXPCConnection];
+    _createXPCConnection = [self _createXPCConnection];
     v6 = kSharedConnection_0;
-    kSharedConnection_0 = v5;
+    kSharedConnection_0 = _createXPCConnection;
 
     [kSharedConnection_0 resume];
     v4 = kSharedConnection_0;
@@ -292,9 +292,9 @@ uint64_t __50__AMSMultiUserService_sharedConnectionAccessQueue__block_invoke()
   return v2;
 }
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -306,8 +306,8 @@ uint64_t __50__AMSMultiUserService_sharedConnectionAccessQueue__block_invoke()
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 + (id)_createXPCConnection
@@ -319,8 +319,8 @@ uint64_t __50__AMSMultiUserService_sharedConnectionAccessQueue__block_invoke()
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -328,15 +328,15 @@ uint64_t __50__AMSMultiUserService_sharedConnectionAccessQueue__block_invoke()
     v25 = v5;
     v26 = 2114;
     v27 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Initializing amsaccountsd XPC connection.", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Initializing amsaccountsd XPC connection.", buf, 0x16u);
   }
 
   v7 = objc_alloc(MEMORY[0x1E696B0B8]);
-  v8 = [a1 machServiceName];
-  v9 = [v7 initWithMachServiceName:v8 options:0];
+  machServiceName = [self machServiceName];
+  v9 = [v7 initWithMachServiceName:machServiceName options:0];
 
   v10 = AMSLogKey();
-  objc_initWeak(buf, a1);
+  objc_initWeak(buf, self);
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __43__AMSMultiUserService__createXPCConnection__block_invoke;
@@ -353,8 +353,8 @@ uint64_t __50__AMSMultiUserService_sharedConnectionAccessQueue__block_invoke()
   v12 = v11;
   v19 = v12;
   [v9 setInvalidationHandler:&v15];
-  v13 = [a1 serviceInterface];
-  [v9 setRemoteObjectInterface:v13];
+  serviceInterface = [self serviceInterface];
+  [v9 setRemoteObjectInterface:serviceInterface];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&v23);

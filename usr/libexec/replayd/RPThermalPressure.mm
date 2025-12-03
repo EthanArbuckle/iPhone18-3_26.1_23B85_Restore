@@ -1,10 +1,10 @@
 @interface RPThermalPressure
 - (RPThermalPressureDelegate)delegate;
-- (int)getStateWithToken:(int)a3;
-- (int64_t)convertThermalPressureLevel:(int)a3;
+- (int)getStateWithToken:(int)token;
+- (int64_t)convertThermalPressureLevel:(int)level;
 - (void)dealloc;
 - (void)startMonitoring;
-- (void)thermalPressureDidChangeWithThermalLevel:(int)a3;
+- (void)thermalPressureDidChangeWithThermalLevel:(int)level;
 @end
 
 @implementation RPThermalPressure
@@ -32,24 +32,24 @@
   notify_register_dispatch(kOSThermalNotificationPressureLevelName, &self->_thermalNotificationToken, &_dispatch_main_q, handler);
 }
 
-- (void)thermalPressureDidChangeWithThermalLevel:(int)a3
+- (void)thermalPressureDidChangeWithThermalLevel:(int)level
 {
   newThermalLevel = self->_newThermalLevel;
-  if (newThermalLevel != a3)
+  if (newThermalLevel != level)
   {
     self->_thermalLevel = newThermalLevel;
-    self->_newThermalLevel = a3;
+    self->_newThermalLevel = level;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained thermalPressureDidChangeWithLevel:{-[RPThermalPressure convertThermalPressureLevel:](self, "convertThermalPressureLevel:", self->_thermalLevel)}];
   }
 }
 
-- (int64_t)convertThermalPressureLevel:(int)a3
+- (int64_t)convertThermalPressureLevel:(int)level
 {
-  v3 = a3;
-  if (a3 > 29)
+  levelCopy = level;
+  if (level > 29)
   {
-    switch(a3)
+    switch(level)
     {
       case 30:
         return 30;
@@ -62,10 +62,10 @@
 
   else
   {
-    switch(a3)
+    switch(level)
     {
       case 0:
-        return v3;
+        return levelCopy;
       case 10:
         return 10;
       case 20:
@@ -82,13 +82,13 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d unknown pressure level", &v5, 0x12u);
   }
 
-  return v3;
+  return levelCopy;
 }
 
-- (int)getStateWithToken:(int)a3
+- (int)getStateWithToken:(int)token
 {
   state64 = 0;
-  notify_get_state(a3, &state64);
+  notify_get_state(token, &state64);
   return state64;
 }
 

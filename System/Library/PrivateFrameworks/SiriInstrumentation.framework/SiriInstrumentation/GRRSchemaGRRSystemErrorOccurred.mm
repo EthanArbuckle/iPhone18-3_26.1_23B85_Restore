@@ -1,32 +1,32 @@
 @interface GRRSchemaGRRSystemErrorOccurred
-- (BOOL)isEqual:(id)a3;
-- (GRRSchemaGRRSystemErrorOccurred)initWithDictionary:(id)a3;
-- (GRRSchemaGRRSystemErrorOccurred)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (GRRSchemaGRRSystemErrorOccurred)initWithDictionary:(id)dictionary;
+- (GRRSchemaGRRSystemErrorOccurred)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation GRRSchemaGRRSystemErrorOccurred
 
-- (GRRSchemaGRRSystemErrorOccurred)initWithDictionary:(id)a3
+- (GRRSchemaGRRSystemErrorOccurred)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = GRRSchemaGRRSystemErrorOccurred;
   v5 = [(GRRSchemaGRRSystemErrorOccurred *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"errorCode"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"errorCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[GRRSchemaGRRSystemErrorOccurred setErrorCode:](v5, "setErrorCode:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"errorMessage"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"errorMessage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (GRRSchemaGRRSystemErrorOccurred)initWithJSON:(id)a3
+- (GRRSchemaGRRSystemErrorOccurred)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(GRRSchemaGRRSystemErrorOccurred *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(GRRSchemaGRRSystemErrorOccurred *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(GRRSchemaGRRSystemErrorOccurred *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,17 +76,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    v4 = [(GRRSchemaGRRSystemErrorOccurred *)self errorCode];
+    errorCode = [(GRRSchemaGRRSystemErrorOccurred *)self errorCode];
     v5 = @"GRRERRORCODE_UNKNOWN";
-    if (v4 == 1)
+    if (errorCode == 1)
     {
       v5 = @"GRRERRORCODE_FEATURE_EXTRACTION_ERROR";
     }
 
-    if (v4 == 2)
+    if (errorCode == 2)
     {
       v6 = @"GRRERRORCODE_RANKING_ERROR";
     }
@@ -96,19 +96,19 @@
       v6 = v5;
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"errorCode"];
+    [dictionary setObject:v6 forKeyedSubscript:@"errorCode"];
   }
 
   if (self->_errorMessage)
   {
-    v7 = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"errorMessage"];
+    errorMessage = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
+    v8 = [errorMessage copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"errorMessage"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -126,22 +126,22 @@
   return [(NSString *)self->_errorMessage hash]^ v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if ((*&self->_has & 1) == (v4[24] & 1))
+    if ((*&self->_has & 1) == (equalCopy[24] & 1))
     {
-      if ((*&self->_has & 1) == 0 || (errorCode = self->_errorCode, errorCode == [v4 errorCode]))
+      if ((*&self->_has & 1) == 0 || (errorCode = self->_errorCode, errorCode == [equalCopy errorCode]))
       {
-        v6 = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
-        v7 = [v4 errorMessage];
-        v8 = v7;
-        if ((v6 != 0) != (v7 == 0))
+        errorMessage = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
+        errorMessage2 = [equalCopy errorMessage];
+        v8 = errorMessage2;
+        if ((errorMessage != 0) != (errorMessage2 == 0))
         {
-          v9 = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
-          if (!v9)
+          errorMessage3 = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
+          if (!errorMessage3)
           {
 
 LABEL_13:
@@ -149,10 +149,10 @@ LABEL_13:
             goto LABEL_11;
           }
 
-          v10 = v9;
-          v11 = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
-          v12 = [v4 errorMessage];
-          v13 = [v11 isEqual:v12];
+          v10 = errorMessage3;
+          errorMessage4 = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
+          errorMessage5 = [equalCopy errorMessage];
+          v13 = [errorMessage4 isEqual:errorMessage5];
 
           if (v13)
           {
@@ -173,21 +173,21 @@ LABEL_11:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
   }
 
-  v4 = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
+  errorMessage = [(GRRSchemaGRRSystemErrorOccurred *)self errorMessage];
 
-  v5 = v6;
-  if (v4)
+  v5 = toCopy;
+  if (errorMessage)
   {
     PBDataWriterWriteStringField();
-    v5 = v6;
+    v5 = toCopy;
   }
 }
 

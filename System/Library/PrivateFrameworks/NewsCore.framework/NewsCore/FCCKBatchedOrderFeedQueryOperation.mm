@@ -1,9 +1,9 @@
 @interface FCCKBatchedOrderFeedQueryOperation
 - (FCCKBatchedOrderFeedQueryOperation)init;
 - (id)networkEvents;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
-- (void)setDatabase:(uint64_t)a1;
+- (void)setDatabase:(uint64_t)database;
 @end
 
 @implementation FCCKBatchedOrderFeedQueryOperation
@@ -70,18 +70,18 @@ void __42__FCCKBatchedOrderFeedQueryOperation_init__block_invoke(uint64_t a1, co
 
 - (id)networkEvents
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 allNetworkEvents];
-    v2 = [v1 readOnlyArray];
+    allNetworkEvents = [self allNetworkEvents];
+    readOnlyArray = [allNetworkEvents readOnlyArray];
   }
 
   else
   {
-    v2 = 0;
+    readOnlyArray = 0;
   }
 
-  return v2;
+  return readOnlyArray;
 }
 
 - (void)performOperation
@@ -371,27 +371,27 @@ void __54__FCCKBatchedOrderFeedQueryOperation_performOperation__block_invoke_3(u
   [*(a1 + 32) finishedPerformingOperationWithError:v3];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v20 = a3;
-  v4 = [(FCCKBatchedOrderFeedQueryOperation *)self allTagRecords];
-  v5 = [v4 readOnlyArray];
-  v6 = [v5 fc_uniqueByValueBlock:&__block_literal_global_135];
+  errorCopy = error;
+  allTagRecords = [(FCCKBatchedOrderFeedQueryOperation *)self allTagRecords];
+  readOnlyArray = [allTagRecords readOnlyArray];
+  v6 = [readOnlyArray fc_uniqueByValueBlock:&__block_literal_global_135];
 
-  v7 = [(FCCKBatchedOrderFeedQueryOperation *)self allIssueRecords];
-  v8 = [v7 readOnlyArray];
-  v9 = [v8 fc_uniqueByValueBlock:&__block_literal_global_8_2];
+  allIssueRecords = [(FCCKBatchedOrderFeedQueryOperation *)self allIssueRecords];
+  readOnlyArray2 = [allIssueRecords readOnlyArray];
+  v9 = [readOnlyArray2 fc_uniqueByValueBlock:&__block_literal_global_8_2];
 
   v10 = [FCCKOrderFeedQueryResult alloc];
-  v11 = [(FCCKBatchedOrderFeedQueryOperation *)self allFeedItemAndArticleRecords];
-  v12 = [v11 readOnlyArray];
-  v13 = [(FCCKBatchedOrderFeedQueryOperation *)self allFeedResponses];
-  v14 = [v13 readOnlyArray];
-  v15 = [(FCCKBatchedOrderFeedQueryOperation *)self allNetworkEvents];
-  v16 = [v15 readOnlyArray];
-  v17 = [(FCCKOrderFeedQueryResult *)&v10->super.isa initWithFeedItemAndArticleRecords:v12 feedResponses:v14 tagRecords:v6 issueRecords:v9 networkEvents:v16];
+  allFeedItemAndArticleRecords = [(FCCKBatchedOrderFeedQueryOperation *)self allFeedItemAndArticleRecords];
+  readOnlyArray3 = [allFeedItemAndArticleRecords readOnlyArray];
+  allFeedResponses = [(FCCKBatchedOrderFeedQueryOperation *)self allFeedResponses];
+  readOnlyArray4 = [allFeedResponses readOnlyArray];
+  allNetworkEvents = [(FCCKBatchedOrderFeedQueryOperation *)self allNetworkEvents];
+  readOnlyArray5 = [allNetworkEvents readOnlyArray];
+  v17 = [(FCCKOrderFeedQueryResult *)&v10->super.isa initWithFeedItemAndArticleRecords:readOnlyArray3 feedResponses:readOnlyArray4 tagRecords:v6 issueRecords:v9 networkEvents:readOnlyArray5];
 
-  if (v20)
+  if (errorCopy)
   {
     [(FCCKBatchedOrderFeedQueryOperation *)self promiseRejectBlock];
   }
@@ -408,7 +408,7 @@ void __54__FCCKBatchedOrderFeedQueryOperation_performOperation__block_invoke_3(u
     queryCompletionHandler = self->_queryCompletionHandler;
     if (queryCompletionHandler)
     {
-      queryCompletionHandler[2](queryCompletionHandler, v17, v20);
+      queryCompletionHandler[2](queryCompletionHandler, v17, errorCopy);
     }
   }
 }
@@ -429,11 +429,11 @@ id __67__FCCKBatchedOrderFeedQueryOperation_operationWillFinishWithError___block
   return v3;
 }
 
-- (void)setDatabase:(uint64_t)a1
+- (void)setDatabase:(uint64_t)database
 {
-  if (a1)
+  if (database)
   {
-    objc_storeStrong((a1 + 368), a2);
+    objc_storeStrong((database + 368), a2);
   }
 }
 

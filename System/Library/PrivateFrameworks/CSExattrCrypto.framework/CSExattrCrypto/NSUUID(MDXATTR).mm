@@ -9,7 +9,7 @@
   v3[2] = *MEMORY[0x277D85DE8];
   v3[0] = 0;
   v3[1] = 0;
-  [a1 getUUIDBytes:v3];
+  [self getUUIDBytes:v3];
   result = [MEMORY[0x277CBEA90] dataWithBytes:v3 length:16];
   v2 = *MEMORY[0x277D85DE8];
   return result;

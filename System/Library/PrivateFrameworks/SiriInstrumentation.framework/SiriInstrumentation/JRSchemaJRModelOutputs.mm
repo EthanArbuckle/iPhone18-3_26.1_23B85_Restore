@@ -1,28 +1,28 @@
 @interface JRSchemaJRModelOutputs
-- (BOOL)isEqual:(id)a3;
-- (JRSchemaJRModelOutputs)initWithDictionary:(id)a3;
-- (JRSchemaJRModelOutputs)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (JRSchemaJRModelOutputs)initWithDictionary:(id)dictionary;
+- (JRSchemaJRModelOutputs)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addUserHistory:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserHistory:(id)history;
+- (void)writeTo:(id)to;
 @end
 
 @implementation JRSchemaJRModelOutputs
 
-- (JRSchemaJRModelOutputs)initWithDictionary:(id)a3
+- (JRSchemaJRModelOutputs)initWithDictionary:(id)dictionary
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v42.receiver = self;
   v42.super_class = JRSchemaJRModelOutputs;
   v5 = [(JRSchemaJRModelOutputs *)&v42 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"action"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"action"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(JRSchemaJRModelOutputs *)v5 setAction:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"candidates"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"candidates"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(JRSchemaJRModelOutputs *)v5 setCandidates:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"ranking"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"ranking"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -46,7 +46,7 @@
       [(JRSchemaJRModelOutputs *)v5 setRanking:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"jrAnonymizedHistoryAndContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"jrAnonymizedHistoryAndContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,14 +54,14 @@
       [(JRSchemaJRModelOutputs *)v5 setJrAnonymizedHistoryAndContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"didJRForcePrompt"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"didJRForcePrompt"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[JRSchemaJRModelOutputs setDidJRForcePrompt:](v5, "setDidJRForcePrompt:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"modelDiagnosticSignals"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"modelDiagnosticSignals"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(JRSchemaJRModelOutputs *)v5 setModelDiagnosticSignals:v16];
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"shadowAction"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"shadowAction"];
     objc_opt_class();
     v37 = v17;
     if (objc_opt_isKindOfClass())
@@ -78,7 +78,7 @@
       [(JRSchemaJRModelOutputs *)v5 setShadowAction:v18];
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"shadowCandidates"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"shadowCandidates"];
     objc_opt_class();
     v36 = v19;
     if (objc_opt_isKindOfClass())
@@ -87,7 +87,7 @@
       [(JRSchemaJRModelOutputs *)v5 setShadowCandidates:v20];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"userHistory"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"userHistory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -143,30 +143,30 @@
   return v5;
 }
 
-- (JRSchemaJRModelOutputs)initWithJSON:(id)a3
+- (JRSchemaJRModelOutputs)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(JRSchemaJRModelOutputs *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(JRSchemaJRModelOutputs *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(JRSchemaJRModelOutputs *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -180,128 +180,128 @@
 - (id)dictionaryRepresentation
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_action)
   {
-    v4 = [(JRSchemaJRModelOutputs *)self action];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    action = [(JRSchemaJRModelOutputs *)self action];
+    dictionaryRepresentation = [action dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"action"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"action"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"action"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"action"];
     }
   }
 
   if (self->_candidates)
   {
-    v7 = [(JRSchemaJRModelOutputs *)self candidates];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    candidates = [(JRSchemaJRModelOutputs *)self candidates];
+    dictionaryRepresentation2 = [candidates dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"candidates"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"candidates"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"candidates"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"candidates"];
     }
   }
 
   if (*&self->_has)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[JRSchemaJRModelOutputs didJRForcePrompt](self, "didJRForcePrompt")}];
-    [v3 setObject:v10 forKeyedSubscript:@"didJRForcePrompt"];
+    [dictionary setObject:v10 forKeyedSubscript:@"didJRForcePrompt"];
   }
 
   if (self->_jrAnonymizedHistoryAndContext)
   {
-    v11 = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
-    v12 = [v11 dictionaryRepresentation];
-    if (v12)
+    jrAnonymizedHistoryAndContext = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
+    dictionaryRepresentation3 = [jrAnonymizedHistoryAndContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v12 forKeyedSubscript:@"jrAnonymizedHistoryAndContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"jrAnonymizedHistoryAndContext"];
     }
 
     else
     {
-      v13 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v13 forKeyedSubscript:@"jrAnonymizedHistoryAndContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"jrAnonymizedHistoryAndContext"];
     }
   }
 
   if (self->_modelDiagnosticSignals)
   {
-    v14 = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    modelDiagnosticSignals = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
+    dictionaryRepresentation4 = [modelDiagnosticSignals dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"modelDiagnosticSignals"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"modelDiagnosticSignals"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"modelDiagnosticSignals"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"modelDiagnosticSignals"];
     }
   }
 
   if (self->_ranking)
   {
-    v17 = [(JRSchemaJRModelOutputs *)self ranking];
-    v18 = [v17 dictionaryRepresentation];
-    if (v18)
+    ranking = [(JRSchemaJRModelOutputs *)self ranking];
+    dictionaryRepresentation5 = [ranking dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"ranking"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"ranking"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"ranking"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"ranking"];
     }
   }
 
   if (self->_shadowAction)
   {
-    v20 = [(JRSchemaJRModelOutputs *)self shadowAction];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    shadowAction = [(JRSchemaJRModelOutputs *)self shadowAction];
+    dictionaryRepresentation6 = [shadowAction dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"shadowAction"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"shadowAction"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"shadowAction"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"shadowAction"];
     }
   }
 
   if (self->_shadowCandidates)
   {
-    v23 = [(JRSchemaJRModelOutputs *)self shadowCandidates];
-    v24 = [v23 dictionaryRepresentation];
-    if (v24)
+    shadowCandidates = [(JRSchemaJRModelOutputs *)self shadowCandidates];
+    dictionaryRepresentation7 = [shadowCandidates dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v24 forKeyedSubscript:@"shadowCandidates"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"shadowCandidates"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"shadowCandidates"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"shadowCandidates"];
     }
   }
 
   if ([(NSArray *)self->_userHistorys count])
   {
-    v26 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -321,16 +321,16 @@
             objc_enumerationMutation(v27);
           }
 
-          v32 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
-          if (v32)
+          dictionaryRepresentation8 = [*(*(&v35 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation8)
           {
-            [v26 addObject:v32];
+            [array addObject:dictionaryRepresentation8];
           }
 
           else
           {
-            v33 = [MEMORY[0x1E695DFB0] null];
-            [v26 addObject:v33];
+            null8 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null8];
           }
         }
 
@@ -340,12 +340,12 @@
       while (v29);
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"userHistory"];
+    [dictionary setObject:array forKeyedSubscript:@"userHistory"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v35];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v35];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -371,28 +371,28 @@
   return v10 ^ v11 ^ [(NSArray *)self->_userHistorys hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
-  v5 = [(JRSchemaJRModelOutputs *)self action];
-  v6 = [v4 action];
-  if ((v5 != 0) == (v6 == 0))
+  action = [(JRSchemaJRModelOutputs *)self action];
+  action2 = [equalCopy action];
+  if ((action != 0) == (action2 == 0))
   {
     goto LABEL_44;
   }
 
-  v7 = [(JRSchemaJRModelOutputs *)self action];
-  if (v7)
+  action3 = [(JRSchemaJRModelOutputs *)self action];
+  if (action3)
   {
-    v8 = v7;
-    v9 = [(JRSchemaJRModelOutputs *)self action];
-    v10 = [v4 action];
-    v11 = [v9 isEqual:v10];
+    v8 = action3;
+    action4 = [(JRSchemaJRModelOutputs *)self action];
+    action5 = [equalCopy action];
+    v11 = [action4 isEqual:action5];
 
     if (!v11)
     {
@@ -404,20 +404,20 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelOutputs *)self candidates];
-  v6 = [v4 candidates];
-  if ((v5 != 0) == (v6 == 0))
+  action = [(JRSchemaJRModelOutputs *)self candidates];
+  action2 = [equalCopy candidates];
+  if ((action != 0) == (action2 == 0))
   {
     goto LABEL_44;
   }
 
-  v12 = [(JRSchemaJRModelOutputs *)self candidates];
-  if (v12)
+  candidates = [(JRSchemaJRModelOutputs *)self candidates];
+  if (candidates)
   {
-    v13 = v12;
-    v14 = [(JRSchemaJRModelOutputs *)self candidates];
-    v15 = [v4 candidates];
-    v16 = [v14 isEqual:v15];
+    v13 = candidates;
+    candidates2 = [(JRSchemaJRModelOutputs *)self candidates];
+    candidates3 = [equalCopy candidates];
+    v16 = [candidates2 isEqual:candidates3];
 
     if (!v16)
     {
@@ -429,20 +429,20 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelOutputs *)self ranking];
-  v6 = [v4 ranking];
-  if ((v5 != 0) == (v6 == 0))
+  action = [(JRSchemaJRModelOutputs *)self ranking];
+  action2 = [equalCopy ranking];
+  if ((action != 0) == (action2 == 0))
   {
     goto LABEL_44;
   }
 
-  v17 = [(JRSchemaJRModelOutputs *)self ranking];
-  if (v17)
+  ranking = [(JRSchemaJRModelOutputs *)self ranking];
+  if (ranking)
   {
-    v18 = v17;
-    v19 = [(JRSchemaJRModelOutputs *)self ranking];
-    v20 = [v4 ranking];
-    v21 = [v19 isEqual:v20];
+    v18 = ranking;
+    ranking2 = [(JRSchemaJRModelOutputs *)self ranking];
+    ranking3 = [equalCopy ranking];
+    v21 = [ranking2 isEqual:ranking3];
 
     if (!v21)
     {
@@ -454,20 +454,20 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
-  v6 = [v4 jrAnonymizedHistoryAndContext];
-  if ((v5 != 0) == (v6 == 0))
+  action = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
+  action2 = [equalCopy jrAnonymizedHistoryAndContext];
+  if ((action != 0) == (action2 == 0))
   {
     goto LABEL_44;
   }
 
-  v22 = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
-  if (v22)
+  jrAnonymizedHistoryAndContext = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
+  if (jrAnonymizedHistoryAndContext)
   {
-    v23 = v22;
-    v24 = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
-    v25 = [v4 jrAnonymizedHistoryAndContext];
-    v26 = [v24 isEqual:v25];
+    v23 = jrAnonymizedHistoryAndContext;
+    jrAnonymizedHistoryAndContext2 = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
+    jrAnonymizedHistoryAndContext3 = [equalCopy jrAnonymizedHistoryAndContext];
+    v26 = [jrAnonymizedHistoryAndContext2 isEqual:jrAnonymizedHistoryAndContext3];
 
     if (!v26)
     {
@@ -479,7 +479,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[80] & 1))
+  if ((*&self->_has & 1) != (equalCopy[80] & 1))
   {
     goto LABEL_45;
   }
@@ -487,26 +487,26 @@
   if (*&self->_has)
   {
     didJRForcePrompt = self->_didJRForcePrompt;
-    if (didJRForcePrompt != [v4 didJRForcePrompt])
+    if (didJRForcePrompt != [equalCopy didJRForcePrompt])
     {
       goto LABEL_45;
     }
   }
 
-  v5 = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
-  v6 = [v4 modelDiagnosticSignals];
-  if ((v5 != 0) == (v6 == 0))
+  action = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
+  action2 = [equalCopy modelDiagnosticSignals];
+  if ((action != 0) == (action2 == 0))
   {
     goto LABEL_44;
   }
 
-  v28 = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
-  if (v28)
+  modelDiagnosticSignals = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
+  if (modelDiagnosticSignals)
   {
-    v29 = v28;
-    v30 = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
-    v31 = [v4 modelDiagnosticSignals];
-    v32 = [v30 isEqual:v31];
+    v29 = modelDiagnosticSignals;
+    modelDiagnosticSignals2 = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
+    modelDiagnosticSignals3 = [equalCopy modelDiagnosticSignals];
+    v32 = [modelDiagnosticSignals2 isEqual:modelDiagnosticSignals3];
 
     if (!v32)
     {
@@ -518,20 +518,20 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelOutputs *)self shadowAction];
-  v6 = [v4 shadowAction];
-  if ((v5 != 0) == (v6 == 0))
+  action = [(JRSchemaJRModelOutputs *)self shadowAction];
+  action2 = [equalCopy shadowAction];
+  if ((action != 0) == (action2 == 0))
   {
     goto LABEL_44;
   }
 
-  v33 = [(JRSchemaJRModelOutputs *)self shadowAction];
-  if (v33)
+  shadowAction = [(JRSchemaJRModelOutputs *)self shadowAction];
+  if (shadowAction)
   {
-    v34 = v33;
-    v35 = [(JRSchemaJRModelOutputs *)self shadowAction];
-    v36 = [v4 shadowAction];
-    v37 = [v35 isEqual:v36];
+    v34 = shadowAction;
+    shadowAction2 = [(JRSchemaJRModelOutputs *)self shadowAction];
+    shadowAction3 = [equalCopy shadowAction];
+    v37 = [shadowAction2 isEqual:shadowAction3];
 
     if (!v37)
     {
@@ -543,20 +543,20 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelOutputs *)self shadowCandidates];
-  v6 = [v4 shadowCandidates];
-  if ((v5 != 0) == (v6 == 0))
+  action = [(JRSchemaJRModelOutputs *)self shadowCandidates];
+  action2 = [equalCopy shadowCandidates];
+  if ((action != 0) == (action2 == 0))
   {
     goto LABEL_44;
   }
 
-  v38 = [(JRSchemaJRModelOutputs *)self shadowCandidates];
-  if (v38)
+  shadowCandidates = [(JRSchemaJRModelOutputs *)self shadowCandidates];
+  if (shadowCandidates)
   {
-    v39 = v38;
-    v40 = [(JRSchemaJRModelOutputs *)self shadowCandidates];
-    v41 = [v4 shadowCandidates];
-    v42 = [v40 isEqual:v41];
+    v39 = shadowCandidates;
+    shadowCandidates2 = [(JRSchemaJRModelOutputs *)self shadowCandidates];
+    shadowCandidates3 = [equalCopy shadowCandidates];
+    v42 = [shadowCandidates2 isEqual:shadowCandidates3];
 
     if (!v42)
     {
@@ -568,12 +568,12 @@
   {
   }
 
-  v5 = [(JRSchemaJRModelOutputs *)self userHistorys];
-  v6 = [v4 userHistorys];
-  if ((v5 != 0) != (v6 == 0))
+  action = [(JRSchemaJRModelOutputs *)self userHistorys];
+  action2 = [equalCopy userHistorys];
+  if ((action != 0) != (action2 == 0))
   {
-    v43 = [(JRSchemaJRModelOutputs *)self userHistorys];
-    if (!v43)
+    userHistorys = [(JRSchemaJRModelOutputs *)self userHistorys];
+    if (!userHistorys)
     {
 
 LABEL_48:
@@ -581,10 +581,10 @@ LABEL_48:
       goto LABEL_46;
     }
 
-    v44 = v43;
-    v45 = [(JRSchemaJRModelOutputs *)self userHistorys];
-    v46 = [v4 userHistorys];
-    v47 = [v45 isEqual:v46];
+    v44 = userHistorys;
+    userHistorys2 = [(JRSchemaJRModelOutputs *)self userHistorys];
+    userHistorys3 = [equalCopy userHistorys];
+    v47 = [userHistorys2 isEqual:userHistorys3];
 
     if (v47)
     {
@@ -604,39 +604,39 @@ LABEL_46:
   return v48;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(JRSchemaJRModelOutputs *)self action];
+  toCopy = to;
+  action = [(JRSchemaJRModelOutputs *)self action];
 
-  if (v5)
+  if (action)
   {
-    v6 = [(JRSchemaJRModelOutputs *)self action];
+    action2 = [(JRSchemaJRModelOutputs *)self action];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(JRSchemaJRModelOutputs *)self candidates];
+  candidates = [(JRSchemaJRModelOutputs *)self candidates];
 
-  if (v7)
+  if (candidates)
   {
-    v8 = [(JRSchemaJRModelOutputs *)self candidates];
+    candidates2 = [(JRSchemaJRModelOutputs *)self candidates];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(JRSchemaJRModelOutputs *)self ranking];
+  ranking = [(JRSchemaJRModelOutputs *)self ranking];
 
-  if (v9)
+  if (ranking)
   {
-    v10 = [(JRSchemaJRModelOutputs *)self ranking];
+    ranking2 = [(JRSchemaJRModelOutputs *)self ranking];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
+  jrAnonymizedHistoryAndContext = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
 
-  if (v11)
+  if (jrAnonymizedHistoryAndContext)
   {
-    v12 = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
+    jrAnonymizedHistoryAndContext2 = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -645,27 +645,27 @@ LABEL_46:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
+  modelDiagnosticSignals = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
 
-  if (v13)
+  if (modelDiagnosticSignals)
   {
-    v14 = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
+    modelDiagnosticSignals2 = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(JRSchemaJRModelOutputs *)self shadowAction];
+  shadowAction = [(JRSchemaJRModelOutputs *)self shadowAction];
 
-  if (v15)
+  if (shadowAction)
   {
-    v16 = [(JRSchemaJRModelOutputs *)self shadowAction];
+    shadowAction2 = [(JRSchemaJRModelOutputs *)self shadowAction];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(JRSchemaJRModelOutputs *)self shadowCandidates];
+  shadowCandidates = [(JRSchemaJRModelOutputs *)self shadowCandidates];
 
-  if (v17)
+  if (shadowCandidates)
   {
-    v18 = [(JRSchemaJRModelOutputs *)self shadowCandidates];
+    shadowCandidates2 = [(JRSchemaJRModelOutputs *)self shadowCandidates];
     PBDataWriterWriteSubmessage();
   }
 
@@ -701,95 +701,95 @@ LABEL_46:
   }
 }
 
-- (void)addUserHistory:(id)a3
+- (void)addUserHistory:(id)history
 {
-  v4 = a3;
+  historyCopy = history;
   userHistorys = self->_userHistorys;
-  v8 = v4;
+  v8 = historyCopy;
   if (!userHistorys)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_userHistorys;
-    self->_userHistorys = v6;
+    self->_userHistorys = array;
 
-    v4 = v8;
+    historyCopy = v8;
     userHistorys = self->_userHistorys;
   }
 
-  [(NSArray *)userHistorys addObject:v4];
+  [(NSArray *)userHistorys addObject:historyCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v30.receiver = self;
   v30.super_class = JRSchemaJRModelOutputs;
-  v5 = [(SISchemaInstrumentationMessage *)&v30 applySensitiveConditionsPolicy:v4];
-  v6 = [(JRSchemaJRModelOutputs *)self action];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v30 applySensitiveConditionsPolicy:policyCopy];
+  action = [(JRSchemaJRModelOutputs *)self action];
+  v7 = [action applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(JRSchemaJRModelOutputs *)self deleteAction];
   }
 
-  v9 = [(JRSchemaJRModelOutputs *)self candidates];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  candidates = [(JRSchemaJRModelOutputs *)self candidates];
+  v10 = [candidates applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(JRSchemaJRModelOutputs *)self deleteCandidates];
   }
 
-  v12 = [(JRSchemaJRModelOutputs *)self ranking];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  ranking = [(JRSchemaJRModelOutputs *)self ranking];
+  v13 = [ranking applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(JRSchemaJRModelOutputs *)self deleteRanking];
   }
 
-  v15 = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  jrAnonymizedHistoryAndContext = [(JRSchemaJRModelOutputs *)self jrAnonymizedHistoryAndContext];
+  v16 = [jrAnonymizedHistoryAndContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(JRSchemaJRModelOutputs *)self deleteJrAnonymizedHistoryAndContext];
   }
 
-  v18 = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  modelDiagnosticSignals = [(JRSchemaJRModelOutputs *)self modelDiagnosticSignals];
+  v19 = [modelDiagnosticSignals applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(JRSchemaJRModelOutputs *)self deleteModelDiagnosticSignals];
   }
 
-  v21 = [(JRSchemaJRModelOutputs *)self shadowAction];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  shadowAction = [(JRSchemaJRModelOutputs *)self shadowAction];
+  v22 = [shadowAction applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(JRSchemaJRModelOutputs *)self deleteShadowAction];
   }
 
-  v24 = [(JRSchemaJRModelOutputs *)self shadowCandidates];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  shadowCandidates = [(JRSchemaJRModelOutputs *)self shadowCandidates];
+  v25 = [shadowCandidates applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(JRSchemaJRModelOutputs *)self deleteShadowCandidates];
   }
 
-  v27 = [(JRSchemaJRModelOutputs *)self userHistorys];
-  v28 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v27 underConditions:v4];
+  userHistorys = [(JRSchemaJRModelOutputs *)self userHistorys];
+  v28 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:userHistorys underConditions:policyCopy];
   [(JRSchemaJRModelOutputs *)self setUserHistorys:v28];
 
   return v5;

@@ -1,13 +1,13 @@
 @interface HKRemoteFeatureAvailabilityDeviceClassEqualsRule
 - (BOOL)evaluate;
-- (void)processUserInfo:(id)a3;
+- (void)processUserInfo:(id)info;
 @end
 
 @implementation HKRemoteFeatureAvailabilityDeviceClassEqualsRule
 
-- (void)processUserInfo:(id)a3
+- (void)processUserInfo:(id)info
 {
-  v4 = [a3 hk_safeStringIfExistsForKeyPath:@"DeviceClass" error:0];
+  v4 = [info hk_safeStringIfExistsForKeyPath:@"DeviceClass" error:0];
   deviceClass = self->_deviceClass;
   self->_deviceClass = v4;
 
@@ -21,12 +21,12 @@
     return 0;
   }
 
-  v2 = self;
-  v3 = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
-  v4 = [v3 currentDeviceClass];
-  LOBYTE(v2) = [v4 isEqualToString:v2->_deviceClass];
+  selfCopy = self;
+  dataSource = [(HKRemoteFeatureAvailabilityBaseRule *)self dataSource];
+  currentDeviceClass = [dataSource currentDeviceClass];
+  LOBYTE(selfCopy) = [currentDeviceClass isEqualToString:selfCopy->_deviceClass];
 
-  return v2;
+  return selfCopy;
 }
 
 @end

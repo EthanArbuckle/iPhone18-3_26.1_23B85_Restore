@@ -1,6 +1,6 @@
 @interface AVRoutingContextCommandOutputDeviceConfiguration
 + (void)initialize;
-- (AVRoutingContextCommandOutputDeviceConfiguration)initWithRoutingContextComandResponse:(__CFDictionary *)a3;
+- (AVRoutingContextCommandOutputDeviceConfiguration)initWithRoutingContextComandResponse:(__CFDictionary *)response;
 - (BOOL)automaticallyAllowsConnectionsFromPeersInHomeGroup;
 - (BOOL)onlyAllowsConnectionsFromPeersInHomeGroup;
 - (NSArray)peersInHomeGroup;
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -35,20 +35,20 @@
 
 - (BOOL)onlyAllowsConnectionsFromPeersInHomeGroup
 {
-  v3 = [(AVRoutingContextCommandOutputDeviceConfiguration *)self automaticallyAllowsConnectionsFromPeersInHomeGroup];
-  if (v3)
+  automaticallyAllowsConnectionsFromPeersInHomeGroup = [(AVRoutingContextCommandOutputDeviceConfiguration *)self automaticallyAllowsConnectionsFromPeersInHomeGroup];
+  if (automaticallyAllowsConnectionsFromPeersInHomeGroup)
   {
     CFDictionaryGetValue(self->_response, *MEMORY[0x1E69617C0]);
-    LOBYTE(v3) = FigCFEqual() == 0;
+    LOBYTE(automaticallyAllowsConnectionsFromPeersInHomeGroup) = FigCFEqual() == 0;
   }
 
-  return v3;
+  return automaticallyAllowsConnectionsFromPeersInHomeGroup;
 }
 
 - (NSArray)peersInHomeGroup
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   Value = CFDictionaryGetValue(self->_response, *MEMORY[0x1E69617A8]);
   v16 = 0u;
   v17 = 0u;
@@ -74,7 +74,7 @@
         }
 
         v12 = -[AVOutputDeviceAuthorizedPeer initWithID:publicKey:hasAdministratorPrivileges:]([AVOutputDeviceAuthorizedPeer alloc], "initWithID:publicKey:hasAdministratorPrivileges:", [*(*(&v16 + 1) + 8 * v11) objectForKeyedSubscript:v8], objc_msgSend(*(*(&v16 + 1) + 8 * v11), "objectForKeyedSubscript:", v9), objc_msgSend(objc_msgSend(*(*(&v16 + 1) + 8 * v11), "objectForKeyedSubscript:", v10), "unsignedIntegerValue") == 1);
-        [(NSArray *)v3 addObject:v12];
+        [(NSArray *)array addObject:v12];
 
         ++v11;
       }
@@ -87,10 +87,10 @@
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v3;
+  return array;
 }
 
-- (AVRoutingContextCommandOutputDeviceConfiguration)initWithRoutingContextComandResponse:(__CFDictionary *)a3
+- (AVRoutingContextCommandOutputDeviceConfiguration)initWithRoutingContextComandResponse:(__CFDictionary *)response
 {
   v8.receiver = self;
   v8.super_class = AVRoutingContextCommandOutputDeviceConfiguration;
@@ -101,25 +101,25 @@
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!response)
   {
     v4->_response = 0;
     goto LABEL_6;
   }
 
-  v6 = CFRetain(a3);
+  v6 = CFRetain(response);
   v5->_response = v6;
   if (!v6)
   {
 LABEL_7:
-    a3 = 0;
+    response = 0;
     goto LABEL_6;
   }
 
-  a3 = v5;
+  response = v5;
 LABEL_6:
 
-  return a3;
+  return response;
 }
 
 - (BOOL)automaticallyAllowsConnectionsFromPeersInHomeGroup

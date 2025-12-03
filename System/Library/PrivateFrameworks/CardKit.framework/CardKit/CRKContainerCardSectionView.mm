@@ -1,21 +1,21 @@
 @interface CRKContainerCardSectionView
-+ (CGSize)sizeThatFitsCardSection:(id)a3 boundingSize:(CGSize)a4;
++ (CGSize)sizeThatFitsCardSection:(id)section boundingSize:(CGSize)size;
 - (CGSize)contentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (CRKComposableView)composedSuperview;
-- (CRKContainerCardSectionView)initWithFrame:(CGRect)a3;
+- (CRKContainerCardSectionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)removeFromComposedSuperview;
-- (void)setContentView:(id)a3;
+- (void)setContentView:(id)view;
 @end
 
 @implementation CRKContainerCardSectionView
 
-+ (CGSize)sizeThatFitsCardSection:(id)a3 boundingSize:(CGSize)a4
++ (CGSize)sizeThatFitsCardSection:(id)section boundingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = objc_alloc_init(a1);
+  height = size.height;
+  width = size.width;
+  v6 = objc_alloc_init(self);
   [v6 sizeThatFits:{width, height}];
   v8 = v7;
   v10 = v9;
@@ -27,17 +27,17 @@
   return result;
 }
 
-- (CRKContainerCardSectionView)initWithFrame:(CGRect)a3
+- (CRKContainerCardSectionView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = CRKContainerCardSectionView;
-  v3 = [(CRKContainerCardSectionView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRKContainerCardSectionView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     cardSectionViewIdentifier = v3->_cardSectionViewIdentifier;
-    v3->_cardSectionViewIdentifier = v5;
+    v3->_cardSectionViewIdentifier = uUIDString;
 
     v7 = objc_alloc(MEMORY[0x277D75D18]);
     v8 = [v7 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -46,14 +46,14 @@
 
     [(UIView *)v3->_userInputEventInterceptView setUserInteractionEnabled:1];
     v10 = v3->_userInputEventInterceptView;
-    v11 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v10 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v10 setBackgroundColor:clearColor];
 
-    v12 = [(UIView *)v3->_userInputEventInterceptView layer];
-    [v12 setAllowsHitTesting:1];
+    layer = [(UIView *)v3->_userInputEventInterceptView layer];
+    [layer setAllowsHitTesting:1];
 
-    v13 = [(UIView *)v3->_userInputEventInterceptView layer];
-    [v13 setHitTestsAsOpaque:1];
+    layer2 = [(UIView *)v3->_userInputEventInterceptView layer];
+    [layer2 setHitTestsAsOpaque:1];
 
     [(CRKContainerCardSectionView *)v3 addSubview:v3->_userInputEventInterceptView];
   }
@@ -77,20 +77,20 @@
   return result;
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     contentView = [(CRKContainerCardSectionView *)self insertSubview:self->_contentView atIndex:0];
-    v5 = v7;
+    viewCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](contentView, v5);
+  MEMORY[0x2821F96F8](contentView, viewCopy);
 }
 
 - (void)layoutSubviews
@@ -108,8 +108,8 @@
 
 - (void)removeFromComposedSuperview
 {
-  v3 = [(CRKContainerCardSectionView *)self composedSuperview];
-  [v3 cardSectionSubviewWantsToBeRemovedFromHierarchy:self];
+  composedSuperview = [(CRKContainerCardSectionView *)self composedSuperview];
+  [composedSuperview cardSectionSubviewWantsToBeRemovedFromHierarchy:self];
 }
 
 - (CRKComposableView)composedSuperview

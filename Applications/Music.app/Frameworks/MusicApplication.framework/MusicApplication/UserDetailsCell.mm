@@ -1,33 +1,33 @@
 @interface UserDetailsCell
 - (NSString)accessoryText;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)setAccessoryButtonMenu:(id)a3;
-- (void)setAccessoryText:(id)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)setAccessoryButtonMenu:(id)menu;
+- (void)setAccessoryText:(id)text;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UserDetailsCell
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5 = sub_AB92A0();
   v6 = (self + OBJC_IVAR____TtC16MusicApplication15UserDetailsCell_title);
   *v6 = v5;
   v6[1] = v7;
-  v9 = a3;
-  v8 = self;
+  titleCopy = title;
+  selfCopy = self;
 
   sub_31ECC0();
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
   v5 = sub_AB92A0();
   v7 = v6;
-  v9 = a3;
-  v8 = self;
+  subtitleCopy = subtitle;
+  selfCopy = self;
   sub_31F284(v5, v7);
 }
 
@@ -47,9 +47,9 @@
   return v2;
 }
 
-- (void)setAccessoryText:(id)a3
+- (void)setAccessoryText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_AB92A0();
   }
@@ -65,38 +65,38 @@
   v8 = *(self + OBJC_IVAR____TtC16MusicApplication15UserDetailsCell_accessoryText + 8);
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_31F484(v7, v8);
 }
 
-- (void)setAccessoryButtonMenu:(id)a3
+- (void)setAccessoryButtonMenu:(id)menu
 {
   v6 = *(self + OBJC_IVAR____TtC16MusicApplication15UserDetailsCell_accessoryButtonMenu);
-  *(self + OBJC_IVAR____TtC16MusicApplication15UserDetailsCell_accessoryButtonMenu) = a3;
-  v4 = a3;
-  v5 = self;
+  *(self + OBJC_IVAR____TtC16MusicApplication15UserDetailsCell_accessoryButtonMenu) = menu;
+  menuCopy = menu;
+  selfCopy = self;
   sub_31F628(v6);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_31F720(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_31F720(change);
 }
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(UserDetailsCell *)v5 traitCollection];
+  attributesCopy = attributes;
+  selfCopy = self;
+  traitCollection = [(UserDetailsCell *)selfCopy traitCollection];
   sub_31FF10();
-  sub_2F48A4(v7, v6, 0, 0);
+  sub_2F48A4(v7, traitCollection, 0, 0);
 
-  [v4 frame];
-  [v4 setFrame:?];
+  [attributesCopy frame];
+  [attributesCopy setFrame:?];
 
-  return v4;
+  return attributesCopy;
 }
 
 @end

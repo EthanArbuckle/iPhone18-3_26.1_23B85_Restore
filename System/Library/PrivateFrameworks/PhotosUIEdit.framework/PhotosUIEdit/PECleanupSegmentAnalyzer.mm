@@ -1,18 +1,18 @@
 @interface PECleanupSegmentAnalyzer
-- (BOOL)_strokeAppearsToBeClosedShape:(id)a3 imageToScreenSpaceScale:(double)a4 lassoDistance:(double)a5;
-- (BOOL)shouldChooseSegment:(id)a3;
-- (CGRect)scaleRect:(CGRect)a3 scaleFactor:(double)a4;
+- (BOOL)_strokeAppearsToBeClosedShape:(id)shape imageToScreenSpaceScale:(double)scale lassoDistance:(double)distance;
+- (BOOL)shouldChooseSegment:(id)segment;
+- (CGRect)scaleRect:(CGRect)rect scaleFactor:(double)factor;
 - (CGSize)cachedStrokeMaskSize;
 - (PECleanupSegmentAnalyzer)init;
-- (id)_brushStrokeToNormalizedSampledPointArray:(id)a3 maxPointCount:(int64_t)a4 originalImageSize:(CGSize)a5;
-- (id)_evenlySampleArray:(id)a3 maxCount:(int64_t)a4;
-- (id)_filledRegionOfFilledStrokeImage:(id)a3 withUnfilledStrokeImage:(id)a4;
-- (id)_maskForStroke:(id)a3 imageSize:(CGSize)a4 maskSize:(CGSize)a5 filled:(BOOL)a6;
-- (id)_strokeToNormalizedSampledPointArray:(id)a3 maxPointCount:(int64_t)a4 originalImageSize:(CGSize)a5 treatStrokeAsFilledCircle:(BOOL)a6;
-- (void)_analyzeSegmentationResult:(id)a3 forStroke:(id)a4 treatStrokeAsFilledCircle:(BOOL)a5 maskContext:(id)a6 compositionController:(id)a7 geometry:(id)a8 usingTargetPoints:(BOOL)a9 completion:(id)a10;
-- (void)_analyzeStrokeMaskIntersections:(id)a3 treatStrokeAsFilledCircle:(BOOL)a4 usingMaskContext:(id)a5 useTargetPoints:(BOOL)a6 compositionController:(id)a7 geometry:(id)a8 completion:(id)a9;
-- (void)analyzeStrokeMaskIntersections:(id)a3 inpaintMaskContext:(id)a4 compositionController:(id)a5 geometry:(id)a6 imageToScreenSpaceScale:(double)a7 faceRects:(id)a8 completion:(id)a9;
-- (void)hitTestSegmentation:(CGPoint)a3 radius:(double)a4 inpaintMaskContext:(id)a5 compositionController:(id)a6 geometry:(id)a7 completion:(id)a8;
+- (id)_brushStrokeToNormalizedSampledPointArray:(id)array maxPointCount:(int64_t)count originalImageSize:(CGSize)size;
+- (id)_evenlySampleArray:(id)array maxCount:(int64_t)count;
+- (id)_filledRegionOfFilledStrokeImage:(id)image withUnfilledStrokeImage:(id)strokeImage;
+- (id)_maskForStroke:(id)stroke imageSize:(CGSize)size maskSize:(CGSize)maskSize filled:(BOOL)filled;
+- (id)_strokeToNormalizedSampledPointArray:(id)array maxPointCount:(int64_t)count originalImageSize:(CGSize)size treatStrokeAsFilledCircle:(BOOL)circle;
+- (void)_analyzeSegmentationResult:(id)result forStroke:(id)stroke treatStrokeAsFilledCircle:(BOOL)circle maskContext:(id)context compositionController:(id)controller geometry:(id)geometry usingTargetPoints:(BOOL)points completion:(id)self0;
+- (void)_analyzeStrokeMaskIntersections:(id)intersections treatStrokeAsFilledCircle:(BOOL)circle usingMaskContext:(id)context useTargetPoints:(BOOL)points compositionController:(id)controller geometry:(id)geometry completion:(id)completion;
+- (void)analyzeStrokeMaskIntersections:(id)intersections inpaintMaskContext:(id)context compositionController:(id)controller geometry:(id)geometry imageToScreenSpaceScale:(double)scale faceRects:(id)rects completion:(id)completion;
+- (void)hitTestSegmentation:(CGPoint)segmentation radius:(double)radius inpaintMaskContext:(id)context compositionController:(id)controller geometry:(id)geometry completion:(id)completion;
 @end
 
 @implementation PECleanupSegmentAnalyzer
@@ -26,16 +26,16 @@
   return result;
 }
 
-- (void)hitTestSegmentation:(CGPoint)a3 radius:(double)a4 inpaintMaskContext:(id)a5 compositionController:(id)a6 geometry:(id)a7 completion:(id)a8
+- (void)hitTestSegmentation:(CGPoint)segmentation radius:(double)radius inpaintMaskContext:(id)context compositionController:(id)controller geometry:(id)geometry completion:(id)completion
 {
-  y = a3.y;
-  x = a3.x;
+  y = segmentation.y;
+  x = segmentation.x;
   v111 = *MEMORY[0x277D85DE8];
-  v15 = a5;
-  v16 = a6;
-  v92 = a7;
-  v17 = a8;
-  if (!v15)
+  contextCopy = context;
+  controllerCopy = controller;
+  geometryCopy = geometry;
+  completionCopy = completion;
+  if (!contextCopy)
   {
     v85 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
@@ -44,13 +44,13 @@
       _os_log_impl(&dword_25E6E9000, v85, OS_LOG_TYPE_ERROR, "Cleanup: No mask context provided", buf, 2u);
     }
 
-    (*(v17 + 2))(v17, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_52;
   }
 
-  v18 = [v15 segmentationResult];
+  segmentationResult = [contextCopy segmentationResult];
   v19 = objc_alloc(MEMORY[0x277D2CFE0]);
-  *&v20 = a4;
+  *&v20 = radius;
   memset(buf, 0, 32);
   LODWORD(v21) = 1.0;
   v22 = [v19 initWithRadius:buf softness:0 opacity:v20 clipRect:COERCE_DOUBLE(1045220557) pressureMode:v21];
@@ -59,14 +59,14 @@
   v93 = v22;
   [v22 appendPoint:{v23, v24, 0.0}];
   v91 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v25 = [v18 backgroundInstances];
+  backgroundInstances = [segmentationResult backgroundInstances];
   v26 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
-    v27 = [v18 backgroundInstances];
-    v28 = [v27 count];
-    v29 = [v18 foregroundInstances];
-    v30 = [v29 count];
+    backgroundInstances2 = [segmentationResult backgroundInstances];
+    v28 = [backgroundInstances2 count];
+    foregroundInstances = [segmentationResult foregroundInstances];
+    v30 = [foregroundInstances count];
     *buf = 134218240;
     *&buf[4] = v28;
     *&buf[12] = 2048;
@@ -74,12 +74,12 @@
     _os_log_impl(&dword_25E6E9000, v26, OS_LOG_TYPE_DEBUG, "Cleanup: Attempting hit test; retrieved %lu background instances, %lu foreground instances", buf, 0x16u);
   }
 
-  v31 = [v25 count];
+  v31 = [backgroundInstances count];
   v32 = MEMORY[0x277D3A918];
-  v33 = [v16 composition];
-  v34 = [v32 removeOperationsFromInstances:v25 composition:v33 context:v15];
+  composition = [controllerCopy composition];
+  v34 = [v32 removeOperationsFromInstances:backgroundInstances composition:composition context:contextCopy];
 
-  v35 = [MEMORY[0x277D3A918] removeGatedInstances:v34 context:v15];
+  v35 = [MEMORY[0x277D3A918] removeGatedInstances:v34 context:contextCopy];
 
   v94 = v35;
   if (v31 != [v35 count])
@@ -94,13 +94,13 @@
     }
   }
 
-  v89 = v15;
-  v90 = v17;
-  v88 = v16;
-  v38 = [v94 firstIndex];
-  v39 = v92;
+  v89 = contextCopy;
+  v90 = completionCopy;
+  v88 = controllerCopy;
+  firstIndex = [v94 firstIndex];
+  v39 = geometryCopy;
   v40 = v93;
-  if (v38 == 0x7FFFFFFFFFFFFFFFLL)
+  if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_31:
     v70 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -126,14 +126,14 @@ LABEL_31:
           }
 
           v78 = *(*(&v95 + 1) + 8 * i);
-          v79 = [v78 mask];
-          v80 = [v78 intersector];
-          [v80 brushPercentInsideMask];
+          mask = [v78 mask];
+          intersector = [v78 intersector];
+          [intersector brushPercentInsideMask];
           v82 = v81;
 
           if (v82 > v76)
           {
-            v83 = v79;
+            v83 = mask;
 
             [v70 removeAllIndexes];
             -[NSObject addIndex:](v70, "addIndex:", [v78 segmentIndex]);
@@ -150,9 +150,9 @@ LABEL_31:
       if (v74)
       {
         v84 = PLPhotoEditGetLog();
-        v16 = v88;
-        v15 = v89;
-        v17 = v90;
+        controllerCopy = v88;
+        contextCopy = v89;
+        completionCopy = v90;
         if (os_log_type_enabled(v84, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 0;
@@ -162,7 +162,7 @@ LABEL_31:
 LABEL_50:
 
         v87 = [v70 copy];
-        (*(v17 + 2))(v17, v74, v87);
+        (*(completionCopy + 2))(completionCopy, v74, v87);
 
         goto LABEL_51;
       }
@@ -173,9 +173,9 @@ LABEL_50:
     }
 
     v86 = PLPhotoEditGetLog();
-    v16 = v88;
-    v15 = v89;
-    v17 = v90;
+    controllerCopy = v88;
+    contextCopy = v89;
+    completionCopy = v90;
     if (os_log_type_enabled(v86, OS_LOG_TYPE_DEBUG))
     {
       *buf = 0;
@@ -188,18 +188,18 @@ LABEL_50:
     goto LABEL_50;
   }
 
-  v41 = v38;
+  v41 = firstIndex;
   v42 = 0uLL;
   while (1)
   {
     *buf = v42;
     *&buf[16] = v42;
-    if (v18)
+    if (segmentationResult)
     {
-      [v18 tightBoundsForInstance:v41];
+      [segmentationResult tightBoundsForInstance:v41];
       v106 = 0u;
       v107 = 0u;
-      [v18 fullExtentForInstance:v41];
+      [segmentationResult fullExtentForInstance:v41];
     }
 
     else
@@ -251,13 +251,13 @@ LABEL_30:
   }
 
   v99 = 0;
-  v43 = [v18 newMaskForInstance:v41 error:&v99];
+  v43 = [segmentationResult newMaskForInstance:v41 error:&v99];
   v44 = v99;
   v100 = 0u;
   v101 = 0u;
-  if (v18)
+  if (segmentationResult)
   {
-    [v18 tightBoundsForInstance:v41];
+    [segmentationResult tightBoundsForInstance:v41];
   }
 
   v45 = [MEMORY[0x277D3A918] maskIdentifierForSegmentIndex:v41];
@@ -317,7 +317,7 @@ LABEL_30:
       [v64 maskPercentInsideBrush];
       *v109 = 67109632;
       *&v109[4] = v67;
-      v39 = v92;
+      v39 = geometryCopy;
       *&v109[8] = 2048;
       *&v109[10] = v41;
       *&v109[18] = 1024;
@@ -343,32 +343,32 @@ LABEL_30:
     _os_log_impl(&dword_25E6E9000, v60, OS_LOG_TYPE_ERROR, "Cleanup: stroke mask creation failed", v109, 2u);
   }
 
-  v17 = v90;
+  completionCopy = v90;
   (*(v90 + 2))(v90, 0, 0);
 
-  v16 = v88;
-  v15 = v89;
+  controllerCopy = v88;
+  contextCopy = v89;
 LABEL_51:
 
 LABEL_52:
 }
 
-- (CGRect)scaleRect:(CGRect)a3 scaleFactor:(double)a4
+- (CGRect)scaleRect:(CGRect)rect scaleFactor:(double)factor
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MidX = CGRectGetMidX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MidX = CGRectGetMidX(rect);
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
   v15.size.height = height;
-  v10 = CGRectGetMidY(v15) * a4;
-  v11 = width * a4;
-  v12 = height * a4;
-  v13 = MidX * a4 - width * a4 * 0.5;
-  v14 = v10 - height * a4 * 0.5;
+  v10 = CGRectGetMidY(v15) * factor;
+  v11 = width * factor;
+  v12 = height * factor;
+  v13 = MidX * factor - width * factor * 0.5;
+  v14 = v10 - height * factor * 0.5;
   result.size.height = v12;
   result.size.width = v11;
   result.origin.y = v14;
@@ -376,17 +376,17 @@ LABEL_52:
   return result;
 }
 
-- (BOOL)_strokeAppearsToBeClosedShape:(id)a3 imageToScreenSpaceScale:(double)a4 lassoDistance:(double)a5
+- (BOOL)_strokeAppearsToBeClosedShape:(id)shape imageToScreenSpaceScale:(double)scale lassoDistance:(double)distance
 {
   v287 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if ([v7 pointCount] <= 5)
+  shapeCopy = shape;
+  if ([shapeCopy pointCount] <= 5)
   {
     v8 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134217984;
-      *&buf[4] = [v7 pointCount];
+      *&buf[4] = [shapeCopy pointCount];
       _os_log_impl(&dword_25E6E9000, v8, OS_LOG_TYPE_DEBUG, "Cleanup: strokeAppearsToBeClosedShape - rejected for having only %ld points", buf, 0xCu);
     }
 
@@ -394,7 +394,7 @@ LABEL_52:
     goto LABEL_188;
   }
 
-  v258 = a5;
+  distanceCopy = distance;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__PECleanupSegmentAnalyzer__strokeAppearsToBeClosedShape_imageToScreenSpaceScale_lassoDistance___block_invoke_2;
@@ -407,11 +407,11 @@ LABEL_52:
   v266[3] = &unk_279A30680;
   v267 = &__block_literal_global_79;
   v252 = _Block_copy(v266);
-  v11 = [v7 pointCount];
-  v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v11 - 1];
-  [v7 pointAtIndex:0];
+  pointCount = [shapeCopy pointCount];
+  v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:pointCount - 1];
+  [shapeCopy pointAtIndex:0];
   v16 = 0.0;
-  if (v11 >= 2)
+  if (pointCount >= 2)
   {
     v17 = v13;
     v18 = v14;
@@ -419,7 +419,7 @@ LABEL_52:
     v20 = 1;
     do
     {
-      [v7 pointAtIndex:v20];
+      [shapeCopy pointAtIndex:v20];
       v22 = v21;
       v24 = v23;
       v26 = v25;
@@ -433,7 +433,7 @@ LABEL_52:
       v19 = v26;
     }
 
-    while (v11 != v20);
+    while (pointCount != v20);
   }
 
   if ([v12 count])
@@ -456,14 +456,14 @@ LABEL_52:
       }
     }
 
-    v32 = v252[2](v252, v7, v12, v16 / 10.0);
+    v32 = v252[2](v252, shapeCopy, v12, v16 / 10.0);
 
-    v11 = [v32 pointCount];
-    v33 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v11 - 1];
+    pointCount = [v32 pointCount];
+    v33 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:pointCount - 1];
 
     [v32 pointAtIndex:0];
     v16 = 0.0;
-    if (v11 >= 2)
+    if (pointCount >= 2)
     {
       v37 = v34;
       v38 = v35;
@@ -485,19 +485,19 @@ LABEL_52:
         v39 = v46;
       }
 
-      while (v11 != v40);
+      while (pointCount != v40);
     }
 
     v12 = v33;
-    v7 = v32;
+    shapeCopy = v32;
   }
 
 LABEL_17:
-  [v7 pointAtIndex:0];
+  [shapeCopy pointAtIndex:0];
   v50 = v48;
   v51 = v49;
-  v52 = v11 - 2;
-  if (v11 < 2)
+  v52 = pointCount - 2;
+  if (pointCount < 2)
   {
     v55 = v49;
     v54 = v48;
@@ -510,7 +510,7 @@ LABEL_17:
     v55 = v49;
     do
     {
-      [v7 pointAtIndex:v53];
+      [shapeCopy pointAtIndex:v53];
       v58 = v57;
       if (v50 > v58)
       {
@@ -535,7 +535,7 @@ LABEL_17:
       ++v53;
     }
 
-    while (v11 != v53);
+    while (pointCount != v53);
   }
 
   v59 = (v55 - v51) * (v55 - v51) + (v54 - v50) * (v54 - v50);
@@ -545,7 +545,7 @@ LABEL_17:
 
   v63 = +[PEGlobalSettings globalSettings];
   [v63 cleanupLassoHeadTailMaxLength];
-  v65 = v64 / a4;
+  v65 = v64 / scale;
 
   if (v16 * v62 >= v65)
   {
@@ -558,7 +558,7 @@ LABEL_17:
   }
 
   v67 = 0.0;
-  if (v11 >= 4)
+  if (pointCount >= 4)
   {
     v68 = 0;
     v69 = 0.0;
@@ -574,7 +574,7 @@ LABEL_17:
         break;
       }
 
-      if (v11 - 3 == v68)
+      if (pointCount - 3 == v68)
       {
         v68 = 0;
         break;
@@ -598,7 +598,7 @@ LABEL_43:
   else
   {
     v67 = 0.0;
-    v73 = v11 - 2;
+    v73 = pointCount - 2;
     while (1)
     {
       v74 = [v12 objectAtIndexedSubscript:v73];
@@ -616,24 +616,24 @@ LABEL_43:
       }
     }
 
-    v76 = v11 - v73;
+    v76 = pointCount - v73;
   }
 
-  v237 = v16 * a4;
+  v237 = v16 * scale;
   v77 = v72 * 0.125;
-  v78 = v258 / a4;
+  v78 = distanceCopy / scale;
   v79 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
   {
-    v80 = [v7 pointCount];
-    [v7 pointAtIndex:0];
+    pointCount2 = [shapeCopy pointCount];
+    [shapeCopy pointAtIndex:0];
     v82 = v81;
     v84 = v83;
     v86 = v85;
-    [v7 pointAtIndex:v11 - 1];
+    [shapeCopy pointAtIndex:pointCount - 1];
     v90 = v10[2](v10, v82, v84, v86, v87, v88, v89);
     *buf = 134220800;
-    *&buf[4] = v80;
+    *&buf[4] = pointCount2;
     *&buf[12] = 2048;
     *&buf[14] = v16;
     *&buf[22] = 2048;
@@ -709,9 +709,9 @@ LABEL_54:
   v251 = _Block_copy(v263);
   v261 = 0u;
   v262 = 0u;
-  if (v7)
+  if (shapeCopy)
   {
-    [v7 extent];
+    [shapeCopy extent];
     v94 = v262;
   }
 
@@ -720,8 +720,8 @@ LABEL_54:
     v94 = 0.0;
   }
 
-  [v7 radius];
-  if (v94 / v95 < 4.0 || ([v7 radius], *(&v262 + 1) / v96 < 4.0))
+  [shapeCopy radius];
+  if (v94 / v95 < 4.0 || ([shapeCopy radius], *(&v262 + 1) / v96 < 4.0))
   {
     v97 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v97, OS_LOG_TYPE_DEBUG))
@@ -739,15 +739,15 @@ LABEL_54:
 
   v101 = 0;
   v249 = v76;
-  v257 = v11 - 2;
-  v259 = v11 + ~v76;
+  v257 = pointCount - 2;
+  v259 = pointCount + ~v76;
   v247 = v10;
   do
   {
     v102 = v101 + 1;
     if (v257 >= v259)
     {
-      v103 = v11 - 2;
+      v103 = pointCount - 2;
       do
       {
         if (v103 > v257 || v103 < 0)
@@ -756,7 +756,7 @@ LABEL_54:
           if (os_log_type_enabled(v118, OS_LOG_TYPE_ERROR))
           {
             *buf = 134219008;
-            *&buf[4] = v11;
+            *&buf[4] = pointCount;
             *&buf[12] = 2048;
             *&buf[14] = v68;
             *&buf[22] = 2048;
@@ -771,22 +771,22 @@ LABEL_54:
 
         else
         {
-          [v7 pointAtIndex:v101];
+          [shapeCopy pointAtIndex:v101];
           v105 = v104;
           v107 = v106;
-          [v7 pointAtIndex:v101 + 1];
+          [shapeCopy pointAtIndex:v101 + 1];
           v109 = v108;
           v111 = v110;
-          [v7 pointAtIndex:v103];
+          [shapeCopy pointAtIndex:v103];
           v113 = v112;
           v115 = v114;
-          [v7 pointAtIndex:v103 + 1];
+          [shapeCopy pointAtIndex:v103 + 1];
           if (((v113 - v105) * (v117 - v107)) > ((v115 - v107) * (v116 - v105)) == ((v113 - v109) * (v117 - v111)) <= ((v115 - v111) * (v116 - v109)) && ((v109 - v105) * (v115 - v107)) > ((v111 - v107) * (v113 - v105)) != ((v109 - v105) * (v117 - v107)) > ((v111 - v107) * (v116 - v105)))
           {
             v177 = PLPhotoEditGetLog();
             if (os_log_type_enabled(v177, OS_LOG_TYPE_DEBUG))
             {
-              v179 = [v7 pointCount];
+              pointCount3 = [shapeCopy pointCount];
               *buf = 134219008;
               *&buf[4] = v101;
               *&buf[12] = 2048;
@@ -796,7 +796,7 @@ LABEL_54:
               *v272 = 2048;
               *&v272[2] = v103 + 1;
               *&v272[10] = 2048;
-              *&v272[12] = v179;
+              *&v272[12] = pointCount3;
               _os_log_impl(&dword_25E6E9000, v177, OS_LOG_TYPE_DEBUG, "Cleanup: strokeAppearsToBeClosedShape - line segments were intersecting in segments s = {%ld, %ld} and e = {%ld, %ld}, out of %ld points", buf, 0x34u);
             }
 
@@ -823,9 +823,9 @@ LABEL_54:
   v124 = -1;
   v250 = -1;
   v125 = 0x279A2E000;
-  v126 = v11 - 2;
+  v126 = pointCount - 2;
   v234 = v12;
-  v235 = v7;
+  v235 = shapeCopy;
   do
   {
     if (v121)
@@ -854,7 +854,7 @@ LABEL_54:
         if (os_log_type_enabled(v163, OS_LOG_TYPE_ERROR))
         {
           *buf = 134219008;
-          *&buf[4] = v11;
+          *&buf[4] = pointCount;
           *&buf[12] = 2048;
           *&buf[14] = v68;
           *&buf[22] = 2048;
@@ -874,7 +874,7 @@ LABEL_54:
         goto LABEL_135;
       }
 
-      [v7 pointAtIndex:v248];
+      [shapeCopy pointAtIndex:v248];
       v243 = v122;
       v129 = v128;
       v240 = v130;
@@ -882,16 +882,16 @@ LABEL_54:
       v131 = v130;
       v133 = v132;
       v239 = v132;
-      [v7 pointAtIndex:v120];
+      [shapeCopy pointAtIndex:v120];
       v242 = v134;
       v254 = v136;
       v255 = v135;
-      [v7 pointAtIndex:v127];
+      [shapeCopy pointAtIndex:v127];
       v138 = v137;
       v140 = v139;
       v238 = v139;
       v253 = v141;
-      [v7 pointAtIndex:?];
+      [shapeCopy pointAtIndex:?];
       v143 = v142;
       v145 = v144;
       v147 = v146;
@@ -1008,8 +1008,8 @@ LABEL_54:
 
       v245 = v156;
       v164 = v251[2](v251, buf, &v270, v244, v145, v147, v241, v240, v239);
-      v126 = v11 - 2;
-      v7 = v235;
+      v126 = pointCount - 2;
+      shapeCopy = v235;
       if (v164 < v256 && v164 < v122)
       {
         v250 = v127 + 1;
@@ -1054,7 +1054,7 @@ LABEL_143:
     v166 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v166, OS_LOG_TYPE_DEBUG))
     {
-      v167 = COERCE_DOUBLE([v7 pointCount]);
+      v167 = COERCE_DOUBLE([shapeCopy pointCount]);
       *buf = 134219264;
       *&buf[4] = sqrt(v122);
       *&buf[12] = 2048;
@@ -1070,23 +1070,23 @@ LABEL_143:
       _os_log_impl(&dword_25E6E9000, v166, OS_LOG_TYPE_DEBUG, "Cleanup: strokeAppearsToBeClosedShape - points and line segments from start and end of stroke found to be close enough (%.2f) at segments s = {%ld, %ld} and e = {%ld, %ld}, out of %ld points", buf, 0x3Eu);
     }
 
-    v168 = [*(v125 + 3640) globalSettings];
-    [v168 cleanupShortStrokeLengthThreshold];
+    globalSettings = [*(v125 + 3640) globalSettings];
+    [globalSettings cleanupShortStrokeLengthThreshold];
     v170 = v169;
 
     if (v237 < v170)
     {
-      v171 = PEExteriorAngleSum(v7) * 57.2957795;
-      v172 = [*(v125 + 3640) globalSettings];
-      [v172 cleanupShortStrokeAngleThreshold];
+      v171 = PEExteriorAngleSum(shapeCopy) * 57.2957795;
+      globalSettings2 = [*(v125 + 3640) globalSettings];
+      [globalSettings2 cleanupShortStrokeAngleThreshold];
       if (v171 >= v173)
       {
       }
 
       else
       {
-        v174 = [*(v125 + 3640) globalSettings];
-        [v174 cleanupShortStrokeAngleThreshold];
+        globalSettings3 = [*(v125 + 3640) globalSettings];
+        [globalSettings3 cleanupShortStrokeAngleThreshold];
         v176 = -v175;
 
         if (v171 > v176)
@@ -1124,12 +1124,12 @@ LABEL_153:
     }
 
     Mutable = CGPathCreateMutable();
-    if ([v7 pointCount] >= 1)
+    if ([shapeCopy pointCount] >= 1)
     {
       v181 = 0;
       do
       {
-        [v7 pointAtIndex:v181];
+        [shapeCopy pointAtIndex:v181];
         v183 = v182;
         v185 = v184;
         if (v181)
@@ -1145,7 +1145,7 @@ LABEL_153:
         ++v181;
       }
 
-      while (v181 < [v7 pointCount]);
+      while (v181 < [shapeCopy pointCount]);
     }
 
     CGPathCloseSubpath(Mutable);
@@ -1177,7 +1177,7 @@ LABEL_153:
       _os_log_impl(&dword_25E6E9000, v188, OS_LOG_TYPE_DEBUG, "Cleanup: Centerpoint: %f, %f", &v270, 0x16u);
     }
 
-    if ([v7 pointCount] < 1)
+    if ([shapeCopy pointCount] < 1)
     {
       v190 = 0;
     }
@@ -1188,29 +1188,29 @@ LABEL_153:
       v190 = 0;
       do
       {
-        [v7 pointAtIndex:v189];
+        [shapeCopy pointAtIndex:v189];
         v288.x = v191;
         v288.y = v192;
         v190 += CGPathContainsPoint(Mutable, buf, v288, 0);
         ++v189;
       }
 
-      while (v189 < [v7 pointCount]);
+      while (v189 < [shapeCopy pointCount]);
     }
 
     CGPathRelease(Mutable);
     v193 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v193, OS_LOG_TYPE_DEBUG))
     {
-      v194 = [v7 pointCount];
+      pointCount4 = [shapeCopy pointCount];
       v195 = v190;
-      v196 = [v7 pointCount];
+      pointCount5 = [shapeCopy pointCount];
       LODWORD(v270.a) = 134218496;
-      *(&v270.a + 4) = v194;
+      *(&v270.a + 4) = pointCount4;
       WORD2(v270.b) = 2048;
       *(&v270.b + 6) = v190;
       HIWORD(v270.c) = 2048;
-      *&v270.d = ((v190 / v196) * 100.0);
+      *&v270.d = ((v190 / pointCount5) * 100.0);
       _os_log_impl(&dword_25E6E9000, v193, OS_LOG_TYPE_DEBUG, "Cleanup: strokeAppearsToBeClosedShape - path has %ld points; %ld are inside the path - %ld%%", &v270, 0x20u);
     }
 
@@ -1219,7 +1219,7 @@ LABEL_153:
       v195 = v190;
     }
 
-    if ((v195 / [v7 pointCount]) > 0.3)
+    if ((v195 / [shapeCopy pointCount]) > 0.3)
     {
       v197 = PLPhotoEditGetLog();
       if (os_log_type_enabled(v197, OS_LOG_TYPE_DEBUG))
@@ -1231,7 +1231,7 @@ LABEL_153:
       goto LABEL_184;
     }
 
-    v197 = [v7 mutableCopy];
+    v197 = [shapeCopy mutableCopy];
     [v197 pointAtIndex:0];
     [v197 appendPoint:?];
     v198 = [v197 ciImageTiled:0 closed:1 pressureMode:2 filled:0];
@@ -1242,8 +1242,8 @@ LABEL_153:
     v204 = v203;
     v206 = v205;
     v208 = v207;
-    v209 = [MEMORY[0x277CBF740] context];
-    [v200 computeMatteCoverageWithRect:v198 segmentationMatte:v209 context:{v202, v204, v206, v208}];
+    context = [MEMORY[0x277CBF740] context];
+    [v200 computeMatteCoverageWithRect:v198 segmentationMatte:context context:{v202, v204, v206, v208}];
     v211 = v210;
 
     v212 = MEMORY[0x277D3A958];
@@ -1252,8 +1252,8 @@ LABEL_153:
     v216 = v215;
     v218 = v217;
     v220 = v219;
-    v221 = [MEMORY[0x277CBF740] context];
-    [v212 computeMatteCoverageWithRect:v199 segmentationMatte:v221 context:{v214, v216, v218, v220}];
+    context2 = [MEMORY[0x277CBF740] context];
+    [v212 computeMatteCoverageWithRect:v199 segmentationMatte:context2 context:{v214, v216, v218, v220}];
     v223 = v222;
 
     v224 = PLPhotoEditGetLog();
@@ -1273,8 +1273,8 @@ LABEL_153:
     }
 
     v226 = (v223 - v211) / v211;
-    v227 = [*(v125 + 3640) globalSettings];
-    [v227 cleanupFilledCoverageRatio];
+    globalSettings4 = [*(v125 + 3640) globalSettings];
+    [globalSettings4 cleanupFilledCoverageRatio];
     v229 = v228;
 
     v10 = v247;
@@ -1283,8 +1283,8 @@ LABEL_153:
       v230 = PLPhotoEditGetLog();
       if (os_log_type_enabled(v230, OS_LOG_TYPE_DEBUG))
       {
-        v231 = [*(v125 + 3640) globalSettings];
-        [v231 cleanupFilledCoverageRatio];
+        globalSettings5 = [*(v125 + 3640) globalSettings];
+        [globalSettings5 cleanupFilledCoverageRatio];
         LODWORD(v270.a) = 134218240;
         *(&v270.a + 4) = v226;
         WORD2(v270.b) = 2048;
@@ -1446,16 +1446,16 @@ void __96__PECleanupSegmentAnalyzer__strokeAppearsToBeClosedShape_imageToScreenS
   }
 }
 
-- (BOOL)shouldChooseSegment:(id)a3
+- (BOOL)shouldChooseSegment:(id)segment
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 isWire])
+  segmentCopy = segment;
+  if ([segmentCopy isWire])
   {
     v4 = 0.2;
   }
 
-  else if ([v3 usingTargetPoints])
+  else if ([segmentCopy usingTargetPoints])
   {
     v5 = +[PEGlobalSettings globalSettings];
     [v5 retouchTargetPointCoverageThreshold];
@@ -1470,8 +1470,8 @@ void __96__PECleanupSegmentAnalyzer__strokeAppearsToBeClosedShape_imageToScreenS
   v7 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v3 intersector];
-    [v8 maskPercentInsideBrush];
+    intersector = [segmentCopy intersector];
+    [intersector maskPercentInsideBrush];
     v14 = 134218240;
     v15 = v4;
     v16 = 2048;
@@ -1479,30 +1479,30 @@ void __96__PECleanupSegmentAnalyzer__strokeAppearsToBeClosedShape_imageToScreenS
     _os_log_impl(&dword_25E6E9000, v7, OS_LOG_TYPE_DEBUG, "Cleanup: coverage threshold: %f - maskPercentInsideBrush: %f", &v14, 0x16u);
   }
 
-  v10 = [v3 intersector];
-  [v10 maskPercentInsideBrush];
+  intersector2 = [segmentCopy intersector];
+  [intersector2 maskPercentInsideBrush];
   v12 = v11 > v4;
 
   return v12;
 }
 
-- (void)analyzeStrokeMaskIntersections:(id)a3 inpaintMaskContext:(id)a4 compositionController:(id)a5 geometry:(id)a6 imageToScreenSpaceScale:(double)a7 faceRects:(id)a8 completion:(id)a9
+- (void)analyzeStrokeMaskIntersections:(id)intersections inpaintMaskContext:(id)context compositionController:(id)controller geometry:(id)geometry imageToScreenSpaceScale:(double)scale faceRects:(id)rects completion:(id)completion
 {
   v66 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v47 = a9;
+  intersectionsCopy = intersections;
+  contextCopy = context;
+  controllerCopy = controller;
+  geometryCopy = geometry;
+  rectsCopy = rects;
+  completionCopy = completion;
   v21 = +[PEGlobalSettings globalSettings];
   [v21 cleanupLassoDistance];
-  v23 = [(PECleanupSegmentAnalyzer *)self _strokeAppearsToBeClosedShape:v16 imageToScreenSpaceScale:a7 lassoDistance:v22];
+  v23 = [(PECleanupSegmentAnalyzer *)self _strokeAppearsToBeClosedShape:intersectionsCopy imageToScreenSpaceScale:scale lassoDistance:v22];
 
   v24 = PLPhotoEditGetLog();
   v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG);
-  v48 = v17;
-  v49 = v18;
+  v48 = contextCopy;
+  v49 = controllerCopy;
   if (v23)
   {
     if (!v25)
@@ -1528,7 +1528,7 @@ void __96__PECleanupSegmentAnalyzer__strokeAppearsToBeClosedShape_imageToScreenS
   _os_log_impl(&dword_25E6E9000, v24, OS_LOG_TYPE_DEBUG, v26, buf, 2u);
 LABEL_7:
 
-  [v19 inputRect];
+  [geometryCopy inputRect];
   v27 = NUPixelSizeFromCGSize();
   v29 = v28;
   v30 = PLPhotoEditGetLog();
@@ -1545,7 +1545,7 @@ LABEL_7:
       v32 = @"NO";
     }
 
-    v33 = [v20 count];
+    v33 = [rectsCopy count];
     *buf = 136315650;
     v61 = "[PECleanupSegmentAnalyzer analyzeStrokeMaskIntersections:inpaintMaskContext:compositionController:geometry:imageToScreenSpaceScale:faceRects:completion:]";
     v62 = 2112;
@@ -1556,23 +1556,23 @@ LABEL_7:
   }
 
   v34 = +[PEGlobalSettings sharedSettings];
-  v35 = [v34 retouchPixellatesFaces];
+  retouchPixellatesFaces = [v34 retouchPixellatesFaces];
 
-  if (!v35)
+  if (!retouchPixellatesFaces)
   {
     goto LABEL_16;
   }
 
-  v36 = [v16 ciImageTiled:0 closed:0 pressureMode:2 filled:v23];
-  v37 = [MEMORY[0x277D3A8E8] globalSettings];
-  [v37 inpaintPixellationIntersectionAreaToMaskAreaThreshold];
+  v36 = [intersectionsCopy ciImageTiled:0 closed:0 pressureMode:2 filled:v23];
+  globalSettings = [MEMORY[0x277D3A8E8] globalSettings];
+  [globalSettings inpaintPixellationIntersectionAreaToMaskAreaThreshold];
   v39 = v38;
 
-  v40 = [MEMORY[0x277D3A8E8] globalSettings];
-  [v40 inpaintPixellationIntersectionAreaToFaceAreaThreshold];
+  globalSettings2 = [MEMORY[0x277D3A8E8] globalSettings];
+  [globalSettings2 inpaintPixellationIntersectionAreaToFaceAreaThreshold];
   v42 = v41;
 
-  if (![MEMORY[0x277D3A918] maskIsMostlyWithinFace:v36 imageSize:v27 imageOrientation:v29 intAreaOverMaskAreaThreshold:objc_msgSend(v49 intAreaOverFaceAreaThreshold:"imageOrientation") detectedFaces:{v20, v39, v42}])
+  if (![MEMORY[0x277D3A918] maskIsMostlyWithinFace:v36 imageSize:v27 imageOrientation:v29 intAreaOverMaskAreaThreshold:objc_msgSend(v49 intAreaOverFaceAreaThreshold:"imageOrientation") detectedFaces:{rectsCopy, v39, v42}])
   {
 
 LABEL_16:
@@ -1580,27 +1580,27 @@ LABEL_16:
     v50[1] = 3221225472;
     v50[2] = __154__PECleanupSegmentAnalyzer_analyzeStrokeMaskIntersections_inpaintMaskContext_compositionController_geometry_imageToScreenSpaceScale_faceRects_completion___block_invoke;
     v50[3] = &unk_279A305F0;
-    v51 = v16;
+    v51 = intersectionsCopy;
     v57 = v27;
     v58 = v29;
     v52 = v49;
-    v53 = v20;
-    v54 = self;
+    v53 = rectsCopy;
+    selfCopy = self;
     v59 = v23;
-    v55 = v19;
-    v43 = v47;
-    v56 = v47;
-    v46 = self;
+    v55 = geometryCopy;
+    v43 = completionCopy;
+    v56 = completionCopy;
+    selfCopy2 = self;
     v45 = v49;
     v44 = v48;
-    [(PECleanupSegmentAnalyzer *)v46 _analyzeStrokeMaskIntersections:v51 treatStrokeAsFilledCircle:v23 usingMaskContext:v48 useTargetPoints:0 compositionController:v52 geometry:v55 completion:v50];
+    [(PECleanupSegmentAnalyzer *)selfCopy2 _analyzeStrokeMaskIntersections:v51 treatStrokeAsFilledCircle:v23 usingMaskContext:v48 useTargetPoints:0 compositionController:v52 geometry:v55 completion:v50];
 
     v36 = v51;
     goto LABEL_17;
   }
 
-  v43 = v47;
-  (*(v47 + 2))(v47, 0, 0, 0, 0, v23, 1, 0);
+  v43 = completionCopy;
+  (*(completionCopy + 2))(completionCopy, 0, 0, 0, 0, v23, 1, 0);
   v44 = v48;
   v45 = v49;
 LABEL_17:
@@ -1661,57 +1661,57 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)_analyzeStrokeMaskIntersections:(id)a3 treatStrokeAsFilledCircle:(BOOL)a4 usingMaskContext:(id)a5 useTargetPoints:(BOOL)a6 compositionController:(id)a7 geometry:(id)a8 completion:(id)a9
+- (void)_analyzeStrokeMaskIntersections:(id)intersections treatStrokeAsFilledCircle:(BOOL)circle usingMaskContext:(id)context useTargetPoints:(BOOL)points compositionController:(id)controller geometry:(id)geometry completion:(id)completion
 {
-  v11 = a6;
-  v13 = a4;
-  v15 = a3;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  if (v16)
+  pointsCopy = points;
+  circleCopy = circle;
+  intersectionsCopy = intersections;
+  contextCopy = context;
+  controllerCopy = controller;
+  geometryCopy = geometry;
+  completionCopy = completion;
+  if (contextCopy)
   {
-    v20 = [v16 segmentationResult];
+    segmentationResult = [contextCopy segmentationResult];
     v49[0] = MEMORY[0x277D85DD0];
     v49[1] = 3221225472;
     v49[2] = __161__PECleanupSegmentAnalyzer__analyzeStrokeMaskIntersections_treatStrokeAsFilledCircle_usingMaskContext_useTargetPoints_compositionController_geometry_completion___block_invoke;
     v49[3] = &unk_279A30550;
-    v50 = v19;
-    v21 = v19;
-    LOBYTE(v37) = v11;
-    [(PECleanupSegmentAnalyzer *)self _analyzeSegmentationResult:v20 forStroke:v15 treatStrokeAsFilledCircle:v13 maskContext:v16 compositionController:v17 geometry:v18 usingTargetPoints:v37 completion:v49];
+    v50 = completionCopy;
+    v21 = completionCopy;
+    LOBYTE(v37) = pointsCopy;
+    [(PECleanupSegmentAnalyzer *)self _analyzeSegmentationResult:segmentationResult forStroke:intersectionsCopy treatStrokeAsFilledCircle:circleCopy maskContext:contextCopy compositionController:controllerCopy geometry:geometryCopy usingTargetPoints:v37 completion:v49];
 
     v22 = v50;
   }
 
   else
   {
-    v38 = v13;
+    v38 = circleCopy;
     v23 = objc_alloc(MEMORY[0x277D2D050]);
-    v24 = [v17 composition];
-    v25 = [v23 initWithComposition:v24];
+    composition = [controllerCopy composition];
+    v25 = [v23 initWithComposition:composition];
 
-    v26 = [MEMORY[0x277D3A938] pipelineFiltersForPreInpaintSegmentation];
-    [v25 setPipelineFilters:v26];
+    pipelineFiltersForPreInpaintSegmentation = [MEMORY[0x277D3A938] pipelineFiltersForPreInpaintSegmentation];
+    [v25 setPipelineFilters:pipelineFiltersForPreInpaintSegmentation];
 
-    v27 = [(PECleanupSegmentAnalyzer *)self analyzerQueue];
-    [v25 setResponseQueue:v27];
+    analyzerQueue = [(PECleanupSegmentAnalyzer *)self analyzerQueue];
+    [v25 setResponseQueue:analyzerQueue];
 
-    if (v11)
+    if (pointsCopy)
     {
-      v28 = [MEMORY[0x277D3A938] pipelineFiltersForPostInpaintSegmentation];
-      [v25 setPipelineFilters:v28];
+      pipelineFiltersForPostInpaintSegmentation = [MEMORY[0x277D3A938] pipelineFiltersForPostInpaintSegmentation];
+      [v25 setPipelineFilters:pipelineFiltersForPostInpaintSegmentation];
 
-      v29 = [MEMORY[0x277D2D050] maximumTargetPoints];
-      [v18 inputRect];
-      v32 = [(PECleanupSegmentAnalyzer *)self _strokeToNormalizedSampledPointArray:v15 maxPointCount:v29 originalImageSize:v38 treatStrokeAsFilledCircle:v30, v31];
+      maximumTargetPoints = [MEMORY[0x277D2D050] maximumTargetPoints];
+      [geometryCopy inputRect];
+      v32 = [(PECleanupSegmentAnalyzer *)self _strokeToNormalizedSampledPointArray:intersectionsCopy maxPointCount:maximumTargetPoints originalImageSize:v38 treatStrokeAsFilledCircle:v30, v31];
       [v25 setTargetSamplePoints:v32];
     }
 
     v33 = objc_alloc(MEMORY[0x277D3A920]);
-    v34 = [MEMORY[0x277D3A928] genEditIdentifier];
-    v35 = [v33 initWithIdentifier:v34 operation:3];
+    genEditIdentifier = [MEMORY[0x277D3A928] genEditIdentifier];
+    v35 = [v33 initWithIdentifier:genEditIdentifier operation:3];
 
     [v35 beginMeasuring];
     v39[0] = MEMORY[0x277D85DD0];
@@ -1719,15 +1719,15 @@ LABEL_11:
     v39[2] = __161__PECleanupSegmentAnalyzer__analyzeStrokeMaskIntersections_treatStrokeAsFilledCircle_usingMaskContext_useTargetPoints_compositionController_geometry_completion___block_invoke_2;
     v39[3] = &unk_279A305A0;
     v40 = v35;
-    v41 = self;
-    v42 = v15;
+    selfCopy = self;
+    v42 = intersectionsCopy;
     v47 = v38;
-    v43 = v17;
-    v48 = v11;
+    v43 = controllerCopy;
+    v48 = pointsCopy;
     v45 = v25;
-    v46 = v19;
-    v44 = v18;
-    v36 = v19;
+    v46 = completionCopy;
+    v44 = geometryCopy;
+    v36 = completionCopy;
     v22 = v25;
     v21 = v35;
     [v22 submit:v39];
@@ -1787,32 +1787,32 @@ void __161__PECleanupSegmentAnalyzer__analyzeStrokeMaskIntersections_treatStroke
   (*(v6 + 16))(v6, v10, v9, v8, v11);
 }
 
-- (void)_analyzeSegmentationResult:(id)a3 forStroke:(id)a4 treatStrokeAsFilledCircle:(BOOL)a5 maskContext:(id)a6 compositionController:(id)a7 geometry:(id)a8 usingTargetPoints:(BOOL)a9 completion:(id)a10
+- (void)_analyzeSegmentationResult:(id)result forStroke:(id)stroke treatStrokeAsFilledCircle:(BOOL)circle maskContext:(id)context compositionController:(id)controller geometry:(id)geometry usingTargetPoints:(BOOL)points completion:(id)self0
 {
-  v95 = a5;
+  circleCopy = circle;
   v112 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v97 = a4;
-  v16 = a6;
-  v17 = a7;
-  v98 = a8;
-  v18 = a10;
+  resultCopy = result;
+  strokeCopy = stroke;
+  contextCopy = context;
+  controllerCopy = controller;
+  geometryCopy = geometry;
+  completionCopy = completion;
   v96 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v99 = [v15 instances];
+  instances = [resultCopy instances];
   v19 = PLPhotoEditGetLog();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG);
-  v94 = v15;
-  v91 = v18;
-  if (a9)
+  v94 = resultCopy;
+  v91 = completionCopy;
+  if (points)
   {
     if (v20)
     {
       *buf = 134217984;
-      *&buf[4] = [v99 count];
+      *&buf[4] = [instances count];
       _os_log_impl(&dword_25E6E9000, v19, OS_LOG_TYPE_DEBUG, "Cleanup: Attempting intersection with Target Points; retrieved %lu instances", buf, 0xCu);
     }
 
-    v21 = v98;
+    v21 = geometryCopy;
 LABEL_5:
 
     goto LABEL_9;
@@ -1820,31 +1820,31 @@ LABEL_5:
 
   if (v20)
   {
-    v22 = [v15 backgroundInstances];
-    v23 = [v22 count];
-    v24 = [v15 foregroundInstances];
+    backgroundInstances = [resultCopy backgroundInstances];
+    v23 = [backgroundInstances count];
+    foregroundInstances = [resultCopy foregroundInstances];
     *buf = 134218240;
     *&buf[4] = v23;
     *&buf[12] = 2048;
-    *&buf[14] = [v24 count];
+    *&buf[14] = [foregroundInstances count];
     _os_log_impl(&dword_25E6E9000, v19, OS_LOG_TYPE_DEBUG, "Cleanup: Attempting intersection; retrieved %lu background instances, %lu foreground instances", buf, 0x16u);
   }
 
-  v25 = [v99 count];
+  v25 = [instances count];
   v26 = MEMORY[0x277D3A918];
-  v27 = [v17 composition];
-  v28 = [v26 removeOperationsFromInstances:v99 composition:v27 context:v16];
+  composition = [controllerCopy composition];
+  v28 = [v26 removeOperationsFromInstances:instances composition:composition context:contextCopy];
 
-  v29 = [MEMORY[0x277D3A918] removeGatedInstances:v28 context:v16];
+  v29 = [MEMORY[0x277D3A918] removeGatedInstances:v28 context:contextCopy];
 
-  v99 = v29;
-  v21 = v98;
+  instances = v29;
+  v21 = geometryCopy;
   if (v25 != [v29 count])
   {
     v19 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v90 = [v99 count];
+      v90 = [instances count];
       *buf = 134217984;
       *&buf[4] = v25 - v90;
       _os_log_impl(&dword_25E6E9000, v19, OS_LOG_TYPE_DEBUG, "Cleanup: %ld indices were removed from testing because those objects had previously been removed from the image", buf, 0xCu);
@@ -1854,11 +1854,11 @@ LABEL_5:
   }
 
 LABEL_9:
-  v102 = [v15 instancesForCategory:*MEMORY[0x277D2CF68]];
-  v30 = [v99 firstIndex];
-  v92 = v17;
-  v93 = v16;
-  if (v30 == 0x7FFFFFFFFFFFFFFFLL)
+  v102 = [resultCopy instancesForCategory:*MEMORY[0x277D2CF68]];
+  firstIndex = [instances firstIndex];
+  v92 = controllerCopy;
+  v93 = contextCopy;
+  if (firstIndex == 0x7FFFFFFFFFFFFFFFLL)
   {
     v101 = 0;
     v31 = 0;
@@ -1866,26 +1866,26 @@ LABEL_9:
 
   else
   {
-    v32 = v30;
+    v32 = firstIndex;
     v31 = 0;
     v101 = 0;
     do
     {
       v108 = 0;
-      v33 = [v15 newMaskForInstance:v32 error:&v108];
+      v33 = [resultCopy newMaskForInstance:v32 error:&v108];
       v34 = v108;
 
       memset(buf, 0, 32);
-      if (v15)
+      if (resultCopy)
       {
-        [v15 tightBoundsForInstance:v32];
+        [resultCopy tightBoundsForInstance:v32];
       }
 
-      if (a9)
+      if (points)
       {
         v35 = MEMORY[0x277CCACA8];
-        v36 = [MEMORY[0x277CCAD78] UUID];
-        v37 = [v35 stringWithFormat:@"targetPoints: %@", v36];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        v37 = [v35 stringWithFormat:@"targetPoints: %@", uUID];
       }
 
       else
@@ -1924,7 +1924,7 @@ LABEL_9:
         v48 = v47;
         [v33 size];
         NUPixelSizeToCGSize();
-        v51 = [(PECleanupSegmentAnalyzer *)self _maskForStroke:v97 imageSize:v95 maskSize:v46 filled:v48, v49, v50];
+        v51 = [(PECleanupSegmentAnalyzer *)self _maskForStroke:strokeCopy imageSize:circleCopy maskSize:v46 filled:v48, v49, v50];
 
         v52 = PLPhotoEditGetLog();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEBUG))
@@ -1952,7 +1952,7 @@ LABEL_9:
           *v110 = 67109632;
           *&v110[4] = v60;
           v51 = v59;
-          v15 = v94;
+          resultCopy = v94;
           *&v110[8] = 2048;
           *&v110[10] = v32;
           *&v110[18] = 1024;
@@ -1964,13 +1964,13 @@ LABEL_9:
         [(_CleanupSegmentInfo *)v62 setSegmentIndex:v32];
         [(_CleanupSegmentInfo *)v62 setIntersector:v56];
         [(_CleanupSegmentInfo *)v62 setMask:v42];
-        [(_CleanupSegmentInfo *)v62 setUsingTargetPoints:a9];
+        [(_CleanupSegmentInfo *)v62 setUsingTargetPoints:points];
         [(_CleanupSegmentInfo *)v62 setIsWire:v100];
         [v96 addObject:v62];
 
-        v32 = [v99 indexGreaterThanIndex:v32];
+        v32 = [instances indexGreaterThanIndex:v32];
         v101 = v51;
-        v21 = v98;
+        v21 = geometryCopy;
         v31 = 0;
       }
     }
@@ -2003,18 +2003,18 @@ LABEL_9:
         }
 
         v72 = *(*(&v104 + 1) + 8 * i);
-        v73 = [v72 mask];
+        mask = [v72 mask];
         if ([(PECleanupSegmentAnalyzer *)self shouldChooseSegment:v72])
         {
-          [v63 addObject:v73];
+          [v63 addObject:mask];
           [v65 addIndex:{objc_msgSend(v72, "segmentIndex")}];
-          v74 = [v72 intersector];
-          [v74 brushPercentInsideMask];
+          intersector = [v72 intersector];
+          [intersector brushPercentInsideMask];
           v70 = v70 + v75;
         }
 
-        v76 = [v73 buffer];
-        [v64 addObject:v76];
+        buffer = [mask buffer];
+        [v64 addObject:buffer];
       }
 
       v68 = [v66 countByEnumeratingWithState:&v104 objects:v109 count:16];
@@ -2047,7 +2047,7 @@ LABEL_9:
 
   v80 = PLPhotoEditGetLog();
   v81 = os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT);
-  v82 = v70 < v79 && !v95;
+  v82 = v70 < v79 && !circleCopy;
   v83 = v94;
   if (v82)
   {
@@ -2081,7 +2081,7 @@ LABEL_55:
   if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
   {
     v86 = @"No";
-    if (v95)
+    if (circleCopy)
     {
       v86 = @"Yes";
     }
@@ -2099,17 +2099,17 @@ LABEL_56:
   (v91)[2](v91, v63, v89, v64);
 }
 
-- (id)_strokeToNormalizedSampledPointArray:(id)a3 maxPointCount:(int64_t)a4 originalImageSize:(CGSize)a5 treatStrokeAsFilledCircle:(BOOL)a6
+- (id)_strokeToNormalizedSampledPointArray:(id)array maxPointCount:(int64_t)count originalImageSize:(CGSize)size treatStrokeAsFilledCircle:(BOOL)circle
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = v11;
-  v13 = v11;
-  if (v6)
+  circleCopy = circle;
+  height = size.height;
+  width = size.width;
+  arrayCopy = array;
+  v12 = arrayCopy;
+  v13 = arrayCopy;
+  if (circleCopy)
   {
-    v13 = [v11 mutableCopy];
+    v13 = [arrayCopy mutableCopy];
     [v13 setRadius:0.0];
   }
 
@@ -2120,18 +2120,18 @@ LABEL_56:
     [v13 extent];
   }
 
-  v14 = sqrt(a4 / NUPixelSizeArea());
+  v14 = sqrt(count / NUPixelSizeArea());
   v15 = v14 + v14;
   v16 = width * (v14 + v14);
   v17 = height * (v14 + v14);
-  v18 = [(PECleanupSegmentAnalyzer *)self _maskForStroke:v13 imageSize:v6 maskSize:width filled:height, v16, v17];
+  v18 = [(PECleanupSegmentAnalyzer *)self _maskForStroke:v13 imageSize:circleCopy maskSize:width filled:height, v16, v17];
   if (v18)
   {
     v19 = v18;
     v20 = +[PEGlobalSettings globalSettings];
-    v21 = [v20 targetPointsFillStrategy];
+    targetPointsFillStrategy = [v20 targetPointsFillStrategy];
 
-    if (v6 && v21 == 1)
+    if (circleCopy && targetPointsFillStrategy == 1)
     {
       v22 = [(PECleanupSegmentAnalyzer *)self _maskForStroke:v12 imageSize:0 maskSize:width filled:height, v16, v17];
       v23 = [(PECleanupSegmentAnalyzer *)self _filledRegionOfFilledStrokeImage:v19 withUnfilledStrokeImage:v22];
@@ -2152,7 +2152,7 @@ LABEL_56:
 
     else
     {
-      v39 = a4;
+      countCopy = count;
       memset(&v45, 0, sizeof(v45));
       CGAffineTransformMakeTranslation(&v45, -v47, -*(&v47 + 1));
       NUPixelRectToCGRect();
@@ -2161,17 +2161,17 @@ LABEL_56:
       v44 = v45;
       v19 = [v25 imageByApplyingTransform:&v44];
 
-      v26 = [MEMORY[0x277CBF740] context];
-      [v26 render:v19 toCVPixelBuffer:pixelBufferOut];
+      context = [MEMORY[0x277CBF740] context];
+      [context render:v19 toCVPixelBuffer:pixelBufferOut];
 
-      v27 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __123__PECleanupSegmentAnalyzer__strokeToNormalizedSampledPointArray_maxPointCount_originalImageSize_treatStrokeAsFilledCircle___block_invoke;
       aBlock[3] = &unk_279A30528;
       v42 = width;
       v43 = height;
-      v38 = v27;
+      v38 = array;
       v41 = v38;
       v28 = _Block_copy(aBlock);
       CVPixelBufferLockBaseAddress(pixelBufferOut, 1uLL);
@@ -2212,7 +2212,7 @@ LABEL_56:
       CVPixelBufferRelease(pixelBufferOut);
       v36 = v38;
       v24 = v36;
-      if ([v36 count] > v39)
+      if ([v36 count] > countCopy)
       {
         v24 = [(PECleanupSegmentAnalyzer *)self _evenlySampleArray:v36 maxCount:?];
       }
@@ -2237,12 +2237,12 @@ void __123__PECleanupSegmentAnalyzer__strokeToNormalizedSampledPointArray_maxPoi
   [v8 addObject:v9];
 }
 
-- (id)_filledRegionOfFilledStrokeImage:(id)a3 withUnfilledStrokeImage:(id)a4
+- (id)_filledRegionOfFilledStrokeImage:(id)image withUnfilledStrokeImage:(id)strokeImage
 {
   v43[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = thresholdImage(a3, 0.9999);
-  v7 = thresholdImage(v5, 0.0001);
+  strokeImageCopy = strokeImage;
+  v6 = thresholdImage(image, 0.9999);
+  v7 = thresholdImage(strokeImageCopy, 0.0001);
 
   v8 = v7;
   [v8 extent];
@@ -2281,7 +2281,7 @@ void __123__PECleanupSegmentAnalyzer__strokeToNormalizedSampledPointArray_maxPoi
   height = v46.size.height;
   if (CGRectIsEmpty(v46))
   {
-    v39 = [MEMORY[0x277CBF758] emptyImage];
+    emptyImage = [MEMORY[0x277CBF758] emptyImage];
   }
 
   else
@@ -2290,35 +2290,35 @@ void __123__PECleanupSegmentAnalyzer__strokeToNormalizedSampledPointArray_maxPoi
     v43[0] = v21;
     v43[1] = v22;
     v41 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:2];
-    v39 = [v40 applyWithExtent:v41 arguments:{x, y, width, height}];
+    emptyImage = [v40 applyWithExtent:v41 arguments:{x, y, width, height}];
   }
 
-  return v39;
+  return emptyImage;
 }
 
-- (id)_brushStrokeToNormalizedSampledPointArray:(id)a3 maxPointCount:(int64_t)a4 originalImageSize:(CGSize)a5
+- (id)_brushStrokeToNormalizedSampledPointArray:(id)array maxPointCount:(int64_t)count originalImageSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = [MEMORY[0x277CBEB18] array];
+  height = size.height;
+  width = size.width;
+  arrayCopy = array;
+  array = [MEMORY[0x277CBEB18] array];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __102__PECleanupSegmentAnalyzer__brushStrokeToNormalizedSampledPointArray_maxPointCount_originalImageSize___block_invoke;
   aBlock[3] = &unk_279A30500;
   v25 = width;
   v26 = height;
-  v11 = v10;
+  v11 = array;
   v24 = v11;
   v12 = _Block_copy(aBlock);
-  [v9 radius];
+  [arrayCopy radius];
   v14 = v13;
-  if ([v9 pointCount] >= 1)
+  if ([arrayCopy pointCount] >= 1)
   {
     v15 = 0;
     do
     {
-      [v9 pointAtIndex:v15];
+      [arrayCopy pointAtIndex:v15];
       v17 = v16;
       v19 = v18;
       v12[2](v12);
@@ -2329,14 +2329,14 @@ void __123__PECleanupSegmentAnalyzer__strokeToNormalizedSampledPointArray_maxPoi
       ++v15;
     }
 
-    while (v15 < [v9 pointCount]);
+    while (v15 < [arrayCopy pointCount]);
   }
 
   v20 = v11;
   v21 = v20;
-  if ([v20 count] > a4)
+  if ([v20 count] > count)
   {
-    v21 = [(PECleanupSegmentAnalyzer *)self _evenlySampleArray:v20 maxCount:a4];
+    v21 = [(PECleanupSegmentAnalyzer *)self _evenlySampleArray:v20 maxCount:count];
   }
 
   return v21;
@@ -2350,33 +2350,33 @@ void __102__PECleanupSegmentAnalyzer__brushStrokeToNormalizedSampledPointArray_m
   [v3 addObject:v4];
 }
 
-- (id)_evenlySampleArray:(id)a3 maxCount:(int64_t)a4
+- (id)_evenlySampleArray:(id)array maxCount:(int64_t)count
 {
-  v5 = a3;
-  v6 = [v5 count];
-  if (v6 <= a4)
+  arrayCopy = array;
+  v6 = [arrayCopy count];
+  if (v6 <= count)
   {
-    v12 = v5;
+    v12 = arrayCopy;
   }
 
   else
   {
     v7 = v6;
-    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:a4];
-    if (a4 >= 1)
+    v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:count];
+    if (count >= 1)
     {
-      v9 = v7 / a4;
+      v9 = v7 / count;
       v10 = 0.0;
       do
       {
-        v11 = [v5 objectAtIndex:v10];
+        v11 = [arrayCopy objectAtIndex:v10];
         [v8 addObject:v11];
 
         v10 = v9 + v10;
-        --a4;
+        --count;
       }
 
-      while (a4);
+      while (count);
     }
 
     v12 = [v8 copy];
@@ -2385,51 +2385,51 @@ void __102__PECleanupSegmentAnalyzer__brushStrokeToNormalizedSampledPointArray_m
   return v12;
 }
 
-- (id)_maskForStroke:(id)a3 imageSize:(CGSize)a4 maskSize:(CGSize)a5 filled:(BOOL)a6
+- (id)_maskForStroke:(id)stroke imageSize:(CGSize)size maskSize:(CGSize)maskSize filled:(BOOL)filled
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
-  v9 = a4.height;
-  v10 = a4.width;
-  v12 = a3;
-  v13 = [(PECleanupSegmentAnalyzer *)self cachedBrushStroke];
-  if (v13 != v12)
+  filledCopy = filled;
+  height = maskSize.height;
+  width = maskSize.width;
+  v9 = size.height;
+  v10 = size.width;
+  strokeCopy = stroke;
+  cachedBrushStroke = [(PECleanupSegmentAnalyzer *)self cachedBrushStroke];
+  if (cachedBrushStroke != strokeCopy)
   {
     goto LABEL_8;
   }
 
-  v14 = [(PECleanupSegmentAnalyzer *)self cachedStrokeMask];
-  if (!v14 || ([(PECleanupSegmentAnalyzer *)self cachedStrokeMaskSize], width != v16) || height != v15)
+  cachedStrokeMask = [(PECleanupSegmentAnalyzer *)self cachedStrokeMask];
+  if (!cachedStrokeMask || ([(PECleanupSegmentAnalyzer *)self cachedStrokeMaskSize], width != v16) || height != v15)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v17 = [(PECleanupSegmentAnalyzer *)self cachedStrokeMaskFilled];
+  cachedStrokeMaskFilled = [(PECleanupSegmentAnalyzer *)self cachedStrokeMaskFilled];
 
-  if (v17 == v6)
+  if (cachedStrokeMaskFilled == filledCopy)
   {
-    v18 = [(PECleanupSegmentAnalyzer *)self cachedStrokeMask];
+    cachedStrokeMask2 = [(PECleanupSegmentAnalyzer *)self cachedStrokeMask];
     goto LABEL_10;
   }
 
 LABEL_9:
-  v19 = [v12 mutableCopy];
+  v19 = [strokeCopy mutableCopy];
   CGAffineTransformMakeScale(&v22, width / v10, height / v9);
   [v19 applyTransform:&v22];
-  [(PECleanupSegmentAnalyzer *)self setCachedBrushStroke:v12];
-  v20 = [v19 ciImageTiled:0 closed:0 pressureMode:2 filled:v6];
+  [(PECleanupSegmentAnalyzer *)self setCachedBrushStroke:strokeCopy];
+  v20 = [v19 ciImageTiled:0 closed:0 pressureMode:2 filled:filledCopy];
   [(PECleanupSegmentAnalyzer *)self setCachedStrokeMask:v20];
 
   [(PECleanupSegmentAnalyzer *)self setCachedStrokeMaskSize:width, height];
-  [(PECleanupSegmentAnalyzer *)self setCachedStrokeMaskFilled:v6];
-  v18 = [(PECleanupSegmentAnalyzer *)self cachedStrokeMask];
+  [(PECleanupSegmentAnalyzer *)self setCachedStrokeMaskFilled:filledCopy];
+  cachedStrokeMask2 = [(PECleanupSegmentAnalyzer *)self cachedStrokeMask];
 
 LABEL_10:
 
-  return v18;
+  return cachedStrokeMask2;
 }
 
 - (PECleanupSegmentAnalyzer)init

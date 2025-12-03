@@ -1,8 +1,8 @@
 @interface BKHIDEventBuffer
-- (BKHIDEventBuffer)initWithDispatchTarget:(id)a3;
+- (BKHIDEventBuffer)initWithDispatchTarget:(id)target;
 - (id)drainAllEvents;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)appendEvent:(__IOHIDEvent *)a3 sender:(id)a4 sequence:(id)a5 additionalContext:(id)a6;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)appendEvent:(__IOHIDEvent *)event sender:(id)sender sequence:(id)sequence additionalContext:(id)context;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -71,7 +71,7 @@
       v12 = 2114;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2114;
       v17 = @"BKHIDEventBuffer.m";
       v18 = 1024;
@@ -93,16 +93,16 @@
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke;
   v6[3] = &unk_2784F7270;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = formatterCopy;
+  selfCopy = self;
+  v5 = formatterCopy;
   [v5 appendProem:self block:v6];
 }
 
@@ -143,13 +143,13 @@ id __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke(uint64_t a
   return v5;
 }
 
-- (void)appendEvent:(__IOHIDEvent *)a3 sender:(id)a4 sequence:(id)a5 additionalContext:(id)a6
+- (void)appendEvent:(__IOHIDEvent *)event sender:(id)sender sequence:(id)sequence additionalContext:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!a3)
+  senderCopy = sender;
+  sequenceCopy = sequence;
+  contextCopy = context;
+  if (!event)
   {
     v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"event != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -162,7 +162,7 @@ id __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke(uint64_t a
       v38 = 2114;
       v39 = v23;
       v40 = 2048;
-      v41 = self;
+      selfCopy4 = self;
       v42 = 2114;
       v43 = @"BKHIDEventBuffer.m";
       v44 = 1024;
@@ -178,7 +178,7 @@ id __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke(uint64_t a
     JUMPOUT(0x223CEA94CLL);
   }
 
-  if (!v11)
+  if (!senderCopy)
   {
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"sender != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -191,7 +191,7 @@ id __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke(uint64_t a
       v38 = 2114;
       v39 = v27;
       v40 = 2048;
-      v41 = self;
+      selfCopy4 = self;
       v42 = 2114;
       v43 = @"BKHIDEventBuffer.m";
       v44 = 1024;
@@ -207,7 +207,7 @@ id __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke(uint64_t a
     JUMPOUT(0x223CEAA44);
   }
 
-  if (!v12)
+  if (!sequenceCopy)
   {
     v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"sequence != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -220,7 +220,7 @@ id __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke(uint64_t a
       v38 = 2114;
       v39 = v31;
       v40 = 2048;
-      v41 = self;
+      selfCopy4 = self;
       v42 = 2114;
       v43 = @"BKHIDEventBuffer.m";
       v44 = 1024;
@@ -236,10 +236,10 @@ id __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke(uint64_t a
     JUMPOUT(0x223CEAB3CLL);
   }
 
-  v14 = v13;
-  v15 = [v11 senderDescriptor];
+  v14 = contextCopy;
+  senderDescriptor = [senderCopy senderDescriptor];
 
-  if (!v15)
+  if (!senderDescriptor)
   {
     v32 = [MEMORY[0x277CCACA8] stringWithFormat:@"Invalid condition not satisfying: %@", @"[sender senderDescriptor] != nil"];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -252,7 +252,7 @@ id __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke(uint64_t a
       v38 = 2114;
       v39 = v35;
       v40 = 2048;
-      v41 = self;
+      selfCopy4 = self;
       v42 = 2114;
       v43 = @"BKHIDEventBuffer.m";
       v44 = 1024;
@@ -285,9 +285,9 @@ id __49__BKHIDEventBuffer_appendDescriptionToFormatter___block_invoke(uint64_t a
   else
   {
     v16 = objc_alloc_init(BKBufferedEventEntry);
-    [(BKBufferedEventEntry *)v16 setEvent:a3];
-    [(BKBufferedEventEntry *)v16 setSender:v11];
-    [(BKBufferedEventEntry *)v16 setSequence:v12];
+    [(BKBufferedEventEntry *)v16 setEvent:event];
+    [(BKBufferedEventEntry *)v16 setSender:senderCopy];
+    [(BKBufferedEventEntry *)v16 setSequence:sequenceCopy];
     if (v14)
     {
       [(BKBufferedEventEntry *)v16 setAdditionalContext:v14];
@@ -308,16 +308,16 @@ LABEL_12:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BKHIDEventBuffer)initWithDispatchTarget:(id)a3
+- (BKHIDEventBuffer)initWithDispatchTarget:(id)target
 {
-  v5 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = BKHIDEventBuffer;
   v6 = [(BKHIDEventBuffer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchTarget, a3);
+    objc_storeStrong(&v6->_dispatchTarget, target);
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:256];
     buffer = v7->_buffer;
     v7->_buffer = v8;

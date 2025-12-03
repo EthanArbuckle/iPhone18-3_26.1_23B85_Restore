@@ -37,9 +37,9 @@
       [(MRBaseComponentHandler *)v3 setFollowUpInfoMessage:@"NFC_FOLLOWUP_INFO_IPAD"];
       [(MRBaseComponentHandler *)v3 setPopUpNotificationMessage:@"NFC_POPUP_INFO_IPAD"];
       v5 = objc_opt_new();
-      v6 = [v5 isSupportedIPad];
+      isSupportedIPad = [v5 isSupportedIPad];
 
-      if ((v6 & 1) == 0)
+      if ((isSupportedIPad & 1) == 0)
       {
         [(MRBaseComponentHandler *)v3 setUnlockCheckActivityRequired:0];
         [(MRBaseComponentHandler *)v3 setDisplayNotification:0];
@@ -64,7 +64,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000D8F0;
   block[3] = &unk_100018610;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001EB80 != -1)
   {
     dispatch_once(&qword_10001EB80, block);
@@ -78,7 +78,7 @@
 + (void)handleSUCase
 {
   v3 = objc_opt_new();
-  [a1 handleComponentSUCase:@"hasDisplayedFollowupForSHCNFC" lastAUthCheckBuildVersion:@"LastNFCAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.NFCRepair" queryString:@"NFC" suCasekey:@"SUcaseForNFC" startBuildVersion:@"19F1" componentAuth:v3];
+  [self handleComponentSUCase:@"hasDisplayedFollowupForSHCNFC" lastAUthCheckBuildVersion:@"LastNFCAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.NFCRepair" queryString:@"NFC" suCasekey:@"SUcaseForNFC" startBuildVersion:@"19F1" componentAuth:v3];
 }
 
 @end

@@ -1,94 +1,94 @@
 @interface WBSWebExtensionToolbarItem
-- (BOOL)hasUpdatedBadgeTextInTab:(id)a3;
-- (BOOL)isEnabledForTab:(id)a3;
-- (BOOL)shouldRequestAccessForTab:(id)a3;
+- (BOOL)hasUpdatedBadgeTextInTab:(id)tab;
+- (BOOL)isEnabledForTab:(id)tab;
+- (BOOL)shouldRequestAccessForTab:(id)tab;
 - (WBSWebExtensionData)webExtension;
-- (WBSWebExtensionToolbarItem)initWithWebExtension:(id)a3 extensionsController:(id)a4;
-- (id)badgeTextForTab:(id)a3;
-- (id)iconForTab:(id)a3;
-- (id)popupWebViewInspectionNameForAction:(id)a3;
-- (id)titleForTab:(id)a3;
-- (void)didViewBadgeInTab:(id)a3;
+- (WBSWebExtensionToolbarItem)initWithWebExtension:(id)extension extensionsController:(id)controller;
+- (id)badgeTextForTab:(id)tab;
+- (id)iconForTab:(id)tab;
+- (id)popupWebViewInspectionNameForAction:(id)action;
+- (id)titleForTab:(id)tab;
+- (void)didViewBadgeInTab:(id)tab;
 @end
 
 @implementation WBSWebExtensionToolbarItem
 
-- (WBSWebExtensionToolbarItem)initWithWebExtension:(id)a3 extensionsController:(id)a4
+- (WBSWebExtensionToolbarItem)initWithWebExtension:(id)extension extensionsController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  extensionCopy = extension;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = WBSWebExtensionToolbarItem;
   v8 = [(WBSWebExtensionToolbarItem *)&v17 init];
   if (v8)
   {
-    v9 = [v6 webKitContext];
-    v10 = [v9 actionForTab:0];
+    webKitContext = [extensionCopy webKitContext];
+    v10 = [webKitContext actionForTab:0];
 
-    v11 = [v6 toolbarImage];
+    toolbarImage = [extensionCopy toolbarImage];
     image = v8->_image;
-    v8->_image = v11;
+    v8->_image = toolbarImage;
 
-    v13 = [v10 label];
+    label = [v10 label];
     label = v8->_label;
-    v8->_label = v13;
+    v8->_label = label;
 
     v8->_enabled = [v10 isEnabled];
-    objc_storeWeak(&v8->_extensionsController, v7);
-    objc_storeWeak(&v8->_webExtension, v6);
+    objc_storeWeak(&v8->_extensionsController, controllerCopy);
+    objc_storeWeak(&v8->_webExtension, extensionCopy);
     v15 = v8;
   }
 
   return v8;
 }
 
-- (id)popupWebViewInspectionNameForAction:(id)a3
+- (id)popupWebViewInspectionNameForAction:(id)action
 {
-  v4 = [a3 popupWebView];
-  v5 = [v4 URL];
+  popupWebView = [action popupWebView];
+  v5 = [popupWebView URL];
 
   WeakRetained = objc_loadWeakRetained(&self->_webExtension);
   v7 = objc_loadWeakRetained(&self->_extensionsController);
   if ([v7 hasNamedProfiles])
   {
-    v8 = [v7 profile];
+    profile = [v7 profile];
     v9 = MEMORY[0x1E696AEC0];
-    v10 = _WBSLocalizedString();
-    v11 = [WeakRetained displayShortName];
-    v12 = [v8 title];
-    v13 = [v5 lastPathComponent];
-    v14 = [v9 stringWithFormat:v10, v11, v12, v13];
+    displayShortName2 = _WBSLocalizedString();
+    displayShortName = [WeakRetained displayShortName];
+    title = [profile title];
+    lastPathComponent = [v5 lastPathComponent];
+    v14 = [v9 stringWithFormat:displayShortName2, displayShortName, title, lastPathComponent];
   }
 
   else
   {
     v15 = MEMORY[0x1E696AEC0];
-    v8 = _WBSLocalizedString();
-    v10 = [WeakRetained displayShortName];
-    v11 = [v5 lastPathComponent];
-    v14 = [v15 stringWithFormat:v8, v10, v11];
+    profile = _WBSLocalizedString();
+    displayShortName2 = [WeakRetained displayShortName];
+    displayShortName = [v5 lastPathComponent];
+    v14 = [v15 stringWithFormat:profile, displayShortName2, displayShortName];
   }
 
   return v14;
 }
 
-- (id)badgeTextForTab:(id)a3
+- (id)badgeTextForTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   WeakRetained = objc_loadWeakRetained(&self->_webExtension);
-  v6 = [WeakRetained webKitContext];
-  v7 = [v6 actionForTab:v4];
-  v8 = [v7 badgeText];
+  webKitContext = [WeakRetained webKitContext];
+  v7 = [webKitContext actionForTab:tabCopy];
+  badgeText = [v7 badgeText];
 
-  return v8;
+  return badgeText;
 }
 
-- (void)didViewBadgeInTab:(id)a3
+- (void)didViewBadgeInTab:(id)tab
 {
-  v7 = a3;
+  tabCopy = tab;
   WeakRetained = objc_loadWeakRetained(&self->_webExtension);
-  v5 = [WeakRetained webKitContext];
-  v6 = [v5 actionForTab:v7];
+  webKitContext = [WeakRetained webKitContext];
+  v6 = [webKitContext actionForTab:tabCopy];
 
   if (objc_opt_respondsToSelector())
   {
@@ -96,88 +96,88 @@
   }
 }
 
-- (BOOL)hasUpdatedBadgeTextInTab:(id)a3
+- (BOOL)hasUpdatedBadgeTextInTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   WeakRetained = objc_loadWeakRetained(&self->_webExtension);
-  v6 = [WeakRetained webKitContext];
-  v7 = [v6 actionForTab:v4];
+  webKitContext = [WeakRetained webKitContext];
+  v7 = [webKitContext actionForTab:tabCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v7 hasUnreadBadgeText];
+    hasUnreadBadgeText = [v7 hasUnreadBadgeText];
   }
 
   else
   {
-    v8 = 0;
+    hasUnreadBadgeText = 0;
   }
 
-  return v8;
+  return hasUnreadBadgeText;
 }
 
-- (id)titleForTab:(id)a3
+- (id)titleForTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   WeakRetained = objc_loadWeakRetained(&self->_webExtension);
-  v6 = [WeakRetained webKitContext];
-  v7 = [v6 actionForTab:v4];
-  v8 = [v7 label];
+  webKitContext = [WeakRetained webKitContext];
+  v7 = [webKitContext actionForTab:tabCopy];
+  label = [v7 label];
 
-  return v8;
+  return label;
 }
 
-- (BOOL)isEnabledForTab:(id)a3
+- (BOOL)isEnabledForTab:(id)tab
 {
-  v4 = a3;
+  tabCopy = tab;
   WeakRetained = objc_loadWeakRetained(&self->_webExtension);
-  v6 = [WeakRetained webKitContext];
-  v7 = [v6 actionForTab:v4];
-  v8 = [v7 isEnabled];
+  webKitContext = [WeakRetained webKitContext];
+  v7 = [webKitContext actionForTab:tabCopy];
+  isEnabled = [v7 isEnabled];
 
-  return v8;
+  return isEnabled;
 }
 
-- (id)iconForTab:(id)a3
+- (id)iconForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(WBSWebExtensionToolbarItem *)self webExtension];
-  v6 = [v5 extensionsController];
-  v7 = [v6 toolbarItemIdealPointSize];
+  tabCopy = tab;
+  webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+  extensionsController = [webExtension extensionsController];
+  toolbarItemIdealPointSize = [extensionsController toolbarItemIdealPointSize];
 
   WeakRetained = objc_loadWeakRetained(&self->_webExtension);
-  v9 = [WeakRetained webKitContext];
-  v10 = [v9 actionForTab:v4];
-  v11 = [v10 iconForSize:{v7, v7}];
+  webKitContext = [WeakRetained webKitContext];
+  v10 = [webKitContext actionForTab:tabCopy];
+  v11 = [v10 iconForSize:{toolbarItemIdealPointSize, toolbarItemIdealPointSize}];
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    toolbarImage = v11;
   }
 
   else
   {
-    v13 = [v5 toolbarImage];
+    toolbarImage = [webExtension toolbarImage];
   }
 
-  v14 = v13;
+  v14 = toolbarImage;
 
   return v14;
 }
 
-- (BOOL)shouldRequestAccessForTab:(id)a3
+- (BOOL)shouldRequestAccessForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [v4 urlForExtensions];
-  if ([v5 safari_isHTTPFamilyURL])
+  tabCopy = tab;
+  urlForExtensions = [tabCopy urlForExtensions];
+  if ([urlForExtensions safari_isHTTPFamilyURL])
   {
-    v6 = [(WBSWebExtensionToolbarItem *)self webExtension];
-    v7 = [MEMORY[0x1E69C88C8] sharedController];
-    v8 = [v5 host];
-    v9 = [v6 composedIdentifier];
-    v10 = [v7 domainIsManaged:v8 forComposedIdentifier:v9];
+    webExtension = [(WBSWebExtensionToolbarItem *)self webExtension];
+    mEMORY[0x1E69C88C8] = [MEMORY[0x1E69C88C8] sharedController];
+    host = [urlForExtensions host];
+    composedIdentifier = [webExtension composedIdentifier];
+    v10 = [mEMORY[0x1E69C88C8] domainIsManaged:host forComposedIdentifier:composedIdentifier];
 
-    v11 = (v10 & 1) == 0 && ([v6 permissionStateForURL:v5 inTab:v4] + 1) < 2;
+    v11 = (v10 & 1) == 0 && ([webExtension permissionStateForURL:urlForExtensions inTab:tabCopy] + 1) < 2;
   }
 
   else

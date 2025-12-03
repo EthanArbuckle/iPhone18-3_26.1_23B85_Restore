@@ -1,28 +1,28 @@
 @interface CNAvatarCardHighlightView
 - (BOOL)highlighted;
-- (CNAvatarCardHighlightView)initWithFrame:(CGRect)a3;
+- (CNAvatarCardHighlightView)initWithFrame:(CGRect)frame;
 - (UIColor)highlightColor;
 - (void)_commonInit;
 - (void)awakeFromNib;
 - (void)layoutSubviews;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
 @end
 
 @implementation CNAvatarCardHighlightView
 
 - (BOOL)highlighted
 {
-  v2 = [(CNAvatarCardHighlightView *)self highlightLayer];
-  [v2 opacity];
+  highlightLayer = [(CNAvatarCardHighlightView *)self highlightLayer];
+  [highlightLayer opacity];
   v4 = v3 > 0.0;
 
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  if (a3)
+  if (highlighted)
   {
     v4 = 1.0;
   }
@@ -32,24 +32,24 @@
     v4 = 0.0;
   }
 
-  v6 = [(CNAvatarCardHighlightView *)self highlightLayer];
+  highlightLayer = [(CNAvatarCardHighlightView *)self highlightLayer];
   *&v5 = v4;
-  [v6 setOpacity:v5];
+  [highlightLayer setOpacity:v5];
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
-  v7 = [(CNAvatarCardHighlightView *)self highlightLayer];
-  [v7 setBackgroundColor:v6];
+  colorCopy = color;
+  cGColor = [color CGColor];
+  highlightLayer = [(CNAvatarCardHighlightView *)self highlightLayer];
+  [highlightLayer setBackgroundColor:cGColor];
 }
 
 - (UIColor)highlightColor
 {
   v2 = MEMORY[0x1E69DC888];
-  v3 = [(CNAvatarCardHighlightView *)self highlightLayer];
-  v4 = [v2 colorWithCGColor:{objc_msgSend(v3, "backgroundColor")}];
+  highlightLayer = [(CNAvatarCardHighlightView *)self highlightLayer];
+  v4 = [v2 colorWithCGColor:{objc_msgSend(highlightLayer, "backgroundColor")}];
 
   return v4;
 }
@@ -59,14 +59,14 @@
   v13.receiver = self;
   v13.super_class = CNAvatarCardHighlightView;
   [(CNAvatarCardHighlightView *)&v13 layoutSubviews];
-  v3 = [(CNAvatarCardHighlightView *)self layer];
-  [v3 bounds];
+  layer = [(CNAvatarCardHighlightView *)self layer];
+  [layer bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CNAvatarCardHighlightView *)self highlightLayer];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  highlightLayer = [(CNAvatarCardHighlightView *)self highlightLayer];
+  [highlightLayer setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)awakeFromNib
@@ -77,23 +77,23 @@
   [(CNAvatarCardHighlightView *)self _commonInit];
 }
 
-- (CNAvatarCardHighlightView)initWithFrame:(CGRect)a3
+- (CNAvatarCardHighlightView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = CNAvatarCardHighlightView;
-  v3 = [(CNAvatarCardHighlightView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CNAvatarCardHighlightView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(CNAvatarCardHighlightView *)v3 _commonInit];
   return v3;
 }
 
 - (void)_commonInit
 {
-  v3 = [MEMORY[0x1E6979398] layer];
-  [(CNAvatarCardHighlightView *)self setHighlightLayer:v3];
+  layer = [MEMORY[0x1E6979398] layer];
+  [(CNAvatarCardHighlightView *)self setHighlightLayer:layer];
 
-  v4 = [(CNAvatarCardHighlightView *)self layer];
-  v5 = [(CNAvatarCardHighlightView *)self highlightLayer];
-  [v4 insertSublayer:v5 atIndex:0];
+  layer2 = [(CNAvatarCardHighlightView *)self layer];
+  highlightLayer = [(CNAvatarCardHighlightView *)self highlightLayer];
+  [layer2 insertSublayer:highlightLayer atIndex:0];
 
   v6 = +[CNUIColorRepository navigationListCellBackgroundHighlightedColorRegular];
   [(CNAvatarCardHighlightView *)self setHighlightColor:v6];

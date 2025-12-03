@@ -2,7 +2,7 @@
 + (BOOL)didAcceptRestrictedDistributionTerms;
 + (BOOL)mustAcceptRestrictedDistributionTerms;
 + (NSArray)restrictedStickerIdentifiers;
-+ (void)presentRestrictedDistributionTermsAlertIfNecessaryFor:(id)a3 isInPopover:(BOOL)a4 completion:(id)a5;
++ (void)presentRestrictedDistributionTermsAlertIfNecessaryFor:(id)for isInPopover:(BOOL)popover completion:(id)completion;
 - (STKRestrictedDistributionManager)init;
 @end
 
@@ -38,9 +38,9 @@
   return v2 & 1;
 }
 
-+ (void)presentRestrictedDistributionTermsAlertIfNecessaryFor:(id)a3 isInPopover:(BOOL)a4 completion:(id)a5
++ (void)presentRestrictedDistributionTermsAlertIfNecessaryFor:(id)for isInPopover:(BOOL)popover completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -54,8 +54,8 @@
   }
 
   swift_getObjCClassMetadata();
-  v9 = a3;
-  static RestrictedDistributionManager.presentRestrictedDistributionTermsAlertIfNecessary(for:isInPopover:completion:)(v9, a4, v7, v8);
+  forCopy = for;
+  static RestrictedDistributionManager.presentRestrictedDistributionTermsAlertIfNecessary(for:isInPopover:completion:)(forCopy, popover, v7, v8);
   sub_19A60126C(v7);
 }
 

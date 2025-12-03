@@ -1,56 +1,56 @@
 @interface ZWZoomLensViewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)shouldPanZoomContentForAxis:(int64_t)a3 delta:(CGPoint)a4 edgeMask:(unint64_t)a5;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)shouldPanZoomContentForAxis:(int64_t)axis delta:(CGPoint)delta edgeMask:(unint64_t)mask;
 - (CGPoint)_lensDragMultiplier;
 - (CGPoint)dummyScrollViewDefaultOffset;
 - (CGPoint)dummyScrollViewOffsetForSlug;
-- (CGPoint)maximumPanOffsetWithZoomFactor:(double)a3;
-- (CGPoint)offsetByPanningToPoint:(CGPoint)a3 zoomFactor:(double)a4;
-- (CGPoint)offsetByPanningToRect:(CGRect)a3 zoomFactor:(double)a4;
-- (CGPoint)offsetByPanningWithDelta:(CGPoint)a3 axis:(int64_t)a4 zoomFactor:(double)a5;
-- (CGPoint)offsetIgnoringValidOffsetConstraintsByPanningToRect:(CGRect)a3 zoomFacotr:(double)a4;
-- (CGPoint)offsetIgnoringValidOffsetConstraintsByPanningWithDelta:(CGPoint)a3 axis:(int64_t)a4 zoomFacotr:(double)a5;
-- (CGPoint)validPanOffsetForProposedOffset:(CGPoint)a3 proposedZoomFactor:(double)a4;
+- (CGPoint)maximumPanOffsetWithZoomFactor:(double)factor;
+- (CGPoint)offsetByPanningToPoint:(CGPoint)point zoomFactor:(double)factor;
+- (CGPoint)offsetByPanningToRect:(CGRect)rect zoomFactor:(double)factor;
+- (CGPoint)offsetByPanningWithDelta:(CGPoint)delta axis:(int64_t)axis zoomFactor:(double)factor;
+- (CGPoint)offsetIgnoringValidOffsetConstraintsByPanningToRect:(CGRect)rect zoomFacotr:(double)facotr;
+- (CGPoint)offsetIgnoringValidOffsetConstraintsByPanningWithDelta:(CGPoint)delta axis:(int64_t)axis zoomFacotr:(double)facotr;
+- (CGPoint)validPanOffsetForProposedOffset:(CGPoint)offset proposedZoomFactor:(double)factor;
 - (CGPoint)zoomPanOffset;
 - (CGSize)dummyScrollViewContentSize;
 - (NSString)identifier;
 - (UIScreen)screen;
-- (ZWZoomLensViewController)initWithZoomFactor:(double)a3 zoomPanOffset:(CGPoint)a4 lensEffect:(id)a5 screen:(id)a6;
+- (ZWZoomLensViewController)initWithZoomFactor:(double)factor zoomPanOffset:(CGPoint)offset lensEffect:(id)effect screen:(id)screen;
 - (ZWZoomLensViewControllerDelegate)delegate;
 - (id)dummyScrollViewPanGestureRecognizer;
-- (void)_handleLongPress:(id)a3;
-- (void)_updateLensChromeVisibility:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_handleLongPress:(id)press;
+- (void)_updateLensChromeVisibility:(BOOL)visibility animated:(BOOL)animated completion:(id)completion;
 - (void)dealloc;
 - (void)loadView;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setInStandbyMode:(BOOL)a3;
-- (void)updateLensEffect:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)updateStandbyMode:(BOOL)a3 zoomFactor:(double)a4 panOffset:(CGPoint)a5 lensEffect:(id)a6 animated:(BOOL)a7 completion:(id)a8;
-- (void)updateZoomFactor:(double)a3 panOffset:(CGPoint)a4 animated:(BOOL)a5 animationDuration:(double)a6 completion:(id)a7;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setInStandbyMode:(BOOL)mode;
+- (void)updateLensEffect:(id)effect animated:(BOOL)animated completion:(id)completion;
+- (void)updateStandbyMode:(BOOL)mode zoomFactor:(double)factor panOffset:(CGPoint)offset lensEffect:(id)effect animated:(BOOL)animated completion:(id)completion;
+- (void)updateZoomFactor:(double)factor panOffset:(CGPoint)offset animated:(BOOL)animated animationDuration:(double)duration completion:(id)completion;
 - (void)viewDidLoad;
 @end
 
 @implementation ZWZoomLensViewController
 
-- (ZWZoomLensViewController)initWithZoomFactor:(double)a3 zoomPanOffset:(CGPoint)a4 lensEffect:(id)a5 screen:(id)a6
+- (ZWZoomLensViewController)initWithZoomFactor:(double)factor zoomPanOffset:(CGPoint)offset lensEffect:(id)effect screen:(id)screen
 {
-  y = a4.y;
-  x = a4.x;
-  v11 = a5;
-  v12 = a6;
+  y = offset.y;
+  x = offset.x;
+  effectCopy = effect;
+  screenCopy = screen;
   v25.receiver = self;
   v25.super_class = ZWZoomLensViewController;
   v13 = [(ZWZoomLensViewController *)&v25 initWithNibName:0 bundle:0];
   v14 = v13;
   if (v13)
   {
-    [(ZWZoomLensViewController *)v13 setZoomFactor:a3];
+    [(ZWZoomLensViewController *)v13 setZoomFactor:factor];
     [(ZWZoomLensViewController *)v14 setZoomPanOffset:x, y];
-    [(ZWZoomLensViewController *)v14 setLensEffect:v11];
-    [(ZWZoomLensViewController *)v14 setScreen:v12];
+    [(ZWZoomLensViewController *)v14 setLensEffect:effectCopy];
+    [(ZWZoomLensViewController *)v14 setScreen:screenCopy];
     v14->_inStandbyMode = 1;
     v23[0] = 0;
     v23[1] = v23;
@@ -107,35 +107,35 @@ void __79__ZWZoomLensViewController_initWithZoomFactor_zoomPanOffset_lensEffect_
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v8 = [(ZWLensZoomView *)v4 initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ZWZoomLensViewController *)self setLensZoomView:v8];
-  [(ZWLensRootView *)v24 addSubview:v8];
+  height = [(ZWLensZoomView *)v4 initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ZWZoomLensViewController *)self setLensZoomView:height];
+  [(ZWLensRootView *)v24 addSubview:height];
   v9 = +[AXSettings sharedInstance];
-  v10 = [v9 zoomCurrentLensEffect];
-  [(ZWLensZoomView *)v8 updateLensEffect:v10 animated:0 completion:0];
+  zoomCurrentLensEffect = [v9 zoomCurrentLensEffect];
+  [(ZWLensZoomView *)height updateLensEffect:zoomCurrentLensEffect animated:0 completion:0];
 
-  [(ZWLensZoomView *)v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [[ZWCancelButtonTouchesScrollView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(ZWLensRootView *)v24 addSubview:v11];
-  [(ZWCancelButtonTouchesScrollView *)v11 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(ZWCancelButtonTouchesScrollView *)v11 setCanCancelContentTouches:1];
-  [(ZWCancelButtonTouchesScrollView *)v11 setContentInsetAdjustmentBehavior:2];
+  [(ZWLensZoomView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
+  height2 = [[ZWCancelButtonTouchesScrollView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(ZWLensRootView *)v24 addSubview:height2];
+  [(ZWCancelButtonTouchesScrollView *)height2 setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(ZWCancelButtonTouchesScrollView *)height2 setCanCancelContentTouches:1];
+  [(ZWCancelButtonTouchesScrollView *)height2 setContentInsetAdjustmentBehavior:2];
   LODWORD(v12) = AXResistAllCompressingAndStretching[0];
   LODWORD(v13) = AXResistAllCompressingAndStretching[1];
   LODWORD(v14) = AXResistAllCompressingAndStretching[2];
   LODWORD(v15) = AXResistAllCompressingAndStretching[3];
-  [(ZWCancelButtonTouchesScrollView *)v11 ax_setContentHuggingAndCompressionResistance:v12, v13, v14, v15];
-  v16 = [(ZWCancelButtonTouchesScrollView *)v11 ax_pinConstraintsInAllDimensionsToView:v24];
-  [(ZWZoomLensViewController *)self setDummyScrollView:v11];
-  [(ZWCancelButtonTouchesScrollView *)v11 setDelegate:self];
+  [(ZWCancelButtonTouchesScrollView *)height2 ax_setContentHuggingAndCompressionResistance:v12, v13, v14, v15];
+  v16 = [(ZWCancelButtonTouchesScrollView *)height2 ax_pinConstraintsInAllDimensionsToView:v24];
+  [(ZWZoomLensViewController *)self setDummyScrollView:height2];
+  [(ZWCancelButtonTouchesScrollView *)height2 setDelegate:self];
   [(ZWZoomLensViewController *)self dummyScrollViewContentSize];
-  [(ZWCancelButtonTouchesScrollView *)v11 setContentSize:?];
+  [(ZWCancelButtonTouchesScrollView *)height2 setContentSize:?];
   [(ZWZoomLensViewController *)self dummyScrollViewDefaultOffset];
-  [(ZWCancelButtonTouchesScrollView *)v11 setContentOffset:?];
-  [(ZWCancelButtonTouchesScrollView *)v11 setBounces:0];
-  [(ZWCancelButtonTouchesScrollView *)v11 setHidden:1];
-  v17 = [(ZWCancelButtonTouchesScrollView *)v11 panGestureRecognizer];
-  [(ZWLensRootView *)v24 addGestureRecognizer:v17];
+  [(ZWCancelButtonTouchesScrollView *)height2 setContentOffset:?];
+  [(ZWCancelButtonTouchesScrollView *)height2 setBounces:0];
+  [(ZWCancelButtonTouchesScrollView *)height2 setHidden:1];
+  panGestureRecognizer = [(ZWCancelButtonTouchesScrollView *)height2 panGestureRecognizer];
+  [(ZWLensRootView *)v24 addGestureRecognizer:panGestureRecognizer];
 
   v18 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"_handleLongPress:"];
   [(ZWZoomLensViewController *)self setLongPressGestureRecognizer:v18];
@@ -156,8 +156,8 @@ void __79__ZWZoomLensViewController_initWithZoomFactor_zoomPanOffset_lensEffect_
 - (void)dealloc
 {
   v3 = +[AXSpringBoardServer server];
-  v4 = [(ZWZoomLensViewController *)self screenshotActionHandlerIdentifier];
-  [v3 removeActionHandler:v4];
+  screenshotActionHandlerIdentifier = [(ZWZoomLensViewController *)self screenshotActionHandlerIdentifier];
+  [v3 removeActionHandler:screenshotActionHandlerIdentifier];
 
   v5.receiver = self;
   v5.super_class = ZWZoomLensViewController;
@@ -172,13 +172,13 @@ void __79__ZWZoomLensViewController_initWithZoomFactor_zoomPanOffset_lensEffect_
   [(ZWZoomLensViewController *)self _applyInitialLayoutConstraints];
 }
 
-- (void)updateZoomFactor:(double)a3 panOffset:(CGPoint)a4 animated:(BOOL)a5 animationDuration:(double)a6 completion:(id)a7
+- (void)updateZoomFactor:(double)factor panOffset:(CGPoint)offset animated:(BOOL)animated animationDuration:(double)duration completion:(id)completion
 {
-  v8 = a5;
-  y = a4.y;
-  x = a4.x;
-  v17 = a7;
-  [(ZWZoomLensViewController *)self setZoomFactor:a3];
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  completionCopy = completion;
+  [(ZWZoomLensViewController *)self setZoomFactor:factor];
   [(ZWZoomLensViewController *)self setZoomPanOffset:x, y];
   [(ZWZoomLensViewController *)self zoomFactor];
   if (vabdd_f64(v13, AXZoomMinimumZoomLevel) <= 0.0001 && [(ZWZoomLensViewController *)self _minimumZoomIndistinguishableFromStandbyMode])
@@ -186,78 +186,78 @@ void __79__ZWZoomLensViewController_initWithZoomFactor_zoomPanOffset_lensEffect_
     [(ZWZoomLensViewController *)self setInStandbyMode:1];
   }
 
-  v14 = [(ZWZoomLensViewController *)self lensZoomView];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
 
-  if (v14)
+  if (lensZoomView)
   {
-    v15 = [(ZWZoomLensViewController *)self lensZoomView];
-    [v15 updateZoomPanOffset:-[ZWZoomLensViewController _shouldRoundLensCorners](self zoomFactor:"_shouldRoundLensCorners") roundedLensCorners:v8 animated:v17 animationDuration:x completion:{y, a3, a6}];
+    lensZoomView2 = [(ZWZoomLensViewController *)self lensZoomView];
+    [lensZoomView2 updateZoomPanOffset:-[ZWZoomLensViewController _shouldRoundLensCorners](self zoomFactor:"_shouldRoundLensCorners") roundedLensCorners:animatedCopy animated:completionCopy animationDuration:x completion:{y, factor, duration}];
   }
 
   else
   {
-    v16 = v17;
-    if (!v17)
+    v16 = completionCopy;
+    if (!completionCopy)
     {
       goto LABEL_9;
     }
 
-    (*(v17 + 2))(v17);
+    (*(completionCopy + 2))(completionCopy);
   }
 
-  v16 = v17;
+  v16 = completionCopy;
 LABEL_9:
 }
 
-- (void)updateLensEffect:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)updateLensEffect:(id)effect animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v11 = a3;
-  v8 = a5;
-  [(ZWZoomLensViewController *)self setLensEffect:v11];
-  v9 = [(ZWZoomLensViewController *)self lensZoomView];
+  animatedCopy = animated;
+  effectCopy = effect;
+  completionCopy = completion;
+  [(ZWZoomLensViewController *)self setLensEffect:effectCopy];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
 
-  if (v9)
+  if (lensZoomView)
   {
-    v10 = [(ZWZoomLensViewController *)self lensZoomView];
-    [v10 updateLensEffect:v11 animated:v6 completion:v8];
+    lensZoomView2 = [(ZWZoomLensViewController *)self lensZoomView];
+    [lensZoomView2 updateLensEffect:effectCopy animated:animatedCopy completion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)setInStandbyMode:(BOOL)a3
+- (void)setInStandbyMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   inStandbyMode = self->_inStandbyMode;
-  self->_inStandbyMode = a3;
+  self->_inStandbyMode = mode;
   v6 = +[ZWCoalescedSettings sharedInstance];
-  [v6 setZoomInStandby:v3];
+  [v6 setZoomInStandby:modeCopy];
 
-  if (inStandbyMode != v3)
+  if (inStandbyMode != modeCopy)
   {
-    v7 = [(ZWZoomLensViewController *)self delegate];
-    [v7 zoomLensViewControllerDidChangeStandbyMode:self];
+    delegate = [(ZWZoomLensViewController *)self delegate];
+    [delegate zoomLensViewControllerDidChangeStandbyMode:self];
   }
 
-  v9 = [(ZWZoomLensViewController *)self dummyScrollView];
-  v8 = [(ZWZoomLensViewController *)self dummyScrollView];
-  [v8 contentOffset];
-  [v9 setContentOffset:0 animated:?];
+  dummyScrollView = [(ZWZoomLensViewController *)self dummyScrollView];
+  dummyScrollView2 = [(ZWZoomLensViewController *)self dummyScrollView];
+  [dummyScrollView2 contentOffset];
+  [dummyScrollView setContentOffset:0 animated:?];
 }
 
-- (void)updateStandbyMode:(BOOL)a3 zoomFactor:(double)a4 panOffset:(CGPoint)a5 lensEffect:(id)a6 animated:(BOOL)a7 completion:(id)a8
+- (void)updateStandbyMode:(BOOL)mode zoomFactor:(double)factor panOffset:(CGPoint)offset lensEffect:(id)effect animated:(BOOL)animated completion:(id)completion
 {
-  v9 = a7;
-  y = a5.y;
-  x = a5.x;
-  v13 = a3;
-  v15 = a6;
-  v16 = a8;
-  if (v16)
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  modeCopy = mode;
+  effectCopy = effect;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v17 = ZOOMLogCommon();
     if (os_signpost_enabled(v17))
@@ -267,21 +267,21 @@ LABEL_9:
     }
   }
 
-  if (vabdd_f64(a4, AXZoomMinimumZoomLevel) <= 0.0001)
+  if (vabdd_f64(factor, AXZoomMinimumZoomLevel) <= 0.0001)
   {
-    v13 = [(ZWZoomLensViewController *)self _minimumZoomIndistinguishableFromStandbyMode]| v13;
+    modeCopy = [(ZWZoomLensViewController *)self _minimumZoomIndistinguishableFromStandbyMode]| modeCopy;
   }
 
-  [(ZWZoomLensViewController *)self setInStandbyMode:v13];
-  [(ZWZoomLensViewController *)self setZoomFactor:a4];
+  [(ZWZoomLensViewController *)self setInStandbyMode:modeCopy];
+  [(ZWZoomLensViewController *)self setZoomFactor:factor];
   [(ZWZoomLensViewController *)self setZoomPanOffset:x, y];
-  [(ZWZoomLensViewController *)self setLensEffect:v15];
-  v18 = [(ZWZoomLensViewController *)self standbyFinishedTransitioningUnitTestCallback];
+  [(ZWZoomLensViewController *)self setLensEffect:effectCopy];
+  standbyFinishedTransitioningUnitTestCallback = [(ZWZoomLensViewController *)self standbyFinishedTransitioningUnitTestCallback];
 
-  if (!v18)
+  if (!standbyFinishedTransitioningUnitTestCallback)
   {
 LABEL_10:
-    if (!v9)
+    if (!animatedCopy)
     {
       goto LABEL_12;
     }
@@ -289,53 +289,53 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (v16)
+  if (completionCopy)
   {
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensEffect_animated_completion___block_invoke;
     v39[3] = &unk_79040;
     v39[4] = self;
-    v40 = v16;
-    v16 = objc_retainBlock(v39);
+    v40 = completionCopy;
+    completionCopy = objc_retainBlock(v39);
 
     goto LABEL_10;
   }
 
-  v16 = [(ZWZoomLensViewController *)self standbyFinishedTransitioningUnitTestCallback];
-  if (v9)
+  completionCopy = [(ZWZoomLensViewController *)self standbyFinishedTransitioningUnitTestCallback];
+  if (animatedCopy)
   {
 LABEL_11:
-    v19 = [(ZWZoomLensViewController *)self delegate];
-    [v19 didStartAnimation];
+    delegate = [(ZWZoomLensViewController *)self delegate];
+    [delegate didStartAnimation];
   }
 
 LABEL_12:
-  if (v16)
+  if (completionCopy)
   {
     v37[0] = _NSConcreteStackBlock;
     v37[1] = 3221225472;
     v37[2] = __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensEffect_animated_completion___block_invoke_2;
     v37[3] = &unk_79040;
     v37[4] = self;
-    v38 = v16;
-    v16 = objc_retainBlock(v37);
+    v38 = completionCopy;
+    completionCopy = objc_retainBlock(v37);
   }
 
-  v20 = [(ZWZoomLensViewController *)self view];
-  v21 = [v20 window];
+  view = [(ZWZoomLensViewController *)self view];
+  window = [view window];
 
-  if (v21)
+  if (window)
   {
-    v22 = [(ZWZoomLensViewController *)self view];
-    [v22 layoutIfNeeded];
+    view2 = [(ZWZoomLensViewController *)self view];
+    [view2 layoutIfNeeded];
   }
 
-  if (v13)
+  if (modeCopy)
   {
-    v23 = [(ZWZoomLensViewController *)self _shouldDisableLensEffectsForStandbyMode];
-    v24 = [(ZWZoomLensViewController *)self lensZoomView];
-    if (v23)
+    _shouldDisableLensEffectsForStandbyMode = [(ZWZoomLensViewController *)self _shouldDisableLensEffectsForStandbyMode];
+    lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+    if (_shouldDisableLensEffectsForStandbyMode)
     {
       v25 = AXZoomLensEffectNone;
       v34[0] = _NSConcreteStackBlock;
@@ -343,10 +343,10 @@ LABEL_12:
       v34[2] = __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensEffect_animated_completion___block_invoke_303;
       v34[3] = &unk_78F80;
       v34[4] = self;
-      v36 = v9;
+      v36 = animatedCopy;
       v26 = &v35;
-      v35 = v16;
-      [v24 updateLensEffect:v25 animated:v9 completion:v34];
+      v35 = completionCopy;
+      [lensZoomView updateLensEffect:v25 animated:animatedCopy completion:v34];
     }
 
     else
@@ -357,26 +357,26 @@ LABEL_12:
       v31[2] = __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensEffect_animated_completion___block_invoke_4;
       v31[3] = &unk_78F80;
       v31[4] = self;
-      v33 = v9;
+      v33 = animatedCopy;
       v26 = &v32;
-      v32 = v16;
-      [v24 updateZoomPanOffset:0 zoomFactor:v9 roundedLensCorners:v31 animated:CGPointZero.x animationDuration:CGPointZero.y completion:{v27, -1.0}];
+      v32 = completionCopy;
+      [lensZoomView updateZoomPanOffset:0 zoomFactor:animatedCopy roundedLensCorners:v31 animated:CGPointZero.x animationDuration:CGPointZero.y completion:{v27, -1.0}];
     }
   }
 
   else
   {
-    [(ZWZoomLensViewController *)self _updateLensChromeVisibility:1 animated:v9 completion:0];
-    v24 = [(ZWZoomLensViewController *)self delegate];
+    [(ZWZoomLensViewController *)self _updateLensChromeVisibility:1 animated:animatedCopy completion:0];
+    lensZoomView = [(ZWZoomLensViewController *)self delegate];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensEffect_animated_completion___block_invoke_6;
     v28[3] = &unk_78F80;
     v28[4] = self;
-    v30 = v9;
+    v30 = animatedCopy;
     v26 = &v29;
-    v29 = v16;
-    [v24 zoomLensViewControllerUpdateUIForStandby:self completion:v28];
+    v29 = completionCopy;
+    [lensZoomView zoomLensViewControllerUpdateUIForStandby:self completion:v28];
   }
 }
 
@@ -492,25 +492,25 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
   return result;
 }
 
-- (void)_updateLensChromeVisibility:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_updateLensChromeVisibility:(BOOL)visibility animated:(BOOL)animated completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 
-- (BOOL)shouldPanZoomContentForAxis:(int64_t)a3 delta:(CGPoint)a4 edgeMask:(unint64_t)a5
+- (BOOL)shouldPanZoomContentForAxis:(int64_t)axis delta:(CGPoint)delta edgeMask:(unint64_t)mask
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
+  maskCopy = mask;
+  y = delta.y;
+  x = delta.x;
   [(ZWZoomLensViewController *)self zoomPanOffset];
-  if (a3 == 2)
+  if (axis == 2)
   {
-    if ((v5 & 8) == 0 || (result = 1, x >= 0.0) && x + v9 > 0.0)
+    if ((maskCopy & 8) == 0 || (result = 1, x >= 0.0) && x + v9 > 0.0)
     {
-      if ((v5 & 2) != 0)
+      if ((maskCopy & 2) != 0)
       {
         v12 = x > 0.0;
         v13 = x + v9;
@@ -521,9 +521,9 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
     }
   }
 
-  else if ((v5 & 1) == 0 || (result = 1, y >= 0.0) && y + v10 > 0.0)
+  else if ((maskCopy & 1) == 0 || (result = 1, y >= 0.0) && y + v10 > 0.0)
   {
-    if ((v5 & 4) != 0)
+    if ((maskCopy & 4) != 0)
     {
       v12 = y > 0.0;
       v13 = y + v10;
@@ -536,11 +536,11 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
   return result;
 }
 
-- (CGPoint)offsetIgnoringValidOffsetConstraintsByPanningWithDelta:(CGPoint)a3 axis:(int64_t)a4 zoomFacotr:(double)a5
+- (CGPoint)offsetIgnoringValidOffsetConstraintsByPanningWithDelta:(CGPoint)delta axis:(int64_t)axis zoomFacotr:(double)facotr
 {
-  if ((a4 & 2) != 0)
+  if ((axis & 2) != 0)
   {
-    x = a3.x;
+    x = delta.x;
   }
 
   else
@@ -548,9 +548,9 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
     x = 0.0;
   }
 
-  if ((a4 & 4) != 0)
+  if ((axis & 4) != 0)
   {
-    y = a3.y;
+    y = delta.y;
   }
 
   else
@@ -558,7 +558,7 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
     y = 0.0;
   }
 
-  [(ZWZoomLensViewController *)self zoomPanOffset:a3.x];
+  [(ZWZoomLensViewController *)self zoomPanOffset:delta.x];
   v9 = x + v8;
   [(ZWZoomLensViewController *)self zoomPanOffset];
   v11 = y + v10;
@@ -568,20 +568,20 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
   return result;
 }
 
-- (CGPoint)offsetByPanningWithDelta:(CGPoint)a3 axis:(int64_t)a4 zoomFactor:(double)a5
+- (CGPoint)offsetByPanningWithDelta:(CGPoint)delta axis:(int64_t)axis zoomFactor:(double)factor
 {
-  v5 = a4;
-  [(ZWZoomLensViewController *)self offsetIgnoringValidOffsetConstraintsByPanningWithDelta:a3.x axis:a3.y zoomFacotr:?];
+  axisCopy = axis;
+  [(ZWZoomLensViewController *)self offsetIgnoringValidOffsetConstraintsByPanningWithDelta:delta.x axis:delta.y zoomFacotr:?];
   [ZWZoomLensViewController validPanOffsetForProposedOffset:"validPanOffsetForProposedOffset:proposedZoomFactor:" proposedZoomFactor:?];
   v8 = v7;
   v10 = v9;
   [(ZWZoomLensViewController *)self zoomPanOffset];
-  if ((v5 & 2) != 0)
+  if ((axisCopy & 2) != 0)
   {
     v11 = v8;
   }
 
-  if ((v5 & 4) != 0)
+  if ((axisCopy & 4) != 0)
   {
     v12 = v10;
   }
@@ -591,21 +591,21 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
   return result;
 }
 
-- (CGPoint)offsetByPanningToPoint:(CGPoint)a3 zoomFactor:(double)a4
+- (CGPoint)offsetByPanningToPoint:(CGPoint)point zoomFactor:(double)factor
 {
-  [(ZWZoomLensViewController *)self offsetByPanningToRect:a3.x zoomFactor:a3.y, 0.0, 0.0, a4];
+  [(ZWZoomLensViewController *)self offsetByPanningToRect:point.x zoomFactor:point.y, 0.0, 0.0, factor];
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)offsetIgnoringValidOffsetConstraintsByPanningToRect:(CGRect)a3 zoomFacotr:(double)a4
+- (CGPoint)offsetIgnoringValidOffsetConstraintsByPanningToRect:(CGRect)rect zoomFacotr:(double)facotr
 {
   AX_CGRectGetCenter();
   v6 = v5;
   v8 = v7;
-  v9 = [(ZWZoomLensViewController *)self view];
-  [v9 frame];
+  view = [(ZWZoomLensViewController *)self view];
+  [view frame];
   AX_CGRectGetCenter();
   v11 = v10;
   v13 = v12;
@@ -617,9 +617,9 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
   return result;
 }
 
-- (CGPoint)offsetByPanningToRect:(CGRect)a3 zoomFactor:(double)a4
+- (CGPoint)offsetByPanningToRect:(CGRect)rect zoomFactor:(double)factor
 {
-  [(ZWZoomLensViewController *)self offsetIgnoringValidOffsetConstraintsByPanningToRect:a3.origin.x zoomFacotr:a3.origin.y, a3.size.width, a3.size.height];
+  [(ZWZoomLensViewController *)self offsetIgnoringValidOffsetConstraintsByPanningToRect:rect.origin.x zoomFacotr:rect.origin.y, rect.size.width, rect.size.height];
 
   [ZWZoomLensViewController validPanOffsetForProposedOffset:"validPanOffsetForProposedOffset:proposedZoomFactor:" proposedZoomFactor:?];
   result.y = v6;
@@ -627,11 +627,11 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
   return result;
 }
 
-- (CGPoint)validPanOffsetForProposedOffset:(CGPoint)a3 proposedZoomFactor:(double)a4
+- (CGPoint)validPanOffsetForProposedOffset:(CGPoint)offset proposedZoomFactor:(double)factor
 {
-  y = a3.y;
-  x = a3.x;
-  [(ZWZoomLensViewController *)self maximumPanOffsetWithZoomFactor:a4];
+  y = offset.y;
+  x = offset.x;
+  [(ZWZoomLensViewController *)self maximumPanOffsetWithZoomFactor:factor];
   v8 = -v6;
   if (x >= -v6)
   {
@@ -661,10 +661,10 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
 
 - (id)dummyScrollViewPanGestureRecognizer
 {
-  v2 = [(ZWZoomLensViewController *)self dummyScrollView];
-  v3 = [v2 panGestureRecognizer];
+  dummyScrollView = [(ZWZoomLensViewController *)self dummyScrollView];
+  panGestureRecognizer = [dummyScrollView panGestureRecognizer];
 
-  return v3;
+  return panGestureRecognizer;
 }
 
 - (CGSize)dummyScrollViewContentSize
@@ -690,8 +690,8 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
   [(ZWZoomLensViewController *)self dummyScrollViewDefaultOffset];
   v4 = v3;
   v6 = v5;
-  v7 = [(ZWZoomLensViewController *)self dummyScrollView];
-  [v7 contentOffset];
+  dummyScrollView = [(ZWZoomLensViewController *)self dummyScrollView];
+  [dummyScrollView contentOffset];
   v9 = v8;
   v11 = v10;
 
@@ -702,12 +702,12 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
   return result;
 }
 
-- (void)_handleLongPress:(id)a3
+- (void)_handleLongPress:(id)press
 {
-  v4 = [a3 state];
-  if ((v4 - 3) >= 3)
+  state = [press state];
+  if ((state - 3) >= 3)
   {
-    if (v4 != &dword_0 + 1)
+    if (state != &dword_0 + 1)
     {
       return;
     }
@@ -725,37 +725,37 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
 
     self->_prescrollTaps = v8;
     self->_lastTapTime = v7;
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
   }
 
-  [(ZWZoomLensViewController *)v5 setUserIsInteractingWithLens:v6];
+  [(ZWZoomLensViewController *)selfCopy2 setUserIsInteractingWithLens:v6];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v6 = a3;
+  draggingCopy = dragging;
   if (![(ZWZoomLensViewController *)self inStandbyMode])
   {
     [(ZWZoomLensViewController *)self setUserIsMovingLens:1];
     self->_lastDragOffset = CGPointZero;
     self->_shouldNotifyDelegateOfDrag = 0;
     [(ZWZoomLensViewController *)self dummyScrollViewDefaultOffset];
-    [v6 setContentOffset:?];
+    [draggingCopy setContentOffset:?];
     self->_shouldNotifyDelegateOfDrag = 1;
-    v4 = [(ZWZoomLensViewController *)self delegate];
-    v5 = [(ZWZoomLensViewController *)self view];
-    [v4 zoomLensViewController:self willBeginMovingLens:v5];
+    delegate = [(ZWZoomLensViewController *)self delegate];
+    view = [(ZWZoomLensViewController *)self view];
+    [delegate zoomLensViewController:self willBeginMovingLens:view];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   if (![(ZWZoomLensViewController *)self inStandbyMode])
   {
@@ -769,9 +769,9 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
       [(ZWZoomLensViewController *)self _lensDragMultiplier];
       v11 = v8 * v10;
       v13 = v9 * v12;
-      v14 = [(ZWZoomLensViewController *)self delegate];
-      v15 = [(ZWZoomLensViewController *)self view];
-      [v14 zoomLensViewController:self didMoveLens:v15 withDelta:{v11, v13}];
+      delegate = [(ZWZoomLensViewController *)self delegate];
+      view = [(ZWZoomLensViewController *)self view];
+      [delegate zoomLensViewController:self didMoveLens:view withDelta:{v11, v13}];
     }
 
     self->_lastDragOffset.x = v6;
@@ -779,44 +779,44 @@ void __98__ZWZoomLensViewController_updateStandbyMode_zoomFactor_panOffset_lensE
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (![(ZWZoomLensViewController *)self inStandbyMode]&& !a4)
+  if (![(ZWZoomLensViewController *)self inStandbyMode]&& !decelerate)
   {
     [(ZWZoomLensViewController *)self setUserIsMovingLens:0];
-    v7 = [(ZWZoomLensViewController *)self delegate];
-    v6 = [(ZWZoomLensViewController *)self view];
-    [v7 zoomLensViewController:self didFinishMovingLens:v6];
+    delegate = [(ZWZoomLensViewController *)self delegate];
+    view = [(ZWZoomLensViewController *)self view];
+    [delegate zoomLensViewController:self didFinishMovingLens:view];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   if (![(ZWZoomLensViewController *)self inStandbyMode])
   {
     [(ZWZoomLensViewController *)self setUserIsMovingLens:0];
-    v5 = [(ZWZoomLensViewController *)self delegate];
-    v4 = [(ZWZoomLensViewController *)self view];
-    [v5 zoomLensViewController:self didFinishMovingLens:v4];
+    delegate = [(ZWZoomLensViewController *)self delegate];
+    view = [(ZWZoomLensViewController *)self view];
+    [delegate zoomLensViewController:self didFinishMovingLens:view];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ZWZoomLensViewController *)self longPressGestureRecognizer];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  longPressGestureRecognizer = [(ZWZoomLensViewController *)self longPressGestureRecognizer];
 
-  v9 = [(ZWZoomLensViewController *)self dummyScrollView];
-  v10 = [v9 panGestureRecognizer];
-  v11 = v10;
-  if (v8 == v6)
+  dummyScrollView = [(ZWZoomLensViewController *)self dummyScrollView];
+  panGestureRecognizer = [dummyScrollView panGestureRecognizer];
+  tapGestureRecognizer2 = panGestureRecognizer;
+  if (longPressGestureRecognizer == recognizerCopy)
   {
-    if (v10 != v7)
+    if (panGestureRecognizer != gestureRecognizerCopy)
     {
-      v14 = [(ZWZoomLensViewController *)self tapGestureRecognizer];
+      tapGestureRecognizer = [(ZWZoomLensViewController *)self tapGestureRecognizer];
 LABEL_11:
-      v13 = v14 == v7;
+      v13 = tapGestureRecognizer == gestureRecognizerCopy;
 
       goto LABEL_13;
     }
@@ -826,32 +826,32 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v11 == v6)
+  if (tapGestureRecognizer2 == recognizerCopy)
   {
-    v9 = [(ZWZoomLensViewController *)self longPressGestureRecognizer];
-    if (v9 == v7)
+    dummyScrollView = [(ZWZoomLensViewController *)self longPressGestureRecognizer];
+    if (dummyScrollView == gestureRecognizerCopy)
     {
       v13 = 1;
       goto LABEL_14;
     }
 
-    v11 = [(ZWZoomLensViewController *)self tapGestureRecognizer];
-    v13 = v11 == v7;
+    tapGestureRecognizer2 = [(ZWZoomLensViewController *)self tapGestureRecognizer];
+    v13 = tapGestureRecognizer2 == gestureRecognizerCopy;
 LABEL_13:
 
 LABEL_14:
     goto LABEL_15;
   }
 
-  v12 = [(ZWZoomLensViewController *)self tapGestureRecognizer];
+  tapGestureRecognizer3 = [(ZWZoomLensViewController *)self tapGestureRecognizer];
 
-  if (v12 == v6)
+  if (tapGestureRecognizer3 == recognizerCopy)
   {
-    v9 = [(ZWZoomLensViewController *)self dummyScrollView];
-    v11 = [v9 panGestureRecognizer];
-    if (v11 != v7)
+    dummyScrollView = [(ZWZoomLensViewController *)self dummyScrollView];
+    tapGestureRecognizer2 = [dummyScrollView panGestureRecognizer];
+    if (tapGestureRecognizer2 != gestureRecognizerCopy)
     {
-      v14 = [(ZWZoomLensViewController *)self longPressGestureRecognizer];
+      tapGestureRecognizer = [(ZWZoomLensViewController *)self longPressGestureRecognizer];
       goto LABEL_11;
     }
 
@@ -894,7 +894,7 @@ LABEL_15:
   return 0;
 }
 
-- (CGPoint)maximumPanOffsetWithZoomFactor:(double)a3
+- (CGPoint)maximumPanOffsetWithZoomFactor:(double)factor
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

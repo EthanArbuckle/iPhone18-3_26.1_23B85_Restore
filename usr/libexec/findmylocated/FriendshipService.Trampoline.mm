@@ -1,31 +1,31 @@
 @interface FriendshipService.Trampoline
 - (_TtCC13findmylocated17FriendshipService10Trampoline)init;
-- (void)allFriendsWithCompletion:(id)a3;
-- (void)friendsWithTypes:(id)a3 completion:(id)a4;
-- (void)friendshipStateWithRequest:(id)a3 completion:(id)a4;
-- (void)offerExpirationForHandle:(id)a3 fromHandle:(id)a4 completion:(id)a5;
-- (void)offerExpirationForHandle:(id)a3 groupId:(id)a4 completion:(id)a5;
-- (void)ownerTokenWithCompletion:(id)a3;
-- (void)peerTokenWithHandle:(id)a3 completion:(id)a4;
-- (void)removePeerTokenWithHandle:(id)a3 completion:(id)a4;
-- (void)requestOwnerTokenWithForce:(BOOL)a3 completion:(id)a4;
-- (void)resetTokenDatabaseWithCompletion:(id)a3;
-- (void)respondToInviteRequest:(id)a3 completion:(id)a4;
-- (void)sendFriendshipInvite:(id)a3 completion:(id)a4;
-- (void)sendFriendshipOffer:(id)a3 completion:(id)a4;
-- (void)startFriendsUpdateWithCompletion:(id)a3;
-- (void)startOwnerRangingWithCompletion:(id)a3;
-- (void)startRangingWithHandle:(id)a3 completion:(id)a4;
-- (void)stopConfigRangingSessionWithCompletion:(id)a3;
-- (void)stopRangingWithCompletion:(id)a3;
-- (void)stopSharingMyLocation:(id)a3 completion:(id)a4;
+- (void)allFriendsWithCompletion:(id)completion;
+- (void)friendsWithTypes:(id)types completion:(id)completion;
+- (void)friendshipStateWithRequest:(id)request completion:(id)completion;
+- (void)offerExpirationForHandle:(id)handle fromHandle:(id)fromHandle completion:(id)completion;
+- (void)offerExpirationForHandle:(id)handle groupId:(id)id completion:(id)completion;
+- (void)ownerTokenWithCompletion:(id)completion;
+- (void)peerTokenWithHandle:(id)handle completion:(id)completion;
+- (void)removePeerTokenWithHandle:(id)handle completion:(id)completion;
+- (void)requestOwnerTokenWithForce:(BOOL)force completion:(id)completion;
+- (void)resetTokenDatabaseWithCompletion:(id)completion;
+- (void)respondToInviteRequest:(id)request completion:(id)completion;
+- (void)sendFriendshipInvite:(id)invite completion:(id)completion;
+- (void)sendFriendshipOffer:(id)offer completion:(id)completion;
+- (void)startFriendsUpdateWithCompletion:(id)completion;
+- (void)startOwnerRangingWithCompletion:(id)completion;
+- (void)startRangingWithHandle:(id)handle completion:(id)completion;
+- (void)stopConfigRangingSessionWithCompletion:(id)completion;
+- (void)stopRangingWithCompletion:(id)completion;
+- (void)stopSharingMyLocation:(id)location completion:(id)completion;
 @end
 
 @implementation FriendshipService.Trampoline
 
-- (void)startFriendsUpdateWithCompletion:(id)a3
+- (void)startFriendsUpdateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   type metadata accessor for Transaction();
@@ -38,9 +38,9 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)allFriendsWithCompletion:(id)a3
+- (void)allFriendsWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   type metadata accessor for Transaction();
@@ -53,10 +53,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)friendsWithTypes:(id)a3 completion:(id)a4
+- (void)friendsWithTypes:(id)types completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  typesCopy = types;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -78,10 +78,10 @@
   sub_1000049D0(v8, v10);
 }
 
-- (void)friendshipStateWithRequest:(id)a3 completion:(id)a4
+- (void)friendshipStateWithRequest:(id)request completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  requestCopy = request;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -103,11 +103,11 @@
   sub_1000049D0(v8, v10);
 }
 
-- (void)offerExpirationForHandle:(id)a3 fromHandle:(id)a4 completion:(id)a5
+- (void)offerExpirationForHandle:(id)handle fromHandle:(id)fromHandle completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
+  v8 = _Block_copy(completion);
+  handleCopy = handle;
+  fromHandleCopy = fromHandle;
 
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
@@ -136,16 +136,16 @@
   sub_1000049D0(v11, v13);
 }
 
-- (void)offerExpirationForHandle:(id)a3 groupId:(id)a4 completion:(id)a5
+- (void)offerExpirationForHandle:(id)handle groupId:(id)id completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
+  v8 = _Block_copy(completion);
+  handleCopy = handle;
 
-  v10 = a4;
+  idCopy = id;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 
-  if (v10)
+  if (idCopy)
   {
     v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v16 = v15;
@@ -176,10 +176,10 @@
   sub_1000049D0(v11, v13);
 }
 
-- (void)sendFriendshipOffer:(id)a3 completion:(id)a4
+- (void)sendFriendshipOffer:(id)offer completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  offerCopy = offer;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -201,10 +201,10 @@
   sub_1000049D0(v8, v10);
 }
 
-- (void)sendFriendshipInvite:(id)a3 completion:(id)a4
+- (void)sendFriendshipInvite:(id)invite completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  inviteCopy = invite;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -226,10 +226,10 @@
   sub_1000049D0(v8, v10);
 }
 
-- (void)respondToInviteRequest:(id)a3 completion:(id)a4
+- (void)respondToInviteRequest:(id)request completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  requestCopy = request;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -251,10 +251,10 @@
   sub_1000049D0(v8, v10);
 }
 
-- (void)stopSharingMyLocation:(id)a3 completion:(id)a4
+- (void)stopSharingMyLocation:(id)location completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  locationCopy = location;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -276,10 +276,10 @@
   sub_1000049D0(v8, v10);
 }
 
-- (void)peerTokenWithHandle:(id)a3 completion:(id)a4
+- (void)peerTokenWithHandle:(id)handle completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  handleCopy = handle;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -301,10 +301,10 @@
   sub_1000049D0(v8, v10);
 }
 
-- (void)removePeerTokenWithHandle:(id)a3 completion:(id)a4
+- (void)removePeerTokenWithHandle:(id)handle completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  handleCopy = handle;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -326,15 +326,15 @@
   sub_1000049D0(v8, v10);
 }
 
-- (void)requestOwnerTokenWithForce:(BOOL)a3 completion:(id)a4
+- (void)requestOwnerTokenWithForce:(BOOL)force completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   type metadata accessor for Transaction();
   v8 = swift_allocObject();
   *(v8 + 16) = self;
-  *(v8 + 24) = a3;
+  *(v8 + 24) = force;
   *(v8 + 32) = sub_1000CAB5C;
   *(v8 + 40) = v7;
   swift_retain_n();
@@ -342,10 +342,10 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)startRangingWithHandle:(id)a3 completion:(id)a4
+- (void)startRangingWithHandle:(id)handle completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = a3;
+  v6 = _Block_copy(completion);
+  handleCopy = handle;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
@@ -367,9 +367,9 @@
   sub_1000049D0(v8, v10);
 }
 
-- (void)stopRangingWithCompletion:(id)a3
+- (void)stopRangingWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   type metadata accessor for Transaction();
@@ -382,9 +382,9 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)stopConfigRangingSessionWithCompletion:(id)a3
+- (void)stopConfigRangingSessionWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   type metadata accessor for Transaction();
@@ -397,9 +397,9 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)resetTokenDatabaseWithCompletion:(id)a3
+- (void)resetTokenDatabaseWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   type metadata accessor for Transaction();
@@ -412,9 +412,9 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)ownerTokenWithCompletion:(id)a3
+- (void)ownerTokenWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   type metadata accessor for Transaction();
@@ -427,9 +427,9 @@
   static Transaction.asyncTask(name:block:)();
 }
 
-- (void)startOwnerRangingWithCompletion:(id)a3
+- (void)startOwnerRangingWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   type metadata accessor for Transaction();

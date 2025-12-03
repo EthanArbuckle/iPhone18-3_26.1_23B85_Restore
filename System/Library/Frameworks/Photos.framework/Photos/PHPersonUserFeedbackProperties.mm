@@ -1,29 +1,29 @@
 @interface PHPersonUserFeedbackProperties
 + (id)propertiesToFetch;
 + (id)propertiesToSortBy;
-- (PHPersonUserFeedbackProperties)initWithFetchDictionary:(id)a3 person:(id)a4 prefetched:(BOOL)a5;
+- (PHPersonUserFeedbackProperties)initWithFetchDictionary:(id)dictionary person:(id)person prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHPersonUserFeedbackProperties
 
-- (PHPersonUserFeedbackProperties)initWithFetchDictionary:(id)a3 person:(id)a4 prefetched:(BOOL)a5
+- (PHPersonUserFeedbackProperties)initWithFetchDictionary:(id)dictionary person:(id)person prefetched:(BOOL)prefetched
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  personCopy = person;
   v39.receiver = self;
   v39.super_class = PHPersonUserFeedbackProperties;
   v33 = [(PHPersonUserFeedbackProperties *)&v39 init];
   if (v33)
   {
-    objc_storeWeak(&v33->super._person, v8);
-    if (v7)
+    objc_storeWeak(&v33->super._person, personCopy);
+    if (dictionaryCopy)
     {
-      v9 = [v7 objectForKeyedSubscript:@"fetchedResults"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"fetchedResults"];
       if ([v9 count])
       {
-        v31 = v8;
-        v32 = v7;
+        v31 = personCopy;
+        v32 = dictionaryCopy;
         v10 = [objc_alloc(MEMORY[0x1E695DFA0]) initWithCapacity:{objc_msgSend(v9, "count")}];
         v35 = 0u;
         v36 = 0u;
@@ -49,17 +49,17 @@
               v15 = *(*(&v35 + 1) + 8 * v14);
               v16 = [v15 objectForKeyedSubscript:@"uuid"];
               v17 = [v15 objectForKeyedSubscript:@"type"];
-              v18 = [v17 integerValue];
+              integerValue = [v17 integerValue];
 
               v19 = [v15 objectForKeyedSubscript:@"feature"];
-              v20 = [v19 integerValue];
+              integerValue2 = [v19 integerValue];
 
               v21 = [v15 objectForKeyedSubscript:@"creationType"];
-              v22 = [v21 integerValue];
+              integerValue3 = [v21 integerValue];
 
               v23 = [v15 objectForKeyedSubscript:@"context"];
               v24 = [v15 objectForKeyedSubscript:@"lastModifiedDate"];
-              v25 = [[PHUserFeedback alloc] initWithUUID:v16 type:v18 feature:v20 creationType:v22 context:v23 lastModifiedDate:v24];
+              v25 = [[PHUserFeedback alloc] initWithUUID:v16 type:integerValue feature:integerValue2 creationType:integerValue3 context:v23 lastModifiedDate:v24];
               if ([(PHUserFeedback *)v25 feature]|| v33->_userFeedback)
               {
                 if ([(PHUserFeedback *)v25 feature]== 1 || [(PHUserFeedback *)v25 feature]== 2)
@@ -91,8 +91,8 @@
           v33->_autonamingUserFeedbacks = v27;
         }
 
-        v8 = v31;
-        v7 = v32;
+        personCopy = v31;
+        dictionaryCopy = v32;
         v9 = v30;
       }
     }

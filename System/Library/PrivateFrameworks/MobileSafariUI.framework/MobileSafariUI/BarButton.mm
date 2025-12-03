@@ -1,21 +1,21 @@
 @interface BarButton
-+ (id)sidebarButtonWithPrimaryAction:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (BarButton)initWithFrame:(CGRect)a3;
++ (id)sidebarButtonWithPrimaryAction:(id)action;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (BarButton)initWithFrame:(CGRect)frame;
 - (CGRect)_barButtonHitRect;
 - (CGRect)_selectedIndicatorBounds;
 - (CGRect)barButtonHitRect;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
 @end
 
 @implementation BarButton
 
-- (BarButton)initWithFrame:(CGRect)a3
+- (BarButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = BarButton;
-  v3 = [(BarButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BarButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -53,10 +53,10 @@ id __27__BarButton_initWithFrame___block_invoke(uint64_t a1, uint64_t a2, void *
   return CGRectUnion(*&x, *&v4);
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(BarButton *)self _barButtonHitRect];
   v10 = x;
   v11 = y;
@@ -64,10 +64,10 @@ id __27__BarButton_initWithFrame___block_invoke(uint64_t a1, uint64_t a2, void *
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v5 = MEMORY[0x277D75880];
-  [(BarButton *)self _barButtonHitRect:a3];
+  [(BarButton *)self _barButtonHitRect:interaction];
 
   return [v5 regionWithRect:@"BarButton" identifier:?];
 }
@@ -79,8 +79,8 @@ id __27__BarButton_initWithFrame___block_invoke(uint64_t a1, uint64_t a2, void *
 
   if (v4)
   {
-    v5 = [(BarButton *)self titleLabel];
-    [v5 frame];
+    titleLabel = [(BarButton *)self titleLabel];
+    [titleLabel frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -99,8 +99,8 @@ id __27__BarButton_initWithFrame___block_invoke(uint64_t a1, uint64_t a2, void *
 
   else
   {
-    v18 = [(BarButton *)self imageView];
-    [v18 frame];
+    imageView = [(BarButton *)self imageView];
+    [imageView frame];
     x = v19;
     y = v20;
     width = v21;
@@ -118,11 +118,11 @@ id __27__BarButton_initWithFrame___block_invoke(uint64_t a1, uint64_t a2, void *
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v8.receiver = self;
   v8.super_class = BarButton;
-  v5 = [(BarButton *)&v8 contextMenuInteraction:a3 configurationForMenuAtLocation:a4.x, a4.y];
+  v5 = [(BarButton *)&v8 contextMenuInteraction:interaction configurationForMenuAtLocation:location.x, location.y];
   v6 = v5;
   if (self->_shouldRespectContextMenuOrdering)
   {
@@ -132,19 +132,19 @@ id __27__BarButton_initWithFrame___block_invoke(uint64_t a1, uint64_t a2, void *
   return v6;
 }
 
-+ (id)sidebarButtonWithPrimaryAction:(id)a3
++ (id)sidebarButtonWithPrimaryAction:(id)action
 {
   v4 = MEMORY[0x277D75230];
-  v5 = a3;
-  v6 = [v4 plainButtonConfiguration];
-  v7 = [MEMORY[0x277D75348] clearColor];
-  v8 = [v6 background];
-  [v8 setBackgroundColor:v7];
+  actionCopy = action;
+  plainButtonConfiguration = [v4 plainButtonConfiguration];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  background = [plainButtonConfiguration background];
+  [background setBackgroundColor:clearColor];
 
-  [v6 setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
+  [plainButtonConfiguration setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
   v9 = [MEMORY[0x277D755B8] systemImageNamed:@"sidebar.leading"];
-  [v6 setImage:v9];
-  v10 = [a1 buttonWithConfiguration:v6 primaryAction:v5];
+  [plainButtonConfiguration setImage:v9];
+  v10 = [self buttonWithConfiguration:plainButtonConfiguration primaryAction:actionCopy];
 
   v11 = _WBSLocalizedString();
   [v10 sf_configureLargeContentViewerWithImage:v9 title:v11];

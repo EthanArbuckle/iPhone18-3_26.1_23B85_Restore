@@ -1,6 +1,6 @@
 @interface PlayMediaAppSelectionInput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation PlayMediaAppSelectionInput
@@ -16,7 +16,7 @@
   return v2;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_2664E02C8();
   v5 = v4;

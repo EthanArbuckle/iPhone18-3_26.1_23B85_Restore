@@ -1,8 +1,8 @@
 @interface SBRootWindowingModifier
 - (CGRect)leftStatusBarPartIntersectionRegion;
 - (CGRect)rightStatusBarPartIntersectionRegion;
-- (SBRootWindowingModifier)initWithSwitcherModifier:(id)a3;
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForItem:(id)a3;
+- (SBRootWindowingModifier)initWithSwitcherModifier:(id)modifier;
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForItem:(id)item;
 - (void)_clearAllCachedValues;
 - (void)didUpdate;
 - (void)layoutViewModelsIfNeeded;
@@ -11,10 +11,10 @@
 
 @implementation SBRootWindowingModifier
 
-- (SBRootWindowingModifier)initWithSwitcherModifier:(id)a3
+- (SBRootWindowingModifier)initWithSwitcherModifier:(id)modifier
 {
-  v5 = a3;
-  if (!v5)
+  modifierCopy = modifier;
+  if (!modifierCopy)
   {
     [(SBRootWindowingModifier *)a2 initWithSwitcherModifier:?];
   }
@@ -25,7 +25,7 @@
   v7 = v6;
   if (v6)
   {
-    [(SBWindowingModifier *)v6 addChildModifier:v5 atLevel:1 key:@"Root Windowing Steady State Modifier"];
+    [(SBWindowingModifier *)v6 addChildModifier:modifierCopy atLevel:1 key:@"Root Windowing Steady State Modifier"];
     v8 = objc_alloc_init(SBDefaultWindowingModifier);
     [(SBWindowingModifier *)v7 addChildModifier:v8 atLevel:2 key:@"Root Windowing Default Modifier"];
     [(SBRootWindowingModifier *)v7 _clearAllCachedValues];
@@ -131,19 +131,19 @@
 
   if ([(SBRootWindowingModifier *)self environmentMode]!= 2 && [(SBWindowingModifier *)self transitioningToEnvironmentMode]!= 2)
   {
-    v5 = [(SBRootWindowingModifier *)self appLayout];
-    v6 = [(SBRootWindowingModifier *)self zOrderedItemsInAppLayout:v5];
+    appLayout = [(SBRootWindowingModifier *)self appLayout];
+    v6 = [(SBRootWindowingModifier *)self zOrderedItemsInAppLayout:appLayout];
     v7 = [v6 count];
-    v8 = [(SBRootWindowingModifier *)self maximumNumberOfVisibleScenesOnStage];
+    maximumNumberOfVisibleScenesOnStage = [(SBRootWindowingModifier *)self maximumNumberOfVisibleScenesOnStage];
     v30 = v6;
-    if (v7 - v8 >= 1)
+    if (v7 - maximumNumberOfVisibleScenesOnStage >= 1)
     {
       obj = v7;
       v39 = 0u;
       v40 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v9 = [v6 subarrayWithRange:v8];
+      v9 = [v6 subarrayWithRange:maximumNumberOfVisibleScenesOnStage];
       v10 = [v9 countByEnumeratingWithState:&v37 objects:v43 count:16];
       if (v10)
       {
@@ -158,7 +158,7 @@
               objc_enumerationMutation(v9);
             }
 
-            v14 = [v5 leafAppLayoutForItem:*(*(&v37 + 1) + 8 * i)];
+            v14 = [appLayout leafAppLayoutForItem:*(*(&v37 + 1) + 8 * i)];
             v15 = [(SBWindowingModifier *)self viewModelForItem:v14];
             v16 = [v15 mutableCopy];
 
@@ -176,13 +176,13 @@
       v7 = obj;
     }
 
-    v17 = [(SBRootWindowingModifier *)self switcherSettings];
-    v18 = [v17 sceneRelevancySettings];
-    v19 = [v18 numberOfFadingScenesOnStage];
+    switcherSettings = [(SBRootWindowingModifier *)self switcherSettings];
+    sceneRelevancySettings = [switcherSettings sceneRelevancySettings];
+    numberOfFadingScenesOnStage = [sceneRelevancySettings numberOfFadingScenesOnStage];
 
-    if (v7 >= v8)
+    if (v7 >= maximumNumberOfVisibleScenesOnStage)
     {
-      v20 = v8;
+      v20 = maximumNumberOfVisibleScenesOnStage;
     }
 
     else
@@ -190,7 +190,7 @@
       v20 = v7;
     }
 
-    if (v20 - (v8 - v19) >= 1)
+    if (v20 - (maximumNumberOfVisibleScenesOnStage - numberOfFadingScenesOnStage) >= 1)
     {
       v35 = 0u;
       v36 = 0u;
@@ -202,7 +202,7 @@
       {
         v22 = v21;
         v23 = *v34;
-        v24 = v19 + 1.0;
+        v24 = numberOfFadingScenesOnStage + 1.0;
         v25 = 1;
         do
         {
@@ -213,7 +213,7 @@
               objc_enumerationMutation(obja);
             }
 
-            v27 = [v5 leafAppLayoutForItem:*(*(&v33 + 1) + 8 * j)];
+            v27 = [appLayout leafAppLayoutForItem:*(*(&v33 + 1) + 8 * j)];
             v28 = self->wallpaperAlphasForLeafAppLayouts;
             v29 = [MEMORY[0x277CCABB0] numberWithDouble:v25 / v24];
             [(NSMutableDictionary *)v28 setObject:v29 forKey:v27];
@@ -232,12 +232,12 @@
   }
 }
 
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForItem:(id)a3
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   wallpaperAlphasForLeafAppLayouts = self->wallpaperAlphasForLeafAppLayouts;
-  v6 = [v4 appLayout];
-  v7 = [(NSMutableDictionary *)wallpaperAlphasForLeafAppLayouts objectForKey:v6];
+  appLayout = [itemCopy appLayout];
+  v7 = [(NSMutableDictionary *)wallpaperAlphasForLeafAppLayouts objectForKey:appLayout];
 
   if (v7)
   {
@@ -250,7 +250,7 @@
   {
     v15.receiver = self;
     v15.super_class = SBRootWindowingModifier;
-    [(SBWindowingModifier *)&v15 wallpaperGradientAttributesForItem:v4];
+    [(SBWindowingModifier *)&v15 wallpaperGradientAttributesForItem:itemCopy];
     v10 = v11;
     v9 = v12;
   }

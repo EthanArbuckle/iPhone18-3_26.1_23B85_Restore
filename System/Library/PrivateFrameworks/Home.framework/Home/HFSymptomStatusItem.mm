@@ -1,16 +1,16 @@
 @interface HFSymptomStatusItem
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFSymptomStatusItem
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v62 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(HFStatusItem *)self home];
-  v6 = [v5 mediaSystems];
-  v7 = [v4 setWithArray:v6];
+  home = [(HFStatusItem *)self home];
+  mediaSystems = [home mediaSystems];
+  v7 = [v4 setWithArray:mediaSystems];
   v59[0] = MEMORY[0x277D85DD0];
   v59[1] = 3221225472;
   v59[2] = __51__HFSymptomStatusItem__subclass_updateWithOptions___block_invoke;
@@ -19,9 +19,9 @@
   v8 = [v7 na_filter:v59];
 
   v9 = MEMORY[0x277CBEB98];
-  v10 = [(HFStatusItem *)self home];
-  v11 = [v10 accessories];
-  v12 = [v9 setWithArray:v11];
+  home2 = [(HFStatusItem *)self home];
+  accessories = [home2 accessories];
+  v12 = [v9 setWithArray:accessories];
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __51__HFSymptomStatusItem__subclass_updateWithOptions___block_invoke_1;
@@ -29,12 +29,12 @@
   v58[4] = self;
   v13 = [v12 na_filter:v58];
 
-  v14 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   v56[0] = MEMORY[0x277D85DD0];
   v56[1] = 3221225472;
   v56[2] = __51__HFSymptomStatusItem__subclass_updateWithOptions___block_invoke_2;
   v56[3] = &unk_277DF5200;
-  v15 = v14;
+  v15 = strongToStrongObjectsMapTable;
   v57 = v15;
   v47 = v13;
   [v13 na_each:v56];
@@ -46,71 +46,71 @@
   v55 = v16;
   v48 = v8;
   [v8 na_each:v54];
-  v17 = [MEMORY[0x277CD1E88] hf_symptomArraySortComparator];
-  v18 = [v16 keyEnumerator];
-  v19 = [v18 allObjects];
+  hf_symptomArraySortComparator = [MEMORY[0x277CD1E88] hf_symptomArraySortComparator];
+  keyEnumerator = [v16 keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __51__HFSymptomStatusItem__subclass_updateWithOptions___block_invoke_4;
   v52[3] = &unk_277DFC750;
-  v46 = v17;
+  v46 = hf_symptomArraySortComparator;
   v53 = v46;
-  v20 = [v19 sortedArrayUsingComparator:v52];
+  v20 = [allObjects sortedArrayUsingComparator:v52];
 
   v45 = v20;
-  v21 = [v20 firstObject];
-  v22 = [v21 hf_symptomsSortedByPriority];
-  v23 = [v22 firstObject];
+  firstObject = [v20 firstObject];
+  hf_symptomsSortedByPriority = [firstObject hf_symptomsSortedByPriority];
+  firstObject2 = [hf_symptomsSortedByPriority firstObject];
   v24 = objc_alloc_init(HFMutableItemUpdateOutcome);
   v25 = MEMORY[0x277CBEB98];
   v26 = objc_opt_class();
   v27 = [v25 setWithObjects:{v26, objc_opt_class(), 0}];
   [(HFMutableItemUpdateOutcome *)v24 setObject:v27 forKeyedSubscript:@"dependentHomeKitClasses"];
 
-  if ([v23 type] == 114 && objc_msgSend(v22, "count") >= 2)
+  if ([firstObject2 type] == 114 && objc_msgSend(hf_symptomsSortedByPriority, "count") >= 2)
   {
-    [(HFMutableItemUpdateOutcome *)v24 setObject:v23 forKeyedSubscript:@"bannerSymptom"];
-    v28 = [MEMORY[0x277CD1E88] hf_nextSymptomAfterInternetOutageInSortedList:v22];
+    [(HFMutableItemUpdateOutcome *)v24 setObject:firstObject2 forKeyedSubscript:@"bannerSymptom"];
+    v28 = [MEMORY[0x277CD1E88] hf_nextSymptomAfterInternetOutageInSortedList:hf_symptomsSortedByPriority];
 
     v29 = HFLogForCategory(0x47uLL);
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v61 = v22;
+      v61 = hf_symptomsSortedByPriority;
       _os_log_impl(&dword_20D9BF000, v29, OS_LOG_TYPE_DEFAULT, "Handler has symptom other than internet outage: %@", buf, 0xCu);
     }
 
-    v23 = v28;
+    firstObject2 = v28;
   }
 
-  v30 = [v23 type];
-  if (v30 > 113)
+  type = [firstObject2 type];
+  if (type > 113)
   {
-    if (v30 == 1000)
+    if (type == 1000)
     {
 LABEL_17:
       [(HFMutableItemUpdateOutcome *)v24 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
       goto LABEL_18;
     }
 
-    if (v30 == 114)
+    if (type == 114)
     {
       [(HFMutableItemUpdateOutcome *)v24 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"hidden"];
     }
   }
 
-  else if (v30 == 12 || v30 == 15)
+  else if (type == 12 || type == 15)
   {
     goto LABEL_17;
   }
 
-  v31 = [v23 hf_shortDescription];
-  if (!v31)
+  hf_shortDescription = [firstObject2 hf_shortDescription];
+  if (!hf_shortDescription)
   {
     goto LABEL_17;
   }
 
-  v32 = v31;
+  v32 = hf_shortDescription;
   v33 = [MEMORY[0x277CBEB58] set];
   [v33 unionSet:v47];
   [v33 unionSet:v8];
@@ -133,7 +133,7 @@ LABEL_17:
   v49[1] = 3221225472;
   v49[2] = __51__HFSymptomStatusItem__subclass_updateWithOptions___block_invoke_4_20;
   v49[3] = &unk_277DF7C90;
-  v36 = v23;
+  v36 = firstObject2;
   v50 = v36;
   v37 = [v33 na_filter:v49];
   [(HFMutableItemUpdateOutcome *)v24 setObject:v37 forKeyedSubscript:@"statusRepresentedHomeKitObjects"];

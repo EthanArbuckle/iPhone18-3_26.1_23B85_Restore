@@ -1,15 +1,15 @@
 @interface AMDBaseEvent
-+ (BOOL)validateInput:(id)a3;
++ (BOOL)validateInput:(id)input;
 @end
 
 @implementation AMDBaseEvent
 
-+ (BOOL)validateInput:(id)a3
++ (BOOL)validateInput:(id)input
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, input);
   v8 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v7 = 16;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))

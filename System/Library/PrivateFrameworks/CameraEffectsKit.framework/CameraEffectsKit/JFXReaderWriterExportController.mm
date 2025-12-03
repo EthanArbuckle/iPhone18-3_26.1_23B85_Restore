@@ -1,27 +1,27 @@
 @interface JFXReaderWriterExportController
-- (CGSize)applyCompositionAspectRatioToAVPresetSize:(CGSize)a3 compositionSize:(CGSize)a4;
-- (id)JFX_videoCompressionSettingsFromAssistant:(id)a3;
+- (CGSize)applyCompositionAspectRatioToAVPresetSize:(CGSize)size compositionSize:(CGSize)compositionSize;
+- (id)JFX_videoCompressionSettingsFromAssistant:(id)assistant;
 - (id)audioCompressionSettings;
 - (id)fileTypeFromExtension;
-- (id)videoCompressionSettings:(CGSize)a3;
-- (id)videoDecompressionSettingsForVideoCompressionSettings:(id)a3;
-- (int64_t)mapAssetReaderStatusToExportStatus:(int64_t)a3;
-- (int64_t)mapAssetWriterStatusToExportStatus:(int64_t)a3;
-- (void)cancelExportWithStatus:(int64_t)a3;
+- (id)videoCompressionSettings:(CGSize)settings;
+- (id)videoDecompressionSettingsForVideoCompressionSettings:(id)settings;
+- (int64_t)mapAssetReaderStatusToExportStatus:(int64_t)status;
+- (int64_t)mapAssetWriterStatusToExportStatus:(int64_t)status;
+- (void)cancelExportWithStatus:(int64_t)status;
 - (void)continueExportAfterDelay;
-- (void)transferSampleBuffers:(id)a3 assetReader:(id)a4 assetWriterInput:(id)a5 assetWriter:(id)a6 timeRangeToExport:(id *)a7 queue:(id)a8 pass:(int64_t)a9 completionBlock:(id)a10;
-- (void)updateSessionProgress:(id)a3;
-- (void)updateStatusAndErrorFromReader:(id)a3 andWriter:(id)a4;
+- (void)transferSampleBuffers:(id)buffers assetReader:(id)reader assetWriterInput:(id)input assetWriter:(id)writer timeRangeToExport:(id *)export queue:(id)queue pass:(int64_t)pass completionBlock:(id)self0;
+- (void)updateSessionProgress:(id)progress;
+- (void)updateStatusAndErrorFromReader:(id)reader andWriter:(id)writer;
 @end
 
 @implementation JFXReaderWriterExportController
 
 - (id)fileTypeFromExtension
 {
-  v2 = [(JFXExportController *)self exportPath];
-  v3 = [v2 pathExtension];
+  exportPath = [(JFXExportController *)self exportPath];
+  pathExtension = [exportPath pathExtension];
 
-  if (([v3 isEqualToString:@"mp4"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"MP4"))
+  if (([pathExtension isEqualToString:@"mp4"] & 1) != 0 || objc_msgSend(pathExtension, "isEqualToString:", @"MP4"))
   {
     v4 = MEMORY[0x277CE1DF0];
   }
@@ -31,27 +31,27 @@
     v4 = MEMORY[0x277CE1E40];
   }
 
-  v5 = [*v4 identifier];
+  identifier = [*v4 identifier];
 
-  return v5;
+  return identifier;
 }
 
-- (CGSize)applyCompositionAspectRatioToAVPresetSize:(CGSize)a3 compositionSize:(CGSize)a4
+- (CGSize)applyCompositionAspectRatioToAVPresetSize:(CGSize)size compositionSize:(CGSize)compositionSize
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4.width / a4.height;
-  if (a4.width / a4.height == 1.0)
+  height = size.height;
+  width = size.width;
+  v6 = compositionSize.width / compositionSize.height;
+  if (compositionSize.width / compositionSize.height == 1.0)
   {
-    v7 = a3.height;
+    v7 = size.height;
   }
 
-  else if (a4.width / a4.height >= 1.0)
+  else if (compositionSize.width / compositionSize.height >= 1.0)
   {
     if (v6 <= 1.0)
     {
-      v8 = a4.height;
-      v9 = a4.width;
+      v8 = compositionSize.height;
+      v9 = compositionSize.width;
       v10 = JFXLog_export();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -61,7 +61,7 @@
 
     else
     {
-      height = a3.width * (1.0 / v6);
+      height = size.width * (1.0 / v6);
     }
 
     v7 = width;
@@ -69,7 +69,7 @@
 
   else
   {
-    v7 = a3.width * v6;
+    v7 = size.width * v6;
     height = width;
   }
 
@@ -79,23 +79,23 @@
   return result;
 }
 
-- (id)JFX_videoCompressionSettingsFromAssistant:(id)a3
+- (id)JFX_videoCompressionSettingsFromAssistant:(id)assistant
 {
-  v3 = a3;
+  assistantCopy = assistant;
   v4 = *MEMORY[0x277CE6010];
-  if ([v3 isEqualToString:*MEMORY[0x277CE5BC8]])
+  if ([assistantCopy isEqualToString:*MEMORY[0x277CE5BC8]])
   {
     v5 = MEMORY[0x277CE6020];
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CE5BD0]])
+  else if ([assistantCopy isEqualToString:*MEMORY[0x277CE5BD0]])
   {
     v5 = MEMORY[0x277CE6028];
   }
 
   else
   {
-    if (![v3 isEqualToString:*MEMORY[0x277CE5BB0]])
+    if (![assistantCopy isEqualToString:*MEMORY[0x277CE5BB0]])
     {
       goto LABEL_8;
     }
@@ -108,16 +108,16 @@
   v4 = v6;
 LABEL_8:
   v7 = [MEMORY[0x277CE6580] outputSettingsAssistantWithPreset:v4];
-  v8 = [v7 videoSettings];
-  v9 = [v8 copy];
+  videoSettings = [v7 videoSettings];
+  v9 = [videoSettings copy];
 
   return v9;
 }
 
-- (id)videoCompressionSettings:(CGSize)a3
+- (id)videoCompressionSettings:(CGSize)settings
 {
-  height = a3.height;
-  width = a3.width;
+  height = settings.height;
+  width = settings.width;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__JFXReaderWriterExportController_videoCompressionSettings___block_invoke_2;
@@ -128,14 +128,14 @@ LABEL_8:
     dispatch_once(&videoCompressionSettings__onceToken, block);
   }
 
-  v6 = [(JFXExportController *)self currentPreset];
-  v7 = [videoCompressionSettings__presetToVideoSettingsLUT objectForKeyedSubscript:v6];
+  currentPreset = [(JFXExportController *)self currentPreset];
+  v7 = [videoCompressionSettings__presetToVideoSettingsLUT objectForKeyedSubscript:currentPreset];
   if (!v7)
   {
     v7 = [videoCompressionSettings__presetToVideoSettingsLUT objectForKeyedSubscript:*MEMORY[0x277CE5BA8]];
   }
 
-  if ([v6 isEqualToString:JFXAssetExportPresetHEVC1280x720HDR] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", JFXAssetExportPresetHEVC1920x1080HDR))
+  if ([currentPreset isEqualToString:JFXAssetExportPresetHEVC1280x720HDR] & 1) != 0 || (objc_msgSend(currentPreset, "isEqualToString:", JFXAssetExportPresetHEVC1920x1080HDR))
   {
     v49 = 1;
 LABEL_8:
@@ -143,13 +143,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:JFXAssetExportPresetHEVC1280x720])
+  if ([currentPreset isEqualToString:JFXAssetExportPresetHEVC1280x720])
   {
     v49 = 0;
     goto LABEL_8;
   }
 
-  v8 = [v6 isEqualToString:JFXAssetExportPresetHEVC1920x1080];
+  v8 = [currentPreset isEqualToString:JFXAssetExportPresetHEVC1920x1080];
   v49 = 0;
 LABEL_9:
   v9 = [v7 objectForKeyedSubscript:@"kJFXVideoSettingsSize"];
@@ -158,14 +158,14 @@ LABEL_9:
   v13 = v12;
 
   v14 = [v7 objectForKeyedSubscript:@"kJFXVideoSettingsFrameReordering"];
-  v15 = [v14 BOOLValue];
+  bOOLValue = [v14 BOOLValue];
 
   v16 = [v7 objectForKeyedSubscript:@"kJFXVideoSettingsProfileLevel"];
   v17 = [v7 objectForKeyedSubscript:@"kJFXVideoSettingsEntropyMode"];
-  v51 = v6;
-  v18 = [objc_opt_class() videoDataRateForPreset:v6 size:{width, height}];
+  v51 = currentPreset;
+  v18 = [objc_opt_class() videoDataRateForPreset:currentPreset size:{width, height}];
   v19 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
-  v48 = self;
+  selfCopy = self;
   [(JFXReaderWriterExportController *)self applyCompositionAspectRatioToAVPresetSize:v11 compositionSize:v13, width, height];
   v21 = v20;
   v23 = [MEMORY[0x277CCABB0] numberWithInteger:v22];
@@ -188,7 +188,7 @@ LABEL_9:
     v26 = 4;
   }
 
-  v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v26 + v15];
+  v27 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:v26 + bOOLValue];
   [v27 setObject:v16 forKey:*MEMORY[0x277CE6390]];
   if ((v8 & 1) == 0 && v17)
   {
@@ -204,7 +204,7 @@ LABEL_9:
   v28 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v18];
   [v27 setObject:v28 forKey:*MEMORY[0x277CE62B0]];
 
-  if (v15)
+  if (bOOLValue)
   {
     v29 = [MEMORY[0x277CCABB0] numberWithBool:1];
     [v27 setObject:v29 forKey:*MEMORY[0x277CE6298]];
@@ -213,28 +213,28 @@ LABEL_9:
   v30 = [v27 copy];
   [v19 setObject:v30 forKey:*MEMORY[0x277CE6330]];
 
-  v31 = [MEMORY[0x277D41610] sharedInstance];
-  v32 = [v31 preferredExportColorSpace];
+  mEMORY[0x277D41610] = [MEMORY[0x277D41610] sharedInstance];
+  preferredExportColorSpace = [mEMORY[0x277D41610] preferredExportColorSpace];
 
-  if ((v8 & 1) == 0 && [v32 isHDRSpace])
+  if ((v8 & 1) == 0 && [preferredExportColorSpace isHDRSpace])
   {
-    v33 = [MEMORY[0x277D415E0] rec709GammaColorSpace];
+    rec709GammaColorSpace = [MEMORY[0x277D415E0] rec709GammaColorSpace];
 
-    v32 = v33;
+    preferredExportColorSpace = rec709GammaColorSpace;
   }
 
   v34 = objc_opt_new();
-  v35 = [v32 nclcTriplet];
-  v36 = [v35 colorPrimary];
-  [v34 setObject:v36 forKeyedSubscript:*MEMORY[0x277CE6318]];
+  nclcTriplet = [preferredExportColorSpace nclcTriplet];
+  colorPrimary = [nclcTriplet colorPrimary];
+  [v34 setObject:colorPrimary forKeyedSubscript:*MEMORY[0x277CE6318]];
 
-  v37 = [v32 nclcTriplet];
-  v38 = [v37 transferFunction];
-  [v34 setObject:v38 forKeyedSubscript:*MEMORY[0x277CE63B0]];
+  nclcTriplet2 = [preferredExportColorSpace nclcTriplet];
+  transferFunction = [nclcTriplet2 transferFunction];
+  [v34 setObject:transferFunction forKeyedSubscript:*MEMORY[0x277CE63B0]];
 
-  v39 = [v32 nclcTriplet];
-  v40 = [v39 ycbcrMatrix];
-  [v34 setObject:v40 forKeyedSubscript:*MEMORY[0x277CE63C8]];
+  nclcTriplet3 = [preferredExportColorSpace nclcTriplet];
+  ycbcrMatrix = [nclcTriplet3 ycbcrMatrix];
+  [v34 setObject:ycbcrMatrix forKeyedSubscript:*MEMORY[0x277CE63C8]];
 
   [v19 setObject:v34 forKeyedSubscript:*MEMORY[0x277CE6328]];
   v41 = JFXLog_DebugExport();
@@ -251,7 +251,7 @@ LABEL_9:
     v44 = JFXLog_DebugExport();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
     {
-      [JFXReaderWriterExportController videoCompressionSettings:v48];
+      [JFXReaderWriterExportController videoCompressionSettings:selfCopy];
     }
 
     v45 = JFXLog_DebugExport();
@@ -359,13 +359,13 @@ void __60__JFXReaderWriterExportController_videoCompressionSettings___block_invo
   return v12;
 }
 
-- (id)videoDecompressionSettingsForVideoCompressionSettings:(id)a3
+- (id)videoDecompressionSettingsForVideoCompressionSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:*MEMORY[0x277CE63C0]];
-  v6 = [v5 unsignedIntValue];
+  settingsCopy = settings;
+  v5 = [settingsCopy objectForKey:*MEMORY[0x277CE63C0]];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  if (!v6)
+  if (!unsignedIntValue)
   {
     v7 = JFXLog_export();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -374,10 +374,10 @@ void __60__JFXReaderWriterExportController_videoCompressionSettings___block_invo
     }
   }
 
-  v8 = [v4 objectForKey:*MEMORY[0x277CE6360]];
-  v9 = [v8 unsignedIntValue];
+  v8 = [settingsCopy objectForKey:*MEMORY[0x277CE6360]];
+  unsignedIntValue2 = [v8 unsignedIntValue];
 
-  if (!v9)
+  if (!unsignedIntValue2)
   {
     v10 = JFXLog_export();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -386,16 +386,16 @@ void __60__JFXReaderWriterExportController_videoCompressionSettings___block_invo
     }
   }
 
-  v30 = v4;
-  v11 = v9;
-  v12 = v6;
-  v13 = [(JFXExportController *)self composition];
-  v31 = [v13 compositionOutputColorSpace];
+  v30 = settingsCopy;
+  v11 = unsignedIntValue2;
+  v12 = unsignedIntValue;
+  composition = [(JFXExportController *)self composition];
+  compositionOutputColorSpace = [composition compositionOutputColorSpace];
 
-  v14 = [v31 jfx_getCVPixelFormatForExport];
-  v15 = ((v9 + 15) & 0x1FFFFFFF0) - v9;
+  jfx_getCVPixelFormatForExport = [compositionOutputColorSpace jfx_getCVPixelFormatForExport];
+  v15 = ((unsignedIntValue2 + 15) & 0x1FFFFFFF0) - unsignedIntValue2;
   v29 = MEMORY[0x277CBEB38];
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v14];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:jfx_getCVPixelFormatForExport];
   v28 = *MEMORY[0x277CC4E30];
   v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
   v18 = *MEMORY[0x277CC4EC8];
@@ -411,11 +411,11 @@ void __60__JFXReaderWriterExportController_videoCompressionSettings___block_invo
   return v26;
 }
 
-- (int64_t)mapAssetReaderStatusToExportStatus:(int64_t)a3
+- (int64_t)mapAssetReaderStatusToExportStatus:(int64_t)status
 {
-  if ((a3 - 1) < 4)
+  if ((status - 1) < 4)
   {
-    return a3 + 1;
+    return status + 1;
   }
 
   else
@@ -424,11 +424,11 @@ void __60__JFXReaderWriterExportController_videoCompressionSettings___block_invo
   }
 }
 
-- (int64_t)mapAssetWriterStatusToExportStatus:(int64_t)a3
+- (int64_t)mapAssetWriterStatusToExportStatus:(int64_t)status
 {
-  if ((a3 - 1) < 4)
+  if ((status - 1) < 4)
   {
-    return a3 + 1;
+    return status + 1;
   }
 
   else
@@ -437,12 +437,12 @@ void __60__JFXReaderWriterExportController_videoCompressionSettings___block_invo
   }
 }
 
-- (void)updateStatusAndErrorFromReader:(id)a3 andWriter:(id)a4
+- (void)updateStatusAndErrorFromReader:(id)reader andWriter:(id)writer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[JFXReaderWriterExportController mapAssetReaderStatusToExportStatus:](self, "mapAssetReaderStatusToExportStatus:", [v6 status]);
-  v9 = -[JFXReaderWriterExportController mapAssetWriterStatusToExportStatus:](self, "mapAssetWriterStatusToExportStatus:", [v7 status]);
+  readerCopy = reader;
+  writerCopy = writer;
+  v8 = -[JFXReaderWriterExportController mapAssetReaderStatusToExportStatus:](self, "mapAssetReaderStatusToExportStatus:", [readerCopy status]);
+  v9 = -[JFXReaderWriterExportController mapAssetWriterStatusToExportStatus:](self, "mapAssetWriterStatusToExportStatus:", [writerCopy status]);
   v10 = v9;
   if (v8 <= v9)
   {
@@ -473,35 +473,35 @@ void __60__JFXReaderWriterExportController_videoCompressionSettings___block_invo
 
   if ([(JFXExportController *)self status]== 4)
   {
-    v13 = [v7 error];
+    error = [writerCopy error];
 
     v14 = JFXLog_export();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
-    if (v13)
+    if (error)
     {
       if (v15)
       {
-        [JFXReaderWriterExportController updateStatusAndErrorFromReader:v7 andWriter:?];
+        [JFXReaderWriterExportController updateStatusAndErrorFromReader:writerCopy andWriter:?];
       }
     }
 
     else if (v15)
     {
-      [JFXReaderWriterExportController updateStatusAndErrorFromReader:v6 andWriter:?];
+      [JFXReaderWriterExportController updateStatusAndErrorFromReader:readerCopy andWriter:?];
     }
   }
 }
 
-- (void)updateSessionProgress:(id)a3
+- (void)updateSessionProgress:(id)progress
 {
-  v4 = a3;
-  [v4 floatValue];
+  progressCopy = progress;
+  [progressCopy floatValue];
   v6 = v5;
-  v7 = [(JFXExportController *)self composition];
-  v8 = v7;
-  if (v7)
+  composition = [(JFXExportController *)self composition];
+  v8 = composition;
+  if (composition)
   {
-    [v7 duration];
+    [composition duration];
   }
 
   else
@@ -516,22 +516,22 @@ void __60__JFXReaderWriterExportController_videoCompressionSettings___block_invo
   v10 = JFXLog_DebugExport();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [JFXReaderWriterExportController updateSessionProgress:v4];
+    [JFXReaderWriterExportController updateSessionProgress:progressCopy];
   }
 
-  v11 = [(JFXReaderWriterExportController *)self customCompositor];
+  customCompositor = [(JFXReaderWriterExportController *)self customCompositor];
   v12 = time;
-  [v11 signalScheduling:&v12 playerRate:{COERCE_DOUBLE(__PAIR64__(HIDWORD(time.value), 1.0))}];
+  [customCompositor signalScheduling:&v12 playerRate:{COERCE_DOUBLE(__PAIR64__(HIDWORD(time.value), 1.0))}];
 }
 
-- (void)transferSampleBuffers:(id)a3 assetReader:(id)a4 assetWriterInput:(id)a5 assetWriter:(id)a6 timeRangeToExport:(id *)a7 queue:(id)a8 pass:(int64_t)a9 completionBlock:(id)a10
+- (void)transferSampleBuffers:(id)buffers assetReader:(id)reader assetWriterInput:(id)input assetWriter:(id)writer timeRangeToExport:(id *)export queue:(id)queue pass:(int64_t)pass completionBlock:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a10;
+  buffersCopy = buffers;
+  readerCopy = reader;
+  inputCopy = input;
+  writerCopy = writer;
+  queueCopy = queue;
+  blockCopy = block;
   v40[0] = 0;
   v40[1] = v40;
   v40[2] = 0x2020000000;
@@ -541,23 +541,23 @@ void __60__JFXReaderWriterExportController_videoCompressionSettings___block_invo
   v28[2] = __143__JFXReaderWriterExportController_transferSampleBuffers_assetReader_assetWriterInput_assetWriter_timeRangeToExport_queue_pass_completionBlock___block_invoke;
   v28[3] = &unk_278D7CC08;
   v35 = v40;
-  v22 = v18;
+  v22 = inputCopy;
   v29 = v22;
-  v23 = v16;
+  v23 = buffersCopy;
   v30 = v23;
-  v31 = self;
-  v24 = *&a7->var0.var3;
-  v37 = *&a7->var0.var0;
+  selfCopy = self;
+  v24 = *&export->var0.var3;
+  v37 = *&export->var0.var0;
   v38 = v24;
-  v39 = *&a7->var1.var1;
-  v25 = v17;
+  v39 = *&export->var1.var1;
+  v25 = readerCopy;
   v32 = v25;
-  v26 = v19;
+  v26 = writerCopy;
   v33 = v26;
-  v36 = a9;
-  v27 = v21;
+  passCopy = pass;
+  v27 = blockCopy;
   v34 = v27;
-  [v22 requestMediaDataWhenReadyOnQueue:v20 usingBlock:v28];
+  [v22 requestMediaDataWhenReadyOnQueue:queueCopy usingBlock:v28];
 
   _Block_object_dispose(v40, 8);
 }
@@ -760,7 +760,7 @@ LABEL_39:
 - (void)continueExportAfterDelay
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_242A3B000, log, OS_LOG_TYPE_ERROR, "An error occurred during export: %{public}@", buf, 0xCu);
 }
 
@@ -849,7 +849,7 @@ uint64_t __59__JFXReaderWriterExportController_continueExportAfterDelay__block_i
   }
 }
 
-- (void)cancelExportWithStatus:(int64_t)a3
+- (void)cancelExportWithStatus:(int64_t)status
 {
   v5 = JFXLog_DebugExport();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -860,7 +860,7 @@ uint64_t __59__JFXReaderWriterExportController_continueExportAfterDelay__block_i
   [(JFXExportController *)self setCancel:1];
   v6.receiver = self;
   v6.super_class = JFXReaderWriterExportController;
-  [(JFXExportController *)&v6 cancelExportWithStatus:a3];
+  [(JFXExportController *)&v6 cancelExportWithStatus:status];
 }
 
 - (void)applyCompositionAspectRatioToAVPresetSize:(double)a1 compositionSize:(double)a2 .cold.1(double a1, double a2)

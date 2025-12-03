@@ -1,37 +1,37 @@
 @interface CAMDrawerSemanticStyleButton
 - (BOOL)shouldShowSlashForCurrentState;
-- (void)setOn:(BOOL)a3;
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4;
+- (void)setOn:(BOOL)on;
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated;
 @end
 
 @implementation CAMDrawerSemanticStyleButton
 
-- (void)setOn:(BOOL)a3
+- (void)setOn:(BOOL)on
 {
-  if (self->_on != a3)
+  if (self->_on != on)
   {
-    self->_on = a3;
+    self->_on = on;
     [(CAMControlDrawerButton *)self updateImage];
   }
 }
 
-- (void)setSemanticStyle:(id)a3 animated:(BOOL)a4
+- (void)setSemanticStyle:(id)style animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  styleCopy = style;
   if (![(CAMSemanticStyle *)self->_semanticStyle isEqualToSemanticStyle:?])
   {
-    objc_storeStrong(&self->_semanticStyle, a3);
-    [(CAMControlDrawerButton *)self updateImageAnimated:v4];
+    objc_storeStrong(&self->_semanticStyle, style);
+    [(CAMControlDrawerButton *)self updateImageAnimated:animatedCopy];
   }
 }
 
 - (BOOL)shouldShowSlashForCurrentState
 {
-  v2 = [(CAMDrawerSemanticStyleButton *)self semanticStyle];
-  v3 = [v2 isCustomizable];
+  semanticStyle = [(CAMDrawerSemanticStyleButton *)self semanticStyle];
+  isCustomizable = [semanticStyle isCustomizable];
 
-  return v3 ^ 1;
+  return isCustomizable ^ 1;
 }
 
 @end

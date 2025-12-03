@@ -1,19 +1,19 @@
 @interface ACIXPCAccountReceiver
-- (ACIXPCAccountReceiver)initWithEndpoint:(id)a3;
+- (ACIXPCAccountReceiver)initWithEndpoint:(id)endpoint;
 - (void)cleanup;
 @end
 
 @implementation ACIXPCAccountReceiver
 
-- (ACIXPCAccountReceiver)initWithEndpoint:(id)a3
+- (ACIXPCAccountReceiver)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v6 = [(ACIXPCAccountReceiver *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_endpoint, a3);
-    v8 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:v5];
+    objc_storeStrong(&v6->_endpoint, endpoint);
+    v8 = [objc_alloc(MEMORY[0x277CCAE80]) initWithListenerEndpoint:endpointCopy];
     connection = v7->_connection;
     v7->_connection = v8;
 
@@ -25,9 +25,9 @@
     [(NSXPCConnection *)v7->_connection setRemoteObjectInterface:v11];
 
     [(NSXPCConnection *)v7->_connection resume];
-    v12 = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)v7->_connection remoteObjectProxy];
     receiverProxy = v7->_receiverProxy;
-    v7->_receiverProxy = v12;
+    v7->_receiverProxy = remoteObjectProxy;
 
     v14 = v7;
   }

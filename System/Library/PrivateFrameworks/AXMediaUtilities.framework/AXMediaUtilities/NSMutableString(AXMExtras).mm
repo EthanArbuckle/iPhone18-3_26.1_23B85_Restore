@@ -8,24 +8,24 @@
 - (void)axmAppendIndentation:()AXMExtras
 {
   v2 = [MEMORY[0x1E696AD60] axmIndentationString:?];
-  [a1 appendString:v2];
+  [self appendString:v2];
 }
 
 + (id)axmIndentationString:()AXMExtras
 {
-  v4 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (a3 >= 1)
   {
     do
     {
-      [v4 appendString:@" "];
+      [string appendString:@" "];
       --a3;
     }
 
     while (a3);
   }
 
-  return v4;
+  return string;
 }
 
 @end

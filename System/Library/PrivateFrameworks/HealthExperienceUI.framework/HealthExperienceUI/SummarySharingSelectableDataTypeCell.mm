@@ -1,5 +1,5 @@
 @interface SummarySharingSelectableDataTypeCell
-- (_TtC18HealthExperienceUI36SummarySharingSelectableDataTypeCell)initWithFrame:(CGRect)a3;
+- (_TtC18HealthExperienceUI36SummarySharingSelectableDataTypeCell)initWithFrame:(CGRect)frame;
 - (void)switchUpdated;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)switchUpdated
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA253F88();
 }
 
-- (_TtC18HealthExperienceUI36SummarySharingSelectableDataTypeCell)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUI36SummarySharingSelectableDataTypeCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC18HealthExperienceUI36SummarySharingSelectableDataTypeCell_selectionSwitch;
   *(&self->super.super.super.super.super.super.super.isa + v8) = [objc_allocWithZone(MEMORY[0x1E69DCFD0]) initWithFrame_];
   v9 = OBJC_IVAR____TtC18HealthExperienceUI36SummarySharingSelectableDataTypeCell_font;

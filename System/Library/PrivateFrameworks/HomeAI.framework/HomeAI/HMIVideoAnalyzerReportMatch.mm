@@ -1,22 +1,22 @@
 @interface HMIVideoAnalyzerReportMatch
-- (HMIVideoAnalyzerReportMatch)initWithTruth:(id)a3 prediction:(id)a4 score:(float)a5;
+- (HMIVideoAnalyzerReportMatch)initWithTruth:(id)truth prediction:(id)prediction score:(float)score;
 @end
 
 @implementation HMIVideoAnalyzerReportMatch
 
-- (HMIVideoAnalyzerReportMatch)initWithTruth:(id)a3 prediction:(id)a4 score:(float)a5
+- (HMIVideoAnalyzerReportMatch)initWithTruth:(id)truth prediction:(id)prediction score:(float)score
 {
-  v9 = a3;
-  v10 = a4;
+  truthCopy = truth;
+  predictionCopy = prediction;
   v14.receiver = self;
   v14.super_class = HMIVideoAnalyzerReportMatch;
   v11 = [(HMIVideoAnalyzerReportMatch *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_truth, a3);
-    objc_storeStrong(&v12->_prediction, a4);
-    v12->_score = a5;
+    objc_storeStrong(&v11->_truth, truth);
+    objc_storeStrong(&v12->_prediction, prediction);
+    v12->_score = score;
   }
 
   return v12;

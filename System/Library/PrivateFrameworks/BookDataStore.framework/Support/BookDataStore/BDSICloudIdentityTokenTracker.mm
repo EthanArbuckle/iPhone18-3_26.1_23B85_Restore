@@ -1,9 +1,9 @@
 @interface BDSICloudIdentityTokenTracker
-- (BDSICloudIdentityTokenTracker)initWithContainerURL:(id)a3 trackingLiverpool:(BOOL)a4;
+- (BDSICloudIdentityTokenTracker)initWithContainerURL:(id)l trackingLiverpool:(BOOL)liverpool;
 - (BOOL)didUnacknowledgediCloudLogoutOccur;
 - (void)acknowledgeiCloudIdentity;
 - (void)fetchCurrentToken;
-- (void)forceUpdateTokenWithString:(id)a3;
+- (void)forceUpdateTokenWithString:(id)string;
 @end
 
 @implementation BDSICloudIdentityTokenTracker
@@ -12,41 +12,41 @@
 {
   if ([(BDSICloudIdentityTokenTracker *)self trackLiverpool])
   {
-    v3 = +[BDSICloudIdentityToken tokenForCurrentIdentityIfCloudKitEnabled];
+    initWithCurrentIdentity = +[BDSICloudIdentityToken tokenForCurrentIdentityIfCloudKitEnabled];
   }
 
   else
   {
-    v3 = [[BDSICloudIdentityToken alloc] initWithCurrentIdentity];
+    initWithCurrentIdentity = [[BDSICloudIdentityToken alloc] initWithCurrentIdentity];
   }
 
-  v4 = v3;
-  [(BDSICloudIdentityTokenTracker *)self setCurrentToken:v3];
+  v4 = initWithCurrentIdentity;
+  [(BDSICloudIdentityTokenTracker *)self setCurrentToken:initWithCurrentIdentity];
 }
 
 - (BOOL)didUnacknowledgediCloudLogoutOccur
 {
-  v2 = self;
+  selfCopy = self;
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
   objc_initWeak(&location, self);
-  v3 = [(BDSICloudIdentityTokenTracker *)v2 dispatchQueue];
+  dispatchQueue = [(BDSICloudIdentityTokenTracker *)selfCopy dispatchQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000027D0;
   v5[3] = &unk_10023FC68;
   objc_copyWeak(&v6, &location);
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v8;
-  dispatch_sync(v3, v5);
+  dispatch_sync(dispatchQueue, v5);
 
-  LOBYTE(v2) = *(v9 + 24);
+  LOBYTE(selfCopy) = *(v9 + 24);
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v8, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)acknowledgeiCloudIdentity
@@ -59,30 +59,30 @@
   }
 
   objc_initWeak(buf, self);
-  v4 = [(BDSICloudIdentityTokenTracker *)self dispatchQueue];
+  dispatchQueue = [(BDSICloudIdentityTokenTracker *)self dispatchQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100002E44;
   v5[3] = &unk_10023F9A8;
   objc_copyWeak(&v6, buf);
   v5[4] = self;
-  dispatch_sync(v4, v5);
+  dispatch_sync(dispatchQueue, v5);
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(buf);
 }
 
-- (BDSICloudIdentityTokenTracker)initWithContainerURL:(id)a3 trackingLiverpool:(BOOL)a4
+- (BDSICloudIdentityTokenTracker)initWithContainerURL:(id)l trackingLiverpool:(BOOL)liverpool
 {
-  v6 = a3;
+  lCopy = l;
   v21.receiver = self;
   v21.super_class = BDSICloudIdentityTokenTracker;
   v7 = [(BDSICloudIdentityTokenTracker *)&v21 init];
   v8 = v7;
   if (v7)
   {
-    v7->_trackLiverpool = a4;
-    v9 = [v6 URLByAppendingPathComponent:@"BDSICloudIdentityToken.plist"];
+    v7->_trackLiverpool = liverpool;
+    v9 = [lCopy URLByAppendingPathComponent:@"BDSICloudIdentityToken.plist"];
     plistURL = v8->_plistURL;
     v8->_plistURL = v9;
 
@@ -112,12 +112,12 @@
   return v8;
 }
 
-- (void)forceUpdateTokenWithString:(id)a3
+- (void)forceUpdateTokenWithString:(id)string
 {
-  v5 = a3;
-  if (v5)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v4 = [[BDSICloudIdentityToken alloc] initWithToken:v5];
+    v4 = [[BDSICloudIdentityToken alloc] initWithToken:stringCopy];
     [(BDSICloudIdentityTokenTracker *)self setCurrentToken:v4];
   }
 

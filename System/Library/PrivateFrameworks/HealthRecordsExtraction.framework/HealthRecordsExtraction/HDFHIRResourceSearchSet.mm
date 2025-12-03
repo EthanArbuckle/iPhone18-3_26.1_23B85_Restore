@@ -1,34 +1,34 @@
 @interface HDFHIRResourceSearchSet
-+ (id)searchSetWithFHIRJSONObject:(id)a3 serverBaseURL:(id)a4 error:(id *)a5;
-- (id)_initWithEntries:(id)a3 serverBaseURL:(id)a4 pageURL:(id)a5 nextPageURL:(id)a6;
++ (id)searchSetWithFHIRJSONObject:(id)object serverBaseURL:(id)l error:(id *)error;
+- (id)_initWithEntries:(id)entries serverBaseURL:(id)l pageURL:(id)rL nextPageURL:(id)uRL;
 @end
 
 @implementation HDFHIRResourceSearchSet
 
-- (id)_initWithEntries:(id)a3 serverBaseURL:(id)a4 pageURL:(id)a5 nextPageURL:(id)a6
+- (id)_initWithEntries:(id)entries serverBaseURL:(id)l pageURL:(id)rL nextPageURL:(id)uRL
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  entriesCopy = entries;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
   v24.receiver = self;
   v24.super_class = HDFHIRResourceSearchSet;
   v14 = [(HDFHIRResourceSearchSet *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [entriesCopy copy];
     entries = v14->_entries;
     v14->_entries = v15;
 
-    v17 = [v11 copy];
+    v17 = [lCopy copy];
     serverBaseURL = v14->_serverBaseURL;
     v14->_serverBaseURL = v17;
 
-    v19 = [v12 copy];
+    v19 = [rLCopy copy];
     pageURL = v14->_pageURL;
     v14->_pageURL = v19;
 
-    v21 = [v13 copy];
+    v21 = [uRLCopy copy];
     nextPageURL = v14->_nextPageURL;
     v14->_nextPageURL = v21;
   }
@@ -36,36 +36,36 @@
   return v14;
 }
 
-+ (id)searchSetWithFHIRJSONObject:(id)a3 serverBaseURL:(id)a4 error:(id *)a5
++ (id)searchSetWithFHIRJSONObject:(id)object serverBaseURL:(id)l error:(id *)error
 {
   v104 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v85 = a4;
-  if (!v85)
+  objectCopy = object;
+  lCopy = l;
+  if (!lCopy)
   {
-    [HDFHIRResourceSearchSet searchSetWithFHIRJSONObject:a2 serverBaseURL:a1 error:?];
+    [HDFHIRResourceSearchSet searchSetWithFHIRJSONObject:a2 serverBaseURL:self error:?];
   }
 
-  v10 = [v9 detectedResourceType];
-  v11 = [v10 isEqualToString:@"Bundle"];
+  detectedResourceType = [objectCopy detectedResourceType];
+  v11 = [detectedResourceType isEqualToString:@"Bundle"];
 
   if ((v11 & 1) == 0)
   {
     v39 = MEMORY[0x277CCA9B8];
-    v40 = [v9 detectedResourceType];
-    [v39 hk_assignError:a5 code:3 format:{@"searchSetWithFHIRJSONObject needs Bundle resource, but got %@", v40}];
+    detectedResourceType2 = [objectCopy detectedResourceType];
+    [v39 hk_assignError:error code:3 format:{@"searchSetWithFHIRJSONObject needs Bundle resource, but got %@", detectedResourceType2}];
 
     v41 = 0;
     goto LABEL_67;
   }
 
-  v70 = a1;
-  v12 = [v9 sourceURL];
-  v13 = [v9 JSONObject];
-  v14 = [v13 hk_safeArrayIfExistsForKeyPath:@"link" error:0];
+  selfCopy = self;
+  sourceURL = [objectCopy sourceURL];
+  jSONObject = [objectCopy JSONObject];
+  v14 = [jSONObject hk_safeArrayIfExistsForKeyPath:@"link" error:0];
 
-  v76 = a5;
-  v77 = v9;
+  errorCopy = error;
+  v77 = objectCopy;
   v72 = v14;
   if (!v14)
   {
@@ -73,7 +73,7 @@
     goto LABEL_29;
   }
 
-  v79 = v12;
+  v79 = sourceURL;
   v96 = 0u;
   v97 = 0u;
   v94 = 0u;
@@ -111,7 +111,7 @@
 
       if (v26)
       {
-        v27 = [v85 hrs_URLByExpandingReference:v26];
+        v27 = [lCopy hrs_URLByExpandingReference:v26];
         if (v27)
         {
           v28 = v18;
@@ -180,22 +180,22 @@ LABEL_22:
   while (v16);
 LABEL_28:
 
-  a5 = v76;
-  v9 = v77;
-  v12 = v79;
+  error = errorCopy;
+  objectCopy = v77;
+  sourceURL = v79;
   v14 = v72;
 LABEL_29:
-  v42 = [MEMORY[0x277CBEB18] array];
-  v43 = [v9 JSONObject];
+  array = [MEMORY[0x277CBEB18] array];
+  jSONObject2 = [objectCopy JSONObject];
   v93 = 0;
-  v44 = [v43 hk_safeArrayForKeyPath:@"entry" error:&v93];
+  v44 = [jSONObject2 hk_safeArrayForKeyPath:@"entry" error:&v93];
   v71 = v93;
 
   if (v44)
   {
-    v73 = v42;
-    v80 = v12;
-    v75 = [MEMORY[0x277CBEAA8] date];
+    v73 = array;
+    v80 = sourceURL;
+    date = [MEMORY[0x277CBEAA8] date];
     v89 = 0u;
     v90 = 0u;
     v91 = 0u;
@@ -223,9 +223,9 @@ LABEL_29:
           {
 
             v41 = 0;
-            v12 = v80;
+            sourceURL = v80;
             v14 = v72;
-            v42 = v73;
+            array = v73;
             v44 = v69;
             goto LABEL_66;
           }
@@ -247,20 +247,20 @@ LABEL_29:
           if (v50)
           {
             v52 = MEMORY[0x277D12380];
-            v53 = [v9 FHIRVersion];
+            fHIRVersion = [objectCopy FHIRVersion];
             obja = v49;
             if (v49)
             {
               v87 = v51;
               v54 = &v87;
-              [v52 resourceObjectWithJSONObject:v50 sourceURL:v49 FHIRVersion:v53 receivedDate:v75 extractionHints:0 error:&v87];
+              [v52 resourceObjectWithJSONObject:v50 sourceURL:v49 FHIRVersion:fHIRVersion receivedDate:date extractionHints:0 error:&v87];
             }
 
             else
             {
               v86 = v51;
               v54 = &v86;
-              [v52 resourceObjectWithJSONObject:v50 serverBaseURL:v85 FHIRVersion:v53 receivedDate:v75 error:&v86];
+              [v52 resourceObjectWithJSONObject:v50 serverBaseURL:lCopy FHIRVersion:fHIRVersion receivedDate:date error:&v86];
             }
             v57 = ;
             v56 = *v54;
@@ -268,14 +268,14 @@ LABEL_29:
             if (v57)
             {
               [v73 addObject:v57];
-              v9 = v77;
+              objectCopy = v77;
             }
 
             else
             {
               _HKInitializeLogging();
               v58 = *MEMORY[0x277CCC2C0];
-              v9 = v77;
+              objectCopy = v77;
               if (os_log_type_enabled(*MEMORY[0x277CCC2C0], OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
@@ -312,18 +312,18 @@ LABEL_29:
       }
     }
 
-    v12 = v80;
+    sourceURL = v80;
     v14 = v72;
-    v42 = v73;
+    array = v73;
     v44 = v69;
 LABEL_63:
-    v41 = [[v70 alloc] _initWithEntries:v42 serverBaseURL:v85 pageURL:v12 nextPageURL:v17];
+    v41 = [[selfCopy alloc] _initWithEntries:array serverBaseURL:lCopy pageURL:sourceURL nextPageURL:v17];
   }
 
   else
   {
-    v59 = [v9 JSONObject];
-    v60 = [v59 objectForKeyedSubscript:@"entry"];
+    jSONObject3 = [objectCopy JSONObject];
+    v60 = [jSONObject3 objectForKeyedSubscript:@"entry"];
 
     _HKInitializeLogging();
     v61 = *MEMORY[0x277CCC2C0];
@@ -350,10 +350,10 @@ LABEL_63:
     v63 = v71;
     if (v63)
     {
-      if (a5)
+      if (error)
       {
         v64 = v63;
-        *a5 = v63;
+        *error = v63;
       }
 
       else

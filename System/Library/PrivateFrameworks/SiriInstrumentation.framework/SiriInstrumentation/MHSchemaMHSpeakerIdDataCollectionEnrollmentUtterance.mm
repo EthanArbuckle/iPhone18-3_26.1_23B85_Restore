@@ -1,41 +1,41 @@
 @interface MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance)initWithDictionary:(id)a3;
-- (MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance)initWithDictionary:(id)dictionary;
+- (MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasTriggerPhrase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasTriggerPhrase:(BOOL)phrase;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance
 
-- (MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance)initWithDictionary:(id)a3
+- (MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance;
   v5 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"approximateGenerationTimeStamp"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"approximateGenerationTimeStamp"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance setApproximateGenerationTimeStamp:](v5, "setApproximateGenerationTimeStamp:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"triggerPhrase"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"triggerPhrase"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance setTriggerPhrase:](v5, "setTriggerPhrase:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"enrollmentDonationId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"enrollmentDonationId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance)initWithJSON:(id)a3
+- (MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,39 +85,39 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance approximateGenerationTimeStamp](self, "approximateGenerationTimeStamp")}];
-    [v3 setObject:v4 forKeyedSubscript:@"approximateGenerationTimeStamp"];
+    [dictionary setObject:v4 forKeyedSubscript:@"approximateGenerationTimeStamp"];
   }
 
   if (self->_enrollmentDonationId)
   {
-    v5 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
-    v6 = [v5 dictionaryRepresentation];
-    if (v6)
+    enrollmentDonationId = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
+    dictionaryRepresentation = [enrollmentDonationId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v6 forKeyedSubscript:@"enrollmentDonationId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"enrollmentDonationId"];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v7 forKeyedSubscript:@"enrollmentDonationId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"enrollmentDonationId"];
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    v8 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self triggerPhrase];
+    triggerPhrase = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self triggerPhrase];
     v9 = @"TRIGGERPHRASE_UNKNOWN";
-    if (v8 == 1)
+    if (triggerPhrase == 1)
     {
       v9 = @"TRIGGERPHRASE_HEY_SIRI";
     }
 
-    if (v8 == 2)
+    if (triggerPhrase == 2)
     {
       v10 = @"TRIGGERPHRASE_SIRI";
     }
@@ -127,12 +127,12 @@
       v10 = v9;
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"triggerPhrase"];
+    [dictionary setObject:v10 forKeyedSubscript:@"triggerPhrase"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -161,16 +161,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(SISchemaUUID *)self->_enrollmentDonationId hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -179,27 +179,27 @@ LABEL_3:
   if (*&has)
   {
     approximateGenerationTimeStamp = self->_approximateGenerationTimeStamp;
-    if (approximateGenerationTimeStamp != [v4 approximateGenerationTimeStamp])
+    if (approximateGenerationTimeStamp != [equalCopy approximateGenerationTimeStamp])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (triggerPhrase = self->_triggerPhrase, triggerPhrase == [v4 triggerPhrase]))
+    if (!v8 || (triggerPhrase = self->_triggerPhrase, triggerPhrase == [equalCopy triggerPhrase]))
     {
-      v10 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
-      v11 = [v4 enrollmentDonationId];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      enrollmentDonationId = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
+      enrollmentDonationId2 = [equalCopy enrollmentDonationId];
+      v12 = enrollmentDonationId2;
+      if ((enrollmentDonationId != 0) != (enrollmentDonationId2 == 0))
       {
-        v13 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
-        if (!v13)
+        enrollmentDonationId3 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
+        if (!enrollmentDonationId3)
         {
 
 LABEL_17:
@@ -207,10 +207,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
-        v16 = [v4 enrollmentDonationId];
-        v17 = [v15 isEqual:v16];
+        v14 = enrollmentDonationId3;
+        enrollmentDonationId4 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
+        enrollmentDonationId5 = [equalCopy enrollmentDonationId];
+        v17 = [enrollmentDonationId4 isEqual:enrollmentDonationId5];
 
         if (v17)
         {
@@ -231,9 +231,9 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -246,21 +246,21 @@ LABEL_15:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
+  enrollmentDonationId = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
 
-  v6 = v8;
-  if (v5)
+  v6 = toCopy;
+  if (enrollmentDonationId)
   {
-    v7 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
+    enrollmentDonationId2 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId];
     PBDataWriterWriteSubmessage();
 
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasTriggerPhrase:(BOOL)a3
+- (void)setHasTriggerPhrase:(BOOL)phrase
 {
-  if (a3)
+  if (phrase)
   {
     v3 = 2;
   }
@@ -273,17 +273,17 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self enrollmentDonationId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(MHSchemaMHSpeakerIdDataCollectionEnrollmentUtterance *)self deleteEnrollmentDonationId];
   }

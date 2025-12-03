@@ -1,20 +1,20 @@
 @interface ABValuePredicate
-+ (id)stringForComparison:(id)a3 withComparision:(int64_t)a4;
++ (id)stringForComparison:(id)comparison withComparision:(int64_t)comparision;
 - (ABValuePredicate)init;
-- (BOOL)_shouldConsultIndexForKey:(id)a3;
+- (BOOL)_shouldConsultIndexForKey:(id)key;
 - (BOOL)_supportsFTSSearch;
 - (BOOL)isValid;
 - (id)_ftsAllQueryStrings;
-- (id)_ftsTermStringForString:(id)a3;
-- (id)_ftsTokenizedTermStringForString:(id)a3;
+- (id)_ftsTermStringForString:(id)string;
+- (id)_ftsTokenizedTermStringForString:(id)string;
 - (id)predicateFormat;
-- (id)queryJoinsInCompound:(BOOL)a3 predicateIdentifier:(int)a4;
-- (id)querySelectPropertiesForPredicateIdentifier:(int)a3;
-- (id)queryWhereStringForPredicateIdentifier:(int)a3;
-- (id)stringForComparison:(id)a3;
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5;
+- (id)queryJoinsInCompound:(BOOL)compound predicateIdentifier:(int)identifier;
+- (id)querySelectPropertiesForPredicateIdentifier:(int)identifier;
+- (id)queryWhereStringForPredicateIdentifier:(int)identifier;
+- (id)stringForComparison:(id)comparison;
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier;
 - (void)dealloc;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation ABValuePredicate
@@ -40,13 +40,13 @@
   [(ABPredicate *)&v3 dealloc];
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   value = self->_value;
-  if (value != a3)
+  if (value != value)
   {
 
-    self->_value = [a3 copy];
+    self->_value = [value copy];
     objc_opt_class();
     self->_dictionaryValue = objc_opt_isKindOfClass() & 1;
   }
@@ -131,7 +131,7 @@
   return (v10 < 2) & v11;
 }
 
-- (id)querySelectPropertiesForPredicateIdentifier:(int)a3
+- (id)querySelectPropertiesForPredicateIdentifier:(int)identifier
 {
   if (ABPersonGetTypeOfProperty(self->_property) == 261)
   {
@@ -144,16 +144,16 @@
   }
 }
 
-- (id)queryJoinsInCompound:(BOOL)a3 predicateIdentifier:(int)a4
+- (id)queryJoinsInCompound:(BOOL)compound predicateIdentifier:(int)identifier
 {
-  v4 = a3;
+  compoundCopy = compound;
   if (ABPersonGetTypeOfProperty(self->_property) != 261)
   {
     return 0;
   }
 
   v5 = MEMORY[0x1E695DEC8];
-  if (v4)
+  if (compoundCopy)
   {
     v6 = @"LEFT OUTER JOIN ABMultiValue abv ON abp.ROWID = abv.record_id";
   }
@@ -166,14 +166,14 @@
   return [v5 arrayWithObject:v6];
 }
 
-- (BOOL)_shouldConsultIndexForKey:(id)a3
+- (BOOL)_shouldConsultIndexForKey:(id)key
 {
   ArrayOfAllFTSPropertyIDs = _ABPersonGetArrayOfAllFTSPropertyIDs();
   Count = CFArrayGetCount(ArrayOfAllFTSPropertyIDs);
-  v7 = [(ABValuePredicate *)self property];
+  property = [(ABValuePredicate *)self property];
   v19.location = 0;
   v19.length = Count;
-  v8 = CFArrayContainsValue(ArrayOfAllFTSPropertyIDs, v19, v7);
+  v8 = CFArrayContainsValue(ArrayOfAllFTSPropertyIDs, v19, property);
   if (!v8)
   {
     return v8;
@@ -206,7 +206,7 @@ LABEL_12:
     return v8;
   }
 
-  LOBYTE(v8) = [v9 containsObject:a3];
+  LOBYTE(v8) = [v9 containsObject:key];
   return v8;
 }
 
@@ -301,7 +301,7 @@ LABEL_16:
   return v3;
 }
 
-- (id)queryWhereStringForPredicateIdentifier:(int)a3
+- (id)queryWhereStringForPredicateIdentifier:(int)identifier
 {
   TypeOfProperty = ABPersonGetTypeOfProperty(self->_property);
   v5 = TypeOfProperty;
@@ -394,9 +394,9 @@ LABEL_16:
             [v9 appendString:@" INTERSECT "];
           }
 
-          v14 = [(ABValuePredicate *)self _supportsFTSSearch];
+          _supportsFTSSearch = [(ABValuePredicate *)self _supportsFTSSearch];
           v15 = @"(SELECT ROWID FROM ABPerson)";
-          if (v14)
+          if (_supportsFTSSearch)
           {
             v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(SELECT rowid FROM ABPersonFullTextSearch WHERE %@ MATCH ?)", v25];
           }
@@ -475,38 +475,38 @@ LABEL_43:
   }
 }
 
-+ (id)stringForComparison:(id)a3 withComparision:(int64_t)a4
++ (id)stringForComparison:(id)comparison withComparision:(int64_t)comparision
 {
-  switch(a4)
+  switch(comparision)
   {
     case 3:
-      v5 = [@"%" stringByAppendingString:a3];
-      a3 = @"%";
+      comparisonCopy = [@"%" stringByAppendingString:comparison];
+      comparison = @"%";
 
-      return [(__CFString *)v5 stringByAppendingString:a3];
+      return [(__CFString *)comparisonCopy stringByAppendingString:comparison];
     case 2:
-      v5 = @"%";
+      comparisonCopy = @"%";
 
-      return [(__CFString *)v5 stringByAppendingString:a3];
+      return [(__CFString *)comparisonCopy stringByAppendingString:comparison];
     case 1:
-      v5 = a3;
-      a3 = @"%";
+      comparisonCopy = comparison;
+      comparison = @"%";
 
-      return [(__CFString *)v5 stringByAppendingString:a3];
+      return [(__CFString *)comparisonCopy stringByAppendingString:comparison];
   }
 
-  return a3;
+  return comparison;
 }
 
-- (id)stringForComparison:(id)a3
+- (id)stringForComparison:(id)comparison
 {
   v5 = objc_opt_class();
   comparison = self->_comparison;
 
-  return [v5 stringForComparison:a3 withComparision:comparison];
+  return [v5 stringForComparison:comparison withComparision:comparison];
 }
 
-- (id)_ftsTermStringForString:(id)a3
+- (id)_ftsTermStringForString:(id)string
 {
   if ([(ABValuePredicate *)self comparison]== 3 || [(ABValuePredicate *)self comparison]== 2)
   {
@@ -528,10 +528,10 @@ LABEL_43:
     v6 = &stru_1F2FE2718;
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"##&%@%@%@", v5, a3, v6];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"##&%@%@%@", v5, string, v6];
 }
 
-- (id)_ftsTokenizedTermStringForString:(id)a3
+- (id)_ftsTokenizedTermStringForString:(id)string
 {
   v5 = CFLocaleCopyPreferredLanguages();
   if (v5)
@@ -560,15 +560,15 @@ LABEL_7:
   v16.length = 0;
   v9 = CFStringTokenizerCreate(*MEMORY[0x1E695E480], &stru_1F2FE2718, v16, 0, v8);
   v10 = ABTokenListCreate();
-  ABTokenListPopulateFromString(v10, v9, 0, a3, 0, 1, 0);
-  v11 = [MEMORY[0x1E696AD60] string];
+  ABTokenListPopulateFromString(v10, v9, 0, string, 0, 1, 0);
+  string = [MEMORY[0x1E696AD60] string];
   Count = ABTokenListGetCount(v10);
   if (Count >= 1)
   {
     v13 = Count;
     for (i = 0; i != v13; ++i)
     {
-      [v11 appendFormat:@"%@ ", -[ABValuePredicate _ftsTermStringForString:](self, "_ftsTermStringForString:", ABTokenListGetTokenAtIndex(v10, i))];
+      [string appendFormat:@"%@ ", -[ABValuePredicate _ftsTermStringForString:](self, "_ftsTermStringForString:", ABTokenListGetTokenAtIndex(v10, i))];
     }
   }
 
@@ -579,13 +579,13 @@ LABEL_7:
 
   CFRelease(v9);
   CFRelease(v10);
-  return v11;
+  return string;
 }
 
 - (id)_ftsAllQueryStrings
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -608,7 +608,7 @@ LABEL_7:
         v9 = *(*(&v11 + 1) + 8 * i);
         if ([(ABValuePredicate *)self _shouldConsultIndexForKey:v9])
         {
-          [v3 appendFormat:@"%@ ", -[NSObject objectForKey:](self->_value, "objectForKey:", v9)];
+          [string appendFormat:@"%@ ", -[NSObject objectForKey:](self->_value, "objectForKey:", v9)];
         }
       }
 
@@ -618,16 +618,16 @@ LABEL_7:
     while (v6);
   }
 
-  return [(ABValuePredicate *)self _ftsTokenizedTermStringForString:v3];
+  return [(ABValuePredicate *)self _ftsTokenizedTermStringForString:string];
 }
 
-- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)a3 withBindingOffset:(int *)a4 predicateIdentifier:(int)a5
+- (void)ab_bindWhereClauseComponentOfStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset predicateIdentifier:(int)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
   if (self->_value)
   {
     TypeOfProperty = ABPersonGetTypeOfProperty(self->_property);
-    v26 = [(ABValuePredicate *)self _supportsFTSSearch];
+    _supportsFTSSearch = [(ABValuePredicate *)self _supportsFTSSearch];
     if (TypeOfProperty == 261 && self->_dictionaryValue)
     {
       value = self->_value;
@@ -656,13 +656,13 @@ LABEL_7:
             if (objc_opt_isKindOfClass())
             {
               v16 = [(ABValuePredicate *)self stringForComparison:v15];
-              if (v26)
+              if (_supportsFTSSearch)
               {
-                [(ABPredicate *)self bindString:[(ABValuePredicate *)self _ftsAllQueryStrings] toStatement:a3 withBindingOffset:a4];
+                [(ABPredicate *)self bindString:[(ABValuePredicate *)self _ftsAllQueryStrings] toStatement:statement withBindingOffset:offset];
               }
 
-              [(ABPredicate *)self bindString:v14 toStatement:a3 withBindingOffset:a4];
-              [(ABPredicate *)self bindString:v16 toStatement:a3 withBindingOffset:a4];
+              [(ABPredicate *)self bindString:v14 toStatement:statement withBindingOffset:offset];
+              [(ABPredicate *)self bindString:v16 toStatement:statement withBindingOffset:offset];
             }
           }
 
@@ -675,7 +675,7 @@ LABEL_7:
 
     else
     {
-      v17 = v26;
+      v17 = _supportsFTSSearch;
       if ((TypeOfProperty & 0x100) == 0)
       {
         v17 = 1;
@@ -683,8 +683,8 @@ LABEL_7:
 
       if ((v17 & 1) == 0)
       {
-        sqlite3_bind_int(a3->var1, *a4, self->_property);
-        ++*a4;
+        sqlite3_bind_int(statement->var1, *offset, self->_property);
+        ++*offset;
       }
 
       objc_opt_class();
@@ -692,11 +692,11 @@ LABEL_7:
       v19 = self->_value;
       if (isKindOfClass)
       {
-        if (!v26 || ([(ABPredicate *)self bindString:[(ABValuePredicate *)self _ftsTokenizedTermStringForString:self->_value] toStatement:a3 withBindingOffset:a4], ![(ABValuePredicate *)self _allowsLaxCheckingForFTS]))
+        if (!_supportsFTSSearch || ([(ABPredicate *)self bindString:[(ABValuePredicate *)self _ftsTokenizedTermStringForString:self->_value] toStatement:statement withBindingOffset:offset], ![(ABValuePredicate *)self _allowsLaxCheckingForFTS]))
         {
           v20 = [(ABValuePredicate *)self stringForComparison:v19];
 
-          [(ABPredicate *)self bindString:v20 toStatement:a3 withBindingOffset:a4];
+          [(ABPredicate *)self bindString:v20 toStatement:statement withBindingOffset:offset];
         }
       }
 
@@ -705,19 +705,19 @@ LABEL_7:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = [MEMORY[0x1E695DEE8] currentCalendar];
-          v22 = [v21 components:254 fromDate:self->_value];
-          [v21 setTimeZone:{objc_msgSend(MEMORY[0x1E695DFE8], "timeZoneForSecondsFromGMT:", 0)}];
+          currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+          v22 = [currentCalendar components:254 fromDate:self->_value];
+          [currentCalendar setTimeZone:{objc_msgSend(MEMORY[0x1E695DFE8], "timeZoneForSecondsFromGMT:", 0)}];
           [v22 setHour:12];
           [v22 setMinute:0];
           [v22 setSecond:0];
-          v23 = [v21 dateFromComponents:v22];
+          v23 = [currentCalendar dateFromComponents:v22];
           v24 = v23;
           comparison = self->_comparison;
           if (comparison == 5 || !comparison)
           {
             [objc_msgSend(v23 dateByAddingTimeInterval:{-43200.0), "timeIntervalSinceReferenceDate"}];
-            [(ABPredicate *)self bindDouble:a3 toStatement:a4 withBindingOffset:?];
+            [(ABPredicate *)self bindDouble:statement toStatement:offset withBindingOffset:?];
             comparison = self->_comparison;
           }
 
@@ -725,7 +725,7 @@ LABEL_7:
           {
             [objc_msgSend(v24 dateByAddingTimeInterval:{43200.0), "timeIntervalSinceReferenceDate"}];
 
-            [(ABPredicate *)self bindDouble:a3 toStatement:a4 withBindingOffset:?];
+            [(ABPredicate *)self bindDouble:statement toStatement:offset withBindingOffset:?];
           }
         }
       }

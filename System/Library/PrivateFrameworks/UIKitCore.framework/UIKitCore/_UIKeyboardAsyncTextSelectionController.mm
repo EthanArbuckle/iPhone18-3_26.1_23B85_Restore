@@ -1,38 +1,38 @@
 @interface _UIKeyboardAsyncTextSelectionController
-- (BOOL)cursorPositionIsContainedByRange:(id)a3;
-- (BOOL)shouldAllowSelectionGestureWithTouchType:(int64_t)a3 atPoint:(CGPoint)a4 toProgressToState:(int64_t)a5;
+- (BOOL)cursorPositionIsContainedByRange:(id)range;
+- (BOOL)shouldAllowSelectionGestureWithTouchType:(int64_t)type atPoint:(CGPoint)point toProgressToState:(int64_t)state;
 - (CGRect)caretRectForLeftmostSelectedPosition;
 - (CGRect)caretRectForRightmostSelectedPosition;
 - (id)webInputDelegate;
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3;
-- (void)beginSelectionWithBaseAtSelectionBoundaryInDirection:(int64_t)a3 initialExtentPoint:(CGPoint)a4 executionContext:(id)a5;
+- (void)beginFloatingCursorAtPoint:(CGPoint)point;
+- (void)beginSelectionWithBaseAtSelectionBoundaryInDirection:(int64_t)direction initialExtentPoint:(CGPoint)point executionContext:(id)context;
 - (void)endFloatingCursor;
-- (void)selectPositionAtBoundary:(int64_t)a3 inDirection:(int64_t)a4 relativeToSelection:(id)a5 executionContext:(id)a6;
-- (void)selectPositionAtPoint:(CGPoint)a3 executionContext:(id)a4;
-- (void)selectPositionAtPoint:(CGPoint)a3 granularity:(int64_t)a4 completionHandler:(id)a5;
-- (void)selectTextWithGranularity:(int64_t)a3 atPoint:(CGPoint)a4 completionHandler:(id)a5;
-- (void)selectTextWithGranularity:(int64_t)a3 atPoint:(CGPoint)a4 executionContext:(id)a5;
-- (void)setRangedSelectionShouldShowGrabbers:(BOOL)a3;
+- (void)selectPositionAtBoundary:(int64_t)boundary inDirection:(int64_t)direction relativeToSelection:(id)selection executionContext:(id)context;
+- (void)selectPositionAtPoint:(CGPoint)point executionContext:(id)context;
+- (void)selectPositionAtPoint:(CGPoint)point granularity:(int64_t)granularity completionHandler:(id)handler;
+- (void)selectTextWithGranularity:(int64_t)granularity atPoint:(CGPoint)point completionHandler:(id)handler;
+- (void)selectTextWithGranularity:(int64_t)granularity atPoint:(CGPoint)point executionContext:(id)context;
+- (void)setRangedSelectionShouldShowGrabbers:(BOOL)grabbers;
 - (void)showSelectionCommands;
 - (void)showSelectionView;
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3;
-- (void)updateSelectionWithExtentPoint:(CGPoint)a3 executionContext:(id)a4;
-- (void)updateSelectionWithExtentPoint:(CGPoint)a3 withBoundary:(int64_t)a4 executionContext:(id)a5;
+- (void)updateFloatingCursorAtPoint:(CGPoint)point;
+- (void)updateSelectionWithExtentPoint:(CGPoint)point executionContext:(id)context;
+- (void)updateSelectionWithExtentPoint:(CGPoint)point withBoundary:(int64_t)boundary executionContext:(id)context;
 @end
 
 @implementation _UIKeyboardAsyncTextSelectionController
 
-- (BOOL)cursorPositionIsContainedByRange:(id)a3
+- (BOOL)cursorPositionIsContainedByRange:(id)range
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIKeyboardTextSelectionController *)self cursorPosition];
+  rangeCopy = range;
+  cursorPosition = [(_UIKeyboardTextSelectionController *)self cursorPosition];
 
-  if (v5)
+  if (cursorPosition)
   {
-    v6 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v7 = [(_UIKeyboardTextSelectionController *)self cursorPosition];
-    [v6 caretRectForPosition:v7];
+    inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    cursorPosition2 = [(_UIKeyboardTextSelectionController *)self cursorPosition];
+    [inputDelegate caretRectForPosition:cursorPosition2];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -44,26 +44,26 @@
     v28.size.height = v15;
     if (CGRectIsEmpty(v28))
     {
-      LOBYTE(v5) = 0;
+      LOBYTE(cursorPosition) = 0;
     }
 
     else
     {
-      v16 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-      v17 = [v16 selectionRectsForRange:v4];
+      inputDelegate2 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+      v17 = [inputDelegate2 selectionRectsForRange:rangeCopy];
 
       v24 = 0u;
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
       v18 = v17;
-      v5 = [v18 countByEnumeratingWithState:&v22 objects:v26 count:16];
-      if (v5)
+      cursorPosition = [v18 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      if (cursorPosition)
       {
         v19 = *v23;
         while (2)
         {
-          for (i = 0; i != v5; i = i + 1)
+          for (i = 0; i != cursorPosition; i = i + 1)
           {
             if (*v23 != v19)
             {
@@ -77,13 +77,13 @@
             v30.size.height = v15;
             if (CGRectIntersectsRect(v29, v30))
             {
-              LOBYTE(v5) = 1;
+              LOBYTE(cursorPosition) = 1;
               goto LABEL_14;
             }
           }
 
-          v5 = [v18 countByEnumeratingWithState:&v22 objects:v26 count:16];
-          if (v5)
+          cursorPosition = [v18 countByEnumeratingWithState:&v22 objects:v26 count:16];
+          if (cursorPosition)
           {
             continue;
           }
@@ -96,20 +96,20 @@ LABEL_14:
     }
   }
 
-  return v5;
+  return cursorPosition;
 }
 
 - (CGRect)caretRectForLeftmostSelectedPosition
 {
-  v3 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-  v4 = [v3 selectedTextRange];
+  inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  selectedTextRange = [inputDelegate selectedTextRange];
 
-  v5 = [v4 start];
-  if (v5)
+  start = [selectedTextRange start];
+  if (start)
   {
-    v6 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v7 = [v4 start];
-    [v6 caretRectForPosition:v7];
+    inputDelegate2 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    start2 = [selectedTextRange start];
+    [inputDelegate2 caretRectForPosition:start2];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -124,12 +124,12 @@ LABEL_14:
     v15 = *(MEMORY[0x1E695F050] + 24);
   }
 
-  v16 = [v4 end];
+  v16 = [selectedTextRange end];
   if (v16)
   {
-    v17 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v18 = [v4 end];
-    [v17 caretRectForPosition:v18];
+    inputDelegate3 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    v18 = [selectedTextRange end];
+    [inputDelegate3 caretRectForPosition:v18];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -165,15 +165,15 @@ LABEL_14:
 
 - (CGRect)caretRectForRightmostSelectedPosition
 {
-  v3 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-  v4 = [v3 selectedTextRange];
+  inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  selectedTextRange = [inputDelegate selectedTextRange];
 
-  v5 = [v4 start];
-  if (v5)
+  start = [selectedTextRange start];
+  if (start)
   {
-    v6 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v7 = [v4 start];
-    [v6 caretRectForPosition:v7];
+    inputDelegate2 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    start2 = [selectedTextRange start];
+    [inputDelegate2 caretRectForPosition:start2];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -188,12 +188,12 @@ LABEL_14:
     v15 = *(MEMORY[0x1E695F050] + 24);
   }
 
-  v16 = [v4 end];
+  v16 = [selectedTextRange end];
   if (v16)
   {
-    v17 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v18 = [v4 end];
-    [v17 caretRectForPosition:v18];
+    inputDelegate3 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    v18 = [selectedTextRange end];
+    [inputDelegate3 caretRectForPosition:v18];
     v20 = v19;
     v22 = v21;
     v24 = v23;
@@ -227,58 +227,58 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)shouldAllowSelectionGestureWithTouchType:(int64_t)a3 atPoint:(CGPoint)a4 toProgressToState:(int64_t)a5
+- (BOOL)shouldAllowSelectionGestureWithTouchType:(int64_t)type atPoint:(CGPoint)point toProgressToState:(int64_t)state
 {
-  y = a4.y;
-  x = a4.x;
-  [UIKBInputDelegateManager isAsyncTextInputEnabled:a3];
-  v8 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-  v9 = [v8 hasSelectablePositionAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  [UIKBInputDelegateManager isAsyncTextInputEnabled:type];
+  inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  v9 = [inputDelegate hasSelectablePositionAtPoint:{x, y}];
   if (v9)
   {
-    [v8 _cancelLongPressGestureRecognizer];
+    [inputDelegate _cancelLongPressGestureRecognizer];
   }
 
   return v9;
 }
 
-- (void)selectPositionAtPoint:(CGPoint)a3 executionContext:(id)a4
+- (void)selectPositionAtPoint:(CGPoint)point executionContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  y = point.y;
+  x = point.x;
+  contextCopy = context;
+  inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __82___UIKeyboardAsyncTextSelectionController_selectPositionAtPoint_executionContext___block_invoke;
   v11[3] = &unk_1E7103E40;
-  v12 = v7;
-  v13 = self;
-  v14 = v8;
+  v12 = contextCopy;
+  selfCopy = self;
+  v14 = inputDelegate;
   v15 = x;
   v16 = y;
-  v9 = v8;
-  v10 = v7;
+  v9 = inputDelegate;
+  v10 = contextCopy;
   [(_UIKeyboardAsyncTextSelectionController *)self selectPositionAtPoint:v11 completionHandler:x, y];
 }
 
-- (void)selectPositionAtPoint:(CGPoint)a3 granularity:(int64_t)a4 completionHandler:(id)a5
+- (void)selectPositionAtPoint:(CGPoint)point granularity:(int64_t)granularity completionHandler:(id)handler
 {
-  y = a3.y;
-  x = a3.x;
-  v14 = a5;
+  y = point.y;
+  x = point.x;
+  handlerCopy = handler;
   if (+[UIKBInputDelegateManager isAsyncTextInputEnabled])
   {
-    v9 = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
+    webInputDelegate = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
 
-    v10 = self;
-    if (v9)
+    selfCopy2 = self;
+    if (webInputDelegate)
     {
-      v11 = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
-      v12 = v11;
-      if (a4)
+      webInputDelegate2 = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
+      v12 = webInputDelegate2;
+      if (granularity)
       {
-        [v11 updateCurrentSelectionTo:1 fromGesture:3 inState:{x, y}];
+        [webInputDelegate2 updateCurrentSelectionTo:1 fromGesture:3 inState:{x, y}];
         goto LABEL_9;
       }
 
@@ -288,119 +288,119 @@ LABEL_14:
 
   else
   {
-    v10 = self;
+    selfCopy2 = self;
   }
 
-  v13 = [(_UIKeyboardTextSelectionController *)v10 inputDelegate];
-  v12 = v13;
-  if (a4)
+  inputDelegate = [(_UIKeyboardTextSelectionController *)selfCopy2 inputDelegate];
+  v12 = inputDelegate;
+  if (granularity)
   {
-    [v13 changeSelectionWithGestureAt:1 withGesture:3 withState:{x, y}];
+    [inputDelegate changeSelectionWithGestureAt:1 withGesture:3 withState:{x, y}];
     goto LABEL_9;
   }
 
 LABEL_8:
-  [v12 selectPositionAtPoint:v14 completionHandler:{x, y}];
+  [v12 selectPositionAtPoint:handlerCopy completionHandler:{x, y}];
 LABEL_9:
 }
 
-- (void)selectPositionAtBoundary:(int64_t)a3 inDirection:(int64_t)a4 relativeToSelection:(id)a5 executionContext:(id)a6
+- (void)selectPositionAtBoundary:(int64_t)boundary inDirection:(int64_t)direction relativeToSelection:(id)selection executionContext:(id)context
 {
-  v9 = a6;
+  contextCopy = context;
   if (!+[UIKBInputDelegateManager isAsyncTextInputEnabled])
   {
-    v12 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __117___UIKeyboardAsyncTextSelectionController_selectPositionAtBoundary_inDirection_relativeToSelection_executionContext___block_invoke_9;
     v14[3] = &unk_1E70F35B8;
-    v15 = v9;
-    v16 = self;
-    [v12 moveSelectionAtBoundary:a3 inDirection:a4 completionHandler:v14];
+    v15 = contextCopy;
+    selfCopy = self;
+    [inputDelegate moveSelectionAtBoundary:boundary inDirection:direction completionHandler:v14];
     v13 = v15;
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v10 = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
+  webInputDelegate = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
 
-  if (!v10)
+  if (!webInputDelegate)
   {
-    v12 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __117___UIKeyboardAsyncTextSelectionController_selectPositionAtBoundary_inDirection_relativeToSelection_executionContext___block_invoke_5;
     v17[3] = &unk_1E70F35B8;
-    v18 = v9;
-    v19 = self;
-    [v12 moveSelectionAtBoundary:a3 inDirection:a4 completionHandler:v17];
+    v18 = contextCopy;
+    selfCopy2 = self;
+    [inputDelegate moveSelectionAtBoundary:boundary inDirection:direction completionHandler:v17];
     v13 = v18;
     goto LABEL_6;
   }
 
-  v11 = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
+  webInputDelegate2 = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __117___UIKeyboardAsyncTextSelectionController_selectPositionAtBoundary_inDirection_relativeToSelection_executionContext___block_invoke;
   v20[3] = &unk_1E70F35B8;
-  v21 = v9;
-  v22 = self;
-  [v11 moveSelectionAtBoundary:a3 inStorageDirection:a4 completionHandler:v20];
+  v21 = contextCopy;
+  selfCopy3 = self;
+  [webInputDelegate2 moveSelectionAtBoundary:boundary inStorageDirection:direction completionHandler:v20];
 
-  v12 = v21;
+  inputDelegate = v21;
 LABEL_7:
 }
 
-- (void)setRangedSelectionShouldShowGrabbers:(BOOL)a3
+- (void)setRangedSelectionShouldShowGrabbers:(BOOL)grabbers
 {
-  v3 = a3;
-  v5 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+  grabbersCopy = grabbers;
+  interactionAssistant = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
 
-  if (v5)
+  if (interactionAssistant)
   {
-    v6 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v7 = [v6 selectedTextRange];
-    v8 = v7 == 0;
-    if (v7)
+    inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    selectedTextRange = [inputDelegate selectedTextRange];
+    v8 = selectedTextRange == 0;
+    if (selectedTextRange)
     {
-      v9 = v7;
-      v10 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-      v11 = [v10 selectedTextRange];
-      v12 = [v11 isEmpty];
+      v9 = selectedTextRange;
+      inputDelegate2 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+      selectedTextRange2 = [inputDelegate2 selectedTextRange];
+      isEmpty = [selectedTextRange2 isEmpty];
 
-      if (v12)
+      if (isEmpty)
       {
         v8 = 1;
 LABEL_9:
-        v15 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-        [v15 setShouldDelayActivatingSelectionView:v8];
+        interactionAssistant2 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+        [interactionAssistant2 setShouldDelayActivatingSelectionView:v8];
 
-        v16 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-        [v16 setSelectionHighlightMode:!v3];
+        interactionAssistant3 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+        [interactionAssistant3 setSelectionHighlightMode:!grabbersCopy];
         goto LABEL_11;
       }
 
-      v14 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-      [v14 setSelectionDisplayVisible:1];
+      interactionAssistant4 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+      [interactionAssistant4 setSelectionDisplayVisible:1];
 
-      v6 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-      [v6 activateSelection];
+      inputDelegate = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+      [inputDelegate activateSelection];
     }
 
     goto LABEL_9;
   }
 
-  v13 = [(_UIKeyboardTextSelectionController *)self selectionInteractionAssistant];
-  v16 = v13;
-  if (v3)
+  selectionInteractionAssistant = [(_UIKeyboardTextSelectionController *)self selectionInteractionAssistant];
+  interactionAssistant3 = selectionInteractionAssistant;
+  if (grabbersCopy)
   {
-    [v13 configureForSelectionMode];
+    [selectionInteractionAssistant configureForSelectionMode];
   }
 
   else
   {
-    [v13 configureForHighlightMode];
+    [selectionInteractionAssistant configureForHighlightMode];
   }
 
 LABEL_11:
@@ -408,19 +408,19 @@ LABEL_11:
 
 - (void)showSelectionCommands
 {
-  v3 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-  v4 = [v3 selectedTextRange];
-  v5 = [v4 isEmpty];
+  inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  selectedTextRange = [inputDelegate selectedTextRange];
+  isEmpty = [selectedTextRange isEmpty];
 
-  if (v5)
+  if (isEmpty)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-    [v7 showSelectionCommands];
+    interactionAssistant = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+    [interactionAssistant showSelectionCommands];
 
     v6 = 0;
   }
@@ -430,39 +430,39 @@ LABEL_11:
 
 - (void)showSelectionView
 {
-  v2 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-  if ([v2 shouldDelayActivatingSelectionView])
+  interactionAssistant = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+  if ([interactionAssistant shouldDelayActivatingSelectionView])
   {
-    [v2 setSelectionDisplayVisible:1];
-    [v2 activateSelection];
-    [v2 setShouldDelayActivatingSelectionView:0];
+    [interactionAssistant setSelectionDisplayVisible:1];
+    [interactionAssistant activateSelection];
+    [interactionAssistant setShouldDelayActivatingSelectionView:0];
   }
 }
 
-- (void)selectTextWithGranularity:(int64_t)a3 atPoint:(CGPoint)a4 executionContext:(id)a5
+- (void)selectTextWithGranularity:(int64_t)granularity atPoint:(CGPoint)point executionContext:(id)context
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
+  y = point.y;
+  x = point.x;
+  contextCopy = context;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __94___UIKeyboardAsyncTextSelectionController_selectTextWithGranularity_atPoint_executionContext___block_invoke;
   aBlock[3] = &unk_1E70F36D0;
-  v10 = v9;
+  v10 = contextCopy;
   v16 = v10;
-  v17 = self;
-  v18 = a3;
+  selfCopy = self;
+  granularityCopy = granularity;
   v11 = _Block_copy(aBlock);
   if (!+[UIKBInputDelegateManager isAsyncTextInputEnabled]|| ([(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
   {
-    v14 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v13 = v14;
+    inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    webInputDelegate = inputDelegate;
 LABEL_6:
-    [v14 selectTextWithGranularity:a3 atPoint:v11 completionHandler:{x, y}];
+    [inputDelegate selectTextWithGranularity:granularity atPoint:v11 completionHandler:{x, y}];
     goto LABEL_7;
   }
 
-  v13 = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
+  webInputDelegate = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -470,51 +470,51 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    v14 = v13;
+    inputDelegate = webInputDelegate;
     goto LABEL_6;
   }
 
-  [v13 selectTextInGranularity:a3 atPoint:v11 completionHandler:{x, y}];
+  [webInputDelegate selectTextInGranularity:granularity atPoint:v11 completionHandler:{x, y}];
 LABEL_7:
 }
 
-- (void)selectTextWithGranularity:(int64_t)a3 atPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)selectTextWithGranularity:(int64_t)granularity atPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
-  if (a3 == 1)
+  y = point.y;
+  x = point.x;
+  handlerCopy = handler;
+  if (granularity == 1)
   {
-    v10 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v11 = [v10 selectedTextRange];
+    inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    selectedTextRange = [inputDelegate selectedTextRange];
   }
 
   else
   {
-    v11 = 0;
+    selectedTextRange = 0;
   }
 
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __95___UIKeyboardAsyncTextSelectionController_selectTextWithGranularity_atPoint_completionHandler___block_invoke;
   v21 = &unk_1E7118860;
-  v25 = a3;
-  v12 = v11;
+  granularityCopy = granularity;
+  v12 = selectedTextRange;
   v22 = v12;
-  v23 = self;
-  v13 = v9;
+  selfCopy = self;
+  v13 = handlerCopy;
   v24 = v13;
   v14 = _Block_copy(&v18);
   if (![UIKBInputDelegateManager isAsyncTextInputEnabled:v18]|| ([(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate], v15 = objc_claimAutoreleasedReturnValue(), v15, !v15))
   {
-    v17 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v16 = v17;
+    inputDelegate2 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    webInputDelegate = inputDelegate2;
 LABEL_9:
-    [v17 selectTextWithGranularity:a3 atPoint:v14 completionHandler:{x, y}];
+    [inputDelegate2 selectTextWithGranularity:granularity atPoint:v14 completionHandler:{x, y}];
     goto LABEL_10;
   }
 
-  v16 = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
+  webInputDelegate = [(_UIKeyboardAsyncTextSelectionController *)self webInputDelegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
@@ -522,48 +522,48 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v17 = v16;
+    inputDelegate2 = webInputDelegate;
     goto LABEL_9;
   }
 
-  [v16 selectTextInGranularity:a3 atPoint:v14 completionHandler:{x, y}];
+  [webInputDelegate selectTextInGranularity:granularity atPoint:v14 completionHandler:{x, y}];
 LABEL_10:
 }
 
-- (void)beginSelectionWithBaseAtSelectionBoundaryInDirection:(int64_t)a3 initialExtentPoint:(CGPoint)a4 executionContext:(id)a5
+- (void)beginSelectionWithBaseAtSelectionBoundaryInDirection:(int64_t)direction initialExtentPoint:(CGPoint)point executionContext:(id)context
 {
-  v7 = a5;
+  contextCopy = context;
   [(_UIKeyboardTextSelectionController *)self beginSelection];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __132___UIKeyboardAsyncTextSelectionController_beginSelectionWithBaseAtSelectionBoundaryInDirection_initialExtentPoint_executionContext___block_invoke;
   v14 = &unk_1E70F3C60;
-  v8 = v7;
+  v8 = contextCopy;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v9 = _Block_copy(&v11);
   [UIKBInputDelegateManager isAsyncTextInputEnabled:v11];
-  v10 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-  [v10 beginSelectionInDirection:a3 completionHandler:v9];
+  inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  [inputDelegate beginSelectionInDirection:direction completionHandler:v9];
 }
 
-- (void)updateSelectionWithExtentPoint:(CGPoint)a3 executionContext:(id)a4
+- (void)updateSelectionWithExtentPoint:(CGPoint)point executionContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = point.y;
+  x = point.x;
+  contextCopy = context;
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __91___UIKeyboardAsyncTextSelectionController_updateSelectionWithExtentPoint_executionContext___block_invoke;
   v17 = &unk_1E70F3C60;
-  v8 = v7;
+  v8 = contextCopy;
   v18 = v8;
-  v19 = self;
+  selfCopy = self;
   v9 = _Block_copy(&v14);
   v10 = [UIKBInputDelegateManager isAsyncTextInputEnabled:v14];
-  v11 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-  v12 = v11;
-  if (v10 && (v13 = [v11 conformsToProtocolCached:&unk_1F016C810], v12, -[_UIKeyboardTextSelectionController inputDelegate](self, "inputDelegate"), v12 = objc_claimAutoreleasedReturnValue(), v13))
+  inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  v12 = inputDelegate;
+  if (v10 && (v13 = [inputDelegate conformsToProtocolCached:&unk_1F016C810], v12, -[_UIKeyboardTextSelectionController inputDelegate](self, "inputDelegate"), v12 = objc_claimAutoreleasedReturnValue(), v13))
   {
     if (objc_opt_respondsToSelector())
     {
@@ -582,51 +582,51 @@ LABEL_10:
   }
 }
 
-- (void)updateSelectionWithExtentPoint:(CGPoint)a3 withBoundary:(int64_t)a4 executionContext:(id)a5
+- (void)updateSelectionWithExtentPoint:(CGPoint)point withBoundary:(int64_t)boundary executionContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a5;
+  y = point.y;
+  x = point.x;
+  contextCopy = context;
   v20 = MEMORY[0x1E69E9820];
   v21 = 3221225472;
   v22 = __104___UIKeyboardAsyncTextSelectionController_updateSelectionWithExtentPoint_withBoundary_executionContext___block_invoke;
   v23 = &unk_1E70F3C60;
-  v10 = v9;
+  v10 = contextCopy;
   v24 = v10;
-  v25 = self;
+  selfCopy = self;
   v11 = _Block_copy(&v20);
   if (![UIKBInputDelegateManager isAsyncTextInputEnabled:v20])
   {
-    v16 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v17 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-    [v17 startAutoscroll:{x, y}];
+    inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    interactionAssistant = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+    [interactionAssistant startAutoscroll:{x, y}];
 
 LABEL_6:
-    v18 = v16;
+    inputDelegate4 = inputDelegate;
 LABEL_7:
-    [v18 updateSelectionWithExtentPoint:a4 withBoundary:v11 completionHandler:{x, y}];
+    [inputDelegate4 updateSelectionWithExtentPoint:boundary withBoundary:v11 completionHandler:{x, y}];
     goto LABEL_8;
   }
 
-  v12 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-  [v12 startAutoscroll:{x, y}];
+  interactionAssistant2 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+  [interactionAssistant2 startAutoscroll:{x, y}];
 
-  v13 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-  v14 = [v13 conformsToProtocol:&unk_1F016C810];
+  inputDelegate2 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  v14 = [inputDelegate2 conformsToProtocol:&unk_1F016C810];
 
-  v15 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-  v16 = v15;
+  inputDelegate3 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  inputDelegate = inputDelegate3;
   if (!v14)
   {
-    v19 = [v15 conformsToProtocol:&unk_1F016C7B0];
+    v19 = [inputDelegate3 conformsToProtocol:&unk_1F016C7B0];
 
     if (!v19)
     {
       goto LABEL_9;
     }
 
-    v18 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-    v16 = v18;
+    inputDelegate4 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    inputDelegate = inputDelegate4;
     goto LABEL_7;
   }
 
@@ -640,50 +640,50 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  [v16 updateSelectionWithExtentPoint:a4 boundary:v11 completionHandler:{x, y}];
+  [inputDelegate updateSelectionWithExtentPoint:boundary boundary:v11 completionHandler:{x, y}];
 LABEL_8:
 
 LABEL_9:
 }
 
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3
+- (void)beginFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-  [v5 beginFloatingCursorAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  interactionAssistant = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+  [interactionAssistant beginFloatingCursorAtPoint:{x, y}];
 }
 
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3
+- (void)updateFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-  [v5 updateFloatingCursorAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  interactionAssistant = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+  [interactionAssistant updateFloatingCursorAtPoint:{x, y}];
 }
 
 - (void)endFloatingCursor
 {
-  v2 = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
-  [v2 endFloatingCursor];
+  interactionAssistant = [(_UIKeyboardTextSelectionController *)self interactionAssistant];
+  [interactionAssistant endFloatingCursor];
 }
 
 - (id)webInputDelegate
 {
-  v3 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
-  v4 = [v3 conformsToProtocolCached:&unk_1F016C810];
+  inputDelegate = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+  v4 = [inputDelegate conformsToProtocolCached:&unk_1F016C810];
 
   if (v4)
   {
-    v5 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
+    inputDelegate2 = [(_UIKeyboardTextSelectionController *)self inputDelegate];
   }
 
   else
   {
-    v5 = 0;
+    inputDelegate2 = 0;
   }
 
-  return v5;
+  return inputDelegate2;
 }
 
 @end

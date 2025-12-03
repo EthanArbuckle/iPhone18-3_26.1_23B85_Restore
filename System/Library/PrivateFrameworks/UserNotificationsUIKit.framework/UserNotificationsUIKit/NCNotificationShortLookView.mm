@@ -5,16 +5,16 @@
 - (BOOL)hideDate;
 - (BOOL)isDateAllDay;
 - (CGAffineTransform)contentTransform;
-- (CGSize)_sizeThatFitsContentWithSize:(CGSize)a3 withAuxiliaryOptionsViewVisible:(BOOL)a4 withProjectedConfigurationOrNil:(id)a5;
-- (CGSize)contentSizeForSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 withTraits:(id)a4;
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3;
+- (CGSize)_sizeThatFitsContentWithSize:(CGSize)size withAuxiliaryOptionsViewVisible:(BOOL)visible withProjectedConfigurationOrNil:(id)nil;
+- (CGSize)contentSizeForSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits withTraits:(id)traits;
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size;
 - (MTVisualStylingProvider)importantTextVisualStylingProvider;
 - (MTVisualStylingProvider)strokeVisualStylingProvider;
 - (NCBadgedIconDescription)badgedIconDescription;
 - (NCNotificationListCellDynamicHeightTraits)currentTraits;
-- (NCNotificationShortLookView)initWithFrame:(CGRect)a3;
+- (NCNotificationShortLookView)initWithFrame:(CGRect)frame;
 - (NCNotificationShortLookViewDelegate)delegate;
 - (NSAttributedString)footerSummaryAttributionText;
 - (NSAttributedString)footerText;
@@ -39,56 +39,56 @@
 - (void)_configurePlatterViewIfNeccesary;
 - (void)_layoutAuxiliaryOptionsView;
 - (void)_layoutNotificationContentView;
-- (void)_setFontProvider:(id)a3;
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3;
-- (void)didInvalidateSizeFromNotificationSeamlessContentView:(id)a3;
+- (void)_setFontProvider:(id)provider;
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform;
+- (void)didInvalidateSizeFromNotificationSeamlessContentView:(id)view;
 - (void)layoutSubviews;
 - (void)removeAuxiliaryOptionsView;
 - (void)removeLightEffectsIfNeeded;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setAlignContentToBottom:(BOOL)a3;
-- (void)setAllowContentToCrossFade:(BOOL)a3;
-- (void)setApparentZDistanceToUser:(int64_t)a3;
-- (void)setAuxiliaryOptionActions:(id)a3;
-- (void)setAuxiliaryOptionsSummaryText:(id)a3;
-- (void)setAuxiliaryOptionsVisible:(BOOL)a3;
-- (void)setBackgroundAlpha:(double)a3;
-- (void)setBackgroundHidden:(BOOL)a3;
-- (void)setBadgedIconDescription:(id)a3;
-- (void)setCompositeAlpha:(double)a3;
-- (void)setContentAlpha:(double)a3;
-- (void)setContentTransform:(CGAffineTransform *)a3;
-- (void)setCustomPlatterBackgroundView:(id)a3;
-- (void)setDate:(id)a3;
-- (void)setDateAllDay:(BOOL)a3;
-- (void)setDateAlpha:(double)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setDisableDimming:(BOOL)a3;
-- (void)setFooterSummaryAttributionText:(id)a3;
-- (void)setFooterText:(id)a3;
-- (void)setGlassMode:(unint64_t)a3;
-- (void)setHideDate:(BOOL)a3;
-- (void)setImportantAttributedText:(id)a3;
-- (void)setImportantText:(id)a3;
-- (void)setImportantTextVisualStylingProvider:(id)a3;
-- (void)setInlineAction:(id)a3;
-- (void)setIsGroupCollapsed:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setMaterialRecipe:(int64_t)a3;
-- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)a3;
-- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)a3;
-- (void)setNotificationContentViewHidden:(BOOL)a3;
-- (void)setPrimarySubtitleText:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setRootScrollVelocity:(double)a3;
-- (void)setScreenCaptureProhibited:(BOOL)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setSecondaryTextCompact:(id)a3;
-- (void)setSecondaryTextGroupCollapsed:(id)a3;
-- (void)setSupportsGlass:(BOOL)a3;
-- (void)setThumbnail:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setUnmanagedBackdropContrast:(BOOL)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setAlignContentToBottom:(BOOL)bottom;
+- (void)setAllowContentToCrossFade:(BOOL)fade;
+- (void)setApparentZDistanceToUser:(int64_t)user;
+- (void)setAuxiliaryOptionActions:(id)actions;
+- (void)setAuxiliaryOptionsSummaryText:(id)text;
+- (void)setAuxiliaryOptionsVisible:(BOOL)visible;
+- (void)setBackgroundAlpha:(double)alpha;
+- (void)setBackgroundHidden:(BOOL)hidden;
+- (void)setBadgedIconDescription:(id)description;
+- (void)setCompositeAlpha:(double)alpha;
+- (void)setContentAlpha:(double)alpha;
+- (void)setContentTransform:(CGAffineTransform *)transform;
+- (void)setCustomPlatterBackgroundView:(id)view;
+- (void)setDate:(id)date;
+- (void)setDateAllDay:(BOOL)day;
+- (void)setDateAlpha:(double)alpha;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setDisableDimming:(BOOL)dimming;
+- (void)setFooterSummaryAttributionText:(id)text;
+- (void)setFooterText:(id)text;
+- (void)setGlassMode:(unint64_t)mode;
+- (void)setHideDate:(BOOL)date;
+- (void)setImportantAttributedText:(id)text;
+- (void)setImportantText:(id)text;
+- (void)setImportantTextVisualStylingProvider:(id)provider;
+- (void)setInlineAction:(id)action;
+- (void)setIsGroupCollapsed:(BOOL)collapsed;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setMaterialRecipe:(int64_t)recipe;
+- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)lines;
+- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)lines;
+- (void)setNotificationContentViewHidden:(BOOL)hidden;
+- (void)setPrimarySubtitleText:(id)text;
+- (void)setPrimaryText:(id)text;
+- (void)setRootScrollVelocity:(double)velocity;
+- (void)setScreenCaptureProhibited:(BOOL)prohibited;
+- (void)setSecondaryText:(id)text;
+- (void)setSecondaryTextCompact:(id)compact;
+- (void)setSecondaryTextGroupCollapsed:(id)collapsed;
+- (void)setSupportsGlass:(BOOL)glass;
+- (void)setThumbnail:(id)thumbnail;
+- (void)setTimeZone:(id)zone;
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast;
 @end
 
 @implementation NCNotificationShortLookView
@@ -112,8 +112,8 @@
 {
   if (self->_notificationContentView)
   {
-    v3 = [(NCNotificationShortLookView *)self customContentView];
-    [v3 bounds];
+    customContentView = [(NCNotificationShortLookView *)self customContentView];
+    [customContentView bounds];
     v5 = v4;
     v7 = v6;
 
@@ -160,13 +160,13 @@
     [(NCNotificationContentDisplaying *)self->_notificationContentView frame];
     [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setFrame:v6, CGRectGetMaxY(v16), v8, v10];
     auxiliaryOptionsView = self->_auxiliaryOptionsView;
-    v12 = [(NCAuxiliaryOptionsView *)auxiliaryOptionsView auxiliaryOptionsVisible];
+    auxiliaryOptionsVisible = [(NCAuxiliaryOptionsView *)auxiliaryOptionsView auxiliaryOptionsVisible];
     v13 = 0.0;
-    if (v12)
+    if (auxiliaryOptionsVisible)
     {
-      v14 = [(NCNotificationShortLookView *)self isNotificationContentViewHidden];
+      isNotificationContentViewHidden = [(NCNotificationShortLookView *)self isNotificationContentViewHidden];
       v13 = 1.0;
-      if (v14)
+      if (isNotificationContentViewHidden)
       {
         v13 = 0.0;
       }
@@ -180,30 +180,30 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView badgedIconDescription];
+    badgedIconDescription = [(NCNotificationContentDisplaying *)self->_notificationContentView badgedIconDescription];
   }
 
   else
   {
-    v3 = 0;
+    badgedIconDescription = 0;
   }
 
-  return v3;
+  return badgedIconDescription;
 }
 
 - (NSDate)date
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView date];
+    date = [(NCNotificationContentDisplaying *)self->_notificationContentView date];
   }
 
   else
   {
-    v3 = 0;
+    date = 0;
   }
 
-  return v3;
+  return date;
 }
 
 - (BOOL)isDateAllDay
@@ -222,15 +222,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView timeZone];
+    timeZone = [(NCNotificationContentDisplaying *)self->_notificationContentView timeZone];
   }
 
   else
   {
-    v3 = 0;
+    timeZone = 0;
   }
 
-  return v3;
+  return timeZone;
 }
 
 - (int64_t)dateFormatStyle
@@ -249,135 +249,135 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView secondaryTextCompact];
+    secondaryTextCompact = [(NCNotificationContentDisplaying *)self->_notificationContentView secondaryTextCompact];
   }
 
   else
   {
-    v3 = 0;
+    secondaryTextCompact = 0;
   }
 
-  return v3;
+  return secondaryTextCompact;
 }
 
 - (NSAttributedString)secondaryTextGroupCollapsed
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView secondaryTextGroupCollapsed];
+    secondaryTextGroupCollapsed = [(NCNotificationContentDisplaying *)self->_notificationContentView secondaryTextGroupCollapsed];
   }
 
   else
   {
-    v3 = 0;
+    secondaryTextGroupCollapsed = 0;
   }
 
-  return v3;
+  return secondaryTextGroupCollapsed;
 }
 
 - (UIAction)inlineAction
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView inlineAction];
+    inlineAction = [(NCNotificationContentDisplaying *)self->_notificationContentView inlineAction];
   }
 
   else
   {
-    v3 = 0;
+    inlineAction = 0;
   }
 
-  return v3;
+  return inlineAction;
 }
 
 - (NSAttributedString)footerText
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView footerText];
+    footerText = [(NCNotificationContentDisplaying *)self->_notificationContentView footerText];
   }
 
   else
   {
-    v3 = 0;
+    footerText = 0;
   }
 
-  return v3;
+  return footerText;
 }
 
 - (NSAttributedString)footerSummaryAttributionText
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView footerSummaryAttributionText];
+    footerSummaryAttributionText = [(NCNotificationContentDisplaying *)self->_notificationContentView footerSummaryAttributionText];
   }
 
   else
   {
-    v3 = 0;
+    footerSummaryAttributionText = 0;
   }
 
-  return v3;
+  return footerSummaryAttributionText;
 }
 
 - (UIImageConfiguration)importantTextImageConfiguration
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView importantTextImageConfiguration];
+    importantTextImageConfiguration = [(NCNotificationContentDisplaying *)self->_notificationContentView importantTextImageConfiguration];
   }
 
   else
   {
-    v3 = 0;
+    importantTextImageConfiguration = 0;
   }
 
-  return v3;
+  return importantTextImageConfiguration;
 }
 
 - (NSAttributedString)importantAttributedText
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView importantAttributedText];
+    importantAttributedText = [(NCNotificationContentDisplaying *)self->_notificationContentView importantAttributedText];
   }
 
   else
   {
-    v3 = 0;
+    importantAttributedText = 0;
   }
 
-  return v3;
+  return importantAttributedText;
 }
 
 - (MTVisualStylingProvider)importantTextVisualStylingProvider
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView importantTextVisualStylingProvider];
+    importantTextVisualStylingProvider = [(NCNotificationContentDisplaying *)self->_notificationContentView importantTextVisualStylingProvider];
   }
 
   else
   {
-    v3 = 0;
+    importantTextVisualStylingProvider = 0;
   }
 
-  return v3;
+  return importantTextVisualStylingProvider;
 }
 
 - (NSString)importantText
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView importantText];
+    importantText = [(NCNotificationContentDisplaying *)self->_notificationContentView importantText];
   }
 
   else
   {
-    v3 = 0;
+    importantText = 0;
   }
 
-  return v3;
+  return importantText;
 }
 
 - (void)removeAuxiliaryOptionsView
@@ -389,11 +389,11 @@
   [(NCNotificationShortLookView *)self setNeedsLayout];
 }
 
-- (NCNotificationShortLookView)initWithFrame:(CGRect)a3
+- (NCNotificationShortLookView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = NCNotificationShortLookView;
-  v3 = [(NCNotificationShortLookView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCNotificationShortLookView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -416,9 +416,9 @@
   return v4;
 }
 
-- (void)setNotificationContentViewHidden:(BOOL)a3
+- (void)setNotificationContentViewHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v4 = 0.0;
   }
@@ -428,51 +428,51 @@
     v4 = 1.0;
   }
 
-  v5 = [(NCNotificationShortLookView *)self _notificationContentView];
-  [v5 setAlpha:v4];
+  _notificationContentView = [(NCNotificationShortLookView *)self _notificationContentView];
+  [_notificationContentView setAlpha:v4];
 
   auxiliaryOptionsView = self->_auxiliaryOptionsView;
 
   [(NCAuxiliaryOptionsView *)auxiliaryOptionsView setAlpha:v4];
 }
 
-- (void)setAlignContentToBottom:(BOOL)a3
+- (void)setAlignContentToBottom:(BOOL)bottom
 {
-  v3 = a3;
-  self->_alignContentToBottom = a3;
+  bottomCopy = bottom;
+  self->_alignContentToBottom = bottom;
   if (objc_opt_respondsToSelector())
   {
     notificationContentView = self->_notificationContentView;
 
-    [(NCNotificationContentDisplaying *)notificationContentView setAlignContentToBottom:v3];
+    [(NCNotificationContentDisplaying *)notificationContentView setAlignContentToBottom:bottomCopy];
   }
 }
 
-- (void)setDisableDimming:(BOOL)a3
+- (void)setDisableDimming:(BOOL)dimming
 {
-  if (self->_disableDimming != a3)
+  if (self->_disableDimming != dimming)
   {
-    self->_disableDimming = a3;
+    self->_disableDimming = dimming;
     [(NCNotificationListStackDimmingOverlayView *)self->_stackDimmingOverlayView setHidden:?];
   }
 }
 
-- (void)setIsGroupCollapsed:(BOOL)a3
+- (void)setIsGroupCollapsed:(BOOL)collapsed
 {
-  v3 = a3;
-  self->_isGroupCollapsed = a3;
+  collapsedCopy = collapsed;
+  self->_isGroupCollapsed = collapsed;
   if (objc_opt_respondsToSelector())
   {
     notificationContentView = self->_notificationContentView;
 
-    [(NCNotificationContentDisplaying *)notificationContentView setIsGroupCollapsed:v3];
+    [(NCNotificationContentDisplaying *)notificationContentView setIsGroupCollapsed:collapsedCopy];
   }
 }
 
-- (void)configureStackDimmingForTransform:(CGAffineTransform *)a3
+- (void)configureStackDimmingForTransform:(CGAffineTransform *)transform
 {
-  v4 = dbl_21E946550[a3->a < 0.94];
-  if (a3->a > 0.94)
+  v4 = dbl_21E946550[transform->a < 0.94];
+  if (transform->a > 0.94)
   {
     v4 = 0.0;
   }
@@ -484,9 +484,9 @@
   [(NCNotificationListStackDimmingOverlayView *)stackDimmingOverlayView setHidden:v6];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(NCNotificationShortLookView *)self contentSizeForSize:a3.width, a3.height];
+  [(NCNotificationShortLookView *)self contentSizeForSize:fits.width, fits.height];
 
   [(NCNotificationShortLookView *)self sizeThatFitsContentWithSize:?];
   result.height = v5;
@@ -494,13 +494,13 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 withTraits:(id)a4
+- (CGSize)sizeThatFits:(CGSize)fits withTraits:(id)traits
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = fits.height;
+  width = fits.width;
+  traitsCopy = traits;
   [(NCNotificationShortLookView *)self contentSizeForSize:width, height];
-  -[NCNotificationShortLookView _sizeThatFitsContentWithSize:withAuxiliaryOptionsViewVisible:withProjectedConfigurationOrNil:](self, "_sizeThatFitsContentWithSize:withAuxiliaryOptionsViewVisible:withProjectedConfigurationOrNil:", [v7 showAuxiliaryOptions], v7, v8, v9);
+  -[NCNotificationShortLookView _sizeThatFitsContentWithSize:withAuxiliaryOptionsViewVisible:withProjectedConfigurationOrNil:](self, "_sizeThatFitsContentWithSize:withAuxiliaryOptionsViewVisible:withProjectedConfigurationOrNil:", [traitsCopy showAuxiliaryOptions], traitsCopy, v8, v9);
   v11 = v10;
   v13 = v12;
 
@@ -511,21 +511,21 @@
   return result;
 }
 
-- (CGSize)contentSizeForSize:(CGSize)a3
+- (CGSize)contentSizeForSize:(CGSize)size
 {
-  [(PLPlatterView *)self->_platterView contentSizeForSize:a3.width, a3.height];
+  [(PLPlatterView *)self->_platterView contentSizeForSize:size.width, size.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)sizeThatFitsContentWithSize:(CGSize)a3
+- (CGSize)sizeThatFitsContentWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView auxiliaryOptionsVisible];
+  height = size.height;
+  width = size.width;
+  auxiliaryOptionsVisible = [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView auxiliaryOptionsVisible];
 
-  [(NCNotificationShortLookView *)self _sizeThatFitsContentWithSize:v6 withAuxiliaryOptionsViewVisible:0 withProjectedConfigurationOrNil:width, height];
+  [(NCNotificationShortLookView *)self _sizeThatFitsContentWithSize:auxiliaryOptionsVisible withAuxiliaryOptionsViewVisible:0 withProjectedConfigurationOrNil:width, height];
   result.height = v8;
   result.width = v7;
   return result;
@@ -535,63 +535,63 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCNotificationContentDisplaying *)self->_notificationContentView strokeVisualStylingProvider];
+    strokeVisualStylingProvider = [(NCNotificationContentDisplaying *)self->_notificationContentView strokeVisualStylingProvider];
   }
 
   else
   {
-    v3 = 0;
+    strokeVisualStylingProvider = 0;
   }
 
-  return v3;
+  return strokeVisualStylingProvider;
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationContentDisplaying *)self->_notificationContentView primaryText];
+  textCopy = text;
+  primaryText = [(NCNotificationContentDisplaying *)self->_notificationContentView primaryText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationContentDisplaying *)self->_notificationContentView setPrimaryText:v6];
+    [(NCNotificationContentDisplaying *)self->_notificationContentView setPrimaryText:textCopy];
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setPrimarySubtitleText:(id)a3
+- (void)setPrimarySubtitleText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationContentDisplaying *)self->_notificationContentView primarySubtitleText];
+  textCopy = text;
+  primarySubtitleText = [(NCNotificationContentDisplaying *)self->_notificationContentView primarySubtitleText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationContentDisplaying *)self->_notificationContentView setPrimarySubtitleText:v6];
+    [(NCNotificationContentDisplaying *)self->_notificationContentView setPrimarySubtitleText:textCopy];
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationContentDisplaying *)self->_notificationContentView secondaryText];
+  textCopy = text;
+  secondaryText = [(NCNotificationContentDisplaying *)self->_notificationContentView secondaryText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationContentDisplaying *)self->_notificationContentView setSecondaryText:v6];
+    [(NCNotificationContentDisplaying *)self->_notificationContentView setSecondaryText:textCopy];
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setSecondaryTextCompact:(id)a3
+- (void)setSecondaryTextCompact:(id)compact
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self secondaryTextCompact];
+  compactCopy = compact;
+  secondaryTextCompact = [(NCNotificationShortLookView *)self secondaryTextCompact];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
@@ -599,15 +599,15 @@
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setSecondaryTextCompact:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setSecondaryTextCompact:compactCopy];
     }
   }
 }
 
-- (void)setSecondaryTextGroupCollapsed:(id)a3
+- (void)setSecondaryTextGroupCollapsed:(id)collapsed
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self secondaryTextGroupCollapsed];
+  collapsedCopy = collapsed;
+  secondaryTextGroupCollapsed = [(NCNotificationShortLookView *)self secondaryTextGroupCollapsed];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
@@ -615,15 +615,15 @@
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setSecondaryTextGroupCollapsed:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setSecondaryTextGroupCollapsed:collapsedCopy];
     }
   }
 }
 
-- (void)setImportantText:(id)a3
+- (void)setImportantText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self importantText];
+  textCopy = text;
+  importantText = [(NCNotificationShortLookView *)self importantText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
@@ -631,15 +631,15 @@
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setImportantText:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setImportantText:textCopy];
     }
   }
 }
 
-- (void)setImportantAttributedText:(id)a3
+- (void)setImportantAttributedText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self importantAttributedText];
+  textCopy = text;
+  importantAttributedText = [(NCNotificationShortLookView *)self importantAttributedText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
@@ -647,15 +647,15 @@
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setImportantAttributedText:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setImportantAttributedText:textCopy];
     }
   }
 }
 
-- (void)setImportantTextVisualStylingProvider:(id)a3
+- (void)setImportantTextVisualStylingProvider:(id)provider
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self importantTextVisualStylingProvider];
+  providerCopy = provider;
+  importantTextVisualStylingProvider = [(NCNotificationShortLookView *)self importantTextVisualStylingProvider];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
@@ -663,15 +663,15 @@
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setImportantTextVisualStylingProvider:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setImportantTextVisualStylingProvider:providerCopy];
     }
   }
 }
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self footerText];
+  textCopy = text;
+  footerText = [(NCNotificationShortLookView *)self footerText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
@@ -679,17 +679,17 @@
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setFooterText:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setFooterText:textCopy];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setFooterSummaryAttributionText:(id)a3
+- (void)setFooterSummaryAttributionText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self footerSummaryAttributionText];
+  textCopy = text;
+  footerSummaryAttributionText = [(NCNotificationShortLookView *)self footerSummaryAttributionText];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
@@ -697,17 +697,17 @@
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setFooterSummaryAttributionText:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setFooterSummaryAttributionText:textCopy];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setInlineAction:(id)a3
+- (void)setInlineAction:(id)action
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self inlineAction];
+  actionCopy = action;
+  inlineAction = [(NCNotificationShortLookView *)self inlineAction];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
@@ -715,15 +715,15 @@
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setInlineAction:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setInlineAction:actionCopy];
     }
   }
 }
 
-- (void)setBadgedIconDescription:(id)a3
+- (void)setBadgedIconDescription:(id)description
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self badgedIconDescription];
+  descriptionCopy = description;
+  badgedIconDescription = [(NCNotificationShortLookView *)self badgedIconDescription];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
@@ -731,82 +731,82 @@
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setBadgedIconDescription:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setBadgedIconDescription:descriptionCopy];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setThumbnail:(id)a3
+- (void)setThumbnail:(id)thumbnail
 {
-  v6 = a3;
-  v4 = [(NCNotificationContentDisplaying *)self->_notificationContentView thumbnail];
+  thumbnailCopy = thumbnail;
+  thumbnail = [(NCNotificationContentDisplaying *)self->_notificationContentView thumbnail];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
-    [(NCNotificationContentDisplaying *)self->_notificationContentView setThumbnail:v6];
+    [(NCNotificationContentDisplaying *)self->_notificationContentView setThumbnail:thumbnailCopy];
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self date];
+  dateCopy = date;
+  date = [(NCNotificationShortLookView *)self date];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setDate:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setDate:dateCopy];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setDateAllDay:(BOOL)a3
+- (void)setDateAllDay:(BOOL)day
 {
-  v3 = a3;
-  if ([(NCNotificationShortLookView *)self isDateAllDay]!= a3)
+  dayCopy = day;
+  if ([(NCNotificationShortLookView *)self isDateAllDay]!= day)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setDateAllDay:v3];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setDateAllDay:dayCopy];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self timeZone];
+  zoneCopy = zone;
+  timeZone = [(NCNotificationShortLookView *)self timeZone];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setTimeZone:v6];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setTimeZone:zoneCopy];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if ([(NCNotificationShortLookView *)self dateFormatStyle]!= a3)
+  if ([(NCNotificationShortLookView *)self dateFormatStyle]!= style)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setDateFormatStyle:a3];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setDateFormatStyle:style];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
@@ -825,14 +825,14 @@
   return [(NCNotificationContentDisplaying *)notificationContentView hideDate];
 }
 
-- (void)setHideDate:(BOOL)a3
+- (void)setHideDate:(BOOL)date
 {
-  v3 = a3;
-  if ([(NCNotificationShortLookView *)self hideDate]!= a3)
+  dateCopy = date;
+  if ([(NCNotificationShortLookView *)self hideDate]!= date)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setHideDate:v3];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setHideDate:dateCopy];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
@@ -851,14 +851,14 @@
   return [(NCNotificationContentDisplaying *)notificationContentView allowContentToCrossFade];
 }
 
-- (void)setAllowContentToCrossFade:(BOOL)a3
+- (void)setAllowContentToCrossFade:(BOOL)fade
 {
-  v3 = a3;
-  if ([(NCNotificationShortLookView *)self allowContentToCrossFade]!= a3)
+  fadeCopy = fade;
+  if ([(NCNotificationShortLookView *)self allowContentToCrossFade]!= fade)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setAllowContentToCrossFade:v3];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setAllowContentToCrossFade:fadeCopy];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
@@ -878,87 +878,87 @@
   return result;
 }
 
-- (void)setDateAlpha:(double)a3
+- (void)setDateAlpha:(double)alpha
 {
   [(NCNotificationShortLookView *)self dateAlpha];
-  if (v5 != a3)
+  if (v5 != alpha)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(NCNotificationContentDisplaying *)self->_notificationContentView setDateAlpha:a3];
+      [(NCNotificationContentDisplaying *)self->_notificationContentView setDateAlpha:alpha];
     }
 
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setScreenCaptureProhibited:(BOOL)a3
+- (void)setScreenCaptureProhibited:(BOOL)prohibited
 {
-  v3 = a3;
+  prohibitedCopy = prohibited;
   [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentDisplaying *)notificationContentView setScreenCaptureProhibited:v3];
+  [(NCNotificationContentDisplaying *)notificationContentView setScreenCaptureProhibited:prohibitedCopy];
 }
 
-- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfPrimaryTextLines:(unint64_t)lines
 {
   [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
-  [(NCNotificationContentDisplaying *)self->_notificationContentView setPrimaryTextMaximumNumberOfLines:a3];
+  [(NCNotificationContentDisplaying *)self->_notificationContentView setPrimaryTextMaximumNumberOfLines:lines];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentDisplaying *)notificationContentView setPrimarySubtitleTextMaximumNumberOfLines:a3];
+  [(NCNotificationContentDisplaying *)notificationContentView setPrimarySubtitleTextMaximumNumberOfLines:lines];
 }
 
-- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)a3
+- (void)setMaximumNumberOfSecondaryTextLines:(unint64_t)lines
 {
   [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
   notificationContentView = self->_notificationContentView;
 
-  [(NCNotificationContentDisplaying *)notificationContentView setSecondaryTextMaximumNumberOfLines:a3];
+  [(NCNotificationContentDisplaying *)notificationContentView setSecondaryTextMaximumNumberOfLines:lines];
 }
 
-- (void)setSupportsGlass:(BOOL)a3
+- (void)setSupportsGlass:(BOOL)glass
 {
-  if (self->_supportsGlass != a3)
+  if (self->_supportsGlass != glass)
   {
-    self->_supportsGlass = a3;
+    self->_supportsGlass = glass;
     [(NCPlatterView *)self->_platterView setSupportsGlass:?];
   }
 }
 
-- (void)setCustomPlatterBackgroundView:(id)a3
+- (void)setCustomPlatterBackgroundView:(id)view
 {
-  v5 = a3;
-  if (self->_customPlatterBackgroundView != v5)
+  viewCopy = view;
+  if (self->_customPlatterBackgroundView != viewCopy)
   {
-    v6 = v5;
+    v6 = viewCopy;
     [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
-    objc_storeStrong(&self->_customPlatterBackgroundView, a3);
+    objc_storeStrong(&self->_customPlatterBackgroundView, view);
     [(PLPlatterView *)self->_platterView setBackgroundView:v6];
     [(NCPlatterView *)self->_platterView layoutIfNeeded];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setAuxiliaryOptionsSummaryText:(id)a3
+- (void)setAuxiliaryOptionsSummaryText:(id)text
 {
-  v6 = a3;
-  v4 = [(NCNotificationShortLookView *)self auxiliaryOptionsSummaryText];
+  textCopy = text;
+  auxiliaryOptionsSummaryText = [(NCNotificationShortLookView *)self auxiliaryOptionsSummaryText];
   v5 = BSEqualStrings();
 
   if ((v5 & 1) == 0)
   {
     [(NCNotificationShortLookView *)self _configureAuxiliaryOptionsViewIfNecessary];
-    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsSummaryText:v6];
+    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsSummaryText:textCopy];
     [(NCNotificationShortLookView *)self setNeedsDisplay];
   }
 }
 
-- (void)setAuxiliaryOptionsVisible:(BOOL)a3
+- (void)setAuxiliaryOptionsVisible:(BOOL)visible
 {
-  v3 = a3;
-  if ([(NCNotificationShortLookView *)self auxiliaryOptionsVisible]!= a3)
+  visibleCopy = visible;
+  if ([(NCNotificationShortLookView *)self auxiliaryOptionsVisible]!= visible)
   {
     [(NCNotificationShortLookView *)self _configureAuxiliaryOptionsViewIfNecessary];
     v5[0] = MEMORY[0x277D85DD0];
@@ -967,16 +967,16 @@
     v5[3] = &unk_27836F6A8;
     v5[4] = self;
     [MEMORY[0x277D75D18] performWithoutAnimation:v5];
-    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsVisible:v3];
+    [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionsVisible:visibleCopy];
     [(NCNotificationShortLookView *)self setNeedsLayout];
   }
 }
 
-- (void)setAuxiliaryOptionActions:(id)a3
+- (void)setAuxiliaryOptionActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   [(NCNotificationShortLookView *)self _configureAuxiliaryOptionsViewIfNecessary];
-  [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionActions:v4];
+  [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setAuxiliaryOptionActions:actionsCopy];
 
   [(NCNotificationShortLookView *)self setNeedsLayout];
 }
@@ -999,35 +999,35 @@
   return [(NCPlatterView *)platterView adjustsFontForContentSizeCategory];
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
+  categoryCopy = category;
   if (objc_opt_respondsToSelector())
   {
-    [(NCPlatterView *)self->_platterView setAdjustsFontForContentSizeCategory:v3];
+    [(NCPlatterView *)self->_platterView setAdjustsFontForContentSizeCategory:categoryCopy];
   }
 
-  v5 = [(NCNotificationShortLookView *)self adjustsFontForContentSizeCategory];
-  [(NCNotificationContentDisplaying *)self->_notificationContentView setAdjustsFontForContentSizeCategory:v5];
+  adjustsFontForContentSizeCategory = [(NCNotificationShortLookView *)self adjustsFontForContentSizeCategory];
+  [(NCNotificationContentDisplaying *)self->_notificationContentView setAdjustsFontForContentSizeCategory:adjustsFontForContentSizeCategory];
   auxiliaryOptionsView = self->_auxiliaryOptionsView;
 
-  [(NCAuxiliaryOptionsView *)auxiliaryOptionsView setAdjustsFontForContentSizeCategory:v5];
+  [(NCAuxiliaryOptionsView *)auxiliaryOptionsView setAdjustsFontForContentSizeCategory:adjustsFontForContentSizeCategory];
 }
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(NCPlatterView *)self->_platterView adjustForContentSizeCategoryChange];
+    adjustForContentSizeCategoryChange = [(NCPlatterView *)self->_platterView adjustForContentSizeCategoryChange];
   }
 
   else
   {
-    v3 = 0;
+    adjustForContentSizeCategoryChange = 0;
   }
 
-  v4 = [(NCNotificationContentDisplaying *)self->_notificationContentView adjustForContentSizeCategoryChange];
-  v5 = [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView adjustForContentSizeCategoryChange]| v4 | v3;
+  adjustForContentSizeCategoryChange2 = [(NCNotificationContentDisplaying *)self->_notificationContentView adjustForContentSizeCategoryChange];
+  v5 = [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView adjustForContentSizeCategoryChange]| adjustForContentSizeCategoryChange2 | adjustForContentSizeCategoryChange;
   if (v5)
   {
     [(NCNotificationShortLookView *)self setNeedsLayout];
@@ -1036,150 +1036,150 @@
   return v5 & 1;
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  v4 = a3;
+  baseCopy = base;
   [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
-  [(PLPlatterView *)self->_platterView setMaterialGroupNameBase:v4];
-  [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setMaterialGroupNameBase:v4];
+  [(PLPlatterView *)self->_platterView setMaterialGroupNameBase:baseCopy];
+  [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView setMaterialGroupNameBase:baseCopy];
 }
 
-- (void)setMaterialRecipe:(int64_t)a3
+- (void)setMaterialRecipe:(int64_t)recipe
 {
   [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
-  [(NCPlatterView *)self->_platterView setMaterialRecipe:a3];
+  [(NCPlatterView *)self->_platterView setMaterialRecipe:recipe];
   auxiliaryOptionsView = self->_auxiliaryOptionsView;
 
-  [(NCAuxiliaryOptionsView *)auxiliaryOptionsView setMaterialRecipe:a3];
+  [(NCAuxiliaryOptionsView *)auxiliaryOptionsView setMaterialRecipe:recipe];
 }
 
-- (void)setBackgroundAlpha:(double)a3
+- (void)setBackgroundAlpha:(double)alpha
 {
-  if (self->_backgroundAlpha != a3)
+  if (self->_backgroundAlpha != alpha)
   {
-    self->_backgroundAlpha = a3;
+    self->_backgroundAlpha = alpha;
     [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
-    v5 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
+    backgroundMaterialView = [(PLPlatterView *)self->_platterView backgroundMaterialView];
 
-    if (!v5)
+    if (!backgroundMaterialView)
     {
       [(NCPlatterView *)self->_platterView setNeedsLayout];
       [(NCPlatterView *)self->_platterView layoutIfNeeded];
     }
 
-    v6 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
+    backgroundMaterialView2 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
 
-    if (v6)
+    if (backgroundMaterialView2)
     {
-      v7 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
-      [v7 setAlpha:a3];
+      backgroundMaterialView3 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
+      [backgroundMaterialView3 setAlpha:alpha];
 
-      v8 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
-      [v8 setHidden:a3 < 0.001];
+      backgroundMaterialView4 = [(PLPlatterView *)self->_platterView backgroundMaterialView];
+      [backgroundMaterialView4 setHidden:alpha < 0.001];
     }
   }
 }
 
-- (void)setContentAlpha:(double)a3
+- (void)setContentAlpha:(double)alpha
 {
-  if (self->_contentAlpha != a3)
+  if (self->_contentAlpha != alpha)
   {
-    self->_contentAlpha = a3;
+    self->_contentAlpha = alpha;
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
     notificationContentView = self->_notificationContentView;
 
-    [(NCNotificationContentDisplaying *)notificationContentView setAlpha:a3];
+    [(NCNotificationContentDisplaying *)notificationContentView setAlpha:alpha];
   }
 }
 
-- (void)setCompositeAlpha:(double)a3
+- (void)setCompositeAlpha:(double)alpha
 {
-  if (self->_compositeAlpha != a3)
+  if (self->_compositeAlpha != alpha)
   {
-    self->_compositeAlpha = a3;
+    self->_compositeAlpha = alpha;
     [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
-    v5 = [(NCNotificationShortLookView *)self layer];
-    [v5 setAllowsGroupOpacity:a3 < 1.0];
+    layer = [(NCNotificationShortLookView *)self layer];
+    [layer setAllowsGroupOpacity:alpha < 1.0];
 
-    [(NCNotificationShortLookView *)self setAlpha:a3];
+    [(NCNotificationShortLookView *)self setAlpha:alpha];
   }
 }
 
-- (void)setContentTransform:(CGAffineTransform *)a3
+- (void)setContentTransform:(CGAffineTransform *)transform
 {
   p_contentTransform = &self->_contentTransform;
   v6 = *&self->_contentTransform.c;
   *&t1.a = *&self->_contentTransform.a;
   *&t1.c = v6;
   *&t1.tx = *&self->_contentTransform.tx;
-  v7 = *&a3->c;
-  *&v11.a = *&a3->a;
+  v7 = *&transform->c;
+  *&v11.a = *&transform->a;
   *&v11.c = v7;
-  *&v11.tx = *&a3->tx;
+  *&v11.tx = *&transform->tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v11))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_contentTransform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_contentTransform->c = *&transform->c;
     *&p_contentTransform->tx = v9;
     *&p_contentTransform->a = v8;
     [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
-    v10 = *&a3->c;
-    *&t1.a = *&a3->a;
+    v10 = *&transform->c;
+    *&t1.a = *&transform->a;
     *&t1.c = v10;
-    *&t1.tx = *&a3->tx;
+    *&t1.tx = *&transform->tx;
     [(NCNotificationShortLookView *)self setTransform:&t1];
   }
 }
 
-- (void)setApparentZDistanceToUser:(int64_t)a3
+- (void)setApparentZDistanceToUser:(int64_t)user
 {
-  if (self->_apparentZDistanceToUser != a3)
+  if (self->_apparentZDistanceToUser != user)
   {
-    self->_apparentZDistanceToUser = a3;
+    self->_apparentZDistanceToUser = user;
     [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
-    [(NCPlatterView *)self->_platterView updateWithApparentZDistanceToUser:a3];
+    [(NCPlatterView *)self->_platterView updateWithApparentZDistanceToUser:user];
     stackDimmingOverlayView = self->_stackDimmingOverlayView;
-    v7 = a3 == 0 || self->_disableDimming;
+    v7 = user == 0 || self->_disableDimming;
 
     [(NCNotificationListStackDimmingOverlayView *)stackDimmingOverlayView setHidden:v7];
   }
 }
 
-- (void)setRootScrollVelocity:(double)a3
+- (void)setRootScrollVelocity:(double)velocity
 {
-  if (self->_rootScrollVelocity != a3)
+  if (self->_rootScrollVelocity != velocity)
   {
-    self->_rootScrollVelocity = a3;
+    self->_rootScrollVelocity = velocity;
     [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
     platterView = self->_platterView;
 
-    [(NCPlatterView *)platterView updateWithRootListScrollVelocity:a3];
+    [(NCPlatterView *)platterView updateWithRootListScrollVelocity:velocity];
   }
 }
 
-- (void)setGlassMode:(unint64_t)a3
+- (void)setGlassMode:(unint64_t)mode
 {
-  if (self->_glassMode != a3)
+  if (self->_glassMode != mode)
   {
-    self->_glassMode = a3;
+    self->_glassMode = mode;
     [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
     platterView = self->_platterView;
 
-    [(NCPlatterView *)platterView updateWithGlassMode:a3];
+    [(NCPlatterView *)platterView updateWithGlassMode:mode];
   }
 }
 
-- (void)setBackgroundHidden:(BOOL)a3
+- (void)setBackgroundHidden:(BOOL)hidden
 {
-  if (self->_backgroundHidden != a3)
+  if (self->_backgroundHidden != hidden)
   {
-    v4 = a3;
-    self->_backgroundHidden = a3;
+    hiddenCopy = hidden;
+    self->_backgroundHidden = hidden;
     [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
     platterView = self->_platterView;
 
-    [(NCPlatterView *)platterView setBackgroundHidden:v4];
+    [(NCPlatterView *)platterView setBackgroundHidden:hiddenCopy];
   }
 }
 
@@ -1226,34 +1226,34 @@
   }
 }
 
-- (void)setUnmanagedBackdropContrast:(BOOL)a3
+- (void)setUnmanagedBackdropContrast:(BOOL)contrast
 {
-  if (self->_unmanagedBackdropContrast != a3)
+  if (self->_unmanagedBackdropContrast != contrast)
   {
-    v4 = a3;
-    self->_unmanagedBackdropContrast = a3;
+    contrastCopy = contrast;
+    self->_unmanagedBackdropContrast = contrast;
     [(NCNotificationShortLookView *)self _configurePlatterViewIfNeccesary];
     platterView = self->_platterView;
 
-    [(NCPlatterView *)platterView setUnmanagedBackdropContrast:v4];
+    [(NCPlatterView *)platterView setUnmanagedBackdropContrast:contrastCopy];
   }
 }
 
-- (CGSize)_sizeThatFitsContentWithSize:(CGSize)a3 withAuxiliaryOptionsViewVisible:(BOOL)a4 withProjectedConfigurationOrNil:(id)a5
+- (CGSize)_sizeThatFitsContentWithSize:(CGSize)size withAuxiliaryOptionsViewVisible:(BOOL)visible withProjectedConfigurationOrNil:(id)nil
 {
-  v5 = a4;
-  width = a3.width;
+  visibleCopy = visible;
+  width = size.width;
   platterView = self->_platterView;
-  v9 = a5;
+  nilCopy = nil;
   [(PLPlatterView *)platterView sizeThatFitsContentWithSize:width, 0.0];
   v11 = v10;
   v13 = v12;
   [(NCNotificationShortLookView *)self _configureNotificationContentViewIfNecessary];
-  NCSizeThatFits(self->_notificationContentView, v9, width, 0.0);
+  NCSizeThatFits(self->_notificationContentView, nilCopy, width, 0.0);
   v15 = v14;
 
   v16 = v13 + v15;
-  if (v5)
+  if (visibleCopy)
   {
     [(NCAuxiliaryOptionsView *)self->_auxiliaryOptionsView sizeThatFits:width, 0.0];
     v16 = v16 + v17;
@@ -1276,8 +1276,8 @@
 
     [(NCPlatterView *)self->_platterView _setContinuousCornerRadius:23.5];
     [(NCPlatterView *)self->_platterView setAccessibilityIdentifier:@"ShortLook.Platter"];
-    v5 = [(PLPlatterView *)self->_platterView customContentView];
-    [v5 setClipsToBounds:1];
+    customContentView = [(PLPlatterView *)self->_platterView customContentView];
+    [customContentView setClipsToBounds:1];
 
     [(NCNotificationShortLookView *)self addSubview:self->_platterView];
     v6 = self->_platterView;
@@ -1374,8 +1374,8 @@ void __75__NCNotificationShortLookView__configureNotificationContentViewIfNecess
     v5 = self->_auxiliaryOptionsView;
     [(NCNotificationShortLookView *)self _continuousCornerRadius];
     [(NCAuxiliaryOptionsView *)v5 _setContinuousCornerRadius:?];
-    v6 = [(NCNotificationShortLookView *)self customContentView];
-    [v6 addSubview:self->_auxiliaryOptionsView];
+    customContentView = [(NCNotificationShortLookView *)self customContentView];
+    [customContentView addSubview:self->_auxiliaryOptionsView];
 
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
@@ -1408,26 +1408,26 @@ void __75__NCNotificationShortLookView__configureNotificationContentViewIfNecess
   return fontProvider;
 }
 
-- (void)_setFontProvider:(id)a3
+- (void)_setFontProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_fontProvider != v5)
+  providerCopy = provider;
+  if (self->_fontProvider != providerCopy)
   {
-    objc_storeStrong(&self->_fontProvider, a3);
-    v5 = objc_opt_respondsToSelector();
-    if (v5)
+    objc_storeStrong(&self->_fontProvider, provider);
+    providerCopy = objc_opt_respondsToSelector();
+    if (providerCopy)
     {
-      v5 = [(NCNotificationContentDisplaying *)self->_notificationContentView setFontProvider:self->_fontProvider];
+      providerCopy = [(NCNotificationContentDisplaying *)self->_notificationContentView setFontProvider:self->_fontProvider];
     }
   }
 
-  MEMORY[0x2821F96F8](v5);
+  MEMORY[0x2821F96F8](providerCopy);
 }
 
-- (void)didInvalidateSizeFromNotificationSeamlessContentView:(id)a3
+- (void)didInvalidateSizeFromNotificationSeamlessContentView:(id)view
 {
-  v4 = [(NCNotificationShortLookView *)self delegate];
-  [v4 didInvalidateSizeFromNotificationShortLookView:self];
+  delegate = [(NCNotificationShortLookView *)self delegate];
+  [delegate didInvalidateSizeFromNotificationShortLookView:self];
 }
 
 - (CGAffineTransform)contentTransform

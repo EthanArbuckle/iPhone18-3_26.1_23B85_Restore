@@ -1,29 +1,29 @@
 @interface PGGraphPortraitDonationEnrichmentProcessor
-- (id)_knowledgeToDonateFromAccumulatedNodesWithProgressBlock:(id)a3;
-- (id)_locationNamedEntitiesFromAddressNodes:(id)a3 dates:(id)a4 currentProgress:(double *)a5 progressFraction:(double)a6 progressBlock:(id)a7;
-- (id)_namedEntitiesFromNamedEntityNodes:(id)a3 currentProgress:(double *)a4 progressFraction:(double)a5 progressBlock:(id)a6;
-- (id)_topicsFromTopicNodes:(id)a3 currentProgress:(double *)a4 progressFraction:(double)a5 progressBlock:(id)a6;
-- (void)_accumulateKnowledgeNodesFromMomentNodes:(id)a3 progressBlock:(id)a4;
-- (void)_donateKnowledge:(id)a3 donationDate:(id)a4 loggingConnection:(id)a5;
-- (void)_donateKnowledgeWithManager:(id)a3 progressBlock:(id)a4;
+- (id)_knowledgeToDonateFromAccumulatedNodesWithProgressBlock:(id)block;
+- (id)_locationNamedEntitiesFromAddressNodes:(id)nodes dates:(id)dates currentProgress:(double *)progress progressFraction:(double)fraction progressBlock:(id)block;
+- (id)_namedEntitiesFromNamedEntityNodes:(id)nodes currentProgress:(double *)progress progressFraction:(double)fraction progressBlock:(id)block;
+- (id)_topicsFromTopicNodes:(id)nodes currentProgress:(double *)progress progressFraction:(double)fraction progressBlock:(id)block;
+- (void)_accumulateKnowledgeNodesFromMomentNodes:(id)nodes progressBlock:(id)block;
+- (void)_donateKnowledge:(id)knowledge donationDate:(id)date loggingConnection:(id)connection;
+- (void)_donateKnowledgeWithManager:(id)manager progressBlock:(id)block;
 - (void)_prepareForKnowledgeDonation;
-- (void)enrichDataModelWithManager:(id)a3 curationContext:(id)a4 graphUpdateInventory:(id)a5 progressReporter:(id)a6;
+- (void)enrichDataModelWithManager:(id)manager curationContext:(id)context graphUpdateInventory:(id)inventory progressReporter:(id)reporter;
 @end
 
 @implementation PGGraphPortraitDonationEnrichmentProcessor
 
-- (id)_namedEntitiesFromNamedEntityNodes:(id)a3 currentProgress:(double *)a4 progressFraction:(double)a5 progressBlock:(id)a6
+- (id)_namedEntitiesFromNamedEntityNodes:(id)nodes currentProgress:(double *)progress progressFraction:(double)fraction progressBlock:(id)block
 {
   v47 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  if (!a4)
+  nodesCopy = nodes;
+  blockCopy = block;
+  if (!progress)
   {
     v41 = 0;
-    a4 = &v41;
+    progress = &v41;
   }
 
-  v11 = [v9 count];
+  v11 = [nodesCopy count];
   if (!v11)
   {
     v18 = MEMORY[0x277CBEBF8];
@@ -31,9 +31,9 @@
   }
 
   v12 = v11;
-  v13 = [v9 pg_accumulatedCount];
-  v14 = *a4;
-  v15 = _Block_copy(v10);
+  pg_accumulatedCount = [nodesCopy pg_accumulatedCount];
+  v14 = *progress;
+  v15 = _Block_copy(blockCopy);
   v16 = 0.0;
   if (!v15)
   {
@@ -52,20 +52,20 @@
   {
     v16 = Current;
 LABEL_12:
-    v35 = a4;
-    v19 = [MEMORY[0x277CBEB18] array];
+    progressCopy = progress;
+    array = [MEMORY[0x277CBEB18] array];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v20 = v9;
+    v20 = nodesCopy;
     v21 = [v20 countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v21)
     {
       v22 = v21;
-      v23 = a5 / v12;
+      v23 = fraction / v12;
       v24 = *v37;
-      v25 = v13;
+      v25 = pg_accumulatedCount;
       while (2)
       {
         for (i = 0; i != v22; ++i)
@@ -77,12 +77,12 @@ LABEL_12:
 
           v27 = *(*(&v36 + 1) + 8 * i);
           v28 = [v20 countForObject:v27];
-          v29 = [v27 pg_namedEntity];
-          if (v29)
+          pg_namedEntity = [v27 pg_namedEntity];
+          if (pg_namedEntity)
           {
-            v30 = v29;
-            v31 = [objc_alloc(MEMORY[0x277D3A498]) initWithItem:v29 score:v28 / v25];
-            [v19 addObject:v31];
+            v30 = pg_namedEntity;
+            v31 = [objc_alloc(MEMORY[0x277D3A498]) initWithItem:pg_namedEntity score:v28 / v25];
+            [array addObject:v31];
             v14 = v23 + v14;
             if (v15)
             {
@@ -122,8 +122,8 @@ LABEL_12:
       }
     }
 
-    *v35 = v14;
-    v18 = v19;
+    *progressCopy = v14;
+    v18 = array;
 LABEL_29:
 
     goto LABEL_30;
@@ -147,19 +147,19 @@ LABEL_31:
   return v18;
 }
 
-- (id)_locationNamedEntitiesFromAddressNodes:(id)a3 dates:(id)a4 currentProgress:(double *)a5 progressFraction:(double)a6 progressBlock:(id)a7
+- (id)_locationNamedEntitiesFromAddressNodes:(id)nodes dates:(id)dates currentProgress:(double *)progress progressFraction:(double)fraction progressBlock:(id)block
 {
   v65 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v48 = a4;
-  v12 = a7;
-  if (!a5)
+  nodesCopy = nodes;
+  datesCopy = dates;
+  blockCopy = block;
+  if (!progress)
   {
     v58 = 0;
-    a5 = &v58;
+    progress = &v58;
   }
 
-  v13 = [v11 count];
+  v13 = [nodesCopy count];
   if (!v13)
   {
     v20 = MEMORY[0x277CBEBF8];
@@ -167,9 +167,9 @@ LABEL_31:
   }
 
   v14 = v13;
-  v15 = [v11 pg_accumulatedCount];
-  v16 = *a5;
-  v17 = _Block_copy(v12);
+  pg_accumulatedCount = [nodesCopy pg_accumulatedCount];
+  v16 = *progress;
+  v17 = _Block_copy(blockCopy);
   v18 = 0.0;
   if (!v17)
   {
@@ -188,21 +188,21 @@ LABEL_31:
   {
     v18 = Current;
 LABEL_12:
-    v41 = a5;
-    v42 = v12;
-    v21 = [MEMORY[0x277CBEB18] array];
+    progressCopy = progress;
+    v42 = blockCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v43 = v11;
-    v22 = v11;
+    v43 = nodesCopy;
+    v22 = nodesCopy;
     v47 = [v22 countByEnumeratingWithState:&v53 objects:v60 count:16];
     if (v47)
     {
-      v23 = a6 / v14;
+      v23 = fraction / v14;
       v46 = *v54;
-      v24 = v15;
+      v24 = pg_accumulatedCount;
       v44 = v22;
       v45 = v17;
       while (2)
@@ -216,7 +216,7 @@ LABEL_12:
 
           v26 = *(*(&v53 + 1) + 8 * i);
           v27 = [v22 countForObject:v26];
-          v28 = [v48 objectForKeyedSubscript:v26];
+          v28 = [datesCopy objectForKeyedSubscript:v26];
           if ([v28 count])
           {
             v51 = 0u;
@@ -240,16 +240,16 @@ LABEL_20:
                 }
 
                 v35 = *(*(&v49 + 1) + 8 * v34);
-                v36 = [v26 pg_locationNamedEntity];
-                if (!v36)
+                pg_locationNamedEntity = [v26 pg_locationNamedEntity];
+                if (!pg_locationNamedEntity)
                 {
                   break;
                 }
 
-                v37 = v36;
-                [v36 setScore:v32];
+                v37 = pg_locationNamedEntity;
+                [pg_locationNamedEntity setScore:v32];
                 [v37 setDate:v35];
-                [v21 addObject:v37];
+                [array addObject:v37];
 
                 if (v31 == ++v34)
                 {
@@ -306,12 +306,12 @@ LABEL_20:
       }
     }
 
-    *v41 = v16;
-    v20 = v21;
+    *progressCopy = v16;
+    v20 = array;
 LABEL_37:
-    v11 = v43;
+    nodesCopy = v43;
 
-    v12 = v42;
+    blockCopy = v42;
     goto LABEL_38;
   }
 
@@ -333,18 +333,18 @@ LABEL_39:
   return v20;
 }
 
-- (id)_topicsFromTopicNodes:(id)a3 currentProgress:(double *)a4 progressFraction:(double)a5 progressBlock:(id)a6
+- (id)_topicsFromTopicNodes:(id)nodes currentProgress:(double *)progress progressFraction:(double)fraction progressBlock:(id)block
 {
   v46 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  if (!a4)
+  nodesCopy = nodes;
+  blockCopy = block;
+  if (!progress)
   {
     v40 = 0;
-    a4 = &v40;
+    progress = &v40;
   }
 
-  v11 = [v9 count];
+  v11 = [nodesCopy count];
   if (!v11)
   {
     v18 = MEMORY[0x277CBEC10];
@@ -352,9 +352,9 @@ LABEL_39:
   }
 
   v12 = v11;
-  v13 = [v9 pg_accumulatedCount];
-  v14 = *a4;
-  v15 = _Block_copy(v10);
+  pg_accumulatedCount = [nodesCopy pg_accumulatedCount];
+  v14 = *progress;
+  v15 = _Block_copy(blockCopy);
   v16 = 0.0;
   if (!v15)
   {
@@ -373,20 +373,20 @@ LABEL_39:
   {
     v16 = Current;
 LABEL_12:
-    v34 = a4;
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    progressCopy = progress;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v20 = v9;
+    v20 = nodesCopy;
     v21 = [v20 countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v21)
     {
       v22 = v21;
-      v23 = a5 / v12;
+      v23 = fraction / v12;
       v24 = *v36;
-      v25 = v13;
+      v25 = pg_accumulatedCount;
       while (2)
       {
         for (i = 0; i != v22; ++i)
@@ -398,11 +398,11 @@ LABEL_12:
 
           v27 = *(*(&v35 + 1) + 8 * i);
           v28 = [v20 countForObject:v27];
-          v29 = [v27 pg_topic];
-          if (v29)
+          pg_topic = [v27 pg_topic];
+          if (pg_topic)
           {
             v30 = [MEMORY[0x277CCABB0] numberWithDouble:v28 / v25];
-            [v19 setObject:v30 forKeyedSubscript:v29];
+            [dictionary setObject:v30 forKeyedSubscript:pg_topic];
 
             v14 = v23 + v14;
             if (v15)
@@ -443,8 +443,8 @@ LABEL_12:
       }
     }
 
-    *v34 = v14;
-    v18 = v19;
+    *progressCopy = v14;
+    v18 = dictionary;
 LABEL_28:
 
     goto LABEL_29;
@@ -468,24 +468,24 @@ LABEL_30:
   return v18;
 }
 
-- (void)_donateKnowledge:(id)a3 donationDate:(id)a4 loggingConnection:(id)a5
+- (void)_donateKnowledge:(id)knowledge donationDate:(id)date loggingConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_opt_class() graphDonationBundleId];
+  knowledgeCopy = knowledge;
+  dateCopy = date;
+  connectionCopy = connection;
+  graphDonationBundleId = [objc_opt_class() graphDonationBundleId];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __94__PGGraphPortraitDonationEnrichmentProcessor__donateKnowledge_donationDate_loggingConnection___block_invoke;
   v17[3] = &unk_278889470;
-  v18 = v7;
-  v19 = v10;
-  v20 = v8;
-  v21 = v9;
-  v11 = v9;
-  v12 = v8;
-  v13 = v10;
-  v14 = v7;
+  v18 = knowledgeCopy;
+  v19 = graphDonationBundleId;
+  v20 = dateCopy;
+  v21 = connectionCopy;
+  v11 = connectionCopy;
+  v12 = dateCopy;
+  v13 = graphDonationBundleId;
+  v14 = knowledgeCopy;
   v15 = dispatch_block_create(0, v17);
   v16 = dispatch_get_global_queue(0, 0);
   dispatch_async(v16, v15);
@@ -588,18 +588,18 @@ LABEL_8:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_knowledgeToDonateFromAccumulatedNodesWithProgressBlock:(id)a3
+- (id)_knowledgeToDonateFromAccumulatedNodesWithProgressBlock:(id)block
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  blockCopy = block;
+  v5 = _Block_copy(blockCopy);
   v30 = 0.5;
-  v6 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _locationNamedEntitiesFromAddressNodes:self->_addressNodes dates:self->_datesByAddressNode currentProgress:&v30 progressFraction:v4 progressBlock:0.0714285714];
+  v6 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _locationNamedEntitiesFromAddressNodes:self->_addressNodes dates:self->_datesByAddressNode currentProgress:&v30 progressFraction:blockCopy progressBlock:0.0714285714];
   v7 = 0.0;
   if (!v5 || (v8 = CFAbsoluteTimeGetCurrent(), v8 < 0.01))
   {
 LABEL_8:
-    v10 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _topicsFromTopicNodes:self->_meaningNodes currentProgress:&v30 progressFraction:v4 progressBlock:0.0714285714];
+    v10 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _topicsFromTopicNodes:self->_meaningNodes currentProgress:&v30 progressFraction:blockCopy progressBlock:0.0714285714];
     if (v5)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -626,7 +626,7 @@ LABEL_8:
       }
     }
 
-    v12 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _topicsFromTopicNodes:self->_roiNodes currentProgress:&v30 progressFraction:v4 progressBlock:0.0714285714];
+    v12 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _topicsFromTopicNodes:self->_roiNodes currentProgress:&v30 progressFraction:blockCopy progressBlock:0.0714285714];
     if (v5)
     {
       v13 = CFAbsoluteTimeGetCurrent();
@@ -653,7 +653,7 @@ LABEL_8:
       }
     }
 
-    v14 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _topicsFromTopicNodes:self->_poiNodes currentProgress:&v30 progressFraction:v4 progressBlock:0.0714285714];
+    v14 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _topicsFromTopicNodes:self->_poiNodes currentProgress:&v30 progressFraction:blockCopy progressBlock:0.0714285714];
     if (v5)
     {
       v15 = CFAbsoluteTimeGetCurrent();
@@ -680,7 +680,7 @@ LABEL_8:
       }
     }
 
-    v16 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _namedEntitiesFromNamedEntityNodes:self->_businessNodes currentProgress:&v30 progressFraction:v4 progressBlock:0.0714285714];
+    v16 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _namedEntitiesFromNamedEntityNodes:self->_businessNodes currentProgress:&v30 progressFraction:blockCopy progressBlock:0.0714285714];
     v27 = v16;
     if (v5)
     {
@@ -708,7 +708,7 @@ LABEL_8:
       }
     }
 
-    v28 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _namedEntitiesFromNamedEntityNodes:self->_publicEventNodes currentProgress:&v30 progressFraction:v4 progressBlock:0.0714285714, v16];
+    v28 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _namedEntitiesFromNamedEntityNodes:self->_publicEventNodes currentProgress:&v30 progressFraction:blockCopy progressBlock:0.0714285714, v16];
     if (v5)
     {
       v18 = CFAbsoluteTimeGetCurrent();
@@ -746,7 +746,7 @@ LABEL_55:
     v19 = v6;
     v20 = v10;
     v21 = v12;
-    v22 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _namedEntitiesFromNamedEntityNodes:self->_performerNodes currentProgress:&v30 progressFraction:v4 progressBlock:0.0714285714];
+    v22 = [(PGGraphPortraitDonationEnrichmentProcessor *)self _namedEntitiesFromNamedEntityNodes:self->_performerNodes currentProgress:&v30 progressFraction:blockCopy progressBlock:0.0714285714];
     if (v5 && CFAbsoluteTimeGetCurrent() - v7 >= 0.01 && (v29 = 0, v5[2](v5, &v29, v30), v29))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -804,17 +804,17 @@ LABEL_56:
   return v9;
 }
 
-- (void)_accumulateKnowledgeNodesFromMomentNodes:(id)a3 progressBlock:(id)a4
+- (void)_accumulateKnowledgeNodesFromMomentNodes:(id)nodes progressBlock:(id)block
 {
   v71 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
+  nodesCopy = nodes;
+  blockCopy = block;
+  v8 = [nodesCopy count];
   if (v8)
   {
     v9 = v8;
-    v36 = v7;
-    v10 = _Block_copy(v7);
+    v36 = blockCopy;
+    v10 = _Block_copy(blockCopy);
     v44 = self->_meaningNodes;
     v38 = self->_poiNodes;
     v39 = self->_roiNodes;
@@ -827,8 +827,8 @@ LABEL_56:
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
-    v37 = v6;
-    obj = v6;
+    v37 = nodesCopy;
+    obj = nodesCopy;
     v12 = [obj countByEnumeratingWithState:&v62 objects:v70 count:16];
     if (!v12)
     {
@@ -854,12 +854,12 @@ LABEL_56:
 
         v21 = *(*(&v62 + 1) + 8 * v19);
         v22 = objc_autoreleasePoolPush();
-        v23 = [v21 localStartDate];
-        [v23 timeIntervalSince1970];
+        localStartDate = [v21 localStartDate];
+        [localStartDate timeIntervalSince1970];
         v25 = v24;
 
-        v26 = [v21 universalStartDate];
-        [v26 timeIntervalSince1970];
+        universalStartDate = [v21 universalStartDate];
+        [universalStartDate timeIntervalSince1970];
         v28 = v27;
 
         v58[0] = MEMORY[0x277D85DD0];
@@ -1104,8 +1104,8 @@ LABEL_60:
       {
 LABEL_63:
 
-        v7 = v36;
-        v6 = v37;
+        blockCopy = v36;
+        nodesCopy = v37;
         break;
       }
     }
@@ -1169,23 +1169,23 @@ void __101__PGGraphPortraitDonationEnrichmentProcessor__accumulateKnowledgeNodes
   performerNodes = self->_performerNodes;
   self->_performerNodes = v13;
 
-  v15 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   datesByAddressNode = self->_datesByAddressNode;
-  self->_datesByAddressNode = v15;
+  self->_datesByAddressNode = dictionary;
 
   v17 = [MEMORY[0x277CCA940] set];
   addressNodes = self->_addressNodes;
   self->_addressNodes = v17;
 }
 
-- (void)_donateKnowledgeWithManager:(id)a3 progressBlock:(id)a4
+- (void)_donateKnowledgeWithManager:(id)manager progressBlock:(id)block
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 enrichmentLoggingConnection];
-  v9 = os_signpost_id_generate(v8);
-  v10 = v8;
+  managerCopy = manager;
+  blockCopy = block;
+  enrichmentLoggingConnection = [managerCopy enrichmentLoggingConnection];
+  v9 = os_signpost_id_generate(enrichmentLoggingConnection);
+  v10 = enrichmentLoggingConnection;
   v11 = v10;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
   {
@@ -1208,15 +1208,15 @@ void __101__PGGraphPortraitDonationEnrichmentProcessor__accumulateKnowledgeNodes
   v25 = &unk_278880D38;
   v13 = v11;
   v26 = v13;
-  v14 = v7;
-  v27 = self;
+  v14 = blockCopy;
+  selfCopy = self;
   v28 = v14;
   v29 = buf;
-  [v6 performSynchronousConcurrentGraphReadUsingBlock:&v22];
+  [managerCopy performSynchronousConcurrentGraphReadUsingBlock:&v22];
   if (*(v31 + 5))
   {
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [(PGGraphPortraitDonationEnrichmentProcessor *)self _donateKnowledge:*(v31 + 5) donationDate:v15 loggingConnection:v13];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(PGGraphPortraitDonationEnrichmentProcessor *)self _donateKnowledge:*(v31 + 5) donationDate:date loggingConnection:v13];
   }
 
   v16 = mach_absolute_time();
@@ -1390,16 +1390,16 @@ LABEL_34:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrichDataModelWithManager:(id)a3 curationContext:(id)a4 graphUpdateInventory:(id)a5 progressReporter:(id)a6
+- (void)enrichDataModelWithManager:(id)manager curationContext:(id)context graphUpdateInventory:(id)inventory progressReporter:(id)reporter
 {
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 enrichmentLoggingConnection];
-  v15 = os_signpost_id_generate(v14);
-  v16 = v14;
+  managerCopy = manager;
+  contextCopy = context;
+  inventoryCopy = inventory;
+  reporterCopy = reporter;
+  enrichmentLoggingConnection = [managerCopy enrichmentLoggingConnection];
+  v15 = os_signpost_id_generate(enrichmentLoggingConnection);
+  v16 = enrichmentLoggingConnection;
   v17 = v16;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
   {
@@ -1410,7 +1410,7 @@ LABEL_34:
   info = 0;
   mach_timebase_info(&info);
   v18 = mach_absolute_time();
-  v19 = v13;
+  v19 = reporterCopy;
   *buf = 0;
   v35 = buf;
   v36 = 0x2020000000;
@@ -1436,7 +1436,7 @@ LABEL_19:
 
   else
   {
-    if ([(PGGraphPortraitDonationEnrichmentProcessor *)self _shouldProcessGraphUpdate:v12])
+    if ([(PGGraphPortraitDonationEnrichmentProcessor *)self _shouldProcessGraphUpdate:inventoryCopy])
     {
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
@@ -1444,7 +1444,7 @@ LABEL_19:
       v31[3] = &unk_278889448;
       v33 = buf;
       v32 = v19;
-      [(PGGraphPortraitDonationEnrichmentProcessor *)self _donateKnowledgeWithManager:v10 progressBlock:v31];
+      [(PGGraphPortraitDonationEnrichmentProcessor *)self _donateKnowledgeWithManager:managerCopy progressBlock:v31];
       if (v35[24] == 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))

@@ -10,15 +10,15 @@
   if ([v4 hasDarkAppearance])
   {
     v5 = [MEMORY[0x1E69DC888] colorWithRed:0.366 green:0.366 blue:0.366 alpha:1.0];
-    [a1 setBackgroundColor:v5];
+    [self setBackgroundColor:v5];
   }
 
-  v6 = [v4 tintColor];
-  [a1 _setHighlightColor:v6];
+  tintColor = [v4 tintColor];
+  [self _setHighlightColor:tintColor];
 
-  v7 = [v4 textColor];
+  textColor = [v4 textColor];
 
-  [a1 _setTextColor:v7];
+  [self _setTextColor:textColor];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface MFPGradientStop
-- (MFPGradientStop)initWithColor:(id)a3 position:(float)a4;
+- (MFPGradientStop)initWithColor:(id)color position:(float)position;
 @end
 
 @implementation MFPGradientStop
 
-- (MFPGradientStop)initWithColor:(id)a3 position:(float)a4
+- (MFPGradientStop)initWithColor:(id)color position:(float)position
 {
-  v7 = a3;
+  colorCopy = color;
   v11.receiver = self;
   v11.super_class = MFPGradientStop;
   v8 = [(MFPGradientStop *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->mColor, a3);
-    v9->mPosition = a4;
+    objc_storeStrong(&v8->mColor, color);
+    v9->mPosition = position;
   }
 
   return v9;

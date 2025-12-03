@@ -1,26 +1,26 @@
 @interface IPXPCEventStateUpdateStreamSource
 - (IPStateUpdateStreamSourceDelegate)delegate;
-- (IPXPCEventStateUpdateStreamSource)initWithQueue:(id)a3 streamName:(id)a4;
-- (void)_queue_handleEvent:(id)a3;
+- (IPXPCEventStateUpdateStreamSource)initWithQueue:(id)queue streamName:(id)name;
+- (void)_queue_handleEvent:(id)event;
 - (void)resume;
 @end
 
 @implementation IPXPCEventStateUpdateStreamSource
 
-- (IPXPCEventStateUpdateStreamSource)initWithQueue:(id)a3 streamName:(id)a4
+- (IPXPCEventStateUpdateStreamSource)initWithQueue:(id)queue streamName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = IPXPCEventStateUpdateStreamSource;
   v9 = [(IPXPCEventStateUpdateStreamSource *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     streamName = v9->_streamName;
     v9->_streamName = v10;
 
-    objc_storeStrong(&v9->_queue, a3);
+    objc_storeStrong(&v9->_queue, queue);
   }
 
   return v9;
@@ -43,14 +43,14 @@
   v5 = xpc_dictionary_create(0, 0, 0);
   [(NSString *)self->_streamName UTF8String];
   xpc_set_event();
-  v6 = [(NSString *)self->_streamName UTF8String];
+  uTF8String = [(NSString *)self->_streamName UTF8String];
   queue = self->_queue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __43__IPXPCEventStateUpdateStreamSource_resume__block_invoke;
   handler[3] = &unk_2797B2008;
   objc_copyWeak(&v10, buf);
-  xpc_set_event_stream_handler(v6, queue, handler);
+  xpc_set_event_stream_handler(uTF8String, queue, handler);
   objc_destroyWeak(&v10);
 
   objc_destroyWeak(buf);
@@ -64,25 +64,25 @@ void __43__IPXPCEventStateUpdateStreamSource_resume__block_invoke(uint64_t a1, v
   [WeakRetained _queue_handleEvent:v3];
 }
 
-- (void)_queue_handleEvent:(id)a3
+- (void)_queue_handleEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   dispatch_assert_queue_V2(self->_queue);
   v5 = _IPClientLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = IPXPCCopyDescription(v4);
+    v6 = IPXPCCopyDescription(eventCopy);
     *buf = 138412290;
     v15 = v6;
     _os_log_impl(&dword_254C69000, v5, OS_LOG_TYPE_DEFAULT, "event: %@", buf, 0xCu);
   }
 
-  if (MEMORY[0x259C29850](v4) == MEMORY[0x277D86468])
+  if (MEMORY[0x259C29850](eventCopy) == MEMORY[0x277D86468])
   {
-    if (xpc_dictionary_get_uint64(v4, [@"type" UTF8String]) == -1)
+    if (xpc_dictionary_get_uint64(eventCopy, [@"type" UTF8String]) == -1)
     {
-      reply = xpc_dictionary_create_reply(v4);
+      reply = xpc_dictionary_create_reply(eventCopy);
       xpc_dictionary_send_reply();
       v11 = _IPClientLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -95,7 +95,7 @@ void __43__IPXPCEventStateUpdateStreamSource_resume__block_invoke(uint64_t a1, v
     else
     {
       v13 = 0;
-      v8 = [[IPStateUpdateMessage alloc] initWithXPCDictionaryRepresentation:v4 error:&v13];
+      v8 = [[IPStateUpdateMessage alloc] initWithXPCDictionaryRepresentation:eventCopy error:&v13];
       reply = v13;
       v9 = _IPClientLog();
       WeakRetained = v9;

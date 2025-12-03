@@ -10,7 +10,7 @@
   block[1] = 3221225472;
   block[2] = __41__NSBundle_Photos__ph_isFirstPartyBundle__block_invoke;
   block[3] = &unk_1E75AB270;
-  block[4] = a1;
+  block[4] = self;
   if (ph_isFirstPartyBundle_onceToken != -1)
   {
     dispatch_once(&ph_isFirstPartyBundle_onceToken, block);

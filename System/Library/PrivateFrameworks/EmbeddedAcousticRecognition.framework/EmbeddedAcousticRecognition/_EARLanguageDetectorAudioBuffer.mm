@@ -1,13 +1,13 @@
 @interface _EARLanguageDetectorAudioBuffer
 - (id).cxx_construct;
-- (id)_initWithAudioBuffer:(const void *)a3;
-- (void)addAudioSampleData:(id)a3;
-- (void)addAudioSamples:(const signed __int16 *)a3 count:(unint64_t)a4;
+- (id)_initWithAudioBuffer:(const void *)buffer;
+- (void)addAudioSampleData:(id)data;
+- (void)addAudioSamples:(const signed __int16 *)samples count:(unint64_t)count;
 @end
 
 @implementation _EARLanguageDetectorAudioBuffer
 
-- (id)_initWithAudioBuffer:(const void *)a3
+- (id)_initWithAudioBuffer:(const void *)buffer
 {
   v10.receiver = self;
   v10.super_class = _EARLanguageDetectorAudioBuffer;
@@ -15,8 +15,8 @@
   v5 = v4;
   if (v4)
   {
-    v7 = *a3;
-    v6 = *(a3 + 1);
+    v7 = *buffer;
+    v6 = *(buffer + 1);
     if (v6)
     {
       atomic_fetch_add_explicit((v6 + 8), 1uLL, memory_order_relaxed);
@@ -34,24 +34,24 @@
   return v5;
 }
 
-- (void)addAudioSampleData:(id)a3
+- (void)addAudioSampleData:(id)data
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = [v4 length] >> 1;
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = [dataCopy length] >> 1;
   ptr = self->_buffer.__ptr_;
   v9 = 0;
-  (*(*ptr + 16))(ptr, v5, v6, v8);
+  (*(*ptr + 16))(ptr, bytes, v6, v8);
   std::__function::__value_func<void ()(BOOL)>::~__value_func[abi:ne200100](v8);
 }
 
-- (void)addAudioSamples:(const signed __int16 *)a3 count:(unint64_t)a4
+- (void)addAudioSamples:(const signed __int16 *)samples count:(unint64_t)count
 {
   v7 = *MEMORY[0x1E69E9840];
   ptr = self->_buffer.__ptr_;
   v6 = 0;
-  (*(*ptr + 16))(ptr, a3, a4, v5);
+  (*(*ptr + 16))(ptr, samples, count, v5);
   std::__function::__value_func<void ()(BOOL)>::~__value_func[abi:ne200100](v5);
 }
 

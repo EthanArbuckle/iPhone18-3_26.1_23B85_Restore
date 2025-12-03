@@ -1,23 +1,23 @@
 @interface BCSCoalesceObjectConfig
-- (BCSCoalesceObjectConfig)initWithCompletionBlock:(id)a3 coalesceKey:(id)a4;
+- (BCSCoalesceObjectConfig)initWithCompletionBlock:(id)block coalesceKey:(id)key;
 @end
 
 @implementation BCSCoalesceObjectConfig
 
-- (BCSCoalesceObjectConfig)initWithCompletionBlock:(id)a3 coalesceKey:(id)a4
+- (BCSCoalesceObjectConfig)initWithCompletionBlock:(id)block coalesceKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  keyCopy = key;
   v14.receiver = self;
   v14.super_class = BCSCoalesceObjectConfig;
   v8 = [(BCSCoalesceObjectConfig *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [blockCopy copy];
     configCompletionBlock = v8->_configCompletionBlock;
     v8->_configCompletionBlock = v9;
 
-    v11 = [v7 copy];
+    v11 = [keyCopy copy];
     coalesceKey = v8->_coalesceKey;
     v8->_coalesceKey = v11;
   }

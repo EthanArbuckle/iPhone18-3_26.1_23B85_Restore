@@ -1,19 +1,19 @@
 @interface PAEBadFilm
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAEBadFilm)initWithAPIManager:(id)a3;
-- (double)autoRandomize:(double)a3 withVariance:(double)a4 andFrequency:(int)a5 atTime:(id)a6 randCount:(int *)a7;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAEBadFilm)initWithAPIManager:(id)manager;
+- (double)autoRandomize:(double)randomize withVariance:(double)variance andFrequency:(int)frequency atTime:(id)time randCount:(int *)count;
 - (id)properties;
-- (void)createDust:(int)a3 scratches:(int)a4 scratchColor:(double *)a5 hair:(int)a6 randomSeed:(int)a7 autoRandFreq:(int)a8 buffer:(void *)a9 atTime:(id)a10 pixelTransform:(const void *)a11;
+- (void)createDust:(int)dust scratches:(int)scratches scratchColor:(double *)color hair:(int)hair randomSeed:(int)seed autoRandFreq:(int)freq buffer:(void *)buffer atTime:(id)self0 pixelTransform:(const void *)self1;
 - (void)dealloc;
-- (void)getBrightness:(double *)a3 saturation:(double *)a4 dust:(int *)a5 scratches:(int *)a6 scratchColor:(double *)a7 hair:(int *)a8 randomSeed:(int *)a9 jitter:(double *)a10 focus:(double *)a11 grain:(double *)a12 autoRandFreq:(int *)a13 withParmsAPI:(id)a14 atTime:(id)a15;
-- (void)setupScratchArrayWithAutoRandomizeFrequency:(int)a3 andSeed:(int)a4 withWidth:(int)a5 andHeight:(int)a6 atTime:(id)a7;
+- (void)getBrightness:(double *)brightness saturation:(double *)saturation dust:(int *)dust scratches:(int *)scratches scratchColor:(double *)color hair:(int *)hair randomSeed:(int *)seed jitter:(double *)self0 focus:(double *)self1 grain:(double *)self2 autoRandFreq:(int *)self3 withParmsAPI:(id)self4 atTime:(id)self5;
+- (void)setupScratchArrayWithAutoRandomizeFrequency:(int)frequency andSeed:(int)seed withWidth:(int)width andHeight:(int)height atTime:(id)time;
 @end
 
 @implementation PAEBadFilm
 
-- (PAEBadFilm)initWithAPIManager:(id)a3
+- (PAEBadFilm)initWithAPIManager:(id)manager
 {
   v8.receiver = self;
   v8.super_class = PAEBadFilm;
@@ -23,7 +23,7 @@
   {
     v4->_cachedSeed = 0;
     v4->_scratches = [MEMORY[0x277CBEB18] arrayWithCapacity:25];
-    v6 = [[PAEEarthquake alloc] initWithAPIManager:a3];
+    v6 = [[PAEEarthquake alloc] initWithAPIManager:manager];
     v5->_jitterer = v6;
     if (!v6)
     {
@@ -99,45 +99,45 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
   return v3 != 0;
 }
 
-- (void)getBrightness:(double *)a3 saturation:(double *)a4 dust:(int *)a5 scratches:(int *)a6 scratchColor:(double *)a7 hair:(int *)a8 randomSeed:(int *)a9 jitter:(double *)a10 focus:(double *)a11 grain:(double *)a12 autoRandFreq:(int *)a13 withParmsAPI:(id)a14 atTime:(id)a15
+- (void)getBrightness:(double *)brightness saturation:(double *)saturation dust:(int *)dust scratches:(int *)scratches scratchColor:(double *)color hair:(int *)hair randomSeed:(int *)seed jitter:(double *)self0 focus:(double *)self1 grain:(double *)self2 autoRandFreq:(int *)self3 withParmsAPI:(id)self4 atTime:(id)self5
 {
-  [a14 getFloatValue:a3 fromParm:3 atFxTime:a15.var1];
-  [a14 getFloatValue:a4 fromParm:5 atFxTime:a15.var1];
-  [a14 getIntValue:a5 fromParm:9 atFxTime:a15.var1];
-  [a14 getIntValue:a6 fromParm:7 atFxTime:a15.var1];
-  [a14 getRedValue:a7 greenValue:a7 + 1 blueValue:a7 + 2 alphaValue:a7 + 3 fromParm:15 atFxTime:a15.var1];
-  [a14 getIntValue:a8 fromParm:8 atFxTime:a15.var1];
-  [a14 getIntValue:a9 fromParm:14 atFxTime:a15.var1];
-  [a14 getFloatValue:a10 fromParm:10 atFxTime:a15.var1];
-  [a14 getFloatValue:a11 fromParm:1 atFxTime:a15.var1];
-  [a14 getFloatValue:a12 fromParm:12 atFxTime:a15.var1];
+  [i getFloatValue:brightness fromParm:3 atFxTime:time.var1];
+  [i getFloatValue:saturation fromParm:5 atFxTime:time.var1];
+  [i getIntValue:dust fromParm:9 atFxTime:time.var1];
+  [i getIntValue:scratches fromParm:7 atFxTime:time.var1];
+  [i getRedValue:color greenValue:color + 1 blueValue:color + 2 alphaValue:color + 3 fromParm:15 atFxTime:time.var1];
+  [i getIntValue:hair fromParm:8 atFxTime:time.var1];
+  [i getIntValue:seed fromParm:14 atFxTime:time.var1];
+  [i getFloatValue:jitter fromParm:10 atFxTime:time.var1];
+  [i getFloatValue:focus fromParm:1 atFxTime:time.var1];
+  [i getFloatValue:grain fromParm:12 atFxTime:time.var1];
   v33 = 0.0;
   v34 = 0.0;
   v31 = 0.0;
   v32 = 0.0;
-  [a14 getIntValue:a13 fromParm:13 atFxTime:a15.var1];
-  if (*a13)
+  [i getIntValue:freq fromParm:13 atFxTime:time.var1];
+  if (*freq)
   {
     v30 = 0;
-    [a14 getFloatValue:&v34 fromParm:2 atFxTime:a15.var1];
-    [(PAEBadFilm *)self autoRandomize:*a13 withVariance:a15.var1 andFrequency:&v30 atTime:*a11 randCount:v34];
-    *a11 = fabs(v19);
-    [a14 getFloatValue:&v33 fromParm:4 atFxTime:a15.var1];
-    [(PAEBadFilm *)self autoRandomize:*a13 withVariance:a15.var1 andFrequency:&v30 atTime:*a3 randCount:v33];
-    *a3 = fabs(v20);
-    [a14 getFloatValue:&v32 fromParm:6 atFxTime:a15.var1];
-    [(PAEBadFilm *)self autoRandomize:*a13 withVariance:a15.var1 andFrequency:&v30 atTime:*a4 randCount:v32];
-    *a4 = v21;
-    [a14 getFloatValue:&v31 fromParm:11 atFxTime:a15.var1];
-    [(PAEBadFilm *)self autoRandomize:*a13 withVariance:a15.var1 andFrequency:&v30 atTime:*a10 randCount:v31];
-    *a10 = fabs(v22);
+    [i getFloatValue:&v34 fromParm:2 atFxTime:time.var1];
+    [(PAEBadFilm *)self autoRandomize:*freq withVariance:time.var1 andFrequency:&v30 atTime:*focus randCount:v34];
+    *focus = fabs(v19);
+    [i getFloatValue:&v33 fromParm:4 atFxTime:time.var1];
+    [(PAEBadFilm *)self autoRandomize:*freq withVariance:time.var1 andFrequency:&v30 atTime:*brightness randCount:v33];
+    *brightness = fabs(v20);
+    [i getFloatValue:&v32 fromParm:6 atFxTime:time.var1];
+    [(PAEBadFilm *)self autoRandomize:*freq withVariance:time.var1 andFrequency:&v30 atTime:*saturation randCount:v32];
+    *saturation = v21;
+    [i getFloatValue:&v31 fromParm:11 atFxTime:time.var1];
+    [(PAEBadFilm *)self autoRandomize:*freq withVariance:time.var1 andFrequency:&v30 atTime:*jitter randCount:v31];
+    *jitter = fabs(v22);
   }
 
-  v23 = *a4 / 100.0 + 1.0;
+  v23 = *saturation / 100.0 + 1.0;
   v24 = 2.0;
   if (v23 <= 2.0)
   {
-    v24 = *a4 / 100.0 + 1.0;
+    v24 = *saturation / 100.0 + 1.0;
   }
 
   v25 = v23 < 0.0;
@@ -147,17 +147,17 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
     v26 = v24;
   }
 
-  *a4 = v26;
+  *saturation = v26;
 }
 
-- (double)autoRandomize:(double)a3 withVariance:(double)a4 andFrequency:(int)a5 atTime:(id)a6 randCount:(int *)a7
+- (double)autoRandomize:(double)randomize withVariance:(double)variance andFrequency:(int)frequency atTime:(id)time randCount:(int *)count
 {
-  [(PAESharedDefaultBase *)self frameFromFxTime:a6.var1 forPlugIn:self];
+  [(PAESharedDefaultBase *)self frameFromFxTime:time.var1 forPlugIn:self];
   v12 = v11 + v11;
   RandMersenne::RandMersenne(v19);
   RandMersenne::SetSeed(v19, v12);
-  v13 = *a7;
-  if (*a7 <= 0)
+  v13 = *count;
+  if (*count <= 0)
   {
     v15 = v21;
   }
@@ -172,7 +172,7 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
       {
         dsfmt_gen_rand_all(v20);
         v15 = 0;
-        v13 = *a7;
+        v13 = *count;
       }
 
       v21 = ++v15;
@@ -190,7 +190,7 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
 
   v16 = v15 + 1;
   v21 = v15 + 1;
-  if (!((*&v20[v15] + -1.0) * a5))
+  if (!((*&v20[v15] + -1.0) * frequency))
   {
     if (v15 >= 381)
     {
@@ -200,30 +200,30 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
 
     v21 = v16 + 1;
     v17 = *&v20[v16] + -1.0 + -0.5;
-    a3 = (v17 + v17) * a4 + a3;
+    randomize = (v17 + v17) * variance + randomize;
   }
 
-  ++*a7;
+  ++*count;
   RandMersenne::~RandMersenne(v19);
-  return a3;
+  return randomize;
 }
 
-- (void)setupScratchArrayWithAutoRandomizeFrequency:(int)a3 andSeed:(int)a4 withWidth:(int)a5 andHeight:(int)a6 atTime:(id)a7
+- (void)setupScratchArrayWithAutoRandomizeFrequency:(int)frequency andSeed:(int)seed withWidth:(int)width andHeight:(int)height atTime:(id)time
 {
   RandMersenne::RandMersenne(v29);
-  if (a3)
+  if (frequency)
   {
-    [(PAESharedDefaultBase *)self frameFromFxTime:a7.var1 forPlugIn:self];
+    [(PAESharedDefaultBase *)self frameFromFxTime:time.var1 forPlugIn:self];
     v13 = RandMersenne::SetSeed(v29, (v12 + v12) + 1);
   }
 
   else
   {
-    v13 = RandMersenne::SetSeed(v29, a4);
+    v13 = RandMersenne::SetSeed(v29, seed);
   }
 
   [(NSMutableArray *)self->_scratches removeAllObjects];
-  v14 = a6;
+  heightCopy = height;
   v15 = 25;
   do
   {
@@ -272,11 +272,11 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
     v23 = [PAEScratchVector alloc];
     v24 = v18 + -1.0;
     *&v24 = v18 + -1.0;
-    v25 = (v19 + -1.0) * v14 * 600.0;
+    v25 = (v19 + -1.0) * heightCopy * 600.0;
     *&v25 = v25;
     v26 = v21 + -1.0;
     *&v26 = v21 + -1.0;
-    v27 = (v22 + -1.0) * v14 * 600.0;
+    v27 = (v22 + -1.0) * heightCopy * 600.0;
     *&v27 = v27;
     v28 = [(PAEScratchVector *)v23 initWithStartLocationX:v24 andY:v25 andEndLocationX:v26 andY:v27];
     [(NSMutableArray *)self->_scratches addObject:v28];
@@ -288,22 +288,22 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
   RandMersenne::~RandMersenne(v29);
 }
 
-- (void)createDust:(int)a3 scratches:(int)a4 scratchColor:(double *)a5 hair:(int)a6 randomSeed:(int)a7 autoRandFreq:(int)a8 buffer:(void *)a9 atTime:(id)a10 pixelTransform:(const void *)a11
+- (void)createDust:(int)dust scratches:(int)scratches scratchColor:(double *)color hair:(int)hair randomSeed:(int)seed autoRandFreq:(int)freq buffer:(void *)buffer atTime:(id)self0 pixelTransform:(const void *)self1
 {
-  v12 = *&a7;
+  v12 = *&seed;
   v111 = *MEMORY[0x277D85DE8];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   if (DeviceRGB)
   {
     v18 = DeviceRGB;
-    v19 = *(a9 + 7) - *(a9 + 5);
-    v20 = *(a9 + 8) - *(a9 + 6);
-    v21 = CGBitmapContextCreate(*(a9 + 10), v19, v20, 8uLL, *(a9 + 8), DeviceRGB, 2u);
+    v19 = *(buffer + 7) - *(buffer + 5);
+    v20 = *(buffer + 8) - *(buffer + 6);
+    v21 = CGBitmapContextCreate(*(buffer + 10), v19, v20, 8uLL, *(buffer + 8), DeviceRGB, 2u);
     if (v21)
     {
       v22 = v21;
-      v92 = a5;
-      v96 = a4;
+      colorCopy = color;
+      scratchesCopy = scratches;
       memset(components, 0, sizeof(components));
       v23 = CGColorCreate(v18, components);
       CGContextSaveGState(v22);
@@ -319,12 +319,12 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
       CGContextRestoreGState(v22);
       RandMersenne::RandMersenne(v107);
       color = v23;
-      v97 = a8;
+      freqCopy = freq;
       v95 = v12;
       v94 = v19;
-      if (a8)
+      if (freq)
       {
-        [(PAESharedDefaultBase *)self frameFromFxTime:a10.var1 forPlugIn:self];
+        [(PAESharedDefaultBase *)self frameFromFxTime:time.var1 forPlugIn:self];
         RandMersenne::SetSeed(v107, (v24 + v24) + 1);
         v25 = v109;
         if (v109 >= 382)
@@ -334,7 +334,7 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
         }
 
         v109 = v25 + 1;
-        if (a3 >= 1 && !((v108[v25] + -1.0) * a8))
+        if (dust >= 1 && !((v108[v25] + -1.0) * freq))
         {
           CGContextSetLineWidth(v22, 1.0);
           v26 = 0;
@@ -364,23 +364,23 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
               v33 = v28 + 2;
               v109 = v28 + 2;
               v31 = v108[v28 + 1];
-              v34 = *a11;
+              v34 = *transform;
               if (v28 == 380)
               {
                 dsfmt_gen_rand_all(v108);
                 v33 = 0;
               }
 
-              v32 = *a11;
+              v32 = *transform;
             }
 
             else
             {
               dsfmt_gen_rand_all(v108);
               v31 = v108[0];
-              v32 = *a11;
+              v32 = *transform;
               v33 = 1;
-              v34 = *a11;
+              v34 = *transform;
             }
 
             v109 = v33 + 1;
@@ -468,7 +468,7 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
             ++v26;
           }
 
-          while (v26 != a3);
+          while (v26 != dust);
         }
       }
 
@@ -488,19 +488,19 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
       *&v105 = &self->_scratchMutex;
       PCMutex::lock(&self->_scratchMutex);
       BYTE8(v105) = 1;
-      v49 = v97;
+      v49 = freqCopy;
       v50 = v95;
-      if ([(NSMutableArray *)self->_scratches count]!= 25 || !v97 && self->_cachedSeed != v95)
+      if ([(NSMutableArray *)self->_scratches count]!= 25 || !freqCopy && self->_cachedSeed != v95)
       {
-        [(PAEBadFilm *)self setupScratchArrayWithAutoRandomizeFrequency:v97 andSeed:v95 withWidth:v94 andHeight:v20 atTime:a10.var1];
+        [(PAEBadFilm *)self setupScratchArrayWithAutoRandomizeFrequency:freqCopy andSeed:v95 withWidth:v94 andHeight:v20 atTime:time.var1];
       }
 
       v51 = [MEMORY[0x277CBEA60] arrayWithArray:self->_scratches];
       PCMutex::unlock(&self->_scratchMutex);
-      var1 = a10.var1;
-      if (v97)
+      var1 = time.var1;
+      if (freqCopy)
       {
-        [(PAESharedDefaultBase *)self frameFromFxTime:a10.var1 forPlugIn:self];
+        [(PAESharedDefaultBase *)self frameFromFxTime:time.var1 forPlugIn:self];
         RandMersenne::SetSeed(v107, (v53 + v53) + 1);
       }
 
@@ -509,15 +509,15 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
         RandMersenne::SetSeed(v107, v95);
       }
 
-      if (v96 >= 1)
+      if (scratchesCopy >= 1)
       {
-        CGContextSetRGBStrokeColor(v22, *v92, v92[1], v92[2], v92[3]);
+        CGContextSetRGBStrokeColor(v22, *colorCopy, colorCopy[1], colorCopy[2], colorCopy[3]);
         v54 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F060];
         v105 = *MEMORY[0x277CC08F0];
         v106 = *(MEMORY[0x277CC08F0] + 16);
         v104 = &v105;
         [v54 inPointFxTimeOfTimelineForEffect:&v104];
-        [(PAESharedDefaultBase *)self frameFromFxTime:a10.var1 forPlugIn:self];
+        [(PAESharedDefaultBase *)self frameFromFxTime:time.var1 forPlugIn:self];
         v56 = v55;
         [(PAESharedDefaultBase *)self frameFromFxTime:v104 forPlugIn:self];
         v58 = 0;
@@ -549,11 +549,11 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
           ++v58;
         }
 
-        while (v96 != v58);
+        while (scratchesCopy != v58);
         CGContextStrokePath(v22);
         v50 = v95;
-        var1 = a10.var1;
-        v49 = v97;
+        var1 = time.var1;
+        v49 = freqCopy;
       }
 
       if (v49)
@@ -595,13 +595,13 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
         }
 
         v109 = v68 + 1;
-        if (a6 >= 1 && !((v108[v68] + -1.0) * v49))
+        if (hair >= 1 && !((v108[v68] + -1.0) * v49))
         {
-          v69 = *a11 + 0.1;
+          v69 = *transform + 0.1;
           CGContextSetRGBStrokeColor(v22, 0.2, 0.2, 0.2, v69);
           v70 = 0;
-          v71 = fabs(*(a11 + 5)) * 10.0;
-          v72 = fabs(*a11) * 10.0;
+          v71 = fabs(*(transform + 5)) * 10.0;
+          v72 = fabs(*transform) * 10.0;
           v73 = v72;
           v74 = v71;
           do
@@ -683,7 +683,7 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
             ++v70;
           }
 
-          while (v70 != a6);
+          while (v70 != hair);
           CGContextStrokePath(v22);
         }
       }
@@ -708,7 +708,7 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
   }
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v49 = *MEMORY[0x277D85DE8];
   v47 = 0;
@@ -716,9 +716,9 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  if (a4)
+  if (input)
   {
-    [a4 imageInfo];
+    [input imageInfo];
   }
 
   v42 = 0;
@@ -726,9 +726,9 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  if (a3)
+  if (output)
   {
-    [a3 imageInfo];
+    [output imageInfo];
   }
 
   v9 = v43;
@@ -759,13 +759,13 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
   v32 = 0;
   v30 = 0.0;
   v29 = 0;
-  [(PAEBadFilm *)self getBrightness:&v37 saturation:&v36 dust:&v35 + 4 scratches:&v35 scratchColor:v48 hair:&v34 randomSeed:&v33 jitter:&v32 focus:&v31 grain:&v30 autoRandFreq:&v29 withParmsAPI:v10 atTime:a5->var0.var1];
-  v15 = [a4 imageType];
-  v16 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
-  [(PAESharedDefaultBase *)self getPixelTransformForImage:a4];
+  [(PAEBadFilm *)self getBrightness:&v37 saturation:&v36 dust:&v35 + 4 scratches:&v35 scratchColor:v48 hair:&v34 randomSeed:&v33 jitter:&v32 focus:&v31 grain:&v30 autoRandFreq:&v29 withParmsAPI:v10 atTime:info->var0.var1];
+  imageType = [input imageType];
+  v16 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
+  [(PAESharedDefaultBase *)self getPixelTransformForImage:input];
   if (v16)
   {
-    v17 = v15 == 3;
+    v17 = imageType == 3;
   }
 
   else
@@ -780,16 +780,16 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
     v20 = v19;
     v21 = HGObject::operator new(0x80uLL);
     *&v22 = HGBitmap::HGBitmap(v21, v18, v20, 22).n128_u64[0];
-    [(PAEBadFilm *)self createDust:HIDWORD(v35) scratches:v35 scratchColor:v48 hair:v34 randomSeed:v33 autoRandFreq:v29 buffer:v22 atTime:v21 pixelTransform:a5->var0.var1, v28];
+    [(PAEBadFilm *)self createDust:HIDWORD(v35) scratches:v35 scratchColor:v48 hair:v34 randomSeed:v33 autoRandFreq:v29 buffer:v22 atTime:v21 pixelTransform:info->var0.var1, v28];
     v23 = HGObject::operator new(0x1F0uLL);
     HGBitmapLoader::HGBitmapLoader(v23, v21);
-    [(PAESharedDefaultBase *)self getScaleForImage:a4];
-    [objc_msgSend(v12 colorMatrixFromDesiredRGBToYCbCrAtTime:{a5->var0.var1), "matrix"}];
+    [(PAESharedDefaultBase *)self getScaleForImage:input];
+    [objc_msgSend(v12 colorMatrixFromDesiredRGBToYCbCrAtTime:{info->var0.var1), "matrix"}];
     if (v30 != 0.0)
     {
-      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a4, v30];
+      [(PAESharedDefaultBase *)self getInversePixelTransformForImage:input, v30];
       v24 = v38;
-      [(PAESharedDefaultBase *)self frameFromFxTime:a5->var0.var1 forPlugIn:self];
+      [(PAESharedDefaultBase *)self frameFromFxTime:info->var0.var1 forPlugIn:self];
       PAEGenerateNoise(v30, v25, v24, *(&v24 + 1), 2, 0, 1, 0);
     }
 
@@ -826,15 +826,15 @@ uint64_t __24__PAEBadFilm_properties__block_invoke()
   return v14;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

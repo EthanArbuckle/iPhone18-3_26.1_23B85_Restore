@@ -1,17 +1,17 @@
 @interface RelevanceEngineMetricsBlockRecorder
 - (_TtC18HealthPlatformCore35RelevanceEngineMetricsBlockRecorder)init;
-- (void)recordTrainingMetrics:(id)a3 forInteraction:(id)a4;
+- (void)recordTrainingMetrics:(id)metrics forInteraction:(id)interaction;
 @end
 
 @implementation RelevanceEngineMetricsBlockRecorder
 
-- (void)recordTrainingMetrics:(id)a3 forInteraction:(id)a4
+- (void)recordTrainingMetrics:(id)metrics forInteraction:(id)interaction
 {
   sub_228750A74();
   v5 = sub_2287CB140();
   v6 = sub_2287CB220();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   sub_228750148(v5, v6, v8);
 }
 

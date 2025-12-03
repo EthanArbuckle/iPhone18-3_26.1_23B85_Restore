@@ -1,6 +1,6 @@
 @interface SearchResults
 - (SearchResults)init;
-- (void)addResult:(id)a3;
+- (void)addResult:(id)result;
 @end
 
 @implementation SearchResults
@@ -32,19 +32,19 @@
   return v2;
 }
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
-  v13 = a3;
-  v4 = [v13 object];
-  v5 = [v4 objectID];
-  v6 = [v5 ic_isNoteType];
+  resultCopy = result;
+  object = [resultCopy object];
+  objectID = [object objectID];
+  ic_isNoteType = [objectID ic_isNoteType];
 
-  if (v6)
+  if (ic_isNoteType)
   {
-    v7 = [v13 configuration];
-    v8 = [v7 isTopHit];
+    configuration = [resultCopy configuration];
+    isTopHit = [configuration isTopHit];
 
-    if (v8)
+    if (isTopHit)
     {
       [(SearchResults *)self topHitResults];
     }
@@ -53,12 +53,12 @@
     {
       [(SearchResults *)self noteResults];
     }
-    v9 = ;
+    attachmentResults = ;
   }
 
   else
   {
-    v10 = [v13 object];
+    object2 = [resultCopy object];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -67,11 +67,11 @@
       goto LABEL_9;
     }
 
-    v9 = [(SearchResults *)self attachmentResults];
+    attachmentResults = [(SearchResults *)self attachmentResults];
   }
 
-  v12 = v9;
-  [v9 addObject:v13];
+  v12 = attachmentResults;
+  [attachmentResults addObject:resultCopy];
 
 LABEL_9:
 }

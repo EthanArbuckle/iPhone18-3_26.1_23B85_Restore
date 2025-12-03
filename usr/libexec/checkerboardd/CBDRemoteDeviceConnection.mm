@@ -1,8 +1,8 @@
 @interface CBDRemoteDeviceConnection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDeviceConnection:(id)a3;
-- (CBDRemoteDeviceConnection)initWithRemoteDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDeviceConnection:(id)connection;
+- (CBDRemoteDeviceConnection)initWithRemoteDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -11,16 +11,16 @@
 
 @implementation CBDRemoteDeviceConnection
 
-- (CBDRemoteDeviceConnection)initWithRemoteDevice:(id)a3
+- (CBDRemoteDeviceConnection)initWithRemoteDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v33.receiver = self;
   v33.super_class = CBDRemoteDeviceConnection;
   v6 = [(CBDRemoteDeviceConnection *)&v33 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_remoteDevice, a3);
+    objc_storeStrong(&v6->_remoteDevice, device);
     v8 = dispatch_queue_create("com.apple.deviceconnection.handshake", 0);
     serviceDiscoveryQueue = v7->_serviceDiscoveryQueue;
     v7->_serviceDiscoveryQueue = v8;
@@ -114,9 +114,9 @@
 
 - (void)invalidate
 {
-  v3 = [(CBDRemoteDeviceConnection *)self remoteDevice];
+  remoteDevice = [(CBDRemoteDeviceConnection *)self remoteDevice];
 
-  if (v3)
+  if (remoteDevice)
   {
 
     [(CBDRemoteDeviceConnection *)self setRemoteDevice:0];
@@ -135,64 +135,64 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CBDRemoteDeviceConnection *)self uuid];
-  v6 = [(CBDRemoteDeviceConnection *)self name];
-  v7 = [(CBDRemoteDeviceConnection *)self productType];
-  v8 = [(CBDRemoteDeviceConnection *)self osVersion];
-  v9 = [NSString stringWithFormat:@"<%@: %p uuid = %@, name = %@, productType = %@, osVersion = %@>", v4, self, v5, v6, v7, v8];;
+  uuid = [(CBDRemoteDeviceConnection *)self uuid];
+  name = [(CBDRemoteDeviceConnection *)self name];
+  productType = [(CBDRemoteDeviceConnection *)self productType];
+  osVersion = [(CBDRemoteDeviceConnection *)self osVersion];
+  v9 = [NSString stringWithFormat:@"<%@: %p uuid = %@, name = %@, productType = %@, osVersion = %@>", v4, self, uuid, name, productType, osVersion];;
 
   return v9;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CBDRemoteDeviceConnection *)self uuid];
-  v3 = [v2 hash];
+  uuid = [(CBDRemoteDeviceConnection *)self uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (BOOL)isEqualToDeviceConnection:(id)a3
+- (BOOL)isEqualToDeviceConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CBDRemoteDeviceConnection *)self uuid];
-  v6 = [v4 uuid];
+  connectionCopy = connection;
+  uuid = [(CBDRemoteDeviceConnection *)self uuid];
+  uuid2 = [connectionCopy uuid];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(connectionCopy) = [uuid isEqual:uuid2];
+  return connectionCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self == v4;
+  equalCopy = equal;
+  v5 = self == equalCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CBDRemoteDeviceConnection *)self isEqualToDeviceConnection:v4];
+    v5 = [(CBDRemoteDeviceConnection *)self isEqualToDeviceConnection:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CBDRemoteDeviceConnection);
-  v5 = [(CBDRemoteDeviceConnection *)self name];
-  v6 = [v5 copy];
+  name = [(CBDRemoteDeviceConnection *)self name];
+  v6 = [name copy];
   [(CBDRemoteDeviceConnection *)v4 setName:v6];
 
-  v7 = [(CBDRemoteDeviceConnection *)self uuid];
-  v8 = [v7 copy];
+  uuid = [(CBDRemoteDeviceConnection *)self uuid];
+  v8 = [uuid copy];
   [(CBDRemoteDeviceConnection *)v4 setUuid:v8];
 
-  v9 = [(CBDRemoteDeviceConnection *)self productType];
-  v10 = [v9 copy];
+  productType = [(CBDRemoteDeviceConnection *)self productType];
+  v10 = [productType copy];
   [(CBDRemoteDeviceConnection *)v4 setProductType:v10];
 
   v11 = [NSDictionary alloc];
-  v12 = [(CBDRemoteDeviceConnection *)self properties];
-  v13 = [v11 initWithDictionary:v12 copyItems:1];
+  properties = [(CBDRemoteDeviceConnection *)self properties];
+  v13 = [v11 initWithDictionary:properties copyItems:1];
   [(CBDRemoteDeviceConnection *)v4 setProperties:v13];
 
   return v4;

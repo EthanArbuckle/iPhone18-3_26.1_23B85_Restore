@@ -1,24 +1,24 @@
 @interface NWMUltravioletIndexColorIndex
 + (NSArray)allIndices;
-+ (id)indexWithUltravioletIndexValue:(double)a3 color:(id)a4;
-- (NWMUltravioletIndexColorIndex)initWithUltravioletIndexValue:(double)a3 color:(id)a4;
++ (id)indexWithUltravioletIndexValue:(double)value color:(id)color;
+- (NWMUltravioletIndexColorIndex)initWithUltravioletIndexValue:(double)value color:(id)color;
 @end
 
 @implementation NWMUltravioletIndexColorIndex
 
-+ (id)indexWithUltravioletIndexValue:(double)a3 color:(id)a4
++ (id)indexWithUltravioletIndexValue:(double)value color:(id)color
 {
-  v5 = a4;
-  v6 = [[NWMUltravioletIndexColorIndex alloc] initWithUltravioletIndexValue:v5 color:a3];
+  colorCopy = color;
+  v6 = [[NWMUltravioletIndexColorIndex alloc] initWithUltravioletIndexValue:colorCopy color:value];
 
   return v6;
 }
 
-- (NWMUltravioletIndexColorIndex)initWithUltravioletIndexValue:(double)a3 color:(id)a4
+- (NWMUltravioletIndexColorIndex)initWithUltravioletIndexValue:(double)value color:(id)color
 {
   v5.receiver = self;
   v5.super_class = NWMUltravioletIndexColorIndex;
-  return [(NWKUIColorIndex *)&v5 initWithValue:a4 color:a3];
+  return [(NWKUIColorIndex *)&v5 initWithValue:color color:value];
 }
 
 + (NSArray)allIndices
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __43__NWMUltravioletIndexColorIndex_allIndices__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (allIndices_onceToken != -1)
   {
     dispatch_once(&allIndices_onceToken, block);

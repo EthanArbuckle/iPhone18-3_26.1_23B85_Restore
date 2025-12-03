@@ -64,10 +64,10 @@ void __39__PXDragAndDropSettings_sharedInstance__block_invoke()
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:7];
   v12 = [v2 sectionWithRows:v11 title:@"Settings"];
 
-  v13 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v14 = MEMORY[0x1E69C6638];
   v20[0] = v12;
-  v20[1] = v13;
+  v20[1] = px_restoreDefaultsSection;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
   v16 = [v14 moduleWithTitle:@"Drag & Drop" contents:v15];
 

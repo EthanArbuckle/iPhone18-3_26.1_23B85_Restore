@@ -1,13 +1,13 @@
 @interface SiriSignalsService
-- (void)saveToInferenceDESWithSignals:(id)a3;
+- (void)saveToInferenceDESWithSignals:(id)signals;
 @end
 
 @implementation SiriSignalsService
 
-- (void)saveToInferenceDESWithSignals:(id)a3
+- (void)saveToInferenceDESWithSignals:(id)signals
 {
   sub_2315860D4();
-  v4 = self;
+  selfCopy = self;
   sub_231570590();
 }
 

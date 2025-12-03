@@ -1,24 +1,24 @@
 @interface TSCH3DLight
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver;
 + (id)light;
 + (id)lightClasses;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DLight)init;
-- (TSCH3DLight)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSCH3DLight)initWithLightArchive:(const void *)a3 unarchiver:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSCH3DLight)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSCH3DLight)initWithLightArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (tvec3<float>)attenuation;
 - (tvec4<float>)ambientColor;
 - (tvec4<float>)diffuseColor;
 - (tvec4<float>)specularColor;
-- (void)affect:(id)a3 states:(id)a4 texturePool:(id)a5;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToLightArchive:(void *)a3 archiver:(id)a4;
-- (void)setAmbientColor:(tvec4<float>)a3;
-- (void)setAttenuation:(tvec3<float>)a3;
-- (void)setDiffuseColor:(tvec4<float>)a3;
-- (void)setSpecularColor:(tvec4<float>)a3;
+- (void)affect:(id)affect states:(id)states texturePool:(id)pool;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToLightArchive:(void *)archive archiver:(id)archiver;
+- (void)setAmbientColor:(tvec4<float>)color;
+- (void)setAttenuation:(tvec3<float>)attenuation;
+- (void)setDiffuseColor:(tvec4<float>)color;
+- (void)setSpecularColor:(tvec4<float>)color;
 @end
 
 @implementation TSCH3DLight
@@ -37,7 +37,7 @@
 
 + (id)light
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -89,7 +89,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
   if (v5)
@@ -121,10 +121,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v43 = 1;
   }
@@ -174,9 +174,9 @@
   return result;
 }
 
-- (void)setAmbientColor:(tvec4<float>)a3
+- (void)setAmbientColor:(tvec4<float>)color
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&color.var0.var0;
   v5 = [TSCH3DVector alloc];
   v10 = objc_msgSend_initWithVec4_(v5, v6, v7, v8, v9, v3);
   ambientColor = self->_ambientColor;
@@ -206,9 +206,9 @@
   return result;
 }
 
-- (void)setDiffuseColor:(tvec4<float>)a3
+- (void)setDiffuseColor:(tvec4<float>)color
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&color.var0.var0;
   v5 = [TSCH3DVector alloc];
   v10 = objc_msgSend_initWithVec4_(v5, v6, v7, v8, v9, v3);
   diffuseColor = self->_diffuseColor;
@@ -238,9 +238,9 @@
   return result;
 }
 
-- (void)setSpecularColor:(tvec4<float>)a3
+- (void)setSpecularColor:(tvec4<float>)color
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&color.var0.var0;
   v5 = [TSCH3DVector alloc];
   v10 = objc_msgSend_initWithVec4_(v5, v6, v7, v8, v9, v3);
   specularColor = self->_specularColor;
@@ -269,27 +269,27 @@
   return result;
 }
 
-- (void)setAttenuation:(tvec3<float>)a3
+- (void)setAttenuation:(tvec3<float>)attenuation
 {
-  v3 = *&a3.var0.var0;
+  v3 = *&attenuation.var0.var0;
   v5 = [TSCH3DVector alloc];
   v10 = objc_msgSend_initWithVec3_(v5, v6, v7, v8, v9, v3);
   attenuation = self->_attenuation;
   self->_attenuation = v10;
 }
 
-- (void)affect:(id)a3 states:(id)a4 texturePool:(id)a5
+- (void)affect:(id)affect states:(id)states texturePool:(id)pool
 {
-  v36 = a4;
+  statesCopy = states;
   v6 = objc_opt_class();
   v11 = objc_msgSend_effectClass(v6, v7, v8, v9, v10);
-  v17 = objc_msgSend_stateForStateInfo_createIfNil_(v36, v12, v13, v14, v15, v11, 1);
-  if ((v36 == 0) == (v17 != 0))
+  v17 = objc_msgSend_stateForStateInfo_createIfNil_(statesCopy, v12, v13, v14, v15, v11, 1);
+  if ((statesCopy == 0) == (v17 != 0))
   {
     v21 = MEMORY[0x277D81150];
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v18, v19, v20, "[TSCH3DLight affect:states:texturePool:]");
     v27 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, v24, v25, v26, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DLight.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v21, v28, v29, v30, v31, v22, v27, 168, 0, "mismatch between state %@ and effectsStates %@", v17, v36);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v21, v28, v29, v30, v31, v22, v27, 168, 0, "mismatch between state %@ and effectsStates %@", v17, statesCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33, v34, v35);
   }
@@ -297,10 +297,10 @@
   objc_msgSend_addObject_(v17, v16, v18, v19, v20, self);
 }
 
-+ (id)instanceWithArchive:(const void *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
-  v10 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v10 = *(archive + 4);
   if ((v10 & 0x20) != 0)
   {
     v12 = off_27A6B5AD0;
@@ -323,101 +323,101 @@
   }
 
   v13 = objc_alloc(*v12);
-  v11 = objc_msgSend_initWithArchive_unarchiver_(v13, v14, v15, v16, v17, a3, v6);
+  v11 = objc_msgSend_initWithArchive_unarchiver_(v13, v14, v15, v16, v17, archive, unarchiverCopy);
 LABEL_9:
   v18 = v11;
 
   return v18;
 }
 
-- (TSCH3DLight)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DLight)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v8 = objc_msgSend_instanceWithArchive_unarchiver_(TSCH3DLight, a2, v4, v5, v6, a3, a4);
+  v8 = objc_msgSend_instanceWithArchive_unarchiver_(TSCH3DLight, a2, v4, v5, v6, archive, unarchiver);
 
   return v8;
 }
 
-- (TSCH3DLight)initWithLightArchive:(const void *)a3 unarchiver:(id)a4
+- (TSCH3DLight)initWithLightArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v44.receiver = self;
   v44.super_class = TSCH3DLight;
   v7 = [(TSCH3DLight *)&v44 init];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v13 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, v10, v11, v12, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+    v13 = objc_msgSend_tsp_initWithProtobufString_(v8, v9, v10, v11, v12, *(archive + 3) & 0xFFFFFFFFFFFFFFFELL);
     name = v7->_name;
     v7->_name = v13;
 
     v15 = [TSCH3DVector alloc];
-    if (*(a3 + 4))
+    if (*(archive + 4))
     {
-      v20 = objc_msgSend_initWithArchive_unarchiver_(v15, v16, v17, v18, v19, *(a3 + 4), v6);
+      v20 = objc_msgSend_initWithArchive_unarchiver_(v15, v16, v17, v18, v19, *(archive + 4), unarchiverCopy);
     }
 
     else
     {
-      v20 = objc_msgSend_initWithArchive_unarchiver_(v15, v16, v17, v18, v19, &qword_2812F15A8, v6);
+      v20 = objc_msgSend_initWithArchive_unarchiver_(v15, v16, v17, v18, v19, &qword_2812F15A8, unarchiverCopy);
     }
 
     ambientColor = v7->_ambientColor;
     v7->_ambientColor = v20;
 
     v22 = [TSCH3DVector alloc];
-    if (*(a3 + 5))
+    if (*(archive + 5))
     {
-      v27 = objc_msgSend_initWithArchive_unarchiver_(v22, v23, v24, v25, v26, *(a3 + 5), v6);
+      v27 = objc_msgSend_initWithArchive_unarchiver_(v22, v23, v24, v25, v26, *(archive + 5), unarchiverCopy);
     }
 
     else
     {
-      v27 = objc_msgSend_initWithArchive_unarchiver_(v22, v23, v24, v25, v26, &qword_2812F15A8, v6);
+      v27 = objc_msgSend_initWithArchive_unarchiver_(v22, v23, v24, v25, v26, &qword_2812F15A8, unarchiverCopy);
     }
 
     diffuseColor = v7->_diffuseColor;
     v7->_diffuseColor = v27;
 
     v29 = [TSCH3DVector alloc];
-    if (*(a3 + 6))
+    if (*(archive + 6))
     {
-      v34 = objc_msgSend_initWithArchive_unarchiver_(v29, v30, v31, v32, v33, *(a3 + 6), v6);
+      v34 = objc_msgSend_initWithArchive_unarchiver_(v29, v30, v31, v32, v33, *(archive + 6), unarchiverCopy);
     }
 
     else
     {
-      v34 = objc_msgSend_initWithArchive_unarchiver_(v29, v30, v31, v32, v33, &qword_2812F15A8, v6);
+      v34 = objc_msgSend_initWithArchive_unarchiver_(v29, v30, v31, v32, v33, &qword_2812F15A8, unarchiverCopy);
     }
 
     specularColor = v7->_specularColor;
     v7->_specularColor = v34;
 
-    v7->_intensity = *(a3 + 22);
+    v7->_intensity = *(archive + 22);
     v36 = [TSCH3DVector alloc];
-    if (*(a3 + 7))
+    if (*(archive + 7))
     {
-      v41 = objc_msgSend_initWithArchive_unarchiver_(v36, v37, v38, v39, v40, *(a3 + 7), v6);
+      v41 = objc_msgSend_initWithArchive_unarchiver_(v36, v37, v38, v39, v40, *(archive + 7), unarchiverCopy);
     }
 
     else
     {
-      v41 = objc_msgSend_initWithArchive_unarchiver_(v36, v37, v38, v39, v40, &qword_2812F15A8, v6);
+      v41 = objc_msgSend_initWithArchive_unarchiver_(v36, v37, v38, v39, v40, &qword_2812F15A8, unarchiverCopy);
     }
 
     attenuation = v7->_attenuation;
     v7->_attenuation = v41;
 
-    v7->_coordinateSpace = *(a3 + 23);
-    v7->_enabled = *(a3 + 96);
+    v7->_coordinateSpace = *(archive + 23);
+    v7->_enabled = *(archive + 96);
   }
 
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v7 = MEMORY[0x277D81150];
-  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCH3DLight(PersistenceAdditions) saveToArchive:archiver:]", a4);
+  v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCH3DLight(PersistenceAdditions) saveToArchive:archiver:]", archiver);
   v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DLight.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v14, v15, v16, v17, v8, v13, 216, 0, "Cannot archive super class TSCH3DLight");
 
@@ -426,9 +426,9 @@ LABEL_9:
   objc_msgSend_logBacktraceThrottled(v22, v18, v19, v20, v21);
 }
 
-- (void)saveToLightArchive:(void *)a3 archiver:(id)a4
+- (void)saveToLightArchive:(void *)archive archiver:(id)archiver
 {
-  v118 = a4;
+  archiverCopy = archiver;
   name = self->_name;
   if (!name)
   {
@@ -442,7 +442,7 @@ LABEL_9:
   }
 
   v26 = objc_msgSend_tsp_protobufString(name, v6, v7, v8, v9);
-  sub_276192594(a3, v26);
+  sub_276192594(archive, v26);
   ambientColor = self->_ambientColor;
   if (!ambientColor)
   {
@@ -455,21 +455,21 @@ LABEL_9:
     ambientColor = self->_ambientColor;
   }
 
-  *(a3 + 4) |= 2u;
-  v47 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v47 = *(archive + 4);
   if (!v47)
   {
-    v48 = *(a3 + 1);
+    v48 = *(archive + 1);
     if (v48)
     {
       v48 = *(v48 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v47 = sub_276447FD4(v48);
-    *(a3 + 4) = v47;
+    *(archive + 4) = v47;
   }
 
-  objc_msgSend_saveToArchive_archiver_(ambientColor, v27, v28, v29, v30, v47, v118);
+  objc_msgSend_saveToArchive_archiver_(ambientColor, v27, v28, v29, v30, v47, archiverCopy);
   diffuseColor = self->_diffuseColor;
   if (!diffuseColor)
   {
@@ -482,21 +482,21 @@ LABEL_9:
     diffuseColor = self->_diffuseColor;
   }
 
-  *(a3 + 4) |= 4u;
-  v69 = *(a3 + 5);
+  *(archive + 4) |= 4u;
+  v69 = *(archive + 5);
   if (!v69)
   {
-    v70 = *(a3 + 1);
+    v70 = *(archive + 1);
     if (v70)
     {
       v70 = *(v70 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v69 = sub_276447FD4(v70);
-    *(a3 + 5) = v69;
+    *(archive + 5) = v69;
   }
 
-  objc_msgSend_saveToArchive_archiver_(diffuseColor, v49, v50, v51, v52, v69, v118);
+  objc_msgSend_saveToArchive_archiver_(diffuseColor, v49, v50, v51, v52, v69, archiverCopy);
   specularColor = self->_specularColor;
   if (!specularColor)
   {
@@ -509,25 +509,25 @@ LABEL_9:
     specularColor = self->_specularColor;
   }
 
-  *(a3 + 4) |= 8u;
-  v91 = *(a3 + 6);
+  *(archive + 4) |= 8u;
+  v91 = *(archive + 6);
   if (!v91)
   {
-    v92 = *(a3 + 1);
+    v92 = *(archive + 1);
     if (v92)
     {
       v92 = *(v92 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v91 = sub_276447FD4(v92);
-    *(a3 + 6) = v91;
+    *(archive + 6) = v91;
   }
 
-  objc_msgSend_saveToArchive_archiver_(specularColor, v71, v72, v73, v74, v91, v118);
+  objc_msgSend_saveToArchive_archiver_(specularColor, v71, v72, v73, v74, v91, archiverCopy);
   *&v96 = self->_intensity;
-  v97 = *(a3 + 4) | 0x100;
-  *(a3 + 4) = v97;
-  *(a3 + 22) = LODWORD(v96);
+  v97 = *(archive + 4) | 0x100;
+  *(archive + 4) = v97;
+  *(archive + 22) = LODWORD(v96);
   attenuation = self->_attenuation;
   if (!attenuation)
   {
@@ -538,29 +538,29 @@ LABEL_9:
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v110, v111, v112, v113);
     attenuation = self->_attenuation;
-    v97 = *(a3 + 4);
+    v97 = *(archive + 4);
   }
 
-  *(a3 + 4) = v97 | 0x10;
-  v114 = *(a3 + 7);
+  *(archive + 4) = v97 | 0x10;
+  v114 = *(archive + 7);
   if (!v114)
   {
-    v115 = *(a3 + 1);
+    v115 = *(archive + 1);
     if (v115)
     {
       v115 = *(v115 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v114 = sub_276447FD4(v115);
-    *(a3 + 7) = v114;
+    *(archive + 7) = v114;
   }
 
-  objc_msgSend_saveToArchive_archiver_(attenuation, v93, v96, v94, v95, v114, v118);
-  v116 = *(a3 + 4);
-  *(a3 + 23) = self->_coordinateSpace;
+  objc_msgSend_saveToArchive_archiver_(attenuation, v93, v96, v94, v95, v114, archiverCopy);
+  v116 = *(archive + 4);
+  *(archive + 23) = self->_coordinateSpace;
   enabled = self->_enabled;
-  *(a3 + 4) = v116 | 0x600;
-  *(a3 + 96) = enabled;
+  *(archive + 4) = v116 | 0x600;
+  *(archive + 96) = enabled;
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface MUPlaceEnrichmentAction
-- (BOOL)isEqual:(id)a3;
-- (MUPlaceEnrichmentAction)initWithActionType:(unint64_t)a3 isValidated:(BOOL)a4 mkActionType:(unint64_t)a5 metadata:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MUPlaceEnrichmentAction)initWithActionType:(unint64_t)type isValidated:(BOOL)validated mkActionType:(unint64_t)actionType metadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation MUPlaceEnrichmentAction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
-    v7 = [(MUPlaceEnrichmentAction *)v6 actionType];
-    if (v7 == [(MUPlaceEnrichmentAction *)self actionType])
+    actionType = [(MUPlaceEnrichmentAction *)v6 actionType];
+    if (actionType == [(MUPlaceEnrichmentAction *)self actionType])
     {
-      v8 = [(MUPlaceEnrichmentAction *)v6 enrichmentAction];
-      v9 = [(MUPlaceEnrichmentAction *)self enrichmentAction];
-      v10 = [v8 isEqualToDictionary:v9];
+      enrichmentAction = [(MUPlaceEnrichmentAction *)v6 enrichmentAction];
+      enrichmentAction2 = [(MUPlaceEnrichmentAction *)self enrichmentAction];
+      v10 = [enrichmentAction isEqualToDictionary:enrichmentAction2];
     }
 
     else
@@ -41,13 +41,13 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = self;
-  objc_sync_enter(v5);
-  objc_storeStrong(v4 + 1, v5->_enrichmentAction);
-  objc_sync_exit(v5);
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  objc_storeStrong(v4 + 1, selfCopy->_enrichmentAction);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -55,8 +55,8 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MUPlaceEnrichmentAction *)self enrichmentAction];
-  v5 = v4;
+  enrichmentAction = [(MUPlaceEnrichmentAction *)self enrichmentAction];
+  v5 = enrichmentAction;
   v6 = self->_actionType - 1;
   if (v6 > 0xD)
   {
@@ -68,15 +68,15 @@
     v7 = off_1E8218C30[v6];
   }
 
-  v8 = [v3 stringWithFormat:@"%@, Type: %@", v4, v7];
+  v8 = [v3 stringWithFormat:@"%@, Type: %@", enrichmentAction, v7];
 
   return v8;
 }
 
-- (MUPlaceEnrichmentAction)initWithActionType:(unint64_t)a3 isValidated:(BOOL)a4 mkActionType:(unint64_t)a5 metadata:(id)a6
+- (MUPlaceEnrichmentAction)initWithActionType:(unint64_t)type isValidated:(BOOL)validated mkActionType:(unint64_t)actionType metadata:(id)metadata
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a6;
+  metadataCopy = metadata;
   v29.receiver = self;
   v29.super_class = MUPlaceEnrichmentAction;
   v10 = [(MUPlaceEnrichmentAction *)&v29 init];
@@ -87,22 +87,22 @@
 
   v11 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{@"actionType", @"isValidated", 0}];
   v12 = objc_alloc(MEMORY[0x1E695DF70]);
-  if (a3 - 1 > 0xD)
+  if (type - 1 > 0xD)
   {
     v13 = @"Unknown";
   }
 
   else
   {
-    v13 = off_1E8218C30[a3 - 1];
+    v13 = off_1E8218C30[type - 1];
   }
 
   v14 = NSStringFromBOOL();
   v15 = [v12 initWithObjects:{v13, v14, 0}];
 
-  if (a3 != 12)
+  if (type != 12)
   {
-    if (a3 != 13 || !v9)
+    if (type != 13 || !metadataCopy)
     {
       goto LABEL_12;
     }
@@ -111,19 +111,19 @@
     goto LABEL_11;
   }
 
-  v16 = [v9 objectForKeyedSubscript:@"appCategory"];
+  v16 = [metadataCopy objectForKeyedSubscript:@"appCategory"];
 
   if (v16)
   {
     v17 = @"appCategory";
 LABEL_11:
     [v11 addObject:v17];
-    v18 = [v9 objectForKeyedSubscript:v17];
+    v18 = [metadataCopy objectForKeyedSubscript:v17];
     [v15 addObject:v18];
   }
 
 LABEL_12:
-  v10->_actionType = a3;
+  v10->_actionType = type;
   v19 = MEMORY[0x1E695DF20];
   v20 = [v15 copy];
   v21 = [v11 copy];
@@ -131,7 +131,7 @@ LABEL_12:
   enrichmentAction = v10->_enrichmentAction;
   v10->_enrichmentAction = v22;
 
-  v10->_mkActionType = a5;
+  v10->_mkActionType = actionType;
   if (MUGetMUPlaceEnrichmentActionLog_onceToken != -1)
   {
     dispatch_once(&MUGetMUPlaceEnrichmentActionLog_onceToken, &__block_literal_global_2588);

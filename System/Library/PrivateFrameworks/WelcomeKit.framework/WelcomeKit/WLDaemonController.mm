@@ -1,7 +1,7 @@
 @interface WLDaemonController
 + (id)sharedInstance;
 - (WLDaemonController)init;
-- (void)getLocalImportOptionsWithCompletion:(id)a3;
+- (void)getLocalImportOptionsWithCompletion:(id)completion;
 - (void)importLocalContent;
 @end
 
@@ -40,18 +40,18 @@ uint64_t __36__WLDaemonController_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)getLocalImportOptionsWithCompletion:(id)a3
+- (void)getLocalImportOptionsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WLDaemonController *)self connection];
+  completionCopy = completion;
+  connection = [(WLDaemonController *)self connection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__WLDaemonController_getLocalImportOptionsWithCompletion___block_invoke;
   v11[3] = &unk_279EB40D8;
   v11[4] = self;
-  v6 = v4;
+  v6 = completionCopy;
   v12 = v6;
-  v7 = [v5 daemonWithErrorHandler:v11];
+  v7 = [connection daemonWithErrorHandler:v11];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -92,13 +92,13 @@ uint64_t __58__WLDaemonController_getLocalImportOptionsWithCompletion___block_in
 
 - (void)importLocalContent
 {
-  v3 = [(WLDaemonController *)self connection];
+  connection = [(WLDaemonController *)self connection];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__WLDaemonController_importLocalContent__block_invoke;
   v5[3] = &unk_279EB4128;
   v5[4] = self;
-  v4 = [v3 daemonWithErrorHandler:v5];
+  v4 = [connection daemonWithErrorHandler:v5];
 
   [v4 importLocalContent];
 }

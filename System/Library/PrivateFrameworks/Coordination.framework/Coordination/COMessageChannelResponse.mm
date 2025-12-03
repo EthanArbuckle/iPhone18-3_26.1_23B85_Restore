@@ -1,6 +1,6 @@
 @interface COMessageChannelResponse
 - (COMessageChannelResponse)init;
-- (COMessageChannelResponse)initWithCoder:(id)a3;
+- (COMessageChannelResponse)initWithCoder:(id)coder;
 @end
 
 @implementation COMessageChannelResponse
@@ -12,7 +12,7 @@
   return [(COMessageChannelResponse *)&v3 init];
 }
 
-- (COMessageChannelResponse)initWithCoder:(id)a3
+- (COMessageChannelResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = COMessageChannelResponse;

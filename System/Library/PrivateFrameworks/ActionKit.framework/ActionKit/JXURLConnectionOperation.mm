@@ -2,12 +2,12 @@
 + (id)networkThread;
 + (void)runLoopForever;
 - (JXURLConnectionOperation)init;
-- (JXURLConnectionOperation)initWithURL:(id)a3;
-- (void)connection:(id)a3 didFailWithError:(id)a4;
-- (void)connection:(id)a3 didReceiveData:(id)a4;
-- (void)connection:(id)a3 didReceiveResponse:(id)a4;
-- (void)connection:(id)a3 didSendBodyData:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6;
-- (void)connectionDidFinishLoading:(id)a3;
+- (JXURLConnectionOperation)initWithURL:(id)l;
+- (void)connection:(id)connection didFailWithError:(id)error;
+- (void)connection:(id)connection didReceiveData:(id)data;
+- (void)connection:(id)connection didReceiveResponse:(id)response;
+- (void)connection:(id)connection didSendBodyData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)connectionDidFinishLoading:(id)loading;
 - (void)dealloc;
 - (void)main;
 - (void)startConnection;
@@ -17,7 +17,7 @@
 
 @implementation JXURLConnectionOperation
 
-- (void)connectionDidFinishLoading:(id)a3
+- (void)connectionDidFinishLoading:(id)loading
 {
   if (([(JXURLConnectionOperation *)self isCancelled]& 1) == 0)
   {
@@ -26,29 +26,29 @@
   }
 }
 
-- (void)connection:(id)a3 didSendBodyData:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6
+- (void)connection:(id)connection didSendBodyData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  if (([(JXURLConnectionOperation *)self isCancelled:a3]& 1) == 0)
+  if (([(JXURLConnectionOperation *)self isCancelled:connection]& 1) == 0)
   {
-    v8 = [(JXURLConnectionOperation *)self bytesUploaded]+ a4;
+    v8 = [(JXURLConnectionOperation *)self bytesUploaded]+ data;
 
     [(JXURLConnectionOperation *)self setBytesUploaded:v8];
   }
 }
 
-- (void)connection:(id)a3 didReceiveData:(id)a4
+- (void)connection:(id)connection didReceiveData:(id)data
 {
-  v10 = a4;
+  dataCopy = data;
   if (([(JXURLConnectionOperation *)self isCancelled]& 1) == 0)
   {
-    v5 = [(JXURLConnectionOperation *)self outputStream];
-    v6 = [v5 hasSpaceAvailable];
+    outputStream = [(JXURLConnectionOperation *)self outputStream];
+    hasSpaceAvailable = [outputStream hasSpaceAvailable];
 
-    if (v6)
+    if (hasSpaceAvailable)
     {
-      v7 = [(JXURLConnectionOperation *)self outputStream];
-      v8 = v10;
-      v9 = [v7 write:objc_msgSend(v10 maxLength:{"bytes"), objc_msgSend(v10, "length")}];
+      outputStream2 = [(JXURLConnectionOperation *)self outputStream];
+      v8 = dataCopy;
+      v9 = [outputStream2 write:objc_msgSend(dataCopy maxLength:{"bytes"), objc_msgSend(dataCopy, "length")}];
 
       if (v9 != -1)
       {
@@ -58,90 +58,90 @@
   }
 }
 
-- (void)connection:(id)a3 didReceiveResponse:(id)a4
+- (void)connection:(id)connection didReceiveResponse:(id)response
 {
-  v6 = a4;
+  responseCopy = response;
   if (([(JXURLConnectionOperation *)self isCancelled]& 1) == 0)
   {
-    [(JXURLConnectionOperation *)self setResponse:v6];
-    v5 = [(JXURLConnectionOperation *)self outputStream];
-    [v5 open];
+    [(JXURLConnectionOperation *)self setResponse:responseCopy];
+    outputStream = [(JXURLConnectionOperation *)self outputStream];
+    [outputStream open];
   }
 }
 
-- (void)connection:(id)a3 didFailWithError:(id)a4
+- (void)connection:(id)connection didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   if (([(JXURLConnectionOperation *)self isCancelled]& 1) == 0)
   {
-    [(JXURLConnectionOperation *)self setError:v5];
+    [(JXURLConnectionOperation *)self setError:errorCopy];
     [(JXOperation *)self finish];
   }
 }
 
 - (void)stopConnection
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [objc_opt_class() networkThread];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  networkThread = [objc_opt_class() networkThread];
 
-  if (v3 == v4)
+  if (currentThread == networkThread)
   {
-    v5 = [(JXURLConnectionOperation *)self connection];
-    v6 = [MEMORY[0x277CBEB88] currentRunLoop];
+    connection = [(JXURLConnectionOperation *)self connection];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v7 = *MEMORY[0x277CBE738];
-    [v5 unscheduleFromRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+    [connection unscheduleFromRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
-    v8 = [(JXURLConnectionOperation *)self connection];
-    [v8 cancel];
+    connection2 = [(JXURLConnectionOperation *)self connection];
+    [connection2 cancel];
 
-    v9 = [(JXURLConnectionOperation *)self outputStream];
-    v10 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v9 removeFromRunLoop:v10 forMode:v7];
+    outputStream = [(JXURLConnectionOperation *)self outputStream];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    [outputStream removeFromRunLoop:currentRunLoop2 forMode:v7];
 
-    v11 = [(JXURLConnectionOperation *)self outputStream];
-    [v11 close];
+    outputStream2 = [(JXURLConnectionOperation *)self outputStream];
+    [outputStream2 close];
   }
 
   else
   {
-    v11 = [objc_opt_class() networkThread];
+    outputStream2 = [objc_opt_class() networkThread];
     [JXURLConnectionOperation performSelector:"performSelector:onThread:withObject:waitUntilDone:" onThread:sel_stopConnection withObject:? waitUntilDone:?];
   }
 }
 
 - (void)startConnection
 {
-  v3 = [MEMORY[0x277CCACC8] currentThread];
-  v4 = [objc_opt_class() networkThread];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  networkThread = [objc_opt_class() networkThread];
 
-  if (v3 == v4)
+  if (currentThread == networkThread)
   {
     if (([(JXURLConnectionOperation *)self isCancelled]& 1) != 0)
     {
       return;
     }
 
-    v5 = [(JXURLConnectionOperation *)self outputStream];
-    v6 = [MEMORY[0x277CBEB88] currentRunLoop];
+    outputStream = [(JXURLConnectionOperation *)self outputStream];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
     v7 = *MEMORY[0x277CBE738];
-    [v5 scheduleInRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+    [outputStream scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
     v8 = objc_alloc(MEMORY[0x277CBAB78]);
-    v9 = [(JXURLConnectionOperation *)self request];
-    v10 = [v8 initWithRequest:v9 delegate:self startImmediately:0];
+    request = [(JXURLConnectionOperation *)self request];
+    v10 = [v8 initWithRequest:request delegate:self startImmediately:0];
     [(JXURLConnectionOperation *)self setConnection:v10];
 
-    v11 = [(JXURLConnectionOperation *)self connection];
-    v12 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v11 scheduleInRunLoop:v12 forMode:v7];
+    connection = [(JXURLConnectionOperation *)self connection];
+    currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+    [connection scheduleInRunLoop:currentRunLoop2 forMode:v7];
 
-    v13 = [(JXURLConnectionOperation *)self connection];
-    [v13 start];
+    connection2 = [(JXURLConnectionOperation *)self connection];
+    [connection2 start];
   }
 
   else
   {
-    v13 = [objc_opt_class() networkThread];
+    connection2 = [objc_opt_class() networkThread];
     [JXURLConnectionOperation performSelector:"performSelector:onThread:withObject:waitUntilDone:" onThread:sel_startConnection withObject:? waitUntilDone:?];
   }
 }
@@ -163,13 +163,13 @@
   }
 }
 
-- (JXURLConnectionOperation)initWithURL:(id)a3
+- (JXURLConnectionOperation)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = [(JXURLConnectionOperation *)self init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBAB50]) initWithURL:lCopy];
     [(JXURLConnectionOperation *)v5 setRequest:v6];
   }
 
@@ -190,8 +190,8 @@
     [(JXURLConnectionOperation *)v3 setError:0];
     [(JXURLConnectionOperation *)v3 setBytesDownloaded:0];
     [(JXURLConnectionOperation *)v3 setBytesUploaded:0];
-    v4 = [objc_alloc(MEMORY[0x277CBEB78]) initToMemory];
-    [(JXURLConnectionOperation *)v3 setOutputStream:v4];
+    initToMemory = [objc_alloc(MEMORY[0x277CBEB78]) initToMemory];
+    [(JXURLConnectionOperation *)v3 setOutputStream:initToMemory];
   }
 
   return v3;
@@ -207,16 +207,16 @@
 
 + (void)runLoopForever
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  [v2 setName:@"JXHTTP"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  [currentThread setName:@"JXHTTP"];
 
   v3 = *MEMORY[0x277CBE640];
   while (1)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = [MEMORY[0x277CBEB88] currentRunLoop];
-    v6 = [MEMORY[0x277CBEAA8] distantFuture];
-    [v5 runMode:v3 beforeDate:v6];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+    [currentRunLoop runMode:v3 beforeDate:distantFuture];
 
     objc_autoreleasePoolPop(v4);
   }
@@ -228,7 +228,7 @@
   block[1] = 3221225472;
   block[2] = __41__JXURLConnectionOperation_networkThread__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (networkThread_predicate != -1)
   {
     dispatch_once(&networkThread_predicate, block);

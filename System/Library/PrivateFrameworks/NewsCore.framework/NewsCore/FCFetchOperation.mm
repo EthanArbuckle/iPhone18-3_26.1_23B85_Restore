@@ -1,13 +1,13 @@
 @interface FCFetchOperation
 - (FCFetchOperation)init;
 - (void)cancel;
-- (void)finishExecutingWithError:(id)a3;
-- (void)finishExecutingWithFetchedObject:(id)a3;
-- (void)finishExecutingWithResult:(id)a3;
-- (void)finishExecutingWithStatus:(unint64_t)a3;
+- (void)finishExecutingWithError:(id)error;
+- (void)finishExecutingWithFetchedObject:(id)object;
+- (void)finishExecutingWithResult:(id)result;
+- (void)finishExecutingWithStatus:(unint64_t)status;
 - (void)finishFromEarlyCancellation;
-- (void)operationDidFinishWithError:(id)a3;
-- (void)takeInputsFromFetchOperation:(id)a3;
+- (void)operationDidFinishWithError:(id)error;
+- (void)takeInputsFromFetchOperation:(id)operation;
 @end
 
 @implementation FCFetchOperation
@@ -37,11 +37,11 @@
   }
 }
 
-- (void)finishExecutingWithResult:(id)a3
+- (void)finishExecutingWithResult:(id)result
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  resultCopy = result;
+  if (!resultCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"can't finish executing a fetch operation without a result"];
     *buf = 136315906;
@@ -55,105 +55,105 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_result)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_result)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    if (-[FCFetchOperation shouldFailOnMissingObjects](v5, "shouldFailOnMissingObjects") && ![v4 status] && objc_msgSend(v4, "anyMissingObjects"))
+    if (-[FCFetchOperation shouldFailOnMissingObjects](selfCopy, "shouldFailOnMissingObjects") && ![resultCopy status] && objc_msgSend(resultCopy, "anyMissingObjects"))
     {
-      v6 = [(FCFetchOperation *)v5 cachePolicy];
+      cachePolicy = [(FCFetchOperation *)selfCopy cachePolicy];
       v7 = MEMORY[0x1E696ABC0];
-      if (v6 == 3)
+      if (cachePolicy == 3)
       {
-        v8 = [v4 missingObjectDescriptions];
-        v9 = [v7 fc_notCachedErrorWithMissingObjects:v8];
+        missingObjectDescriptions = [resultCopy missingObjectDescriptions];
+        v9 = [v7 fc_notCachedErrorWithMissingObjects:missingObjectDescriptions];
       }
 
       else
       {
-        v8 = [v4 missingObjectDescriptions];
-        v16 = v8;
+        missingObjectDescriptions = [resultCopy missingObjectDescriptions];
+        v16 = missingObjectDescriptions;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
         v9 = [v7 fc_partialFailureErrorWithUserInfo:v11];
       }
 
       v12 = [FCFetchOperationResult resultWithStatus:3 fetchedObject:0 error:v9];
 
-      v4 = v12;
+      resultCopy = v12;
     }
 
-    objc_storeStrong(&v5->_result, v4);
-    objc_sync_exit(v5);
+    objc_storeStrong(&selfCopy->_result, resultCopy);
+    objc_sync_exit(selfCopy);
 
-    v13 = [v4 error];
-    [(FCOperation *)v5 finishedPerformingOperationWithError:v13];
-    v5 = v13;
+    error = [resultCopy error];
+    [(FCOperation *)selfCopy finishedPerformingOperationWithError:error];
+    selfCopy = error;
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishExecutingWithFetchedObject:(id)a3
+- (void)finishExecutingWithFetchedObject:(id)object
 {
-  v4 = [FCFetchOperationResult resultWithStatus:0 fetchedObject:a3 error:0];
+  v4 = [FCFetchOperationResult resultWithStatus:0 fetchedObject:object error:0];
   [(FCFetchOperation *)self finishExecutingWithResult:v4];
 }
 
-- (void)finishExecutingWithStatus:(unint64_t)a3
+- (void)finishExecutingWithStatus:(unint64_t)status
 {
-  v4 = [FCFetchOperationResult resultWithStatus:a3 fetchedObject:0 error:0];
+  v4 = [FCFetchOperationResult resultWithStatus:status fetchedObject:0 error:0];
   [(FCFetchOperation *)self finishExecutingWithResult:v4];
 }
 
-- (void)finishExecutingWithError:(id)a3
+- (void)finishExecutingWithError:(id)error
 {
-  v4 = [FCFetchOperationResult resultWithStatus:3 fetchedObject:0 error:a3];
+  v4 = [FCFetchOperationResult resultWithStatus:3 fetchedObject:0 error:error];
   [(FCFetchOperation *)self finishExecutingWithResult:v4];
 }
 
-- (void)takeInputsFromFetchOperation:(id)a3
+- (void)takeInputsFromFetchOperation:(id)operation
 {
-  v4 = a3;
-  -[FCOperation setQualityOfService:](self, "setQualityOfService:", [v4 qualityOfService]);
-  -[FCOperation setRelativePriority:](self, "setRelativePriority:", [v4 relativePriority]);
-  -[FCFetchOperation setCachePolicy:](self, "setCachePolicy:", [v4 cachePolicy]);
-  [v4 maximumCachedAge];
+  operationCopy = operation;
+  -[FCOperation setQualityOfService:](self, "setQualityOfService:", [operationCopy qualityOfService]);
+  -[FCOperation setRelativePriority:](self, "setRelativePriority:", [operationCopy relativePriority]);
+  -[FCFetchOperation setCachePolicy:](self, "setCachePolicy:", [operationCopy cachePolicy]);
+  [operationCopy maximumCachedAge];
   [(FCFetchOperation *)self setMaximumCachedAge:?];
-  v5 = [v4 shouldFailOnMissingObjects];
+  shouldFailOnMissingObjects = [operationCopy shouldFailOnMissingObjects];
 
-  [(FCFetchOperation *)self setShouldFailOnMissingObjects:v5];
+  [(FCFetchOperation *)self setShouldFailOnMissingObjects:shouldFailOnMissingObjects];
 }
 
-- (void)operationDidFinishWithError:(id)a3
+- (void)operationDidFinishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(FCFetchOperation *)self fetchCompletionBlock];
-  if (v4)
+  errorCopy = error;
+  fetchCompletionBlock = [(FCFetchOperation *)self fetchCompletionBlock];
+  if (errorCopy)
   {
-    v6 = self;
-    objc_sync_enter(v6);
-    if (!v6->_result)
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    if (!selfCopy->_result)
     {
-      v7 = [FCFetchOperationResult resultWithStatus:3 fetchedObject:0 error:v4];
-      result = v6->_result;
-      v6->_result = v7;
+      v7 = [FCFetchOperationResult resultWithStatus:3 fetchedObject:0 error:errorCopy];
+      result = selfCopy->_result;
+      selfCopy->_result = v7;
     }
 
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
   }
 
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __48__FCFetchOperation_operationDidFinishWithError___block_invoke;
   v19 = &unk_1E7C37778;
-  v20 = self;
-  v21 = v5;
-  v9 = v5;
+  selfCopy2 = self;
+  v21 = fetchCompletionBlock;
+  v9 = fetchCompletionBlock;
   v10 = _Block_copy(&v16);
   if ([(FCFetchOperation *)self canSendFetchCompletionSynchronously:v16])
   {
@@ -162,11 +162,11 @@
 
   else
   {
-    v11 = [(FCFetchOperation *)self fetchCompletionQueue];
-    v12 = v11;
-    if (v11)
+    fetchCompletionQueue = [(FCFetchOperation *)self fetchCompletionQueue];
+    v12 = fetchCompletionQueue;
+    if (fetchCompletionQueue)
     {
-      v13 = v11;
+      v13 = fetchCompletionQueue;
     }
 
     else

@@ -1,13 +1,13 @@
 @interface SUUIRedeemResultsView
 - (SUUIRedeemResultsView)init;
 - (SUUIRedeemResultsViewDelegate)resultsDelegate;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)layoutSubviews;
-- (void)setSections:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)setSections:(id)sections;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation SUUIRedeemResultsView
@@ -23,8 +23,8 @@
     [(SUUIRedeemResultsView *)v2 setDelegate:v2];
     [(SUUIRedeemResultsView *)v3 setDataSource:v3];
     [(SUUIRedeemResultsView *)v3 setAlwaysBounceVertical:0];
-    v4 = [MEMORY[0x277D75348] whiteColor];
-    [(SUUIRedeemResultsView *)v3 setBackgroundColor:v4];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SUUIRedeemResultsView *)v3 setBackgroundColor:whiteColor];
 
     [(SUUIRedeemResultsView *)v3 setSeparatorStyle:0];
   }
@@ -32,70 +32,70 @@
   return v3;
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
-  v5 = a3;
-  if (self->_sections != v5)
+  sectionsCopy = sections;
+  if (self->_sections != sectionsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_sections, a3);
+    v6 = sectionsCopy;
+    objc_storeStrong(&self->_sections, sections);
     [(SUUIRedeemResultsView *)self reloadData];
-    v5 = v6;
+    sectionsCopy = v6;
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v6 = a4;
-  v7 = a3;
-  v8 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [v6 section]);
-  v9 = [v8 tableViewCellForTableView:v7 indexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  v9 = [v8 tableViewCellForTableView:viewCopy indexPath:pathCopy];
 
   return v9;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 numberOfRowsInSection];
+  v4 = [(NSArray *)self->_sections objectAtIndex:section];
+  numberOfRowsInSection = [v4 numberOfRowsInSection];
 
-  return v5;
+  return numberOfRowsInSection;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  pathCopy = path;
   WeakRetained = objc_loadWeakRetained(&self->_resultsDelegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_resultsDelegate);
-    [v7 redeemResultsView:self didSelectRowAtIndexPath:v8];
+    [v7 redeemResultsView:self didSelectRowAtIndexPath:pathCopy];
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v6 = a4;
-  v7 = a3;
-  v8 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [v6 section]);
-  [v8 heightForCellInTableView:v7 indexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  [v8 heightForCellInTableView:viewCopy indexPath:pathCopy];
   v10 = v9;
 
   return v10;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
   sections = self->_sections;
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [v8 section]);
-  [v11 tableView:v10 willDisplayCell:v9 forIndexPath:v8];
+  pathCopy = path;
+  cellCopy = cell;
+  viewCopy = view;
+  v11 = -[NSArray objectAtIndex:](sections, "objectAtIndex:", [pathCopy section]);
+  [v11 tableView:viewCopy willDisplayCell:cellCopy forIndexPath:pathCopy];
 }
 
 - (void)layoutSubviews
@@ -120,11 +120,11 @@
   [(SUUIRedeemResultsView *)self bounds];
   v13 = v12;
   top = self->_contentInsetAdjustments.top;
-  v15 = [MEMORY[0x277D75418] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v17 = 15.0;
-  if ((v16 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v17 = 28.0;
   }

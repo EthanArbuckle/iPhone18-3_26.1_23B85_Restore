@@ -8,10 +8,10 @@
 - (id)description;
 - (void)bind;
 - (void)dealloc;
-- (void)loadMatrix:(int)a3 matrix:(_GLKMatrix4 *)a4;
-- (void)setInvModelviewMatrix:(_GLKMatrix4 *)a3;
+- (void)loadMatrix:(int)matrix matrix:(_GLKMatrix4 *)a4;
+- (void)setInvModelviewMatrix:(_GLKMatrix4 *)matrix;
 - (void)setModelviewMatrix:(GLKMatrix4 *)modelviewMatrix;
-- (void)setMvpMatrix:(_GLKMatrix4 *)a3;
+- (void)setMvpMatrix:(_GLKMatrix4 *)matrix;
 - (void)setProjectionMatrix:(GLKMatrix4 *)projectionMatrix;
 - (void)setShaderBindings;
 @end
@@ -37,9 +37,9 @@
   return result;
 }
 
-- (void)loadMatrix:(int)a3 matrix:(_GLKMatrix4 *)a4
+- (void)loadMatrix:(int)matrix matrix:(_GLKMatrix4 *)a4
 {
-  if (a3 == 1)
+  if (matrix == 1)
   {
     v8 = *&a4->m[12];
     v10 = *&a4->m00;
@@ -53,7 +53,7 @@
 
   else
   {
-    if (a3)
+    if (matrix)
     {
       return;
     }
@@ -291,23 +291,23 @@
   return self;
 }
 
-- (void)setInvModelviewMatrix:(_GLKMatrix4 *)a3
+- (void)setInvModelviewMatrix:(_GLKMatrix4 *)matrix
 {
-  v3 = *&a3->m[12];
-  v5 = *&a3->m00;
-  v4 = *&a3->m[4];
-  *&self->_invModelviewMatrix.m[8] = *&a3->m[8];
+  v3 = *&matrix->m[12];
+  v5 = *&matrix->m00;
+  v4 = *&matrix->m[4];
+  *&self->_invModelviewMatrix.m[8] = *&matrix->m[8];
   *&self->_invModelviewMatrix.m[12] = v3;
   *&self->_invModelviewMatrix.m00 = v5;
   *&self->_invModelviewMatrix.m[4] = v4;
 }
 
-- (void)setMvpMatrix:(_GLKMatrix4 *)a3
+- (void)setMvpMatrix:(_GLKMatrix4 *)matrix
 {
-  v3 = *&a3->m[12];
-  v5 = *&a3->m00;
-  v4 = *&a3->m[4];
-  *&self->_mvpMatrix.m[8] = *&a3->m[8];
+  v3 = *&matrix->m[12];
+  v5 = *&matrix->m00;
+  v4 = *&matrix->m[4];
+  *&self->_mvpMatrix.m[8] = *&matrix->m[8];
   *&self->_mvpMatrix.m[12] = v3;
   *&self->_mvpMatrix.m00 = v5;
   *&self->_mvpMatrix.m[4] = v4;

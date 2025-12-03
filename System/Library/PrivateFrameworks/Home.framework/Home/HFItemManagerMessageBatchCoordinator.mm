@@ -2,12 +2,12 @@
 - (HFItemManager)itemManager;
 - (HFItemManagerBatchedDelegateAdapter)delegateAdapter;
 - (HFItemManagerMessageBatchCoordinator)init;
-- (void)batchedAccessory:(id)a3 didUpdateLoggedInAccount:(id)a4 inHome:(id)a5 sender:(SEL)a6;
-- (void)batchedDidUpdateControllableAccessory:(id)a3 inHome:(id)a4 sender:(SEL)a5;
-- (void)batchedLightProfileUpdate:(id)a3 settings:(id)a4 sender:(SEL)a5;
-- (void)batchedMediaObjectDidUpdate:(id)a3 settings:(id)a4 inHome:(id)a5 sender:(SEL)a6;
-- (void)batchedSoftwareUpdateV2DidUpdateForAccessory:(id)a3 sender:(SEL)a4;
-- (void)batchedValuesDidUpdateForCharacteristics:(id)a3 inHome:(id)a4 sender:(SEL)a5;
+- (void)batchedAccessory:(id)accessory didUpdateLoggedInAccount:(id)account inHome:(id)home sender:(SEL)sender;
+- (void)batchedDidUpdateControllableAccessory:(id)accessory inHome:(id)home sender:(SEL)sender;
+- (void)batchedLightProfileUpdate:(id)update settings:(id)settings sender:(SEL)sender;
+- (void)batchedMediaObjectDidUpdate:(id)update settings:(id)settings inHome:(id)home sender:(SEL)sender;
+- (void)batchedSoftwareUpdateV2DidUpdateForAccessory:(id)accessory sender:(SEL)sender;
+- (void)batchedValuesDidUpdateForCharacteristics:(id)characteristics inHome:(id)home sender:(SEL)sender;
 @end
 
 @implementation HFItemManagerMessageBatchCoordinator
@@ -26,76 +26,76 @@
   return Strong;
 }
 
-- (void)batchedAccessory:(id)a3 didUpdateLoggedInAccount:(id)a4 inHome:(id)a5 sender:(SEL)a6
+- (void)batchedAccessory:(id)accessory didUpdateLoggedInAccount:(id)account inHome:(id)home sender:(SEL)sender
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  sub_20DA73B2C(v10, a5, a6);
+  accessoryCopy = accessory;
+  accountCopy = account;
+  homeCopy = home;
+  selfCopy = self;
+  sub_20DA73B2C(accessoryCopy, home, sender);
 }
 
-- (void)batchedDidUpdateControllableAccessory:(id)a3 inHome:(id)a4 sender:(SEL)a5
+- (void)batchedDidUpdateControllableAccessory:(id)accessory inHome:(id)home sender:(SEL)sender
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27C843A60, &qword_20DD94360);
   inited = swift_initStackObject();
   *(inited + 16) = xmmword_20DD940A0;
-  *(inited + 32) = a3;
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
+  *(inited + 32) = accessory;
+  accessoryCopy = accessory;
+  homeCopy = home;
+  selfCopy = self;
   sub_20D9EE8D0(inited);
   v14 = v13;
   swift_setDeallocating();
   v15 = *(inited + 16);
   swift_arrayDestroy();
-  sub_20DA7141C(v14, 3, MEMORY[0x277D84FA0], a4, a5);
+  sub_20DA7141C(v14, 3, MEMORY[0x277D84FA0], home, sender);
 }
 
-- (void)batchedValuesDidUpdateForCharacteristics:(id)a3 inHome:(id)a4 sender:(SEL)a5
+- (void)batchedValuesDidUpdateForCharacteristics:(id)characteristics inHome:(id)home sender:(SEL)sender
 {
   sub_20D9D7510(0, &qword_280E02100, 0x277CD1970);
   sub_20D9EC18C(&unk_280E020F0, &qword_280E02100, 0x277CD1970);
   v8 = sub_20DD651E4();
-  v9 = a4;
-  v10 = self;
-  sub_20DA7141C(v8, 0, MEMORY[0x277D84FA0], a4, a5);
+  homeCopy = home;
+  selfCopy = self;
+  sub_20DA7141C(v8, 0, MEMORY[0x277D84FA0], home, sender);
 }
 
-- (void)batchedMediaObjectDidUpdate:(id)a3 settings:(id)a4 inHome:(id)a5 sender:(SEL)a6
+- (void)batchedMediaObjectDidUpdate:(id)update settings:(id)settings inHome:(id)home sender:(SEL)sender
 {
   swift_unknownObjectRetain();
-  v11 = self;
-  v14 = a4;
-  v12 = a5;
-  sub_20DA7141C(a3, 1, MEMORY[0x277D84FA0], a5, a6);
-  if (v14)
+  selfCopy = self;
+  settingsCopy = settings;
+  homeCopy = home;
+  sub_20DA7141C(update, 1, MEMORY[0x277D84FA0], home, sender);
+  if (settingsCopy)
   {
-    v13 = v14;
-    sub_20DA7141C(v14, 2, MEMORY[0x277D84FA0], a5, a6);
+    v13 = settingsCopy;
+    sub_20DA7141C(settingsCopy, 2, MEMORY[0x277D84FA0], home, sender);
 
-    v12 = v11;
-    v11 = v13;
+    homeCopy = selfCopy;
+    selfCopy = v13;
   }
 
   swift_unknownObjectRelease();
 }
 
-- (void)batchedLightProfileUpdate:(id)a3 settings:(id)a4 sender:(SEL)a5
+- (void)batchedLightProfileUpdate:(id)update settings:(id)settings sender:(SEL)sender
 {
-  v8 = a3;
-  v11 = self;
-  v9 = [v8 accessory];
-  v10 = [v9 home];
+  updateCopy = update;
+  selfCopy = self;
+  accessory = [updateCopy accessory];
+  home = [accessory home];
 
-  sub_20DA7141C(a3, 4, MEMORY[0x277D84FA0], v10, a5);
+  sub_20DA7141C(update, 4, MEMORY[0x277D84FA0], home, sender);
 }
 
-- (void)batchedSoftwareUpdateV2DidUpdateForAccessory:(id)a3 sender:(SEL)a4
+- (void)batchedSoftwareUpdateV2DidUpdateForAccessory:(id)accessory sender:(SEL)sender
 {
-  v6 = a3;
-  v7 = self;
-  sub_20DA7274C(v6, a4);
+  accessoryCopy = accessory;
+  selfCopy = self;
+  sub_20DA7274C(accessoryCopy, sender);
 }
 
 - (HFItemManagerMessageBatchCoordinator)init

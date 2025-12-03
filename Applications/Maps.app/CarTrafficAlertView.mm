@@ -1,7 +1,7 @@
 @interface CarTrafficAlertView
 - (BOOL)progressionHidden;
-- (CarTrafficAlertView)initWithDelegate:(id)a3 incidentLayoutItem:(id)a4;
-- (CarTrafficAlertView)initWithDelegate:(id)a3 trafficAlert:(id)a4;
+- (CarTrafficAlertView)initWithDelegate:(id)delegate incidentLayoutItem:(id)item;
+- (CarTrafficAlertView)initWithDelegate:(id)delegate trafficAlert:(id)alert;
 - (CarTrafficAlertViewDelegate)delegate;
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
@@ -9,14 +9,14 @@
 - (id)_progressButton;
 - (id)dataSource;
 - (void)_acceptButtonColors;
-- (void)_buttonTapped:(id)a3;
+- (void)_buttonTapped:(id)tapped;
 - (void)_commonInit;
 - (void)_updateView;
-- (void)setCompletionProgress:(double)a3;
-- (void)setIncidentLayoutItem:(id)a3;
-- (void)setProgressionHidden:(BOOL)a3;
-- (void)setTrafficAlert:(id)a3;
-- (void)startProgressAnimationWithDuration:(double)a3;
+- (void)setCompletionProgress:(double)progress;
+- (void)setIncidentLayoutItem:(id)item;
+- (void)setProgressionHidden:(BOOL)hidden;
+- (void)setTrafficAlert:(id)alert;
+- (void)startProgressAnimationWithDuration:(double)duration;
 @end
 
 @implementation CarTrafficAlertView
@@ -30,15 +30,15 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v3 = [(CarTrafficAlertView *)self buttonStack];
-  v4 = [v3 arrangedSubviews];
-  v5 = [(CarTrafficAlertView *)self acceptButton];
-  v6 = [v4 containsObject:v5];
+  buttonStack = [(CarTrafficAlertView *)self buttonStack];
+  arrangedSubviews = [buttonStack arrangedSubviews];
+  acceptButton = [(CarTrafficAlertView *)self acceptButton];
+  v6 = [arrangedSubviews containsObject:acceptButton];
 
   if (v6)
   {
-    v7 = [(CarTrafficAlertView *)self acceptButton];
-    v10 = v7;
+    acceptButton2 = [(CarTrafficAlertView *)self acceptButton];
+    v10 = acceptButton2;
     v8 = [NSArray arrayWithObjects:&v10 count:1];
   }
 
@@ -53,19 +53,19 @@
 - (NSArray)focusOrderSubItems
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(CarTrafficAlertView *)self closeButton];
-  [v3 addObject:v4];
+  closeButton = [(CarTrafficAlertView *)self closeButton];
+  [v3 addObject:closeButton];
 
-  v5 = [(CarTrafficAlertView *)self buttonStack];
-  v6 = [v5 arrangedSubviews];
-  [v3 addObjectsFromArray:v6];
+  buttonStack = [(CarTrafficAlertView *)self buttonStack];
+  arrangedSubviews = [buttonStack arrangedSubviews];
+  [v3 addObjectsFromArray:arrangedSubviews];
 
   return v3;
 }
 
-- (void)_buttonTapped:(id)a3
+- (void)_buttonTapped:(id)tapped
 {
-  v12 = a3;
+  tappedCopy = tapped;
   if (self->_trafficAlert)
   {
     v4 = [CarTrafficAlertCardViewController alertVotable:?];
@@ -76,12 +76,12 @@
     v4 = 0;
   }
 
-  v5 = [(CarTrafficAlertView *)self acceptButton];
+  acceptButton = [(CarTrafficAlertView *)self acceptButton];
 
-  if (v5 == v12)
+  if (acceptButton == tappedCopy)
   {
-    v9 = [(CarTrafficAlertView *)self delegate];
-    v8 = v9;
+    delegate = [(CarTrafficAlertView *)self delegate];
+    delegate2 = delegate;
     if (v4)
     {
       v11 = 3;
@@ -95,12 +95,12 @@
     goto LABEL_14;
   }
 
-  v6 = [(CarTrafficAlertView *)self cancelButton];
+  cancelButton = [(CarTrafficAlertView *)self cancelButton];
 
-  if (v6 == v12)
+  if (cancelButton == tappedCopy)
   {
-    v9 = [(CarTrafficAlertView *)self delegate];
-    v8 = v9;
+    delegate = [(CarTrafficAlertView *)self delegate];
+    delegate2 = delegate;
     if (v4)
     {
       v11 = 4;
@@ -112,16 +112,16 @@
     }
 
 LABEL_14:
-    v10 = self;
+    selfCopy2 = self;
     goto LABEL_15;
   }
 
-  v7 = [(CarTrafficAlertView *)self closeButton];
+  closeButton = [(CarTrafficAlertView *)self closeButton];
 
-  v8 = [(CarTrafficAlertView *)self delegate];
-  v9 = v8;
-  v10 = self;
-  if (v7 == v12)
+  delegate2 = [(CarTrafficAlertView *)self delegate];
+  delegate = delegate2;
+  selfCopy2 = self;
+  if (closeButton == tappedCopy)
   {
     v11 = 5;
   }
@@ -132,7 +132,7 @@ LABEL_14:
   }
 
 LABEL_15:
-  [v9 trafficAlertView:v10 didDismissWithResult:v11];
+  [delegate trafficAlertView:selfCopy2 didDismissWithResult:v11];
 }
 
 - (void)_updateView
@@ -140,7 +140,7 @@ LABEL_15:
   trafficAlert = self->_trafficAlert;
   if (trafficAlert)
   {
-    v4 = [NavTrafficIncidentViewComposer imageForMNTrafficIncidentAlert:trafficAlert view:self];
+    displayImage = [NavTrafficIncidentViewComposer imageForMNTrafficIncidentAlert:trafficAlert view:self];
   }
 
   else
@@ -151,18 +151,18 @@ LABEL_15:
       goto LABEL_6;
     }
 
-    v4 = [(TrafficIncidentLayoutItem *)incidentLayoutItem displayImage];
+    displayImage = [(TrafficIncidentLayoutItem *)incidentLayoutItem displayImage];
   }
 
-  v6 = v4;
-  [(UIImageView *)self->_alertImageView setImage:v4];
+  v6 = displayImage;
+  [(UIImageView *)self->_alertImageView setImage:displayImage];
 
 LABEL_6:
-  v7 = [(CarTrafficAlertView *)self primaryLabel];
-  v8 = [v7 text];
-  v9 = [(CarTrafficAlertView *)self dataSource];
-  v10 = [v9 primaryString];
-  v11 = [v8 isEqualToString:v10];
+  primaryLabel = [(CarTrafficAlertView *)self primaryLabel];
+  text = [primaryLabel text];
+  dataSource = [(CarTrafficAlertView *)self dataSource];
+  primaryString = [dataSource primaryString];
+  v11 = [text isEqualToString:primaryString];
 
   if ((v11 & 1) == 0)
   {
@@ -172,12 +172,12 @@ LABEL_6:
     }
 
     v12 = [NSAttributedString alloc];
-    v13 = [(CarTrafficAlertView *)self dataSource];
-    v14 = [v13 primaryString];
-    v15 = v14;
-    if (v14)
+    dataSource2 = [(CarTrafficAlertView *)self dataSource];
+    primaryString2 = [dataSource2 primaryString];
+    v15 = primaryString2;
+    if (primaryString2)
     {
-      v16 = v14;
+      v16 = primaryString2;
     }
 
     else
@@ -186,47 +186,47 @@ LABEL_6:
     }
 
     v17 = [v12 initWithString:v16 attributes:qword_10195DD88];
-    v18 = [(CarTrafficAlertView *)self primaryLabel];
-    [v18 setAttributedText:v17];
+    primaryLabel2 = [(CarTrafficAlertView *)self primaryLabel];
+    [primaryLabel2 setAttributedText:v17];
   }
 
-  v19 = [(CarTrafficAlertView *)self secondaryLabel];
-  v20 = [v19 text];
-  v21 = [(CarTrafficAlertView *)self dataSource];
-  v22 = [v21 secondaryString];
-  v23 = [v20 isEqualToString:v22];
+  secondaryLabel = [(CarTrafficAlertView *)self secondaryLabel];
+  text2 = [secondaryLabel text];
+  dataSource3 = [(CarTrafficAlertView *)self dataSource];
+  secondaryString = [dataSource3 secondaryString];
+  v23 = [text2 isEqualToString:secondaryString];
 
   if ((v23 & 1) == 0)
   {
-    v24 = [(CarTrafficAlertView *)self dataSource];
-    v25 = [v24 secondaryString];
-    v26 = [(CarTrafficAlertView *)self secondaryLabel];
-    [v26 setText:v25];
+    dataSource4 = [(CarTrafficAlertView *)self dataSource];
+    secondaryString2 = [dataSource4 secondaryString];
+    secondaryLabel2 = [(CarTrafficAlertView *)self secondaryLabel];
+    [secondaryLabel2 setText:secondaryString2];
   }
 
-  v27 = [(CarTrafficAlertView *)self dataSource];
-  v28 = [v27 includeDismissButton];
-  v29 = [(CarTrafficAlertView *)self closeButton];
-  [v29 setHidden:v28 ^ 1];
+  dataSource5 = [(CarTrafficAlertView *)self dataSource];
+  includeDismissButton = [dataSource5 includeDismissButton];
+  closeButton = [(CarTrafficAlertView *)self closeButton];
+  [closeButton setHidden:includeDismissButton ^ 1];
 
-  v30 = [(CarTrafficAlertView *)self dataSource];
-  [v30 alertDisplayDuration];
+  dataSource6 = [(CarTrafficAlertView *)self dataSource];
+  [dataSource6 alertDisplayDuration];
   v32 = v31;
-  v33 = [(CarTrafficAlertView *)self closeButton];
-  [v33 setAnimationDuration:v32];
+  closeButton2 = [(CarTrafficAlertView *)self closeButton];
+  [closeButton2 setAnimationDuration:v32];
 
-  v34 = [(CarTrafficAlertView *)self buttonStack];
-  v35 = [v34 arrangedSubviews];
-  v36 = [v35 count];
-  v37 = [(CarTrafficAlertView *)self dataSource];
-  v38 = [v37 buttonInfos];
-  v39 = [v38 count];
+  buttonStack = [(CarTrafficAlertView *)self buttonStack];
+  arrangedSubviews = [buttonStack arrangedSubviews];
+  v36 = [arrangedSubviews count];
+  dataSource7 = [(CarTrafficAlertView *)self dataSource];
+  buttonInfos = [dataSource7 buttonInfos];
+  v39 = [buttonInfos count];
 
   if (v36 != v39)
   {
-    v54 = [(CarTrafficAlertView *)self dataSource];
-    v55 = [v54 buttonInfos];
-    v56 = [v55 count];
+    dataSource8 = [(CarTrafficAlertView *)self dataSource];
+    buttonInfos2 = [dataSource8 buttonInfos];
+    v56 = [buttonInfos2 count];
 
     if (v56)
     {
@@ -254,10 +254,10 @@ LABEL_6:
     v93 = 0u;
     v90 = 0u;
     v91 = 0u;
-    v59 = [(CarTrafficAlertView *)self buttonStack];
-    v60 = [v59 arrangedSubviews];
+    buttonStack2 = [(CarTrafficAlertView *)self buttonStack];
+    arrangedSubviews2 = [buttonStack2 arrangedSubviews];
 
-    v61 = [v60 countByEnumeratingWithState:&v90 objects:v97 count:16];
+    v61 = [arrangedSubviews2 countByEnumeratingWithState:&v90 objects:v97 count:16];
     if (v61)
     {
       v62 = v61;
@@ -268,15 +268,15 @@ LABEL_6:
         {
           if (*v91 != v63)
           {
-            objc_enumerationMutation(v60);
+            objc_enumerationMutation(arrangedSubviews2);
           }
 
           v65 = *(*(&v90 + 1) + 8 * i);
-          v66 = [(CarTrafficAlertView *)self buttonStack];
-          [v66 _maps_removeArrangedSubview:v65];
+          buttonStack3 = [(CarTrafficAlertView *)self buttonStack];
+          [buttonStack3 _maps_removeArrangedSubview:v65];
         }
 
-        v62 = [v60 countByEnumeratingWithState:&v90 objects:v97 count:16];
+        v62 = [arrangedSubviews2 countByEnumeratingWithState:&v90 objects:v97 count:16];
       }
 
       while (v62);
@@ -287,16 +287,16 @@ LABEL_6:
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v68 = [(CarTrafficAlertView *)self dataSource];
-    v69 = [v68 buttonInfos];
+    dataSource9 = [(CarTrafficAlertView *)self dataSource];
+    buttonInfos3 = [dataSource9 buttonInfos];
 
-    v70 = [v69 countByEnumeratingWithState:&v86 objects:v96 count:16];
+    v70 = [buttonInfos3 countByEnumeratingWithState:&v86 objects:v96 count:16];
     if (!v70)
     {
 LABEL_54:
 
-      v84 = [(CarTrafficAlertView *)self buttonStack];
-      [v84 _maps_setArrangedSubviews:v67];
+      buttonStack4 = [(CarTrafficAlertView *)self buttonStack];
+      [buttonStack4 _maps_setArrangedSubviews:v67];
 
       return;
     }
@@ -311,12 +311,12 @@ LABEL_37:
     {
       if (*v87 != v73)
       {
-        objc_enumerationMutation(v69);
+        objc_enumerationMutation(buttonInfos3);
       }
 
       v75 = *(*(&v86 + 1) + 8 * v74);
-      v76 = [v75 action];
-      if (v76)
+      action = [v75 action];
+      if (action)
       {
         break;
       }
@@ -335,7 +335,7 @@ LABEL_52:
 
       if (v72 == ++v74)
       {
-        v72 = [v69 countByEnumeratingWithState:&v86 objects:v96 count:16];
+        v72 = [buttonInfos3 countByEnumeratingWithState:&v86 objects:v96 count:16];
         if (!v72)
         {
           goto LABEL_54;
@@ -345,14 +345,14 @@ LABEL_52:
       }
     }
 
-    if (v76 == 1)
+    if (action == 1)
     {
-      v77 = [(CarTrafficAlertView *)self cancelButton];
+      cancelButton = [(CarTrafficAlertView *)self cancelButton];
     }
 
     else
     {
-      if (v76 != 2)
+      if (action != 2)
       {
 LABEL_47:
         v78 = sub_100035E6C();
@@ -371,17 +371,17 @@ LABEL_51:
         goto LABEL_52;
       }
 
-      v77 = [(CarTrafficAlertView *)self acceptButton];
+      cancelButton = [(CarTrafficAlertView *)self acceptButton];
     }
 
-    v78 = v77;
-    if (v77)
+    v78 = cancelButton;
+    if (cancelButton)
     {
-      v79 = [v75 title];
-      [v78 setTitle:v79 forState:0];
+      title = [v75 title];
+      [v78 setTitle:title forState:0];
 
-      v80 = [v75 title];
-      [v78 setTitle:v80 forState:8];
+      title2 = [v75 title];
+      [v78 setTitle:title2 forState:8];
 
       [v67 addObject:v78];
       goto LABEL_52;
@@ -390,33 +390,33 @@ LABEL_51:
     goto LABEL_47;
   }
 
-  v40 = [(CarTrafficAlertView *)self buttonStack];
-  v41 = [v40 arrangedSubviews];
-  v42 = [v41 count];
+  buttonStack5 = [(CarTrafficAlertView *)self buttonStack];
+  arrangedSubviews3 = [buttonStack5 arrangedSubviews];
+  v42 = [arrangedSubviews3 count];
 
   if (v42)
   {
     v43 = 0;
     do
     {
-      v44 = [(CarTrafficAlertView *)self buttonStack];
-      v45 = [v44 arrangedSubviews];
-      v46 = [v45 objectAtIndexedSubscript:v43];
+      buttonStack6 = [(CarTrafficAlertView *)self buttonStack];
+      arrangedSubviews4 = [buttonStack6 arrangedSubviews];
+      v46 = [arrangedSubviews4 objectAtIndexedSubscript:v43];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v47 = [(CarTrafficAlertView *)self dataSource];
-        v48 = [v47 buttonInfos];
-        v49 = [v48 objectAtIndexedSubscript:v43];
-        v50 = [v49 title];
-        [v46 setTitle:v50 forState:0];
+        dataSource10 = [(CarTrafficAlertView *)self dataSource];
+        buttonInfos4 = [dataSource10 buttonInfos];
+        v49 = [buttonInfos4 objectAtIndexedSubscript:v43];
+        title3 = [v49 title];
+        [v46 setTitle:title3 forState:0];
       }
 
       ++v43;
-      v51 = [(CarTrafficAlertView *)self buttonStack];
-      v52 = [v51 arrangedSubviews];
-      v53 = [v52 count];
+      buttonStack7 = [(CarTrafficAlertView *)self buttonStack];
+      arrangedSubviews5 = [buttonStack7 arrangedSubviews];
+      v53 = [arrangedSubviews5 count];
     }
 
     while (v43 < v53);
@@ -425,26 +425,26 @@ LABEL_51:
 
 - (double)completionProgress
 {
-  v2 = [(CarTrafficAlertView *)self _progressButton];
-  [v2 progress];
+  _progressButton = [(CarTrafficAlertView *)self _progressButton];
+  [_progressButton progress];
   v4 = v3;
 
   return v4;
 }
 
-- (void)startProgressAnimationWithDuration:(double)a3
+- (void)startProgressAnimationWithDuration:(double)duration
 {
-  v5 = [(CarTrafficAlertView *)self _progressButton];
+  _progressButton = [(CarTrafficAlertView *)self _progressButton];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CarTrafficAlertView *)self _progressButton];
-    [v7 setAnimationDuration:a3];
+    _progressButton2 = [(CarTrafficAlertView *)self _progressButton];
+    [_progressButton2 setAnimationDuration:duration];
 
     [(CarTrafficAlertView *)self setCompletionProgress:1.0];
-    v8 = [(CarTrafficAlertView *)self _progressButton];
-    [v8 performSelector:"startProgressAnimation"];
+    _progressButton3 = [(CarTrafficAlertView *)self _progressButton];
+    [_progressButton3 performSelector:"startProgressAnimation"];
   }
 
   else
@@ -455,46 +455,46 @@ LABEL_51:
     v9[2] = sub_10093A24C;
     v9[3] = &unk_101661B18;
     v9[4] = self;
-    [UIView animateWithDuration:v9 animations:0 completion:a3];
+    [UIView animateWithDuration:v9 animations:0 completion:duration];
   }
 }
 
-- (void)setCompletionProgress:(double)a3
+- (void)setCompletionProgress:(double)progress
 {
-  v4 = [(CarTrafficAlertView *)self _progressButton];
-  [v4 setProgress:a3];
+  _progressButton = [(CarTrafficAlertView *)self _progressButton];
+  [_progressButton setProgress:progress];
 }
 
 - (BOOL)progressionHidden
 {
-  v2 = [(CarTrafficAlertView *)self _progressButton];
-  v3 = [v2 progressionHidden];
+  _progressButton = [(CarTrafficAlertView *)self _progressButton];
+  progressionHidden = [_progressButton progressionHidden];
 
-  return v3;
+  return progressionHidden;
 }
 
-- (void)setProgressionHidden:(BOOL)a3
+- (void)setProgressionHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(CarTrafficAlertView *)self _progressButton];
-  [v4 setProgressionHidden:v3];
+  hiddenCopy = hidden;
+  _progressButton = [(CarTrafficAlertView *)self _progressButton];
+  [_progressButton setProgressionHidden:hiddenCopy];
 }
 
-- (void)setIncidentLayoutItem:(id)a3
+- (void)setIncidentLayoutItem:(id)item
 {
-  v5 = a3;
-  if (self->_incidentLayoutItem != v5)
+  itemCopy = item;
+  if (self->_incidentLayoutItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_incidentLayoutItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_incidentLayoutItem, item);
     [(CarTrafficAlertView *)self _updateView];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
-- (void)setTrafficAlert:(id)a3
+- (void)setTrafficAlert:(id)alert
 {
-  objc_storeStrong(&self->_trafficAlert, a3);
+  objc_storeStrong(&self->_trafficAlert, alert);
 
   [(CarTrafficAlertView *)self _updateView];
 }
@@ -503,24 +503,24 @@ LABEL_51:
 {
   if (self->_incidentLayoutItem)
   {
-    v3 = [(CarTrafficAlertView *)self closeButton];
+    closeButton = [(CarTrafficAlertView *)self closeButton];
     goto LABEL_17;
   }
 
-  v4 = [(CarTrafficAlertView *)self trafficAlert];
-  v5 = [v4 defaultButtonInfo];
+  trafficAlert = [(CarTrafficAlertView *)self trafficAlert];
+  defaultButtonInfo = [trafficAlert defaultButtonInfo];
 
-  v6 = [(CarTrafficAlertView *)self trafficAlert];
-  v7 = [v6 acceptButtonInfo];
+  trafficAlert2 = [(CarTrafficAlertView *)self trafficAlert];
+  acceptButtonInfo = [trafficAlert2 acceptButtonInfo];
 
-  if ([v7 isDefaultButton])
+  if ([acceptButtonInfo isDefaultButton])
   {
-    v8 = [(CarTrafficAlertView *)self acceptButton];
+    acceptButton = [(CarTrafficAlertView *)self acceptButton];
   }
 
   else
   {
-    if (v5 || (-[CarTrafficAlertView trafficAlert](self, "trafficAlert"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 includeDismissButton], v9, !v10))
+    if (defaultButtonInfo || (-[CarTrafficAlertView trafficAlert](self, "trafficAlert"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 includeDismissButton], v9, !v10))
     {
       v11 = sub_10006D178();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -546,19 +546,19 @@ LABEL_51:
         }
       }
 
-      v3 = 0;
+      closeButton = 0;
       goto LABEL_16;
     }
 
-    v8 = [(CarTrafficAlertView *)self closeButton];
+    acceptButton = [(CarTrafficAlertView *)self closeButton];
   }
 
-  v3 = v8;
+  closeButton = acceptButton;
 LABEL_16:
 
 LABEL_17:
 
-  return v3;
+  return closeButton;
 }
 
 - (id)dataSource
@@ -576,10 +576,10 @@ LABEL_17:
 
 - (void)_acceptButtonColors
 {
-  v3 = [(CarTrafficAlertView *)self _progressButton];
+  _progressButton = [(CarTrafficAlertView *)self _progressButton];
   acceptButton = self->_acceptButton;
 
-  if (v3 == acceptButton)
+  if (_progressButton == acceptButton)
   {
     v7 = +[UIColor tertiarySystemFillColor];
     [(CarFocusableButton *)self->_acceptButton setNonFocusedBackgroundColor:v7];
@@ -608,10 +608,10 @@ LABEL_17:
 
   else
   {
-    v5 = [(CarTrafficAlertView *)self _progressButton];
+    _progressButton2 = [(CarTrafficAlertView *)self _progressButton];
     closeButton = self->_closeButton;
 
-    if (v5 != closeButton)
+    if (_progressButton2 != closeButton)
     {
       return;
     }
@@ -681,8 +681,8 @@ LABEL_17:
   v20 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCaption1 weight:UIFontWeightMedium];
   [(UILabel *)self->_secondaryLabel setFont:v20];
 
-  v21 = [(UILabel *)self->_secondaryLabel font];
-  [v21 pointSize];
+  font = [(UILabel *)self->_secondaryLabel font];
+  [font pointSize];
   v23 = self->_secondaryLabel;
   if (10.0 / v22 > 1.0)
   {
@@ -691,8 +691,8 @@ LABEL_17:
 
   else
   {
-    v24 = [(UILabel *)v23 font];
-    [v24 pointSize];
+    font2 = [(UILabel *)v23 font];
+    [font2 pointSize];
     [(UILabel *)self->_secondaryLabel setMinimumScaleFactor:10.0 / v25];
   }
 
@@ -710,15 +710,15 @@ LABEL_17:
   [(UIImageView *)self->_alertImageView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIImageView *)self->_alertImageView setContentMode:1];
   [(CarTrafficAlertView *)self addSubview:self->_alertImageView];
-  v30 = [[CarCardRoundedButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height = [[CarCardRoundedButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   cancelButton = self->_cancelButton;
-  self->_cancelButton = v30;
+  self->_cancelButton = height;
 
   [(CarCardRoundedButton *)self->_cancelButton setAccessibilityIdentifier:@"CancelButton"];
   [(CarCardRoundedButton *)self->_cancelButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v32 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleCallout weight:UIFontWeightMedium];
-  v33 = [(CarCardRoundedButton *)self->_cancelButton titleLabel];
-  [v33 setFont:v32];
+  titleLabel = [(CarCardRoundedButton *)self->_cancelButton titleLabel];
+  [titleLabel setFont:v32];
 
   v34 = +[UIColor _carSystemQuaternaryColor];
   [(CarFocusableButton *)self->_cancelButton setNonFocusedBackgroundColor:v34];
@@ -731,9 +731,9 @@ LABEL_17:
 
   [(CarFocusableButton *)self->_cancelButton setModifiesBackgroundColor:1];
   [(CarCardRoundedButton *)self->_cancelButton addTarget:self action:"_buttonTapped:" forControlEvents:64];
-  v37 = [[CarFocusableProgressBackgroundFillButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  height2 = [[CarFocusableProgressBackgroundFillButton alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
   acceptButton = self->_acceptButton;
-  self->_acceptButton = v37;
+  self->_acceptButton = height2;
 
   [(CarFocusableProgressBackgroundFillButton *)self->_acceptButton setAccessibilityIdentifier:@"AcceptButton"];
   [(CarFocusableProgressBackgroundFillButton *)self->_acceptButton setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -757,83 +757,83 @@ LABEL_17:
   [(UIStackView *)self->_buttonStack setDistribution:1];
   [(UIStackView *)self->_buttonStack setSpacing:6.0];
   [(CarTrafficAlertView *)self addSubview:self->_buttonStack];
-  v44 = [(UILabel *)self->_primaryLabel trailingAnchor];
-  v45 = [(CarTrafficAlertView *)self trailingAnchor];
-  v46 = [v44 constraintEqualToAnchor:v45 constant:-10.0];
+  trailingAnchor = [(UILabel *)self->_primaryLabel trailingAnchor];
+  trailingAnchor2 = [(CarTrafficAlertView *)self trailingAnchor];
+  v46 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   primaryLabelTrailingShortText = self->primaryLabelTrailingShortText;
   self->primaryLabelTrailingShortText = v46;
 
-  v48 = [(UILabel *)self->_primaryLabel trailingAnchor];
-  v49 = [(CarFocusableProgressButton *)self->_closeButton leadingAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49 constant:-10.0];
+  trailingAnchor3 = [(UILabel *)self->_primaryLabel trailingAnchor];
+  leadingAnchor = [(CarFocusableProgressButton *)self->_closeButton leadingAnchor];
+  v50 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor constant:-10.0];
   primaryLabelTrailingLongText = self->primaryLabelTrailingLongText;
   self->primaryLabelTrailingLongText = v50;
 
-  v52 = [(CarTrafficAlertView *)self topAnchor];
-  v139 = [(UIImageView *)self->_alertImageView topAnchor];
-  v141 = v52;
-  v137 = [v52 constraintEqualToAnchor:-10.0 constant:?];
+  topAnchor = [(CarTrafficAlertView *)self topAnchor];
+  topAnchor2 = [(UIImageView *)self->_alertImageView topAnchor];
+  v141 = topAnchor;
+  v137 = [topAnchor constraintEqualToAnchor:-10.0 constant:?];
   v147[0] = v137;
-  v53 = [(UIImageView *)self->_alertImageView leadingAnchor];
-  v135 = [(CarTrafficAlertView *)self leadingAnchor];
-  v136 = v53;
-  v134 = [v53 constraintEqualToAnchor:10.0 constant:?];
+  leadingAnchor2 = [(UIImageView *)self->_alertImageView leadingAnchor];
+  leadingAnchor3 = [(CarTrafficAlertView *)self leadingAnchor];
+  v136 = leadingAnchor2;
+  v134 = [leadingAnchor2 constraintEqualToAnchor:10.0 constant:?];
   v147[1] = v134;
-  v54 = [(UIImageView *)self->_alertImageView heightAnchor];
-  v132 = [(UIImageView *)self->_alertImageView widthAnchor];
-  v133 = v54;
-  v131 = [v54 constraintEqualToAnchor:?];
+  heightAnchor = [(UIImageView *)self->_alertImageView heightAnchor];
+  widthAnchor = [(UIImageView *)self->_alertImageView widthAnchor];
+  v133 = heightAnchor;
+  v131 = [heightAnchor constraintEqualToAnchor:?];
   v147[2] = v131;
-  v130 = [(UIImageView *)self->_alertImageView heightAnchor];
-  v129 = [v130 constraintEqualToConstant:36.0];
+  heightAnchor2 = [(UIImageView *)self->_alertImageView heightAnchor];
+  v129 = [heightAnchor2 constraintEqualToConstant:36.0];
   v147[3] = v129;
-  v55 = [(UIImageView *)self->_alertImageView bottomAnchor];
-  v127 = [(UILabel *)self->_primaryLabel firstBaselineAnchor];
-  v128 = v55;
-  v126 = [v55 constraintEqualToAnchor:-22.0 constant:?];
+  bottomAnchor = [(UIImageView *)self->_alertImageView bottomAnchor];
+  firstBaselineAnchor = [(UILabel *)self->_primaryLabel firstBaselineAnchor];
+  v128 = bottomAnchor;
+  v126 = [bottomAnchor constraintEqualToAnchor:-22.0 constant:?];
   v147[4] = v126;
-  v56 = [(UILabel *)self->_primaryLabel leadingAnchor];
-  v124 = [(CarTrafficAlertView *)self leadingAnchor];
-  v125 = v56;
-  v123 = [v56 constraintEqualToAnchor:10.0 constant:?];
+  leadingAnchor4 = [(UILabel *)self->_primaryLabel leadingAnchor];
+  leadingAnchor5 = [(CarTrafficAlertView *)self leadingAnchor];
+  v125 = leadingAnchor4;
+  v123 = [leadingAnchor4 constraintEqualToAnchor:10.0 constant:?];
   v147[5] = v123;
-  v57 = [(UILabel *)self->_primaryLabel lastBaselineAnchor];
-  v121 = [(UILabel *)self->_secondaryLabel firstBaselineAnchor];
-  v122 = v57;
-  v58 = [v57 constraintEqualToAnchor:-18.0 constant:?];
+  lastBaselineAnchor = [(UILabel *)self->_primaryLabel lastBaselineAnchor];
+  firstBaselineAnchor2 = [(UILabel *)self->_secondaryLabel firstBaselineAnchor];
+  v122 = lastBaselineAnchor;
+  v58 = [lastBaselineAnchor constraintEqualToAnchor:-18.0 constant:?];
   v59 = self->primaryLabelTrailingShortText;
   v120 = v58;
   v147[6] = v58;
   v147[7] = v59;
-  v60 = [(CarFocusableProgressButton *)self->_closeButton topAnchor];
-  v118 = [(UIImageView *)self->_alertImageView topAnchor];
-  v119 = v60;
-  v117 = [v60 constraintEqualToAnchor:?];
+  topAnchor3 = [(CarFocusableProgressButton *)self->_closeButton topAnchor];
+  topAnchor4 = [(UIImageView *)self->_alertImageView topAnchor];
+  v119 = topAnchor3;
+  v117 = [topAnchor3 constraintEqualToAnchor:?];
   v147[8] = v117;
-  v61 = [(CarFocusableProgressButton *)self->_closeButton trailingAnchor];
-  v115 = [(CarTrafficAlertView *)self trailingAnchor];
-  v116 = v61;
-  v114 = [v61 constraintEqualToAnchor:-10.0 constant:?];
+  trailingAnchor4 = [(CarFocusableProgressButton *)self->_closeButton trailingAnchor];
+  trailingAnchor5 = [(CarTrafficAlertView *)self trailingAnchor];
+  v116 = trailingAnchor4;
+  v114 = [trailingAnchor4 constraintEqualToAnchor:-10.0 constant:?];
   v147[9] = v114;
-  v62 = [(CarFocusableProgressButton *)self->_closeButton heightAnchor];
-  v112 = [(CarFocusableProgressButton *)self->_closeButton widthAnchor];
-  v113 = v62;
-  v111 = [v62 constraintEqualToAnchor:?];
+  heightAnchor3 = [(CarFocusableProgressButton *)self->_closeButton heightAnchor];
+  widthAnchor2 = [(CarFocusableProgressButton *)self->_closeButton widthAnchor];
+  v113 = heightAnchor3;
+  v111 = [heightAnchor3 constraintEqualToAnchor:?];
   v147[10] = v111;
-  v110 = [(CarFocusableProgressButton *)self->_closeButton widthAnchor];
-  v109 = [v110 constraintEqualToConstant:28.0];
+  widthAnchor3 = [(CarFocusableProgressButton *)self->_closeButton widthAnchor];
+  v109 = [widthAnchor3 constraintEqualToConstant:28.0];
   v147[11] = v109;
-  v63 = [(UILabel *)self->_secondaryLabel leadingAnchor];
-  v107 = [(CarTrafficAlertView *)self leadingAnchor];
-  v108 = v63;
-  v106 = [v63 constraintEqualToAnchor:10.0 constant:?];
+  leadingAnchor6 = [(UILabel *)self->_secondaryLabel leadingAnchor];
+  leadingAnchor7 = [(CarTrafficAlertView *)self leadingAnchor];
+  v108 = leadingAnchor6;
+  v106 = [leadingAnchor6 constraintEqualToAnchor:10.0 constant:?];
   v147[12] = v106;
-  v64 = [(UILabel *)self->_secondaryLabel trailingAnchor];
-  v104 = [(CarTrafficAlertView *)self trailingAnchor];
-  v105 = v64;
-  v103 = [v64 constraintEqualToAnchor:-10.0 constant:?];
+  trailingAnchor6 = [(UILabel *)self->_secondaryLabel trailingAnchor];
+  trailingAnchor7 = [(CarTrafficAlertView *)self trailingAnchor];
+  v105 = trailingAnchor6;
+  v103 = [trailingAnchor6 constraintEqualToAnchor:-10.0 constant:?];
   v147[13] = v103;
-  v65 = [(CarCardRoundedButton *)self->_cancelButton heightAnchor];
+  heightAnchor4 = [(CarCardRoundedButton *)self->_cancelButton heightAnchor];
   v66 = self->_cancelButton;
   if (v66)
   {
@@ -841,11 +841,11 @@ LABEL_17:
     v41 = v144;
   }
 
-  v101 = [v65 constraintEqualToConstant:v41];
+  v101 = [heightAnchor4 constraintEqualToConstant:v41];
   v147[14] = v101;
-  v67 = [(CarFocusableProgressBackgroundFillButton *)self->_acceptButton heightAnchor];
+  heightAnchor5 = [(CarFocusableProgressBackgroundFillButton *)self->_acceptButton heightAnchor];
   v68 = self->_acceptButton;
-  v102 = v65;
+  v102 = heightAnchor4;
   if (v68)
   {
     [(CarCardRoundedButton *)v68 buttonMetrics];
@@ -857,51 +857,51 @@ LABEL_17:
     v69 = 0.0;
   }
 
-  v100 = [v67 constraintEqualToConstant:v69];
+  v100 = [heightAnchor5 constraintEqualToConstant:v69];
   v147[15] = v100;
-  v99 = [(UIStackView *)self->_buttonStack topAnchor];
-  v98 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
-  v97 = [v99 constraintEqualToAnchor:v98 constant:12.0];
+  topAnchor5 = [(UIStackView *)self->_buttonStack topAnchor];
+  lastBaselineAnchor2 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
+  v97 = [topAnchor5 constraintEqualToAnchor:lastBaselineAnchor2 constant:12.0];
   v147[16] = v97;
-  v95 = [(UIStackView *)self->_buttonStack leadingAnchor];
-  v70 = [(CarTrafficAlertView *)self leadingAnchor];
-  [v95 constraintEqualToAnchor:v70 constant:10.0];
-  v71 = v96 = v67;
+  leadingAnchor8 = [(UIStackView *)self->_buttonStack leadingAnchor];
+  leadingAnchor9 = [(CarTrafficAlertView *)self leadingAnchor];
+  [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9 constant:10.0];
+  v71 = v96 = heightAnchor5;
   v147[17] = v71;
-  v72 = [(UIStackView *)self->_buttonStack trailingAnchor];
-  v73 = [(CarTrafficAlertView *)self trailingAnchor];
-  v74 = [v72 constraintEqualToAnchor:v73 constant:-10.0];
+  trailingAnchor8 = [(UIStackView *)self->_buttonStack trailingAnchor];
+  trailingAnchor9 = [(CarTrafficAlertView *)self trailingAnchor];
+  v74 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:-10.0];
   v147[18] = v74;
-  v75 = [(UIStackView *)self->_buttonStack bottomAnchor];
-  v76 = [(CarTrafficAlertView *)self bottomAnchor];
-  v77 = [v75 constraintEqualToAnchor:v76 constant:-10.0];
+  bottomAnchor2 = [(UIStackView *)self->_buttonStack bottomAnchor];
+  bottomAnchor3 = [(CarTrafficAlertView *)self bottomAnchor];
+  v77 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-10.0];
   v147[19] = v77;
   v78 = [NSArray arrayWithObjects:v147 count:20];
   [NSLayoutConstraint activateConstraints:v78];
 
-  v142 = [(UIStackView *)self->_buttonStack topAnchor];
-  v140 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
-  v138 = [v142 constraintEqualToAnchor:v140 constant:12.0];
+  topAnchor6 = [(UIStackView *)self->_buttonStack topAnchor];
+  lastBaselineAnchor3 = [(UILabel *)self->_secondaryLabel lastBaselineAnchor];
+  v138 = [topAnchor6 constraintEqualToAnchor:lastBaselineAnchor3 constant:12.0];
   v146[0] = v138;
-  v79 = [(UIStackView *)self->_buttonStack leadingAnchor];
-  v80 = [(CarTrafficAlertView *)self leadingAnchor];
-  v81 = [v79 constraintEqualToAnchor:v80 constant:10.0];
+  leadingAnchor10 = [(UIStackView *)self->_buttonStack leadingAnchor];
+  leadingAnchor11 = [(CarTrafficAlertView *)self leadingAnchor];
+  v81 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11 constant:10.0];
   v146[1] = v81;
-  v82 = [(UIStackView *)self->_buttonStack trailingAnchor];
-  v83 = [(CarTrafficAlertView *)self trailingAnchor];
-  v84 = [v82 constraintEqualToAnchor:v83 constant:-10.0];
+  trailingAnchor10 = [(UIStackView *)self->_buttonStack trailingAnchor];
+  trailingAnchor11 = [(CarTrafficAlertView *)self trailingAnchor];
+  v84 = [trailingAnchor10 constraintEqualToAnchor:trailingAnchor11 constant:-10.0];
   v146[2] = v84;
-  v85 = [(UIStackView *)self->_buttonStack bottomAnchor];
-  v86 = [(CarTrafficAlertView *)self bottomAnchor];
-  v87 = [v85 constraintEqualToAnchor:v86 constant:-10.0];
+  bottomAnchor4 = [(UIStackView *)self->_buttonStack bottomAnchor];
+  bottomAnchor5 = [(CarTrafficAlertView *)self bottomAnchor];
+  v87 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-10.0];
   v146[3] = v87;
   v88 = [NSArray arrayWithObjects:v146 count:4];
   stackViewConstraint = self->_stackViewConstraint;
   self->_stackViewConstraint = v88;
 
-  v90 = [(UILabel *)self->_secondaryLabel bottomAnchor];
-  v91 = [(CarTrafficAlertView *)self bottomAnchor];
-  v92 = [v90 constraintEqualToAnchor:v91 constant:-10.0];
+  bottomAnchor6 = [(UILabel *)self->_secondaryLabel bottomAnchor];
+  bottomAnchor7 = [(CarTrafficAlertView *)self bottomAnchor];
+  v92 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7 constant:-10.0];
   v145 = v92;
   v93 = [NSArray arrayWithObjects:&v145 count:1];
   stackViewEmptyConstraint = self->_stackViewEmptyConstraint;
@@ -911,36 +911,36 @@ LABEL_17:
   [(CarTrafficAlertView *)self _updateView];
 }
 
-- (CarTrafficAlertView)initWithDelegate:(id)a3 incidentLayoutItem:(id)a4
+- (CarTrafficAlertView)initWithDelegate:(id)delegate incidentLayoutItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = CarTrafficAlertView;
   v8 = [(CarTrafficAlertView *)&v11 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_incidentLayoutItem, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_incidentLayoutItem, item);
     [(CarTrafficAlertView *)v9 _commonInit];
   }
 
   return v9;
 }
 
-- (CarTrafficAlertView)initWithDelegate:(id)a3 trafficAlert:(id)a4
+- (CarTrafficAlertView)initWithDelegate:(id)delegate trafficAlert:(id)alert
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  alertCopy = alert;
   v11.receiver = self;
   v11.super_class = CarTrafficAlertView;
   v8 = [(CarTrafficAlertView *)&v11 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_trafficAlert, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_trafficAlert, alert);
     [(CarTrafficAlertView *)v9 _commonInit];
   }
 

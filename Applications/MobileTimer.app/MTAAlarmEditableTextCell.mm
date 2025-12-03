@@ -1,15 +1,15 @@
 @interface MTAAlarmEditableTextCell
-- (BOOL)textFieldShouldReturn:(id)a3;
-- (MTAAlarmEditableTextCell)initWithText:(id)a3 autoCapsType:(int64_t)a4;
+- (BOOL)textFieldShouldReturn:(id)return;
+- (MTAAlarmEditableTextCell)initWithText:(id)text autoCapsType:(int64_t)type;
 - (void)layoutSubviews;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation MTAAlarmEditableTextCell
 
-- (MTAAlarmEditableTextCell)initWithText:(id)a3 autoCapsType:(int64_t)a4
+- (MTAAlarmEditableTextCell)initWithText:(id)text autoCapsType:(int64_t)type
 {
-  v6 = a3;
+  textCopy = text;
   v22.receiver = self;
   v22.super_class = MTAAlarmEditableTextCell;
   v7 = [(MTAAlarmEditableTextCell *)&v22 init];
@@ -22,14 +22,14 @@
     v8->_textField = v9;
 
     [(UITextField *)v8->_textField _setForcesClearButtonHighContrastAppearance:1];
-    [(UITextField *)v8->_textField setText:v6];
+    [(UITextField *)v8->_textField setText:textCopy];
     v11 = +[UIColor mtui_primaryTextColor];
     [(UITextField *)v8->_textField setTextColor:v11];
 
     v12 = +[UIColor mtui_tintColor];
     [(UITextField *)v8->_textField setTintColor:v12];
 
-    [(UITextField *)v8->_textField setAutocapitalizationType:a4];
+    [(UITextField *)v8->_textField setAutocapitalizationType:type];
     [(UITextField *)v8->_textField setBorderStyle:0];
     v13 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     [(UITextField *)v8->_textField setFont:v13];
@@ -41,17 +41,17 @@
     [(UITextField *)v8->_textField setDelegate:v8];
     [(UITextField *)v8->_textField setEnablesReturnKeyAutomatically:1];
     [(UITextField *)v8->_textField setKeyboardAppearance:1];
-    v14 = [(UITextField *)v8->_textField _clearButton];
-    v15 = [v14 imageForState:0];
+    _clearButton = [(UITextField *)v8->_textField _clearButton];
+    v15 = [_clearButton imageForState:0];
 
     v16 = +[UIColor secondaryLabelColor];
     v17 = [v15 mtui_imageWithTintColor:v16];
 
-    v18 = [(UITextField *)v8->_textField _clearButton];
-    [v18 setImage:v17 forState:0];
+    _clearButton2 = [(UITextField *)v8->_textField _clearButton];
+    [_clearButton2 setImage:v17 forState:0];
 
-    v19 = [(MTAAlarmEditableTextCell *)v8 contentView];
-    [v19 addSubview:v8->_textField];
+    contentView = [(MTAAlarmEditableTextCell *)v8 contentView];
+    [contentView addSubview:v8->_textField];
 
     [(MTAAlarmEditableTextCell *)v8 setNeedsLayout];
     v20 = v8;
@@ -66,17 +66,17 @@
   v4.super_class = MTAAlarmEditableTextCell;
   [(MTAAlarmEditableTextCell *)&v4 layoutSubviews];
   [(UITextField *)self->_textField isUserInteractionEnabled];
-  v3 = [(MTAAlarmEditableTextCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MTAAlarmEditableTextCell *)self contentView];
+  [contentView bounds];
 
   UIRectCenteredYInRect();
   [(UITextField *)self->_textField setFrame:?];
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  v3 = [a3 text];
-  v4 = [v3 length];
+  text = [return text];
+  v4 = [text length];
 
   if (v4)
   {
@@ -87,15 +87,15 @@
   return v4 != 0;
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(MTAAlarmEditableTextCell *)self isUserInteractionEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(MTAAlarmEditableTextCell *)self isUserInteractionEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = MTAAlarmEditableTextCell;
-    [(MTAAlarmEditableTextCell *)&v5 setUserInteractionEnabled:v3];
-    [(UITextField *)self->_textField setUserInteractionEnabled:v3];
+    [(MTAAlarmEditableTextCell *)&v5 setUserInteractionEnabled:enabledCopy];
+    [(UITextField *)self->_textField setUserInteractionEnabled:enabledCopy];
     [(MTAAlarmEditableTextCell *)self setNeedsLayout];
   }
 }

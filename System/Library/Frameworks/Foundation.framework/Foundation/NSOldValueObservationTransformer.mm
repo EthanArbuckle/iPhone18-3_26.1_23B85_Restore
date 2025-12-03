@@ -1,6 +1,6 @@
 @interface NSOldValueObservationTransformer
 + (id)oldValuesTransformer;
-- (void)_receiveBox:(id)a3;
+- (void)_receiveBox:(id)box;
 - (void)dealloc;
 @end
 
@@ -8,31 +8,31 @@
 
 + (id)oldValuesTransformer
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
-  if (*(a3 + 6) == 1)
+  if (*(box + 6) == 1)
   {
-    v5 = [a3 value];
+    value = [box value];
     lastValue = self->_lastValue;
     if (lastValue)
     {
       v7 = lastValue;
       self->_lastValue = v7;
-      v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a3, @"new", v7, @"old", 0}];
+      v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{box, @"new", v7, @"old", 0}];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{a3, @"new", 0, v9, v10}];
+      v8 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{box, @"new", 0, v9, v10}];
     }
 
-    [a3 setValue:v8];
-    self->_lastValue = v5;
+    [box setValue:v8];
+    self->_lastValue = value;
   }
 }
 

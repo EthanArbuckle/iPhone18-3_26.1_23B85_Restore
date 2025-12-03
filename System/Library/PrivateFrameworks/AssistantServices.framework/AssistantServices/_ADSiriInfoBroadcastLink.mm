@@ -1,22 +1,22 @@
 @interface _ADSiriInfoBroadcastLink
 - (_ADSiriInfoBroadcastLink)init;
 - (id)siriInfoToBeBroadcasted;
-- (void)_broadcastSiriInfo:(BOOL)a3;
-- (void)_configureRapportLinkAndReconnectNow:(BOOL)a3;
-- (void)_handleFoundRemoteDevice:(id)a3;
-- (void)_handleUpdatedLocalDevice:(id)a3;
-- (void)rapportLink:(id)a3 didFindDevice:(id)a4;
-- (void)rapportLink:(id)a3 didUpdateLocalDevice:(id)a4;
-- (void)rapportLinkDidInterrupt:(id)a3;
-- (void)rapportLinkDidInvalidate:(id)a3;
-- (void)updateSiriInfoWithObject:(id)a3 forKey:(id)a4;
+- (void)_broadcastSiriInfo:(BOOL)info;
+- (void)_configureRapportLinkAndReconnectNow:(BOOL)now;
+- (void)_handleFoundRemoteDevice:(id)device;
+- (void)_handleUpdatedLocalDevice:(id)device;
+- (void)rapportLink:(id)link didFindDevice:(id)device;
+- (void)rapportLink:(id)link didUpdateLocalDevice:(id)device;
+- (void)rapportLinkDidInterrupt:(id)interrupt;
+- (void)rapportLinkDidInvalidate:(id)invalidate;
+- (void)updateSiriInfoWithObject:(id)object forKey:(id)key;
 @end
 
 @implementation _ADSiriInfoBroadcastLink
 
-- (void)_broadcastSiriInfo:(BOOL)a3
+- (void)_broadcastSiriInfo:(BOOL)info
 {
-  v3 = a3;
+  infoCopy = info;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000A82B0;
@@ -26,7 +26,7 @@
   v6 = v5;
   v7 = self->_generation + 1;
   self->_generation = v7;
-  if (v3)
+  if (infoCopy)
   {
     (v5[2])(v5);
   }
@@ -46,26 +46,26 @@
   }
 }
 
-- (void)_handleFoundRemoteDevice:(id)a3
+- (void)_handleFoundRemoteDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v6 = 136315394;
     v7 = "[_ADSiriInfoBroadcastLink _handleFoundRemoteDevice:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = deviceCopy;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s Remote device %@ found, broadcasting soon...", &v6, 0x16u);
   }
 
   [(_ADSiriInfoBroadcastLink *)self _broadcastSiriInfo:0];
 }
 
-- (void)_handleUpdatedLocalDevice:(id)a3
+- (void)_handleUpdatedLocalDevice:(id)device
 {
-  v4 = a3;
-  if (v4 && !self->_isLocalDeviceAvailble)
+  deviceCopy = device;
+  if (deviceCopy && !self->_isLocalDeviceAvailble)
   {
     self->_isLocalDeviceAvailble = 1;
     v5 = AFSiriLogContextDaemon;
@@ -74,7 +74,7 @@
       v6 = 136315394;
       v7 = "[_ADSiriInfoBroadcastLink _handleUpdatedLocalDevice:]";
       v8 = 2112;
-      v9 = v4;
+      v9 = deviceCopy;
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s Local device %@ becomes available, broadcasting SiriInfo now...", &v6, 0x16u);
     }
 
@@ -82,86 +82,86 @@
   }
 }
 
-- (void)rapportLinkDidInvalidate:(id)a3
+- (void)rapportLinkDidInvalidate:(id)invalidate
 {
-  v4 = a3;
+  invalidateCopy = invalidate;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
   {
     v6 = 136315394;
     v7 = "[_ADSiriInfoBroadcastLink rapportLinkDidInvalidate:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = invalidateCopy;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s %@", &v6, 0x16u);
   }
 
   [(_ADSiriInfoBroadcastLink *)self _configureRapportLinkAndReconnectNow:0];
 }
 
-- (void)rapportLinkDidInterrupt:(id)a3
+- (void)rapportLinkDidInterrupt:(id)interrupt
 {
-  v4 = a3;
+  interruptCopy = interrupt;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
   {
     v6 = 136315394;
     v7 = "[_ADSiriInfoBroadcastLink rapportLinkDidInterrupt:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = interruptCopy;
     _os_log_error_impl(&_mh_execute_header, v5, OS_LOG_TYPE_ERROR, "%s %@", &v6, 0x16u);
   }
 
   [(_ADSiriInfoBroadcastLink *)self _configureRapportLinkAndReconnectNow:1];
 }
 
-- (void)rapportLink:(id)a3 didFindDevice:(id)a4
+- (void)rapportLink:(id)link didFindDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  deviceCopy = device;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v9 = 136315394;
     v10 = "[_ADSiriInfoBroadcastLink rapportLink:didFindDevice:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = linkCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s %@", &v9, 0x16u);
   }
 
-  [(_ADSiriInfoBroadcastLink *)self _handleFoundRemoteDevice:v7];
+  [(_ADSiriInfoBroadcastLink *)self _handleFoundRemoteDevice:deviceCopy];
 }
 
-- (void)rapportLink:(id)a3 didUpdateLocalDevice:(id)a4
+- (void)rapportLink:(id)link didUpdateLocalDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  deviceCopy = device;
   v8 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v9 = 136315394;
     v10 = "[_ADSiriInfoBroadcastLink rapportLink:didUpdateLocalDevice:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = linkCopy;
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%s %@", &v9, 0x16u);
   }
 
-  [(_ADSiriInfoBroadcastLink *)self _handleUpdatedLocalDevice:v7];
+  [(_ADSiriInfoBroadcastLink *)self _handleUpdatedLocalDevice:deviceCopy];
 }
 
-- (void)updateSiriInfoWithObject:(id)a3 forKey:(id)a4
+- (void)updateSiriInfoWithObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A89CC;
   block[3] = &unk_10051DB68;
-  v12 = v7;
-  v13 = v6;
-  v14 = self;
-  v9 = v6;
-  v10 = v7;
+  v12 = keyCopy;
+  v13 = objectCopy;
+  selfCopy = self;
+  v9 = objectCopy;
+  v10 = keyCopy;
   dispatch_async(queue, block);
 }
 
@@ -187,9 +187,9 @@
   return v3;
 }
 
-- (void)_configureRapportLinkAndReconnectNow:(BOOL)a3
+- (void)_configureRapportLinkAndReconnectNow:(BOOL)now
 {
-  v3 = a3;
+  nowCopy = now;
   rapportLink = self->_rapportLink;
   if (rapportLink)
   {
@@ -206,7 +206,7 @@
   v13[4] = self;
   v7 = objc_retainBlock(v13);
   v8 = v7;
-  if (v3)
+  if (nowCopy)
   {
     (v7[2])(v7);
   }

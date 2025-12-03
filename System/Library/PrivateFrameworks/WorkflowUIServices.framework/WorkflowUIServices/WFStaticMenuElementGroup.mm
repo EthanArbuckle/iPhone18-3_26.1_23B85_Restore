@@ -1,23 +1,23 @@
 @interface WFStaticMenuElementGroup
 - (BOOL)shouldCollapse;
-- (WFStaticMenuElementGroup)initWithMenuElements:(id)a3;
+- (WFStaticMenuElementGroup)initWithMenuElements:(id)elements;
 @end
 
 @implementation WFStaticMenuElementGroup
 
 - (BOOL)shouldCollapse
 {
-  v3 = [(WFStaticMenuElementGroup *)self style];
-  if (v3 != 1)
-    LOBYTE(v3) = -[WFStaticMenuElementGroup style](self, "style") == 2 && (-[WFStaticMenuElementGroup menuElements](self, "menuElements"), v4 = {;
+  style = [(WFStaticMenuElementGroup *)self style];
+  if (style != 1)
+    LOBYTE(style) = -[WFStaticMenuElementGroup style](self, "style") == 2 && (-[WFStaticMenuElementGroup menuElements](self, "menuElements"), v4 = {;
   }
 
-  return v3;
+  return style;
 }
 
-- (WFStaticMenuElementGroup)initWithMenuElements:(id)a3
+- (WFStaticMenuElementGroup)initWithMenuElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v11.receiver = self;
   v11.super_class = WFStaticMenuElementGroup;
   v5 = [(WFStaticMenuElementGroup *)&v11 init];
@@ -25,7 +25,7 @@
   if (v5)
   {
     [(WFStaticMenuElementGroup *)v5 setStyle:0];
-    v7 = [v4 copy];
+    v7 = [elementsCopy copy];
     menuElements = v6->_menuElements;
     v6->_menuElements = v7;
 

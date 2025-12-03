@@ -1,43 +1,43 @@
 @interface HKDisplayTypeChartingRules
-+ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)a3 axisScalingRule:(id)a4;
-+ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)a3 chartStyleForTimeScopes:(id)a4 axisScalingRule:(id)a5 compactAxisScalingRule:(id)a6 preferredTimeScope:(int64_t)a7 chartingOptions:(unint64_t)a8;
-+ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)a3 chartStyleForTimeScopes:(id)a4 axisScalingRule:(id)a5 preferredTimeScope:(int64_t)a6 chartingOptions:(unint64_t)a7;
-- (BOOL)lineChartExtendFirstValueForTimeScope:(int64_t)a3;
-- (BOOL)lineChartExtendLastValueForTimeScope:(int64_t)a3;
-- (BOOL)lineChartFlatLastValueForTimeScope:(int64_t)a3;
-- (BOOL)lineChartUsesPointMarkerImageForTimeScope:(int64_t)a3;
-- (BOOL)lineChartUsesValueAxisAnnotationForTimeScope:(int64_t)a3;
-- (HKDisplayTypeChartingRules)initWithDefaultChartStyle:(int64_t)a3 chartingOptions:(unint64_t)a4 preferredTimeScope:(int64_t)a5;
-- (double)chartPointLineWidthForTimeScope:(int64_t)a3;
-- (double)chartPointRadiusForTimeScope:(int64_t)a3;
-- (id)_ruleForKey:(id)a3 timeScope:(int64_t)a4;
-- (id)allowedDecimalPrecisionRuleForUnit:(id)a3;
-- (id)intervalComponentsForTimeScope:(int64_t)a3;
-- (int64_t)chartStyleForTimeScope:(int64_t)a3;
-- (void)_setRule:(id)a3 forKey:(id)a4 timeScope:(int64_t)a5;
-- (void)setAllowedDecimalPrecisionRule:(id)a3 perUnitPrecisionRules:(id)a4;
-- (void)setChartPointLineWidth:(double)a3 forTimeScope:(int64_t)a4;
-- (void)setChartPointRadius:(double)a3 forTimeScope:(int64_t)a4;
-- (void)setChartStyle:(int64_t)a3 forTimeScope:(int64_t)a4;
-- (void)setLineChartExtendFirstValue:(BOOL)a3 forTimeScope:(int64_t)a4;
-- (void)setLineChartExtendLastValue:(BOOL)a3 forTimeScope:(int64_t)a4;
-- (void)setLineChartFlatLastValue:(BOOL)a3 forTimeScope:(int64_t)a4;
-- (void)setLineChartUsesPointMarkerImage:(BOOL)a3 forTimeScope:(int64_t)a4;
-- (void)setLineChartUsesValueAxisAnnotation:(BOOL)a3 forTimeScope:(int64_t)a4;
++ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)style axisScalingRule:(id)rule;
++ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)style chartStyleForTimeScopes:(id)scopes axisScalingRule:(id)rule compactAxisScalingRule:(id)scalingRule preferredTimeScope:(int64_t)scope chartingOptions:(unint64_t)options;
++ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)style chartStyleForTimeScopes:(id)scopes axisScalingRule:(id)rule preferredTimeScope:(int64_t)scope chartingOptions:(unint64_t)options;
+- (BOOL)lineChartExtendFirstValueForTimeScope:(int64_t)scope;
+- (BOOL)lineChartExtendLastValueForTimeScope:(int64_t)scope;
+- (BOOL)lineChartFlatLastValueForTimeScope:(int64_t)scope;
+- (BOOL)lineChartUsesPointMarkerImageForTimeScope:(int64_t)scope;
+- (BOOL)lineChartUsesValueAxisAnnotationForTimeScope:(int64_t)scope;
+- (HKDisplayTypeChartingRules)initWithDefaultChartStyle:(int64_t)style chartingOptions:(unint64_t)options preferredTimeScope:(int64_t)scope;
+- (double)chartPointLineWidthForTimeScope:(int64_t)scope;
+- (double)chartPointRadiusForTimeScope:(int64_t)scope;
+- (id)_ruleForKey:(id)key timeScope:(int64_t)scope;
+- (id)allowedDecimalPrecisionRuleForUnit:(id)unit;
+- (id)intervalComponentsForTimeScope:(int64_t)scope;
+- (int64_t)chartStyleForTimeScope:(int64_t)scope;
+- (void)_setRule:(id)rule forKey:(id)key timeScope:(int64_t)scope;
+- (void)setAllowedDecimalPrecisionRule:(id)rule perUnitPrecisionRules:(id)rules;
+- (void)setChartPointLineWidth:(double)width forTimeScope:(int64_t)scope;
+- (void)setChartPointRadius:(double)radius forTimeScope:(int64_t)scope;
+- (void)setChartStyle:(int64_t)style forTimeScope:(int64_t)scope;
+- (void)setLineChartExtendFirstValue:(BOOL)value forTimeScope:(int64_t)scope;
+- (void)setLineChartExtendLastValue:(BOOL)value forTimeScope:(int64_t)scope;
+- (void)setLineChartFlatLastValue:(BOOL)value forTimeScope:(int64_t)scope;
+- (void)setLineChartUsesPointMarkerImage:(BOOL)image forTimeScope:(int64_t)scope;
+- (void)setLineChartUsesValueAxisAnnotation:(BOOL)annotation forTimeScope:(int64_t)scope;
 @end
 
 @implementation HKDisplayTypeChartingRules
 
-- (HKDisplayTypeChartingRules)initWithDefaultChartStyle:(int64_t)a3 chartingOptions:(unint64_t)a4 preferredTimeScope:(int64_t)a5
+- (HKDisplayTypeChartingRules)initWithDefaultChartStyle:(int64_t)style chartingOptions:(unint64_t)options preferredTimeScope:(int64_t)scope
 {
-  v6 = a4;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = HKDisplayTypeChartingRules;
   v8 = [(HKDisplayTypeChartingRules *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    v8->_defaultChartStyle = a3;
+    v8->_defaultChartStyle = style;
     if (_DefaultDecimalPrecisionRule_onceToken != -1)
     {
       [HKDisplayTypeChartingRules initWithDefaultChartStyle:chartingOptions:preferredTimeScope:];
@@ -50,52 +50,52 @@
     maximumYAxisLabelWidth = v9->_maximumYAxisLabelWidth;
     v9->_maximumYAxisLabelWidth = &unk_1F4384910;
 
-    v9->_preferredTimeScope = a5;
-    v9->_shouldDisplayUnitForAxisLabels = v6 & 1;
-    v9->_shouldShowInitialLollipop = (v6 & 2) == 0;
-    v9->_shouldInvertYAxis = (v6 & 4) != 0;
-    v9->_shouldConnectSamplesWithLines = (v6 & 8) == 0;
-    v9->_shouldRoundYAxisDuringExpansion = (v6 & 0x10) == 0;
+    v9->_preferredTimeScope = scope;
+    v9->_shouldDisplayUnitForAxisLabels = optionsCopy & 1;
+    v9->_shouldShowInitialLollipop = (optionsCopy & 2) == 0;
+    v9->_shouldInvertYAxis = (optionsCopy & 4) != 0;
+    v9->_shouldConnectSamplesWithLines = (optionsCopy & 8) == 0;
+    v9->_shouldRoundYAxisDuringExpansion = (optionsCopy & 0x10) == 0;
   }
 
   return v9;
 }
 
-+ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)a3 axisScalingRule:(id)a4
++ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)style axisScalingRule:(id)rule
 {
-  v5 = a4;
-  v6 = [objc_opt_class() chartingRulesWithDefaultChartStyle:a3 chartStyleForTimeScopes:0 axisScalingRule:v5 preferredTimeScope:5 chartingOptions:0];
+  ruleCopy = rule;
+  v6 = [objc_opt_class() chartingRulesWithDefaultChartStyle:style chartStyleForTimeScopes:0 axisScalingRule:ruleCopy preferredTimeScope:5 chartingOptions:0];
 
   return v6;
 }
 
-+ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)a3 chartStyleForTimeScopes:(id)a4 axisScalingRule:(id)a5 preferredTimeScope:(int64_t)a6 chartingOptions:(unint64_t)a7
++ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)style chartStyleForTimeScopes:(id)scopes axisScalingRule:(id)rule preferredTimeScope:(int64_t)scope chartingOptions:(unint64_t)options
 {
-  v11 = a5;
-  v12 = a4;
-  v13 = [objc_opt_class() chartingRulesWithDefaultChartStyle:a3 chartStyleForTimeScopes:v12 axisScalingRule:v11 compactAxisScalingRule:0 preferredTimeScope:a6 chartingOptions:a7];
+  ruleCopy = rule;
+  scopesCopy = scopes;
+  v13 = [objc_opt_class() chartingRulesWithDefaultChartStyle:style chartStyleForTimeScopes:scopesCopy axisScalingRule:ruleCopy compactAxisScalingRule:0 preferredTimeScope:scope chartingOptions:options];
 
   return v13;
 }
 
-+ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)a3 chartStyleForTimeScopes:(id)a4 axisScalingRule:(id)a5 compactAxisScalingRule:(id)a6 preferredTimeScope:(int64_t)a7 chartingOptions:(unint64_t)a8
++ (HKDisplayTypeChartingRules)chartingRulesWithDefaultChartStyle:(int64_t)style chartStyleForTimeScopes:(id)scopes axisScalingRule:(id)rule compactAxisScalingRule:(id)scalingRule preferredTimeScope:(int64_t)scope chartingOptions:(unint64_t)options
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a5;
-  v16 = [[HKDisplayTypeChartingRules alloc] initWithDefaultChartStyle:a3 chartingOptions:a8];
-  [(HKDisplayTypeChartingRules *)v16 setAxisScalingRule:v15];
+  scopesCopy = scopes;
+  scalingRuleCopy = scalingRule;
+  ruleCopy = rule;
+  v16 = [[HKDisplayTypeChartingRules alloc] initWithDefaultChartStyle:style chartingOptions:options];
+  [(HKDisplayTypeChartingRules *)v16 setAxisScalingRule:ruleCopy];
 
-  [(HKDisplayTypeChartingRules *)v16 setCompactChartAxisScalingRule:v14];
-  [(HKDisplayTypeChartingRules *)v16 setPreferredTimeScope:a7];
-  if (v13)
+  [(HKDisplayTypeChartingRules *)v16 setCompactChartAxisScalingRule:scalingRuleCopy];
+  [(HKDisplayTypeChartingRules *)v16 setPreferredTimeScope:scope];
+  if (scopesCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __163__HKDisplayTypeChartingRules_chartingRulesWithDefaultChartStyle_chartStyleForTimeScopes_axisScalingRule_compactAxisScalingRule_preferredTimeScope_chartingOptions___block_invoke;
     v18[3] = &unk_1E81B8548;
     v19 = v16;
-    [v13 enumerateKeysAndObjectsUsingBlock:v18];
+    [scopesCopy enumerateKeysAndObjectsUsingBlock:v18];
   }
 
   return v16;
@@ -111,15 +111,15 @@ uint64_t __163__HKDisplayTypeChartingRules_chartingRulesWithDefaultChartStyle_ch
   return [v4 setChartStyle:v6 forTimeScope:v7];
 }
 
-- (void)setChartStyle:(int64_t)a3 forTimeScope:(int64_t)a4
+- (void)setChartStyle:(int64_t)style forTimeScope:(int64_t)scope
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"chartStyle" timeScope:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:style];
+  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"chartStyle" timeScope:scope];
 }
 
-- (int64_t)chartStyleForTimeScope:(int64_t)a3
+- (int64_t)chartStyleForTimeScope:(int64_t)scope
 {
-  v4 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"chartStyle" timeScope:a3];
+  v4 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"chartStyle" timeScope:scope];
   v5 = v4;
   if (v4)
   {
@@ -134,9 +134,9 @@ uint64_t __163__HKDisplayTypeChartingRules_chartingRulesWithDefaultChartStyle_ch
   return defaultChartStyle;
 }
 
-- (id)intervalComponentsForTimeScope:(int64_t)a3
+- (id)intervalComponentsForTimeScope:(int64_t)scope
 {
-  v4 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"intervalComponents" timeScope:a3];
+  v4 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"intervalComponents" timeScope:scope];
   if (v4)
   {
     goto LABEL_2;
@@ -144,13 +144,13 @@ uint64_t __163__HKDisplayTypeChartingRules_chartingRulesWithDefaultChartStyle_ch
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF10]);
   v4 = v6;
-  if (a3 <= 4)
+  if (scope <= 4)
   {
-    if (a3 <= 2)
+    if (scope <= 2)
     {
-      if (a3 >= 2)
+      if (scope >= 2)
       {
-        if (a3 == 2)
+        if (scope == 2)
         {
           [v6 setMonth:1];
         }
@@ -164,7 +164,7 @@ uint64_t __163__HKDisplayTypeChartingRules_chartingRulesWithDefaultChartStyle_ch
       goto LABEL_2;
     }
 
-    if (a3 == 3)
+    if (scope == 3)
     {
       [v6 setWeekOfYear:1];
       goto LABEL_2;
@@ -173,9 +173,9 @@ uint64_t __163__HKDisplayTypeChartingRules_chartingRulesWithDefaultChartStyle_ch
     goto LABEL_16;
   }
 
-  if (a3 <= 6)
+  if (scope <= 6)
   {
-    if (a3 != 5)
+    if (scope != 5)
     {
       [v6 setHour:1];
       goto LABEL_2;
@@ -184,14 +184,14 @@ uint64_t __163__HKDisplayTypeChartingRules_chartingRulesWithDefaultChartStyle_ch
     goto LABEL_16;
   }
 
-  if (a3 == 8)
+  if (scope == 8)
   {
 LABEL_16:
     [v6 setDay:1];
     goto LABEL_2;
   }
 
-  if (a3 == 7)
+  if (scope == 7)
   {
     [v6 setMinute:15];
   }
@@ -201,15 +201,15 @@ LABEL_2:
   return v4;
 }
 
-- (void)setChartPointLineWidth:(double)a3 forTimeScope:(int64_t)a4
+- (void)setChartPointLineWidth:(double)width forTimeScope:(int64_t)scope
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineWidth" timeScope:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:width];
+  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineWidth" timeScope:scope];
 }
 
-- (double)chartPointLineWidthForTimeScope:(int64_t)a3
+- (double)chartPointLineWidthForTimeScope:(int64_t)scope
 {
-  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineWidth" timeScope:a3];
+  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineWidth" timeScope:scope];
   v4 = v3;
   if (v3)
   {
@@ -225,15 +225,15 @@ LABEL_2:
   return v6;
 }
 
-- (void)setChartPointRadius:(double)a3 forTimeScope:(int64_t)a4
+- (void)setChartPointRadius:(double)radius forTimeScope:(int64_t)scope
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"radius" timeScope:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithDouble:radius];
+  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"radius" timeScope:scope];
 }
 
-- (double)chartPointRadiusForTimeScope:(int64_t)a3
+- (double)chartPointRadiusForTimeScope:(int64_t)scope
 {
-  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"radius" timeScope:a3];
+  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"radius" timeScope:scope];
   v4 = v3;
   if (v3)
   {
@@ -249,125 +249,125 @@ LABEL_2:
   return v6;
 }
 
-- (void)setLineChartFlatLastValue:(BOOL)a3 forTimeScope:(int64_t)a4
+- (void)setLineChartFlatLastValue:(BOOL)value forTimeScope:(int64_t)scope
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartFlatLastValue" timeScope:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:value];
+  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartFlatLastValue" timeScope:scope];
 }
 
-- (BOOL)lineChartFlatLastValueForTimeScope:(int64_t)a3
+- (BOOL)lineChartFlatLastValueForTimeScope:(int64_t)scope
 {
-  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartFlatLastValue" timeScope:a3];
+  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartFlatLastValue" timeScope:scope];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setLineChartExtendLastValue:(BOOL)a3 forTimeScope:(int64_t)a4
+- (void)setLineChartExtendLastValue:(BOOL)value forTimeScope:(int64_t)scope
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartExtendLastValue" timeScope:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:value];
+  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartExtendLastValue" timeScope:scope];
 }
 
-- (BOOL)lineChartExtendLastValueForTimeScope:(int64_t)a3
+- (BOOL)lineChartExtendLastValueForTimeScope:(int64_t)scope
 {
-  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartExtendLastValue" timeScope:a3];
+  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartExtendLastValue" timeScope:scope];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setLineChartExtendFirstValue:(BOOL)a3 forTimeScope:(int64_t)a4
+- (void)setLineChartExtendFirstValue:(BOOL)value forTimeScope:(int64_t)scope
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartExtendFirstValue" timeScope:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:value];
+  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartExtendFirstValue" timeScope:scope];
 }
 
-- (BOOL)lineChartExtendFirstValueForTimeScope:(int64_t)a3
+- (BOOL)lineChartExtendFirstValueForTimeScope:(int64_t)scope
 {
-  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartExtendFirstValue" timeScope:a3];
+  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartExtendFirstValue" timeScope:scope];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setLineChartUsesPointMarkerImage:(BOOL)a3 forTimeScope:(int64_t)a4
+- (void)setLineChartUsesPointMarkerImage:(BOOL)image forTimeScope:(int64_t)scope
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartUsesPointMarkerImage" timeScope:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:image];
+  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartUsesPointMarkerImage" timeScope:scope];
 }
 
-- (BOOL)lineChartUsesPointMarkerImageForTimeScope:(int64_t)a3
+- (BOOL)lineChartUsesPointMarkerImageForTimeScope:(int64_t)scope
 {
-  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartUsesPointMarkerImage" timeScope:a3];
+  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartUsesPointMarkerImage" timeScope:scope];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)setLineChartUsesValueAxisAnnotation:(BOOL)a3 forTimeScope:(int64_t)a4
+- (void)setLineChartUsesValueAxisAnnotation:(BOOL)annotation forTimeScope:(int64_t)scope
 {
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:a3];
-  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartUsesValueAxisAnnotation" timeScope:a4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:annotation];
+  [(HKDisplayTypeChartingRules *)self _setRule:v6 forKey:@"lineChartUsesValueAxisAnnotation" timeScope:scope];
 }
 
-- (BOOL)lineChartUsesValueAxisAnnotationForTimeScope:(int64_t)a3
+- (BOOL)lineChartUsesValueAxisAnnotationForTimeScope:(int64_t)scope
 {
-  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartUsesValueAxisAnnotation" timeScope:a3];
+  v3 = [(HKDisplayTypeChartingRules *)self _ruleForKey:@"lineChartUsesValueAxisAnnotation" timeScope:scope];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)_setRule:(id)a3 forKey:(id)a4 timeScope:(int64_t)a5
+- (void)_setRule:(id)rule forKey:(id)key timeScope:(int64_t)scope
 {
-  v14 = a3;
-  v8 = a4;
+  ruleCopy = rule;
+  keyCopy = key;
   rulesByTimeScope = self->_rulesByTimeScope;
   if (!rulesByTimeScope)
   {
@@ -378,47 +378,47 @@ LABEL_2:
     rulesByTimeScope = self->_rulesByTimeScope;
   }
 
-  v12 = [(NSMutableDictionary *)rulesByTimeScope objectForKeyedSubscript:v8];
+  v12 = [(NSMutableDictionary *)rulesByTimeScope objectForKeyedSubscript:keyCopy];
   if (!v12)
   {
     v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_rulesByTimeScope setObject:v12 forKeyedSubscript:v8];
+    [(NSMutableDictionary *)self->_rulesByTimeScope setObject:v12 forKeyedSubscript:keyCopy];
   }
 
-  v13 = [MEMORY[0x1E696AD98] numberWithInteger:a5];
-  [v12 setObject:v14 forKeyedSubscript:v13];
+  v13 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
+  [v12 setObject:ruleCopy forKeyedSubscript:v13];
 }
 
-- (id)_ruleForKey:(id)a3 timeScope:(int64_t)a4
+- (id)_ruleForKey:(id)key timeScope:(int64_t)scope
 {
-  v5 = [(NSMutableDictionary *)self->_rulesByTimeScope objectForKeyedSubscript:a3];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v5 = [(NSMutableDictionary *)self->_rulesByTimeScope objectForKeyedSubscript:key];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
   v7 = [v5 objectForKeyedSubscript:v6];
 
   return v7;
 }
 
-- (void)setAllowedDecimalPrecisionRule:(id)a3 perUnitPrecisionRules:(id)a4
+- (void)setAllowedDecimalPrecisionRule:(id)rule perUnitPrecisionRules:(id)rules
 {
-  v8 = a3;
-  v7 = a4;
-  if (v8)
+  ruleCopy = rule;
+  rulesCopy = rules;
+  if (ruleCopy)
   {
-    objc_storeStrong(&self->_allowedDecimalPrecisionRule, a3);
+    objc_storeStrong(&self->_allowedDecimalPrecisionRule, rule);
   }
 
-  if (v7)
+  if (rulesCopy)
   {
-    objc_storeStrong(&self->_perUnitDecimalPrecision, a4);
+    objc_storeStrong(&self->_perUnitDecimalPrecision, rules);
   }
 }
 
-- (id)allowedDecimalPrecisionRuleForUnit:(id)a3
+- (id)allowedDecimalPrecisionRuleForUnit:(id)unit
 {
   v5 = self->_allowedDecimalPrecisionRule;
-  if (a3)
+  if (unit)
   {
-    v6 = [(NSDictionary *)self->_perUnitDecimalPrecision objectForKeyedSubscript:a3];
+    v6 = [(NSDictionary *)self->_perUnitDecimalPrecision objectForKeyedSubscript:unit];
     v7 = v6;
     if (v6)
     {

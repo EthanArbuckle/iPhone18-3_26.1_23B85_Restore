@@ -1,17 +1,17 @@
 @interface _UIActivityCollectionViewCompositionalLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 @end
 
 @implementation _UIActivityCollectionViewCompositionalLayout
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(_UIActivityCollectionViewCompositionalLayout *)self collectionView];
-  [v7 bounds];
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  collectionView = [(_UIActivityCollectionViewCompositionalLayout *)self collectionView];
+  [collectionView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;

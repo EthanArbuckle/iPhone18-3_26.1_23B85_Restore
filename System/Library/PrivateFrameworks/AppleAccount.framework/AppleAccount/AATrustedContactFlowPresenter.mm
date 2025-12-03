@@ -1,18 +1,18 @@
 @interface AATrustedContactFlowPresenter
 - (void)dealloc;
-- (void)presentInvitationUIWithCustodianshipInfo:(id)a3 completion:(id)a4;
-- (void)presentModel:(id)a3 completion:(id)a4;
+- (void)presentInvitationUIWithCustodianshipInfo:(id)info completion:(id)completion;
+- (void)presentModel:(id)model completion:(id)completion;
 @end
 
 @implementation AATrustedContactFlowPresenter
 
-- (void)presentModel:(id)a3 completion:(id)a4
+- (void)presentModel:(id)model completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  [(AAFlowPresenter *)self setPresentationCompletion:a4];
+  modelCopy = model;
+  [(AAFlowPresenter *)self setPresentationCompletion:completion];
   v16 = 0;
-  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v16];
+  v7 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:modelCopy requiringSecureCoding:1 error:&v16];
   v8 = v16;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   objc_opt_class();
@@ -47,10 +47,10 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)presentInvitationUIWithCustodianshipInfo:(id)a3 completion:(id)a4
+- (void)presentInvitationUIWithCustodianshipInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  [(AAFlowPresenter *)self setPresentationCompletion:a4];
+  infoCopy = info;
+  [(AAFlowPresenter *)self setPresentationCompletion:completion];
   v7 = _AALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -60,7 +60,7 @@
 
   v8 = _AALogSystem();
   v9 = v8;
-  if (v6)
+  if (infoCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -68,7 +68,7 @@
       _os_log_impl(&dword_1B6F6A000, v9, OS_LOG_TYPE_DEFAULT, "Will create model for invitation.", v18, 2u);
     }
 
-    v10 = [[AAOBCustodianInvitationModel alloc] initWithCustodianshipInfo:v6];
+    v10 = [[AAOBCustodianInvitationModel alloc] initWithCustodianshipInfo:infoCopy];
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v17 = 0;
     v12 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v17];

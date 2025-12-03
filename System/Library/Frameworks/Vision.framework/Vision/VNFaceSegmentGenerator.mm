@@ -1,13 +1,13 @@
 @interface VNFaceSegmentGenerator
-+ (id)espressoModelFileNameForConfigurationOptions:(id)a3;
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3;
-- (BOOL)_fillFaceSegmentLabelToProbabilityMap:(id)a3 error:(id *)a4;
-- (BOOL)_getFaceSegmenterInputImageSize:(CGSize *)a3 forRequestRevision:(unint64_t)a4 error:(id *)a5;
-- (BOOL)_getNumberOfSupportedFaceSegments:(unint64_t *)a3 forRequestRevision:(unint64_t)a4 error:(id *)a5;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)espressoModelFileNameForConfigurationOptions:(id)options;
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options;
+- (BOOL)_fillFaceSegmentLabelToProbabilityMap:(id)map error:(id *)error;
+- (BOOL)_getFaceSegmenterInputImageSize:(CGSize *)size forRequestRevision:(unint64_t)revision error:(id *)error;
+- (BOOL)_getNumberOfSupportedFaceSegments:(unint64_t *)segments forRequestRevision:(unint64_t)revision error:(id *)error;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (id).cxx_construct;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 @end
 
 @implementation VNFaceSegmentGenerator
@@ -19,10 +19,10 @@
   return self;
 }
 
-- (BOOL)_fillFaceSegmentLabelToProbabilityMap:(id)a3 error:(id *)a4
+- (BOOL)_fillFaceSegmentLabelToProbabilityMap:(id)map error:(id *)error
 {
   v33[4] = *MEMORY[0x1E69E9840];
-  v29 = a3;
+  mapCopy = map;
   v5 = +[VNFaceSegments faceSegmentIndexToFlagMap];
   v6 = 0;
   while (1)
@@ -70,11 +70,11 @@ LABEL_7:
 
     if (dest.width != 256 || dest.height != 256)
     {
-      if (a4)
+      if (error)
       {
         v25 = objc_alloc(MEMORY[0x1E696AEC0]);
         v26 = [v25 initWithFormat:@"Expected labelConfidence map of %lu x %lu and got %lu x %lu", 256, 256, dest.width, dest.height];
-        *a4 = [VNError errorForInternalErrorWithLocalizedDescription:v26];
+        *error = [VNError errorForInternalErrorWithLocalizedDescription:v26];
       }
 
       goto LABEL_24;
@@ -100,15 +100,15 @@ LABEL_7:
 
     if (!v22)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [VNError errorForInternalErrorWithLocalizedDescription:@"cannot map face segments"];
+        *error = [VNError errorForInternalErrorWithLocalizedDescription:@"cannot map face segments"];
       }
 
       goto LABEL_24;
     }
 
-    [v29 setObject:v20 forKey:v22];
+    [mapCopy setObject:v20 forKey:v22];
 
     if (++v6 == 15)
     {
@@ -127,9 +127,9 @@ LABEL_7:
 
   v24 = 8315;
 LABEL_22:
-  if (a4)
+  if (error)
   {
-    *a4 = VNErrorForCVMLStatus(v24);
+    *error = VNErrorForCVMLStatus(v24);
   }
 
 LABEL_24:
@@ -139,18 +139,18 @@ LABEL_25:
   return v23;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
   v82[1] = *MEMORY[0x1E69E9840];
-  v12 = a5;
+  optionsCopy = options;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __124__VNFaceSegmentGenerator_processRegionOfInterest_croppedPixelBuffer_options_qosClass_warningRecorder_error_progressHandler___block_invoke;
   aBlock[3] = &unk_1E77B36A8;
   aBlock[4] = self;
-  aBlock[5] = a4;
+  aBlock[5] = buffer;
   v13 = _Block_copy(aBlock);
-  if ((VNExecuteBlock(v13, a8) & 1) == 0)
+  if ((VNExecuteBlock(v13, error) & 1) == 0)
   {
     goto LABEL_35;
   }
@@ -161,11 +161,11 @@ LABEL_25:
   if (*(v14 + 248) != 1)
   {
     v37 = 8308;
-    if (a8)
+    if (error)
     {
 LABEL_33:
       VNErrorForCVMLStatus(v37);
-      *a8 = v38 = 0;
+      *error = v38 = 0;
       goto LABEL_36;
     }
 
@@ -174,7 +174,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v77 = v12;
+  v77 = optionsCopy;
   v15 = *(v14 + 28);
   v16 = *v15;
   v17 = v15[1];
@@ -191,7 +191,7 @@ LABEL_35:
   *(v14 + 46) = v19;
   *(v14 + 44) = v17;
   bzero(v20, v19 * v17);
-  v12 = v77;
+  optionsCopy = v77;
   if (v17)
   {
     v21 = 0;
@@ -258,14 +258,14 @@ LABEL_35:
       *&v80 = v31;
       *(&v80 + 1) = (v31 + 15) & 0xFFFFFFFFFFFFFFF0;
       ptr[1] = v32;
-      v12 = v77;
+      optionsCopy = v77;
       goto LABEL_20;
     }
 
 LABEL_34:
     v37 = 4221;
-    v12 = v77;
-    if (a8)
+    optionsCopy = v77;
+    if (error)
     {
       goto LABEL_33;
     }
@@ -277,7 +277,7 @@ LABEL_20:
   if (!*(v14 + 43) || (v33 = *(v14 + 45)) == 0 || (v34 = *(v14 + 44)) == 0 || *(v14 + 46) < 2uLL || !v80 || (v35 = ptr[1]) == 0 || (v36 = *(&v80 + 1), *(&v80 + 1) < 2uLL))
   {
     v37 = 4220;
-    if (a8)
+    if (error)
     {
       goto LABEL_33;
     }
@@ -349,29 +349,29 @@ LABEL_20:
   v54 = *(v52 + 65);
   v55 = objc_alloc(MEMORY[0x1E695DEF0]);
   v56 = [v55 initWithBytesNoCopy:ptr[0] length:((v53 + 15) & 0xFFFFFFFFFFFFFFF0) * v54];
-  v57 = [VNValidationUtilities originatingRequestSpecifierInOptions:v12 specifyingRequestClass:objc_opt_class() error:a8];
+  v57 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy specifyingRequestClass:objc_opt_class() error:error];
   v58 = v57;
-  if (v57 && (v59 = [v57 requestRevision], v78 = 0, -[VNFaceSegmentGenerator _getNumberOfSupportedFaceSegments:forRequestRevision:error:](self, "_getNumberOfSupportedFaceSegments:forRequestRevision:error:", &v78, v59, a8)))
+  if (v57 && (v59 = [v57 requestRevision], v78 = 0, -[VNFaceSegmentGenerator _getNumberOfSupportedFaceSegments:forRequestRevision:error:](self, "_getNumberOfSupportedFaceSegments:forRequestRevision:error:", &v78, v59, error)))
   {
     v60 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    if ([(VNFaceSegmentGenerator *)self _fillFaceSegmentLabelToProbabilityMap:v60 error:a8])
+    if ([(VNFaceSegmentGenerator *)self _fillFaceSegmentLabelToProbabilityMap:v60 error:error])
     {
-      v76 = [v12 objectForKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_X"];
+      v76 = [optionsCopy objectForKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_X"];
       [v76 doubleValue];
       v62 = v61;
-      v63 = [v12 objectForKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Y"];
+      v63 = [optionsCopy objectForKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Y"];
       [v63 doubleValue];
       v65 = v64;
-      v66 = [v12 objectForKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Width"];
+      v66 = [optionsCopy objectForKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Width"];
       [v66 doubleValue];
       v68 = v67;
-      v69 = [v12 objectForKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Height"];
+      v69 = [optionsCopy objectForKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Height"];
       [v69 doubleValue];
       v71 = v70;
 
       v72 = [VNFaceSegments alloc];
       v73 = [(VNFaceSegments *)v72 initWithRequestRevision:v59 outputBufferWidth:v80 outputBufferHeight:ptr[1] outputBufferData:v56 numberOfFaceSegments:v78 faceSegmentBBox:v60 faceSegmentLabelToProbabilityMap:v62, v65, v68, v71];
-      v74 = VNCloneFaceObservationFromOptions(v12, a8);
+      v74 = VNCloneFaceObservationFromOptions(optionsCopy, error);
       v75 = v74;
       if (v74)
       {
@@ -449,28 +449,28 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  v12 = a4;
-  v13 = [(VNDetector *)self validatedImageBufferFromOptions:v12 error:a8];
+  optionsCopy = options;
+  v13 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 width];
-    v16 = [v14 height];
-    v17 = [VNValidationUtilities requiredFaceObservationInOptions:v12 error:a8];
+    width = [v13 width];
+    height = [v14 height];
+    v17 = [VNValidationUtilities requiredFaceObservationInOptions:optionsCopy error:error];
     v18 = v17;
     if (v17)
     {
       [v17 alignedBoundingBoxAsCGRect];
-      v22 = v15;
-      v24 = v23 * v15;
-      if (v24 == 0.0 || (v25 = v16, v26 = v21 * v16, v26 == 0.0))
+      v22 = width;
+      v24 = v23 * width;
+      if (v24 == 0.0 || (v25 = height, v26 = v21 * height, v26 == 0.0))
       {
-        if (a8)
+        if (error)
         {
           [VNError errorForInternalErrorWithLocalizedDescription:@"One of the dimensions of the input face image is zero"];
-          *a8 = v42 = 0;
+          *error = v42 = 0;
 LABEL_17:
 
           goto LABEL_18;
@@ -482,7 +482,7 @@ LABEL_17:
         v27 = v19;
         v28 = v20;
         v56 = 0.0;
-        if ([VNValidationUtilities getFloatValue:&v56 forKey:@"VNFaceSegmentGeneratorProcessOption_FaceBoundingBoxExpansionRatio" inOptions:v12 error:a8])
+        if ([VNValidationUtilities getFloatValue:&v56 forKey:@"VNFaceSegmentGeneratorProcessOption_FaceBoundingBoxExpansionRatio" inOptions:optionsCopy error:error])
         {
           v57.origin.x = v27 * v22;
           v57.origin.y = v28 * v25;
@@ -497,7 +497,7 @@ LABEL_17:
           width = v58.size.width;
           height = v58.size.height;
           [v14 orientation];
-          if (VNSetFaceOrientationInOptionsDictionary(v18, v12, a8))
+          if (VNSetFaceOrientationInOptionsDictionary(v18, optionsCopy, error))
           {
             if (width >= height)
             {
@@ -513,37 +513,37 @@ LABEL_17:
             v37 = v36;
             if (v38 >= v37)
             {
-              v44 = [VNValidationUtilities originatingRequestSpecifierInOptions:v12 specifyingRequestClass:objc_opt_class() error:a8];
+              v44 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy specifyingRequestClass:objc_opt_class() error:error];
               v41 = v44;
-              if (v44 && (v45 = [v44 requestRevision], *v55 = *MEMORY[0x1E695F060], -[VNFaceSegmentGenerator _getFaceSegmenterInputImageSize:forRequestRevision:error:](self, "_getFaceSegmenterInputImageSize:forRequestRevision:error:", v55, v45, a8)) && (objc_msgSend(v12, "setObject:forKeyedSubscript:", MEMORY[0x1E695E118], @"VNImageBufferOption_CreateFromPixelBufferPool"), v46 = objc_msgSend(v14, "croppedBufferWithWidth:height:format:cropRect:options:error:", v55[0], v55[1], 1111970369, v12, a8, x, y, width, height), (*a7 = v46) != 0))
+              if (v44 && (v45 = [v44 requestRevision], *v55 = *MEMORY[0x1E695F060], -[VNFaceSegmentGenerator _getFaceSegmenterInputImageSize:forRequestRevision:error:](self, "_getFaceSegmenterInputImageSize:forRequestRevision:error:", v55, v45, error)) && (objc_msgSend(optionsCopy, "setObject:forKeyedSubscript:", MEMORY[0x1E695E118], @"VNImageBufferOption_CreateFromPixelBufferPool"), v46 = objc_msgSend(v14, "croppedBufferWithWidth:height:format:cropRect:options:error:", v55[0], v55[1], 1111970369, optionsCopy, error, x, y, width, height), (*buffer = v46) != 0))
               {
                 v47 = 0.0;
                 v48 = 0.0;
                 v49 = 0.0;
-                if (v15)
+                if (width)
                 {
                   v48 = x / v22;
                   v49 = width / v22;
                 }
 
                 v50 = 0.0;
-                if (v16)
+                if (height)
                 {
                   v47 = y / v25;
                   v50 = height / v25;
                 }
 
                 v51 = [MEMORY[0x1E696AD98] numberWithDouble:v48];
-                [v12 setObject:v51 forKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_X"];
+                [optionsCopy setObject:v51 forKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_X"];
 
                 v52 = [MEMORY[0x1E696AD98] numberWithDouble:v47];
-                [v12 setObject:v52 forKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Y"];
+                [optionsCopy setObject:v52 forKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Y"];
 
                 v53 = [MEMORY[0x1E696AD98] numberWithDouble:v49];
-                [v12 setObject:v53 forKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Width"];
+                [optionsCopy setObject:v53 forKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Width"];
 
                 v54 = [MEMORY[0x1E696AD98] numberWithDouble:v50];
-                [v12 setObject:v54 forKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Height"];
+                [optionsCopy setObject:v54 forKeyedSubscript:@"VNFaceSegmentGeneratorInternalProcessOption_FaceSegmentBBoxNormalized_Height"];
 
                 v42 = 1;
               }
@@ -556,13 +556,13 @@ LABEL_17:
               goto LABEL_28;
             }
 
-            if (a8)
+            if (error)
             {
               v39 = MEMORY[0x1E696AEC0];
               +[VNFaceSegmentGenerator _faceSegmenterMaximumInputImageAspectRatio];
               v41 = [v39 stringWithFormat:@"Input face aspect ratio > %f cannot be processed", v40];
               [VNError errorForInternalErrorWithLocalizedDescription:v41];
-              *a8 = v42 = 0;
+              *error = v42 = 0;
 LABEL_28:
 
               goto LABEL_17;
@@ -582,84 +582,84 @@ LABEL_18:
   return v42;
 }
 
-- (BOOL)_getNumberOfSupportedFaceSegments:(unint64_t *)a3 forRequestRevision:(unint64_t)a4 error:(id *)a5
+- (BOOL)_getNumberOfSupportedFaceSegments:(unint64_t *)segments forRequestRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3)
+  if (segments)
   {
-    if (a4 == 1)
+    if (revision == 1)
     {
-      *a3 = *(*(self->_faceSegmenterDNN.__ptr_ + 28) + 16);
+      *segments = *(*(self->_faceSegmenterDNN.__ptr_ + 28) + 16);
       return 1;
     }
 
-    if (a5)
+    if (error)
     {
       v7 = @"Unexpected request revision";
       goto LABEL_8;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v7 = @"Invalid parameter (numberOfSupportedFaceSegments)";
 LABEL_8:
-    v8 = [VNError errorForInternalErrorWithLocalizedDescription:v7, a4];
-    v9 = v8;
+    revision = [VNError errorForInternalErrorWithLocalizedDescription:v7, revision];
+    v9 = revision;
     result = 0;
-    *a5 = v8;
+    *error = revision;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)_getFaceSegmenterInputImageSize:(CGSize *)a3 forRequestRevision:(unint64_t)a4 error:(id *)a5
+- (BOOL)_getFaceSegmenterInputImageSize:(CGSize *)size forRequestRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3)
+  if (size)
   {
-    if (a4 == 1)
+    if (revision == 1)
     {
-      *a3 = vcvtq_f64_f32(vcvt_f32_f64(vcvtq_f64_u64(**(self->_faceSegmenterDNN.__ptr_ + 25))));
+      *size = vcvtq_f64_f32(vcvt_f32_f64(vcvtq_f64_u64(**(self->_faceSegmenterDNN.__ptr_ + 25))));
       return 1;
     }
 
-    if (a5)
+    if (error)
     {
       v7 = @"Unexpected request revision";
       goto LABEL_8;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v7 = @"Invalid parameter (size)";
 LABEL_8:
-    v8 = [VNError errorForInternalErrorWithLocalizedDescription:v7, a4];
-    v9 = v8;
+    revision = [VNError errorForInternalErrorWithLocalizedDescription:v7, revision];
+    v9 = revision;
     result = 0;
-    *a5 = v8;
+    *error = revision;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
   v7.receiver = self;
   v7.super_class = VNFaceSegmentGenerator;
-  if ([(VNEspressoModelFileBasedDetector *)&v7 completeInitializationForSession:a3 error:?])
+  if ([(VNEspressoModelFileBasedDetector *)&v7 completeInitializationForSession:session error:?])
   {
-    v5 = [(VNEspressoModelFileBasedDetector *)self espressoResources];
-    [v5 network];
-    [v5 plan];
+    espressoResources = [(VNEspressoModelFileBasedDetector *)self espressoResources];
+    [espressoResources network];
+    [espressoResources plan];
     operator new();
   }
 
   return 0;
 }
 
-+ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)a3
++ (id)espressoModelInputImageDimensionsBlobNameForConfigurationOptions:(id)options
 {
   if (+[VNFaceSegmentGenerator espressoModelInputImageDimensionsBlobNameForConfigurationOptions:]::onceToken != -1)
   {
@@ -678,7 +678,7 @@ uint64_t __91__VNFaceSegmentGenerator_espressoModelInputImageDimensionsBlobNameF
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)espressoModelFileNameForConfigurationOptions:(id)a3
++ (id)espressoModelFileNameForConfigurationOptions:(id)options
 {
   if (+[VNFaceSegmentGenerator espressoModelFileNameForConfigurationOptions:]::onceToken != -1)
   {

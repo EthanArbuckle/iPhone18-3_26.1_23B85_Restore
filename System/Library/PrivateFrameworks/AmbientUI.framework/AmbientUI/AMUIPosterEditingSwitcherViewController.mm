@@ -1,24 +1,24 @@
 @interface AMUIPosterEditingSwitcherViewController
-- (AMUIPosterEditingSwitcherViewController)initWithActiveConfiguration:(id)a3 transitionOverlayView:(id)a4;
+- (AMUIPosterEditingSwitcherViewController)initWithActiveConfiguration:(id)configuration transitionOverlayView:(id)view;
 - (AMUIPosterEditingSwitcherViewControllerDelegate)delegate;
-- (void)modalRemoteViewController:(id)a3 didDismissWithResponse:(id)a4;
+- (void)modalRemoteViewController:(id)controller didDismissWithResponse:(id)response;
 - (void)viewDidLoad;
 @end
 
 @implementation AMUIPosterEditingSwitcherViewController
 
-- (AMUIPosterEditingSwitcherViewController)initWithActiveConfiguration:(id)a3 transitionOverlayView:(id)a4
+- (AMUIPosterEditingSwitcherViewController)initWithActiveConfiguration:(id)configuration transitionOverlayView:(id)view
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = AMUIPosterEditingSwitcherViewController;
   v9 = [(AMUIPosterEditingSwitcherViewController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_activeConfiguration, a3);
-    objc_storeStrong(&v10->_transitionOverlayView, a4);
+    objc_storeStrong(&v9->_activeConfiguration, configuration);
+    objc_storeStrong(&v10->_transitionOverlayView, view);
   }
 
   return v10;
@@ -29,11 +29,11 @@
   v12.receiver = self;
   v12.super_class = AMUIPosterEditingSwitcherViewController;
   [(AMUIPosterEditingSwitcherViewController *)&v12 viewDidLoad];
-  v3 = [(AMUIPosterEditingSwitcherViewController *)self transitionOverlayView];
-  v4 = v3;
-  if (v3)
+  transitionOverlayView = [(AMUIPosterEditingSwitcherViewController *)self transitionOverlayView];
+  v4 = transitionOverlayView;
+  if (transitionOverlayView)
   {
-    v5 = [v3 layer];
+    layer = [transitionOverlayView layer];
     RenderId = CALayerGetRenderId();
   }
 
@@ -42,10 +42,10 @@
     RenderId = 0;
   }
 
-  v7 = [v4 window];
-  v8 = [v7 _contextId];
+  window = [v4 window];
+  _contextId = [window _contextId];
 
-  v9 = [objc_alloc(MEMORY[0x277D3EAB0]) initWithActiveConfiguration:self->_activeConfiguration transitionOverlayRenderId:RenderId transitionOverlayContextId:v8];
+  v9 = [objc_alloc(MEMORY[0x277D3EAB0]) initWithActiveConfiguration:self->_activeConfiguration transitionOverlayRenderId:RenderId transitionOverlayContextId:_contextId];
   v10 = [objc_alloc(MEMORY[0x277D3EAF8]) initWithEntryPoint:v9];
   remoteViewController = self->_remoteViewController;
   self->_remoteViewController = v10;
@@ -55,9 +55,9 @@
   [(AMUIPosterEditingSwitcherViewController *)self bs_addChildViewController:self->_remoteViewController];
 }
 
-- (void)modalRemoteViewController:(id)a3 didDismissWithResponse:(id)a4
+- (void)modalRemoteViewController:(id)controller didDismissWithResponse:(id)response
 {
-  v5 = [(AMUIPosterEditingSwitcherViewController *)self delegate:a3];
+  v5 = [(AMUIPosterEditingSwitcherViewController *)self delegate:controller];
   [v5 posterEditingSwitcherViewControllerRequestsDismissal:self];
 }
 

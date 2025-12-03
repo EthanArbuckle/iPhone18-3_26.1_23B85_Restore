@@ -1,44 +1,44 @@
 @interface NEPolicyCondition
-+ (id)accountIdentifier:(id)a3;
++ (id)accountIdentifier:(id)identifier;
 + (id)allInterfaces;
-+ (id)clientFlags:(unsigned int)a3;
-+ (id)customEntitlement:(id)a3;
++ (id)clientFlags:(unsigned int)flags;
++ (id)customEntitlement:(id)entitlement;
 + (id)delegateIsPlatformBinary;
-+ (id)domain:(id)a3;
-+ (id)domainFilter:(unint64_t)a3;
-+ (id)effectiveApplication:(id)a3;
-+ (id)effectivePID:(int)a3;
-+ (id)effectivePID:(int)a3 version:(int)a4;
++ (id)domain:(id)domain;
++ (id)domainFilter:(unint64_t)filter;
++ (id)effectiveApplication:(id)application;
++ (id)effectivePID:(int)d;
++ (id)effectivePID:(int)d version:(int)version;
 + (id)entitlement;
-+ (id)flowIPProtocol:(unsigned __int16)a3;
-+ (id)flowLocalAddress:(id)a3 prefix:(unsigned __int8)a4;
++ (id)flowIPProtocol:(unsigned __int16)protocol;
++ (id)flowLocalAddress:(id)address prefix:(unsigned __int8)prefix;
 + (id)flowLocalAddressEmpty;
-+ (id)flowLocalAddressStart:(id)a3 end:(id)a4;
-+ (id)flowRemoteAddress:(id)a3 prefix:(unsigned __int8)a4;
++ (id)flowLocalAddressStart:(id)start end:(id)end;
++ (id)flowRemoteAddress:(id)address prefix:(unsigned __int8)prefix;
 + (id)flowRemoteAddressEmpty;
-+ (id)flowRemoteAddressStart:(id)a3 end:(id)a4;
++ (id)flowRemoteAddressStart:(id)start end:(id)end;
 + (id)hasSignedResult;
-+ (id)ipProtocol:(unsigned __int16)a3;
++ (id)ipProtocol:(unsigned __int16)protocol;
 + (id)isLoopback;
-+ (id)localAddress:(id)a3 prefix:(unsigned __int8)a4;
-+ (id)localAddressStart:(id)a3 end:(id)a4;
++ (id)localAddress:(id)address prefix:(unsigned __int8)prefix;
++ (id)localAddressStart:(id)start end:(id)end;
 + (id)localNetworks;
-+ (id)localNetworksWithFlags:(unsigned __int8)a3;
-+ (id)packetFilterTags:(unsigned __int16)a3;
++ (id)localNetworksWithFlags:(unsigned __int8)flags;
++ (id)packetFilterTags:(unsigned __int16)tags;
 + (id)platformBinary;
-+ (id)realApplication:(id)a3;
-+ (id)realUID:(unsigned int)a3;
-+ (id)remoteAddress:(id)a3 prefix:(unsigned __int8)a4;
-+ (id)remoteAddressStart:(id)a3 end:(id)a4;
-+ (id)requiredAgentDomain:(id)a3 agentType:(id)a4;
-+ (id)schemeUsingPort:(unsigned __int16)a3;
-+ (id)scopedInterface:(id)a3;
-+ (id)scopedInterfaceFlags:(unsigned int)a3 eflags:(unsigned int)a4 xflags:(unsigned int)a5;
-+ (id)sdkVersion:(unsigned int)a3 minSDKVersion:(unsigned int)a4 platform:(unsigned int)a5;
-+ (id)signingIdentifier:(id)a3;
-+ (id)trafficClassStart:(unsigned int)a3 end:(unsigned int)a4;
-+ (id)uid:(unsigned int)a3;
-+ (id)url:(id)a3;
++ (id)realApplication:(id)application;
++ (id)realUID:(unsigned int)d;
++ (id)remoteAddress:(id)address prefix:(unsigned __int8)prefix;
++ (id)remoteAddressStart:(id)start end:(id)end;
++ (id)requiredAgentDomain:(id)domain agentType:(id)type;
++ (id)schemeUsingPort:(unsigned __int16)port;
++ (id)scopedInterface:(id)interface;
++ (id)scopedInterfaceFlags:(unsigned int)flags eflags:(unsigned int)eflags xflags:(unsigned int)xflags;
++ (id)sdkVersion:(unsigned int)version minSDKVersion:(unsigned int)kVersion platform:(unsigned int)platform;
++ (id)signingIdentifier:(id)identifier;
++ (id)trafficClassStart:(unsigned int)start end:(unsigned int)end;
++ (id)uid:(unsigned int)uid;
++ (id)url:(id)url;
 + (id)usesModernNetworkAPI;
 - (NEPolicyCondition)init;
 @end
@@ -177,9 +177,9 @@
   return v3;
 }
 
-+ (id)signingIdentifier:(id)a3
++ (id)signingIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -189,7 +189,7 @@
     [v5 setConditionType:29];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 160);
+      objc_setProperty_atomic_copy(v5, v6, identifierCopy, 160);
     }
   }
 
@@ -202,7 +202,7 @@
   return v5;
 }
 
-+ (id)clientFlags:(unsigned int)a3
++ (id)clientFlags:(unsigned int)flags
 {
   v4 = [NEPolicyCondition alloc];
   if (v4)
@@ -213,7 +213,7 @@
     [v5 setConditionType:24];
     if (v5)
     {
-      v5[14] = a3;
+      v5[14] = flags;
     }
   }
 
@@ -226,7 +226,7 @@
   return v5;
 }
 
-+ (id)packetFilterTags:(unsigned __int16)a3
++ (id)packetFilterTags:(unsigned __int16)tags
 {
   v4 = [NEPolicyCondition alloc];
   if (v4)
@@ -237,7 +237,7 @@
     [v5 setConditionType:30];
     if (v5)
     {
-      v5[7] = a3;
+      v5[7] = tags;
     }
   }
 
@@ -250,10 +250,10 @@
   return v5;
 }
 
-+ (id)requiredAgentDomain:(id)a3 agentType:(id)a4
++ (id)requiredAgentDomain:(id)domain agentType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  domainCopy = domain;
+  typeCopy = type;
   v7 = [NEPolicyCondition alloc];
   if (v7)
   {
@@ -263,8 +263,8 @@
     [v8 setConditionType:16];
     if (v8)
     {
-      objc_setProperty_atomic_copy(v8, v9, v5, 144);
-      objc_setProperty_atomic_copy(v8, v10, v6, 152);
+      objc_setProperty_atomic_copy(v8, v9, domainCopy, 144);
+      objc_setProperty_atomic_copy(v8, v10, typeCopy, 152);
     }
   }
 
@@ -277,7 +277,7 @@
   return v8;
 }
 
-+ (id)sdkVersion:(unsigned int)a3 minSDKVersion:(unsigned int)a4 platform:(unsigned int)a5
++ (id)sdkVersion:(unsigned int)version minSDKVersion:(unsigned int)kVersion platform:(unsigned int)platform
 {
   v8 = [NEPolicyCondition alloc];
   if (v8)
@@ -288,9 +288,9 @@
     [v9 setConditionType:28];
     if (v9)
     {
-      v9[16] = a3;
-      v9[17] = a4;
-      v9[15] = a5;
+      v9[16] = version;
+      v9[17] = kVersion;
+      v9[15] = platform;
     }
   }
 
@@ -323,9 +323,9 @@
   return v3;
 }
 
-+ (id)customEntitlement:(id)a3
++ (id)customEntitlement:(id)entitlement
 {
-  v3 = a3;
+  entitlementCopy = entitlement;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -335,7 +335,7 @@
     [v5 setConditionType:15];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 136);
+      objc_setProperty_atomic_copy(v5, v6, entitlementCopy, 136);
     }
   }
 
@@ -368,9 +368,9 @@
   return v3;
 }
 
-+ (id)schemeUsingPort:(unsigned __int16)a3
++ (id)schemeUsingPort:(unsigned __int16)port
 {
-  v3 = a3;
+  portCopy = port;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -380,7 +380,7 @@
     [v5 setConditionType:37];
     if (v5)
     {
-      v5[8] = __rev16(v3);
+      v5[8] = __rev16(portCopy);
     }
   }
 
@@ -393,10 +393,10 @@
   return v5;
 }
 
-+ (id)flowRemoteAddressStart:(id)a3 end:(id)a4
++ (id)flowRemoteAddressStart:(id)start end:(id)end
 {
-  v5 = a3;
-  v6 = a4;
+  startCopy = start;
+  endCopy = end;
   v7 = [NEPolicyCondition alloc];
   if (v7)
   {
@@ -406,8 +406,8 @@
     [v8 setConditionType:23];
     if (v8)
     {
-      objc_setProperty_atomic_copy(v8, v9, v5, 120);
-      objc_setProperty_atomic_copy(v8, v10, v6, 128);
+      objc_setProperty_atomic_copy(v8, v9, startCopy, 120);
+      objc_setProperty_atomic_copy(v8, v10, endCopy, 128);
     }
   }
 
@@ -420,7 +420,7 @@
   return v8;
 }
 
-+ (id)localNetworksWithFlags:(unsigned __int8)a3
++ (id)localNetworksWithFlags:(unsigned __int8)flags
 {
   v4 = [NEPolicyCondition alloc];
   if (v4)
@@ -431,7 +431,7 @@
     [v5 setConditionType:18];
     if (v5)
     {
-      v5[11] = a3;
+      v5[11] = flags;
     }
   }
 
@@ -464,10 +464,10 @@
   return v3;
 }
 
-+ (id)remoteAddressStart:(id)a3 end:(id)a4
++ (id)remoteAddressStart:(id)start end:(id)end
 {
-  v5 = a3;
-  v6 = a4;
+  startCopy = start;
+  endCopy = end;
   v7 = [NEPolicyCondition alloc];
   if (v7)
   {
@@ -477,8 +477,8 @@
     [v8 setConditionType:14];
     if (v8)
     {
-      objc_setProperty_atomic_copy(v8, v9, v5, 120);
-      objc_setProperty_atomic_copy(v8, v10, v6, 128);
+      objc_setProperty_atomic_copy(v8, v9, startCopy, 120);
+      objc_setProperty_atomic_copy(v8, v10, endCopy, 128);
     }
   }
 
@@ -491,10 +491,10 @@
   return v8;
 }
 
-+ (id)flowLocalAddressStart:(id)a3 end:(id)a4
++ (id)flowLocalAddressStart:(id)start end:(id)end
 {
-  v5 = a3;
-  v6 = a4;
+  startCopy = start;
+  endCopy = end;
   v7 = [NEPolicyCondition alloc];
   if (v7)
   {
@@ -504,8 +504,8 @@
     [v8 setConditionType:21];
     if (v8)
     {
-      objc_setProperty_atomic_copy(v8, v9, v5, 120);
-      objc_setProperty_atomic_copy(v8, v10, v6, 128);
+      objc_setProperty_atomic_copy(v8, v9, startCopy, 120);
+      objc_setProperty_atomic_copy(v8, v10, endCopy, 128);
     }
   }
 
@@ -518,10 +518,10 @@
   return v8;
 }
 
-+ (id)localAddressStart:(id)a3 end:(id)a4
++ (id)localAddressStart:(id)start end:(id)end
 {
-  v5 = a3;
-  v6 = a4;
+  startCopy = start;
+  endCopy = end;
   v7 = [NEPolicyCondition alloc];
   if (v7)
   {
@@ -531,8 +531,8 @@
     [v8 setConditionType:12];
     if (v8)
     {
-      objc_setProperty_atomic_copy(v8, v9, v5, 120);
-      objc_setProperty_atomic_copy(v8, v10, v6, 128);
+      objc_setProperty_atomic_copy(v8, v9, startCopy, 120);
+      objc_setProperty_atomic_copy(v8, v10, endCopy, 128);
     }
   }
 
@@ -545,9 +545,9 @@
   return v8;
 }
 
-+ (id)flowRemoteAddress:(id)a3 prefix:(unsigned __int8)a4
++ (id)flowRemoteAddress:(id)address prefix:(unsigned __int8)prefix
 {
-  v5 = a3;
+  addressCopy = address;
   v6 = [NEPolicyCondition alloc];
   if (v6)
   {
@@ -557,8 +557,8 @@
     [v7 setConditionType:22];
     if (v7)
     {
-      objc_setProperty_atomic_copy(v7, v8, v5, 120);
-      v7[10] = a4;
+      objc_setProperty_atomic_copy(v7, v8, addressCopy, 120);
+      v7[10] = prefix;
     }
   }
 
@@ -571,9 +571,9 @@
   return v7;
 }
 
-+ (id)remoteAddress:(id)a3 prefix:(unsigned __int8)a4
++ (id)remoteAddress:(id)address prefix:(unsigned __int8)prefix
 {
-  v5 = a3;
+  addressCopy = address;
   v6 = [NEPolicyCondition alloc];
   if (v6)
   {
@@ -583,8 +583,8 @@
     [v7 setConditionType:13];
     if (v7)
     {
-      objc_setProperty_atomic_copy(v7, v8, v5, 120);
-      v7[10] = a4;
+      objc_setProperty_atomic_copy(v7, v8, addressCopy, 120);
+      v7[10] = prefix;
     }
   }
 
@@ -597,9 +597,9 @@
   return v7;
 }
 
-+ (id)flowLocalAddress:(id)a3 prefix:(unsigned __int8)a4
++ (id)flowLocalAddress:(id)address prefix:(unsigned __int8)prefix
 {
-  v5 = a3;
+  addressCopy = address;
   v6 = [NEPolicyCondition alloc];
   if (v6)
   {
@@ -609,8 +609,8 @@
     [v7 setConditionType:20];
     if (v7)
     {
-      objc_setProperty_atomic_copy(v7, v8, v5, 120);
-      v7[10] = a4;
+      objc_setProperty_atomic_copy(v7, v8, addressCopy, 120);
+      v7[10] = prefix;
     }
   }
 
@@ -623,9 +623,9 @@
   return v7;
 }
 
-+ (id)localAddress:(id)a3 prefix:(unsigned __int8)a4
++ (id)localAddress:(id)address prefix:(unsigned __int8)prefix
 {
-  v5 = a3;
+  addressCopy = address;
   v6 = [NEPolicyCondition alloc];
   if (v6)
   {
@@ -635,8 +635,8 @@
     [v7 setConditionType:11];
     if (v7)
     {
-      objc_setProperty_atomic_copy(v7, v8, v5, 120);
-      v7[10] = a4;
+      objc_setProperty_atomic_copy(v7, v8, addressCopy, 120);
+      v7[10] = prefix;
     }
   }
 
@@ -649,7 +649,7 @@
   return v7;
 }
 
-+ (id)flowIPProtocol:(unsigned __int16)a3
++ (id)flowIPProtocol:(unsigned __int16)protocol
 {
   v4 = [NEPolicyCondition alloc];
   if (v4)
@@ -660,7 +660,7 @@
     [v5 setConditionType:19];
     if (v5)
     {
-      v5[6] = a3;
+      v5[6] = protocol;
     }
   }
 
@@ -673,7 +673,7 @@
   return v5;
 }
 
-+ (id)ipProtocol:(unsigned __int16)a3
++ (id)ipProtocol:(unsigned __int16)protocol
 {
   v4 = [NEPolicyCondition alloc];
   if (v4)
@@ -684,7 +684,7 @@
     [v5 setConditionType:10];
     if (v5)
     {
-      v5[6] = a3;
+      v5[6] = protocol;
     }
   }
 
@@ -697,7 +697,7 @@
   return v5;
 }
 
-+ (id)trafficClassStart:(unsigned int)a3 end:(unsigned int)a4
++ (id)trafficClassStart:(unsigned int)start end:(unsigned int)end
 {
   v6 = [NEPolicyCondition alloc];
   if (v6)
@@ -708,8 +708,8 @@
     [v7 setConditionType:9];
     if (v7)
     {
-      v7[12] = a3;
-      v7[13] = a4;
+      v7[12] = start;
+      v7[13] = end;
     }
   }
 
@@ -722,7 +722,7 @@
   return v7;
 }
 
-+ (id)scopedInterfaceFlags:(unsigned int)a3 eflags:(unsigned int)a4 xflags:(unsigned int)a5
++ (id)scopedInterfaceFlags:(unsigned int)flags eflags:(unsigned int)eflags xflags:(unsigned int)xflags
 {
   v8 = [NEPolicyCondition alloc];
   if (v8)
@@ -733,9 +733,9 @@
     [v9 setConditionType:43];
     if (v9)
     {
-      v9[9] = a3;
-      v9[10] = a4;
-      v9[11] = a5;
+      v9[9] = flags;
+      v9[10] = eflags;
+      v9[11] = xflags;
     }
   }
 
@@ -748,9 +748,9 @@
   return v9;
 }
 
-+ (id)scopedInterface:(id)a3
++ (id)scopedInterface:(id)interface
 {
-  v3 = a3;
+  interfaceCopy = interface;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -760,7 +760,7 @@
     [v5 setConditionType:8];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 112);
+      objc_setProperty_atomic_copy(v5, v6, interfaceCopy, 112);
     }
   }
 
@@ -793,9 +793,9 @@
   return v3;
 }
 
-+ (id)url:(id)a3
++ (id)url:(id)url
 {
-  v3 = a3;
+  urlCopy = url;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -805,7 +805,7 @@
     [v5 setConditionType:42];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 104);
+      objc_setProperty_atomic_copy(v5, v6, urlCopy, 104);
     }
   }
 
@@ -818,9 +818,9 @@
   return v5;
 }
 
-+ (id)domainFilter:(unint64_t)a3
++ (id)domainFilter:(unint64_t)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -830,7 +830,7 @@
     [v5 setConditionType:38];
     if (v5)
     {
-      v5[8] = v3;
+      v5[8] = filterCopy;
     }
   }
 
@@ -843,9 +843,9 @@
   return v5;
 }
 
-+ (id)domain:(id)a3
++ (id)domain:(id)domain
 {
-  v3 = a3;
+  domainCopy = domain;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -855,7 +855,7 @@
     [v5 setConditionType:6];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 96);
+      objc_setProperty_atomic_copy(v5, v6, domainCopy, 96);
     }
   }
 
@@ -868,9 +868,9 @@
   return v5;
 }
 
-+ (id)accountIdentifier:(id)a3
++ (id)accountIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -880,7 +880,7 @@
     [v5 setConditionType:5];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 88);
+      objc_setProperty_atomic_copy(v5, v6, identifierCopy, 88);
     }
   }
 
@@ -893,7 +893,7 @@
   return v5;
 }
 
-+ (id)realUID:(unsigned int)a3
++ (id)realUID:(unsigned int)d
 {
   v4 = [NEPolicyCondition alloc];
   if (v4)
@@ -904,7 +904,7 @@
     [v5 setConditionType:40];
     if (v5)
     {
-      v5[7] = a3;
+      v5[7] = d;
     }
   }
 
@@ -917,7 +917,7 @@
   return v5;
 }
 
-+ (id)uid:(unsigned int)a3
++ (id)uid:(unsigned int)uid
 {
   v4 = [NEPolicyCondition alloc];
   if (v4)
@@ -928,7 +928,7 @@
     [v5 setConditionType:4];
     if (v5)
     {
-      v5[7] = a3;
+      v5[7] = uid;
     }
   }
 
@@ -941,7 +941,7 @@
   return v5;
 }
 
-+ (id)effectivePID:(int)a3 version:(int)a4
++ (id)effectivePID:(int)d version:(int)version
 {
   v6 = [NEPolicyCondition alloc];
   if (v6)
@@ -952,8 +952,8 @@
     [v7 setConditionType:3];
     if (v7)
     {
-      v7[5] = a3;
-      v7[6] = a4;
+      v7[5] = d;
+      v7[6] = version;
     }
   }
 
@@ -966,7 +966,7 @@
   return v7;
 }
 
-+ (id)effectivePID:(int)a3
++ (id)effectivePID:(int)d
 {
   v4 = [NEPolicyCondition alloc];
   if (v4)
@@ -977,7 +977,7 @@
     [v5 setConditionType:3];
     if (v5)
     {
-      v5[5] = a3;
+      v5[5] = d;
       v5[6] = 0;
     }
   }
@@ -991,9 +991,9 @@
   return v5;
 }
 
-+ (id)realApplication:(id)a3
++ (id)realApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -1003,7 +1003,7 @@
     [v5 setConditionType:2];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 80);
+      objc_setProperty_atomic_copy(v5, v6, applicationCopy, 80);
     }
   }
 
@@ -1016,9 +1016,9 @@
   return v5;
 }
 
-+ (id)effectiveApplication:(id)a3
++ (id)effectiveApplication:(id)application
 {
-  v3 = a3;
+  applicationCopy = application;
   v4 = [NEPolicyCondition alloc];
   if (v4)
   {
@@ -1028,7 +1028,7 @@
     [v5 setConditionType:1];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 80);
+      objc_setProperty_atomic_copy(v5, v6, applicationCopy, 80);
     }
   }
 

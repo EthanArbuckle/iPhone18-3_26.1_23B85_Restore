@@ -1,7 +1,7 @@
 @interface _CDPeopleSuggesterContext
 + (id)currentContext;
 - (_CDPeopleSuggesterContext)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,9 +21,9 @@
   v2 = [(_CDPeopleSuggesterContext *)&v11 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     date = v2->_date;
-    v2->_date = v3;
+    v2->_date = date;
 
     locationUUID = v2->_locationUUID;
     v2->_locationUUID = 0;
@@ -44,37 +44,37 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   if (v4)
   {
-    v5 = [(_CDPeopleSuggesterContext *)self date];
-    [v4 setDate:v5];
+    date = [(_CDPeopleSuggesterContext *)self date];
+    [v4 setDate:date];
 
-    v6 = [(_CDPeopleSuggesterContext *)self locationUUID];
-    [v4 setLocationUUID:v6];
+    locationUUID = [(_CDPeopleSuggesterContext *)self locationUUID];
+    [v4 setLocationUUID:locationUUID];
 
-    v7 = [(_CDPeopleSuggesterContext *)self title];
-    [v4 setTitle:v7];
+    title = [(_CDPeopleSuggesterContext *)self title];
+    [v4 setTitle:title];
 
-    v8 = [(_CDPeopleSuggesterContext *)self contactPrefix];
-    [v4 setContactPrefix:v8];
+    contactPrefix = [(_CDPeopleSuggesterContext *)self contactPrefix];
+    [v4 setContactPrefix:contactPrefix];
 
-    v9 = [(_CDPeopleSuggesterContext *)self seedContactIdentifiers];
-    [v4 setSeedContactIdentifiers:v9];
+    seedContactIdentifiers = [(_CDPeopleSuggesterContext *)self seedContactIdentifiers];
+    [v4 setSeedContactIdentifiers:seedContactIdentifiers];
 
-    v10 = [(_CDPeopleSuggesterContext *)self consumerIdentifier];
-    [v4 setConsumerIdentifier:v10];
+    consumerIdentifier = [(_CDPeopleSuggesterContext *)self consumerIdentifier];
+    [v4 setConsumerIdentifier:consumerIdentifier];
 
-    v11 = [(_CDPeopleSuggesterContext *)self contentUTIs];
-    [v4 setContentUTIs:v11];
+    contentUTIs = [(_CDPeopleSuggesterContext *)self contentUTIs];
+    [v4 setContentUTIs:contentUTIs];
 
-    v12 = [(_CDPeopleSuggesterContext *)self nearbyPeople];
-    [v4 setNearbyPeople:v12];
+    nearbyPeople = [(_CDPeopleSuggesterContext *)self nearbyPeople];
+    [v4 setNearbyPeople:nearbyPeople];
 
-    v13 = [(_CDPeopleSuggesterContext *)self activeInteraction];
-    [v4 setActiveInteraction:v13];
+    activeInteraction = [(_CDPeopleSuggesterContext *)self activeInteraction];
+    [v4 setActiveInteraction:activeInteraction];
   }
 
   return v4;
@@ -83,32 +83,32 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithString:@"Context {\n"];
-  v4 = [(_CDPeopleSuggesterContext *)self date];
-  [v3 appendFormat:@"                      date: %@\n", v4];
+  date = [(_CDPeopleSuggesterContext *)self date];
+  [v3 appendFormat:@"                      date: %@\n", date];
 
-  v5 = [(_CDPeopleSuggesterContext *)self locationUUID];
-  [v3 appendFormat:@"              locationUUID: %@\n", v5];
+  locationUUID = [(_CDPeopleSuggesterContext *)self locationUUID];
+  [v3 appendFormat:@"              locationUUID: %@\n", locationUUID];
 
-  v6 = [(_CDPeopleSuggesterContext *)self title];
-  [v3 appendFormat:@"                     title: %@\n", v6];
+  title = [(_CDPeopleSuggesterContext *)self title];
+  [v3 appendFormat:@"                     title: %@\n", title];
 
-  v7 = [(_CDPeopleSuggesterContext *)self contactPrefix];
-  [v3 appendFormat:@"             contactPrefix: %@\n", v7];
+  contactPrefix = [(_CDPeopleSuggesterContext *)self contactPrefix];
+  [v3 appendFormat:@"             contactPrefix: %@\n", contactPrefix];
 
-  v8 = [(_CDPeopleSuggesterContext *)self seedContactIdentifiers];
-  [v3 appendFormat:@"    seedContactIdentifiers: %@\n", v8];
+  seedContactIdentifiers = [(_CDPeopleSuggesterContext *)self seedContactIdentifiers];
+  [v3 appendFormat:@"    seedContactIdentifiers: %@\n", seedContactIdentifiers];
 
-  v9 = [(_CDPeopleSuggesterContext *)self consumerIdentifier];
-  [v3 appendFormat:@"        consumerIdentifier: %@\n", v9];
+  consumerIdentifier = [(_CDPeopleSuggesterContext *)self consumerIdentifier];
+  [v3 appendFormat:@"        consumerIdentifier: %@\n", consumerIdentifier];
 
-  v10 = [(_CDPeopleSuggesterContext *)self nearbyPeople];
-  [v3 appendFormat:@"              nearbyPeople: %@\n", v10];
+  nearbyPeople = [(_CDPeopleSuggesterContext *)self nearbyPeople];
+  [v3 appendFormat:@"              nearbyPeople: %@\n", nearbyPeople];
 
-  v11 = [(_CDPeopleSuggesterContext *)self activeInteraction];
-  [v3 appendFormat:@"         activeInteraction: %@\n", v11];
+  activeInteraction = [(_CDPeopleSuggesterContext *)self activeInteraction];
+  [v3 appendFormat:@"         activeInteraction: %@\n", activeInteraction];
 
-  v12 = [(_CDPeopleSuggesterContext *)self contentUTIs];
-  [v3 appendFormat:@"               contentUTIs: %@\n", v12];
+  contentUTIs = [(_CDPeopleSuggesterContext *)self contentUTIs];
+  [v3 appendFormat:@"               contentUTIs: %@\n", contentUTIs];
 
   [v3 appendFormat:@"}\n"];
 

@@ -1,20 +1,20 @@
 @interface PDASMFetchMissingEntitiesOperation
-- (BOOL)processResponseZone:(id)a3;
+- (BOOL)processResponseZone:(id)zone;
 - (BOOL)wantsToExecute;
-- (PDASMFetchMissingEntitiesOperation)initWithDatabase:(id)a3;
-- (id)generateFetchQueryForZoneName:(id)a3 forObjectIDs:(id)a4;
+- (PDASMFetchMissingEntitiesOperation)initWithDatabase:(id)database;
+- (id)generateFetchQueryForZoneName:(id)name forObjectIDs:(id)ds;
 - (id)requestData;
 - (id)zoneNamesWithMissingEntities;
-- (void)addFilterQueryForZoneNamed:(id)a3 toSearchRequest:(id)a4;
+- (void)addFilterQueryForZoneNamed:(id)named toSearchRequest:(id)request;
 @end
 
 @implementation PDASMFetchMissingEntitiesOperation
 
-- (PDASMFetchMissingEntitiesOperation)initWithDatabase:(id)a3
+- (PDASMFetchMissingEntitiesOperation)initWithDatabase:(id)database
 {
   v7.receiver = self;
   v7.super_class = PDASMFetchMissingEntitiesOperation;
-  v3 = [(PDASMSearchOperation *)&v7 initWithDatabase:a3];
+  v3 = [(PDASMSearchOperation *)&v7 initWithDatabase:database];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -36,8 +36,8 @@
   v7 = [NSArray arrayWithObjects:v12 count:2];
 
   v8 = [PDDatabase whereSQLForArray:v7 prefix:@"entityName in "];
-  v9 = [(PDOperation *)self database];
-  v10 = [v9 count:objc_opt_class() where:v8 bindings:v7];
+  database = [(PDOperation *)self database];
+  v10 = [database count:objc_opt_class() where:v8 bindings:v7];
 
   return v10 > 0;
 }
@@ -45,28 +45,28 @@
 - (id)zoneNamesWithMissingEntities
 {
   v3 = objc_opt_new();
-  v4 = [(PDOperation *)self database];
+  database = [(PDOperation *)self database];
   v5 = objc_opt_class();
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_10009B944;
   v20 = &unk_100204060;
-  v21 = self;
+  selfCopy = self;
   v6 = v3;
   v22 = v6;
-  [v4 selectAll:v5 block:&v17];
+  [database selectAll:v5 block:&v17];
   v7 = sub_100084798(6);
-  v8 = [v6 containsObject:{v7, v17, v18, v19, v20, v21}];
+  v8 = [v6 containsObject:{v7, v17, v18, v19, v20, selfCopy}];
 
   if (v8)
   {
     v9 = sub_100084798(7);
     [v6 addObject:v9];
-    v10 = [(PDASMFetchMissingEntitiesOperation *)self missingIDsByClass];
+    missingIDsByClass = [(PDASMFetchMissingEntitiesOperation *)self missingIDsByClass];
     v11 = sub_100084798(6);
-    v12 = [v10 objectForKeyedSubscript:v11];
-    v13 = [(PDASMFetchMissingEntitiesOperation *)self missingIDsByClass];
-    [v13 setObject:v12 forKeyedSubscript:v9];
+    v12 = [missingIDsByClass objectForKeyedSubscript:v11];
+    missingIDsByClass2 = [(PDASMFetchMissingEntitiesOperation *)self missingIDsByClass];
+    [missingIDsByClass2 setObject:v12 forKeyedSubscript:v9];
   }
 
   v14 = v22;
@@ -75,39 +75,39 @@
   return v6;
 }
 
-- (void)addFilterQueryForZoneNamed:(id)a3 toSearchRequest:(id)a4
+- (void)addFilterQueryForZoneNamed:(id)named toSearchRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PDASMFetchMissingEntitiesOperation *)self missingIDsByClass];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  namedCopy = named;
+  requestCopy = request;
+  missingIDsByClass = [(PDASMFetchMissingEntitiesOperation *)self missingIDsByClass];
+  v9 = [missingIDsByClass objectForKeyedSubscript:namedCopy];
 
-  v10 = [(PDASMFetchMissingEntitiesOperation *)self generateFetchQueryForZoneName:v6 forObjectIDs:v9];
-  v11 = [(PDASMSearchOperation *)self createSearchRequestZoneForZoneName:v6 usingQuery:v10];
+  v10 = [(PDASMFetchMissingEntitiesOperation *)self generateFetchQueryForZoneName:namedCopy forObjectIDs:v9];
+  v11 = [(PDASMSearchOperation *)self createSearchRequestZoneForZoneName:namedCopy usingQuery:v10];
   if (v10)
   {
     CLSInitLog();
-    v12 = [(PDASMFetchMissingEntitiesOperation *)self logSubsystem];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+    logSubsystem = [(PDASMFetchMissingEntitiesOperation *)self logSubsystem];
+    if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
     {
       v13 = objc_opt_class();
       v14 = v13;
-      v15 = [(PDURLRequestOperation *)self operationID];
-      v16 = [v11 dictionaryRepresentation];
+      operationID = [(PDURLRequestOperation *)self operationID];
+      dictionaryRepresentation = [v11 dictionaryRepresentation];
       v17 = 138544386;
       v18 = v13;
       v19 = 2114;
-      v20 = v15;
+      v20 = operationID;
       v21 = 2114;
       v22 = v9;
       v23 = 2114;
-      v24 = v6;
+      v24 = namedCopy;
       v25 = 2112;
-      v26 = v16;
-      _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Detected missing IDs: %{public}@ for zone %{public}@ query: %@", &v17, 0x34u);
+      v26 = dictionaryRepresentation;
+      _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Detected missing IDs: %{public}@ for zone %{public}@ query: %@", &v17, 0x34u);
     }
 
-    [v7 addSearchRequestZones:v11];
+    [requestCopy addSearchRequestZones:v11];
   }
 }
 
@@ -115,20 +115,20 @@
 {
   if ([(PDOperation *)self isAborted])
   {
-    v3 = 0;
+    data = 0;
   }
 
   else
   {
     v4 = objc_alloc_init(PDDPEESearchRequest);
-    v5 = [(PDASMFetchMissingEntitiesOperation *)self zoneNamesWithMissingEntities];
+    zoneNamesWithMissingEntities = [(PDASMFetchMissingEntitiesOperation *)self zoneNamesWithMissingEntities];
     if ([*(&self->super._personsRequiringFilterProcessing + 2) count])
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v6 = v5;
+      v6 = zoneNamesWithMissingEntities;
       v7 = [v6 countByEnumeratingWithState:&v17 objects:v27 count:16];
       if (v7)
       {
@@ -153,39 +153,39 @@
       }
 
       CLSInitLog();
-      v11 = [(PDASMFetchMissingEntitiesOperation *)self logSubsystem];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      logSubsystem = [(PDASMFetchMissingEntitiesOperation *)self logSubsystem];
+      if (os_log_type_enabled(logSubsystem, OS_LOG_TYPE_DEBUG))
       {
         v13 = objc_opt_class();
         v14 = v13;
-        v15 = [(PDURLRequestOperation *)self operationID];
-        v16 = [(PDDPEESearchRequest *)v4 dictionaryRepresentation];
+        operationID = [(PDURLRequestOperation *)self operationID];
+        dictionaryRepresentation = [(PDDPEESearchRequest *)v4 dictionaryRepresentation];
         *buf = 138543874;
         v22 = v13;
         v23 = 2114;
-        v24 = v15;
+        v24 = operationID;
         v25 = 2114;
-        v26 = v16;
-        _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Fetch missing request: %{public}@", buf, 0x20u);
+        v26 = dictionaryRepresentation;
+        _os_log_debug_impl(&_mh_execute_header, logSubsystem, OS_LOG_TYPE_DEBUG, "%{public}@: %{public}@ Fetch missing request: %{public}@", buf, 0x20u);
       }
 
-      v3 = [(PDDPEESearchRequest *)v4 data];
+      data = [(PDDPEESearchRequest *)v4 data];
     }
 
     else
     {
-      v3 = 0;
+      data = 0;
     }
   }
 
-  return v3;
+  return data;
 }
 
-- (id)generateFetchQueryForZoneName:(id)a3 forObjectIDs:(id)a4
+- (id)generateFetchQueryForZoneName:(id)name forObjectIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 count])
+  nameCopy = name;
+  dsCopy = ds;
+  if (![dsCopy count])
   {
     v8 = 0;
     goto LABEL_12;
@@ -194,7 +194,7 @@
   v8 = objc_alloc_init(PDDPSearchQuery);
   [(PDDPSearchQuery *)v8 setType:3];
   v9 = sub_100084798(6);
-  if (!(v6 | v9))
+  if (!(nameCopy | v9))
   {
     goto LABEL_10;
   }
@@ -202,10 +202,10 @@
   v10 = v9;
   v11 = sub_100084798(6);
   v12 = v11;
-  if (v6 && v11)
+  if (nameCopy && v11)
   {
     v13 = sub_100084798(6);
-    v14 = [v13 isEqualToString:v6];
+    v14 = [v13 isEqualToString:nameCopy];
 
     if (v14)
     {
@@ -218,15 +218,15 @@
   }
 
   v15 = sub_100084798(7);
-  if (v6 | v15)
+  if (nameCopy | v15)
   {
     v19 = v15;
     v20 = sub_100084798(7);
     v21 = v20;
-    if (v6 && v20)
+    if (nameCopy && v20)
     {
       v22 = sub_100084798(7);
-      v23 = [v22 isEqualToString:v6];
+      v23 = [v22 isEqualToString:nameCopy];
 
       if (v23)
       {
@@ -245,7 +245,7 @@
 LABEL_10:
   v16 = @"class_id";
 LABEL_11:
-  v17 = [(PDASMSearchOperation *)self criteriaForFieldName:v16 andValues:v7 withFormat:0];
+  v17 = [(PDASMSearchOperation *)self criteriaForFieldName:v16 andValues:dsCopy withFormat:0];
   [(PDDPSearchQuery *)v8 setCriteria:v17];
 
 LABEL_12:
@@ -253,29 +253,29 @@ LABEL_12:
   return v8;
 }
 
-- (BOOL)processResponseZone:(id)a3
+- (BOOL)processResponseZone:(id)zone
 {
-  v4 = a3;
-  v5 = [v4 status];
-  v6 = [v5 code];
+  zoneCopy = zone;
+  status = [zoneCopy status];
+  code = [status code];
 
-  if (v6 == 1)
+  if (code == 1)
   {
-    v7 = [(PDASMFetchMissingEntitiesOperation *)self missingIDsByClass];
-    v8 = [v4 zoneName];
-    v9 = [v7 objectForKeyedSubscript:v8];
+    missingIDsByClass = [(PDASMFetchMissingEntitiesOperation *)self missingIDsByClass];
+    zoneName = [zoneCopy zoneName];
+    v9 = [missingIDsByClass objectForKeyedSubscript:zoneName];
 
     if ([v9 count])
     {
       v10 = [PDDatabase whereSQLForArray:v9 prefix:@"entityId in "];
-      v11 = [(PDOperation *)self database];
-      [v11 deleteAll:objc_opt_class() where:v10 bindings:v9];
+      database = [(PDOperation *)self database];
+      [database deleteAll:objc_opt_class() where:v10 bindings:v9];
     }
   }
 
   v14.receiver = self;
   v14.super_class = PDASMFetchMissingEntitiesOperation;
-  v12 = [(PDASMSearchOperation *)&v14 processResponseZone:v4];
+  v12 = [(PDASMSearchOperation *)&v14 processResponseZone:zoneCopy];
 
   return v12;
 }

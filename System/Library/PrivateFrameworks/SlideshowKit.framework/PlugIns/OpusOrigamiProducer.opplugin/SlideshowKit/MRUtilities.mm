@@ -1,8 +1,8 @@
 @interface MRUtilities
-+ (CGPoint)valueForPointAnimationPath:(id)a3 withPlugTiming:(id)a4 atTime:(double)a5 defaultsTo:(CGPoint)a6 previousKeyPoint:(CGPoint *)a7 nextKeyPoint:(CGPoint *)a8 animationIsOver:(BOOL *)a9;
-+ (double)transformTime:(double)a3 forAnimationPath:(id)a4 withPlugTiming:(id)a5;
-+ (double)valueForScalarAnimationPath:(id)a3 withPlugTiming:(id)a4 atTime:(double)a5 defaultsTo:(double)a6 previousKeyValue:(double *)a7 nextKeyValue:(double *)a8 animationIsOver:(BOOL *)a9;
-+ (id)executeScript:(id)a3 withHeader:(id)a4 andAttributes:(id)a5;
++ (CGPoint)valueForPointAnimationPath:(id)path withPlugTiming:(id)timing atTime:(double)time defaultsTo:(CGPoint)to previousKeyPoint:(CGPoint *)point nextKeyPoint:(CGPoint *)keyPoint animationIsOver:(BOOL *)over;
++ (double)transformTime:(double)time forAnimationPath:(id)path withPlugTiming:(id)timing;
++ (double)valueForScalarAnimationPath:(id)path withPlugTiming:(id)timing atTime:(double)time defaultsTo:(double)to previousKeyValue:(double *)value nextKeyValue:(double *)keyValue animationIsOver:(BOOL *)over;
++ (id)executeScript:(id)script withHeader:(id)header andAttributes:(id)attributes;
 + (int64_t)operatingSystemMajorVersion;
 + (int64_t)operatingSystemMinorVersion;
 + (int64_t)operationQueueConcurrentOperationCount;
@@ -13,21 +13,21 @@
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___MRUtilities;
   objc_msgSendSuper2(&v2, "initialize");
 }
 
-+ (double)valueForScalarAnimationPath:(id)a3 withPlugTiming:(id)a4 atTime:(double)a5 defaultsTo:(double)a6 previousKeyValue:(double *)a7 nextKeyValue:(double *)a8 animationIsOver:(BOOL *)a9
++ (double)valueForScalarAnimationPath:(id)path withPlugTiming:(id)timing atTime:(double)time defaultsTo:(double)to previousKeyValue:(double *)value nextKeyValue:(double *)keyValue animationIsOver:(BOOL *)over
 {
-  [a1 transformTime:a5 forAnimationPath:? withPlugTiming:?];
+  [self transformTime:time forAnimationPath:? withPlugTiming:?];
   v16 = v15;
-  if (a9)
+  if (over)
   {
-    *a9 = 1;
+    *over = 1;
   }
 
-  v17 = [a3 orderedKeyframesWithPlugTiming:a4];
+  v17 = [path orderedKeyframesWithPlugTiming:timing];
   v18 = [v17 count];
   if (!v18)
   {
@@ -37,42 +37,42 @@
   v19 = v18;
   if (v18 == &dword_0 + 1 || v16 <= 0.0)
   {
-    if (a9)
+    if (over)
     {
-      *a9 = v18 == &dword_0 + 1;
+      *over = v18 == &dword_0 + 1;
     }
 
-    v24 = [v17 objectAtIndex:0];
+    lastObject = [v17 objectAtIndex:0];
     goto LABEL_14;
   }
 
-  [a4 fullDuration];
+  [timing fullDuration];
   if (v16 >= v20)
   {
 LABEL_10:
-    v24 = [v17 lastObject];
+    lastObject = [v17 lastObject];
 LABEL_14:
-    [v24 value];
-    a6 = v25;
+    [lastObject value];
+    to = v25;
 LABEL_15:
-    if (a8)
+    if (keyValue)
     {
-      *a8 = a6;
+      *keyValue = to;
     }
 
-    if (a7)
+    if (value)
     {
-      *a7 = a6;
+      *value = to;
     }
 
-    return a6;
+    return to;
   }
 
   v21 = 0;
   v22 = 1;
   while (1)
   {
-    +[MCAnimationPathKeyframed timeForKeyframe:withPlugTiming:](MCAnimationPathKeyframed, "timeForKeyframe:withPlugTiming:", [v17 objectAtIndex:v22], a4);
+    +[MCAnimationPathKeyframed timeForKeyframe:withPlugTiming:](MCAnimationPathKeyframed, "timeForKeyframe:withPlugTiming:", [v17 objectAtIndex:v22], timing);
     if (v16 <= v23)
     {
       break;
@@ -86,16 +86,16 @@ LABEL_15:
     }
   }
 
-  if (a9)
+  if (over)
   {
-    *a9 = 0;
+    *over = 0;
   }
 
   v27 = [v17 objectAtIndex:v21];
   v28 = [v17 objectAtIndex:v22];
-  [MCAnimationPathKeyframed timeForKeyframe:v27 withPlugTiming:a4];
+  [MCAnimationPathKeyframed timeForKeyframe:v27 withPlugTiming:timing];
   v30 = v29;
-  [MCAnimationPathKeyframed timeForKeyframe:v28 withPlugTiming:a4];
+  [MCAnimationPathKeyframed timeForKeyframe:v28 withPlugTiming:timing];
   v32 = (v16 - v30) / (v31 - v30);
   if (v16 - v30 > 0.0)
   {
@@ -108,15 +108,15 @@ LABEL_15:
   }
 
   [v27 value];
-  if (a7)
+  if (value)
   {
-    *a7 = v34;
+    *value = v34;
   }
 
   [v28 value];
-  if (a8)
+  if (keyValue)
   {
-    *a8 = v35;
+    *keyValue = v35;
   }
 
   [v27 value];
@@ -127,122 +127,122 @@ LABEL_15:
   return v37 + (v39 - v40) * v33;
 }
 
-+ (CGPoint)valueForPointAnimationPath:(id)a3 withPlugTiming:(id)a4 atTime:(double)a5 defaultsTo:(CGPoint)a6 previousKeyPoint:(CGPoint *)a7 nextKeyPoint:(CGPoint *)a8 animationIsOver:(BOOL *)a9
++ (CGPoint)valueForPointAnimationPath:(id)path withPlugTiming:(id)timing atTime:(double)time defaultsTo:(CGPoint)to previousKeyPoint:(CGPoint *)point nextKeyPoint:(CGPoint *)keyPoint animationIsOver:(BOOL *)over
 {
-  y = a6.y;
-  x = a6.x;
-  [a1 transformTime:a5 forAnimationPath:? withPlugTiming:?];
+  y = to.y;
+  x = to.x;
+  [self transformTime:time forAnimationPath:? withPlugTiming:?];
   v17 = v16;
   v57[0] = 0;
   v57[1] = 0;
-  if (a7)
+  if (point)
   {
-    v18 = a7;
+    pointCopy = point;
   }
 
   else
   {
-    v18 = v57;
+    pointCopy = v57;
   }
 
-  if (a8)
+  if (keyPoint)
   {
-    v19 = a8;
+    keyPointCopy = keyPoint;
   }
 
   else
   {
-    v19 = v57;
+    keyPointCopy = v57;
   }
 
-  if (a9)
+  if (over)
   {
-    v20 = a9;
+    overCopy = over;
   }
 
   else
   {
-    v20 = v57;
+    overCopy = v57;
   }
 
-  *v20 = 1;
-  v21 = [a3 orderedKeyframesWithPlugTiming:a4];
+  *overCopy = 1;
+  v21 = [path orderedKeyframesWithPlugTiming:timing];
   v22 = [v21 count];
   if (!v22)
   {
-    v19->x = x;
-    if (a8)
+    keyPointCopy->x = x;
+    if (keyPoint)
     {
-      v33 = a8;
+      keyPointCopy2 = keyPoint;
     }
 
     else
     {
-      v33 = v57;
+      keyPointCopy2 = v57;
     }
 
-    v33->y = y;
-    *v18 = *v19;
-    v32 = v18->x;
-    if (a7)
+    keyPointCopy2->y = y;
+    *pointCopy = *keyPointCopy;
+    v32 = pointCopy->x;
+    if (point)
     {
-      v30 = a7;
+      pointCopy3 = point;
     }
 
     else
     {
-      v30 = v57;
+      pointCopy3 = v57;
     }
 
 LABEL_35:
-    v38 = v30->y;
+    v38 = pointCopy3->y;
     goto LABEL_42;
   }
 
   v23 = v22;
   if (v22 == &dword_0 + 1 || v17 <= 0.0)
   {
-    *v20 = v22 == &dword_0 + 1;
-    v34 = [v21 objectAtIndex:0];
+    *overCopy = v22 == &dword_0 + 1;
+    lastObject = [v21 objectAtIndex:0];
     goto LABEL_29;
   }
 
-  [a4 fullDuration];
+  [timing fullDuration];
   if (v17 >= v24)
   {
-    v34 = [v21 lastObject];
+    lastObject = [v21 lastObject];
 LABEL_29:
-    [v34 point];
-    v19->x = v36;
-    v30 = v57;
-    if (a8)
+    [lastObject point];
+    keyPointCopy->x = v36;
+    pointCopy3 = v57;
+    if (keyPoint)
     {
-      v37 = a8;
+      keyPointCopy3 = keyPoint;
     }
 
     else
     {
-      v37 = v57;
+      keyPointCopy3 = v57;
     }
 
-    v37->y = v35;
-    *v18 = *v19;
-    v32 = v18->x;
+    keyPointCopy3->y = v35;
+    *pointCopy = *keyPointCopy;
+    v32 = pointCopy->x;
 LABEL_33:
-    if (a7)
+    if (point)
     {
-      v30 = a7;
+      pointCopy3 = point;
     }
 
     goto LABEL_35;
   }
 
-  v56 = v19;
+  v56 = keyPointCopy;
   v25 = 0;
   v26 = 1;
   while (1)
   {
-    +[MCAnimationPathKeyframed timeForKeyframe:withPlugTiming:](MCAnimationPathKeyframed, "timeForKeyframe:withPlugTiming:", [v21 objectAtIndex:{v26, v56}], a4);
+    +[MCAnimationPathKeyframed timeForKeyframe:withPlugTiming:](MCAnimationPathKeyframed, "timeForKeyframe:withPlugTiming:", [v21 objectAtIndex:{v26, v56}], timing);
     if (v17 <= v27)
     {
       break;
@@ -254,25 +254,25 @@ LABEL_33:
     {
       [objc_msgSend(v21 "lastObject")];
       v56->x = v29;
-      v30 = v57;
-      if (a8)
+      pointCopy3 = v57;
+      if (keyPoint)
       {
-        v31 = a8;
+        keyPointCopy4 = keyPoint;
       }
 
       else
       {
-        v31 = v57;
+        keyPointCopy4 = v57;
       }
 
-      v31->y = v28;
-      *v18 = *v56;
-      v32 = v18->x;
+      keyPointCopy4->y = v28;
+      *pointCopy = *v56;
+      v32 = pointCopy->x;
       goto LABEL_33;
     }
   }
 
-  *v20 = 0;
+  *overCopy = 0;
   v39 = [v21 objectAtIndex:v25];
   v40 = [v21 objectAtIndex:v26];
   [v39 point];
@@ -281,31 +281,31 @@ LABEL_33:
   [v40 point];
   v46 = v45;
   v48 = v47;
-  [MCAnimationPathKeyframed timeForKeyframe:v39 withPlugTiming:a4];
+  [MCAnimationPathKeyframed timeForKeyframe:v39 withPlugTiming:timing];
   v50 = v49;
   v51 = v17 - v49;
-  [MCAnimationPathKeyframed timeForKeyframe:v40 withPlugTiming:a4];
+  [MCAnimationPathKeyframed timeForKeyframe:v40 withPlugTiming:timing];
   v53 = v51 / (v52 - v50);
-  v18->x = v42;
-  v54 = v57;
-  if (a7)
+  pointCopy->x = v42;
+  keyPointCopy5 = v57;
+  if (point)
   {
-    v55 = a7;
+    pointCopy4 = point;
   }
 
   else
   {
-    v55 = v57;
+    pointCopy4 = v57;
   }
 
-  v55->y = v44;
+  pointCopy4->y = v44;
   v56->x = v46;
-  if (a8)
+  if (keyPoint)
   {
-    v54 = a8;
+    keyPointCopy5 = keyPoint;
   }
 
-  v54->y = v48;
+  keyPointCopy5->y = v48;
   v32 = v42 + (v46 - v42) * v53;
   v38 = v44 + (v48 - v44) * v53;
 LABEL_42:
@@ -314,16 +314,16 @@ LABEL_42:
   return result;
 }
 
-+ (double)transformTime:(double)a3 forAnimationPath:(id)a4 withPlugTiming:(id)a5
++ (double)transformTime:(double)time forAnimationPath:(id)path withPlugTiming:(id)timing
 {
-  [a5 fullDuration];
+  [timing fullDuration];
   v9 = v8;
-  v10 = [a4 orderedKeyframesWithPlugTiming:a5];
+  v10 = [path orderedKeyframesWithPlugTiming:timing];
   v11 = [v10 count];
   result = 0.0;
-  if (a3 > 0.0 && v11 >= 2)
+  if (time > 0.0 && v11 >= 2)
   {
-    if (v9 <= a3)
+    if (v9 <= time)
     {
       return v9;
     }
@@ -335,8 +335,8 @@ LABEL_42:
       v16 = 1;
       while (1)
       {
-        +[MCAnimationPathKeyframed timeForKeyframe:withPlugTiming:](MCAnimationPathKeyframed, "timeForKeyframe:withPlugTiming:", [v10 objectAtIndex:{v16, result}], a5);
-        if (result >= a3)
+        +[MCAnimationPathKeyframed timeForKeyframe:withPlugTiming:](MCAnimationPathKeyframed, "timeForKeyframe:withPlugTiming:", [v10 objectAtIndex:{v16, result}], timing);
+        if (result >= time)
         {
           break;
         }
@@ -351,11 +351,11 @@ LABEL_42:
 
       v17 = [v10 objectAtIndex:v15];
       v18 = [v10 objectAtIndex:v16];
-      [MCAnimationPathKeyframed timeForKeyframe:v17 withPlugTiming:a5];
+      [MCAnimationPathKeyframed timeForKeyframe:v17 withPlugTiming:timing];
       v20 = v19;
-      [MCAnimationPathKeyframed timeForKeyframe:v18 withPlugTiming:a5];
+      [MCAnimationPathKeyframed timeForKeyframe:v18 withPlugTiming:timing];
       v22 = v21 - v20;
-      v23 = (a3 - v20) / (v21 - v20);
+      v23 = (time - v20) / (v21 - v20);
       [v17 postControl];
       v25 = v24;
       [v18 preControl];
@@ -366,14 +366,14 @@ LABEL_42:
   return result;
 }
 
-+ (id)executeScript:(id)a3 withHeader:(id)a4 andAttributes:(id)a5
++ (id)executeScript:(id)script withHeader:(id)header andAttributes:(id)attributes
 {
-  if (!a3)
+  if (!script)
   {
     return 0;
   }
 
-  v7 = [a3 componentsSeparatedByString:{@", "}];
+  v7 = [script componentsSeparatedByString:{@", "}];
   v8 = [objc_msgSend(v7 objectAtIndex:{0), "stringByTrimmingCharactersInSet:", +[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
   v9 = [objc_msgSend(v7 objectAtIndex:{1), "stringByTrimmingCharactersInSet:", +[NSCharacterSet whitespaceAndNewlineCharacterSet](NSCharacterSet, "whitespaceAndNewlineCharacterSet")}];
   v10 = [[MUMathExpressionFloatBased alloc] initWithString:v8 error:0];
@@ -382,7 +382,7 @@ LABEL_42:
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v12 = [a5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+  v12 = [attributes countByEnumeratingWithState:&v37 objects:v42 count:16];
   if (v12)
   {
     v13 = v12;
@@ -393,11 +393,11 @@ LABEL_42:
       {
         if (*v38 != v14)
         {
-          objc_enumerationMutation(a5);
+          objc_enumerationMutation(attributes);
         }
 
         v16 = *(*(&v37 + 1) + 8 * i);
-        v17 = [a5 objectForKey:v16];
+        v17 = [attributes objectForKey:v16];
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
@@ -415,7 +415,7 @@ LABEL_42:
         [(MUMathExpressionFloatBased *)v11 setValue:v16 forVariable:v21];
       }
 
-      v13 = [a5 countByEnumeratingWithState:&v37 objects:v42 count:16];
+      v13 = [attributes countByEnumeratingWithState:&v37 objects:v42 count:16];
     }
 
     while (v13);
@@ -425,7 +425,7 @@ LABEL_42:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v22 = [a4 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  v22 = [header countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (v22)
   {
     v23 = v22;
@@ -436,11 +436,11 @@ LABEL_42:
       {
         if (*v34 != v24)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(header);
         }
 
         v26 = *(*(&v33 + 1) + 8 * j);
-        v27 = [a4 objectForKey:v26];
+        v27 = [header objectForKey:v26];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -451,7 +451,7 @@ LABEL_42:
         }
       }
 
-      v23 = [a4 countByEnumeratingWithState:&v33 objects:v41 count:16];
+      v23 = [header countByEnumeratingWithState:&v33 objects:v41 count:16];
     }
 
     while (v23);

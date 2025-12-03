@@ -1,14 +1,14 @@
 @interface FTTapToBox
-+ ($7E6FF06E1E2A477A0598F669E6D2B004)postProcessNetworkOutput:(SEL)a3;
-+ (BOOL)preprocessForTap:(CGPoint)a3 inSourceImageBuffer:(__CVBuffer *)a4 destinationImageBuffer:(__CVBuffer *)a5 tapBuffer:(__CVBuffer *)a6 scaler:(id)a7;
-+ (BOOL)renderTap:(CGPoint)a3 inBuffer:(__CVBuffer *)a4;
++ ($7E6FF06E1E2A477A0598F669E6D2B004)postProcessNetworkOutput:(SEL)output;
++ (BOOL)preprocessForTap:(CGPoint)tap inSourceImageBuffer:(__CVBuffer *)buffer destinationImageBuffer:(__CVBuffer *)imageBuffer tapBuffer:(__CVBuffer *)tapBuffer scaler:(id)scaler;
++ (BOOL)renderTap:(CGPoint)tap inBuffer:(__CVBuffer *)buffer;
 + (CGSize)networkInputImageSize;
 + (CGSize)networkInputTapImageSize;
 + (id)networkDescriptor;
 + (id)networkPath;
 + (void)networkPath;
-- ($7E6FF06E1E2A477A0598F669E6D2B004)predictionForTap:(SEL)a3 inBuffer:(CGPoint)a4 scaler:(__CVBuffer *)a5;
-- (CGRect)predictBoxForTap:(CGPoint)a3 inBuffer:(__CVBuffer *)a4 scaler:(id)a5;
+- ($7E6FF06E1E2A477A0598F669E6D2B004)predictionForTap:(SEL)tap inBuffer:(CGPoint)buffer scaler:(__CVBuffer *)scaler;
+- (CGRect)predictBoxForTap:(CGPoint)tap inBuffer:(__CVBuffer *)buffer scaler:(id)scaler;
 - (FTTapToBox)init;
 - (id).cxx_construct;
 @end
@@ -25,11 +25,11 @@
   if (v2)
   {
     +[FTTapToBox networkDescriptor];
-    v3 = [objc_claimAutoreleasedReturnValue() outputNames];
-    v4 = [v3 firstObject];
-    v5 = v4;
-    v6 = [v4 UTF8String];
-    v7 = strlen(v6);
+    outputNames = [objc_claimAutoreleasedReturnValue() outputNames];
+    firstObject = [outputNames firstObject];
+    v5 = firstObject;
+    uTF8String = [firstObject UTF8String];
+    v7 = strlen(uTF8String);
     if (v7 < 0x7FFFFFFFFFFFFFF8)
     {
       v8 = v7;
@@ -38,7 +38,7 @@
         *(&__dst.__r_.__value_.__s + 23) = v7;
         if (v7)
         {
-          memmove(&__dst, v6, v7);
+          memmove(&__dst, uTF8String, v7);
         }
 
         __dst.__r_.__value_.__s.__data_[v8] = 0;
@@ -82,12 +82,12 @@
   return 0;
 }
 
-- ($7E6FF06E1E2A477A0598F669E6D2B004)predictionForTap:(SEL)a3 inBuffer:(CGPoint)a4 scaler:(__CVBuffer *)a5
+- ($7E6FF06E1E2A477A0598F669E6D2B004)predictionForTap:(SEL)tap inBuffer:(CGPoint)buffer scaler:(__CVBuffer *)scaler
 {
-  y = a4.y;
-  x = a4.x;
+  y = buffer.y;
+  x = buffer.x;
   v11 = a6;
-  if ([FTTapToBox preprocessForTap:a5 inSourceImageBuffer:*(self->_inputImageTensor.storage_.__ptr_ + 1) destinationImageBuffer:*(self->_inputTapTensor.storage_.__ptr_ + 1) tapBuffer:v11 scaler:x, y])
+  if ([FTTapToBox preprocessForTap:scaler inSourceImageBuffer:*(self->_inputImageTensor.storage_.__ptr_ + 1) destinationImageBuffer:*(self->_inputTapTensor.storage_.__ptr_ + 1) tapBuffer:v11 scaler:x, y])
   {
     ptr = self->_net.__ptr_;
     v13 = *(ptr + 1);
@@ -141,9 +141,9 @@ LABEL_10:
   return result;
 }
 
-- (CGRect)predictBoxForTap:(CGPoint)a3 inBuffer:(__CVBuffer *)a4 scaler:(id)a5
+- (CGRect)predictBoxForTap:(CGPoint)tap inBuffer:(__CVBuffer *)buffer scaler:(id)scaler
 {
-  [(FTTapToBox *)self predictionForTap:a4 inBuffer:a5 scaler:a3.x, a3.y];
+  [(FTTapToBox *)self predictionForTap:buffer inBuffer:scaler scaler:tap.x, tap.y];
   v5 = v9;
   v6 = v10;
   v7 = v11;
@@ -158,10 +158,10 @@ LABEL_10:
 + (id)networkPath
 {
   v12 = *MEMORY[0x277D85DE8];
-  v2 = [a1 networkDescriptor];
-  v3 = [v2 name];
+  networkDescriptor = [self networkDescriptor];
+  name = [networkDescriptor name];
 
-  v4 = FTResolveEspressoNetPath(v3);
+  v4 = FTResolveEspressoNetPath(name);
   v5 = v4;
   if (v4)
   {
@@ -171,14 +171,14 @@ LABEL_10:
   else
   {
     v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v6 = [v7 pathForResource:v3 ofType:@"espresso.net"];
+    v6 = [v7 pathForResource:name ofType:@"espresso.net"];
 
     if (!v6)
     {
       v9 = ft::GetOsLog(v8);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        +[FTTapToBox networkPath].cold.1([v3 UTF8String], v11, v9);
+        +[FTTapToBox networkPath].cold.1([name UTF8String], v11, v9);
       }
 
       v6 = 0;
@@ -210,10 +210,10 @@ LABEL_10:
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(FTNetworkDescriptor);
-  [a1 networkInputImageSize];
+  [self networkInputImageSize];
   v4 = [FTImageTensorDescriptor bgraImageWithName:@"input_color_image" size:?];
   v8[0] = v4;
-  [a1 networkInputTapImageSize];
+  [self networkInputTapImageSize];
   v5 = [FTImageTensorDescriptor descriptorWithName:@"input_tap_image" size:1278226488 pixelFormat:?];
   v8[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
@@ -225,23 +225,23 @@ LABEL_10:
   return v3;
 }
 
-+ (BOOL)renderTap:(CGPoint)a3 inBuffer:(__CVBuffer *)a4
++ (BOOL)renderTap:(CGPoint)tap inBuffer:(__CVBuffer *)buffer
 {
-  y = a3.y;
-  x = a3.x;
-  if (CVPixelBufferLockBaseAddress(a4, 0))
+  y = tap.y;
+  x = tap.x;
+  if (CVPixelBufferLockBaseAddress(buffer, 0))
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(exception, "Failed to lock pixel buffer.");
     goto LABEL_26;
   }
 
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  v10 = [a1 networkInputTapImageSize];
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  networkInputTapImageSize = [self networkInputTapImageSize];
   if (Width != v12 || Height != v11)
   {
-    v14 = ft::GetOsLog(v10);
+    v14 = ft::GetOsLog(networkInputTapImageSize);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       +[FTTapToBox renderTap:inBuffer:];
@@ -253,7 +253,7 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  BaseAddress = CVPixelBufferGetBaseAddress(a4);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
   if (!BaseAddress)
   {
     v14 = ft::GetOsLog(0);
@@ -265,7 +265,7 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   bzero(BaseAddress, BytesPerRow * Height);
   if (x > 1.0 || x < 0.0 || y < 0.0 || y > 1.0)
   {
@@ -294,7 +294,7 @@ LABEL_21:
   }
 
 LABEL_22:
-  if (CVPixelBufferUnlockBaseAddress(a4, 0))
+  if (CVPixelBufferUnlockBaseAddress(buffer, 0))
   {
     exception = __cxa_allocate_exception(0x10uLL);
     std::runtime_error::runtime_error(exception, "Failed to unlock pixel buffer.");
@@ -305,12 +305,12 @@ LABEL_26:
   return v18;
 }
 
-+ (BOOL)preprocessForTap:(CGPoint)a3 inSourceImageBuffer:(__CVBuffer *)a4 destinationImageBuffer:(__CVBuffer *)a5 tapBuffer:(__CVBuffer *)a6 scaler:(id)a7
++ (BOOL)preprocessForTap:(CGPoint)tap inSourceImageBuffer:(__CVBuffer *)buffer destinationImageBuffer:(__CVBuffer *)imageBuffer tapBuffer:(__CVBuffer *)tapBuffer scaler:(id)scaler
 {
-  y = a3.y;
-  x = a3.x;
-  v13 = a7;
-  v14 = [a1 renderTap:a6 inBuffer:{x, y}];
+  y = tap.y;
+  x = tap.x;
+  scalerCopy = scaler;
+  v14 = [self renderTap:tapBuffer inBuffer:{x, y}];
   if ((v14 & 1) == 0)
   {
     v20 = ft::GetOsLog(v14);
@@ -322,10 +322,10 @@ LABEL_26:
     goto LABEL_8;
   }
 
-  Width = CVPixelBufferGetWidth(a4);
-  Height = CVPixelBufferGetHeight(a4);
-  v17 = CVPixelBufferGetWidth(a5);
-  v18 = [v13 scaleSourceBuffer:a4 toDestinationBuffer:a5 sourceROI:0.0 destinationROI:{0.0, Width, Height, 0.0, 0.0, v17, CVPixelBufferGetHeight(a5)}];
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  v17 = CVPixelBufferGetWidth(imageBuffer);
+  v18 = [scalerCopy scaleSourceBuffer:buffer toDestinationBuffer:imageBuffer sourceROI:0.0 destinationROI:{0.0, Width, Height, 0.0, 0.0, v17, CVPixelBufferGetHeight(imageBuffer)}];
   if ((v18 & 1) == 0)
   {
     v20 = ft::GetOsLog(v18);
@@ -346,7 +346,7 @@ LABEL_9:
   return v19;
 }
 
-+ ($7E6FF06E1E2A477A0598F669E6D2B004)postProcessNetworkOutput:(SEL)a3
++ ($7E6FF06E1E2A477A0598F669E6D2B004)postProcessNetworkOutput:(SEL)output
 {
   v5 = *a4->var0;
   v6 = vcvtq_f64_f32(*(a4->var0 + 12));
@@ -422,7 +422,7 @@ LABEL_9:
 + (void)networkPath
 {
   *buf = 136315138;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_24BC30000, log, OS_LOG_TYPE_ERROR, "Network not found: %s", buf, 0xCu);
 }
 

@@ -1,18 +1,18 @@
 @interface ATXProactiveSuggestionGroupedUIFeedbackQuery
 - (id)uiFeedbackPublisherChainForShortcutsEditor;
-- (id)uiPublisherForConsumerSubType:(unsigned __int8)a3 startTime:(double)a4;
-- (void)enumerateGroupedUIFeedbackResultsWithBlock:(id)a3 completionBlock:(id)a4;
-- (void)enumerateGroupedUIFeedbackResultsWithBlock:(id)a3 completionBlock:(id)a4 uiFeedbackPublisherChain:(id)a5;
+- (id)uiPublisherForConsumerSubType:(unsigned __int8)type startTime:(double)time;
+- (void)enumerateGroupedUIFeedbackResultsWithBlock:(id)block completionBlock:(id)completionBlock;
+- (void)enumerateGroupedUIFeedbackResultsWithBlock:(id)block completionBlock:(id)completionBlock uiFeedbackPublisherChain:(id)chain;
 @end
 
 @implementation ATXProactiveSuggestionGroupedUIFeedbackQuery
 
-- (id)uiPublisherForConsumerSubType:(unsigned __int8)a3 startTime:(double)a4
+- (id)uiPublisherForConsumerSubType:(unsigned __int8)type startTime:(double)time
 {
-  if (a3 == 43)
+  if (type == 43)
   {
     v5 = objc_opt_new();
-    v6 = [v5 genericEventPublisherFromStartTime:43 consumerSubType:a4];
+    v6 = [v5 genericEventPublisherFromStartTime:43 consumerSubType:time];
   }
 
   else
@@ -20,7 +20,7 @@
     v8 = __atxlog_handle_blending_ecosystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [ATXProactiveSuggestionGroupedUIFeedbackQuery uiPublisherForConsumerSubType:a3 startTime:v8];
+      [ATXProactiveSuggestionGroupedUIFeedbackQuery uiPublisherForConsumerSubType:type startTime:v8];
     }
 
     v6 = 0;
@@ -32,18 +32,18 @@
 - (id)uiFeedbackPublisherChainForShortcutsEditor
 {
   v3 = [ATXShortcutsEditorGroupedUIFeedbackPublisher alloc];
-  v4 = [(ATXProactiveSuggestionUIFeedbackQuery *)self uiFeedbackPublisherChain];
-  v5 = [(ATXShortcutsEditorGroupedUIFeedbackPublisher *)v3 initWithUIFeedbackPublisher:v4];
-  v6 = [(ATXShortcutsEditorGroupedUIFeedbackPublisher *)v5 shortcutsEditorUIFeedbackPublisher];
+  uiFeedbackPublisherChain = [(ATXProactiveSuggestionUIFeedbackQuery *)self uiFeedbackPublisherChain];
+  v5 = [(ATXShortcutsEditorGroupedUIFeedbackPublisher *)v3 initWithUIFeedbackPublisher:uiFeedbackPublisherChain];
+  shortcutsEditorUIFeedbackPublisher = [(ATXShortcutsEditorGroupedUIFeedbackPublisher *)v5 shortcutsEditorUIFeedbackPublisher];
 
-  return v6;
+  return shortcutsEditorUIFeedbackPublisher;
 }
 
-- (void)enumerateGroupedUIFeedbackResultsWithBlock:(id)a3 completionBlock:(id)a4
+- (void)enumerateGroupedUIFeedbackResultsWithBlock:(id)block completionBlock:(id)completionBlock
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   if ([(ATXProactiveSuggestionUIFeedbackQuery *)self consumerSubTypeToConsider]!= 43)
   {
     v10 = __atxlog_handle_blending();
@@ -63,8 +63,8 @@
     goto LABEL_10;
   }
 
-  v8 = [(ATXProactiveSuggestionGroupedUIFeedbackQuery *)self uiFeedbackPublisherChainForShortcutsEditor];
-  if (!v8)
+  uiFeedbackPublisherChainForShortcutsEditor = [(ATXProactiveSuggestionGroupedUIFeedbackQuery *)self uiFeedbackPublisherChainForShortcutsEditor];
+  if (!uiFeedbackPublisherChainForShortcutsEditor)
   {
     v17 = __atxlog_handle_blending_ecosystem();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -91,43 +91,43 @@ LABEL_10:
     v24 = [v21 initWithFormat:@"%@", v23];
     v25 = [v20 initWithDomain:v24 code:-1 userInfo:v9];
 
-    v7[2](v7, v25);
+    completionBlockCopy[2](completionBlockCopy, v25);
     goto LABEL_11;
   }
 
-  v9 = v8;
-  [(ATXProactiveSuggestionGroupedUIFeedbackQuery *)self enumerateGroupedUIFeedbackResultsWithBlock:v6 completionBlock:v7 uiFeedbackPublisherChain:v8];
+  v9 = uiFeedbackPublisherChainForShortcutsEditor;
+  [(ATXProactiveSuggestionGroupedUIFeedbackQuery *)self enumerateGroupedUIFeedbackResultsWithBlock:blockCopy completionBlock:completionBlockCopy uiFeedbackPublisherChain:uiFeedbackPublisherChainForShortcutsEditor];
 LABEL_11:
 
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)enumerateGroupedUIFeedbackResultsWithBlock:(id)a3 completionBlock:(id)a4 uiFeedbackPublisherChain:(id)a5
+- (void)enumerateGroupedUIFeedbackResultsWithBlock:(id)block completionBlock:(id)completionBlock uiFeedbackPublisherChain:(id)chain
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  chainCopy = chain;
   v11 = MEMORY[0x1E698AFE0];
-  v12 = [(ATXProactiveSuggestionUIFeedbackQuery *)self bookmarkURLPath];
+  bookmarkURLPath = [(ATXProactiveSuggestionUIFeedbackQuery *)self bookmarkURLPath];
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:4];
-  v14 = [v11 bookmarkFromURLPath:v12 maxFileSize:3000000 versionNumber:v13];
+  v14 = [v11 bookmarkFromURLPath:bookmarkURLPath maxFileSize:3000000 versionNumber:v13];
 
-  v15 = [v14 bookmark];
+  bookmark = [v14 bookmark];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __132__ATXProactiveSuggestionGroupedUIFeedbackQuery_enumerateGroupedUIFeedbackResultsWithBlock_completionBlock_uiFeedbackPublisherChain___block_invoke;
   v21[3] = &unk_1E86A3CE8;
   v21[4] = self;
-  v22 = v9;
+  v22 = completionBlockCopy;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __132__ATXProactiveSuggestionGroupedUIFeedbackQuery_enumerateGroupedUIFeedbackResultsWithBlock_completionBlock_uiFeedbackPublisherChain___block_invoke_28;
   v19[3] = &unk_1E86A44D8;
   v19[4] = self;
-  v20 = v8;
-  v16 = v8;
-  v17 = v9;
-  v18 = [v10 sinkWithBookmark:v15 completion:v21 receiveInput:v19];
+  v20 = blockCopy;
+  v16 = blockCopy;
+  v17 = completionBlockCopy;
+  v18 = [chainCopy sinkWithBookmark:bookmark completion:v21 receiveInput:v19];
 }
 
 void __132__ATXProactiveSuggestionGroupedUIFeedbackQuery_enumerateGroupedUIFeedbackResultsWithBlock_completionBlock_uiFeedbackPublisherChain___block_invoke(uint64_t a1, void *a2, void *a3)

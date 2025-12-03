@@ -1,27 +1,27 @@
 @interface WFHotspotAlertController
-+ (id)hotspotAlertControllerWithNetworkName:(id)a3 completionHandler:(id)a4;
++ (id)hotspotAlertControllerWithNetworkName:(id)name completionHandler:(id)handler;
 @end
 
 @implementation WFHotspotAlertController
 
-+ (id)hotspotAlertControllerWithNetworkName:(id)a3 completionHandler:(id)a4
++ (id)hotspotAlertControllerWithNetworkName:(id)name completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  nameCopy = name;
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (!nameCopy)
   {
     +[WFHotspotAlertController hotspotAlertControllerWithNetworkName:completionHandler:];
 LABEL_7:
     v17 = 0;
     v15 = 0;
-    v13 = 0;
+    nameCopy = 0;
     v9 = 0;
     v18 = 0;
     goto LABEL_4;
   }
 
-  if (!v6)
+  if (!handlerCopy)
   {
     +[WFHotspotAlertController hotspotAlertControllerWithNetworkName:completionHandler:];
     goto LABEL_7;
@@ -33,7 +33,7 @@ LABEL_7:
   v10 = MEMORY[0x277CCACA8];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"kWFLocDisablePersonalHotspotAlertMessage" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
-  v13 = [v10 stringWithFormat:v12, v5];
+  nameCopy = [v10 stringWithFormat:v12, nameCopy];
 
   v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v15 = [v14 localizedStringForKey:@"kWFLocPromptAlertCancelButton" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
@@ -41,7 +41,7 @@ LABEL_7:
   v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v17 = [v16 localizedStringForKey:@"kWFLocPromptAlertJoinButton" value:&stru_288308678 table:@"WiFiKitUILocalizableStrings"];
 
-  v18 = [(WFPromptAlertController *)WFHotspotAlertController promptAlertControllerWithTitle:v9 message:v13 cancelTitle:v15 successTitle:v17 completionHandler:v7];
+  v18 = [(WFPromptAlertController *)WFHotspotAlertController promptAlertControllerWithTitle:v9 message:nameCopy cancelTitle:v15 successTitle:v17 completionHandler:v7];
 LABEL_4:
   v19 = v18;
 

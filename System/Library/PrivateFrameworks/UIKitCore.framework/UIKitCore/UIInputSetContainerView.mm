@@ -1,40 +1,40 @@
 @interface UIInputSetContainerView
 - (CGPoint)offsetOrigin;
 - (CGRect)_accessoryViewFrame;
-- (UIInputSetContainerView)initWithFrame:(CGRect)a3;
+- (UIInputSetContainerView)initWithFrame:(CGRect)frame;
 - (UIScreen)hostingScreen;
 - (id)_containerForKeyplaneViews;
 - (id)_inputWindowController;
-- (void)_didRemoveSubview:(id)a3;
-- (void)_setAccessoryViewFrame:(CGRect)a3;
-- (void)_setRenderConfig:(id)a3;
-- (void)addHostedView:(id)a3 withViewRemovalHandler:(id)a4;
-- (void)addSubview:(id)a3;
+- (void)_didRemoveSubview:(id)subview;
+- (void)_setAccessoryViewFrame:(CGRect)frame;
+- (void)_setRenderConfig:(id)config;
+- (void)addHostedView:(id)view withViewRemovalHandler:(id)handler;
+- (void)addSubview:(id)subview;
 - (void)dealloc;
-- (void)didAddSubview:(id)a3;
-- (void)performWithoutGeometryObserverNotifications:(id)a3;
-- (void)setCenter:(CGPoint)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setOffsetOrigin:(CGPoint)a3;
+- (void)didAddSubview:(id)subview;
+- (void)performWithoutGeometryObserverNotifications:(id)notifications;
+- (void)setCenter:(CGPoint)center;
+- (void)setFrame:(CGRect)frame;
+- (void)setOffsetOrigin:(CGPoint)origin;
 @end
 
 @implementation UIInputSetContainerView
 
-- (UIInputSetContainerView)initWithFrame:(CGRect)a3
+- (UIInputSetContainerView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = UIInputSetContainerView;
-  v3 = [(UIView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v11.receiver = v3;
     v11.super_class = UIInputSetContainerView;
-    v5 = [(UIView *)&v11 _inheritedRenderConfig];
-    v6 = v5;
-    if (v5)
+    _inheritedRenderConfig = [(UIView *)&v11 _inheritedRenderConfig];
+    v6 = _inheritedRenderConfig;
+    if (_inheritedRenderConfig)
     {
-      v7 = v5;
+      v7 = _inheritedRenderConfig;
     }
 
     else
@@ -45,8 +45,8 @@
     v8 = v7;
 
     [(UIInputSetContainerView *)v4 _setRenderConfig:v8];
-    v9 = [(UIView *)v4 layer];
-    [v9 setSecurityMode:*MEMORY[0x1E6979E68]];
+    layer = [(UIView *)v4 layer];
+    [layer setSecurityMode:*MEMORY[0x1E6979E68]];
   }
 
   return v4;
@@ -62,10 +62,10 @@
   [(UIView *)&v4 dealloc];
 }
 
-- (void)_setRenderConfig:(id)a3
+- (void)_setRenderConfig:(id)config
 {
-  v5 = a3;
-  if ([v5 lightKeyboard])
+  configCopy = config;
+  if ([configCopy lightKeyboard])
   {
     v6 = 1;
   }
@@ -78,11 +78,11 @@
   if (+[UIKeyboard usesInputSystemUI])
   {
     v7 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v8 = [v7 remoteInputViewHost];
+    remoteInputViewHost = [v7 remoteInputViewHost];
 
-    v9 = [v8 inputViewWindow];
-    v10 = [v9 rootViewController];
-    [v10 setOverrideUserInterfaceStyle:v6];
+    inputViewWindow = [remoteInputViewHost inputViewWindow];
+    rootViewController = [inputViewWindow rootViewController];
+    [rootViewController setOverrideUserInterfaceStyle:v6];
   }
 
   else
@@ -90,28 +90,28 @@
     [(UIView *)self setOverrideUserInterfaceStyle:v6];
   }
 
-  objc_storeStrong(&self->_renderConfig, a3);
-  v11 = [(UIView *)self _rootInputWindowController];
-  v12 = [v11 updateGuideBackdropRenderConfig:v5 animated:0];
+  objc_storeStrong(&self->_renderConfig, config);
+  _rootInputWindowController = [(UIView *)self _rootInputWindowController];
+  v12 = [_rootInputWindowController updateGuideBackdropRenderConfig:configCopy animated:0];
 
-  if ([v5 animatedBackground] && (v12 & 1) == 0)
+  if ([configCopy animatedBackground] && (v12 & 1) == 0)
   {
-    v13 = [(UIView *)self _rootInputWindowController];
-    [v13 updateBackdropRenderConfig:v5];
+    _rootInputWindowController2 = [(UIView *)self _rootInputWindowController];
+    [_rootInputWindowController2 updateBackdropRenderConfig:configCopy];
   }
 
   v14.receiver = self;
   v14.super_class = UIInputSetContainerView;
-  [(UIView *)&v14 _setRenderConfig:v5];
+  [(UIView *)&v14 _setRenderConfig:configCopy];
 }
 
 - (id)_inputWindowController
 {
-  v2 = [(UIView *)self nextResponder];
+  nextResponder = [(UIView *)self nextResponder];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = nextResponder;
   }
 
   else
@@ -137,31 +137,31 @@
     [(UIView *)self->_containerForKeyplaneViews setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIInputSetContainerView *)self addSubview:self->_containerForKeyplaneViews];
     v19 = MEMORY[0x1E69977A0];
-    v24 = [(UIView *)self topAnchor];
-    v23 = [(UIView *)self->_containerForKeyplaneViews topAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    topAnchor = [(UIView *)self topAnchor];
+    topAnchor2 = [(UIView *)self->_containerForKeyplaneViews topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v25[0] = v22;
-    v21 = [(UIView *)self leftAnchor];
-    v20 = [(UIView *)self->_containerForKeyplaneViews leftAnchor];
-    v6 = [v21 constraintEqualToAnchor:v20];
+    leftAnchor = [(UIView *)self leftAnchor];
+    leftAnchor2 = [(UIView *)self->_containerForKeyplaneViews leftAnchor];
+    v6 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v25[1] = v6;
-    v7 = [(UIView *)self widthAnchor];
-    v8 = [(UIView *)self->_containerForKeyplaneViews widthAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    widthAnchor = [(UIView *)self widthAnchor];
+    widthAnchor2 = [(UIView *)self->_containerForKeyplaneViews widthAnchor];
+    v9 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v25[2] = v9;
-    v10 = [(UIView *)self heightAnchor];
-    v11 = [(UIView *)self->_containerForKeyplaneViews heightAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    heightAnchor = [(UIView *)self heightAnchor];
+    heightAnchor2 = [(UIView *)self->_containerForKeyplaneViews heightAnchor];
+    v12 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     v25[3] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
     [v19 activateConstraints:v13];
   }
 
-  v14 = [(UIView *)self subviews];
-  v15 = [v14 lastObject];
+  subviews = [(UIView *)self subviews];
+  lastObject = [subviews lastObject];
   v16 = self->_containerForKeyplaneViews;
 
-  if (v15 != v16)
+  if (lastObject != v16)
   {
     [(UIView *)self bringSubviewToFront:self->_containerForKeyplaneViews];
   }
@@ -173,9 +173,9 @@
 
 - (CGRect)_accessoryViewFrame
 {
-  v2 = [(UIInputSetContainerView *)self _inputWindowController];
-  v3 = [v2 inputAccessoryView];
-  [v3 frame];
+  _inputWindowController = [(UIInputSetContainerView *)self _inputWindowController];
+  inputAccessoryView = [_inputWindowController inputAccessoryView];
+  [inputAccessoryView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -192,35 +192,35 @@
   return result;
 }
 
-- (void)_setAccessoryViewFrame:(CGRect)a3
+- (void)_setAccessoryViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIInputSetContainerView *)self _inputWindowController];
-  v9 = [v8 inputAccessoryView];
-  [v9 setFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _inputWindowController = [(UIInputSetContainerView *)self _inputWindowController];
+  inputAccessoryView = [_inputWindowController inputAccessoryView];
+  [inputAccessoryView setFrame:{x, y, width, height}];
 
-  v10 = [(UIInputSetContainerView *)self _inputWindowController];
-  [v10 setHostingNeedsLayout];
+  _inputWindowController2 = [(UIInputSetContainerView *)self _inputWindowController];
+  [_inputWindowController2 setHostingNeedsLayout];
 }
 
 - (UIScreen)hostingScreen
 {
-  v2 = [(UIView *)self window];
-  v3 = [v2 screen];
+  window = [(UIView *)self window];
+  screen = [window screen];
 
-  return v3;
+  return screen;
 }
 
-- (void)addHostedView:(id)a3 withViewRemovalHandler:(id)a4
+- (void)addHostedView:(id)view withViewRemovalHandler:(id)handler
 {
-  v14 = a3;
-  v6 = a4;
-  if (v14)
+  viewCopy = view;
+  handlerCopy = handler;
+  if (viewCopy)
   {
-    if (v6)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -229,7 +229,7 @@
   else
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"subview must not be nil"];
-    if (v6)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -237,7 +237,7 @@
 
   [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"removalHandler must not be nil"];
 LABEL_3:
-  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:v14];
+  v7 = [MEMORY[0x1E696B098] valueWithNonretainedObject:viewCopy];
   v8 = [(NSMutableDictionary *)self->_hostedViews objectForKey:v7];
   v9 = v8;
   if (v8)
@@ -248,53 +248,53 @@ LABEL_3:
   hostedViews = self->_hostedViews;
   if (!hostedViews)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12 = self->_hostedViews;
-    self->_hostedViews = v11;
+    self->_hostedViews = dictionary;
 
     hostedViews = self->_hostedViews;
   }
 
-  v13 = [v6 copy];
+  v13 = [handlerCopy copy];
   [(NSMutableDictionary *)hostedViews setObject:v13 forKey:v7];
 
-  [(UIInputSetContainerView *)self addSubview:v14];
+  [(UIInputSetContainerView *)self addSubview:viewCopy];
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v3.receiver = self;
   v3.super_class = UIInputSetContainerView;
-  [(UIView *)&v3 addSubview:a3];
+  [(UIView *)&v3 addSubview:subview];
 }
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v6.receiver = self;
   v6.super_class = UIInputSetContainerView;
-  [(UIView *)&v6 didAddSubview:a3];
-  v4 = [(UIView *)self superview];
+  [(UIView *)&v6 didAddSubview:subview];
+  superview = [(UIView *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UIView *)self superview];
+    superview2 = [(UIView *)self superview];
   }
 
   else
   {
-    v5 = 0;
+    superview2 = 0;
   }
 
-  [v5 _sortSubviewsOfView:self];
+  [superview2 _sortSubviewsOfView:self];
 }
 
-- (void)_didRemoveSubview:(id)a3
+- (void)_didRemoveSubview:(id)subview
 {
   v8.receiver = self;
   v8.super_class = UIInputSetContainerView;
-  v4 = a3;
-  [(UIView *)&v8 _didRemoveSubview:v4];
-  v5 = [MEMORY[0x1E696B098] valueWithNonretainedObject:{v4, v8.receiver, v8.super_class}];
+  subviewCopy = subview;
+  [(UIView *)&v8 _didRemoveSubview:subviewCopy];
+  v5 = [MEMORY[0x1E696B098] valueWithNonretainedObject:{subviewCopy, v8.receiver, v8.super_class}];
 
   v6 = [(NSMutableDictionary *)self->_hostedViews objectForKey:v5];
   if (v6)
@@ -310,17 +310,17 @@ LABEL_3:
   }
 }
 
-- (void)performWithoutGeometryObserverNotifications:(id)a3
+- (void)performWithoutGeometryObserverNotifications:(id)notifications
 {
   self->_disableGeometryObserverNotifications = 1;
-  (*(a3 + 2))(a3, a2);
+  (*(notifications + 2))(notifications, a2);
   self->_disableGeometryObserverNotifications = 0;
 }
 
-- (void)setOffsetOrigin:(CGPoint)a3
+- (void)setOffsetOrigin:(CGPoint)origin
 {
-  y = a3.y;
-  x = a3.x;
+  y = origin.y;
+  x = origin.x;
   [(UIView *)self frame];
   v7 = v6 - self->_offsetOrigin.x;
   v9 = v8 - self->_offsetOrigin.y;
@@ -331,19 +331,19 @@ LABEL_3:
   [(UIInputSetContainerView *)self setFrame:v7, v9];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v3 = a3.origin.x + self->_offsetOrigin.x;
-  v4 = a3.origin.y + self->_offsetOrigin.y;
+  v3 = frame.origin.x + self->_offsetOrigin.x;
+  v4 = frame.origin.y + self->_offsetOrigin.y;
   v5.receiver = self;
   v5.super_class = UIInputSetContainerView;
-  [(UIView *)&v5 setFrame:v3, v4, a3.size.width, a3.size.height];
+  [(UIView *)&v5 setFrame:v3, v4, frame.size.width, frame.size.height];
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  v3 = a3.x + self->_offsetOrigin.x;
-  v4 = a3.y + self->_offsetOrigin.y;
+  v3 = center.x + self->_offsetOrigin.x;
+  v4 = center.y + self->_offsetOrigin.y;
   v5.receiver = self;
   v5.super_class = UIInputSetContainerView;
   [(UIView *)&v5 setCenter:v3, v4];

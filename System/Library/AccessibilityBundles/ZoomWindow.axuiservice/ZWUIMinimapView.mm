@@ -1,28 +1,28 @@
 @interface ZWUIMinimapView
 - (CGRect)zoomedRect;
-- (ZWUIMinimapView)initWithFrame:(CGRect)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setZoomedRect:(CGRect)a3 screenRect:(CGRect)a4;
+- (ZWUIMinimapView)initWithFrame:(CGRect)frame;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setZoomedRect:(CGRect)rect screenRect:(CGRect)screenRect;
 @end
 
 @implementation ZWUIMinimapView
 
-- (ZWUIMinimapView)initWithFrame:(CGRect)a3
+- (ZWUIMinimapView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = ZWUIMinimapView;
-  return [(ZWUIMinimapView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(ZWUIMinimapView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  self->_enabled = a3;
+  self->_enabled = enabled;
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = __30__ZWUIMinimapView_setEnabled___block_invoke;
   v3[3] = &unk_78BD0;
   v3[4] = self;
-  v4 = a3;
+  enabledCopy = enabled;
   [UIView animateWithDuration:4 delay:v3 options:0 animations:0.25 completion:0.0];
 }
 
@@ -37,16 +37,16 @@ id __30__ZWUIMinimapView_setEnabled___block_invoke(uint64_t a1)
   return [*(a1 + 32) setAlpha:v1];
 }
 
-- (void)setZoomedRect:(CGRect)a3 screenRect:(CGRect)a4
+- (void)setZoomedRect:(CGRect)rect screenRect:(CGRect)screenRect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  y = a4.origin.y;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  v8 = a3.origin.y;
-  v9 = a3.origin.x;
+  height = screenRect.size.height;
+  width = screenRect.size.width;
+  x = screenRect.origin.x;
+  y = screenRect.origin.y;
+  v6 = rect.size.height;
+  v7 = rect.size.width;
+  v8 = rect.origin.y;
+  v9 = rect.origin.x;
   [(ZWUIMinimapView *)self setZoomedRect:?];
   [(ZWUIMinimapView *)self bounds];
   v22 = CGRectInset(v21, 1.0, 1.0);

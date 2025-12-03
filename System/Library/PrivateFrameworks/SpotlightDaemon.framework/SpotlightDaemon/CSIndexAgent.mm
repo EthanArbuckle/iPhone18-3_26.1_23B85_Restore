@@ -1,26 +1,26 @@
 @interface CSIndexAgent
-+ (id)indexAgent:(BOOL)a3 serviceName:(id)a4;
-+ (id)indexDelegateAgent:(id)a3;
-- (BOOL)addClientConnectionIfAllowedForConfiguration:(id)a3;
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3;
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5;
-- (BOOL)lostClientConnection:(id)a3 error:(id)a4;
-- (id)indexConnection:(id)a3;
++ (id)indexAgent:(BOOL)agent serviceName:(id)name;
++ (id)indexDelegateAgent:(id)agent;
+- (BOOL)addClientConnectionIfAllowedForConfiguration:(id)configuration;
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection;
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection;
+- (BOOL)lostClientConnection:(id)connection error:(id)error;
+- (id)indexConnection:(id)connection;
 @end
 
 @implementation CSIndexAgent
 
-+ (id)indexAgent:(BOOL)a3 serviceName:(id)a4
++ (id)indexAgent:(BOOL)agent serviceName:(id)name
 {
-  v5 = a4;
+  nameCopy = name;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __39__CSIndexAgent_indexAgent_serviceName___block_invoke;
   v11[3] = &unk_278934400;
-  v13 = a3;
-  v12 = v5;
+  agentCopy = agent;
+  v12 = nameCopy;
   v6 = indexAgent_serviceName__onceToken;
-  v7 = v5;
+  v7 = nameCopy;
   if (v6 != -1)
   {
     dispatch_once(&indexAgent_serviceName__onceToken, v11);
@@ -63,16 +63,16 @@ void __39__CSIndexAgent_indexAgent_serviceName___block_invoke(uint64_t a1)
   [sIndexAgent setIndexConnections:v7];
 }
 
-+ (id)indexDelegateAgent:(id)a3
++ (id)indexDelegateAgent:(id)agent
 {
-  v3 = a3;
+  agentCopy = agent;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__CSIndexAgent_indexDelegateAgent___block_invoke;
   block[3] = &unk_278934050;
-  v10 = v3;
+  v10 = agentCopy;
   v4 = indexDelegateAgent__onceToken;
-  v5 = v3;
+  v5 = agentCopy;
   if (v4 != -1)
   {
     dispatch_once(&indexDelegateAgent__onceToken, block);
@@ -106,28 +106,28 @@ void __35__CSIndexAgent_indexDelegateAgent___block_invoke(uint64_t a1)
   [sIndexDelegateAgent setIndexConnections:v6];
 }
 
-- (BOOL)addClientConnectionIfAllowedForConfiguration:(id)a3
+- (BOOL)addClientConnectionIfAllowedForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [[CSIndexClientConnection alloc] initWithConfiguration:v4 indexer:self->_indexer];
-  v6 = [(CSIndexClientConnection *)v5 configuration];
-  v7 = [v6 bundleID];
-  if (v7)
+  configurationCopy = configuration;
+  v5 = [[CSIndexClientConnection alloc] initWithConfiguration:configurationCopy indexer:self->_indexer];
+  configuration = [(CSIndexClientConnection *)v5 configuration];
+  bundleID = [configuration bundleID];
+  if (bundleID)
   {
 
 LABEL_4:
-    v10 = [v4 connection];
-    v11 = [CSIndexClientConnectionKey keyWithConnection:v10];
+    connection = [configurationCopy connection];
+    v11 = [CSIndexClientConnectionKey keyWithConnection:connection];
 
     [(NSMutableDictionary *)self->_indexConnections setObject:v5 forKeyedSubscript:v11];
     v12 = 1;
     goto LABEL_5;
   }
 
-  v8 = [(CSIndexClientConnection *)v5 configuration];
-  v9 = [v8 internal];
+  configuration2 = [(CSIndexClientConnection *)v5 configuration];
+  internal = [configuration2 internal];
 
-  if (v9)
+  if (internal)
   {
     goto LABEL_4;
   }
@@ -135,7 +135,7 @@ LABEL_4:
   v14 = logForCSLogCategoryIndex();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
-    [CSIndexAgent addClientConnectionIfAllowedForConfiguration:v4];
+    [CSIndexAgent addClientConnectionIfAllowedForConfiguration:configurationCopy];
   }
 
   v12 = 0;
@@ -144,47 +144,47 @@ LABEL_5:
   return v12;
 }
 
-- (BOOL)addClientConnectionIfAllowedForConnection:(id)a3
+- (BOOL)addClientConnectionIfAllowedForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [[SDConnectionConfiguration alloc] initWithConnection:v4 isPrivate:0];
+  connectionCopy = connection;
+  v5 = [[SDConnectionConfiguration alloc] initWithConnection:connectionCopy isPrivate:0];
 
   LOBYTE(self) = [(CSIndexAgent *)self addClientConnectionIfAllowedForConfiguration:v5];
   return self;
 }
 
-- (BOOL)lostClientConnection:(id)a3 error:(id)a4
+- (BOOL)lostClientConnection:(id)connection error:(id)error
 {
-  v5 = [CSIndexClientConnectionKey keyWithConnection:a3, a4];
-  [(NSMutableDictionary *)self->_indexConnections setObject:0 forKeyedSubscript:v5];
+  error = [CSIndexClientConnectionKey keyWithConnection:connection, error];
+  [(NSMutableDictionary *)self->_indexConnections setObject:0 forKeyedSubscript:error];
 
   return 0;
 }
 
-- (id)indexConnection:(id)a3
+- (id)indexConnection:(id)connection
 {
-  v4 = [CSIndexClientConnectionKey keyWithConnection:a3];
+  v4 = [CSIndexClientConnectionKey keyWithConnection:connection];
   v5 = [(NSMutableDictionary *)self->_indexConnections objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (BOOL)handleCommand:(const char *)a3 info:(id)a4 connection:(id)a5
+- (BOOL)handleCommand:(const char *)command info:(id)info connection:(id)connection
 {
-  v8 = a4;
-  v9 = a5;
+  infoCopy = info;
+  connectionCopy = connection;
   v10 = logForCSLogCategoryDefault();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [CSIndexAgent handleCommand:a3 info:v9 connection:v10];
+    [CSIndexAgent handleCommand:command info:connectionCopy connection:v10];
   }
 
-  v11 = [(CSIndexAgent *)self indexConnection:v9];
+  v11 = [(CSIndexAgent *)self indexConnection:connectionCopy];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 service];
-    v14 = [v13 handleCommand:a3 info:v8];
+    service = [v11 service];
+    v14 = [service handleCommand:command info:infoCopy];
   }
 
   else

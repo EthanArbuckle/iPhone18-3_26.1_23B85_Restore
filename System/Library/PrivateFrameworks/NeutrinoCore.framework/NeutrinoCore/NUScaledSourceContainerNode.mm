@@ -1,20 +1,20 @@
 @interface NUScaledSourceContainerNode
-- (id)resolveSourceNodeForPipelineState:(id)a3 foundScale:(id *)a4 error:(id *)a5;
+- (id)resolveSourceNodeForPipelineState:(id)state foundScale:(id *)scale error:(id *)error;
 @end
 
 @implementation NUScaledSourceContainerNode
 
-- (id)resolveSourceNodeForPipelineState:(id)a3 foundScale:(id *)a4 error:(id *)a5
+- (id)resolveSourceNodeForPipelineState:(id)state foundScale:(id *)scale error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = [(NUMultipleSourceContainerNode *)self sources];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  stateCopy = state;
+  sources = [(NUMultipleSourceContainerNode *)self sources];
+  v10 = [sources objectAtIndexedSubscript:0];
 
   v34.receiver = self;
   v34.super_class = NUScaledSourceContainerNode;
-  v11 = [(NUMultipleSourceContainerNode *)&v34 resolveSourceNodeForPipelineState:v8 foundScale:a4 error:a5];
-  if (v11 && [v8 evaluationMode] == 1 && v11 == v10)
+  v11 = [(NUMultipleSourceContainerNode *)&v34 resolveSourceNodeForPipelineState:stateCopy foundScale:scale error:error];
+  if (v11 && [stateCopy evaluationMode] == 1 && v11 == v10)
   {
     if (_NULogOnceToken != -1)
     {
@@ -58,8 +58,8 @@ LABEL_11:
         v23 = MEMORY[0x1E696AF00];
         v24 = specific;
         v25 = v17;
-        v26 = [v23 callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v27 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = specific;
         v37 = 2114;
@@ -77,8 +77,8 @@ LABEL_17:
     {
       v30 = MEMORY[0x1E696AF00];
       v31 = v28;
-      v32 = [v30 callStackSymbols];
-      v33 = [v32 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v30 callStackSymbols];
+      v33 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v33;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

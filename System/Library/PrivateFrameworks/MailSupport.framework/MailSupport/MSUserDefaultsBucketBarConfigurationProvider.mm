@@ -2,21 +2,21 @@
 - (EFCancelable)token;
 - (MSBucketBarConfigurationProviderDelegate)delegate;
 - (MSUserDefaultsBucketBarConfigurationProvider)init;
-- (MSUserDefaultsBucketBarConfigurationProvider)initWithUserDefaults:(id)a3 delegate:(id)a4;
-- (void)setToken:(id)a3;
-- (void)storeBucketBarConfiguration:(id)a3;
-- (void)storeBucketSelectionConfiguration:(id)a3;
+- (MSUserDefaultsBucketBarConfigurationProvider)initWithUserDefaults:(id)defaults delegate:(id)delegate;
+- (void)setToken:(id)token;
+- (void)storeBucketBarConfiguration:(id)configuration;
+- (void)storeBucketSelectionConfiguration:(id)configuration;
 @end
 
 @implementation MSUserDefaultsBucketBarConfigurationProvider
 
 - (MSUserDefaultsBucketBarConfigurationProvider)init
 {
-  v3 = [objc_opt_self() em_userDefaults];
-  if (v3)
+  em_userDefaults = [objc_opt_self() em_userDefaults];
+  if (em_userDefaults)
   {
-    v4 = v3;
-    v5 = [(MSUserDefaultsBucketBarConfigurationProvider *)self initWithUserDefaults:v3 delegate:0];
+    v4 = em_userDefaults;
+    v5 = [(MSUserDefaultsBucketBarConfigurationProvider *)self initWithUserDefaults:em_userDefaults delegate:0];
 
     return v5;
   }
@@ -30,11 +30,11 @@
   return result;
 }
 
-- (MSUserDefaultsBucketBarConfigurationProvider)initWithUserDefaults:(id)a3 delegate:(id)a4
+- (MSUserDefaultsBucketBarConfigurationProvider)initWithUserDefaults:(id)defaults delegate:(id)delegate
 {
-  v4 = a3;
+  defaultsCopy = defaults;
   swift_unknownObjectRetain();
-  return MSUserDefaultsBucketBarConfigurationProvider.init(userDefaults:delegate:)(v4);
+  return MSUserDefaultsBucketBarConfigurationProvider.init(userDefaults:delegate:)(defaultsCopy);
 }
 
 - (MSBucketBarConfigurationProviderDelegate)delegate
@@ -53,32 +53,32 @@
   return v3;
 }
 
-- (void)setToken:(id)a3
+- (void)setToken:(id)token
 {
   v3 = *(self + OBJC_IVAR___MSUserDefaultsBucketBarConfigurationProvider_token);
-  *(self + OBJC_IVAR___MSUserDefaultsBucketBarConfigurationProvider_token) = a3;
+  *(self + OBJC_IVAR___MSUserDefaultsBucketBarConfigurationProvider_token) = token;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
 }
 
-- (void)storeBucketBarConfiguration:(id)a3
+- (void)storeBucketBarConfiguration:(id)configuration
 {
   sub_257F909B0(0, &qword_280CFF6A0, 0x277CCABB0);
   v4 = sub_257FA9610();
-  v5 = self;
+  selfCopy = self;
   MSUserDefaultsBucketBarConfigurationProvider.storeBucketBarConfiguration(_:)(v4);
 }
 
-- (void)storeBucketSelectionConfiguration:(id)a3
+- (void)storeBucketSelectionConfiguration:(id)configuration
 {
   sub_257F909B0(0, &qword_280CFF6A0, 0x277CCABB0);
   sub_257FA9610();
-  v4 = self;
-  v5 = [(MSUserDefaultsBucketBarConfigurationProvider *)v4 userDefaults];
+  selfCopy = self;
+  userDefaults = [(MSUserDefaultsBucketBarConfigurationProvider *)selfCopy userDefaults];
   v6 = sub_257FA9600();
-  v7 = [(MSUserDefaultsBucketBarConfigurationProvider *)v4 bucketSelectionConfigurationKey];
-  [(NSUserDefaults *)v5 setObject:v6 forKey:v7];
+  bucketSelectionConfigurationKey = [(MSUserDefaultsBucketBarConfigurationProvider *)selfCopy bucketSelectionConfigurationKey];
+  [(NSUserDefaults *)userDefaults setObject:v6 forKey:bucketSelectionConfigurationKey];
 }
 
 @end

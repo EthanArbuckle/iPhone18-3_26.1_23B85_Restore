@@ -1,24 +1,24 @@
 @interface MTBaseCollectionViewFlowLayout
-- (void)setExpandedIndexPath:(id)a3;
-- (void)setNumberOfColumns:(unint64_t)a3;
+- (void)setExpandedIndexPath:(id)path;
+- (void)setNumberOfColumns:(unint64_t)columns;
 @end
 
 @implementation MTBaseCollectionViewFlowLayout
 
-- (void)setNumberOfColumns:(unint64_t)a3
+- (void)setNumberOfColumns:(unint64_t)columns
 {
-  if (self->_numberOfColumns != a3)
+  if (self->_numberOfColumns != columns)
   {
-    self->_numberOfColumns = a3;
+    self->_numberOfColumns = columns;
   }
 }
 
-- (void)setExpandedIndexPath:(id)a3
+- (void)setExpandedIndexPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   if (([(NSIndexPath *)self->_expandedIndexPath isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_expandedIndexPath, a3);
+    objc_storeStrong(&self->_expandedIndexPath, path);
   }
 }
 

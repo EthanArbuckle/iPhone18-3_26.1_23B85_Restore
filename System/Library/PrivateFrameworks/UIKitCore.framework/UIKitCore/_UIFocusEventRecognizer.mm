@@ -1,108 +1,108 @@
 @interface _UIFocusEventRecognizer
-- (BOOL)_attemptPanFocusMovementWithHeading:(unint64_t)a3 acceleratedVelocity:(CGPoint)a4 focusSystem:(id)a5 studyLogData:(id)a6;
-- (BOOL)_attemptRotaryFocusMovementWithLinearHeading:(unint64_t)a3 directionalHeading:(unint64_t)a4 focusMovementAxis:(int64_t)a5 focusSystem:(id)a6 acceleratedVelocity:(CGPoint)a7 studyLogData:(id)a8;
-- (BOOL)_attemptToRecognizeContinuousMovementRequest:(id)a3;
+- (BOOL)_attemptPanFocusMovementWithHeading:(unint64_t)heading acceleratedVelocity:(CGPoint)velocity focusSystem:(id)system studyLogData:(id)data;
+- (BOOL)_attemptRotaryFocusMovementWithLinearHeading:(unint64_t)heading directionalHeading:(unint64_t)directionalHeading focusMovementAxis:(int64_t)axis focusSystem:(id)system acceleratedVelocity:(CGPoint)velocity studyLogData:(id)data;
+- (BOOL)_attemptToRecognizeContinuousMovementRequest:(id)request;
 - (BOOL)_buttonMaskTimeHasExpired;
-- (BOOL)_canMoveFocusWithRotaryInputInFocusContext:(id)a3;
-- (BOOL)_didRecognizeFocusMovementRequest:(id)a3;
+- (BOOL)_canMoveFocusWithRotaryInputInFocusContext:(id)context;
+- (BOOL)_didRecognizeFocusMovementRequest:(id)request;
 - (BOOL)_hasFailedMovementHeadingExpired;
-- (BOOL)_joystickAttemptFocusMovementWithRequest:(id)a3;
-- (BOOL)_joystickFocusMovement:(id)a3 shouldBeConsideredEqualToFocusMovement:(id)a4;
-- (BOOL)_moveInDirection:(unint64_t)a3 groupFilter:(int64_t)a4 withEvaluator:(id)a5;
-- (BOOL)_moveInDirection:(unint64_t)a3 groupFilter:(int64_t)a4 withSearchInfo:(id)a5;
-- (BOOL)_moveWithEvent:(id)a3;
-- (BOOL)_shouldAcceptInputType:(unint64_t)a3;
+- (BOOL)_joystickAttemptFocusMovementWithRequest:(id)request;
+- (BOOL)_joystickFocusMovement:(id)movement shouldBeConsideredEqualToFocusMovement:(id)focusMovement;
+- (BOOL)_moveInDirection:(unint64_t)direction groupFilter:(int64_t)filter withEvaluator:(id)evaluator;
+- (BOOL)_moveInDirection:(unint64_t)direction groupFilter:(int64_t)filter withSearchInfo:(id)info;
+- (BOOL)_moveWithEvent:(id)event;
+- (BOOL)_shouldAcceptInputType:(unint64_t)type;
 - (BOOL)_shouldPerformFocusUpdateWithCurrentMomentumStatus;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)_applyAxisLockingForNormalizedPoint:(CGPoint)a3 toDelta:(CGPoint)a4;
-- (CGPoint)_applyButtonMaskTimeToValue:(CGPoint)a3 remoteTouchSurfaceType:(unint64_t)a4;
-- (CGPoint)_applyHorizontalFlipForFocusItemMetadata:(id)a3 toDelta:(CGPoint)a4;
-- (CGPoint)_applyPanDeadbandToValue:(CGPoint)a3 startPoint:(CGPoint)a4 currentPoint:(CGPoint)a5 remoteTouchSurfaceType:(unint64_t)a6;
-- (CGPoint)_calculateDeltaForNormalizedPoint:(CGPoint)a3 studyLogData:(id)a4;
-- (CGPoint)_pointForLinearValue:(double)a3 axis:(unint64_t)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)_applyAxisLockingForNormalizedPoint:(CGPoint)point toDelta:(CGPoint)delta;
+- (CGPoint)_applyButtonMaskTimeToValue:(CGPoint)value remoteTouchSurfaceType:(unint64_t)type;
+- (CGPoint)_applyHorizontalFlipForFocusItemMetadata:(id)metadata toDelta:(CGPoint)delta;
+- (CGPoint)_applyPanDeadbandToValue:(CGPoint)value startPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint remoteTouchSurfaceType:(unint64_t)type;
+- (CGPoint)_calculateDeltaForNormalizedPoint:(CGPoint)point studyLogData:(id)data;
+- (CGPoint)_pointForLinearValue:(double)value axis:(unint64_t)axis;
 - (CGSize)_momentumReferenceSize;
-- (CGSize)_touchSensitivityForFocusItemMetadata:(id)a3 remoteTouchSurfaceType:(unint64_t)a4;
-- (CGVector)_accelerationFactorForCurrentVelocity:(CGPoint)a3 alpha:(double)a4 isRotaryGesture:(BOOL)a5 isFocusInKeyboard:(BOOL)a6 remoteTouchSurfaceType:(unint64_t)a7;
-- (CGVector)_joystickVelocityForHeading:(unint64_t)a3;
+- (CGSize)_touchSensitivityForFocusItemMetadata:(id)metadata remoteTouchSurfaceType:(unint64_t)type;
+- (CGVector)_accelerationFactorForCurrentVelocity:(CGPoint)velocity alpha:(double)alpha isRotaryGesture:(BOOL)gesture isFocusInKeyboard:(BOOL)keyboard remoteTouchSurfaceType:(unint64_t)type;
+- (CGVector)_joystickVelocityForHeading:(unint64_t)heading;
 - (NSSet)gesturesForFailureRequirements;
 - (UIView)owningView;
 - (_UIFocusEventRecognizer)init;
-- (_UIFocusEventRecognizer)initWithOwningView:(id)a3;
+- (_UIFocusEventRecognizer)initWithOwningView:(id)view;
 - (_UIFocusEventRecognizerDelegate)delegate;
-- (double)_joystickRepeatDurationForTimeInMovementZone:(double)a3;
-- (id)_createMovementInfoForHeading:(unint64_t)a3 groupFilter:(int64_t)a4 acceleratedVelocity:(CGPoint)a5;
-- (id)_createPanMovementRequestWithFocusSystem:(id)a3;
-- (id)_createRotaryMovementRequestWithFocusSystem:(id)a3;
-- (id)_focusMovementForJoystickPosition:(CGPoint)a3 usingMinimumRadius:(double)a4 focusMovementStyle:(int64_t)a5;
+- (double)_joystickRepeatDurationForTimeInMovementZone:(double)zone;
+- (id)_createMovementInfoForHeading:(unint64_t)heading groupFilter:(int64_t)filter acceleratedVelocity:(CGPoint)velocity;
+- (id)_createPanMovementRequestWithFocusSystem:(id)system;
+- (id)_createRotaryMovementRequestWithFocusSystem:(id)system;
+- (id)_focusMovementForJoystickPosition:(CGPoint)position usingMinimumRadius:(double)radius focusMovementStyle:(int64_t)style;
 - (id)_focusMovementSystem;
 - (id)_focusSystemSceneComponent;
 - (id)_globalCoordinateSpace;
 - (id)_retrieveFocusItemMetadata;
 - (id)currentFocusBehavior;
-- (int)_touchRegionForDigitizerLocation:(CGPoint)a3;
-- (unint64_t)_calculateDirectionalHeadingForAccumulator:(CGVector)a3 studyLogData:(id)a4;
-- (unint64_t)_calculateLinearHeadingForAccumulator:(CGVector)a3 studyLogData:(id)a4;
-- (unint64_t)_headingForJoystickPosition:(CGPoint)a3 usingMinimumRadius:(double)a4;
-- (unint64_t)_momentumFocusHeadingForAccumulator:(CGVector)a3;
-- (void)_beginMomentumImmediatelyWithVelocity:(CGPoint)a3 friction:(double)a4;
+- (int)_touchRegionForDigitizerLocation:(CGPoint)location;
+- (unint64_t)_calculateDirectionalHeadingForAccumulator:(CGVector)accumulator studyLogData:(id)data;
+- (unint64_t)_calculateLinearHeadingForAccumulator:(CGVector)accumulator studyLogData:(id)data;
+- (unint64_t)_headingForJoystickPosition:(CGPoint)position usingMinimumRadius:(double)radius;
+- (unint64_t)_momentumFocusHeadingForAccumulator:(CGVector)accumulator;
+- (void)_beginMomentumImmediatelyWithVelocity:(CGPoint)velocity friction:(double)friction;
 - (void)_cancelAllGestureRecognizers;
 - (void)_cancelShowRotaryIndicatorTimer;
-- (void)_cleanupPanMomentumWithAccumulator:(CGVector)a3 movementSuccess:(BOOL)a4;
+- (void)_cleanupPanMomentumWithAccumulator:(CGVector)accumulator movementSuccess:(BOOL)success;
 - (void)_continueTouchWithMomentum;
-- (void)_continuousMovementFailedWithPrimaryHeading:(unint64_t)a3;
-- (void)_continuousMovementSucceededWithDirectionalHeading:(unint64_t)a3;
-- (void)_exitJoystickModeForReal:(id)a3;
-- (void)_focusSystemEnabledStateDidChange:(id)a3;
-- (void)_gestureRecognizerFailed:(id)a3;
-- (void)_handleArrowButtonGesture:(id)a3;
-- (void)_handleJoystickGesture:(id)a3;
-- (void)_handleJoystickRepeatMode:(id)a3;
-- (void)_handleJoystickTiltMode:(id)a3;
-- (void)_handlePageButtonGesture:(id)a3;
-- (void)_handlePanGesture:(id)a3;
-- (void)_handleRotaryBegin:(id)a3;
-- (void)_handleRotaryCancelled:(id)a3;
-- (void)_handleRotaryEnd:(id)a3;
-- (void)_handleRotaryGesture:(id)a3;
-- (void)_handleSelectGesture:(id)a3;
-- (void)_handleSelectObserverGesture:(id)a3;
-- (void)_handleShoulderButtonGesture:(id)a3;
-- (void)_handleTabulatorGesture:(id)a3;
-- (void)_handleTapGesture:(id)a3;
+- (void)_continuousMovementFailedWithPrimaryHeading:(unint64_t)heading;
+- (void)_continuousMovementSucceededWithDirectionalHeading:(unint64_t)heading;
+- (void)_exitJoystickModeForReal:(id)real;
+- (void)_focusSystemEnabledStateDidChange:(id)change;
+- (void)_gestureRecognizerFailed:(id)failed;
+- (void)_handleArrowButtonGesture:(id)gesture;
+- (void)_handleJoystickGesture:(id)gesture;
+- (void)_handleJoystickRepeatMode:(id)mode;
+- (void)_handleJoystickTiltMode:(id)mode;
+- (void)_handlePageButtonGesture:(id)gesture;
+- (void)_handlePanGesture:(id)gesture;
+- (void)_handleRotaryBegin:(id)begin;
+- (void)_handleRotaryCancelled:(id)cancelled;
+- (void)_handleRotaryEnd:(id)end;
+- (void)_handleRotaryGesture:(id)gesture;
+- (void)_handleSelectGesture:(id)gesture;
+- (void)_handleSelectObserverGesture:(id)gesture;
+- (void)_handleShoulderButtonGesture:(id)gesture;
+- (void)_handleTabulatorGesture:(id)gesture;
+- (void)_handleTapGesture:(id)gesture;
 - (void)_hideRotaryIndicator;
-- (void)_joystickDisplayLinkHeartbeat:(id)a3;
-- (void)_joystickGestureBegan:(id)a3;
-- (void)_joystickGestureEnded:(id)a3;
-- (void)_joystickGestureUpdated:(id)a3;
-- (void)_momentumHeartbeat:(id)a3;
-- (void)_panGestureCancelled:(id)a3;
-- (void)_panGestureEnd:(id)a3;
-- (void)_panGestureStart:(id)a3;
-- (void)_recordMomentumForPoint:(CGPoint)a3 reportedVelocity:(CGPoint)a4;
+- (void)_joystickDisplayLinkHeartbeat:(id)heartbeat;
+- (void)_joystickGestureBegan:(id)began;
+- (void)_joystickGestureEnded:(id)ended;
+- (void)_joystickGestureUpdated:(id)updated;
+- (void)_momentumHeartbeat:(id)heartbeat;
+- (void)_panGestureCancelled:(id)cancelled;
+- (void)_panGestureEnd:(id)end;
+- (void)_panGestureStart:(id)start;
+- (void)_recordMomentumForPoint:(CGPoint)point reportedVelocity:(CGPoint)velocity;
 - (void)_resetCachedFocusItemMetadata;
 - (void)_resetJoystick;
 - (void)_resetMomentum;
 - (void)_resetPanDeadband;
-- (void)_resetProgressAccumulatorWithHeading:(unint64_t)a3;
+- (void)_resetProgressAccumulatorWithHeading:(unint64_t)heading;
 - (void)_sendGestureBeginNotification;
-- (void)_sendMomentumEndNotificationsAndAnimateRollback:(BOOL)a3;
+- (void)_sendMomentumEndNotificationsAndAnimateRollback:(BOOL)rollback;
 - (void)_showRotaryIndicator;
 - (void)_showRotaryIndicatorAfterDelay;
 - (void)_stopMomentumAndPerformRollback;
-- (void)_timerFiredForShowRotaryIndicator:(id)a3;
-- (void)_updateAccumulatorsWithScaledDelta:(CGPoint)a3 unlockedDelta:(CGPoint)a4 studyLogData:(id)a5;
-- (void)_updateFailedContinuousMovementHeading:(unint64_t)a3;
-- (void)_updateGestureRecognizersForcingRemoval:(BOOL)a3 studyLogData:(id)a4;
-- (void)_updateMotionEffectsControllerWithProgressAccumulator:(CGVector)a3 unlockedAccumulator:(CGVector)a4;
-- (void)_updatePanLocation:(CGPoint)a3 reportedVelocity:(CGPoint)a4 remoteTouchSurfaceType:(unint64_t)a5;
-- (void)_updateRotaryDistance:(double)a3 delta:(double)a4 reportedVelocity:(double)a5 remoteTouchSurfaceType:(unint64_t)a6 focusMovementAxis:(int64_t)a7;
+- (void)_timerFiredForShowRotaryIndicator:(id)indicator;
+- (void)_updateAccumulatorsWithScaledDelta:(CGPoint)delta unlockedDelta:(CGPoint)unlockedDelta studyLogData:(id)data;
+- (void)_updateFailedContinuousMovementHeading:(unint64_t)heading;
+- (void)_updateGestureRecognizersForcingRemoval:(BOOL)removal studyLogData:(id)data;
+- (void)_updateMotionEffectsControllerWithProgressAccumulator:(CGVector)accumulator unlockedAccumulator:(CGVector)unlockedAccumulator;
+- (void)_updatePanLocation:(CGPoint)location reportedVelocity:(CGPoint)velocity remoteTouchSurfaceType:(unint64_t)type;
+- (void)_updateRotaryDistance:(double)distance delta:(double)delta reportedVelocity:(double)velocity remoteTouchSurfaceType:(unint64_t)type focusMovementAxis:(int64_t)axis;
 - (void)_updateRotaryIndicatorView;
 - (void)dealloc;
 - (void)reset;
-- (void)rotaryGestureRecognizerBeganClassifyingMovement:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setGesture:(id)a3 forName:(unint64_t)a4;
+- (void)rotaryGestureRecognizerBeganClassifyingMovement:(id)movement;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setGesture:(id)gesture forName:(unint64_t)name;
 @end
 
 @implementation _UIFocusEventRecognizer
@@ -149,9 +149,9 @@
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
-        v8 = [v7 isEnabled];
+        isEnabled = [v7 isEnabled];
         [v7 setEnabled:0];
-        [v7 setEnabled:v8];
+        [v7 setEnabled:isEnabled];
       }
 
       v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
@@ -164,7 +164,7 @@
 - (void)_updateRotaryIndicatorView
 {
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v10 = [WeakRetained _focusBehavior];
+  _focusBehavior = [WeakRetained _focusBehavior];
 
   v4 = _UIInternalPreferenceUsesDefault(&_UIInternalPreference_B519_ShowRotaryIndicator, @"B519_ShowRotaryIndicator", _UIInternalPreferenceUpdateBool);
   if (byte_1ED48AEE4)
@@ -183,7 +183,7 @@
     goto LABEL_5;
   }
 
-  if (!(v5 & 1 | (([v10 supportsIndirectRotaryMovement] & 1) == 0)))
+  if (!(v5 & 1 | (([_focusBehavior supportsIndirectRotaryMovement] & 1) == 0)))
   {
     v7 = objc_loadWeakRetained(&self->_owningView);
     v8 = [_UIFocusRotaryIndicatorView createRotaryIndicatorInView:v7];
@@ -200,7 +200,7 @@ LABEL_13:
 LABEL_5:
     if ((v5 & 1) == 0)
     {
-      if ([v10 supportsIndirectRotaryMovement])
+      if ([_focusBehavior supportsIndirectRotaryMovement])
       {
         goto LABEL_14;
       }
@@ -265,14 +265,14 @@ LABEL_14:
 {
   [(_UIFocusEventRecognizer *)self reset];
   [(_UIFocusEventRecognizer *)self _updateGestureRecognizersForcingRemoval:1];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"_UIFocusBehaviorDidChangeNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"_UIFocusBehaviorDidChangeNotification" object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:@"UIFocusDidUpdateNotification" object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 removeObserver:self name:@"UIFocusDidUpdateNotification" object:0];
 
   v6.receiver = self;
   v6.super_class = _UIFocusEventRecognizer;
@@ -281,23 +281,23 @@ LABEL_14:
 
 - (_UIFocusEventRecognizer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:266 description:@"-init is not a valid initializer."];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:266 description:@"-init is not a valid initializer."];
 
   return 0;
 }
 
-- (_UIFocusEventRecognizer)initWithOwningView:(id)a3
+- (_UIFocusEventRecognizer)initWithOwningView:(id)view
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewCopy = view;
   v28.receiver = self;
   v28.super_class = _UIFocusEventRecognizer;
   v5 = [(_UIFocusEventRecognizer *)&v28 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_owningView, v4);
+    objc_storeWeak(&v5->_owningView, viewCopy);
     v7 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:1282 valueOptions:0 capacity:0];
     gestureRecognizers = v6->_gestureRecognizers;
     v6->_gestureRecognizers = v7;
@@ -308,39 +308,39 @@ LABEL_14:
     v6->_motionEffectsController = v9;
 
     [(_UIFocusEffectsController *)v6->_motionEffectsController setDisplayOffsetAccumulatorEnabled:1];
-    v11 = [v4 traitCollection];
-    if ([v11 userInterfaceIdiom] == 2)
+    traitCollection = [viewCopy traitCollection];
+    if ([traitCollection userInterfaceIdiom] == 2)
     {
     }
 
     else
     {
-      v12 = [v4 traitCollection];
-      v13 = [v12 userInterfaceIdiom];
+      traitCollection2 = [viewCopy traitCollection];
+      userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-      if (v13 != 3)
+      if (userInterfaceIdiom != 3)
       {
 LABEL_16:
         [(_UIFocusEventRecognizer *)v6 _updateGestureRecognizersForcingRemoval:0];
-        v20 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v20 addObserver:v6 selector:sel__focusSystemEnabledStateDidChange_ name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter addObserver:v6 selector:sel__focusSystemEnabledStateDidChange_ name:@"_UIFocusSystemEnabledStateDidChangeNotification" object:0];
 
-        v21 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v21 addObserver:v6 selector:sel__focusBehaviorDidChange_ name:@"_UIFocusBehaviorDidChangeNotification" object:0];
+        defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter2 addObserver:v6 selector:sel__focusBehaviorDidChange_ name:@"_UIFocusBehaviorDidChangeNotification" object:0];
 
-        v22 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v22 addObserver:v6 selector:sel__focusDidUpdate_ name:@"UIFocusDidUpdateNotification" object:0];
+        defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter3 addObserver:v6 selector:sel__focusDidUpdate_ name:@"UIFocusDidUpdateNotification" object:0];
 
         goto LABEL_17;
       }
     }
 
-    v14 = [v4 gestureRecognizers];
+    gestureRecognizers = [viewCopy gestureRecognizers];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v15 = [v14 countByEnumeratingWithState:&v24 objects:v29 count:16];
+    v15 = [gestureRecognizers countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v15)
     {
       v16 = v15;
@@ -351,17 +351,17 @@ LABEL_16:
         {
           if (*v25 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           v19 = *(*(&v24 + 1) + 8 * i);
           if (([v19 _isGestureType:8] & 1) != 0 || objc_msgSend(v19, "_isGestureType:", 12))
           {
-            [v4 removeGestureRecognizer:v19];
+            [viewCopy removeGestureRecognizer:v19];
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v24 objects:v29 count:16];
+        v16 = [gestureRecognizers countByEnumeratingWithState:&v24 objects:v29 count:16];
       }
 
       while (v16);
@@ -375,57 +375,57 @@ LABEL_17:
   return v6;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    [(_UIFocusEventRecognizer *)self _updateGestureRecognizersForcingRemoval:!a3];
-    self->_enabled = a3;
+    [(_UIFocusEventRecognizer *)self _updateGestureRecognizersForcingRemoval:!enabled];
+    self->_enabled = enabled;
   }
 }
 
-- (void)setGesture:(id)a3 forName:(unint64_t)a4
+- (void)setGesture:(id)gesture forName:(unint64_t)name
 {
   gestureRecognizers = self->_gestureRecognizers;
-  if (a3)
+  if (gesture)
   {
-    [(NSMapTable *)gestureRecognizers setObject:a3 forKey:a4];
+    [(NSMapTable *)gestureRecognizers setObject:gesture forKey:name];
   }
 
   else
   {
-    [(NSMapTable *)gestureRecognizers removeObjectForKey:a4];
+    [(NSMapTable *)gestureRecognizers removeObjectForKey:name];
   }
 }
 
-- (void)_updateGestureRecognizersForcingRemoval:(BOOL)a3 studyLogData:(id)a4
+- (void)_updateGestureRecognizersForcingRemoval:(BOOL)removal studyLogData:(id)data
 {
-  v91 = a4;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v7 = [WeakRetained _focusBehavior];
-  v8 = v7;
-  if (a3)
+  _focusBehavior = [WeakRetained _focusBehavior];
+  v8 = _focusBehavior;
+  if (removal)
   {
-    v9 = 0;
+    supportsIndirectPanningMovement = 0;
   }
 
   else
   {
-    v9 = [v7 supportsIndirectPanningMovement];
+    supportsIndirectPanningMovement = [_focusBehavior supportsIndirectPanningMovement];
   }
 
   v10 = [(_UIFocusEventRecognizer *)self gestureForName:1];
   v11 = v10;
-  if (v10 || !v9)
+  if (v10 || !supportsIndirectPanningMovement)
   {
-    if ((v10 == 0) | v9 & 1)
+    if ((v10 == 0) | supportsIndirectPanningMovement & 1)
     {
       goto LABEL_16;
     }
 
     [WeakRetained removeGestureRecognizer:v10];
     [(_UIFocusEventRecognizer *)self setGesture:0 forName:1];
-    if (!v91)
+    if (!dataCopy)
     {
       goto LABEL_16;
     }
@@ -444,7 +444,7 @@ LABEL_17:
     [(UIPanGestureRecognizer *)v11 _setHysteresis:1.0];
     [(UIGestureRecognizer *)v11 setAllowedTouchTypes:&unk_1EFE2BE00];
     [WeakRetained addGestureRecognizer:v11];
-    if (!v91 || !v11)
+    if (!dataCopy || !v11)
     {
       goto LABEL_16;
     }
@@ -453,13 +453,13 @@ LABEL_17:
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v11];
-  [v91 setObject:v13 forKeyedSubscript:@"_UIFocusGesturePanAddress"];
+  [dataCopy setObject:v13 forKeyedSubscript:@"_UIFocusGesturePanAddress"];
 
-  v14 = [(UIGestureRecognizer *)v11 name];
-  v15 = v14;
-  if (v14)
+  name = [(UIGestureRecognizer *)v11 name];
+  v15 = name;
+  if (name)
   {
-    v16 = v14;
+    v16 = name;
   }
 
   else
@@ -467,33 +467,33 @@ LABEL_17:
     v16 = &stru_1EFB14550;
   }
 
-  [v91 setObject:v16 forKeyedSubscript:@"_UIFocusGesturePanName"];
+  [dataCopy setObject:v16 forKeyedSubscript:@"_UIFocusGesturePanName"];
 
-  [v91 setObject:v12 forKeyedSubscript:@"_UIFocusGesturePanAction"];
+  [dataCopy setObject:v12 forKeyedSubscript:@"_UIFocusGesturePanAction"];
 LABEL_16:
 
-  if (a3)
+  if (removal)
   {
-    v17 = 0;
+    shouldEnableFocusOnSelect = 0;
   }
 
   else
   {
-    v17 = [v8 shouldEnableFocusOnSelect];
+    shouldEnableFocusOnSelect = [v8 shouldEnableFocusOnSelect];
   }
 
   v18 = [(_UIFocusEventRecognizer *)self gestureForName:3];
   v19 = v18;
-  if (v18 || !v17)
+  if (v18 || !shouldEnableFocusOnSelect)
   {
-    if ((v18 == 0) | v17 & 1)
+    if ((v18 == 0) | shouldEnableFocusOnSelect & 1)
     {
       goto LABEL_31;
     }
 
     [WeakRetained removeGestureRecognizer:v18];
     [(_UIFocusEventRecognizer *)self setGesture:0 forName:3];
-    if (!v91)
+    if (!dataCopy)
     {
       goto LABEL_31;
     }
@@ -508,7 +508,7 @@ LABEL_16:
     [(UIGestureRecognizer *)v19 setDelegate:self];
     [(_UIFocusEventRecognizer *)self setGesture:v19 forName:3];
     [WeakRetained addGestureRecognizer:v19];
-    if (!v91 || !v19)
+    if (!dataCopy || !v19)
     {
       goto LABEL_31;
     }
@@ -517,13 +517,13 @@ LABEL_16:
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v19];
-  [v91 setObject:v21 forKeyedSubscript:@"_UIFocusGestureSelectAddress"];
+  [dataCopy setObject:v21 forKeyedSubscript:@"_UIFocusGestureSelectAddress"];
 
-  v22 = [(UIGestureRecognizer *)v19 name];
-  v23 = v22;
-  if (v22)
+  name2 = [(UIGestureRecognizer *)v19 name];
+  v23 = name2;
+  if (name2)
   {
-    v24 = v22;
+    v24 = name2;
   }
 
   else
@@ -531,33 +531,33 @@ LABEL_16:
     v24 = &stru_1EFB14550;
   }
 
-  [v91 setObject:v24 forKeyedSubscript:@"_UIFocusGestureSelectName"];
+  [dataCopy setObject:v24 forKeyedSubscript:@"_UIFocusGestureSelectName"];
 
-  [v91 setObject:v20 forKeyedSubscript:@"_UIFocusGestureSelectAction"];
+  [dataCopy setObject:v20 forKeyedSubscript:@"_UIFocusGestureSelectAction"];
 LABEL_31:
 
-  if (a3)
+  if (removal)
   {
-    v25 = 0;
+    shouldSupressIndirectMovementOnSelect = 0;
   }
 
   else
   {
-    v25 = [v8 shouldSupressIndirectMovementOnSelect];
+    shouldSupressIndirectMovementOnSelect = [v8 shouldSupressIndirectMovementOnSelect];
   }
 
   v26 = [(_UIFocusEventRecognizer *)self gestureForName:4];
   v27 = v26;
-  if (v26 || !v25)
+  if (v26 || !shouldSupressIndirectMovementOnSelect)
   {
-    if ((v26 == 0) | v25 & 1)
+    if ((v26 == 0) | shouldSupressIndirectMovementOnSelect & 1)
     {
       goto LABEL_46;
     }
 
     [WeakRetained removeGestureRecognizer:v26];
     [(_UIFocusEventRecognizer *)self setGesture:0 forName:4];
-    if (!v91)
+    if (!dataCopy)
     {
       goto LABEL_46;
     }
@@ -572,7 +572,7 @@ LABEL_31:
     [(UIGestureRecognizer *)v27 setDelegate:self];
     [(_UIFocusEventRecognizer *)self setGesture:v27 forName:4];
     [WeakRetained addGestureRecognizer:v27];
-    if (!v91 || !v27)
+    if (!dataCopy || !v27)
     {
       goto LABEL_46;
     }
@@ -581,13 +581,13 @@ LABEL_31:
   }
 
   v29 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v27];
-  [v91 setObject:v29 forKeyedSubscript:@"_UIFocusGestureSelectObserverAddress"];
+  [dataCopy setObject:v29 forKeyedSubscript:@"_UIFocusGestureSelectObserverAddress"];
 
-  v30 = [(UIGestureRecognizer *)v27 name];
-  v31 = v30;
-  if (v30)
+  name3 = [(UIGestureRecognizer *)v27 name];
+  v31 = name3;
+  if (name3)
   {
-    v32 = v30;
+    v32 = name3;
   }
 
   else
@@ -595,33 +595,33 @@ LABEL_31:
     v32 = &stru_1EFB14550;
   }
 
-  [v91 setObject:v32 forKeyedSubscript:@"_UIFocusGestureSelectObserverName"];
+  [dataCopy setObject:v32 forKeyedSubscript:@"_UIFocusGestureSelectObserverName"];
 
-  [v91 setObject:v28 forKeyedSubscript:@"_UIFocusGestureSelectObserverAction"];
+  [dataCopy setObject:v28 forKeyedSubscript:@"_UIFocusGestureSelectObserverAction"];
 LABEL_46:
 
-  if (a3)
+  if (removal)
   {
-    v33 = 0;
+    shouldConvertIndirectTapsIntoArrowKeys = 0;
   }
 
   else
   {
-    v33 = [v8 shouldConvertIndirectTapsIntoArrowKeys];
+    shouldConvertIndirectTapsIntoArrowKeys = [v8 shouldConvertIndirectTapsIntoArrowKeys];
   }
 
   v34 = [(_UIFocusEventRecognizer *)self gestureForName:2];
   v35 = v34;
-  if (v34 || !v33)
+  if (v34 || !shouldConvertIndirectTapsIntoArrowKeys)
   {
-    if ((v34 == 0) | v33 & 1)
+    if ((v34 == 0) | shouldConvertIndirectTapsIntoArrowKeys & 1)
     {
       goto LABEL_63;
     }
 
     [WeakRetained removeGestureRecognizer:v34];
     [(_UIFocusEventRecognizer *)self setGesture:0 forName:2];
-    if (!v91)
+    if (!dataCopy)
     {
       goto LABEL_63;
     }
@@ -647,18 +647,18 @@ LABEL_46:
   [(UITapGestureRecognizer *)v35 setAllowableMovement:v37];
   [(UIGestureRecognizer *)v35 setAllowedTouchTypes:&unk_1EFE2BE18];
   [WeakRetained addGestureRecognizer:v35];
-  if (v91 && v35)
+  if (dataCopy && v35)
   {
     v38 = @"add";
 LABEL_59:
     v39 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v35];
-    [v91 setObject:v39 forKeyedSubscript:@"_UIFocusGestureTapAddress"];
+    [dataCopy setObject:v39 forKeyedSubscript:@"_UIFocusGestureTapAddress"];
 
-    v40 = [(UIGestureRecognizer *)v35 name];
-    v41 = v40;
-    if (v40)
+    name4 = [(UIGestureRecognizer *)v35 name];
+    v41 = name4;
+    if (name4)
     {
-      v42 = v40;
+      v42 = name4;
     }
 
     else
@@ -666,35 +666,35 @@ LABEL_59:
       v42 = &stru_1EFB14550;
     }
 
-    [v91 setObject:v42 forKeyedSubscript:@"_UIFocusGestureTapName"];
+    [dataCopy setObject:v42 forKeyedSubscript:@"_UIFocusGestureTapName"];
 
-    [v91 setObject:v38 forKeyedSubscript:@"_UIFocusGestureTapAction"];
+    [dataCopy setObject:v38 forKeyedSubscript:@"_UIFocusGestureTapAction"];
   }
 
 LABEL_63:
 
-  if (a3)
+  if (removal)
   {
-    v43 = 0;
+    supportsGameControllers = 0;
   }
 
   else
   {
-    v43 = [v8 supportsGameControllers];
+    supportsGameControllers = [v8 supportsGameControllers];
   }
 
   v44 = [(_UIFocusEventRecognizer *)self gestureForName:9];
   v45 = v44;
-  if (v44 || !v43)
+  if (v44 || !supportsGameControllers)
   {
-    if ((v44 == 0) | v43 & 1)
+    if ((v44 == 0) | supportsGameControllers & 1)
     {
       goto LABEL_78;
     }
 
     [WeakRetained removeGestureRecognizer:v44];
     [(_UIFocusEventRecognizer *)self setGesture:0 forName:9];
-    if (!v91)
+    if (!dataCopy)
     {
       goto LABEL_78;
     }
@@ -712,7 +712,7 @@ LABEL_63:
     [(UIGestureRecognizer *)v45 setCancelsTouchesInView:0];
     [(UIGestureRecognizer *)v45 setAllowedTouchTypes:MEMORY[0x1E695E0F0]];
     [WeakRetained addGestureRecognizer:v45];
-    if (!v91 || !v45)
+    if (!dataCopy || !v45)
     {
       goto LABEL_78;
     }
@@ -721,13 +721,13 @@ LABEL_63:
   }
 
   v47 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v45];
-  [v91 setObject:v47 forKeyedSubscript:@"_UIFocusGestureJoystickAddress"];
+  [dataCopy setObject:v47 forKeyedSubscript:@"_UIFocusGestureJoystickAddress"];
 
-  v48 = [(UIGestureRecognizer *)v45 name];
-  v49 = v48;
-  if (v48)
+  name5 = [(UIGestureRecognizer *)v45 name];
+  v49 = name5;
+  if (name5)
   {
-    v50 = v48;
+    v50 = name5;
   }
 
   else
@@ -735,33 +735,33 @@ LABEL_63:
     v50 = &stru_1EFB14550;
   }
 
-  [v91 setObject:v50 forKeyedSubscript:@"_UIFocusGestureJoystickName"];
+  [dataCopy setObject:v50 forKeyedSubscript:@"_UIFocusGestureJoystickName"];
 
-  [v91 setObject:v46 forKeyedSubscript:@"_UIFocusGestureJoystickAction"];
+  [dataCopy setObject:v46 forKeyedSubscript:@"_UIFocusGestureJoystickAction"];
 LABEL_78:
 
-  if (a3)
+  if (removal)
   {
-    v51 = 0;
+    supportsGameControllers2 = 0;
   }
 
   else
   {
-    v51 = [v8 supportsGameControllers];
+    supportsGameControllers2 = [v8 supportsGameControllers];
   }
 
   v52 = [(_UIFocusEventRecognizer *)self gestureForName:10];
   v53 = v52;
-  if (v52 || !v51)
+  if (v52 || !supportsGameControllers2)
   {
-    if ((v52 == 0) | v51 & 1)
+    if ((v52 == 0) | supportsGameControllers2 & 1)
     {
       goto LABEL_93;
     }
 
     [WeakRetained removeGestureRecognizer:v52];
     [(_UIFocusEventRecognizer *)self setGesture:0 forName:10];
-    if (!v91)
+    if (!dataCopy)
     {
       goto LABEL_93;
     }
@@ -776,7 +776,7 @@ LABEL_78:
     [(UIGestureRecognizer *)v53 setDelegate:self];
     [(_UIFocusEventRecognizer *)self setGesture:v53 forName:10];
     [WeakRetained addGestureRecognizer:v53];
-    if (!v91 || !v53)
+    if (!dataCopy || !v53)
     {
       goto LABEL_93;
     }
@@ -785,13 +785,13 @@ LABEL_78:
   }
 
   v55 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v53];
-  [v91 setObject:v55 forKeyedSubscript:@"_UIFocusGestureShoulderButtonsAddress"];
+  [dataCopy setObject:v55 forKeyedSubscript:@"_UIFocusGestureShoulderButtonsAddress"];
 
-  v56 = [(UIGestureRecognizer *)v53 name];
-  v57 = v56;
-  if (v56)
+  name6 = [(UIGestureRecognizer *)v53 name];
+  v57 = name6;
+  if (name6)
   {
-    v58 = v56;
+    v58 = name6;
   }
 
   else
@@ -799,33 +799,33 @@ LABEL_78:
     v58 = &stru_1EFB14550;
   }
 
-  [v91 setObject:v58 forKeyedSubscript:@"_UIFocusGestureShoulderButtonsName"];
+  [dataCopy setObject:v58 forKeyedSubscript:@"_UIFocusGestureShoulderButtonsName"];
 
-  [v91 setObject:v54 forKeyedSubscript:@"_UIFocusGestureShoulderButtonsAction"];
+  [dataCopy setObject:v54 forKeyedSubscript:@"_UIFocusGestureShoulderButtonsAction"];
 LABEL_93:
 
-  if (a3)
+  if (removal)
   {
-    v59 = 0;
+    supportsTabKey = 0;
   }
 
   else
   {
-    v59 = [v8 supportsTabKey];
+    supportsTabKey = [v8 supportsTabKey];
   }
 
   v60 = [(_UIFocusEventRecognizer *)self gestureForName:8];
   v61 = v60;
-  if (v60 || !v59)
+  if (v60 || !supportsTabKey)
   {
-    if ((v60 == 0) | v59 & 1)
+    if ((v60 == 0) | supportsTabKey & 1)
     {
       goto LABEL_108;
     }
 
     [WeakRetained removeGestureRecognizer:v60];
     [(_UIFocusEventRecognizer *)self setGesture:0 forName:8];
-    if (!v91)
+    if (!dataCopy)
     {
       goto LABEL_108;
     }
@@ -840,7 +840,7 @@ LABEL_93:
     [(UIGestureRecognizer *)v61 setDelegate:self];
     [(_UIFocusEventRecognizer *)self setGesture:v61 forName:8];
     [WeakRetained addGestureRecognizer:v61];
-    if (!v91 || !v61)
+    if (!dataCopy || !v61)
     {
       goto LABEL_108;
     }
@@ -849,13 +849,13 @@ LABEL_93:
   }
 
   v63 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v61];
-  [v91 setObject:v63 forKeyedSubscript:@"_UIFocusGestureTabulatorAddress"];
+  [dataCopy setObject:v63 forKeyedSubscript:@"_UIFocusGestureTabulatorAddress"];
 
-  v64 = [(UIGestureRecognizer *)v61 name];
-  v65 = v64;
-  if (v64)
+  name7 = [(UIGestureRecognizer *)v61 name];
+  v65 = name7;
+  if (name7)
   {
-    v66 = v64;
+    v66 = name7;
   }
 
   else
@@ -863,33 +863,33 @@ LABEL_93:
     v66 = &stru_1EFB14550;
   }
 
-  [v91 setObject:v66 forKeyedSubscript:@"_UIFocusGestureTabulatorName"];
+  [dataCopy setObject:v66 forKeyedSubscript:@"_UIFocusGestureTabulatorName"];
 
-  [v91 setObject:v62 forKeyedSubscript:@"_UIFocusGestureTabulatorAction"];
+  [dataCopy setObject:v62 forKeyedSubscript:@"_UIFocusGestureTabulatorAction"];
 LABEL_108:
 
-  if (a3)
+  if (removal)
   {
-    v67 = 0;
+    supportsArrowKeys = 0;
   }
 
   else
   {
-    v67 = [v8 supportsArrowKeys];
+    supportsArrowKeys = [v8 supportsArrowKeys];
   }
 
   v68 = [(_UIFocusEventRecognizer *)self gestureForName:6];
   v69 = v68;
-  if (v68 || !v67)
+  if (v68 || !supportsArrowKeys)
   {
-    if ((v68 == 0) | v67 & 1)
+    if ((v68 == 0) | supportsArrowKeys & 1)
     {
       goto LABEL_123;
     }
 
     [WeakRetained removeGestureRecognizer:v68];
     [(_UIFocusEventRecognizer *)self setGesture:0 forName:6];
-    if (!v91)
+    if (!dataCopy)
     {
       goto LABEL_123;
     }
@@ -904,7 +904,7 @@ LABEL_108:
     [(UIGestureRecognizer *)v69 setDelegate:self];
     [(_UIFocusEventRecognizer *)self setGesture:v69 forName:6];
     [WeakRetained addGestureRecognizer:v69];
-    if (!v91 || !v69)
+    if (!dataCopy || !v69)
     {
       goto LABEL_123;
     }
@@ -913,13 +913,13 @@ LABEL_108:
   }
 
   v71 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v69];
-  [v91 setObject:v71 forKeyedSubscript:@"_UIFocusGestureArrowButtonAddress"];
+  [dataCopy setObject:v71 forKeyedSubscript:@"_UIFocusGestureArrowButtonAddress"];
 
-  v72 = [(UIGestureRecognizer *)v69 name];
-  v73 = v72;
-  if (v72)
+  name8 = [(UIGestureRecognizer *)v69 name];
+  v73 = name8;
+  if (name8)
   {
-    v74 = v72;
+    v74 = name8;
   }
 
   else
@@ -927,33 +927,33 @@ LABEL_108:
     v74 = &stru_1EFB14550;
   }
 
-  [v91 setObject:v74 forKeyedSubscript:@"_UIFocusGestureArrowButtonName"];
+  [dataCopy setObject:v74 forKeyedSubscript:@"_UIFocusGestureArrowButtonName"];
 
-  [v91 setObject:v70 forKeyedSubscript:@"_UIFocusGestureArrowButtonAction"];
+  [dataCopy setObject:v70 forKeyedSubscript:@"_UIFocusGestureArrowButtonAction"];
 LABEL_123:
 
-  if (a3)
+  if (removal)
   {
-    v75 = 0;
+    supportsIndirectRotaryMovement = 0;
   }
 
   else
   {
-    v75 = [v8 supportsIndirectRotaryMovement];
+    supportsIndirectRotaryMovement = [v8 supportsIndirectRotaryMovement];
   }
 
   v76 = [(_UIFocusEventRecognizer *)self gestureForName:5];
   v77 = v76;
-  if (v76 || !v75)
+  if (v76 || !supportsIndirectRotaryMovement)
   {
-    if ((v76 == 0) | v75 & 1)
+    if ((v76 == 0) | supportsIndirectRotaryMovement & 1)
     {
       goto LABEL_138;
     }
 
     [WeakRetained removeGestureRecognizer:v76];
     [(_UIFocusEventRecognizer *)self setGesture:0 forName:5];
-    if (!v91)
+    if (!dataCopy)
     {
       goto LABEL_138;
     }
@@ -971,7 +971,7 @@ LABEL_123:
     [(UIGestureRecognizer *)v77 setCancelsTouchesInView:0];
     [(UIGestureRecognizer *)v77 setAllowedTouchTypes:&unk_1EFE2BE30];
     [WeakRetained addGestureRecognizer:v77];
-    if (!v91 || !v77)
+    if (!dataCopy || !v77)
     {
       goto LABEL_138;
     }
@@ -980,13 +980,13 @@ LABEL_123:
   }
 
   v79 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v77];
-  [v91 setObject:v79 forKeyedSubscript:@"_UIFocusGestureRotaryAddress"];
+  [dataCopy setObject:v79 forKeyedSubscript:@"_UIFocusGestureRotaryAddress"];
 
-  v80 = [(UIGestureRecognizer *)v77 name];
-  v81 = v80;
-  if (v80)
+  name9 = [(UIGestureRecognizer *)v77 name];
+  v81 = name9;
+  if (name9)
   {
-    v82 = v80;
+    v82 = name9;
   }
 
   else
@@ -994,12 +994,12 @@ LABEL_123:
     v82 = &stru_1EFB14550;
   }
 
-  [v91 setObject:v82 forKeyedSubscript:@"_UIFocusGestureRotaryName"];
+  [dataCopy setObject:v82 forKeyedSubscript:@"_UIFocusGestureRotaryName"];
 
-  [v91 setObject:v78 forKeyedSubscript:@"_UIFocusGestureRotaryAction"];
+  [dataCopy setObject:v78 forKeyedSubscript:@"_UIFocusGestureRotaryAction"];
 LABEL_138:
 
-  v83 = !a3 && [v8 pageButtonScrollingStyle] != 0;
+  v83 = !removal && [v8 pageButtonScrollingStyle] != 0;
   v84 = [(_UIFocusEventRecognizer *)self gestureForName:7];
   v85 = v84;
   if (v84 || !v83)
@@ -1008,7 +1008,7 @@ LABEL_138:
     {
       [WeakRetained removeGestureRecognizer:v84];
       [(_UIFocusEventRecognizer *)self setGesture:0 forName:7];
-      if (v91)
+      if (dataCopy)
       {
         v86 = @"remove";
         goto LABEL_149;
@@ -1024,18 +1024,18 @@ LABEL_138:
     [(_UIFocusEventRecognizer *)self setGesture:v85 forName:7];
     [(UIGestureRecognizer *)v85 setAllowedPressTypes:&unk_1EFE2BE48];
     [WeakRetained addGestureRecognizer:v85];
-    if (v91 && v85)
+    if (dataCopy && v85)
     {
       v86 = @"add";
 LABEL_149:
       v87 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v85];
-      [v91 setObject:v87 forKeyedSubscript:@"_UIFocusGesturePageButtonAddress"];
+      [dataCopy setObject:v87 forKeyedSubscript:@"_UIFocusGesturePageButtonAddress"];
 
-      v88 = [(UIGestureRecognizer *)v85 name];
-      v89 = v88;
-      if (v88)
+      name10 = [(UIGestureRecognizer *)v85 name];
+      v89 = name10;
+      if (name10)
       {
-        v90 = v88;
+        v90 = name10;
       }
 
       else
@@ -1043,9 +1043,9 @@ LABEL_149:
         v90 = &stru_1EFB14550;
       }
 
-      [v91 setObject:v90 forKeyedSubscript:@"_UIFocusGesturePageButtonName"];
+      [dataCopy setObject:v90 forKeyedSubscript:@"_UIFocusGesturePageButtonName"];
 
-      [v91 setObject:v86 forKeyedSubscript:@"_UIFocusGesturePageButtonAction"];
+      [dataCopy setObject:v86 forKeyedSubscript:@"_UIFocusGesturePageButtonAction"];
     }
   }
 
@@ -1061,15 +1061,15 @@ LABEL_149:
   return v4;
 }
 
-- (void)_focusSystemEnabledStateDidChange:(id)a3
+- (void)_focusSystemEnabledStateDidChange:(id)change
 {
-  v6 = [a3 object];
-  if (([v6 _isEnabled] & 1) == 0)
+  object = [change object];
+  if (([object _isEnabled] & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_owningView);
-    v5 = [WeakRetained _focusSystem];
+    _focusSystem = [WeakRetained _focusSystem];
 
-    if (v6 == v5)
+    if (object == _focusSystem)
     {
       [(_UIFocusEventRecognizer *)self _resetContinuousMovementState];
       [(_UIFocusEventRecognizer *)self _resetProgressAccumulator];
@@ -1112,29 +1112,29 @@ LABEL_149:
       }
     }
 
-    v6 = [v5 _preferredFirstResponderFocusSystem];
+    _preferredFirstResponderFocusSystem = [v5 _preferredFirstResponderFocusSystem];
   }
 
   else
   {
-    v6 = 0;
+    _preferredFirstResponderFocusSystem = 0;
   }
 
-  return v6;
+  return _preferredFirstResponderFocusSystem;
 }
 
-- (BOOL)_didRecognizeFocusMovementRequest:(id)a3
+- (BOOL)_didRecognizeFocusMovementRequest:(id)request
 {
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:567 description:{@"Invalid parameter not satisfying: %@", @"request"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:567 description:{@"Invalid parameter not satisfying: %@", @"request"}];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
-  if (WeakRetained && [WeakRetained _focusEventRecognizer:self didRecognizeFocusMovementRequest:v5])
+  if (WeakRetained && [WeakRetained _focusEventRecognizer:self didRecognizeFocusMovementRequest:requestCopy])
   {
     [(_UIFocusEventRecognizer *)self _resetFailedMovementHeading];
     v8 = 1;
@@ -1148,9 +1148,9 @@ LABEL_149:
   return v8;
 }
 
-- (BOOL)_moveWithEvent:(id)a3
+- (BOOL)_moveWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (![(_UIFocusEventRecognizer *)self _shouldAcceptInputType:5])
   {
     v9 = 0;
@@ -1159,42 +1159,42 @@ LABEL_149:
 
   self->_inputType = 5;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v6 = [WeakRetained traitCollection];
-  v7 = [v6 userInterfaceIdiom];
+  traitCollection = [WeakRetained traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v7 != 3)
+  if (userInterfaceIdiom != 3)
   {
     goto LABEL_8;
   }
 
-  if (![v4 _focusHeading])
+  if (![eventCopy _focusHeading])
   {
-    v10 = [v4 _moveDirection];
-    if ((v10 - 1) <= 3)
+    _moveDirection = [eventCopy _moveDirection];
+    if ((_moveDirection - 1) <= 3)
     {
-      v8 = qword_18A67B590[v10 - 1];
+      _focusHeading = qword_18A67B590[_moveDirection - 1];
       goto LABEL_9;
     }
 
 LABEL_8:
-    v8 = 0;
+    _focusHeading = 0;
     goto LABEL_9;
   }
 
-  v8 = [v4 _focusHeading];
+  _focusHeading = [eventCopy _focusHeading];
 LABEL_9:
 
-  [(_UIFocusEventRecognizer *)self _setMoveEvent:v4];
-  v11 = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
-  v12 = [v11 focusGroupMovementBehavior] << 60;
+  [(_UIFocusEventRecognizer *)self _setMoveEvent:eventCopy];
+  currentFocusBehavior = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
+  v12 = [currentFocusBehavior focusGroupMovementBehavior] << 60;
 
   v13 = 1;
-  if ((v8 & 0x330) != 0)
+  if ((_focusHeading & 0x330) != 0)
   {
     v13 = 2;
   }
 
-  v9 = [(_UIFocusEventRecognizer *)self _moveInDirection:v8 groupFilter:v13 & (v12 >> 63)];
+  v9 = [(_UIFocusEventRecognizer *)self _moveInDirection:_focusHeading groupFilter:v13 & (v12 >> 63)];
   [(_UIFocusEventRecognizer *)self _setMoveEvent:0];
   self->_inputType = 0;
 LABEL_12:
@@ -1202,19 +1202,19 @@ LABEL_12:
   return v9;
 }
 
-- (BOOL)_moveInDirection:(unint64_t)a3 groupFilter:(int64_t)a4 withSearchInfo:(id)a5
+- (BOOL)_moveInDirection:(unint64_t)direction groupFilter:(int64_t)filter withSearchInfo:(id)info
 {
-  v8 = a5;
-  if (a3)
+  infoCopy = info;
+  if (direction)
   {
-    v9 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-    if (v9)
+    _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+    if (_focusMovementSystem)
     {
-      v10 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v9];
-      v11 = [[_UIFocusMovementInfo alloc] initWithHeading:a3 linearHeading:0 isInitial:1 shouldLoadScrollableContainer:1 looping:0 groupFilter:a4 inputType:self->_inputType];
+      v10 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:_focusMovementSystem];
+      v11 = [[_UIFocusMovementInfo alloc] initWithHeading:direction linearHeading:0 isInitial:1 shouldLoadScrollableContainer:1 looping:0 groupFilter:filter inputType:self->_inputType];
       [(_UIFocusMovementRequest *)v10 setMovementInfo:v11];
 
-      [(_UIFocusMovementRequest *)v10 setSearchInfo:v8];
+      [(_UIFocusMovementRequest *)v10 setSearchInfo:infoCopy];
       v12 = [(_UIFocusEventRecognizer *)self _didRecognizeFocusMovementRequest:v10];
     }
 
@@ -1239,25 +1239,25 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)_moveInDirection:(unint64_t)a3 groupFilter:(int64_t)a4 withEvaluator:(id)a5
+- (BOOL)_moveInDirection:(unint64_t)direction groupFilter:(int64_t)filter withEvaluator:(id)evaluator
 {
-  v8 = a5;
-  v9 = [[_UIFocusSearchInfo alloc] initWithFocusEvaluator:v8];
+  evaluatorCopy = evaluator;
+  v9 = [[_UIFocusSearchInfo alloc] initWithFocusEvaluator:evaluatorCopy];
 
-  LOBYTE(a4) = [(_UIFocusEventRecognizer *)self _moveInDirection:a3 groupFilter:a4 withSearchInfo:v9];
-  return a4;
+  LOBYTE(filter) = [(_UIFocusEventRecognizer *)self _moveInDirection:direction groupFilter:filter withSearchInfo:v9];
+  return filter;
 }
 
-- (void)_handleSelectGesture:(id)a3
+- (void)_handleSelectGesture:(id)gesture
 {
-  v4 = [(_UIFocusEventRecognizer *)self _focusSystemSceneComponent];
-  v3 = [v4 focusSystem];
-  [v3 _setNeedsNonDeferredFocusUpdate];
+  _focusSystemSceneComponent = [(_UIFocusEventRecognizer *)self _focusSystemSceneComponent];
+  focusSystem = [_focusSystemSceneComponent focusSystem];
+  [focusSystem _setNeedsNonDeferredFocusUpdate];
 }
 
-- (void)_handleSelectObserverGesture:(id)a3
+- (void)_handleSelectObserverGesture:(id)gesture
 {
-  if ([a3 state] == 1)
+  if ([gesture state] == 1)
   {
     [(_UIFocusEffectsController *)self->_motionEffectsController startRollbackAnimation];
     [(_UIFocusEventRecognizer *)self _resetProgressAccumulator];
@@ -1273,8 +1273,8 @@ LABEL_12:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v5 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v5 handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:726 description:{@"Unexpected gesture recognizer class: %@", objc_opt_class()}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:726 description:{@"Unexpected gesture recognizer class: %@", objc_opt_class()}];
       }
 
       self->_lastKnownTouchPoint = *(v6 + 408);
@@ -1282,95 +1282,95 @@ LABEL_12:
   }
 }
 
-- (void)_handleArrowButtonGesture:(id)a3
+- (void)_handleArrowButtonGesture:(id)gesture
 {
-  v19 = a3;
-  v4 = [v19 state];
+  gestureCopy = gesture;
+  state = [gestureCopy state];
   self->_lastButtonPressTime = CACurrentMediaTime();
-  v5 = [v19 pressSource];
+  pressSource = [gestureCopy pressSource];
   [(_UIFocusEventRecognizer *)self _resetProgressAccumulator];
   [(_UIFocusEffectsController *)self->_motionEffectsController reset];
   [(_UIFocusEventRecognizer *)self _resetPanDeadband];
   if ([(_UIFocusEventRecognizer *)self _shouldAcceptInputType:4])
   {
-    if ((v4 - 1) <= 1)
+    if ((state - 1) <= 1)
     {
-      v6 = [v19 focusHeading];
-      if (v6)
+      focusHeading = [gestureCopy focusHeading];
+      if (focusHeading)
       {
-        v7 = v6;
+        v7 = focusHeading;
         [(_UIFocusEventRecognizer *)self _resetMomentum];
-        v8 = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
+        currentFocusBehavior = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
         v9 = [(_UIFocusEventRecognizer *)self gestureForName:1];
         v10 = [(_UIFocusEventRecognizer *)self gestureForName:2];
         v11 = [(_UIFocusEventRecognizer *)self gestureForName:5];
-        v18 = [v9 isEnabled];
-        v17 = [v10 isEnabled];
-        v12 = [v11 isEnabled];
-        if ([v8 indirectMovementPriority] == 2)
+        isEnabled = [v9 isEnabled];
+        isEnabled2 = [v10 isEnabled];
+        isEnabled3 = [v11 isEnabled];
+        if ([currentFocusBehavior indirectMovementPriority] == 2)
         {
           [v9 setEnabled:0];
           [v11 setEnabled:0];
         }
 
         v13 = +[UIDevice currentDevice];
-        v14 = [v13 _remoteTouchSurfaceType];
+        _remoteTouchSurfaceType = [v13 _remoteTouchSurfaceType];
 
-        if (v14 == 2 && [v8 shouldConvertIndirectTapsIntoArrowKeys])
+        if (_remoteTouchSurfaceType == 2 && [currentFocusBehavior shouldConvertIndirectTapsIntoArrowKeys])
         {
           [v10 setEnabled:0];
         }
 
         inputType = self->_inputType;
         self->_inputType = 4;
-        if (v5 == 2)
+        if (pressSource == 2)
         {
-          v16 = [v8 constrainGameControllersToFocusGroups];
+          constrainGameControllersToFocusGroups = [currentFocusBehavior constrainGameControllersToFocusGroups];
         }
 
         else
         {
-          v16 = ([v8 focusGroupMovementBehavior] >> 2) & 1;
+          constrainGameControllersToFocusGroups = ([currentFocusBehavior focusGroupMovementBehavior] >> 2) & 1;
         }
 
-        [(_UIFocusEventRecognizer *)self _moveInDirection:v7 groupFilter:v16];
+        [(_UIFocusEventRecognizer *)self _moveInDirection:v7 groupFilter:constrainGameControllersToFocusGroups];
         self->_inputType = inputType;
-        [v9 setEnabled:v18];
-        [v10 setEnabled:v17];
-        [v11 setEnabled:v12];
+        [v9 setEnabled:isEnabled];
+        [v10 setEnabled:isEnabled2];
+        [v11 setEnabled:isEnabled3];
       }
     }
   }
 }
 
-- (void)_handlePageButtonGesture:(id)a3
+- (void)_handlePageButtonGesture:(id)gesture
 {
-  v19 = a3;
+  gestureCopy = gesture;
   v4 = [(_UIFocusEventRecognizer *)self _shouldAcceptInputType:7];
-  v5 = v19;
+  v5 = gestureCopy;
   if (v4)
   {
-    if (([v19 state] - 1) > 1)
+    if (([gestureCopy state] - 1) > 1)
     {
       goto LABEL_15;
     }
 
-    v6 = [v19 focusHeading];
-    v5 = v19;
-    if (!v6)
+    focusHeading = [gestureCopy focusHeading];
+    v5 = gestureCopy;
+    if (!focusHeading)
     {
       goto LABEL_17;
     }
 
-    v7 = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
-    v8 = [v7 pageButtonScrollingStyle];
+    currentFocusBehavior = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
+    pageButtonScrollingStyle = [currentFocusBehavior pageButtonScrollingStyle];
 
-    if ([(_UIFocusEventRecognizer *)self _shouldAcceptInputType:7]&& (v8 - 1) <= 1)
+    if ([(_UIFocusEventRecognizer *)self _shouldAcceptInputType:7]&& (pageButtonScrollingStyle - 1) <= 1)
     {
       *&self->_flags |= 1u;
       self->_inputType = 7;
       [(_UIFocusEventRecognizer *)self _resetFailedMovementHeading];
-      v5 = v19;
+      v5 = gestureCopy;
       if ((*&self->_flags & 2) == 0)
       {
         if (_UIInternalPreferenceUsesDefault(&unk_1ED48AF48, @"FocusMomentumFriction", _UIInternalPreferenceUpdateDouble))
@@ -1403,14 +1403,14 @@ LABEL_12:
         self->_lastKnownTouchPoint = lastMomentumTouchPoint;
         self->_touchBeganPoint = lastMomentumTouchPoint;
         [(_UIFocusEventRecognizer *)self _beginMomentumImmediatelyWithVelocity:0.0 friction:v12, v9];
-        v5 = v19;
+        v5 = gestureCopy;
       }
     }
 
     else
     {
 LABEL_15:
-      v5 = v19;
+      v5 = gestureCopy;
       if (self->_inputType == 7)
       {
         self->_inputType = 0;
@@ -1421,28 +1421,28 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)_handleTabulatorGesture:(id)a3
+- (void)_handleTabulatorGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if ([(_UIFocusEventRecognizer *)self _shouldAcceptInputType:8]&& (v5 - 1) <= 1)
+  gestureCopy = gesture;
+  state = [gestureCopy state];
+  if ([(_UIFocusEventRecognizer *)self _shouldAcceptInputType:8]&& (state - 1) <= 1)
   {
     self->_inputType = 8;
     WeakRetained = objc_loadWeakRetained(&self->_owningView);
-    v7 = [WeakRetained _focusBehavior];
+    _focusBehavior = [WeakRetained _focusBehavior];
 
-    v8 = [v4 focusHeading];
-    if (v8)
+    focusHeading = [gestureCopy focusHeading];
+    if (focusHeading)
     {
-      v9 = v8;
-      v10 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-      if (v10)
+      v9 = focusHeading;
+      _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+      if (_focusMovementSystem)
       {
-        v11 = [v7 focusGroupMovementBehavior];
+        focusGroupMovementBehavior = [_focusBehavior focusGroupMovementBehavior];
         v12 = +[_UIFocusSearchInfo defaultInfo];
         [v12 setForceFocusToLeaveContainer:1];
-        v13 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v10];
-        v14 = -[_UIFocusMovementInfo initWithHeading:linearHeading:isInitial:shouldLoadScrollableContainer:looping:groupFilter:inputType:]([_UIFocusMovementInfo alloc], "initWithHeading:linearHeading:isInitial:shouldLoadScrollableContainer:looping:groupFilter:inputType:", v9, 0, 1, 0, [v7 tabBasedMovementLoops], v11 & 2, self->_inputType);
+        v13 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:_focusMovementSystem];
+        v14 = -[_UIFocusMovementInfo initWithHeading:linearHeading:isInitial:shouldLoadScrollableContainer:looping:groupFilter:inputType:]([_UIFocusMovementInfo alloc], "initWithHeading:linearHeading:isInitial:shouldLoadScrollableContainer:looping:groupFilter:inputType:", v9, 0, 1, 0, [_focusBehavior tabBasedMovementLoops], focusGroupMovementBehavior & 2, self->_inputType);
         [(_UIFocusMovementRequest *)v13 setMovementInfo:v14];
 
         [(_UIFocusMovementRequest *)v13 setSearchInfo:v12];
@@ -1469,33 +1469,33 @@ LABEL_17:
   }
 }
 
-- (void)_handleShoulderButtonGesture:(id)a3
+- (void)_handleShoulderButtonGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 state];
+  gestureCopy = gesture;
+  state = [gestureCopy state];
   if ([(_UIFocusEventRecognizer *)self _shouldAcceptInputType:10])
   {
-    v6 = [(_UIFocusEventRecognizer *)self owningView];
-    v7 = [v6 _focusBehavior];
-    v8 = [v7 constrainGameControllersToFocusGroups];
+    owningView = [(_UIFocusEventRecognizer *)self owningView];
+    _focusBehavior = [owningView _focusBehavior];
+    constrainGameControllersToFocusGroups = [_focusBehavior constrainGameControllersToFocusGroups];
 
-    if (v8)
+    if (constrainGameControllersToFocusGroups)
     {
-      if ((v5 - 1) <= 1)
+      if ((state - 1) <= 1)
       {
         self->_inputType = 10;
         WeakRetained = objc_loadWeakRetained(&self->_owningView);
-        v10 = [WeakRetained _focusBehavior];
+        _focusBehavior2 = [WeakRetained _focusBehavior];
 
-        v11 = [v4 focusHeading];
-        if (v11)
+        focusHeading = [gestureCopy focusHeading];
+        if (focusHeading)
         {
-          v12 = v11;
-          v13 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-          if (v13)
+          v12 = focusHeading;
+          _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+          if (_focusMovementSystem)
           {
-            v14 = [v10 focusGroupMovementBehavior];
-            v15 = v14;
+            focusGroupMovementBehavior = [_focusBehavior2 focusGroupMovementBehavior];
+            v15 = focusGroupMovementBehavior;
             v16 = 8;
             v17 = 4;
             if (v12 != 32)
@@ -1508,7 +1508,7 @@ LABEL_17:
               v16 = v17;
             }
 
-            if ((v14 & 2) != 0)
+            if ((focusGroupMovementBehavior & 2) != 0)
             {
               v18 = v12;
             }
@@ -1520,8 +1520,8 @@ LABEL_17:
 
             v19 = +[_UIFocusSearchInfo defaultInfo];
             [v19 setForceFocusToLeaveContainer:1];
-            v20 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v13];
-            v21 = -[_UIFocusMovementInfo initWithHeading:linearHeading:isInitial:shouldLoadScrollableContainer:looping:groupFilter:inputType:]([_UIFocusMovementInfo alloc], "initWithHeading:linearHeading:isInitial:shouldLoadScrollableContainer:looping:groupFilter:inputType:", v18, 0, 1, 0, [v10 tabBasedMovementLoops], v15 & 2, self->_inputType);
+            v20 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:_focusMovementSystem];
+            v21 = -[_UIFocusMovementInfo initWithHeading:linearHeading:isInitial:shouldLoadScrollableContainer:looping:groupFilter:inputType:]([_UIFocusMovementInfo alloc], "initWithHeading:linearHeading:isInitial:shouldLoadScrollableContainer:looping:groupFilter:inputType:", v18, 0, 1, 0, [_focusBehavior2 tabBasedMovementLoops], v15 & 2, self->_inputType);
             [(_UIFocusMovementRequest *)v20 setMovementInfo:v21];
 
             [(_UIFocusMovementRequest *)v20 setSearchInfo:v19];
@@ -1550,40 +1550,40 @@ LABEL_17:
   }
 }
 
-- (void)_handlePanGesture:(id)a3
+- (void)_handlePanGesture:(id)gesture
 {
-  v19 = a3;
+  gestureCopy = gesture;
   v5 = [(_UIFocusEventRecognizer *)self gestureForName:1];
 
-  if (v5 != v19)
+  if (v5 != gestureCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:1024 description:{@"Invalid parameter not satisfying: %@", @"recognizer == [self gestureForName:_UIFocusGesturePan]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:1024 description:{@"Invalid parameter not satisfying: %@", @"recognizer == [self gestureForName:_UIFocusGesturePan]"}];
   }
 
   v6 = [(_UIFocusEventRecognizer *)self _shouldAcceptInputType:1];
-  v7 = v19;
+  v7 = gestureCopy;
   if (v6)
   {
-    if ([v19 state] == 1)
+    if ([gestureCopy state] == 1)
     {
-      [(_UIFocusEventRecognizer *)self _panGestureStart:v19];
+      [(_UIFocusEventRecognizer *)self _panGestureStart:gestureCopy];
     }
 
-    if ([v19 state] != 4 && (*&self->_flags & 0x80) == 0)
+    if ([gestureCopy state] != 4 && (*&self->_flags & 0x80) == 0)
     {
       WeakRetained = objc_loadWeakRetained(&self->_owningView);
-      [v19 velocityInView:WeakRetained];
+      [gestureCopy velocityInView:WeakRetained];
       v10 = v9;
       v12 = v11;
 
       v13 = +[UIDevice currentDevice];
-      v14 = [v13 _remoteTouchSurfaceType];
+      _remoteTouchSurfaceType = [v13 _remoteTouchSurfaceType];
 
-      if (v19)
+      if (gestureCopy)
       {
-        v15 = v19[51];
-        v16 = v19[52];
+        v15 = gestureCopy[51];
+        v16 = gestureCopy[52];
       }
 
       else
@@ -1592,106 +1592,106 @@ LABEL_17:
         v15 = 0.0;
       }
 
-      [(_UIFocusEventRecognizer *)self _updatePanLocation:v14 reportedVelocity:v15 remoteTouchSurfaceType:v16, v10, v12];
+      [(_UIFocusEventRecognizer *)self _updatePanLocation:_remoteTouchSurfaceType reportedVelocity:v15 remoteTouchSurfaceType:v16, v10, v12];
     }
 
-    if ([v19 state] == 3)
+    if ([gestureCopy state] == 3)
     {
-      [(_UIFocusEventRecognizer *)self _panGestureEnd:v19];
+      [(_UIFocusEventRecognizer *)self _panGestureEnd:gestureCopy];
     }
 
     else
     {
-      v17 = [v19 state];
-      v7 = v19;
-      if (v17 != 4)
+      state = [gestureCopy state];
+      v7 = gestureCopy;
+      if (state != 4)
       {
         goto LABEL_16;
       }
 
-      [(_UIFocusEventRecognizer *)self _panGestureCancelled:v19];
+      [(_UIFocusEventRecognizer *)self _panGestureCancelled:gestureCopy];
     }
 
-    v7 = v19;
+    v7 = gestureCopy;
   }
 
 LABEL_16:
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
-  v12 = a3;
+  gestureCopy = gesture;
   v4 = [(_UIFocusEventRecognizer *)self _shouldAcceptInputType:2];
-  v5 = v12;
+  v5 = gestureCopy;
   if (v4)
   {
-    v6 = [v12 state];
-    v5 = v12;
-    if (v6 == 3)
+    state = [gestureCopy state];
+    v5 = gestureCopy;
+    if (state == 3)
     {
       self->_inputType = 2;
-      [v12 _digitizerLocation];
+      [gestureCopy _digitizerLocation];
       v7 = [(_UIFocusEventRecognizer *)self _touchRegionForDigitizerLocation:?]- 1;
       if (v7 <= 3)
       {
         v8 = qword_18A67B5B0[v7];
-        v9 = [MEMORY[0x1E695DF00] date];
-        [v9 timeIntervalSinceNow];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceNow];
         v11 = v10;
 
         [_UIFocusEngineDelayedPressAction sendDelayedPressWithType:v8 timestamp:self sender:v11];
       }
 
       self->_inputType = 0;
-      v5 = v12;
+      v5 = gestureCopy;
     }
   }
 }
 
-- (void)_handleJoystickGesture:(id)a3
+- (void)_handleJoystickGesture:(id)gesture
 {
-  v7 = a3;
+  gestureCopy = gesture;
   v4 = [(_UIFocusEventRecognizer *)self _shouldAcceptInputType:3];
-  v5 = v7;
+  v5 = gestureCopy;
   if (!v4)
   {
     goto LABEL_8;
   }
 
-  v6 = [v7 state];
-  if (v6 == 1)
+  state = [gestureCopy state];
+  if (state == 1)
   {
-    [(_UIFocusEventRecognizer *)self _joystickGestureBegan:v7];
+    [(_UIFocusEventRecognizer *)self _joystickGestureBegan:gestureCopy];
   }
 
-  else if ((v6 - 1) > 2)
+  else if ((state - 1) > 2)
   {
     goto LABEL_6;
   }
 
-  [(_UIFocusEventRecognizer *)self _joystickGestureUpdated:v7];
+  [(_UIFocusEventRecognizer *)self _joystickGestureUpdated:gestureCopy];
 LABEL_6:
-  v5 = v7;
-  if ((v6 - 3) <= 1)
+  v5 = gestureCopy;
+  if ((state - 3) <= 1)
   {
-    [(_UIFocusEventRecognizer *)self _joystickGestureEnded:v7];
-    v5 = v7;
+    [(_UIFocusEventRecognizer *)self _joystickGestureEnded:gestureCopy];
+    v5 = gestureCopy;
   }
 
 LABEL_8:
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 _remoteTouchSurfaceType];
+  _remoteTouchSurfaceType = [v5 _remoteTouchSurfaceType];
 
   v7 = [(_UIFocusEventRecognizer *)self gestureForName:1];
-  if (v7 != v4 || (*&self->_flags & 0x20) != 0)
+  if (v7 != beginCopy || (*&self->_flags & 0x20) != 0)
   {
     v9 = [(_UIFocusEventRecognizer *)self gestureForName:5];
-    v8 = v9 == v4;
+    v8 = v9 == beginCopy;
   }
 
   else
@@ -1703,8 +1703,8 @@ LABEL_8:
 
   if (v8)
   {
-    v11 = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
-    if ([v11 indirectMovementPriority] == 2)
+    currentFocusBehavior = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
+    if ([currentFocusBehavior indirectMovementPriority] == 2)
     {
       v12 = CACurrentMediaTime();
       v13 = _UIInternalPreferenceUsesDefault(&unk_1ED48AF08, @"B519_ButtonSupressionTime", _UIInternalPreferenceUpdateDouble);
@@ -1726,7 +1726,7 @@ LABEL_8:
   else
   {
     v15 = 1;
-    if (v10 == v4 && v6 == 2)
+    if (v10 == beginCopy && _remoteTouchSurfaceType == 2)
     {
       v16 = CACurrentMediaTime();
       v17 = _UIInternalPreferenceUsesDefault(&unk_1ED48AF18, @"B519_TapSupressionTime", _UIInternalPreferenceUpdateDouble);
@@ -1743,16 +1743,16 @@ LABEL_8:
   return v15;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
   v8 = [(_UIFocusEventRecognizer *)self gestureForName:1];
 
-  if (v8 == v7)
+  if (v8 == recognizerCopy)
   {
     v10 = [(_UIFocusEventRecognizer *)self gestureForName:5];
-    v9 = v10 == v6;
+    v9 = v10 == gestureRecognizerCopy;
   }
 
   else
@@ -1763,17 +1763,17 @@ LABEL_8:
   return v9;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  v6 = a3;
+  failedCopy = failed;
   v4 = [(_UIFocusEventRecognizer *)self gestureForName:1];
-  if (v4 == v6)
+  if (v4 == failedCopy)
   {
     inputType = self->_inputType;
 
     if (inputType == 1)
     {
-      [(_UIFocusEventRecognizer *)self _panGestureEnd:v6];
+      [(_UIFocusEventRecognizer *)self _panGestureEnd:failedCopy];
     }
   }
 
@@ -1782,18 +1782,18 @@ LABEL_8:
   }
 }
 
-- (void)rotaryGestureRecognizerBeganClassifyingMovement:(id)a3
+- (void)rotaryGestureRecognizerBeganClassifyingMovement:(id)movement
 {
-  v8 = a3;
+  movementCopy = movement;
   v5 = [(_UIFocusEventRecognizer *)self gestureForName:5];
 
-  v6 = v8;
-  if (v5 != v8)
+  v6 = movementCopy;
+  if (v5 != movementCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:1204 description:{@"Invalid parameter not satisfying: %@", @"rotaryGesture == [self gestureForName:_UIFocusGestureRotary]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:1204 description:{@"Invalid parameter not satisfying: %@", @"rotaryGesture == [self gestureForName:_UIFocusGestureRotary]"}];
 
-    v6 = v8;
+    v6 = movementCopy;
   }
 
   if ([v6 beganMode] == 1)
@@ -1810,9 +1810,9 @@ LABEL_8:
 - (id)currentFocusBehavior
 {
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v3 = [WeakRetained _focusBehavior];
+  _focusBehavior = [WeakRetained _focusBehavior];
 
-  return v3;
+  return _focusBehavior;
 }
 
 - (BOOL)_buttonMaskTimeHasExpired
@@ -1828,10 +1828,10 @@ LABEL_8:
   return v3 - self->_lastButtonPressTime >= v5;
 }
 
-- (int)_touchRegionForDigitizerLocation:(CGPoint)a3
+- (int)_touchRegionForDigitizerLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   if (_UIInternalPreferenceUsesDefault(&unk_1ED48AF58, @"FocusEngineRemoteDeadzoneCenterX", _UIInternalPreferenceUpdateDouble))
   {
     v5 = 0.5;
@@ -1894,15 +1894,15 @@ LABEL_8:
   }
 }
 
-- (CGSize)_touchSensitivityForFocusItemMetadata:(id)a3 remoteTouchSurfaceType:(unint64_t)a4
+- (CGSize)_touchSensitivityForFocusItemMetadata:(id)metadata remoteTouchSurfaceType:(unint64_t)type
 {
-  v7 = a3;
-  v8 = [v7 item];
-  v9 = _UIFocusEnvironmentContainingView(v8);
-  v10 = [v9 traitCollection];
-  v11 = [v10 userInterfaceIdiom];
+  metadataCopy = metadata;
+  item = [metadataCopy item];
+  v9 = _UIFocusEnvironmentContainingView(item);
+  traitCollection = [v9 traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v11 == 3)
+  if (userInterfaceIdiom == 3)
   {
     currentCarTouchpad = self->_currentCarTouchpad;
     if (!currentCarTouchpad)
@@ -1910,8 +1910,8 @@ LABEL_8:
       currentCarTouchpad = self->_currentCarKitTouchpad;
       if (!currentCarTouchpad)
       {
-        v60 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v60 handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:1346 description:@"Attempting to retrieve sensitivity information without a touchpad."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:1346 description:@"Attempting to retrieve sensitivity information without a touchpad."];
 
         currentCarTouchpad = self->_currentCarTouchpad;
         if (!currentCarTouchpad)
@@ -1935,18 +1935,18 @@ LABEL_8:
     goto LABEL_52;
   }
 
-  v20 = [v7 focusTouchSensitivityStyle];
-  v21 = v20;
+  focusTouchSensitivityStyle = [metadataCopy focusTouchSensitivityStyle];
+  v21 = focusTouchSensitivityStyle;
   v23 = *MEMORY[0x1E695F060];
   v22 = *(MEMORY[0x1E695F060] + 8);
-  if (v20 <= 1)
+  if (focusTouchSensitivityStyle <= 1)
   {
-    if (v20)
+    if (focusTouchSensitivityStyle)
     {
-      if (v20 == 1)
+      if (focusTouchSensitivityStyle == 1)
       {
-        v24 = [v7 item];
-        v25 = _UIFocusEnvironmentContainingView(v24);
+        item2 = [metadataCopy item];
+        v25 = _UIFocusEnvironmentContainingView(item2);
         [v25 bounds];
         v22 = v26;
 
@@ -1959,27 +1959,27 @@ LABEL_8:
     goto LABEL_13;
   }
 
-  if (v20 == 2)
+  if (focusTouchSensitivityStyle == 2)
   {
     *&v23 = 70.0;
     v22 = 0x4070E00000000000;
   }
 
-  else if (v20 == 3)
+  else if (focusTouchSensitivityStyle == 3)
   {
 LABEL_13:
     if (dyld_program_sdk_at_least())
     {
-      v27 = [(_UIFocusEventRecognizer *)self _globalCoordinateSpace];
-      [v7 itemSizeInCoordinateSpace:v27];
+      _globalCoordinateSpace = [(_UIFocusEventRecognizer *)self _globalCoordinateSpace];
+      [metadataCopy itemSizeInCoordinateSpace:_globalCoordinateSpace];
       v23 = v28;
       v22 = v29;
     }
 
     else
     {
-      v27 = [v7 item];
-      v30 = _UIFocusEnvironmentContainingView(v27);
+      _globalCoordinateSpace = [metadataCopy item];
+      v30 = _UIFocusEnvironmentContainingView(_globalCoordinateSpace);
       [v30 frame];
       v23 = v31;
       v22 = v32;
@@ -1999,7 +1999,7 @@ LABEL_18:
     v34 = *&qword_1ED48AF90;
   }
 
-  if (a4 == 2 && (v35 = UIFocusGetSensitivitySetting(), v35 < 3))
+  if (type == 2 && (v35 = UIFocusGetSensitivitySetting(), v35 < 3))
   {
     v36 = dbl_18A67B5D0[v35];
   }
@@ -2024,7 +2024,7 @@ LABEL_18:
     }
   }
 
-  v39 = [v7 item];
+  item3 = [metadataCopy item];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2033,9 +2033,9 @@ LABEL_18:
   v43 = 1.0;
   if (isKindOfClass)
   {
-    v44 = [v7 item];
-    v45 = [v44 _disableTouchInput];
-    if (v45)
+    item4 = [metadataCopy item];
+    _disableTouchInput = [item4 _disableTouchInput];
+    if (_disableTouchInput)
     {
       v42 = 0.75;
     }
@@ -2045,7 +2045,7 @@ LABEL_18:
       v42 = 1.0;
     }
 
-    if (v45)
+    if (_disableTouchInput)
     {
       v43 = 1.3;
     }
@@ -2061,7 +2061,7 @@ LABEL_18:
     v41 = 1.2;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v46 = 1.1;
   }
@@ -2116,7 +2116,7 @@ LABEL_52:
   return result;
 }
 
-- (BOOL)_shouldAcceptInputType:(unint64_t)a3
+- (BOOL)_shouldAcceptInputType:(unint64_t)type
 {
   inputType = self->_inputType;
   v6 = 0x4Au >> inputType;
@@ -2125,7 +2125,7 @@ LABEL_52:
     LOBYTE(v6) = 0;
   }
 
-  if (a3 == 4)
+  if (type == 4)
   {
     v7 = v6;
   }
@@ -2135,25 +2135,25 @@ LABEL_52:
     v7 = 0;
   }
 
-  v8 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-  v9 = v8;
-  if (v8)
+  _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+  v9 = _focusMovementSystem;
+  if (_focusMovementSystem)
   {
-    v10 = [v8 focusedItem];
-    if (a3 == 6 && ![(_UIFocusEventRecognizer *)self _canMoveFocusWithRotaryInputInFocusContext:v10])
+    focusedItem = [_focusMovementSystem focusedItem];
+    if (type == 6 && ![(_UIFocusEventRecognizer *)self _canMoveFocusWithRotaryInputInFocusContext:focusedItem])
     {
       goto LABEL_19;
     }
 
     v11 = self->_inputType;
-    v13 = v11 != a3 && v11 != 0;
+    v13 = v11 != type && v11 != 0;
     if (v7)
     {
-      v14 = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
-      v13 = [v14 indirectMovementPriority] == 0;
+      currentFocusBehavior = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
+      v13 = [currentFocusBehavior indirectMovementPriority] == 0;
     }
 
-    if (inputType != 3 && v13 || a3 == 2 && (*&self->_flags & 2) != 0)
+    if (inputType != 3 && v13 || type == 2 && (*&self->_flags & 2) != 0)
     {
 LABEL_19:
       v15 = 0;
@@ -2175,9 +2175,9 @@ LABEL_19:
   return v15;
 }
 
-- (BOOL)_canMoveFocusWithRotaryInputInFocusContext:(id)a3
+- (BOOL)_canMoveFocusWithRotaryInputInFocusContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   isKindOfClass = 1;
   if ((_UIInternalPreferenceUsesDefault(&dword_1ED48AF00, @"B519_UniversalFocusMovement", _UIInternalPreferenceUpdateBool) & 1) == 0 && !byte_1ED48AF04)
   {
@@ -2198,32 +2198,32 @@ LABEL_19:
 
 - (id)_focusSystemSceneComponent
 {
-  v2 = [(_UIFocusEventRecognizer *)self owningView];
-  v3 = [v2 _window];
-  v4 = [v3 windowScene];
-  v5 = [v4 _focusSystemSceneComponent];
+  owningView = [(_UIFocusEventRecognizer *)self owningView];
+  _window = [owningView _window];
+  windowScene = [_window windowScene];
+  _focusSystemSceneComponent = [windowScene _focusSystemSceneComponent];
 
-  return v5;
+  return _focusSystemSceneComponent;
 }
 
 - (id)_globalCoordinateSpace
 {
-  v2 = [(_UIFocusEventRecognizer *)self _focusSystemSceneComponent];
-  v3 = [v2 coordinateSpace];
+  _focusSystemSceneComponent = [(_UIFocusEventRecognizer *)self _focusSystemSceneComponent];
+  coordinateSpace = [_focusSystemSceneComponent coordinateSpace];
 
-  return v3;
+  return coordinateSpace;
 }
 
 - (id)_retrieveFocusItemMetadata
 {
-  v3 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-  v4 = [v3 focusedItem];
+  _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+  focusedItem = [_focusMovementSystem focusedItem];
   cachedFocusItemMetadata = self->_cachedFocusItemMetadata;
-  if (v4)
+  if (focusedItem)
   {
     if (!cachedFocusItemMetadata)
     {
-      v6 = [[_UIFocusItemUIKitMetadata alloc] initWithItem:v4];
+      v6 = [[_UIFocusItemUIKitMetadata alloc] initWithItem:focusedItem];
       v7 = self->_cachedFocusItemMetadata;
       self->_cachedFocusItemMetadata = v6;
 
@@ -2243,71 +2243,71 @@ LABEL_19:
   return v8;
 }
 
-- (void)_handleRotaryGesture:(id)a3
+- (void)_handleRotaryGesture:(id)gesture
 {
-  v23 = a3;
+  gestureCopy = gesture;
   v5 = [(_UIFocusEventRecognizer *)self gestureForName:5];
 
-  if (v5 != v23)
+  if (v5 != gestureCopy)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:1690 description:{@"Invalid parameter not satisfying: %@", @"rotaryGesture == [self gestureForName:_UIFocusGestureRotary]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:1690 description:{@"Invalid parameter not satisfying: %@", @"rotaryGesture == [self gestureForName:_UIFocusGestureRotary]"}];
   }
 
   if ([(_UIFocusEventRecognizer *)self _shouldAcceptInputType:6])
   {
-    if ([v23 state] == 1)
+    if ([gestureCopy state] == 1)
     {
-      [(_UIFocusEventRecognizer *)self _handleRotaryBegin:v23];
+      [(_UIFocusEventRecognizer *)self _handleRotaryBegin:gestureCopy];
     }
 
-    if ([v23 state] != 4 && (*&self->_flags & 0x80) == 0)
+    if ([gestureCopy state] != 4 && (*&self->_flags & 0x80) == 0)
     {
-      [v23 velocity];
+      [gestureCopy velocity];
       v7 = v6;
       [(_UIFocusEventRecognizer *)self _momentumReferenceSize];
       v9 = v8;
       v10 = +[UIDevice currentDevice];
-      v11 = [v10 _remoteTouchSurfaceType];
+      _remoteTouchSurfaceType = [v10 _remoteTouchSurfaceType];
 
-      v12 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-      v13 = [v12 focusedItem];
-      v14 = _UIFocusEnvironmentResolvedRotaryFocusMovementAxis(v13, 0);
+      _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+      focusedItem = [_focusMovementSystem focusedItem];
+      v14 = _UIFocusEnvironmentResolvedRotaryFocusMovementAxis(focusedItem, 0);
 
       if ((v14 - 1) <= 2)
       {
         v15 = v7 * v9;
-        [v23 accumulatedDistance];
+        [gestureCopy accumulatedDistance];
         v17 = v16;
-        [v23 delta];
-        [(_UIFocusEventRecognizer *)self _updateRotaryDistance:v11 delta:v14 reportedVelocity:v17 remoteTouchSurfaceType:v18 focusMovementAxis:v15];
+        [gestureCopy delta];
+        [(_UIFocusEventRecognizer *)self _updateRotaryDistance:_remoteTouchSurfaceType delta:v14 reportedVelocity:v17 remoteTouchSurfaceType:v18 focusMovementAxis:v15];
       }
 
       rotaryIndicatorView = self->_rotaryIndicatorView;
-      [v23 position];
+      [gestureCopy position];
       [(_UIFocusRotaryIndicatorView *)rotaryIndicatorView updateWheelPosition:?];
     }
 
-    if ([v23 state] == 3)
+    if ([gestureCopy state] == 3)
     {
-      [(_UIFocusEventRecognizer *)self _handleRotaryEnd:v23];
+      [(_UIFocusEventRecognizer *)self _handleRotaryEnd:gestureCopy];
 LABEL_18:
-      v20 = v23;
+      v20 = gestureCopy;
       goto LABEL_19;
     }
 
-    v21 = [v23 state] == 4;
-    v20 = v23;
+    v21 = [gestureCopy state] == 4;
+    v20 = gestureCopy;
     if (v21)
     {
-      [(_UIFocusEventRecognizer *)self _handleRotaryCancelled:v23];
+      [(_UIFocusEventRecognizer *)self _handleRotaryCancelled:gestureCopy];
       goto LABEL_18;
     }
   }
 
   else
   {
-    v20 = v23;
+    v20 = gestureCopy;
     if (self->_inputType == 6)
     {
       self->_inputType = 0;
@@ -2317,7 +2317,7 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_handleRotaryBegin:(id)a3
+- (void)_handleRotaryBegin:(id)begin
 {
   self->_inputType = 6;
   [(_UIFocusEffectsController *)self->_motionEffectsController cancelRollbackAnimation];
@@ -2330,7 +2330,7 @@ LABEL_19:
   [(_UIFocusEventRecognizer *)self _showRotaryIndicator];
 }
 
-- (void)_handleRotaryEnd:(id)a3
+- (void)_handleRotaryEnd:(id)end
 {
   *&self->_flags &= ~0x80u;
   [(_UIFocusEventRecognizer *)self _resetContinuousMovementState];
@@ -2340,7 +2340,7 @@ LABEL_19:
   [(_UIFocusEventRecognizer *)self _hideRotaryIndicator];
 }
 
-- (void)_handleRotaryCancelled:(id)a3
+- (void)_handleRotaryCancelled:(id)cancelled
 {
   [(_UIFocusEventRecognizer *)self _resetContinuousMovementState];
   [(_UIFocusEffectsController *)self->_motionEffectsController reset];
@@ -2358,8 +2358,8 @@ LABEL_19:
 
   if (self->_showRotaryIndicatorAfterDelayTimer)
   {
-    v5 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [v5 addTimer:self->_showRotaryIndicatorAfterDelayTimer forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [mainRunLoop addTimer:self->_showRotaryIndicatorAfterDelayTimer forMode:*MEMORY[0x1E695DA28]];
   }
 }
 
@@ -2370,9 +2370,9 @@ LABEL_19:
   self->_showRotaryIndicatorAfterDelayTimer = 0;
 }
 
-- (void)_timerFiredForShowRotaryIndicator:(id)a3
+- (void)_timerFiredForShowRotaryIndicator:(id)indicator
 {
-  if (self->_showRotaryIndicatorAfterDelayTimer == a3)
+  if (self->_showRotaryIndicatorAfterDelayTimer == indicator)
   {
     [(_UIFocusEventRecognizer *)self _cancelShowRotaryIndicatorTimer];
     v5 = [(_UIFocusEventRecognizer *)self gestureForName:5];
@@ -2380,9 +2380,9 @@ LABEL_19:
     if (v5)
     {
       v8 = v5;
-      v7 = [v5 state];
+      state = [v5 state];
       v6 = v8;
-      if (!v7)
+      if (!state)
       {
         [(_UIFocusEventRecognizer *)self _showRotaryIndicator];
         v6 = v8;
@@ -2418,11 +2418,11 @@ LABEL_19:
   [(_UIFocusRotaryIndicatorView *)rotaryIndicatorView toggleVisible:0 animated:1];
 }
 
-- (void)_updateRotaryDistance:(double)a3 delta:(double)a4 reportedVelocity:(double)a5 remoteTouchSurfaceType:(unint64_t)a6 focusMovementAxis:(int64_t)a7
+- (void)_updateRotaryDistance:(double)distance delta:(double)delta reportedVelocity:(double)velocity remoteTouchSurfaceType:(unint64_t)type focusMovementAxis:(int64_t)axis
 {
   v56 = *MEMORY[0x1E69E9840];
-  v12 = [_UIFocusEventRecognizer _createStudyLogDataForRotaryDistance:"_createStudyLogDataForRotaryDistance:delta:reportedVelocity:" delta:a3 reportedVelocity:?];
-  v13 = [(_UIFocusEventRecognizer *)self _retrieveFocusItemMetadata];
+  v12 = [_UIFocusEventRecognizer _createStudyLogDataForRotaryDistance:"_createStudyLogDataForRotaryDistance:delta:reportedVelocity:" delta:distance reportedVelocity:?];
+  _retrieveFocusItemMetadata = [(_UIFocusEventRecognizer *)self _retrieveFocusItemMetadata];
   v14 = _UIInternalPreferenceUsesDefault(&unk_1ED48AF38, @"B519_FocusMovementGain", _UIInternalPreferenceUpdateDouble);
   v15 = *&qword_1ED48AF40;
   if (v14)
@@ -2430,7 +2430,7 @@ LABEL_19:
     v15 = 1.5;
   }
 
-  v16 = v15 * a4;
+  v16 = v15 * delta;
   v17 = _UIInternalPreferenceUsesDefault(&unk_1ED48AF38, @"B519_FocusMovementGain", _UIInternalPreferenceUpdateDouble);
   v18 = *&qword_1ED48AF40;
   if (v17)
@@ -2438,26 +2438,26 @@ LABEL_19:
     v18 = 1.5;
   }
 
-  v19 = v18 * a5;
-  v20 = [v13 focusTouchSensitivityStyle];
-  if ((a7 - 1) > 2)
+  v19 = v18 * velocity;
+  focusTouchSensitivityStyle = [_retrieveFocusItemMetadata focusTouchSensitivityStyle];
+  if ((axis - 1) > 2)
   {
     v21 = 0;
   }
 
   else
   {
-    v21 = qword_18A67B5E8[a7 - 1];
+    v21 = qword_18A67B5E8[axis - 1];
   }
 
-  v22 = v20 == 2;
+  v22 = focusTouchSensitivityStyle == 2;
   [(_UIFocusEventRecognizer *)self _pointForLinearValue:v21 axis:v16];
   v24 = v23;
   v26 = v25;
   [(_UIFocusEventRecognizer *)self _pointForLinearValue:v21 axis:v19];
   v28 = v27;
   v30 = v29;
-  [(_UIFocusEventRecognizer *)self _applyHorizontalFlipForFocusItemMetadata:v13 toDelta:v24, v26];
+  [(_UIFocusEventRecognizer *)self _applyHorizontalFlipForFocusItemMetadata:_retrieveFocusItemMetadata toDelta:v24, v26];
   v32 = v31;
   v34 = v33;
   if (_UIInternalPreferenceUsesDefault(&unk_1ED48AF28, @"B519_RotaryMovementAccelerationStrength", _UIInternalPreferenceUpdateDouble))
@@ -2470,10 +2470,10 @@ LABEL_19:
     v35 = *&qword_1ED48AF30;
   }
 
-  [(_UIFocusEventRecognizer *)self _accelerationFactorForCurrentVelocity:1 alpha:v22 isRotaryGesture:a6 isFocusInKeyboard:v28 remoteTouchSurfaceType:v30, v35];
+  [(_UIFocusEventRecognizer *)self _accelerationFactorForCurrentVelocity:1 alpha:v22 isRotaryGesture:type isFocusInKeyboard:v28 remoteTouchSurfaceType:v30, v35];
   v37 = v36;
   v39 = v38;
-  [(_UIFocusEventRecognizer *)self _touchSensitivityForFocusItemMetadata:v13 remoteTouchSurfaceType:a6];
+  [(_UIFocusEventRecognizer *)self _touchSensitivityForFocusItemMetadata:_retrieveFocusItemMetadata remoteTouchSurfaceType:type];
   v42 = v41;
   v43 = v40;
   if (v41 == *MEMORY[0x1E695F060] && v40 == *(MEMORY[0x1E695F060] + 8))
@@ -2486,8 +2486,8 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v52 = [v13 item];
-      v53 = [v52 debugDescription];
+      item = [_retrieveFocusItemMetadata item];
+      v53 = [item debugDescription];
       v54 = 138412290;
       v55 = v53;
       _os_log_fault_impl(&dword_188A29000, v51, OS_LOG_TYPE_FAULT, "Focus Sensitivity for focus item must not be zero: %@", &v54, 0xCu);
@@ -2502,8 +2502,8 @@ LABEL_19:
       }
 
       v51 = v50;
-      v52 = [v13 item];
-      v53 = [v52 debugDescription];
+      item = [_retrieveFocusItemMetadata item];
+      v53 = [item debugDescription];
       v54 = 138412290;
       v55 = v53;
       _os_log_impl(&dword_188A29000, v51, OS_LOG_TYPE_ERROR, "Focus Sensitivity for focus item must not be zero: %@", &v54, 0xCu);
@@ -2513,51 +2513,51 @@ LABEL_20:
   }
 
 LABEL_15:
-  [(_UIFocusEventRecognizer *)self _applyButtonMaskTimeToValue:a6 remoteTouchSurfaceType:v32 * v37 * v42, v34 * v39 * v43];
+  [(_UIFocusEventRecognizer *)self _applyButtonMaskTimeToValue:type remoteTouchSurfaceType:v32 * v37 * v42, v34 * v39 * v43];
   [(_UIFocusEventRecognizer *)self _updateAccumulatorsWithScaledDelta:v12 unlockedDelta:v45 studyLogData:v46, v45, v46];
   [(_UIFocusEventRecognizer *)self _updateMotionEffectsControllerWithProgressAccumulator:self->_progressAccumulator.dx unlockedAccumulator:self->_progressAccumulator.dy, self->_unlockedAccumulator.dx, self->_unlockedAccumulator.dy];
   v47 = [(_UIFocusEventRecognizer *)self _calculateLinearHeadingForAccumulator:v12 studyLogData:self->_progressAccumulator.dx, self->_progressAccumulator.dy];
   v48 = [(_UIFocusEventRecognizer *)self _calculateDirectionalHeadingForAccumulator:v12 studyLogData:self->_progressAccumulator.dx, self->_progressAccumulator.dy];
-  v49 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-  [(_UIFocusEventRecognizer *)self _attemptRotaryFocusMovementWithLinearHeading:v47 directionalHeading:v48 focusMovementAxis:a7 focusSystem:v49 acceleratedVelocity:v12 studyLogData:v28 * v37, v30 * v39];
+  _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+  [(_UIFocusEventRecognizer *)self _attemptRotaryFocusMovementWithLinearHeading:v47 directionalHeading:v48 focusMovementAxis:axis focusSystem:_focusMovementSystem acceleratedVelocity:v12 studyLogData:v28 * v37, v30 * v39];
 }
 
-- (id)_createRotaryMovementRequestWithFocusSystem:(id)a3
+- (id)_createRotaryMovementRequestWithFocusSystem:(id)system
 {
-  v3 = a3;
-  v4 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v3];
+  systemCopy = system;
+  v4 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:systemCopy];
 
   return v4;
 }
 
-- (CGPoint)_pointForLinearValue:(double)a3 axis:(unint64_t)a4
+- (CGPoint)_pointForLinearValue:(double)value axis:(unint64_t)axis
 {
-  v4 = 0.0;
-  if (a4)
+  valueCopy2 = 0.0;
+  if (axis)
   {
-    v5 = a3;
+    valueCopy = value;
   }
 
   else
   {
-    v5 = 0.0;
+    valueCopy = 0.0;
   }
 
-  if ((a4 & 2) != 0)
+  if ((axis & 2) != 0)
   {
-    v4 = a3;
+    valueCopy2 = value;
   }
 
-  v6 = v5;
-  result.y = v4;
+  v6 = valueCopy;
+  result.y = valueCopy2;
   result.x = v6;
   return result;
 }
 
-- (unint64_t)_calculateLinearHeadingForAccumulator:(CGVector)a3 studyLogData:(id)a4
+- (unint64_t)_calculateLinearHeadingForAccumulator:(CGVector)accumulator studyLogData:(id)data
 {
-  v4 = 32 * (fmin(a3.dx, a3.dy) <= -1.0);
-  if (fmax(a3.dx, a3.dy) < 1.0)
+  v4 = 32 * (fmin(accumulator.dx, accumulator.dy) <= -1.0);
+  if (fmax(accumulator.dx, accumulator.dy) < 1.0)
   {
     return v4;
   }
@@ -2568,34 +2568,34 @@ LABEL_15:
   }
 }
 
-- (BOOL)_attemptRotaryFocusMovementWithLinearHeading:(unint64_t)a3 directionalHeading:(unint64_t)a4 focusMovementAxis:(int64_t)a5 focusSystem:(id)a6 acceleratedVelocity:(CGPoint)a7 studyLogData:(id)a8
+- (BOOL)_attemptRotaryFocusMovementWithLinearHeading:(unint64_t)heading directionalHeading:(unint64_t)directionalHeading focusMovementAxis:(int64_t)axis focusSystem:(id)system acceleratedVelocity:(CGPoint)velocity studyLogData:(id)data
 {
   LOBYTE(v8) = 0;
-  if (a5 != 3)
+  if (axis != 3)
   {
-    a3 = a4;
+    heading = directionalHeading;
   }
 
-  if (a6 && a3)
+  if (system && heading)
   {
-    y = a7.y;
-    x = a7.x;
-    v14 = [(_UIFocusEventRecognizer *)self _createRotaryMovementRequestWithFocusSystem:a6];
-    v15 = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
-    v16 = ([v15 focusGroupMovementBehavior] >> 5) & 1;
+    y = velocity.y;
+    x = velocity.x;
+    v14 = [(_UIFocusEventRecognizer *)self _createRotaryMovementRequestWithFocusSystem:system];
+    currentFocusBehavior = [(_UIFocusEventRecognizer *)self currentFocusBehavior];
+    v16 = ([currentFocusBehavior focusGroupMovementBehavior] >> 5) & 1;
 
-    v17 = [(_UIFocusEventRecognizer *)self _createMovementInfoForHeading:a3 groupFilter:v16 acceleratedVelocity:x, y];
+    v17 = [(_UIFocusEventRecognizer *)self _createMovementInfoForHeading:heading groupFilter:v16 acceleratedVelocity:x, y];
     [v14 setMovementInfo:v17];
 
     v8 = [(_UIFocusEventRecognizer *)self _attemptToRecognizeContinuousMovementRequest:v14];
     if (v8)
     {
-      [(_UIFocusEventRecognizer *)self _continuousMovementSucceededWithDirectionalHeading:a4];
+      [(_UIFocusEventRecognizer *)self _continuousMovementSucceededWithDirectionalHeading:directionalHeading];
     }
 
     else
     {
-      [(_UIFocusEventRecognizer *)self _continuousMovementFailedWithPrimaryHeading:a4];
+      [(_UIFocusEventRecognizer *)self _continuousMovementFailedWithPrimaryHeading:directionalHeading];
     }
   }
 
@@ -2614,17 +2614,17 @@ LABEL_15:
   self->_panDeadBand = v4;
 }
 
-- (void)_panGestureStart:(id)a3
+- (void)_panGestureStart:(id)start
 {
-  v25 = a3;
+  startCopy = start;
   self->_inputType = 1;
   [(_UIFocusEffectsController *)self->_motionEffectsController cancelRollbackAnimation];
   self->_focusUpdateCountSinceLastContinuousMovementBegan = 0;
   *&self->_flags |= 0x41u;
   v5 = 0;
-  if (v25)
+  if (startCopy)
   {
-    v5 = *(v25 + 408);
+    v5 = *(startCopy + 408);
   }
 
   self->_lastKnownTouchPoint = v5;
@@ -2638,37 +2638,37 @@ LABEL_15:
   self->_previousPoints[0] = 0u;
   self->_numFrames = 1;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v7 = [WeakRetained traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [WeakRetained traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 == 3)
+  if (userInterfaceIdiom == 3)
   {
-    v9 = [(UIGestureRecognizer *)v25 _activeTouchesEvent];
-    v10 = [v9 touchesForGestureRecognizer:v25];
-    v11 = [v10 anyObject];
+    _activeTouchesEvent = [(UIGestureRecognizer *)startCopy _activeTouchesEvent];
+    v10 = [_activeTouchesEvent touchesForGestureRecognizer:startCopy];
+    anyObject = [v10 anyObject];
 
-    if (v11)
+    if (anyObject)
     {
       v12 = objc_loadWeakRetained(&self->_owningView);
-      v13 = [v12 _window];
-      v14 = [v13 windowScene];
-      v15 = [v14 carPlaySession];
-      v16 = [v15 touchpadForSenderID:{objc_msgSend(v11, "_senderID")}];
+      _window = [v12 _window];
+      windowScene = [_window windowScene];
+      carPlaySession = [windowScene carPlaySession];
+      v16 = [carPlaySession touchpadForSenderID:{objc_msgSend(anyObject, "_senderID")}];
       currentCarTouchpad = self->_currentCarTouchpad;
       self->_currentCarTouchpad = v16;
 
       v18 = objc_loadWeakRetained(&self->_owningView);
-      v19 = [v18 _screen];
-      v20 = [v19 _carSession];
-      v21 = [v20 inputDeviceManager];
-      v22 = [v21 touchpadWithSenderID:{objc_msgSend(v11, "_senderID")}];
+      _screen = [v18 _screen];
+      _carSession = [_screen _carSession];
+      inputDeviceManager = [_carSession inputDeviceManager];
+      v22 = [inputDeviceManager touchpadWithSenderID:{objc_msgSend(anyObject, "_senderID")}];
       currentCarKitTouchpad = self->_currentCarKitTouchpad;
       self->_currentCarKitTouchpad = v22;
 
       if (!self->_currentCarTouchpad && !self->_currentCarKitTouchpad)
       {
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v24 handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:2103 description:@"Attempted a pan-gesture-based focus movement without a touchpad."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusEventRecognizer.m" lineNumber:2103 description:@"Attempted a pan-gesture-based focus movement without a touchpad."];
       }
     }
   }
@@ -2677,29 +2677,29 @@ LABEL_15:
   [(_UIFocusEventRecognizer *)self _sendGestureBeginNotification];
 }
 
-- (void)_updatePanLocation:(CGPoint)a3 reportedVelocity:(CGPoint)a4 remoteTouchSurfaceType:(unint64_t)a5
+- (void)_updatePanLocation:(CGPoint)location reportedVelocity:(CGPoint)velocity remoteTouchSurfaceType:(unint64_t)type
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a3.y;
-  v9 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v8 = location.y;
+  v9 = location.x;
   v74 = *MEMORY[0x1E69E9840];
   v11 = [_UIFocusEventRecognizer _createStudyLogDataForPanNormalizedPoint:"_createStudyLogDataForPanNormalizedPoint:reportedVelocity:" reportedVelocity:?];
-  v12 = [(_UIFocusEventRecognizer *)self _retrieveFocusItemMetadata];
+  _retrieveFocusItemMetadata = [(_UIFocusEventRecognizer *)self _retrieveFocusItemMetadata];
   [(_UIFocusEventRecognizer *)self _calculateDeltaForNormalizedPoint:v11 studyLogData:v9, v8];
-  [_UIFocusEventRecognizer _applyPanDeadbandToValue:"_applyPanDeadbandToValue:startPoint:currentPoint:remoteTouchSurfaceType:" startPoint:a5 currentPoint:? remoteTouchSurfaceType:?];
+  [_UIFocusEventRecognizer _applyPanDeadbandToValue:"_applyPanDeadbandToValue:startPoint:currentPoint:remoteTouchSurfaceType:" startPoint:type currentPoint:? remoteTouchSurfaceType:?];
   v14 = v13;
   v16 = v15;
-  [(_UIFocusEventRecognizer *)self _applyHorizontalFlipForFocusItemMetadata:v12 toDelta:?];
+  [(_UIFocusEventRecognizer *)self _applyHorizontalFlipForFocusItemMetadata:_retrieveFocusItemMetadata toDelta:?];
   v70 = v9;
   v71 = v8;
   [(_UIFocusEventRecognizer *)self _applyAxisLockingForNormalizedPoint:v9 toDelta:v8, v17, v18];
   v20 = v19;
   v22 = v21;
-  -[_UIFocusEventRecognizer _accelerationFactorForCurrentVelocity:alpha:isRotaryGesture:isFocusInKeyboard:remoteTouchSurfaceType:](self, "_accelerationFactorForCurrentVelocity:alpha:isRotaryGesture:isFocusInKeyboard:remoteTouchSurfaceType:", 0, [v12 focusTouchSensitivityStyle] == 2, a5, x, y, 1.0);
+  -[_UIFocusEventRecognizer _accelerationFactorForCurrentVelocity:alpha:isRotaryGesture:isFocusInKeyboard:remoteTouchSurfaceType:](self, "_accelerationFactorForCurrentVelocity:alpha:isRotaryGesture:isFocusInKeyboard:remoteTouchSurfaceType:", 0, [_retrieveFocusItemMetadata focusTouchSensitivityStyle] == 2, type, x, y, 1.0);
   v24 = v23;
   v26 = v25;
-  [(_UIFocusEventRecognizer *)self _touchSensitivityForFocusItemMetadata:v12 remoteTouchSurfaceType:a5];
+  [(_UIFocusEventRecognizer *)self _touchSensitivityForFocusItemMetadata:_retrieveFocusItemMetadata remoteTouchSurfaceType:type];
   v28 = y;
   v30 = v29;
   v31 = v27;
@@ -2720,8 +2720,8 @@ LABEL_15:
       v61 = __UIFaultDebugAssertLog();
       if (os_log_type_enabled(v61, OS_LOG_TYPE_FAULT))
       {
-        v62 = [v12 item];
-        v63 = [v62 debugDescription];
+        item = [_retrieveFocusItemMetadata item];
+        v63 = [item debugDescription];
         *buf = 138412290;
         v73 = v63;
         _os_log_fault_impl(&dword_188A29000, v61, OS_LOG_TYPE_FAULT, "Focus Sensitivity for focus item must not be zero: %@", buf, 0xCu);
@@ -2751,8 +2751,8 @@ LABEL_15:
         v65 = v52;
         v57 = v28;
         v58 = v55;
-        v59 = [v12 item];
-        v60 = [v59 debugDescription];
+        item2 = [_retrieveFocusItemMetadata item];
+        v60 = [item2 debugDescription];
         *buf = 138412290;
         v73 = v60;
         _os_log_impl(&dword_188A29000, v58, OS_LOG_TYPE_ERROR, "Focus Sensitivity for focus item must not be zero: %@", buf, 0xCu);
@@ -2774,30 +2774,30 @@ LABEL_15:
   v39 = v22 * v26 * v31;
   v40 = v38 * v30;
   v41 = v37 * v31;
-  [(_UIFocusEventRecognizer *)self _applyButtonMaskTimeToValue:a5 remoteTouchSurfaceType:v20 * v24 * v30, v39, *&v64];
+  [(_UIFocusEventRecognizer *)self _applyButtonMaskTimeToValue:type remoteTouchSurfaceType:v20 * v24 * v30, v39, *&v64];
   v43 = v42;
   v45 = v44;
-  [(_UIFocusEventRecognizer *)self _applyButtonMaskTimeToValue:a5 remoteTouchSurfaceType:v40, v41];
+  [(_UIFocusEventRecognizer *)self _applyButtonMaskTimeToValue:type remoteTouchSurfaceType:v40, v41];
   [(_UIFocusEventRecognizer *)self _updateAccumulatorsWithScaledDelta:v11 unlockedDelta:v43 studyLogData:v45, v46, v47];
   [(_UIFocusEventRecognizer *)self _recordMomentumForPoint:v70 reportedVelocity:v71, v34, v36];
   [(_UIFocusEventRecognizer *)self _updateMotionEffectsControllerWithProgressAccumulator:self->_progressAccumulator.dx unlockedAccumulator:self->_progressAccumulator.dy, self->_unlockedAccumulator.dx, self->_unlockedAccumulator.dy];
   v48 = [(_UIFocusEventRecognizer *)self _calculateDirectionalHeadingForAccumulator:v11 studyLogData:self->_progressAccumulator.dx, self->_progressAccumulator.dy];
-  v49 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-  v50 = [(_UIFocusEventRecognizer *)self _attemptPanFocusMovementWithHeading:v48 acceleratedVelocity:v49 focusSystem:v11 studyLogData:v67, v68];
+  _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+  v50 = [(_UIFocusEventRecognizer *)self _attemptPanFocusMovementWithHeading:v48 acceleratedVelocity:_focusMovementSystem focusSystem:v11 studyLogData:v67, v68];
 
   [(_UIFocusEventRecognizer *)self _cleanupPanMomentumWithAccumulator:v50 movementSuccess:self->_progressAccumulator.dx, self->_progressAccumulator.dy];
 }
 
-- (id)_createPanMovementRequestWithFocusSystem:(id)a3
+- (id)_createPanMovementRequestWithFocusSystem:(id)system
 {
-  v4 = a3;
-  v5 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v4];
+  systemCopy = system;
+  v5 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:systemCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v7 = [WeakRetained traitCollection];
-  v8 = [v7 userInterfaceIdiom];
+  traitCollection = [WeakRetained traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v8 == 3)
+  if (userInterfaceIdiom == 3)
   {
     currentCarTouchpad = self->_currentCarTouchpad;
     if (currentCarTouchpad && [(_UISceneCarPlaySessionTouchpad *)currentCarTouchpad feedbackSupported])
@@ -2824,11 +2824,11 @@ LABEL_9:
   return v5;
 }
 
-- (CGPoint)_calculateDeltaForNormalizedPoint:(CGPoint)a3 studyLogData:(id)a4
+- (CGPoint)_calculateDeltaForNormalizedPoint:(CGPoint)point studyLogData:(id)data
 {
-  v4 = a3.x - self->_lastKnownTouchPoint.x;
-  v5 = a3.y - self->_lastKnownTouchPoint.y;
-  self->_lastKnownTouchPoint = a3;
+  v4 = point.x - self->_lastKnownTouchPoint.x;
+  v5 = point.y - self->_lastKnownTouchPoint.y;
+  self->_lastKnownTouchPoint = point;
   v6 = v4;
   v7 = v5;
   result.y = v7;
@@ -2836,16 +2836,16 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)_applyPanDeadbandToValue:(CGPoint)a3 startPoint:(CGPoint)a4 currentPoint:(CGPoint)a5 remoteTouchSurfaceType:(unint64_t)a6
+- (CGPoint)_applyPanDeadbandToValue:(CGPoint)value startPoint:(CGPoint)point currentPoint:(CGPoint)currentPoint remoteTouchSurfaceType:(unint64_t)type
 {
-  y = a3.y;
-  x = a3.x;
-  if (a6 == 2)
+  y = value.y;
+  x = value.x;
+  if (type == 2)
   {
-    v8 = a5.y;
-    v9 = a5.x;
-    v10 = a4.y;
-    v11 = a4.x;
+    v8 = currentPoint.y;
+    v9 = currentPoint.x;
+    v10 = point.y;
+    v11 = point.x;
     panDeadBand = self->_panDeadBand;
     if (panDeadBand > 0.0)
     {
@@ -2895,13 +2895,13 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)_applyHorizontalFlipForFocusItemMetadata:(id)a3 toDelta:(CGPoint)a4
+- (CGPoint)_applyHorizontalFlipForFocusItemMetadata:(id)metadata toDelta:(CGPoint)delta
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = [a3 isFocusMovementFlippedHorizontally];
+  y = delta.y;
+  x = delta.x;
+  isFocusMovementFlippedHorizontally = [metadata isFocusMovementFlippedHorizontally];
   v7 = -x;
-  if (!v6)
+  if (!isFocusMovementFlippedHorizontally)
   {
     v7 = x;
   }
@@ -2912,19 +2912,19 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)_applyAxisLockingForNormalizedPoint:(CGPoint)a3 toDelta:(CGPoint)a4
+- (CGPoint)_applyAxisLockingForNormalizedPoint:(CGPoint)point toDelta:(CGPoint)delta
 {
-  if (a3.x > 0.95 && self->_touchBeganPoint.x < 0.95 || (y = 0.0, a3.x < 0.05) && self->_touchBeganPoint.x > 0.05)
+  if (point.x > 0.95 && self->_touchBeganPoint.x < 0.95 || (y = 0.0, point.x < 0.05) && self->_touchBeganPoint.x > 0.05)
   {
-    y = a4.y;
-    a4.y = 0.0;
+    y = delta.y;
+    delta.y = 0.0;
   }
 
   v5.f64[0] = 0.0;
-  if (a3.y < 0.1 && self->_touchBeganPoint.y > 0.1)
+  if (point.y < 0.1 && self->_touchBeganPoint.y > 0.1)
   {
-    v5.f64[0] = a4.x;
-    a4.x = 0.0;
+    v5.f64[0] = delta.x;
+    delta.x = 0.0;
   }
 
   self->_previousPoints[4] = self->_previousPoints[3];
@@ -2945,27 +2945,27 @@ LABEL_9:
   {
     if (v8.f64[0] >= v8.f64[1])
     {
-      a4.y = a4.y * 0.0;
+      delta.y = delta.y * 0.0;
     }
 
     else
     {
-      a4.x = a4.x * 0.0;
+      delta.x = delta.x * 0.0;
     }
   }
 
-  x = a4.x;
-  v10 = a4.y;
+  x = delta.x;
+  v10 = delta.y;
   result.y = v10;
   result.x = x;
   return result;
 }
 
-- (CGPoint)_applyButtonMaskTimeToValue:(CGPoint)a3 remoteTouchSurfaceType:(unint64_t)a4
+- (CGPoint)_applyButtonMaskTimeToValue:(CGPoint)value remoteTouchSurfaceType:(unint64_t)type
 {
-  y = a3.y;
-  x = a3.x;
-  if (a4 == 2 && ![(_UIFocusEventRecognizer *)self _buttonMaskTimeHasExpired])
+  y = value.y;
+  x = value.x;
+  if (type == 2 && ![(_UIFocusEventRecognizer *)self _buttonMaskTimeHasExpired])
   {
     y = 0.0;
     x = 0.0;
@@ -2978,12 +2978,12 @@ LABEL_9:
   return result;
 }
 
-- (CGVector)_accelerationFactorForCurrentVelocity:(CGPoint)a3 alpha:(double)a4 isRotaryGesture:(BOOL)a5 isFocusInKeyboard:(BOOL)a6 remoteTouchSurfaceType:(unint64_t)a7
+- (CGVector)_accelerationFactorForCurrentVelocity:(CGPoint)velocity alpha:(double)alpha isRotaryGesture:(BOOL)gesture isFocusInKeyboard:(BOOL)keyboard remoteTouchSurfaceType:(unint64_t)type
 {
-  v8 = a6;
-  v9 = a5;
-  y = a3.y;
-  x = a3.x;
+  keyboardCopy = keyboard;
+  gestureCopy = gesture;
+  y = velocity.y;
+  x = velocity.x;
   v14 = _UIInternalPreferenceUsesDefault(&_UIInternalPreference_FocusEngineUsesAccelerationCurve, @"FocusEngineUsesAccelerationCurve", _UIInternalPreferenceUpdateBool);
   v15 = 1.0;
   if ((v14 & 1) != 0 || !byte_1EA95E394)
@@ -3001,18 +3001,18 @@ LABEL_9:
       v20 = y / v19;
       v21 = fabs(x / v17);
       v22 = fabs(y / v19);
-      v23 = _UIFocusEngineAcceleratedSpeedForSpeed(a7, v9, v8, v21);
-      v24 = _UIFocusEngineAcceleratedSpeedForSpeed(a7, v9, v8, v22);
+      v23 = _UIFocusEngineAcceleratedSpeedForSpeed(type, gestureCopy, keyboardCopy, v21);
+      v24 = _UIFocusEngineAcceleratedSpeedForSpeed(type, gestureCopy, keyboardCopy, v22);
       v16 = 1.0;
       v15 = 1.0;
       if (v18 != 0.0)
       {
-        v15 = 1.0 - a4 + v23 / v21 * a4;
+        v15 = 1.0 - alpha + v23 / v21 * alpha;
       }
 
       if (v20 != 0.0)
       {
-        v16 = 1.0 - a4 + v24 / v22 * a4;
+        v16 = 1.0 - alpha + v24 / v22 * alpha;
       }
     }
   }
@@ -3022,49 +3022,49 @@ LABEL_9:
   return result;
 }
 
-- (void)_updateAccumulatorsWithScaledDelta:(CGPoint)a3 unlockedDelta:(CGPoint)a4 studyLogData:(id)a5
+- (void)_updateAccumulatorsWithScaledDelta:(CGPoint)delta unlockedDelta:(CGPoint)unlockedDelta studyLogData:(id)data
 {
-  y = a3.y;
-  v6 = a4.y;
-  v7 = vaddq_f64(a4, self->_unlockedAccumulator);
-  self->_progressAccumulator = vaddq_f64(a3, self->_progressAccumulator);
+  y = delta.y;
+  v6 = unlockedDelta.y;
+  v7 = vaddq_f64(unlockedDelta, self->_unlockedAccumulator);
+  self->_progressAccumulator = vaddq_f64(delta, self->_progressAccumulator);
   self->_unlockedAccumulator = v7;
 }
 
-- (void)_updateMotionEffectsControllerWithProgressAccumulator:(CGVector)a3 unlockedAccumulator:(CGVector)a4
+- (void)_updateMotionEffectsControllerWithProgressAccumulator:(CGVector)accumulator unlockedAccumulator:(CGVector)unlockedAccumulator
 {
-  v4 = a4.dx * 0.8;
-  v5 = a4.dy * 0.8;
+  v4 = unlockedAccumulator.dx * 0.8;
+  v5 = unlockedAccumulator.dy * 0.8;
   if (!self->_focusUpdateCountSinceLastContinuousMovementBegan)
   {
-    a3.dy = v5;
-    a3.dx = v4;
+    accumulator.dy = v5;
+    accumulator.dx = v4;
   }
 
-  [(_UIFocusEffectsController *)self->_motionEffectsController updateCurrentOffset:a3.dx, a3.dy];
+  [(_UIFocusEffectsController *)self->_motionEffectsController updateCurrentOffset:accumulator.dx, accumulator.dy];
 }
 
-- (unint64_t)_calculateDirectionalHeadingForAccumulator:(CGVector)a3 studyLogData:(id)a4
+- (unint64_t)_calculateDirectionalHeadingForAccumulator:(CGVector)accumulator studyLogData:(id)data
 {
   v4 = 8;
   v5 = 4;
-  if (a3.dx > -1.0)
+  if (accumulator.dx > -1.0)
   {
     v5 = 0;
   }
 
-  if (a3.dx < 1.0)
+  if (accumulator.dx < 1.0)
   {
     v4 = v5;
   }
 
   v6 = 2;
-  if (a3.dy < 1.0)
+  if (accumulator.dy < 1.0)
   {
-    v6 = a3.dy <= -1.0;
+    v6 = accumulator.dy <= -1.0;
   }
 
-  if (fabs(a3.dy) >= fabs(a3.dx))
+  if (fabs(accumulator.dy) >= fabs(accumulator.dx))
   {
     return v6;
   }
@@ -3075,19 +3075,19 @@ LABEL_9:
   }
 }
 
-- (BOOL)_attemptPanFocusMovementWithHeading:(unint64_t)a3 acceleratedVelocity:(CGPoint)a4 focusSystem:(id)a5 studyLogData:(id)a6
+- (BOOL)_attemptPanFocusMovementWithHeading:(unint64_t)heading acceleratedVelocity:(CGPoint)velocity focusSystem:(id)system studyLogData:(id)data
 {
-  y = a4.y;
-  x = a4.x;
-  v10 = a5;
-  v11 = [(_UIFocusEventRecognizer *)self _shouldPerformFocusUpdateWithCurrentMomentumStatus];
-  if (!a3)
+  y = velocity.y;
+  x = velocity.x;
+  systemCopy = system;
+  _shouldPerformFocusUpdateWithCurrentMomentumStatus = [(_UIFocusEventRecognizer *)self _shouldPerformFocusUpdateWithCurrentMomentumStatus];
+  if (!heading)
   {
     goto LABEL_8;
   }
 
-  v12 = !v11;
-  if (!v10)
+  v12 = !_shouldPerformFocusUpdateWithCurrentMomentumStatus;
+  if (!systemCopy)
   {
     v12 = 1;
   }
@@ -3100,46 +3100,46 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v13 = [(_UIFocusEventRecognizer *)self _createPanMovementRequestWithFocusSystem:v10];
-  v14 = [(_UIFocusEventRecognizer *)self _createMovementInfoForHeading:a3 groupFilter:0 acceleratedVelocity:x, y];
+  v13 = [(_UIFocusEventRecognizer *)self _createPanMovementRequestWithFocusSystem:systemCopy];
+  v14 = [(_UIFocusEventRecognizer *)self _createMovementInfoForHeading:heading groupFilter:0 acceleratedVelocity:x, y];
   [v13 setMovementInfo:v14];
 
   v15 = [(_UIFocusEventRecognizer *)self _attemptToRecognizeContinuousMovementRequest:v13];
   if (v15)
   {
-    [(_UIFocusEventRecognizer *)self _continuousMovementSucceededWithDirectionalHeading:a3];
+    [(_UIFocusEventRecognizer *)self _continuousMovementSucceededWithDirectionalHeading:heading];
   }
 
   else
   {
-    [(_UIFocusEventRecognizer *)self _continuousMovementFailedWithPrimaryHeading:a3];
+    [(_UIFocusEventRecognizer *)self _continuousMovementFailedWithPrimaryHeading:heading];
   }
 
 LABEL_11:
   return v15;
 }
 
-- (id)_createMovementInfoForHeading:(unint64_t)a3 groupFilter:(int64_t)a4 acceleratedVelocity:(CGPoint)a5
+- (id)_createMovementInfoForHeading:(unint64_t)heading groupFilter:(int64_t)filter acceleratedVelocity:(CGPoint)velocity
 {
-  v5 = [[_UIFocusMovementInfo alloc] initWithHeading:a3 velocity:*&self->_flags & 1 isInitial:(a3 & 0x330) == 0 shouldLoadScrollableContainer:a4 groupFilter:self->_inputType inputType:a5.x, a5.y];
+  v5 = [[_UIFocusMovementInfo alloc] initWithHeading:heading velocity:*&self->_flags & 1 isInitial:(heading & 0x330) == 0 shouldLoadScrollableContainer:filter groupFilter:self->_inputType inputType:velocity.x, velocity.y];
 
   return v5;
 }
 
-- (BOOL)_attemptToRecognizeContinuousMovementRequest:(id)a3
+- (BOOL)_attemptToRecognizeContinuousMovementRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 movementInfo];
-  v6 = [v5 heading];
+  requestCopy = request;
+  movementInfo = [requestCopy movementInfo];
+  heading = [movementInfo heading];
   failedContinuousMovementHeading = self->_failedContinuousMovementHeading;
 
-  v8 = (v6 != failedContinuousMovementHeading || [(_UIFocusEventRecognizer *)self _hasFailedMovementHeadingExpired]) && [(_UIFocusEventRecognizer *)self _didRecognizeFocusMovementRequest:v4];
+  v8 = (heading != failedContinuousMovementHeading || [(_UIFocusEventRecognizer *)self _hasFailedMovementHeadingExpired]) && [(_UIFocusEventRecognizer *)self _didRecognizeFocusMovementRequest:requestCopy];
   return v8;
 }
 
-- (void)_continuousMovementSucceededWithDirectionalHeading:(unint64_t)a3
+- (void)_continuousMovementSucceededWithDirectionalHeading:(unint64_t)heading
 {
-  [(_UIFocusEventRecognizer *)self _resetProgressAccumulatorWithHeading:a3];
+  [(_UIFocusEventRecognizer *)self _resetProgressAccumulatorWithHeading:heading];
   [(_UIFocusEffectsController *)self->_motionEffectsController adjustDisplayOffsetAccumulationFactorForFocusTransfer];
   motionEffectsController = self->_motionEffectsController;
   dx = self->_progressAccumulator.dx;
@@ -3157,7 +3157,7 @@ LABEL_11:
   ++self->_focusUpdateCountSinceLastContinuousMovementBegan;
 }
 
-- (void)_continuousMovementFailedWithPrimaryHeading:(unint64_t)a3
+- (void)_continuousMovementFailedWithPrimaryHeading:(unint64_t)heading
 {
   __asm
   {
@@ -3171,15 +3171,15 @@ LABEL_11:
   self->_unlockedAccumulator = v12;
   [(_UIFocusEventRecognizer *)self _resetCachedFocusItemMetadata];
 
-  [(_UIFocusEventRecognizer *)self _updateFailedContinuousMovementHeading:a3];
+  [(_UIFocusEventRecognizer *)self _updateFailedContinuousMovementHeading:heading];
 }
 
-- (void)_updateFailedContinuousMovementHeading:(unint64_t)a3
+- (void)_updateFailedContinuousMovementHeading:(unint64_t)heading
 {
-  if (self->_failedContinuousMovementHeading != a3 || [(_UIFocusEventRecognizer *)self _hasFailedMovementHeadingExpired])
+  if (self->_failedContinuousMovementHeading != heading || [(_UIFocusEventRecognizer *)self _hasFailedMovementHeadingExpired])
   {
-    self->_failedContinuousMovementHeading = a3;
-    [(_UIFocusRotaryIndicatorView *)self->_rotaryIndicatorView updateFailedMovementHeading:a3];
+    self->_failedContinuousMovementHeading = heading;
+    [(_UIFocusRotaryIndicatorView *)self->_rotaryIndicatorView updateFailedMovementHeading:heading];
     if (self->_failedContinuousMovementHeading)
     {
       v5 = CACurrentMediaTime();
@@ -3194,11 +3194,11 @@ LABEL_11:
   }
 }
 
-- (void)_cleanupPanMomentumWithAccumulator:(CGVector)a3 movementSuccess:(BOOL)a4
+- (void)_cleanupPanMomentumWithAccumulator:(CGVector)accumulator movementSuccess:(BOOL)success
 {
-  if (!a4)
+  if (!success)
   {
-    v5 = hypot(a3.dx, a3.dy);
+    v5 = hypot(accumulator.dx, accumulator.dy);
     if ((*&self->_flags & 2) != 0 && v5 > 2.0)
     {
 
@@ -3207,7 +3207,7 @@ LABEL_11:
   }
 }
 
-- (void)_panGestureEnd:(id)a3
+- (void)_panGestureEnd:(id)end
 {
   *&self->_flags &= ~0x80u;
   [(_UIFocusEventRecognizer *)self _continueTouchWithMomentum];
@@ -3215,7 +3215,7 @@ LABEL_11:
   [(_UIFocusEventRecognizer *)self _resetContinuousMovementState];
 }
 
-- (void)_panGestureCancelled:(id)a3
+- (void)_panGestureCancelled:(id)cancelled
 {
   [(_UIFocusEventRecognizer *)self _resetContinuousMovementState];
   motionEffectsController = self->_motionEffectsController;
@@ -3223,14 +3223,14 @@ LABEL_11:
   [(_UIFocusEffectsController *)motionEffectsController reset];
 }
 
-- (void)_resetProgressAccumulatorWithHeading:(unint64_t)a3
+- (void)_resetProgressAccumulatorWithHeading:(unint64_t)heading
 {
   v5 = +[UIDevice currentDevice];
   v6 = [v5 _remoteTouchSurfaceType] == 2;
 
-  if ((a3 & 0xC) != 0)
+  if ((heading & 0xC) != 0)
   {
-    if ((a3 & 3) != 0)
+    if ((heading & 3) != 0)
     {
       return;
     }
@@ -3242,7 +3242,7 @@ LABEL_11:
 
   else
   {
-    if ((a3 & 3) == 0)
+    if ((heading & 3) == 0)
     {
       return;
     }
@@ -3255,7 +3255,7 @@ LABEL_11:
   v10 = dbl_18A67B520[v6];
   v11 = 2.0 - v10;
   v12 = v10 + -2.0;
-  if ((v9 & a3) != 0)
+  if ((v9 & heading) != 0)
   {
     v12 = v11;
   }
@@ -3264,7 +3264,7 @@ LABEL_11:
   *(&self->super.isa + v7) = *(&self->super.isa + v7) - v12;
 }
 
-- (void)_joystickGestureBegan:(id)a3
+- (void)_joystickGestureBegan:(id)began
 {
   self->_inputType = 3;
   *&self->_flags = *&self->_flags & 0xFFFA | 1;
@@ -3283,32 +3283,32 @@ LABEL_11:
     [(_UIFocusEventRecognizer *)self _sendGestureBeginNotification];
     [(CADisplayLink *)self->_joystickFocusDirectionDisplayLink invalidate];
     WeakRetained = objc_loadWeakRetained(&self->_owningView);
-    v7 = [WeakRetained _screen];
-    v8 = [v7 displayLinkWithTarget:self selector:sel__joystickDisplayLinkHeartbeat_];
+    _screen = [WeakRetained _screen];
+    v8 = [_screen displayLinkWithTarget:self selector:sel__joystickDisplayLinkHeartbeat_];
     joystickFocusDirectionDisplayLink = self->_joystickFocusDirectionDisplayLink;
     self->_joystickFocusDirectionDisplayLink = v8;
 
     v10 = self->_joystickFocusDirectionDisplayLink;
-    v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)v10 addToRunLoop:v11 forMode:*MEMORY[0x1E695DA28]];
-    v5 = v11;
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)v10 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
+    v5 = mainRunLoop;
   }
 }
 
-- (void)_joystickGestureUpdated:(id)a3
+- (void)_joystickGestureUpdated:(id)updated
 {
   if ((*&self->_flags & 8) != 0)
   {
-    [(_UIFocusEventRecognizer *)self _handleJoystickRepeatMode:a3];
+    [(_UIFocusEventRecognizer *)self _handleJoystickRepeatMode:updated];
   }
 
   else
   {
-    [(_UIFocusEventRecognizer *)self _handleJoystickTiltMode:a3];
+    [(_UIFocusEventRecognizer *)self _handleJoystickTiltMode:updated];
   }
 }
 
-- (void)_joystickGestureEnded:(id)a3
+- (void)_joystickGestureEnded:(id)ended
 {
   [(NSTimer *)self->_joystickModeExitTimer invalidate];
   _UIInternalPreferenceUsesDefault(&_UIInternalPreference_JoystickModeExitInterval, @"JoystickModeExitInterval", _UIInternalPreferenceUpdateDouble);
@@ -3321,7 +3321,7 @@ LABEL_11:
   self->_joystickModeRepeatTimer = 0;
 }
 
-- (void)_exitJoystickModeForReal:(id)a3
+- (void)_exitJoystickModeForReal:(id)real
 {
   self->_inputType = 0;
   joystickModeExitTimer = self->_joystickModeExitTimer;
@@ -3331,11 +3331,11 @@ LABEL_11:
   self->_joystickRepeatCount = 0;
 }
 
-- (void)_handleJoystickRepeatMode:(id)a3
+- (void)_handleJoystickRepeatMode:(id)mode
 {
-  v4 = a3;
+  modeCopy = mode;
   *&self->_flags &= ~0x10u;
-  [v4 stickPosition];
+  [modeCopy stickPosition];
   v6 = v5;
   v8 = v7;
   if (_UIInternalPreferenceUsesDefault(&unk_1ED48AFE8, @"JoystickTiltModeRadius", _UIInternalPreferenceUpdateDouble))
@@ -3348,13 +3348,13 @@ LABEL_11:
     v9 = *&qword_1ED48AFF0;
   }
 
-  v10 = [(_UIFocusEventRecognizer *)self _retrieveFocusItemMetadata];
-  v11 = -[_UIFocusEventRecognizer _focusMovementForJoystickPosition:usingMinimumRadius:focusMovementStyle:](self, "_focusMovementForJoystickPosition:usingMinimumRadius:focusMovementStyle:", [v10 inheritedFocusMovementStyle], v6, v8, v9);
+  _retrieveFocusItemMetadata = [(_UIFocusEventRecognizer *)self _retrieveFocusItemMetadata];
+  v11 = -[_UIFocusEventRecognizer _focusMovementForJoystickPosition:usingMinimumRadius:focusMovementStyle:](self, "_focusMovementForJoystickPosition:usingMinimumRadius:focusMovementStyle:", [_retrieveFocusItemMetadata inheritedFocusMovementStyle], v6, v8, v9);
   if (![(_UIFocusEventRecognizer *)self _joystickFocusMovement:v11 shouldBeConsideredEqualToFocusMovement:self->_previousJoystickFocusMovementInfo])
   {
     *&self->_flags &= ~8u;
     self->_joystickRepeatCount = 0;
-    [(_UIFocusEventRecognizer *)self _handleJoystickTiltMode:v4];
+    [(_UIFocusEventRecognizer *)self _handleJoystickTiltMode:modeCopy];
     goto LABEL_17;
   }
 
@@ -3374,10 +3374,10 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v16 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-    if (v16)
+    _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+    if (_focusMovementSystem)
     {
-      v17 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v16];
+      v17 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:_focusMovementSystem];
       [(_UIFocusMovementRequest *)v17 setMovementInfo:v11];
       v18 = [(_UIFocusEventRecognizer *)self _joystickAttemptFocusMovementWithRequest:v17];
 
@@ -3413,18 +3413,18 @@ LABEL_15:
 LABEL_17:
 }
 
-- (void)_handleJoystickTiltMode:(id)a3
+- (void)_handleJoystickTiltMode:(id)mode
 {
-  v4 = a3;
-  [v4 stickPosition];
+  modeCopy = mode;
+  [modeCopy stickPosition];
   v6 = v5;
   v8 = v7;
-  [v4 previousStickPosition];
+  [modeCopy previousStickPosition];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(_UIFocusEventRecognizer *)self _retrieveFocusItemMetadata];
-  v14 = [v13 inheritedFocusMovementStyle];
+  _retrieveFocusItemMetadata = [(_UIFocusEventRecognizer *)self _retrieveFocusItemMetadata];
+  inheritedFocusMovementStyle = [_retrieveFocusItemMetadata inheritedFocusMovementStyle];
   if (_UIInternalPreferenceUsesDefault(&unk_1ED48AFE8, @"JoystickTiltModeRadius", _UIInternalPreferenceUpdateDouble))
   {
     v15 = 0.6;
@@ -3435,16 +3435,16 @@ LABEL_17:
     v15 = *&qword_1ED48AFF0;
   }
 
-  v16 = [(_UIFocusEventRecognizer *)self _focusMovementForJoystickPosition:v14 usingMinimumRadius:v6 focusMovementStyle:v8, v15];
+  v16 = [(_UIFocusEventRecognizer *)self _focusMovementForJoystickPosition:inheritedFocusMovementStyle usingMinimumRadius:v6 focusMovementStyle:v8, v15];
   if (v16)
   {
     v17 = [(_UIFocusEventRecognizer *)self _headingForJoystickPosition:v10 usingMinimumRadius:v12, v15];
-    v18 = [v16 heading];
+    heading = [v16 heading];
     v19 = self->_previousJoystickFocusMovementInfo;
     v20 = v19;
-    if (v18 == v17 || v19 == 0)
+    if (heading == v17 || v19 == 0)
     {
-      if (v18 == v17)
+      if (heading == v17)
       {
         goto LABEL_22;
       }
@@ -3462,10 +3462,10 @@ LABEL_17:
     joystickModeRepeatTimer = self->_joystickModeRepeatTimer;
     self->_joystickModeRepeatTimer = 0;
 
-    v26 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-    if (v26)
+    _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+    if (_focusMovementSystem)
     {
-      v27 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v26];
+      v27 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:_focusMovementSystem];
       [(_UIFocusMovementRequest *)v27 setMovementInfo:v16];
       v28 = [(_UIFocusEventRecognizer *)self _joystickAttemptFocusMovementWithRequest:v27];
 
@@ -3507,13 +3507,13 @@ LABEL_22:
 LABEL_23:
 }
 
-- (BOOL)_joystickAttemptFocusMovementWithRequest:(id)a3
+- (BOOL)_joystickAttemptFocusMovementWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 movementInfo];
-  v6 = [v5 heading];
+  requestCopy = request;
+  movementInfo = [requestCopy movementInfo];
+  heading = [movementInfo heading];
 
-  if (v6 && [(_UIFocusEventRecognizer *)self _attemptToRecognizeContinuousMovementRequest:v4])
+  if (heading && [(_UIFocusEventRecognizer *)self _attemptToRecognizeContinuousMovementRequest:requestCopy])
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     self->_previousJoystickFocusMovementTime = v7;
@@ -3528,7 +3528,7 @@ LABEL_23:
   return v8;
 }
 
-- (double)_joystickRepeatDurationForTimeInMovementZone:(double)a3
+- (double)_joystickRepeatDurationForTimeInMovementZone:(double)zone
 {
   if (_UIInternalPreferenceUsesDefault(algn_1ED48B018, @"JoystickAccelerationBaseline", _UIInternalPreferenceUpdateDouble))
   {
@@ -3570,9 +3570,9 @@ LABEL_23:
     v7 = *&qword_1ED48B010;
   }
 
-  if (v6 > a3 || v7 <= a3)
+  if (v6 > zone || v7 <= zone)
   {
-    if (v7 <= a3)
+    if (v7 <= zone)
     {
       return v5;
     }
@@ -3583,12 +3583,12 @@ LABEL_23:
     v9 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
     v10 = v9;
     v11 = 0.0;
-    if (v6 <= a3)
+    if (v6 <= zone)
     {
       LODWORD(v11) = 1.0;
-      if (v7 >= a3)
+      if (v7 >= zone)
       {
-        v11 = (a3 - v6) / (v7 - v6) + 0.0;
+        v11 = (zone - v6) / (v7 - v6) + 0.0;
         *&v11 = v11;
       }
     }
@@ -3611,22 +3611,22 @@ LABEL_23:
   return v4;
 }
 
-- (BOOL)_joystickFocusMovement:(id)a3 shouldBeConsideredEqualToFocusMovement:(id)a4
+- (BOOL)_joystickFocusMovement:(id)movement shouldBeConsideredEqualToFocusMovement:(id)focusMovement
 {
   result = 0;
-  if (a3 && a4)
+  if (movement && focusMovement)
   {
-    v6 = a4;
-    v7 = a3;
-    [v7 _velocity];
+    focusMovementCopy = focusMovement;
+    movementCopy = movement;
+    [movementCopy _velocity];
     v9 = v8;
-    [v7 _velocity];
+    [movementCopy _velocity];
     v11 = v10;
 
     v12 = atan2(v9, v11);
-    [v6 _velocity];
+    [focusMovementCopy _velocity];
     v14 = v13;
-    [v6 _velocity];
+    [focusMovementCopy _velocity];
     v16 = v15;
 
     v17 = atan2(v14, v16) - v12;
@@ -3652,46 +3652,46 @@ LABEL_23:
   return result;
 }
 
-- (id)_focusMovementForJoystickPosition:(CGPoint)a3 usingMinimumRadius:(double)a4 focusMovementStyle:(int64_t)a5
+- (id)_focusMovementForJoystickPosition:(CGPoint)position usingMinimumRadius:(double)radius focusMovementStyle:(int64_t)style
 {
-  y = a3.y;
-  x = a3.x;
-  if (hypot(a3.x, a3.y) <= a4)
+  y = position.y;
+  x = position.x;
+  if (hypot(position.x, position.y) <= radius)
   {
     v16 = 0;
   }
 
   else
   {
-    if (a5 == 2 && (v10 = hypot(x, -y), v11 = x / v10 * 2500.0, v12 = -y / v10 * 2500.0, fabs(atan2(fabs(v12), fabs(v11)) + -0.785398163) <= 0.6981))
+    if (style == 2 && (v10 = hypot(x, -y), v11 = x / v10 * 2500.0, v12 = -y / v10 * 2500.0, fabs(atan2(fabs(v12), fabs(v11)) + -0.785398163) <= 0.6981))
     {
-      v13 = 0;
+      radius = 0;
     }
 
     else
     {
-      v13 = [(_UIFocusEventRecognizer *)self _headingForJoystickPosition:x usingMinimumRadius:y, a4];
-      [(_UIFocusEventRecognizer *)self _joystickVelocityForHeading:v13];
+      radius = [(_UIFocusEventRecognizer *)self _headingForJoystickPosition:x usingMinimumRadius:y, radius];
+      [(_UIFocusEventRecognizer *)self _joystickVelocityForHeading:radius];
       v11 = v14;
       v12 = v15;
     }
 
-    v17 = [(_UIFocusEventRecognizer *)self owningView];
-    v18 = [v17 _focusBehavior];
-    v19 = [v18 constrainGameControllersToFocusGroups];
+    owningView = [(_UIFocusEventRecognizer *)self owningView];
+    _focusBehavior = [owningView _focusBehavior];
+    constrainGameControllersToFocusGroups = [_focusBehavior constrainGameControllersToFocusGroups];
 
-    v16 = [[_UIFocusMovementInfo alloc] initWithHeading:v13 velocity:*&self->_flags & 1 isInitial:1 shouldLoadScrollableContainer:v19 groupFilter:self->_inputType inputType:v11, v12];
+    v16 = [[_UIFocusMovementInfo alloc] initWithHeading:radius velocity:*&self->_flags & 1 isInitial:1 shouldLoadScrollableContainer:constrainGameControllersToFocusGroups groupFilter:self->_inputType inputType:v11, v12];
   }
 
   return v16;
 }
 
-- (CGVector)_joystickVelocityForHeading:(unint64_t)a3
+- (CGVector)_joystickVelocityForHeading:(unint64_t)heading
 {
-  v3 = a3 - 1;
+  v3 = heading - 1;
   v4 = 0.0;
   v5 = 0.0;
-  if (a3 - 1 <= 7)
+  if (heading - 1 <= 7)
   {
     v4 = dbl_18A67B618[v3];
     v5 = dbl_18A67B658[v3];
@@ -3702,11 +3702,11 @@ LABEL_23:
   return result;
 }
 
-- (unint64_t)_headingForJoystickPosition:(CGPoint)a3 usingMinimumRadius:(double)a4
+- (unint64_t)_headingForJoystickPosition:(CGPoint)position usingMinimumRadius:(double)radius
 {
-  y = a3.y;
-  x = a3.x;
-  if (hypot(a3.x, a3.y) <= a4)
+  y = position.y;
+  x = position.x;
+  if (hypot(position.x, position.y) <= radius)
   {
     return 0;
   }
@@ -3734,7 +3734,7 @@ LABEL_23:
   }
 }
 
-- (void)_joystickDisplayLinkHeartbeat:(id)a3
+- (void)_joystickDisplayLinkHeartbeat:(id)heartbeat
 {
   [(_UIFocusEffectsController *)self->_motionEffectsController currentOffset];
   if (fabs(v4) < 0.05)
@@ -3804,9 +3804,9 @@ LABEL_23:
 - (CGSize)_momentumReferenceSize
 {
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v3 = [WeakRetained _screen];
+  _screen = [WeakRetained _screen];
 
-  if (!v3)
+  if (!_screen)
   {
     if (os_variant_has_internal_diagnostics())
     {
@@ -3828,10 +3828,10 @@ LABEL_23:
       }
     }
 
-    v3 = [objc_opt_self() mainScreen];
+    _screen = [objc_opt_self() mainScreen];
   }
 
-  [v3 bounds];
+  [_screen bounds];
   v6 = v5;
   v8 = v7;
 
@@ -3842,13 +3842,13 @@ LABEL_23:
   return result;
 }
 
-- (void)_recordMomentumForPoint:(CGPoint)a3 reportedVelocity:(CGPoint)a4
+- (void)_recordMomentumForPoint:(CGPoint)point reportedVelocity:(CGPoint)velocity
 {
   if ((*&self->_flags & 2) == 0)
   {
-    y = a4.y;
-    x = a4.x;
-    self->_lastMomentumTouchPoint = a3;
+    y = velocity.y;
+    x = velocity.x;
+    self->_lastMomentumTouchPoint = point;
     WeakRetained = objc_loadWeakRetained(&self->_owningView);
     [(_UIFocusEventRecognizer *)self _momentumReferenceSize];
     self->_momentumVelocity.x = x / v7;
@@ -3910,10 +3910,10 @@ LABEL_7:
   else
   {
     v11 = v10;
-    v12 = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
-    if (v12)
+    _focusMovementSystem = [(_UIFocusEventRecognizer *)self _focusMovementSystem];
+    if (_focusMovementSystem)
     {
-      v13 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v12];
+      v13 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:_focusMovementSystem];
       v14 = [[_UIFocusMovementInfo alloc] initWithHeading:v11 linearHeading:0 isInitial:*&self->_flags & 1 shouldLoadScrollableContainer:1 looping:0 groupFilter:0 inputType:5];
       [(_UIFocusMovementRequest *)v13 setMovementInfo:v14];
 
@@ -3937,10 +3937,10 @@ LABEL_7:
   }
 }
 
-- (void)_beginMomentumImmediatelyWithVelocity:(CGPoint)a3 friction:(double)a4
+- (void)_beginMomentumImmediatelyWithVelocity:(CGPoint)velocity friction:(double)friction
 {
-  self->_momentumVelocity = a3;
-  self->_momentumFriction = a4;
+  self->_momentumVelocity = velocity;
+  self->_momentumFriction = friction;
   *&self->_flags |= 2u;
   momentumDisplayLink = self->_momentumDisplayLink;
   if (momentumDisplayLink)
@@ -3951,22 +3951,22 @@ LABEL_7:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v8 = [WeakRetained _screen];
-  v9 = [v8 displayLinkWithTarget:self selector:sel__momentumHeartbeat_];
+  _screen = [WeakRetained _screen];
+  v9 = [_screen displayLinkWithTarget:self selector:sel__momentumHeartbeat_];
   v10 = self->_momentumDisplayLink;
   self->_momentumDisplayLink = v9;
 
   v11 = self->_momentumDisplayLink;
-  v12 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [(CADisplayLink *)v11 addToRunLoop:v12 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [(CADisplayLink *)v11 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 }
 
-- (unint64_t)_momentumFocusHeadingForAccumulator:(CGVector)a3
+- (unint64_t)_momentumFocusHeadingForAccumulator:(CGVector)accumulator
 {
-  v3 = fabs(a3.dx);
-  v4 = fabs(a3.dy);
+  v3 = fabs(accumulator.dx);
+  v4 = fabs(accumulator.dy);
   v5 = 2;
-  if (a3.dy <= 0.0)
+  if (accumulator.dy <= 0.0)
   {
     v5 = 1;
   }
@@ -3977,7 +3977,7 @@ LABEL_7:
   }
 
   v6 = 4;
-  if (a3.dx > 0.0)
+  if (accumulator.dx > 0.0)
   {
     v6 = 8;
   }
@@ -3993,23 +3993,23 @@ LABEL_7:
   }
 }
 
-- (void)_momentumHeartbeat:(id)a3
+- (void)_momentumHeartbeat:(id)heartbeat
 {
-  v32 = a3;
+  heartbeatCopy = heartbeat;
   WeakRetained = objc_loadWeakRetained(&self->_owningView);
-  v5 = [WeakRetained _screen];
-  if (!v5)
+  _screen = [WeakRetained _screen];
+  if (!_screen)
   {
 
     goto LABEL_13;
   }
 
-  v6 = v5;
+  v6 = _screen;
   v7 = objc_loadWeakRetained(&self->_owningView);
-  v8 = [v7 _window];
-  v9 = [v8 windowScene];
+  _window = [v7 _window];
+  windowScene = [_window windowScene];
 
-  if (!v9)
+  if (!windowScene)
   {
 LABEL_13:
     [(CADisplayLink *)self->_momentumDisplayLink invalidate];
@@ -4021,7 +4021,7 @@ LABEL_13:
 
   x = self->_lastMomentumTouchPoint.x;
   y = self->_lastMomentumTouchPoint.y;
-  [v32 duration];
+  [heartbeatCopy duration];
   v13 = v12;
   v15 = self->_momentumVelocity.x;
   v14 = self->_momentumVelocity.y;
@@ -4038,9 +4038,9 @@ LABEL_13:
   v20 = v15 * v19;
   v22 = v14 * v21;
   v23 = +[UIDevice currentDevice];
-  v24 = [v23 _remoteTouchSurfaceType];
+  _remoteTouchSurfaceType = [v23 _remoteTouchSurfaceType];
 
-  [(_UIFocusEventRecognizer *)self _updatePanLocation:v24 reportedVelocity:v17 remoteTouchSurfaceType:v18, v20, v22];
+  [(_UIFocusEventRecognizer *)self _updatePanLocation:_remoteTouchSurfaceType reportedVelocity:v17 remoteTouchSurfaceType:v18, v20, v22];
   self->_lastMomentumTouchPoint.x = v17;
   self->_lastMomentumTouchPoint.y = v18;
   v25 = fabs(v15);
@@ -4093,9 +4093,9 @@ LABEL_14:
   [(_UIFocusEventRecognizer *)self _sendMomentumEndNotificationsAndAnimateRollback:1];
 }
 
-- (void)_sendMomentumEndNotificationsAndAnimateRollback:(BOOL)a3
+- (void)_sendMomentumEndNotificationsAndAnimateRollback:(BOOL)rollback
 {
-  if (a3)
+  if (rollback)
   {
     [(_UIFocusEffectsController *)self->_motionEffectsController startRollbackAnimation];
     [(_UIFocusEffectsController *)self->_motionEffectsController resetDisplayOffsetAccumulationFactor];
@@ -4106,8 +4106,8 @@ LABEL_14:
 
 - (void)_sendGestureBeginNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"_UIFocusEngineGestureDidBeginNotification" object:self userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIFocusEngineGestureDidBeginNotification" object:self userInfo:0];
 }
 
 - (UIView)owningView

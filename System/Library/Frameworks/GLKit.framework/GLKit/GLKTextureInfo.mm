@@ -1,13 +1,13 @@
 @interface GLKTextureInfo
-- (GLKTextureInfo)initWithTexture:(id)a3 textureName:(unsigned int)a4;
-- (GLKTextureInfo)initWithTextureTXR:(id)a3 textureName:(unsigned int)a4;
+- (GLKTextureInfo)initWithTexture:(id)texture textureName:(unsigned int)name;
+- (GLKTextureInfo)initWithTextureTXR:(id)r textureName:(unsigned int)name;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation GLKTextureInfo
 
-- (GLKTextureInfo)initWithTexture:(id)a3 textureName:(unsigned int)a4
+- (GLKTextureInfo)initWithTexture:(id)texture textureName:(unsigned int)name
 {
   v15.receiver = self;
   v15.super_class = GLKTextureInfo;
@@ -18,14 +18,14 @@
     return v7;
   }
 
-  v6->name = a4;
-  v6->target = [a3 bindTarget];
-  v7->width = [a3 width];
-  v7->height = [a3 height];
+  v6->name = name;
+  v6->target = [texture bindTarget];
+  v7->width = [texture width];
+  v7->height = [texture height];
   v7->depth = 1;
-  if ([a3 hasAlpha])
+  if ([texture hasAlpha])
   {
-    if ([a3 hasPremultipliedAlpha])
+    if ([texture hasPremultipliedAlpha])
     {
       v8 = 2;
     }
@@ -42,14 +42,14 @@
   }
 
   v7->alphaState = v8;
-  if ([a3 orientation] == 1)
+  if ([texture orientation] == 1)
   {
     v9 = 1;
   }
 
   else
   {
-    if ([a3 orientation] != 4)
+    if ([texture orientation] != 4)
     {
       v7->textureOrigin = 0;
       goto LABEL_13;
@@ -60,11 +60,11 @@
 
   v7->textureOrigin = v9;
 LABEL_13:
-  v7->containsMipmaps = [a3 isMipmapped];
+  v7->containsMipmaps = [texture isMipmapped];
   v7->arrayLength = 1;
-  v10 = [a3 numMipMapLevels];
-  v7->mimapLevelCount = v10;
-  if (v10 == 1 && [a3 requestIssuedForMipmapGeneration])
+  numMipMapLevels = [texture numMipMapLevels];
+  v7->mimapLevelCount = numMipMapLevels;
+  if (numMipMapLevels == 1 && [texture requestIssuedForMipmapGeneration])
   {
     width = v7->width;
     if (width <= v7->height)
@@ -89,7 +89,7 @@ LABEL_13:
   return v7;
 }
 
-- (GLKTextureInfo)initWithTextureTXR:(id)a3 textureName:(unsigned int)a4
+- (GLKTextureInfo)initWithTextureTXR:(id)r textureName:(unsigned int)name
 {
   v9.receiver = self;
   v9.super_class = GLKTextureInfo;
@@ -97,17 +97,17 @@ LABEL_13:
   v7 = v6;
   if (v6)
   {
-    v6->name = a4;
-    v6->target = [a3 target];
-    v7->width = [a3 width];
-    v7->height = [a3 height];
-    v7->depth = [a3 depth];
-    v7->lossyCompressedSource = [a3 lossyCompressedSource];
-    v7->alphaState = [a3 hasAlpha];
+    v6->name = name;
+    v6->target = [r target];
+    v7->width = [r width];
+    v7->height = [r height];
+    v7->depth = [r depth];
+    v7->lossyCompressedSource = [r lossyCompressedSource];
+    v7->alphaState = [r hasAlpha];
     v7->textureOrigin = 0;
-    v7->containsMipmaps = [a3 mipmapLevelCount] > 1;
-    v7->arrayLength = [a3 arrayLength];
-    v7->mimapLevelCount = [a3 mipmapLevelCount];
+    v7->containsMipmaps = [r mipmapLevelCount] > 1;
+    v7->arrayLength = [r arrayLength];
+    v7->mimapLevelCount = [r mipmapLevelCount];
   }
 
   return v7;

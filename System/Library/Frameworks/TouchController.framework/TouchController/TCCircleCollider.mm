@@ -1,13 +1,13 @@
 @interface TCCircleCollider
-- (BOOL)containsPoint:(CGPoint)a3;
-- (TCCircleCollider)initWithControlLayout:(id)a3;
+- (BOOL)containsPoint:(CGPoint)point;
+- (TCCircleCollider)initWithControlLayout:(id)layout;
 @end
 
 @implementation TCCircleCollider
 
-- (TCCircleCollider)initWithControlLayout:(id)a3
+- (TCCircleCollider)initWithControlLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = TCCircleCollider;
   v5 = [(TCCircleCollider *)&v8 init];
@@ -15,21 +15,21 @@
   if (v5)
   {
     v5->_enabled = 1;
-    objc_storeWeak(&v5->_controlLayout, v4);
+    objc_storeWeak(&v5->_controlLayout, layoutCopy);
   }
 
   return v6;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
   if (!self->_enabled)
   {
     return 0;
   }
 
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   WeakRetained = objc_loadWeakRetained(&self->_controlLayout);
   [WeakRetained size];
   v8 = v7;

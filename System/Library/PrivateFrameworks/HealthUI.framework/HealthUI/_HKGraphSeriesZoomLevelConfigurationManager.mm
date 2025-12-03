@@ -1,11 +1,11 @@
 @interface _HKGraphSeriesZoomLevelConfigurationManager
 - (_HKGraphSeriesZoomLevelConfigurationManager)init;
-- (id)_displayTypeIdentifierForDisplayType:(id)a3;
+- (id)_displayTypeIdentifierForDisplayType:(id)type;
 - (id)allDisplayTypes;
-- (id)configurationForDisplayType:(id)a3;
-- (id)configurationForGraphSeries:(id)a3;
-- (void)addConfiguration:(id)a3;
-- (void)removeConfigurationForDisplayType:(id)a3;
+- (id)configurationForDisplayType:(id)type;
+- (id)configurationForGraphSeries:(id)series;
+- (void)addConfiguration:(id)configuration;
+- (void)removeConfigurationForDisplayType:(id)type;
 - (void)reset;
 @end
 
@@ -26,51 +26,51 @@
     graphSeriesUUIDToConfiguration = v2->_graphSeriesUUIDToConfiguration;
     v2->_graphSeriesUUIDToConfiguration = v5;
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     graphSeriesInOrderAdded = v2->_graphSeriesInOrderAdded;
-    v2->_graphSeriesInOrderAdded = v7;
+    v2->_graphSeriesInOrderAdded = array;
   }
 
   return v2;
 }
 
-- (void)addConfiguration:(id)a3
+- (void)addConfiguration:(id)configuration
 {
   displayTypeIdentifierToConfiguration = self->_displayTypeIdentifierToConfiguration;
-  v5 = a3;
-  v6 = [v5 displayType];
-  v7 = [(_HKGraphSeriesZoomLevelConfigurationManager *)self _displayTypeIdentifierForDisplayType:v6];
-  [(NSMutableDictionary *)displayTypeIdentifierToConfiguration setObject:v5 forKey:v7];
+  configurationCopy = configuration;
+  displayType = [configurationCopy displayType];
+  v7 = [(_HKGraphSeriesZoomLevelConfigurationManager *)self _displayTypeIdentifierForDisplayType:displayType];
+  [(NSMutableDictionary *)displayTypeIdentifierToConfiguration setObject:configurationCopy forKey:v7];
 
   graphSeriesUUIDToConfiguration = self->_graphSeriesUUIDToConfiguration;
-  v9 = [v5 graphSeries];
-  v10 = [v9 UUID];
-  [(NSMutableDictionary *)graphSeriesUUIDToConfiguration setObject:v5 forKey:v10];
+  graphSeries = [configurationCopy graphSeries];
+  uUID = [graphSeries UUID];
+  [(NSMutableDictionary *)graphSeriesUUIDToConfiguration setObject:configurationCopy forKey:uUID];
 
   graphSeriesInOrderAdded = self->_graphSeriesInOrderAdded;
-  v12 = [v5 graphSeries];
+  graphSeries2 = [configurationCopy graphSeries];
 
-  [(NSMutableArray *)graphSeriesInOrderAdded addObject:v12];
+  [(NSMutableArray *)graphSeriesInOrderAdded addObject:graphSeries2];
 }
 
-- (void)removeConfigurationForDisplayType:(id)a3
+- (void)removeConfigurationForDisplayType:(id)type
 {
-  v4 = a3;
-  v12 = [(_HKGraphSeriesZoomLevelConfigurationManager *)self configurationForDisplayType:v4];
+  typeCopy = type;
+  v12 = [(_HKGraphSeriesZoomLevelConfigurationManager *)self configurationForDisplayType:typeCopy];
   displayTypeIdentifierToConfiguration = self->_displayTypeIdentifierToConfiguration;
-  v6 = [(_HKGraphSeriesZoomLevelConfigurationManager *)self _displayTypeIdentifierForDisplayType:v4];
+  v6 = [(_HKGraphSeriesZoomLevelConfigurationManager *)self _displayTypeIdentifierForDisplayType:typeCopy];
 
   [(NSMutableDictionary *)displayTypeIdentifierToConfiguration removeObjectForKey:v6];
   if (v12)
   {
     graphSeriesUUIDToConfiguration = self->_graphSeriesUUIDToConfiguration;
-    v8 = [v12 graphSeries];
-    v9 = [v8 UUID];
-    [(NSMutableDictionary *)graphSeriesUUIDToConfiguration removeObjectForKey:v9];
+    graphSeries = [v12 graphSeries];
+    uUID = [graphSeries UUID];
+    [(NSMutableDictionary *)graphSeriesUUIDToConfiguration removeObjectForKey:uUID];
 
     graphSeriesInOrderAdded = self->_graphSeriesInOrderAdded;
-    v11 = [v12 graphSeries];
-    [(NSMutableArray *)graphSeriesInOrderAdded removeObject:v11];
+    graphSeries2 = [v12 graphSeries];
+    [(NSMutableArray *)graphSeriesInOrderAdded removeObject:graphSeries2];
   }
 }
 
@@ -83,20 +83,20 @@
   [(NSMutableArray *)graphSeriesInOrderAdded removeAllObjects];
 }
 
-- (id)configurationForDisplayType:(id)a3
+- (id)configurationForDisplayType:(id)type
 {
   displayTypeIdentifierToConfiguration = self->_displayTypeIdentifierToConfiguration;
-  v4 = [(_HKGraphSeriesZoomLevelConfigurationManager *)self _displayTypeIdentifierForDisplayType:a3];
+  v4 = [(_HKGraphSeriesZoomLevelConfigurationManager *)self _displayTypeIdentifierForDisplayType:type];
   v5 = [(NSMutableDictionary *)displayTypeIdentifierToConfiguration objectForKey:v4];
 
   return v5;
 }
 
-- (id)configurationForGraphSeries:(id)a3
+- (id)configurationForGraphSeries:(id)series
 {
   graphSeriesUUIDToConfiguration = self->_graphSeriesUUIDToConfiguration;
-  v4 = [a3 UUID];
-  v5 = [(NSMutableDictionary *)graphSeriesUUIDToConfiguration objectForKey:v4];
+  uUID = [series UUID];
+  v5 = [(NSMutableDictionary *)graphSeriesUUIDToConfiguration objectForKey:uUID];
 
   return v5;
 }
@@ -125,8 +125,8 @@
         }
 
         v9 = [(_HKGraphSeriesZoomLevelConfigurationManager *)self configurationForGraphSeries:*(*(&v12 + 1) + 8 * i), v12];
-        v10 = [v9 displayType];
-        [v3 addObject:v10];
+        displayType = [v9 displayType];
+        [v3 addObject:displayType];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -138,12 +138,12 @@
   return v3;
 }
 
-- (id)_displayTypeIdentifierForDisplayType:(id)a3
+- (id)_displayTypeIdentifierForDisplayType:(id)type
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [a3 displayTypeIdentifier];
+  displayTypeIdentifier = [type displayTypeIdentifier];
 
-  return [v3 numberWithInteger:v4];
+  return [v3 numberWithInteger:displayTypeIdentifier];
 }
 
 @end

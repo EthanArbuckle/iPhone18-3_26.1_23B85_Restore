@@ -1,17 +1,17 @@
 @interface CLAbsoluteAltitudeSubHarvesterPoiClientLocal
-- (CLAbsoluteAltitudeSubHarvesterPoiClientLocal)initWithElevationSubscription:(void *)a3;
+- (CLAbsoluteAltitudeSubHarvesterPoiClientLocal)initWithElevationSubscription:(void *)subscription;
 @end
 
 @implementation CLAbsoluteAltitudeSubHarvesterPoiClientLocal
 
-- (CLAbsoluteAltitudeSubHarvesterPoiClientLocal)initWithElevationSubscription:(void *)a3
+- (CLAbsoluteAltitudeSubHarvesterPoiClientLocal)initWithElevationSubscription:(void *)subscription
 {
   v5.receiver = self;
   v5.super_class = CLAbsoluteAltitudeSubHarvesterPoiClientLocal;
   result = [(CLAbsoluteAltitudeSubHarvesterPoiClientLocal *)&v5 init];
   if (result)
   {
-    result->_elevationSubscription = a3;
+    result->_elevationSubscription = subscription;
     result->_valid = 1;
   }
 

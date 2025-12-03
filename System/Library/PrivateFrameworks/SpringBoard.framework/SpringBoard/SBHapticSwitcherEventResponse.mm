@@ -1,30 +1,30 @@
 @interface SBHapticSwitcherEventResponse
-- (SBHapticSwitcherEventResponse)initWithHapticType:(int64_t)a3 phase:(int64_t)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBHapticSwitcherEventResponse)initWithHapticType:(int64_t)type phase:(int64_t)phase;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBHapticSwitcherEventResponse
 
-- (SBHapticSwitcherEventResponse)initWithHapticType:(int64_t)a3 phase:(int64_t)a4
+- (SBHapticSwitcherEventResponse)initWithHapticType:(int64_t)type phase:(int64_t)phase
 {
   v7.receiver = self;
   v7.super_class = SBHapticSwitcherEventResponse;
   result = [(SBChainableModifierEventResponse *)&v7 init];
   if (result)
   {
-    result->_hapticType = a3;
-    result->_phase = a4;
+    result->_hapticType = type;
+    result->_phase = phase;
     result->_hidEventSenderID = 0;
   }
 
   return result;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v14.receiver = self;
   v14.super_class = SBHapticSwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v14 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifierEventResponse *)&v14 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = v4;
   hapticType = self->_hapticType;
   v7 = @"FlyIn";

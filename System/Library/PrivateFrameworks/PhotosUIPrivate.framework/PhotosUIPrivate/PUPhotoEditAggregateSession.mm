@@ -1,9 +1,9 @@
 @interface PUPhotoEditAggregateSession
 - (NSArray)_autoCropKeys;
-- (__CFString)_keyForSessionEnd:(int64_t)a3;
-- (id)_sessionKeysWithEnd:(int64_t)a3;
-- (id)finishSessionWithEnd:(int64_t)a3 newCompositionController:(id)a4 oldCompositionController:(id)a5;
-- (void)_recordKeys:(id)a3;
+- (__CFString)_keyForSessionEnd:(int64_t)end;
+- (id)_sessionKeysWithEnd:(int64_t)end;
+- (id)finishSessionWithEnd:(int64_t)end newCompositionController:(id)controller oldCompositionController:(id)compositionController;
+- (void)_recordKeys:(id)keys;
 - (void)notifyDidAdjustCrop;
 - (void)notifyDidApplyAutoCrop;
 - (void)notifyDidResetCrop;
@@ -11,35 +11,35 @@
 
 @implementation PUPhotoEditAggregateSession
 
-- (id)finishSessionWithEnd:(int64_t)a3 newCompositionController:(id)a4 oldCompositionController:(id)a5
+- (id)finishSessionWithEnd:(int64_t)end newCompositionController:(id)controller oldCompositionController:(id)compositionController
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PUPhotoEditAggregateSession *)self _sessionKeysWithEnd:a3];
+  controllerCopy = controller;
+  compositionControllerCopy = compositionController;
+  v10 = [(PUPhotoEditAggregateSession *)self _sessionKeysWithEnd:end];
   v11 = [v10 mutableCopy];
-  if (v8 && v9)
+  if (controllerCopy && compositionControllerCopy)
   {
-    v12 = [MEMORY[0x1E69BE360] compositionController:v8 aggregateKeysForPreviousComposition:v9];
+    v12 = [MEMORY[0x1E69BE360] compositionController:controllerCopy aggregateKeysForPreviousComposition:compositionControllerCopy];
     [v11 addObjectsFromArray:v12];
-    if (!a3)
+    if (!end)
     {
-      v13 = [v9 composition];
+      composition = [compositionControllerCopy composition];
       v28[0] = *MEMORY[0x1E69BE180];
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
-      v15 = [v8 isEqual:v13 forKeys:v14 visualChangesOnly:0];
+      v15 = [controllerCopy isEqual:composition forKeys:v14 visualChangesOnly:0];
 
       if ((v15 & 1) == 0)
       {
-        v16 = [v8 trimAdjustmentController];
+        trimAdjustmentController = [controllerCopy trimAdjustmentController];
 
-        if (v16)
+        if (trimAdjustmentController)
         {
-          v17 = [v8 trimAdjustmentController];
-          v18 = v17;
-          if (v17)
+          trimAdjustmentController2 = [controllerCopy trimAdjustmentController];
+          v18 = trimAdjustmentController2;
+          if (trimAdjustmentController2)
           {
-            [v17 endTime];
+            [trimAdjustmentController2 endTime];
           }
 
           else
@@ -48,11 +48,11 @@
           }
 
           CMTimeGetSeconds(&v26);
-          v19 = [v8 trimAdjustmentController];
-          v20 = v19;
-          if (v19)
+          trimAdjustmentController3 = [controllerCopy trimAdjustmentController];
+          v20 = trimAdjustmentController3;
+          if (trimAdjustmentController3)
           {
-            [v19 startTime];
+            [trimAdjustmentController3 startTime];
           }
 
           else
@@ -68,16 +68,16 @@
         }
       }
 
-      v21 = [v9 composition];
+      composition2 = [compositionControllerCopy composition];
       v27 = *MEMORY[0x1E69BE160];
       v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v27 count:1];
-      v23 = [v8 isEqual:v21 forKeys:v22 visualChangesOnly:0];
+      v23 = [controllerCopy isEqual:composition2 forKeys:v22 visualChangesOnly:0];
 
       if ((v23 & 1) == 0)
       {
-        v24 = [v8 slomoAdjustmentController];
+        slomoAdjustmentController = [controllerCopy slomoAdjustmentController];
 
-        if (v24)
+        if (slomoAdjustmentController)
         {
           [v11 pu_addCFString:*MEMORY[0x1E69BEE48]];
         }
@@ -90,15 +90,15 @@
   return v11;
 }
 
-- (void)_recordKeys:(id)a3
+- (void)_recordKeys:(id)keys
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  keysCopy = keys;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [keysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -111,61 +111,61 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keysCopy);
         }
 
         [MEMORY[0x1E6991F28] sendEvent:*(*(&v9 + 1) + 8 * v8++) withPayload:v7];
       }
 
       while (v5 != v8);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [keysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_sessionKeysWithEnd:(int64_t)a3
+- (id)_sessionKeysWithEnd:(int64_t)end
 {
-  v5 = [MEMORY[0x1E695DF70] array];
-  [v5 pu_addCFString:*MEMORY[0x1E69BEE00]];
-  [v5 pu_addCFString:{-[PUPhotoEditAggregateSession _keyForSessionEnd:](self, "_keyForSessionEnd:", a3)}];
-  if (!a3)
+  array = [MEMORY[0x1E695DF70] array];
+  [array pu_addCFString:*MEMORY[0x1E69BEE00]];
+  [array pu_addCFString:{-[PUPhotoEditAggregateSession _keyForSessionEnd:](self, "_keyForSessionEnd:", end)}];
+  if (!end)
   {
-    v6 = [(PUPhotoEditAggregateSession *)self _autoCropKeys];
-    [v5 addObjectsFromArray:v6];
+    _autoCropKeys = [(PUPhotoEditAggregateSession *)self _autoCropKeys];
+    [array addObjectsFromArray:_autoCropKeys];
   }
 
   if ([(PUPhotoEditAggregateSession *)self toggledOriginal])
   {
-    [v5 pu_addCFString:*MEMORY[0x1E69BEE18]];
+    [array pu_addCFString:*MEMORY[0x1E69BEE18]];
   }
 
   if ([(PUPhotoEditAggregateSession *)self pluginStarted])
   {
-    v7 = [(PUPhotoEditAggregateSession *)self shouldUseVideoKeys];
+    shouldUseVideoKeys = [(PUPhotoEditAggregateSession *)self shouldUseVideoKeys];
     v8 = MEMORY[0x1E69BEE38];
-    if (!v7)
+    if (!shouldUseVideoKeys)
     {
       v8 = MEMORY[0x1E69BEDA0];
     }
 
-    [v5 pu_addCFString:*v8];
+    [array pu_addCFString:*v8];
   }
 
   if ([(PUPhotoEditAggregateSession *)self pluginSaved])
   {
-    v9 = [(PUPhotoEditAggregateSession *)self shouldUseVideoKeys];
+    shouldUseVideoKeys2 = [(PUPhotoEditAggregateSession *)self shouldUseVideoKeys];
     v10 = MEMORY[0x1E69BEE30];
-    if (!v9)
+    if (!shouldUseVideoKeys2)
     {
       v10 = MEMORY[0x1E69BED98];
     }
 
-    [v5 pu_addCFString:*v10];
+    [array pu_addCFString:*v10];
   }
 
-  return v5;
+  return array;
 }
 
 - (NSArray)_autoCropKeys
@@ -229,12 +229,12 @@ LABEL_10:
   [(PUPhotoEditAggregateSession *)self _setAutoCropReset:0];
 }
 
-- (__CFString)_keyForSessionEnd:(int64_t)a3
+- (__CFString)_keyForSessionEnd:(int64_t)end
 {
   result = 0;
-  if (a3 > 2)
+  if (end > 2)
   {
-    switch(a3)
+    switch(end)
     {
       case 3:
         v7 = MEMORY[0x1E69BED58];
@@ -252,13 +252,13 @@ LABEL_10:
     return *v7;
   }
 
-  if (!a3)
+  if (!end)
   {
     v7 = MEMORY[0x1E69BEDC8];
     return *v7;
   }
 
-  if (a3 == 1)
+  if (end == 1)
   {
     v8 = [(PUPhotoEditAggregateSession *)self shouldUseVideoKeys:v3];
     v9 = MEMORY[0x1E69BEE40];

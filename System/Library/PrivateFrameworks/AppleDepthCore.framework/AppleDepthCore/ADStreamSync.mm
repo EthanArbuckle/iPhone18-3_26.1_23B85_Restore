@@ -1,25 +1,25 @@
 @interface ADStreamSync
-+ (unint64_t)expectedNumberOfFramesForObject:(id)a3;
-- (ADStreamSync)initWithStreamCount:(unint64_t)a3 allowedMatchTimeInterval:(double)a4;
-- (BOOL)areOldestMatchingObjectsInAllowedInterval:(unint64_t)a3;
-- (BOOL)checkOnceForMatch:(id *)a3;
-- (BOOL)dropOldFramesFromStream:(unint64_t)a3 belowTimestampThreshold:(double)a4;
-- (BOOL)streamContainsMinimalFrameCount:(unint64_t)a3;
-- (double)oldestAverageTimestampForStream:(unint64_t)a3;
++ (unint64_t)expectedNumberOfFramesForObject:(id)object;
+- (ADStreamSync)initWithStreamCount:(unint64_t)count allowedMatchTimeInterval:(double)interval;
+- (BOOL)areOldestMatchingObjectsInAllowedInterval:(unint64_t)interval;
+- (BOOL)checkOnceForMatch:(id *)match;
+- (BOOL)dropOldFramesFromStream:(unint64_t)stream belowTimestampThreshold:(double)threshold;
+- (BOOL)streamContainsMinimalFrameCount:(unint64_t)count;
+- (double)oldestAverageTimestampForStream:(unint64_t)stream;
 - (id)checkForMatch;
 - (id)createAndPopulateMatch;
-- (id)pushData:(__n128)a3 streamIndex:(__n128)a4 timestamp:(__n128)a5 pose:(__n128)a6 calibration:(uint64_t)a7 meta:(void *)a8;
-- (id)pushData:(void *)a1 streamIndex:(uint64_t)a2 timestamp:(uint64_t)a3 pose:(uint64_t)a4;
-- (id)pushData:(void *)a1 streamIndex:(uint64_t)a2 timestamp:(uint64_t)a3 pose:(uint64_t)a4 calibration:(uint64_t)a5;
-- (id)pushData:(void *)a1 streamIndex:(uint64_t)a2 timestamp:(uint64_t)a3 pose:(uint64_t)a4 meta:(uint64_t)a5;
+- (id)pushData:(__n128)data streamIndex:(__n128)index timestamp:(__n128)timestamp pose:(__n128)pose calibration:(uint64_t)calibration meta:(void *)meta;
+- (id)pushData:(void *)data streamIndex:(uint64_t)index timestamp:(uint64_t)timestamp pose:(uint64_t)pose;
+- (id)pushData:(void *)data streamIndex:(uint64_t)index timestamp:(uint64_t)timestamp pose:(uint64_t)pose calibration:(uint64_t)calibration;
+- (id)pushData:(void *)data streamIndex:(uint64_t)index timestamp:(uint64_t)timestamp pose:(uint64_t)pose meta:(uint64_t)meta;
 - (int64_t)reset;
-- (int64_t)setStream:(unint64_t)a3 queueSize:(unint64_t)a4 aggregationCount:(unint64_t)a5 allowedAggregationInterval:(double)a6;
+- (int64_t)setStream:(unint64_t)stream queueSize:(unint64_t)size aggregationCount:(unint64_t)count allowedAggregationInterval:(double)interval;
 - (void)dealloc;
 @end
 
 @implementation ADStreamSync
 
-- (BOOL)checkOnceForMatch:(id *)a3
+- (BOOL)checkOnceForMatch:(id *)match
 {
   if ([(NSMutableArray *)self->_streamsHistory count])
   {
@@ -174,10 +174,10 @@ LABEL_39:
 
       else
       {
-        v23 = [(ADStreamSync *)self createAndPopulateMatch];
-        v24 = v23;
+        createAndPopulateMatch = [(ADStreamSync *)self createAndPopulateMatch];
+        v24 = createAndPopulateMatch;
         result = 0;
-        *a3 = v23;
+        *match = createAndPopulateMatch;
       }
     }
   }
@@ -227,63 +227,63 @@ LABEL_39:
       while (v7 > v9++);
     }
 
-    v12 = [v3 matchedStreams];
-    [v12 addObject:v8];
+    matchedStreams = [v3 matchedStreams];
+    [matchedStreams addObject:v8];
   }
 
   return v3;
 }
 
-- (BOOL)dropOldFramesFromStream:(unint64_t)a3 belowTimestampThreshold:(double)a4
+- (BOOL)dropOldFramesFromStream:(unint64_t)stream belowTimestampThreshold:(double)threshold
 {
   for (i = 0; ; i = 1)
   {
-    v8 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:a3];
+    v8 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:stream];
     if (![v8 count])
     {
       break;
     }
 
-    [(ADStreamSync *)self oldestAverageTimestampForStream:a3];
+    [(ADStreamSync *)self oldestAverageTimestampForStream:stream];
     v10 = v9;
 
-    if (v10 > a4)
+    if (v10 > threshold)
     {
       return i;
     }
 
-    v11 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:a3];
+    v11 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:stream];
     [v11 removeObjectAtIndex:0];
   }
 
   return i;
 }
 
-- (BOOL)streamContainsMinimalFrameCount:(unint64_t)a3
+- (BOOL)streamContainsMinimalFrameCount:(unint64_t)count
 {
   v5 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:?];
-  LOBYTE(a3) = [v5 count] >= self->_aggregationCounts[a3];
+  LOBYTE(count) = [v5 count] >= self->_aggregationCounts[count];
 
-  return a3;
+  return count;
 }
 
-- (BOOL)areOldestMatchingObjectsInAllowedInterval:(unint64_t)a3
+- (BOOL)areOldestMatchingObjectsInAllowedInterval:(unint64_t)interval
 {
   v5 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:?];
-  v6 = [v5 objectAtIndexedSubscript:self->_aggregationCounts[a3] - 1];
+  v6 = [v5 objectAtIndexedSubscript:self->_aggregationCounts[interval] - 1];
   v7 = [v5 objectAtIndexedSubscript:0];
   [v6 midExposureTimestamp];
   v9 = v8;
   [v7 midExposureTimestamp];
-  LOBYTE(a3) = v9 - v10 <= self->_allowedAggregationIntervals[a3];
+  LOBYTE(interval) = v9 - v10 <= self->_allowedAggregationIntervals[interval];
 
-  return a3;
+  return interval;
 }
 
-- (double)oldestAverageTimestampForStream:(unint64_t)a3
+- (double)oldestAverageTimestampForStream:(unint64_t)stream
 {
   v5 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:?];
-  v6 = self->_aggregationCounts[a3];
+  v6 = self->_aggregationCounts[stream];
   v7 = [v5 count];
   if (v6 >= v7)
   {
@@ -355,26 +355,26 @@ LABEL_39:
   return 0;
 }
 
-- (id)pushData:(__n128)a3 streamIndex:(__n128)a4 timestamp:(__n128)a5 pose:(__n128)a6 calibration:(uint64_t)a7 meta:(void *)a8
+- (id)pushData:(__n128)data streamIndex:(__n128)index timestamp:(__n128)timestamp pose:(__n128)pose calibration:(uint64_t)calibration meta:(void *)meta
 {
-  v29 = a5;
-  v30 = a6;
-  v27 = a3;
-  v28 = a4;
+  timestampCopy = timestamp;
+  poseCopy = pose;
+  dataCopy = data;
+  indexCopy = index;
   v35 = *MEMORY[0x277D85DE8];
-  v16 = a8;
+  metaCopy = meta;
   v17 = a10;
   v18 = a11;
   v19 = objc_opt_new();
-  [v19 setData:v16];
+  [v19 setData:metaCopy];
   [v19 setTimestamp:a2];
-  [v19 setPose:{v27.n128_f64[0], v28.n128_f64[0], v29.n128_f64[0], v30.n128_f64[0]}];
+  [v19 setPose:{dataCopy.n128_f64[0], indexCopy.n128_f64[0], timestampCopy.n128_f64[0], poseCopy.n128_f64[0]}];
   [v19 setMidExposureTimestamp:a2];
   [v19 setCalibration:v17];
   [v19 setMetadata:v18];
-  if ([a1[1] count] <= a9 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if ([self[1] count] <= a9 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    v26 = [a1[1] count];
+    v26 = [self[1] count];
     *buf = 134218240;
     v32 = a9;
     v33 = 2048;
@@ -382,13 +382,13 @@ LABEL_39:
     _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "ADStreamSync error: cannot push to index %lu when number of synced streams is %lu", buf, 0x16u);
   }
 
-  v20 = a1;
-  objc_sync_enter(v20);
-  v21 = [a1[1] objectAtIndexedSubscript:a9];
-  if (*(v20[6] + a9) == 1)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v21 = [self[1] objectAtIndexedSubscript:a9];
+  if (*(selfCopy[6] + a9) == 1)
   {
-    v22 = [ADStreamSync expectedNumberOfFramesForObject:v16];
-    if (v22 != *(v20[3] + a9))
+    v22 = [ADStreamSync expectedNumberOfFramesForObject:metaCopy];
+    if (v22 != *(selfCopy[3] + a9))
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
@@ -398,41 +398,41 @@ LABEL_39:
       }
 
       [v21 removeAllObjects];
-      *(v20[3] + a9) = v22;
+      *(selfCopy[3] + a9) = v22;
     }
   }
 
-  v23 = *(v20[2] + a9);
+  v23 = *(selfCopy[2] + a9);
   if ([v21 count] >= v23)
   {
     [v21 removeObjectAtIndex:0];
   }
 
   [v21 addObject:v19];
-  v24 = [v20 checkForMatch];
+  checkForMatch = [selfCopy checkForMatch];
 
-  objc_sync_exit(v20);
+  objc_sync_exit(selfCopy);
 
-  return v24;
+  return checkForMatch;
 }
 
-- (id)pushData:(void *)a1 streamIndex:(uint64_t)a2 timestamp:(uint64_t)a3 pose:(uint64_t)a4
+- (id)pushData:(void *)data streamIndex:(uint64_t)index timestamp:(uint64_t)timestamp pose:(uint64_t)pose
 {
-  v4 = [a1 pushData:a3 streamIndex:a4 timestamp:0 pose:0 calibration:? meta:?];
+  v4 = [data pushData:timestamp streamIndex:pose timestamp:0 pose:0 calibration:? meta:?];
 
   return v4;
 }
 
-- (id)pushData:(void *)a1 streamIndex:(uint64_t)a2 timestamp:(uint64_t)a3 pose:(uint64_t)a4 meta:(uint64_t)a5
+- (id)pushData:(void *)data streamIndex:(uint64_t)index timestamp:(uint64_t)timestamp pose:(uint64_t)pose meta:(uint64_t)meta
 {
-  v5 = [a1 pushData:a3 streamIndex:a4 timestamp:0 pose:a5 calibration:? meta:?];
+  v5 = [data pushData:timestamp streamIndex:pose timestamp:0 pose:meta calibration:? meta:?];
 
   return v5;
 }
 
-- (id)pushData:(void *)a1 streamIndex:(uint64_t)a2 timestamp:(uint64_t)a3 pose:(uint64_t)a4 calibration:(uint64_t)a5
+- (id)pushData:(void *)data streamIndex:(uint64_t)index timestamp:(uint64_t)timestamp pose:(uint64_t)pose calibration:(uint64_t)calibration
 {
-  v5 = [a1 pushData:a3 streamIndex:a4 timestamp:a5 pose:0 calibration:? meta:?];
+  v5 = [data pushData:timestamp streamIndex:pose timestamp:calibration pose:0 calibration:? meta:?];
 
   return v5;
 }
@@ -474,16 +474,16 @@ LABEL_39:
   [(ADStreamSync *)&v8 dealloc];
 }
 
-- (int64_t)setStream:(unint64_t)a3 queueSize:(unint64_t)a4 aggregationCount:(unint64_t)a5 allowedAggregationInterval:(double)a6
+- (int64_t)setStream:(unint64_t)stream queueSize:(unint64_t)size aggregationCount:(unint64_t)count allowedAggregationInterval:(double)interval
 {
   v22 = *MEMORY[0x277D85DE8];
-  if ([(NSMutableArray *)self->_streamsHistory count]<= a3)
+  if ([(NSMutableArray *)self->_streamsHistory count]<= stream)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v17 = [(NSMutableArray *)self->_streamsHistory count];
       v18 = 134218240;
-      v19 = a3;
+      streamCopy = stream;
       v20 = 2048;
       v21 = v17;
       _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "ADStreamSync cannot set stream %lu. only %lu streams supported", &v18, 0x16u);
@@ -494,28 +494,28 @@ LABEL_39:
 
   else
   {
-    self->_allowedAggregationIntervals[a3] = a6;
+    self->_allowedAggregationIntervals[stream] = interval;
     aggregationCounts = self->_aggregationCounts;
-    self->_historySizes[a3] = a4;
-    aggregationCounts[a3] = a5;
-    self->_autoAggregation[a3] = a5 == -1;
-    v12 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:a3];
+    self->_historySizes[stream] = size;
+    aggregationCounts[stream] = count;
+    self->_autoAggregation[stream] = count == -1;
+    v12 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:stream];
     v13 = [v12 count];
 
-    if (v13 >= a4)
+    if (v13 >= size)
     {
-      v14 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:a3];
-      v15 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:a3];
-      [v14 removeObjectsInRange:{0, objc_msgSend(v15, "count") - a4}];
+      v14 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:stream];
+      v15 = [(NSMutableArray *)self->_streamsHistory objectAtIndexedSubscript:stream];
+      [v14 removeObjectsInRange:{0, objc_msgSend(v15, "count") - size}];
     }
 
     return 0;
   }
 }
 
-- (ADStreamSync)initWithStreamCount:(unint64_t)a3 allowedMatchTimeInterval:(double)a4
+- (ADStreamSync)initWithStreamCount:(unint64_t)count allowedMatchTimeInterval:(double)interval
 {
-  self->_allowedMatchTimeInterval = a4;
+  self->_allowedMatchTimeInterval = interval;
   v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:?];
   streamsHistory = self->_streamsHistory;
   self->_streamsHistory = v5;
@@ -523,17 +523,17 @@ LABEL_39:
   operator new[]();
 }
 
-+ (unint64_t)expectedNumberOfFramesForObject:(id)a3
++ (unint64_t)expectedNumberOfFramesForObject:(id)object
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v4 = [v3 length];
+  v4 = [objectCopy length];
   v5 = v4;
   v6 = 4;
   if (v4 <= 287)

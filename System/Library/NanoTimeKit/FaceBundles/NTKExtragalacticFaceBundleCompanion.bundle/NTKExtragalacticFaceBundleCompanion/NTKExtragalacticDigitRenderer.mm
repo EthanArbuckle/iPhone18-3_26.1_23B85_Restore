@@ -1,20 +1,20 @@
 @interface NTKExtragalacticDigitRenderer
-- (NTKExtragalacticDigitRenderer)initWithDevice:(id)a3;
-- (id)loadDrawInfoForDigit:(id)a3 inStyle:(unint64_t)a4;
+- (NTKExtragalacticDigitRenderer)initWithDevice:(id)device;
+- (id)loadDrawInfoForDigit:(id)digit inStyle:(unint64_t)style;
 @end
 
 @implementation NTKExtragalacticDigitRenderer
 
-- (NTKExtragalacticDigitRenderer)initWithDevice:(id)a3
+- (NTKExtragalacticDigitRenderer)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = NTKExtragalacticDigitRenderer;
   v6 = [(NTKExtragalacticDigitRenderer *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = [NTKExtragalacticFontLoader extragalacticFontForDevice:v7->_device];
     font = v7->_font;
     v7->_font = v8;
@@ -27,19 +27,19 @@
   return v7;
 }
 
-- (id)loadDrawInfoForDigit:(id)a3 inStyle:(unint64_t)a4
+- (id)loadDrawInfoForDigit:(id)digit inStyle:(unint64_t)style
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  digitCopy = digit;
   font = self->_font;
   v9 = *MEMORY[0x277CBF3A8];
   v8 = *(MEMORY[0x277CBF3A8] + 8);
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  obj = [v6 glyphsForStyle:a4];
+  obj = [digitCopy glyphsForStyle:style];
   v11 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v11)
   {
@@ -55,8 +55,8 @@
         }
 
         v15 = *(*(&v37 + 1) + 8 * i);
-        v16 = [v15 name];
-        GlyphWithName = CTFontGetGlyphWithName(font, v16);
+        name = [v15 name];
+        GlyphWithName = CTFontGetGlyphWithName(font, name);
 
         glyphs = GlyphWithName;
         PathForGlyph = CTFontCreatePathForGlyph(font, GlyphWithName, 0);
@@ -77,7 +77,7 @@
           v35 = capHeight;
           v26 = [MEMORY[0x277D75208] bezierPathWithCGPath:{MEMORY[0x23EEBF150](v19, v33)}];
           v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v15, "color")}];
-          [v10 setObject:v26 forKeyedSubscript:v27];
+          [dictionary setObject:v26 forKeyedSubscript:v27];
 
           v45.origin.x = x;
           v45.origin.y = y;
@@ -99,7 +99,7 @@
     while (v12);
   }
 
-  v29 = [NTKExtragalacticDigitDrawInfo drawInfoWithUnifiedSize:v10 paths:v9, v8];
+  v29 = [NTKExtragalacticDigitDrawInfo drawInfoWithUnifiedSize:dictionary paths:v9, v8];
 
   v30 = *MEMORY[0x277D85DE8];
 

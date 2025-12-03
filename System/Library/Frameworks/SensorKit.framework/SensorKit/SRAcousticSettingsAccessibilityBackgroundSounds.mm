@@ -1,17 +1,17 @@
 @interface SRAcousticSettingsAccessibilityBackgroundSounds
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithBackgroundSoundsEnabled:(BOOL)a3 soundName:(int64_t)a4 relativeVolume:(double)a5 playWithMediaEnabled:(BOOL)a6 relativeVolumeWithMedia:(double)a7 stopOnLockEnabled:(BOOL)a8;
-- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithCoder:(id)a3;
+- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithBackgroundSoundsEnabled:(BOOL)enabled soundName:(int64_t)name relativeVolume:(double)volume playWithMediaEnabled:(BOOL)mediaEnabled relativeVolumeWithMedia:(double)media stopOnLockEnabled:(BOOL)lockEnabled;
+- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithCoder:(id)coder;
 - (id)binarySampleRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRAcousticSettingsAccessibilityBackgroundSounds
 
-- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithBackgroundSoundsEnabled:(BOOL)a3 soundName:(int64_t)a4 relativeVolume:(double)a5 playWithMediaEnabled:(BOOL)a6 relativeVolumeWithMedia:(double)a7 stopOnLockEnabled:(BOOL)a8
+- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithBackgroundSoundsEnabled:(BOOL)enabled soundName:(int64_t)name relativeVolume:(double)volume playWithMediaEnabled:(BOOL)mediaEnabled relativeVolumeWithMedia:(double)media stopOnLockEnabled:(BOOL)lockEnabled
 {
   v25 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -20,7 +20,7 @@
   v15 = v14;
   if (v14)
   {
-    if (a5 < 0.0 || a5 > 100.0)
+    if (volume < 0.0 || volume > 100.0)
     {
       v17 = SRLogAcousticSettings;
       if (os_log_type_enabled(SRLogAcousticSettings, OS_LOG_TYPE_FAULT))
@@ -28,7 +28,7 @@
         *buf = 138412546;
         v22 = @"accessibilityBackgroundSoundsRelativeVolume";
         v23 = 2048;
-        v24 = a5;
+        mediaCopy = volume;
 LABEL_15:
         _os_log_fault_impl(&dword_1C914D000, v17, OS_LOG_TYPE_FAULT, "Failed to construct SRAcousticSettingsAccessibilityBackgroundSounds object. %@: %f and is out of range of expected input.", buf, 0x16u);
         goto LABEL_12;
@@ -37,7 +37,7 @@ LABEL_15:
       goto LABEL_12;
     }
 
-    if (a7 < 0.0 || a7 > 100.0)
+    if (media < 0.0 || media > 100.0)
     {
       v17 = SRLogAcousticSettings;
       if (os_log_type_enabled(SRLogAcousticSettings, OS_LOG_TYPE_FAULT))
@@ -45,7 +45,7 @@ LABEL_15:
         *buf = 138412546;
         v22 = @"accessibilityBackgroundSoundsRelativeVolumeWithMedia";
         v23 = 2048;
-        v24 = a7;
+        mediaCopy = media;
         goto LABEL_15;
       }
 
@@ -55,12 +55,12 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v14->_enabled = a3;
-    v14->_soundName = a4;
-    v14->_playWithMediaEnabled = a6;
-    v14->_relativeVolume = a5;
-    v14->_relativeVolumeWithMedia = a7;
-    v14->_stopOnLockEnabled = a8;
+    v14->_enabled = enabled;
+    v14->_soundName = name;
+    v14->_playWithMediaEnabled = mediaEnabled;
+    v14->_relativeVolume = volume;
+    v14->_relativeVolumeWithMedia = media;
+    v14->_stopOnLockEnabled = lockEnabled;
   }
 
 LABEL_13:
@@ -68,10 +68,10 @@ LABEL_13:
   return v15;
 }
 
-- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
     goto LABEL_7;
   }
@@ -83,7 +83,7 @@ LABEL_13:
   {
     self = result;
     v12 = 0;
-    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v12];
+    v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v12];
     if (v8)
     {
       v9 = v8;
@@ -141,9 +141,9 @@ LABEL_8:
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -155,39 +155,39 @@ LABEL_8:
   }
 
   enabled = self->_enabled;
-  if (enabled != [a3 isEnabled])
+  if (enabled != [equal isEnabled])
   {
     return 0;
   }
 
   soundName = self->_soundName;
-  if (soundName != [a3 soundName])
+  if (soundName != [equal soundName])
   {
     return 0;
   }
 
   relativeVolume = self->_relativeVolume;
-  [a3 relativeVolume];
+  [equal relativeVolume];
   if (relativeVolume != v8)
   {
     return 0;
   }
 
   playWithMediaEnabled = self->_playWithMediaEnabled;
-  if (playWithMediaEnabled != [a3 isPlayWithMediaEnabled])
+  if (playWithMediaEnabled != [equal isPlayWithMediaEnabled])
   {
     return 0;
   }
 
   relativeVolumeWithMedia = self->_relativeVolumeWithMedia;
-  [a3 relativeVolumeWithMedia];
+  [equal relativeVolumeWithMedia];
   if (relativeVolumeWithMedia != v11)
   {
     return 0;
   }
 
   stopOnLockEnabled = self->_stopOnLockEnabled;
-  return stopOnLockEnabled == [a3 isStopOnLockEnabled];
+  return stopOnLockEnabled == [equal isStopOnLockEnabled];
 }
 
 - (unint64_t)hash
@@ -205,7 +205,7 @@ LABEL_8:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SRAcousticSettingsAccessibilityBackgroundSounds *)self isEnabled];
+  isEnabled = [(SRAcousticSettingsAccessibilityBackgroundSounds *)self isEnabled];
   if (self)
   {
     v7 = [(SRAcousticSettingsAccessibilityBackgroundSounds *)self soundName]- 2;
@@ -225,49 +225,49 @@ LABEL_8:
     v8 = 0;
   }
 
-  v9 = [(SRAcousticSettingsAccessibilityBackgroundSounds *)self soundName];
+  soundName = [(SRAcousticSettingsAccessibilityBackgroundSounds *)self soundName];
   [(SRAcousticSettingsAccessibilityBackgroundSounds *)self relativeVolume];
   v11 = v10;
-  v12 = [(SRAcousticSettingsAccessibilityBackgroundSounds *)self isPlayWithMediaEnabled];
+  isPlayWithMediaEnabled = [(SRAcousticSettingsAccessibilityBackgroundSounds *)self isPlayWithMediaEnabled];
   [(SRAcousticSettingsAccessibilityBackgroundSounds *)self relativeVolumeWithMedia];
-  return [v3 stringWithFormat:@"%@ (%p) {Accessibility Background Sounds Settings backgroundSoundsIsEnabled: %d, soundName: %@ (%ld), relativeVolume: %f, playWithMediaIsEnabled: %d, relativeVolumeWithMedia: %f, stopOnLockIsEnabled: %d}", v5, self, v6, v8, v9, v11, v12, v13, -[SRAcousticSettingsAccessibilityBackgroundSounds isStopOnLockEnabled](self, "isStopOnLockEnabled")];
+  return [v3 stringWithFormat:@"%@ (%p) {Accessibility Background Sounds Settings backgroundSoundsIsEnabled: %d, soundName: %@ (%ld), relativeVolume: %f, playWithMediaIsEnabled: %d, relativeVolumeWithMedia: %f, stopOnLockIsEnabled: %d}", v5, self, isEnabled, v8, soundName, v11, isPlayWithMediaEnabled, v13, -[SRAcousticSettingsAccessibilityBackgroundSounds isStopOnLockEnabled](self, "isStopOnLockEnabled")];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeBool:-[SRAcousticSettingsAccessibilityBackgroundSounds isEnabled](self forKey:{"isEnabled"), @"accessibilityBackgroundSoundsEnabled"}];
-  [a3 encodeInteger:-[SRAcousticSettingsAccessibilityBackgroundSounds soundName](self forKey:{"soundName"), @"accessibilityBackgroundSoundsName"}];
+  [coder encodeBool:-[SRAcousticSettingsAccessibilityBackgroundSounds isEnabled](self forKey:{"isEnabled"), @"accessibilityBackgroundSoundsEnabled"}];
+  [coder encodeInteger:-[SRAcousticSettingsAccessibilityBackgroundSounds soundName](self forKey:{"soundName"), @"accessibilityBackgroundSoundsName"}];
   [(SRAcousticSettingsAccessibilityBackgroundSounds *)self relativeVolume];
-  [a3 encodeDouble:@"accessibilityBackgroundSoundsRelativeVolume" forKey:?];
-  [a3 encodeBool:-[SRAcousticSettingsAccessibilityBackgroundSounds isPlayWithMediaEnabled](self forKey:{"isPlayWithMediaEnabled"), @"accessibilityBackgroundSoundsPlayWithMediaEnabled"}];
+  [coder encodeDouble:@"accessibilityBackgroundSoundsRelativeVolume" forKey:?];
+  [coder encodeBool:-[SRAcousticSettingsAccessibilityBackgroundSounds isPlayWithMediaEnabled](self forKey:{"isPlayWithMediaEnabled"), @"accessibilityBackgroundSoundsPlayWithMediaEnabled"}];
   [(SRAcousticSettingsAccessibilityBackgroundSounds *)self relativeVolumeWithMedia];
-  [a3 encodeDouble:@"accessibilityBackgroundSoundsRelativeVolumeWithMedia" forKey:?];
-  v6 = [(SRAcousticSettingsAccessibilityBackgroundSounds *)self isStopOnLockEnabled];
+  [coder encodeDouble:@"accessibilityBackgroundSoundsRelativeVolumeWithMedia" forKey:?];
+  isStopOnLockEnabled = [(SRAcousticSettingsAccessibilityBackgroundSounds *)self isStopOnLockEnabled];
 
-  [a3 encodeBool:v6 forKey:@"accessibilityBackgroundSoundsStopOnLockEnabled"];
+  [coder encodeBool:isStopOnLockEnabled forKey:@"accessibilityBackgroundSoundsStopOnLockEnabled"];
 }
 
-- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithCoder:(id)a3
+- (SRAcousticSettingsAccessibilityBackgroundSounds)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeBoolForKey:@"accessibilityBackgroundSoundsEnabled"];
-  v7 = [a3 decodeIntegerForKey:@"accessibilityBackgroundSoundsName"];
-  [a3 decodeDoubleForKey:@"accessibilityBackgroundSoundsRelativeVolume"];
+  v6 = [coder decodeBoolForKey:@"accessibilityBackgroundSoundsEnabled"];
+  v7 = [coder decodeIntegerForKey:@"accessibilityBackgroundSoundsName"];
+  [coder decodeDoubleForKey:@"accessibilityBackgroundSoundsRelativeVolume"];
   v9 = v8;
-  v10 = [a3 decodeBoolForKey:@"accessibilityBackgroundSoundsPlayWithMediaEnabled"];
-  [a3 decodeDoubleForKey:@"accessibilityBackgroundSoundsRelativeVolumeWithMedia"];
+  v10 = [coder decodeBoolForKey:@"accessibilityBackgroundSoundsPlayWithMediaEnabled"];
+  [coder decodeDoubleForKey:@"accessibilityBackgroundSoundsRelativeVolumeWithMedia"];
   v12 = v11;
-  v13 = [a3 decodeBoolForKey:@"accessibilityBackgroundSoundsStopOnLockEnabled"];
+  v13 = [coder decodeBoolForKey:@"accessibilityBackgroundSoundsStopOnLockEnabled"];
   if ((v7 - 17) > 0xFFFFFFFFFFFFFFEFLL)
   {
     v17 = v13;

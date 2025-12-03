@@ -1,6 +1,6 @@
 @interface HealthRecordsNotifications
 - (_TtC15HealthRecordsUI26HealthRecordsNotifications)init;
-- (void)notificationAlertIfNecessaryWithCompletion:(id)a3;
+- (void)notificationAlertIfNecessaryWithCompletion:(id)completion;
 @end
 
 @implementation HealthRecordsNotifications
@@ -25,12 +25,12 @@
   return [(HealthRecordsNotifications *)&v5 init];
 }
 
-- (void)notificationAlertIfNecessaryWithCompletion:(id)a3
+- (void)notificationAlertIfNecessaryWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1D1264228(sub_1D1116948, v5);
 }
 

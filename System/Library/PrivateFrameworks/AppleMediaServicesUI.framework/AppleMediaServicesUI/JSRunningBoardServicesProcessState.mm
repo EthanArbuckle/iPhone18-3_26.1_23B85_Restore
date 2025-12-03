@@ -6,7 +6,7 @@
 
 - (unsigned)taskState
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100137814();
 
   return v3;

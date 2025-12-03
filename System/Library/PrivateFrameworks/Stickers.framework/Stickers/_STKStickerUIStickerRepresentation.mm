@@ -3,7 +3,7 @@
 - (NSData)data;
 - (NSString)type;
 - (_STKStickerUIStickerRepresentation)init;
-- (_STKStickerUIStickerRepresentation)initWithData:(id)a3 type:(id)a4 size:(CGSize)a5 role:(id)a6;
+- (_STKStickerUIStickerRepresentation)initWithData:(id)data type:(id)type size:(CGSize)size role:(id)role;
 @end
 
 @implementation _STKStickerUIStickerRepresentation
@@ -38,20 +38,20 @@
   return result;
 }
 
-- (_STKStickerUIStickerRepresentation)initWithData:(id)a3 type:(id)a4 size:(CGSize)a5 role:(id)a6
+- (_STKStickerUIStickerRepresentation)initWithData:(id)data type:(id)type size:(CGSize)size role:(id)role
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  typeCopy = type;
+  roleCopy = role;
   v14 = sub_1B8A237C4();
   v16 = v15;
 
   v17 = sub_1B8A23F24();
   v19 = v18;
 
-  if (v13)
+  if (roleCopy)
   {
     v20 = sub_1B8A23F24();
     v22 = v21;

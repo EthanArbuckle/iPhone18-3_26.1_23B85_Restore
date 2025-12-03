@@ -6,100 +6,100 @@
 - (BOOL)matchesTransform;
 - (UIView)sourceView;
 - (id)description;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setAllowsBackdropGroups:(BOOL)a3;
-- (void)setHidesSourceView:(BOOL)a3;
-- (void)setMatchesAlpha:(BOOL)a3;
-- (void)setMatchesPosition:(BOOL)a3;
-- (void)setMatchesTransform:(BOOL)a3;
-- (void)setSourceView:(id)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setAllowsBackdropGroups:(BOOL)groups;
+- (void)setHidesSourceView:(BOOL)view;
+- (void)setMatchesAlpha:(BOOL)alpha;
+- (void)setMatchesPosition:(BOOL)position;
+- (void)setMatchesTransform:(BOOL)transform;
+- (void)setSourceView:(id)view;
 @end
 
 @implementation SBPortalView
 
-- (void)setSourceView:(id)a3
+- (void)setSourceView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_sourceView, v4);
-  v6 = [v4 layer];
+  viewCopy = view;
+  objc_storeWeak(&self->_sourceView, viewCopy);
+  layer = [viewCopy layer];
 
-  v5 = [(SBPortalView *)self portalLayer];
-  [v5 setSourceLayer:v6];
+  portalLayer = [(SBPortalView *)self portalLayer];
+  [portalLayer setSourceLayer:layer];
 }
 
 - (BOOL)hidesSourceView
 {
-  v2 = [(SBPortalView *)self portalLayer];
-  v3 = [v2 hidesSourceLayer];
+  portalLayer = [(SBPortalView *)self portalLayer];
+  hidesSourceLayer = [portalLayer hidesSourceLayer];
 
-  return v3;
+  return hidesSourceLayer;
 }
 
-- (void)setHidesSourceView:(BOOL)a3
+- (void)setHidesSourceView:(BOOL)view
 {
-  v3 = a3;
-  v4 = [(SBPortalView *)self portalLayer];
-  [v4 setHidesSourceLayer:v3];
+  viewCopy = view;
+  portalLayer = [(SBPortalView *)self portalLayer];
+  [portalLayer setHidesSourceLayer:viewCopy];
 }
 
 - (BOOL)matchesAlpha
 {
-  v2 = [(SBPortalView *)self portalLayer];
-  v3 = [v2 matchesOpacity];
+  portalLayer = [(SBPortalView *)self portalLayer];
+  matchesOpacity = [portalLayer matchesOpacity];
 
-  return v3;
+  return matchesOpacity;
 }
 
-- (void)setMatchesAlpha:(BOOL)a3
+- (void)setMatchesAlpha:(BOOL)alpha
 {
-  v3 = a3;
-  v4 = [(SBPortalView *)self portalLayer];
-  [v4 setMatchesOpacity:v3];
+  alphaCopy = alpha;
+  portalLayer = [(SBPortalView *)self portalLayer];
+  [portalLayer setMatchesOpacity:alphaCopy];
 }
 
 - (BOOL)matchesTransform
 {
-  v2 = [(SBPortalView *)self portalLayer];
-  v3 = [v2 matchesTransform];
+  portalLayer = [(SBPortalView *)self portalLayer];
+  matchesTransform = [portalLayer matchesTransform];
 
-  return v3;
+  return matchesTransform;
 }
 
-- (void)setMatchesTransform:(BOOL)a3
+- (void)setMatchesTransform:(BOOL)transform
 {
-  v3 = a3;
-  v4 = [(SBPortalView *)self portalLayer];
-  [v4 setMatchesTransform:v3];
+  transformCopy = transform;
+  portalLayer = [(SBPortalView *)self portalLayer];
+  [portalLayer setMatchesTransform:transformCopy];
 }
 
 - (BOOL)matchesPosition
 {
-  v2 = [(SBPortalView *)self portalLayer];
-  v3 = [v2 matchesPosition];
+  portalLayer = [(SBPortalView *)self portalLayer];
+  matchesPosition = [portalLayer matchesPosition];
 
-  return v3;
+  return matchesPosition;
 }
 
-- (void)setMatchesPosition:(BOOL)a3
+- (void)setMatchesPosition:(BOOL)position
 {
-  v3 = a3;
-  v4 = [(SBPortalView *)self portalLayer];
-  [v4 setMatchesPosition:v3];
+  positionCopy = position;
+  portalLayer = [(SBPortalView *)self portalLayer];
+  [portalLayer setMatchesPosition:positionCopy];
 }
 
 - (BOOL)allowsBackdropGroups
 {
-  v2 = [(SBPortalView *)self portalLayer];
-  v3 = [v2 allowsBackdropGroups];
+  portalLayer = [(SBPortalView *)self portalLayer];
+  allowsBackdropGroups = [portalLayer allowsBackdropGroups];
 
-  return v3;
+  return allowsBackdropGroups;
 }
 
-- (void)setAllowsBackdropGroups:(BOOL)a3
+- (void)setAllowsBackdropGroups:(BOOL)groups
 {
-  v3 = a3;
-  v4 = [(SBPortalView *)self portalLayer];
-  [v4 setAllowsBackdropGroups:v3];
+  groupsCopy = groups;
+  portalLayer = [(SBPortalView *)self portalLayer];
+  [portalLayer setAllowsBackdropGroups:groupsCopy];
 }
 
 - (id)description
@@ -135,17 +135,17 @@
     [v4 appendString:@"allowsBackdropGroups = YES; "];
   }
 
-  v5 = [(SBPortalView *)self sourceView];
-  [v4 appendFormat:@"sourceView = <%@: %p>>", objc_opt_class(), v5];
+  sourceView = [(SBPortalView *)self sourceView];
+  [v4 appendFormat:@"sourceView = <%@: %p>>", objc_opt_class(), sourceView];
 
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = SBPortalView;
-  v5 = [(SBPortalView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SBPortalView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self && self->_passesTouchesThrough)
   {
 

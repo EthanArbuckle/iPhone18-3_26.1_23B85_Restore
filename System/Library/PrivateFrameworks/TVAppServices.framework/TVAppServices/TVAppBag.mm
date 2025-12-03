@@ -20,7 +20,7 @@
 
 - (void)prewarm
 {
-  v2 = self;
+  selfCopy = self;
   TVAppBag.prewarm()();
 }
 

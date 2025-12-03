@@ -1,18 +1,18 @@
 @interface IMDCallManager
-- (IMDCallManager)initWithServiceSession:(id)a3;
+- (IMDCallManager)initWithServiceSession:(id)session;
 @end
 
 @implementation IMDCallManager
 
-- (IMDCallManager)initWithServiceSession:(id)a3
+- (IMDCallManager)initWithServiceSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = IMDCallManager;
   v5 = [(IMDCallManager *)&v9 init];
   if (v5)
   {
-    v6 = [[IMDCallManager_Impl alloc] initWithServiceSession:v4];
+    v6 = [[IMDCallManager_Impl alloc] initWithServiceSession:sessionCopy];
     swiftImpl = v5->_swiftImpl;
     v5->_swiftImpl = v6;
   }

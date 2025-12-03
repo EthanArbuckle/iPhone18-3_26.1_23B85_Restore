@@ -1,38 +1,38 @@
 @interface CNCache
 + (id)atomicCache;
-+ (id)boundingStrategyWithCapacity:(unint64_t)a3;
-+ (id)boundingStrategyWithTTL:(double)a3;
-+ (id)boundingStrategyWithTTL:(double)a3 renewalOptions:(unint64_t)a4 timeProvider:(id)a5;
++ (id)boundingStrategyWithCapacity:(unint64_t)capacity;
++ (id)boundingStrategyWithTTL:(double)l;
++ (id)boundingStrategyWithTTL:(double)l renewalOptions:(unint64_t)options timeProvider:(id)provider;
 + (id)cache;
 - (CNCache)init;
-- (CNCache)initWithBoundingStrategies:(id)a3 resourceScheduler:(id)a4;
+- (CNCache)initWithBoundingStrategies:(id)strategies resourceScheduler:(id)scheduler;
 - (NSArray)allKeys;
 - (NSArray)allObjects;
 - (id)description;
-- (id)objectForKey:(id)a3;
-- (id)objectForKey:(id)a3 onCacheMiss:(id)a4;
-- (id)resultWithResourceLock:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)objectForKey:(id)key onCacheMiss:(id)miss;
+- (id)resultWithResourceLock:(id)lock;
 - (unint64_t)overestimatedCount;
-- (void)addDidEvictHandler:(id)a3;
+- (void)addDidEvictHandler:(id)handler;
 - (void)callDidEvictHandlersIfNecessary;
-- (void)performWithResourceLock:(id)a3;
+- (void)performWithResourceLock:(id)lock;
 - (void)removeAllObjects;
-- (void)resourceLock_evictObjectsForKeys:(id)a3;
-- (void)resourceLock_setObject:(id)a3 forKey:(id)a4;
+- (void)resourceLock_evictObjectsForKeys:(id)keys;
+- (void)resourceLock_setObject:(id)object forKey:(id)key;
 - (void)resourceLock_validateAllKeys;
-- (void)resourceLock_validateKey:(id)a3;
-- (void)resourceLock_validateKeys:(id)a3;
-- (void)resourceLock_willAccessKey:(id)a3;
-- (void)resourceLock_willSetObject:(id)a3 forKey:(id)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)resourceLock_validateKey:(id)key;
+- (void)resourceLock_validateKeys:(id)keys;
+- (void)resourceLock_willAccessKey:(id)key;
+- (void)resourceLock_willSetObject:(id)object forKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation CNCache
 
 + (id)atomicCache
 {
-  v3 = [a1 atomicCacheScheduler];
-  v4 = [[a1 alloc] initWithResourceScheduler:v3];
+  atomicCacheScheduler = [self atomicCacheScheduler];
+  v4 = [[self alloc] initWithResourceScheduler:atomicCacheScheduler];
 
   return v4;
 }
@@ -124,9 +124,9 @@ id __18__CNCache_allKeys__block_invoke(uint64_t a1)
 
 - (void)resourceLock_validateAllKeys
 {
-  v3 = [(CNCache *)self storage];
-  v4 = [v3 allKeys];
-  v5 = [v4 copy];
+  storage = [(CNCache *)self storage];
+  allKeys = [storage allKeys];
+  v5 = [allKeys copy];
 
   [(CNCache *)self resourceLock_validateKeys:v5];
 }
@@ -155,30 +155,30 @@ id __21__CNCache_allObjects__block_invoke(uint64_t a1)
 
 + (id)cache
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (CNCache)initWithBoundingStrategies:(id)a3 resourceScheduler:(id)a4
+- (CNCache)initWithBoundingStrategies:(id)strategies resourceScheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  strategiesCopy = strategies;
+  schedulerCopy = scheduler;
   v17.receiver = self;
   v17.super_class = CNCache;
   v8 = [(CNCache *)&v17 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [strategiesCopy copy];
     boundingStrategies = v8->_boundingStrategies;
     v8->_boundingStrategies = v9;
 
-    objc_storeStrong(&v8->_resourceScheduler, a4);
+    objc_storeStrong(&v8->_resourceScheduler, scheduler);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     storage = v8->_storage;
     v8->_storage = v11;
 
-    if ([v6 count])
+    if ([strategiesCopy count])
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
       didEvictHandlers = v8->_didEvictHandlers;
@@ -195,62 +195,62 @@ id __21__CNCache_allObjects__block_invoke(uint64_t a1)
 {
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(CNCache *)self allKeys];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+  allKeys = [(CNCache *)self allKeys];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(allKeys, "count")}];
   v7 = [v3 appendName:@"count of keys" object:v6];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-+ (id)boundingStrategyWithCapacity:(unint64_t)a3
++ (id)boundingStrategyWithCapacity:(unint64_t)capacity
 {
-  v3 = [[_CNCacheFixedCapacityBoundingStrategy alloc] initWithCapacity:a3];
+  v3 = [[_CNCacheFixedCapacityBoundingStrategy alloc] initWithCapacity:capacity];
 
   return v3;
 }
 
-+ (id)boundingStrategyWithTTL:(double)a3
++ (id)boundingStrategyWithTTL:(double)l
 {
-  v3 = [[_CNCacheFixedTTLBoundingStrategy alloc] initWithTTL:a3];
+  v3 = [[_CNCacheFixedTTLBoundingStrategy alloc] initWithTTL:l];
 
   return v3;
 }
 
-+ (id)boundingStrategyWithTTL:(double)a3 renewalOptions:(unint64_t)a4 timeProvider:(id)a5
++ (id)boundingStrategyWithTTL:(double)l renewalOptions:(unint64_t)options timeProvider:(id)provider
 {
-  v7 = a5;
-  v8 = [[_CNCacheFixedTTLBoundingStrategy alloc] initWithTTL:a4 renewalOptions:v7 timeProvider:a3];
+  providerCopy = provider;
+  v8 = [[_CNCacheFixedTTLBoundingStrategy alloc] initWithTTL:options renewalOptions:providerCopy timeProvider:l];
 
   return v8;
 }
 
-- (void)performWithResourceLock:(id)a3
+- (void)performWithResourceLock:(id)lock
 {
-  v4 = a3;
-  v5 = [(CNCache *)self resourceScheduler];
-  [v5 performBlock:v4];
+  lockCopy = lock;
+  resourceScheduler = [(CNCache *)self resourceScheduler];
+  [resourceScheduler performBlock:lockCopy];
 }
 
-- (id)resultWithResourceLock:(id)a3
+- (id)resultWithResourceLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__1;
   v16 = __Block_byref_object_dispose__1;
   v17 = 0;
-  v5 = [(CNCache *)self resourceScheduler];
+  resourceScheduler = [(CNCache *)self resourceScheduler];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __34__CNCache_resultWithResourceLock___block_invoke;
   v9[3] = &unk_1E6ED5140;
   v11 = &v12;
-  v6 = v4;
+  v6 = lockCopy;
   v10 = v6;
-  [v5 performBlock:v9];
+  [resourceScheduler performBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -268,16 +268,16 @@ uint64_t __34__CNCache_resultWithResourceLock___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
   v10 = __24__CNCache_objectForKey___block_invoke;
   v11 = &unk_1E6ED5190;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = keyCopy;
+  v5 = keyCopy;
   v6 = [(CNCache *)self resultWithResourceLock:&v8];
   [(CNCache *)self callDidEvictHandlersIfNecessary:v8];
 
@@ -294,19 +294,19 @@ id __24__CNCache_objectForKey___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (id)objectForKey:(id)a3 onCacheMiss:(id)a4
+- (id)objectForKey:(id)key onCacheMiss:(id)miss
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  missCopy = miss;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __36__CNCache_objectForKey_onCacheMiss___block_invoke;
   v12[3] = &unk_1E6ED57B8;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = keyCopy;
+  v14 = missCopy;
+  v8 = missCopy;
+  v9 = keyCopy;
   v10 = [(CNCache *)self resultWithResourceLock:v12];
   [(CNCache *)self callDidEvictHandlersIfNecessary];
 
@@ -335,38 +335,38 @@ id __36__CNCache_objectForKey_onCacheMiss___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  keyCopy = key;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __28__CNCache_setObject_forKey___block_invoke;
   v10[3] = &unk_1E6ED57E0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = objectCopy;
+  v12 = keyCopy;
+  v8 = keyCopy;
+  v9 = objectCopy;
   [(CNCache *)self performWithResourceLock:v10];
   [(CNCache *)self callDidEvictHandlersIfNecessary];
 }
 
-- (void)resourceLock_setObject:(id)a3 forKey:(id)a4
+- (void)resourceLock_setObject:(id)object forKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  [(CNCache *)self resourceLock_willSetObject:v9 forKey:v6];
-  v7 = [(CNCache *)self storage];
-  v8 = v7;
-  if (v9)
+  objectCopy = object;
+  keyCopy = key;
+  [(CNCache *)self resourceLock_willSetObject:objectCopy forKey:keyCopy];
+  storage = [(CNCache *)self storage];
+  v8 = storage;
+  if (objectCopy)
   {
-    [v7 setObject:v9 forKey:v6];
+    [storage setObject:objectCopy forKey:keyCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v6];
+    [storage removeObjectForKey:keyCopy];
   }
 }
 
@@ -410,11 +410,11 @@ void __27__CNCache_removeAllObjects__block_invoke(uint64_t a1)
   [v1 removeAllObjects];
 }
 
-- (void)addDidEvictHandler:(id)a3
+- (void)addDidEvictHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CNCache *)self boundingStrategies];
-  v6 = [v5 count];
+  handlerCopy = handler;
+  boundingStrategies = [(CNCache *)self boundingStrategies];
+  v6 = [boundingStrategies count];
 
   if (v6)
   {
@@ -423,7 +423,7 @@ void __27__CNCache_removeAllObjects__block_invoke(uint64_t a1)
     v7[2] = __30__CNCache_addDidEvictHandler___block_invoke;
     v7[3] = &unk_1E6ED5858;
     v7[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     [(CNCache *)self performWithResourceLock:v7];
   }
 }
@@ -436,21 +436,21 @@ void __30__CNCache_addDidEvictHandler___block_invoke(uint64_t a1)
   [v4 addObject:v3];
 }
 
-- (void)resourceLock_willSetObject:(id)a3 forKey:(id)a4
+- (void)resourceLock_willSetObject:(id)object forKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  keyCopy = key;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = [(CNCache *)self boundingStrategies];
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  boundingStrategies = [(CNCache *)self boundingStrategies];
+  v8 = [boundingStrategies countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v18;
-    v11 = a3 != 0;
+    v11 = object != 0;
     do
     {
       v12 = 0;
@@ -458,12 +458,12 @@ void __30__CNCache_addDidEvictHandler___block_invoke(uint64_t a1)
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(boundingStrategies);
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
         v16 = 0;
-        [v13 willUpdateCacheBy:v11 forKey:v6 keysToEvict:&v16];
+        [v13 willUpdateCacheBy:v11 forKey:keyCopy keysToEvict:&v16];
         v14 = v16;
         if (v14)
         {
@@ -474,7 +474,7 @@ void __30__CNCache_addDidEvictHandler___block_invoke(uint64_t a1)
       }
 
       while (v9 != v12);
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [boundingStrategies countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
@@ -483,16 +483,16 @@ void __30__CNCache_addDidEvictHandler___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resourceLock_willAccessKey:(id)a3
+- (void)resourceLock_willAccessKey:(id)key
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(CNCache *)self boundingStrategies];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  boundingStrategies = [(CNCache *)self boundingStrategies];
+  v6 = [boundingStrategies countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -504,14 +504,14 @@ void __30__CNCache_addDidEvictHandler___block_invoke(uint64_t a1)
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(boundingStrategies);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) willAccessKey:v4];
+        [*(*(&v11 + 1) + 8 * v9++) willAccessKey:keyCopy];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [boundingStrategies countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -520,27 +520,27 @@ void __30__CNCache_addDidEvictHandler___block_invoke(uint64_t a1)
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resourceLock_validateKey:(id)a3
+- (void)resourceLock_validateKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (key)
   {
-    v8 = a3;
+    keyCopy = key;
     v4 = MEMORY[0x1E695DEC8];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v8 count:1];
+    keyCopy2 = key;
+    v6 = [v4 arrayWithObjects:&keyCopy count:1];
 
-    [(CNCache *)self resourceLock_validateKeys:v6, v8, v9];
+    [(CNCache *)self resourceLock_validateKeys:v6, keyCopy, v9];
   }
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resourceLock_validateKeys:(id)a3
+- (void)resourceLock_validateKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(CNCache *)self boundingStrategies];
-  v6 = [v5 count];
+  keysCopy = keys;
+  boundingStrategies = [(CNCache *)self boundingStrategies];
+  v6 = [boundingStrategies count];
 
   if (v6)
   {
@@ -549,10 +549,10 @@ void __30__CNCache_addDidEvictHandler___block_invoke(uint64_t a1)
     v9[2] = __37__CNCache_resourceLock_validateKeys___block_invoke;
     v9[3] = &unk_1E6ED58A8;
     v9[4] = self;
-    v7 = [v4 indexesOfObjectsPassingTest:v9];
+    v7 = [keysCopy indexesOfObjectsPassingTest:v9];
     if ([v7 count])
     {
-      v8 = [v4 objectsAtIndexes:v7];
+      v8 = [keysCopy objectsAtIndexes:v7];
       [(CNCache *)self resourceLock_evictObjectsForKeys:v8];
     }
   }
@@ -573,11 +573,11 @@ uint64_t __37__CNCache_resourceLock_validateKeys___block_invoke(uint64_t a1, voi
   return v6;
 }
 
-- (void)resourceLock_evictObjectsForKeys:(id)a3
+- (void)resourceLock_evictObjectsForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(CNCache *)self boundingStrategies];
-  v6 = [v5 count];
+  keysCopy = keys;
+  boundingStrategies = [(CNCache *)self boundingStrategies];
+  v6 = [boundingStrategies count];
 
   if (v6)
   {
@@ -586,7 +586,7 @@ uint64_t __37__CNCache_resourceLock_validateKeys___block_invoke(uint64_t a1, voi
     v10[2] = __44__CNCache_resourceLock_evictObjectsForKeys___block_invoke;
     v10[3] = &unk_1E6ED58D0;
     v10[4] = self;
-    v7 = [v4 _cn_map:v10];
+    v7 = [keysCopy _cn_map:v10];
     v8 = [v7 _cn_filter:CNPairNeitherElementIsNil];
 
     if ([v8 count])
@@ -595,8 +595,8 @@ uint64_t __37__CNCache_resourceLock_validateKeys___block_invoke(uint64_t a1, voi
     }
   }
 
-  v9 = [(CNCache *)self storage];
-  [v9 removeObjectsForKeys:v4];
+  storage = [(CNCache *)self storage];
+  [storage removeObjectsForKeys:keysCopy];
 }
 
 id __44__CNCache_resourceLock_evictObjectsForKeys___block_invoke(uint64_t a1, void *a2)

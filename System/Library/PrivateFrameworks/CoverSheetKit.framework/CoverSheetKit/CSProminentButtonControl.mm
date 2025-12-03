@@ -1,36 +1,36 @@
 @interface CSProminentButtonControl
-- (BOOL)clickInteractionShouldBegin:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CSProminentButtonControl)initWithFrame:(CGRect)a3 luminanceMap:(id)a4;
+- (BOOL)clickInteractionShouldBegin:(id)begin;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CSProminentButtonControl)initWithFrame:(CGRect)frame luminanceMap:(id)map;
 - (UIEdgeInsets)edgeInsets;
 - (UIImage)luminanceMap;
 - (UIView)backgroundView;
 - (double)containerCornerRadius;
-- (id)_backgroundEffectsWithBrightness:(double)a3;
+- (id)_backgroundEffectsWithBrightness:(double)brightness;
 - (id)copyBackgroundView;
 - (id)copyWithoutGlyphView;
-- (id)highlightEffectForClickInteraction:(id)a3;
-- (unint64_t)_clickInteractionDefaultDriverType:(id)a3;
-- (void)_animateEffectUpdateWithProgress:(double)a3 ended:(BOOL)a4;
+- (id)highlightEffectForClickInteraction:(id)interaction;
+- (unint64_t)_clickInteractionDefaultDriverType:(id)type;
+- (void)_animateEffectUpdateWithProgress:(double)progress ended:(BOOL)ended;
 - (void)_configureBackgroundView;
 - (void)_configureBackingShadowView;
 - (void)_configureContainerAppearance;
 - (void)_updateStyle;
-- (void)clickInteraction:(id)a3 didObserveForce:(double)maxForceDuringInteraction;
-- (void)clickInteractionDidClickUp:(id)a3;
-- (void)clickInteractionDidEnd:(id)a3;
+- (void)clickInteraction:(id)interaction didObserveForce:(double)maxForceDuringInteraction;
+- (void)clickInteractionDidClickUp:(id)up;
+- (void)clickInteractionDidEnd:(id)end;
 - (void)layoutBackgroundEffectView;
 - (void)layoutContainerBackgroundView;
 - (void)layoutIfNeededAnimated;
 - (void)layoutSubviews;
-- (void)setEdgeInsets:(UIEdgeInsets)a3;
-- (void)setGlassLuminanceValue:(double)a3;
-- (void)setGlyphView:(id)a3;
-- (void)setHidesBackingShadow:(BOOL)a3;
-- (void)setScaleValue:(double)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setShouldAnimateBackgroundDuringInteraction:(BOOL)a3;
-- (void)setUsesGlassMaterial:(BOOL)a3;
+- (void)setEdgeInsets:(UIEdgeInsets)insets;
+- (void)setGlassLuminanceValue:(double)value;
+- (void)setGlyphView:(id)view;
+- (void)setHidesBackingShadow:(BOOL)shadow;
+- (void)setScaleValue:(double)value;
+- (void)setSelected:(BOOL)selected;
+- (void)setShouldAnimateBackgroundDuringInteraction:(BOOL)interaction;
+- (void)setUsesGlassMaterial:(BOOL)material;
 @end
 
 @implementation CSProminentButtonControl
@@ -66,23 +66,23 @@
   MidY = CGRectGetMidY(v40);
   [(UIView *)self->_containerView setBounds:0.0, 0.0, Width, Height];
   [(UIView *)self->_containerView setCenter:MidX, MidY];
-  v23 = [(CSProminentButtonControl *)self isSelected];
+  isSelected = [(CSProminentButtonControl *)self isSelected];
   v24 = &OBJC_IVAR___CSProminentButtonControl__backgroundEffects;
-  if (v23)
+  if (isSelected)
   {
     v24 = &OBJC_IVAR___CSProminentButtonControl__selectedBackgroundEffects;
   }
 
   [(UIVisualEffectView *)self->_backgroundEffectView setBackgroundEffects:*(&self->super.super.super.super.isa + *v24)];
-  v25 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
-  [v25 setHidden:v23];
+  contentView = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
+  [contentView setHidden:isSelected];
 
   [(CSProminentButtonControl *)self layoutBackgroundEffectView];
   [(CSProminentButtonControl *)self layoutContainerBackgroundView];
   [(CSProminentButtonControlEmbeddedView *)self->_glyphView sizeThatFits:v16, v18];
   UIRectGetCenter();
-  v26 = [(CSProminentButtonControl *)self traitCollection];
-  [v26 displayScale];
+  traitCollection = [(CSProminentButtonControl *)self traitCollection];
+  [traitCollection displayScale];
   UIRectCenteredAboutPointScale();
   v28 = v27;
   v30 = v29;
@@ -135,8 +135,8 @@
     v31.size.height = v19;
     CGRectGetHeight(v31);
     UIRectGetCenter();
-    v20 = [(CSProminentButtonControl *)self traitCollection];
-    [v20 displayScale];
+    traitCollection = [(CSProminentButtonControl *)self traitCollection];
+    [traitCollection displayScale];
     UIRectCenteredAboutPointScale();
     v22 = v21;
     v24 = v23;
@@ -144,8 +144,8 @@
     v28 = v27;
 
     [(UIVisualEffectView *)self->_backgroundEffectView setFrame:v22, v24, v26, v28];
-    v29 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
-    [v29 setAlpha:self->_highlightProgress * 0.5 + 0.0];
+    contentView = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
+    [contentView setAlpha:self->_highlightProgress * 0.5 + 0.0];
   }
 }
 
@@ -182,8 +182,8 @@
     v38.size.height = v26;
     CGRectGetHeight(v38);
     UIRectGetCenter();
-    v27 = [(CSProminentButtonControl *)self traitCollection];
-    [v27 displayScale];
+    traitCollection = [(CSProminentButtonControl *)self traitCollection];
+    [traitCollection displayScale];
     UIRectCenteredAboutPointScale();
     v29 = v28;
     v31 = v30;
@@ -218,31 +218,31 @@
   return v6 * 0.5;
 }
 
-- (CSProminentButtonControl)initWithFrame:(CGRect)a3 luminanceMap:(id)a4
+- (CSProminentButtonControl)initWithFrame:(CGRect)frame luminanceMap:(id)map
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  mapCopy = map;
   v32.receiver = self;
   v32.super_class = CSProminentButtonControl;
-  v11 = [(CSProminentButtonControl *)&v32 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(CSProminentButtonControl *)&v32 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v12 = [MEMORY[0x1E69DC888] whiteColor];
-    [(CSProminentButtonControl *)v11 setTintColor:v12];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(CSProminentButtonControl *)height setTintColor:whiteColor];
 
-    [(CSProminentButtonControl *)v11 setClipsToBounds:0];
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [(CSProminentButtonControl *)v11 setBackgroundColor:v13];
+    [(CSProminentButtonControl *)height setClipsToBounds:0];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CSProminentButtonControl *)height setBackgroundColor:clearColor];
 
-    [(CSProminentButtonControl *)v11 setOpaque:0];
+    [(CSProminentButtonControl *)height setOpaque:0];
     v14 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&v11->_edgeInsets.top = *MEMORY[0x1E69DDCE0];
-    *&v11->_edgeInsets.bottom = v14;
-    objc_storeStrong(&v11->_luminanceMap, a4);
-    [(CSProminentButtonControl *)v11 bounds];
+    *&height->_edgeInsets.top = *MEMORY[0x1E69DDCE0];
+    *&height->_edgeInsets.bottom = v14;
+    objc_storeStrong(&height->_luminanceMap, map);
+    [(CSProminentButtonControl *)height bounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
@@ -250,35 +250,35 @@
     v23 = objc_alloc_init(CSProminentButtonBackingShadowView);
     [(CSProminentButtonBackingShadowView *)v23 setAutoresizingMask:18];
     [(CSProminentButtonBackingShadowView *)v23 setUserInteractionEnabled:0];
-    backingShadowView = v11->_backingShadowView;
-    v11->_backingShadowView = v23;
+    backingShadowView = height->_backingShadowView;
+    height->_backingShadowView = v23;
 
     v25 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v16, v18, v20, v22}];
     [(UIView *)v25 setAutoresizingMask:18];
-    v26 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v25 setBackgroundColor:v26];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v25 setBackgroundColor:clearColor2];
 
     [(UIView *)v25 setOpaque:0];
     [(UIView *)v25 setClipsToBounds:1];
     [(UIView *)v25 setUserInteractionEnabled:0];
-    [(CSProminentButtonControl *)v11 addSubview:v25];
-    containerView = v11->_containerView;
-    v11->_containerView = v25;
+    [(CSProminentButtonControl *)height addSubview:v25];
+    containerView = height->_containerView;
+    height->_containerView = v25;
 
-    v11->_glassLuminanceValue = 0.0;
-    [(CSProminentButtonControl *)v11 _configureContainerAppearance];
-    [(CSProminentButtonControl *)v11 _configureBackgroundView];
+    height->_glassLuminanceValue = 0.0;
+    [(CSProminentButtonControl *)height _configureContainerAppearance];
+    [(CSProminentButtonControl *)height _configureBackgroundView];
     v28 = objc_alloc_init(MEMORY[0x1E69DD3D8]);
-    [v28 setDelegate:v11];
-    clickInteraction = v11->_clickInteraction;
-    v11->_clickInteraction = v28;
+    [v28 setDelegate:height];
+    clickInteraction = height->_clickInteraction;
+    height->_clickInteraction = v28;
 
-    [(CSProminentButtonControl *)v11 addInteraction:v11->_clickInteraction];
-    [(_UIClickInteraction *)v11->_clickInteraction setDriverCancelsTouchesInView:0];
-    v30 = v11;
+    [(CSProminentButtonControl *)height addInteraction:height->_clickInteraction];
+    [(_UIClickInteraction *)height->_clickInteraction setDriverCancelsTouchesInView:0];
+    v30 = height;
   }
 
-  return v11;
+  return height;
 }
 
 - (void)_configureBackingShadowView
@@ -287,9 +287,9 @@
   backingShadowView = self->_backingShadowView;
   if (usesGlassMaterial)
   {
-    v5 = [(CSProminentButtonBackingShadowView *)backingShadowView superview];
+    superview = [(CSProminentButtonBackingShadowView *)backingShadowView superview];
 
-    if (v5 != self)
+    if (superview != self)
     {
       [(CSProminentButtonControl *)self insertSubview:self->_backingShadowView belowSubview:self->_containerView];
       [(CSProminentButtonControl *)self bounds];
@@ -346,8 +346,8 @@
 
     v12 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v4, v6, v8, v10}];
     [v12 setAutoresizingMask:18];
-    v13 = [MEMORY[0x1E69DC888] whiteColor];
-    [v12 setBackgroundColor:v13];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v12 setBackgroundColor:whiteColor];
 
     [v12 setAlpha:0.0];
     [v12 setClipsToBounds:1];
@@ -370,12 +370,12 @@
     v17 = self->_backgroundEffectView;
     self->_backgroundEffectView = v16;
 
-    v18 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
+    contentView = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
     v19 = [MEMORY[0x1E69DC888] colorWithRed:0.031372549 green:0.031372549 blue:0.031372549 alpha:1.0];
-    [v18 setBackgroundColor:v19];
+    [contentView setBackgroundColor:v19];
 
-    v20 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
-    [v20 setAlpha:0.0];
+    contentView2 = [(UIVisualEffectView *)self->_backgroundEffectView contentView];
+    [contentView2 setAlpha:0.0];
 
     v21 = [(CSProminentButtonControl *)self _backgroundEffectsWithBrightness:-0.13];
     backgroundEffects = self->_backgroundEffects;
@@ -395,28 +395,28 @@
   [(UIView *)containerView bringSubviewToFront:glyphView];
 }
 
-- (void)setEdgeInsets:(UIEdgeInsets)a3
+- (void)setEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_edgeInsets.top, v3), vceqq_f64(*&self->_edgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_edgeInsets = a3;
+    self->_edgeInsets = insets;
     [(CSProminentButtonControl *)self setNeedsLayout];
   }
 }
 
-- (void)setGlyphView:(id)a3
+- (void)setGlyphView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   glyphView = self->_glyphView;
-  v8 = v5;
-  if (glyphView != v5)
+  v8 = viewCopy;
+  if (glyphView != viewCopy)
   {
     [(CSProminentButtonControlEmbeddedView *)glyphView removeFromSuperview];
-    objc_storeStrong(&self->_glyphView, a3);
+    objc_storeStrong(&self->_glyphView, view);
     v7 = self->_glyphView;
     [(UIView *)self->_containerView bounds];
     [(CSProminentButtonControlEmbeddedView *)v7 setFrame:?];
@@ -437,28 +437,28 @@
 
 - (void)_updateStyle
 {
-  v6 = [MEMORY[0x1E69DC888] whiteColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   if (([(CSProminentButtonControl *)self isSelected]& 1) != 0)
   {
-    v3 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
   else
   {
-    v3 = v6;
+    blackColor = whiteColor;
   }
 
-  v4 = v3;
-  v5 = [v3 colorWithAlphaComponent:1.0];
+  v4 = blackColor;
+  v5 = [blackColor colorWithAlphaComponent:1.0];
 
   [(CSProminentButtonControl *)self setTintColor:v5];
 }
 
-- (void)setScaleValue:(double)a3
+- (void)setScaleValue:(double)value
 {
-  self->_scaleValue = a3;
+  self->_scaleValue = value;
   containerView = self->_containerView;
-  CGAffineTransformMakeScale(&v4, a3, a3);
+  CGAffineTransformMakeScale(&v4, value, value);
   [(UIView *)containerView setTransform:&v4];
 }
 
@@ -473,36 +473,36 @@
   return containerBackgroundView;
 }
 
-- (void)setUsesGlassMaterial:(BOOL)a3
+- (void)setUsesGlassMaterial:(BOOL)material
 {
-  if (self->_usesGlassMaterial != a3)
+  if (self->_usesGlassMaterial != material)
   {
-    self->_usesGlassMaterial = a3;
+    self->_usesGlassMaterial = material;
     [(CSProminentButtonControl *)self _configureContainerAppearance];
 
     [(CSProminentButtonControl *)self _configureBackgroundView];
   }
 }
 
-- (void)setGlassLuminanceValue:(double)a3
+- (void)setGlassLuminanceValue:(double)value
 {
-  if (self->_glassLuminanceValue != a3)
+  if (self->_glassLuminanceValue != value)
   {
-    self->_glassLuminanceValue = a3;
+    self->_glassLuminanceValue = value;
     [(CSProminentButtonControl *)self _configureContainerAppearance];
   }
 }
 
-- (void)setHidesBackingShadow:(BOOL)a3
+- (void)setHidesBackingShadow:(BOOL)shadow
 {
-  if (self->_hidesBackingShadow != a3)
+  if (self->_hidesBackingShadow != shadow)
   {
     v19 = v6;
     v20 = v5;
     v21 = v3;
     v22 = v4;
-    self->_hidesBackingShadow = a3;
-    if (a3)
+    self->_hidesBackingShadow = shadow;
+    if (shadow)
     {
       v8 = 0.0;
     }
@@ -512,7 +512,7 @@
       v8 = 1.0;
     }
 
-    v9 = [MEMORY[0x1E69DD250] areAnimationsEnabled];
+    areAnimationsEnabled = [MEMORY[0x1E69DD250] areAnimationsEnabled];
     [MEMORY[0x1E69DD250] setAnimationsEnabled:1];
     v10 = self->_backingShadowView;
     v11 = MEMORY[0x1E69DD250];
@@ -524,18 +524,18 @@
     v18 = v8;
     v12 = v10;
     [v11 _animateUsingSpringWithDampingRatio:0 response:&v13 tracking:0 dampingRatioSmoothing:1.0 responseSmoothing:0.55 targetSmoothing:0.0 projectionDeceleration:0.0 animations:0.0 completion:0.0];
-    [MEMORY[0x1E69DD250] setAnimationsEnabled:{v9, v13, v14, v15, v16}];
+    [MEMORY[0x1E69DD250] setAnimationsEnabled:{areAnimationsEnabled, v13, v14, v15, v16}];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(CSProminentButtonControl *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(CSProminentButtonControl *)self isSelected]!= selected)
   {
     v5.receiver = self;
     v5.super_class = CSProminentButtonControl;
-    [(CSProminentButtonControl *)&v5 setSelected:v3];
+    [(CSProminentButtonControl *)&v5 setSelected:selectedCopy];
     [(CSProminentButtonControl *)self setNeedsLayout];
     [(CSProminentButtonControl *)self _updateStyle];
     if (objc_opt_respondsToSelector())
@@ -547,7 +547,7 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = vaddq_f64(vaddq_f64(*&self->_edgeInsets.top, *&self->_edgeInsets.bottom), vdupq_n_s64(0x4049000000000000uLL));
   v4 = v3.f64[1];
@@ -570,10 +570,10 @@ uint64_t __57__CSProminentButtonControl_layoutContainerBackgroundView__block_inv
   return [v3 setAlpha:v5];
 }
 
-- (BOOL)clickInteractionShouldBegin:(id)a3
+- (BOOL)clickInteractionShouldBegin:(id)begin
 {
-  v4 = a3;
-  if (self->_clickInteraction == v4 && !self->_clickSuppressed)
+  beginCopy = begin;
+  if (self->_clickInteraction == beginCopy && !self->_clickSuppressed)
   {
     v5 = 1;
     self->_interactive = 1;
@@ -591,9 +591,9 @@ uint64_t __57__CSProminentButtonControl_layoutContainerBackgroundView__block_inv
   return v5;
 }
 
-- (void)clickInteractionDidClickUp:(id)a3
+- (void)clickInteractionDidClickUp:(id)up
 {
-  if (self->_clickInteraction == a3)
+  if (self->_clickInteraction == up)
   {
     [(CSProminentButtonControl *)self setSelected:[(CSProminentButtonControl *)self isSelected]^ 1];
     [(CSProminentButtonControl *)self sendActionsForControlEvents:0x2000];
@@ -604,7 +604,7 @@ uint64_t __57__CSProminentButtonControl_layoutContainerBackgroundView__block_inv
   }
 }
 
-- (void)clickInteraction:(id)a3 didObserveForce:(double)maxForceDuringInteraction
+- (void)clickInteraction:(id)interaction didObserveForce:(double)maxForceDuringInteraction
 {
   if (self->_interactive)
   {
@@ -617,9 +617,9 @@ uint64_t __57__CSProminentButtonControl_layoutContainerBackgroundView__block_inv
   }
 }
 
-- (void)clickInteractionDidEnd:(id)a3
+- (void)clickInteractionDidEnd:(id)end
 {
-  if (self->_clickInteraction == a3)
+  if (self->_clickInteraction == end)
   {
     v9[5] = v6;
     v9[6] = v5;
@@ -650,12 +650,12 @@ uint64_t __57__CSProminentButtonControl_layoutContainerBackgroundView__block_inv
   }
 }
 
-- (unint64_t)_clickInteractionDefaultDriverType:(id)a3
+- (unint64_t)_clickInteractionDefaultDriverType:(id)type
 {
-  v3 = [(CSProminentButtonControl *)self traitCollection];
-  v4 = [v3 forceTouchCapability];
+  traitCollection = [(CSProminentButtonControl *)self traitCollection];
+  forceTouchCapability = [traitCollection forceTouchCapability];
 
-  if (v4 == 2)
+  if (forceTouchCapability == 2)
   {
     return 4;
   }
@@ -666,9 +666,9 @@ uint64_t __57__CSProminentButtonControl_layoutContainerBackgroundView__block_inv
   }
 }
 
-- (id)highlightEffectForClickInteraction:(id)a3
+- (id)highlightEffectForClickInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x1E69DD620]);
   v8[0] = MEMORY[0x1E69E9820];
@@ -694,20 +694,20 @@ void __63__CSProminentButtonControl_highlightEffectForClickInteraction___block_i
   [WeakRetained _animateEffectUpdateWithProgress:v6 ended:v5];
 }
 
-- (void)_animateEffectUpdateWithProgress:(double)a3 ended:(BOOL)a4
+- (void)_animateEffectUpdateWithProgress:(double)progress ended:(BOOL)ended
 {
-  v4 = a3 + a3 + 18.0;
+  v4 = progress + progress + 18.0;
   v5[1] = 3221225472;
   v5[0] = MEMORY[0x1E69E9820];
   v5[2] = __67__CSProminentButtonControl__animateEffectUpdateWithProgress_ended___block_invoke;
   v5[3] = &unk_1E76B9E20;
-  if (a4)
+  if (ended)
   {
     v4 = v4 + 4.0;
   }
 
   v5[4] = self;
-  *&v5[5] = a3;
+  *&v5[5] = progress;
   [MEMORY[0x1E69DD250] _animateUsingSpringWithTension:0 friction:v5 interactive:0 animations:500.0 completion:v4];
 }
 
@@ -747,15 +747,15 @@ uint64_t __67__CSProminentButtonControl__animateEffectUpdateWithProgress_ended__
   return [v4 layoutIfNeeded];
 }
 
-- (void)setShouldAnimateBackgroundDuringInteraction:(BOOL)a3
+- (void)setShouldAnimateBackgroundDuringInteraction:(BOOL)interaction
 {
-  if (self->_shouldAnimateBackgroundDuringInteraction != a3)
+  if (self->_shouldAnimateBackgroundDuringInteraction != interaction)
   {
     v13 = v7;
     v14 = v3;
-    self->_shouldAnimateBackgroundDuringInteraction = a3;
+    self->_shouldAnimateBackgroundDuringInteraction = interaction;
     containerBackgroundView = self->_containerBackgroundView;
-    if (a3)
+    if (interaction)
     {
       v11 = 0.0;
     }
@@ -794,21 +794,21 @@ uint64_t __50__CSProminentButtonControl_layoutIfNeededAnimated__block_invoke(uin
   return [v2 _modifyAnimationsWithPreferredFrameRateRange:1114125 updateReason:v4 animations:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
 }
 
-- (id)_backgroundEffectsWithBrightness:(double)a3
+- (id)_backgroundEffectsWithBrightness:(double)brightness
 {
   v16[5] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E69DC730] effectWithBlurRadius:30.0];
   v6 = MEMORY[0x1E69DD290];
-  v7 = [MEMORY[0x1E69DC888] blackColor];
-  v8 = [v6 effectCompositingColor:v7 withMode:4 alpha:0.12];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  v8 = [v6 effectCompositingColor:blackColor withMode:4 alpha:0.12];
   v16[1] = v8;
   v9 = MEMORY[0x1E69DC898];
-  v10 = [(CSProminentButtonControl *)self luminanceMap];
-  v11 = [v9 colorEffectLuminanceMap:v10 blendingAmount:0.7];
+  luminanceMap = [(CSProminentButtonControl *)self luminanceMap];
+  v11 = [v9 colorEffectLuminanceMap:luminanceMap blendingAmount:0.7];
   v16[2] = v11;
   v12 = [MEMORY[0x1E69DC898] colorEffectSaturate:2.8];
   v16[3] = v12;
-  v13 = [MEMORY[0x1E69DC898] colorEffectBrightness:a3];
+  v13 = [MEMORY[0x1E69DC898] colorEffectBrightness:brightness];
   v16[4] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:5];
 
@@ -820,15 +820,15 @@ uint64_t __50__CSProminentButtonControl_layoutIfNeededAnimated__block_invoke(uin
   luminanceMap = self->_luminanceMap;
   if (luminanceMap)
   {
-    v3 = luminanceMap;
+    _defaultLuminanceMap = luminanceMap;
   }
 
   else
   {
-    v3 = [(CSProminentButtonControl *)self _defaultLuminanceMap];
+    _defaultLuminanceMap = [(CSProminentButtonControl *)self _defaultLuminanceMap];
   }
 
-  return v3;
+  return _defaultLuminanceMap;
 }
 
 - (id)copyBackgroundView
@@ -839,12 +839,12 @@ uint64_t __50__CSProminentButtonControl_layoutIfNeededAnimated__block_invoke(uin
     [(CSProminentButtonControl *)self bounds];
     v4 = [v3 initWithFrame:?];
     [v4 setAutoresizingMask:18];
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [v4 setBackgroundColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v4 setBackgroundColor:whiteColor];
 
-    v6 = [(CSProminentButtonControl *)self isSelected];
+    isSelected = [(CSProminentButtonControl *)self isSelected];
     highlightProgress = 1.0;
-    if ((v6 & 1) == 0)
+    if ((isSelected & 1) == 0)
     {
       highlightProgress = self->_highlightProgress;
     }
@@ -871,8 +871,8 @@ uint64_t __50__CSProminentButtonControl_layoutIfNeededAnimated__block_invoke(uin
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CSProminentButtonControl *)self luminanceMap];
-  v13 = [v3 initWithFrame:v12 luminanceMap:{v5, v7, v9, v11}];
+  luminanceMap = [(CSProminentButtonControl *)self luminanceMap];
+  v13 = [v3 initWithFrame:luminanceMap luminanceMap:{v5, v7, v9, v11}];
 
   [(CSProminentButtonControl *)self edgeInsets];
   [v13 setEdgeInsets:?];
@@ -881,24 +881,24 @@ uint64_t __50__CSProminentButtonControl_layoutIfNeededAnimated__block_invoke(uin
   [v13 setUsesGlassMaterial:{-[CSProminentButtonControl usesGlassMaterial](self, "usesGlassMaterial")}];
   [(CSProminentButtonControl *)self glassLuminanceValue];
   [v13 setGlassLuminanceValue:?];
-  v14 = [v13 backgroundEffectView];
+  backgroundEffectView = [v13 backgroundEffectView];
 
-  if (v14)
+  if (backgroundEffectView)
   {
     v15 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v16 = [(CSProminentButtonControl *)self backgroundEffectView];
-    v17 = [v16 backgroundEffects];
-    v18 = [v15 initWithArray:v17 copyItems:1];
+    backgroundEffectView2 = [(CSProminentButtonControl *)self backgroundEffectView];
+    backgroundEffects = [backgroundEffectView2 backgroundEffects];
+    v18 = [v15 initWithArray:backgroundEffects copyItems:1];
 
-    v19 = [v13 backgroundEffectView];
-    [v19 setBackgroundEffects:v18];
+    backgroundEffectView3 = [v13 backgroundEffectView];
+    [backgroundEffectView3 setBackgroundEffects:v18];
 
-    v20 = [(CSProminentButtonControl *)self backgroundEffectViewGroupName];
-    [v13 setBackgroundEffectViewGroupName:v20];
+    backgroundEffectViewGroupName = [(CSProminentButtonControl *)self backgroundEffectViewGroupName];
+    [v13 setBackgroundEffectViewGroupName:backgroundEffectViewGroupName];
   }
 
-  v21 = [(CSProminentButtonControl *)self tintColor];
-  [v13 setTintColor:v21];
+  tintColor = [(CSProminentButtonControl *)self tintColor];
+  [v13 setTintColor:tintColor];
 
   [(CSProminentButtonControl *)self alpha];
   [v13 setAlpha:?];

@@ -1,22 +1,22 @@
 @interface MSServer
-- (BOOL)_isConnectionEntitled:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MSServer)initWithMediator:(id)a3;
-- (void)_addConnection:(id)a3;
+- (BOOL)_isConnectionEntitled:(id)entitled;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MSServer)initWithMediator:(id)mediator;
+- (void)_addConnection:(id)connection;
 - (void)_initializeServer;
-- (void)_removeConnection:(id)a3;
+- (void)_removeConnection:(id)connection;
 - (void)openConnection;
-- (void)serviceSettingDidUpdate:(id)a3 homeUserID:(id)a4;
-- (void)userDidRemoveService:(id)a3 homeUserID:(id)a4;
-- (void)userDidUpdateDefaultService:(id)a3 homeUserID:(id)a4;
+- (void)serviceSettingDidUpdate:(id)update homeUserID:(id)d;
+- (void)userDidRemoveService:(id)service homeUserID:(id)d;
+- (void)userDidUpdateDefaultService:(id)service homeUserID:(id)d;
 @end
 
 @implementation MSServer
 
-- (MSServer)initWithMediator:(id)a3
+- (MSServer)initWithMediator:(id)mediator
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  mediatorCopy = mediator;
   v11.receiver = self;
   v11.super_class = MSServer;
   v6 = [(MSServer *)&v11 init];
@@ -30,7 +30,7 @@
       _os_log_impl(&dword_23986C000, v7, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_mediator, a3);
+    objc_storeStrong(&v6->_mediator, mediator);
     [(MSServerMediator *)v6->_mediator setConnectionDelegate:v6];
     v8 = +[MSServiceUpdatedHandler shared];
     [v8 setDelegate:v6];
@@ -58,16 +58,16 @@
   [(NSXPCListener *)v7 resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSServer *)self _isConnectionEntitled:v7];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = [(MSServer *)self _isConnectionEntitled:connectionCopy];
   v9 = v8;
   if (v8)
   {
     v57 = v8;
-    v58 = v6;
+    v58 = listenerCopy;
     [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284C68FC0];
     v10 = v59 = self;
     v11 = MEMORY[0x277CBEB98];
@@ -134,12 +134,12 @@
     v50 = [v48 setWithObjects:{v49, objc_opt_class(), 0}];
     [v10 setClasses:v50 forSelector:sel_getMediaServiceChoicesForSharedUser_completion_ argumentIndex:0 ofReply:1];
 
-    [v7 setExportedInterface:v10];
-    [v7 setExportedObject:v59->_mediator];
+    [connectionCopy setExportedInterface:v10];
+    [connectionCopy setExportedObject:v59->_mediator];
     v51 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_284C54538];
-    [v7 setRemoteObjectInterface:v51];
+    [connectionCopy setRemoteObjectInterface:v51];
 
-    objc_initWeak(location, v7);
+    objc_initWeak(location, connectionCopy);
     objc_initWeak(&from, v59);
     v64[0] = MEMORY[0x277D85DD0];
     v64[1] = 3221225472;
@@ -147,15 +147,15 @@
     v64[3] = &unk_278AA2C60;
     objc_copyWeak(&v65, &from);
     objc_copyWeak(&v66, location);
-    [v7 setInterruptionHandler:v64];
+    [connectionCopy setInterruptionHandler:v64];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __47__MSServer_listener_shouldAcceptNewConnection___block_invoke_130;
     v61[3] = &unk_278AA2C60;
     objc_copyWeak(&v62, &from);
     objc_copyWeak(&v63, location);
-    [v7 setInvalidationHandler:v61];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:v61];
+    [connectionCopy resume];
     v52 = _MSLogingFacility();
     if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
     {
@@ -170,7 +170,7 @@
     objc_destroyWeak(&from);
     objc_destroyWeak(location);
 
-    v6 = v58;
+    listenerCopy = v58;
     v9 = v57;
   }
 
@@ -217,32 +217,32 @@ void __47__MSServer_listener_shouldAcceptNewConnection___block_invoke_130(uint64
 - (void)openConnection
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   v4 = _MSLogingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = currentConnection;
     _os_log_impl(&dword_23986C000, v4, OS_LOG_TYPE_DEFAULT, "Registering client connection, %@", &v6, 0xCu);
   }
 
-  [(MSServer *)self _addConnection:v3];
+  [(MSServer *)self _addConnection:currentConnection];
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceSettingDidUpdate:(id)a3 homeUserID:(id)a4
+- (void)serviceSettingDidUpdate:(id)update homeUserID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSServer *)self connections];
-  objc_sync_enter(v8);
+  updateCopy = update;
+  dCopy = d;
+  connections = [(MSServer *)self connections];
+  objc_sync_enter(connections);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(MSServer *)self connections];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  connections2 = [(MSServer *)self connections];
+  v10 = [connections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -253,41 +253,41 @@ void __47__MSServer_listener_shouldAcceptNewConnection___block_invoke_130(uint64
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(connections2);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
-        [v13 serviceSettingDidUpdate:v6 homeUserID:v7];
+        remoteObjectProxy = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
+        [remoteObjectProxy serviceSettingDidUpdate:updateCopy homeUserID:dCopy];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [connections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(connections);
   ICSiriPostDynamiteClientStateChangedNotification();
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userDidRemoveService:(id)a3 homeUserID:(id)a4
+- (void)userDidRemoveService:(id)service homeUserID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSServer *)self connections];
-  objc_sync_enter(v8);
+  serviceCopy = service;
+  dCopy = d;
+  connections = [(MSServer *)self connections];
+  objc_sync_enter(connections);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(MSServer *)self connections];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  connections2 = [(MSServer *)self connections];
+  v10 = [connections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -298,41 +298,41 @@ void __47__MSServer_listener_shouldAcceptNewConnection___block_invoke_130(uint64
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(connections2);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
-        [v13 userDidRemoveService:v6 homeUserID:v7];
+        remoteObjectProxy = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
+        [remoteObjectProxy userDidRemoveService:serviceCopy homeUserID:dCopy];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [connections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(connections);
   ICSiriPostDynamiteClientStateChangedNotification();
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)userDidUpdateDefaultService:(id)a3 homeUserID:(id)a4
+- (void)userDidUpdateDefaultService:(id)service homeUserID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MSServer *)self connections];
-  objc_sync_enter(v8);
+  serviceCopy = service;
+  dCopy = d;
+  connections = [(MSServer *)self connections];
+  objc_sync_enter(connections);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v9 = [(MSServer *)self connections];
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  connections2 = [(MSServer *)self connections];
+  v10 = [connections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = *v16;
@@ -343,69 +343,69 @@ void __47__MSServer_listener_shouldAcceptNewConnection___block_invoke_130(uint64
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(connections2);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
-        [v13 userDidUpdateDefaultService:v6 homeUserID:v7];
+        remoteObjectProxy = [*(*(&v15 + 1) + 8 * v12) remoteObjectProxy];
+        [remoteObjectProxy userDidUpdateDefaultService:serviceCopy homeUserID:dCopy];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [connections2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(connections);
   ICSiriPostDynamiteClientStateChangedNotification();
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isConnectionEntitled:(id)a3
+- (BOOL)_isConnectionEntitled:(id)entitled
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"com.apple.mediasetupd.client"];
-  v5 = [v4 BOOLValue];
+  entitledCopy = entitled;
+  v4 = [entitledCopy valueForEntitlement:@"com.apple.mediasetupd.client"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [v3 valueForEntitlement:@"com.apple.developer.mediasetup"];
+  v6 = [entitledCopy valueForEntitlement:@"com.apple.developer.mediasetup"];
 
-  LOBYTE(v3) = [v6 BOOLValue];
-  return (v5 | v3) & 1;
+  LOBYTE(entitledCopy) = [v6 BOOLValue];
+  return (bOOLValue | entitledCopy) & 1;
 }
 
-- (void)_addConnection:(id)a3
+- (void)_addConnection:(id)connection
 {
-  v6 = a3;
-  v4 = [(MSServer *)self connections];
-  objc_sync_enter(v4);
-  v5 = [(MSServer *)self connections];
-  [v5 addObject:v6];
+  connectionCopy = connection;
+  connections = [(MSServer *)self connections];
+  objc_sync_enter(connections);
+  connections2 = [(MSServer *)self connections];
+  [connections2 addObject:connectionCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(connections);
 }
 
-- (void)_removeConnection:(id)a3
+- (void)_removeConnection:(id)connection
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MSServer *)self connections];
-  objc_sync_enter(v5);
-  v6 = [(MSServer *)self connections];
-  [v6 removeObject:v4];
+  connectionCopy = connection;
+  connections = [(MSServer *)self connections];
+  objc_sync_enter(connections);
+  connections2 = [(MSServer *)self connections];
+  [connections2 removeObject:connectionCopy];
 
   v7 = _MSLogingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = connectionCopy;
     _os_log_impl(&dword_23986C000, v7, OS_LOG_TYPE_DEFAULT, "Removed Connection: (%@)", &v9, 0xCu);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(connections);
   v8 = *MEMORY[0x277D85DE8];
 }
 

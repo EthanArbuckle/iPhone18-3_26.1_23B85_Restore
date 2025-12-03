@@ -1,14 +1,14 @@
 @interface AVMutableAssetDownloadStorageManagementPolicy
 - (AVAssetDownloadedAssetEvictionPriority)priority;
 - (NSDate)expirationDate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)setExpirationDate:(NSDate *)expirationDate;
 - (void)setPriority:(AVAssetDownloadedAssetEvictionPriority)priority;
 @end
 
 @implementation AVMutableAssetDownloadStorageManagementPolicy
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AVAssetDownloadStorageManagementPolicy allocWithZone:?]];
   if (v4)

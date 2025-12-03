@@ -3,15 +3,15 @@
 - (CGSize)primitiveCanvasSize;
 - (void)awakeFromFetch;
 - (void)prepareForDeletion;
-- (void)setCanvasSize:(CGSize)a3;
+- (void)setCanvasSize:(CGSize)size;
 @end
 
 @implementation TDLayerStackRenditionSpec
 
-- (void)setCanvasSize:(CGSize)a3
+- (void)setCanvasSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(TDLayerStackRenditionSpec *)self willChangeValueForKey:@"canvasSize"];
   [(TDLayerStackRenditionSpec *)self setPrimitiveCanvasSize:width, height];
   [(TDLayerStackRenditionSpec *)self didChangeValueForKey:@"canvasSize"];

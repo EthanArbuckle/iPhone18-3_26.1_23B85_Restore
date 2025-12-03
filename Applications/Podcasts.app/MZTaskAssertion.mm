@@ -1,6 +1,6 @@
 @interface MZTaskAssertion
-+ (id)newBackgroundTaskWithExpirationHandler:(id)a3 debugInfo:(id)a4;
-- (MZTaskAssertion)initWithExpirationHandler:(id)a3 debugInfo:(id)a4;
++ (id)newBackgroundTaskWithExpirationHandler:(id)handler debugInfo:(id)info;
+- (MZTaskAssertion)initWithExpirationHandler:(id)handler debugInfo:(id)info;
 - (id)description;
 - (void)dealloc;
 - (void)invalidate;
@@ -9,20 +9,20 @@
 
 @implementation MZTaskAssertion
 
-- (MZTaskAssertion)initWithExpirationHandler:(id)a3 debugInfo:(id)a4
+- (MZTaskAssertion)initWithExpirationHandler:(id)handler debugInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  infoCopy = info;
   v20.receiver = self;
   v20.super_class = MZTaskAssertion;
   v8 = [(MZTaskAssertion *)&v20 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [handlerCopy copy];
     expireHandler = v8->_expireHandler;
     v8->_expireHandler = v9;
 
-    v11 = [v7 copy];
+    v11 = [infoCopy copy];
     debugInfo = v8->_debugInfo;
     v8->_debugInfo = v11;
 
@@ -43,11 +43,11 @@
   return v8;
 }
 
-+ (id)newBackgroundTaskWithExpirationHandler:(id)a3 debugInfo:(id)a4
++ (id)newBackgroundTaskWithExpirationHandler:(id)handler debugInfo:(id)info
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MZTaskAssertion alloc] initWithExpirationHandler:v6 debugInfo:v5];
+  infoCopy = info;
+  handlerCopy = handler;
+  v7 = [[MZTaskAssertion alloc] initWithExpirationHandler:handlerCopy debugInfo:infoCopy];
 
   return v7;
 }
@@ -66,7 +66,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Background time expired. App will sleep soon. Assertion: %@", buf, 0xCu);
   }
 

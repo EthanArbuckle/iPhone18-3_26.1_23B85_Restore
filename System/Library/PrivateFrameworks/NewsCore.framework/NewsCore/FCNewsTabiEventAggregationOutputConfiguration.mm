@@ -1,6 +1,6 @@
 @interface FCNewsTabiEventAggregationOutputConfiguration
-- (FCNewsTabiEventAggregationOutputConfiguration)initWithDictionary:(id)a3;
-- (FCNewsTabiEventAggregationOutputConfiguration)initWithOutputs:(id)a3;
+- (FCNewsTabiEventAggregationOutputConfiguration)initWithDictionary:(id)dictionary;
+- (FCNewsTabiEventAggregationOutputConfiguration)initWithOutputs:(id)outputs;
 - (id)description;
 @end
 
@@ -9,19 +9,19 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiEventAggregationOutputConfiguration *)self outputNames];
-  v5 = [v4 indentedDescription];
-  [v3 appendFormat:@"\n\toutputNames: %@;", v5];
+  outputNames = [(FCNewsTabiEventAggregationOutputConfiguration *)self outputNames];
+  indentedDescription = [outputNames indentedDescription];
+  [v3 appendFormat:@"\n\toutputNames: %@;", indentedDescription];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiEventAggregationOutputConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiEventAggregationOutputConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationArrayValueWithDefaultValue(v4, @"outputNames", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationArrayValueWithDefaultValue(dictionaryCopy, @"outputNames", 0);
   v6 = v5;
   if (v5)
   {
@@ -36,7 +36,7 @@
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -45,12 +45,12 @@
     v13[1] = 3221225472;
     v13[2] = __68__FCNewsTabiEventAggregationOutputConfiguration_initWithDictionary___block_invoke;
     v13[3] = &unk_1E7C36F98;
-    v14 = v4;
-    v10 = __68__FCNewsTabiEventAggregationOutputConfiguration_initWithDictionary___block_invoke(v13);
+    v14 = dictionaryCopy;
+    selfCopy = __68__FCNewsTabiEventAggregationOutputConfiguration_initWithDictionary___block_invoke(v13);
     v7 = v14;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 uint64_t __68__FCNewsTabiEventAggregationOutputConfiguration_initWithDictionary___block_invoke(uint64_t a1)
@@ -71,15 +71,15 @@ uint64_t __68__FCNewsTabiEventAggregationOutputConfiguration_initWithDictionary_
   return 0;
 }
 
-- (FCNewsTabiEventAggregationOutputConfiguration)initWithOutputs:(id)a3
+- (FCNewsTabiEventAggregationOutputConfiguration)initWithOutputs:(id)outputs
 {
-  v4 = a3;
+  outputsCopy = outputs;
   v5 = MEMORY[0x1E695DFD8];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__FCNewsTabiEventAggregationOutputConfiguration_initWithOutputs___block_invoke;
   v15[3] = &unk_1E7C371F8;
-  v6 = v4;
+  v6 = outputsCopy;
   v16 = v6;
   v7 = [v5 fc_set:v15];
   if ([v7 count])
@@ -89,13 +89,13 @@ uint64_t __68__FCNewsTabiEventAggregationOutputConfiguration_initWithDictionary_
     v8 = [(FCNewsTabiEventAggregationOutputConfiguration *)&v14 init];
     if (v8)
     {
-      v9 = [v7 allObjects];
+      allObjects = [v7 allObjects];
       outputNames = v8->_outputNames;
-      v8->_outputNames = v9;
+      v8->_outputNames = allObjects;
     }
 
     self = v8;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -107,10 +107,10 @@ uint64_t __68__FCNewsTabiEventAggregationOutputConfiguration_initWithDictionary_
       _os_log_error_impl(&dword_1B63EF000, v12, OS_LOG_TYPE_ERROR, "Failed to initialize FCNewsTabiEventAggregationOutputConfiguration from external outputs due to their being no outputs specified", buf, 2u);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 void __65__FCNewsTabiEventAggregationOutputConfiguration_initWithOutputs___block_invoke(uint64_t a1, void *a2)

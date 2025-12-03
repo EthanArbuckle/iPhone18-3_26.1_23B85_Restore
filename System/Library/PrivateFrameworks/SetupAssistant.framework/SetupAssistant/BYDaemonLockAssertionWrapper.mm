@@ -1,21 +1,21 @@
 @interface BYDaemonLockAssertionWrapper
-- (BYDaemonLockAssertionWrapper)initWithAssertionRef:(__MKBAssertion *)a3 purpose:(id)a4;
+- (BYDaemonLockAssertionWrapper)initWithAssertionRef:(__MKBAssertion *)ref purpose:(id)purpose;
 - (void)dealloc;
 @end
 
 @implementation BYDaemonLockAssertionWrapper
 
-- (BYDaemonLockAssertionWrapper)initWithAssertionRef:(__MKBAssertion *)a3 purpose:(id)a4
+- (BYDaemonLockAssertionWrapper)initWithAssertionRef:(__MKBAssertion *)ref purpose:(id)purpose
 {
-  v6 = a4;
+  purposeCopy = purpose;
   v10.receiver = self;
   v10.super_class = BYDaemonLockAssertionWrapper;
   v7 = [(BYDaemonLockAssertionWrapper *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(BYDaemonLockAssertionWrapper *)v7 setAssertionRef:a3];
-    [(BYDaemonLockAssertionWrapper *)v8 setPurpose:v6];
+    [(BYDaemonLockAssertionWrapper *)v7 setAssertionRef:ref];
+    [(BYDaemonLockAssertionWrapper *)v8 setPurpose:purposeCopy];
   }
 
   return v8;
@@ -28,9 +28,9 @@
     v3 = _BYLoggingFacility();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(BYDaemonLockAssertionWrapper *)self purpose];
+      purpose = [(BYDaemonLockAssertionWrapper *)self purpose];
       *buf = 138543362;
-      v7 = v4;
+      v7 = purpose;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Releasing device lock assertion for purpose '%{public}@'", buf, 0xCu);
     }
 

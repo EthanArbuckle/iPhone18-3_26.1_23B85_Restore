@@ -1,39 +1,39 @@
 @interface SCLTransportController
-- (BOOL)sendSchedule:(id)a3 identifier:(id *)a4 error:(id *)a5;
+- (BOOL)sendSchedule:(id)schedule identifier:(id *)identifier error:(id *)error;
 - (IDSDevice)device;
 - (SCLSettingsSyncCoordinator)settingsSyncCoordinator;
-- (SCLTransportController)initWithNRDevice:(id)a3 deviceRegistry:(id)a4 service:(id)a5 deviceIdentifier:(id)a6;
+- (SCLTransportController)initWithNRDevice:(id)device deviceRegistry:(id)registry service:(id)service deviceIdentifier:(id)identifier;
 - (SCLTransportControllerDelegate)delegate;
 - (SCLTransportService)transportService;
-- (void)addUnlockHistoryItem:(id)a3;
-- (void)applySchedule:(id)a3;
+- (void)addUnlockHistoryItem:(id)item;
+- (void)applySchedule:(id)schedule;
 - (void)device;
-- (void)handleIncomingHistoryItem:(id)a3;
-- (void)handleIncomingSchedule:(id)a3 forType:(int)a4;
+- (void)handleIncomingHistoryItem:(id)item;
+- (void)handleIncomingSchedule:(id)schedule forType:(int)type;
 - (void)handleRemoteScheduleSettingsRequest;
 - (void)requestRemoteSettings;
-- (void)service:(id)a3 didDeliverMessageWithIdentifier:(id)a4;
-- (void)service:(id)a3 incomingProtobuf:(id)a4 fromID:(id)a5 context:(id)a6;
+- (void)service:(id)service didDeliverMessageWithIdentifier:(id)identifier;
+- (void)service:(id)service incomingProtobuf:(id)protobuf fromID:(id)d context:(id)context;
 @end
 
 @implementation SCLTransportController
 
-- (SCLTransportController)initWithNRDevice:(id)a3 deviceRegistry:(id)a4 service:(id)a5 deviceIdentifier:(id)a6
+- (SCLTransportController)initWithNRDevice:(id)device deviceRegistry:(id)registry service:(id)service deviceIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  deviceCopy = device;
+  registryCopy = registry;
+  serviceCopy = service;
+  identifierCopy = identifier;
   v20.receiver = self;
   v20.super_class = SCLTransportController;
   v15 = [(SCLTransportController *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_NRDevice, a3);
-    objc_storeStrong(&v16->_deviceRegistry, a4);
-    objc_storeStrong(&v16->_service, a5);
-    v17 = [v14 copy];
+    objc_storeStrong(&v15->_NRDevice, device);
+    objc_storeStrong(&v16->_deviceRegistry, registry);
+    objc_storeStrong(&v16->_service, service);
+    v17 = [identifierCopy copy];
     IDSDeviceIdentifier = v16->_IDSDeviceIdentifier;
     v16->_IDSDeviceIdentifier = v17;
   }
@@ -43,12 +43,12 @@
 
 - (IDSDevice)device
 {
-  v3 = [(SCLTransportController *)self service];
-  v4 = [v3 linkedDevicesWithRelationship:2];
+  service = [(SCLTransportController *)self service];
+  v4 = [service linkedDevicesWithRelationship:2];
 
-  v5 = [(SCLTransportController *)self deviceRegistry];
-  v6 = [(SCLTransportController *)self NRDevice];
-  v7 = [v5 deviceForNRDevice:v6 fromIDSDevices:v4];
+  deviceRegistry = [(SCLTransportController *)self deviceRegistry];
+  nRDevice = [(SCLTransportController *)self NRDevice];
+  v7 = [deviceRegistry deviceForNRDevice:nRDevice fromIDSDevices:v4];
 
   if (!v7)
   {
@@ -68,12 +68,12 @@
   return v7;
 }
 
-- (void)service:(id)a3 incomingProtobuf:(id)a4 fromID:(id)a5 context:(id)a6
+- (void)service:(id)service incomingProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v7 = a4;
-  v8 = [(SCLTransportController *)self delegate];
+  protobufCopy = protobuf;
+  delegate = [(SCLTransportController *)self delegate];
 
-  if (!v8)
+  if (!delegate)
   {
     v9 = scl_transport_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
@@ -82,25 +82,25 @@
     }
   }
 
-  v10 = [v7 type];
-  if (v10 > 2)
+  type = [protobufCopy type];
+  if (type > 2)
   {
-    if (v10 == 3)
+    if (type == 3)
     {
       [(SCLTransportController *)self handleRemoteScheduleSettingsRequest];
       goto LABEL_19;
     }
 
-    if (v10 == 4)
+    if (type == 4)
     {
       v14 = [SCLPBScheduleRequestResponse alloc];
-      v15 = [v7 data];
-      v13 = [(SCLPBScheduleRequestResponse *)v14 initWithData:v15];
+      data = [protobufCopy data];
+      v13 = [(SCLPBScheduleRequestResponse *)v14 initWithData:data];
 
       if ([(SCLPBScheduleRequestResponse *)v13 hasScheduleSettings])
       {
-        v16 = [(SCLPBScheduleRequestResponse *)v13 scheduleSettings];
-        -[SCLTransportController handleIncomingSchedule:forType:](self, "handleIncomingSchedule:forType:", v16, [v7 type]);
+        scheduleSettings = [(SCLPBScheduleRequestResponse *)v13 scheduleSettings];
+        -[SCLTransportController handleIncomingSchedule:forType:](self, "handleIncomingSchedule:forType:", scheduleSettings, [protobufCopy type]);
       }
 
       goto LABEL_17;
@@ -109,21 +109,21 @@
 
   else
   {
-    if (v10 == 1)
+    if (type == 1)
     {
       v18 = [SCLPBScheduleSettings alloc];
-      v19 = [v7 data];
-      v13 = [(SCLPBScheduleSettings *)v18 initWithData:v19];
+      data2 = [protobufCopy data];
+      v13 = [(SCLPBScheduleSettings *)v18 initWithData:data2];
 
-      -[SCLTransportController handleIncomingSchedule:forType:](self, "handleIncomingSchedule:forType:", v13, [v7 type]);
+      -[SCLTransportController handleIncomingSchedule:forType:](self, "handleIncomingSchedule:forType:", v13, [protobufCopy type]);
       goto LABEL_17;
     }
 
-    if (v10 == 2)
+    if (type == 2)
     {
       v11 = [SCLPBUnlockHistoryItem alloc];
-      v12 = [v7 data];
-      v13 = [(SCLPBUnlockHistoryItem *)v11 initWithData:v12];
+      data3 = [protobufCopy data];
+      v13 = [(SCLPBUnlockHistoryItem *)v11 initWithData:data3];
 
       [(SCLTransportController *)self handleIncomingHistoryItem:v13];
 LABEL_17:
@@ -135,30 +135,30 @@ LABEL_17:
   v17 = scl_transport_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    [SCLTransportController service:v7 incomingProtobuf:v17 fromID:? context:?];
+    [SCLTransportController service:protobufCopy incomingProtobuf:v17 fromID:? context:?];
   }
 
 LABEL_19:
 }
 
-- (void)service:(id)a3 didDeliverMessageWithIdentifier:(id)a4
+- (void)service:(id)service didDeliverMessageWithIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [(SCLTransportController *)self settingsSyncCoordinator];
-  [v6 didDeliverMessageWithIdentifier:v5];
+  identifierCopy = identifier;
+  settingsSyncCoordinator = [(SCLTransportController *)self settingsSyncCoordinator];
+  [settingsSyncCoordinator didDeliverMessageWithIdentifier:identifierCopy];
 }
 
-- (void)addUnlockHistoryItem:(id)a3
+- (void)addUnlockHistoryItem:(id)item
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = SCLPBUnlockHistoryItemFromSCLUnlockHistoryItem(a3);
-  v5 = [v4 data];
-  v6 = [objc_alloc(MEMORY[0x277D189F0]) initWithProtobufData:v5 type:2 isResponse:0];
-  v7 = [(SCLTransportController *)self transportService];
-  v8 = [(SCLTransportController *)self device];
+  v4 = SCLPBUnlockHistoryItemFromSCLUnlockHistoryItem(item);
+  data = [v4 data];
+  v6 = [objc_alloc(MEMORY[0x277D189F0]) initWithProtobufData:data type:2 isResponse:0];
+  transportService = [(SCLTransportController *)self transportService];
+  device = [(SCLTransportController *)self device];
   v15 = 0;
   v16 = 0;
-  v9 = [v7 sendProtobuf:v6 toDevice:v8 options:0 identifier:&v16 error:&v15];
+  v9 = [transportService sendProtobuf:v6 toDevice:device options:0 identifier:&v16 error:&v15];
   v10 = v16;
   v11 = v15;
 
@@ -182,30 +182,30 @@ LABEL_19:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIncomingSchedule:(id)a3 forType:(int)a4
+- (void)handleIncomingSchedule:(id)schedule forType:(int)type
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = SCLScheduleSettingsFromSCLPBScheduleSettings(a3);
+  v6 = SCLScheduleSettingsFromSCLPBScheduleSettings(schedule);
   v7 = scl_transport_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412546;
     v11 = v6;
     v12 = 1024;
-    v13 = a4 == 4;
+    v13 = type == 4;
     _os_log_impl(&dword_264829000, v7, OS_LOG_TYPE_DEFAULT, "Received incoming schedule: %@ forInitialSync: %{BOOL}u", &v10, 0x12u);
   }
 
-  v8 = [(SCLTransportController *)self delegate];
-  [v8 transportController:self didReceiveSchedule:v6 forInitialSync:a4 == 4];
+  delegate = [(SCLTransportController *)self delegate];
+  [delegate transportController:self didReceiveSchedule:v6 forInitialSync:type == 4];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleIncomingHistoryItem:(id)a3
+- (void)handleIncomingHistoryItem:(id)item
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = SCLUnlockHistoryItemFromSCLPBUnlockHistoryItem(a3);
+  v4 = SCLUnlockHistoryItemFromSCLPBUnlockHistoryItem(item);
   v5 = scl_transport_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -214,8 +214,8 @@ LABEL_19:
     _os_log_impl(&dword_264829000, v5, OS_LOG_TYPE_INFO, "Handle incoming history item %@", &v8, 0xCu);
   }
 
-  v6 = [(SCLTransportController *)self delegate];
-  [v6 transportController:self didReceiveUnlockHistoryItem:v4];
+  delegate = [(SCLTransportController *)self delegate];
+  [delegate transportController:self didReceiveUnlockHistoryItem:v4];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -228,37 +228,37 @@ LABEL_19:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)sendSchedule:(id)a3 identifier:(id *)a4 error:(id *)a5
+- (BOOL)sendSchedule:(id)schedule identifier:(id *)identifier error:(id *)error
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v8 = SCLPBScheduleSettingsFromSCLScheduleSettings(a3);
-  v9 = [v8 data];
-  v10 = [objc_alloc(MEMORY[0x277D189F0]) initWithProtobufData:v9 type:1 isResponse:0];
+  v8 = SCLPBScheduleSettingsFromSCLScheduleSettings(schedule);
+  data = [v8 data];
+  v10 = [objc_alloc(MEMORY[0x277D189F0]) initWithProtobufData:data type:1 isResponse:0];
   v16 = *MEMORY[0x277D18678];
   v17[0] = MEMORY[0x277CBEC38];
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  v12 = [(SCLTransportController *)self transportService];
-  v13 = [(SCLTransportController *)self device];
-  LOBYTE(a5) = [v12 sendProtobuf:v10 toDevice:v13 options:v11 identifier:a4 error:a5];
+  transportService = [(SCLTransportController *)self transportService];
+  device = [(SCLTransportController *)self device];
+  LOBYTE(error) = [transportService sendProtobuf:v10 toDevice:device options:v11 identifier:identifier error:error];
 
   v14 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-- (void)applySchedule:(id)a3
+- (void)applySchedule:(id)schedule
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = SCLPBScheduleSettingsFromSCLScheduleSettings(a3);
-  v5 = [v4 data];
-  v6 = [objc_alloc(MEMORY[0x277D189F0]) initWithProtobufData:v5 type:1 isResponse:0];
+  v4 = SCLPBScheduleSettingsFromSCLScheduleSettings(schedule);
+  data = [v4 data];
+  v6 = [objc_alloc(MEMORY[0x277D189F0]) initWithProtobufData:data type:1 isResponse:0];
   v20 = *MEMORY[0x277D18678];
   v21[0] = MEMORY[0x277CBEC38];
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-  v8 = [(SCLTransportController *)self transportService];
-  v9 = [(SCLTransportController *)self device];
+  transportService = [(SCLTransportController *)self transportService];
+  device = [(SCLTransportController *)self device];
   v16 = 0;
   v17 = 0;
-  v10 = [v8 sendProtobuf:v6 toDevice:v9 options:v7 identifier:&v17 error:&v16];
+  v10 = [transportService sendProtobuf:v6 toDevice:device options:v7 identifier:&v17 error:&v16];
   v11 = v17;
   v12 = v16;
 

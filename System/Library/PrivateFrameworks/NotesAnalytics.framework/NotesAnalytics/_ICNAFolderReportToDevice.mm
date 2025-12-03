@@ -1,6 +1,6 @@
 @interface _ICNAFolderReportToDevice
 - (_ICNAFolderReportToDevice)init;
-- (void)updateFolderCollaborationMatrixWithCollaborationStatus:(id)a3 collaborationType:(id)a4;
+- (void)updateFolderCollaborationMatrixWithCollaborationStatus:(id)status collaborationType:(id)type;
 @end
 
 @implementation _ICNAFolderReportToDevice
@@ -20,24 +20,24 @@
   return result;
 }
 
-- (void)updateFolderCollaborationMatrixWithCollaborationStatus:(id)a3 collaborationType:(id)a4
+- (void)updateFolderCollaborationMatrixWithCollaborationStatus:(id)status collaborationType:(id)type
 {
-  v6 = a4;
-  v7 = [a3 collaborationStatus];
+  typeCopy = type;
+  collaborationStatus = [status collaborationStatus];
   v8 = 3;
-  if (v7 == 1)
+  if (collaborationStatus == 1)
   {
     v8 = 0;
   }
 
-  v9 = v7 != 2 && v7 != 1;
-  if (v7 == 2)
+  v9 = collaborationStatus != 2 && collaborationStatus != 1;
+  if (collaborationStatus == 2)
   {
     v8 = 1;
   }
 
-  v10 = v7 != 3 && v9;
-  if (v7 == 3)
+  v10 = collaborationStatus != 3 && v9;
+  if (collaborationStatus == 3)
   {
     v11 = 2;
   }
@@ -47,11 +47,11 @@
     v11 = v8;
   }
 
-  v12 = [v6 collaborationType];
+  collaborationType = [typeCopy collaborationType];
 
-  if ((v12 - 1) <= 2 && !v10)
+  if ((collaborationType - 1) <= 2 && !v10)
   {
-    v13 = self + 12 * v11 + 4 * v12 - 4;
+    v13 = self + 12 * v11 + 4 * collaborationType - 4;
     ++*(v13 + 2);
   }
 }

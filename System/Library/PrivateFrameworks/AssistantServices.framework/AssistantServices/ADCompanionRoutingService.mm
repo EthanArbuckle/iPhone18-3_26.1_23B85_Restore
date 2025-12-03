@@ -1,12 +1,12 @@
 @interface ADCompanionRoutingService
 - (ADCompanionRoutingService)init;
-- (id)commandsForDomain:(id)a3;
+- (id)commandsForDomain:(id)domain;
 - (id)domains;
-- (void)_callStateDidChange:(id)a3;
-- (void)_handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
+- (void)_callStateDidChange:(id)change;
+- (void)_handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
 - (void)_processPendingCallResultBlocks;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
-- (void)preheatDomain:(id)a3;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
+- (void)preheatDomain:(id)domain;
 @end
 
 @implementation ADCompanionRoutingService
@@ -64,7 +64,7 @@
   }
 }
 
-- (void)_callStateDidChange:(id)a3
+- (void)_callStateDidChange:(id)change
 {
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
@@ -75,22 +75,22 @@
   dispatch_async(serialQueue, block);
 }
 
-- (void)preheatDomain:(id)a3
+- (void)preheatDomain:(id)domain
 {
-  v3 = a3;
+  domainCopy = domain;
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v16 = 136315394;
     v17 = "[ADCompanionRoutingService preheatDomain:]";
     v18 = 2112;
-    v19 = v3;
+    v19 = domainCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s preheating companion service domain: %@", &v16, 0x16u);
   }
 
   if (qword_10058FF80 == -1)
   {
-    if (!v3)
+    if (!domainCopy)
     {
       goto LABEL_10;
     }
@@ -99,34 +99,34 @@
   else
   {
     dispatch_once(&qword_10058FF80, &stru_100510470);
-    if (!v3)
+    if (!domainCopy)
     {
       goto LABEL_10;
     }
   }
 
-  v5 = [qword_10058FF78 objectForKeyedSubscript:v3];
+  v5 = [qword_10058FF78 objectForKeyedSubscript:domainCopy];
   if (v5)
   {
     v6 = v5;
     v7 = objc_alloc_init(SAAceDomainSignal);
     v8 = +[NSUUID UUID];
-    v9 = [v8 UUIDString];
+    uUIDString = [v8 UUIDString];
 
-    [v7 setAceId:v9];
+    [v7 setAceId:uUIDString];
     [v7 setDomain:v6];
     v10 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
     {
       v11 = v10;
-      v12 = [v7 encodedClassName];
-      v13 = [v7 groupIdentifier];
+      encodedClassName = [v7 encodedClassName];
+      groupIdentifier = [v7 groupIdentifier];
       v16 = 136315650;
       v17 = "[ADCompanionRoutingService preheatDomain:]";
       v18 = 2112;
-      v19 = v12;
+      v19 = encodedClassName;
       v20 = 2112;
-      v21 = v13;
+      v21 = groupIdentifier;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s Dispatching command (%@) for domain (%@)", &v16, 0x20u);
     }
 
@@ -143,43 +143,43 @@ LABEL_10:
     v16 = 136315394;
     v17 = "[ADCompanionRoutingService preheatDomain:]";
     v18 = 2112;
-    v19 = v3;
+    v19 = domainCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s unsupported preheat domain: %@", &v16, 0x16u);
   }
 
 LABEL_12:
 }
 
-- (void)_handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)_handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  commandCopy = command;
+  domainCopy = domain;
+  contextCopy = context;
+  replyCopy = reply;
   v14 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v15 = v14;
-    v16 = [v10 encodedClassName];
-    v17 = [v10 groupIdentifier];
+    encodedClassName = [commandCopy encodedClassName];
+    groupIdentifier = [commandCopy groupIdentifier];
     *buf = 136315650;
     v31 = "[ADCompanionRoutingService _handleCommand:forDomain:executionContext:reply:]";
     v32 = 2112;
-    v33 = v16;
+    v33 = encodedClassName;
     v34 = 2112;
-    v35 = v17;
+    v35 = groupIdentifier;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s Dispatching command (%@) for domain (%@)", buf, 0x20u);
   }
 
-  v18 = [v10 encodedClassName];
-  v19 = [v18 isEqualToString:SAPhoneCallClassIdentifier];
+  encodedClassName2 = [commandCopy encodedClassName];
+  v19 = [encodedClassName2 isEqualToString:SAPhoneCallClassIdentifier];
   v20 = v19;
   if (!v19)
   {
-    if ([v18 isEqualToString:SAUILParseExpressionsClassIdentifier])
+    if ([encodedClassName2 isEqualToString:SAUILParseExpressionsClassIdentifier])
     {
-      v25 = [v10 targetDevice];
-      v24 = [v25 assistantId];
+      targetDevice = [commandCopy targetDevice];
+      assistantId = [targetDevice assistantId];
 
 LABEL_10:
       v26 = +[ADCommandCenter sharedCommandCenter];
@@ -188,62 +188,62 @@ LABEL_10:
       v27[2] = sub_1000AA978;
       v27[3] = &unk_100510450;
       v27[4] = self;
-      v28 = v13;
+      v28 = replyCopy;
       v29 = v20;
-      [v26 _remoteExecute_remoteDeviceExecuteCommand:v10 onDeviceForAssistantId:v24 executionContext:v12 completion:v27];
+      [v26 _remoteExecute_remoteDeviceExecuteCommand:commandCopy onDeviceForAssistantId:assistantId executionContext:contextCopy completion:v27];
 
       goto LABEL_11;
     }
 
 LABEL_9:
-    v24 = 0;
+    assistantId = 0;
     goto LABEL_10;
   }
 
   v21 = +[ADCommandCenter sharedCommandCenter];
-  v22 = [v21 _hasIncomingCall];
+  _hasIncomingCall = [v21 _hasIncomingCall];
 
-  if (!v22)
+  if (!_hasIncomingCall)
   {
     goto LABEL_9;
   }
 
-  if (v13)
+  if (replyCopy)
   {
     v23 = [SACommandFailed alloc];
-    v24 = [v23 initWithErrorCode:SAPhoneCompanionHasIncomingCallErrorCode];
-    (*(v13 + 2))(v13, v24, 0);
+    assistantId = [v23 initWithErrorCode:SAPhoneCompanionHasIncomingCallErrorCode];
+    (*(replyCopy + 2))(replyCopy, assistantId, 0);
 LABEL_11:
   }
 }
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  commandCopy = command;
+  domainCopy = domain;
+  contextCopy = context;
+  replyCopy = reply;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000AAF30;
   block[3] = &unk_10051D2A0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = commandCopy;
+  v21 = domainCopy;
+  v22 = contextCopy;
+  v23 = replyCopy;
+  v15 = replyCopy;
+  v16 = contextCopy;
+  v17 = domainCopy;
+  v18 = commandCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (id)commandsForDomain:(id)a3
+- (id)commandsForDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SASmsGroupIdentifier])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:SASmsGroupIdentifier])
   {
     v16[0] = SASmsSearchClassIdentifier;
     v16[1] = SADomainObjectCancelClassIdentifier;
@@ -261,7 +261,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ([v3 isEqualToString:SAABGroupIdentifier])
+  if ([domainCopy isEqualToString:SAABGroupIdentifier])
   {
     v15[0] = SADomainObjectCancelClassIdentifier;
     v15[1] = SADomainObjectCommitClassIdentifier;
@@ -275,7 +275,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:SAReminderGroupIdentifier])
+  if ([domainCopy isEqualToString:SAReminderGroupIdentifier])
   {
     v14[0] = SAReminderSearchClassIdentifier;
     v14[1] = SAReminderSnoozeClassIdentifier;
@@ -289,7 +289,7 @@ LABEL_13:
     goto LABEL_3;
   }
 
-  if ([v3 isEqualToString:SAUILGroupIdentifier])
+  if ([domainCopy isEqualToString:SAUILGroupIdentifier])
   {
     v13 = SAUILParseExpressionsClassIdentifier;
     v4 = &v13;
@@ -298,14 +298,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:SAGroupIdentifier])
+  if ([domainCopy isEqualToString:SAGroupIdentifier])
   {
     v12 = SAAcknowledgeAlertClassIdentifier;
     v4 = &v12;
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:SAPhoneGroupIdentifier])
+  if ([domainCopy isEqualToString:SAPhoneGroupIdentifier])
   {
     v11[0] = SAPhoneCallClassIdentifier;
     v11[1] = SAPhoneSearchClassIdentifier;
@@ -315,7 +315,7 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:SACalendarGroupIdentifier])
+  if ([domainCopy isEqualToString:SACalendarGroupIdentifier])
   {
     v10[0] = SADomainObjectDeleteClassIdentifier;
     v10[1] = SADomainObjectCommitClassIdentifier;
@@ -327,7 +327,7 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:SAEmailGroupIdentifier])
+  if ([domainCopy isEqualToString:SAEmailGroupIdentifier])
   {
     v9[0] = SADomainObjectCreateClassIdentifier;
     v9[1] = SADomainObjectCommitClassIdentifier;
@@ -338,7 +338,7 @@ LABEL_19:
     goto LABEL_13;
   }
 
-  if ([v3 isEqualToString:SAStockGroupIdentifier])
+  if ([domainCopy isEqualToString:SAStockGroupIdentifier])
   {
     v8[0] = SAStockAddClassIdentifier;
     v8[1] = SAStockSearchClassIdentifier;

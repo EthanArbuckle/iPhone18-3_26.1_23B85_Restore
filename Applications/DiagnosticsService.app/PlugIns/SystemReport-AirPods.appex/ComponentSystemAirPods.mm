@@ -1,9 +1,9 @@
 @interface ComponentSystemAirPods
 - (BOOL)isPresent;
 - (id)diagnosticsVersion;
-- (id)serialNumberFromAacpInfo:(id)a3;
+- (id)serialNumberFromAacpInfo:(id)info;
 - (void)bluetoothManagerDidBecomeAvailable;
-- (void)populateAttributes:(id)a3;
+- (void)populateAttributes:(id)attributes;
 @end
 
 @implementation ComponentSystemAirPods
@@ -56,9 +56,9 @@
     }
   }
 
-  v9 = [(ComponentSystemAirPods *)self device];
+  device = [(ComponentSystemAirPods *)self device];
 
-  if (!v9)
+  if (!device)
   {
     v10 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -73,73 +73,73 @@ LABEL_15:
 
 - (BOOL)isPresent
 {
-  v2 = self;
-  v3 = [(ComponentAirPodsBase *)self btManagerAvailableSemaphore];
+  selfCopy = self;
+  btManagerAvailableSemaphore = [(ComponentAirPodsBase *)self btManagerAvailableSemaphore];
   v4 = dispatch_time(0, 3000000000);
-  dispatch_semaphore_wait(v3, v4);
+  dispatch_semaphore_wait(btManagerAvailableSemaphore, v4);
 
-  v5 = [(ComponentSystemAirPods *)v2 device];
-  LOBYTE(v2) = v5 != 0;
+  device = [(ComponentSystemAirPods *)selfCopy device];
+  LOBYTE(selfCopy) = device != 0;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(ComponentSystemAirPods *)self device];
-  v6 = [v5 address];
-  [v4 setObject:v6 forKeyedSubscript:@"MACAddress"];
+  attributesCopy = attributes;
+  device = [(ComponentSystemAirPods *)self device];
+  address = [device address];
+  [attributesCopy setObject:address forKeyedSubscript:@"MACAddress"];
 
-  v7 = [(ComponentSystemAirPods *)self device];
-  v8 = [v7 name];
-  [v4 setObject:v8 forKeyedSubscript:@"name"];
+  device2 = [(ComponentSystemAirPods *)self device];
+  name = [device2 name];
+  [attributesCopy setObject:name forKeyedSubscript:@"name"];
 
-  v9 = [(ComponentSystemAirPods *)self device];
-  v10 = [v9 productName];
-  [v4 setObject:v10 forKeyedSubscript:@"productName"];
+  device3 = [(ComponentSystemAirPods *)self device];
+  productName = [device3 productName];
+  [attributesCopy setObject:productName forKeyedSubscript:@"productName"];
 
-  v11 = [(ComponentSystemAirPods *)self device];
-  v12 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v11 productId]);
-  [v4 setObject:v12 forKeyedSubscript:@"prodId"];
+  device4 = [(ComponentSystemAirPods *)self device];
+  v12 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [device4 productId]);
+  [attributesCopy setObject:v12 forKeyedSubscript:@"prodId"];
 
-  v13 = [(ComponentSystemAirPods *)self device];
-  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v13 connected]);
-  [v4 setObject:v14 forKeyedSubscript:@"isConnected"];
+  device5 = [(ComponentSystemAirPods *)self device];
+  v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [device5 connected]);
+  [attributesCopy setObject:v14 forKeyedSubscript:@"isConnected"];
 
-  v15 = [(ComponentSystemAirPods *)self device];
-  v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v15 isTemporaryPaired]);
-  [v4 setObject:v16 forKeyedSubscript:@"isTempPaired"];
+  device6 = [(ComponentSystemAirPods *)self device];
+  v16 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [device6 isTemporaryPaired]);
+  [attributesCopy setObject:v16 forKeyedSubscript:@"isTempPaired"];
 
-  v17 = [(ComponentSystemAirPods *)self device];
-  v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v17 inEarDetectEnabled]);
-  [v4 setObject:v18 forKeyedSubscript:@"inEarDetectEnabled"];
+  device7 = [(ComponentSystemAirPods *)self device];
+  v18 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [device7 inEarDetectEnabled]);
+  [attributesCopy setObject:v18 forKeyedSubscript:@"inEarDetectEnabled"];
 
-  v19 = [(ComponentSystemAirPods *)self device];
-  v20 = -[ComponentAirPodsBase stringForListeningMode:](self, "stringForListeningMode:", [v19 listeningMode]);
-  [v4 setObject:v20 forKeyedSubscript:@"listeningMode"];
+  device8 = [(ComponentSystemAirPods *)self device];
+  v20 = -[ComponentAirPodsBase stringForListeningMode:](self, "stringForListeningMode:", [device8 listeningMode]);
+  [attributesCopy setObject:v20 forKeyedSubscript:@"listeningMode"];
 
-  v21 = [(ComponentSystemAirPods *)self device];
-  v22 = -[ComponentAirPodsBase generationStringForProductId:](self, "generationStringForProductId:", [v21 productId]);
-  [v4 setObject:v22 forKeyedSubscript:@"generation"];
+  device9 = [(ComponentSystemAirPods *)self device];
+  v22 = -[ComponentAirPodsBase generationStringForProductId:](self, "generationStringForProductId:", [device9 productId]);
+  [attributesCopy setObject:v22 forKeyedSubscript:@"generation"];
 
-  v23 = [(ComponentSystemAirPods *)self diagnosticsVersion];
-  [v4 setObject:v23 forKeyedSubscript:@"diagnosticsVersion"];
+  diagnosticsVersion = [(ComponentSystemAirPods *)self diagnosticsVersion];
+  [attributesCopy setObject:diagnosticsVersion forKeyedSubscript:@"diagnosticsVersion"];
 
   v24 = +[HUAccessoryHearingSettings sharedInstance];
-  v25 = [(ComponentSystemAirPods *)self device];
-  v26 = [v25 address];
-  v27 = [v24 activeHearingProtectionAvailableForAddress:v26];
+  device10 = [(ComponentSystemAirPods *)self device];
+  address2 = [device10 address];
+  v27 = [v24 activeHearingProtectionAvailableForAddress:address2];
 
-  v28 = [(ComponentSystemAirPods *)self device];
-  if ([v28 getAdaptiveVolumeSupport])
+  device11 = [(ComponentSystemAirPods *)self device];
+  if ([device11 getAdaptiveVolumeSupport])
   {
   }
 
   else
   {
-    v29 = [(ComponentSystemAirPods *)self device];
-    v30 = [v29 getConversationDetectSupport] | v27;
+    device12 = [(ComponentSystemAirPods *)self device];
+    v30 = [device12 getConversationDetectSupport] | v27;
 
     if ((v30 & 1) == 0)
     {
@@ -147,48 +147,48 @@ LABEL_15:
     }
   }
 
-  v31 = [(ComponentSystemAirPods *)self device];
-  v32 = [(ComponentAirPodsBase *)self audioOutputForDevice:v31];
-  [v4 setObject:v32 forKeyedSubscript:@"Audio"];
+  device13 = [(ComponentSystemAirPods *)self device];
+  v32 = [(ComponentAirPodsBase *)self audioOutputForDevice:device13];
+  [attributesCopy setObject:v32 forKeyedSubscript:@"Audio"];
 
 LABEL_5:
-  v33 = [(ComponentSystemAirPods *)self device];
-  v34 = [(ComponentAirPodsBase *)self spatialAudioSupportedForDevice:v33];
+  device14 = [(ComponentSystemAirPods *)self device];
+  v34 = [(ComponentAirPodsBase *)self spatialAudioSupportedForDevice:device14];
 
   v35 = [NSNumber numberWithBool:v34];
-  [v4 setObject:v35 forKeyedSubscript:@"spatialAudioSupported"];
+  [attributesCopy setObject:v35 forKeyedSubscript:@"spatialAudioSupported"];
 
   if (v34)
   {
     v36 = [NSNumber numberWithBool:[(ComponentAirPodsBase *)self spatialAudioEnabled]];
-    [v4 setObject:v36 forKeyedSubscript:@"spatialAudioEnabled"];
+    [attributesCopy setObject:v36 forKeyedSubscript:@"spatialAudioEnabled"];
   }
 
-  v37 = [(ComponentSystemAirPods *)self device];
-  v38 = [(ComponentAirPodsBase *)self inEarStatusForDevice:v37];
+  device15 = [(ComponentSystemAirPods *)self device];
+  v38 = [(ComponentAirPodsBase *)self inEarStatusForDevice:device15];
 
   if (v38 && [v38 count])
   {
-    [v4 setObject:v38 forKeyedSubscript:@"inEarStatus"];
+    [attributesCopy setObject:v38 forKeyedSubscript:@"inEarStatus"];
   }
 
-  v39 = [(ComponentSystemAirPods *)self device];
-  v40 = [(ComponentAirPodsBase *)self budSide:v39];
+  device16 = [(ComponentSystemAirPods *)self device];
+  v40 = [(ComponentAirPodsBase *)self budSide:device16];
 
   if (v40 && [v40 count])
   {
-    [v4 setObject:v40 forKeyedSubscript:@"BudSide"];
+    [attributesCopy setObject:v40 forKeyedSubscript:@"BudSide"];
   }
 
-  v41 = [(ComponentSystemAirPods *)self device];
-  v42 = [(ComponentAirPodsBase *)self getAutoEQStateForDevice:v41];
+  device17 = [(ComponentSystemAirPods *)self device];
+  v42 = [(ComponentAirPodsBase *)self getAutoEQStateForDevice:device17];
 
   v66 = v42;
-  [v4 addEntriesFromDictionary:v42];
-  v43 = [(ComponentSystemAirPods *)self device];
-  v44 = [v43 isTemporaryPaired];
+  [attributesCopy addEntriesFromDictionary:v42];
+  device18 = [(ComponentSystemAirPods *)self device];
+  isTemporaryPaired = [device18 isTemporaryPaired];
 
-  if (v44)
+  if (isTemporaryPaired)
   {
     v45 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
@@ -200,47 +200,47 @@ LABEL_5:
 
   else
   {
-    v46 = [(ComponentSystemAirPods *)self device];
-    v47 = [v46 accessoryInfo];
-    v45 = [(ComponentAirPodsBase *)self aacpInfoFromAccessoryInfo:v47];
+    device19 = [(ComponentSystemAirPods *)self device];
+    accessoryInfo = [device19 accessoryInfo];
+    v45 = [(ComponentAirPodsBase *)self aacpInfoFromAccessoryInfo:accessoryInfo];
 
     if (v45)
     {
-      [v4 addEntriesFromDictionary:v45];
+      [attributesCopy addEntriesFromDictionary:v45];
       v48 = [(ComponentSystemAirPods *)self serialNumberFromAacpInfo:v45];
-      [v4 setObject:v48 forKeyedSubscript:@"serialNumber"];
+      [attributesCopy setObject:v48 forKeyedSubscript:@"serialNumber"];
     }
 
-    v49 = [(ComponentSystemAirPods *)self device];
-    v50 = [v49 accessoryInfo];
-    v51 = [(ComponentAirPodsBase *)self caseInfoFromAccessoryInfo:v50];
+    device20 = [(ComponentSystemAirPods *)self device];
+    accessoryInfo2 = [device20 accessoryInfo];
+    v51 = [(ComponentAirPodsBase *)self caseInfoFromAccessoryInfo:accessoryInfo2];
 
     if (v51)
     {
-      [v4 addEntriesFromDictionary:v51];
+      [attributesCopy addEntriesFromDictionary:v51];
     }
   }
 
-  v52 = [(ComponentAirPodsBase *)self getCBDevices];
-  v53 = [v4 objectForKeyedSubscript:@"systemSerialNumber"];
-  v54 = [(ComponentSystemAirPods *)self device];
-  v55 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v54 isGenuineAirPods]);
-  [v4 setObject:v55 forKeyedSubscript:@"authPassed"];
+  getCBDevices = [(ComponentAirPodsBase *)self getCBDevices];
+  v53 = [attributesCopy objectForKeyedSubscript:@"systemSerialNumber"];
+  device21 = [(ComponentSystemAirPods *)self device];
+  v55 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [device21 isGenuineAirPods]);
+  [attributesCopy setObject:v55 forKeyedSubscript:@"authPassed"];
 
   if (v53)
   {
-    v56 = [v52 objectForKey:v53];
+    v56 = [getCBDevices objectForKey:v53];
     v57 = v56;
     if (v56)
     {
       v58 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v56 gapaFlags]);
-      [v4 setObject:v58 forKeyedSubscript:@"authErrorCode"];
+      [attributesCopy setObject:v58 forKeyedSubscript:@"authErrorCode"];
 
       v59 = [(ComponentAirPodsBase *)self getBatteryInfoForDevice:v57];
       v60 = v59;
       if (v59 && [v59 count])
       {
-        [v4 setObject:v60 forKeyedSubscript:@"batteryInfo"];
+        [attributesCopy setObject:v60 forKeyedSubscript:@"batteryInfo"];
       }
 
       v61 = 1;
@@ -258,15 +258,15 @@ LABEL_5:
     v57 = 0;
   }
 
-  v62 = [(ComponentSystemAirPods *)self device];
-  v63 = [v62 connected];
+  device22 = [(ComponentSystemAirPods *)self device];
+  connected = [device22 connected];
 
-  if (v61 && v63)
+  if (v61 && connected)
   {
     v64 = [(ComponentAirPodsBase *)self microphoneCalibrationResultForDevice:v57];
     if (v64)
     {
-      [v4 setObject:v64 forKeyedSubscript:@"micCalibration"];
+      [attributesCopy setObject:v64 forKeyedSubscript:@"micCalibration"];
     }
   }
 
@@ -275,24 +275,24 @@ LABEL_5:
     v64 = DiagnosticLogHandleForCategory();
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
     {
-      v65 = [(ComponentSystemAirPods *)self device];
+      device23 = [(ComponentSystemAirPods *)self device];
       *buf = 138412290;
-      v68 = v65;
+      v68 = device23;
       _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "Device %@ is not connected, not attempting to read micrphone calibration data", buf, 0xCu);
     }
   }
 }
 
-- (id)serialNumberFromAacpInfo:(id)a3
+- (id)serialNumberFromAacpInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = @"systemSerialNumber";
-  v5 = [v3 objectForKeyedSubscript:@"systemSerialNumber"];
+  v5 = [infoCopy objectForKeyedSubscript:@"systemSerialNumber"];
 
   if (!v5)
   {
     v4 = @"leftBudSerialNumber";
-    v6 = [v3 objectForKeyedSubscript:@"leftBudSerialNumber"];
+    v6 = [infoCopy objectForKeyedSubscript:@"leftBudSerialNumber"];
 
     if (!v6)
     {
@@ -300,7 +300,7 @@ LABEL_5:
     }
   }
 
-  v7 = [v3 objectForKeyedSubscript:v4];
+  v7 = [infoCopy objectForKeyedSubscript:v4];
 
   return v7;
 }
@@ -316,8 +316,8 @@ LABEL_5:
   }
 
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 infoDictionary];
-  v5 = [v4 objectForKeyedSubscript:@"CFBundleShortVersionString"];
+  infoDictionary = [v3 infoDictionary];
+  v5 = [infoDictionary objectForKeyedSubscript:@"CFBundleShortVersionString"];
   v6 = stringOrNull(v5);
 
   return v6;

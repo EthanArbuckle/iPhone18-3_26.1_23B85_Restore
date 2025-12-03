@@ -1,36 +1,36 @@
 @interface NTKUnity2025Quad
-- (NTKUnity2025Quad)initWithDevice:(id)a3;
-- (id)loadAssetWithPath:(id)a3 enableMeshAllocation:(BOOL)a4;
-- (void)blendToFragmentUniformsWithIdx1:(int)a3 idx2:(int)a4 percent:(float)a5 uniforms:(id *)a6;
-- (void)ensureMeshLoaded:(int64_t)a3;
+- (NTKUnity2025Quad)initWithDevice:(id)device;
+- (id)loadAssetWithPath:(id)path enableMeshAllocation:(BOOL)allocation;
+- (void)blendToFragmentUniformsWithIdx1:(int)idx1 idx2:(int)idx2 percent:(float)percent uniforms:(id *)uniforms;
+- (void)ensureMeshLoaded:(int64_t)loaded;
 - (void)initRenderPipeline;
-- (void)loadMesh:(int64_t)a3;
-- (void)loadMeshesWithAssetName:(id)a3 numberPath:(id)a4 hour:(int)a5;
-- (void)morphBetweenColorways:(float)a3 index1:(int)a4 index2:(int)a5;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setState:(int)a3;
-- (void)setTritiumProgress:(double)a3;
-- (void)setupForQuadView:(id)a3;
-- (void)unloadMesh:(int64_t)a3;
+- (void)loadMesh:(int64_t)mesh;
+- (void)loadMeshesWithAssetName:(id)name numberPath:(id)path hour:(int)hour;
+- (void)morphBetweenColorways:(float)colorways index1:(int)index1 index2:(int)index2;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setState:(int)state;
+- (void)setTritiumProgress:(double)progress;
+- (void)setupForQuadView:(id)view;
+- (void)unloadMesh:(int64_t)mesh;
 @end
 
 @implementation NTKUnity2025Quad
 
-- (NTKUnity2025Quad)initWithDevice:(id)a3
+- (NTKUnity2025Quad)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v20.receiver = self;
   v20.super_class = NTKUnity2025Quad;
   v6 = [(CLKUIQuad *)&v20 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v8 = [MEMORY[0x277CFA798] sharedDevice];
+    objc_storeStrong(&v6->_device, device);
+    mEMORY[0x277CFA798] = [MEMORY[0x277CFA798] sharedDevice];
     mtlDevice = v7->_mtlDevice;
-    v7->_mtlDevice = v8;
+    v7->_mtlDevice = mEMORY[0x277CFA798];
 
     v10 = v7->_mtlDevice;
     v11 = sub_23C09DC80();
@@ -38,7 +38,7 @@
     library = v7->_library;
     v7->_library = v12;
 
-    [v5 screenScale];
+    [deviceCopy screenScale];
     v7->_screenScale = v14;
     v7->_currentSettingIdx = 0;
     v7->_smoothedTritiumProgress = 0.0;
@@ -65,18 +65,18 @@
   return v7;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   screenScale = self->_screenScale;
   self->_renderSize.width = v6 * screenScale;
   self->_renderSize.height = v7 * screenScale;
-  v8 = [v4 superview];
-  [v8 safeAreaInsets];
+  superview = [viewCopy superview];
+  [superview safeAreaInsets];
   v10 = v9;
-  v11 = [v4 superview];
-  [v11 safeAreaInsets];
+  superview2 = [viewCopy superview];
+  [superview2 safeAreaInsets];
   v13 = v10 - v12;
 
   v14 = -v13;
@@ -87,14 +87,14 @@
 
   v15 = self->_screenScale * v14;
   self->_renderSize.height = self->_renderSize.height + v15;
-  v16 = [v4 colorPixelFormat];
+  colorPixelFormat = [viewCopy colorPixelFormat];
 
-  self->_pixelFormat = v16;
+  self->_pixelFormat = colorPixelFormat;
 
   MEMORY[0x2821F9670](self, sel_initRenderPipeline);
 }
 
-- (void)renderWithCommandBuffer:(id)a3 passDescriptor:(id)a4
+- (void)renderWithCommandBuffer:(id)buffer passDescriptor:(id)descriptor
 {
   if (self->_editingColors)
   {
@@ -111,27 +111,27 @@
     editingFraction = self->_smoothedTritiumProgress;
   }
 
-  v10 = a4;
-  v11 = a3;
+  descriptorCopy = descriptor;
+  bufferCopy = buffer;
   *&v12 = editingFraction;
   [(NTKUnity2025Quad *)self blendBackgroundWithIdx1:v6 idx2:v7 percent:v12];
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v10 colorAttachments];
-  v20 = [v19 objectAtIndexedSubscript:0];
+  colorAttachments = [descriptorCopy colorAttachments];
+  v20 = [colorAttachments objectAtIndexedSubscript:0];
   [v20 setClearColor:{v14, v16, v18, 1.0}];
 
-  v21 = [v11 renderCommandEncoderWithDescriptor:v10];
+  v21 = [bufferCopy renderCommandEncoderWithDescriptor:descriptorCopy];
 
   [v21 setDepthStencilState:self->_depthStencilState];
   [(NTKUnity2025Quad *)self renderForDisplayWithEncoder:v21];
   [v21 endEncoding];
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
-  v4 = a3;
+  encoderCopy = encoder;
   if (self->_editingColors)
   {
     v64 = 2 * self->_editingIndex2;
@@ -150,46 +150,46 @@
   overrideDate = self->_overrideDate;
   if (overrideDate)
   {
-    v8 = overrideDate;
+    faceDate = overrideDate;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D2BFD8] faceDate];
+    faceDate = [MEMORY[0x277D2BFD8] faceDate];
   }
 
-  v9 = v8;
-  v55 = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = faceDate;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v56 = v9;
-  v54 = [v55 components:96 fromDate:v9];
-  v10 = [v54 hour];
-  v52 = [MEMORY[0x277CBEAF8] currentLocale];
+  v54 = [currentCalendar components:96 fromDate:v9];
+  hour = [v54 hour];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v11 = CLKLocaleIs24HourMode();
   v12 = 12;
-  v13 = v10 - 12;
-  if (v10 <= 12)
+  v13 = hour - 12;
+  if (hour <= 12)
   {
-    v13 = v10;
+    v13 = hour;
   }
 
-  if (v10)
+  if (hour)
   {
     v12 = v13;
   }
 
   if ((v11 & 1) == 0)
   {
-    v10 = v12;
+    hour = v12;
   }
 
-  [(NTKUnity2025Quad *)self ensureMeshLoaded:v10, v52];
-  [v4 setLabel:@"Unity2025 Render Encoder"];
+  [(NTKUnity2025Quad *)self ensureMeshLoaded:hour, currentLocale];
+  [encoderCopy setLabel:@"Unity2025 Render Encoder"];
   v79 = 0uLL;
   renderSize = self->_renderSize;
   v81 = xmmword_23C0A0A80;
-  [v4 setViewport:&v79];
-  [v4 setRenderPipelineState:self->_unity2025PipelineState];
-  [v4 setCullMode:1];
+  [encoderCopy setViewport:&v79];
+  [encoderCopy setRenderPipelineState:self->_unity2025PipelineState];
+  [encoderCopy setCullMode:1];
   [(CLKDevice *)self->_device screenBounds];
   v15 = v14;
   [(CLKDevice *)self->_device screenBounds];
@@ -199,11 +199,11 @@
   v63 = v18;
   v60 = v21;
   v61 = v20;
-  v66 = &self->_hourStructs[v10];
+  v66 = &self->_hourStructs[hour];
   if (v66->numDigits >= 1)
   {
     v22 = 0;
-    v23 = &unk_23C0A1120 + 20 * v10;
+    v23 = &unk_23C0A1120 + 20 * hour;
     v24 = *(v23 + 4);
     v58 = v23;
     v57 = v23 + 8;
@@ -211,7 +211,7 @@
     v26 = xmmword_23C0A0AA0;
     v27 = xmmword_23C0A0AD0;
     v28 = xmmword_23C0A0AE0;
-    v59 = self;
+    selfCopy = self;
     do
     {
       v29 = 0;
@@ -243,7 +243,7 @@
       v81 = v75;
       v82 = v76;
       v68 = [(MTLDevice *)self->_mtlDevice newBufferWithBytes:&v79 length:144 options:1];
-      [v4 setVertexBuffer:? offset:? atIndex:?];
+      [encoderCopy setVertexBuffer:? offset:? atIndex:?];
       v77 = 0u;
       v78 = 0u;
       v75 = 0u;
@@ -257,7 +257,7 @@
       *&v31 = editingFraction;
       [(NTKUnity2025Quad *)self blendToFragmentUniformsWithIdx1:v65 idx2:v64 percent:&v73 uniforms:v31];
       v67 = [(MTLDevice *)self->_mtlDevice newBufferWithBytes:&v73 length:96 options:1];
-      [v4 setFragmentBuffer:? offset:? atIndex:?];
+      [encoderCopy setFragmentBuffer:? offset:? atIndex:?];
       v33 = 0;
       v69 = v22;
       v70 = &v66->digits[v22];
@@ -265,49 +265,49 @@
       {
         v72 = v33;
         v34 = *(v70 + 8 * v33);
-        v35 = [v34 vertexBuffers];
-        v36 = [v35 objectAtIndexedSubscript:0];
+        vertexBuffers = [v34 vertexBuffers];
+        v36 = [vertexBuffers objectAtIndexedSubscript:0];
 
-        v37 = [v36 buffer];
+        buffer = [v36 buffer];
         v71 = v36;
-        [v4 setVertexBuffer:v37 offset:objc_msgSend(v36 atIndex:{"offset"), 0}];
+        [encoderCopy setVertexBuffer:buffer offset:objc_msgSend(v36 atIndex:{"offset"), 0}];
 
-        v38 = [v34 submeshes];
-        v39 = [v38 count];
+        submeshes = [v34 submeshes];
+        v39 = [submeshes count];
 
-        v40 = v4;
+        v40 = encoderCopy;
         if (v39)
         {
           v41 = 0;
           do
           {
-            v42 = [v34 submeshes];
-            v43 = [v42 objectAtIndexedSubscript:v41];
+            submeshes2 = [v34 submeshes];
+            v43 = [submeshes2 objectAtIndexedSubscript:v41];
 
-            v44 = [v43 primitiveType];
-            v45 = [v43 indexCount];
-            v46 = [v43 indexType];
-            v47 = [v43 indexBuffer];
-            v48 = [v47 buffer];
-            v49 = [v43 indexBuffer];
-            [v40 drawIndexedPrimitives:v44 indexCount:v45 indexType:v46 indexBuffer:v48 indexBufferOffset:{objc_msgSend(v49, "offset")}];
+            primitiveType = [v43 primitiveType];
+            indexCount = [v43 indexCount];
+            indexType = [v43 indexType];
+            indexBuffer = [v43 indexBuffer];
+            buffer2 = [indexBuffer buffer];
+            indexBuffer2 = [v43 indexBuffer];
+            [v40 drawIndexedPrimitives:primitiveType indexCount:indexCount indexType:indexType indexBuffer:buffer2 indexBufferOffset:{objc_msgSend(indexBuffer2, "offset")}];
 
             ++v41;
-            v50 = [v34 submeshes];
-            v51 = [v50 count];
+            submeshes3 = [v34 submeshes];
+            v51 = [submeshes3 count];
           }
 
           while (v51 > v41);
         }
 
         v33 = v72 + 1;
-        v4 = v40;
+        encoderCopy = v40;
       }
 
       while (v72 != 4);
 
       v22 = v69 + 1;
-      self = v59;
+      self = selfCopy;
       v26 = xmmword_23C0A0AA0;
       v25 = xmmword_23C0A0A90;
       v28 = xmmword_23C0A0AE0;
@@ -318,15 +318,15 @@
   }
 }
 
-- (void)ensureMeshLoaded:(int64_t)a3
+- (void)ensureMeshLoaded:(int64_t)loaded
 {
   hourStructs = self->_hourStructs;
-  if (!self->_hourStructs[a3].digits[0].meshes[0])
+  if (!self->_hourStructs[loaded].digits[0].meshes[0])
   {
-    [(NTKUnity2025Quad *)self loadMesh:a3];
+    [(NTKUnity2025Quad *)self loadMesh:loaded];
   }
 
-  v6 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v7 = CLKLocaleIs24HourMode();
   v8 = 13;
   if (v7)
@@ -334,14 +334,14 @@
     v8 = 25;
   }
 
-  if (!hourStructs[(a3 + 1) % v8].digits[0].meshes[0])
+  if (!hourStructs[(loaded + 1) % v8].digits[0].meshes[0])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_23C09E64C;
     block[3] = &unk_278BADFB0;
     block[4] = self;
-    block[5] = (a3 + 1) % v8;
+    block[5] = (loaded + 1) % v8;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -356,11 +356,11 @@
   }
 }
 
-- (void)unloadMesh:(int64_t)a3
+- (void)unloadMesh:(int64_t)mesh
 {
-  if (a3)
+  if (mesh)
   {
-    v3 = &self->_hourStructs[a3];
+    v3 = &self->_hourStructs[mesh];
     v5 = v3->digits[0].meshes[0];
     digits = v3->digits;
     if (v5)
@@ -383,29 +383,29 @@
   }
 }
 
-- (void)loadMesh:(int64_t)a3
+- (void)loadMesh:(int64_t)mesh
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"NumberMesh%ld%ld", a3 / 10, a3 % 10];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"NumberMesh%ld%ld", mesh / 10, mesh % 10];
   [NTKUnity2025Quad loadMeshesWithAssetName:"loadMeshesWithAssetName:numberPath:hour:" numberPath:? hour:?];
-  if (a3 > 2)
+  if (mesh > 2)
   {
     v5 = -3;
   }
 
   else
   {
-    [(NTKUnity2025Quad *)self unloadMesh:a3 + 21];
+    [(NTKUnity2025Quad *)self unloadMesh:mesh + 21];
     v5 = 9;
   }
 
-  [(NTKUnity2025Quad *)self unloadMesh:v5 + a3];
+  [(NTKUnity2025Quad *)self unloadMesh:v5 + mesh];
 }
 
-- (id)loadAssetWithPath:(id)a3 enableMeshAllocation:(BOOL)a4
+- (id)loadAssetWithPath:(id)path enableMeshAllocation:(BOOL)allocation
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  allocationCopy = allocation;
+  pathCopy = path;
+  if (allocationCopy)
   {
     if (!self->_allocator)
     {
@@ -448,11 +448,11 @@
   v22 = v21;
   if (v21)
   {
-    v23 = [v21 URLForResource:v6 withExtension:@"usdc"];
+    v23 = [v21 URLForResource:pathCopy withExtension:@"usdc"];
     if (v23)
     {
       v24 = objc_alloc(MEMORY[0x277CD7AD0]);
-      if (v4)
+      if (allocationCopy)
       {
         v25 = [v24 initWithURL:v23 vertexDescriptor:self->_descriptor bufferAllocator:self->_allocator];
       }
@@ -503,15 +503,15 @@ LABEL_24:
   return v26;
 }
 
-- (void)loadMeshesWithAssetName:(id)a3 numberPath:(id)a4 hour:(int)a5
+- (void)loadMeshesWithAssetName:(id)name numberPath:(id)path hour:(int)hour
 {
   v68 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [(NTKUnity2025Quad *)self loadAssetWithPath:a3 enableMeshAllocation:1];
-  v10 = [v9 objectAtPath:v8];
+  pathCopy = path;
+  v9 = [(NTKUnity2025Quad *)self loadAssetWithPath:name enableMeshAllocation:1];
+  v10 = [v9 objectAtPath:pathCopy];
   v11 = v10;
   v51 = v9;
-  v52 = v8;
+  v52 = pathCopy;
   if (!v10)
   {
     v49 = _NTKLoggingObjectForDomain();
@@ -523,14 +523,14 @@ LABEL_24:
     goto LABEL_35;
   }
 
-  v12 = [v10 children];
-  v13 = [v12 count];
+  children = [v10 children];
+  v13 = [children count];
 
   v55 = v13;
   if (v13 != 1)
   {
-    v14 = [v11 children];
-    v15 = [v14 count];
+    children2 = [v11 children];
+    v15 = [children2 count];
 
     if (v15 != 24)
     {
@@ -546,40 +546,40 @@ LABEL_35:
     }
   }
 
-  if (a5 < 0)
+  if (hour < 0)
   {
-    v16 = 23;
+    hourCopy = 23;
   }
 
   else
   {
-    v16 = a5;
+    hourCopy = hour;
   }
 
-  v17 = a5 & ~(a5 >> 31);
-  if (v17 <= v16)
+  v17 = hour & ~(hour >> 31);
+  if (v17 <= hourCopy)
   {
-    v53 = v16 + 1;
+    v53 = hourCopy + 1;
     digits = self->_hourStructs[v17].digits;
     v54 = v11;
     while (1)
     {
       v18 = &self->_hourStructs[v17];
       v18->hour = v17;
-      v19 = [v11 children];
-      v20 = v19;
+      children3 = [v11 children];
+      v20 = children3;
       v58 = v17;
       v21 = v55 == 1 ? 0 : v17;
-      v22 = [v19 objectAtIndexedSubscript:v21];
+      v22 = [children3 objectAtIndexedSubscript:v21];
 
-      v23 = [v22 children];
-      if ([v23 count] == 1)
+      children4 = [v22 children];
+      if ([children4 count] == 1)
       {
         break;
       }
 
-      v24 = [v22 children];
-      v25 = [v24 count];
+      children5 = [v22 children];
+      v25 = [children5 count];
 
       if (v25 == 2)
       {
@@ -599,8 +599,8 @@ LABEL_29:
 
 LABEL_15:
     v18->centerZ = 0.0;
-    v26 = [v22 children];
-    v27 = [v26 count];
+    children6 = [v22 children];
+    v27 = [children6 count];
 
     if (v27)
     {
@@ -613,16 +613,16 @@ LABEL_15:
       {
         v59 = v28 + 1;
         v18->numDigits = v28 + 1;
-        v32 = [v22 children];
+        children7 = [v22 children];
         v60 = v28;
-        v33 = [v32 objectAtIndexedSubscript:v28];
+        v33 = [children7 objectAtIndexedSubscript:v28];
 
         for (i = 0; i != 5; ++i)
         {
-          v35 = [v33 children];
-          v36 = [v35 objectAtIndexedSubscript:i];
-          v37 = [v36 children];
-          v38 = [v37 objectAtIndexedSubscript:0];
+          children8 = [v33 children];
+          v36 = [children8 objectAtIndexedSubscript:i];
+          children9 = [v36 children];
+          v38 = [children9 objectAtIndexedSubscript:0];
 
           if (!v38)
           {
@@ -669,8 +669,8 @@ LABEL_24:
         }
 
         v22 = v57;
-        v47 = [v57 children];
-        v48 = [v47 count];
+        children10 = [v57 children];
+        v48 = [children10 count];
 
         ++v29;
         v28 = v59;
@@ -698,9 +698,9 @@ LABEL_36:
     self->_binaryArchive = v5;
   }
 
-  v7 = [MEMORY[0x277CD6D78] functionDescriptor];
-  [v7 setName:@"unity2025VertexShader"];
-  v8 = [(CLKUIMetalBinaryArchive *)self->_binaryArchive newFunctionInLibrary:self->_library withDescriptor:v7];
+  functionDescriptor = [MEMORY[0x277CD6D78] functionDescriptor];
+  [functionDescriptor setName:@"unity2025VertexShader"];
+  v8 = [(CLKUIMetalBinaryArchive *)self->_binaryArchive newFunctionInLibrary:self->_library withDescriptor:functionDescriptor];
   if (!v8)
   {
     v9 = _NTKLoggingObjectForDomain();
@@ -710,9 +710,9 @@ LABEL_36:
     }
   }
 
-  v10 = [MEMORY[0x277CD6D78] functionDescriptor];
-  [v10 setName:@"unity2025FragmentShader"];
-  v11 = [(CLKUIMetalBinaryArchive *)self->_binaryArchive newFunctionInLibrary:self->_library withDescriptor:v10];
+  functionDescriptor2 = [MEMORY[0x277CD6D78] functionDescriptor];
+  [functionDescriptor2 setName:@"unity2025FragmentShader"];
+  v11 = [(CLKUIMetalBinaryArchive *)self->_binaryArchive newFunctionInLibrary:self->_library withDescriptor:functionDescriptor2];
   if (!v11)
   {
     v12 = _NTKLoggingObjectForDomain();
@@ -728,8 +728,8 @@ LABEL_36:
   [v13 setDepthAttachmentPixelFormat:252];
   [v13 setRasterSampleCount:4];
   [v13 setLabel:@"Unity2025 Render Pipeline"];
-  v14 = [v13 colorAttachments];
-  v15 = [v14 objectAtIndexedSubscript:0];
+  colorAttachments = [v13 colorAttachments];
+  v15 = [colorAttachments objectAtIndexedSubscript:0];
 
   [v15 setPixelFormat:self->_pixelFormat];
   [v15 setBlendingEnabled:0];
@@ -740,28 +740,28 @@ LABEL_36:
   v18 = objc_opt_new();
   [v18 setDepthCompareFunction:3];
   [v18 setDepthWriteEnabled:1];
-  v19 = [MEMORY[0x277CFA798] sharedDevice];
-  v20 = [v19 newDepthStencilStateWithDescriptor:v18];
+  mEMORY[0x277CFA798] = [MEMORY[0x277CFA798] sharedDevice];
+  v20 = [mEMORY[0x277CFA798] newDepthStencilStateWithDescriptor:v18];
   depthStencilState = self->_depthStencilState;
   self->_depthStencilState = v20;
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v6 = a3;
+  dateCopy = date;
   overrideDate = self->_overrideDate;
-  v8 = v6;
+  v8 = dateCopy;
   if ((NTKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
   }
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    if ((a3 - 1) >= 2)
+    if ((state - 1) >= 2)
     {
       v3 = 1.0 / self->_deviceFPS;
     }
@@ -772,10 +772,10 @@ LABEL_36:
     }
 
     self->_deltaTime = v3;
-    if (a3)
+    if (state)
     {
       v4 = &OBJC_IVAR___NTKUnity2025Quad__triggerTwistAnimation;
-      if (a3 == 2)
+      if (state == 2)
       {
         v5 = 1;
       }
@@ -789,13 +789,13 @@ LABEL_36:
       *(&self->super.super.isa + *v4) = v5;
     }
 
-    self->_state = a3;
+    self->_state = state;
   }
 }
 
-- (void)setTritiumProgress:(double)a3
+- (void)setTritiumProgress:(double)progress
 {
-  self->_tritiumProgress = a3;
+  self->_tritiumProgress = progress;
   self->_smoothedTritiumProgress = 0.0;
   tritiumProgress = self->_tritiumProgress;
   if (tritiumProgress > 0.0)
@@ -807,48 +807,48 @@ LABEL_36:
   }
 }
 
-- (void)blendToFragmentUniformsWithIdx1:(int)a3 idx2:(int)a4 percent:(float)a5 uniforms:(id *)a6
+- (void)blendToFragmentUniformsWithIdx1:(int)idx1 idx2:(int)idx2 percent:(float)percent uniforms:(id *)uniforms
 {
   v6 = 0;
-  v7 = vdupq_lane_s64(COERCE__INT64(a5), 0);
+  v7 = vdupq_lane_s64(COERCE__INT64(percent), 0);
   do
   {
-    v8 = vcvtq_f64_f32(*(&unk_23C0A0B20 + 128 * a3 + v6 * 4 + 80));
-    *&a6->var0[v6] = vcvt_f32_f64(vmlaq_f64(v8, vsubq_f64(vcvtq_f64_f32(*(&unk_23C0A0B20 + 128 * a4 + v6 * 4 + 80)), v8), v7));
+    v8 = vcvtq_f64_f32(*(&unk_23C0A0B20 + 128 * idx1 + v6 * 4 + 80));
+    *&uniforms->var0[v6] = vcvt_f32_f64(vmlaq_f64(v8, vsubq_f64(vcvtq_f64_f32(*(&unk_23C0A0B20 + 128 * idx2 + v6 * 4 + 80)), v8), v7));
     v6 += 2;
   }
 
   while (v6 != 8);
-  v9 = (&unk_27E1EE120 + 64 * a3);
-  v10 = (&unk_27E1EE120 + 64 * a4);
-  *&a6->var1 = vmlaq_n_f32(v9[1], vsubq_f32(v10[1], v9[1]), a5);
-  *&a6[1].var0[1] = vmlaq_n_f32(v9[2], vsubq_f32(v10[2], v9[2]), a5);
-  *&a6[1].var0[5] = vmlaq_n_f32(v9[3], vsubq_f32(v10[3], v9[3]), a5);
-  a6[1].var2 = a5;
+  v9 = (&unk_27E1EE120 + 64 * idx1);
+  v10 = (&unk_27E1EE120 + 64 * idx2);
+  *&uniforms->var1 = vmlaq_n_f32(v9[1], vsubq_f32(v10[1], v9[1]), percent);
+  *&uniforms[1].var0[1] = vmlaq_n_f32(v9[2], vsubq_f32(v10[2], v9[2]), percent);
+  *&uniforms[1].var0[5] = vmlaq_n_f32(v9[3], vsubq_f32(v10[3], v9[3]), percent);
+  uniforms[1].var2 = percent;
 }
 
-- (void)morphBetweenColorways:(float)a3 index1:(int)a4 index2:(int)a5
+- (void)morphBetweenColorways:(float)colorways index1:(int)index1 index2:(int)index2
 {
   self->_editingColors = 1;
-  self->_editingIndex1 = a4;
-  self->_editingIndex2 = a5;
-  self->_editingFraction = a3;
+  self->_editingIndex1 = index1;
+  self->_editingIndex2 = index2;
+  self->_editingFraction = colorways;
   self->_state = 5;
-  v5 = 2 * a4;
-  v6 = (&unk_23C0A0B20 + 256 * a4);
-  v7 = (&unk_23C0A0B20 + 256 * a5);
-  *self->_backgroundColor = vmlaq_n_f32(v6[1], vsubq_f32(v7[1], v6[1]), a3);
-  if (a3 >= 0.5)
+  v5 = 2 * index1;
+  v6 = (&unk_23C0A0B20 + 256 * index1);
+  v7 = (&unk_23C0A0B20 + 256 * index2);
+  *self->_backgroundColor = vmlaq_n_f32(v6[1], vsubq_f32(v7[1], v6[1]), colorways);
+  if (colorways >= 0.5)
   {
-    v5 = 2 * a5;
+    v5 = 2 * index2;
   }
 
   self->_isGreyscale = (v5 - 2) < 4;
-  *self->_complicationForegroundColor = vmlaq_n_f32(*v6, vsubq_f32(*v7, *v6), a3);
-  if (a4 == a5)
+  *self->_complicationForegroundColor = vmlaq_n_f32(*v6, vsubq_f32(*v7, *v6), colorways);
+  if (index1 == index2)
   {
     self->_editingColors = 0;
-    self->_currentSettingIdx = a4;
+    self->_currentSettingIdx = index1;
     self->_state = 4;
   }
 }

@@ -2,18 +2,18 @@
 - (CIBarcodeDescriptor)barcodeDescriptor;
 - (NSString)payloadStringValue;
 - (NSString)symbology;
-- (VKRecognizedBarcode)initWithFrameInfo:(id)a3 barcodeObservation:(id)a4;
+- (VKRecognizedBarcode)initWithFrameInfo:(id)info barcodeObservation:(id)observation;
 - (VNBarcodeObservation)observation;
 - (id)description;
 @end
 
 @implementation VKRecognizedBarcode
 
-- (VKRecognizedBarcode)initWithFrameInfo:(id)a3 barcodeObservation:(id)a4
+- (VKRecognizedBarcode)initWithFrameInfo:(id)info barcodeObservation:(id)observation
 {
   v5.receiver = self;
   v5.super_class = VKRecognizedBarcode;
-  return [(VKRecognizedItem *)&v5 initWithFrameInfo:a3 rectangleObservation:a4];
+  return [(VKRecognizedItem *)&v5 initWithFrameInfo:info rectangleObservation:observation];
 }
 
 - (VNBarcodeObservation)observation
@@ -21,8 +21,8 @@
   v3 = objc_opt_class();
   v7.receiver = self;
   v7.super_class = VKRecognizedBarcode;
-  v4 = [(VKRecognizedItem *)&v7 observation];
-  v5 = VKDynamicCast(v3, v4);
+  observation = [(VKRecognizedItem *)&v7 observation];
+  v5 = VKDynamicCast(v3, observation);
 
   return v5;
 }
@@ -33,35 +33,35 @@
   v9.receiver = self;
   v9.super_class = VKRecognizedBarcode;
   v4 = [(VKRecognizedBarcode *)&v9 description];
-  v5 = [(VKRecognizedBarcode *)self observation];
-  v6 = [v5 payloadStringValue];
-  v7 = [v3 stringWithFormat:@"%@ payload:%@", v4, v6];
+  observation = [(VKRecognizedBarcode *)self observation];
+  payloadStringValue = [observation payloadStringValue];
+  v7 = [v3 stringWithFormat:@"%@ payload:%@", v4, payloadStringValue];
 
   return v7;
 }
 
 - (NSString)symbology
 {
-  v2 = [(VKRecognizedBarcode *)self observation];
-  v3 = [v2 symbology];
+  observation = [(VKRecognizedBarcode *)self observation];
+  symbology = [observation symbology];
 
-  return v3;
+  return symbology;
 }
 
 - (CIBarcodeDescriptor)barcodeDescriptor
 {
-  v2 = [(VKRecognizedBarcode *)self observation];
-  v3 = [v2 barcodeDescriptor];
+  observation = [(VKRecognizedBarcode *)self observation];
+  barcodeDescriptor = [observation barcodeDescriptor];
 
-  return v3;
+  return barcodeDescriptor;
 }
 
 - (NSString)payloadStringValue
 {
-  v2 = [(VKRecognizedBarcode *)self observation];
-  v3 = [v2 payloadStringValue];
+  observation = [(VKRecognizedBarcode *)self observation];
+  payloadStringValue = [observation payloadStringValue];
 
-  return v3;
+  return payloadStringValue;
 }
 
 @end

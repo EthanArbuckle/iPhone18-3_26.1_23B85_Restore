@@ -1,14 +1,14 @@
 @interface _UICalendarViewDecorationItem
 - (UIView)_parent;
-- (id)_decorationViewForReuseView:(id)a3;
+- (id)_decorationViewForReuseView:(id)view;
 @end
 
 @implementation _UICalendarViewDecorationItem
 
-- (id)_decorationViewForReuseView:(id)a3
+- (id)_decorationViewForReuseView:(id)view
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"UICalendarViewDecoration.m" lineNumber:204 description:@"This must be implemented by a decoration subclass"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UICalendarViewDecoration.m" lineNumber:204 description:@"This must be implemented by a decoration subclass"];
 
   return 0;
 }

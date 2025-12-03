@@ -1,12 +1,12 @@
 @interface STSchemaSTEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
 - (STSchemaSTAnswerSynthesisContext)stAnswerSynthesisContext;
 - (STSchemaSTDisambiguationContext)stDisambiguationContext;
-- (STSchemaSTEvent)initWithDictionary:(id)a3;
-- (STSchemaSTEvent)initWithJSON:(id)a3;
+- (STSchemaSTEvent)initWithDictionary:(id)dictionary;
+- (STSchemaSTEvent)initWithJSON:(id)n;
 - (STSchemaSTGeneralSearchContext)stGeneralSearchContext;
 - (STSchemaSTGeneralSearchEndedTier1)requestEndedTier1;
 - (STSchemaSTGlobalSearchContext)stGlobalSearchContext;
@@ -14,7 +14,7 @@
 - (STSchemaSTLLMQUQueryArgumentsTier1)stLLMQUQueryArgumentsTier1;
 - (STSchemaSTLLMQueryUnderstandingContext)stLLMQueryUnderstandingContext;
 - (STSchemaSTSpotlightContext)stSpotlightContext;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -30,29 +30,29 @@
 - (void)deleteStLLMQUQueryArgumentsTier1;
 - (void)deleteStLLMQueryUnderstandingContext;
 - (void)deleteStSpotlightContext;
-- (void)setRequestEndedTier1:(id)a3;
-- (void)setSearchToolHallucinationDetectionContext:(id)a3;
-- (void)setStAnswerSynthesisContext:(id)a3;
-- (void)setStDisambiguationContext:(id)a3;
-- (void)setStGeneralSearchContext:(id)a3;
-- (void)setStGlobalSearchContext:(id)a3;
-- (void)setStLLMQUQueryArgumentsTier1:(id)a3;
-- (void)setStLLMQueryUnderstandingContext:(id)a3;
-- (void)setStSpotlightContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setRequestEndedTier1:(id)tier1;
+- (void)setSearchToolHallucinationDetectionContext:(id)context;
+- (void)setStAnswerSynthesisContext:(id)context;
+- (void)setStDisambiguationContext:(id)context;
+- (void)setStGeneralSearchContext:(id)context;
+- (void)setStGlobalSearchContext:(id)context;
+- (void)setStLLMQUQueryArgumentsTier1:(id)tier1;
+- (void)setStLLMQueryUnderstandingContext:(id)context;
+- (void)setStSpotlightContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation STSchemaSTEvent
 
-- (STSchemaSTEvent)initWithDictionary:(id)a3
+- (STSchemaSTEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = STSchemaSTEvent;
   v5 = [(STSchemaSTEvent *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -60,7 +60,7 @@
       [(STSchemaSTEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"stGeneralSearchContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"stGeneralSearchContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(STSchemaSTEvent *)v5 setStGeneralSearchContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"stLLMQueryUnderstandingContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"stLLMQueryUnderstandingContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
     }
 
     v30 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"stSpotlightContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"stSpotlightContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
     }
 
     v29 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"stAnswerSynthesisContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"stAnswerSynthesisContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
       [(STSchemaSTEvent *)v5 setStAnswerSynthesisContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"stGlobalSearchContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"stGlobalSearchContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
     }
 
     v31 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"stLLMQUQueryArgumentsTier1"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"stLLMQUQueryArgumentsTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
     }
 
     v20 = v6;
-    v21 = [v4 objectForKeyedSubscript:@"stDisambiguationContext"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"stDisambiguationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -120,7 +120,7 @@
       [(STSchemaSTEvent *)v5 setStDisambiguationContext:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"requestEndedTier1"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"requestEndedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -128,7 +128,7 @@
       [(STSchemaSTEvent *)v5 setRequestEndedTier1:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"searchToolHallucinationDetectionContext"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"searchToolHallucinationDetectionContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -142,30 +142,30 @@
   return v5;
 }
 
-- (STSchemaSTEvent)initWithJSON:(id)a3
+- (STSchemaSTEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(STSchemaSTEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(STSchemaSTEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(STSchemaSTEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -178,170 +178,170 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_eventMetadata)
   {
-    v4 = [(STSchemaSTEvent *)self eventMetadata];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    eventMetadata = [(STSchemaSTEvent *)self eventMetadata];
+    dictionaryRepresentation = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"eventMetadata"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_requestEndedTier1)
   {
-    v7 = [(STSchemaSTEvent *)self requestEndedTier1];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    requestEndedTier1 = [(STSchemaSTEvent *)self requestEndedTier1];
+    dictionaryRepresentation2 = [requestEndedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"requestEndedTier1"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestEndedTier1"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"requestEndedTier1"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestEndedTier1"];
     }
   }
 
   if (self->_searchToolHallucinationDetectionContext)
   {
-    v10 = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    searchToolHallucinationDetectionContext = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
+    dictionaryRepresentation3 = [searchToolHallucinationDetectionContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"searchToolHallucinationDetectionContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"searchToolHallucinationDetectionContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"searchToolHallucinationDetectionContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"searchToolHallucinationDetectionContext"];
     }
   }
 
   if (self->_stAnswerSynthesisContext)
   {
-    v13 = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    stAnswerSynthesisContext = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
+    dictionaryRepresentation4 = [stAnswerSynthesisContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"stAnswerSynthesisContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"stAnswerSynthesisContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"stAnswerSynthesisContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"stAnswerSynthesisContext"];
     }
   }
 
   if (self->_stDisambiguationContext)
   {
-    v16 = [(STSchemaSTEvent *)self stDisambiguationContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    stDisambiguationContext = [(STSchemaSTEvent *)self stDisambiguationContext];
+    dictionaryRepresentation5 = [stDisambiguationContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"stDisambiguationContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"stDisambiguationContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"stDisambiguationContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"stDisambiguationContext"];
     }
   }
 
   if (self->_stGeneralSearchContext)
   {
-    v19 = [(STSchemaSTEvent *)self stGeneralSearchContext];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    stGeneralSearchContext = [(STSchemaSTEvent *)self stGeneralSearchContext];
+    dictionaryRepresentation6 = [stGeneralSearchContext dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"stGeneralSearchContext"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"stGeneralSearchContext"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"stGeneralSearchContext"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"stGeneralSearchContext"];
     }
   }
 
   if (self->_stGlobalSearchContext)
   {
-    v22 = [(STSchemaSTEvent *)self stGlobalSearchContext];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    stGlobalSearchContext = [(STSchemaSTEvent *)self stGlobalSearchContext];
+    dictionaryRepresentation7 = [stGlobalSearchContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"stGlobalSearchContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"stGlobalSearchContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"stGlobalSearchContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"stGlobalSearchContext"];
     }
   }
 
   if (self->_stLLMQUQueryArgumentsTier1)
   {
-    v25 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    stLLMQUQueryArgumentsTier1 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
+    dictionaryRepresentation8 = [stLLMQUQueryArgumentsTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"stLLMQUQueryArgumentsTier1"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"stLLMQUQueryArgumentsTier1"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"stLLMQUQueryArgumentsTier1"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"stLLMQUQueryArgumentsTier1"];
     }
   }
 
   if (self->_stLLMQueryUnderstandingContext)
   {
-    v28 = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    stLLMQueryUnderstandingContext = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
+    dictionaryRepresentation9 = [stLLMQueryUnderstandingContext dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"stLLMQueryUnderstandingContext"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"stLLMQueryUnderstandingContext"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"stLLMQueryUnderstandingContext"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"stLLMQueryUnderstandingContext"];
     }
   }
 
   if (self->_stSpotlightContext)
   {
-    v31 = [(STSchemaSTEvent *)self stSpotlightContext];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    stSpotlightContext = [(STSchemaSTEvent *)self stSpotlightContext];
+    dictionaryRepresentation10 = [stSpotlightContext dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"stSpotlightContext"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"stSpotlightContext"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"stSpotlightContext"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"stSpotlightContext"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -358,34 +358,34 @@
   return v9 ^ v11 ^ [(STSchemaSTHallucinationDetectionContext *)self->_searchToolHallucinationDetectionContext hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_53;
   }
 
-  v6 = [(STSchemaSTEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v8 = [(STSchemaSTEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(STSchemaSTEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(STSchemaSTEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(STSchemaSTEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -397,20 +397,20 @@
   {
   }
 
-  v6 = [(STSchemaSTEvent *)self stGeneralSearchContext];
-  v7 = [v4 stGeneralSearchContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self stGeneralSearchContext];
+  eventMetadata2 = [equalCopy stGeneralSearchContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v13 = [(STSchemaSTEvent *)self stGeneralSearchContext];
-  if (v13)
+  stGeneralSearchContext = [(STSchemaSTEvent *)self stGeneralSearchContext];
+  if (stGeneralSearchContext)
   {
-    v14 = v13;
-    v15 = [(STSchemaSTEvent *)self stGeneralSearchContext];
-    v16 = [v4 stGeneralSearchContext];
-    v17 = [v15 isEqual:v16];
+    v14 = stGeneralSearchContext;
+    stGeneralSearchContext2 = [(STSchemaSTEvent *)self stGeneralSearchContext];
+    stGeneralSearchContext3 = [equalCopy stGeneralSearchContext];
+    v17 = [stGeneralSearchContext2 isEqual:stGeneralSearchContext3];
 
     if (!v17)
     {
@@ -422,20 +422,20 @@
   {
   }
 
-  v6 = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
-  v7 = [v4 stLLMQueryUnderstandingContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
+  eventMetadata2 = [equalCopy stLLMQueryUnderstandingContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v18 = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
-  if (v18)
+  stLLMQueryUnderstandingContext = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
+  if (stLLMQueryUnderstandingContext)
   {
-    v19 = v18;
-    v20 = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
-    v21 = [v4 stLLMQueryUnderstandingContext];
-    v22 = [v20 isEqual:v21];
+    v19 = stLLMQueryUnderstandingContext;
+    stLLMQueryUnderstandingContext2 = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
+    stLLMQueryUnderstandingContext3 = [equalCopy stLLMQueryUnderstandingContext];
+    v22 = [stLLMQueryUnderstandingContext2 isEqual:stLLMQueryUnderstandingContext3];
 
     if (!v22)
     {
@@ -447,20 +447,20 @@
   {
   }
 
-  v6 = [(STSchemaSTEvent *)self stSpotlightContext];
-  v7 = [v4 stSpotlightContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self stSpotlightContext];
+  eventMetadata2 = [equalCopy stSpotlightContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v23 = [(STSchemaSTEvent *)self stSpotlightContext];
-  if (v23)
+  stSpotlightContext = [(STSchemaSTEvent *)self stSpotlightContext];
+  if (stSpotlightContext)
   {
-    v24 = v23;
-    v25 = [(STSchemaSTEvent *)self stSpotlightContext];
-    v26 = [v4 stSpotlightContext];
-    v27 = [v25 isEqual:v26];
+    v24 = stSpotlightContext;
+    stSpotlightContext2 = [(STSchemaSTEvent *)self stSpotlightContext];
+    stSpotlightContext3 = [equalCopy stSpotlightContext];
+    v27 = [stSpotlightContext2 isEqual:stSpotlightContext3];
 
     if (!v27)
     {
@@ -472,20 +472,20 @@
   {
   }
 
-  v6 = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
-  v7 = [v4 stAnswerSynthesisContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
+  eventMetadata2 = [equalCopy stAnswerSynthesisContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v28 = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
-  if (v28)
+  stAnswerSynthesisContext = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
+  if (stAnswerSynthesisContext)
   {
-    v29 = v28;
-    v30 = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
-    v31 = [v4 stAnswerSynthesisContext];
-    v32 = [v30 isEqual:v31];
+    v29 = stAnswerSynthesisContext;
+    stAnswerSynthesisContext2 = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
+    stAnswerSynthesisContext3 = [equalCopy stAnswerSynthesisContext];
+    v32 = [stAnswerSynthesisContext2 isEqual:stAnswerSynthesisContext3];
 
     if (!v32)
     {
@@ -497,20 +497,20 @@
   {
   }
 
-  v6 = [(STSchemaSTEvent *)self stGlobalSearchContext];
-  v7 = [v4 stGlobalSearchContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self stGlobalSearchContext];
+  eventMetadata2 = [equalCopy stGlobalSearchContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v33 = [(STSchemaSTEvent *)self stGlobalSearchContext];
-  if (v33)
+  stGlobalSearchContext = [(STSchemaSTEvent *)self stGlobalSearchContext];
+  if (stGlobalSearchContext)
   {
-    v34 = v33;
-    v35 = [(STSchemaSTEvent *)self stGlobalSearchContext];
-    v36 = [v4 stGlobalSearchContext];
-    v37 = [v35 isEqual:v36];
+    v34 = stGlobalSearchContext;
+    stGlobalSearchContext2 = [(STSchemaSTEvent *)self stGlobalSearchContext];
+    stGlobalSearchContext3 = [equalCopy stGlobalSearchContext];
+    v37 = [stGlobalSearchContext2 isEqual:stGlobalSearchContext3];
 
     if (!v37)
     {
@@ -522,20 +522,20 @@
   {
   }
 
-  v6 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
-  v7 = [v4 stLLMQUQueryArgumentsTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
+  eventMetadata2 = [equalCopy stLLMQUQueryArgumentsTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v38 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
-  if (v38)
+  stLLMQUQueryArgumentsTier1 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
+  if (stLLMQUQueryArgumentsTier1)
   {
-    v39 = v38;
-    v40 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
-    v41 = [v4 stLLMQUQueryArgumentsTier1];
-    v42 = [v40 isEqual:v41];
+    v39 = stLLMQUQueryArgumentsTier1;
+    stLLMQUQueryArgumentsTier12 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
+    stLLMQUQueryArgumentsTier13 = [equalCopy stLLMQUQueryArgumentsTier1];
+    v42 = [stLLMQUQueryArgumentsTier12 isEqual:stLLMQUQueryArgumentsTier13];
 
     if (!v42)
     {
@@ -547,20 +547,20 @@
   {
   }
 
-  v6 = [(STSchemaSTEvent *)self stDisambiguationContext];
-  v7 = [v4 stDisambiguationContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self stDisambiguationContext];
+  eventMetadata2 = [equalCopy stDisambiguationContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v43 = [(STSchemaSTEvent *)self stDisambiguationContext];
-  if (v43)
+  stDisambiguationContext = [(STSchemaSTEvent *)self stDisambiguationContext];
+  if (stDisambiguationContext)
   {
-    v44 = v43;
-    v45 = [(STSchemaSTEvent *)self stDisambiguationContext];
-    v46 = [v4 stDisambiguationContext];
-    v47 = [v45 isEqual:v46];
+    v44 = stDisambiguationContext;
+    stDisambiguationContext2 = [(STSchemaSTEvent *)self stDisambiguationContext];
+    stDisambiguationContext3 = [equalCopy stDisambiguationContext];
+    v47 = [stDisambiguationContext2 isEqual:stDisambiguationContext3];
 
     if (!v47)
     {
@@ -572,20 +572,20 @@
   {
   }
 
-  v6 = [(STSchemaSTEvent *)self requestEndedTier1];
-  v7 = [v4 requestEndedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self requestEndedTier1];
+  eventMetadata2 = [equalCopy requestEndedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v48 = [(STSchemaSTEvent *)self requestEndedTier1];
-  if (v48)
+  requestEndedTier1 = [(STSchemaSTEvent *)self requestEndedTier1];
+  if (requestEndedTier1)
   {
-    v49 = v48;
-    v50 = [(STSchemaSTEvent *)self requestEndedTier1];
-    v51 = [v4 requestEndedTier1];
-    v52 = [v50 isEqual:v51];
+    v49 = requestEndedTier1;
+    requestEndedTier12 = [(STSchemaSTEvent *)self requestEndedTier1];
+    requestEndedTier13 = [equalCopy requestEndedTier1];
+    v52 = [requestEndedTier12 isEqual:requestEndedTier13];
 
     if (!v52)
     {
@@ -597,12 +597,12 @@
   {
   }
 
-  v6 = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
-  v7 = [v4 searchToolHallucinationDetectionContext];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
+  eventMetadata2 = [equalCopy searchToolHallucinationDetectionContext];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v53 = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
-    if (!v53)
+    searchToolHallucinationDetectionContext = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
+    if (!searchToolHallucinationDetectionContext)
     {
 
 LABEL_56:
@@ -610,10 +610,10 @@ LABEL_56:
       goto LABEL_54;
     }
 
-    v54 = v53;
-    v55 = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
-    v56 = [v4 searchToolHallucinationDetectionContext];
-    v57 = [v55 isEqual:v56];
+    v54 = searchToolHallucinationDetectionContext;
+    searchToolHallucinationDetectionContext2 = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
+    searchToolHallucinationDetectionContext3 = [equalCopy searchToolHallucinationDetectionContext];
+    v57 = [searchToolHallucinationDetectionContext2 isEqual:searchToolHallucinationDetectionContext3];
 
     if (v57)
     {
@@ -633,90 +633,90 @@ LABEL_54:
   return v58;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v25 = a3;
-  v4 = [(STSchemaSTEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(STSchemaSTEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(STSchemaSTEvent *)self eventMetadata];
+    eventMetadata2 = [(STSchemaSTEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(STSchemaSTEvent *)self stGeneralSearchContext];
+  stGeneralSearchContext = [(STSchemaSTEvent *)self stGeneralSearchContext];
 
-  if (v6)
+  if (stGeneralSearchContext)
   {
-    v7 = [(STSchemaSTEvent *)self stGeneralSearchContext];
+    stGeneralSearchContext2 = [(STSchemaSTEvent *)self stGeneralSearchContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
+  stLLMQueryUnderstandingContext = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
 
-  if (v8)
+  if (stLLMQueryUnderstandingContext)
   {
-    v9 = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
+    stLLMQueryUnderstandingContext2 = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(STSchemaSTEvent *)self stSpotlightContext];
+  stSpotlightContext = [(STSchemaSTEvent *)self stSpotlightContext];
 
-  if (v10)
+  if (stSpotlightContext)
   {
-    v11 = [(STSchemaSTEvent *)self stSpotlightContext];
+    stSpotlightContext2 = [(STSchemaSTEvent *)self stSpotlightContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
+  stAnswerSynthesisContext = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
 
-  if (v12)
+  if (stAnswerSynthesisContext)
   {
-    v13 = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
+    stAnswerSynthesisContext2 = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(STSchemaSTEvent *)self stGlobalSearchContext];
+  stGlobalSearchContext = [(STSchemaSTEvent *)self stGlobalSearchContext];
 
-  if (v14)
+  if (stGlobalSearchContext)
   {
-    v15 = [(STSchemaSTEvent *)self stGlobalSearchContext];
+    stGlobalSearchContext2 = [(STSchemaSTEvent *)self stGlobalSearchContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
+  stLLMQUQueryArgumentsTier1 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
 
-  if (v16)
+  if (stLLMQUQueryArgumentsTier1)
   {
-    v17 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
+    stLLMQUQueryArgumentsTier12 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(STSchemaSTEvent *)self stDisambiguationContext];
+  stDisambiguationContext = [(STSchemaSTEvent *)self stDisambiguationContext];
 
-  if (v18)
+  if (stDisambiguationContext)
   {
-    v19 = [(STSchemaSTEvent *)self stDisambiguationContext];
+    stDisambiguationContext2 = [(STSchemaSTEvent *)self stDisambiguationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(STSchemaSTEvent *)self requestEndedTier1];
+  requestEndedTier1 = [(STSchemaSTEvent *)self requestEndedTier1];
 
-  if (v20)
+  if (requestEndedTier1)
   {
-    v21 = [(STSchemaSTEvent *)self requestEndedTier1];
+    requestEndedTier12 = [(STSchemaSTEvent *)self requestEndedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
+  searchToolHallucinationDetectionContext = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
 
-  v23 = v25;
-  if (v22)
+  v23 = toCopy;
+  if (searchToolHallucinationDetectionContext)
   {
-    v24 = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
+    searchToolHallucinationDetectionContext2 = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
     PBDataWriterWriteSubmessage();
 
-    v23 = v25;
+    v23 = toCopy;
   }
 }
 
@@ -745,9 +745,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setSearchToolHallucinationDetectionContext:(id)a3
+- (void)setSearchToolHallucinationDetectionContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   stGeneralSearchContext = self->_stGeneralSearchContext;
   self->_stGeneralSearchContext = 0;
 
@@ -773,14 +773,14 @@ LABEL_54:
   self->_requestEndedTier1 = 0;
 
   v13 = 109;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   searchToolHallucinationDetectionContext = self->_searchToolHallucinationDetectionContext;
-  self->_searchToolHallucinationDetectionContext = v4;
+  self->_searchToolHallucinationDetectionContext = contextCopy;
 }
 
 - (void)deleteRequestEndedTier1
@@ -808,9 +808,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setRequestEndedTier1:(id)a3
+- (void)setRequestEndedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   stGeneralSearchContext = self->_stGeneralSearchContext;
   self->_stGeneralSearchContext = 0;
 
@@ -836,14 +836,14 @@ LABEL_54:
   self->_searchToolHallucinationDetectionContext = 0;
 
   v13 = 108;
-  if (!v4)
+  if (!tier1Copy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   requestEndedTier1 = self->_requestEndedTier1;
-  self->_requestEndedTier1 = v4;
+  self->_requestEndedTier1 = tier1Copy;
 }
 
 - (void)deleteStDisambiguationContext
@@ -871,9 +871,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setStDisambiguationContext:(id)a3
+- (void)setStDisambiguationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   stGeneralSearchContext = self->_stGeneralSearchContext;
   self->_stGeneralSearchContext = 0;
 
@@ -899,14 +899,14 @@ LABEL_54:
   self->_searchToolHallucinationDetectionContext = 0;
 
   v13 = 107;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   stDisambiguationContext = self->_stDisambiguationContext;
-  self->_stDisambiguationContext = v4;
+  self->_stDisambiguationContext = contextCopy;
 }
 
 - (void)deleteStLLMQUQueryArgumentsTier1
@@ -934,9 +934,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setStLLMQUQueryArgumentsTier1:(id)a3
+- (void)setStLLMQUQueryArgumentsTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   stGeneralSearchContext = self->_stGeneralSearchContext;
   self->_stGeneralSearchContext = 0;
 
@@ -962,14 +962,14 @@ LABEL_54:
   self->_searchToolHallucinationDetectionContext = 0;
 
   v13 = 106;
-  if (!v4)
+  if (!tier1Copy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   stLLMQUQueryArgumentsTier1 = self->_stLLMQUQueryArgumentsTier1;
-  self->_stLLMQUQueryArgumentsTier1 = v4;
+  self->_stLLMQUQueryArgumentsTier1 = tier1Copy;
 }
 
 - (void)deleteStGlobalSearchContext
@@ -997,9 +997,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setStGlobalSearchContext:(id)a3
+- (void)setStGlobalSearchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   stGeneralSearchContext = self->_stGeneralSearchContext;
   self->_stGeneralSearchContext = 0;
 
@@ -1025,14 +1025,14 @@ LABEL_54:
   self->_searchToolHallucinationDetectionContext = 0;
 
   v13 = 105;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   stGlobalSearchContext = self->_stGlobalSearchContext;
-  self->_stGlobalSearchContext = v4;
+  self->_stGlobalSearchContext = contextCopy;
 }
 
 - (void)deleteStAnswerSynthesisContext
@@ -1060,9 +1060,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setStAnswerSynthesisContext:(id)a3
+- (void)setStAnswerSynthesisContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   stGeneralSearchContext = self->_stGeneralSearchContext;
   self->_stGeneralSearchContext = 0;
 
@@ -1088,14 +1088,14 @@ LABEL_54:
   self->_searchToolHallucinationDetectionContext = 0;
 
   v13 = 104;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   stAnswerSynthesisContext = self->_stAnswerSynthesisContext;
-  self->_stAnswerSynthesisContext = v4;
+  self->_stAnswerSynthesisContext = contextCopy;
 }
 
 - (void)deleteStSpotlightContext
@@ -1123,9 +1123,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setStSpotlightContext:(id)a3
+- (void)setStSpotlightContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   stGeneralSearchContext = self->_stGeneralSearchContext;
   self->_stGeneralSearchContext = 0;
 
@@ -1151,14 +1151,14 @@ LABEL_54:
   self->_searchToolHallucinationDetectionContext = 0;
 
   v13 = 103;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   stSpotlightContext = self->_stSpotlightContext;
-  self->_stSpotlightContext = v4;
+  self->_stSpotlightContext = contextCopy;
 }
 
 - (void)deleteStLLMQueryUnderstandingContext
@@ -1186,9 +1186,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setStLLMQueryUnderstandingContext:(id)a3
+- (void)setStLLMQueryUnderstandingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   stGeneralSearchContext = self->_stGeneralSearchContext;
   self->_stGeneralSearchContext = 0;
 
@@ -1214,14 +1214,14 @@ LABEL_54:
   self->_searchToolHallucinationDetectionContext = 0;
 
   v13 = 102;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   stLLMQueryUnderstandingContext = self->_stLLMQueryUnderstandingContext;
-  self->_stLLMQueryUnderstandingContext = v4;
+  self->_stLLMQueryUnderstandingContext = contextCopy;
 }
 
 - (void)deleteStGeneralSearchContext
@@ -1249,9 +1249,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setStGeneralSearchContext:(id)a3
+- (void)setStGeneralSearchContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   stLLMQueryUnderstandingContext = self->_stLLMQueryUnderstandingContext;
   self->_stLLMQueryUnderstandingContext = 0;
 
@@ -1277,147 +1277,147 @@ LABEL_54:
   self->_searchToolHallucinationDetectionContext = 0;
 
   v13 = 101;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   stGeneralSearchContext = self->_stGeneralSearchContext;
-  self->_stGeneralSearchContext = v4;
+  self->_stGeneralSearchContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(STSchemaSTEvent *)self whichEvent_Type];
-  if (v2 - 101 > 8)
+  whichEvent_Type = [(STSchemaSTEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 8)
   {
     return @"com.apple.aiml.siri.searchtool.STEvent";
   }
 
   else
   {
-    return off_1E78E77F0[v2 - 101];
+    return off_1E78E77F0[whichEvent_Type - 101];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v37.receiver = self;
   v37.super_class = STSchemaSTEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(STSchemaSTEvent *)self deleteStLLMQUQueryArgumentsTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(STSchemaSTEvent *)self deleteStLLMQUQueryArgumentsTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(STSchemaSTEvent *)self deleteStLLMQUQueryArgumentsTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(STSchemaSTEvent *)self deleteStLLMQUQueryArgumentsTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(STSchemaSTEvent *)self deleteStLLMQUQueryArgumentsTier1];
   }
 
-  v6 = [(STSchemaSTEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(STSchemaSTEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(STSchemaSTEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(STSchemaSTEvent *)self stGeneralSearchContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  stGeneralSearchContext = [(STSchemaSTEvent *)self stGeneralSearchContext];
+  v10 = [stGeneralSearchContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(STSchemaSTEvent *)self deleteStGeneralSearchContext];
   }
 
-  v12 = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  stLLMQueryUnderstandingContext = [(STSchemaSTEvent *)self stLLMQueryUnderstandingContext];
+  v13 = [stLLMQueryUnderstandingContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(STSchemaSTEvent *)self deleteStLLMQueryUnderstandingContext];
   }
 
-  v15 = [(STSchemaSTEvent *)self stSpotlightContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  stSpotlightContext = [(STSchemaSTEvent *)self stSpotlightContext];
+  v16 = [stSpotlightContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(STSchemaSTEvent *)self deleteStSpotlightContext];
   }
 
-  v18 = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  stAnswerSynthesisContext = [(STSchemaSTEvent *)self stAnswerSynthesisContext];
+  v19 = [stAnswerSynthesisContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(STSchemaSTEvent *)self deleteStAnswerSynthesisContext];
   }
 
-  v21 = [(STSchemaSTEvent *)self stGlobalSearchContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  stGlobalSearchContext = [(STSchemaSTEvent *)self stGlobalSearchContext];
+  v22 = [stGlobalSearchContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(STSchemaSTEvent *)self deleteStGlobalSearchContext];
   }
 
-  v24 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  stLLMQUQueryArgumentsTier1 = [(STSchemaSTEvent *)self stLLMQUQueryArgumentsTier1];
+  v25 = [stLLMQUQueryArgumentsTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(STSchemaSTEvent *)self deleteStLLMQUQueryArgumentsTier1];
   }
 
-  v27 = [(STSchemaSTEvent *)self stDisambiguationContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  stDisambiguationContext = [(STSchemaSTEvent *)self stDisambiguationContext];
+  v28 = [stDisambiguationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(STSchemaSTEvent *)self deleteStDisambiguationContext];
   }
 
-  v30 = [(STSchemaSTEvent *)self requestEndedTier1];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  requestEndedTier1 = [(STSchemaSTEvent *)self requestEndedTier1];
+  v31 = [requestEndedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(STSchemaSTEvent *)self deleteRequestEndedTier1];
   }
 
-  v33 = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  searchToolHallucinationDetectionContext = [(STSchemaSTEvent *)self searchToolHallucinationDetectionContext];
+  v34 = [searchToolHallucinationDetectionContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(STSchemaSTEvent *)self deleteSearchToolHallucinationDetectionContext];
   }
@@ -1435,98 +1435,98 @@ LABEL_54:
 
 - (int)componentName
 {
-  v2 = [(STSchemaSTEvent *)self eventMetadata];
-  v3 = [v2 searchToolId];
+  eventMetadata = [(STSchemaSTEvent *)self eventMetadata];
+  searchToolId = [eventMetadata searchToolId];
 
-  if (v3)
+  if (searchToolId)
   {
-    v4 = [v3 value];
-    if (v4)
+    value = [searchToolId value];
+    if (value)
     {
-      v5 = [v3 value];
-      v6 = [v5 length];
+      value2 = [searchToolId value];
+      v6 = [value2 length];
 
       if (v6)
       {
-        LODWORD(v4) = 55;
+        LODWORD(value) = 55;
       }
 
       else
       {
-        LODWORD(v4) = 0;
+        LODWORD(value) = 0;
       }
     }
   }
 
   else
   {
-    LODWORD(v4) = 0;
+    LODWORD(value) = 0;
   }
 
-  return v4;
+  return value;
 }
 
 - (id)getComponentId
 {
-  v2 = [(STSchemaSTEvent *)self eventMetadata];
-  v3 = [v2 searchToolId];
+  eventMetadata = [(STSchemaSTEvent *)self eventMetadata];
+  searchToolId = [eventMetadata searchToolId];
 
-  if (!v3)
+  if (!searchToolId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [searchToolId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [searchToolId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = searchToolId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(STSchemaSTEvent *)self whichEvent_Type];
-  if (v3 - 101 > 8)
+  whichEvent_Type = [(STSchemaSTEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 101 > 8)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78EB178[v3 - 101]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78EB178[whichEvent_Type - 101]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 101 > 8)
+  if (tag - 101 > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78EB1C0[a3 - 101];
+    return off_1E78EB1C0[tag - 101];
   }
 }
 

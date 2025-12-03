@@ -1,7 +1,7 @@
 @interface ABPKDepthBasedScaleEstimation
 - (ABPKDepthBasedScaleEstimation)init;
-- (float)estimateScaleFromDepthData:(CGFloat)a3 depthConfidenceData:(CGFloat)a4 timestamp:(__n128)a5 imageResolution:(__n128)a6 imageIntrinsics:(__n128)a7 cameraFromBodyPose:(uint64_t)a8 liftingResult:(__CVBuffer *)a9;
-- (float)estimateScaleFromJasperCloud:(float32x4_t)a3 cameraFromBodyPose:(float32x4_t)a4 liftingResult:(float32x4_t)a5;
+- (float)estimateScaleFromDepthData:(CGFloat)data depthConfidenceData:(CGFloat)confidenceData timestamp:(__n128)timestamp imageResolution:(__n128)resolution imageIntrinsics:(__n128)intrinsics cameraFromBodyPose:(uint64_t)pose liftingResult:(__CVBuffer *)result;
+- (float)estimateScaleFromJasperCloud:(float32x4_t)cloud cameraFromBodyPose:(float32x4_t)pose liftingResult:(float32x4_t)result;
 - (void)resetState;
 @end
 
@@ -41,11 +41,11 @@
   self->_depth_scaler_observation_count = 0;
 }
 
-- (float)estimateScaleFromDepthData:(CGFloat)a3 depthConfidenceData:(CGFloat)a4 timestamp:(__n128)a5 imageResolution:(__n128)a6 imageIntrinsics:(__n128)a7 cameraFromBodyPose:(uint64_t)a8 liftingResult:(__CVBuffer *)a9
+- (float)estimateScaleFromDepthData:(CGFloat)data depthConfidenceData:(CGFloat)confidenceData timestamp:(__n128)timestamp imageResolution:(__n128)resolution imageIntrinsics:(__n128)intrinsics cameraFromBodyPose:(uint64_t)pose liftingResult:(__CVBuffer *)result
 {
-  *&v62[16] = a6;
-  *&v62[32] = a7;
-  *v62 = a5;
+  *&v62[16] = resolution;
+  *&v62[32] = intrinsics;
+  *v62 = timestamp;
   v91 = *MEMORY[0x277D85DE8];
   v21 = a11;
   v22 = __ABPKLogSharedInstance();
@@ -55,18 +55,18 @@
     _os_log_impl(&dword_23EDDC000, v22, OS_LOG_TYPE_DEBUG, " ABPKDepthBasedScaleEstimation: Estimating scale from AppleDepth data ", buf, 2u);
   }
 
-  if (a2 - *(a1 + 8) > 1.0)
+  if (a2 - *(self + 8) > 1.0)
   {
-    [a1 resetState];
+    [self resetState];
   }
 
-  Width = CVPixelBufferGetWidth(a9);
-  Height = CVPixelBufferGetHeight(a9);
+  Width = CVPixelBufferGetWidth(result);
+  Height = CVPixelBufferGetHeight(result);
   v25 = Height;
   v93.width = Width;
   v93.height = Height;
-  v92.width = a3;
-  v92.height = a4;
+  v92.width = data;
+  v92.height = confidenceData;
   v27.f32[0] = ABPKAdjustIntrinsicsForViewportSize(*v62, v92, v93);
   v26 = 0;
   v27.i32[3] = 0;
@@ -87,7 +87,7 @@
   v61 = *buf;
   v58 = v87;
   v59 = v86;
-  CVPixelBufferLockBaseAddress(a9, 0);
+  CVPixelBufferLockBaseAddress(result, 0);
   CVPixelBufferLockBaseAddress(a10, 0);
   v30 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -96,8 +96,8 @@
     _os_log_impl(&dword_23EDDC000, v30, OS_LOG_TYPE_DEBUG, " \t Accessing depth data pointers ", buf, 2u);
   }
 
-  BaseAddress = CVPixelBufferGetBaseAddress(a9);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a9);
+  BaseAddress = CVPixelBufferGetBaseAddress(result);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(result);
   v33 = CVPixelBufferGetBaseAddress(a10);
   v34 = CVPixelBufferGetBytesPerRow(a10);
   memset(buf, 0, sizeof(buf));
@@ -122,21 +122,21 @@
   {
     if ([v21 isJointTracked:v36])
     {
-      v44 = [v21 joints];
-      *v40.i32 = COERCE_FLOAT(HIDWORD(*&v44[4 * v36])) / 1000.0;
-      *v41.i32 = COERCE_FLOAT(*&v44[4 * v36 + 2]) / 1000.0;
+      joints = [v21 joints];
+      *v40.i32 = COERCE_FLOAT(HIDWORD(*&joints[4 * v36])) / 1000.0;
+      *v41.i32 = COERCE_FLOAT(*&joints[4 * v36 + 2]) / 1000.0;
       v64 = v40;
-      v65 = COERCE_FLOAT(*&v44[4 * v36]) / 1000.0;
+      v65 = COERCE_FLOAT(*&joints[4 * v36]) / 1000.0;
       v63 = v41;
       v42 = vaddq_f32(v58, vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v61, v65), v60, *v40.i32), v59, *v41.i32));
       v43 = vdivq_f32(v42, vdupq_laneq_s32(v42, 2)).u64[0];
-      LODWORD(v44) = llroundf(*&v43);
-      if ((v44 & 0x80000000) == 0 && v44 < Width)
+      LODWORD(joints) = llroundf(*&v43);
+      if ((joints & 0x80000000) == 0 && joints < Width)
       {
         v45 = llroundf(*(&v43 + 1));
         if ((v45 & 0x80000000) == 0 && v45 < v25)
         {
-          DepthAndConfidenceInNeighborood(v44, v45, BaseAddress, v33, Width, v25, v38, v39);
+          DepthAndConfidenceInNeighborood(joints, v45, BaseAddress, v33, Width, v25, v38, v39);
           *v75 = v46;
           v76 = v47;
           std::vector<float>::push_back[abi:ne200100](v81, v75);
@@ -150,7 +150,7 @@
     ++v36;
   }
 
-  CVPixelBufferUnlockBaseAddress(a9, 0);
+  CVPixelBufferUnlockBaseAddress(result, 0);
   CVPixelBufferUnlockBaseAddress(a10, 0);
   v48 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
@@ -196,11 +196,11 @@
   v50 = -1.0;
   if (v49 > 0.0 && v88 > 0.0)
   {
-    v51 = v49 + *(a1 + 16);
-    v52 = v88 + *(a1 + 20);
-    *(a1 + 16) = v51;
-    *(a1 + 20) = v52;
-    *(a1 + 8) = a2;
+    v51 = v49 + *(self + 16);
+    v52 = v88 + *(self + 20);
+    *(self + 16) = v51;
+    *(self + 20) = v52;
+    *(self + 8) = a2;
     v50 = v51 / v52;
   }
 
@@ -226,12 +226,12 @@
   return v50;
 }
 
-- (float)estimateScaleFromJasperCloud:(float32x4_t)a3 cameraFromBodyPose:(float32x4_t)a4 liftingResult:(float32x4_t)a5
+- (float)estimateScaleFromJasperCloud:(float32x4_t)cloud cameraFromBodyPose:(float32x4_t)pose liftingResult:(float32x4_t)result
 {
-  v38 = a4;
-  v39 = a5;
+  poseCopy = pose;
+  resultCopy = result;
   v36 = a2;
-  v37 = a3;
+  cloudCopy = cloud;
   v10 = a7;
   v11 = a8;
   v12 = __ABPKLogSharedInstance();
@@ -253,13 +253,13 @@
   do
   {
     v14 = *(&v52 + v13);
-    if ([v11 isJointTracked:{v14, *&v36, *&v37, *&v38, *&v39}])
+    if ([v11 isJointTracked:{v14, *&v36, *&cloudCopy, *&poseCopy, *&resultCopy}])
     {
-      v15 = [v11 joints];
+      joints = [v11 joints];
       v16 = *buf;
       if (*buf != v60)
       {
-        v40 = vaddq_f32(v39, vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v36, COERCE_FLOAT(*(v15 + 16 * v14)) / 1000.0), v37, COERCE_FLOAT(HIDWORD(*(v15 + 16 * v14))) / 1000.0), v38, COERCE_FLOAT(*(v15 + 16 * v14 + 8)) / 1000.0));
+        v40 = vaddq_f32(resultCopy, vmlaq_n_f32(vmlaq_n_f32(vmulq_n_f32(v36, COERCE_FLOAT(*(joints + 16 * v14)) / 1000.0), cloudCopy, COERCE_FLOAT(HIDWORD(*(joints + 16 * v14))) / 1000.0), poseCopy, COERCE_FLOAT(*(joints + 16 * v14 + 8)) / 1000.0));
         v17 = vdiv_f32(*v40.i8, vdup_laneq_s32(v40, 2));
         v18 = *buf + 16;
         v19 = vsub_f32(**buf, v17);
@@ -360,12 +360,12 @@
     v25 = v53;
     if (v30 > 0.0 && v61 > 0.0)
     {
-      v32 = v30 + *(a1 + 16);
-      v33 = v61 + *(a1 + 20);
-      *(a1 + 16) = v32;
-      *(a1 + 20) = v33;
-      v34 = *(a1 + 24) + v54 - v25;
-      *(a1 + 24) = v34;
+      v32 = v30 + *(self + 16);
+      v33 = v61 + *(self + 20);
+      *(self + 16) = v32;
+      *(self + 20) = v33;
+      v34 = *(self + 24) + v54 - v25;
+      *(self + 24) = v34;
       if (v34 >= 8)
       {
         v31 = v32 / v33;

@@ -10,13 +10,13 @@
 - (id)_allLines
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [a1 subviews];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subviews = [self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,24 +27,24 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v2 addObject:v8];
+          [array addObject:v8];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 
-  return v2;
+  return array;
 }
 
 - (void)_setImage:()TUICandidateLine onEdges:outside:style:
@@ -57,9 +57,9 @@
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v44 = a1;
-  v11 = [a1 subviews];
-  v12 = [v11 countByEnumeratingWithState:&v51 objects:v56 count:16];
+  selfCopy = self;
+  subviews = [self subviews];
+  v12 = [subviews countByEnumeratingWithState:&v51 objects:v56 count:16];
   if (v12)
   {
     v13 = v12;
@@ -70,7 +70,7 @@
       {
         if (*v52 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(subviews);
         }
 
         v16 = *(*(&v51 + 1) + 8 * i);
@@ -82,7 +82,7 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v51 objects:v56 count:16];
+      v13 = [subviews countByEnumeratingWithState:&v51 objects:v56 count:16];
     }
 
     while (v13);
@@ -111,19 +111,19 @@
         }
 
         v26 = *(*(&v47 + 1) + 8 * j);
-        v27 = [v26 integerValue];
+        integerValue = [v26 integerValue];
         v28 = [v10 objectForKeyedSubscript:v26];
         v29 = v28;
-        if ((v27 & a4) != 0)
+        if ((integerValue & a4) != 0)
         {
           if (!v28)
           {
             v29 = [[TUICandidateLine alloc] initWithFrame:v21, v22, v23, v24];
-            [v44 _attachLine:v29 toEdge:v27];
+            [selfCopy _attachLine:v29 toEdge:integerValue];
           }
 
-          v30 = [(TUICandidateLine *)v29 subviews];
-          v31 = [v30 count];
+          subviews2 = [(TUICandidateLine *)v29 subviews];
+          v31 = [subviews2 count];
 
           if (!v31)
           {
@@ -132,12 +132,12 @@
           }
 
           [(TUICandidateLine *)v29 setBackgroundColor:0];
-          v33 = [(TUICandidateLine *)v29 subviews];
-          v34 = [v33 firstObject];
+          subviews3 = [(TUICandidateLine *)v29 subviews];
+          firstObject = [subviews3 firstObject];
 
           if (v9)
           {
-            [v34 setImage:v9];
+            [firstObject setImage:v9];
             [v46 foregroundOpacity];
             [(TUICandidateLine *)v29 setAlpha:?];
             [(TUICandidateLine *)v29 bounds];
@@ -146,7 +146,7 @@
             if (a5)
             {
               v39 = v35;
-              if (v27 == 2)
+              if (integerValue == 2)
               {
                 [v9 size];
                 v39 = -v40;
@@ -156,7 +156,7 @@
             else
             {
               v39 = 0.0;
-              if (v27 != 2)
+              if (integerValue != 2)
               {
                 [v9 size];
                 v39 = v38 - v41;
@@ -166,7 +166,7 @@
             [v9 size];
             v43 = v42;
             [(TUICandidateLine *)v29 bounds];
-            [v34 setFrame:{v39, v37, v43, CGRectGetHeight(v58)}];
+            [firstObject setFrame:{v39, v37, v43, CGRectGetHeight(v58)}];
           }
 
           else
@@ -190,25 +190,25 @@
   v7 = v6;
   if (a3 == 15 && ([v6 cornerRadius], v8 > 0.0))
   {
-    v9 = 1.0 / TUIScreenScaleForView(a1);
-    v10 = [a1 layer];
-    [v10 setBorderWidth:v9];
+    v9 = 1.0 / TUIScreenScaleForView(self);
+    layer = [self layer];
+    [layer setBorderWidth:v9];
 
-    v11 = [v7 lineColor];
-    v12 = [v11 CGColor];
-    v13 = [a1 layer];
-    [v13 setBorderColor:v12];
+    lineColor = [v7 lineColor];
+    cGColor = [lineColor CGColor];
+    layer2 = [self layer];
+    [layer2 setBorderColor:cGColor];
 
     a3 = 0;
   }
 
   else
   {
-    v14 = [a1 layer];
-    [v14 setBorderWidth:0.0];
+    layer3 = [self layer];
+    [layer3 setBorderWidth:0.0];
 
-    v11 = [a1 layer];
-    [v11 setBorderColor:0];
+    lineColor = [self layer];
+    [lineColor setBorderColor:0];
   }
 
   v15 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
@@ -216,9 +216,9 @@
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v36 = a1;
-  v16 = [a1 subviews];
-  v17 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  selfCopy = self;
+  subviews = [self subviews];
+  v17 = [subviews countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (v17)
   {
     v18 = v17;
@@ -229,7 +229,7 @@
       {
         if (*v42 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(subviews);
         }
 
         v21 = *(*(&v41 + 1) + 8 * i);
@@ -241,7 +241,7 @@
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v41 objects:v46 count:16];
+      v18 = [subviews countByEnumeratingWithState:&v41 objects:v46 count:16];
     }
 
     while (v18);
@@ -270,15 +270,15 @@
         }
 
         v31 = *(*(&v37 + 1) + 8 * j);
-        v32 = [v31 integerValue];
+        integerValue = [v31 integerValue];
         v33 = [v15 objectForKeyedSubscript:v31];
         v34 = v33;
-        if ((v32 & a3) != 0)
+        if ((integerValue & a3) != 0)
         {
           if (!v33)
           {
             v34 = [[TUICandidateLine alloc] initWithFrame:v26, v27, v28, v29];
-            [v36 _attachLine:v34 toEdge:v32];
+            [selfCopy _attachLine:v34 toEdge:integerValue];
           }
 
           [(TUICandidateLine *)v34 setStyle:v7];
@@ -303,12 +303,12 @@
 - (void)_attachLine:()TUICandidateLine toEdge:
 {
   v25 = a3;
-  [a1 bounds];
+  [self bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = TUIScreenScaleForView(a1);
+  v14 = TUIScreenScaleForView(self);
   v15 = 0;
   v16 = 1.0 / v14;
   if (a4 > 3)
@@ -326,7 +326,7 @@
     }
 
 LABEL_8:
-    [a1 bounds];
+    [self bounds];
     v18 = v20;
     v15 = 2;
     v17 = v16;
@@ -343,7 +343,7 @@ LABEL_8:
   if (a4 == 2)
   {
 LABEL_7:
-    [a1 bounds];
+    [self bounds];
     v17 = v19;
     v15 = 16;
     v18 = v16;
@@ -397,10 +397,10 @@ LABEL_18:
   v15 |= 8uLL;
 LABEL_19:
   [v25 setFrame:{v21, v23, v18, v17}];
-  [a1 addSubview:v25];
+  [self addSubview:v25];
   [v25 setAutoresizingMask:v15];
-  v24 = [v25 layer];
-  [v24 setZPosition:1.0];
+  layer = [v25 layer];
+  [layer setZPosition:1.0];
 
   [v25 setTag:a4];
 }

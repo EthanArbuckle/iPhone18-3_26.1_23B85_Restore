@@ -7,8 +7,8 @@
 - (uint64_t)isFaceTime
 {
   v1 = MEMORY[0x1E696AAE8];
-  v2 = [a1 bundleID];
-  v3 = [v1 mru_isFaceTimeBundleIdentifier:v2];
+  bundleID = [self bundleID];
+  v3 = [v1 mru_isFaceTimeBundleIdentifier:bundleID];
 
   return v3;
 }

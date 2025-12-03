@@ -1,41 +1,41 @@
 @interface _UIViewAdditiveAnimationAction
-- (_UIViewAdditiveAnimationAction)initWithPendingAnimation:(id)a3 withAnimationObject:(id)a4 forView:(id)a5;
-- (void)runActionForKey:(id)a3 object:(id)a4 arguments:(id)a5;
+- (_UIViewAdditiveAnimationAction)initWithPendingAnimation:(id)animation withAnimationObject:(id)object forView:(id)view;
+- (void)runActionForKey:(id)key object:(id)object arguments:(id)arguments;
 @end
 
 @implementation _UIViewAdditiveAnimationAction
 
-- (_UIViewAdditiveAnimationAction)initWithPendingAnimation:(id)a3 withAnimationObject:(id)a4 forView:(id)a5
+- (_UIViewAdditiveAnimationAction)initWithPendingAnimation:(id)animation withAnimationObject:(id)object forView:(id)view
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  animationCopy = animation;
+  objectCopy = object;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = _UIViewAdditiveAnimationAction;
   v12 = [(_UIViewAdditiveAnimationAction *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pendingAnimation, a3);
-    objc_storeStrong(&v13->_animationObject, a4);
-    objc_storeStrong(&v13->_view, a5);
+    objc_storeStrong(&v12->_pendingAnimation, animation);
+    objc_storeStrong(&v13->_animationObject, object);
+    objc_storeStrong(&v13->_view, view);
     v14 = v13;
   }
 
   return v13;
 }
 
-- (void)runActionForKey:(id)a3 object:(id)a4 arguments:(id)a5
+- (void)runActionForKey:(id)key object:(id)object arguments:(id)arguments
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(_UIViewAdditiveAnimationAction *)self animationObject];
+  keyCopy = key;
+  objectCopy = object;
+  animationObject = [(_UIViewAdditiveAnimationAction *)self animationObject];
 
-  if (v9)
+  if (animationObject)
   {
     v10 = __currentViewAnimationState;
-    v11 = [(_UIViewAdditiveAnimationAction *)self view];
-    v12 = [v10 _shouldAnimateAdditivelyForKey:v7 onLayer:v8 forView:v11];
+    view = [(_UIViewAdditiveAnimationAction *)self view];
+    v12 = [v10 _shouldAnimateAdditivelyForKey:keyCopy onLayer:objectCopy forView:view];
   }
 
   else
@@ -47,10 +47,10 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __67___UIViewAdditiveAnimationAction_runActionForKey_object_arguments___block_invoke;
   aBlock[3] = &unk_1E712AE70;
-  v13 = v8;
+  v13 = objectCopy;
   v95 = v13;
-  v96 = self;
-  v14 = v7;
+  selfCopy = self;
+  v14 = keyCopy;
   v97 = v14;
   v98 = v12;
   v15 = _Block_copy(aBlock);
@@ -60,86 +60,86 @@
   v90[3] = &unk_1E712AE98;
   v16 = v13;
   v91 = v16;
-  v92 = self;
+  selfCopy2 = self;
   v17 = v14;
   v93 = v17;
   v18 = _Block_copy(v90);
-  v19 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
+  pendingAnimation = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
-    v21 = [v20 toValue];
-    if (v21)
+    pendingAnimation2 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
+    toValue = [pendingAnimation2 toValue];
+    if (toValue)
     {
     }
 
     else
     {
-      v22 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
-      v23 = [v22 keyPath];
+      pendingAnimation3 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
+      keyPath = [pendingAnimation3 keyPath];
 
-      if (!v23)
+      if (!keyPath)
       {
         goto LABEL_8;
       }
 
-      v24 = [(_UIViewAdditiveAnimationAction *)self animationObject];
-      if (v24)
+      animationObject2 = [(_UIViewAdditiveAnimationAction *)self animationObject];
+      if (animationObject2)
       {
-        v25 = v24;
-        v26 = [(_UIViewAdditiveAnimationAction *)self animationObject];
-        v27 = [v26 isIntrospectable];
+        v25 = animationObject2;
+        animationObject3 = [(_UIViewAdditiveAnimationAction *)self animationObject];
+        isIntrospectable = [animationObject3 isIntrospectable];
 
-        if (v27)
+        if (isIntrospectable)
         {
-          v28 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
-          v15[2](v15, v28);
+          pendingAnimation4 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
+          v15[2](v15, pendingAnimation4);
         }
       }
 
       if (v12)
       {
-        v29 = [(_UIViewAdditiveAnimationAction *)self animationObject];
+        animationObject4 = [(_UIViewAdditiveAnimationAction *)self animationObject];
 
-        if (v29 && (-[_UIViewAdditiveAnimationAction animationObject](self, "animationObject"), v30 = objc_claimAutoreleasedReturnValue(), v31 = [v30 _generatePointValueSpringAnimationsForKeyPath:v17], v30, v31))
+        if (animationObject4 && (-[_UIViewAdditiveAnimationAction animationObject](self, "animationObject"), v30 = objc_claimAutoreleasedReturnValue(), v31 = [v30 _generatePointValueSpringAnimationsForKeyPath:v17], v30, v31))
         {
-          v32 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
+          pendingAnimation5 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
           v33 = [v16 valueForKeyPath:v17];
-          v34 = [(_UIViewAdditiveAnimationAction *)self animationObject];
-          v35 = [v32 fromValue];
-          [v34 _setOriginalFromValue:v35 forKey:v17 inLayer:v16];
+          animationObject5 = [(_UIViewAdditiveAnimationAction *)self animationObject];
+          fromValue = [pendingAnimation5 fromValue];
+          [animationObject5 _setOriginalFromValue:fromValue forKey:v17 inLayer:v16];
 
-          v36 = [(_UIViewAdditiveAnimationAction *)self animationObject];
-          [v36 _setOriginalToValue:v33 forKey:v17 inLayer:v16];
+          animationObject6 = [(_UIViewAdditiveAnimationAction *)self animationObject];
+          [animationObject6 _setOriginalToValue:v33 forKey:v17 inLayer:v16];
 
-          v37 = [v32 fromValue];
-          [v37 CGPointValue];
+          fromValue2 = [pendingAnimation5 fromValue];
+          [fromValue2 CGPointValue];
           v39 = v38;
           v41 = v40;
 
           [v33 CGPointValue];
           v43 = v42;
           v45 = v44;
-          v19 = v32;
-          v46 = [(_UIViewAdditiveAnimationAction *)self animationObject];
-          v88 = v19;
-          v89 = v19;
-          [v46 _springAnimationForXComponent:&v89 forYComponent:&v88];
+          pendingAnimation = pendingAnimation5;
+          animationObject7 = [(_UIViewAdditiveAnimationAction *)self animationObject];
+          v88 = pendingAnimation;
+          v89 = pendingAnimation;
+          [animationObject7 _springAnimationForXComponent:&v89 forYComponent:&v88];
           v47 = v89;
           v48 = v88;
 
-          v49 = [v19 delegate];
-          [v48 setDelegate:v49];
+          delegate = [pendingAnimation delegate];
+          [v48 setDelegate:delegate];
 
-          v50 = [v19 timingFunction];
-          [v48 setTimingFunction:v50];
+          timingFunction = [pendingAnimation timingFunction];
+          [v48 setTimingFunction:timingFunction];
 
-          v51 = [v19 fromValue];
-          [v47 setFromValue:v51];
+          fromValue3 = [pendingAnimation fromValue];
+          [v47 setFromValue:fromValue3];
 
-          v52 = [v19 fromValue];
-          [v48 setFromValue:v52];
+          fromValue4 = [pendingAnimation fromValue];
+          [v48 setFromValue:fromValue4];
 
           v53 = [MEMORY[0x1E696B098] valueWithCGPoint:{v43, v41}];
           v18[2](v18, v47, v53, @".x");
@@ -150,18 +150,18 @@
 
         else if (([v17 isEqualToString:@"bounds"] & 1) != 0 || (objc_msgSend(v17, "isEqualToString:", @"contentsRect") & 1) != 0 || objc_msgSend(v17, "isEqualToString:", @"contentsCenter"))
         {
-          v67 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
-          v68 = [v67 fromValue];
-          [v68 CGRectValue];
+          pendingAnimation6 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
+          fromValue5 = [pendingAnimation6 fromValue];
+          [fromValue5 CGRectValue];
           v70 = v69;
           v72 = v71;
           v74 = v73;
           v76 = v75;
 
-          v77 = [v67 toValue];
-          if (v77)
+          toValue2 = [pendingAnimation6 toValue];
+          if (toValue2)
           {
-            [v67 toValue];
+            [pendingAnimation6 toValue];
           }
 
           else
@@ -173,15 +173,15 @@
           v80 = v79;
           v82 = v81;
 
-          v19 = v67;
-          v83 = [v19 copy];
+          pendingAnimation = pendingAnimation6;
+          v83 = [pendingAnimation copy];
           v84 = [v17 stringByAppendingString:@".size"];
-          [v19 setKeyPath:v84];
+          [pendingAnimation setKeyPath:v84];
 
           v85 = [MEMORY[0x1E696B098] valueWithCGSize:{v74, v76}];
-          [v19 setFromValue:v85];
+          [pendingAnimation setFromValue:v85];
 
-          v18[2](v18, v19, 0, 0);
+          v18[2](v18, pendingAnimation, 0, 0);
           if (vabdd_f64(v70, v80) >= 0.0001 || vabdd_f64(v72, v82) >= 0.0001)
           {
             v86 = [v17 stringByAppendingString:@".origin"];
@@ -197,41 +197,41 @@
 
         else
         {
-          v19 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
-          v18[2](v18, v19, 0, 0);
+          pendingAnimation = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
+          v18[2](v18, pendingAnimation, 0, 0);
         }
       }
 
       else
       {
-        v19 = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
-        v55 = [v19 keyPath];
-        v56 = [v16 valueForKeyPath:v55];
-        [v19 setToValue:v56];
+        pendingAnimation = [(_UIViewAdditiveAnimationAction *)self pendingAnimation];
+        keyPath2 = [pendingAnimation keyPath];
+        v56 = [v16 valueForKeyPath:keyPath2];
+        [pendingAnimation setToValue:v56];
 
-        v57 = [(_UIViewAdditiveAnimationAction *)self animationObject];
-        v58 = [v19 toValue];
-        [v57 _setOriginalToValue:v58 forKey:v17 inLayer:v16];
+        animationObject8 = [(_UIViewAdditiveAnimationAction *)self animationObject];
+        toValue3 = [pendingAnimation toValue];
+        [animationObject8 _setOriginalToValue:toValue3 forKey:v17 inLayer:v16];
 
         v59 = v16;
-        if ([UIView _shouldTrackActionWithAnimator:v19])
+        if ([UIView _shouldTrackActionWithAnimator:pendingAnimation])
         {
-          v60 = [v19 keyPath];
-          v61 = [UIViewPropertyAnimator _trackNonAdditiveAnimationWithAnimator:v19 forLayer:v59 forKey:v60];
+          keyPath3 = [pendingAnimation keyPath];
+          v61 = [UIViewPropertyAnimator _trackNonAdditiveAnimationWithAnimator:pendingAnimation forLayer:v59 forKey:keyPath3];
 
-          v62 = [v19 toValue];
-          [v61 _setOriginalToValue:v62 forKey:v17 inLayer:v59];
+          toValue4 = [pendingAnimation toValue];
+          [v61 _setOriginalToValue:toValue4 forKey:v17 inLayer:v59];
         }
 
-        v63 = [v19 keyPath];
-        [v59 addAnimation:v19 forKey:v63];
+        keyPath4 = [pendingAnimation keyPath];
+        [v59 addAnimation:pendingAnimation forKey:keyPath4];
 
         if (+[UIView _isAnimationTracking])
         {
           v64 = __currentViewAnimationState;
-          v65 = [v19 keyPath];
-          v66 = [v19 keyPath];
-          [v64 _trackAnimation:v19 nonAdditiveAnimation:0 withAnimationKey:v65 forKeyPath:v66 inLayer:v59];
+          keyPath5 = [pendingAnimation keyPath];
+          keyPath6 = [pendingAnimation keyPath];
+          [v64 _trackAnimation:pendingAnimation nonAdditiveAnimation:0 withAnimationKey:keyPath5 forKeyPath:keyPath6 inLayer:v59];
         }
       }
     }

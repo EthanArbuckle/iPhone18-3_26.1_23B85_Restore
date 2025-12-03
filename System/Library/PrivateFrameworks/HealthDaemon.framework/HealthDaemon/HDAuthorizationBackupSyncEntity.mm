@@ -1,60 +1,60 @@
 @interface HDAuthorizationBackupSyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (id)_backupInfoWithSyncStore:(uint64_t)a1;
-+ (id)authorizationBackupPullIdentifierWithSyncStore:(id)a3;
-+ (id)authorizationBackupPushIdentifierWithSyncStore:(id)a3;
-+ (id)createCodableSourceAuthorizationWithSource:(id)a3 syncSession:(id)a4;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (void)_setBackupInfo:(uint64_t)a1;
-+ (void)didGenerateCodableSourceAuthorizationsForSyncSession:(id)a3;
-+ (void)setAuthorizationBackupPushIdentifier:(id)a3 syncStore:(id)a4;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (id)_backupInfoWithSyncStore:(uint64_t)store;
++ (id)authorizationBackupPullIdentifierWithSyncStore:(id)store;
++ (id)authorizationBackupPushIdentifierWithSyncStore:(id)store;
++ (id)createCodableSourceAuthorizationWithSource:(id)source syncSession:(id)session;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
++ (void)_setBackupInfo:(uint64_t)info;
++ (void)didGenerateCodableSourceAuthorizationsForSyncSession:(id)session;
++ (void)setAuthorizationBackupPushIdentifier:(id)identifier syncStore:(id)store;
 @end
 
 @implementation HDAuthorizationBackupSyncEntity
 
-+ (id)createCodableSourceAuthorizationWithSource:(id)a3 syncSession:(id)a4
++ (id)createCodableSourceAuthorizationWithSource:(id)source syncSession:(id)session
 {
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = &OBJC_METACLASS___HDAuthorizationBackupSyncEntity;
-  v5 = a4;
-  v6 = a3;
-  v7 = objc_msgSendSuper2(&v11, sel_createCodableSourceAuthorizationWithSource_syncSession_, v6, v5);
-  v8 = [v5 sessionUUID];
+  sessionCopy = session;
+  sourceCopy = source;
+  v7 = objc_msgSendSuper2(&v11, sel_createCodableSourceAuthorizationWithSource_syncSession_, sourceCopy, sessionCopy);
+  sessionUUID = [sessionCopy sessionUUID];
 
-  v9 = [v8 hk_dataForUUIDBytes];
-  [v7 setBackupUUID:v9];
+  hk_dataForUUIDBytes = [sessionUUID hk_dataForUUIDBytes];
+  [v7 setBackupUUID:hk_dataForUUIDBytes];
 
-  [v7 setSource:v6];
+  [v7 setSource:sourceCopy];
 
   return v7;
 }
 
-+ (void)setAuthorizationBackupPushIdentifier:(id)a3 syncStore:(id)a4
++ (void)setAuthorizationBackupPushIdentifier:(id)identifier syncStore:(id)store
 {
-  v6 = a3;
-  v7 = [(HDAuthorizationBackupSyncEntity *)a1 _backupInfoWithSyncStore:a4];
+  identifierCopy = identifier;
+  v7 = [(HDAuthorizationBackupSyncEntity *)self _backupInfoWithSyncStore:store];
   v9 = [v7 mutableCopy];
 
-  v8 = [v6 UUIDString];
+  uUIDString = [identifierCopy UUIDString];
 
-  [v9 setObject:v8 forKeyedSubscript:@"PushIdentifier"];
-  [(HDAuthorizationBackupSyncEntity *)a1 _setBackupInfo:v9];
+  [v9 setObject:uUIDString forKeyedSubscript:@"PushIdentifier"];
+  [(HDAuthorizationBackupSyncEntity *)self _setBackupInfo:v9];
 }
 
-+ (id)_backupInfoWithSyncStore:(uint64_t)a1
++ (id)_backupInfoWithSyncStore:(uint64_t)store
 {
   v22[2] = *MEMORY[0x277D85DE8];
   v2 = a2;
   v3 = objc_opt_self();
-  v4 = [v2 databaseIdentifier];
+  databaseIdentifier = [v2 databaseIdentifier];
 
-  v5 = [v4 UUIDString];
+  uUIDString = [databaseIdentifier UUIDString];
 
-  if (v5)
+  if (uUIDString)
   {
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v7 = [v3 backupInfoUserDefaultsKey];
-    v8 = [v6 objectForKey:v7];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    backupInfoUserDefaultsKey = [v3 backupInfoUserDefaultsKey];
+    v8 = [standardUserDefaults objectForKey:backupInfoUserDefaultsKey];
 
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -62,7 +62,7 @@
       v10 = [v8 objectForKeyedSubscript:@"PushIdentifier"];
       if (v9)
       {
-        if ([v9 isEqualToString:v5])
+        if ([v9 isEqualToString:uUIDString])
         {
           v11 = v8;
 LABEL_10:
@@ -75,7 +75,7 @@ LABEL_10:
         {
           v21[0] = @"DatabaseIdentifier";
           v21[1] = @"PullIdentifier";
-          v22[0] = v5;
+          v22[0] = uUIDString;
           v22[1] = v10;
           v12 = MEMORY[0x277CBEAC0];
           v13 = v22;
@@ -93,7 +93,7 @@ LABEL_10:
     }
 
     v19 = @"DatabaseIdentifier";
-    v20 = v5;
+    v20 = uUIDString;
     v12 = MEMORY[0x277CBEAC0];
     v13 = &v20;
     v14 = &v19;
@@ -111,26 +111,26 @@ LABEL_12:
   return v16;
 }
 
-+ (void)_setBackupInfo:(uint64_t)a1
++ (void)_setBackupInfo:(uint64_t)info
 {
   v5 = a2;
   v2 = objc_opt_self();
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v2 backupInfoUserDefaultsKey];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  backupInfoUserDefaultsKey = [v2 backupInfoUserDefaultsKey];
   if (v5)
   {
-    [v3 setObject:v5 forKey:v4];
+    [standardUserDefaults setObject:v5 forKey:backupInfoUserDefaultsKey];
   }
 
   else
   {
-    [v3 removeObjectForKey:v4];
+    [standardUserDefaults removeObjectForKey:backupInfoUserDefaultsKey];
   }
 }
 
-+ (id)authorizationBackupPullIdentifierWithSyncStore:(id)a3
++ (id)authorizationBackupPullIdentifierWithSyncStore:(id)store
 {
-  v3 = [(HDAuthorizationBackupSyncEntity *)a1 _backupInfoWithSyncStore:a3];
+  v3 = [(HDAuthorizationBackupSyncEntity *)self _backupInfoWithSyncStore:store];
   v4 = objc_alloc(MEMORY[0x277CCAD78]);
   v5 = [v3 objectForKeyedSubscript:@"PullIdentifier"];
   v6 = [v4 initWithUUIDString:v5];
@@ -138,9 +138,9 @@ LABEL_12:
   return v6;
 }
 
-+ (id)authorizationBackupPushIdentifierWithSyncStore:(id)a3
++ (id)authorizationBackupPushIdentifierWithSyncStore:(id)store
 {
-  v3 = [(HDAuthorizationBackupSyncEntity *)a1 _backupInfoWithSyncStore:a3];
+  v3 = [(HDAuthorizationBackupSyncEntity *)self _backupInfoWithSyncStore:store];
   v4 = objc_alloc(MEMORY[0x277CCAD78]);
   v5 = [v3 objectForKeyedSubscript:@"PushIdentifier"];
   v6 = [v4 initWithUUIDString:v5];
@@ -148,40 +148,40 @@ LABEL_12:
   return v6;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___HDAuthorizationBackupSyncEntity;
-  return objc_msgSendSuper2(&v8, sel_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error_, a3, a4.start, a4.end, a5, a6, a7);
+  return objc_msgSendSuper2(&v8, sel_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error_, session, range.start, range.end, profile, handler, error);
 }
 
-+ (void)didGenerateCodableSourceAuthorizationsForSyncSession:(id)a3
++ (void)didGenerateCodableSourceAuthorizationsForSyncSession:(id)session
 {
-  v4 = a3;
-  v6 = [v4 sessionUUID];
-  v5 = [v4 syncStore];
+  sessionCopy = session;
+  sessionUUID = [sessionCopy sessionUUID];
+  syncStore = [sessionCopy syncStore];
 
-  [a1 setAuthorizationBackupPushIdentifier:v6 syncStore:v5];
+  [self setAuthorizationBackupPushIdentifier:sessionUUID syncStore:syncStore];
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [a1 authorizationBackupPullIdentifierWithSyncStore:v12];
+  objectsCopy = objects;
+  storeCopy = store;
+  profileCopy = profile;
+  v14 = [self authorizationBackupPullIdentifierWithSyncStore:storeCopy];
   if (v14)
   {
-    v34 = a7;
-    v35 = v13;
+    errorCopy = error;
+    v35 = profileCopy;
     v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v36 = v11;
-    v16 = v11;
+    v36 = objectsCopy;
+    v16 = objectsCopy;
     v17 = [v16 countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v17)
     {
@@ -197,8 +197,8 @@ LABEL_12:
           }
 
           v21 = *(*(&v37 + 1) + 8 * i);
-          v22 = [v21 decodedBackupUUID];
-          if ([v22 isEqual:v14])
+          decodedBackupUUID = [v21 decodedBackupUUID];
+          if ([decodedBackupUUID isEqual:v14])
           {
             [v15 addObject:v21];
           }
@@ -214,7 +214,7 @@ LABEL_12:
     {
       _HKInitializeLogging();
       v23 = *MEMORY[0x277CCC328];
-      v13 = v35;
+      profileCopy = v35;
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
       {
         v24 = v23;
@@ -228,15 +228,15 @@ LABEL_12:
         _os_log_impl(&dword_228986000, v24, OS_LOG_TYPE_DEFAULT, "Applying %lu objects for %{public}@", buf, 0x16u);
       }
 
-      v28 = [HDAuthorizationEntity _insertCodableSourceAuthorizations:v15 overwriteExisting:0 syncStore:v12 profile:v35 error:v34]^ 1;
-      v11 = v36;
+      v28 = [HDAuthorizationEntity _insertCodableSourceAuthorizations:v15 overwriteExisting:0 syncStore:storeCopy profile:v35 error:errorCopy]^ 1;
+      objectsCopy = v36;
     }
 
     else
     {
       v28 = 0;
-      v13 = v35;
-      v11 = v36;
+      profileCopy = v35;
+      objectsCopy = v36;
     }
   }
 

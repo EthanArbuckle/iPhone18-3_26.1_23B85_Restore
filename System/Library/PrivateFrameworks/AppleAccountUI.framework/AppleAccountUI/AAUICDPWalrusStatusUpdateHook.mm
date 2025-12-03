@@ -1,38 +1,38 @@
 @interface AAUICDPWalrusStatusUpdateHook
-- (AAUICDPWalrusStatusUpdateHook)initWithAppleAccount:(id)a3;
-- (id)additionalPayloadForAction:(id)a3 error:(id)a4;
-- (id)changeControllerForAction:(id)a3;
-- (void)postCompletionProcessingForAction:(id)a3 error:(id)a4;
+- (AAUICDPWalrusStatusUpdateHook)initWithAppleAccount:(id)account;
+- (id)additionalPayloadForAction:(id)action error:(id)error;
+- (id)changeControllerForAction:(id)action;
+- (void)postCompletionProcessingForAction:(id)action error:(id)error;
 @end
 
 @implementation AAUICDPWalrusStatusUpdateHook
 
-- (AAUICDPWalrusStatusUpdateHook)initWithAppleAccount:(id)a3
+- (AAUICDPWalrusStatusUpdateHook)initWithAppleAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   v9.receiver = self;
   v9.super_class = AAUICDPWalrusStatusUpdateHook;
   v6 = [(AAUICDPWalrusStatusUpdateHook *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_account, a3);
+    objc_storeStrong(&v6->_account, account);
   }
 
   return v7;
 }
 
-- (id)changeControllerForAction:(id)a3
+- (id)changeControllerForAction:(id)action
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"walrus:enable"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"walrus:enable"])
   {
     v5 = 1;
   }
 
   else
   {
-    if (![v4 isEqualToString:@"walrus:disable"])
+    if (![actionCopy isEqualToString:@"walrus:disable"])
     {
       v8 = 0;
       goto LABEL_9;
@@ -43,8 +43,8 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v6 = [MEMORY[0x1E698DC80] sharedInstance];
-    v7 = [v6 altDSIDForAccount:self->_account];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    v7 = [mEMORY[0x1E698DC80] altDSIDForAccount:self->_account];
 
     v8 = [MEMORY[0x1E6997870] controllerWithTargetWalrusStatus:v5 altDSID:v7];
   }
@@ -59,17 +59,17 @@ LABEL_9:
   return v8;
 }
 
-- (id)additionalPayloadForAction:(id)a3 error:(id)a4
+- (id)additionalPayloadForAction:(id)action error:(id)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (error)
   {
     v4 = 0;
   }
 
   else
   {
-    if ([a3 isEqualToString:@"walrus:enable"])
+    if ([action isEqualToString:@"walrus:enable"])
     {
       v11 = @"walrusClientState";
       v12[0] = &unk_1F44C05E8;
@@ -93,11 +93,11 @@ LABEL_9:
   return v4;
 }
 
-- (void)postCompletionProcessingForAction:(id)a3 error:(id)a4
+- (void)postCompletionProcessingForAction:(id)action error:(id)error
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v6 = [a3 isEqualToString:@"walrus:disable"];
-  if (!a4 && v6)
+  v6 = [action isEqualToString:@"walrus:disable"];
+  if (!error && v6)
   {
     v7 = _AAUILogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))

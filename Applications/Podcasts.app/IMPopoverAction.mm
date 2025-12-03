@@ -1,29 +1,29 @@
 @interface IMPopoverAction
 - (void)dealloc;
 - (void)dismissPopover;
-- (void)showViewController:(id)a3 inPopoverFromButton:(id)a4;
+- (void)showViewController:(id)controller inPopoverFromButton:(id)button;
 - (void)updatePopover;
 @end
 
 @implementation IMPopoverAction
 
-- (void)showViewController:(id)a3 inPopoverFromButton:(id)a4
+- (void)showViewController:(id)controller inPopoverFromButton:(id)button
 {
-  v6 = a3;
-  [(IMPopoverPresentationAction *)self setPresentingButton:a4];
-  v7 = [(IMAction *)self controller];
-  v11 = [v7 delegate];
+  controllerCopy = controller;
+  [(IMPopoverPresentationAction *)self setPresentingButton:button];
+  controller = [(IMAction *)self controller];
+  delegate = [controller delegate];
 
-  [(UIViewController *)v6 setModalPresentationStyle:7];
-  [v11 presentViewController:v6 animated:1 completion:0];
+  [(UIViewController *)controllerCopy setModalPresentationStyle:7];
+  [delegate presentViewController:controllerCopy animated:1 completion:0];
   viewControllerPresentedInPopover = self->_viewControllerPresentedInPopover;
-  self->_viewControllerPresentedInPopover = v6;
-  v9 = v6;
+  self->_viewControllerPresentedInPopover = controllerCopy;
+  v9 = controllerCopy;
 
-  v10 = [(UIViewController *)v9 popoverPresentationController];
+  popoverPresentationController = [(UIViewController *)v9 popoverPresentationController];
 
-  [v10 setPermittedArrowDirections:3];
-  [v10 setDelegate:self];
+  [popoverPresentationController setPermittedArrowDirections:3];
+  [popoverPresentationController setDelegate:self];
 }
 
 - (void)dealloc
@@ -54,30 +54,30 @@
 - (void)updatePopover
 {
   v3 = self->_viewControllerPresentedInPopover;
-  v4 = [(UIViewController *)v3 presentingViewController];
-  if (v4)
+  presentingViewController = [(UIViewController *)v3 presentingViewController];
+  if (presentingViewController)
   {
-    v5 = v4;
-    v6 = [(UIViewController *)v3 presentingViewController];
-    v7 = [v6 traitCollection];
-    v8 = [v7 horizontalSizeClass];
+    v5 = presentingViewController;
+    presentingViewController2 = [(UIViewController *)v3 presentingViewController];
+    traitCollection = [presentingViewController2 traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v8 != 1)
+    if (horizontalSizeClass != 1)
     {
       objc_initWeak(&location, self);
-      v9 = [(IMAction *)self controller];
-      v10 = [v9 delegate];
+      controller = [(IMAction *)self controller];
+      delegate = [controller delegate];
 
-      v11 = [(UIViewController *)v3 presentingViewController];
+      presentingViewController3 = [(UIViewController *)v3 presentingViewController];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_10009A920;
       v13[3] = &unk_1004DA270;
-      v12 = v10;
+      v12 = delegate;
       v14 = v12;
       v15 = v3;
       objc_copyWeak(&v16, &location);
-      [v11 dismissViewControllerAnimated:0 completion:v13];
+      [presentingViewController3 dismissViewControllerAnimated:0 completion:v13];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);

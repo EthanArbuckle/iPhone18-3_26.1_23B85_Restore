@@ -20,7 +20,7 @@
   v9[3] = &unk_1005270C8;
   v5 = v3;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   [(NSDictionary *)apps enumerateKeysAndObjectsUsingBlock:v9];
   if ([(NSDictionary *)self->_apps count]> 1 || self->_isXDCRequest || !v14[5])

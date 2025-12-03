@@ -1,8 +1,8 @@
 @interface PUPlayheadView
-- (PUPlayheadView)initWithFrame:(CGRect)a3;
+- (PUPlayheadView)initWithFrame:(CGRect)frame;
 - (void)_updateLineColor;
 - (void)layoutSubviews;
-- (void)setPreferredHighlightColor:(id)a3;
+- (void)setPreferredHighlightColor:(id)color;
 - (void)tintColorDidChange;
 @end
 
@@ -10,45 +10,45 @@
 
 - (void)_updateLineColor
 {
-  v3 = [(PUPlayheadView *)self preferredHighlightColor];
-  if (v3)
+  preferredHighlightColor = [(PUPlayheadView *)self preferredHighlightColor];
+  if (preferredHighlightColor)
   {
     goto LABEL_2;
   }
 
   v5 = +[PUInterfaceManager currentTheme];
-  v6 = [v5 playheadColor];
+  playheadColor = [v5 playheadColor];
 
-  v4 = v6;
-  if (!v6)
+  v4 = playheadColor;
+  if (!playheadColor)
   {
-    v3 = [(PUPlayheadView *)self tintColor];
+    preferredHighlightColor = [(PUPlayheadView *)self tintColor];
 LABEL_2:
-    v4 = v3;
+    v4 = preferredHighlightColor;
   }
 
   v7 = v4;
   [(UIView *)self->_line setBackgroundColor:v4];
 }
 
-- (void)setPreferredHighlightColor:(id)a3
+- (void)setPreferredHighlightColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_preferredHighlightColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_preferredHighlightColor != colorCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = colorCopy;
+    colorCopy = [colorCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((colorCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_preferredHighlightColor, a3);
-      v5 = [(PUPlayheadView *)self _updateLineColor];
+      objc_storeStrong(&self->_preferredHighlightColor, color);
+      colorCopy = [(PUPlayheadView *)self _updateLineColor];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](colorCopy, v6);
 }
 
 - (void)layoutSubviews
@@ -61,8 +61,8 @@ LABEL_2:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PUPlayheadView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(PUPlayheadView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   v25.origin.x = v4;
@@ -112,11 +112,11 @@ LABEL_2:
   [(PUPlayheadView *)self _updateLineColor];
 }
 
-- (PUPlayheadView)initWithFrame:(CGRect)a3
+- (PUPlayheadView)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = PUPlayheadView;
-  v3 = [(PUPlayheadView *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUPlayheadView *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[PUInterfaceManager currentTheme];
@@ -129,32 +129,32 @@ LABEL_2:
     line = v3->_line;
     v3->_line = v10;
 
-    v12 = [(UIView *)v3->_line layer];
-    [v12 setCornerRadius:1.0];
+    layer = [(UIView *)v3->_line layer];
+    [layer setCornerRadius:1.0];
 
     [(PUPlayheadView *)v3 addSubview:v3->_line];
     v13 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v6, v7, v8, v9}];
     outline = v3->_outline;
     v3->_outline = v13;
 
-    v15 = [(UIView *)v3->_outline layer];
-    [v15 setBorderWidth:1.0];
+    layer2 = [(UIView *)v3->_outline layer];
+    [layer2 setBorderWidth:1.0];
 
-    v16 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v3->_outline setBackgroundColor:v16];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v3->_outline setBackgroundColor:clearColor];
 
-    v17 = [v4 playheadOutlineColor];
-    v18 = [v17 CGColor];
-    v19 = [(UIView *)v3->_outline layer];
-    [v19 setBorderColor:v18];
+    playheadOutlineColor = [v4 playheadOutlineColor];
+    cGColor = [playheadOutlineColor CGColor];
+    layer3 = [(UIView *)v3->_outline layer];
+    [layer3 setBorderColor:cGColor];
 
-    v20 = [(UIView *)v3->_outline layer];
-    [v20 setCornerRadius:2.0];
+    layer4 = [(UIView *)v3->_outline layer];
+    [layer4 setCornerRadius:2.0];
 
     [(PUPlayheadView *)v3 addSubview:v3->_outline];
     [(PUPlayheadView *)v3 _updateLineColor];
-    v21 = [v4 playheadBackgroundColor];
-    [(PUPlayheadView *)v3 setBackgroundColor:v21];
+    playheadBackgroundColor = [v4 playheadBackgroundColor];
+    [(PUPlayheadView *)v3 setBackgroundColor:playheadBackgroundColor];
 
     [(PUPlayheadView *)v3 setUserInteractionEnabled:0];
   }

@@ -1,42 +1,42 @@
 @interface SearchUIPreferredMediaAppIcon
-- (BOOL)isEqual:(id)a3;
-- (SearchUIPreferredMediaAppIcon)initWithMediaMetadata:(id)a3 variant:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (SearchUIPreferredMediaAppIcon)initWithMediaMetadata:(id)metadata variant:(unint64_t)variant;
 - (unint64_t)hash;
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5;
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler;
 @end
 
 @implementation SearchUIPreferredMediaAppIcon
 
-- (SearchUIPreferredMediaAppIcon)initWithMediaMetadata:(id)a3 variant:(unint64_t)a4
+- (SearchUIPreferredMediaAppIcon)initWithMediaMetadata:(id)metadata variant:(unint64_t)variant
 {
-  v6 = a3;
+  metadataCopy = metadata;
   v10.receiver = self;
   v10.super_class = SearchUIPreferredMediaAppIcon;
-  v7 = [(SearchUIAppIconImage *)&v10 initWithBundleIdentifier:0 isOnenessApp:0 variant:a4 contentType:0];
+  v7 = [(SearchUIAppIconImage *)&v10 initWithBundleIdentifier:0 isOnenessApp:0 variant:variant contentType:0];
   v8 = v7;
   if (v7)
   {
-    [(SearchUIPreferredMediaAppIcon *)v7 setMediaMetadata:v6];
+    [(SearchUIPreferredMediaAppIcon *)v7 setMediaMetadata:metadataCopy];
   }
 
   return v8;
 }
 
-- (void)loadImageWithScale:(double)a3 isDarkStyle:(BOOL)a4 completionHandler:(id)a5
+- (void)loadImageWithScale:(double)scale isDarkStyle:(BOOL)style completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(SearchUIPreferredMediaAppIcon *)self mediaMetadata];
+  handlerCopy = handler;
+  mediaMetadata = [(SearchUIPreferredMediaAppIcon *)self mediaMetadata];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __82__SearchUIPreferredMediaAppIcon_loadImageWithScale_isDarkStyle_completionHandler___block_invoke;
   v12[3] = &unk_1E85B3EB8;
-  v13 = v9;
-  v14 = self;
-  v16 = a3;
-  v17 = a4;
-  v15 = v8;
-  v10 = v8;
-  v11 = v9;
+  v13 = mediaMetadata;
+  selfCopy = self;
+  scaleCopy = scale;
+  styleCopy = style;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = mediaMetadata;
   [SearchUIMediaUtilities predictionForMediaMetadata:v11 completion:v12];
 }
 
@@ -77,17 +77,17 @@ id __82__SearchUIPreferredMediaAppIcon_loadImageWithScale_isDarkStyle_completion
   return objc_msgSendSuper2(&v7, sel_loadImageWithScale_isDarkStyle_completionHandler_, v4, v5, v3);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(SearchUIPreferredMediaAppIcon *)self mediaMetadata];
-    v6 = [v4 mediaMetadata];
-    if ([v5 isEqual:v6])
+    mediaMetadata = [(SearchUIPreferredMediaAppIcon *)self mediaMetadata];
+    mediaMetadata2 = [equalCopy mediaMetadata];
+    if ([mediaMetadata isEqual:mediaMetadata2])
     {
-      v7 = [v4 variant];
-      v8 = v7 == [(SearchUIAppIconImage *)self variant];
+      variant = [equalCopy variant];
+      v8 = variant == [(SearchUIAppIconImage *)self variant];
     }
 
     else
@@ -106,8 +106,8 @@ id __82__SearchUIPreferredMediaAppIcon_loadImageWithScale_isDarkStyle_completion
 
 - (unint64_t)hash
 {
-  v3 = [(SearchUIPreferredMediaAppIcon *)self mediaMetadata];
-  v4 = [v3 hash];
+  mediaMetadata = [(SearchUIPreferredMediaAppIcon *)self mediaMetadata];
+  v4 = [mediaMetadata hash];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SearchUIAppIconImage variant](self, "variant")}];
   v6 = [v5 hash];
 

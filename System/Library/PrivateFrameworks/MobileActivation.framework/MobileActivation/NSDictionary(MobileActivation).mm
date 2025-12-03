@@ -12,8 +12,8 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a1 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [self allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -24,18 +24,18 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         if (![v10 compare:v4 options:1])
         {
-          v11 = [a1 objectForKey:v10];
+          v11 = [self objectForKey:v10];
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

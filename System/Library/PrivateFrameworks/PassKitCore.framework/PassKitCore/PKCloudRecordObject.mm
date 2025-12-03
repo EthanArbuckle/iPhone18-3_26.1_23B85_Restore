@@ -1,18 +1,18 @@
 @interface PKCloudRecordObject
 - (NSSet)records;
-- (PKCloudRecordObject)initWithCoder:(id)a3;
-- (PKCloudRecordObject)initWithRecords:(id)a3;
-- (id)_descriptionWithDetailedOutput:(BOOL)a3;
+- (PKCloudRecordObject)initWithCoder:(id)coder;
+- (PKCloudRecordObject)initWithRecords:(id)records;
+- (id)_descriptionWithDetailedOutput:(BOOL)output;
 - (id)primaryIdentifier;
-- (void)applyCloudRecordObject:(id)a3;
+- (void)applyCloudRecordObject:(id)object;
 @end
 
 @implementation PKCloudRecordObject
 
-- (PKCloudRecordObject)initWithRecords:(id)a3
+- (PKCloudRecordObject)initWithRecords:(id)records
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v21.receiver = self;
   v21.super_class = PKCloudRecordObject;
   v5 = [(PKCloudRecordObject *)&v21 init];
@@ -26,7 +26,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = v4;
+    v8 = recordsCopy;
     v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v9)
     {
@@ -43,8 +43,8 @@
 
           v13 = *(*(&v17 + 1) + 8 * i);
           v14 = v5->_recordIDToRecord;
-          v15 = [v13 recordID];
-          [(NSMutableDictionary *)v14 setObject:v13 forKey:v15];
+          recordID = [v13 recordID];
+          [(NSMutableDictionary *)v14 setObject:v13 forKey:recordID];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
@@ -60,15 +60,15 @@
 - (NSSet)records
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSMutableDictionary *)self->_recordIDToRecord allValues];
-  v4 = [v2 setWithArray:v3];
+  allValues = [(NSMutableDictionary *)self->_recordIDToRecord allValues];
+  v4 = [v2 setWithArray:allValues];
 
   return v4;
 }
 
-- (PKCloudRecordObject)initWithCoder:(id)a3
+- (PKCloudRecordObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKCloudRecordObject;
   v5 = [(PKCloudRecordObject *)&v13 init];
@@ -78,7 +78,7 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"recordIDToRecord"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"recordIDToRecord"];
     recordIDToRecord = v5->_recordIDToRecord;
     v5->_recordIDToRecord = v10;
   }
@@ -86,18 +86,18 @@
   return v5;
 }
 
-- (id)_descriptionWithDetailedOutput:(BOOL)a3
+- (id)_descriptionWithDetailedOutput:(BOOL)output
 {
-  v3 = a3;
+  outputCopy = output;
   v18 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD60] string];
-  [v5 appendFormat:@"records: \n"];
+  string = [MEMORY[0x1E696AD60] string];
+  [string appendFormat:@"records: \n"];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [(PKCloudRecordObject *)self records];
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  records = [(PKCloudRecordObject *)self records];
+  v7 = [records countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -108,43 +108,43 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(records);
         }
 
-        if (v3)
+        if (outputCopy)
         {
-          v11 = [*(*(&v13 + 1) + 8 * i) pk_description];
-          [v5 appendFormat:@" --> %@\n", v11];
+          pk_description = [*(*(&v13 + 1) + 8 * i) pk_description];
+          [string appendFormat:@" --> %@\n", pk_description];
         }
 
         else
         {
-          [v5 appendFormat:@" --> %@\n", *(*(&v13 + 1) + 8 * i)];
+          [string appendFormat:@" --> %@\n", *(*(&v13 + 1) + 8 * i)];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [records countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return string;
 }
 
-- (void)applyCloudRecordObject:(id)a3
+- (void)applyCloudRecordObject:(id)object
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 records];
+    records = [objectCopy records];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v6 = [records countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
       v7 = v6;
@@ -155,23 +155,23 @@
         {
           if (*v17 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(records);
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
           recordIDToRecord = self->_recordIDToRecord;
-          v12 = [v10 recordID];
-          v13 = [(NSMutableDictionary *)recordIDToRecord objectForKey:v12];
+          recordID = [v10 recordID];
+          v13 = [(NSMutableDictionary *)recordIDToRecord objectForKey:recordID];
 
           if (!v13)
           {
             v14 = self->_recordIDToRecord;
-            v15 = [v10 recordID];
-            [(NSMutableDictionary *)v14 setObject:v10 forKey:v15];
+            recordID2 = [v10 recordID];
+            [(NSMutableDictionary *)v14 setObject:v10 forKey:recordID2];
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v7 = [records countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v7);
@@ -181,18 +181,18 @@
 
 - (id)primaryIdentifier
 {
-  v3 = [(PKCloudRecordObject *)self item];
-  v4 = [v3 primaryIdentifier];
+  item = [(PKCloudRecordObject *)self item];
+  primaryIdentifier = [item primaryIdentifier];
 
-  if (!v4)
+  if (!primaryIdentifier)
   {
-    v5 = [(NSMutableDictionary *)self->_recordIDToRecord allValues];
-    v6 = [v5 firstObject];
-    v7 = [v6 recordID];
-    v4 = [v7 recordName];
+    allValues = [(NSMutableDictionary *)self->_recordIDToRecord allValues];
+    firstObject = [allValues firstObject];
+    recordID = [firstObject recordID];
+    primaryIdentifier = [recordID recordName];
   }
 
-  return v4;
+  return primaryIdentifier;
 }
 
 @end

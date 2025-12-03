@@ -1,12 +1,12 @@
 @interface IMStewieChat
 - (IMStewieChat)init;
-- (IMStewieChat)initWithDaemon:(id)a3;
+- (IMStewieChat)initWithDaemon:(id)daemon;
 - (void)daemonConnectionLost;
 - (void)daemonControllerDidDisconnect;
 - (void)dealloc;
-- (void)locationUpdateDelivered:(id)a3;
-- (void)openStewieChatWithContext:(id)a3;
-- (void)sendQuestionnaire:(id)a3;
+- (void)locationUpdateDelivered:(id)delivered;
+- (void)openStewieChatWithContext:(id)context;
+- (void)sendQuestionnaire:(id)questionnaire;
 - (void)setUpConnectionToDaemaon;
 @end
 
@@ -54,9 +54,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)sendQuestionnaire:(id)a3
+- (void)sendQuestionnaire:(id)questionnaire
 {
-  v4 = a3;
+  questionnaireCopy = questionnaire;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -68,12 +68,12 @@ LABEL_9:
   }
 
   v8 = objc_msgSend_remoteDaemon(self->_daemon, v5, v6);
-  objc_msgSend_sendQuestionnaire_(v8, v9, v4);
+  objc_msgSend_sendQuestionnaire_(v8, v9, questionnaireCopy);
 }
 
-- (void)locationUpdateDelivered:(id)a3
+- (void)locationUpdateDelivered:(id)delivered
 {
-  v4 = a3;
+  deliveredCopy = delivered;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -85,12 +85,12 @@ LABEL_9:
   }
 
   v8 = objc_msgSend_remoteDaemon(self->_daemon, v5, v6);
-  objc_msgSend_locationUpdateDelivered_(v8, v9, v4);
+  objc_msgSend_locationUpdateDelivered_(v8, v9, deliveredCopy);
 }
 
-- (void)openStewieChatWithContext:(id)a3
+- (void)openStewieChatWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -102,19 +102,19 @@ LABEL_9:
   }
 
   v8 = objc_msgSend_remoteDaemon(self->_daemon, v5, v6);
-  objc_msgSend_openStewieChatWithContext_(v8, v9, v4);
+  objc_msgSend_openStewieChatWithContext_(v8, v9, contextCopy);
 }
 
-- (IMStewieChat)initWithDaemon:(id)a3
+- (IMStewieChat)initWithDaemon:(id)daemon
 {
-  v4 = a3;
+  daemonCopy = daemon;
   v11.receiver = self;
   v11.super_class = IMStewieChat;
   v5 = [(IMStewieChat *)&v11 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setDaemon_(v5, v6, v4);
+    objc_msgSend_setDaemon_(v5, v6, daemonCopy);
     objc_msgSend_setUpConnectionToDaemaon(v7, v8, v9);
   }
 

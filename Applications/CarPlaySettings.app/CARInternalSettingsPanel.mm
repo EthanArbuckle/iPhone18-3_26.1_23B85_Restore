@@ -1,39 +1,39 @@
 @interface CARInternalSettingsPanel
 - (BOOL)_isPreflightThemeAssetEnabled;
 - (BOOL)_sessionSupportsVehicleData;
-- (CARInternalSettingsPanel)initWithPanelController:(id)a3;
+- (CARInternalSettingsPanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
 - (void)viewDidLoad;
 @end
 
 @implementation CARInternalSettingsPanel
 
-- (CARInternalSettingsPanel)initWithPanelController:(id)a3
+- (CARInternalSettingsPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v104.receiver = self;
   v104.super_class = CARInternalSettingsPanel;
-  v5 = [(CARSettingsPanel *)&v104 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v104 initWithPanelController:controllerCopy];
   if (v5)
   {
-    v6 = [[CARDebugPanel alloc] initWithPanelController:v4];
+    v6 = [[CARDebugPanel alloc] initWithPanelController:controllerCopy];
     debugPanel = v5->_debugPanel;
     v5->_debugPanel = v6;
 
-    v91 = v4;
-    v8 = [[CARNavigationOverridesPanel alloc] initWithPanelController:v4];
+    v91 = controllerCopy;
+    v8 = [[CARNavigationOverridesPanel alloc] initWithPanelController:controllerCopy];
     navigationOverridesPanel = v5->_navigationOverridesPanel;
     v5->_navigationOverridesPanel = v8;
 
     v10 = [[CARSettingsCellSpecifier alloc] initWithTitle:@"Plug-in Version" image:0 icon:0 accessoryType:0 actionBlock:&stru_1000DB248];
-    v11 = [(CARSettingsPanel *)v5 panelController];
-    v12 = [v11 carSession];
-    v13 = [v12 sourceVersion];
+    panelController = [(CARSettingsPanel *)v5 panelController];
+    carSession = [panelController carSession];
+    sourceVersion = [carSession sourceVersion];
 
-    if (v13)
+    if (sourceVersion)
     {
       v14 = qword_100101E88;
-      v15 = v13;
+      v15 = sourceVersion;
       if (v14 != -1)
       {
         sub_1000916E0();
@@ -71,19 +71,19 @@
     if ([(CARInternalSettingsPanel *)v5 _sessionSupportsVehicleData])
     {
       v24 = [[CARSettingsCellSpecifier alloc] initWithTitle:@"Asset ID" image:0 icon:0 accessoryType:0 actionBlock:&stru_1000DB268];
-      v25 = [(CARSettingsPanel *)v5 panelController];
-      v26 = [v25 vehicle];
-      v27 = [v26 clusterAssetIdentifier];
+      panelController2 = [(CARSettingsPanel *)v5 panelController];
+      vehicle = [panelController2 vehicle];
+      clusterAssetIdentifier = [vehicle clusterAssetIdentifier];
 
-      v89 = v27;
-      if ([v27 length])
+      v89 = clusterAssetIdentifier;
+      if ([clusterAssetIdentifier length])
       {
-        [(CARSettingsCellSpecifier *)v24 setDetail:v27 sizeToFit:1 withNumberOfLines:1 lineBreakMode:5];
+        [(CARSettingsCellSpecifier *)v24 setDetail:clusterAssetIdentifier sizeToFit:1 withNumberOfLines:1 lineBreakMode:5];
         v100[0] = _NSConcreteStackBlock;
         v100[1] = 3221225472;
         v100[2] = sub_100016530;
         v100[3] = &unk_1000DAE90;
-        v101 = v27;
+        v101 = clusterAssetIdentifier;
         [(CARSettingsCellSpecifier *)v24 setActionBlock:v100];
       }
 
@@ -93,21 +93,21 @@
       }
 
       v29 = [[CARSettingsCellSpecifier alloc] initWithTitle:@"Asset Version" image:0 icon:0 accessoryType:0 actionBlock:&stru_1000DB288];
-      v30 = [(CARSettingsPanel *)v5 panelController];
-      v31 = [v30 vehicle];
-      v32 = [v31 clusterAssetVersion];
+      panelController3 = [(CARSettingsPanel *)v5 panelController];
+      vehicle2 = [panelController3 vehicle];
+      clusterAssetVersion = [vehicle2 clusterAssetVersion];
 
       v94 = v29;
-      if (v32)
+      if (clusterAssetVersion)
       {
-        v33 = [v32 stringValue];
-        [(CARSettingsCellSpecifier *)v29 setDetail:v33 sizeToFit:1 withNumberOfLines:1 lineBreakMode:3];
+        stringValue = [clusterAssetVersion stringValue];
+        [(CARSettingsCellSpecifier *)v29 setDetail:stringValue sizeToFit:1 withNumberOfLines:1 lineBreakMode:3];
 
         v98[0] = _NSConcreteStackBlock;
         v98[1] = 3221225472;
         v98[2] = sub_10001658C;
         v98[3] = &unk_1000DAE90;
-        v99 = v32;
+        v99 = clusterAssetVersion;
         [(CARSettingsCellSpecifier *)v29 setActionBlock:v98];
       }
 
@@ -116,9 +116,9 @@
         [(CARSettingsCellSpecifier *)v29 setDetail:@"Unknown"];
       }
 
-      v34 = [(CARInternalSettingsPanel *)v5 _isPreflightThemeAssetEnabled];
+      _isPreflightThemeAssetEnabled = [(CARInternalSettingsPanel *)v5 _isPreflightThemeAssetEnabled];
       v35 = [[CARSettingsCellSpecifier alloc] initWithTitle:@"Asset Type" image:0 icon:0 accessoryType:0 actionBlock:&stru_1000DB2A8];
-      if (v34)
+      if (_isPreflightThemeAssetEnabled)
       {
         v36 = @"Preflight";
       }
@@ -131,19 +131,19 @@
       v93 = v35;
       [(CARSettingsCellSpecifier *)v35 setDetail:v36];
       v37 = [[CARSettingsCellSpecifier alloc] initWithTitle:@"SDK Version" image:0 icon:0 accessoryType:0 actionBlock:&stru_1000DB2C8];
-      v38 = [(CARSettingsPanel *)v5 panelController];
-      v39 = [v38 vehicle];
-      v40 = [v39 SDKVersion];
+      panelController4 = [(CARSettingsPanel *)v5 panelController];
+      vehicle3 = [panelController4 vehicle];
+      sDKVersion = [vehicle3 SDKVersion];
 
-      if ([v40 length])
+      if ([sDKVersion length])
       {
-        [(CARSettingsCellSpecifier *)v37 setDetail:v40 sizeToFit:1 withNumberOfLines:1 lineBreakMode:3];
-        [(CARSettingsCellSpecifier *)v37 setDetail:v40];
+        [(CARSettingsCellSpecifier *)v37 setDetail:sDKVersion sizeToFit:1 withNumberOfLines:1 lineBreakMode:3];
+        [(CARSettingsCellSpecifier *)v37 setDetail:sDKVersion];
         v96[0] = _NSConcreteStackBlock;
         v96[1] = 3221225472;
         v96[2] = sub_100016604;
         v96[3] = &unk_1000DAE90;
-        v97 = v40;
+        v97 = sDKVersion;
         [(CARSettingsCellSpecifier *)v37 setActionBlock:v96];
       }
 
@@ -165,7 +165,7 @@
       v24 = 0;
     }
 
-    v88 = v13;
+    v88 = sourceVersion;
     v41 = [[CARSettingsCellSpecifier alloc] initWithTitle:@"Toggle USB" image:0 icon:0 accessoryType:0 actionBlock:&stru_1000DB2E8];
     v109[0] = v41;
     v109[1] = v10;
@@ -241,16 +241,16 @@
     }
 
     v76 = v5->_switches;
-    v77 = [(CARDebugPanel *)v5->_debugPanel cellSpecifier];
-    v105[0] = v77;
-    v78 = [(CARNavigationOverridesPanel *)v5->_navigationOverridesPanel cellSpecifier];
-    v105[1] = v78;
+    cellSpecifier = [(CARDebugPanel *)v5->_debugPanel cellSpecifier];
+    v105[0] = cellSpecifier;
+    cellSpecifier2 = [(CARNavigationOverridesPanel *)v5->_navigationOverridesPanel cellSpecifier];
+    v105[1] = cellSpecifier2;
     v79 = [NSArray arrayWithObjects:v105 count:2];
     v80 = [(NSArray *)v76 arrayByAddingObjectsFromArray:v79];
     v81 = v5->_switches;
     v5->_switches = v80;
 
-    v4 = v91;
+    controllerCopy = v91;
   }
 
   return v5;
@@ -294,20 +294,20 @@
 
 - (BOOL)_sessionSupportsVehicleData
 {
-  v2 = [(CARSettingsPanel *)self panelController];
-  v3 = [v2 carSession];
-  v4 = [v3 configuration];
-  v5 = [v4 supportsVehicleData];
+  panelController = [(CARSettingsPanel *)self panelController];
+  carSession = [panelController carSession];
+  configuration = [carSession configuration];
+  supportsVehicleData = [configuration supportsVehicleData];
 
-  return v5;
+  return supportsVehicleData;
 }
 
 - (BOOL)_isPreflightThemeAssetEnabled
 {
   v2 = +[CRCarPlayPreferences isPreflightThemeAssetEnabled];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

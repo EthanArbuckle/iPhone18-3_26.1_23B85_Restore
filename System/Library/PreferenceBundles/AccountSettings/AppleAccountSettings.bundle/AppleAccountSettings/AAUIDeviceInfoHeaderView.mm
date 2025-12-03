@@ -1,5 +1,5 @@
 @interface AAUIDeviceInfoHeaderView
-- (AAUIDeviceInfoHeaderView)initWithDevice:(id)a3 style:(id)a4;
+- (AAUIDeviceInfoHeaderView)initWithDevice:(id)device style:(id)style;
 - (BOOL)_isFindMyIsInstalled;
 - (id)_deviceTypeLabel;
 - (id)_urlSession;
@@ -11,23 +11,23 @@
 - (void)_startListeningForForegrounding;
 - (void)_updateFindMyLink;
 - (void)dealloc;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation AAUIDeviceInfoHeaderView
 
-- (AAUIDeviceInfoHeaderView)initWithDevice:(id)a3 style:(id)a4
+- (AAUIDeviceInfoHeaderView)initWithDevice:(id)device style:(id)style
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  styleCopy = style;
   v12.receiver = self;
   v12.super_class = AAUIDeviceInfoHeaderView;
   v9 = [(AAUIDeviceInfoHeaderView *)&v12 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_remoteUIStyle, a4);
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_remoteUIStyle, style);
     [(AAUIDeviceInfoHeaderView *)v10 _setupSubviews];
     [(AAUIDeviceInfoHeaderView *)v10 _startListeningForForegrounding];
   }
@@ -35,21 +35,21 @@
   return v10;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = a3;
+  superviewCopy = superview;
   v5 = _AAUILogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = superviewCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Device header moving to super view: %@", buf, 0xCu);
   }
 
   v6.receiver = self;
   v6.super_class = AAUIDeviceInfoHeaderView;
-  [(AAUIDeviceInfoHeaderView *)&v6 willMoveToSuperview:v4];
-  if (v4)
+  [(AAUIDeviceInfoHeaderView *)&v6 willMoveToSuperview:superviewCopy];
+  if (superviewCopy)
   {
     [(AAUIDeviceInfoHeaderView *)self _getLazyLoadedDeviceImage];
   }
@@ -68,11 +68,11 @@
 
 - (void)_updateFindMyLink
 {
-  v3 = [(AAUIDeviceInfoHeaderView *)self _isFindMyIsInstalled];
-  if ([(AATrustedDevice *)self->_device showFMIPLink]&& self->_findMyIsInstalled != v3)
+  _isFindMyIsInstalled = [(AAUIDeviceInfoHeaderView *)self _isFindMyIsInstalled];
+  if ([(AATrustedDevice *)self->_device showFMIPLink]&& self->_findMyIsInstalled != _isFindMyIsInstalled)
   {
-    self->_findMyIsInstalled = v3;
-    if (v3)
+    self->_findMyIsInstalled = _isFindMyIsInstalled;
+    if (_isFindMyIsInstalled)
     {
       v4 = _AAUILogSystem();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -139,8 +139,8 @@
   self->_deviceNameLabel = v5;
 
   v7 = self->_deviceNameLabel;
-  v8 = [(AATrustedDevice *)self->_device detailDeviceName];
-  [(UILabel *)v7 setText:v8];
+  detailDeviceName = [(AATrustedDevice *)self->_device detailDeviceName];
+  [(UILabel *)v7 setText:detailDeviceName];
 
   v9 = self->_deviceNameLabel;
   v10 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -153,19 +153,19 @@
   if ([(AATrustedDevice *)self->_device showFMIPLink]&& [(AAUIDeviceInfoHeaderView *)self _isFindMyIsInstalled])
   {
     self->_findMyIsInstalled = 1;
-    v11 = [(AAUIDeviceInfoHeaderView *)self findMyAppLaunchButton];
+    findMyAppLaunchButton = [(AAUIDeviceInfoHeaderView *)self findMyAppLaunchButton];
     v12 = &OBJC_IVAR___AAUIDeviceInfoHeaderView__openInFmipButton;
   }
 
   else
   {
-    v11 = [(AAUIDeviceInfoHeaderView *)self _deviceTypeLabel];
+    findMyAppLaunchButton = [(AAUIDeviceInfoHeaderView *)self _deviceTypeLabel];
     v12 = &OBJC_IVAR___AAUIDeviceInfoHeaderView__detailLabel;
   }
 
   v13 = *v12;
   v14 = *(&self->super.super.super.isa + v13);
-  *(&self->super.super.super.isa + v13) = v11;
+  *(&self->super.super.super.isa + v13) = findMyAppLaunchButton;
 
   [(AAUIDeviceInfoHeaderView *)self addSubview:*(&self->super.super.super.isa + v13)];
   v33 = *(&self->super.super.super.isa + v13);
@@ -188,17 +188,17 @@
   [v16 addObjectsFromArray:v23];
 
   v24 = self->_deviceImageView;
-  v25 = [(UIImageView *)v24 superview];
-  v26 = [NSLayoutConstraint constraintWithItem:v24 attribute:9 relatedBy:0 toItem:v25 attribute:9 multiplier:1.0 constant:0.0];
+  superview = [(UIImageView *)v24 superview];
+  v26 = [NSLayoutConstraint constraintWithItem:v24 attribute:9 relatedBy:0 toItem:superview attribute:9 multiplier:1.0 constant:0.0];
   [v16 addObject:v26];
 
   v27 = self->_deviceNameLabel;
-  v28 = [(UILabel *)v27 superview];
-  v29 = [NSLayoutConstraint constraintWithItem:v27 attribute:9 relatedBy:0 toItem:v28 attribute:9 multiplier:1.0 constant:0.0];
+  superview2 = [(UILabel *)v27 superview];
+  v29 = [NSLayoutConstraint constraintWithItem:v27 attribute:9 relatedBy:0 toItem:superview2 attribute:9 multiplier:1.0 constant:0.0];
   [v16 addObject:v29];
 
-  v30 = [v33 superview];
-  v31 = [NSLayoutConstraint constraintWithItem:v33 attribute:9 relatedBy:0 toItem:v30 attribute:9 multiplier:1.0 constant:0.0];
+  superview3 = [v33 superview];
+  v31 = [NSLayoutConstraint constraintWithItem:v33 attribute:9 relatedBy:0 toItem:superview3 attribute:9 multiplier:1.0 constant:0.0];
   [v16 addObject:v31];
 
   [(AAUIDeviceInfoHeaderView *)self addConstraints:v16];
@@ -238,8 +238,8 @@
 - (id)_deviceTypeLabel
 {
   v3 = objc_alloc_init(UILabel);
-  v4 = [(AATrustedDevice *)self->_device detailSubLabel];
-  [v3 setText:v4];
+  detailSubLabel = [(AATrustedDevice *)self->_device detailSubLabel];
+  [v3 setText:detailSubLabel];
 
   v5 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
   [v3 setFont:v5];
@@ -259,11 +259,11 @@
   openInFmipButton = self->_openInFmipButton;
   self->_openInFmipButton = v3;
 
-  v5 = [(UIButton *)self->_openInFmipButton titleLabel];
-  [v5 setNumberOfLines:0];
+  titleLabel = [(UIButton *)self->_openInFmipButton titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  v6 = [(UIButton *)self->_openInFmipButton titleLabel];
-  [v6 setTextAlignment:1];
+  titleLabel2 = [(UIButton *)self->_openInFmipButton titleLabel];
+  [titleLabel2 setTextAlignment:1];
 
   v7 = self->_openInFmipButton;
   v8 = [NSBundle bundleForClass:objc_opt_class()];
@@ -273,17 +273,17 @@
   [(UIButton *)self->_openInFmipButton addTarget:self action:"_openFMIPButtonPressed" forControlEvents:64];
   [(UIButton *)self->_openInFmipButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v10 = self->_openInFmipButton;
-  v11 = [(AAUIDeviceInfoHeaderView *)self tintColor];
-  [(UIButton *)v10 setTitleColor:v11 forState:0];
+  tintColor = [(AAUIDeviceInfoHeaderView *)self tintColor];
+  [(UIButton *)v10 setTitleColor:tintColor forState:0];
 
   v12 = self->_openInFmipButton;
-  v13 = [(AAUIDeviceInfoHeaderView *)self tintColor];
-  v14 = [v13 colorWithAlphaComponent:0.200000003];
+  tintColor2 = [(AAUIDeviceInfoHeaderView *)self tintColor];
+  v14 = [tintColor2 colorWithAlphaComponent:0.200000003];
   [(UIButton *)v12 setTitleColor:v14 forState:1];
 
   v15 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-  v16 = [(UIButton *)self->_openInFmipButton titleLabel];
-  [v16 setFont:v15];
+  titleLabel3 = [(UIButton *)self->_openInFmipButton titleLabel];
+  [titleLabel3 setFont:v15];
 
   v17 = self->_openInFmipButton;
 
@@ -292,8 +292,8 @@
 
 - (void)_openFMIPButtonPressed
 {
-  v2 = [(AATrustedDevice *)self->_device FMIPDeviceID];
-  v3 = [NSString stringWithFormat:@"fmip1://device/device?id=%@", v2];
+  fMIPDeviceID = [(AATrustedDevice *)self->_device FMIPDeviceID];
+  v3 = [NSString stringWithFormat:@"fmip1://device/device?id=%@", fMIPDeviceID];
   v5 = [NSURL URLWithString:v3];
 
   v4 = +[LSApplicationWorkspace defaultWorkspace];
@@ -309,16 +309,16 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Starting to fetch device header image...", buf, 2u);
   }
 
-  v4 = [(AAUIDeviceInfoHeaderView *)self getDeviceImageURL];
-  v5 = [NSURLRequest requestWithURL:v4 cachePolicy:2 timeoutInterval:20.0];
+  getDeviceImageURL = [(AAUIDeviceInfoHeaderView *)self getDeviceImageURL];
+  v5 = [NSURLRequest requestWithURL:getDeviceImageURL cachePolicy:2 timeoutInterval:20.0];
 
-  v6 = [(AAUIDeviceInfoHeaderView *)self _urlSession];
+  _urlSession = [(AAUIDeviceInfoHeaderView *)self _urlSession];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_CD84;
   v9[3] = &unk_596A8;
   v9[4] = self;
-  v7 = [v6 dataTaskWithRequest:v5 completionHandler:v9];
+  v7 = [_urlSession dataTaskWithRequest:v5 completionHandler:v9];
   imageLoadingTask = self->_imageLoadingTask;
   self->_imageLoadingTask = v7;
 
@@ -360,16 +360,16 @@
     {
       [(AATrustedDevice *)device modelLargePhotoURL1x];
     }
-    v6 = ;
+    modelLargePhotoURL3x = ;
   }
 
   else
   {
-    v6 = [(AATrustedDevice *)self->_device modelLargePhotoURL3x];
+    modelLargePhotoURL3x = [(AATrustedDevice *)self->_device modelLargePhotoURL3x];
   }
 
-  v8 = v6;
-  v9 = [NSURL URLWithString:v6];
+  v8 = modelLargePhotoURL3x;
+  v9 = [NSURL URLWithString:modelLargePhotoURL3x];
 
   return v9;
 }

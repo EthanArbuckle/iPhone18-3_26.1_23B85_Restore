@@ -1,16 +1,16 @@
 @interface ADCarPlayAnnouncementRequestCapabilityProvider
-- (void)_updateForCarPlaySessionConnected:(BOOL)a3;
+- (void)_updateForCarPlaySessionConnected:(BOOL)connected;
 @end
 
 @implementation ADCarPlayAnnouncementRequestCapabilityProvider
 
-- (void)_updateForCarPlaySessionConnected:(BOOL)a3
+- (void)_updateForCarPlaySessionConnected:(BOOL)connected
 {
-  v3 = a3;
+  connectedCopy = connected;
   v9.receiver = self;
   v9.super_class = ADCarPlayAnnouncementRequestCapabilityProvider;
   [(AFCarPlayAnnouncementRequestCapabilityProvider *)&v9 _updateForCarPlaySessionConnected:?];
-  if (v3)
+  if (connectedCopy)
   {
     _AFPreferencesAnnounceNotificationsInCarPlayType();
     v4 = 0;

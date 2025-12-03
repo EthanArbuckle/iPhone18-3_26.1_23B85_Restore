@@ -4,7 +4,7 @@
 - (UILabel)timeTriggerLabel;
 - (UILabel)titleLabel;
 - (UIStackView)stackView;
-- (_TtC27RemindersIntentsUIExtension34TTRIIntentsSnippetReminderViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC27RemindersIntentsUIExtension34TTRIIntentsSnippetReminderViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -13,7 +13,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_100015B54();
 }
 
@@ -54,15 +54,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100016064();
 }
 
-- (_TtC27RemindersIntentsUIExtension34TTRIIntentsSnippetReminderViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC27RemindersIntentsUIExtension34TTRIIntentsSnippetReminderViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_10001FA84();
+    identifier = sub_10001FA84();
     v6 = v5;
   }
 
@@ -71,7 +71,7 @@
     v6 = 0;
   }
 
-  return sub_100017BB8(a3, a4, v6);
+  return sub_100017BB8(style, identifier, v6);
 }
 
 @end

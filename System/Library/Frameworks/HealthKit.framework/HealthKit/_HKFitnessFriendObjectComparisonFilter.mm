@@ -1,12 +1,12 @@
 @interface _HKFitnessFriendObjectComparisonFilter
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4;
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3;
-+ (id)allowedValueClassesForKeyPath:(id)a3;
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path;
++ (id)allowedDataTypeClassesForKeyPath:(id)path;
++ (id)allowedValueClassesForKeyPath:(id)path;
 @end
 
 @implementation _HKFitnessFriendObjectComparisonFilter
 
-+ (id)allowedDataTypeClassesForKeyPath:(id)a3
++ (id)allowedDataTypeClassesForKeyPath:(id)path
 {
   v3 = MEMORY[0x1E695DFD8];
   v4 = objc_opt_class();
@@ -14,9 +14,9 @@
   return [v3 setWithObject:v4];
 }
 
-+ (id)allowedValueClassesForKeyPath:(id)a3
++ (id)allowedValueClassesForKeyPath:(id)path
 {
-  if ([a3 isEqualToString:@"friend_uuid"])
+  if ([path isEqualToString:@"friend_uuid"])
   {
     v5 = MEMORY[0x1E695DFD8];
     v6 = objc_opt_class();
@@ -26,8 +26,8 @@
 
   else
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:a1 file:@"_HKFitnessFriendObjectComparisonFilter.m" lineNumber:34 description:@"Unreachable code has been executed"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_HKFitnessFriendObjectComparisonFilter.m" lineNumber:34 description:@"Unreachable code has been executed"];
 
     [MEMORY[0x1E695DFD8] set];
   }
@@ -36,15 +36,15 @@
   return v8;
 }
 
-+ (BOOL)isAllowedPredicateOperatorType:(unint64_t)a3 forKeyPath:(id)a4
++ (BOOL)isAllowedPredicateOperatorType:(unint64_t)type forKeyPath:(id)path
 {
-  if ([a4 isEqualToString:@"friend_uuid"])
+  if ([path isEqualToString:@"friend_uuid"])
   {
-    return a3 == 10 || (a3 & 0xFFFFFFFFFFFFFFFELL) == 4;
+    return type == 10 || (type & 0xFFFFFFFFFFFFFFFELL) == 4;
   }
 
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:a1 file:@"_HKFitnessFriendObjectComparisonFilter.m" lineNumber:43 description:@"Unreachable code has been executed"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_HKFitnessFriendObjectComparisonFilter.m" lineNumber:43 description:@"Unreachable code has been executed"];
 
   return 0;
 }

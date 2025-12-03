@@ -1,27 +1,27 @@
 @interface AVAssetReaderOutputAnnotationAdaptor
-+ (id)assetReaderOutputAnnotationAdaptorWithAssetReaderTrackOutput:(id)a3;
-- (AVAssetReaderOutputAnnotationAdaptor)initWithAssetReaderTrackOutput:(id)a3;
++ (id)assetReaderOutputAnnotationAdaptorWithAssetReaderTrackOutput:(id)output;
+- (AVAssetReaderOutputAnnotationAdaptor)initWithAssetReaderTrackOutput:(id)output;
 - (id)nextAnnotation;
-- (int)addExtractionForOutput:(id)a3 figAssetReader:(OpaqueFigAssetReader *)a4 options:(id)a5 withOutputExtactionID:(int *)a6;
+- (int)addExtractionForOutput:(id)output figAssetReader:(OpaqueFigAssetReader *)reader options:(id)options withOutputExtactionID:(int *)d;
 - (void)dealloc;
 @end
 
 @implementation AVAssetReaderOutputAnnotationAdaptor
 
-+ (id)assetReaderOutputAnnotationAdaptorWithAssetReaderTrackOutput:(id)a3
++ (id)assetReaderOutputAnnotationAdaptorWithAssetReaderTrackOutput:(id)output
 {
-  v3 = [[a1 alloc] initWithAssetReaderTrackOutput:a3];
+  v3 = [[self alloc] initWithAssetReaderTrackOutput:output];
 
   return v3;
 }
 
-- (AVAssetReaderOutputAnnotationAdaptor)initWithAssetReaderTrackOutput:(id)a3
+- (AVAssetReaderOutputAnnotationAdaptor)initWithAssetReaderTrackOutput:(id)output
 {
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  if (!a3)
+  if (!output)
   {
-    v11 = self;
+    selfCopy = self;
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = "trackOutput != nil";
@@ -33,18 +33,18 @@ LABEL_10:
   }
 
   v8 = v7;
-  if (([objc_msgSend(a3 "mediaType")] & 1) == 0)
+  if (([objc_msgSend(output "mediaType")] & 1) == 0)
   {
-    v20 = self;
+    selfCopy2 = self;
     v17 = MEMORY[0x1E695DF30];
     v18 = *MEMORY[0x1E695D940];
     v19 = "[[trackOutput mediaType] isEqualToString:AVMediaTypeMetadata]";
     goto LABEL_10;
   }
 
-  if ([a3 _isAttachedToAdaptor])
+  if ([output _isAttachedToAdaptor])
   {
-    v24 = self;
+    selfCopy3 = self;
     v25 = MEMORY[0x1E695DF30];
     v26 = *MEMORY[0x1E695D940];
     v32 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot initialize an instance of %@ with a track output which was used to initialize another instance of %@", v27, v28, v29, v30, v31, v8);
@@ -56,9 +56,9 @@ LABEL_14:
     objc_exception_throw([v22 exceptionWithName:v23 reason:v21 userInfo:0]);
   }
 
-  if ([a3 _status] >= 1)
+  if ([output _status] >= 1)
   {
-    v33 = self;
+    selfCopy4 = self;
     v25 = MEMORY[0x1E695DF30];
     v26 = *MEMORY[0x1E695D940];
     v32 = AVMethodExceptionReasonWithObjectAndSelector(self, a2, @"Cannot initialize an instance of %@ with a track output which has already progressed beyond AVAssetReaderStatusUnknown", v34, v35, v36, v37, v38, v8);
@@ -70,9 +70,9 @@ LABEL_14:
   v9 = [(AVAssetReaderOutputAnnotationAdaptor *)&v39 init];
   if (v9)
   {
-    v9->_trackOutput = a3;
-    v9->_assetReaderOutputMetadataAdaptor = [AVAssetReaderOutputMetadataAdaptor assetReaderOutputMetadataAdaptorWithAssetReaderTrackOutput:a3];
-    [a3 _setAttachedAdaptor:v9];
+    v9->_trackOutput = output;
+    v9->_assetReaderOutputMetadataAdaptor = [AVAssetReaderOutputMetadataAdaptor assetReaderOutputMetadataAdaptorWithAssetReaderTrackOutput:output];
+    [output _setAttachedAdaptor:v9];
   }
 
   return v9;
@@ -85,33 +85,33 @@ LABEL_14:
   [(AVAssetReaderOutputAnnotationAdaptor *)&v3 dealloc];
 }
 
-- (int)addExtractionForOutput:(id)a3 figAssetReader:(OpaqueFigAssetReader *)a4 options:(id)a5 withOutputExtactionID:(int *)a6
+- (int)addExtractionForOutput:(id)output figAssetReader:(OpaqueFigAssetReader *)reader options:(id)options withOutputExtactionID:(int *)d
 {
-  v9 = [objc_msgSend(a3 "track")];
+  v9 = [objc_msgSend(output "track")];
   v10 = *(*(CMBaseObjectGetVTable() + 16) + 24);
   if (!v10)
   {
     return -12782;
   }
 
-  return v10(a4, v9, a5, a6);
+  return v10(reader, v9, options, d);
 }
 
 - (id)nextAnnotation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(AVAssetReaderOutputMetadataAdaptor *)self->_assetReaderOutputMetadataAdaptor nextTimedMetadataGroup];
-  if (v4)
+  array = [MEMORY[0x1E695DF70] array];
+  nextTimedMetadataGroup = [(AVAssetReaderOutputMetadataAdaptor *)self->_assetReaderOutputMetadataAdaptor nextTimedMetadataGroup];
+  if (nextTimedMetadataGroup)
   {
-    v14 = v3;
-    v5 = [(AVTimedMetadataGroup *)v4 items];
-    v6 = [MEMORY[0x1E695DF70] array];
+    v14 = array;
+    items = [(AVTimedMetadataGroup *)nextTimedMetadataGroup items];
+    array2 = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(NSArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v7 = [(NSArray *)items countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -123,7 +123,7 @@ LABEL_14:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(items);
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
@@ -135,13 +135,13 @@ LABEL_14:
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                [v6 addObject:{+[AVAnnotationRepresentation _createBindingDictionaryFromMetadataItemPayload:error:](AVAnnotationRepresentation, "_createBindingDictionaryFromMetadataItemPayload:error:", objc_msgSend(v12, "value"), 0)}];
+                [array2 addObject:{+[AVAnnotationRepresentation _createBindingDictionaryFromMetadataItemPayload:error:](AVAnnotationRepresentation, "_createBindingDictionaryFromMetadataItemPayload:error:", objc_msgSend(v12, "value"), 0)}];
               }
             }
           }
         }
 
-        v8 = [(NSArray *)v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [(NSArray *)items countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -151,13 +151,13 @@ LABEL_14:
     v15[1] = 3221225472;
     v15[2] = __54__AVAssetReaderOutputAnnotationAdaptor_nextAnnotation__block_invoke;
     v15[3] = &unk_1E7465000;
-    v15[4] = v6;
-    v3 = v14;
+    v15[4] = array2;
+    array = v14;
     v15[5] = v14;
-    [(NSArray *)v5 enumerateObjectsUsingBlock:v15];
+    [(NSArray *)items enumerateObjectsUsingBlock:v15];
   }
 
-  return [v3 firstObject];
+  return [array firstObject];
 }
 
 uint64_t __54__AVAssetReaderOutputAnnotationAdaptor_nextAnnotation__block_invoke(uint64_t a1, void *a2)

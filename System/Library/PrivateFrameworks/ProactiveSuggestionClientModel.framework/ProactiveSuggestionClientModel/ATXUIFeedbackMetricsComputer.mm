@@ -1,10 +1,10 @@
 @interface ATXUIFeedbackMetricsComputer
 - (ATXUIFeedbackMetricsComputer)init;
-- (ATXUIFeedbackMetricsComputer)initWithUIFeedbackResultStream:(id)a3;
-- (id)_computeResultForClientModel:(id)a3 query:(id)a4 publisher:(id)a5 resultSpecification:(id)a6;
-- (id)_computeResultForConsumerSubType:(unsigned __int8)a3 query:(id)a4 publisher:(id)a5 resultSpecification:(id)a6;
-- (id)computeResultForQuery:(id)a3 resultSpecification:(id)a4;
-- (void)_updateNonTrendPlotSectionsInResult:(id)a3 withFeedbackResult:(id)a4;
+- (ATXUIFeedbackMetricsComputer)initWithUIFeedbackResultStream:(id)stream;
+- (id)_computeResultForClientModel:(id)model query:(id)query publisher:(id)publisher resultSpecification:(id)specification;
+- (id)_computeResultForConsumerSubType:(unsigned __int8)type query:(id)query publisher:(id)publisher resultSpecification:(id)specification;
+- (id)computeResultForQuery:(id)query resultSpecification:(id)specification;
+- (void)_updateNonTrendPlotSectionsInResult:(id)result withFeedbackResult:(id)feedbackResult;
 @end
 
 @implementation ATXUIFeedbackMetricsComputer
@@ -17,41 +17,41 @@
   return v4;
 }
 
-- (ATXUIFeedbackMetricsComputer)initWithUIFeedbackResultStream:(id)a3
+- (ATXUIFeedbackMetricsComputer)initWithUIFeedbackResultStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXUIFeedbackMetricsComputer;
   v6 = [(ATXUIFeedbackMetricsComputer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
   }
 
   return v7;
 }
 
-- (id)computeResultForQuery:(id)a3 resultSpecification:(id)a4
+- (id)computeResultForQuery:(id)query resultSpecification:(id)specification
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 clientModelType] || objc_msgSend(v6, "consumerSubType"))
+  queryCopy = query;
+  specificationCopy = specification;
+  if ([queryCopy clientModelType] || objc_msgSend(queryCopy, "consumerSubType"))
   {
     stream = self->_stream;
-    v9 = [v6 startDate];
-    [v9 timeIntervalSinceReferenceDate];
+    startDate = [queryCopy startDate];
+    [startDate timeIntervalSinceReferenceDate];
     v10 = [(ATXBiomeProactiveSuggestionUIFeedbackResultStream *)stream publisherFromStartTime:?];
 
-    if ([v6 clientModelType])
+    if ([queryCopy clientModelType])
     {
-      v11 = +[ATXProactiveSuggestionClientModel clientModelIdFromClientModelType:](ATXProactiveSuggestionClientModel, "clientModelIdFromClientModelType:", [v6 clientModelType]);
-      v12 = [(ATXUIFeedbackMetricsComputer *)self _computeResultForClientModel:v11 query:v6 publisher:v10 resultSpecification:v7];
+      v11 = +[ATXProactiveSuggestionClientModel clientModelIdFromClientModelType:](ATXProactiveSuggestionClientModel, "clientModelIdFromClientModelType:", [queryCopy clientModelType]);
+      v12 = [(ATXUIFeedbackMetricsComputer *)self _computeResultForClientModel:v11 query:queryCopy publisher:v10 resultSpecification:specificationCopy];
     }
 
     else
     {
-      v12 = -[ATXUIFeedbackMetricsComputer _computeResultForConsumerSubType:query:publisher:resultSpecification:](self, "_computeResultForConsumerSubType:query:publisher:resultSpecification:", [v6 consumerSubType], v6, v10, v7);
+      v12 = -[ATXUIFeedbackMetricsComputer _computeResultForConsumerSubType:query:publisher:resultSpecification:](self, "_computeResultForConsumerSubType:query:publisher:resultSpecification:", [queryCopy consumerSubType], queryCopy, v10, specificationCopy);
     }
   }
 
@@ -69,31 +69,31 @@
   return v12;
 }
 
-- (id)_computeResultForClientModel:(id)a3 query:(id)a4 publisher:(id)a5 resultSpecification:(id)a6
+- (id)_computeResultForClientModel:(id)model query:(id)query publisher:(id)publisher resultSpecification:(id)specification
 {
-  v10 = a3;
-  v11 = a4;
+  modelCopy = model;
+  queryCopy = query;
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __97__ATXUIFeedbackMetricsComputer__computeResultForClientModel_query_publisher_resultSpecification___block_invoke;
   v30[3] = &unk_1E86A3F90;
-  v12 = v11;
+  v12 = queryCopy;
   v31 = v12;
-  v32 = v10;
-  v13 = v10;
-  v14 = a6;
-  v15 = [a5 filterWithIsIncluded:v30];
+  v32 = modelCopy;
+  v13 = modelCopy;
+  specificationCopy = specification;
+  v15 = [publisher filterWithIsIncluded:v30];
   v16 = [ATXUIFeedbackMetricsResult alloc];
-  v17 = [v12 startDate];
-  v18 = [v12 endDate];
-  v19 = [(ATXUIFeedbackMetricsResult *)v16 initWithSpecification:v14 startDate:v17 endDate:v18];
+  startDate = [v12 startDate];
+  endDate = [v12 endDate];
+  v19 = [(ATXUIFeedbackMetricsResult *)v16 initWithSpecification:specificationCopy startDate:startDate endDate:endDate];
 
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __97__ATXUIFeedbackMetricsComputer__computeResultForClientModel_query_publisher_resultSpecification___block_invoke_14;
   v26[3] = &unk_1E86A3FD8;
   v27 = v12;
-  v28 = self;
+  selfCopy = self;
   v20 = v19;
   v29 = v20;
   v21 = v12;
@@ -194,29 +194,29 @@ BOOL __97__ATXUIFeedbackMetricsComputer__computeResultForClientModel_query_publi
   return v6 != v7;
 }
 
-- (id)_computeResultForConsumerSubType:(unsigned __int8)a3 query:(id)a4 publisher:(id)a5 resultSpecification:(id)a6
+- (id)_computeResultForConsumerSubType:(unsigned __int8)type query:(id)query publisher:(id)publisher resultSpecification:(id)specification
 {
-  v10 = a4;
-  v11 = a6;
+  queryCopy = query;
+  specificationCopy = specification;
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __101__ATXUIFeedbackMetricsComputer__computeResultForConsumerSubType_query_publisher_resultSpecification___block_invoke;
   v40[3] = &unk_1E86A4000;
-  v12 = v10;
+  v12 = queryCopy;
   v41 = v12;
-  v42 = a3;
-  v13 = [a5 filterWithIsIncluded:v40];
+  typeCopy = type;
+  v13 = [publisher filterWithIsIncluded:v40];
   v14 = [ATXUIFeedbackMetricsResult alloc];
-  v15 = [v12 startDate];
-  v16 = [v12 endDate];
-  v17 = [(ATXUIFeedbackMetricsResult *)v14 initWithSpecification:v11 startDate:v15 endDate:v16];
+  startDate = [v12 startDate];
+  endDate = [v12 endDate];
+  v17 = [(ATXUIFeedbackMetricsResult *)v14 initWithSpecification:specificationCopy startDate:startDate endDate:endDate];
 
   v38[0] = 0;
   v38[1] = v38;
   v38[2] = 0x3032000000;
   v38[3] = __Block_byref_object_copy__1;
   v38[4] = __Block_byref_object_dispose__1;
-  v39 = [MEMORY[0x1E695DF00] distantPast];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
   v18 = objc_opt_new();
   v19 = objc_opt_new();
   v20 = objc_opt_new();
@@ -226,7 +226,7 @@ BOOL __97__ATXUIFeedbackMetricsComputer__computeResultForClientModel_query_publi
   v30[3] = &unk_1E86A4028;
   v21 = v12;
   v31 = v21;
-  v32 = self;
+  selfCopy = self;
   v22 = v17;
   v33 = v22;
   v37 = v38;
@@ -450,27 +450,27 @@ BOOL __101__ATXUIFeedbackMetricsComputer__computeResultForConsumerSubType_query_
   return v6 != v7;
 }
 
-- (void)_updateNonTrendPlotSectionsInResult:(id)a3 withFeedbackResult:(id)a4
+- (void)_updateNonTrendPlotSectionsInResult:(id)result withFeedbackResult:(id)feedbackResult
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 sectionForShownSuggestions];
-  v9 = [v6 shownSuggestions];
-  v10 = [v6 clientModelId];
-  -[ATXUIFeedbackMetricsComputer _updateResultSection:withSuggestions:clientModelId:consumerSubType:](self, "_updateResultSection:withSuggestions:clientModelId:consumerSubType:", v8, v9, v10, [v6 consumerSubType]);
+  feedbackResultCopy = feedbackResult;
+  resultCopy = result;
+  sectionForShownSuggestions = [resultCopy sectionForShownSuggestions];
+  shownSuggestions = [feedbackResultCopy shownSuggestions];
+  clientModelId = [feedbackResultCopy clientModelId];
+  -[ATXUIFeedbackMetricsComputer _updateResultSection:withSuggestions:clientModelId:consumerSubType:](self, "_updateResultSection:withSuggestions:clientModelId:consumerSubType:", sectionForShownSuggestions, shownSuggestions, clientModelId, [feedbackResultCopy consumerSubType]);
 
-  v11 = [v7 sectionForEngagedSuggestions];
-  v12 = [v6 engagedSuggestions];
-  v13 = [v6 clientModelId];
-  -[ATXUIFeedbackMetricsComputer _updateResultSection:withSuggestions:clientModelId:consumerSubType:](self, "_updateResultSection:withSuggestions:clientModelId:consumerSubType:", v11, v12, v13, [v6 consumerSubType]);
+  sectionForEngagedSuggestions = [resultCopy sectionForEngagedSuggestions];
+  engagedSuggestions = [feedbackResultCopy engagedSuggestions];
+  clientModelId2 = [feedbackResultCopy clientModelId];
+  -[ATXUIFeedbackMetricsComputer _updateResultSection:withSuggestions:clientModelId:consumerSubType:](self, "_updateResultSection:withSuggestions:clientModelId:consumerSubType:", sectionForEngagedSuggestions, engagedSuggestions, clientModelId2, [feedbackResultCopy consumerSubType]);
 
-  v17 = [v7 sectionForRejectedSuggestions];
+  sectionForRejectedSuggestions = [resultCopy sectionForRejectedSuggestions];
 
-  v14 = [v6 rejectedSuggestions];
-  v15 = [v6 clientModelId];
-  v16 = [v6 consumerSubType];
+  rejectedSuggestions = [feedbackResultCopy rejectedSuggestions];
+  clientModelId3 = [feedbackResultCopy clientModelId];
+  consumerSubType = [feedbackResultCopy consumerSubType];
 
-  [(ATXUIFeedbackMetricsComputer *)self _updateResultSection:v17 withSuggestions:v14 clientModelId:v15 consumerSubType:v16];
+  [(ATXUIFeedbackMetricsComputer *)self _updateResultSection:sectionForRejectedSuggestions withSuggestions:rejectedSuggestions clientModelId:clientModelId3 consumerSubType:consumerSubType];
 }
 
 void __99__ATXUIFeedbackMetricsComputer__updateResultSection_withSuggestions_clientModelId_consumerSubType___block_invoke(uint64_t a1, uint64_t a2)

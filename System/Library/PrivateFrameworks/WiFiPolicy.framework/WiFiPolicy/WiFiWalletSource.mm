@@ -1,23 +1,23 @@
 @interface WiFiWalletSource
-- (WiFiWalletSource)initWithChangeHandler:(id)a3;
-- (id)_createWiFiWalletPassFromPass:(id)a3;
-- (id)_networksWithIdentifier:(id)a3;
+- (WiFiWalletSource)initWithChangeHandler:(id)handler;
+- (id)_createWiFiWalletPassFromPass:(id)pass;
+- (id)_networksWithIdentifier:(id)identifier;
 - (id)candidateNetworks;
 - (id)expiredWalletIDs;
 - (id)relevantNetworks;
-- (void)_addPass:(id)a3;
-- (void)_handlePassLibraryChange:(id)a3;
-- (void)_handleRelevantPassUpdate:(id)a3;
+- (void)_addPass:(id)pass;
+- (void)_handlePassLibraryChange:(id)change;
+- (void)_handleRelevantPassUpdate:(id)update;
 - (void)_initializeWiFiPasses;
-- (void)_issueChangeCallbackWithPass:(id)a3 removedNetworks:(id)a4;
-- (void)_issueRelevancyCallbackWithRelevantNetworks:(id)a3 notRelevantNetworks:(id)a4;
-- (void)_issueRemovalCallbackWithPass:(id)a3;
-- (void)_passDidBecomeRelevant:(id)a3;
-- (void)_passLibraryDidBecomeRelevantNotification:(id)a3;
-- (void)_passLibraryDidChange:(id)a3;
-- (void)_removePass:(id)a3 withSerialNumber:(id)a4;
+- (void)_issueChangeCallbackWithPass:(id)pass removedNetworks:(id)networks;
+- (void)_issueRelevancyCallbackWithRelevantNetworks:(id)networks notRelevantNetworks:(id)relevantNetworks;
+- (void)_issueRemovalCallbackWithPass:(id)pass;
+- (void)_passDidBecomeRelevant:(id)relevant;
+- (void)_passLibraryDidBecomeRelevantNotification:(id)notification;
+- (void)_passLibraryDidChange:(id)change;
+- (void)_removePass:(id)pass withSerialNumber:(id)number;
 - (void)_removeRelevantPasses;
-- (void)_replacePass:(id)a3;
+- (void)_replacePass:(id)pass;
 - (void)dealloc;
 @end
 
@@ -32,8 +32,8 @@
   v19 = 0u;
   v20 = 0u;
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(WiFiWalletSource *)self relevantPassIdentifiers];
-  v6 = [v4 setWithSet:v5];
+  relevantPassIdentifiers = [(WiFiWalletSource *)self relevantPassIdentifiers];
+  v6 = [v4 setWithSet:relevantPassIdentifiers];
 
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
@@ -50,13 +50,13 @@
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(WiFiWalletSource *)self networks];
-        v13 = [v12 objectForKey:v11];
+        networks = [(WiFiWalletSource *)self networks];
+        v13 = [networks objectForKey:v11];
 
         if (v13)
         {
-          v14 = [v13 allObjects];
-          [v3 addObjectsFromArray:v14];
+          allObjects = [v13 allObjects];
+          [v3 addObjectsFromArray:allObjects];
         }
 
         else
@@ -80,8 +80,8 @@
 {
   if (self->_passLibrary)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277D386E0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D386E0] object:0];
   }
 
   v4.receiver = self;
@@ -92,14 +92,14 @@
 - (void)_initializeWiFiPasses
 {
   objc_initWeak(&location, self);
-  v3 = [(WiFiWalletSource *)self queue];
+  queue = [(WiFiWalletSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __41__WiFiWalletSource__initializeWiFiPasses__block_invoke;
   block[3] = &unk_2789C7BA0;
   objc_copyWeak(&v5, &location);
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -195,25 +195,25 @@ void __41__WiFiWalletSource__initializeWiFiPasses__block_invoke_2(uint64_t a1, v
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addPass:(id)a3
+- (void)_addPass:(id)pass
 {
-  v4 = a3;
-  if (_WiFiWalletSourcePassContainsWiFiSemantics(v4))
+  passCopy = pass;
+  if (_WiFiWalletSourcePassContainsWiFiSemantics(passCopy))
   {
-    v5 = [v4 uniqueID];
-    v6 = [v4 serialNumber];
-    NSLog(&cfstr_SAddingPassUni.isa, "[WiFiWalletSource _addPass:]", v4, v5, v6);
+    uniqueID = [passCopy uniqueID];
+    serialNumber = [passCopy serialNumber];
+    NSLog(&cfstr_SAddingPassUni.isa, "[WiFiWalletSource _addPass:]", passCopy, uniqueID, serialNumber);
 
-    v7 = [(WiFiWalletSource *)self _createWiFiWalletPassFromPass:v4];
+    v7 = [(WiFiWalletSource *)self _createWiFiWalletPassFromPass:passCopy];
     if (v7)
     {
-      v8 = [(WiFiWalletSource *)self networks];
-      v9 = [v4 uniqueID];
-      [v8 setObject:v7 forKey:v9];
+      networks = [(WiFiWalletSource *)self networks];
+      uniqueID2 = [passCopy uniqueID];
+      [networks setObject:v7 forKey:uniqueID2];
 
-      v10 = [(WiFiWalletSource *)self changeHandler];
+      changeHandler = [(WiFiWalletSource *)self changeHandler];
 
-      if (v10)
+      if (changeHandler)
       {
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
@@ -228,13 +228,13 @@ void __41__WiFiWalletSource__initializeWiFiPasses__block_invoke_2(uint64_t a1, v
 
     else
     {
-      NSLog(&cfstr_SFailedToCreat_6.isa, "[WiFiWalletSource _addPass:]", v4);
+      NSLog(&cfstr_SFailedToCreat_6.isa, "[WiFiWalletSource _addPass:]", passCopy);
     }
   }
 
   else
   {
-    [WiFiWalletSource _addPass:v4];
+    [WiFiWalletSource _addPass:passCopy];
     v7 = 0;
   }
 }
@@ -245,20 +245,20 @@ void __29__WiFiWalletSource__addPass___block_invoke(uint64_t a1)
   (*(v2 + 2))(v2, *(a1 + 40), 0);
 }
 
-- (void)_removePass:(id)a3 withSerialNumber:(id)a4
+- (void)_removePass:(id)pass withSerialNumber:(id)number
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v26 = a4;
+  passCopy = pass;
+  numberCopy = number;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [(WiFiWalletSource *)self networks];
-  v8 = [v7 allKeys];
+  networks = [(WiFiWalletSource *)self networks];
+  allKeys = [networks allKeys];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  obj = allKeys;
+  v9 = [allKeys countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v9)
   {
     v10 = *v30;
@@ -272,34 +272,34 @@ void __29__WiFiWalletSource__addPass___block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v29 + 1) + 8 * i);
-        v13 = [(WiFiWalletSource *)self networks];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        networks2 = [(WiFiWalletSource *)self networks];
+        v14 = [networks2 objectForKeyedSubscript:v12];
 
-        v15 = [v14 anyObject];
-        v16 = [v15 passTypeIdentifier];
-        if ([v16 isEqualToString:v6])
+        anyObject = [v14 anyObject];
+        passTypeIdentifier = [anyObject passTypeIdentifier];
+        if ([passTypeIdentifier isEqualToString:passCopy])
         {
-          [v15 serialNumber];
+          [anyObject serialNumber];
           v28 = v14;
           v17 = v9;
           v18 = v10;
-          v19 = self;
-          v21 = v20 = v6;
-          v22 = [v21 isEqualToString:v26];
+          selfCopy = self;
+          v21 = v20 = passCopy;
+          v22 = [v21 isEqualToString:numberCopy];
 
-          v6 = v20;
-          self = v19;
+          passCopy = v20;
+          self = selfCopy;
           v10 = v18;
           v9 = v17;
           v14 = v28;
 
           if (v22)
           {
-            v23 = [(WiFiWalletSource *)self networks];
-            v9 = [v23 objectForKey:v12];
+            networks3 = [(WiFiWalletSource *)self networks];
+            v9 = [networks3 objectForKey:v12];
 
-            v24 = [(WiFiWalletSource *)self networks];
-            [v24 removeObjectForKey:v12];
+            networks4 = [(WiFiWalletSource *)self networks];
+            [networks4 removeObjectForKey:v12];
 
             goto LABEL_12;
           }
@@ -322,16 +322,16 @@ LABEL_12:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_passLibraryDidBecomeRelevantNotification:(id)a3
+- (void)_passLibraryDidBecomeRelevantNotification:(id)notification
 {
-  NSLog(&cfstr_S.isa, a2, "[WiFiWalletSource _passLibraryDidBecomeRelevantNotification:]", a3);
-  v4 = [(WiFiWalletSource *)self queue];
+  NSLog(&cfstr_S.isa, a2, "[WiFiWalletSource _passLibraryDidBecomeRelevantNotification:]", notification);
+  queue = [(WiFiWalletSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__WiFiWalletSource__passLibraryDidBecomeRelevantNotification___block_invoke;
   block[3] = &unk_2789C6630;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __62__WiFiWalletSource__passLibraryDidBecomeRelevantNotification___block_invoke(uint64_t a1)
@@ -391,19 +391,19 @@ void __62__WiFiWalletSource__passLibraryDidBecomeRelevantNotification___block_in
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_passLibraryDidChange:(id)a3
+- (void)_passLibraryDidChange:(id)change
 {
-  v4 = a3;
-  NSLog(&cfstr_LibraryChanged.isa, v4);
-  v5 = [(WiFiWalletSource *)self queue];
+  changeCopy = change;
+  NSLog(&cfstr_LibraryChanged.isa, changeCopy);
+  queue = [(WiFiWalletSource *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__WiFiWalletSource__passLibraryDidChange___block_invoke;
   block[3] = &unk_2789C6608;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_async(queue, block);
 }
 
 void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
@@ -413,18 +413,18 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
   [v1 _handlePassLibraryChange:v2];
 }
 
-- (void)_handleRelevantPassUpdate:(id)a3
+- (void)_handleRelevantPassUpdate:(id)update
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  updateCopy = update;
+  v9 = updateCopy;
+  if (updateCopy)
   {
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D38718]];
+    v5 = [updateCopy objectForKeyedSubscript:*MEMORY[0x277D38718]];
     if (v5)
     {
       v6 = v5;
-      v7 = [(WiFiWalletSource *)self passLibrary];
-      v8 = [v7 passWithUniqueID:v6];
+      passLibrary = [(WiFiWalletSource *)self passLibrary];
+      v8 = [passLibrary passWithUniqueID:v6];
 
       if (v8)
       {
@@ -449,20 +449,20 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_passDidBecomeRelevant:(id)a3
+- (void)_passDidBecomeRelevant:(id)relevant
 {
-  v9 = a3;
-  if (v9)
+  relevantCopy = relevant;
+  if (relevantCopy)
   {
-    v4 = [(WiFiWalletSource *)self relevantPassIdentifiers];
-    v5 = [v9 uniqueID];
-    [v4 addObject:v5];
+    relevantPassIdentifiers = [(WiFiWalletSource *)self relevantPassIdentifiers];
+    uniqueID = [relevantCopy uniqueID];
+    [relevantPassIdentifiers addObject:uniqueID];
 
-    v6 = [v9 uniqueID];
-    NSLog(&cfstr_SPassIsNowRele.isa, "[WiFiWalletSource _passDidBecomeRelevant:]", v9, v6);
+    uniqueID2 = [relevantCopy uniqueID];
+    NSLog(&cfstr_SPassIsNowRele.isa, "[WiFiWalletSource _passDidBecomeRelevant:]", relevantCopy, uniqueID2);
 
-    v7 = [v9 uniqueID];
-    v8 = [(WiFiWalletSource *)self _networksWithIdentifier:v7];
+    uniqueID3 = [relevantCopy uniqueID];
+    v8 = [(WiFiWalletSource *)self _networksWithIdentifier:uniqueID3];
 
     if (v8)
     {
@@ -471,7 +471,7 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
 
     else
     {
-      [WiFiWalletSource _passDidBecomeRelevant:v9];
+      [WiFiWalletSource _passDidBecomeRelevant:relevantCopy];
     }
   }
 
@@ -484,21 +484,21 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
 - (void)_removeRelevantPasses
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(WiFiWalletSource *)self relevantPassIdentifiers];
-  v4 = [v3 count];
+  relevantPassIdentifiers = [(WiFiWalletSource *)self relevantPassIdentifiers];
+  v4 = [relevantPassIdentifiers count];
 
   if (v4)
   {
-    v5 = [(WiFiWalletSource *)self relevantPassIdentifiers];
-    NSLog(&cfstr_SRelevantPassI.isa, "[WiFiWalletSource _removeRelevantPasses]", v5);
+    relevantPassIdentifiers2 = [(WiFiWalletSource *)self relevantPassIdentifiers];
+    NSLog(&cfstr_SRelevantPassI.isa, "[WiFiWalletSource _removeRelevantPasses]", relevantPassIdentifiers2);
 
     v6 = [MEMORY[0x277CBEB58] set];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [(WiFiWalletSource *)self relevantPassIdentifiers];
-    v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    relevantPassIdentifiers3 = [(WiFiWalletSource *)self relevantPassIdentifiers];
+    v8 = [relevantPassIdentifiers3 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v8)
     {
       v9 = v8;
@@ -509,7 +509,7 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(relevantPassIdentifiers3);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
@@ -517,8 +517,8 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
           v14 = v13;
           if (v13)
           {
-            v15 = [v13 allObjects];
-            [v6 addObjectsFromArray:v15];
+            allObjects = [v13 allObjects];
+            [v6 addObjectsFromArray:allObjects];
           }
 
           else
@@ -527,15 +527,15 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [relevantPassIdentifiers3 countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v9);
     }
 
     [(WiFiWalletSource *)self _issueRelevancyCallbackWithRelevantNetworks:0 notRelevantNetworks:v6];
-    v16 = [(WiFiWalletSource *)self relevantPassIdentifiers];
-    [v16 removeAllObjects];
+    relevantPassIdentifiers4 = [(WiFiWalletSource *)self relevantPassIdentifiers];
+    [relevantPassIdentifiers4 removeAllObjects];
   }
 
   else
@@ -546,15 +546,15 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_createWiFiWalletPassFromPass:(id)a3
+- (id)_createWiFiWalletPassFromPass:(id)pass
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  passCopy = pass;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = [v3 semantics];
+  obj = [passCopy semantics];
   v4 = [obj countByEnumeratingWithState:&v55 objects:v60 count:16];
   if (v4)
   {
@@ -584,19 +584,19 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
         if ([v13 isEqualToString:v8])
         {
           v47 = v12;
-          v14 = [v3 localizedName];
-          v15 = [v3 localizedDescription];
-          NSLog(&cfstr_PassHasWifi.isa, v14, v15);
+          localizedName = [passCopy localizedName];
+          localizedDescription = [passCopy localizedDescription];
+          NSLog(&cfstr_PassHasWifi.isa, localizedName, localizedDescription);
 
-          v16 = [v3 semantics];
-          v17 = [v16 objectForKey:v13];
+          semantics = [passCopy semantics];
+          v17 = [semantics objectForKey:v13];
 
-          v18 = [v17 dictionariesValue];
-          v19 = [v18 count];
+          dictionariesValue = [v17 dictionariesValue];
+          v19 = [dictionariesValue count];
 
           if (!v19)
           {
-            NSLog(&cfstr_SPassHasAWifia.isa, "[WiFiWalletSource _createWiFiWalletPassFromPass:]", v3);
+            NSLog(&cfstr_SPassHasAWifia.isa, "[WiFiWalletSource _createWiFiWalletPassFromPass:]", passCopy);
 
             v39 = 0;
             goto LABEL_27;
@@ -609,8 +609,8 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
           v51 = 0u;
           v52 = 0u;
           v46 = v17;
-          v20 = [v17 dictionariesValue];
-          v21 = [v20 countByEnumeratingWithState:&v51 objects:v59 count:16];
+          dictionariesValue2 = [v17 dictionariesValue];
+          v21 = [dictionariesValue2 countByEnumeratingWithState:&v51 objects:v59 count:16];
           if (v21)
           {
             v22 = v21;
@@ -621,13 +621,13 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
               {
                 if (*v52 != v23)
                 {
-                  objc_enumerationMutation(v20);
+                  objc_enumerationMutation(dictionariesValue2);
                 }
 
                 v25 = *(*(&v51 + 1) + 8 * i);
                 v26 = objc_alloc_init(WiFiWalletPass);
-                v27 = [v3 uniqueID];
-                [(WiFiWalletPass *)v26 setUniqueIdentifier:v27];
+                uniqueID = [passCopy uniqueID];
+                [(WiFiWalletPass *)v26 setUniqueIdentifier:uniqueID];
 
                 v28 = [v25 objectForKey:v9];
                 [(WiFiWalletPass *)v26 setSSID:v28];
@@ -644,24 +644,24 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
                   [(WiFiWalletPass *)v26 setCaptiveTokenAuthURL:v31];
                 }
 
-                v32 = [v3 serialNumber];
-                [(WiFiWalletPass *)v26 setSerialNumber:v32];
+                serialNumber = [passCopy serialNumber];
+                [(WiFiWalletPass *)v26 setSerialNumber:serialNumber];
 
-                v33 = [v3 passTypeIdentifier];
-                [(WiFiWalletPass *)v26 setPassTypeIdentifier:v33];
+                passTypeIdentifier = [passCopy passTypeIdentifier];
+                [(WiFiWalletPass *)v26 setPassTypeIdentifier:passTypeIdentifier];
 
-                v34 = [v3 relevantDate];
-                [(WiFiWalletPass *)v26 setRelevantDate:v34];
+                relevantDate = [passCopy relevantDate];
+                [(WiFiWalletPass *)v26 setRelevantDate:relevantDate];
 
-                v35 = [v3 localizedDescription];
-                [(WiFiWalletPass *)v26 setLocalizedDescription:v35];
+                localizedDescription2 = [passCopy localizedDescription];
+                [(WiFiWalletPass *)v26 setLocalizedDescription:localizedDescription2];
 
-                v36 = [(WiFiWalletPass *)v26 SSID];
+                sSID = [(WiFiWalletPass *)v26 SSID];
 
-                if (v36)
+                if (sSID)
                 {
-                  v37 = [(WiFiWalletPass *)v26 SSID];
-                  v38 = [v37 length];
+                  sSID2 = [(WiFiWalletPass *)v26 SSID];
+                  v38 = [sSID2 length];
 
                   if (v38)
                   {
@@ -671,7 +671,7 @@ void __42__WiFiWalletSource__passLibraryDidChange___block_invoke(uint64_t a1)
                 }
               }
 
-              v22 = [v20 countByEnumeratingWithState:&v51 objects:v59 count:16];
+              v22 = [dictionariesValue2 countByEnumeratingWithState:&v51 objects:v59 count:16];
             }
 
             while (v22);
@@ -712,15 +712,15 @@ LABEL_27:
   return v39;
 }
 
-- (id)_networksWithIdentifier:(id)a3
+- (id)_networksWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WiFiWalletSource *)self networks];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  networks = [(WiFiWalletSource *)self networks];
+  v6 = [networks objectForKey:identifierCopy];
 
   if (!v6)
   {
-    NSLog(&cfstr_SRelevantNetwo.isa, "[WiFiWalletSource _networksWithIdentifier:]", v4);
+    NSLog(&cfstr_SRelevantNetwo.isa, "[WiFiWalletSource _networksWithIdentifier:]", identifierCopy);
   }
 
   return v6;
@@ -734,10 +734,10 @@ LABEL_27:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(WiFiWalletSource *)self networks];
-  v5 = [v4 allValues];
+  networks = [(WiFiWalletSource *)self networks];
+  allValues = [networks allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -749,17 +749,17 @@ LABEL_27:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * v9) allObjects];
-        [v3 addObjectsFromArray:v10];
+        allObjects = [*(*(&v15 + 1) + 8 * v9) allObjects];
+        [v3 addObjectsFromArray:allObjects];
 
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -784,15 +784,15 @@ LABEL_27:
 - (id)expiredWalletIDs
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(WiFiWalletSource *)self passLibrary];
-  v3 = [v2 passes];
+  passLibrary = [(WiFiWalletSource *)self passLibrary];
+  passes = [passLibrary passes];
 
   v4 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = passes;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -810,8 +810,8 @@ LABEL_27:
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 isExpired])
         {
-          v11 = [v10 serialNumber];
-          [v4 addObject:v11];
+          serialNumber = [v10 serialNumber];
+          [v4 addObject:serialNumber];
         }
       }
 
@@ -826,21 +826,21 @@ LABEL_27:
   return v4;
 }
 
-- (WiFiWalletSource)initWithChangeHandler:(id)a3
+- (WiFiWalletSource)initWithChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = WiFiWalletSource;
   v5 = [(WiFiWalletSource *)&v19 init];
   if (!v5)
   {
-    v17 = 0;
+    defaultCenter2 = 0;
     goto LABEL_9;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
-    v6 = MEMORY[0x23839E400](v4);
+    v6 = MEMORY[0x23839E400](handlerCopy);
     changeHandler = v5->changeHandler;
     v5->changeHandler = v6;
   }
@@ -861,7 +861,7 @@ LABEL_27:
   if (!v5->_networks || (v12 = objc_alloc_init(MEMORY[0x277CBEB58]), relevantPassIdentifiers = v5->_relevantPassIdentifiers, v5->_relevantPassIdentifiers = v12, relevantPassIdentifiers, !v5->_relevantPassIdentifiers))
   {
 LABEL_12:
-    v17 = v5;
+    defaultCenter2 = v5;
     v5 = 0;
     goto LABEL_9;
   }
@@ -877,24 +877,24 @@ LABEL_12:
   v5->_passLibrary = v14;
 
   [(WiFiWalletSource *)v5 _initializeWiFiPasses];
-  v16 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v16 addObserver:v5 selector:sel__passLibraryDidChange_ name:*MEMORY[0x277D386E0] object:v5->_passLibrary];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v5 selector:sel__passLibraryDidChange_ name:*MEMORY[0x277D386E0] object:v5->_passLibrary];
 
-  v17 = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v17 addObserver:v5 selector:sel__passLibraryDidBecomeRelevantNotification_ name:*MEMORY[0x277D38728] object:0 suspensionBehavior:2];
+  defaultCenter2 = [MEMORY[0x277CCA9A0] defaultCenter];
+  [defaultCenter2 addObserver:v5 selector:sel__passLibraryDidBecomeRelevantNotification_ name:*MEMORY[0x277D38728] object:0 suspensionBehavior:2];
 LABEL_9:
 
   return v5;
 }
 
-- (void)_replacePass:(id)a3
+- (void)_replacePass:(id)pass
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WiFiWalletSource *)self passLibrary];
-  v6 = [v5 passesOfType:0];
+  passCopy = pass;
+  passLibrary = [(WiFiWalletSource *)self passLibrary];
+  v6 = [passLibrary passesOfType:0];
 
-  if (_WiFiWalletSourcePassContainsWiFiSemantics(v4))
+  if (_WiFiWalletSourcePassContainsWiFiSemantics(passCopy))
   {
     v30 = 0u;
     v31 = 0u;
@@ -917,34 +917,34 @@ LABEL_9:
           }
 
           v12 = *(*(&v28 + 1) + 8 * i);
-          v13 = [v4 uniqueID];
-          v14 = [v12 uniqueID];
-          v15 = [v13 isEqualToString:v14];
+          uniqueID = [passCopy uniqueID];
+          uniqueID2 = [v12 uniqueID];
+          v15 = [uniqueID isEqualToString:uniqueID2];
 
           if (v15)
           {
-            v16 = [(WiFiWalletSource *)self _createWiFiWalletPassFromPass:v4];
+            v16 = [(WiFiWalletSource *)self _createWiFiWalletPassFromPass:passCopy];
             if (v16)
             {
               v17 = v16;
-              v18 = [(WiFiWalletSource *)self networks];
-              v19 = [v12 uniqueID];
-              v20 = [v18 objectForKey:v19];
+              networks = [(WiFiWalletSource *)self networks];
+              uniqueID3 = [v12 uniqueID];
+              v20 = [networks objectForKey:uniqueID3];
 
-              v21 = [(WiFiWalletSource *)self networks];
-              v22 = [v12 uniqueID];
-              [v21 removeObjectForKey:v22];
+              networks2 = [(WiFiWalletSource *)self networks];
+              uniqueID4 = [v12 uniqueID];
+              [networks2 removeObjectForKey:uniqueID4];
 
-              v23 = [(WiFiWalletSource *)self networks];
-              v24 = [v4 uniqueID];
-              [v23 setObject:v17 forKey:v24];
+              networks3 = [(WiFiWalletSource *)self networks];
+              uniqueID5 = [passCopy uniqueID];
+              [networks3 setObject:v17 forKey:uniqueID5];
 
               [(WiFiWalletSource *)self _issueChangeCallbackWithPass:v17 removedNetworks:v20];
             }
 
             else
             {
-              NSLog(&cfstr_SFailedToCreat_6.isa, "[WiFiWalletSource _replacePass:]", v4);
+              NSLog(&cfstr_SFailedToCreat_6.isa, "[WiFiWalletSource _replacePass:]", passCopy);
             }
 
             goto LABEL_13;
@@ -968,25 +968,25 @@ LABEL_13:
 
   else
   {
-    v26 = [v4 localizedDescription];
-    NSLog(&cfstr_SPassDoesnTCon.isa, "[WiFiWalletSource _replacePass:]", v4, v26);
+    localizedDescription = [passCopy localizedDescription];
+    NSLog(&cfstr_SPassDoesnTCon.isa, "[WiFiWalletSource _replacePass:]", passCopy, localizedDescription);
   }
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePassLibraryChange:(id)a3
+- (void)_handlePassLibraryChange:(id)change
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changeCopy = change;
+  v5 = changeCopy;
+  if (changeCopy)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x277D386C0]];
+    v6 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277D386C0]];
     v7 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v7)
     {
@@ -1075,18 +1075,18 @@ LABEL_13:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_issueRelevancyCallbackWithRelevantNetworks:(id)a3 notRelevantNetworks:(id)a4
+- (void)_issueRelevancyCallbackWithRelevantNetworks:(id)networks notRelevantNetworks:(id)relevantNetworks
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(WiFiWalletSource *)self relevancyHandler];
+  networksCopy = networks;
+  relevantNetworksCopy = relevantNetworks;
+  relevancyHandler = [(WiFiWalletSource *)self relevancyHandler];
 
-  if (v7)
+  if (relevancyHandler)
   {
-    if (v11 | v6)
+    if (networksCopy | relevantNetworksCopy)
     {
-      v8 = [(WiFiWalletSource *)self relevancyHandler];
-      v9 = OUTLINED_FUNCTION_0_6(v8);
+      relevancyHandler2 = [(WiFiWalletSource *)self relevancyHandler];
+      v9 = OUTLINED_FUNCTION_0_6(relevancyHandler2);
       v10(v9);
     }
 
@@ -1097,17 +1097,17 @@ LABEL_13:
   }
 }
 
-- (void)_issueRemovalCallbackWithPass:(id)a3
+- (void)_issueRemovalCallbackWithPass:(id)pass
 {
-  v8 = a3;
-  v4 = [(WiFiWalletSource *)self removalHandler];
+  passCopy = pass;
+  removalHandler = [(WiFiWalletSource *)self removalHandler];
 
-  if (v4)
+  if (removalHandler)
   {
-    if (v8)
+    if (passCopy)
     {
-      v5 = [(WiFiWalletSource *)self removalHandler];
-      v6 = OUTLINED_FUNCTION_0_6(v5);
+      removalHandler2 = [(WiFiWalletSource *)self removalHandler];
+      v6 = OUTLINED_FUNCTION_0_6(removalHandler2);
       v7(v6);
     }
 
@@ -1118,18 +1118,18 @@ LABEL_13:
   }
 }
 
-- (void)_issueChangeCallbackWithPass:(id)a3 removedNetworks:(id)a4
+- (void)_issueChangeCallbackWithPass:(id)pass removedNetworks:(id)networks
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(WiFiWalletSource *)self changeHandler];
+  passCopy = pass;
+  networksCopy = networks;
+  changeHandler = [(WiFiWalletSource *)self changeHandler];
 
-  if (v7)
+  if (changeHandler)
   {
-    if (v11 && v6)
+    if (passCopy && networksCopy)
     {
-      v8 = [(WiFiWalletSource *)self changeHandler];
-      v9 = OUTLINED_FUNCTION_0_6(v8);
+      changeHandler2 = [(WiFiWalletSource *)self changeHandler];
+      v9 = OUTLINED_FUNCTION_0_6(changeHandler2);
       v10(v9);
     }
 

@@ -1,21 +1,21 @@
 @interface _MKLocompassViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateLabels;
 - (void)_updateControlsVisibility;
-- (void)setMapView:(id)a3;
+- (void)setMapView:(id)view;
 @end
 
 @implementation _MKLocompassViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_MKLocompassView"];
-  [v3 validateClass:@"_MKLocompassView" hasInstanceMethod:@"_updateControlsVisibility" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_MKLocompassView" hasInstanceMethod:@"setMapView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"_MKLocompassView" hasInstanceVariable:@"_compassView" withType:"MKCompassView_watchos"];
-  [v3 validateClass:@"_MKLocompassView" hasInstanceVariable:@"_userTrackingButton" withType:"_MKUserTrackingButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_MKLocompassView"];
+  [validationsCopy validateClass:@"_MKLocompassView" hasInstanceMethod:@"_updateControlsVisibility" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_MKLocompassView" hasInstanceMethod:@"setMapView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"_MKLocompassView" hasInstanceVariable:@"_compassView" withType:"MKCompassView_watchos"];
+  [validationsCopy validateClass:@"_MKLocompassView" hasInstanceVariable:@"_userTrackingButton" withType:"_MKUserTrackingButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -34,22 +34,22 @@
   [(_MKLocompassViewAccessibility *)self _axUpdateLabels];
 }
 
-- (void)setMapView:(id)a3
+- (void)setMapView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _MKLocompassViewAccessibility;
-  [(_MKLocompassViewAccessibility *)&v4 setMapView:a3];
+  [(_MKLocompassViewAccessibility *)&v4 setMapView:view];
   [(_MKLocompassViewAccessibility *)self _axUpdateLabels];
 }
 
 - (void)_axUpdateLabels
 {
   v5 = [(_MKLocompassViewAccessibility *)self safeUIViewForKey:@"_userTrackingButton"];
-  v3 = [v5 accessibilityLabel];
-  [(_MKLocompassViewAccessibility *)self setAccessibilityLabel:v3];
+  accessibilityLabel = [v5 accessibilityLabel];
+  [(_MKLocompassViewAccessibility *)self setAccessibilityLabel:accessibilityLabel];
 
-  v4 = [v5 accessibilityValue];
-  [(_MKLocompassViewAccessibility *)self setAccessibilityValue:v4];
+  accessibilityValue = [v5 accessibilityValue];
+  [(_MKLocompassViewAccessibility *)self setAccessibilityValue:accessibilityValue];
 }
 
 @end

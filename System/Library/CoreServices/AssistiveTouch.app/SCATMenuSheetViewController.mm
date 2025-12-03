@@ -1,32 +1,32 @@
 @interface SCATMenuSheetViewController
-- (SCATMenuSheetViewController)initWithSheet:(id)a3;
+- (SCATMenuSheetViewController)initWithSheet:(id)sheet;
 - (SCATStaticElementProvider)elementProvider;
-- (id)_scannerGroupsForMenuItems:(id)a3;
-- (id)_visibleCellForMenuItem:(id)a3;
+- (id)_scannerGroupsForMenuItems:(id)items;
+- (id)_visibleCellForMenuItem:(id)item;
 - (unint64_t)currentPage;
 - (unint64_t)numberOfItemsInFirstPage;
 - (unint64_t)numberOfItemsPerRow;
 - (unint64_t)numberOfPagesRequired;
 - (void)_setupMenuSheet;
-- (void)flashCellForMenuItem:(id)a3;
+- (void)flashCellForMenuItem:(id)item;
 - (void)reload;
-- (void)updateCellForMenuItem:(id)a3;
+- (void)updateCellForMenuItem:(id)item;
 @end
 
 @implementation SCATMenuSheetViewController
 
-- (SCATMenuSheetViewController)initWithSheet:(id)a3
+- (SCATMenuSheetViewController)initWithSheet:(id)sheet
 {
-  v4 = a3;
+  sheetCopy = sheet;
   v9.receiver = self;
   v9.super_class = SCATMenuSheetViewController;
   v5 = [(SCATMenuSheetViewController *)&v9 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(SCATMenuSheetViewController *)v5 setSheet:v4];
-    v7 = [(SCATMenuSheetViewController *)v6 sheet];
-    [v7 setElementProviderDelegate:v6];
+    [(SCATMenuSheetViewController *)v5 setSheet:sheetCopy];
+    sheet = [(SCATMenuSheetViewController *)v6 sheet];
+    [sheet setElementProviderDelegate:v6];
 
     [(SCATMenuSheetViewController *)v6 _setupMenuSheet];
   }
@@ -41,30 +41,30 @@
   [(SCATMenuSheetViewController *)self setCollectionViewLayout:v5];
   v3 = [[SCATModernMenuSheetCollectionViewController alloc] initWithCollectionViewLayout:v5];
   [(SCATMenuSheetViewController *)self setCollectionViewController:v3];
-  v4 = [(SCATMenuSheetViewController *)self sheet];
-  [(SCATModernMenuSheetCollectionViewController *)v3 setMenuSheet:v4];
+  sheet = [(SCATMenuSheetViewController *)self sheet];
+  [(SCATModernMenuSheetCollectionViewController *)v3 setMenuSheet:sheet];
 }
 
 - (SCATStaticElementProvider)elementProvider
 {
-  v2 = [(SCATMenuSheetViewController *)self collectionViewController];
-  v3 = [v2 collectionView];
+  collectionViewController = [(SCATMenuSheetViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
 
-  [v3 setClipsToBounds:0];
-  v4 = [v3 collectionViewLayout];
-  [v4 collectionViewContentSize];
+  [collectionView setClipsToBounds:0];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v6 = v5;
   v8 = v7;
 
   if (v6 > 0.0 && v8 > 0.0)
   {
-    v9 = [v3 superview];
-    [v9 setBounds:{0.0, 0.0, v6, v8}];
+    superview = [collectionView superview];
+    [superview setBounds:{0.0, 0.0, v6, v8}];
   }
 
-  [v3 layoutIfNeeded];
-  v10 = [v3 indexPathsForVisibleItems];
-  v11 = [v10 sortedArrayUsingComparator:&stru_1001D5AA0];
+  [collectionView layoutIfNeeded];
+  indexPathsForVisibleItems = [collectionView indexPathsForVisibleItems];
+  v11 = [indexPathsForVisibleItems sortedArrayUsingComparator:&stru_1001D5AA0];
 
   v28 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v11 count]);
   v29 = 0u;
@@ -86,17 +86,17 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [v3 cellForItemAtIndexPath:*(*(&v29 + 1) + 8 * i)];
+        v17 = [collectionView cellForItemAtIndexPath:*(*(&v29 + 1) + 8 * i)];
         if (v17)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v18 = v17;
-            v19 = [v18 menuItem];
-            v20 = [v19 isDisabled];
+            menuItem = [v18 menuItem];
+            isDisabled = [menuItem isDisabled];
 
-            if ((v20 & 1) == 0)
+            if ((isDisabled & 1) == 0)
             {
               [v18 setParentGroup:0];
               [v28 addObject:v18];
@@ -114,10 +114,10 @@
   if ([v28 count])
   {
     v21 = +[AXSettings sharedInstance];
-    v22 = [v21 assistiveTouchGroupElementsEnabled];
+    assistiveTouchGroupElementsEnabled = [v21 assistiveTouchGroupElementsEnabled];
 
     v23 = [SCATStaticElementProvider alloc];
-    if (v22)
+    if (assistiveTouchGroupElementsEnabled)
     {
       [(SCATMenuSheetViewController *)self _scannerGroupsForMenuItems:v28];
     }
@@ -140,26 +140,26 @@
 
 - (unint64_t)numberOfItemsPerRow
 {
-  v2 = [(SCATMenuSheetViewController *)self collectionViewLayout];
-  v3 = [v2 maxItemsPerRow];
+  collectionViewLayout = [(SCATMenuSheetViewController *)self collectionViewLayout];
+  maxItemsPerRow = [collectionViewLayout maxItemsPerRow];
 
-  return v3;
+  return maxItemsPerRow;
 }
 
-- (id)_scannerGroupsForMenuItems:(id)a3
+- (id)_scannerGroupsForMenuItems:(id)items
 {
-  v3 = a3;
-  v4 = [v3 count];
+  itemsCopy = items;
+  v4 = [itemsCopy count];
   if (v4 > 1)
   {
     v6 = v4;
-    v7 = [v3 objectAtIndex:0];
+    v7 = [itemsCopy objectAtIndex:0];
     [v7 frame];
     v9 = v8;
     v10 = 1;
     while (1)
     {
-      v11 = [v3 objectAtIndex:v10];
+      v11 = [itemsCopy objectAtIndex:v10];
       [v11 frame];
       v13 = v12;
 
@@ -170,7 +170,7 @@
 
       if (v6 == ++v10)
       {
-        v5 = [v3 axMapObjectsUsingBlock:&stru_1001D5B20];
+        v5 = [itemsCopy axMapObjectsUsingBlock:&stru_1001D5B20];
         goto LABEL_30;
       }
     }
@@ -182,7 +182,7 @@
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v15 = v3;
+    v15 = itemsCopy;
     v16 = [v15 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v16)
     {
@@ -212,9 +212,9 @@
             [v19 frame];
             if (v20 == v9)
             {
-              v21 = [v19 menuItem];
-              v22 = [v21 scatElement];
-              [v14 addObject:v22];
+              menuItem = [v19 menuItem];
+              scatElement = [menuItem scatElement];
+              [v14 addObject:scatElement];
             }
 
             else
@@ -236,9 +236,9 @@
                 [v26 setAccessibilityLabel:v28];
               }
 
-              v29 = [v19 menuItem];
-              v30 = [v29 scatElement];
-              v31 = [NSMutableArray arrayWithObject:v30];
+              menuItem2 = [v19 menuItem];
+              scatElement2 = [menuItem2 scatElement];
+              v31 = [NSMutableArray arrayWithObject:scatElement2];
 
               [v19 frame];
               v9 = v32;
@@ -249,9 +249,9 @@
 
           else
           {
-            v23 = [v19 menuItem];
-            v24 = [v23 scatElement];
-            [v14 addObject:v24];
+            menuItem3 = [v19 menuItem];
+            scatElement3 = [menuItem3 scatElement];
+            [v14 addObject:scatElement3];
 
             [v19 frame];
             v9 = v25;
@@ -293,7 +293,7 @@ LABEL_30:
 
   else
   {
-    v5 = [v3 axMapObjectsUsingBlock:&stru_1001D5B00];
+    v5 = [itemsCopy axMapObjectsUsingBlock:&stru_1001D5B00];
   }
 
   return v5;
@@ -301,21 +301,21 @@ LABEL_30:
 
 - (unint64_t)currentPage
 {
-  v3 = [(SCATMenuSheetViewController *)self numberOfItemsInFirstPage];
-  v4 = [(SCATMenuSheetViewController *)self collectionViewController];
-  v5 = [v4 visibleItemOffset];
+  numberOfItemsInFirstPage = [(SCATMenuSheetViewController *)self numberOfItemsInFirstPage];
+  collectionViewController = [(SCATMenuSheetViewController *)self collectionViewController];
+  visibleItemOffset = [collectionViewController visibleItemOffset];
 
-  if (v3)
+  if (numberOfItemsInFirstPage)
   {
-    v7 = [(SCATMenuSheetViewController *)self collectionViewController];
-    v8 = [v7 visibleItemOffset];
+    collectionViewController2 = [(SCATMenuSheetViewController *)self collectionViewController];
+    visibleItemOffset2 = [collectionViewController2 visibleItemOffset];
 
-    if (v8 < v3)
+    if (visibleItemOffset2 < numberOfItemsInFirstPage)
     {
       return 0;
     }
 
-    v5 -= v3;
+    visibleItemOffset -= numberOfItemsInFirstPage;
     v6 = 1;
   }
 
@@ -324,13 +324,13 @@ LABEL_30:
     v6 = 0;
   }
 
-  v9 = [(SCATMenuSheetViewController *)self collectionViewController];
-  v10 = [v9 collectionView];
-  v11 = [v10 collectionViewLayout];
+  collectionViewController3 = [(SCATMenuSheetViewController *)self collectionViewController];
+  collectionView = [collectionViewController3 collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  if (v11)
+  if (collectionViewLayout)
   {
-    v6 += v5 / [v11 maxVisibleItems];
+    v6 += visibleItemOffset / [collectionViewLayout maxVisibleItems];
   }
 
   else
@@ -343,18 +343,18 @@ LABEL_30:
 
 - (unint64_t)numberOfPagesRequired
 {
-  v3 = [(SCATMenuSheetViewController *)self collectionViewController];
-  v4 = [v3 collectionView];
-  v5 = [v4 collectionViewLayout];
+  collectionViewController = [(SCATMenuSheetViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  v6 = [(SCATMenuSheetViewController *)self numberOfItemsInFirstPage];
-  v7 = [(SCATMenuSheetViewController *)self sheet];
-  v8 = [v7 menuItems];
-  v9 = [v8 count];
+  numberOfItemsInFirstPage = [(SCATMenuSheetViewController *)self numberOfItemsInFirstPage];
+  sheet = [(SCATMenuSheetViewController *)self sheet];
+  menuItems = [sheet menuItems];
+  v9 = [menuItems count];
 
-  if (v6)
+  if (numberOfItemsInFirstPage)
   {
-    v10 = v6;
+    v10 = numberOfItemsInFirstPage;
   }
 
   else
@@ -363,18 +363,18 @@ LABEL_30:
   }
 
   v11 = &v9[-v10];
-  v12 = [v5 maxVisibleItems];
-  if (v6)
+  maxVisibleItems = [collectionViewLayout maxVisibleItems];
+  if (numberOfItemsInFirstPage)
   {
-    v13 = v11 / v12 + 1;
+    v13 = v11 / maxVisibleItems + 1;
   }
 
   else
   {
-    v13 = v11 / v12;
+    v13 = v11 / maxVisibleItems;
   }
 
-  if (v11 % [v5 maxVisibleItems])
+  if (v11 % [collectionViewLayout maxVisibleItems])
   {
     ++v13;
   }
@@ -384,49 +384,49 @@ LABEL_30:
 
 - (unint64_t)numberOfItemsInFirstPage
 {
-  v2 = [(SCATMenuSheetViewController *)self sheet];
-  v3 = [v2 numberOfItemsInFirstPage];
+  sheet = [(SCATMenuSheetViewController *)self sheet];
+  numberOfItemsInFirstPage = [sheet numberOfItemsInFirstPage];
 
-  return v3;
+  return numberOfItemsInFirstPage;
 }
 
-- (void)updateCellForMenuItem:(id)a3
+- (void)updateCellForMenuItem:(id)item
 {
-  v3 = [(SCATMenuSheetViewController *)self _visibleCellForMenuItem:a3];
+  v3 = [(SCATMenuSheetViewController *)self _visibleCellForMenuItem:item];
   [v3 update];
 }
 
-- (void)flashCellForMenuItem:(id)a3
+- (void)flashCellForMenuItem:(id)item
 {
-  v3 = [(SCATMenuSheetViewController *)self _visibleCellForMenuItem:a3];
+  v3 = [(SCATMenuSheetViewController *)self _visibleCellForMenuItem:item];
   [v3 flash];
 }
 
-- (id)_visibleCellForMenuItem:(id)a3
+- (id)_visibleCellForMenuItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SCATMenuSheetViewController *)self collectionViewController];
-  v6 = [v5 collectionView];
-  v7 = [v6 visibleCells];
+  itemCopy = item;
+  collectionViewController = [(SCATMenuSheetViewController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  visibleCells = [collectionView visibleCells];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10007CFA4;
   v12[3] = &unk_1001D5B48;
-  v13 = v4;
-  v8 = v4;
-  v9 = [v7 axFilterObjectsUsingBlock:v12];
-  v10 = [v9 firstObject];
+  v13 = itemCopy;
+  v8 = itemCopy;
+  v9 = [visibleCells axFilterObjectsUsingBlock:v12];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 - (void)reload
 {
-  v3 = [(SCATMenuSheetViewController *)self collectionViewController];
-  [v3 adjustVisibleItemOffsetForPageBoundary];
+  collectionViewController = [(SCATMenuSheetViewController *)self collectionViewController];
+  [collectionViewController adjustVisibleItemOffsetForPageBoundary];
 
-  v4 = [(SCATMenuSheetViewController *)self collectionViewController];
-  [v4 reloadCollectionView];
+  collectionViewController2 = [(SCATMenuSheetViewController *)self collectionViewController];
+  [collectionViewController2 reloadCollectionView];
 }
 
 @end

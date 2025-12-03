@@ -1,13 +1,13 @@
 @interface CKRecordSystemFieldsTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation CKRecordSystemFieldsTransformer
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   v4 = REMDynamicCast();
 
@@ -16,20 +16,20 @@
     v5 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
     [v4 encodeSystemFieldsWithCoder:v5];
     [v5 finishEncoding];
-    v6 = [v5 encodedData];
+    encodedData = [v5 encodedData];
   }
 
   else
   {
-    v6 = 0;
+    encodedData = 0;
   }
 
-  return v6;
+  return encodedData;
 }
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   v4 = REMDynamicCast();
 

@@ -1,13 +1,13 @@
 @interface SFRSASigningOperation
 - (SFDigestOperation)digestOperation;
 - (SFRSASigningOperation)init;
-- (SFRSASigningOperation)initWithCoder:(id)a3;
-- (SFRSASigningOperation)initWithKeySpecifier:(id)a3;
-- (SFRSASigningOperation)initWithKeySpecifier:(id)a3 digestOperation:(id)a4;
+- (SFRSASigningOperation)initWithCoder:(id)coder;
+- (SFRSASigningOperation)initWithKeySpecifier:(id)specifier;
+- (SFRSASigningOperation)initWithKeySpecifier:(id)specifier digestOperation:(id)operation;
 - (_SFRSAKeySpecifier)signingKeySpecifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setDigestOperation:(id)a3;
-- (void)setSigningKeySpecifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setDigestOperation:(id)operation;
+- (void)setSigningKeySpecifier:(id)specifier;
 @end
 
 @implementation SFRSASigningOperation
@@ -20,40 +20,40 @@
   return v4;
 }
 
-- (SFRSASigningOperation)initWithKeySpecifier:(id)a3
+- (SFRSASigningOperation)initWithKeySpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = _defaultDigestOperation();
-  v6 = [(SFRSASigningOperation *)self initWithKeySpecifier:v4 digestOperation:v5];
+  v6 = [(SFRSASigningOperation *)self initWithKeySpecifier:specifierCopy digestOperation:v5];
 
   return v6;
 }
 
-- (SFRSASigningOperation)initWithKeySpecifier:(id)a3 digestOperation:(id)a4
+- (SFRSASigningOperation)initWithKeySpecifier:(id)specifier digestOperation:(id)operation
 {
-  v7 = a3;
-  v8 = a4;
+  specifierCopy = specifier;
+  operationCopy = operation;
   v12.receiver = self;
   v12.super_class = SFRSASigningOperation;
   v9 = [(SFRSASigningOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(v9->_rsaSigningOperationInternal + 1, a3);
-    objc_storeStrong(v10->_rsaSigningOperationInternal + 2, a4);
+    objc_storeStrong(v9->_rsaSigningOperationInternal + 1, specifier);
+    objc_storeStrong(v10->_rsaSigningOperationInternal + 2, operation);
   }
 
   return v10;
 }
 
-- (SFRSASigningOperation)initWithCoder:(id)a3
+- (SFRSASigningOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFRSASigningOperation;
   return [(SFRSASigningOperation *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   rsaSigningOperationInternal = self->_rsaSigningOperationInternal;
@@ -70,9 +70,9 @@
   return v2;
 }
 
-- (void)setSigningKeySpecifier:(id)a3
+- (void)setSigningKeySpecifier:(id)specifier
 {
-  v4 = [a3 copy];
+  v4 = [specifier copy];
   rsaSigningOperationInternal = self->_rsaSigningOperationInternal;
   v6 = rsaSigningOperationInternal[1];
   rsaSigningOperationInternal[1] = v4;
@@ -87,9 +87,9 @@
   return v2;
 }
 
-- (void)setDigestOperation:(id)a3
+- (void)setDigestOperation:(id)operation
 {
-  v4 = [a3 copyWithZone:0];
+  v4 = [operation copyWithZone:0];
   rsaSigningOperationInternal = self->_rsaSigningOperationInternal;
   v6 = rsaSigningOperationInternal[2];
   rsaSigningOperationInternal[2] = v4;

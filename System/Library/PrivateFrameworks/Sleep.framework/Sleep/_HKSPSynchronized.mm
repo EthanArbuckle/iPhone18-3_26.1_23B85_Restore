@@ -1,16 +1,16 @@
 @interface _HKSPSynchronized
-- (void)performBlock:(id)a3;
+- (void)performBlock:(id)block;
 @end
 
 @implementation _HKSPSynchronized
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5[2]();
-  objc_sync_exit(v4);
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  blockCopy[2]();
+  objc_sync_exit(selfCopy);
 }
 
 @end

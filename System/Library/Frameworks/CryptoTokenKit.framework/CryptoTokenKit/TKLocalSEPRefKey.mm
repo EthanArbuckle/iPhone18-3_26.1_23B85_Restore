@@ -1,16 +1,16 @@
 @interface TKLocalSEPRefKey
-- (BOOL)deleteWithError:(id *)a3;
-- (id)_initWithKeyType:(id)a3 keySize:(int64_t)a4 accessControl:(__SecAccessControl *)a5 options:(id)a6 authContext:(id)a7 caller:(id)a8 forceSystemSession:(BOOL)a9 error:(id *)a10;
-- (id)attestKey:(id)a3 nonce:(id)a4 error:(id *)a5;
-- (id)computeSharedSecret:(id)a3 error:(id *)a4;
-- (id)decapsulateKey:(id)a3 error:(id *)a4;
+- (BOOL)deleteWithError:(id *)error;
+- (id)_initWithKeyType:(id)type keySize:(int64_t)size accessControl:(__SecAccessControl *)control options:(id)options authContext:(id)context caller:(id)caller forceSystemSession:(BOOL)session error:(id *)self0;
+- (id)attestKey:(id)key nonce:(id)nonce error:(id *)error;
+- (id)computeSharedSecret:(id)secret error:(id *)error;
+- (id)decapsulateKey:(id)key error:(id *)error;
 - (id)description;
 - (id)keySize;
 - (id)keyType;
 - (id)objectID;
-- (id)publicKeyWithError:(id *)a3;
-- (id)recryptData:(id)a3 attributes:(id)a4 error:(id *)a5;
-- (id)signDigest:(id)a3 error:(id *)a4;
+- (id)publicKeyWithError:(id *)error;
+- (id)recryptData:(id)data attributes:(id)attributes error:(id *)error;
+- (id)signDigest:(id)digest error:(id *)error;
 - (void)dealloc;
 @end
 
@@ -119,8 +119,8 @@ LABEL_19:
     }
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:self file:@"TKLocalSEPKey.m" lineNumber:887 description:{@"Unexpected aks_key_type %d", v6}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"TKLocalSEPKey.m" lineNumber:887 description:{@"Unexpected aks_key_type %d", v6}];
 
   v10 = &stru_1F5A7A8A8;
 LABEL_24:
@@ -207,16 +207,16 @@ LABEL_24:
   return v11;
 }
 
-- (id)_initWithKeyType:(id)a3 keySize:(int64_t)a4 accessControl:(__SecAccessControl *)a5 options:(id)a6 authContext:(id)a7 caller:(id)a8 forceSystemSession:(BOOL)a9 error:(id *)a10
+- (id)_initWithKeyType:(id)type keySize:(int64_t)size accessControl:(__SecAccessControl *)control options:(id)options authContext:(id)context caller:(id)caller forceSystemSession:(BOOL)session error:(id *)self0
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
-  v17 = [(TKLocalSEPKey *)self _initWithAuthContext:a7 caller:a8];
+  typeCopy = type;
+  optionsCopy = options;
+  v17 = [(TKLocalSEPKey *)self _initWithAuthContext:context caller:caller];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 authContextWithError:a10];
+    v19 = [v17 authContextWithError:error];
     if (!v19)
     {
 LABEL_24:
@@ -225,17 +225,17 @@ LABEL_24:
     }
 
     v20 = v19;
-    if (([v15 isEqual:*MEMORY[0x1E697ADB8]] & 1) == 0 && (objc_msgSend(v15, "isEqual:", *MEMORY[0x1E697ADB0]) & 1) == 0 && !objc_msgSend(v15, "isEqual:", *MEMORY[0x1E697AD80]) && (objc_msgSend(v15, "isEqual:", *MEMORY[0x1E697AD88]) & 1) == 0 && (objc_msgSend(v15, "isEqual:", *MEMORY[0x1E697ADC0]) & 1) == 0 && !objc_msgSend(v15, "isEqual:", *MEMORY[0x1E697AD90]) && !objc_msgSend(v15, "isEqual:", *MEMORY[0x1E697ADA0]))
+    if (([typeCopy isEqual:*MEMORY[0x1E697ADB8]] & 1) == 0 && (objc_msgSend(typeCopy, "isEqual:", *MEMORY[0x1E697ADB0]) & 1) == 0 && !objc_msgSend(typeCopy, "isEqual:", *MEMORY[0x1E697AD80]) && (objc_msgSend(typeCopy, "isEqual:", *MEMORY[0x1E697AD88]) & 1) == 0 && (objc_msgSend(typeCopy, "isEqual:", *MEMORY[0x1E697ADC0]) & 1) == 0 && !objc_msgSend(typeCopy, "isEqual:", *MEMORY[0x1E697AD90]) && !objc_msgSend(typeCopy, "isEqual:", *MEMORY[0x1E697ADA0]))
     {
-      [v15 isEqual:*MEMORY[0x1E697AD98]];
+      [typeCopy isEqual:*MEMORY[0x1E697AD98]];
     }
 
-    [v18 setSac:a5];
+    [v18 setSac:control];
     v21 = objc_opt_class();
     [v18 accessControl];
     [v21 keyClassForProtection:SecAccessControlGetProtection()];
-    v22 = [v20 ACMHandle];
-    v23 = [v18 parametersWithACMHandle:v22];
+    aCMHandle = [v20 ACMHandle];
+    v23 = [v18 parametersWithACMHandle:aCMHandle];
 
     if ([v18 accessControl])
     {
@@ -249,16 +249,16 @@ LABEL_24:
         v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
         v27 = [(TKBERTLVRecord *)v25 initWithPropertyList:v26];
         [(TKTLVRecord *)v27 data];
-        v28 = v46 = v16;
+        v28 = v46 = optionsCopy;
 
         [v23 setData:v28 forKey:2];
       }
     }
 
-    v29 = [v16 objectForKeyedSubscript:{*MEMORY[0x1E697B200], v46}];
-    v30 = [v29 BOOLValue];
+    v29 = [optionsCopy objectForKeyedSubscript:{*MEMORY[0x1E697B200], v46}];
+    bOOLValue = [v29 BOOLValue];
 
-    if (v30)
+    if (bOOLValue)
     {
       v31 = 4;
     }
@@ -268,22 +268,22 @@ LABEL_24:
       v31 = 0;
     }
 
-    v32 = [v16 objectForKeyedSubscript:@"ECCompactable"];
-    v33 = [v32 BOOLValue];
+    v32 = [optionsCopy objectForKeyedSubscript:@"ECCompactable"];
+    bOOLValue2 = [v32 BOOLValue];
 
-    if (v33)
+    if (bOOLValue2)
     {
       v31 |= 0x10uLL;
     }
 
-    v34 = [v16 objectForKeyedSubscript:*MEMORY[0x1E697B238]];
-    v35 = [v34 BOOLValue];
+    v34 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E697B238]];
+    bOOLValue3 = [v34 BOOLValue];
 
-    v36 = v31 | v35;
-    v37 = [v16 objectForKeyedSubscript:*MEMORY[0x1E697B248]];
-    v38 = [v37 BOOLValue];
+    v36 = v31 | bOOLValue3;
+    v37 = [optionsCopy objectForKeyedSubscript:*MEMORY[0x1E697B248]];
+    bOOLValue4 = [v37 BOOLValue];
 
-    if (v38)
+    if (bOOLValue4)
     {
       v39 = v36 | 0x100;
     }
@@ -293,7 +293,7 @@ LABEL_24:
       v39 = v36;
     }
 
-    if ([v15 isEqual:*MEMORY[0x1E697ADB0]])
+    if ([typeCopy isEqual:*MEMORY[0x1E697ADB0]])
     {
       v40 = v39 | 0x40;
     }
@@ -308,14 +308,14 @@ LABEL_24:
       [v23 setNumber:v40 forKey:9];
     }
 
-    [objc_opt_class() keybagHandleForceSystemSession:a9];
+    [objc_opt_class() keybagHandleForceSystemSession:session];
     [v23 bytes];
     [v23 length];
     v41 = aks_ref_key_create();
     if (v41)
     {
       v18[6] = 0;
-      [v18 error:a10 withAKSReturn:v41 ACMHandle:0 AKSOperation:0 params:v23 message:@"unable to generate key"];
+      [v18 error:error withAKSReturn:v41 ACMHandle:0 AKSOperation:0 params:v23 message:@"unable to generate key"];
 
       goto LABEL_24;
     }
@@ -334,15 +334,15 @@ LABEL_29:
   return v42;
 }
 
-- (BOOL)deleteWithError:(id *)a3
+- (BOOL)deleteWithError:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = [(TKLocalSEPKey *)self authContextWithError:?];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 ACMHandle];
-    v8 = [(TKLocalSEPKey *)self parametersWithACMHandle:v7];
+    aCMHandle = [v5 ACMHandle];
+    v8 = [(TKLocalSEPKey *)self parametersWithACMHandle:aCMHandle];
 
     AKSRefKey = self->_AKSRefKey;
     [v8 bytes];
@@ -366,8 +366,8 @@ LABEL_8:
 
       if (v10 != -536362989)
       {
-        v15 = [v6 ACMHandle];
-        [(TKLocalSEPKey *)self error:a3 withAKSReturn:v11 ACMHandle:v15 AKSOperation:@"odel" params:v8 message:@"unable to delete key"];
+        aCMHandle2 = [v6 ACMHandle];
+        [(TKLocalSEPKey *)self error:error withAKSReturn:v11 ACMHandle:aCMHandle2 AKSOperation:@"odel" params:v8 message:@"unable to delete key"];
 
         v14 = 0;
 LABEL_13:
@@ -394,7 +394,7 @@ LABEL_14:
   return v14;
 }
 
-- (id)publicKeyWithError:(id *)a3
+- (id)publicKeyWithError:(id *)error
 {
   AKSRefKey = self->_AKSRefKey;
   v4 = [MEMORY[0x1E695DEF0] dataWithBytes:aks_ref_key_get_public_key() length:0];
@@ -402,28 +402,28 @@ LABEL_14:
   return v4;
 }
 
-- (id)signDigest:(id)a3 error:(id *)a4
+- (id)signDigest:(id)digest error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TKLocalSEPKey *)self authContextWithError:a4];
+  digestCopy = digest;
+  v7 = [(TKLocalSEPKey *)self authContextWithError:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 ACMHandle];
-    v10 = [(TKLocalSEPKey *)self parametersWithACMHandle:v9];
+    aCMHandle = [v7 ACMHandle];
+    v10 = [(TKLocalSEPKey *)self parametersWithACMHandle:aCMHandle];
 
     AKSRefKey = self->_AKSRefKey;
     [v10 bytes];
     [v10 length];
-    [v6 bytes];
-    [v6 length];
+    [digestCopy bytes];
+    [digestCopy length];
     v12 = aks_ref_key_sign();
     if (v12)
     {
       v13 = v12;
-      v14 = [v8 ACMHandle];
-      [(TKLocalSEPKey *)self error:a4 withAKSReturn:v13 ACMHandle:v14 AKSOperation:@"osgn" params:v10 message:@"unable to sign digest"];
-      v15 = 0;
+      aCMHandle2 = [v8 ACMHandle];
+      [(TKLocalSEPKey *)self error:error withAKSReturn:v13 ACMHandle:aCMHandle2 AKSOperation:@"osgn" params:v10 message:@"unable to sign digest"];
+      value = 0;
     }
 
     else
@@ -435,42 +435,42 @@ LABEL_14:
       }
 
       v17 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:0 length:0];
-      v14 = [(TKTLVRecord *)TKBERTLVRecord recordFromData:v17];
+      aCMHandle2 = [(TKTLVRecord *)TKBERTLVRecord recordFromData:v17];
 
-      v15 = [v14 value];
+      value = [aCMHandle2 value];
     }
   }
 
   else
   {
-    v15 = 0;
+    value = 0;
   }
 
-  return v15;
+  return value;
 }
 
-- (id)computeSharedSecret:(id)a3 error:(id *)a4
+- (id)computeSharedSecret:(id)secret error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TKLocalSEPKey *)self authContextWithError:a4];
+  secretCopy = secret;
+  v7 = [(TKLocalSEPKey *)self authContextWithError:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 ACMHandle];
-    v10 = [(TKLocalSEPKey *)self parametersWithACMHandle:v9];
+    aCMHandle = [v7 ACMHandle];
+    v10 = [(TKLocalSEPKey *)self parametersWithACMHandle:aCMHandle];
 
     AKSRefKey = self->_AKSRefKey;
     [v10 bytes];
     [v10 length];
-    [v6 bytes];
-    [v6 length];
+    [secretCopy bytes];
+    [secretCopy length];
     v12 = aks_ref_key_compute_key();
     if (v12)
     {
       v13 = v12;
-      v14 = [v8 ACMHandle];
-      [(TKLocalSEPKey *)self error:a4 withAKSReturn:v13 ACMHandle:v14 AKSOperation:@"ock" params:v10 message:@"unable to compute shared secret"];
-      v15 = 0;
+      aCMHandle2 = [v8 ACMHandle];
+      [(TKLocalSEPKey *)self error:error withAKSReturn:v13 ACMHandle:aCMHandle2 AKSOperation:@"ock" params:v10 message:@"unable to compute shared secret"];
+      value = 0;
     }
 
     else
@@ -482,42 +482,42 @@ LABEL_14:
       }
 
       v17 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:0 length:0];
-      v14 = [(TKTLVRecord *)TKBERTLVRecord recordFromData:v17];
+      aCMHandle2 = [(TKTLVRecord *)TKBERTLVRecord recordFromData:v17];
 
-      v15 = [v14 value];
+      value = [aCMHandle2 value];
     }
   }
 
   else
   {
-    v15 = 0;
+    value = 0;
   }
 
-  return v15;
+  return value;
 }
 
-- (id)recryptData:(id)a3 attributes:(id)a4 error:(id *)a5
+- (id)recryptData:(id)data attributes:(id)attributes error:(id *)error
 {
   v53[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(TKLocalSEPKey *)self authContextWithError:a5];
+  dataCopy = data;
+  attributesCopy = attributes;
+  v10 = [(TKLocalSEPKey *)self authContextWithError:error];
   if (!v10)
   {
     v34 = 0;
     goto LABEL_35;
   }
 
-  v11 = [v9 objectForKeyedSubscript:*MEMORY[0x1E697B208]];
+  v11 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697B208]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v46 = v8;
-    v12 = [v10 ACMHandle];
-    v13 = [(TKLocalSEPKey *)self parametersWithACMHandle:v12];
+    v46 = dataCopy;
+    aCMHandle = [v10 ACMHandle];
+    v13 = [(TKLocalSEPKey *)self parametersWithACMHandle:aCMHandle];
 
     v14 = *MEMORY[0x1E697B230];
-    v15 = [v9 objectForKeyedSubscript:*MEMORY[0x1E697B230]];
+    v15 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697B230]];
     if (v15)
     {
       [v13 setData:v15 forKey:10];
@@ -525,13 +525,13 @@ LABEL_14:
 
     v47 = v11;
     v16 = *MEMORY[0x1E697B218];
-    v17 = [v9 objectForKeyedSubscript:*MEMORY[0x1E697B218]];
+    v17 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697B218]];
     if (v17)
     {
       [v13 setData:v17 forKey:11];
     }
 
-    v18 = [v9 objectForKeyedSubscript:*MEMORY[0x1E697B210]];
+    v18 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697B210]];
     v19 = [v18 objectForKeyedSubscript:v14];
 
     if (v19)
@@ -549,7 +549,7 @@ LABEL_14:
 
     v43 = v20;
     v21 = *MEMORY[0x1E697B220];
-    v22 = [v9 objectForKeyedSubscript:*MEMORY[0x1E697B220]];
+    v22 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697B220]];
     v23 = v22;
     if (v22)
     {
@@ -588,15 +588,15 @@ LABEL_14:
       [v13 length];
       [v47 bytes];
       [v47 length];
-      v8 = v46;
+      dataCopy = v46;
       [v46 bytes];
       [v46 length];
       v31 = aks_ref_key_ecies_transcode();
       if (v31)
       {
         v32 = v31;
-        v33 = [v10 ACMHandle];
-        [(TKLocalSEPKey *)self error:a5 withAKSReturn:v32 ACMHandle:v33 AKSOperation:@"oect" params:v13 message:@"unable to recrypt"];
+        aCMHandle2 = [v10 ACMHandle];
+        [(TKLocalSEPKey *)self error:error withAKSReturn:v32 ACMHandle:aCMHandle2 AKSOperation:@"oect" params:v13 message:@"unable to recrypt"];
 
         v34 = 0;
       }
@@ -618,14 +618,14 @@ LABEL_14:
 
     else
     {
-      v8 = v46;
-      if (a5)
+      dataCopy = v46;
+      if (error)
       {
         v36 = MEMORY[0x1E696ABC0];
         v50 = *MEMORY[0x1E696A278];
         v51 = @"Bad kSecKeyEncryptionParameterSymmetricKeySizeInBits - if present, must be set to 128 for both input and output crypto operation";
         v37 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v51 forKeys:&v50 count:1];
-        *a5 = [v36 errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:v37];
+        *error = [v36 errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:v37];
       }
 
       v34 = 0;
@@ -636,14 +636,14 @@ LABEL_14:
     goto LABEL_33;
   }
 
-  if (a5)
+  if (error)
   {
     v35 = MEMORY[0x1E696ABC0];
     v52 = *MEMORY[0x1E696A278];
     v53[0] = @"Bad or missing kSecKeyEncryptionParameterRecryptCertificate";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v53 forKeys:&v52 count:1];
     [v35 errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:v13];
-    *a5 = v34 = 0;
+    *error = v34 = 0;
 LABEL_33:
 
     goto LABEL_34;
@@ -658,27 +658,27 @@ LABEL_35:
   return v34;
 }
 
-- (id)decapsulateKey:(id)a3 error:(id *)a4
+- (id)decapsulateKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(TKLocalSEPKey *)self authContextWithError:a4];
+  keyCopy = key;
+  v7 = [(TKLocalSEPKey *)self authContextWithError:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 ACMHandle];
-    v10 = [(TKLocalSEPKey *)self parametersWithACMHandle:v9];
+    aCMHandle = [v7 ACMHandle];
+    v10 = [(TKLocalSEPKey *)self parametersWithACMHandle:aCMHandle];
 
     AKSRefKey = self->_AKSRefKey;
     [v10 bytes];
     [v10 length];
-    [v6 bytes];
-    [v6 length];
+    [keyCopy bytes];
+    [keyCopy length];
     v12 = aks_ref_key_decapsulate();
     if (v12)
     {
       v13 = v12;
-      v14 = [v8 ACMHandle];
-      [(TKLocalSEPKey *)self error:a4 withAKSReturn:v13 ACMHandle:v14 AKSOperation:@"okd" params:v10 message:@"unable to decapsulate shared key"];
+      aCMHandle2 = [v8 ACMHandle];
+      [(TKLocalSEPKey *)self error:error withAKSReturn:v13 ACMHandle:aCMHandle2 AKSOperation:@"okd" params:v10 message:@"unable to decapsulate shared key"];
 
       v15 = 0;
     }
@@ -697,30 +697,30 @@ LABEL_35:
   return v15;
 }
 
-- (id)attestKey:(id)a3 nonce:(id)a4 error:(id *)a5
+- (id)attestKey:(id)key nonce:(id)nonce error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (![(TKLocalSEPKey *)self callerHasEntitlement:@"com.apple.security.attestation.access" error:a5])
+  keyCopy = key;
+  nonceCopy = nonce;
+  if (![(TKLocalSEPKey *)self callerHasEntitlement:@"com.apple.security.attestation.access" error:error])
   {
     v20 = 0;
     goto LABEL_20;
   }
 
-  v10 = [(TKLocalSEPKey *)self authContextWithError:a5];
+  v10 = [(TKLocalSEPKey *)self authContextWithError:error];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 ACMHandle];
-    v13 = [(TKLocalSEPKey *)self parametersWithACMHandle:v12];
+    aCMHandle = [v10 ACMHandle];
+    v13 = [(TKLocalSEPKey *)self parametersWithACMHandle:aCMHandle];
 
-    if (v9)
+    if (nonceCopy)
     {
-      [v13 setData:v9 forKey:4];
+      [v13 setData:nonceCopy forKey:4];
     }
 
-    v14 = v8;
+    v14 = keyCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -733,7 +733,7 @@ LABEL_35:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138544130;
-        v28 = self;
+        selfCopy = self;
         v29 = 2112;
         v30 = v13;
         v31 = 2114;
@@ -755,19 +755,19 @@ LABEL_35:
         goto LABEL_18;
       }
 
-      v19 = [v11 ACMHandle];
-      [(TKLocalSEPKey *)self error:a5 withAKSReturn:v17 ACMHandle:v19 AKSOperation:@"oa" params:v13 message:@"unable to attest refkey->refkey"];
+      aCMHandle2 = [v11 ACMHandle];
+      [(TKLocalSEPKey *)self error:error withAKSReturn:v17 ACMHandle:aCMHandle2 AKSOperation:@"oa" params:v13 message:@"unable to attest refkey->refkey"];
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
         v21 = MEMORY[0x1E696ABC0];
         v35 = *MEMORY[0x1E696A278];
         v36[0] = @"unsuitable key for attesting";
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:&v35 count:1];
-        *a5 = [v21 errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:v22];
+        *error = [v21 errorWithDomain:@"CryptoTokenKit" code:-8 userInfo:v22];
       }
 
       v23 = TK_LOG_sepkey_0();

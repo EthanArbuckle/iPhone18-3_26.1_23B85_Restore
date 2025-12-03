@@ -1,14 +1,14 @@
 @interface RMManagementPropertiesArchiver
-+ (BOOL)persistPropertiesWithStoreIdentifier:(id)a3 properties:(id)a4 error:(id *)a5;
-+ (id)_getManagementPropertiesFileURLWithStoreIdentifier:(id)a3;
-+ (id)propertiesWithStoreIdentifier:(id)a3 error:(id *)a4;
++ (BOOL)persistPropertiesWithStoreIdentifier:(id)identifier properties:(id)properties error:(id *)error;
++ (id)_getManagementPropertiesFileURLWithStoreIdentifier:(id)identifier;
++ (id)propertiesWithStoreIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation RMManagementPropertiesArchiver
 
-+ (id)propertiesWithStoreIdentifier:(id)a3 error:(id *)a4
++ (id)propertiesWithStoreIdentifier:(id)identifier error:(id *)error
 {
-  v5 = [RMManagementPropertiesArchiver _getManagementPropertiesFileURLWithStoreIdentifier:a3];
+  v5 = [RMManagementPropertiesArchiver _getManagementPropertiesFileURLWithStoreIdentifier:identifier];
   v12 = 0;
   v6 = [RMJSONUtilities deserializeJSONDictionaryAtFileURL:v5 error:&v12];
   v7 = v12;
@@ -25,22 +25,22 @@
       sub_100049F68();
     }
 
-    if (a4 && v7)
+    if (error && v7)
     {
       v10 = v7;
-      *a4 = v7;
+      *error = v7;
     }
   }
 
   return v6;
 }
 
-+ (BOOL)persistPropertiesWithStoreIdentifier:(id)a3 properties:(id)a4 error:(id *)a5
++ (BOOL)persistPropertiesWithStoreIdentifier:(id)identifier properties:(id)properties error:(id *)error
 {
-  v7 = a4;
-  v8 = [RMManagementPropertiesArchiver _getManagementPropertiesFileURLWithStoreIdentifier:a3];
+  propertiesCopy = properties;
+  v8 = [RMManagementPropertiesArchiver _getManagementPropertiesFileURLWithStoreIdentifier:identifier];
   v21 = 0;
-  v9 = [RMJSONUtilities serializeJSONDictionary:v7 fileURL:v8 error:&v21];
+  v9 = [RMJSONUtilities serializeJSONDictionary:propertiesCopy fileURL:v8 error:&v21];
   v10 = v21;
   v11 = v10;
   if (v9)
@@ -67,18 +67,18 @@ LABEL_12:
     }
 
     v13 = 0;
-    if (a5 && v11)
+    if (error && v11)
     {
       v18 = v11;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     goto LABEL_17;
   }
 
   v20 = v11;
-  v14 = [RMJSONUtilities serializeJSONDictionary:v7 fileURL:v8 error:&v20];
+  v14 = [RMJSONUtilities serializeJSONDictionary:propertiesCopy fileURL:v8 error:&v20];
   v15 = v20;
 
   if (!v14)
@@ -99,16 +99,16 @@ LABEL_18:
   return v13;
 }
 
-+ (id)_getManagementPropertiesFileURLWithStoreIdentifier:(id)a3
++ (id)_getManagementPropertiesFileURLWithStoreIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = [RMLocations statusDirectoryURLCreateIfNeeded:1];
-  v5 = [v4 URLByAppendingPathComponent:v3 isDirectory:1];
+  v5 = [v4 URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
   v15 = 0;
   v6 = +[NSFileManager defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:&v15];
+  path = [v5 path];
+  v8 = [v6 fileExistsAtPath:path isDirectory:&v15];
 
   if ((v8 & 1) == 0)
   {

@@ -1,8 +1,8 @@
 @interface AXAlertBannerManager
 - (AXAlertBannerManager)init;
-- (void)dismissAlertBanner:(id)a3;
-- (void)postAlertBanner:(id)a3;
-- (void)postAlertBanner:(id)a3 duration:(double)a4;
+- (void)dismissAlertBanner:(id)banner;
+- (void)postAlertBanner:(id)banner;
+- (void)postAlertBanner:(id)banner duration:(double)duration;
 @end
 
 @implementation AXAlertBannerManager
@@ -17,19 +17,19 @@
   {
     [(AXAlertBannerManager *)v2 setBannerRequestIdentifier:@"com.apple.accessibility"];
     v4 = MEMORY[0x1E698E580];
-    v5 = [(AXAlertBannerManager *)v3 bannerRequestIdentifier];
-    v6 = [v4 bannerSourceForDestination:0 forRequesterIdentifier:v5];
+    bannerRequestIdentifier = [(AXAlertBannerManager *)v3 bannerRequestIdentifier];
+    v6 = [v4 bannerSourceForDestination:0 forRequesterIdentifier:bannerRequestIdentifier];
     [(AXAlertBannerManager *)v3 setBannerSource:v6];
   }
 
   return v3;
 }
 
-- (void)postAlertBanner:(id)a3
+- (void)postAlertBanner:(id)banner
 {
-  v9 = a3;
-  v4 = [v9 actionBlock];
-  if (v4)
+  bannerCopy = banner;
+  actionBlock = [bannerCopy actionBlock];
+  if (actionBlock)
   {
     v5 = 5.0;
   }
@@ -39,8 +39,8 @@
     v5 = 3.0;
   }
 
-  v6 = [v9 identifier];
-  v7 = [v6 containsString:@"accessibility-help-banner"];
+  identifier = [bannerCopy identifier];
+  v7 = [identifier containsString:@"accessibility-help-banner"];
 
   v8 = 10.0;
   if (!v7)
@@ -48,15 +48,15 @@
     v8 = v5;
   }
 
-  [(AXAlertBannerManager *)self postAlertBanner:v9 duration:v8];
+  [(AXAlertBannerManager *)self postAlertBanner:bannerCopy duration:v8];
 }
 
-- (void)postAlertBanner:(id)a3 duration:(double)a4
+- (void)postAlertBanner:(id)banner duration:(double)duration
 {
-  v5 = a3;
+  bannerCopy = banner;
   [(AXAlertBannerManager *)self dismissAlertBanner:@"Replacing with new banner"];
-  v6 = [(AXAlertBannerManager *)self dismissalTimer];
-  [v6 invalidate];
+  dismissalTimer = [(AXAlertBannerManager *)self dismissalTimer];
+  [dismissalTimer invalidate];
 
   v7 = SBUIIsSystemApertureEnabled();
   v8 = off_1E812CB78;
@@ -66,12 +66,12 @@
   }
 
   v9 = objc_alloc(*v8);
-  v10 = [(AXAlertBannerManager *)self bannerRequestIdentifier];
-  v11 = [v9 initWithAlertContent:v5 requesterID:v10];
+  bannerRequestIdentifier = [(AXAlertBannerManager *)self bannerRequestIdentifier];
+  v11 = [v9 initWithAlertContent:bannerCopy requesterID:bannerRequestIdentifier];
 
   [(AXAlertBannerManager *)self setBannerPresentable:v11];
-  v12 = [v5 userInfo];
-  v13 = [v12 mutableCopy];
+  userInfo = [bannerCopy userInfo];
+  v13 = [userInfo mutableCopy];
   if (v13)
   {
     [(AXAlertBannerManager *)self setBannerUserInfo:v13];
@@ -83,13 +83,13 @@
     [(AXAlertBannerManager *)self setBannerUserInfo:v14];
   }
 
-  v15 = [(AXAlertBannerManager *)self bannerUserInfo];
-  [v15 setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69D45D0]];
+  bannerUserInfo = [(AXAlertBannerManager *)self bannerUserInfo];
+  [bannerUserInfo setValue:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E69D45D0]];
 
-  v16 = [(AXAlertBannerManager *)self bannerSource];
-  v17 = [(AXAlertBannerManager *)self bannerUserInfo];
+  bannerSource = [(AXAlertBannerManager *)self bannerSource];
+  bannerUserInfo2 = [(AXAlertBannerManager *)self bannerUserInfo];
   v20 = 0;
-  [v16 postPresentable:v11 options:1 userInfo:v17 error:&v20];
+  [bannerSource postPresentable:v11 options:1 userInfo:bannerUserInfo2 error:&v20];
   v18 = v20;
 
   if (v18)
@@ -107,18 +107,18 @@
   }
 }
 
-- (void)dismissAlertBanner:(id)a3
+- (void)dismissAlertBanner:(id)banner
 {
-  v4 = a3;
-  v5 = [(AXAlertBannerManager *)self bannerPresentable];
-  v6 = [v5 requestIdentifier];
+  bannerCopy = banner;
+  bannerPresentable = [(AXAlertBannerManager *)self bannerPresentable];
+  requestIdentifier = [bannerPresentable requestIdentifier];
 
-  if ([v6 length])
+  if ([requestIdentifier length])
   {
-    v7 = [(AXAlertBannerManager *)self bannerSource];
-    v8 = [(AXAlertBannerManager *)self bannerUserInfo];
+    bannerSource = [(AXAlertBannerManager *)self bannerSource];
+    bannerUserInfo = [(AXAlertBannerManager *)self bannerUserInfo];
     v12 = 0;
-    v9 = [v7 revokePresentableWithRequestIdentifier:v6 reason:v4 animated:1 userInfo:v8 error:&v12];
+    v9 = [bannerSource revokePresentableWithRequestIdentifier:requestIdentifier reason:bannerCopy animated:1 userInfo:bannerUserInfo error:&v12];
     v10 = v12;
 
     if (v10)

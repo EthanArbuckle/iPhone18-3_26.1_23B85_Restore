@@ -1,25 +1,25 @@
 @interface CNDescriptionBuilder
-+ (id)descriptionBuilderWithObject:(id)a3;
-+ (id)descriptionForBool:(BOOL)a3;
-+ (id)descriptionForObject:(id)a3 withNamesAndObjects:(id)a4;
++ (id)descriptionBuilderWithObject:(id)object;
++ (id)descriptionForBool:(BOOL)bool;
++ (id)descriptionForObject:(id)object withNamesAndObjects:(id)objects;
 - (CNDescriptionBuilder)init;
-- (CNDescriptionBuilder)initWithObject:(id)a3;
-- (id)appendKey:(id)a3;
-- (id)appendKeys:(id)a3;
-- (id)appendName:(id)a3 BOOLValue:(BOOL)a4;
-- (id)appendName:(id)a3 doubleValue:(double)a4;
-- (id)appendName:(id)a3 integerValue:(int64_t)a4;
-- (id)appendName:(id)a3 object:(id)a4;
-- (id)appendName:(id)a3 pointerValue:(void *)a4;
-- (id)appendName:(id)a3 range:(_NSRange)a4;
-- (id)appendName:(id)a3 selector:(SEL)a4;
-- (id)appendName:(id)a3 timeInterval:(double)a4;
-- (id)appendName:(id)a3 u_int64_t:(unint64_t)a4;
-- (id)appendName:(id)a3 unsignedInteger:(unint64_t)a4;
-- (id)appendNamesAndObjects:(id)a3 args:(char *)a4;
-- (id)appendableDescriptionOfValue:(id)a3;
+- (CNDescriptionBuilder)initWithObject:(id)object;
+- (id)appendKey:(id)key;
+- (id)appendKeys:(id)keys;
+- (id)appendName:(id)name BOOLValue:(BOOL)value;
+- (id)appendName:(id)name doubleValue:(double)value;
+- (id)appendName:(id)name integerValue:(int64_t)value;
+- (id)appendName:(id)name object:(id)object;
+- (id)appendName:(id)name pointerValue:(void *)value;
+- (id)appendName:(id)name range:(_NSRange)range;
+- (id)appendName:(id)name selector:(SEL)selector;
+- (id)appendName:(id)name timeInterval:(double)interval;
+- (id)appendName:(id)name u_int64_t:(unint64_t)u_int64_t;
+- (id)appendName:(id)name unsignedInteger:(unint64_t)integer;
+- (id)appendNamesAndObjects:(id)objects args:(char *)args;
+- (id)appendableDescriptionOfValue:(id)value;
 - (id)build;
-- (void)tryAppendKey:(id)a3;
+- (void)tryAppendKey:(id)key;
 @end
 
 @implementation CNDescriptionBuilder
@@ -32,22 +32,22 @@
   return v3;
 }
 
-+ (id)descriptionBuilderWithObject:(id)a3
++ (id)descriptionBuilderWithObject:(id)object
 {
-  v3 = a3;
-  v4 = [[CNDescriptionBuilder alloc] initWithObject:v3];
+  objectCopy = object;
+  v4 = [[CNDescriptionBuilder alloc] initWithObject:objectCopy];
 
   return v4;
 }
 
-+ (id)descriptionForObject:(id)a3 withNamesAndObjects:(id)a4
++ (id)descriptionForObject:(id)object withNamesAndObjects:(id)objects
 {
-  v5 = a4;
-  v6 = [CNDescriptionBuilder descriptionBuilderWithObject:a3];
-  v7 = [v6 appendNamesAndObjects:v5 args:&v11];
-  v8 = [v6 build];
+  objectsCopy = objects;
+  v6 = [CNDescriptionBuilder descriptionBuilderWithObject:object];
+  v7 = [v6 appendNamesAndObjects:objectsCopy args:&v11];
+  build = [v6 build];
 
-  return v8;
+  return build;
 }
 
 - (CNDescriptionBuilder)init
@@ -56,16 +56,16 @@
   objc_exception_throw(v2);
 }
 
-- (CNDescriptionBuilder)initWithObject:(id)a3
+- (CNDescriptionBuilder)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v16.receiver = self;
   v16.super_class = CNDescriptionBuilder;
   v5 = [(CNDescriptionBuilder *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_object, v4);
+    objc_storeWeak(&v5->_object, objectCopy);
     v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
     description = v6->_description;
     v6->_description = v7;
@@ -85,51 +85,51 @@
   return v6;
 }
 
-- (id)appendName:(id)a3 object:(id)a4
+- (id)appendName:(id)name object:(id)object
 {
   description = self->_description;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CNDescriptionBuilder *)self separator];
-  [(NSMutableString *)description appendString:v9];
+  objectCopy = object;
+  nameCopy = name;
+  separator = [(CNDescriptionBuilder *)self separator];
+  [(NSMutableString *)description appendString:separator];
 
   [(NSMutableString *)self->_description appendString:@" "];
-  [(NSMutableString *)self->_description appendString:v8];
+  [(NSMutableString *)self->_description appendString:nameCopy];
 
   [(NSMutableString *)self->_description appendString:@"="];
   v10 = self->_description;
-  v11 = [(CNDescriptionBuilder *)self appendableDescriptionOfValue:v7];
+  v11 = [(CNDescriptionBuilder *)self appendableDescriptionOfValue:objectCopy];
 
   [(NSMutableString *)v10 appendString:v11];
   [(CNDescriptionBuilder *)self setSeparator:@", "];
   return self;
 }
 
-- (id)appendableDescriptionOfValue:(id)a3
+- (id)appendableDescriptionOfValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 _cn_shortDescription];
+    _cn_shortDescription = [valueCopy _cn_shortDescription];
   }
 
   else
   {
-    v4 = [v3 description];
+    _cn_shortDescription = [valueCopy description];
 
-    if (!v4)
+    if (!_cn_shortDescription)
     {
-      v4 = @"(nil)";
+      _cn_shortDescription = @"(nil)";
     }
   }
 
-  return v4;
+  return _cn_shortDescription;
 }
 
-- (id)appendName:(id)a3 BOOLValue:(BOOL)a4
+- (id)appendName:(id)name BOOLValue:(BOOL)value
 {
-  if (a4)
+  if (value)
   {
     v5 = @"YES";
   }
@@ -139,97 +139,97 @@
     v5 = @"NO";
   }
 
-  v6 = [(CNDescriptionBuilder *)self appendName:a3 object:v5];
+  v6 = [(CNDescriptionBuilder *)self appendName:name object:v5];
   return self;
 }
 
-- (id)appendName:(id)a3 integerValue:(int64_t)a4
+- (id)appendName:(id)name integerValue:(int64_t)value
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", a4];
-  v8 = [(CNDescriptionBuilder *)self appendName:v6 object:v7];
-
-  return self;
-}
-
-- (id)appendName:(id)a3 unsignedInteger:(unint64_t)a4
-{
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a4];
-  v8 = [(CNDescriptionBuilder *)self appendName:v6 object:v7];
+  nameCopy = name;
+  value = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", value];
+  v8 = [(CNDescriptionBuilder *)self appendName:nameCopy object:value];
 
   return self;
 }
 
-- (id)appendName:(id)a3 u_int64_t:(unint64_t)a4
+- (id)appendName:(id)name unsignedInteger:(unint64_t)integer
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a4];
-  v8 = [(CNDescriptionBuilder *)self appendName:v6 object:v7];
+  nameCopy = name;
+  integer = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", integer];
+  v8 = [(CNDescriptionBuilder *)self appendName:nameCopy object:integer];
 
   return self;
 }
 
-- (id)appendName:(id)a3 doubleValue:(double)a4
+- (id)appendName:(id)name u_int64_t:(unint64_t)u_int64_t
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", *&a4];
-  v8 = [(CNDescriptionBuilder *)self appendName:v6 object:v7];
+  nameCopy = name;
+  u_int64_t = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", u_int64_t];
+  v8 = [(CNDescriptionBuilder *)self appendName:nameCopy object:u_int64_t];
 
   return self;
 }
 
-- (id)appendName:(id)a3 timeInterval:(double)a4
+- (id)appendName:(id)name doubleValue:(double)value
 {
-  v6 = a3;
-  v7 = [CNTimeIntervalFormatter stringForTimeInterval:a4];
-  v8 = [(CNDescriptionBuilder *)self appendName:v6 object:v7];
+  nameCopy = name;
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%f", *&value];
+  v8 = [(CNDescriptionBuilder *)self appendName:nameCopy object:v7];
 
   return self;
 }
 
-- (id)appendName:(id)a3 range:(_NSRange)a4
+- (id)appendName:(id)name timeInterval:(double)interval
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  nameCopy = name;
+  v7 = [CNTimeIntervalFormatter stringForTimeInterval:interval];
+  v8 = [(CNDescriptionBuilder *)self appendName:nameCopy object:v7];
+
+  return self;
+}
+
+- (id)appendName:(id)name range:(_NSRange)range
+{
+  length = range.length;
+  location = range.location;
+  nameCopy = name;
   v8 = (*(CNRangeShortDescription + 2))(CNRangeShortDescription, location, length);
-  v9 = [(CNDescriptionBuilder *)self appendName:v7 object:v8];
+  v9 = [(CNDescriptionBuilder *)self appendName:nameCopy object:v8];
 
   return self;
 }
 
-- (id)appendName:(id)a3 pointerValue:(void *)a4
+- (id)appendName:(id)name pointerValue:(void *)value
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", a4];
-  v8 = [(CNDescriptionBuilder *)self appendName:v6 object:v7];
+  nameCopy = name;
+  value = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", value];
+  v8 = [(CNDescriptionBuilder *)self appendName:nameCopy object:value];
 
   return self;
 }
 
-- (id)appendName:(id)a3 selector:(SEL)a4
+- (id)appendName:(id)name selector:(SEL)selector
 {
-  v6 = a3;
-  v7 = NSStringFromSelector(a4);
-  v8 = [(CNDescriptionBuilder *)self appendName:v6 object:v7];
+  nameCopy = name;
+  v7 = NSStringFromSelector(selector);
+  v8 = [(CNDescriptionBuilder *)self appendName:nameCopy object:v7];
 
   return self;
 }
 
-- (id)appendNamesAndObjects:(id)a3 args:(char *)a4
+- (id)appendNamesAndObjects:(id)objects args:(char *)args
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  objectsCopy = objects;
+  v6 = objectsCopy;
+  if (objectsCopy)
   {
-    v7 = v5;
+    v7 = objectsCopy;
     do
     {
-      v8 = *a4;
+      v8 = *args;
       v9 = [(CNDescriptionBuilder *)self appendName:v7 object:v8];
-      v10 = (a4 + 8);
-      a4 += 16;
+      v10 = (args + 8);
+      args += 16;
       v11 = *v10;
 
       v7 = v11;
@@ -241,23 +241,23 @@
   return self;
 }
 
-- (id)appendKey:(id)a3
+- (id)appendKey:(id)key
 {
-  v4 = a3;
-  [(CNDescriptionBuilder *)self tryAppendKey:v4];
+  keyCopy = key;
+  [(CNDescriptionBuilder *)self tryAppendKey:keyCopy];
 
   return self;
 }
 
-- (id)appendKeys:(id)a3
+- (id)appendKeys:(id)keys
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keysCopy = keys;
+  v5 = [keysCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = *v11;
@@ -268,14 +268,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         [(CNDescriptionBuilder *)self tryAppendKey:*(*(&v10 + 1) + 8 * v7++), v10];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [keysCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -285,18 +285,18 @@
   return self;
 }
 
-- (void)tryAppendKey:(id)a3
+- (void)tryAppendKey:(id)key
 {
-  v7 = a3;
+  keyCopy = key;
   WeakRetained = objc_loadWeakRetained(&self->_object);
-  v5 = [WeakRetained valueForKey:v7];
+  v5 = [WeakRetained valueForKey:keyCopy];
 
-  v6 = [(CNDescriptionBuilder *)self appendObject:v5 withName:v7];
+  v6 = [(CNDescriptionBuilder *)self appendObject:v5 withName:keyCopy];
 }
 
-+ (id)descriptionForBool:(BOOL)a3
++ (id)descriptionForBool:(BOOL)bool
 {
-  if (a3)
+  if (bool)
   {
     return @"YES";
   }

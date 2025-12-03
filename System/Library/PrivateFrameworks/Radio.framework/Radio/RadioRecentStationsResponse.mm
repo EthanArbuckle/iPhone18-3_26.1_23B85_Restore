@@ -1,7 +1,7 @@
 @interface RadioRecentStationsResponse
 - (NSArray)stationDictionaries;
 - (NSArray)stationGroups;
-- (RadioRecentStationsResponse)initWithResponseDictionary:(id)a3;
+- (RadioRecentStationsResponse)initWithResponseDictionary:(id)dictionary;
 @end
 
 @implementation RadioRecentStationsResponse
@@ -96,13 +96,13 @@
   return v3;
 }
 
-- (RadioRecentStationsResponse)initWithResponseDictionary:(id)a3
+- (RadioRecentStationsResponse)initWithResponseDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(RadioRecentStationsResponse *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseDictionary = v5->_responseDictionary;
     v5->_responseDictionary = v6;
   }

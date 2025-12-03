@@ -1,24 +1,24 @@
 @interface AKEightPointRectangularPointOfInterestHelper
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5;
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6;
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller;
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment;
 @end
 
 @implementation AKEightPointRectangularPointOfInterestHelper
 
-+ (void)_concretePointsOfInterest:(id *)a3 withVisualStyle:(id *)a4 ofAnnotation:(id)a5 pageControllerForPixelAlignment:(id)a6
++ (void)_concretePointsOfInterest:(id *)interest withVisualStyle:(id *)style ofAnnotation:(id)annotation pageControllerForPixelAlignment:(id)alignment
 {
-  v9 = a5;
-  v10 = a6;
+  annotationCopy = annotation;
+  alignmentCopy = alignment;
   v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:9];
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:9];
-  [v9 rectangle];
+  [annotationCopy rectangle];
   x = v71.origin.x;
   y = v71.origin.y;
   width = v71.size.width;
   height = v71.size.height;
   if (CGRectIsInfinite(v71))
   {
-    [v10 maxPageRect];
+    [alignmentCopy maxPageRect];
     x = v17;
     y = v18;
     width = v19;
@@ -26,7 +26,7 @@
   }
 
   v70 = 0.0;
-  v21 = [AKGeometryHelper annotationHasRotation:v9 outAngle:&v70];
+  v21 = [AKGeometryHelper annotationHasRotation:annotationCopy outAngle:&v70];
   v22 = *(MEMORY[0x277CBF2C0] + 16);
   v69[0] = *MEMORY[0x277CBF2C0];
   v69[1] = v22;
@@ -50,13 +50,13 @@
   if (v21)
   {
     v67 = MidX;
-    [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:v9, *&MidY];
+    [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:annotationCopy, *&MidY];
   }
 
   else
   {
-    v28 = [v10 geometryHelper];
-    [v28 screenPixelAlignedPointForPoint:{MidX, v25}];
+    geometryHelper = [alignmentCopy geometryHelper];
+    [geometryHelper screenPixelAlignedPointForPoint:{MidX, v25}];
     v30 = v29;
     v32 = v31;
 
@@ -64,15 +64,15 @@
     v67 = v30;
     if (objc_opt_isKindOfClass())
     {
-      [v9 strokeWidth];
-      [AKGeometryHelper renderingStrokeAlignedRectForRect:v10 withStrokeWidth:0 alignToScreenUsingPageController:0 orAlignToContext:x usingAnnotation:y, width, height, v33];
+      [annotationCopy strokeWidth];
+      [AKGeometryHelper renderingStrokeAlignedRectForRect:alignmentCopy withStrokeWidth:0 alignToScreenUsingPageController:0 orAlignToContext:x usingAnnotation:y, width, height, v33];
       x = v34;
       y = v35;
       width = v36;
       height = v37;
     }
 
-    [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:v9, v32];
+    [AKAnnotationRenderer draggingBoundsInsetsForAnnotation:annotationCopy, v32];
   }
 
   v38 = v26;
@@ -88,20 +88,20 @@
   v43 = v75.size.height;
   if ((v21 & 1) == 0)
   {
-    v44 = [v10 geometryHelper];
-    [v44 screenPixelAlignedRectForRect:{v40, v41, v42, v43}];
+    geometryHelper2 = [alignmentCopy geometryHelper];
+    [geometryHelper2 screenPixelAlignedRectForRect:{v40, v41, v42, v43}];
     v40 = v45;
     v41 = v46;
     v42 = v47;
     v43 = v48;
   }
 
-  [AKGeometryHelper convertModelToScreenOrientationForRect:v10 withPageController:v40, v41, v42, v43];
+  [AKGeometryHelper convertModelToScreenOrientationForRect:alignmentCopy withPageController:v40, v41, v42, v43];
   v50 = v49;
   v52 = v51;
   v54 = v53;
   v56 = v55;
-  [AKGeometryHelper convertModelToScreenOrientationForPoint:v10 relativeToRect:v67 withPageController:v65, v40, v41, v42, v43];
+  [AKGeometryHelper convertModelToScreenOrientationForPoint:alignmentCopy relativeToRect:v67 withPageController:v65, v40, v41, v42, v43];
   v66 = v58;
   v68 = v57;
   v76.origin.x = v50;
@@ -124,43 +124,43 @@
   v79.size.width = v54;
   v79.size.height = v56;
   MaxY = CGRectGetMaxY(v79);
-  if ([v9 conformsToAKTextAnnotationProtocol] && objc_msgSend(v9, "textIsClipped"))
+  if ([annotationCopy conformsToAKTextAnnotationProtocol] && objc_msgSend(annotationCopy, "textIsClipped"))
   {
-    sub_23F42A9AC(2, v10, v21, v69, v11, v12, v68, MinY, v50, v52, v54, v56);
+    sub_23F42A9AC(2, alignmentCopy, v21, v69, v11, v12, v68, MinY, v50, v52, v54, v56);
   }
 
-  sub_23F42A9AC(0, v10, v21, v69, v11, v12, MaxX, MinY, v50, v52, v54, v56);
-  sub_23F42A9AC(0, v10, v21, v69, v11, v12, MaxX, MaxY, v50, v52, v54, v56);
-  sub_23F42A9AC(0, v10, v21, v69, v11, v12, MinX, MinY, v50, v52, v54, v56);
-  sub_23F42A9AC(0, v10, v21, v69, v11, v12, MinX, MaxY, v50, v52, v54, v56);
-  sub_23F42A9AC(0, v10, v21, v69, v11, v12, MinX, v66, v50, v52, v54, v56);
-  sub_23F42A9AC(0, v10, v21, v69, v11, v12, v68, MinY, v50, v52, v54, v56);
-  sub_23F42A9AC(0, v10, v21, v69, v11, v12, v68, MaxY, v50, v52, v54, v56);
-  sub_23F42A9AC(0, v10, v21, v69, v11, v12, MaxX, v66, v50, v52, v54, v56);
+  sub_23F42A9AC(0, alignmentCopy, v21, v69, v11, v12, MaxX, MinY, v50, v52, v54, v56);
+  sub_23F42A9AC(0, alignmentCopy, v21, v69, v11, v12, MaxX, MaxY, v50, v52, v54, v56);
+  sub_23F42A9AC(0, alignmentCopy, v21, v69, v11, v12, MinX, MinY, v50, v52, v54, v56);
+  sub_23F42A9AC(0, alignmentCopy, v21, v69, v11, v12, MinX, MaxY, v50, v52, v54, v56);
+  sub_23F42A9AC(0, alignmentCopy, v21, v69, v11, v12, MinX, v66, v50, v52, v54, v56);
+  sub_23F42A9AC(0, alignmentCopy, v21, v69, v11, v12, v68, MinY, v50, v52, v54, v56);
+  sub_23F42A9AC(0, alignmentCopy, v21, v69, v11, v12, v68, MaxY, v50, v52, v54, v56);
+  sub_23F42A9AC(0, alignmentCopy, v21, v69, v11, v12, MaxX, v66, v50, v52, v54, v56);
   v63 = v11;
-  *a3 = v11;
+  *interest = v11;
   v64 = v12;
-  *a4 = v12;
+  *style = v12;
 }
 
-+ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)a3 ofAnnotation:(id)a4 onPageController:(id)a5
++ (unint64_t)_concreteDraggableAreaForPointOfInterestWithIndex:(unint64_t)index ofAnnotation:(id)annotation onPageController:(id)controller
 {
-  v6 = a4;
-  if ([v6 conformsToAKTextAnnotationProtocol])
+  annotationCopy = annotation;
+  if ([annotationCopy conformsToAKTextAnnotationProtocol])
   {
-    v7 = [v6 textIsClipped];
-    v8 = a3 - 1;
-    if (!a3)
+    textIsClipped = [annotationCopy textIsClipped];
+    indexCopy2 = index - 1;
+    if (!index)
     {
-      v8 = 0;
+      indexCopy2 = 0;
     }
 
-    if (!v7)
+    if (!textIsClipped)
     {
-      v8 = a3;
+      indexCopy2 = index;
     }
 
-    if (!a3 && (v7 & 1) != 0)
+    if (!index && (textIsClipped & 1) != 0)
     {
       goto LABEL_12;
     }
@@ -168,17 +168,17 @@
 
   else
   {
-    v8 = a3;
+    indexCopy2 = index;
   }
 
-  if (v8 > 7)
+  if (indexCopy2 > 7)
   {
 LABEL_12:
     v9 = 0;
     goto LABEL_13;
   }
 
-  v9 = qword_23F4D8F30[v8];
+  v9 = qword_23F4D8F30[indexCopy2];
 LABEL_13:
 
   return v9;

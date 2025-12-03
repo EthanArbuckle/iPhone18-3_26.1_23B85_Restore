@@ -6,14 +6,14 @@
 
 - (uint64_t)pu_isAssetReferenceSelected:()PUOneUpSelectionIndicatorCompatibility
 {
-  v4 = [a3 indexPath];
-  v5 = [a1 selectionSnapshot];
-  v6 = [v5 dataSource];
-  [v6 identifier];
+  indexPath = [a3 indexPath];
+  selectionSnapshot = [self selectionSnapshot];
+  dataSource = [selectionSnapshot dataSource];
+  [dataSource identifier];
 
   PXSimpleIndexPathFromIndexPath();
   memset(v9, 0, sizeof(v9));
-  v7 = [v5 isIndexPathSelected:v9];
+  v7 = [selectionSnapshot isIndexPathSelected:v9];
 
   return v7;
 }

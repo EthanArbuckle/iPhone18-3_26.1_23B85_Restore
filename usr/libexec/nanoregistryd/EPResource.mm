@@ -1,17 +1,17 @@
 @interface EPResource
-- (EPResource)initWithResourceManager:(id)a3 andOwnerDelegate:(id)a4;
+- (EPResource)initWithResourceManager:(id)manager andOwnerDelegate:(id)delegate;
 - (EPResourceOwnerDelegate)ownerDelegate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setAvailability:(unint64_t)a3 withError:(id)a4;
+- (void)setAvailability:(unint64_t)availability withError:(id)error;
 @end
 
 @implementation EPResource
 
-- (EPResource)initWithResourceManager:(id)a3 andOwnerDelegate:(id)a4
+- (EPResource)initWithResourceManager:(id)manager andOwnerDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = EPResource;
   v9 = [(EPResource *)&v17 init];
@@ -27,19 +27,19 @@
       {
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
-        v15 = [v7 referenceCounter];
+        referenceCounter = [managerCopy referenceCounter];
         *buf = 138412802;
         v19 = v14;
         v20 = 2048;
         v21 = v9;
         v22 = 2048;
-        v23 = v15;
+        v23 = referenceCounter;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "init %@[%p] manager refcount = %ld", buf, 0x20u);
       }
     }
 
-    objc_storeStrong(&v9->_resourceManager, a3);
-    objc_storeWeak(&v9->_ownerDelegate, v8);
+    objc_storeStrong(&v9->_resourceManager, manager);
+    objc_storeWeak(&v9->_ownerDelegate, delegateCopy);
   }
 
   return v9;
@@ -57,20 +57,20 @@
   [(EPResource *)&v3 dealloc];
 }
 
-- (void)setAvailability:(unint64_t)a3 withError:(id)a4
+- (void)setAvailability:(unint64_t)availability withError:(id)error
 {
-  v7 = a4;
-  if (self->_availability != a3 || (error = self->_error, error != v7) && ([(NSError *)error isEqual:v7]& 1) == 0)
+  errorCopy = error;
+  if (self->_availability != availability || (error = self->_error, error != errorCopy) && ([(NSError *)error isEqual:errorCopy]& 1) == 0)
   {
-    self->_availability = a3;
-    objc_storeStrong(&self->_error, a4);
-    v9 = [(EPResourceManagerProtocol *)self->_resourceManager queue];
+    self->_availability = availability;
+    objc_storeStrong(&self->_error, error);
+    queue = [(EPResourceManagerProtocol *)self->_resourceManager queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000CDA50;
     block[3] = &unk_100175660;
     block[4] = self;
-    dispatch_async(v9, block);
+    dispatch_async(queue, block);
   }
 }
 
@@ -90,7 +90,7 @@
       v8 = 138412546;
       v9 = v7;
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "invalidated %@[%p]", &v8, 0x16u);
     }
   }

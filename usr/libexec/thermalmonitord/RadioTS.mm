@@ -3,7 +3,7 @@
 - (RadioTS)init;
 - (RadioTSInternal)radioTSInternal;
 - (void)queryThermalSensorInfo;
-- (void)setRadioTSInternal:(RadioTSInternal *)a3;
+- (void)setRadioTSInternal:(RadioTSInternal *)internal;
 @end
 
 @implementation RadioTS
@@ -89,10 +89,10 @@
   return self;
 }
 
-- (void)setRadioTSInternal:(RadioTSInternal *)a3
+- (void)setRadioTSInternal:(RadioTSInternal *)internal
 {
-  ptr = a3->abmManager.__ptr_;
-  cntrl = a3->abmManager.__cntrl_;
+  ptr = internal->abmManager.__ptr_;
+  cntrl = internal->abmManager.__cntrl_;
   if (cntrl)
   {
     atomic_fetch_add_explicit(cntrl + 1, 1uLL, memory_order_relaxed);
@@ -106,7 +106,7 @@
     sub_100028CE8(v7);
   }
 
-  *&self->_radioTSInternal.bbIsready = *&a3->bbIsready;
+  *&self->_radioTSInternal.bbIsready = *&internal->bbIsready;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface ASDEventServiceExtensionRemoteContext
-- (void)didReceiveInstallationEvent:(id)a3;
+- (void)didReceiveInstallationEvent:(id)event;
 @end
 
 @implementation ASDEventServiceExtensionRemoteContext
 
-- (void)didReceiveInstallationEvent:(id)a3
+- (void)didReceiveInstallationEvent:(id)event
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = ASDLogHandleForCategory(16);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 bundleID];
+    bundleID = [eventCopy bundleID];
     v12 = 138543874;
-    v13 = v6;
+    v13 = bundleID;
     v14 = 2048;
-    v15 = [v4 phase];
+    phase = [eventCopy phase];
     v16 = 2048;
-    v17 = [v4 terminalPhase];
+    terminalPhase = [eventCopy terminalPhase];
     _os_log_impl(&dword_1B8220000, v5, OS_LOG_TYPE_DEFAULT, "didReceiveInstallationEvent: %{public}@ %ld/%ld", &v12, 0x20u);
   }
 
-  v7 = [(ASDEventServiceExtension *)self->_extensionInstance didReceiveInstallationEvent:v4];
-  v8 = [v4 phase];
-  if (v8 == [v4 terminalPhase])
+  v7 = [(ASDEventServiceExtension *)self->_extensionInstance didReceiveInstallationEvent:eventCopy];
+  phase2 = [eventCopy phase];
+  if (phase2 == [eventCopy terminalPhase])
   {
     [(ASDEventServiceExtensionRemoteContext *)self completeRequestReturningItems:0 completionHandler:0];
   }

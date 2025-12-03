@@ -1,16 +1,16 @@
 @interface DAStatusReport
 - (DAStatusReport)init;
-- (DAStatusReport)initWithDictionaryRepresentation:(id)a3;
+- (DAStatusReport)initWithDictionaryRepresentation:(id)representation;
 - (NSNumber)timeSpan;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeStatusReport:(id)a3;
+- (void)mergeStatusReport:(id)report;
 - (void)noteFailedNetworkRequest;
 - (void)noteFailedProtocolRequest;
 - (void)noteFalseMoreAvailableResponse;
-- (void)noteNewHBIDataPoint:(int)a3;
-- (void)noteSuccessfulRequestWithNumDownloadedElements:(int)a3 numUploadedElements:(int)a4;
-- (void)noteTimeSpentInNetworking:(double)a3;
+- (void)noteNewHBIDataPoint:(int)point;
+- (void)noteSuccessfulRequestWithNumDownloadedElements:(int)elements numUploadedElements:(int)uploadedElements;
+- (void)noteTimeSpentInNetworking:(double)networking;
 @end
 
 @implementation DAStatusReport
@@ -22,80 +22,80 @@
   v2 = [(DAStatusReport *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
-    [(DAStatusReport *)v2 setCreationDate:v3];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(DAStatusReport *)v2 setCreationDate:date];
   }
 
   return v2;
 }
 
-- (DAStatusReport)initWithDictionaryRepresentation:(id)a3
+- (DAStatusReport)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v26.receiver = self;
   v26.super_class = DAStatusReport;
   v5 = [(DAStatusReport *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:kDAStatusReportPersistentUUID];
+    v6 = [representationCopy objectForKeyedSubscript:kDAStatusReportPersistentUUID];
     [(DAStatusReport *)v5 setPersistentUUID:v6];
 
-    v7 = [v4 objectForKeyedSubscript:kDAStatusReportDisplayName];
+    v7 = [representationCopy objectForKeyedSubscript:kDAStatusReportDisplayName];
     [(DAStatusReport *)v5 setDisplayName:v7];
 
-    v8 = [v4 objectForKeyedSubscript:kDAStatusReportAccountType];
+    v8 = [representationCopy objectForKeyedSubscript:kDAStatusReportAccountType];
     [(DAStatusReport *)v5 setAccountType:v8];
 
-    v9 = [v4 objectForKeyedSubscript:kDAStatusReportTimeSpan];
+    v9 = [representationCopy objectForKeyedSubscript:kDAStatusReportTimeSpan];
     [(DAStatusReport *)v5 setTimeSpan:v9];
 
-    v10 = [v4 objectForKeyedSubscript:kDAStatusReportTimeInNetworking];
+    v10 = [representationCopy objectForKeyedSubscript:kDAStatusReportTimeInNetworking];
     [(DAStatusReport *)v5 setTimeInNetworking:v10];
 
-    v11 = [v4 objectForKeyedSubscript:kDAStatusReportAverageHBI];
+    v11 = [representationCopy objectForKeyedSubscript:kDAStatusReportAverageHBI];
     [(DAStatusReport *)v5 setAverageHBI:v11];
 
-    v12 = [v4 objectForKeyedSubscript:kDAStatusReportSuccessfulRequests];
+    v12 = [representationCopy objectForKeyedSubscript:kDAStatusReportSuccessfulRequests];
     [(DAStatusReport *)v5 setSuccessfulRequests:v12];
 
-    v13 = [v4 objectForKeyedSubscript:kDAStatusReportFailedNetworkRequests];
+    v13 = [representationCopy objectForKeyedSubscript:kDAStatusReportFailedNetworkRequests];
     [(DAStatusReport *)v5 setFailedNetworkRequests:v13];
 
-    v14 = [v4 objectForKeyedSubscript:kDAStatusReportFailedProtocolRequests];
+    v14 = [representationCopy objectForKeyedSubscript:kDAStatusReportFailedProtocolRequests];
     [(DAStatusReport *)v5 setFailedProtocolRequests:v14];
 
-    v15 = [v4 objectForKeyedSubscript:kDAStatusReportDownloadedElements];
+    v15 = [representationCopy objectForKeyedSubscript:kDAStatusReportDownloadedElements];
     [(DAStatusReport *)v5 setDownloadedElements:v15];
 
-    v16 = [v4 objectForKeyedSubscript:kDAStatusReportUploadedElements];
+    v16 = [representationCopy objectForKeyedSubscript:kDAStatusReportUploadedElements];
     [(DAStatusReport *)v5 setUploadedElements:v16];
 
-    v17 = [v4 objectForKeyedSubscript:kDAStatusReportFalseMoreAvailableCount];
+    v17 = [representationCopy objectForKeyedSubscript:kDAStatusReportFalseMoreAvailableCount];
     [(DAStatusReport *)v5 setFalseMoreAvailableCount:v17];
 
-    v18 = [v4 objectForKeyedSubscript:kDAStatusReportProtocolVersion];
+    v18 = [representationCopy objectForKeyedSubscript:kDAStatusReportProtocolVersion];
     [(DAStatusReport *)v5 setProtocolVersion:v18];
 
-    v19 = [v4 objectForKeyedSubscript:kDAStatusReportSyncingAllowed];
+    v19 = [representationCopy objectForKeyedSubscript:kDAStatusReportSyncingAllowed];
     v20 = v19;
     if (v19)
     {
-      v21 = [v19 BOOLValue];
+      bOOLValue = [v19 BOOLValue];
     }
 
     else
     {
-      v21 = 1;
+      bOOLValue = 1;
     }
 
-    [(DAStatusReport *)v5 setSyncingAllowed:v21];
-    v22 = [v4 objectForKeyedSubscript:kDAStatusReportLastSuccessDate];
+    [(DAStatusReport *)v5 setSyncingAllowed:bOOLValue];
+    v22 = [representationCopy objectForKeyedSubscript:kDAStatusReportLastSuccessDate];
     [(DAStatusReport *)v5 setLastSuccessDate:v22];
 
-    v23 = [v4 objectForKeyedSubscript:kDAStatusReportLastFailureDate];
+    v23 = [representationCopy objectForKeyedSubscript:kDAStatusReportLastFailureDate];
     [(DAStatusReport *)v5 setLastFailureDate:v23];
 
-    v24 = [v4 objectForKeyedSubscript:kDAStatusReportIsDelegate];
+    v24 = [representationCopy objectForKeyedSubscript:kDAStatusReportIsDelegate];
     [(DAStatusReport *)v5 setIsDelegate:v24];
   }
 
@@ -104,152 +104,152 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(DAStatusReport *)self persistentUUID];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  persistentUUID = [(DAStatusReport *)self persistentUUID];
 
-  if (v4)
+  if (persistentUUID)
   {
-    v5 = [(DAStatusReport *)self persistentUUID];
-    [v3 setObject:v5 forKeyedSubscript:kDAStatusReportPersistentUUID];
+    persistentUUID2 = [(DAStatusReport *)self persistentUUID];
+    [dictionary setObject:persistentUUID2 forKeyedSubscript:kDAStatusReportPersistentUUID];
   }
 
-  v6 = [(DAStatusReport *)self displayName];
+  displayName = [(DAStatusReport *)self displayName];
 
-  if (v6)
+  if (displayName)
   {
-    v7 = [(DAStatusReport *)self displayName];
-    [v3 setObject:v7 forKeyedSubscript:kDAStatusReportDisplayName];
+    displayName2 = [(DAStatusReport *)self displayName];
+    [dictionary setObject:displayName2 forKeyedSubscript:kDAStatusReportDisplayName];
   }
 
-  v8 = [(DAStatusReport *)self accountType];
+  accountType = [(DAStatusReport *)self accountType];
 
-  if (v8)
+  if (accountType)
   {
-    v9 = [(DAStatusReport *)self accountType];
-    [v3 setObject:v9 forKeyedSubscript:kDAStatusReportAccountType];
+    accountType2 = [(DAStatusReport *)self accountType];
+    [dictionary setObject:accountType2 forKeyedSubscript:kDAStatusReportAccountType];
   }
 
-  v10 = [(DAStatusReport *)self timeSpan];
+  timeSpan = [(DAStatusReport *)self timeSpan];
 
-  if (v10)
+  if (timeSpan)
   {
-    v11 = [(DAStatusReport *)self timeSpan];
-    [v3 setObject:v11 forKeyedSubscript:kDAStatusReportTimeSpan];
+    timeSpan2 = [(DAStatusReport *)self timeSpan];
+    [dictionary setObject:timeSpan2 forKeyedSubscript:kDAStatusReportTimeSpan];
   }
 
-  v12 = [(DAStatusReport *)self timeInNetworking];
+  timeInNetworking = [(DAStatusReport *)self timeInNetworking];
 
-  if (v12)
+  if (timeInNetworking)
   {
-    v13 = [(DAStatusReport *)self timeInNetworking];
-    [v3 setObject:v13 forKeyedSubscript:kDAStatusReportTimeInNetworking];
+    timeInNetworking2 = [(DAStatusReport *)self timeInNetworking];
+    [dictionary setObject:timeInNetworking2 forKeyedSubscript:kDAStatusReportTimeInNetworking];
   }
 
-  v14 = [(DAStatusReport *)self averageHBI];
+  averageHBI = [(DAStatusReport *)self averageHBI];
 
-  if (v14)
+  if (averageHBI)
   {
-    v15 = [(DAStatusReport *)self averageHBI];
-    [v3 setObject:v15 forKeyedSubscript:kDAStatusReportAverageHBI];
+    averageHBI2 = [(DAStatusReport *)self averageHBI];
+    [dictionary setObject:averageHBI2 forKeyedSubscript:kDAStatusReportAverageHBI];
   }
 
-  v16 = [(DAStatusReport *)self successfulRequests];
+  successfulRequests = [(DAStatusReport *)self successfulRequests];
 
-  if (v16)
+  if (successfulRequests)
   {
-    v17 = [(DAStatusReport *)self successfulRequests];
-    [v3 setObject:v17 forKeyedSubscript:kDAStatusReportSuccessfulRequests];
+    successfulRequests2 = [(DAStatusReport *)self successfulRequests];
+    [dictionary setObject:successfulRequests2 forKeyedSubscript:kDAStatusReportSuccessfulRequests];
   }
 
-  v18 = [(DAStatusReport *)self failedNetworkRequests];
+  failedNetworkRequests = [(DAStatusReport *)self failedNetworkRequests];
 
-  if (v18)
+  if (failedNetworkRequests)
   {
-    v19 = [(DAStatusReport *)self failedNetworkRequests];
-    [v3 setObject:v19 forKeyedSubscript:kDAStatusReportFailedNetworkRequests];
+    failedNetworkRequests2 = [(DAStatusReport *)self failedNetworkRequests];
+    [dictionary setObject:failedNetworkRequests2 forKeyedSubscript:kDAStatusReportFailedNetworkRequests];
   }
 
-  v20 = [(DAStatusReport *)self failedProtocolRequests];
+  failedProtocolRequests = [(DAStatusReport *)self failedProtocolRequests];
 
-  if (v20)
+  if (failedProtocolRequests)
   {
-    v21 = [(DAStatusReport *)self failedProtocolRequests];
-    [v3 setObject:v21 forKeyedSubscript:kDAStatusReportFailedProtocolRequests];
+    failedProtocolRequests2 = [(DAStatusReport *)self failedProtocolRequests];
+    [dictionary setObject:failedProtocolRequests2 forKeyedSubscript:kDAStatusReportFailedProtocolRequests];
   }
 
-  v22 = [(DAStatusReport *)self downloadedElements];
+  downloadedElements = [(DAStatusReport *)self downloadedElements];
 
-  if (v22)
+  if (downloadedElements)
   {
-    v23 = [(DAStatusReport *)self downloadedElements];
-    [v3 setObject:v23 forKeyedSubscript:kDAStatusReportDownloadedElements];
+    downloadedElements2 = [(DAStatusReport *)self downloadedElements];
+    [dictionary setObject:downloadedElements2 forKeyedSubscript:kDAStatusReportDownloadedElements];
   }
 
-  v24 = [(DAStatusReport *)self uploadedElements];
+  uploadedElements = [(DAStatusReport *)self uploadedElements];
 
-  if (v24)
+  if (uploadedElements)
   {
-    v25 = [(DAStatusReport *)self uploadedElements];
-    [v3 setObject:v25 forKeyedSubscript:kDAStatusReportUploadedElements];
+    uploadedElements2 = [(DAStatusReport *)self uploadedElements];
+    [dictionary setObject:uploadedElements2 forKeyedSubscript:kDAStatusReportUploadedElements];
   }
 
-  v26 = [(DAStatusReport *)self protocolVersion];
+  protocolVersion = [(DAStatusReport *)self protocolVersion];
 
-  if (v26)
+  if (protocolVersion)
   {
-    v27 = [(DAStatusReport *)self protocolVersion];
-    [v3 setObject:v27 forKeyedSubscript:kDAStatusReportProtocolVersion];
+    protocolVersion2 = [(DAStatusReport *)self protocolVersion];
+    [dictionary setObject:protocolVersion2 forKeyedSubscript:kDAStatusReportProtocolVersion];
   }
 
-  v28 = [(DAStatusReport *)self falseMoreAvailableCount];
+  falseMoreAvailableCount = [(DAStatusReport *)self falseMoreAvailableCount];
 
-  if (v28)
+  if (falseMoreAvailableCount)
   {
-    v29 = [(DAStatusReport *)self falseMoreAvailableCount];
-    [v3 setObject:v29 forKeyedSubscript:kDAStatusReportFalseMoreAvailableCount];
+    falseMoreAvailableCount2 = [(DAStatusReport *)self falseMoreAvailableCount];
+    [dictionary setObject:falseMoreAvailableCount2 forKeyedSubscript:kDAStatusReportFalseMoreAvailableCount];
   }
 
   v30 = [MEMORY[0x277CCABB0] numberWithBool:{-[DAStatusReport syncingAllowed](self, "syncingAllowed")}];
-  [v3 setObject:v30 forKeyedSubscript:kDAStatusReportSyncingAllowed];
+  [dictionary setObject:v30 forKeyedSubscript:kDAStatusReportSyncingAllowed];
 
-  v31 = [(DAStatusReport *)self lastSuccessDate];
+  lastSuccessDate = [(DAStatusReport *)self lastSuccessDate];
 
-  if (v31)
+  if (lastSuccessDate)
   {
-    v32 = [(DAStatusReport *)self lastSuccessDate];
-    [v3 setObject:v32 forKeyedSubscript:kDAStatusReportLastSuccessDate];
+    lastSuccessDate2 = [(DAStatusReport *)self lastSuccessDate];
+    [dictionary setObject:lastSuccessDate2 forKeyedSubscript:kDAStatusReportLastSuccessDate];
   }
 
-  v33 = [(DAStatusReport *)self lastFailureDate];
+  lastFailureDate = [(DAStatusReport *)self lastFailureDate];
 
-  if (v33)
+  if (lastFailureDate)
   {
-    v34 = [(DAStatusReport *)self lastFailureDate];
-    [v3 setObject:v34 forKeyedSubscript:kDAStatusReportLastFailureDate];
+    lastFailureDate2 = [(DAStatusReport *)self lastFailureDate];
+    [dictionary setObject:lastFailureDate2 forKeyedSubscript:kDAStatusReportLastFailureDate];
   }
 
-  v35 = [(DAStatusReport *)self isDelegate];
+  isDelegate = [(DAStatusReport *)self isDelegate];
 
-  if (v35)
+  if (isDelegate)
   {
-    v36 = [(DAStatusReport *)self isDelegate];
-    [v3 setObject:v36 forKeyedSubscript:kDAStatusReportIsDelegate];
+    isDelegate2 = [(DAStatusReport *)self isDelegate];
+    [dictionary setObject:isDelegate2 forKeyedSubscript:kDAStatusReportIsDelegate];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)mergeStatusReport:(id)a3
+- (void)mergeStatusReport:(id)report
 {
   v111 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 persistentUUID];
-  if (v5)
+  reportCopy = report;
+  persistentUUID = [reportCopy persistentUUID];
+  if (persistentUUID)
   {
-    v6 = v5;
-    v7 = [v4 persistentUUID];
-    v8 = [(DAStatusReport *)self persistentUUID];
-    v9 = [v7 isEqualToString:v8];
+    v6 = persistentUUID;
+    persistentUUID2 = [reportCopy persistentUUID];
+    persistentUUID3 = [(DAStatusReport *)self persistentUUID];
+    v9 = [persistentUUID2 isEqualToString:persistentUUID3];
 
     if ((v9 & 1) == 0)
     {
@@ -257,34 +257,34 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v107 = 138412546;
-        v108 = self;
+        selfCopy2 = self;
         v109 = 2112;
-        v110 = v4;
+        v110 = reportCopy;
         _os_log_impl(&dword_242505000, v10, OS_LOG_TYPE_ERROR, "Why are we combining status reports for different accounts? %@ vs. %@", &v107, 0x16u);
       }
     }
   }
 
-  v11 = [v4 displayName];
-  if (v11)
+  displayName = [reportCopy displayName];
+  if (displayName)
   {
-    v12 = v11;
-    v13 = [(DAStatusReport *)self displayName];
+    v12 = displayName;
+    displayName2 = [(DAStatusReport *)self displayName];
 
-    if (!v13)
+    if (!displayName2)
     {
-      v14 = [v4 displayName];
-      [(DAStatusReport *)self setDisplayName:v14];
+      displayName3 = [reportCopy displayName];
+      [(DAStatusReport *)self setDisplayName:displayName3];
     }
   }
 
-  v15 = [v4 accountType];
-  if (v15)
+  accountType = [reportCopy accountType];
+  if (accountType)
   {
-    v16 = v15;
-    v17 = [v4 accountType];
-    v18 = [(DAStatusReport *)self accountType];
-    v19 = [v17 isEqualToString:v18];
+    v16 = accountType;
+    accountType2 = [reportCopy accountType];
+    accountType3 = [(DAStatusReport *)self accountType];
+    v19 = [accountType2 isEqualToString:accountType3];
 
     if ((v19 & 1) == 0)
     {
@@ -292,276 +292,276 @@
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
         v107 = 138412546;
-        v108 = self;
+        selfCopy2 = self;
         v109 = 2112;
-        v110 = v4;
+        v110 = reportCopy;
         _os_log_impl(&dword_242505000, v20, OS_LOG_TYPE_ERROR, "Why are we combining status reports for different accounts? %@ vs. %@", &v107, 0x16u);
       }
     }
   }
 
-  v21 = [v4 timeSpan];
-  v22 = [v21 intValue];
-  v23 = [(DAStatusReport *)self timeSpan];
-  v24 = [v23 intValue];
+  timeSpan = [reportCopy timeSpan];
+  intValue = [timeSpan intValue];
+  timeSpan2 = [(DAStatusReport *)self timeSpan];
+  intValue2 = [timeSpan2 intValue];
 
-  if (v22 > v24)
+  if (intValue > intValue2)
   {
-    v25 = [v4 timeSpan];
-    [(DAStatusReport *)self setTimeSpan:v25];
+    timeSpan3 = [reportCopy timeSpan];
+    [(DAStatusReport *)self setTimeSpan:timeSpan3];
   }
 
-  v26 = [(DAStatusReport *)self timeInNetworking];
-  if (v26)
+  timeInNetworking = [(DAStatusReport *)self timeInNetworking];
+  if (timeInNetworking)
   {
 
 LABEL_19:
     v28 = MEMORY[0x277CCABB0];
-    v29 = [(DAStatusReport *)self timeInNetworking];
-    [v29 doubleValue];
+    timeInNetworking2 = [(DAStatusReport *)self timeInNetworking];
+    [timeInNetworking2 doubleValue];
     v31 = v30;
-    v32 = [v4 timeInNetworking];
-    [v32 doubleValue];
+    timeInNetworking3 = [reportCopy timeInNetworking];
+    [timeInNetworking3 doubleValue];
     v34 = [v28 numberWithDouble:v31 + v33];
     [(DAStatusReport *)self setTimeInNetworking:v34];
 
     goto LABEL_20;
   }
 
-  v27 = [v4 timeInNetworking];
+  timeInNetworking4 = [reportCopy timeInNetworking];
 
-  if (v27)
+  if (timeInNetworking4)
   {
     goto LABEL_19;
   }
 
 LABEL_20:
-  v35 = [v4 averageHBI];
-  if (v35)
+  averageHBI = [reportCopy averageHBI];
+  if (averageHBI)
   {
-    v36 = v35;
-    v37 = [(DAStatusReport *)self averageHBI];
+    v36 = averageHBI;
+    averageHBI2 = [(DAStatusReport *)self averageHBI];
 
-    if (!v37)
+    if (!averageHBI2)
     {
-      v38 = [v4 averageHBI];
-      [(DAStatusReport *)self setAverageHBI:v38];
+      averageHBI3 = [reportCopy averageHBI];
+      [(DAStatusReport *)self setAverageHBI:averageHBI3];
     }
   }
 
-  v39 = [(DAStatusReport *)self successfulRequests];
-  if (v39)
+  successfulRequests = [(DAStatusReport *)self successfulRequests];
+  if (successfulRequests)
   {
   }
 
   else
   {
-    v40 = [v4 successfulRequests];
+    successfulRequests2 = [reportCopy successfulRequests];
 
-    if (!v40)
+    if (!successfulRequests2)
     {
       goto LABEL_27;
     }
   }
 
   v41 = MEMORY[0x277CCABB0];
-  v42 = [(DAStatusReport *)self successfulRequests];
-  v43 = [v42 intValue];
-  v44 = [v4 successfulRequests];
-  v45 = [v41 numberWithInt:{objc_msgSend(v44, "intValue") + v43}];
+  successfulRequests3 = [(DAStatusReport *)self successfulRequests];
+  intValue3 = [successfulRequests3 intValue];
+  successfulRequests4 = [reportCopy successfulRequests];
+  v45 = [v41 numberWithInt:{objc_msgSend(successfulRequests4, "intValue") + intValue3}];
   [(DAStatusReport *)self setSuccessfulRequests:v45];
 
 LABEL_27:
-  v46 = [(DAStatusReport *)self failedNetworkRequests];
-  if (v46)
+  failedNetworkRequests = [(DAStatusReport *)self failedNetworkRequests];
+  if (failedNetworkRequests)
   {
   }
 
   else
   {
-    v47 = [v4 failedNetworkRequests];
+    failedNetworkRequests2 = [reportCopy failedNetworkRequests];
 
-    if (!v47)
+    if (!failedNetworkRequests2)
     {
       goto LABEL_31;
     }
   }
 
   v48 = MEMORY[0x277CCABB0];
-  v49 = [(DAStatusReport *)self failedNetworkRequests];
-  v50 = [v49 intValue];
-  v51 = [v4 failedNetworkRequests];
-  v52 = [v48 numberWithInt:{objc_msgSend(v51, "intValue") + v50}];
+  failedNetworkRequests3 = [(DAStatusReport *)self failedNetworkRequests];
+  intValue4 = [failedNetworkRequests3 intValue];
+  failedNetworkRequests4 = [reportCopy failedNetworkRequests];
+  v52 = [v48 numberWithInt:{objc_msgSend(failedNetworkRequests4, "intValue") + intValue4}];
   [(DAStatusReport *)self setFailedNetworkRequests:v52];
 
 LABEL_31:
-  v53 = [(DAStatusReport *)self failedProtocolRequests];
-  if (v53)
+  failedProtocolRequests = [(DAStatusReport *)self failedProtocolRequests];
+  if (failedProtocolRequests)
   {
   }
 
   else
   {
-    v54 = [v4 failedProtocolRequests];
+    failedProtocolRequests2 = [reportCopy failedProtocolRequests];
 
-    if (!v54)
+    if (!failedProtocolRequests2)
     {
       goto LABEL_35;
     }
   }
 
   v55 = MEMORY[0x277CCABB0];
-  v56 = [(DAStatusReport *)self failedProtocolRequests];
-  v57 = [v56 intValue];
-  v58 = [v4 failedProtocolRequests];
-  v59 = [v55 numberWithInt:{objc_msgSend(v58, "intValue") + v57}];
+  failedProtocolRequests3 = [(DAStatusReport *)self failedProtocolRequests];
+  intValue5 = [failedProtocolRequests3 intValue];
+  failedProtocolRequests4 = [reportCopy failedProtocolRequests];
+  v59 = [v55 numberWithInt:{objc_msgSend(failedProtocolRequests4, "intValue") + intValue5}];
   [(DAStatusReport *)self setFailedProtocolRequests:v59];
 
 LABEL_35:
-  v60 = [(DAStatusReport *)self downloadedElements];
-  if (v60)
+  downloadedElements = [(DAStatusReport *)self downloadedElements];
+  if (downloadedElements)
   {
   }
 
   else
   {
-    v61 = [v4 downloadedElements];
+    downloadedElements2 = [reportCopy downloadedElements];
 
-    if (!v61)
+    if (!downloadedElements2)
     {
       goto LABEL_39;
     }
   }
 
   v62 = MEMORY[0x277CCABB0];
-  v63 = [(DAStatusReport *)self downloadedElements];
-  v64 = [v63 intValue];
-  v65 = [v4 downloadedElements];
-  v66 = [v62 numberWithInt:{objc_msgSend(v65, "intValue") + v64}];
+  downloadedElements3 = [(DAStatusReport *)self downloadedElements];
+  intValue6 = [downloadedElements3 intValue];
+  downloadedElements4 = [reportCopy downloadedElements];
+  v66 = [v62 numberWithInt:{objc_msgSend(downloadedElements4, "intValue") + intValue6}];
   [(DAStatusReport *)self setDownloadedElements:v66];
 
 LABEL_39:
-  v67 = [(DAStatusReport *)self uploadedElements];
-  if (v67)
+  uploadedElements = [(DAStatusReport *)self uploadedElements];
+  if (uploadedElements)
   {
   }
 
   else
   {
-    v68 = [v4 uploadedElements];
+    uploadedElements2 = [reportCopy uploadedElements];
 
-    if (!v68)
+    if (!uploadedElements2)
     {
       goto LABEL_43;
     }
   }
 
   v69 = MEMORY[0x277CCABB0];
-  v70 = [(DAStatusReport *)self uploadedElements];
-  v71 = [v70 intValue];
-  v72 = [v4 uploadedElements];
-  v73 = [v69 numberWithInt:{objc_msgSend(v72, "intValue") + v71}];
+  uploadedElements3 = [(DAStatusReport *)self uploadedElements];
+  intValue7 = [uploadedElements3 intValue];
+  uploadedElements4 = [reportCopy uploadedElements];
+  v73 = [v69 numberWithInt:{objc_msgSend(uploadedElements4, "intValue") + intValue7}];
   [(DAStatusReport *)self setUploadedElements:v73];
 
 LABEL_43:
-  v74 = [(DAStatusReport *)self falseMoreAvailableCount];
-  if (v74)
+  falseMoreAvailableCount = [(DAStatusReport *)self falseMoreAvailableCount];
+  if (falseMoreAvailableCount)
   {
 
 LABEL_46:
     v76 = MEMORY[0x277CCABB0];
-    v77 = [(DAStatusReport *)self falseMoreAvailableCount];
-    v78 = [v77 intValue];
-    v79 = [v4 falseMoreAvailableCount];
-    v80 = [v76 numberWithInt:{objc_msgSend(v79, "intValue") + v78}];
+    falseMoreAvailableCount2 = [(DAStatusReport *)self falseMoreAvailableCount];
+    intValue8 = [falseMoreAvailableCount2 intValue];
+    falseMoreAvailableCount3 = [reportCopy falseMoreAvailableCount];
+    v80 = [v76 numberWithInt:{objc_msgSend(falseMoreAvailableCount3, "intValue") + intValue8}];
     [(DAStatusReport *)self setFalseMoreAvailableCount:v80];
 
     goto LABEL_47;
   }
 
-  v75 = [v4 falseMoreAvailableCount];
+  falseMoreAvailableCount4 = [reportCopy falseMoreAvailableCount];
 
-  if (v75)
+  if (falseMoreAvailableCount4)
   {
     goto LABEL_46;
   }
 
 LABEL_47:
-  v81 = [v4 protocolVersion];
-  if (v81)
+  protocolVersion = [reportCopy protocolVersion];
+  if (protocolVersion)
   {
-    v82 = v81;
-    v83 = [v4 protocolVersion];
-    v84 = [(DAStatusReport *)self protocolVersion];
-    v85 = [v83 isEqualToString:v84];
+    v82 = protocolVersion;
+    protocolVersion2 = [reportCopy protocolVersion];
+    protocolVersion3 = [(DAStatusReport *)self protocolVersion];
+    v85 = [protocolVersion2 isEqualToString:protocolVersion3];
 
     if ((v85 & 1) == 0)
     {
       v86 = DALoggingwithCategory(0);
       if (os_log_type_enabled(v86, OS_LOG_TYPE_INFO))
       {
-        v87 = [v4 protocolVersion];
+        protocolVersion4 = [reportCopy protocolVersion];
         v107 = 138412290;
-        v108 = v87;
+        selfCopy2 = protocolVersion4;
         _os_log_impl(&dword_242505000, v86, OS_LOG_TYPE_INFO, "Protocol version is updated to %@", &v107, 0xCu);
       }
 
-      v88 = [v4 protocolVersion];
-      [(DAStatusReport *)self setProtocolVersion:v88];
+      protocolVersion5 = [reportCopy protocolVersion];
+      [(DAStatusReport *)self setProtocolVersion:protocolVersion5];
     }
   }
 
   if ([(DAStatusReport *)self syncingAllowed])
   {
-    v89 = [v4 syncingAllowed];
+    syncingAllowed = [reportCopy syncingAllowed];
   }
 
   else
   {
-    v89 = 0;
+    syncingAllowed = 0;
   }
 
-  [(DAStatusReport *)self setSyncingAllowed:v89];
-  v90 = [v4 lastSuccessDate];
-  if (v90)
+  [(DAStatusReport *)self setSyncingAllowed:syncingAllowed];
+  lastSuccessDate = [reportCopy lastSuccessDate];
+  if (lastSuccessDate)
   {
-    v91 = v90;
-    v92 = [v4 lastSuccessDate];
-    v93 = [(DAStatusReport *)self lastSuccessDate];
-    v94 = [v92 isEqualToDate:v93];
+    v91 = lastSuccessDate;
+    lastSuccessDate2 = [reportCopy lastSuccessDate];
+    lastSuccessDate3 = [(DAStatusReport *)self lastSuccessDate];
+    v94 = [lastSuccessDate2 isEqualToDate:lastSuccessDate3];
 
     if ((v94 & 1) == 0)
     {
-      v95 = [v4 lastSuccessDate];
-      [(DAStatusReport *)self setLastSuccessDate:v95];
+      lastSuccessDate4 = [reportCopy lastSuccessDate];
+      [(DAStatusReport *)self setLastSuccessDate:lastSuccessDate4];
     }
   }
 
-  v96 = [v4 lastFailureDate];
-  if (v96)
+  lastFailureDate = [reportCopy lastFailureDate];
+  if (lastFailureDate)
   {
-    v97 = v96;
-    v98 = [v4 lastFailureDate];
-    v99 = [(DAStatusReport *)self lastFailureDate];
-    v100 = [v98 isEqualToDate:v99];
+    v97 = lastFailureDate;
+    lastFailureDate2 = [reportCopy lastFailureDate];
+    lastFailureDate3 = [(DAStatusReport *)self lastFailureDate];
+    v100 = [lastFailureDate2 isEqualToDate:lastFailureDate3];
 
     if ((v100 & 1) == 0)
     {
-      v101 = [v4 lastFailureDate];
-      [(DAStatusReport *)self setLastFailureDate:v101];
+      lastFailureDate4 = [reportCopy lastFailureDate];
+      [(DAStatusReport *)self setLastFailureDate:lastFailureDate4];
     }
   }
 
-  v102 = [v4 isDelegate];
-  if (v102)
+  isDelegate = [reportCopy isDelegate];
+  if (isDelegate)
   {
-    v103 = v102;
-    v104 = [(DAStatusReport *)self isDelegate];
+    v103 = isDelegate;
+    isDelegate2 = [(DAStatusReport *)self isDelegate];
 
-    if (!v104)
+    if (!isDelegate2)
     {
-      v105 = [v4 isDelegate];
-      [(DAStatusReport *)self setIsDelegate:v105];
+      isDelegate3 = [reportCopy isDelegate];
+      [(DAStatusReport *)self setIsDelegate:isDelegate3];
     }
   }
 
@@ -573,8 +573,8 @@ LABEL_47:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DAStatusReport *)self dictionaryRepresentation];
-  v7 = [v3 stringWithFormat:@"%@ %p: %@", v5, self, v6];
+  dictionaryRepresentation = [(DAStatusReport *)self dictionaryRepresentation];
+  v7 = [v3 stringWithFormat:@"%@ %p: %@", v5, self, dictionaryRepresentation];
 
   return v7;
 }
@@ -585,8 +585,8 @@ LABEL_47:
   if (!timeSpan)
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [MEMORY[0x277CBEAA8] date];
-    [v5 timeIntervalSinceDate:self->_creationDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_creationDate];
     v6 = [v4 numberWithDouble:?];
     [(DAStatusReport *)self setTimeSpan:v6];
 
@@ -596,76 +596,76 @@ LABEL_47:
   return timeSpan;
 }
 
-- (void)noteSuccessfulRequestWithNumDownloadedElements:(int)a3 numUploadedElements:(int)a4
+- (void)noteSuccessfulRequestWithNumDownloadedElements:(int)elements numUploadedElements:(int)uploadedElements
 {
-  v7 = [MEMORY[0x277CBEAA8] date];
-  [(DAStatusReport *)self setLastSuccessDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(DAStatusReport *)self setLastSuccessDate:date];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(DAStatusReport *)self successfulRequests];
-  v10 = [v8 numberWithInt:{objc_msgSend(v9, "intValue") + 1}];
+  successfulRequests = [(DAStatusReport *)self successfulRequests];
+  v10 = [v8 numberWithInt:{objc_msgSend(successfulRequests, "intValue") + 1}];
   [(DAStatusReport *)self setSuccessfulRequests:v10];
 
-  if (a3)
+  if (elements)
   {
     v11 = MEMORY[0x277CCABB0];
-    v12 = [(DAStatusReport *)self downloadedElements];
-    v13 = [v11 numberWithInt:{objc_msgSend(v12, "intValue") + a3}];
+    downloadedElements = [(DAStatusReport *)self downloadedElements];
+    v13 = [v11 numberWithInt:{objc_msgSend(downloadedElements, "intValue") + elements}];
     [(DAStatusReport *)self setDownloadedElements:v13];
   }
 
-  if (a4)
+  if (uploadedElements)
   {
     v14 = MEMORY[0x277CCABB0];
-    v16 = [(DAStatusReport *)self uploadedElements];
-    v15 = [v14 numberWithInt:{objc_msgSend(v16, "intValue") + a4}];
+    uploadedElements = [(DAStatusReport *)self uploadedElements];
+    v15 = [v14 numberWithInt:{objc_msgSend(uploadedElements, "intValue") + uploadedElements}];
     [(DAStatusReport *)self setUploadedElements:v15];
   }
 }
 
 - (void)noteFailedNetworkRequest
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  [(DAStatusReport *)self setLastFailureDate:v3];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(DAStatusReport *)self setLastFailureDate:date];
 
   v4 = MEMORY[0x277CCABB0];
-  v6 = [(DAStatusReport *)self failedNetworkRequests];
-  v5 = [v4 numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
+  failedNetworkRequests = [(DAStatusReport *)self failedNetworkRequests];
+  v5 = [v4 numberWithInt:{objc_msgSend(failedNetworkRequests, "intValue") + 1}];
   [(DAStatusReport *)self setFailedNetworkRequests:v5];
 }
 
 - (void)noteFailedProtocolRequest
 {
   v3 = MEMORY[0x277CCABB0];
-  v5 = [(DAStatusReport *)self failedProtocolRequests];
-  v4 = [v3 numberWithInt:{objc_msgSend(v5, "intValue") + 1}];
+  failedProtocolRequests = [(DAStatusReport *)self failedProtocolRequests];
+  v4 = [v3 numberWithInt:{objc_msgSend(failedProtocolRequests, "intValue") + 1}];
   [(DAStatusReport *)self setFailedProtocolRequests:v4];
 }
 
-- (void)noteNewHBIDataPoint:(int)a3
+- (void)noteNewHBIDataPoint:(int)point
 {
-  v5 = [(DAStatusReport *)self averageHBI];
-  [v5 doubleValue];
+  averageHBI = [(DAStatusReport *)self averageHBI];
+  [averageHBI doubleValue];
   v7 = v6;
 
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:(a3 + v7 * self->_numHBIDataPoints) / (self->_numHBIDataPoints + 1)];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:(point + v7 * self->_numHBIDataPoints) / (self->_numHBIDataPoints + 1)];
   [(DAStatusReport *)self setAverageHBI:v8];
 }
 
-- (void)noteTimeSpentInNetworking:(double)a3
+- (void)noteTimeSpentInNetworking:(double)networking
 {
   v5 = MEMORY[0x277CCABB0];
-  v8 = [(DAStatusReport *)self timeInNetworking];
-  [v8 doubleValue];
-  v7 = [v5 numberWithDouble:v6 + a3];
-  [(DAStatusReport *)self setTimeInNetworking:v7];
+  timeInNetworking = [(DAStatusReport *)self timeInNetworking];
+  [timeInNetworking doubleValue];
+  networking = [v5 numberWithDouble:v6 + networking];
+  [(DAStatusReport *)self setTimeInNetworking:networking];
 }
 
 - (void)noteFalseMoreAvailableResponse
 {
   v3 = MEMORY[0x277CCABB0];
-  v5 = [(DAStatusReport *)self falseMoreAvailableCount];
-  v4 = [v3 numberWithInt:{objc_msgSend(v5, "intValue") + 1}];
+  falseMoreAvailableCount = [(DAStatusReport *)self falseMoreAvailableCount];
+  v4 = [v3 numberWithInt:{objc_msgSend(falseMoreAvailableCount, "intValue") + 1}];
   [(DAStatusReport *)self setFalseMoreAvailableCount:v4];
 }
 

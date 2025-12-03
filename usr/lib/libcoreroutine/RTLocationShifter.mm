@@ -1,8 +1,8 @@
 @interface RTLocationShifter
 - (RTLocationShifter)init;
-- (id)shiftedLocation:(id)a3 allowNetwork:(BOOL)a4 error:(id *)a5;
-- (void)shiftCoordinate:(CLLocationCoordinate2D)a3 accuracy:(double)a4 handler:(id)a5;
-- (void)shiftLocation:(id)a3 handler:(id)a4;
+- (id)shiftedLocation:(id)location allowNetwork:(BOOL)network error:(id *)error;
+- (void)shiftCoordinate:(CLLocationCoordinate2D)coordinate accuracy:(double)accuracy handler:(id)handler;
+- (void)shiftLocation:(id)location handler:(id)handler;
 @end
 
 @implementation RTLocationShifter
@@ -22,32 +22,32 @@
   return v2;
 }
 
-- (void)shiftLocation:(id)a3 handler:(id)a4
+- (void)shiftLocation:(id)location handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    if ([v6 referenceFrame] == 2)
+    if ([locationCopy referenceFrame] == 2)
     {
-      v7[2](v7, v6, 0);
+      handlerCopy[2](handlerCopy, locationCopy, 0);
     }
 
     else
     {
-      [v6 latitude];
+      [locationCopy latitude];
       v10 = v9;
-      [v6 longitude];
+      [locationCopy longitude];
       v12 = CLLocationCoordinate2DMake(v10, v11);
-      [v6 horizontalUncertainty];
+      [locationCopy horizontalUncertainty];
       v14 = v13;
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __43__RTLocationShifter_shiftLocation_handler___block_invoke;
       v15[3] = &unk_2788C84D0;
-      v16 = v6;
-      v17 = v7;
+      v16 = locationCopy;
+      v17 = handlerCopy;
       [(RTLocationShifter *)self shiftCoordinate:v15 accuracy:v12.latitude handler:v12.longitude, v14];
     }
   }
@@ -84,20 +84,20 @@ void __43__RTLocationShifter_shiftLocation_handler___block_invoke(uint64_t a1, v
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)shiftedLocation:(id)a3 allowNetwork:(BOOL)a4 error:(id *)a5
+- (id)shiftedLocation:(id)location allowNetwork:(BOOL)network error:(id *)error
 {
   v75[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if ([v8 referenceFrame] == 2)
+  locationCopy = location;
+  if ([locationCopy referenceFrame] == 2)
   {
-    v9 = v8;
+    v9 = locationCopy;
   }
 
-  else if (a4)
+  else if (network)
   {
-    [v8 latitude];
+    [locationCopy latitude];
     v11 = v10;
-    [v8 longitude];
+    [locationCopy longitude];
     v13 = CLLocationCoordinate2DMake(v11, v12);
     v59 = 0.0;
     *&v60 = COERCE_DOUBLE(&v59);
@@ -116,7 +116,7 @@ void __43__RTLocationShifter_shiftLocation_handler___block_invoke(uint64_t a1, v
     v72 = __Block_byref_object_dispose__39;
     v73 = 0;
     v14 = dispatch_semaphore_create(0);
-    [v8 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     v16 = v15;
     v47 = MEMORY[0x277D85DD0];
     v48 = 3221225472;
@@ -140,31 +140,31 @@ void __43__RTLocationShifter_shiftLocation_handler___block_invoke(uint64_t a1, v
       v22 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
-        v46 = [v21 localizedDescription];
+        localizedDescription = [v21 localizedDescription];
         *buf = 138412290;
-        v66 = v46;
+        v66 = localizedDescription;
         _os_log_error_impl(&dword_2304B3000, v22, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v23 = v21;
-        *a5 = v21;
+        *error = v21;
       }
 
-      v9 = v8;
+      v9 = locationCopy;
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
-        *a5 = *(*(&v69 + 1) + 40);
+        *error = *(*(&v69 + 1) + 40);
       }
 
       if (*(*(&v69 + 1) + 40))
       {
-        v9 = v8;
+        v9 = locationCopy;
       }
 
       else
@@ -173,8 +173,8 @@ void __43__RTLocationShifter_shiftLocation_handler___block_invoke(uint64_t a1, v
         v41 = v60[4];
         v42 = v60[5];
         v43 = v56[3];
-        v44 = [v8 date];
-        v9 = [v40 initWithLatitude:v44 longitude:2 horizontalUncertainty:v41 date:v42 referenceFrame:v43];
+        date = [locationCopy date];
+        v9 = [v40 initWithLatitude:date longitude:2 horizontalUncertainty:v41 date:v42 referenceFrame:v43];
       }
     }
 
@@ -188,20 +188,20 @@ void __43__RTLocationShifter_shiftLocation_handler___block_invoke(uint64_t a1, v
     v59 = 0.0;
     *&v60 = 0.0;
     v55 = 0.0;
-    [v8 latitude];
+    [locationCopy latitude];
     v25 = v24;
-    [v8 longitude];
+    [locationCopy longitude];
     v27 = v26;
     geoLocationShifter = self->_geoLocationShifter;
-    [v8 horizontalUncertainty];
+    [locationCopy horizontalUncertainty];
     if (([(GEOLocationShifter *)geoLocationShifter shiftCoordinate:&v59 accuracy:&v55 shiftedCoordinate:v25 shiftedAccuracy:v27, v29]& 1) != 0)
     {
       v30 = objc_alloc(MEMORY[0x277D01160]);
       v31 = v59;
       v32 = *&v60;
       v33 = v55;
-      v34 = [v8 date];
-      v35 = [v30 initWithLatitude:v34 longitude:2 horizontalUncertainty:v31 date:v32 referenceFrame:v33];
+      date2 = [locationCopy date];
+      v35 = [v30 initWithLatitude:date2 longitude:2 horizontalUncertainty:v31 date:v32 referenceFrame:v33];
     }
 
     else
@@ -210,23 +210,23 @@ void __43__RTLocationShifter_shiftLocation_handler___block_invoke(uint64_t a1, v
       v74 = *MEMORY[0x277CCA450];
       v75[0] = @"Unable to shift without network allowed";
       v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:&v74 count:1];
-      v34 = [v36 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v37];
+      date2 = [v36 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v37];
 
       v38 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
         LODWORD(v69) = 138412290;
-        *(&v69 + 4) = v34;
+        *(&v69 + 4) = date2;
         _os_log_error_impl(&dword_2304B3000, v38, OS_LOG_TYPE_ERROR, "%@", &v69, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
-        v39 = v34;
-        *a5 = v34;
+        v39 = date2;
+        *error = date2;
       }
 
-      v35 = v8;
+      v35 = locationCopy;
     }
 
     v9 = v35;
@@ -246,13 +246,13 @@ void __56__RTLocationShifter_shiftedLocation_allowNetwork_error___block_invoke(u
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)shiftCoordinate:(CLLocationCoordinate2D)a3 accuracy:(double)a4 handler:(id)a5
+- (void)shiftCoordinate:(CLLocationCoordinate2D)coordinate accuracy:(double)accuracy handler:(id)handler
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a5;
-  if (v9)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     if ([MEMORY[0x277D0EB88] isLocationShiftRequiredForCoordinate:{latitude, longitude}])
     {
@@ -260,7 +260,7 @@ void __56__RTLocationShifter_shiftedLocation_allowNetwork_error___block_invoke(u
       aBlock[1] = 3221225472;
       aBlock[2] = __54__RTLocationShifter_shiftCoordinate_accuracy_handler___block_invoke;
       aBlock[3] = &unk_2788C8520;
-      v10 = v9;
+      v10 = handlerCopy;
       v22 = v10;
       v11 = _Block_copy(aBlock);
       v16[0] = MEMORY[0x277D85DD0];
@@ -270,16 +270,16 @@ void __56__RTLocationShifter_shiftedLocation_allowNetwork_error___block_invoke(u
       v17 = v10;
       v18 = latitude;
       v19 = longitude;
-      v20 = a4;
+      accuracyCopy = accuracy;
       v12 = _Block_copy(v16);
       geoLocationShifter = self->_geoLocationShifter;
       v14 = dispatch_get_global_queue(0, 0);
-      [(GEOLocationShifter *)geoLocationShifter shiftCoordinate:v11 accuracy:0 withCompletionHandler:v12 mustGoToNetworkCallback:v14 errorHandler:latitude callbackQueue:longitude, a4];
+      [(GEOLocationShifter *)geoLocationShifter shiftCoordinate:v11 accuracy:0 withCompletionHandler:v12 mustGoToNetworkCallback:v14 errorHandler:latitude callbackQueue:longitude, accuracy];
     }
 
     else
     {
-      (*(v9 + 2))(v9, 0, latitude, longitude, a4);
+      (*(handlerCopy + 2))(handlerCopy, 0, latitude, longitude, accuracy);
     }
   }
 

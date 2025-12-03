@@ -1,19 +1,19 @@
 @interface _EARCustomPronData
-- (_EARCustomPronData)initWithCustomPronData:(shared_ptr<quasar::CustomPronData>)a3;
+- (_EARCustomPronData)initWithCustomPronData:(shared_ptr<quasar::CustomPronData>)data;
 - (id).cxx_construct;
 - (id)validationError;
 - (shared_ptr<quasar::CustomPronData>)data;
-- (void)setData:(shared_ptr<quasar::CustomPronData>)a3;
+- (void)setData:(shared_ptr<quasar::CustomPronData>)data;
 @end
 
 @implementation _EARCustomPronData
 
-- (_EARCustomPronData)initWithCustomPronData:(shared_ptr<quasar::CustomPronData>)a3
+- (_EARCustomPronData)initWithCustomPronData:(shared_ptr<quasar::CustomPronData>)data
 {
-  ptr = a3.__ptr_;
+  ptr = data.__ptr_;
   v10.receiver = self;
   v10.super_class = _EARCustomPronData;
-  v4 = [(_EARCustomPronData *)&v10 init:a3.__ptr_];
+  v4 = [(_EARCustomPronData *)&v10 init:data.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -63,10 +63,10 @@
   return result;
 }
 
-- (void)setData:(shared_ptr<quasar::CustomPronData>)a3
+- (void)setData:(shared_ptr<quasar::CustomPronData>)data
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *data.__ptr_;
+  v3 = *(data.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

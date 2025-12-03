@@ -1,38 +1,38 @@
 @interface BCGenerateDownloadSizePlistProducer
-- (BOOL)_addDownloadSizeFromITunesMetadataToEntry:(id)a3;
-- (id)_addEstimatedDownloadSizeFromITunesMetadataDictionary:(id)a3 assetPath:(id)a4 toEntry:(id)a5;
-- (id)_addSizeOnDiskFromITunesMetadataDictionary:(id)a3 toEntry:(id)a4;
-- (id)_artworkFileSizeForAssetPath:(id)a3 isDirectory:(BOOL)a4;
-- (id)_fileSizeForPath:(id)a3;
-- (id)_metadataAssetFileSize:(id)a3 book:(id)a4;
+- (BOOL)_addDownloadSizeFromITunesMetadataToEntry:(id)entry;
+- (id)_addEstimatedDownloadSizeFromITunesMetadataDictionary:(id)dictionary assetPath:(id)path toEntry:(id)entry;
+- (id)_addSizeOnDiskFromITunesMetadataDictionary:(id)dictionary toEntry:(id)entry;
+- (id)_artworkFileSizeForAssetPath:(id)path isDirectory:(BOOL)directory;
+- (id)_fileSizeForPath:(id)path;
+- (id)_metadataAssetFileSize:(id)size book:(id)book;
 - (id)produceData;
-- (void)_addComputedSizeOnDiskToEntries:(id)a3;
+- (void)_addComputedSizeOnDiskToEntries:(id)entries;
 @end
 
 @implementation BCGenerateDownloadSizePlistProducer
 
-- (id)_metadataAssetFileSize:(id)a3 book:(id)a4
+- (id)_metadataAssetFileSize:(id)size book:(id)book
 {
-  if (!a3)
+  if (!size)
   {
     return 0;
   }
 
   v5 = objc_opt_class();
-  v6 = BCDynamicCast(v5, [a3 objectForKeyedSubscript:@"asset-info"]);
+  v6 = BCDynamicCast(v5, [size objectForKeyedSubscript:@"asset-info"]);
   if (!v6 || (result = [v6 objectForKeyedSubscript:@"file-size"]) == 0)
   {
 
-    return [a3 objectForKeyedSubscript:@"file-size"];
+    return [size objectForKeyedSubscript:@"file-size"];
   }
 
   return result;
 }
 
-- (id)_fileSizeForPath:(id)a3
+- (id)_fileSizeForPath:(id)path
 {
   v7 = 0;
-  v4 = [+[NSFileManager defaultManager](NSFileManager attributesOfItemAtPath:"attributesOfItemAtPath:error:" error:a3, &v7];
+  v4 = [+[NSFileManager defaultManager](NSFileManager attributesOfItemAtPath:"attributesOfItemAtPath:error:" error:path, &v7];
   if (v4)
   {
     return [(NSDictionary *)v4 objectForKeyedSubscript:NSFileSize];
@@ -41,66 +41,66 @@
   v6 = BCDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_13398(a3, &v7, v6);
+    sub_13398(path, &v7, v6);
   }
 
   return 0;
 }
 
-- (id)_artworkFileSizeForAssetPath:(id)a3 isDirectory:(BOOL)a4
+- (id)_artworkFileSizeForAssetPath:(id)path isDirectory:(BOOL)directory
 {
-  if (a4)
+  if (directory)
   {
-    v5 = [a3 stringByAppendingPathComponent:@"iTunesArtwork"];
+    v5 = [path stringByAppendingPathComponent:@"iTunesArtwork"];
   }
 
   else
   {
-    v5 = [objc_msgSend(a3 "stringByDeletingPathExtension")];
+    v5 = [objc_msgSend(path "stringByDeletingPathExtension")];
   }
 
   return [(BCGenerateDownloadSizePlistProducer *)self _fileSizeForPath:v5];
 }
 
-- (id)_addEstimatedDownloadSizeFromITunesMetadataDictionary:(id)a3 assetPath:(id)a4 toEntry:(id)a5
+- (id)_addEstimatedDownloadSizeFromITunesMetadataDictionary:(id)dictionary assetPath:(id)path toEntry:(id)entry
 {
-  v8 = [(BCGenerateDownloadSizePlistProducer *)self _metadataAssetFileSize:a3 book:a5];
+  v8 = [(BCGenerateDownloadSizePlistProducer *)self _metadataAssetFileSize:dictionary book:entry];
   if (!v8)
   {
     return 0;
   }
 
-  v9 = [v8 unsignedLongLongValue];
-  v10 = [(BCGenerateDownloadSizePlistProducer *)self _artworkFileSizeForAssetPath:a4 isDirectory:1];
+  unsignedLongLongValue = [v8 unsignedLongLongValue];
+  v10 = [(BCGenerateDownloadSizePlistProducer *)self _artworkFileSizeForAssetPath:path isDirectory:1];
   if (v10)
   {
-    v9 = &v9[[v10 unsignedLongLongValue]];
+    unsignedLongLongValue = &unsignedLongLongValue[[v10 unsignedLongLongValue]];
   }
 
-  v11 = [NSNumber numberWithUnsignedLongLong:v9];
+  v11 = [NSNumber numberWithUnsignedLongLong:unsignedLongLongValue];
   if (v11)
   {
     v12 = BCDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412802;
-      v15 = [a5 objectForKeyedSubscript:@"Artist"];
+      v15 = [entry objectForKeyedSubscript:@"Artist"];
       v16 = 2112;
-      v17 = [a5 objectForKeyedSubscript:@"Name"];
+      v17 = [entry objectForKeyedSubscript:@"Name"];
       v18 = 2112;
       v19 = v11;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[BCGenerateDownloadSizePlistProducer] Adding 'Estimated Download Size' for {%@ - %@}: %@", &v14, 0x20u);
     }
 
-    [a5 setObject:v11 forKeyedSubscript:@"Estimated Download Size"];
+    [entry setObject:v11 forKeyedSubscript:@"Estimated Download Size"];
   }
 
   return v11;
 }
 
-- (id)_addSizeOnDiskFromITunesMetadataDictionary:(id)a3 toEntry:(id)a4
+- (id)_addSizeOnDiskFromITunesMetadataDictionary:(id)dictionary toEntry:(id)entry
 {
-  v5 = [a3 objectForKeyedSubscript:@"BKAllocatedSize"];
+  v5 = [dictionary objectForKeyedSubscript:@"BKAllocatedSize"];
   if (v5)
   {
     v6 = BCDefaultLog();
@@ -109,30 +109,30 @@
       v8 = 138544130;
       v9 = @"BKAllocatedSize";
       v10 = 2112;
-      v11 = [a4 objectForKeyedSubscript:@"Artist"];
+      v11 = [entry objectForKeyedSubscript:@"Artist"];
       v12 = 2112;
-      v13 = [a4 objectForKeyedSubscript:@"Name"];
+      v13 = [entry objectForKeyedSubscript:@"Name"];
       v14 = 2112;
       v15 = v5;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "[BCGenerateDownloadSizePlistProducer] Adding 'Size On Disk' based on %{public}@ for {%@ - %@}: %@", &v8, 0x2Au);
     }
 
-    [a4 setObject:v5 forKeyedSubscript:@"Size On Disk"];
+    [entry setObject:v5 forKeyedSubscript:@"Size On Disk"];
   }
 
   return v5;
 }
 
-- (void)_addComputedSizeOnDiskToEntries:(id)a3
+- (void)_addComputedSizeOnDiskToEntries:(id)entries
 {
-  v3 = a3;
-  if ([a3 count])
+  entriesCopy = entries;
+  if ([entries count])
   {
     v40 = 0u;
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v5 = [v3 countByEnumeratingWithState:&v38 objects:v48 count:16];
+    v5 = [entriesCopy countByEnumeratingWithState:&v38 objects:v48 count:16];
     if (v5)
     {
       v7 = v5;
@@ -150,7 +150,7 @@
         {
           if (*v39 != v8)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(entriesCopy);
           }
 
           v13 = *(*(&v38 + 1) + 8 * v12);
@@ -208,14 +208,14 @@ LABEL_18:
             v20 = v9;
             v21 = v8;
             v22 = v10;
-            v23 = v3;
-            v24 = self;
+            v23 = entriesCopy;
+            selfCopy = self;
             v25 = [v13 objectForKeyedSubscript:@"Artist"];
             v26 = [v13 objectForKeyedSubscript:@"Name"];
             *buf = 138412802;
             v43 = v25;
-            self = v24;
-            v3 = v23;
+            self = selfCopy;
+            entriesCopy = v23;
             v10 = v22;
             v8 = v21;
             v9 = v20;
@@ -234,7 +234,7 @@ LABEL_15:
         }
 
         while (v7 != v12);
-        v35 = [v3 countByEnumeratingWithState:&v38 objects:v48 count:16];
+        v35 = [entriesCopy countByEnumeratingWithState:&v38 objects:v48 count:16];
         v7 = v35;
       }
 
@@ -243,11 +243,11 @@ LABEL_15:
   }
 }
 
-- (BOOL)_addDownloadSizeFromITunesMetadataToEntry:(id)a3
+- (BOOL)_addDownloadSizeFromITunesMetadataToEntry:(id)entry
 {
   v5 = +[NSFileManager defaultManager];
   v6 = objc_opt_class();
-  v7 = BCDynamicCast(v6, [a3 objectForKeyedSubscript:@"Path"]);
+  v7 = BCDynamicCast(v6, [entry objectForKeyedSubscript:@"Path"]);
   if (!v7)
   {
     v13 = BCDefaultLog();
@@ -257,7 +257,7 @@ LABEL_15:
       return v10;
     }
 
-    sub_13574(a3);
+    sub_13574(entry);
 LABEL_13:
     LOBYTE(v10) = 0;
     return v10;
@@ -273,7 +273,7 @@ LABEL_13:
       return v10;
     }
 
-    sub_134CC(a3);
+    sub_134CC(entry);
     goto LABEL_13;
   }
 
@@ -294,19 +294,19 @@ LABEL_13:
       return v10;
     }
 
-    sub_13424(a3);
+    sub_13424(entry);
     goto LABEL_13;
   }
 
   v12 = v11;
-  if ([(BCGenerateDownloadSizePlistProducer *)self _addEstimatedDownloadSizeFromITunesMetadataDictionary:v11 assetPath:v9 toEntry:a3])
+  if ([(BCGenerateDownloadSizePlistProducer *)self _addEstimatedDownloadSizeFromITunesMetadataDictionary:v11 assetPath:v9 toEntry:entry])
   {
     LOBYTE(v10) = 1;
   }
 
   else
   {
-    LOBYTE(v10) = [(BCGenerateDownloadSizePlistProducer *)self _addSizeOnDiskFromITunesMetadataDictionary:v12 toEntry:a3]!= 0;
+    LOBYTE(v10) = [(BCGenerateDownloadSizePlistProducer *)self _addSizeOnDiskFromITunesMetadataDictionary:v12 toEntry:entry]!= 0;
   }
 
   return v10;
@@ -339,7 +339,7 @@ LABEL_17:
   }
 
   v9 = v8;
-  v23 = self;
+  selfCopy = self;
   obj = v6;
   v20 = v4;
   v21 = v7;
@@ -369,7 +369,7 @@ LABEL_17:
       {
         v18 = [[NSMutableDictionary alloc] initWithDictionary:v14];
         [v3 addObject:v18];
-        if (![(BCGenerateDownloadSizePlistProducer *)v23 _addDownloadSizeFromITunesMetadataToEntry:v18])
+        if (![(BCGenerateDownloadSizePlistProducer *)selfCopy _addDownloadSizeFromITunesMetadataToEntry:v18])
         {
           [v21 addObject:v18];
         }
@@ -382,8 +382,8 @@ LABEL_17:
   }
 
   while (v9);
-  self = v23;
-  [(BCGenerateDownloadSizePlistProducer *)v23 _addComputedSizeOnDiskToEntries:v21];
+  self = selfCopy;
+  [(BCGenerateDownloadSizePlistProducer *)selfCopy _addComputedSizeOnDiskToEntries:v21];
 
   v4 = v20;
   if ((v22 & 1) == 0)

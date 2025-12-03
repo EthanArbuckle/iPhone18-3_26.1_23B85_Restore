@@ -7,24 +7,24 @@
 - (id)_ui_dateInRangeForDate:()UICalendarAdditions
 {
   v4 = a3;
-  if ([a1 containsDate:v4])
+  if ([self containsDate:v4])
   {
     v5 = v4;
   }
 
   else
   {
-    v6 = [a1 startDate];
-    v7 = [v4 compare:v6];
+    startDate = [self startDate];
+    v7 = [v4 compare:startDate];
 
     if (v7 == 1)
     {
-      [a1 endDate];
+      [self endDate];
     }
 
     else
     {
-      [a1 startDate];
+      [self startDate];
     }
     v5 = ;
   }

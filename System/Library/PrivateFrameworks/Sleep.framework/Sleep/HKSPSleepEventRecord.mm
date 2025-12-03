@@ -1,22 +1,22 @@
 @interface HKSPSleepEventRecord
-+ (void)_appendDateDescriptionIfRelevant:(id)a3 withName:(id)a4 toBuilder:(id)a5;
-- (BOOL)_needsMigrationForCoder:(id)a3;
++ (void)_appendDateDescriptionIfRelevant:(id)relevant withName:(id)name toBuilder:(id)builder;
+- (BOOL)_needsMigrationForCoder:(id)coder;
 - (BOOL)isConsolidatedSleepCoachingOnboardingCompleted;
 - (BOOL)isConsolidatedSleepTrackingOnboardingCompleted;
 - (BOOL)isCurrentSleepCoachingOnboardingCompleted;
 - (BOOL)isCurrentSleepTrackingOnboardingCompleted;
 - (BOOL)isCurrentSleepWindDownShortcutsOnboardingCompleted;
-- (BOOL)isEqualToOnboardingModel:(id)a3;
+- (BOOL)isEqualToOnboardingModel:(id)model;
 - (HKSPSleepEventRecord)init;
-- (HKSPSleepEventRecord)initWithCoder:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)initFromObject:(id)a3;
+- (HKSPSleepEventRecord)initWithCoder:(id)coder;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)initFromObject:(id)object;
 - (id)mutableCopy;
-- (id)objectWithSyncAnchor:(id)a3;
-- (id)secondsSinceAlarmDismissalFromDate:(id)a3;
+- (id)objectWithSyncAnchor:(id)anchor;
+- (id)secondsSinceAlarmDismissalFromDate:(id)date;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSPSleepEventRecord
@@ -25,93 +25,93 @@
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = objc_opt_class();
-  v5 = [(HKSPSleepEventRecord *)self wakeUpAlarmSnoozedUntilDate];
-  [v4 _appendDateDescriptionIfRelevant:v5 withName:@"wakeUpAlarmSnoozedUntilDate" toBuilder:v3];
+  wakeUpAlarmSnoozedUntilDate = [(HKSPSleepEventRecord *)self wakeUpAlarmSnoozedUntilDate];
+  [v4 _appendDateDescriptionIfRelevant:wakeUpAlarmSnoozedUntilDate withName:@"wakeUpAlarmSnoozedUntilDate" toBuilder:v3];
 
   v6 = objc_opt_class();
-  v7 = [(HKSPSleepEventRecord *)self wakeUpAlarmDismissedDate];
-  [v6 _appendDateDescriptionIfRelevant:v7 withName:@"wakeUpAlarmDismissedDate" toBuilder:v3];
+  wakeUpAlarmDismissedDate = [(HKSPSleepEventRecord *)self wakeUpAlarmDismissedDate];
+  [v6 _appendDateDescriptionIfRelevant:wakeUpAlarmDismissedDate withName:@"wakeUpAlarmDismissedDate" toBuilder:v3];
 
   v8 = objc_opt_class();
-  v9 = [(HKSPSleepEventRecord *)self wakeUpOverriddenDate];
-  [v8 _appendDateDescriptionIfRelevant:v9 withName:@"wakeUpOverriddenDate" toBuilder:v3];
+  wakeUpOverriddenDate = [(HKSPSleepEventRecord *)self wakeUpOverriddenDate];
+  [v8 _appendDateDescriptionIfRelevant:wakeUpOverriddenDate withName:@"wakeUpOverriddenDate" toBuilder:v3];
 
   v10 = objc_opt_class();
-  v11 = [(HKSPSleepEventRecord *)self wakeUpEarlyNotificationConfirmedDate];
-  [v10 _appendDateDescriptionIfRelevant:v11 withName:@"wakeUpEarlyNotificationConfirmedDate" toBuilder:v3];
+  wakeUpEarlyNotificationConfirmedDate = [(HKSPSleepEventRecord *)self wakeUpEarlyNotificationConfirmedDate];
+  [v10 _appendDateDescriptionIfRelevant:wakeUpEarlyNotificationConfirmedDate withName:@"wakeUpEarlyNotificationConfirmedDate" toBuilder:v3];
 
   v12 = objc_opt_class();
-  v13 = [(HKSPSleepEventRecord *)self wakeUpConfirmedUntilDate];
-  [v12 _appendDateDescriptionIfRelevant:v13 withName:@"wakeUpConfirmedUntilDate" toBuilder:v3];
+  wakeUpConfirmedUntilDate = [(HKSPSleepEventRecord *)self wakeUpConfirmedUntilDate];
+  [v12 _appendDateDescriptionIfRelevant:wakeUpConfirmedUntilDate withName:@"wakeUpConfirmedUntilDate" toBuilder:v3];
 
   v14 = objc_opt_class();
-  v15 = [(HKSPSleepEventRecord *)self goodMorningDismissedDate];
-  [v14 _appendDateDescriptionIfRelevant:v15 withName:@"goodMorningDismissedDate" toBuilder:v3];
+  goodMorningDismissedDate = [(HKSPSleepEventRecord *)self goodMorningDismissedDate];
+  [v14 _appendDateDescriptionIfRelevant:goodMorningDismissedDate withName:@"goodMorningDismissedDate" toBuilder:v3];
 
   v16 = [v3 appendInteger:-[HKSPSleepEventRecord sleepCoachingOnboardingCompletedVersion](self withName:{"sleepCoachingOnboardingCompletedVersion"), @"sleepCoachingOnboardingCompletedVersion"}];
   v17 = objc_opt_class();
-  v18 = [(HKSPSleepEventRecord *)self sleepCoachingOnboardingFirstCompletedDate];
-  [v17 _appendDateDescriptionIfRelevant:v18 withName:@"sleepCoachingOnboardingFirstCompletedDate" toBuilder:v3];
+  sleepCoachingOnboardingFirstCompletedDate = [(HKSPSleepEventRecord *)self sleepCoachingOnboardingFirstCompletedDate];
+  [v17 _appendDateDescriptionIfRelevant:sleepCoachingOnboardingFirstCompletedDate withName:@"sleepCoachingOnboardingFirstCompletedDate" toBuilder:v3];
 
   v19 = [v3 appendInteger:-[HKSPSleepEventRecord sleepTrackingOnboardingCompletedVersion](self withName:{"sleepTrackingOnboardingCompletedVersion"), @"sleepTrackingOnboardingCompletedVersion"}];
   v20 = objc_opt_class();
-  v21 = [(HKSPSleepEventRecord *)self sleepTrackingOnboardingFirstCompletedDate];
-  [v20 _appendDateDescriptionIfRelevant:v21 withName:@"sleepTrackingOnboardingFirstCompletedDate" toBuilder:v3];
+  sleepTrackingOnboardingFirstCompletedDate = [(HKSPSleepEventRecord *)self sleepTrackingOnboardingFirstCompletedDate];
+  [v20 _appendDateDescriptionIfRelevant:sleepTrackingOnboardingFirstCompletedDate withName:@"sleepTrackingOnboardingFirstCompletedDate" toBuilder:v3];
 
   v22 = [v3 appendInteger:-[HKSPSleepEventRecord sleepWindDownShortcutsOnboardingCompletedVersion](self withName:{"sleepWindDownShortcutsOnboardingCompletedVersion"), @"sleepWindDownShortcutsOnboardingCompletedVersion"}];
   v23 = objc_opt_class();
-  v24 = [(HKSPSleepEventRecord *)self sleepWindDownShortcutsOnboardingFirstCompletedDate];
-  [v23 _appendDateDescriptionIfRelevant:v24 withName:@"sleepWindDownShortcutsOnboardingFirstCompletedDate" toBuilder:v3];
+  sleepWindDownShortcutsOnboardingFirstCompletedDate = [(HKSPSleepEventRecord *)self sleepWindDownShortcutsOnboardingFirstCompletedDate];
+  [v23 _appendDateDescriptionIfRelevant:sleepWindDownShortcutsOnboardingFirstCompletedDate withName:@"sleepWindDownShortcutsOnboardingFirstCompletedDate" toBuilder:v3];
 
   v25 = [v3 appendInteger:-[HKSPSleepEventRecord lastWakeUpResultsIntroductionNotificationVersionSent](self withName:{"lastWakeUpResultsIntroductionNotificationVersionSent"), @"lastWakeUpResultsIntroductionNotificationVersionSent"}];
   v26 = objc_opt_class();
-  v27 = [(HKSPSleepEventRecord *)self lastWakeUpResultsIntroductionNotificationVersionSentDate];
-  [v26 _appendDateDescriptionIfRelevant:v27 withName:@"lastWakeUpResultsIntroductionNotificationVersionSentDate" toBuilder:v3];
+  lastWakeUpResultsIntroductionNotificationVersionSentDate = [(HKSPSleepEventRecord *)self lastWakeUpResultsIntroductionNotificationVersionSentDate];
+  [v26 _appendDateDescriptionIfRelevant:lastWakeUpResultsIntroductionNotificationVersionSentDate withName:@"lastWakeUpResultsIntroductionNotificationVersionSentDate" toBuilder:v3];
 
   return v3;
 }
 
 - (BOOL)isCurrentSleepTrackingOnboardingCompleted
 {
-  v3 = [(HKSPSleepEventRecord *)self isAnySleepTrackingOnboardingCompleted];
-  if (v3)
+  isAnySleepTrackingOnboardingCompleted = [(HKSPSleepEventRecord *)self isAnySleepTrackingOnboardingCompleted];
+  if (isAnySleepTrackingOnboardingCompleted)
   {
-    LOBYTE(v3) = [(HKSPSleepEventRecord *)self sleepTrackingOnboardingCompletedVersion]> 1;
+    LOBYTE(isAnySleepTrackingOnboardingCompleted) = [(HKSPSleepEventRecord *)self sleepTrackingOnboardingCompletedVersion]> 1;
   }
 
-  return v3;
+  return isAnySleepTrackingOnboardingCompleted;
 }
 
 - (BOOL)isCurrentSleepWindDownShortcutsOnboardingCompleted
 {
-  v3 = [(HKSPSleepEventRecord *)self isAnySleepWindDownShortcutsOnboardingCompleted];
-  if (v3)
+  isAnySleepWindDownShortcutsOnboardingCompleted = [(HKSPSleepEventRecord *)self isAnySleepWindDownShortcutsOnboardingCompleted];
+  if (isAnySleepWindDownShortcutsOnboardingCompleted)
   {
-    LOBYTE(v3) = [(HKSPSleepEventRecord *)self sleepWindDownShortcutsOnboardingCompletedVersion]> 1;
+    LOBYTE(isAnySleepWindDownShortcutsOnboardingCompleted) = [(HKSPSleepEventRecord *)self sleepWindDownShortcutsOnboardingCompletedVersion]> 1;
   }
 
-  return v3;
+  return isAnySleepWindDownShortcutsOnboardingCompleted;
 }
 
 - (BOOL)isCurrentSleepCoachingOnboardingCompleted
 {
-  v3 = [(HKSPSleepEventRecord *)self isAnySleepCoachingOnboardingCompleted];
-  if (v3)
+  isAnySleepCoachingOnboardingCompleted = [(HKSPSleepEventRecord *)self isAnySleepCoachingOnboardingCompleted];
+  if (isAnySleepCoachingOnboardingCompleted)
   {
-    LOBYTE(v3) = [(HKSPSleepEventRecord *)self sleepCoachingOnboardingCompletedVersion]> 1;
+    LOBYTE(isAnySleepCoachingOnboardingCompleted) = [(HKSPSleepEventRecord *)self sleepCoachingOnboardingCompletedVersion]> 1;
   }
 
-  return v3;
+  return isAnySleepCoachingOnboardingCompleted;
 }
 
-- (BOOL)isEqualToOnboardingModel:(id)a3
+- (BOOL)isEqualToOnboardingModel:(id)model
 {
-  v4 = a3;
-  v5 = [(HKSPSleepEventRecord *)self sleepCoachingOnboardingCompletedVersion];
-  if (v5 == [v4 sleepCoachingOnboardingCompletedVersion] && (v6 = -[HKSPSleepEventRecord sleepTrackingOnboardingCompletedVersion](self, "sleepTrackingOnboardingCompletedVersion"), v6 == objc_msgSend(v4, "sleepTrackingOnboardingCompletedVersion")))
+  modelCopy = model;
+  sleepCoachingOnboardingCompletedVersion = [(HKSPSleepEventRecord *)self sleepCoachingOnboardingCompletedVersion];
+  if (sleepCoachingOnboardingCompletedVersion == [modelCopy sleepCoachingOnboardingCompletedVersion] && (v6 = -[HKSPSleepEventRecord sleepTrackingOnboardingCompletedVersion](self, "sleepTrackingOnboardingCompletedVersion"), v6 == objc_msgSend(modelCopy, "sleepTrackingOnboardingCompletedVersion")))
   {
-    v7 = [(HKSPSleepEventRecord *)self sleepWindDownShortcutsOnboardingCompletedVersion];
-    v8 = v7 == [v4 sleepWindDownShortcutsOnboardingCompletedVersion];
+    sleepWindDownShortcutsOnboardingCompletedVersion = [(HKSPSleepEventRecord *)self sleepWindDownShortcutsOnboardingCompletedVersion];
+    v8 = sleepWindDownShortcutsOnboardingCompletedVersion == [modelCopy sleepWindDownShortcutsOnboardingCompletedVersion];
   }
 
   else
@@ -131,29 +131,29 @@
   if (v2)
   {
     v2->_version = 1;
-    v4 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     wakeUpEarlyNotificationConfirmedDate = v3->_wakeUpEarlyNotificationConfirmedDate;
-    v3->_wakeUpEarlyNotificationConfirmedDate = v4;
+    v3->_wakeUpEarlyNotificationConfirmedDate = distantPast;
 
-    v6 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
     wakeUpConfirmedUntilDate = v3->_wakeUpConfirmedUntilDate;
-    v3->_wakeUpConfirmedUntilDate = v6;
+    v3->_wakeUpConfirmedUntilDate = distantPast2;
 
-    v8 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast3 = [MEMORY[0x277CBEAA8] distantPast];
     wakeUpAlarmDismissedDate = v3->_wakeUpAlarmDismissedDate;
-    v3->_wakeUpAlarmDismissedDate = v8;
+    v3->_wakeUpAlarmDismissedDate = distantPast3;
 
-    v10 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast4 = [MEMORY[0x277CBEAA8] distantPast];
     wakeUpOverriddenDate = v3->_wakeUpOverriddenDate;
-    v3->_wakeUpOverriddenDate = v10;
+    v3->_wakeUpOverriddenDate = distantPast4;
 
-    v12 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast5 = [MEMORY[0x277CBEAA8] distantPast];
     wakeUpAlarmSnoozedUntilDate = v3->_wakeUpAlarmSnoozedUntilDate;
-    v3->_wakeUpAlarmSnoozedUntilDate = v12;
+    v3->_wakeUpAlarmSnoozedUntilDate = distantPast5;
 
-    v14 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast6 = [MEMORY[0x277CBEAA8] distantPast];
     goodMorningDismissedDate = v3->_goodMorningDismissedDate;
-    v3->_goodMorningDismissedDate = v14;
+    v3->_goodMorningDismissedDate = distantPast6;
 
     sleepCoachingOnboardingFirstCompletedDate = v3->_sleepCoachingOnboardingFirstCompletedDate;
     v3->_sleepCoachingOnboardingCompletedVersion = 0;
@@ -177,38 +177,38 @@
   return v3;
 }
 
-- (id)initFromObject:(id)a3
+- (id)initFromObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v6 = [(HKSPSleepEventRecord *)self init];
     HKSPCopyFromObject(v5, v6);
-    v7 = [v5 syncAnchor];
+    syncAnchor = [v5 syncAnchor];
 
-    v8 = [v7 copyWithZone:0];
+    v8 = [syncAnchor copyWithZone:0];
     syncAnchor = v6->_syncAnchor;
     v6->_syncAnchor = v8;
 
     self = v6;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (id)objectWithSyncAnchor:(id)a3
+- (id)objectWithSyncAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [objc_alloc(objc_opt_class()) initFromObject:self];
-  v6 = [v4 copyWithZone:0];
+  v6 = [anchorCopy copyWithZone:0];
 
   v7 = v5[3];
   v5[3] = v6;
@@ -216,26 +216,26 @@
   return v5;
 }
 
-- (HKSPSleepEventRecord)initWithCoder:(id)a3
+- (HKSPSleepEventRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = HKSPSleepEventRecord;
   v5 = [(HKSPSleepEventRecord *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    HKSPDecodeObjectWithCoder(v5, v4);
-    if (([v4 hksp_serializationOptions] & 1) == 0)
+    HKSPDecodeObjectWithCoder(v5, coderCopy);
+    if (([coderCopy hksp_serializationOptions] & 1) == 0)
     {
-      v7 = [v4 decodeObjectOfClass:HKSPSyncAnchorClass() forKey:@"HKSPEventRecordSyncAnchor"];
+      v7 = [coderCopy decodeObjectOfClass:HKSPSyncAnchorClass() forKey:@"HKSPEventRecordSyncAnchor"];
       syncAnchor = v6->_syncAnchor;
       v6->_syncAnchor = v7;
     }
 
-    if ([(HKSPSleepEventRecord *)v6 _needsMigrationForCoder:v4])
+    if ([(HKSPSleepEventRecord *)v6 _needsMigrationForCoder:coderCopy])
     {
-      [(HKSPSleepEventRecord *)v6 _migrateForCoder:v4];
+      [(HKSPSleepEventRecord *)v6 _migrateForCoder:coderCopy];
     }
 
     v9 = v6;
@@ -244,21 +244,21 @@
   return v6;
 }
 
-- (BOOL)_needsMigrationForCoder:(id)a3
+- (BOOL)_needsMigrationForCoder:(id)coder
 {
-  v3 = a3;
-  v4 = ([v3 hksp_serializationOptions] & 1) != 0 && objc_msgSend(v3, "decodeIntegerForKey:", @"HKSPEventRecordVersion") == 0;
+  coderCopy = coder;
+  v4 = ([coderCopy hksp_serializationOptions] & 1) != 0 && objc_msgSend(coderCopy, "decodeIntegerForKey:", @"HKSPEventRecordVersion") == 0;
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  HKSPEncodeObjectWithCoder(self, v4);
-  if (([v4 hksp_serializationOptions] & 1) == 0)
+  coderCopy = coder;
+  HKSPEncodeObjectWithCoder(self, coderCopy);
+  if (([coderCopy hksp_serializationOptions] & 1) == 0)
   {
-    [v4 encodeObject:self->_syncAnchor forKey:@"HKSPEventRecordSyncAnchor"];
+    [coderCopy encodeObject:self->_syncAnchor forKey:@"HKSPEventRecordSyncAnchor"];
   }
 }
 
@@ -271,76 +271,76 @@
 
 - (id)succinctDescription
 {
-  v2 = [(HKSPSleepEventRecord *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(HKSPSleepEventRecord *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-+ (void)_appendDateDescriptionIfRelevant:(id)a3 withName:(id)a4 toBuilder:(id)a5
++ (void)_appendDateDescriptionIfRelevant:(id)relevant withName:(id)name toBuilder:(id)builder
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (v12)
+  relevantCopy = relevant;
+  nameCopy = name;
+  builderCopy = builder;
+  if (relevantCopy)
   {
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
-    if (([v12 isEqualToDate:v9] & 1) == 0)
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    if (([relevantCopy isEqualToDate:distantPast] & 1) == 0)
     {
-      v10 = [MEMORY[0x277CBEAA8] distantFuture];
-      v11 = [v12 isEqualToDate:v10];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v11 = [relevantCopy isEqualToDate:distantFuture];
 
       if (v11)
       {
         goto LABEL_6;
       }
 
-      v9 = [v12 hkspDescription];
-      [v8 appendString:v9 withName:v7];
+      distantPast = [relevantCopy hkspDescription];
+      [builderCopy appendString:distantPast withName:nameCopy];
     }
   }
 
 LABEL_6:
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(HKSPSleepEventRecord *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(HKSPSleepEventRecord *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (BOOL)isConsolidatedSleepCoachingOnboardingCompleted
 {
-  v3 = [(HKSPSleepEventRecord *)self isAnySleepCoachingOnboardingCompleted];
-  if (v3)
+  isAnySleepCoachingOnboardingCompleted = [(HKSPSleepEventRecord *)self isAnySleepCoachingOnboardingCompleted];
+  if (isAnySleepCoachingOnboardingCompleted)
   {
-    LOBYTE(v3) = [(HKSPSleepEventRecord *)self sleepCoachingOnboardingCompletedVersion]> 2;
+    LOBYTE(isAnySleepCoachingOnboardingCompleted) = [(HKSPSleepEventRecord *)self sleepCoachingOnboardingCompletedVersion]> 2;
   }
 
-  return v3;
+  return isAnySleepCoachingOnboardingCompleted;
 }
 
 - (BOOL)isConsolidatedSleepTrackingOnboardingCompleted
 {
-  v3 = [(HKSPSleepEventRecord *)self isAnySleepTrackingOnboardingCompleted];
-  if (v3)
+  isAnySleepTrackingOnboardingCompleted = [(HKSPSleepEventRecord *)self isAnySleepTrackingOnboardingCompleted];
+  if (isAnySleepTrackingOnboardingCompleted)
   {
-    LOBYTE(v3) = [(HKSPSleepEventRecord *)self sleepTrackingOnboardingCompletedVersion]> 2;
+    LOBYTE(isAnySleepTrackingOnboardingCompleted) = [(HKSPSleepEventRecord *)self sleepTrackingOnboardingCompletedVersion]> 2;
   }
 
-  return v3;
+  return isAnySleepTrackingOnboardingCompleted;
 }
 
-- (id)secondsSinceAlarmDismissalFromDate:(id)a3
+- (id)secondsSinceAlarmDismissalFromDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HKSPSleepEventRecord *)self wakeUpAlarmDismissedDate];
-  if (v5 && ([MEMORY[0x277CBEAA8] distantPast], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToDate:", v6), v6, (v7 & 1) == 0))
+  dateCopy = date;
+  wakeUpAlarmDismissedDate = [(HKSPSleepEventRecord *)self wakeUpAlarmDismissedDate];
+  if (wakeUpAlarmDismissedDate && ([MEMORY[0x277CBEAA8] distantPast], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(wakeUpAlarmDismissedDate, "isEqualToDate:", v6), v6, (v7 & 1) == 0))
   {
     v9 = MEMORY[0x277CCABB0];
-    [v5 timeIntervalSinceDate:v4];
+    [wakeUpAlarmDismissedDate timeIntervalSinceDate:dateCopy];
     if (v10 < 0.0)
     {
       v10 = -v10;

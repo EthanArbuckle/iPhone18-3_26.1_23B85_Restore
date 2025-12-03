@@ -1,6 +1,6 @@
 @interface MTOSTransaction
-+ (id)transactionWithDescription:(id)a3 timeout:(double)a4 timeoutBlock:(id)a5;
-- (MTOSTransaction)initWithDescription:(id)a3 timeout:(double)a4 timeoutBlock:(id)a5;
++ (id)transactionWithDescription:(id)description timeout:(double)timeout timeoutBlock:(id)block;
+- (MTOSTransaction)initWithDescription:(id)description timeout:(double)timeout timeoutBlock:(id)block;
 - (void)_cancel;
 - (void)dealloc;
 - (void)end;
@@ -8,25 +8,25 @@
 
 @implementation MTOSTransaction
 
-+ (id)transactionWithDescription:(id)a3 timeout:(double)a4 timeoutBlock:(id)a5
++ (id)transactionWithDescription:(id)description timeout:(double)timeout timeoutBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [objc_alloc(objc_opt_class()) initWithDescription:v8 timeout:v7 timeoutBlock:a4];
+  blockCopy = block;
+  descriptionCopy = description;
+  v9 = [objc_alloc(objc_opt_class()) initWithDescription:descriptionCopy timeout:blockCopy timeoutBlock:timeout];
 
   return v9;
 }
 
-- (MTOSTransaction)initWithDescription:(id)a3 timeout:(double)a4 timeoutBlock:(id)a5
+- (MTOSTransaction)initWithDescription:(id)description timeout:(double)timeout timeoutBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  descriptionCopy = description;
+  blockCopy = block;
   v25.receiver = self;
   v25.super_class = MTOSTransaction;
   v10 = [(MTOSTransaction *)&v25 init];
   if (v10)
   {
-    [v8 UTF8String];
+    [descriptionCopy UTF8String];
     v11 = os_transaction_create();
     v12 = *(v10 + 1);
     *(v10 + 1) = v11;
@@ -46,10 +46,10 @@
     handler[2] = __60__MTOSTransaction_initWithDescription_timeout_timeoutBlock___block_invoke;
     handler[3] = &unk_1E7B0E228;
     objc_copyWeak(&v23, &location);
-    v22 = v9;
+    v22 = blockCopy;
     dispatch_source_set_event_handler(v17, handler);
     v18 = *(v10 + 2);
-    v19 = dispatch_time(0, (a4 * 1000000000.0));
+    v19 = dispatch_time(0, (timeout * 1000000000.0));
     dispatch_source_set_timer(v18, v19, 0xFFFFFFFFFFFFFFFFLL, 0);
     dispatch_resume(*(v10 + 2));
 

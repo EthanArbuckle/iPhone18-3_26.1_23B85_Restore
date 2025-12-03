@@ -1,65 +1,65 @@
 @interface MapsSettingsController
-+ (id)parkedCarEnabled:(id)a3;
++ (id)parkedCarEnabled:(id)enabled;
 - (BOOL)_shouldShowUKRegulatorySection;
-- (MapsSettingsController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_allowEmailCorrespondence:(id)a3;
-- (id)_enableAutomaticUpdates:(id)a3;
-- (id)_enableOfflineSyncToWatch:(id)a3;
-- (id)_enableOnlyUseOfflineMaps:(id)a3;
-- (id)_enableOptimizeStorage:(id)a3;
+- (MapsSettingsController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_allowEmailCorrespondence:(id)correspondence;
+- (id)_enableAutomaticUpdates:(id)updates;
+- (id)_enableOfflineSyncToWatch:(id)watch;
+- (id)_enableOnlyUseOfflineMaps:(id)maps;
+- (id)_enableOptimizeStorage:(id)storage;
 - (id)_offlineDownloadSettingsMenu;
 - (id)_privacyIdentifiersForContributeToMapsSection;
-- (id)_showAirQualityIndex:(id)a3;
-- (id)_showWeatherConditions:(id)a3;
-- (id)_specifierIDForTransportType:(int64_t)a3;
-- (id)_thirdPartyPhotoSharingEnabled:(id)a3;
-- (id)allowsAddingRatingsAndPhotos:(id)a3;
-- (id)enableImproveEVRouting:(id)a3;
-- (id)lagunaBeachSiriSuggestionsEnabled:(id)a3;
-- (id)parkedCarEnabled:(id)a3;
-- (id)selectSpecifier:(id)a3;
+- (id)_showAirQualityIndex:(id)index;
+- (id)_showWeatherConditions:(id)conditions;
+- (id)_specifierIDForTransportType:(int64_t)type;
+- (id)_thirdPartyPhotoSharingEnabled:(id)enabled;
+- (id)allowsAddingRatingsAndPhotos:(id)photos;
+- (id)enableImproveEVRouting:(id)routing;
+- (id)lagunaBeachSiriSuggestionsEnabled:(id)enabled;
+- (id)parkedCarEnabled:(id)enabled;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_addOfflineSpecifiers:(id)a3;
-- (void)_addShareETASpecifiers:(id)a3;
-- (void)_appendPrivacyFooterFromBundleIdentifiers:(id)a3 toGroupSpecifier:(id)a4 selector:(SEL)a5;
+- (void)_addOfflineSpecifiers:(id)specifiers;
+- (void)_addShareETASpecifiers:(id)specifiers;
+- (void)_appendPrivacyFooterFromBundleIdentifiers:(id)identifiers toGroupSpecifier:(id)specifier selector:(SEL)selector;
 - (void)_presentContributeToMapsPrivacySplashViewController;
 - (void)_presentMapsAppPrivacySplashViewController;
-- (void)_presentPrivacySplashViewControllerForIdentifiers:(id)a3;
+- (void)_presentPrivacySplashViewControllerForIdentifiers:(id)identifiers;
 - (void)_refreshThirdPartyPhotoSharingStatus;
-- (void)_setAllowEmailCorrespondence:(id)a3 specifier:(id)a4;
-- (void)_setAllowsAddingRatingsAndPhotos:(id)a3 specifier:(id)a4;
-- (void)_setEnableAutomaticUpdates:(id)a3 specifier:(id)a4;
-- (void)_setEnableOfflineSyncToWatch:(id)a3 specifier:(id)a4;
-- (void)_setEnableOnlyUseOfflineMaps:(id)a3 specifier:(id)a4;
-- (void)_setEnableOptimizeStorage:(id)a3 specifier:(id)a4;
-- (void)_setEnableShareETA:(id)a3 specifier:(id)a4;
-- (void)_setLagunaBeachSiriSuggestionsEnabled:(id)a3 specifier:(id)a4;
-- (void)_setParkedCarEnabled:(id)a3 specifier:(id)a4;
-- (void)_setShowAirQualityIndex:(id)a3 specifier:(id)a4;
-- (void)_setShowWeatherConditions:(id)a3 specifier:(id)a4;
-- (void)_setThirdPartyPhotoSharingEnabled:(id)a3 specifier:(id)a4;
-- (void)_showUKRegulatoryWebPage:(id)a3;
+- (void)_setAllowEmailCorrespondence:(id)correspondence specifier:(id)specifier;
+- (void)_setAllowsAddingRatingsAndPhotos:(id)photos specifier:(id)specifier;
+- (void)_setEnableAutomaticUpdates:(id)updates specifier:(id)specifier;
+- (void)_setEnableOfflineSyncToWatch:(id)watch specifier:(id)specifier;
+- (void)_setEnableOnlyUseOfflineMaps:(id)maps specifier:(id)specifier;
+- (void)_setEnableOptimizeStorage:(id)storage specifier:(id)specifier;
+- (void)_setEnableShareETA:(id)a specifier:(id)specifier;
+- (void)_setLagunaBeachSiriSuggestionsEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setParkedCarEnabled:(id)enabled specifier:(id)specifier;
+- (void)_setShowAirQualityIndex:(id)index specifier:(id)specifier;
+- (void)_setShowWeatherConditions:(id)conditions specifier:(id)specifier;
+- (void)_setThirdPartyPhotoSharingEnabled:(id)enabled specifier:(id)specifier;
+- (void)_showUKRegulatoryWebPage:(id)page;
 - (void)dealloc;
-- (void)didUpdateEVApplications:(id)a3;
-- (void)didUpdateElectricVehicleCount:(unint64_t)a3;
-- (void)setEnableImproveEVRouting:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)valueChangedForGEOConfigKey:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)didUpdateEVApplications:(id)applications;
+- (void)didUpdateElectricVehicleCount:(unint64_t)count;
+- (void)setEnableImproveEVRouting:(id)routing specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)valueChangedForGEOConfigKey:(id)key;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MapsSettingsController
 
-- (MapsSettingsController)initWithNibName:(id)a3 bundle:(id)a4
+- (MapsSettingsController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   v28.receiver = self;
   v28.super_class = MapsSettingsController;
-  v8 = [(MapsSettingBaseController *)&v28 initWithNibName:v6 bundle:v7];
+  v8 = [(MapsSettingBaseController *)&v28 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     objc_initWeak(&location, v8);
@@ -118,21 +118,21 @@
   v8.receiver = self;
   v8.super_class = MapsSettingsController;
   [(MapsSettingsController *)&v8 viewDidLoad];
-  v3 = [(MapsSettingsController *)self table];
+  table = [(MapsSettingsController *)self table];
   v4 = objc_opt_class();
   v5 = +[MapsSettingsMenuTableCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
   v6 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
   v7 = [v6 localizedStringForKey:@"Maps [Settings]" value:@"localized string not found" table:0];
   [(MapsSettingsController *)self setTitle:v7];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = MapsSettingsController;
-  [(MapsSettingBaseController *)&v10 viewWillAppear:a3];
+  [(MapsSettingBaseController *)&v10 viewWillAppear:appear];
   v4 = MapsRAPContactBackEmailAddress();
   if (([v4 isEqualToString:*(&self->super + 1)] & 1) == 0)
   {
@@ -142,20 +142,20 @@
 
   [(MapsSettingsController *)self _refreshThirdPartyPhotoSharingStatus];
   v5 = +[NSNotificationCenter defaultCenter];
-  v6 = [(MapsSettingsController *)self view];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
-  [v5 addObserver:self selector:"_sceneWillEnterForeground:" name:UISceneWillEnterForegroundNotification object:v8];
+  view = [(MapsSettingsController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [v5 addObserver:self selector:"_sceneWillEnterForeground:" name:UISceneWillEnterForegroundNotification object:windowScene];
 
-  v9 = [(MapsSettingsController *)self offlineHelper];
-  [v9 addObserver:self];
+  offlineHelper = [(MapsSettingsController *)self offlineHelper];
+  [offlineHelper addObserver:self];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = MapsSettingsController;
-  [(MapsSettingsController *)&v8 viewDidAppear:a3];
+  [(MapsSettingsController *)&v8 viewDidAppear:appear];
   v4 = MapsSettingsRootTitle();
   v5 = AppsSettingsTitle();
   v9 = v5;
@@ -164,76 +164,76 @@
   [(MapsSettingsController *)self pe_emitNavigationEventForApplicationSettingsWithApplicationBundleIdentifier:@"com.apple.Maps" title:v4 localizedNavigationComponents:v6 deepLink:v7];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = MapsSettingsController;
-  [(MapsSettingsController *)&v9 viewWillDisappear:a3];
+  [(MapsSettingsController *)&v9 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
-  v5 = [(MapsSettingsController *)self view];
-  v6 = [v5 window];
-  v7 = [v6 windowScene];
-  [v4 removeObserver:self name:UISceneWillEnterForegroundNotification object:v7];
+  view = [(MapsSettingsController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [v4 removeObserver:self name:UISceneWillEnterForegroundNotification object:windowScene];
 
-  v8 = [(MapsSettingsController *)self offlineHelper];
-  [v8 removeObserver:self];
+  offlineHelper = [(MapsSettingsController *)self offlineHelper];
+  [offlineHelper removeObserver:self];
 }
 
-- (id)_showAirQualityIndex:(id)a3
+- (id)_showAirQualityIndex:(id)index
 {
   BOOL = GEOConfigGetBOOL();
 
   return [NSNumber numberWithBool:BOOL];
 }
 
-- (void)_setShowAirQualityIndex:(id)a3 specifier:(id)a4
+- (void)_setShowAirQualityIndex:(id)index specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [index BOOLValue];
 
   GEOConfigSetBOOL();
 }
 
-- (id)_showWeatherConditions:(id)a3
+- (id)_showWeatherConditions:(id)conditions
 {
   BOOL = GEOConfigGetBOOL();
 
   return [NSNumber numberWithBool:BOOL];
 }
 
-- (void)_setShowWeatherConditions:(id)a3 specifier:(id)a4
+- (void)_setShowWeatherConditions:(id)conditions specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [conditions BOOLValue];
 
   GEOConfigSetBOOL();
 }
 
-- (id)_specifierIDForTransportType:(int64_t)a3
+- (id)_specifierIDForTransportType:(int64_t)type
 {
-  if ((a3 - 1) > 3)
+  if ((type - 1) > 3)
   {
     return @"TransportTypePreferenceDrivingID";
   }
 
   else
   {
-    return off_80138[a3 - 1];
+    return off_80138[type - 1];
   }
 }
 
-- (id)_allowEmailCorrespondence:(id)a3
+- (id)_allowEmailCorrespondence:(id)correspondence
 {
   v3 = +[MapsSettings allowEmailCorrespondence];
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)_setAllowEmailCorrespondence:(id)a3 specifier:(id)a4
+- (void)_setAllowEmailCorrespondence:(id)correspondence specifier:(id)specifier
 {
-  v4 = a3;
-  +[MapsSettings setAllowEmailCorrespondence:](MapsSettings, "setAllowEmailCorrespondence:", [v4 BOOLValue]);
-  v5 = [v4 BOOLValue];
+  correspondenceCopy = correspondence;
+  +[MapsSettings setAllowEmailCorrespondence:](MapsSettings, "setAllowEmailCorrespondence:", [correspondenceCopy BOOLValue]);
+  bOOLValue = [correspondenceCopy BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = 17088;
   }
@@ -246,61 +246,61 @@
   [GEOAPPortal captureUserAction:v6 target:0 value:0];
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(&self->_preferredTransportTypeSpecifiers + 3) == v4)
+  specifierCopy = specifier;
+  v5 = specifierCopy;
+  if (*(&self->_preferredTransportTypeSpecifiers + 3) == specifierCopy)
   {
-    v6 = [(MapsSettingsController *)self rideBookingController];
+    rideBookingController = [(MapsSettingsController *)self rideBookingController];
   }
 
-  else if (*(&self->_rideBookingLinkSpecifier + 3) == v4)
+  else if (*(&self->_rideBookingLinkSpecifier + 3) == specifierCopy)
   {
-    v6 = [(MapsSettingsController *)self restaurantBookingController];
+    rideBookingController = [(MapsSettingsController *)self restaurantBookingController];
   }
 
-  else if (*(&self->_restaurantBookingLinkSpecifier + 3) == v4)
+  else if (*(&self->_restaurantBookingLinkSpecifier + 3) == specifierCopy)
   {
-    v6 = [(MapsSettingsController *)self evRoutingController];
+    rideBookingController = [(MapsSettingsController *)self evRoutingController];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = MapsSettingsController;
-    v6 = [(MapsSettingsController *)&v9 selectSpecifier:v4];
+    rideBookingController = [(MapsSettingsController *)&v9 selectSpecifier:specifierCopy];
   }
 
-  v7 = v6;
+  v7 = rideBookingController;
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = MapsSettingsController;
-  v6 = a4;
-  [(MapsSettingsController *)&v14 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(MapsSettingsController *)self indexForIndexPath:v6, v14.receiver, v14.super_class];
+  pathCopy = path;
+  [(MapsSettingsController *)&v14 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(MapsSettingsController *)self indexForIndexPath:pathCopy, v14.receiver, v14.super_class];
 
   v8 = [*&self->super.PSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndexedSubscript:v7];
   v9 = [v8 propertyForKey:PSValueKey];
   if ([*(&self->_emailAddress + 3) containsObject:v8])
   {
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
     GEOSetUserTransportTypePreference();
     v11 = +[MKMapService sharedService];
     v12 = v11;
-    if ((v10 - 1) > 3)
+    if ((integerValue - 1) > 3)
     {
       v13 = 5025;
     }
 
     else
     {
-      v13 = dword_48E50[(v10 - 1)];
+      v13 = dword_48E50[(integerValue - 1)];
     }
 
     [v11 captureUserAction:v13 onTarget:602 eventValue:0];
@@ -313,17 +313,17 @@
   v3 = [[AUSystemSettingsSpecifiersProvider alloc] initWithApplicationBundleIdentifier:@"com.apple.Maps"];
   [(MapsSettingsController *)self setSpecifiersProvider:v3];
 
-  v4 = [(MapsSettingsController *)self specifiersProvider];
-  v5 = [v4 specifiers];
-  v6 = [v5 mutableCopy];
+  specifiersProvider = [(MapsSettingsController *)self specifiersProvider];
+  specifiers = [specifiersProvider specifiers];
+  v6 = [specifiers mutableCopy];
 
   v7 = +[NSMutableIndexSet indexSet];
   v8 = [v6 count];
   while (v8)
   {
     v9 = [v6 objectAtIndexedSubscript:--v8];
-    v10 = [v9 identifier];
-    v11 = [v10 isEqualToString:@"PREFERRED_LANGUAGE"];
+    identifier = [v9 identifier];
+    v11 = [identifier isEqualToString:@"PREFERRED_LANGUAGE"];
 
     if (v11)
     {
@@ -332,9 +332,9 @@
       {
         v12 = v8 - 1;
         v13 = [v6 objectAtIndexedSubscript:v12];
-        v14 = [v13 cellType];
+        cellType = [v13 cellType];
 
-        if (!v14)
+        if (!cellType)
         {
           [v7 addIndex:v12];
         }
@@ -350,8 +350,8 @@
   v191 = @"com.apple.onboarding.maps";
   v15 = [NSArray arrayWithObjects:&v191 count:1];
   v186 = v6;
-  v16 = [v6 firstObject];
-  [(MapsSettingsController *)self _appendPrivacyFooterFromBundleIdentifiers:v15 toGroupSpecifier:v16 selector:"_presentMapsAppPrivacySplashViewController"];
+  firstObject = [v6 firstObject];
+  [(MapsSettingsController *)self _appendPrivacyFooterFromBundleIdentifiers:v15 toGroupSpecifier:firstObject selector:"_presentMapsAppPrivacySplashViewController"];
 
   [(MapsSettingsController *)self _addOfflineSpecifiers:v189];
   v17 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
@@ -403,7 +403,7 @@
   [*(&self->_emailAddress + 3) addObject:v36];
   v37 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
   v38 = [v37 localizedStringForKey:@"Cycling Transportation Mode Label [Settings]" value:@"localized string not found" table:0];
-  v190 = self;
+  selfCopy = self;
   v39 = [PSSpecifier preferenceSpecifierNamed:v38 target:self set:0 get:0 detail:0 cell:3 edit:0];
 
   [v39 setProperty:@"TransportTypePreferenceBicycleID" forKey:v24];
@@ -483,7 +483,7 @@
   v71 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
   v72 = v68;
   v73 = [v71 localizedStringForKey:@"Weather Conditions Switch Label [Settings]" value:@"localized string not found" table:0];
-  v74 = [PSSpecifier preferenceSpecifierNamed:v73 target:v190 set:"_setShowWeatherConditions:specifier:" get:"_showWeatherConditions:" detail:0 cell:6 edit:0];
+  v74 = [PSSpecifier preferenceSpecifierNamed:v73 target:selfCopy set:"_setShowWeatherConditions:specifier:" get:"_showWeatherConditions:" detail:0 cell:6 edit:0];
 
   v75 = v189;
   [v74 setProperty:&__kCFBooleanTrue forKey:v68];
@@ -493,7 +493,7 @@
   v77 = [v76 localizedStringForKey:@"Weather Conditions" value:@"localized string not found" table:0];
 
   v78 = &PSBundlePathForPreferenceBundle_ptr;
-  if ([(MapsSettingBaseController *)v190 canLocalizeLabels])
+  if ([(MapsSettingBaseController *)selfCopy canLocalizeLabels])
   {
     v79 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v80 = [v79 localizedStringForKey:@"Label Language Group Title [Settings]" value:@"localized string not found" table:0];
@@ -502,7 +502,7 @@
     [v189 addObject:v81];
     v82 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v83 = [v82 localizedStringForKey:@"Label Language Switch Label [Settings]" value:@"localized string not found" table:0];
-    v84 = [PSSpecifier preferenceSpecifierNamed:v83 target:v190 set:"_setLabelLanguageAlwaysUILanguage:specifier:" get:"_labelLanguageAlwaysUILanguage:" detail:0 cell:6 edit:0];
+    v84 = [PSSpecifier preferenceSpecifierNamed:v83 target:selfCopy set:"_setLabelLanguageAlwaysUILanguage:specifier:" get:"_labelLanguageAlwaysUILanguage:" detail:0 cell:6 edit:0];
 
     v75 = v189;
     [v84 setProperty:&__kCFBooleanTrue forKey:v72];
@@ -523,8 +523,8 @@
   v87 = v72;
   if (MapsFeature_IsEnabled_EVRouting())
   {
-    v88 = [(MapsSettingsController *)v190 evRoutingController];
-    v89 = [v88 electricVehicleCount] != 0;
+    evRoutingController = [(MapsSettingsController *)selfCopy evRoutingController];
+    v89 = [evRoutingController electricVehicleCount] != 0;
   }
 
   else
@@ -555,7 +555,7 @@
       v94 = v78;
       v95 = [v78[415] bundleForClass:NSClassFromString(@"MapsSettingsController")];
       v96 = [v95 localizedStringForKey:@"Ratings and Photos [Laguna Beach][Settings]" value:@"localized string not found" table:0];
-      v97 = [PSSpecifier preferenceSpecifierNamed:v96 target:v190 set:"_setAllowsAddingRatingsAndPhotos:specifier:" get:"allowsAddingRatingsAndPhotos:" detail:0 cell:6 edit:0];
+      v97 = [PSSpecifier preferenceSpecifierNamed:v96 target:selfCopy set:"_setAllowsAddingRatingsAndPhotos:specifier:" get:"allowsAddingRatingsAndPhotos:" detail:0 cell:6 edit:0];
 
       [v97 setProperty:&__kCFBooleanTrue forKey:v72];
       [v97 setProperty:@"RatingsAndPhotosPreferencesID" forKey:v188];
@@ -567,7 +567,7 @@
       v75 = v189;
       v101 = [v100 bundleForClass:v99];
       v102 = [v101 localizedStringForKey:@"Show Ratings and Photos Suggestions [Laguna Beach][Settings]" value:@"localized string not found" table:0];
-      v103 = [PSSpecifier preferenceSpecifierNamed:v102 target:v190 set:"_setLagunaBeachSiriSuggestionsEnabled:specifier:" get:"lagunaBeachSiriSuggestionsEnabled:" detail:0 cell:6 edit:0];
+      v103 = [PSSpecifier preferenceSpecifierNamed:v102 target:selfCopy set:"_setLagunaBeachSiriSuggestionsEnabled:specifier:" get:"lagunaBeachSiriSuggestionsEnabled:" detail:0 cell:6 edit:0];
 
       v78 = v94;
       v93 = v177;
@@ -583,7 +583,7 @@
     {
       v104 = [v78[415] bundleForClass:NSClassFromString(@"MapsSettingsController")];
       v105 = [v104 localizedStringForKey:@"Improve EV Routing [Settings]" value:@"localized string not found" table:0];
-      v106 = [PSSpecifier preferenceSpecifierNamed:v105 target:v190 set:"setEnableImproveEVRouting:specifier:" get:"enableImproveEVRouting:" detail:0 cell:6 edit:0];
+      v106 = [PSSpecifier preferenceSpecifierNamed:v105 target:selfCopy set:"setEnableImproveEVRouting:specifier:" get:"enableImproveEVRouting:" detail:0 cell:6 edit:0];
 
       [v106 setProperty:&__kCFBooleanTrue forKey:v87];
       [v106 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
@@ -591,10 +591,10 @@
       [v75 addObject:v106];
     }
 
-    v107 = [(MapsSettingsController *)v190 _privacyIdentifiersForContributeToMapsSection];
-    if ([v107 count])
+    _privacyIdentifiersForContributeToMapsSection = [(MapsSettingsController *)selfCopy _privacyIdentifiersForContributeToMapsSection];
+    if ([_privacyIdentifiersForContributeToMapsSection count])
     {
-      [(MapsSettingsController *)v190 _appendPrivacyFooterFromBundleIdentifiers:v107 toGroupSpecifier:v93 selector:"_presentContributeToMapsPrivacySplashViewController"];
+      [(MapsSettingsController *)selfCopy _appendPrivacyFooterFromBundleIdentifiers:_privacyIdentifiersForContributeToMapsSection toGroupSpecifier:v93 selector:"_presentContributeToMapsPrivacySplashViewController"];
     }
   }
 
@@ -608,12 +608,12 @@
     [v75 addObject:v111];
     v112 = [v110[415] bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v113 = [v112 localizedStringForKey:@"Allow Photo Providers to Use Your Photos [Settings]" value:@"localized string not found" table:0];
-    v114 = [PSSpecifier preferenceSpecifierNamed:v113 target:v190 set:"_setThirdPartyPhotoSharingEnabled:specifier:" get:"_thirdPartyPhotoSharingEnabled:" detail:0 cell:6 edit:0];
+    v114 = [PSSpecifier preferenceSpecifierNamed:v113 target:selfCopy set:"_setThirdPartyPhotoSharingEnabled:specifier:" get:"_thirdPartyPhotoSharingEnabled:" detail:0 cell:6 edit:0];
 
     v75 = v189;
     [v114 setProperty:&__kCFBooleanTrue forKey:v87];
     [v114 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
-    v115 = [NSNumber numberWithBool:[(MapsSettingsController *)v190 isThirdPartyPhotoSharingStatusLoading]];
+    v115 = [NSNumber numberWithBool:[(MapsSettingsController *)selfCopy isThirdPartyPhotoSharingStatusLoading]];
     [v114 setProperty:v115 forKey:PSControlIsLoadingKey];
 
     [v114 setProperty:@"AllowPhotoProvidersPreferencesID" forKey:v188];
@@ -623,33 +623,33 @@
     [v111 setProperty:v117 forKey:v179];
   }
 
-  v118 = *(&v190->_preferredTransportTypeSpecifiers + 3);
-  *(&v190->_preferredTransportTypeSpecifiers + 3) = 0;
+  v118 = *(&selfCopy->_preferredTransportTypeSpecifiers + 3);
+  *(&selfCopy->_preferredTransportTypeSpecifiers + 3) = 0;
 
-  v119 = *(&v190->_rideBookingLinkSpecifier + 3);
-  *(&v190->_rideBookingLinkSpecifier + 3) = 0;
+  v119 = *(&selfCopy->_rideBookingLinkSpecifier + 3);
+  *(&selfCopy->_rideBookingLinkSpecifier + 3) = 0;
 
-  v120 = *(&v190->_restaurantBookingLinkSpecifier + 3);
-  *(&v190->_restaurantBookingLinkSpecifier + 3) = 0;
+  v120 = *(&selfCopy->_restaurantBookingLinkSpecifier + 3);
+  *(&selfCopy->_restaurantBookingLinkSpecifier + 3) = 0;
 
-  v121 = [(MapsSettingsController *)v190 rideBookingController];
-  v122 = [v121 hasInstalledApplications];
+  rideBookingController = [(MapsSettingsController *)selfCopy rideBookingController];
+  hasInstalledApplications = [rideBookingController hasInstalledApplications];
 
-  v123 = [(MapsSettingsController *)v190 restaurantBookingController];
-  v124 = [v123 hasInstalledApplications];
+  restaurantBookingController = [(MapsSettingsController *)selfCopy restaurantBookingController];
+  hasInstalledApplications2 = [restaurantBookingController hasInstalledApplications];
 
   if (MapsFeature_IsEnabled_EVRouting())
   {
-    v125 = [(MapsSettingsController *)v190 evRoutingController];
-    v126 = [v125 hasInstalledApplications];
+    evRoutingController2 = [(MapsSettingsController *)selfCopy evRoutingController];
+    hasInstalledApplications3 = [evRoutingController2 hasInstalledApplications];
   }
 
   else
   {
-    v126 = 0;
+    hasInstalledApplications3 = 0;
   }
 
-  if (((v122 | v124) & 1) != 0 || v126)
+  if (((hasInstalledApplications | hasInstalledApplications2) & 1) != 0 || hasInstalledApplications3)
   {
     v127 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v128 = [v127 localizedStringForKey:@"Extensions Group Title [Settings]" value:@"localized string not found" table:0];
@@ -658,7 +658,7 @@
     v75 = v189;
     v178 = v129;
     [v189 addObject:v129];
-    if (v122)
+    if (hasInstalledApplications)
     {
       v145 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
       v146 = [v145 localizedStringForKey:@"Ride Booking Row [Settings]" value:@"localized string not found" table:0];
@@ -667,13 +667,13 @@
       [(NSMutableSet *)v147 setProperty:&__kCFBooleanTrue forKey:v72];
       [(NSMutableSet *)v147 setProperty:@"RideBookingPreferencesID" forKey:v188];
       [v189 addObject:v147];
-      v148 = *(&v190->_preferredTransportTypeSpecifiers + 3);
-      *(&v190->_preferredTransportTypeSpecifiers + 3) = v147;
+      v148 = *(&selfCopy->_preferredTransportTypeSpecifiers + 3);
+      *(&selfCopy->_preferredTransportTypeSpecifiers + 3) = v147;
 
-      if (!v124)
+      if (!hasInstalledApplications2)
       {
 LABEL_35:
-        if (!v126)
+        if (!hasInstalledApplications3)
         {
 LABEL_37:
 
@@ -687,14 +687,14 @@ LABEL_36:
 
         [v189 addObject:v132];
         [v132 setProperty:&__kCFBooleanTrue forKey:v72];
-        v133 = *(&v190->_restaurantBookingLinkSpecifier + 3);
-        *(&v190->_restaurantBookingLinkSpecifier + 3) = v132;
+        v133 = *(&selfCopy->_restaurantBookingLinkSpecifier + 3);
+        *(&selfCopy->_restaurantBookingLinkSpecifier + 3) = v132;
 
         goto LABEL_37;
       }
     }
 
-    else if (!v124)
+    else if (!hasInstalledApplications2)
     {
       goto LABEL_35;
     }
@@ -705,10 +705,10 @@ LABEL_36:
 
     [v189 addObject:v151];
     [v151 setProperty:&__kCFBooleanTrue forKey:v72];
-    v152 = *(&v190->_rideBookingLinkSpecifier + 3);
-    *(&v190->_rideBookingLinkSpecifier + 3) = v151;
+    v152 = *(&selfCopy->_rideBookingLinkSpecifier + 3);
+    *(&selfCopy->_rideBookingLinkSpecifier + 3) = v151;
 
-    if (!v126)
+    if (!hasInstalledApplications3)
     {
       goto LABEL_37;
     }
@@ -727,16 +727,16 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v137 = [v135 isEphemeralMultiUser];
+  isEphemeralMultiUser = [v135 isEphemeralMultiUser];
 
   v136 = &PSBundlePathForPreferenceBundle_ptr;
-  if ((AutomaticParkedCarLocationSupported & (v137 ^ 1)) == 1)
+  if ((AutomaticParkedCarLocationSupported & (isEphemeralMultiUser ^ 1)) == 1)
   {
     v138 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v139 = [v138 localizedStringForKey:@"Parked Car Group Tile [Settings]" value:@"localized string not found" table:0];
     v135 = [PSSpecifier preferenceSpecifierNamed:v139 target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
-    v140 = [(MapsSettingsController *)v190 parkedCarEnabled:0];
+    v140 = [(MapsSettingsController *)selfCopy parkedCarEnabled:0];
     LOBYTE(v138) = [v140 BOOLValue];
 
     if (v138)
@@ -768,7 +768,7 @@ LABEL_52:
     [v75 addObject:v135];
     v154 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v155 = [v154 localizedStringForKey:@"Parked Car Switch Title [Settings]" value:@"localized string not found" table:0];
-    v156 = [PSSpecifier preferenceSpecifierNamed:v155 target:v190 set:"_setParkedCarEnabled:specifier:" get:"parkedCarEnabled:" detail:0 cell:6 edit:0];
+    v156 = [PSSpecifier preferenceSpecifierNamed:v155 target:selfCopy set:"_setParkedCarEnabled:specifier:" get:"parkedCarEnabled:" detail:0 cell:6 edit:0];
 
     v157 = +[MCProfileConnection sharedConnection];
     LODWORD(v154) = [v157 BOOLRestrictionForFeature:MCFeatureFindMyCarAllowed];
@@ -788,7 +788,7 @@ LABEL_52:
   }
 
 LABEL_53:
-  if ((MapsFeature_IsEnabled_RAPCommunityID() & 1) == 0 && _MKRAPIsAvailable() && *(&v190->super + 1))
+  if ((MapsFeature_IsEnabled_RAPCommunityID() & 1) == 0 && _MKRAPIsAvailable() && *(&selfCopy->super + 1))
   {
     v160 = [v136[415] bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v161 = [v160 localizedStringForKey:@"Report an Issue Group Title [Settings]" value:@"localized string not found" table:0];
@@ -797,13 +797,13 @@ LABEL_53:
     [v189 addObject:v162];
     v163 = [v136[415] bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v164 = [v163 localizedStringForKey:@"Email Correspondence Switch Label [Settings]" value:@"localized string not found" table:0];
-    v165 = [PSSpecifier preferenceSpecifierNamed:v164 target:v190 set:"_setAllowEmailCorrespondence:specifier:" get:"_allowEmailCorrespondence:" detail:0 cell:6 edit:0];
+    v165 = [PSSpecifier preferenceSpecifierNamed:v164 target:selfCopy set:"_setAllowEmailCorrespondence:specifier:" get:"_allowEmailCorrespondence:" detail:0 cell:6 edit:0];
 
     [v165 setProperty:&__kCFBooleanTrue forKey:v72];
     v166 = [v136[415] bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v75 = v189;
     v167 = [v166 localizedStringForKey:@"Report an Issue Explanation (Format) [Settings]" value:@"localized string not found" table:0];
-    v168 = [NSString stringWithFormat:v167, *(&v190->super + 1)];
+    v168 = [NSString stringWithFormat:v167, *(&selfCopy->super + 1)];
 
     [v165 setProperty:v168 forKey:v179];
     [v189 addObject:v165];
@@ -816,13 +816,13 @@ LABEL_53:
     v169 = v187;
   }
 
-  if ([(MapsSettingsController *)v190 _shouldShowUKRegulatorySection])
+  if ([(MapsSettingsController *)selfCopy _shouldShowUKRegulatorySection])
   {
     v170 = [PSSpecifier preferenceSpecifierNamed:0 target:0 set:0 get:0 detail:0 cell:0 edit:0];
     [v75 addObject:v170];
     v171 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v172 = [v171 localizedStringForKey:@"UK Online Safety Regulatory Button [Settings]" value:@"localized string not found" table:0];
-    v173 = [PSSpecifier preferenceSpecifierNamed:v172 target:v190 set:0 get:0 detail:0 cell:13 edit:0];
+    v173 = [PSSpecifier preferenceSpecifierNamed:v172 target:selfCopy set:0 get:0 detail:0 cell:13 edit:0];
 
     [v173 setButtonAction:"_showUKRegulatoryWebPage:"];
     [v75 addObject:v173];
@@ -830,22 +830,22 @@ LABEL_53:
     v169 = v173;
   }
 
-  [(MapsSettingsController *)v190 setSpecifiers:v75];
-  v174 = [(MapsSettingsController *)v190 _specifierIDForTransportType:GEOGetUserTransportTypePreference()];
-  v175 = [(MapsSettingsController *)v190 specifierForID:v174];
+  [(MapsSettingsController *)selfCopy setSpecifiers:v75];
+  v174 = [(MapsSettingsController *)selfCopy _specifierIDForTransportType:GEOGetUserTransportTypePreference()];
+  v175 = [(MapsSettingsController *)selfCopy specifierForID:v174];
   [v184 setProperty:v175 forKey:PSRadioGroupCheckedSpecifierKey];
 
   return v75;
 }
 
-- (void)_addOfflineSpecifiers:(id)a3
+- (void)_addOfflineSpecifiers:(id)specifiers
 {
-  v65 = a3;
+  specifiersCopy = specifiers;
   if (GEOSupportsOfflineMaps())
   {
-    v4 = [(MapsSettingsController *)self offlineHelper];
-    v5 = [v4 subscriptions];
-    v6 = [v5 count];
+    offlineHelper = [(MapsSettingsController *)self offlineHelper];
+    subscriptions = [offlineHelper subscriptions];
+    v6 = [subscriptions count];
 
     if (v6)
     {
@@ -853,12 +853,12 @@ LABEL_53:
       v8 = [v7 localizedStringForKey:@"Offline Maps [Settings]" value:@"localized string not found" table:0];
       v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
-      [v65 addObject:v9];
-      v10 = [(MapsSettingsController *)self _offlineDownloadSettingsMenu];
-      v59 = v10;
-      if (v10)
+      [specifiersCopy addObject:v9];
+      _offlineDownloadSettingsMenu = [(MapsSettingsController *)self _offlineDownloadSettingsMenu];
+      v59 = _offlineDownloadSettingsMenu;
+      if (_offlineDownloadSettingsMenu)
       {
-        v11 = v10;
+        v11 = _offlineDownloadSettingsMenu;
         v12 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
         v13 = [v12 localizedStringForKey:@"Downloads [Settings]" value:@"localized string not found" table:0];
         v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:0 detail:0 cell:-1 edit:0];
@@ -871,7 +871,7 @@ LABEL_53:
         v17 = PSIDKey;
         [v14 setProperty:@"DownloadsPreferencesID" forKey:PSIDKey];
         [v14 setUserInfo:v11];
-        [v65 addObject:v14];
+        [specifiersCopy addObject:v14];
         v9 = v14;
       }
 
@@ -883,23 +883,23 @@ LABEL_53:
       }
 
       v61 = v17;
-      v18 = [(MapsSettingsController *)self offlineHelper];
-      v19 = [v18 totalOfflineDataSize];
+      offlineHelper2 = [(MapsSettingsController *)self offlineHelper];
+      totalOfflineDataSize = [offlineHelper2 totalOfflineDataSize];
       updated = GEOMaximumAutomaticUpdateOfflineDataSize();
 
       v21 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
       v22 = [v21 localizedStringForKey:@"Automatic Updates [Settings]" value:@"localized string not found" table:0];
       v23 = [PSSpecifier preferenceSpecifierNamed:v22 target:self set:"_setEnableAutomaticUpdates:specifier:" get:"_enableAutomaticUpdates:" detail:0 cell:6 edit:0];
 
-      v24 = [NSNumber numberWithBool:v19 <= updated];
+      updated = [NSNumber numberWithBool:totalOfflineDataSize <= updated];
       v63 = v16;
-      [v23 setProperty:v24 forKey:v16];
+      [v23 setProperty:updated forKey:v16];
 
       v62 = PSAllowMultilineTitleKey;
       [v23 setProperty:&__kCFBooleanTrue forKey:?];
       [v23 setProperty:objc_opt_class() forKey:v64];
       [v23 setProperty:@"AutomaticUpdatesPreferencesID" forKey:v17];
-      if (v19 > updated)
+      if (totalOfflineDataSize > updated)
       {
         v25 = objc_alloc_init(NSByteCountFormatter);
         v26 = [v25 stringFromByteCount:GEOMaximumAutomaticUpdateOfflineDataSize()];
@@ -918,7 +918,7 @@ LABEL_53:
         [v23 setProperty:v26 forKey:PSTableCellSubtitleTextKey];
       }
 
-      [v65 addObject:v23];
+      [specifiersCopy addObject:v23];
       v31 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
       v32 = [v31 localizedStringForKey:@"Optimize Storage [Settings]" value:@"localized string not found" table:0];
       v33 = [PSSpecifier preferenceSpecifierNamed:v32 target:self set:"_setEnableOptimizeStorage:specifier:" get:"_enableOptimizeStorage:" detail:0 cell:6 edit:0];
@@ -933,25 +933,25 @@ LABEL_53:
 
       v37 = v61;
       [v33 setProperty:@"OptimizeStoragePreferencesID" forKey:v61];
-      [v65 addObject:v33];
+      [specifiersCopy addObject:v33];
       v60 = v27;
       if (MapsFeature_IsEnabled_StandaloneWatchOffline())
       {
         v38 = +[NRPairedDeviceRegistry sharedInstance];
-        v39 = [v38 getActivePairedDeviceExcludingAltAccount];
+        getActivePairedDeviceExcludingAltAccount = [v38 getActivePairedDeviceExcludingAltAccount];
 
-        if (v39)
+        if (getActivePairedDeviceExcludingAltAccount)
         {
           v40 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
           v41 = [v40 localizedStringForKey:@"Sync with Watch [Settings]" value:@"localized string not found" table:0];
           v42 = [PSSpecifier preferenceSpecifierNamed:v41 target:self set:"_setEnableOfflineSyncToWatch:specifier:" get:"_enableOfflineSyncToWatch:" detail:0 cell:6 edit:0];
 
           v43 = [[NSUUID alloc] initWithUUIDString:@"3B512C1E-F8D5-4FE7-B109-1AD8EF7F924D"];
-          LODWORD(v40) = [v39 supportsCapability:v43];
+          LODWORD(v40) = [getActivePairedDeviceExcludingAltAccount supportsCapability:v43];
 
           if (v40)
           {
-            v44 = [v39 valueForProperty:NRDevicePropertyName];
+            v44 = [getActivePairedDeviceExcludingAltAccount valueForProperty:NRDevicePropertyName];
             v45 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
             v46 = [v45 localizedStringForKey:@"Sync with Watch Subtitle [Settings]" value:@"localized string not found" table:0];
             v47 = [NSString localizedStringWithFormat:v46, v44];
@@ -970,7 +970,7 @@ LABEL_53:
           [v42 setProperty:&__kCFBooleanTrue forKey:v62];
           [v42 setProperty:objc_opt_class() forKey:v64];
           [v42 setProperty:@"SyncWithAppleWatchPreferencesID" forKey:v61];
-          [v65 addObject:v42];
+          [specifiersCopy addObject:v42];
           v33 = v42;
         }
 
@@ -990,8 +990,8 @@ LABEL_53:
       v53 = v52 = v34;
       v54 = [v50 preferenceSpecifierNamed:v53 target:self set:"_setEnableOnlyUseOfflineMaps:specifier:" get:"_enableOnlyUseOfflineMaps:" detail:0 cell:6 edit:0];
 
-      v55 = [(MapsSettingsController *)self offlineHelper];
-      v56 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v55 hasFullyLoadedSubscriptions]);
+      offlineHelper3 = [(MapsSettingsController *)self offlineHelper];
+      v56 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [offlineHelper3 hasFullyLoadedSubscriptions]);
       [v54 setProperty:v56 forKey:v63];
 
       [v54 setProperty:&__kCFBooleanTrue forKey:v62];
@@ -1001,7 +1001,7 @@ LABEL_53:
       [v54 setProperty:v58 forKey:v60];
 
       [v54 setProperty:@"OnlyUseOfflineMapsPreferencesID" forKey:v48];
-      [v65 addObject:v54];
+      [specifiersCopy addObject:v54];
     }
   }
 }
@@ -1088,14 +1088,14 @@ LABEL_15:
   return v3;
 }
 
-- (id)_enableAutomaticUpdates:(id)a3
+- (id)_enableAutomaticUpdates:(id)updates
 {
-  v3 = [(MapsSettingsController *)self offlineHelper];
-  v4 = [v3 totalOfflineDataSize];
+  offlineHelper = [(MapsSettingsController *)self offlineHelper];
+  totalOfflineDataSize = [offlineHelper totalOfflineDataSize];
   updated = GEOMaximumAutomaticUpdateOfflineDataSize();
 
   BOOL = GEOConfigGetBOOL();
-  if (v4 <= updated)
+  if (totalOfflineDataSize <= updated)
   {
     v7 = BOOL;
   }
@@ -1108,47 +1108,47 @@ LABEL_15:
   return [NSNumber numberWithInt:v7];
 }
 
-- (void)_setEnableAutomaticUpdates:(id)a3 specifier:(id)a4
+- (void)_setEnableAutomaticUpdates:(id)updates specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [updates BOOLValue];
 
   GEOConfigSetBOOL();
 }
 
-- (id)_enableOptimizeStorage:(id)a3
+- (id)_enableOptimizeStorage:(id)storage
 {
   BOOL = GEOConfigGetBOOL();
 
   return [NSNumber numberWithBool:BOOL];
 }
 
-- (void)_setEnableOptimizeStorage:(id)a3 specifier:(id)a4
+- (void)_setEnableOptimizeStorage:(id)storage specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [storage BOOLValue];
 
   GEOConfigSetBOOL();
 }
 
-- (id)_enableOfflineSyncToWatch:(id)a3
+- (id)_enableOfflineSyncToWatch:(id)watch
 {
   BOOL = GEOConfigGetBOOL();
 
   return [NSNumber numberWithBool:BOOL];
 }
 
-- (void)_setEnableOfflineSyncToWatch:(id)a3 specifier:(id)a4
+- (void)_setEnableOfflineSyncToWatch:(id)watch specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [watch BOOLValue];
 
   GEOConfigSetBOOL();
 }
 
-- (id)_enableOnlyUseOfflineMaps:(id)a3
+- (id)_enableOnlyUseOfflineMaps:(id)maps
 {
   if (GEOConfigGetBOOL())
   {
-    v4 = [(MapsSettingsController *)self offlineHelper];
-    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 hasFullyLoadedSubscriptions]);
+    offlineHelper = [(MapsSettingsController *)self offlineHelper];
+    v5 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [offlineHelper hasFullyLoadedSubscriptions]);
   }
 
   else
@@ -1159,22 +1159,22 @@ LABEL_15:
   return v5;
 }
 
-- (void)_setEnableOnlyUseOfflineMaps:(id)a3 specifier:(id)a4
+- (void)_setEnableOnlyUseOfflineMaps:(id)maps specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [maps BOOLValue];
 
   GEOConfigSetBOOL();
 }
 
-- (id)parkedCarEnabled:(id)a3
+- (id)parkedCarEnabled:(id)enabled
 {
-  v3 = a3;
-  v4 = [objc_opt_class() parkedCarEnabled:v3];
+  enabledCopy = enabled;
+  v4 = [objc_opt_class() parkedCarEnabled:enabledCopy];
 
   return v4;
 }
 
-+ (id)parkedCarEnabled:(id)a3
++ (id)parkedCarEnabled:(id)enabled
 {
   v3 = +[MCProfileConnection sharedConnection];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isFindMyCarAllowed]);
@@ -1182,10 +1182,10 @@ LABEL_15:
   return v4;
 }
 
-- (void)_setParkedCarEnabled:(id)a3 specifier:(id)a4
+- (void)_setParkedCarEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
-  if ([v5 BOOLValue])
+  enabledCopy = enabled;
+  if ([enabledCopy BOOLValue])
   {
     v6 = 5029;
   }
@@ -1196,25 +1196,25 @@ LABEL_15:
   }
 
   v7 = +[MCProfileConnection sharedConnection];
-  v8 = [v5 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v7 setFindMyCarAllowed:v8];
+  [v7 setFindMyCarAllowed:bOOLValue];
   v9 = +[MKMapService sharedService];
   [v9 captureUserAction:v6 onTarget:602 eventValue:0];
 
   [(MapsSettingsController *)self reloadSpecifiers];
 }
 
-- (void)_addShareETASpecifiers:(id)a3
+- (void)_addShareETASpecifiers:(id)specifiers
 {
-  v19 = a3;
+  specifiersCopy = specifiers;
   if (MSPSharedTripNetworkEnabled())
   {
     v4 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v5 = [v4 localizedStringForKey:@"Share ETA [Settings]" value:@"localized string not found" table:0];
     v6 = [PSSpecifier preferenceSpecifierNamed:v5 target:0 set:0 get:0 detail:0 cell:0 edit:0];
 
-    [v19 addObject:v6];
+    [specifiersCopy addObject:v6];
     v7 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v8 = [v7 localizedStringForKey:@"Enable Share ETA [Settings]" value:@"localized string not found" table:0];
     v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:"_setEnableShareETA:specifier:" get:"_enableShareETA:" detail:0 cell:6 edit:0];
@@ -1223,7 +1223,7 @@ LABEL_15:
     [v9 setProperty:@"MSPShareETAUserEnabledKey" forKey:PSDefaultsKey];
     v10 = PSIDKey;
     [v9 setProperty:@"ShareETAPreferenceID" forKey:PSIDKey];
-    [v19 addObject:v9];
+    [specifiersCopy addObject:v9];
     v11 = [NSBundle bundleForClass:NSClassFromString(@"MapsSettingsController")];
     v12 = [v11 localizedStringForKey:@"Share ETA" value:@"localized string not found" table:0];
 
@@ -1242,32 +1242,32 @@ LABEL_15:
     [v15 setProperty:v18 forKey:PSFooterTextGroupKey];
 
     [v15 setProperty:@"BlockedContactsPreferenceID" forKey:v10];
-    [v19 addObject:v15];
+    [specifiersCopy addObject:v15];
   }
 }
 
-- (void)_setEnableShareETA:(id)a3 specifier:(id)a4
+- (void)_setEnableShareETA:(id)a specifier:(id)specifier
 {
-  [MapsSettings setValue:a3 forConfigKey:GEOConfigMSPShareETAUserEnabled[0], GEOConfigMSPShareETAUserEnabled[1]];
+  [MapsSettings setValue:a forConfigKey:GEOConfigMSPShareETAUserEnabled[0], GEOConfigMSPShareETAUserEnabled[1]];
 
   notify_post("com.apple.maps.ShareETAUserEnabled");
 }
 
-- (id)lagunaBeachSiriSuggestionsEnabled:(id)a3
+- (id)lagunaBeachSiriSuggestionsEnabled:(id)enabled
 {
   v3 = GEOAreLagunaBeachSiriSuggestionsEnabled();
 
   return [NSNumber numberWithBool:v3];
 }
 
-- (void)_setLagunaBeachSiriSuggestionsEnabled:(id)a3 specifier:(id)a4
+- (void)_setLagunaBeachSiriSuggestionsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
-  [v4 BOOLValue];
+  enabledCopy = enabled;
+  [enabledCopy BOOLValue];
   GEOSetAreLagunaBeachSiriSuggestionsEnabled();
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = 322;
   }
@@ -1280,21 +1280,21 @@ LABEL_15:
   [GEOAPPortal captureUserAction:v6 target:602 value:0];
 }
 
-- (id)allowsAddingRatingsAndPhotos:(id)a3
+- (id)allowsAddingRatingsAndPhotos:(id)photos
 {
   LagunaBeachContributions = GEOCanUserMakeLagunaBeachContributions();
 
   return [NSNumber numberWithBool:LagunaBeachContributions];
 }
 
-- (void)_setAllowsAddingRatingsAndPhotos:(id)a3 specifier:(id)a4
+- (void)_setAllowsAddingRatingsAndPhotos:(id)photos specifier:(id)specifier
 {
-  v4 = a3;
-  [v4 BOOLValue];
+  photosCopy = photos;
+  [photosCopy BOOLValue];
   GEOSetCanUserMakeLagunaBeachContributions();
-  v5 = [v4 BOOLValue];
+  bOOLValue = [photosCopy BOOLValue];
 
-  if (v5)
+  if (bOOLValue)
   {
     v6 = 324;
   }
@@ -1307,56 +1307,56 @@ LABEL_15:
   [GEOAPPortal captureUserAction:v6 target:602 value:0];
 }
 
-- (void)_appendPrivacyFooterFromBundleIdentifiers:(id)a3 toGroupSpecifier:(id)a4 selector:(SEL)a5
+- (void)_appendPrivacyFooterFromBundleIdentifiers:(id)identifiers toGroupSpecifier:(id)specifier selector:(SEL)selector
 {
-  v24 = a4;
-  v8 = a3;
-  if ([v8 count] <= 1)
+  specifierCopy = specifier;
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] <= 1)
   {
-    v10 = [v8 firstObject];
+    firstObject = [identifiersCopy firstObject];
 
-    v9 = [OBPrivacyLinkController linkWithBundleIdentifier:v10];
-    v8 = v10;
+    v9 = [OBPrivacyLinkController linkWithBundleIdentifier:firstObject];
+    identifiersCopy = firstObject;
   }
 
   else
   {
-    v9 = [OBPrivacyLinkController linkWithBundleIdentifiers:v8];
+    v9 = [OBPrivacyLinkController linkWithBundleIdentifiers:identifiersCopy];
   }
 
-  v11 = [v9 flow];
-  v12 = [v11 localizedButtonTitle];
+  flow = [v9 flow];
+  localizedButtonTitle = [flow localizedButtonTitle];
 
-  v13 = [v24 propertyForKey:PSFooterTextGroupKey];
+  v13 = [specifierCopy propertyForKey:PSFooterTextGroupKey];
   if (v13)
   {
-    [NSString stringWithFormat:@"%@ %@", v13, v12];
+    [NSString stringWithFormat:@"%@ %@", v13, localizedButtonTitle];
   }
 
   else
   {
-    [NSString stringWithFormat:@"%@", v12, v23];
+    [NSString stringWithFormat:@"%@", localizedButtonTitle, v23];
   }
   v14 = ;
   v15 = objc_opt_class();
   v16 = NSStringFromClass(v15);
   v17 = PSFooterCellClassGroupKey;
-  [v24 setProperty:v16 forKey:PSFooterCellClassGroupKey];
+  [specifierCopy setProperty:v16 forKey:PSFooterCellClassGroupKey];
 
-  [v24 setProperty:v14 forKey:PSFooterHyperlinkViewTitleKey];
-  v26.location = [v14 rangeOfString:v12];
+  [specifierCopy setProperty:v14 forKey:PSFooterHyperlinkViewTitleKey];
+  v26.location = [v14 rangeOfString:localizedButtonTitle];
   v18 = NSStringFromRange(v26);
-  [v24 setProperty:v18 forKey:PSFooterHyperlinkViewLinkRangeKey];
+  [specifierCopy setProperty:v18 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
   v19 = [NSValue valueWithNonretainedObject:self];
-  [v24 setProperty:v19 forKey:PSFooterHyperlinkViewTargetKey];
+  [specifierCopy setProperty:v19 forKey:PSFooterHyperlinkViewTargetKey];
 
-  v20 = NSStringFromSelector(a5);
-  [v24 setProperty:v20 forKey:PSFooterHyperlinkViewActionKey];
+  v20 = NSStringFromSelector(selector);
+  [specifierCopy setProperty:v20 forKey:PSFooterHyperlinkViewActionKey];
 
   v21 = objc_opt_class();
   v22 = NSStringFromClass(v21);
-  [v24 setProperty:v22 forKey:v17];
+  [specifierCopy setProperty:v22 forKey:v17];
 }
 
 - (id)_privacyIdentifiersForContributeToMapsSection
@@ -1379,8 +1379,8 @@ LABEL_15:
 
 - (void)_presentContributeToMapsPrivacySplashViewController
 {
-  v3 = [(MapsSettingsController *)self _privacyIdentifiersForContributeToMapsSection];
-  [(MapsSettingsController *)self _presentPrivacySplashViewControllerForIdentifiers:v3];
+  _privacyIdentifiersForContributeToMapsSection = [(MapsSettingsController *)self _privacyIdentifiersForContributeToMapsSection];
+  [(MapsSettingsController *)self _presentPrivacySplashViewControllerForIdentifiers:_privacyIdentifiersForContributeToMapsSection];
 }
 
 - (void)_presentMapsAppPrivacySplashViewController
@@ -1390,51 +1390,51 @@ LABEL_15:
   [(MapsSettingsController *)self _presentPrivacySplashViewControllerForIdentifiers:v3];
 }
 
-- (void)_presentPrivacySplashViewControllerForIdentifiers:(id)a3
+- (void)_presentPrivacySplashViewControllerForIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  if ([v4 count] > 1)
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count] > 1)
   {
-    v6 = [OBPrivacyPresenter presenterForPrivacyUnifiedAboutWithIdentifiers:v4];
+    v6 = [OBPrivacyPresenter presenterForPrivacyUnifiedAboutWithIdentifiers:identifiersCopy];
   }
 
   else
   {
-    v5 = [v4 firstObject];
+    firstObject = [identifiersCopy firstObject];
 
-    v6 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:v5];
-    v4 = v5;
+    v6 = [OBPrivacyPresenter presenterForPrivacySplashWithIdentifier:firstObject];
+    identifiersCopy = firstObject;
   }
 
   [v6 setPresentingViewController:self];
   [v6 present];
 }
 
-- (id)enableImproveEVRouting:(id)a3
+- (id)enableImproveEVRouting:(id)routing
 {
   BOOL = GEOConfigGetBOOL();
 
   return [NSNumber numberWithBool:BOOL];
 }
 
-- (void)setEnableImproveEVRouting:(id)a3 specifier:(id)a4
+- (void)setEnableImproveEVRouting:(id)routing specifier:(id)specifier
 {
-  [a3 BOOLValue];
+  [routing BOOLValue];
 
   GEOConfigSetBOOL();
 }
 
-- (void)didUpdateEVApplications:(id)a3
+- (void)didUpdateEVApplications:(id)applications
 {
-  v4 = a3;
-  v5 = v4;
-  v7 = v4;
+  applicationsCopy = applications;
+  v5 = applicationsCopy;
+  v7 = applicationsCopy;
   if (!*(&self->_restaurantBookingLinkSpecifier + 3))
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 count];
+  v6 = [applicationsCopy count];
   v5 = v7;
   if (v6)
   {
@@ -1456,9 +1456,9 @@ LABEL_6:
   _objc_release_x1();
 }
 
-- (void)didUpdateElectricVehicleCount:(unint64_t)a3
+- (void)didUpdateElectricVehicleCount:(unint64_t)count
 {
-  if ((a3 == 0) != (*(&self->_restaurantBookingLinkSpecifier + 3) == 0))
+  if ((count == 0) != (*(&self->_restaurantBookingLinkSpecifier + 3) == 0))
   {
     [(MapsSettingsController *)self reloadSpecifiers];
   }
@@ -1480,33 +1480,33 @@ LABEL_6:
   objc_destroyWeak(&location);
 }
 
-- (id)_thirdPartyPhotoSharingEnabled:(id)a3
+- (id)_thirdPartyPhotoSharingEnabled:(id)enabled
 {
-  v3 = [(MapsSettingsController *)self thirdPartyPhotoSharingPreference];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 optIn]);
+  thirdPartyPhotoSharingPreference = [(MapsSettingsController *)self thirdPartyPhotoSharingPreference];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [thirdPartyPhotoSharingPreference optIn]);
 
   return v4;
 }
 
-- (void)_setThirdPartyPhotoSharingEnabled:(id)a3 specifier:(id)a4
+- (void)_setThirdPartyPhotoSharingEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
-  [(MapsSettingsController *)self reloadSpecifier:v7];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  [specifierCopy setProperty:&__kCFBooleanFalse forKey:PSEnabledKey];
+  [(MapsSettingsController *)self reloadSpecifier:specifierCopy];
   objc_initWeak(&location, self);
   v8 = +[UGCThirdPartyPhotoSharingPreferencesManager sharedManager];
-  v9 = [v6 BOOLValue];
-  v10 = [(MapsSettingsController *)self thirdPartyPhotoSharingPreference];
-  v11 = [v10 version];
+  bOOLValue = [enabledCopy BOOLValue];
+  thirdPartyPhotoSharingPreference = [(MapsSettingsController *)self thirdPartyPhotoSharingPreference];
+  version = [thirdPartyPhotoSharingPreference version];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_252E8;
   v13[3] = &unk_80118;
   objc_copyWeak(&v15, &location);
-  v12 = v7;
+  v12 = specifierCopy;
   v14 = v12;
-  [v8 updateThirdPartyPhotoSharingPreferences:v9 versionID:v11 completion:v13];
+  [v8 updateThirdPartyPhotoSharingPreferences:bOOLValue versionID:version completion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1515,13 +1515,13 @@ LABEL_6:
 - (BOOL)_shouldShowUKRegulatorySection
 {
   v2 = +[NSLocale currentLocale];
-  v3 = [v2 regionCode];
-  v4 = [v3 isEqualToString:@"GB"];
+  regionCode = [v2 regionCode];
+  v4 = [regionCode isEqualToString:@"GB"];
 
   return v4;
 }
 
-- (void)_showUKRegulatoryWebPage:(id)a3
+- (void)_showUKRegulatoryWebPage:(id)page
 {
   v4 = [SFSafariViewController alloc];
   v5 = [NSURL URLWithString:@"https://www.apple.com/uk/legal/online-safety/index.html"];
@@ -1531,12 +1531,12 @@ LABEL_6:
   [(MapsSettingsController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v6 = a3.var0 == 628 && a3.var1 == &unk_74DF8;
-  if (v6 || (a3.var0 == GeoOfflineConfig_AutomaticUpdatesEnabled ? (v7 = a3.var1 == *(&GeoOfflineConfig_AutomaticUpdatesEnabled + 1)) : (v7 = 0), v7 || (a3.var0 == GeoOfflineConfig_OptimizeStorageEnabled ? (v8 = a3.var1 == *(&GeoOfflineConfig_OptimizeStorageEnabled + 1)) : (v8 = 0), v8 || (a3.var0 == GeoOfflineConfig_SyncToWatchEnabled ? (v9 = a3.var1 == *(&GeoOfflineConfig_SyncToWatchEnabled + 1)) : (v9 = 0), v9 || (a3.var0 == 569 ? (v10 = a3.var1 == &unk_73E80) : (v10 = 0), v10)))))
+  var1 = key.var1;
+  var0 = key.var0;
+  v6 = key.var0 == 628 && key.var1 == &unk_74DF8;
+  if (v6 || (key.var0 == GeoOfflineConfig_AutomaticUpdatesEnabled ? (v7 = key.var1 == *(&GeoOfflineConfig_AutomaticUpdatesEnabled + 1)) : (v7 = 0), v7 || (key.var0 == GeoOfflineConfig_OptimizeStorageEnabled ? (v8 = key.var1 == *(&GeoOfflineConfig_OptimizeStorageEnabled + 1)) : (v8 = 0), v8 || (key.var0 == GeoOfflineConfig_SyncToWatchEnabled ? (v9 = key.var1 == *(&GeoOfflineConfig_SyncToWatchEnabled + 1)) : (v9 = 0), v9 || (key.var0 == 569 ? (v10 = key.var1 == &unk_73E80) : (v10 = 0), v10)))))
   {
     [(MapsSettingsController *)self reloadSpecifiers];
   }

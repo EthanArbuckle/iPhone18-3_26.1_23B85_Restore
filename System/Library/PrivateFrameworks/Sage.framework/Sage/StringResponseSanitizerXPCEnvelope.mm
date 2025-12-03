@@ -1,14 +1,14 @@
 @interface StringResponseSanitizerXPCEnvelope
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation StringResponseSanitizerXPCEnvelope
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  StringResponseSanitizerXPCEnvelope.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  StringResponseSanitizerXPCEnvelope.encode(with:)(coderCopy);
 }
 
 @end

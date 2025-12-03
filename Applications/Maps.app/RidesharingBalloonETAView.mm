@@ -1,23 +1,23 @@
 @interface RidesharingBalloonETAView
-- (RidesharingBalloonETAView)initWithFrame:(CGRect)a3;
+- (RidesharingBalloonETAView)initWithFrame:(CGRect)frame;
 - (id)_minutesText;
-- (void)setMinutes:(id)a3 withState:(unint64_t)a4;
-- (void)setScheduledPickupWindowStart:(id)a3;
+- (void)setMinutes:(id)minutes withState:(unint64_t)state;
+- (void)setScheduledPickupWindowStart:(id)start;
 @end
 
 @implementation RidesharingBalloonETAView
 
 - (id)_minutesText
 {
-  v2 = [(RidesharingBalloonETAView *)self minutes];
-  v3 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", @"%llu", [v2 unsignedLongLongValue]);
+  minutes = [(RidesharingBalloonETAView *)self minutes];
+  v3 = +[NSString localizedStringWithFormat:](NSString, "localizedStringWithFormat:", @"%llu", [minutes unsignedLongLongValue]);
 
   return v3;
 }
 
-- (void)setScheduledPickupWindowStart:(id)a3
+- (void)setScheduledPickupWindowStart:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   if (qword_10195EB48 != -1)
   {
     dispatch_once(&qword_10195EB48, &stru_10164DAA0);
@@ -30,11 +30,11 @@
   v7 = +[NSLocale autoupdatingCurrentLocale];
   [qword_10195EB40 setLocale:v7];
 
-  v8 = [v4 timeZone];
-  [qword_10195EB40 setTimeZone:v8];
+  timeZone = [startCopy timeZone];
+  [qword_10195EB40 setTimeZone:timeZone];
 
   v9 = +[NSCalendar autoupdatingCurrentCalendar];
-  v10 = [v9 dateFromComponents:v4];
+  v10 = [v9 dateFromComponents:startCopy];
 
   v11 = [qword_10195EB40 stringFromDate:v10];
   v12 = +[NSLocale autoupdatingCurrentLocale];
@@ -64,21 +64,21 @@
   v21[3] = &unk_101661A40;
   v21[4] = self;
   v22 = v15;
-  v23 = v4;
-  v19 = v4;
+  v23 = startCopy;
+  v19 = startCopy;
   v20 = v15;
   [(RidesharingBalloonETAView *)self crossfadeView:subLabel animations:v21];
   [(UIActivityIndicatorView *)self->_spinner stopAnimating];
 }
 
-- (void)setMinutes:(id)a3 withState:(unint64_t)a4
+- (void)setMinutes:(id)minutes withState:(unint64_t)state
 {
-  v6 = [a3 copy];
+  v6 = [minutes copy];
   minutes = self->_minutes;
   self->_minutes = v6;
 
-  self->_balloonState = a4;
-  if (a4 == 2)
+  self->_balloonState = state;
+  if (state == 2)
   {
     label = self->_label;
     v15[0] = _NSConcreteStackBlock;
@@ -99,7 +99,7 @@
 
   else
   {
-    if (a4 == 1)
+    if (state == 1)
     {
       v11 = self->_label;
       v17[0] = _NSConcreteStackBlock;
@@ -119,7 +119,7 @@
 
     else
     {
-      if (a4)
+      if (state)
       {
         return;
       }
@@ -145,11 +145,11 @@
   }
 }
 
-- (RidesharingBalloonETAView)initWithFrame:(CGRect)a3
+- (RidesharingBalloonETAView)initWithFrame:(CGRect)frame
 {
   v36.receiver = self;
   v36.super_class = RidesharingBalloonETAView;
-  v3 = [(RidesharingBalloonETAView *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RidesharingBalloonETAView *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[RidesharingBalloonETAView balloonFillColor];
@@ -193,29 +193,29 @@
     [(UIActivityIndicatorView *)v3->_spinner setHidesWhenStopped:1];
     [(RidesharingBalloonETAView *)v3 addSubview:v3->_spinner];
     [(UIActivityIndicatorView *)v3->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
-    v35 = [(UILabel *)v3->_label centerXAnchor];
-    v34 = [(RidesharingBalloonETAView *)v3 centerXAnchor];
-    v33 = [v35 constraintEqualToAnchor:v34];
+    centerXAnchor = [(UILabel *)v3->_label centerXAnchor];
+    centerXAnchor2 = [(RidesharingBalloonETAView *)v3 centerXAnchor];
+    v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v37[0] = v33;
-    v32 = [(UILabel *)v3->_label centerYAnchor];
-    v31 = [(RidesharingBalloonETAView *)v3 centerYAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31 constant:-7.0];
+    centerYAnchor = [(UILabel *)v3->_label centerYAnchor];
+    centerYAnchor2 = [(RidesharingBalloonETAView *)v3 centerYAnchor];
+    v30 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:-7.0];
     v37[1] = v30;
-    v29 = [(UILabel *)v3->_subLabel firstBaselineAnchor];
-    v28 = [(UILabel *)v3->_label lastBaselineAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28 constant:15.0];
+    firstBaselineAnchor = [(UILabel *)v3->_subLabel firstBaselineAnchor];
+    lastBaselineAnchor = [(UILabel *)v3->_label lastBaselineAnchor];
+    v27 = [firstBaselineAnchor constraintEqualToAnchor:lastBaselineAnchor constant:15.0];
     v37[2] = v27;
-    v26 = [(UILabel *)v3->_subLabel centerXAnchor];
-    v16 = [(RidesharingBalloonETAView *)v3 centerXAnchor];
-    v17 = [v26 constraintEqualToAnchor:v16];
+    centerXAnchor3 = [(UILabel *)v3->_subLabel centerXAnchor];
+    centerXAnchor4 = [(RidesharingBalloonETAView *)v3 centerXAnchor];
+    v17 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v37[3] = v17;
-    v18 = [(UIActivityIndicatorView *)v3->_spinner centerXAnchor];
-    v19 = [(RidesharingBalloonETAView *)v3 centerXAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    centerXAnchor5 = [(UIActivityIndicatorView *)v3->_spinner centerXAnchor];
+    centerXAnchor6 = [(RidesharingBalloonETAView *)v3 centerXAnchor];
+    v20 = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
     v37[4] = v20;
-    v21 = [(UIActivityIndicatorView *)v3->_spinner centerYAnchor];
-    v22 = [(RidesharingBalloonETAView *)v3 centerYAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerYAnchor3 = [(UIActivityIndicatorView *)v3->_spinner centerYAnchor];
+    centerYAnchor4 = [(RidesharingBalloonETAView *)v3 centerYAnchor];
+    v23 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v37[5] = v23;
     v24 = [NSArray arrayWithObjects:v37 count:6];
     [NSLayoutConstraint activateConstraints:v24];

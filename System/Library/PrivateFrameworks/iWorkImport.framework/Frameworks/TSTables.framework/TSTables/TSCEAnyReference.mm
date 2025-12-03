@@ -1,22 +1,22 @@
 @interface TSCEAnyReference
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCEAnyRef)anyRef;
-- (TSCEAnyReference)initWithCellRef:(const TSCECellRef *)a3;
-- (TSCEAnyReference)initWithRangeRef:(const TSCERangeRef *)a3;
+- (TSCEAnyReference)initWithCellRef:(const TSCECellRef *)ref;
+- (TSCEAnyReference)initWithRangeRef:(const TSCERangeRef *)ref;
 - (TSCERangeRef)rangeRef;
 - (TSCEWrappedRangeRef)rangeReference;
 - (TSKUIDStruct)tableUID;
 - (id).cxx_construct;
-- (id)p_stringByUnescapingQuotedStringWithPossibleDollarPrefix:(id)a3 partial:(BOOL)a4;
-- (id)referenceTextForAutocompleteWithCalculationEngine:(id)a3 contextSheetName:(id)a4 preserveFlags:(TSUPreserveFlags)a5 inputString:(id)a6 inputStringIsComplete:(BOOL)a7;
-- (id)referenceTextForAutocompleteWithCalculationEngine:(id)a3 hostTableUID:(const TSKUIDStruct *)a4 preserveFlags:(TSUPreserveFlags)a5 inputString:(id)a6 inputStringIsComplete:(BOOL)a7;
-- (id)referenceTextWithCalculationEngine:(id)a3 contextSheetName:(id)a4;
-- (id)referenceTextWithCalculationEngine:(id)a3 hostTableUID:(const TSKUIDStruct *)a4;
+- (id)p_stringByUnescapingQuotedStringWithPossibleDollarPrefix:(id)prefix partial:(BOOL)partial;
+- (id)referenceTextForAutocompleteWithCalculationEngine:(id)engine contextSheetName:(id)name preserveFlags:(TSUPreserveFlags)flags inputString:(id)string inputStringIsComplete:(BOOL)complete;
+- (id)referenceTextForAutocompleteWithCalculationEngine:(id)engine hostTableUID:(const TSKUIDStruct *)d preserveFlags:(TSUPreserveFlags)flags inputString:(id)string inputStringIsComplete:(BOOL)complete;
+- (id)referenceTextWithCalculationEngine:(id)engine contextSheetName:(id)name;
+- (id)referenceTextWithCalculationEngine:(id)engine hostTableUID:(const TSKUIDStruct *)d;
 @end
 
 @implementation TSCEAnyReference
 
-- (TSCEAnyReference)initWithRangeRef:(const TSCERangeRef *)a3
+- (TSCEAnyReference)initWithRangeRef:(const TSCERangeRef *)ref
 {
   v14 = *MEMORY[0x277D85DE8];
   v11.receiver = self;
@@ -25,8 +25,8 @@
   v5 = v4;
   if (v4)
   {
-    tableUID = a3->_tableUID;
-    *&v13[6] = a3->range;
+    tableUID = ref->_tableUID;
+    *&v13[6] = ref->range;
     *&v13[22] = tableUID;
     memset(&v12[7], 0, 18);
     *(v4 + 4) = 1;
@@ -45,7 +45,7 @@
   return v5;
 }
 
-- (TSCEAnyReference)initWithCellRef:(const TSCECellRef *)a3
+- (TSCEAnyReference)initWithCellRef:(const TSCECellRef *)ref
 {
   v12 = *MEMORY[0x277D85DE8];
   v8.receiver = self;
@@ -53,7 +53,7 @@
   v4 = [(TSCEAnyReference *)&v8 init];
   if (v4)
   {
-    TSCERangeRef::TSCERangeRef(&v9, a3);
+    TSCERangeRef::TSCERangeRef(&v9, ref);
     *&v11[6] = v9;
     v5 = *(&v9.range._bottomRight.row + 2);
     *(v4 + 10) = *v11;
@@ -150,9 +150,9 @@ LABEL_4:
   return result;
 }
 
-- (id)referenceTextWithCalculationEngine:(id)a3 hostTableUID:(const TSKUIDStruct *)a4
+- (id)referenceTextWithCalculationEngine:(id)engine hostTableUID:(const TSKUIDStruct *)d
 {
-  v9 = a3;
+  engineCopy = engine;
   overrideText = self->_overrideText;
   if (overrideText)
   {
@@ -192,8 +192,8 @@ LABEL_4:
   v39 = tableUID;
 LABEL_9:
   v25 = objc_opt_new();
-  objc_msgSend_setHostTableUID_(v25, v26, a4->_lower, a4->_upper, v27);
-  v32 = objc_msgSend_namer(v9, v28, v29, v30, v31);
+  objc_msgSend_setHostTableUID_(v25, v26, d->_lower, d->_upper, v27);
+  v32 = objc_msgSend_namer(engineCopy, v28, v29, v30, v31);
   v38.range = v36;
   v38._tableUID = v39;
   v11 = objc_msgSend_nameForChromeRangeRef_namingContext_(v32, v33, &v38, v25, v34);
@@ -203,10 +203,10 @@ LABEL_10:
   return v11;
 }
 
-- (id)referenceTextWithCalculationEngine:(id)a3 contextSheetName:(id)a4
+- (id)referenceTextWithCalculationEngine:(id)engine contextSheetName:(id)name
 {
-  v6 = a3;
-  v10 = a4;
+  engineCopy = engine;
+  nameCopy = name;
   overrideText = self->_overrideText;
   if (overrideText)
   {
@@ -245,8 +245,8 @@ LABEL_10:
   upper = self->_ref._spanningRef.rangeRef._tableUID._upper;
 LABEL_9:
   v28 = objc_opt_new();
-  objc_msgSend_setContextSheetName_(v28, v29, v10, v30, v31);
-  v36 = objc_msgSend_namer(v6, v32, v33, v34, v35);
+  objc_msgSend_setContextSheetName_(v28, v29, nameCopy, v30, v31);
+  v36 = objc_msgSend_namer(engineCopy, v32, v33, v34, v35);
   v40[0] = topLeft;
   v40[1] = bottomRight;
   v40[2] = lower;
@@ -258,16 +258,16 @@ LABEL_10:
   return v12;
 }
 
-- (id)p_stringByUnescapingQuotedStringWithPossibleDollarPrefix:(id)a3 partial:(BOOL)a4
+- (id)p_stringByUnescapingQuotedStringWithPossibleDollarPrefix:(id)prefix partial:(BOOL)partial
 {
-  v4 = a4;
-  v5 = a3;
-  if (objc_msgSend_hasPrefix_(v5, v6, @"$", v7, v8))
+  partialCopy = partial;
+  prefixCopy = prefix;
+  if (objc_msgSend_hasPrefix_(prefixCopy, v6, @"$", v7, v8))
   {
     v13 = objc_msgSend_length(@"$", v9, v10, v11, v12);
-    v17 = objc_msgSend_substringFromIndex_(v5, v14, v13, v15, v16);
+    v17 = objc_msgSend_substringFromIndex_(prefixCopy, v14, v13, v15, v16);
     v22 = v17;
-    if (v4)
+    if (partialCopy)
     {
       objc_msgSend_tsce_stringByUnescapingPartialQuotedString(v17, v18, v19, v20, v21);
     }
@@ -282,18 +282,18 @@ LABEL_10:
 
   else
   {
-    v23 = objc_msgSend_tsce_stringByUnescapingPartialQuotedString(v5, v9, v10, v11, v12);
+    v23 = objc_msgSend_tsce_stringByUnescapingPartialQuotedString(prefixCopy, v9, v10, v11, v12);
   }
 
   return v23;
 }
 
-- (id)referenceTextForAutocompleteWithCalculationEngine:(id)a3 hostTableUID:(const TSKUIDStruct *)a4 preserveFlags:(TSUPreserveFlags)a5 inputString:(id)a6 inputStringIsComplete:(BOOL)a7
+- (id)referenceTextForAutocompleteWithCalculationEngine:(id)engine hostTableUID:(const TSKUIDStruct *)d preserveFlags:(TSUPreserveFlags)flags inputString:(id)string inputStringIsComplete:(BOOL)complete
 {
-  v7 = a7;
-  v94._flags = a5._flags;
-  v11 = a3;
-  v14 = a6;
+  completeCopy = complete;
+  v94._flags = flags._flags;
+  engineCopy = engine;
+  stringCopy = string;
   overrideTextAsTyped = self->_overrideTextAsTyped;
   if (overrideTextAsTyped)
   {
@@ -304,18 +304,18 @@ LABEL_10:
   {
     if (self->_wasConstructedViaNames)
     {
-      v17 = objc_msgSend_p_stringByUnescapingQuotedStringWithPossibleDollarPrefix_partial_(self, v12, v14, !v7, v13);
-      isEqualToString = objc_msgSend_isEqualToString_(v14, v18, v17, v19, v20);
+      v17 = objc_msgSend_p_stringByUnescapingQuotedStringWithPossibleDollarPrefix_partial_(self, v12, stringCopy, !completeCopy, v13);
+      isEqualToString = objc_msgSend_isEqualToString_(stringCopy, v18, v17, v19, v20);
 
       if ((isEqualToString & 1) == 0)
       {
         goto LABEL_11;
       }
 
-      if (!objc_msgSend_length(v14, v22, v23, v24, v25) || objc_msgSend_isEqualToString_(v14, v26, @"$", v27, v28))
+      if (!objc_msgSend_length(stringCopy, v22, v23, v24, v25) || objc_msgSend_isEqualToString_(stringCopy, v26, @"$", v27, v28))
       {
         v29 = objc_opt_new();
-        objc_msgSend_setHostTableUID_(v29, v30, a4->_lower, a4->_upper, v31);
+        objc_msgSend_setHostTableUID_(v29, v30, d->_lower, d->_upper, v31);
         v36 = objc_msgSend_rangeReference(self, v32, v33, v34, v35);
         v41 = v36;
         if (v36)
@@ -330,7 +330,7 @@ LABEL_10:
 
         LOBYTE(v92) = 0;
         TSCERangeRef::setPreserveFlags(&v93, &v92);
-        v46 = objc_msgSend_namer(v11, v42, v43, v44, v45, *&v93.range._topLeft, *&v93.range._bottomRight, v93._tableUID._lower, v93._tableUID._upper);
+        v46 = objc_msgSend_namer(engineCopy, v42, v43, v44, v45, *&v93.range._topLeft, *&v93.range._bottomRight, v93._tableUID._lower, v93._tableUID._upper);
         v49 = objc_msgSend_nameForChromeRangeRef_namingContext_(v46, v47, &v92, v29, v48);
 
         LOBYTE(v46) = objc_msgSend_tsce_needsReferenceSingleQuoteEscaping(v49, v50, v51, v52, v53);
@@ -338,7 +338,7 @@ LABEL_10:
         {
 LABEL_11:
           v54 = objc_opt_new();
-          objc_msgSend_setHostTableUID_(v54, v55, a4->_lower, a4->_upper, v56);
+          objc_msgSend_setHostTableUID_(v54, v55, d->_lower, d->_upper, v56);
           objc_msgSend_setQuoteComponents_(v54, v57, 1, v58, v59);
           objc_msgSend_setForceEscaping_(v54, v60, 1, v61, v62);
           v67 = objc_msgSend_rangeReference(self, v63, v64, v65, v66);
@@ -354,7 +354,7 @@ LABEL_11:
           }
 
           TSCERangeRef::setPreserveFlags(&v93, &v94);
-          v79 = objc_msgSend_namer(v11, v75, v76, v77, v78, *&v93.range._topLeft, *&v93.range._bottomRight, v93._tableUID._lower, v93._tableUID._upper);
+          v79 = objc_msgSend_namer(engineCopy, v75, v76, v77, v78, *&v93.range._topLeft, *&v93.range._bottomRight, v93._tableUID._lower, v93._tableUID._upper);
           v82 = objc_msgSend_nameForChromeRangeRef_namingContext_(v79, v80, &v92, v54, v81);
           v87 = objc_msgSend_tsce_referenceComponentsSeparatedByPathDelimiter(v82, v83, v84, v85, v86);
           v73 = objc_msgSend_lastObject(v87, v88, v89, v90, v91);
@@ -364,7 +364,7 @@ LABEL_11:
       }
     }
 
-    v16 = objc_msgSend_referenceTextWithCalculationEngine_hostTableUID_(self, v12, v11, a4, v13);
+    v16 = objc_msgSend_referenceTextWithCalculationEngine_hostTableUID_(self, v12, engineCopy, d, v13);
   }
 
   v73 = v16;
@@ -373,13 +373,13 @@ LABEL_15:
   return v73;
 }
 
-- (id)referenceTextForAutocompleteWithCalculationEngine:(id)a3 contextSheetName:(id)a4 preserveFlags:(TSUPreserveFlags)a5 inputString:(id)a6 inputStringIsComplete:(BOOL)a7
+- (id)referenceTextForAutocompleteWithCalculationEngine:(id)engine contextSheetName:(id)name preserveFlags:(TSUPreserveFlags)flags inputString:(id)string inputStringIsComplete:(BOOL)complete
 {
-  v7 = a7;
-  v97._flags = a5._flags;
-  v11 = a3;
-  v12 = a4;
-  v15 = a6;
+  completeCopy = complete;
+  v97._flags = flags._flags;
+  engineCopy = engine;
+  nameCopy = name;
+  stringCopy = string;
   overrideTextAsTyped = self->_overrideTextAsTyped;
   if (overrideTextAsTyped)
   {
@@ -390,18 +390,18 @@ LABEL_15:
   {
     if (self->_wasConstructedViaNames)
     {
-      v18 = objc_msgSend_p_stringByUnescapingQuotedStringWithPossibleDollarPrefix_partial_(self, v13, v15, !v7, v14);
-      isEqualToString = objc_msgSend_isEqualToString_(v15, v19, v18, v20, v21);
+      v18 = objc_msgSend_p_stringByUnescapingQuotedStringWithPossibleDollarPrefix_partial_(self, v13, stringCopy, !completeCopy, v14);
+      isEqualToString = objc_msgSend_isEqualToString_(stringCopy, v19, v18, v20, v21);
 
       if ((isEqualToString & 1) == 0)
       {
         goto LABEL_11;
       }
 
-      if (!objc_msgSend_length(v15, v23, v24, v25, v26) || objc_msgSend_isEqualToString_(v15, v27, @"$", v28, v29))
+      if (!objc_msgSend_length(stringCopy, v23, v24, v25, v26) || objc_msgSend_isEqualToString_(stringCopy, v27, @"$", v28, v29))
       {
         v30 = objc_opt_new();
-        objc_msgSend_setContextSheetName_(v30, v31, v12, v32, v33);
+        objc_msgSend_setContextSheetName_(v30, v31, nameCopy, v32, v33);
         v38 = objc_msgSend_rangeReference(self, v34, v35, v36, v37);
         v43 = v38;
         if (v38)
@@ -416,7 +416,7 @@ LABEL_15:
 
         LOBYTE(v95) = 0;
         TSCERangeRef::setPreserveFlags(&v96, &v95);
-        v48 = objc_msgSend_namer(v11, v44, v45, v46, v47, *&v96.range._topLeft, *&v96.range._bottomRight, v96._tableUID._lower, v96._tableUID._upper);
+        v48 = objc_msgSend_namer(engineCopy, v44, v45, v46, v47, *&v96.range._topLeft, *&v96.range._bottomRight, v96._tableUID._lower, v96._tableUID._upper);
         v51 = objc_msgSend_nameForChromeRangeRef_namingContext_(v48, v49, &v95, v30, v50);
 
         LOBYTE(v48) = objc_msgSend_tsce_needsReferenceSingleQuoteEscaping(v51, v52, v53, v54, v55);
@@ -424,7 +424,7 @@ LABEL_15:
         {
 LABEL_11:
           v56 = objc_opt_new();
-          objc_msgSend_setContextSheetName_(v56, v57, v12, v58, v59);
+          objc_msgSend_setContextSheetName_(v56, v57, nameCopy, v58, v59);
           objc_msgSend_setQuoteComponents_(v56, v60, 1, v61, v62);
           objc_msgSend_setForceEscaping_(v56, v63, 1, v64, v65);
           v70 = objc_msgSend_rangeReference(self, v66, v67, v68, v69);
@@ -440,7 +440,7 @@ LABEL_11:
           }
 
           TSCERangeRef::setPreserveFlags(&v96, &v97);
-          v82 = objc_msgSend_namer(v11, v78, v79, v80, v81, *&v96.range._topLeft, *&v96.range._bottomRight, v96._tableUID._lower, v96._tableUID._upper);
+          v82 = objc_msgSend_namer(engineCopy, v78, v79, v80, v81, *&v96.range._topLeft, *&v96.range._bottomRight, v96._tableUID._lower, v96._tableUID._upper);
           v85 = objc_msgSend_nameForChromeRangeRef_namingContext_(v82, v83, &v95, v56, v84);
           v90 = objc_msgSend_tsce_referenceComponentsSeparatedByPathDelimiter(v85, v86, v87, v88, v89);
           v76 = objc_msgSend_lastObject(v90, v91, v92, v93, v94);
@@ -450,7 +450,7 @@ LABEL_11:
       }
     }
 
-    v17 = objc_msgSend_referenceTextWithCalculationEngine_contextSheetName_(self, v13, v11, v12, v14);
+    v17 = objc_msgSend_referenceTextWithCalculationEngine_contextSheetName_(self, v13, engineCopy, nameCopy, v14);
   }
 
   v76 = v17;
@@ -459,13 +459,13 @@ LABEL_15:
   return v76;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v13 = TSCEAnyRef::operator==(&self->_ref._refType, v5 + 1) && ((overrideText = self->_overrideText, v10 = v5[11], overrideText == v10) || v10 && objc_msgSend_isEqualToString_(overrideText, v6, v10, v7, v8)) && ((overrideTextAsTyped = self->_overrideTextAsTyped, v12 = v5[12], overrideTextAsTyped == v12) || v12 && objc_msgSend_isEqualToString_(overrideTextAsTyped, v6, v12, v7, v8)) && self->_preserveFlags._flags == *(v5 + 104) && self->_wasConstructedViaNames == *(v5 + 105);
   }
 

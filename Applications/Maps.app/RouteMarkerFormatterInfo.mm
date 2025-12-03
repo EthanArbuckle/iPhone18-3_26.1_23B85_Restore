@@ -1,5 +1,5 @@
 @interface RouteMarkerFormatterInfo
-- (RouteMarkerFormatterInfo)initWithRouteDescription:(id)a3 etaType:(int64_t)a4 etaComparison:(unsigned __int8)a5 tollCurrency:(unsigned __int8)a6 styleAttributes:(id)a7;
+- (RouteMarkerFormatterInfo)initWithRouteDescription:(id)description etaType:(int64_t)type etaComparison:(unsigned __int8)comparison tollCurrency:(unsigned __int8)currency styleAttributes:(id)attributes;
 - (id)description;
 @end
 
@@ -175,23 +175,23 @@ LABEL_46:
   return v4;
 }
 
-- (RouteMarkerFormatterInfo)initWithRouteDescription:(id)a3 etaType:(int64_t)a4 etaComparison:(unsigned __int8)a5 tollCurrency:(unsigned __int8)a6 styleAttributes:(id)a7
+- (RouteMarkerFormatterInfo)initWithRouteDescription:(id)description etaType:(int64_t)type etaComparison:(unsigned __int8)comparison tollCurrency:(unsigned __int8)currency styleAttributes:(id)attributes
 {
-  v12 = a3;
-  v13 = a7;
+  descriptionCopy = description;
+  attributesCopy = attributes;
   v18.receiver = self;
   v18.super_class = RouteMarkerFormatterInfo;
   v14 = [(RouteMarkerFormatterInfo *)&v18 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [descriptionCopy copy];
     routeDescription = v14->_routeDescription;
     v14->_routeDescription = v15;
 
-    v14->_etaType = a4;
-    v14->_etaComparison = a5;
-    v14->_tollCurrency = a6;
-    objc_storeStrong(&v14->_styleAttributes, a7);
+    v14->_etaType = type;
+    v14->_etaComparison = comparison;
+    v14->_tollCurrency = currency;
+    objc_storeStrong(&v14->_styleAttributes, attributes);
   }
 
   return v14;

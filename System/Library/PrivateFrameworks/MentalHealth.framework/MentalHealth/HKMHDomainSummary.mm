@@ -1,37 +1,37 @@
 @interface HKMHDomainSummary
-- (BOOL)isEqual:(id)a3;
-- (HKMHDomainSummary)initWithCoder:(id)a3;
-- (HKMHDomainSummary)initWithDomains:(id)a3 count:(int64_t)a4 totalSampleCount:(int64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (HKMHDomainSummary)initWithCoder:(id)coder;
+- (HKMHDomainSummary)initWithDomains:(id)domains count:(int64_t)count totalSampleCount:(int64_t)sampleCount;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMHDomainSummary
 
-- (HKMHDomainSummary)initWithDomains:(id)a3 count:(int64_t)a4 totalSampleCount:(int64_t)a5
+- (HKMHDomainSummary)initWithDomains:(id)domains count:(int64_t)count totalSampleCount:(int64_t)sampleCount
 {
-  v9 = a3;
+  domainsCopy = domains;
   v13.receiver = self;
   v13.super_class = HKMHDomainSummary;
   v10 = [(HKMHDomainSummary *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_domains, a3);
-    v11->_count = a4;
-    v11->_totalSampleCount = a5;
+    objc_storeStrong(&v10->_domains, domains);
+    v11->_count = count;
+    v11->_totalSampleCount = sampleCount;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(NSArray *)self->_domains isEqualToArray:v5[1]]&& self->_count == v5[2] && self->_totalSampleCount == v5[3];
   }
 
@@ -55,24 +55,24 @@
   return v8;
 }
 
-- (HKMHDomainSummary)initWithCoder:(id)a3
+- (HKMHDomainSummary)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"Count"];
-  v6 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"Domains"];
-  v7 = [v4 decodeIntegerForKey:@"TotalSampleCount"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"Count"];
+  v6 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"Domains"];
+  v7 = [coderCopy decodeIntegerForKey:@"TotalSampleCount"];
 
   v8 = [(HKMHDomainSummary *)self initWithDomains:v6 count:v5 totalSampleCount:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   count = self->_count;
-  v5 = a3;
-  [v5 encodeInteger:count forKey:@"Count"];
-  [v5 encodeObject:self->_domains forKey:@"Domains"];
-  [v5 encodeInteger:self->_totalSampleCount forKey:@"TotalSampleCount"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:count forKey:@"Count"];
+  [coderCopy encodeObject:self->_domains forKey:@"Domains"];
+  [coderCopy encodeInteger:self->_totalSampleCount forKey:@"TotalSampleCount"];
 }
 
 @end

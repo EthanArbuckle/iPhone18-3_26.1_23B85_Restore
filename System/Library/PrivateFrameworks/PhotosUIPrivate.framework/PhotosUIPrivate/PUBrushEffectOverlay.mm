@@ -1,14 +1,14 @@
 @interface PUBrushEffectOverlay
-- (PUBrushEffectOverlay)initWithTimeScale:(double)a3;
+- (PUBrushEffectOverlay)initWithTimeScale:(double)scale;
 - (void)_layoutSubviews;
 - (void)_recycleVFXView;
 - (void)endEmission;
 - (void)layoutSubviews;
 - (void)loadEffect;
-- (void)setBrushPosition:(CGPoint)a3;
-- (void)setBrushRadius:(double)a3;
-- (void)setMaxEDR:(double)a3;
-- (void)setNormalizedBrushPosition:(CGPoint)a3;
+- (void)setBrushPosition:(CGPoint)position;
+- (void)setBrushRadius:(double)radius;
+- (void)setMaxEDR:(double)r;
+- (void)setNormalizedBrushPosition:(CGPoint)position;
 - (void)startEmission;
 @end
 
@@ -39,8 +39,8 @@
 
   [(VFXView *)self->_vfxView setTranslatesAutoresizingMaskIntoConstraints:0];
   v5 = self->_vfxView;
-  v6 = [MEMORY[0x1E69DC888] clearColor];
-  [(VFXView *)v5 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(VFXView *)v5 setBackgroundColor:clearColor];
 
   v7 = self->_vfxView;
   [(PUBrushEffectOverlay *)self bounds];
@@ -79,46 +79,46 @@
       v9 = __log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v13 = [v7 localizedDescription];
+        localizedDescription = [v7 localizedDescription];
         *buf = 138412290;
-        v17 = v13;
+        v17 = localizedDescription;
         _os_log_debug_impl(&dword_1B36F3000, v9, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
       }
     }
 
-    v10 = [(VFXWorld *)self->_world rootNode];
-    v11 = [v10 childNodeWithName:@"EmitterWand"];
+    rootNode = [(VFXWorld *)self->_world rootNode];
+    v11 = [rootNode childNodeWithName:@"EmitterWand"];
     emitterWand = self->_emitterWand;
     self->_emitterWand = v11;
 
     if (!self->_emitterWand)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PUVFXOverlay.m" lineNumber:265 description:@"emitter wand is nil"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUVFXOverlay.m" lineNumber:265 description:@"emitter wand is nil"];
     }
 
     [(PUBrushEffectOverlay *)self _recycleVFXView];
   }
 }
 
-- (void)setBrushRadius:(double)a3
+- (void)setBrushRadius:(double)radius
 {
   NSSelectorFromString(&cfstr_Behaviorgraph.isa);
   if (objc_opt_respondsToSelector())
   {
     [(PUBrushEffectOverlay *)self frame];
     v7 = 0.0 / v5 * 2.0 + -1.0 - (0.0 / v5 * 2.0 + -1.0);
-    v8 = sqrt((0.0 / v6 * 2.0 + -1.0 - (a3 / v6 * 2.0 + -1.0)) * (0.0 / v6 * 2.0 + -1.0 - (a3 / v6 * 2.0 + -1.0)) + v7 * v7);
+    v8 = sqrt((0.0 / v6 * 2.0 + -1.0 - (radius / v6 * 2.0 + -1.0)) * (0.0 / v6 * 2.0 + -1.0 - (radius / v6 * 2.0 + -1.0)) + v7 * v7);
     v10 = [(VFXNode *)self->_emitterWand valueForKey:@"behaviorGraph"];
     v9 = [MEMORY[0x1E696AD98] numberWithDouble:v8];
     [v10 setValue:v9 forKey:@"radius"];
   }
 }
 
-- (void)setBrushPosition:(CGPoint)a3
+- (void)setBrushPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(PUBrushEffectOverlay *)self frame];
 
   [(PUBrushEffectOverlay *)self setNormalizedBrushPosition:x / v6 * 2.0 + -1.0, -(y / v7 * 2.0 + -1.0)];
@@ -146,7 +146,7 @@
   [v3 setValue:MEMORY[0x1E695E118] forKey:@"isWandClick"];
 }
 
-- (void)setNormalizedBrushPosition:(CGPoint)a3
+- (void)setNormalizedBrushPosition:(CGPoint)position
 {
   [(PUBrushEffectOverlay *)self frame];
   Width = CGRectGetWidth(v13);
@@ -168,9 +168,9 @@
   }
 }
 
-- (void)setMaxEDR:(double)a3
+- (void)setMaxEDR:(double)r
 {
-  if (a3 >= 1.0)
+  if (r >= 1.0)
   {
     NSSelectorFromString(&cfstr_Wantsextendedd.isa);
     if (objc_opt_respondsToSelector())
@@ -179,16 +179,16 @@
       if (objc_opt_respondsToSelector())
       {
         v6 = [(VFXNode *)self->_emitterWand valueForKey:@"behaviorGraph", 1.0];
-        [(VFXView *)self->_vfxView setWantsExtendedDynamicRange:a3 > 1.0];
+        [(VFXView *)self->_vfxView setWantsExtendedDynamicRange:r > 1.0];
         [(VFXView *)self->_vfxView setPixelFormat:115];
-        v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+        v5 = [MEMORY[0x1E696AD98] numberWithDouble:r];
         [v6 setValue:v5 forKey:@"EDR"];
       }
     }
   }
 }
 
-- (PUBrushEffectOverlay)initWithTimeScale:(double)a3
+- (PUBrushEffectOverlay)initWithTimeScale:(double)scale
 {
   v9.receiver = self;
   v9.super_class = PUBrushEffectOverlay;

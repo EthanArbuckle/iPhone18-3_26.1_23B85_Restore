@@ -1,37 +1,37 @@
 @interface EXDifferentialStyle
-+ (id)edDifferentialStyleFromXmlDifferentialStyleElement:(_xmlNode *)a3 state:(id)a4;
++ (id)edDifferentialStyleFromXmlDifferentialStyleElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation EXDifferentialStyle
 
-+ (id)edDifferentialStyleFromXmlDifferentialStyleElement:(_xmlNode *)a3 state:(id)a4
++ (id)edDifferentialStyleFromXmlDifferentialStyleElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
-  if (a3)
+  stateCopy = state;
+  if (element)
   {
     v6 = objc_alloc_init(EDDifferentialStyle);
-    v7 = [v5 EXSpreadsheetMLNamespace];
-    v8 = OCXFindChild(a3, v7, "numFmt");
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v8 = OCXFindChild(element, eXSpreadsheetMLNamespace, "numFmt");
 
     v9 = [EXContentFormat edContentFormatFromXmlContentFormatElement:v8];
     [(EDDifferentialStyle *)v6 setContentFormat:v9];
 
-    v10 = [v5 EXSpreadsheetMLNamespace];
-    v11 = OCXFindChild(a3, v10, "font");
+    eXSpreadsheetMLNamespace2 = [stateCopy EXSpreadsheetMLNamespace];
+    v11 = OCXFindChild(element, eXSpreadsheetMLNamespace2, "font");
 
-    v12 = [EXFont edFontFromXmlFontElement:v11 inConditionalFormat:1 returnDefaultIfEmpty:1 state:v5];
+    v12 = [EXFont edFontFromXmlFontElement:v11 inConditionalFormat:1 returnDefaultIfEmpty:1 state:stateCopy];
     [(EDDifferentialStyle *)v6 setFont:v12];
 
-    v13 = [v5 EXSpreadsheetMLNamespace];
-    v14 = OCXFindChild(a3, v13, "border");
+    eXSpreadsheetMLNamespace3 = [stateCopy EXSpreadsheetMLNamespace];
+    v14 = OCXFindChild(element, eXSpreadsheetMLNamespace3, "border");
 
-    v15 = [EXBorders edBordersFromXmlBordersElement:v14 state:v5];
+    v15 = [EXBorders edBordersFromXmlBordersElement:v14 state:stateCopy];
     [(EDDifferentialStyle *)v6 setBorders:v15];
 
-    v16 = [v5 EXSpreadsheetMLNamespace];
-    v17 = OCXFindChild(a3, v16, "fill");
+    eXSpreadsheetMLNamespace4 = [stateCopy EXSpreadsheetMLNamespace];
+    v17 = OCXFindChild(element, eXSpreadsheetMLNamespace4, "fill");
 
-    v18 = [EXFill edFillFromXmlFillElement:v17 differentialFill:1 state:v5];
+    v18 = [EXFill edFillFromXmlFillElement:v17 differentialFill:1 state:stateCopy];
     [(EDDifferentialStyle *)v6 setFill:v18];
   }
 

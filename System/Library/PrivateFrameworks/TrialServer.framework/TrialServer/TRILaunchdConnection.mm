@@ -1,15 +1,15 @@
 @interface TRILaunchdConnection
 - (BOOL)requestReloadLowLevelFactors;
-- (void)_logErrorReply:(id)a3;
+- (void)_logErrorReply:(id)reply;
 @end
 
 @implementation TRILaunchdConnection
 
-- (void)_logErrorReply:(id)a3
+- (void)_logErrorReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
-    xpc_dictionary_apply(a3, &__block_literal_global_24);
+    xpc_dictionary_apply(reply, &__block_literal_global_24);
   }
 }
 

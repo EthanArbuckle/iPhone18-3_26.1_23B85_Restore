@@ -1,29 +1,29 @@
 @interface BrowseTileContentViewTextAccessory
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory)initWithCoder:(id)a3;
-- (_TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory)initWithCoder:(id)coder;
+- (_TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation BrowseTileContentViewTextAccessory
 
-- (_TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory)initWithFrame:(CGRect)a3
+- (_TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory____lazy_storage___label) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for BrowseTileContentViewTextAccessory();
-  v7 = [(BrowseTileContentViewBase *)&v10 initWithFrame:x, y, width, height];
+  height = [(BrowseTileContentViewBase *)&v10 initWithFrame:x, y, width, height];
   v8 = sub_1BA1C94A0();
-  [(BrowseTileContentViewTextAccessory *)v7 addSubview:v8];
+  [(BrowseTileContentViewTextAccessory *)height addSubview:v8];
 
-  return v7;
+  return height;
 }
 
-- (_TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory)initWithCoder:(id)a3
+- (_TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18HealthExperienceUIP33_7A9E5CF486B0F4226BE0F022FE7FA17134BrowseTileContentViewTextAccessory____lazy_storage___label) = 0;
   result = sub_1BA4A8018();
@@ -43,11 +43,11 @@
   [v3 setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = sub_1BA1CA42C(sub_1BA1C94A0, width, height);
   v8 = v7;
 

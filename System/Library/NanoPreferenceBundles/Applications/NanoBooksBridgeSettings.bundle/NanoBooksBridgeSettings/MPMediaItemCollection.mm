@@ -11,8 +11,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(MPMediaItemCollection *)self items];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  items = [(MPMediaItemCollection *)self items];
+  v3 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -24,7 +24,7 @@ LABEL_3:
     {
       if (*v14 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(items);
       }
 
       v8 = *(*(&v13 + 1) + 8 * v7);
@@ -39,7 +39,7 @@ LABEL_3:
 
       if (v4 == ++v7)
       {
-        v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v4 = [items countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -78,8 +78,8 @@ LABEL_15:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(MPMediaItemCollection *)self items];
-  v6 = [NSString stringWithFormat:@"<%@(%p) %@>", v4, self, v5];
+  items = [(MPMediaItemCollection *)self items];
+  v6 = [NSString stringWithFormat:@"<%@(%p) %@>", v4, self, items];
 
   return v6;
 }

@@ -1,19 +1,19 @@
 @interface QLPUPlayheadView
-- (QLPUPlayheadView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (QLPUPlayheadView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation QLPUPlayheadView
 
-- (QLPUPlayheadView)initWithFrame:(CGRect)a3
+- (QLPUPlayheadView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = QLPUPlayheadView;
-  v3 = [(QLPUPlayheadView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(QLPUPlayheadView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(QLPUPlayheadView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(QLPUPlayheadView *)v3 setBackgroundColor:clearColor];
 
     [(QLPUPlayheadView *)v3 setUserInteractionEnabled:0];
   }
@@ -21,12 +21,12 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v32.origin.x = x;
@@ -50,8 +50,8 @@
   v35.size.width = v11;
   v35.size.height = v12;
   v15 = CGRectGetHeight(v35) + -4.0;
-  v16 = [(QLPUPlayheadView *)self traitCollection];
-  [v16 displayScale];
+  traitCollection = [(QLPUPlayheadView *)self traitCollection];
+  [traitCollection displayScale];
   v18 = v17;
   v36.size.width = 2.0;
   v36.origin.x = v13;
@@ -76,15 +76,15 @@
   v30 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:v39.origin.x cornerRadius:{v39.origin.y, v39.size.width, v39.size.height, 2.5}];
   v25 = v30;
   CGContextAddPath(CurrentContext, [v30 CGPath]);
-  v26 = [MEMORY[0x277D75348] blackColor];
-  v27 = [v26 colorWithAlphaComponent:0.400000006];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v27 = [blackColor colorWithAlphaComponent:0.400000006];
   CGContextSetFillColorWithColor(CurrentContext, [v27 CGColor]);
 
   CGContextDrawPath(CurrentContext, kCGPathFill);
   v28 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:v21 cornerRadius:{v22, v23, v24, 1.0}];
   CGContextAddPath(CurrentContext, [v28 CGPath]);
-  v29 = [MEMORY[0x277D75348] whiteColor];
-  CGContextSetFillColorWithColor(CurrentContext, [v29 CGColor]);
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  CGContextSetFillColorWithColor(CurrentContext, [whiteColor CGColor]);
 
   CGContextDrawPath(CurrentContext, kCGPathFill);
   CGContextRestoreGState(CurrentContext);

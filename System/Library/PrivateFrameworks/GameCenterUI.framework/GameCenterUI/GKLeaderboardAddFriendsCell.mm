@@ -1,13 +1,13 @@
 @interface GKLeaderboardAddFriendsCell
 - (BOOL)lineVisible;
-- (CGSize)preferredLayoutSizeFittingSize:(CGSize)a3;
+- (CGSize)preferredLayoutSizeFittingSize:(CGSize)size;
 - (_TtC12GameCenterUI14EmptyStateView)noFriendsView;
 - (_TtC12GameCenterUI22GKAddFriendsLockupView)addFriendsLockupView;
 - (void)awakeFromNib;
 - (void)clearContainer;
-- (void)configureAddFriendsLockupWithMetricsPageId:(id)a3 handler:(id)a4;
-- (void)configureNoFriendsViewWithHandler:(id)a3;
-- (void)setLineVisible:(BOOL)a3;
+- (void)configureAddFriendsLockupWithMetricsPageId:(id)id handler:(id)handler;
+- (void)configureNoFriendsViewWithHandler:(id)handler;
+- (void)setLineVisible:(BOOL)visible;
 @end
 
 @implementation GKLeaderboardAddFriendsCell
@@ -19,26 +19,26 @@
   [(GKLeaderboardAddFriendsCell *)&v2 awakeFromNib];
 }
 
-- (CGSize)preferredLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)preferredLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
-  [(GKLeaderboardAddFriendsCell *)v5 frame];
-  [(GKLeaderboardAddFriendsCell *)v5 setFrame:?];
-  [(GKLeaderboardAddFriendsCell *)v5 setNeedsLayout];
-  [(GKLeaderboardAddFriendsCell *)v5 layoutIfNeeded];
-  v6 = [(GKLeaderboardAddFriendsCell *)v5 container];
-  v7 = [v6 subviews];
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
+  [(GKLeaderboardAddFriendsCell *)selfCopy frame];
+  [(GKLeaderboardAddFriendsCell *)selfCopy setFrame:?];
+  [(GKLeaderboardAddFriendsCell *)selfCopy setNeedsLayout];
+  [(GKLeaderboardAddFriendsCell *)selfCopy layoutIfNeeded];
+  container = [(GKLeaderboardAddFriendsCell *)selfCopy container];
+  subviews = [container subviews];
 
-  if (!v7)
+  if (!subviews)
   {
     goto LABEL_6;
   }
 
-  v8 = [(GKLeaderboardAddFriendsCell *)v5 container];
-  v9 = [v8 subviews];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  container2 = [(GKLeaderboardAddFriendsCell *)selfCopy container];
+  subviews2 = [container2 subviews];
+  v10 = [subviews2 objectAtIndexedSubscript:0];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -54,7 +54,7 @@ LABEL_6:
     }
   }
 
-  [v10 measurementsWithFitting:v5 in:{width, height}];
+  [v10 measurementsWithFitting:selfCopy in:{width, height}];
   v12 = v11;
   v14 = v13;
 
@@ -66,34 +66,34 @@ LABEL_7:
   return result;
 }
 
-- (void)configureAddFriendsLockupWithMetricsPageId:(id)a3 handler:(id)a4
+- (void)configureAddFriendsLockupWithMetricsPageId:(id)id handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKLeaderboardAddFriendsCell *)self topLine];
-  [v8 setHidden:0];
+  handlerCopy = handler;
+  idCopy = id;
+  topLine = [(GKLeaderboardAddFriendsCell *)self topLine];
+  [topLine setHidden:0];
 
   [(GKLeaderboardAddFriendsCell *)self clearContainer];
   v9 = [(GKLeaderboardAddFriendsCell *)self friendCount]< 1;
   v10 = [_TtC12GameCenterUI22GKAddFriendsLockupView alloc];
-  v14 = [(GKAddFriendsLockupView *)v10 initWithFrame:v9 friendState:v7 metricsPageId:@"leaderboard" metricsPageType:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
+  v14 = [(GKAddFriendsLockupView *)v10 initWithFrame:v9 friendState:idCopy metricsPageId:@"leaderboard" metricsPageType:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
 
   [(GKAddFriendsLockupView *)v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(GKLeaderboardAddFriendsCell *)self container];
-  [v11 addSubview:v14];
+  container = [(GKLeaderboardAddFriendsCell *)self container];
+  [container addSubview:v14];
 
   v12 = MEMORY[0x277CCAAD0];
-  v13 = [(GKLeaderboardAddFriendsCell *)self container];
-  [v12 _gkInstallEdgeConstraintsForView:v14 containedWithinParentView:v13];
+  container2 = [(GKLeaderboardAddFriendsCell *)self container];
+  [v12 _gkInstallEdgeConstraintsForView:v14 containedWithinParentView:container2];
 
-  [(GKAddFriendsLockupView *)v14 setAddFriendsHandler:v6];
+  [(GKAddFriendsLockupView *)v14 setAddFriendsHandler:handlerCopy];
 }
 
-- (void)configureNoFriendsViewWithHandler:(id)a3
+- (void)configureNoFriendsViewWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(GKLeaderboardAddFriendsCell *)self topLine];
-  [v5 setHidden:1];
+  handlerCopy = handler;
+  topLine = [(GKLeaderboardAddFriendsCell *)self topLine];
+  [topLine setHidden:1];
 
   [(GKLeaderboardAddFriendsCell *)self clearContainer];
   if ([(GKLeaderboardAddFriendsCell *)self friendCount]<= 0)
@@ -107,22 +107,22 @@ LABEL_7:
   }
   v9 = ;
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(GKLeaderboardAddFriendsCell *)self container];
-  [v6 addSubview:v9];
+  container = [(GKLeaderboardAddFriendsCell *)self container];
+  [container addSubview:v9];
 
   v7 = MEMORY[0x277CCAAD0];
-  v8 = [(GKLeaderboardAddFriendsCell *)self container];
-  [v7 _gkInstallEdgeConstraintsForView:v9 containedWithinParentView:v8];
+  container2 = [(GKLeaderboardAddFriendsCell *)self container];
+  [v7 _gkInstallEdgeConstraintsForView:v9 containedWithinParentView:container2];
 
-  [v9 setButtonActionBlock:v4];
+  [v9 setButtonActionBlock:handlerCopy];
 }
 
 - (void)clearContainer
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(GKLeaderboardAddFriendsCell *)self container];
-  v3 = [v2 subviews];
-  v4 = [v3 copy];
+  container = [(GKLeaderboardAddFriendsCell *)self container];
+  subviews = [container subviews];
+  v4 = [subviews copy];
 
   v12 = 0u;
   v13 = 0u;
@@ -155,19 +155,19 @@ LABEL_7:
   }
 }
 
-- (void)setLineVisible:(BOOL)a3
+- (void)setLineVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(GKLeaderboardAddFriendsCell *)self topLine];
-  [v4 setHidden:!v3];
+  visibleCopy = visible;
+  topLine = [(GKLeaderboardAddFriendsCell *)self topLine];
+  [topLine setHidden:!visibleCopy];
 }
 
 - (BOOL)lineVisible
 {
-  v2 = [(GKLeaderboardAddFriendsCell *)self topLine];
-  v3 = [v2 isHidden];
+  topLine = [(GKLeaderboardAddFriendsCell *)self topLine];
+  isHidden = [topLine isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
 - (_TtC12GameCenterUI22GKAddFriendsLockupView)addFriendsLockupView

@@ -1,8 +1,8 @@
 @interface SKDLanguageProcessor
-- (BOOL)willProcessRecord:(id)a3 bundleID:(id)a4;
+- (BOOL)willProcessRecord:(id)record bundleID:(id)d;
 - (SKDLanguageProcessor)init;
-- (SKDLanguageProcessor)initWithLanguageIdentifier:(id)a3 listener:(id)a4;
-- (id)processRecord:(id)a3 bundleID:(id)a4;
+- (SKDLanguageProcessor)initWithLanguageIdentifier:(id)identifier listener:(id)listener;
+- (id)processRecord:(id)record bundleID:(id)d;
 - (id)processedAttributes;
 - (id)requiredAttributes;
 @end
@@ -12,24 +12,24 @@
 - (SKDLanguageProcessor)init
 {
   v3 = +[SKGLanguageIdentifier sharedIdentifier];
-  v4 = [MEMORY[0x277D657A8] sharedProcessorListener];
-  v5 = [(SKDLanguageProcessor *)self initWithLanguageIdentifier:v3 listener:v4];
+  mEMORY[0x277D657A8] = [MEMORY[0x277D657A8] sharedProcessorListener];
+  v5 = [(SKDLanguageProcessor *)self initWithLanguageIdentifier:v3 listener:mEMORY[0x277D657A8]];
 
   return v5;
 }
 
-- (SKDLanguageProcessor)initWithLanguageIdentifier:(id)a3 listener:(id)a4
+- (SKDLanguageProcessor)initWithLanguageIdentifier:(id)identifier listener:(id)listener
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  listenerCopy = listener;
   v12.receiver = self;
   v12.super_class = SKDLanguageProcessor;
   v9 = [(SKDRecordProcessor *)&v12 initWithName:@"language"];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_langIdentifier, a3);
-    objc_storeStrong(&v10->_listener, a4);
+    objc_storeStrong(&v9->_langIdentifier, identifier);
+    objc_storeStrong(&v10->_listener, listener);
   }
 
   return v10;
@@ -76,20 +76,20 @@ void __43__SKDLanguageProcessor_processedAttributes__block_invoke()
   processedAttributes_sLangAttributes = &unk_2846E8160;
 }
 
-- (BOOL)willProcessRecord:(id)a3 bundleID:(id)a4
+- (BOOL)willProcessRecord:(id)record bundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  recordCopy = record;
   v20.receiver = self;
   v20.super_class = SKDLanguageProcessor;
-  if ([(SKDRecordProcessor *)&v20 willProcessRecord:v6 bundleID:a4])
+  if ([(SKDRecordProcessor *)&v20 willProcessRecord:recordCopy bundleID:d])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(SKDLanguageProcessor *)self processedAttributes];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    processedAttributes = [(SKDLanguageProcessor *)self processedAttributes];
+    v8 = [processedAttributes countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
@@ -100,10 +100,10 @@ void __43__SKDLanguageProcessor_processedAttributes__block_invoke()
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(processedAttributes);
           }
 
-          v12 = [v6 objectForKeyedSubscript:*(*(&v16 + 1) + 8 * i)];
+          v12 = [recordCopy objectForKeyedSubscript:*(*(&v16 + 1) + 8 * i)];
 
           if (v12)
           {
@@ -112,7 +112,7 @@ void __43__SKDLanguageProcessor_processedAttributes__block_invoke()
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v9 = [processedAttributes countByEnumeratingWithState:&v16 objects:v21 count:16];
         if (v9)
         {
           continue;
@@ -135,19 +135,19 @@ LABEL_13:
   return v13;
 }
 
-- (id)processRecord:(id)a3 bundleID:(id)a4
+- (id)processRecord:(id)record bundleID:(id)d
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  dCopy = d;
   v8 = [SKDRecordUpdate alloc];
   v9 = [objc_opt_class() description];
-  v10 = [(SKDRecordUpdate *)v8 initWithStatus:0 identifier:v9 bundleID:v7];
+  v10 = [(SKDRecordUpdate *)v8 initWithStatus:0 identifier:v9 bundleID:dCopy];
 
-  v11 = [(SKDRecordProcessor *)self name];
-  [(SKDItemUpdate *)v10 setPipeline:v11];
+  name = [(SKDRecordProcessor *)self name];
+  [(SKDItemUpdate *)v10 setPipeline:name];
 
-  v12 = [v6 objectForKeyedSubscript:*MEMORY[0x277CC31A0]];
+  v12 = [recordCopy objectForKeyedSubscript:*MEMORY[0x277CC31A0]];
   -[SKDItemUpdate setTextContentLength:](v10, "setTextContentLength:", [v12 length]);
   if (!v12)
   {
@@ -155,16 +155,16 @@ LABEL_13:
   }
 
   context = objc_autoreleasePoolPush();
-  v13 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v14 = [v12 stringByTrimmingCharactersInSet:v13];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v14 = [v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v15 = [v14 mutableCopy];
 
-  v16 = [v6 objectForKeyedSubscript:SKDItemAttributeTextContentEntityRanges];
+  v16 = [recordCopy objectForKeyedSubscript:SKDItemAttributeTextContentEntityRanges];
   v17 = v16;
   if (v16)
   {
-    v43 = v7;
-    v44 = v6;
+    v43 = dCopy;
+    v44 = recordCopy;
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
@@ -185,8 +185,8 @@ LABEL_13:
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v47 + 1) + 8 * i) rangeValue];
-          v25 = [v12 substringWithRange:{v23, v24}];
+          rangeValue = [*(*(&v47 + 1) + 8 * i) rangeValue];
+          v25 = [v12 substringWithRange:{rangeValue, v24}];
           [(__CFString *)v15 replaceOccurrencesOfString:v25 withString:@" " options:0 range:0, [(__CFString *)v15 length]];
         }
 
@@ -196,16 +196,16 @@ LABEL_13:
       while (v20);
     }
 
-    v7 = v43;
-    v6 = v44;
+    dCopy = v43;
+    recordCopy = v44;
     v17 = v42;
   }
 
   v26 = [(SKDLanguageProcessor *)self listener:v42];
-  v27 = [v26 currentLocaleIsCJK];
+  currentLocaleIsCJK = [v26 currentLocaleIsCJK];
 
   v28 = [(__CFString *)v15 length];
-  if (!v27)
+  if (!currentLocaleIsCJK)
   {
     if (v28 < 0x10)
     {
@@ -213,8 +213,8 @@ LABEL_13:
     }
 
 LABEL_15:
-    v30 = [(SKDRecordProcessor *)self logger];
-    v31 = [v30 trackingEventBeginWithName:@"language-id" event:v10];
+    logger = [(SKDRecordProcessor *)self logger];
+    v31 = [logger trackingEventBeginWithName:@"language-id" event:v10];
 
     if (v15)
     {
@@ -231,7 +231,7 @@ LABEL_15:
         else
         {
           v45 = v32;
-          v34 = v7;
+          v34 = dCopy;
           v35 = NLStringTokenizerCopyBestStringLanguage();
           if (v35)
           {
@@ -245,7 +245,7 @@ LABEL_15:
             Length = 0;
           }
 
-          v7 = v34;
+          dCopy = v34;
           v32 = v45;
         }
 
@@ -258,8 +258,8 @@ LABEL_15:
       Length = 0;
     }
 
-    v37 = [(SKDRecordProcessor *)self logger];
-    [v37 trackingEventEnd:v31];
+    logger2 = [(SKDRecordProcessor *)self logger];
+    [logger2 trackingEventEnd:v31];
 
     goto LABEL_26;
   }
@@ -280,12 +280,12 @@ LABEL_26:
   }
 
 LABEL_28:
-  v38 = [(SKDRecordProcessor *)self marker];
-  [(SKDItemUpdate *)v10 addAttribute:v38 value:MEMORY[0x277CBEC38]];
+  marker = [(SKDRecordProcessor *)self marker];
+  [(SKDItemUpdate *)v10 addAttribute:marker value:MEMORY[0x277CBEC38]];
 
   [(SKDEvent *)v10 updateStatus:2];
-  v39 = [(SKDRecordProcessor *)self logger];
-  [v39 logEvent:v10 level:6];
+  logger3 = [(SKDRecordProcessor *)self logger];
+  [logger3 logEvent:v10 level:6];
 
   v40 = *MEMORY[0x277D85DE8];
 

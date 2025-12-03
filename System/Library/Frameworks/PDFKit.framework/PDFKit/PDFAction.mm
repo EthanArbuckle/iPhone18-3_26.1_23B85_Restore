@@ -1,12 +1,12 @@
 @interface PDFAction
-+ (Class)_classForActionDictionary:(CGPDFDictionary *)a3;
-+ (PDFAction)actionWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5;
++ (Class)_classForActionDictionary:(CGPDFDictionary *)dictionary;
++ (PDFAction)actionWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page;
 - (PDFAction)init;
-- (PDFAction)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5;
-- (id)baseURLForDocument:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setNextAction:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5;
-- (void)_setNextActions:(CGPDFArray *)a3 forDocument:(id)a4 forPage:(id)a5;
+- (PDFAction)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page;
+- (id)baseURLForDocument:(id)document;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setNextAction:(CGPDFDictionary *)action forDocument:(id)document forPage:(id)page;
+- (void)_setNextActions:(CGPDFArray *)actions forDocument:(id)document forPage:(id)page;
 - (void)commonInit;
 @end
 
@@ -26,21 +26,21 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
     v6 = objc_alloc_init(PDFActionPrivate);
     v7 = v5[1];
     v5[1] = v6;
 
-    v8 = [(NSString *)self->_private->type copyWithZone:a3];
+    v8 = [(NSString *)self->_private->type copyWithZone:zone];
     v9 = v5[1];
     v10 = *(v9 + 8);
     *(v9 + 8) = v8;
 
-    v11 = [(NSArray *)self->_private->nextActions copyWithZone:a3];
+    v11 = [(NSArray *)self->_private->nextActions copyWithZone:zone];
     v12 = v5[1];
     v13 = *(v12 + 16);
     *(v12 + 16) = v11;
@@ -64,25 +64,25 @@
   v7->nextActions = 0;
 }
 
-+ (PDFAction)actionWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5
++ (PDFAction)actionWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a1 _classForActionDictionary:a3];
+  pageCopy = page;
+  documentCopy = document;
+  v10 = [self _classForActionDictionary:dictionary];
   if (!v10)
   {
     v10 = PDFAction;
   }
 
-  v11 = [[v10 alloc] initWithActionDictionary:a3 forDocument:v9 forPage:v8];
+  v11 = [[v10 alloc] initWithActionDictionary:dictionary forDocument:documentCopy forPage:pageCopy];
 
   return v11;
 }
 
-+ (Class)_classForActionDictionary:(CGPDFDictionary *)a3
++ (Class)_classForActionDictionary:(CGPDFDictionary *)dictionary
 {
   value = 0;
-  Name = CGPDFDictionaryGetName(a3, "S", &value);
+  Name = CGPDFDictionaryGetName(dictionary, "S", &value);
   v4 = value;
   v5 = !Name || value == 0;
   if (!v5 && (!strcmp(value, "GoTo") || !strcmp(v4, "Named") || !strcmp(v4, "URI") || !strcmp(v4, "Launch") || !strcmp(v4, "GoToR") || !strcmp(v4, "ResetForm")))
@@ -98,10 +98,10 @@
   return v6;
 }
 
-- (PDFAction)initWithActionDictionary:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5
+- (PDFAction)initWithActionDictionary:(CGPDFDictionary *)dictionary forDocument:(id)document forPage:(id)page
 {
-  v8 = a4;
-  v9 = a5;
+  documentCopy = document;
+  pageCopy = page;
   v20 = 0;
   value = 0;
   v18.receiver = self;
@@ -112,7 +112,7 @@
   if (v10)
   {
     [(PDFAction *)v10 commonInit];
-    if (CGPDFDictionaryGetName(a3, "S", &value))
+    if (CGPDFDictionaryGetName(dictionary, "S", &value))
     {
       v12 = objc_alloc(MEMORY[0x1E696AEC0]);
       v13 = [v12 initWithUTF8String:value];
@@ -121,14 +121,14 @@
       v14->type = v13;
     }
 
-    if (CGPDFDictionaryGetDictionary(a3, "Next", &v19))
+    if (CGPDFDictionaryGetDictionary(dictionary, "Next", &v19))
     {
-      [(PDFAction *)v11 _setNextAction:v19 forDocument:v8 forPage:v9];
+      [(PDFAction *)v11 _setNextAction:v19 forDocument:documentCopy forPage:pageCopy];
     }
 
-    else if (CGPDFDictionaryGetArray(a3, "Next", &v20))
+    else if (CGPDFDictionaryGetArray(dictionary, "Next", &v20))
     {
-      [(PDFAction *)v11 _setNextActions:v20 forDocument:v8 forPage:v9];
+      [(PDFAction *)v11 _setNextActions:v20 forDocument:documentCopy forPage:pageCopy];
     }
 
     v16 = v11;
@@ -137,26 +137,26 @@
   return v11;
 }
 
-- (void)_setNextAction:(CGPDFDictionary *)a3 forDocument:(id)a4 forPage:(id)a5
+- (void)_setNextAction:(CGPDFDictionary *)action forDocument:(id)document forPage:(id)page
 {
-  v18 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x1E696B098] valueWithPointer:a3];
-  v10 = [MEMORY[0x1E696AF00] currentThread];
-  v11 = [v10 threadDictionary];
+  documentCopy = document;
+  pageCopy = page;
+  v9 = [MEMORY[0x1E696B098] valueWithPointer:action];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v12 = [v11 objectForKey:v9];
+  v12 = [threadDictionary objectForKey:v9];
 
   if (!v12)
   {
-    [v11 setObject:v9 forKey:v9];
-    v13 = [objc_opt_class() _classForActionDictionary:a3];
+    [threadDictionary setObject:v9 forKey:v9];
+    v13 = [objc_opt_class() _classForActionDictionary:action];
     if (!v13)
     {
       v13 = PDFAction;
     }
 
-    v14 = [[v13 alloc] initWithActionDictionary:a3 forDocument:v18 forPage:v8];
+    v14 = [[v13 alloc] initWithActionDictionary:action forDocument:documentCopy forPage:pageCopy];
     if (v14)
     {
       v15 = [MEMORY[0x1E695DEC8] arrayWithObject:v14];
@@ -166,15 +166,15 @@
     }
   }
 
-  [v11 removeObjectForKey:v9];
+  [threadDictionary removeObjectForKey:v9];
 }
 
-- (void)_setNextActions:(CGPDFArray *)a3 forDocument:(id)a4 forPage:(id)a5
+- (void)_setNextActions:(CGPDFArray *)actions forDocument:(id)document forPage:(id)page
 {
-  v8 = a4;
-  v9 = a5;
+  documentCopy = document;
+  pageCopy = page;
   value = 0;
-  Count = CGPDFArrayGetCount(a3);
+  Count = CGPDFArrayGetCount(actions);
   if (Count)
   {
     v11 = Count;
@@ -182,7 +182,7 @@
     v13 = 0;
     for (i = 0; i != v11; ++i)
     {
-      if (CGPDFArrayGetDictionary(a3, i, &value))
+      if (CGPDFArrayGetDictionary(actions, i, &value))
       {
         v15 = [objc_opt_class() _classForActionDictionary:value];
         if (!v15)
@@ -191,7 +191,7 @@
         }
 
         v16 = [v15 alloc];
-        v17 = [v16 initWithActionDictionary:value forDocument:v8 forPage:v9];
+        v17 = [v16 initWithActionDictionary:value forDocument:documentCopy forPage:pageCopy];
 
         if (v17)
         {
@@ -213,17 +213,17 @@
   }
 }
 
-- (id)baseURLForDocument:(id)a3
+- (id)baseURLForDocument:(id)document
 {
-  v3 = a3;
+  documentCopy = document;
   value = 0;
-  v4 = [v3 documentRef];
-  if (!v4 || (Catalog = CGPDFDocumentGetCatalog(v4), !CGPDFDictionaryGetDictionary(Catalog, "URI", &value)) || (string = 0, !CGPDFDictionaryGetString(value, "Base", &string)) || (BytePtr = CGPDFStringGetBytePtr(string)) == 0 || (v7 = BytePtr, !CGPDFStringGetLength(string)) || ([MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:30], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(objc_alloc(MEMORY[0x1E695DFF8]), "initWithString:", v8), v8, !v9))
+  documentRef = [documentCopy documentRef];
+  if (!documentRef || (Catalog = CGPDFDocumentGetCatalog(documentRef), !CGPDFDictionaryGetDictionary(Catalog, "URI", &value)) || (string = 0, !CGPDFDictionaryGetString(value, "Base", &string)) || (BytePtr = CGPDFStringGetBytePtr(string)) == 0 || (v7 = BytePtr, !CGPDFStringGetLength(string)) || ([MEMORY[0x1E696AEC0] stringWithCString:v7 encoding:30], v8 = objc_claimAutoreleasedReturnValue(), documentURL = objc_msgSend(objc_alloc(MEMORY[0x1E695DFF8]), "initWithString:", v8), v8, !documentURL))
   {
-    v9 = [v3 documentURL];
+    documentURL = [documentCopy documentURL];
   }
 
-  return v9;
+  return documentURL;
 }
 
 @end

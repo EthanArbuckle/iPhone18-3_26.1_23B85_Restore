@@ -1,53 +1,53 @@
 @interface HDAudioAnalyticsManager
-- (BOOL)_dayComponents:(id)a3 lessThan:(id)a4;
+- (BOOL)_dayComponents:(id)components lessThan:(id)than;
 - (BOOL)_recordedDataForToday;
-- (HDAudioAnalyticsManager)initWithProfile:(id)a3;
+- (HDAudioAnalyticsManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (id)_dayForDate:(id)a3;
+- (id)_dayForDate:(id)date;
 - (id)_lastSuccessfulCalculation;
-- (int64_t)capturePhoneAnalyticsWithError:(id *)a3;
-- (void)_successfulCalculationAt:(id)a3;
-- (void)daemonReady:(id)a3;
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4;
+- (int64_t)capturePhoneAnalyticsWithError:(id *)error;
+- (void)_successfulCalculationAt:(id)at;
+- (void)daemonReady:(id)ready;
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion;
 @end
 
 @implementation HDAudioAnalyticsManager
 
-- (HDAudioAnalyticsManager)initWithProfile:(id)a3
+- (HDAudioAnalyticsManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDAudioAnalyticsManager;
   v5 = [(HDAudioAnalyticsManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKCreateSerialDispatchQueue();
     queue = v6->_queue;
     v6->_queue = v7;
 
     *&v6->_unitTesting = 0;
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v10 = [WeakRetained daemon];
-    [v10 registerDaemonReadyObserver:v6 queue:v6->_queue];
+    daemon = [WeakRetained daemon];
+    [daemon registerDaemonReadyObserver:v6 queue:v6->_queue];
   }
 
   return v6;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 analyticsSubmissionCoordinator];
-  [v5 addObserver:self queue:self->_queue];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator addObserver:self queue:self->_queue];
 }
 
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v17 = 0;
   v6 = [(HDAudioAnalyticsManager *)self capturePhoneAnalyticsWithError:&v17];
   v7 = v17;
@@ -59,12 +59,12 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v19 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_251764000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: HDAudioAnalyticsManager HDAudioAnalyticsStatusIgnore", buf, 0xCu);
       }
 
-      v9 = v5[2];
-      v10 = v5;
+      v9 = completionCopy[2];
+      v10 = completionCopy;
       v11 = 1;
       goto LABEL_13;
     case 1:
@@ -73,15 +73,15 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
       {
         v13 = v12;
-        v14 = [v7 localizedDescription];
+        localizedDescription = [v7 localizedDescription];
         *buf = 138543618;
-        v19 = self;
+        selfCopy3 = self;
         v20 = 2114;
-        v21 = v14;
+        v21 = localizedDescription;
         _os_log_impl(&dword_251764000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: HDAudioAnalyticsManager HDAudioAnalyticsStatusRetry %{public}@", buf, 0x16u);
       }
 
-      (v5[2])(v5, 0, 2, v7);
+      (completionCopy[2])(completionCopy, 0, 2, v7);
       break;
     case 0:
       _HKInitializeLogging();
@@ -89,12 +89,12 @@
       if (os_log_type_enabled(*MEMORY[0x277CCC2C8], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v19 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_251764000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: HDAudioAnalyticsManager HDAudioAnalyticsStatusSuccess", buf, 0xCu);
       }
 
-      v9 = v5[2];
-      v10 = v5;
+      v9 = completionCopy[2];
+      v10 = completionCopy;
       v11 = 0;
 LABEL_13:
       v9(v10, 0, v11, 0);
@@ -104,18 +104,18 @@ LABEL_13:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_successfulCalculationAt:(id)a3
+- (void)_successfulCalculationAt:(id)at
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"HDAudioAnalyticsManager-LastSuccessfulRun"];
+  atCopy = at;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:atCopy forKey:@"HDAudioAnalyticsManager-LastSuccessfulRun"];
 }
 
 - (id)_lastSuccessfulCalculation
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"HDAudioAnalyticsManager-LastSuccessfulRun"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"HDAudioAnalyticsManager-LastSuccessfulRun"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -131,49 +131,49 @@ LABEL_13:
   return v4;
 }
 
-- (int64_t)capturePhoneAnalyticsWithError:(id *)a3
+- (int64_t)capturePhoneAnalyticsWithError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained profileType];
+  profileType = [WeakRetained profileType];
 
-  if (v6 != 1 || [(HDAudioAnalyticsManager *)self _recordedDataForToday])
+  if (profileType != 1 || [(HDAudioAnalyticsManager *)self _recordedDataForToday])
   {
     return 2;
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v9 = [HDAudioAnalyticsExposureCalculator alloc];
-  v10 = [(HDAudioAnalyticsManager *)self profile];
-  v11 = [(HDAudioAnalyticsExposureCalculator *)v9 initWithTargetDate:v8 exposureType:0 profile:v10];
+  profile = [(HDAudioAnalyticsManager *)self profile];
+  v11 = [(HDAudioAnalyticsExposureCalculator *)v9 initWithTargetDate:date exposureType:0 profile:profile];
 
-  v12 = [(HDAudioAnalyticsExposureCalculator *)v11 audioExposureResultWithError:a3];
+  v12 = [(HDAudioAnalyticsExposureCalculator *)v11 audioExposureResultWithError:error];
   v7 = 1;
-  v56 = [(HDAudioAnalyticsExposureCalculator *)v11 notificationCountForRollingDays:1 error:a3];
-  v57 = [(HDAudioAnalyticsExposureCalculator *)v11 notificationCountForRollingDays:30 error:a3];
+  v56 = [(HDAudioAnalyticsExposureCalculator *)v11 notificationCountForRollingDays:1 error:error];
+  v57 = [(HDAudioAnalyticsExposureCalculator *)v11 notificationCountForRollingDays:30 error:error];
   v53 = v11;
-  v64 = [(HDAudioAnalyticsExposureCalculator *)v11 sevenDayDoseForMostRecentNotificationWithError:a3];
+  v64 = [(HDAudioAnalyticsExposureCalculator *)v11 sevenDayDoseForMostRecentNotificationWithError:error];
   v13 = [HDAudioAnalyticsExposureCalculator alloc];
-  v14 = [(HDAudioAnalyticsManager *)self profile];
-  v15 = [(HDAudioAnalyticsExposureCalculator *)v13 initWithTargetDate:v8 exposureType:1 profile:v14];
+  profile2 = [(HDAudioAnalyticsManager *)self profile];
+  v15 = [(HDAudioAnalyticsExposureCalculator *)v13 initWithTargetDate:date exposureType:1 profile:profile2];
 
-  v16 = [(HDAudioAnalyticsExposureCalculator *)v15 audioExposureResultWithError:a3];
-  v63 = [(HDAudioAnalyticsExposureCalculator *)v15 notificationCountForRollingDays:1 error:a3];
+  v16 = [(HDAudioAnalyticsExposureCalculator *)v15 audioExposureResultWithError:error];
+  v63 = [(HDAudioAnalyticsExposureCalculator *)v15 notificationCountForRollingDays:1 error:error];
   v54 = v15;
-  v62 = [(HDAudioAnalyticsExposureCalculator *)v15 notificationCountForRollingDays:30 error:a3];
+  v62 = [(HDAudioAnalyticsExposureCalculator *)v15 notificationCountForRollingDays:30 error:error];
   v17 = [HDAudioAnalyticsExposureCalculator alloc];
-  v18 = [(HDAudioAnalyticsManager *)self profile];
-  v19 = [(HDAudioAnalyticsExposureCalculator *)v17 initWithTargetDate:v8 exposureType:2 profile:v18];
+  profile3 = [(HDAudioAnalyticsManager *)self profile];
+  v19 = [(HDAudioAnalyticsExposureCalculator *)v17 initWithTargetDate:date exposureType:2 profile:profile3];
 
-  v61 = [(HDAudioAnalyticsExposureCalculator *)v19 audioExposureResultWithError:a3];
-  v60 = [(HDAudioAnalyticsExposureCalculator *)v19 notificationCountForRollingDays:1 error:a3];
-  v59 = [(HDAudioAnalyticsExposureCalculator *)v19 notificationCountForRollingDays:30 error:a3];
+  v61 = [(HDAudioAnalyticsExposureCalculator *)v19 audioExposureResultWithError:error];
+  v60 = [(HDAudioAnalyticsExposureCalculator *)v19 notificationCountForRollingDays:1 error:error];
+  v59 = [(HDAudioAnalyticsExposureCalculator *)v19 notificationCountForRollingDays:30 error:error];
   v20 = v12;
   v21 = [HDAudioAnalyticsExposureCalculator alloc];
-  v22 = [(HDAudioAnalyticsManager *)self profile];
-  v23 = [(HDAudioAnalyticsExposureCalculator *)v21 initWithTargetDate:v8 exposureType:3 profile:v22];
+  profile4 = [(HDAudioAnalyticsManager *)self profile];
+  v23 = [(HDAudioAnalyticsExposureCalculator *)v21 initWithTargetDate:date exposureType:3 profile:profile4];
 
   v58 = v23;
-  v24 = [(HDAudioAnalyticsExposureCalculator *)v23 audioExposureResultWithError:a3];
+  v24 = [(HDAudioAnalyticsExposureCalculator *)v23 audioExposureResultWithError:error];
   v55 = v16;
   if (v20 && v16)
   {
@@ -183,8 +183,8 @@ LABEL_13:
     {
       v52 = v24;
       v27 = objc_loadWeakRetained(&self->_profile);
-      v28 = [v27 deviceContextManager];
-      v29 = [v28 numberOfDeviceContextsPerDeviceType:a3];
+      deviceContextManager = [v27 deviceContextManager];
+      v29 = [deviceContextManager numberOfDeviceContextsPerDeviceType:error];
 
       if (v29)
       {
@@ -234,12 +234,12 @@ LABEL_13:
         }
 
         v49 = objc_alloc_init(HDAudioAnalyticsSettingsPreferences);
-        v42 = [(HDAudioAnalyticsSettingsPreferences *)v49 noisePreferences];
-        v34 = [(HDAudioAnalyticsSettingsPreferences *)v49 headphonePreferences];
+        noisePreferences = [(HDAudioAnalyticsSettingsPreferences *)v49 noisePreferences];
+        headphonePreferences = [(HDAudioAnalyticsSettingsPreferences *)v49 headphonePreferences];
         v35 = objc_loadWeakRetained(&self->_profile);
-        v36 = [v35 daemon];
-        v37 = [v36 behavior];
-        [v37 isiPad];
+        daemon = [v35 daemon];
+        behavior = [daemon behavior];
+        [behavior isiPad];
 
         v65 = v50;
         v66 = v46;
@@ -261,10 +261,10 @@ LABEL_13:
         v38 = v46;
         v47 = v50;
         v51 = v48;
-        v39 = v42;
-        v40 = v34;
+        v39 = noisePreferences;
+        v40 = headphonePreferences;
         AnalyticsSendEventLazy();
-        [(HDAudioAnalyticsManager *)self _successfulCalculationAt:v8];
+        [(HDAudioAnalyticsManager *)self _successfulCalculationAt:date];
 
         v7 = 0;
         v29 = v43;
@@ -588,12 +588,12 @@ id __58__HDAudioAnalyticsManager_capturePhoneAnalyticsWithError___block_invoke(u
 
   else
   {
-    v4 = [(HDAudioAnalyticsManager *)self _lastSuccessfulCalculation];
-    if (v4)
+    _lastSuccessfulCalculation = [(HDAudioAnalyticsManager *)self _lastSuccessfulCalculation];
+    if (_lastSuccessfulCalculation)
     {
-      v5 = [(HDAudioAnalyticsManager *)self _dayForDate:v4];
-      v6 = [MEMORY[0x277CBEAA8] date];
-      v7 = [(HDAudioAnalyticsManager *)self _dayForDate:v6];
+      v5 = [(HDAudioAnalyticsManager *)self _dayForDate:_lastSuccessfulCalculation];
+      date = [MEMORY[0x277CBEAA8] date];
+      v7 = [(HDAudioAnalyticsManager *)self _dayForDate:date];
 
       unitTesting_recordedDataForToday = ![(HDAudioAnalyticsManager *)self _dayComponents:v5 lessThan:v7];
     }
@@ -607,24 +607,24 @@ id __58__HDAudioAnalyticsManager_capturePhoneAnalyticsWithError___block_invoke(u
   return unitTesting_recordedDataForToday & 1;
 }
 
-- (id)_dayForDate:(id)a3
+- (id)_dayForDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[HDAudioAnalyticsUtilities localGregorianCalendar];
-  v5 = [v4 components:30 fromDate:v3];
+  v5 = [v4 components:30 fromDate:dateCopy];
 
   return v5;
 }
 
-- (BOOL)_dayComponents:(id)a3 lessThan:(id)a4
+- (BOOL)_dayComponents:(id)components lessThan:(id)than
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 era];
-  if (v7 >= [v6 era] && (v8 = objc_msgSend(v5, "year"), v8 >= objc_msgSend(v6, "year")) && (v9 = objc_msgSend(v5, "month"), v9 >= objc_msgSend(v6, "month")))
+  componentsCopy = components;
+  thanCopy = than;
+  v7 = [componentsCopy era];
+  if (v7 >= [thanCopy era] && (v8 = objc_msgSend(componentsCopy, "year"), v8 >= objc_msgSend(thanCopy, "year")) && (v9 = objc_msgSend(componentsCopy, "month"), v9 >= objc_msgSend(thanCopy, "month")))
   {
-    v12 = [v5 day];
-    v10 = v12 < [v6 day];
+    v12 = [componentsCopy day];
+    v10 = v12 < [thanCopy day];
   }
 
   else

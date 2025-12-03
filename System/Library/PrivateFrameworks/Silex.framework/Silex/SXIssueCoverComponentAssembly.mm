@@ -1,32 +1,32 @@
 @interface SXIssueCoverComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXIssueCoverComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_53];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_53];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_8];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_8];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_59_6];
+  publicContainer = [registryCopy publicContainer];
+  v9 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_59_6];
 
-  v10 = [v3 publicContainer];
-  v11 = [v10 registerClass:objc_opt_class() factory:&__block_literal_global_110];
+  publicContainer2 = [registryCopy publicContainer];
+  v11 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_110];
 
-  v12 = [v3 publicContainer];
-  v13 = [v12 registerProtocol:&unk_1F5417BA8 factory:&__block_literal_global_116];
+  publicContainer3 = [registryCopy publicContainer];
+  v13 = [publicContainer3 registerProtocol:&unk_1F5417BA8 factory:&__block_literal_global_116];
 
-  v15 = [v3 publicContainer];
+  publicContainer4 = [registryCopy publicContainer];
 
-  v14 = [v15 registerProtocol:&unk_1F53FCD40 factory:&__block_literal_global_120_1];
+  v14 = [publicContainer4 registerProtocol:&unk_1F53FCD40 factory:&__block_literal_global_120_1];
 }
 
 void __48__SXIssueCoverComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

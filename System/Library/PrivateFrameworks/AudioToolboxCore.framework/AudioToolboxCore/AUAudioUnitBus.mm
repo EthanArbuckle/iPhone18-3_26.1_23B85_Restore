@@ -3,10 +3,10 @@
 - (BOOL)setFormat:(AVAudioFormat *)format error:(NSError *)outError;
 - (id).cxx_construct;
 - (vector<BusPropertyObserver,)observers;
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6;
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context;
 - (void)dealloc;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4;
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5;
+- (void)removeObserver:(id)observer forKeyPath:(id)path;
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context;
 - (void)setEnabled:(BOOL)enabled;
 - (void)setMaximumChannelCount:(AUAudioChannelCount)maximumChannelCount;
 - (void)setObservers:()vector<BusPropertyObserver;
@@ -40,26 +40,26 @@
   return std::vector<BusPropertyObserver>::__init_with_size[abi:ne200100]<BusPropertyObserver*,BusPropertyObserver*>(retstr, self->_observers.__begin_, self->_observers.__end_, (self->_observers.__end_ - self->_observers.__begin_) >> 5);
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4 context:(void *)a5
+- (void)removeObserver:(id)observer forKeyPath:(id)path context:(void *)context
 {
-  v8 = a3;
-  v9 = a4;
+  observerCopy = observer;
+  pathCopy = path;
   begin = self->_observers.__begin_;
   self->_removingObserverWithContext = 1;
   for (i = self->_observers.__end_; begin != i; i = self->_observers.__end_)
   {
     WeakRetained = objc_loadWeakRetained(begin);
-    if (WeakRetained == v8 && [*(begin + 1) isEqualToString:v9])
+    if (WeakRetained == observerCopy && [*(begin + 1) isEqualToString:pathCopy])
     {
       v13 = *(begin + 3);
 
-      if (v13 == a5)
+      if (v13 == context)
       {
         v14 = std::__move_impl<std::_ClassicAlgPolicy>::operator()[abi:ne200100]<BusPropertyObserver *,BusPropertyObserver *,BusPropertyObserver *>(begin + 4, self->_observers.__end_, begin);
         std::vector<BusPropertyObserver>::__base_destruct_at_end[abi:ne200100](&self->_observers, v14);
         v15.receiver = self;
         v15.super_class = AUAudioUnitBus;
-        [(AUAudioUnitBus *)&v15 removeObserver:v8 forKeyPath:v9 context:a5];
+        [(AUAudioUnitBus *)&v15 removeObserver:observerCopy forKeyPath:pathCopy context:context];
         break;
       }
     }
@@ -74,15 +74,15 @@
   self->_removingObserverWithContext = 0;
 }
 
-- (void)removeObserver:(id)a3 forKeyPath:(id)a4
+- (void)removeObserver:(id)observer forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  pathCopy = path;
   if (self->_removingObserverWithContext)
   {
     v15.receiver = self;
     v15.super_class = AUAudioUnitBus;
-    [(AUAudioUnitBus *)&v15 removeObserver:v6 forKeyPath:v7];
+    [(AUAudioUnitBus *)&v15 removeObserver:observerCopy forKeyPath:pathCopy];
   }
 
   else
@@ -92,9 +92,9 @@
     {
       WeakRetained = objc_loadWeakRetained(begin);
       v11 = WeakRetained;
-      if (WeakRetained == v6)
+      if (WeakRetained == observerCopy)
       {
-        v12 = [*(begin + 1) isEqualToString:v7];
+        v12 = [*(begin + 1) isEqualToString:pathCopy];
 
         if (v12)
         {
@@ -102,7 +102,7 @@
           std::vector<BusPropertyObserver>::__base_destruct_at_end[abi:ne200100](&self->_observers, v13);
           v14.receiver = self;
           v14.super_class = AUAudioUnitBus;
-          [(AUAudioUnitBus *)&v14 removeObserver:v6 forKeyPath:v7];
+          [(AUAudioUnitBus *)&v14 removeObserver:observerCopy forKeyPath:pathCopy];
           break;
         }
       }
@@ -116,19 +116,19 @@
   }
 }
 
-- (void)addObserver:(id)a3 forKeyPath:(id)a4 options:(unint64_t)a5 context:(void *)a6
+- (void)addObserver:(id)observer forKeyPath:(id)path options:(unint64_t)options context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  objc_initWeak(&location, v10);
-  v12 = v11;
+  observerCopy = observer;
+  pathCopy = path;
+  objc_initWeak(&location, observerCopy);
+  v12 = pathCopy;
   v15 = v12;
-  v16 = a5;
-  v17 = a6;
+  optionsCopy = options;
+  contextCopy = context;
   std::vector<BusPropertyObserver>::push_back[abi:ne200100](&self->_observers, &location);
   v13.receiver = self;
   v13.super_class = AUAudioUnitBus;
-  [(AUAudioUnitBus *)&v13 addObserver:v10 forKeyPath:v12 options:a5 context:a6];
+  [(AUAudioUnitBus *)&v13 addObserver:observerCopy forKeyPath:v12 options:options context:context];
 
   objc_destroyWeak(&location);
 }
@@ -171,8 +171,8 @@
               objc_enumerationMutation(v12);
             }
 
-            v16 = [*(*(&v19 + 1) + 8 * i) unsignedIntegerValue];
-            if (v16 == [(AVAudioFormat *)v7 channelCount])
+            unsignedIntegerValue = [*(*(&v19 + 1) + 8 * i) unsignedIntegerValue];
+            if (unsignedIntegerValue == [(AVAudioFormat *)v7 channelCount])
             {
 
               goto LABEL_23;
@@ -278,10 +278,10 @@ LABEL_10:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) unsignedIntegerValue];
-          if (v7 <= v11)
+          unsignedIntegerValue = [*(*(&v14 + 1) + 8 * i) unsignedIntegerValue];
+          if (v7 <= unsignedIntegerValue)
           {
-            v7 = v11;
+            v7 = unsignedIntegerValue;
           }
 
           else

@@ -1,17 +1,17 @@
 @interface IRSessionClientProxy
-- (IRSessionClientProxy)initWithConnection:(id)a3;
-- (void)_didSpotOnLocationComplete:(id)a3;
-- (void)_didUpdateBundlesWithSignificantInteractionPattern:(id)a3;
-- (void)_didUpdateContext:(id)a3;
-- (void)_sessionDidFailWithError:(id)a3;
+- (IRSessionClientProxy)initWithConnection:(id)connection;
+- (void)_didSpotOnLocationComplete:(id)complete;
+- (void)_didUpdateBundlesWithSignificantInteractionPattern:(id)pattern;
+- (void)_didUpdateContext:(id)context;
+- (void)_sessionDidFailWithError:(id)error;
 - (void)invalidateXPCConnection;
 @end
 
 @implementation IRSessionClientProxy
 
-- (IRSessionClientProxy)initWithConnection:(id)a3
+- (IRSessionClientProxy)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v16.receiver = self;
   v16.super_class = IRSessionClientProxy;
   v5 = [(IRSessionClientProxy *)&v16 init];
@@ -20,9 +20,9 @@
     goto LABEL_8;
   }
 
-  if (v4)
+  if (connectionCopy)
   {
-    [v4 auditToken];
+    [connectionCopy auditToken];
   }
 
   v6 = xpc_copy_code_signing_identity_for_token();
@@ -37,10 +37,10 @@
     goto LABEL_14;
   }
 
-  v9 = [v4 valueForEntitlement:@"com.apple.intelligentrouting.recommendationservice"];
-  v10 = [v9 BOOLValue];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.intelligentrouting.recommendationservice"];
+  bOOLValue = [v9 BOOLValue];
 
-  if ((v10 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v14 = *MEMORY[0x277D21260];
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_ERROR))
@@ -53,9 +53,9 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  [(IRSessionClientProxy *)v5 setConnection:v4];
-  v11 = [v4 _queue];
-  [(IRSessionClientProxy *)v5 setQueue:v11];
+  [(IRSessionClientProxy *)v5 setConnection:connectionCopy];
+  _queue = [connectionCopy _queue];
+  [(IRSessionClientProxy *)v5 setQueue:_queue];
 
   [(IRSessionClientProxy *)v5 setClientIdentifier:v8];
 LABEL_8:
@@ -67,42 +67,42 @@ LABEL_15:
 
 - (void)invalidateXPCConnection
 {
-  v2 = [(IRSessionClientProxy *)self connection];
-  [v2 invalidate];
+  connection = [(IRSessionClientProxy *)self connection];
+  [connection invalidate];
 }
 
-- (void)_didUpdateContext:(id)a3
+- (void)_didUpdateContext:(id)context
 {
-  v4 = a3;
-  v6 = [(IRSessionClientProxy *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 _didUpdateContext:v4];
+  contextCopy = context;
+  connection = [(IRSessionClientProxy *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy _didUpdateContext:contextCopy];
 }
 
-- (void)_sessionDidFailWithError:(id)a3
+- (void)_sessionDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(IRSessionClientProxy *)self connection];
-  v6 = [v5 remoteObjectProxy];
-  [v6 _sessionDidFailWithError:v4];
+  errorCopy = error;
+  connection = [(IRSessionClientProxy *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy _sessionDidFailWithError:errorCopy];
 
   [(IRSessionClientProxy *)self invalidateXPCConnection];
 }
 
-- (void)_didSpotOnLocationComplete:(id)a3
+- (void)_didSpotOnLocationComplete:(id)complete
 {
-  v4 = a3;
-  v6 = [(IRSessionClientProxy *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 _didSpotOnLocationComplete:v4];
+  completeCopy = complete;
+  connection = [(IRSessionClientProxy *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy _didSpotOnLocationComplete:completeCopy];
 }
 
-- (void)_didUpdateBundlesWithSignificantInteractionPattern:(id)a3
+- (void)_didUpdateBundlesWithSignificantInteractionPattern:(id)pattern
 {
-  v4 = a3;
-  v6 = [(IRSessionClientProxy *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 _didUpdateBundlesWithSignificantInteractionPattern:v4];
+  patternCopy = pattern;
+  connection = [(IRSessionClientProxy *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy _didUpdateBundlesWithSignificantInteractionPattern:patternCopy];
 }
 
 - (void)initWithConnection:(void *)a1 .cold.1(void *a1, void *a2)

@@ -124,15 +124,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 0.25;
+    intValue = 0.25;
   }
 
-  return v4;
+  return intValue;
 }
 
 - (double)mailContactHasBeencontactedToday

@@ -1,9 +1,9 @@
 @interface MXAudioStatistics
 + (id)sharedInstance;
 - (id)initInternal;
-- (void)sendSinglePerformanceMessageForAssertion:(const char *)a3 explanation:(id)a4 activity:(id)a5;
-- (void)sendSinglePerformanceMessageForRoutine:(const char *)a3 operationTime:(int64_t)a4 details:(id)a5;
-- (void)sendSingleUserPreferredInputMessage:(id)a3 hostApplicationDisplayID:(id)a4 clientInitiator:(id)a5 audioRouteName:(id)a6 isInputOverride:(BOOL)a7;
+- (void)sendSinglePerformanceMessageForAssertion:(const char *)assertion explanation:(id)explanation activity:(id)activity;
+- (void)sendSinglePerformanceMessageForRoutine:(const char *)routine operationTime:(int64_t)time details:(id)details;
+- (void)sendSingleUserPreferredInputMessage:(id)message hostApplicationDisplayID:(id)d clientInitiator:(id)initiator audioRouteName:(id)name isInputOverride:(BOOL)override;
 @end
 
 @implementation MXAudioStatistics
@@ -39,67 +39,67 @@ void *__35__MXAudioStatistics_sharedInstance__block_invoke()
   return [(MXAudioStatistics *)&v3 init];
 }
 
-- (void)sendSinglePerformanceMessageForRoutine:(const char *)a3 operationTime:(int64_t)a4 details:(id)a5
+- (void)sendSinglePerformanceMessageForRoutine:(const char *)routine operationTime:(int64_t)time details:(id)details
 {
-  if (a4 >= 250000000)
+  if (time >= 250000000)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:a3 encoding:4];
-    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:a4];
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:routine encoding:4];
+    v12 = [objc_alloc(MEMORY[0x1E696AD98]) initWithLongLong:time];
     [v10 setObject:v11 forKey:@"RoutineName"];
     [v10 setObject:v12 forKey:@"OperationDurationInNanoseconds"];
-    if (a5)
+    if (details)
     {
-      [v10 setObject:a5 forKey:@"OperationDetails"];
+      [v10 setObject:details forKey:@"OperationDetails"];
     }
 
     (self->mSendSingleMessage)(v10, 13, 11);
   }
 }
 
-- (void)sendSinglePerformanceMessageForAssertion:(const char *)a3 explanation:(id)a4 activity:(id)a5
+- (void)sendSinglePerformanceMessageForAssertion:(const char *)assertion explanation:(id)explanation activity:(id)activity
 {
   if (MX_FeatureFlags_IsAssertionActivityReportingEnabled())
   {
     v9 = objc_autoreleasePoolPush();
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:a3 encoding:4];
+    v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithCString:assertion encoding:4];
     [v10 setObject:v11 forKey:@"RoutineName"];
-    [v10 setObject:a4 forKey:@"AssertionExplanation"];
-    [v10 setObject:a5 forKey:@"AssertionActivity"];
+    [v10 setObject:explanation forKey:@"AssertionExplanation"];
+    [v10 setObject:activity forKey:@"AssertionActivity"];
     (self->mSendSingleMessage)(v10, 13, 11);
 
     objc_autoreleasePoolPop(v9);
   }
 }
 
-- (void)sendSingleUserPreferredInputMessage:(id)a3 hostApplicationDisplayID:(id)a4 clientInitiator:(id)a5 audioRouteName:(id)a6 isInputOverride:(BOOL)a7
+- (void)sendSingleUserPreferredInputMessage:(id)message hostApplicationDisplayID:(id)d clientInitiator:(id)initiator audioRouteName:(id)name isInputOverride:(BOOL)override
 {
-  v7 = a7;
+  overrideCopy = override;
   v20 = *MEMORY[0x1E69E9840];
   if (MX_FeatureFlags_IsSystemInputPickerEnabled())
   {
     v13 = objc_autoreleasePoolPush();
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [v14 setObject:a3 forKey:0x1F2898850];
-    if (a6)
+    [v14 setObject:message forKey:0x1F2898850];
+    if (name)
     {
-      [v14 setObject:a6 forKey:0x1F288ED70];
+      [v14 setObject:name forKey:0x1F288ED70];
     }
 
-    if (a5)
+    if (initiator)
     {
-      [v14 setObject:a5 forKey:0x1F2898A70];
+      [v14 setObject:initiator forKey:0x1F2898A70];
     }
 
-    if (v7)
+    if (overrideCopy)
     {
       [v14 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", 1), 0x1F2898A90}];
     }
 
-    if (a4)
+    if (d)
     {
-      [v14 setObject:a4 forKey:0x1F2892E10];
+      [v14 setObject:d forKey:0x1F2892E10];
       v15 = kMXUserPreferredInputSelectionLog_SelectionType_App;
     }
 

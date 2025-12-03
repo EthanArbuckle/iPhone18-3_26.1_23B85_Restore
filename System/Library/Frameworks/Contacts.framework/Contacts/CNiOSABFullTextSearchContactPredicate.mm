@@ -1,18 +1,18 @@
 @interface CNiOSABFullTextSearchContactPredicate
-- (CNiOSABFullTextSearchContactPredicate)initWithSearchString:(id)a3 containerIdentifiers:(id)a4 groupIdentifiers:(id)a5;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)_predicatesWithAddressBook:(void *)a3 environment:(id)a4;
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7;
-- (id)cn_fetchPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 progressiveResults:(id)a5 completion:(id)a6 environment:(id)a7;
+- (CNiOSABFullTextSearchContactPredicate)initWithSearchString:(id)string containerIdentifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)_predicatesWithAddressBook:(void *)book environment:(id)environment;
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror;
+- (id)cn_fetchPeopleInAddressBook:(void *)book fetchRequest:(id)request progressiveResults:(id)results completion:(id)completion environment:(id)environment;
 @end
 
 @implementation CNiOSABFullTextSearchContactPredicate
 
-- (CNiOSABFullTextSearchContactPredicate)initWithSearchString:(id)a3 containerIdentifiers:(id)a4 groupIdentifiers:(id)a5
+- (CNiOSABFullTextSearchContactPredicate)initWithSearchString:(id)string containerIdentifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers
 {
   v9.receiver = self;
   v9.super_class = CNiOSABFullTextSearchContactPredicate;
-  v5 = [(CNFullTextSearchContactPredicate *)&v9 initWithSearchString:a3 containerIdentifiers:a4 groupIdentifiers:a5];
+  v5 = [(CNFullTextSearchContactPredicate *)&v9 initWithSearchString:string containerIdentifiers:identifiers groupIdentifiers:groupIdentifiers];
   v6 = v5;
   if (v5)
   {
@@ -23,20 +23,20 @@
   return v6;
 }
 
-- (id)_predicatesWithAddressBook:(void *)a3 environment:(id)a4
+- (id)_predicatesWithAddressBook:(void *)book environment:(id)environment
 {
   v45 = *MEMORY[0x1E69E9840];
-  v39 = a4;
-  v6 = [(CNFullTextSearchContactPredicate *)self groupIdentifiers];
+  environmentCopy = environment;
+  groupIdentifiers = [(CNFullTextSearchContactPredicate *)self groupIdentifiers];
 
-  if (v6)
+  if (groupIdentifiers)
   {
-    v7 = [(CNFullTextSearchContactPredicate *)self groupIdentifiers];
+    groupIdentifiers2 = [(CNFullTextSearchContactPredicate *)self groupIdentifiers];
     v8 = ABAddressBookCopyGroupsWithUUIDs();
 
     if (!v8)
     {
-      v9 = 0;
+      array = 0;
       goto LABEL_22;
     }
   }
@@ -46,15 +46,15 @@
     v8 = 0;
   }
 
-  v10 = [(CNFullTextSearchContactPredicate *)self containerIdentifiers];
+  containerIdentifiers = [(CNFullTextSearchContactPredicate *)self containerIdentifiers];
 
-  if (!v10)
+  if (!containerIdentifiers)
   {
     v12 = 0;
     goto LABEL_9;
   }
 
-  v11 = [(CNFullTextSearchContactPredicate *)self containerIdentifiers];
+  containerIdentifiers2 = [(CNFullTextSearchContactPredicate *)self containerIdentifiers];
   v12 = ABAddressBookCopySourcesWithUUIDs();
   v13 = [v12 count];
 
@@ -65,16 +65,16 @@ LABEL_9:
     v14 = [v12 _cn_partition:&__block_literal_global_33];
     v38 = v8;
     v15 = [v8 _cn_partition:&__block_literal_global_2_1];
-    v34 = [v14 second];
-    v33 = [v15 second];
+    second = [v14 second];
+    second2 = [v15 second];
     v36 = v14;
-    v16 = [v14 first];
+    first = [v14 first];
     v35 = v15;
-    v17 = [v15 first];
-    v18 = [v17 _cn_map:&__block_literal_global_5_1];
-    v19 = [v16 arrayByAddingObjectsFromArray:v18];
+    first2 = [v15 first];
+    v18 = [first2 _cn_map:&__block_literal_global_5_1];
+    v19 = [first arrayByAddingObjectsFromArray:v18];
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -95,10 +95,10 @@ LABEL_9:
           }
 
           v25 = *(*(&v40 + 1) + 8 * i);
-          v26 = [v39 abPredicateRunner];
-          v27 = [(CNFullTextSearchContactPredicate *)self searchString];
-          v28 = [v26 personPredicateWithNameLike:v27 inSource:v25 addressBook:a3];
-          [v9 _cn_addNonNilObject:v28];
+          abPredicateRunner = [environmentCopy abPredicateRunner];
+          searchString = [(CNFullTextSearchContactPredicate *)self searchString];
+          v28 = [abPredicateRunner personPredicateWithNameLike:searchString inSource:v25 addressBook:book];
+          [array _cn_addNonNilObject:v28];
         }
 
         v22 = [v20 countByEnumeratingWithState:&v40 objects:v44 count:16];
@@ -107,12 +107,12 @@ LABEL_9:
       while (v22);
     }
 
-    if (![v20 count] || objc_msgSend(v34, "count") || objc_msgSend(v33, "count"))
+    if (![v20 count] || objc_msgSend(second, "count") || objc_msgSend(second2, "count"))
     {
-      v29 = [v39 abPredicateRunner];
-      v30 = [(CNFullTextSearchContactPredicate *)self searchString];
-      v31 = [v29 personPredicateWithNameLike:v30 inGroups:v33 sources:v34 addressBook:a3];
-      [v9 _cn_addNonNilObject:v31];
+      abPredicateRunner2 = [environmentCopy abPredicateRunner];
+      searchString2 = [(CNFullTextSearchContactPredicate *)self searchString];
+      v31 = [abPredicateRunner2 personPredicateWithNameLike:searchString2 inGroups:second2 sources:second addressBook:book];
+      [array _cn_addNonNilObject:v31];
     }
 
     v12 = v37;
@@ -120,12 +120,12 @@ LABEL_9:
     goto LABEL_21;
   }
 
-  v9 = 0;
+  array = 0;
 LABEL_21:
 
 LABEL_22:
 
-  return v9;
+  return array;
 }
 
 uint64_t __80__CNiOSABFullTextSearchContactPredicate__predicatesWithAddressBook_environment___block_invoke_2(int a1, ABRecordRef group)
@@ -147,10 +147,10 @@ id __80__CNiOSABFullTextSearchContactPredicate__predicatesWithAddressBook_enviro
   return v2;
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v15 = 0;
-  v8 = [(CNiOSABFullTextSearchContactPredicate *)self cn_copyPeopleInAddressBook:a3 fetchRequest:a4 matchInfos:a5 environment:a6 nserror:&v15];
+  v8 = [(CNiOSABFullTextSearchContactPredicate *)self cn_copyPeopleInAddressBook:book fetchRequest:request matchInfos:infos environment:environment nserror:&v15];
   v9 = v15;
   v10 = v9;
   if (v8)
@@ -158,33 +158,33 @@ id __80__CNiOSABFullTextSearchContactPredicate__predicatesWithAddressBook_enviro
     v11 = v8;
   }
 
-  else if (a7)
+  else if (error)
   {
-    v12 = [v9 code];
-    v13 = [v10 userInfo];
-    *a7 = [CNErrorFactory errorWithCode:v12 userInfo:v13];
+    code = [v9 code];
+    userInfo = [v10 userInfo];
+    *error = [CNErrorFactory errorWithCode:code userInfo:userInfo];
   }
 
   return v8;
 }
 
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror
 {
-  v12 = a4;
-  v13 = a6;
+  requestCopy = request;
+  environmentCopy = environment;
   v14 = *MEMORY[0x1E6996568];
-  v15 = [(CNFullTextSearchContactPredicate *)self searchString];
-  LODWORD(v14) = (*(v14 + 16))(v14, v15);
+  searchString = [(CNFullTextSearchContactPredicate *)self searchString];
+  LODWORD(v14) = (*(v14 + 16))(v14, searchString);
 
   if (v14)
   {
     v16 = [CNErrorFactory errorWithCode:400 userInfo:0];
     v17 = v16;
-    if (a7)
+    if (nserror)
     {
       v18 = v16;
       v19 = 0;
-      *a7 = v17;
+      *nserror = v17;
     }
 
     else
@@ -195,17 +195,17 @@ id __80__CNiOSABFullTextSearchContactPredicate__predicatesWithAddressBook_enviro
 
   else
   {
-    v17 = [(CNiOSABFullTextSearchContactPredicate *)self _predicatesWithAddressBook:a3 environment:v13];
+    v17 = [(CNiOSABFullTextSearchContactPredicate *)self _predicatesWithAddressBook:book environment:environmentCopy];
     if ([v17 count])
     {
-      v19 = +[CNiOSFetchExecution contactsMatchingPredicates:sortOrdering:matchInfos:options:addressBook:environment:error:](CNiOSFetchExecution, "contactsMatchingPredicates:sortOrdering:matchInfos:options:addressBook:environment:error:", v17, [v12 sortOrder], a5, objc_msgSend(v12, "options"), a3, v13, a7);
+      v19 = +[CNiOSFetchExecution contactsMatchingPredicates:sortOrdering:matchInfos:options:addressBook:environment:error:](CNiOSFetchExecution, "contactsMatchingPredicates:sortOrdering:matchInfos:options:addressBook:environment:error:", v17, [requestCopy sortOrder], infos, objc_msgSend(requestCopy, "options"), book, environmentCopy, nserror);
     }
 
     else
     {
-      if (a5)
+      if (infos)
       {
-        *a5 = 0;
+        *infos = 0;
       }
 
       v19 = MEMORY[0x1E695E0F0];
@@ -215,23 +215,23 @@ id __80__CNiOSABFullTextSearchContactPredicate__predicatesWithAddressBook_enviro
   return v19;
 }
 
-- (id)cn_fetchPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 progressiveResults:(id)a5 completion:(id)a6 environment:(id)a7
+- (id)cn_fetchPeopleInAddressBook:(void *)book fetchRequest:(id)request progressiveResults:(id)results completion:(id)completion environment:(id)environment
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(CNiOSABFullTextSearchContactPredicate *)self _predicatesWithAddressBook:a3 environment:v15];
+  requestCopy = request;
+  resultsCopy = results;
+  completionCopy = completion;
+  environmentCopy = environment;
+  v16 = [(CNiOSABFullTextSearchContactPredicate *)self _predicatesWithAddressBook:book environment:environmentCopy];
   if ([v16 count])
   {
-    v17 = +[CNiOSFetchExecution contactsMatchingPredicates:sortOrdering:options:addressBook:progressiveResults:completion:environment:](CNiOSFetchExecution, "contactsMatchingPredicates:sortOrdering:options:addressBook:progressiveResults:completion:environment:", v16, [v12 sortOrder], objc_msgSend(v12, "options"), a3, v13, v14, v15);
+    v17 = +[CNiOSFetchExecution contactsMatchingPredicates:sortOrdering:options:addressBook:progressiveResults:completion:environment:](CNiOSFetchExecution, "contactsMatchingPredicates:sortOrdering:options:addressBook:progressiveResults:completion:environment:", v16, [requestCopy sortOrder], objc_msgSend(requestCopy, "options"), book, resultsCopy, completionCopy, environmentCopy);
   }
 
   else
   {
-    if (v14)
+    if (completionCopy)
     {
-      v14[2](v14, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     v17 = 0;

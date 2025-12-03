@@ -1,9 +1,9 @@
 @interface SXActionEngine
 - (SXActionEngine)init;
-- (id)actionForAddition:(id)a3;
-- (id)actionForURL:(id)a3;
-- (void)registerFactory:(id)a3 URLHost:(id)a4;
-- (void)registerFactory:(id)a3 additionType:(Class)a4;
+- (id)actionForAddition:(id)addition;
+- (id)actionForURL:(id)l;
+- (void)registerFactory:(id)factory URLHost:(id)host;
+- (void)registerFactory:(id)factory additionType:(Class)type;
 @end
 
 @implementation SXActionEngine
@@ -15,46 +15,46 @@
   v2 = [(SXActionEngine *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     additionFactories = v2->_additionFactories;
-    v2->_additionFactories = v3;
+    v2->_additionFactories = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     hostNameFactories = v2->_hostNameFactories;
-    v2->_hostNameFactories = v5;
+    v2->_hostNameFactories = dictionary2;
   }
 
   return v2;
 }
 
-- (id)actionForAddition:(id)a3
+- (id)actionForAddition:(id)addition
 {
-  v4 = a3;
+  additionCopy = addition;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
   v7 = v6;
   v8 = 0;
-  if (v4 && v6)
+  if (additionCopy && v6)
   {
-    v9 = [(SXActionEngine *)self additionFactories];
-    v10 = [v9 objectForKey:v7];
+    additionFactories = [(SXActionEngine *)self additionFactories];
+    v10 = [additionFactories objectForKey:v7];
 
-    v8 = [v10 actionForAddition:v4];
+    v8 = [v10 actionForAddition:additionCopy];
   }
 
   return v8;
 }
 
-- (id)actionForURL:(id)a3
+- (id)actionForURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 host];
-  if (v5 && ([v4 scheme], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"action"), v6, v7))
+  lCopy = l;
+  host = [lCopy host];
+  if (host && ([lCopy scheme], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", @"action"), v6, v7))
   {
-    v8 = [(SXActionEngine *)self hostNameFactories];
-    v9 = [v8 objectForKey:v5];
+    hostNameFactories = [(SXActionEngine *)self hostNameFactories];
+    v9 = [hostNameFactories objectForKey:host];
 
-    v10 = [v9 actionForURL:v4];
+    v10 = [v9 actionForURL:lCopy];
   }
 
   else
@@ -65,25 +65,25 @@
   return v10;
 }
 
-- (void)registerFactory:(id)a3 additionType:(Class)a4
+- (void)registerFactory:(id)factory additionType:(Class)type
 {
-  if (a3 && a4)
+  if (factory && type)
   {
-    v6 = a3;
-    v8 = [(SXActionEngine *)self additionFactories];
-    v7 = NSStringFromClass(a4);
-    [v8 setObject:v6 forKey:v7];
+    factoryCopy = factory;
+    additionFactories = [(SXActionEngine *)self additionFactories];
+    v7 = NSStringFromClass(type);
+    [additionFactories setObject:factoryCopy forKey:v7];
   }
 }
 
-- (void)registerFactory:(id)a3 URLHost:(id)a4
+- (void)registerFactory:(id)factory URLHost:(id)host
 {
-  if (a3 && a4)
+  if (factory && host)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [(SXActionEngine *)self hostNameFactories];
-    [v8 setObject:v7 forKey:v6];
+    hostCopy = host;
+    factoryCopy = factory;
+    hostNameFactories = [(SXActionEngine *)self hostNameFactories];
+    [hostNameFactories setObject:factoryCopy forKey:hostCopy];
   }
 }
 

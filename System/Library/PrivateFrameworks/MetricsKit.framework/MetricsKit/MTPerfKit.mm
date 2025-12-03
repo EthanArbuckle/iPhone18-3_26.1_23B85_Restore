@@ -1,18 +1,18 @@
 @interface MTPerfKit
-- (MTPerfKit)initWithTopic:(id)a3;
-- (id)flexibleMeasurementWithEventType:(id)a3 eventData:(id)a4;
-- (id)loadUrlMeasurementWithEventData:(id)a3;
-- (id)pageRenderMeasurementWithPageId:(id)a3 pageType:(id)a4 pageContext:(id)a5 eventData:(id)a6;
+- (MTPerfKit)initWithTopic:(id)topic;
+- (id)flexibleMeasurementWithEventType:(id)type eventData:(id)data;
+- (id)loadUrlMeasurementWithEventData:(id)data;
+- (id)pageRenderMeasurementWithPageId:(id)id pageType:(id)type pageContext:(id)context eventData:(id)data;
 - (id)sampling;
 @end
 
 @implementation MTPerfKit
 
-- (MTPerfKit)initWithTopic:(id)a3
+- (MTPerfKit)initWithTopic:(id)topic
 {
   v7.receiver = self;
   v7.super_class = MTPerfKit;
-  v3 = [(MTMetricsKitTemplate *)&v7 initWithTopic:a3];
+  v3 = [(MTMetricsKitTemplate *)&v7 initWithTopic:topic];
   if (v3)
   {
     v4 = [(MTObject *)[MTPerfEventHandlers alloc] initWithMetricsKit:v3];
@@ -27,55 +27,55 @@
 
 - (id)sampling
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_sampling)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_sampling)
   {
     v3 = objc_alloc_init(MTSampling);
-    sampling = v2->_sampling;
-    v2->_sampling = v3;
+    sampling = selfCopy->_sampling;
+    selfCopy->_sampling = v3;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v5 = v2->_sampling;
+  v5 = selfCopy->_sampling;
 
   return v5;
 }
 
-- (id)pageRenderMeasurementWithPageId:(id)a3 pageType:(id)a4 pageContext:(id)a5 eventData:(id)a6
+- (id)pageRenderMeasurementWithPageId:(id)id pageType:(id)type pageContext:(id)context eventData:(id)data
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  dataCopy = data;
+  contextCopy = context;
+  typeCopy = type;
+  idCopy = id;
   v14 = [MTPageRenderMeasurement alloc];
-  v15 = [(MTMetricsKitTemplate *)self eventHandlers];
-  v16 = [v15 pageRender];
-  v17 = [(MTPageRenderMeasurement *)v14 initWithMeasurementTransformer:v16 pageId:v13 pageType:v12 pageContext:v11 eventData:v10];
+  eventHandlers = [(MTMetricsKitTemplate *)self eventHandlers];
+  pageRender = [eventHandlers pageRender];
+  v17 = [(MTPageRenderMeasurement *)v14 initWithMeasurementTransformer:pageRender pageId:idCopy pageType:typeCopy pageContext:contextCopy eventData:dataCopy];
 
   return v17;
 }
 
-- (id)loadUrlMeasurementWithEventData:(id)a3
+- (id)loadUrlMeasurementWithEventData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = [MTLoadUrlMeasurement alloc];
-  v6 = [(MTMetricsKitTemplate *)self eventHandlers];
-  v7 = [v6 loadUrl];
-  v8 = [(MTPerfBaseMeasurement *)v5 initWithMeasurementTransformer:v7 eventData:v4];
+  eventHandlers = [(MTMetricsKitTemplate *)self eventHandlers];
+  loadUrl = [eventHandlers loadUrl];
+  v8 = [(MTPerfBaseMeasurement *)v5 initWithMeasurementTransformer:loadUrl eventData:dataCopy];
 
   return v8;
 }
 
-- (id)flexibleMeasurementWithEventType:(id)a3 eventData:(id)a4
+- (id)flexibleMeasurementWithEventType:(id)type eventData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
+  dataCopy = data;
+  typeCopy = type;
   v8 = [MTFlexiblePerfMeasurement alloc];
-  v9 = [(MTMetricsKitTemplate *)self eventHandlers];
-  v10 = [v9 flexible];
-  v11 = [(MTFlexiblePerfMeasurement *)v8 initWithMeasurementTransformer:v10 eventType:v7 eventData:v6];
+  eventHandlers = [(MTMetricsKitTemplate *)self eventHandlers];
+  flexible = [eventHandlers flexible];
+  v11 = [(MTFlexiblePerfMeasurement *)v8 initWithMeasurementTransformer:flexible eventType:typeCopy eventData:dataCopy];
 
   return v11;
 }

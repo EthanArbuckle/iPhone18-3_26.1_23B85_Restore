@@ -1,13 +1,13 @@
 @interface SURoundedCornersMaskProvider
-- (CGPath)copyPathForMaskWithSize:(CGSize)a3;
+- (CGPath)copyPathForMaskWithSize:(CGSize)size;
 @end
 
 @implementation SURoundedCornersMaskProvider
 
-- (CGPath)copyPathForMaskWithSize:(CGSize)a3
+- (CGPath)copyPathForMaskWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = MEMORY[0x1E69DC728];
   [(SURoundedCornersMaskProvider *)self cornerRadius];
   result = [objc_msgSend(v5 bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, width, height, v6), "CGPath"}];

@@ -1,5 +1,5 @@
 @interface DMEnvironment
-+ (BOOL)isBuildVersion:(id)a3 equalToBuildVersion:(id)a4;
++ (BOOL)isBuildVersion:(id)version equalToBuildVersion:(id)buildVersion;
 + (DMEnvironment)sharedInstance;
 - (BOOL)deviceModeIsSharediPad;
 - (BOOL)shouldImposePluginArtificialHang;
@@ -18,13 +18,13 @@
 - (id)userDataDispositionPref;
 - (unint64_t)migrationRebootCount;
 - (void)clearContext;
-- (void)setContext:(id)a3;
-- (void)setLastBuildVersionPref:(id)a3;
-- (void)setLastMigrationResultsPref:(id)a3;
-- (void)setMigrationPluginResultsPref:(id)a3;
-- (void)setMigrationRebootCount:(unint64_t)a3;
-- (void)setMigrationRebootCountPref:(id)a3;
-- (void)setUserDataDispositionPref:(id)a3;
+- (void)setContext:(id)context;
+- (void)setLastBuildVersionPref:(id)pref;
+- (void)setLastMigrationResultsPref:(id)pref;
+- (void)setMigrationPluginResultsPref:(id)pref;
+- (void)setMigrationRebootCount:(unint64_t)count;
+- (void)setMigrationRebootCountPref:(id)pref;
+- (void)setUserDataDispositionPref:(id)pref;
 @end
 
 @implementation DMEnvironment
@@ -58,11 +58,11 @@ uint64_t __31__DMEnvironment_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)setLastBuildVersionPref:(id)a3
+- (void)setLastBuildVersionPref:(id)pref
 {
   v3 = *MEMORY[0x277CBF040];
   v4 = *MEMORY[0x277CBF030];
-  CFPreferencesSetValue(@"LastSystemVersion", a3, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+  CFPreferencesSetValue(@"LastSystemVersion", pref, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
 
   CFPreferencesSynchronize(@"com.apple.migration", v3, v4);
 }
@@ -77,11 +77,11 @@ uint64_t __31__DMEnvironment_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)setLastMigrationResultsPref:(id)a3
+- (void)setLastMigrationResultsPref:(id)pref
 {
   v3 = *MEMORY[0x277CBF040];
   v4 = *MEMORY[0x277CBF030];
-  CFPreferencesSetValue(@"DMLastMigrationResults", a3, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+  CFPreferencesSetValue(@"DMLastMigrationResults", pref, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
 
   CFPreferencesSynchronize(@"com.apple.migration", v3, v4);
 }
@@ -96,11 +96,11 @@ uint64_t __31__DMEnvironment_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)setUserDataDispositionPref:(id)a3
+- (void)setUserDataDispositionPref:(id)pref
 {
   v3 = *MEMORY[0x277CBF040];
   v4 = *MEMORY[0x277CBF030];
-  CFPreferencesSetValue(@"DMUserDataDisposition", a3, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+  CFPreferencesSetValue(@"DMUserDataDisposition", pref, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
 
   CFPreferencesSynchronize(@"com.apple.migration", v3, v4);
 }
@@ -157,11 +157,11 @@ uint64_t __31__DMEnvironment_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)setMigrationPluginResultsPref:(id)a3
+- (void)setMigrationPluginResultsPref:(id)pref
 {
   v3 = *MEMORY[0x277CBF040];
   v4 = *MEMORY[0x277CBF030];
-  CFPreferencesSetValue(@"DMMigrationPluginResults", a3, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+  CFPreferencesSetValue(@"DMMigrationPluginResults", pref, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
 
   CFPreferencesSynchronize(@"com.apple.migration", v3, v4);
 }
@@ -194,38 +194,38 @@ uint64_t __31__DMEnvironment_sharedInstance__block_invoke()
 
 - (unint64_t)migrationRebootCount
 {
-  v3 = [(DMEnvironment *)self migrationRebootCountPref];
+  migrationRebootCountPref = [(DMEnvironment *)self migrationRebootCountPref];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(DMEnvironment *)self buildVersion];
-    v5 = [v3 dm_migrationRebootCountPref_buildVersion];
-    v6 = [DMEnvironment isBuildVersion:v4 equalToBuildVersion:v5];
+    buildVersion = [(DMEnvironment *)self buildVersion];
+    dm_migrationRebootCountPref_buildVersion = [migrationRebootCountPref dm_migrationRebootCountPref_buildVersion];
+    v6 = [DMEnvironment isBuildVersion:buildVersion equalToBuildVersion:dm_migrationRebootCountPref_buildVersion];
 
     if (v6)
     {
-      v7 = [v3 dm_migrationRebootCountPref_rebootCount];
+      dm_migrationRebootCountPref_rebootCount = [migrationRebootCountPref dm_migrationRebootCountPref_rebootCount];
     }
 
     else
     {
-      v7 = 0;
+      dm_migrationRebootCountPref_rebootCount = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    dm_migrationRebootCountPref_rebootCount = 0;
   }
 
-  return v7;
+  return dm_migrationRebootCountPref_rebootCount;
 }
 
-- (void)setMigrationRebootCount:(unint64_t)a3
+- (void)setMigrationRebootCount:(unint64_t)count
 {
   v5 = MEMORY[0x277CBEAC0];
-  v6 = [(DMEnvironment *)self buildVersion];
-  v7 = [v5 dm_migrationRebootCountPrefWithRebootCount:a3 buildVersion:v6];
+  buildVersion = [(DMEnvironment *)self buildVersion];
+  v7 = [v5 dm_migrationRebootCountPrefWithRebootCount:count buildVersion:buildVersion];
   [(DMEnvironment *)self setMigrationRebootCountPref:v7];
 
   [(DMEnvironment *)self blockUntilPreferencesFlush];
@@ -241,11 +241,11 @@ uint64_t __31__DMEnvironment_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)setMigrationRebootCountPref:(id)a3
+- (void)setMigrationRebootCountPref:(id)pref
 {
   v3 = *MEMORY[0x277CBF040];
   v4 = *MEMORY[0x277CBF030];
-  CFPreferencesSetValue(@"DMMigrationRebootCount", a3, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
+  CFPreferencesSetValue(@"DMMigrationRebootCount", pref, @"com.apple.migration", *MEMORY[0x277CBF040], *MEMORY[0x277CBF030]);
 
   CFPreferencesSynchronize(@"com.apple.migration", v3, v4);
 }
@@ -330,9 +330,9 @@ uint64_t __31__DMEnvironment_sharedInstance__block_invoke()
   return v7;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  propertyList = a3;
+  propertyList = context;
   _DMLogFunc(v3, 7, @"Setting context to %@");
   v4 = getpwnam("mobile");
   if (!v4)
@@ -457,14 +457,14 @@ LABEL_23:
   return v4;
 }
 
-+ (BOOL)isBuildVersion:(id)a3 equalToBuildVersion:(id)a4
++ (BOOL)isBuildVersion:(id)version equalToBuildVersion:(id)buildVersion
 {
   result = 0;
-  if (a3)
+  if (version)
   {
-    if (a4)
+    if (buildVersion)
     {
-      return [a3 compare:a4 options:1] == 0;
+      return [version compare:buildVersion options:1] == 0;
     }
   }
 

@@ -1,15 +1,15 @@
 @interface CSDiagnosticeExtension
-- (id)_sortedAttachmentListWithPath:(id)a3 regularExpressionPatten:(id)a4;
-- (id)attachmentsForParameters:(id)a3;
+- (id)_sortedAttachmentListWithPath:(id)path regularExpressionPatten:(id)patten;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation CSDiagnosticeExtension
 
-- (id)_sortedAttachmentListWithPath:(id)a3 regularExpressionPatten:(id)a4
+- (id)_sortedAttachmentListWithPath:(id)path regularExpressionPatten:(id)patten
 {
-  v6 = a4;
-  v7 = [NSURL fileURLWithPath:a3];
-  v8 = [NSRegularExpression regularExpressionWithPattern:v6 options:1 error:0];
+  pattenCopy = patten;
+  v7 = [NSURL fileURLWithPath:path];
+  v8 = [NSRegularExpression regularExpressionWithPattern:pattenCopy options:1 error:0];
 
   v9 = [(CSDiagnosticeExtension *)self filesInDir:v7 matchingPattern:v8 excludingPattern:0];
 
@@ -30,12 +30,12 @@
   return v13;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = +[NSMutableArray array];
   v6 = os_log_create("com.apple.corespeech", "DiagnosticExtension");
-  v7 = [v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  v7 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
 
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v7 BOOLValue])
   {
@@ -65,7 +65,7 @@
       [v5 addObjectsFromArray:v10];
 
       v11 = @"/private/var/mobile/Library/Logs/CrashReporter/Assistant/MHLog";
-      v12 = self;
+      selfCopy2 = self;
       v13 = @".*\\.(wav)$";
     }
 
@@ -73,10 +73,10 @@
     {
       v11 = @"/private/var/mobile/Library/Logs/CrashReporter/Assistant/SpeechLogs";
       v13 = @"PHS\\-.*\\.(wav)$";
-      v12 = self;
+      selfCopy2 = self;
     }
 
-    v14 = [(CSDiagnosticeExtension *)v12 _sortedAttachmentListWithPath:v11 regularExpressionPatten:v13];
+    v14 = [(CSDiagnosticeExtension *)selfCopy2 _sortedAttachmentListWithPath:v11 regularExpressionPatten:v13];
     [v5 addObjectsFromArray:v14];
   }
 

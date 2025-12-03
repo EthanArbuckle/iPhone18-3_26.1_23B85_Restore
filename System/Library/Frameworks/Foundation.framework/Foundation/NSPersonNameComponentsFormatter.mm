@@ -1,95 +1,95 @@
 @interface NSPersonNameComponentsFormatter
-+ (BOOL)__contents:(id)a3 exclusivelyInCharacterSet:(USet *)a4;
-+ (BOOL)__shortStyle:(int64_t)a3 isRestrictedForLocalization:(id)a4;
-+ (BOOL)__shortStyle:(int64_t)a3 isRestrictedForScript:(unint64_t)a4;
-+ (BOOL)__shortStyleRestrictionExistsForComponents:(id)a3 shortStyle:(int64_t)a4;
++ (BOOL)__contents:(id)__contents exclusivelyInCharacterSet:(USet *)set;
++ (BOOL)__shortStyle:(int64_t)style isRestrictedForLocalization:(id)localization;
++ (BOOL)__shortStyle:(int64_t)style isRestrictedForScript:(unint64_t)script;
++ (BOOL)__shortStyleRestrictionExistsForComponents:(id)components shortStyle:(int64_t)style;
 + (BOOL)__shouldFallbackToGivenNameInitialForAbbreviatedNameFormatFamilyNameOnly;
-+ (BOOL)__style:(int64_t)a3 isRestrictedForLocalization:(id)a4;
-+ (BOOL)__style:(int64_t)a3 isRestrictedForScript:(unint64_t)a4;
++ (BOOL)__style:(int64_t)__style isRestrictedForLocalization:(id)localization;
++ (BOOL)__style:(int64_t)__style isRestrictedForScript:(unint64_t)script;
 + (BOOL)_currentLocaleIsCJK;
-+ (BOOL)_isCJKScript:(id)a3;
++ (BOOL)_isCJKScript:(id)script;
 + (BOOL)_shortNameIsEnabled;
 + (BOOL)_shouldPreferNicknames;
-+ (BOOL)isKatakana:(id)a3;
++ (BOOL)isKatakana:(id)katakana;
 + (NSString)_preferredLocalizationForCurrentLocale;
 + (NSString)localizedStringFromPersonNameComponents:(NSPersonNameComponents *)components style:(NSPersonNameComponentsFormatterStyle)nameFormatStyle options:(NSPersonNameComponentsFormatterOptions)nameOptions;
-+ (SEL)__initialsCreatorForScript:(unint64_t)a3;
-+ (USet)__getCharacterSetWithPattern:(id)a3;
-+ (id)__characterSetWithPattern:(id)a3;
++ (SEL)__initialsCreatorForScript:(unint64_t)script;
++ (USet)__getCharacterSetWithPattern:(id)pattern;
++ (id)__characterSetWithPattern:(id)pattern;
 + (id)__currentLocale;
 + (id)__familyNameFirstOrdering;
 + (id)__givenNameFirstOrdering;
-+ (id)__initialsForString:(id)a3;
-+ (id)__longestComponentFromComponents:(id)a3;
-+ (id)__naiveDelimiterForCombinedNameString:(id)a3;
-+ (id)__stringByStrippingNonInitialPunctuationFromString:(id)a3;
-+ (id)__stringValueForShortStyle:(int64_t)a3;
-+ (id)__stringValueForStyle:(int64_t)a3;
-+ (id)__supportedNameDefaultsFromLocalization:(id)a3;
-+ (id)__supportedScriptDefaultsFromScriptName:(id)a3;
++ (id)__initialsForString:(id)string;
++ (id)__longestComponentFromComponents:(id)components;
++ (id)__naiveDelimiterForCombinedNameString:(id)string;
++ (id)__stringByStrippingNonInitialPunctuationFromString:(id)string;
++ (id)__stringValueForShortStyle:(int64_t)style;
++ (id)__stringValueForStyle:(int64_t)style;
++ (id)__supportedNameDefaultsFromLocalization:(id)localization;
++ (id)__supportedScriptDefaultsFromScriptName:(id)name;
 + (id)__thaiConsonantSet;
 + (id)_cjkLanguagesSet;
 + (id)_cjkLocaleIdentifiers;
-+ (id)_fallbackDescriptorForStyle:(int64_t)a3 options:(unint64_t)a4;
-+ (id)_formatterWithStyle:(int64_t)a3 options:(unint64_t)a4;
-+ (id)_localizedDelimiterForComponents:(id)a3 options:(unint64_t)a4;
-+ (id)_localizedShortNameForComponents:(id)a3 withStyle:(int64_t)a4 options:(unint64_t)a5;
-+ (id)_preferredLocalizationFromLocale:(id)a3;
-+ (id)_relevantKeyPathsForStyle:(int64_t)a3 options:(unint64_t)a4;
-+ (id)_styleFormatterForStyle:(int64_t)a3 masterFormatter:(id)a4;
-+ (int64_t)__abbreviatedNameFormatForPersonNameComponents:(id)a3;
-+ (int64_t)__abbreviatedNameFormatForString:(id)a3;
-+ (int64_t)__nameOrderForLocalization:(id)a3 usingNativeOrdering:(BOOL)a4;
-+ (int64_t)__shortNameFormatForLocalization:(id)a3;
++ (id)_fallbackDescriptorForStyle:(int64_t)style options:(unint64_t)options;
++ (id)_formatterWithStyle:(int64_t)style options:(unint64_t)options;
++ (id)_localizedDelimiterForComponents:(id)components options:(unint64_t)options;
++ (id)_localizedShortNameForComponents:(id)components withStyle:(int64_t)style options:(unint64_t)options;
++ (id)_preferredLocalizationFromLocale:(id)locale;
++ (id)_relevantKeyPathsForStyle:(int64_t)style options:(unint64_t)options;
++ (id)_styleFormatterForStyle:(int64_t)style masterFormatter:(id)formatter;
++ (int64_t)__abbreviatedNameFormatForPersonNameComponents:(id)components;
++ (int64_t)__abbreviatedNameFormatForString:(id)string;
++ (int64_t)__nameOrderForLocalization:(id)localization usingNativeOrdering:(BOOL)ordering;
++ (int64_t)__shortNameFormatForLocalization:(id)localization;
 + (int64_t)_defaultDisplayNameOrder;
 + (int64_t)_defaultShortNameFormat;
-+ (int64_t)_nameOrderWithOverridesForComponents:(id)a3 options:(unint64_t)a4;
-+ (unint64_t)__inferredScriptIndexForComponents:(id)a3 ignoreUndeterminedComponents:(BOOL)a4;
-+ (unint64_t)__inferredScriptIndexFromString:(id)a3;
++ (int64_t)_nameOrderWithOverridesForComponents:(id)components options:(unint64_t)options;
++ (unint64_t)__inferredScriptIndexForComponents:(id)components ignoreUndeterminedComponents:(BOOL)undeterminedComponents;
++ (unint64_t)__inferredScriptIndexFromString:(id)string;
 + (void)__registerDefaults;
-+ (void)forEachExistingComponentWithComponents:(id)a3 performBlock:(id)a4;
-- (BOOL)__localizedRestrictionExistsForComponents:(id)a3 ignoreUndeterminedComponents:(BOOL)a4;
-- (BOOL)__localizedRestrictionExistsForShortStyle:(int64_t)a3;
-- (BOOL)__localizedRestrictionExistsForStyle:(int64_t)a3;
++ (void)forEachExistingComponentWithComponents:(id)components performBlock:(id)block;
+- (BOOL)__localizedRestrictionExistsForComponents:(id)components ignoreUndeterminedComponents:(BOOL)undeterminedComponents;
+- (BOOL)__localizedRestrictionExistsForShortStyle:(int64_t)style;
+- (BOOL)__localizedRestrictionExistsForStyle:(int64_t)style;
 - (BOOL)_forceFamilyNameFirst;
 - (BOOL)_forceGivenNameFirst;
 - (BOOL)_ignoresFallbacks;
 - (BOOL)getObjectValue:(id *)obj forString:(NSString *)string errorDescription:(NSString *)error;
-- (BOOL)isEqualToFormatter:(id)a3;
+- (BOOL)isEqualToFormatter:(id)formatter;
 - (BOOL)isPhonetic;
 - (NSAttributedString)annotatedStringFromPersonNameComponents:(NSPersonNameComponents *)components;
 - (NSLocale)_locale;
 - (NSLocale)locale;
 - (NSPersonNameComponents)personNameComponentsFromString:(NSString *)string;
 - (NSPersonNameComponentsFormatter)init;
-- (NSPersonNameComponentsFormatter)initWithCoder:(id)a3;
-- (NSPersonNameComponentsFormatter)initWithData:(id)a3;
+- (NSPersonNameComponentsFormatter)initWithCoder:(id)coder;
+- (NSPersonNameComponentsFormatter)initWithData:(id)data;
 - (NSPersonNameComponentsFormatterStyle)style;
 - (NSString)_preferredLocalizationForExplicitlySetLocale;
 - (NSString)stringFromPersonNameComponents:(NSPersonNameComponents *)components;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
-- (int64_t)__computedNameOrderForComponents:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
+- (int64_t)__computedNameOrderForComponents:(id)components;
 - (int64_t)__computedShortNameFormat;
-- (int64_t)__localizedNameOrderUsingNativeOrdering:(BOOL)a3;
+- (int64_t)__localizedNameOrderUsingNativeOrdering:(BOOL)ordering;
 - (int64_t)__localizedShortNameFormat;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)receiveObservedValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)receiveObservedValue:(id)value;
 - (void)setLocale:(NSLocale *)locale;
 - (void)setPhonetic:(BOOL)phonetic;
 - (void)setStyle:(NSPersonNameComponentsFormatterStyle)style;
-- (void)set_forceFamilyNameFirst:(BOOL)a3;
-- (void)set_forceGivenNameFirst:(BOOL)a3;
-- (void)set_ignoresFallbacks:(BOOL)a3;
-- (void)set_locale:(id)a3;
+- (void)set_forceFamilyNameFirst:(BOOL)first;
+- (void)set_forceGivenNameFirst:(BOOL)first;
+- (void)set_ignoresFallbacks:(BOOL)fallbacks;
+- (void)set_locale:(id)set_locale;
 @end
 
 @implementation NSPersonNameComponentsFormatter
 
 + (int64_t)_defaultDisplayNameOrder
 {
-  [a1 __registerDefaults];
+  [self __registerDefaults];
   if (_overriddenSettings && (v2 = [_overriddenSettings objectForKeyedSubscript:@"NSPersonNameDefaultDisplayNameOrder"]) != 0)
   {
 
@@ -98,9 +98,9 @@
 
   else
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v4 integerForKey:@"NSPersonNameDefaultDisplayNameOrder"];
+    return [standardUserDefaults integerForKey:@"NSPersonNameDefaultDisplayNameOrder"];
   }
 }
 
@@ -121,7 +121,7 @@
   v2[1] = 3221225472;
   v2[2] = __53__NSPersonNameComponentsFormatter___registerDefaults__block_invoke;
   v2[3] = &unk_1E69F2C00;
-  v2[4] = a1;
+  v2[4] = self;
   if (__registerDefaults_onceToken != -1)
   {
     dispatch_once(&__registerDefaults_onceToken, v2);
@@ -156,7 +156,7 @@ id __50__NSPersonNameComponentsFormatter___currentLocale__block_invoke()
 
 + (BOOL)_shortNameIsEnabled
 {
-  [a1 __registerDefaults];
+  [self __registerDefaults];
   if (_overriddenSettings && (v2 = [_overriddenSettings objectForKeyedSubscript:@"NSPersonNameDefaultShortNameEnabled"]) != 0)
   {
 
@@ -165,15 +165,15 @@ id __50__NSPersonNameComponentsFormatter___currentLocale__block_invoke()
 
   else
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v4 BOOLForKey:@"NSPersonNameDefaultShortNameEnabled"];
+    return [standardUserDefaults BOOLForKey:@"NSPersonNameDefaultShortNameEnabled"];
   }
 }
 
 + (int64_t)_defaultShortNameFormat
 {
-  [a1 __registerDefaults];
+  [self __registerDefaults];
   if (_overriddenSettings && (v2 = [_overriddenSettings objectForKeyedSubscript:@"NSPersonNameDefaultShortNameFormat"]) != 0)
   {
 
@@ -182,15 +182,15 @@ id __50__NSPersonNameComponentsFormatter___currentLocale__block_invoke()
 
   else
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v4 integerForKey:@"NSPersonNameDefaultShortNameFormat"];
+    return [standardUserDefaults integerForKey:@"NSPersonNameDefaultShortNameFormat"];
   }
 }
 
 + (BOOL)_shouldPreferNicknames
 {
-  [a1 __registerDefaults];
+  [self __registerDefaults];
   if (_overriddenSettings && (v2 = [_overriddenSettings objectForKeyedSubscript:@"NSPersonNameDefaultShouldPreferNicknamesPreference"]) != 0)
   {
 
@@ -199,9 +199,9 @@ id __50__NSPersonNameComponentsFormatter___currentLocale__block_invoke()
 
   else
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
 
-    return [v4 BOOLForKey:@"NSPersonNameDefaultShouldPreferNicknamesPreference"];
+    return [standardUserDefaults BOOLForKey:@"NSPersonNameDefaultShouldPreferNicknamesPreference"];
   }
 }
 
@@ -223,9 +223,9 @@ id __50__NSPersonNameComponentsFormatter___currentLocale__block_invoke()
 - (NSPersonNameComponentsFormatterStyle)style
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [self->_private style];
+  style = [self->_private style];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return style;
 }
 
 + (id)_cjkLanguagesSet
@@ -266,17 +266,17 @@ id __50__NSPersonNameComponentsFormatter___currentLocale__block_invoke()
 - (BOOL)_forceFamilyNameFirst
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [self->_private forceFamilyNameFirst];
+  forceFamilyNameFirst = [self->_private forceFamilyNameFirst];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return forceFamilyNameFirst;
 }
 
 - (BOOL)_forceGivenNameFirst
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [self->_private forceGivenNameFirst];
+  forceGivenNameFirst = [self->_private forceGivenNameFirst];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return forceGivenNameFirst;
 }
 
 + (id)__givenNameFirstOrdering
@@ -292,9 +292,9 @@ id __50__NSPersonNameComponentsFormatter___currentLocale__block_invoke()
 - (BOOL)isPhonetic
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [self->_private phonetic];
+  phonetic = [self->_private phonetic];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return phonetic;
 }
 
 + (NSString)_preferredLocalizationForCurrentLocale
@@ -356,15 +356,15 @@ uint64_t __57__NSPersonNameComponentsFormatter_westernInitialsCreator__block_inv
 - (BOOL)_ignoresFallbacks
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [self->_private ignoresFallbacks];
+  ignoresFallbacks = [self->_private ignoresFallbacks];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return ignoresFallbacks;
 }
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (value)
   {
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -373,7 +373,7 @@ uint64_t __57__NSPersonNameComponentsFormatter_westernInitialsCreator__block_inv
 
     v6.receiver = self;
     v6.super_class = NSPersonNameComponentsFormatter;
-    [(NSPersonNameComponentsFormatter *)&v6 receiveObservedValue:[(NSPersonNameComponentsFormatter *)self stringFromPersonNameComponents:a3]];
+    [(NSPersonNameComponentsFormatter *)&v6 receiveObservedValue:[(NSPersonNameComponentsFormatter *)self stringFromPersonNameComponents:value]];
   }
 
   else
@@ -384,7 +384,7 @@ uint64_t __57__NSPersonNameComponentsFormatter_westernInitialsCreator__block_inv
   }
 }
 
-- (NSPersonNameComponentsFormatter)initWithData:(id)a3
+- (NSPersonNameComponentsFormatter)initWithData:(id)data
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -392,36 +392,36 @@ uint64_t __57__NSPersonNameComponentsFormatter_westernInitialsCreator__block_inv
   v4 = [(NSPersonNameComponentsFormatter *)&v6 init];
   if (v4)
   {
-    v4->_private = [a3 copy];
+    v4->_private = [data copy];
     v4->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v4;
 }
 
-- (void)set_forceFamilyNameFirst:(BOOL)a3
+- (void)set_forceFamilyNameFirst:(BOOL)first
 {
-  v3 = a3;
+  firstCopy = first;
   os_unfair_lock_lock(&self->_lock);
-  [self->_private setForceFamilyNameFirst:v3];
+  [self->_private setForceFamilyNameFirst:firstCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)set_forceGivenNameFirst:(BOOL)a3
+- (void)set_forceGivenNameFirst:(BOOL)first
 {
-  v3 = a3;
+  firstCopy = first;
   os_unfair_lock_lock(&self->_lock);
-  [self->_private setForceGivenNameFirst:v3];
+  [self->_private setForceGivenNameFirst:firstCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)set_ignoresFallbacks:(BOOL)a3
+- (void)set_ignoresFallbacks:(BOOL)fallbacks
 {
-  v3 = a3;
+  fallbacksCopy = fallbacks;
   os_unfair_lock_lock(&self->_lock);
-  [self->_private setIgnoresFallbacks:v3];
+  [self->_private setIgnoresFallbacks:fallbacksCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -429,18 +429,18 @@ uint64_t __57__NSPersonNameComponentsFormatter_westernInitialsCreator__block_inv
 - (NSLocale)_locale
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [self->_private locale];
+  locale = [self->_private locale];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return locale;
 }
 
-- (void)set_locale:(id)a3
+- (void)set_locale:(id)set_locale
 {
   os_unfair_lock_lock(&self->_lock);
-  [self->_private setLocale:a3];
-  if (a3)
+  [self->_private setLocale:set_locale];
+  if (set_locale)
   {
-    self->__preferredLocalizationForExplicitlySetLocale = [+[NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:](NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:{a3), "copy"}];
+    self->__preferredLocalizationForExplicitlySetLocale = [+[NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:](NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:{set_locale), "copy"}];
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -449,14 +449,14 @@ uint64_t __57__NSPersonNameComponentsFormatter_westernInitialsCreator__block_inv
 - (NSLocale)locale
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [self->_private locale];
+  locale = [self->_private locale];
   os_unfair_lock_unlock(&self->_lock);
-  if (!v3)
+  if (!locale)
   {
-    v3 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    locale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
   }
 
-  v4 = v3;
+  v4 = locale;
 
   return v4;
 }
@@ -495,8 +495,8 @@ uint64_t __57__NSPersonNameComponentsFormatter_westernInitialsCreator__block_inv
   v7 = *MEMORY[0x1E69E9840];
   v4 = __107__NSPersonNameComponentsFormatter___shouldFallbackToGivenNameInitialForAbbreviatedNameFormatFamilyNameOnly__block_invoke;
   v5 = &unk_1E69F2C00;
-  v6 = a1;
-  if ([a1 __shouldCacheFallbackToGivenNameInitialForAbbreviatedNameFormatFamilyNameOnly])
+  selfCopy = self;
+  if ([self __shouldCacheFallbackToGivenNameInitialForAbbreviatedNameFormatFamilyNameOnly])
   {
     if (qword_1ED43F488 != -1)
     {
@@ -567,13 +567,13 @@ LABEL_3:
   return result;
 }
 
-+ (id)_formatterWithStyle:(int64_t)a3 options:(unint64_t)a4
++ (id)_formatterWithStyle:(int64_t)style options:(unint64_t)options
 {
-  v6 = objc_alloc_init(a1);
-  [v6 setStyle:a3];
-  [v6 setPhonetic:(a4 >> 1) & 1];
-  [v6 set_forceFamilyNameFirst:(a4 >> 30) & 1];
-  [v6 set_forceGivenNameFirst:(a4 >> 31) & 1];
+  v6 = objc_alloc_init(self);
+  [v6 setStyle:style];
+  [v6 setPhonetic:(options >> 1) & 1];
+  [v6 set_forceFamilyNameFirst:(options >> 30) & 1];
+  [v6 set_forceGivenNameFirst:(options >> 31) & 1];
   return v6;
 }
 
@@ -581,15 +581,15 @@ LABEL_3:
 {
   if (!components)
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:a1 lineNumber:@"NSPersonNameComponentsFormatter.m" description:1712, @"Invalid parameter not satisfying: %@", @"components != nil"];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSPersonNameComponentsFormatter.m" description:1712, @"Invalid parameter not satisfying: %@", @"components != nil"];
   }
 
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:a1 lineNumber:@"NSPersonNameComponentsFormatter.m" description:1713, @"Invalid parameter not satisfying: %@", @"[components isKindOfClass:STATIC_CLASS_REF(NSPersonNameComponents)]"];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSPersonNameComponentsFormatter.m" description:1713, @"Invalid parameter not satisfying: %@", @"[components isKindOfClass:STATIC_CLASS_REF(NSPersonNameComponents)]"];
   }
 
-  v10 = [a1 _formatterWithStyle:nameFormatStyle options:nameOptions];
+  v10 = [self _formatterWithStyle:nameFormatStyle options:nameOptions];
 
   return [v10 stringFromPersonNameComponents:components];
 }
@@ -617,14 +617,14 @@ id __60__NSPersonNameComponentsFormatter___familyNameFirstOrdering__block_invoke
   return result;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!value || (objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  return [(NSPersonNameComponentsFormatter *)self stringFromPersonNameComponents:a3];
+  return [(NSPersonNameComponentsFormatter *)self stringFromPersonNameComponents:value];
 }
 
 - (NSString)stringFromPersonNameComponents:(NSPersonNameComponents *)components
@@ -697,11 +697,11 @@ id __60__NSPersonNameComponentsFormatter___familyNameFirstOrdering__block_invoke
   return result;
 }
 
-+ (id)_styleFormatterForStyle:(int64_t)a3 masterFormatter:(id)a4
++ (id)_styleFormatterForStyle:(int64_t)style masterFormatter:(id)formatter
 {
-  if (a3 > 2)
+  if (style > 2)
   {
-    switch(a3)
+    switch(style)
     {
       case 31:
         v4 = off_1E69EED40;
@@ -720,29 +720,29 @@ id __60__NSPersonNameComponentsFormatter___familyNameFirstOrdering__block_invoke
   else
   {
     v4 = off_1E69EED70;
-    if (a3)
+    if (style)
     {
-      if (a3 == 1)
+      if (style == 1)
       {
         v4 = off_1E69EED78;
       }
 
-      else if (a3 != 2)
+      else if (style != 2)
       {
         return 0;
       }
     }
   }
 
-  v6 = [objc_alloc(*v4) initWithMasterFormatter:a4];
+  v6 = [objc_alloc(*v4) initWithMasterFormatter:formatter];
 
   return v6;
 }
 
-+ (void)forEachExistingComponentWithComponents:(id)a3 performBlock:(id)a4
++ (void)forEachExistingComponentWithComponents:(id)components performBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (block)
   {
     v19 = 0u;
     v20 = 0u;
@@ -764,10 +764,10 @@ id __60__NSPersonNameComponentsFormatter___familyNameFirstOrdering__block_invoke
           }
 
           v11 = *(*(&v17 + 1) + 8 * i);
-          v12 = [a3 valueForKeyPath:v11];
+          v12 = [components valueForKeyPath:v11];
           if ([v12 length])
           {
-            (*(a4 + 2))(a4, v11, v12);
+            (*(block + 2))(block, v11, v12);
           }
         }
 
@@ -782,24 +782,24 @@ id __60__NSPersonNameComponentsFormatter___familyNameFirstOrdering__block_invoke
   {
     v15 = +[NSAssertionHandler currentHandler];
 
-    [(NSAssertionHandler *)v15 handleFailureInMethod:a2 object:a1 file:@"NSPersonNameComponentsFormatter.m" lineNumber:1808 description:@"block to perform should not be nil"];
+    [(NSAssertionHandler *)v15 handleFailureInMethod:a2 object:self file:@"NSPersonNameComponentsFormatter.m" lineNumber:1808 description:@"block to perform should not be nil"];
   }
 }
 
-+ (BOOL)isKatakana:(id)a3
++ (BOOL)isKatakana:(id)katakana
 {
   v11 = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E69E9820];
   v7 = 3221225472;
   v8 = __46__NSPersonNameComponentsFormatter_isKatakana___block_invoke;
   v9 = &unk_1E69F2C00;
-  v10 = a1;
+  selfCopy = self;
   if (qword_1ED43F4B8 != -1)
   {
     dispatch_once(&qword_1ED43F4B8, &v6);
   }
 
-  return [a1 __contents:a3 exclusivelyInCharacterSet:{qword_1ED43F4B0, v6, v7, v8, v9, v10, v11}];
+  return [self __contents:katakana exclusivelyInCharacterSet:{qword_1ED43F4B0, v6, v7, v8, v9, selfCopy, v11}];
 }
 
 uint64_t __46__NSPersonNameComponentsFormatter_isKatakana___block_invoke(uint64_t a1)
@@ -816,7 +816,7 @@ uint64_t __46__NSPersonNameComponentsFormatter_isKatakana___block_invoke(uint64_
   v3[1] = 3221225472;
   v3[2] = __53__NSPersonNameComponentsFormatter___thaiConsonantSet__block_invoke;
   v3[3] = &unk_1E69F2C00;
-  v3[4] = a1;
+  v3[4] = self;
   if (qword_1ED43F4C8 != -1)
   {
     dispatch_once(&qword_1ED43F4C8, v3);
@@ -832,7 +832,7 @@ id __53__NSPersonNameComponentsFormatter___thaiConsonantSet__block_invoke(uint64
   return result;
 }
 
-+ (id)__characterSetWithPattern:(id)a3
++ (id)__characterSetWithPattern:(id)pattern
 {
   v20 = *MEMORY[0x1E69E9840];
   v14 = 0;
@@ -844,8 +844,8 @@ id __53__NSPersonNameComponentsFormatter___thaiConsonantSet__block_invoke(uint64
   v11 = __61__NSPersonNameComponentsFormatter___characterSetWithPattern___block_invoke;
   v12 = &unk_1E69FA458;
   v13 = &v14;
-  v4 = [a3 length];
-  CharactersPtr = CFStringGetCharactersPtr(a3);
+  v4 = [pattern length];
+  CharactersPtr = CFStringGetCharactersPtr(pattern);
   if (CharactersPtr)
   {
     (v11)(&v10, CharactersPtr, v4);
@@ -876,7 +876,7 @@ id __53__NSPersonNameComponentsFormatter___thaiConsonantSet__block_invoke(uint64
 
     v21.location = 0;
     v21.length = v4;
-    CFStringGetCharacters(a3, v21, v7);
+    CFStringGetCharacters(pattern, v21, v7);
     (v11)(&v10, v7, v4);
     if (v6 >= 0x101)
     {
@@ -896,21 +896,21 @@ uint64_t __61__NSPersonNameComponentsFormatter___characterSetWithPattern___block
   return uset_close();
 }
 
-+ (USet)__getCharacterSetWithPattern:(id)a3
++ (USet)__getCharacterSetWithPattern:(id)pattern
 {
-  v3 = a3;
+  patternCopy = pattern;
   v17 = *MEMORY[0x1E69E9840];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  if (a3)
+  if (pattern)
   {
     v10 = __64__NSPersonNameComponentsFormatter___getCharacterSetWithPattern___block_invoke;
     v11 = &unk_1E69FA458;
     v12 = &v13;
-    v4 = [a3 length];
-    CharactersPtr = CFStringGetCharactersPtr(v3);
+    v4 = [pattern length];
+    CharactersPtr = CFStringGetCharactersPtr(patternCopy);
     if (CharactersPtr)
     {
       (v10)(&v9, CharactersPtr, v4);
@@ -941,7 +941,7 @@ uint64_t __61__NSPersonNameComponentsFormatter___characterSetWithPattern___block
 
       v18.location = 0;
       v18.length = v4;
-      CFStringGetCharacters(v3, v18, v7);
+      CFStringGetCharacters(patternCopy, v18, v7);
       (v10)(&v9, v7, v4);
       if (v6 >= 0x101)
       {
@@ -949,11 +949,11 @@ uint64_t __61__NSPersonNameComponentsFormatter___characterSetWithPattern___block
       }
     }
 
-    v3 = v14[3];
+    patternCopy = v14[3];
   }
 
   _Block_object_dispose(&v13, 8);
-  return v3;
+  return patternCopy;
 }
 
 uint64_t __64__NSPersonNameComponentsFormatter___getCharacterSetWithPattern___block_invoke(uint64_t a1)
@@ -963,10 +963,10 @@ uint64_t __64__NSPersonNameComponentsFormatter___getCharacterSetWithPattern___bl
   return result;
 }
 
-+ (BOOL)__contents:(id)a3 exclusivelyInCharacterSet:(USet *)a4
++ (BOOL)__contents:(id)__contents exclusivelyInCharacterSet:(USet *)set
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a3 && [a3 length])
+  if (__contents && [__contents length])
   {
     v18 = 0;
     v19 = &v18;
@@ -977,9 +977,9 @@ uint64_t __64__NSPersonNameComponentsFormatter___getCharacterSetWithPattern___bl
     v14 = __72__NSPersonNameComponentsFormatter___contents_exclusivelyInCharacterSet___block_invoke;
     v15 = &unk_1E69FA480;
     v16 = &v18;
-    v17 = a4;
-    v6 = [a3 length];
-    CharactersPtr = CFStringGetCharactersPtr(a3);
+    setCopy = set;
+    v6 = [__contents length];
+    CharactersPtr = CFStringGetCharactersPtr(__contents);
     if (CharactersPtr)
     {
       (v14)(v13, CharactersPtr, v6);
@@ -1010,7 +1010,7 @@ uint64_t __64__NSPersonNameComponentsFormatter___getCharacterSetWithPattern___bl
 
       v23.location = 0;
       v23.length = v6;
-      CFStringGetCharacters(a3, v23, v10);
+      CFStringGetCharacters(__contents, v23, v10);
       (v14)(v13, v10, v6);
       if (v9 >= 0x101)
       {
@@ -1037,7 +1037,7 @@ uint64_t __72__NSPersonNameComponentsFormatter___contents_exclusivelyInCharacter
   return result;
 }
 
-+ (id)__longestComponentFromComponents:(id)a3
++ (id)__longestComponentFromComponents:(id)components
 {
   v12[4] = *MEMORY[0x1E69E9840];
   v12[0] = 0;
@@ -1056,7 +1056,7 @@ uint64_t __72__NSPersonNameComponentsFormatter___contents_exclusivelyInCharacter
   v5[3] = &unk_1E69FA4A8;
   v5[4] = v12;
   v5[5] = &v6;
-  [a1 forEachExistingComponentWithComponents:a3 performBlock:v5];
+  [self forEachExistingComponentWithComponents:components performBlock:v5];
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
   _Block_object_dispose(v12, 8);
@@ -1076,24 +1076,24 @@ unint64_t __68__NSPersonNameComponentsFormatter___longestComponentFromComponents
   return result;
 }
 
-+ (id)__stringByStrippingNonInitialPunctuationFromString:(id)a3
++ (id)__stringByStrippingNonInitialPunctuationFromString:(id)string
 {
   if (qword_1ED43F4D8 != -1)
   {
     dispatch_once(&qword_1ED43F4D8, &__block_literal_global_362_0);
   }
 
-  if (![a3 length])
+  if (![string length])
   {
-    return a3;
+    return string;
   }
 
-  if (![a3 rangeOfCharacterFromSet:qword_1ED43F4D0] && v4 != 0)
+  if (![string rangeOfCharacterFromSet:qword_1ED43F4D0] && v4 != 0)
   {
-    return a3;
+    return string;
   }
 
-  v6 = [a3 componentsSeparatedByCharactersInSet:qword_1ED43F4D0];
+  v6 = [string componentsSeparatedByCharactersInSet:qword_1ED43F4D0];
 
   return [v6 componentsJoinedByString:&stru_1EEEFDF90];
 }
@@ -1105,10 +1105,10 @@ NSCharacterSet *__86__NSPersonNameComponentsFormatter___stringByStrippingNonInit
   return result;
 }
 
-+ (unint64_t)__inferredScriptIndexFromString:(id)a3
++ (unint64_t)__inferredScriptIndexFromString:(id)string
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = [objc_msgSend(a1 __stringByStrippingNonInitialPunctuationFromString:{a3), "stringByReplacingOccurrencesOfString:withString:", @" ", &stru_1EEEFDF90}];
+  v3 = [objc_msgSend(self __stringByStrippingNonInitialPunctuationFromString:{string), "stringByReplacingOccurrencesOfString:withString:", @" ", &stru_1EEEFDF90}];
   v4 = [v3 length];
   MEMORY[0x1EEE9AC00](v4);
   v6 = v12 - v5;
@@ -1133,7 +1133,7 @@ NSCharacterSet *__86__NSPersonNameComponentsFormatter___stringByStrippingNonInit
   return v10;
 }
 
-+ (unint64_t)__inferredScriptIndexForComponents:(id)a3 ignoreUndeterminedComponents:(BOOL)a4
++ (unint64_t)__inferredScriptIndexForComponents:(id)components ignoreUndeterminedComponents:(BOOL)undeterminedComponents
 {
   v24 = *MEMORY[0x1E69E9840];
   v20 = 0u;
@@ -1159,14 +1159,14 @@ NSCharacterSet *__86__NSPersonNameComponentsFormatter___stringByStrippingNonInit
         objc_enumerationMutation(v7);
       }
 
-      v13 = [a1 __stringByStrippingNonInitialPunctuationFromString:{objc_msgSend(a3, "valueForKeyPath:", *(*(&v20 + 1) + 8 * i))}];
+      v13 = [self __stringByStrippingNonInitialPunctuationFromString:{objc_msgSend(components, "valueForKeyPath:", *(*(&v20 + 1) + 8 * i))}];
       if (v13)
       {
         v14 = v13;
         if ([v13 length])
         {
-          v15 = [a1 __inferredScriptIndexFromString:v14];
-          v16 = v15 == 1 && a4;
+          v15 = [self __inferredScriptIndexFromString:v14];
+          v16 = v15 == 1 && undeterminedComponents;
           if (v15 && !v16)
           {
             if (v10 == v15 || v10 == 0)
@@ -1190,14 +1190,14 @@ NSCharacterSet *__86__NSPersonNameComponentsFormatter___stringByStrippingNonInit
   return v10;
 }
 
-+ (id)__naiveDelimiterForCombinedNameString:(id)a3
++ (id)__naiveDelimiterForCombinedNameString:(id)string
 {
-  if (([a1 __inferredScriptIndexFromString:?] - 2) > 3)
+  if (([self __inferredScriptIndexFromString:?] - 2) > 3)
   {
     return @" ";
   }
 
-  if ([a1 isKatakana:a3])
+  if ([self isKatakana:string])
   {
     return @"・";
   }
@@ -1205,13 +1205,13 @@ NSCharacterSet *__86__NSPersonNameComponentsFormatter___stringByStrippingNonInit
   return &stru_1EEEFDF90;
 }
 
-+ (BOOL)_isCJKScript:(id)a3
++ (BOOL)_isCJKScript:(id)script
 {
-  v4 = [a3 _scriptDeterminingStringRepresentationWithPhoneticDesired:0];
+  v4 = [script _scriptDeterminingStringRepresentationWithPhoneticDesired:0];
   v5 = [v4 length];
   if (v5)
   {
-    v6 = [a1 __inferredScriptIndexFromString:v4];
+    v6 = [self __inferredScriptIndexFromString:v4];
     v7 = +[NSPersonNameComponentsFormatter _cjkLanguagesSet];
     v8 = [NSNumber numberWithUnsignedInteger:v6];
 
@@ -1242,17 +1242,17 @@ uint64_t __56__NSPersonNameComponentsFormatter__cjkLocaleIdentifiers__block_invo
 {
   v3 = +[NSPersonNameComponentsFormatter __currentLocale];
   v4 = [v3 objectForKey:*MEMORY[0x1E695D9B0]];
-  v5 = [a1 _cjkLocaleIdentifiers];
+  _cjkLocaleIdentifiers = [self _cjkLocaleIdentifiers];
 
-  return [v5 containsObject:v4];
+  return [_cjkLocaleIdentifiers containsObject:v4];
 }
 
-- (int64_t)__computedNameOrderForComponents:(id)a3
+- (int64_t)__computedNameOrderForComponents:(id)components
 {
-  v5 = [a3 _isEmpty];
-  if (a3 && !v5)
+  _isEmpty = [components _isEmpty];
+  if (components && !_isEmpty)
   {
-    if (![NSPersonNameComponentsFormatter _isCJKScript:a3])
+    if (![NSPersonNameComponentsFormatter _isCJKScript:components])
     {
       if ([(NSPersonNameComponentsFormatter *)self _preferredLocalizationForExplicitlySetLocale])
       {
@@ -1296,90 +1296,90 @@ LABEL_8:
   return [(NSPersonNameComponentsFormatter *)self __localizedNameOrderUsingNativeOrdering:1];
 }
 
-- (BOOL)__localizedRestrictionExistsForStyle:(int64_t)a3
+- (BOOL)__localizedRestrictionExistsForStyle:(int64_t)style
 {
-  v4 = [(NSPersonNameComponentsFormatter *)self _preferredLocalizationForExplicitlySetLocale];
-  if (!v4)
+  _preferredLocalizationForExplicitlySetLocale = [(NSPersonNameComponentsFormatter *)self _preferredLocalizationForExplicitlySetLocale];
+  if (!_preferredLocalizationForExplicitlySetLocale)
   {
-    v4 = +[NSPersonNameComponentsFormatter _preferredLocalizationForCurrentLocale];
+    _preferredLocalizationForExplicitlySetLocale = +[NSPersonNameComponentsFormatter _preferredLocalizationForCurrentLocale];
   }
 
-  return [NSPersonNameComponentsFormatter __style:a3 isRestrictedForLocalization:v4];
+  return [NSPersonNameComponentsFormatter __style:style isRestrictedForLocalization:_preferredLocalizationForExplicitlySetLocale];
 }
 
-- (BOOL)__localizedRestrictionExistsForShortStyle:(int64_t)a3
+- (BOOL)__localizedRestrictionExistsForShortStyle:(int64_t)style
 {
-  v4 = [(NSPersonNameComponentsFormatter *)self _preferredLocalizationForExplicitlySetLocale];
-  if (!v4)
+  _preferredLocalizationForExplicitlySetLocale = [(NSPersonNameComponentsFormatter *)self _preferredLocalizationForExplicitlySetLocale];
+  if (!_preferredLocalizationForExplicitlySetLocale)
   {
-    v4 = +[NSPersonNameComponentsFormatter _preferredLocalizationForCurrentLocale];
+    _preferredLocalizationForExplicitlySetLocale = +[NSPersonNameComponentsFormatter _preferredLocalizationForCurrentLocale];
   }
 
-  return [NSPersonNameComponentsFormatter __shortStyle:a3 isRestrictedForLocalization:v4];
+  return [NSPersonNameComponentsFormatter __shortStyle:style isRestrictedForLocalization:_preferredLocalizationForExplicitlySetLocale];
 }
 
-- (BOOL)__localizedRestrictionExistsForComponents:(id)a3 ignoreUndeterminedComponents:(BOOL)a4
+- (BOOL)__localizedRestrictionExistsForComponents:(id)components ignoreUndeterminedComponents:(BOOL)undeterminedComponents
 {
-  v5 = [NSPersonNameComponentsFormatter __inferredScriptIndexForComponents:a3 ignoreUndeterminedComponents:a4];
-  v6 = [(NSPersonNameComponentsFormatter *)self style];
+  v5 = [NSPersonNameComponentsFormatter __inferredScriptIndexForComponents:components ignoreUndeterminedComponents:undeterminedComponents];
+  style = [(NSPersonNameComponentsFormatter *)self style];
 
-  return [NSPersonNameComponentsFormatter __style:v6 isRestrictedForScript:v5];
+  return [NSPersonNameComponentsFormatter __style:style isRestrictedForScript:v5];
 }
 
-+ (BOOL)__shortStyleRestrictionExistsForComponents:(id)a3 shortStyle:(int64_t)a4
++ (BOOL)__shortStyleRestrictionExistsForComponents:(id)components shortStyle:(int64_t)style
 {
-  v5 = [NSPersonNameComponentsFormatter __inferredScriptIndexForComponents:a3];
+  v5 = [NSPersonNameComponentsFormatter __inferredScriptIndexForComponents:components];
 
-  return [NSPersonNameComponentsFormatter __shortStyle:a4 isRestrictedForScript:v5];
+  return [NSPersonNameComponentsFormatter __shortStyle:style isRestrictedForScript:v5];
 }
 
-- (int64_t)__localizedNameOrderUsingNativeOrdering:(BOOL)a3
+- (int64_t)__localizedNameOrderUsingNativeOrdering:(BOOL)ordering
 {
-  v3 = a3;
-  v4 = [(NSPersonNameComponentsFormatter *)self _preferredLocalizationForExplicitlySetLocale];
-  if (!v4)
+  orderingCopy = ordering;
+  _preferredLocalizationForExplicitlySetLocale = [(NSPersonNameComponentsFormatter *)self _preferredLocalizationForExplicitlySetLocale];
+  if (!_preferredLocalizationForExplicitlySetLocale)
   {
-    v4 = +[NSPersonNameComponentsFormatter _preferredLocalizationForCurrentLocale];
+    _preferredLocalizationForExplicitlySetLocale = +[NSPersonNameComponentsFormatter _preferredLocalizationForCurrentLocale];
   }
 
-  return [NSPersonNameComponentsFormatter __nameOrderForLocalization:v4 usingNativeOrdering:v3];
+  return [NSPersonNameComponentsFormatter __nameOrderForLocalization:_preferredLocalizationForExplicitlySetLocale usingNativeOrdering:orderingCopy];
 }
 
 - (int64_t)__localizedShortNameFormat
 {
-  v2 = [(NSPersonNameComponentsFormatter *)self _preferredLocalizationForExplicitlySetLocale];
-  if (!v2)
+  _preferredLocalizationForExplicitlySetLocale = [(NSPersonNameComponentsFormatter *)self _preferredLocalizationForExplicitlySetLocale];
+  if (!_preferredLocalizationForExplicitlySetLocale)
   {
-    v2 = +[NSPersonNameComponentsFormatter _preferredLocalizationForCurrentLocale];
+    _preferredLocalizationForExplicitlySetLocale = +[NSPersonNameComponentsFormatter _preferredLocalizationForCurrentLocale];
   }
 
-  return [NSPersonNameComponentsFormatter __shortNameFormatForLocalization:v2];
+  return [NSPersonNameComponentsFormatter __shortNameFormatForLocalization:_preferredLocalizationForExplicitlySetLocale];
 }
 
-+ (int64_t)_nameOrderWithOverridesForComponents:(id)a3 options:(unint64_t)a4
++ (int64_t)_nameOrderWithOverridesForComponents:(id)components options:(unint64_t)options
 {
-  v5 = [a1 _formatterWithStyle:0 options:a4];
+  v5 = [self _formatterWithStyle:0 options:options];
 
-  return [v5 _nameOrderWithOverridesForComponents:a3];
+  return [v5 _nameOrderWithOverridesForComponents:components];
 }
 
-+ (id)_localizedDelimiterForComponents:(id)a3 options:(unint64_t)a4
++ (id)_localizedDelimiterForComponents:(id)components options:(unint64_t)options
 {
-  v5 = [a3 _scriptDeterminingStringRepresentationWithPhoneticDesired:(a4 >> 1) & 1];
+  v5 = [components _scriptDeterminingStringRepresentationWithPhoneticDesired:(options >> 1) & 1];
 
-  return [a1 __naiveDelimiterForCombinedNameString:v5];
+  return [self __naiveDelimiterForCombinedNameString:v5];
 }
 
-+ (id)_relevantKeyPathsForStyle:(int64_t)a3 options:(unint64_t)a4
++ (id)_relevantKeyPathsForStyle:(int64_t)style options:(unint64_t)options
 {
-  v4 = +[NSPersonNameComponentsFormatter _styleFormatterForStyle:masterFormatter:](NSPersonNameComponentsFormatter, "_styleFormatterForStyle:masterFormatter:", a3, [a1 _formatterWithStyle:a3 options:a4]);
+  v4 = +[NSPersonNameComponentsFormatter _styleFormatterForStyle:masterFormatter:](NSPersonNameComponentsFormatter, "_styleFormatterForStyle:masterFormatter:", style, [self _formatterWithStyle:style options:options]);
 
   return [v4 orderedKeysOfInterest];
 }
 
-+ (id)_fallbackDescriptorForStyle:(int64_t)a3 options:(unint64_t)a4
++ (id)_fallbackDescriptorForStyle:(int64_t)style options:(unint64_t)options
 {
-  v4 = +[NSPersonNameComponentsFormatter _styleFormatterForStyle:masterFormatter:](NSPersonNameComponentsFormatter, "_styleFormatterForStyle:masterFormatter:", a3, [a1 _formatterWithStyle:a3 options:a4]);
+  v4 = +[NSPersonNameComponentsFormatter _styleFormatterForStyle:masterFormatter:](NSPersonNameComponentsFormatter, "_styleFormatterForStyle:masterFormatter:", style, [self _formatterWithStyle:style options:options]);
 
   return [v4 fallbackDescriptor];
 }
@@ -1444,55 +1444,55 @@ LABEL_8:
   return 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithData:", self->_private}];
-  v6 = [self->_private locale];
-  if (v6)
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithData:", self->_private}];
+  locale = [self->_private locale];
+  if (locale)
   {
-    v5[2] = [+[NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:](NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:{v6), "copy"}];
+    v5[2] = [+[NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:](NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:{locale), "copy"}];
   }
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (NSPersonNameComponentsFormatter)initWithCoder:(id)a3
+- (NSPersonNameComponentsFormatter)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v8 = [NSString stringWithFormat:@"%@ cannot be decoded by non-keyed archivers", objc_opt_class()];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v8 userInfo:0]);
   }
 
-  v5 = -[NSPersonNameComponentsFormatter initWithData:](self, "initWithData:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.nameComponentsFormatterPrivate"]);
-  v6 = [v5->_private locale];
-  if (v6)
+  v5 = -[NSPersonNameComponentsFormatter initWithData:](self, "initWithData:", [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.nameComponentsFormatterPrivate"]);
+  locale = [v5->_private locale];
+  if (locale)
   {
-    v5->__preferredLocalizationForExplicitlySetLocale = [+[NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:](NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:{v6), "copy"}];
+    v5->__preferredLocalizationForExplicitlySetLocale = [+[NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:](NSPersonNameComponentsFormatter _preferredLocalizationFromLocale:{locale), "copy"}];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSPersonNameComponents cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [a3 encodeObject:self->_private forKey:@"NS.nameComponentsFormatterPrivate"];
+  [coder encodeObject:self->_private forKey:@"NS.nameComponentsFormatterPrivate"];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)isEqualToFormatter:(id)a3
+- (BOOL)isEqualToFormatter:(id)formatter
 {
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!formatter || (objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
@@ -1503,23 +1503,23 @@ LABEL_8:
   return v5;
 }
 
-+ (id)_localizedShortNameForComponents:(id)a3 withStyle:(int64_t)a4 options:(unint64_t)a5
++ (id)_localizedShortNameForComponents:(id)components withStyle:(int64_t)style options:(unint64_t)options
 {
-  if (!a3)
+  if (!components)
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:a1 lineNumber:@"NSPersonNameComponentsFormatter.m" description:2298, @"Components should not be nil"];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSPersonNameComponentsFormatter.m" description:2298, @"Components should not be nil"];
   }
 
-  v9 = -[_NSPersonNameComponentsStyleFormatterShort initWithMasterFormatter:]([_NSPersonNameComponentsStyleFormatterShort alloc], "initWithMasterFormatter:", [a1 _formatterWithStyle:1 options:a5]);
-  [(_NSPersonNameComponentsStyleFormatterShort *)v9 setShortNameFormat:a4];
+  v9 = -[_NSPersonNameComponentsStyleFormatterShort initWithMasterFormatter:]([_NSPersonNameComponentsStyleFormatterShort alloc], "initWithMasterFormatter:", [self _formatterWithStyle:1 options:options]);
+  [(_NSPersonNameComponentsStyleFormatterShort *)v9 setShortNameFormat:style];
   [(_NSPersonNameComponentsStyleFormatterShort *)v9 setForceShortNameEnabled:1];
 
-  return [(_NSPersonNameComponentsStyleFormatter *)v9 stringFromComponents:a3 attributesByRange:0];
+  return [(_NSPersonNameComponentsStyleFormatter *)v9 stringFromComponents:components attributesByRange:0];
 }
 
-+ (id)__initialsForString:(id)a3
++ (id)__initialsForString:(id)string
 {
-  v3 = *([a1 performSelector:{+[NSPersonNameComponentsFormatter __initialsCreatorForScript:](NSPersonNameComponentsFormatter, "__initialsCreatorForScript:", +[NSPersonNameComponentsFormatter __inferredScriptIndexFromString:](NSPersonNameComponentsFormatter, "__inferredScriptIndexFromString:"))}] + 16);
+  v3 = *([self performSelector:{+[NSPersonNameComponentsFormatter __initialsCreatorForScript:](NSPersonNameComponentsFormatter, "__initialsCreatorForScript:", +[NSPersonNameComponentsFormatter __inferredScriptIndexFromString:](NSPersonNameComponentsFormatter, "__inferredScriptIndexFromString:"))}] + 16);
 
   return v3();
 }
@@ -1645,38 +1645,38 @@ uint64_t __56__NSPersonNameComponentsFormatter_arabicInitialsCreator__block_invo
   return result;
 }
 
-+ (id)_preferredLocalizationFromLocale:(id)a3
++ (id)_preferredLocalizationFromLocale:(id)locale
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v4 = [objc_msgSend(&unk_1EEF5AED0 objectForKeyedSubscript:{@"localeInfo", "allKeys"}];
-  v6[0] = [a3 localeIdentifier];
+  v6[0] = [locale localeIdentifier];
   return -[NSArray objectAtIndexedSubscript:](+[NSBundle preferredLocalizationsFromArray:forPreferences:](NSBundle, "preferredLocalizationsFromArray:forPreferences:", v4, [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1]), "objectAtIndexedSubscript:", 0);
 }
 
-+ (id)__supportedNameDefaultsFromLocalization:(id)a3
++ (id)__supportedNameDefaultsFromLocalization:(id)localization
 {
   v4 = [&unk_1EEF5B830 objectForKeyedSubscript:@"localeInfo"];
 
-  return [v4 objectForKeyedSubscript:a3];
+  return [v4 objectForKeyedSubscript:localization];
 }
 
-+ (id)__supportedScriptDefaultsFromScriptName:(id)a3
++ (id)__supportedScriptDefaultsFromScriptName:(id)name
 {
-  if (!a3)
+  if (!name)
   {
     return 0;
   }
 
   v4 = [&unk_1EEF5C190 objectForKeyedSubscript:@"scriptInfo"];
 
-  return [v4 objectForKeyedSubscript:a3];
+  return [v4 objectForKeyedSubscript:name];
 }
 
-+ (int64_t)__nameOrderForLocalization:(id)a3 usingNativeOrdering:(BOOL)a4
++ (int64_t)__nameOrderForLocalization:(id)localization usingNativeOrdering:(BOOL)ordering
 {
-  v5 = [a1 __supportedNameDefaultsFromLocalization:a3];
+  v5 = [self __supportedNameDefaultsFromLocalization:localization];
   v6 = v5;
-  if (a4 || (v7 = [v5 objectForKeyedSubscript:@"nameOrderForNonNativeScripts"]) == 0)
+  if (ordering || (v7 = [v5 objectForKeyedSubscript:@"nameOrderForNonNativeScripts"]) == 0)
   {
     v7 = [v6 objectForKeyedSubscript:@"nameOrder"];
   }
@@ -1684,14 +1684,14 @@ uint64_t __56__NSPersonNameComponentsFormatter_arabicInitialsCreator__block_invo
   return [v7 integerValue];
 }
 
-+ (int64_t)__abbreviatedNameFormatForString:(id)a3
++ (int64_t)__abbreviatedNameFormatForString:(id)string
 {
-  if (![a3 length])
+  if (![string length])
   {
     return 6;
   }
 
-  result = [objc_msgSend(objc_msgSend(a1 __supportedScriptDefaultsFromScriptName:{objc_msgSend(a1, "__scriptIdentifierFromIndex:", objc_msgSend(a1, "__inferredScriptIndexFromString:", a3))), "objectForKeyedSubscript:", @"abbreviatedNameStyle", "integerValue"}];
+  result = [objc_msgSend(objc_msgSend(self __supportedScriptDefaultsFromScriptName:{objc_msgSend(self, "__scriptIdentifierFromIndex:", objc_msgSend(self, "__inferredScriptIndexFromString:", string))), "objectForKeyedSubscript:", @"abbreviatedNameStyle", "integerValue"}];
   if (!result)
   {
     return 5;
@@ -1700,10 +1700,10 @@ uint64_t __56__NSPersonNameComponentsFormatter_arabicInitialsCreator__block_invo
   return result;
 }
 
-+ (int64_t)__abbreviatedNameFormatForPersonNameComponents:(id)a3
++ (int64_t)__abbreviatedNameFormatForPersonNameComponents:(id)components
 {
-  v5 = [a1 __abbreviatedNameFormatForString:{objc_msgSend(a3, "givenName")}];
-  v6 = [a1 __abbreviatedNameFormatForString:{objc_msgSend(a3, "familyName")}];
+  v5 = [self __abbreviatedNameFormatForString:{objc_msgSend(components, "givenName")}];
+  v6 = [self __abbreviatedNameFormatForString:{objc_msgSend(components, "familyName")}];
   if (v6 != v5)
   {
     if (v5 == 6 || v6 == 2 || v6 == 4)
@@ -1741,31 +1741,31 @@ uint64_t __56__NSPersonNameComponentsFormatter_arabicInitialsCreator__block_invo
   return v5;
 }
 
-+ (int64_t)__shortNameFormatForLocalization:(id)a3
++ (int64_t)__shortNameFormatForLocalization:(id)localization
 {
-  v3 = [objc_msgSend(a1 __supportedNameDefaultsFromLocalization:{a3), "objectForKeyedSubscript:", @"shortNameStyle"}];
+  v3 = [objc_msgSend(self __supportedNameDefaultsFromLocalization:{localization), "objectForKeyedSubscript:", @"shortNameStyle"}];
 
   return [v3 integerValue];
 }
 
-+ (BOOL)__style:(int64_t)a3 isRestrictedForLocalization:(id)a4
++ (BOOL)__style:(int64_t)__style isRestrictedForLocalization:(id)localization
 {
-  v6 = [objc_msgSend(a1 __supportedNameDefaultsFromLocalization:{a4), "objectForKeyedSubscript:", @"styleRestrictions"}];
-  v7 = [a1 __stringValueForStyle:a3];
+  v6 = [objc_msgSend(self __supportedNameDefaultsFromLocalization:{localization), "objectForKeyedSubscript:", @"styleRestrictions"}];
+  v7 = [self __stringValueForStyle:__style];
   return v6 && [v6 objectForKeyedSubscript:v7] != 0;
 }
 
-+ (BOOL)__style:(int64_t)a3 isRestrictedForScript:(unint64_t)a4
++ (BOOL)__style:(int64_t)__style isRestrictedForScript:(unint64_t)script
 {
-  v6 = [objc_msgSend(a1 __supportedScriptDefaultsFromScriptName:{objc_msgSend(a1, "__scriptIdentifierFromIndex:", a4)), "objectForKeyedSubscript:", @"styleRestrictions"}];
-  v7 = [a1 __stringValueForStyle:a3];
+  v6 = [objc_msgSend(self __supportedScriptDefaultsFromScriptName:{objc_msgSend(self, "__scriptIdentifierFromIndex:", script)), "objectForKeyedSubscript:", @"styleRestrictions"}];
+  v7 = [self __stringValueForStyle:__style];
   return v6 && [v6 objectForKeyedSubscript:v7] != 0;
 }
 
-+ (BOOL)__shortStyle:(int64_t)a3 isRestrictedForScript:(unint64_t)a4
++ (BOOL)__shortStyle:(int64_t)style isRestrictedForScript:(unint64_t)script
 {
-  v6 = [objc_msgSend(a1 __supportedScriptDefaultsFromScriptName:{objc_msgSend(a1, "__scriptIdentifierFromIndex:", a4)), "objectForKeyedSubscript:", @"shortStyleRestrictions"}];
-  v7 = [a1 __stringValueForShortStyle:a3];
+  v6 = [objc_msgSend(self __supportedScriptDefaultsFromScriptName:{objc_msgSend(self, "__scriptIdentifierFromIndex:", script)), "objectForKeyedSubscript:", @"shortStyleRestrictions"}];
+  v7 = [self __stringValueForShortStyle:style];
   if (v7)
   {
     LOBYTE(v7) = [v6 objectForKeyedSubscript:v7] != 0;
@@ -1774,16 +1774,16 @@ uint64_t __56__NSPersonNameComponentsFormatter_arabicInitialsCreator__block_invo
   return v7;
 }
 
-+ (BOOL)__shortStyle:(int64_t)a3 isRestrictedForLocalization:(id)a4
++ (BOOL)__shortStyle:(int64_t)style isRestrictedForLocalization:(id)localization
 {
-  v6 = [objc_msgSend(a1 __supportedNameDefaultsFromLocalization:{a4), "objectForKeyedSubscript:", @"shortStyleRestrictions"}];
-  v7 = [a1 __stringValueForShortStyle:a3];
+  v6 = [objc_msgSend(self __supportedNameDefaultsFromLocalization:{localization), "objectForKeyedSubscript:", @"shortStyleRestrictions"}];
+  v7 = [self __stringValueForShortStyle:style];
   return v6 && [v6 objectForKeyedSubscript:v7] != 0;
 }
 
-+ (SEL)__initialsCreatorForScript:(unint64_t)a3
++ (SEL)__initialsCreatorForScript:(unint64_t)script
 {
-  v3 = [objc_msgSend(a1 __supportedScriptDefaultsFromScriptName:{objc_msgSend(a1, "__scriptIdentifierFromIndex:", a3)), "objectForKeyedSubscript:", @"initialsCreator"}];
+  v3 = [objc_msgSend(self __supportedScriptDefaultsFromScriptName:{objc_msgSend(self, "__scriptIdentifierFromIndex:", script)), "objectForKeyedSubscript:", @"initialsCreator"}];
   if (!v3)
   {
     return sel_westernInitialsCreator;
@@ -1792,29 +1792,29 @@ uint64_t __56__NSPersonNameComponentsFormatter_arabicInitialsCreator__block_invo
   return NSSelectorFromString(v3);
 }
 
-+ (id)__stringValueForStyle:(int64_t)a3
++ (id)__stringValueForStyle:(int64_t)style
 {
-  if (a3 > 4)
+  if (style > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E69FA510[a3];
+    return off_1E69FA510[style];
   }
 }
 
-+ (id)__stringValueForShortStyle:(int64_t)a3
++ (id)__stringValueForShortStyle:(int64_t)style
 {
-  if (a3 > 4)
+  if (style > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E69FA538[a3];
+    return off_1E69FA538[style];
   }
 }
 

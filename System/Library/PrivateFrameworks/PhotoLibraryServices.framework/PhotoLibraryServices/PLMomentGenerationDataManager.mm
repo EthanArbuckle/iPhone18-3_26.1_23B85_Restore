@@ -1,85 +1,85 @@
 @interface PLMomentGenerationDataManager
-+ (BOOL)isManagedObjectContextMomentarilyBlessed:(id)a3;
++ (BOOL)isManagedObjectContextMomentarilyBlessed:(id)blessed;
 + (void)initialize;
-+ (void)setManagedObjectContextMomentarilyBlessed:(id)a3;
-+ (void)setManagerMomentarilyBlessed:(id)a3;
-- (BOOL)_batchDeleteForEntityName:(id)a3 error:(id *)a4;
-- (BOOL)_deleteAllObjectsForEntityName:(id)a3 error:(id *)a4;
++ (void)setManagedObjectContextMomentarilyBlessed:(id)blessed;
++ (void)setManagerMomentarilyBlessed:(id)blessed;
+- (BOOL)_batchDeleteForEntityName:(id)name error:(id *)error;
+- (BOOL)_deleteAllObjectsForEntityName:(id)name error:(id *)error;
 - (BOOL)cameraIsActive;
-- (BOOL)deleteAllHighlightsWithError:(id *)a3;
-- (BOOL)deleteAllMomentsWithError:(id *)a3;
+- (BOOL)deleteAllHighlightsWithError:(id *)error;
+- (BOOL)deleteAllMomentsWithError:(id *)error;
 - (BOOL)hasChanges;
 - (BOOL)routineIsAvailable;
-- (BOOL)save:(id *)a3;
+- (BOOL)save:(id *)save;
 - (BOOL)wantsMomentReplayLogging;
 - (CNContactStore)_contactStore;
 - (NSDictionary)generationOptions;
 - (NSManagedObjectContext)managedObjectContext;
-- (PLMomentGenerationDataManager)initWithLibraryServicesManager:(id)a3;
-- (PLMomentGenerationDataManager)initWithManagedObjectContext:(id)a3 pathManagerForLightweightMigration:(id)a4;
+- (PLMomentGenerationDataManager)initWithLibraryServicesManager:(id)manager;
+- (PLMomentGenerationDataManager)initWithManagedObjectContext:(id)context pathManagerForLightweightMigration:(id)migration;
 - (PLPhotoLibrary)momentGenerationLibrary;
 - (id)_currentHomeAddressDictionary;
-- (id)_highlightRelationshipsToPrefetchForHighlightKind:(unsigned __int16)a3;
+- (id)_highlightRelationshipsToPrefetchForHighlightKind:(unsigned __int16)kind;
 - (id)_highlightRelationshipsToPrefetchForHighlightOfAnyKind;
-- (id)allAssetIDsToBeIncludedInMomentsWithError:(id *)a3;
-- (id)allAssetsToBeIncludedInMomentsWithError:(id *)a3;
-- (id)allEmptyPhotosHighlightsOfKind:(unsigned __int16)a3 error:(id *)a4;
-- (id)allInvalidAssetsWithError:(id *)a3;
-- (id)allInvalidMomentsWithError:(id *)a3;
-- (id)allInvalidPhotosHighlightsOfAllKindsWithError:(id *)a3;
-- (id)allMomentIDsWithError:(id *)a3;
-- (id)allMomentsWithError:(id *)a3;
-- (id)allPhotosHighlightsOfAllKindsWithError:(id *)a3;
-- (id)allPhotosHighlightsOfKind:(unsigned __int16)a3 withPredicate:(id)a4 error:(id *)a5;
-- (id)allPhotosHighlightsWithPredicate:(id)a3 error:(id *)a4;
-- (id)assetWithUniqueID:(id)a3 error:(id *)a4;
-- (id)assetsWithUniqueIDs:(id)a3 error:(id *)a4;
+- (id)allAssetIDsToBeIncludedInMomentsWithError:(id *)error;
+- (id)allAssetsToBeIncludedInMomentsWithError:(id *)error;
+- (id)allEmptyPhotosHighlightsOfKind:(unsigned __int16)kind error:(id *)error;
+- (id)allInvalidAssetsWithError:(id *)error;
+- (id)allInvalidMomentsWithError:(id *)error;
+- (id)allInvalidPhotosHighlightsOfAllKindsWithError:(id *)error;
+- (id)allMomentIDsWithError:(id *)error;
+- (id)allMomentsWithError:(id *)error;
+- (id)allPhotosHighlightsOfAllKindsWithError:(id *)error;
+- (id)allPhotosHighlightsOfKind:(unsigned __int16)kind withPredicate:(id)predicate error:(id *)error;
+- (id)allPhotosHighlightsWithPredicate:(id)predicate error:(id *)error;
+- (id)assetWithUniqueID:(id)d error:(id *)error;
+- (id)assetsWithUniqueIDs:(id)ds error:(id *)error;
 - (id)deletedObjects;
-- (id)fetchChildHighlightItemsForHighlightItem:(id)a3;
-- (id)fetchNeighborHighlightItemsForHighlightItems:(id)a3;
-- (id)fetchParentHighlightItemsForHighlightItems:(id)a3;
-- (id)highlightsIntersectingDateInterval:(id)a3 ofKind:(unsigned __int16)a4;
+- (id)fetchChildHighlightItemsForHighlightItem:(id)item;
+- (id)fetchNeighborHighlightItemsForHighlightItems:(id)items;
+- (id)fetchParentHighlightItemsForHighlightItems:(id)items;
+- (id)highlightsIntersectingDateInterval:(id)interval ofKind:(unsigned __int16)kind;
 - (id)insertNewMoment;
 - (id)insertNewPhotosHighlight;
 - (id)insertedObjects;
 - (id)locationsOfInterest;
-- (id)momentWithUniqueID:(id)a3 error:(id *)a4;
-- (id)momentsBetweenDate:(id)a3 andDate:(id)a4 sorted:(BOOL)a5 excludeExternal:(BOOL)a6;
-- (id)momentsForAssetsWithUniqueIDs:(id)a3 error:(id *)a4;
-- (id)momentsIntersectingDateInterval:(id)a3;
-- (id)momentsRequiringLocationOfInterestUpdateWithError:(id *)a3;
-- (id)momentsRequiringLocationProcessingWhenCoreRoutineIsAvailable:(id *)a3;
-- (id)momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailable:(id *)a3;
-- (id)momentsRequiringLocationProcessingWhenFrequentLocationsChangedWithError:(id *)a3;
-- (id)momentsWithUniqueIDs:(id)a3 error:(id *)a4;
-- (id)orphanedAssetIDsWithError:(id *)a3;
-- (id)prefetchedAssetsWithUniqueIDs:(id)a3 error:(id *)a4;
+- (id)momentWithUniqueID:(id)d error:(id *)error;
+- (id)momentsBetweenDate:(id)date andDate:(id)andDate sorted:(BOOL)sorted excludeExternal:(BOOL)external;
+- (id)momentsForAssetsWithUniqueIDs:(id)ds error:(id *)error;
+- (id)momentsIntersectingDateInterval:(id)interval;
+- (id)momentsRequiringLocationOfInterestUpdateWithError:(id *)error;
+- (id)momentsRequiringLocationProcessingWhenCoreRoutineIsAvailable:(id *)available;
+- (id)momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailable:(id *)available;
+- (id)momentsRequiringLocationProcessingWhenFrequentLocationsChangedWithError:(id *)error;
+- (id)momentsWithUniqueIDs:(id)ds error:(id *)error;
+- (id)orphanedAssetIDsWithError:(id *)error;
+- (id)prefetchedAssetsWithUniqueIDs:(id)ds error:(id *)error;
 - (id)replayLogPath;
 - (id)updatedObjects;
 - (void)_finalizeInit;
 - (void)_initIsolationQueue;
-- (void)_networkReachabilityDidChange:(id)a3;
+- (void)_networkReachabilityDidChange:(id)change;
 - (void)invalidateAllHighlightSubtitles;
 - (void)logRoutineInformation;
-- (void)performBlock:(id)a3 synchronously:(BOOL)a4 priority:(int64_t)a5 completionHandler:(id)a6;
-- (void)performDataTransaction:(id)a3 synchronously:(BOOL)a4 priority:(int64_t)a5 completionHandler:(id)a6;
+- (void)performBlock:(id)block synchronously:(BOOL)synchronously priority:(int64_t)priority completionHandler:(id)handler;
+- (void)performDataTransaction:(id)transaction synchronously:(BOOL)synchronously priority:(int64_t)priority completionHandler:(id)handler;
 - (void)refreshAllObjects;
 - (void)reloadGenerationOptions;
 - (void)resetOnFailure;
-- (void)runPeriodicMaintenanceTasks:(unint64_t)a3 withTransaction:(id)a4 progressReportBlock:(id)a5;
-- (void)setPreviousValidatedModelVersion:(int64_t)a3;
-- (void)setPreviousValidationSucceeded:(BOOL)a3;
-- (void)setShouldPerformLightweightValidation:(BOOL)a3;
-- (void)verifyAndRepairOrphanedAssets:(id)a3 completionBlock:(id)a4;
+- (void)runPeriodicMaintenanceTasks:(unint64_t)tasks withTransaction:(id)transaction progressReportBlock:(id)block;
+- (void)setPreviousValidatedModelVersion:(int64_t)version;
+- (void)setPreviousValidationSucceeded:(BOOL)succeeded;
+- (void)setShouldPerformLightweightValidation:(BOOL)validation;
+- (void)verifyAndRepairOrphanedAssets:(id)assets completionBlock:(id)block;
 @end
 
 @implementation PLMomentGenerationDataManager
 
-- (void)runPeriodicMaintenanceTasks:(unint64_t)a3 withTransaction:(id)a4 progressReportBlock:(id)a5
+- (void)runPeriodicMaintenanceTasks:(unint64_t)tasks withTransaction:(id)transaction progressReportBlock:(id)block
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  tasksCopy = tasks;
+  transactionCopy = transaction;
+  blockCopy = block;
   if ([(PLMomentGenerationDataManager *)self cameraIsActive])
   {
     v10 = PLMomentsGetLog();
@@ -92,9 +92,9 @@
     goto LABEL_44;
   }
 
-  if (!v9)
+  if (!blockCopy)
   {
-    v9 = &__block_literal_global_252;
+    blockCopy = &__block_literal_global_252;
   }
 
   v11 = PLMomentsGetLog();
@@ -105,7 +105,7 @@
   }
 
   v10 = dispatch_group_create();
-  if (v6)
+  if (tasksCopy)
   {
     v12 = PLMomentsGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -121,16 +121,16 @@
     v62[1] = 3221225472;
     v62[2] = __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransaction_progressReportBlock___block_invoke_253;
     v62[3] = &unk_1E7576F38;
-    v65 = v9;
+    v65 = blockCopy;
     v63 = v13;
     v64 = v10;
     v15 = v13;
     [(PLMomentGeneration *)generator processRecentHighlightsWithCompletionBlock:v62];
 
-    if ((v6 & 0x20) == 0)
+    if ((tasksCopy & 0x20) == 0)
     {
 LABEL_10:
-      if ((v6 & 4) == 0)
+      if ((tasksCopy & 4) == 0)
       {
         goto LABEL_11;
       }
@@ -139,7 +139,7 @@ LABEL_10:
     }
   }
 
-  else if ((v6 & 0x20) == 0)
+  else if ((tasksCopy & 0x20) == 0)
   {
     goto LABEL_10;
   }
@@ -158,16 +158,16 @@ LABEL_10:
   v58[1] = 3221225472;
   v58[2] = __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransaction_progressReportBlock___block_invoke_257;
   v58[3] = &unk_1E7576F38;
-  v61 = v9;
+  v61 = blockCopy;
   v59 = v17;
   v60 = v10;
   v19 = v17;
   [(PLMomentGeneration *)v18 locationOfInterestUpdateWithCompletionBlock:v58];
 
-  if ((v6 & 4) == 0)
+  if ((tasksCopy & 4) == 0)
   {
 LABEL_11:
-    if ((v6 & 8) == 0)
+    if ((tasksCopy & 8) == 0)
     {
       goto LABEL_12;
     }
@@ -190,16 +190,16 @@ LABEL_22:
   v54[1] = 3221225472;
   v54[2] = __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransaction_progressReportBlock___block_invoke_261;
   v54[3] = &unk_1E7576F38;
-  v57 = v9;
+  v57 = blockCopy;
   v55 = v21;
   v56 = v10;
   v23 = v21;
   [(PLMomentGeneration *)v22 processUnprocessedMomentLocationsWithCompletionBlock:v54];
 
-  if ((v6 & 8) == 0)
+  if ((tasksCopy & 8) == 0)
   {
 LABEL_12:
-    if ((v6 & 2) == 0)
+    if ((tasksCopy & 2) == 0)
     {
       goto LABEL_13;
     }
@@ -222,16 +222,16 @@ LABEL_25:
   v50[1] = 3221225472;
   v50[2] = __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransaction_progressReportBlock___block_invoke_265;
   v50[3] = &unk_1E7576F38;
-  v53 = v9;
+  v53 = blockCopy;
   v51 = v25;
   v52 = v10;
   v27 = v25;
   [(PLMomentGeneration *)v26 updateHighlightTitlesWithCompletionBlock:v50];
 
-  if ((v6 & 2) == 0)
+  if ((tasksCopy & 2) == 0)
   {
 LABEL_13:
-    if ((v6 & 0x10) == 0)
+    if ((tasksCopy & 0x10) == 0)
     {
       goto LABEL_14;
     }
@@ -251,13 +251,13 @@ LABEL_31:
     v44[1] = 3221225472;
     v44[2] = __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransaction_progressReportBlock___block_invoke_270;
     v44[3] = &unk_1E7576F38;
-    v47 = v9;
+    v47 = blockCopy;
     v45 = v30;
     v46 = v10;
     v32 = v30;
     [(PLMomentGeneration *)v31 validateLibraryWithCompletionBlock:v44];
 
-    if ((v6 & 0x20) == 0)
+    if ((tasksCopy & 0x20) == 0)
     {
       goto LABEL_37;
     }
@@ -279,15 +279,15 @@ LABEL_28:
   v48[2] = __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransaction_progressReportBlock___block_invoke_269;
   v48[3] = &unk_1E75781E8;
   v49 = v10;
-  [(PLMomentGenerationDataManager *)self verifyAndRepairOrphanedAssets:v8 completionBlock:v48];
+  [(PLMomentGenerationDataManager *)self verifyAndRepairOrphanedAssets:transactionCopy completionBlock:v48];
 
-  if ((v6 & 0x10) != 0)
+  if ((tasksCopy & 0x10) != 0)
   {
     goto LABEL_31;
   }
 
 LABEL_14:
-  if ((v6 & 0x20) != 0)
+  if ((tasksCopy & 0x20) != 0)
   {
 LABEL_34:
     v33 = PLMomentsGetLog();
@@ -304,7 +304,7 @@ LABEL_34:
     v40[1] = 3221225472;
     v40[2] = __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransaction_progressReportBlock___block_invoke_274;
     v40[3] = &unk_1E7576F38;
-    v43 = v9;
+    v43 = blockCopy;
     v41 = v34;
     v42 = v10;
     v36 = v34;
@@ -328,7 +328,7 @@ LABEL_37:
   }
 
   [(PLMomentGeneration *)self->_generator releaseMemoryIntensiveObjects];
-  [v8 stillAlive];
+  [transactionCopy stillAlive];
   v39 = PLMomentsGetLog();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
   {
@@ -453,50 +453,50 @@ void __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransac
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)setPreviousValidationSucceeded:(BOOL)a3
+- (void)setPreviousValidationSucceeded:(BOOL)succeeded
 {
-  v3 = a3;
-  self->_previousValidationSucceeded = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"com.apple.photos.validation.previousValidationSucceeded"];
+  succeededCopy = succeeded;
+  self->_previousValidationSucceeded = succeeded;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:succeededCopy forKey:@"com.apple.photos.validation.previousValidationSucceeded"];
 }
 
-- (void)setPreviousValidatedModelVersion:(int64_t)a3
+- (void)setPreviousValidatedModelVersion:(int64_t)version
 {
-  self->_previousValidatedModelVersion = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setInteger:a3 forKey:@"com.apple.photos.validation.previousValidatedModelVersion"];
+  self->_previousValidatedModelVersion = version;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setInteger:version forKey:@"com.apple.photos.validation.previousValidatedModelVersion"];
 }
 
-- (void)setShouldPerformLightweightValidation:(BOOL)a3
+- (void)setShouldPerformLightweightValidation:(BOOL)validation
 {
-  v3 = a3;
-  self->_shouldPerformLightweightValidation = a3;
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"com.apple.photos.validation.performLightweightValidation"];
+  validationCopy = validation;
+  self->_shouldPerformLightweightValidation = validation;
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:validationCopy forKey:@"com.apple.photos.validation.performLightweightValidation"];
 }
 
 - (BOOL)cameraIsActive
 {
-  v2 = [(PLMomentGenerationDataManager *)self cameraWatcher];
-  v3 = [v2 isCameraRunning];
+  cameraWatcher = [(PLMomentGenerationDataManager *)self cameraWatcher];
+  isCameraRunning = [cameraWatcher isCameraRunning];
 
-  return v3;
+  return isCameraRunning;
 }
 
 - (id)locationsOfInterest
 {
   if ([(PLMomentGenerationDataManager *)self routineIsAvailable])
   {
-    v3 = [(PLRoutineService *)self->_routineManager allLocationsOfInterest];
+    allLocationsOfInterest = [(PLRoutineService *)self->_routineManager allLocationsOfInterest];
   }
 
   else
   {
-    v3 = 0;
+    allLocationsOfInterest = 0;
   }
 
-  return v3;
+  return allLocationsOfInterest;
 }
 
 - (BOOL)routineIsAvailable
@@ -516,12 +516,12 @@ void __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransac
   v19 = *MEMORY[0x1E69E9840];
   if ([(PLMomentGenerationDataManager *)self routineIsAvailable])
   {
-    v3 = [(PLMomentGenerationDataManager *)self locationsOfInterest];
+    locationsOfInterest = [(PLMomentGenerationDataManager *)self locationsOfInterest];
     v4 = PLMomentsGetLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v18 = [v3 count];
+      v18 = [locationsOfInterest count];
       _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "Routine is available with %lu LOIs:", buf, 0xCu);
     }
 
@@ -529,7 +529,7 @@ void __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransac
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = v3;
+    v5 = locationsOfInterest;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -575,9 +575,9 @@ void __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransac
 - (id)replayLogPath
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v3 = [v2 lastObject];
+  lastObject = [v2 lastObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"Logs/CrashReporter/DiagnosticLogs/com.apple.photos/"];
+  v4 = [lastObject stringByAppendingPathComponent:@"Logs/CrashReporter/DiagnosticLogs/com.apple.photos/"];
   v5 = [v4 stringByAppendingPathComponent:@"MomentsReplayLog.plist"];
 
   return v5;
@@ -594,14 +594,14 @@ void __97__PLMomentGenerationDataManager_runPeriodicMaintenanceTasks_withTransac
   return v2;
 }
 
-- (void)verifyAndRepairOrphanedAssets:(id)a3 completionBlock:(id)a4
+- (void)verifyAndRepairOrphanedAssets:(id)assets completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLMomentGenerationDataManager *)self isolationQueue];
-  v11 = v7;
-  v9 = v7;
-  v10 = v6;
+  assetsCopy = assets;
+  blockCopy = block;
+  isolationQueue = [(PLMomentGenerationDataManager *)self isolationQueue];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  v10 = assetsCopy;
   pl_dispatch_async();
 }
 
@@ -689,7 +689,7 @@ uint64_t __79__PLMomentGenerationDataManager_verifyAndRepairOrphanedAssets_compl
   return v2();
 }
 
-- (id)orphanedAssetIDsWithError:(id *)a3
+- (id)orphanedAssetIDsWithError:(id *)error
 {
   v17[5] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Asset"];
@@ -709,52 +709,52 @@ uint64_t __79__PLMomentGenerationDataManager_verifyAndRepairOrphanedAssets_compl
   [v5 setPredicate:v13];
   [v5 setResultType:1];
   [v5 setIncludesPropertyValues:0];
-  v14 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v15 = [v14 executeFetchRequest:v5 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v15 = [managedObjectContext executeFetchRequest:v5 error:error];
 
   return v15;
 }
 
 - (id)insertNewPhotosHighlight
 {
-  v2 = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
   v5 = 0;
-  v3 = [PLPhotosHighlight insertNewPhotosHighlightInManagedObjectContext:v2 error:&v5];
+  v3 = [PLPhotosHighlight insertNewPhotosHighlightInManagedObjectContext:managedObjectContext error:&v5];
 
   return v3;
 }
 
 - (id)insertNewMoment
 {
-  v2 = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
   v3 = +[PLMoment entityName];
-  v4 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v3, v2, 0);
+  v4 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v3, managedObjectContext, 0);
 
   return v4;
 }
 
-- (BOOL)deleteAllHighlightsWithError:(id *)a3
+- (BOOL)deleteAllHighlightsWithError:(id *)error
 {
   v5 = +[PLPhotosHighlight entityName];
-  LOBYTE(a3) = [(PLMomentGenerationDataManager *)self _deleteAllObjectsForEntityName:v5 error:a3];
+  LOBYTE(error) = [(PLMomentGenerationDataManager *)self _deleteAllObjectsForEntityName:v5 error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)deleteAllMomentsWithError:(id *)a3
+- (BOOL)deleteAllMomentsWithError:(id *)error
 {
   v5 = +[PLMoment entityName];
-  LOBYTE(a3) = [(PLMomentGenerationDataManager *)self _batchDeleteForEntityName:v5 error:a3];
+  LOBYTE(error) = [(PLMomentGenerationDataManager *)self _batchDeleteForEntityName:v5 error:error];
 
-  return a3;
+  return error;
 }
 
-- (BOOL)_deleteAllObjectsForEntityName:(id)a3 error:(id *)a4
+- (BOOL)_deleteAllObjectsForEntityName:(id)name error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v7];
-  v9 = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  nameCopy = name;
+  v8 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:nameCopy];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
   v27 = 0;
   v28 = &v27;
   v29 = 0x2020000000;
@@ -765,7 +765,7 @@ uint64_t __79__PLMomentGenerationDataManager_verifyAndRepairOrphanedAssets_compl
   v25[1] = 3221225472;
   v25[2] = __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___block_invoke;
   v25[3] = &unk_1E7575B30;
-  v26 = v9;
+  v26 = managedObjectContext;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___block_invoke_2;
@@ -785,7 +785,7 @@ uint64_t __79__PLMomentGenerationDataManager_verifyAndRepairOrphanedAssets_compl
     {
       v17 = v28[3];
       *buf = 138412546;
-      v32 = v7;
+      v32 = nameCopy;
       v33 = 2048;
       v34 = v17;
       _os_log_impl(&dword_19BF1F000, v16, OS_LOG_TYPE_DEFAULT, "Finished deleting entity: %@, count deleted: %ld", buf, 0x16u);
@@ -798,16 +798,16 @@ uint64_t __79__PLMomentGenerationDataManager_verifyAndRepairOrphanedAssets_compl
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v32 = v7;
+      v32 = nameCopy;
       v33 = 2112;
       v34 = v15;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Failed to delete objects of entity: %@, error: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v19 = v15;
-      *a4 = v15;
+      *error = v15;
     }
   }
 
@@ -851,16 +851,16 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
   }
 }
 
-- (BOOL)_batchDeleteForEntityName:(id)a3 error:(id *)a4
+- (BOOL)_batchDeleteForEntityName:(id)name error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:v6];
+  nameCopy = name;
+  v7 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:nameCopy];
   v8 = [objc_alloc(MEMORY[0x1E695D538]) initWithFetchRequest:v7];
   [v8 setResultType:2];
-  v9 = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
   v17 = 0;
-  v10 = [v9 executeRequest:v8 error:&v17];
+  v10 = [managedObjectContext executeRequest:v8 error:&v17];
   v11 = v17;
   v12 = PLMigrationGetLog();
   v13 = v12;
@@ -869,7 +869,7 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v6;
+      v19 = nameCopy;
       v20 = 2112;
       v21 = v11;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "Failed to clear %@ references, %@", buf, 0x16u);
@@ -878,187 +878,187 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
 
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v10 result];
+    result = [v10 result];
     *buf = 138412546;
-    v19 = v14;
+    v19 = result;
     v20 = 2112;
-    v21 = v6;
+    v21 = nameCopy;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_DEFAULT, "Cleared all %@ %@ references from assets", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     v15 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v11 == 0;
 }
 
-- (id)allAssetIDsToBeIncludedInMomentsWithError:(id *)a3
+- (id)allAssetIDsToBeIncludedInMomentsWithError:(id *)error
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment allAssetsIncludedInMomentsInManagedObjectContext:v4 IDsOnly:1 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment allAssetsIncludedInMomentsInManagedObjectContext:managedObjectContext IDsOnly:1 error:error];
 
   return v5;
 }
 
-- (id)allInvalidAssetsWithError:(id *)a3
+- (id)allInvalidAssetsWithError:(id *)error
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment allInvalidAssetsInManagedObjectContext:v4 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment allInvalidAssetsInManagedObjectContext:managedObjectContext error:error];
 
   return v5;
 }
 
-- (id)allAssetsToBeIncludedInMomentsWithError:(id *)a3
+- (id)allAssetsToBeIncludedInMomentsWithError:(id *)error
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment allAssetsIncludedInMomentsInManagedObjectContext:v4 IDsOnly:0 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment allAssetsIncludedInMomentsInManagedObjectContext:managedObjectContext IDsOnly:0 error:error];
 
   return v5;
 }
 
-- (id)allMomentIDsWithError:(id *)a3
+- (id)allMomentIDsWithError:(id *)error
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment allMomentIDsInManagedObjectContext:v4 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment allMomentIDsInManagedObjectContext:managedObjectContext error:error];
 
   return v5;
 }
 
-- (id)momentsRequiringLocationOfInterestUpdateWithError:(id *)a3
+- (id)momentsRequiringLocationOfInterestUpdateWithError:(id *)error
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment momentsWithLocationOfInterestInManagedObjectContext:v4 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment momentsWithLocationOfInterestInManagedObjectContext:managedObjectContext error:error];
 
   return v5;
 }
 
-- (id)momentsRequiringLocationProcessingWhenFrequentLocationsChangedWithError:(id *)a3
+- (id)momentsRequiringLocationProcessingWhenFrequentLocationsChangedWithError:(id *)error
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment momentsRequiringLocationProcessingWhenFrequentLocationsChangedInManagedObjectContext:v4 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment momentsRequiringLocationProcessingWhenFrequentLocationsChangedInManagedObjectContext:managedObjectContext error:error];
 
   return v5;
 }
 
-- (id)momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailable:(id *)a3
+- (id)momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailable:(id *)available
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailableInManagedObjectContext:v4 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment momentsRequiringLocationProcessingWhenFrequentLocationsAreAvailableInManagedObjectContext:managedObjectContext error:available];
 
   return v5;
 }
 
-- (id)momentsRequiringLocationProcessingWhenCoreRoutineIsAvailable:(id *)a3
+- (id)momentsRequiringLocationProcessingWhenCoreRoutineIsAvailable:(id *)available
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment momentsRequiringLocationProcessingWhenCoreRoutineIsAvailableInManagedObjectContext:v4 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment momentsRequiringLocationProcessingWhenCoreRoutineIsAvailableInManagedObjectContext:managedObjectContext error:available];
 
   return v5;
 }
 
-- (id)allInvalidMomentsWithError:(id *)a3
+- (id)allInvalidMomentsWithError:(id *)error
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment allInvalidMomentsInManagedObjectContext:v4 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment allInvalidMomentsInManagedObjectContext:managedObjectContext error:error];
 
   return v5;
 }
 
-- (id)allMomentsWithError:(id *)a3
+- (id)allMomentsWithError:(id *)error
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [PLMoment allMomentsInManagedObjectContext:v4 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [PLMoment allMomentsInManagedObjectContext:managedObjectContext error:error];
 
   return v5;
 }
 
-- (id)allPhotosHighlightsWithPredicate:(id)a3 error:(id *)a4
+- (id)allPhotosHighlightsWithPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v8 = [(PLMomentGenerationDataManager *)self _highlightRelationshipsToPrefetchForHighlightOfAnyKind];
-  v9 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:v7 predicate:v6 keyPathsForPrefetching:v8 error:a4];
+  predicateCopy = predicate;
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  _highlightRelationshipsToPrefetchForHighlightOfAnyKind = [(PLMomentGenerationDataManager *)self _highlightRelationshipsToPrefetchForHighlightOfAnyKind];
+  v9 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:managedObjectContext predicate:predicateCopy keyPathsForPrefetching:_highlightRelationshipsToPrefetchForHighlightOfAnyKind error:error];
 
   return v9;
 }
 
-- (id)allPhotosHighlightsOfKind:(unsigned __int16)a3 withPredicate:(id)a4 error:(id *)a5
+- (id)allPhotosHighlightsOfKind:(unsigned __int16)kind withPredicate:(id)predicate error:(id *)error
 {
-  v6 = a3;
+  kindCopy = kind;
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", v6];
-  v11 = v10;
-  if (v8)
+  predicateCopy = predicate;
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  kindCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", kindCopy];
+  v11 = kindCopy;
+  if (predicateCopy)
   {
     v12 = MEMORY[0x1E696AB28];
-    v18[0] = v10;
-    v18[1] = v8;
+    v18[0] = kindCopy;
+    v18[1] = predicateCopy;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
     v14 = [v12 andPredicateWithSubpredicates:v13];
   }
 
   else
   {
-    v14 = v10;
+    v14 = kindCopy;
   }
 
-  v15 = [(PLMomentGenerationDataManager *)self _highlightRelationshipsToPrefetchForHighlightKind:v6];
-  v16 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:v9 predicate:v14 keyPathsForPrefetching:v15 error:a5];
+  v15 = [(PLMomentGenerationDataManager *)self _highlightRelationshipsToPrefetchForHighlightKind:kindCopy];
+  v16 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:managedObjectContext predicate:v14 keyPathsForPrefetching:v15 error:error];
 
   return v16;
 }
 
-- (id)allEmptyPhotosHighlightsOfKind:(unsigned __int16)a3 error:(id *)a4
+- (id)allEmptyPhotosHighlightsOfKind:(unsigned __int16)kind error:(id *)error
 {
-  v5 = a3;
-  v6 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v7 = [PLPhotosHighlight predicateForEmptyHighlightsOfKind:v5];
-  v8 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:v6 predicate:v7 keyPathsForPrefetching:0 error:a4];
+  kindCopy = kind;
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v7 = [PLPhotosHighlight predicateForEmptyHighlightsOfKind:kindCopy];
+  v8 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:managedObjectContext predicate:v7 keyPathsForPrefetching:0 error:error];
 
   return v8;
 }
 
-- (id)allInvalidPhotosHighlightsOfAllKindsWithError:(id *)a3
+- (id)allInvalidPhotosHighlightsOfAllKindsWithError:(id *)error
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
   v5 = +[PLPhotosHighlight predicateForInvalidHighlightsOfAllKinds];
-  v6 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:v4 predicate:v5 keyPathsForPrefetching:0 error:a3];
+  v6 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:managedObjectContext predicate:v5 keyPathsForPrefetching:0 error:error];
 
   return v6;
 }
 
-- (id)allPhotosHighlightsOfAllKindsWithError:(id *)a3
+- (id)allPhotosHighlightsOfAllKindsWithError:(id *)error
 {
-  v5 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v6 = [(PLMomentGenerationDataManager *)self _highlightRelationshipsToPrefetchForHighlightOfAnyKind];
-  v7 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:v5 predicate:0 keyPathsForPrefetching:v6 error:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  _highlightRelationshipsToPrefetchForHighlightOfAnyKind = [(PLMomentGenerationDataManager *)self _highlightRelationshipsToPrefetchForHighlightOfAnyKind];
+  v7 = [PLPhotosHighlight allPhotosHighlightsInManagedObjectContext:managedObjectContext predicate:0 keyPathsForPrefetching:_highlightRelationshipsToPrefetchForHighlightOfAnyKind error:error];
 
   return v7;
 }
 
-- (id)momentsBetweenDate:(id)a3 andDate:(id)a4 sorted:(BOOL)a5 excludeExternal:(BOOL)a6
+- (id)momentsBetweenDate:(id)date andDate:(id)andDate sorted:(BOOL)sorted excludeExternal:(BOOL)external
 {
-  v6 = a6;
-  v7 = a5;
+  externalCopy = external;
+  sortedCopy = sorted;
   v27[2] = *MEMORY[0x1E69E9840];
   v10 = MEMORY[0x1E695D5E0];
-  v11 = a4;
-  v12 = a3;
+  andDateCopy = andDate;
+  dateCopy = date;
   v13 = +[PLMoment entityName];
   v14 = [v10 fetchRequestWithEntityName:v13];
 
-  v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K >= %@) AND (%K <= %@)", @"endDate", v12, @"startDate", v11];
+  andDateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K >= %@) AND (%K <= %@)", @"endDate", dateCopy, @"startDate", andDateCopy];
 
-  if (v6)
+  if (externalCopy)
   {
     v16 = [PLMoment fetchPredicateForExcludingOriginatorState:8];
     v17 = MEMORY[0x1E696AB28];
-    v27[0] = v15;
+    v27[0] = andDateCopy;
     v27[1] = v16;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:2];
     v19 = [v17 andPredicateWithSubpredicates:v18];
@@ -1067,11 +1067,11 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
 
   else
   {
-    [v14 setPredicate:v15];
+    [v14 setPredicate:andDateCopy];
   }
 
   [v14 setReturnsObjectsAsFaults:0];
-  if (v7)
+  if (sortedCopy)
   {
     v20 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"representativeDate" ascending:1];
     v26[0] = v20;
@@ -1081,26 +1081,26 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
     [v14 setSortDescriptors:v22];
   }
 
-  v23 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v24 = [v23 executeFetchRequest:v14 error:0];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v24 = [managedObjectContext executeFetchRequest:v14 error:0];
 
   return v24;
 }
 
-- (id)momentsIntersectingDateInterval:(id)a3
+- (id)momentsIntersectingDateInterval:(id)interval
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  intervalCopy = interval;
+  if (!intervalCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:621 description:{@"Invalid parameter not satisfying: %@", @"dateInterval"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:621 description:{@"Invalid parameter not satisfying: %@", @"dateInterval"}];
   }
 
   v6 = MEMORY[0x1E696AE18];
-  v7 = [v5 endDate];
-  v8 = [v5 startDate];
-  v9 = [v6 predicateWithFormat:@"(%K <= %@) AND (%K >= %@)", @"startDate", v7, @"endDate", v8];
+  endDate = [intervalCopy endDate];
+  startDate = [intervalCopy startDate];
+  v9 = [v6 predicateWithFormat:@"(%K <= %@) AND (%K >= %@)", @"startDate", endDate, @"endDate", startDate];
 
   v10 = MEMORY[0x1E695D5E0];
   v11 = +[PLMoment entityName];
@@ -1113,26 +1113,26 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   [v12 setRelationshipKeyPathsForPrefetching:v13];
 
-  v14 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v15 = [v14 executeFetchRequest:v12 error:0];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v15 = [managedObjectContext executeFetchRequest:v12 error:0];
 
   return v15;
 }
 
-- (id)highlightsIntersectingDateInterval:(id)a3 ofKind:(unsigned __int16)a4
+- (id)highlightsIntersectingDateInterval:(id)interval ofKind:(unsigned __int16)kind
 {
-  v4 = a4;
-  v7 = a3;
-  if (!v7)
+  kindCopy = kind;
+  intervalCopy = interval;
+  if (!intervalCopy)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:606 description:{@"Invalid parameter not satisfying: %@", @"dateInterval"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:606 description:{@"Invalid parameter not satisfying: %@", @"dateInterval"}];
   }
 
   v8 = MEMORY[0x1E696AE18];
-  v9 = [v7 endDate];
-  v10 = [v7 startDate];
-  v11 = [v8 predicateWithFormat:@"(%K <= %@) AND (%K >= %@) AND kind = %d", @"startDate", v9, @"endDate", v10, v4];
+  endDate = [intervalCopy endDate];
+  startDate = [intervalCopy startDate];
+  kindCopy = [v8 predicateWithFormat:@"(%K <= %@) AND (%K >= %@) AND kind = %d", @"startDate", endDate, @"endDate", startDate, kindCopy];
 
   v12 = MEMORY[0x1E695D5E0];
   v13 = +[PLPhotosHighlight entityName];
@@ -1140,12 +1140,12 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
 
   [v14 setFetchBatchSize:100];
   [v14 setReturnsObjectsAsFaults:0];
-  [v14 setPredicate:v11];
-  v15 = [(PLMomentGenerationDataManager *)self _highlightRelationshipsToPrefetchForHighlightKind:v4];
+  [v14 setPredicate:kindCopy];
+  v15 = [(PLMomentGenerationDataManager *)self _highlightRelationshipsToPrefetchForHighlightKind:kindCopy];
   [v14 setRelationshipKeyPathsForPrefetching:v15];
 
-  v16 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v17 = [v16 executeFetchRequest:v14 error:0];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v17 = [managedObjectContext executeFetchRequest:v14 error:0];
 
   return v17;
 }
@@ -1160,13 +1160,13 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
   return v2;
 }
 
-- (id)_highlightRelationshipsToPrefetchForHighlightKind:(unsigned __int16)a3
+- (id)_highlightRelationshipsToPrefetchForHighlightKind:(unsigned __int16)kind
 {
   v3 = 0;
   v11[6] = *MEMORY[0x1E69E9840];
-  if (a3 > 1)
+  if (kind > 1)
   {
-    if (a3 == 2)
+    if (kind == 2)
     {
       v8 = @"childPhotosHighlights";
       v4 = MEMORY[0x1E695DEC8];
@@ -1176,7 +1176,7 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
 
     else
     {
-      if (a3 != 3)
+      if (kind != 3)
       {
         goto LABEL_11;
       }
@@ -1192,9 +1192,9 @@ void __70__PLMomentGenerationDataManager__deleteAllObjectsForEntityName_error___
     }
   }
 
-  else if (a3)
+  else if (kind)
   {
-    if (a3 != 1)
+    if (kind != 1)
     {
       goto LABEL_11;
     }
@@ -1228,11 +1228,11 @@ LABEL_11:
 - (id)_currentHomeAddressDictionary
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PLMomentGenerationDataManager *)self _contactStore];
+  _contactStore = [(PLMomentGenerationDataManager *)self _contactStore];
   v23[0] = *MEMORY[0x1E695C360];
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v21 = 0;
-  v4 = [v2 _crossPlatformUnifiedMeContactWithKeysToFetch:v3 error:&v21];
+  v4 = [_contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:v3 error:&v21];
   v5 = v21;
 
   if (v4)
@@ -1258,11 +1258,11 @@ LABEL_11:
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 label];
-          if ([v13 isEqualToString:v10])
+          label = [v12 label];
+          if ([label isEqualToString:v10])
           {
-            v15 = [v12 value];
-            v14 = [v15 dictionaryRepresentation];
+            value = [v12 value];
+            dictionaryRepresentation = [value dictionaryRepresentation];
 
             goto LABEL_12;
           }
@@ -1278,16 +1278,16 @@ LABEL_11:
       }
     }
 
-    v14 = 0;
+    dictionaryRepresentation = 0;
 LABEL_12:
   }
 
   else
   {
-    v14 = 0;
+    dictionaryRepresentation = 0;
   }
 
-  return v14;
+  return dictionaryRepresentation;
 }
 
 - (CNContactStore)_contactStore
@@ -1298,9 +1298,9 @@ LABEL_12:
     v3 = PLBackendGetLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
     {
-      v4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v7 = 138412290;
-      v8 = v4;
+      v8 = callStackSymbols;
       _os_log_impl(&dword_19BF1F000, v3, OS_LOG_TYPE_ERROR, "We should never attempt to access the contact store when it isn't authorized. %@", &v7, 0xCu);
     }
   }
@@ -1310,12 +1310,12 @@ LABEL_12:
   return contactStore;
 }
 
-- (void)_networkReachabilityDidChange:(id)a3
+- (void)_networkReachabilityDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x1E698B610]];
-  v7 = [v6 BOOLValue];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E698B610]];
+  bOOLValue = [v6 BOOLValue];
 
   v11 = 0;
   v12 = &v11;
@@ -1335,7 +1335,7 @@ LABEL_12:
   v9 = v12[5];
   if (v9)
   {
-    (*(v9 + 16))(v9, v7);
+    (*(v9 + 16))(v9, bOOLValue);
   }
 
   _Block_object_dispose(&v11, 8);
@@ -1349,16 +1349,16 @@ void __63__PLMomentGenerationDataManager__networkReachabilityDidChange___block_i
   *(v3 + 40) = v2;
 }
 
-- (id)fetchParentHighlightItemsForHighlightItems:(id)a3
+- (id)fetchParentHighlightItemsForHighlightItems:(id)items
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = [MEMORY[0x1E695DFA8] set];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -1373,10 +1373,10 @@ void __63__PLMomentGenerationDataManager__networkReachabilityDidChange___block_i
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v13 + 1) + 8 * i) parentPhotosHighlight];
-        if (v10)
+        parentPhotosHighlight = [*(*(&v13 + 1) + 8 * i) parentPhotosHighlight];
+        if (parentPhotosHighlight)
         {
-          [v4 addObject:v10];
+          [v4 addObject:parentPhotosHighlight];
         }
       }
 
@@ -1386,42 +1386,42 @@ void __63__PLMomentGenerationDataManager__networkReachabilityDidChange___block_i
     while (v7);
   }
 
-  v11 = [v4 allObjects];
+  allObjects = [v4 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
-- (id)fetchChildHighlightItemsForHighlightItem:(id)a3
+- (id)fetchChildHighlightItemsForHighlightItem:(id)item
 {
-  v3 = [a3 childPhotosHighlights];
-  v4 = [v3 allObjects];
+  childPhotosHighlights = [item childPhotosHighlights];
+  allObjects = [childPhotosHighlights allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (id)fetchNeighborHighlightItemsForHighlightItems:(id)a3
+- (id)fetchNeighborHighlightItemsForHighlightItems:(id)items
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 count])
+  itemsCopy = items;
+  if (![itemsCopy count])
   {
     v21 = MEMORY[0x1E695E0F0];
     goto LABEL_30;
   }
 
-  v5 = [MEMORY[0x1E695DF00] distantFuture];
-  v6 = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v38 = v4;
-  v7 = v4;
+  v38 = itemsCopy;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
   if (v8)
   {
     v9 = v8;
-    v37 = self;
+    selfCopy = self;
     v10 = *v41;
     do
     {
@@ -1433,25 +1433,25 @@ void __63__PLMomentGenerationDataManager__networkReachabilityDidChange___block_i
         }
 
         v12 = *(*(&v40 + 1) + 8 * i);
-        v13 = [v12 startDate];
-        v14 = v13;
-        if (v13)
+        startDate = [v12 startDate];
+        v14 = startDate;
+        if (startDate)
         {
-          v15 = [v13 earlierDate:v5];
+          v15 = [startDate earlierDate:distantFuture];
 
-          v5 = v15;
+          distantFuture = v15;
         }
 
-        v16 = [v12 endDate];
-        v17 = v16;
-        if (v16)
+        endDate = [v12 endDate];
+        v17 = endDate;
+        if (endDate)
         {
-          v18 = [v16 laterDate:v6];
+          v18 = [endDate laterDate:distantPast];
 
-          v6 = v18;
+          distantPast = v18;
         }
 
-        v19 = [v12 kind];
+        kind = [v12 kind];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v40 objects:v47 count:16];
@@ -1459,40 +1459,40 @@ void __63__PLMomentGenerationDataManager__networkReachabilityDidChange___block_i
 
     while (v9);
 
-    if (v19)
+    if (kind)
     {
       v20 = &PLYearGroupingRuleTimeIntervalForNeighbors;
-      self = v37;
+      self = selfCopy;
       goto LABEL_19;
     }
 
-    self = v37;
+    self = selfCopy;
   }
 
   else
   {
   }
 
-  v19 = 0;
+  kind = 0;
   v20 = &PLMonthGroupingRuleTimeIntervalForNeighbors;
 LABEL_19:
   v22 = *v20;
   v23 = MEMORY[0x1E696AE18];
-  v24 = [v5 dateByAddingTimeInterval:-*v20];
+  v24 = [distantFuture dateByAddingTimeInterval:-*v20];
   v25 = [v23 predicateWithFormat:@"startDate >= %@", v24];
 
   v26 = MEMORY[0x1E696AE18];
-  v27 = [v6 dateByAddingTimeInterval:v22];
+  v27 = [distantPast dateByAddingTimeInterval:v22];
   v28 = [v26 predicateWithFormat:@"endDate <= %@", v27];
 
-  if (v19 - 1 < 2)
+  if (kind - 1 < 2)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", v19, v36];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d", kind, v36];
   }
 
   else
   {
-    if (v19 && v19 != 3)
+    if (kind && kind != 3)
     {
       v29 = 0;
       goto LABEL_25;
@@ -1523,7 +1523,7 @@ LABEL_25:
     }
   }
 
-  v4 = v38;
+  itemsCopy = v38;
 LABEL_30:
 
   return v21;
@@ -1546,17 +1546,17 @@ LABEL_30:
 
 - (void)resetOnFailure
 {
-  v2 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  [v2 reset];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  [managedObjectContext reset];
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
-  v4 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v5 = [v4 save:a3];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v5 = [managedObjectContext save:save];
   if (v5)
   {
-    [v4 refreshAllObjects];
+    [managedObjectContext refreshAllObjects];
   }
 
   return v5;
@@ -1564,37 +1564,37 @@ LABEL_30:
 
 - (BOOL)hasChanges
 {
-  v2 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v3 = [v2 hasChanges];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  hasChanges = [managedObjectContext hasChanges];
 
-  return v3;
+  return hasChanges;
 }
 
 - (void)refreshAllObjects
 {
-  v2 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  [v2 refreshAllObjects];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  [managedObjectContext refreshAllObjects];
 }
 
-- (id)momentsForAssetsWithUniqueIDs:(id)a3 error:(id *)a4
+- (id)momentsForAssetsWithUniqueIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v7 = MEMORY[0x1E695D5E0];
     v8 = +[PLMoment entityName];
     v9 = [v7 fetchRequestWithEntityName:v8];
 
-    v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY assets IN %@", v6];
-    [v9 setPredicate:v10];
-    if ([v6 count] >= 0x65)
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"ANY assets IN %@", dsCopy];
+    [v9 setPredicate:dsCopy];
+    if ([dsCopy count] >= 0x65)
     {
       [v9 setFetchBatchSize:100];
     }
 
     [v9 setReturnsObjectsAsFaults:0];
-    v11 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-    v12 = [v11 executeFetchRequest:v9 error:a4];
+    managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+    v12 = [managedObjectContext executeFetchRequest:v9 error:error];
   }
 
   else
@@ -1605,25 +1605,25 @@ LABEL_30:
   return v12;
 }
 
-- (id)momentsWithUniqueIDs:(id)a3 error:(id *)a4
+- (id)momentsWithUniqueIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  if ([v6 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
     v7 = MEMORY[0x1E695D5E0];
     v8 = +[PLMoment entityName];
     v9 = [v7 fetchRequestWithEntityName:v8];
 
-    v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", v6];
-    [v9 setPredicate:v10];
-    if ([v6 count] >= 0x65)
+    dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self IN %@", dsCopy];
+    [v9 setPredicate:dsCopy];
+    if ([dsCopy count] >= 0x65)
     {
       [v9 setFetchBatchSize:100];
     }
 
     [v9 setReturnsObjectsAsFaults:0];
-    v11 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-    v12 = [v11 executeFetchRequest:v9 error:a4];
+    managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+    v12 = [managedObjectContext executeFetchRequest:v9 error:error];
   }
 
   else
@@ -1634,34 +1634,34 @@ LABEL_30:
   return v12;
 }
 
-- (id)momentWithUniqueID:(id)a3 error:(id *)a4
+- (id)momentWithUniqueID:(id)d error:(id *)error
 {
-  v7 = a3;
+  dCopy = d;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:338 description:@"Must get object with NSManagedObjectID"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:338 description:@"Must get object with NSManagedObjectID"];
   }
 
-  v8 = v7;
-  v9 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v10 = [v9 existingObjectWithID:v8 error:a4];
+  v8 = dCopy;
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v10 = [managedObjectContext existingObjectWithID:v8 error:error];
 
   return v10;
 }
 
-- (id)prefetchedAssetsWithUniqueIDs:(id)a3 error:(id *)a4
+- (id)prefetchedAssetsWithUniqueIDs:(id)ds error:(id *)error
 {
   v19[6] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
+  dsCopy = ds;
   v8 = +[PLManagedAsset entityName];
   v9 = [v6 fetchRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v7];
-  [v9 setPredicate:v10];
-  v11 = [v7 count];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", dsCopy];
+  [v9 setPredicate:dsCopy];
+  v11 = [dsCopy count];
 
   if (v11 >= 0x65)
   {
@@ -1681,23 +1681,23 @@ LABEL_30:
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:6];
   [v9 setRelationshipKeyPathsForPrefetching:v15];
 
-  v16 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v17 = [v16 executeFetchRequest:v9 error:a4];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v17 = [managedObjectContext executeFetchRequest:v9 error:error];
 
   return v17;
 }
 
-- (id)assetsWithUniqueIDs:(id)a3 error:(id *)a4
+- (id)assetsWithUniqueIDs:(id)ds error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
+  dsCopy = ds;
   v8 = +[PLManagedAsset entityName];
   v9 = [v6 fetchRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", v7];
-  [v9 setPredicate:v10];
-  v11 = [v7 count];
+  dsCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self in %@", dsCopy];
+  [v9 setPredicate:dsCopy];
+  v11 = [dsCopy count];
 
   if (v11 >= 0x65)
   {
@@ -1709,71 +1709,71 @@ LABEL_30:
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   [v9 setRelationshipKeyPathsForPrefetching:v12];
 
-  v13 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v14 = [v13 executeFetchRequest:v9 error:a4];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v14 = [managedObjectContext executeFetchRequest:v9 error:error];
 
   return v14;
 }
 
-- (id)assetWithUniqueID:(id)a3 error:(id *)a4
+- (id)assetWithUniqueID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:286 description:@"Must get object with NSManagedObjectID"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:286 description:@"Must get object with NSManagedObjectID"];
   }
 
-  v7 = v6;
-  v8 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v9 = [PLManagedAsset assetWithObjectID:v7 inManagedObjectContext:v8];
+  v7 = dCopy;
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  v9 = [PLManagedAsset assetWithObjectID:v7 inManagedObjectContext:managedObjectContext];
 
   return v9;
 }
 
 - (id)deletedObjects
 {
-  v2 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v3 = [v2 deletedObjects];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  deletedObjects = [managedObjectContext deletedObjects];
 
-  return v3;
+  return deletedObjects;
 }
 
 - (id)updatedObjects
 {
-  v2 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v3 = [v2 updatedObjects];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  updatedObjects = [managedObjectContext updatedObjects];
 
-  return v3;
+  return updatedObjects;
 }
 
 - (id)insertedObjects
 {
-  v2 = [(PLMomentGenerationDataManager *)self managedObjectContext];
-  v3 = [v2 insertedObjects];
+  managedObjectContext = [(PLMomentGenerationDataManager *)self managedObjectContext];
+  insertedObjects = [managedObjectContext insertedObjects];
 
-  return v3;
+  return insertedObjects;
 }
 
-- (void)performDataTransaction:(id)a3 synchronously:(BOOL)a4 priority:(int64_t)a5 completionHandler:(id)a6
+- (void)performDataTransaction:(id)transaction synchronously:(BOOL)synchronously priority:(int64_t)priority completionHandler:(id)handler
 {
-  v8 = a4;
-  v13 = a3;
-  v10 = a6;
+  synchronouslyCopy = synchronously;
+  transactionCopy = transaction;
+  handlerCopy = handler;
   if (self->_isLightweightMigrationManager)
   {
     os_unfair_lock_lock(&self->_lightweightMigrationLock);
-    if (v13)
+    if (transactionCopy)
     {
-      v13[2](v13);
+      transactionCopy[2](transactionCopy);
     }
 
     [(PLMomentGenerationDataManager *)self save:0];
     [(PLMomentGenerationDataManager *)self refreshAllObjects];
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
     }
 
     os_unfair_lock_unlock(&self->_lightweightMigrationLock);
@@ -1781,36 +1781,36 @@ LABEL_30:
 
   else
   {
-    v11 = [(PLMomentGenerationDataManager *)self momentGenerationLibrary];
-    v12 = v11;
-    if (v8)
+    momentGenerationLibrary = [(PLMomentGenerationDataManager *)self momentGenerationLibrary];
+    v12 = momentGenerationLibrary;
+    if (synchronouslyCopy)
     {
-      [v11 performTransactionAndWait:v13 completionHandler:v10];
+      [momentGenerationLibrary performTransactionAndWait:transactionCopy completionHandler:handlerCopy];
     }
 
     else
     {
-      [v11 performTransaction:v13 completionHandler:v10 withPriority:a5];
+      [momentGenerationLibrary performTransaction:transactionCopy completionHandler:handlerCopy withPriority:priority];
     }
   }
 }
 
-- (void)performBlock:(id)a3 synchronously:(BOOL)a4 priority:(int64_t)a5 completionHandler:(id)a6
+- (void)performBlock:(id)block synchronously:(BOOL)synchronously priority:(int64_t)priority completionHandler:(id)handler
 {
-  v8 = a4;
-  v13 = a3;
-  v10 = a6;
+  synchronouslyCopy = synchronously;
+  blockCopy = block;
+  handlerCopy = handler;
   if (self->_isLightweightMigrationManager)
   {
     os_unfair_lock_lock(&self->_lightweightMigrationLock);
-    if (v13)
+    if (blockCopy)
     {
-      v13[2](v13);
+      blockCopy[2](blockCopy);
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10);
+      handlerCopy[2](handlerCopy);
     }
 
     os_unfair_lock_unlock(&self->_lightweightMigrationLock);
@@ -1818,16 +1818,16 @@ LABEL_30:
 
   else
   {
-    v11 = [(PLMomentGenerationDataManager *)self momentGenerationLibrary];
-    v12 = v11;
-    if (v8)
+    momentGenerationLibrary = [(PLMomentGenerationDataManager *)self momentGenerationLibrary];
+    v12 = momentGenerationLibrary;
+    if (synchronouslyCopy)
     {
-      [v11 performBlockAndWait:v13 completionHandler:v10];
+      [momentGenerationLibrary performBlockAndWait:blockCopy completionHandler:handlerCopy];
     }
 
     else
     {
-      [v11 performBlock:v13 completionHandler:v10 withPriority:a5];
+      [momentGenerationLibrary performBlock:blockCopy completionHandler:handlerCopy withPriority:priority];
     }
   }
 }
@@ -1837,62 +1837,62 @@ LABEL_30:
   managedObjectContext = self->_managedObjectContext;
   if (managedObjectContext)
   {
-    v3 = managedObjectContext;
+    managedObjectContext = managedObjectContext;
   }
 
   else
   {
-    v4 = [(PLMomentGenerationDataManager *)self momentGenerationLibrary];
-    v3 = [v4 managedObjectContext];
+    momentGenerationLibrary = [(PLMomentGenerationDataManager *)self momentGenerationLibrary];
+    managedObjectContext = [momentGenerationLibrary managedObjectContext];
   }
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (PLPhotoLibrary)momentGenerationLibrary
 {
   if ((PLPlatformMomentsSupported() & 1) == 0)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:180 description:@"Unsupported platform"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:180 description:@"Unsupported platform"];
   }
 
   if (self->_isLightweightMigrationManager)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:181 description:@"Moment Generation attempted to set up a photolibrary during lightweight migration"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:181 description:@"Moment Generation attempted to set up a photolibrary during lightweight migration"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_libraryServicesManager);
 
   if (!WeakRetained)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"_libraryServicesManager"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:182 description:{@"Invalid parameter not satisfying: %@", @"_libraryServicesManager"}];
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  if (!v5->_momentGenerationLibrary)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_momentGenerationLibrary)
   {
     v6 = objc_loadWeakRetained(&self->_libraryServicesManager);
-    v7 = [v6 databaseContext];
-    v8 = [v7 momentLibrary];
-    momentGenerationLibrary = v5->_momentGenerationLibrary;
-    v5->_momentGenerationLibrary = v8;
+    databaseContext = [v6 databaseContext];
+    momentLibrary = [databaseContext momentLibrary];
+    momentGenerationLibrary = selfCopy->_momentGenerationLibrary;
+    selfCopy->_momentGenerationLibrary = momentLibrary;
 
-    v10 = v5->_momentGenerationLibrary;
+    v10 = selfCopy->_momentGenerationLibrary;
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __56__PLMomentGenerationDataManager_momentGenerationLibrary__block_invoke;
     v16[3] = &unk_1E75781E8;
-    v16[4] = v5;
+    v16[4] = selfCopy;
     [(PLPhotoLibrary *)v10 performBlockAndWait:v16];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
-  v11 = v5->_momentGenerationLibrary;
+  v11 = selfCopy->_momentGenerationLibrary;
 
   return v11;
 }
@@ -1917,18 +1917,18 @@ void __56__PLMomentGenerationDataManager_momentGenerationLibrary__block_invoke(u
   [v5 setPropertiesToUpdate:v7];
 
   [v5 setResultType:2];
-  v8 = [(PLMomentGenerationDataManager *)self momentGenerationLibrary];
-  v9 = [v8 managedObjectContext];
+  momentGenerationLibrary = [(PLMomentGenerationDataManager *)self momentGenerationLibrary];
+  managedObjectContext = [momentGenerationLibrary managedObjectContext];
   v14 = 0;
-  v10 = [v9 executeRequest:v5 error:&v14];
+  v10 = [managedObjectContext executeRequest:v5 error:&v14];
   v11 = v14;
 
   v12 = PLMomentsGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v10 result];
+    result = [v10 result];
     *buf = 138412290;
-    v16 = v13;
+    v16 = result;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Invalidate all titles for %@ Highlights", buf, 0xCu);
   }
 }
@@ -1949,14 +1949,14 @@ void __56__PLMomentGenerationDataManager_momentGenerationLibrary__block_invoke(u
 
 - (void)_finalizeInit
 {
-  v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-  self->_shouldPerformLightweightValidation = [v3 BOOLForKey:@"com.apple.photos.validation.performLightweightValidation"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  self->_shouldPerformLightweightValidation = [standardUserDefaults BOOLForKey:@"com.apple.photos.validation.performLightweightValidation"];
 
-  v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-  self->_previousValidatedModelVersion = [v4 integerForKey:@"com.apple.photos.validation.previousValidatedModelVersion"];
+  standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+  self->_previousValidatedModelVersion = [standardUserDefaults2 integerForKey:@"com.apple.photos.validation.previousValidatedModelVersion"];
 
-  v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-  self->_previousValidationSucceeded = [v5 BOOLForKey:@"com.apple.photos.validation.previousValidationSucceeded"];
+  standardUserDefaults3 = [MEMORY[0x1E695E000] standardUserDefaults];
+  self->_previousValidationSucceeded = [standardUserDefaults3 BOOLForKey:@"com.apple.photos.validation.previousValidationSucceeded"];
 
   v6 = objc_alloc_init(PLCameraAppWatcher);
   cameraWatcher = self->_cameraWatcher;
@@ -1971,9 +1971,9 @@ void __56__PLMomentGenerationDataManager_momentGenerationLibrary__block_invoke(u
   self->_isolationQueue = v3;
 }
 
-- (PLMomentGenerationDataManager)initWithLibraryServicesManager:(id)a3
+- (PLMomentGenerationDataManager)initWithLibraryServicesManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PLMomentGenerationDataManager;
   v5 = [(PLMomentGenerationDataManager *)&v13 init];
@@ -1982,11 +1982,11 @@ void __56__PLMomentGenerationDataManager_momentGenerationLibrary__block_invoke(u
     if (v5)
     {
       [(PLMomentGenerationDataManager *)v5 _initIsolationQueue];
-      objc_storeWeak(&v5->_libraryServicesManager, v4);
+      objc_storeWeak(&v5->_libraryServicesManager, managerCopy);
       [(PLMomentGenerationDataManager *)v5 reloadGenerationOptions];
       v6 = [PLMomentGeneration alloc];
-      v7 = [v4 libraryBundle];
-      v8 = [(PLMomentGeneration *)v6 initWithMomentGenerationDataManager:v5 bundle:v7];
+      libraryBundle = [managerCopy libraryBundle];
+      v8 = [(PLMomentGeneration *)v6 initWithMomentGenerationDataManager:v5 bundle:libraryBundle];
       generator = v5->_generator;
       v5->_generator = v8;
 
@@ -2007,10 +2007,10 @@ void __56__PLMomentGenerationDataManager_momentGenerationLibrary__block_invoke(u
   return v5;
 }
 
-- (PLMomentGenerationDataManager)initWithManagedObjectContext:(id)a3 pathManagerForLightweightMigration:(id)a4
+- (PLMomentGenerationDataManager)initWithManagedObjectContext:(id)context pathManagerForLightweightMigration:(id)migration
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  migrationCopy = migration;
   v17.receiver = self;
   v17.super_class = PLMomentGenerationDataManager;
   v8 = [(PLMomentGenerationDataManager *)&v17 init];
@@ -2029,9 +2029,9 @@ LABEL_8:
     v8->_isLightweightMigrationManager = 1;
     v8->_lightweightMigrationLock._os_unfair_lock_opaque = 0;
     [(PLMomentGenerationDataManager *)v8 setMomentGenerationLibrary:0];
-    [(PLMomentGenerationDataManager *)v8 setManagedObjectContext:v6];
+    [(PLMomentGenerationDataManager *)v8 setManagedObjectContext:contextCopy];
     objc_opt_class();
-    v9 = v6;
+    v9 = contextCopy;
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -2045,12 +2045,12 @@ LABEL_8:
     v11 = v10;
 
     v12 = [PLMomentGeneration alloc];
-    v13 = [(PLMomentGenerationDataManager *)v11 pl_libraryBundle];
-    v14 = [(PLMomentGeneration *)v12 initWithMomentGenerationDataManager:v8 bundle:v13];
+    pl_libraryBundle = [(PLMomentGenerationDataManager *)v11 pl_libraryBundle];
+    v14 = [(PLMomentGeneration *)v12 initWithMomentGenerationDataManager:v8 bundle:pl_libraryBundle];
     generator = v8->_generator;
     v8->_generator = v14;
 
-    objc_storeStrong(&v8->_lightWeightMigrationPathManager, a4);
+    objc_storeStrong(&v8->_lightWeightMigrationPathManager, migration);
     [(PLMomentGenerationDataManager *)v8 _finalizeInit];
     goto LABEL_8;
   }
@@ -2068,55 +2068,55 @@ PLMomentProcessingData *__62__PLMomentGenerationDataManager_processingMomentsFro
   return v3;
 }
 
-+ (BOOL)isManagedObjectContextMomentarilyBlessed:(id)a3
++ (BOOL)isManagedObjectContextMomentarilyBlessed:(id)blessed
 {
-  v5 = a3;
+  blessedCopy = blessed;
   if ((PLPlatformMomentsSupported() & 1) == 0)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"PLMomentGenerationDataManager.m" lineNumber:281 description:@"Unsupported platform"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:281 description:@"Unsupported platform"];
   }
 
-  v6 = [v5 userInfo];
-  v7 = [v6 objectForKey:@"MomentarilyBlessed"];
-  v8 = [v7 BOOLValue];
+  userInfo = [blessedCopy userInfo];
+  v7 = [userInfo objectForKey:@"MomentarilyBlessed"];
+  bOOLValue = [v7 BOOLValue];
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (void)setManagedObjectContextMomentarilyBlessed:(id)a3
++ (void)setManagedObjectContextMomentarilyBlessed:(id)blessed
 {
-  v3 = [a3 userInfo];
-  [v3 setObject:MEMORY[0x1E695E118] forKey:@"MomentarilyBlessed"];
+  userInfo = [blessed userInfo];
+  [userInfo setObject:MEMORY[0x1E695E118] forKey:@"MomentarilyBlessed"];
 }
 
-+ (void)setManagerMomentarilyBlessed:(id)a3
++ (void)setManagerMomentarilyBlessed:(id)blessed
 {
-  v8 = a3;
+  blessedCopy = blessed;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"PLMomentGenerationDataManager.m" lineNumber:268 description:@"Passed in incorrect data manager class"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:268 description:@"Passed in incorrect data manager class"];
   }
 
   if ((PLPlatformMomentsSupported() & 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PLMomentGenerationDataManager.m" lineNumber:269 description:@"Unsupported platform"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLMomentGenerationDataManager.m" lineNumber:269 description:@"Unsupported platform"];
   }
 
-  v5 = [v8 managedObjectContext];
-  [a1 setManagedObjectContextMomentarilyBlessed:v5];
+  managedObjectContext = [blessedCopy managedObjectContext];
+  [self setManagedObjectContextMomentarilyBlessed:managedObjectContext];
 }
 
 + (void)initialize
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___PLMomentGenerationDataManager;
   objc_msgSendSuper2(&v3, sel_initialize);
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v2 registerDefaults:&unk_1F0FC06E0];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults registerDefaults:&unk_1F0FC06E0];
 }
 
 @end

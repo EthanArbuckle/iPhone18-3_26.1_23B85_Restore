@@ -1,7 +1,7 @@
 @interface ULSettingsRegistry
 + (id)shared;
-- (BOOL)checkSetting:(id)a3;
-- (BOOL)registerSetting:(id)a3;
+- (BOOL)checkSetting:(id)setting;
+- (BOOL)registerSetting:(id)setting;
 - (ULSettingsRegistry)init;
 @end
 
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __28__ULSettingsRegistry_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_ul_once_token_1 != -1)
   {
     dispatch_once(&shared_ul_once_token_1, block);
@@ -45,20 +45,20 @@ void __28__ULSettingsRegistry_shared__block_invoke(uint64_t a1)
   shared_ul_once_object_1 = v1;
 }
 
-- (BOOL)registerSetting:(id)a3
+- (BOOL)registerSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [(ULSettingsRegistry *)self settingNames];
-  [v5 addObject:v4];
+  settingCopy = setting;
+  settingNames = [(ULSettingsRegistry *)self settingNames];
+  [settingNames addObject:settingCopy];
 
   return 1;
 }
 
-- (BOOL)checkSetting:(id)a3
+- (BOOL)checkSetting:(id)setting
 {
-  v4 = a3;
-  v5 = [(ULSettingsRegistry *)self settingNames];
-  v6 = [v5 containsObject:v4];
+  settingCopy = setting;
+  settingNames = [(ULSettingsRegistry *)self settingNames];
+  v6 = [settingNames containsObject:settingCopy];
 
   return v6;
 }

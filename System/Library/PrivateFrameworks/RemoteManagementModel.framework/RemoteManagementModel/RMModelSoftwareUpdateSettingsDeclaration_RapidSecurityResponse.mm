@@ -1,11 +1,11 @@
 @interface RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse
 + (NSSet)allowedPayloadKeys;
 + (id)buildRequiredOnly;
-+ (id)buildWithEnable:(id)a3 enableRollback:(id)a4;
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithType:(signed __int16)a3;
-- (void)combineWithOther:(id)a3;
++ (id)buildWithEnable:(id)enable enableRollback:(id)rollback;
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithType:(signed __int16)type;
+- (void)combineWithOther:(id)other;
 @end
 
 @implementation RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse
@@ -24,16 +24,16 @@
   return v4;
 }
 
-+ (id)buildWithEnable:(id)a3 enableRollback:(id)a4
++ (id)buildWithEnable:(id)enable enableRollback:(id)rollback
 {
-  v5 = a4;
-  v6 = a3;
+  rollbackCopy = rollback;
+  enableCopy = enable;
   v7 = objc_opt_new();
   v8 = v7;
   v9 = MEMORY[0x277CBEC38];
-  if (v6)
+  if (enableCopy)
   {
-    v10 = v6;
+    v10 = enableCopy;
   }
 
   else
@@ -43,9 +43,9 @@
 
   [v7 setPayloadEnable:v10];
 
-  if (v5)
+  if (rollbackCopy)
   {
-    v11 = v5;
+    v11 = rollbackCopy;
   }
 
   else
@@ -65,12 +65,12 @@
   return v2;
 }
 
-- (BOOL)loadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v7 = a3;
+  dictionaryCopy = dictionary;
   v8 = MEMORY[0x277CBEB58];
-  v9 = [v7 allKeys];
-  v10 = [v8 setWithArray:v9];
+  allKeys = [dictionaryCopy allKeys];
+  v10 = [v8 setWithArray:allKeys];
 
   v11 = +[RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse allowedPayloadKeys];
   [v10 minusSet:v11];
@@ -79,49 +79,49 @@
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v12];
 
   v13 = 0;
-  if ([(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"Enable" forKeyPath:@"payloadEnable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5])
+  if ([(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"Enable" forKeyPath:@"payloadEnable" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error])
   {
-    v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:v7 usingKey:@"EnableRollback" forKeyPath:@"payloadEnableRollback" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:a5];
+    v13 = [(RMModelPayloadBase *)self loadBooleanFromDictionary:dictionaryCopy usingKey:@"EnableRollback" forKeyPath:@"payloadEnableRollback" isRequired:0 defaultValue:MEMORY[0x277CBEC38] error:error];
   }
 
   return v13;
 }
 
-- (id)serializeWithType:(signed __int16)a3
+- (id)serializeWithType:(signed __int16)type
 {
   v4 = objc_opt_new();
-  v5 = [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self payloadEnable];
+  payloadEnable = [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self payloadEnable];
   v6 = MEMORY[0x277CBEC38];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enable" value:v5 isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"Enable" value:payloadEnable isRequired:0 defaultValue:MEMORY[0x277CBEC38]];
 
-  v7 = [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self payloadEnableRollback];
-  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"EnableRollback" value:v7 isRequired:0 defaultValue:v6];
+  payloadEnableRollback = [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self payloadEnableRollback];
+  [(RMModelPayloadBase *)self serializeBooleanIntoDictionary:v4 usingKey:@"EnableRollback" value:payloadEnableRollback isRequired:0 defaultValue:v6];
 
   v8 = [v4 copy];
 
   return v8;
 }
 
-- (void)combineWithOther:(id)a3
+- (void)combineWithOther:(id)other
 {
-  v4 = a3;
-  v5 = [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self payloadEnable];
-  v6 = [v4 payloadEnable];
-  v7 = [RMModelConfigurationBase combineBooleanAnd:v5 other:v6];
+  otherCopy = other;
+  payloadEnable = [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self payloadEnable];
+  payloadEnable2 = [otherCopy payloadEnable];
+  v7 = [RMModelConfigurationBase combineBooleanAnd:payloadEnable other:payloadEnable2];
   [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self setPayloadEnable:v7];
 
-  v10 = [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self payloadEnableRollback];
-  v8 = [v4 payloadEnableRollback];
+  payloadEnableRollback = [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self payloadEnableRollback];
+  payloadEnableRollback2 = [otherCopy payloadEnableRollback];
 
-  v9 = [RMModelConfigurationBase combineBooleanAnd:v10 other:v8];
+  v9 = [RMModelConfigurationBase combineBooleanAnd:payloadEnableRollback other:payloadEnableRollback2];
   [(RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse *)self setPayloadEnableRollback:v9];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = RMModelSoftwareUpdateSettingsDeclaration_RapidSecurityResponse;
-  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v10 copyWithZone:zone];
   v5 = [(NSNumber *)self->_payloadEnable copy];
   v6 = v4[2];
   v4[2] = v5;

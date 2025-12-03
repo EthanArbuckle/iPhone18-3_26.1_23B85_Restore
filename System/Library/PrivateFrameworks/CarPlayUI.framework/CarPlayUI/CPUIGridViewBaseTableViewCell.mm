@@ -1,14 +1,14 @@
 @interface CPUIGridViewBaseTableViewCell
 + (NSString)reuseIdentifier;
 - (CPUIGridViewBaseStyleOptions)gridViewStyleOptions;
-- (CPUIGridViewBaseTableViewCell)initWithCoder:(id)a3;
-- (CPUIGridViewBaseTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CPUIGridViewBaseTableViewCell)initWithCoder:(id)coder;
+- (CPUIGridViewBaseTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (unint64_t)gridViewStyle;
 - (void)prepareForReuse;
-- (void)setGridViewStyle:(unint64_t)a3;
-- (void)setGridViewStyleOptions:(id)a3;
-- (void)setViewModels:(id)a3;
-- (void)updateGridViewStyleWithStyle:(unint64_t)a3 options:(id)a4;
+- (void)setGridViewStyle:(unint64_t)style;
+- (void)setGridViewStyleOptions:(id)options;
+- (void)setViewModels:(id)models;
+- (void)updateGridViewStyleWithStyle:(unint64_t)style options:(id)options;
 @end
 
 @implementation CPUIGridViewBaseTableViewCell
@@ -22,15 +22,15 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   CPUIGridViewBaseTableViewCell.prepareForReuse()();
 }
 
-- (void)setViewModels:(id)a3
+- (void)setViewModels:(id)models
 {
   type metadata accessor for CPUIGridViewBaseViewModel(0);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   CPUIGridViewBaseTableViewCell.__setViewModels(_:)(v4);
 }
 
@@ -41,40 +41,40 @@
   return *(&unk_2431E6988 + ((*(v2 + 12) >> 11) & 0x18));
 }
 
-- (void)setGridViewStyle:(unint64_t)a3
+- (void)setGridViewStyle:(unint64_t)style
 {
-  v5 = self;
-  v4 = [(CPUIGridViewBaseTableViewCell *)v5 gridViewStyleOptions];
-  [(CPUIGridViewBaseTableViewCell *)v5 updateGridViewStyleWithStyle:a3 options:v4];
+  selfCopy = self;
+  gridViewStyleOptions = [(CPUIGridViewBaseTableViewCell *)selfCopy gridViewStyleOptions];
+  [(CPUIGridViewBaseTableViewCell *)selfCopy updateGridViewStyleWithStyle:style options:gridViewStyleOptions];
 }
 
 - (CPUIGridViewBaseStyleOptions)gridViewStyleOptions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CPUIGridViewBaseTableViewCell.__gridViewStyleOptions.getter();
 
   return v3;
 }
 
-- (void)setGridViewStyleOptions:(id)a3
+- (void)setGridViewStyleOptions:(id)options
 {
-  v4 = a3;
-  v5 = self;
-  [(CPUIGridViewBaseTableViewCell *)v5 updateGridViewStyleWithStyle:[(CPUIGridViewBaseTableViewCell *)v5 gridViewStyle] options:v4];
+  optionsCopy = options;
+  selfCopy = self;
+  [(CPUIGridViewBaseTableViewCell *)selfCopy updateGridViewStyleWithStyle:[(CPUIGridViewBaseTableViewCell *)selfCopy gridViewStyle] options:optionsCopy];
 }
 
-- (void)updateGridViewStyleWithStyle:(unint64_t)a3 options:(id)a4
+- (void)updateGridViewStyleWithStyle:(unint64_t)style options:(id)options
 {
-  v6 = a4;
-  v7 = self;
-  CPUIGridViewBaseTableViewCell.updateGridViewStyle(style:options:)(a3, v6);
+  optionsCopy = options;
+  selfCopy = self;
+  CPUIGridViewBaseTableViewCell.updateGridViewStyle(style:options:)(style, optionsCopy);
 }
 
-- (CPUIGridViewBaseTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CPUIGridViewBaseTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    identifier = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
   }
 
@@ -83,10 +83,10 @@
     v6 = 0;
   }
 
-  return CPUIGridViewBaseTableViewCell.init(style:reuseIdentifier:)(a3, a4, v6);
+  return CPUIGridViewBaseTableViewCell.init(style:reuseIdentifier:)(style, identifier, v6);
 }
 
-- (CPUIGridViewBaseTableViewCell)initWithCoder:(id)a3
+- (CPUIGridViewBaseTableViewCell)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.super.super.isa + OBJC_IVAR___CPUIGridViewBaseTableViewCell_storedDataSource);
   *v3 = 0;

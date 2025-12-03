@@ -1,63 +1,63 @@
 @interface PKPaletteToolPickerView
 - (BOOL)_canPresentToolAttributesPopover;
-- (BOOL)_canSelectToolView:(id)a3 fromTap:(BOOL)a4;
-- (BOOL)_isAllToolsColorUserInterfaceStyleEqualsTo:(int64_t)a3;
-- (BOOL)_isAllToolsEdgeLocationEqualsTo:(unint64_t)a3;
+- (BOOL)_canSelectToolView:(id)view fromTap:(BOOL)tap;
+- (BOOL)_isAllToolsColorUserInterfaceStyleEqualsTo:(int64_t)to;
+- (BOOL)_isAllToolsEdgeLocationEqualsTo:(unint64_t)to;
 - (BOOL)_useCompactSize;
 - (BOOL)canToggleSelectedToolAndEraser;
-- (BOOL)hasToolViewWithIdentifier:(id)a3;
-- (CGRect)sourceRectForPopoverPresentationForTool:(id)a3;
+- (BOOL)hasToolViewWithIdentifier:(id)identifier;
+- (CGRect)sourceRectForPopoverPresentationForTool:(id)tool;
 - (NSArray)toolViews;
-- (PKPaletteToolPickerView)initWithToolViews:(id)a3;
+- (PKPaletteToolPickerView)initWithToolViews:(id)views;
 - (PKPaletteToolPickerViewDelegate)delegate;
 - (UIScrollViewDelegate)lastScrollViewDelegateBeforeScrollingToolToVisible;
-- (double)_widthForToolAtIndex:(unint64_t)a3 isCompactSize:(BOOL)a4;
+- (double)_widthForToolAtIndex:(unint64_t)index isCompactSize:(BOOL)size;
 - (id)_eraserToolView;
 - (id)_firstInkingTool;
-- (id)sourceViewForPopoverPresentationForTool:(id)a3;
+- (id)sourceViewForPopoverPresentationForTool:(id)tool;
 - (int64_t)_stackViewAxis;
 - (unint64_t)_selectedToolsCount;
-- (void)_addToolView:(id)a3 updateUI:(BOOL)a4;
-- (void)_insertToolView:(id)a3 atIndex:(unint64_t)a4 updateUI:(BOOL)a5;
-- (void)_installScrollViewInView:(id)a3;
-- (void)_installStackViewInScrollView:(id)a3;
-- (void)_setSelectedToolView:(id)a3 animated:(BOOL)a4 showToolTip:(BOOL)a5 notifyDelegate:(BOOL)a6 fromTap:(BOOL)a7;
-- (void)_showToolAttributesPopoverFromRect:(CGRect)a3 inView:(id)a4;
-- (void)_toolTapGestureRecognizer:(id)a3;
-- (void)_updateToolViewVisibilityLayingOutIfNeeded:(BOOL)a3;
+- (void)_addToolView:(id)view updateUI:(BOOL)i;
+- (void)_insertToolView:(id)view atIndex:(unint64_t)index updateUI:(BOOL)i;
+- (void)_installScrollViewInView:(id)view;
+- (void)_installStackViewInScrollView:(id)view;
+- (void)_setSelectedToolView:(id)view animated:(BOOL)animated showToolTip:(BOOL)tip notifyDelegate:(BOOL)delegate fromTap:(BOOL)tap;
+- (void)_showToolAttributesPopoverFromRect:(CGRect)rect inView:(id)view;
+- (void)_toolTapGestureRecognizer:(id)recognizer;
+- (void)_updateToolViewVisibilityLayingOutIfNeeded:(BOOL)needed;
 - (void)_updateUI;
 - (void)dealloc;
-- (void)dismissPalettePopoverWithCompletion:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)reloadToolViewsWithDataSource:(id)a3;
-- (void)removeToolView:(id)a3 updateUI:(BOOL)a4;
-- (void)removeToolViewsWithIdentifier:(id)a3;
-- (void)scrollSelectedToolViewToVisibleAnimated:(BOOL)a3;
-- (void)scrollToolViewAtIndex:(unint64_t)a3 toVisibleAnimated:(BOOL)a4;
-- (void)selectToolViewAtIndex:(unint64_t)a3;
-- (void)setAllowHDR:(BOOL)a3;
-- (void)setClippingViewLassoToolEditingViewVisible:(BOOL)a3;
-- (void)setColorUserInterfaceStyle:(int64_t)a3;
-- (void)setCornerLocation:(unint64_t)a3;
-- (void)setEdgeLocation:(unint64_t)a3;
-- (void)setInterItemToolsSpacing:(double)a3;
-- (void)setScalingFactor:(double)a3;
-- (void)setScrollingEnabled:(BOOL)a3;
-- (void)setUnselectedToolsVisible:(BOOL)a3;
-- (void)toggleSelectedToolAndEraserAnimated:(BOOL)a3;
-- (void)toggleSelectedToolAndLastSelectedToolAnimated:(BOOL)a3;
-- (void)toggleSelectedToolAttributesPopoverFromRect:(CGRect)a3 inView:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)dismissPalettePopoverWithCompletion:(id)completion;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)reloadToolViewsWithDataSource:(id)source;
+- (void)removeToolView:(id)view updateUI:(BOOL)i;
+- (void)removeToolViewsWithIdentifier:(id)identifier;
+- (void)scrollSelectedToolViewToVisibleAnimated:(BOOL)animated;
+- (void)scrollToolViewAtIndex:(unint64_t)index toVisibleAnimated:(BOOL)animated;
+- (void)selectToolViewAtIndex:(unint64_t)index;
+- (void)setAllowHDR:(BOOL)r;
+- (void)setClippingViewLassoToolEditingViewVisible:(BOOL)visible;
+- (void)setColorUserInterfaceStyle:(int64_t)style;
+- (void)setCornerLocation:(unint64_t)location;
+- (void)setEdgeLocation:(unint64_t)location;
+- (void)setInterItemToolsSpacing:(double)spacing;
+- (void)setScalingFactor:(double)factor;
+- (void)setScrollingEnabled:(BOOL)enabled;
+- (void)setUnselectedToolsVisible:(BOOL)visible;
+- (void)toggleSelectedToolAndEraserAnimated:(BOOL)animated;
+- (void)toggleSelectedToolAndLastSelectedToolAnimated:(BOOL)animated;
+- (void)toggleSelectedToolAttributesPopoverFromRect:(CGRect)rect inView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateClippingViewEdgesVisibility;
 - (void)updatePopoverUI;
 @end
 
 @implementation PKPaletteToolPickerView
 
-- (PKPaletteToolPickerView)initWithToolViews:(id)a3
+- (PKPaletteToolPickerView)initWithToolViews:(id)views
 {
   v48[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  viewsCopy = views;
   v46.receiver = self;
   v46.super_class = PKPaletteToolPickerView;
   v5 = [(PKPaletteToolPickerView *)&v46 init];
@@ -77,14 +77,14 @@
 
     objc_storeStrong(&v5->_drawingPaletteStatistics, v8);
 
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     presentedViewControllers = v5->_presentedViewControllers;
-    v5->_presentedViewControllers = v9;
+    v5->_presentedViewControllers = weakObjectsHashTable;
 
     v5->_scalingFactor = 1.0;
-    v11 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     mutableToolViews = v5->_mutableToolViews;
-    v5->_mutableToolViews = v11;
+    v5->_mutableToolViews = array;
 
     v5->_interItemToolsSpacing = 0.0;
     v5->_unselectedToolsVisible = 1;
@@ -94,35 +94,35 @@
 
     [(PKPaletteToolPickerClippingView *)v5->_clippingView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PKPaletteToolPickerView *)v5 addSubview:v5->_clippingView];
-    v15 = [(PKPaletteToolPickerClippingView *)v5->_clippingView topAnchor];
-    v16 = [(PKPaletteToolPickerView *)v5 topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    topAnchor = [(PKPaletteToolPickerClippingView *)v5->_clippingView topAnchor];
+    topAnchor2 = [(PKPaletteToolPickerView *)v5 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [(PKPaletteToolPickerView *)v5 setClippingViewTopConstraint:v17];
 
-    v18 = [(PKPaletteToolPickerClippingView *)v5->_clippingView leadingAnchor];
-    v19 = [(PKPaletteToolPickerView *)v5 leadingAnchor];
-    v20 = [v18 constraintEqualToAnchor:v19];
+    leadingAnchor = [(PKPaletteToolPickerClippingView *)v5->_clippingView leadingAnchor];
+    leadingAnchor2 = [(PKPaletteToolPickerView *)v5 leadingAnchor];
+    v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     [(PKPaletteToolPickerView *)v5 setClippingViewLeadingConstraint:v20];
 
-    v21 = [(PKPaletteToolPickerClippingView *)v5->_clippingView bottomAnchor];
-    v22 = [(PKPaletteToolPickerView *)v5 bottomAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    bottomAnchor = [(PKPaletteToolPickerClippingView *)v5->_clippingView bottomAnchor];
+    bottomAnchor2 = [(PKPaletteToolPickerView *)v5 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [(PKPaletteToolPickerView *)v5 setClippingViewBottomConstraint:v23];
 
-    v24 = [(PKPaletteToolPickerClippingView *)v5->_clippingView trailingAnchor];
-    v25 = [(PKPaletteToolPickerView *)v5 trailingAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    trailingAnchor = [(PKPaletteToolPickerClippingView *)v5->_clippingView trailingAnchor];
+    trailingAnchor2 = [(PKPaletteToolPickerView *)v5 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     [(PKPaletteToolPickerView *)v5 setClippingViewTrailingConstraint:v26];
 
     v27 = MEMORY[0x1E696ACD8];
-    v28 = [(PKPaletteToolPickerView *)v5 clippingViewTopConstraint];
-    v48[0] = v28;
-    v29 = [(PKPaletteToolPickerView *)v5 clippingViewLeadingConstraint];
-    v48[1] = v29;
-    v30 = [(PKPaletteToolPickerView *)v5 clippingViewBottomConstraint];
-    v48[2] = v30;
-    v31 = [(PKPaletteToolPickerView *)v5 clippingViewTrailingConstraint];
-    v48[3] = v31;
+    clippingViewTopConstraint = [(PKPaletteToolPickerView *)v5 clippingViewTopConstraint];
+    v48[0] = clippingViewTopConstraint;
+    clippingViewLeadingConstraint = [(PKPaletteToolPickerView *)v5 clippingViewLeadingConstraint];
+    v48[1] = clippingViewLeadingConstraint;
+    clippingViewBottomConstraint = [(PKPaletteToolPickerView *)v5 clippingViewBottomConstraint];
+    v48[2] = clippingViewBottomConstraint;
+    clippingViewTrailingConstraint = [(PKPaletteToolPickerView *)v5 clippingViewTrailingConstraint];
+    v48[3] = clippingViewTrailingConstraint;
     v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:4];
     [v27 activateConstraints:v32];
 
@@ -141,14 +141,14 @@
       [(PKPaletteToolPickerClippingView *)v5->_clippingView setupBackdropViewsWithScrollView:?];
     }
 
-    v35 = [(PKPaletteToolPickerView *)v5 scrollView];
-    [v35 addObserver:v5 forKeyPath:@"bounds" options:1 context:PKPaletteToolPickerScrollViewObserverContext];
+    scrollView = [(PKPaletteToolPickerView *)v5 scrollView];
+    [scrollView addObserver:v5 forKeyPath:@"bounds" options:1 context:PKPaletteToolPickerScrollViewObserverContext];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v36 = v4;
+    v36 = viewsCopy;
     v37 = [v36 countByEnumeratingWithState:&v42 objects:v47 count:16];
     if (v37)
     {
@@ -180,37 +180,37 @@
 
 - (void)dealloc
 {
-  v3 = [(PKPaletteToolPickerView *)self scrollView];
-  [v3 removeObserver:self forKeyPath:@"bounds" context:PKPaletteToolPickerScrollViewObserverContext];
+  scrollView = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView removeObserver:self forKeyPath:@"bounds" context:PKPaletteToolPickerScrollViewObserverContext];
 
   v4.receiver = self;
   v4.super_class = PKPaletteToolPickerView;
   [(PKPaletteToolPickerView *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (PKPaletteToolPickerScrollViewObserverContext != a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (PKPaletteToolPickerScrollViewObserverContext != context)
   {
     goto LABEL_6;
   }
 
-  v13 = [(PKPaletteToolPickerView *)self scrollView];
-  v14 = v13;
-  if (v13 != v11)
+  scrollView = [(PKPaletteToolPickerView *)self scrollView];
+  v14 = scrollView;
+  if (scrollView != objectCopy)
   {
 
 LABEL_6:
     v16.receiver = self;
     v16.super_class = PKPaletteToolPickerView;
-    [(PKPaletteToolPickerView *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(PKPaletteToolPickerView *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     goto LABEL_7;
   }
 
-  v15 = [v10 isEqualToString:@"bounds"];
+  v15 = [pathCopy isEqualToString:@"bounds"];
 
   if (!v15)
   {
@@ -262,153 +262,153 @@ uint64_t __43__PKPaletteToolPickerView__firstInkingTool__block_invoke(uint64_t a
   return v5;
 }
 
-- (void)_installScrollViewInView:(id)a3
+- (void)_installScrollViewInView:(id)view
 {
   v43[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DCEF8];
-  v5 = a3;
+  viewCopy = view;
   v6 = objc_alloc_init(v4);
   [(PKPaletteToolPickerView *)self setScrollView:v6];
 
-  v7 = [(PKPaletteToolPickerView *)self scrollView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(PKPaletteToolPickerView *)self scrollView];
-  [v8 setShowsVerticalScrollIndicator:0];
+  scrollView2 = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView2 setShowsVerticalScrollIndicator:0];
 
-  v9 = [(PKPaletteToolPickerView *)self scrollView];
-  [v9 setShowsHorizontalScrollIndicator:0];
+  scrollView3 = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView3 setShowsHorizontalScrollIndicator:0];
 
-  v10 = [(PKPaletteToolPickerView *)self scrollView];
-  [v10 setPagingEnabled:0];
+  scrollView4 = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView4 setPagingEnabled:0];
 
-  v11 = [(PKPaletteToolPickerView *)self scrollView];
-  [v11 setClipsToBounds:0];
+  scrollView5 = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView5 setClipsToBounds:0];
 
-  v12 = [(PKPaletteToolPickerView *)self scrollView];
-  [v5 addSubview:v12];
+  scrollView6 = [(PKPaletteToolPickerView *)self scrollView];
+  [viewCopy addSubview:scrollView6];
 
-  v13 = [(PKPaletteToolPickerView *)self scrollView];
-  v14 = [v13 topAnchor];
-  v15 = [v5 topAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  scrollView7 = [(PKPaletteToolPickerView *)self scrollView];
+  topAnchor = [scrollView7 topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [(PKPaletteToolPickerView *)self setScrollViewTopConstraint:v16];
 
-  v17 = [(PKPaletteToolPickerView *)self scrollView];
-  v18 = [v17 leadingAnchor];
-  v19 = [v5 leadingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  scrollView8 = [(PKPaletteToolPickerView *)self scrollView];
+  leadingAnchor = [scrollView8 leadingAnchor];
+  leadingAnchor2 = [viewCopy leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [(PKPaletteToolPickerView *)self setScrollViewLeadingConstraint:v20];
 
-  v21 = [(PKPaletteToolPickerView *)self scrollView];
-  v22 = [v21 bottomAnchor];
-  v23 = [v5 bottomAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  scrollView9 = [(PKPaletteToolPickerView *)self scrollView];
+  bottomAnchor = [scrollView9 bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v24 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [(PKPaletteToolPickerView *)self setScrollViewBottomConstraint:v24];
 
-  v25 = [(PKPaletteToolPickerView *)self scrollView];
-  v26 = [v25 trailingAnchor];
-  v27 = [v5 trailingAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  scrollView10 = [(PKPaletteToolPickerView *)self scrollView];
+  trailingAnchor = [scrollView10 trailingAnchor];
+  trailingAnchor2 = [viewCopy trailingAnchor];
+  v28 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [(PKPaletteToolPickerView *)self setScrollViewTrailingConstraint:v28];
 
-  v29 = [(PKPaletteToolPickerView *)self scrollView];
-  v30 = [v29 centerXAnchor];
-  v31 = [v5 centerXAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  scrollView11 = [(PKPaletteToolPickerView *)self scrollView];
+  centerXAnchor = [scrollView11 centerXAnchor];
+  centerXAnchor2 = [viewCopy centerXAnchor];
+  v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [(PKPaletteToolPickerView *)self setScrollViewCenterXConstraint:v32];
 
-  v33 = [(PKPaletteToolPickerView *)self scrollView];
-  v34 = [v33 centerYAnchor];
-  v35 = [v5 centerYAnchor];
+  scrollView12 = [(PKPaletteToolPickerView *)self scrollView];
+  centerYAnchor = [scrollView12 centerYAnchor];
+  centerYAnchor2 = [viewCopy centerYAnchor];
 
-  v36 = [v34 constraintEqualToAnchor:v35];
+  v36 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [(PKPaletteToolPickerView *)self setScrollViewCenterYConstraint:v36];
 
   v37 = MEMORY[0x1E696ACD8];
-  v38 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
-  v43[0] = v38;
-  v39 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
-  v43[1] = v39;
-  v40 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
-  v43[2] = v40;
-  v41 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
-  v43[3] = v41;
+  scrollViewTopConstraint = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
+  v43[0] = scrollViewTopConstraint;
+  scrollViewLeadingConstraint = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
+  v43[1] = scrollViewLeadingConstraint;
+  scrollViewBottomConstraint = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
+  v43[2] = scrollViewBottomConstraint;
+  scrollViewTrailingConstraint = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
+  v43[3] = scrollViewTrailingConstraint;
   v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:4];
   [v37 activateConstraints:v42];
 }
 
-- (void)_installStackViewInScrollView:(id)a3
+- (void)_installStackViewInScrollView:(id)view
 {
   v43[4] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DCF90];
-  v5 = a3;
+  viewCopy = view;
   v6 = objc_alloc_init(v4);
   [(PKPaletteToolPickerView *)self setStackView:v6];
 
-  v7 = [(PKPaletteToolPickerView *)self stackView];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView = [(PKPaletteToolPickerView *)self stackView];
+  [stackView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v8 = [(PKPaletteToolPickerView *)self stackView];
-  [v8 setAxis:0];
+  stackView2 = [(PKPaletteToolPickerView *)self stackView];
+  [stackView2 setAxis:0];
 
-  v9 = [(PKPaletteToolPickerView *)self stackView];
-  [v5 addSubview:v9];
+  stackView3 = [(PKPaletteToolPickerView *)self stackView];
+  [viewCopy addSubview:stackView3];
 
   v35 = MEMORY[0x1E696ACD8];
-  v42 = [(PKPaletteToolPickerView *)self stackView];
-  v41 = [v42 topAnchor];
-  v40 = [v5 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  stackView4 = [(PKPaletteToolPickerView *)self stackView];
+  topAnchor = [stackView4 topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v39 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v43[0] = v39;
-  v38 = [(PKPaletteToolPickerView *)self stackView];
-  v37 = [v38 bottomAnchor];
-  v36 = [v5 bottomAnchor];
-  v34 = [v37 constraintEqualToAnchor:v36];
+  stackView5 = [(PKPaletteToolPickerView *)self stackView];
+  bottomAnchor = [stackView5 bottomAnchor];
+  bottomAnchor2 = [viewCopy bottomAnchor];
+  v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v43[1] = v34;
-  v10 = [(PKPaletteToolPickerView *)self stackView];
-  v11 = [v10 leftAnchor];
-  v12 = [v5 leftAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  stackView6 = [(PKPaletteToolPickerView *)self stackView];
+  leftAnchor = [stackView6 leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v13 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v43[2] = v13;
-  v14 = [(PKPaletteToolPickerView *)self stackView];
-  v15 = [v14 rightAnchor];
-  v16 = [v5 rightAnchor];
+  stackView7 = [(PKPaletteToolPickerView *)self stackView];
+  rightAnchor = [stackView7 rightAnchor];
+  rightAnchor2 = [viewCopy rightAnchor];
 
-  v17 = [v15 constraintEqualToAnchor:v16];
+  v17 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v43[3] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:4];
   [v35 activateConstraints:v18];
 
-  v19 = [(PKPaletteToolPickerView *)self stackView];
-  v20 = [v19 heightAnchor];
-  v21 = [(PKPaletteToolPickerView *)self scrollView];
-  v22 = [v21 heightAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  stackView8 = [(PKPaletteToolPickerView *)self stackView];
+  heightAnchor = [stackView8 heightAnchor];
+  scrollView = [(PKPaletteToolPickerView *)self scrollView];
+  heightAnchor2 = [scrollView heightAnchor];
+  v23 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   [(PKPaletteToolPickerView *)self setStackViewCompactHeightConstraint:v23];
 
-  v24 = [(PKPaletteToolPickerView *)self scrollView];
-  v25 = [v24 widthAnchor];
-  v26 = [(PKPaletteToolPickerView *)self stackView];
-  v27 = [v26 widthAnchor];
-  v28 = [v25 constraintEqualToAnchor:v27];
+  scrollView2 = [(PKPaletteToolPickerView *)self scrollView];
+  widthAnchor = [scrollView2 widthAnchor];
+  stackView9 = [(PKPaletteToolPickerView *)self stackView];
+  widthAnchor2 = [stackView9 widthAnchor];
+  v28 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [(PKPaletteToolPickerView *)self setScrollViewWidthConstraint:v28];
 
-  v29 = [(PKPaletteToolPickerView *)self scrollView];
-  v30 = [v29 heightAnchor];
-  v31 = [(PKPaletteToolPickerView *)self stackView];
-  v32 = [v31 heightAnchor];
-  v33 = [v30 constraintEqualToAnchor:v32];
+  scrollView3 = [(PKPaletteToolPickerView *)self scrollView];
+  heightAnchor3 = [scrollView3 heightAnchor];
+  stackView10 = [(PKPaletteToolPickerView *)self stackView];
+  heightAnchor4 = [stackView10 heightAnchor];
+  v33 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
   [(PKPaletteToolPickerView *)self setScrollViewHeightConstraint:v33];
 }
 
-- (void)setAllowHDR:(BOOL)a3
+- (void)setAllowHDR:(BOOL)r
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_allowHDR != a3)
+  if (self->_allowHDR != r)
   {
-    v3 = a3;
-    self->_allowHDR = a3;
+    rCopy = r;
+    self->_allowHDR = r;
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
@@ -429,7 +429,7 @@ uint64_t __43__PKPaletteToolPickerView__firstInkingTool__block_invoke(uint64_t a
             objc_enumerationMutation(v4);
           }
 
-          [*(*(&v9 + 1) + 8 * v8++) setAllowHDR:{v3, v9}];
+          [*(*(&v9 + 1) + 8 * v8++) setAllowHDR:{rCopy, v9}];
         }
 
         while (v6 != v8);
@@ -441,75 +441,75 @@ uint64_t __43__PKPaletteToolPickerView__firstInkingTool__block_invoke(uint64_t a
   }
 }
 
-- (void)_addToolView:(id)a3 updateUI:(BOOL)a4
+- (void)_addToolView:(id)view updateUI:(BOOL)i
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 setAllowHDR:{-[PKPaletteToolPickerView allowHDR](self, "allowHDR")}];
-  [(PKPaletteToolPickerView *)self _insertToolView:v6 atIndex:[(NSMutableArray *)self->_mutableToolViews count] updateUI:v4];
+  iCopy = i;
+  viewCopy = view;
+  [viewCopy setAllowHDR:{-[PKPaletteToolPickerView allowHDR](self, "allowHDR")}];
+  [(PKPaletteToolPickerView *)self _insertToolView:viewCopy atIndex:[(NSMutableArray *)self->_mutableToolViews count] updateUI:iCopy];
 }
 
-- (void)removeToolView:(id)a3 updateUI:(BOOL)a4
+- (void)removeToolView:(id)view updateUI:(BOOL)i
 {
-  v4 = a4;
-  v6 = a3;
+  iCopy = i;
+  viewCopy = view;
   selectedToolView = self->_selectedToolView;
-  v10 = v6;
-  if (selectedToolView == v6)
+  v10 = viewCopy;
+  if (selectedToolView == viewCopy)
   {
     self->_selectedToolView = 0;
 
-    v6 = v10;
+    viewCopy = v10;
   }
 
   lastSelectedToolView = self->_lastSelectedToolView;
-  if (lastSelectedToolView == v6)
+  if (lastSelectedToolView == viewCopy)
   {
     self->_lastSelectedToolView = 0;
 
-    v6 = v10;
+    viewCopy = v10;
   }
 
-  [(NSMutableArray *)self->_mutableToolViews removeObject:v6];
-  v9 = [(PKPaletteToolPickerView *)self stackView];
-  [v9 removeArrangedSubview:v10];
+  [(NSMutableArray *)self->_mutableToolViews removeObject:viewCopy];
+  stackView = [(PKPaletteToolPickerView *)self stackView];
+  [stackView removeArrangedSubview:v10];
 
   [(PKPaletteToolView *)v10 removeFromSuperview];
-  if (v4)
+  if (iCopy)
   {
     [(PKPaletteToolPickerView *)self _updateUI];
   }
 }
 
-- (void)_insertToolView:(id)a3 atIndex:(unint64_t)a4 updateUI:(BOOL)a5
+- (void)_insertToolView:(id)view atIndex:(unint64_t)index updateUI:(BOOL)i
 {
-  v5 = a5;
-  v8 = a3;
-  [v8 setAllowHDR:{-[PKPaletteToolPickerView allowHDR](self, "allowHDR")}];
-  [(NSMutableArray *)self->_mutableToolViews insertObject:v8 atIndex:a4];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(PKPaletteToolPickerView *)self stackView];
-  [v9 insertArrangedSubview:v8 atIndex:a4];
+  iCopy = i;
+  viewCopy = view;
+  [viewCopy setAllowHDR:{-[PKPaletteToolPickerView allowHDR](self, "allowHDR")}];
+  [(NSMutableArray *)self->_mutableToolViews insertObject:viewCopy atIndex:index];
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackView = [(PKPaletteToolPickerView *)self stackView];
+  [stackView insertArrangedSubview:viewCopy atIndex:index];
 
   v10 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__toolTapGestureRecognizer_];
-  [v8 addGestureRecognizer:?];
+  [viewCopy addGestureRecognizer:?];
 
-  if (v5)
+  if (iCopy)
   {
     [(PKPaletteToolPickerView *)self _updateUI];
   }
 }
 
-- (BOOL)hasToolViewWithIdentifier:(id)a3
+- (BOOL)hasToolViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   mutableToolViews = self->_mutableToolViews;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__PKPaletteToolPickerView_hasToolViewWithIdentifier___block_invoke;
   v8[3] = &unk_1E82DCD00;
-  v9 = v4;
-  v6 = v4;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
   LOBYTE(mutableToolViews) = [(NSMutableArray *)mutableToolViews indexOfObjectPassingTest:v8]!= 0x7FFFFFFFFFFFFFFFLL;
 
   return mutableToolViews;
@@ -524,17 +524,17 @@ uint64_t __53__PKPaletteToolPickerView_hasToolViewWithIdentifier___block_invoke(
   return v5;
 }
 
-- (void)removeToolViewsWithIdentifier:(id)a3
+- (void)removeToolViewsWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [(NSMutableArray *)self->_mutableToolViews copy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__PKPaletteToolPickerView_removeToolViewsWithIdentifier___block_invoke;
   v7[3] = &unk_1E82DCD28;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
   [v5 enumerateObjectsUsingBlock:v7];
 }
 
@@ -551,23 +551,23 @@ void __57__PKPaletteToolPickerView_removeToolViewsWithIdentifier___block_invoke(
   }
 }
 
-- (void)setUnselectedToolsVisible:(BOOL)a3
+- (void)setUnselectedToolsVisible:(BOOL)visible
 {
-  if (self->_unselectedToolsVisible != a3)
+  if (self->_unselectedToolsVisible != visible)
   {
-    self->_unselectedToolsVisible = a3;
+    self->_unselectedToolsVisible = visible;
     [(PKPaletteToolPickerView *)self _updateToolViewVisibilityLayingOutIfNeeded:1];
   }
 }
 
-- (void)_updateToolViewVisibilityLayingOutIfNeeded:(BOOL)a3
+- (void)_updateToolViewVisibilityLayingOutIfNeeded:(BOOL)needed
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __70__PKPaletteToolPickerView__updateToolViewVisibilityLayingOutIfNeeded___block_invoke;
   v3[3] = &unk_1E82D90B8;
   v3[4] = self;
-  v4 = a3;
+  neededCopy = needed;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v3];
 }
 
@@ -604,56 +604,56 @@ uint64_t __70__PKPaletteToolPickerView__updateToolViewVisibilityLayingOutIfNeede
   return [a2 setHidden:v3 & 1];
 }
 
-- (void)setScalingFactor:(double)a3
+- (void)setScalingFactor:(double)factor
 {
   scalingFactor = self->_scalingFactor;
-  if (scalingFactor != a3 && vabdd_f64(scalingFactor, a3) >= fabs(a3 * 0.000000999999997))
+  if (scalingFactor != factor && vabdd_f64(scalingFactor, factor) >= fabs(factor * 0.000000999999997))
   {
-    self->_scalingFactor = a3;
+    self->_scalingFactor = factor;
     [(PKPaletteToolPickerView *)self _updateUI];
   }
 }
 
-- (void)setEdgeLocation:(unint64_t)a3
+- (void)setEdgeLocation:(unint64_t)location
 {
-  if (self->_edgeLocation != a3)
+  if (self->_edgeLocation != location)
   {
-    self->_edgeLocation = a3;
+    self->_edgeLocation = location;
     [(PKPaletteToolPickerView *)self _updateUI];
   }
 }
 
-- (void)setCornerLocation:(unint64_t)a3
+- (void)setCornerLocation:(unint64_t)location
 {
-  if (self->_cornerLocation != a3)
+  if (self->_cornerLocation != location)
   {
-    self->_cornerLocation = a3;
+    self->_cornerLocation = location;
     [(PKPaletteToolPickerView *)self _updateUI];
   }
 }
 
-- (void)setInterItemToolsSpacing:(double)a3
+- (void)setInterItemToolsSpacing:(double)spacing
 {
-  if (vabdd_f64(self->_interItemToolsSpacing, a3) >= 0.00999999978)
+  if (vabdd_f64(self->_interItemToolsSpacing, spacing) >= 0.00999999978)
   {
-    self->_interItemToolsSpacing = a3;
+    self->_interItemToolsSpacing = spacing;
     [(PKPaletteToolPickerView *)self _updateUI];
   }
 }
 
-- (void)_toolTapGestureRecognizer:(id)a3
+- (void)_toolTapGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v5 = [v4 view];
-  if ([v4 state] == 1)
+  recognizerCopy = recognizer;
+  view = [recognizerCopy view];
+  if ([recognizerCopy state] == 1)
   {
     v6 = MEMORY[0x1E69DD250];
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v29[2] = __53__PKPaletteToolPickerView__toolTapGestureRecognizer___block_invoke;
     v29[3] = &unk_1E82D6E70;
-    v30 = v5;
-    v31 = self;
+    v30 = view;
+    selfCopy = self;
     [v6 animateWithDuration:4 delay:v29 usingSpringWithDamping:0 initialSpringVelocity:0.35 options:0.0 animations:0.65 completion:0.0];
     v7 = v30;
 LABEL_3:
@@ -661,34 +661,34 @@ LABEL_3:
     goto LABEL_15;
   }
 
-  if ([v5 isHighlighted])
+  if ([view isHighlighted])
   {
     v8 = MEMORY[0x1E69DD250];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __53__PKPaletteToolPickerView__toolTapGestureRecognizer___block_invoke_2;
     v26[3] = &unk_1E82D6E70;
-    v27 = v5;
-    v28 = self;
+    v27 = view;
+    selfCopy2 = self;
     [v8 animateWithDuration:4 delay:v26 usingSpringWithDamping:0 initialSpringVelocity:0.35 options:0.0 animations:0.65 completion:0.0];
   }
 
-  if ([v4 state] == 3)
+  if ([recognizerCopy state] == 3)
   {
-    v9 = [v5 tool];
-    v10 = [v9 isRulerTool];
+    tool = [view tool];
+    isRulerTool = [tool isRulerTool];
 
-    v11 = [v5 tool];
-    v12 = [v11 isHandwritingTool];
+    tool2 = [view tool];
+    isHandwritingTool = [tool2 isHandwritingTool];
 
-    if (v12 && ([v5 isSelected] & 1) == 0)
+    if (isHandwritingTool && ([view isSelected] & 1) == 0)
     {
-      v13 = [(PKPaletteToolPickerView *)self drawingPaletteStatistics];
-      [v13 recordHandwritingToolSelected];
+      drawingPaletteStatistics = [(PKPaletteToolPickerView *)self drawingPaletteStatistics];
+      [drawingPaletteStatistics recordHandwritingToolSelected];
     }
 
-    v14 = [(PKPaletteToolPickerView *)self selectedToolView];
-    v15 = (v14 != v5) | v10;
+    selectedToolView = [(PKPaletteToolPickerView *)self selectedToolView];
+    v15 = (selectedToolView != view) | isRulerTool;
 
     if ((v15 & 1) == 0)
     {
@@ -696,9 +696,9 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    if (!v10)
+    if (!isRulerTool)
     {
-      [(PKPaletteToolPickerView *)self _setSelectedToolView:v5 animated:1 showToolTip:0 notifyDelegate:1 fromTap:1];
+      [(PKPaletteToolPickerView *)self _setSelectedToolView:view animated:1 showToolTip:0 notifyDelegate:1 fromTap:1];
       goto LABEL_15;
     }
 
@@ -706,14 +706,14 @@ LABEL_3:
     v23[1] = 3221225472;
     v23[2] = __53__PKPaletteToolPickerView__toolTapGestureRecognizer___block_invoke_3;
     v23[3] = &unk_1E82D6E70;
-    v24 = v5;
-    v25 = self;
+    v24 = view;
+    selfCopy3 = self;
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __53__PKPaletteToolPickerView__toolTapGestureRecognizer___block_invoke_4;
     v20 = &unk_1E82DC850;
     v21 = v24;
-    v22 = self;
+    selfCopy4 = self;
     [PKPaletteToolViewAnimation performSelectionAnimations:v23 completion:&v17];
     v16 = [(PKPaletteToolPickerView *)self delegate:v17];
     [v16 toolPickerDidToggleRulerTool:self];
@@ -770,29 +770,29 @@ uint64_t __53__PKPaletteToolPickerView__toolTapGestureRecognizer___block_invoke_
   return [v2 layoutIfNeeded];
 }
 
-- (void)selectToolViewAtIndex:(unint64_t)a3
+- (void)selectToolViewAtIndex:(unint64_t)index
 {
-  v4 = [(NSMutableArray *)self->_mutableToolViews objectAtIndex:a3];
+  v4 = [(NSMutableArray *)self->_mutableToolViews objectAtIndex:index];
   [(PKPaletteToolPickerView *)self _setSelectedToolView:v4 animated:0 showToolTip:0 notifyDelegate:0 fromTap:0];
 }
 
-- (void)_setSelectedToolView:(id)a3 animated:(BOOL)a4 showToolTip:(BOOL)a5 notifyDelegate:(BOOL)a6 fromTap:(BOOL)a7
+- (void)_setSelectedToolView:(id)view animated:(BOOL)animated showToolTip:(BOOL)tip notifyDelegate:(BOOL)delegate fromTap:(BOOL)tap
 {
-  v7 = a7;
-  v41 = a6;
-  v8 = a5;
-  v9 = a4;
+  tapCopy = tap;
+  delegateCopy = delegate;
+  tipCopy = tip;
+  animatedCopy = animated;
   v53 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  if (self->_selectedToolView != v12)
+  viewCopy = view;
+  if (self->_selectedToolView != viewCopy)
   {
-    if (![(PKPaletteToolPickerView *)self _canSelectToolView:v12 fromTap:v7])
+    if (![(PKPaletteToolPickerView *)self _canSelectToolView:viewCopy fromTap:tapCopy])
     {
       v19 = os_log_create("com.apple.pencilkit", "PKPalette");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v52 = v12;
+        v52 = viewCopy;
         _os_log_impl(&dword_1C7CCA000, v19, OS_LOG_TYPE_DEFAULT, "Can't select tool: %@", buf, 0xCu);
       }
 
@@ -846,16 +846,16 @@ uint64_t __53__PKPaletteToolPickerView__toolTapGestureRecognizer___block_invoke_
       while (v14);
     }
 
-    objc_storeStrong(&self->_selectedToolView, a3);
+    objc_storeStrong(&self->_selectedToolView, view);
     [(PKPaletteToolView *)self->_selectedToolView setSelected:1];
     [(PKPaletteToolPickerView *)self _updateToolViewVisibilityLayingOutIfNeeded:0];
-    v17 = [(PKPaletteToolPickerView *)self scrollView];
+    scrollView = [(PKPaletteToolPickerView *)self scrollView];
     [(PKPaletteToolView *)self->_selectedToolView frame];
-    v18 = [v17 _isRectFullyVisible:?];
+    v18 = [scrollView _isRectFullyVisible:?];
 
-    if (v18 & 1 | !v9)
+    if (v18 & 1 | !animatedCopy)
     {
-      if (((v9 | v18) & 1) == 0)
+      if (((animatedCopy | v18) & 1) == 0)
       {
         [(PKPaletteToolPickerView *)self scrollSelectedToolViewToVisibleAnimated:0];
       }
@@ -863,16 +863,16 @@ uint64_t __53__PKPaletteToolPickerView__toolTapGestureRecognizer___block_invoke_
 
     else
     {
-      v24 = [(PKPaletteToolPickerView *)self scrollView];
-      v25 = [v24 delegate];
-      [(PKPaletteToolPickerView *)self setLastScrollViewDelegateBeforeScrollingToolToVisible:v25];
+      scrollView2 = [(PKPaletteToolPickerView *)self scrollView];
+      delegate = [scrollView2 delegate];
+      [(PKPaletteToolPickerView *)self setLastScrollViewDelegateBeforeScrollingToolToVisible:delegate];
 
       v26 = objc_alloc_init(PKScrollViewDelegateEventsHandler);
       [(PKPaletteToolPickerView *)self setScrollViewDelegateEventsHandler:v26];
 
-      v27 = [(PKPaletteToolPickerView *)self scrollViewDelegateEventsHandler];
-      v28 = [(PKPaletteToolPickerView *)self scrollView];
-      [v28 setDelegate:v27];
+      scrollViewDelegateEventsHandler = [(PKPaletteToolPickerView *)self scrollViewDelegateEventsHandler];
+      scrollView3 = [(PKPaletteToolPickerView *)self scrollView];
+      [scrollView3 setDelegate:scrollViewDelegateEventsHandler];
 
       objc_initWeak(buf, self);
       v43[0] = MEMORY[0x1E69E9820];
@@ -880,29 +880,29 @@ uint64_t __53__PKPaletteToolPickerView__toolTapGestureRecognizer___block_invoke_
       v43[2] = __92__PKPaletteToolPickerView__setSelectedToolView_animated_showToolTip_notifyDelegate_fromTap___block_invoke;
       v43[3] = &unk_1E82DCD78;
       objc_copyWeak(&v44, buf);
-      v45 = v8;
-      v29 = [(PKPaletteToolPickerView *)self scrollViewDelegateEventsHandler];
-      [v29 setScrollViewDidEndScrollingAnimationHandler:v43];
+      v45 = tipCopy;
+      scrollViewDelegateEventsHandler2 = [(PKPaletteToolPickerView *)self scrollViewDelegateEventsHandler];
+      [scrollViewDelegateEventsHandler2 setScrollViewDidEndScrollingAnimationHandler:v43];
 
       [(PKPaletteToolPickerView *)self scrollSelectedToolViewToVisibleAnimated:1];
       objc_destroyWeak(&v44);
       objc_destroyWeak(buf);
     }
 
-    if ((v8 & v18) == 1)
+    if ((tipCopy & v18) == 1)
     {
-      v30 = [(PKPaletteToolPickerView *)self tooltipPresentationHandle];
-      v31 = v30 == 0;
+      tooltipPresentationHandle = [(PKPaletteToolPickerView *)self tooltipPresentationHandle];
+      v31 = tooltipPresentationHandle == 0;
 
       if (!v31)
       {
         v32 = self->_selectedToolView;
-        v33 = [(PKPaletteToolPickerView *)self tooltipPresentationHandle];
-        [(PKPaletteToolView *)v32 showTooltip:v33];
+        tooltipPresentationHandle2 = [(PKPaletteToolPickerView *)self tooltipPresentationHandle];
+        [(PKPaletteToolView *)v32 showTooltip:tooltipPresentationHandle2];
       }
     }
 
-    if (v9)
+    if (animatedCopy)
     {
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
@@ -930,11 +930,11 @@ uint64_t __53__PKPaletteToolPickerView__toolTapGestureRecognizer___block_invoke_
       _os_log_impl(&dword_1C7CCA000, v36, OS_LOG_TYPE_DEFAULT, "Last selected tool is: %@", buf, 0xCu);
     }
 
-    if (v41)
+    if (delegateCopy)
     {
       v38 = [*(&self->super.super.super.isa + v40) indexOfObject:self->_selectedToolView];
-      v39 = [(PKPaletteToolPickerView *)self delegate];
-      [v39 toolPicker:self didSelectTool:self->_selectedToolView atIndex:v38];
+      delegate2 = [(PKPaletteToolPickerView *)self delegate];
+      [delegate2 toolPicker:self didSelectTool:self->_selectedToolView atIndex:v38];
     }
 
     if (self->_lastSelectedToolView == self->_selectedToolView)
@@ -980,11 +980,11 @@ void __92__PKPaletteToolPickerView__setSelectedToolView_animated_showToolTip_not
   }
 }
 
-- (BOOL)_canSelectToolView:(id)a3 fromTap:(BOOL)a4
+- (BOOL)_canSelectToolView:(id)view fromTap:(BOOL)tap
 {
-  v4 = a4;
-  v6 = a3;
-  if (([(NSMutableArray *)self->_mutableToolViews containsObject:v6]& 1) == 0)
+  tapCopy = tap;
+  viewCopy = view;
+  if (([(NSMutableArray *)self->_mutableToolViews containsObject:viewCopy]& 1) == 0)
   {
     v11 = os_log_create("com.apple.pencilkit", "PKPalette");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1007,7 +1007,7 @@ LABEL_7:
   }
 
   v9 = objc_loadWeakRetained(&self->_delegate);
-  v10 = [v9 toolPicker:self canSelectTool:v6 fromTap:v4];
+  v10 = [v9 toolPicker:self canSelectTool:viewCopy fromTap:tapCopy];
 
 LABEL_8:
   return v10;
@@ -1062,49 +1062,49 @@ uint64_t __42__PKPaletteToolPickerView__eraserToolView__block_invoke(uint64_t a1
   return v3;
 }
 
-- (void)_showToolAttributesPopoverFromRect:(CGRect)a3 inView:(id)a4
+- (void)_showToolAttributesPopoverFromRect:(CGRect)rect inView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [(PKPaletteToolPickerView *)self delegate];
-  v11 = [v10 palettePopoverPresentingController];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  delegate = [(PKPaletteToolPickerView *)self delegate];
+  palettePopoverPresentingController = [delegate palettePopoverPresentingController];
 
-  if (!v11)
+  if (!palettePopoverPresentingController)
   {
     goto LABEL_32;
   }
 
-  v12 = [(PKPaletteToolView *)self->_selectedToolView attributeViewController];
-  [(PKPaletteToolPickerView *)self setToolAttributesPopover:v12];
+  attributeViewController = [(PKPaletteToolView *)self->_selectedToolView attributeViewController];
+  [(PKPaletteToolPickerView *)self setToolAttributesPopover:attributeViewController];
 
-  v13 = [(PKPaletteToolView *)self->_selectedToolView tool];
-  v14 = [v13 toolIdentifier];
-  v15 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-  [v15 setToolIdentifier:v14];
+  tool = [(PKPaletteToolView *)self->_selectedToolView tool];
+  toolIdentifier = [tool toolIdentifier];
+  toolAttributesPopover = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+  [toolAttributesPopover setToolIdentifier:toolIdentifier];
 
-  v16 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-  if (!v16)
+  toolAttributesPopover2 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+  if (!toolAttributesPopover2)
   {
     goto LABEL_32;
   }
 
-  v17 = v16;
-  v18 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-  if (!v18)
+  toolAttributesPopover16 = toolAttributesPopover2;
+  toolAttributesPopover3 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+  if (!toolAttributesPopover3)
   {
 
 LABEL_8:
-    v21 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-    [v21 setModalPresentationStyle:7];
+    toolAttributesPopover4 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+    [toolAttributesPopover4 setModalPresentationStyle:7];
 
-    v22 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-    v23 = [v22 popoverPresentationController];
-    [v23 setDelegate:self];
+    toolAttributesPopover5 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+    popoverPresentationController = [toolAttributesPopover5 popoverPresentationController];
+    [popoverPresentationController setDelegate:self];
 
-    if (v9)
+    if (viewCopy)
     {
       v66.origin.x = x;
       v66.origin.y = y;
@@ -1118,10 +1118,10 @@ LABEL_8:
       v24 = 0;
     }
 
-    v25 = [(PKPaletteToolPickerView *)self edgeLocation];
-    v26 = [(PKPaletteToolPickerView *)self cornerLocation];
-    v27 = [(PKPaletteToolPickerView *)self _useCompactSize];
-    v28 = [(PKPaletteToolPickerView *)self cornerLocation];
+    edgeLocation = [(PKPaletteToolPickerView *)self edgeLocation];
+    cornerLocation = [(PKPaletteToolPickerView *)self cornerLocation];
+    _useCompactSize = [(PKPaletteToolPickerView *)self _useCompactSize];
+    cornerLocation2 = [(PKPaletteToolPickerView *)self cornerLocation];
     if (v24)
     {
       v29 = 0;
@@ -1132,39 +1132,39 @@ LABEL_8:
       v29 = 2;
     }
 
-    if (!v24 && !v27)
+    if (!v24 && !_useCompactSize)
     {
-      if (v28 == -1)
+      if (cornerLocation2 == -1)
       {
-        v30 = PKUIPopoverPermittedArrowDirectionsForEdge(v25);
+        v30 = PKUIPopoverPermittedArrowDirectionsForEdge(edgeLocation);
       }
 
       else
       {
-        v30 = PKUIPopoverPermittedArrowDirectionsForCorner(v26);
+        v30 = PKUIPopoverPermittedArrowDirectionsForCorner(cornerLocation);
       }
 
       v29 = v30;
     }
 
-    v31 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-    v32 = [v31 popoverPresentationController];
-    [v32 setPermittedArrowDirections:v29];
+    toolAttributesPopover6 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+    popoverPresentationController2 = [toolAttributesPopover6 popoverPresentationController];
+    [popoverPresentationController2 setPermittedArrowDirections:v29];
 
     if (_UISolariumEnabled())
     {
-      v33 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-      v34 = [v33 popoverPresentationController];
-      [v34 _setShouldHideArrow:1];
+      toolAttributesPopover7 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+      popoverPresentationController3 = [toolAttributesPopover7 popoverPresentationController];
+      [popoverPresentationController3 _setShouldHideArrow:1];
     }
 
     if (v24)
     {
-      v35 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-      v36 = [v35 popoverPresentationController];
-      [v36 setSourceRect:{x, y, width, height}];
+      toolAttributesPopover8 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+      popoverPresentationController4 = [toolAttributesPopover8 popoverPresentationController];
+      [popoverPresentationController4 setSourceRect:{x, y, width, height}];
 
-      v37 = v9;
+      v37 = viewCopy;
     }
 
     else
@@ -1174,81 +1174,81 @@ LABEL_8:
       v41 = v40;
       v43 = v42;
       v45 = v44;
-      v46 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-      v47 = [v46 popoverPresentationController];
-      [v47 setSourceRect:{v39, v41, v43, v45}];
+      toolAttributesPopover9 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+      popoverPresentationController5 = [toolAttributesPopover9 popoverPresentationController];
+      [popoverPresentationController5 setSourceRect:{v39, v41, v43, v45}];
 
       v37 = [(PKPaletteToolPickerView *)self sourceViewForPopoverPresentationForTool:self->_selectedToolView];
     }
 
-    v48 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-    v49 = [v48 popoverPresentationController];
-    [v49 setSourceView:v37];
+    toolAttributesPopover10 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+    popoverPresentationController6 = [toolAttributesPopover10 popoverPresentationController];
+    [popoverPresentationController6 setSourceView:v37];
 
     if (!v24)
     {
     }
 
-    v50 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-    v51 = [v50 popoverPresentationController];
-    [v51 _setShouldDisableInteractionDuringTransitions:0];
+    toolAttributesPopover11 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+    popoverPresentationController7 = [toolAttributesPopover11 popoverPresentationController];
+    [popoverPresentationController7 _setShouldDisableInteractionDuringTransitions:0];
 
-    v52 = [(PKPaletteToolPickerView *)self delegate];
-    v53 = [v52 palettePopoverPassthroughViews];
-    v54 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-    v55 = [v54 popoverPresentationController];
-    [v55 setPassthroughViews:v53];
+    delegate2 = [(PKPaletteToolPickerView *)self delegate];
+    palettePopoverPassthroughViews = [delegate2 palettePopoverPassthroughViews];
+    toolAttributesPopover12 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+    popoverPresentationController8 = [toolAttributesPopover12 popoverPresentationController];
+    [popoverPresentationController8 setPassthroughViews:palettePopoverPassthroughViews];
 
-    v56 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-    v57 = [v56 popoverPresentationController];
-    [v57 _setIgnoresKeyboardNotifications:1];
+    toolAttributesPopover13 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+    popoverPresentationController9 = [toolAttributesPopover13 popoverPresentationController];
+    [popoverPresentationController9 _setIgnoresKeyboardNotifications:1];
 
     [(PKPaletteToolPickerView *)self updatePopoverUI];
-    v58 = [v11 presentedViewController];
+    presentedViewController = [palettePopoverPresentingController presentedViewController];
 
-    if (!v58)
+    if (!presentedViewController)
     {
-      v59 = [(PKPaletteToolPickerView *)self presentedViewControllers];
-      [v59 removeAllObjects];
+      presentedViewControllers = [(PKPaletteToolPickerView *)self presentedViewControllers];
+      [presentedViewControllers removeAllObjects];
     }
 
     if ([(PKPaletteToolPickerView *)self _canPresentToolAttributesPopover])
     {
-      v60 = [(PKPaletteToolPickerView *)self presentedViewControllers];
-      v61 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-      [v60 addObject:v61];
+      presentedViewControllers2 = [(PKPaletteToolPickerView *)self presentedViewControllers];
+      toolAttributesPopover14 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+      [presentedViewControllers2 addObject:toolAttributesPopover14];
 
-      v62 = [(PKPaletteToolPickerView *)self tooltipPresentationHandle];
-      [v62 hideFloatingLabel];
+      tooltipPresentationHandle = [(PKPaletteToolPickerView *)self tooltipPresentationHandle];
+      [tooltipPresentationHandle hideFloatingLabel];
 
-      v63 = [(PKPaletteToolPickerView *)self edgeLocation];
-      v64 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-      [v64 setEdgeLocation:v63];
+      edgeLocation2 = [(PKPaletteToolPickerView *)self edgeLocation];
+      toolAttributesPopover15 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+      [toolAttributesPopover15 setEdgeLocation:edgeLocation2];
 
-      v17 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+      toolAttributesPopover16 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
       v65[0] = MEMORY[0x1E69E9820];
       v65[1] = 3221225472;
       v65[2] = __69__PKPaletteToolPickerView__showToolAttributesPopoverFromRect_inView___block_invoke;
       v65[3] = &unk_1E82D7148;
       v65[4] = self;
-      [v11 presentViewController:v17 animated:1 completion:v65];
+      [palettePopoverPresentingController presentViewController:toolAttributesPopover16 animated:1 completion:v65];
       goto LABEL_31;
     }
 
     goto LABEL_32;
   }
 
-  v19 = v18;
-  if ([v18 isBeingPresented])
+  v19 = toolAttributesPopover3;
+  if ([toolAttributesPopover3 isBeingPresented])
   {
 
 LABEL_31:
     goto LABEL_32;
   }
 
-  v20 = [v19 isBeingDismissed];
+  isBeingDismissed = [v19 isBeingDismissed];
 
-  if ((v20 & 1) == 0)
+  if ((isBeingDismissed & 1) == 0)
   {
     goto LABEL_8;
   }
@@ -1265,23 +1265,23 @@ void __69__PKPaletteToolPickerView__showToolAttributesPopoverFromRect_inView___b
 
 - (BOOL)_canPresentToolAttributesPopover
 {
-  v3 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-  if (v3)
+  toolAttributesPopover = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+  if (toolAttributesPopover)
   {
-    v4 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-    if ([v4 isBeingPresented])
+    toolAttributesPopover2 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+    if ([toolAttributesPopover2 isBeingPresented])
     {
       LOBYTE(v5) = 0;
     }
 
     else
     {
-      v6 = [(PKPaletteToolPickerView *)self delegate];
-      if ([v6 shouldPalettePresentPopover])
+      delegate = [(PKPaletteToolPickerView *)self delegate];
+      if ([delegate shouldPalettePresentPopover])
       {
-        v7 = [(PKPaletteToolPickerView *)self presentedViewControllers];
-        v8 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-        v5 = [v7 containsObject:v8] ^ 1;
+        presentedViewControllers = [(PKPaletteToolPickerView *)self presentedViewControllers];
+        toolAttributesPopover3 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+        v5 = [presentedViewControllers containsObject:toolAttributesPopover3] ^ 1;
       }
 
       else
@@ -1299,9 +1299,9 @@ void __69__PKPaletteToolPickerView__showToolAttributesPopoverFromRect_inView___b
   return v5;
 }
 
-- (CGRect)sourceRectForPopoverPresentationForTool:(id)a3
+- (CGRect)sourceRectForPopoverPresentationForTool:(id)tool
 {
-  v4 = a3;
+  toolCopy = tool;
   if ([(PKPaletteToolPickerView *)self cornerLocation]!= -1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1315,14 +1315,14 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  v24 = [(PKPaletteToolPickerView *)self scrollView];
-  [v4 frame];
+  scrollView = [(PKPaletteToolPickerView *)self scrollView];
+  [toolCopy frame];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  v33 = [(PKPaletteToolPickerView *)self stackView];
-  [v24 convertRect:v33 fromView:{v26, v28, v30, v32}];
+  stackView = [(PKPaletteToolPickerView *)self stackView];
+  [scrollView convertRect:stackView fromView:{v26, v28, v30, v32}];
   v7 = v34;
   v9 = v35;
   v11 = v36;
@@ -1330,24 +1330,24 @@ LABEL_3:
 
   if (_UISolariumEnabled())
   {
-    v38 = [(PKPaletteToolPickerView *)self delegate];
-    WeakRetained = [v38 toolPickerViewSourceViewForPopoverPresentation:self fromCorner:1];
+    delegate = [(PKPaletteToolPickerView *)self delegate];
+    WeakRetained = [delegate toolPickerViewSourceViewForPopoverPresentation:self fromCorner:1];
 
-    v39 = [(PKPaletteToolPickerView *)self scrollView];
+    scrollView2 = [(PKPaletteToolPickerView *)self scrollView];
     [WeakRetained frame];
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v47 = v46;
-    v48 = [WeakRetained superview];
-    [v39 convertRect:v48 fromView:{v41, v43, v45, v47}];
+    superview = [WeakRetained superview];
+    [scrollView2 convertRect:superview fromView:{v41, v43, v45, v47}];
     v50 = v49;
     v52 = v51;
     v54 = v53;
     v56 = v55;
 
-    v57 = [(PKPaletteToolPickerView *)self edgeLocation];
-    if (v57 == 8 || v57 == 2)
+    edgeLocation = [(PKPaletteToolPickerView *)self edgeLocation];
+    if (edgeLocation == 8 || edgeLocation == 2)
     {
       v11 = v54;
       v7 = v50;
@@ -1363,9 +1363,9 @@ LABEL_3:
   }
 
 LABEL_4:
-  v14 = [(PKPaletteToolPickerView *)self cornerLocation];
+  cornerLocation = [(PKPaletteToolPickerView *)self cornerLocation];
   [(PKPaletteToolPickerView *)self cornerLocation];
-  if (v14 == -1)
+  if (cornerLocation == -1)
   {
     v15 = -5.0;
   }
@@ -1396,42 +1396,42 @@ LABEL_4:
   return result;
 }
 
-- (id)sourceViewForPopoverPresentationForTool:(id)a3
+- (id)sourceViewForPopoverPresentationForTool:(id)tool
 {
   if ([(PKPaletteToolPickerView *)self cornerLocation]== -1)
   {
-    v5 = [(PKPaletteToolPickerView *)self scrollView];
+    scrollView = [(PKPaletteToolPickerView *)self scrollView];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [WeakRetained toolPickerViewSourceViewForPopoverPresentation:self fromCorner:{-[PKPaletteToolPickerView cornerLocation](self, "cornerLocation")}];
+    scrollView = [WeakRetained toolPickerViewSourceViewForPopoverPresentation:self fromCorner:{-[PKPaletteToolPickerView cornerLocation](self, "cornerLocation")}];
   }
 
-  return v5;
+  return scrollView;
 }
 
 - (void)updatePopoverUI
 {
-  v4 = [(PKPaletteToolPickerView *)self delegate];
-  v3 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-  [v4 updatePalettePopover:v3];
+  delegate = [(PKPaletteToolPickerView *)self delegate];
+  toolAttributesPopover = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+  [delegate updatePalettePopover:toolAttributesPopover];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v14.receiver = self;
   v14.super_class = PKPaletteToolPickerView;
-  [(PKPaletteToolPickerView *)&v14 traitCollectionDidChange:v4];
-  v5 = [(PKPaletteToolPickerView *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
-  if (v6 == [v4 verticalSizeClass])
+  [(PKPaletteToolPickerView *)&v14 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKPaletteToolPickerView *)self traitCollection];
+  verticalSizeClass = [traitCollection verticalSizeClass];
+  if (verticalSizeClass == [changeCopy verticalSizeClass])
   {
-    v7 = [(PKPaletteToolPickerView *)self traitCollection];
-    v8 = [v7 horizontalSizeClass];
-    v9 = v8 != [v4 horizontalSizeClass];
+    traitCollection2 = [(PKPaletteToolPickerView *)self traitCollection];
+    horizontalSizeClass = [traitCollection2 horizontalSizeClass];
+    v9 = horizontalSizeClass != [changeCopy horizontalSizeClass];
   }
 
   else
@@ -1439,27 +1439,27 @@ LABEL_4:
     v9 = 1;
   }
 
-  v10 = [(PKPaletteToolPickerView *)self traitCollection];
-  v11 = [v10 userInterfaceStyle];
-  v12 = [v4 userInterfaceStyle];
+  traitCollection3 = [(PKPaletteToolPickerView *)self traitCollection];
+  userInterfaceStyle = [traitCollection3 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v9 || v11 != v12)
+  if (v9 || userInterfaceStyle != userInterfaceStyle2)
   {
     [(PKPaletteToolPickerView *)self _updateUI];
     [(PKPaletteToolPickerView *)self updatePopoverUI];
     if (v9)
     {
-      v13 = [(PKPaletteToolPickerView *)self delegate];
-      [v13 toolPickerViewDidChangeTraitCollectionSizeClass:self];
+      delegate = [(PKPaletteToolPickerView *)self delegate];
+      [delegate toolPickerViewDidChangeTraitCollectionSizeClass:self];
     }
   }
 }
 
-- (void)setColorUserInterfaceStyle:(int64_t)a3
+- (void)setColorUserInterfaceStyle:(int64_t)style
 {
-  if (self->_colorUserInterfaceStyle != a3)
+  if (self->_colorUserInterfaceStyle != style)
   {
-    self->_colorUserInterfaceStyle = a3;
+    self->_colorUserInterfaceStyle = style;
     [(PKPaletteToolPickerView *)self _updateUI];
   }
 }
@@ -1467,25 +1467,25 @@ LABEL_4:
 - (void)_updateUI
 {
   v184 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaletteToolPickerView *)self _stackViewAxis];
-  v4 = [(PKPaletteToolPickerView *)self stackView];
-  [v4 setAxis:v3];
+  _stackViewAxis = [(PKPaletteToolPickerView *)self _stackViewAxis];
+  stackView = [(PKPaletteToolPickerView *)self stackView];
+  [stackView setAxis:_stackViewAxis];
 
   [(PKPaletteToolPickerView *)self interItemToolsSpacing];
   v6 = v5;
-  v7 = [(PKPaletteToolPickerView *)self stackView];
-  [v7 setSpacing:v6];
+  stackView2 = [(PKPaletteToolPickerView *)self stackView];
+  [stackView2 setSpacing:v6];
 
-  v8 = [(PKPaletteToolPickerView *)self isScrollingEnabled];
-  v9 = [(PKPaletteToolPickerView *)self scrollView];
-  [v9 setScrollEnabled:v8];
+  isScrollingEnabled = [(PKPaletteToolPickerView *)self isScrollingEnabled];
+  scrollView = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView setScrollEnabled:isScrollingEnabled];
 
-  v10 = [(PKPaletteToolPickerView *)self isScrollingEnabled];
-  v11 = [(PKPaletteToolPickerView *)self clippingView];
-  v12 = v11;
-  if (v11)
+  isScrollingEnabled2 = [(PKPaletteToolPickerView *)self isScrollingEnabled];
+  clippingView = [(PKPaletteToolPickerView *)self clippingView];
+  v12 = clippingView;
+  if (clippingView)
   {
-    v13 = *(v11 + 536);
+    v13 = *(clippingView + 536);
   }
 
   else
@@ -1494,36 +1494,36 @@ LABEL_4:
   }
 
   v14 = v13;
-  [v14 setClipsToBounds:v10];
+  [v14 setClipsToBounds:isScrollingEnabled2];
 
   [(PKPaletteToolPickerView *)self scalingFactor];
   v16 = v15;
-  v17 = [(PKPaletteToolPickerView *)self clippingView];
-  [v17 setScalingFactor:v16];
+  clippingView2 = [(PKPaletteToolPickerView *)self clippingView];
+  [clippingView2 setScalingFactor:v16];
 
-  v18 = [(PKPaletteToolPickerView *)self clippingViewTopConstraint];
-  [v18 setConstant:0.0];
+  clippingViewTopConstraint = [(PKPaletteToolPickerView *)self clippingViewTopConstraint];
+  [clippingViewTopConstraint setConstant:0.0];
 
-  v19 = [(PKPaletteToolPickerView *)self clippingViewBottomConstraint];
-  [v19 setConstant:0.0];
+  clippingViewBottomConstraint = [(PKPaletteToolPickerView *)self clippingViewBottomConstraint];
+  [clippingViewBottomConstraint setConstant:0.0];
 
-  v20 = [(PKPaletteToolPickerView *)self clippingViewLeadingConstraint];
-  [v20 setConstant:0.0];
+  clippingViewLeadingConstraint = [(PKPaletteToolPickerView *)self clippingViewLeadingConstraint];
+  [clippingViewLeadingConstraint setConstant:0.0];
 
-  v21 = [(PKPaletteToolPickerView *)self clippingViewTrailingConstraint];
-  [v21 setConstant:0.0];
+  clippingViewTrailingConstraint = [(PKPaletteToolPickerView *)self clippingViewTrailingConstraint];
+  [clippingViewTrailingConstraint setConstant:0.0];
 
-  v22 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
-  [v22 setConstant:0.0];
+  scrollViewTopConstraint = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
+  [scrollViewTopConstraint setConstant:0.0];
 
-  v23 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
-  [v23 setConstant:0.0];
+  scrollViewBottomConstraint = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
+  [scrollViewBottomConstraint setConstant:0.0];
 
-  v24 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
-  [v24 setConstant:0.0];
+  scrollViewLeadingConstraint = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
+  [scrollViewLeadingConstraint setConstant:0.0];
 
-  v25 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
-  [v25 setConstant:0.0];
+  scrollViewTrailingConstraint = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
+  [scrollViewTrailingConstraint setConstant:0.0];
 
   if ([(PKPaletteToolPickerView *)self _useCompactSize])
   {
@@ -1600,28 +1600,28 @@ LABEL_4:
   }
 
   v39 = MEMORY[0x1E696ACD8];
-  v40 = [(PKPaletteToolPickerView *)self toolsHeightConstraints];
-  [v39 deactivateConstraints:v40];
+  toolsHeightConstraints = [(PKPaletteToolPickerView *)self toolsHeightConstraints];
+  [v39 deactivateConstraints:toolsHeightConstraints];
 
   v41 = MEMORY[0x1E696ACD8];
-  v42 = [(PKPaletteToolPickerView *)self toolsWidthConstraints];
-  [v41 deactivateConstraints:v42];
+  toolsWidthConstraints = [(PKPaletteToolPickerView *)self toolsWidthConstraints];
+  [v41 deactivateConstraints:toolsWidthConstraints];
 
   v43 = MEMORY[0x1E696ACD8];
-  v44 = [(PKPaletteToolPickerView *)self toolsWidthCompactConstraints];
-  [v43 deactivateConstraints:v44];
+  toolsWidthCompactConstraints = [(PKPaletteToolPickerView *)self toolsWidthCompactConstraints];
+  [v43 deactivateConstraints:toolsWidthCompactConstraints];
 
-  v45 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   toolsWidthConstraints = self->_toolsWidthConstraints;
-  self->_toolsWidthConstraints = v45;
+  self->_toolsWidthConstraints = array;
 
-  v47 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   toolsHeightConstraints = self->_toolsHeightConstraints;
-  self->_toolsHeightConstraints = v47;
+  self->_toolsHeightConstraints = array2;
 
-  v49 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   toolsWidthCompactConstraints = self->_toolsWidthCompactConstraints;
-  self->_toolsWidthCompactConstraints = v49;
+  self->_toolsWidthCompactConstraints = array3;
 
   if ([(PKPaletteToolPickerView *)self _useCompactSize])
   {
@@ -1656,17 +1656,17 @@ LABEL_4:
           }
 
           v57 = *(*(&v162 + 1) + 8 * k);
-          v58 = [(PKPaletteToolPickerView *)self toolsWidthConstraints];
-          v59 = [v57 widthAnchor];
-          v60 = [(PKPaletteToolPickerView *)self widthAnchor];
-          v61 = [v59 constraintEqualToAnchor:v60];
-          [v58 addObject:v61];
+          toolsWidthConstraints2 = [(PKPaletteToolPickerView *)self toolsWidthConstraints];
+          widthAnchor = [v57 widthAnchor];
+          widthAnchor2 = [(PKPaletteToolPickerView *)self widthAnchor];
+          v61 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
+          [toolsWidthConstraints2 addObject:v61];
 
-          v62 = [(PKPaletteToolPickerView *)self toolsHeightConstraints];
-          v63 = [v57 heightAnchor];
-          v64 = [(PKPaletteToolPickerView *)self heightAnchor];
-          v65 = [v63 constraintEqualToAnchor:v64];
-          [v62 addObject:v65];
+          toolsHeightConstraints2 = [(PKPaletteToolPickerView *)self toolsHeightConstraints];
+          heightAnchor = [v57 heightAnchor];
+          heightAnchor2 = [(PKPaletteToolPickerView *)self heightAnchor];
+          v65 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
+          [toolsHeightConstraints2 addObject:v65];
         }
 
         v54 = [(NSMutableArray *)v52 countByEnumeratingWithState:&v162 objects:v181 count:16];
@@ -1680,9 +1680,9 @@ LABEL_4:
   v161 = 0u;
   v158 = 0u;
   v159 = 0u;
-  v66 = [(PKPaletteToolPickerView *)self toolsWidthConstraints];
-  v67 = [(PKPaletteToolPickerView *)self toolsHeightConstraints];
-  v68 = [v66 arrayByAddingObjectsFromArray:v67];
+  toolsWidthConstraints3 = [(PKPaletteToolPickerView *)self toolsWidthConstraints];
+  toolsHeightConstraints3 = [(PKPaletteToolPickerView *)self toolsHeightConstraints];
+  v68 = [toolsWidthConstraints3 arrayByAddingObjectsFromArray:toolsHeightConstraints3];
 
   v69 = [v68 countByEnumeratingWithState:&v158 objects:v180 count:16];
   if (v69)
@@ -1709,38 +1709,38 @@ LABEL_4:
   }
 
   v155 = MEMORY[0x1E696ACD8];
-  v156 = [(PKPaletteToolPickerView *)self stackViewCompactHeightConstraint];
-  v179[0] = v156;
-  v74 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
-  v179[1] = v74;
-  v75 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
-  v179[2] = v75;
-  v76 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
-  v179[3] = v76;
-  v77 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
-  v179[4] = v77;
-  v78 = [(PKPaletteToolPickerView *)self scrollViewCenterXConstraint];
-  v179[5] = v78;
-  v79 = [(PKPaletteToolPickerView *)self scrollViewCenterYConstraint];
-  v179[6] = v79;
-  v80 = [(PKPaletteToolPickerView *)self scrollViewWidthConstraint];
-  v179[7] = v80;
-  v81 = [(PKPaletteToolPickerView *)self scrollViewHeightConstraint];
-  v179[8] = v81;
+  stackViewCompactHeightConstraint = [(PKPaletteToolPickerView *)self stackViewCompactHeightConstraint];
+  v179[0] = stackViewCompactHeightConstraint;
+  scrollViewTopConstraint2 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
+  v179[1] = scrollViewTopConstraint2;
+  scrollViewBottomConstraint2 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
+  v179[2] = scrollViewBottomConstraint2;
+  scrollViewLeadingConstraint2 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
+  v179[3] = scrollViewLeadingConstraint2;
+  scrollViewTrailingConstraint2 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
+  v179[4] = scrollViewTrailingConstraint2;
+  scrollViewCenterXConstraint = [(PKPaletteToolPickerView *)self scrollViewCenterXConstraint];
+  v179[5] = scrollViewCenterXConstraint;
+  scrollViewCenterYConstraint = [(PKPaletteToolPickerView *)self scrollViewCenterYConstraint];
+  v179[6] = scrollViewCenterYConstraint;
+  scrollViewWidthConstraint = [(PKPaletteToolPickerView *)self scrollViewWidthConstraint];
+  v179[7] = scrollViewWidthConstraint;
+  scrollViewHeightConstraint = [(PKPaletteToolPickerView *)self scrollViewHeightConstraint];
+  v179[8] = scrollViewHeightConstraint;
   v82 = [MEMORY[0x1E695DEC8] arrayWithObjects:v179 count:9];
   [v155 deactivateConstraints:v82];
 
   if ([(PKPaletteToolPickerView *)self isScrollingEnabled])
   {
-    v83 = [(PKPaletteToolPickerView *)self edgeLocation];
+    edgeLocation = [(PKPaletteToolPickerView *)self edgeLocation];
     [(PKPaletteToolPickerView *)self scalingFactor];
     v85 = v84;
-    v86 = [(PKPaletteToolPickerView *)self _useCompactSize];
-    v87 = [(PKPaletteToolPickerView *)self clippingView];
-    v88 = v87;
-    if (v87)
+    _useCompactSize = [(PKPaletteToolPickerView *)self _useCompactSize];
+    clippingView3 = [(PKPaletteToolPickerView *)self clippingView];
+    v88 = clippingView3;
+    if (clippingView3)
     {
-      v89 = *(v87 + 523);
+      v89 = *(clippingView3 + 523);
     }
 
     else
@@ -1751,7 +1751,7 @@ LABEL_4:
     v90 = 0x1E696A000uLL;
     v91 = v89 | ~_UISolariumEnabled();
     v92 = 26.0;
-    if (v86)
+    if (_useCompactSize)
     {
       v92 = 22.0;
     }
@@ -1778,7 +1778,7 @@ LABEL_4:
       v96 = 6.0;
     }
 
-    if (v83 == 8 || v83 == 2)
+    if (edgeLocation == 8 || edgeLocation == 2)
     {
       v94 = v95;
       v95 = 0.0;
@@ -1801,15 +1801,15 @@ LABEL_4:
     v90 = 0x1E696A000;
   }
 
-  v98 = [(PKPaletteToolPickerView *)self scrollView];
-  [v98 setContentInset:{v94, v95, v97, v96}];
+  scrollView2 = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView2 setContentInset:{v94, v95, v97, v96}];
 
-  v99 = [(PKPaletteToolPickerView *)self scrollView];
-  [v99 contentInset];
+  scrollView3 = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView3 contentInset];
   v101 = -v100;
 
-  v102 = [(PKPaletteToolPickerView *)self scrollView];
-  [v102 setContentOffset:{v101, 0.0}];
+  scrollView4 = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView4 setContentOffset:{v101, 0.0}];
 
   [(PKPaletteToolPickerView *)self _useCompactSize];
   [(PKPaletteToolPickerView *)self scalingFactor];
@@ -1817,37 +1817,37 @@ LABEL_4:
   if ([(PKPaletteToolPickerView *)self _useCompactSize])
   {
     v105 = *(v90 + 3288);
-    v106 = [(PKPaletteToolPickerView *)self toolsWidthCompactConstraints];
-    v107 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
-    v178[0] = v107;
-    v108 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
-    v178[1] = v108;
-    v109 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
-    v178[2] = v109;
-    v110 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
-    v178[3] = v110;
-    v111 = [(PKPaletteToolPickerView *)self stackViewCompactHeightConstraint];
-    v178[4] = v111;
+    toolsWidthCompactConstraints2 = [(PKPaletteToolPickerView *)self toolsWidthCompactConstraints];
+    scrollViewTopConstraint3 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
+    v178[0] = scrollViewTopConstraint3;
+    scrollViewBottomConstraint3 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
+    v178[1] = scrollViewBottomConstraint3;
+    scrollViewLeadingConstraint3 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
+    v178[2] = scrollViewLeadingConstraint3;
+    scrollViewTrailingConstraint3 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
+    v178[3] = scrollViewTrailingConstraint3;
+    stackViewCompactHeightConstraint2 = [(PKPaletteToolPickerView *)self stackViewCompactHeightConstraint];
+    v178[4] = stackViewCompactHeightConstraint2;
     v112 = [MEMORY[0x1E695DEC8] arrayWithObjects:v178 count:5];
-    v113 = [v106 arrayByAddingObjectsFromArray:v112];
+    v113 = [toolsWidthCompactConstraints2 arrayByAddingObjectsFromArray:v112];
     [v105 activateConstraints:v113];
 
-    v114 = [(PKPaletteToolPickerView *)self clippingViewLeadingConstraint];
-    [v114 setConstant:-v104];
+    clippingViewLeadingConstraint2 = [(PKPaletteToolPickerView *)self clippingViewLeadingConstraint];
+    [clippingViewLeadingConstraint2 setConstant:-v104];
 
-    v115 = [(PKPaletteToolPickerView *)self clippingViewTrailingConstraint];
-    [v115 setConstant:v104];
+    clippingViewTrailingConstraint2 = [(PKPaletteToolPickerView *)self clippingViewTrailingConstraint];
+    [clippingViewTrailingConstraint2 setConstant:v104];
 
-    v116 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
-    [v116 setConstant:v104];
+    scrollViewLeadingConstraint4 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
+    [scrollViewLeadingConstraint4 setConstant:v104];
 
-    v117 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
-    [v117 setConstant:-v104];
+    scrollViewTrailingConstraint4 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
+    [scrollViewTrailingConstraint4 setConstant:-v104];
     goto LABEL_69;
   }
 
-  v118 = [(PKPaletteToolPickerView *)self stackView];
-  [v118 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+  stackView3 = [(PKPaletteToolPickerView *)self stackView];
+  [stackView3 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
   v120 = v119;
   v122 = v121;
 
@@ -1876,37 +1876,37 @@ LABEL_4:
   aBlock[2] = __36__PKPaletteToolPickerView__updateUI__block_invoke_3;
   aBlock[3] = &unk_1E82D7148;
   aBlock[4] = self;
-  v117 = _Block_copy(aBlock);
-  v126 = [(PKPaletteToolPickerView *)self edgeLocation];
-  if (v126 == 8 || v126 == 2)
+  scrollViewTrailingConstraint4 = _Block_copy(aBlock);
+  edgeLocation2 = [(PKPaletteToolPickerView *)self edgeLocation];
+  if (edgeLocation2 == 8 || edgeLocation2 == 2)
   {
     v127 = *(v90 + 3288);
-    v128 = [(PKPaletteToolPickerView *)self toolsWidthConstraints];
-    [v127 activateConstraints:v128];
+    toolsWidthConstraints4 = [(PKPaletteToolPickerView *)self toolsWidthConstraints];
+    [v127 activateConstraints:toolsWidthConstraints4];
 
-    v129 = [(PKPaletteToolPickerView *)self clippingViewTopConstraint];
-    [v129 setConstant:-v104];
+    clippingViewTopConstraint2 = [(PKPaletteToolPickerView *)self clippingViewTopConstraint];
+    [clippingViewTopConstraint2 setConstant:-v104];
 
-    v130 = [(PKPaletteToolPickerView *)self clippingViewBottomConstraint];
-    [v130 setConstant:v104];
+    clippingViewBottomConstraint2 = [(PKPaletteToolPickerView *)self clippingViewBottomConstraint];
+    [clippingViewBottomConstraint2 setConstant:v104];
 
-    v131 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
-    [v131 setConstant:v104];
+    scrollViewTopConstraint4 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
+    [scrollViewTopConstraint4 setConstant:v104];
 
-    v132 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
-    [v132 setConstant:-v104];
+    scrollViewBottomConstraint4 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
+    [scrollViewBottomConstraint4 setConstant:-v104];
 
     if (v122 < v125)
     {
       v133 = *(v90 + 3288);
-      v134 = [(PKPaletteToolPickerView *)self scrollViewCenterYConstraint];
-      v177[0] = v134;
-      v135 = [(PKPaletteToolPickerView *)self scrollViewHeightConstraint];
-      v177[1] = v135;
-      v136 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
-      v177[2] = v136;
-      v137 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
-      v177[3] = v137;
+      scrollViewCenterYConstraint2 = [(PKPaletteToolPickerView *)self scrollViewCenterYConstraint];
+      v177[0] = scrollViewCenterYConstraint2;
+      scrollViewHeightConstraint2 = [(PKPaletteToolPickerView *)self scrollViewHeightConstraint];
+      v177[1] = scrollViewHeightConstraint2;
+      scrollViewLeadingConstraint5 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
+      v177[2] = scrollViewLeadingConstraint5;
+      scrollViewTrailingConstraint5 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
+      v177[3] = scrollViewTrailingConstraint5;
       v138 = MEMORY[0x1E695DEC8];
       v139 = v177;
 LABEL_67:
@@ -1920,58 +1920,58 @@ LABEL_67:
   else
   {
     v140 = *(v90 + 3288);
-    v141 = [(PKPaletteToolPickerView *)self toolsHeightConstraints];
-    [v140 activateConstraints:v141];
+    toolsHeightConstraints4 = [(PKPaletteToolPickerView *)self toolsHeightConstraints];
+    [v140 activateConstraints:toolsHeightConstraints4];
 
-    v142 = [(PKPaletteToolPickerView *)self clippingViewLeadingConstraint];
-    [v142 setConstant:-v104];
+    clippingViewLeadingConstraint3 = [(PKPaletteToolPickerView *)self clippingViewLeadingConstraint];
+    [clippingViewLeadingConstraint3 setConstant:-v104];
 
-    v143 = [(PKPaletteToolPickerView *)self clippingViewTrailingConstraint];
-    [v143 setConstant:v104];
+    clippingViewTrailingConstraint3 = [(PKPaletteToolPickerView *)self clippingViewTrailingConstraint];
+    [clippingViewTrailingConstraint3 setConstant:v104];
 
-    v144 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
-    [v144 setConstant:v104];
+    scrollViewLeadingConstraint6 = [(PKPaletteToolPickerView *)self scrollViewLeadingConstraint];
+    [scrollViewLeadingConstraint6 setConstant:v104];
 
-    v145 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
-    [v145 setConstant:-v104];
+    scrollViewTrailingConstraint6 = [(PKPaletteToolPickerView *)self scrollViewTrailingConstraint];
+    [scrollViewTrailingConstraint6 setConstant:-v104];
 
     if (v120 < v125)
     {
       v133 = *(v90 + 3288);
-      v134 = [(PKPaletteToolPickerView *)self scrollViewCenterXConstraint];
-      v176[0] = v134;
-      v135 = [(PKPaletteToolPickerView *)self scrollViewWidthConstraint];
-      v176[1] = v135;
-      v136 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
-      v176[2] = v136;
-      v137 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
-      v176[3] = v137;
+      scrollViewCenterYConstraint2 = [(PKPaletteToolPickerView *)self scrollViewCenterXConstraint];
+      v176[0] = scrollViewCenterYConstraint2;
+      scrollViewHeightConstraint2 = [(PKPaletteToolPickerView *)self scrollViewWidthConstraint];
+      v176[1] = scrollViewHeightConstraint2;
+      scrollViewLeadingConstraint5 = [(PKPaletteToolPickerView *)self scrollViewTopConstraint];
+      v176[2] = scrollViewLeadingConstraint5;
+      scrollViewTrailingConstraint5 = [(PKPaletteToolPickerView *)self scrollViewBottomConstraint];
+      v176[3] = scrollViewTrailingConstraint5;
       v138 = MEMORY[0x1E695DEC8];
       v139 = v176;
       goto LABEL_67;
     }
   }
 
-  v117[2](v117);
+  scrollViewTrailingConstraint4[2](scrollViewTrailingConstraint4);
 LABEL_69:
 
-  v147 = [(PKPaletteToolPickerView *)self edgeLocation];
-  v149 = v147 == 2 || v147 == 8;
-  v150 = [(PKPaletteToolPickerView *)self clippingView];
-  v151 = v150;
-  if (v150 && *(v150 + 544) != v149)
+  edgeLocation3 = [(PKPaletteToolPickerView *)self edgeLocation];
+  v149 = edgeLocation3 == 2 || edgeLocation3 == 8;
+  clippingView4 = [(PKPaletteToolPickerView *)self clippingView];
+  v151 = clippingView4;
+  if (clippingView4 && *(clippingView4 + 544) != v149)
   {
-    *(v150 + 544) = v149;
-    [(PKPaletteToolPickerClippingView *)v150 _updateUI];
+    *(clippingView4 + 544) = v149;
+    [(PKPaletteToolPickerClippingView *)clippingView4 _updateUI];
   }
 
   v152 = [(PKPaletteToolPickerView *)self edgeLocation]== 8;
-  v153 = [(PKPaletteToolPickerView *)self clippingView];
-  v154 = v153;
-  if (v153 && *(v153 + 520) != v152)
+  clippingView5 = [(PKPaletteToolPickerView *)self clippingView];
+  v154 = clippingView5;
+  if (clippingView5 && *(clippingView5 + 520) != v152)
   {
-    *(v153 + 520) = v152;
-    [(PKPaletteToolPickerClippingView *)v153 _updateUI];
+    *(clippingView5 + 520) = v152;
+    [(PKPaletteToolPickerClippingView *)clippingView5 _updateUI];
   }
 
   [(PKPaletteToolPickerView *)self updateClippingViewEdgesVisibility];
@@ -2025,60 +2025,60 @@ void __36__PKPaletteToolPickerView__updateUI__block_invoke_3(uint64_t a1)
 
 - (void)updateClippingViewEdgesVisibility
 {
-  v3 = [(PKPaletteToolPickerView *)self edgeLocation];
-  if (v3 == 2 || v3 == 8)
+  edgeLocation = [(PKPaletteToolPickerView *)self edgeLocation];
+  if (edgeLocation == 2 || edgeLocation == 8)
   {
-    v4 = [(PKPaletteToolPickerView *)self scrollView];
-    [v4 contentOffset];
+    scrollView = [(PKPaletteToolPickerView *)self scrollView];
+    [scrollView contentOffset];
     v6 = v5;
   }
 
   else
   {
-    v4 = [(PKPaletteToolPickerView *)self scrollView];
-    [v4 contentOffset];
+    scrollView = [(PKPaletteToolPickerView *)self scrollView];
+    [scrollView contentOffset];
     v6 = v7;
   }
 
-  v8 = [(PKPaletteToolPickerView *)self isScrollingEnabled];
-  v9 = v6 > 10.0 && v8;
-  v10 = [(PKPaletteToolPickerView *)self clippingView];
-  v11 = v10;
-  if (v10 && *(v10 + 521) != v9)
+  isScrollingEnabled = [(PKPaletteToolPickerView *)self isScrollingEnabled];
+  v9 = v6 > 10.0 && isScrollingEnabled;
+  clippingView = [(PKPaletteToolPickerView *)self clippingView];
+  v11 = clippingView;
+  if (clippingView && *(clippingView + 521) != v9)
   {
-    *(v10 + 521) = v9;
-    [(PKPaletteToolPickerClippingView *)v10 _updateUI];
+    *(clippingView + 521) = v9;
+    [(PKPaletteToolPickerClippingView *)clippingView _updateUI];
   }
 
-  v12 = [(PKPaletteToolPickerView *)self scrollView];
-  [v12 _pk_maximumContentOffset];
+  scrollView2 = [(PKPaletteToolPickerView *)self scrollView];
+  [scrollView2 _pk_maximumContentOffset];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(PKPaletteToolPickerView *)self edgeLocation];
-  if (v17 == 8 || v17 == 2)
+  edgeLocation2 = [(PKPaletteToolPickerView *)self edgeLocation];
+  if (edgeLocation2 == 8 || edgeLocation2 == 2)
   {
     v14 = v16;
   }
 
-  v19 = [(PKPaletteToolPickerView *)self isScrollingEnabled];
-  v20 = v6 < v14 + -10.0 && v19;
-  v21 = [(PKPaletteToolPickerView *)self clippingView];
-  if (v21 && v21[522] != v20)
+  isScrollingEnabled2 = [(PKPaletteToolPickerView *)self isScrollingEnabled];
+  v20 = v6 < v14 + -10.0 && isScrollingEnabled2;
+  clippingView2 = [(PKPaletteToolPickerView *)self clippingView];
+  if (clippingView2 && clippingView2[522] != v20)
   {
-    v21[522] = v20;
-    v22 = v21;
-    [(PKPaletteToolPickerClippingView *)v21 _updateUI];
-    v21 = v22;
+    clippingView2[522] = v20;
+    v22 = clippingView2;
+    [(PKPaletteToolPickerClippingView *)clippingView2 _updateUI];
+    clippingView2 = v22;
   }
 }
 
 - (BOOL)_useCompactSize
 {
-  v3 = [(PKPaletteToolPickerView *)self traitCollection];
-  v4 = [(PKPaletteToolPickerView *)self window];
-  v5 = [v4 windowScene];
-  v6 = PKUseCompactSize(v3, v5);
+  traitCollection = [(PKPaletteToolPickerView *)self traitCollection];
+  window = [(PKPaletteToolPickerView *)self window];
+  windowScene = [window windowScene];
+  v6 = PKUseCompactSize(traitCollection, windowScene);
 
   return v6;
 }
@@ -2090,34 +2090,34 @@ void __36__PKPaletteToolPickerView__updateUI__block_invoke_3(uint64_t a1)
     return 0;
   }
 
-  v4 = [(PKPaletteToolPickerView *)self edgeLocation];
-  return v4 == 2 || v4 == 8;
+  edgeLocation = [(PKPaletteToolPickerView *)self edgeLocation];
+  return edgeLocation == 2 || edgeLocation == 8;
 }
 
-- (double)_widthForToolAtIndex:(unint64_t)a3 isCompactSize:(BOOL)a4
+- (double)_widthForToolAtIndex:(unint64_t)index isCompactSize:(BOOL)size
 {
-  v4 = a4;
-  v7 = [(PKPaletteToolPickerView *)self delegate];
-  [v7 toolPickerView:self widthForToolAtIndex:a3 isCompactSize:v4];
+  sizeCopy = size;
+  delegate = [(PKPaletteToolPickerView *)self delegate];
+  [delegate toolPickerView:self widthForToolAtIndex:index isCompactSize:sizeCopy];
   v9 = v8;
 
   return v9;
 }
 
-- (void)dismissPalettePopoverWithCompletion:(id)a3
+- (void)dismissPalettePopoverWithCompletion:(id)completion
 {
-  v6 = a3;
-  v4 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+  completionCopy = completion;
+  toolAttributesPopover = [(PKPaletteToolPickerView *)self toolAttributesPopover];
 
-  if (v4)
+  if (toolAttributesPopover)
   {
-    v5 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-    [v5 dismissViewControllerAnimated:1 completion:v6];
+    toolAttributesPopover2 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+    [toolAttributesPopover2 dismissViewControllerAnimated:1 completion:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
@@ -2125,30 +2125,30 @@ void __36__PKPaletteToolPickerView__updateUI__block_invoke_3(uint64_t a1)
 {
   if ([(NSMutableArray *)self->_mutableToolViews count]>= 2)
   {
-    v3 = [(PKPaletteToolPickerView *)self selectedToolView];
-    v4 = [v3 tool];
-    if ([v4 isErasingTool])
+    selectedToolView = [(PKPaletteToolPickerView *)self selectedToolView];
+    tool = [selectedToolView tool];
+    if ([tool isErasingTool])
     {
     }
 
     else
     {
-      v5 = [(PKPaletteToolPickerView *)self _eraserToolView];
+      _eraserToolView = [(PKPaletteToolPickerView *)self _eraserToolView];
 
-      if (v5)
+      if (_eraserToolView)
       {
         return 1;
       }
     }
 
-    v6 = [(PKPaletteToolPickerView *)self selectedToolView];
-    v7 = [v6 tool];
-    if ([v7 isErasingTool])
+    selectedToolView2 = [(PKPaletteToolPickerView *)self selectedToolView];
+    tool2 = [selectedToolView2 tool];
+    if ([tool2 isErasingTool])
     {
-      v8 = [(PKPaletteToolView *)self->_lastSelectedToolView tool];
-      v9 = [v8 isErasingTool];
+      tool3 = [(PKPaletteToolView *)self->_lastSelectedToolView tool];
+      isErasingTool = [tool3 isErasingTool];
 
-      if (!v9)
+      if (!isErasingTool)
       {
         return 1;
       }
@@ -2162,15 +2162,15 @@ void __36__PKPaletteToolPickerView__updateUI__block_invoke_3(uint64_t a1)
   return 0;
 }
 
-- (void)toggleSelectedToolAndEraserAnimated:(BOOL)a3
+- (void)toggleSelectedToolAndEraserAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PKPaletteToolPickerView *)self canToggleSelectedToolAndEraser])
   {
-    v5 = [(PKPaletteToolPickerView *)self _eraserToolView];
-    v6 = [(PKPaletteToolPickerView *)self selectedToolView];
+    _eraserToolView = [(PKPaletteToolPickerView *)self _eraserToolView];
+    selectedToolView = [(PKPaletteToolPickerView *)self selectedToolView];
 
-    if (v6 == v5)
+    if (selectedToolView == _eraserToolView)
     {
       lastSelectedToolView = self->_lastSelectedToolView;
       if (!lastSelectedToolView)
@@ -2192,26 +2192,26 @@ void __36__PKPaletteToolPickerView__updateUI__block_invoke_3(uint64_t a1)
         lastSelectedToolView = self->_lastSelectedToolView;
       }
 
-      v7 = self;
+      selfCopy2 = self;
     }
 
     else
     {
-      v7 = self;
-      lastSelectedToolView = v5;
+      selfCopy2 = self;
+      lastSelectedToolView = _eraserToolView;
     }
 
-    [(PKPaletteToolPickerView *)v7 _setSelectedToolView:lastSelectedToolView animated:v3 showToolTip:1 notifyDelegate:1 fromTap:0];
+    [(PKPaletteToolPickerView *)selfCopy2 _setSelectedToolView:lastSelectedToolView animated:animatedCopy showToolTip:1 notifyDelegate:1 fromTap:0];
     [(PKPaletteToolPickerView *)self dismissPalettePopoverWithCompletion:0];
   }
 
   else
   {
-    v5 = os_log_create("com.apple.pencilkit", "PKPalette");
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    _eraserToolView = os_log_create("com.apple.pencilkit", "PKPalette");
+    if (os_log_type_enabled(_eraserToolView, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C7CCA000, v5, OS_LOG_TYPE_DEFAULT, "Can't toggle between last selected tool and eraser.", buf, 2u);
+      _os_log_impl(&dword_1C7CCA000, _eraserToolView, OS_LOG_TYPE_DEFAULT, "Can't toggle between last selected tool and eraser.", buf, 2u);
     }
   }
 }
@@ -2243,9 +2243,9 @@ uint64_t __63__PKPaletteToolPickerView_toggleSelectedToolAndEraserAnimated___blo
   return v6;
 }
 
-- (void)toggleSelectedToolAndLastSelectedToolAnimated:(BOOL)a3
+- (void)toggleSelectedToolAndLastSelectedToolAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(PKPaletteToolPickerView *)self canToggleSelectedToolAndLastSelectedTool])
   {
     lastSelectedToolView = self->_lastSelectedToolView;
@@ -2268,7 +2268,7 @@ uint64_t __63__PKPaletteToolPickerView_toggleSelectedToolAndEraserAnimated___blo
       lastSelectedToolView = self->_lastSelectedToolView;
     }
 
-    [(PKPaletteToolPickerView *)self _setSelectedToolView:lastSelectedToolView animated:v3 showToolTip:1 notifyDelegate:1 fromTap:0];
+    [(PKPaletteToolPickerView *)self _setSelectedToolView:lastSelectedToolView animated:animatedCopy showToolTip:1 notifyDelegate:1 fromTap:0];
     [(PKPaletteToolPickerView *)self dismissPalettePopoverWithCompletion:0];
   }
 
@@ -2283,29 +2283,29 @@ uint64_t __63__PKPaletteToolPickerView_toggleSelectedToolAndEraserAnimated___blo
   }
 }
 
-- (void)toggleSelectedToolAttributesPopoverFromRect:(CGRect)a3 inView:(id)a4
+- (void)toggleSelectedToolAttributesPopoverFromRect:(CGRect)rect inView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v15 = a4;
-  v9 = [(PKPaletteToolPickerView *)self delegate];
-  v10 = [v9 palettePopoverPresentingController];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  delegate = [(PKPaletteToolPickerView *)self delegate];
+  palettePopoverPresentingController = [delegate palettePopoverPresentingController];
 
-  v11 = [(PKPaletteToolPickerView *)self toolAttributesPopover];
-  if (v11 && (v12 = v11, [v10 presentedViewController], v13 = objc_claimAutoreleasedReturnValue(), -[PKPaletteToolPickerView toolAttributesPopover](self, "toolAttributesPopover"), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, v13 == v14))
+  toolAttributesPopover = [(PKPaletteToolPickerView *)self toolAttributesPopover];
+  if (toolAttributesPopover && (v12 = toolAttributesPopover, [palettePopoverPresentingController presentedViewController], v13 = objc_claimAutoreleasedReturnValue(), -[PKPaletteToolPickerView toolAttributesPopover](self, "toolAttributesPopover"), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, v13 == v14))
   {
     [(PKPaletteToolPickerView *)self dismissPalettePopoverWithCompletion:0];
   }
 
   else
   {
-    [(PKPaletteToolPickerView *)self _showToolAttributesPopoverFromRect:v15 inView:x, y, width, height];
+    [(PKPaletteToolPickerView *)self _showToolAttributesPopoverFromRect:viewCopy inView:x, y, width, height];
   }
 }
 
-- (BOOL)_isAllToolsColorUserInterfaceStyleEqualsTo:(int64_t)a3
+- (BOOL)_isAllToolsColorUserInterfaceStyleEqualsTo:(int64_t)to
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -2329,8 +2329,8 @@ uint64_t __63__PKPaletteToolPickerView_toggleSelectedToolAndEraserAnimated___blo
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [(PKPaletteToolPickerView *)self colorUserInterfaceStyle];
-        v8 &= v11 == [v10 colorUserInterfaceStyle];
+        colorUserInterfaceStyle = [(PKPaletteToolPickerView *)self colorUserInterfaceStyle];
+        v8 &= colorUserInterfaceStyle == [v10 colorUserInterfaceStyle];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -2347,7 +2347,7 @@ uint64_t __63__PKPaletteToolPickerView_toggleSelectedToolAndEraserAnimated___blo
   return v8;
 }
 
-- (BOOL)_isAllToolsEdgeLocationEqualsTo:(unint64_t)a3
+- (BOOL)_isAllToolsEdgeLocationEqualsTo:(unint64_t)to
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
@@ -2371,8 +2371,8 @@ uint64_t __63__PKPaletteToolPickerView_toggleSelectedToolAndEraserAnimated___blo
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [(PKPaletteToolPickerView *)self edgeLocation];
-        v8 &= v11 == [v10 edgeLocation];
+        edgeLocation = [(PKPaletteToolPickerView *)self edgeLocation];
+        v8 &= edgeLocation == [v10 edgeLocation];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -2389,9 +2389,9 @@ uint64_t __63__PKPaletteToolPickerView_toggleSelectedToolAndEraserAnimated___blo
   return v8;
 }
 
-- (void)reloadToolViewsWithDataSource:(id)a3
+- (void)reloadToolViewsWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [(NSMutableArray *)self->_mutableToolViews copy];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -2400,13 +2400,13 @@ uint64_t __63__PKPaletteToolPickerView_toggleSelectedToolAndEraserAnimated___blo
   v10[4] = self;
   [v5 enumerateObjectsUsingBlock:v10];
 
-  v6 = [v4 numberOfToolsInToolPickerView:self];
+  v6 = [sourceCopy numberOfToolsInToolPickerView:self];
   if (v6 >= 1)
   {
     v7 = v6;
     for (i = 0; i != v7; ++i)
     {
-      v9 = [v4 toolPickerView:self viewForToolAtIndex:i];
+      v9 = [sourceCopy toolPickerView:self viewForToolAtIndex:i];
       [(PKPaletteToolPickerView *)self _addToolView:v9 updateUI:0];
     }
   }
@@ -2414,45 +2414,45 @@ uint64_t __63__PKPaletteToolPickerView_toggleSelectedToolAndEraserAnimated___blo
   [(PKPaletteToolPickerView *)self _updateUI];
 }
 
-- (void)setScrollingEnabled:(BOOL)a3
+- (void)setScrollingEnabled:(BOOL)enabled
 {
-  if (self->_scrollingEnabled != a3)
+  if (self->_scrollingEnabled != enabled)
   {
-    self->_scrollingEnabled = a3;
+    self->_scrollingEnabled = enabled;
     [(PKPaletteToolPickerView *)self _updateUI];
   }
 }
 
-- (void)scrollSelectedToolViewToVisibleAnimated:(BOOL)a3
+- (void)scrollSelectedToolViewToVisibleAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v6 = [(PKPaletteToolPickerView *)self scrollView];
-  v5 = [(PKPaletteToolPickerView *)self selectedToolView];
-  [v5 frame];
-  [v6 scrollRectToVisible:v3 animated:?];
+  animatedCopy = animated;
+  scrollView = [(PKPaletteToolPickerView *)self scrollView];
+  selectedToolView = [(PKPaletteToolPickerView *)self selectedToolView];
+  [selectedToolView frame];
+  [scrollView scrollRectToVisible:animatedCopy animated:?];
 }
 
-- (void)scrollToolViewAtIndex:(unint64_t)a3 toVisibleAnimated:(BOOL)a4
+- (void)scrollToolViewAtIndex:(unint64_t)index toVisibleAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(PKPaletteToolPickerView *)self toolViews];
-  v9 = [v7 objectAtIndex:a3];
+  animatedCopy = animated;
+  toolViews = [(PKPaletteToolPickerView *)self toolViews];
+  v9 = [toolViews objectAtIndex:index];
 
-  v8 = [(PKPaletteToolPickerView *)self scrollView];
+  scrollView = [(PKPaletteToolPickerView *)self scrollView];
   [v9 frame];
-  [v8 scrollRectToVisible:v4 animated:?];
+  [scrollView scrollRectToVisible:animatedCopy animated:?];
 }
 
-- (void)setClippingViewLassoToolEditingViewVisible:(BOOL)a3
+- (void)setClippingViewLassoToolEditingViewVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(PKPaletteToolPickerView *)self clippingView];
-  if (v4 && v4[523] != v3)
+  visibleCopy = visible;
+  clippingView = [(PKPaletteToolPickerView *)self clippingView];
+  if (clippingView && clippingView[523] != visibleCopy)
   {
-    v4[523] = v3;
-    v5 = v4;
-    [(PKPaletteToolPickerClippingView *)v4 _updateUI];
-    v4 = v5;
+    clippingView[523] = visibleCopy;
+    v5 = clippingView;
+    [(PKPaletteToolPickerClippingView *)clippingView _updateUI];
+    clippingView = v5;
   }
 }
 

@@ -1,7 +1,7 @@
 @interface MKPlaceHeaderButton
 - (BOOL)_isTintColorWhite;
 - (MKPlaceHeaderButton)init;
-- (MKPlaceHeaderButton)initWithPrimaryType:(unint64_t)a3;
+- (MKPlaceHeaderButton)initWithPrimaryType:(unint64_t)type;
 - (_MKPlaceActionButtonController)buttonController;
 - (id)_primaryButtonColor;
 - (void)_contentSizeDidChange;
@@ -9,13 +9,13 @@
 - (void)_updateStyleNonPrimaryButton;
 - (void)_updateStylePrimaryButton;
 - (void)applyButtonDefaultConfiguration;
-- (void)buttonSelected:(id)a3;
+- (void)buttonSelected:(id)selected;
 - (void)infoCardThemeChanged;
-- (void)placeActionButtonControllerTextDidChange:(id)a3;
-- (void)setButtonController:(id)a3;
-- (void)setPrimaryTitle:(id)a3;
-- (void)setPrimaryTitle:(id)a3 subtitle:(id)a4;
-- (void)updateButtonWithHighlighted:(BOOL)a3;
+- (void)placeActionButtonControllerTextDidChange:(id)change;
+- (void)setButtonController:(id)controller;
+- (void)setPrimaryTitle:(id)title;
+- (void)setPrimaryTitle:(id)title subtitle:(id)subtitle;
+- (void)updateButtonWithHighlighted:(BOOL)highlighted;
 @end
 
 @implementation MKPlaceHeaderButton
@@ -27,30 +27,30 @@
   return WeakRetained;
 }
 
-- (void)placeActionButtonControllerTextDidChange:(id)a3
+- (void)placeActionButtonControllerTextDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_buttonController);
 
-  if (WeakRetained == v4)
+  if (WeakRetained == changeCopy)
   {
     v9 = objc_loadWeakRetained(&self->_buttonController);
-    v6 = [v9 buttonTitle];
+    buttonTitle = [v9 buttonTitle];
     v7 = objc_loadWeakRetained(&self->_buttonController);
-    v8 = [v7 buttonSubTitle];
-    [(MKPlaceHeaderButton *)self setPrimaryTitle:v6 subtitle:v8];
+    buttonSubTitle = [v7 buttonSubTitle];
+    [(MKPlaceHeaderButton *)self setPrimaryTitle:buttonTitle subtitle:buttonSubTitle];
   }
 }
 
-- (void)setPrimaryTitle:(id)a3 subtitle:(id)a4
+- (void)setPrimaryTitle:(id)title subtitle:(id)subtitle
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  v8 = subtitleCopy;
+  if (titleCopy)
   {
-    v9 = v6;
+    v9 = titleCopy;
   }
 
   else
@@ -58,7 +58,7 @@
     v9 = &stru_1F15B23C0;
   }
 
-  if ([v7 length])
+  if ([subtitleCopy length])
   {
     v10 = 0.0;
     v11 = -1.0;
@@ -163,8 +163,8 @@
     v25 = [v15 initWithString:v9 attributes:v32];
   }
 
-  v37 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v38 = [v37 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v38 = [defaultParagraphStyle mutableCopy];
 
   [v38 setAlignment:1];
   [v38 setParagraphSpacing:-3.0];
@@ -173,14 +173,14 @@
   [v25 addAttribute:*MEMORY[0x1E69DB688] value:v38 range:{0, v39}];
   if (([(MKPlaceHeaderButton *)self isEnabled]& 1) != 0)
   {
-    v40 = [(UIView *)self mk_theme];
-    [v40 tintColor];
+    mk_theme = [(UIView *)self mk_theme];
+    [mk_theme tintColor];
   }
 
   else
   {
-    v40 = [MEMORY[0x1E69DC888] labelColor];
-    [v40 colorWithAlphaComponent:0.3];
+    mk_theme = [MEMORY[0x1E69DC888] labelColor];
+    [mk_theme colorWithAlphaComponent:0.3];
   }
   v41 = ;
 
@@ -188,24 +188,24 @@
   [(MKPlaceHeaderButton *)self setAttributedTitle:v25 forState:0];
 }
 
-- (void)updateButtonWithHighlighted:(BOOL)a3
+- (void)updateButtonWithHighlighted:(BOOL)highlighted
 {
-  if (a3)
+  if (highlighted)
   {
     if (self->_primary && ![(MKPlaceHeaderButton *)self _isTintColorWhite])
     {
-      v7 = [(UIView *)self mk_theme];
-      v5 = [v7 headerPrimaryButtonHighlightedColor];
-      [(MKPlaceHeaderButton *)self setTintColor:v5];
+      mk_theme = [(UIView *)self mk_theme];
+      headerPrimaryButtonHighlightedColor = [mk_theme headerPrimaryButtonHighlightedColor];
+      [(MKPlaceHeaderButton *)self setTintColor:headerPrimaryButtonHighlightedColor];
       goto LABEL_9;
     }
 
-    v7 = [(UIView *)self mk_theme];
-    v4 = [v7 buttonHighlightedColor];
+    mk_theme = [(UIView *)self mk_theme];
+    buttonHighlightedColor = [mk_theme buttonHighlightedColor];
 LABEL_8:
-    v5 = v4;
-    v6 = [(MKVibrantView *)self->_vibrantView contentView];
-    [v6 setBackgroundColor:v5];
+    headerPrimaryButtonHighlightedColor = buttonHighlightedColor;
+    contentView = [(MKVibrantView *)self->_vibrantView contentView];
+    [contentView setBackgroundColor:headerPrimaryButtonHighlightedColor];
 
 LABEL_9:
     goto LABEL_10;
@@ -213,12 +213,12 @@ LABEL_9:
 
   if (!self->_primary || [(MKPlaceHeaderButton *)self _isTintColorWhite])
   {
-    v7 = [(UIView *)self mk_theme];
-    v4 = [v7 buttonNormalColor];
+    mk_theme = [(UIView *)self mk_theme];
+    buttonHighlightedColor = [mk_theme buttonNormalColor];
     goto LABEL_8;
   }
 
-  v7 = [(MKPlaceHeaderButton *)self _primaryButtonColor];
+  mk_theme = [(MKPlaceHeaderButton *)self _primaryButtonColor];
   [(MKPlaceHeaderButton *)self setTintColor:?];
 LABEL_10:
 }
@@ -244,17 +244,17 @@ LABEL_10:
   }
 }
 
-- (void)setPrimaryTitle:(id)a3
+- (void)setPrimaryTitle:(id)title
 {
-  v4 = a3;
-  v5 = [v4 length];
-  v10 = [(MKPlaceHeaderButton *)self _primaryButtonTextColor];
-  v6 = [v4 mutableCopy];
+  titleCopy = title;
+  v5 = [titleCopy length];
+  _primaryButtonTextColor = [(MKPlaceHeaderButton *)self _primaryButtonTextColor];
+  v6 = [titleCopy mutableCopy];
   v7 = *MEMORY[0x1E69DB650];
-  [v6 addAttribute:*MEMORY[0x1E69DB650] value:v10 range:{0, v5}];
+  [v6 addAttribute:*MEMORY[0x1E69DB650] value:_primaryButtonTextColor range:{0, v5}];
   [(MKPlaceHeaderButton *)self setAttributedTitle:v6 forState:0];
-  v8 = [v10 colorWithAlphaComponent:0.25];
-  v9 = [v4 mutableCopy];
+  v8 = [_primaryButtonTextColor colorWithAlphaComponent:0.25];
+  v9 = [titleCopy mutableCopy];
 
   [v9 addAttribute:v7 value:v8 range:{0, v5}];
   [(MKPlaceHeaderButton *)self setAttributedTitle:v9 forState:1];
@@ -267,8 +267,8 @@ LABEL_10:
   {
     if (buttonType == 2)
     {
-      v4 = [(UIView *)self mk_theme];
-      if ([v4 isDarkTheme])
+      mk_theme = [(UIView *)self mk_theme];
+      if ([mk_theme isDarkTheme])
       {
         v7 = 0.243137255;
         v8 = 0.776470602;
@@ -282,16 +282,16 @@ LABEL_10:
         v9 = 0.370000005;
       }
 
-      v5 = [MEMORY[0x1E69DC888] colorWithRed:v7 green:v8 blue:v9 alpha:1.0];
+      tintColor = [MEMORY[0x1E69DC888] colorWithRed:v7 green:v8 blue:v9 alpha:1.0];
     }
 
     else
     {
-      v4 = [(UIView *)self mk_theme];
-      v5 = [v4 tintColor];
+      mk_theme = [(UIView *)self mk_theme];
+      tintColor = [mk_theme tintColor];
     }
 
-    v2 = v5;
+    v2 = tintColor;
   }
 
   return v2;
@@ -299,24 +299,24 @@ LABEL_10:
 
 - (BOOL)_isTintColorWhite
 {
-  v2 = [(UIView *)self mk_theme];
-  v3 = [v2 tintColor];
-  v4 = [MEMORY[0x1E69DC888] whiteColor];
-  v5 = [v3 isEqual:v4];
+  mk_theme = [(UIView *)self mk_theme];
+  tintColor = [mk_theme tintColor];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v5 = [tintColor isEqual:whiteColor];
 
   return v5;
 }
 
-- (void)buttonSelected:(id)a3
+- (void)buttonSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   if (!self->_primary)
   {
-    v8 = v4;
+    v8 = selectedCopy;
     WeakRetained = objc_loadWeakRetained(&self->_buttonController);
-    v6 = [WeakRetained buttonSelectedBlock];
+    buttonSelectedBlock = [WeakRetained buttonSelectedBlock];
 
-    if (v6)
+    if (buttonSelectedBlock)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -329,10 +329,10 @@ LABEL_10:
         v7 = 0;
       }
 
-      (v6)[2](v6, v7);
+      (buttonSelectedBlock)[2](buttonSelectedBlock, v7);
     }
 
-    v4 = v8;
+    selectedCopy = v8;
   }
 }
 
@@ -348,7 +348,7 @@ LABEL_10:
   }
 
   [(MKPlaceHeaderButton *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(MKPlaceHeaderButton *)self heightAnchor];
+  heightAnchor = [(MKPlaceHeaderButton *)self heightAnchor];
   v5 = MEMORY[0x1E69DB878];
   v6 = MEMORY[0x1E69DB880];
   if (_MKPlaceCardUseSmallerFont_onceToken != -1)
@@ -369,13 +369,13 @@ LABEL_10:
   v8 = [v6 preferredFontDescriptorWithTextStyle:*v7 addingSymbolicTraits:2 options:0];
   v9 = [v5 fontWithDescriptor:v8 size:0.0];
   [v9 _mapkit_scaledValueForValue:52.0];
-  v10 = [v4 constraintEqualToConstant:?];
+  v10 = [heightAnchor constraintEqualToConstant:?];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v10;
 
   [(NSLayoutConstraint *)self->_heightConstraint setActive:1];
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
 }
 
 - (void)infoCardThemeChanged
@@ -392,10 +392,10 @@ LABEL_10:
   {
     [(MKPlaceHeaderButton *)self _updateStyleNonPrimaryButton];
     WeakRetained = objc_loadWeakRetained(&self->_buttonController);
-    v4 = [WeakRetained buttonTitle];
+    buttonTitle = [WeakRetained buttonTitle];
     v5 = objc_loadWeakRetained(&self->_buttonController);
-    v6 = [v5 buttonSubTitle];
-    [(MKPlaceHeaderButton *)self setPrimaryTitle:v4 subtitle:v6];
+    buttonSubTitle = [v5 buttonSubTitle];
+    [(MKPlaceHeaderButton *)self setPrimaryTitle:buttonTitle subtitle:buttonSubTitle];
   }
 }
 
@@ -426,17 +426,17 @@ LABEL_10:
   if (self->_primary)
   {
     WeakRetained = [(MKPlaceHeaderButton *)self titleLabel];
-    v8 = [WeakRetained attributedText];
-    [(MKPlaceHeaderButton *)self setPrimaryTitle:v8];
+    attributedText = [WeakRetained attributedText];
+    [(MKPlaceHeaderButton *)self setPrimaryTitle:attributedText];
   }
 
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_buttonController);
-    v8 = [WeakRetained buttonTitle];
+    attributedText = [WeakRetained buttonTitle];
     v9 = objc_loadWeakRetained(&self->_buttonController);
-    v10 = [v9 buttonSubTitle];
-    [(MKPlaceHeaderButton *)self setPrimaryTitle:v8 subtitle:v10];
+    buttonSubTitle = [v9 buttonSubTitle];
+    [(MKPlaceHeaderButton *)self setPrimaryTitle:attributedText subtitle:buttonSubTitle];
   }
 }
 
@@ -473,28 +473,28 @@ LABEL_11:
     self->_vibrantView = v10;
 
     [(MKVibrantView *)self->_vibrantView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [MEMORY[0x1E69DC888] clearColor];
-    [(MKVibrantView *)self->_vibrantView setBackgroundColor:v12];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(MKVibrantView *)self->_vibrantView setBackgroundColor:clearColor];
 
     [(MKVibrantView *)self->_vibrantView setUserInteractionEnabled:0];
     [(MKVibrantView *)self->_vibrantView setContinuousCornerRadius:8.0];
     [(MKPlaceHeaderButton *)self insertSubview:self->_vibrantView atIndex:0];
     v23 = MEMORY[0x1E696ACD8];
-    v27 = [(MKVibrantView *)self->_vibrantView topAnchor];
-    v25 = [(MKPlaceHeaderButton *)self topAnchor];
-    v24 = [v27 constraintEqualToAnchor:v25];
+    topAnchor = [(MKVibrantView *)self->_vibrantView topAnchor];
+    topAnchor2 = [(MKPlaceHeaderButton *)self topAnchor];
+    v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v28[0] = v24;
-    v13 = [(MKVibrantView *)self->_vibrantView bottomAnchor];
-    v14 = [(MKPlaceHeaderButton *)self bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [(MKVibrantView *)self->_vibrantView bottomAnchor];
+    bottomAnchor2 = [(MKPlaceHeaderButton *)self bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v28[1] = v15;
-    v16 = [(MKVibrantView *)self->_vibrantView leadingAnchor];
-    v17 = [(MKPlaceHeaderButton *)self leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    leadingAnchor = [(MKVibrantView *)self->_vibrantView leadingAnchor];
+    leadingAnchor2 = [(MKPlaceHeaderButton *)self leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v28[2] = v18;
-    v19 = [(MKVibrantView *)self->_vibrantView trailingAnchor];
-    v20 = [(MKPlaceHeaderButton *)self trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor = [(MKVibrantView *)self->_vibrantView trailingAnchor];
+    trailingAnchor2 = [(MKPlaceHeaderButton *)self trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v28[3] = v21;
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
     [v23 activateConstraints:v22];
@@ -505,26 +505,26 @@ LABEL_11:
 LABEL_7:
   if ([(MKPlaceHeaderButton *)self _isTintColorWhite])
   {
-    v3 = [(MKPlaceHeaderButton *)self layer];
-    [v3 setCornerRadius:8.0];
+    layer = [(MKPlaceHeaderButton *)self layer];
+    [layer setCornerRadius:8.0];
 
     v4 = *MEMORY[0x1E69796E8];
-    v5 = [(MKPlaceHeaderButton *)self layer];
-    [v5 setCornerCurve:v4];
+    layer2 = [(MKPlaceHeaderButton *)self layer];
+    [layer2 setCornerCurve:v4];
 
     v6 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.200000003];
-    v7 = [v6 CGColor];
-    v8 = [(MKPlaceHeaderButton *)self layer];
-    [v8 setBorderColor:v7];
+    cGColor = [v6 CGColor];
+    layer3 = [(MKPlaceHeaderButton *)self layer];
+    [layer3 setBorderColor:cGColor];
 
-    v26 = [(MKPlaceHeaderButton *)self layer];
-    [v26 setBorderWidth:1.0];
+    layer4 = [(MKPlaceHeaderButton *)self layer];
+    [layer4 setBorderWidth:1.0];
   }
 }
 
-- (void)setButtonController:(id)a3
+- (void)setButtonController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_buttonController);
 
   if (WeakRetained != obj)
@@ -536,23 +536,23 @@ LABEL_7:
     [(MKPlaceHeaderButton *)self applyButtonDefaultConfiguration];
     [(MKPlaceHeaderButton *)self _updateStyleNonPrimaryButton];
     v6 = objc_loadWeakRetained(&self->_buttonController);
-    v7 = [v6 buttonTitle];
+    buttonTitle = [v6 buttonTitle];
     v8 = objc_loadWeakRetained(&self->_buttonController);
-    v9 = [v8 buttonSubTitle];
-    [(MKPlaceHeaderButton *)self setPrimaryTitle:v7 subtitle:v9];
+    buttonSubTitle = [v8 buttonSubTitle];
+    [(MKPlaceHeaderButton *)self setPrimaryTitle:buttonTitle subtitle:buttonSubTitle];
 
     [(MKPlaceHeaderButton *)self _setVibrantView];
   }
 }
 
-- (MKPlaceHeaderButton)initWithPrimaryType:(unint64_t)a3
+- (MKPlaceHeaderButton)initWithPrimaryType:(unint64_t)type
 {
   v4 = [(MKPlaceHeaderButton *)self init];
   v5 = v4;
   if (v4)
   {
     v4->_primary = 1;
-    v4->_buttonType = a3;
+    v4->_buttonType = type;
     [(MKPlaceHeaderButton *)v4 applyButtonDefaultConfiguration];
     [(MKPlaceHeaderButton *)v5 _setVibrantView];
     [(MKPlaceHeaderButton *)v5 _updateStylePrimaryButton];
@@ -569,14 +569,14 @@ LABEL_7:
   v3 = v2;
   if (v2)
   {
-    v4 = [(MKPlaceHeaderButton *)v2 titleLabel];
-    [v4 setNumberOfLines:3];
+    titleLabel = [(MKPlaceHeaderButton *)v2 titleLabel];
+    [titleLabel setNumberOfLines:3];
 
-    v5 = [(MKPlaceHeaderButton *)v3 titleLabel];
-    [v5 setMinimumScaleFactor:0.699999988];
+    titleLabel2 = [(MKPlaceHeaderButton *)v3 titleLabel];
+    [titleLabel2 setMinimumScaleFactor:0.699999988];
 
-    v6 = [(MKPlaceHeaderButton *)v3 titleLabel];
-    [v6 setAdjustsFontSizeToFitWidth:1];
+    titleLabel3 = [(MKPlaceHeaderButton *)v3 titleLabel];
+    [titleLabel3 setAdjustsFontSizeToFitWidth:1];
   }
 
   return v3;

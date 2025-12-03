@@ -1,11 +1,11 @@
 @interface FMLocationShifter
-- (BOOL)isLocationShiftRequiredForItem:(id)a3;
-- (BOOL)isLocationShiftRequiredForItems:(id)a3;
+- (BOOL)isLocationShiftRequiredForItem:(id)item;
+- (BOOL)isLocationShiftRequiredForItems:(id)items;
 - (FMLocationShifter)init;
-- (id)shiftLocation:(id)a3 timeout:(double)a4;
-- (id)shiftLocations:(id)a3 timeout:(double)a4;
-- (void)shiftLocation:(id)a3 withCompletionHandler:(id)a4 callbackQueue:(id)a5;
-- (void)shiftLocations:(id)a3 withCompletionHandler:(id)a4 callbackQueue:(id)a5;
+- (id)shiftLocation:(id)location timeout:(double)timeout;
+- (id)shiftLocations:(id)locations timeout:(double)timeout;
+- (void)shiftLocation:(id)location withCompletionHandler:(id)handler callbackQueue:(id)queue;
+- (void)shiftLocations:(id)locations withCompletionHandler:(id)handler callbackQueue:(id)queue;
 @end
 
 @implementation FMLocationShifter
@@ -30,23 +30,23 @@
   return v2;
 }
 
-- (BOOL)isLocationShiftRequiredForItem:(id)a3
+- (BOOL)isLocationShiftRequiredForItem:(id)item
 {
-  [a3 coordinate];
+  [item coordinate];
   v3 = MEMORY[0x277D0EB88];
 
   return [v3 isLocationShiftRequiredForCoordinate:?];
 }
 
-- (BOOL)isLocationShiftRequiredForItems:(id)a3
+- (BOOL)isLocationShiftRequiredForItems:(id)items
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  itemsCopy = items;
+  v5 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -57,7 +57,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         if ([(FMLocationShifter *)self isLocationShiftRequiredForItem:*(*(&v12 + 1) + 8 * i), v12])
@@ -67,7 +67,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -84,19 +84,19 @@ LABEL_11:
   return v9;
 }
 
-- (void)shiftLocation:(id)a3 withCompletionHandler:(id)a4 callbackQueue:(id)a5
+- (void)shiftLocation:(id)location withCompletionHandler:(id)handler callbackQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(FMLocationShifter *)self isLocationShiftRequiredForItem:v8])
+  locationCopy = location;
+  handlerCopy = handler;
+  queueCopy = queue;
+  if ([(FMLocationShifter *)self isLocationShiftRequiredForItem:locationCopy])
   {
-    [v8 coordinate];
+    [locationCopy coordinate];
     v12 = v11;
     v14 = v13;
-    [v8 accuracy];
+    [locationCopy accuracy];
     v16 = v15;
-    v17 = [(FMLocationShifter *)self queue];
+    queue = [(FMLocationShifter *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__FMLocationShifter_shiftLocation_withCompletionHandler_callbackQueue___block_invoke;
@@ -105,12 +105,12 @@ LABEL_11:
     v31 = v14;
     v32 = v16;
     block[4] = self;
-    v27 = v8;
-    v28 = v10;
-    v29 = v9;
-    v18 = v8;
-    v19 = v9;
-    dispatch_async(v17, block);
+    v27 = locationCopy;
+    v28 = queueCopy;
+    v29 = handlerCopy;
+    v18 = locationCopy;
+    v19 = handlerCopy;
+    dispatch_async(queue, block);
 
     v20 = v27;
   }
@@ -121,11 +121,11 @@ LABEL_11:
     v23[1] = 3221225472;
     v23[2] = __71__FMLocationShifter_shiftLocation_withCompletionHandler_callbackQueue___block_invoke_59;
     v23[3] = &unk_278FD97D0;
-    v24 = v8;
-    v25 = v9;
-    v21 = v8;
-    v22 = v9;
-    dispatch_async(v10, v23);
+    v24 = locationCopy;
+    v25 = handlerCopy;
+    v21 = locationCopy;
+    v22 = handlerCopy;
+    dispatch_async(queueCopy, v23);
 
     v20 = v25;
   }
@@ -209,24 +209,24 @@ void __71__FMLocationShifter_shiftLocation_withCompletionHandler_callbackQueue__
   dispatch_semaphore_signal(v15);
 }
 
-- (void)shiftLocations:(id)a3 withCompletionHandler:(id)a4 callbackQueue:(id)a5
+- (void)shiftLocations:(id)locations withCompletionHandler:(id)handler callbackQueue:(id)queue
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(FMLocationShifter *)self isLocationShiftRequiredForItems:v8])
+  locationsCopy = locations;
+  handlerCopy = handler;
+  queueCopy = queue;
+  if ([(FMLocationShifter *)self isLocationShiftRequiredForItems:locationsCopy])
   {
-    v24 = v9;
+    v24 = handlerCopy;
     v11 = dispatch_queue_create("com.apple.icloud.fmcore.multishift.shiftSerialQueue", 0);
-    v12 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v8, "count")}];
+    v12 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(locationsCopy, "count")}];
     v13 = dispatch_group_create();
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v25 = v8;
-    obj = v8;
+    v25 = locationsCopy;
+    obj = locationsCopy;
     v14 = [obj countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v14)
     {
@@ -237,7 +237,7 @@ void __71__FMLocationShifter_shiftLocation_withCompletionHandler_callbackQueue__
         v17 = 0;
         do
         {
-          v18 = v10;
+          v18 = queueCopy;
           if (*v38 != v16)
           {
             objc_enumerationMutation(obj);
@@ -253,7 +253,7 @@ void __71__FMLocationShifter_shiftLocation_withCompletionHandler_callbackQueue__
           v35 = v12;
           v36 = v13;
           v20 = v19;
-          v10 = v18;
+          queueCopy = v18;
           [(FMLocationShifter *)self shiftLocation:v20 withCompletionHandler:v33 callbackQueue:v18];
 
           ++v17;
@@ -274,9 +274,9 @@ void __71__FMLocationShifter_shiftLocation_withCompletionHandler_callbackQueue__
     v32 = v24;
     v21 = v24;
     v22 = v12;
-    dispatch_group_notify(v13, v10, block);
+    dispatch_group_notify(v13, queueCopy, block);
 
-    v8 = v25;
+    locationsCopy = v25;
   }
 
   else
@@ -285,10 +285,10 @@ void __71__FMLocationShifter_shiftLocation_withCompletionHandler_callbackQueue__
     v27[1] = 3221225472;
     v27[2] = __72__FMLocationShifter_shiftLocations_withCompletionHandler_callbackQueue___block_invoke_4;
     v27[3] = &unk_278FD97D0;
-    v29 = v9;
-    v28 = v8;
-    v11 = v9;
-    dispatch_async(v10, v27);
+    v29 = handlerCopy;
+    v28 = locationsCopy;
+    v11 = handlerCopy;
+    dispatch_async(queueCopy, v27);
 
     v13 = v29;
   }
@@ -311,16 +311,16 @@ void __72__FMLocationShifter_shiftLocations_withCompletionHandler_callbackQueue_
   dispatch_group_leave(*(a1 + 48));
 }
 
-- (id)shiftLocation:(id)a3 timeout:(double)a4
+- (id)shiftLocation:(id)location timeout:(double)timeout
 {
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__1;
   v22 = __Block_byref_object_dispose__1;
-  v6 = a3;
-  v23 = v6;
-  v7 = [objc_alloc(MEMORY[0x277D07B80]) initWithDescription:@"shiftLocation" andTimeout:a4];
+  locationCopy = location;
+  v23 = locationCopy;
+  v7 = [objc_alloc(MEMORY[0x277D07B80]) initWithDescription:@"shiftLocation" andTimeout:timeout];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __56__FMLocationShifter_Synchronous__shiftLocation_timeout___block_invoke;
@@ -329,7 +329,7 @@ void __72__FMLocationShifter_shiftLocations_withCompletionHandler_callbackQueue_
   v8 = v7;
   v16 = v8;
   v9 = dispatch_get_global_queue(21, 0);
-  [(FMLocationShifter *)self shiftLocation:v6 withCompletionHandler:&v12 callbackQueue:v9];
+  [(FMLocationShifter *)self shiftLocation:locationCopy withCompletionHandler:&v12 callbackQueue:v9];
 
   [v8 wait];
   v10 = v19[5];
@@ -346,16 +346,16 @@ void __56__FMLocationShifter_Synchronous__shiftLocation_timeout___block_invoke(u
   [*(a1 + 32) signal];
 }
 
-- (id)shiftLocations:(id)a3 timeout:(double)a4
+- (id)shiftLocations:(id)locations timeout:(double)timeout
 {
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__1;
   v22 = __Block_byref_object_dispose__1;
-  v6 = a3;
-  v23 = v6;
-  v7 = [objc_alloc(MEMORY[0x277D07B80]) initWithDescription:@"shiftLocations" andTimeout:a4];
+  locationsCopy = locations;
+  v23 = locationsCopy;
+  v7 = [objc_alloc(MEMORY[0x277D07B80]) initWithDescription:@"shiftLocations" andTimeout:timeout];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = __57__FMLocationShifter_Synchronous__shiftLocations_timeout___block_invoke;
@@ -364,7 +364,7 @@ void __56__FMLocationShifter_Synchronous__shiftLocation_timeout___block_invoke(u
   v8 = v7;
   v16 = v8;
   v9 = dispatch_get_global_queue(21, 0);
-  [(FMLocationShifter *)self shiftLocations:v6 withCompletionHandler:&v12 callbackQueue:v9];
+  [(FMLocationShifter *)self shiftLocations:locationsCopy withCompletionHandler:&v12 callbackQueue:v9];
 
   [v8 wait];
   v10 = v19[5];

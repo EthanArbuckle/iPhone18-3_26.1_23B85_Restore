@@ -1,26 +1,26 @@
 @interface SPCBPeripheralKeyRequest
-- (SPCBPeripheralKeyRequest)initWithCoder:(id)a3;
-- (SPCBPeripheralKeyRequest)initWithDate:(id)a3 requestParameters:(id)a4;
+- (SPCBPeripheralKeyRequest)initWithCoder:(id)coder;
+- (SPCBPeripheralKeyRequest)initWithDate:(id)date requestParameters:(id)parameters;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPCBPeripheralKeyRequest
 
-- (SPCBPeripheralKeyRequest)initWithDate:(id)a3 requestParameters:(id)a4
+- (SPCBPeripheralKeyRequest)initWithDate:(id)date requestParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = SPCBPeripheralKeyRequest;
   v8 = [(SPCBPeripheralKeyRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dateCopy copy];
     date = v8->_date;
     v8->_date = v9;
 
-    v11 = [v7 copy];
+    v11 = [parametersCopy copy];
     requestParameters = v8->_requestParameters;
     v8->_requestParameters = v11;
   }
@@ -28,21 +28,21 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SPCBPeripheralKeyRequest *)self date];
-  [v4 encodeObject:v5 forKey:@"date"];
+  coderCopy = coder;
+  date = [(SPCBPeripheralKeyRequest *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  v6 = [(SPCBPeripheralKeyRequest *)self requestParameters];
-  [v4 encodeObject:v6 forKey:@"requestParameters"];
+  requestParameters = [(SPCBPeripheralKeyRequest *)self requestParameters];
+  [coderCopy encodeObject:requestParameters forKey:@"requestParameters"];
 }
 
-- (SPCBPeripheralKeyRequest)initWithCoder:(id)a3
+- (SPCBPeripheralKeyRequest)initWithCoder:(id)coder
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
   date = self->_date;
   self->_date = v5;
 
@@ -51,7 +51,7 @@
   v14[1] = objc_opt_class();
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v9 = [v7 setWithArray:v8];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"requestParameters"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"requestParameters"];
 
   requestParameters = self->_requestParameters;
   self->_requestParameters = v10;
@@ -64,9 +64,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SPCBPeripheralKeyRequest *)self date];
-  v6 = [(SPCBPeripheralKeyRequest *)self requestParameters];
-  v7 = [v3 stringWithFormat:@"[%@: date=%@, paramCount=%lu]", v4, v5, objc_msgSend(v6, "count")];
+  date = [(SPCBPeripheralKeyRequest *)self date];
+  requestParameters = [(SPCBPeripheralKeyRequest *)self requestParameters];
+  v7 = [v3 stringWithFormat:@"[%@: date=%@, paramCount=%lu]", v4, date, objc_msgSend(requestParameters, "count")];
 
   return v7;
 }

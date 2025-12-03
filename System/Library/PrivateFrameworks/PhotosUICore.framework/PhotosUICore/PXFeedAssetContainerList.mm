@@ -1,6 +1,6 @@
 @interface PXFeedAssetContainerList
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)transientIdentifier;
 - (unint64_t)containersCount;
 - (unint64_t)hash;
@@ -13,10 +13,10 @@
   transientIdentifier = self->_transientIdentifier;
   if (!transientIdentifier)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v6 = self->_transientIdentifier;
-    self->_transientIdentifier = v5;
+    self->_transientIdentifier = uUIDString;
 
     transientIdentifier = self->_transientIdentifier;
   }
@@ -31,8 +31,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(PXFeedAssetContainerList *)self containers];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  containers = [(PXFeedAssetContainerList *)self containers];
+  v3 = [containers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -43,7 +43,7 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(containers);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) isEmpty])
@@ -53,7 +53,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [containers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -71,23 +71,23 @@ LABEL_11:
 
 - (unint64_t)containersCount
 {
-  v2 = [(PXFeedAssetContainerList *)self containers];
-  v3 = [v2 count];
+  containers = [(PXFeedAssetContainerList *)self containers];
+  v3 = [containers count];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXFeedAssetContainerList *)self containers];
-    v7 = [v5 containers];
+    v5 = equalCopy;
+    containers = [(PXFeedAssetContainerList *)self containers];
+    containers2 = [v5 containers];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [containers isEqual:containers2];
   }
 
   else
@@ -100,8 +100,8 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(PXFeedAssetContainerList *)self containers];
-  v3 = [v2 hash];
+  containers = [(PXFeedAssetContainerList *)self containers];
+  v3 = [containers hash];
 
   return v3;
 }

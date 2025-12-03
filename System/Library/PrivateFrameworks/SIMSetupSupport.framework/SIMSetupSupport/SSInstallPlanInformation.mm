@@ -4,41 +4,41 @@
 - (NSString)imageName;
 - (NSString)text;
 - (SSConfirmationCodeViewController)confirmationCodeViewController;
-- (SSInstallPlanInformation)initWithItem:(id)a3;
-- (SSInstallPlanInformation)initWithPlan:(id)a3;
+- (SSInstallPlanInformation)initWithItem:(id)item;
+- (SSInstallPlanInformation)initWithPlan:(id)plan;
 - (id)description;
 - (unint64_t)activatingState;
 - (void)maybeUpdateTimeoutStatus;
-- (void)updateTargetIccidInfo:(id)a3;
+- (void)updateTargetIccidInfo:(id)info;
 @end
 
 @implementation SSInstallPlanInformation
 
-- (SSInstallPlanInformation)initWithPlan:(id)a3
+- (SSInstallPlanInformation)initWithPlan:(id)plan
 {
-  v5 = a3;
+  planCopy = plan;
   v16.receiver = self;
   v16.super_class = SSInstallPlanInformation;
   v6 = [(SSInstallPlanInformation *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_displayPlan, a3);
+    objc_storeStrong(&v6->_displayPlan, plan);
     v7->_status = 6;
-    v8 = [(CTDisplayPlan *)v7->_displayPlan plan];
-    if (v8)
+    plan = [(CTDisplayPlan *)v7->_displayPlan plan];
+    if (plan)
     {
-      v9 = v8;
-      v10 = [(CTDisplayPlan *)v7->_displayPlan plan];
+      v9 = plan;
+      plan2 = [(CTDisplayPlan *)v7->_displayPlan plan];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v12 = [(CTDisplayPlan *)v7->_displayPlan plan];
-        v13 = [v12 iccidHash];
+        plan3 = [(CTDisplayPlan *)v7->_displayPlan plan];
+        iccidHash = [plan3 iccidHash];
         targetIccidHash = v7->_targetIccidHash;
-        v7->_targetIccidHash = v13;
+        v7->_targetIccidHash = iccidHash;
       }
     }
   }
@@ -46,19 +46,19 @@
   return v7;
 }
 
-- (SSInstallPlanInformation)initWithItem:(id)a3
+- (SSInstallPlanInformation)initWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v10.receiver = self;
   v10.super_class = SSInstallPlanInformation;
   v6 = [(SSInstallPlanInformation *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_planItem, a3);
+    objc_storeStrong(&v6->_planItem, item);
     v7->_isPreInstalled = 1;
-    v8 = [v5 iccid];
-    [(SSInstallPlanInformation *)v7 updateTargetIccidInfo:v8];
+    iccid = [itemCopy iccid];
+    [(SSInstallPlanInformation *)v7 updateTargetIccidInfo:iccid];
   }
 
   return v7;
@@ -69,7 +69,7 @@
   displayPlan = self->_displayPlan;
   if (displayPlan && (-[CTDisplayPlan identifier](displayPlan, "identifier"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 length], v4, v5))
   {
-    v6 = [(CTDisplayPlan *)self->_displayPlan identifier];
+    identifier = [(CTDisplayPlan *)self->_displayPlan identifier];
   }
 
   else
@@ -77,22 +77,22 @@
     planItem = self->_planItem;
     if (planItem && (-[CTCellularPlanItem iccid](planItem, "iccid"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 length], v8, v9))
     {
-      v6 = [(CTCellularPlanItem *)self->_planItem iccid];
+      identifier = [(CTCellularPlanItem *)self->_planItem iccid];
     }
 
     else
     {
-      v6 = self->_targetIccid;
+      identifier = self->_targetIccid;
     }
   }
 
-  return v6;
+  return identifier;
 }
 
 - (NSString)carrierName
 {
-  v3 = [(CTDisplayPlan *)self->_displayPlan carrierName];
-  v4 = [v3 length];
+  carrierName = [(CTDisplayPlan *)self->_displayPlan carrierName];
+  v4 = [carrierName length];
 
   v5 = 16;
   if (!v4)
@@ -100,9 +100,9 @@
     v5 = 24;
   }
 
-  v6 = [*(&self->super.isa + v5) carrierName];
+  carrierName2 = [*(&self->super.isa + v5) carrierName];
 
-  return v6;
+  return carrierName2;
 }
 
 - (NSString)text
@@ -126,7 +126,7 @@
   displayPlan = self->_displayPlan;
   if (displayPlan)
   {
-    v4 = [(CTDisplayPlan *)displayPlan imageName];
+    imageName = [(CTDisplayPlan *)displayPlan imageName];
   }
 
   else
@@ -134,16 +134,16 @@
     planItem = self->_planItem;
     if (planItem && ![(CTCellularPlanItem *)planItem type])
     {
-      v4 = @"simcard";
+      imageName = @"simcard";
     }
 
     else
     {
-      v4 = @"esim";
+      imageName = @"esim";
     }
   }
 
-  return v4;
+  return imageName;
 }
 
 - (unint64_t)activatingState
@@ -195,20 +195,20 @@
   return result;
 }
 
-- (void)updateTargetIccidInfo:(id)a3
+- (void)updateTargetIccidInfo:(id)info
 {
-  v5 = a3;
-  objc_storeStrong(&self->_targetIccid, a3);
-  v9 = v5;
+  infoCopy = info;
+  objc_storeStrong(&self->_targetIccid, info);
+  v9 = infoCopy;
   v6 = v9;
   if ([v9 length] == 19)
   {
     v6 = [v9 stringByAppendingString:@"F"];
   }
 
-  v7 = [v6 sha256];
+  sha256 = [v6 sha256];
   targetIccidHash = self->_targetIccidHash;
-  self->_targetIccidHash = v7;
+  self->_targetIccidHash = sha256;
 }
 
 - (void)maybeUpdateTimeoutStatus
@@ -241,7 +241,7 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    v5 = [(CTDisplayPlan *)self->_displayPlan plan];
+    plan = [(CTDisplayPlan *)self->_displayPlan plan];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -252,9 +252,9 @@ LABEL_10:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_15:
-        v9 = [(SSInstallPlanInformation *)self identifier];
+        identifier = [(SSInstallPlanInformation *)self identifier];
         v15 = 138412546;
-        v16 = v9;
+        v16 = identifier;
         v17 = 2080;
         v18 = "[SSInstallPlanInformation maybeUpdateTimeoutStatus]";
         v10 = "consent timeout, update %@ status to TimeoutNotConsented @%s";
@@ -265,7 +265,7 @@ LABEL_23:
 
     else
     {
-      v11 = [(CTDisplayPlan *)self->_displayPlan plan];
+      plan2 = [(CTDisplayPlan *)self->_displayPlan plan];
       objc_opt_class();
       v12 = objc_opt_isKindOfClass();
 
@@ -285,9 +285,9 @@ LABEL_23:
         v8 = _TSLogDomain();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [(SSInstallPlanInformation *)self identifier];
+          identifier = [(SSInstallPlanInformation *)self identifier];
           v15 = 138412546;
-          v16 = v9;
+          v16 = identifier;
           v17 = 2080;
           v18 = "[SSInstallPlanInformation maybeUpdateTimeoutStatus]";
           v10 = "timeout, update %@ status to TimeoutInstallOngoing @%s";
@@ -305,8 +305,8 @@ LABEL_25:
 {
   v3 = objc_opt_new();
   [v3 appendFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(SSInstallPlanInformation *)self identifier];
-  [v3 appendFormat:@" id=%@", v4];
+  identifier = [(SSInstallPlanInformation *)self identifier];
+  [v3 appendFormat:@" id=%@", identifier];
 
   [v3 appendFormat:@" status=%s", SSPlanTransferStatusAsString(self->_status)];
   [v3 appendFormat:@" error=%@", self->_installError];

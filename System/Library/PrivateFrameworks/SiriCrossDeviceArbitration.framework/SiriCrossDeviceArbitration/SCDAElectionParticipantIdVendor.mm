@@ -1,8 +1,8 @@
 @interface SCDAElectionParticipantIdVendor
-+ (id)computeId:(id)a3 withPayload:(id)a4;
++ (id)computeId:(id)id withPayload:(id)payload;
 + (void)initialize;
 - (SCDAElectionParticipantIdVendor)init;
-- (id)computeIds:(id)a3;
+- (id)computeIds:(id)ids;
 - (void)_clearCBAdvertiser;
 - (void)_fetchBTLEAddress;
 - (void)_init;
@@ -57,20 +57,20 @@
   }
 }
 
-- (id)computeIds:(id)a3
+- (id)computeIds:(id)ids
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idsCopy = ids;
   [(SCDAElectionParticipantIdVendor *)self fetchBTLEAddressIfRequired];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_bleAddress;
-  v7 = v5->_lastAddressChange;
-  v8 = v5->_rotatedBLEAddress;
-  v9 = v5->_lastRotatedAddressChange;
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_bleAddress;
+  v7 = selfCopy->_lastAddressChange;
+  v8 = selfCopy->_rotatedBLEAddress;
+  v9 = selfCopy->_lastRotatedAddressChange;
+  objc_sync_exit(selfCopy);
 
-  if (!v4 || !v6)
+  if (!idsCopy || !v6)
   {
     v13 = SCDALogContextCore;
     if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_DEBUG))
@@ -80,7 +80,7 @@
       v25 = 1024;
       *v26 = v6 == 0;
       *&v26[4] = 1024;
-      *&v26[6] = v4 == 0;
+      *&v26[6] = idsCopy == 0;
       _os_log_debug_impl(&dword_1DA758000, v13, OS_LOG_TYPE_DEBUG, "%s #scda Returning null sentinel id. addressNil?%d payloadNil?%d", &v23, 0x18u);
     }
 
@@ -109,7 +109,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v14 = [SCDAElectionParticipantIdVendor computeId:v6 withPayload:v4];
+  v14 = [SCDAElectionParticipantIdVendor computeId:v6 withPayload:idsCopy];
   v19 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_DEBUG))
   {
@@ -120,7 +120,7 @@ LABEL_11:
     *&v26[8] = 2112;
     v27 = v6;
     v28 = 2112;
-    v29 = v4;
+    v29 = idsCopy;
     _os_log_debug_impl(&dword_1DA758000, v19, OS_LOG_TYPE_DEBUG, "%s #scda Primary electionParticipantId: %@ from address %@ and payload %@", &v23, 0x2Au);
     if (!v8)
     {
@@ -149,7 +149,7 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v15 = [SCDAElectionParticipantIdVendor computeId:v8 withPayload:v4];
+  v15 = [SCDAElectionParticipantIdVendor computeId:v8 withPayload:idsCopy];
   v22 = SCDALogContextCore;
   if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_DEBUG))
   {
@@ -176,8 +176,8 @@ LABEL_12:
   cbAdvertiser = self->_cbAdvertiser;
   if (cbAdvertiser)
   {
-    v4 = [(CBAdvertiser *)cbAdvertiser advertisingAddressDataNonConnectable];
-    v5 = [v4 copy];
+    advertisingAddressDataNonConnectable = [(CBAdvertiser *)cbAdvertiser advertisingAddressDataNonConnectable];
+    v5 = [advertisingAddressDataNonConnectable copy];
 
     v6 = [MEMORY[0x1E695DF00] now];
     if (!v5)
@@ -193,9 +193,9 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v7 = self;
-    objc_sync_enter(v7);
-    bleAddress = v7->_bleAddress;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    bleAddress = selfCopy->_bleAddress;
     if (bleAddress)
     {
       if ([(NSData *)bleAddress isEqualToData:v5])
@@ -215,15 +215,15 @@ LABEL_16:
 
       else
       {
-        objc_storeStrong(&v7->_rotatedBLEAddress, v7->_bleAddress);
-        objc_storeStrong(&v7->_lastRotatedAddressChange, v7->_lastAddressChange);
-        objc_storeStrong(&v7->_bleAddress, v5);
-        objc_storeStrong(&v7->_lastAddressChange, v6);
+        objc_storeStrong(&selfCopy->_rotatedBLEAddress, selfCopy->_bleAddress);
+        objc_storeStrong(&selfCopy->_lastRotatedAddressChange, selfCopy->_lastAddressChange);
+        objc_storeStrong(&selfCopy->_bleAddress, v5);
+        objc_storeStrong(&selfCopy->_lastAddressChange, v6);
         v15 = SCDALogContextCore;
         if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_DEBUG))
         {
-          rotatedBLEAddress = v7->_rotatedBLEAddress;
-          v18 = v7->_bleAddress;
+          rotatedBLEAddress = selfCopy->_rotatedBLEAddress;
+          v18 = selfCopy->_bleAddress;
           v19 = 136315650;
           v20 = "[SCDAElectionParticipantIdVendor _fetchBTLEAddress]";
           v21 = 2112;
@@ -240,8 +240,8 @@ LABEL_16:
 
     else
     {
-      objc_storeStrong(&v7->_bleAddress, v5);
-      objc_storeStrong(&v7->_lastAddressChange, v6);
+      objc_storeStrong(&selfCopy->_bleAddress, v5);
+      objc_storeStrong(&selfCopy->_lastAddressChange, v6);
       v14 = SCDALogContextCore;
       if (os_log_type_enabled(SCDALogContextCore, OS_LOG_TYPE_DEBUG))
       {
@@ -256,7 +256,7 @@ LABEL_16:
       }
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
 
 LABEL_13:
   }
@@ -419,12 +419,12 @@ void __40__SCDAElectionParticipantIdVendor__init__block_invoke_2(uint64_t a1, vo
   return v2;
 }
 
-+ (id)computeId:(id)a3 withPayload:(id)a4
++ (id)computeId:(id)id withPayload:(id)payload
 {
   data[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 length];
+  payloadCopy = payload;
+  idCopy = id;
+  v7 = [payloadCopy length];
   if (v7 >= 8)
   {
     v8 = 8;
@@ -443,13 +443,13 @@ void __40__SCDAElectionParticipantIdVendor__init__block_invoke_2(uint64_t a1, vo
   memset(&v16, 0, sizeof(v16));
   CC_SHA1_Init(&v16);
   CC_SHA1_Update(&v16, data, 0x10u);
-  v10 = [v6 bytes];
-  v11 = [v6 length];
+  bytes = [idCopy bytes];
+  v11 = [idCopy length];
 
-  CC_SHA1_Update(&v16, v10, v11);
-  v12 = [v5 bytes];
+  CC_SHA1_Update(&v16, bytes, v11);
+  bytes2 = [payloadCopy bytes];
 
-  CC_SHA1_Update(&v16, v12, v8);
+  CC_SHA1_Update(&v16, bytes2, v8);
   CC_SHA1_Final(md, &v16);
   v18 = v18 & 0xF | 0x50;
   v19 = v19 & 0x3F | 0x80;

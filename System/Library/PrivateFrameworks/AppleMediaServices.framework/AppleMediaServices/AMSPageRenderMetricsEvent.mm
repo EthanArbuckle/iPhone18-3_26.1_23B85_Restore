@@ -13,8 +13,8 @@
     v3 = +[AMSLogConfig sharedConfig];
   }
 
-  v4 = [v3 OSLogObject];
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+  oSLogObject = [v3 OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = AMSLogKey();
@@ -22,7 +22,7 @@
     v10 = v5;
     v11 = 2114;
     v12 = v6;
-    _os_log_impl(&dword_192869000, v4, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] init", buf, 0x16u);
+    _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_INFO, "%{public}@: [%{public}@] init", buf, 0x16u);
   }
 
   v8.receiver = self;

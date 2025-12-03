@@ -1,12 +1,12 @@
 @interface SIScaleTask
-- (void)registerResoureStreamWithContext:(id)a3;
+- (void)registerResoureStreamWithContext:(id)context;
 @end
 
 @implementation SIScaleTask
 
-- (void)registerResoureStreamWithContext:(id)a3
+- (void)registerResoureStreamWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8 = xmmword_21DECC010;
   if (self->_cvPixelBufferProperties)
   {
@@ -30,7 +30,7 @@
     v5 = [MEMORY[0x277D3E680] cvPixelStreamWithResourceKey:self->_outputResourceKey options:&v8 width:width height:height pixelFormat:self->_pixelFormat];
   }
 
-  [v4 addResourceStream:{v5, v8}];
+  [contextCopy addResourceStream:{v5, v8}];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface SSRVoiceProfileRetrainerFactory
 - (SSRVoiceProfileRetrainerFactory)init;
-- (id)voiceRetrainersWithContext:(id)a3;
+- (id)voiceRetrainersWithContext:(id)context;
 @end
 
 @implementation SSRVoiceProfileRetrainerFactory
 
-- (id)voiceRetrainersWithContext:(id)a3
+- (id)voiceRetrainersWithContext:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [[SSRVoiceProfileRetrainerPSR alloc] initWithVoiceRetrainingContext:v3];
+  v5 = [[SSRVoiceProfileRetrainerPSR alloc] initWithVoiceRetrainingContext:contextCopy];
   if (v5)
   {
     [v4 addObject:v5];
   }
 
-  v6 = [[SSRVoiceProfileRetrainerSAT alloc] initWithVoiceRetrainingContext:v3];
+  v6 = [[SSRVoiceProfileRetrainerSAT alloc] initWithVoiceRetrainingContext:contextCopy];
   if (v6)
   {
     [v4 addObject:v6];
@@ -25,16 +25,16 @@
   if ([MEMORY[0x277D018F8] supportsSecureAssetForSpeakerRecognition])
   {
     v7 = objc_alloc_init(SSRSecureAssetProvider);
-    v8 = [v3 voiceProfile];
-    v9 = [v8 locale];
-    v10 = [v3 asset];
-    v11 = [(SSRSecureAssetProvider *)v7 fetchSecureAssetForLocale:v9 withAsset:v10];
+    voiceProfile = [contextCopy voiceProfile];
+    locale = [voiceProfile locale];
+    asset = [contextCopy asset];
+    v11 = [(SSRSecureAssetProvider *)v7 fetchSecureAssetForLocale:locale withAsset:asset];
 
     if (v11)
     {
       v12 = objc_alloc_init(MEMORY[0x277D01F58]);
       v13 = [v12 decode:v11];
-      v14 = [[SSRVoiceProfileRetrainerPSRExclave alloc] initWithVoiceRetrainingContext:v3 secureAsset:v11 secureSpeakerRecognitionConfig:v13];
+      v14 = [[SSRVoiceProfileRetrainerPSRExclave alloc] initWithVoiceRetrainingContext:contextCopy secureAsset:v11 secureSpeakerRecognitionConfig:v13];
       if (v14)
       {
         [v4 addObject:v14];
@@ -42,7 +42,7 @@
 
       if ((CSIsCommunalDevice() & 1) == 0)
       {
-        v15 = [[SSRVoiceProfileRetrainerSATExclave alloc] initWithVoiceRetrainingContext:v3 secureAsset:v11 secureSpeakerRecognitionConfig:v13];
+        v15 = [[SSRVoiceProfileRetrainerSATExclave alloc] initWithVoiceRetrainingContext:contextCopy secureAsset:v11 secureSpeakerRecognitionConfig:v13];
         if (v15)
         {
           [v4 addObject:v15];
@@ -81,15 +81,15 @@
 - (SSRVoiceProfileRetrainerFactory)init
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D01788] sharedPreferences];
-  v4 = [v3 isSpeakerRecognitionAvailable];
+  mEMORY[0x277D01788] = [MEMORY[0x277D01788] sharedPreferences];
+  isSpeakerRecognitionAvailable = [mEMORY[0x277D01788] isSpeakerRecognitionAvailable];
 
-  if (v4)
+  if (isSpeakerRecognitionAvailable)
   {
     v9.receiver = self;
     v9.super_class = SSRVoiceProfileRetrainerFactory;
     self = [(SSRVoiceProfileRetrainerFactory *)&v9 init];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -102,11 +102,11 @@
       _os_log_error_impl(&dword_225E12000, v6, OS_LOG_TYPE_ERROR, "%s ERR: SpeakerRecognition is not available on this platform", buf, 0xCu);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
   v7 = *MEMORY[0x277D85DE8];
-  return v5;
+  return selfCopy;
 }
 
 @end

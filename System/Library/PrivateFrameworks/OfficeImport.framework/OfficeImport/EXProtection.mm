@@ -1,20 +1,20 @@
 @interface EXProtection
-+ (id)edProtectionFromXmlElement:(_xmlNode *)a3 state:(id)a4;
++ (id)edProtectionFromXmlElement:(_xmlNode *)element state:(id)state;
 @end
 
 @implementation EXProtection
 
-+ (id)edProtectionFromXmlElement:(_xmlNode *)a3 state:(id)a4
++ (id)edProtectionFromXmlElement:(_xmlNode *)element state:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v12 = 0;
   v6 = 1;
   v11 = 1;
-  if (a3)
+  if (element)
   {
-    CXOptionalBoolAttribute(a3, CXNoNamespace, "hidden", &v12);
-    v7 = [v5 EXSpreadsheetMLNamespace];
-    v8 = OCXFindChild(a3, v7, "Locked");
+    CXOptionalBoolAttribute(element, CXNoNamespace, "hidden", &v12);
+    eXSpreadsheetMLNamespace = [stateCopy EXSpreadsheetMLNamespace];
+    v8 = OCXFindChild(element, eXSpreadsheetMLNamespace, "Locked");
 
     if (v8)
     {
@@ -24,7 +24,7 @@
 
     else
     {
-      CXOptionalBoolAttribute(a3, CXNoNamespace, "locked", &v11);
+      CXOptionalBoolAttribute(element, CXNoNamespace, "locked", &v11);
       v6 = v11;
     }
   }

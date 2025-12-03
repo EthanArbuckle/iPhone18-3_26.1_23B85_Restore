@@ -1,21 +1,21 @@
 @interface DYFutureOperation
-+ (id)operationWithBlock:(id)a3;
++ (id)operationWithBlock:(id)block;
 - (BOOL)isExecuting;
 - (BOOL)isFinished;
 - (void)_start_NOLOCK;
-- (void)addDependency:(id)a3;
+- (void)addDependency:(id)dependency;
 - (void)dealloc;
 @end
 
 @implementation DYFutureOperation
 
-+ (id)operationWithBlock:(id)a3
++ (id)operationWithBlock:(id)block
 {
   objc_opt_class();
   v4 = objc_opt_new();
   if (v4)
   {
-    v4[41] = [a3 copy];
+    v4[41] = [block copy];
     *(v4 + 304) = 0;
   }
 
@@ -96,10 +96,10 @@ void __34__DYFutureOperation__start_NOLOCK__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addDependency:(id)a3
+- (void)addDependency:(id)dependency
 {
   [(NSCondition *)self->super._condition lock];
-  [(DYFuture *)self _addDependency_REQUIRESLOCK:a3];
+  [(DYFuture *)self _addDependency_REQUIRESLOCK:dependency];
   condition = self->super._condition;
 
   [(NSCondition *)condition unlock];

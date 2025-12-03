@@ -1,45 +1,45 @@
 @interface TIKeyboardOutput
-- (BOOL)isEqual:(id)a3;
-- (TIKeyboardOutput)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TIKeyboardOutput)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)deleteBackward:(unint64_t)a3;
-- (void)deleteForward:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)insertText:(id)a3;
-- (void)insertTextAfterSelection:(id)a3;
+- (void)deleteBackward:(unint64_t)backward;
+- (void)deleteForward:(unint64_t)forward;
+- (void)encodeWithCoder:(id)coder;
+- (void)insertText:(id)text;
+- (void)insertTextAfterSelection:(id)selection;
 @end
 
 @implementation TIKeyboardOutput
 
-- (void)deleteForward:(unint64_t)a3
+- (void)deleteForward:(unint64_t)forward
 {
-  v5 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
-  v6 = [v5 length];
+  insertionTextAfterSelection = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+  v6 = [insertionTextAfterSelection length];
 
   v7 = 0;
   v8 = v6 != 0;
-  if (a3 && v6)
+  if (forward && v6)
   {
     v7 = 0;
     do
     {
-      v9 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
-      v10 = [v9 rangeOfComposedCharacterSequenceAtIndex:v7];
+      insertionTextAfterSelection2 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+      v10 = [insertionTextAfterSelection2 rangeOfComposedCharacterSequenceAtIndex:v7];
       v12 = v11;
 
       v7 = v10 + v12;
       v8 = v7 < v6;
-      --a3;
+      --forward;
     }
 
-    while (a3 && v7 < v6);
+    while (forward && v7 < v6);
   }
 
   if (v8)
   {
-    v13 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
-    v14 = [v13 substringFromIndex:v7];
+    insertionTextAfterSelection3 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+    v14 = [insertionTextAfterSelection3 substringFromIndex:v7];
     [(TIKeyboardOutput *)self setInsertionTextAfterSelection:v14];
   }
 
@@ -48,41 +48,41 @@
     [(TIKeyboardOutput *)self setInsertionTextAfterSelection:0];
   }
 
-  self->_forwardDeletionCount += a3;
+  self->_forwardDeletionCount += forward;
 }
 
-- (void)insertTextAfterSelection:(id)a3
+- (void)insertTextAfterSelection:(id)selection
 {
-  v7 = a3;
-  v4 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
-  if (v4)
+  selectionCopy = selection;
+  insertionTextAfterSelection = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+  if (insertionTextAfterSelection)
   {
-    v5 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
-    v6 = [v7 stringByAppendingString:v5];
+    insertionTextAfterSelection2 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+    v6 = [selectionCopy stringByAppendingString:insertionTextAfterSelection2];
     [(TIKeyboardOutput *)self setInsertionTextAfterSelection:v6];
   }
 
   else
   {
-    [(TIKeyboardOutput *)self setInsertionTextAfterSelection:v7];
+    [(TIKeyboardOutput *)self setInsertionTextAfterSelection:selectionCopy];
   }
 }
 
-- (void)deleteBackward:(unint64_t)a3
+- (void)deleteBackward:(unint64_t)backward
 {
-  v5 = [(TIKeyboardOutput *)self insertionText];
-  v6 = [v5 length];
+  insertionText = [(TIKeyboardOutput *)self insertionText];
+  v6 = [insertionText length];
 
-  for (; a3 && v6; --a3)
+  for (; backward && v6; --backward)
   {
-    v7 = [(TIKeyboardOutput *)self insertionText];
-    v6 = [v7 _rangeOfBackwardDeletionClusterAtIndex:v6 - 1];
+    insertionText2 = [(TIKeyboardOutput *)self insertionText];
+    v6 = [insertionText2 _rangeOfBackwardDeletionClusterAtIndex:v6 - 1];
   }
 
   if (v6)
   {
-    v8 = [(TIKeyboardOutput *)self insertionText];
-    v9 = [v8 substringToIndex:v6];
+    insertionText3 = [(TIKeyboardOutput *)self insertionText];
+    v9 = [insertionText3 substringToIndex:v6];
     [(TIKeyboardOutput *)self setInsertionText:v9];
   }
 
@@ -91,14 +91,14 @@
     [(TIKeyboardOutput *)self setInsertionText:0];
   }
 
-  self->_deletionCount += a3;
+  self->_deletionCount += backward;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
-  v8 = [(TIKeyboardOutput *)self insertionText];
-  v5 = [v8 stringByAppendingString:v4];
+  textCopy = text;
+  insertionText = [(TIKeyboardOutput *)self insertionText];
+  v5 = [insertionText stringByAppendingString:textCopy];
   v6 = v5;
   if (v5)
   {
@@ -107,7 +107,7 @@
 
   else
   {
-    v7 = v4;
+    v7 = textCopy;
   }
 
   [(TIKeyboardOutput *)self setInsertionText:v7];
@@ -120,21 +120,21 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p", v5, self];
 
-  v7 = [(TIKeyboardOutput *)self acceptedCandidate];
+  acceptedCandidate = [(TIKeyboardOutput *)self acceptedCandidate];
 
-  if (v7)
+  if (acceptedCandidate)
   {
-    v8 = [(TIKeyboardOutput *)self acceptedCandidate];
-    v9 = [v8 candidate];
-    [v6 appendFormat:@"; acceptedCandidate = %@", v9];
+    acceptedCandidate2 = [(TIKeyboardOutput *)self acceptedCandidate];
+    candidate = [acceptedCandidate2 candidate];
+    [v6 appendFormat:@"; acceptedCandidate = %@", candidate];
   }
 
-  v10 = [(TIKeyboardOutput *)self textToCommit];
+  textToCommit = [(TIKeyboardOutput *)self textToCommit];
 
-  if (v10)
+  if (textToCommit)
   {
-    v11 = [(TIKeyboardOutput *)self textToCommit];
-    [v6 appendFormat:@"; textToCommit = %@", v11];
+    textToCommit2 = [(TIKeyboardOutput *)self textToCommit];
+    [v6 appendFormat:@"; textToCommit = %@", textToCommit2];
   }
 
   if ([(TIKeyboardOutput *)self unmarkIfNecessary])
@@ -152,12 +152,12 @@
     [v6 appendFormat:@"; delete %u", -[TIKeyboardOutput deletionCount](self, "deletionCount")];
   }
 
-  v12 = [(TIKeyboardOutput *)self insertionText];
+  insertionText = [(TIKeyboardOutput *)self insertionText];
 
-  if (v12)
+  if (insertionText)
   {
-    v13 = [(TIKeyboardOutput *)self insertionText];
-    [v6 appendFormat:@"; insert %@", v13];
+    insertionText2 = [(TIKeyboardOutput *)self insertionText];
+    [v6 appendFormat:@"; insert %@", insertionText2];
   }
 
   if ([(TIKeyboardOutput *)self forwardDeletionCount])
@@ -165,29 +165,29 @@
     [v6 appendFormat:@"; delete forward %u", -[TIKeyboardOutput forwardDeletionCount](self, "forwardDeletionCount")];
   }
 
-  v14 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+  insertionTextAfterSelection = [(TIKeyboardOutput *)self insertionTextAfterSelection];
 
-  if (v14)
+  if (insertionTextAfterSelection)
   {
-    v15 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
-    [v6 appendFormat:@"; insert %@ (after selection)", v15];
+    insertionTextAfterSelection2 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+    [v6 appendFormat:@"; insert %@ (after selection)", insertionTextAfterSelection2];
   }
 
-  v16 = [(TIKeyboardOutput *)self shortcutConversion];
+  shortcutConversion = [(TIKeyboardOutput *)self shortcutConversion];
 
-  if (v16)
+  if (shortcutConversion)
   {
-    v17 = [(TIKeyboardOutput *)self shortcutConversion];
-    v18 = [v17 candidate];
-    [v6 appendFormat:@"; shortcutConversion = %@", v18];
+    shortcutConversion2 = [(TIKeyboardOutput *)self shortcutConversion];
+    candidate2 = [shortcutConversion2 candidate];
+    [v6 appendFormat:@"; shortcutConversion = %@", candidate2];
   }
 
-  v19 = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
+  handwritingStrokesToDelete = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
 
-  if (v19)
+  if (handwritingStrokesToDelete)
   {
-    v20 = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
-    [v6 appendFormat:@"; handwritingStrokesToDelete = %@", v20];
+    handwritingStrokesToDelete2 = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
+    [v6 appendFormat:@"; handwritingStrokesToDelete = %@", handwritingStrokesToDelete2];
   }
 
   if ([(TIKeyboardOutput *)self shouldSendCurrentLocation])
@@ -195,12 +195,12 @@
     [v6 appendString:@"; shouldSendCurrentLocation = YES"];
   }
 
-  v21 = [(TIKeyboardOutput *)self customInfo];
+  customInfo = [(TIKeyboardOutput *)self customInfo];
 
-  if (v21)
+  if (customInfo)
   {
-    v22 = [(TIKeyboardOutput *)self customInfo];
-    [v6 appendFormat:@"; secureCandidateInfo = %@", v22];
+    customInfo2 = [(TIKeyboardOutput *)self customInfo];
+    [v6 appendFormat:@"; secureCandidateInfo = %@", customInfo2];
   }
 
   if ([(TIKeyboardOutput *)self producedByDeleteInput])
@@ -208,12 +208,12 @@
     [v6 appendString:@"; producedByDeleteInput = YES"];
   }
 
-  v23 = [(TIKeyboardOutput *)self delimitingPrefix];
+  delimitingPrefix = [(TIKeyboardOutput *)self delimitingPrefix];
 
-  if (v23)
+  if (delimitingPrefix)
   {
-    v24 = [(TIKeyboardOutput *)self delimitingPrefix];
-    [v6 appendFormat:@"; delimitingPrefix = %@", v24];
+    delimitingPrefix2 = [(TIKeyboardOutput *)self delimitingPrefix];
+    [v6 appendFormat:@"; delimitingPrefix = %@", delimitingPrefix2];
   }
 
   [v6 appendString:@">"];
@@ -223,55 +223,55 @@
 
 - (unint64_t)hash
 {
-  v3 = [(TIKeyboardOutput *)self acceptedCandidate];
-  v4 = [v3 hash];
+  acceptedCandidate = [(TIKeyboardOutput *)self acceptedCandidate];
+  v4 = [acceptedCandidate hash];
 
-  v5 = [(TIKeyboardOutput *)self textToCommit];
-  v6 = [v5 hash] + 257 * v4;
+  textToCommit = [(TIKeyboardOutput *)self textToCommit];
+  v6 = [textToCommit hash] + 257 * v4;
 
   v7 = 257 * (257 * v6 + [(TIKeyboardOutput *)self positionOffset]);
   v8 = 257 * (v7 + [(TIKeyboardOutput *)self deletionCount]);
-  v9 = [(TIKeyboardOutput *)self insertionText];
-  v10 = v8 + [v9 hash];
+  insertionText = [(TIKeyboardOutput *)self insertionText];
+  v10 = v8 + [insertionText hash];
 
   v11 = 257 * (257 * v10 + [(TIKeyboardOutput *)self forwardDeletionCount]);
-  v12 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
-  v13 = [v12 hash] + v11;
+  insertionTextAfterSelection = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+  v13 = [insertionTextAfterSelection hash] + v11;
 
-  v14 = [(TIKeyboardOutput *)self shortcutConversion];
-  v15 = [v14 hash] + 257 * v13;
+  shortcutConversion = [(TIKeyboardOutput *)self shortcutConversion];
+  v15 = [shortcutConversion hash] + 257 * v13;
 
-  v16 = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
-  v17 = [v16 hash] + 257 * v15;
+  handwritingStrokesToDelete = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
+  v17 = [handwritingStrokesToDelete hash] + 257 * v15;
 
-  v18 = [(TIKeyboardOutput *)self customInfo];
-  v19 = [v18 hash] + 257 * v17;
+  customInfo = [(TIKeyboardOutput *)self customInfo];
+  v19 = [customInfo hash] + 257 * v17;
 
   v20 = 257 * (257 * v19 + [(TIKeyboardOutput *)self producedByDeleteInput]);
-  v21 = [(TIKeyboardOutput *)self delimitingPrefix];
-  v22 = [v21 hash];
+  delimitingPrefix = [(TIKeyboardOutput *)self delimitingPrefix];
+  v22 = [delimitingPrefix hash];
 
   return v20 + v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(TIKeyboardOutput *)self acceptedCandidate];
-    v7 = [v5 acceptedCandidate];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    acceptedCandidate = [(TIKeyboardOutput *)self acceptedCandidate];
+    acceptedCandidate2 = [v5 acceptedCandidate];
+    v8 = acceptedCandidate2;
+    if (acceptedCandidate == acceptedCandidate2)
     {
     }
 
     else
     {
-      v9 = [(TIKeyboardOutput *)self acceptedCandidate];
-      v10 = [v5 acceptedCandidate];
-      v11 = [v9 isEqual:v10];
+      acceptedCandidate3 = [(TIKeyboardOutput *)self acceptedCandidate];
+      acceptedCandidate4 = [v5 acceptedCandidate];
+      v11 = [acceptedCandidate3 isEqual:acceptedCandidate4];
 
       if (!v11)
       {
@@ -279,18 +279,18 @@
       }
     }
 
-    v13 = [(TIKeyboardOutput *)self textToCommit];
-    v14 = [v5 textToCommit];
-    v15 = v14;
-    if (v13 == v14)
+    textToCommit = [(TIKeyboardOutput *)self textToCommit];
+    textToCommit2 = [v5 textToCommit];
+    v15 = textToCommit2;
+    if (textToCommit == textToCommit2)
     {
     }
 
     else
     {
-      v16 = [(TIKeyboardOutput *)self textToCommit];
-      v17 = [v5 textToCommit];
-      v18 = [v16 isEqualToString:v17];
+      textToCommit3 = [(TIKeyboardOutput *)self textToCommit];
+      textToCommit4 = [v5 textToCommit];
+      v18 = [textToCommit3 isEqualToString:textToCommit4];
 
       if (!v18)
       {
@@ -298,36 +298,36 @@
       }
     }
 
-    v19 = [(TIKeyboardOutput *)self unmarkIfNecessary];
-    if (v19 != [v5 unmarkIfNecessary])
+    unmarkIfNecessary = [(TIKeyboardOutput *)self unmarkIfNecessary];
+    if (unmarkIfNecessary != [v5 unmarkIfNecessary])
     {
       goto LABEL_34;
     }
 
-    v20 = [(TIKeyboardOutput *)self positionOffset];
-    if (v20 != [v5 positionOffset])
+    positionOffset = [(TIKeyboardOutput *)self positionOffset];
+    if (positionOffset != [v5 positionOffset])
     {
       goto LABEL_34;
     }
 
-    v21 = [(TIKeyboardOutput *)self deletionCount];
-    if (v21 != [v5 deletionCount])
+    deletionCount = [(TIKeyboardOutput *)self deletionCount];
+    if (deletionCount != [v5 deletionCount])
     {
       goto LABEL_34;
     }
 
-    v22 = [(TIKeyboardOutput *)self insertionText];
-    v23 = [v5 insertionText];
-    v24 = v23;
-    if (v22 == v23)
+    insertionText = [(TIKeyboardOutput *)self insertionText];
+    insertionText2 = [v5 insertionText];
+    v24 = insertionText2;
+    if (insertionText == insertionText2)
     {
     }
 
     else
     {
-      v25 = [(TIKeyboardOutput *)self insertionText];
-      v26 = [v5 insertionText];
-      v27 = [v25 isEqualToString:v26];
+      insertionText3 = [(TIKeyboardOutput *)self insertionText];
+      insertionText4 = [v5 insertionText];
+      v27 = [insertionText3 isEqualToString:insertionText4];
 
       if (!v27)
       {
@@ -335,21 +335,21 @@
       }
     }
 
-    v28 = [(TIKeyboardOutput *)self forwardDeletionCount];
-    if (v28 == [v5 forwardDeletionCount])
+    forwardDeletionCount = [(TIKeyboardOutput *)self forwardDeletionCount];
+    if (forwardDeletionCount == [v5 forwardDeletionCount])
     {
-      v29 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
-      v30 = [v5 insertionTextAfterSelection];
-      v31 = v30;
-      if (v29 == v30)
+      insertionTextAfterSelection = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+      insertionTextAfterSelection2 = [v5 insertionTextAfterSelection];
+      v31 = insertionTextAfterSelection2;
+      if (insertionTextAfterSelection == insertionTextAfterSelection2)
       {
       }
 
       else
       {
-        v32 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
-        v33 = [v5 insertionTextAfterSelection];
-        v34 = [v32 isEqualToString:v33];
+        insertionTextAfterSelection3 = [(TIKeyboardOutput *)self insertionTextAfterSelection];
+        insertionTextAfterSelection4 = [v5 insertionTextAfterSelection];
+        v34 = [insertionTextAfterSelection3 isEqualToString:insertionTextAfterSelection4];
 
         if (!v34)
         {
@@ -357,18 +357,18 @@
         }
       }
 
-      v35 = [(TIKeyboardOutput *)self shortcutConversion];
-      v36 = [v5 shortcutConversion];
-      v37 = v36;
-      if (v35 == v36)
+      shortcutConversion = [(TIKeyboardOutput *)self shortcutConversion];
+      shortcutConversion2 = [v5 shortcutConversion];
+      v37 = shortcutConversion2;
+      if (shortcutConversion == shortcutConversion2)
       {
       }
 
       else
       {
-        v38 = [(TIKeyboardOutput *)self shortcutConversion];
-        v39 = [v5 shortcutConversion];
-        v40 = [v38 isEqual:v39];
+        shortcutConversion3 = [(TIKeyboardOutput *)self shortcutConversion];
+        shortcutConversion4 = [v5 shortcutConversion];
+        v40 = [shortcutConversion3 isEqual:shortcutConversion4];
 
         if (!v40)
         {
@@ -376,18 +376,18 @@
         }
       }
 
-      v41 = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
-      v42 = [v5 handwritingStrokesToDelete];
-      v43 = v42;
-      if (v41 == v42)
+      handwritingStrokesToDelete = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
+      handwritingStrokesToDelete2 = [v5 handwritingStrokesToDelete];
+      v43 = handwritingStrokesToDelete2;
+      if (handwritingStrokesToDelete == handwritingStrokesToDelete2)
       {
       }
 
       else
       {
-        v44 = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
-        v45 = [v5 handwritingStrokesToDelete];
-        v46 = [v44 isEqual:v45];
+        handwritingStrokesToDelete3 = [(TIKeyboardOutput *)self handwritingStrokesToDelete];
+        handwritingStrokesToDelete4 = [v5 handwritingStrokesToDelete];
+        v46 = [handwritingStrokesToDelete3 isEqual:handwritingStrokesToDelete4];
 
         if (!v46)
         {
@@ -395,29 +395,29 @@
         }
       }
 
-      v47 = [(TIKeyboardOutput *)self shouldSendCurrentLocation];
-      if (v47 == [v5 shouldSendCurrentLocation])
+      shouldSendCurrentLocation = [(TIKeyboardOutput *)self shouldSendCurrentLocation];
+      if (shouldSendCurrentLocation == [v5 shouldSendCurrentLocation])
       {
-        v48 = [(TIKeyboardOutput *)self customInfo];
-        v49 = [v5 customInfo];
+        customInfo = [(TIKeyboardOutput *)self customInfo];
+        customInfo2 = [v5 customInfo];
 
-        if (v48 == v49)
+        if (customInfo == customInfo2)
         {
-          v50 = [(TIKeyboardOutput *)self producedByDeleteInput];
-          if (v50 == [v5 producedByDeleteInput])
+          producedByDeleteInput = [(TIKeyboardOutput *)self producedByDeleteInput];
+          if (producedByDeleteInput == [v5 producedByDeleteInput])
           {
-            v52 = [(TIKeyboardOutput *)self delimitingPrefix];
-            v53 = [v5 delimitingPrefix];
-            if (v52 == v53)
+            delimitingPrefix = [(TIKeyboardOutput *)self delimitingPrefix];
+            delimitingPrefix2 = [v5 delimitingPrefix];
+            if (delimitingPrefix == delimitingPrefix2)
             {
               v12 = 1;
             }
 
             else
             {
-              v54 = [(TIKeyboardOutput *)self delimitingPrefix];
-              v55 = [v5 delimitingPrefix];
-              v12 = [v54 isEqualToString:v55];
+              delimitingPrefix3 = [(TIKeyboardOutput *)self delimitingPrefix];
+              delimitingPrefix4 = [v5 delimitingPrefix];
+              v12 = [delimitingPrefix3 isEqualToString:delimitingPrefix4];
             }
 
             goto LABEL_35;
@@ -439,140 +439,140 @@ LABEL_36:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v15 = a3;
+  coderCopy = coder;
   acceptedCandidate = self->_acceptedCandidate;
   if (acceptedCandidate)
   {
-    [v15 encodeObject:acceptedCandidate forKey:@"acceptedCandidate"];
+    [coderCopy encodeObject:acceptedCandidate forKey:@"acceptedCandidate"];
   }
 
   textToCommit = self->_textToCommit;
   if (textToCommit)
   {
-    [v15 encodeObject:textToCommit forKey:@"textToCommit"];
+    [coderCopy encodeObject:textToCommit forKey:@"textToCommit"];
   }
 
   if (self->_unmarkIfNecessary)
   {
-    [v15 encodeBool:1 forKey:@"unmarkIfNecessary"];
+    [coderCopy encodeBool:1 forKey:@"unmarkIfNecessary"];
   }
 
   if (self->_positionOffset)
   {
-    [v15 encodeInteger:-[TIKeyboardOutput positionOffset](self forKey:{"positionOffset"), @"positionOffset"}];
+    [coderCopy encodeInteger:-[TIKeyboardOutput positionOffset](self forKey:{"positionOffset"), @"positionOffset"}];
   }
 
   deletionCount = self->_deletionCount;
   if (deletionCount)
   {
-    [v15 encodeInteger:deletionCount forKey:@"deletionCount"];
+    [coderCopy encodeInteger:deletionCount forKey:@"deletionCount"];
   }
 
   insertionText = self->_insertionText;
-  v8 = v15;
+  v8 = coderCopy;
   if (insertionText)
   {
-    [v15 encodeObject:insertionText forKey:@"insertionText"];
-    v8 = v15;
+    [coderCopy encodeObject:insertionText forKey:@"insertionText"];
+    v8 = coderCopy;
   }
 
   forwardDeletionCount = self->_forwardDeletionCount;
   if (forwardDeletionCount)
   {
-    [v15 encodeInteger:forwardDeletionCount forKey:@"forwardDeletionCount"];
-    v8 = v15;
+    [coderCopy encodeInteger:forwardDeletionCount forKey:@"forwardDeletionCount"];
+    v8 = coderCopy;
   }
 
   insertionTextAfterSelection = self->_insertionTextAfterSelection;
   if (insertionTextAfterSelection)
   {
-    [v15 encodeObject:insertionTextAfterSelection forKey:@"insertionTextAfterSelection"];
-    v8 = v15;
+    [coderCopy encodeObject:insertionTextAfterSelection forKey:@"insertionTextAfterSelection"];
+    v8 = coderCopy;
   }
 
   shortcutConversion = self->_shortcutConversion;
   if (shortcutConversion)
   {
-    [v15 encodeObject:shortcutConversion forKey:@"shortcutConversion"];
-    v8 = v15;
+    [coderCopy encodeObject:shortcutConversion forKey:@"shortcutConversion"];
+    v8 = coderCopy;
   }
 
   handwritingStrokesToDelete = self->_handwritingStrokesToDelete;
   if (handwritingStrokesToDelete)
   {
-    [v15 encodeObject:handwritingStrokesToDelete forKey:@"handwritingStrokesToDelete"];
-    v8 = v15;
+    [coderCopy encodeObject:handwritingStrokesToDelete forKey:@"handwritingStrokesToDelete"];
+    v8 = coderCopy;
   }
 
   if (self->_shouldSendCurrentLocation)
   {
-    [v15 encodeBool:1 forKey:@"shouldSendCurrentLocation"];
-    v8 = v15;
+    [coderCopy encodeBool:1 forKey:@"shouldSendCurrentLocation"];
+    v8 = coderCopy;
   }
 
   customInfo = self->_customInfo;
   if (customInfo)
   {
-    [v15 encodeObject:customInfo forKey:@"customInfo"];
-    v8 = v15;
+    [coderCopy encodeObject:customInfo forKey:@"customInfo"];
+    v8 = coderCopy;
   }
 
   if (self->_producedByDeleteInput)
   {
-    [v15 encodeBool:1 forKey:@"producedByDeleteInput"];
-    v8 = v15;
+    [coderCopy encodeBool:1 forKey:@"producedByDeleteInput"];
+    v8 = coderCopy;
   }
 
   delimitingPrefix = self->_delimitingPrefix;
   if (delimitingPrefix)
   {
-    [v15 encodeObject:delimitingPrefix forKey:@"delimitingPrefix"];
-    v8 = v15;
+    [coderCopy encodeObject:delimitingPrefix forKey:@"delimitingPrefix"];
+    v8 = coderCopy;
   }
 }
 
-- (TIKeyboardOutput)initWithCoder:(id)a3
+- (TIKeyboardOutput)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v35.receiver = self;
   v35.super_class = TIKeyboardOutput;
   v5 = [(TIKeyboardOutput *)&v35 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"acceptedCandidate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"acceptedCandidate"];
     acceptedCandidate = v5->_acceptedCandidate;
     v5->_acceptedCandidate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textToCommit"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textToCommit"];
     textToCommit = v5->_textToCommit;
     v5->_textToCommit = v8;
 
-    v5->_unmarkIfNecessary = [v4 decodeBoolForKey:@"_unmarkIfNecessary"];
-    v5->_positionOffset = [v4 decodeIntegerForKey:@"positionOffset"];
-    v5->_deletionCount = [v4 decodeIntegerForKey:@"deletionCount"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"insertionText"];
+    v5->_unmarkIfNecessary = [coderCopy decodeBoolForKey:@"_unmarkIfNecessary"];
+    v5->_positionOffset = [coderCopy decodeIntegerForKey:@"positionOffset"];
+    v5->_deletionCount = [coderCopy decodeIntegerForKey:@"deletionCount"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"insertionText"];
     v11 = [v10 copy];
     insertionText = v5->_insertionText;
     v5->_insertionText = v11;
 
-    v5->_forwardDeletionCount = [v4 decodeIntegerForKey:@"forwardDeletionCount"];
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"insertionTextAfterSelection"];
+    v5->_forwardDeletionCount = [coderCopy decodeIntegerForKey:@"forwardDeletionCount"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"insertionTextAfterSelection"];
     v14 = [v13 copy];
     insertionTextAfterSelection = v5->_insertionTextAfterSelection;
     v5->_insertionTextAfterSelection = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcutConversion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcutConversion"];
     shortcutConversion = v5->_shortcutConversion;
     v5->_shortcutConversion = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handwritingStrokesToDelete"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handwritingStrokesToDelete"];
     v19 = [v18 copy];
     handwritingStrokesToDelete = v5->_handwritingStrokesToDelete;
     v5->_handwritingStrokesToDelete = v19;
 
-    v5->_shouldSendCurrentLocation = [v4 decodeBoolForKey:@"shouldSendCurrentLocation"];
+    v5->_shouldSendCurrentLocation = [coderCopy decodeBoolForKey:@"shouldSendCurrentLocation"];
     v21 = MEMORY[0x1E695DFD8];
     v22 = objc_opt_class();
     v23 = objc_opt_class();
@@ -580,13 +580,13 @@ LABEL_36:
     v25 = objc_opt_class();
     v26 = objc_opt_class();
     v27 = [v21 setWithObjects:{v22, v23, v24, v25, v26, objc_opt_class(), 0}];
-    v28 = [v4 decodeObjectOfClasses:v27 forKey:@"customInfo"];
+    v28 = [coderCopy decodeObjectOfClasses:v27 forKey:@"customInfo"];
     v29 = [v28 mutableCopy];
     customInfo = v5->_customInfo;
     v5->_customInfo = v29;
 
-    v5->_producedByDeleteInput = [v4 decodeBoolForKey:@"producedByDeleteInput"];
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"delimitingPrefix"];
+    v5->_producedByDeleteInput = [coderCopy decodeBoolForKey:@"producedByDeleteInput"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"delimitingPrefix"];
     v32 = [v31 copy];
     delimitingPrefix = v5->_delimitingPrefix;
     v5->_delimitingPrefix = v32;

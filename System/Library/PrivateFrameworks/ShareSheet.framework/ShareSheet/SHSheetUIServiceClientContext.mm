@@ -1,10 +1,10 @@
 @interface SHSheetUIServiceClientContext
-+ (id)_deserializeMetadatas:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_deserializeMetadatas:(id)metadatas;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)hostPortraitWindowSize;
-- (SHSheetUIServiceClientContext)initWithBSXPCCoder:(id)a3;
-- (SHSheetUIServiceClientContext)initWithSession:(id)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (SHSheetUIServiceClientContext)initWithBSXPCCoder:(id)coder;
+- (SHSheetUIServiceClientContext)initWithSession:(id)session;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation SHSheetUIServiceClientContext
@@ -18,50 +18,50 @@
   return result;
 }
 
-- (SHSheetUIServiceClientContext)initWithSession:(id)a3
+- (SHSheetUIServiceClientContext)initWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v71.receiver = self;
   v71.super_class = SHSheetUIServiceClientContext;
   v5 = [(SHSheetUIServiceClientContext *)&v71 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [sessionCopy identifier];
     sessionIdentifier = v5->_sessionIdentifier;
-    v5->_sessionIdentifier = v6;
+    v5->_sessionIdentifier = identifier;
 
-    v8 = [v4 activitiesManager];
-    v9 = [v8 orderedActivities];
-    v10 = v9;
+    activitiesManager = [sessionCopy activitiesManager];
+    orderedActivities = [activitiesManager orderedActivities];
+    v10 = orderedActivities;
     v11 = MEMORY[0x1E695E0F0];
-    if (v9)
+    if (orderedActivities)
     {
-      v11 = v9;
+      v11 = orderedActivities;
     }
 
     v12 = v11;
 
-    v13 = [v4 activityConfigurationsForActivities:v12 forRemoteUIService:1];
+    v13 = [sessionCopy activityConfigurationsForActivities:v12 forRemoteUIService:1];
 
     activityConfigurations = v5->_activityConfigurations;
     v5->_activityConfigurations = v13;
 
-    v15 = [v4 metadataCollection];
-    v16 = [v15 loadedSerializedMetadatas];
+    metadataCollection = [sessionCopy metadataCollection];
+    loadedSerializedMetadatas = [metadataCollection loadedSerializedMetadatas];
     serializedMetadataValues = v5->_serializedMetadataValues;
-    v5->_serializedMetadataValues = v16;
+    v5->_serializedMetadataValues = loadedSerializedMetadatas;
 
     v18 = [SHSheetUIServiceClientContext _deserializeMetadatas:v5->_serializedMetadataValues];
     metadataValues = v5->_metadataValues;
     v5->_metadataValues = v18;
 
-    v20 = [v4 metadataCollection];
-    v21 = [v20 metadatas];
-    if ([v21 count])
+    metadataCollection2 = [sessionCopy metadataCollection];
+    metadatas = [metadataCollection2 metadatas];
+    if ([metadatas count])
     {
-      v22 = [v4 metadataCollection];
-      v23 = [v22 loadedMetadatas];
-      v5->_isLoadingMetadata = v23 == 0;
+      metadataCollection3 = [sessionCopy metadataCollection];
+      loadedMetadatas = [metadataCollection3 loadedMetadatas];
+      v5->_isLoadingMetadata = loadedMetadatas == 0;
     }
 
     else
@@ -69,100 +69,100 @@
       v5->_isLoadingMetadata = 0;
     }
 
-    v24 = [v4 activityItemsManager];
-    v25 = [v24 urlRequests];
+    activityItemsManager = [sessionCopy activityItemsManager];
+    urlRequests = [activityItemsManager urlRequests];
     urlRequests = v5->_urlRequests;
-    v5->_urlRequests = v25;
+    v5->_urlRequests = urlRequests;
 
-    v27 = [v4 activityItemsManager];
-    v28 = [v27 urlSandboxExtensions];
+    activityItemsManager2 = [sessionCopy activityItemsManager];
+    urlSandboxExtensions = [activityItemsManager2 urlSandboxExtensions];
     urlSandboxExtensions = v5->_urlSandboxExtensions;
-    v5->_urlSandboxExtensions = v28;
+    v5->_urlSandboxExtensions = urlSandboxExtensions;
 
-    v5->_showOptions = [v4 showOptions];
-    v30 = [v4 customOptionsTitle];
+    v5->_showOptions = [sessionCopy showOptions];
+    customOptionsTitle = [sessionCopy customOptionsTitle];
     customOptionsTitle = v5->_customOptionsTitle;
-    v5->_customOptionsTitle = v30;
+    v5->_customOptionsTitle = customOptionsTitle;
 
-    v5->_showCustomHeaderButton = [v4 showSharePlayProminently];
-    v5->_showHeaderSpecialization = [v4 showHeaderSpecialization];
-    v32 = SHSheetCustomHeaderButtonTitle([v4 showSharePlayProminently]);
+    v5->_showCustomHeaderButton = [sessionCopy showSharePlayProminently];
+    v5->_showHeaderSpecialization = [sessionCopy showHeaderSpecialization];
+    v32 = SHSheetCustomHeaderButtonTitle([sessionCopy showSharePlayProminently]);
     customHeaderButtonTitle = v5->_customHeaderButtonTitle;
     v5->_customHeaderButtonTitle = v32;
 
-    v34 = SHSheetCustomHeaderButtonColor([v4 showSharePlayProminently]);
+    v34 = SHSheetCustomHeaderButtonColor([sessionCopy showSharePlayProminently]);
     customHeaderButtonColor = v5->_customHeaderButtonColor;
     v5->_customHeaderButtonColor = v34;
 
-    v5->_isModeSwitchDisabled = [v4 isModeSwitchDisabled];
-    v5->_isSharingExpanded = [v4 isExpanded];
-    v5->_sharingStyle = [v4 sharingStyle];
-    v5->_configureForCloudSharing = [v4 configureForCloudSharing];
-    v5->_configureForPhotosEdit = [v4 configureForPhotosEdit];
-    v5->_hideHeaderView = [v4 hideHeaderView];
-    v5->_hideNavigationBar = [v4 hideNavigationBar];
-    v36 = [v4 topContentSectionText];
+    v5->_isModeSwitchDisabled = [sessionCopy isModeSwitchDisabled];
+    v5->_isSharingExpanded = [sessionCopy isExpanded];
+    v5->_sharingStyle = [sessionCopy sharingStyle];
+    v5->_configureForCloudSharing = [sessionCopy configureForCloudSharing];
+    v5->_configureForPhotosEdit = [sessionCopy configureForPhotosEdit];
+    v5->_hideHeaderView = [sessionCopy hideHeaderView];
+    v5->_hideNavigationBar = [sessionCopy hideNavigationBar];
+    topContentSectionText = [sessionCopy topContentSectionText];
     topContentSectionText = v5->_topContentSectionText;
-    v5->_topContentSectionText = v36;
+    v5->_topContentSectionText = topContentSectionText;
 
-    v38 = [v4 heroActionActivityTypes];
+    heroActionActivityTypes = [sessionCopy heroActionActivityTypes];
     heroActionActivityTypes = v5->_heroActionActivityTypes;
-    v5->_heroActionActivityTypes = v38;
+    v5->_heroActionActivityTypes = heroActionActivityTypes;
 
-    v40 = [v4 excludedActivityTypes];
+    excludedActivityTypes = [sessionCopy excludedActivityTypes];
     excludedActivityTypes = v5->_excludedActivityTypes;
-    v5->_excludedActivityTypes = v40;
+    v5->_excludedActivityTypes = excludedActivityTypes;
 
-    v42 = [v4 activitiesManager];
-    v43 = [v42 applicationActivityTypes];
+    activitiesManager2 = [sessionCopy activitiesManager];
+    applicationActivityTypes = [activitiesManager2 applicationActivityTypes];
     applicationActivityTypes = v5->_applicationActivityTypes;
-    v5->_applicationActivityTypes = v43;
+    v5->_applicationActivityTypes = applicationActivityTypes;
 
-    v5->_showHeroActionsHorizontally = [v4 showHeroActionsHorizontally];
+    v5->_showHeroActionsHorizontally = [sessionCopy showHeroActionsHorizontally];
     v45 = SHSheetTintColor();
     tintColor = v5->_tintColor;
     v5->_tintColor = v45;
 
-    v5->_supportsCollaboration = [v4 supportsCollaboration];
-    v5->_supportsSendCopy = [v4 supportsSendCopy];
-    v5->_isCollaborative = [v4 isCollaborative];
-    v5->_showCollaborationOptions = [v4 showCollaborationOptions];
-    v47 = [v4 collaborationItem];
-    v48 = v47;
-    if (v47)
+    v5->_supportsCollaboration = [sessionCopy supportsCollaboration];
+    v5->_supportsSendCopy = [sessionCopy supportsSendCopy];
+    v5->_isCollaborative = [sessionCopy isCollaborative];
+    v5->_showCollaborationOptions = [sessionCopy showCollaborationOptions];
+    collaborationItem = [sessionCopy collaborationItem];
+    v48 = collaborationItem;
+    if (collaborationItem)
     {
-      v49 = [v47 canAddPeople];
-      v50 = SHSheetCollaborationModeTitle(v49);
+      canAddPeople = [collaborationItem canAddPeople];
+      v50 = SHSheetCollaborationModeTitle(canAddPeople);
       collaborationModeTitle = v5->_collaborationModeTitle;
       v5->_collaborationModeTitle = v50;
 
-      v52 = [v48 createCollaborationFooterViewModel];
+      createCollaborationFooterViewModel = [v48 createCollaborationFooterViewModel];
       collaborationFooterViewModel = v5->_collaborationFooterViewModel;
-      v5->_collaborationFooterViewModel = v52;
+      v5->_collaborationFooterViewModel = createCollaborationFooterViewModel;
     }
 
-    v54 = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
+    identityOfCurrentProcess = [MEMORY[0x1E69C75F0] identityOfCurrentProcess];
     processIdentity = v5->_processIdentity;
-    v5->_processIdentity = v54;
+    v5->_processIdentity = identityOfCurrentProcess;
 
-    v5->_wantsCustomScene = [v4 showCustomScene];
-    v56 = [v4 activityViewController];
-    v57 = [v56 customViewControllerVerticalInsetWrapper];
+    v5->_wantsCustomScene = [sessionCopy showCustomScene];
+    activityViewController = [sessionCopy activityViewController];
+    customViewControllerVerticalInsetWrapper = [activityViewController customViewControllerVerticalInsetWrapper];
     customViewControllerVerticalInsetWrapper = v5->_customViewControllerVerticalInsetWrapper;
-    v5->_customViewControllerVerticalInsetWrapper = v57;
+    v5->_customViewControllerVerticalInsetWrapper = customViewControllerVerticalInsetWrapper;
 
-    v59 = [v4 activityViewController];
-    v60 = [v59 customViewControllerSectionHeightWrapper];
+    activityViewController2 = [sessionCopy activityViewController];
+    customViewControllerSectionHeightWrapper = [activityViewController2 customViewControllerSectionHeightWrapper];
     customViewControllerSectionHeightWrapper = v5->_customViewControllerSectionHeightWrapper;
-    v5->_customViewControllerSectionHeightWrapper = v60;
+    v5->_customViewControllerSectionHeightWrapper = customViewControllerSectionHeightWrapper;
 
     v62 = _ShareSheetApplicationKeyWindow();
     [v62 bounds];
     v64 = v63;
     v66 = v65;
 
-    v67 = [*MEMORY[0x1E69DDA98] activeInterfaceOrientation];
-    if ((v67 - 1) >= 2)
+    activeInterfaceOrientation = [*MEMORY[0x1E69DDA98] activeInterfaceOrientation];
+    if ((activeInterfaceOrientation - 1) >= 2)
     {
       v68 = v66;
     }
@@ -172,7 +172,7 @@
       v68 = v64;
     }
 
-    if ((v67 - 1) >= 2)
+    if ((activeInterfaceOrientation - 1) >= 2)
     {
       v69 = v64;
     }
@@ -189,10 +189,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v12) = 1;
   }
@@ -202,11 +202,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SHSheetUIServiceClientContext *)self sessionIdentifier];
-      v7 = [(SHSheetUIServiceClientContext *)v5 sessionIdentifier];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      sessionIdentifier = [(SHSheetUIServiceClientContext *)self sessionIdentifier];
+      sessionIdentifier2 = [(SHSheetUIServiceClientContext *)v5 sessionIdentifier];
+      v8 = sessionIdentifier;
+      v9 = sessionIdentifier2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -233,10 +233,10 @@ LABEL_83:
         }
       }
 
-      v13 = [(SHSheetUIServiceClientContext *)self activityConfigurations];
-      v14 = [(SHSheetUIServiceClientContext *)v5 activityConfigurations];
-      v15 = v13;
-      v16 = v14;
+      activityConfigurations = [(SHSheetUIServiceClientContext *)self activityConfigurations];
+      activityConfigurations2 = [(SHSheetUIServiceClientContext *)v5 activityConfigurations];
+      v15 = activityConfigurations;
+      v16 = activityConfigurations2;
       v17 = v16;
       if (v15 == v16)
       {
@@ -265,10 +265,10 @@ LABEL_82:
         }
       }
 
-      v19 = [(SHSheetUIServiceClientContext *)self metadataValues];
-      v20 = [(SHSheetUIServiceClientContext *)v5 metadataValues];
-      v21 = v19;
-      v22 = v20;
+      metadataValues = [(SHSheetUIServiceClientContext *)self metadataValues];
+      metadataValues2 = [(SHSheetUIServiceClientContext *)v5 metadataValues];
+      v21 = metadataValues;
+      v22 = metadataValues2;
       v23 = v22;
       if (v21 == v22)
       {
@@ -294,8 +294,8 @@ LABEL_80:
         }
       }
 
-      v24 = [(SHSheetUIServiceClientContext *)self isLoadingMetadata];
-      if (v24 != [(SHSheetUIServiceClientContext *)v5 isLoadingMetadata])
+      isLoadingMetadata = [(SHSheetUIServiceClientContext *)self isLoadingMetadata];
+      if (isLoadingMetadata != [(SHSheetUIServiceClientContext *)v5 isLoadingMetadata])
       {
         LOBYTE(v12) = 0;
         goto LABEL_81;
@@ -303,10 +303,10 @@ LABEL_80:
 
       v141 = v21;
       v142 = v23;
-      v27 = [(SHSheetUIServiceClientContext *)self urlRequests];
-      v28 = [(SHSheetUIServiceClientContext *)v5 urlRequests];
-      v29 = v27;
-      v30 = v28;
+      urlRequests = [(SHSheetUIServiceClientContext *)self urlRequests];
+      urlRequests2 = [(SHSheetUIServiceClientContext *)v5 urlRequests];
+      v29 = urlRequests;
+      v30 = urlRequests2;
       v31 = v30;
       v140 = v30;
       if (v29 == v30)
@@ -347,10 +347,10 @@ LABEL_79:
         }
       }
 
-      v34 = [(SHSheetUIServiceClientContext *)self urlSandboxExtensions];
-      v35 = [(SHSheetUIServiceClientContext *)v5 urlSandboxExtensions];
-      v36 = v34;
-      v37 = v35;
+      urlSandboxExtensions = [(SHSheetUIServiceClientContext *)self urlSandboxExtensions];
+      urlSandboxExtensions2 = [(SHSheetUIServiceClientContext *)v5 urlSandboxExtensions];
+      v36 = urlSandboxExtensions;
+      v37 = urlSandboxExtensions2;
       v38 = v37;
       v23 = v142;
       v137 = v36;
@@ -383,8 +383,8 @@ LABEL_77:
         }
       }
 
-      v43 = [(SHSheetUIServiceClientContext *)self showOptions];
-      if (v43 != [(SHSheetUIServiceClientContext *)v5 showOptions])
+      showOptions = [(SHSheetUIServiceClientContext *)self showOptions];
+      if (showOptions != [(SHSheetUIServiceClientContext *)v5 showOptions])
       {
 LABEL_37:
         LOBYTE(v12) = 0;
@@ -396,10 +396,10 @@ LABEL_78:
         goto LABEL_79;
       }
 
-      v45 = [(SHSheetUIServiceClientContext *)self customOptionsTitle];
-      v46 = [(SHSheetUIServiceClientContext *)v5 customOptionsTitle];
-      v47 = v45;
-      v48 = v46;
+      customOptionsTitle = [(SHSheetUIServiceClientContext *)self customOptionsTitle];
+      customOptionsTitle2 = [(SHSheetUIServiceClientContext *)v5 customOptionsTitle];
+      v47 = customOptionsTitle;
+      v48 = customOptionsTitle2;
       v49 = v48;
       v134 = v48;
       v135 = v47;
@@ -429,8 +429,8 @@ LABEL_75:
         }
       }
 
-      v51 = [(SHSheetUIServiceClientContext *)self showCustomHeaderButton];
-      if (v51 != [(SHSheetUIServiceClientContext *)v5 showCustomHeaderButton])
+      showCustomHeaderButton = [(SHSheetUIServiceClientContext *)self showCustomHeaderButton];
+      if (showCustomHeaderButton != [(SHSheetUIServiceClientContext *)v5 showCustomHeaderButton])
       {
 LABEL_45:
         LOBYTE(v12) = 0;
@@ -442,9 +442,9 @@ LABEL_76:
         goto LABEL_77;
       }
 
-      v53 = [(SHSheetUIServiceClientContext *)self showHeaderSpecialization];
+      showHeaderSpecialization = [(SHSheetUIServiceClientContext *)self showHeaderSpecialization];
       v44 = v135;
-      if (v53 != [(SHSheetUIServiceClientContext *)v5 showHeaderSpecialization])
+      if (showHeaderSpecialization != [(SHSheetUIServiceClientContext *)v5 showHeaderSpecialization])
       {
         LOBYTE(v12) = 0;
         v21 = v141;
@@ -453,10 +453,10 @@ LABEL_76:
         goto LABEL_77;
       }
 
-      v54 = [(SHSheetUIServiceClientContext *)self customHeaderButtonTitle];
-      v55 = [(SHSheetUIServiceClientContext *)v5 customHeaderButtonTitle];
-      v56 = v54;
-      v57 = v55;
+      customHeaderButtonTitle = [(SHSheetUIServiceClientContext *)self customHeaderButtonTitle];
+      customHeaderButtonTitle2 = [(SHSheetUIServiceClientContext *)v5 customHeaderButtonTitle];
+      v56 = customHeaderButtonTitle;
+      v57 = customHeaderButtonTitle2;
       v58 = v57;
       v131 = v57;
       v133 = v56;
@@ -493,10 +493,10 @@ LABEL_74:
         }
       }
 
-      v62 = [(SHSheetUIServiceClientContext *)self customHeaderButtonColor];
-      v63 = [(SHSheetUIServiceClientContext *)v5 customHeaderButtonColor];
-      v64 = v62;
-      v65 = v63;
+      customHeaderButtonColor = [(SHSheetUIServiceClientContext *)self customHeaderButtonColor];
+      customHeaderButtonColor2 = [(SHSheetUIServiceClientContext *)v5 customHeaderButtonColor];
+      v64 = customHeaderButtonColor;
+      v65 = customHeaderButtonColor2;
       v66 = v65;
       v130 = v65;
       if (v64 == v65)
@@ -523,8 +523,8 @@ LABEL_63:
         }
       }
 
-      v69 = [(SHSheetUIServiceClientContext *)self isModeSwitchDisabled];
-      if (v69 != [(SHSheetUIServiceClientContext *)v5 isModeSwitchDisabled])
+      isModeSwitchDisabled = [(SHSheetUIServiceClientContext *)self isModeSwitchDisabled];
+      if (isModeSwitchDisabled != [(SHSheetUIServiceClientContext *)v5 isModeSwitchDisabled])
       {
 LABEL_61:
         LOBYTE(v12) = 0;
@@ -536,8 +536,8 @@ LABEL_72:
         goto LABEL_73;
       }
 
-      v71 = [(SHSheetUIServiceClientContext *)self isSharingExpanded];
-      if (v71 != [(SHSheetUIServiceClientContext *)v5 isSharingExpanded]|| (v72 = [(SHSheetUIServiceClientContext *)self sharingStyle], v72 != [(SHSheetUIServiceClientContext *)v5 sharingStyle]) || (v73 = [(SHSheetUIServiceClientContext *)self configureForCloudSharing], v73 != [(SHSheetUIServiceClientContext *)v5 configureForCloudSharing]) || (v74 = [(SHSheetUIServiceClientContext *)self configureForPhotosEdit], v74 != [(SHSheetUIServiceClientContext *)v5 configureForPhotosEdit]) || (v75 = [(SHSheetUIServiceClientContext *)self hideHeaderView], v75 != [(SHSheetUIServiceClientContext *)v5 hideHeaderView]) || (v76 = [(SHSheetUIServiceClientContext *)self hideNavigationBar], v76 != [(SHSheetUIServiceClientContext *)v5 hideNavigationBar]))
+      isSharingExpanded = [(SHSheetUIServiceClientContext *)self isSharingExpanded];
+      if (isSharingExpanded != [(SHSheetUIServiceClientContext *)v5 isSharingExpanded]|| (v72 = [(SHSheetUIServiceClientContext *)self sharingStyle], v72 != [(SHSheetUIServiceClientContext *)v5 sharingStyle]) || (v73 = [(SHSheetUIServiceClientContext *)self configureForCloudSharing], v73 != [(SHSheetUIServiceClientContext *)v5 configureForCloudSharing]) || (v74 = [(SHSheetUIServiceClientContext *)self configureForPhotosEdit], v74 != [(SHSheetUIServiceClientContext *)v5 configureForPhotosEdit]) || (v75 = [(SHSheetUIServiceClientContext *)self hideHeaderView], v75 != [(SHSheetUIServiceClientContext *)v5 hideHeaderView]) || (v76 = [(SHSheetUIServiceClientContext *)self hideNavigationBar], v76 != [(SHSheetUIServiceClientContext *)v5 hideNavigationBar]))
       {
         LOBYTE(v12) = 0;
         v21 = v141;
@@ -545,10 +545,10 @@ LABEL_72:
         goto LABEL_72;
       }
 
-      v78 = [(SHSheetUIServiceClientContext *)self topContentSectionText];
-      v79 = [(SHSheetUIServiceClientContext *)v5 topContentSectionText];
-      v80 = v78;
-      v128 = v79;
+      topContentSectionText = [(SHSheetUIServiceClientContext *)self topContentSectionText];
+      topContentSectionText2 = [(SHSheetUIServiceClientContext *)v5 topContentSectionText];
+      v80 = topContentSectionText;
+      v128 = topContentSectionText2;
       v129 = v80;
       if (v80 == v128)
       {
@@ -578,10 +578,10 @@ LABEL_131:
         }
       }
 
-      v82 = [(SHSheetUIServiceClientContext *)self heroActionActivityTypes];
-      v83 = [(SHSheetUIServiceClientContext *)v5 heroActionActivityTypes];
-      v126 = v82;
-      v127 = v83;
+      heroActionActivityTypes = [(SHSheetUIServiceClientContext *)self heroActionActivityTypes];
+      heroActionActivityTypes2 = [(SHSheetUIServiceClientContext *)v5 heroActionActivityTypes];
+      v126 = heroActionActivityTypes;
+      v127 = heroActionActivityTypes2;
       if (v126 == v127)
       {
       }
@@ -608,10 +608,10 @@ LABEL_129:
         }
       }
 
-      v85 = [(SHSheetUIServiceClientContext *)self excludedActivityTypes];
-      v86 = [(SHSheetUIServiceClientContext *)v5 excludedActivityTypes];
-      v87 = v85;
-      v124 = v86;
+      excludedActivityTypes = [(SHSheetUIServiceClientContext *)self excludedActivityTypes];
+      excludedActivityTypes2 = [(SHSheetUIServiceClientContext *)v5 excludedActivityTypes];
+      v87 = excludedActivityTypes;
+      v124 = excludedActivityTypes2;
       v125 = v87;
       if (v87 == v124)
       {
@@ -639,10 +639,10 @@ LABEL_127:
         }
       }
 
-      v89 = [(SHSheetUIServiceClientContext *)self applicationActivityTypes];
-      v90 = [(SHSheetUIServiceClientContext *)v5 applicationActivityTypes];
-      v91 = v89;
-      v123 = v90;
+      applicationActivityTypes = [(SHSheetUIServiceClientContext *)self applicationActivityTypes];
+      applicationActivityTypes2 = [(SHSheetUIServiceClientContext *)v5 applicationActivityTypes];
+      v91 = applicationActivityTypes;
+      v123 = applicationActivityTypes2;
       if (v91 == v123)
       {
       }
@@ -666,8 +666,8 @@ LABEL_124:
         }
       }
 
-      v93 = [(SHSheetUIServiceClientContext *)self showHeroActionsHorizontally];
-      if (v93 != [(SHSheetUIServiceClientContext *)v5 showHeroActionsHorizontally])
+      showHeroActionsHorizontally = [(SHSheetUIServiceClientContext *)self showHeroActionsHorizontally];
+      if (showHeroActionsHorizontally != [(SHSheetUIServiceClientContext *)v5 showHeroActionsHorizontally])
       {
 LABEL_109:
         LOBYTE(v12) = 0;
@@ -676,10 +676,10 @@ LABEL_125:
         goto LABEL_126;
       }
 
-      v94 = [(SHSheetUIServiceClientContext *)self tintColor];
-      v95 = [(SHSheetUIServiceClientContext *)v5 tintColor];
-      v96 = v94;
-      v121 = v95;
+      tintColor = [(SHSheetUIServiceClientContext *)self tintColor];
+      tintColor2 = [(SHSheetUIServiceClientContext *)v5 tintColor];
+      v96 = tintColor;
+      v121 = tintColor2;
       v122 = v96;
       if (v96 == v121)
       {
@@ -709,34 +709,34 @@ LABEL_123:
         }
       }
 
-      v97 = [(SHSheetUIServiceClientContext *)self supportsCollaboration];
-      if (v97 != [(SHSheetUIServiceClientContext *)v5 supportsCollaboration])
+      supportsCollaboration = [(SHSheetUIServiceClientContext *)self supportsCollaboration];
+      if (supportsCollaboration != [(SHSheetUIServiceClientContext *)v5 supportsCollaboration])
       {
         goto LABEL_120;
       }
 
-      v98 = [(SHSheetUIServiceClientContext *)self supportsSendCopy];
-      if (v98 != [(SHSheetUIServiceClientContext *)v5 supportsSendCopy])
+      supportsSendCopy = [(SHSheetUIServiceClientContext *)self supportsSendCopy];
+      if (supportsSendCopy != [(SHSheetUIServiceClientContext *)v5 supportsSendCopy])
       {
         goto LABEL_120;
       }
 
-      v99 = [(SHSheetUIServiceClientContext *)self isCollaborative];
-      if (v99 != [(SHSheetUIServiceClientContext *)v5 isCollaborative])
+      isCollaborative = [(SHSheetUIServiceClientContext *)self isCollaborative];
+      if (isCollaborative != [(SHSheetUIServiceClientContext *)v5 isCollaborative])
       {
         goto LABEL_120;
       }
 
-      v100 = [(SHSheetUIServiceClientContext *)self showCollaborationOptions];
-      if (v100 != [(SHSheetUIServiceClientContext *)v5 showCollaborationOptions])
+      showCollaborationOptions = [(SHSheetUIServiceClientContext *)self showCollaborationOptions];
+      if (showCollaborationOptions != [(SHSheetUIServiceClientContext *)v5 showCollaborationOptions])
       {
         goto LABEL_120;
       }
 
-      v102 = [(SHSheetUIServiceClientContext *)self collaborationModeTitle];
-      v120 = [(SHSheetUIServiceClientContext *)v5 collaborationModeTitle];
-      v103 = v102;
-      v104 = v120;
+      collaborationModeTitle = [(SHSheetUIServiceClientContext *)self collaborationModeTitle];
+      collaborationModeTitle2 = [(SHSheetUIServiceClientContext *)v5 collaborationModeTitle];
+      v103 = collaborationModeTitle;
+      v104 = collaborationModeTitle2;
       v119 = v103;
       v101 = v104;
       if (v103 == v104)
@@ -761,8 +761,8 @@ LABEL_123:
         }
       }
 
-      v105 = [(SHSheetUIServiceClientContext *)self wantsCustomScene];
-      if (v105 != [(SHSheetUIServiceClientContext *)v5 wantsCustomScene])
+      wantsCustomScene = [(SHSheetUIServiceClientContext *)self wantsCustomScene];
+      if (wantsCustomScene != [(SHSheetUIServiceClientContext *)v5 wantsCustomScene])
       {
 LABEL_138:
         LOBYTE(v12) = 0;
@@ -779,10 +779,10 @@ LABEL_138:
         goto LABEL_122;
       }
 
-      v113 = [(SHSheetUIServiceClientContext *)self collaborationFooterViewModel];
-      v114 = [(SHSheetUIServiceClientContext *)v5 collaborationFooterViewModel];
-      v12 = v113;
-      v115 = v114;
+      collaborationFooterViewModel = [(SHSheetUIServiceClientContext *)self collaborationFooterViewModel];
+      collaborationFooterViewModel2 = [(SHSheetUIServiceClientContext *)v5 collaborationFooterViewModel];
+      v12 = collaborationFooterViewModel;
+      v115 = collaborationFooterViewModel2;
       v106 = v115;
       v117 = v12;
       if (v12 == v115)
@@ -812,111 +812,111 @@ LABEL_84:
   return v12;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v24 = a3;
-  v4 = [(SHSheetUIServiceClientContext *)self sessionIdentifier];
-  [v24 encodeObject:v4 forKey:@"sessionIdentifier"];
+  coderCopy = coder;
+  sessionIdentifier = [(SHSheetUIServiceClientContext *)self sessionIdentifier];
+  [coderCopy encodeObject:sessionIdentifier forKey:@"sessionIdentifier"];
 
-  v5 = [(SHSheetUIServiceClientContext *)self activityConfigurations];
-  [v24 encodeCollection:v5 forKey:@"activityConfigurations"];
+  activityConfigurations = [(SHSheetUIServiceClientContext *)self activityConfigurations];
+  [coderCopy encodeCollection:activityConfigurations forKey:@"activityConfigurations"];
 
-  [v24 encodeBool:-[SHSheetUIServiceClientContext isSharingExpanded](self forKey:{"isSharingExpanded"), @"isSharingExpanded"}];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext isSharingExpanded](self forKey:{"isSharingExpanded"), @"isSharingExpanded"}];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:{-[SHSheetUIServiceClientContext sharingStyle](self, "sharingStyle")}];
-  [v24 encodeObject:v6 forKey:@"sharingStyle"];
+  [coderCopy encodeObject:v6 forKey:@"sharingStyle"];
 
-  [v24 encodeBool:-[SHSheetUIServiceClientContext configureForCloudSharing](self forKey:{"configureForCloudSharing"), @"configureForCloudSharing"}];
-  [v24 encodeBool:-[SHSheetUIServiceClientContext configureForPhotosEdit](self forKey:{"configureForPhotosEdit"), @"configureForPhotosEdit"}];
-  [v24 encodeBool:-[SHSheetUIServiceClientContext hideHeaderView](self forKey:{"hideHeaderView"), @"hideHeaderView"}];
-  [v24 encodeBool:-[SHSheetUIServiceClientContext hideNavigationBar](self forKey:{"hideNavigationBar"), @"hideNavigationBar"}];
-  v7 = [(SHSheetUIServiceClientContext *)self topContentSectionText];
-  [v24 encodeObject:v7 forKey:@"topContentSectionText"];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext configureForCloudSharing](self forKey:{"configureForCloudSharing"), @"configureForCloudSharing"}];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext configureForPhotosEdit](self forKey:{"configureForPhotosEdit"), @"configureForPhotosEdit"}];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext hideHeaderView](self forKey:{"hideHeaderView"), @"hideHeaderView"}];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext hideNavigationBar](self forKey:{"hideNavigationBar"), @"hideNavigationBar"}];
+  topContentSectionText = [(SHSheetUIServiceClientContext *)self topContentSectionText];
+  [coderCopy encodeObject:topContentSectionText forKey:@"topContentSectionText"];
 
-  v8 = [(SHSheetUIServiceClientContext *)self heroActionActivityTypes];
-  [v24 encodeObject:v8 forKey:@"heroActionActivityTypes"];
+  heroActionActivityTypes = [(SHSheetUIServiceClientContext *)self heroActionActivityTypes];
+  [coderCopy encodeObject:heroActionActivityTypes forKey:@"heroActionActivityTypes"];
 
-  v9 = [(SHSheetUIServiceClientContext *)self excludedActivityTypes];
-  [v24 encodeObject:v9 forKey:@"excludedActivityTypes"];
+  excludedActivityTypes = [(SHSheetUIServiceClientContext *)self excludedActivityTypes];
+  [coderCopy encodeObject:excludedActivityTypes forKey:@"excludedActivityTypes"];
 
-  v10 = [(SHSheetUIServiceClientContext *)self applicationActivityTypes];
-  [v24 encodeObject:v10 forKey:@"applicationActivityTypes"];
+  applicationActivityTypes = [(SHSheetUIServiceClientContext *)self applicationActivityTypes];
+  [coderCopy encodeObject:applicationActivityTypes forKey:@"applicationActivityTypes"];
 
-  [v24 encodeBool:-[SHSheetUIServiceClientContext showHeroActionsHorizontally](self forKey:{"showHeroActionsHorizontally"), @"showHeroActionsHorizontally"}];
-  v11 = [(SHSheetUIServiceClientContext *)self tintColor];
-  [v24 encodeObject:v11 forKey:@"tintColor"];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext showHeroActionsHorizontally](self forKey:{"showHeroActionsHorizontally"), @"showHeroActionsHorizontally"}];
+  tintColor = [(SHSheetUIServiceClientContext *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"tintColor"];
 
-  v12 = [(SHSheetUIServiceClientContext *)self serializedMetadataValues];
-  [v24 encodeObject:v12 forKey:@"serializedMetadataValues"];
+  serializedMetadataValues = [(SHSheetUIServiceClientContext *)self serializedMetadataValues];
+  [coderCopy encodeObject:serializedMetadataValues forKey:@"serializedMetadataValues"];
 
-  [v24 encodeBool:-[SHSheetUIServiceClientContext isLoadingMetadata](self forKey:{"isLoadingMetadata"), @"isLoadingMetadata"}];
-  v13 = [(SHSheetUIServiceClientContext *)self urlRequests];
-  [v24 encodeObject:v13 forKey:@"urlRequests"];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext isLoadingMetadata](self forKey:{"isLoadingMetadata"), @"isLoadingMetadata"}];
+  urlRequests = [(SHSheetUIServiceClientContext *)self urlRequests];
+  [coderCopy encodeObject:urlRequests forKey:@"urlRequests"];
 
-  v14 = [(SHSheetUIServiceClientContext *)self urlSandboxExtensions];
-  [v24 encodeObject:v14 forKey:@"urlSandboxExtensions"];
+  urlSandboxExtensions = [(SHSheetUIServiceClientContext *)self urlSandboxExtensions];
+  [coderCopy encodeObject:urlSandboxExtensions forKey:@"urlSandboxExtensions"];
 
-  [v24 encodeBool:-[SHSheetUIServiceClientContext showOptions](self forKey:{"showOptions"), @"showOptions"}];
-  v15 = [(SHSheetUIServiceClientContext *)self customOptionsTitle];
-  [v24 encodeObject:v15 forKey:@"customOptionsTitle"];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext showOptions](self forKey:{"showOptions"), @"showOptions"}];
+  customOptionsTitle = [(SHSheetUIServiceClientContext *)self customOptionsTitle];
+  [coderCopy encodeObject:customOptionsTitle forKey:@"customOptionsTitle"];
 
-  [v24 encodeBool:-[SHSheetUIServiceClientContext showCustomHeaderButton](self forKey:{"showCustomHeaderButton"), @"showCustomHeaderButton"}];
-  [v24 encodeBool:-[SHSheetUIServiceClientContext showHeaderSpecialization](self forKey:{"showHeaderSpecialization"), @"showHeaderSpecialization"}];
-  v16 = [(SHSheetUIServiceClientContext *)self customHeaderButtonTitle];
-  [v24 encodeObject:v16 forKey:@"customHeaderButtonTitle"];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext showCustomHeaderButton](self forKey:{"showCustomHeaderButton"), @"showCustomHeaderButton"}];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext showHeaderSpecialization](self forKey:{"showHeaderSpecialization"), @"showHeaderSpecialization"}];
+  customHeaderButtonTitle = [(SHSheetUIServiceClientContext *)self customHeaderButtonTitle];
+  [coderCopy encodeObject:customHeaderButtonTitle forKey:@"customHeaderButtonTitle"];
 
-  v17 = [(SHSheetUIServiceClientContext *)self customHeaderButtonColor];
-  [v24 encodeObject:v17 forKey:@"customHeaderButtonColor"];
+  customHeaderButtonColor = [(SHSheetUIServiceClientContext *)self customHeaderButtonColor];
+  [coderCopy encodeObject:customHeaderButtonColor forKey:@"customHeaderButtonColor"];
 
-  [v24 encodeBool:-[SHSheetUIServiceClientContext isModeSwitchDisabled](self forKey:{"isModeSwitchDisabled"), @"isModeSwitchDisabled"}];
-  [v24 encodeBool:-[SHSheetUIServiceClientContext supportsCollaboration](self forKey:{"supportsCollaboration"), @"supportsCollaboration"}];
-  [v24 encodeBool:-[SHSheetUIServiceClientContext supportsSendCopy](self forKey:{"supportsSendCopy"), @"supportsSendCopy"}];
-  [v24 encodeBool:-[SHSheetUIServiceClientContext isCollaborative](self forKey:{"isCollaborative"), @"isCollaborative"}];
-  [v24 encodeBool:-[SHSheetUIServiceClientContext showCollaborationOptions](self forKey:{"showCollaborationOptions"), @"showCollaborationOptions"}];
-  v18 = [(SHSheetUIServiceClientContext *)self collaborationModeTitle];
-  [v24 encodeObject:v18 forKey:@"collaborationModeTitle"];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext isModeSwitchDisabled](self forKey:{"isModeSwitchDisabled"), @"isModeSwitchDisabled"}];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext supportsCollaboration](self forKey:{"supportsCollaboration"), @"supportsCollaboration"}];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext supportsSendCopy](self forKey:{"supportsSendCopy"), @"supportsSendCopy"}];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext isCollaborative](self forKey:{"isCollaborative"), @"isCollaborative"}];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext showCollaborationOptions](self forKey:{"showCollaborationOptions"), @"showCollaborationOptions"}];
+  collaborationModeTitle = [(SHSheetUIServiceClientContext *)self collaborationModeTitle];
+  [coderCopy encodeObject:collaborationModeTitle forKey:@"collaborationModeTitle"];
 
-  v19 = [(SHSheetUIServiceClientContext *)self collaborationFooterViewModel];
+  collaborationFooterViewModel = [(SHSheetUIServiceClientContext *)self collaborationFooterViewModel];
 
-  if (v19)
+  if (collaborationFooterViewModel)
   {
-    v20 = [(SHSheetUIServiceClientContext *)self collaborationFooterViewModel];
-    [v24 encodeObject:v20 forKey:@"collaborationFooterViewModel"];
+    collaborationFooterViewModel2 = [(SHSheetUIServiceClientContext *)self collaborationFooterViewModel];
+    [coderCopy encodeObject:collaborationFooterViewModel2 forKey:@"collaborationFooterViewModel"];
   }
 
-  v21 = [(SHSheetUIServiceClientContext *)self processIdentity];
-  [v24 encodeObject:v21 forKey:@"processIdentity"];
+  processIdentity = [(SHSheetUIServiceClientContext *)self processIdentity];
+  [coderCopy encodeObject:processIdentity forKey:@"processIdentity"];
 
-  [v24 encodeBool:-[SHSheetUIServiceClientContext wantsCustomScene](self forKey:{"wantsCustomScene"), @"wantsCustomScene"}];
-  v22 = [(SHSheetUIServiceClientContext *)self customViewControllerVerticalInsetWrapper];
-  [v24 encodeObject:v22 forKey:@"customViewControllerVerticalInsetWrapper"];
+  [coderCopy encodeBool:-[SHSheetUIServiceClientContext wantsCustomScene](self forKey:{"wantsCustomScene"), @"wantsCustomScene"}];
+  customViewControllerVerticalInsetWrapper = [(SHSheetUIServiceClientContext *)self customViewControllerVerticalInsetWrapper];
+  [coderCopy encodeObject:customViewControllerVerticalInsetWrapper forKey:@"customViewControllerVerticalInsetWrapper"];
 
-  v23 = [(SHSheetUIServiceClientContext *)self customViewControllerSectionHeightWrapper];
-  [v24 encodeObject:v23 forKey:@"customViewControllerSectionHeightWrapper"];
+  customViewControllerSectionHeightWrapper = [(SHSheetUIServiceClientContext *)self customViewControllerSectionHeightWrapper];
+  [coderCopy encodeObject:customViewControllerSectionHeightWrapper forKey:@"customViewControllerSectionHeightWrapper"];
 
   [(SHSheetUIServiceClientContext *)self hostPortraitWindowSize];
-  [v24 encodeCGSize:@"hostPortraitWindowSize" forKey:?];
+  [coderCopy encodeCGSize:@"hostPortraitWindowSize" forKey:?];
 }
 
-- (SHSheetUIServiceClientContext)initWithBSXPCCoder:(id)a3
+- (SHSheetUIServiceClientContext)initWithBSXPCCoder:(id)coder
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v71.receiver = self;
   v71.super_class = SHSheetUIServiceClientContext;
   v5 = [(SHSheetUIServiceClientContext *)&v71 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
     v8 = objc_opt_class();
-    v9 = [v4 decodeCollectionOfClass:v8 containingClass:objc_opt_class() forKey:@"activityConfigurations"];
+    v9 = [coderCopy decodeCollectionOfClass:v8 containingClass:objc_opt_class() forKey:@"activityConfigurations"];
     activityConfigurations = v5->_activityConfigurations;
     v5->_activityConfigurations = v9;
 
     v11 = [SUIHostActivityProxy activitiesForConfigurations:v5->_activityConfigurations];
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
@@ -936,8 +936,8 @@ LABEL_84:
           }
 
           v17 = *(*(&v67 + 1) + 8 * i);
-          v18 = [v17 activityUUID];
-          [v12 setObject:v17 forKeyedSubscript:v18];
+          activityUUID = [v17 activityUUID];
+          [dictionary setObject:v17 forKeyedSubscript:activityUUID];
         }
 
         v14 = [v13 countByEnumeratingWithState:&v67 objects:v77 count:16];
@@ -946,44 +946,44 @@ LABEL_84:
       while (v14);
     }
 
-    v19 = [v12 copy];
+    v19 = [dictionary copy];
     activitiesByUUID = v5->_activitiesByUUID;
     v5->_activitiesByUUID = v19;
 
-    v5->_isSharingExpanded = [v4 decodeBoolForKey:@"isSharingExpanded"];
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingStyle"];
+    v5->_isSharingExpanded = [coderCopy decodeBoolForKey:@"isSharingExpanded"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingStyle"];
     v5->_sharingStyle = [v21 intValue];
 
-    v5->_configureForCloudSharing = [v4 decodeBoolForKey:@"configureForCloudSharing"];
-    v5->_configureForPhotosEdit = [v4 decodeBoolForKey:@"configureForPhotosEdit"];
-    v5->_hideHeaderView = [v4 decodeBoolForKey:@"hideHeaderView"];
-    v5->_hideNavigationBar = [v4 decodeBoolForKey:@"hideNavigationBar"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topContentSectionText"];
+    v5->_configureForCloudSharing = [coderCopy decodeBoolForKey:@"configureForCloudSharing"];
+    v5->_configureForPhotosEdit = [coderCopy decodeBoolForKey:@"configureForPhotosEdit"];
+    v5->_hideHeaderView = [coderCopy decodeBoolForKey:@"hideHeaderView"];
+    v5->_hideNavigationBar = [coderCopy decodeBoolForKey:@"hideNavigationBar"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topContentSectionText"];
     topContentSectionText = v5->_topContentSectionText;
     v5->_topContentSectionText = v22;
 
     v24 = objc_opt_class();
-    v25 = [v4 decodeCollectionOfClass:v24 containingClass:objc_opt_class() forKey:@"heroActionActivityTypes"];
+    v25 = [coderCopy decodeCollectionOfClass:v24 containingClass:objc_opt_class() forKey:@"heroActionActivityTypes"];
     heroActionActivityTypes = v5->_heroActionActivityTypes;
     v5->_heroActionActivityTypes = v25;
 
     v27 = objc_opt_class();
-    v28 = [v4 decodeCollectionOfClass:v27 containingClass:objc_opt_class() forKey:@"excludedActivityTypes"];
+    v28 = [coderCopy decodeCollectionOfClass:v27 containingClass:objc_opt_class() forKey:@"excludedActivityTypes"];
     excludedActivityTypes = v5->_excludedActivityTypes;
     v5->_excludedActivityTypes = v28;
 
     v30 = objc_opt_class();
-    v31 = [v4 decodeCollectionOfClass:v30 containingClass:objc_opt_class() forKey:@"applicationActivityTypes"];
+    v31 = [coderCopy decodeCollectionOfClass:v30 containingClass:objc_opt_class() forKey:@"applicationActivityTypes"];
     applicationActivityTypes = v5->_applicationActivityTypes;
     v5->_applicationActivityTypes = v31;
 
-    v5->_showHeroActionsHorizontally = [v4 decodeBoolForKey:@"showHeroActionsHorizontally"];
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
+    v5->_showHeroActionsHorizontally = [coderCopy decodeBoolForKey:@"showHeroActionsHorizontally"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tintColor"];
     tintColor = v5->_tintColor;
     v5->_tintColor = v33;
 
     v35 = objc_opt_class();
-    v36 = [v4 decodeCollectionOfClass:v35 containingClass:objc_opt_class() forKey:@"serializedMetadataValues"];
+    v36 = [coderCopy decodeCollectionOfClass:v35 containingClass:objc_opt_class() forKey:@"serializedMetadataValues"];
     serializedMetadataValues = v5->_serializedMetadataValues;
     v5->_serializedMetadataValues = v36;
 
@@ -991,38 +991,38 @@ LABEL_84:
     metadataValues = v5->_metadataValues;
     v5->_metadataValues = v38;
 
-    v5->_isLoadingMetadata = [v4 decodeBoolForKey:@"isLoadingMetadata"];
+    v5->_isLoadingMetadata = [coderCopy decodeBoolForKey:@"isLoadingMetadata"];
     v40 = objc_opt_class();
-    v41 = [v4 decodeCollectionOfClass:v40 containingClass:objc_opt_class() forKey:@"urlRequests"];
+    v41 = [coderCopy decodeCollectionOfClass:v40 containingClass:objc_opt_class() forKey:@"urlRequests"];
     urlRequests = v5->_urlRequests;
     v5->_urlRequests = v41;
 
     v43 = objc_opt_class();
-    v44 = [v4 decodeCollectionOfClass:v43 containingClass:objc_opt_class() forKey:@"urlSandboxExtensions"];
+    v44 = [coderCopy decodeCollectionOfClass:v43 containingClass:objc_opt_class() forKey:@"urlSandboxExtensions"];
     urlSandboxExtensions = v5->_urlSandboxExtensions;
     v5->_urlSandboxExtensions = v44;
 
-    v5->_showOptions = [v4 decodeBoolForKey:@"showOptions"];
-    v46 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customOptionsTitle"];
+    v5->_showOptions = [coderCopy decodeBoolForKey:@"showOptions"];
+    v46 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customOptionsTitle"];
     customOptionsTitle = v5->_customOptionsTitle;
     v5->_customOptionsTitle = v46;
 
-    v5->_showCustomHeaderButton = [v4 decodeBoolForKey:@"showCustomHeaderButton"];
-    v5->_showHeaderSpecialization = [v4 decodeBoolForKey:@"showHeaderSpecialization"];
-    v48 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customHeaderButtonTitle"];
+    v5->_showCustomHeaderButton = [coderCopy decodeBoolForKey:@"showCustomHeaderButton"];
+    v5->_showHeaderSpecialization = [coderCopy decodeBoolForKey:@"showHeaderSpecialization"];
+    v48 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customHeaderButtonTitle"];
     customHeaderButtonTitle = v5->_customHeaderButtonTitle;
     v5->_customHeaderButtonTitle = v48;
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customHeaderButtonColor"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customHeaderButtonColor"];
     customHeaderButtonColor = v5->_customHeaderButtonColor;
     v5->_customHeaderButtonColor = v50;
 
-    v5->_isModeSwitchDisabled = [v4 decodeBoolForKey:@"isModeSwitchDisabled"];
-    v5->_supportsCollaboration = [v4 decodeBoolForKey:@"supportsCollaboration"];
-    v5->_supportsSendCopy = [v4 decodeBoolForKey:@"supportsSendCopy"];
-    v5->_isCollaborative = [v4 decodeBoolForKey:@"isCollaborative"];
-    v5->_showCollaborationOptions = [v4 decodeBoolForKey:@"showCollaborationOptions"];
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"collaborationModeTitle"];
+    v5->_isModeSwitchDisabled = [coderCopy decodeBoolForKey:@"isModeSwitchDisabled"];
+    v5->_supportsCollaboration = [coderCopy decodeBoolForKey:@"supportsCollaboration"];
+    v5->_supportsSendCopy = [coderCopy decodeBoolForKey:@"supportsSendCopy"];
+    v5->_isCollaborative = [coderCopy decodeBoolForKey:@"isCollaborative"];
+    v5->_showCollaborationOptions = [coderCopy decodeBoolForKey:@"showCollaborationOptions"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"collaborationModeTitle"];
     collaborationModeTitle = v5->_collaborationModeTitle;
     v5->_collaborationModeTitle = v52;
 
@@ -1046,25 +1046,25 @@ LABEL_84:
 
       v55 = v54;
       _Block_object_dispose(&v73, 8);
-      v56 = [v4 decodeObjectOfClass:v54 forKey:@"collaborationFooterViewModel"];
+      v56 = [coderCopy decodeObjectOfClass:v54 forKey:@"collaborationFooterViewModel"];
       collaborationFooterViewModel = v5->_collaborationFooterViewModel;
       v5->_collaborationFooterViewModel = v56;
     }
 
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processIdentity"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processIdentity"];
     processIdentity = v5->_processIdentity;
     v5->_processIdentity = v58;
 
-    v5->_wantsCustomScene = [v4 decodeBoolForKey:@"wantsCustomScene"];
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customViewControllerVerticalInsetWrapper"];
+    v5->_wantsCustomScene = [coderCopy decodeBoolForKey:@"wantsCustomScene"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customViewControllerVerticalInsetWrapper"];
     customViewControllerVerticalInsetWrapper = v5->_customViewControllerVerticalInsetWrapper;
     v5->_customViewControllerVerticalInsetWrapper = v60;
 
-    v62 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"customViewControllerSectionHeightWrapper"];
+    v62 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"customViewControllerSectionHeightWrapper"];
     customViewControllerSectionHeightWrapper = v5->_customViewControllerSectionHeightWrapper;
     v5->_customViewControllerSectionHeightWrapper = v62;
 
-    [v4 decodeCGSizeForKey:@"hostPortraitWindowSize"];
+    [coderCopy decodeCGSizeForKey:@"hostPortraitWindowSize"];
     v5->_hostPortraitWindowSize.width = v64;
     v5->_hostPortraitWindowSize.height = v65;
   }
@@ -1072,16 +1072,16 @@ LABEL_84:
   return v5;
 }
 
-+ (id)_deserializeMetadatas:(id)a3
++ (id)_deserializeMetadatas:(id)metadatas
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  metadatasCopy = metadatas;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(metadatasCopy, "count")}];
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = metadatasCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v6)
   {

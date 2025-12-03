@@ -1,34 +1,34 @@
 @interface ATXPBSharedDigestEngagementTrackingMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumEngagementsAfterExpiration:(BOOL)a3;
-- (void)setHasNumEngagementsInScheduled:(BOOL)a3;
-- (void)setHasNumEngagementsInUpcoming:(BOOL)a3;
-- (void)setHasNumExpansions:(BOOL)a3;
-- (void)setHasSectionPosition:(BOOL)a3;
-- (void)setHasSectionSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumEngagementsAfterExpiration:(BOOL)expiration;
+- (void)setHasNumEngagementsInScheduled:(BOOL)scheduled;
+- (void)setHasNumEngagementsInUpcoming:(BOOL)upcoming;
+- (void)setHasNumExpansions:(BOOL)expansions;
+- (void)setHasSectionPosition:(BOOL)position;
+- (void)setHasSectionSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBSharedDigestEngagementTrackingMetrics
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBSharedDigestEngagementTrackingMetrics *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = nCopy;
       v7 = [v6 objectForKeyedSubscript:@"numEngagementsInUpcoming"];
       -[ATXPBSharedDigestEngagementTrackingMetrics setNumEngagementsInUpcoming:](v5, "setNumEngagementsInUpcoming:", [v7 unsignedIntegerValue]);
 
@@ -77,8 +77,8 @@
   v5 = [ATXJSONHelper wrapObject:v4];
   v20[3] = v5;
   v19[4] = @"sectionIdentifier";
-  v6 = [(ATXPBSharedDigestEngagementTrackingMetrics *)self sectionIdentifier];
-  v7 = [ATXJSONHelper wrapObject:v6];
+  sectionIdentifier = [(ATXPBSharedDigestEngagementTrackingMetrics *)self sectionIdentifier];
+  v7 = [ATXJSONHelper wrapObject:sectionIdentifier];
   v20[4] = v7;
   v19[5] = @"sectionPosition";
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ATXPBSharedDigestEngagementTrackingMetrics sectionPosition](self, "sectionPosition")}];
@@ -93,9 +93,9 @@
   return v12;
 }
 
-- (void)setHasNumEngagementsInUpcoming:(BOOL)a3
+- (void)setHasNumEngagementsInUpcoming:(BOOL)upcoming
 {
-  if (a3)
+  if (upcoming)
   {
     v3 = 8;
   }
@@ -108,9 +108,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNumEngagementsInScheduled:(BOOL)a3
+- (void)setHasNumEngagementsInScheduled:(BOOL)scheduled
 {
-  if (a3)
+  if (scheduled)
   {
     v3 = 4;
   }
@@ -123,9 +123,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasNumEngagementsAfterExpiration:(BOOL)a3
+- (void)setHasNumEngagementsAfterExpiration:(BOOL)expiration
 {
-  if (a3)
+  if (expiration)
   {
     v3 = 2;
   }
@@ -138,9 +138,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasNumExpansions:(BOOL)a3
+- (void)setHasNumExpansions:(BOOL)expansions
 {
-  if (a3)
+  if (expansions)
   {
     v3 = 16;
   }
@@ -153,9 +153,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSectionPosition:(BOOL)a3
+- (void)setHasSectionPosition:(BOOL)position
 {
-  if (a3)
+  if (position)
   {
     v3 = 32;
   }
@@ -168,9 +168,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasSectionSize:(BOOL)a3
+- (void)setHasSectionSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 64;
   }
@@ -189,20 +189,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBSharedDigestEngagementTrackingMetrics;
   v4 = [(ATXPBSharedDigestEngagementTrackingMetrics *)&v8 description];
-  v5 = [(ATXPBSharedDigestEngagementTrackingMetrics *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBSharedDigestEngagementTrackingMetrics *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numEngagementsInUpcoming];
-    [v3 setObject:v10 forKey:@"numEngagementsInUpcoming"];
+    [dictionary setObject:v10 forKey:@"numEngagementsInUpcoming"];
 
     has = self->_has;
     if ((has & 4) == 0)
@@ -223,7 +223,7 @@ LABEL_3:
   }
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numEngagementsInScheduled];
-  [v3 setObject:v11 forKey:@"numEngagementsInScheduled"];
+  [dictionary setObject:v11 forKey:@"numEngagementsInScheduled"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -239,27 +239,27 @@ LABEL_4:
 
 LABEL_17:
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numEngagementsAfterExpiration];
-  [v3 setObject:v12 forKey:@"numEngagementsAfterExpiration"];
+  [dictionary setObject:v12 forKey:@"numEngagementsAfterExpiration"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numExpansions];
-    [v3 setObject:v5 forKey:@"numExpansions"];
+    [dictionary setObject:v5 forKey:@"numExpansions"];
   }
 
 LABEL_6:
   sectionIdentifier = self->_sectionIdentifier;
   if (sectionIdentifier)
   {
-    [v3 setObject:sectionIdentifier forKey:@"sectionIdentifier"];
+    [dictionary setObject:sectionIdentifier forKey:@"sectionIdentifier"];
   }
 
   v7 = self->_has;
   if ((v7 & 0x20) != 0)
   {
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_sectionPosition];
-    [v3 setObject:v13 forKey:@"sectionPosition"];
+    [dictionary setObject:v13 forKey:@"sectionPosition"];
 
     v7 = self->_has;
     if ((v7 & 0x40) == 0)
@@ -280,23 +280,23 @@ LABEL_10:
   }
 
   v14 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_sectionSize];
-  [v3 setObject:v14 forKey:@"sectionSize"];
+  [dictionary setObject:v14 forKey:@"sectionSize"];
 
   if (*&self->_has)
   {
 LABEL_11:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_numDigestExpansions];
-    [v3 setObject:v8 forKey:@"numDigestExpansions"];
+    [dictionary setObject:v8 forKey:@"numDigestExpansions"];
   }
 
 LABEL_12:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -378,14 +378,14 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[4] = self->_numEngagementsInUpcoming;
-    *(v4 + 72) |= 8u;
+    toCopy[4] = self->_numEngagementsInUpcoming;
+    *(toCopy + 72) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -404,28 +404,28 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_numEngagementsInScheduled;
-  *(v4 + 72) |= 4u;
+  toCopy[3] = self->_numEngagementsInScheduled;
+  *(toCopy + 72) |= 4u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_4:
-    v4[5] = self->_numExpansions;
-    *(v4 + 72) |= 0x10u;
+    toCopy[5] = self->_numExpansions;
+    *(toCopy + 72) |= 0x10u;
   }
 
 LABEL_5:
   if (self->_sectionIdentifier)
   {
-    v7 = v4;
-    [v4 setSectionIdentifier:?];
-    v4 = v7;
+    v7 = toCopy;
+    [toCopy setSectionIdentifier:?];
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x20) != 0)
   {
-    v4[6] = self->_sectionPosition;
-    *(v4 + 72) |= 0x20u;
+    toCopy[6] = self->_sectionPosition;
+    *(toCopy + 72) |= 0x20u;
     v6 = self->_has;
     if ((v6 & 0x40) == 0)
     {
@@ -444,8 +444,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4[7] = self->_sectionSize;
-  *(v4 + 72) |= 0x40u;
+  toCopy[7] = self->_sectionSize;
+  *(toCopy + 72) |= 0x40u;
   v6 = self->_has;
   if ((v6 & 2) == 0)
   {
@@ -459,21 +459,21 @@ LABEL_10:
   }
 
 LABEL_20:
-  v4[2] = self->_numEngagementsAfterExpiration;
-  *(v4 + 72) |= 2u;
+  toCopy[2] = self->_numEngagementsAfterExpiration;
+  *(toCopy + 72) |= 2u;
   if (*&self->_has)
   {
 LABEL_11:
-    v4[1] = self->_numDigestExpansions;
-    *(v4 + 72) |= 1u;
+    toCopy[1] = self->_numDigestExpansions;
+    *(toCopy + 72) |= 1u;
   }
 
 LABEL_12:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -508,7 +508,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(NSString *)self->_sectionIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_sectionIdentifier copyWithZone:zone];
   v9 = *(v6 + 64);
   *(v6 + 64) = v8;
 
@@ -562,10 +562,10 @@ LABEL_9:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
@@ -573,45 +573,45 @@ LABEL_9:
   has = self->_has;
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_numEngagementsInUpcoming != *(v4 + 4))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_numEngagementsInUpcoming != *(equalCopy + 4))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_numEngagementsInScheduled != *(v4 + 3))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_numEngagementsInScheduled != *(equalCopy + 3))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_39;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 72) & 0x10) == 0 || self->_numExpansions != *(v4 + 5))
+    if ((*(equalCopy + 72) & 0x10) == 0 || self->_numExpansions != *(equalCopy + 5))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 72) & 0x10) != 0)
+  else if ((*(equalCopy + 72) & 0x10) != 0)
   {
     goto LABEL_39;
   }
 
   sectionIdentifier = self->_sectionIdentifier;
-  if (sectionIdentifier | *(v4 + 8))
+  if (sectionIdentifier | *(equalCopy + 8))
   {
     if (![(NSString *)sectionIdentifier isEqual:?])
     {
@@ -625,47 +625,47 @@ LABEL_39:
 
   if ((has & 0x20) != 0)
   {
-    if ((*(v4 + 72) & 0x20) == 0 || self->_sectionPosition != *(v4 + 6))
+    if ((*(equalCopy + 72) & 0x20) == 0 || self->_sectionPosition != *(equalCopy + 6))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 72) & 0x20) != 0)
+  else if ((*(equalCopy + 72) & 0x20) != 0)
   {
     goto LABEL_39;
   }
 
   if ((has & 0x40) != 0)
   {
-    if ((*(v4 + 72) & 0x40) == 0 || self->_sectionSize != *(v4 + 7))
+    if ((*(equalCopy + 72) & 0x40) == 0 || self->_sectionSize != *(equalCopy + 7))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 72) & 0x40) != 0)
+  else if ((*(equalCopy + 72) & 0x40) != 0)
   {
     goto LABEL_39;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_numEngagementsAfterExpiration != *(v4 + 2))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_numEngagementsAfterExpiration != *(equalCopy + 2))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_39;
   }
 
-  v7 = (*(v4 + 72) & 1) == 0;
+  v7 = (*(equalCopy + 72) & 1) == 0;
   if (has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_numDigestExpansions != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_numDigestExpansions != *(equalCopy + 1))
     {
       goto LABEL_39;
     }
@@ -769,15 +769,15 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v7 ^ v8 ^ v9 ^ v10 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 72);
+  fromCopy = from;
+  v5 = *(fromCopy + 72);
   if ((v5 & 8) != 0)
   {
-    self->_numEngagementsInUpcoming = *(v4 + 4);
+    self->_numEngagementsInUpcoming = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v5 = *(v4 + 72);
+    v5 = *(fromCopy + 72);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -790,34 +790,34 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 72) & 4) == 0)
+  else if ((*(fromCopy + 72) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_numEngagementsInScheduled = *(v4 + 3);
+  self->_numEngagementsInScheduled = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if ((*(v4 + 72) & 0x10) != 0)
+  if ((*(fromCopy + 72) & 0x10) != 0)
   {
 LABEL_4:
-    self->_numExpansions = *(v4 + 5);
+    self->_numExpansions = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
 LABEL_5:
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
-    v7 = v4;
+    v7 = fromCopy;
     [(ATXPBSharedDigestEngagementTrackingMetrics *)self setSectionIdentifier:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 0x20) != 0)
   {
-    self->_sectionPosition = *(v4 + 6);
+    self->_sectionPosition = *(fromCopy + 6);
     *&self->_has |= 0x20u;
-    v6 = *(v4 + 72);
+    v6 = *(fromCopy + 72);
     if ((v6 & 0x40) == 0)
     {
 LABEL_9:
@@ -830,14 +830,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 72) & 0x40) == 0)
+  else if ((*(fromCopy + 72) & 0x40) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_sectionSize = *(v4 + 7);
+  self->_sectionSize = *(fromCopy + 7);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 72);
+  v6 = *(fromCopy + 72);
   if ((v6 & 2) == 0)
   {
 LABEL_10:
@@ -850,12 +850,12 @@ LABEL_10:
   }
 
 LABEL_20:
-  self->_numEngagementsAfterExpiration = *(v4 + 2);
+  self->_numEngagementsAfterExpiration = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 72))
+  if (*(fromCopy + 72))
   {
 LABEL_11:
-    self->_numDigestExpansions = *(v4 + 1);
+    self->_numDigestExpansions = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

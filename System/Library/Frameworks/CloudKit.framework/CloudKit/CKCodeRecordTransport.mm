@@ -1,41 +1,41 @@
 @interface CKCodeRecordTransport
-- (BOOL)isEqual:(id)a3;
-- (CKCodeRecordTransport)initWithRecord:(id)a3;
-- (id)contentsAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKCodeRecordTransport)initWithRecord:(id)record;
+- (id)contentsAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsContents:(id)a3;
+- (int)StringAsContents:(id)contents;
 - (int)contents;
 - (unint64_t)hash;
 - (void)clearOneofValuesForContents;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setLocalSerialization:(id)a3;
-- (void)setWireSerialization:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setLocalSerialization:(id)serialization;
+- (void)setWireSerialization:(id)serialization;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKCodeRecordTransport
 
-- (void)setLocalSerialization:(id)a3
+- (void)setLocalSerialization:(id)serialization
 {
-  v4 = a3;
+  serializationCopy = serialization;
   objc_msgSend_clearOneofValuesForContents(self, v5, v6);
   *&self->_has |= 1u;
   self->_contents = 1;
   localSerialization = self->_localSerialization;
-  self->_localSerialization = v4;
+  self->_localSerialization = serializationCopy;
 }
 
-- (void)setWireSerialization:(id)a3
+- (void)setWireSerialization:(id)serialization
 {
-  v4 = a3;
+  serializationCopy = serialization;
   objc_msgSend_clearOneofValuesForContents(self, v5, v6);
   *&self->_has |= 1u;
   self->_contents = 2;
   wireSerialization = self->_wireSerialization;
-  self->_wireSerialization = v4;
+  self->_wireSerialization = serializationCopy;
 }
 
 - (int)contents
@@ -51,35 +51,35 @@
   }
 }
 
-- (id)contentsAsString:(int)a3
+- (id)contentsAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x1E696AEC0], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_1E70BE680[a3];
+    v4 = off_1E70BE680[string];
   }
 
   return v4;
 }
 
-- (int)StringAsContents:(id)a3
+- (int)StringAsContents:(id)contents
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"PBUNSET"))
+  contentsCopy = contents;
+  if (objc_msgSend_isEqualToString_(contentsCopy, v4, @"PBUNSET"))
   {
     v6 = 0;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"localSerialization"))
+  else if (objc_msgSend_isEqualToString_(contentsCopy, v5, @"localSerialization"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"wireSerialization"))
+  else if (objc_msgSend_isEqualToString_(contentsCopy, v7, @"wireSerialization"))
   {
     v6 = 2;
   }
@@ -156,65 +156,65 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_localSerialization)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_wireSerialization)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_encryptedMasterKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_contents;
-    *(v4 + 40) |= 1u;
+    toCopy[2] = self->_contents;
+    *(toCopy + 40) |= 1u;
   }
 
   localSerialization = self->_localSerialization;
-  v9 = v4;
+  v9 = toCopy;
   if (localSerialization)
   {
-    objc_msgSend_setLocalSerialization_(v4, v5, localSerialization);
-    v4 = v9;
+    objc_msgSend_setLocalSerialization_(toCopy, v5, localSerialization);
+    toCopy = v9;
   }
 
   wireSerialization = self->_wireSerialization;
   if (wireSerialization)
   {
     objc_msgSend_setWireSerialization_(v9, v5, wireSerialization);
-    v4 = v9;
+    toCopy = v9;
   }
 
   encryptedMasterKey = self->_encryptedMasterKey;
   if (encryptedMasterKey)
   {
     objc_msgSend_setEncryptedMasterKey_(v9, v5, encryptedMasterKey);
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v12 = v10;
   if (*&self->_has)
@@ -223,40 +223,40 @@
     *(v10 + 40) |= 1u;
   }
 
-  v13 = objc_msgSend_copyWithZone_(self->_localSerialization, v11, a3);
+  v13 = objc_msgSend_copyWithZone_(self->_localSerialization, v11, zone);
   v14 = v12[3];
   v12[3] = v13;
 
-  v16 = objc_msgSend_copyWithZone_(self->_wireSerialization, v15, a3);
+  v16 = objc_msgSend_copyWithZone_(self->_wireSerialization, v15, zone);
   v17 = v12[4];
   v12[4] = v16;
 
-  v19 = objc_msgSend_copyWithZone_(self->_encryptedMasterKey, v18, a3);
+  v19 = objc_msgSend_copyWithZone_(self->_encryptedMasterKey, v18, zone);
   v20 = v12[2];
   v12[2] = v19;
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_13;
   }
 
-  v8 = *(v4 + 40);
+  v8 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((v4[5] & 1) == 0 || self->_contents != *(v4 + 2))
+    if ((equalCopy[5] & 1) == 0 || self->_contents != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if (v4[5])
+  else if (equalCopy[5])
   {
 LABEL_13:
     isEqual = 0;
@@ -264,14 +264,14 @@ LABEL_13:
   }
 
   localSerialization = self->_localSerialization;
-  v10 = v4[3];
+  v10 = equalCopy[3];
   if (localSerialization | v10 && !objc_msgSend_isEqual_(localSerialization, v7, v10))
   {
     goto LABEL_13;
   }
 
   wireSerialization = self->_wireSerialization;
-  v12 = v4[4];
+  v12 = equalCopy[4];
   if (wireSerialization | v12)
   {
     if (!objc_msgSend_isEqual_(wireSerialization, v7, v12))
@@ -281,7 +281,7 @@ LABEL_13:
   }
 
   encryptedMasterKey = self->_encryptedMasterKey;
-  v14 = v4[2];
+  v14 = equalCopy[2];
   if (encryptedMasterKey | v14)
   {
     isEqual = objc_msgSend_isEqual_(encryptedMasterKey, v7, v14);
@@ -314,48 +314,48 @@ LABEL_14:
   return v5 ^ v8 ^ objc_msgSend_hash(self->_encryptedMasterKey, v9, v10);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 40))
+  fromCopy = from;
+  if (*(fromCopy + 40))
   {
-    self->_contents = *(v4 + 2);
+    self->_contents = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (v6)
   {
     objc_msgSend_setLocalSerialization_(self, v5, v6);
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v7 = *(v4 + 4);
+  v7 = *(fromCopy + 4);
   if (v7)
   {
     objc_msgSend_setWireSerialization_(self, v5, v7);
-    v4 = v9;
+    fromCopy = v9;
   }
 
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (v8)
   {
     objc_msgSend_setEncryptedMasterKey_(self, v5, v8);
-    v4 = v9;
+    fromCopy = v9;
   }
 }
 
-- (CKCodeRecordTransport)initWithRecord:(id)a3
+- (CKCodeRecordTransport)initWithRecord:(id)record
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  recordCopy = record;
   v28.receiver = self;
   v28.super_class = CKCodeRecordTransport;
   v8 = [(CKCodeRecordTransport *)&v28 init];
   if (v8)
   {
-    v9 = objc_msgSend_valueStore(v5, v6, v7);
+    v9 = objc_msgSend_valueStore(recordCopy, v6, v7);
     v29[0] = objc_opt_class();
     v11 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v10, v29, 1);
     v13 = objc_msgSend_containsValueOfClasses_options_passingTest_(v9, v12, v11, 1, &unk_1EFA2F148);
@@ -368,7 +368,7 @@ LABEL_14:
 
     v16 = objc_alloc(MEMORY[0x1E696ACC8]);
     inited = objc_msgSend_initRequiringSecureCoding_(v16, v17, 1);
-    objc_msgSend_encodeWithCoder_(v5, v19, inited);
+    objc_msgSend_encodeWithCoder_(recordCopy, v19, inited);
     v22 = objc_msgSend_encodedData(inited, v20, v21);
     objc_msgSend_setLocalSerialization_(v8, v23, v22);
   }

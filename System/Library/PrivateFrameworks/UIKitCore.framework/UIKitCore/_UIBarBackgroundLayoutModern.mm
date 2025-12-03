@@ -1,5 +1,5 @@
 @interface _UIBarBackgroundLayoutModern
-- (_UIBarBackgroundLayoutModern)initWithLayout:(id)a3;
+- (_UIBarBackgroundLayoutModern)initWithLayout:(id)layout;
 - (double)bg1Alpha;
 - (double)bg1ShadowAlpha;
 - (double)bg2ShadowAlpha;
@@ -7,9 +7,9 @@
 - (id)bg1ShadowTint;
 - (id)bg2ShadowColor;
 - (id)bg2ShadowTint;
-- (void)describeInto:(id)a3;
-- (void)setBackgroundData1:(id)a3;
-- (void)setBackgroundData2:(id)a3;
+- (void)describeInto:(id)into;
+- (void)setBackgroundData1:(id)data1;
+- (void)setBackgroundData2:(id)data2;
 @end
 
 @implementation _UIBarBackgroundLayoutModern
@@ -18,16 +18,16 @@
 {
   if (self->_backgroundsAreSame || self->super._useExplicitGeometry)
   {
-    v3 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewTintColor];
+    shadowViewTintColor = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewTintColor];
   }
 
   else
   {
     if (![(_UIBarBackgroundAppearanceData *)self->_backgroundData2 hasShadow])
     {
-      v6 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewTintColor];
-      v7 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewTintColor];
-      v8 = _interpolateColors(v6, v7, self->super._backgroundTransitionProgress);
+      shadowViewTintColor2 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewTintColor];
+      shadowViewTintColor3 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewTintColor];
+      v8 = _interpolateColors(shadowViewTintColor2, shadowViewTintColor3, self->super._backgroundTransitionProgress);
       v9 = v8;
       if (v8)
       {
@@ -44,10 +44,10 @@
       goto LABEL_5;
     }
 
-    v3 = +[UIColor clearColor];
+    shadowViewTintColor = +[UIColor clearColor];
   }
 
-  v4 = v3;
+  v4 = shadowViewTintColor;
 LABEL_5:
 
   return v4;
@@ -68,22 +68,22 @@ LABEL_5:
 {
   if (self->_backgroundsAreSame || self->super._useExplicitGeometry || self->super._backgroundTransitionProgress <= 0.0)
   {
-    v3 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewBackgroundColor];
+    shadowViewBackgroundColor = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewBackgroundColor];
   }
 
   else if ([(_UIBarBackgroundAppearanceData *)self->_backgroundData2 hasShadow])
   {
-    v3 = 0;
+    shadowViewBackgroundColor = 0;
   }
 
   else
   {
-    v5 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewBackgroundColor];
-    v6 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewBackgroundColor];
-    v3 = _interpolateColors(v5, v6, self->super._backgroundTransitionProgress);
+    shadowViewBackgroundColor2 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewBackgroundColor];
+    shadowViewBackgroundColor3 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewBackgroundColor];
+    shadowViewBackgroundColor = _interpolateColors(shadowViewBackgroundColor2, shadowViewBackgroundColor3, self->super._backgroundTransitionProgress);
   }
 
-  return v3;
+  return shadowViewBackgroundColor;
 }
 
 - (double)bg1ShadowAlpha
@@ -103,34 +103,34 @@ LABEL_5:
 {
   if (self->super._useExplicitGeometry || self->super._backgroundTransitionProgress >= 1.0)
   {
-    v5 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewBackgroundColor];
+    shadowViewBackgroundColor = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewBackgroundColor];
   }
 
   else
   {
-    v3 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewBackgroundColor];
-    v4 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewBackgroundColor];
-    v5 = _interpolateColors(v3, v4, self->super._backgroundTransitionProgress);
+    shadowViewBackgroundColor2 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewBackgroundColor];
+    shadowViewBackgroundColor3 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewBackgroundColor];
+    shadowViewBackgroundColor = _interpolateColors(shadowViewBackgroundColor2, shadowViewBackgroundColor3, self->super._backgroundTransitionProgress);
   }
 
-  return v5;
+  return shadowViewBackgroundColor;
 }
 
 - (id)bg2ShadowTint
 {
   if (self->super._useExplicitGeometry)
   {
-    v3 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewTintColor];
+    shadowViewTintColor = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewTintColor];
   }
 
   else
   {
-    v4 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewTintColor];
-    v5 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewTintColor];
-    v3 = _interpolateColors(v4, v5, self->super._backgroundTransitionProgress);
+    shadowViewTintColor2 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData1 shadowViewTintColor];
+    shadowViewTintColor3 = [(_UIBarBackgroundAppearanceData *)self->_backgroundData2 shadowViewTintColor];
+    shadowViewTintColor = _interpolateColors(shadowViewTintColor2, shadowViewTintColor3, self->super._backgroundTransitionProgress);
   }
 
-  return v3;
+  return shadowViewTintColor;
 }
 
 - (double)bg2ShadowAlpha
@@ -144,26 +144,26 @@ LABEL_5:
   return result;
 }
 
-- (_UIBarBackgroundLayoutModern)initWithLayout:(id)a3
+- (_UIBarBackgroundLayoutModern)initWithLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = _UIBarBackgroundLayoutModern;
-  v5 = [(_UIBarBackgroundLayout *)&v8 initWithLayout:v4];
-  if (v5 && [v4 isMemberOfClass:objc_opt_class()])
+  v5 = [(_UIBarBackgroundLayout *)&v8 initWithLayout:layoutCopy];
+  if (v5 && [layoutCopy isMemberOfClass:objc_opt_class()])
   {
-    objc_storeStrong(&v5->_backgroundData1, v4[12]);
-    v6 = v4;
+    objc_storeStrong(&v5->_backgroundData1, layoutCopy[12]);
+    v6 = layoutCopy;
     objc_storeStrong(&v5->_backgroundData2, v6[13]);
   }
 
   return v5;
 }
 
-- (void)setBackgroundData1:(id)a3
+- (void)setBackgroundData1:(id)data1
 {
-  v11 = a3;
-  objc_storeStrong(&self->_backgroundData1, a3);
+  data1Copy = data1;
+  objc_storeStrong(&self->_backgroundData1, data1);
   backgroundData2 = self->_backgroundData2;
   v6 = self->_backgroundData1;
   v7 = backgroundData2;
@@ -199,10 +199,10 @@ LABEL_5:
   self->_backgroundsAreSame = v10;
 }
 
-- (void)setBackgroundData2:(id)a3
+- (void)setBackgroundData2:(id)data2
 {
-  v11 = a3;
-  objc_storeStrong(&self->_backgroundData2, a3);
+  data2Copy = data2;
+  objc_storeStrong(&self->_backgroundData2, data2);
   backgroundData2 = self->_backgroundData2;
   v6 = self->_backgroundData1;
   v7 = backgroundData2;
@@ -238,18 +238,18 @@ LABEL_5:
   self->_backgroundsAreSame = v10;
 }
 
-- (void)describeInto:(id)a3
+- (void)describeInto:(id)into
 {
-  v4 = a3;
+  intoCopy = into;
   v5.receiver = self;
   v5.super_class = _UIBarBackgroundLayoutModern;
-  [(_UIBarBackgroundLayout *)&v5 describeInto:v4];
+  [(_UIBarBackgroundLayout *)&v5 describeInto:intoCopy];
   if (self->_backgroundData1)
   {
-    [v4 appendFormat:@" background1=%@", self->_backgroundData1];
+    [intoCopy appendFormat:@" background1=%@", self->_backgroundData1];
     if (self->_backgroundData2)
     {
-      [v4 appendFormat:@" background2=%@", self->_backgroundData2];
+      [intoCopy appendFormat:@" background2=%@", self->_backgroundData2];
     }
   }
 }

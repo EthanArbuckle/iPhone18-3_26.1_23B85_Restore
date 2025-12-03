@@ -1,9 +1,9 @@
 @interface ISDevice
 + (id)sharedInstance;
-+ (void)setSharedInstance:(id)a3;
-- (BOOL)checkCapabilities:(id)a3 withMismatches:(id *)a4;
-- (BOOL)releasePowerAssertion:(id)a3;
-- (BOOL)takePowerAssertion:(id)a3;
++ (void)setSharedInstance:(id)instance;
+- (BOOL)checkCapabilities:(id)capabilities withMismatches:(id *)mismatches;
+- (BOOL)releasePowerAssertion:(id)assertion;
+- (BOOL)takePowerAssertion:(id)assertion;
 - (ISDevice)init;
 - (NSString)deviceName;
 - (NSString)guid;
@@ -11,11 +11,11 @@
 - (NSString)serialNumber;
 - (NSString)systemName;
 - (id)copyProtocolConditionalContext;
-- (id)supportedOfferDeviceForDevices:(id)a3;
+- (id)supportedOfferDeviceForDevices:(id)devices;
 - (int)_deviceClass;
 - (int64_t)deviceBiometricStyle;
 - (void)dealloc;
-- (void)requestFreeSpace:(unint64_t)a3 atPath:(id)a4 withOptions:(id)a5 completionBlock:(id)a6;
+- (void)requestFreeSpace:(unint64_t)space atPath:(id)path withOptions:(id)options completionBlock:(id)block;
 - (void)resetLocationAndPrivacy;
 @end
 
@@ -52,13 +52,13 @@
   [(ISDevice *)&v4 dealloc];
 }
 
-+ (void)setSharedInstance:(id)a3
++ (void)setSharedInstance:(id)instance
 {
   pthread_mutex_lock(&__SharedInstanceLock);
-  if (__SharedInstance != a3)
+  if (__SharedInstance != instance)
   {
 
-    __SharedInstance = a3;
+    __SharedInstance = instance;
   }
 
   pthread_mutex_unlock(&__SharedInstanceLock);
@@ -79,10 +79,10 @@
   return v3;
 }
 
-- (BOOL)checkCapabilities:(id)a3 withMismatches:(id *)a4
+- (BOOL)checkCapabilities:(id)capabilities withMismatches:(id *)mismatches
 {
   v6 = ISWeakLinkedSymbolForString("MobileInstallationCheckCapabilitiesMatch", 0x17);
-  if (v6 && (v7 = v6(a3, 0)) != 0)
+  if (v6 && (v7 = v6(capabilities, 0)) != 0)
   {
     v8 = v7;
     Value = CFDictionaryGetValue(v7, @"CapabilitiesMatch");
@@ -100,7 +100,7 @@
     }
 
     CFRelease(v8);
-    if (!a4)
+    if (!mismatches)
     {
       goto LABEL_10;
     }
@@ -110,7 +110,7 @@
   {
     v10 = 0;
     v11 = 0;
-    if (!a4)
+    if (!mismatches)
     {
 LABEL_10:
 
@@ -118,7 +118,7 @@ LABEL_10:
     }
   }
 
-  *a4 = v10;
+  *mismatches = v10;
   return v11;
 }
 
@@ -126,15 +126,15 @@ LABEL_10:
 {
   v3 = objc_alloc_init(MEMORY[0x277D69C00]);
   [v3 setSystemVersion:{objc_msgSend(objc_msgSend(MEMORY[0x277D69A80], "currentDevice"), "productVersion")}];
-  v4 = [(ISDevice *)self _deviceClass];
+  _deviceClass = [(ISDevice *)self _deviceClass];
   v5 = MEMORY[0x277D6A508];
   v6 = MEMORY[0x277D6A518];
-  if (v4 != 2)
+  if (_deviceClass != 2)
   {
     v6 = MEMORY[0x277D6A510];
   }
 
-  if (v4 != 3)
+  if (_deviceClass != 3)
   {
     v5 = v6;
   }
@@ -233,27 +233,27 @@ id __16__ISDevice_guid__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (BOOL)releasePowerAssertion:(id)a3
+- (BOOL)releasePowerAssertion:(id)assertion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v4)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v4 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v6 &= 2u;
   }
@@ -263,7 +263,7 @@ id __16__ISDevice_guid__block_invoke(uint64_t a1)
     v12 = 138412546;
     v13 = objc_opt_class();
     v14 = 2112;
-    v15 = a3;
+    assertionCopy = assertion;
     LODWORD(v11) = 22;
     v7 = _os_log_send_and_compose_impl();
     if (v7)
@@ -295,27 +295,27 @@ id __16__ISDevice_guid__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)takePowerAssertion:(id)a3
+- (BOOL)takePowerAssertion:(id)assertion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v4)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v4 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_DEFAULT))
+  if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_DEFAULT))
   {
     v6 &= 2u;
   }
@@ -325,7 +325,7 @@ id __16__ISDevice_guid__block_invoke(uint64_t a1)
     v12 = 138412546;
     v13 = objc_opt_class();
     v14 = 2112;
-    v15 = a3;
+    assertionCopy = assertion;
     LODWORD(v11) = 22;
     v7 = _os_log_send_and_compose_impl();
     if (v7)
@@ -342,7 +342,7 @@ id __16__ISDevice_guid__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)requestFreeSpace:(unint64_t)a3 atPath:(id)a4 withOptions:(id)a5 completionBlock:(id)a6
+- (void)requestFreeSpace:(unint64_t)space atPath:(id)path withOptions:(id)options completionBlock:(id)block
 {
   v9 = 0;
   v10 = &v9;
@@ -357,7 +357,7 @@ id __16__ISDevice_guid__block_invoke(uint64_t a1)
   block[3] = &unk_27A670618;
   block[5] = self;
   block[6] = &v9;
-  block[4] = a5;
+  block[4] = options;
   dispatch_sync(dispatchQueue, block);
   v7 = v10[5];
   CPFreeSpaceRequestBytesAtPathWithCompletionBlock();
@@ -398,24 +398,24 @@ LABEL_6:
 
 - (void)resetLocationAndPrivacy
 {
-  v2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v2)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v2 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v3 = [v2 shouldLog];
-  if ([v2 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v4 = v3 | 2;
+    v4 = shouldLog | 2;
   }
 
   else
   {
-    v4 = v3;
+    v4 = shouldLog;
   }
 
-  if (os_log_type_enabled([v2 OSLogObject], OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_INFO))
   {
     v5 = v4;
   }
@@ -441,19 +441,19 @@ LABEL_6:
     }
   }
 
-  v9 = [MEMORY[0x277D69CB8] sharedStorage];
-  [v9 removeCookiesWithProperties:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"xp_ci", *MEMORY[0x277CCA240])}];
+  mEMORY[0x277D69CB8] = [MEMORY[0x277D69CB8] sharedStorage];
+  [mEMORY[0x277D69CB8] removeCookiesWithProperties:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObject:forKey:", @"xp_ci", *MEMORY[0x277CCA240])}];
 }
 
-- (id)supportedOfferDeviceForDevices:(id)a3
+- (id)supportedOfferDeviceForDevices:(id)devices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = [(ISDevice *)self _deviceClass];
+  _deviceClass = [(ISDevice *)self _deviceClass];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [devices countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -464,42 +464,42 @@ LABEL_6:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(devices);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 deviceIdentifier];
-        if (v10 <= 2)
+        deviceIdentifier = [v9 deviceIdentifier];
+        if (deviceIdentifier <= 2)
         {
-          if (v10 == 2)
+          if (deviceIdentifier == 2)
           {
-            if (v4 == 1)
+            if (_deviceClass == 1)
             {
               goto LABEL_23;
             }
           }
 
-          else if (v10 == 1)
+          else if (deviceIdentifier == 1)
           {
             goto LABEL_23;
           }
         }
 
-        else if ((v10 - 3) >= 2)
+        else if ((deviceIdentifier - 3) >= 2)
         {
-          if (v10 == 9 && v4 == 3)
+          if (deviceIdentifier == 9 && _deviceClass == 3)
           {
             goto LABEL_23;
           }
         }
 
-        else if (v4 == 2)
+        else if (_deviceClass == 2)
         {
           goto LABEL_23;
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [devices countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -514,9 +514,9 @@ LABEL_23:
 - (int)_deviceClass
 {
   v2 = MGCopyAnswer();
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 @end

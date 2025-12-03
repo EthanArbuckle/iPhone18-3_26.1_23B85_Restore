@@ -1,24 +1,24 @@
 @interface PKRetrieveMerchantTokensResponse
-- (PKRetrieveMerchantTokensResponse)initWithData:(id)a3;
-- (PKRetrieveMerchantTokensResponse)initWithMerchantTokens:(id)a3 totalMerchantTokens:(id)a4 pageSize:(id)a5 totalPages:(id)a6 pageNumber:(id)a7;
+- (PKRetrieveMerchantTokensResponse)initWithData:(id)data;
+- (PKRetrieveMerchantTokensResponse)initWithMerchantTokens:(id)tokens totalMerchantTokens:(id)merchantTokens pageSize:(id)size totalPages:(id)pages pageNumber:(id)number;
 @end
 
 @implementation PKRetrieveMerchantTokensResponse
 
-- (PKRetrieveMerchantTokensResponse)initWithData:(id)a3
+- (PKRetrieveMerchantTokensResponse)initWithData:(id)data
 {
   v41 = *MEMORY[0x1E69E9840];
   v35.receiver = self;
   v35.super_class = PKRetrieveMerchantTokensResponse;
-  v3 = [(PKWebServiceResponse *)&v35 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v35 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKArrayContaining:objc_opt_class() forKey:@"merchantTokens"];
+      v6 = [jSONObject PKArrayContaining:objc_opt_class() forKey:@"merchantTokens"];
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v31 = 0u;
       v32 = 0u;
@@ -62,19 +62,19 @@
       merchantTokens = v4->_merchantTokens;
       v4->_merchantTokens = v16;
 
-      v18 = [v5 PKNumberForKey:@"totalMerchantTokens"];
+      v18 = [jSONObject PKNumberForKey:@"totalMerchantTokens"];
       totalMerchantTokens = v4->_totalMerchantTokens;
       v4->_totalMerchantTokens = v18;
 
-      v20 = [v5 PKNumberForKey:@"pageSize"];
+      v20 = [jSONObject PKNumberForKey:@"pageSize"];
       pageSize = v4->_pageSize;
       v4->_pageSize = v20;
 
-      v22 = [v5 PKNumberForKey:@"totalPages"];
+      v22 = [jSONObject PKNumberForKey:@"totalPages"];
       totalPages = v4->_totalPages;
       v4->_totalPages = v22;
 
-      v24 = [v5 PKNumberForKey:@"pageNumber"];
+      v24 = [jSONObject PKNumberForKey:@"pageNumber"];
       pageNumber = v4->_pageNumber;
       v4->_pageNumber = v24;
     }
@@ -103,35 +103,35 @@
   return v4;
 }
 
-- (PKRetrieveMerchantTokensResponse)initWithMerchantTokens:(id)a3 totalMerchantTokens:(id)a4 pageSize:(id)a5 totalPages:(id)a6 pageNumber:(id)a7
+- (PKRetrieveMerchantTokensResponse)initWithMerchantTokens:(id)tokens totalMerchantTokens:(id)merchantTokens pageSize:(id)size totalPages:(id)pages pageNumber:(id)number
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  tokensCopy = tokens;
+  merchantTokensCopy = merchantTokens;
+  sizeCopy = size;
+  pagesCopy = pages;
+  numberCopy = number;
   v29.receiver = self;
   v29.super_class = PKRetrieveMerchantTokensResponse;
   v17 = [(PKRetrieveMerchantTokensResponse *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [tokensCopy copy];
     merchantTokens = v17->_merchantTokens;
     v17->_merchantTokens = v18;
 
-    v20 = [v13 copy];
+    v20 = [merchantTokensCopy copy];
     totalMerchantTokens = v17->_totalMerchantTokens;
     v17->_totalMerchantTokens = v20;
 
-    v22 = [v14 copy];
+    v22 = [sizeCopy copy];
     pageSize = v17->_pageSize;
     v17->_pageSize = v22;
 
-    v24 = [v15 copy];
+    v24 = [pagesCopy copy];
     totalPages = v17->_totalPages;
     v17->_totalPages = v24;
 
-    v26 = [v16 copy];
+    v26 = [numberCopy copy];
     pageNumber = v17->_pageNumber;
     v17->_pageNumber = v26;
   }

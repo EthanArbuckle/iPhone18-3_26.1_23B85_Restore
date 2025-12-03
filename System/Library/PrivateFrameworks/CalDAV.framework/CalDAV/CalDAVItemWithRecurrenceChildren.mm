@@ -1,23 +1,23 @@
 @interface CalDAVItemWithRecurrenceChildren
 - (id)copyParseRules;
-- (void)addRecurrence:(id)a3;
+- (void)addRecurrence:(id)recurrence;
 @end
 
 @implementation CalDAVItemWithRecurrenceChildren
 
-- (void)addRecurrence:(id)a3
+- (void)addRecurrence:(id)recurrence
 {
-  v4 = a3;
-  v5 = [(CalDAVItemWithRecurrenceChildren *)self recurrences];
+  recurrenceCopy = recurrence;
+  recurrences = [(CalDAVItemWithRecurrenceChildren *)self recurrences];
 
-  if (!v5)
+  if (!recurrences)
   {
     v6 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:1];
     [(CalDAVItemWithRecurrenceChildren *)self setRecurrences:v6];
   }
 
-  v7 = [(CalDAVItemWithRecurrenceChildren *)self recurrences];
-  [v7 addObject:v4];
+  recurrences2 = [(CalDAVItemWithRecurrenceChildren *)self recurrences];
+  [recurrences2 addObject:recurrenceCopy];
 }
 
 - (id)copyParseRules

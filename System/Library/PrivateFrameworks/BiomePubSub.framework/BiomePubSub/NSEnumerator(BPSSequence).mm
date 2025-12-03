@@ -6,7 +6,7 @@
 
 - (BPSSequence)bpsPublisher
 {
-  v1 = [[BPSSequence alloc] initWithEnumerator:a1];
+  v1 = [[BPSSequence alloc] initWithEnumerator:self];
 
   return v1;
 }

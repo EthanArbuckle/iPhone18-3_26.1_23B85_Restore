@@ -9,21 +9,21 @@
 
 - (id)_sf_highLevelDomainAndPort
 {
-  v2 = [a1 host];
+  host = [self host];
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [v2 safari_highLevelDomainFromHost];
-  v5 = v4;
-  if (v4)
+  safari_highLevelDomainFromHost = [host safari_highLevelDomainFromHost];
+  v5 = safari_highLevelDomainFromHost;
+  if (safari_highLevelDomainFromHost)
   {
-    v6 = v4;
+    v6 = safari_highLevelDomainFromHost;
   }
 
   else
   {
-    v6 = v2;
+    v6 = host;
   }
 
-  v7 = [v3 stringWithFormat:@"%@:%ld", v6, objc_msgSend(a1, "port")];
+  v7 = [v3 stringWithFormat:@"%@:%ld", v6, objc_msgSend(self, "port")];
 
   return v7;
 }
@@ -31,7 +31,7 @@
 - (id)_sf_identities
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     result = 0;
     v2 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -50,13 +50,13 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [a1 distinguishedNames];
+        distinguishedNames = [self distinguishedNames];
         v6 = WBS_LOG_CHANNEL_PREFIXClientAuthentication();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
         {
           v7 = v6;
           v8 = [v4 count];
-          v9 = [v5 count];
+          v9 = [distinguishedNames count];
           *buf = 134218240;
           *&buf[4] = v8;
           *&buf[12] = 2048;
@@ -64,7 +64,7 @@
           _os_log_impl(&dword_1D4644000, v7, OS_LOG_TYPE_DEFAULT, "Unfiltered identities count: %lu, distinguished names count: %lu", buf, 0x16u);
         }
 
-        if (v5)
+        if (distinguishedNames)
         {
           *buf = 0;
           *&buf[8] = buf;
@@ -76,7 +76,7 @@
           v18 = __60__NSURLProtectionSpace_SafariServicesExtras___sf_identities__block_invoke;
           v19 = &unk_1E8496438;
           v22 = Current;
-          v20 = v5;
+          v20 = distinguishedNames;
           v21 = buf;
           v11 = [v4 safari_filterObjectsUsingBlock:&v16];
           v12 = WBS_LOG_CHANNEL_PREFIXClientAuthentication();
@@ -127,26 +127,26 @@
 
 - (BOOL)_sf_canAuthenticate
 {
-  v2 = [a1 authenticationMethod];
-  if ([v2 isEqualToString:*MEMORY[0x1E695AB48]] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", *MEMORY[0x1E695AB58]) & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", *MEMORY[0x1E695AB60]) & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", *MEMORY[0x1E695AB50]) & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", *MEMORY[0x1E695AB68]))
+  authenticationMethod = [self authenticationMethod];
+  if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB48]] & 1) != 0 || (objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x1E695AB58]) & 1) != 0 || (objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x1E695AB60]) & 1) != 0 || (objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x1E695AB50]) & 1) != 0 || (objc_msgSend(authenticationMethod, "isEqualToString:", *MEMORY[0x1E695AB68]))
   {
     v3 = 1;
   }
 
-  else if ([v2 isEqualToString:*MEMORY[0x1E695AB40]])
+  else if ([authenticationMethod isEqualToString:*MEMORY[0x1E695AB40]])
   {
-    v5 = [a1 _sf_identities];
-    v3 = [v5 count] != 0;
+    _sf_identities = [self _sf_identities];
+    v3 = [_sf_identities count] != 0;
   }
 
   else
   {
-    if (([v2 isEqualToString:*MEMORY[0x1E695AB78]] & 1) == 0)
+    if (([authenticationMethod isEqualToString:*MEMORY[0x1E695AB78]] & 1) == 0)
     {
       v6 = WBS_LOG_CHANNEL_PREFIXPageLoading();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        [(NSURLProtectionSpace(SafariServicesExtras) *)v2 _sf_canAuthenticate];
+        [(NSURLProtectionSpace(SafariServicesExtras) *)authenticationMethod _sf_canAuthenticate];
       }
     }
 
@@ -160,7 +160,7 @@
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1D4644000, a2, OS_LOG_TYPE_ERROR, "Tried to authenticate with unsupported authentication method: %@", &v2, 0xCu);
 }
 

@@ -1,15 +1,15 @@
 @interface BWStillImageSmartStyleAttachmentTransferNode
-- (BWStillImageSmartStyleAttachmentTransferNode)initWithNodeConfiguration:(id)a3;
+- (BWStillImageSmartStyleAttachmentTransferNode)initWithNodeConfiguration:(id)configuration;
 - (uint64_t)_transferAttachmentsToStyledBuffer;
 - (void)_resetProcessingState;
 - (void)dealloc;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWStillImageSmartStyleAttachmentTransferNode
 
-- (BWStillImageSmartStyleAttachmentTransferNode)initWithNodeConfiguration:(id)a3
+- (BWStillImageSmartStyleAttachmentTransferNode)initWithNodeConfiguration:(id)configuration
 {
   v8.receiver = self;
   v8.super_class = BWStillImageSmartStyleAttachmentTransferNode;
@@ -26,7 +26,7 @@
     [(BWNodeOutput *)v6 setPassthroughMode:1];
     [(BWNode *)v4 addOutput:v6];
 
-    v4->_nodeConfiguration = a3;
+    v4->_nodeConfiguration = configuration;
     v4->_inferencesFromUnstyledBuffers = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4->_attachedMediaFromUnstyledBuffers = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4->_attachmentsFromUnstyledBuffers = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -46,9 +46,9 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v6 = CMGetAttachment(a3, @"StillSettings", 0);
+  v6 = CMGetAttachment(buffer, @"StillSettings", 0);
   if (BWIsSmartStyleCapture(v6))
   {
     v7 = [objc_msgSend(v6 "requestedSettings")];
@@ -57,13 +57,13 @@
       [(BWStillImageSmartStyleAttachmentTransferNode *)self renderSampleBuffer:v7 forInput:&self->_lastCaptureRequestIdentifier];
     }
 
-    v8 = BWStillImageProcessingFlagsForSampleBuffer(a3);
+    v8 = BWStillImageProcessingFlagsForSampleBuffer(buffer);
     if ((v8 & 0x2800000) == 0)
     {
       v9 = v8;
-      v10 = [CMGetAttachment(a3 @"StillImageBufferFrameType"];
-      v11 = [(BWStillImageNodeConfiguration *)self->_nodeConfiguration optimizedEnhancedResolutionDepthPipelineEnabled];
-      v12 = v10 == 13 && v11;
+      v10 = [CMGetAttachment(buffer @"StillImageBufferFrameType"];
+      optimizedEnhancedResolutionDepthPipelineEnabled = [(BWStillImageNodeConfiguration *)self->_nodeConfiguration optimizedEnhancedResolutionDepthPipelineEnabled];
+      v12 = v10 == 13 && optimizedEnhancedResolutionDepthPipelineEnabled;
       if ((v9 & 0x200000) == 0)
       {
         if (v10 != 40 && !v12)
@@ -83,13 +83,13 @@ LABEL_35:
         goto LABEL_13;
       }
 
-      if (BWSampleBufferGetAttachedMedia(a3, 0x1F21AAF90))
+      if (BWSampleBufferGetAttachedMedia(buffer, 0x1F21AAF90))
       {
         if (v10 != 40 && !v12)
         {
-          if (a3)
+          if (buffer)
           {
-            v26 = CFRetain(a3);
+            v26 = CFRetain(buffer);
           }
 
           else
@@ -102,13 +102,13 @@ LABEL_35:
         }
 
 LABEL_13:
-        [(NSMutableDictionary *)self->_inferencesFromUnstyledBuffers addEntriesFromDictionary:CMGetAttachment(a3, @"Inferences", 0)];
-        v13 = CMGetAttachment(a3, @"AttachedMedia", 0);
+        [(NSMutableDictionary *)self->_inferencesFromUnstyledBuffers addEntriesFromDictionary:CMGetAttachment(buffer, @"Inferences", 0)];
+        v13 = CMGetAttachment(buffer, @"AttachedMedia", 0);
         [(NSMutableDictionary *)self->_attachedMediaFromUnstyledBuffers addEntriesFromDictionary:v13];
         if ([v13 objectForKeyedSubscript:@"Depth"])
         {
           v14 = *off_1E798D2B8;
-          v15 = CMGetAttachment(a3, *off_1E798D2B8, 0);
+          v15 = CMGetAttachment(buffer, *off_1E798D2B8, 0);
           if (v15)
           {
             [(NSMutableDictionary *)self->_attachmentsFromUnstyledBuffers setObject:v15 forKeyedSubscript:v14];
@@ -141,7 +141,7 @@ LABEL_13:
               }
 
               v23 = *(*(&v29 + 1) + 8 * i);
-              v24 = CMGetAttachment(a3, v23, 0);
+              v24 = CMGetAttachment(buffer, v23, 0);
               if (v24)
               {
                 [(NSMutableDictionary *)self->_attachmentsFromUnstyledBuffers setObject:v24 forKeyedSubscript:v23];
@@ -157,7 +157,7 @@ LABEL_13:
         self->_hasAttachmentsFromUnstyledBuffer |= v10 == 40;
         if (-[BWStillImageNodeConfiguration filterRenderingEnabled](self->_nodeConfiguration, "filterRenderingEnabled") && BWCIFilterArrayContainsPortraitFilters([objc_msgSend(v6 "requestedSettings")]))
         {
-          [(BWNodeOutput *)self->super._output emitSampleBuffer:a3];
+          [(BWNodeOutput *)self->super._output emitSampleBuffer:buffer];
         }
 
         goto LABEL_35;
@@ -167,25 +167,25 @@ LABEL_13:
 
   output = self->super._output;
 
-  [(BWNodeOutput *)output emitSampleBuffer:a3];
+  [(BWNodeOutput *)output emitSampleBuffer:buffer];
 }
 
 - (void)_resetProcessingState
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 136) removeAllObjects];
-    [*(a1 + 144) removeAllObjects];
-    [*(a1 + 152) removeAllObjects];
-    *(a1 + 160) = 0;
-    v2 = *(a1 + 168);
+    [*(self + 136) removeAllObjects];
+    [*(self + 144) removeAllObjects];
+    [*(self + 152) removeAllObjects];
+    *(self + 160) = 0;
+    v2 = *(self + 168);
     if (v2)
     {
       CFRelease(v2);
-      *(a1 + 168) = 0;
+      *(self + 168) = 0;
     }
 
-    *(a1 + 176) = 0;
+    *(self + 176) = 0;
   }
 }
 
@@ -294,12 +294,12 @@ LABEL_13:
   return result;
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   [(BWStillImageSmartStyleAttachmentTransferNode *)self _resetProcessingState];
   output = self->super._output;
 
-  [(BWNodeOutput *)output emitNodeError:a3];
+  [(BWNodeOutput *)output emitNodeError:error];
 }
 
 - (id)renderSampleBuffer:(void *)a3 forInput:.cold.1(uint64_t a1, void *a2, void *a3)

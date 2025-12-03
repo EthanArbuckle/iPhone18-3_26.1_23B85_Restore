@@ -1,20 +1,20 @@
 @interface AVTColorSlider
-- (AVTColorSlider)initWithUserInterfaceLayoutDirection:(int64_t)a3;
+- (AVTColorSlider)initWithUserInterfaceLayoutDirection:(int64_t)direction;
 - (AVTColorSliderDelegate)delegate;
 - (CGColor)trackBorderColor;
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5;
-- (CGRect)trackRectForBounds:(CGRect)a3;
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
 - (id)createThumbView;
 - (void)layoutSubviews;
 - (void)relayoutSublayers;
-- (void)removeTrackLayer:(id)a3 animated:(BOOL)a4;
-- (void)setTrackLayer:(id)a3 animated:(BOOL)a4;
-- (void)valueDidChange:(id)a3 forEvent:(id)a4;
+- (void)removeTrackLayer:(id)layer animated:(BOOL)animated;
+- (void)setTrackLayer:(id)layer animated:(BOOL)animated;
+- (void)valueDidChange:(id)change forEvent:(id)event;
 @end
 
 @implementation AVTColorSlider
 
-- (AVTColorSlider)initWithUserInterfaceLayoutDirection:(int64_t)a3
+- (AVTColorSlider)initWithUserInterfaceLayoutDirection:(int64_t)direction
 {
   v15.receiver = self;
   v15.super_class = AVTColorSlider;
@@ -22,14 +22,14 @@
   v6 = v4;
   if (v4)
   {
-    v4->_layoutDirection = a3;
+    v4->_layoutDirection = direction;
     LODWORD(v5) = -1.0;
     [(AVTColorSlider *)v4 setMinimumValue:v5];
     LODWORD(v7) = 1.0;
     [(AVTColorSlider *)v6 setMaximumValue:v7];
     v6->_shouldTriggerFeedback = 0;
-    v8 = [MEMORY[0x1E69DD4B0] sliderConfiguration];
-    v9 = [v8 tweakedConfigurationForClass:objc_opt_class() usage:@"sliderEdge"];
+    sliderConfiguration = [MEMORY[0x1E69DD4B0] sliderConfiguration];
+    v9 = [sliderConfiguration tweakedConfigurationForClass:objc_opt_class() usage:@"sliderEdge"];
 
     v10 = [objc_alloc(MEMORY[0x1E69DD4A8]) initWithConfiguration:v9 view:v6];
     edgeFeedbackGenerator = v6->_edgeFeedbackGenerator;
@@ -57,10 +57,10 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(AVTColorSlider *)self thumbContentLayer];
-  v4 = [v3 sublayers];
+  thumbContentLayer = [(AVTColorSlider *)self thumbContentLayer];
+  sublayers = [thumbContentLayer sublayers];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -72,19 +72,19 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(AVTColorSlider *)self thumbContentLayer];
-        [v10 bounds];
+        thumbContentLayer2 = [(AVTColorSlider *)self thumbContentLayer];
+        [thumbContentLayer2 bounds];
         [v9 setFrame:?];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -96,29 +96,29 @@
   v102.receiver = self;
   v102.super_class = AVTColorSlider;
   [(AVTColorSlider *)&v102 layoutSubviews];
-  v3 = [(AVTColorSlider *)self edgeFeedbackGenerator];
+  edgeFeedbackGenerator = [(AVTColorSlider *)self edgeFeedbackGenerator];
   [(AVTColorSlider *)self bounds];
-  [v3 setDistance:v4];
+  [edgeFeedbackGenerator setDistance:v4];
 
-  v5 = [(AVTColorSlider *)self thumbView];
-  v6 = [v5 layer];
-  [v6 bounds];
+  thumbView = [(AVTColorSlider *)self thumbView];
+  layer = [thumbView layer];
+  [layer bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(AVTColorSlider *)self thumbContentLayer];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  thumbContentLayer = [(AVTColorSlider *)self thumbContentLayer];
+  [thumbContentLayer setFrame:{v8, v10, v12, v14}];
 
   [(AVTColorSlider *)self relayoutSublayers];
-  v16 = [(AVTColorSlider *)self thumbClippingLayer];
-  [v16 frame];
+  thumbClippingLayer = [(AVTColorSlider *)self thumbClippingLayer];
+  [thumbClippingLayer frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(AVTColorSlider *)self thumbView];
-  [v25 bounds];
+  thumbView2 = [(AVTColorSlider *)self thumbView];
+  [thumbView2 bounds];
   v108.origin.x = v26;
   v108.origin.y = v27;
   v108.size.width = v28;
@@ -127,42 +127,42 @@
   v103.origin.y = v20;
   v103.size.width = v22;
   v103.size.height = v24;
-  LOBYTE(v15) = CGRectEqualToRect(v103, v108);
+  LOBYTE(thumbContentLayer) = CGRectEqualToRect(v103, v108);
 
-  if ((v15 & 1) == 0)
+  if ((thumbContentLayer & 1) == 0)
   {
-    v30 = [(AVTColorSlider *)self thumbView];
-    v31 = [v30 layer];
-    [v31 bounds];
+    thumbView3 = [(AVTColorSlider *)self thumbView];
+    layer2 = [thumbView3 layer];
+    [layer2 bounds];
     v33 = v32;
     v35 = v34;
     v37 = v36;
     v39 = v38;
-    v40 = [(AVTColorSlider *)self thumbClippingLayer];
-    [v40 setFrame:{v33, v35, v37, v39}];
+    thumbClippingLayer2 = [(AVTColorSlider *)self thumbClippingLayer];
+    [thumbClippingLayer2 setFrame:{v33, v35, v37, v39}];
 
     v41 = MEMORY[0x1E69DC728];
-    v42 = [(AVTColorSlider *)self thumbView];
-    v43 = [v42 layer];
-    [v43 bounds];
+    thumbView4 = [(AVTColorSlider *)self thumbView];
+    layer3 = [thumbView4 layer];
+    [layer3 bounds];
     v105 = CGRectInset(v104, 1.0, 1.0);
     v44 = [v41 bezierPathWithOvalInRect:{v105.origin.x, v105.origin.y, v105.size.width, v105.size.height}];
-    v45 = [v44 CGPath];
-    v46 = [(AVTColorSlider *)self thumbClippingLayer];
-    [v46 setPath:v45];
+    cGPath = [v44 CGPath];
+    thumbClippingLayer3 = [(AVTColorSlider *)self thumbClippingLayer];
+    [thumbClippingLayer3 setPath:cGPath];
 
-    v47 = [(AVTColorSlider *)self thumbView];
-    v48 = [v47 layer];
-    [v48 bounds];
+    thumbView5 = [(AVTColorSlider *)self thumbView];
+    layer4 = [thumbView5 layer];
+    [layer4 bounds];
     v50 = v49;
     v52 = v51;
     v54 = v53;
     v56 = v55;
-    v57 = [(AVTColorSlider *)self thumbBorderLayer];
-    [v57 lineWidth];
+    thumbBorderLayer = [(AVTColorSlider *)self thumbBorderLayer];
+    [thumbBorderLayer lineWidth];
     v59 = v58 * 0.5;
-    v60 = [(AVTColorSlider *)self thumbBorderLayer];
-    [v60 lineWidth];
+    thumbBorderLayer2 = [(AVTColorSlider *)self thumbBorderLayer];
+    [thumbBorderLayer2 lineWidth];
     v62 = v61 * 0.5;
     v106.origin.x = v50;
     v106.origin.y = v52;
@@ -175,78 +175,78 @@
     height = v107.size.height;
 
     v67 = [MEMORY[0x1E69DC728] bezierPathWithOvalInRect:{x, y, width, height}];
-    v68 = [v67 CGPath];
-    v69 = [(AVTColorSlider *)self thumbBorderLayer];
-    [v69 setPath:v68];
+    cGPath2 = [v67 CGPath];
+    thumbBorderLayer3 = [(AVTColorSlider *)self thumbBorderLayer];
+    [thumbBorderLayer3 setPath:cGPath2];
 
-    v70 = [(AVTColorSlider *)self thumbView];
-    v71 = [v70 layer];
-    [v71 bounds];
+    thumbView6 = [(AVTColorSlider *)self thumbView];
+    layer5 = [thumbView6 layer];
+    [layer5 bounds];
     v73 = v72;
     v75 = v74;
     v77 = v76;
     v79 = v78;
-    v80 = [(AVTColorSlider *)self thumbBorderLayer];
-    [v80 setFrame:{v73, v75, v77, v79}];
+    thumbBorderLayer4 = [(AVTColorSlider *)self thumbBorderLayer];
+    [thumbBorderLayer4 setFrame:{v73, v75, v77, v79}];
 
-    v81 = [(AVTColorSlider *)self thumbBorderLayer];
-    v82 = [v81 path];
-    v83 = [(AVTColorSlider *)self thumbView];
-    v84 = [v83 layer];
-    [v84 setShadowPath:v82];
+    thumbBorderLayer5 = [(AVTColorSlider *)self thumbBorderLayer];
+    path = [thumbBorderLayer5 path];
+    thumbView7 = [(AVTColorSlider *)self thumbView];
+    layer6 = [thumbView7 layer];
+    [layer6 setShadowPath:path];
 
-    v85 = [(AVTColorSlider *)self thumbBorderLayer];
-    v86 = [v85 path];
-    v87 = [(AVTColorSlider *)self thumbSoftShadowLayer];
-    [v87 setShadowPath:v86];
+    thumbBorderLayer6 = [(AVTColorSlider *)self thumbBorderLayer];
+    path2 = [thumbBorderLayer6 path];
+    thumbSoftShadowLayer = [(AVTColorSlider *)self thumbSoftShadowLayer];
+    [thumbSoftShadowLayer setShadowPath:path2];
   }
 
-  v88 = [(AVTColorSlider *)self trackLayer];
+  trackLayer = [(AVTColorSlider *)self trackLayer];
 
-  if (v88)
+  if (trackLayer)
   {
     [(AVTColorSlider *)self bounds];
     v90 = v89;
     v92 = v91;
     v94 = v93 + -18.0;
     v96 = v95 + 9.0;
-    v97 = [(AVTColorSlider *)self trackLayer];
-    [v97 setFrame:{v90, v96, v92, v94}];
+    trackLayer2 = [(AVTColorSlider *)self trackLayer];
+    [trackLayer2 setFrame:{v90, v96, v92, v94}];
 
-    v98 = [(AVTColorSlider *)self trackLayer];
-    [v98 setCornerRadius:v94 * 0.5];
+    trackLayer3 = [(AVTColorSlider *)self trackLayer];
+    [trackLayer3 setCornerRadius:v94 * 0.5];
 
-    v99 = [(AVTColorSlider *)self trackLayer];
-    [v99 setBorderWidth:2.0];
+    trackLayer4 = [(AVTColorSlider *)self trackLayer];
+    [trackLayer4 setBorderWidth:2.0];
 
-    v100 = [(AVTColorSlider *)self trackBorderColor];
-    v101 = [(AVTColorSlider *)self trackLayer];
-    [v101 setBorderColor:v100];
+    trackBorderColor = [(AVTColorSlider *)self trackBorderColor];
+    trackLayer5 = [(AVTColorSlider *)self trackLayer];
+    [trackLayer5 setBorderColor:trackBorderColor];
   }
 }
 
-- (void)setTrackLayer:(id)a3 animated:(BOOL)a4
+- (void)setTrackLayer:(id)layer animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(AVTColorSlider *)self trackLayer];
+  animatedCopy = animated;
+  layerCopy = layer;
+  trackLayer = [(AVTColorSlider *)self trackLayer];
 
-  if (v7)
+  if (trackLayer)
   {
-    v8 = [(AVTColorSlider *)self trackLayer];
-    [(AVTColorSlider *)self removeTrackLayer:v8 animated:v4];
+    trackLayer2 = [(AVTColorSlider *)self trackLayer];
+    [(AVTColorSlider *)self removeTrackLayer:trackLayer2 animated:animatedCopy];
   }
 
   trackLayer = self->_trackLayer;
-  self->_trackLayer = v6;
+  self->_trackLayer = layerCopy;
 
   v10 = *MEMORY[0x1E69796E8];
-  v11 = [(AVTColorSlider *)self trackLayer];
-  [v11 setCornerCurve:v10];
+  trackLayer3 = [(AVTColorSlider *)self trackLayer];
+  [trackLayer3 setCornerCurve:v10];
 
-  v12 = [(AVTColorSlider *)self layer];
-  v13 = [(AVTColorSlider *)self trackLayer];
-  [v12 insertSublayer:v13 atIndex:0];
+  layer = [(AVTColorSlider *)self layer];
+  trackLayer4 = [(AVTColorSlider *)self trackLayer];
+  [layer insertSublayer:trackLayer4 atIndex:0];
 
   if ([(AVTColorSlider *)self layoutDirection]== 1)
   {
@@ -269,18 +269,18 @@
     *&v20.m23 = v17;
   }
 
-  v18 = [(AVTColorSlider *)self trackLayer];
+  trackLayer5 = [(AVTColorSlider *)self trackLayer];
   v19 = v20;
-  [v18 setTransform:&v19];
+  [trackLayer5 setTransform:&v19];
 
   [(AVTColorSlider *)self setNeedsLayout];
 }
 
-- (void)removeTrackLayer:(id)a3 animated:(BOOL)a4
+- (void)removeTrackLayer:(id)layer animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  layerCopy = layer;
+  v6 = layerCopy;
+  if (animated)
   {
     [MEMORY[0x1E6979518] begin];
     v7 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
@@ -302,16 +302,16 @@
 
   else
   {
-    [v5 removeFromSuperlayer];
+    [layerCopy removeFromSuperlayer];
   }
 }
 
 - (CGColor)trackBorderColor
 {
-  v2 = [(AVTColorSlider *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(AVTColorSlider *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v3 == 2)
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.05];
   }
@@ -321,113 +321,113 @@
     [MEMORY[0x1E69DC888] clearColor];
   }
   v4 = ;
-  v5 = [v4 CGColor];
+  cGColor = [v4 CGColor];
 
-  return v5;
+  return cGColor;
 }
 
 - (id)createThumbView
 {
-  v3 = [(AVTColorSlider *)self thumbView];
+  thumbView = [(AVTColorSlider *)self thumbView];
 
-  if (!v3)
+  if (!thumbView)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     [(AVTColorSlider *)self setThumbView:v4];
 
-    v5 = [MEMORY[0x1E69DC888] clearColor];
-    v6 = [(AVTColorSlider *)self thumbView];
-    [v6 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    thumbView2 = [(AVTColorSlider *)self thumbView];
+    [thumbView2 setBackgroundColor:clearColor];
 
-    v7 = [(AVTColorSlider *)self thumbView];
-    [v7 setContentMode:2];
+    thumbView3 = [(AVTColorSlider *)self thumbView];
+    [thumbView3 setContentMode:2];
 
-    v8 = [(AVTColorSlider *)self thumbView];
-    [v8 setClipsToBounds:0];
+    thumbView4 = [(AVTColorSlider *)self thumbView];
+    [thumbView4 setClipsToBounds:0];
 
-    v9 = [(AVTColorSlider *)self thumbView];
-    v10 = [v9 layer];
+    thumbView5 = [(AVTColorSlider *)self thumbView];
+    layer = [thumbView5 layer];
     LODWORD(v11) = 1042536202;
-    [v10 setShadowOpacity:v11];
+    [layer setShadowOpacity:v11];
 
-    v12 = [(AVTColorSlider *)self thumbView];
-    v13 = [v12 layer];
-    [v13 setShadowOffset:{1.0, 5.5}];
+    thumbView6 = [(AVTColorSlider *)self thumbView];
+    layer2 = [thumbView6 layer];
+    [layer2 setShadowOffset:{1.0, 5.5}];
 
-    v14 = [(AVTColorSlider *)self thumbView];
-    v15 = [v14 layer];
-    [v15 setShadowRadius:3.5];
+    thumbView7 = [(AVTColorSlider *)self thumbView];
+    layer3 = [thumbView7 layer];
+    [layer3 setShadowRadius:3.5];
 
-    v16 = [MEMORY[0x1E6979398] layer];
-    [(AVTColorSlider *)self setThumbSoftShadowLayer:v16];
+    layer4 = [MEMORY[0x1E6979398] layer];
+    [(AVTColorSlider *)self setThumbSoftShadowLayer:layer4];
 
-    v17 = [(AVTColorSlider *)self thumbSoftShadowLayer];
+    thumbSoftShadowLayer = [(AVTColorSlider *)self thumbSoftShadowLayer];
     LODWORD(v18) = 1042536202;
-    [v17 setShadowOpacity:v18];
+    [thumbSoftShadowLayer setShadowOpacity:v18];
 
-    v19 = [(AVTColorSlider *)self thumbSoftShadowLayer];
-    [v19 setShadowOffset:{0.0, 0.0}];
+    thumbSoftShadowLayer2 = [(AVTColorSlider *)self thumbSoftShadowLayer];
+    [thumbSoftShadowLayer2 setShadowOffset:{0.0, 0.0}];
 
-    v20 = [(AVTColorSlider *)self thumbSoftShadowLayer];
-    [v20 setShadowRadius:6.5];
+    thumbSoftShadowLayer3 = [(AVTColorSlider *)self thumbSoftShadowLayer];
+    [thumbSoftShadowLayer3 setShadowRadius:6.5];
 
-    v21 = [(AVTColorSlider *)self thumbView];
-    v22 = [v21 layer];
-    v23 = [(AVTColorSlider *)self thumbSoftShadowLayer];
-    [v22 addSublayer:v23];
+    thumbView8 = [(AVTColorSlider *)self thumbView];
+    layer5 = [thumbView8 layer];
+    thumbSoftShadowLayer4 = [(AVTColorSlider *)self thumbSoftShadowLayer];
+    [layer5 addSublayer:thumbSoftShadowLayer4];
 
-    v24 = [MEMORY[0x1E6979398] layer];
-    [(AVTColorSlider *)self setThumbContentLayer:v24];
+    layer6 = [MEMORY[0x1E6979398] layer];
+    [(AVTColorSlider *)self setThumbContentLayer:layer6];
 
-    v25 = [(AVTColorSlider *)self thumbView];
-    v26 = [v25 layer];
-    v27 = [(AVTColorSlider *)self thumbContentLayer];
-    [v26 addSublayer:v27];
+    thumbView9 = [(AVTColorSlider *)self thumbView];
+    layer7 = [thumbView9 layer];
+    thumbContentLayer = [(AVTColorSlider *)self thumbContentLayer];
+    [layer7 addSublayer:thumbContentLayer];
 
     v28 = objc_alloc_init(MEMORY[0x1E69794A0]);
     [(AVTColorSlider *)self setThumbBorderLayer:v28];
 
-    v29 = [MEMORY[0x1E69DC888] clearColor];
-    v30 = [v29 CGColor];
-    v31 = [(AVTColorSlider *)self thumbBorderLayer];
-    [v31 setFillColor:v30];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    cGColor = [clearColor2 CGColor];
+    thumbBorderLayer = [(AVTColorSlider *)self thumbBorderLayer];
+    [thumbBorderLayer setFillColor:cGColor];
 
     v32 = [MEMORY[0x1E69DC888] colorWithRed:0.972549 green:0.972549 blue:0.972549 alpha:1.0];
-    v33 = [v32 CGColor];
-    v34 = [(AVTColorSlider *)self thumbBorderLayer];
-    [v34 setStrokeColor:v33];
+    cGColor2 = [v32 CGColor];
+    thumbBorderLayer2 = [(AVTColorSlider *)self thumbBorderLayer];
+    [thumbBorderLayer2 setStrokeColor:cGColor2];
 
-    v35 = [(AVTColorSlider *)self thumbBorderLayer];
-    [v35 setLineWidth:6.0];
+    thumbBorderLayer3 = [(AVTColorSlider *)self thumbBorderLayer];
+    [thumbBorderLayer3 setLineWidth:6.0];
 
-    v36 = [(AVTColorSlider *)self thumbView];
-    v37 = [v36 layer];
-    v38 = [(AVTColorSlider *)self thumbBorderLayer];
-    [v37 addSublayer:v38];
+    thumbView10 = [(AVTColorSlider *)self thumbView];
+    layer8 = [thumbView10 layer];
+    thumbBorderLayer4 = [(AVTColorSlider *)self thumbBorderLayer];
+    [layer8 addSublayer:thumbBorderLayer4];
 
     v39 = objc_alloc_init(MEMORY[0x1E69794A0]);
     [(AVTColorSlider *)self setThumbClippingLayer:v39];
 
     v40 = *MEMORY[0x1E69797F8];
-    v41 = [(AVTColorSlider *)self thumbClippingLayer];
-    [v41 setFillRule:v40];
+    thumbClippingLayer = [(AVTColorSlider *)self thumbClippingLayer];
+    [thumbClippingLayer setFillRule:v40];
 
-    v42 = [(AVTColorSlider *)self thumbClippingLayer];
-    v43 = [(AVTColorSlider *)self thumbContentLayer];
-    [v43 setMask:v42];
+    thumbClippingLayer2 = [(AVTColorSlider *)self thumbClippingLayer];
+    thumbContentLayer2 = [(AVTColorSlider *)self thumbContentLayer];
+    [thumbContentLayer2 setMask:thumbClippingLayer2];
   }
 
   [(AVTColorSlider *)self thumbView];
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v9.receiver = self;
   v9.super_class = AVTColorSlider;
-  [(AVTColorSlider *)&v9 trackRectForBounds:a3.origin.x, a3.origin.y];
+  [(AVTColorSlider *)&v9 trackRectForBounds:bounds.origin.x, bounds.origin.y];
   v8 = width + height * -0.5;
   result.size.height = v7;
   result.size.width = v8;
@@ -436,19 +436,19 @@
   return result;
 }
 
-- (CGRect)thumbRectForBounds:(CGRect)a3 trackRect:(CGRect)a4 value:(float)a5
+- (CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(AVTColorSlider *)self minimumValue:a3.origin.x];
-  v9 = a5 - v8;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(AVTColorSlider *)self minimumValue:bounds.origin.x];
+  v9 = value - v8;
   [(AVTColorSlider *)self maximumValue];
   v11 = v10;
   [(AVTColorSlider *)self minimumValue];
   v13 = (v9 / (v11 - v12));
-  v14 = [(AVTColorSlider *)self layoutDirection];
+  layoutDirection = [(AVTColorSlider *)self layoutDirection];
   v15 = 1.0 - v13;
-  if (v14 != 1)
+  if (layoutDirection != 1)
   {
     v15 = v13;
   }
@@ -464,16 +464,16 @@
   return result;
 }
 
-- (void)valueDidChange:(id)a3 forEvent:(id)a4
+- (void)valueDidChange:(id)change forEvent:(id)event
 {
-  v21 = a4;
+  eventCopy = event;
   [(AVTColorSlider *)self value];
   v6 = v5;
   v7 = v5;
-  v8 = [(AVTColorSlider *)self edgeFeedbackGenerator];
-  v9 = [(AVTColorSlider *)self edgeFeedbackGenerator];
-  [v9 distance];
-  [v8 positionUpdated:v10 * v7];
+  edgeFeedbackGenerator = [(AVTColorSlider *)self edgeFeedbackGenerator];
+  edgeFeedbackGenerator2 = [(AVTColorSlider *)self edgeFeedbackGenerator];
+  [edgeFeedbackGenerator2 distance];
+  [edgeFeedbackGenerator positionUpdated:v10 * v7];
 
   v11 = -v7;
   if (v6 >= 0.0)
@@ -490,20 +490,20 @@
       goto LABEL_7;
     }
 
-    v13 = [(AVTColorSlider *)self selectionFeedbackGenerator];
-    [v13 selectionChanged];
+    selectionFeedbackGenerator = [(AVTColorSlider *)self selectionFeedbackGenerator];
+    [selectionFeedbackGenerator selectionChanged];
   }
 
   [(AVTColorSlider *)self setShouldTriggerFeedback:v12 >= 0.0];
 LABEL_7:
-  v14 = [v21 allTouches];
-  v15 = [v14 anyObject];
+  allTouches = [eventCopy allTouches];
+  anyObject = [allTouches anyObject];
 
-  v16 = [v15 phase];
-  if (v16 == 3)
+  phase = [anyObject phase];
+  if (phase == 3)
   {
-    v19 = [(AVTColorSlider *)self delegate];
-    [v19 colorSlider:self didFinishSelectingValue:v7];
+    delegate = [(AVTColorSlider *)self delegate];
+    [delegate colorSlider:self didFinishSelectingValue:v7];
 
     *&v20 = v7;
     [(AVTColorSlider *)self setValue:0 animated:v20];
@@ -511,19 +511,19 @@ LABEL_7:
 
   else
   {
-    if (v16 != 1)
+    if (phase != 1)
     {
-      if (v16)
+      if (phase)
       {
         goto LABEL_13;
       }
 
-      v17 = [(AVTColorSlider *)self selectionFeedbackGenerator];
-      [v17 prepare];
+      selectionFeedbackGenerator2 = [(AVTColorSlider *)self selectionFeedbackGenerator];
+      [selectionFeedbackGenerator2 prepare];
     }
 
-    v18 = [(AVTColorSlider *)self delegate];
-    [v18 colorSlider:self valueChanged:v7];
+    delegate2 = [(AVTColorSlider *)self delegate];
+    [delegate2 colorSlider:self valueChanged:v7];
   }
 
 LABEL_13:

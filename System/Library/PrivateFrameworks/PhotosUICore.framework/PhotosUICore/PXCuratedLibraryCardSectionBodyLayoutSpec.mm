@@ -1,9 +1,9 @@
 @interface PXCuratedLibraryCardSectionBodyLayoutSpec
 - ($7A74DE1ADD4D9428579EDAA94466197A)cornerRadius;
-- (PXCuratedLibraryCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXCuratedLibraryCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 - (UIEdgeInsets)horizontalInsets;
 - (UIEdgeInsets)padding;
-- (void)setCornerRadius:(id)a3;
+- (void)setCornerRadius:(id)radius;
 @end
 
 @implementation PXCuratedLibraryCardSectionBodyLayoutSpec
@@ -34,7 +34,7 @@
   return result;
 }
 
-- (void)setCornerRadius:(id)a3
+- (void)setCornerRadius:(id)radius
 {
   self->_cornerRadius.var0.var0.topLeft = v3;
   self->_cornerRadius.var0.var0.topRight = v4;
@@ -49,11 +49,11 @@
   return result;
 }
 
-- (PXCuratedLibraryCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXCuratedLibraryCardSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
   v17.receiver = self;
   v17.super_class = PXCuratedLibraryCardSectionBodyLayoutSpec;
-  v4 = [(PXCuratedLibraryCardSectionBodyLayoutSpec *)&v17 initWithExtendedTraitCollection:a3 options:a4];
+  v4 = [(PXCuratedLibraryCardSectionBodyLayoutSpec *)&v17 initWithExtendedTraitCollection:collection options:options];
   if (v4)
   {
     v5 = +[PXCuratedLibrarySettings sharedInstance];

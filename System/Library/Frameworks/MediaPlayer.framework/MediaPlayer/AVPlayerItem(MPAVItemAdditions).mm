@@ -15,7 +15,7 @@
   v6[3] = &unk_1E767FF10;
   objc_copyWeak(&v7, &location);
   v5 = _Block_copy(v6);
-  objc_setAssociatedObject(a1, 0, v5, 1);
+  objc_setAssociatedObject(self, 0, v5, 1);
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
@@ -23,7 +23,7 @@
 
 - (id)MPAVItem
 {
-  v1 = objc_getAssociatedObject(a1, 0);
+  v1 = objc_getAssociatedObject(self, 0);
   v2 = v1;
   if (v1)
   {

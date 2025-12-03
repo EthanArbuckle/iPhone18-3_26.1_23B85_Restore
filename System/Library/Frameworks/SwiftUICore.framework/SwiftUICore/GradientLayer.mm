@@ -1,7 +1,7 @@
 @interface GradientLayer
 - (_TtC7SwiftUI13GradientLayer)init;
-- (_TtC7SwiftUI13GradientLayer)initWithCoder:(id)a3;
-- (_TtC7SwiftUI13GradientLayer)initWithLayer:(id)a3;
+- (_TtC7SwiftUI13GradientLayer)initWithCoder:(id)coder;
+- (_TtC7SwiftUI13GradientLayer)initWithLayer:(id)layer;
 @end
 
 @implementation GradientLayer
@@ -13,7 +13,7 @@
   return [(GradientLayer *)&v3 init];
 }
 
-- (_TtC7SwiftUI13GradientLayer)initWithLayer:(id)a3
+- (_TtC7SwiftUI13GradientLayer)initWithLayer:(id)layer
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectRetain();
@@ -29,12 +29,12 @@
   return v6;
 }
 
-- (_TtC7SwiftUI13GradientLayer)initWithCoder:(id)a3
+- (_TtC7SwiftUI13GradientLayer)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(GradientLayer *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(GradientLayer *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

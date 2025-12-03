@@ -1,15 +1,15 @@
 @interface PUPickerOptionsViewFactory
-+ (id)viewControllerWithConfiguration:(id)a3 selectionCoordinator:(id)a4 additionalSelectionState:(id)a5;
++ (id)viewControllerWithConfiguration:(id)configuration selectionCoordinator:(id)coordinator additionalSelectionState:(id)state;
 @end
 
 @implementation PUPickerOptionsViewFactory
 
-+ (id)viewControllerWithConfiguration:(id)a3 selectionCoordinator:(id)a4 additionalSelectionState:(id)a5
++ (id)viewControllerWithConfiguration:(id)configuration selectionCoordinator:(id)coordinator additionalSelectionState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_1B375AFB4(v7, v8, v9);
+  configurationCopy = configuration;
+  coordinatorCopy = coordinator;
+  stateCopy = state;
+  v10 = sub_1B375AFB4(configurationCopy, coordinatorCopy, stateCopy);
 
   return v10;
 }

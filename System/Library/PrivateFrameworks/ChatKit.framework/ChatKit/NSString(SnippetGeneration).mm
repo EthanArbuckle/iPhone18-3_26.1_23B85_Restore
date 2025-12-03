@@ -9,7 +9,7 @@
   v8 = a4;
   if (v8)
   {
-    v9 = [(__CFString *)a1 rangeOfString:v8 options:129];
+    v9 = [(__CFString *)self rangeOfString:v8 options:129];
     v11 = v10;
   }
 
@@ -21,30 +21,30 @@
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (([(__CFString *)a1 _snippetOptions:a5 hasOption:4]& 1) == 0)
+    if (([(__CFString *)self _snippetOptions:a5 hasOption:4]& 1) == 0)
     {
-      a3 = [(__CFString *)a1 length];
+      a3 = [(__CFString *)self length];
     }
 
-    v12 = [(__CFString *)a1 substringWithRange:0, a3];
+    v12 = [(__CFString *)self substringWithRange:0, a3];
     goto LABEL_33;
   }
 
-  if ([(__CFString *)a1 _snippetOptions:a5 hasOption:2])
+  if ([(__CFString *)self _snippetOptions:a5 hasOption:2])
   {
     a3 -= [v8 length];
   }
 
   v13 = CFLocaleCopyCurrent();
-  v37.length = [(__CFString *)a1 length];
+  v37.length = [(__CFString *)self length];
   v37.location = 0;
-  v14 = CFStringTokenizerCreate(0, a1, v37, 0, v13);
+  v14 = CFStringTokenizerCreate(0, self, v37, 0, v13);
   if (v13)
   {
     CFRelease(v13);
   }
 
-  v15 = [(__CFString *)a1 length];
+  v15 = [(__CFString *)self length];
   if (v14)
   {
     v16 = v15;
@@ -88,7 +88,7 @@
     CFRelease(v14);
     v26 = location > 0;
     v27 = location & ~(location >> 63);
-    if ((v25 & 1) == 0 && v16 <= [(__CFString *)a1 length])
+    if ((v25 & 1) == 0 && v16 <= [(__CFString *)self length])
     {
       v28 = 1;
       goto LABEL_28;
@@ -101,28 +101,28 @@
     v27 = 0;
   }
 
-  v16 = [(__CFString *)a1 length];
+  v16 = [(__CFString *)self length];
   v28 = 0;
 LABEL_28:
-  v29 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   if (v26)
   {
     v30 = CKFrameworkBundle();
     v31 = [v30 localizedStringForKey:@"ELLIPSES" value:&stru_1F04268F8 table:@"ChatKit"];
-    [v29 appendString:v31];
+    [string appendString:v31];
   }
 
-  v32 = [(__CFString *)a1 substringWithRange:v27, v16 - v27];
-  [v29 appendString:v32];
+  v32 = [(__CFString *)self substringWithRange:v27, v16 - v27];
+  [string appendString:v32];
 
   if (v28)
   {
     v33 = CKFrameworkBundle();
     v34 = [v33 localizedStringForKey:@"ELLIPSES" value:&stru_1F04268F8 table:@"ChatKit"];
-    [v29 appendString:v34];
+    [string appendString:v34];
   }
 
-  v12 = [v29 copy];
+  v12 = [string copy];
 
 LABEL_33:
 

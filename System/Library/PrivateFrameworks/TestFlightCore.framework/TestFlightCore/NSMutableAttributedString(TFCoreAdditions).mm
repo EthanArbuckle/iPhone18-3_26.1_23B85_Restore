@@ -8,9 +8,9 @@
 {
   v98[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v60 = a1;
-  v5 = [a1 string];
-  v6 = [(__CFString *)v5 length];
+  selfCopy = self;
+  string = [self string];
+  v6 = [(__CFString *)string length];
   if (v6)
   {
     v7 = v6;
@@ -31,15 +31,15 @@
     v76 = 0u;
     *buffer = 0u;
     v74 = 0u;
-    v89 = v5;
+    v89 = string;
     v92 = 0;
     v93 = v6;
-    CharactersPtr = CFStringGetCharactersPtr(v5);
+    CharactersPtr = CFStringGetCharactersPtr(string);
     CStringPtr = 0;
     v90 = CharactersPtr;
     if (!CharactersPtr)
     {
-      CStringPtr = CFStringGetCStringPtr(v5, 0x600u);
+      CStringPtr = CFStringGetCStringPtr(string, 0x600u);
     }
 
     v69 = 0;
@@ -54,7 +54,7 @@
     v57 = 0;
     v58 = 0;
     v53 = v7 - 1;
-    v54 = v5;
+    v54 = string;
     v94 = 0;
     v95 = 0;
     v91 = CStringPtr;
@@ -424,7 +424,7 @@ LABEL_22:
           v26 = [MEMORY[0x277CCABB0] numberWithInteger:{0, v53}];
           v98[0] = v26;
           v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v98 count:1];
-          [v60 addAttribute:v59 value:v27 range:{v15, v25}];
+          [selfCopy addAttribute:v59 value:v27 range:{v15, v25}];
 
           v16 = v62;
         }
@@ -459,7 +459,7 @@ LABEL_22:
           v37 = [MEMORY[0x277CCABB0] numberWithInteger:v70];
           v97 = v37;
           v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v97 count:1];
-          [v60 addAttribute:v59 value:v38 range:{v61, v29}];
+          [selfCopy addAttribute:v59 value:v38 range:{v61, v29}];
 
           v16 = v62;
         }
@@ -508,7 +508,7 @@ LABEL_65:
 
             if (v43)
             {
-              [v60 addAttribute:v55 value:v42 range:{v58, v13}];
+              [selfCopy addAttribute:v55 value:v42 range:{v58, v13}];
             }
 
             v13 = 0;
@@ -526,7 +526,7 @@ LABEL_65:
           v44 = v13;
           v96.location = 0;
           v96.length = 0;
-          v45 = [v60 attribute:v55 atIndex:v58 effectiveRange:&v96];
+          v45 = [selfCopy attribute:v55 atIndex:v58 effectiveRange:&v96];
           if (v45)
           {
             v99.location = v58;
@@ -571,7 +571,7 @@ LABEL_68:
       if (v11 == v16)
       {
         v4 = v56;
-        v5 = v54;
+        string = v54;
         goto LABEL_137;
       }
     }

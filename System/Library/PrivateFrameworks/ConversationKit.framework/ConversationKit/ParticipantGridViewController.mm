@@ -1,5 +1,5 @@
 @interface ParticipantGridViewController
-- (_TtC15ConversationKit29ParticipantGridViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit29ParticipantGridViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)forceBumpPriority;
 - (void)loadView;
 - (void)viewDidLoad;
@@ -9,30 +9,30 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantGridViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantGridViewController.viewDidLoad()();
 }
 
 - (void)forceBumpPriority
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantGridViewController.forceBumpPriority()();
 }
 
-- (_TtC15ConversationKit29ParticipantGridViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit29ParticipantGridViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ParticipantGridViewController.init(nibName:bundle:)();
 }
 

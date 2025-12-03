@@ -1,14 +1,14 @@
 @interface TUISmartActionPollCandidate
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)title;
-- (TUISmartActionPollCandidate)initWithCoder:(id)a3;
-- (TUISmartActionPollCandidate)initWithTitle:(id)a3 options:(id)a4;
+- (TUISmartActionPollCandidate)initWithCoder:(id)coder;
+- (TUISmartActionPollCandidate)initWithTitle:(id)title options:(id)options;
 - (id)alternativeText;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)label;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUISmartActionPollCandidate
@@ -19,7 +19,7 @@
   label = self->_label;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  v7 = [(TUISmartActionPollCandidate *)self title];
+  title = [(TUISmartActionPollCandidate *)self title];
   if ([(TUISmartActionPollCandidate *)self shouldSuggestTitle])
   {
     v8 = "YES";
@@ -30,8 +30,8 @@
     v8 = "NO";
   }
 
-  v9 = [(TUISmartActionPollCandidate *)self options];
-  v10 = [v3 stringWithFormat:@"<%@: label=%@, title=%@, shouldSuggestTitle=%s, options=%@>", label, v6, v7, v8, v9];
+  options = [(TUISmartActionPollCandidate *)self options];
+  v10 = [v3 stringWithFormat:@"<%@: label=%@, title=%@, shouldSuggestTitle=%s, options=%@>", label, v6, title, v8, options];
 
   return v10;
 }
@@ -67,10 +67,10 @@ uint64_t __35__TUISmartActionPollCandidate_hash__block_invoke(uint64_t a1, void 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -80,7 +80,7 @@ uint64_t __35__TUISmartActionPollCandidate_hash__block_invoke(uint64_t a1, void 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v11.receiver = self;
       v9 = -[TUISmartActionPollCandidate isEqual:](&v11, sel_isEqual_, v5) && (-[TUISmartActionPollCandidate label](self, "label"), v6 = v11.super_class = TUISmartActionPollCandidate;
     }
@@ -94,30 +94,30 @@ uint64_t __35__TUISmartActionPollCandidate_hash__block_invoke(uint64_t a1, void 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TUISmartActionPollCandidate;
-  v4 = a3;
-  [(TIKeyboardCandidateSingle *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_label forKey:{@"saPollLabel", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_options forKey:@"saPollOptionArray"];
-  [v4 encodeBool:self->_shouldSuggestTitle forKey:@"saPollShouldSuggestTitle"];
+  coderCopy = coder;
+  [(TIKeyboardCandidateSingle *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_label forKey:{@"saPollLabel", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_options forKey:@"saPollOptionArray"];
+  [coderCopy encodeBool:self->_shouldSuggestTitle forKey:@"saPollShouldSuggestTitle"];
 }
 
-- (TUISmartActionPollCandidate)initWithCoder:(id)a3
+- (TUISmartActionPollCandidate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TUISmartActionPollCandidate;
-  v5 = [(TIKeyboardCandidateSingle *)&v12 initWithCoder:v4];
+  v5 = [(TIKeyboardCandidateSingle *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"saPollLabel"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"saPollLabel"];
     label = v5->_label;
     v5->_label = v6;
 
-    v8 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"saPollOptionArray"];
+    v8 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"saPollOptionArray"];
     v9 = v8;
     if (v8)
     {
@@ -131,24 +131,24 @@ uint64_t __35__TUISmartActionPollCandidate_hash__block_invoke(uint64_t a1, void 
 
     objc_storeStrong(&v5->_options, v10);
 
-    v5->_shouldSuggestTitle = [v4 decodeBoolForKey:@"saPollShouldSuggestTitle"];
+    v5->_shouldSuggestTitle = [coderCopy decodeBoolForKey:@"saPollShouldSuggestTitle"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = TUISmartActionPollCandidate;
   v5 = [(TIKeyboardCandidateSingle *)&v11 copyWithZone:?];
   if (v5)
   {
-    v6 = [(NSString *)self->_label copyWithZone:a3];
+    v6 = [(NSString *)self->_label copyWithZone:zone];
     v7 = v5[29];
     v5[29] = v6;
 
-    v8 = [(NSArray *)self->_options copyWithZone:a3];
+    v8 = [(NSArray *)self->_options copyWithZone:zone];
     v9 = v5[31];
     v5[31] = v8;
 
@@ -162,15 +162,15 @@ uint64_t __35__TUISmartActionPollCandidate_hash__block_invoke(uint64_t a1, void 
 {
   if (self->_label)
   {
-    v3 = [(TUISmartActionPollCandidate *)self title];
+    title = [(TUISmartActionPollCandidate *)self title];
   }
 
   else
   {
-    v3 = 0;
+    title = 0;
   }
 
-  return v3;
+  return title;
 }
 
 - (id)label
@@ -178,24 +178,24 @@ uint64_t __35__TUISmartActionPollCandidate_hash__block_invoke(uint64_t a1, void 
   label = self->_label;
   if (label)
   {
-    v3 = label;
+    title = label;
   }
 
   else
   {
-    v3 = [(TUISmartActionPollCandidate *)self title];
+    title = [(TUISmartActionPollCandidate *)self title];
   }
 
-  return v3;
+  return title;
 }
 
 - (NSString)title
 {
-  v2 = [(TIKeyboardCandidateSingle *)self candidate];
-  v3 = v2;
-  if (v2)
+  candidate = [(TIKeyboardCandidateSingle *)self candidate];
+  v3 = candidate;
+  if (candidate)
   {
-    v4 = v2;
+    v4 = candidate;
   }
 
   else
@@ -208,17 +208,17 @@ uint64_t __35__TUISmartActionPollCandidate_hash__block_invoke(uint64_t a1, void 
   return &v4->isa;
 }
 
-- (TUISmartActionPollCandidate)initWithTitle:(id)a3 options:(id)a4
+- (TUISmartActionPollCandidate)initWithTitle:(id)title options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   v12.receiver = self;
   v12.super_class = TUISmartActionPollCandidate;
-  v7 = [(TIKeyboardCandidateSingle *)&v12 initWithCandidate:a3 forInput:&stru_1F03BA8F8];
+  v7 = [(TIKeyboardCandidateSingle *)&v12 initWithCandidate:title forInput:&stru_1F03BA8F8];
   if (v7)
   {
-    if (v6)
+    if (optionsCopy)
     {
-      v8 = v6;
+      v8 = optionsCopy;
     }
 
     else

@@ -1,9 +1,9 @@
 @interface PregnancyOnboardingConfirmationViewController
-- (_TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)hxui_primaryFooterButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
@@ -11,65 +11,65 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29DFDBEA8();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(OBBaseWelcomeController *)&v7 viewDidAppear:v3];
-  v5 = [v4 navigationController];
-  if (v5)
+  [(OBBaseWelcomeController *)&v7 viewDidAppear:appearCopy];
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v6 = v5;
-    [v5 setNavigationBarHidden_];
+    v6 = navigationController;
+    [navigationController setNavigationBarHidden_];
   }
 
   sub_29E2BE504();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(OBBaseWelcomeController *)&v8 viewDidDisappear:v3];
+  [(OBBaseWelcomeController *)&v8 viewDidDisappear:disappearCopy];
   sub_29E2BE4F4();
   v5 = sub_29DFDB5CC();
   [v5 hidesBusyIndicator];
 
-  v6 = [v4 navigationController];
-  if (v6)
+  navigationController = [v4 navigationController];
+  if (navigationController)
   {
-    v7 = v6;
-    [v6 setNavigationBarHidden_];
+    v7 = navigationController;
+    [navigationController setNavigationBarHidden_];
   }
 }
 
 - (void)hxui_primaryFooterButtonTapped
 {
-  v3 = self;
+  selfCopy = self;
   v2 = sub_29DFDB5CC();
   [v2 showsBusyIndicator];
 
-  LODWORD(v2) = *(&v3->super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController_onboardingStep);
+  LODWORD(v2) = *(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController_onboardingStep);
 
   sub_29E27EA20(v2, 2u);
 }
 
-- (_TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC24MenstrualCyclesAppPlugin45PregnancyOnboardingConfirmationViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

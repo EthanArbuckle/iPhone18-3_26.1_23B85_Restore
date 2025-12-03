@@ -1,21 +1,21 @@
 @interface PowerUIAlarmSignalMonitor
-+ (id)monitorWithDelegate:(id)a3;
-+ (id)monitorWithDelegate:(id)a3 trialManager:(id)a4 withContext:(id)a5;
-- (PowerUIAlarmSignalMonitor)initWithDelegate:(id)a3 trialManager:(id)a4 withContext:(id)a5;
++ (id)monitorWithDelegate:(id)delegate;
++ (id)monitorWithDelegate:(id)delegate trialManager:(id)manager withContext:(id)context;
+- (PowerUIAlarmSignalMonitor)initWithDelegate:(id)delegate trialManager:(id)manager withContext:(id)context;
 - (id)detectedSignals;
 - (id)nextLocalAlarm;
 - (id)requiredFullChargeDate;
-- (void)sourceInformationChangedNotification:(id)a3;
+- (void)sourceInformationChangedNotification:(id)notification;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation PowerUIAlarmSignalMonitor
 
-- (PowerUIAlarmSignalMonitor)initWithDelegate:(id)a3 trialManager:(id)a4 withContext:(id)a5
+- (PowerUIAlarmSignalMonitor)initWithDelegate:(id)delegate trialManager:(id)manager withContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v27.receiver = self;
   v27.super_class = PowerUIAlarmSignalMonitor;
   v10 = [(PowerUIAlarmSignalMonitor *)&v27 init];
@@ -25,7 +25,7 @@
     alarmManager = v10->_alarmManager;
     v10->_alarmManager = v11;
 
-    objc_storeStrong(&v10->_delegate, a3);
+    objc_storeStrong(&v10->_delegate, delegate);
     v13 = os_log_create("com.apple.powerui.smartcharging", "signals");
     log = v10->_log;
     v10->_log = v13;
@@ -34,7 +34,7 @@
     v22 = 3221225472;
     v23 = __71__PowerUIAlarmSignalMonitor_initWithDelegate_trialManager_withContext___block_invoke;
     v24 = &unk_2782D4AC0;
-    v15 = v9;
+    v15 = managerCopy;
     v25 = v15;
     v26 = v10;
     v16 = MEMORY[0x21CEF8A60](&v21);
@@ -65,40 +65,40 @@ void __71__PowerUIAlarmSignalMonitor_initWithDelegate_trialManager_withContext__
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)monitorWithDelegate:(id)a3
++ (id)monitorWithDelegate:(id)delegate
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:v3 trialManager:0 withContext:0];
+  delegateCopy = delegate;
+  v4 = [objc_alloc(objc_opt_class()) initWithDelegate:delegateCopy trialManager:0 withContext:0];
 
   return v4;
 }
 
-+ (id)monitorWithDelegate:(id)a3 trialManager:(id)a4 withContext:(id)a5
++ (id)monitorWithDelegate:(id)delegate trialManager:(id)manager withContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [objc_alloc(objc_opt_class()) initWithDelegate:v9 trialManager:v8 withContext:v7];
+  contextCopy = context;
+  managerCopy = manager;
+  delegateCopy = delegate;
+  v10 = [objc_alloc(objc_opt_class()) initWithDelegate:delegateCopy trialManager:managerCopy withContext:contextCopy];
 
   return v10;
 }
 
 - (void)startMonitoring
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_sourceInformationChangedNotification_ name:*MEMORY[0x277D295C8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_sourceInformationChangedNotification_ name:*MEMORY[0x277D295C8] object:0];
 }
 
-- (void)sourceInformationChangedNotification:(id)a3
+- (void)sourceInformationChangedNotification:(id)notification
 {
-  v4 = [(PowerUIAlarmSignalMonitor *)self requiredFullChargeDate];
-  [(PowerUISignalMonitorDelegate *)self->_delegate monitor:self maySuggestNewFullChargeDeadline:v4];
+  requiredFullChargeDate = [(PowerUIAlarmSignalMonitor *)self requiredFullChargeDate];
+  [(PowerUISignalMonitorDelegate *)self->_delegate monitor:self maySuggestNewFullChargeDeadline:requiredFullChargeDate];
 }
 
 - (void)stopMonitoring
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D295C8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D295C8] object:0];
 }
 
 - (id)nextLocalAlarm
@@ -109,8 +109,8 @@ void __71__PowerUIAlarmSignalMonitor_initWithDelegate_trialManager_withContext__
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__9;
   v19 = __Block_byref_object_dispose__9;
-  v20 = [MEMORY[0x277CBEAA8] distantFuture];
-  v3 = [(MTAlarmManager *)self->_alarmManager nextAlarm];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  nextAlarm = [(MTAlarmManager *)self->_alarmManager nextAlarm];
   v4 = dispatch_semaphore_create(0);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -120,7 +120,7 @@ void __71__PowerUIAlarmSignalMonitor_initWithDelegate_trialManager_withContext__
   v14 = &v15;
   v5 = v4;
   v13 = v5;
-  v6 = [v3 addCompletionBlock:v12];
+  v6 = [nextAlarm addCompletionBlock:v12];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
@@ -173,28 +173,28 @@ void __43__PowerUIAlarmSignalMonitor_nextLocalAlarm__block_invoke(uint64_t a1, v
 
 - (id)requiredFullChargeDate
 {
-  v2 = [(PowerUIAlarmSignalMonitor *)self nextAlarm];
-  v3 = v2;
-  if (v2 && ([v2 timeIntervalSinceNow], v4 >= 0.0))
+  nextAlarm = [(PowerUIAlarmSignalMonitor *)self nextAlarm];
+  v3 = nextAlarm;
+  if (nextAlarm && ([nextAlarm timeIntervalSinceNow], v4 >= 0.0))
   {
-    v5 = [v3 dateByAddingTimeInterval:-*&kBufferBeforeAlarm];
+    distantFuture = [v3 dateByAddingTimeInterval:-*&kBufferBeforeAlarm];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
-  v6 = v5;
+  v6 = distantFuture;
 
   return v6;
 }
 
 - (id)detectedSignals
 {
-  v2 = [(PowerUIAlarmSignalMonitor *)self nextAlarm];
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
-  v4 = [v2 isEqualToDate:v3];
+  nextAlarm = [(PowerUIAlarmSignalMonitor *)self nextAlarm];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v4 = [nextAlarm isEqualToDate:distantFuture];
 
   if (v4)
   {
@@ -203,7 +203,7 @@ void __43__PowerUIAlarmSignalMonitor_nextLocalAlarm__block_invoke(uint64_t a1, v
 
   else
   {
-    [MEMORY[0x277CBEA60] arrayWithObject:v2];
+    [MEMORY[0x277CBEA60] arrayWithObject:nextAlarm];
   }
   v5 = ;
 

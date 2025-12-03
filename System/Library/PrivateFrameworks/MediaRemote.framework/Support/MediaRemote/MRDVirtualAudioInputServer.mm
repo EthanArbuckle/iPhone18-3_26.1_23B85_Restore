@@ -3,17 +3,17 @@
 - (MRDVirtualAudioInputServerDelegate)delegate;
 - (NSArray)recordingEndpointClients;
 - (NSArray)registeredDevices;
-- (id)registeredDeviceWithID:(unsigned int)a3;
-- (void)_handleGetDevicesMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleInputDeviceConnectedMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleInputDeviceDisconnectedMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRecordingEndpointAvailabilityMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleRecordingStateChangedMessage:(id)a3 fromClient:(id)a4;
-- (void)_handleVoiceDataReceivedMessage:(id)a3 fromClient:(id)a4;
-- (void)clearRecordingEndpointsForClient:(id)a3;
-- (void)clearRegisteredDevicesForClient:(id)a3;
-- (void)collectDiagnostic:(id)a3;
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4;
+- (id)registeredDeviceWithID:(unsigned int)d;
+- (void)_handleGetDevicesMessage:(id)message fromClient:(id)client;
+- (void)_handleInputDeviceConnectedMessage:(id)message fromClient:(id)client;
+- (void)_handleInputDeviceDisconnectedMessage:(id)message fromClient:(id)client;
+- (void)_handleRecordingEndpointAvailabilityMessage:(id)message fromClient:(id)client;
+- (void)_handleRecordingStateChangedMessage:(id)message fromClient:(id)client;
+- (void)_handleVoiceDataReceivedMessage:(id)message fromClient:(id)client;
+- (void)clearRecordingEndpointsForClient:(id)client;
+- (void)clearRegisteredDevicesForClient:(id)client;
+- (void)collectDiagnostic:(id)diagnostic;
+- (void)handleXPCMessage:(id)message fromClient:(id)client;
 @end
 
 @implementation MRDVirtualAudioInputServer
@@ -88,7 +88,7 @@
   return v3;
 }
 
-- (id)registeredDeviceWithID:(unsigned int)a3
+- (id)registeredDeviceWithID:(unsigned int)d
 {
   v8 = 0;
   v9 = &v8;
@@ -101,7 +101,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001765A0;
   block[3] = &unk_1004BFE28;
-  v7 = a3;
+  dCopy = d;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(serialQueue, block);
@@ -111,51 +111,51 @@
   return v4;
 }
 
-- (void)clearRegisteredDevicesForClient:(id)a3
+- (void)clearRegisteredDevicesForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10017675C;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)clearRecordingEndpointsForClient:(id)a3
+- (void)clearRecordingEndpointsForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10017692C;
   v7[3] = &unk_1004B68F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)handleXPCMessage:(id)a3 fromClient:(id)a4
+- (void)handleXPCMessage:(id)message fromClient:(id)client
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = message;
+  clientCopy = client;
   uint64 = xpc_dictionary_get_uint64(xdict, "MRXPC_MESSAGE_ID_KEY");
   if (uint64 > 0x900000000000003)
   {
     switch(uint64)
     {
       case 0x900000000000004:
-        [(MRDVirtualAudioInputServer *)self _handleRecordingStateChangedMessage:xdict fromClient:v6];
+        [(MRDVirtualAudioInputServer *)self _handleRecordingStateChangedMessage:xdict fromClient:clientCopy];
         break;
       case 0x900000000000005:
-        [(MRDVirtualAudioInputServer *)self _handleVoiceDataReceivedMessage:xdict fromClient:v6];
+        [(MRDVirtualAudioInputServer *)self _handleVoiceDataReceivedMessage:xdict fromClient:clientCopy];
         break;
       case 0x900000000000006:
-        [(MRDVirtualAudioInputServer *)self _handleRecordingEndpointAvailabilityMessage:xdict fromClient:v6];
+        [(MRDVirtualAudioInputServer *)self _handleRecordingEndpointAvailabilityMessage:xdict fromClient:clientCopy];
         break;
     }
   }
@@ -165,78 +165,78 @@
     switch(uint64)
     {
       case 0x900000000000001:
-        [(MRDVirtualAudioInputServer *)self _handleGetDevicesMessage:xdict fromClient:v6];
+        [(MRDVirtualAudioInputServer *)self _handleGetDevicesMessage:xdict fromClient:clientCopy];
         break;
       case 0x900000000000002:
-        [(MRDVirtualAudioInputServer *)self _handleInputDeviceConnectedMessage:xdict fromClient:v6];
+        [(MRDVirtualAudioInputServer *)self _handleInputDeviceConnectedMessage:xdict fromClient:clientCopy];
         break;
       case 0x900000000000003:
-        [(MRDVirtualAudioInputServer *)self _handleInputDeviceDisconnectedMessage:xdict fromClient:v6];
+        [(MRDVirtualAudioInputServer *)self _handleInputDeviceDisconnectedMessage:xdict fromClient:clientCopy];
         break;
     }
   }
 }
 
-- (void)collectDiagnostic:(id)a3
+- (void)collectDiagnostic:(id)diagnostic
 {
-  v4 = a3;
+  diagnosticCopy = diagnostic;
   serialQueue = self->_serialQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100176C1C;
   v7[3] = &unk_1004B68F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = diagnosticCopy;
+  selfCopy = self;
+  v6 = diagnosticCopy;
   dispatch_sync(serialQueue, v7);
 }
 
-- (void)_handleGetDevicesMessage:(id)a3 fromClient:(id)a4
+- (void)_handleGetDevicesMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
+  messageCopy = message;
   v6 = objc_alloc_init(NSMutableArray);
   serialQueue = self->_serialQueue;
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_100176D58;
   v13 = &unk_1004B68F0;
-  v14 = self;
+  selfCopy = self;
   v15 = v6;
   v8 = v6;
   dispatch_sync(serialQueue, &v10);
-  v9 = [NSPropertyListSerialization dataWithPropertyList:v8 format:200 options:0 error:0, v10, v11, v12, v13, v14];
-  sub_10001673C(v5, "MRXPC_VOICE_INPUT_DEVICES_DATA_KEY", v9, 0);
+  selfCopy = [NSPropertyListSerialization dataWithPropertyList:v8 format:200 options:0 error:0, v10, v11, v12, v13, selfCopy];
+  sub_10001673C(messageCopy, "MRXPC_VOICE_INPUT_DEVICES_DATA_KEY", selfCopy, 0);
 }
 
-- (void)_handleInputDeviceConnectedMessage:(id)a3 fromClient:(id)a4
+- (void)_handleInputDeviceConnectedMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  clientCopy = client;
   v8 = MRCreateDataFromXPCMessage();
   if (v8)
   {
     v9 = MRVirtualVoiceInputDeviceDescriptorCreateFromExternalRepresentation();
-    v10 = [[MRDVirtualAudioInputServerDevice alloc] initWithOwningClient:v7];
+    v10 = [[MRDVirtualAudioInputServerDevice alloc] initWithOwningClient:clientCopy];
     [(MRDVirtualAudioInputServerDevice *)v10 setDescriptor:v9];
-    v25 = [(MRDVirtualAudioInputServerDevice *)v10 deviceID];
+    deviceID = [(MRDVirtualAudioInputServerDevice *)v10 deviceID];
     v11 = _MRLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       sub_1003ABD88(v9, v11);
     }
 
-    v12 = [(MRDVirtualAudioInputServer *)self recordingEndpointClients];
+    recordingEndpointClients = [(MRDVirtualAudioInputServer *)self recordingEndpointClients];
     v13 = _MRLogForCategory();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      sub_1003ABE00(v12, v13);
+      sub_1003ABE00(recordingEndpointClients, v13);
     }
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v14 = v12;
+    v14 = recordingEndpointClients;
     v15 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
     if (v15)
     {
@@ -251,7 +251,7 @@
             objc_enumerationMutation(v14);
           }
 
-          [*(*(&v28 + 1) + 8 * i) relayXPCMessage:v6 andReply:0];
+          [*(*(&v28 + 1) + 8 * i) relayXPCMessage:messageCopy andReply:0];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -270,7 +270,7 @@
     v20 = v10;
     dispatch_sync(serialQueue, block);
 
-    v21 = v25;
+    v21 = deviceID;
   }
 
   else
@@ -284,21 +284,21 @@
     v21 = 0;
   }
 
-  v23 = xpc_dictionary_get_remote_connection(v6);
+  v23 = xpc_dictionary_get_remote_connection(messageCopy);
   if (v23)
   {
-    reply = xpc_dictionary_create_reply(v6);
+    reply = xpc_dictionary_create_reply(messageCopy);
     xpc_dictionary_set_uint64(reply, "MRXPC_VOICE_INPUT_DEVICE_ID_KEY", v21);
     MRAddErrorToXPCMessage();
     xpc_connection_send_message(v23, reply);
   }
 }
 
-- (void)_handleInputDeviceDisconnectedMessage:(id)a3 fromClient:(id)a4
+- (void)_handleInputDeviceDisconnectedMessage:(id)message fromClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  uint64 = xpc_dictionary_get_uint64(v6, "MRXPC_VOICE_INPUT_DEVICE_ID_KEY");
+  messageCopy = message;
+  clientCopy = client;
+  uint64 = xpc_dictionary_get_uint64(messageCopy, "MRXPC_VOICE_INPUT_DEVICE_ID_KEY");
   v9 = _MRLogForCategory();
   v10 = v9;
   if (uint64)
@@ -323,18 +323,18 @@
     dispatch_sync(serialQueue, block);
     if (*(v26 + 24) == 1)
     {
-      v12 = [(MRDVirtualAudioInputServer *)self recordingEndpointClients];
+      recordingEndpointClients = [(MRDVirtualAudioInputServer *)self recordingEndpointClients];
       v13 = _MRLogForCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        sub_1003ABFB0(buf, [v12 count], v13);
+        sub_1003ABFB0(buf, [recordingEndpointClients count], v13);
       }
 
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v14 = v12;
+      v14 = recordingEndpointClients;
       v15 = [v14 countByEnumeratingWithState:&v19 objects:v29 count:16];
       if (v15)
       {
@@ -348,7 +348,7 @@
               objc_enumerationMutation(v14);
             }
 
-            [*(*(&v19 + 1) + 8 * i) relayXPCMessage:v6 andReply:{0, v19}];
+            [*(*(&v19 + 1) + 8 * i) relayXPCMessage:messageCopy andReply:{0, v19}];
           }
 
           v15 = [v14 countByEnumeratingWithState:&v19 objects:v29 count:16];
@@ -384,13 +384,13 @@
     v18 = 22;
   }
 
-  sub_10000F9E4(v6, v18);
+  sub_10000F9E4(messageCopy, v18);
 }
 
-- (void)_handleRecordingStateChangedMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRecordingStateChangedMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = [(MRDVirtualAudioInputServer *)self registeredDeviceWithID:xpc_dictionary_get_uint64(v5, "MRXPC_VOICE_INPUT_DEVICE_ID_KEY")];
+  messageCopy = message;
+  v6 = [(MRDVirtualAudioInputServer *)self registeredDeviceWithID:xpc_dictionary_get_uint64(messageCopy, "MRXPC_VOICE_INPUT_DEVICE_ID_KEY")];
   v7 = _MRLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -399,7 +399,7 @@
 
   if (v6)
   {
-    uint64 = xpc_dictionary_get_uint64(v5, "MRXPC_VOICE_RECORDING_STATE");
+    uint64 = xpc_dictionary_get_uint64(messageCopy, "MRXPC_VOICE_RECORDING_STATE");
     [v6 setRecordingState:uint64];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v10 = objc_opt_respondsToSelector();
@@ -427,18 +427,18 @@
   }
 
 LABEL_11:
-  sub_10000F9E4(v5, v12);
+  sub_10000F9E4(messageCopy, v12);
 }
 
-- (void)_handleVoiceDataReceivedMessage:(id)a3 fromClient:(id)a4
+- (void)_handleVoiceDataReceivedMessage:(id)message fromClient:(id)client
 {
-  v5 = a3;
-  v6 = [(MRDVirtualAudioInputServer *)self recordingEndpointClients];
+  messageCopy = message;
+  recordingEndpointClients = [(MRDVirtualAudioInputServer *)self recordingEndpointClients];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [recordingEndpointClients countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -450,26 +450,26 @@ LABEL_11:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(recordingEndpointClients);
         }
 
-        [*(*(&v11 + 1) + 8 * v10) relayXPCMessage:v5 andReply:0];
+        [*(*(&v11 + 1) + 8 * v10) relayXPCMessage:messageCopy andReply:0];
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [recordingEndpointClients countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)_handleRecordingEndpointAvailabilityMessage:(id)a3 fromClient:(id)a4
+- (void)_handleRecordingEndpointAvailabilityMessage:(id)message fromClient:(id)client
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = xpc_dictionary_get_BOOL(v7, "MRXPC_VOICE_RECORDING_ENDPOINT_AVAILABLE_KEY");
+  clientCopy = client;
+  messageCopy = message;
+  v8 = xpc_dictionary_get_BOOL(messageCopy, "MRXPC_VOICE_RECORDING_ENDPOINT_AVAILABLE_KEY");
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -477,10 +477,10 @@ LABEL_11:
   block[3] = &unk_1004B8870;
   v13 = v8;
   block[4] = self;
-  v12 = v6;
-  v10 = v6;
+  v12 = clientCopy;
+  v10 = clientCopy;
   dispatch_sync(serialQueue, block);
-  sub_10000F9E4(v7, 0);
+  sub_10000F9E4(messageCopy, 0);
 }
 
 - (MRDVirtualAudioInputServerDelegate)delegate

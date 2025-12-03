@@ -4,38 +4,38 @@
 - (BOOL)isRunningFromMobileMailApp;
 - (BOOL)validateAccount;
 - (DAAccount)account;
-- (id)accountBooleanPropertyWithSpecifier:(id)a3;
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier;
 - (id)accountFromSpecifier;
-- (id)accountPropertyWithSpecifier:(id)a3;
+- (id)accountPropertyWithSpecifier:(id)specifier;
 - (id)currentlyEditingCell;
-- (id)daAccountWithBackingAccountInfo:(id)a3;
-- (id)lastGroupSpecifierInSpecifiers:(id)a3;
+- (id)daAccountWithBackingAccountInfo:(id)info;
+- (id)lastGroupSpecifierInSpecifiers:(id)specifiers;
 - (id)localizedAccountTitleString;
 - (id)newDefaultAccount;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int)indexOfCurrentlyEditingCell;
 - (void)_beginAccountValidation;
 - (void)_confirmSaveUnvalidatedAccount;
 - (void)_deleteAccount;
 - (void)_dismissAndUpdateParent;
-- (void)_finishSaveAccountDismissWhenDone:(BOOL)a3;
-- (void)_saveAccountDismissWhenDone:(BOOL)a3;
-- (void)cancelButtonTapped:(id)a3;
+- (void)_finishSaveAccountDismissWhenDone:(BOOL)done;
+- (void)_saveAccountDismissWhenDone:(BOOL)done;
+- (void)cancelButtonTapped:(id)tapped;
 - (void)dealloc;
 - (void)deleteAccountButtonTapped;
-- (void)didConfirmSaveUnvalidatedAccount:(BOOL)a3;
-- (void)didConfirmTryWithoutSSL:(BOOL)a3;
-- (void)doneButtonTapped:(id)a3;
+- (void)didConfirmSaveUnvalidatedAccount:(BOOL)account;
+- (void)didConfirmTryWithoutSSL:(BOOL)l;
+- (void)doneButtonTapped:(id)tapped;
 - (void)finishedAccountSetup;
-- (void)hideProgressWithPrompt:(id)a3;
-- (void)propertyValueChanged:(id)a3;
+- (void)hideProgressWithPrompt:(id)prompt;
+- (void)propertyValueChanged:(id)changed;
 - (void)reloadAccount;
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4;
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4;
-- (void)setHostString:(id)a3;
-- (void)setNeedsSaveAndValidation:(BOOL)a3;
-- (void)showAlertWithButtons:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6;
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier;
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier;
+- (void)setHostString:(id)string;
+- (void)setNeedsSaveAndValidation:(BOOL)validation;
+- (void)showAlertWithButtons:(id)buttons title:(id)title message:(id)message completion:(id)completion;
 - (void)showIdenticalAccountFailureView;
 - (void)showSSLFailureView;
 - (void)updateDoneButton;
@@ -48,9 +48,9 @@
   v21 = *MEMORY[0x277D85DE8];
   if (!self->_account)
   {
-    v3 = [(DASettingsAccountsUIController *)self accountFromSpecifier];
+    accountFromSpecifier = [(DASettingsAccountsUIController *)self accountFromSpecifier];
     account = self->_account;
-    self->_account = v3;
+    self->_account = accountFromSpecifier;
 
     if (self->_account)
     {
@@ -62,27 +62,27 @@
     {
       [(DASettingsAccountsUIController *)self setIsSettingUpNewAccount:1];
       [(DASettingsAccountsUIController *)self setAccountNeedsAdd:1];
-      v5 = [(DASettingsAccountsUIController *)self newDefaultAccount];
+      newDefaultAccount = [(DASettingsAccountsUIController *)self newDefaultAccount];
       v6 = self->_account;
-      self->_account = v5;
+      self->_account = newDefaultAccount;
 
       v7 = DALoggingwithCategory();
       v8 = *(MEMORY[0x277D03988] + 4);
       if (os_log_type_enabled(v7, v8))
       {
-        v9 = [(DAAccount *)self->_account backingAccountInfo];
-        v10 = [v9 identifier];
-        v11 = [(DAAccount *)self->_account backingAccountInfo];
-        v12 = [v11 username];
+        backingAccountInfo = [(DAAccount *)self->_account backingAccountInfo];
+        identifier = [backingAccountInfo identifier];
+        backingAccountInfo2 = [(DAAccount *)self->_account backingAccountInfo];
+        username = [backingAccountInfo2 username];
         v17 = 138412546;
-        v18 = v10;
+        v18 = identifier;
         v19 = 2112;
-        v20 = v12;
+        v20 = username;
         _os_log_impl(&dword_248599000, v7, v8, "Setting _backingAccountInfo.authenticated = YES for Account identifier %@ and username %@", &v17, 0x16u);
       }
 
-      v13 = [(DAAccount *)self->_account backingAccountInfo];
-      [v13 setAuthenticated:1];
+      backingAccountInfo3 = [(DAAccount *)self->_account backingAccountInfo];
+      [backingAccountInfo3 setAuthenticated:1];
     }
   }
 
@@ -94,24 +94,24 @@
 
 - (void)reloadAccount
 {
-  v3 = [(DASettingsAccountsUIController *)self account];
-  [v3 reload];
+  account = [(DASettingsAccountsUIController *)self account];
+  [account reload];
 
-  v5 = [(DASettingsAccountsUIController *)self account];
-  v4 = [v5 backingAccountInfo];
-  [v4 setAuthenticated:1];
+  account2 = [(DASettingsAccountsUIController *)self account];
+  backingAccountInfo = [account2 backingAccountInfo];
+  [backingAccountInfo setAuthenticated:1];
 }
 
 - (id)accountFromSpecifier
 {
-  v2 = [(DASettingsAccountsUIController *)self specifier];
-  v3 = [v2 userInfo];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CE8550]];
+  specifier = [(DASettingsAccountsUIController *)self specifier];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CE8550]];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D03738] sharedInstance];
-    v6 = [v5 daemonAppropriateAccountClassForACAccount:v4];
+    mEMORY[0x277D03738] = [MEMORY[0x277D03738] sharedInstance];
+    v6 = [mEMORY[0x277D03738] daemonAppropriateAccountClassForACAccount:v4];
 
     v7 = [[v6 alloc] initWithBackingAccountInfo:v4];
   }
@@ -124,7 +124,7 @@
   return v7;
 }
 
-- (id)daAccountWithBackingAccountInfo:(id)a3
+- (id)daAccountWithBackingAccountInfo:(id)info
 {
   v3 = DALoggingwithCategory();
   v4 = *(MEMORY[0x277D03988] + 3);
@@ -155,17 +155,17 @@
   if (![(DASettingsAccountsUIController *)self haveRegisteredForAccountsChanged])
   {
     [(DASettingsAccountsUIController *)self setHaveRegisteredForAccountsChanged:1];
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel__accountsChanged_ name:*MEMORY[0x277CB8B78] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__accountsChanged_ name:*MEMORY[0x277CB8B78] object:0];
   }
 
   v4 = *MEMORY[0x277D3FC48];
   v5 = *(&self->super.super.super.super.super.super.isa + v4);
   if (!v5)
   {
-    v6 = [(DASettingsAccountsUIController *)self accountSpecifiers];
+    accountSpecifiers = [(DASettingsAccountsUIController *)self accountSpecifiers];
     v7 = *(&self->super.super.super.super.super.super.isa + v4);
-    *(&self->super.super.super.super.super.super.isa + v4) = v6;
+    *(&self->super.super.super.super.super.super.isa + v4) = accountSpecifiers;
 
     v5 = *(&self->super.super.super.super.super.super.isa + v4);
   }
@@ -173,31 +173,31 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = DASettingsAccountsUIController;
-  v6 = a4;
-  v7 = [(DASettingsAccountsUIController *)&v16 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(DASettingsAccountsUIController *)self indexForIndexPath:v6, v16.receiver, v16.super_class];
+  pathCopy = path;
+  v7 = [(DASettingsAccountsUIController *)&v16 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(DASettingsAccountsUIController *)self indexForIndexPath:pathCopy, v16.receiver, v16.super_class];
 
   v9 = [(DASettingsAccountsUIController *)self specifierAtIndex:v8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v9 identifier];
-    v11 = [v10 isEqualToString:@"DESCRIPTION"];
+    identifier = [v9 identifier];
+    v11 = [identifier isEqualToString:@"DESCRIPTION"];
 
     if ((v11 & 1) == 0)
     {
-      v12 = [v7 textField];
-      if (v12)
+      textField = [v7 textField];
+      if (textField)
       {
-        v13 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v13 removeObserver:self name:0 object:v12];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter removeObserver:self name:0 object:textField];
 
-        v14 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v14 addObserver:self selector:sel_propertyValueChanged_ name:*MEMORY[0x277D770B0] object:v12];
+        defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter2 addObserver:self selector:sel_propertyValueChanged_ name:*MEMORY[0x277D770B0] object:textField];
       }
     }
   }
@@ -205,18 +205,18 @@
   return v7;
 }
 
-- (void)showAlertWithButtons:(id)a3 title:(id)a4 message:(id)a5 completion:(id)a6
+- (void)showAlertWithButtons:(id)buttons title:(id)title message:(id)message completion:(id)completion
 {
-  v23 = self;
+  selfCopy = self;
   v33 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v24 = a6;
-  v10 = [MEMORY[0x277D75110] alertControllerWithTitle:a4 message:a5 preferredStyle:1];
+  buttonsCopy = buttons;
+  completionCopy = completion;
+  v10 = [MEMORY[0x277D75110] alertControllerWithTitle:title message:message preferredStyle:1];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v11 = v9;
+  v11 = buttonsCopy;
   v12 = [v11 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v12)
   {
@@ -240,7 +240,7 @@
         v25[1] = 3221225472;
         v25[2] = __80__DASettingsAccountsUIController_showAlertWithButtons_title_message_completion___block_invoke;
         v25[3] = &unk_278F217B8;
-        v26 = v24;
+        v26 = completionCopy;
         v27 = v14;
         v21 = [v20 actionWithTitle:v17 style:v19 handler:v25];
         ++v14;
@@ -256,7 +256,7 @@
     while (v13);
   }
 
-  [(DASettingsAccountsUIController *)v23 presentViewController:v10 animated:1 completion:0];
+  [(DASettingsAccountsUIController *)selfCopy presentViewController:v10 animated:1 completion:0];
   v22 = *MEMORY[0x277D85DE8];
 }
 
@@ -293,9 +293,9 @@ uint64_t __80__DASettingsAccountsUIController_showAlertWithButtons_title_message
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"ACCOUNT_UNIQUE_CONSTRAINT_FAILED_TITLE" value:&stru_285ACAC78 table:@"DataAccess"];
-  v8 = [(DASettingsAccountsUIController *)self account];
-  v9 = [v8 localizedIdenticalAccountFailureMessage];
-  [(DASettingsAccountsUIController *)self showAlertWithButtons:v5 title:v7 message:v9 completion:0];
+  account = [(DASettingsAccountsUIController *)self account];
+  localizedIdenticalAccountFailureMessage = [account localizedIdenticalAccountFailureMessage];
+  [(DASettingsAccountsUIController *)self showAlertWithButtons:v5 title:v7 message:localizedIdenticalAccountFailureMessage completion:0];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -324,38 +324,38 @@ uint64_t __80__DASettingsAccountsUIController_showAlertWithButtons_title_message
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didConfirmTryWithoutSSL:(BOOL)a3
+- (void)didConfirmTryWithoutSSL:(BOOL)l
 {
-  if (a3)
+  if (l)
   {
     v4 = [(DASettingsAccountsUIController *)self specifierForID:@"USE_SSL"];
-    v9 = [v4 properties];
+    properties = [v4 properties];
 
-    v5 = [v9 objectForKeyedSubscript:*MEMORY[0x277D40148]];
-    v6 = [v5 control];
-    [v6 setOn:0 animated:1];
+    v5 = [properties objectForKeyedSubscript:*MEMORY[0x277D40148]];
+    control = [v5 control];
+    [control setOn:0 animated:1];
 
-    v7 = [(DASettingsAccountsUIController *)self account];
-    [v7 setUseSSL:0];
+    account = [(DASettingsAccountsUIController *)self account];
+    [account setUseSSL:0];
 
     [(DASettingsAccountsUIController *)self _beginAccountValidation];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v8 = [v9 localizedStringForKey:@"ACCOUNT_VERIFICATION_FAILED" value:&stru_285ACAC78 table:@"Localizable"];
+    properties = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v8 = [properties localizedStringForKey:@"ACCOUNT_VERIFICATION_FAILED" value:&stru_285ACAC78 table:@"Localizable"];
     [(DASettingsAccountsUIController *)self hideProgressWithPrompt:v8];
   }
 }
 
-- (void)didConfirmSaveUnvalidatedAccount:(BOOL)a3
+- (void)didConfirmSaveUnvalidatedAccount:(BOOL)account
 {
-  if (a3)
+  if (account)
   {
     [(DASettingsAccountsUIController *)self setConfirmedUnvalidatedAccount:1];
-    v4 = [(DASettingsAccountsUIController *)self account];
-    [(DASettingsAccountsUIController *)self account:v4 isValid:1 validationError:0];
+    account = [(DASettingsAccountsUIController *)self account];
+    [(DASettingsAccountsUIController *)self account:account isValid:1 validationError:0];
   }
 }
 
@@ -369,14 +369,14 @@ uint64_t __80__DASettingsAccountsUIController_showAlertWithButtons_title_message
   v6 = [v5 localizedStringForKey:@"EDIT" value:&stru_285ACAC78 table:@"Localizable"];
   v12[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
-  v8 = [(DASettingsAccountsUIController *)self localizedConfirmSaveUnvalidatedAccountTitleString];
-  v9 = [(DASettingsAccountsUIController *)self localizedConfirmSaveUnvalidatedAccountMessageString];
+  localizedConfirmSaveUnvalidatedAccountTitleString = [(DASettingsAccountsUIController *)self localizedConfirmSaveUnvalidatedAccountTitleString];
+  localizedConfirmSaveUnvalidatedAccountMessageString = [(DASettingsAccountsUIController *)self localizedConfirmSaveUnvalidatedAccountMessageString];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__DASettingsAccountsUIController__confirmSaveUnvalidatedAccount__block_invoke;
   v11[3] = &unk_278F217E0;
   v11[4] = self;
-  [(ACUIViewController *)self showConfirmationWithButtons:v7 title:v8 message:v9 destructive:0 completion:v11];
+  [(ACUIViewController *)self showConfirmationWithButtons:v7 title:localizedConfirmSaveUnvalidatedAccountTitleString message:localizedConfirmSaveUnvalidatedAccountMessageString destructive:0 completion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -404,15 +404,15 @@ uint64_t __80__DASettingsAccountsUIController_showAlertWithButtons_title_message
 
     else if ([(DASettingsAccountsUIController *)self transitionsAfterInitialSetup])
     {
-      v3 = [(DASettingsAccountsUIController *)self parentController];
+      parentController = [(DASettingsAccountsUIController *)self parentController];
       v4 = objc_opt_respondsToSelector();
 
       if (v4)
       {
-        v7 = [(DASettingsAccountsUIController *)self parentController];
-        v5 = [(DASettingsAccountsUIController *)self account];
-        v6 = [v5 backingAccountInfo];
-        [v7 controller:self didFinishSettingUpAccount:v6];
+        parentController2 = [(DASettingsAccountsUIController *)self parentController];
+        account = [(DASettingsAccountsUIController *)self account];
+        backingAccountInfo = [account backingAccountInfo];
+        [parentController2 controller:self didFinishSettingUpAccount:backingAccountInfo];
       }
     }
   }
@@ -424,11 +424,11 @@ uint64_t __80__DASettingsAccountsUIController_showAlertWithButtons_title_message
   }
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
-  v4 = [(DASettingsAccountsUIController *)self table];
-  v5 = [v4 firstResponder];
-  [v5 resignFirstResponder];
+  table = [(DASettingsAccountsUIController *)self table];
+  firstResponder = [table firstResponder];
+  [firstResponder resignFirstResponder];
 
   if ([(DASettingsAccountsUIController *)self attemptedValidation])
   {
@@ -462,26 +462,26 @@ uint64_t __80__DASettingsAccountsUIController_showAlertWithButtons_title_message
   }
 }
 
-- (void)cancelButtonTapped:(id)a3
+- (void)cancelButtonTapped:(id)tapped
 {
   if ([(DASettingsAccountsUIController *)self isSettingUpNewAccount])
   {
-    v4 = [(DASettingsAccountsUIController *)self account];
-    [v4 cleanupAccountFiles];
+    account = [(DASettingsAccountsUIController *)self account];
+    [account cleanupAccountFiles];
   }
 
-  v5 = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
-  [v5 resignFirstResponder];
+  firstResponder = [*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) firstResponder];
+  [firstResponder resignFirstResponder];
 
-  v6 = [(DASettingsAccountsUIController *)self account];
-  [v6 reload];
+  account2 = [(DASettingsAccountsUIController *)self account];
+  [account2 reload];
 
   [(ACUIViewController *)self dismissAnimated:1];
 }
 
-- (void)setNeedsSaveAndValidation:(BOOL)a3
+- (void)setNeedsSaveAndValidation:(BOOL)validation
 {
-  if (a3)
+  if (validation)
   {
     self->_attemptedValidation = 0;
   }
@@ -526,11 +526,11 @@ uint64_t __80__DASettingsAccountsUIController_showAlertWithButtons_title_message
   }
 
   v8 = [v5 localizedStringForKey:v7 value:&stru_285ACAC78 table:@"Localizable"];
-  v9 = [(ACUIViewController *)self doneButton];
-  [v9 setTitle:v8];
+  doneButton = [(ACUIViewController *)self doneButton];
+  [doneButton setTitle:v8];
 
-  v10 = [(ACUIViewController *)self doneButton];
-  [v10 setEnabled:v3];
+  doneButton2 = [(ACUIViewController *)self doneButton];
+  [doneButton2 setEnabled:v3];
 }
 
 - (BOOL)haveEnoughValues
@@ -546,51 +546,51 @@ uint64_t __80__DASettingsAccountsUIController_showAlertWithButtons_title_message
   return 0;
 }
 
-- (void)propertyValueChanged:(id)a3
+- (void)propertyValueChanged:(id)changed
 {
   [(DASettingsAccountsUIController *)self setAttemptedValidation:0];
 
   [(DASettingsAccountsUIController *)self updateDoneButton];
 }
 
-- (void)setHostString:(id)a3
+- (void)setHostString:(id)string
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   [(DASettingsAccountsUIController *)self setDidSetFullHostURL:0];
-  v5 = [v4 rangeOfString:@"/"];
-  v6 = [v4 rangeOfString:@":"];
-  if (![v4 length] || v5 == 0x7FFFFFFFFFFFFFFFLL && v6 == 0x7FFFFFFFFFFFFFFFLL)
+  v5 = [stringCopy rangeOfString:@"/"];
+  v6 = [stringCopy rangeOfString:@":"];
+  if (![stringCopy length] || v5 == 0x7FFFFFFFFFFFFFFFLL && v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_11;
   }
 
-  v7 = [MEMORY[0x277CBEBC0] URLWithString:v4];
-  v8 = [v7 host];
-  if (v8)
+  v7 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
+  host = [v7 host];
+  if (host)
   {
     goto LABEL_7;
   }
 
-  if (([v4 hasPrefix:@"http"] & 1) == 0)
+  if (([stringCopy hasPrefix:@"http"] & 1) == 0)
   {
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://%@", v4];
-    v9 = [MEMORY[0x277CBEBC0] URLWithString:v8];
+    host = [MEMORY[0x277CCACA8] stringWithFormat:@"https://%@", stringCopy];
+    v9 = [MEMORY[0x277CBEBC0] URLWithString:host];
 
     v7 = v9;
 LABEL_7:
   }
 
-  v10 = [v7 host];
+  host2 = [v7 host];
 
-  if (v10)
+  if (host2)
   {
-    v11 = [(DASettingsAccountsUIController *)self account];
-    [v11 setPrincipalURL:v7];
+    account = [(DASettingsAccountsUIController *)self account];
+    [account setPrincipalURL:v7];
 
     [(DASettingsAccountsUIController *)self setDidSetFullHostURL:1];
-    v12 = [(DASettingsAccountsUIController *)self account];
-    [v12 setShouldDoInitialAutodiscovery:0];
+    account2 = [(DASettingsAccountsUIController *)self account];
+    [account2 setShouldDoInitialAutodiscovery:0];
   }
 
 LABEL_11:
@@ -601,35 +601,35 @@ LABEL_11:
     if (os_log_type_enabled(v13, v14))
     {
       *buf = 138412290;
-      v19 = v4;
+      v19 = stringCopy;
       _os_log_impl(&dword_248599000, v13, v14, "Couldn't parse host string %@ into a URL. Using it directly", buf, 0xCu);
     }
 
-    v15 = [(DASettingsAccountsUIController *)self account];
-    [v15 setHost:v4];
+    account3 = [(DASettingsAccountsUIController *)self account];
+    [account3 setHost:stringCopy];
 
-    v16 = [(DASettingsAccountsUIController *)self account];
-    [v16 setShouldDoInitialAutodiscovery:0];
+    account4 = [(DASettingsAccountsUIController *)self account];
+    [account4 setShouldDoInitialAutodiscovery:0];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAccountProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountProperty:(id)property withSpecifier:(id)specifier
 {
-  v25 = a3;
-  v6 = a4;
-  v7 = [v6 identifier];
-  v8 = [(DASettingsAccountsUIController *)self accountPropertyWithSpecifier:v6];
+  propertyCopy = property;
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  v8 = [(DASettingsAccountsUIController *)self accountPropertyWithSpecifier:specifierCopy];
 
-  if ([v25 isEqualToString:v8])
+  if ([propertyCopy isEqualToString:v8])
   {
-    [v7 isEqualToString:@"EMAIL"];
+    [identifier isEqualToString:@"EMAIL"];
   }
 
   else
   {
-    if ([v25 length])
+    if ([propertyCopy length])
     {
       v9 = 0;
     }
@@ -639,88 +639,88 @@ LABEL_11:
       v9 = [v8 length] == 0;
     }
 
-    if ([v7 isEqualToString:@"EMAIL"] && !v9)
+    if ([identifier isEqualToString:@"EMAIL"] && !v9)
     {
-      v11 = [(DASettingsAccountsUIController *)self account];
-      [v11 setEmailAddress:v25];
+      account = [(DASettingsAccountsUIController *)self account];
+      [account setEmailAddress:propertyCopy];
 
-      v12 = [(DASettingsAccountsUIController *)self account];
-      v13 = [v12 accountDescription];
-      v14 = [v13 length];
+      account2 = [(DASettingsAccountsUIController *)self account];
+      accountDescription = [account2 accountDescription];
+      v14 = [accountDescription length];
 
       if (v14)
       {
         goto LABEL_19;
       }
 
-      v10 = [(DASettingsAccountsUIController *)self _defaultAccountDescription];
-      v15 = [(ACUIViewController *)self accountStore];
-      v16 = [v15 hasAccountWithDescription:v10];
+      _defaultAccountDescription = [(DASettingsAccountsUIController *)self _defaultAccountDescription];
+      accountStore = [(ACUIViewController *)self accountStore];
+      v16 = [accountStore hasAccountWithDescription:_defaultAccountDescription];
 
       if (v16)
       {
-        v17 = v25;
+        v17 = propertyCopy;
 
-        v10 = v17;
+        _defaultAccountDescription = v17;
       }
 
-      v18 = [(DASettingsAccountsUIController *)self account];
-      [v18 setAccountDescription:v10];
+      account3 = [(DASettingsAccountsUIController *)self account];
+      [account3 setAccountDescription:_defaultAccountDescription];
 
       [(DASettingsAccountsUIController *)self reloadSpecifierID:@"DESCRIPTION"];
       goto LABEL_18;
     }
   }
 
-  if ([v7 isEqualToString:@"HOST"])
+  if ([identifier isEqualToString:@"HOST"])
   {
-    [(DASettingsAccountsUIController *)self setHostString:v25];
+    [(DASettingsAccountsUIController *)self setHostString:propertyCopy];
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:@"USERNAME"])
+  if ([identifier isEqualToString:@"USERNAME"])
   {
-    v10 = [(DASettingsAccountsUIController *)self account];
-    [v10 setUsername:v25];
+    _defaultAccountDescription = [(DASettingsAccountsUIController *)self account];
+    [_defaultAccountDescription setUsername:propertyCopy];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  if ([v7 isEqualToString:@"PASSWORD"])
+  if ([identifier isEqualToString:@"PASSWORD"])
   {
-    v10 = [(DASettingsAccountsUIController *)self account];
-    [v10 setPassword:v25];
+    _defaultAccountDescription = [(DASettingsAccountsUIController *)self account];
+    [_defaultAccountDescription setPassword:propertyCopy];
     goto LABEL_18;
   }
 
-  if ([v7 isEqualToString:@"DESCRIPTION"])
+  if ([identifier isEqualToString:@"DESCRIPTION"])
   {
-    v19 = [(DASettingsAccountsUIController *)self account];
-    v20 = [v19 accountDescription];
-    v21 = [v25 isEqualToString:v20];
+    account4 = [(DASettingsAccountsUIController *)self account];
+    accountDescription2 = [account4 accountDescription];
+    v21 = [propertyCopy isEqualToString:accountDescription2];
 
     if ((v21 & 1) == 0)
     {
-      v22 = [(DASettingsAccountsUIController *)self account];
-      [v22 setAccountDescription:v25];
+      account5 = [(DASettingsAccountsUIController *)self account];
+      [account5 setAccountDescription:propertyCopy];
 
-      v10 = [(DASettingsAccountsUIController *)self rootController];
-      v23 = [v10 topViewController];
-      if (v23 != self)
+      _defaultAccountDescription = [(DASettingsAccountsUIController *)self rootController];
+      topViewController = [_defaultAccountDescription topViewController];
+      if (topViewController != self)
       {
 LABEL_27:
 
         goto LABEL_18;
       }
 
-      v24 = [(DASettingsAccountsUIController *)self isSettingUpNewAccount];
+      isSettingUpNewAccount = [(DASettingsAccountsUIController *)self isSettingUpNewAccount];
 
-      if (!v24)
+      if (!isSettingUpNewAccount)
       {
-        v10 = [(DASettingsAccountsUIController *)self navigationItem];
-        v23 = [(DASettingsAccountsUIController *)self localizedAccountTitleString];
-        [v10 setTitle:v23];
+        _defaultAccountDescription = [(DASettingsAccountsUIController *)self navigationItem];
+        topViewController = [(DASettingsAccountsUIController *)self localizedAccountTitleString];
+        [_defaultAccountDescription setTitle:topViewController];
         goto LABEL_27;
       }
     }
@@ -730,63 +730,63 @@ LABEL_19:
   [(DASettingsAccountsUIController *)self setNeedsSaveAndValidation:0];
 }
 
-- (id)accountPropertyWithSpecifier:(id)a3
+- (id)accountPropertyWithSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"EMAIL"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"EMAIL"])
   {
-    v5 = [(DASettingsAccountsUIController *)self account];
-    v6 = [v5 emailAddress];
+    account = [(DASettingsAccountsUIController *)self account];
+    emailAddress = [account emailAddress];
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"HOST"])
+  if ([identifier isEqualToString:@"HOST"])
   {
-    v11 = [(DASettingsAccountsUIController *)self didSetFullHostURL];
-    v12 = [(DASettingsAccountsUIController *)self account];
-    v5 = v12;
-    if (v11)
+    didSetFullHostURL = [(DASettingsAccountsUIController *)self didSetFullHostURL];
+    account2 = [(DASettingsAccountsUIController *)self account];
+    account = account2;
+    if (didSetFullHostURL)
     {
-      v13 = [v12 principalURL];
-      v7 = [v13 absoluteString];
+      principalURL = [account2 principalURL];
+      absoluteString = [principalURL absoluteString];
 
       goto LABEL_4;
     }
 
-    v6 = [v12 host];
+    emailAddress = [account2 host];
 LABEL_3:
-    v7 = v6;
+    absoluteString = emailAddress;
 LABEL_4:
 
     goto LABEL_5;
   }
 
-  if ([v4 isEqualToString:@"USERNAME"])
+  if ([identifier isEqualToString:@"USERNAME"])
   {
-    v5 = [(DASettingsAccountsUIController *)self account];
-    v6 = [v5 username];
+    account = [(DASettingsAccountsUIController *)self account];
+    emailAddress = [account username];
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"PASSWORD"])
+  if ([identifier isEqualToString:@"PASSWORD"])
   {
-    v5 = [(DASettingsAccountsUIController *)self account];
-    v6 = [v5 passwordWithExpected:0];
+    account = [(DASettingsAccountsUIController *)self account];
+    emailAddress = [account passwordWithExpected:0];
     goto LABEL_3;
   }
 
-  if ([v4 isEqualToString:@"DESCRIPTION"])
+  if ([identifier isEqualToString:@"DESCRIPTION"])
   {
-    v5 = [(DASettingsAccountsUIController *)self account];
-    v6 = [v5 accountDescription];
+    account = [(DASettingsAccountsUIController *)self account];
+    emailAddress = [account accountDescription];
     goto LABEL_3;
   }
 
-  v7 = 0;
+  absoluteString = 0;
 LABEL_5:
-  if (v7)
+  if (absoluteString)
   {
-    v8 = v7;
+    v8 = absoluteString;
   }
 
   else
@@ -799,37 +799,37 @@ LABEL_5:
   return v8;
 }
 
-- (void)setAccountBooleanProperty:(id)a3 withSpecifier:(id)a4
+- (void)setAccountBooleanProperty:(id)property withSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = [a3 BOOLValue];
-  v10 = [v6 identifier];
+  specifierCopy = specifier;
+  bOOLValue = [property BOOLValue];
+  identifier = [specifierCopy identifier];
 
-  v8 = [v10 isEqualToString:@"USE_SSL"];
+  v8 = [identifier isEqualToString:@"USE_SSL"];
   if (v8)
   {
-    v9 = [(DASettingsAccountsUIController *)self account];
-    [v9 setUseSSL:v7];
+    account = [(DASettingsAccountsUIController *)self account];
+    [account setUseSSL:bOOLValue];
   }
 
   [(DASettingsAccountsUIController *)self setNeedsSaveAndValidation:v8];
 }
 
-- (id)accountBooleanPropertyWithSpecifier:(id)a3
+- (id)accountBooleanPropertyWithSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  if ([v4 isEqualToString:@"USE_SSL"])
+  identifier = [specifier identifier];
+  if ([identifier isEqualToString:@"USE_SSL"])
   {
-    v5 = [(DASettingsAccountsUIController *)self account];
-    v6 = [v5 useSSL];
+    account = [(DASettingsAccountsUIController *)self account];
+    useSSL = [account useSSL];
   }
 
   else
   {
-    v6 = 0;
+    useSSL = 0;
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:useSSL];
 
   return v7;
 }
@@ -852,10 +852,10 @@ LABEL_5:
     _os_log_impl(&dword_248599000, v3, v4, "Requesting delete from ACAccountStore", v8, 2u);
   }
 
-  v5 = [(ACUIViewController *)self accountOperationsHelper];
-  v6 = [(DASettingsAccountsUIController *)self account];
-  v7 = [v6 backingAccountInfo];
-  [v5 removeAccount:v7];
+  accountOperationsHelper = [(ACUIViewController *)self accountOperationsHelper];
+  account = [(DASettingsAccountsUIController *)self account];
+  backingAccountInfo = [account backingAccountInfo];
+  [accountOperationsHelper removeAccount:backingAccountInfo];
 }
 
 uint64_t __86__DASettingsAccountsUIController_operationsHelper_didRemoveAccount_withSuccess_error___block_invoke(uint64_t a1)
@@ -880,22 +880,22 @@ uint64_t __86__DASettingsAccountsUIController_operationsHelper_didRemoveAccount_
   return result;
 }
 
-- (void)_finishSaveAccountDismissWhenDone:(BOOL)a3
+- (void)_finishSaveAccountDismissWhenDone:(BOOL)done
 {
-  v3 = a3;
+  doneCopy = done;
   [(ACUIViewController *)self reloadParentSpecifier];
   [(ACUIViewController *)self setTaskCompletionAssertionEnabled:0];
-  if (v3)
+  if (doneCopy)
   {
-    v5 = [(DASettingsAccountsUIController *)self parentController];
+    parentController = [(DASettingsAccountsUIController *)self parentController];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v9 = [(DASettingsAccountsUIController *)self parentController];
-      v7 = [(DASettingsAccountsUIController *)self account];
-      v8 = [v7 backingAccountInfo];
-      [v9 controller:self didFinishSettingUpAccount:v8];
+      parentController2 = [(DASettingsAccountsUIController *)self parentController];
+      account = [(DASettingsAccountsUIController *)self account];
+      backingAccountInfo = [account backingAccountInfo];
+      [parentController2 controller:self didFinishSettingUpAccount:backingAccountInfo];
     }
 
     else
@@ -906,11 +906,11 @@ uint64_t __86__DASettingsAccountsUIController_operationsHelper_didRemoveAccount_
   }
 }
 
-- (void)_saveAccountDismissWhenDone:(BOOL)a3
+- (void)_saveAccountDismissWhenDone:(BOOL)done
 {
-  v3 = a3;
+  doneCopy = done;
   [(ACUIViewController *)self setTaskCompletionAssertionEnabled:1];
-  if (v3)
+  if (doneCopy)
   {
     v5 = DALoggingwithCategory();
     v6 = *(MEMORY[0x277D03988] + 6);
@@ -920,13 +920,13 @@ uint64_t __86__DASettingsAccountsUIController_operationsHelper_didRemoveAccount_
       _os_log_impl(&dword_248599000, v5, v6, "Requesting account save from ACAccountStore", v11, 2u);
     }
 
-    v7 = [(DASettingsAccountsUIController *)self account];
-    [v7 saveModifiedPropertiesOnBackingAccount];
+    account = [(DASettingsAccountsUIController *)self account];
+    [account saveModifiedPropertiesOnBackingAccount];
 
-    v8 = [(ACUIViewController *)self accountOperationsHelper];
-    v9 = [(DASettingsAccountsUIController *)self account];
-    v10 = [v9 backingAccountInfo];
-    [v8 saveAccount:v10 requireVerification:0];
+    accountOperationsHelper = [(ACUIViewController *)self accountOperationsHelper];
+    account2 = [(DASettingsAccountsUIController *)self account];
+    backingAccountInfo = [account2 backingAccountInfo];
+    [accountOperationsHelper saveAccount:backingAccountInfo requireVerification:0];
   }
 }
 
@@ -974,18 +974,18 @@ LABEL_6:
 
 - (BOOL)isRunningFromMobileMailApp
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.mobilemail"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v4 = [bundleIdentifier isEqualToString:@"com.apple.mobilemail"];
 
   return v4;
 }
 
-- (void)hideProgressWithPrompt:(id)a3
+- (void)hideProgressWithPrompt:(id)prompt
 {
-  v13 = a3;
-  v4 = [(DASettingsAccountsUIController *)self localizedAccountSetupTitleString];
-  [(ACUIViewController *)self stopValidationWithPrompt:v4 showButtons:1];
+  promptCopy = prompt;
+  localizedAccountSetupTitleString = [(DASettingsAccountsUIController *)self localizedAccountSetupTitleString];
+  [(ACUIViewController *)self stopValidationWithPrompt:localizedAccountSetupTitleString showButtons:1];
 
   [(DASettingsAccountsUIController *)self updateDoneButton];
   if (![(DASettingsAccountsUIController *)self isRunningFromMobileMailApp])
@@ -993,12 +993,12 @@ LABEL_6:
     [*MEMORY[0x277D76620] setStatusBarShowsProgress:0];
   }
 
-  v5 = v13;
-  if (v13)
+  v5 = promptCopy;
+  if (promptCopy)
   {
     v6 = MEMORY[0x277D75110];
-    v7 = [(DASettingsAccountsUIController *)self localizedValidationFailureTitleString];
-    v8 = [v6 alertControllerWithTitle:v7 message:v13 preferredStyle:1];
+    localizedValidationFailureTitleString = [(DASettingsAccountsUIController *)self localizedValidationFailureTitleString];
+    v8 = [v6 alertControllerWithTitle:localizedValidationFailureTitleString message:promptCopy preferredStyle:1];
 
     v9 = MEMORY[0x277D750F8];
     v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1008,14 +1008,14 @@ LABEL_6:
     [v8 addAction:v12];
     [(DASettingsAccountsUIController *)self presentViewController:v8 animated:1 completion:0];
 
-    v5 = v13;
+    v5 = promptCopy;
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = DASettingsAccountsUIController;
@@ -1024,8 +1024,8 @@ LABEL_6:
 
 - (int)indexOfCurrentlyEditingCell
 {
-  v3 = [(DASettingsAccountsUIController *)self currentlyEditingCell];
-  if (v3 && ([*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) indexPathForCell:v3], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  currentlyEditingCell = [(DASettingsAccountsUIController *)self currentlyEditingCell];
+  if (currentlyEditingCell && ([*(&self->super.super.super.super.super.super.isa + *MEMORY[0x277D3FC60]) indexPathForCell:currentlyEditingCell], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
     v6 = [(DASettingsAccountsUIController *)self indexForIndexPath:v4];
@@ -1041,11 +1041,11 @@ LABEL_6:
 
 - (id)currentlyEditingCell
 {
-  v2 = [(DASettingsAccountsUIController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 firstResponder];
+  view = [(DASettingsAccountsUIController *)self view];
+  window = [view window];
+  firstResponder = [window firstResponder];
 
-  v5 = v4;
+  v5 = firstResponder;
   v6 = v5;
   if (v5)
   {
@@ -1064,12 +1064,12 @@ LABEL_6:
         goto LABEL_8;
       }
 
-      v8 = [v7 superview];
+      superview = [v7 superview];
 
-      v7 = v8;
+      v7 = superview;
     }
 
-    while (v8);
+    while (superview);
   }
 
   v7 = 0;
@@ -1078,10 +1078,10 @@ LABEL_8:
   return v7;
 }
 
-- (id)lastGroupSpecifierInSpecifiers:(id)a3
+- (id)lastGroupSpecifierInSpecifiers:(id)specifiers
 {
-  v3 = a3;
-  v4 = [v3 count];
+  specifiersCopy = specifiers;
+  v4 = [specifiersCopy count];
   if (v4 < 1)
   {
 LABEL_5:
@@ -1094,7 +1094,7 @@ LABEL_5:
     v6 = MEMORY[0x277D3FC90];
     while (1)
     {
-      v7 = [v3 objectAtIndexedSubscript:v5 - 2];
+      v7 = [specifiersCopy objectAtIndexedSubscript:v5 - 2];
       v8 = v7;
       if (!*&v7[*v6])
       {
@@ -1113,34 +1113,34 @@ LABEL_5:
 
 - (id)localizedAccountTitleString
 {
-  v3 = [(DASettingsAccountsUIController *)self account];
-  v4 = [v3 accountDescription];
+  account = [(DASettingsAccountsUIController *)self account];
+  accountDescription = [account accountDescription];
 
-  if ([v4 length])
+  if ([accountDescription length])
   {
-    v5 = v4;
+    localizedAccountSetupTitleString = accountDescription;
   }
 
   else
   {
-    v5 = [(DASettingsAccountsUIController *)self localizedAccountSetupTitleString];
+    localizedAccountSetupTitleString = [(DASettingsAccountsUIController *)self localizedAccountSetupTitleString];
   }
 
-  v6 = v5;
+  v6 = localizedAccountSetupTitleString;
 
   return v6;
 }
 
 - (void)deleteAccountButtonTapped
 {
-  v3 = [(DASettingsAccountsUIController *)self account];
-  v4 = [v3 backingAccountInfo];
+  account = [(DASettingsAccountsUIController *)self account];
+  backingAccountInfo = [account backingAccountInfo];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __59__DASettingsAccountsUIController_deleteAccountButtonTapped__block_invoke;
   v5[3] = &unk_278F217E0;
   v5[4] = self;
-  [(ACUIViewController *)self showConfirmationForDeletingAccount:v4 completion:v5];
+  [(ACUIViewController *)self showConfirmationForDeletingAccount:backingAccountInfo completion:v5];
 }
 
 uint64_t __59__DASettingsAccountsUIController_deleteAccountButtonTapped__block_invoke(uint64_t result, uint64_t a2)
@@ -1155,19 +1155,19 @@ uint64_t __59__DASettingsAccountsUIController_deleteAccountButtonTapped__block_i
 
 - (BOOL)accountIsManaged
 {
-  v3 = [(DASettingsAccountsUIController *)self account];
-  v4 = [v3 backingAccountInfo];
-  v5 = [v4 managingOwnerIdentifier];
+  account = [(DASettingsAccountsUIController *)self account];
+  backingAccountInfo = [account backingAccountInfo];
+  managingOwnerIdentifier = [backingAccountInfo managingOwnerIdentifier];
 
-  if (v5)
+  if (managingOwnerIdentifier)
   {
     return 1;
   }
 
-  v7 = [(DASettingsAccountsUIController *)self account];
-  v8 = [v7 backingAccountInfo];
-  v9 = [v8 mcBackingProfile];
-  v6 = v9 != 0;
+  account2 = [(DASettingsAccountsUIController *)self account];
+  backingAccountInfo2 = [account2 backingAccountInfo];
+  mcBackingProfile = [backingAccountInfo2 mcBackingProfile];
+  v6 = mcBackingProfile != 0;
 
   return v6;
 }

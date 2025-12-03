@@ -1,36 +1,36 @@
 @interface SMContactsManager
-- (id)activeSessionRecipientContactsFor:(id)a3;
-- (id)contactWith:(id)a3;
-- (id)fetchAdditionalInfoFor:(id)a3 keysToFetch:(id)a4;
+- (id)activeSessionRecipientContactsFor:(id)for;
+- (id)contactWith:(id)with;
+- (id)fetchAdditionalInfoFor:(id)for keysToFetch:(id)fetch;
 - (id)fetchSelfContact;
 @end
 
 @implementation SMContactsManager
 
-- (id)activeSessionRecipientContactsFor:(id)a3
+- (id)activeSessionRecipientContactsFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = +[SMContactsManager shared];
-  v5 = [v4 activeSessionRecipientContactsFor:v3];
+  v5 = [v4 activeSessionRecipientContactsFor:forCopy];
 
   return v5;
 }
 
-- (id)contactWith:(id)a3
+- (id)contactWith:(id)with
 {
-  v3 = a3;
+  withCopy = with;
   v4 = +[SMContactsManager shared];
-  v5 = [v4 contactWith:v3];
+  v5 = [v4 contactWith:withCopy];
 
   return v5;
 }
 
-- (id)fetchAdditionalInfoFor:(id)a3 keysToFetch:(id)a4
+- (id)fetchAdditionalInfoFor:(id)for keysToFetch:(id)fetch
 {
-  v5 = a4;
-  v6 = a3;
+  fetchCopy = fetch;
+  forCopy = for;
   v7 = +[SMContactsManager shared];
-  v8 = [v7 fetchAdditionalInfoFor:v6 keysToFetch:v5];
+  v8 = [v7 fetchAdditionalInfoFor:forCopy keysToFetch:fetchCopy];
 
   return v8;
 }
@@ -38,9 +38,9 @@
 - (id)fetchSelfContact
 {
   v2 = +[SMContactsManager shared];
-  v3 = [v2 fetchSelfContact];
+  fetchSelfContact = [v2 fetchSelfContact];
 
-  return v3;
+  return fetchSelfContact;
 }
 
 @end

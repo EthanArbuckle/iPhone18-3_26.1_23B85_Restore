@@ -1,14 +1,14 @@
 @interface ATXHomeScreenSuggestionReceiver
-- (void)logWidgetAddedFeaturesInCoreAnalytics:(id)a3 rankOfWidgetInGallery:(unint64_t)a4 galleryItems:(id)a5;
+- (void)logWidgetAddedFeaturesInCoreAnalytics:(id)analytics rankOfWidgetInGallery:(unint64_t)gallery galleryItems:(id)items;
 @end
 
 @implementation ATXHomeScreenSuggestionReceiver
 
-- (void)logWidgetAddedFeaturesInCoreAnalytics:(id)a3 rankOfWidgetInGallery:(unint64_t)a4 galleryItems:(id)a5
+- (void)logWidgetAddedFeaturesInCoreAnalytics:(id)analytics rankOfWidgetInGallery:(unint64_t)gallery galleryItems:(id)items
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[ATXHomeScreenLogWidgetAddedFeatures alloc] initWithHSEvent:v8 rankOfWidgetInGallery:a4 galleryItems:v7];
+  itemsCopy = items;
+  analyticsCopy = analytics;
+  v9 = [[ATXHomeScreenLogWidgetAddedFeatures alloc] initWithHSEvent:analyticsCopy rankOfWidgetInGallery:gallery galleryItems:itemsCopy];
 
   [(ATXHomeScreenLogWidgetAddedFeatures *)v9 logWidgetAddedFeaturesInCoreAnalytics];
 }

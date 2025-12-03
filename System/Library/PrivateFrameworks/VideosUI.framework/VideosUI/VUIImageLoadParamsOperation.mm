@@ -1,7 +1,7 @@
 @interface VUIImageLoadParamsOperation
 - (CGSize)scaleToSize;
 - (VUIImageLoadParamsOperation)init;
-- (VUIImageLoadParamsOperation)initWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5;
+- (VUIImageLoadParamsOperation)initWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit;
 @end
 
 @implementation VUIImageLoadParamsOperation
@@ -16,13 +16,13 @@
   return 0;
 }
 
-- (VUIImageLoadParamsOperation)initWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5
+- (VUIImageLoadParamsOperation)initWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit
 {
-  v5 = a5;
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8) && v5)
+  fitCopy = fit;
+  height = size.height;
+  width = size.width;
+  paramsCopy = params;
+  if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8) && fitCopy)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"The cropToFit parameter cannot be set to YES when no scale size is given"];
   }
@@ -33,10 +33,10 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_params, a3);
+    objc_storeStrong(&v13->_params, params);
     v14->_scaleToSize.width = width;
     v14->_scaleToSize.height = height;
-    v14->_cropToFit = v5;
+    v14->_cropToFit = fitCopy;
   }
 
   return v14;

@@ -1,6 +1,6 @@
 @interface ICQUIOSLOPresenter
-+ (id)parsePurchaseParams:(id)a3;
-- (ICQUIOSLOPresenter)initWithOffer:(id)a3 link:(id)a4 presenter:(id)a5;
++ (id)parsePurchaseParams:(id)params;
+- (ICQUIOSLOPresenter)initWithOffer:(id)offer link:(id)link presenter:(id)presenter;
 - (ICQUIOSLOPresenterDelegate)delegate;
 - (NSString)_sceneIdentifier;
 - (id)_createPostPurchaseICQLink;
@@ -8,32 +8,32 @@
 - (void)_handlePostPurchaseLiftUIFlow;
 - (void)_handlePostPurchaseRemoteUIFlow;
 - (void)beginOSLOPurchaseFlow;
-- (void)handleAuthenticateRequest:(id)a3 purchase:(id)a4 completion:(id)a5;
-- (void)handleDialogRequest:(id)a3 purchase:(id)a4 completion:(id)a5;
-- (void)handleEngagementRequest:(id)a3 purchase:(id)a4 completion:(id)a5;
-- (void)liftUIPresenterDidCancel:(id)a3;
-- (void)liftUIPresenterDidComplete:(id)a3;
-- (void)remoteUIFlowManager:(id)a3 didCompleteFlowWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)remoteUIFlowManager:(id)a3 didDismissWithError:(id)a4;
-- (void)remoteUIFlowManager:(id)a3 didLoadWithSuccess:(BOOL)a4 error:(id)a5;
+- (void)handleAuthenticateRequest:(id)request purchase:(id)purchase completion:(id)completion;
+- (void)handleDialogRequest:(id)request purchase:(id)purchase completion:(id)completion;
+- (void)handleEngagementRequest:(id)request purchase:(id)purchase completion:(id)completion;
+- (void)liftUIPresenterDidCancel:(id)cancel;
+- (void)liftUIPresenterDidComplete:(id)complete;
+- (void)remoteUIFlowManager:(id)manager didCompleteFlowWithSuccess:(BOOL)success error:(id)error;
+- (void)remoteUIFlowManager:(id)manager didDismissWithError:(id)error;
+- (void)remoteUIFlowManager:(id)manager didLoadWithSuccess:(BOOL)success error:(id)error;
 @end
 
 @implementation ICQUIOSLOPresenter
 
-- (ICQUIOSLOPresenter)initWithOffer:(id)a3 link:(id)a4 presenter:(id)a5
+- (ICQUIOSLOPresenter)initWithOffer:(id)offer link:(id)link presenter:(id)presenter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  offerCopy = offer;
+  linkCopy = link;
+  presenterCopy = presenter;
   v15.receiver = self;
   v15.super_class = ICQUIOSLOPresenter;
   v12 = [(ICQUIOSLOPresenter *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_offer, a3);
-    objc_storeStrong(&v13->_link, a4);
-    objc_storeWeak(&v13->_presenter, v11);
+    objc_storeStrong(&v12->_offer, offer);
+    objc_storeStrong(&v13->_link, link);
+    objc_storeWeak(&v13->_presenter, presenterCopy);
   }
 
   return v13;
@@ -42,12 +42,12 @@
 - (NSString)_sceneIdentifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
-  v3 = [WeakRetained view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 _sceneIdentifier];
+  view = [WeakRetained view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
 
-  return v6;
+  return _sceneIdentifier;
 }
 
 - (id)_createPostPurchaseICQLink
@@ -75,11 +75,11 @@
   [(ICQPurchase *)purchase setIsLegacyNativeFlow:1];
   [(ICQPurchase *)self->_purchase setDelegate:self];
   WeakRetained = objc_loadWeakRetained(&self->_presenter);
-  v8 = [WeakRetained view];
-  v9 = [v8 window];
-  v10 = [v9 windowScene];
-  v11 = [v10 _sceneIdentifier];
-  [(ICQPurchase *)self->_purchase setPresentingSceneIdentifier:v11];
+  view = [WeakRetained view];
+  window = [view window];
+  windowScene = [window windowScene];
+  _sceneIdentifier = [windowScene _sceneIdentifier];
+  [(ICQPurchase *)self->_purchase setPresentingSceneIdentifier:_sceneIdentifier];
 
   [(ICQPurchase *)self->_purchase setPresentingSceneBundleIdentifier:*MEMORY[0x277D7F408]];
   v12 = self->_purchase;
@@ -124,10 +124,10 @@ void __43__ICQUIOSLOPresenter_beginOSLOPurchaseFlow__block_invoke(uint64_t a1, i
   _os_log_error_impl(&dword_275623000, log, OS_LOG_TYPE_ERROR, "%s Post purchase action not avaialble. Bailing", &v1, 0xCu);
 }
 
-- (void)handleAuthenticateRequest:(id)a3 purchase:(id)a4 completion:(id)a5
+- (void)handleAuthenticateRequest:(id)request purchase:(id)purchase completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -140,10 +140,10 @@ void __43__ICQUIOSLOPresenter_beginOSLOPurchaseFlow__block_invoke(uint64_t a1, i
   block[2] = __68__ICQUIOSLOPresenter_handleAuthenticateRequest_purchase_completion___block_invoke;
   block[3] = &unk_27A65B060;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = requestCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -187,10 +187,10 @@ void __68__ICQUIOSLOPresenter_handleAuthenticateRequest_purchase_completion___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)handleDialogRequest:(id)a3 purchase:(id)a4 completion:(id)a5
+- (void)handleDialogRequest:(id)request purchase:(id)purchase completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -203,10 +203,10 @@ void __68__ICQUIOSLOPresenter_handleAuthenticateRequest_purchase_completion___bl
   block[2] = __62__ICQUIOSLOPresenter_handleDialogRequest_purchase_completion___block_invoke;
   block[3] = &unk_27A65B060;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = requestCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -218,10 +218,10 @@ void __62__ICQUIOSLOPresenter_handleDialogRequest_purchase_completion___block_in
   [v3 addFinishBlock:a1[6]];
 }
 
-- (void)handleEngagementRequest:(id)a3 purchase:(id)a4 completion:(id)a5
+- (void)handleEngagementRequest:(id)request purchase:(id)purchase completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = _ICQGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -234,10 +234,10 @@ void __62__ICQUIOSLOPresenter_handleDialogRequest_purchase_completion___block_in
   block[2] = __66__ICQUIOSLOPresenter_handleEngagementRequest_purchase_completion___block_invoke;
   block[3] = &unk_27A65B060;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = requestCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = requestCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -253,47 +253,47 @@ void __66__ICQUIOSLOPresenter_handleEngagementRequest_purchase_completion___bloc
   [v6 addFinishBlock:a1[6]];
 }
 
-+ (id)parsePurchaseParams:(id)a3
++ (id)parsePurchaseParams:(id)params
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  paramsCopy = params;
   v5 = objc_alloc_init(v3);
   v6 = _ICQStringForAction();
   [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277D7F430]];
 
-  v7 = [v4 parameters];
+  parameters = [paramsCopy parameters];
   v8 = *MEMORY[0x277D7F418];
-  v9 = [v7 objectForKeyedSubscript:*MEMORY[0x277D7F418]];
+  v9 = [parameters objectForKeyedSubscript:*MEMORY[0x277D7F418]];
   [v5 setObject:v9 forKeyedSubscript:v8];
 
-  v10 = [v4 parameters];
-  v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277D7F428]];
+  parameters2 = [paramsCopy parameters];
+  v11 = [parameters2 objectForKeyedSubscript:*MEMORY[0x277D7F428]];
   [v5 setObject:v11 forKeyedSubscript:*MEMORY[0x277D7F400]];
 
-  v12 = [v4 parameters];
+  parameters3 = [paramsCopy parameters];
   v13 = *MEMORY[0x277D7F420];
-  v14 = [v12 objectForKeyedSubscript:*MEMORY[0x277D7F420]];
+  v14 = [parameters3 objectForKeyedSubscript:*MEMORY[0x277D7F420]];
   [v5 setObject:v14 forKeyedSubscript:v13];
 
-  v15 = [v4 parameters];
+  parameters4 = [paramsCopy parameters];
   v16 = *MEMORY[0x277D7F448];
-  v17 = [v15 objectForKeyedSubscript:*MEMORY[0x277D7F448]];
+  v17 = [parameters4 objectForKeyedSubscript:*MEMORY[0x277D7F448]];
   [v5 setObject:v17 forKeyedSubscript:v16];
 
-  v18 = [v4 parameters];
+  parameters5 = [paramsCopy parameters];
   v19 = *MEMORY[0x277D7F438];
-  v20 = [v18 objectForKeyedSubscript:*MEMORY[0x277D7F438]];
+  v20 = [parameters5 objectForKeyedSubscript:*MEMORY[0x277D7F438]];
   [v5 setObject:v20 forKeyedSubscript:v19];
 
-  v21 = [v4 parameters];
+  parameters6 = [paramsCopy parameters];
   v22 = *MEMORY[0x277D7F440];
-  v23 = [v21 objectForKeyedSubscript:*MEMORY[0x277D7F440]];
+  v23 = [parameters6 objectForKeyedSubscript:*MEMORY[0x277D7F440]];
   [v5 setObject:v23 forKeyedSubscript:v22];
 
-  v24 = [v4 parameters];
+  parameters7 = [paramsCopy parameters];
 
   v25 = *MEMORY[0x277D7F410];
-  v26 = [v24 objectForKeyedSubscript:*MEMORY[0x277D7F410]];
+  v26 = [parameters7 objectForKeyedSubscript:*MEMORY[0x277D7F410]];
   [v5 setObject:v26 forKeyedSubscript:v25];
 
   v27 = [v5 copy];
@@ -306,19 +306,19 @@ void __66__ICQUIOSLOPresenter_handleEngagementRequest_purchase_completion___bloc
   v21 = *MEMORY[0x277D85DE8];
   if (self->_liftUIPresenter)
   {
-    v2 = _ICQGetLogSystem();
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+    aa_primaryAppleAccount = _ICQGetLogSystem();
+    if (os_log_type_enabled(aa_primaryAppleAccount, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v20 = "[ICQUIOSLOPresenter _handlePostPurchaseLiftUIFlow]";
-      _os_log_impl(&dword_275623000, v2, OS_LOG_TYPE_DEFAULT, "LiftUI presenter has already been dismissed, %s will be ignored", buf, 0xCu);
+      _os_log_impl(&dword_275623000, aa_primaryAppleAccount, OS_LOG_TYPE_DEFAULT, "LiftUI presenter has already been dismissed, %s will be ignored", buf, 0xCu);
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x277CB8F48] defaultStore];
-    v2 = [v4 aa_primaryAppleAccount];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
     v5 = [ICQUIOSLOPresenter parsePurchaseParams:self->_link];
     v6 = objc_alloc(MEMORY[0x277CBEBC0]);
@@ -332,7 +332,7 @@ void __66__ICQUIOSLOPresenter_handleEngagementRequest_purchase_completion___bloc
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:{-[ICQPurchase amsServerErrorCode](self->_purchase, "amsServerErrorCode")}];
     v18[1] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:2];
-    v13 = [(ICQLiftUIPresenter *)v9 initWithURL:v8 account:v2 data:v12];
+    v13 = [(ICQLiftUIPresenter *)v9 initWithURL:v8 account:aa_primaryAppleAccount data:v12];
     liftUIPresenter = self->_liftUIPresenter;
     self->_liftUIPresenter = v13;
 
@@ -348,23 +348,23 @@ void __66__ICQUIOSLOPresenter_handleEngagementRequest_purchase_completion___bloc
   v27 = *MEMORY[0x277D85DE8];
   if (self->_remoteUIPresenter)
   {
-    v2 = _ICQGetLogSystem();
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
+    aa_primaryAppleAccount = _ICQGetLogSystem();
+    if (os_log_type_enabled(aa_primaryAppleAccount, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 136315138;
       v26 = "[ICQUIOSLOPresenter _handlePostPurchaseRemoteUIFlow]";
-      _os_log_impl(&dword_275623000, v2, OS_LOG_TYPE_DEFAULT, "RemoteUI presenter has already been dismissed, %s will be ignored", buf, 0xCu);
+      _os_log_impl(&dword_275623000, aa_primaryAppleAccount, OS_LOG_TYPE_DEFAULT, "RemoteUI presenter has already been dismissed, %s will be ignored", buf, 0xCu);
     }
   }
 
   else
   {
-    v4 = [MEMORY[0x277CB8F48] defaultStore];
-    v2 = [v4 aa_primaryAppleAccount];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
     v5 = [ICQUIRemoteUIPresenter alloc];
     WeakRetained = objc_loadWeakRetained(&self->_presenter);
-    v7 = [(ICQUIRemoteUIPresenter *)v5 initWithAccount:v2 presenter:WeakRetained];
+    v7 = [(ICQUIRemoteUIPresenter *)v5 initWithAccount:aa_primaryAppleAccount presenter:WeakRetained];
     remoteUIPresenter = self->_remoteUIPresenter;
     self->_remoteUIPresenter = v7;
 
@@ -411,45 +411,45 @@ void __66__ICQUIOSLOPresenter_handleEngagementRequest_purchase_completion___bloc
   }
 }
 
-- (void)remoteUIFlowManager:(id)a3 didCompleteFlowWithSuccess:(BOOL)a4 error:(id)a5
+- (void)remoteUIFlowManager:(id)manager didCompleteFlowWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v7 = a5;
+  successCopy = success;
+  errorCopy = error;
   v8 = _ICQGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [ICQUIOSLOPresenter remoteUIFlowManager:v5 didCompleteFlowWithSuccess:v7 error:?];
+    [ICQUIOSLOPresenter remoteUIFlowManager:successCopy didCompleteFlowWithSuccess:errorCopy error:?];
   }
 
-  v9 = [(ICQUIOSLOPresenter *)self delegate];
-  [v9 purchaseFlowCompletedWith:v5 error:v7];
+  delegate = [(ICQUIOSLOPresenter *)self delegate];
+  [delegate purchaseFlowCompletedWith:successCopy error:errorCopy];
 }
 
-- (void)remoteUIFlowManager:(id)a3 didDismissWithError:(id)a4
+- (void)remoteUIFlowManager:(id)manager didDismissWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _ICQGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [ICQUIOSLOPresenter remoteUIFlowManager:v5 didDismissWithError:?];
+    [ICQUIOSLOPresenter remoteUIFlowManager:errorCopy didDismissWithError:?];
   }
 
-  v7 = [(ICQUIOSLOPresenter *)self delegate];
-  [v7 purchaseFlowCompletedWith:0 error:v5];
+  delegate = [(ICQUIOSLOPresenter *)self delegate];
+  [delegate purchaseFlowCompletedWith:0 error:errorCopy];
 }
 
-- (void)remoteUIFlowManager:(id)a3 didLoadWithSuccess:(BOOL)a4 error:(id)a5
+- (void)remoteUIFlowManager:(id)manager didLoadWithSuccess:(BOOL)success error:(id)error
 {
-  v5 = a4;
-  v6 = a5;
+  successCopy = success;
+  errorCopy = error;
   v7 = _ICQGetLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [ICQUIOSLOPresenter remoteUIFlowManager:v5 didLoadWithSuccess:v6 error:?];
+    [ICQUIOSLOPresenter remoteUIFlowManager:successCopy didLoadWithSuccess:errorCopy error:?];
   }
 }
 
-- (void)liftUIPresenterDidComplete:(id)a3
+- (void)liftUIPresenterDidComplete:(id)complete
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -457,11 +457,11 @@ void __66__ICQUIOSLOPresenter_handleEngagementRequest_purchase_completion___bloc
     [ICQUIOSLOPresenter liftUIPresenterDidComplete:v4];
   }
 
-  v5 = [(ICQUIOSLOPresenter *)self delegate];
-  [v5 purchaseFlowCompletedWith:1 error:0];
+  delegate = [(ICQUIOSLOPresenter *)self delegate];
+  [delegate purchaseFlowCompletedWith:1 error:0];
 }
 
-- (void)liftUIPresenterDidCancel:(id)a3
+- (void)liftUIPresenterDidCancel:(id)cancel
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -469,8 +469,8 @@ void __66__ICQUIOSLOPresenter_handleEngagementRequest_purchase_completion___bloc
     [ICQUIOSLOPresenter liftUIPresenterDidComplete:v4];
   }
 
-  v5 = [(ICQUIOSLOPresenter *)self delegate];
-  [v5 purchaseFlowCompletedWith:0 error:0];
+  delegate = [(ICQUIOSLOPresenter *)self delegate];
+  [delegate purchaseFlowCompletedWith:0 error:0];
 }
 
 - (ICQUIOSLOPresenterDelegate)delegate

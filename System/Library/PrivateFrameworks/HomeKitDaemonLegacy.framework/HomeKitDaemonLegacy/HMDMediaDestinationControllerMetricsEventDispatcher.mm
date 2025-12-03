@@ -1,19 +1,19 @@
 @interface HMDMediaDestinationControllerMetricsEventDispatcher
 + (id)logCategory;
-- (HMDMediaDestinationControllerMetricsEventDispatcher)initWithIdentifier:(id)a3 logEventSubmitter:(id)a4 dataSource:(id)a5;
+- (HMDMediaDestinationControllerMetricsEventDispatcher)initWithIdentifier:(id)identifier logEventSubmitter:(id)submitter dataSource:(id)source;
 - (HMDMediaDestinationControllerMetricsEventDispatcherDataSource)dataSource;
 - (id)dataSourceCurrentDestinationType;
 - (id)dataSourceCurrentUser;
 - (id)dataSourceCurrentUserPrivilege;
-- (id)dataSourceDestinationTypeWithIdentifier:(id)a3;
+- (id)dataSourceDestinationTypeWithIdentifier:(id)identifier;
 - (id)dataSourceIsTriggeredOnControllerDevice;
 - (id)logIdentifier;
-- (void)startStagedDestinationIdentifierCommittedEventWithStagedDestinationIdentifier:(id)a3;
+- (void)startStagedDestinationIdentifierCommittedEventWithStagedDestinationIdentifier:(id)identifier;
 - (void)submitDailySetDestinationEvent;
-- (void)submitFailureEventWithEventErrorCode:(unint64_t)a3 error:(id)a4;
-- (void)submitReceivedUpdateDestinationRequestMessageEventWithDestinationIdentifier:(id)a3 existingDestinationIdentifier:(id)a4;
-- (void)submitStagedDestinationIdentifierCommittedEventWithCommittedDestinationIdentifier:(id)a3;
-- (void)submitTransactionUpdatedDestinationEventWithDestinationIdentifier:(id)a3 existingDestinationIdentifier:(id)a4;
+- (void)submitFailureEventWithEventErrorCode:(unint64_t)code error:(id)error;
+- (void)submitReceivedUpdateDestinationRequestMessageEventWithDestinationIdentifier:(id)identifier existingDestinationIdentifier:(id)destinationIdentifier;
+- (void)submitStagedDestinationIdentifierCommittedEventWithCommittedDestinationIdentifier:(id)identifier;
+- (void)submitTransactionUpdatedDestinationEventWithDestinationIdentifier:(id)identifier existingDestinationIdentifier:(id)destinationIdentifier;
 @end
 
 @implementation HMDMediaDestinationControllerMetricsEventDispatcher
@@ -27,27 +27,27 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)dataSourceIsTriggeredOnControllerDevice
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    [v3 isTriggeredOnControllerDeviceForMediaDestinationControllerMetricsEventDispatcher:self];
+    [dataSource isTriggeredOnControllerDeviceForMediaDestinationControllerMetricsEventDispatcher:self];
     v5 = HMFBooleanToString();
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -66,23 +66,23 @@
   return v5;
 }
 
-- (id)dataSourceDestinationTypeWithIdentifier:(id)a3
+- (id)dataSourceDestinationTypeWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSource];
-    v6 = v5;
-    if (v5)
+    dataSource = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSource];
+    v6 = dataSource;
+    if (dataSource)
     {
-      [v5 mediaDestinationControllerMetricsEventDispatcher:self destinationTypeForDestinationWithIdentifier:v4];
+      [dataSource mediaDestinationControllerMetricsEventDispatcher:self destinationTypeForDestinationWithIdentifier:identifierCopy];
     }
 
     else
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
@@ -111,11 +111,11 @@
 - (id)dataSourceCurrentDestinationType
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 currentDestinationTypeForMediaDestinationControllerMetricsEventDispatcher:self];
+    v5 = [dataSource currentDestinationTypeForMediaDestinationControllerMetricsEventDispatcher:self];
     v6 = v5;
     if (v5)
     {
@@ -132,7 +132,7 @@
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -154,12 +154,12 @@
 - (id)dataSourceCurrentUser
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSource];
-  v4 = [v3 currentUserForMediaDestinationControllerMetricsEventDispatcher:self];
+  dataSource = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSource];
+  v4 = [dataSource currentUserForMediaDestinationControllerMetricsEventDispatcher:self];
   if (!v4)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -167,7 +167,7 @@
       v11 = 138543618;
       v12 = v8;
       v13 = 2112;
-      v14 = v3;
+      v14 = dataSource;
       _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_ERROR, "%{public}@Failed to get current user from data source: %@", &v11, 0x16u);
     }
 
@@ -181,19 +181,19 @@
 
 - (id)dataSourceCurrentUserPrivilege
 {
-  v2 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceCurrentUser];
-  v3 = v2;
-  if (v2)
+  dataSourceCurrentUser = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceCurrentUser];
+  v3 = dataSourceCurrentUser;
+  if (dataSourceCurrentUser)
   {
-    v4 = [v2 privilege];
-    if (v4 > 4)
+    privilege = [dataSourceCurrentUser privilege];
+    if (privilege > 4)
     {
       v5 = @"None";
     }
 
     else
     {
-      v5 = off_279730DF8[v4];
+      v5 = off_279730DF8[privilege];
     }
 
     v6 = v5;
@@ -211,7 +211,7 @@
 {
   v25 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -222,12 +222,12 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)v4 dataSource];
-  v8 = v7;
-  if (!v7)
+  dataSource = [(HMDMediaDestinationControllerMetricsEventDispatcher *)selfCopy dataSource];
+  v8 = dataSource;
+  if (!dataSource)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v4;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -248,10 +248,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (([v7 isTriggeredOnControllerDeviceForMediaDestinationControllerMetricsEventDispatcher:v4] & 1) == 0)
+  if (([dataSource isTriggeredOnControllerDeviceForMediaDestinationControllerMetricsEventDispatcher:selfCopy] & 1) == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = v4;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -270,19 +270,19 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v9 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)v4 dataSourceCurrentDestinationType];
-  v10 = [[HMDMediaDestinationControllerDailySetDestinationEvent alloc] initWithExistingDestinationType:v9];
-  v11 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)v4 logEventSubmitter];
-  [v11 submitLogEvent:v10];
+  dataSourceCurrentDestinationType = [(HMDMediaDestinationControllerMetricsEventDispatcher *)selfCopy dataSourceCurrentDestinationType];
+  v10 = [[HMDMediaDestinationControllerDailySetDestinationEvent alloc] initWithExistingDestinationType:dataSourceCurrentDestinationType];
+  logEventSubmitter = [(HMDMediaDestinationControllerMetricsEventDispatcher *)selfCopy logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v10];
 
 LABEL_12:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitStagedDestinationIdentifierCommittedEventWithCommittedDestinationIdentifier:(id)a3
+- (void)submitStagedDestinationIdentifierCommittedEventWithCommittedDestinationIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
   v5 = self->_trackedStagedDestinationIdentifierEvent;
   v6 = v5;
@@ -293,7 +293,7 @@ LABEL_12:
 
     os_unfair_lock_unlock(&self->_lock);
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -301,13 +301,13 @@ LABEL_12:
       v20 = 138543618;
       v21 = v13;
       v22 = 2112;
-      v23 = v4;
+      v23 = identifierCopy;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@submitting staged destination identifier committed event with committed destination identifier: %@", &v20, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    v14 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)v11 logEventSubmitter];
-    [v14 submitLogEvent:v6];
+    logEventSubmitter = [(HMDMediaDestinationControllerMetricsEventDispatcher *)selfCopy logEventSubmitter];
+    [logEventSubmitter submitLogEvent:v6];
   }
 
   else
@@ -315,7 +315,7 @@ LABEL_12:
 
     os_unfair_lock_unlock(&self->_lock);
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -331,12 +331,12 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startStagedDestinationIdentifierCommittedEventWithStagedDestinationIdentifier:(id)a3
+- (void)startStagedDestinationIdentifierCommittedEventWithStagedDestinationIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -344,89 +344,89 @@ LABEL_12:
     v14 = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Tracking staged destination identifier: %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)v6 dataSourceIsTriggeredOnControllerDevice];
-  v10 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)v6 dataSourceCurrentUserPrivilege];
-  v11 = [[HMDMediaDestinationControllerStagedDestinationIdentifierCommittedEvent alloc] initWithStagedDestinationIdentifier:v4 isTriggeredOnControllerDevice:v9 userPrivilege:v10];
+  dataSourceIsTriggeredOnControllerDevice = [(HMDMediaDestinationControllerMetricsEventDispatcher *)selfCopy dataSourceIsTriggeredOnControllerDevice];
+  dataSourceCurrentUserPrivilege = [(HMDMediaDestinationControllerMetricsEventDispatcher *)selfCopy dataSourceCurrentUserPrivilege];
+  v11 = [[HMDMediaDestinationControllerStagedDestinationIdentifierCommittedEvent alloc] initWithStagedDestinationIdentifier:identifierCopy isTriggeredOnControllerDevice:dataSourceIsTriggeredOnControllerDevice userPrivilege:dataSourceCurrentUserPrivilege];
   os_unfair_lock_lock_with_options();
-  trackedStagedDestinationIdentifierEvent = v6->_trackedStagedDestinationIdentifierEvent;
-  v6->_trackedStagedDestinationIdentifierEvent = v11;
+  trackedStagedDestinationIdentifierEvent = selfCopy->_trackedStagedDestinationIdentifierEvent;
+  selfCopy->_trackedStagedDestinationIdentifierEvent = v11;
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitFailureEventWithEventErrorCode:(unint64_t)a3 error:(id)a4
+- (void)submitFailureEventWithEventErrorCode:(unint64_t)code error:(id)error
 {
-  v6 = a4;
-  if (a3 > 0xB)
+  errorCopy = error;
+  if (code > 0xB)
   {
     v7 = @"unknown";
   }
 
   else
   {
-    v7 = off_279726028[a3];
+    v7 = off_279726028[code];
   }
 
   v16 = v7;
   v8 = MEMORY[0x277CCACA8];
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "code")}];
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
   v10 = [v8 stringWithFormat:@"%@", v9];
 
-  v11 = [v6 domain];
+  domain = [errorCopy domain];
 
-  v12 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceIsTriggeredOnControllerDevice];
-  v13 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceCurrentUserPrivilege];
-  v14 = [[HMDMediaDestinationControllerFailureLogEvent alloc] initWithDestinationControllerErrorCode:v16 errorCode:v10 errorDomain:v11 isTriggeredOnControllerDevice:v12 userPrivilege:v13];
-  v15 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self logEventSubmitter];
-  [v15 submitLogEvent:v14];
+  dataSourceIsTriggeredOnControllerDevice = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceIsTriggeredOnControllerDevice];
+  dataSourceCurrentUserPrivilege = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceCurrentUserPrivilege];
+  v14 = [[HMDMediaDestinationControllerFailureLogEvent alloc] initWithDestinationControllerErrorCode:v16 errorCode:v10 errorDomain:domain isTriggeredOnControllerDevice:dataSourceIsTriggeredOnControllerDevice userPrivilege:dataSourceCurrentUserPrivilege];
+  logEventSubmitter = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v14];
 }
 
-- (void)submitTransactionUpdatedDestinationEventWithDestinationIdentifier:(id)a3 existingDestinationIdentifier:(id)a4
+- (void)submitTransactionUpdatedDestinationEventWithDestinationIdentifier:(id)identifier existingDestinationIdentifier:(id)destinationIdentifier
 {
-  v6 = a3;
-  v12 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceDestinationTypeWithIdentifier:a4];
-  v7 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceDestinationTypeWithIdentifier:v6];
+  identifierCopy = identifier;
+  v12 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceDestinationTypeWithIdentifier:destinationIdentifier];
+  v7 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceDestinationTypeWithIdentifier:identifierCopy];
 
-  v8 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceIsTriggeredOnControllerDevice];
-  v9 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceCurrentUserPrivilege];
-  v10 = [[HMDMediaDestinationControllerTransactionUpdatedDestinationLogEvent alloc] initWithExistingDestinationType:v12 destinationType:v7 isTriggeredOnControllerDevice:v8 userPrivilege:v9];
-  v11 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self logEventSubmitter];
-  [v11 submitLogEvent:v10];
+  dataSourceIsTriggeredOnControllerDevice = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceIsTriggeredOnControllerDevice];
+  dataSourceCurrentUserPrivilege = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceCurrentUserPrivilege];
+  v10 = [[HMDMediaDestinationControllerTransactionUpdatedDestinationLogEvent alloc] initWithExistingDestinationType:v12 destinationType:v7 isTriggeredOnControllerDevice:dataSourceIsTriggeredOnControllerDevice userPrivilege:dataSourceCurrentUserPrivilege];
+  logEventSubmitter = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v10];
 }
 
-- (void)submitReceivedUpdateDestinationRequestMessageEventWithDestinationIdentifier:(id)a3 existingDestinationIdentifier:(id)a4
+- (void)submitReceivedUpdateDestinationRequestMessageEventWithDestinationIdentifier:(id)identifier existingDestinationIdentifier:(id)destinationIdentifier
 {
-  v6 = a3;
-  v12 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceDestinationTypeWithIdentifier:a4];
-  v7 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceDestinationTypeWithIdentifier:v6];
+  identifierCopy = identifier;
+  v12 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceDestinationTypeWithIdentifier:destinationIdentifier];
+  v7 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceDestinationTypeWithIdentifier:identifierCopy];
 
-  v8 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceIsTriggeredOnControllerDevice];
-  v9 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceCurrentUserPrivilege];
-  v10 = [[HMDMediaDestinationControllerReceivedUpdateDestinationRequestMessageLogEvent alloc] initWithExistingDestinationType:v12 destinationType:v7 isTriggeredOnControllerDevice:v8 userPrivilege:v9];
-  v11 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self logEventSubmitter];
-  [v11 submitLogEvent:v10];
+  dataSourceIsTriggeredOnControllerDevice = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceIsTriggeredOnControllerDevice];
+  dataSourceCurrentUserPrivilege = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self dataSourceCurrentUserPrivilege];
+  v10 = [[HMDMediaDestinationControllerReceivedUpdateDestinationRequestMessageLogEvent alloc] initWithExistingDestinationType:v12 destinationType:v7 isTriggeredOnControllerDevice:dataSourceIsTriggeredOnControllerDevice userPrivilege:dataSourceCurrentUserPrivilege];
+  logEventSubmitter = [(HMDMediaDestinationControllerMetricsEventDispatcher *)self logEventSubmitter];
+  [logEventSubmitter submitLogEvent:v10];
 }
 
-- (HMDMediaDestinationControllerMetricsEventDispatcher)initWithIdentifier:(id)a3 logEventSubmitter:(id)a4 dataSource:(id)a5
+- (HMDMediaDestinationControllerMetricsEventDispatcher)initWithIdentifier:(id)identifier logEventSubmitter:(id)submitter dataSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  submitterCopy = submitter;
+  sourceCopy = source;
   v15.receiver = self;
   v15.super_class = HMDMediaDestinationControllerMetricsEventDispatcher;
   v12 = [(HMDMediaDestinationControllerMetricsEventDispatcher *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_identifier, a3);
-    objc_storeStrong(&v13->_logEventSubmitter, a4);
-    objc_storeWeak(&v13->_dataSource, v11);
+    objc_storeStrong(&v12->_identifier, identifier);
+    objc_storeStrong(&v13->_logEventSubmitter, submitter);
+    objc_storeWeak(&v13->_dataSource, sourceCopy);
   }
 
   return v13;

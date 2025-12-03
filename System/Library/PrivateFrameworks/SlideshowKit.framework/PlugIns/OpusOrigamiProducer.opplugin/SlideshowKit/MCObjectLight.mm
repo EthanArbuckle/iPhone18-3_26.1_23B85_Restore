@@ -1,15 +1,15 @@
 @interface MCObjectLight
-+ (id)objectWithImprint:(id)a3;
++ (id)objectWithImprint:(id)imprint;
 @end
 
 @implementation MCObjectLight
 
-+ (id)objectWithImprint:(id)a3
++ (id)objectWithImprint:(id)imprint
 {
-  result = NSClassFromString([a3 objectForKey:@"type"]);
+  result = NSClassFromString([imprint objectForKey:@"type"]);
   if (result)
   {
-    v5 = [[result alloc] initWithImprint:a3];
+    v5 = [[result alloc] initWithImprint:imprint];
 
     return v5;
   }

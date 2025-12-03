@@ -1,14 +1,14 @@
 @interface UND_BBOBserver
-+ (id)gatewayWithQueue:(id)a3 calloutQueue:(id)a4 name:(id)a5 priority:(unint64_t)a6;
++ (id)gatewayWithQueue:(id)queue calloutQueue:(id)calloutQueue name:(id)name priority:(unint64_t)priority;
 @end
 
 @implementation UND_BBOBserver
 
-+ (id)gatewayWithQueue:(id)a3 calloutQueue:(id)a4 name:(id)a5 priority:(unint64_t)a6
++ (id)gatewayWithQueue:(id)queue calloutQueue:(id)calloutQueue name:(id)name priority:(unint64_t)priority
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queueCopy = queue;
+  calloutQueueCopy = calloutQueue;
+  nameCopy = name;
   v17 = 0;
   v18 = &v17;
   v19 = 0x2050000000;
@@ -27,7 +27,7 @@
 
   v13 = v12;
   _Block_object_dispose(&v17, 8);
-  v14 = [v12 gatewayWithQueue:v9 calloutQueue:v10 name:v11 priority:a6];
+  v14 = [v12 gatewayWithQueue:queueCopy calloutQueue:calloutQueueCopy name:nameCopy priority:priority];
 
   return v14;
 }

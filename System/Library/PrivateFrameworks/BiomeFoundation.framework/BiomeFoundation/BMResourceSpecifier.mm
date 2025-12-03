@@ -1,11 +1,11 @@
 @interface BMResourceSpecifier
-+ (id)resourceFromContainer:(id)a3 withType:(unint64_t)a4 name:(id)a5 descriptors:(id)a6;
-- (BMResourceSpecifier)initWithCoder:(id)a3;
-- (BMResourceSpecifier)initWithType:(unint64_t)a3 name:(id)a4 descriptors:(id)a5 options:(unsigned __int8)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)resourceFromContainer:(id)container withType:(unint64_t)type name:(id)name descriptors:(id)descriptors;
+- (BMResourceSpecifier)initWithCoder:(id)coder;
+- (BMResourceSpecifier)initWithType:(unint64_t)type name:(id)name descriptors:(id)descriptors options:(unsigned __int8)options;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMResourceSpecifier
@@ -27,12 +27,12 @@
   type = self->_type;
   if (type >= 6)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown(%lu):", type];
+    type = [MEMORY[0x1E696AEC0] stringWithFormat:@"unknown(%lu):", type];
   }
 
   else
   {
-    v4 = off_1E796B210[type];
+    type = off_1E796B210[type];
   }
 
   if ([(NSArray *)self->_descriptors count])
@@ -59,16 +59,16 @@
     v10 = &stru_1F20E2850;
   }
 
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<BMResource: %@%@%@%@>", v4, self->_name, v7, v10];
+  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<BMResource: %@%@%@%@>", type, self->_name, v7, v10];
 
   return v11;
 }
 
-- (BMResourceSpecifier)initWithType:(unint64_t)a3 name:(id)a4 descriptors:(id)a5 options:(unsigned __int8)a6
+- (BMResourceSpecifier)initWithType:(unint64_t)type name:(id)name descriptors:(id)descriptors options:(unsigned __int8)options
 {
-  v10 = a4;
-  v11 = a5;
-  if (BMIdentifierIsPathSafe(v10))
+  nameCopy = name;
+  descriptorsCopy = descriptors;
+  if (BMIdentifierIsPathSafe(nameCopy))
   {
     v21.receiver = self;
     v21.super_class = BMResourceSpecifier;
@@ -76,20 +76,20 @@
     v13 = v12;
     if (v12)
     {
-      v12->_type = a3;
-      v14 = [v10 copy];
+      v12->_type = type;
+      v14 = [nameCopy copy];
       name = v13->_name;
       v13->_name = v14;
 
-      v16 = [v11 copy];
+      v16 = [descriptorsCopy copy];
       descriptors = v13->_descriptors;
       v13->_descriptors = v16;
 
-      v13->_options = a6;
+      v13->_options = options;
     }
 
     self = v13;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
@@ -97,31 +97,31 @@
     v19 = __biome_log_for_category(0);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [BMResourceSpecifier initWithType:v10 name:v19 descriptors:? options:?];
+      [BMResourceSpecifier initWithType:nameCopy name:v19 descriptors:? options:?];
     }
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-+ (id)resourceFromContainer:(id)a3 withType:(unint64_t)a4 name:(id)a5 descriptors:(id)a6
++ (id)resourceFromContainer:(id)container withType:(unint64_t)type name:(id)name descriptors:(id)descriptors
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = [objc_alloc(objc_opt_class()) initWithType:a4 name:v10 descriptors:v9 options:{objc_msgSend(a3, "isInUserVault")}];
+  descriptorsCopy = descriptors;
+  nameCopy = name;
+  v11 = [objc_alloc(objc_opt_class()) initWithType:type name:nameCopy descriptors:descriptorsCopy options:{objc_msgSend(container, "isInUserVault")}];
 
   return v11;
 }
 
-- (BMResourceSpecifier)initWithCoder:(id)a3
+- (BMResourceSpecifier)initWithCoder:(id)coder
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v7 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"descriptors"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"descriptors"];
   v8 = v7;
   v9 = MEMORY[0x1E695E0F0];
   if (v7)
@@ -131,7 +131,7 @@
 
   v10 = v9;
 
-  v11 = -[BMResourceSpecifier initWithType:name:descriptors:options:](self, "initWithType:name:descriptors:options:", v5, v6, v10, [v4 decodeInt32ForKey:@"options"]);
+  v11 = -[BMResourceSpecifier initWithType:name:descriptors:options:](self, "initWithType:name:descriptors:options:", v5, v6, v10, [coderCopy decodeInt32ForKey:@"options"]);
   if (!v11)
   {
     v12 = MEMORY[0x1E696ABC0];
@@ -139,28 +139,28 @@
     v18[0] = @"Decoding failure";
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v14 = [v12 errorWithDomain:@"Biome" code:-1 userInfo:v13];
-    [v4 failWithError:v14];
+    [coderCopy failWithError:v14];
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_descriptors forKey:@"descriptors"];
-  [v5 encodeInt32:self->_options forKey:@"options"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_descriptors forKey:@"descriptors"];
+  [coderCopy encodeInt32:self->_options forKey:@"options"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == v4[2] && [(NSString *)self->_name isEqual:v4[3]]&& [(NSArray *)self->_descriptors isEqual:v4[5]]&& self->_options == *(v4 + 8);
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_type == equalCopy[2] && [(NSString *)self->_name isEqual:equalCopy[3]]&& [(NSArray *)self->_descriptors isEqual:equalCopy[5]]&& self->_options == *(equalCopy + 8);
 
   return v5;
 }

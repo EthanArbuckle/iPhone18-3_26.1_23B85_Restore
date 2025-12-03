@@ -1,18 +1,18 @@
 @interface CAFSeatBeltObservable
 - (NSString)description;
-- (void)seatBeltService:(id)a3 didUpdateBuckleState:(unsigned __int8)a4;
-- (void)seatBeltService:(id)a3 didUpdateSeatBeltIndicator:(unsigned __int8)a4;
-- (void)seatBeltService:(id)a3 didUpdateSeatOccupancy:(unsigned __int8)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)seatBeltService:(id)service didUpdateBuckleState:(unsigned __int8)state;
+- (void)seatBeltService:(id)service didUpdateSeatBeltIndicator:(unsigned __int8)indicator;
+- (void)seatBeltService:(id)service didUpdateSeatOccupancy:(unsigned __int8)occupancy;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFSeatBeltObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFSeatBeltObservable.description.getter();
   v5 = v4;
 
@@ -21,46 +21,46 @@
   return v6;
 }
 
-- (void)seatBeltService:(id)a3 didUpdateSeatOccupancy:(unsigned __int8)a4
+- (void)seatBeltService:(id)service didUpdateSeatOccupancy:(unsigned __int8)occupancy
 {
-  v6 = a3;
-  v7 = self;
-  CAFSeatBeltObservable.seatBeltService(_:didUpdateSeatOccupancy:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFSeatBeltObservable.seatBeltService(_:didUpdateSeatOccupancy:)(selfCopy, occupancy);
 }
 
-- (void)seatBeltService:(id)a3 didUpdateBuckleState:(unsigned __int8)a4
+- (void)seatBeltService:(id)service didUpdateBuckleState:(unsigned __int8)state
 {
-  v6 = a3;
-  v7 = self;
-  CAFSeatBeltObservable.seatBeltService(_:didUpdateBuckleState:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFSeatBeltObservable.seatBeltService(_:didUpdateBuckleState:)(selfCopy, state);
 }
 
-- (void)seatBeltService:(id)a3 didUpdateSeatBeltIndicator:(unsigned __int8)a4
+- (void)seatBeltService:(id)service didUpdateSeatBeltIndicator:(unsigned __int8)indicator
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFSeatBeltObservable.seatBeltService(_:didUpdateSeatBeltIndicator:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFSeatBeltObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFSeatBeltObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFSeatBeltObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFSeatBeltObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFSeatBeltObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

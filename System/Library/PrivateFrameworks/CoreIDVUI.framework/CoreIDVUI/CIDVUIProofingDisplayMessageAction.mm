@@ -1,9 +1,9 @@
 @interface CIDVUIProofingDisplayMessageAction
 - (CIDVUIProofingDisplayMessageAction)init;
-- (CIDVUIProofingDisplayMessageAction)initWithTitle:(id)a3 actionType:(int64_t)a4 actionURL:(id)a5;
+- (CIDVUIProofingDisplayMessageAction)initWithTitle:(id)title actionType:(int64_t)type actionURL:(id)l;
 - (NSURL)actionURL;
 - (id)_actionURL;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CIDVUIProofingDisplayMessageAction
@@ -37,7 +37,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EE29470);
   MEMORY[0x28223BE20](v3 - 8);
   v5 = &v13 - v4;
-  v6 = self;
+  selfCopy = self;
   sub_2458C62D8(v5);
 
   v7 = sub_24590C094();
@@ -54,14 +54,14 @@
   return v10;
 }
 
-- (CIDVUIProofingDisplayMessageAction)initWithTitle:(id)a3 actionType:(int64_t)a4 actionURL:(id)a5
+- (CIDVUIProofingDisplayMessageAction)initWithTitle:(id)title actionType:(int64_t)type actionURL:(id)l
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27EE29470);
   MEMORY[0x28223BE20](v7 - 8);
   v9 = &v16 - v8;
   v10 = sub_245910A04();
   v12 = v11;
-  if (a5)
+  if (l)
   {
     sub_24590C054();
     v13 = sub_24590C094();
@@ -74,14 +74,14 @@
     (*(*(v14 - 8) + 56))(v9, 1, 1, v14);
   }
 
-  return sub_2458C6400(v10, v12, a4, v9);
+  return sub_2458C6400(v10, v12, type, v9);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_2458C6A30(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_2458C6A30(coderCopy);
 }
 
 - (CIDVUIProofingDisplayMessageAction)init

@@ -1,12 +1,12 @@
 @interface MessagesViewController
 - (AVTAvatarPickerDelegate)avatarPickerDelegate;
-- (void)didBecomeActiveWithConversation:(id)a3;
-- (void)didTransitionToPresentationStyle:(unint64_t)a3;
+- (void)didBecomeActiveWithConversation:(id)conversation;
+- (void)didTransitionToPresentationStyle:(unint64_t)style;
 - (void)dismissLaunchScreenIfNecessary;
-- (void)setAvatarPickerDelegate:(id)a3;
-- (void)splashScreenViewControllerDidConfirm:(id)a3;
+- (void)setAvatarPickerDelegate:(id)delegate;
+- (void)splashScreenViewControllerDidConfirm:(id)confirm;
 - (void)viewDidLoad;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation MessagesViewController
@@ -17,80 +17,80 @@
   v68.super_class = MessagesViewController;
   [(MessagesViewController *)&v68 viewDidLoad];
   v3 = +[AVTUIColorRepository appBackgroundColor];
-  v4 = [(MessagesViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(MessagesViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = objc_alloc_init(AVTAvatarStore);
   [(MessagesViewController *)self setAvatarStore:v5];
 
   v6 = +[AVTFunCamAvatarPickerStyle defaultLayoutStyle];
-  v7 = [(MessagesViewController *)self avatarStore];
+  avatarStore = [(MessagesViewController *)self avatarStore];
   v67 = v6;
-  v8 = [AVTFunCamAvatarPickerController funCamAvatarPickerControllerForStore:v7 style:v6];
+  v8 = [AVTFunCamAvatarPickerController funCamAvatarPickerControllerForStore:avatarStore style:v6];
   [(MessagesViewController *)self setPickerController:v8];
 
-  v9 = [(MessagesViewController *)self pickerController];
-  [v9 setPresenterDelegate:self];
+  pickerController = [(MessagesViewController *)self pickerController];
+  [pickerController setPresenterDelegate:self];
 
-  v10 = [(MessagesViewController *)self avatarPickerDelegate];
-  v11 = [(MessagesViewController *)self pickerController];
-  [v11 setAvatarPickerDelegate:v10];
+  avatarPickerDelegate = [(MessagesViewController *)self avatarPickerDelegate];
+  pickerController2 = [(MessagesViewController *)self pickerController];
+  [pickerController2 setAvatarPickerDelegate:avatarPickerDelegate];
 
-  v12 = [(MessagesViewController *)self pickerController];
-  [(MessagesViewController *)self addChildViewController:v12];
+  pickerController3 = [(MessagesViewController *)self pickerController];
+  [(MessagesViewController *)self addChildViewController:pickerController3];
 
-  v13 = [(MessagesViewController *)self pickerController];
-  v14 = [v13 view];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  pickerController4 = [(MessagesViewController *)self pickerController];
+  view2 = [pickerController4 view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(MessagesViewController *)self view];
-  v16 = [(MessagesViewController *)self pickerController];
-  v17 = [v16 view];
-  [v15 addSubview:v17];
+  view3 = [(MessagesViewController *)self view];
+  pickerController5 = [(MessagesViewController *)self pickerController];
+  view4 = [pickerController5 view];
+  [view3 addSubview:view4];
 
-  v66 = [(MessagesViewController *)self view];
-  v64 = [v66 topAnchor];
-  v65 = [(MessagesViewController *)self pickerController];
-  v63 = [v65 view];
-  v62 = [v63 topAnchor];
-  v61 = [v64 constraintEqualToAnchor:v62];
+  view5 = [(MessagesViewController *)self view];
+  topAnchor = [view5 topAnchor];
+  pickerController6 = [(MessagesViewController *)self pickerController];
+  view6 = [pickerController6 view];
+  topAnchor2 = [view6 topAnchor];
+  v61 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v69[0] = v61;
-  v60 = [(MessagesViewController *)self view];
-  v58 = [v60 leftAnchor];
-  v59 = [(MessagesViewController *)self pickerController];
-  v57 = [v59 view];
-  v56 = [v57 leftAnchor];
-  v55 = [v58 constraintEqualToAnchor:v56];
+  view7 = [(MessagesViewController *)self view];
+  leftAnchor = [view7 leftAnchor];
+  pickerController7 = [(MessagesViewController *)self pickerController];
+  view8 = [pickerController7 view];
+  leftAnchor2 = [view8 leftAnchor];
+  v55 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v69[1] = v55;
-  v54 = [(MessagesViewController *)self view];
-  v52 = [v54 rightAnchor];
-  v53 = [(MessagesViewController *)self pickerController];
-  v51 = [v53 view];
-  v18 = [v51 rightAnchor];
-  v19 = [v52 constraintEqualToAnchor:v18];
+  view9 = [(MessagesViewController *)self view];
+  rightAnchor = [view9 rightAnchor];
+  pickerController8 = [(MessagesViewController *)self pickerController];
+  view10 = [pickerController8 view];
+  rightAnchor2 = [view10 rightAnchor];
+  v19 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v69[2] = v19;
-  v20 = [(MessagesViewController *)self view];
-  v21 = [v20 bottomAnchor];
-  v22 = [(MessagesViewController *)self pickerController];
-  v23 = [v22 view];
-  v24 = [v23 bottomAnchor];
-  v25 = [v21 constraintEqualToAnchor:v24];
+  view11 = [(MessagesViewController *)self view];
+  bottomAnchor = [view11 bottomAnchor];
+  pickerController9 = [(MessagesViewController *)self pickerController];
+  view12 = [pickerController9 view];
+  bottomAnchor2 = [view12 bottomAnchor];
+  v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v69[3] = v25;
   v26 = [NSArray arrayWithObjects:v69 count:4];
   [(MessagesViewController *)self setConstraints:v26];
 
-  v27 = [(MessagesViewController *)self view];
-  v28 = [(MessagesViewController *)self constraints];
-  [v27 addConstraints:v28];
+  view13 = [(MessagesViewController *)self view];
+  constraints = [(MessagesViewController *)self constraints];
+  [view13 addConstraints:constraints];
 
-  v29 = [(MessagesViewController *)self pickerController];
-  [v29 didMoveToParentViewController:self];
+  pickerController10 = [(MessagesViewController *)self pickerController];
+  [pickerController10 didMoveToParentViewController:self];
 
   v30 = +[NSBundle mainBundle];
-  v31 = [v30 bundleIdentifier];
-  LODWORD(v21) = [v31 isEqualToString:@"com.apple.InCallService"];
+  bundleIdentifier = [v30 bundleIdentifier];
+  LODWORD(bottomAnchor) = [bundleIdentifier isEqualToString:@"com.apple.InCallService"];
 
-  if (v21)
+  if (bottomAnchor)
   {
     AVTUIHasDisplayedCameraEffectsSplashScreen();
   }
@@ -110,9 +110,9 @@
     if ((AVTUIHasDisplayedCameraEffectsSplashScreen() & 1) == 0)
     {
       [(MessagesViewController *)self setShowsSplashScreen:1];
-      v34 = [(MessagesViewController *)self pickerController];
-      v35 = [v34 view];
-      [v35 setAlpha:0.0];
+      pickerController11 = [(MessagesViewController *)self pickerController];
+      view14 = [pickerController11 view];
+      [view14 setAlpha:0.0];
 
       v36 = objc_alloc_init(AVTSplashScreenConfiguration);
       v37 = [NSBundle bundleForClass:objc_opt_class()];
@@ -132,47 +132,47 @@
       v44 = [[AVTSplashScreenViewController alloc] initWithConfiguration:v36];
       [(MessagesViewController *)self setSplashViewController:v44];
 
-      v45 = [(MessagesViewController *)self splashViewController];
-      [v45 setDelegate:self];
+      splashViewController = [(MessagesViewController *)self splashViewController];
+      [splashViewController setDelegate:self];
 
-      v46 = [(MessagesViewController *)self splashViewController];
-      v47 = [v46 view];
-      [v47 setAlpha:0.0];
+      splashViewController2 = [(MessagesViewController *)self splashViewController];
+      view15 = [splashViewController2 view];
+      [view15 setAlpha:0.0];
 
-      v48 = [(MessagesViewController *)self view];
-      v49 = [(MessagesViewController *)self splashViewController];
-      v50 = [v49 view];
-      [v48 addSubview:v50];
+      view16 = [(MessagesViewController *)self view];
+      splashViewController3 = [(MessagesViewController *)self splashViewController];
+      view17 = [splashViewController3 view];
+      [view16 addSubview:view17];
     }
   }
 }
 
-- (void)didBecomeActiveWithConversation:(id)a3
+- (void)didBecomeActiveWithConversation:(id)conversation
 {
   v7.receiver = self;
   v7.super_class = MessagesViewController;
-  [(MessagesViewController *)&v7 didBecomeActiveWithConversation:a3];
-  v4 = [(MessagesViewController *)self parentMessagesViewController];
-  v5 = [v4 presentationStyle] == &dword_0 + 1;
+  [(MessagesViewController *)&v7 didBecomeActiveWithConversation:conversation];
+  parentMessagesViewController = [(MessagesViewController *)self parentMessagesViewController];
+  v5 = [parentMessagesViewController presentationStyle] == &dword_0 + 1;
 
-  v6 = [(MessagesViewController *)self pickerController];
-  [v6 setMode:v5];
+  pickerController = [(MessagesViewController *)self pickerController];
+  [pickerController setMode:v5];
 }
 
-- (void)setAvatarPickerDelegate:(id)a3
+- (void)setAvatarPickerDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_avatarPickerDelegate);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_avatarPickerDelegate, obj);
-    v5 = [(MessagesViewController *)self pickerController];
+    pickerController = [(MessagesViewController *)self pickerController];
 
-    if (v5)
+    if (pickerController)
     {
-      v6 = [(MessagesViewController *)self pickerController];
-      [v6 setAvatarPickerDelegate:obj];
+      pickerController2 = [(MessagesViewController *)self pickerController];
+      [pickerController2 setAvatarPickerDelegate:obj];
     }
   }
 }
@@ -184,25 +184,25 @@
   return WeakRetained;
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
-  v5 = [(MessagesViewController *)self showsSplashScreen];
-  if (!a3 && v5)
+  showsSplashScreen = [(MessagesViewController *)self showsSplashScreen];
+  if (!style && showsSplashScreen)
   {
     [(MessagesViewController *)self dismissLaunchScreenIfNecessary];
   }
 
-  v6 = [(MessagesViewController *)self pickerController];
-  [v6 setMode:a3 == 1];
+  pickerController = [(MessagesViewController *)self pickerController];
+  [pickerController setMode:style == 1];
 }
 
-- (void)didTransitionToPresentationStyle:(unint64_t)a3
+- (void)didTransitionToPresentationStyle:(unint64_t)style
 {
   if ([(MessagesViewController *)self showsSplashScreen])
   {
-    v5 = [(MessagesViewController *)self splashViewController];
-    v4 = [v5 view];
-    [v4 setAlpha:1.0];
+    splashViewController = [(MessagesViewController *)self splashViewController];
+    view = [splashViewController view];
+    [view setAlpha:1.0];
   }
 }
 
@@ -225,7 +225,7 @@
   }
 }
 
-- (void)splashScreenViewControllerDidConfirm:(id)a3
+- (void)splashScreenViewControllerDidConfirm:(id)confirm
 {
   AVTUISetHasDisplayedAnimojiSplashScreen();
   AVTUISetHasDisplayedCameraEffectsSplashScreen();

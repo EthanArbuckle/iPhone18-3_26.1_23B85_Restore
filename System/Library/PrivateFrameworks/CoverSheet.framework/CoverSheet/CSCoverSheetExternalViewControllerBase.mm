@@ -3,8 +3,8 @@
 - (id)_presenter;
 - (void)_registerAsExternalProviderIfNeeded;
 - (void)_unregisterAsExternalProvider;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CSCoverSheetExternalViewControllerBase
@@ -13,28 +13,28 @@
 {
   v5.receiver = self;
   v5.super_class = CSCoverSheetExternalViewControllerBase;
-  v3 = [(CSCoverSheetViewControllerBase *)&v5 _presenter];
-  if (!v3)
+  _presenter = [(CSCoverSheetViewControllerBase *)&v5 _presenter];
+  if (!_presenter)
   {
-    v3 = [(CSCoverSheetExternalViewControllerBase *)self coverSheetViewController];
+    _presenter = [(CSCoverSheetExternalViewControllerBase *)self coverSheetViewController];
   }
 
-  return v3;
+  return _presenter;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CSCoverSheetExternalViewControllerBase;
-  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewDidAppear:appear];
   [(CSCoverSheetExternalViewControllerBase *)self _registerAsExternalProviderIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CSCoverSheetExternalViewControllerBase;
-  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:a3];
+  [(CSCoverSheetViewControllerBase *)&v4 viewWillDisappear:disappear];
   [(CSCoverSheetExternalViewControllerBase *)self _unregisterAsExternalProvider];
 }
 
@@ -45,14 +45,14 @@
     return;
   }
 
-  v8 = [(CSCoverSheetExternalViewControllerBase *)self presentingViewController];
+  presentingViewController = [(CSCoverSheetExternalViewControllerBase *)self presentingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_6;
   }
 
-  v3 = [(CSCoverSheetExternalViewControllerBase *)self parentViewController];
+  parentViewController = [(CSCoverSheetExternalViewControllerBase *)self parentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -64,18 +64,18 @@ LABEL_6:
 
   v9.receiver = self;
   v9.super_class = CSCoverSheetExternalViewControllerBase;
-  v4 = [(CSCoverSheetViewControllerBase *)&v9 _presenter];
+  _presenter = [(CSCoverSheetViewControllerBase *)&v9 _presenter];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     self->_externalToDashBoard = 1;
-    v6 = [(CSCoverSheetExternalViewControllerBase *)self coverSheetViewController];
-    v7 = v6;
-    if (v6)
+    coverSheetViewController = [(CSCoverSheetExternalViewControllerBase *)self coverSheetViewController];
+    v7 = coverSheetViewController;
+    if (coverSheetViewController)
     {
-      [v6 registerExternalAppearanceProvider:self];
+      [coverSheetViewController registerExternalAppearanceProvider:self];
       [v7 registerExternalBehaviorProvider:self];
       [v7 registerExternalPresentationProvider:self];
       [v7 registerExternalEventHandler:self];
@@ -90,14 +90,14 @@ LABEL_6:
     return;
   }
 
-  v8 = [(CSCoverSheetExternalViewControllerBase *)self presentingViewController];
+  presentingViewController = [(CSCoverSheetExternalViewControllerBase *)self presentingViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_6;
   }
 
-  v3 = [(CSCoverSheetExternalViewControllerBase *)self parentViewController];
+  parentViewController = [(CSCoverSheetExternalViewControllerBase *)self parentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -109,18 +109,18 @@ LABEL_6:
 
   v9.receiver = self;
   v9.super_class = CSCoverSheetExternalViewControllerBase;
-  v4 = [(CSCoverSheetViewControllerBase *)&v9 _presenter];
+  _presenter = [(CSCoverSheetViewControllerBase *)&v9 _presenter];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     self->_externalToDashBoard = 0;
-    v6 = [(CSCoverSheetExternalViewControllerBase *)self coverSheetViewController];
-    v7 = v6;
-    if (v6)
+    coverSheetViewController = [(CSCoverSheetExternalViewControllerBase *)self coverSheetViewController];
+    v7 = coverSheetViewController;
+    if (coverSheetViewController)
     {
-      [v6 unregisterExternalAppearanceProvider:self];
+      [coverSheetViewController unregisterExternalAppearanceProvider:self];
       [v7 unregisterExternalBehaviorProvider:self];
       [v7 unregisterExternalPresentationProvider:self];
       [v7 unregisterExternalEventHandler:self];

@@ -1,24 +1,24 @@
 @interface AXMImageAestheticsNode
-- (AXMImageAestheticsNode)initWithCoder:(id)a3;
+- (AXMImageAestheticsNode)initWithCoder:(id)coder;
 - (BOOL)validateVisionKitSoftLinkSymbols;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 @end
 
 @implementation AXMImageAestheticsNode
 
-- (AXMImageAestheticsNode)initWithCoder:(id)a3
+- (AXMImageAestheticsNode)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = AXMImageAestheticsNode;
-  return [(AXMEvaluationNode *)&v4 initWithCoder:a3];
+  return [(AXMEvaluationNode *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = AXMImageAestheticsNode;
-  [(AXMEvaluationNode *)&v3 encodeWithCoder:a3];
+  [(AXMEvaluationNode *)&v3 encodeWithCoder:coder];
 }
 
 - (BOOL)validateVisionKitSoftLinkSymbols
@@ -42,38 +42,38 @@
   }
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v17.receiver = self;
   v17.super_class = AXMImageAestheticsNode;
-  [(AXMEvaluationNode *)&v17 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v17 evaluate:evaluateCopy metrics:metricsCopy];
   v8 = objc_autoreleasePoolPush();
-  v9 = [(AXMImageAestheticsNode *)self _imageAestheticsRequest];
+  _imageAestheticsRequest = [(AXMImageAestheticsNode *)self _imageAestheticsRequest];
 
-  if (!v9)
+  if (!_imageAestheticsRequest)
   {
     v10 = objc_alloc_init(getVNClassifyImageAestheticsRequestClass());
     [(AXMImageAestheticsNode *)self set_imageAestheticsRequest:v10];
 
-    v11 = [(AXMImageAestheticsNode *)self _imageAestheticsRequest];
-    [AXMEvaluationNode configureForRunningOnANEIfPossibleWithRequest:v11];
+    _imageAestheticsRequest2 = [(AXMImageAestheticsNode *)self _imageAestheticsRequest];
+    [AXMEvaluationNode configureForRunningOnANEIfPossibleWithRequest:_imageAestheticsRequest2];
   }
 
-  v12 = [(AXMImageAestheticsNode *)self _imageAestheticsRequest];
-  v18[0] = v12;
+  _imageAestheticsRequest3 = [(AXMImageAestheticsNode *)self _imageAestheticsRequest];
+  v18[0] = _imageAestheticsRequest3;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-  [(AXMEvaluationNode *)self evaluateRequests:v13 withContext:v6 requestHandlerOptions:0 metrics:v7 error:0];
+  [(AXMEvaluationNode *)self evaluateRequests:v13 withContext:evaluateCopy requestHandlerOptions:0 metrics:metricsCopy error:0];
 
-  v14 = [v12 results];
-  v15 = [v14 firstObject];
+  results = [_imageAestheticsRequest3 results];
+  firstObject = [results firstObject];
 
-  if (v15)
+  if (firstObject)
   {
-    v16 = [AXMVisionFeature featureWithImageAestheticsObservation:v15];
-    [v6 appendFeature:v16];
+    v16 = [AXMVisionFeature featureWithImageAestheticsObservation:firstObject];
+    [evaluateCopy appendFeature:v16];
   }
 
   objc_autoreleasePoolPop(v8);

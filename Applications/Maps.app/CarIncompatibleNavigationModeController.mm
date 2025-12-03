@@ -4,7 +4,7 @@
 - (NSArray)carFocusOrderSequences;
 - (id)fullscreenViewControllerDismissalTransition;
 - (id)fullscreenViewControllerPresentationTransition;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 @end
 
 @implementation CarIncompatibleNavigationModeController
@@ -20,8 +20,8 @@
 {
   if ([(CarAlertViewController *)self->_viewController isViewLoaded])
   {
-    v3 = [(CarAlertViewController *)self->_viewController focusOrderSubItems];
-    v4 = sub_100021DB0(v3, &stru_101655C10);
+    focusOrderSubItems = [(CarAlertViewController *)self->_viewController focusOrderSubItems];
+    v4 = sub_100021DB0(focusOrderSubItems, &stru_101655C10);
     v5 = [CarFocusOrderSequence sequenceWithItems:v4 options:5];
     v8 = v5;
     v6 = [NSArray arrayWithObjects:&v8 count:1];
@@ -35,21 +35,21 @@
   return v6;
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  [(CarAlertViewController *)self->_viewController reset:a3];
+  [(CarAlertViewController *)self->_viewController reset:controller];
   v5 = +[MNNavigationService sharedService];
   if ([v5 desiredTransportType])
   {
-    v6 = [v5 desiredTransportType];
-    if (v6 > 5)
+    desiredTransportType = [v5 desiredTransportType];
+    if (desiredTransportType > 5)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = qword_1012160D0[v6];
+      v7 = qword_1012160D0[desiredTransportType];
     }
 
     v10 = sub_100FB2100(v7);
@@ -86,8 +86,8 @@
   viewController = self->_viewController;
   v17 = v13;
   [(CarAlertViewController *)viewController setResultBlock:v19];
-  v18 = [(CarIncompatibleNavigationModeController *)self chromeViewController];
-  [v18 setHardwareBackButtonBehavior:2 forContext:self];
+  chromeViewController = [(CarIncompatibleNavigationModeController *)self chromeViewController];
+  [chromeViewController setHardwareBackButtonBehavior:2 forContext:self];
 }
 
 - (id)fullscreenViewControllerDismissalTransition
@@ -117,8 +117,8 @@
     viewController = v2->_viewController;
     v2->_viewController = v3;
 
-    v5 = [(CarAlertViewController *)v2->_viewController navigationItem];
-    [v5 setHidesBackButton:1];
+    navigationItem = [(CarAlertViewController *)v2->_viewController navigationItem];
+    [navigationItem setHidesBackButton:1];
   }
 
   return v2;

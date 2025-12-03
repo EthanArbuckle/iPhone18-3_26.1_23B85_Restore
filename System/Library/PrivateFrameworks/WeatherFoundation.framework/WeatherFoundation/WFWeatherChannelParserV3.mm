@@ -1,16 +1,16 @@
 @interface WFWeatherChannelParserV3
 - (WFWeatherChannelParserV3)init;
-- (id)_parseCurrentConditions:(id)a3;
-- (id)_parseDailyForecastedConditions:(id)a3;
-- (id)_parseDailyPollenForecastedConditions:(id)a3;
-- (id)_parseForecastedConditions:(id)a3 individualForecastProcessingBlock:(id)a4 uniqueParsingBlock:(id)a5;
-- (id)_parseHourlyForecastedConditions:(id)a3;
-- (id)_parseLastTwentyFourHoursOfObservations:(id)a3;
-- (id)_parsePollutants:(id)a3;
-- (id)parseAirQualityData:(id)a3 location:(id)a4 locale:(id)a5 error:(id *)a6;
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9;
-- (void)_parseCommonComponents:(id)a3 intoConditions:(id)a4;
-- (void)_parseWebLinks:(id)a3 intoWeatherConditions:(id)a4;
+- (id)_parseCurrentConditions:(id)conditions;
+- (id)_parseDailyForecastedConditions:(id)conditions;
+- (id)_parseDailyPollenForecastedConditions:(id)conditions;
+- (id)_parseForecastedConditions:(id)conditions individualForecastProcessingBlock:(id)block uniqueParsingBlock:(id)parsingBlock;
+- (id)_parseHourlyForecastedConditions:(id)conditions;
+- (id)_parseLastTwentyFourHoursOfObservations:(id)observations;
+- (id)_parsePollutants:(id)pollutants;
+- (id)parseAirQualityData:(id)data location:(id)location locale:(id)locale error:(id *)error;
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules;
+- (void)_parseCommonComponents:(id)components intoConditions:(id)conditions;
+- (void)_parseWebLinks:(id)links intoWeatherConditions:(id)conditions;
 @end
 
 @implementation WFWeatherChannelParserV3
@@ -34,121 +34,121 @@
   return v2;
 }
 
-- (void)_parseCommonComponents:(id)a3 intoConditions:(id)a4
+- (void)_parseCommonComponents:(id)components intoConditions:(id)conditions
 {
-  v33 = a3;
-  v5 = a4;
-  v6 = [v33 numberForKey:@"validTimeUtc"];
+  componentsCopy = components;
+  conditionsCopy = conditions;
+  v6 = [componentsCopy numberForKey:@"validTimeUtc"];
   v7 = v6;
   if (v6)
   {
     v8 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v6, "unsignedIntegerValue")}];
-    [v5 setObject:v8 forKeyedSubscript:@"WFWeatherForecastDateComponent"];
+    [conditionsCopy setObject:v8 forKeyedSubscript:@"WFWeatherForecastDateComponent"];
   }
 
-  v9 = [v33 numberForKey:@"expirationTimeUtc"];
+  v9 = [componentsCopy numberForKey:@"expirationTimeUtc"];
 
   if (v9)
   {
     v10 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v9, "unsignedIntegerValue")}];
-    [v5 setObject:v10 forKeyedSubscript:@"WFWeatherForecastExpirationDateComponent"];
+    [conditionsCopy setObject:v10 forKeyedSubscript:@"WFWeatherForecastExpirationDateComponent"];
   }
 
-  v11 = [v33 numberForKey:@"iconCode"];
+  v11 = [componentsCopy numberForKey:@"iconCode"];
   if (v11)
   {
-    [v5 setObject:v11 forKeyedSubscript:@"__THIS_WILL_BE_DEPRECATED__WFWeatherLegacyConditionComponent"];
+    [conditionsCopy setObject:v11 forKeyedSubscript:@"__THIS_WILL_BE_DEPRECATED__WFWeatherLegacyConditionComponent"];
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{WFConditionCodeFromLegacyWeatherConditionCode(objc_msgSend(v11, "unsignedIntegerValue"))}];
-    [v5 setObject:v12 forKeyedSubscript:@"WFWeatherConditionComponent"];
+    [conditionsCopy setObject:v12 forKeyedSubscript:@"WFWeatherConditionComponent"];
   }
 
-  v13 = [v33 numberForKey:@"relativeHumidity"];
-  [v5 setObject:v13 forKeyedSubscript:@"WFWeatherHumidityComponent"];
+  v13 = [componentsCopy numberForKey:@"relativeHumidity"];
+  [conditionsCopy setObject:v13 forKeyedSubscript:@"WFWeatherHumidityComponent"];
 
-  v14 = [v33 numberForKey:@"qpf"];
-  if (v14 || ([v33 numberForKey:@"precip24Hour"], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  v14 = [componentsCopy numberForKey:@"qpf"];
+  if (v14 || ([componentsCopy numberForKey:@"precip24Hour"], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v15 = v14;
-    [v5 setObject:v14 forKeyedSubscript:@"WFWeatherPrecipitationAmountComponent"];
+    [conditionsCopy setObject:v14 forKeyedSubscript:@"WFWeatherPrecipitationAmountComponent"];
   }
 
-  v16 = [v33 numberForKey:@"precipChance"];
-  [v5 setObject:v16 forKeyedSubscript:@"WFWeatherPrecipitationChanceComponent"];
+  v16 = [componentsCopy numberForKey:@"precipChance"];
+  [conditionsCopy setObject:v16 forKeyedSubscript:@"WFWeatherPrecipitationChanceComponent"];
 
-  v17 = [v33 numberForKey:@"sunriseTimeUtc"];
+  v17 = [componentsCopy numberForKey:@"sunriseTimeUtc"];
 
   if (v17)
   {
     v18 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v17, "unsignedIntegerValue")}];
-    [v5 setObject:v18 forKeyedSubscript:@"WFWeatherSunriseDateComponent"];
+    [conditionsCopy setObject:v18 forKeyedSubscript:@"WFWeatherSunriseDateComponent"];
   }
 
-  v19 = [v33 numberForKey:@"sunsetTimeUtc"];
+  v19 = [componentsCopy numberForKey:@"sunsetTimeUtc"];
 
   if (v19)
   {
     v20 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{objc_msgSend(v19, "unsignedIntegerValue")}];
-    [v5 setObject:v20 forKeyedSubscript:@"WFWeatherSunsetDateComponent"];
+    [conditionsCopy setObject:v20 forKeyedSubscript:@"WFWeatherSunsetDateComponent"];
   }
 
-  v21 = [v33 numberForKey:@"temperature"];
+  v21 = [componentsCopy numberForKey:@"temperature"];
   if (v21)
   {
     v22 = [WFTemperature alloc];
     [v21 doubleValue];
     v23 = [(WFTemperature *)v22 initWithTemperatureUnit:2 value:?];
-    [v5 setObject:v23 forKeyedSubscript:@"WFWeatherTemperatureComponent"];
+    [conditionsCopy setObject:v23 forKeyedSubscript:@"WFWeatherTemperatureComponent"];
   }
 
-  v24 = [v33 numberForKey:@"temperatureFeelsLike"];
+  v24 = [componentsCopy numberForKey:@"temperatureFeelsLike"];
 
   if (v24)
   {
     v25 = [WFTemperature alloc];
     [v24 doubleValue];
     v26 = [(WFTemperature *)v25 initWithTemperatureUnit:2 value:?];
-    [v5 setObject:v26 forKeyedSubscript:@"WFWeatherFeelsLikeTemperatureComponent"];
+    [conditionsCopy setObject:v26 forKeyedSubscript:@"WFWeatherFeelsLikeTemperatureComponent"];
   }
 
-  v27 = [v33 numberForKey:@"uvIndex"];
-  [v5 setObject:v27 forKeyedSubscript:@"WFWeatherUVIndexComponent"];
+  v27 = [componentsCopy numberForKey:@"uvIndex"];
+  [conditionsCopy setObject:v27 forKeyedSubscript:@"WFWeatherUVIndexComponent"];
 
-  v28 = [v33 numberForKey:@"visibility"];
+  v28 = [componentsCopy numberForKey:@"visibility"];
   if (v28)
   {
-    [v5 setObject:v28 forKeyedSubscript:@"WFWeatherVisibilityComponent"];
+    [conditionsCopy setObject:v28 forKeyedSubscript:@"WFWeatherVisibilityComponent"];
   }
 
-  v29 = [v33 numberForKey:@"windDirection"];
-  [v5 setObject:v29 forKeyedSubscript:@"WFWeatherWindDirectionComponent"];
+  v29 = [componentsCopy numberForKey:@"windDirection"];
+  [conditionsCopy setObject:v29 forKeyedSubscript:@"WFWeatherWindDirectionComponent"];
 
-  v30 = [v33 numberForKey:@"windSpeed"];
+  v30 = [componentsCopy numberForKey:@"windSpeed"];
   if (v30)
   {
-    [v5 setObject:v30 forKeyedSubscript:@"WFWeatherWindSpeedComponent"];
+    [conditionsCopy setObject:v30 forKeyedSubscript:@"WFWeatherWindSpeedComponent"];
   }
 
-  v31 = [v33 numberForKey:@"pressureAltimeter"];
+  v31 = [componentsCopy numberForKey:@"pressureAltimeter"];
   if (v31)
   {
-    [v5 setObject:v31 forKeyedSubscript:@"WFWeatherPressureComponent"];
+    [conditionsCopy setObject:v31 forKeyedSubscript:@"WFWeatherPressureComponent"];
   }
 
-  v32 = [v33 numberForKey:@"pressureTendencyCode"];
+  v32 = [componentsCopy numberForKey:@"pressureTendencyCode"];
   if (v32)
   {
-    [v5 setObject:v32 forKeyedSubscript:@"WFWeatherPressureTrendComponent"];
+    [conditionsCopy setObject:v32 forKeyedSubscript:@"WFWeatherPressureTrendComponent"];
   }
 }
 
-- (id)_parseCurrentConditions:(id)a3
+- (id)_parseCurrentConditions:(id)conditions
 {
-  v4 = a3;
-  if (v4)
+  conditionsCopy = conditions;
+  if (conditionsCopy)
   {
     v5 = objc_opt_new();
-    [(WFWeatherChannelParserV3 *)self _parseCommonComponents:v4 intoConditions:v5];
-    v6 = [v4 numberForKey:@"temperatureDewPoint"];
+    [(WFWeatherChannelParserV3 *)self _parseCommonComponents:conditionsCopy intoConditions:v5];
+    v6 = [conditionsCopy numberForKey:@"temperatureDewPoint"];
     if (v6)
     {
       [v5 setObject:v6 forKeyedSubscript:@"WFWeatherDewpointComponent"];
@@ -158,7 +158,7 @@
       [v5 setObject:v8 forKeyedSubscript:@"WFWeatherDewpointTemperatureComponent"];
     }
 
-    v9 = [v4 numberForKey:@"temperatureMaxSince7Am"];
+    v9 = [conditionsCopy numberForKey:@"temperatureMaxSince7Am"];
     if (v9)
     {
       v10 = [WFTemperature alloc];
@@ -176,15 +176,15 @@
   return v5;
 }
 
-- (id)_parseForecastedConditions:(id)a3 individualForecastProcessingBlock:(id)a4 uniqueParsingBlock:(id)a5
+- (id)_parseForecastedConditions:(id)conditions individualForecastProcessingBlock:(id)block uniqueParsingBlock:(id)parsingBlock
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v33 = a5;
-  v32 = [v7 allKeys];
-  v9 = [v32 firstObject];
-  v10 = [v7 objectForKeyedSubscript:v9];
+  conditionsCopy = conditions;
+  blockCopy = block;
+  parsingBlockCopy = parsingBlock;
+  allKeys = [conditionsCopy allKeys];
+  firstObject = [allKeys firstObject];
+  v10 = [conditionsCopy objectForKeyedSubscript:firstObject];
   v11 = [v10 count];
 
   v31 = [MEMORY[0x277CBEB18] arrayWithCapacity:v11];
@@ -192,16 +192,16 @@
   if (v11)
   {
     v12 = 0;
-    v13 = v8 + 16;
+    v13 = blockCopy + 16;
     do
     {
       v34 = v12;
-      v14 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v32, "count")}];
+      v14 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(allKeys, "count")}];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      obj = v32;
+      obj = allKeys;
       v15 = [obj countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v15)
       {
@@ -217,9 +217,9 @@
             }
 
             v19 = *(*(&v36 + 1) + 8 * i);
-            if (((*(v8 + 2))(v8, v14, v7, v19, v12) & 1) == 0)
+            if (((*(blockCopy + 2))(blockCopy, v14, conditionsCopy, v19, v12) & 1) == 0)
             {
-              [v7 objectForKeyedSubscript:v19];
+              [conditionsCopy objectForKeyedSubscript:v19];
               v21 = v20 = v13;
               v22 = [v21 objectAtIndexedSubscript:v12];
               [v14 setObject:v22 forKeyedSubscript:v19];
@@ -243,7 +243,7 @@
       [v23 setObject:v26 forKeyedSubscript:@"__THIS_WILL_BE_DEPRECATED__WFWeatherSeriesIndexComponent"];
 
       v12 = v25;
-      v33[2](v33, v23, v14);
+      parsingBlockCopy[2](parsingBlockCopy, v23, v14);
       [v31 addObject:v23];
     }
 
@@ -255,11 +255,11 @@
   return v27;
 }
 
-- (id)_parseDailyForecastedConditions:(id)a3
+- (id)_parseDailyForecastedConditions:(id)conditions
 {
-  if (a3)
+  if (conditions)
   {
-    v4 = [(WFWeatherChannelParserV3 *)self _parseForecastedConditions:a3 individualForecastProcessingBlock:&__block_literal_global_22 uniqueParsingBlock:&__block_literal_global_12];
+    v4 = [(WFWeatherChannelParserV3 *)self _parseForecastedConditions:conditions individualForecastProcessingBlock:&__block_literal_global_22 uniqueParsingBlock:&__block_literal_global_12];
   }
 
   else
@@ -369,16 +369,16 @@ void __60__WFWeatherChannelParserV3__parseDailyForecastedConditions___block_invo
   }
 }
 
-- (id)_parseDailyPollenForecastedConditions:(id)a3
+- (id)_parseDailyPollenForecastedConditions:(id)conditions
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  conditionsCopy = conditions;
+  v4 = conditionsCopy;
+  if (conditionsCopy)
   {
-    v36 = [v3 allKeys];
-    v5 = [v36 firstObject];
-    v6 = [v4 objectForKeyedSubscript:v5];
+    allKeys = [conditionsCopy allKeys];
+    firstObject = [allKeys firstObject];
+    v6 = [v4 objectForKeyedSubscript:firstObject];
     v7 = [v6 count];
 
     [MEMORY[0x277CBEB18] arrayWithCapacity:v7];
@@ -389,12 +389,12 @@ void __60__WFWeatherChannelParserV3__parseDailyForecastedConditions___block_invo
       v33 = @"treePollenIndex";
       do
       {
-        v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v36, "count", v33)}];
+        v9 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(allKeys, "count", v33)}];
         v37 = 0u;
         v38 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v10 = v36;
+        v10 = allKeys;
         v11 = [v10 countByEnumeratingWithState:&v37 objects:v41 count:16];
         if (v11)
         {
@@ -479,11 +479,11 @@ void __60__WFWeatherChannelParserV3__parseDailyForecastedConditions___block_invo
   return v31;
 }
 
-- (id)_parseHourlyForecastedConditions:(id)a3
+- (id)_parseHourlyForecastedConditions:(id)conditions
 {
-  if (a3)
+  if (conditions)
   {
-    v4 = [(WFWeatherChannelParserV3 *)self _parseForecastedConditions:a3 individualForecastProcessingBlock:&__block_literal_global_18 uniqueParsingBlock:&__block_literal_global_20];
+    v4 = [(WFWeatherChannelParserV3 *)self _parseForecastedConditions:conditions individualForecastProcessingBlock:&__block_literal_global_18 uniqueParsingBlock:&__block_literal_global_20];
   }
 
   else
@@ -512,11 +512,11 @@ void __61__WFWeatherChannelParserV3__parseHourlyForecastedConditions___block_inv
   [v9 setObject:v8 forKeyedSubscript:@"WFWeatherSeverityComponent"];
 }
 
-- (id)_parseLastTwentyFourHoursOfObservations:(id)a3
+- (id)_parseLastTwentyFourHoursOfObservations:(id)observations
 {
-  if (a3)
+  if (observations)
   {
-    v4 = [(WFWeatherChannelParserV3 *)self _parseForecastedConditions:a3 individualForecastProcessingBlock:&__block_literal_global_22_0 uniqueParsingBlock:&__block_literal_global_24];
+    v4 = [(WFWeatherChannelParserV3 *)self _parseForecastedConditions:observations individualForecastProcessingBlock:&__block_literal_global_22_0 uniqueParsingBlock:&__block_literal_global_24];
   }
 
   else
@@ -541,20 +541,20 @@ void __68__WFWeatherChannelParserV3__parseLastTwentyFourHoursOfObservations___bl
   }
 }
 
-- (id)_parsePollutants:(id)a3
+- (id)_parsePollutants:(id)pollutants
 {
-  if (a3)
+  if (pollutants)
   {
     v3 = MEMORY[0x277CBEB38];
-    v4 = a3;
-    v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    pollutantsCopy = pollutants;
+    v5 = [v3 dictionaryWithCapacity:{objc_msgSend(pollutantsCopy, "count")}];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __45__WFWeatherChannelParserV3__parsePollutants___block_invoke;
     v9[3] = &unk_279E6F5C8;
     v10 = v5;
     v6 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v9];
+    [pollutantsCopy enumerateKeysAndObjectsUsingBlock:v9];
 
     v7 = [v6 copy];
   }
@@ -597,37 +597,37 @@ void __45__WFWeatherChannelParserV3__parsePollutants___block_invoke(uint64_t a1,
   [*(a1 + 32) setObject:v14 forKeyedSubscript:v6];
 }
 
-- (void)_parseWebLinks:(id)a3 intoWeatherConditions:(id)a4
+- (void)_parseWebLinks:(id)links intoWeatherConditions:(id)conditions
 {
-  if (a3)
+  if (links)
   {
     v5 = MEMORY[0x277CBEBC0];
-    v6 = a4;
-    v7 = a3;
-    v8 = [v7 stringForKey:@"web"];
+    conditionsCopy = conditions;
+    linksCopy = links;
+    v8 = [linksCopy stringForKey:@"web"];
     v9 = [v5 URLWithString:v8];
-    [v6 setObject:v9 forKeyedSubscript:@"WFWeatherWebLinkComponent"];
+    [conditionsCopy setObject:v9 forKeyedSubscript:@"WFWeatherWebLinkComponent"];
 
     v10 = MEMORY[0x277CBEBC0];
-    v12 = [v7 stringForKey:@"web"];
+    v12 = [linksCopy stringForKey:@"web"];
 
     v11 = [v10 URLWithString:v12];
-    [v6 setObject:v11 forKeyedSubscript:@"WFWeatherMobileLinkComponent"];
+    [conditionsCopy setObject:v11 forKeyedSubscript:@"WFWeatherMobileLinkComponent"];
   }
 }
 
-- (id)parseForecastData:(id)a3 types:(unint64_t)a4 location:(id)a5 locale:(id)a6 date:(id)a7 error:(id *)a8 rules:(id)a9
+- (id)parseForecastData:(id)data types:(unint64_t)types location:(id)location locale:(id)locale date:(id)date error:(id *)error rules:(id)rules
 {
   v154[1] = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
-  if (v14)
+  dataCopy = data;
+  locationCopy = location;
+  localeCopy = locale;
+  dateCopy = date;
+  rulesCopy = rules;
+  if (dataCopy)
   {
     v139 = 0;
-    v19 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v14 options:0 error:&v139];
+    v19 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v139];
     v20 = v139;
   }
 
@@ -644,21 +644,21 @@ void __45__WFWeatherChannelParserV3__parsePollutants___block_invoke(uint64_t a1,
     v22 = MEMORY[0x277CCA9B8];
     v153 = *MEMORY[0x277CCA450];
     v154[0] = @"Failed to parse JSON forecast data";
-    v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v154 forKeys:&v153 count:1];
-    [v22 wf_errorWithCode:1 encapsulatedError:v20 userInfo:v23];
-    *a8 = v24 = 0;
+    currentConditions = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v154 forKeys:&v153 count:1];
+    [v22 wf_errorWithCode:1 encapsulatedError:v20 userInfo:currentConditions];
+    *error = v24 = 0;
     goto LABEL_6;
   }
 
   v130 = v19;
   if ([v26 count])
   {
-    v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"Server error %@", v26];
+    currentConditions = [MEMORY[0x277CCACA8] stringWithFormat:@"Server error %@", v26];
     v27 = MEMORY[0x277CCA9B8];
     v151 = *MEMORY[0x277CCA068];
-    v152 = v23;
+    v152 = currentConditions;
     v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v152 forKeys:&v151 count:1];
-    *a8 = [v27 wf_errorWithCode:17 userInfo:v28];
+    *error = [v27 wf_errorWithCode:17 userInfo:v28];
 
     v19 = v130;
     v24 = 0;
@@ -666,9 +666,9 @@ void __45__WFWeatherChannelParserV3__parsePollutants___block_invoke(uint64_t a1,
   }
 
   v129 = objc_opt_new();
-  IsRequestedInTypes = WFForecastTypeIsRequestedInTypes(2, a4);
-  v128 = v17;
-  if (a4 == 2)
+  IsRequestedInTypes = WFForecastTypeIsRequestedInTypes(2, types);
+  v128 = dateCopy;
+  if (types == 2)
   {
     v30 = v19;
   }
@@ -705,14 +705,14 @@ LABEL_23:
     v149 = *MEMORY[0x277CCA068];
     v150 = @"Failed to parse current observations from response.";
     v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v150 forKeys:&v149 count:1];
-    *a8 = [v42 wf_errorWithCode:1 userInfo:v43];
+    *error = [v42 wf_errorWithCode:1 userInfo:v43];
 
     goto LABEL_23;
   }
 
   v33 = v32;
 LABEL_24:
-  if (WFForecastTypeIsRequestedInTypes(256, a4))
+  if (WFForecastTypeIsRequestedInTypes(256, types))
   {
     v44 = [v130 dictionaryForKey:@"v3-links"];
     if (v44)
@@ -723,9 +723,9 @@ LABEL_24:
   }
 
   [v129 setCurrentConditions:v33];
-  v46 = WFForecastTypeIsRequestedInTypes(32, a4);
-  v127 = v18;
-  if (a4 == 32)
+  v46 = WFForecastTypeIsRequestedInTypes(32, types);
+  v127 = rulesCopy;
+  if (types == 32)
   {
     v47 = v130;
   }
@@ -736,7 +736,7 @@ LABEL_24:
     {
       v48 = 0;
       v49 = 0;
-      v17 = v128;
+      dateCopy = v128;
       goto LABEL_38;
     }
 
@@ -744,13 +744,13 @@ LABEL_24:
   }
 
   v48 = v47;
-  v17 = v128;
+  dateCopy = v128;
   if (v47)
   {
     v49 = [(WFWeatherChannelParserV3 *)self _parseLastTwentyFourHoursOfObservations:v47];
     if (![v49 count])
     {
-      v50 = v16;
+      v50 = localeCopy;
       v51 = WFLogForCategory(7uLL);
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
       {
@@ -761,11 +761,11 @@ LABEL_24:
       v147 = *MEMORY[0x277CCA068];
       v148 = @"Failed to parse last twenty-four hours of observations from response.";
       v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v148 forKeys:&v147 count:1];
-      *a8 = [v59 wf_errorWithCode:1 userInfo:v60];
+      *error = [v59 wf_errorWithCode:1 userInfo:v60];
 
-      v16 = v50;
-      v18 = v127;
-      v17 = v128;
+      localeCopy = v50;
+      rulesCopy = v127;
+      dateCopy = v128;
     }
   }
 
@@ -777,8 +777,8 @@ LABEL_24:
 LABEL_38:
 
   [v129 setLastTwentyFourHoursOfObservations:v49];
-  v61 = WFForecastTypeIsRequestedInTypes(4, a4);
-  if (a4 == 4)
+  v61 = WFForecastTypeIsRequestedInTypes(4, types);
+  if (types == 4)
   {
     v62 = v130;
   }
@@ -805,7 +805,7 @@ LABEL_48:
   v64 = [(WFWeatherChannelParserV3 *)self _parseHourlyForecastedConditions:v62];
   if (![v64 count])
   {
-    v65 = v16;
+    v65 = localeCopy;
     v66 = WFLogForCategory(7uLL);
     if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
     {
@@ -816,18 +816,18 @@ LABEL_48:
     v145 = *MEMORY[0x277CCA068];
     v146 = @"Failed to parse daily forecasted conditions from response.";
     v75 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v146 forKeys:&v145 count:1];
-    *a8 = [v74 wf_errorWithCode:1 userInfo:v75];
+    *error = [v74 wf_errorWithCode:1 userInfo:v75];
 
-    v16 = v65;
-    v18 = v127;
-    v17 = v128;
+    localeCopy = v65;
+    rulesCopy = v127;
+    dateCopy = v128;
   }
 
 LABEL_49:
 
   [v129 setHourlyForecasts:v64];
-  v76 = WFForecastTypeIsRequestedInTypes(8, a4);
-  if (a4 == 8)
+  v76 = WFForecastTypeIsRequestedInTypes(8, types);
+  if (types == 8)
   {
     v77 = v130;
   }
@@ -854,7 +854,7 @@ LABEL_59:
   v79 = [(WFWeatherChannelParserV3 *)self _parseDailyForecastedConditions:v77];
   if (![v79 count])
   {
-    v80 = v16;
+    v80 = localeCopy;
     v81 = WFLogForCategory(7uLL);
     if (os_log_type_enabled(v81, OS_LOG_TYPE_ERROR))
     {
@@ -865,22 +865,22 @@ LABEL_59:
     v143 = *MEMORY[0x277CCA068];
     v144 = @"Failed to parse daily forecasted conditions from response.";
     v90 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v144 forKeys:&v143 count:1];
-    *a8 = [v89 wf_errorWithCode:1 userInfo:v90];
+    *error = [v89 wf_errorWithCode:1 userInfo:v90];
 
-    v16 = v80;
-    v18 = v127;
-    v17 = v128;
+    localeCopy = v80;
+    rulesCopy = v127;
+    dateCopy = v128;
   }
 
 LABEL_60:
 
   [v129 setDailyForecasts:v79];
-  if (WFForecastTypeIsRequestedInTypes(1, a4))
+  if (WFForecastTypeIsRequestedInTypes(1, types))
   {
     v91 = v130;
-    if ([WFResponseParsingRules aqiEnabledByRules:v18 forLocation:v15])
+    if ([WFResponseParsingRules aqiEnabledByRules:rulesCopy forLocation:locationCopy])
     {
-      v92 = [(WFWeatherChannelParserV3 *)self parseAirQualityData:v130 location:v15 locale:v16 error:a8];
+      v92 = [(WFWeatherChannelParserV3 *)self parseAirQualityData:v130 location:locationCopy locale:localeCopy error:error];
     }
 
     else
@@ -897,8 +897,8 @@ LABEL_60:
 
   [v129 setAirQualityObservations:v92];
 
-  v93 = WFForecastTypeIsRequestedInTypes(16, a4);
-  if (a4 == 16)
+  v93 = WFForecastTypeIsRequestedInTypes(16, types);
+  if (types == 16)
   {
     v94 = v91;
 LABEL_69:
@@ -931,9 +931,9 @@ LABEL_71:
       v141 = *MEMORY[0x277CCA068];
       v142 = @"Failed to parse daily pollen forecasted conditions from response.";
       v107 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v142 forKeys:&v141 count:1];
-      *a8 = [v106 wf_errorWithCode:1 userInfo:v107];
+      *error = [v106 wf_errorWithCode:1 userInfo:v107];
 
-      v17 = v128;
+      dateCopy = v128;
     }
   }
 
@@ -945,16 +945,16 @@ LABEL_71:
   v24 = v129;
   [v129 setPollenForecasts:v97];
 
-  v23 = [v129 currentConditions];
-  if (v23)
+  currentConditions = [v129 currentConditions];
+  if (currentConditions)
   {
-    v108 = [v129 dailyForecasts];
-    v109 = [v108 count];
+    dailyForecasts = [v129 dailyForecasts];
+    v109 = [dailyForecasts count];
 
     if (v109)
     {
-      v124 = v16;
-      v126 = v14;
+      v124 = localeCopy;
+      v126 = dataCopy;
       v110 = WFLogForCategory(7uLL);
       if (os_log_type_enabled(v110, OS_LOG_TYPE_INFO))
       {
@@ -962,12 +962,12 @@ LABEL_71:
         _os_log_impl(&dword_272B94000, v110, OS_LOG_TYPE_INFO, "Found current conditions in response; let's try to update the high/low for our current conditions with the matching daily forecasted conditions.", buf, 2u);
       }
 
-      v111 = [MEMORY[0x277CBEA80] currentCalendar];
-      v125 = v15;
-      v112 = [v15 timeZone];
-      [v111 setTimeZone:v112];
+      currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+      v125 = locationCopy;
+      timeZone = [locationCopy timeZone];
+      [currentCalendar setTimeZone:timeZone];
 
-      v113 = [v23 objectForKeyedSubscript:@"WFWeatherForecastDateComponent"];
+      v113 = [currentConditions objectForKeyedSubscript:@"WFWeatherForecastDateComponent"];
       v134 = 0u;
       v135 = 0u;
       v136 = 0u;
@@ -989,25 +989,25 @@ LABEL_71:
 
             v118 = *(*(&v134 + 1) + 8 * i);
             v119 = [v118 objectForKeyedSubscript:@"WFWeatherForecastDateComponent"];
-            if ([v111 isDate:v119 inSameDayAsDate:v113])
+            if ([currentCalendar isDate:v119 inSameDayAsDate:v113])
             {
               v120 = [v118 objectForKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
               if (v120)
               {
                 v121 = [v118 objectForKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
-                v122 = v23;
+                v122 = currentConditions;
               }
 
               else
               {
-                v121 = [v23 objectForKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
+                v121 = [currentConditions objectForKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
                 v122 = v118;
               }
 
               [v122 setObject:v121 forKeyedSubscript:@"WFWeatherHighTemperatureComponent"];
 
               v123 = [v118 objectForKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
-              [v23 setObject:v123 forKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
+              [currentConditions setObject:v123 forKeyedSubscript:@"WFWeatherLowTemperatureComponent"];
 
               goto LABEL_95;
             }
@@ -1025,11 +1025,11 @@ LABEL_71:
 
 LABEL_95:
 
-      v15 = v125;
-      v14 = v126;
-      v16 = v124;
-      v18 = v127;
-      v17 = v128;
+      locationCopy = v125;
+      dataCopy = v126;
+      localeCopy = v124;
+      rulesCopy = v127;
+      dateCopy = v128;
     }
 
     v24 = v129;
@@ -1046,15 +1046,15 @@ LABEL_6:
   return v24;
 }
 
-- (id)parseAirQualityData:(id)a3 location:(id)a4 locale:(id)a5 error:(id *)a6
+- (id)parseAirQualityData:(id)data location:(id)location locale:(id)locale error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  dataCopy = data;
+  localeCopy = locale;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v9;
+    v11 = dataCopy;
     v12 = [v11 objectForKeyedSubscript:@"v3-wx-globalAirQuality"];
 
     if (v12)
@@ -1075,7 +1075,7 @@ LABEL_6:
   if ([v14 count])
   {
     v15 = objc_opt_new();
-    [v15 setLocale:v10];
+    [v15 setLocale:localeCopy];
     v16 = objc_opt_new();
     [v15 setDate:v16];
 
@@ -1095,9 +1095,9 @@ LABEL_6:
     v22 = [v14 stringForKey:@"disclaimer"];
     [v15 setLocalizedDisclaimer:v22];
 
-    v42 = v10;
-    v23 = [v10 countryCode];
-    v24 = AqiScaleForCountryCode(v23);
+    v42 = localeCopy;
+    countryCode = [localeCopy countryCode];
+    v24 = AqiScaleForCountryCode(countryCode);
 
     v25 = [v14 numberForKey:@"airQualityIndex"];
     v41 = v24;
@@ -1132,8 +1132,8 @@ LABEL_6:
     v30 = [v14 dictionaryForKey:@"pollutants"];
     v31 = [(WFWeatherChannelParserV3 *)self _parsePollutants:v30];
 
-    v32 = [v31 allValues];
-    [v15 setPollutants:v32];
+    allValues = [v31 allValues];
+    [v15 setPollutants:allValues];
 
     v33 = [v14 stringForKey:@"primaryPollutant"];
     if (v33)
@@ -1149,9 +1149,9 @@ LABEL_6:
         log = WFLogForCategory(7uLL);
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
         {
-          v39 = [v15 pollutants];
+          pollutants = [v15 pollutants];
           v38 = NSStringFromSelector(sel_localizedName);
-          v37 = [v39 valueForKeyPath:v38];
+          v37 = [pollutants valueForKeyPath:v38];
           v36 = [v37 componentsJoinedByString:{@", "}];
           *buf = 138543618;
           v46 = v33;
@@ -1162,7 +1162,7 @@ LABEL_6:
       }
     }
 
-    v10 = v42;
+    localeCopy = v42;
   }
 
   else
@@ -1172,7 +1172,7 @@ LABEL_6:
     v44 = @"Failed to parse JSON air quality data";
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v44 forKeys:&v43 count:1];
     [v29 wf_errorWithCode:1 userInfo:v18];
-    *a6 = v15 = 0;
+    *error = v15 = 0;
   }
 
   return v15;

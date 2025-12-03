@@ -1,30 +1,30 @@
 @interface BLSHInactiveBudgetPolicy
-- (BLSHInactiveBudgetPolicy)initWithBudgetFactory:(id)a3;
-- (BLSHInactiveBudgetPolicy)initWithOSTimerProvider:(id)a3;
+- (BLSHInactiveBudgetPolicy)initWithBudgetFactory:(id)factory;
+- (BLSHInactiveBudgetPolicy)initWithOSTimerProvider:(id)provider;
 - (NSString)description;
-- (id)budgetForEnvironment:(uint64_t)a1;
-- (id)validateAndChargeFutureSpecifier:(id)a3 nextSpecifier:(id)a4 forEnvironment:(id)a5;
-- (int64_t)allowedFidelityAtDate:(id)a3 forEnvironment:(id)a4 expectedFidelity:(int64_t)a5;
-- (void)chargeRenderedSpecifier:(id)a3;
-- (void)invalidateAtRequestDate:(id)a3 forEnvironment:(id)a4 invalidationBlock:(id)a5;
+- (id)budgetForEnvironment:(uint64_t)environment;
+- (id)validateAndChargeFutureSpecifier:(id)specifier nextSpecifier:(id)nextSpecifier forEnvironment:(id)environment;
+- (int64_t)allowedFidelityAtDate:(id)date forEnvironment:(id)environment expectedFidelity:(int64_t)fidelity;
+- (void)chargeRenderedSpecifier:(id)specifier;
+- (void)invalidateAtRequestDate:(id)date forEnvironment:(id)environment invalidationBlock:(id)block;
 - (void)performInvalidation;
-- (void)purgeStaleDataForNowDate:(id)a3;
-- (void)resetAllBudgetsForReason:(id)a3;
-- (void)resetBudgetForProcess:(id)a3 reason:(id)a4;
+- (void)purgeStaleDataForNowDate:(id)date;
+- (void)resetAllBudgetsForReason:(id)reason;
+- (void)resetBudgetForProcess:(id)process reason:(id)reason;
 - (void)resetFutureSpecifiers;
 @end
 
 @implementation BLSHInactiveBudgetPolicy
 
-- (BLSHInactiveBudgetPolicy)initWithOSTimerProvider:(id)a3
+- (BLSHInactiveBudgetPolicy)initWithOSTimerProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__BLSHInactiveBudgetPolicy_initWithOSTimerProvider___block_invoke;
   v8[3] = &unk_27841F3F0;
-  v9 = v4;
-  v5 = v4;
+  v9 = providerCopy;
+  v5 = providerCopy;
   v6 = [(BLSHInactiveBudgetPolicy *)self initWithBudgetFactory:v8];
 
   return v6;
@@ -41,19 +41,19 @@ BLSHInactiveProcessBudget *__52__BLSHInactiveBudgetPolicy_initWithOSTimerProvide
   return v6;
 }
 
-- (BLSHInactiveBudgetPolicy)initWithBudgetFactory:(id)a3
+- (BLSHInactiveBudgetPolicy)initWithBudgetFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v13.receiver = self;
   v13.super_class = BLSHInactiveBudgetPolicy;
   v5 = [(BLSHInactiveBudgetPolicy *)&v13 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     budgets = v5->_budgets;
-    v5->_budgets = v6;
+    v5->_budgets = dictionary;
 
-    v8 = MEMORY[0x223D70730](v4);
+    v8 = MEMORY[0x223D70730](factoryCopy);
     budgetFactory = v5->_budgetFactory;
     v5->_budgetFactory = v8;
 
@@ -71,16 +71,16 @@ BLSHInactiveProcessBudget *__52__BLSHInactiveBudgetPolicy_initWithOSTimerProvide
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   [v3 appendDictionarySection:self->_budgets withName:@"budgets" skipIfEmpty:1];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (int64_t)allowedFidelityAtDate:(id)a3 forEnvironment:(id)a4 expectedFidelity:(int64_t)a5
+- (int64_t)allowedFidelityAtDate:(id)date forEnvironment:(id)environment expectedFidelity:(int64_t)fidelity
 {
-  v8 = a3;
-  v9 = [(BLSHInactiveBudgetPolicy *)self budgetForEnvironment:a4];
-  v10 = [v9 allowedFidelityAtDate:v8 expectedFidelity:a5];
+  dateCopy = date;
+  v9 = [(BLSHInactiveBudgetPolicy *)self budgetForEnvironment:environment];
+  v10 = [v9 allowedFidelityAtDate:dateCopy expectedFidelity:fidelity];
 
   return v10;
 }
@@ -93,16 +93,16 @@ BLSHInactiveProcessBudget *__52__BLSHInactiveBudgetPolicy_initWithOSTimerProvide
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)chargeRenderedSpecifier:(id)a3
+- (void)chargeRenderedSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__BLSHInactiveBudgetPolicy_chargeRenderedSpecifier___block_invoke;
   v6[3] = &unk_27841F438;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = specifierCopy;
+  v5 = specifierCopy;
   [v5 enumerateDateSpecifiersUsingBlock:v6];
 }
 
@@ -115,44 +115,44 @@ BLSHInactiveProcessBudget *__52__BLSHInactiveBudgetPolicy_initWithOSTimerProvide
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)resetBudgetForProcess:(id)a3 reason:(id)a4
+- (void)resetBudgetForProcess:(id)process reason:(id)reason
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  processCopy = process;
+  reasonCopy = reason;
+  if (processCopy)
   {
     v8 = bls_budget_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = 134218498;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
-      v13 = v6;
+      v13 = processCopy;
       v14 = 2114;
-      v15 = v7;
+      v15 = reasonCopy;
       _os_log_impl(&dword_21FD11000, v8, OS_LOG_TYPE_INFO, "%p will reset budget for process:%{public}@ reason:%{public}@", &v10, 0x20u);
     }
 
     os_unfair_lock_lock(&self->_lock);
-    [(NSMutableDictionary *)self->_budgets removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_budgets removeObjectForKey:processCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetAllBudgetsForReason:(id)a3
+- (void)resetAllBudgetsForReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = bls_budget_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = reasonCopy;
     _os_log_impl(&dword_21FD11000, v5, OS_LOG_TYPE_INFO, "%p will reset all budgets for reason:%{public}@", &v7, 0x16u);
   }
 
@@ -163,18 +163,18 @@ BLSHInactiveProcessBudget *__52__BLSHInactiveBudgetPolicy_initWithOSTimerProvide
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)purgeStaleDataForNowDate:(id)a3
+- (void)purgeStaleDataForNowDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSMutableDictionary *)self->_budgets copy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__BLSHInactiveBudgetPolicy_purgeStaleDataForNowDate___block_invoke;
   v7[3] = &unk_27841F460;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = dateCopy;
+  selfCopy = self;
+  v6 = dateCopy;
   [v5 enumerateKeysAndObjectsUsingBlock:v7];
 
   os_unfair_lock_unlock(&self->_lock);
@@ -189,29 +189,29 @@ void __53__BLSHInactiveBudgetPolicy_purgeStaleDataForNowDate___block_invoke(uint
   }
 }
 
-- (id)budgetForEnvironment:(uint64_t)a1
+- (id)budgetForEnvironment:(uint64_t)environment
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (environment)
   {
-    v5 = [v3 budgetProcessIdentity];
-    if (v5)
+    budgetProcessIdentity = [v3 budgetProcessIdentity];
+    if (budgetProcessIdentity)
     {
-      os_unfair_lock_lock((a1 + 32));
-      v6 = [*(a1 + 8) objectForKey:v5];
+      os_unfair_lock_lock((environment + 32));
+      v6 = [*(environment + 8) objectForKey:budgetProcessIdentity];
       if (!v6)
       {
-        v6 = (*(*(a1 + 16) + 16))();
-        [*(a1 + 8) setObject:v6 forKey:v5];
+        v6 = (*(*(environment + 16) + 16))();
+        [*(environment + 8) setObject:v6 forKey:budgetProcessIdentity];
       }
 
-      os_unfair_lock_unlock((a1 + 32));
+      os_unfair_lock_unlock((environment + 32));
     }
 
     else
     {
-      v6 = *(a1 + 24);
+      v6 = *(environment + 24);
     }
   }
 
@@ -223,15 +223,15 @@ void __53__BLSHInactiveBudgetPolicy_purgeStaleDataForNowDate___block_invoke(uint
   return v6;
 }
 
-- (id)validateAndChargeFutureSpecifier:(id)a3 nextSpecifier:(id)a4 forEnvironment:(id)a5
+- (id)validateAndChargeFutureSpecifier:(id)specifier nextSpecifier:(id)nextSpecifier forEnvironment:(id)environment
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = BLSDefaultFidelityForBacklightState(1, v8);
-  v12 = [(BLSHInactiveBudgetPolicy *)self budgetForEnvironment:v8];
+  environmentCopy = environment;
+  nextSpecifierCopy = nextSpecifier;
+  specifierCopy = specifier;
+  v11 = BLSDefaultFidelityForBacklightState(1, environmentCopy);
+  v12 = [(BLSHInactiveBudgetPolicy *)self budgetForEnvironment:environmentCopy];
 
-  v13 = [v12 validateAndChargeFutureSpecifier:v10 nextSpecifier:v9 expectedFidelity:v11];
+  v13 = [v12 validateAndChargeFutureSpecifier:specifierCopy nextSpecifier:nextSpecifierCopy expectedFidelity:v11];
 
   return v13;
 }
@@ -262,15 +262,15 @@ void __52__BLSHInactiveBudgetPolicy_chargeRenderedSpecifier___block_invoke(uint6
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateAtRequestDate:(id)a3 forEnvironment:(id)a4 invalidationBlock:(id)a5
+- (void)invalidateAtRequestDate:(id)date forEnvironment:(id)environment invalidationBlock:(id)block
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = BLSDefaultFidelityForBacklightState(1, v9);
-  v12 = [(BLSHInactiveBudgetPolicy *)self budgetForEnvironment:v9];
+  blockCopy = block;
+  environmentCopy = environment;
+  dateCopy = date;
+  v11 = BLSDefaultFidelityForBacklightState(1, environmentCopy);
+  v12 = [(BLSHInactiveBudgetPolicy *)self budgetForEnvironment:environmentCopy];
 
-  [v12 invalidateAtRequestDate:v10 expectedFidelity:v11 invalidationBlock:v8];
+  [v12 invalidateAtRequestDate:dateCopy expectedFidelity:v11 invalidationBlock:blockCopy];
 }
 
 @end

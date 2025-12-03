@@ -1,23 +1,23 @@
 @interface FigHTTPRequestSessionDataDelegate
-- (FigHTTPRequestSessionDataDelegate)initWithResponseDispositionOption:(BOOL)a3;
-- (FigRetainProxy)_copyAndLockRequestForTask:(id)a3;
-- (id)adoptVoucherFromRetainProxy:(FigRetainProxy *)a3;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6;
-- (void)_deregisterFigHTTPRequestForDataTask:(id)a3;
-- (void)_registerFigHTTPRequest:(OpaqueFigHTTPRequest *)a3 forDataTask:(id)a4;
+- (FigHTTPRequestSessionDataDelegate)initWithResponseDispositionOption:(BOOL)option;
+- (FigRetainProxy)_copyAndLockRequestForTask:(id)task;
+- (id)adoptVoucherFromRetainProxy:(FigRetainProxy *)proxy;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics;
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler;
+- (void)_deregisterFigHTTPRequestForDataTask:(id)task;
+- (void)_registerFigHTTPRequest:(OpaqueFigHTTPRequest *)request forDataTask:(id)task;
 - (void)dealloc;
-- (void)restoreVoucher:(id)a3;
+- (void)restoreVoucher:(id)voucher;
 @end
 
 @implementation FigHTTPRequestSessionDataDelegate
 
-- (FigHTTPRequestSessionDataDelegate)initWithResponseDispositionOption:(BOOL)a3
+- (FigHTTPRequestSessionDataDelegate)initWithResponseDispositionOption:(BOOL)option
 {
   v7.receiver = self;
   v7.super_class = FigHTTPRequestSessionDataDelegate;
@@ -28,7 +28,7 @@
     v4->_taskToFigHTTPRequest = v5;
     if (v5 && (v4->_taskToFigHTTPRequestMutex = FigReentrantMutexCreate(), v4->_taskToFigHTTPRequest))
     {
-      v4->_doesIgnoreDidReceiveResponseDisposition = a3;
+      v4->_doesIgnoreDidReceiveResponseDisposition = option;
     }
 
     else
@@ -53,24 +53,24 @@
   [(FigHTTPRequestSessionDataDelegate *)&v3 dealloc];
 }
 
-- (void)_registerFigHTTPRequest:(OpaqueFigHTTPRequest *)a3 forDataTask:(id)a4
+- (void)_registerFigHTTPRequest:(OpaqueFigHTTPRequest *)request forDataTask:(id)task
 {
   DerivedStorage = CMBaseObjectGetDerivedStorage();
   FigSimpleMutexLock();
-  [(NSMutableDictionary *)self->_taskToFigHTTPRequest setObject:*DerivedStorage forKey:a4];
+  [(NSMutableDictionary *)self->_taskToFigHTTPRequest setObject:*DerivedStorage forKey:task];
 
   FigSimpleMutexUnlock();
 }
 
-- (void)_deregisterFigHTTPRequestForDataTask:(id)a3
+- (void)_deregisterFigHTTPRequestForDataTask:(id)task
 {
   FigSimpleMutexLock();
-  [(NSMutableDictionary *)self->_taskToFigHTTPRequest removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_taskToFigHTTPRequest removeObjectForKey:task];
 
   FigSimpleMutexUnlock();
 }
 
-- (id)adoptVoucherFromRetainProxy:(FigRetainProxy *)a3
+- (id)adoptVoucherFromRetainProxy:(FigRetainProxy *)proxy
 {
   FigRetainProxyGetOwner();
   v3 = *(CMBaseObjectGetDerivedStorage() + 560);
@@ -78,18 +78,18 @@
   return voucher_adopt();
 }
 
-- (void)restoreVoucher:(id)a3
+- (void)restoreVoucher:(id)voucher
 {
-  if (a3)
+  if (voucher)
   {
     v3 = voucher_adopt();
   }
 }
 
-- (FigRetainProxy)_copyAndLockRequestForTask:(id)a3
+- (FigRetainProxy)_copyAndLockRequestForTask:(id)task
 {
   FigSimpleMutexLock();
-  v5 = [(NSMutableDictionary *)self->_taskToFigHTTPRequest objectForKey:a3];
+  v5 = [(NSMutableDictionary *)self->_taskToFigHTTPRequest objectForKey:task];
   if (v5)
   {
     FigRetainProxyRetain();
@@ -111,16 +111,16 @@
   return v5;
 }
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v7 = objc_autoreleasePoolPush();
-  if (![a4 previousFailureCount])
+  if (![challenge previousFailureCount])
   {
-    (*(a5 + 2))(a5, 1, 0);
+    (*(handler + 2))(handler, 1, 0);
     goto LABEL_6;
   }
 
-  if ([a4 previousFailureCount] != 1 || (objc_msgSend(objc_msgSend(objc_msgSend(a4, "protectionSpace"), "authenticationMethod"), "isEqual:", *MEMORY[0x1E695AB40]) & 1) != 0)
+  if ([challenge previousFailureCount] != 1 || (objc_msgSend(objc_msgSend(objc_msgSend(challenge, "protectionSpace"), "authenticationMethod"), "isEqual:", *MEMORY[0x1E695AB40]) & 1) != 0)
   {
     goto LABEL_4;
   }
@@ -134,7 +134,7 @@
   if (!theArray)
   {
 LABEL_4:
-    (*(a5 + 2))(a5, 2, 0);
+    (*(handler + 2))(handler, 2, 0);
     goto LABEL_6;
   }
 
@@ -159,7 +159,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  (*(a5 + 2))(a5, 0, v15);
+  (*(handler + 2))(handler, 0, v15);
   CFRelease(v14);
   if (theArray)
   {
@@ -170,13 +170,13 @@ LABEL_6:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didReceiveChallenge:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
   v10 = objc_autoreleasePoolPush();
-  v11 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:a4];
+  v11 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:task];
   if (!v11)
   {
-    [FigHTTPRequestSessionDataDelegate URLSession:a6 task:? didReceiveChallenge:? completionHandler:?];
+    [FigHTTPRequestSessionDataDelegate URLSession:handler task:? didReceiveChallenge:? completionHandler:?];
     goto LABEL_18;
   }
 
@@ -190,9 +190,9 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if ([a5 previousFailureCount] || !objc_msgSend(a5, "proposedCredential"))
+  if ([challenge previousFailureCount] || !objc_msgSend(challenge, "proposedCredential"))
   {
-    if (a5)
+    if (challenge)
     {
       if (*(DerivedStorage + 464))
       {
@@ -213,7 +213,7 @@ LABEL_16:
                 *(DerivedStorage + 472) = 0;
               }
 
-              *(DerivedStorage + 472) = _Block_copy(a6);
+              *(DerivedStorage + 472) = _Block_copy(handler);
               goto LABEL_17;
             }
           }
@@ -224,7 +224,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  (*(a6 + 2))(a6, 1, 0);
+  (*(handler + 2))(handler, 1, 0);
 LABEL_17:
   [(FigHTTPRequestSessionDataDelegate *)self restoreVoucher:v12];
   FigRetainProxyUnlockMutex();
@@ -233,20 +233,20 @@ LABEL_18:
   objc_autoreleasePoolPop(v10);
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   cf[16] = *MEMORY[0x1E69E9840];
   v94 = 0;
   v93 = 0;
   v10 = objc_autoreleasePoolPush();
-  v11 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:a4];
+  v11 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:task];
   if (!v11)
   {
     v94 = -12420;
     goto LABEL_77;
   }
 
-  v90 = self;
+  selfCopy = self;
   v12 = [(FigHTTPRequestSessionDataDelegate *)self adoptVoucherFromRetainProxy:v11];
   Owner = FigRetainProxyGetOwner();
   DerivedStorage = CMBaseObjectGetDerivedStorage();
@@ -254,25 +254,25 @@ LABEL_18:
   if (*(DerivedStorage + 172))
   {
     v94 = -12420;
-    self = v90;
+    self = selfCopy;
     goto LABEL_76;
   }
 
   v15 = DerivedStorage;
-  v88 = a6;
+  handlerCopy = handler;
   *(DerivedStorage + 216) = FigGetUpTimeNanoseconds();
-  v16 = [objc_msgSend(objc_msgSend(a4 "_incompleteTaskMetrics")];
+  v16 = [objc_msgSend(objc_msgSend(task "_incompleteTaskMetrics")];
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v16 _usesMultipath];
+    _usesMultipath = [v16 _usesMultipath];
   }
 
   else
   {
-    v17 = 0;
+    _usesMultipath = 0;
   }
 
-  *(v15 + 536) = v17;
+  *(v15 + 536) = _usesMultipath;
   *(v15 + 537) = [v16 isExpensive];
   [objc_msgSend(v16 "domainLookupEndDate")];
   *(v15 + 264) = (v18 * 1000000000.0);
@@ -318,52 +318,52 @@ LABEL_18:
     *(v15 + 208) = *(v15 + 200);
   }
 
-  [a5 _CFURLResponse];
+  [response _CFURLResponse];
   IsCellular = CFURLResponseConnectionIsCellular();
   *(v15 + 376) = IsCellular;
   if (IsCellular)
   {
-    [a5 _CFURLResponse];
+    [response _CFURLResponse];
     *(v15 + 377) = CFURLResponseConnectionDidFallback();
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v27 = [a5 allHeaderFields];
-    *(v15 + 144) = v27;
-    if (!v27)
+    allHeaderFields = [response allHeaderFields];
+    *(v15 + 144) = allHeaderFields;
+    if (!allHeaderFields)
     {
       _figHTTPRequestCreateErrorComment(v15, v28, @"NULL HTTP response headers", v29, v30, v31, v32, v33, v84);
       v94 = FigSignalErrorAtGM();
     }
 
-    v34 = [a5 statusCode];
-    v35 = v34;
+    statusCode = [response statusCode];
+    v35 = statusCode;
     *(v15 + 416) = 0;
     *(v15 + 424) = 0;
   }
 
-  else if ([objc_msgSend(objc_msgSend(a5 "URL")] && objc_msgSend(objc_msgSend(objc_msgSend(a5, "URL"), "scheme"), "caseInsensitiveCompare:", @"file"))
+  else if ([objc_msgSend(objc_msgSend(response "URL")] && objc_msgSend(objc_msgSend(objc_msgSend(response, "URL"), "scheme"), "caseInsensitiveCompare:", @"file"))
   {
     v36 = objc_opt_class();
-    v85 = [objc_msgSend(a5 "URL")];
+    v85 = [objc_msgSend(response "URL")];
     _figHTTPRequestCreateErrorComment(v15, v37, @"Received response of type %@ for scheme %@", v38, v39, v40, v41, v42, v36);
-    v34 = FigSignalErrorAtGM();
+    statusCode = FigSignalErrorAtGM();
     v35 = 0;
-    v94 = v34;
+    v94 = statusCode;
   }
 
   else
   {
     *(v15 + 144) = objc_alloc_init(MEMORY[0x1E695DF20]);
-    v34 = [a5 expectedContentLength];
-    *(v15 + 416) = v34;
+    statusCode = [response expectedContentLength];
+    *(v15 + 416) = statusCode;
     v35 = 200;
   }
 
   *(v15 + 457) = 1;
-  FigBytePumpGetFigBaseObject(v34);
+  FigBytePumpGetFigBaseObject(statusCode);
   if (figHTTPShouldReportNetworkHistory(v15))
   {
     if (*(v15 + 176))
@@ -406,7 +406,7 @@ LABEL_18:
 
   if (!*(v15 + 80))
   {
-    *(v15 + 80) = CFRetain([a5 URL]);
+    *(v15 + 80) = CFRetain([response URL]);
   }
 
   v48 = *(v15 + 368);
@@ -415,7 +415,7 @@ LABEL_18:
     CFRelease(v48);
   }
 
-  [a5 _CFURLResponse];
+  [response _CFURLResponse];
   *(v15 + 368) = CFURLResponseCopyPeerAddress();
   FigCFHTTPCopyErrorCodeAndCommentForHTTPStatusCode(v35, &v94, &v93);
   if (v94)
@@ -543,7 +543,7 @@ LABEL_68:
         Callback = figHTTPRequestPerformReadCallback(Owner, 0, 0, 0, v63, 0);
         v94 = Callback;
 LABEL_72:
-        a6 = v88;
+        handler = handlerCopy;
         goto LABEL_73;
       }
     }
@@ -573,10 +573,10 @@ LABEL_98:
   v94 = FigSignalErrorAtGM();
   _figHTTPRequestCreateErrorComment(v15, v77, @"byte range and no content length - error code is %d", v78, v79, v80, v81, v82, v35);
 LABEL_63:
-  a6 = v88;
+  handler = handlerCopy;
   Callback = v94;
 LABEL_73:
-  self = v90;
+  self = selfCopy;
   if (Callback != -12785 && Callback)
   {
     figHTTPRequestPerformReadCallback(Owner, 0, 0, 0, 2u, Callback);
@@ -588,15 +588,15 @@ LABEL_76:
   FigRetainProxyRelease();
   if (!v94)
   {
-    (*(a6 + 2))(a6, 1);
+    (*(handler + 2))(handler, 1);
     goto LABEL_80;
   }
 
 LABEL_77:
-  (*(a6 + 2))(a6, 0);
+  (*(handler + 2))(handler, 0);
   if (self->_doesIgnoreDidReceiveResponseDisposition)
   {
-    [a4 cancel];
+    [task cancel];
   }
 
 LABEL_80:
@@ -607,11 +607,11 @@ LABEL_80:
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  if (a5)
+  if (data)
   {
-    v8 = CFRetain(a5);
+    v8 = CFRetain(data);
   }
 
   else
@@ -619,7 +619,7 @@ LABEL_80:
     v8 = 0;
   }
 
-  v9 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:a4];
+  v9 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:task];
   if (!v9)
   {
     goto LABEL_59;
@@ -629,13 +629,13 @@ LABEL_80:
   v11 = [(FigHTTPRequestSessionDataDelegate *)self adoptVoucherFromRetainProxy:v9];
   Owner = FigRetainProxyGetOwner();
   DerivedStorage = CMBaseObjectGetDerivedStorage();
-  v14 = *(DerivedStorage + 256);
-  if (!v14)
+  _incompleteTaskMetrics = *(DerivedStorage + 256);
+  if (!_incompleteTaskMetrics)
   {
-    v14 = [*(DerivedStorage + 504) _incompleteTaskMetrics];
+    _incompleteTaskMetrics = [*(DerivedStorage + 504) _incompleteTaskMetrics];
   }
 
-  v15 = [objc_msgSend(v14 "transactionMetrics")];
+  v15 = [objc_msgSend(_incompleteTaskMetrics "transactionMetrics")];
   v47 = 0;
   v48 = &v47;
   v49 = 0x2020000000;
@@ -660,13 +660,13 @@ LABEL_80:
 
     if ([v16 _establishmentReport])
     {
-      v18 = [v16 _establishmentReport];
+      _establishmentReport = [v16 _establishmentReport];
       enumerate_block = MEMORY[0x1E69E9820];
       *v45 = 3221225472;
       *&v45[8] = __figHTTPGetConnectionRTT_block_invoke;
       *&v45[16] = &unk_1E748EF08;
       v46 = &v47;
-      nw_establishment_report_enumerate_protocols(v18, &enumerate_block);
+      nw_establishment_report_enumerate_protocols(_establishmentReport, &enumerate_block);
     }
   }
 
@@ -680,7 +680,7 @@ LABEL_14:
     *(DerivedStorage + 232) = figHTTPCapUptimeToResponseEndTime(DerivedStorage, UpTimeNanoseconds);
     if (figHTTPShouldReportNetworkHistory(DerivedStorage))
     {
-      [a5 length];
+      [data length];
       FigNetworkHistoryRequestReceivedBytes();
     }
 
@@ -745,7 +745,7 @@ LABEL_25:
     v42 = v20;
     if (*(DerivedStorage + 16))
     {
-      v41 = self;
+      selfCopy = self;
       v26 = FigRetainProxyGetOwner();
       v27 = CMBaseObjectGetDerivedStorage();
       v28 = CFDataGetLength(v8) - v25;
@@ -809,7 +809,7 @@ LABEL_40:
         }
       }
 
-      self = v41;
+      self = selfCopy;
       goto LABEL_42;
     }
 
@@ -898,17 +898,17 @@ LABEL_59:
   }
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 willCacheResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task willCacheResponse:(id)response completionHandler:(id)handler
 {
   v7 = objc_autoreleasePoolPush();
-  (*(a6 + 2))(a6, 0);
+  (*(handler + 2))(handler, 0);
 
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:a4];
+  v7 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:task];
   if (v7)
   {
     v8 = [(FigHTTPRequestSessionDataDelegate *)self adoptVoucherFromRetainProxy:v7];
@@ -916,10 +916,10 @@ LABEL_59:
     DerivedStorage = CMBaseObjectGetDerivedStorage();
     if (!*(DerivedStorage + 552))
     {
-      if (a5)
+      if (error)
       {
-        v11 = [a5 domain];
-        if ([v11 compare:*MEMORY[0x1E696A978]] || objc_msgSend(a5, "code") != -999)
+        domain = [error domain];
+        if ([domain compare:*MEMORY[0x1E696A978]] || objc_msgSend(error, "code") != -999)
         {
           v12 = 3;
         }
@@ -945,7 +945,7 @@ LABEL_59:
 
     *(DerivedStorage + 224) = FigGetUpTimeNanoseconds();
     v13 = objc_autoreleasePoolPush();
-    *(DerivedStorage + 512) = a5;
+    *(DerivedStorage + 512) = error;
     v14 = *DerivedStorage;
     v15 = CMBaseObjectGetDerivedStorage();
     if (*(v15 + 172))
@@ -968,9 +968,9 @@ LABEL_31:
     v17 = *(v15 + 512);
     if (v17)
     {
-      v18 = [v17 domain];
+      domain2 = [v17 domain];
       [*(v16 + 512) code];
-      _figHTTPRequestCreateErrorComment(v16, v21, @"Network error: domain=%@, code=%d, %@ for %@", v22, v23, v24, v25, v26, v18);
+      _figHTTPRequestCreateErrorComment(v16, v21, @"Network error: domain=%@, code=%d, %@ for %@", v22, v23, v24, v25, v26, domain2);
       [*(v16 + 512) code];
       OutputBuffer = FigSignalErrorAtGM();
       goto LABEL_21;
@@ -1079,21 +1079,21 @@ LABEL_42:
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didFinishCollectingMetrics:(id)a5
+- (void)URLSession:(id)session task:(id)task didFinishCollectingMetrics:(id)metrics
 {
-  if ([objc_msgSend(a5 transactionMetrics] == 1)
+  if ([objc_msgSend(metrics transactionMetrics] == 1)
   {
-    v8 = [objc_msgSend(a5 "transactionMetrics")];
-    v9 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:a4];
+    v8 = [objc_msgSend(metrics "transactionMetrics")];
+    v9 = [(FigHTTPRequestSessionDataDelegate *)self _copyAndLockRequestForTask:task];
     if (v9)
     {
       v10 = [(FigHTTPRequestSessionDataDelegate *)self adoptVoucherFromRetainProxy:v9];
       FigRetainProxyGetOwner();
       DerivedStorage = CMBaseObjectGetDerivedStorage();
-      *(DerivedStorage + 256) = a5;
+      *(DerivedStorage + 256) = metrics;
       [objc_msgSend(v8 "responseEndDate")];
       *(DerivedStorage + 304) = (v12 * 1000000000.0);
-      *(DerivedStorage + 328) = [a5 redirectCount];
+      *(DerivedStorage + 328) = [metrics redirectCount];
       if (objc_opt_respondsToSelector())
       {
         *(DerivedStorage + 336) = [v8 _privacyStance];
@@ -1108,11 +1108,11 @@ LABEL_42:
         }
 
         *(DerivedStorage + 344) = 0;
-        v14 = [v8 _establishmentReport];
-        *(DerivedStorage + 344) = v14;
-        if (v14)
+        _establishmentReport = [v8 _establishmentReport];
+        *(DerivedStorage + 344) = _establishmentReport;
+        if (_establishmentReport)
         {
-          nw_retain(v14);
+          nw_retain(_establishmentReport);
         }
       }
 
@@ -1123,11 +1123,11 @@ LABEL_42:
       }
 
       *(DerivedStorage + 352) = 0;
-      v16 = [v8 _dataTransferReport];
-      *(DerivedStorage + 352) = v16;
-      if (v16)
+      _dataTransferReport = [v8 _dataTransferReport];
+      *(DerivedStorage + 352) = _dataTransferReport;
+      if (_dataTransferReport)
       {
-        nw_retain(v16);
+        nw_retain(_dataTransferReport);
       }
 
       [(FigHTTPRequestSessionDataDelegate *)self restoreVoucher:v10];

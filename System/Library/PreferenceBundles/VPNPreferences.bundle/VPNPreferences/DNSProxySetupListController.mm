@@ -2,23 +2,23 @@
 - (DNSProxySetupListController)init;
 - (id)bundle;
 - (id)connection;
-- (id)getDescriptionForApp:(id)a3;
+- (id)getDescriptionForApp:(id)app;
 - (id)specifiers;
-- (id)statusForConnection:(id)a3;
-- (void)appWillEnterForeground:(id)a3;
+- (id)statusForConnection:(id)connection;
+- (void)appWillEnterForeground:(id)foreground;
 - (void)dealloc;
 - (void)loadView;
-- (void)setStateForServiceID:(id)a3;
+- (void)setStateForServiceID:(id)d;
 @end
 
 @implementation DNSProxySetupListController
 
-- (void)appWillEnterForeground:(id)a3
+- (void)appWillEnterForeground:(id)foreground
 {
-  v4 = a3;
-  v5 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  foregroundCopy = foreground;
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
   v6 = +[VPNConnectionStore sharedInstance];
-  v7 = [v5 objectForKeyedSubscript:@"vpn-service-id"];
+  v7 = [userInfo objectForKeyedSubscript:@"vpn-service-id"];
   v8 = [v6 connectionWithServiceID:v7 withGrade:{-[DNSProxySetupListController vpnGrade](self, "vpnGrade")}];
   objc_initWeak(&location, v8);
 
@@ -71,19 +71,19 @@
   return [NSBundle bundleForClass:v2];
 }
 
-- (void)setStateForServiceID:(id)a3
+- (void)setStateForServiceID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  dCopy = d;
+  v5 = [dCopy copy];
   [(DNSProxySetupListController *)self setServiceID:v5];
 
   v6 = OBJC_IVAR___PSViewController__specifier;
-  v7 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v8 = [v7 objectForKey:@"service-grade"];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v8 = [userInfo objectForKey:@"service-grade"];
   -[DNSProxySetupListController setVpnGrade:](self, "setVpnGrade:", [v8 unsignedIntegerValue]);
 
   v9 = +[VPNConnectionStore sharedInstance];
-  v15 = [v9 optionsForServiceID:v4 withGrade:{-[DNSProxySetupListController vpnGrade](self, "vpnGrade")}];
+  v15 = [v9 optionsForServiceID:dCopy withGrade:{-[DNSProxySetupListController vpnGrade](self, "vpnGrade")}];
 
   if (v15)
   {
@@ -96,8 +96,8 @@
     v12 = [v15 objectForKey:@"VPNIncludedBundleIDs"];
     [(DNSProxySetupListController *)self setIncludedBundleIDs:v12];
 
-    v13 = [*&self->PSListController_opaque[v6] userInfo];
-    v14 = [v13 objectForKey:@"vpn-organization"];
+    userInfo2 = [*&self->PSListController_opaque[v6] userInfo];
+    v14 = [userInfo2 objectForKey:@"vpn-organization"];
     [(DNSProxySetupListController *)self setOrganization:v14];
   }
 }
@@ -107,8 +107,8 @@
   v5.receiver = self;
   v5.super_class = DNSProxySetupListController;
   [(DNSProxySetupListController *)&v5 loadView];
-  v3 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
-  v4 = [v3 objectForKey:@"vpn-service-id"];
+  userInfo = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] userInfo];
+  v4 = [userInfo objectForKey:@"vpn-service-id"];
 
   [(DNSProxySetupListController *)self setStateForServiceID:v4];
 }
@@ -116,33 +116,33 @@
 - (id)connection
 {
   v3 = +[VPNConnectionStore sharedInstance];
-  v4 = [(DNSProxySetupListController *)self serviceID];
-  v5 = [v3 connectionWithServiceID:v4 withGrade:{-[DNSProxySetupListController vpnGrade](self, "vpnGrade")}];
+  serviceID = [(DNSProxySetupListController *)self serviceID];
+  v5 = [v3 connectionWithServiceID:serviceID withGrade:{-[DNSProxySetupListController vpnGrade](self, "vpnGrade")}];
 
   return v5;
 }
 
-- (id)statusForConnection:(id)a3
+- (id)statusForConnection:(id)connection
 {
-  v3 = [(DNSProxySetupListController *)self connection];
-  v4 = v3;
-  if (v3)
+  connection = [(DNSProxySetupListController *)self connection];
+  v4 = connection;
+  if (connection)
   {
-    v5 = [v3 statusText];
+    statusText = [connection statusText];
   }
 
   else
   {
     v6 = [NSBundle bundleForClass:objc_opt_class()];
-    v5 = [v6 localizedStringForKey:@"INVALID" value:&stru_411E8 table:@"MobileVPN"];
+    statusText = [v6 localizedStringForKey:@"INVALID" value:&stru_411E8 table:@"MobileVPN"];
   }
 
-  return v5;
+  return statusText;
 }
 
-- (id)getDescriptionForApp:(id)a3
+- (id)getDescriptionForApp:(id)app
 {
-  v3 = [a3 propertyForKey:@"AppDescription"];
+  v3 = [app propertyForKey:@"AppDescription"];
   v4 = v3;
   if (v3)
   {
@@ -159,34 +159,34 @@
 
 - (id)specifiers
 {
-  v2 = self;
+  selfCopy = self;
   if (*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier])
   {
-    v3 = [(DNSProxySetupListController *)self displayName];
-    [(DNSProxySetupListController *)v2 setTitle:v3];
+    displayName = [(DNSProxySetupListController *)self displayName];
+    [(DNSProxySetupListController *)selfCopy setTitle:displayName];
 
     v4 = objc_alloc_init(NSMutableArray);
     v5 = +[PSSpecifier emptyGroupSpecifier];
     [v4 addObject:v5];
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"VPN_GRADE" value:&stru_411E8 table:@"MobileVPN"];
-    v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:v2 set:0 get:"vpnGradeNameForSpecifier:" detail:0 cell:4 edit:0];
+    v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:selfCopy set:0 get:"vpnGradeNameForSpecifier:" detail:0 cell:4 edit:0];
 
     v48 = v8;
     [v4 addObject:v8];
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"STATUS" value:&stru_411E8 table:@"MobileVPN"];
-    v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:v2 set:0 get:"statusForConnection:" detail:0 cell:4 edit:0];
+    v11 = [PSSpecifier preferenceSpecifierNamed:v10 target:selfCopy set:0 get:"statusForConnection:" detail:0 cell:4 edit:0];
 
     v12 = v11;
     v54 = v4;
     [v4 addObject:v11];
-    v13 = [(DNSProxySetupListController *)v2 includedBundleIDs];
-    if (v13)
+    includedBundleIDs = [(DNSProxySetupListController *)selfCopy includedBundleIDs];
+    if (includedBundleIDs)
     {
-      v14 = v13;
-      v15 = [(DNSProxySetupListController *)v2 includedBundleIDs];
-      v16 = [v15 count];
+      v14 = includedBundleIDs;
+      includedBundleIDs2 = [(DNSProxySetupListController *)selfCopy includedBundleIDs];
+      v16 = [includedBundleIDs2 count];
 
       if (v16)
       {
@@ -201,9 +201,9 @@
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        obj = [(DNSProxySetupListController *)v2 includedBundleIDs];
+        obj = [(DNSProxySetupListController *)selfCopy includedBundleIDs];
         v20 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
-        v21 = v2;
+        v21 = selfCopy;
         if (v20)
         {
           v22 = v20;
@@ -228,9 +228,9 @@
               v56 = 0;
               v28 = [v27 initWithBundleIdentifier:v26 allowPlaceholder:0 error:&v56];
               v29 = v56;
-              v30 = [v28 localizedName];
+              localizedName = [v28 localizedName];
 
-              if (v30)
+              if (localizedName)
               {
                 v31 = v29 == 0;
               }
@@ -243,9 +243,9 @@
               if (v31)
               {
                 v32 = v22;
-                v33 = [PSSpecifier preferenceSpecifierNamed:v30 target:v21 set:0 get:"getDescriptionForApp:" detail:0 cell:4 edit:0];
-                v34 = [(DNSProxySetupListController *)v21 includedBundleIDs];
-                v35 = [v34 objectForKeyedSubscript:v26];
+                v33 = [PSSpecifier preferenceSpecifierNamed:localizedName target:v21 set:0 get:"getDescriptionForApp:" detail:0 cell:4 edit:0];
+                includedBundleIDs3 = [(DNSProxySetupListController *)v21 includedBundleIDs];
+                v35 = [includedBundleIDs3 objectForKeyedSubscript:v26];
                 [v33 setProperty:v35 forKey:@"AppDescription"];
 
                 [v33 setProperty:v26 forKey:v53];
@@ -287,18 +287,18 @@
           while (v22);
         }
 
-        v2 = v21;
+        selfCopy = v21;
         v12 = v46;
         v5 = v47;
       }
     }
 
     v41 = OBJC_IVAR___PSListController__specifiers;
-    v42 = *&v2->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
-    *&v2->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] = v54;
+    v42 = *&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
+    *&selfCopy->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] = v54;
     v43 = v54;
 
-    v44 = *&v2->PSListController_opaque[v41];
+    v44 = *&selfCopy->PSListController_opaque[v41];
   }
 
   else

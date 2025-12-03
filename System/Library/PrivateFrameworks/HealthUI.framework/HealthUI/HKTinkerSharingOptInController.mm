@@ -1,5 +1,5 @@
 @interface HKTinkerSharingOptInController
-- (HKTinkerSharingOptInController)initWithStyle:(int64_t)a3 delegate:(id)a4;
+- (HKTinkerSharingOptInController)initWithStyle:(int64_t)style delegate:(id)delegate;
 - (id)alternateButtonTitle;
 - (id)detailString;
 - (id)suggestedButtonTitle;
@@ -7,25 +7,25 @@
 - (id)termsOfAddress;
 - (id)titleString;
 - (void)_configureLayoutStyle;
-- (void)_presentNetworkAccessConfirmationWithHelper:(id)a3;
-- (void)applyConfirmedOptin:(BOOL)a3;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)_presentNetworkAccessConfirmationWithHelper:(id)helper;
+- (void)applyConfirmedOptin:(BOOL)optin;
+- (void)suggestedButtonPressed:(id)pressed;
 - (void)viewDidLoad;
 @end
 
 @implementation HKTinkerSharingOptInController
 
-- (HKTinkerSharingOptInController)initWithStyle:(int64_t)a3 delegate:(id)a4
+- (HKTinkerSharingOptInController)initWithStyle:(int64_t)style delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = HKTinkerSharingOptInController;
   v7 = [(BPSWelcomeOptinViewController *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_layoutStyle = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_layoutStyle = style;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     [(HKTinkerSharingOptInController *)v8 _configureLayoutStyle];
   }
 
@@ -56,8 +56,8 @@
   if (self->_layoutStyle == 2)
   {
     v3 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_userDidRequestCancel];
-    v4 = [(OBBaseWelcomeController *)self navigationItem];
-    [v4 setLeftBarButtonItem:v3];
+    navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem setLeftBarButtonItem:v3];
   }
 }
 
@@ -67,9 +67,9 @@
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = [v4 localizedStringForKey:@"HEALTH_TINKER_TITLE_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained tinkerMember];
-  v8 = [v7 firstName];
-  v9 = [v3 stringWithFormat:v5, v8];
+  tinkerMember = [WeakRetained tinkerMember];
+  firstName = [tinkerMember firstName];
+  v9 = [v3 stringWithFormat:v5, firstName];
 
   return v9;
 }
@@ -80,9 +80,9 @@
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v5 = [v4 localizedStringForKey:@"HEALTH_TINKER_DETAIL_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained tinkerMember];
-  v8 = [v7 firstName];
-  v9 = [v3 stringWithFormat:v5, v8];
+  tinkerMember = [WeakRetained tinkerMember];
+  firstName = [tinkerMember firstName];
+  v9 = [v3 stringWithFormat:v5, firstName];
 
   return v9;
 }
@@ -93,24 +93,24 @@
   v10[0] = *MEMORY[0x1E695C1C0];
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained tinkerMember];
+  tinkerMember = [WeakRetained tinkerMember];
   v6 = objc_alloc_init(MEMORY[0x1E695CE18]);
-  v7 = [v5 contactWithKeys:v3 contactStore:v6];
+  v7 = [tinkerMember contactWithKeys:v3 contactStore:v6];
 
   if (v7)
   {
-    v8 = [v7 termsOfAddress];
+    termsOfAddress = [v7 termsOfAddress];
   }
 
   else
   {
-    v8 = MEMORY[0x1E695E0F0];
+    termsOfAddress = MEMORY[0x1E695E0F0];
   }
 
-  return v8;
+  return termsOfAddress;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
   v4 = objc_alloc_init(HKTinkerSharingHelper);
   if ([(HKTinkerSharingHelper *)v4 isChinaSKUDevice]&& ![(HKTinkerSharingHelper *)v4 networkAccessEnabledForHealth])
@@ -124,7 +124,7 @@
   }
 }
 
-- (void)applyConfirmedOptin:(BOOL)a3
+- (void)applyConfirmedOptin:(BOOL)optin
 {
   v14 = *MEMORY[0x1E69E9840];
   _HKInitializeLogging();
@@ -145,8 +145,8 @@
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v10 = [(HKTinkerSharingGizmoPermissionController *)v7 initWithStyle:layoutStyle delegate:WeakRetained];
 
-    v11 = [(HKTinkerSharingOptInController *)self navigationController];
-    [v11 pushViewController:v10 animated:1];
+    navigationController = [(HKTinkerSharingOptInController *)self navigationController];
+    [navigationController pushViewController:v10 animated:1];
   }
 }
 
@@ -173,10 +173,10 @@
   return v2;
 }
 
-- (void)_presentNetworkAccessConfirmationWithHelper:(id)a3
+- (void)_presentNetworkAccessConfirmationWithHelper:(id)helper
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v27 = a3;
+  helperCopy = helper;
   v4 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v28 = [v4 localizedStringForKey:@"ENABLE_NETWORK_ACCESS_FOR_HEALTH_APP" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
 
@@ -185,18 +185,18 @@
 
   v6 = objc_alloc(MEMORY[0x1E696AAB0]);
   v34 = *MEMORY[0x1E696A498];
-  v7 = [(HKTinkerSharingOptInController *)self termsOfAddress];
-  v33 = v7;
+  termsOfAddress = [(HKTinkerSharingOptInController *)self termsOfAddress];
+  v33 = termsOfAddress;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v33 count:1];
   v35[0] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:&v34 count:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [WeakRetained tinkerMember];
-  v12 = [v11 firstName];
-  v25 = [v6 initWithFormat:v26 options:0 locale:0 context:v9, v12];
+  tinkerMember = [WeakRetained tinkerMember];
+  firstName = [tinkerMember firstName];
+  v25 = [v6 initWithFormat:v26 options:0 locale:0 context:v9, firstName];
 
-  v24 = [v25 string];
-  v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v28 message:v24 preferredStyle:1];
+  string = [v25 string];
+  v13 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v28 message:string preferredStyle:1];
   v14 = MEMORY[0x1E69DC648];
   v15 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v16 = [v15 localizedStringForKey:@"DONT_ENABLE_NETWORK_ACCESS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
@@ -215,14 +215,14 @@
   v29[1] = 3221225472;
   v29[2] = __78__HKTinkerSharingOptInController__presentNetworkAccessConfirmationWithHelper___block_invoke_2;
   v29[3] = &unk_1E81B6F00;
-  v30 = v27;
-  v31 = self;
-  v21 = v27;
+  v30 = helperCopy;
+  selfCopy = self;
+  v21 = helperCopy;
   v22 = [v18 actionWithTitle:v20 style:0 handler:v29];
   [v13 addAction:v22];
 
-  v23 = [(HKTinkerSharingOptInController *)self navigationController];
-  [v23 presentViewController:v13 animated:1 completion:0];
+  navigationController = [(HKTinkerSharingOptInController *)self navigationController];
+  [navigationController presentViewController:v13 animated:1 completion:0];
 }
 
 uint64_t __78__HKTinkerSharingOptInController__presentNetworkAccessConfirmationWithHelper___block_invoke_2(uint64_t a1)

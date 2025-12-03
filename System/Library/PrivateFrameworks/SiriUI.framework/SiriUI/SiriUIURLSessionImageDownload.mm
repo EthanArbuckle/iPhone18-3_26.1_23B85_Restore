@@ -1,21 +1,21 @@
 @interface SiriUIURLSessionImageDownload
-- (SiriUIURLSessionImageDownload)initWithFitToSize:(CGSize)a3 progressHandler:(id)a4 incremental:(BOOL)a5 client:(id)a6 fillColor:(id)a7;
-- (void)_updateImageFromURL:(id)a3 error:(id)a4;
-- (void)appendDownloadedData:(id)a3 fromURL:(id)a4;
+- (SiriUIURLSessionImageDownload)initWithFitToSize:(CGSize)size progressHandler:(id)handler incremental:(BOOL)incremental client:(id)client fillColor:(id)color;
+- (void)_updateImageFromURL:(id)l error:(id)error;
+- (void)appendDownloadedData:(id)data fromURL:(id)l;
 - (void)dealloc;
-- (void)finishedFromURL:(id)a3 error:(id)a4;
+- (void)finishedFromURL:(id)l error:(id)error;
 @end
 
 @implementation SiriUIURLSessionImageDownload
 
-- (SiriUIURLSessionImageDownload)initWithFitToSize:(CGSize)a3 progressHandler:(id)a4 incremental:(BOOL)a5 client:(id)a6 fillColor:(id)a7
+- (SiriUIURLSessionImageDownload)initWithFitToSize:(CGSize)size progressHandler:(id)handler incremental:(BOOL)incremental client:(id)client fillColor:(id)color
 {
-  v9 = a5;
-  height = a3.height;
-  width = a3.width;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  incrementalCopy = incremental;
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  clientCopy = client;
+  colorCopy = color;
   v27.receiver = self;
   v27.super_class = SiriUIURLSessionImageDownload;
   v16 = [(SiriUIURLSessionImageDownload *)&v27 init];
@@ -24,12 +24,12 @@
   {
     v16->_fitToSize.width = width;
     v16->_fitToSize.height = height;
-    v18 = [v13 copy];
+    v18 = [handlerCopy copy];
     progressHandler = v17->_progressHandler;
     v17->_progressHandler = v18;
 
-    objc_storeStrong(&v17->_client, a6);
-    objc_storeStrong(&v17->_backgroundFillColor, a7);
+    objc_storeStrong(&v17->_client, client);
+    objc_storeStrong(&v17->_backgroundFillColor, color);
     v20 = objc_alloc_init(MEMORY[0x277CBEB28]);
     downloadedData = v17->_downloadedData;
     v17->_downloadedData = v20;
@@ -42,7 +42,7 @@
     v25 = dispatch_get_global_queue(-32768, 0);
     dispatch_set_target_queue(v24, v25);
 
-    if (v9)
+    if (incrementalCopy)
     {
       v17->_imageSource = CGImageSourceCreateIncremental(0);
     }
@@ -65,11 +65,11 @@
   [(SiriUIURLSessionImageDownload *)&v4 dealloc];
 }
 
-- (void)_updateImageFromURL:(id)a3 error:(id)a4
+- (void)_updateImageFromURL:(id)l error:(id)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_hasSentFinished)
   {
@@ -82,8 +82,8 @@
       {
         self->_lastUpdatedLength = v10;
         v11 = self->_downloadedData;
-        v12 = [MEMORY[0x277D759A0] mainScreen];
-        [v12 scale];
+        mainScreen = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen scale];
         v14 = v13;
 
         if (imageSource)
@@ -159,7 +159,7 @@ LABEL_39:
                 v62 = 2112;
                 v63 = v19;
                 v64 = 2112;
-                *v65 = v6;
+                *v65 = lCopy;
                 *&v65[8] = 1024;
                 *&v65[10] = finished;
                 _os_log_impl(&dword_26948D000, log, OS_LOG_TYPE_DEFAULT, "%s Loaded %@ (resized to %@) image for %@ from %@ (finished = %d)", buf, 0x3Au);
@@ -243,7 +243,7 @@ LABEL_43:
             v60 = 2112;
             v61 = v19;
             v62 = 2112;
-            v63 = v6;
+            v63 = lCopy;
             v64 = 1024;
             *v65 = 1;
             _os_log_impl(&dword_26948D000, v40, OS_LOG_TYPE_DEFAULT, "%s Loaded %@ image for %@ from %@ (finished = %d)", buf, 0x30u);
@@ -263,9 +263,9 @@ LABEL_30:
           v58 = 2114;
           v59 = v19;
           v60 = 2114;
-          v61 = v6;
+          v61 = lCopy;
           v62 = 2114;
-          v63 = v7;
+          v63 = errorCopy;
           v64 = 1026;
           *v65 = finished;
           *&v65[4] = 2050;
@@ -277,14 +277,14 @@ LABEL_30:
         v34 = AFAnalyticsContextCreateWithError();
         v35 = [v33 dictionaryWithDictionary:v34];
 
-        v36 = [v6 absoluteString];
-        if (v36)
+        absoluteString = [lCopy absoluteString];
+        if (absoluteString)
         {
-          [v35 setObject:v36 forKeyedSubscript:@"URL"];
+          [v35 setObject:absoluteString forKeyedSubscript:@"URL"];
         }
 
-        v37 = [MEMORY[0x277CEF158] sharedAnalytics];
-        [v37 logEventWithType:1425 context:v35];
+        mEMORY[0x277CEF158] = [MEMORY[0x277CEF158] sharedAnalytics];
+        [mEMORY[0x277CEF158] logEventWithType:1425 context:v35];
 
         v18 = 0;
         v38 = 0;
@@ -307,10 +307,10 @@ uint64_t __59__SiriUIURLSessionImageDownload__updateImageFromURL_error___block_i
   return result;
 }
 
-- (void)appendDownloadedData:(id)a3 fromURL:(id)a4
+- (void)appendDownloadedData:(id)data fromURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  lCopy = l;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -318,11 +318,11 @@ uint64_t __59__SiriUIURLSessionImageDownload__updateImageFromURL_error___block_i
   block[2] = __62__SiriUIURLSessionImageDownload_appendDownloadedData_fromURL___block_invoke;
   block[3] = &unk_279C59EC8;
   objc_copyWeak(&v15, &location);
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  selfCopy = self;
+  v14 = lCopy;
+  v9 = lCopy;
+  v10 = dataCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v15);
@@ -378,10 +378,10 @@ void __62__SiriUIURLSessionImageDownload_appendDownloadedData_fromURL___block_in
   }
 }
 
-- (void)finishedFromURL:(id)a3 error:(id)a4
+- (void)finishedFromURL:(id)l error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  errorCopy = error;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -390,10 +390,10 @@ void __62__SiriUIURLSessionImageDownload_appendDownloadedData_fromURL___block_in
   block[3] = &unk_279C59EC8;
   objc_copyWeak(&v14, &location);
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = lCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v14);

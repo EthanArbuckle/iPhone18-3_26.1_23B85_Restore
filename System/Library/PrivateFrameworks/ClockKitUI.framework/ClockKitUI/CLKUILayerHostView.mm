@@ -1,29 +1,29 @@
 @interface CLKUILayerHostView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UIView)superviewDelegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation CLKUILayerHostView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CLKUILayerHostView *)self superviewDelegate];
-  v9 = [v8 hitTest:v7 withEvent:{x, y}];
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  superviewDelegate = [(CLKUILayerHostView *)self superviewDelegate];
+  v9 = [superviewDelegate hitTest:eventCopy withEvent:{x, y}];
 
   return v9;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(CLKUILayerHostView *)self superviewDelegate];
-  v9 = [v8 pointInside:v7 withEvent:{x, y}];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  superviewDelegate = [(CLKUILayerHostView *)self superviewDelegate];
+  v9 = [superviewDelegate pointInside:eventCopy withEvent:{x, y}];
 
   return v9;
 }

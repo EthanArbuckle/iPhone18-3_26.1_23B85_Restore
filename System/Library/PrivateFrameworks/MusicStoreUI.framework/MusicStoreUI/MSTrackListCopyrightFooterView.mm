@@ -1,8 +1,8 @@
 @interface MSTrackListCopyrightFooterView
 - (CGSize)_textSize;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setText:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setText:(id)text;
 - (void)sizeToFit;
 @end
 
@@ -16,22 +16,22 @@
   [(MSTrackListCopyrightFooterView *)&v3 dealloc];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   text = self->_text;
-  if (text != a3)
+  if (text != text)
   {
 
-    self->_text = a3;
+    self->_text = text;
     self->_textSize = *MEMORY[0x277CBF3A8];
 
     [(MSTrackListCopyrightFooterView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(MSTrackListCopyrightFooterView *)self bounds:a3.origin.x];
+  [(MSTrackListCopyrightFooterView *)self bounds:rect.origin.x];
   v5 = v4;
   [(MSTrackListCopyrightFooterView *)self _textSize];
   v7 = v6;

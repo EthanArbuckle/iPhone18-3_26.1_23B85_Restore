@@ -1,43 +1,43 @@
 @interface DNDSConfigurationSecureRecord
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithRecord:(id)a3;
-- (id)_initWithSenderConfiguration:(id)a3 allowedApplications:(id)a4 deniedApplications:(id)a5 allowedWebApplications:(id)a6 deniedWebApplications:(id)a7;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithRecord:(id)record;
+- (id)_initWithSenderConfiguration:(id)configuration allowedApplications:(id)applications deniedApplications:(id)deniedApplications allowedWebApplications:(id)webApplications deniedWebApplications:(id)deniedWebApplications;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)log:(id)a3 withPrefix:(id)a4;
+- (void)log:(id)log withPrefix:(id)prefix;
 @end
 
 @implementation DNDSConfigurationSecureRecord
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 senderConfiguration];
-  v6 = [v4 allowedApplications];
-  v7 = [v4 deniedApplications];
-  v8 = [v4 allowedWebApplications];
-  v9 = [v4 deniedWebApplications];
+  recordCopy = record;
+  senderConfiguration = [recordCopy senderConfiguration];
+  allowedApplications = [recordCopy allowedApplications];
+  deniedApplications = [recordCopy deniedApplications];
+  allowedWebApplications = [recordCopy allowedWebApplications];
+  deniedWebApplications = [recordCopy deniedWebApplications];
 
-  v10 = [(DNDSConfigurationSecureRecord *)self _initWithSenderConfiguration:v5 allowedApplications:v6 deniedApplications:v7 allowedWebApplications:v8 deniedWebApplications:v9];
+  v10 = [(DNDSConfigurationSecureRecord *)self _initWithSenderConfiguration:senderConfiguration allowedApplications:allowedApplications deniedApplications:deniedApplications allowedWebApplications:allowedWebApplications deniedWebApplications:deniedWebApplications];
   return v10;
 }
 
-- (id)_initWithSenderConfiguration:(id)a3 allowedApplications:(id)a4 deniedApplications:(id)a5 allowedWebApplications:(id)a6 deniedWebApplications:(id)a7
+- (id)_initWithSenderConfiguration:(id)configuration allowedApplications:(id)applications deniedApplications:(id)deniedApplications allowedWebApplications:(id)webApplications deniedWebApplications:(id)deniedWebApplications
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  configurationCopy = configuration;
+  applicationsCopy = applications;
+  deniedApplicationsCopy = deniedApplications;
+  webApplicationsCopy = webApplications;
+  deniedWebApplicationsCopy = deniedWebApplications;
   v39.receiver = self;
   v39.super_class = DNDSConfigurationSecureRecord;
   v17 = [(DNDSConfigurationSecureRecord *)&v39 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [configurationCopy copy];
     v19 = v18;
     if (v18)
     {
@@ -52,7 +52,7 @@
     senderConfiguration = v17->_senderConfiguration;
     v17->_senderConfiguration = v20;
 
-    v22 = [v13 copy];
+    v22 = [applicationsCopy copy];
     v23 = v22;
     if (v22)
     {
@@ -67,7 +67,7 @@
     allowedApplications = v17->_allowedApplications;
     v17->_allowedApplications = v24;
 
-    v26 = [v14 copy];
+    v26 = [deniedApplicationsCopy copy];
     v27 = v26;
     if (v26)
     {
@@ -82,7 +82,7 @@
     deniedApplications = v17->_deniedApplications;
     v17->_deniedApplications = v28;
 
-    v30 = [v15 copy];
+    v30 = [webApplicationsCopy copy];
     v31 = v30;
     if (v30)
     {
@@ -97,7 +97,7 @@
     allowedWebApplications = v17->_allowedWebApplications;
     v17->_allowedWebApplications = v32;
 
-    v34 = [v16 copy];
+    v34 = [deniedWebApplicationsCopy copy];
     v35 = v34;
     if (v34)
     {
@@ -116,16 +116,16 @@
   return v17;
 }
 
-- (void)log:(id)a3 withPrefix:(id)a4
+- (void)log:(id)log withPrefix:(id)prefix
 {
   v63 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  logCopy = log;
+  prefixCopy = prefix;
+  if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v57 = v6;
-    _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Begin secure configuration", buf, 0xCu);
+    v57 = prefixCopy;
+    _os_log_impl(&dword_24912E000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] Begin secure configuration", buf, 0xCu);
   }
 
   v51 = 0u;
@@ -151,15 +151,15 @@
 
         v13 = *(*(&v49 + 1) + 8 * i);
         v14 = [(NSDictionary *)self->_allowedApplications objectForKeyedSubscript:v13, v35];
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v35;
-          v57 = v6;
+          v57 = prefixCopy;
           v58 = 2113;
           v59 = v13;
           v60 = 2113;
           v61 = v14;
-          _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Allowed app: %{private}@; %{private}@", buf, 0x20u);
+          _os_log_impl(&dword_24912E000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] Allowed app: %{private}@; %{private}@", buf, 0x20u);
         }
       }
 
@@ -188,14 +188,14 @@
           objc_enumerationMutation(v15);
         }
 
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
         {
           v20 = *(*(&v45 + 1) + 8 * j);
           *buf = 138543619;
-          v57 = v6;
+          v57 = prefixCopy;
           v58 = 2113;
           v59 = v20;
-          _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Denied app: %{private}@", buf, 0x16u);
+          _os_log_impl(&dword_24912E000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] Denied app: %{private}@", buf, 0x16u);
         }
       }
 
@@ -224,14 +224,14 @@
           objc_enumerationMutation(v21);
         }
 
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
         {
           v26 = *(*(&v41 + 1) + 8 * k);
           *buf = 138543619;
-          v57 = v6;
+          v57 = prefixCopy;
           v58 = 2113;
           v59 = v26;
-          _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Allowed web app: %{private}@", buf, 0x16u);
+          _os_log_impl(&dword_24912E000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] Allowed web app: %{private}@", buf, 0x16u);
         }
       }
 
@@ -260,14 +260,14 @@
           objc_enumerationMutation(v27);
         }
 
-        if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
         {
           v32 = *(*(&v37 + 1) + 8 * m);
           *buf = 138543619;
-          v57 = v6;
+          v57 = prefixCopy;
           v58 = 2113;
           v59 = v32;
-          _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] Denied web app: %{private}@", buf, 0x16u);
+          _os_log_impl(&dword_24912E000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] Denied web app: %{private}@", buf, 0x16u);
         }
       }
 
@@ -277,21 +277,21 @@
     while (v29);
   }
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
   {
     senderConfiguration = self->_senderConfiguration;
     *buf = 138543619;
-    v57 = v6;
+    v57 = prefixCopy;
     v58 = 2113;
     v59 = senderConfiguration;
-    _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] senderConfiguration: %{private}@", buf, 0x16u);
+    _os_log_impl(&dword_24912E000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] senderConfiguration: %{private}@", buf, 0x16u);
   }
 
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(logCopy, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v57 = v6;
-    _os_log_impl(&dword_24912E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] End secure configuration", buf, 0xCu);
+    v57 = prefixCopy;
+    _os_log_impl(&dword_24912E000, logCopy, OS_LOG_TYPE_DEFAULT, "[%{public}@] End secure configuration", buf, 0xCu);
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -299,24 +299,24 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
-  v4 = [v3 hash];
-  v5 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDSConfigurationSecureRecord *)self deniedApplications];
-  v8 = [v7 hash];
-  v9 = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
-  v12 = [v11 hash];
+  senderConfiguration = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
+  v4 = [senderConfiguration hash];
+  allowedApplications = [(DNDSConfigurationSecureRecord *)self allowedApplications];
+  v6 = [allowedApplications hash] ^ v4;
+  deniedApplications = [(DNDSConfigurationSecureRecord *)self deniedApplications];
+  v8 = [deniedApplications hash];
+  allowedWebApplications = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
+  v10 = v6 ^ v8 ^ [allowedWebApplications hash];
+  deniedWebApplications = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
+  v12 = [deniedWebApplications hash];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -326,20 +326,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
-      v7 = [(DNDSConfigurationSecureRecord *)v5 senderConfiguration];
-      if (v6 != v7)
+      v5 = equalCopy;
+      senderConfiguration = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
+      senderConfiguration2 = [(DNDSConfigurationSecureRecord *)v5 senderConfiguration];
+      if (senderConfiguration != senderConfiguration2)
       {
-        v63 = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
-        if (!v63)
+        senderConfiguration3 = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
+        if (!senderConfiguration3)
         {
           v11 = 0;
           goto LABEL_56;
         }
 
-        v8 = [(DNDSConfigurationSecureRecord *)v5 senderConfiguration];
-        if (!v8)
+        senderConfiguration4 = [(DNDSConfigurationSecureRecord *)v5 senderConfiguration];
+        if (!senderConfiguration4)
         {
           v11 = 0;
 LABEL_55:
@@ -347,9 +347,9 @@ LABEL_55:
           goto LABEL_56;
         }
 
-        v9 = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
-        v10 = [(DNDSConfigurationSecureRecord *)v5 senderConfiguration];
-        if (![v9 isEqual:v10])
+        senderConfiguration5 = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
+        senderConfiguration6 = [(DNDSConfigurationSecureRecord *)v5 senderConfiguration];
+        if (![senderConfiguration5 isEqual:senderConfiguration6])
         {
           v11 = 0;
 LABEL_54:
@@ -357,30 +357,30 @@ LABEL_54:
           goto LABEL_55;
         }
 
-        v59 = v10;
-        v60 = v9;
-        v61 = v8;
+        v59 = senderConfiguration6;
+        v60 = senderConfiguration5;
+        v61 = senderConfiguration4;
       }
 
-      v12 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
-      v13 = [(DNDSConfigurationSecureRecord *)v5 allowedApplications];
-      if (v12 != v13)
+      allowedApplications = [(DNDSConfigurationSecureRecord *)self allowedApplications];
+      allowedApplications2 = [(DNDSConfigurationSecureRecord *)v5 allowedApplications];
+      if (allowedApplications != allowedApplications2)
       {
-        v14 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
-        if (v14)
+        allowedApplications3 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
+        if (allowedApplications3)
         {
-          v15 = v14;
-          v62 = v12;
-          v16 = [(DNDSConfigurationSecureRecord *)v5 allowedApplications];
-          if (v16)
+          v15 = allowedApplications3;
+          v62 = allowedApplications;
+          allowedApplications4 = [(DNDSConfigurationSecureRecord *)v5 allowedApplications];
+          if (allowedApplications4)
           {
-            v17 = v16;
-            v18 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
-            v19 = [(DNDSConfigurationSecureRecord *)v5 allowedApplications];
-            if ([v18 isEqual:v19])
+            v17 = allowedApplications4;
+            allowedApplications5 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
+            allowedApplications6 = [(DNDSConfigurationSecureRecord *)v5 allowedApplications];
+            if ([allowedApplications5 isEqual:allowedApplications6])
             {
-              v54 = v18;
-              v55 = v19;
+              v54 = allowedApplications5;
+              v55 = allowedApplications6;
               v52 = v17;
               v53 = v15;
               goto LABEL_17;
@@ -397,44 +397,44 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      v62 = v12;
+      v62 = allowedApplications;
 LABEL_17:
-      v20 = [(DNDSConfigurationSecureRecord *)self deniedApplications];
-      v21 = [(DNDSConfigurationSecureRecord *)v5 deniedApplications];
-      if (v20 == v21)
+      deniedApplications = [(DNDSConfigurationSecureRecord *)self deniedApplications];
+      deniedApplications2 = [(DNDSConfigurationSecureRecord *)v5 deniedApplications];
+      if (deniedApplications == deniedApplications2)
       {
-        v58 = v20;
+        v58 = deniedApplications;
 LABEL_26:
-        v26 = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
+        allowedWebApplications = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
         [(DNDSConfigurationSecureRecord *)v5 allowedWebApplications];
-        v27 = v57 = v26;
-        if (v26 == v27)
+        v27 = v57 = allowedWebApplications;
+        if (allowedWebApplications == v27)
         {
-          v50 = v21;
+          v50 = deniedApplications2;
           goto LABEL_34;
         }
 
-        v28 = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
-        v29 = v21;
-        if (v28)
+        allowedWebApplications2 = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
+        v29 = deniedApplications2;
+        if (allowedWebApplications2)
         {
-          v49 = v28;
-          v30 = [(DNDSConfigurationSecureRecord *)v5 allowedWebApplications];
-          if (v30)
+          v49 = allowedWebApplications2;
+          allowedWebApplications3 = [(DNDSConfigurationSecureRecord *)v5 allowedWebApplications];
+          if (allowedWebApplications3)
           {
-            v50 = v21;
-            v46 = v30;
-            v31 = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
-            v32 = [(DNDSConfigurationSecureRecord *)v5 allowedWebApplications];
-            if ([v31 isEqual:v32])
+            v50 = deniedApplications2;
+            v46 = allowedWebApplications3;
+            allowedWebApplications4 = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
+            allowedWebApplications5 = [(DNDSConfigurationSecureRecord *)v5 allowedWebApplications];
+            if ([allowedWebApplications4 isEqual:allowedWebApplications5])
             {
-              v44 = v32;
-              v45 = v31;
+              v44 = allowedWebApplications5;
+              v45 = allowedWebApplications4;
 LABEL_34:
-              v33 = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
-              v34 = [(DNDSConfigurationSecureRecord *)v5 deniedWebApplications];
-              v35 = v34;
-              if (v33 == v34)
+              deniedWebApplications = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
+              deniedWebApplications2 = [(DNDSConfigurationSecureRecord *)v5 deniedWebApplications];
+              v35 = deniedWebApplications2;
+              if (deniedWebApplications == deniedWebApplications2)
               {
 
                 v11 = 1;
@@ -442,19 +442,19 @@ LABEL_34:
 
               else
               {
-                v36 = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
-                if (v36)
+                deniedWebApplications3 = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
+                if (deniedWebApplications3)
                 {
-                  v43 = v36;
-                  v37 = [(DNDSConfigurationSecureRecord *)v5 deniedWebApplications];
-                  if (v37)
+                  v43 = deniedWebApplications3;
+                  deniedWebApplications4 = [(DNDSConfigurationSecureRecord *)v5 deniedWebApplications];
+                  if (deniedWebApplications4)
                   {
-                    v42 = v37;
-                    v41 = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
-                    v38 = [(DNDSConfigurationSecureRecord *)v5 deniedWebApplications];
-                    v11 = [v41 isEqual:?];
+                    v42 = deniedWebApplications4;
+                    deniedWebApplications5 = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
+                    deniedWebApplications6 = [(DNDSConfigurationSecureRecord *)v5 deniedWebApplications];
+                    v11 = [deniedWebApplications5 isEqual:?];
 
-                    v37 = v42;
+                    deniedWebApplications4 = v42;
                   }
 
                   else
@@ -478,15 +478,15 @@ LABEL_34:
               {
               }
 
-              if (v62 != v13)
+              if (v62 != allowedApplications2)
               {
               }
 
 LABEL_53:
-              v9 = v60;
-              v8 = v61;
-              v10 = v59;
-              if (v6 != v7)
+              senderConfiguration5 = v60;
+              senderConfiguration4 = v61;
+              senderConfiguration6 = v59;
+              if (senderConfiguration != senderConfiguration2)
               {
                 goto LABEL_54;
               }
@@ -496,8 +496,8 @@ LABEL_56:
               goto LABEL_57;
             }
 
-            v30 = v46;
-            v29 = v21;
+            allowedWebApplications3 = v46;
+            v29 = deniedApplications2;
           }
         }
 
@@ -510,7 +510,7 @@ LABEL_56:
         }
 
         v39 = v62;
-        if (v62 == v13)
+        if (v62 == allowedApplications2)
         {
           goto LABEL_51;
         }
@@ -518,27 +518,27 @@ LABEL_56:
         goto LABEL_50;
       }
 
-      v22 = [(DNDSConfigurationSecureRecord *)self deniedApplications];
-      if (v22)
+      deniedApplications3 = [(DNDSConfigurationSecureRecord *)self deniedApplications];
+      if (deniedApplications3)
       {
-        v56 = v22;
-        v23 = [(DNDSConfigurationSecureRecord *)v5 deniedApplications];
-        if (v23)
+        v56 = deniedApplications3;
+        deniedApplications4 = [(DNDSConfigurationSecureRecord *)v5 deniedApplications];
+        if (deniedApplications4)
         {
-          v58 = v20;
-          v51 = v23;
-          v24 = [(DNDSConfigurationSecureRecord *)self deniedApplications];
-          v25 = [(DNDSConfigurationSecureRecord *)v5 deniedApplications];
-          if ([v24 isEqual:v25])
+          v58 = deniedApplications;
+          v51 = deniedApplications4;
+          deniedApplications5 = [(DNDSConfigurationSecureRecord *)self deniedApplications];
+          deniedApplications6 = [(DNDSConfigurationSecureRecord *)v5 deniedApplications];
+          if ([deniedApplications5 isEqual:deniedApplications6])
           {
-            v47 = v25;
-            v48 = v24;
+            v47 = deniedApplications6;
+            v48 = deniedApplications5;
             goto LABEL_26;
           }
 
 LABEL_41:
           v39 = v62;
-          if (v62 == v13)
+          if (v62 == allowedApplications2)
           {
 LABEL_51:
 
@@ -566,34 +566,34 @@ LABEL_57:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
-  v6 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
-  v7 = [(DNDSConfigurationSecureRecord *)self deniedApplications];
-  v8 = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
-  v9 = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
-  v10 = [v3 stringWithFormat:@"<%@: %p senderConfiguration: %@; ; allowedApplications: %@; ; deniedApplications: %@; ; allowedWebApplications: %@; ; deniedWebApplications: %@; >", v4, self, v5, v6, v7, v8, v9];;
+  senderConfiguration = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
+  allowedApplications = [(DNDSConfigurationSecureRecord *)self allowedApplications];
+  deniedApplications = [(DNDSConfigurationSecureRecord *)self deniedApplications];
+  allowedWebApplications = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
+  deniedWebApplications = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
+  v10 = [v3 stringWithFormat:@"<%@: %p senderConfiguration: %@; ; allowedApplications: %@; ; deniedApplications: %@; ; allowedWebApplications: %@; ; deniedWebApplications: %@; >", v4, self, senderConfiguration, allowedApplications, deniedApplications, allowedWebApplications, deniedWebApplications];;
 
   return v10;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableConfigurationSecureRecord alloc];
 
   return [(DNDSConfigurationSecureRecord *)v4 _initWithRecord:self];
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
   v88 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 bs_safeDictionaryForKey:@"senderConfiguration"];
-  v54 = [DNDSSenderConfigurationRecord newWithDictionaryRepresentation:v7 context:v6];
+  representationCopy = representation;
+  contextCopy = context;
+  v7 = [representationCopy bs_safeDictionaryForKey:@"senderConfiguration"];
+  v54 = [DNDSSenderConfigurationRecord newWithDictionaryRepresentation:v7 context:contextCopy];
 
-  v60 = [v5 bs_safeDictionaryForKey:@"platforms"];
-  v55 = v5;
-  v8 = [v5 bs_safeDictionaryForKey:@"allowedApplications"];
+  v60 = [representationCopy bs_safeDictionaryForKey:@"platforms"];
+  v55 = representationCopy;
+  v8 = [representationCopy bs_safeDictionaryForKey:@"allowedApplications"];
   v59 = objc_opt_new();
   v80 = 0u;
   v81 = 0u;
@@ -616,15 +616,15 @@ LABEL_57:
 
         v13 = *(*(&v80 + 1) + 8 * i);
         v14 = [v60 objectForKeyedSubscript:v13];
-        v15 = [v14 unsignedIntegerValue];
+        unsignedIntegerValue = [v14 unsignedIntegerValue];
 
-        v16 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:v13 platform:v15];
-        v17 = [v6 applicationIdentifierMapper];
-        v18 = [v17 applicationIdentifierForFileWithSourceApplicationIdentifier:v16];
+        v16 = [objc_alloc(MEMORY[0x277D058C8]) initWithBundleID:v13 platform:unsignedIntegerValue];
+        applicationIdentifierMapper = [contextCopy applicationIdentifierMapper];
+        v18 = [applicationIdentifierMapper applicationIdentifierForFileWithSourceApplicationIdentifier:v16];
 
-        v19 = [v18 bundleID];
-        v20 = [obj objectForKey:v19];
-        v21 = [DNDSApplicationConfigurationRecord newWithDictionaryRepresentation:v20 context:v6];
+        bundleID = [v18 bundleID];
+        v20 = [obj objectForKey:bundleID];
+        v21 = [DNDSApplicationConfigurationRecord newWithDictionaryRepresentation:v20 context:contextCopy];
 
         [v59 setObject:v21 forKey:v18];
       }
@@ -672,9 +672,9 @@ LABEL_17:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v31 = [MEMORY[0x277D058C8] newWithDictionaryRepresentation:v29 context:v6];
-          v32 = [v6 applicationIdentifierMapper];
-          v30 = [v32 applicationIdentifierForFileWithSourceApplicationIdentifier:v31];
+          v31 = [MEMORY[0x277D058C8] newWithDictionaryRepresentation:v29 context:contextCopy];
+          applicationIdentifierMapper2 = [contextCopy applicationIdentifierMapper];
+          v30 = [applicationIdentifierMapper2 applicationIdentifierForFileWithSourceApplicationIdentifier:v31];
 
           v24 = v56;
           v23 = v57;
@@ -718,7 +718,7 @@ LABEL_17:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v40 = [MEMORY[0x277D05AC8] newWithDictionaryRepresentation:v39 context:v6];
+          v40 = [MEMORY[0x277D05AC8] newWithDictionaryRepresentation:v39 context:contextCopy];
           [v58 addObject:v40];
         }
 
@@ -759,7 +759,7 @@ LABEL_17:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v49 = [MEMORY[0x277D05AC8] newWithDictionaryRepresentation:v48 context:v6];
+          v49 = [MEMORY[0x277D05AC8] newWithDictionaryRepresentation:v48 context:contextCopy];
           [v42 addObject:v49];
         }
 
@@ -775,42 +775,42 @@ LABEL_17:
     while (v45);
   }
 
-  v50 = [[a1 alloc] _initWithSenderConfiguration:v54 allowedApplications:v59 deniedApplications:v57 allowedWebApplications:v58 deniedWebApplications:v42];
+  v50 = [[self alloc] _initWithSenderConfiguration:v54 allowedApplications:v59 deniedApplications:v57 allowedWebApplications:v58 deniedWebApplications:v42];
   v51 = *MEMORY[0x277D85DE8];
   return v50;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
   v88 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 healingSource];
-  v5 = [v4 mutableCopy];
+  contextCopy = context;
+  healingSource = [contextCopy healingSource];
+  v5 = [healingSource mutableCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    dictionary = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v8 = v7;
+  v8 = dictionary;
 
-  v9 = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
+  senderConfiguration = [(DNDSConfigurationSecureRecord *)self senderConfiguration];
   v63 = v8;
-  [v8 setDictionaryRepresentationOfRecord:v9 forKey:@"senderConfiguration" context:v3];
+  [v8 setDictionaryRepresentationOfRecord:senderConfiguration forKey:@"senderConfiguration" context:contextCopy];
 
-  v66 = [MEMORY[0x277CBEB38] dictionary];
-  v65 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  v10 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
-  v11 = [v10 countByEnumeratingWithState:&v80 objects:v87 count:16];
+  allowedApplications = [(DNDSConfigurationSecureRecord *)self allowedApplications];
+  v11 = [allowedApplications countByEnumeratingWithState:&v80 objects:v87 count:16];
   if (v11)
   {
     v12 = v11;
@@ -821,25 +821,25 @@ LABEL_17:
       {
         if (*v81 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allowedApplications);
         }
 
         v15 = *(*(&v80 + 1) + 8 * i);
-        v16 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
-        v17 = [v16 objectForKeyedSubscript:v15];
+        allowedApplications2 = [(DNDSConfigurationSecureRecord *)self allowedApplications];
+        v17 = [allowedApplications2 objectForKeyedSubscript:v15];
 
-        v18 = [v3 destination];
-        if (!v18)
+        destination = [contextCopy destination];
+        if (!destination)
         {
-          v19 = [v3 applicationIdentifierMapper];
-          v20 = [v19 applicationIdentifierForSyncWithSourceApplicationIdentifier:v15];
+          applicationIdentifierMapper = [contextCopy applicationIdentifierMapper];
+          v20 = [applicationIdentifierMapper applicationIdentifierForSyncWithSourceApplicationIdentifier:v15];
           goto LABEL_13;
         }
 
-        if (v18 == 1)
+        if (destination == 1)
         {
-          v19 = [v3 applicationIdentifierMapper];
-          v20 = [v19 applicationIdentifierForFileWithSourceApplicationIdentifier:v15];
+          applicationIdentifierMapper = [contextCopy applicationIdentifierMapper];
+          v20 = [applicationIdentifierMapper applicationIdentifierForFileWithSourceApplicationIdentifier:v15];
 LABEL_13:
           v21 = v20;
 
@@ -849,23 +849,23 @@ LABEL_13:
         v21 = 0;
 LABEL_15:
         v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v21, "platform")}];
-        v23 = [v21 bundleID];
-        [v65 setObject:v22 forKeyedSubscript:v23];
+        bundleID = [v21 bundleID];
+        [dictionary3 setObject:v22 forKeyedSubscript:bundleID];
 
-        v24 = [v21 bundleID];
-        [v66 setDictionaryRepresentationOfRecord:v17 forKey:v24 context:v3];
+        bundleID2 = [v21 bundleID];
+        [dictionary2 setDictionaryRepresentationOfRecord:v17 forKey:bundleID2 context:contextCopy];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v80 objects:v87 count:16];
+      v12 = [allowedApplications countByEnumeratingWithState:&v80 objects:v87 count:16];
     }
 
     while (v12);
   }
 
-  v25 = [MEMORY[0x277CBEB18] array];
-  v26 = [v3 mutableCopy];
-  v27 = [v3 healingSource];
-  v28 = [v27 objectForKeyedSubscript:@"silencedApplications"];
+  array = [MEMORY[0x277CBEB18] array];
+  v26 = [contextCopy mutableCopy];
+  healingSource2 = [contextCopy healingSource];
+  v28 = [healingSource2 objectForKeyedSubscript:@"silencedApplications"];
   v64 = v26;
   [v26 setArrayHealingSource:v28];
 
@@ -873,8 +873,8 @@ LABEL_15:
   v79 = 0u;
   v76 = 0u;
   v77 = 0u;
-  v29 = [(DNDSConfigurationSecureRecord *)self deniedApplications];
-  v30 = [v29 countByEnumeratingWithState:&v76 objects:v86 count:16];
+  deniedApplications = [(DNDSConfigurationSecureRecord *)self deniedApplications];
+  v30 = [deniedApplications countByEnumeratingWithState:&v76 objects:v86 count:16];
   if (!v30)
   {
     goto LABEL_30;
@@ -888,22 +888,22 @@ LABEL_15:
     {
       if (*v77 != v32)
       {
-        objc_enumerationMutation(v29);
+        objc_enumerationMutation(deniedApplications);
       }
 
       v34 = *(*(&v76 + 1) + 8 * j);
-      v35 = [v3 destination];
-      if (!v35)
+      destination2 = [contextCopy destination];
+      if (!destination2)
       {
-        v36 = [v3 applicationIdentifierMapper];
-        v37 = [v36 applicationIdentifierForSyncWithSourceApplicationIdentifier:v34];
+        applicationIdentifierMapper2 = [contextCopy applicationIdentifierMapper];
+        v37 = [applicationIdentifierMapper2 applicationIdentifierForSyncWithSourceApplicationIdentifier:v34];
         goto LABEL_26;
       }
 
-      if (v35 == 1)
+      if (destination2 == 1)
       {
-        v36 = [v3 applicationIdentifierMapper];
-        v37 = [v36 applicationIdentifierForFileWithSourceApplicationIdentifier:v34];
+        applicationIdentifierMapper2 = [contextCopy applicationIdentifierMapper];
+        v37 = [applicationIdentifierMapper2 applicationIdentifierForFileWithSourceApplicationIdentifier:v34];
 LABEL_26:
         v38 = v37;
 
@@ -913,31 +913,31 @@ LABEL_26:
       v38 = 0;
 LABEL_28:
       v39 = [v38 dictionaryRepresentationWithContext:v64];
-      [v25 addObject:v39];
+      [array addObject:v39];
     }
 
-    v31 = [v29 countByEnumeratingWithState:&v76 objects:v86 count:16];
+    v31 = [deniedApplications countByEnumeratingWithState:&v76 objects:v86 count:16];
   }
 
   while (v31);
 LABEL_30:
 
-  [v63 bs_setSafeObject:v66 forKey:@"allowedApplications"];
-  [v63 bs_setSafeObject:v65 forKey:@"platforms"];
-  v62 = v25;
-  [v63 bs_setSafeObject:v25 forKey:@"silencedApplications"];
-  v40 = [MEMORY[0x277CBEB18] array];
-  v41 = [v3 mutableCopy];
-  v42 = [v3 healingSource];
-  v43 = [v42 objectForKeyedSubscript:@"allowedWebApplications"];
+  [v63 bs_setSafeObject:dictionary2 forKey:@"allowedApplications"];
+  [v63 bs_setSafeObject:dictionary3 forKey:@"platforms"];
+  v62 = array;
+  [v63 bs_setSafeObject:array forKey:@"silencedApplications"];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v41 = [contextCopy mutableCopy];
+  healingSource3 = [contextCopy healingSource];
+  v43 = [healingSource3 objectForKeyedSubscript:@"allowedWebApplications"];
   [v41 setArrayHealingSource:v43];
 
   v74 = 0u;
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v44 = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
-  v45 = [v44 countByEnumeratingWithState:&v72 objects:v85 count:16];
+  allowedWebApplications = [(DNDSConfigurationSecureRecord *)self allowedWebApplications];
+  v45 = [allowedWebApplications countByEnumeratingWithState:&v72 objects:v85 count:16];
   if (v45)
   {
     v46 = v45;
@@ -948,32 +948,32 @@ LABEL_30:
       {
         if (*v73 != v47)
         {
-          objc_enumerationMutation(v44);
+          objc_enumerationMutation(allowedWebApplications);
         }
 
         v49 = [*(*(&v72 + 1) + 8 * k) dictionaryRepresentationWithContext:v41];
-        [v40 addObject:v49];
+        [array2 addObject:v49];
       }
 
-      v46 = [v44 countByEnumeratingWithState:&v72 objects:v85 count:16];
+      v46 = [allowedWebApplications countByEnumeratingWithState:&v72 objects:v85 count:16];
     }
 
     while (v46);
   }
 
-  [v63 bs_setSafeObject:v40 forKey:@"allowedWebApplications"];
-  v50 = [MEMORY[0x277CBEB18] array];
-  v51 = [v3 mutableCopy];
-  v52 = [v3 healingSource];
-  v53 = [v52 objectForKeyedSubscript:@"silencedWebApplications"];
+  [v63 bs_setSafeObject:array2 forKey:@"allowedWebApplications"];
+  array3 = [MEMORY[0x277CBEB18] array];
+  v51 = [contextCopy mutableCopy];
+  healingSource4 = [contextCopy healingSource];
+  v53 = [healingSource4 objectForKeyedSubscript:@"silencedWebApplications"];
   [v51 setArrayHealingSource:v53];
 
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v54 = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
-  v55 = [v54 countByEnumeratingWithState:&v68 objects:v84 count:16];
+  deniedWebApplications = [(DNDSConfigurationSecureRecord *)self deniedWebApplications];
+  v55 = [deniedWebApplications countByEnumeratingWithState:&v68 objects:v84 count:16];
   if (v55)
   {
     v56 = v55;
@@ -984,20 +984,20 @@ LABEL_30:
       {
         if (*v69 != v57)
         {
-          objc_enumerationMutation(v54);
+          objc_enumerationMutation(deniedWebApplications);
         }
 
         v59 = [*(*(&v68 + 1) + 8 * m) dictionaryRepresentationWithContext:v51];
-        [v50 addObject:v59];
+        [array3 addObject:v59];
       }
 
-      v56 = [v54 countByEnumeratingWithState:&v68 objects:v84 count:16];
+      v56 = [deniedWebApplications countByEnumeratingWithState:&v68 objects:v84 count:16];
     }
 
     while (v56);
   }
 
-  [v63 bs_setSafeObject:v50 forKey:@"silencedWebApplications"];
+  [v63 bs_setSafeObject:array3 forKey:@"silencedWebApplications"];
   v60 = *MEMORY[0x277D85DE8];
 
   return v63;

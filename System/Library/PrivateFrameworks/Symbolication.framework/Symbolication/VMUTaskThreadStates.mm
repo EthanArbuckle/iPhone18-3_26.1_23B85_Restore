@@ -1,8 +1,8 @@
 @interface VMUTaskThreadStates
-- (VMUTaskThreadStates)initWithVMUTask:(id)a3;
-- (unint64_t)stackPointerForThreadNum:(unsigned int)a3;
+- (VMUTaskThreadStates)initWithVMUTask:(id)task;
+- (unint64_t)stackPointerForThreadNum:(unsigned int)num;
 - (void)dealloc;
-- (void)threadStateForThreadNum:(unsigned int)a3;
+- (void)threadStateForThreadNum:(unsigned int)num;
 @end
 
 @implementation VMUTaskThreadStates
@@ -26,9 +26,9 @@
   [(VMUTaskThreadStates *)&v5 dealloc];
 }
 
-- (VMUTaskThreadStates)initWithVMUTask:(id)a3
+- (VMUTaskThreadStates)initWithVMUTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v38.receiver = self;
   v38.super_class = VMUTaskThreadStates;
   v5 = [(VMUTaskThreadStates *)&v38 init];
@@ -39,12 +39,12 @@
 
   v37 = 0;
   v36 = 0;
-  v6 = [v4 memoryCache];
-  v7 = [v6 taskThreadsWithList:&v37 listCnt:&v36];
+  memoryCache = [taskCopy memoryCache];
+  v7 = [memoryCache taskThreadsWithList:&v37 listCnt:&v36];
 
   if (v7)
   {
-    v8 = [v4 pid];
+    v8 = [taskCopy pid];
     v9 = mach_error_string(v7);
     NSLog(&cfstr_UnableToGather.isa, v8, v9, v7);
     goto LABEL_4;
@@ -68,10 +68,10 @@
   {
     v5->_threadStateSize = 272;
     v31 = 68;
-    v13 = [v4 memoryCache];
-    v14 = [v13 threadGetState:*(v37 + 4 * v12) withFlavor:6 oldState:__src oldStateCnt:&v31];
+    memoryCache2 = [taskCopy memoryCache];
+    v14 = [memoryCache2 threadGetState:*(v37 + 4 * v12) withFlavor:6 oldState:__src oldStateCnt:&v31];
 
-    v15 = v4;
+    v15 = taskCopy;
     if ([v15 isExclave])
     {
       v16 = HIDWORD(v35);
@@ -205,12 +205,12 @@ LABEL_35:
   return v10;
 }
 
-- (void)threadStateForThreadNum:(unsigned int)a3
+- (void)threadStateForThreadNum:(unsigned int)num
 {
   threadStates = self->_threadStates;
-  if (threadStates && self->_threadCount > a3)
+  if (threadStates && self->_threadCount > num)
   {
-    return &threadStates[self->_threadStateSize * a3];
+    return &threadStates[self->_threadStateSize * num];
   }
 
   else
@@ -219,12 +219,12 @@ LABEL_35:
   }
 }
 
-- (unint64_t)stackPointerForThreadNum:(unsigned int)a3
+- (unint64_t)stackPointerForThreadNum:(unsigned int)num
 {
   stackPointers = self->_stackPointers;
-  if (stackPointers && self->_threadCount > a3)
+  if (stackPointers && self->_threadCount > num)
   {
-    return stackPointers[a3];
+    return stackPointers[num];
   }
 
   else

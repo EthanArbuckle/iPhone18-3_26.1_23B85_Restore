@@ -1,30 +1,30 @@
 @interface FPImportCookie
 - (BOOL)hasExpired;
-- (FPImportCookie)initWithCoder:(id)a3;
-- (FPImportCookie)initWithURL:(id)a3 error:(id *)a4;
+- (FPImportCookie)initWithCoder:(id)coder;
+- (FPImportCookie)initWithURL:(id)l error:(id *)error;
 - (id)description;
 - (id)providersWithOngoingImport;
-- (void)addEntry:(id)a3;
+- (void)addEntry:(id)entry;
 @end
 
 @implementation FPImportCookie
 
-- (FPImportCookie)initWithURL:(id)a3 error:(id *)a4
+- (FPImportCookie)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v19 = 0;
-  v7 = FPGetImportCookieForURL(v6, &v19);
+  v7 = FPGetImportCookieForURL(lCopy, &v19);
   v8 = v19;
   v9 = v8;
   if (!v7)
   {
     if (v8)
     {
-      if (a4)
+      if (error)
       {
         v13 = v8;
         v11 = 0;
-        *a4 = v9;
+        *error = v9;
         goto LABEL_4;
       }
 
@@ -38,15 +38,15 @@ LABEL_14:
     self = [(FPImportCookie *)&v18 init];
     if (self)
     {
-      v14 = [v6 path];
-      v15 = access([v14 fileSystemRepresentation], 0);
+      path = [lCopy path];
+      v15 = access([path fileSystemRepresentation], 0);
 
       if (v15 < 0)
       {
-        if (a4)
+        if (error)
         {
-          [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error() itemURL:v6 debugDescription:@"FPImportCookie passed non-existent url"];
-          *a4 = v11 = 0;
+          [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error() itemURL:lCopy debugDescription:@"FPImportCookie passed non-existent url"];
+          *error = v11 = 0;
           goto LABEL_4;
         }
 
@@ -58,22 +58,22 @@ LABEL_14:
       self->_entries = v16;
     }
 
-    v10 = self;
-    self = v10;
+    selfCopy = self;
+    self = selfCopy;
     goto LABEL_3;
   }
 
-  v10 = v7;
+  selfCopy = v7;
 LABEL_3:
-  v11 = v10;
+  v11 = selfCopy;
 LABEL_4:
 
   return v11;
 }
 
-- (FPImportCookie)initWithCoder:(id)a3
+- (FPImportCookie)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = FPImportCookie;
   v5 = [(FPImportCookie *)&v13 init];
@@ -83,7 +83,7 @@ LABEL_4:
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_entries"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_entries"];
     entries = v5->_entries;
     v5->_entries = v10;
   }
@@ -91,12 +91,12 @@ LABEL_4:
   return v5;
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
   entries = self->_entries;
-  v4 = a3;
-  v5 = [v4 domainPathRelativeToVolumeRoot];
-  [(NSMutableDictionary *)entries setObject:v4 forKeyedSubscript:v5];
+  entryCopy = entry;
+  domainPathRelativeToVolumeRoot = [entryCopy domainPathRelativeToVolumeRoot];
+  [(NSMutableDictionary *)entries setObject:entryCopy forKeyedSubscript:domainPathRelativeToVolumeRoot];
 }
 
 - (BOOL)hasExpired
@@ -104,16 +104,16 @@ LABEL_4:
   v23 = *MEMORY[0x1E69E9840];
   ExpirationInterval();
   v4 = v3;
-  v5 = [MEMORY[0x1E695DF00] date];
-  [v5 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceReferenceDate];
   v7 = v6;
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(NSMutableDictionary *)self->_entries allValues];
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allValues = [(NSMutableDictionary *)self->_entries allValues];
+  v9 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -125,7 +125,7 @@ LABEL_4:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v18 + 1) + 8 * i) creationTime];
@@ -136,7 +136,7 @@ LABEL_4:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
@@ -158,16 +158,16 @@ LABEL_4:
   ExpirationInterval();
   v4 = v3;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [MEMORY[0x1E695DF00] date];
-  [v6 timeIntervalSinceReferenceDate];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceReferenceDate];
   v8 = v7;
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [(NSMutableDictionary *)self->_entries allValues];
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allValues = [(NSMutableDictionary *)self->_entries allValues];
+  v10 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -178,25 +178,25 @@ LABEL_4:
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 displayName];
-        v16 = [v15 length];
+        displayName = [v14 displayName];
+        v16 = [displayName length];
 
         if (v16)
         {
           [v14 creationTime];
           if (v8 - v17 < v4)
           {
-            v18 = [v14 displayName];
-            [v5 addObject:v18];
+            displayName2 = [v14 displayName];
+            [v5 addObject:displayName2];
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
@@ -209,9 +209,9 @@ LABEL_4:
 
 - (id)description
 {
-  v2 = [(FPImportCookie *)self entries];
-  v3 = [v2 allValues];
-  v4 = [v3 fp_map:&__block_literal_global_16];
+  entries = [(FPImportCookie *)self entries];
+  allValues = [entries allValues];
+  v4 = [allValues fp_map:&__block_literal_global_16];
   v5 = [v4 componentsJoinedByString:{@", "}];
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@: %@>", objc_opt_class(), v5];

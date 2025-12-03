@@ -52,9 +52,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -69,9 +69,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -86,9 +86,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -103,9 +103,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -120,9 +120,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -137,9 +137,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -154,9 +154,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -171,9 +171,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -188,9 +188,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -205,9 +205,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -222,9 +222,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -239,9 +239,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -256,9 +256,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -273,9 +273,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -290,9 +290,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -307,9 +307,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -324,9 +324,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -341,9 +341,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -358,9 +358,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -375,9 +375,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -392,9 +392,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -409,9 +409,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -426,9 +426,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -443,9 +443,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -460,9 +460,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -477,9 +477,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -494,9 +494,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -511,9 +511,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -528,9 +528,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -545,9 +545,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -562,9 +562,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -579,9 +579,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -596,9 +596,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -613,9 +613,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -630,9 +630,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -647,9 +647,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -664,9 +664,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -681,9 +681,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -698,9 +698,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -715,9 +715,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -732,9 +732,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -749,9 +749,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -766,9 +766,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -783,9 +783,9 @@
 {
   v0 = objc_alloc_init(MEMORY[0x277CBC4F8]);
   v1 = MEMORY[0x277CCACA8];
-  v2 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v3 = "";
-  if (v2)
+  if (br_isInSyncBubble)
   {
     v3 = " (SB)";
   }
@@ -802,9 +802,9 @@
   v4 = a3;
   v5 = objc_alloc_init(v3);
   v6 = MEMORY[0x277CCACA8];
-  v7 = [MEMORY[0x277D77BF8] br_isInSyncBubble];
+  br_isInSyncBubble = [MEMORY[0x277D77BF8] br_isInSyncBubble];
   v8 = "";
-  if (v7)
+  if (br_isInSyncBubble)
   {
     v8 = " (SB)";
   }

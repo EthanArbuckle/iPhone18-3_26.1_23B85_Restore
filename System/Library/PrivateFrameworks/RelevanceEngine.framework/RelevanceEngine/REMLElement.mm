@@ -1,32 +1,32 @@
 @interface REMLElement
-- (BOOL)isEqual:(id)a3;
-- (REMLElement)initWithIdentifier:(id)a3 featureMap:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMLElement)initWithIdentifier:(id)identifier featureMap:(id)map;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation REMLElement
 
-- (REMLElement)initWithIdentifier:(id)a3 featureMap:(id)a4
+- (REMLElement)initWithIdentifier:(id)identifier featureMap:(id)map
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  mapCopy = map;
   v12.receiver = self;
   v12.super_class = REMLElement;
   v9 = [(REMLElement *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_identifier, a3);
-    objc_storeStrong(&v10->_featureMap, a4);
+    objc_storeStrong(&v9->_identifier, identifier);
+    objc_storeStrong(&v10->_featureMap, map);
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = v5->_identifier;
       v7 = self->_identifier;
       v8 = v7;
@@ -82,9 +82,9 @@ LABEL_14:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   v6 = [(REFeatureMap *)self->_featureMap copy];
   v7 = [v4 initWithIdentifier:identifier featureMap:v6];

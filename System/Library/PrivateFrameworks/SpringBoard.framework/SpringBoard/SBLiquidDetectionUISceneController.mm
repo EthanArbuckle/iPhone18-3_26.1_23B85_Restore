@@ -1,28 +1,28 @@
 @interface SBLiquidDetectionUISceneController
 + (id)_setupInfo;
-- (SBLiquidDetectionUISceneController)initWithSceneWorkspaceIdentifier:(id)a3 clientProcessIdentity:(id)a4 sceneVendingPolicy:(int64_t)a5 traitsRole:(id)a6 jobLabel:(id)a7 level:(double)a8;
-- (void)addLiquidDetectionObserver:(id)a3;
+- (SBLiquidDetectionUISceneController)initWithSceneWorkspaceIdentifier:(id)identifier clientProcessIdentity:(id)identity sceneVendingPolicy:(int64_t)policy traitsRole:(id)role jobLabel:(id)label level:(double)level;
+- (void)addLiquidDetectionObserver:(id)observer;
 - (void)dealloc;
-- (void)removeLiquidDetectionObserver:(id)a3;
-- (void)scenePresenter:(id)a3 didPresentScene:(id)a4;
-- (void)scenePresenter:(id)a3 willDismissScene:(id)a4;
-- (void)setDefaultPresenter:(id)a3;
+- (void)removeLiquidDetectionObserver:(id)observer;
+- (void)scenePresenter:(id)presenter didPresentScene:(id)scene;
+- (void)scenePresenter:(id)presenter willDismissScene:(id)scene;
+- (void)setDefaultPresenter:(id)presenter;
 @end
 
 @implementation SBLiquidDetectionUISceneController
 
-- (SBLiquidDetectionUISceneController)initWithSceneWorkspaceIdentifier:(id)a3 clientProcessIdentity:(id)a4 sceneVendingPolicy:(int64_t)a5 traitsRole:(id)a6 jobLabel:(id)a7 level:(double)a8
+- (SBLiquidDetectionUISceneController)initWithSceneWorkspaceIdentifier:(id)identifier clientProcessIdentity:(id)identity sceneVendingPolicy:(int64_t)policy traitsRole:(id)role jobLabel:(id)label level:(double)level
 {
   v17.receiver = self;
   v17.super_class = SBLiquidDetectionUISceneController;
-  v8 = [(SBSystemUISceneController *)&v17 initWithSceneWorkspaceIdentifier:a3 clientProcessIdentity:a4 sceneVendingPolicy:a5 traitsRole:a6 jobLabel:a7 level:a8];
+  v8 = [(SBSystemUISceneController *)&v17 initWithSceneWorkspaceIdentifier:identifier clientProcessIdentity:identity sceneVendingPolicy:policy traitsRole:role jobLabel:label level:level];
   v9 = v8;
   if (v8)
   {
     v8->_presenting = 0;
-    v10 = [SBApp lockOutController];
+    lockOutController = [SBApp lockOutController];
     v11 = objc_opt_class();
-    v12 = v10;
+    v12 = lockOutController;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -76,28 +76,28 @@
   return v2;
 }
 
-- (void)setDefaultPresenter:(id)a3
+- (void)setDefaultPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v5.receiver = self;
   v5.super_class = SBLiquidDetectionUISceneController;
-  [(SBSystemUISceneController *)&v5 setDefaultPresenter:v4];
+  [(SBSystemUISceneController *)&v5 setDefaultPresenter:presenterCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPresentingDelegate:self];
+    [presenterCopy setPresentingDelegate:self];
   }
 }
 
-- (void)scenePresenter:(id)a3 didPresentScene:(id)a4
+- (void)scenePresenter:(id)presenter didPresentScene:(id)scene
 {
   v38[3] = *MEMORY[0x277D85DE8];
-  v5 = [a4 definition];
-  v6 = [v5 specification];
-  v7 = [v6 uiSceneSessionRole];
+  definition = [scene definition];
+  specification = [definition specification];
+  uiSceneSessionRole = [specification uiSceneSessionRole];
 
   v8 = objc_opt_new();
-  v9 = [v8 uiSceneSessionRole];
-  v10 = [v7 isEqual:v9];
+  uiSceneSessionRole2 = [v8 uiSceneSessionRole];
+  v10 = [uiSceneSessionRole isEqual:uiSceneSessionRole2];
 
   if (v10)
   {
@@ -112,10 +112,10 @@
 
     if (!self->_suppressSystemAperture)
     {
-      v14 = [SBApp systemApertureControllerForMainDisplay];
-      v15 = [v14 systemApertureRepresentationSuppressionAssertionForLiquidDetectionVisibility];
+      systemApertureControllerForMainDisplay = [SBApp systemApertureControllerForMainDisplay];
+      systemApertureRepresentationSuppressionAssertionForLiquidDetectionVisibility = [systemApertureControllerForMainDisplay systemApertureRepresentationSuppressionAssertionForLiquidDetectionVisibility];
       suppressSystemAperture = self->_suppressSystemAperture;
-      self->_suppressSystemAperture = v15;
+      self->_suppressSystemAperture = systemApertureRepresentationSuppressionAssertionForLiquidDetectionVisibility;
     }
 
     if (!self->_disableIdleTimer)
@@ -177,16 +177,16 @@
   }
 }
 
-- (void)scenePresenter:(id)a3 willDismissScene:(id)a4
+- (void)scenePresenter:(id)presenter willDismissScene:(id)scene
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [a4 definition];
-  v6 = [v5 specification];
-  v7 = [v6 uiSceneSessionRole];
+  definition = [scene definition];
+  specification = [definition specification];
+  uiSceneSessionRole = [specification uiSceneSessionRole];
 
   v8 = objc_opt_new();
-  v9 = [v8 uiSceneSessionRole];
-  v10 = [v7 isEqual:v9];
+  uiSceneSessionRole2 = [v8 uiSceneSessionRole];
+  v10 = [uiSceneSessionRole isEqual:uiSceneSessionRole2];
 
   if (v10)
   {
@@ -238,30 +238,30 @@
   }
 }
 
-- (void)addLiquidDetectionObserver:(id)a3
+- (void)addLiquidDetectionObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v8 = v4;
+    v8 = observerCopy;
     if (!observers)
     {
-      v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
       v7 = self->_observers;
-      self->_observers = v6;
+      self->_observers = weakObjectsHashTable;
 
       observers = self->_observers;
     }
 
     [(NSHashTable *)observers addObject:v8];
-    v4 = v8;
+    observerCopy = v8;
   }
 }
 
-- (void)removeLiquidDetectionObserver:(id)a3
+- (void)removeLiquidDetectionObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }

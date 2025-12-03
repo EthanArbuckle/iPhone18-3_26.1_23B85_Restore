@@ -1,35 +1,35 @@
 @interface HKBadge
 + (HKBadge)errorBadge;
 + (HKBadge)indicatorBadge;
-+ (id)badgeFromKeyValueRepresentation:(id)a3;
-+ (id)numberBadgeWithCount:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)badgeFromKeyValueRepresentation:(id)representation;
++ (id)numberBadgeWithCount:(int64_t)count;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isZeroBadge;
-- (HKBadge)initWithCoder:(id)a3;
+- (HKBadge)initWithCoder:(id)coder;
 - (NSNumber)keyValueRepresentation;
 - (NSObject)value;
 - (NSString)stringValue;
-- (id)badgeByAggregatingWithBadge:(id)a3;
-- (id)badgeByIncrementingByCount:(int64_t)a3;
+- (id)badgeByAggregatingWithBadge:(id)badge;
+- (id)badgeByIncrementingByCount:(int64_t)count;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKBadge
 
-- (id)badgeByAggregatingWithBadge:(id)a3
+- (id)badgeByAggregatingWithBadge:(id)badge
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v4;
-  if (-[HKBadge isErrorBadge](v5, "isErrorBadge") || [v6 isErrorBadge])
+  badgeCopy = badge;
+  selfCopy = self;
+  v6 = badgeCopy;
+  if (-[HKBadge isErrorBadge](selfCopy, "isErrorBadge") || [v6 isErrorBadge])
   {
     v7 = +[HKBadge errorBadge];
     goto LABEL_4;
   }
 
-  if ([(HKBadge *)v5 isZeroBadge])
+  if ([(HKBadge *)selfCopy isZeroBadge])
   {
     goto LABEL_8;
   }
@@ -39,7 +39,7 @@
     goto LABEL_10;
   }
 
-  if ([(HKBadge *)v5 isIndicatorBadge])
+  if ([(HKBadge *)selfCopy isIndicatorBadge])
   {
 LABEL_8:
     v7 = v6;
@@ -49,17 +49,17 @@ LABEL_8:
   if ([v6 isIndicatorBadge])
   {
 LABEL_10:
-    v7 = v5;
+    v7 = selfCopy;
   }
 
   else
   {
-    if (!-[HKBadge isNumberBadge](v5, "isNumberBadge") || ([v6 isNumberBadge] & 1) == 0)
+    if (!-[HKBadge isNumberBadge](selfCopy, "isNumberBadge") || ([v6 isNumberBadge] & 1) == 0)
     {
       [HKBadge badgeByAggregatingWithBadge:];
     }
 
-    v7 = [HKBadge numberBadgeWithCount:v6[1] + v5->_count];
+    v7 = [HKBadge numberBadgeWithCount:v6[1] + selfCopy->_count];
   }
 
 LABEL_4:
@@ -68,24 +68,24 @@ LABEL_4:
   return v8;
 }
 
-- (id)badgeByIncrementingByCount:(int64_t)a3
+- (id)badgeByIncrementingByCount:(int64_t)count
 {
-  if (a3 < 0)
+  if (count < 0)
   {
     [(HKBadge *)a2 badgeByIncrementingByCount:?];
   }
 
-  v5 = [(HKBadge *)self type];
-  if (v5 == 2)
+  selfCopy = [(HKBadge *)self type];
+  if (selfCopy == 2)
   {
 LABEL_6:
-    v5 = self;
+    selfCopy = self;
     goto LABEL_8;
   }
 
-  if (v5 != 1)
+  if (selfCopy != 1)
   {
-    if (v5)
+    if (selfCopy)
     {
       goto LABEL_8;
     }
@@ -93,16 +93,16 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v5 = [HKBadge numberBadgeWithCount:self->_count + a3];
+  selfCopy = [HKBadge numberBadgeWithCount:self->_count + count];
 LABEL_8:
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v3 = [(HKBadge *)self type];
-  if (v3 == 1)
+  type = [(HKBadge *)self type];
+  if (type == 1)
   {
     if ([(HKBadge *)self isZeroBadge])
     {
@@ -115,7 +115,7 @@ LABEL_8:
     }
   }
 
-  else if (v3 == 2)
+  else if (type == 2)
   {
     v4 = @"error";
   }
@@ -128,23 +128,23 @@ LABEL_8:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if ([(HKBadge *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(HKBadge *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(HKBadge *)v5 type];
-    if (v6 == [(HKBadge *)self type])
+    v5 = equalCopy;
+    type = [(HKBadge *)v5 type];
+    if (type == [(HKBadge *)self type])
     {
-      v7 = [(HKBadge *)v5 value];
-      v8 = [(HKBadge *)self value];
-      v9 = v7 == v8;
+      value = [(HKBadge *)v5 value];
+      value2 = [(HKBadge *)self value];
+      v9 = value == value2;
     }
 
     else
@@ -163,27 +163,27 @@ LABEL_8:
 
 - (unint64_t)hash
 {
-  v3 = [(HKBadge *)self type];
-  v4 = [(HKBadge *)self value];
-  v5 = [v4 hash];
+  type = [(HKBadge *)self type];
+  value = [(HKBadge *)self value];
+  v5 = [value hash];
 
-  return v5 ^ v3;
+  return v5 ^ type;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[HKBadge type](self forKey:{"type"), @"type"}];
-  [v4 encodeInteger:self->_count forKey:@"count"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[HKBadge type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeInteger:self->_count forKey:@"count"];
 }
 
-- (HKBadge)initWithCoder:(id)a3
+- (HKBadge)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeIntegerForKey:@"count"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeIntegerForKey:@"count"];
 
-  v7 = 0;
+  selfCopy = 0;
   if (v5 <= 2 && (v6 & 0x8000000000000000) == 0)
   {
     if (self)
@@ -204,27 +204,27 @@ LABEL_8:
     }
 
     self = v8;
-    v7 = self;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (BOOL)isZeroBadge
 {
-  v3 = [(HKBadge *)self isNumberBadge];
-  if (v3)
+  isNumberBadge = [(HKBadge *)self isNumberBadge];
+  if (isNumberBadge)
   {
-    LOBYTE(v3) = self->_count == 0;
+    LOBYTE(isNumberBadge) = self->_count == 0;
   }
 
-  return v3;
+  return isNumberBadge;
 }
 
 - (NSObject)value
 {
-  v3 = [(HKBadge *)self type];
-  if (v3 == 1)
+  type = [(HKBadge *)self type];
+  if (type == 1)
   {
     if ([(HKBadge *)self isZeroBadge])
     {
@@ -237,7 +237,7 @@ LABEL_8:
     }
   }
 
-  else if (v3 == 2)
+  else if (type == 2)
   {
     v4 = @"!";
   }
@@ -253,22 +253,22 @@ LABEL_8:
 - (NSString)stringValue
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(HKBadge *)self value];
-  if (v3)
+  value = [(HKBadge *)self value];
+  if (value)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      stringValue = value;
 LABEL_6:
-      v5 = v4;
+      v5 = stringValue;
       goto LABEL_10;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 stringValue];
+      stringValue = [value stringValue];
       goto LABEL_6;
     }
 
@@ -277,9 +277,9 @@ LABEL_6:
     if (os_log_type_enabled(HKLogNotifications, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = v3;
+      v10 = value;
       v11 = 2114;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&dword_19197B000, v6, OS_LOG_TYPE_DEFAULT, "Invalid badge value %{public}@ for %{public}@.", &v9, 0x16u);
     }
   }
@@ -294,13 +294,13 @@ LABEL_10:
 
 - (NSNumber)keyValueRepresentation
 {
-  v3 = [(HKBadge *)self type];
-  if (v3 == 1)
+  type = [(HKBadge *)self type];
+  if (type == 1)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithInteger:self->_count];
   }
 
-  else if (v3)
+  else if (type)
   {
     v4 = &unk_1F0683360;
   }
@@ -313,30 +313,30 @@ LABEL_10:
   return v4;
 }
 
-+ (id)badgeFromKeyValueRepresentation:(id)a3
++ (id)badgeFromKeyValueRepresentation:(id)representation
 {
-  v3 = a3;
+  representationCopy = representation;
   v4 = +[HKBadge zeroBadge];
-  if (v3)
+  if (representationCopy)
   {
-    v5 = [v3 integerValue];
-    if (v5 > -3)
+    integerValue = [representationCopy integerValue];
+    if (integerValue > -3)
     {
-      if (v5 == -1)
+      if (integerValue == -1)
       {
         v7 = +[HKBadge indicatorBadge];
       }
 
       else
       {
-        if (v5 == -2)
+        if (integerValue == -2)
         {
           +[HKBadge errorBadge];
         }
 
         else
         {
-          [HKBadge numberBadgeWithCount:v5];
+          [HKBadge numberBadgeWithCount:integerValue];
         }
         v7 = ;
       }
@@ -348,7 +348,7 @@ LABEL_10:
     v6 = HKLogNotifications;
     if (os_log_type_enabled(HKLogNotifications, OS_LOG_TYPE_ERROR))
     {
-      [(HKBadge(KeyValueEntitySupport) *)v5 badgeFromKeyValueRepresentation:v6];
+      [(HKBadge(KeyValueEntitySupport) *)integerValue badgeFromKeyValueRepresentation:v6];
     }
   }
 
@@ -361,7 +361,7 @@ LABEL_6:
 
 + (HKBadge)indicatorBadge
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   if (v2)
   {
     v4.receiver = v2;
@@ -379,7 +379,7 @@ LABEL_6:
 
 + (HKBadge)errorBadge
 {
-  v2 = [a1 alloc];
+  v2 = [self alloc];
   if (v2)
   {
     v4.receiver = v2;
@@ -394,15 +394,15 @@ LABEL_6:
   return v2;
 }
 
-+ (id)numberBadgeWithCount:(int64_t)a3
++ (id)numberBadgeWithCount:(int64_t)count
 {
-  if (a3 < 0)
+  if (count < 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"HKBadge.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"count >= 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKBadge.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"count >= 0"}];
   }
 
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   if (v5)
   {
     v9.receiver = v5;
@@ -410,7 +410,7 @@ LABEL_6:
     v5 = objc_msgSendSuper2(&v9, sel_init);
     if (v5)
     {
-      v5[1] = a3;
+      v5[1] = count;
       v5[2] = 1;
     }
   }

@@ -1,10 +1,10 @@
 @interface JavaUtilConcurrentConcurrentHashMap_CollectionView
 - (BOOL)isEmpty;
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3;
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3;
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection;
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection;
 - (NSString)description;
 - (id)toArray;
-- (id)toArrayWithNSObjectArray:(id)a3;
+- (id)toArrayWithNSObjectArray:(id)array;
 - (int)size;
 - (void)__javaClone;
 - (void)clear;
@@ -54,16 +54,16 @@ LABEL_22:
     JreThrowNullPointerException();
   }
 
-  v4 = [Weak mappingCount];
-  if (v4 >= 2147483640)
+  mappingCount = [Weak mappingCount];
+  if (mappingCount >= 2147483640)
   {
 LABEL_23:
     v15 = new_JavaLangOutOfMemoryError_initWithNSString_(off_100550518);
     objc_exception_throw(v15);
   }
 
-  v5 = v4;
-  v6 = [IOSObjectArray arrayWithLength:v4 type:NSObject_class_()];
+  v5 = mappingCount;
+  v6 = [IOSObjectArray arrayWithLength:mappingCount type:NSObject_class_()];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -137,7 +137,7 @@ LABEL_23:
   return v6;
 }
 
-- (id)toArrayWithNSObjectArray:(id)a3
+- (id)toArrayWithNSObjectArray:(id)array
 {
   Weak = objc_loadWeak(&self->map_);
   if (!Weak)
@@ -145,35 +145,35 @@ LABEL_23:
     goto LABEL_29;
   }
 
-  v6 = [Weak mappingCount];
-  if (v6 >= 2147483640)
+  mappingCount = [Weak mappingCount];
+  if (mappingCount >= 2147483640)
   {
 LABEL_31:
     v18 = new_JavaLangOutOfMemoryError_initWithNSString_(off_100550518);
     objc_exception_throw(v18);
   }
 
-  if (!a3)
+  if (!array)
   {
 LABEL_29:
     JreThrowNullPointerException();
   }
 
-  v7 = *(a3 + 2);
-  v8 = a3;
-  if (v7 < v6)
+  v7 = *(array + 2);
+  arrayCopy = array;
+  if (v7 < mappingCount)
   {
-    v8 = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(a3 "getClass")], v6);
+    arrayCopy = JavaLangReflectArray_newInstanceWithIOSClass_withInt_([objc_msgSend(array "getClass")], mappingCount);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       JreThrowClassCastException();
     }
 
-    v7 = v8[2];
+    v7 = arrayCopy[2];
   }
 
-  v19 = a3;
+  arrayCopy2 = array;
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -213,17 +213,17 @@ LABEL_29:
             v7 += (v7 >> 1) + 1;
           }
 
-          v16 = JavaUtilArrays_copyOfWithNSObjectArray_withInt_(v8, v7);
+          v16 = JavaUtilArrays_copyOfWithNSObjectArray_withInt_(arrayCopy, v7);
           if (!v16)
           {
             goto LABEL_29;
           }
 
-          v8 = v16;
+          arrayCopy = v16;
         }
 
         v11 = v14 + 1;
-        IOSObjectArray_Set(v8, v14, v15);
+        IOSObjectArray_Set(arrayCopy, v14, v15);
         ++v13;
         ++v14;
       }
@@ -240,34 +240,34 @@ LABEL_29:
     v11 = 0;
   }
 
-  if (v8 == v19 && v11 < v7)
+  if (arrayCopy == arrayCopy2 && v11 < v7)
   {
-    IOSObjectArray_Set(v8, v11, 0);
+    IOSObjectArray_Set(arrayCopy, v11, 0);
   }
 
   else if (v11 != v7)
   {
-    return JavaUtilArrays_copyOfWithNSObjectArray_withInt_(v8, v11);
+    return JavaUtilArrays_copyOfWithNSObjectArray_withInt_(arrayCopy, v11);
   }
 
-  return v8;
+  return arrayCopy;
 }
 
 - (NSString)description
 {
   v3 = new_JavaLangStringBuilder_init();
   [(JavaLangStringBuilder *)v3 appendWithChar:91];
-  v4 = [(JavaUtilConcurrentConcurrentHashMap_CollectionView *)self iterator];
-  if (!v4)
+  iterator = [(JavaUtilConcurrentConcurrentHashMap_CollectionView *)self iterator];
+  if (!iterator)
   {
     goto LABEL_16;
   }
 
-  v5 = v4;
-  if ([v4 hasNext])
+  v5 = iterator;
+  if ([iterator hasNext])
   {
-    v6 = [v5 next];
-    v7 = v6 == self ? @"(this Collection)" : v6;
+    next = [v5 next];
+    v7 = next == self ? @"(this Collection)" : next;
     [(JavaLangStringBuilder *)v3 appendWithId:v7];
     if ([v5 hasNext])
     {
@@ -280,15 +280,15 @@ LABEL_29:
         }
 
         [v8 appendWithChar:32];
-        v9 = [v5 next];
-        if (v9 == self)
+        next2 = [v5 next];
+        if (next2 == self)
         {
           v10 = @"(this Collection)";
         }
 
         else
         {
-          v10 = v9;
+          v10 = next2;
         }
 
         [(JavaLangStringBuilder *)v3 appendWithId:v10];
@@ -313,21 +313,21 @@ LABEL_12:
   return [v11 description];
 }
 
-- (BOOL)removeAllWithJavaUtilCollection:(id)a3
+- (BOOL)removeAllWithJavaUtilCollection:(id)collection
 {
-  v4 = [(JavaUtilConcurrentConcurrentHashMap_CollectionView *)self iterator];
-  if (!v4)
+  iterator = [(JavaUtilConcurrentConcurrentHashMap_CollectionView *)self iterator];
+  if (!iterator)
   {
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = iterator;
   v6 = 0;
-  if ([v4 hasNext])
+  if ([iterator hasNext])
   {
-    while (a3)
+    while (collection)
     {
-      if ([a3 containsWithId:{objc_msgSend(v5, "next")}])
+      if ([collection containsWithId:{objc_msgSend(v5, "next")}])
       {
         [v5 remove];
         v6 = 1;
@@ -346,21 +346,21 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)retainAllWithJavaUtilCollection:(id)a3
+- (BOOL)retainAllWithJavaUtilCollection:(id)collection
 {
-  v4 = [(JavaUtilConcurrentConcurrentHashMap_CollectionView *)self iterator];
-  if (!v4)
+  iterator = [(JavaUtilConcurrentConcurrentHashMap_CollectionView *)self iterator];
+  if (!iterator)
   {
     goto LABEL_8;
   }
 
-  v5 = v4;
+  v5 = iterator;
   v6 = 0;
-  if ([v4 hasNext])
+  if ([iterator hasNext])
   {
-    while (a3)
+    while (collection)
     {
-      if (([a3 containsWithId:{objc_msgSend(v5, "next")}] & 1) == 0)
+      if (([collection containsWithId:{objc_msgSend(v5, "next")}] & 1) == 0)
       {
         [v5 remove];
         v6 = 1;

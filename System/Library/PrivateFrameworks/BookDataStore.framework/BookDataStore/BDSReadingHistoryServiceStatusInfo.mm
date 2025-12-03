@@ -1,28 +1,28 @@
 @interface BDSReadingHistoryServiceStatusInfo
-- (BDSReadingHistoryServiceStatusInfo)initWithCoder:(id)a3;
+- (BDSReadingHistoryServiceStatusInfo)initWithCoder:(id)coder;
 - (BOOL)isLoaded;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSReadingHistoryServiceStatusInfo
 
 - (BOOL)isLoaded
 {
-  v2 = [(BDSReadingHistoryServiceStatusInfo *)self status];
-  v3 = [v2 isLoaded];
+  status = [(BDSReadingHistoryServiceStatusInfo *)self status];
+  isLoaded = [status isLoaded];
 
-  return v3;
+  return isLoaded;
 }
 
-- (BDSReadingHistoryServiceStatusInfo)initWithCoder:(id)a3
+- (BDSReadingHistoryServiceStatusInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BDSReadingHistoryServiceStatusInfo *)self init];
   if (v5)
   {
-    v6 = [[BDSReadingHistoryServiceStatus alloc] initWithCoder:v4];
+    v6 = [[BDSReadingHistoryServiceStatus alloc] initWithCoder:coderCopy];
     status = v5->_status;
     v5->_status = v6;
   }
@@ -30,25 +30,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BDSReadingHistoryServiceStatusInfo *)self status];
-  [v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  status = [(BDSReadingHistoryServiceStatusInfo *)self status];
+  [status encodeWithCoder:coderCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BDSReadingHistoryServiceStatusInfo alloc];
-  v5 = [(BDSReadingHistoryServiceStatusInfo *)self isLoaded];
+  isLoaded = [(BDSReadingHistoryServiceStatusInfo *)self isLoaded];
 
-  return [(BDSReadingHistoryServiceStatusInfo *)v4 initWithIsLoaded:v5];
+  return [(BDSReadingHistoryServiceStatusInfo *)v4 initWithIsLoaded:isLoaded];
 }
 
 - (id)description
 {
-  v2 = [(BDSReadingHistoryServiceStatusInfo *)self status];
-  v3 = [v2 description];
+  status = [(BDSReadingHistoryServiceStatusInfo *)self status];
+  v3 = [status description];
 
   return v3;
 }

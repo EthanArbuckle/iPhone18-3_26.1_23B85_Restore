@@ -1,30 +1,30 @@
 @interface NTKParmesanCropPreviewModel
-- (NTKParmesanCropPreviewModel)initWithPhoto:(id)a3 maskedPhoto:(id)a4 previewValidator:(id)a5 crop:(id)a6 timeLayout:(id)a7 useDepthEffect:(BOOL)a8 revertable:(BOOL)a9;
+- (NTKParmesanCropPreviewModel)initWithPhoto:(id)photo maskedPhoto:(id)maskedPhoto previewValidator:(id)validator crop:(id)crop timeLayout:(id)layout useDepthEffect:(BOOL)effect revertable:(BOOL)revertable;
 - (id)description;
 @end
 
 @implementation NTKParmesanCropPreviewModel
 
-- (NTKParmesanCropPreviewModel)initWithPhoto:(id)a3 maskedPhoto:(id)a4 previewValidator:(id)a5 crop:(id)a6 timeLayout:(id)a7 useDepthEffect:(BOOL)a8 revertable:(BOOL)a9
+- (NTKParmesanCropPreviewModel)initWithPhoto:(id)photo maskedPhoto:(id)maskedPhoto previewValidator:(id)validator crop:(id)crop timeLayout:(id)layout useDepthEffect:(BOOL)effect revertable:(BOOL)revertable
 {
-  v16 = a3;
-  v17 = a4;
-  v23 = a5;
-  v22 = a6;
-  v18 = a7;
+  photoCopy = photo;
+  maskedPhotoCopy = maskedPhoto;
+  validatorCopy = validator;
+  cropCopy = crop;
+  layoutCopy = layout;
   v24.receiver = self;
   v24.super_class = NTKParmesanCropPreviewModel;
   v19 = [(NTKParmesanCropPreviewModel *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_photo, a3);
-    objc_storeStrong(&v20->_maskedPhoto, a4);
-    objc_storeStrong(&v20->_previewValidator, a5);
-    objc_storeStrong(&v20->_crop, a6);
-    objc_storeStrong(&v20->_timeLayout, a7);
-    v20->_useDepthEffect = a8;
-    v20->_revertable = a9;
+    objc_storeStrong(&v19->_photo, photo);
+    objc_storeStrong(&v20->_maskedPhoto, maskedPhoto);
+    objc_storeStrong(&v20->_previewValidator, validator);
+    objc_storeStrong(&v20->_crop, crop);
+    objc_storeStrong(&v20->_timeLayout, layout);
+    v20->_useDepthEffect = effect;
+    v20->_revertable = revertable;
   }
 
   return v20;

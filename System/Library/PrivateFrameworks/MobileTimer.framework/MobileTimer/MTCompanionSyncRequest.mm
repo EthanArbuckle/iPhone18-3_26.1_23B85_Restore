@@ -1,21 +1,21 @@
 @interface MTCompanionSyncRequest
-+ (MTCompanionSyncRequest)requestWithType:(unint64_t)a3;
-- (MTCompanionSyncRequest)initWithRequestType:(unint64_t)a3;
++ (MTCompanionSyncRequest)requestWithType:(unint64_t)type;
+- (MTCompanionSyncRequest)initWithRequestType:(unint64_t)type;
 - (NSString)description;
-- (void)addCompletionBlock:(id)a3;
-- (void)complete:(id)a3;
+- (void)addCompletionBlock:(id)block;
+- (void)complete:(id)complete;
 @end
 
 @implementation MTCompanionSyncRequest
 
-+ (MTCompanionSyncRequest)requestWithType:(unint64_t)a3
++ (MTCompanionSyncRequest)requestWithType:(unint64_t)type
 {
-  v3 = [[a1 alloc] initWithRequestType:a3];
+  v3 = [[self alloc] initWithRequestType:type];
 
   return v3;
 }
 
-- (MTCompanionSyncRequest)initWithRequestType:(unint64_t)a3
+- (MTCompanionSyncRequest)initWithRequestType:(unint64_t)type
 {
   v11.receiver = self;
   v11.super_class = MTCompanionSyncRequest;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_requestType = a3;
+    v4->_requestType = type;
     v6 = objc_opt_new();
     completionBlocks = v5->_completionBlocks;
     v5->_completionBlocks = v6;
@@ -36,17 +36,17 @@
   return v5;
 }
 
-- (void)complete:(id)a3
+- (void)complete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   serializer = self->_serializer;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __35__MTCompanionSyncRequest_complete___block_invoke;
   v7[3] = &unk_1E7B0C928;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completeCopy;
+  v6 = completeCopy;
   [(NAScheduler *)serializer performBlock:v7];
 }
 
@@ -73,11 +73,11 @@ void __35__MTCompanionSyncRequest_complete___block_invoke(uint64_t a1)
   }
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  blockCopy = block;
+  v5 = blockCopy;
+  if (blockCopy)
   {
     serializer = self->_serializer;
     v7[0] = MEMORY[0x1E69E9820];
@@ -85,7 +85,7 @@ void __35__MTCompanionSyncRequest_complete___block_invoke(uint64_t a1)
     v7[2] = __45__MTCompanionSyncRequest_addCompletionBlock___block_invoke;
     v7[3] = &unk_1E7B0CA00;
     v7[4] = self;
-    v8 = v4;
+    v8 = blockCopy;
     [(NAScheduler *)serializer performBlock:v7];
   }
 }
@@ -112,8 +112,8 @@ void __45__MTCompanionSyncRequest_addCompletionBlock___block_invoke(uint64_t a1)
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTCompanionSyncRequest *)self requestDescription];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@ >", v4, self, v5];
+  requestDescription = [(MTCompanionSyncRequest *)self requestDescription];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@ >", v4, self, requestDescription];
 
   return v6;
 }

@@ -1,52 +1,52 @@
 @interface HFPowerStateControlItem
 + (id)_powerStateTargetValues;
 + (id)na_identity;
-- (BOOL)supportsItemRepresentingServices:(id)a3;
-- (HFPowerStateControlItem)initWithValueSource:(id)a3 auxiliaryTargetValueTuples:(id)a4 additionalCharacteristicOptions:(id)a5 displayResults:(id)a6;
-- (HFPowerStateControlItem)initWithValueSource:(id)a3 auxiliaryTargetValueTuples:(id)a4 displayResults:(id)a5;
-- (HFPowerStateControlItem)initWithValueSource:(id)a3 characteristicTypes:(id)a4 displayResults:(id)a5;
-- (HFPowerStateControlItem)initWithValueSource:(id)a3 displayResults:(id)a4;
-- (id)characteristicValuesForValue:(id)a3;
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4;
+- (BOOL)supportsItemRepresentingServices:(id)services;
+- (HFPowerStateControlItem)initWithValueSource:(id)source auxiliaryTargetValueTuples:(id)tuples additionalCharacteristicOptions:(id)options displayResults:(id)results;
+- (HFPowerStateControlItem)initWithValueSource:(id)source auxiliaryTargetValueTuples:(id)tuples displayResults:(id)results;
+- (HFPowerStateControlItem)initWithValueSource:(id)source characteristicTypes:(id)types displayResults:(id)results;
+- (HFPowerStateControlItem)initWithValueSource:(id)source displayResults:(id)results;
+- (id)characteristicValuesForValue:(id)value;
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source;
 - (id)readValueAndPopulateStandardResults;
 - (id)toggleValue;
-- (id)valueForCharacteristicValues:(id)a3;
-- (id)writePrimaryState:(int64_t)a3;
+- (id)valueForCharacteristicValues:(id)values;
+- (id)writePrimaryState:(int64_t)state;
 @end
 
 @implementation HFPowerStateControlItem
 
-- (HFPowerStateControlItem)initWithValueSource:(id)a3 displayResults:(id)a4
+- (HFPowerStateControlItem)initWithValueSource:(id)source displayResults:(id)results
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
+  resultsCopy = results;
+  sourceCopy = source;
   v9 = [v6 set];
-  v10 = [(HFPowerStateControlItem *)self initWithValueSource:v8 auxiliaryTargetValueTuples:v9 displayResults:v7];
+  v10 = [(HFPowerStateControlItem *)self initWithValueSource:sourceCopy auxiliaryTargetValueTuples:v9 displayResults:resultsCopy];
 
   return v10;
 }
 
-- (HFPowerStateControlItem)initWithValueSource:(id)a3 auxiliaryTargetValueTuples:(id)a4 displayResults:(id)a5
+- (HFPowerStateControlItem)initWithValueSource:(id)source auxiliaryTargetValueTuples:(id)tuples displayResults:(id)results
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  resultsCopy = results;
+  tuplesCopy = tuples;
+  sourceCopy = source;
   v11 = objc_alloc_init(HFControlItemCharacteristicOptions);
-  v12 = [(HFPowerStateControlItem *)self initWithValueSource:v10 auxiliaryTargetValueTuples:v9 additionalCharacteristicOptions:v11 displayResults:v8];
+  v12 = [(HFPowerStateControlItem *)self initWithValueSource:sourceCopy auxiliaryTargetValueTuples:tuplesCopy additionalCharacteristicOptions:v11 displayResults:resultsCopy];
 
   return v12;
 }
 
-- (HFPowerStateControlItem)initWithValueSource:(id)a3 auxiliaryTargetValueTuples:(id)a4 additionalCharacteristicOptions:(id)a5 displayResults:(id)a6
+- (HFPowerStateControlItem)initWithValueSource:(id)source auxiliaryTargetValueTuples:(id)tuples additionalCharacteristicOptions:(id)options displayResults:(id)results
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
-  v14 = [objc_opt_class() _powerStateTargetValues];
-  v15 = [v14 setByAddingObjectsFromSet:v11];
+  sourceCopy = source;
+  tuplesCopy = tuples;
+  resultsCopy = results;
+  optionsCopy = options;
+  _powerStateTargetValues = [objc_opt_class() _powerStateTargetValues];
+  v15 = [_powerStateTargetValues setByAddingObjectsFromSet:tuplesCopy];
   allTargetValues = self->_allTargetValues;
   self->_allTargetValues = v15;
 
@@ -55,7 +55,7 @@
   v28[1] = 3221225472;
   v28[2] = __121__HFPowerStateControlItem_initWithValueSource_auxiliaryTargetValueTuples_additionalCharacteristicOptions_displayResults___block_invoke_2;
   v28[3] = &unk_277DF3130;
-  v18 = v10;
+  v18 = sourceCopy;
   v29 = v18;
   v19 = [v17 na_filter:v28];
 
@@ -65,15 +65,15 @@
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:&v30 count:1];
   v22 = [(HFControlItemCharacteristicOptions *)v20 initWithCharacteristicTypesByUsage:v21];
 
-  v23 = [(HFControlItemCharacteristicOptions *)v22 optionsByAddingCharacteristicOptions:v13];
+  v23 = [(HFControlItemCharacteristicOptions *)v22 optionsByAddingCharacteristicOptions:optionsCopy];
 
   v27.receiver = self;
   v27.super_class = HFPowerStateControlItem;
-  v24 = [(HFPrimaryStateControlItem *)&v27 initWithValueSource:v18 characteristicOptions:v23 displayResults:v12];
+  v24 = [(HFPrimaryStateControlItem *)&v27 initWithValueSource:v18 characteristicOptions:v23 displayResults:resultsCopy];
 
   if (v24)
   {
-    objc_storeStrong(&v24->_auxiliaryTargetValueTuples, a4);
+    objc_storeStrong(&v24->_auxiliaryTargetValueTuples, tuples);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -88,30 +88,30 @@ BOOL __121__HFPowerStateControlItem_initWithValueSource_auxiliaryTargetValueTupl
   return v3;
 }
 
-- (HFPowerStateControlItem)initWithValueSource:(id)a3 characteristicTypes:(id)a4 displayResults:(id)a5
+- (HFPowerStateControlItem)initWithValueSource:(id)source characteristicTypes:(id)types displayResults:(id)results
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v8 = NSStringFromSelector(sel_initWithValueSource_displayResults_);
-  [v7 handleFailureInMethod:a2 object:self file:@"HFPowerStateControlItem.m" lineNumber:123 description:{@"%s is unavailable; use %@ instead", "-[HFPowerStateControlItem initWithValueSource:characteristicTypes:displayResults:]", v8}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFPowerStateControlItem.m" lineNumber:123 description:{@"%s is unavailable; use %@ instead", "-[HFPowerStateControlItem initWithValueSource:characteristicTypes:displayResults:]", v8}];
 
   return 0;
 }
 
-- (id)copyWithCharacteristicOptions:(id)a3 valueSource:(id)a4
+- (id)copyWithCharacteristicOptions:(id)options valueSource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v6 = objc_alloc(objc_opt_class());
-  v7 = [(HFPowerStateControlItem *)self auxiliaryTargetValueTuples];
-  v8 = [(HFControlItem *)self displayResults];
-  v9 = [v6 initWithValueSource:v5 auxiliaryTargetValueTuples:v7 displayResults:v8];
+  auxiliaryTargetValueTuples = [(HFPowerStateControlItem *)self auxiliaryTargetValueTuples];
+  displayResults = [(HFControlItem *)self displayResults];
+  v9 = [v6 initWithValueSource:sourceCopy auxiliaryTargetValueTuples:auxiliaryTargetValueTuples displayResults:displayResults];
 
   [v9 copyLatestResultsFromItem:self];
   return v9;
 }
 
-- (id)writePrimaryState:(int64_t)a3
+- (id)writePrimaryState:(int64_t)state
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:state];
   v5 = [(HFPrimaryStateControlItem *)self writeValue:v4];
 
   return v5;
@@ -121,8 +121,8 @@ BOOL __121__HFPowerStateControlItem_initWithValueSource_auxiliaryTargetValueTupl
 {
   v5.receiver = self;
   v5.super_class = HFPowerStateControlItem;
-  v2 = [(HFControlItem *)&v5 readValueAndPopulateStandardResults];
-  v3 = [v2 flatMap:&__block_literal_global_115];
+  readValueAndPopulateStandardResults = [(HFControlItem *)&v5 readValueAndPopulateStandardResults];
+  v3 = [readValueAndPopulateStandardResults flatMap:&__block_literal_global_115];
 
   return v3;
 }
@@ -156,10 +156,10 @@ LABEL_6:
 - (id)toggleValue
 {
   v3 = +[HFHomeKitDispatcher sharedDispatcher];
-  v4 = [v3 homeManager];
-  v5 = [v4 hasOptedToHH2];
+  homeManager = [v3 homeManager];
+  hasOptedToHH2 = [homeManager hasOptedToHH2];
   v6 = off_277DF0150;
-  if (!v5)
+  if (!hasOptedToHH2)
   {
     v6 = off_277DF0158;
   }
@@ -167,19 +167,19 @@ LABEL_6:
   v7 = *v6;
   v8 = objc_opt_new();
 
-  v9 = [(HFControlItem *)self valueSource];
-  [v9 beginTransactionWithReason:@"HFPowerStateControlItem-Toggle" readPolicy:v8 logger:0];
+  valueSource = [(HFControlItem *)self valueSource];
+  [valueSource beginTransactionWithReason:@"HFPowerStateControlItem-Toggle" readPolicy:v8 logger:0];
 
-  v10 = [(HFPowerStateControlItem *)self readValueAndPopulateStandardResults];
+  readValueAndPopulateStandardResults = [(HFPowerStateControlItem *)self readValueAndPopulateStandardResults];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __38__HFPowerStateControlItem_toggleValue__block_invoke;
   v14[3] = &unk_277DF3FD0;
   v14[4] = self;
-  v11 = [v10 flatMap:v14];
+  v11 = [readValueAndPopulateStandardResults flatMap:v14];
 
-  v12 = [(HFControlItem *)self valueSource];
-  [v12 commitTransactionWithReason:@"HFPowerStateControlItem-Toggle"];
+  valueSource2 = [(HFControlItem *)self valueSource];
+  [valueSource2 commitTransactionWithReason:@"HFPowerStateControlItem-Toggle"];
 
   return v11;
 }
@@ -214,17 +214,17 @@ id __38__HFPowerStateControlItem_toggleValue__block_invoke(uint64_t a1, void *a2
   return v7;
 }
 
-- (id)valueForCharacteristicValues:(id)a3
+- (id)valueForCharacteristicValues:(id)values
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _powerStateTargetValues];
+  valuesCopy = values;
+  _powerStateTargetValues = [objc_opt_class() _powerStateTargetValues];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__HFPowerStateControlItem_valueForCharacteristicValues___block_invoke;
   v9[3] = &unk_277DF3FF8;
-  v10 = v3;
-  v5 = v3;
-  if ([v4 na_any:v9])
+  v10 = valuesCopy;
+  v5 = valuesCopy;
+  if ([_powerStateTargetValues na_any:v9])
   {
     v6 = &unk_2825234D8;
   }
@@ -262,13 +262,13 @@ BOOL __56__HFPowerStateControlItem_valueForCharacteristicValues___block_invoke(u
   return v9 == 2;
 }
 
-- (id)characteristicValuesForValue:(id)a3
+- (id)characteristicValuesForValue:(id)value
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  valueCopy = value;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   objc_opt_class();
-  v6 = v4;
+  v6 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -281,13 +281,13 @@ BOOL __56__HFPowerStateControlItem_valueForCharacteristicValues___block_invoke(u
 
   v8 = v7;
 
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(HFPowerStateControlItem *)self allTargetValues];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allTargetValues = [(HFPowerStateControlItem *)self allTargetValues];
+  v11 = [allTargetValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -298,39 +298,39 @@ BOOL __56__HFPowerStateControlItem_valueForCharacteristicValues___block_invoke(u
       {
         if (*v22 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allTargetValues);
         }
 
         v15 = *(*(&v21 + 1) + 8 * i);
-        v16 = [v15 targetValueForPrimaryState:v9];
+        v16 = [v15 targetValueForPrimaryState:integerValue];
         if (v16)
         {
-          v17 = [v15 characteristicType];
-          [v5 setObject:v16 forKeyedSubscript:v17];
+          characteristicType = [v15 characteristicType];
+          [dictionary setObject:v16 forKeyedSubscript:characteristicType];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v12 = [allTargetValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v12);
   }
 
-  v18 = [(HFControlItem *)self normalizedCharacteristicValuesForValues:v5];
+  v18 = [(HFControlItem *)self normalizedCharacteristicValuesForValues:dictionary];
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v18;
 }
 
-- (BOOL)supportsItemRepresentingServices:(id)a3
+- (BOOL)supportsItemRepresentingServices:(id)services
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __60__HFPowerStateControlItem_supportsItemRepresentingServices___block_invoke;
   v4[3] = &unk_277DF4020;
   v4[4] = self;
-  return [a3 na_any:v4];
+  return [services na_any:v4];
 }
 
 uint64_t __60__HFPowerStateControlItem_supportsItemRepresentingServices___block_invoke(uint64_t a1, void *a2)
@@ -412,7 +412,7 @@ void __50__HFPowerStateControlItem__powerStateTargetValues__block_invoke_2()
   v4[1] = 3221225472;
   v4[2] = __38__HFPowerStateControlItem_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __38__HFPowerStateControlItem_na_identity__block_invoke(v4);
 
   return v2;

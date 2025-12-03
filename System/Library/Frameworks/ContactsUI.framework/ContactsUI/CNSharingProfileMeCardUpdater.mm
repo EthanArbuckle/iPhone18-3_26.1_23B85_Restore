@@ -1,9 +1,9 @@
 @interface CNSharingProfileMeCardUpdater
-- (CNSharingProfileMeCardUpdater)initWithMeContact:(id)a3 contactStore:(id)a4;
+- (CNSharingProfileMeCardUpdater)initWithMeContact:(id)contact contactStore:(id)store;
 - (CNSharingProfileMeCardUpdaterDelegate)delegate;
-- (id)alertControllerForMeCardUpdateWithImageContact:(id)a3;
+- (id)alertControllerForMeCardUpdateWithImageContact:(id)contact;
 - (void)performSave;
-- (void)updateMeContactWithImageContact:(id)a3;
+- (void)updateMeContactWithImageContact:(id)contact;
 @end
 
 @implementation CNSharingProfileMeCardUpdater
@@ -18,26 +18,26 @@
 - (void)performSave
 {
   v3 = objc_alloc(MEMORY[0x1E695CDB0]);
-  v4 = [(CNSharingProfileMeCardUpdater *)self meContact];
-  v5 = [(CNSharingProfileMeCardUpdater *)self contactStore];
-  v7 = [v3 initWithContact:v4 contactStore:v5];
+  meContact = [(CNSharingProfileMeCardUpdater *)self meContact];
+  contactStore = [(CNSharingProfileMeCardUpdater *)self contactStore];
+  v7 = [v3 initWithContact:meContact contactStore:contactStore];
 
-  v6 = [(CNSharingProfileMeCardUpdater *)self imageContact];
-  [v7 updateImageWithImageContact:v6 setAsMe:1];
+  imageContact = [(CNSharingProfileMeCardUpdater *)self imageContact];
+  [v7 updateImageWithImageContact:imageContact setAsMe:1];
 }
 
-- (void)updateMeContactWithImageContact:(id)a3
+- (void)updateMeContactWithImageContact:(id)contact
 {
-  objc_storeStrong(&self->_imageContact, a3);
+  objc_storeStrong(&self->_imageContact, contact);
   [(CNSharingProfileMeCardUpdater *)self performSave];
-  v4 = [(CNSharingProfileMeCardUpdater *)self delegate];
-  [v4 meCardUpdaterDidSetPhotoToMeCard:self];
+  delegate = [(CNSharingProfileMeCardUpdater *)self delegate];
+  [delegate meCardUpdaterDidSetPhotoToMeCard:self];
 }
 
-- (id)alertControllerForMeCardUpdateWithImageContact:(id)a3
+- (id)alertControllerForMeCardUpdateWithImageContact:(id)contact
 {
-  v5 = a3;
-  objc_storeStrong(&self->_imageContact, a3);
+  contactCopy = contact;
+  objc_storeStrong(&self->_imageContact, contact);
   v6 = MEMORY[0x1E69DC650];
   v7 = CNContactsUIBundle();
   v8 = [v7 localizedStringForKey:@"SHARING_UPDATE_ME_CARD_PROMPT_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
@@ -53,8 +53,8 @@
   v23[2] = __80__CNSharingProfileMeCardUpdater_alertControllerForMeCardUpdateWithImageContact___block_invoke;
   v23[3] = &unk_1E74E7308;
   v23[4] = self;
-  v24 = v5;
-  v15 = v5;
+  v24 = contactCopy;
+  v15 = contactCopy;
   v16 = [v12 actionWithTitle:v14 style:0 handler:v23];
   [v11 addAction:v16];
 
@@ -78,18 +78,18 @@ void __80__CNSharingProfileMeCardUpdater_alertControllerForMeCardUpdateWithImage
   [v2 meCardUpdaterDidDeclineSetPhotoToMeCard:*(a1 + 32)];
 }
 
-- (CNSharingProfileMeCardUpdater)initWithMeContact:(id)a3 contactStore:(id)a4
+- (CNSharingProfileMeCardUpdater)initWithMeContact:(id)contact contactStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = CNSharingProfileMeCardUpdater;
   v9 = [(CNSharingProfileMeCardUpdater *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a4);
-    objc_storeStrong(&v10->_meContact, a3);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v10->_meContact, contact);
     v11 = v10;
   }
 

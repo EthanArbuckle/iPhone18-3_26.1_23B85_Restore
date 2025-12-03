@@ -1,58 +1,58 @@
 @interface KCellularLteNbrInterRatCellMeas
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMeasNbrGeran:(id)a3;
-- (void)addMeasNbrUtra:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasSubsId:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMeasNbrGeran:(id)geran;
+- (void)addMeasNbrUtra:(id)utra;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasSubsId:(BOOL)id;
+- (void)writeTo:(id)to;
 @end
 
 @implementation KCellularLteNbrInterRatCellMeas
 
-- (void)addMeasNbrUtra:(id)a3
+- (void)addMeasNbrUtra:(id)utra
 {
-  v4 = a3;
+  utraCopy = utra;
   measNbrUtras = self->_measNbrUtras;
-  v8 = v4;
+  v8 = utraCopy;
   if (!measNbrUtras)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_measNbrUtras;
     self->_measNbrUtras = v6;
 
-    v4 = v8;
+    utraCopy = v8;
     measNbrUtras = self->_measNbrUtras;
   }
 
-  [(NSMutableArray *)measNbrUtras addObject:v4];
+  [(NSMutableArray *)measNbrUtras addObject:utraCopy];
 }
 
-- (void)addMeasNbrGeran:(id)a3
+- (void)addMeasNbrGeran:(id)geran
 {
-  v4 = a3;
+  geranCopy = geran;
   measNbrGerans = self->_measNbrGerans;
-  v8 = v4;
+  v8 = geranCopy;
   if (!measNbrGerans)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_measNbrGerans;
     self->_measNbrGerans = v6;
 
-    v4 = v8;
+    geranCopy = v8;
     measNbrGerans = self->_measNbrGerans;
   }
 
-  [(NSMutableArray *)measNbrGerans addObject:v4];
+  [(NSMutableArray *)measNbrGerans addObject:geranCopy];
 }
 
-- (void)setHasSubsId:(BOOL)a3
+- (void)setHasSubsId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -70,8 +70,8 @@
   v7.receiver = self;
   v7.super_class = KCellularLteNbrInterRatCellMeas;
   v3 = [(KCellularLteNbrInterRatCellMeas *)&v7 description];
-  v4 = [(KCellularLteNbrInterRatCellMeas *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(KCellularLteNbrInterRatCellMeas *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -107,8 +107,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -142,8 +142,8 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          [v12 addObject:v18];
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          [v12 addObject:dictionaryRepresentation2];
         }
 
         v15 = [(NSMutableArray *)v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -164,9 +164,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     timestamp = self->_timestamp;
@@ -244,23 +244,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 36) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 36) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if ([(KCellularLteNbrInterRatCellMeas *)self measNbrUtrasCount])
   {
     [v13 clearMeasNbrUtras];
-    v5 = [(KCellularLteNbrInterRatCellMeas *)self measNbrUtrasCount];
-    if (v5)
+    measNbrUtrasCount = [(KCellularLteNbrInterRatCellMeas *)self measNbrUtrasCount];
+    if (measNbrUtrasCount)
     {
-      v6 = v5;
+      v6 = measNbrUtrasCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(KCellularLteNbrInterRatCellMeas *)self measNbrUtraAtIndex:i];
@@ -272,10 +272,10 @@
   if ([(KCellularLteNbrInterRatCellMeas *)self measNbrGeransCount])
   {
     [v13 clearMeasNbrGerans];
-    v9 = [(KCellularLteNbrInterRatCellMeas *)self measNbrGeransCount];
-    if (v9)
+    measNbrGeransCount = [(KCellularLteNbrInterRatCellMeas *)self measNbrGeransCount];
+    if (measNbrGeransCount)
     {
-      v10 = v9;
+      v10 = measNbrGeransCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(KCellularLteNbrInterRatCellMeas *)self measNbrGeranAtIndex:j];
@@ -291,9 +291,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -321,7 +321,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v24 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v24 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addMeasNbrUtra:v12];
 
         v11 = v11 + 1;
@@ -354,7 +354,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v20 + 1) + 8 * v17) copyWithZone:{a3, v20}];
+        v18 = [*(*(&v20 + 1) + 8 * v17) copyWithZone:{zone, v20}];
         [v6 addMeasNbrGeran:v18];
 
         v17 = v17 + 1;
@@ -376,24 +376,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_15;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_15;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
 LABEL_15:
     v8 = 0;
@@ -401,13 +401,13 @@ LABEL_15:
   }
 
   measNbrUtras = self->_measNbrUtras;
-  if (measNbrUtras | *(v4 + 3) && ![(NSMutableArray *)measNbrUtras isEqual:?])
+  if (measNbrUtras | *(equalCopy + 3) && ![(NSMutableArray *)measNbrUtras isEqual:?])
   {
     goto LABEL_15;
   }
 
   measNbrGerans = self->_measNbrGerans;
-  if (measNbrGerans | *(v4 + 2))
+  if (measNbrGerans | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)measNbrGerans isEqual:?])
     {
@@ -415,10 +415,10 @@ LABEL_15:
     }
   }
 
-  v8 = (*(v4 + 36) & 2) == 0;
+  v8 = (*(equalCopy + 36) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_subsId != *(v4 + 8))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_subsId != *(equalCopy + 8))
     {
       goto LABEL_15;
     }
@@ -458,13 +458,13 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 36))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 36))
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -472,7 +472,7 @@ LABEL_16:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v7)
   {

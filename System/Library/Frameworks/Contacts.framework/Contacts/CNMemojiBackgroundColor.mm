@@ -1,8 +1,8 @@
 @interface CNMemojiBackgroundColor
 + (id)log;
-- (CNMemojiBackgroundColor)initWithColorDescription:(id)a3 alpha:(double)a4;
-- (CNMemojiBackgroundColor)initWithDefaultColorWithAlpha:(double)a3;
-- (CNMemojiBackgroundColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6;
+- (CNMemojiBackgroundColor)initWithColorDescription:(id)description alpha:(double)alpha;
+- (CNMemojiBackgroundColor)initWithDefaultColorWithAlpha:(double)alpha;
+- (CNMemojiBackgroundColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha;
 @end
 
 @implementation CNMemojiBackgroundColor
@@ -28,10 +28,10 @@ uint64_t __30__CNMemojiBackgroundColor_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNMemojiBackgroundColor)initWithColorDescription:(id)a3 alpha:(double)a4
+- (CNMemojiBackgroundColor)initWithColorDescription:(id)description alpha:(double)alpha
 {
-  v6 = a3;
-  if (v6)
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
     if (initWithColorDescription_alpha__cn_once_token_2 != -1)
     {
@@ -39,7 +39,7 @@ uint64_t __30__CNMemojiBackgroundColor_log__block_invoke()
     }
 
     v7 = initWithColorDescription_alpha__cn_once_object_2;
-    v8 = [v6 componentsSeparatedByString:@":"];
+    v8 = [descriptionCopy componentsSeparatedByString:@":"];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __58__CNMemojiBackgroundColor_initWithColorDescription_alpha___block_invoke_2;
@@ -58,7 +58,7 @@ uint64_t __30__CNMemojiBackgroundColor_log__block_invoke()
       v16 = v15;
       v17 = [v10 objectAtIndexedSubscript:2];
       [v17 doubleValue];
-      v19 = [(CNMemojiBackgroundColor *)self initWithRed:v13 green:v16 blue:v18 alpha:a4];
+      v19 = [(CNMemojiBackgroundColor *)self initWithRed:v13 green:v16 blue:v18 alpha:alpha];
     }
 
     else
@@ -66,10 +66,10 @@ uint64_t __30__CNMemojiBackgroundColor_log__block_invoke()
       v21 = [objc_opt_class() log];
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        [CNMemojiBackgroundColor initWithColorDescription:v6 alpha:v21];
+        [CNMemojiBackgroundColor initWithColorDescription:descriptionCopy alpha:v21];
       }
 
-      v19 = [(CNMemojiBackgroundColor *)self initWithDefaultColorWithAlpha:a4];
+      v19 = [(CNMemojiBackgroundColor *)self initWithDefaultColorWithAlpha:alpha];
     }
   }
 
@@ -81,7 +81,7 @@ uint64_t __30__CNMemojiBackgroundColor_log__block_invoke()
       [CNMemojiBackgroundColor initWithColorDescription:v20 alpha:?];
     }
 
-    v19 = [(CNMemojiBackgroundColor *)self initWithDefaultColorWithAlpha:a4];
+    v19 = [(CNMemojiBackgroundColor *)self initWithDefaultColorWithAlpha:alpha];
   }
 
   return v19;
@@ -98,7 +98,7 @@ void __58__CNMemojiBackgroundColor_initWithColorDescription_alpha___block_invoke
   initWithColorDescription_alpha__cn_once_object_2 = v0;
 }
 
-- (CNMemojiBackgroundColor)initWithRed:(double)a3 green:(double)a4 blue:(double)a5 alpha:(double)a6
+- (CNMemojiBackgroundColor)initWithRed:(double)red green:(double)green blue:(double)blue alpha:(double)alpha
 {
   v14.receiver = self;
   v14.super_class = CNMemojiBackgroundColor;
@@ -106,17 +106,17 @@ void __58__CNMemojiBackgroundColor_initWithColorDescription_alpha___block_invoke
   v11 = v10;
   if (v10)
   {
-    v10->_red = a3;
-    v10->_green = a4;
-    v10->_blue = a5;
-    v10->_alpha = a6;
+    v10->_red = red;
+    v10->_green = green;
+    v10->_blue = blue;
+    v10->_alpha = alpha;
     v12 = v10;
   }
 
   return v11;
 }
 
-- (CNMemojiBackgroundColor)initWithDefaultColorWithAlpha:(double)a3
+- (CNMemojiBackgroundColor)initWithDefaultColorWithAlpha:(double)alpha
 {
   v8.receiver = self;
   v8.super_class = CNMemojiBackgroundColor;
@@ -126,7 +126,7 @@ void __58__CNMemojiBackgroundColor_initWithColorDescription_alpha___block_invoke
   {
     *(v4 + 8) = vdupq_n_s64(0x4061C00000000000uLL);
     *(v4 + 3) = 0x4062600000000000;
-    *(v4 + 4) = a3;
+    *(v4 + 4) = alpha;
     v6 = v4;
   }
 

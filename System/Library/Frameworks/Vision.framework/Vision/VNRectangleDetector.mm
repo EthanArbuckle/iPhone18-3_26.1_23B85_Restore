@@ -1,32 +1,32 @@
 @interface VNRectangleDetector
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
 - (void)dealloc;
 @end
 
 @implementation VNRectangleDetector
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v149 = *MEMORY[0x1E69E9840];
-  v18 = a5;
-  v116 = a7;
-  v117 = a9;
-  v19 = [VNValidationUtilities originatingRequestSpecifierInOptions:v18 error:a8];
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
+  v19 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (!v19)
   {
     v20 = 0;
     goto LABEL_54;
   }
 
-  v115 = [(VNDetector *)self validatedImageBufferFromOptions:v18 error:a8];
-  if (!v115 || (v147 = 0, ![VNValidationUtilities getIntValue:&v147 forKey:@"VNRectangleDetectorProcessOption_Version" inOptions:v18 minimumValue:1 maximumValue:2 error:a8]))
+  v115 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
+  if (!v115 || (v147 = 0, ![VNValidationUtilities getIntValue:&v147 forKey:@"VNRectangleDetectorProcessOption_Version" inOptions:optionsCopy minimumValue:1 maximumValue:2 error:error]))
   {
     v20 = 0;
     goto LABEL_53;
@@ -34,27 +34,27 @@
 
   if (v147 != 2 || [v115 width] >= 5 && objc_msgSend(v115, "height") >= 5)
   {
-    v114 = [(VNDetector *)self computeDeviceOfTypes:1 forComputeStage:@"VNComputeStageMain" processingOptions:v18 error:a8];
+    v114 = [(VNDetector *)self computeDeviceOfTypes:1 forComputeStage:@"VNComputeStageMain" processingOptions:optionsCopy error:error];
     if (!v114)
     {
       goto LABEL_51;
     }
 
-    v21 = [v18 objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_X"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_X"];
     [v21 doubleValue];
     v112 = v22;
-    v23 = [v18 objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Y"];
+    v23 = [optionsCopy objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Y"];
     [v23 doubleValue];
     v109 = v24;
-    v25 = [v18 objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Width"];
+    v25 = [optionsCopy objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Width"];
     [v25 doubleValue];
     v27 = v26;
-    v28 = [v18 objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Hight"];
+    v28 = [optionsCopy objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Hight"];
     [v28 doubleValue];
     v30 = v29;
 
     v146 = 0;
-    if (![VNValidationUtilities getBOOLValue:&v146 forKey:@"VNRectangleDetectorProcessOption_HighAccuracy" inOptions:v18 withDefaultValue:1 error:a8])
+    if (![VNValidationUtilities getBOOLValue:&v146 forKey:@"VNRectangleDetectorProcessOption_HighAccuracy" inOptions:optionsCopy withDefaultValue:1 error:error])
     {
       goto LABEL_51;
     }
@@ -73,13 +73,13 @@
     v38.i16[3] = v37.i16[3];
     if (vmaxv_u8(v38))
     {
-      if (a8)
+      if (error)
       {
         v39 = MEMORY[0x1E696AEC0];
         v40 = VNHumanReadableCGRect(x, y, width, height);
         v41 = [v39 stringWithFormat:@"invalid region of interest: %@", v40];
 
-        *a8 = [VNError errorForInvalidArgumentWithLocalizedDescription:v41];
+        *error = [VNError errorForInvalidArgumentWithLocalizedDescription:v41];
       }
 
       goto LABEL_51;
@@ -92,13 +92,13 @@
       goto LABEL_39;
     }
 
-    v43 = [v115 orientation];
+    orientation = [v115 orientation];
     v44 = 0x3F0000003F000000;
-    if (v43 <= 4)
+    if (orientation <= 4)
     {
-      if (v43 <= 2)
+      if (orientation <= 2)
       {
-        if (v43 < 2)
+        if (orientation < 2)
         {
           v45 = v145;
 LABEL_37:
@@ -106,7 +106,7 @@ LABEL_37:
           goto LABEL_38;
         }
 
-        if (v43 == 2)
+        if (orientation == 2)
         {
           _Q1.f64[0] = 1.0;
           v45.f64[0] = 1.0 - v145.f64[0];
@@ -120,18 +120,18 @@ LABEL_39:
         v107 = _Q0;
         v144 = 0.0;
         LODWORD(_Q1.f64[0]) = 1.0;
-        if ([VNValidationUtilities getFloatValue:&v144 forKey:@"VNRectangleDetectorProcessOption_MinimumAspectRatio" inOptions:v18 minimumValue:a8 maximumValue:0.0 error:_Q1.f64[0]])
+        if ([VNValidationUtilities getFloatValue:&v144 forKey:@"VNRectangleDetectorProcessOption_MinimumAspectRatio" inOptions:optionsCopy minimumValue:error maximumValue:0.0 error:_Q1.f64[0]])
         {
           v143 = 0.0;
           LODWORD(v54) = 1.0;
-          if ([VNValidationUtilities getFloatValue:&v143 forKey:@"VNRectangleDetectorProcessOption_MaximumAspectRatio" inOptions:v18 minimumValue:a8 maximumValue:0.0 error:v54])
+          if ([VNValidationUtilities getFloatValue:&v143 forKey:@"VNRectangleDetectorProcessOption_MaximumAspectRatio" inOptions:optionsCopy minimumValue:error maximumValue:0.0 error:v54])
           {
             if (v144 > v143)
             {
-              if (a8)
+              if (error)
               {
-                v56 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VNRectangleDetectorProcessOption_MinimumAspectRatio value, %f is greater than VNRectangleDetectorProcessOption_MaximumAspectRatio value, %f", v144, v143];
-                *a8 = [VNError errorWithCode:4 message:v56];
+                v143 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VNRectangleDetectorProcessOption_MinimumAspectRatio value, %f is greater than VNRectangleDetectorProcessOption_MaximumAspectRatio value, %f", v144, v143];
+                *error = [VNError errorWithCode:4 message:v143];
               }
 
               goto LABEL_51;
@@ -139,30 +139,30 @@ LABEL_39:
 
             v142 = 0;
             LODWORD(v55) = 1110704128;
-            if ([VNValidationUtilities getFloatValue:&v142 forKey:@"VNRectangleDetectorProcessOption_QuadratureTolerance" inOptions:v18 minimumValue:a8 maximumValue:0.0 error:v55])
+            if ([VNValidationUtilities getFloatValue:&v142 forKey:@"VNRectangleDetectorProcessOption_QuadratureTolerance" inOptions:optionsCopy minimumValue:error maximumValue:0.0 error:v55])
             {
               v141 = 0;
               LODWORD(v57) = 1.0;
-              if ([VNValidationUtilities getFloatValue:&v141 forKey:@"VNRectangleDetectorProcessOption_MinimumSize" inOptions:v18 minimumValue:a8 maximumValue:0.0 error:v57])
+              if ([VNValidationUtilities getFloatValue:&v141 forKey:@"VNRectangleDetectorProcessOption_MinimumSize" inOptions:optionsCopy minimumValue:error maximumValue:0.0 error:v57])
               {
                 v140 = 0.0;
                 LODWORD(v58) = 1.0;
-                if ([VNValidationUtilities getFloatValue:&v140 forKey:@"VNRectangleDetectorProcessOption_MinimumConfidence" inOptions:v18 minimumValue:a8 maximumValue:0.0 error:v58])
+                if ([VNValidationUtilities getFloatValue:&v140 forKey:@"VNRectangleDetectorProcessOption_MinimumConfidence" inOptions:optionsCopy minimumValue:error maximumValue:0.0 error:v58])
                 {
                   v139 = 0;
-                  if ([VNValidationUtilities getIntValue:&v139 forKey:@"VNRectangleDetectorProcessOption_MaximumNumber" inOptions:v18 minimumValue:1 maximumValue:0x7FFFFFFFLL error:a8])
+                  if ([VNValidationUtilities getIntValue:&v139 forKey:@"VNRectangleDetectorProcessOption_MaximumNumber" inOptions:optionsCopy minimumValue:1 maximumValue:0x7FFFFFFFLL error:error])
                   {
                     std::vector<float>::vector[abi:ne200100](v138, 8 * v139);
                     std::vector<float>::vector[abi:ne200100](__p, v139);
                     v59 = v138[0];
                     v136 = 0;
-                    v135.data = CVPixelBufferGetBaseAddress(a4);
-                    v135.height = CVPixelBufferGetHeight(a4);
-                    v135.width = CVPixelBufferGetWidth(a4);
-                    v135.rowBytes = CVPixelBufferGetBytesPerRow(a4);
-                    v60 = [v115 height];
-                    v61 = [v115 width];
-                    v62 = [v18 objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_OriginalScaleFactor"];
+                    v135.data = CVPixelBufferGetBaseAddress(buffer);
+                    v135.height = CVPixelBufferGetHeight(buffer);
+                    v135.width = CVPixelBufferGetWidth(buffer);
+                    v135.rowBytes = CVPixelBufferGetBytesPerRow(buffer);
+                    height = [v115 height];
+                    width = [v115 width];
+                    v62 = [optionsCopy objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_OriginalScaleFactor"];
                     [v62 floatValue];
                     v64 = v63;
 
@@ -171,15 +171,15 @@ LABEL_39:
                     *&v68 = v134;
                     if (v134 < 0.0)
                     {
-                      if (!a8)
+                      if (!error)
                       {
                         v20 = 0;
                         goto LABEL_92;
                       }
 
-                      v69 = [MEMORY[0x1E696AEC0] stringWithFormat:@" PixelFocalLength value is out of bounds: %f", v134];
-                      [VNError errorWithCode:4 message:v69];
-                      *a8 = v20 = 0;
+                      v134 = [MEMORY[0x1E696AEC0] stringWithFormat:@" PixelFocalLength value is out of bounds: %f", v134];
+                      [VNError errorWithCode:4 message:v134];
+                      *error = v20 = 0;
 LABEL_91:
 
 LABEL_92:
@@ -198,8 +198,8 @@ LABEL_92:
                       goto LABEL_52;
                     }
 
-                    v71.f64[0] = v61;
-                    v71.f64[1] = v60;
+                    v71.f64[0] = width;
+                    v71.f64[1] = height;
                     __asm { FMOV            V1.2D, #-1.0 }
 
                     v73 = vaddq_f64(v71, _Q1);
@@ -264,8 +264,8 @@ LABEL_66:
                     v79 = objc_alloc(MEMORY[0x1E695DF70]);
                     v80 = v136;
                     v81 = [v79 initWithCapacity:v136];
-                    v82 = [v18 objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_TargetScaleY"];
-                    v83 = [v82 intValue];
+                    v82 = [optionsCopy objectForKeyedSubscript:@"VNRectangleDetectorProcessOption_TargetScaleY"];
+                    intValue = [v82 intValue];
 
                     v84 = !v77;
                     if (!v80)
@@ -281,7 +281,7 @@ LABEL_66:
                       __asm { FMOV            V0.2D, #1.0 }
 
                       v111 = vdivq_f64(_Q0, v105);
-                      v89 = v83 + -1.0;
+                      v89 = intValue + -1.0;
                       do
                       {
                         v90 = 0;
@@ -361,8 +361,8 @@ LABEL_66:
                     v121 = 0u;
                     v118 = 0u;
                     v119 = 0u;
-                    v69 = v81;
-                    v102 = [v69 countByEnumeratingWithState:&v118 objects:v148 count:16];
+                    v134 = v81;
+                    v102 = [v134 countByEnumeratingWithState:&v118 objects:v148 count:16];
                     if (v102)
                     {
                       v103 = *v119;
@@ -372,19 +372,19 @@ LABEL_66:
                         {
                           if (*v119 != v103)
                           {
-                            objc_enumerationMutation(v69);
+                            objc_enumerationMutation(v134);
                           }
 
-                          [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:v18 toObservation:*(*(&v118 + 1) + 8 * i)];
+                          [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:optionsCopy toObservation:*(*(&v118 + 1) + 8 * i)];
                         }
 
-                        v102 = [v69 countByEnumeratingWithState:&v118 objects:v148 count:16];
+                        v102 = [v134 countByEnumeratingWithState:&v118 objects:v148 count:16];
                       }
 
                       while (v102);
                     }
 
-                    v20 = v69;
+                    v20 = v134;
                     goto LABEL_91;
                   }
                 }
@@ -400,7 +400,7 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      if (v43 == 3)
+      if (orientation == 3)
       {
         __asm { FMOV            V1.2D, #1.0 }
 
@@ -416,11 +416,11 @@ LABEL_29:
       goto LABEL_37;
     }
 
-    if (v43 > 6)
+    if (orientation > 6)
     {
-      if (v43 != 7)
+      if (orientation != 7)
       {
-        if (v43 != 8)
+        if (orientation != 8)
         {
           goto LABEL_38;
         }
@@ -437,7 +437,7 @@ LABEL_29:
 
     else
     {
-      if (v43 != 5)
+      if (orientation != 5)
       {
         _Q1.f64[0] = 1.0;
         v45.f64[0] = 1.0 - v145.f64[1];
@@ -462,23 +462,23 @@ LABEL_54:
   return v20;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a6;
-  v19 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  v19 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v20 = v19;
-  if (v19 && (v21 = [v19 height], v22 = objc_msgSend(v20, "width"), v23 = v22, v46.origin.x = x * v23, v46.size.width = width * v23, v24 = v21, v46.origin.y = y * v24, v46.size.height = height * v24, v47 = CGRectIntegral(v46), v25 = v47.origin.x, v26 = v47.origin.y, v27 = v47.size.width, v28 = v47.size.height, v45 = 0, +[VNValidationUtilities getIntValue:forKey:inOptions:minimumValue:maximumValue:error:](VNValidationUtilities, "getIntValue:forKey:inOptions:minimumValue:maximumValue:error:", &v45, @"VNRectangleDetectorProcessOption_Version", v17, 1, 2, a8)))
+  if (v19 && (v21 = [v19 height], v22 = objc_msgSend(v20, "width"), v23 = v22, v46.origin.x = x * v23, v46.size.width = width * v23, v24 = v21, v46.origin.y = y * v24, v46.size.height = height * v24, v47 = CGRectIntegral(v46), v25 = v47.origin.x, v26 = v47.origin.y, v27 = v47.size.width, v28 = v47.size.height, v45 = 0, +[VNValidationUtilities getIntValue:forKey:inOptions:minimumValue:maximumValue:error:](VNValidationUtilities, "getIntValue:forKey:inOptions:minimumValue:maximumValue:error:", &v45, @"VNRectangleDetectorProcessOption_Version", optionsCopy, 1, 2, error)))
   {
     if (v45 == 2)
     {
       if (v22 < 5 || v21 <= 4)
       {
-        VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v18, 5);
+        VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, 5);
         v33 = 1;
         goto LABEL_17;
       }
@@ -522,31 +522,31 @@ LABEL_54:
     }
 
     v44 = 0;
-    v34 = [v20 croppedBufferWithWidth:v29 height:v30 format:1111970369 cropRect:v17 options:a8 error:&v44 pixelBufferRepsCacheKey:{v25, v26, v27, v28}];
+    v34 = [v20 croppedBufferWithWidth:v29 height:v30 format:1111970369 cropRect:optionsCopy options:error error:&v44 pixelBufferRepsCacheKey:{v25, v26, v27, v28}];
     v35 = v44;
-    *a7 = v34;
+    *buffer = v34;
     v33 = v34 != 0;
     if (v34)
     {
       v36 = [MEMORY[0x1E696AD98] numberWithDouble:v25];
-      [v17 setObject:v36 forKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_X"];
+      [optionsCopy setObject:v36 forKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_X"];
 
       v37 = [MEMORY[0x1E696AD98] numberWithDouble:v26];
-      [v17 setObject:v37 forKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Y"];
+      [optionsCopy setObject:v37 forKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Y"];
 
       v38 = [MEMORY[0x1E696AD98] numberWithDouble:v27];
-      [v17 setObject:v38 forKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Width"];
+      [optionsCopy setObject:v38 forKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Width"];
 
       v39 = [MEMORY[0x1E696AD98] numberWithDouble:v28];
-      [v17 setObject:v39 forKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Hight"];
+      [optionsCopy setObject:v39 forKeyedSubscript:@"VNRectangleDetectorProcessOption_CropRect_Hight"];
 
       v40 = [MEMORY[0x1E696AD98] numberWithDouble:v31];
-      [v17 setObject:v40 forKeyedSubscript:@"VNRectangleDetectorProcessOption_OriginalScaleFactor"];
+      [optionsCopy setObject:v40 forKeyedSubscript:@"VNRectangleDetectorProcessOption_OriginalScaleFactor"];
 
       v41 = [MEMORY[0x1E696AD98] numberWithDouble:v30];
-      [v17 setObject:v41 forKeyedSubscript:@"VNRectangleDetectorProcessOption_TargetScaleY"];
+      [optionsCopy setObject:v41 forKeyedSubscript:@"VNRectangleDetectorProcessOption_TargetScaleY"];
 
-      [(VNDetector *)self recordImageCropQuickLookInfoToOptions:v17 cacheKey:v35 imageBuffer:v20];
+      [(VNDetector *)self recordImageCropQuickLookInfoToOptions:optionsCopy cacheKey:v35 imageBuffer:v20];
     }
   }
 
@@ -574,11 +574,11 @@ LABEL_17:
   [(VNDetector *)&v4 dealloc];
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = 0;
-  if ([VNValidationUtilities getIntValue:&v10 forKey:@"VNRectangleDetectorProcessOption_Version" inOptions:a3 minimumValue:1 maximumValue:2 error:a4])
+  if ([VNValidationUtilities getIntValue:&v10 forKey:@"VNRectangleDetectorProcessOption_Version" inOptions:options minimumValue:1 maximumValue:2 error:error])
   {
     v4 = v10 == 1;
     v5 = [[VNSizeRange alloc] initWithMinimumDimension:256 maximumDimension:-1 idealDimension:256];
@@ -606,11 +606,11 @@ LABEL_17:
   return v7;
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7 = @"VNComputeStageMain";
-  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities allCPUComputeDevices:options];
   v8[0] = v4;
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
 

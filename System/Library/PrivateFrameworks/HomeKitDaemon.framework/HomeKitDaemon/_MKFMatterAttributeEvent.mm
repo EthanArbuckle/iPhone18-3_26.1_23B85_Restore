@@ -1,14 +1,14 @@
 @interface _MKFMatterAttributeEvent
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFHome)home;
 - (MKFMatterAttributeEventDatabaseID)databaseID;
 @end
 
 @implementation _MKFMatterAttributeEvent
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -22,10 +22,10 @@
 
 - (MKFHome)home
 {
-  v2 = [(_MKFMatterAttributeEvent *)self trigger];
-  v3 = [v2 home];
+  trigger = [(_MKFMatterAttributeEvent *)self trigger];
+  home = [trigger home];
 
-  return v3;
+  return home;
 }
 
 - (MKFMatterAttributeEventDatabaseID)databaseID

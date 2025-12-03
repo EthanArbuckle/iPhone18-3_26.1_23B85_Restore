@@ -3,9 +3,9 @@
 - (NSAttributedString)attributedTitle;
 - (NSDictionary)userInfo;
 - (NSExtensionItem)init;
-- (NSExtensionItem)initWithCoder:(id)a3;
+- (NSExtensionItem)initWithCoder:(id)coder;
 - (id)_matchingDictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 - (void)setAttachments:(NSArray *)attachments;
@@ -53,7 +53,7 @@
   [(NSExtensionItem *)&v3 dealloc];
 }
 
-- (NSExtensionItem)initWithCoder:(id)a3
+- (NSExtensionItem)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -61,13 +61,13 @@
   v4 = [(NSExtensionItem *)&v6 init];
   if (v4)
   {
-    v4->_userInfo = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(a3 forKey:{"allowedClasses"), @"NSExtensionItemUserInfoKey", "mutableCopy"}];
+    v4->_userInfo = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(coder forKey:{"allowedClasses"), @"NSExtensionItemUserInfoKey", "mutableCopy"}];
   }
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(NSExtensionItem);
@@ -273,19 +273,19 @@
   v39 = 0x3052000000;
   v40 = __Block_byref_object_copy__5;
   v41 = __Block_byref_object_dispose__5;
-  v42 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
   v36 = 0;
-  v3 = [(NSExtensionItem *)self userInfo];
+  userInfo = [(NSExtensionItem *)self userInfo];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __52__NSExtensionItem__matchingDictionaryRepresentation__block_invoke;
   v32[3] = &unk_1E69F3BB0;
   v32[4] = &v33;
   v32[5] = &v37;
-  [(NSDictionary *)v3 enumerateKeysAndObjectsUsingBlock:v32];
+  [(NSDictionary *)userInfo enumerateKeysAndObjectsUsingBlock:v32];
   if ([(NSArray *)[(NSExtensionItem *)self attachments] count])
   {
     v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -294,15 +294,15 @@
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v5 = [(NSExtensionItem *)self attachments];
-    v6 = [(NSArray *)v5 countByEnumeratingWithState:&v50 objects:v49 count:16];
+    attachments = [(NSExtensionItem *)self attachments];
+    v6 = [(NSArray *)attachments countByEnumeratingWithState:&v50 objects:v49 count:16];
     if (!v6)
     {
       goto LABEL_40;
     }
 
     v7 = *v51;
-    obj = v5;
+    obj = attachments;
     v27 = v31;
     while (1)
     {
@@ -338,9 +338,9 @@ LABEL_13:
           v31[2] = v14;
           [v9 loadItemForTypeIdentifier:v13 options:v15 completionHandler:v30];
           v16 = [(NSExtensionURLResult *)v14 wait:2.0];
-          v17 = [(NSExtensionURLResult *)v14 copiedURL];
+          copiedURL = [(NSExtensionURLResult *)v14 copiedURL];
 
-          if (v17)
+          if (copiedURL)
           {
             v18 = v16;
           }
@@ -357,7 +357,7 @@ LABEL_13:
 
           if (v13 == v10)
           {
-            if ([objc_msgSend(v17 "scheme")] && objc_msgSend(objc_msgSend(v17, "scheme"), "caseInsensitiveCompare:", @"https"))
+            if ([objc_msgSend(copiedURL "scheme")] && objc_msgSend(objc_msgSend(copiedURL, "scheme"), "caseInsensitiveCompare:", @"https"))
             {
               goto LABEL_24;
             }
@@ -368,9 +368,9 @@ LABEL_13:
 
           else
           {
-            if (v13 == v4 && [v17 isFileURL])
+            if (v13 == v4 && [copiedURL isFileURL])
             {
-              v13 = (off_1ED439830[0])(v17, 0);
+              v13 = (off_1ED439830[0])(copiedURL, 0);
               v19 = 0;
               goto LABEL_25;
             }
@@ -416,9 +416,9 @@ LABEL_31:
         if (v13)
         {
           v45[0] = @"registeredTypeIdentifiers";
-          v20 = [v12 allObjects];
+          allObjects = [v12 allObjects];
           v45[1] = @"fileProviderItem";
-          v46[0] = v20;
+          v46[0] = allObjects;
           v21 = v45;
           v22 = v46;
           v23 = 2;
@@ -428,9 +428,9 @@ LABEL_31:
         else
         {
           v43 = @"registeredTypeIdentifiers";
-          v44 = [v12 allObjects];
+          allObjects2 = [v12 allObjects];
           v21 = &v43;
-          v22 = &v44;
+          v22 = &allObjects2;
           v23 = 1;
         }
 

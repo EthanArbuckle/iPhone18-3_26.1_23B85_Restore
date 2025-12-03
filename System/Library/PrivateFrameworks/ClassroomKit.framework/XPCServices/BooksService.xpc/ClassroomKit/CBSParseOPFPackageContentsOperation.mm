@@ -1,25 +1,25 @@
 @interface CBSParseOPFPackageContentsOperation
-- (CBSParseOPFPackageContentsOperation)initWithOPFFilePath:(id)a3 identifierType:(id)a4 identifier:(id)a5;
+- (CBSParseOPFPackageContentsOperation)initWithOPFFilePath:(id)path identifierType:(id)type identifier:(id)identifier;
 - (void)main;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation CBSParseOPFPackageContentsOperation
 
-- (CBSParseOPFPackageContentsOperation)initWithOPFFilePath:(id)a3 identifierType:(id)a4 identifier:(id)a5
+- (CBSParseOPFPackageContentsOperation)initWithOPFFilePath:(id)path identifierType:(id)type identifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  typeCopy = type;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = CBSParseOPFPackageContentsOperation;
   v12 = [(CBSParseOPFPackageContentsOperation *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->mOPFFilePath, a3);
-    v14 = [[CBSOPFPackageContents alloc] initWithIdentifierType:v10 identifier:v11];
+    objc_storeStrong(&v12->mOPFFilePath, path);
+    v14 = [[CBSOPFPackageContents alloc] initWithIdentifierType:typeCopy identifier:identifierCopy];
     mPackageContents = v13->mPackageContents;
     v13->mPackageContents = v14;
   }
@@ -53,29 +53,29 @@
   }
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v34 = a4;
-  v9 = a7;
-  if (![v34 isEqualToString:@"item"])
+  elementCopy = element;
+  attributesCopy = attributes;
+  if (![elementCopy isEqualToString:@"item"])
   {
-    if ([v34 isEqualToString:@"itemref"])
+    if ([elementCopy isEqualToString:@"itemref"])
     {
-      v18 = [v9 objectForKeyedSubscript:@"idref"];
+      v18 = [attributesCopy objectForKeyedSubscript:@"idref"];
 
       if (!v18)
       {
         goto LABEL_23;
       }
 
-      v19 = [(CBSOPFPackageContents *)self->mPackageContents spineItemIdentifiers];
-      v20 = [v9 objectForKeyedSubscript:@"idref"];
-      [v19 addObject:v20];
+      spineItemIdentifiers = [(CBSOPFPackageContents *)self->mPackageContents spineItemIdentifiers];
+      v20 = [attributesCopy objectForKeyedSubscript:@"idref"];
+      [spineItemIdentifiers addObject:v20];
     }
 
     else
     {
-      if (([v34 isEqualToString:@"dc:title"] & 1) != 0 || objc_msgSend(v34, "isEqualToString:", @"dc:creator"))
+      if (([elementCopy isEqualToString:@"dc:title"] & 1) != 0 || objc_msgSend(elementCopy, "isEqualToString:", @"dc:creator"))
       {
         v21 = objc_opt_new();
         v22 = 32;
@@ -83,12 +83,12 @@
 
       else
       {
-        if (![v34 isEqualToString:@"meta"])
+        if (![elementCopy isEqualToString:@"meta"])
         {
           goto LABEL_23;
         }
 
-        v23 = [v9 objectForKeyedSubscript:@"name"];
+        v23 = [attributesCopy objectForKeyedSubscript:@"name"];
         v24 = [v23 isEqualToString:@"cover"];
 
         if (!v24)
@@ -96,11 +96,11 @@
           goto LABEL_23;
         }
 
-        v21 = [v9 objectForKeyedSubscript:@"content"];
+        v21 = [attributesCopy objectForKeyedSubscript:@"content"];
         v22 = 40;
       }
 
-      v19 = *&self->CATOperation_opaque[v22];
+      spineItemIdentifiers = *&self->CATOperation_opaque[v22];
       *&self->CATOperation_opaque[v22] = v21;
     }
 
@@ -109,36 +109,36 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v10 = [v9 objectForKeyedSubscript:@"id"];
+  v10 = [attributesCopy objectForKeyedSubscript:@"id"];
   if (v10)
   {
     v11 = v10;
-    v12 = [v9 objectForKeyedSubscript:@"href"];
+    v12 = [attributesCopy objectForKeyedSubscript:@"href"];
 
     if (v12)
     {
-      v13 = [v9 objectForKeyedSubscript:@"href"];
-      v14 = [(CBSOPFPackageContents *)self->mPackageContents itemPathsByIdentifier];
-      v15 = [v9 objectForKeyedSubscript:@"id"];
-      [v14 setObject:v13 forKeyedSubscript:v15];
+      v13 = [attributesCopy objectForKeyedSubscript:@"href"];
+      itemPathsByIdentifier = [(CBSOPFPackageContents *)self->mPackageContents itemPathsByIdentifier];
+      v15 = [attributesCopy objectForKeyedSubscript:@"id"];
+      [itemPathsByIdentifier setObject:v13 forKeyedSubscript:v15];
 
-      v16 = [(CBSOPFPackageContents *)self->mPackageContents tableOfContentsFilePath];
-      if (!v16)
+      tableOfContentsFilePath = [(CBSOPFPackageContents *)self->mPackageContents tableOfContentsFilePath];
+      if (!tableOfContentsFilePath)
       {
-        v17 = [v9 objectForKeyedSubscript:@"id"];
+        v17 = [attributesCopy objectForKeyedSubscript:@"id"];
         if ([v17 isEqualToString:@"ncx"])
         {
         }
 
         else
         {
-          v25 = [v9 objectForKeyedSubscript:@"id"];
+          v25 = [attributesCopy objectForKeyedSubscript:@"id"];
           v26 = [v25 isEqualToString:@"toc"];
 
           if (!v26)
           {
 LABEL_20:
-            v30 = [v9 objectForKeyedSubscript:@"id"];
+            v30 = [attributesCopy objectForKeyedSubscript:@"id"];
             v31 = [v30 isEqualToString:self->mCoverItemID];
 
             if (!v31)
@@ -146,21 +146,21 @@ LABEL_20:
               goto LABEL_23;
             }
 
-            v19 = [(NSString *)self->mOPFFilePath stringByDeletingLastPathComponent];
-            v32 = [v9 objectForKeyedSubscript:@"href"];
-            v33 = [v19 stringByAppendingPathComponent:v32];
+            spineItemIdentifiers = [(NSString *)self->mOPFFilePath stringByDeletingLastPathComponent];
+            v32 = [attributesCopy objectForKeyedSubscript:@"href"];
+            v33 = [spineItemIdentifiers stringByAppendingPathComponent:v32];
             [(CBSOPFPackageContents *)self->mPackageContents setCoverImagePath:v33];
 
             goto LABEL_22;
           }
         }
 
-        v16 = [(NSString *)self->mOPFFilePath stringByDeletingLastPathComponent];
-        v27 = [v9 objectForKeyedSubscript:@"href"];
-        v28 = [v16 stringByAppendingPathComponent:v27];
+        tableOfContentsFilePath = [(NSString *)self->mOPFFilePath stringByDeletingLastPathComponent];
+        v27 = [attributesCopy objectForKeyedSubscript:@"href"];
+        v28 = [tableOfContentsFilePath stringByAppendingPathComponent:v27];
         [(CBSOPFPackageContents *)self->mPackageContents setTableOfContentsFilePath:v28];
 
-        v29 = [v9 objectForKeyedSubscript:@"media-type"];
+        v29 = [attributesCopy objectForKeyedSubscript:@"media-type"];
         [(CBSOPFPackageContents *)self->mPackageContents setTableOfContentsMediaType:v29];
       }
 
@@ -171,10 +171,10 @@ LABEL_20:
 LABEL_23:
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v9 = a4;
-  if ([v9 isEqualToString:@"dc:title"])
+  elementCopy = element;
+  if ([elementCopy isEqualToString:@"dc:title"])
   {
     p_mCurrentText = &self->mCurrentText;
     [(CBSOPFPackageContents *)self->mPackageContents setTitle:self->mCurrentText];
@@ -182,7 +182,7 @@ LABEL_23:
 
   else
   {
-    if (![v9 isEqualToString:@"dc:creator"])
+    if (![elementCopy isEqualToString:@"dc:creator"])
     {
       goto LABEL_6;
     }

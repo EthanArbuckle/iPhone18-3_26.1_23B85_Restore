@@ -1,9 +1,9 @@
 @interface HMDCameraStreamControlMessageHandlerDataSource
 - (BOOL)isResidentCapable;
 - (id)createDynamicActivityAttributionPublisher;
-- (id)createLocalStreamControlManagerWithSessionID:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 reachabilityPath:(unint64_t)a6 device:(id)a7 delegate:(id)a8 accessory:(id)a9 streamManagementService:(id)a10 localNetworkConfig:(id)a11 remoteCapabilities:(id)a12 supportedConfigCache:(id)a13 streamPreference:(id)a14;
-- (id)createRemoteStreamControlManagerWithSessionID:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 reachabilityPath:(unint64_t)a6 device:(id)a7 delegate:(id)a8 accessory:(id)a9 streamManagementService:(id)a10 remoteCapabilities:(id)a11 profileUniqueIdentifier:(id)a12 residentMessageHandler:(id)a13 remoteAccessDevice:(id)a14 streamPreference:(id)a15;
-- (id)createStreamManagerSessionWithSessionID:(id)a3 destinationID:(id)a4 streamClientConnection:(id)a5 streamControlManager:(id)a6 setupWaitPeriod:(double)a7;
+- (id)createLocalStreamControlManagerWithSessionID:(id)d workQueue:(id)queue streamSnapshotHandler:(id)handler reachabilityPath:(unint64_t)path device:(id)device delegate:(id)delegate accessory:(id)accessory streamManagementService:(id)self0 localNetworkConfig:(id)self1 remoteCapabilities:(id)self2 supportedConfigCache:(id)self3 streamPreference:(id)self4;
+- (id)createRemoteStreamControlManagerWithSessionID:(id)d workQueue:(id)queue streamSnapshotHandler:(id)handler reachabilityPath:(unint64_t)path device:(id)device delegate:(id)delegate accessory:(id)accessory streamManagementService:(id)self0 remoteCapabilities:(id)self1 profileUniqueIdentifier:(id)self2 residentMessageHandler:(id)self3 remoteAccessDevice:(id)self4 streamPreference:(id)self5;
+- (id)createStreamManagerSessionWithSessionID:(id)d destinationID:(id)iD streamClientConnection:(id)connection streamControlManager:(id)manager setupWaitPeriod:(double)period;
 @end
 
 @implementation HMDCameraStreamControlMessageHandlerDataSource
@@ -15,51 +15,51 @@
   return v2;
 }
 
-- (id)createStreamManagerSessionWithSessionID:(id)a3 destinationID:(id)a4 streamClientConnection:(id)a5 streamControlManager:(id)a6 setupWaitPeriod:(double)a7
+- (id)createStreamManagerSessionWithSessionID:(id)d destinationID:(id)iD streamClientConnection:(id)connection streamControlManager:(id)manager setupWaitPeriod:(double)period
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[HMDCameraStreamManagerSession alloc] initWithSessionID:v14 destinationID:v13 streamClientConnection:v12 streamControlManager:v11 setupWaitPeriod:a7];
+  managerCopy = manager;
+  connectionCopy = connection;
+  iDCopy = iD;
+  dCopy = d;
+  v15 = [[HMDCameraStreamManagerSession alloc] initWithSessionID:dCopy destinationID:iDCopy streamClientConnection:connectionCopy streamControlManager:managerCopy setupWaitPeriod:period];
 
   return v15;
 }
 
-- (id)createRemoteStreamControlManagerWithSessionID:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 reachabilityPath:(unint64_t)a6 device:(id)a7 delegate:(id)a8 accessory:(id)a9 streamManagementService:(id)a10 remoteCapabilities:(id)a11 profileUniqueIdentifier:(id)a12 residentMessageHandler:(id)a13 remoteAccessDevice:(id)a14 streamPreference:(id)a15
+- (id)createRemoteStreamControlManagerWithSessionID:(id)d workQueue:(id)queue streamSnapshotHandler:(id)handler reachabilityPath:(unint64_t)path device:(id)device delegate:(id)delegate accessory:(id)accessory streamManagementService:(id)self0 remoteCapabilities:(id)self1 profileUniqueIdentifier:(id)self2 residentMessageHandler:(id)self3 remoteAccessDevice:(id)self4 streamPreference:(id)self5
 {
-  v30 = a15;
-  v27 = a14;
-  v26 = a13;
-  v35 = a12;
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v25 = a8;
-  v20 = a7;
-  v29 = a5;
-  v21 = a4;
-  v33 = a3;
-  v22 = v20;
-  v23 = [[HMDCameraRemoteStreamControlManager alloc] initWithSessionID:v33 workQueue:v21 streamSnapshotHandler:v29 reachabilityPath:a6 device:v20 delegate:v25 accessory:v19 streamManagementService:v18 remoteCapabilities:v17 profileUniqueIdentifier:v35 residentMessageHandler:v26 remoteAccessDevice:v27 streamPreference:v30];
+  preferenceCopy = preference;
+  accessDeviceCopy = accessDevice;
+  messageHandlerCopy = messageHandler;
+  identifierCopy = identifier;
+  capabilitiesCopy = capabilities;
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  delegateCopy = delegate;
+  deviceCopy = device;
+  handlerCopy = handler;
+  queueCopy = queue;
+  dCopy = d;
+  v22 = deviceCopy;
+  v23 = [[HMDCameraRemoteStreamControlManager alloc] initWithSessionID:dCopy workQueue:queueCopy streamSnapshotHandler:handlerCopy reachabilityPath:path device:deviceCopy delegate:delegateCopy accessory:accessoryCopy streamManagementService:serviceCopy remoteCapabilities:capabilitiesCopy profileUniqueIdentifier:identifierCopy residentMessageHandler:messageHandlerCopy remoteAccessDevice:accessDeviceCopy streamPreference:preferenceCopy];
 
   return v23;
 }
 
-- (id)createLocalStreamControlManagerWithSessionID:(id)a3 workQueue:(id)a4 streamSnapshotHandler:(id)a5 reachabilityPath:(unint64_t)a6 device:(id)a7 delegate:(id)a8 accessory:(id)a9 streamManagementService:(id)a10 localNetworkConfig:(id)a11 remoteCapabilities:(id)a12 supportedConfigCache:(id)a13 streamPreference:(id)a14
+- (id)createLocalStreamControlManagerWithSessionID:(id)d workQueue:(id)queue streamSnapshotHandler:(id)handler reachabilityPath:(unint64_t)path device:(id)device delegate:(id)delegate accessory:(id)accessory streamManagementService:(id)self0 localNetworkConfig:(id)self1 remoteCapabilities:(id)self2 supportedConfigCache:(id)self3 streamPreference:(id)self4
 {
-  v29 = a14;
-  v27 = a13;
-  v26 = a12;
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v24 = a8;
-  v20 = a7;
-  v25 = a5;
-  v21 = a4;
-  v22 = a3;
-  v32 = [[HMDCameraLocalStreamControlManager alloc] initWithSessionID:v22 workQueue:v21 streamSnapshotHandler:v25 reachabilityPath:a6 device:v20 delegate:v24 accessory:v19 streamManagementService:v18 localNetworkConfig:v17 remoteCapabilities:v26 supportedConfigCache:v27 streamPreference:v29];
+  preferenceCopy = preference;
+  cacheCopy = cache;
+  capabilitiesCopy = capabilities;
+  configCopy = config;
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  delegateCopy = delegate;
+  deviceCopy = device;
+  handlerCopy = handler;
+  queueCopy = queue;
+  dCopy = d;
+  v32 = [[HMDCameraLocalStreamControlManager alloc] initWithSessionID:dCopy workQueue:queueCopy streamSnapshotHandler:handlerCopy reachabilityPath:path device:deviceCopy delegate:delegateCopy accessory:accessoryCopy streamManagementService:serviceCopy localNetworkConfig:configCopy remoteCapabilities:capabilitiesCopy supportedConfigCache:cacheCopy streamPreference:preferenceCopy];
 
   return v32;
 }
@@ -67,9 +67,9 @@
 - (BOOL)isResidentCapable
 {
   v2 = +[HMDDeviceCapabilities deviceCapabilities];
-  v3 = [v2 isResidentCapable];
+  isResidentCapable = [v2 isResidentCapable];
 
-  return v3;
+  return isResidentCapable;
 }
 
 @end

@@ -1,27 +1,27 @@
 @interface VNGenerateFaceSegmentsRequestConfiguration
-+ (BOOL)expansionRatioWithinValidRange:(float)a3;
-- (VNGenerateFaceSegmentsRequestConfiguration)initWithRequestClass:(Class)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setFaceBoundingBoxExpansionRatio:(float)a3;
++ (BOOL)expansionRatioWithinValidRange:(float)range;
+- (VNGenerateFaceSegmentsRequestConfiguration)initWithRequestClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setFaceBoundingBoxExpansionRatio:(float)ratio;
 @end
 
 @implementation VNGenerateFaceSegmentsRequestConfiguration
 
-- (void)setFaceBoundingBoxExpansionRatio:(float)a3
+- (void)setFaceBoundingBoxExpansionRatio:(float)ratio
 {
   v5 = objc_opt_class();
-  *&v6 = a3;
+  *&v6 = ratio;
   if ([v5 expansionRatioWithinValidRange:v6])
   {
-    self->_faceBoundingBoxExpansionRatio = a3;
+    self->_faceBoundingBoxExpansionRatio = ratio;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = VNGenerateFaceSegmentsRequestConfiguration;
-  v4 = [(VNImageBasedRequestConfiguration *)&v8 copyWithZone:a3];
+  v4 = [(VNImageBasedRequestConfiguration *)&v8 copyWithZone:zone];
   v6 = v4;
   if (v4)
   {
@@ -32,11 +32,11 @@
   return v6;
 }
 
-- (VNGenerateFaceSegmentsRequestConfiguration)initWithRequestClass:(Class)a3
+- (VNGenerateFaceSegmentsRequestConfiguration)initWithRequestClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = VNGenerateFaceSegmentsRequestConfiguration;
-  v3 = [(VNImageBasedRequestConfiguration *)&v7 initWithRequestClass:a3];
+  v3 = [(VNImageBasedRequestConfiguration *)&v7 initWithRequestClass:class];
   if (v3)
   {
     [objc_opt_class() defaultFaceBoundingBoxExpansionRatio];
@@ -47,17 +47,17 @@
   return v3;
 }
 
-+ (BOOL)expansionRatioWithinValidRange:(float)a3
++ (BOOL)expansionRatioWithinValidRange:(float)range
 {
   v4 = objc_opt_class();
   [v4 beginRangeFaceBoundingBoxExpansionRatio];
-  if (v5 > a3)
+  if (v5 > range)
   {
     return 0;
   }
 
   [v4 endRangeFaceBoundingBoxExpansionRatio];
-  return v7 >= a3;
+  return v7 >= range;
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface _MFNSShadow
-- (_MFNSShadow)initWithCoder:(id)a3;
-- (_MFNSShadow)initWithShadow:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_MFNSShadow)initWithCoder:(id)coder;
+- (_MFNSShadow)initWithShadow:(id)shadow;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _MFNSShadow
 
-- (_MFNSShadow)initWithShadow:(id)a3
+- (_MFNSShadow)initWithShadow:(id)shadow
 {
-  v5 = a3;
+  shadowCopy = shadow;
   v9.receiver = self;
   v9.super_class = _MFNSShadow;
   v6 = [(_MFNSShadow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_shadow, a3);
+    objc_storeStrong(&v6->_shadow, shadow);
   }
 
   return v7;
 }
 
-- (_MFNSShadow)initWithCoder:(id)a3
+- (_MFNSShadow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _MFNSShadow;
   v5 = [(_MFNSShadow *)&v10 init];
@@ -33,13 +33,13 @@
     shadow = v5->_shadow;
     v5->_shadow = v6;
 
-    [v4 decodeCGSizeForKey:@"offset"];
+    [coderCopy decodeCGSizeForKey:@"offset"];
     [(NSShadow *)v5->_shadow setShadowOffset:?];
-    [v4 decodeDoubleForKey:@"blurRadius"];
+    [coderCopy decodeDoubleForKey:@"blurRadius"];
     [(NSShadow *)v5->_shadow setShadowBlurRadius:?];
-    if ([v4 containsValueForKey:@"color"])
+    if ([coderCopy containsValueForKey:@"color"])
     {
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
       [(NSShadow *)v5->_shadow setShadowColor:v8];
     }
   }
@@ -47,19 +47,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   [(NSShadow *)self->_shadow shadowOffset];
-  [v6 encodeCGSize:@"offset" forKey:?];
+  [coderCopy encodeCGSize:@"offset" forKey:?];
   [(NSShadow *)self->_shadow shadowBlurRadius];
-  [v6 encodeDouble:@"blurRadius" forKey:?];
-  v4 = [(NSShadow *)self->_shadow shadowColor];
+  [coderCopy encodeDouble:@"blurRadius" forKey:?];
+  shadowColor = [(NSShadow *)self->_shadow shadowColor];
 
-  if (v4)
+  if (shadowColor)
   {
-    v5 = [(NSShadow *)self->_shadow shadowColor];
-    [v6 encodeObject:v5 forKey:@"color"];
+    shadowColor2 = [(NSShadow *)self->_shadow shadowColor];
+    [coderCopy encodeObject:shadowColor2 forKey:@"color"];
   }
 }
 

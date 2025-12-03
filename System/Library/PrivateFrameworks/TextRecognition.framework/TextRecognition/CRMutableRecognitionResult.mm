@@ -1,43 +1,43 @@
 @interface CRMutableRecognitionResult
-- (void)addContentsOfRecognitionResult:(id)a3 shouldOverwriteExistingHandler:(id)a4;
-- (void)addRecognizedRegions:(id)a3 detectedRegion:(id)a4;
+- (void)addContentsOfRecognitionResult:(id)result shouldOverwriteExistingHandler:(id)handler;
+- (void)addRecognizedRegions:(id)regions detectedRegion:(id)region;
 @end
 
 @implementation CRMutableRecognitionResult
 
-- (void)addRecognizedRegions:(id)a3 detectedRegion:(id)a4
+- (void)addRecognizedRegions:(id)regions detectedRegion:(id)region
 {
-  v6 = a4;
-  v7 = a3;
+  regionCopy = region;
+  regionsCopy = regions;
   os_unfair_lock_lock(&self->super._mapUpdateLock);
-  v8 = [[CRDetectedRecognizedRegionPair alloc] initWithDetectedRegion:v6 recognizedRegions:v7];
+  v8 = [[CRDetectedRecognizedRegionPair alloc] initWithDetectedRegion:regionCopy recognizedRegions:regionsCopy];
 
-  v9 = [(CRRecognitionResult *)self detectorRecognizerResultMap];
-  v10 = [v6 uuid];
+  detectorRecognizerResultMap = [(CRRecognitionResult *)self detectorRecognizerResultMap];
+  uuid = [regionCopy uuid];
 
-  [v9 setObject:v8 forKeyedSubscript:v10];
+  [detectorRecognizerResultMap setObject:v8 forKeyedSubscript:uuid];
 
   os_unfair_lock_unlock(&self->super._mapUpdateLock);
 }
 
-- (void)addContentsOfRecognitionResult:(id)a3 shouldOverwriteExistingHandler:(id)a4
+- (void)addContentsOfRecognitionResult:(id)result shouldOverwriteExistingHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->super._mapUpdateLock);
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [v6 detectorRecognizerResultMap];
+  array = [MEMORY[0x1E695DF70] array];
+  detectorRecognizerResultMap = [resultCopy detectorRecognizerResultMap];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __92__CRMutableRecognitionResult_addContentsOfRecognitionResult_shouldOverwriteExistingHandler___block_invoke;
   v21[3] = &unk_1E7BC29A0;
   v21[4] = self;
-  v10 = v7;
+  v10 = handlerCopy;
   v23 = v10;
-  v11 = v8;
+  v11 = array;
   v22 = v11;
-  [v9 enumerateKeysAndObjectsUsingBlock:v21];
+  [detectorRecognizerResultMap enumerateKeysAndObjectsUsingBlock:v21];
 
   os_unfair_lock_unlock(&self->super._mapUpdateLock);
   v19 = 0u;

@@ -1,24 +1,24 @@
 @interface FCTopicalEdge
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (uint64_t)independentCountForNode:(uint64_t)a1;
+- (uint64_t)independentCountForNode:(uint64_t)node;
 - (unint64_t)hash;
 - (void)calculateRelatedness;
 @end
 
 @implementation FCTopicalEdge
 
-- (uint64_t)independentCountForNode:(uint64_t)a1
+- (uint64_t)independentCountForNode:(uint64_t)node
 {
   v18 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (node)
   {
-    v5 = *(a1 + 16);
-    if (v5 != v3 && *(a1 + 24) != v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    v5 = *(node + 16);
+    if (v5 != v3 && *(node + 24) != v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Asked for independent count for node %@ but node not part of edge %@", v4, a1];
+      node = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Asked for independent count for node %@ but node not part of edge %@", v4, node];
       *buf = 136315906;
       v11 = "[FCTopicalEdge independentCountForNode:]";
       v12 = 2080;
@@ -26,10 +26,10 @@
       v14 = 1024;
       v15 = 510;
       v16 = 2114;
-      v17 = v9;
+      v17 = node;
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-      v5 = *(a1 + 16);
+      v5 = *(node + 16);
     }
 
     v6 = 48;
@@ -38,11 +38,11 @@
       v6 = 32;
     }
 
-    a1 = *(a1 + v6);
+    node = *(node + v6);
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return a1;
+  return node;
 }
 
 uint64_t __38__FCTopicalEdge_initWithNode_andNode___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -75,11 +75,11 @@ uint64_t __38__FCTopicalEdge_initWithNode_andNode___block_invoke(uint64_t a1, vo
 - (void)calculateRelatedness
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    if ([a1 relatednessCalculated] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if ([self relatednessCalculated] && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Asking to calculate relatedness when it already calculated : %@", a1];
+      v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Asking to calculate relatedness when it already calculated : %@", self];
       *buf = 136315906;
       v12 = "[FCTopicalEdge calculateRelatedness]";
       v13 = 2080;
@@ -91,14 +91,14 @@ uint64_t __38__FCTopicalEdge_initWithNode_andNode___block_invoke(uint64_t a1, vo
       _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
     }
 
-    v2 = a1[2];
+    v2 = self[2];
     if (v2)
     {
       v2 = v2[6];
     }
 
     v3 = v2;
-    v4 = a1[3];
+    v4 = self[3];
     if (v4)
     {
       v4 = v4[6];
@@ -109,21 +109,21 @@ uint64_t __38__FCTopicalEdge_initWithNode_andNode___block_invoke(uint64_t a1, vo
     v10[1] = 3221225472;
     v10[2] = __37__FCTopicalEdge_calculateRelatedness__block_invoke_3;
     v10[3] = &unk_1E7C38238;
-    v10[4] = a1;
-    a1[4] = __37__FCTopicalEdge_calculateRelatedness__block_invoke(v3, v10);
+    v10[4] = self;
+    self[4] = __37__FCTopicalEdge_calculateRelatedness__block_invoke(v3, v10);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __37__FCTopicalEdge_calculateRelatedness__block_invoke_4;
     v9[3] = &unk_1E7C38238;
-    v9[4] = a1;
-    a1[5] = __37__FCTopicalEdge_calculateRelatedness__block_invoke(v3, v9);
+    v9[4] = self;
+    self[5] = __37__FCTopicalEdge_calculateRelatedness__block_invoke(v3, v9);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __37__FCTopicalEdge_calculateRelatedness__block_invoke_5;
     v8[3] = &unk_1E7C38238;
-    v8[4] = a1;
-    a1[6] = __37__FCTopicalEdge_calculateRelatedness__block_invoke(v5, v8);
-    [a1 setRelatednessCalculated:1];
+    v8[4] = self;
+    self[6] = __37__FCTopicalEdge_calculateRelatedness__block_invoke(v5, v8);
+    [self setRelatednessCalculated:1];
   }
 
   v6 = *MEMORY[0x1E69E9840];
@@ -247,9 +247,9 @@ LABEL_4:
   return v9 ^ 1u;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (self)
   {
     a = self->_a;
@@ -262,9 +262,9 @@ LABEL_4:
 
   v6 = a;
   v7 = v6;
-  if (v4)
+  if (equalCopy)
   {
-    v8 = v4[2];
+    v8 = equalCopy[2];
   }
 
   else
@@ -277,10 +277,10 @@ LABEL_4:
     if (self)
     {
       b = self->_b;
-      if (v4)
+      if (equalCopy)
       {
 LABEL_9:
-        v11 = v4[3];
+        v11 = equalCopy[3];
 LABEL_10:
         v9 = b == v11;
 
@@ -291,7 +291,7 @@ LABEL_10:
     else
     {
       b = 0;
-      if (v4)
+      if (equalCopy)
       {
         goto LABEL_9;
       }
@@ -309,7 +309,7 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = self->_a;
@@ -330,10 +330,10 @@ LABEL_11:
 LABEL_4:
   v6 = identifiers;
   v7 = [(NSSet *)v6 hash];
-  if (v2)
+  if (selfCopy)
   {
-    v8 = v2->_b;
-    v2 = v8;
+    v8 = selfCopy->_b;
+    selfCopy = v8;
     if (v8)
     {
       v8 = v8->_identifiers;

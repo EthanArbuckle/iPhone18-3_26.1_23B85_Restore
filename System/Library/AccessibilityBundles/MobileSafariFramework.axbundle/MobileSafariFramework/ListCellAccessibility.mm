@@ -1,18 +1,18 @@
 @interface ListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 @end
 
 @implementation ListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_SFBrowsingAssistantListCell" isKindOfClass:@"UICollectionViewListCell"];
-  [v3 validateClass:@"_SFBrowsingAssistantListCell" hasSwiftField:@"isDeletable" withSwiftType:"Bool"];
-  [v3 validateClass:@"_SFBrowsingAssistantListCell" hasSwiftField:@"delegate" withSwiftType:"Optional<BrowsingAssistantListCellDelegate>"];
-  [v3 validateClass:@"SFBrowsingAssistantCollection" hasInstanceMethod:@"listCellDidDeleteCell:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SFBrowsingAssistantCollection" hasInstanceMethod:@"listCellDidInsertCell:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_SFBrowsingAssistantListCell" isKindOfClass:@"UICollectionViewListCell"];
+  [validationsCopy validateClass:@"_SFBrowsingAssistantListCell" hasSwiftField:@"isDeletable" withSwiftType:"Bool"];
+  [validationsCopy validateClass:@"_SFBrowsingAssistantListCell" hasSwiftField:@"delegate" withSwiftType:"Optional<BrowsingAssistantListCellDelegate>"];
+  [validationsCopy validateClass:@"SFBrowsingAssistantCollection" hasInstanceMethod:@"listCellDidDeleteCell:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SFBrowsingAssistantCollection" hasInstanceMethod:@"listCellDidInsertCell:" withFullSignature:{"v", "@", 0}];
 }
 
 - (BOOL)accessibilityActivate
@@ -20,10 +20,10 @@
   v19 = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 configurationState];
-  v5 = [v4 isEditing];
+  configurationState = [v3 configurationState];
+  isEditing = [configurationState isEditing];
 
-  if (v5)
+  if (isEditing)
   {
     if ([(ListCellAccessibility *)self safeSwiftBoolForKey:@"isDeletable"])
     {
@@ -31,7 +31,7 @@
       v15 = 3221225472;
       v16 = __46__ListCellAccessibility_accessibilityActivate__block_invoke;
       v17 = &unk_29F2D6938;
-      v18 = self;
+      selfCopy = self;
     }
 
     else
@@ -40,21 +40,21 @@
       v10 = 3221225472;
       v11 = __46__ListCellAccessibility_accessibilityActivate__block_invoke_2;
       v12 = &unk_29F2D6938;
-      v13 = self;
+      selfCopy2 = self;
     }
 
     AXPerformSafeBlock();
-    v6 = 1;
+    accessibilityActivate = 1;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ListCellAccessibility;
-    v6 = [(ListCellAccessibility *)&v8 accessibilityActivate];
+    accessibilityActivate = [(ListCellAccessibility *)&v8 accessibilityActivate];
   }
 
-  return v6;
+  return accessibilityActivate;
 }
 
 void __46__ListCellAccessibility_accessibilityActivate__block_invoke(uint64_t a1)

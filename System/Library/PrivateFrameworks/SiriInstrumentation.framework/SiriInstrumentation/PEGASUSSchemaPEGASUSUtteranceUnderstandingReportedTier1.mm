@@ -1,29 +1,29 @@
 @interface PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addTopKGSAIntents:(id)a3;
-- (void)addTopU2Intents:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTopKGSAIntents:(id)intents;
+- (void)addTopU2Intents:(id)intents;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1
 
-- (PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1)initWithDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v38.receiver = self;
   v38.super_class = PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1;
   v5 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)&v38 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"linkId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -31,7 +31,7 @@
       [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)v5 setLinkId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"topU2Intents"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"topU2Intents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -73,7 +73,7 @@
       v8 = v9;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"topKGSAIntents"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"topKGSAIntents"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -115,7 +115,7 @@
       v8 = v29;
     }
 
-    v25 = [v4 objectForKeyedSubscript:{@"multiTurnListSelectionUnderstanding", v29}];
+    v25 = [dictionaryCopy objectForKeyedSubscript:{@"multiTurnListSelectionUnderstanding", v29}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -129,30 +129,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -166,42 +166,42 @@
 - (id)dictionaryRepresentation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_linkId)
   {
-    v4 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    linkId = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
+    dictionaryRepresentation = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"linkId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_multiTurnListSelectionUnderstanding)
   {
-    v7 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    multiTurnListSelectionUnderstanding = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
+    dictionaryRepresentation2 = [multiTurnListSelectionUnderstanding dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"multiTurnListSelectionUnderstanding"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"multiTurnListSelectionUnderstanding"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"multiTurnListSelectionUnderstanding"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"multiTurnListSelectionUnderstanding"];
     }
   }
 
   if ([(NSArray *)self->_topKGSAIntents count])
   {
-    v10 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -221,16 +221,16 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          if (v16)
+          dictionaryRepresentation3 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v10 addObject:v16];
+            [array addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v17 = [MEMORY[0x1E695DFB0] null];
-            [v10 addObject:v17];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null3];
           }
         }
 
@@ -240,12 +240,12 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"topKGSAIntents"];
+    [dictionary setObject:array forKeyedSubscript:@"topKGSAIntents"];
   }
 
   if ([(NSArray *)self->_topU2Intents count])
   {
-    v18 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -265,16 +265,16 @@
             objc_enumerationMutation(v19);
           }
 
-          v24 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
-          if (v24)
+          dictionaryRepresentation4 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation4)
           {
-            [v18 addObject:v24];
+            [array2 addObject:dictionaryRepresentation4];
           }
 
           else
           {
-            v25 = [MEMORY[0x1E695DFB0] null];
-            [v18 addObject:v25];
+            null4 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null4];
           }
         }
 
@@ -284,12 +284,12 @@
       while (v21);
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"topU2Intents"];
+    [dictionary setObject:array2 forKeyedSubscript:@"topU2Intents"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v27];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v27];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -300,28 +300,28 @@
   return v4 ^ v5 ^ [(PEGASUSSchemaPEGASUSMultiTurnListSelectionUnderstandingTier1 *)self->_multiTurnListSelectionUnderstanding hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
-  v6 = [v4 linkId];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
-  if (v7)
+  linkId3 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
+  if (linkId3)
   {
-    v8 = v7;
-    v9 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
-    v10 = [v4 linkId];
-    v11 = [v9 isEqual:v10];
+    v8 = linkId3;
+    linkId4 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v11 = [linkId4 isEqual:linkId5];
 
     if (!v11)
     {
@@ -333,20 +333,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topU2Intents];
-  v6 = [v4 topU2Intents];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topU2Intents];
+  linkId2 = [equalCopy topU2Intents];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topU2Intents];
-  if (v12)
+  topU2Intents = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topU2Intents];
+  if (topU2Intents)
   {
-    v13 = v12;
-    v14 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topU2Intents];
-    v15 = [v4 topU2Intents];
-    v16 = [v14 isEqual:v15];
+    v13 = topU2Intents;
+    topU2Intents2 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topU2Intents];
+    topU2Intents3 = [equalCopy topU2Intents];
+    v16 = [topU2Intents2 isEqual:topU2Intents3];
 
     if (!v16)
     {
@@ -358,20 +358,20 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topKGSAIntents];
-  v6 = [v4 topKGSAIntents];
-  if ((v5 != 0) == (v6 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topKGSAIntents];
+  linkId2 = [equalCopy topKGSAIntents];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topKGSAIntents];
-  if (v17)
+  topKGSAIntents = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topKGSAIntents];
+  if (topKGSAIntents)
   {
-    v18 = v17;
-    v19 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topKGSAIntents];
-    v20 = [v4 topKGSAIntents];
-    v21 = [v19 isEqual:v20];
+    v18 = topKGSAIntents;
+    topKGSAIntents2 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topKGSAIntents];
+    topKGSAIntents3 = [equalCopy topKGSAIntents];
+    v21 = [topKGSAIntents2 isEqual:topKGSAIntents3];
 
     if (!v21)
     {
@@ -383,12 +383,12 @@
   {
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
-  v6 = [v4 multiTurnListSelectionUnderstanding];
-  if ((v5 != 0) != (v6 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
+  linkId2 = [equalCopy multiTurnListSelectionUnderstanding];
+  if ((linkId != 0) != (linkId2 == 0))
   {
-    v22 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
-    if (!v22)
+    multiTurnListSelectionUnderstanding = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
+    if (!multiTurnListSelectionUnderstanding)
     {
 
 LABEL_25:
@@ -396,10 +396,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
-    v25 = [v4 multiTurnListSelectionUnderstanding];
-    v26 = [v24 isEqual:v25];
+    v23 = multiTurnListSelectionUnderstanding;
+    multiTurnListSelectionUnderstanding2 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
+    multiTurnListSelectionUnderstanding3 = [equalCopy multiTurnListSelectionUnderstanding];
+    v26 = [multiTurnListSelectionUnderstanding2 isEqual:multiTurnListSelectionUnderstanding3];
 
     if (v26)
     {
@@ -419,15 +419,15 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
+  toCopy = to;
+  linkId = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
 
-  if (v5)
+  if (linkId)
   {
-    v6 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
+    linkId2 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -493,79 +493,79 @@ LABEL_23:
     while (v14);
   }
 
-  v17 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
+  multiTurnListSelectionUnderstanding = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
 
-  if (v17)
+  if (multiTurnListSelectionUnderstanding)
   {
-    v18 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
+    multiTurnListSelectionUnderstanding2 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)addTopKGSAIntents:(id)a3
+- (void)addTopKGSAIntents:(id)intents
 {
-  v4 = a3;
+  intentsCopy = intents;
   topKGSAIntents = self->_topKGSAIntents;
-  v8 = v4;
+  v8 = intentsCopy;
   if (!topKGSAIntents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_topKGSAIntents;
-    self->_topKGSAIntents = v6;
+    self->_topKGSAIntents = array;
 
-    v4 = v8;
+    intentsCopy = v8;
     topKGSAIntents = self->_topKGSAIntents;
   }
 
-  [(NSArray *)topKGSAIntents addObject:v4];
+  [(NSArray *)topKGSAIntents addObject:intentsCopy];
 }
 
-- (void)addTopU2Intents:(id)a3
+- (void)addTopU2Intents:(id)intents
 {
-  v4 = a3;
+  intentsCopy = intents;
   topU2Intents = self->_topU2Intents;
-  v8 = v4;
+  v8 = intentsCopy;
   if (!topU2Intents)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_topU2Intents;
-    self->_topU2Intents = v6;
+    self->_topU2Intents = array;
 
-    v4 = v8;
+    intentsCopy = v8;
     topU2Intents = self->_topU2Intents;
   }
 
-  [(NSArray *)topU2Intents addObject:v4];
+  [(NSArray *)topU2Intents addObject:intentsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v17.receiver = self;
   v17.super_class = PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1;
-  v5 = [(SISchemaInstrumentationMessage *)&v17 applySensitiveConditionsPolicy:v4];
-  v6 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v17 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self deleteLinkId];
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topU2Intents];
-  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v9 underConditions:v4];
+  topU2Intents = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topU2Intents];
+  v10 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:topU2Intents underConditions:policyCopy];
   [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self setTopU2Intents:v10];
 
-  v11 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topKGSAIntents];
-  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v11 underConditions:v4];
+  topKGSAIntents = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self topKGSAIntents];
+  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:topKGSAIntents underConditions:policyCopy];
   [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self setTopKGSAIntents:v12];
 
-  v13 = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
-  v14 = [v13 applySensitiveConditionsPolicy:v4];
-  v15 = [v14 suppressMessage];
+  multiTurnListSelectionUnderstanding = [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self multiTurnListSelectionUnderstanding];
+  v14 = [multiTurnListSelectionUnderstanding applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v14 suppressMessage];
 
-  if (v15)
+  if (suppressMessage2)
   {
     [(PEGASUSSchemaPEGASUSUtteranceUnderstandingReportedTier1 *)self deleteMultiTurnListSelectionUnderstanding];
   }

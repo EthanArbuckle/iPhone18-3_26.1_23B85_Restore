@@ -1,6 +1,6 @@
 @interface GPUImageUndistortion
 - (GPUImageUndistortion)init;
-- (void)undistortFisheyeImage:(float32x4_t)a3 withFisheyeIntrinsics:(float32x4_t)a4 withFisheyeRadialCoefficients:(float32x4_t)a5 toRectilinearImage:(__n128)a6 withRectilinearIntrinsics:(__n128)a7;
+- (void)undistortFisheyeImage:(float32x4_t)image withFisheyeIntrinsics:(float32x4_t)intrinsics withFisheyeRadialCoefficients:(float32x4_t)coefficients toRectilinearImage:(__n128)rectilinearImage withRectilinearIntrinsics:(__n128)rectilinearIntrinsics;
 @end
 
 @implementation GPUImageUndistortion
@@ -14,9 +14,9 @@
   device = v2->_device;
   v2->_device = v3;
 
-  v5 = [(MTLDevice *)v2->_device newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v2->_device newCommandQueue];
   commandQueue = v2->_commandQueue;
-  v2->_commandQueue = v5;
+  v2->_commandQueue = newCommandQueue;
 
   [(MTLCommandQueue *)v2->_commandQueue setLabel:@"com.apple.abpk.gpuimageundistortion.queue"];
   v7 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -41,15 +41,15 @@
   return v2;
 }
 
-- (void)undistortFisheyeImage:(float32x4_t)a3 withFisheyeIntrinsics:(float32x4_t)a4 withFisheyeRadialCoefficients:(float32x4_t)a5 toRectilinearImage:(__n128)a6 withRectilinearIntrinsics:(__n128)a7
+- (void)undistortFisheyeImage:(float32x4_t)image withFisheyeIntrinsics:(float32x4_t)intrinsics withFisheyeRadialCoefficients:(float32x4_t)coefficients toRectilinearImage:(__n128)rectilinearImage withRectilinearIntrinsics:(__n128)rectilinearIntrinsics
 {
-  *&v46[16] = a7;
+  *&v46[16] = rectilinearIntrinsics;
   *&v46[32] = a8;
-  *v46 = a6;
+  *v46 = rectilinearImage;
   v66[1] = *MEMORY[0x277D85DE8];
-  v63 = a3;
-  v64 = a4;
-  v61 = a5;
+  imageCopy = image;
+  intrinsicsCopy = intrinsics;
+  coefficientsCopy = coefficients;
   v62 = a2;
   Width = CVPixelBufferGetWidth(a10);
   Height = CVPixelBufferGetHeight(a10);
@@ -67,34 +67,34 @@
 
   v17 = CVPixelBufferGetWidth(v15);
   v18 = CVPixelBufferGetHeight(*v51);
-  pixelBufferAttributes = [*(a1 + 16) commandBuffer];
+  pixelBufferAttributes = [*(self + 16) commandBuffer];
   [(__CFDictionary *)pixelBufferAttributes setLabel:@"com.apple.abpk.gpuimageundistortion.commandBuffer"];
-  v19 = *(a1 + 40);
-  if (!v19 || [v19 width] != v17 || objc_msgSend(*(a1 + 40), "height") != v18 || (v20 = vandq_s8(vandq_s8(vceqq_f32(*(a1 + 64), v63), vceqq_f32(*(a1 + 48), v62)), vceqq_f32(*(a1 + 80), v64)), v20.i32[3] = v20.i32[2], (vminvq_u32(v20) & 0x80000000) == 0) || (vminvq_u32(vceqq_f32(*(a1 + 96), v61)) & 0x80000000) == 0 || (v21 = vandq_s8(vandq_s8(vceqq_f32(*(a1 + 128), *&v46[16]), vceqq_f32(*(a1 + 112), *v46)), vceqq_f32(*(a1 + 144), *&v46[32])), v21.i32[3] = v21.i32[2], (vminvq_u32(v21) & 0x80000000) == 0))
+  v19 = *(self + 40);
+  if (!v19 || [v19 width] != v17 || objc_msgSend(*(self + 40), "height") != v18 || (v20 = vandq_s8(vandq_s8(vceqq_f32(*(self + 64), imageCopy), vceqq_f32(*(self + 48), v62)), vceqq_f32(*(self + 80), intrinsicsCopy)), v20.i32[3] = v20.i32[2], (vminvq_u32(v20) & 0x80000000) == 0) || (vminvq_u32(vceqq_f32(*(self + 96), coefficientsCopy)) & 0x80000000) == 0 || (v21 = vandq_s8(vandq_s8(vceqq_f32(*(self + 128), *&v46[16]), vceqq_f32(*(self + 112), *v46)), vceqq_f32(*(self + 144), *&v46[32])), v21.i32[3] = v21.i32[2], (vminvq_u32(v21) & 0x80000000) == 0))
   {
-    v22 = v63;
-    v23 = v64;
-    v24 = v61;
-    *(a1 + 48) = v62;
-    *(a1 + 64) = v22;
-    *(a1 + 80) = v23;
-    *(a1 + 96) = v24;
-    *(a1 + 112) = *v46;
-    *(a1 + 128) = *&v46[16];
-    *(a1 + 144) = *&v46[32];
-    v25 = *(a1 + 40);
-    if (!v25 || [v25 width] != v17 || objc_msgSend(*(a1 + 40), "height") != v18)
+    v22 = imageCopy;
+    v23 = intrinsicsCopy;
+    v24 = coefficientsCopy;
+    *(self + 48) = v62;
+    *(self + 64) = v22;
+    *(self + 80) = v23;
+    *(self + 96) = v24;
+    *(self + 112) = *v46;
+    *(self + 128) = *&v46[16];
+    *(self + 144) = *&v46[32];
+    v25 = *(self + 40);
+    if (!v25 || [v25 width] != v17 || objc_msgSend(*(self + 40), "height") != v18)
     {
       v26 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:105 width:v17 height:v18 mipmapped:0, *v46];
       [v26 setUsage:3];
-      v27 = [*(a1 + 8) newTextureWithDescriptor:v26];
-      v28 = *(a1 + 40);
-      *(a1 + 40) = v27;
+      v27 = [*(self + 8) newTextureWithDescriptor:v26];
+      v28 = *(self + 40);
+      *(self + 40) = v27;
     }
 
-    v29 = [(__CFDictionary *)pixelBufferAttributes computeCommandEncoder];
-    [v29 setLabel:@"com.apple.abpk.gpuimageundistortion.generatelut"];
-    [v29 setComputePipelineState:*(a1 + 32)];
+    computeCommandEncoder = [(__CFDictionary *)pixelBufferAttributes computeCommandEncoder];
+    [computeCommandEncoder setLabel:@"com.apple.abpk.gpuimageundistortion.generatelut"];
+    [computeCommandEncoder setComputePipelineState:*(self + 32)];
     v59 = 0u;
     v60 = 0u;
     v58 = 0u;
@@ -105,34 +105,34 @@
     *&v59 = v67.columns[1].i64[0];
     DWORD2(v60) = v67.columns[2].i32[2];
     *&v60 = v67.columns[2].i64[0];
-    [v29 setTexture:*(a1 + 40) atIndex:0];
-    [v29 setBytes:&v62 length:48 atIndex:0];
-    [v29 setBytes:&v61 length:16 atIndex:1];
-    [v29 setBytes:&v58 length:48 atIndex:2];
-    v30 = [*(a1 + 32) threadExecutionWidth];
+    [computeCommandEncoder setTexture:*(self + 40) atIndex:0];
+    [computeCommandEncoder setBytes:&v62 length:48 atIndex:0];
+    [computeCommandEncoder setBytes:&coefficientsCopy length:16 atIndex:1];
+    [computeCommandEncoder setBytes:&v58 length:48 atIndex:2];
+    threadExecutionWidth = [*(self + 32) threadExecutionWidth];
     v31 = v18;
-    v32 = [*(a1 + 32) maxTotalThreadsPerThreadgroup];
-    v33 = [*(a1 + 40) width];
-    v34 = [*(a1 + 40) height];
-    v55 = (v30 + v33 - 1) / v30;
-    v56 = (v32 / v30 + v34 - 1) / (v32 / v30);
+    maxTotalThreadsPerThreadgroup = [*(self + 32) maxTotalThreadsPerThreadgroup];
+    width = [*(self + 40) width];
+    height = [*(self + 40) height];
+    v55 = (threadExecutionWidth + width - 1) / threadExecutionWidth;
+    v56 = (maxTotalThreadsPerThreadgroup / threadExecutionWidth + height - 1) / (maxTotalThreadsPerThreadgroup / threadExecutionWidth);
     v57 = 1;
-    v54[0] = v30;
-    v54[1] = v32 / v30;
+    v54[0] = threadExecutionWidth;
+    v54[1] = maxTotalThreadsPerThreadgroup / threadExecutionWidth;
     v54[2] = 1;
-    [v29 dispatchThreadgroups:&v55 threadsPerThreadgroup:v54];
-    [v29 endEncoding];
+    [computeCommandEncoder dispatchThreadgroups:&v55 threadsPerThreadgroup:v54];
+    [computeCommandEncoder endEncoding];
 
     v18 = v31;
   }
 
   v48 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:10 width:Width height:Height mipmapped:0, *v46];
   [v48 setUsage:3];
-  v47 = [*(a1 + 8) newTextureWithDescriptor:v48 iosurface:CVPixelBufferGetIOSurface(a10) plane:0];
+  v47 = [*(self + 8) newTextureWithDescriptor:v48 iosurface:CVPixelBufferGetIOSurface(a10) plane:0];
   [v47 setLabel:@"com.apple.abpk.gpuimageundistortion.srcY"];
   v50 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:30 width:Width >> 1 height:Height >> 1 mipmapped:0];
   [v50 setUsage:1];
-  v35 = [*(a1 + 8) newTextureWithDescriptor:v50 iosurface:CVPixelBufferGetIOSurface(a10) plane:1];
+  v35 = [*(self + 8) newTextureWithDescriptor:v50 iosurface:CVPixelBufferGetIOSurface(a10) plane:1];
   [v35 setLabel:@"com.apple.abpk.gpuimageundistortion.srcCbCr"];
   v36 = CVBufferRetain(a10);
   v53[0] = MEMORY[0x277D85DD0];
@@ -143,31 +143,31 @@
   [(__CFDictionary *)pixelBufferAttributes addCompletedHandler:v53];
   v37 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:10 width:v17 height:v18 mipmapped:0];
   [v37 setUsage:3];
-  v38 = [*(a1 + 8) newTextureWithDescriptor:v37 iosurface:CVPixelBufferGetIOSurface(*v51) plane:0];
+  v38 = [*(self + 8) newTextureWithDescriptor:v37 iosurface:CVPixelBufferGetIOSurface(*v51) plane:0];
   [v38 setLabel:@"com.apple.abpk.gpuimageundistortion.dstY"];
   v39 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:30 width:v17 >> 1 height:v18 >> 1 mipmapped:0];
   [v39 setUsage:3];
-  v40 = [*(a1 + 8) newTextureWithDescriptor:v39 iosurface:CVPixelBufferGetIOSurface(*v51) plane:1];
+  v40 = [*(self + 8) newTextureWithDescriptor:v39 iosurface:CVPixelBufferGetIOSurface(*v51) plane:1];
   [v40 setLabel:@"com.apple.abpk.gpuimageundistortion.dstCbCr"];
-  v41 = [(__CFDictionary *)pixelBufferAttributes computeCommandEncoder];
+  computeCommandEncoder2 = [(__CFDictionary *)pixelBufferAttributes computeCommandEncoder];
   v42 = v18;
-  [v41 setLabel:@"com.apple.abpk.gpuimageundistortion.settexture"];
-  [v41 setComputePipelineState:*(a1 + 24)];
-  [v41 setTexture:v47 atIndex:0];
-  [v41 setTexture:v35 atIndex:1];
-  [v41 setTexture:*(a1 + 40) atIndex:2];
-  [v41 setTexture:v38 atIndex:3];
-  [v41 setTexture:v40 atIndex:4];
-  v43 = [*(a1 + 24) threadExecutionWidth];
-  v44 = [*(a1 + 24) maxTotalThreadsPerThreadgroup];
-  *&v58 = (v17 + v43 - 1) / v43;
-  *(&v58 + 1) = (v42 + v44 / v43 - 1) / (v44 / v43);
+  [computeCommandEncoder2 setLabel:@"com.apple.abpk.gpuimageundistortion.settexture"];
+  [computeCommandEncoder2 setComputePipelineState:*(self + 24)];
+  [computeCommandEncoder2 setTexture:v47 atIndex:0];
+  [computeCommandEncoder2 setTexture:v35 atIndex:1];
+  [computeCommandEncoder2 setTexture:*(self + 40) atIndex:2];
+  [computeCommandEncoder2 setTexture:v38 atIndex:3];
+  [computeCommandEncoder2 setTexture:v40 atIndex:4];
+  threadExecutionWidth2 = [*(self + 24) threadExecutionWidth];
+  maxTotalThreadsPerThreadgroup2 = [*(self + 24) maxTotalThreadsPerThreadgroup];
+  *&v58 = (v17 + threadExecutionWidth2 - 1) / threadExecutionWidth2;
+  *(&v58 + 1) = (v42 + maxTotalThreadsPerThreadgroup2 / threadExecutionWidth2 - 1) / (maxTotalThreadsPerThreadgroup2 / threadExecutionWidth2);
   *&v59 = 1;
-  v55 = v43;
-  v56 = v44 / v43;
+  v55 = threadExecutionWidth2;
+  v56 = maxTotalThreadsPerThreadgroup2 / threadExecutionWidth2;
   v57 = 1;
-  [v41 dispatchThreadgroups:&v58 threadsPerThreadgroup:&v55];
-  [v41 endEncoding];
+  [computeCommandEncoder2 dispatchThreadgroups:&v58 threadsPerThreadgroup:&v55];
+  [computeCommandEncoder2 endEncoding];
   [(__CFDictionary *)pixelBufferAttributes commit];
   [(__CFDictionary *)pixelBufferAttributes waitUntilCompleted];
 

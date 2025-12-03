@@ -1,14 +1,14 @@
 @interface CKAlertControllerActionHelper
-+ (void)reportJunkWithConversation:(id)a3;
++ (void)reportJunkWithConversation:(id)conversation;
 - (CKAlertControllerActionHelper)init;
 @end
 
 @implementation CKAlertControllerActionHelper
 
-+ (void)reportJunkWithConversation:(id)a3
++ (void)reportJunkWithConversation:(id)conversation
 {
-  v3 = a3;
-  sub_190BC714C(v3);
+  conversationCopy = conversation;
+  sub_190BC714C(conversationCopy);
 }
 
 - (CKAlertControllerActionHelper)init

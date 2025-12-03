@@ -1,14 +1,14 @@
 @interface CLSClueCollection
-- (BOOL)hasMeaningClueWithKey:(id)a3 andValue:(id)a4;
-- (BOOL)hasMeaningClueWithKey:(id)a3 value:(id)a4 andMinimumScore:(double)a5;
-- (BOOL)hasOutputClueWithKey:(id)a3 andValue:(id)a4;
-- (BOOL)hasOutputClueWithKey:(id)a3 value:(id)a4 andMinimumScore:(double)a5;
-- (CLSClueCollection)initWithServiceManager:(id)a3;
+- (BOOL)hasMeaningClueWithKey:(id)key andValue:(id)value;
+- (BOOL)hasMeaningClueWithKey:(id)key value:(id)value andMinimumScore:(double)score;
+- (BOOL)hasOutputClueWithKey:(id)key andValue:(id)value;
+- (BOOL)hasOutputClueWithKey:(id)key value:(id)value andMinimumScore:(double)score;
+- (CLSClueCollection)initWithServiceManager:(id)manager;
 - (CLSMeaningClue)locationMobilityClue;
 - (double)timeInterval;
 - (id)description;
 - (id)inputClues;
-- (id)inputCluesForKey:(id)a3;
+- (id)inputCluesForKey:(id)key;
 - (id)localDates;
 - (id)localEndDate;
 - (id)localStartDate;
@@ -17,20 +17,20 @@
 - (id)locationRegionsInPlacemarks;
 - (id)locations;
 - (id)meaningClues;
-- (id)meaningCluesForKey:(id)a3;
-- (id)meaningCluesForKey:(id)a3 andValue:(id)a4;
+- (id)meaningCluesForKey:(id)key;
+- (id)meaningCluesForKey:(id)key andValue:(id)value;
 - (id)outputClues;
-- (id)outputCluesForKey:(id)a3;
-- (id)outputCluesForKey:(id)a3 andValue:(id)a4;
-- (id)peopleDescriptionWithoutPeople:(id)a3;
+- (id)outputCluesForKey:(id)key;
+- (id)outputCluesForKey:(id)key andValue:(id)value;
+- (id)peopleDescriptionWithoutPeople:(id)people;
 - (id)peopleNames;
 - (id)uniqueInputClues;
-- (id)uniqueMeaningClueForKey:(id)a3 andValue:(id)a4;
+- (id)uniqueMeaningClueForKey:(id)key andValue:(id)value;
 - (id)uniqueMeaningClues;
-- (id)uniqueMeaningCluesForKey:(id)a3;
-- (id)uniqueOutputClueForKey:(id)a3 andValue:(id)a4;
+- (id)uniqueMeaningCluesForKey:(id)key;
+- (id)uniqueOutputClueForKey:(id)key andValue:(id)value;
 - (id)uniqueOutputClues;
-- (id)uniqueOutputCluesForKey:(id)a3;
+- (id)uniqueOutputCluesForKey:(id)key;
 - (id)universalDateInterval;
 - (id)universalDates;
 - (id)universalEndDate;
@@ -40,34 +40,34 @@
 - (unint64_t)numberOfPersons;
 - (unint64_t)numberOfTimes;
 - (void)_incrementVersionCount;
-- (void)_mergeInputClue:(id)a3;
-- (void)_mergeMeaningClue:(id)a3;
-- (void)_mergeOutputClue:(id)a3;
-- (void)enumerateLocationClues:(id)a3;
-- (void)enumeratePeopleClues:(id)a3;
-- (void)enumerateTimeClues:(id)a3;
-- (void)enumerateTimeOfDayClues:(id)a3;
-- (void)mergeClues:(id)a3;
-- (void)prepareWithProgressBlock:(id)a3;
+- (void)_mergeInputClue:(id)clue;
+- (void)_mergeMeaningClue:(id)clue;
+- (void)_mergeOutputClue:(id)clue;
+- (void)enumerateLocationClues:(id)clues;
+- (void)enumeratePeopleClues:(id)clues;
+- (void)enumerateTimeClues:(id)clues;
+- (void)enumerateTimeOfDayClues:(id)clues;
+- (void)mergeClues:(id)clues;
+- (void)prepareWithProgressBlock:(id)block;
 @end
 
 @implementation CLSClueCollection
 
-- (id)peopleDescriptionWithoutPeople:(id)a3
+- (id)peopleDescriptionWithoutPeople:(id)people
 {
-  v4 = a3;
+  peopleCopy = people;
   v5 = [(CLSClueCollection *)self outputCluesForKey:@"People Relationship"];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"value != %@", @"Myself"];
   v7 = [v5 filteredArrayUsingPredicate:v6];
 
-  if (v4)
+  if (peopleCopy)
   {
     v8 = MEMORY[0x277CCAC30];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke;
     v15[3] = &unk_2788A8128;
-    v16 = v4;
+    v16 = peopleCopy;
     v9 = [v8 predicateWithBlock:v15];
     v10 = [v7 filteredArrayUsingPredicate:v9];
 
@@ -89,16 +89,16 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   return a1 ^ 1;
 }
 
-- (void)mergeClues:(id)a3
+- (void)mergeClues:(id)clues
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cluesCopy = clues;
   os_unfair_recursive_lock_lock_with_options();
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = cluesCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v6)
   {
@@ -144,13 +144,13 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
               v13 = v9;
               v14 = v10;
               v15 = +[CLSLogging sharedLogging];
-              v16 = [v15 loggingConnection];
+              loggingConnection = [v15 loggingConnection];
 
-              if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+              if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
                 v22 = v12;
-                _os_log_error_impl(&dword_22F907000, v16, OS_LOG_TYPE_ERROR, "Cannot merge clue: %@", buf, 0xCu);
+                _os_log_error_impl(&dword_22F907000, loggingConnection, OS_LOG_TYPE_ERROR, "Cannot merge clue: %@", buf, 0xCu);
               }
 
               v10 = v14;
@@ -173,24 +173,24 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)_mergeMeaningClue:(id)a3
+- (void)_mergeMeaningClue:(id)clue
 {
-  v4 = a3;
+  clueCopy = clue;
   meaningCluesByKey = self->_meaningCluesByKey;
-  v14 = v4;
-  v6 = [v4 key];
-  v7 = [(NSMapTable *)meaningCluesByKey objectForKey:v6];
+  v14 = clueCopy;
+  v6 = [clueCopy key];
+  strongToStrongObjectsMapTable = [(NSMapTable *)meaningCluesByKey objectForKey:v6];
 
-  if (v7)
+  if (strongToStrongObjectsMapTable)
   {
-    v8 = [v14 value];
-    v9 = [v7 objectForKey:v8];
+    value = [v14 value];
+    v9 = [strongToStrongObjectsMapTable objectForKey:value];
 
     if (!v9)
     {
       v9 = objc_opt_new();
-      v10 = [v14 value];
-      [v7 setObject:v9 forKey:v10];
+      value2 = [v14 value];
+      [strongToStrongObjectsMapTable setObject:v9 forKey:value2];
     }
 
     [v9 addObject:v14];
@@ -198,35 +198,35 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
 
   else
   {
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v11 = [MEMORY[0x277CBEB18] arrayWithObject:v14];
-    v12 = [v14 value];
-    [v7 setObject:v11 forKey:v12];
+    value3 = [v14 value];
+    [strongToStrongObjectsMapTable setObject:v11 forKey:value3];
 
     v13 = self->_meaningCluesByKey;
     v9 = [v14 key];
-    [(NSMapTable *)v13 setObject:v7 forKey:v9];
+    [(NSMapTable *)v13 setObject:strongToStrongObjectsMapTable forKey:v9];
   }
 }
 
-- (void)_mergeOutputClue:(id)a3
+- (void)_mergeOutputClue:(id)clue
 {
-  v4 = a3;
+  clueCopy = clue;
   outputCluesByKey = self->_outputCluesByKey;
-  v14 = v4;
-  v6 = [v4 key];
-  v7 = [(NSMapTable *)outputCluesByKey objectForKey:v6];
+  v14 = clueCopy;
+  v6 = [clueCopy key];
+  strongToStrongObjectsMapTable = [(NSMapTable *)outputCluesByKey objectForKey:v6];
 
-  if (v7)
+  if (strongToStrongObjectsMapTable)
   {
-    v8 = [v14 value];
-    v9 = [v7 objectForKey:v8];
+    value = [v14 value];
+    v9 = [strongToStrongObjectsMapTable objectForKey:value];
 
     if (!v9)
     {
       v9 = objc_opt_new();
-      v10 = [v14 value];
-      [v7 setObject:v9 forKey:v10];
+      value2 = [v14 value];
+      [strongToStrongObjectsMapTable setObject:v9 forKey:value2];
     }
 
     [v9 addObject:v14];
@@ -234,23 +234,23 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
 
   else
   {
-    v7 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v11 = [MEMORY[0x277CBEB18] arrayWithObject:v14];
-    v12 = [v14 value];
-    [v7 setObject:v11 forKey:v12];
+    value3 = [v14 value];
+    [strongToStrongObjectsMapTable setObject:v11 forKey:value3];
 
     v13 = self->_outputCluesByKey;
     v9 = [v14 key];
-    [(NSMapTable *)v13 setObject:v7 forKey:v9];
+    [(NSMapTable *)v13 setObject:strongToStrongObjectsMapTable forKey:v9];
   }
 }
 
-- (void)_mergeInputClue:(id)a3
+- (void)_mergeInputClue:(id)clue
 {
-  v4 = a3;
+  clueCopy = clue;
   inputCluesByKey = self->_inputCluesByKey;
-  v10 = v4;
-  v6 = [v4 key];
+  v10 = clueCopy;
+  v6 = [clueCopy key];
   v7 = [(NSMapTable *)inputCluesByKey objectForKey:v6];
 
   if (v7)
@@ -268,7 +268,7 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   }
 }
 
-- (void)prepareWithProgressBlock:(id)a3
+- (void)prepareWithProgressBlock:(id)block
 {
   v14 = *MEMORY[0x277D85DE8];
   [(CLSInputClue *)self->_mePersonClue prepareIfNeeded];
@@ -276,8 +276,8 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v4 = [(CLSClueCollection *)self inputClues];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  inputClues = [(CLSClueCollection *)self inputClues];
+  v5 = [inputClues countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -289,14 +289,14 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputClues);
         }
 
         [*(*(&v9 + 1) + 8 * v8++) prepareIfNeeded];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [inputClues countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -321,15 +321,15 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   return v5;
 }
 
-- (void)enumeratePeopleClues:(id)a3
+- (void)enumeratePeopleClues:(id)clues
 {
-  v4 = a3;
+  cluesCopy = clues;
   os_unfair_recursive_lock_lock_with_options();
   v5 = [(NSMapTable *)self->_inputCluesByKey objectForKey:@"Global People"];
   v6 = [v5 copy];
 
   os_unfair_recursive_lock_unlock();
-  [v6 enumerateObjectsUsingBlock:v4];
+  [v6 enumerateObjectsUsingBlock:cluesCopy];
 }
 
 - (unint64_t)numberOfLocations
@@ -380,15 +380,15 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   return v5;
 }
 
-- (void)enumerateLocationClues:(id)a3
+- (void)enumerateLocationClues:(id)clues
 {
-  v4 = a3;
+  cluesCopy = clues;
   os_unfair_recursive_lock_lock_with_options();
   v5 = [(NSMapTable *)self->_inputCluesByKey objectForKey:@"Global Location"];
   v6 = [v5 copy];
 
   os_unfair_recursive_lock_unlock();
-  [v6 enumerateObjectsUsingBlock:v4];
+  [v6 enumerateObjectsUsingBlock:cluesCopy];
 }
 
 - (unint64_t)numberOfTimes
@@ -402,9 +402,9 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
 - (id)universalDateInterval
 {
   v3 = objc_alloc(MEMORY[0x277CCA970]);
-  v4 = [(CLSClueCollection *)self universalStartDate];
-  v5 = [(CLSClueCollection *)self universalEndDate];
-  v6 = [v3 initWithStartDate:v4 endDate:v5];
+  universalStartDate = [(CLSClueCollection *)self universalStartDate];
+  universalEndDate = [(CLSClueCollection *)self universalEndDate];
+  v6 = [v3 initWithStartDate:universalStartDate endDate:universalEndDate];
 
   return v6;
 }
@@ -412,9 +412,9 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
 - (id)localDates
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(CLSClueCollection *)self localStartDate];
-  v5 = [(CLSClueCollection *)self localEndDate];
-  v6 = [v3 setWithObjects:{v4, v5, 0}];
+  localStartDate = [(CLSClueCollection *)self localStartDate];
+  localEndDate = [(CLSClueCollection *)self localEndDate];
+  v6 = [v3 setWithObjects:{localStartDate, localEndDate, 0}];
 
   return v6;
 }
@@ -428,9 +428,9 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   os_unfair_recursive_lock_unlock();
   v5 = [v4 valueForKeyPath:@"localEndDate"];
   v6 = [v5 sortedArrayUsingSelector:sel_compare_];
-  v7 = [v6 lastObject];
+  lastObject = [v6 lastObject];
 
-  return v7;
+  return lastObject;
 }
 
 - (id)localStartDate
@@ -442,17 +442,17 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   os_unfair_recursive_lock_unlock();
   v5 = [v4 valueForKeyPath:@"localStartDate"];
   v6 = [v5 sortedArrayUsingSelector:sel_compare_];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 - (id)universalDates
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(CLSClueCollection *)self universalStartDate];
-  v5 = [(CLSClueCollection *)self universalEndDate];
-  v6 = [v3 setWithObjects:{v4, v5, 0}];
+  universalStartDate = [(CLSClueCollection *)self universalStartDate];
+  universalEndDate = [(CLSClueCollection *)self universalEndDate];
+  v6 = [v3 setWithObjects:{universalStartDate, universalEndDate, 0}];
 
   return v6;
 }
@@ -466,9 +466,9 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   os_unfair_recursive_lock_unlock();
   v5 = [v4 valueForKeyPath:@"universalEndDate"];
   v6 = [v5 sortedArrayUsingSelector:sel_compare_];
-  v7 = [v6 lastObject];
+  lastObject = [v6 lastObject];
 
-  return v7;
+  return lastObject;
 }
 
 - (id)universalStartDate
@@ -480,35 +480,35 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
   os_unfair_recursive_lock_unlock();
   v5 = [v4 valueForKeyPath:@"universalStartDate"];
   v6 = [v5 sortedArrayUsingSelector:sel_compare_];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (void)enumerateTimeClues:(id)a3
+- (void)enumerateTimeClues:(id)clues
 {
-  v4 = a3;
+  cluesCopy = clues;
   os_unfair_recursive_lock_lock_with_options();
   v5 = [(NSMapTable *)self->_inputCluesByKey objectForKey:@"Global Time"];
   v6 = [v5 copy];
 
   os_unfair_recursive_lock_unlock();
-  [v6 enumerateObjectsUsingBlock:v4];
+  [v6 enumerateObjectsUsingBlock:cluesCopy];
 }
 
 - (int64_t)year
 {
-  v2 = [(CLSClueCollection *)self localEndDate];
-  v3 = [CLSCalendar yearFromDate:v2];
+  localEndDate = [(CLSClueCollection *)self localEndDate];
+  v3 = [CLSCalendar yearFromDate:localEndDate];
 
   return v3;
 }
 
 - (double)timeInterval
 {
-  v3 = [(CLSClueCollection *)self localEndDate];
-  v4 = [(CLSClueCollection *)self localStartDate];
-  [v3 timeIntervalSinceDate:v4];
+  localEndDate = [(CLSClueCollection *)self localEndDate];
+  localStartDate = [(CLSClueCollection *)self localStartDate];
+  [localEndDate timeIntervalSinceDate:localStartDate];
   v6 = v5;
 
   return v6;
@@ -517,26 +517,26 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
 - (CLSMeaningClue)locationMobilityClue
 {
   v2 = [(CLSClueCollection *)self meaningCluesForKey:@"Location Mobility"];
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (void)enumerateTimeOfDayClues:(id)a3
+- (void)enumerateTimeOfDayClues:(id)clues
 {
-  v4 = a3;
+  cluesCopy = clues;
   v5 = [(CLSClueCollection *)self outputCluesForKey:@"Time of Day"];
-  [v5 enumerateObjectsUsingBlock:v4];
+  [v5 enumerateObjectsUsingBlock:cluesCopy];
 }
 
-- (BOOL)hasMeaningClueWithKey:(id)a3 value:(id)a4 andMinimumScore:(double)a5
+- (BOOL)hasMeaningClueWithKey:(id)key value:(id)value andMinimumScore:(double)score
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  valueCopy = value;
   os_unfair_recursive_lock_lock_with_options();
-  v10 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:v8];
-  [v10 objectForKey:v9];
+  v10 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:keyCopy];
+  [v10 objectForKey:valueCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -555,7 +555,7 @@ uint64_t __52__CLSClueCollection_peopleDescriptionWithoutPeople___block_invoke(u
         }
 
         [*(*(&v17 + 1) + 8 * i) score];
-        if (v15 >= a5)
+        if (v15 >= score)
         {
           LOBYTE(v12) = 1;
           goto LABEL_11;
@@ -578,33 +578,33 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)hasMeaningClueWithKey:(id)a3 andValue:(id)a4
+- (BOOL)hasMeaningClueWithKey:(id)key andValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  keyCopy = key;
   os_unfair_recursive_lock_lock_with_options();
-  v8 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:v7];
+  v8 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:keyCopy];
 
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:valueCopy];
 
-  LOBYTE(v6) = [v9 count] != 0;
+  LOBYTE(valueCopy) = [v9 count] != 0;
   os_unfair_recursive_lock_unlock();
 
-  return v6;
+  return valueCopy;
 }
 
-- (id)uniqueMeaningClueForKey:(id)a3 andValue:(id)a4
+- (id)uniqueMeaningClueForKey:(id)key andValue:(id)value
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [CLSMeaningClue clueWithValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [CLSMeaningClue clueWithValue:valueCopy forKey:keyCopy];
   v9 = 0.0;
   [v8 setConfidence:0.0];
   [v8 setRelevance:0.0];
   os_unfair_recursive_lock_lock_with_options();
-  v10 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:v6];
-  v11 = [v10 objectForKey:v7];
+  v10 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:keyCopy];
+  v11 = [v10 objectForKey:valueCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -665,30 +665,30 @@ LABEL_11:
   return v21;
 }
 
-- (id)meaningCluesForKey:(id)a3 andValue:(id)a4
+- (id)meaningCluesForKey:(id)key andValue:(id)value
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
+  valueCopy = value;
+  keyCopy = key;
+  array = [v6 array];
   os_unfair_recursive_lock_lock_with_options();
-  v10 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:v8];
+  v10 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:keyCopy];
 
-  v11 = [v10 objectForKey:v7];
+  v11 = [v10 objectForKey:valueCopy];
 
-  [v9 addObjectsFromArray:v11];
+  [array addObjectsFromArray:v11];
   os_unfair_recursive_lock_unlock();
 
-  return v9;
+  return array;
 }
 
-- (id)uniqueMeaningCluesForKey:(id)a3
+- (id)uniqueMeaningCluesForKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [MEMORY[0x277CBEB58] set];
   os_unfair_recursive_lock_lock_with_options();
-  v6 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:v4];
+  v6 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:keyCopy];
   v7 = v6;
   if (v6)
   {
@@ -711,7 +711,7 @@ LABEL_11:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [(CLSClueCollection *)self uniqueMeaningClueForKey:v4 andValue:*(*(&v15 + 1) + 8 * i), v15];
+          v13 = [(CLSClueCollection *)self uniqueMeaningClueForKey:keyCopy andValue:*(*(&v15 + 1) + 8 * i), v15];
           if (v13)
           {
             [v5 addObject:v13];
@@ -730,19 +730,19 @@ LABEL_11:
   return v5;
 }
 
-- (id)meaningCluesForKey:(id)a3
+- (id)meaningCluesForKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  keyCopy = key;
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_recursive_lock_lock_with_options();
-  v6 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:v4];
+  v6 = [(NSMapTable *)self->_meaningCluesByKey objectForKey:keyCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [v6 objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -753,13 +753,13 @@ LABEL_11:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [v5 addObjectsFromArray:*(*(&v13 + 1) + 8 * i)];
+        [array addObjectsFromArray:*(*(&v13 + 1) + 8 * i)];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -767,7 +767,7 @@ LABEL_11:
 
   os_unfair_recursive_lock_unlock();
 
-  return v5;
+  return array;
 }
 
 - (id)uniqueMeaningClues
@@ -816,7 +816,7 @@ LABEL_11:
 - (id)meaningClues
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_recursive_lock_lock_with_options();
   meaningCluesByKey = self->_meaningCluesByKey;
   if (meaningCluesByKey)
@@ -841,7 +841,7 @@ LABEL_11:
           }
 
           v10 = [(CLSClueCollection *)self meaningCluesForKey:*(*(&v12 + 1) + 8 * i), v12];
-          [v3 addObjectsFromArray:v10];
+          [array addObjectsFromArray:v10];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -853,17 +853,17 @@ LABEL_11:
 
   os_unfair_recursive_lock_unlock();
 
-  return v3;
+  return array;
 }
 
-- (BOOL)hasOutputClueWithKey:(id)a3 value:(id)a4 andMinimumScore:(double)a5
+- (BOOL)hasOutputClueWithKey:(id)key value:(id)value andMinimumScore:(double)score
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  keyCopy = key;
+  valueCopy = value;
   os_unfair_recursive_lock_lock_with_options();
-  v10 = [(NSMapTable *)self->_outputCluesByKey objectForKey:v8];
-  [v10 objectForKey:v9];
+  v10 = [(NSMapTable *)self->_outputCluesByKey objectForKey:keyCopy];
+  [v10 objectForKey:valueCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -882,7 +882,7 @@ LABEL_11:
         }
 
         [*(*(&v17 + 1) + 8 * i) score];
-        if (v15 >= a5)
+        if (v15 >= score)
         {
           LOBYTE(v12) = 1;
           goto LABEL_11;
@@ -905,25 +905,25 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)hasOutputClueWithKey:(id)a3 andValue:(id)a4
+- (BOOL)hasOutputClueWithKey:(id)key andValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
+  valueCopy = value;
+  keyCopy = key;
   os_unfair_recursive_lock_lock_with_options();
-  v8 = [(NSMapTable *)self->_outputCluesByKey objectForKey:v7];
+  v8 = [(NSMapTable *)self->_outputCluesByKey objectForKey:keyCopy];
 
-  v9 = [v8 objectForKey:v6];
+  v9 = [v8 objectForKey:valueCopy];
 
-  LOBYTE(v6) = [v9 count] != 0;
+  LOBYTE(valueCopy) = [v9 count] != 0;
   os_unfair_recursive_lock_unlock();
 
-  return v6;
+  return valueCopy;
 }
 
 - (id)outputClues
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_recursive_lock_lock_with_options();
   outputCluesByKey = self->_outputCluesByKey;
   if (outputCluesByKey)
@@ -952,8 +952,8 @@ LABEL_11:
           v18 = 0u;
           v19 = 0u;
           v20 = 0u;
-          v10 = [v9 objectEnumerator];
-          v11 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+          objectEnumerator = [v9 objectEnumerator];
+          v11 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v25 count:16];
           if (v11)
           {
             v12 = v11;
@@ -964,13 +964,13 @@ LABEL_11:
               {
                 if (*v18 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(objectEnumerator);
                 }
 
-                [v3 addObjectsFromArray:*(*(&v17 + 1) + 8 * j)];
+                [array addObjectsFromArray:*(*(&v17 + 1) + 8 * j)];
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v17 objects:v25 count:16];
+              v12 = [objectEnumerator countByEnumeratingWithState:&v17 objects:v25 count:16];
             }
 
             while (v12);
@@ -986,7 +986,7 @@ LABEL_11:
 
   os_unfair_recursive_lock_unlock();
 
-  return v3;
+  return array;
 }
 
 - (id)uniqueOutputClues
@@ -1032,18 +1032,18 @@ LABEL_11:
   return v3;
 }
 
-- (id)uniqueOutputClueForKey:(id)a3 andValue:(id)a4
+- (id)uniqueOutputClueForKey:(id)key andValue:(id)value
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [CLSOutputClue clueWithValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [CLSOutputClue clueWithValue:valueCopy forKey:keyCopy];
   v9 = 0.0;
   [v8 setConfidence:0.0];
   [v8 setRelevance:0.0];
   os_unfair_recursive_lock_lock_with_options();
-  v10 = [(NSMapTable *)self->_outputCluesByKey objectForKey:v6];
-  v11 = [v10 objectForKey:v7];
+  v10 = [(NSMapTable *)self->_outputCluesByKey objectForKey:keyCopy];
+  v11 = [v10 objectForKey:valueCopy];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1104,30 +1104,30 @@ LABEL_11:
   return v21;
 }
 
-- (id)outputCluesForKey:(id)a3 andValue:(id)a4
+- (id)outputCluesForKey:(id)key andValue:(id)value
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
+  valueCopy = value;
+  keyCopy = key;
+  array = [v6 array];
   os_unfair_recursive_lock_lock_with_options();
-  v10 = [(NSMapTable *)self->_outputCluesByKey objectForKey:v8];
+  v10 = [(NSMapTable *)self->_outputCluesByKey objectForKey:keyCopy];
 
-  v11 = [v10 objectForKey:v7];
+  v11 = [v10 objectForKey:valueCopy];
 
-  [v9 addObjectsFromArray:v11];
+  [array addObjectsFromArray:v11];
   os_unfair_recursive_lock_unlock();
 
-  return v9;
+  return array;
 }
 
-- (id)uniqueOutputCluesForKey:(id)a3
+- (id)uniqueOutputCluesForKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [MEMORY[0x277CBEB58] set];
   os_unfair_recursive_lock_lock_with_options();
-  v6 = [(NSMapTable *)self->_outputCluesByKey objectForKey:v4];
+  v6 = [(NSMapTable *)self->_outputCluesByKey objectForKey:keyCopy];
   v7 = v6;
   if (v6)
   {
@@ -1150,7 +1150,7 @@ LABEL_11:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [(CLSClueCollection *)self uniqueOutputClueForKey:v4 andValue:*(*(&v15 + 1) + 8 * i), v15];
+          v13 = [(CLSClueCollection *)self uniqueOutputClueForKey:keyCopy andValue:*(*(&v15 + 1) + 8 * i), v15];
           if (v13)
           {
             [v5 addObject:v13];
@@ -1169,19 +1169,19 @@ LABEL_11:
   return v5;
 }
 
-- (id)outputCluesForKey:(id)a3
+- (id)outputCluesForKey:(id)key
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  keyCopy = key;
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_recursive_lock_lock_with_options();
-  v6 = [(NSMapTable *)self->_outputCluesByKey objectForKey:v4];
+  v6 = [(NSMapTable *)self->_outputCluesByKey objectForKey:keyCopy];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 objectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  objectEnumerator = [v6 objectEnumerator];
+  v8 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1192,13 +1192,13 @@ LABEL_11:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [v5 addObjectsFromArray:*(*(&v13 + 1) + 8 * i)];
+        [array addObjectsFromArray:*(*(&v13 + 1) + 8 * i)];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -1206,7 +1206,7 @@ LABEL_11:
 
   os_unfair_recursive_lock_unlock();
 
-  return v5;
+  return array;
 }
 
 - (id)uniqueInputClues
@@ -1257,7 +1257,7 @@ LABEL_11:
 - (id)inputClues
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   os_unfair_recursive_lock_lock_with_options();
   inputCluesByKey = self->_inputCluesByKey;
   if (inputCluesByKey)
@@ -1282,7 +1282,7 @@ LABEL_11:
           }
 
           v10 = [(NSMapTable *)self->_inputCluesByKey objectForKey:*(*(&v12 + 1) + 8 * i), v12];
-          [v3 addObjectsFromArray:v10];
+          [array addObjectsFromArray:v10];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -1294,21 +1294,21 @@ LABEL_11:
 
   os_unfair_recursive_lock_unlock();
 
-  return v3;
+  return array;
 }
 
-- (id)inputCluesForKey:(id)a3
+- (id)inputCluesForKey:(id)key
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  keyCopy = key;
+  array = [v4 array];
   os_unfair_recursive_lock_lock_with_options();
-  v7 = [(NSMapTable *)self->_inputCluesByKey objectForKey:v5];
+  v7 = [(NSMapTable *)self->_inputCluesByKey objectForKey:keyCopy];
 
-  [v6 addObjectsFromArray:v7];
+  [array addObjectsFromArray:v7];
   os_unfair_recursive_lock_unlock();
 
-  return v6;
+  return array;
 }
 
 - (void)_incrementVersionCount
@@ -1328,18 +1328,18 @@ LABEL_11:
   [v3 appendFormat:@"\n%@", v4];
 
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(CLSClueCollection *)self localDates];
-  v7 = [v6 allObjects];
-  v8 = [v7 sortedArrayUsingSelector:sel_compare_];
+  localDates = [(CLSClueCollection *)self localDates];
+  allObjects = [localDates allObjects];
+  v8 = [allObjects sortedArrayUsingSelector:sel_compare_];
   v9 = [v8 componentsJoinedByString:{@", "}];
   v10 = [v5 stringWithFormat:@"dates:[%@]", v9];
   v11 = [v10 cls_indentBy:2];
   [v3 appendFormat:@"\n%@", v11];
 
   v12 = MEMORY[0x277CCACA8];
-  v13 = [(CLSClueCollection *)self peopleNames];
-  v14 = [v13 allObjects];
-  v15 = [v14 sortedArrayUsingSelector:sel_compare_];
+  peopleNames = [(CLSClueCollection *)self peopleNames];
+  allObjects2 = [peopleNames allObjects];
+  v15 = [allObjects2 sortedArrayUsingSelector:sel_compare_];
   v16 = [v15 componentsJoinedByString:{@", "}];
   v17 = [v12 stringWithFormat:@"peoples:[%@]", v16];
   v18 = [v17 cls_indentBy:2];
@@ -1374,7 +1374,7 @@ LABEL_11:
   v157 = 0u;
   v158 = 0u;
   v159 = 0u;
-  v85 = self;
+  selfCopy = self;
   obj = [(NSMapTable *)self->_outputCluesByKey objectEnumerator];
   v100 = [obj countByEnumeratingWithState:&v156 objects:v177 count:16];
   if (v100)
@@ -1396,8 +1396,8 @@ LABEL_11:
         v153 = 0u;
         v154 = 0u;
         v155 = 0u;
-        v108 = [v25 objectEnumerator];
-        v26 = [v108 countByEnumeratingWithState:&v152 objects:v176 count:16];
+        objectEnumerator = [v25 objectEnumerator];
+        v26 = [objectEnumerator countByEnumeratingWithState:&v152 objects:v176 count:16];
         if (v26)
         {
           v27 = v26;
@@ -1408,7 +1408,7 @@ LABEL_11:
             {
               if (*v153 != v28)
               {
-                objc_enumerationMutation(v108);
+                objc_enumerationMutation(objectEnumerator);
               }
 
               v30 = *(*(&v152 + 1) + 8 * i);
@@ -1431,8 +1431,8 @@ LABEL_11:
                       objc_enumerationMutation(v31);
                     }
 
-                    v36 = [*(*(&v148 + 1) + 8 * j) stringValue];
-                    [v23 addObject:v36];
+                    stringValue = [*(*(&v148 + 1) + 8 * j) stringValue];
+                    [v23 addObject:stringValue];
                   }
 
                   v33 = [v31 countByEnumeratingWithState:&v148 objects:v175 count:16];
@@ -1442,7 +1442,7 @@ LABEL_11:
               }
             }
 
-            v27 = [v108 countByEnumeratingWithState:&v152 objects:v176 count:16];
+            v27 = [objectEnumerator countByEnumeratingWithState:&v152 objects:v176 count:16];
           }
 
           while (v27);
@@ -1469,8 +1469,8 @@ LABEL_11:
   v147 = 0u;
   v144 = 0u;
   v145 = 0u;
-  v87 = [(NSMapTable *)v85->_outputCluesByKey objectEnumerator];
-  obja = [v87 countByEnumeratingWithState:&v144 objects:v174 count:16];
+  objectEnumerator2 = [(NSMapTable *)selfCopy->_outputCluesByKey objectEnumerator];
+  obja = [objectEnumerator2 countByEnumeratingWithState:&v144 objects:v174 count:16];
   if (obja)
   {
     v89 = *v145;
@@ -1481,7 +1481,7 @@ LABEL_11:
       {
         if (*v145 != v89)
         {
-          objc_enumerationMutation(v87);
+          objc_enumerationMutation(objectEnumerator2);
         }
 
         v97 = v42;
@@ -1490,8 +1490,8 @@ LABEL_11:
         v141 = 0u;
         v142 = 0u;
         v143 = 0u;
-        v101 = [v43 objectEnumerator];
-        v109 = [v101 countByEnumeratingWithState:&v140 objects:v173 count:16];
+        objectEnumerator3 = [v43 objectEnumerator];
+        v109 = [objectEnumerator3 countByEnumeratingWithState:&v140 objects:v173 count:16];
         if (v109)
         {
           v105 = *v141;
@@ -1501,7 +1501,7 @@ LABEL_11:
             {
               if (*v141 != v105)
               {
-                objc_enumerationMutation(v101);
+                objc_enumerationMutation(objectEnumerator3);
               }
 
               v45 = *(*(&v140 + 1) + 8 * k);
@@ -1536,7 +1536,7 @@ LABEL_11:
               }
             }
 
-            v109 = [v101 countByEnumeratingWithState:&v140 objects:v173 count:16];
+            v109 = [objectEnumerator3 countByEnumeratingWithState:&v140 objects:v173 count:16];
           }
 
           while (v109);
@@ -1546,7 +1546,7 @@ LABEL_11:
       }
 
       while (v97 + 1 != obja);
-      obja = [v87 countByEnumeratingWithState:&v144 objects:v174 count:16];
+      obja = [objectEnumerator2 countByEnumeratingWithState:&v144 objects:v174 count:16];
     }
 
     while (obja);
@@ -1560,8 +1560,8 @@ LABEL_11:
   v133 = 0u;
   v134 = 0u;
   v135 = 0u;
-  v90 = [(NSMapTable *)v85->_meaningCluesByKey objectEnumerator];
-  v98 = [v90 countByEnumeratingWithState:&v132 objects:v171 count:16];
+  objectEnumerator4 = [(NSMapTable *)selfCopy->_meaningCluesByKey objectEnumerator];
+  v98 = [objectEnumerator4 countByEnumeratingWithState:&v132 objects:v171 count:16];
   if (v98)
   {
     objb = *v133;
@@ -1572,7 +1572,7 @@ LABEL_11:
       {
         if (*v133 != objb)
         {
-          objc_enumerationMutation(v90);
+          objc_enumerationMutation(objectEnumerator4);
         }
 
         v102 = v55;
@@ -1581,8 +1581,8 @@ LABEL_11:
         v129 = 0u;
         v130 = 0u;
         v131 = 0u;
-        v106 = [v56 objectEnumerator];
-        v57 = [v106 countByEnumeratingWithState:&v128 objects:v170 count:16];
+        objectEnumerator5 = [v56 objectEnumerator];
+        v57 = [objectEnumerator5 countByEnumeratingWithState:&v128 objects:v170 count:16];
         if (v57)
         {
           v58 = v57;
@@ -1593,7 +1593,7 @@ LABEL_11:
             {
               if (*v129 != v110)
               {
-                objc_enumerationMutation(v106);
+                objc_enumerationMutation(objectEnumerator5);
               }
 
               v60 = *(*(&v128 + 1) + 8 * n);
@@ -1616,8 +1616,8 @@ LABEL_11:
                       objc_enumerationMutation(v61);
                     }
 
-                    v66 = [*(*(&v124 + 1) + 8 * ii) stringValue];
-                    [v54 addObject:v66];
+                    stringValue2 = [*(*(&v124 + 1) + 8 * ii) stringValue];
+                    [v54 addObject:stringValue2];
                   }
 
                   v63 = [v61 countByEnumeratingWithState:&v124 objects:v169 count:16];
@@ -1627,7 +1627,7 @@ LABEL_11:
               }
             }
 
-            v58 = [v106 countByEnumeratingWithState:&v128 objects:v170 count:16];
+            v58 = [objectEnumerator5 countByEnumeratingWithState:&v128 objects:v170 count:16];
           }
 
           while (v58);
@@ -1637,7 +1637,7 @@ LABEL_11:
       }
 
       while (v102 + 1 != v98);
-      v98 = [v90 countByEnumeratingWithState:&v132 objects:v171 count:16];
+      v98 = [objectEnumerator4 countByEnumeratingWithState:&v132 objects:v171 count:16];
     }
 
     while (v98);
@@ -1654,8 +1654,8 @@ LABEL_11:
   v123 = 0u;
   v120 = 0u;
   v121 = 0u;
-  v86 = [(NSMapTable *)v85->_meaningCluesByKey objectEnumerator];
-  v91 = [v86 countByEnumeratingWithState:&v120 objects:v168 count:16];
+  objectEnumerator6 = [(NSMapTable *)selfCopy->_meaningCluesByKey objectEnumerator];
+  v91 = [objectEnumerator6 countByEnumeratingWithState:&v120 objects:v168 count:16];
   if (v91)
   {
     v88 = *v121;
@@ -1666,7 +1666,7 @@ LABEL_11:
       {
         if (*v121 != v88)
         {
-          objc_enumerationMutation(v86);
+          objc_enumerationMutation(objectEnumerator6);
         }
 
         objc = v72;
@@ -1675,8 +1675,8 @@ LABEL_11:
         v117 = 0u;
         v118 = 0u;
         v119 = 0u;
-        v99 = [v73 objectEnumerator];
-        v107 = [v99 countByEnumeratingWithState:&v116 objects:v167 count:16];
+        objectEnumerator7 = [v73 objectEnumerator];
+        v107 = [objectEnumerator7 countByEnumeratingWithState:&v116 objects:v167 count:16];
         if (v107)
         {
           v103 = *v117;
@@ -1687,7 +1687,7 @@ LABEL_11:
             {
               if (*v117 != v103)
               {
-                objc_enumerationMutation(v99);
+                objc_enumerationMutation(objectEnumerator7);
               }
 
               v111 = v74;
@@ -1726,7 +1726,7 @@ LABEL_11:
             }
 
             while (v111 + 1 != v107);
-            v107 = [v99 countByEnumeratingWithState:&v116 objects:v167 count:16];
+            v107 = [objectEnumerator7 countByEnumeratingWithState:&v116 objects:v167 count:16];
           }
 
           while (v107);
@@ -1736,7 +1736,7 @@ LABEL_11:
       }
 
       while (objc + 1 != v91);
-      v91 = [v86 countByEnumeratingWithState:&v120 objects:v168 count:16];
+      v91 = [objectEnumerator6 countByEnumeratingWithState:&v120 objects:v168 count:16];
     }
 
     while (v91);
@@ -1772,9 +1772,9 @@ void __32__CLSClueCollection_description__block_invoke_3(uint64_t a1, void *a2)
   [v2 appendFormat:@"\n\n%@", v3];
 }
 
-- (CLSClueCollection)initWithServiceManager:(id)a3
+- (CLSClueCollection)initWithServiceManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v17.receiver = self;
   v17.super_class = CLSClueCollection;
   v5 = [(CLSClueCollection *)&v17 init];
@@ -1785,22 +1785,22 @@ void __32__CLSClueCollection_description__block_invoke_3(uint64_t a1, void *a2)
     v5->_recursiveLock = 0;
     v7 = objc_opt_new();
     [v7 setRelationship:14];
-    v8 = [CLSInputPeopleClue clueWithPeople:v7 serviceManager:v4];
+    v8 = [CLSInputPeopleClue clueWithPeople:v7 serviceManager:managerCopy];
     mePersonClue = v6->_mePersonClue;
     v6->_mePersonClue = v8;
 
     [(CLSClue *)v6->_mePersonClue setKey:@"__ME_PERSON__INTERNAL__"];
-    v10 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     inputCluesByKey = v6->_inputCluesByKey;
-    v6->_inputCluesByKey = v10;
+    v6->_inputCluesByKey = strongToStrongObjectsMapTable;
 
-    v12 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     outputCluesByKey = v6->_outputCluesByKey;
-    v6->_outputCluesByKey = v12;
+    v6->_outputCluesByKey = strongToStrongObjectsMapTable2;
 
-    v14 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     meaningCluesByKey = v6->_meaningCluesByKey;
-    v6->_meaningCluesByKey = v14;
+    v6->_meaningCluesByKey = strongToStrongObjectsMapTable3;
   }
 
   return v6;

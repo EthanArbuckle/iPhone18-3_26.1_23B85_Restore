@@ -5,32 +5,32 @@
 - (BOOL)useMedicalEmergencyContacts;
 - (COSSOSSettingsViewController)init;
 - (COSSOSSettingsViewControllerDelegate)navBarDelegate;
-- (_NSRange)rangeOfReplacementString:(id)a3 inFormatString:(id)a4;
+- (_NSRange)rangeOfReplacementString:(id)string inFormatString:(id)formatString;
 - (id)_createKappaSpecifiers;
 - (id)_createNewtonSpecifiers;
-- (id)_descriptionOfNumberOfFallDetectionApps:(id)a3;
-- (id)kappaTriggersEmergencySOS:(id)a3;
-- (id)longPressTriggersEmergencySOS:(id)a3;
-- (id)newtonTriggersEmergencySOS:(id)a3;
+- (id)_descriptionOfNumberOfFallDetectionApps:(id)apps;
+- (id)kappaTriggersEmergencySOS:(id)s;
+- (id)longPressTriggersEmergencySOS:(id)s;
+- (id)newtonTriggersEmergencySOS:(id)s;
 - (id)specifiers;
-- (void)_addFooterFormat:(id)a3 footerLink:(id)a4 toSpecifier:(id)a5 withAction:(id)a6;
+- (void)_addFooterFormat:(id)format footerLink:(id)link toSpecifier:(id)specifier withAction:(id)action;
 - (void)_createKappaAPISpecifiers;
-- (void)_didSelectFallDetectionDataSharing:(id)a3;
+- (void)_didSelectFallDetectionDataSharing:(id)sharing;
 - (void)_editMedicalID;
-- (void)_setNewtonModeChangeForSpecifier:(id)a3;
+- (void)_setNewtonModeChangeForSpecifier:(id)specifier;
 - (void)_updateSOSContactsList;
-- (void)addEmergencyContactsToSpecifiers:(id)a3;
-- (void)addSOSContactsToSpecifiers:(id)a3;
+- (void)addEmergencyContactsToSpecifiers:(id)specifiers;
+- (void)addSOSContactsToSpecifiers:(id)specifiers;
 - (void)dealloc;
 - (void)learnMore;
-- (void)presentConfirmationWithTitle:(id)a3 message:(id)a4 cancelTitle:(id)a5 cancelHandler:(id)a6 confirmTitle:(id)a7 confirmHandler:(id)a8;
-- (void)setHealthStore:(id)a3;
-- (void)setKappaTriggersEmergencySOS:(id)a3 forSpecifier:(id)a4;
-- (void)setLongPressTriggersEmergencySOS:(id)a3 forSpecifier:(id)a4;
-- (void)setNewtonTriggersEmergencySOS:(id)a3 forSpecifier:(id)a4;
-- (void)sosContactsChanged:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)presentConfirmationWithTitle:(id)title message:(id)message cancelTitle:(id)cancelTitle cancelHandler:(id)handler confirmTitle:(id)confirmTitle confirmHandler:(id)confirmHandler;
+- (void)setHealthStore:(id)store;
+- (void)setKappaTriggersEmergencySOS:(id)s forSpecifier:(id)specifier;
+- (void)setLongPressTriggersEmergencySOS:(id)s forSpecifier:(id)specifier;
+- (void)setNewtonTriggersEmergencySOS:(id)s forSpecifier:(id)specifier;
+- (void)sosContactsChanged:(id)changed;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSSOSSettingsViewController
@@ -41,10 +41,10 @@
   {
     self->_useMedicalEmergencyContacts = 1;
     v3 = +[UIApplication sharedApplication];
-    v4 = [v3 activeWatch];
+    activeWatch = [v3 activeWatch];
 
     v5 = [[NSUUID alloc] initWithUUIDString:@"CCBCAB2C-F590-4386-BC88-BFBEE2C2F7F4"];
-    self->_deviceSupportsMedicalContacts = [v4 supportsCapability:v5];
+    self->_deviceSupportsMedicalContacts = [activeWatch supportsCapability:v5];
 
     if (self->_deviceSupportsMedicalContacts)
     {
@@ -66,8 +66,8 @@
 
       v7 = v6;
       _Block_object_dispose(&v11, 8);
-      v8 = [v6 sharedInstance];
-      self->_useMedicalEmergencyContacts = [v8 isAllowedToMessageSOSContacts];
+      sharedInstance = [v6 sharedInstance];
+      self->_useMedicalEmergencyContacts = [sharedInstance isAllowedToMessageSOSContacts];
     }
 
     else
@@ -120,8 +120,8 @@
     v2->_wristDetectionEnabled = 1;
     v2->_newtonEligibility = 1;
     v10 = UIApp;
-    v11 = [v10 activeWatch];
-    v12 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel" pairedDevice:v11];
+    activeWatch = [v10 activeWatch];
+    v12 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel" pairedDevice:activeWatch];
     v13 = v12;
     if (v12)
     {
@@ -137,18 +137,18 @@
     calendar = v2->_calendar;
     v2->_calendar = v15;
 
-    v17 = [v11 valueForProperty:NRDevicePropertyIsAltAccount];
+    v17 = [activeWatch valueForProperty:NRDevicePropertyIsAltAccount];
     v2->_isTinker = [v17 BOOLValue];
 
     if (v2->_isTinker)
     {
-      v18 = [v11 pairingID];
+      pairingID = [activeWatch pairingID];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_1000E7AC4;
       v24[3] = &unk_10026B928;
       v25 = v2;
-      sub_10002E5B0(v18, &_dispatch_main_q, v24);
+      sub_10002E5B0(pairingID, &_dispatch_main_q, v24);
     }
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
@@ -184,7 +184,7 @@
   [(COSSOSSettingsViewController *)&v9 dealloc];
 }
 
-- (void)sosContactsChanged:(id)a3
+- (void)sosContactsChanged:(id)changed
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -208,10 +208,10 @@
   }
 }
 
-- (void)setHealthStore:(id)a3
+- (void)setHealthStore:(id)store
 {
-  v5 = a3;
-  objc_storeStrong(&self->_healthStore, a3);
+  storeCopy = store;
+  objc_storeStrong(&self->_healthStore, store);
   if ([(COSSOSSettingsViewController *)self canEditMedicalIDContacts])
   {
     v18 = 0;
@@ -261,18 +261,18 @@
   v12[2] = sub_1000E7FEC;
   v12[3] = &unk_100268158;
   v12[4] = self;
-  [v10 newtonEligibilityWithHealthStore:v5 completion:v12];
+  [v10 newtonEligibilityWithHealthStore:storeCopy completion:v12];
 }
 
 - (BOOL)showNewtonInfo
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 activeWatch];
+  activeWatch = [v2 activeWatch];
 
   if (BPSDeviceHasCapabilityForString())
   {
-    v4 = [sub_1000E8134() newtonTriggersEmergencySOSNumber];
-    v5 = v4 != 0;
+    newtonTriggersEmergencySOSNumber = [sub_1000E8134() newtonTriggersEmergencySOSNumber];
+    v5 = newtonTriggersEmergencySOSNumber != 0;
   }
 
   else
@@ -285,30 +285,30 @@
 
 - (BOOL)showKappaInfo
 {
-  v2 = [sub_1000E8134() isKappaDetectionSupportedOnActiveWatch];
-  if (v2)
+  isKappaDetectionSupportedOnActiveWatch = [sub_1000E8134() isKappaDetectionSupportedOnActiveWatch];
+  if (isKappaDetectionSupportedOnActiveWatch)
   {
     v3 = sub_1000E8134();
 
-    LOBYTE(v2) = [v3 isKappaVisible];
+    LOBYTE(isKappaDetectionSupportedOnActiveWatch) = [v3 isKappaVisible];
   }
 
-  return v2;
+  return isKappaDetectionSupportedOnActiveWatch;
 }
 
 - (id)_createKappaSpecifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = [PSSpecifier groupSpecifierWithID:@"CRASH_DETECT_TRIGGERS_SOS_GROUP_ID"];
-  v5 = [sub_1000E8134() crashDetectionTitleDescription];
-  [v4 setName:v5];
+  crashDetectionTitleDescription = [sub_1000E8134() crashDetectionTitleDescription];
+  [v4 setName:crashDetectionTitleDescription];
 
-  v6 = [sub_1000E8134() crashDetectionWatchFooterDescription];
-  [v4 setProperty:v6 forKey:PSFooterTextGroupKey];
+  crashDetectionWatchFooterDescription = [sub_1000E8134() crashDetectionWatchFooterDescription];
+  [v4 setProperty:crashDetectionWatchFooterDescription forKey:PSFooterTextGroupKey];
 
   [v3 addObject:v4];
-  v7 = [sub_1000E8134() crashDetectionSwitchDescription];
-  v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:"setKappaTriggersEmergencySOS:forSpecifier:" get:"kappaTriggersEmergencySOS:" detail:0 cell:6 edit:0];
+  crashDetectionSwitchDescription = [sub_1000E8134() crashDetectionSwitchDescription];
+  v8 = [PSSpecifier preferenceSpecifierNamed:crashDetectionSwitchDescription target:self set:"setKappaTriggersEmergencySOS:forSpecifier:" get:"kappaTriggersEmergencySOS:" detail:0 cell:6 edit:0];
 
   [v8 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
   [v8 setIdentifier:@"CRASH_DETECT_TRIGGERS_SOS_ID"];
@@ -323,8 +323,8 @@
 
 - (void)_createKappaAPISpecifiers
 {
-  v3 = [sub_1000E8134() getKappaThirdPartyApp];
-  if (v3)
+  getKappaThirdPartyApp = [sub_1000E8134() getKappaThirdPartyApp];
+  if (getKappaThirdPartyApp)
   {
     objc_initWeak(&location, self);
     v6[0] = _NSConcreteStackBlock;
@@ -332,7 +332,7 @@
     v6[2] = sub_1000E8560;
     v6[3] = &unk_10026B978;
     objc_copyWeak(&v8, &location);
-    v7 = v3;
+    v7 = getKappaThirdPartyApp;
     [v7 getLocalizedNameForPairedDeviceWithCompletion:v6];
 
     objc_destroyWeak(&v8);
@@ -351,43 +351,43 @@
   }
 }
 
-- (void)setKappaTriggersEmergencySOS:(id)a3 forSpecifier:(id)a4
+- (void)setKappaTriggersEmergencySOS:(id)s forSpecifier:(id)specifier
 {
-  v5 = a3;
+  sCopy = s;
   v6 = sub_1000E8134();
-  v7 = [v5 BOOLValue];
+  bOOLValue = [sCopy BOOLValue];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E88AC;
   v8[3] = &unk_100269800;
   v8[4] = self;
-  [v6 setKappaTriggersEmergencySOS:v7 isWristDetectionEnabled:-[COSSOSSettingsViewController wristDetectionEnabled](self confirmationDelegate:"wristDetectionEnabled") completion:{self, v8}];
+  [v6 setKappaTriggersEmergencySOS:bOOLValue isWristDetectionEnabled:-[COSSOSSettingsViewController wristDetectionEnabled](self confirmationDelegate:"wristDetectionEnabled") completion:{self, v8}];
 }
 
-- (id)kappaTriggersEmergencySOS:(id)a3
+- (id)kappaTriggersEmergencySOS:(id)s
 {
-  v3 = [(COSSOSSettingsViewController *)self isTinker];
+  isTinker = [(COSSOSSettingsViewController *)self isTinker];
   v4 = sub_1000E8134();
-  if (v3)
+  if (isTinker)
   {
-    v5 = [v4 kappaTriggersEmergencySOSTinker];
+    kappaTriggersEmergencySOSTinker = [v4 kappaTriggersEmergencySOSTinker];
   }
 
   else
   {
-    v5 = [v4 kappaTriggersEmergencySOS];
+    kappaTriggersEmergencySOSTinker = [v4 kappaTriggersEmergencySOS];
   }
 
-  v6 = [NSNumber numberWithBool:v5];
+  v6 = [NSNumber numberWithBool:kappaTriggersEmergencySOSTinker];
 
   return v6;
 }
 
-- (void)addEmergencyContactsToSpecifiers:(id)a3
+- (void)addEmergencyContactsToSpecifiers:(id)specifiers
 {
-  v4 = a3;
-  v5 = [v4 specifierForID:@"SOS_CONTACTS_GROUP_ID"];
+  specifiersCopy = specifiers;
+  v5 = [specifiersCopy specifierForID:@"SOS_CONTACTS_GROUP_ID"];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SOS_EMERGENCY_CONTACTS_HEADER" value:&stru_10026E598 table:@"SOSSettings"];
   [v5 setName:v7];
@@ -395,7 +395,7 @@
   if ([(NSArray *)self->_emergencyContacts count])
   {
     v17 = v5;
-    v8 = [v4 indexOfObject:v5];
+    v8 = [specifiersCopy indexOfObject:v5];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -416,14 +416,14 @@
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 name];
-          v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:self set:0 get:"getContactDestination:" detail:0 cell:4 edit:0];
+          name = [v13 name];
+          v15 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:"getContactDestination:" detail:0 cell:4 edit:0];
 
-          v16 = [v13 phoneNumber];
-          [v15 setProperty:v16 forKey:@"COSEmergencySOSFormattedDestination"];
+          phoneNumber = [v13 phoneNumber];
+          [v15 setProperty:phoneNumber forKey:@"COSEmergencySOSFormattedDestination"];
 
           [v15 setProperty:v13 forKey:@"COSEmergencyContactObj"];
-          [v4 insertObject:v15 atIndex:++v8];
+          [specifiersCopy insertObject:v15 atIndex:++v8];
         }
 
         v10 = [(NSArray *)obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -441,21 +441,21 @@
   }
 }
 
-- (void)addSOSContactsToSpecifiers:(id)a3
+- (void)addSOSContactsToSpecifiers:(id)specifiers
 {
-  v4 = a3;
-  v5 = [v4 specifierForID:@"SOS_CONTACTS_GROUP_ID"];
-  v6 = [(SOSLegacyContactsManager *)self->_sosLegacyContactsManager SOSLegacyContacts];
-  if ([v6 count])
+  specifiersCopy = specifiers;
+  v5 = [specifiersCopy specifierForID:@"SOS_CONTACTS_GROUP_ID"];
+  sOSLegacyContacts = [(SOSLegacyContactsManager *)self->_sosLegacyContactsManager SOSLegacyContacts];
+  if ([sOSLegacyContacts count])
   {
     v17 = v5;
-    v7 = [v4 indexOfObject:v5];
+    v7 = [specifiersCopy indexOfObject:v5];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v16 = v6;
-    obj = v6;
+    v16 = sOSLegacyContacts;
+    obj = sOSLegacyContacts;
     v8 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -471,13 +471,13 @@
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 name];
-          v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:"getContactDestination:" detail:0 cell:4 edit:0];
+          name = [v12 name];
+          v14 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:"getContactDestination:" detail:0 cell:4 edit:0];
 
-          v15 = [v12 phoneNumber];
-          [v14 setProperty:v15 forKey:@"COSEmergencySOSFormattedDestination"];
+          phoneNumber = [v12 phoneNumber];
+          [v14 setProperty:phoneNumber forKey:@"COSEmergencySOSFormattedDestination"];
 
-          [v4 insertObject:v14 atIndex:++v7];
+          [specifiersCopy insertObject:v14 atIndex:++v7];
         }
 
         v9 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -486,7 +486,7 @@
       while (v9);
     }
 
-    v6 = v16;
+    sOSLegacyContacts = v16;
     v5 = v17;
   }
 
@@ -504,10 +504,10 @@
   {
     v5 = [(COSSOSSettingsViewController *)self loadSpecifiersFromPlistName:@"SOSSettings" target:self];
     v6 = [v5 specifierForID:@"SOS_TRIGGER_ANIMATION_GROUP"];
-    v7 = [sub_1000E8134() watchTriggerAnimationFooterDescription];
+    watchTriggerAnimationFooterDescription = [sub_1000E8134() watchTriggerAnimationFooterDescription];
     v8 = PSFooterTextGroupKey;
     v29 = v6;
-    [v6 setProperty:v7 forKey:PSFooterTextGroupKey];
+    [v6 setProperty:watchTriggerAnimationFooterDescription forKey:PSFooterTextGroupKey];
 
     v9 = [v5 specifierForID:@"SOS_TRIGGER_ANIMATION"];
     [v9 setProperty:objc_opt_class() forKey:PSCellClassKey];
@@ -516,33 +516,33 @@
     [v9 setProperty:v10 forKey:PSTableCellHeightKey];
 
     v11 = [v5 specifierForID:@"LONG_PRESS_TRIGGERS_SOS_GROUP_ID"];
-    v12 = [sub_1000E8134() holdSideButtonFooterDescription];
-    [v11 setProperty:v12 forKey:v8];
+    holdSideButtonFooterDescription = [sub_1000E8134() holdSideButtonFooterDescription];
+    [v11 setProperty:holdSideButtonFooterDescription forKey:v8];
 
     v13 = [v5 specifierForID:@"LONG_PRESS_TRIGGERS_SOS_ID"];
-    v14 = [sub_1000E8134() holdSideButtonTitleDescription];
-    [v13 setName:v14];
+    holdSideButtonTitleDescription = [sub_1000E8134() holdSideButtonTitleDescription];
+    [v13 setName:holdSideButtonTitleDescription];
 
     [v13 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
     if ([(COSSOSSettingsViewController *)self showKappaInfo])
     {
-      v15 = [(COSSOSSettingsViewController *)self _createKappaSpecifiers];
+      _createKappaSpecifiers = [(COSSOSSettingsViewController *)self _createKappaSpecifiers];
       v16 = [v5 indexOfSpecifierWithID:@"SOS_CONTACTS_GROUP_ID"];
       if (v16 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v17 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v16, [v15 count]);
-        [v5 insertObjects:v15 atIndexes:v17];
+        v17 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v16, [_createKappaSpecifiers count]);
+        [v5 insertObjects:_createKappaSpecifiers atIndexes:v17];
       }
     }
 
     if ([(COSSOSSettingsViewController *)self showNewtonInfo])
     {
-      v18 = [(COSSOSSettingsViewController *)self _createNewtonSpecifiers];
+      _createNewtonSpecifiers = [(COSSOSSettingsViewController *)self _createNewtonSpecifiers];
       v19 = [v5 indexOfSpecifierWithID:@"SOS_CONTACTS_GROUP_ID"];
       if (v19 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v20 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v19, [v18 count]);
-        [v5 insertObjects:v18 atIndexes:v20];
+        v20 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", v19, [_createNewtonSpecifiers count]);
+        [v5 insertObjects:_createNewtonSpecifiers atIndexes:v20];
       }
     }
 
@@ -586,35 +586,35 @@
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = [PSSpecifier groupSpecifierWithID:@"FALL_DETECT_TRIGGERS_SOS_GROUP_ID"];
-  v5 = [sub_1000E8134() fallDetectionTitleDescription];
-  [v4 setName:v5];
+  fallDetectionTitleDescription = [sub_1000E8134() fallDetectionTitleDescription];
+  [v4 setName:fallDetectionTitleDescription];
 
-  v6 = [sub_1000E8134() fallDetectionFooterDescription];
-  [v4 setProperty:v6 forKey:PSFooterTextGroupKey];
+  fallDetectionFooterDescription = [sub_1000E8134() fallDetectionFooterDescription];
+  [v4 setProperty:fallDetectionFooterDescription forKey:PSFooterTextGroupKey];
 
   [v3 addObject:v4];
-  v7 = [sub_1000E8134() fallDetectionTitleDescription];
-  v8 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:"setNewtonTriggersEmergencySOS:forSpecifier:" get:"newtonTriggersEmergencySOS:" detail:0 cell:6 edit:0];
+  fallDetectionTitleDescription2 = [sub_1000E8134() fallDetectionTitleDescription];
+  v8 = [PSSpecifier preferenceSpecifierNamed:fallDetectionTitleDescription2 target:self set:"setNewtonTriggersEmergencySOS:forSpecifier:" get:"newtonTriggersEmergencySOS:" detail:0 cell:6 edit:0];
 
   [v8 setIdentifier:@"FALL_DETECT_TRIGGERS_SOS_ID"];
   [v3 addObject:v8];
   v9 = +[UIApplication sharedApplication];
-  v10 = [v9 activeWatch];
+  activeWatch = [v9 activeWatch];
 
   v11 = [[NSUUID alloc] initWithUUIDString:@"98409C1B-D02D-400B-9F63-33784EFEDA85"];
-  v12 = [v10 supportsCapability:v11];
+  v12 = [activeWatch supportsCapability:v11];
 
   if (v12 && [sub_1000E8134() newtonTriggersEmergencySOS])
   {
-    v13 = [sub_1000E8134() fallDetectionOnlyDuringWorkoutsTitleDescription];
-    v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:0 get:0 detail:0 cell:3 edit:0];
+    fallDetectionOnlyDuringWorkoutsTitleDescription = [sub_1000E8134() fallDetectionOnlyDuringWorkoutsTitleDescription];
+    v14 = [PSSpecifier preferenceSpecifierNamed:fallDetectionOnlyDuringWorkoutsTitleDescription target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v14 setIdentifier:@"FALL_DETECT_TRIGGERS_SOS_WORKOUTS_ID"];
     [v14 setButtonAction:"_setNewtonModeChangeForSpecifier:"];
     v15 = PSAllowMultilineTitleKey;
     [v14 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
-    v16 = [sub_1000E8134() fallDetectionAlwaysOnTitleDescription];
-    v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:self set:0 get:0 detail:0 cell:3 edit:0];
+    fallDetectionAlwaysOnTitleDescription = [sub_1000E8134() fallDetectionAlwaysOnTitleDescription];
+    v17 = [PSSpecifier preferenceSpecifierNamed:fallDetectionAlwaysOnTitleDescription target:self set:0 get:0 detail:0 cell:3 edit:0];
 
     [v17 setIdentifier:@"FALL_DETECT_TRIGGERS_SOS_ALL_DAY_ID"];
     [v17 setButtonAction:"_setNewtonModeChangeForSpecifier:"];
@@ -642,9 +642,9 @@
     if ([(NSSet *)self->_tccAppIDs count])
     {
       v21 = [(COSSOSSettingsViewController *)self newtonTriggersEmergencySOS:v8];
-      v22 = [v21 BOOLValue];
+      bOOLValue = [v21 BOOLValue];
 
-      if (v22)
+      if (bOOLValue)
       {
         v23 = [NSBundle bundleForClass:objc_opt_class()];
         v24 = [v23 localizedStringForKey:@"SOS_FALL_DETECTION_DATA_SHARING" value:&stru_10026E598 table:@"SOSSettings"];
@@ -661,7 +661,7 @@
   return v3;
 }
 
-- (id)_descriptionOfNumberOfFallDetectionApps:(id)a3
+- (id)_descriptionOfNumberOfFallDetectionApps:(id)apps
 {
   v3 = [(NSSet *)self->_tccAppIDs count];
   if (v3)
@@ -674,44 +674,44 @@
   return v3;
 }
 
-- (void)_didSelectFallDetectionDataSharing:(id)a3
+- (void)_didSelectFallDetectionDataSharing:(id)sharing
 {
   v5 = objc_alloc_init(COSSOSSettingsFallDataSharingViewController);
-  v4 = [(COSSOSSettingsViewController *)self navigationController];
-  [v4 pushViewController:v5 animated:1];
+  navigationController = [(COSSOSSettingsViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (void)_addFooterFormat:(id)a3 footerLink:(id)a4 toSpecifier:(id)a5 withAction:(id)a6
+- (void)_addFooterFormat:(id)format footerLink:(id)link toSpecifier:(id)specifier withAction:(id)action
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v21 = [NSString stringWithFormat:v13, v12];
+  actionCopy = action;
+  specifierCopy = specifier;
+  linkCopy = link;
+  formatCopy = format;
+  linkCopy = [NSString stringWithFormat:formatCopy, linkCopy];
   v14 = objc_opt_class();
   v15 = NSStringFromClass(v14);
-  [v11 setProperty:v15 forKey:PSFooterCellClassGroupKey];
+  [specifierCopy setProperty:v15 forKey:PSFooterCellClassGroupKey];
 
-  [v11 setProperty:v21 forKey:PSFooterHyperlinkViewTitleKey];
-  v16 = [(COSSOSSettingsViewController *)self rangeOfReplacementString:v12 inFormatString:v13];
+  [specifierCopy setProperty:linkCopy forKey:PSFooterHyperlinkViewTitleKey];
+  v16 = [(COSSOSSettingsViewController *)self rangeOfReplacementString:linkCopy inFormatString:formatCopy];
   v18 = v17;
 
   v23.location = v16;
   v23.length = v18;
   v19 = NSStringFromRange(v23);
-  [v11 setProperty:v19 forKey:PSFooterHyperlinkViewLinkRangeKey];
+  [specifierCopy setProperty:v19 forKey:PSFooterHyperlinkViewLinkRangeKey];
 
   v20 = [NSValue valueWithNonretainedObject:self];
-  [v11 setProperty:v20 forKey:PSFooterHyperlinkViewTargetKey];
+  [specifierCopy setProperty:v20 forKey:PSFooterHyperlinkViewTargetKey];
 
-  [v11 setProperty:v10 forKey:PSFooterHyperlinkViewActionKey];
+  [specifierCopy setProperty:actionCopy forKey:PSFooterHyperlinkViewActionKey];
 }
 
-- (_NSRange)rangeOfReplacementString:(id)a3 inFormatString:(id)a4
+- (_NSRange)rangeOfReplacementString:(id)string inFormatString:(id)formatString
 {
-  v5 = a3;
-  v6 = [a4 rangeOfString:@"%@"];
-  v7 = [v5 length];
+  stringCopy = string;
+  v6 = [formatString rangeOfString:@"%@"];
+  v7 = [stringCopy length];
 
   v8 = v6;
   v9 = v7;
@@ -720,17 +720,17 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = COSSOSSettingsViewController;
-  [(COSSOSSettingsViewController *)&v11 viewWillAppear:a3];
+  [(COSSOSSettingsViewController *)&v11 viewWillAppear:appear];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [v4 bundleURL];
+  bundleURL = [v4 bundleURL];
 
   v6 = [_NSLocalizedStringResource alloc];
   v7 = +[NSLocale currentLocale];
-  v8 = [v6 initWithKey:@"SOS_MODE" table:@"Settings" locale:v7 bundleURL:v5];
+  v8 = [v6 initWithKey:@"SOS_MODE" table:@"Settings" locale:v7 bundleURL:bundleURL];
 
   v9 = [NSURL URLWithString:@"bridge:root=SOS_MODE_ID"];
   [BPSWatchSettingsNavigationDonation emitNavigationEventForSystemSettingWithIconSpecifierIdentifier:@"SOS_MODE_ID" title:v8 localizedNavigationComponents:&__NSArray0__struct deepLink:v9];
@@ -746,11 +746,11 @@
   [(COSSOSSettingsViewController *)self _createKappaAPISpecifiers];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSSOSSettingsViewController;
-  [(COSSOSSettingsViewController *)&v4 viewDidAppear:a3];
+  [(COSSOSSettingsViewController *)&v4 viewDidAppear:appear];
   if (self->_needsReloadSpecifiers)
   {
     [(COSSOSSettingsViewController *)self reloadSpecifiers];
@@ -765,61 +765,61 @@
     return 1;
   }
 
-  v3 = [(COSSOSSettingsViewController *)self healthStore];
-  v4 = v3 != 0;
+  healthStore = [(COSSOSSettingsViewController *)self healthStore];
+  v4 = healthStore != 0;
 
   return v4;
 }
 
-- (void)setLongPressTriggersEmergencySOS:(id)a3 forSpecifier:(id)a4
+- (void)setLongPressTriggersEmergencySOS:(id)s forSpecifier:(id)specifier
 {
-  v5 = a3;
+  sCopy = s;
   v6 = sub_1000E8134();
-  v7 = [v5 BOOLValue];
+  bOOLValue = [sCopy BOOLValue];
 
-  [v6 setLongPressTriggersEmergencySOS:v7];
+  [v6 setLongPressTriggersEmergencySOS:bOOLValue];
 
   [(COSSOSSettingsViewController *)self reloadSpecifiers];
 }
 
-- (void)setNewtonTriggersEmergencySOS:(id)a3 forSpecifier:(id)a4
+- (void)setNewtonTriggersEmergencySOS:(id)s forSpecifier:(id)specifier
 {
-  v5 = a3;
+  sCopy = s;
   v6 = sub_1000E8134();
-  v7 = [v5 BOOLValue];
+  bOOLValue = [sCopy BOOLValue];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000E9C58;
   v8[3] = &unk_100269800;
   v8[4] = self;
-  [v6 setNewtonTriggersEmergencySOS:v7 isWristDetectionEnabled:-[COSSOSSettingsViewController wristDetectionEnabled](self newtonEligibility:"wristDetectionEnabled") confirmationDelegate:-[COSSOSSettingsViewController newtonEligibility](self completion:{"newtonEligibility"), self, v8}];
+  [v6 setNewtonTriggersEmergencySOS:bOOLValue isWristDetectionEnabled:-[COSSOSSettingsViewController wristDetectionEnabled](self newtonEligibility:"wristDetectionEnabled") confirmationDelegate:-[COSSOSSettingsViewController newtonEligibility](self completion:{"newtonEligibility"), self, v8}];
 }
 
-- (id)newtonTriggersEmergencySOS:(id)a3
+- (id)newtonTriggersEmergencySOS:(id)s
 {
-  v3 = [sub_1000E8134() newtonTriggersEmergencySOS];
+  newtonTriggersEmergencySOS = [sub_1000E8134() newtonTriggersEmergencySOS];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:newtonTriggersEmergencySOS];
 }
 
-- (void)_setNewtonModeChangeForSpecifier:(id)a3
+- (void)_setNewtonModeChangeForSpecifier:(id)specifier
 {
-  v4 = [a3 identifier];
-  v5 = [v4 isEqualToString:@"FALL_DETECT_TRIGGERS_SOS_WORKOUTS_ID"];
+  identifier = [specifier identifier];
+  v5 = [identifier isEqualToString:@"FALL_DETECT_TRIGGERS_SOS_WORKOUTS_ID"];
 
   v6 = sub_1000E8134();
-  v7 = [(COSSOSSettingsViewController *)self wristDetectionEnabled];
-  v8 = [(COSSOSSettingsViewController *)self newtonEligibility];
+  wristDetectionEnabled = [(COSSOSSettingsViewController *)self wristDetectionEnabled];
+  newtonEligibility = [(COSSOSSettingsViewController *)self newtonEligibility];
 
-  [v6 setNewtonTriggersEmergencySOSWorkoutsOnly:v5 isWristDetectionEnabled:v7 newtonEligibility:v8 confirmationDelegate:self completion:&stru_10026B998];
+  [v6 setNewtonTriggersEmergencySOSWorkoutsOnly:v5 isWristDetectionEnabled:wristDetectionEnabled newtonEligibility:newtonEligibility confirmationDelegate:self completion:&stru_10026B998];
 }
 
-- (id)longPressTriggersEmergencySOS:(id)a3
+- (id)longPressTriggersEmergencySOS:(id)s
 {
-  v3 = [sub_1000E8134() longPressTriggersEmergencySOS];
+  longPressTriggersEmergencySOS = [sub_1000E8134() longPressTriggersEmergencySOS];
 
-  return [NSNumber numberWithBool:v3];
+  return [NSNumber numberWithBool:longPressTriggersEmergencySOS];
 }
 
 - (void)_editMedicalID
@@ -829,12 +829,12 @@
   [v3 setEntryPoint:1];
   [v3 setSuggestHealthData:1];
   v4 = [MIUIMedicalIDViewController alloc];
-  v5 = [(COSSOSSettingsViewController *)self healthStore];
-  v6 = [v4 initWithHealthStore:v5 displayConfiguration:v3];
+  healthStore = [(COSSOSSettingsViewController *)self healthStore];
+  v6 = [v4 initWithHealthStore:healthStore displayConfiguration:v3];
 
   v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"_dismissMedicalID"];
-  v8 = [v6 navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem = [v6 navigationItem];
+  [navigationItem setRightBarButtonItem:v7];
 
   v13 = 0;
   v14 = &v13;
@@ -884,15 +884,15 @@
   [v5 present];
 }
 
-- (void)presentConfirmationWithTitle:(id)a3 message:(id)a4 cancelTitle:(id)a5 cancelHandler:(id)a6 confirmTitle:(id)a7 confirmHandler:(id)a8
+- (void)presentConfirmationWithTitle:(id)title message:(id)message cancelTitle:(id)cancelTitle cancelHandler:(id)handler confirmTitle:(id)confirmTitle confirmHandler:(id)confirmHandler
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  [sub_1000E8134() presentConfirmationOnViewController:self title:v19 message:v18 cancelTitle:v17 cancelHandler:v16 confirmTitle:v15 confirmHandler:v14];
+  confirmHandlerCopy = confirmHandler;
+  confirmTitleCopy = confirmTitle;
+  handlerCopy = handler;
+  cancelTitleCopy = cancelTitle;
+  messageCopy = message;
+  titleCopy = title;
+  [sub_1000E8134() presentConfirmationOnViewController:self title:titleCopy message:messageCopy cancelTitle:cancelTitleCopy cancelHandler:handlerCopy confirmTitle:confirmTitleCopy confirmHandler:confirmHandlerCopy];
 }
 
 - (COSSOSSettingsViewControllerDelegate)navBarDelegate

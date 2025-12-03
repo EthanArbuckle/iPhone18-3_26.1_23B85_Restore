@@ -1,41 +1,41 @@
 @interface TabLimitCleanupGroup
-- (TabLimitCleanupGroup)initWithAlertMesssage:(id)a3 actionTitle:(id)a4 tabs:(id)a5 browserController:(id)a6 resultHandler:(id)a7;
+- (TabLimitCleanupGroup)initWithAlertMesssage:(id)messsage actionTitle:(id)title tabs:(id)tabs browserController:(id)controller resultHandler:(id)handler;
 @end
 
 @implementation TabLimitCleanupGroup
 
-- (TabLimitCleanupGroup)initWithAlertMesssage:(id)a3 actionTitle:(id)a4 tabs:(id)a5 browserController:(id)a6 resultHandler:(id)a7
+- (TabLimitCleanupGroup)initWithAlertMesssage:(id)messsage actionTitle:(id)title tabs:(id)tabs browserController:(id)controller resultHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if ([v14 count])
+  messsageCopy = messsage;
+  titleCopy = title;
+  tabsCopy = tabs;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if ([tabsCopy count])
   {
     v28.receiver = self;
     v28.super_class = TabLimitCleanupGroup;
-    v17 = [(TabLimitCleanupGroup *)&v28 init];
-    if (v17)
+    selfCopy = [(TabLimitCleanupGroup *)&v28 init];
+    if (selfCopy)
     {
       v18 = MEMORY[0x277D750F8];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __95__TabLimitCleanupGroup_initWithAlertMesssage_actionTitle_tabs_browserController_resultHandler___block_invoke;
       v24[3] = &unk_2781DB650;
-      v25 = v15;
-      v26 = v14;
-      v27 = v16;
-      v19 = [v18 actionWithTitle:v13 style:2 handler:v24];
-      action = v17->_action;
-      v17->_action = v19;
+      v25 = controllerCopy;
+      v26 = tabsCopy;
+      v27 = handlerCopy;
+      v19 = [v18 actionWithTitle:titleCopy style:2 handler:v24];
+      action = selfCopy->_action;
+      selfCopy->_action = v19;
 
-      v21 = [v12 copy];
-      message = v17->_message;
-      v17->_message = v21;
+      v21 = [messsageCopy copy];
+      message = selfCopy->_message;
+      selfCopy->_message = v21;
 
-      self = v17;
-      v17 = self;
+      self = selfCopy;
+      selfCopy = self;
     }
 
     else
@@ -46,10 +46,10 @@
 
   else
   {
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 void __95__TabLimitCleanupGroup_initWithAlertMesssage_actionTitle_tabs_browserController_resultHandler___block_invoke(uint64_t a1)

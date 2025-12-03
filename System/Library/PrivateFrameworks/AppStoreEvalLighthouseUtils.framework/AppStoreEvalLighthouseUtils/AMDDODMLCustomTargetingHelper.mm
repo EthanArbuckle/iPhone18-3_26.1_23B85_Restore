@@ -1,12 +1,12 @@
 @interface AMDDODMLCustomTargetingHelper
 - (AMDDODMLCustomTargetingHelper)init;
-- (id)callAMDClient:(id)a3 error:(id *)a4;
-- (id)getDictionaryValueDataType:(id)a3 error:(id *)a4;
+- (id)callAMDClient:(id)client error:(id *)error;
+- (id)getDictionaryValueDataType:(id)type error:(id *)error;
 - (id)getOperationsArray;
-- (id)mainTargetingResolver:(id)a3 error:(id *)a4;
-- (id)parseData:(id)a3 withArray:(id)a4 error:(id *)a5;
-- (id)performOperation:(id)a3 onArray:(id)a4 error:(id *)a5;
-- (id)postProc:(id)a3 withDirections:(id)a4 error:(id *)a5;
+- (id)mainTargetingResolver:(id)resolver error:(id *)error;
+- (id)parseData:(id)data withArray:(id)array error:(id *)error;
+- (id)performOperation:(id)operation onArray:(id)array error:(id *)error;
+- (id)postProc:(id)proc withDirections:(id)directions error:(id *)error;
 @end
 
 @implementation AMDDODMLCustomTargetingHelper
@@ -24,13 +24,13 @@
   return v3;
 }
 
-- (id)callAMDClient:(id)a3 error:(id *)a4
+- (id)callAMDClient:(id)client error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = a4;
+  objc_storeStrong(location, client);
+  errorCopy = error;
   v31 = [location[0] objectAtIndex:0];
   v30 = [location[0] objectAtIndex:1];
   v29 = [location[0] objectAtIndex:2];
@@ -86,7 +86,7 @@
         v11 = objc_alloc(MEMORY[0x277CCA9B8]);
         v15 = [v11 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:154 userInfo:0];
         v12 = v15;
-        *v32 = v15;
+        *errorCopy = v15;
         v34 = 0;
       }
 
@@ -99,7 +99,7 @@
       v9 = objc_alloc(MEMORY[0x277CCA9B8]);
       v16 = [v9 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:153 userInfo:0];
       v10 = v16;
-      *v32 = v16;
+      *errorCopy = v16;
       v34 = 0;
       v22 = 1;
     }
@@ -112,7 +112,7 @@
     v7 = objc_alloc(MEMORY[0x277CCA9B8]);
     v17 = [v7 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:152 userInfo:0];
     v8 = v17;
-    *v32 = v17;
+    *errorCopy = v17;
     v34 = 0;
     v22 = 1;
   }
@@ -154,15 +154,15 @@
   return v3;
 }
 
-- (id)performOperation:(id)a3 onArray:(id)a4 error:(id *)a5
+- (id)performOperation:(id)operation onArray:(id)array error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, operation);
   v84 = 0;
-  objc_storeStrong(&v84, a4);
-  v83 = a5;
+  objc_storeStrong(&v84, array);
+  errorCopy = error;
   if ([location[0] isEqual:CustomTargetingSum] & 1) != 0 || (objc_msgSend(location[0], "isEqual:", CustomTargetingSumEmp))
   {
     if ([v84 count])
@@ -176,7 +176,7 @@
         MEMORY[0x277D82BD8](v57);
       }
 
-      v86 = [MEMORY[0x277CCABB0] numberWithDouble:v81];
+      firstObject = [MEMORY[0x277CCABB0] numberWithDouble:v81];
       v82 = 1;
     }
 
@@ -187,13 +187,13 @@
         v5 = objc_alloc(MEMORY[0x277CCA9B8]);
         v58 = [v5 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:155 userInfo:0];
         v6 = v58;
-        *v83 = v58;
-        v86 = 0;
+        *errorCopy = v58;
+        firstObject = 0;
       }
 
       else
       {
-        v86 = [MEMORY[0x277CCABB0] numberWithInt:0];
+        firstObject = [MEMORY[0x277CCABB0] numberWithInt:0];
       }
 
       v82 = 1;
@@ -209,8 +209,8 @@
       if ([v79 count] == 3)
       {
         v77 = [v79 objectAtIndex:2];
-        v76 = [v77 intValue];
-        v78 = (1 / (v76 ^ 0xA));
+        intValue = [v77 intValue];
+        v78 = (1 / (intValue ^ 0xA));
         objc_storeStrong(&v77, 0);
       }
 
@@ -238,7 +238,7 @@
 
           else
           {
-            v86 = [MEMORY[0x277CCABB0] numberWithInt:v52];
+            firstObject = [MEMORY[0x277CCABB0] numberWithInt:v52];
             v82 = 1;
           }
 
@@ -254,8 +254,8 @@
           v10 = objc_alloc(MEMORY[0x277CCA9B8]);
           v54 = [v10 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:157 userInfo:0];
           v11 = v54;
-          *v83 = v54;
-          v86 = 0;
+          *errorCopy = v54;
+          firstObject = 0;
           v82 = 1;
         }
 
@@ -266,7 +266,7 @@
         }
       }
 
-      v86 = [MEMORY[0x277CCABB0] numberWithInt:0];
+      firstObject = [MEMORY[0x277CCABB0] numberWithInt:0];
       v82 = 1;
 LABEL_31:
       objc_storeStrong(&v75, 0);
@@ -277,8 +277,8 @@ LABEL_31:
       v8 = objc_alloc(MEMORY[0x277CCA9B8]);
       v56 = [v8 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:156 userInfo:0];
       v9 = v56;
-      *v83 = v56;
-      v86 = 0;
+      *errorCopy = v56;
+      firstObject = 0;
       v82 = 1;
     }
 
@@ -304,7 +304,7 @@ LABEL_31:
         v67 = MEMORY[0x277D82BE0](v68);
         if ([v67 isEqual:v70])
         {
-          v86 = [MEMORY[0x277CCABB0] numberWithInt:?];
+          firstObject = [MEMORY[0x277CCABB0] numberWithInt:?];
           v82 = 1;
         }
 
@@ -325,8 +325,8 @@ LABEL_31:
         v16 = objc_alloc(MEMORY[0x277CCA9B8]);
         v50 = [v16 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:158 userInfo:0];
         v17 = v50;
-        *v83 = v50;
-        v86 = 0;
+        *errorCopy = v50;
+        firstObject = 0;
         v82 = 1;
       }
 
@@ -337,7 +337,7 @@ LABEL_31:
       }
     }
 
-    v86 = [MEMORY[0x277CCABB0] numberWithInt:0];
+    firstObject = [MEMORY[0x277CCABB0] numberWithInt:0];
     v82 = 1;
 LABEL_46:
     objc_storeStrong(&v70, 0);
@@ -358,7 +358,7 @@ LABEL_46:
       }
 
       v21 = [v84 count];
-      v86 = [MEMORY[0x277CCABB0] numberWithDouble:v66 / v21];
+      firstObject = [MEMORY[0x277CCABB0] numberWithDouble:v66 / v21];
       v82 = 1;
     }
 
@@ -369,13 +369,13 @@ LABEL_46:
         v18 = objc_alloc(MEMORY[0x277CCA9B8]);
         v49 = [v18 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:159 userInfo:0];
         v19 = v49;
-        *v83 = v49;
-        v86 = 0;
+        *errorCopy = v49;
+        firstObject = 0;
       }
 
       else
       {
-        v86 = [MEMORY[0x277CCABB0] numberWithInt:0];
+        firstObject = [MEMORY[0x277CCABB0] numberWithInt:0];
       }
 
       v82 = 1;
@@ -384,7 +384,7 @@ LABEL_46:
 
   else if ([location[0] isEqual:CustomTargetingLen])
   {
-    v86 = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v84, "count")}];
+    firstObject = [MEMORY[0x277CCABB0] numberWithLong:{objc_msgSend(v84, "count")}];
     v82 = 1;
   }
 
@@ -392,7 +392,7 @@ LABEL_46:
   {
     if ([v84 count])
     {
-      v86 = [v84 firstObject];
+      firstObject = [v84 firstObject];
     }
 
     else
@@ -400,8 +400,8 @@ LABEL_46:
       v22 = objc_alloc(MEMORY[0x277CCA9B8]);
       v47 = [v22 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:180 userInfo:0];
       v23 = v47;
-      *v83 = v47;
-      v86 = 0;
+      *errorCopy = v47;
+      firstObject = 0;
     }
 
     v82 = 1;
@@ -411,10 +411,10 @@ LABEL_46:
   {
     if ([v84 count])
     {
-      v44 = [v84 firstObject];
-      [v44 doubleValue];
+      firstObject2 = [v84 firstObject];
+      [firstObject2 doubleValue];
       v45 = v26;
-      MEMORY[0x277D82BD8](v44);
+      MEMORY[0x277D82BD8](firstObject2);
       v64 = v45;
       for (n = 0; n < [v84 count]; ++n)
       {
@@ -428,7 +428,7 @@ LABEL_46:
         }
       }
 
-      v86 = [MEMORY[0x277CCABB0] numberWithDouble:v64];
+      firstObject = [MEMORY[0x277CCABB0] numberWithDouble:v64];
       v82 = 1;
     }
 
@@ -439,13 +439,13 @@ LABEL_46:
         v24 = objc_alloc(MEMORY[0x277CCA9B8]);
         v46 = [v24 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:160 userInfo:0];
         v25 = v46;
-        *v83 = v46;
-        v86 = 0;
+        *errorCopy = v46;
+        firstObject = 0;
       }
 
       else
       {
-        v86 = [MEMORY[0x277CCABB0] numberWithInt:0];
+        firstObject = [MEMORY[0x277CCABB0] numberWithInt:0];
       }
 
       v82 = 1;
@@ -456,10 +456,10 @@ LABEL_46:
   {
     if ([v84 count])
     {
-      v39 = [v84 firstObject];
-      [v39 doubleValue];
+      firstObject3 = [v84 firstObject];
+      [firstObject3 doubleValue];
       v40 = v30;
-      MEMORY[0x277D82BD8](v39);
+      MEMORY[0x277D82BD8](firstObject3);
       v62 = v40;
       for (ii = 0; ii < [v84 count]; ++ii)
       {
@@ -473,7 +473,7 @@ LABEL_46:
         }
       }
 
-      v86 = [MEMORY[0x277CCABB0] numberWithDouble:v62];
+      firstObject = [MEMORY[0x277CCABB0] numberWithDouble:v62];
       v82 = 1;
     }
 
@@ -484,13 +484,13 @@ LABEL_46:
         v28 = objc_alloc(MEMORY[0x277CCA9B8]);
         v41 = [v28 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:161 userInfo:0];
         v29 = v41;
-        *v83 = v41;
-        v86 = 0;
+        *errorCopy = v41;
+        firstObject = 0;
       }
 
       else
       {
-        v86 = [MEMORY[0x277CCABB0] numberWithInt:0];
+        firstObject = [MEMORY[0x277CCABB0] numberWithInt:0];
       }
 
       v82 = 1;
@@ -502,26 +502,26 @@ LABEL_46:
     v32 = objc_alloc(MEMORY[0x277CCA9B8]);
     v36 = [v32 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:162 userInfo:0];
     v33 = v36;
-    *v83 = v36;
-    v86 = 0;
+    *errorCopy = v36;
+    firstObject = 0;
     v82 = 1;
   }
 
   objc_storeStrong(&v84, 0);
   objc_storeStrong(location, 0);
-  v34 = v86;
+  v34 = firstObject;
 
   return v34;
 }
 
-- (id)getDictionaryValueDataType:(id)a3 error:(id *)a4
+- (id)getDictionaryValueDataType:(id)type error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v33 = a4;
+  objc_storeStrong(location, type);
+  errorCopy = error;
   v32 = 0;
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
@@ -560,7 +560,7 @@ LABEL_30:
         v4 = objc_alloc(MEMORY[0x277CCA9B8]);
         v20 = [v4 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:163 userInfo:0];
         v5 = v20;
-        *v33 = v20;
+        *errorCopy = v20;
         v35 = 0;
         v28 = 1;
       }
@@ -584,7 +584,7 @@ LABEL_30:
           v6 = objc_alloc(MEMORY[0x277CCA9B8]);
           v19 = [v6 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:163 userInfo:0];
           v7 = v19;
-          *v33 = v19;
+          *errorCopy = v19;
           v35 = 0;
           v28 = 1;
         }
@@ -608,7 +608,7 @@ LABEL_30:
             v8 = objc_alloc(MEMORY[0x277CCA9B8]);
             v18 = [v8 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:163 userInfo:0];
             v9 = v18;
-            *v33 = v18;
+            *errorCopy = v18;
             v35 = 0;
             v28 = 1;
           }
@@ -632,7 +632,7 @@ LABEL_30:
               v10 = objc_alloc(MEMORY[0x277CCA9B8]);
               v17 = [v10 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:163 userInfo:0];
               v11 = v17;
-              *v33 = v17;
+              *errorCopy = v17;
               v35 = 0;
               v28 = 1;
             }
@@ -642,7 +642,7 @@ LABEL_30:
               v12 = objc_alloc(MEMORY[0x277CCA9B8]);
               v16 = [v12 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:164 userInfo:0];
               v13 = v16;
-              *v33 = v16;
+              *errorCopy = v16;
               v35 = 0;
               v28 = 1;
             }
@@ -686,16 +686,16 @@ LABEL_35:
   return v14;
 }
 
-- (id)parseData:(id)a3 withArray:(id)a4 error:(id *)a5
+- (id)parseData:(id)data withArray:(id)array error:(id *)error
 {
   v114 = *MEMORY[0x277D85DE8];
-  v108 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v106 = 0;
-  objc_storeStrong(&v106, a4);
-  v105 = a5;
+  objc_storeStrong(&v106, array);
+  errorCopy = error;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -705,14 +705,14 @@ LABEL_35:
       v33 = objc_alloc(MEMORY[0x277CCA9B8]);
       v40 = [v33 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:108 userInfo:0];
       v34 = v40;
-      *v105 = v40;
+      *errorCopy = v40;
       v109 = 0;
       v102 = 1;
       goto LABEL_105;
     }
 
     v100 = MEMORY[0x277D82BE0](location[0]);
-    v99 = [(AMDDODMLCustomTargetingHelper *)v108 getDictionaryValueDataType:v100 error:v105];
+    v99 = [(AMDDODMLCustomTargetingHelper *)selfCopy getDictionaryValueDataType:v100 error:errorCopy];
     if (!v99)
     {
       v109 = 0;
@@ -729,7 +729,7 @@ LABEL_35:
         v96 = [v100 objectForKey:v98];
         if (v96)
         {
-          v95 = [(AMDDODMLCustomTargetingHelper *)v108 performOperation:v97 onArray:v96 error:v105];
+          v95 = [(AMDDODMLCustomTargetingHelper *)selfCopy performOperation:v97 onArray:v96 error:errorCopy];
           if (v95)
           {
             v109 = MEMORY[0x277D82BE0](v95);
@@ -749,7 +749,7 @@ LABEL_35:
           v9 = objc_alloc(MEMORY[0x277CCA9B8]);
           v61 = [v9 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:168 userInfo:0];
           v10 = v61;
-          *v105 = v61;
+          *errorCopy = v61;
           v109 = 0;
           v102 = 1;
         }
@@ -763,8 +763,8 @@ LABEL_35:
       if ([v106 count] == 2)
       {
         v94 = [v106 objectAtIndex:1];
-        v93 = [(AMDDODMLCustomTargetingHelper *)v108 getOperationsArray];
-        if ([v93 containsObject:v94])
+        getOperationsArray = [(AMDDODMLCustomTargetingHelper *)selfCopy getOperationsArray];
+        if ([getOperationsArray containsObject:v94])
         {
           if ([v100 count] == 1)
           {
@@ -776,7 +776,7 @@ LABEL_35:
               *__b[2];
               v92 = *__b[1];
               v90 = [v100 objectForKey:v92];
-              v89 = [(AMDDODMLCustomTargetingHelper *)v108 performOperation:v94 onArray:v90 error:v105];
+              v89 = [(AMDDODMLCustomTargetingHelper *)selfCopy performOperation:v94 onArray:v90 error:errorCopy];
               if (v89)
               {
                 v109 = MEMORY[0x277D82BE0](v89);
@@ -809,7 +809,7 @@ LABEL_35:
             v11 = objc_alloc(MEMORY[0x277CCA9B8]);
             v59 = [v11 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:169 userInfo:0];
             v12 = v59;
-            *v105 = v59;
+            *errorCopy = v59;
             v109 = 0;
             v102 = 1;
           }
@@ -819,11 +819,11 @@ LABEL_35:
         {
           v88 = [v106 objectAtIndex:1];
           v87 = [v100 objectForKey:v88];
-          v86 = [v87 firstObject];
+          firstObject = [v87 firstObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v109 = MEMORY[0x277D82BE0](v86);
+            v109 = MEMORY[0x277D82BE0](firstObject);
             v102 = 1;
           }
 
@@ -832,17 +832,17 @@ LABEL_35:
             v13 = objc_alloc(MEMORY[0x277CCA9B8]);
             v58 = [v13 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:170 userInfo:0];
             v14 = v58;
-            *v105 = v58;
+            *errorCopy = v58;
             v109 = 0;
             v102 = 1;
           }
 
-          objc_storeStrong(&v86, 0);
+          objc_storeStrong(&firstObject, 0);
           objc_storeStrong(&v87, 0);
           objc_storeStrong(&v88, 0);
         }
 
-        objc_storeStrong(&v93, 0);
+        objc_storeStrong(&getOperationsArray, 0);
         objc_storeStrong(&v94, 0);
         if (!v102)
         {
@@ -857,7 +857,7 @@ LABEL_35:
           v19 = objc_alloc(MEMORY[0x277CCA9B8]);
           v54 = [v19 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:172 userInfo:0];
           v20 = v54;
-          *v105 = v54;
+          *errorCopy = v54;
           v109 = 0;
           v102 = 1;
           goto LABEL_101;
@@ -868,7 +868,7 @@ LABEL_35:
           v17 = objc_alloc(MEMORY[0x277CCA9B8]);
           v55 = [v17 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:169 userInfo:0];
           v18 = v55;
-          *v105 = v55;
+          *errorCopy = v55;
           v109 = 0;
           v102 = 1;
           goto LABEL_101;
@@ -882,11 +882,11 @@ LABEL_35:
           *v84[2];
           v85 = *v84[1];
           v83 = [v100 objectForKey:v85];
-          v82 = [v83 firstObject];
+          firstObject2 = [v83 firstObject];
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v109 = MEMORY[0x277D82BE0](v82);
+            v109 = MEMORY[0x277D82BE0](firstObject2);
             v102 = 1;
           }
 
@@ -895,12 +895,12 @@ LABEL_35:
             v15 = objc_alloc(MEMORY[0x277CCA9B8]);
             v56 = [v15 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:171 userInfo:0];
             v16 = v56;
-            *v105 = v56;
+            *errorCopy = v56;
             v109 = 0;
             v102 = 1;
           }
 
-          objc_storeStrong(&v82, 0);
+          objc_storeStrong(&firstObject2, 0);
           objc_storeStrong(&v83, 0);
         }
 
@@ -926,7 +926,7 @@ LABEL_35:
           v29 = objc_alloc(MEMORY[0x277CCA9B8]);
           v42 = [v29 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:177 userInfo:0];
           v30 = v42;
-          *v105 = v42;
+          *errorCopy = v42;
         }
 
         else
@@ -934,7 +934,7 @@ LABEL_35:
           v31 = objc_alloc(MEMORY[0x277CCA9B8]);
           v41 = [v31 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:178 userInfo:0];
           v32 = v41;
-          *v105 = v41;
+          *errorCopy = v41;
         }
 
         v109 = 0;
@@ -985,7 +985,7 @@ LABEL_35:
         MEMORY[0x277D82BD8](v52);
         if ([v81 isEqual:@"GETKEYS"])
         {
-          v74 = [(AMDDODMLCustomTargetingHelper *)v108 performOperation:v80 onArray:v79 error:v105];
+          v74 = [(AMDDODMLCustomTargetingHelper *)selfCopy performOperation:v80 onArray:v79 error:errorCopy];
           if (v74)
           {
             v109 = MEMORY[0x277D82BE0](v74);
@@ -1002,7 +1002,7 @@ LABEL_35:
 
         else if ([v81 isEqual:@"GETVALS"])
         {
-          v73 = [(AMDDODMLCustomTargetingHelper *)v108 performOperation:v80 onArray:v78 error:v105];
+          v73 = [(AMDDODMLCustomTargetingHelper *)selfCopy performOperation:v80 onArray:v78 error:errorCopy];
           if (v73)
           {
             v109 = MEMORY[0x277D82BE0](v73);
@@ -1022,7 +1022,7 @@ LABEL_35:
           v21 = objc_alloc(MEMORY[0x277CCA9B8]);
           v47 = [v21 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:173 userInfo:0];
           v22 = v47;
-          *v105 = v47;
+          *errorCopy = v47;
           v109 = 0;
           v102 = 1;
         }
@@ -1049,7 +1049,7 @@ LABEL_35:
             v23 = objc_alloc(MEMORY[0x277CCA9B8]);
             v46 = [v23 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:174 userInfo:0];
             v24 = v46;
-            *v105 = v46;
+            *errorCopy = v46;
             v109 = 0;
           }
 
@@ -1064,7 +1064,7 @@ LABEL_35:
           v27 = objc_alloc(MEMORY[0x277CCA9B8]);
           v43 = [v27 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:176 userInfo:0];
           v28 = v43;
-          *v105 = v43;
+          *errorCopy = v43;
           v109 = 0;
           v102 = 1;
           goto LABEL_101;
@@ -1075,7 +1075,7 @@ LABEL_35:
           v25 = objc_alloc(MEMORY[0x277CCA9B8]);
           v44 = [v25 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:175 userInfo:0];
           v26 = v44;
-          *v105 = v44;
+          *errorCopy = v44;
           v109 = 0;
           v102 = 1;
           goto LABEL_101;
@@ -1122,7 +1122,7 @@ LABEL_101:
   v104 = MEMORY[0x277D82BE0](location[0]);
   if ([v106 count] == 2)
   {
-    v64 = v108;
+    v64 = selfCopy;
     v65 = [v106 objectAtIndex:1];
     v103 = [AMDDODMLCustomTargetingHelper performOperation:v64 onArray:"performOperation:onArray:error:" error:?];
     MEMORY[0x277D82BD8](v65);
@@ -1146,11 +1146,11 @@ LABEL_101:
 
   else if ([v106 count] == 1)
   {
-    v101 = [v104 firstObject];
+    firstObject3 = [v104 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v109 = MEMORY[0x277D82BE0](v101);
+      v109 = MEMORY[0x277D82BE0](firstObject3);
       v102 = 1;
     }
 
@@ -1159,12 +1159,12 @@ LABEL_101:
       v5 = objc_alloc(MEMORY[0x277CCA9B8]);
       v63 = [v5 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:166 userInfo:0];
       v6 = v63;
-      *v105 = v63;
+      *errorCopy = v63;
       v109 = 0;
       v102 = 1;
     }
 
-    objc_storeStrong(&v101, 0);
+    objc_storeStrong(&firstObject3, 0);
   }
 
   else
@@ -1172,7 +1172,7 @@ LABEL_101:
     v7 = objc_alloc(MEMORY[0x277CCA9B8]);
     v62 = [v7 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:167 userInfo:0];
     v8 = v62;
-    *v105 = v62;
+    *errorCopy = v62;
     v109 = 0;
     v102 = 1;
   }
@@ -1184,7 +1184,7 @@ LABEL_104:
     v35 = objc_alloc(MEMORY[0x277CCA9B8]);
     v39 = [v35 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:179 userInfo:0];
     v36 = v39;
-    *v105 = v39;
+    *errorCopy = v39;
     v109 = 0;
     v102 = 1;
   }
@@ -1198,22 +1198,22 @@ LABEL_105:
   return v37;
 }
 
-- (id)postProc:(id)a3 withDirections:(id)a4 error:(id *)a5
+- (id)postProc:(id)proc withDirections:(id)directions error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, proc);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21 = a5;
+  objc_storeStrong(&v22, directions);
+  errorCopy = error;
   v20 = [v22 componentsSeparatedByString:@"_"];
-  v19 = [v20 firstObject];
-  if ([v19 isEqual:CustomTargetingCutDown])
+  firstObject = [v20 firstObject];
+  if ([firstObject isEqual:CustomTargetingCutDown])
   {
-    v18 = [v20 lastObject];
+    lastObject = [v20 lastObject];
     v17 = objc_alloc_init(MEMORY[0x277CCABB8]);
-    v16 = [v17 numberFromString:v18];
+    v16 = [v17 numberFromString:lastObject];
     if (location[0] > v16)
     {
       v24 = MEMORY[0x277D82BE0](v16);
@@ -1227,14 +1227,14 @@ LABEL_105:
     v15 = 1;
     objc_storeStrong(&v16, 0);
     objc_storeStrong(&v17, 0);
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&lastObject, 0);
   }
 
-  else if ([v19 isEqual:CustomTargetingCutUp])
+  else if ([firstObject isEqual:CustomTargetingCutUp])
   {
-    v14 = [v20 lastObject];
+    lastObject2 = [v20 lastObject];
     v13 = objc_alloc_init(MEMORY[0x277CCABB8]);
-    v12 = [v13 numberFromString:v14];
+    v12 = [v13 numberFromString:lastObject2];
     if (location[0] >= v12)
     {
       v24 = MEMORY[0x277D82BE0](location[0]);
@@ -1248,7 +1248,7 @@ LABEL_105:
     v15 = 1;
     objc_storeStrong(&v12, 0);
     objc_storeStrong(&v13, 0);
-    objc_storeStrong(&v14, 0);
+    objc_storeStrong(&lastObject2, 0);
   }
 
   else
@@ -1256,12 +1256,12 @@ LABEL_105:
     v5 = objc_alloc(MEMORY[0x277CCA9B8]);
     v9 = [v5 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:181 userInfo:0];
     v6 = v9;
-    *v21 = v9;
+    *errorCopy = v9;
     v24 = 0;
     v15 = 1;
   }
 
-  objc_storeStrong(&v19, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(&v20, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
@@ -1270,14 +1270,14 @@ LABEL_105:
   return v7;
 }
 
-- (id)mainTargetingResolver:(id)a3 error:(id *)a4
+- (id)mainTargetingResolver:(id)resolver error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v40 = a4;
+  objc_storeStrong(location, resolver);
+  errorCopy = error;
   v39 = objc_alloc_init(MEMORY[0x277CBEB38]);
   memset(__b, 0, sizeof(__b));
   obj = MEMORY[0x277D82BE0](location[0]);
@@ -1297,10 +1297,10 @@ LABEL_105:
 
       v38 = *(__b[1] + 8 * v21);
       v36 = [v38 componentsSeparatedByString:@"______"];
-      v35 = [v36 firstObject];
-      v34 = [v35 componentsSeparatedByString:@"____"];
-      v33 = [v34 firstObject];
-      v32 = [v33 componentsSeparatedByString:@"__"];
+      firstObject = [v36 firstObject];
+      v34 = [firstObject componentsSeparatedByString:@"____"];
+      firstObject2 = [v34 firstObject];
+      v32 = [firstObject2 componentsSeparatedByString:@"__"];
       if ([v32 count] == 3)
       {
         break;
@@ -1309,14 +1309,14 @@ LABEL_105:
       v4 = objc_alloc(MEMORY[0x277CCA9B8]);
       v18 = [v4 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:165 userInfo:0];
       v5 = v18;
-      *v40 = v18;
+      *errorCopy = v18;
       v43 = 0;
       v31 = 1;
 LABEL_25:
       objc_storeStrong(&v32, 0);
-      objc_storeStrong(&v33, 0);
+      objc_storeStrong(&firstObject2, 0);
       objc_storeStrong(&v34, 0);
-      objc_storeStrong(&v35, 0);
+      objc_storeStrong(&firstObject, 0);
       objc_storeStrong(&v36, 0);
       if (v31)
       {
@@ -1335,7 +1335,7 @@ LABEL_25:
       }
     }
 
-    v30 = [(AMDDODMLCustomTargetingHelper *)v42 callAMDClient:v32 error:v40];
+    v30 = [(AMDDODMLCustomTargetingHelper *)selfCopy callAMDClient:v32 error:errorCopy];
     if (!v30)
     {
       v43 = 0;
@@ -1345,7 +1345,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v29 = [(AMDDODMLCustomTargetingHelper *)v42 parseData:v30 withArray:v34 error:v40];
+    v29 = [(AMDDODMLCustomTargetingHelper *)selfCopy parseData:v30 withArray:v34 error:errorCopy];
     if (!v29)
     {
       v43 = 0;
@@ -1371,7 +1371,7 @@ LABEL_23:
         v8 = objc_alloc(MEMORY[0x277CCA9B8]);
         v12 = [v8 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:165 userInfo:0];
         v9 = v12;
-        *v40 = v12;
+        *errorCopy = v12;
         v43 = 0;
         v31 = 1;
         goto LABEL_23;
@@ -1381,22 +1381,22 @@ LABEL_23:
       v26 = MEMORY[0x277D82BE0](v27);
       if ([v36 count] == 2)
       {
-        v16 = v42;
+        v16 = selfCopy;
         v15 = v27;
-        v17 = [v36 lastObject];
+        lastObject = [v36 lastObject];
         v6 = [AMDDODMLCustomTargetingHelper postProc:v16 withDirections:"postProc:withDirections:error:" error:v15];
         v7 = v26;
         v26 = v6;
         MEMORY[0x277D82BD8](v7);
-        MEMORY[0x277D82BD8](v17);
+        MEMORY[0x277D82BD8](lastObject);
       }
 
       if (v26)
       {
         v13 = v39;
-        v14 = [v26 stringValue];
+        stringValue = [v26 stringValue];
         [v13 setObject:? forKey:?];
-        MEMORY[0x277D82BD8](v14);
+        MEMORY[0x277D82BD8](stringValue);
         v31 = 0;
       }
 

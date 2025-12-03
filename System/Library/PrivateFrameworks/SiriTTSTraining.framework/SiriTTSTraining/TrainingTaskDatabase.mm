@@ -4,17 +4,17 @@
 - (id)getAllTasks;
 - (id)getNextSubmittedTask;
 - (id)getSubmittedTasks;
-- (id)getTaskById:(id)a3;
-- (id)isTaskInSubmittedQueue:(id)a3;
+- (id)getTaskById:(id)id;
+- (id)isTaskInSubmittedQueue:(id)queue;
 - (int64_t)getSubmittedTaskQueueSize;
-- (void)addFailedTaskToFinishQueue:(id)a3 errorCode:(unint64_t)a4 description:(id)a5;
-- (void)addTaskToFinishedQueueWithStatus:(id)a3 status:(int64_t)a4;
-- (void)addTaskToSubmittedQueue:(id)a3;
+- (void)addFailedTaskToFinishQueue:(id)queue errorCode:(unint64_t)code description:(id)description;
+- (void)addTaskToFinishedQueueWithStatus:(id)status status:(int64_t)a4;
+- (void)addTaskToSubmittedQueue:(id)queue;
 - (void)cleanUpQueue;
-- (void)submitTaskToSubmittedQueue:(id)a3;
-- (void)updateTaskToSubmittedQueue:(id)a3;
-- (void)updateTaskWithStatusToSubmittedQueue:(id)a3 taskStatus:(int64_t)a4;
-- (void)updateTaskWithTrainingStatusToSubmittedQueue:(id)a3 trainingStatus:(int64_t)a4 currentProgressValue:(int64_t)a5 totalProgressValue:(int64_t)a6 normalizedProgressValue:(float)a7;
+- (void)submitTaskToSubmittedQueue:(id)queue;
+- (void)updateTaskToSubmittedQueue:(id)queue;
+- (void)updateTaskWithStatusToSubmittedQueue:(id)queue taskStatus:(int64_t)status;
+- (void)updateTaskWithTrainingStatusToSubmittedQueue:(id)queue trainingStatus:(int64_t)status currentProgressValue:(int64_t)value totalProgressValue:(int64_t)progressValue normalizedProgressValue:(float)normalizedProgressValue;
 @end
 
 @implementation TrainingTaskDatabase
@@ -73,50 +73,50 @@
   return v3;
 }
 
-- (void)submitTaskToSubmittedQueue:(id)a3
+- (void)submitTaskToSubmittedQueue:(id)queue
 {
   lock = self->_lock;
-  v5 = a3;
+  queueCopy = queue;
   [(NSRecursiveLock *)lock lock];
-  [v5 setTaskStatus:1];
-  +[SiriTTSTrainingAgentUtils postTaskStatusNotification:](SiriTTSTrainingAgentUtils, "postTaskStatusNotification:", [v5 taskStatus]);
-  [(TrainingTaskDatabase *)self addTaskToSubmittedQueue:v5];
+  [queueCopy setTaskStatus:1];
+  +[SiriTTSTrainingAgentUtils postTaskStatusNotification:](SiriTTSTrainingAgentUtils, "postTaskStatusNotification:", [queueCopy taskStatus]);
+  [(TrainingTaskDatabase *)self addTaskToSubmittedQueue:queueCopy];
 
   v6 = self->_lock;
 
   [(NSRecursiveLock *)v6 unlock];
 }
 
-- (void)addTaskToSubmittedQueue:(id)a3
+- (void)addTaskToSubmittedQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   [(NSRecursiveLock *)self->_lock lock];
   v5 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v4 taskId];
-    v10 = [v4 trainingAssetPath];
-    v11 = [v4 dataAssetPath];
-    v12 = [v4 inferenceAssetPath];
-    v13 = [v4 agentTrainingAssetPath];
-    v14 = [v4 agentInferenceAssetPath];
+    taskId = [queueCopy taskId];
+    trainingAssetPath = [queueCopy trainingAssetPath];
+    dataAssetPath = [queueCopy dataAssetPath];
+    inferenceAssetPath = [queueCopy inferenceAssetPath];
+    agentTrainingAssetPath = [queueCopy agentTrainingAssetPath];
+    agentInferenceAssetPath = [queueCopy agentInferenceAssetPath];
     *buf = 138413570;
-    v17 = v9;
+    v17 = taskId;
     v18 = 2112;
-    v19 = v10;
+    v19 = trainingAssetPath;
     v20 = 2112;
-    v21 = v11;
+    v21 = dataAssetPath;
     v22 = 2112;
-    v23 = v12;
+    v23 = inferenceAssetPath;
     v24 = 2112;
-    v25 = v13;
+    v25 = agentTrainingAssetPath;
     v26 = 2112;
-    v27 = v14;
+    v27 = agentInferenceAssetPath;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "addTaskToSubmittedQueue: taskId=%@ trainingAssetPath=%@ dataAssetPath=%@ inferenceAssetPath=%@ agentTrainingAssetPath=%@ agentInferenceAssetPath=%@", buf, 0x3Eu);
   }
 
   v15 = 0;
-  v6 = [NSKeyedArchiver archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v15];
+  v6 = [NSKeyedArchiver archivedDataWithRootObject:queueCopy requiringSecureCoding:1 error:&v15];
   v7 = v15;
   if (v7)
   {
@@ -138,46 +138,46 @@
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)updateTaskToSubmittedQueue:(id)a3
+- (void)updateTaskToSubmittedQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   [(NSRecursiveLock *)self->_lock lock];
   v5 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v4 taskId];
-    v10 = [v4 trainingAssetPath];
-    v11 = [v4 dataAssetPath];
-    v12 = [v4 inferenceAssetPath];
-    v13 = [v4 taskStatus];
-    v14 = [v4 agentTrainingAssetPath];
-    v15 = [v4 agentInferenceAssetPath];
+    taskId = [queueCopy taskId];
+    trainingAssetPath = [queueCopy trainingAssetPath];
+    dataAssetPath = [queueCopy dataAssetPath];
+    inferenceAssetPath = [queueCopy inferenceAssetPath];
+    taskStatus = [queueCopy taskStatus];
+    agentTrainingAssetPath = [queueCopy agentTrainingAssetPath];
+    agentInferenceAssetPath = [queueCopy agentInferenceAssetPath];
     v16 = 138413826;
-    v17 = v9;
+    v17 = taskId;
     v18 = 2112;
-    v19 = v10;
+    v19 = trainingAssetPath;
     v20 = 2112;
-    v21 = v11;
+    v21 = dataAssetPath;
     v22 = 2112;
-    v23 = v12;
+    v23 = inferenceAssetPath;
     v24 = 2048;
-    v25 = v13;
+    v25 = taskStatus;
     v26 = 2112;
-    v27 = v14;
+    v27 = agentTrainingAssetPath;
     v28 = 2112;
-    v29 = v15;
+    v29 = agentInferenceAssetPath;
     _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "updateTaskToSubmittedQueue: taskId=%@ trainingAssetPath=%@ dataAssetPath=%@ inferenceAssetPath=%@ taskStatus=%ld agentTrainingAssetPath=%@ agentInferenceAssetPath=%@", &v16, 0x48u);
   }
 
-  v6 = sub_100015634(self, self->_submittedTaskQueue, v4);
+  v6 = sub_100015634(self, self->_submittedTaskQueue, queueCopy);
   if (v6 < 0)
   {
     v7 = SiriTTSTrainerGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 taskId];
+      taskId2 = [queueCopy taskId];
       v16 = 138412290;
-      v17 = v8;
+      v17 = taskId2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "updateTaskToSubmittedQueue: taskId=%@ not found", &v16, 0xCu);
     }
   }
@@ -185,37 +185,37 @@
   else
   {
     [(NSMutableArray *)self->_submittedTaskQueue removeObjectAtIndex:v6];
-    [(TrainingTaskDatabase *)self addTaskToSubmittedQueue:v4];
+    [(TrainingTaskDatabase *)self addTaskToSubmittedQueue:queueCopy];
   }
 
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)updateTaskWithStatusToSubmittedQueue:(id)a3 taskStatus:(int64_t)a4
+- (void)updateTaskWithStatusToSubmittedQueue:(id)queue taskStatus:(int64_t)status
 {
   lock = self->_lock;
-  v7 = a3;
+  queueCopy = queue;
   [(NSRecursiveLock *)lock lock];
-  [v7 setTaskStatus:a4];
-  +[SiriTTSTrainingAgentUtils postTaskStatusNotification:](SiriTTSTrainingAgentUtils, "postTaskStatusNotification:", [v7 taskStatus]);
-  [(TrainingTaskDatabase *)self updateTaskToSubmittedQueue:v7];
+  [queueCopy setTaskStatus:status];
+  +[SiriTTSTrainingAgentUtils postTaskStatusNotification:](SiriTTSTrainingAgentUtils, "postTaskStatusNotification:", [queueCopy taskStatus]);
+  [(TrainingTaskDatabase *)self updateTaskToSubmittedQueue:queueCopy];
 
   v8 = self->_lock;
 
   [(NSRecursiveLock *)v8 unlock];
 }
 
-- (void)updateTaskWithTrainingStatusToSubmittedQueue:(id)a3 trainingStatus:(int64_t)a4 currentProgressValue:(int64_t)a5 totalProgressValue:(int64_t)a6 normalizedProgressValue:(float)a7
+- (void)updateTaskWithTrainingStatusToSubmittedQueue:(id)queue trainingStatus:(int64_t)status currentProgressValue:(int64_t)value totalProgressValue:(int64_t)progressValue normalizedProgressValue:(float)normalizedProgressValue
 {
   lock = self->_lock;
-  v13 = a3;
+  queueCopy = queue;
   [(NSRecursiveLock *)lock lock];
-  [v13 setTrainingStatus:a4];
-  [v13 setCurrentTaskStatusProgressValue:a5];
-  [v13 setTotalTaskStatusProgressValue:a6];
-  *&v14 = a7;
-  [v13 setNormalizedProgressValue:v14];
-  [(TrainingTaskDatabase *)self updateTaskToSubmittedQueue:v13];
+  [queueCopy setTrainingStatus:status];
+  [queueCopy setCurrentTaskStatusProgressValue:value];
+  [queueCopy setTotalTaskStatusProgressValue:progressValue];
+  *&v14 = normalizedProgressValue;
+  [queueCopy setNormalizedProgressValue:v14];
+  [(TrainingTaskDatabase *)self updateTaskToSubmittedQueue:queueCopy];
 
   v15 = self->_lock;
 
@@ -236,9 +236,9 @@
 
   if ([(NSMutableArray *)self->_submittedTaskQueue count])
   {
-    v5 = [(NSMutableArray *)self->_submittedTaskQueue firstObject];
+    firstObject = [(NSMutableArray *)self->_submittedTaskQueue firstObject];
     v19 = 0;
-    v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v19];
+    v6 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:firstObject error:&v19];
     v7 = v19;
     v8 = SiriTTSTrainerGetLog();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -246,25 +246,25 @@
     {
       if (v9)
       {
-        v10 = [v6 taskId];
-        v11 = [v6 trainingAssetPath];
+        taskId = [v6 taskId];
+        trainingAssetPath = [v6 trainingAssetPath];
         [v6 dataAssetPath];
         v12 = v18 = v7;
-        v13 = [v6 inferenceAssetPath];
-        v14 = [v6 agentTrainingAssetPath];
-        v15 = [v6 agentInferenceAssetPath];
+        inferenceAssetPath = [v6 inferenceAssetPath];
+        agentTrainingAssetPath = [v6 agentTrainingAssetPath];
+        agentInferenceAssetPath = [v6 agentInferenceAssetPath];
         *buf = 138413570;
-        v21 = v10;
+        v21 = taskId;
         v22 = 2112;
-        v23 = v11;
+        v23 = trainingAssetPath;
         v24 = 2112;
         v25 = v12;
         v26 = 2112;
-        v27 = v13;
+        v27 = inferenceAssetPath;
         v28 = 2112;
-        v29 = v14;
+        v29 = agentTrainingAssetPath;
         v30 = 2112;
-        v31 = v15;
+        v31 = agentInferenceAssetPath;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "getNextSubmittedTask: taskId=%@ trainingAssetPath=%@ dataAssetPath=%@ inferenceAssetPath=%@ agentTrainingAssetPath=%@ agentInferenceAssetPath=%@", buf, 0x3Eu);
 
         v7 = v18;
@@ -296,33 +296,33 @@
   return v6;
 }
 
-- (void)addFailedTaskToFinishQueue:(id)a3 errorCode:(unint64_t)a4 description:(id)a5
+- (void)addFailedTaskToFinishQueue:(id)queue errorCode:(unint64_t)code description:(id)description
 {
   lock = self->_lock;
-  v9 = a5;
-  v10 = a3;
+  descriptionCopy = description;
+  queueCopy = queue;
   [(NSRecursiveLock *)lock lock];
   v13 = NSLocalizedDescriptionKey;
-  v14 = v9;
+  v14 = descriptionCopy;
   v11 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-  v12 = [NSError errorWithDomain:@"SiriTTSTrainerTask" code:a4 userInfo:v11];
-  [v10 setError:v12];
+  v12 = [NSError errorWithDomain:@"SiriTTSTrainerTask" code:code userInfo:v11];
+  [queueCopy setError:v12];
 
-  [(TrainingTaskDatabase *)self addTaskToFinishedQueueWithStatus:v10 status:4];
+  [(TrainingTaskDatabase *)self addTaskToFinishedQueueWithStatus:queueCopy status:4];
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (void)addTaskToFinishedQueueWithStatus:(id)a3 status:(int64_t)a4
+- (void)addTaskToFinishedQueueWithStatus:(id)status status:(int64_t)a4
 {
-  v6 = a3;
+  statusCopy = status;
   [(NSRecursiveLock *)self->_lock lock];
-  v7 = sub_100015634(self, self->_submittedTaskQueue, v6);
+  v7 = sub_100015634(self, self->_submittedTaskQueue, statusCopy);
   v8 = SiriTTSTrainerGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 taskId];
+    taskId = [statusCopy taskId];
     *buf = 138412290;
-    v16 = v9;
+    v16 = taskId;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "addTaskToFinishedQueue: task_id=%@", buf, 0xCu);
   }
 
@@ -334,24 +334,24 @@
       goto LABEL_10;
     }
 
-    v11 = [v6 taskId];
+    taskId2 = [statusCopy taskId];
     *buf = 138412290;
-    v16 = v11;
+    v16 = taskId2;
     _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "addTaskToFinishedQueue: task_id %@ not found from submitted queue.", buf, 0xCu);
   }
 
   else
   {
-    [v6 setTaskStatus:a4];
-    +[SiriTTSTrainingAgentUtils postTaskStatusNotification:](SiriTTSTrainingAgentUtils, "postTaskStatusNotification:", [v6 taskStatus]);
+    [statusCopy setTaskStatus:a4];
+    +[SiriTTSTrainingAgentUtils postTaskStatusNotification:](SiriTTSTrainingAgentUtils, "postTaskStatusNotification:", [statusCopy taskStatus]);
     [(NSMutableArray *)self->_submittedTaskQueue removeObjectAtIndex:v7];
     sub_1000150E4(self->_defaults, self->_submittedTaskQueue, @"submitted_task_queue");
-    v10 = [v6 error];
-    v14 = v10;
-    v11 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v14];
+    error = [statusCopy error];
+    v14 = error;
+    taskId2 = [NSKeyedArchiver archivedDataWithRootObject:statusCopy requiringSecureCoding:1 error:&v14];
     v12 = v14;
 
-    [(NSMutableArray *)self->_finishedTaskQueue addObject:v11];
+    [(NSMutableArray *)self->_finishedTaskQueue addObject:taskId2];
     sub_1000150E4(self->_defaults, self->_finishedTaskQueue, @"finished_task_queue");
     if (v12)
     {
@@ -369,15 +369,15 @@ LABEL_10:
   [(NSRecursiveLock *)self->_lock unlock];
 }
 
-- (id)isTaskInSubmittedQueue:(id)a3
+- (id)isTaskInSubmittedQueue:(id)queue
 {
-  v18 = a3;
+  queueCopy = queue;
   [(NSRecursiveLock *)self->_lock lock];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v17 = self;
+  selfCopy = self;
   v4 = self->_submittedTaskQueue;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v5)
@@ -411,12 +411,12 @@ LABEL_10:
 
         else if (v11)
         {
-          v14 = [v11 taskId];
-          v15 = [v14 isEqualToString:v18];
+          taskId = [v11 taskId];
+          v15 = [taskId isEqualToString:queueCopy];
 
           if (v15)
           {
-            [(NSRecursiveLock *)v17->_lock unlock];
+            [(NSRecursiveLock *)selfCopy->_lock unlock];
 
             goto LABEL_16;
           }
@@ -433,22 +433,22 @@ LABEL_10:
     }
   }
 
-  [(NSRecursiveLock *)v17->_lock unlock];
+  [(NSRecursiveLock *)selfCopy->_lock unlock];
   v11 = 0;
 LABEL_16:
 
   return v11;
 }
 
-- (id)getTaskById:(id)a3
+- (id)getTaskById:(id)id
 {
-  v28 = a3;
+  idCopy = id;
   [(NSRecursiveLock *)self->_lock lock];
   v38 = 0u;
   v36 = 0u;
   v37 = 0u;
   v35 = 0u;
-  v27 = self;
+  selfCopy = self;
   v4 = self->_submittedTaskQueue;
   v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v5)
@@ -482,13 +482,13 @@ LABEL_16:
 
         else if (v11)
         {
-          v14 = [v11 taskId];
-          v15 = [v14 isEqualToString:v28];
+          taskId = [v11 taskId];
+          v15 = [taskId isEqualToString:idCopy];
 
           if (v15)
           {
 LABEL_28:
-            [(NSRecursiveLock *)v27->_lock unlock];
+            [(NSRecursiveLock *)selfCopy->_lock unlock];
 
             goto LABEL_29;
           }
@@ -509,7 +509,7 @@ LABEL_28:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = v27->_finishedTaskQueue;
+  v4 = selfCopy->_finishedTaskQueue;
   v16 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v30 objects:v39 count:16];
   if (v16)
   {
@@ -542,8 +542,8 @@ LABEL_28:
 
         else if (v11)
         {
-          v24 = [v11 taskId];
-          v25 = [v24 isEqualToString:v28];
+          taskId2 = [v11 taskId];
+          v25 = [taskId2 isEqualToString:idCopy];
 
           if (v25)
           {
@@ -558,7 +558,7 @@ LABEL_28:
     while (v17);
   }
 
-  [(NSRecursiveLock *)v27->_lock unlock];
+  [(NSRecursiveLock *)selfCopy->_lock unlock];
   v11 = 0;
 LABEL_29:
 

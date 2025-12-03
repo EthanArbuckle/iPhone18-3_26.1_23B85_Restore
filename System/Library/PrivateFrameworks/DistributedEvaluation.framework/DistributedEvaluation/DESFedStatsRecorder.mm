@@ -1,21 +1,21 @@
 @interface DESFedStatsRecorder
 + (void)initialize;
-- (BOOL)record:(id)a3 data:(id)a4 dataTypeContent:(id)a5 metadata:(id)a6 errorOut:(id *)a7;
-- (BOOL)record:(id)a3 data:(id)a4 encodingSchema:(id)a5 metadata:(id)a6 errorOut:(id *)a7;
+- (BOOL)record:(id)record data:(id)data dataTypeContent:(id)content metadata:(id)metadata errorOut:(id *)out;
+- (BOOL)record:(id)record data:(id)data encodingSchema:(id)schema metadata:(id)metadata errorOut:(id *)out;
 @end
 
 @implementation DESFedStatsRecorder
 
-- (BOOL)record:(id)a3 data:(id)a4 dataTypeContent:(id)a5 metadata:(id)a6 errorOut:(id *)a7
+- (BOOL)record:(id)record data:(id)data dataTypeContent:(id)content metadata:(id)metadata errorOut:(id *)out
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  recordCopy = record;
+  dataCopy = data;
+  contentCopy = content;
   if (PrivateFederatedLearningLibraryCore())
   {
-    if ([v11 count])
+    if ([dataCopy count])
     {
-      v13 = [v11 objectAtIndexedSubscript:0];
+      v13 = [dataCopy objectAtIndexedSubscript:0];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -28,9 +28,9 @@
         if (v15)
         {
           v26 = 0;
-          v18 = [FedStatsDataEncoderClass encodeDataArrayAndRecord:v11 dataTypeContent:v12 baseKey:v10 errorOut:&v26];
+          v18 = [FedStatsDataEncoderClass encodeDataArrayAndRecord:dataCopy dataTypeContent:contentCopy baseKey:recordCopy errorOut:&v26];
           v19 = v26;
-          if (!a7)
+          if (!out)
           {
             goto LABEL_15;
           }
@@ -38,12 +38,12 @@
 
         else
         {
-          v23 = [v11 objectAtIndexedSubscript:0];
+          v23 = [dataCopy objectAtIndexedSubscript:0];
           v25 = 0;
-          v18 = [v17 encodeDataAndRecord:v23 dataTypeContent:v12 baseKey:v10 errorOut:&v25];
+          v18 = [v17 encodeDataAndRecord:v23 dataTypeContent:contentCopy baseKey:recordCopy errorOut:&v25];
           v19 = v25;
 
-          if (!a7)
+          if (!out)
           {
 LABEL_15:
 
@@ -52,7 +52,7 @@ LABEL_15:
         }
 
         v24 = v19;
-        *a7 = v19;
+        *out = v19;
         goto LABEL_15;
       }
     }
@@ -79,13 +79,13 @@ LABEL_12:
   return v18;
 }
 
-- (BOOL)record:(id)a3 data:(id)a4 encodingSchema:(id)a5 metadata:(id)a6 errorOut:(id *)a7
+- (BOOL)record:(id)record data:(id)data encodingSchema:(id)schema metadata:(id)metadata errorOut:(id *)out
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [v14 objectForKeyedSubscript:@"dataContentTypes"];
+  recordCopy = record;
+  dataCopy = data;
+  schemaCopy = schema;
+  metadataCopy = metadata;
+  v16 = [schemaCopy objectForKeyedSubscript:@"dataContentTypes"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -98,14 +98,14 @@ LABEL_12:
     objc_exception_throw(v22);
   }
 
-  v17 = [(DESFedStatsRecorder *)self record:v12 data:v13 dataTypeContent:v16 metadata:v15 errorOut:a7];
+  v17 = [(DESFedStatsRecorder *)self record:recordCopy data:dataCopy dataTypeContent:v16 metadata:metadataCopy errorOut:out];
 
   return v17;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sLog_0 = os_log_create("com.apple.DistributedEvaluation", "DESFedStatsRecorder");
 

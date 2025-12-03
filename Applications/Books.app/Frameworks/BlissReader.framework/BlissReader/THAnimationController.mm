@@ -15,22 +15,22 @@
 - (double)p_scaleForTargetLayer;
 - (id)curveAndOvershootAnimation;
 - (id)fadeInAnimation;
-- (id)fadeInOnDelayAnimationToOpacity:(double)a3;
-- (id)p_objectForLayer:(id)a3 key:(id)a4;
+- (id)fadeInOnDelayAnimationToOpacity:(double)opacity;
+- (id)p_objectForLayer:(id)layer key:(id)key;
 - (id)shadowFadeOutAnimation;
 - (id)shadowTransformAnimation;
 - (id)sourceShadowFadeOutAnimation;
 - (void)addBackgroundFadeOutAnimation;
 - (void)addContentAnimation;
 - (void)addForegroundFadeAnimation;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)didAnimate;
 - (void)didAnimatePostCommit;
-- (void)p_restoreLayer:(id)a3;
-- (void)p_saveLayer:(id)a3;
+- (void)p_restoreLayer:(id)layer;
+- (void)p_saveLayer:(id)layer;
 - (void)performAnimation;
-- (void)presentAnimationWithCompletionBlock:(id)a3 overshoot:(BOOL)a4;
+- (void)presentAnimationWithCompletionBlock:(id)block overshoot:(BOOL)overshoot;
 - (void)setupAnimationLayer;
 - (void)setupAnimationLayerForCrossFade;
 - (void)setupTarget;
@@ -74,16 +74,16 @@
 
   else if ([(THAnimationController *)self shouldAnimateTargetLayer])
   {
-    v4 = [(THAnimationController *)self destination];
+    destination = [(THAnimationController *)self destination];
 
-    return [(THAnimatableDestination *)v4 targetLayer];
+    return [(THAnimatableDestination *)destination targetLayer];
   }
 
   else
   {
-    v5 = [(THAnimationController *)self source];
+    source = [(THAnimationController *)self source];
 
-    return [(THAnimatableSource *)v5 animationLayer];
+    return [(THAnimatableSource *)source animationLayer];
   }
 }
 
@@ -94,9 +94,9 @@
     return 0;
   }
 
-  v4 = [(THAnimationController *)self destination];
+  destination = [(THAnimationController *)self destination];
 
-  return [(THAnimatableDestination *)v4 targetLayer];
+  return [(THAnimatableDestination *)destination targetLayer];
 }
 
 - (CALayer)targetShadowLayer
@@ -126,9 +126,9 @@
     return 0;
   }
 
-  v3 = [(THAnimationController *)self destination];
+  destination = [(THAnimationController *)self destination];
 
-  return [(THAnimatableDestination *)v3 targetLayer];
+  return [(THAnimatableDestination *)destination targetLayer];
 }
 
 - (CALayer)fadeOutAnimationLayer
@@ -138,18 +138,18 @@
     return 0;
   }
 
-  v3 = [(THAnimationController *)self source];
+  source = [(THAnimationController *)self source];
 
-  return [(THAnimatableSource *)v3 animationLayer];
+  return [(THAnimatableSource *)source animationLayer];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   if (([(NSMutableArray *)self->mObservers containsObject:?]& 1) == 0)
   {
     mObservers = self->mObservers;
 
-    [(NSMutableArray *)mObservers addObject:a3];
+    [(NSMutableArray *)mObservers addObject:observer];
   }
 }
 
@@ -174,7 +174,7 @@
 
 - (void)didAnimatePostCommit
 {
-  v3 = self;
+  selfCopy = self;
   v4 = [(NSMutableArray *)self->mObservers copy];
   [v4 tsu_makeObjectsPerformSelectorIfImplemented:"animationControllerDidPresentPostCommit:" withObject:self];
 
@@ -184,10 +184,10 @@
 - (void)setupAnimationLayerForCrossFade
 {
   memset(&v50, 0, sizeof(v50));
-  v3 = [(THAnimationController *)self source];
-  if (v3)
+  source = [(THAnimationController *)self source];
+  if (source)
   {
-    [(THAnimatableSource *)v3 freeTransform];
+    [(THAnimatableSource *)source freeTransform];
   }
 
   else
@@ -206,11 +206,11 @@
   *&t2.tx = v35;
   if (!CGAffineTransformEqualToTransform(&t1, &t2))
   {
-    v4 = [(THAnimatableSource *)[(THAnimationController *)self source] animationLayer];
+    animationLayer = [(THAnimatableSource *)[(THAnimationController *)self source] animationLayer];
     *&t1.m11 = v39;
     *&t1.m13 = v37;
     *&t1.m21 = v35;
-    [v4 setAffineTransform:&t1];
+    [animationLayer setAffineTransform:&t1];
   }
 
   [(THAnimationController *)self p_scaleForAnimationLayer:v35];
@@ -219,20 +219,20 @@
   v8 = v7;
   memset(&t2, 0, sizeof(t2));
   CGAffineTransformMakeScale(&t2, v6, v6);
-  v9 = [(THAnimationController *)self fadeInAnimationLayer];
-  v10 = [(THAnimationController *)self fadeOutAnimationLayer];
-  [(CALayer *)v9 setHidden:1];
-  [(CALayer *)v10 setHidden:0];
-  v11 = [(THAnimationController *)self hostLayer];
+  fadeInAnimationLayer = [(THAnimationController *)self fadeInAnimationLayer];
+  fadeOutAnimationLayer = [(THAnimationController *)self fadeOutAnimationLayer];
+  [(CALayer *)fadeInAnimationLayer setHidden:1];
+  [(CALayer *)fadeOutAnimationLayer setHidden:0];
+  hostLayer = [(THAnimationController *)self hostLayer];
   [-[THAnimatableSource animationLayer](-[THAnimationController source](self "source")];
   TSDCenterOfRect();
-  -[CALayer convertPoint:fromLayer:](v11, "convertPoint:fromLayer:", [-[THAnimatableSource animationLayer](-[THAnimationController source](self "source")], v12, v13);
+  -[CALayer convertPoint:fromLayer:](hostLayer, "convertPoint:fromLayer:", [-[THAnimatableSource animationLayer](-[THAnimationController source](self "source")], v12, v13);
   [(THAnimationController *)self setInitialLayerPosition:?];
   [(CALayer *)[(THAnimationController *)self animationLayer] frame];
   [(THAnimationController *)self setInitialLayerSize:v14, v15];
-  v16 = [(THAnimationController *)self hostLayer];
+  hostLayer2 = [(THAnimationController *)self hostLayer];
   [(CALayer *)[(THAnimationController *)self animationLayer] frame];
-  [(CALayer *)v16 convertRect:[(CALayer *)[(THAnimationController *)self animationLayer] superlayer] fromLayer:v17, v18, v19, v20];
+  [(CALayer *)hostLayer2 convertRect:[(CALayer *)[(THAnimationController *)self animationLayer] superlayer] fromLayer:v17, v18, v19, v20];
   v21 = objc_alloc_init(CALayer);
   *&t1.m11 = v40;
   *&t1.m13 = v38;
@@ -246,15 +246,15 @@
   [v22 setFrame:?];
   [v21 addSublayer:v22];
   layerToAnimateUnder = self->_layerToAnimateUnder;
-  v24 = [(THAnimationController *)self hostLayer];
+  hostLayer3 = [(THAnimationController *)self hostLayer];
   if (layerToAnimateUnder)
   {
-    [(CALayer *)v24 insertSublayer:v21 below:self->_layerToAnimateUnder];
+    [(CALayer *)hostLayer3 insertSublayer:v21 below:self->_layerToAnimateUnder];
   }
 
   else
   {
-    [(CALayer *)v24 addSublayer:v21];
+    [(CALayer *)hostLayer3 addSublayer:v21];
   }
 
   if (v6 != 1.0)
@@ -265,19 +265,19 @@
     [v21 setAffineTransform:&t1];
   }
 
-  [(CALayer *)v10 position];
-  [v22 convertPoint:-[CALayer superlayer](v10 fromLayer:{"superlayer"), v25, v26}];
-  [(CALayer *)v10 setPosition:?];
-  [v22 addSublayer:v10];
-  [v22 addSublayer:v9];
+  [(CALayer *)fadeOutAnimationLayer position];
+  [v22 convertPoint:-[CALayer superlayer](fadeOutAnimationLayer fromLayer:{"superlayer"), v25, v26}];
+  [(CALayer *)fadeOutAnimationLayer setPosition:?];
+  [v22 addSublayer:fadeOutAnimationLayer];
+  [v22 addSublayer:fadeInAnimationLayer];
   if (v6 != 1.0)
   {
     memset(&v48, 0, sizeof(v48));
     CGAffineTransformMakeScale(&v48, 1.0 / v6, 1.0 / v6);
     memset(&v47, 0, sizeof(v47));
-    if (v10)
+    if (fadeOutAnimationLayer)
     {
-      [(CALayer *)v10 transform];
+      [(CALayer *)fadeOutAnimationLayer transform];
     }
 
     else
@@ -294,7 +294,7 @@
     *&t1.m11 = *&v45.a;
     *&t1.m13 = *&v45.c;
     *&t1.m21 = *&v45.tx;
-    [(CALayer *)v10 setAffineTransform:&t1];
+    [(CALayer *)fadeOutAnimationLayer setAffineTransform:&t1];
   }
 
   if (v8 != 1.0)
@@ -302,10 +302,10 @@
     memset(&v48, 0, sizeof(v48));
     CGAffineTransformMakeScale(&v48, v8, v8);
     memset(&v47, 0, sizeof(v47));
-    v27 = [(THAnimationController *)self targetLayer];
-    if (v27)
+    targetLayer = [(THAnimationController *)self targetLayer];
+    if (targetLayer)
     {
-      [(CALayer *)v27 transform];
+      [(CALayer *)targetLayer transform];
     }
 
     else
@@ -319,25 +319,25 @@
     *&t1.m21 = *&v47.tx;
     v44 = v48;
     CGAffineTransformConcat(&v43, &t1, &v44);
-    v28 = [(THAnimationController *)self targetLayer];
+    targetLayer2 = [(THAnimationController *)self targetLayer];
     *&t1.m11 = *&v43.a;
     *&t1.m13 = *&v43.c;
     *&t1.m21 = *&v43.tx;
-    [(CALayer *)v28 setAffineTransform:&t1];
+    [(CALayer *)targetLayer2 setAffineTransform:&t1];
   }
 
   [v22 bounds];
   TSDCenterOfRect();
   v30 = v29;
   v32 = v31;
-  [(CALayer *)v9 frame];
+  [(CALayer *)fadeInAnimationLayer frame];
   TSDCenterOfRect();
   memset(&v48, 0, sizeof(v48));
   CGAffineTransformMakeTranslation(&v48, -(v33 - v30), -(v34 - v32));
   memset(&v47, 0, sizeof(v47));
-  if (v9)
+  if (fadeInAnimationLayer)
   {
-    [(CALayer *)v9 transform];
+    [(CALayer *)fadeInAnimationLayer transform];
   }
 
   else
@@ -354,7 +354,7 @@
   *&t1.m11 = *&v42.a;
   *&t1.m13 = *&v42.c;
   *&t1.m21 = *&v42.tx;
-  [(CALayer *)v9 setAffineTransform:&t1];
+  [(CALayer *)fadeInAnimationLayer setAffineTransform:&t1];
   *&t1.m11 = *&v50.a;
   *&t1.m13 = *&v50.c;
   *&t1.m21 = *&v50.tx;
@@ -393,10 +393,10 @@
 - (void)setupAnimationLayer
 {
   memset(&v24, 0, sizeof(v24));
-  v3 = [(THAnimationController *)self source];
-  if (v3)
+  source = [(THAnimationController *)self source];
+  if (source)
   {
-    [(THAnimatableSource *)v3 freeTransform];
+    [(THAnimatableSource *)source freeTransform];
   }
 
   else
@@ -413,11 +413,11 @@
   *&t2.tx = v15;
   if (!CGAffineTransformEqualToTransform(&t1, &t2))
   {
-    v4 = [(THAnimationController *)self animationLayer];
+    animationLayer = [(THAnimationController *)self animationLayer];
     *&t1.a = v19;
     *&t1.c = v17;
     *&t1.tx = v15;
-    [(CALayer *)v4 setAffineTransform:&t1];
+    [(CALayer *)animationLayer setAffineTransform:&t1];
   }
 
   v5 = [(THAnimationController *)self hostLayer:v15];
@@ -582,12 +582,12 @@
   [(THAnimationController *)self source];
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(THAnimatableSource *)[(THAnimationController *)self source] enforceAnimationLayer];
+    enforceAnimationLayer = [(THAnimatableSource *)[(THAnimationController *)self source] enforceAnimationLayer];
   }
 
   else
   {
-    v13 = 0;
+    enforceAnimationLayer = 0;
   }
 
   if ([(THAnimationController *)self p_shouldCrossFade])
@@ -598,8 +598,8 @@
 
   else
   {
-    v15 = [(CALayer *)[(THAnimationController *)self animationLayer] superlayer];
-    v16 = (v15 != [(THAnimationController *)self hostLayer]) | v13;
+    superlayer = [(CALayer *)[(THAnimationController *)self animationLayer] superlayer];
+    v16 = (superlayer != [(THAnimationController *)self hostLayer]) | enforceAnimationLayer;
     v14 = NSArray_ptr;
     if (v16)
     {
@@ -637,22 +637,22 @@
   [(THAnimationController *)self destination];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(THAnimationController *)self destination];
+    destination = [(THAnimationController *)self destination];
 
-    [(THAnimatableDestination *)v3 reparentTargetLayerIfBackedByView:self];
+    [(THAnimatableDestination *)destination reparentTargetLayerIfBackedByView:self];
   }
 }
 
-- (void)presentAnimationWithCompletionBlock:(id)a3 overshoot:(BOOL)a4
+- (void)presentAnimationWithCompletionBlock:(id)block overshoot:(BOOL)overshoot
 {
-  v4 = a4;
+  overshootCopy = overshoot;
   if (!+[NSThread isMainThread])
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
   [+[UIWindow keyWindow](UIWindow "keyWindow")];
-  [(THAnimationController *)self setOvershoot:v4];
+  [(THAnimationController *)self setOvershoot:overshootCopy];
   [(THAnimationController *)self willAnimate];
   [(THAnimationController *)self setupTarget];
   [(CALayer *)[(THAnimationController *)self animationLayer] removeAllAnimations];
@@ -664,7 +664,7 @@
   v7[2] = sub_159150;
   v7[3] = &unk_45AEA8;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = block;
   [CATransaction setCompletionBlock:v7];
   [(THAnimationController *)self performAnimation];
   +[CATransaction commit];
@@ -678,15 +678,15 @@
     return 0.25;
   }
 
-  v3 = [(THAnimationController *)self source];
+  source = [(THAnimationController *)self source];
 
-  [(THAnimatableSource *)v3 animationDuration];
+  [(THAnimatableSource *)source animationDuration];
   return result;
 }
 
 - (void)addForegroundFadeAnimation
 {
-  v3 = [(THAnimationController *)self foregroundLayer];
+  foregroundLayer = [(THAnimationController *)self foregroundLayer];
   v4 = [CABasicAnimation animationWithKeyPath:@"opacity"];
   [(CABasicAnimation *)v4 setFromValue:[NSNumber numberWithFloat:0.0]];
   LODWORD(v5) = 1.0;
@@ -695,16 +695,16 @@
   [(CABasicAnimation *)v4 setDuration:?];
   [(CABasicAnimation *)v4 setRemovedOnCompletion:0];
   [(CABasicAnimation *)v4 setFillMode:kCAFillModeForwards];
-  [(CALayer *)v3 addAnimation:v4 forKey:@"THForegroundFadeAnimation"];
-  v6 = [(THAnimationController *)self foregroundLayer];
+  [(CALayer *)foregroundLayer addAnimation:v4 forKey:@"THForegroundFadeAnimation"];
+  foregroundLayer2 = [(THAnimationController *)self foregroundLayer];
   LODWORD(v7) = 1.0;
 
-  [(CALayer *)v6 setOpacity:v7];
+  [(CALayer *)foregroundLayer2 setOpacity:v7];
 }
 
 - (void)addBackgroundFadeOutAnimation
 {
-  v3 = [(THAnimationController *)self backgroundLayer];
+  backgroundLayer = [(THAnimationController *)self backgroundLayer];
   v4 = [CABasicAnimation animationWithKeyPath:@"opacity"];
   LODWORD(v5) = 1.0;
   [(CABasicAnimation *)v4 setFromValue:[NSNumber numberWithFloat:v5]];
@@ -714,7 +714,7 @@
   [(CABasicAnimation *)v4 setRemovedOnCompletion:0];
   [(CABasicAnimation *)v4 setFillMode:kCAFillModeForwards];
 
-  [(CALayer *)v3 addAnimation:v4 forKey:@"THBackgroundFadeAnimation"];
+  [(CALayer *)backgroundLayer addAnimation:v4 forKey:@"THBackgroundFadeAnimation"];
 }
 
 - (void)addContentAnimation
@@ -734,9 +734,9 @@
     [v3 setType:kCATransitionFade];
     [(THAnimationController *)self animationDuration];
     [v3 setDuration:?];
-    v4 = [(THAnimationController *)self shouldAnimateTargetLayer];
+    shouldAnimateTargetLayer = [(THAnimationController *)self shouldAnimateTargetLayer];
     v5 = &kCAMediaTimingFunctionEaseOut;
-    if (!v4)
+    if (!shouldAnimateTargetLayer)
     {
       v5 = &kCAMediaTimingFunctionEaseIn;
     }
@@ -747,11 +747,11 @@
 
   if ([(THAnimatableSource *)[(THAnimationController *)self source] shadowAnimationLayer])
   {
-    v6 = [(THAnimationController *)self shadowFadeOutAnimation];
-    v7 = [(THAnimatableSource *)[(THAnimationController *)self source] shadowAnimationLayer];
+    shadowFadeOutAnimation = [(THAnimationController *)self shadowFadeOutAnimation];
+    shadowAnimationLayer = [(THAnimatableSource *)[(THAnimationController *)self source] shadowAnimationLayer];
     v8 = @"THAnimationControllerFadeOutAnimation";
 LABEL_15:
-    [(CALayer *)v7 addAnimation:v6 forKey:v8];
+    [(CALayer *)shadowAnimationLayer addAnimation:shadowFadeOutAnimation forKey:v8];
     goto LABEL_16;
   }
 
@@ -767,8 +767,8 @@ LABEL_15:
 
   if ([(THAnimationController *)self sourceOverlayLayer])
   {
-    v6 = [(THAnimationController *)self sourceShadowFadeOutAnimation];
-    v7 = [(THAnimationController *)self sourceOverlayLayer];
+    shadowFadeOutAnimation = [(THAnimationController *)self sourceShadowFadeOutAnimation];
+    shadowAnimationLayer = [(THAnimationController *)self sourceOverlayLayer];
     v8 = @"fadeOutAnimation";
     goto LABEL_15;
   }
@@ -786,8 +786,8 @@ LABEL_16:
     [(CALayer *)[(THAnimationController *)self targetReflectionLayer] addAnimation:[(THAnimationController *)self fadeInOnDelayAnimationToOpacity:v10] forKey:@"fadeInAnimation"];
   }
 
-  v11 = [(THAnimationController *)self shadowTransformAnimation];
-  if (v11)
+  shadowTransformAnimation = [(THAnimationController *)self shadowTransformAnimation];
+  if (shadowTransformAnimation)
   {
     [-[THAnimatableSource shadowAnimationLayer](-[THAnimationController source](self "source")];
   }
@@ -828,10 +828,10 @@ LABEL_16:
 - (id)curveAndOvershootAnimation
 {
   memset(&v85, 0, sizeof(v85));
-  v3 = [(THAnimationController *)self animationLayer];
-  if (v3)
+  animationLayer = [(THAnimationController *)self animationLayer];
+  if (animationLayer)
   {
-    [(CALayer *)v3 transform];
+    [(CALayer *)animationLayer transform];
   }
 
   else
@@ -840,14 +840,14 @@ LABEL_16:
   }
 
   CATransform3DGetAffineTransform(&v85, &v84);
-  v4 = [(THAnimationController *)self animationLayer];
+  animationLayer2 = [(THAnimationController *)self animationLayer];
   v74 = *&CGAffineTransformIdentity.c;
   v75 = *&CGAffineTransformIdentity.a;
   *&v84.m11 = *&CGAffineTransformIdentity.a;
   *&v84.m13 = v74;
   v73 = *&CGAffineTransformIdentity.tx;
   *&v84.m21 = v73;
-  [(CALayer *)v4 setAffineTransform:&v84];
+  [(CALayer *)animationLayer2 setAffineTransform:&v84];
   [(THAnimationController *)self initialLayerPosition];
   [(THAnimationController *)self initialLayerSize];
   TSDRectWithCenterAndSize();
@@ -855,11 +855,11 @@ LABEL_16:
   v8 = v7;
   if ([(THAnimationController *)self targetLayer]&& ([(THAnimatableDestination *)[(THAnimationController *)self destination] shouldFadeInTargetLayer:[(THAnimationController *)self source]]& 1) == 0)
   {
-    v9 = [(THAnimationController *)self targetLayer];
+    targetLayer = [(THAnimationController *)self targetLayer];
     *&v84.m11 = v75;
     *&v84.m13 = v74;
     *&v84.m21 = v73;
-    [(CALayer *)v9 setAffineTransform:&v84];
+    [(CALayer *)targetLayer setAffineTransform:&v84];
   }
 
   [(THAnimationController *)self targetFrame];
@@ -885,7 +885,7 @@ LABEL_16:
   v65 = v20;
   [(THAnimationController *)self animationDuration];
   v72 = v21;
-  v22 = [(THAnimationController *)self overshoot];
+  overshoot = [(THAnimationController *)self overshoot];
   [(THAnimationController *)self overshoot];
   [(THAnimationController *)self destination];
   v64 = v8;
@@ -909,7 +909,7 @@ LABEL_16:
   v27 = v26;
   TSDAddPoints();
   v28 = 0.0;
-  if (v22)
+  if (overshoot)
   {
     v28 = 0.05;
   }
@@ -1067,7 +1067,7 @@ LABEL_16:
   return v6;
 }
 
-- (id)fadeInOnDelayAnimationToOpacity:(double)a3
+- (id)fadeInOnDelayAnimationToOpacity:(double)opacity
 {
   [(THAnimationController *)self animationDuration];
   v6 = v5;
@@ -1078,7 +1078,7 @@ LABEL_16:
   [(CABasicAnimation *)v9 setBeginTime:v6 + CACurrentMediaTime()];
   [(CABasicAnimation *)v9 setDuration:v8];
   [(CABasicAnimation *)v9 setFromValue:[NSNumber numberWithFloat:0.0]];
-  *&v10 = a3;
+  *&v10 = opacity;
   [(CABasicAnimation *)v9 setToValue:[NSNumber numberWithFloat:v10]];
   [(CABasicAnimation *)v9 setFillMode:kCAFillModeForwards];
   [(CABasicAnimation *)v9 setRemovedOnCompletion:0];
@@ -1100,13 +1100,13 @@ LABEL_16:
 
 - (id)shadowTransformAnimation
 {
-  v3 = [(THAnimatableSource *)[(THAnimationController *)self source] shadowAnimationLayer];
-  if (self->_shadowTransformDurationScale <= 0.0 || v3 == 0)
+  shadowAnimationLayer = [(THAnimatableSource *)[(THAnimationController *)self source] shadowAnimationLayer];
+  if (self->_shadowTransformDurationScale <= 0.0 || shadowAnimationLayer == 0)
   {
     return 0;
   }
 
-  v5 = v3;
+  v5 = shadowAnimationLayer;
   [(THAnimationController *)self source];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
@@ -1117,11 +1117,11 @@ LABEL_16:
   v7 = v6;
   [v5 affineTransform];
   memset(v15, 0, sizeof(v15));
-  v8 = [(THAnimationController *)self source];
-  v9 = [(THAnimationController *)self destination];
-  if (v8)
+  source = [(THAnimationController *)self source];
+  destination = [(THAnimationController *)self destination];
+  if (source)
   {
-    [(THAnimatableSource *)v8 shadowAnimationLayerDestinationTransform:v9 uniformTargetScale:self->_uniformTargetScale];
+    [(THAnimatableSource *)source shadowAnimationLayerDestinationTransform:destination uniformTargetScale:self->_uniformTargetScale];
   }
 
   else
@@ -1214,10 +1214,10 @@ LABEL_16:
   v32.size.height = v7;
   if (CGRectIsEmpty(v32))
   {
-    v15 = [(THAnimatableDestination *)[(THAnimationController *)self destination] targetLayer];
+    targetLayer = [(THAnimatableDestination *)[(THAnimationController *)self destination] targetLayer];
     if ([(THAnimationController *)self hostLayer])
     {
-      if (v15 && [v15 superlayer])
+      if (targetLayer && [targetLayer superlayer])
       {
         [(THAnimationController *)self destination];
         if (objc_opt_respondsToSelector())
@@ -1235,14 +1235,14 @@ LABEL_16:
         v33.size.height = height;
         if (CGRectIsEmpty(v33))
         {
-          [v15 frame];
+          [targetLayer frame];
           x = v20;
           y = v21;
           width = v22;
           height = v23;
         }
 
-        -[CALayer convertRect:fromLayer:](-[THAnimationController hostLayer](self, "hostLayer"), "convertRect:fromLayer:", [v15 superlayer], x, y, width, height);
+        -[CALayer convertRect:fromLayer:](-[THAnimationController hostLayer](self, "hostLayer"), "convertRect:fromLayer:", [targetLayer superlayer], x, y, width, height);
         v10 = v24;
         v9 = v25;
         v8 = v26;
@@ -1262,30 +1262,30 @@ LABEL_16:
   return result;
 }
 
-- (id)p_objectForLayer:(id)a3 key:(id)a4
+- (id)p_objectForLayer:(id)layer key:(id)key
 {
-  v6 = [(THAnimationController *)self layerSaveRestore];
+  layerSaveRestore = [(THAnimationController *)self layerSaveRestore];
 
-  return [(TSULayerSaveRestore *)v6 objectForLayer:a3 key:a4];
+  return [(TSULayerSaveRestore *)layerSaveRestore objectForLayer:layer key:key];
 }
 
-- (void)p_saveLayer:(id)a3
+- (void)p_saveLayer:(id)layer
 {
-  if (a3)
+  if (layer)
   {
-    v4 = [(THAnimationController *)self layerSaveRestore];
+    layerSaveRestore = [(THAnimationController *)self layerSaveRestore];
 
-    [(TSULayerSaveRestore *)v4 saveLayer:a3];
+    [(TSULayerSaveRestore *)layerSaveRestore saveLayer:layer];
   }
 }
 
-- (void)p_restoreLayer:(id)a3
+- (void)p_restoreLayer:(id)layer
 {
-  if (a3)
+  if (layer)
   {
-    v4 = [(THAnimationController *)self layerSaveRestore];
+    layerSaveRestore = [(THAnimationController *)self layerSaveRestore];
 
-    [(TSULayerSaveRestore *)v4 restoreLayer:a3];
+    [(TSULayerSaveRestore *)layerSaveRestore restoreLayer:layer];
   }
 }
 
@@ -1327,9 +1327,9 @@ LABEL_16:
 
 - (double)p_scaleForAnimationLayer
 {
-  v3 = [(THAnimationController *)self shouldAnimateTargetLayer];
+  shouldAnimateTargetLayer = [(THAnimationController *)self shouldAnimateTargetLayer];
   result = 1.0;
-  if (v3)
+  if (shouldAnimateTargetLayer)
   {
     [-[THAnimatableDestination targetLayer](-[THAnimationController destination](self destination];
     v6 = v5;

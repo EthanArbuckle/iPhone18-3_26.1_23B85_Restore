@@ -1,40 +1,40 @@
 @interface CBStackISOStreamBTStack
-+ (BOOL)_configureStream:(id)a3 setup:(BOOL)a4 error:(id *)a5;
-+ (BOOL)_processConfigRequest:(id)a3 error:(id *)a4;
-+ (BOOL)_writeWithRequest:(id)a3 stream:(id)a4 error:(id *)a5;
-+ (void)_processNextConfigRequest:(unsigned __int16)a3;
-- (CBStackISOStreamBTStack)initWithConnectionHandle:(unsigned __int16)a3 dataPathDirection:(unsigned __int8)a4 dataPathID:(unsigned __int8)a5 dispatchQueue:(id)a6;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_activateCompletedWithError:(id)a3;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_completeReadRequest:(id)a3 error:(id)a4;
-- (void)_completeWriteRequest:(id)a3 error:(id)a4;
++ (BOOL)_configureStream:(id)stream setup:(BOOL)setup error:(id *)error;
++ (BOOL)_processConfigRequest:(id)request error:(id *)error;
++ (BOOL)_writeWithRequest:(id)request stream:(id)stream error:(id *)error;
++ (void)_processNextConfigRequest:(unsigned __int16)request;
+- (CBStackISOStreamBTStack)initWithConnectionHandle:(unsigned __int16)handle dataPathDirection:(unsigned __int8)direction dataPathID:(unsigned __int8)d dispatchQueue:(id)queue;
+- (id)descriptionWithLevel:(int)level;
+- (void)_activateCompletedWithError:(id)error;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_completeReadRequest:(id)request error:(id)error;
+- (void)_completeWriteRequest:(id)request error:(id)error;
 - (void)_invalidate;
-- (void)_invalidateCoreWithError:(id)a3;
+- (void)_invalidateCoreWithError:(id)error;
 - (void)_invalidated;
-- (void)_receivedData:(id)a3 error:(id)a4;
-- (void)activateWithCompletion:(id)a3;
+- (void)_receivedData:(id)data error:(id)error;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)readWithRequest:(id)a3;
-- (void)writeWithRequest:(id)a3;
+- (void)readWithRequest:(id)request;
+- (void)writeWithRequest:(id)request;
 @end
 
 @implementation CBStackISOStreamBTStack
 
-+ (BOOL)_configureStream:(id)a3 setup:(BOOL)a4 error:(id *)a5
++ (BOOL)_configureStream:(id)stream setup:(BOOL)setup error:(id *)error
 {
-  v6 = a4;
-  v22 = a3;
+  setupCopy = setup;
+  streamCopy = stream;
   v23 = 0;
   sub_1000216B4(&v23);
   if (byte_100B55350)
   {
 LABEL_8:
     v8 = objc_alloc_init(CBStackISOStreamConfigRequest);
-    [(CBStackISOStreamConfigRequest *)v8 setStream:v22];
-    [(CBStackISOStreamConfigRequest *)v8 setSetup:v6];
-    v9 = [v22 connectionHandle];
-    v10 = [NSNumber numberWithUnsignedShort:v9];
+    [(CBStackISOStreamConfigRequest *)v8 setStream:streamCopy];
+    [(CBStackISOStreamConfigRequest *)v8 setSetup:setupCopy];
+    connectionHandle = [streamCopy connectionHandle];
+    v10 = [NSNumber numberWithUnsignedShort:connectionHandle];
     v11 = [qword_100B55338 objectForKeyedSubscript:v10];
     v12 = [v11 count];
     if (v12)
@@ -42,19 +42,19 @@ LABEL_8:
       if (dword_100B51110 <= 30 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
       {
         v13 = "remove";
-        if (v6)
+        if (setupCopy)
         {
           v13 = "setup";
         }
 
-        v20 = v9;
+        v20 = connectionHandle;
         v21 = v12;
         v19 = v13;
         LogPrintF_safe();
       }
     }
 
-    else if (([a1 _processConfigRequest:v8 error:a5] & 1) == 0)
+    else if (([self _processConfigRequest:v8 error:error] & 1) == 0)
     {
       v14 = 0;
 LABEL_22:
@@ -94,10 +94,10 @@ LABEL_22:
     goto LABEL_8;
   }
 
-  if (a5)
+  if (error)
   {
     CBErrorF();
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -111,16 +111,16 @@ LABEL_23:
   return v14;
 }
 
-+ (BOOL)_processConfigRequest:(id)a3 error:(id *)a4
++ (BOOL)_processConfigRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 stream];
-  v7 = [v6 connectionHandle];
-  v8 = [NSNumber numberWithUnsignedShort:v7];
-  v9 = [v6 dataPathDirection];
-  if ([v5 setup])
+  requestCopy = request;
+  stream = [requestCopy stream];
+  connectionHandle = [stream connectionHandle];
+  v8 = [NSNumber numberWithUnsignedShort:connectionHandle];
+  dataPathDirection = [stream dataPathDirection];
+  if ([requestCopy setup])
   {
-    if (v9 == 1)
+    if (dataPathDirection == 1)
     {
       v10 = [qword_100B55340 objectForKeyedSubscript:v8];
 
@@ -131,11 +131,11 @@ LABEL_23:
           LogPrintF_safe();
         }
 
-        if (a4)
+        if (error)
         {
 LABEL_38:
           CBErrorF();
-          *a4 = v17 = 0;
+          *error = v17 = 0;
           goto LABEL_46;
         }
 
@@ -145,37 +145,37 @@ LABEL_45:
       }
     }
 
-    v11 = [v6 dataPathID];
-    v22 = v7;
-    v23 = v9;
-    v24 = v11;
+    dataPathID = [stream dataPathID];
+    v22 = connectionHandle;
+    v23 = dataPathDirection;
+    v24 = dataPathID;
     if (dword_100B51110 <= 30 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
     {
       v12 = "?";
       v13 = "C->H";
-      if (v9 != 1)
+      if (dataPathDirection != 1)
       {
         v13 = "?";
       }
 
-      if (!v9)
+      if (!dataPathDirection)
       {
         v13 = "H->C";
       }
 
-      if (v11 != 255)
+      if (dataPathID != 255)
       {
         v12 = "Vendor";
       }
 
-      if (!v11)
+      if (!dataPathID)
       {
         v12 = "HCI";
       }
 
       v20 = v13;
       v21 = v12;
-      v19 = v7;
+      v19 = connectionHandle;
       LogPrintF_safe();
     }
 
@@ -186,15 +186,15 @@ LABEL_45:
         LogPrintF_safe();
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = CBErrorF();
+        *error = CBErrorF();
       }
 
       goto LABEL_45;
     }
 
-    if (v9 == 1)
+    if (dataPathDirection == 1)
     {
       v14 = qword_100B55340;
       if (!qword_100B55340)
@@ -206,7 +206,7 @@ LABEL_45:
         v14 = qword_100B55340;
       }
 
-      [v14 setObject:v6 forKeyedSubscript:{v8, v19, v20, v21}];
+      [v14 setObject:stream forKeyedSubscript:{v8, v19, v20, v21}];
     }
   }
 
@@ -217,14 +217,14 @@ LABEL_45:
       LogPrintF_safe();
     }
 
-    if (sub_1001804F4(v7, v9))
+    if (sub_1001804F4(connectionHandle, dataPathDirection))
     {
       if (dword_100B51110 <= 90 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
       {
         LogPrintF_safe();
       }
 
-      if (a4)
+      if (error)
       {
         goto LABEL_38;
       }
@@ -239,17 +239,17 @@ LABEL_46:
   return v17;
 }
 
-+ (void)_processNextConfigRequest:(unsigned __int16)a3
++ (void)_processNextConfigRequest:(unsigned __int16)request
 {
-  v3 = a3;
+  requestCopy = request;
   v9 = 0;
   sub_1000216B4(&v9);
   v5 = qword_100B55338;
-  v6 = [NSNumber numberWithUnsignedShort:v3];
+  v6 = [NSNumber numberWithUnsignedShort:requestCopy];
   v7 = [v5 objectForKeyedSubscript:v6];
 
-  v8 = [v7 firstObject];
-  if (v8 && ([a1 _processConfigRequest:v8 error:0] & 1) == 0)
+  firstObject = [v7 firstObject];
+  if (firstObject && ([self _processConfigRequest:firstObject error:0] & 1) == 0)
   {
     [v7 removeObjectAtIndex:0];
   }
@@ -257,20 +257,20 @@ LABEL_46:
   sub_10002249C(&v9);
 }
 
-+ (BOOL)_writeWithRequest:(id)a3 stream:(id)a4 error:(id *)a5
++ (BOOL)_writeWithRequest:(id)request stream:(id)stream error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  streamCopy = stream;
   v16 = 0;
   sub_1000216B4(&v16);
-  [v7 setStream:v8];
-  v9 = [v7 data];
-  v10 = [v9 length];
+  [requestCopy setStream:streamCopy];
+  data = [requestCopy data];
+  v10 = [data length];
   if ([qword_100B55348 count])
   {
     if (dword_100B51110 <= 9 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
     {
-      [v8 connectionHandle];
+      [streamCopy connectionHandle];
       LogPrintF_safe();
     }
 
@@ -279,18 +279,18 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  [qword_100B55348 addObject:v7];
+  [qword_100B55348 addObject:requestCopy];
   if (dword_100B51110 <= 9 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
   {
-    [v8 connectionHandle];
+    [streamCopy connectionHandle];
     LogPrintF_safe();
   }
 
-  v11 = v8[29];
-  v12 = [v9 bytes];
-  if (v12)
+  v11 = streamCopy[29];
+  bytes = [data bytes];
+  if (bytes)
   {
-    v13 = v12;
+    v13 = bytes;
   }
 
   else
@@ -304,10 +304,10 @@ LABEL_15:
   }
 
   [qword_100B55348 removeObjectAtIndex:0];
-  if (a5)
+  if (error)
   {
     CBErrorF();
-    *a5 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -321,19 +321,19 @@ LABEL_16:
   return v14;
 }
 
-- (CBStackISOStreamBTStack)initWithConnectionHandle:(unsigned __int16)a3 dataPathDirection:(unsigned __int8)a4 dataPathID:(unsigned __int8)a5 dispatchQueue:(id)a6
+- (CBStackISOStreamBTStack)initWithConnectionHandle:(unsigned __int16)handle dataPathDirection:(unsigned __int8)direction dataPathID:(unsigned __int8)d dispatchQueue:(id)queue
 {
-  v11 = a6;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = CBStackISOStreamBTStack;
   v12 = [(CBStackISOStreamBTStack *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    v12->_connectionHandle = a3;
-    v12->_dataPathDirection = a4;
-    v12->_dataPathID = a5;
-    objc_storeStrong(&v12->_dispatchQueue, a6);
+    v12->_connectionHandle = handle;
+    v12->_dataPathDirection = direction;
+    v12->_dataPathID = d;
+    objc_storeStrong(&v12->_dispatchQueue, queue);
     v14 = v13;
     objc_sync_enter(v14);
     if (!qword_100B55348)
@@ -351,9 +351,9 @@ LABEL_16:
   return v13;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -402,21 +402,21 @@ LABEL_16:
   return v14;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10014E41C;
   v7[3] = &unk_100AE23F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v16 = 0;
   v17 = &v16;
@@ -429,8 +429,8 @@ LABEL_16:
   v13[2] = sub_10014E6A4;
   v13[3] = &unk_100AE2420;
   v15 = &v16;
-  v4 = a3;
-  v14 = v4;
+  completionCopy = completion;
+  v14 = completionCopy;
   v5 = objc_retainBlock(v13);
   if (self->_activateCalled || self->_invalidateCalled)
   {
@@ -443,18 +443,18 @@ LABEL_16:
   self->_activateCalled = 1;
   if (dword_100B51110 <= 30 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
   {
-    v11 = self;
+    selfCopy = self;
     LogPrintF_safe();
   }
 
   v6 = (v17 + 5);
   obj = v17[5];
-  v7 = [CBStackISOStreamBTStack _configureStream:self setup:1 error:&obj, v11];
+  selfCopy = [CBStackISOStreamBTStack _configureStream:self setup:1 error:&obj, selfCopy];
   objc_storeStrong(v6, obj);
-  if (v7)
+  if (selfCopy)
   {
     self->_setupState = 1;
-    v8 = objc_retainBlock(v4);
+    v8 = objc_retainBlock(completionCopy);
     activateCompletion = self->_activateCompletion;
     self->_activateCompletion = v8;
 LABEL_9:
@@ -465,16 +465,16 @@ LABEL_9:
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)_activateCompletedWithError:(id)a3
+- (void)_activateCompletedWithError:(id)error
 {
-  v8 = a3;
+  errorCopy = error;
   if (dword_100B51110 <= 30 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
   {
     v7 = CUPrintNSError();
     LogPrintF_safe();
   }
 
-  if (v8)
+  if (errorCopy)
   {
     v4 = 3;
   }
@@ -491,7 +491,7 @@ LABEL_9:
 
   if (v5)
   {
-    v5[2](v5, v8);
+    v5[2](v5, errorCopy);
   }
 }
 
@@ -538,9 +538,9 @@ LABEL_9:
   }
 }
 
-- (void)_invalidateCoreWithError:(id)a3
+- (void)_invalidateCoreWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -575,7 +575,7 @@ LABEL_9:
 
   if (self->_removeState == 1)
   {
-    if (v4)
+    if (errorCopy)
     {
       v12 = 3;
     }
@@ -622,28 +622,28 @@ LABEL_9:
   }
 }
 
-- (void)readWithRequest:(id)a3
+- (void)readWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10014EE44;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_receivedData:(id)a3 error:(id)a4
+- (void)_receivedData:(id)data error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMutableArray *)self->_readRequests popFirstObject];
-  if (v7)
+  dataCopy = data;
+  errorCopy = error;
+  popFirstObject = [(NSMutableArray *)self->_readRequests popFirstObject];
+  if (popFirstObject)
   {
-    [(CBStackISOStreamBTStack *)self _completeReadRequest:v7 error:v6];
+    [(CBStackISOStreamBTStack *)self _completeReadRequest:popFirstObject error:errorCopy];
   }
 
   else
@@ -653,11 +653,11 @@ LABEL_9:
     {
       if (dword_100B51110 <= 9 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
       {
-        [v9 length];
+        [dataCopy length];
         LogPrintF_safe();
       }
 
-      v8[2](v8, v9, v6);
+      v8[2](v8, dataCopy, errorCopy);
     }
 
     else
@@ -665,22 +665,22 @@ LABEL_9:
       ++self->_missedReads;
       if (dword_100B51110 <= 9 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
       {
-        [v9 length];
+        [dataCopy length];
         LogPrintF_safe();
       }
     }
   }
 }
 
-- (void)_completeReadRequest:(id)a3 error:(id)a4
+- (void)_completeReadRequest:(id)request error:(id)error
 {
-  v16 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   if (dword_100B51110 <= 9 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
   {
     connectionHandle = self->_connectionHandle;
-    v8 = [v16 data];
-    v9 = [v8 length];
+    data = [requestCopy data];
+    v9 = [data length];
     missedReads = self->_missedReads;
     CUPrintNSError();
     v15 = v14 = missedReads;
@@ -689,41 +689,41 @@ LABEL_9:
     LogPrintF_safe();
   }
 
-  [v16 setError:{v6, v12, v13, v14, v15}];
-  [v16 setMissedReads:self->_missedReads];
+  [requestCopy setError:{errorCopy, v12, v13, v14, v15}];
+  [requestCopy setMissedReads:self->_missedReads];
   self->_missedReads = 0;
-  v11 = [v16 completionHandler];
-  [v16 setCompletionHandler:0];
-  if (v11)
+  completionHandler = [requestCopy completionHandler];
+  [requestCopy setCompletionHandler:0];
+  if (completionHandler)
   {
-    v11[2](v11);
+    completionHandler[2](completionHandler);
   }
 }
 
-- (void)writeWithRequest:(id)a3
+- (void)writeWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10014F36C;
   v7[3] = &unk_100AE0B60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = requestCopy;
+  v6 = requestCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_completeWriteRequest:(id)a3 error:(id)a4
+- (void)_completeWriteRequest:(id)request error:(id)error
 {
-  v16 = a3;
-  v6 = a4;
+  requestCopy = request;
+  errorCopy = error;
   --self->_outstandingWrites;
   if (dword_100B51110 <= 9 && (dword_100B51110 != -1 || _LogCategory_Initialize()))
   {
     connectionHandle = self->_connectionHandle;
-    v8 = [v16 data];
-    v9 = [v8 length];
+    data = [requestCopy data];
+    v9 = [data length];
     outstandingWrites = self->_outstandingWrites;
     CUPrintNSError();
     v15 = v14 = outstandingWrites;
@@ -732,12 +732,12 @@ LABEL_9:
     LogPrintF_safe();
   }
 
-  [v16 setError:{v6, v12, v13, v14, v15}];
-  v11 = [v16 completionHandler];
-  [v16 setCompletionHandler:0];
-  if (v11)
+  [requestCopy setError:{errorCopy, v12, v13, v14, v15}];
+  completionHandler = [requestCopy completionHandler];
+  [requestCopy setCompletionHandler:0];
+  if (completionHandler)
   {
-    v11[2](v11);
+    completionHandler[2](completionHandler);
   }
 
   [(CBStackISOStreamBTStack *)self _invalidated];

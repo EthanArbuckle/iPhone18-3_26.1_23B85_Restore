@@ -1,28 +1,28 @@
 @interface HAP2AccessoryServerSecureTransportThreadPaired
-- (id)decryptData:(id)a3 type:(unint64_t)a4 error:(id *)a5;
-- (id)securitySessionDidRequestAdditionalDerivedKeyTuples:(id)a3;
-- (void)securitySession:(id)a3 didCloseWithError:(id)a4;
-- (void)securitySessionDidOpen:(id)a3;
+- (id)decryptData:(id)data type:(unint64_t)type error:(id *)error;
+- (id)securitySessionDidRequestAdditionalDerivedKeyTuples:(id)tuples;
+- (void)securitySession:(id)session didCloseWithError:(id)error;
+- (void)securitySessionDidOpen:(id)open;
 @end
 
 @implementation HAP2AccessoryServerSecureTransportThreadPaired
 
-- (void)securitySession:(id)a3 didCloseWithError:(id)a4
+- (void)securitySession:(id)session didCloseWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __84__HAP2AccessoryServerSecureTransportThreadPaired_securitySession_didCloseWithError___block_invoke;
   v12[3] = &unk_2786D7078;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = sessionCopy;
+  v14 = errorCopy;
+  v8 = errorCopy;
+  v9 = sessionCopy;
   v10 = MEMORY[0x231885210](v12);
-  v11 = [(HAP2AccessoryServerTransportBase *)self operationQueue];
-  [v11 addConcurrentBlock:v10];
+  operationQueue = [(HAP2AccessoryServerTransportBase *)self operationQueue];
+  [operationQueue addConcurrentBlock:v10];
 }
 
 id __84__HAP2AccessoryServerSecureTransportThreadPaired_securitySession_didCloseWithError___block_invoke(uint64_t a1)
@@ -35,16 +35,16 @@ id __84__HAP2AccessoryServerSecureTransportThreadPaired_securitySession_didClose
   return objc_msgSendSuper2(&v5, sel_securitySession_didCloseWithError_, v2, v3);
 }
 
-- (void)securitySessionDidOpen:(id)a3
+- (void)securitySessionDidOpen:(id)open
 {
-  v4 = a3;
+  openCopy = open;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __73__HAP2AccessoryServerSecureTransportThreadPaired_securitySessionDidOpen___block_invoke;
   v11 = &unk_2786D7050;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = openCopy;
+  selfCopy = self;
+  v5 = openCopy;
   v6 = MEMORY[0x231885210](&v8);
   v7 = [(HAP2AccessoryServerTransportBase *)self operationQueue:v8];
   [v7 addConcurrentBlock:v6];
@@ -91,7 +91,7 @@ void __73__HAP2AccessoryServerSecureTransportThreadPaired_securitySessionDidOpen
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)securitySessionDidRequestAdditionalDerivedKeyTuples:(id)a3
+- (id)securitySessionDidRequestAdditionalDerivedKeyTuples:(id)tuples
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v3 = [HAPSecuritySessionDelegateAdditionalDerivedKeyTuple alloc];
@@ -106,21 +106,21 @@ void __73__HAP2AccessoryServerSecureTransportThreadPaired_securitySessionDidOpen
   return v7;
 }
 
-- (id)decryptData:(id)a3 type:(unint64_t)a4 error:(id *)a5
+- (id)decryptData:(id)data type:(unint64_t)type error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a4 != 1)
+  dataCopy = data;
+  if (type != 1)
   {
     v19.receiver = self;
     v19.super_class = HAP2AccessoryServerSecureTransportThreadPaired;
-    v11 = [(HAP2AccessoryServerSecureTransportBase *)&v19 decryptData:v8 type:a4 error:a5];
+    v11 = [(HAP2AccessoryServerSecureTransportBase *)&v19 decryptData:dataCopy type:type error:error];
     goto LABEL_14;
   }
 
-  v9 = [(HAP2AccessoryServerSecureTransportThreadPaired *)self eventEncryption];
+  eventEncryption = [(HAP2AccessoryServerSecureTransportThreadPaired *)self eventEncryption];
 
-  if (!v9)
+  if (!eventEncryption)
   {
     if (hap2LogInitialize_onceToken != -1)
     {
@@ -131,19 +131,19 @@ void __73__HAP2AccessoryServerSecureTransportThreadPaired_securitySessionDidOpen
     if (os_log_type_enabled(hap2Log_accessory, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v21 = self;
+      selfCopy = self;
       _os_log_error_impl(&dword_22AADC000, v14, OS_LOG_TYPE_ERROR, "%@ No event key was derived", buf, 0xCu);
-      if (a5)
+      if (error)
       {
         goto LABEL_10;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
 LABEL_10:
       [MEMORY[0x277CCA9B8] hapErrorWithCode:1];
-      *a5 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_14;
     }
 
@@ -151,9 +151,9 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v10 = [(HAP2AccessoryServerSecureTransportThreadPaired *)self eventEncryption];
+  eventEncryption2 = [(HAP2AccessoryServerSecureTransportThreadPaired *)self eventEncryption];
   v18 = 0;
-  v11 = [v10 decrypt:v8 additionalAuthenticatedData:0 error:&v18];
+  v11 = [eventEncryption2 decrypt:dataCopy additionalAuthenticatedData:0 error:&v18];
   v12 = v18;
 
   if (v11)
@@ -164,10 +164,10 @@ LABEL_10:
   else
   {
     [(HAP2AccessoryServerTransportBase *)self closeWithError:v12 completion:&__block_literal_global_25493];
-    if (a5)
+    if (error)
     {
       v15 = v12;
-      *a5 = v12;
+      *error = v12;
     }
   }
 

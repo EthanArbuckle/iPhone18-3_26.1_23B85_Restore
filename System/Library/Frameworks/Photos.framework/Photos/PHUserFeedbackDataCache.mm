@@ -7,21 +7,21 @@
 - (NSSet)deniedFeaturedPhotoUUIDs;
 - (NSSet)holidayNamesWithNegativeFeedback;
 - (NSSet)locationsWithNegativeFeedback;
-- (PHUserFeedbackDataCache)initWithPhotoLibrary:(id)a3 importantPersons:(id)a4;
-- (id)_confidentMergeCandidateUUIDsForPerson:(id)a3;
-- (void)_loadDeniedFeaturedPhotoUUIDsWithPhotoLibrary:(id)a3;
-- (void)_loadMemoryFeedbackDataWithPhotoLibrary:(id)a3;
-- (void)_loadPersonFeedbackDataWithPhotoLibrary:(id)a3;
-- (void)loadDataWithPhotoLibrary:(id)a3;
+- (PHUserFeedbackDataCache)initWithPhotoLibrary:(id)library importantPersons:(id)persons;
+- (id)_confidentMergeCandidateUUIDsForPerson:(id)person;
+- (void)_loadDeniedFeaturedPhotoUUIDsWithPhotoLibrary:(id)library;
+- (void)_loadMemoryFeedbackDataWithPhotoLibrary:(id)library;
+- (void)_loadPersonFeedbackDataWithPhotoLibrary:(id)library;
+- (void)loadDataWithPhotoLibrary:(id)library;
 @end
 
 @implementation PHUserFeedbackDataCache
 
-- (void)_loadDeniedFeaturedPhotoUUIDsWithPhotoLibrary:(id)a3
+- (void)_loadDeniedFeaturedPhotoUUIDsWithPhotoLibrary:(id)library
 {
   v57 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v36 = self;
+  libraryCopy = library;
+  selfCopy = self;
   v4 = self->_userFeedbackLogging;
   v5 = os_signpost_id_generate(v4);
   info = 0;
@@ -39,12 +39,12 @@
   v37 = v7;
 
   v35 = mach_absolute_time();
-  v8 = [v41 librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
   v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"state == %d", 4];
-  [v8 setPredicate:v9];
+  [librarySpecificFetchOptions setPredicate:v9];
 
-  v39 = v8;
-  v10 = [PHSuggestion fetchAllFeaturedStateEnabledSuggestionsWithOptions:v8];
+  v39 = librarySpecificFetchOptions;
+  v10 = [PHSuggestion fetchAllFeaturedStateEnabledSuggestionsWithOptions:librarySpecificFetchOptions];
   v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v46 = 0u;
   v47 = 0u;
@@ -67,8 +67,8 @@
 
         v16 = *(*(&v46 + 1) + 8 * i);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v41 librarySpecificFetchOptions];
-        v19 = [PHAsset fetchKeyAssetsInAssetCollection:v16 options:v18];
+        librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
+        v19 = [PHAsset fetchKeyAssetsInAssetCollection:v16 options:librarySpecificFetchOptions2];
 
         v44 = 0u;
         v45 = 0u;
@@ -89,8 +89,8 @@
                 objc_enumerationMutation(v20);
               }
 
-              v25 = [*(*(&v42 + 1) + 8 * j) uuid];
-              [v11 addObject:v25];
+              uuid = [*(*(&v42 + 1) + 8 * j) uuid];
+              [v11 addObject:uuid];
             }
 
             v22 = [v20 countByEnumeratingWithState:&v42 objects:v55 count:16];
@@ -108,12 +108,12 @@
     while (v13);
   }
 
-  [(PHUserFeedbackDataCache *)v36 setDeniedFeaturedPhotoUUIDs:v11];
+  [(PHUserFeedbackDataCache *)selfCopy setDeniedFeaturedPhotoUUIDs:v11];
   v26 = PLPhotoKitGetLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [(PHUserFeedbackDataCache *)v36 deniedFeaturedPhotoUUIDs];
-    v28 = [v27 count];
+    deniedFeaturedPhotoUUIDs = [(PHUserFeedbackDataCache *)selfCopy deniedFeaturedPhotoUUIDs];
+    v28 = [deniedFeaturedPhotoUUIDs count];
     *buf = 134217984;
     v52 = v28;
     _os_log_impl(&dword_19C86F000, v26, OS_LOG_TYPE_DEFAULT, "PHUserFeedbackDataCache: Finished loading denied featured photos, negative feedback added for %lu assets.", buf, 0xCu);
@@ -142,24 +142,24 @@
 
 - (NSSet)deniedFeaturedPhotoUUIDs
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_deniedFeaturedPhotoUUIDs)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_deniedFeaturedPhotoUUIDs)
   {
-    [(PHUserFeedbackDataCache *)v2 _loadDeniedFeaturedPhotoUUIDsWithPhotoLibrary:v2->_photoLibrary];
+    [(PHUserFeedbackDataCache *)selfCopy _loadDeniedFeaturedPhotoUUIDsWithPhotoLibrary:selfCopy->_photoLibrary];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  deniedFeaturedPhotoUUIDs = v2->_deniedFeaturedPhotoUUIDs;
+  deniedFeaturedPhotoUUIDs = selfCopy->_deniedFeaturedPhotoUUIDs;
 
   return deniedFeaturedPhotoUUIDs;
 }
 
-- (id)_confidentMergeCandidateUUIDsForPerson:(id)a3
+- (id)_confidentMergeCandidateUUIDsForPerson:(id)person
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  personCopy = person;
   v5 = self->_userFeedbackLogging;
   v6 = os_signpost_id_generate(v5);
   info = 0;
@@ -175,27 +175,27 @@
 
   v29 = mach_absolute_time();
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v11 = [v4 photoLibrary];
-  v12 = [v11 librarySpecificFetchOptions];
+  photoLibrary = [personCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  v13 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(v4, "detectionType")}];
+  v13 = [MEMORY[0x1E696AD98] numberWithShort:{objc_msgSend(personCopy, "detectionType")}];
   v40[0] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
-  [v12 setIncludedDetectionTypes:v14];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:v14];
 
-  [v12 setIncludeOnlyPersonsWithVisibleKeyFaces:1];
+  [librarySpecificFetchOptions setIncludeOnlyPersonsWithVisibleKeyFaces:1];
   spid = v6;
-  if ([v4 detectionType] == 1)
+  if ([personCopy detectionType] == 1)
   {
     v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %f", @"mergeCandidateConfidence", 0x3FEA8F5C28F5C28FLL, v6];
-    [v12 setPredicate:v15];
+    [librarySpecificFetchOptions setPredicate:v15];
 
-    [PHPerson fetchMergeCandidateWithConfidencePersonsForPerson:v4 options:v12];
+    [PHPerson fetchMergeCandidateWithConfidencePersonsForPerson:personCopy options:librarySpecificFetchOptions];
   }
 
   else
   {
-    [PHPerson fetchMergeCandidatePersonsForPerson:v4 options:v12];
+    [PHPerson fetchMergeCandidatePersonsForPerson:personCopy options:librarySpecificFetchOptions];
   }
 
   v32 = 0u;
@@ -216,8 +216,8 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v30 + 1) + 8 * i) uuid];
-        [v10 addObject:v21];
+        uuid = [*(*(&v30 + 1) + 8 * i) uuid];
+        [v10 addObject:uuid];
       }
 
       v18 = [v16 countByEnumeratingWithState:&v30 objects:v39 count:16];
@@ -249,11 +249,11 @@
   return v10;
 }
 
-- (void)_loadMemoryFeedbackDataWithPhotoLibrary:(id)a3
+- (void)_loadMemoryFeedbackDataWithPhotoLibrary:(id)library
 {
   v77 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v51 = self;
+  libraryCopy = library;
+  selfCopy = self;
   v5 = self->_userFeedbackLogging;
   v6 = os_signpost_id_generate(v5);
   info = 0;
@@ -276,8 +276,8 @@
   v9 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v54 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v11 = [v4 librarySpecificFetchOptions];
-  v12 = [PHMemory fetchBlockedMemoriesWithOptions:v11];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  v12 = [PHMemory fetchBlockedMemoriesWithOptions:librarySpecificFetchOptions];
 
   v67 = 0u;
   v68 = 0u;
@@ -298,43 +298,43 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v65 + 1) + 8 * i) blacklistedFeature];
-        if ([v18 type] == 16)
+        blacklistedFeature = [*(*(&v65 + 1) + 8 * i) blacklistedFeature];
+        if ([blacklistedFeature type] == 16)
         {
-          v19 = [v18 date];
+          date = [blacklistedFeature date];
           v20 = v9;
         }
 
-        else if ([v18 type] == 512)
+        else if ([blacklistedFeature type] == 512)
         {
-          v19 = [v18 dateInterval];
+          date = [blacklistedFeature dateInterval];
           v20 = v10;
         }
 
-        else if ([v18 type] == 32)
+        else if ([blacklistedFeature type] == 32)
         {
-          v19 = [v18 holidayName];
+          date = [blacklistedFeature holidayName];
           v20 = v55;
         }
 
-        else if ([v18 type] == 4096)
+        else if ([blacklistedFeature type] == 4096)
         {
-          v19 = [v18 location];
+          date = [blacklistedFeature location];
           v20 = v54;
         }
 
         else
         {
-          if ([v18 type] != 0x20000)
+          if ([blacklistedFeature type] != 0x20000)
           {
             goto LABEL_20;
           }
 
-          v19 = [v18 areaName];
+          date = [blacklistedFeature areaName];
           v20 = v53;
         }
 
-        [v20 addObject:v19];
+        [v20 addObject:date];
 
 LABEL_20:
       }
@@ -354,14 +354,14 @@ LABEL_20:
     _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_DEFAULT, "PHUserFeedbackDataCache: Finished loading memory user feedback data from legacy storage, %tu found.", buf, 0xCu);
   }
 
-  v52 = v4;
-  v23 = [v4 librarySpecificFetchOptions];
+  v52 = libraryCopy;
+  librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
   v75 = @"PHMemoryPropertySetUserFeedback";
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v75 count:1];
-  [v23 setFetchPropertySets:v24];
+  [librarySpecificFetchOptions2 setFetchPropertySets:v24];
 
-  v48 = v23;
-  v25 = [PHMemory fetchMemoriesWithUserFeedbackWithOptions:v23];
+  v48 = librarySpecificFetchOptions2;
+  v25 = [PHMemory fetchMemoriesWithUserFeedbackWithOptions:librarySpecificFetchOptions2];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
@@ -380,16 +380,16 @@ LABEL_20:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v61 + 1) + 8 * j) userFeedbackProperties];
-        v31 = [v30 userFeedback];
+        userFeedbackProperties = [*(*(&v61 + 1) + 8 * j) userFeedbackProperties];
+        userFeedback = [userFeedbackProperties userFeedback];
 
-        v32 = [v31 feature];
-        if (v32 <= 2)
+        feature = [userFeedback feature];
+        if (feature <= 2)
         {
-          if (v32 == 1)
+          if (feature == 1)
           {
             v60 = 0;
-            v33 = [v31 contextAsDateWithError:&v60];
+            v33 = [userFeedback contextAsDateWithError:&v60];
             v34 = v60;
             if (!v33)
             {
@@ -411,13 +411,13 @@ LABEL_20:
 
           else
           {
-            if (v32 != 2)
+            if (feature != 2)
             {
               goto LABEL_59;
             }
 
             v58 = 0;
-            v33 = [v31 contextAsStringWithError:&v58];
+            v33 = [userFeedback contextAsStringWithError:&v58];
             v34 = v58;
             if (!v33)
             {
@@ -444,11 +444,11 @@ LABEL_57:
 
         else
         {
-          switch(v32)
+          switch(feature)
           {
             case 3:
               v57 = 0;
-              v33 = [v31 contextAsLocationWithError:&v57];
+              v33 = [userFeedback contextAsLocationWithError:&v57];
               v34 = v57;
               if (!v33)
               {
@@ -469,7 +469,7 @@ LABEL_57:
               break;
             case 4:
               v56 = 0;
-              v33 = [v31 contextAsStringWithError:&v56];
+              v33 = [userFeedback contextAsStringWithError:&v56];
               v34 = v56;
               if (!v33)
               {
@@ -490,7 +490,7 @@ LABEL_57:
               break;
             case 5:
               v59 = 0;
-              v33 = [v31 contextAsDateIntervalWithError:&v59];
+              v33 = [userFeedback contextAsDateIntervalWithError:&v59];
               v34 = v59;
               if (!v33)
               {
@@ -535,11 +535,11 @@ LABEL_59:
     _os_log_impl(&dword_19C86F000, v39, OS_LOG_TYPE_DEFAULT, "PHUserFeedbackDataCache: Finished loading memory user feedback data from PHMemory storage, %tu found.", buf, 0xCu);
   }
 
-  [(PHUserFeedbackDataCache *)v51 setHolidayNamesWithNegativeFeedback:v55];
-  [(PHUserFeedbackDataCache *)v51 setAreaNamesWithNegativeFeedback:v53];
-  [(PHUserFeedbackDataCache *)v51 setDatesWithNegativeFeedback:v9];
-  [(PHUserFeedbackDataCache *)v51 setDateIntervalsWithNegativeFeedback:v10];
-  [(PHUserFeedbackDataCache *)v51 setLocationsWithNegativeFeedback:v54];
+  [(PHUserFeedbackDataCache *)selfCopy setHolidayNamesWithNegativeFeedback:v55];
+  [(PHUserFeedbackDataCache *)selfCopy setAreaNamesWithNegativeFeedback:v53];
+  [(PHUserFeedbackDataCache *)selfCopy setDatesWithNegativeFeedback:v9];
+  [(PHUserFeedbackDataCache *)selfCopy setDateIntervalsWithNegativeFeedback:v10];
+  [(PHUserFeedbackDataCache *)selfCopy setLocationsWithNegativeFeedback:v54];
   v41 = mach_absolute_time();
   numer = info.numer;
   denom = info.denom;
@@ -563,89 +563,89 @@ LABEL_59:
 
 - (NSSet)locationsWithNegativeFeedback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_locationsWithNegativeFeedback)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_locationsWithNegativeFeedback)
   {
-    [(PHUserFeedbackDataCache *)v2 _loadMemoryFeedbackDataWithPhotoLibrary:v2->_photoLibrary];
+    [(PHUserFeedbackDataCache *)selfCopy _loadMemoryFeedbackDataWithPhotoLibrary:selfCopy->_photoLibrary];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  locationsWithNegativeFeedback = v2->_locationsWithNegativeFeedback;
+  locationsWithNegativeFeedback = selfCopy->_locationsWithNegativeFeedback;
 
   return locationsWithNegativeFeedback;
 }
 
 - (NSSet)dateIntervalsWithNegativeFeedback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_dateIntervalsWithNegativeFeedback)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_dateIntervalsWithNegativeFeedback)
   {
-    [(PHUserFeedbackDataCache *)v2 _loadMemoryFeedbackDataWithPhotoLibrary:v2->_photoLibrary];
+    [(PHUserFeedbackDataCache *)selfCopy _loadMemoryFeedbackDataWithPhotoLibrary:selfCopy->_photoLibrary];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  dateIntervalsWithNegativeFeedback = v2->_dateIntervalsWithNegativeFeedback;
+  dateIntervalsWithNegativeFeedback = selfCopy->_dateIntervalsWithNegativeFeedback;
 
   return dateIntervalsWithNegativeFeedback;
 }
 
 - (NSSet)datesWithNegativeFeedback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_datesWithNegativeFeedback)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_datesWithNegativeFeedback)
   {
-    [(PHUserFeedbackDataCache *)v2 _loadMemoryFeedbackDataWithPhotoLibrary:v2->_photoLibrary];
+    [(PHUserFeedbackDataCache *)selfCopy _loadMemoryFeedbackDataWithPhotoLibrary:selfCopy->_photoLibrary];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  datesWithNegativeFeedback = v2->_datesWithNegativeFeedback;
+  datesWithNegativeFeedback = selfCopy->_datesWithNegativeFeedback;
 
   return datesWithNegativeFeedback;
 }
 
 - (NSSet)areaNamesWithNegativeFeedback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_areaNamesWithNegativeFeedback)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_areaNamesWithNegativeFeedback)
   {
-    [(PHUserFeedbackDataCache *)v2 _loadMemoryFeedbackDataWithPhotoLibrary:v2->_photoLibrary];
+    [(PHUserFeedbackDataCache *)selfCopy _loadMemoryFeedbackDataWithPhotoLibrary:selfCopy->_photoLibrary];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  areaNamesWithNegativeFeedback = v2->_areaNamesWithNegativeFeedback;
+  areaNamesWithNegativeFeedback = selfCopy->_areaNamesWithNegativeFeedback;
 
   return areaNamesWithNegativeFeedback;
 }
 
 - (NSSet)holidayNamesWithNegativeFeedback
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_holidayNamesWithNegativeFeedback)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_holidayNamesWithNegativeFeedback)
   {
-    [(PHUserFeedbackDataCache *)v2 _loadMemoryFeedbackDataWithPhotoLibrary:v2->_photoLibrary];
+    [(PHUserFeedbackDataCache *)selfCopy _loadMemoryFeedbackDataWithPhotoLibrary:selfCopy->_photoLibrary];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  holidayNamesWithNegativeFeedback = v2->_holidayNamesWithNegativeFeedback;
+  holidayNamesWithNegativeFeedback = selfCopy->_holidayNamesWithNegativeFeedback;
 
   return holidayNamesWithNegativeFeedback;
 }
 
-- (void)_loadPersonFeedbackDataWithPhotoLibrary:(id)a3
+- (void)_loadPersonFeedbackDataWithPhotoLibrary:(id)library
 {
   v136 = *MEMORY[0x1E69E9840];
-  v86 = a3;
-  v91 = self;
+  libraryCopy = library;
+  selfCopy = self;
   v4 = self->_userFeedbackLogging;
   v5 = os_signpost_id_generate(v4);
   info = 0;
@@ -664,7 +664,7 @@ LABEL_59:
 
   v81 = mach_absolute_time();
   v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  [PHMemory blockedPersonLocalIdentifiersInPhotoLibrary:v86];
+  [PHMemory blockedPersonLocalIdentifiersInPhotoLibrary:libraryCopy];
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
@@ -685,10 +685,10 @@ LABEL_59:
         }
 
         v14 = *(*(&v120 + 1) + 8 * i);
-        v15 = [PHObject uuidFromLocalIdentifier:v14, spid];
-        if (v15)
+        spid = [PHObject uuidFromLocalIdentifier:v14, spid];
+        if (spid)
         {
-          [v8 setObject:&unk_1F102C128 forKeyedSubscript:v15];
+          [v8 setObject:&unk_1F102C128 forKeyedSubscript:spid];
         }
 
         else
@@ -722,13 +722,13 @@ LABEL_59:
   v19 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   if ([v9 count])
   {
-    v20 = [v86 librarySpecificFetchOptions];
-    [v20 setIncludedDetectionTypes:&unk_1F102DDA8];
-    v21 = [obj allObjects];
-    v22 = [PHPerson fetchPersonsWithLocalIdentifiers:v21 options:v20];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F102DDA8];
+    allObjects = [obj allObjects];
+    v22 = [PHPerson fetchPersonsWithLocalIdentifiers:allObjects options:librarySpecificFetchOptions];
 
-    v23 = [v22 fetchedObjects];
-    [v19 addObjectsFromArray:v23];
+    fetchedObjects = [v22 fetchedObjects];
+    [v19 addObjectsFromArray:fetchedObjects];
 
     v24 = PLPhotoKitGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -741,14 +741,14 @@ LABEL_59:
   }
 
   v98 = v19;
-  v26 = [v86 librarySpecificFetchOptions];
+  librarySpecificFetchOptions2 = [libraryCopy librarySpecificFetchOptions];
   v134 = @"PHPersonPropertySetUserFeedback";
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v134 count:1];
-  [v26 setFetchPropertySets:v27];
+  [librarySpecificFetchOptions2 setFetchPropertySets:v27];
 
-  [v26 setIncludedDetectionTypes:&unk_1F102DDC0];
-  context = v26;
-  [PHPerson fetchPersonsWithUserFeedbackWithOptions:v26];
+  [librarySpecificFetchOptions2 setIncludedDetectionTypes:&unk_1F102DDC0];
+  context = librarySpecificFetchOptions2;
+  [PHPerson fetchPersonsWithUserFeedbackWithOptions:librarySpecificFetchOptions2];
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
@@ -768,18 +768,18 @@ LABEL_59:
         }
 
         v31 = *(*(&v116 + 1) + 8 * j);
-        v32 = [v31 userFeedbackProperties];
-        v33 = [v32 userFeedback];
-        v34 = [v33 type];
+        userFeedbackProperties = [v31 userFeedbackProperties];
+        userFeedback = [userFeedbackProperties userFeedback];
+        type = [userFeedback type];
 
-        v35 = [v31 uuid];
-        v36 = [v8 objectForKeyedSubscript:v35];
-        v37 = [v36 unsignedIntegerValue];
+        uuid = [v31 uuid];
+        v36 = [v8 objectForKeyedSubscript:uuid];
+        unsignedIntegerValue = [v36 unsignedIntegerValue];
 
-        v38 = [PHUserFeedback sumFeedbackType:v37 withOtherFeedbackType:v34];
+        v38 = [PHUserFeedback sumFeedbackType:unsignedIntegerValue withOtherFeedbackType:type];
         v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v38];
-        v40 = [v31 uuid];
-        [v8 setObject:v39 forKeyedSubscript:v40];
+        uuid2 = [v31 uuid];
+        [v8 setObject:v39 forKeyedSubscript:uuid2];
 
         [v98 addObject:v31];
       }
@@ -799,11 +799,11 @@ LABEL_59:
     _os_log_impl(&dword_19C86F000, v41, OS_LOG_TYPE_DEFAULT, "PHUserFeedbackDataCache: Finished loading person user feedback data from PHPerson storage, %tu people found.", buf, 0xCu);
   }
 
-  v43 = [v86 librarySpecificFetchOptions];
+  librarySpecificFetchOptions3 = [libraryCopy librarySpecificFetchOptions];
 
-  [v43 setIncludedDetectionTypes:&unk_1F102DDD8];
-  v83 = v43;
-  [PHPerson fetchPersonsWithType:-1 options:v43];
+  [librarySpecificFetchOptions3 setIncludedDetectionTypes:&unk_1F102DDD8];
+  v83 = librarySpecificFetchOptions3;
+  [PHPerson fetchPersonsWithType:-1 options:librarySpecificFetchOptions3];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
@@ -823,8 +823,8 @@ LABEL_59:
         }
 
         v49 = *(*(&v112 + 1) + 8 * k);
-        v50 = [v49 uuid];
-        [v8 setObject:&unk_1F102C170 forKeyedSubscript:v50];
+        uuid3 = [v49 uuid];
+        [v8 setObject:&unk_1F102C170 forKeyedSubscript:uuid3];
 
         [v98 addObject:v49];
       }
@@ -870,11 +870,11 @@ LABEL_59:
         v99 = v53;
         v55 = *(*(&v108 + 1) + 8 * v54);
         contexta = objc_autoreleasePoolPush();
-        v56 = [v55 uuid];
-        v57 = [v8 objectForKeyedSubscript:v56];
-        v58 = [v57 unsignedIntegerValue];
+        uuid4 = [v55 uuid];
+        v57 = [v8 objectForKeyedSubscript:uuid4];
+        unsignedIntegerValue2 = [v57 unsignedIntegerValue];
 
-        v93 = [(PHUserFeedbackDataCache *)v91 _confidentMergeCandidateUUIDsForPerson:v55];
+        v93 = [(PHUserFeedbackDataCache *)selfCopy _confidentMergeCandidateUUIDsForPerson:v55];
         v59 = [v8 objectsForKeys:? notFoundMarker:?];
         v104 = 0u;
         v105 = 0u;
@@ -894,7 +894,7 @@ LABEL_59:
                 objc_enumerationMutation(v59);
               }
 
-              v58 = +[PHUserFeedback mergeFeedbackType:withOtherFeedbackType:](PHUserFeedback, "mergeFeedbackType:withOtherFeedbackType:", v58, [*(*(&v104 + 1) + 8 * m) unsignedIntegerValue]);
+              unsignedIntegerValue2 = +[PHUserFeedback mergeFeedbackType:withOtherFeedbackType:](PHUserFeedback, "mergeFeedbackType:withOtherFeedbackType:", unsignedIntegerValue2, [*(*(&v104 + 1) + 8 * m) unsignedIntegerValue]);
             }
 
             v61 = [v59 countByEnumeratingWithState:&v104 objects:v130 count:16];
@@ -903,9 +903,9 @@ LABEL_59:
           while (v61);
         }
 
-        v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v58];
-        v65 = [v55 uuid];
-        [v8 setObject:v64 forKeyedSubscript:v65];
+        v64 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue2];
+        uuid5 = [v55 uuid];
+        [v8 setObject:v64 forKeyedSubscript:uuid5];
 
         v102 = 0u;
         v103 = 0u;
@@ -927,7 +927,7 @@ LABEL_59:
               }
 
               v71 = *(*(&v100 + 1) + 8 * n);
-              v72 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v58];
+              v72 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue2];
               [v8 setObject:v72 forKeyedSubscript:v71];
             }
 
@@ -977,45 +977,45 @@ LABEL_59:
     _os_log_impl(&dword_19C86F000, v78, OS_LOG_TYPE_INFO, "[Performance] %s: %f ms", buf, 0x16u);
   }
 
-  [(PHUserFeedbackDataCache *)v91 setUserFeedbackTypeByPersonUUID:v8];
+  [(PHUserFeedbackDataCache *)selfCopy setUserFeedbackTypeByPersonUUID:v8];
 }
 
 - (NSDictionary)userFeedbackTypeByPersonUUID
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_userFeedbackTypeByPersonUUID)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_userFeedbackTypeByPersonUUID)
   {
-    [(PHUserFeedbackDataCache *)v2 _loadPersonFeedbackDataWithPhotoLibrary:v2->_photoLibrary];
+    [(PHUserFeedbackDataCache *)selfCopy _loadPersonFeedbackDataWithPhotoLibrary:selfCopy->_photoLibrary];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  userFeedbackTypeByPersonUUID = v2->_userFeedbackTypeByPersonUUID;
+  userFeedbackTypeByPersonUUID = selfCopy->_userFeedbackTypeByPersonUUID;
 
   return userFeedbackTypeByPersonUUID;
 }
 
-- (void)loadDataWithPhotoLibrary:(id)a3
+- (void)loadDataWithPhotoLibrary:(id)library
 {
-  v4 = a3;
-  [(PHUserFeedbackDataCache *)self _loadPersonFeedbackDataWithPhotoLibrary:v4];
-  [(PHUserFeedbackDataCache *)self _loadMemoryFeedbackDataWithPhotoLibrary:v4];
-  [(PHUserFeedbackDataCache *)self _loadDeniedFeaturedPhotoUUIDsWithPhotoLibrary:v4];
+  libraryCopy = library;
+  [(PHUserFeedbackDataCache *)self _loadPersonFeedbackDataWithPhotoLibrary:libraryCopy];
+  [(PHUserFeedbackDataCache *)self _loadMemoryFeedbackDataWithPhotoLibrary:libraryCopy];
+  [(PHUserFeedbackDataCache *)self _loadDeniedFeaturedPhotoUUIDsWithPhotoLibrary:libraryCopy];
 }
 
-- (PHUserFeedbackDataCache)initWithPhotoLibrary:(id)a3 importantPersons:(id)a4
+- (PHUserFeedbackDataCache)initWithPhotoLibrary:(id)library importantPersons:(id)persons
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  personsCopy = persons;
   v14.receiver = self;
   v14.super_class = PHUserFeedbackDataCache;
   v9 = [(PHUserFeedbackDataCache *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    objc_storeStrong(&v10->_importantPersons, a4);
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_importantPersons, persons);
     v11 = PLUserFeedbackGetLog();
     userFeedbackLogging = v10->_userFeedbackLogging;
     v10->_userFeedbackLogging = v11;

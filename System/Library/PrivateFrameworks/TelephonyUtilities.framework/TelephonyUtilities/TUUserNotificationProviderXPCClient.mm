@@ -4,10 +4,10 @@
 + (TUUserNotificationsProviderXPCServer)synchronousServer;
 - (NSXPCConnection)xpcConnection;
 - (TUUserNotificationProviderXPCClient)init;
-- (id)serverWithErrorHandler:(id)a3;
-- (id)synchronousServerWithErrorHandler:(id)a3;
+- (id)serverWithErrorHandler:(id)handler;
+- (id)synchronousServerWithErrorHandler:(id)handler;
 - (void)dealloc;
-- (void)momentCapturedForStreamToken:(int64_t)a3 requesterID:(id)a4 reply:(id)a5;
+- (void)momentCapturedForStreamToken:(int64_t)token requesterID:(id)d reply:(id)reply;
 @end
 
 @implementation TUUserNotificationProviderXPCClient
@@ -49,33 +49,33 @@
   [(TUUserNotificationProviderXPCClient *)&v3 dealloc];
 }
 
-- (void)momentCapturedForStreamToken:(int64_t)a3 requesterID:(id)a4 reply:(id)a5
+- (void)momentCapturedForStreamToken:(int64_t)token requesterID:(id)d reply:(id)reply
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  replyCopy = reply;
   v10 = TUDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v20 = a3;
+    tokenCopy = token;
     v21 = 2112;
-    v22 = v8;
+    v22 = dCopy;
     _os_log_impl(&dword_1956FD000, v10, OS_LOG_TYPE_DEFAULT, "momentCapturedForStreamToken: %ld requesterID: %@", buf, 0x16u);
   }
 
-  v11 = [(TUUserNotificationProviderXPCClient *)self queue];
+  queue = [(TUUserNotificationProviderXPCClient *)self queue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__TUUserNotificationProviderXPCClient_momentCapturedForStreamToken_requesterID_reply___block_invoke;
   v15[3] = &unk_1E7425090;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = a3;
-  v12 = v9;
-  v13 = v8;
-  dispatch_async(v11, v15);
+  v16 = dCopy;
+  v17 = replyCopy;
+  tokenCopy2 = token;
+  v12 = replyCopy;
+  v13 = dCopy;
+  dispatch_async(queue, v15);
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -98,8 +98,8 @@ void __86__TUUserNotificationProviderXPCClient_momentCapturedForStreamToken_requ
 
 - (NSXPCConnection)xpcConnection
 {
-  v3 = [(TUUserNotificationProviderXPCClient *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(TUUserNotificationProviderXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   xpcConnection = self->_xpcConnection;
   if (!xpcConnection)
@@ -187,11 +187,11 @@ void __52__TUUserNotificationProviderXPCClient_xpcConnection__block_invoke_2_8()
   }
 }
 
-- (id)serverWithErrorHandler:(id)a3
+- (id)serverWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUUserNotificationProviderXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(TUUserNotificationProviderXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&sAsynchronousServer_0);
   v7 = WeakRetained;
@@ -202,18 +202,18 @@ void __52__TUUserNotificationProviderXPCClient_xpcConnection__block_invoke_2_8()
 
   else
   {
-    v9 = [(TUUserNotificationProviderXPCClient *)self xpcConnection];
-    v8 = [v9 remoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUUserNotificationProviderXPCClient *)self xpcConnection];
+    v8 = [xpcConnection remoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v8;
 }
 
-- (id)synchronousServerWithErrorHandler:(id)a3
+- (id)synchronousServerWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(TUUserNotificationProviderXPCClient *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(TUUserNotificationProviderXPCClient *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   WeakRetained = objc_loadWeakRetained(&sSynchronousServer_0);
   v7 = WeakRetained;
@@ -224,8 +224,8 @@ void __52__TUUserNotificationProviderXPCClient_xpcConnection__block_invoke_2_8()
 
   else
   {
-    v9 = [(TUUserNotificationProviderXPCClient *)self xpcConnection];
-    v8 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v4];
+    xpcConnection = [(TUUserNotificationProviderXPCClient *)self xpcConnection];
+    v8 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
   }
 
   return v8;

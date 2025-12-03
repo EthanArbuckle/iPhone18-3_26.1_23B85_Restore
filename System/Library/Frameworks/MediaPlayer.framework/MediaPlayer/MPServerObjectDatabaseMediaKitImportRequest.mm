@@ -1,43 +1,43 @@
 @interface MPServerObjectDatabaseMediaKitImportRequest
-+ (id)_childKeyForParentType:(id)a3 type:(id)a4;
-+ (id)_entityTypeForObject:(id)a3;
++ (id)_childKeyForParentType:(id)type type:(id)a4;
++ (id)_entityTypeForObject:(id)object;
 + (id)_unsupportedMediaKitTypes;
 + (id)_unsupportedParentChildRelationships;
-- (MPServerObjectDatabaseMediaKitImportRequest)initWithPayload:(id)a3;
-- (id)_sinfDataFromSinfType:(int64_t)a3 payload:(id)a4;
-- (id)performWithDatabaseOperations:(id)a3 augmentingPayload:(id *)a4;
-- (int64_t)_sinfTypeFromPayload:(id)a3;
+- (MPServerObjectDatabaseMediaKitImportRequest)initWithPayload:(id)payload;
+- (id)_sinfDataFromSinfType:(int64_t)type payload:(id)payload;
+- (id)performWithDatabaseOperations:(id)operations augmentingPayload:(id *)payload;
+- (int64_t)_sinfTypeFromPayload:(id)payload;
 @end
 
 @implementation MPServerObjectDatabaseMediaKitImportRequest
 
-- (id)_sinfDataFromSinfType:(int64_t)a3 payload:(id)a4
+- (id)_sinfDataFromSinfType:(int64_t)type payload:(id)payload
 {
   v20 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (!a3)
+  payloadCopy = payload;
+  if (!type)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabaseImportRequest.m" lineNumber:417 description:@"Cannot extract sinfData from invalid synfType"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPServerObjectDatabaseImportRequest.m" lineNumber:417 description:@"Cannot extract sinfData from invalid synfType"];
   }
 
-  if (![v7 count])
+  if (![payloadCopy count])
   {
-    v10 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    firstObject = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_FAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1A238D000, v10, OS_LOG_TYPE_FAULT, "No valid sinfs in payload", buf, 2u);
+      _os_log_impl(&dword_1A238D000, firstObject, OS_LOG_TYPE_FAULT, "No valid sinfs in payload", buf, 2u);
     }
 
     v8 = 0;
     goto LABEL_20;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v10 = [v7 firstObject];
-    v11 = [v10 valueForKey:@"sinf2"];
+    firstObject = [payloadCopy firstObject];
+    v11 = [firstObject valueForKey:@"sinf2"];
     if (v11)
     {
       v8 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v11 options:0];
@@ -49,7 +49,7 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v17 = v10;
+        v17 = firstObject;
         _os_log_impl(&dword_1A238D000, v12, OS_LOG_TYPE_DEFAULT, "Missing miniSinf from sinfDictionary=%{public}@", buf, 0xCu);
       }
 
@@ -59,25 +59,25 @@
     goto LABEL_19;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v8 = 0;
     goto LABEL_21;
   }
 
   v15 = 0;
-  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v7 options:0 error:&v15];
+  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:payloadCopy options:0 error:&v15];
   v9 = v15;
-  v10 = v9;
+  firstObject = v9;
   if (!v8 || v9)
   {
     v11 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects_Oversize");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v17 = v7;
+      v17 = payloadCopy;
       v18 = 2114;
-      v19 = v10;
+      v19 = firstObject;
       _os_log_impl(&dword_1A238D000, v11, OS_LOG_TYPE_DEFAULT, "Could not serialize sinfs from payload=%{public}@, error=%{public}@", buf, 0x16u);
     }
 
@@ -91,12 +91,12 @@ LABEL_21:
   return v8;
 }
 
-- (int64_t)_sinfTypeFromPayload:(id)a3
+- (int64_t)_sinfTypeFromPayload:(id)payload
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  payloadCopy = payload;
+  if (payloadCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    if (_NSIsNSString() && ([v3 isEqualToString:@"miniSinf"] & 1) != 0)
+    if (_NSIsNSString() && ([payloadCopy isEqualToString:@"miniSinf"] & 1) != 0)
     {
       v4 = 2;
     }
@@ -115,35 +115,35 @@ LABEL_21:
   return v4;
 }
 
-- (id)performWithDatabaseOperations:(id)a3 augmentingPayload:(id *)a4
+- (id)performWithDatabaseOperations:(id)operations augmentingPayload:(id *)payload
 {
   v49 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  operationsCopy = operations;
   v7 = objc_alloc_init(MPMediaKitEntityTranslatorContext);
-  v8 = [MEMORY[0x1E69E4688] defaultIdentityStore];
-  v9 = [(MPServerObjectDatabaseImportRequest *)self userIdentity];
-  v10 = [v8 DSIDForUserIdentity:v9 outError:0];
-  v11 = [v10 stringValue];
-  [(MPMediaKitEntityTranslatorContext *)v7 setPersonID:v11];
+  defaultIdentityStore = [MEMORY[0x1E69E4688] defaultIdentityStore];
+  userIdentity = [(MPServerObjectDatabaseImportRequest *)self userIdentity];
+  v10 = [defaultIdentityStore DSIDForUserIdentity:userIdentity outError:0];
+  stringValue = [v10 stringValue];
+  [(MPMediaKitEntityTranslatorContext *)v7 setPersonID:stringValue];
 
-  v12 = [(MPMediaKitEntityTranslatorContext *)v7 personID];
-  v13 = [v12 length];
+  personID = [(MPMediaKitEntityTranslatorContext *)v7 personID];
+  v13 = [personID length];
 
   if (!v13)
   {
     [(MPMediaKitEntityTranslatorContext *)v7 setPersonID:*MEMORY[0x1E69E4388]];
   }
 
-  v14 = [MEMORY[0x1E695DF70] array];
-  v15 = [MEMORY[0x1E695DF70] array];
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__35967;
   v43 = __Block_byref_object_dispose__35968;
   v44 = 0;
-  v17 = [(MPServerObjectDatabaseImportRequest *)self payload];
+  payload = [(MPServerObjectDatabaseImportRequest *)self payload];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __95__MPServerObjectDatabaseMediaKitImportRequest_performWithDatabaseOperations_augmentingPayload___block_invoke;
@@ -152,15 +152,15 @@ LABEL_21:
   v18 = v7;
   v33 = v18;
   v38 = &v39;
-  v19 = v6;
+  v19 = operationsCopy;
   v34 = v19;
-  v20 = v16;
+  v20 = array3;
   v35 = v20;
-  v21 = v14;
+  v21 = array;
   v36 = v21;
-  v22 = v15;
+  v22 = array2;
   v37 = v22;
-  _MPServerObjectDatabaseMetadataImportEnumerateObjects(v17, a4, @"type", 0, 0, 0, 0, v32);
+  _MPServerObjectDatabaseMetadataImportEnumerateObjects(payload, payload, @"type", 0, 0, 0, 0, v32);
 
   v23 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -182,7 +182,7 @@ LABEL_21:
   v30 = v26;
   v31 = &v39;
   [v20 enumerateObjectsUsingBlock:v29];
-  v27 = -[MPServerObjectDatabaseImportResult initWithAnnotatedPayload:playableAssetIdentifiers:importedIdentifiers:assetsCount:hlsAssetsCount:error:]([MPServerObjectDatabaseImportResult alloc], "initWithAnnotatedPayload:playableAssetIdentifiers:importedIdentifiers:assetsCount:hlsAssetsCount:error:", a4, v22, v21, [v26 importedAssetsCount], objc_msgSend(v26, "importedHLSAssetsCount"), 0);
+  v27 = -[MPServerObjectDatabaseImportResult initWithAnnotatedPayload:playableAssetIdentifiers:importedIdentifiers:assetsCount:hlsAssetsCount:error:]([MPServerObjectDatabaseImportResult alloc], "initWithAnnotatedPayload:playableAssetIdentifiers:importedIdentifiers:assetsCount:hlsAssetsCount:error:", payload, v22, v21, [v26 importedAssetsCount], objc_msgSend(v26, "importedHLSAssetsCount"), 0);
 
   _Block_object_dispose(&v39, 8);
 
@@ -1523,16 +1523,16 @@ LABEL_12:
 LABEL_13:
 }
 
-- (MPServerObjectDatabaseMediaKitImportRequest)initWithPayload:(id)a3
+- (MPServerObjectDatabaseMediaKitImportRequest)initWithPayload:(id)payload
 {
   v4.receiver = self;
   v4.super_class = MPServerObjectDatabaseMediaKitImportRequest;
-  return [(MPServerObjectDatabaseImportRequest *)&v4 _initWithPayload:a3];
+  return [(MPServerObjectDatabaseImportRequest *)&v4 _initWithPayload:payload];
 }
 
-+ (id)_entityTypeForObject:(id)a3
++ (id)_entityTypeForObject:(id)object
 {
-  v3 = [a3 objectForKeyedSubscript:@"type"];
+  v3 = [object objectForKeyedSubscript:@"type"];
   v4 = v3;
   if (v3)
   {
@@ -1620,12 +1620,12 @@ LABEL_10:
   return v7;
 }
 
-+ (id)_childKeyForParentType:(id)a3 type:(id)a4
++ (id)_childKeyForParentType:(id)type type:(id)a4
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  typeCopy = type;
   v7 = a4;
-  if (([v6 isEqualToString:@"songs"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"music-videos"))
+  if (([typeCopy isEqualToString:@"songs"] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"music-videos"))
   {
     if ([&unk_1F1509E80 containsObject:v7])
     {
@@ -1642,7 +1642,7 @@ LABEL_28:
     }
   }
 
-  if ([&unk_1F1509E98 containsObject:v6])
+  if ([&unk_1F1509E98 containsObject:typeCopy])
   {
     if (([v7 isEqualToString:@"songs"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"music-videos"))
     {
@@ -1663,44 +1663,44 @@ LABEL_28:
     }
   }
 
-  if ([v6 isEqualToString:@"credit-artists"] && objc_msgSend(v7, "isEqualToString:", @"artists"))
+  if ([typeCopy isEqualToString:@"credit-artists"] && objc_msgSend(v7, "isEqualToString:", @"artists"))
   {
     v8 = @"MPModelChildCreditsArtistRelatedArtist";
     goto LABEL_28;
   }
 
-  if ([v6 isEqualToString:@"artists"] && objc_msgSend(&unk_1F1509EB0, "containsObject:", v7))
+  if ([typeCopy isEqualToString:@"artists"] && objc_msgSend(&unk_1F1509EB0, "containsObject:", v7))
   {
     v8 = @"MPModelChildArtistAlbums";
     goto LABEL_28;
   }
 
-  if ([&unk_1F1509EC8 containsObject:v6] && ((objc_msgSend(v7, "isEqualToString:", @"songs") & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"music-videos")))
+  if ([&unk_1F1509EC8 containsObject:typeCopy] && ((objc_msgSend(v7, "isEqualToString:", @"songs") & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"music-videos")))
   {
     v8 = @"MPModelChildPlaylistEntries";
     goto LABEL_28;
   }
 
-  if ([v6 isEqualToString:@"stations"] && objc_msgSend(v7, "isEqualToString:", @"station-events"))
+  if ([typeCopy isEqualToString:@"stations"] && objc_msgSend(v7, "isEqualToString:", @"station-events"))
   {
     v8 = @"MPModelChildRadioStationEvents";
     goto LABEL_28;
   }
 
-  v11 = [a1 _unsupportedParentChildRelationships];
-  v19[0] = v6;
+  _unsupportedParentChildRelationships = [self _unsupportedParentChildRelationships];
+  v19[0] = typeCopy;
   v19[1] = v7;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   v13 = [v12 componentsJoinedByString:@"|"];
 
-  if (([v11 containsObject:v13] & 1) == 0)
+  if (([_unsupportedParentChildRelationships containsObject:v13] & 1) == 0)
   {
-    [v11 addObject:v13];
+    [_unsupportedParentChildRelationships addObject:v13];
     v14 = os_log_create("com.apple.amp.mediaplayer", "ServerObjects");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v15 = 138412546;
-      v16 = v6;
+      v16 = typeCopy;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&dword_1A238D000, v14, OS_LOG_TYPE_ERROR, "Encountered unexpected media kit relationship parent=%@ type=%@", &v15, 0x16u);

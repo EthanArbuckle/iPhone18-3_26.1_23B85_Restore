@@ -1,27 +1,27 @@
 @interface ULOdometryStore
 + (unsigned)bufferMaxSize;
 + (unsigned)maxEntriesInTable;
-- (BOOL)deleteRecordsOlderThan:(double)a3 orNewerThan:(double)a4;
+- (BOOL)deleteRecordsOlderThan:(double)than orNewerThan:(double)newerThan;
 - (BOOL)flushStoreBuffer;
-- (BOOL)insertDataObjects:(const void *)a3 atLoiUUID:(const uuid *)a4;
-- (BOOL)insertDataObjectsBuffered:(const void *)a3 atLoiUUID:(const uuid *)a4;
-- (ULOdometryStore)initWithDbStore:(ULDatabaseStoreInterface *)a3;
+- (BOOL)insertDataObjects:(const void *)objects atLoiUUID:(const uuid *)d;
+- (BOOL)insertDataObjectsBuffered:(const void *)buffered atLoiUUID:(const uuid *)d;
+- (ULOdometryStore)initWithDbStore:(ULDatabaseStoreInterface *)store;
 - (id).cxx_construct;
 - (id)insertDataObjects:atLoiUUID:;
 - (optional<std::chrono::time_point<cl::chrono::CFAbsoluteTimeClock,)getMostRecentOdometryTimeForLoiGroupId:(ULOdometryStore *)self odometrySource:;
 - (uint64_t)insertDataObjects:atLoiUUID:;
-- (vector<ULOdometryDO,)efficientlyFetchOdometryEntriesWithLOIGroupUUIDs:(ULOdometryStore *)self odometrySource:(SEL)a3 startDate:()vector<boost:(std:(int64_t)a5 :(id)a6 allocator<boost:(id)a7 :(unint64_t)a8 uuids:(BOOL)a9 :(BOOL)a10 uuid>> *)a4 :uuids::uuid endDate:fetchLimit:newest:ascending:;
+- (vector<ULOdometryDO,)efficientlyFetchOdometryEntriesWithLOIGroupUUIDs:(ULOdometryStore *)self odometrySource:(SEL)source startDate:()vector<boost:(std:(int64_t)boost :(id)a6 allocator<boost:(id)a7 :(unint64_t)a8 uuids:(BOOL)uuids :(BOOL)self0 uuid>> *)a4 :uuids::uuid endDate:fetchLimit:newest:ascending:;
 - (vector<ULOdometryDO,)fetchAllRecordsWithLimit:(ULOdometryStore *)self;
 - (void)insertDataObjects:atLoiUUID:;
 @end
 
 @implementation ULOdometryStore
 
-- (ULOdometryStore)initWithDbStore:(ULDatabaseStoreInterface *)a3
+- (ULOdometryStore)initWithDbStore:(ULDatabaseStoreInterface *)store
 {
   v6.receiver = self;
   v6.super_class = ULOdometryStore;
-  v3 = [(ULStore *)&v6 initWithDbStore:a3];
+  v3 = [(ULStore *)&v6 initWithDbStore:store];
   if (v3)
   {
     *v3->_currentLoiUUID.data = [MEMORY[0x277CCAD78] nilBoostUUID];
@@ -34,21 +34,21 @@
 + (unsigned)maxEntriesInTable
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULOdometryTableMaxRows"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A71AC0 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71AC0 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
@@ -56,33 +56,33 @@
 + (unsigned)bufferMaxSize
 {
   v2 = +[ULDefaultsSingleton shared];
-  v3 = [v2 defaultsDictionary];
+  defaultsDictionary = [v2 defaultsDictionary];
 
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULOdometryBufferMaxSize"];
-  v5 = [v3 objectForKey:v4];
+  v5 = [defaultsDictionary objectForKey:v4];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 unsignedIntValue];
+    unsignedIntValue = [v5 unsignedIntValue];
   }
 
   else
   {
-    v6 = [&unk_286A71AA8 unsignedIntValue];
+    unsignedIntValue = [&unk_286A71AA8 unsignedIntValue];
   }
 
-  v7 = v6;
+  v7 = unsignedIntValue;
 
   return v7;
 }
 
-- (BOOL)insertDataObjects:(const void *)a3 atLoiUUID:(const uuid *)a4
+- (BOOL)insertDataObjects:(const void *)objects atLoiUUID:(const uuid *)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
-  v7 = [(ULStore *)self dbStore];
-  v8 = (*(v7->var0 + 8))(v7);
-  v9 = [(ULStore *)self managedObjectContext];
-  v10 = [v8 fetchLoiManagedObjectWithUUID:a4 withManagedObjectContext:v9];
+  selfCopy = self;
+  dbStore = [(ULStore *)self dbStore];
+  v8 = (*(dbStore->var0 + 8))(dbStore);
+  managedObjectContext = [(ULStore *)self managedObjectContext];
+  v10 = [v8 fetchLoiManagedObjectWithUUID:d withManagedObjectContext:managedObjectContext];
 
   if (!v10)
   {
@@ -111,44 +111,44 @@
 
   v13 = v10;
   v18[0] = &unk_286A56908;
-  v18[1] = &v17;
+  v18[1] = &selfCopy;
   v18[2] = v13;
   v18[3] = v18;
-  inserted = ULDBUtils::insertDataObjects<ULOdometryDO,ULOdometryMO>(self, a3, v18);
+  inserted = ULDBUtils::insertDataObjects<ULOdometryDO,ULOdometryMO>(self, objects, v18);
   std::__function::__value_func<ULOdometryMO * ()(ULOdometryDO const&)>::~__value_func[abi:ne200100](v18);
 
   v15 = *MEMORY[0x277D85DE8];
   return inserted;
 }
 
-- (BOOL)insertDataObjectsBuffered:(const void *)a3 atLoiUUID:(const uuid *)a4
+- (BOOL)insertDataObjectsBuffered:(const void *)buffered atLoiUUID:(const uuid *)d
 {
   v7 = +[ULDefaultsSingleton shared];
-  v8 = [v7 defaultsDictionary];
+  defaultsDictionary = [v7 defaultsDictionary];
 
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULOdometryBufferingEnabled"];
-  v10 = [v8 objectForKey:v9];
+  v10 = [defaultsDictionary objectForKey:v9];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = [v10 BOOLValue];
+    bOOLValue = [v10 BOOLValue];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEC38] BOOLValue];
+    bOOLValue = [MEMORY[0x277CBEC38] BOOLValue];
   }
 
-  v12 = v11;
+  v12 = bOOLValue;
 
   if (v12)
   {
-    if (*a4->data != *self->_currentLoiUUID.data || *&a4->data[8] != *&self->_currentLoiUUID.data[8])
+    if (*d->data != *self->_currentLoiUUID.data || *&d->data[8] != *&self->_currentLoiUUID.data[8])
     {
       [(ULOdometryStore *)self flushStoreBuffer];
     }
 
-    self->_currentLoiUUID = *a4;
-    std::vector<ULOdometryDO>::__insert_with_size[abi:ne200100]<std::__wrap_iter<ULOdometryDO const*>,std::__wrap_iter<ULOdometryDO const*>>(&self->_dataObjectBuffer, self->_dataObjectBuffer.__end_, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 6);
+    self->_currentLoiUUID = *d;
+    std::vector<ULOdometryDO>::__insert_with_size[abi:ne200100]<std::__wrap_iter<ULOdometryDO const*>,std::__wrap_iter<ULOdometryDO const*>>(&self->_dataObjectBuffer, self->_dataObjectBuffer.__end_, *buffered, *(buffered + 1), (*(buffered + 1) - *buffered) >> 6);
     v14 = self->_dataObjectBuffer.__end_ - self->_dataObjectBuffer.__begin_;
     if (+[ULOdometryStore bufferMaxSize]<= (v14 >> 6))
     {
@@ -165,7 +165,7 @@
   else
   {
 
-    return [(ULOdometryStore *)self insertDataObjects:a3 atLoiUUID:a4];
+    return [(ULOdometryStore *)self insertDataObjects:buffered atLoiUUID:d];
   }
 }
 
@@ -208,12 +208,12 @@
   return v6;
 }
 
-- (BOOL)deleteRecordsOlderThan:(double)a3 orNewerThan:(double)a4
+- (BOOL)deleteRecordsOlderThan:(double)than orNewerThan:(double)newerThan
 {
   [(ULOdometryStore *)self flushStoreBuffer];
   v8.receiver = self;
   v8.super_class = ULOdometryStore;
-  return [(ULStore *)&v8 deleteRecordsOlderThan:a3 orNewerThan:a4];
+  return [(ULStore *)&v8 deleteRecordsOlderThan:than orNewerThan:newerThan];
 }
 
 - (vector<ULOdometryDO,)fetchAllRecordsWithLimit:(ULOdometryStore *)self
@@ -224,9 +224,9 @@
   return result;
 }
 
-- (vector<ULOdometryDO,)efficientlyFetchOdometryEntriesWithLOIGroupUUIDs:(ULOdometryStore *)self odometrySource:(SEL)a3 startDate:()vector<boost:(std:(int64_t)a5 :(id)a6 allocator<boost:(id)a7 :(unint64_t)a8 uuids:(BOOL)a9 :(BOOL)a10 uuid>> *)a4 :uuids::uuid endDate:fetchLimit:newest:ascending:
+- (vector<ULOdometryDO,)efficientlyFetchOdometryEntriesWithLOIGroupUUIDs:(ULOdometryStore *)self odometrySource:(SEL)source startDate:()vector<boost:(std:(int64_t)boost :(id)a6 allocator<boost:(id)a7 :(unint64_t)a8 uuids:(BOOL)uuids :(BOOL)self0 uuid>> *)a4 :uuids::uuid endDate:fetchLimit:newest:ascending:
 {
-  v10 = a9;
+  uuidsCopy = uuids;
   v53[2] = *MEMORY[0x277D85DE8];
   v48 = a6;
   v47 = a7;
@@ -235,7 +235,7 @@
   retstr->__end_ = 0;
   retstr->__cap_ = 0;
   context = objc_autoreleasePoolPush();
-  v17 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (a4->var1 != a4->var0)
   {
     v44 = ULDBUtils::NSStringArrayFromBoostUUIDs(a4);
@@ -247,7 +247,7 @@
 LABEL_5:
       v21 = v44;
       v20 = v45;
-      [v17 addObject:v45];
+      [array addObject:v45];
     }
 
     else
@@ -268,7 +268,7 @@ LABEL_5:
       v43 = v22;
       v24 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
       v25 = [v23 orPredicateWithSubpredicates:v24];
-      [v17 addObject:v25];
+      [array addObject:v25];
 
       v20 = v45;
     }
@@ -281,7 +281,7 @@ LABEL_5:
     [v48 timeIntervalSinceReferenceDate];
     v28 = [v27 numberWithDouble:?];
     v29 = [v26 predicateWithFormat:@"%K >= %@", @"timestamp", v28];
-    [v17 addObject:v29];
+    [array addObject:v29];
   }
 
   if (v47)
@@ -291,15 +291,15 @@ LABEL_5:
     [v47 timeIntervalSinceReferenceDate];
     v32 = [v31 numberWithDouble:?];
     v33 = [v30 predicateWithFormat:@"%K <= %@", @"timestamp", v32];
-    [v17 addObject:v33];
+    [array addObject:v33];
   }
 
-  v34 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %u", @"odometrySourceType", a5];
-  [v17 addObject:v34];
+  boost = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %u", @"odometrySourceType", boost];
+  [array addObject:boost];
 
   if (a8)
   {
-    v35 = !v10;
+    v35 = !uuidsCopy;
   }
 
   else
@@ -310,7 +310,7 @@ LABEL_5:
   v36 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"timestamp" ascending:v35];
   v52 = v36;
   v37 = [MEMORY[0x277CBEA60] arrayWithObjects:&v52 count:1];
-  ULDBUtils::efficientlyFetchDataObjects<ULOdometryDO,ULOdometryMO>(self, v17, v37, a8, 500, &v49);
+  ULDBUtils::efficientlyFetchDataObjects<ULOdometryDO,ULOdometryMO>(self, array, v37, a8, 500, &v49);
   std::vector<ULOdometryDO>::__vdeallocate(&retstr->__begin_);
   *&retstr->__begin_ = v49;
   retstr->__cap_ = v50;
@@ -345,7 +345,7 @@ LABEL_5:
   v19[1] = *MEMORY[0x277D85DE8];
   [(ULOdometryStore *)self flushStoreBuffer];
   v16 = *v4;
-  v17 = [MEMORY[0x277CCAD78] nilBoostUUID];
+  nilBoostUUID = [MEMORY[0x277CCAD78] nilBoostUUID];
   v18 = v6;
   v13 = 0;
   v14 = 0;
@@ -388,14 +388,14 @@ LABEL_5:
 - (void)insertDataObjects:atLoiUUID:
 {
 
-  operator delete(a1);
+  operator delete(self);
 }
 
 - (id)insertDataObjects:atLoiUUID:
 {
-  v3 = *(a1 + 16);
-  v4 = [**(a1 + 8) managedObjectContext];
-  v5 = [ULOdometryMO createFromDO:a2 loiMO:v3 inManagedObjectContext:v4];
+  v3 = *(self + 16);
+  managedObjectContext = [**(self + 8) managedObjectContext];
+  v5 = [ULOdometryMO createFromDO:a2 loiMO:v3 inManagedObjectContext:managedObjectContext];
 
   return v5;
 }
@@ -403,7 +403,7 @@ LABEL_5:
 - (uint64_t)insertDataObjects:atLoiUUID:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

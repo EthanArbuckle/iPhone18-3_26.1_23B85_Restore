@@ -3,10 +3,10 @@
 - (BOOL)_scrollContentUnderButtonTrayForGroupedStyle;
 - (BOOL)_scrollViewContentIsUnderTray;
 - (BOOL)contentViewUnderButtonTray;
-- (OBTableWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5;
-- (OBTableWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6;
-- (OBTableWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5;
-- (OBTableWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6;
+- (OBTableWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon;
+- (OBTableWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view;
+- (OBTableWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name;
+- (OBTableWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view;
 - (double)headerViewBottomToTableViewTopPadding;
 - (id)scrollView;
 - (void)_floatButtonTray;
@@ -15,10 +15,10 @@
 - (void)_layoutButtonTray;
 - (void)_layoutFooterContainerFloatButtonTray;
 - (void)_layoutFooterContainerInlineButtonTray;
-- (void)_scrollViewDidLayoutSubviews:(id)a3;
-- (void)_setTableView:(id)a3;
-- (void)_setTableViewNonHeaderFooterDonation:(id)a3;
-- (void)_setTableViewWithHeaderFooterDonation:(id)a3;
+- (void)_scrollViewDidLayoutSubviews:(id)subviews;
+- (void)_setTableView:(id)view;
+- (void)_setTableViewNonHeaderFooterDonation:(id)donation;
+- (void)_setTableViewWithHeaderFooterDonation:(id)donation;
 - (void)_setupScrollView;
 - (void)_updateButtonTrayTableFooterContainerSizeIfNeeded;
 - (void)_updateDirectionalLayoutMarginsForTableView;
@@ -26,9 +26,9 @@
 - (void)_updateHeaderTopOffsetConstraint;
 - (void)_updateTableHeaderViewSizeIfNeeded;
 - (void)loadView;
-- (void)setTableFooterView:(id)a3;
-- (void)setTableHeaderView:(id)a3;
-- (void)setTableView:(id)a3;
+- (void)setTableFooterView:(id)view;
+- (void)setTableHeaderView:(id)view;
+- (void)setTableView:(id)view;
 - (void)updateDirectionalLayoutMargins;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -36,11 +36,11 @@
 
 @implementation OBTableWelcomeController
 
-- (OBTableWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5
+- (OBTableWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon
 {
   v6.receiver = self;
   v6.super_class = OBTableWelcomeController;
-  result = [(OBWelcomeController *)&v6 initWithTitle:a3 detailText:a4 icon:a5 contentLayout:3];
+  result = [(OBWelcomeController *)&v6 initWithTitle:title detailText:text icon:icon contentLayout:3];
   if (result)
   {
     result->_adoptTableViewScrollView = 0;
@@ -49,11 +49,11 @@
   return result;
 }
 
-- (OBTableWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5
+- (OBTableWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name
 {
   v8.receiver = self;
   v8.super_class = OBTableWelcomeController;
-  v5 = [(OBWelcomeController *)&v8 initWithTitle:a3 detailText:a4 symbolName:a5];
+  v5 = [(OBWelcomeController *)&v8 initWithTitle:title detailText:text symbolName:name];
   v6 = v5;
   if (v5)
   {
@@ -64,43 +64,43 @@
   return v6;
 }
 
-- (OBTableWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (OBTableWelcomeController)initWithTitle:(id)title detailText:(id)text icon:(id)icon adoptTableViewScrollView:(BOOL)view
 {
   v8.receiver = self;
   v8.super_class = OBTableWelcomeController;
-  result = [(OBWelcomeController *)&v8 initWithTitle:a3 detailText:a4 icon:a5 contentLayout:3];
+  result = [(OBWelcomeController *)&v8 initWithTitle:title detailText:text icon:icon contentLayout:3];
   if (result)
   {
-    result->_adoptTableViewScrollView = a6;
+    result->_adoptTableViewScrollView = view;
   }
 
   return result;
 }
 
-- (OBTableWelcomeController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 adoptTableViewScrollView:(BOOL)a6
+- (OBTableWelcomeController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name adoptTableViewScrollView:(BOOL)view
 {
   v8.receiver = self;
   v8.super_class = OBTableWelcomeController;
-  result = [(OBWelcomeController *)&v8 initWithTitle:a3 detailText:a4 symbolName:a5 contentLayout:3];
+  result = [(OBWelcomeController *)&v8 initWithTitle:title detailText:text symbolName:name contentLayout:3];
   if (result)
   {
-    result->_adoptTableViewScrollView = a6;
+    result->_adoptTableViewScrollView = view;
   }
 
   return result;
 }
 
-- (void)setTableView:(id)a3
+- (void)setTableView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   if (([(OBTableWelcomeController *)self isViewLoaded]& 1) != 0)
   {
-    [(OBTableWelcomeController *)self _setTableView:v5];
+    [(OBTableWelcomeController *)self _setTableView:viewCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_tableView, a3);
+    objc_storeStrong(&self->_tableView, view);
   }
 }
 
@@ -117,71 +117,71 @@
   [(OBBaseWelcomeController *)self directionalLayoutMargins];
   v4 = v3;
   v6 = v5;
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setDirectionalLayoutMargins:{0.0, v4, 0.0, v6}];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setDirectionalLayoutMargins:{0.0, v4, 0.0, v6}];
 
-  v15 = +[OBDevice currentDevice];
-  if ([v15 type] == 2)
+  tableView4 = +[OBDevice currentDevice];
+  if ([tableView4 type] == 2)
   {
-    v8 = [(OBTableWelcomeController *)self tableView];
-    v9 = [v8 style];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    style = [tableView2 style];
 
-    if (v9)
+    if (style)
     {
       return;
     }
 
-    v10 = [(OBTableWelcomeController *)self tableView];
-    [v10 separatorInset];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    [tableView3 separatorInset];
     v12 = v11;
     v14 = v13;
 
-    v15 = [(OBTableWelcomeController *)self tableView];
-    [v15 setSeparatorInset:{v12, v4, v14, v6}];
+    tableView4 = [(OBTableWelcomeController *)self tableView];
+    [tableView4 setSeparatorInset:{v12, v4, v14, v6}];
   }
 }
 
-- (void)_setTableViewNonHeaderFooterDonation:(id)a3
+- (void)_setTableViewNonHeaderFooterDonation:(id)donation
 {
   v33[4] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_tableView, a3);
+  donationCopy = donation;
+  objc_storeStrong(&self->_tableView, donation);
   [(OBTableWelcomeController *)self _updateDirectionalLayoutMarginsForTableView];
-  v6 = [(OBWelcomeController *)self contentView];
-  [v6 addSubview:v5];
+  contentView = [(OBWelcomeController *)self contentView];
+  [contentView addSubview:donationCopy];
 
-  v7 = [(OBWelcomeController *)self contentView];
-  if (v7)
+  contentView2 = [(OBWelcomeController *)self contentView];
+  if (contentView2)
   {
-    v8 = v7;
-    v9 = [(OBTableWelcomeController *)self tableView];
+    v8 = contentView2;
+    tableView = [(OBTableWelcomeController *)self tableView];
 
-    if (v9)
+    if (tableView)
     {
       v23 = MEMORY[0x1E696ACD8];
-      v32 = [(OBWelcomeController *)self contentView];
-      v30 = [v32 topAnchor];
-      v31 = [(OBTableWelcomeController *)self tableView];
-      v29 = [v31 topAnchor];
-      v28 = [v30 constraintEqualToAnchor:v29];
+      contentView3 = [(OBWelcomeController *)self contentView];
+      topAnchor = [contentView3 topAnchor];
+      tableView2 = [(OBTableWelcomeController *)self tableView];
+      topAnchor2 = [tableView2 topAnchor];
+      v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v33[0] = v28;
-      v27 = [(OBWelcomeController *)self contentView];
-      v25 = [v27 leadingAnchor];
-      v26 = [(OBTableWelcomeController *)self tableView];
-      v24 = [v26 leadingAnchor];
-      v22 = [v25 constraintEqualToAnchor:v24];
+      contentView4 = [(OBWelcomeController *)self contentView];
+      leadingAnchor = [contentView4 leadingAnchor];
+      tableView3 = [(OBTableWelcomeController *)self tableView];
+      leadingAnchor2 = [tableView3 leadingAnchor];
+      v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v33[1] = v22;
-      v21 = [(OBWelcomeController *)self contentView];
-      v20 = [v21 trailingAnchor];
-      v10 = [(OBTableWelcomeController *)self tableView];
-      v11 = [v10 trailingAnchor];
-      v12 = [v20 constraintEqualToAnchor:v11];
+      contentView5 = [(OBWelcomeController *)self contentView];
+      trailingAnchor = [contentView5 trailingAnchor];
+      tableView4 = [(OBTableWelcomeController *)self tableView];
+      trailingAnchor2 = [tableView4 trailingAnchor];
+      v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v33[2] = v12;
-      v13 = [(OBWelcomeController *)self contentView];
-      v14 = [v13 bottomAnchor];
-      v15 = [(OBTableWelcomeController *)self tableView];
-      v16 = [v15 bottomAnchor];
-      v17 = [v14 constraintEqualToAnchor:v16];
+      contentView6 = [(OBWelcomeController *)self contentView];
+      bottomAnchor = [contentView6 bottomAnchor];
+      tableView5 = [(OBTableWelcomeController *)self tableView];
+      bottomAnchor2 = [tableView5 bottomAnchor];
+      v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v33[3] = v17;
       v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:4];
       [v23 activateConstraints:v18];
@@ -195,17 +195,17 @@
 {
   if ([(OBTableWelcomeController *)self adoptTableViewScrollView])
   {
-    v3 = [(OBTableWelcomeController *)self tableView];
+    tableView = [(OBTableWelcomeController *)self tableView];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = OBTableWelcomeController;
-    v3 = [(OBWelcomeController *)&v5 scrollView];
+    tableView = [(OBWelcomeController *)&v5 scrollView];
   }
 
-  return v3;
+  return tableView;
 }
 
 - (void)loadView
@@ -218,9 +218,9 @@
     v4 = [[OBTableHeaderFooterView alloc] initWithLayout:1];
     [(OBTableWelcomeController *)self setFooterContainer:v4];
 
-    v5 = [(OBTableWelcomeController *)self headerContainer];
-    v6 = [(OBWelcomeController *)self headerView];
-    [v5 setInternalContentView:v6];
+    headerContainer = [(OBTableWelcomeController *)self headerContainer];
+    headerView = [(OBWelcomeController *)self headerView];
+    [headerContainer setInternalContentView:headerView];
   }
 
   v7.receiver = self;
@@ -237,11 +237,11 @@
   [(OBBaseWelcomeController *)self directionalLayoutMargins];
   v4 = v3;
   v6 = v5;
-  v7 = [(OBTableWelcomeController *)self headerContainer];
+  headerContainer = [(OBTableWelcomeController *)self headerContainer];
   [(OBWelcomeController *)self _headerTopOffset];
   v9 = v8;
   [(OBTableWelcomeController *)self headerViewBottomToTableViewTopPadding];
-  [v7 setInternalContentPadding:{v9, v4, v10, v6}];
+  [headerContainer setInternalContentPadding:{v9, v4, v10, v6}];
 }
 
 - (void)_updateHeaderTopOffsetConstraint
@@ -254,82 +254,82 @@
   }
 }
 
-- (void)_setTableViewWithHeaderFooterDonation:(id)a3
+- (void)_setTableViewWithHeaderFooterDonation:(id)donation
 {
   v41[3] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_tableView, a3);
+  donationCopy = donation;
+  objc_storeStrong(&self->_tableView, donation);
   [(UITableView *)self->_tableView setDelegate:self];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v6 = [(OBTableWelcomeController *)self view];
-  v39 = v5;
-  [v6 addSubview:v5];
+  [donationCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(OBTableWelcomeController *)self view];
+  v39 = donationCopy;
+  [view addSubview:donationCopy];
 
-  v40 = [MEMORY[0x1E695DF70] array];
-  v38 = [(OBTableWelcomeController *)self view];
-  v36 = [v38 leadingAnchor];
-  v37 = [(OBTableWelcomeController *)self tableView];
-  v35 = [v37 leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  array = [MEMORY[0x1E695DF70] array];
+  view2 = [(OBTableWelcomeController *)self view];
+  leadingAnchor = [view2 leadingAnchor];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  leadingAnchor2 = [tableView leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[0] = v34;
-  v33 = [(OBTableWelcomeController *)self view];
-  v32 = [v33 trailingAnchor];
-  v7 = [(OBTableWelcomeController *)self tableView];
-  v8 = [v7 trailingAnchor];
-  v9 = [v32 constraintEqualToAnchor:v8];
+  view3 = [(OBTableWelcomeController *)self view];
+  trailingAnchor = [view3 trailingAnchor];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  trailingAnchor2 = [tableView2 trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[1] = v9;
-  v10 = [(OBTableWelcomeController *)self view];
-  v11 = [v10 bottomAnchor];
-  v12 = [(OBTableWelcomeController *)self tableView];
-  v13 = [v12 bottomAnchor];
-  v14 = [v11 constraintEqualToAnchor:v13];
+  view4 = [(OBTableWelcomeController *)self view];
+  bottomAnchor = [view4 bottomAnchor];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  bottomAnchor2 = [tableView3 bottomAnchor];
+  v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v41[2] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:3];
-  [v40 addObjectsFromArray:v15];
+  [array addObjectsFromArray:v15];
 
-  LODWORD(v7) = +[OBFeatureFlags isNaturalUIEnabled];
-  v16 = [(OBTableWelcomeController *)self view];
-  v17 = v16;
-  if (v7)
+  LODWORD(tableView2) = +[OBFeatureFlags isNaturalUIEnabled];
+  view5 = [(OBTableWelcomeController *)self view];
+  v17 = view5;
+  if (tableView2)
   {
-    v18 = [v16 topAnchor];
-    v19 = [(OBTableWelcomeController *)self tableView];
-    v20 = [v19 topAnchor];
-    v21 = [v18 constraintEqualToAnchor:v20];
-    v22 = v40;
-    [v40 addObject:v21];
+    topAnchor = [view5 topAnchor];
+    tableView4 = [(OBTableWelcomeController *)self tableView];
+    topAnchor2 = [tableView4 topAnchor];
+    v20TopAnchor = [topAnchor constraintEqualToAnchor:topAnchor2];
+    v22 = array;
+    [array addObject:v20TopAnchor];
   }
 
   else
   {
-    v18 = [v16 safeAreaLayoutGuide];
-    v19 = [v18 topAnchor];
-    v20 = [(OBTableWelcomeController *)self tableView];
-    v21 = [v20 topAnchor];
-    v23 = [v19 constraintEqualToAnchor:v21];
-    v22 = v40;
-    [v40 addObject:v23];
+    topAnchor = [view5 safeAreaLayoutGuide];
+    tableView4 = [topAnchor topAnchor];
+    topAnchor2 = [(OBTableWelcomeController *)self tableView];
+    v20TopAnchor = [topAnchor2 topAnchor];
+    v23 = [tableView4 constraintEqualToAnchor:v20TopAnchor];
+    v22 = array;
+    [array addObject:v23];
   }
 
   [MEMORY[0x1E696ACD8] activateConstraints:v22];
-  v24 = [(OBTableWelcomeController *)self headerContainer];
-  v25 = [(OBTableWelcomeController *)self view];
-  [v25 bounds];
-  [v24 setFrame:{0.0, 0.0}];
+  headerContainer = [(OBTableWelcomeController *)self headerContainer];
+  view6 = [(OBTableWelcomeController *)self view];
+  [view6 bounds];
+  [headerContainer setFrame:{0.0, 0.0}];
 
-  v26 = [(OBTableWelcomeController *)self headerContainer];
-  [v26 setNeedsLayout];
+  headerContainer2 = [(OBTableWelcomeController *)self headerContainer];
+  [headerContainer2 setNeedsLayout];
 
-  v27 = [(OBTableWelcomeController *)self headerContainer];
-  [v27 layoutIfNeeded];
+  headerContainer3 = [(OBTableWelcomeController *)self headerContainer];
+  [headerContainer3 layoutIfNeeded];
 
-  v28 = [(OBWelcomeController *)self headerView];
-  v29 = [(OBTableWelcomeController *)self view];
-  [v29 bounds];
-  [v28 setFrame:{0.0, 0.0}];
+  headerView = [(OBWelcomeController *)self headerView];
+  view7 = [(OBTableWelcomeController *)self view];
+  [view7 bounds];
+  [headerView setFrame:{0.0, 0.0}];
 
-  v30 = [(OBTableWelcomeController *)self headerContainer];
-  [v39 setTableHeaderView:v30];
+  headerContainer4 = [(OBTableWelcomeController *)self headerContainer];
+  [v39 setTableHeaderView:headerContainer4];
 
   v31 = *MEMORY[0x1E69E9840];
 }
@@ -342,53 +342,53 @@
   [(OBTableWelcomeController *)self _updateHeaderFooterViewSizeIfNeeded];
 }
 
-- (void)setTableFooterView:(id)a3
+- (void)setTableFooterView:(id)view
 {
-  [(OBTableWelcomeController *)self setHostedTableFooterView:a3];
+  [(OBTableWelcomeController *)self setHostedTableFooterView:view];
 
   [(OBTableWelcomeController *)self _layoutButtonTray];
 }
 
-- (void)setTableHeaderView:(id)a3
+- (void)setTableHeaderView:(id)view
 {
-  [(OBTableWelcomeController *)self setHostedTableHeaderView:a3];
+  [(OBTableWelcomeController *)self setHostedTableHeaderView:view];
   [(OBBaseWelcomeController *)self directionalLayoutMargins];
   v5 = v4;
   v7 = v6;
-  v8 = [(OBTableWelcomeController *)self headerContainer];
-  v9 = [(OBTableWelcomeController *)self hostedTableHeaderView];
-  [v8 setHostedView:v9];
+  headerContainer = [(OBTableWelcomeController *)self headerContainer];
+  hostedTableHeaderView = [(OBTableWelcomeController *)self hostedTableHeaderView];
+  [headerContainer setHostedView:hostedTableHeaderView];
 
-  v10 = [(OBTableWelcomeController *)self headerContainer];
-  [v10 setHostedViewPadding:{0.0, v5, 0.0, v7}];
+  headerContainer2 = [(OBTableWelcomeController *)self headerContainer];
+  [headerContainer2 setHostedViewPadding:{0.0, v5, 0.0, v7}];
 
-  v11 = [(OBTableWelcomeController *)self headerContainer];
-  [v11 layoutIfNeeded];
+  headerContainer3 = [(OBTableWelcomeController *)self headerContainer];
+  [headerContainer3 layoutIfNeeded];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  v13 = [(OBTableWelcomeController *)self headerContainer];
-  [v12 setTableHeaderView:v13];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  headerContainer4 = [(OBTableWelcomeController *)self headerContainer];
+  [tableView setTableHeaderView:headerContainer4];
 
-  v14 = [(OBTableWelcomeController *)self view];
-  [v14 setNeedsLayout];
+  view = [(OBTableWelcomeController *)self view];
+  [view setNeedsLayout];
 
-  v15 = [(OBTableWelcomeController *)self view];
-  [v15 layoutIfNeeded];
+  view2 = [(OBTableWelcomeController *)self view];
+  [view2 layoutIfNeeded];
 }
 
 - (double)headerViewBottomToTableViewTopPadding
 {
   v2 = +[OBDevice currentDevice];
-  v3 = [v2 templateType];
+  templateType = [v2 templateType];
 
-  if ((v3 - 2) > 7)
+  if ((templateType - 2) > 7)
   {
     return 57.0;
   }
 
   else
   {
-    return dbl_1B4FFC138[v3 - 2];
+    return dbl_1B4FFC138[templateType - 2];
   }
 }
 
@@ -406,37 +406,37 @@
 {
   if ([(OBTableWelcomeController *)self adoptTableViewScrollView])
   {
-    v3 = [(OBTableWelcomeController *)self footerContainer];
-    v4 = [(OBTableWelcomeController *)self view];
-    [v4 bounds];
-    [v3 setFrame:{0.0, 0.0}];
+    footerContainer = [(OBTableWelcomeController *)self footerContainer];
+    view = [(OBTableWelcomeController *)self view];
+    [view bounds];
+    [footerContainer setFrame:{0.0, 0.0}];
 
-    v5 = [(OBTableWelcomeController *)self hostedTableFooterView];
-    if (v5)
+    hostedTableFooterView = [(OBTableWelcomeController *)self hostedTableFooterView];
+    if (hostedTableFooterView)
     {
     }
 
     else
     {
-      v6 = [(OBWelcomeController *)self buttonTray];
-      v7 = [v6 isHidden];
+      buttonTray = [(OBWelcomeController *)self buttonTray];
+      isHidden = [buttonTray isHidden];
 
-      if (v7)
+      if (isHidden)
       {
         v8 = *MEMORY[0x1E695F058];
         v9 = *(MEMORY[0x1E695F058] + 8);
         v10 = *(MEMORY[0x1E695F058] + 16);
         v11 = *(MEMORY[0x1E695F058] + 24);
-        v12 = [(OBTableWelcomeController *)self footerContainer];
-        [v12 setFrame:{v8, v9, v10, v11}];
+        footerContainer2 = [(OBTableWelcomeController *)self footerContainer];
+        [footerContainer2 setFrame:{v8, v9, v10, v11}];
 
-        v13 = [(OBTableWelcomeController *)self footerContainer];
-        [v13 setAutoresizingMask:0];
+        footerContainer3 = [(OBTableWelcomeController *)self footerContainer];
+        [footerContainer3 setAutoresizingMask:0];
 
 LABEL_7:
-        v14 = [(OBTableWelcomeController *)self tableView];
-        v15 = [(OBTableWelcomeController *)self footerContainer];
-        [v14 setTableFooterView:v15];
+        tableView = [(OBTableWelcomeController *)self tableView];
+        footerContainer4 = [(OBTableWelcomeController *)self footerContainer];
+        [tableView setTableFooterView:footerContainer4];
 
         goto LABEL_8;
       }
@@ -456,18 +456,18 @@ LABEL_8:
 {
   if ([(OBTableWelcomeController *)self adoptTableViewScrollView])
   {
-    v3 = [(OBTableWelcomeController *)self footerContainer];
-    v4 = [(OBTableWelcomeController *)self view];
-    [v4 bounds];
-    [v3 setFrame:{0.0, 0.0}];
+    footerContainer = [(OBTableWelcomeController *)self footerContainer];
+    view = [(OBTableWelcomeController *)self view];
+    [view bounds];
+    [footerContainer setFrame:{0.0, 0.0}];
 
-    v5 = [(OBTableWelcomeController *)self footerContainer];
-    [v5 setAutoresizingMask:16];
+    footerContainer2 = [(OBTableWelcomeController *)self footerContainer];
+    [footerContainer2 setAutoresizingMask:16];
 
     [(OBTableWelcomeController *)self _layoutFooterContainerInlineButtonTray];
-    v6 = [(OBTableWelcomeController *)self tableView];
-    v7 = [(OBTableWelcomeController *)self footerContainer];
-    [v6 setTableFooterView:v7];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    footerContainer3 = [(OBTableWelcomeController *)self footerContainer];
+    [tableView setTableFooterView:footerContainer3];
 
     [(OBTableWelcomeController *)self _updateButtonTrayTableFooterContainerSizeIfNeeded];
   }
@@ -484,10 +484,10 @@ LABEL_8:
 {
   if ([(OBTableWelcomeController *)self adoptTableViewScrollView]&& ([(OBTableWelcomeController *)self tableView], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
-    v4 = [(OBWelcomeController *)self buttonTray];
-    v5 = [v4 superview];
-    v6 = [(OBTableWelcomeController *)self footerContainer];
-    v7 = v5 == v6;
+    buttonTray = [(OBWelcomeController *)self buttonTray];
+    superview = [buttonTray superview];
+    footerContainer = [(OBTableWelcomeController *)self footerContainer];
+    v7 = superview == footerContainer;
   }
 
   else
@@ -504,14 +504,14 @@ LABEL_8:
 {
   if ([(OBTableWelcomeController *)self adoptTableViewScrollView])
   {
-    v3 = [(OBTableWelcomeController *)self scrollView];
-    [v3 contentSize];
+    scrollView = [(OBTableWelcomeController *)self scrollView];
+    [scrollView contentSize];
     v5 = v4;
-    v6 = [(OBTableWelcomeController *)self scrollView];
-    [v6 frame];
+    scrollView2 = [(OBTableWelcomeController *)self scrollView];
+    [scrollView2 frame];
     MaxY = CGRectGetMaxY(v13);
-    v8 = [(OBWelcomeController *)self buttonTray];
-    [v8 intrinsicContentSize];
+    buttonTray = [(OBWelcomeController *)self buttonTray];
+    [buttonTray intrinsicContentSize];
     v10 = v5 >= MaxY - v9;
   }
 
@@ -527,14 +527,14 @@ LABEL_8:
 
 - (BOOL)_scrollViewContentIsUnderTray
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  if ([v3 style] == 1)
+  tableView = [(OBTableWelcomeController *)self tableView];
+  if ([tableView style] == 1)
   {
     if (![(OBTableWelcomeController *)self _buttonTrayInlined])
     {
-      v4 = [(OBTableWelcomeController *)self adoptTableViewScrollView];
+      adoptTableViewScrollView = [(OBTableWelcomeController *)self adoptTableViewScrollView];
 
-      if (v4)
+      if (adoptTableViewScrollView)
       {
         goto LABEL_11;
       }
@@ -550,16 +550,16 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v5 = [(OBTableWelcomeController *)self tableView];
-  if ([v5 style] != 2 || -[OBTableWelcomeController _buttonTrayInlined](self, "_buttonTrayInlined"))
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  if ([tableView2 style] != 2 || -[OBTableWelcomeController _buttonTrayInlined](self, "_buttonTrayInlined"))
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(OBTableWelcomeController *)self adoptTableViewScrollView];
+  adoptTableViewScrollView2 = [(OBTableWelcomeController *)self adoptTableViewScrollView];
 
-  if (!v7)
+  if (!adoptTableViewScrollView2)
   {
     goto LABEL_9;
   }
@@ -571,22 +571,22 @@ LABEL_11:
 
 - (BOOL)_scrollContentUnderButtonTrayForGroupedStyle
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  [v3 bounds];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView bounds];
   v5 = v4;
 
-  v6 = [(OBWelcomeController *)self buttonTray];
-  [v6 bounds];
+  buttonTray = [(OBWelcomeController *)self buttonTray];
+  [buttonTray bounds];
   v8 = v7;
 
   v9 = 0;
   if (v5 != 0.0 && v8 != 0.0)
   {
-    v10 = [(OBTableWelcomeController *)self tableView];
-    [v10 contentSize];
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    [tableView2 contentSize];
     v12 = v11;
-    v13 = [(OBTableWelcomeController *)self tableView];
-    [v13 contentOffset];
+    tableView3 = [(OBTableWelcomeController *)self tableView];
+    [tableView3 contentOffset];
     v15 = v12 - v14;
     [(OBWelcomeController *)self keyboardFrame];
     v9 = v15 > v5 - v8 - v16;
@@ -597,32 +597,32 @@ LABEL_11:
 
 - (void)_updateButtonTrayTableFooterContainerSizeIfNeeded
 {
-  v3 = [(OBTableWelcomeController *)self footerContainer];
-  [v3 layoutIfNeeded];
+  footerContainer = [(OBTableWelcomeController *)self footerContainer];
+  [footerContainer layoutIfNeeded];
 
   [(OBBaseWelcomeController *)self directionalLayoutMargins];
   v5 = v4;
   v7 = v6;
-  v8 = [(OBTableWelcomeController *)self footerContainer];
-  [v8 setInternalContentPadding:{0.0, v5, 0.0, v7}];
+  footerContainer2 = [(OBTableWelcomeController *)self footerContainer];
+  [footerContainer2 setInternalContentPadding:{0.0, v5, 0.0, v7}];
 
-  v9 = [(OBTableWelcomeController *)self footerContainer];
-  v10 = [(OBTableWelcomeController *)self footerContainer];
-  [v10 frame];
+  footerContainer3 = [(OBTableWelcomeController *)self footerContainer];
+  footerContainer4 = [(OBTableWelcomeController *)self footerContainer];
+  [footerContainer4 frame];
   v12 = v11;
-  v13 = [(OBTableWelcomeController *)self footerContainer];
-  [v13 frame];
+  footerContainer5 = [(OBTableWelcomeController *)self footerContainer];
+  [footerContainer5 frame];
   v15 = v14;
-  v16 = [(OBTableWelcomeController *)self tableView];
-  [v16 bounds];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView bounds];
   v18 = v17;
-  v19 = [(OBTableWelcomeController *)self footerContainer];
-  [v19 intrinsicContentSize];
-  [v9 setFrame:{v12, v15, v18, v20}];
+  footerContainer6 = [(OBTableWelcomeController *)self footerContainer];
+  [footerContainer6 intrinsicContentSize];
+  [footerContainer3 setFrame:{v12, v15, v18, v20}];
 
-  v21 = [(OBTableWelcomeController *)self tableView];
-  v22 = [(OBTableWelcomeController *)self footerContainer];
-  [v21 setTableFooterView:v22];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  footerContainer7 = [(OBTableWelcomeController *)self footerContainer];
+  [tableView2 setTableFooterView:footerContainer7];
 
   [(OBWelcomeController *)self _updateButtonTrayBackdrop];
 }
@@ -634,31 +634,31 @@ LABEL_11:
     [(OBBaseWelcomeController *)self directionalLayoutMargins];
     v4 = v3;
     v6 = v5;
-    v7 = [(OBTableWelcomeController *)self headerContainer];
+    headerContainer = [(OBTableWelcomeController *)self headerContainer];
     [(OBWelcomeController *)self _headerTopOffset];
     v9 = v8;
     [(OBTableWelcomeController *)self headerViewBottomToTableViewTopPadding];
-    [v7 setInternalContentPadding:{v9, v4, v10, v6}];
+    [headerContainer setInternalContentPadding:{v9, v4, v10, v6}];
 
-    v11 = [(OBTableWelcomeController *)self headerContainer];
-    [v11 layoutIfNeeded];
+    headerContainer2 = [(OBTableWelcomeController *)self headerContainer];
+    [headerContainer2 layoutIfNeeded];
 
-    v12 = [(OBTableWelcomeController *)self headerContainer];
-    [v12 frame];
+    headerContainer3 = [(OBTableWelcomeController *)self headerContainer];
+    [headerContainer3 frame];
     v14 = v13;
     v16 = v15;
     v18 = v17;
 
-    v19 = [(OBTableWelcomeController *)self headerContainer];
-    [v19 intrinsicContentSize];
+    headerContainer4 = [(OBTableWelcomeController *)self headerContainer];
+    [headerContainer4 intrinsicContentSize];
     v21 = v20;
 
-    v22 = [(OBTableWelcomeController *)self headerContainer];
-    [v22 setFrame:{v14, v16, v18, v21}];
+    headerContainer5 = [(OBTableWelcomeController *)self headerContainer];
+    [headerContainer5 setFrame:{v14, v16, v18, v21}];
 
-    v24 = [(OBTableWelcomeController *)self tableView];
-    v23 = [(OBTableWelcomeController *)self headerContainer];
-    [v24 setTableHeaderView:v23];
+    tableView = [(OBTableWelcomeController *)self tableView];
+    headerContainer6 = [(OBTableWelcomeController *)self headerContainer];
+    [tableView setTableHeaderView:headerContainer6];
   }
 }
 
@@ -674,64 +674,64 @@ LABEL_11:
 
 - (void)_layoutFooterContainerInlineButtonTray
 {
-  v3 = [(OBTableWelcomeController *)self hostedTableFooterView];
+  hostedTableFooterView = [(OBTableWelcomeController *)self hostedTableFooterView];
 
-  if (v3)
+  if (hostedTableFooterView)
   {
-    v4 = [(OBTableWelcomeController *)self footerContainer];
-    v5 = [(OBWelcomeController *)self buttonTray];
-    [v4 setInternalContentView:v5];
+    footerContainer = [(OBTableWelcomeController *)self footerContainer];
+    buttonTray = [(OBWelcomeController *)self buttonTray];
+    [footerContainer setInternalContentView:buttonTray];
 
-    v6 = [(OBTableWelcomeController *)self footerContainer];
+    footerContainer2 = [(OBTableWelcomeController *)self footerContainer];
     [(OBBaseWelcomeController *)self directionalLayoutMargins];
     v8 = v7;
     [(OBBaseWelcomeController *)self directionalLayoutMargins];
-    [v6 setInternalContentPadding:{0.0, v8, 0.0}];
+    [footerContainer2 setInternalContentPadding:{0.0, v8, 0.0}];
 
-    v9 = [(OBTableWelcomeController *)self footerContainer];
-    v10 = [(OBTableWelcomeController *)self hostedTableFooterView];
-    [v9 setHostedView:v10];
+    footerContainer3 = [(OBTableWelcomeController *)self footerContainer];
+    hostedTableFooterView2 = [(OBTableWelcomeController *)self hostedTableFooterView];
+    [footerContainer3 setHostedView:hostedTableFooterView2];
 
-    v11 = [(OBTableWelcomeController *)self footerContainer];
+    footerContainer4 = [(OBTableWelcomeController *)self footerContainer];
     [(OBBaseWelcomeController *)self directionalLayoutMargins];
     v13 = v12;
     [(OBBaseWelcomeController *)self directionalLayoutMargins];
-    [v11 setHostedViewPadding:{0.0, v13, 0.0}];
+    [footerContainer4 setHostedViewPadding:{0.0, v13, 0.0}];
   }
 
-  v15 = [(OBTableWelcomeController *)self footerContainer];
-  v14 = [(OBWelcomeController *)self buttonTray];
-  [v15 setInternalContentView:v14];
+  footerContainer5 = [(OBTableWelcomeController *)self footerContainer];
+  buttonTray2 = [(OBWelcomeController *)self buttonTray];
+  [footerContainer5 setInternalContentView:buttonTray2];
 }
 
 - (void)_layoutFooterContainerFloatButtonTray
 {
-  v3 = [(OBTableWelcomeController *)self hostedTableFooterView];
+  hostedTableFooterView = [(OBTableWelcomeController *)self hostedTableFooterView];
 
-  if (v3)
+  if (hostedTableFooterView)
   {
-    v4 = [(OBTableWelcomeController *)self footerContainer];
-    [v4 setInternalContentView:0];
+    footerContainer = [(OBTableWelcomeController *)self footerContainer];
+    [footerContainer setInternalContentView:0];
 
-    v5 = [(OBTableWelcomeController *)self footerContainer];
+    footerContainer2 = [(OBTableWelcomeController *)self footerContainer];
     [(OBBaseWelcomeController *)self directionalLayoutMargins];
     v7 = v6;
     [(OBBaseWelcomeController *)self directionalLayoutMargins];
-    [v5 setInternalContentPadding:{0.0, v7, 0.0}];
+    [footerContainer2 setInternalContentPadding:{0.0, v7, 0.0}];
 
-    v8 = [(OBTableWelcomeController *)self footerContainer];
-    v9 = [(OBTableWelcomeController *)self hostedTableFooterView];
-    [v8 setHostedView:v9];
+    footerContainer3 = [(OBTableWelcomeController *)self footerContainer];
+    hostedTableFooterView2 = [(OBTableWelcomeController *)self hostedTableFooterView];
+    [footerContainer3 setHostedView:hostedTableFooterView2];
 
-    v10 = [(OBTableWelcomeController *)self footerContainer];
+    footerContainer4 = [(OBTableWelcomeController *)self footerContainer];
     [(OBBaseWelcomeController *)self directionalLayoutMargins];
     v12 = v11;
     [(OBBaseWelcomeController *)self directionalLayoutMargins];
-    [v10 setHostedViewPadding:{0.0, v12, 0.0}];
+    [footerContainer4 setHostedViewPadding:{0.0, v12, 0.0}];
   }
 
-  v13 = [(OBTableWelcomeController *)self footerContainer];
-  [v13 setInternalContentView:0];
+  footerContainer5 = [(OBTableWelcomeController *)self footerContainer];
+  [footerContainer5 setInternalContentView:0];
 }
 
 - (void)_updateHeaderFooterViewSizeIfNeeded
@@ -746,46 +746,46 @@ LABEL_11:
 
 - (void)_insertPendingTableView
 {
-  v3 = [(OBTableWelcomeController *)self tableView];
-  if (v3)
+  tableView = [(OBTableWelcomeController *)self tableView];
+  if (tableView)
   {
-    v4 = v3;
-    v5 = [(OBTableWelcomeController *)self tableView];
-    v6 = [v5 superview];
+    v4 = tableView;
+    tableView2 = [(OBTableWelcomeController *)self tableView];
+    superview = [tableView2 superview];
 
-    if (!v6)
+    if (!superview)
     {
-      v7 = [(OBTableWelcomeController *)self tableView];
-      [(OBTableWelcomeController *)self _setTableView:v7];
+      tableView3 = [(OBTableWelcomeController *)self tableView];
+      [(OBTableWelcomeController *)self _setTableView:tableView3];
     }
   }
 }
 
-- (void)_setTableView:(id)a3
+- (void)_setTableView:(id)view
 {
-  v6 = a3;
-  v4 = [(OBTableWelcomeController *)self tableView];
-  [v4 _setLayoutObserver:0];
+  viewCopy = view;
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView _setLayoutObserver:0];
 
   v5 = [[OBScrollViewWeakLayoutObserver alloc] initWithLayoutObserver:self];
-  [v6 _setLayoutObserver:v5];
+  [viewCopy _setLayoutObserver:v5];
 
   if ([(OBTableWelcomeController *)self adoptTableViewScrollView])
   {
-    [(OBTableWelcomeController *)self _setTableViewWithHeaderFooterDonation:v6];
+    [(OBTableWelcomeController *)self _setTableViewWithHeaderFooterDonation:viewCopy];
   }
 
   else
   {
-    [(OBTableWelcomeController *)self _setTableViewNonHeaderFooterDonation:v6];
+    [(OBTableWelcomeController *)self _setTableViewNonHeaderFooterDonation:viewCopy];
   }
 }
 
-- (void)_scrollViewDidLayoutSubviews:(id)a3
+- (void)_scrollViewDidLayoutSubviews:(id)subviews
 {
   v4.receiver = self;
   v4.super_class = OBTableWelcomeController;
-  [(OBWelcomeController *)&v4 _scrollViewDidLayoutSubviews:a3];
+  [(OBWelcomeController *)&v4 _scrollViewDidLayoutSubviews:subviews];
   [(OBWelcomeController *)self updateNavigationBarAnimated:1];
 }
 

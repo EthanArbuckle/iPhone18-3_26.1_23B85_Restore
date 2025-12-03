@@ -1,5 +1,5 @@
 @interface PKProximitySetupSourceClient
-- (BOOL)startWithSession:(id)a3;
+- (BOOL)startWithSession:(id)session;
 - (PKProximitySetupSourceClient)init;
 - (void)invalidate;
 @end
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (BOOL)startWithSession:(id)a3
+- (BOOL)startWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_lock);
   isValid = self->_isValid;
   os_unfair_lock_unlock(&self->_lock);
@@ -48,7 +48,7 @@
   v9[2] = __49__PKProximitySetupSourceClient_startWithSession___block_invoke;
   v9[3] = &unk_1E79C9640;
   v9[4] = self;
-  [PKSharingChannelHandle bootstrapSetupAssistantProximityChannelWithTemplateSession:v4 completion:v9];
+  [PKSharingChannelHandle bootstrapSetupAssistantProximityChannelWithTemplateSession:sessionCopy completion:v9];
 
   return 1;
 }

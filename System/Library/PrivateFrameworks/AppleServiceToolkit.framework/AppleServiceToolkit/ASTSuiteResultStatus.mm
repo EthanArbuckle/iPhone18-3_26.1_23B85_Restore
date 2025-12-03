@@ -1,30 +1,30 @@
 @interface ASTSuiteResultStatus
-- (ASTSuiteResultStatus)initWithDictionary:(id)a3 error:(id *)a4;
-- (ASTSuiteResultStatus)initWithStatus:(id)a3 statusCode:(id)a4;
+- (ASTSuiteResultStatus)initWithDictionary:(id)dictionary error:(id *)error;
+- (ASTSuiteResultStatus)initWithStatus:(id)status statusCode:(id)code;
 @end
 
 @implementation ASTSuiteResultStatus
 
-- (ASTSuiteResultStatus)initWithStatus:(id)a3 statusCode:(id)a4
+- (ASTSuiteResultStatus)initWithStatus:(id)status statusCode:(id)code
 {
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  codeCopy = code;
   v12.receiver = self;
   v12.super_class = ASTSuiteResultStatus;
   v9 = [(ASTSuiteResultStatus *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_status, a3);
-    objc_storeStrong(&v10->_statusCode, a4);
+    objc_storeStrong(&v9->_status, status);
+    objc_storeStrong(&v10->_statusCode, code);
   }
 
   return v10;
 }
 
-- (ASTSuiteResultStatus)initWithDictionary:(id)a3 error:(id *)a4
+- (ASTSuiteResultStatus)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = ASTSuiteResultStatus;
   v7 = [(ASTSuiteResultStatus *)&v16 init];
@@ -33,8 +33,8 @@
     goto LABEL_10;
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"status"];
-  v9 = [v6 objectForKeyedSubscript:@"statusCode"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"status"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"statusCode"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -60,9 +60,9 @@ LABEL_10:
     [ASTSuiteResult initWithDictionary:v7 error:v10];
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-7000 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"ASTErrorDomain" code:-7000 userInfo:0];
   }
 
   v11 = 0;

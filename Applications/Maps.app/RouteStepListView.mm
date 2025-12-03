@@ -1,25 +1,25 @@
 @interface RouteStepListView
-+ (double)heightForItem:(id)a3 width:(double)a4 maximumHeight:(double)a5;
++ (double)heightForItem:(id)item width:(double)width maximumHeight:(double)height;
 - (BOOL)shouldUseTextToBottomConstraint;
-- (RouteStepListView)initWithFrame:(CGRect)a3;
+- (RouteStepListView)initWithFrame:(CGRect)frame;
 - (void)_updateHairline;
-- (void)setItem:(id)a3;
-- (void)setShouldUseTextToBottomConstraint:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setItem:(id)item;
+- (void)setShouldUseTextToBottomConstraint:(BOOL)constraint;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation RouteStepListView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = RouteStepListView;
-  v4 = a3;
-  [(RouteStepListView *)&v10 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(RouteStepListView *)&v10 traitCollectionDidChange:changeCopy];
   v5 = [(RouteStepListView *)self traitCollection:v10.receiver];
   [v5 displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   v9 = v8;
 
   if (v7 != v9)
@@ -30,8 +30,8 @@
 
 - (void)_updateHairline
 {
-  v3 = [(UIView *)self->_hairlineView traitCollection];
-  [v3 displayScale];
+  traitCollection = [(UIView *)self->_hairlineView traitCollection];
+  [traitCollection displayScale];
   v5 = v4;
 
   v6 = 1.0;
@@ -45,13 +45,13 @@
   [(NSLayoutConstraint *)hairlineHeightConstraint setConstant:v6];
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
-  v5 = a3;
-  if (self->_item != v5)
+  itemCopy = item;
+  if (self->_item != itemCopy)
   {
-    v10 = v5;
-    objc_storeStrong(&self->_item, a3);
+    v10 = itemCopy;
+    objc_storeStrong(&self->_item, item);
     if (v10)
     {
       v6 = [(RouteStepItem *)v10 showsHairline]^ 1;
@@ -63,15 +63,15 @@
     }
 
     [(UIView *)self->_hairlineView setHidden:v6];
-    v7 = [(RouteStepItem *)v10 metrics];
-    v8 = [v7 hairlineColor];
-    [(UIView *)self->_hairlineView setBackgroundColor:v8];
+    metrics = [(RouteStepItem *)v10 metrics];
+    hairlineColor = [metrics hairlineColor];
+    [(UIView *)self->_hairlineView setBackgroundColor:hairlineColor];
 
     [(RouteStepItem *)v10 hairlineLeadingInset];
     [(NSLayoutConstraint *)self->_hairlineLeadingConstraint setConstant:?];
     [(RouteStepItem *)v10 hairlineTrailingInset];
     [(NSLayoutConstraint *)self->_hairlineTrailingConstraint setConstant:-v9];
-    v5 = v10;
+    itemCopy = v10;
   }
 }
 
@@ -107,7 +107,7 @@
   return 0;
 }
 
-- (void)setShouldUseTextToBottomConstraint:(BOOL)a3
+- (void)setShouldUseTextToBottomConstraint:(BOOL)constraint
 {
   v3 = sub_10006D178();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -137,11 +137,11 @@
   }
 }
 
-- (RouteStepListView)initWithFrame:(CGRect)a3
+- (RouteStepListView)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = RouteStepListView;
-  v3 = [(RouteStepListView *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RouteStepListView *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -150,29 +150,29 @@
 
     [(UIView *)v3->_hairlineView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(RouteStepListView *)v3 addSubview:v3->_hairlineView];
-    v6 = [(UIView *)v3->_hairlineView leadingAnchor];
-    v7 = [(RouteStepListView *)v3 leadingAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    leadingAnchor = [(UIView *)v3->_hairlineView leadingAnchor];
+    leadingAnchor2 = [(RouteStepListView *)v3 leadingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     hairlineLeadingConstraint = v3->_hairlineLeadingConstraint;
     v3->_hairlineLeadingConstraint = v8;
 
-    v10 = [(UIView *)v3->_hairlineView trailingAnchor];
-    v11 = [(RouteStepListView *)v3 trailingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    trailingAnchor = [(UIView *)v3->_hairlineView trailingAnchor];
+    trailingAnchor2 = [(RouteStepListView *)v3 trailingAnchor];
+    v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     hairlineTrailingConstraint = v3->_hairlineTrailingConstraint;
     v3->_hairlineTrailingConstraint = v12;
 
-    v14 = [(UIView *)v3->_hairlineView heightAnchor];
-    v15 = [v14 constraintEqualToConstant:1.0];
+    heightAnchor = [(UIView *)v3->_hairlineView heightAnchor];
+    v15 = [heightAnchor constraintEqualToConstant:1.0];
     hairlineHeightConstraint = v3->_hairlineHeightConstraint;
     v3->_hairlineHeightConstraint = v15;
 
     v23[0] = v3->_hairlineLeadingConstraint;
     v23[1] = v3->_hairlineTrailingConstraint;
     v23[2] = v3->_hairlineHeightConstraint;
-    v17 = [(UIView *)v3->_hairlineView bottomAnchor];
-    v18 = [(RouteStepListView *)v3 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [(UIView *)v3->_hairlineView bottomAnchor];
+    bottomAnchor2 = [(RouteStepListView *)v3 bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v23[3] = v19;
     v20 = [NSArray arrayWithObjects:v23 count:4];
     [NSLayoutConstraint activateConstraints:v20];
@@ -183,7 +183,7 @@
   return v3;
 }
 
-+ (double)heightForItem:(id)a3 width:(double)a4 maximumHeight:(double)a5
++ (double)heightForItem:(id)item width:(double)width maximumHeight:(double)height
 {
   v5 = sub_10006D178();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))

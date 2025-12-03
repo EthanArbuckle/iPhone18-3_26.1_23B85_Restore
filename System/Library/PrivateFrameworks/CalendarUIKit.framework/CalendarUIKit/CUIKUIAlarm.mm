@@ -1,17 +1,17 @@
 @interface CUIKUIAlarm
-- (BOOL)isEqualToUIAlarm:(id)a3;
-- (CUIKUIAlarm)initWithAlarm:(id)a3;
+- (BOOL)isEqualToUIAlarm:(id)alarm;
+- (CUIKUIAlarm)initWithAlarm:(id)alarm;
 - (id)description;
 - (id)initDefaultAlarm;
 - (id)initLeaveNowAlarm;
-- (id)localizedDescriptionAllDay:(BOOL)a3;
+- (id)localizedDescriptionAllDay:(BOOL)day;
 @end
 
 @implementation CUIKUIAlarm
 
-- (CUIKUIAlarm)initWithAlarm:(id)a3
+- (CUIKUIAlarm)initWithAlarm:(id)alarm
 {
-  v5 = a3;
+  alarmCopy = alarm;
   v9.receiver = self;
   v9.super_class = CUIKUIAlarm;
   v6 = [(CUIKUIAlarm *)&v9 init];
@@ -19,8 +19,8 @@
   if (v6)
   {
     v6->_isLeaveNowAlarm = 0;
-    v6->_isDefaultAlarm = [v5 isDefaultAlarm];
-    objc_storeStrong(&v7->_alarm, a3);
+    v6->_isDefaultAlarm = [alarmCopy isDefaultAlarm];
+    objc_storeStrong(&v7->_alarm, alarm);
   }
 
   return v7;
@@ -69,12 +69,12 @@
   [v5 setKey:@"_isLeaveNowAlarm" withBoolean:self->_isLeaveNowAlarm];
   [v5 setKey:@"_isDefaultAlarm" withBoolean:self->_isDefaultAlarm];
   [v5 setKey:@"_alarm" withObject:self->_alarm];
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
-- (id)localizedDescriptionAllDay:(BOOL)a3
+- (id)localizedDescriptionAllDay:(BOOL)day
 {
   if (self->_isLeaveNowAlarm)
   {
@@ -85,7 +85,7 @@
   else
   {
     alarm = self->_alarm;
-    if (a3)
+    if (day)
     {
       [(EKAlarm *)alarm cuik_localizedAllDayDescription];
     }
@@ -100,35 +100,35 @@
   return v4;
 }
 
-- (BOOL)isEqualToUIAlarm:(id)a3
+- (BOOL)isEqualToUIAlarm:(id)alarm
 {
-  v4 = a3;
-  if (v4)
+  alarmCopy = alarm;
+  if (alarmCopy)
   {
-    v5 = [(CUIKUIAlarm *)self isDefaultAlarm];
-    if (v5 == [v4 isDefaultAlarm])
+    isDefaultAlarm = [(CUIKUIAlarm *)self isDefaultAlarm];
+    if (isDefaultAlarm == [alarmCopy isDefaultAlarm])
     {
-      v6 = [(CUIKUIAlarm *)self isLeaveNowAlarm];
-      if (v6 == [v4 isLeaveNowAlarm])
+      isLeaveNowAlarm = [(CUIKUIAlarm *)self isLeaveNowAlarm];
+      if (isLeaveNowAlarm == [alarmCopy isLeaveNowAlarm])
       {
-        if (-[CUIKUIAlarm isLeaveNowAlarm](self, "isLeaveNowAlarm") && ([v4 isLeaveNowAlarm] & 1) != 0)
+        if (-[CUIKUIAlarm isLeaveNowAlarm](self, "isLeaveNowAlarm") && ([alarmCopy isLeaveNowAlarm] & 1) != 0)
         {
           v7 = 1;
           goto LABEL_5;
         }
 
-        v9 = [(CUIKUIAlarm *)self alarm];
-        v10 = [v4 alarm];
-        v11 = v10;
-        if (v9)
+        alarm = [(CUIKUIAlarm *)self alarm];
+        alarm2 = [alarmCopy alarm];
+        v11 = alarm2;
+        if (alarm)
         {
-          v10 = v9;
+          alarm2 = alarm;
           v12 = v11;
         }
 
         else
         {
-          if (!v10)
+          if (!alarm2)
           {
             v7 = 1;
             goto LABEL_14;
@@ -137,7 +137,7 @@
           v12 = 0;
         }
 
-        v7 = [v10 isTopographicallyEqualToAlarm:v12];
+        v7 = [alarm2 isTopographicallyEqualToAlarm:v12];
 LABEL_14:
 
         goto LABEL_5;

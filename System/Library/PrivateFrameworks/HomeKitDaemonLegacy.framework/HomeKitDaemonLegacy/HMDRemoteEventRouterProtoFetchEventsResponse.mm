@@ -1,25 +1,25 @@
 @interface HMDRemoteEventRouterProtoFetchEventsResponse
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addChangedEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addChangedEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMDRemoteEventRouterProtoFetchEventsResponse
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v15 = *MEMORY[0x277D85DE8];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
@@ -48,13 +48,13 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     changedEvents = self->_changedEvents;
-    if (changedEvents | v4[1])
+    if (changedEvents | equalCopy[1])
     {
       v6 = [(NSMutableArray *)changedEvents isEqual:?];
     }
@@ -73,10 +73,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -97,7 +97,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{a3, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v10) copyWithZone:{zone, v14}];
         [v5 addChangedEvents:v11];
 
         ++v10;
@@ -114,29 +114,29 @@
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(HMDRemoteEventRouterProtoFetchEventsResponse *)self changedEventsCount])
   {
-    [v8 clearChangedEvents];
-    v4 = [(HMDRemoteEventRouterProtoFetchEventsResponse *)self changedEventsCount];
-    if (v4)
+    [toCopy clearChangedEvents];
+    changedEventsCount = [(HMDRemoteEventRouterProtoFetchEventsResponse *)self changedEventsCount];
+    if (changedEventsCount)
     {
-      v5 = v4;
+      v5 = changedEventsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(HMDRemoteEventRouterProtoFetchEventsResponse *)self changedEventsAtIndex:i];
-        [v8 addChangedEvents:v7];
+        [toCopy addChangedEvents:v7];
       }
     }
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -172,14 +172,14 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -190,18 +190,18 @@
       while (1)
       {
         LOBYTE(v17[0]) = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:v17 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:v17 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v17[0] & 0x7F) << v6;
@@ -218,9 +218,9 @@
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -245,19 +245,19 @@ LABEL_15:
         return 0;
       }
 
-      v15 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v15 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  return [a3 hasError] ^ 1;
+  return [from hasError] ^ 1;
 }
 
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_changedEvents count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_changedEvents, "count")}];
@@ -280,8 +280,8 @@ LABEL_15:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -290,12 +290,12 @@ LABEL_15:
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"changedEvents"];
+    [dictionary setObject:v4 forKey:@"changedEvents"];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -304,28 +304,28 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = HMDRemoteEventRouterProtoFetchEventsResponse;
   v4 = [(HMDRemoteEventRouterProtoFetchEventsResponse *)&v8 description];
-  v5 = [(HMDRemoteEventRouterProtoFetchEventsResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMDRemoteEventRouterProtoFetchEventsResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addChangedEvents:(id)a3
+- (void)addChangedEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   changedEvents = self->_changedEvents;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!changedEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_changedEvents;
     self->_changedEvents = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     changedEvents = self->_changedEvents;
   }
 
-  [(NSMutableArray *)changedEvents addObject:v4];
+  [(NSMutableArray *)changedEvents addObject:eventsCopy];
 }
 
 @end

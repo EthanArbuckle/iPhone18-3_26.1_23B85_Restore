@@ -2,12 +2,12 @@
 + (void)initialize;
 - (BOOL)_hasQueuedCompressedBuffers;
 - (BOOL)compressionResourcesAllocated;
-- (BOOL)hasUncompressedEquivalentFreeBufferCount:(int)a3;
-- (BWCompressedShotBufferNode)initWithNodeConfiguration:(id)a3 compressionInputDimensions:(id)a4;
+- (BOOL)hasUncompressedEquivalentFreeBufferCount:(int)count;
+- (BWCompressedShotBufferNode)initWithNodeConfiguration:(id)configuration compressionInputDimensions:(id)dimensions;
 - (BWPixelBufferPool)_setupDecompressionPoolWithDimensions:(BWPixelBufferPool *)result;
 - (CMAttachmentBearerRef)_newSampleBufferFromDecompressionPoolWithCopyOfSampleBuffer:(CMAttachmentBearerRef)result;
 - (CMVideoFormatDescriptionRef)_copyCompressedFormatDescriptionForUncompressedSampleBuffer:(CMVideoFormatDescriptionRef)result;
-- (double)_cropRectForSampleBuffer:(uint64_t)a1;
+- (double)_cropRectForSampleBuffer:(uint64_t)buffer;
 - (id)freeBufferCountIncreasedHandler;
 - (int)uncompressedEquivalentCapacity;
 - (uint64_t)_compressedByteCapacity;
@@ -16,32 +16,32 @@
 - (uint64_t)_inUseCompressedBytes;
 - (uint64_t)_newCompressedSampleBufferFromUncompressedSampleBuffer:(uint64_t)result;
 - (uint64_t)_newCompressionSession;
-- (uint64_t)_newDecompressedSampleBufferFromCompressedSampleBuffer:(uint64_t)a1;
-- (uint64_t)_shouldPassthroughSampleBuffer:(uint64_t)a3 compressionInputDimensions:(uint64_t)a4 forInput:;
+- (uint64_t)_newDecompressedSampleBufferFromCompressedSampleBuffer:(uint64_t)buffer;
+- (uint64_t)_shouldPassthroughSampleBuffer:(uint64_t)buffer compressionInputDimensions:(uint64_t)dimensions forInput:;
 - (uint64_t)_updateCompressedByteCapacity;
-- (void)_asyncOnDecompressionQueue:(uint64_t)a1;
-- (void)_compressionOptionsWithCropRect:(uint64_t)a1 pixelFormat:(int)a2;
-- (void)_cropRectForMetadata:(uint64_t)a3 dimensions:(void *)a4 settings:;
+- (void)_asyncOnDecompressionQueue:(uint64_t)queue;
+- (void)_compressionOptionsWithCropRect:(uint64_t)rect pixelFormat:(int)format;
+- (void)_cropRectForMetadata:(uint64_t)metadata dimensions:(void *)dimensions settings:;
 - (void)_decompressionWork;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4;
-- (void)flushAndWaitForUncompressedEquivalentFreeBufferCount:(int)a3;
-- (void)flushAndWaitUntilThreshold:(int)a3;
-- (void)getInUseCompressedBufferCount:(int *)a3 inUseCompressedBytes:(int64_t *)a4 maxInUseCompressedBytes:(int64_t *)a5 forUncompressedEquivalentFreeBufferCount:(int)a6;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
-- (void)setFreeBufferCountIncreasedHandler:(id)a3;
-- (void)setUncompressedEquivalentCapacity:(int)a3;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input;
+- (void)flushAndWaitForUncompressedEquivalentFreeBufferCount:(int)count;
+- (void)flushAndWaitUntilThreshold:(int)threshold;
+- (void)getInUseCompressedBufferCount:(int *)count inUseCompressedBytes:(int64_t *)bytes maxInUseCompressedBytes:(int64_t *)compressedBytes forUncompressedEquivalentFreeBufferCount:(int)bufferCount;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
+- (void)setFreeBufferCountIncreasedHandler:(id)handler;
+- (void)setUncompressedEquivalentCapacity:(int)capacity;
 @end
 
 @implementation BWCompressedShotBufferNode
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -50,7 +50,7 @@
   }
 }
 
-- (BWCompressedShotBufferNode)initWithNodeConfiguration:(id)a3 compressionInputDimensions:(id)a4
+- (BWCompressedShotBufferNode)initWithNodeConfiguration:(id)configuration compressionInputDimensions:(id)dimensions
 {
   v20.receiver = self;
   v20.super_class = BWCompressedShotBufferNode;
@@ -59,31 +59,31 @@
   if (v6)
   {
     [(BWNode *)v6 setSupportsLiveReconfiguration:1];
-    v8 = a3;
-    v7->_nodeConfiguration = v8;
-    v7->_optimizedFieldOfViewProcessingCropEnabled = [(BWStillImageNodeConfiguration *)v8 optimizedProcessingForZoomFOVSupported];
+    configurationCopy = configuration;
+    v7->_nodeConfiguration = configurationCopy;
+    v7->_optimizedFieldOfViewProcessingCropEnabled = [(BWStillImageNodeConfiguration *)configurationCopy optimizedProcessingForZoomFOVSupported];
     v7->_bufferTrackingLock._os_unfair_lock_opaque = 0;
     v7->_uncompressedEquivalentCapacity = 11;
     v7->_queuedCompressedSampleBuffers = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7->_passthroughEnabled = 1;
     v7->_compressWhenCompressedBuffersInUseEnabled = 1;
     v7->_compressedSurfacePoolEnabled = 0;
-    if (a4.var0 >= 1 && *&a4 > 0)
+    if (dimensions.var0 >= 1 && *&dimensions > 0)
     {
-      v7->_compressionInputDimensionsInit = a4;
-      [a3 figThreadPriority];
+      v7->_compressionInputDimensionsInit = dimensions;
+      [configuration figThreadPriority];
       v7->_decompressionQueue = FigDispatchQueueCreateWithPriority();
-      v9 = [a3 depthDataType];
-      if (v9 <= 0xA)
+      depthDataType = [configuration depthDataType];
+      if (depthDataType <= 0xA)
       {
-        if (((1 << v9) & 0xF6) != 0)
+        if (((1 << depthDataType) & 0xF6) != 0)
         {
 LABEL_6:
 
           return 0;
         }
 
-        if (((1 << v9) & 0x609) != 0)
+        if (((1 << depthDataType) & 0x609) != 0)
         {
           v10 = 5;
         }
@@ -155,14 +155,14 @@ LABEL_6:
   [(BWNode *)&v5 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4
+- (void)didSelectFormat:(id)format forInput:(id)input
 {
-  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [a4 index]);
+  v5 = -[NSArray objectAtIndexedSubscript:](-[BWNode outputs](self, "outputs"), "objectAtIndexedSubscript:", [input index]);
 
-  [v5 setFormat:a3];
+  [v5 setFormat:format];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   if (dword_1EB58E240)
   {
@@ -178,8 +178,8 @@ LABEL_6:
   v9[2] = __86__BWCompressedShotBufferNode_configurationWithID_updatedFormat_didBecomeLiveForInput___block_invoke;
   v9[3] = &unk_1E798FE50;
   v9[5] = self;
-  v9[6] = a3;
-  v9[4] = a5;
+  v9[6] = d;
+  v9[4] = input;
   [(BWCompressedShotBufferNode *)self _asyncOnDecompressionQueue:v9];
 }
 
@@ -197,13 +197,13 @@ uint64_t __86__BWCompressedShotBufferNode_configurationWithID_updatedFormat_didB
   return [objc_msgSend(objc_msgSend(*(a1 + 40) outputs];
 }
 
-- (void)_asyncOnDecompressionQueue:(uint64_t)a1
+- (void)_asyncOnDecompressionQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
     if (a2)
     {
-      v2 = *(a1 + 248);
+      v2 = *(queue + 248);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __57__BWCompressedShotBufferNode__asyncOnDecompressionQueue___block_invoke;
@@ -214,16 +214,16 @@ uint64_t __86__BWCompressedShotBufferNode_configurationWithID_updatedFormat_didB
   }
 }
 
-- (void)handleStillImagePrewarmWithSettings:(id)a3 resourceConfig:(id)a4 forInput:(id)a5
+- (void)handleStillImagePrewarmWithSettings:(id)settings resourceConfig:(id)config forInput:(id)input
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __90__BWCompressedShotBufferNode_handleStillImagePrewarmWithSettings_resourceConfig_forInput___block_invoke;
   v5[3] = &unk_1E798FE78;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a3;
-  v5[7] = a4;
+  v5[5] = input;
+  v5[6] = settings;
+  v5[7] = config;
   [(BWCompressedShotBufferNode *)self _asyncOnDecompressionQueue:v5];
 }
 
@@ -236,15 +236,15 @@ uint64_t __90__BWCompressedShotBufferNode_handleStillImagePrewarmWithSettings_re
   return [v2 emitStillImagePrewarmMessageWithSettings:v3 resourceConfig:v4];
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __55__BWCompressedShotBufferNode_handleNodeError_forInput___block_invoke;
   v4[3] = &unk_1E798FD58;
   v4[4] = self;
-  v4[5] = a4;
-  v4[6] = a3;
+  v4[5] = input;
+  v4[6] = error;
   [(BWCompressedShotBufferNode *)self _asyncOnDecompressionQueue:v4];
 }
 
@@ -256,10 +256,10 @@ uint64_t __55__BWCompressedShotBufferNode_handleNodeError_forInput___block_invok
   return [v2 emitNodeError:v3];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v5 = a3;
-  v7 = CMGetAttachment(a3, @"StillSettings", 0);
+  bufferCopy = buffer;
+  v7 = CMGetAttachment(buffer, @"StillSettings", 0);
   v8 = v7;
   if (dword_1EB58E240)
   {
@@ -279,17 +279,17 @@ uint64_t __55__BWCompressedShotBufferNode_handleNodeError_forInput___block_invok
     compressionInputDimensionsInit = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(compressionInputDimensionsInit, v12);
   }
 
-  if (([(BWCompressedShotBufferNode *)self _shouldPassthroughSampleBuffer:v5 compressionInputDimensions:compressionInputDimensionsInit forInput:a4]& 1) != 0)
+  if (([(BWCompressedShotBufferNode *)self _shouldPassthroughSampleBuffer:bufferCopy compressionInputDimensions:compressionInputDimensionsInit forInput:input]& 1) != 0)
   {
 LABEL_14:
-    if (v5)
+    if (bufferCopy)
     {
-      v18 = CFRetain(v5);
+      v18 = CFRetain(bufferCopy);
       goto LABEL_16;
     }
 
 LABEL_56:
-    v42 = CMGetAttachment(v5, *off_1E798A3C8, 0);
+    v42 = CMGetAttachment(bufferCopy, *off_1E798A3C8, 0);
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __58__BWCompressedShotBufferNode_renderSampleBuffer_forInput___block_invoke_3;
@@ -297,12 +297,12 @@ LABEL_56:
     v45[4] = self;
     v45[5] = v8;
     v45[6] = v42;
-    v45[7] = a4;
+    v45[7] = input;
     [(BWCompressedShotBufferNode *)self _asyncOnDecompressionQueue:v45];
     return;
   }
 
-  sbuf = v5;
+  sbuf = bufferCopy;
   if (!self->_decompressionPool)
   {
     [(BWCompressedShotBufferNode *)self _setupDecompressionPoolWithDimensions:?];
@@ -316,7 +316,7 @@ LABEL_56:
     *p_compressionInputDimensions = compressionInputDimensionsInit;
     if (compressionInputDimensionsInit < 1 || SHIDWORD(compressionInputDimensionsInit) <= 0)
     {
-      FormatDescription = CMSampleBufferGetFormatDescription(v5);
+      FormatDescription = CMSampleBufferGetFormatDescription(bufferCopy);
       *p_compressionInputDimensions = CMVideoFormatDescriptionGetDimensions(FormatDescription);
     }
 
@@ -339,12 +339,12 @@ LABEL_56:
       v52 = 2112;
       v53 = BWAspectRatioToShortString([objc_msgSend(v8 "requestedSettings")]);
       v54 = 2048;
-      v55 = [v8 settingsID];
+      settingsID = [v8 settingsID];
       v17 = _os_log_send_and_compose_impl();
       FigCapturePleaseFileRadar(7, v17, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWCompressedShotBufferNode.m", 337, @"LastShownDate:BWCompressedShotBufferNode.m:337", @"LastShownBuild:BWCompressedShotBufferNode.m:337", 0);
       free(v17);
       os_unfair_lock_unlock(&self->_bufferTrackingLock);
-      v5 = sbuf;
+      bufferCopy = sbuf;
       goto LABEL_14;
     }
 
@@ -424,7 +424,7 @@ LABEL_32:
       }
 
       mach_absolute_time();
-      v5 = sbuf;
+      bufferCopy = sbuf;
       v38 = [(BWCompressedShotBufferNode *)self _newCompressedSampleBufferFromUncompressedSampleBuffer:?];
       v8 = v43;
       if (v38)
@@ -478,7 +478,7 @@ LABEL_32:
   }
 
   os_unfair_lock_unlock(&self->_bufferTrackingLock);
-  v18 = [(BWCompressedShotBufferNode *)self _newSampleBufferFromDecompressionPoolWithCopyOfSampleBuffer:v5];
+  v18 = [(BWCompressedShotBufferNode *)self _newSampleBufferFromDecompressionPoolWithCopyOfSampleBuffer:bufferCopy];
 LABEL_16:
   v19 = v18;
   if (!v18)
@@ -493,15 +493,15 @@ LABEL_16:
   v46[2] = __58__BWCompressedShotBufferNode_renderSampleBuffer_forInput___block_invoke_2;
   v46[3] = &unk_1E798FE50;
   v46[4] = self;
-  v46[5] = a4;
+  v46[5] = input;
   v46[6] = v19;
 LABEL_18:
   [(BWCompressedShotBufferNode *)self _asyncOnDecompressionQueue:v20];
   if (([objc_msgSend(v8 "captureSettings")] & 2) == 0)
   {
-    v21 = [(BWPixelBufferPool *)self->_rawThumbnailPool capacity];
+    capacity = [(BWPixelBufferPool *)self->_rawThumbnailPool capacity];
     decompressionPoolCapacity = self->_decompressionPoolCapacity;
-    if (v21 > 2 * decompressionPoolCapacity)
+    if (capacity > 2 * decompressionPoolCapacity)
     {
       [(BWPixelBufferPool *)self->_rawThumbnailPool setCapacity:2 * decompressionPoolCapacity];
     }
@@ -527,7 +527,7 @@ void __58__BWCompressedShotBufferNode_renderSampleBuffer_forInput___block_invoke
   [objc_msgSend(objc_msgSend(*(a1 + 32) "outputs")];
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   if (dword_1EB58E240)
   {
@@ -538,13 +538,13 @@ void __58__BWCompressedShotBufferNode_renderSampleBuffer_forInput___block_invoke
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if ([(BWNode *)self allInputsHaveReachedState:0, a4, v7, v8])
+  if ([(BWNode *)self allInputsHaveReachedState:0, input, v7, v8])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __72__BWCompressedShotBufferNode_didReachEndOfDataForConfigurationID_input___block_invoke;
     v9[3] = &unk_1E798F898;
-    v9[4] = a3;
+    v9[4] = d;
     v9[5] = self;
     [(BWCompressedShotBufferNode *)self _asyncOnDecompressionQueue:v9];
   }
@@ -667,12 +667,12 @@ uint64_t __72__BWCompressedShotBufferNode_didReachEndOfDataForConfigurationID_in
   return result;
 }
 
-- (void)setUncompressedEquivalentCapacity:(int)a3
+- (void)setUncompressedEquivalentCapacity:(int)capacity
 {
   os_unfair_lock_lock(&self->_bufferTrackingLock);
-  if (self->_uncompressedEquivalentCapacity != a3)
+  if (self->_uncompressedEquivalentCapacity != capacity)
   {
-    self->_uncompressedEquivalentCapacity = a3;
+    self->_uncompressedEquivalentCapacity = capacity;
     [(BWCompressedShotBufferNode *)self _updateCompressedByteCapacity];
   }
 
@@ -696,27 +696,27 @@ uint64_t __72__BWCompressedShotBufferNode_didReachEndOfDataForConfigurationID_in
   return v5;
 }
 
-- (void)flushAndWaitUntilThreshold:(int)a3
+- (void)flushAndWaitUntilThreshold:(int)threshold
 {
   os_unfair_lock_lock(&self->_bufferTrackingLock);
-  v5 = (((100.0 - a3) / 100.0) * (self->_compressedByteCapacity / (self->_compressionInputDimensions.height * self->_compressionInputDimensions.width)));
+  v5 = (((100.0 - threshold) / 100.0) * (self->_compressedByteCapacity / (self->_compressionInputDimensions.height * self->_compressionInputDimensions.width)));
   os_unfair_lock_unlock(&self->_bufferTrackingLock);
 
   [(BWCompressedShotBufferNode *)self flushAndWaitForUncompressedEquivalentFreeBufferCount:v5];
 }
 
-- (void)setFreeBufferCountIncreasedHandler:(id)a3
+- (void)setFreeBufferCountIncreasedHandler:(id)handler
 {
   os_unfair_lock_lock(&self->_bufferTrackingLock);
   inUseCompressedBufferCount = self->_inUseCompressedBufferCount;
 
-  self->_freeBufferCountIncreasedHandler = [a3 copy];
+  self->_freeBufferCountIncreasedHandler = [handler copy];
   os_unfair_lock_unlock(&self->_bufferTrackingLock);
-  if (a3 && !inUseCompressedBufferCount)
+  if (handler && !inUseCompressedBufferCount)
   {
-    v6 = *(a3 + 2);
+    v6 = *(handler + 2);
 
-    v6(a3);
+    v6(handler);
   }
 }
 
@@ -729,22 +729,22 @@ uint64_t __72__BWCompressedShotBufferNode_didReachEndOfDataForConfigurationID_in
   return v3;
 }
 
-- (void)getInUseCompressedBufferCount:(int *)a3 inUseCompressedBytes:(int64_t *)a4 maxInUseCompressedBytes:(int64_t *)a5 forUncompressedEquivalentFreeBufferCount:(int)a6
+- (void)getInUseCompressedBufferCount:(int *)count inUseCompressedBytes:(int64_t *)bytes maxInUseCompressedBytes:(int64_t *)compressedBytes forUncompressedEquivalentFreeBufferCount:(int)bufferCount
 {
   os_unfair_lock_lock(&self->_bufferTrackingLock);
-  if (a3)
+  if (count)
   {
-    *a3 = self->_inUseCompressedBufferCount;
+    *count = self->_inUseCompressedBufferCount;
   }
 
-  if (a4)
+  if (bytes)
   {
-    *a4 = self->_inUseCompressedBytes;
+    *bytes = self->_inUseCompressedBytes;
   }
 
-  if (a5)
+  if (compressedBytes)
   {
-    *a5 = self->_compressedByteCapacity - self->_compressionInputDimensions.height * self->_compressionInputDimensions.width * a6;
+    *compressedBytes = self->_compressedByteCapacity - self->_compressionInputDimensions.height * self->_compressionInputDimensions.width * bufferCount;
   }
 
   os_unfair_lock_unlock(&self->_bufferTrackingLock);
@@ -767,12 +767,12 @@ void __72__BWCompressedShotBufferNode__copyRAWThumbnailsForSampleBufferIfNeeded_
   }
 }
 
-- (uint64_t)_shouldPassthroughSampleBuffer:(uint64_t)a3 compressionInputDimensions:(uint64_t)a4 forInput:
+- (uint64_t)_shouldPassthroughSampleBuffer:(uint64_t)buffer compressionInputDimensions:(uint64_t)dimensions forInput:
 {
   if (result)
   {
     v4 = result;
-    if (*(result + 144) != a4)
+    if (*(result + 144) != dimensions)
     {
       return 1;
     }
@@ -787,7 +787,7 @@ void __72__BWCompressedShotBufferNode__copyRAWThumbnailsForSampleBufferIfNeeded_
     if ([objc_msgSend(v7 "requestedSettings")] != 1 || (result = objc_msgSend(objc_msgSend(v8, "objectForKeyedSubscript:", *off_1E798B588), "intValue"), result != 1))
     {
       [(BWCompressedShotBufferNode *)v4 _cropRectForSampleBuffer:?];
-      if (v10 <= a3 && v9 <= SHIDWORD(a3))
+      if (v10 <= buffer && v9 <= SHIDWORD(buffer))
       {
         if (([objc_msgSend(v7 "captureSettings")] & 2) != 0)
         {
@@ -871,12 +871,12 @@ void __72__BWCompressedShotBufferNode__copyRAWThumbnailsForSampleBufferIfNeeded_
 
 - (uint64_t)_inUseCompressedBufferCount
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_6_12(a1);
+  OUTLINED_FUNCTION_6_12(self);
   v2 = *(v1 + 168);
   OUTLINED_FUNCTION_18_4();
   return v2;
@@ -884,12 +884,12 @@ void __72__BWCompressedShotBufferNode__copyRAWThumbnailsForSampleBufferIfNeeded_
 
 - (uint64_t)_inUseCompressedBytes
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_6_12(a1);
+  OUTLINED_FUNCTION_6_12(self);
   v2 = *(v1 + 176);
   OUTLINED_FUNCTION_18_4();
   return v2;
@@ -897,12 +897,12 @@ void __72__BWCompressedShotBufferNode__copyRAWThumbnailsForSampleBufferIfNeeded_
 
 - (uint64_t)_compressedByteCapacity
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_6_12(a1);
+  OUTLINED_FUNCTION_6_12(self);
   v2 = *(v1 + 184);
   OUTLINED_FUNCTION_18_4();
   return v2;
@@ -952,9 +952,9 @@ LABEL_37:
 
       if (!*(v3 + 216))
       {
-        v41 = [(BWCompressedShotBufferNode *)v3 _newCompressionSession];
-        *(v3 + 216) = v41;
-        if (!v41)
+        _newCompressionSession = [(BWCompressedShotBufferNode *)v3 _newCompressionSession];
+        *(v3 + 216) = _newCompressionSession;
+        if (!_newCompressionSession)
         {
           goto LABEL_37;
         }
@@ -981,15 +981,15 @@ LABEL_37:
 
       Width = CVPixelBufferGetWidth(v7);
       Height = CVPixelBufferGetHeight(v7);
-      v19 = [*(v3 + 264) dimensions];
-      v20 = v19;
-      v21 = HIDWORD(v19);
-      if (Width <= v19 && Height <= SHIDWORD(v19))
+      dimensions = [*(v3 + 264) dimensions];
+      v20 = dimensions;
+      v21 = HIDWORD(dimensions);
+      if (Width <= dimensions && Height <= SHIDWORD(dimensions))
       {
         goto LABEL_40;
       }
 
-      v23 = v19;
+      v23 = dimensions;
       v51.origin.x = [(BWCompressedShotBufferNode *)v3 _cropRectForSampleBuffer:?];
       v24 = v51.size.width;
       v25 = v51.size.height;
@@ -1110,7 +1110,7 @@ LABEL_43:
 
 - (void)_decompressionWork
 {
-  if (a1)
+  if (self)
   {
     if (!_FigIsCurrentDispatchQueue())
     {
@@ -1120,38 +1120,38 @@ LABEL_43:
 
     v2 = OUTLINED_FUNCTION_10_7();
     os_unfair_lock_lock(v2);
-    v3 = [*(a1 + 192) firstObject];
-    if (v3)
+    firstObject = [*(self + 192) firstObject];
+    if (firstObject)
     {
-      v5 = v3;
-      [*(a1 + 192) removeObjectAtIndex:0];
+      v5 = firstObject;
+      [*(self + 192) removeObjectAtIndex:0];
       v6 = OUTLINED_FUNCTION_10_7();
       os_unfair_lock_unlock(v6);
       DataBuffer = CMSampleBufferGetDataBuffer(v5);
       DataLength = CMBlockBufferGetDataLength(DataBuffer);
-      v9 = [(BWCompressedShotBufferNode *)a1 _newDecompressedSampleBufferFromCompressedSampleBuffer:v5];
+      v9 = [(BWCompressedShotBufferNode *)self _newDecompressedSampleBufferFromCompressedSampleBuffer:v5];
       if (v9)
       {
         v10 = v9;
         CMGetAttachment(v9, @"StillSettings", 0);
-        [*(a1 + 152) emitSampleBuffer:v10];
+        [*(self + 152) emitSampleBuffer:v10];
         CFRelease(v10);
       }
 
       else
       {
         v11 = CMGetAttachment(v5, @"StillSettings", 0);
-        v12 = [BWNodeError newError:4294954516 sourceNode:a1 stillImageSettings:v11 metadata:CMGetAttachment(v5, *off_1E798A3C8, 0)];
-        [*(a1 + 152) emitNodeError:v12];
+        v12 = [BWNodeError newError:4294954516 sourceNode:self stillImageSettings:v11 metadata:CMGetAttachment(v5, *off_1E798A3C8, 0)];
+        [*(self + 152) emitNodeError:v12];
       }
 
       CFRelease(v5);
       v13 = OUTLINED_FUNCTION_10_7();
       os_unfair_lock_lock(v13);
-      --*(a1 + 168);
-      v14 = *(a1 + 176);
-      *(a1 + 176) = v14 - DataLength;
-      if (!*(a1 + 168))
+      --*(self + 168);
+      v14 = *(self + 176);
+      *(self + 176) = v14 - DataLength;
+      if (!*(self + 168))
       {
         if (v14 != DataLength)
         {
@@ -1159,7 +1159,7 @@ LABEL_43:
           FigDebugAssert3();
         }
 
-        *(a1 + 164) = 0;
+        *(self + 164) = 0;
       }
 
       if (*MEMORY[0x1E695FF58] == 1)
@@ -1167,7 +1167,7 @@ LABEL_43:
         kdebug_trace();
       }
 
-      v16 = *(a1 + 200);
+      v16 = *(self + 200);
       v15 = OUTLINED_FUNCTION_10_7();
       os_unfair_lock_unlock(v15);
       if (v16)
@@ -1193,15 +1193,15 @@ LABEL_43:
     mach_absolute_time();
     target = 0;
     ImageBuffer = CMSampleBufferGetImageBuffer(a2);
-    v5 = [*(v3 + 264) newPixelBuffer];
-    v6 = v5;
+    newPixelBuffer = [*(v3 + 264) newPixelBuffer];
+    v6 = newPixelBuffer;
     if (!ImageBuffer)
     {
       OUTLINED_FUNCTION_0();
       goto LABEL_50;
     }
 
-    if (!v5)
+    if (!newPixelBuffer)
     {
       OUTLINED_FUNCTION_0();
       FigDebugAssert3();
@@ -1367,11 +1367,11 @@ LABEL_50:
   return result;
 }
 
-- (void)flushAndWaitForUncompressedEquivalentFreeBufferCount:(int)a3
+- (void)flushAndWaitForUncompressedEquivalentFreeBufferCount:(int)count
 {
   mach_absolute_time();
   os_unfair_lock_lock(&self->_bufferTrackingLock);
-  v5 = self->_compressedByteCapacity - self->_compressionInputDimensions.height * self->_compressionInputDimensions.width * a3;
+  v5 = self->_compressedByteCapacity - self->_compressionInputDimensions.height * self->_compressionInputDimensions.width * count;
   os_unfair_lock_unlock(&self->_bufferTrackingLock);
   v6 = MEMORY[0x1E695FF58];
   if (*MEMORY[0x1E695FF58] == 1)
@@ -1381,8 +1381,8 @@ LABEL_50:
     kdebug_trace();
   }
 
-  v7 = [(BWCompressedShotBufferNode *)self _inUseCompressedBytes];
-  if (v7 > v5)
+  _inUseCompressedBytes = [(BWCompressedShotBufferNode *)self _inUseCompressedBytes];
+  if (_inUseCompressedBytes > v5)
   {
     v8 = 0;
     do
@@ -1397,11 +1397,11 @@ LABEL_50:
       }
 
       usleep(0x2710u);
-      v10 = [(BWCompressedShotBufferNode *)self _inUseCompressedBytes];
+      _inUseCompressedBytes2 = [(BWCompressedShotBufferNode *)self _inUseCompressedBytes];
       v8 = 1;
     }
 
-    while (v10 > v5);
+    while (_inUseCompressedBytes2 > v5);
   }
 
   if (*v6 == 1)
@@ -1409,7 +1409,7 @@ LABEL_50:
     OUTLINED_FUNCTION_5_14();
   }
 
-  if (v7 <= v5)
+  if (_inUseCompressedBytes <= v5)
   {
     if (!dword_1EB58E240)
     {
@@ -1433,28 +1433,28 @@ LABEL_50:
   fig_log_call_emit_and_clean_up_after_send_and_compose();
 }
 
-- (BOOL)hasUncompressedEquivalentFreeBufferCount:(int)a3
+- (BOOL)hasUncompressedEquivalentFreeBufferCount:(int)count
 {
   os_unfair_lock_lock(&self->_bufferTrackingLock);
-  v5 = self->_compressedByteCapacity - self->_compressionInputDimensions.height * self->_compressionInputDimensions.width * a3;
+  v5 = self->_compressedByteCapacity - self->_compressionInputDimensions.height * self->_compressionInputDimensions.width * count;
   os_unfair_lock_unlock(&self->_bufferTrackingLock);
   return [(BWCompressedShotBufferNode *)self _inUseCompressedBytes]<= v5;
 }
 
-- (void)_cropRectForMetadata:(uint64_t)a3 dimensions:(void *)a4 settings:
+- (void)_cropRectForMetadata:(uint64_t)metadata dimensions:(void *)dimensions settings:
 {
-  if (a1)
+  if (self)
   {
     v6 = *MEMORY[0x1E695F050];
     v5 = *(MEMORY[0x1E695F050] + 8);
     v8 = *(MEMORY[0x1E695F050] + 16);
     v7 = *(MEMORY[0x1E695F050] + 24);
-    if (a2 && (a3 >= 1 ? (v9 = SHIDWORD(a3) <= 0) : (v9 = 1), !v9 && a4))
+    if (a2 && (metadata >= 1 ? (v9 = SHIDWORD(metadata) <= 0) : (v9 = 1), !v9 && dimensions))
     {
-      v12 = [objc_msgSend(a4 "requestedSettings")];
+      v12 = [objc_msgSend(dimensions "requestedSettings")];
       FigCaptureMetadataUtilitiesGetValidBufferRect();
       OUTLINED_FUNCTION_11_1();
-      if (*(a1 + 136) == 1 && [objc_msgSend(a4 "processingSettings")] && v12 && v12 != 6)
+      if (*(self + 136) == 1 && [objc_msgSend(dimensions "processingSettings")] && v12 && v12 != 6)
       {
         BWAspectRatioValueFromAspectRatio(v12);
         v13 = OUTLINED_FUNCTION_3_1();
@@ -1480,9 +1480,9 @@ LABEL_50:
   OUTLINED_FUNCTION_3_1();
 }
 
-- (double)_cropRectForSampleBuffer:(uint64_t)a1
+- (double)_cropRectForSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0.0;
   }
@@ -1490,7 +1490,7 @@ LABEL_50:
   v4 = CMGetAttachment(target, @"StillSettings", 0);
   v5 = CMGetAttachment(target, *off_1E798A3C8, 0);
   v6 = BWPixelBufferDimensionsFromSampleBuffer(target);
-  [(BWCompressedShotBufferNode *)a1 _cropRectForMetadata:v5 dimensions:v6 settings:v4];
+  [(BWCompressedShotBufferNode *)buffer _cropRectForMetadata:v5 dimensions:v6 settings:v4];
   return result;
 }
 
@@ -1635,28 +1635,28 @@ LABEL_5:
   return v11;
 }
 
-- (void)_compressionOptionsWithCropRect:(uint64_t)a1 pixelFormat:(int)a2
+- (void)_compressionOptionsWithCropRect:(uint64_t)rect pixelFormat:(int)format
 {
-  if (!a1)
+  if (!rect)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v10 = 0;
   v11 = 2;
-  FigCapturePreferredSlimCodecFlavorAndTilesForPixelFormat(a2, &v10, &v11);
-  [v4 setObject:&unk_1F2242730 forKeyedSubscript:*MEMORY[0x1E69918D0]];
+  FigCapturePreferredSlimCodecFlavorAndTilesForPixelFormat(format, &v10, &v11);
+  [dictionary setObject:&unk_1F2242730 forKeyedSubscript:*MEMORY[0x1E69918D0]];
   v5 = [MEMORY[0x1E696AD98] numberWithInt:v10];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E6991990]];
-  [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6991898]];
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E6991990]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E6991898]];
   v6 = [MEMORY[0x1E696AD98] numberWithInt:v11];
-  [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69919A8]];
-  if (*(a1 + 224) == 1)
+  [dictionary setObject:v6 forKeyedSubscript:*MEMORY[0x1E69919A8]];
+  if (*(rect + 224) == 1)
   {
     v7 = MEMORY[0x1E695E118];
-    [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69919B0]];
-    [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991948]];
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E69919B0]];
+    [dictionary setObject:v7 forKeyedSubscript:*MEMORY[0x1E6991948]];
   }
 
   v12.origin.x = OUTLINED_FUNCTION_3_1();
@@ -1664,14 +1664,14 @@ LABEL_5:
   {
     v13.origin.x = OUTLINED_FUNCTION_3_1();
     DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v13);
-    [v4 setObject:DictionaryRepresentation forKeyedSubscript:*MEMORY[0x1E6991998]];
+    [dictionary setObject:DictionaryRepresentation forKeyedSubscript:*MEMORY[0x1E6991998]];
     if (DictionaryRepresentation)
     {
       CFRelease(DictionaryRepresentation);
     }
   }
 
-  return v4;
+  return dictionary;
 }
 
 - (CMVideoFormatDescriptionRef)_copyCompressedFormatDescriptionForUncompressedSampleBuffer:(CMVideoFormatDescriptionRef)result
@@ -1741,25 +1741,25 @@ LABEL_5:
 
 - (BOOL)_hasQueuedCompressedBuffers
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_6_12(a1);
+  OUTLINED_FUNCTION_6_12(self);
   v2 = *(v1 + 168) > 0;
   OUTLINED_FUNCTION_18_4();
   return v2;
 }
 
-- (uint64_t)_newDecompressedSampleBufferFromCompressedSampleBuffer:(uint64_t)a1
+- (uint64_t)_newDecompressedSampleBufferFromCompressedSampleBuffer:(uint64_t)buffer
 {
-  if (!a1)
+  if (!buffer)
   {
     return 0;
   }
 
-  if (*(a1 + 264))
+  if (*(buffer + 264))
   {
     mach_absolute_time();
     OUTLINED_FUNCTION_16_2();
@@ -1768,7 +1768,7 @@ LABEL_5:
       OUTLINED_FUNCTION_5_14();
     }
 
-    v5 = [*(a1 + 264) waitForAvailablePixelBuffer];
+    waitForAvailablePixelBuffer = [*(buffer + 264) waitForAvailablePixelBuffer];
     OUTLINED_FUNCTION_16_2();
     if (v4)
     {
@@ -1777,7 +1777,7 @@ LABEL_5:
 
     if (dword_1EB58E240)
     {
-      v6 = v5;
+      v6 = waitForAvailablePixelBuffer;
     }
 
     else
@@ -1803,10 +1803,10 @@ LABEL_5:
     OUTLINED_FUNCTION_5_14();
   }
 
-  v8 = *(a1 + 256);
+  v8 = *(buffer + 256);
   if (!v8)
   {
-    if (!*(a1 + 264) || (v8 = [[BWPhotoDecompressor alloc] initWithOutputPixelBufferPool:*(a1 + 264)], (*(a1 + 256) = v8) == 0))
+    if (!*(buffer + 264) || (v8 = [[BWPhotoDecompressor alloc] initWithOutputPixelBufferPool:*(buffer + 264)], (*(buffer + 256) = v8) == 0))
     {
       OUTLINED_FUNCTION_0();
       FigDebugAssert3();

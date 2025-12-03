@@ -1,12 +1,12 @@
 @interface CNUIUserActionItemComparator
-+ (BOOL)isUserActionForDefaultApps:(id)a3;
++ (BOOL)isUserActionForDefaultApps:(id)apps;
 + (id)comparatorWithActionItemGrouping;
 + (id)comparatorWithAlphabeticalOrderByLabel;
 + (id)comparatorWithAlphabeticalOrderByTargetHandle;
-+ (id)comparatorWithDefaultAppsScorer:(id)a3;
++ (id)comparatorWithDefaultAppsScorer:(id)scorer;
 + (id)comparatorWithPreferredLabelsFirst;
-+ (id)defaultAppScoreForUserAction:(id)a3 scorer:(id)a4;
-+ (id)preferredLabelScoreForUserAction:(id)a3;
++ (id)defaultAppScoreForUserAction:(id)action scorer:(id)scorer;
++ (id)preferredLabelScoreForUserAction:(id)action;
 @end
 
 @implementation CNUIUserActionItemComparator
@@ -38,7 +38,7 @@ uint64_t __64__CNUIUserActionItemComparator_comparatorWithActionItemGrouping__bl
   v4[1] = 3221225472;
   v4[2] = __66__CNUIUserActionItemComparator_comparatorWithPreferredLabelsFirst__block_invoke;
   v4[3] = &__block_descriptor_40_e51_q24__0__CNUIUserActionItem_8__CNUIUserActionItem_16l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = [v4 copy];
 
   return v2;
@@ -139,19 +139,19 @@ uint64_t __77__CNUIUserActionItemComparator_comparatorWithAlphabeticalOrderByTar
   return v12;
 }
 
-+ (id)preferredLabelScoreForUserAction:(id)a3
++ (id)preferredLabelScoreForUserAction:(id)action
 {
   v3 = preferredLabelScoreForUserAction__cn_once_token_1;
-  v4 = a3;
+  actionCopy = action;
   if (v3 != -1)
   {
     +[CNUIUserActionItemComparator preferredLabelScoreForUserAction:];
   }
 
   v5 = preferredLabelScoreForUserAction__cn_once_object_1;
-  v6 = [v4 label];
+  label = [actionCopy label];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [v5 objectForKeyedSubscript:label];
 
   if (v7)
   {
@@ -189,16 +189,16 @@ void __65__CNUIUserActionItemComparator_preferredLabelScoreForUserAction___block
   preferredLabelScoreForUserAction__cn_once_object_1 = v3;
 }
 
-+ (id)comparatorWithDefaultAppsScorer:(id)a3
++ (id)comparatorWithDefaultAppsScorer:(id)scorer
 {
-  v4 = a3;
+  scorerCopy = scorer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __64__CNUIUserActionItemComparator_comparatorWithDefaultAppsScorer___block_invoke;
   v8[3] = &unk_1E76EA5D0;
-  v9 = v4;
-  v10 = a1;
-  v5 = v4;
+  v9 = scorerCopy;
+  selfCopy = self;
+  v5 = scorerCopy;
   v6 = [v8 copy];
 
   return v6;
@@ -223,22 +223,22 @@ uint64_t __64__CNUIUserActionItemComparator_comparatorWithDefaultAppsScorer___bl
   return v9;
 }
 
-+ (BOOL)isUserActionForDefaultApps:(id)a3
++ (BOOL)isUserActionForDefaultApps:(id)apps
 {
-  v3 = a3;
-  v4 = [v3 group] == 2 || objc_msgSend(v3, "group") == 3;
+  appsCopy = apps;
+  v4 = [appsCopy group] == 2 || objc_msgSend(appsCopy, "group") == 3;
 
   return v4;
 }
 
-+ (id)defaultAppScoreForUserAction:(id)a3 scorer:(id)a4
++ (id)defaultAppScoreForUserAction:(id)action scorer:(id)scorer
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 count];
-  v8 = [v6 bundleIdentifier];
+  scorerCopy = scorer;
+  actionCopy = action;
+  v7 = [scorerCopy count];
+  bundleIdentifier = [actionCopy bundleIdentifier];
 
-  v9 = [v5 objectForKeyedSubscript:v8];
+  v9 = [scorerCopy objectForKeyedSubscript:bundleIdentifier];
 
   if (v9)
   {

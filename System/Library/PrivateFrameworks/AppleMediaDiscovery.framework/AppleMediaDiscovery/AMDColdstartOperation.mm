@@ -1,38 +1,38 @@
 @interface AMDColdstartOperation
-+ (id)computeUpdatedScoresV2:(id)a3 withModel:(id)a4 andMappingDictionary:(id)a5;
-+ (id)ensureNewDirectoryForBinaryWithModelId:(id)a3 andVersion:(id)a4;
-+ (id)saveColdStartBinaryforModel:(id)a3 atLocation:(id)a4 withVersion:(id)a5 error:(id *)a6;
++ (id)computeUpdatedScoresV2:(id)v2 withModel:(id)model andMappingDictionary:(id)dictionary;
++ (id)ensureNewDirectoryForBinaryWithModelId:(id)id andVersion:(id)version;
++ (id)saveColdStartBinaryforModel:(id)model atLocation:(id)location withVersion:(id)version error:(id *)error;
 @end
 
 @implementation AMDColdstartOperation
 
-+ (id)ensureNewDirectoryForBinaryWithModelId:(id)a3 andVersion:(id)a4
++ (id)ensureNewDirectoryForBinaryWithModelId:(id)id andVersion:(id)version
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, id);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21 = [MEMORY[0x277CCAA00] defaultManager];
-  v12 = [v21 URLsForDirectory:14 inDomains:1];
-  v20 = [v12 lastObject];
+  objc_storeStrong(&v22, version);
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v12 = [defaultManager URLsForDirectory:14 inDomains:1];
+  lastObject = [v12 lastObject];
   MEMORY[0x277D82BD8](v12);
-  v19 = [v20 URLByAppendingPathComponent:0x2852AD488];
+  v19 = [lastObject URLByAppendingPathComponent:0x2852AD488];
   v18 = [v19 URLByAppendingPathComponent:@"coldstartBinaries"];
   v17 = [v18 URLByAppendingPathComponent:location[0]];
   if ([AMDMiscHelpers ensureDir:v17 removeIfExists:0])
   {
-    v15 = [v22 stringValue];
-    v7 = [MEMORY[0x277CBEAA8] date];
-    [v7 timeIntervalSince1970];
+    stringValue = [v22 stringValue];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSince1970];
     v8 = v4;
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](date);
     v14[1] = v8;
     v9 = [MEMORY[0x277CCABB0] numberWithLong:v8];
     v14[0] = [v9 stringValue];
     MEMORY[0x277D82BD8](v9);
-    v10 = [v17 URLByAppendingPathComponent:v15];
+    v10 = [v17 URLByAppendingPathComponent:stringValue];
     v13 = [v10 URLByAppendingPathComponent:v14[0]];
     MEMORY[0x277D82BD8](v10);
     if ([AMDMiscHelpers ensureDir:v13 removeIfExists:1])
@@ -48,7 +48,7 @@
     v16 = 1;
     objc_storeStrong(&v13, 0);
     objc_storeStrong(v14, 0);
-    objc_storeStrong(&v15, 0);
+    objc_storeStrong(&stringValue, 0);
   }
 
   else
@@ -60,8 +60,8 @@
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v19, 0);
-  objc_storeStrong(&v20, 0);
-  objc_storeStrong(&v21, 0);
+  objc_storeStrong(&lastObject, 0);
+  objc_storeStrong(&defaultManager, 0);
   objc_storeStrong(&v22, 0);
   objc_storeStrong(location, 0);
   v5 = v24;
@@ -69,20 +69,20 @@
   return v5;
 }
 
-+ (id)saveColdStartBinaryforModel:(id)a3 atLocation:(id)a4 withVersion:(id)a5 error:(id *)a6
++ (id)saveColdStartBinaryforModel:(id)model atLocation:(id)location withVersion:(id)version error:(id *)error
 {
   v68 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v58 = 0;
-  objc_storeStrong(&v58, a4);
+  objc_storeStrong(&v58, location);
   v57 = 0;
-  objc_storeStrong(&v57, a5);
-  v56 = a6;
-  v55 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v55 fileExistsAtPath:v58])
+  objc_storeStrong(&v57, version);
+  errorCopy = error;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:v58])
   {
     v24 = MEMORY[0x277CBEA90];
     v25 = [MEMORY[0x277CBEBC0] fileURLWithPath:v58];
@@ -92,9 +92,9 @@
     v7 = v50;
     v48 = crc32(0, ([v50 bytes] + 6), objc_msgSend(v50, "length") - 6);
     v8 = v50;
-    v47 = [v50 bytes];
-    v46 = v47;
-    v45 = *v47;
+    bytes = [v50 bytes];
+    v46 = bytes;
+    v45 = *bytes;
     if (v45)
     {
       v44 = [MEMORY[0x277CCACA8] stringWithFormat:@"Format mismatch. Expected format:0 got:%d Binary cannot be processed for model: %@", v45, location[0]];
@@ -109,7 +109,7 @@
       objc_storeStrong(&oslog, 0);
       v23 = [AMDError allocError:7 withMessage:v44];
       v9 = v23;
-      *v56 = v23;
+      *errorCopy = v23;
       v60 = 0;
       v51 = 1;
       objc_storeStrong(&v44, 0);
@@ -126,10 +126,10 @@
         v21 = [v37 URLByAppendingPathComponent:@"coldstartbinary"];
         v35 = [v21 URLByAppendingPathExtension:@"bin"];
         MEMORY[0x277D82BD8](v21);
-        if (([v55 copyItemAtURL:v36 toURL:v35 error:v56] & 1) != 0 && !*v56)
+        if (([defaultManager copyItemAtURL:v36 toURL:v35 error:errorCopy] & 1) != 0 && !*errorCopy)
         {
-          [v55 removeItemAtURL:v36 error:v56];
-          if (*v56)
+          [defaultManager removeItemAtURL:v36 error:errorCopy];
+          if (*errorCopy)
           {
             v30 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
             if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -148,14 +148,14 @@
             v61[0] = @"modelId";
             v62[0] = location[0];
             v61[1] = @"url";
-            v14 = [v35 path];
-            v62[1] = v14;
+            path = [v35 path];
+            v62[1] = path;
             v61[2] = @"version";
-            v13 = [v57 stringValue];
-            v62[2] = v13;
+            stringValue = [v57 stringValue];
+            v62[2] = stringValue;
             v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v62 forKeys:v61 count:3];
-            MEMORY[0x277D82BD8](v13);
-            MEMORY[0x277D82BD8](v14);
+            MEMORY[0x277D82BD8](stringValue);
+            MEMORY[0x277D82BD8](path);
             v51 = 1;
           }
         }
@@ -172,11 +172,11 @@
             v15 = MEMORY[0x277D82BE0](v20);
             v32 = v15;
             v16 = v37;
-            v19 = [*v56 localizedDescription];
-            v31 = MEMORY[0x277D82BE0](v19);
+            localizedDescription = [*errorCopy localizedDescription];
+            v31 = MEMORY[0x277D82BE0](localizedDescription);
             __os_log_helper_16_2_3_8_64_8_64_8_64(v64, v15, v16, v31);
             _os_log_error_impl(&dword_240CB9000, v17, v18, "could not copy the compiled model from %@ to %@, %@", v64, 0x20u);
-            MEMORY[0x277D82BD8](v19);
+            MEMORY[0x277D82BD8](localizedDescription);
             MEMORY[0x277D82BD8](v20);
             objc_storeStrong(&v31, 0);
             objc_storeStrong(&v32, 0);
@@ -206,7 +206,7 @@
         objc_storeStrong(&v39, 0);
         v22 = [AMDError allocError:7 withMessage:v40];
         v10 = v22;
-        *v56 = v22;
+        *errorCopy = v22;
         v60 = 0;
         v51 = 1;
         objc_storeStrong(&v40, 0);
@@ -230,13 +230,13 @@
     objc_storeStrong(&v53, 0);
     v26 = [AMDError allocError:15 withMessage:v54];
     v6 = v26;
-    *v56 = v26;
+    *errorCopy = v26;
     v60 = 0;
     v51 = 1;
     objc_storeStrong(&v54, 0);
   }
 
-  objc_storeStrong(&v55, 0);
+  objc_storeStrong(&defaultManager, 0);
   objc_storeStrong(&v57, 0);
   objc_storeStrong(&v58, 0);
   objc_storeStrong(location, 0);
@@ -246,17 +246,17 @@
   return v11;
 }
 
-+ (id)computeUpdatedScoresV2:(id)a3 withModel:(id)a4 andMappingDictionary:(id)a5
++ (id)computeUpdatedScoresV2:(id)v2 withModel:(id)model andMappingDictionary:(id)dictionary
 {
   v131 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, v2);
   v118 = 0;
-  objc_storeStrong(&v118, a4);
+  objc_storeStrong(&v118, model);
   v117 = 0;
-  objc_storeStrong(&v117, a5);
+  objc_storeStrong(&v117, dictionary);
   [AMDPerf startMonitoringEvent:@"ColdStart"];
   v116 = 0;
   if (v118)
@@ -267,56 +267,56 @@
     v111 = v40;
     if (v116)
     {
-      v109 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error retrieving binary file from Coredata for model: %@", v118];
+      v118 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error retrieving binary file from Coredata for model: %@", v118];
       v108 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v107 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v108, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_1_8_64(v129, v109);
+        __os_log_helper_16_2_1_8_64(v129, v118);
         _os_log_error_impl(&dword_240CB9000, v108, v107, "%@", v129, 0xCu);
       }
 
       objc_storeStrong(&v108, 0);
-      [AMDFrameworkMetrics log:v109 withKey:@"coldstartError" atVerbosity:2];
+      [AMDFrameworkMetrics log:v118 withKey:@"coldstartError" atVerbosity:2];
       v120 = 0;
       v112 = 1;
-      objc_storeStrong(&v109, 0);
+      objc_storeStrong(&v118, 0);
     }
 
     else if (v111)
     {
-      v103 = [MEMORY[0x277CCAA00] defaultManager];
-      if ([v103 fileExistsAtPath:v111])
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      if ([defaultManager fileExistsAtPath:v111])
       {
         v98 = v116;
-        v39 = [v103 attributesOfItemAtPath:v111 error:&v98];
+        v39 = [defaultManager attributesOfItemAtPath:v111 error:&v98];
         objc_storeStrong(&v116, v98);
         v99 = v39;
         if (v116)
         {
-          v97 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error extracting attributes of file: %@ for model: %@", v111, v118];
+          v1182 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error extracting attributes of file: %@ for model: %@", v111, v118];
           v96 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v95 = OS_LOG_TYPE_ERROR;
           if (os_log_type_enabled(v96, OS_LOG_TYPE_ERROR))
           {
-            __os_log_helper_16_2_1_8_64(v126, v97);
+            __os_log_helper_16_2_1_8_64(v126, v1182);
             _os_log_error_impl(&dword_240CB9000, v96, v95, "%@", v126, 0xCu);
           }
 
           objc_storeStrong(&v96, 0);
-          [AMDFrameworkMetrics log:v97 withKey:@"coldstartError" atVerbosity:2];
+          [AMDFrameworkMetrics log:v1182 withKey:@"coldstartError" atVerbosity:2];
           v120 = 0;
           v112 = 1;
-          objc_storeStrong(&v97, 0);
+          objc_storeStrong(&v1182, 0);
         }
 
         else
         {
           v37 = [v99 objectForKey:*MEMORY[0x277CCA1C0]];
-          v38 = [v37 unsignedLongLongValue];
+          unsignedLongLongValue = [v37 unsignedLongLongValue];
           MEMORY[0x277D82BD8](v37);
-          v94 = v38;
-          v93 = (v38 - 6) / 0x14uLL;
+          v94 = unsignedLongLongValue;
+          v93 = (unsignedLongLongValue - 6) / 0x14uLL;
           v92 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
           v91 = OS_LOG_TYPE_DEBUG;
           if (os_log_type_enabled(v92, OS_LOG_TYPE_DEBUG))
@@ -354,8 +354,8 @@
             v69 = 0;
             v33 = v90;
             v5 = v90;
-            v68 = [v33 bytes];
-            v67 = (v68 + 6);
+            bytes = [v33 bytes];
+            v67 = (bytes + 6);
             v66 = 0;
             while (v66 < v93)
             {
@@ -516,20 +516,20 @@
 
           else
           {
-            v89 = [MEMORY[0x277CCACA8] stringWithFormat:@"could not read from file %@", v111];
+            v111 = [MEMORY[0x277CCACA8] stringWithFormat:@"could not read from file %@", v111];
             v88 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
             v87 = OS_LOG_TYPE_ERROR;
             if (os_log_type_enabled(v88, OS_LOG_TYPE_ERROR))
             {
-              __os_log_helper_16_2_1_8_64(v124, v89);
+              __os_log_helper_16_2_1_8_64(v124, v111);
               _os_log_error_impl(&dword_240CB9000, v88, v87, "%@", v124, 0xCu);
             }
 
             objc_storeStrong(&v88, 0);
-            [AMDFrameworkMetrics log:v89 withKey:@"coldstartError" atVerbosity:2];
+            [AMDFrameworkMetrics log:v111 withKey:@"coldstartError" atVerbosity:2];
             v120 = 0;
             v112 = 1;
-            objc_storeStrong(&v89, 0);
+            objc_storeStrong(&v111, 0);
           }
 
           objc_storeStrong(&v90, 0);
@@ -540,41 +540,41 @@
 
       else
       {
-        v102 = [MEMORY[0x277CCACA8] stringWithFormat:@"Binary unavailable at path: %@ for model: %@", v111, v118];
+        v1183 = [MEMORY[0x277CCACA8] stringWithFormat:@"Binary unavailable at path: %@ for model: %@", v111, v118];
         v101 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
         v100 = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(v101, OS_LOG_TYPE_ERROR))
         {
-          __os_log_helper_16_2_1_8_64(v127, v102);
+          __os_log_helper_16_2_1_8_64(v127, v1183);
           _os_log_error_impl(&dword_240CB9000, v101, v100, "%@", v127, 0xCu);
         }
 
         objc_storeStrong(&v101, 0);
-        [AMDFrameworkMetrics log:v102 withKey:@"coldstartError" atVerbosity:2];
+        [AMDFrameworkMetrics log:v1183 withKey:@"coldstartError" atVerbosity:2];
         v120 = 0;
         v112 = 1;
-        objc_storeStrong(&v102, 0);
+        objc_storeStrong(&v1183, 0);
       }
 
-      objc_storeStrong(&v103, 0);
+      objc_storeStrong(&defaultManager, 0);
     }
 
     else
     {
-      v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"Coldstart binary missing for model: %@", v118];
+      v1184 = [MEMORY[0x277CCACA8] stringWithFormat:@"Coldstart binary missing for model: %@", v118];
       v105 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       v104 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(v105, OS_LOG_TYPE_ERROR))
       {
-        __os_log_helper_16_2_1_8_64(v128, v106);
+        __os_log_helper_16_2_1_8_64(v128, v1184);
         _os_log_error_impl(&dword_240CB9000, v105, v104, "%@", v128, 0xCu);
       }
 
       objc_storeStrong(&v105, 0);
-      [AMDFrameworkMetrics log:v106 withKey:@"coldstartError" atVerbosity:2];
+      [AMDFrameworkMetrics log:v1184 withKey:@"coldstartError" atVerbosity:2];
       v120 = 0;
       v112 = 1;
-      objc_storeStrong(&v106, 0);
+      objc_storeStrong(&v1184, 0);
     }
 
     objc_storeStrong(&v111, 0);

@@ -1,11 +1,11 @@
 @interface CHStrokeGroupTextCorrectionResult
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStrokeGroupTextCorrectionResult:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStrokeGroupTextCorrectionResult:(id)result;
 - (CHStrokeGroupTextCorrectionResult)init;
-- (CHStrokeGroupTextCorrectionResult)initWithCoder:(id)a3;
-- (CHStrokeGroupTextCorrectionResult)initWithTextCorrectionResult:(id)a3 inputStrokeIdentifiers:(id)a4;
+- (CHStrokeGroupTextCorrectionResult)initWithCoder:(id)coder;
+- (CHStrokeGroupTextCorrectionResult)initWithTextCorrectionResult:(id)result inputStrokeIdentifiers:(id)identifiers;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHStrokeGroupTextCorrectionResult
@@ -49,18 +49,18 @@ LABEL_8:
   return 0;
 }
 
-- (CHStrokeGroupTextCorrectionResult)initWithTextCorrectionResult:(id)a3 inputStrokeIdentifiers:(id)a4
+- (CHStrokeGroupTextCorrectionResult)initWithTextCorrectionResult:(id)result inputStrokeIdentifiers:(id)identifiers
 {
-  v7 = a3;
-  v8 = a4;
+  resultCopy = result;
+  identifiersCopy = identifiers;
   v12.receiver = self;
   v12.super_class = CHStrokeGroupTextCorrectionResult;
   v9 = [(CHStrokeGroupTextCorrectionResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_textCorrectionResult, a3);
-    objc_storeStrong(&v10->_inputStrokeIdentifiers, a4);
+    objc_storeStrong(&v9->_textCorrectionResult, result);
+    objc_storeStrong(&v10->_inputStrokeIdentifiers, identifiers);
   }
 
   return v10;
@@ -77,37 +77,37 @@ LABEL_8:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v10 = a3;
-  objc_msgSend_encodeObject_forKey_(v10, v4, self->_textCorrectionResult, @"textCorrectionResult", v5, v6);
-  objc_msgSend_encodeObject_forKey_(v10, v7, self->_inputStrokeIdentifiers, @"inputStrokeIdentifiers", v8, v9);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_textCorrectionResult, @"textCorrectionResult", v5, v6);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_inputStrokeIdentifiers, @"inputStrokeIdentifiers", v8, v9);
 }
 
-- (CHStrokeGroupTextCorrectionResult)initWithCoder:(id)a3
+- (CHStrokeGroupTextCorrectionResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"textCorrectionResult", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"textCorrectionResult", v7, v8);
   v10 = objc_opt_class();
-  v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"inputStrokeIdentifiers", v12, v13);
+  v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"inputStrokeIdentifiers", v12, v13);
   v18 = objc_msgSend_initWithTextCorrectionResult_inputStrokeIdentifiers_(self, v15, v9, v14, v16, v17);
 
   return v18;
 }
 
-- (BOOL)isEqualToStrokeGroupTextCorrectionResult:(id)a3
+- (BOOL)isEqualToStrokeGroupTextCorrectionResult:(id)result
 {
-  v4 = a3;
-  v10 = v4;
-  if (self == v4)
+  resultCopy = result;
+  v10 = resultCopy;
+  if (self == resultCopy)
   {
     v30 = 1;
     goto LABEL_11;
   }
 
   textCorrectionResult = self->_textCorrectionResult;
-  v12 = objc_msgSend_textCorrectionResult(v4, v5, v6, v7, v8, v9);
+  v12 = objc_msgSend_textCorrectionResult(resultCopy, v5, v6, v7, v8, v9);
   v18 = v12;
   if (textCorrectionResult == v12)
   {
@@ -142,13 +142,13 @@ LABEL_11:
   return v30;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    isEqualToStrokeGroupTextCorrectionResult = objc_msgSend_isEqualToStrokeGroupTextCorrectionResult_(self, v5, v4, v6, v7, v8);
+    isEqualToStrokeGroupTextCorrectionResult = objc_msgSend_isEqualToStrokeGroupTextCorrectionResult_(self, v5, equalCopy, v6, v7, v8);
 
     return isEqualToStrokeGroupTextCorrectionResult;
   }

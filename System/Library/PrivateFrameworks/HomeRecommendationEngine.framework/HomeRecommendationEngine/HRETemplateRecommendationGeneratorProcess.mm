@@ -1,34 +1,34 @@
 @interface HRETemplateRecommendationGeneratorProcess
 - (BOOL)shouldGenerateRecommendations;
-- (id)_actionsForDerivingForTemplate:(id)a3 recommendation:(id)a4;
-- (id)_createInitialRecommendations:(id)a3 withRecommendation:(id)a4;
-- (id)_defineActionsWithActionMap:(id)a3 withActionableObjects:(id)a4;
-- (id)_defineProfileActionsForActionableObjects:(id)a3 withActionMap:(id)a4;
-- (id)_existingActionSetForTemplate:(id)a3 recommendation:(id)a4;
-- (id)_filterRecommendations:(id)a3 fromTemplate:(id)a4;
-- (id)_filterSplitRecommendations:(id)a3 characteristicTypePriority:(id)a4;
-- (id)_filterToAllowedObjects:(id)a3 withSourceObjects:(id)a4 withTrigger:(id)a5 template:(id)a6;
-- (id)_initialRecommendationsForTemplate:(id)a3;
-- (id)_splitRecommendationsBySplitStrategy:(id)a3;
-- (id)_triggerWithSameConfigurationAsTrigger:(id)a3;
-- (id)additionalIncludedObjectsInObjects:(id)a3 withTypes:(id)a4;
-- (id)characteristicActionsForObject:(id)a3 actionMap:(id)a4;
-- (id)definiteActionsForCharacteristicActionMap:(id)a3 object:(id)a4;
+- (id)_actionsForDerivingForTemplate:(id)template recommendation:(id)recommendation;
+- (id)_createInitialRecommendations:(id)recommendations withRecommendation:(id)recommendation;
+- (id)_defineActionsWithActionMap:(id)map withActionableObjects:(id)objects;
+- (id)_defineProfileActionsForActionableObjects:(id)objects withActionMap:(id)map;
+- (id)_existingActionSetForTemplate:(id)template recommendation:(id)recommendation;
+- (id)_filterRecommendations:(id)recommendations fromTemplate:(id)template;
+- (id)_filterSplitRecommendations:(id)recommendations characteristicTypePriority:(id)priority;
+- (id)_filterToAllowedObjects:(id)objects withSourceObjects:(id)sourceObjects withTrigger:(id)trigger template:(id)template;
+- (id)_initialRecommendationsForTemplate:(id)template;
+- (id)_splitRecommendationsBySplitStrategy:(id)strategy;
+- (id)_triggerWithSameConfigurationAsTrigger:(id)trigger;
+- (id)additionalIncludedObjectsInObjects:(id)objects withTypes:(id)types;
+- (id)characteristicActionsForObject:(id)object actionMap:(id)map;
+- (id)definiteActionsForCharacteristicActionMap:(id)map object:(id)object;
 - (id)generateRecommendations;
-- (id)matterCommandActionsForActionableObjects:(id)a3 withActionMap:(id)a4;
-- (id)recommendationsWithTemplate:(id)a3;
-- (int64_t)_diffScoreForTriggerComparison:(id)a3;
+- (id)matterCommandActionsForActionableObjects:(id)objects withActionMap:(id)map;
+- (id)recommendationsWithTemplate:(id)template;
+- (int64_t)_diffScoreForTriggerComparison:(id)comparison;
 @end
 
 @implementation HRETemplateRecommendationGeneratorProcess
 
-- (id)matterCommandActionsForActionableObjects:(id)a3 withActionMap:(id)a4
+- (id)matterCommandActionsForActionableObjects:(id)objects withActionMap:(id)map
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27F5F8E50, &qword_254409E88);
   v5 = sub_254406B80();
   sub_2543E51AC(0, &qword_27F5F8B08, off_2797759E8);
   v6 = sub_254406B30();
-  v7 = self;
+  selfCopy = self;
   HRETemplateRecommendationGeneratorProcess.matterCommandActions(for:with:)(v5, v6);
 
   sub_2543E51AC(0, &qword_27F5F8E60, 0x277D14380);
@@ -38,12 +38,12 @@
   return v8;
 }
 
-- (id)additionalIncludedObjectsInObjects:(id)a3 withTypes:(id)a4
+- (id)additionalIncludedObjectsInObjects:(id)objects withTypes:(id)types
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27F5F8E50, &qword_254409E88);
   v5 = sub_254406B80();
   v6 = sub_254406BC0();
-  v7 = self;
+  selfCopy = self;
   HRETemplateRecommendationGeneratorProcess.additionalIncludedObjects(in:with:)(v5, v6);
 
   v8 = sub_254406B70();
@@ -60,8 +60,8 @@
     return 0;
   }
 
-  v3 = [(HRETemplateRecommendationGeneratorProcess *)self activeTemplates];
-  v4 = [v3 count] != 0;
+  activeTemplates = [(HRETemplateRecommendationGeneratorProcess *)self activeTemplates];
+  v4 = [activeTemplates count] != 0;
 
   return v4;
 }
@@ -69,8 +69,8 @@
 - (id)generateRecommendations
 {
   v3 = objc_alloc_init(HRERecommendationEmptyTriggerBuilderContext);
-  v4 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-  v5 = [v4 triggers];
+  home = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+  triggers = [home triggers];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__HRETemplateRecommendationGeneratorProcess_generateRecommendations__block_invoke;
@@ -78,17 +78,17 @@
   v14[4] = self;
   v15 = v3;
   v6 = v3;
-  v7 = [v5 na_map:v14];
+  v7 = [triggers na_map:v14];
   [(HRETemplateRecommendationGeneratorProcess *)self setHomeTriggerBuilders:v7];
 
   v8 = MEMORY[0x277CBEB98];
-  v9 = [(HRETemplateRecommendationGeneratorProcess *)self activeTemplates];
+  activeTemplates = [(HRETemplateRecommendationGeneratorProcess *)self activeTemplates];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__HRETemplateRecommendationGeneratorProcess_generateRecommendations__block_invoke_2;
   v13[3] = &unk_2797769D0;
   v13[4] = self;
-  v10 = [v9 na_flatMap:v13];
+  v10 = [activeTemplates na_flatMap:v13];
   v11 = [v8 setWithArray:v10];
 
   return v11;
@@ -113,12 +113,12 @@ id __68__HRETemplateRecommendationGeneratorProcess_generateRecommendations__bloc
   return v3;
 }
 
-- (id)recommendationsWithTemplate:(id)a3
+- (id)recommendationsWithTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [(HREStandardAsyncRecommendationGenerationProcess *)self options];
+  templateCopy = template;
+  options = [(HREStandardAsyncRecommendationGenerationProcess *)self options];
   objc_opt_class();
-  v6 = v4;
+  v6 = templateCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -131,26 +131,26 @@ id __68__HRETemplateRecommendationGeneratorProcess_generateRecommendations__bloc
 
   v8 = v7;
 
-  v9 = [v6 rules];
-  v10 = [v9 hre_filteredToClass:objc_opt_class()];
-  v11 = [v10 allObjects];
+  rules = [v6 rules];
+  v10 = [rules hre_filteredToClass:objc_opt_class()];
+  allObjects = [v10 allObjects];
 
-  v12 = [v11 na_filter:&__block_literal_global_50];
-  v13 = [(HREStandardAsyncRecommendationGenerationProcess *)self homeRecommendableObjects];
-  LODWORD(v10) = [HRERecommendableObjectUtilities recommendableObjects:v13 matchAllRules:v12];
+  v12 = [allObjects na_filter:&__block_literal_global_50];
+  homeRecommendableObjects = [(HREStandardAsyncRecommendationGenerationProcess *)self homeRecommendableObjects];
+  LODWORD(v10) = [HRERecommendableObjectUtilities recommendableObjects:homeRecommendableObjects matchAllRules:v12];
 
   v14 = 0;
   if (v10)
   {
-    v32 = v5;
-    v15 = [(HREStandardAsyncRecommendationGenerationProcess *)self homeRecommendableObjects];
-    v16 = [v6 involvedAccessoryTypes];
-    v17 = [HRERecommendableObjectUtilities filterRecommendableObjects:v15 toMatchTypes:v16];
+    v32 = options;
+    homeRecommendableObjects2 = [(HREStandardAsyncRecommendationGenerationProcess *)self homeRecommendableObjects];
+    involvedAccessoryTypes = [v6 involvedAccessoryTypes];
+    v17 = [HRERecommendableObjectUtilities filterRecommendableObjects:homeRecommendableObjects2 toMatchTypes:involvedAccessoryTypes];
 
-    v18 = [(HREStandardAsyncRecommendationGenerationProcess *)self homeRecommendableObjects];
-    v19 = [v18 allObjects];
-    v20 = [v6 involvedAccessoryTypes];
-    v21 = [(HRETemplateRecommendationGeneratorProcess *)self additionalIncludedObjectsInObjects:v19 withTypes:v20];
+    homeRecommendableObjects3 = [(HREStandardAsyncRecommendationGenerationProcess *)self homeRecommendableObjects];
+    allObjects2 = [homeRecommendableObjects3 allObjects];
+    involvedAccessoryTypes2 = [v6 involvedAccessoryTypes];
+    v21 = [(HRETemplateRecommendationGeneratorProcess *)self additionalIncludedObjectsInObjects:allObjects2 withTypes:involvedAccessoryTypes2];
 
     v22 = [v17 setByAddingObjectsFromArray:v21];
 
@@ -162,12 +162,12 @@ LABEL_16:
       goto LABEL_17;
     }
 
-    v23 = [(HREStandardAsyncRecommendationGenerationProcess *)self sourceRecommendableObjects];
-    v24 = [v23 na_filter:&__block_literal_global_55_0];
+    sourceRecommendableObjects = [(HREStandardAsyncRecommendationGenerationProcess *)self sourceRecommendableObjects];
+    v24 = [sourceRecommendableObjects na_filter:&__block_literal_global_55_0];
 
-    v25 = [(HREStandardAsyncRecommendationGenerationProcess *)self sourceRecommendableObjects];
+    sourceRecommendableObjects2 = [(HREStandardAsyncRecommendationGenerationProcess *)self sourceRecommendableObjects];
     v31 = v24;
-    if ([v25 count])
+    if ([sourceRecommendableObjects2 count])
     {
       v26 = [v24 count];
 
@@ -193,10 +193,10 @@ LABEL_16:
       v34[2] = __73__HRETemplateRecommendationGeneratorProcess_recommendationsWithTemplate___block_invoke_3;
       v34[3] = &unk_279776A60;
       v35 = v22;
-      v36 = v11;
+      v36 = allObjects;
       v28 = v6;
       v37 = v28;
-      v38 = self;
+      selfCopy = self;
       v41 = v32 < 0;
       v39 = v8;
       v40 = v42;
@@ -579,18 +579,18 @@ void __73__HRETemplateRecommendationGeneratorProcess_recommendationsWithTemplate
   }
 }
 
-- (id)_initialRecommendationsForTemplate:(id)a3
+- (id)_initialRecommendationsForTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [(HREStandardAsyncRecommendationGenerationProcess *)self sourceRecommendableObjects];
-  v6 = [v5 na_map:&__block_literal_global_210];
+  templateCopy = template;
+  sourceRecommendableObjects = [(HREStandardAsyncRecommendationGenerationProcess *)self sourceRecommendableObjects];
+  v6 = [sourceRecommendableObjects na_map:&__block_literal_global_210];
 
-  v7 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-  v8 = [v4 createStarterRecommendationInHome:v7];
+  home = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+  v8 = [templateCopy createStarterRecommendationInHome:home];
 
-  v9 = [v4 splitStrategy];
-  v10 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-  v11 = [v8 splitUsingSplitStrategy:v9 inHome:v10];
+  splitStrategy = [templateCopy splitStrategy];
+  home2 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+  v11 = [v8 splitUsingSplitStrategy:splitStrategy inHome:home2];
 
   if ([v6 count])
   {
@@ -609,8 +609,8 @@ void __73__HRETemplateRecommendationGeneratorProcess_recommendationsWithTemplate
   v16[2] = __80__HRETemplateRecommendationGeneratorProcess__initialRecommendationsForTemplate___block_invoke_3;
   v16[3] = &unk_279776AF8;
   v16[4] = self;
-  v17 = v4;
-  v13 = v4;
+  v17 = templateCopy;
+  v13 = templateCopy;
   v14 = [v11 na_flatMap:v16];
 
   return v14;
@@ -650,13 +650,13 @@ LABEL_6:
   return v7;
 }
 
-- (id)_createInitialRecommendations:(id)a3 withRecommendation:(id)a4
+- (id)_createInitialRecommendations:(id)recommendations withRecommendation:(id)recommendation
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  recommendationsCopy = recommendations;
+  recommendationCopy = recommendation;
   objc_opt_class();
-  v8 = v6;
+  v8 = recommendationsCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -673,24 +673,24 @@ LABEL_6:
   {
     if (![v10 allowMultipleEventsFeature])
     {
-      v14 = [v10 triggerCharacteristicValues];
-      v16 = [MEMORY[0x277CBEB98] setWithArray:v14];
+      triggerCharacteristicValues = [v10 triggerCharacteristicValues];
+      v16 = [MEMORY[0x277CBEB98] setWithArray:triggerCharacteristicValues];
       v17 = [v16 na_map:&__block_literal_global_215];
 
       if ([v17 count])
       {
-        v18 = [v7 room];
-        v19 = [v7 zone];
-        v20 = [(HREStandardAsyncRecommendationGenerationProcess *)self homeRecommendableObjects];
+        room = [recommendationCopy room];
+        v19 = [recommendationCopy zone];
+        homeRecommendableObjects = [(HREStandardAsyncRecommendationGenerationProcess *)self homeRecommendableObjects];
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __94__HRETemplateRecommendationGeneratorProcess__createInitialRecommendations_withRecommendation___block_invoke_2;
         v34[3] = &unk_279776460;
-        v35 = v18;
+        v35 = room;
         v36 = v19;
         v21 = v19;
-        v22 = v18;
-        v23 = [v20 na_filter:v34];
+        v22 = room;
+        v23 = [homeRecommendableObjects na_filter:v34];
 
         v28 = MEMORY[0x277D85DD0];
         v29 = 3221225472;
@@ -699,13 +699,13 @@ LABEL_6:
         v32 = v8;
         v33 = v17;
         v24 = [v23 na_flatMap:&v28];
-        v15 = [v7 splitUsingSplitCharacteristics:{v24, v28, v29, v30, v31}];
+        v15 = [recommendationCopy splitUsingSplitCharacteristics:{v24, v28, v29, v30, v31}];
       }
 
       else
       {
         v25 = MEMORY[0x277CBEB98];
-        v37 = v7;
+        v37 = recommendationCopy;
         v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v37 count:1];
         v15 = [v25 setWithArray:v22];
       }
@@ -714,7 +714,7 @@ LABEL_6:
     }
 
     v11 = MEMORY[0x277CBEB98];
-    v38 = v7;
+    v38 = recommendationCopy;
     v12 = MEMORY[0x277CBEA60];
     v13 = &v38;
   }
@@ -722,13 +722,13 @@ LABEL_6:
   else
   {
     v11 = MEMORY[0x277CBEB98];
-    v39[0] = v7;
+    v39[0] = recommendationCopy;
     v12 = MEMORY[0x277CBEA60];
     v13 = v39;
   }
 
-  v14 = [v12 arrayWithObjects:v13 count:1];
-  v15 = [v11 setWithArray:v14];
+  triggerCharacteristicValues = [v12 arrayWithObjects:v13 count:1];
+  v15 = [v11 setWithArray:triggerCharacteristicValues];
 LABEL_13:
 
   v26 = *MEMORY[0x277D85DE8];
@@ -809,26 +809,26 @@ uint64_t __94__HRETemplateRecommendationGeneratorProcess__createInitialRecommend
   return v7;
 }
 
-- (id)_defineActionsWithActionMap:(id)a3 withActionableObjects:(id)a4
+- (id)_defineActionsWithActionMap:(id)map withActionableObjects:(id)objects
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"HREServiceTypeAll"];
+  mapCopy = map;
+  objectsCopy = objects;
+  v8 = [mapCopy objectForKeyedSubscript:@"HREServiceTypeAll"];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __95__HRETemplateRecommendationGeneratorProcess__defineActionsWithActionMap_withActionableObjects___block_invoke;
   v21[3] = &unk_279776B68;
-  v22 = v6;
+  v22 = mapCopy;
   v23 = v8;
-  v24 = self;
+  selfCopy = self;
   v9 = v8;
-  v10 = v6;
-  v11 = [v7 na_flatMap:v21];
-  v12 = [(HRETemplateRecommendationGeneratorProcess *)self _defineProfileActionsForActionableObjects:v7 withActionMap:v10];
-  v13 = [v7 allObjects];
+  v10 = mapCopy;
+  v11 = [objectsCopy na_flatMap:v21];
+  v12 = [(HRETemplateRecommendationGeneratorProcess *)self _defineProfileActionsForActionableObjects:objectsCopy withActionMap:v10];
+  allObjects = [objectsCopy allObjects];
 
-  v14 = [(HRETemplateRecommendationGeneratorProcess *)self matterCommandActionsForActionableObjects:v13 withActionMap:v10];
+  v14 = [(HRETemplateRecommendationGeneratorProcess *)self matterCommandActionsForActionableObjects:allObjects withActionMap:v10];
 
   v15 = MEMORY[0x277CBEB98];
   v25[0] = v11;
@@ -836,11 +836,11 @@ uint64_t __94__HRETemplateRecommendationGeneratorProcess__createInitialRecommend
   v25[2] = v14;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
   v17 = [v15 setWithArray:v16];
-  v18 = [v17 na_setByFlattening];
+  na_setByFlattening = [v17 na_setByFlattening];
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return na_setByFlattening;
 }
 
 id __95__HRETemplateRecommendationGeneratorProcess__defineActionsWithActionMap_withActionableObjects___block_invoke(uint64_t a1, void *a2)
@@ -897,15 +897,15 @@ id __95__HRETemplateRecommendationGeneratorProcess__defineActionsWithActionMap_w
   return v10;
 }
 
-- (id)_defineProfileActionsForActionableObjects:(id)a3 withActionMap:(id)a4
+- (id)_defineProfileActionsForActionableObjects:(id)objects withActionMap:(id)map
 {
-  v6 = a3;
+  objectsCopy = objects;
   v7 = MEMORY[0x277CBEB58];
-  v8 = a4;
+  mapCopy = map;
   v9 = [v7 set];
   objc_opt_class();
   v10 = NSStringFromProtocol(&unk_28666EF10);
-  v11 = [v8 objectForKeyedSubscript:v10];
+  v11 = [mapCopy objectForKeyedSubscript:v10];
 
   if (objc_opt_isKindOfClass())
   {
@@ -921,23 +921,23 @@ id __95__HRETemplateRecommendationGeneratorProcess__defineActionsWithActionMap_w
 
   if (v13)
   {
-    v14 = [v6 na_flatMap:&__block_literal_global_222];
+    v14 = [objectsCopy na_flatMap:&__block_literal_global_222];
     if ([v14 count])
     {
-      v15 = [v14 anyObject];
-      v11 = [v13 flattenedMapEvaluatedForObject:v15];
+      anyObject = [v14 anyObject];
+      v11 = [v13 flattenedMapEvaluatedForObject:anyObject];
 
       v16 = objc_alloc(MEMORY[0x277D14818]);
-      v17 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-      v18 = [v16 initWithHome:v17];
+      home = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+      v18 = [v16 initWithHome:home];
 
       [v18 setMediaProfiles:v14];
       [v18 setTargetPlayState:{objc_msgSend(v11, "targetPlaybackState")}];
-      v19 = [v11 targetVolume];
-      [v18 setTargetVolume:v19];
+      targetVolume = [v11 targetVolume];
+      [v18 setTargetVolume:targetVolume];
 
-      v20 = [v11 playbackArchive];
-      [v18 setPlaybackArchive:v20];
+      playbackArchive = [v11 playbackArchive];
+      [v18 setPlaybackArchive:playbackArchive];
 
       [v9 addObject:v18];
     }
@@ -974,25 +974,25 @@ void *__101__HRETemplateRecommendationGeneratorProcess__defineProfileActionsForA
   return v4;
 }
 
-- (id)_actionsForDerivingForTemplate:(id)a3 recommendation:(id)a4
+- (id)_actionsForDerivingForTemplate:(id)template recommendation:(id)recommendation
 {
-  v6 = a4;
-  v7 = [(HRETemplateRecommendationGeneratorProcess *)self _existingActionSetForTemplate:a3 recommendation:v6];
+  recommendationCopy = recommendation;
+  v7 = [(HRETemplateRecommendationGeneratorProcess *)self _existingActionSetForTemplate:template recommendation:recommendationCopy];
   v8 = v7;
   if (v7)
   {
     v9 = MEMORY[0x277CBEB98];
-    v10 = [v7 actions];
-    v11 = [v9 setWithArray:v10];
+    actions = [v7 actions];
+    v11 = [v9 setWithArray:actions];
   }
 
   else
   {
     objc_opt_class();
-    v10 = v6;
+    actions = recommendationCopy;
     if (objc_opt_isKindOfClass())
     {
-      v12 = v10;
+      v12 = actions;
     }
 
     else
@@ -1004,14 +1004,14 @@ void *__101__HRETemplateRecommendationGeneratorProcess__defineProfileActionsForA
 
     if (v13)
     {
-      v14 = [v13 triggerBuilders];
-      v11 = [v14 na_flatMap:&__block_literal_global_230];
+      triggerBuilders = [v13 triggerBuilders];
+      v11 = [triggerBuilders na_flatMap:&__block_literal_global_230];
     }
 
     else
     {
       v11 = [MEMORY[0x277CBEB98] set];
-      v10 = 0;
+      actions = 0;
     }
   }
 
@@ -1028,11 +1028,11 @@ id __91__HRETemplateRecommendationGeneratorProcess__actionsForDerivingForTemplat
   return v5;
 }
 
-- (id)_existingActionSetForTemplate:(id)a3 recommendation:(id)a4
+- (id)_existingActionSetForTemplate:(id)template recommendation:(id)recommendation
 {
-  v5 = a3;
+  templateCopy = template;
   objc_opt_class();
-  v6 = v5;
+  v6 = templateCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -1047,19 +1047,19 @@ id __91__HRETemplateRecommendationGeneratorProcess__actionsForDerivingForTemplat
 
   if (v8)
   {
-    v9 = [v8 actionSetType];
-    v10 = [v8 actionSetName];
-    v11 = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
-    v12 = [v11 actionSets];
+    actionSetType = [v8 actionSetType];
+    actionSetName = [v8 actionSetName];
+    home = [(HREStandardAsyncRecommendationGenerationProcess *)self home];
+    actionSets = [home actionSets];
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __90__HRETemplateRecommendationGeneratorProcess__existingActionSetForTemplate_recommendation___block_invoke;
     v23 = &unk_279776B90;
-    v13 = v10;
+    v13 = actionSetName;
     v24 = v13;
-    v14 = v9;
+    v14 = actionSetType;
     v25 = v14;
-    v15 = [v12 na_firstObjectPassingTest:&v20];
+    v15 = [actionSets na_firstObjectPassingTest:&v20];
 
     if (v15)
     {
@@ -1105,20 +1105,20 @@ uint64_t __90__HRETemplateRecommendationGeneratorProcess__existingActionSetForTe
   return v5;
 }
 
-- (id)_filterToAllowedObjects:(id)a3 withSourceObjects:(id)a4 withTrigger:(id)a5 template:(id)a6
+- (id)_filterToAllowedObjects:(id)objects withSourceObjects:(id)sourceObjects withTrigger:(id)trigger template:(id)template
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [v12 actionMap];
-  v15 = [v12 rules];
+  sourceObjectsCopy = sourceObjects;
+  triggerCopy = trigger;
+  templateCopy = template;
+  objectsCopy = objects;
+  actionMap = [templateCopy actionMap];
+  rules = [templateCopy rules];
 
-  v16 = [v15 hre_filteredToClass:objc_opt_class()];
+  v16 = [rules hre_filteredToClass:objc_opt_class()];
   v17 = [v16 mutableCopy];
 
   objc_opt_class();
-  v18 = v11;
+  v18 = triggerCopy;
   if (objc_opt_isKindOfClass())
   {
     v19 = v18;
@@ -1137,22 +1137,22 @@ uint64_t __90__HRETemplateRecommendationGeneratorProcess__existingActionSetForTe
   v45[3] = &unk_279776918;
   v21 = v20;
   v46 = v21;
-  v22 = [v10 na_any:v45];
+  v22 = [sourceObjectsCopy na_any:v45];
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __108__HRETemplateRecommendationGeneratorProcess__filterToAllowedObjects_withSourceObjects_withTrigger_template___block_invoke_2;
   v42[3] = &unk_279776460;
-  v23 = v14;
+  v23 = actionMap;
   v43 = v23;
-  v44 = self;
-  v24 = [v10 na_any:v42];
+  selfCopy = self;
+  v24 = [sourceObjectsCopy na_any:v42];
   v40[0] = MEMORY[0x277D85DD0];
   v40[1] = 3221225472;
   v40[2] = __108__HRETemplateRecommendationGeneratorProcess__filterToAllowedObjects_withSourceObjects_withTrigger_template___block_invoke_3;
   v40[3] = &unk_2797765B8;
   v25 = v17;
   v41 = v25;
-  [v10 na_each:v40];
+  [sourceObjectsCopy na_each:v40];
   v32[0] = MEMORY[0x277D85DD0];
   v32[1] = 3221225472;
   v32[2] = __108__HRETemplateRecommendationGeneratorProcess__filterToAllowedObjects_withSourceObjects_withTrigger_template___block_invoke_5;
@@ -1160,15 +1160,15 @@ uint64_t __90__HRETemplateRecommendationGeneratorProcess__existingActionSetForTe
   v33 = v25;
   v34 = v23;
   v38 = v24;
-  v35 = self;
+  selfCopy2 = self;
   v36 = v21;
   v39 = v22;
-  v37 = v10;
-  v26 = v10;
+  v37 = sourceObjectsCopy;
+  v26 = sourceObjectsCopy;
   v27 = v21;
   v28 = v23;
   v29 = v25;
-  v30 = [v13 na_filter:v32];
+  v30 = [objectsCopy na_filter:v32];
 
   return v30;
 }
@@ -1274,12 +1274,12 @@ LABEL_6:
   return v17 & 1;
 }
 
-- (id)_triggerWithSameConfigurationAsTrigger:(id)a3
+- (id)_triggerWithSameConfigurationAsTrigger:(id)trigger
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v19 = [MEMORY[0x277CBEB18] array];
-  v4 = [MEMORY[0x277CBEB18] array];
+  triggerCopy = trigger;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   if (qword_27F5F97D8 != -1)
   {
     dispatch_once(&qword_27F5F97D8, &__block_literal_global_242);
@@ -1290,8 +1290,8 @@ LABEL_6:
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(HRETemplateRecommendationGeneratorProcess *)self homeTriggerBuilders];
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  homeTriggerBuilders = [(HRETemplateRecommendationGeneratorProcess *)self homeTriggerBuilders];
+  v7 = [homeTriggerBuilders countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
     v8 = *v28;
@@ -1301,23 +1301,23 @@ LABEL_6:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(homeTriggerBuilders);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
         if (([v10 isShortcutOwned] & 1) == 0)
         {
-          v11 = [v3 compareToObject:v10];
+          v11 = [triggerCopy compareToObject:v10];
           v12 = [v11 filteredIgnoringKeys:v5];
           if ([v12 hasNoDifferencesHigherThanPriority:0])
           {
-            [v19 addObject:v10];
-            [v4 addObject:v11];
+            [array addObject:v10];
+            [array2 addObject:v11];
           }
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v7 = [homeTriggerBuilders countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v7);
@@ -1333,18 +1333,18 @@ LABEL_6:
   v20[3] = &unk_279776C08;
   v22 = &v23;
   v20[4] = self;
-  v13 = v4;
+  v13 = array2;
   v21 = v13;
   [v13 enumerateObjectsUsingBlock:v20];
   v14 = v24[3];
-  if (v14 >= [v19 count] || v24[3] < 0)
+  if (v14 >= [array count] || v24[3] < 0)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = [v19 objectAtIndexedSubscript:?];
+    v15 = [array objectAtIndexedSubscript:?];
   }
 
   _Block_object_dispose(&v23, 8);
@@ -1402,12 +1402,12 @@ LABEL_2:
   }
 }
 
-- (id)_filterRecommendations:(id)a3 fromTemplate:(id)a4
+- (id)_filterRecommendations:(id)recommendations fromTemplate:(id)template
 {
-  v6 = a4;
-  v7 = [a3 copy];
+  templateCopy = template;
+  v7 = [recommendations copy];
   objc_opt_class();
-  v8 = v6;
+  v8 = templateCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -1423,8 +1423,8 @@ LABEL_2:
   if (v10)
   {
     v11 = MEMORY[0x277CBEB70];
-    v12 = [v10 characteristicTypePriority];
-    v13 = [v11 orderedSetWithArray:v12];
+    characteristicTypePriority = [v10 characteristicTypePriority];
+    v13 = [v11 orderedSetWithArray:characteristicTypePriority];
 
     if ([v10 characteristicPerServiceRule])
     {
@@ -1449,7 +1449,7 @@ LABEL_2:
       v24 = 3221225472;
       v25 = __81__HRETemplateRecommendationGeneratorProcess__filterRecommendations_fromTemplate___block_invoke_3;
       v26 = &unk_279776C78;
-      v27 = self;
+      selfCopy = self;
       v28 = v13;
       v19 = [v18 na_flatMap:&v23];
 
@@ -1529,12 +1529,12 @@ id __81__HRETemplateRecommendationGeneratorProcess__filterRecommendations_fromTe
   return v6;
 }
 
-- (id)_splitRecommendationsBySplitStrategy:(id)a3
+- (id)_splitRecommendationsBySplitStrategy:(id)strategy
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [a3 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_257];
-  v5 = [v4 allValues];
-  v6 = [v3 setWithArray:v5];
+  v4 = [strategy na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_257];
+  allValues = [v4 allValues];
+  v6 = [v3 setWithArray:allValues];
 
   return v6;
 }
@@ -1559,18 +1559,18 @@ id __82__HRETemplateRecommendationGeneratorProcess__splitRecommendationsBySplitS
   return v6;
 }
 
-- (id)_filterSplitRecommendations:(id)a3 characteristicTypePriority:(id)a4
+- (id)_filterSplitRecommendations:(id)recommendations characteristicTypePriority:(id)priority
 {
-  v6 = a3;
+  recommendationsCopy = recommendations;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __100__HRETemplateRecommendationGeneratorProcess__filterSplitRecommendations_characteristicTypePriority___block_invoke;
   v21[3] = &unk_279776AD0;
   v21[4] = self;
-  v7 = a4;
-  v8 = [v6 na_filter:v21];
-  v9 = [v6 na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_259];
-  v10 = [v7 array];
+  priorityCopy = priority;
+  v8 = [recommendationsCopy na_filter:v21];
+  v9 = [recommendationsCopy na_dictionaryByBucketingObjectsUsingKeyGenerator:&__block_literal_global_259];
+  array = [priorityCopy array];
 
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
@@ -1578,7 +1578,7 @@ id __82__HRETemplateRecommendationGeneratorProcess__splitRecommendationsBySplitS
   v19 = &unk_279776CE0;
   v11 = v9;
   v20 = v11;
-  v12 = [v10 na_firstObjectPassingTest:&v16];
+  v12 = [array na_firstObjectPassingTest:&v16];
 
   if (v12)
   {
@@ -1588,7 +1588,7 @@ id __82__HRETemplateRecommendationGeneratorProcess__splitRecommendationsBySplitS
 
   else
   {
-    v14 = v6;
+    v14 = recommendationsCopy;
   }
 
   return v14;
@@ -1662,13 +1662,13 @@ BOOL __100__HRETemplateRecommendationGeneratorProcess__filterSplitRecommendation
   return v3;
 }
 
-- (int64_t)_diffScoreForTriggerComparison:(id)a3
+- (int64_t)_diffScoreForTriggerComparison:(id)comparison
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  comparisonCopy = comparison;
   objc_opt_class();
-  v4 = [v3 differences];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D137D8]];
+  differences = [comparisonCopy differences];
+  v5 = [differences objectForKeyedSubscript:*MEMORY[0x277D137D8]];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -1681,15 +1681,15 @@ BOOL __100__HRETemplateRecommendationGeneratorProcess__filterSplitRecommendation
 
   v7 = v6;
 
-  v8 = [v7 containedObjectResult];
-  v9 = [v8 differences];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D137C0]];
+  containedObjectResult = [v7 containedObjectResult];
+  differences2 = [containedObjectResult differences];
+  v10 = [differences2 objectForKeyedSubscript:*MEMORY[0x277D137C0]];
 
-  v11 = [v8 differences];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277D137C8]];
+  differences3 = [containedObjectResult differences];
+  v12 = [differences3 objectForKeyedSubscript:*MEMORY[0x277D137C8]];
 
-  v13 = [v3 differences];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D137D0]];
+  differences4 = [comparisonCopy differences];
+  v14 = [differences4 objectForKeyedSubscript:*MEMORY[0x277D137D0]];
 
   v15 = v14 != 0;
   if (v10)
@@ -1698,8 +1698,8 @@ BOOL __100__HRETemplateRecommendationGeneratorProcess__filterSplitRecommendation
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v16 = [v10 containedObjectResults];
-    v17 = [v16 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    containedObjectResults = [v10 containedObjectResults];
+    v17 = [containedObjectResults countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v17)
     {
       v18 = v17;
@@ -1711,14 +1711,14 @@ BOOL __100__HRETemplateRecommendationGeneratorProcess__filterSplitRecommendation
         {
           if (*v33 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(containedObjectResults);
           }
 
           v15 += [*(*(&v32 + 1) + 8 * v20++) hasNoDifferencesHigherThanPriority:0] ^ 1;
         }
 
         while (v18 != v20);
-        v18 = [v16 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v18 = [containedObjectResults countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v18);
@@ -1731,8 +1731,8 @@ BOOL __100__HRETemplateRecommendationGeneratorProcess__filterSplitRecommendation
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v21 = [v12 containedObjectResults];
-    v22 = [v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
+    containedObjectResults2 = [v12 containedObjectResults];
+    v22 = [containedObjectResults2 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v22)
     {
       v23 = v22;
@@ -1744,14 +1744,14 @@ BOOL __100__HRETemplateRecommendationGeneratorProcess__filterSplitRecommendation
         {
           if (*v29 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(containedObjectResults2);
           }
 
           v15 += [*(*(&v28 + 1) + 8 * v25++) hasNoDifferencesHigherThanPriority:0] ^ 1;
         }
 
         while (v23 != v25);
-        v23 = [v21 countByEnumeratingWithState:&v28 objects:v36 count:16];
+        v23 = [containedObjectResults2 countByEnumeratingWithState:&v28 objects:v36 count:16];
       }
 
       while (v23);
@@ -1762,17 +1762,17 @@ BOOL __100__HRETemplateRecommendationGeneratorProcess__filterSplitRecommendation
   return v15;
 }
 
-- (id)characteristicActionsForObject:(id)a3 actionMap:(id)a4
+- (id)characteristicActionsForObject:(id)object actionMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  mapCopy = map;
   v8 = +[HRECharacteristicActionMap emptyMap];
-  v9 = [v7 isEqual:v8];
+  v9 = [mapCopy isEqual:v8];
 
-  if (v9 & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass()) && ([v7 characteristicTypeValues], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v11))
+  if (v9 & 1) == 0 && (objc_opt_class(), (objc_opt_isKindOfClass()) && ([mapCopy characteristicTypeValues], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "count"), v10, v11))
   {
-    v12 = [v7 flattenedMapEvaluatedForObject:v6];
-    v13 = [(HRETemplateRecommendationGeneratorProcess *)self definiteActionsForCharacteristicActionMap:v12 object:v6];
+    v12 = [mapCopy flattenedMapEvaluatedForObject:objectCopy];
+    v13 = [(HRETemplateRecommendationGeneratorProcess *)self definiteActionsForCharacteristicActionMap:v12 object:objectCopy];
   }
 
   else
@@ -1783,18 +1783,18 @@ BOOL __100__HRETemplateRecommendationGeneratorProcess__filterSplitRecommendation
   return v13;
 }
 
-- (id)definiteActionsForCharacteristicActionMap:(id)a3 object:(id)a4
+- (id)definiteActionsForCharacteristicActionMap:(id)map object:(id)object
 {
-  v6 = a3;
-  v7 = [a4 hre_characteristics];
+  mapCopy = map;
+  hre_characteristics = [object hre_characteristics];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __94__HRETemplateRecommendationGeneratorProcess_definiteActionsForCharacteristicActionMap_object___block_invoke;
   v11[3] = &unk_279776D08;
-  v12 = v6;
-  v13 = self;
-  v8 = v6;
-  v9 = [v7 na_map:v11];
+  v12 = mapCopy;
+  selfCopy = self;
+  v8 = mapCopy;
+  v9 = [hre_characteristics na_map:v11];
 
   return v9;
 }

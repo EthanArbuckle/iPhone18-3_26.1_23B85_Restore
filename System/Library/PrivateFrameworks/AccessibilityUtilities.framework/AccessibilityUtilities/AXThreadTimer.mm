@@ -1,94 +1,94 @@
 @interface AXThreadTimer
-- (AXThreadTimer)initWithThread:(id)a3;
+- (AXThreadTimer)initWithThread:(id)thread;
 - (BOOL)isActive;
 - (BOOL)isCancelled;
 - (BOOL)isPending;
-- (void)_runAfterDelay:(id)a3;
-- (void)afterDelay:(double)a3 processBlock:(id)a4 cancelBlock:(id)a5;
+- (void)_runAfterDelay:(id)delay;
+- (void)afterDelay:(double)delay processBlock:(id)block cancelBlock:(id)cancelBlock;
 - (void)cancel;
 @end
 
 @implementation AXThreadTimer
 
-- (AXThreadTimer)initWithThread:(id)a3
+- (AXThreadTimer)initWithThread:(id)thread
 {
-  v5 = a3;
+  threadCopy = thread;
   v10.receiver = self;
   v10.super_class = AXThreadTimer;
   v6 = [(AXThreadTimer *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_thread, a3);
+    objc_storeStrong(&v6->_thread, thread);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)_runAfterDelay:(id)a3
+- (void)_runAfterDelay:(id)delay
 {
-  v4 = a3;
-  v7 = [(AXThreadTimer *)self task];
-  [v4 floatValue];
+  delayCopy = delay;
+  task = [(AXThreadTimer *)self task];
+  [delayCopy floatValue];
   v6 = v5;
 
-  [v7 performSelector:&sel_run withObject:0 afterDelay:v6];
+  [task performSelector:&sel_run withObject:0 afterDelay:v6];
 }
 
-- (void)afterDelay:(double)a3 processBlock:(id)a4 cancelBlock:(id)a5
+- (void)afterDelay:(double)delay processBlock:(id)block cancelBlock:(id)cancelBlock
 {
-  v18 = a5;
-  v8 = a4;
-  v9 = [(AXThreadTimer *)self task];
-  if ([v9 isFinished])
+  cancelBlockCopy = cancelBlock;
+  blockCopy = block;
+  task = [(AXThreadTimer *)self task];
+  if ([task isFinished])
   {
   }
 
   else
   {
-    v10 = [(AXThreadTimer *)self automaticallyCancelPendingBlockUponSchedulingNewBlock];
+    automaticallyCancelPendingBlockUponSchedulingNewBlock = [(AXThreadTimer *)self automaticallyCancelPendingBlockUponSchedulingNewBlock];
 
-    if (v10)
+    if (automaticallyCancelPendingBlockUponSchedulingNewBlock)
     {
       [(AXThreadTimer *)self cancel];
     }
   }
 
-  v11 = [v18 copy];
+  v11 = [cancelBlockCopy copy];
   cancelBlock = self->_cancelBlock;
   self->_cancelBlock = v11;
 
   v13 = objc_alloc_init(AXThreadTimerTask);
-  [(AXThreadTimerTask *)v13 setBlock:v8];
+  [(AXThreadTimerTask *)v13 setBlock:blockCopy];
 
   [(AXThreadTimer *)self setTask:v13];
-  v14 = [MEMORY[0x1E696AF00] currentThread];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
   thread = self->_thread;
 
-  if (v14 == thread)
+  if (currentThread == thread)
   {
-    v17 = [(AXThreadTimer *)self task];
-    [v17 performSelector:&sel_run withObject:0 afterDelay:a3];
+    task2 = [(AXThreadTimer *)self task];
+    [task2 performSelector:&sel_run withObject:0 afterDelay:delay];
   }
 
   else
   {
     v16 = self->_thread;
-    v17 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    [(AXThreadTimer *)self performSelector:sel__runAfterDelay_ onThread:v16 withObject:v17 waitUntilDone:0];
+    task2 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
+    [(AXThreadTimer *)self performSelector:sel__runAfterDelay_ onThread:v16 withObject:task2 waitUntilDone:0];
   }
 }
 
 - (void)cancel
 {
-  v3 = [(AXThreadTimer *)self task];
-  v4 = [v3 isFinished];
+  task = [(AXThreadTimer *)self task];
+  isFinished = [task isFinished];
 
-  if ((v4 & 1) == 0)
+  if ((isFinished & 1) == 0)
   {
-    v5 = [(AXThreadTimer *)self task];
-    [v5 setCancel:1];
+    task2 = [(AXThreadTimer *)self task];
+    [task2 setCancel:1];
 
     cancelBlock = self->_cancelBlock;
     if (cancelBlock)
@@ -104,19 +104,19 @@
 
 - (BOOL)isCancelled
 {
-  v2 = [(AXThreadTimer *)self task];
-  v3 = [v2 isCancelled];
+  task = [(AXThreadTimer *)self task];
+  isCancelled = [task isCancelled];
 
-  return v3;
+  return isCancelled;
 }
 
 - (BOOL)isPending
 {
-  v3 = [(AXThreadTimer *)self task];
-  if (v3)
+  task = [(AXThreadTimer *)self task];
+  if (task)
   {
-    v4 = [(AXThreadTimer *)self task];
-    v5 = [v4 isFinished] ^ 1;
+    task2 = [(AXThreadTimer *)self task];
+    v5 = [task2 isFinished] ^ 1;
   }
 
   else
@@ -129,10 +129,10 @@
 
 - (BOOL)isActive
 {
-  v2 = [(AXThreadTimer *)self task];
-  v3 = [v2 isActive];
+  task = [(AXThreadTimer *)self task];
+  isActive = [task isActive];
 
-  return v3;
+  return isActive;
 }
 
 @end

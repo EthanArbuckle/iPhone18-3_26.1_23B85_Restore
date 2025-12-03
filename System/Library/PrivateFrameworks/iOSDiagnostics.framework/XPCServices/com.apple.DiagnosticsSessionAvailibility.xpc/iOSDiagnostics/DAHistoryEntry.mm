@@ -1,49 +1,49 @@
 @interface DAHistoryEntry
-- (DAHistoryEntry)initWithCoder:(id)a3;
-- (DAHistoryEntry)initWithTestSuiteName:(id)a3 date:(id)a4 skipped:(BOOL)a5 results:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (DAHistoryEntry)initWithCoder:(id)coder;
+- (DAHistoryEntry)initWithTestSuiteName:(id)name date:(id)date skipped:(BOOL)skipped results:(id)results;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DAHistoryEntry
 
-- (DAHistoryEntry)initWithTestSuiteName:(id)a3 date:(id)a4 skipped:(BOOL)a5 results:(id)a6
+- (DAHistoryEntry)initWithTestSuiteName:(id)name date:(id)date skipped:(BOOL)skipped results:(id)results
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  nameCopy = name;
+  dateCopy = date;
+  resultsCopy = results;
   v17.receiver = self;
   v17.super_class = DAHistoryEntry;
   v14 = [(DAHistoryEntry *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_testSuiteName, a3);
-    objc_storeStrong(&v15->_date, a4);
-    v15->_skipped = a5;
-    objc_storeStrong(&v15->_results, a6);
+    objc_storeStrong(&v14->_testSuiteName, name);
+    objc_storeStrong(&v15->_date, date);
+    v15->_skipped = skipped;
+    objc_storeStrong(&v15->_results, results);
   }
 
   return v15;
 }
 
-- (DAHistoryEntry)initWithCoder:(id)a3
+- (DAHistoryEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DAHistoryEntry *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"testSuiteName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"testSuiteName"];
     testSuiteName = v5->_testSuiteName;
     v5->_testSuiteName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"date"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"date"];
     date = v5->_date;
     v5->_date = v8;
 
-    v5->_skipped = [v4 decodeBoolForKey:@"skipped"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"results"];
+    v5->_skipped = [coderCopy decodeBoolForKey:@"skipped"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"results"];
     results = v5->_results;
     v5->_results = v10;
   }
@@ -51,25 +51,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(DAHistoryEntry *)self testSuiteName];
-  [v4 encodeObject:v5 forKey:@"testSuiteName"];
+  coderCopy = coder;
+  testSuiteName = [(DAHistoryEntry *)self testSuiteName];
+  [coderCopy encodeObject:testSuiteName forKey:@"testSuiteName"];
 
-  v6 = [(DAHistoryEntry *)self date];
-  [v4 encodeObject:v6 forKey:@"date"];
+  date = [(DAHistoryEntry *)self date];
+  [coderCopy encodeObject:date forKey:@"date"];
 
-  [v4 encodeBool:-[DAHistoryEntry skipped](self forKey:{"skipped"), @"skipped"}];
-  v7 = [(DAHistoryEntry *)self results];
-  [v4 encodeObject:v7 forKey:@"results"];
+  [coderCopy encodeBool:-[DAHistoryEntry skipped](self forKey:{"skipped"), @"skipped"}];
+  results = [(DAHistoryEntry *)self results];
+  [coderCopy encodeObject:results forKey:@"results"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_testSuiteName copyWithZone:a3];
-  v7 = [(NSDate *)self->_date copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_testSuiteName copyWithZone:zone];
+  v7 = [(NSDate *)self->_date copyWithZone:zone];
   v8 = [v5 initWithTestSuiteName:v6 date:v7 skipped:self->_skipped];
 
   return v8;
@@ -77,9 +77,9 @@
 
 - (id)description
 {
-  v3 = [(DAHistoryEntry *)self testSuiteName];
-  v4 = [(DAHistoryEntry *)self date];
-  v5 = [NSString stringWithFormat:@"testSuiteName: %@ date: %@; skipped: %d", v3, v4, [(DAHistoryEntry *)self skipped]];;
+  testSuiteName = [(DAHistoryEntry *)self testSuiteName];
+  date = [(DAHistoryEntry *)self date];
+  v5 = [NSString stringWithFormat:@"testSuiteName: %@ date: %@; skipped: %d", testSuiteName, date, [(DAHistoryEntry *)self skipped]];;
 
   return v5;
 }

@@ -1,25 +1,25 @@
 @interface OZARFrameMetadata
 + (opaqueCMFormatDescription)metadataFormat;
 - (CGSize)cameraImageResolution;
-- (OZARFrameMetadata)initWithCameraTransform:(double)a3 cameraIntrinsics:(double)a4 cameraImageResolution:(double)a5;
-- (OZARFrameMetadata)initWithCoder:(id)a3;
-- (__n128)setCameraIntrinsics:(__n128)a3;
-- (__n128)setCameraTransform:(__n128)a3;
+- (OZARFrameMetadata)initWithCameraTransform:(double)transform cameraIntrinsics:(double)intrinsics cameraImageResolution:(double)resolution;
+- (OZARFrameMetadata)initWithCoder:(id)coder;
+- (__n128)setCameraIntrinsics:(__n128)intrinsics;
+- (__n128)setCameraTransform:(__n128)transform;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OZARFrameMetadata
 
-- (OZARFrameMetadata)initWithCameraTransform:(double)a3 cameraIntrinsics:(double)a4 cameraImageResolution:(double)a5
+- (OZARFrameMetadata)initWithCameraTransform:(double)transform cameraIntrinsics:(double)intrinsics cameraImageResolution:(double)resolution
 {
-  v27.receiver = a1;
+  v27.receiver = self;
   v27.super_class = OZARFrameMetadata;
   v17 = [(OZARFrameMetadata *)&v27 init];
   v18 = v17;
   if (v17)
   {
-    [(OZARFrameMetadata *)v17 setCameraTransform:a2, a3, a4, a5];
+    [(OZARFrameMetadata *)v17 setCameraTransform:a2, transform, intrinsics, resolution];
     [(OZARFrameMetadata *)v18 setCameraIntrinsics:a6, a7, a8];
     [(OZARFrameMetadata *)v18 setCameraImageResolution:a10, a11];
   }
@@ -33,7 +33,7 @@
   block[1] = *"";
   block[2] = __35__OZARFrameMetadata_metadataFormat__block_invoke;
   block[3] = &unk_279AA8060;
-  block[4] = a1;
+  block[4] = self;
   if (+[OZARFrameMetadata metadataFormat]::onceToken != -1)
   {
     dispatch_once(&+[OZARFrameMetadata metadataFormat]::onceToken, block);
@@ -69,58 +69,58 @@ uint64_t __35__OZARFrameMetadata_metadataFormat__block_invoke(uint64_t a1)
   return [v3 stringWithFormat:@"%@\ncameraTransform:\n%@\ncameraIntrinsics:\n%@\ncameraImageResolution: {%@, %@}", v4, v6, v8, v10, objc_msgSend(v11, "numberWithDouble:", v12)];
 }
 
-- (OZARFrameMetadata)initWithCoder:(id)a3
+- (OZARFrameMetadata)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = OZARFrameMetadata;
   v4 = [(OZARFrameMetadata *)&v15 init];
   if (v4)
   {
-    [a3 oz_decodeMatrixFloat4x4ForKey:@"cameraTransform"];
+    [coder oz_decodeMatrixFloat4x4ForKey:@"cameraTransform"];
     [(OZARFrameMetadata *)v4 setCameraTransform:?];
-    [a3 oz_decodeFloat2ForKey:@"cameraIntrinsicsFocalLength"];
+    [coder oz_decodeFloat2ForKey:@"cameraIntrinsicsFocalLength"];
     v14 = v5;
-    [a3 oz_decodeFloat2ForKey:@"cameraIntrinsicsPrincipalPoint"];
+    [coder oz_decodeFloat2ForKey:@"cameraIntrinsicsPrincipalPoint"];
     LODWORD(v6) = 0;
     HIDWORD(v6) = HIDWORD(v14);
     __asm { FMOV            V2.4S, #1.0 }
 
     [(OZARFrameMetadata *)v4 setCameraIntrinsics:COERCE_DOUBLE(v14), v6, v12];
-    [a3 oz_decodeCGSizeForKey:@"cameraImageResolution"];
+    [coder oz_decodeCGSizeForKey:@"cameraImageResolution"];
     [(OZARFrameMetadata *)v4 setCameraImageResolution:?];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   [(OZARFrameMetadata *)self cameraTransform];
-  [a3 oz_encodeMatrixFloat4x4:@"cameraTransform" forKey:?];
+  [coder oz_encodeMatrixFloat4x4:@"cameraTransform" forKey:?];
   [(OZARFrameMetadata *)self cameraIntrinsics];
   v8 = v5;
   [(OZARFrameMetadata *)self cameraIntrinsics];
-  [a3 oz_encodeFloat2:@"cameraIntrinsicsFocalLength" forKey:{COERCE_DOUBLE(__PAIR64__(v6, v8))}];
+  [coder oz_encodeFloat2:@"cameraIntrinsicsFocalLength" forKey:{COERCE_DOUBLE(__PAIR64__(v6, v8))}];
   [(OZARFrameMetadata *)self cameraIntrinsics];
-  [a3 oz_encodeFloat2:@"cameraIntrinsicsPrincipalPoint" forKey:v7];
+  [coder oz_encodeFloat2:@"cameraIntrinsicsPrincipalPoint" forKey:v7];
   [(OZARFrameMetadata *)self cameraImageResolution];
 
-  [a3 oz_encodeCGSize:@"cameraImageResolution" forKey:?];
+  [coder oz_encodeCGSize:@"cameraImageResolution" forKey:?];
 }
 
-- (__n128)setCameraTransform:(__n128)a3
+- (__n128)setCameraTransform:(__n128)transform
 {
   result[5] = a2;
-  result[6] = a3;
+  result[6] = transform;
   result[7] = a4;
   result[8] = a5;
   return result;
 }
 
-- (__n128)setCameraIntrinsics:(__n128)a3
+- (__n128)setCameraIntrinsics:(__n128)intrinsics
 {
   result[2] = a2;
-  result[3] = a3;
+  result[3] = intrinsics;
   result[4] = a4;
   return result;
 }

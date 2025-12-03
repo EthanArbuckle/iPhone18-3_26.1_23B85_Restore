@@ -1,23 +1,23 @@
 @interface SNConnectionInternal
-- (BOOL)startAndReturnError:(id *)a3;
+- (BOOL)startAndReturnError:(id *)error;
 - (SNConnectionDelegateInternal)delegate;
-- (SNConnectionInternal)initWithConnectionInfo:(id)a3 connectionQueue:(id)a4 networkManager:(id)a5 networkAnalytics:(id)a6;
-- (void)barrierWith:(id)a3;
-- (void)cancelSynchronously:(BOOL)a3 isOnConnectionQueue:(BOOL)a4 with:(id)a5;
-- (void)getSNConnectionAnalysisInfo:(id)a3;
+- (SNConnectionInternal)initWithConnectionInfo:(id)info connectionQueue:(id)queue networkManager:(id)manager networkAnalytics:(id)analytics;
+- (void)barrierWith:(id)with;
+- (void)cancelSynchronously:(BOOL)synchronously isOnConnectionQueue:(BOOL)queue with:(id)with;
+- (void)getSNConnectionAnalysisInfo:(id)info;
 - (void)probeConnection;
-- (void)sendCommand:(id)a3 with:(id)a4;
-- (void)sendCommands:(id)a3 with:(id)a4;
-- (void)sendData:(id)a3 with:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setSendPings:(BOOL)a3;
+- (void)sendCommand:(id)command with:(id)with;
+- (void)sendCommands:(id)commands with:(id)with;
+- (void)sendData:(id)data with:(id)with;
+- (void)setDelegate:(id)delegate;
+- (void)setSendPings:(BOOL)pings;
 @end
 
 @implementation SNConnectionInternal
 
-- (void)sendCommand:(id)a3 with:(id)a4
+- (void)sendCommand:(id)command with:(id)with
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(with);
   if (v5)
   {
     *(swift_allocObject() + 16) = v5;
@@ -25,38 +25,38 @@
   }
 
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   Connection.sendCommand(_:with:)();
   outlined consume of (@escaping @callee_guaranteed (@guaranteed SNLinkRecommendationInfo?) -> ())?(v5);
   swift_unknownObjectRelease();
 }
 
-- (void)setSendPings:(BOOL)a3
+- (void)setSendPings:(BOOL)pings
 {
-  v4 = self;
-  Connection.setSendPings(_:)(a3);
+  selfCopy = self;
+  Connection.setSendPings(_:)(pings);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   Connection.delegate.setter();
 }
 
-- (BOOL)startAndReturnError:(id *)a3
+- (BOOL)startAndReturnError:(id *)error
 {
-  v4 = self;
+  selfCopy = self;
   Connection.start()();
 
   if (v5)
   {
-    if (a3)
+    if (error)
     {
       v6 = _convertErrorToNSError(_:)();
 
       v7 = v6;
-      *a3 = v6;
+      *error = v6;
     }
 
     else
@@ -67,16 +67,16 @@
   return v5 == 0;
 }
 
-- (void)cancelSynchronously:(BOOL)a3 isOnConnectionQueue:(BOOL)a4 with:(id)a5
+- (void)cancelSynchronously:(BOOL)synchronously isOnConnectionQueue:(BOOL)queue with:(id)with
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(with);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = _sIeyB_Ieg_TRTA_0;
   }
 
-  v7 = self;
+  selfCopy = self;
   Connection.cancelSynchronously(_:isOnConnectionQueue:with:)();
   outlined consume of (@escaping @callee_guaranteed (@guaranteed SNLinkRecommendationInfo?) -> ())?(v6);
 }
@@ -88,9 +88,9 @@
   return v2;
 }
 
-- (void)sendCommands:(id)a3 with:(id)a4
+- (void)sendCommands:(id)commands with:(id)with
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(with);
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo15SNSessionObject_So10SNThunkingpMd, &_sSo15SNSessionObject_So10SNThunkingpMR);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   if (v5)
@@ -99,24 +99,24 @@
     v5 = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned SNSessionObject?, @unowned NSError?) -> ();
   }
 
-  v6 = self;
+  selfCopy = self;
   Connection.sendCommands(_:with:)();
   outlined consume of (@escaping @callee_guaranteed (@guaranteed SNLinkRecommendationInfo?) -> ())?(v5);
 }
 
-- (SNConnectionInternal)initWithConnectionInfo:(id)a3 connectionQueue:(id)a4 networkManager:(id)a5 networkAnalytics:(id)a6
+- (SNConnectionInternal)initWithConnectionInfo:(id)info connectionQueue:(id)queue networkManager:(id)manager networkAnalytics:(id)analytics
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  return Connection.init(connectionInfo:connectionQueue:networkManager:networkAnalytics:)(v9, v10, a5, a6);
+  infoCopy = info;
+  queueCopy = queue;
+  managerCopy = manager;
+  return Connection.init(connectionInfo:connectionQueue:networkManager:networkAnalytics:)(infoCopy, queueCopy, manager, analytics);
 }
 
-- (void)sendData:(id)a3 with:(id)a4
+- (void)sendData:(id)data with:(id)with
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(with);
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
   if (v5)
@@ -131,9 +131,9 @@
   __swift_destroy_boxed_opaque_existential_0(v7);
 }
 
-- (void)getSNConnectionAnalysisInfo:(id)a3
+- (void)getSNConnectionAnalysisInfo:(id)info
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(info);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -145,20 +145,20 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   Connection.getSNConnectionAnalysisInfo(_:)();
   outlined consume of (@escaping @callee_guaranteed (@guaranteed SNLinkRecommendationInfo?) -> ())?(v5);
 }
 
 - (void)probeConnection
 {
-  v2 = self;
+  selfCopy = self;
   Connection.probeConnection()();
 }
 
-- (void)barrierWith:(id)a3
+- (void)barrierWith:(id)with
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(with);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -170,7 +170,7 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   Connection.barrier(with:)();
   outlined consume of (@escaping @callee_guaranteed (@guaranteed SNLinkRecommendationInfo?) -> ())?(v5);
 }

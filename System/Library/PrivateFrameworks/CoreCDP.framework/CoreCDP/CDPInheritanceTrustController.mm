@@ -1,23 +1,23 @@
 @interface CDPInheritanceTrustController
-- (BOOL)isInheritanceAccessKeyValid:(id)a3;
-- (void)checkInheritanceKey:(id)a3 inheritanceKeyUUID:(id)a4 completion:(id)a5;
-- (void)createInheritanceKeyWithContext:(id)a3 completion:(id)a4;
-- (void)deleteInheritanceAccessKeyWithContext:(id)a3 completion:(id)a4;
-- (void)recoverOctagonWithContext:(id)a3 inheritanceKey:(id)a4 completion:(id)a5;
-- (void)recreateInheritanceKeyWithContext:(id)a3 newOTPeerID:(id)a4 inheritanceKey:(id)a5 completion:(id)a6;
-- (void)validateAccessKey:(id)a3 withContext:(id)a4 completion:(id)a5;
+- (BOOL)isInheritanceAccessKeyValid:(id)valid;
+- (void)checkInheritanceKey:(id)key inheritanceKeyUUID:(id)d completion:(id)completion;
+- (void)createInheritanceKeyWithContext:(id)context completion:(id)completion;
+- (void)deleteInheritanceAccessKeyWithContext:(id)context completion:(id)completion;
+- (void)recoverOctagonWithContext:(id)context inheritanceKey:(id)key completion:(id)completion;
+- (void)recreateInheritanceKeyWithContext:(id)context newOTPeerID:(id)d inheritanceKey:(id)key completion:(id)completion;
+- (void)validateAccessKey:(id)key withContext:(id)context completion:(id)completion;
 @end
 
 @implementation CDPInheritanceTrustController
 
-- (void)createInheritanceKeyWithContext:(id)a3 completion:(id)a4
+- (void)createInheritanceKeyWithContext:(id)context completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 cliqueConfiguration];
+  contextCopy = context;
+  completionCopy = completion;
+  cliqueConfiguration = [contextCopy cliqueConfiguration];
   v8 = objc_alloc_init(CDPAccount);
-  v9 = [(CDPAccount *)v8 primaryAccountDSID];
-  v10 = [CDPAccount isICDPEnabledForDSID:v9];
+  primaryAccountDSID = [(CDPAccount *)v8 primaryAccountDSID];
+  v10 = [CDPAccount isICDPEnabledForDSID:primaryAccountDSID];
 
   v11 = _CDPLogSystem();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
@@ -25,38 +25,38 @@
   {
     if (v12)
     {
-      [CDPInheritanceTrustController createInheritanceKeyWithContext:v5 completion:?];
+      [CDPInheritanceTrustController createInheritanceKeyWithContext:contextCopy completion:?];
     }
 
     v13 = MEMORY[0x1E697AA80];
-    v14 = [v5 beneficiaryIdentifier];
+    beneficiaryIdentifier = [contextCopy beneficiaryIdentifier];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __76__CDPInheritanceTrustController_createInheritanceKeyWithContext_completion___block_invoke;
     v21[3] = &unk_1E869D6F8;
     v15 = &v22;
-    v22 = v6;
-    v16 = v6;
-    [v13 createInheritanceKey:v7 uuid:v14 reply:v21];
+    v22 = completionCopy;
+    v16 = completionCopy;
+    [v13 createInheritanceKey:cliqueConfiguration uuid:beneficiaryIdentifier reply:v21];
   }
 
   else
   {
     if (v12)
     {
-      [CDPInheritanceTrustController createInheritanceKeyWithContext:v5 completion:?];
+      [CDPInheritanceTrustController createInheritanceKeyWithContext:contextCopy completion:?];
     }
 
     v17 = MEMORY[0x1E697AA80];
-    v14 = [v5 beneficiaryIdentifier];
+    beneficiaryIdentifier = [contextCopy beneficiaryIdentifier];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __76__CDPInheritanceTrustController_createInheritanceKeyWithContext_completion___block_invoke_18;
     v19[3] = &unk_1E869D6F8;
     v15 = &v20;
-    v20 = v6;
-    v18 = v6;
-    [v17 generateInheritanceKey:v7 uuid:v14 reply:v19];
+    v20 = completionCopy;
+    v18 = completionCopy;
+    [v17 generateInheritanceKey:cliqueConfiguration uuid:beneficiaryIdentifier reply:v19];
   }
 }
 
@@ -76,16 +76,16 @@ void __76__CDPInheritanceTrustController_createInheritanceKeyWithContext_complet
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)recoverOctagonWithContext:(id)a3 inheritanceKey:(id)a4 completion:(id)a5
+- (void)recoverOctagonWithContext:(id)context inheritanceKey:(id)key completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [objc_alloc(MEMORY[0x1E69B7CD8]) initFromAccessKey:v8];
+  contextCopy = context;
+  keyCopy = key;
+  completionCopy = completion;
+  v10 = [objc_alloc(MEMORY[0x1E69B7CD8]) initFromAccessKey:keyCopy];
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [CDPInheritanceTrustController recoverOctagonWithContext:v8 inheritanceKey:? completion:?];
+    [CDPInheritanceTrustController recoverOctagonWithContext:keyCopy inheritanceKey:? completion:?];
   }
 
   v12 = _CDPLogSystem();
@@ -98,8 +98,8 @@ void __76__CDPInheritanceTrustController_createInheritanceKeyWithContext_complet
     }
 
     v14 = MEMORY[0x1E697AA80];
-    v15 = [v7 cliqueConfiguration];
-    [v14 recoverOctagonUsingInheritanceKey:v15 inheritanceKey:v10 reply:v9];
+    cliqueConfiguration = [contextCopy cliqueConfiguration];
+    [v14 recoverOctagonUsingInheritanceKey:cliqueConfiguration inheritanceKey:v10 reply:completionCopy];
   }
 
   else
@@ -109,58 +109,58 @@ void __76__CDPInheritanceTrustController_createInheritanceKeyWithContext_complet
       [CDPInheritanceTrustController recoverOctagonWithContext:inheritanceKey:completion:];
     }
 
-    v15 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5216];
-    v9[2](v9, v15);
+    cliqueConfiguration = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5216];
+    completionCopy[2](completionCopy, cliqueConfiguration);
   }
 }
 
-- (BOOL)isInheritanceAccessKeyValid:(id)a3
+- (BOOL)isInheritanceAccessKeyValid:(id)valid
 {
   v3 = MEMORY[0x1E69B7CD8];
-  v4 = a3;
-  v5 = [[v3 alloc] initFromAccessKey:v4];
+  validCopy = valid;
+  v5 = [[v3 alloc] initFromAccessKey:validCopy];
 
   return v5 != 0;
 }
 
-- (void)deleteInheritanceAccessKeyWithContext:(id)a3 completion:(id)a4
+- (void)deleteInheritanceAccessKeyWithContext:(id)context completion:(id)completion
 {
   v5 = MEMORY[0x1E697AA80];
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 cliqueConfiguration];
-  v8 = [v7 beneficiaryIdentifier];
+  completionCopy = completion;
+  contextCopy = context;
+  cliqueConfiguration = [contextCopy cliqueConfiguration];
+  beneficiaryIdentifier = [contextCopy beneficiaryIdentifier];
 
-  [v5 removeInheritanceKey:v9 inheritanceKeyUUID:v8 reply:v6];
+  [v5 removeInheritanceKey:cliqueConfiguration inheritanceKeyUUID:beneficiaryIdentifier reply:completionCopy];
 }
 
-- (void)validateAccessKey:(id)a3 withContext:(id)a4 completion:(id)a5
+- (void)validateAccessKey:(id)key withContext:(id)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 dsid];
-  if (v10)
+  keyCopy = key;
+  contextCopy = context;
+  completionCopy = completion;
+  dsid = [contextCopy dsid];
+  if (dsid)
   {
 
 LABEL_4:
-    v12 = [v8 cliqueConfiguration];
-    v13 = [objc_alloc(MEMORY[0x1E69B7CD8]) initFromAccessKey:v7];
+    cliqueConfiguration = [contextCopy cliqueConfiguration];
+    v13 = [objc_alloc(MEMORY[0x1E69B7CD8]) initFromAccessKey:keyCopy];
     v14 = MEMORY[0x1E697AA80];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __74__CDPInheritanceTrustController_validateAccessKey_withContext_completion___block_invoke;
     v16[3] = &unk_1E869D6A0;
-    v18 = v9;
-    v17 = v7;
-    [v14 preflightRecoverOctagonUsingInheritanceKey:v12 inheritanceKey:v13 reply:v16];
+    v18 = completionCopy;
+    v17 = keyCopy;
+    [v14 preflightRecoverOctagonUsingInheritanceKey:cliqueConfiguration inheritanceKey:v13 reply:v16];
 
     goto LABEL_5;
   }
 
-  v11 = [v8 altDSID];
+  altDSID = [contextCopy altDSID];
 
-  if (v11)
+  if (altDSID)
   {
     goto LABEL_4;
   }
@@ -171,8 +171,8 @@ LABEL_4:
     [CDPCustodianRecoveryKeyController validateRecoveryKey:withContext:completion:];
   }
 
-  v12 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
-  (*(v9 + 2))(v9, v12);
+  cliqueConfiguration = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
+  (*(completionCopy + 2))(completionCopy, cliqueConfiguration);
 LABEL_5:
 }
 
@@ -197,40 +197,40 @@ void __74__CDPInheritanceTrustController_validateAccessKey_withContext_completio
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)recreateInheritanceKeyWithContext:(id)a3 newOTPeerID:(id)a4 inheritanceKey:(id)a5 completion:(id)a6
+- (void)recreateInheritanceKeyWithContext:(id)context newOTPeerID:(id)d inheritanceKey:(id)key completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  dCopy = d;
+  keyCopy = key;
+  completionCopy = completion;
   v13 = _CDPLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     [CDPInheritanceTrustController recreateInheritanceKeyWithContext:newOTPeerID:inheritanceKey:completion:];
   }
 
-  v14 = [v9 dsid];
-  if (v14)
+  dsid = [contextCopy dsid];
+  if (dsid)
   {
 
 LABEL_6:
-    v16 = [v9 cliqueConfiguration];
-    v17 = [objc_alloc(MEMORY[0x1E69B7CD8]) initFromAccessKey:v11];
+    cliqueConfiguration = [contextCopy cliqueConfiguration];
+    v17 = [objc_alloc(MEMORY[0x1E69B7CD8]) initFromAccessKey:keyCopy];
     v18 = MEMORY[0x1E697AA80];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __105__CDPInheritanceTrustController_recreateInheritanceKeyWithContext_newOTPeerID_inheritanceKey_completion___block_invoke;
     v20[3] = &unk_1E869D6F8;
-    v21 = v12;
-    [v18 recreateInheritanceKey:v16 uuid:v10 oldIK:v17 reply:v20];
+    v21 = completionCopy;
+    [v18 recreateInheritanceKey:cliqueConfiguration uuid:dCopy oldIK:v17 reply:v20];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v15 = [v9 altDSID];
+  altDSID = [contextCopy altDSID];
 
-  if (v15)
+  if (altDSID)
   {
     goto LABEL_6;
   }
@@ -241,10 +241,10 @@ LABEL_7:
     [CDPInheritanceTrustController recreateInheritanceKeyWithContext:newOTPeerID:inheritanceKey:completion:];
   }
 
-  if (v12)
+  if (completionCopy)
   {
-    v16 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
-    (*(v12 + 2))(v12, 0, v16);
+    cliqueConfiguration = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
+    (*(completionCopy + 2))(completionCopy, 0, cliqueConfiguration);
     goto LABEL_7;
   }
 
@@ -281,37 +281,37 @@ void __105__CDPInheritanceTrustController_recreateInheritanceKeyWithContext_newO
   }
 }
 
-- (void)checkInheritanceKey:(id)a3 inheritanceKeyUUID:(id)a4 completion:(id)a5
+- (void)checkInheritanceKey:(id)key inheritanceKeyUUID:(id)d completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  dCopy = d;
+  completionCopy = completion;
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [CDPInheritanceTrustController checkInheritanceKey:inheritanceKeyUUID:completion:];
   }
 
-  v11 = [v7 dsid];
-  if (v11)
+  dsid = [keyCopy dsid];
+  if (dsid)
   {
 
 LABEL_6:
-    v13 = [v7 cliqueConfiguration];
+    cliqueConfiguration = [keyCopy cliqueConfiguration];
     v14 = MEMORY[0x1E697AA80];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __83__CDPInheritanceTrustController_checkInheritanceKey_inheritanceKeyUUID_completion___block_invoke;
     v16[3] = &unk_1E869D6C8;
-    v17 = v9;
-    [v14 checkInheritanceKey:v13 inheritanceKeyUUID:v8 reply:v16];
+    v17 = completionCopy;
+    [v14 checkInheritanceKey:cliqueConfiguration inheritanceKeyUUID:dCopy reply:v16];
 
     goto LABEL_7;
   }
 
-  v12 = [v7 altDSID];
+  altDSID = [keyCopy altDSID];
 
-  if (v12)
+  if (altDSID)
   {
     goto LABEL_6;
   }
@@ -322,8 +322,8 @@ LABEL_6:
     [CDPCustodianRecoveryKeyController validateRecoveryKey:withContext:completion:];
   }
 
-  v13 = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
-  (*(v9 + 2))(v9, v13);
+  cliqueConfiguration = [MEMORY[0x1E696ABC0] cdp_errorWithCode:-5003];
+  (*(completionCopy + 2))(completionCopy, cliqueConfiguration);
 LABEL_7:
 }
 

@@ -1,8 +1,8 @@
 @interface TPStringTable
 + (id)defaultTable;
-- (TPStringTable)initWithIdentifier:(id)a3;
-- (id)setWithArray:(id)a3;
-- (id)stringWithString:(id)a3;
+- (TPStringTable)initWithIdentifier:(id)identifier;
+- (id)setWithArray:(id)array;
+- (id)stringWithString:(id)string;
 - (unint64_t)_count;
 @end
 
@@ -27,16 +27,16 @@ uint64_t __29__TPStringTable_defaultTable__block_invoke()
   return v3;
 }
 
-- (id)setWithArray:(id)a3
+- (id)setWithArray:(id)array
 {
-  v4 = a3;
-  v5 = [v4 count];
+  arrayCopy = array;
+  v5 = [arrayCopy count];
   v6 = malloc_type_calloc(v5, 8uLL, 0x80040B8603338uLL);
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      v8 = [v4 objectAtIndexedSubscript:i];
+      v8 = [arrayCopy objectAtIndexedSubscript:i];
       v9 = [(TPStringTable *)self stringWithString:v8];
       v10 = v6[i];
       v6[i] = v9;
@@ -63,30 +63,30 @@ uint64_t __29__TPStringTable_defaultTable__block_invoke()
   return v11;
 }
 
-- (id)stringWithString:(id)a3
+- (id)stringWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__3048;
   v21 = __Block_byref_object_dispose__3049;
   v22 = 0;
-  v5 = [(TPStringTable *)self queue];
+  queue = [(TPStringTable *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__TPStringTable_stringWithString___block_invoke;
   block[3] = &unk_279DEDDD0;
   v16 = &v17;
   block[4] = self;
-  v6 = v4;
+  v6 = stringCopy;
   v15 = v6;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
 
   v7 = v18[5];
   if (!v7)
   {
-    v8 = [(TPStringTable *)self queue];
+    queue2 = [(TPStringTable *)self queue];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __34__TPStringTable_stringWithString___block_invoke_2;
@@ -94,7 +94,7 @@ uint64_t __29__TPStringTable_defaultTable__block_invoke()
     v13 = &v17;
     v11[4] = self;
     v12 = v6;
-    dispatch_barrier_sync(v8, v11);
+    dispatch_barrier_sync(queue2, v11);
 
     v7 = v18[5];
   }
@@ -135,17 +135,17 @@ void __34__TPStringTable_stringWithString___block_invoke_2(uint64_t a1)
   }
 }
 
-- (TPStringTable)initWithIdentifier:(id)a3
+- (TPStringTable)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = TPStringTable;
   v5 = [(TPStringTable *)&v11 init];
   if (v5)
   {
-    v6 = [v4 UTF8String];
+    uTF8String = [identifierCopy UTF8String];
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x277D85CD8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v8 = dispatch_queue_create(v6, v7);
+    v8 = dispatch_queue_create(uTF8String, v7);
     [(TPStringTable *)v5 setQueue:v8];
 
     v9 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:5 capacity:0];
@@ -161,14 +161,14 @@ void __34__TPStringTable_stringWithString___block_invoke_2(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0xAAAAAAAAAAAAAAAALL;
-  v3 = [(TPStringTable *)self queue];
+  queue = [(TPStringTable *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __32__TPStringTable_Testing___count__block_invoke;
   v6[3] = &unk_279DEDE18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);

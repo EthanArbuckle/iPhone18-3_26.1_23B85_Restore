@@ -1,11 +1,11 @@
 @interface WFXPCActivityScheduler
-+ (id)activatedSchedulerWithActivityIdentifier:(id)a3 checkInHandler:(id)a4 runHandler:(id)a5;
-- (WFXPCActivityScheduler)initWithActivityIdentifier:(id)a3;
-- (void)addEligibilityChangedHandler:(id)a3 toActivity:(id)a4;
++ (id)activatedSchedulerWithActivityIdentifier:(id)identifier checkInHandler:(id)handler runHandler:(id)runHandler;
+- (WFXPCActivityScheduler)initWithActivityIdentifier:(id)identifier;
+- (void)addEligibilityChangedHandler:(id)handler toActivity:(id)activity;
 - (void)dealloc;
 - (void)invalidate;
 - (void)removeEligibilityChangedHandlerIfNeeded;
-- (void)scheduleWithCheckInHandler:(id)a3 runHandler:(id)a4;
+- (void)scheduleWithCheckInHandler:(id)handler runHandler:(id)runHandler;
 @end
 
 @implementation WFXPCActivityScheduler
@@ -26,11 +26,11 @@
     v4 = getWFGeneralLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(WFXPCActivityScheduler *)self activityIdentifier];
+      activityIdentifier = [(WFXPCActivityScheduler *)self activityIdentifier];
       *buf = 136315394;
       v9 = "[WFXPCActivityScheduler removeEligibilityChangedHandlerIfNeeded]";
       v10 = 2112;
-      v11 = v5;
+      v11 = activityIdentifier;
       _os_log_impl(&dword_23103C000, v4, OS_LOG_TYPE_INFO, "%s Removing eligibility changed handler for activity: %@", buf, 0x16u);
     }
 
@@ -43,11 +43,11 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addEligibilityChangedHandler:(id)a3 toActivity:(id)a4
+- (void)addEligibilityChangedHandler:(id)handler toActivity:(id)activity
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  activityCopy = activity;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -56,7 +56,7 @@
   aBlock[3] = &unk_278900148;
   aBlock[4] = self;
   v8 = _Block_copy(aBlock);
-  v9 = [(WFXPCActivityScheduler *)self activityIdentifier];
+  activityIdentifier = [(WFXPCActivityScheduler *)self activityIdentifier];
   if ([(WFXPCActivityScheduler *)self lock_eligibilityChangedHandler])
   {
     v10 = getWFGeneralLogObject();
@@ -65,7 +65,7 @@
       *buf = 136315394;
       v15 = "[WFXPCActivityScheduler addEligibilityChangedHandler:toActivity:]";
       v16 = 2112;
-      v17 = v9;
+      v17 = activityIdentifier;
       _os_log_impl(&dword_23103C000, v10, OS_LOG_TYPE_FAULT, "%s Eligibility changed handler already set for activity %@", buf, 0x16u);
     }
   }
@@ -78,7 +78,7 @@
       *buf = 136315394;
       v15 = "[WFXPCActivityScheduler addEligibilityChangedHandler:toActivity:]";
       v16 = 2112;
-      v17 = v9;
+      v17 = activityIdentifier;
       _os_log_impl(&dword_23103C000, v11, OS_LOG_TYPE_INFO, "%s Setting up eligibility changed handler for activity %@", buf, 0x16u);
     }
 
@@ -89,25 +89,25 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleWithCheckInHandler:(id)a3 runHandler:(id)a4
+- (void)scheduleWithCheckInHandler:(id)handler runHandler:(id)runHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFXPCActivityScheduler *)self activityIdentifier];
-  v9 = [v8 UTF8String];
+  handlerCopy = handler;
+  runHandlerCopy = runHandler;
+  activityIdentifier = [(WFXPCActivityScheduler *)self activityIdentifier];
+  uTF8String = [activityIdentifier UTF8String];
   v10 = *MEMORY[0x277D86238];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__WFXPCActivityScheduler_scheduleWithCheckInHandler_runHandler___block_invoke;
   v14[3] = &unk_2788FFCE8;
-  v15 = v8;
-  v16 = self;
-  v17 = v6;
-  v18 = v7;
-  v11 = v7;
-  v12 = v6;
-  v13 = v8;
-  xpc_activity_register(v9, v10, v14);
+  v15 = activityIdentifier;
+  selfCopy = self;
+  v17 = handlerCopy;
+  v18 = runHandlerCopy;
+  v11 = runHandlerCopy;
+  v12 = handlerCopy;
+  v13 = activityIdentifier;
+  xpc_activity_register(uTF8String, v10, v14);
 }
 
 void __64__WFXPCActivityScheduler_scheduleWithCheckInHandler_runHandler___block_invoke(uint64_t a1, void *a2)
@@ -354,9 +354,9 @@ void __64__WFXPCActivityScheduler_scheduleWithCheckInHandler_runHandler___block_
 - (void)invalidate
 {
   [(WFXPCActivityScheduler *)self removeEligibilityChangedHandlerIfNeeded];
-  v4 = [(WFXPCActivityScheduler *)self activityIdentifier];
-  v3 = v4;
-  xpc_activity_unregister([v4 UTF8String]);
+  activityIdentifier = [(WFXPCActivityScheduler *)self activityIdentifier];
+  v3 = activityIdentifier;
+  xpc_activity_unregister([activityIdentifier UTF8String]);
 }
 
 - (void)dealloc
@@ -367,13 +367,13 @@ void __64__WFXPCActivityScheduler_scheduleWithCheckInHandler_runHandler___block_
   [(WFXPCActivityScheduler *)&v3 dealloc];
 }
 
-- (WFXPCActivityScheduler)initWithActivityIdentifier:(id)a3
+- (WFXPCActivityScheduler)initWithActivityIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFXPCActivityScheduler.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"activityIdentifier"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFXPCActivityScheduler.m" lineNumber:27 description:{@"Invalid parameter not satisfying: %@", @"activityIdentifier"}];
   }
 
   v13.receiver = self;
@@ -383,7 +383,7 @@ void __64__WFXPCActivityScheduler_scheduleWithCheckInHandler_runHandler___block_
   if (v6)
   {
     v6->_lock._os_unfair_lock_opaque = 0;
-    v8 = [v5 copy];
+    v8 = [identifierCopy copy];
     activityIdentifier = v7->_activityIdentifier;
     v7->_activityIdentifier = v8;
 
@@ -393,14 +393,14 @@ void __64__WFXPCActivityScheduler_scheduleWithCheckInHandler_runHandler___block_
   return v7;
 }
 
-+ (id)activatedSchedulerWithActivityIdentifier:(id)a3 checkInHandler:(id)a4 runHandler:(id)a5
++ (id)activatedSchedulerWithActivityIdentifier:(id)identifier checkInHandler:(id)handler runHandler:(id)runHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithActivityIdentifier:v10];
+  runHandlerCopy = runHandler;
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  v11 = [[self alloc] initWithActivityIdentifier:identifierCopy];
 
-  [v11 scheduleWithCheckInHandler:v9 runHandler:v8];
+  [v11 scheduleWithCheckInHandler:handlerCopy runHandler:runHandlerCopy];
 
   return v11;
 }

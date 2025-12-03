@@ -1,27 +1,27 @@
 @interface PLPhotosApplication
 + (void)initialize;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_networkReachabilityDidChange:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_networkReachabilityDidChange:(id)change;
 - (void)_registerForPhotoStreamActivityNotifications;
 - (void)_startObservingReachabilityChanges;
 - (void)_stopObservingReachabilityChanges;
 - (void)_unregisterForPhotoStreamActivityNotifications;
 - (void)_updateSuspensionSettings;
-- (void)applicationDidFinishLaunching:(id)a3;
+- (void)applicationDidFinishLaunching:(id)launching;
 - (void)dealloc;
 - (void)disableNetworkObservation;
 - (void)enableNetworkObservation;
 - (void)photosPreferencesChanged;
-- (void)setReceivingRemoteControlEvents:(BOOL)a3;
+- (void)setReceivingRemoteControlEvents:(BOOL)events;
 @end
 
 @implementation PLPhotosApplication
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     srandomdev();
     originalUncaughtExceptionHandler = NSGetUncaughtExceptionHandler();
@@ -71,39 +71,39 @@
 
 - (void)_stopObservingReachabilityChanges
 {
-  v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
 
-  [v3 removeObserver:self forHostname:@"0.0.0.0"];
+  [mEMORY[0x277CEC5B8] removeObserver:self forHostname:@"0.0.0.0"];
 }
 
 - (void)_startObservingReachabilityChanges
 {
-  v3 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
 
-  [v3 addObserver:self selector:sel__networkReachabilityDidChange_ forHostname:@"0.0.0.0"];
+  [mEMORY[0x277CEC5B8] addObserver:self selector:sel__networkReachabilityDidChange_ forHostname:@"0.0.0.0"];
 }
 
-- (void)_networkReachabilityDidChange:(id)a3
+- (void)_networkReachabilityDidChange:(id)change
 {
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKey:*MEMORY[0x277CEC518]];
-  v7 = [a3 userInfo];
-  self->_isReachable = [objc_msgSend(v7 objectForKey:{*MEMORY[0x277CEC510]), "BOOLValue"}];
+  userInfo = [change userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x277CEC518]];
+  userInfo2 = [change userInfo];
+  self->_isReachable = [objc_msgSend(userInfo2 objectForKey:{*MEMORY[0x277CEC510]), "BOOLValue"}];
   v8 = (*([v6 bytes] + 2) & 4) == 0 && self->_isReachable;
   self->_isOnWifi = v8;
   v9 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:self->_isReachable];
   v10 = [objc_alloc(MEMORY[0x277CCABB0]) initWithBool:self->_isOnWifi];
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v9, *MEMORY[0x277D3AE00], v10, *MEMORY[0x277D3ADF8], 0}];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v13 = *MEMORY[0x277D3ADF0];
 
-  [v12 postNotificationName:v13 object:0 userInfo:v11];
+  [defaultCenter postNotificationName:v13 object:0 userInfo:v11];
 }
 
-- (void)setReceivingRemoteControlEvents:(BOOL)a3
+- (void)setReceivingRemoteControlEvents:(BOOL)events
 {
-  if (a3)
+  if (events)
   {
     if (!self->_receivingRemoteControlEvents)
     {
@@ -132,14 +132,14 @@
   }
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   [(PLPhotosApplication *)self _displayAndRemovePhoneInvitationFailures];
 
   [(PLPhotosApplication *)self prepareForApplicationDidBecomeActive];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   [(PLPhotosApplication *)self setReceivingRemoteControlEvents:0];
   [(PLPhotosApplication *)self setStatusBarShowsProgress:0];
@@ -151,16 +151,16 @@
   [(PLPhotosApplication *)self prepareForApplicationDidEnterBackground];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   [(PLPhotosApplication *)self _registerForPhotoStreamActivityNotifications];
   [(PLPhotosApplication *)self prepareForApplicationWillEnterForeground];
   [MEMORY[0x277D3AD48] applicationIsInForeground:1 photoLibraryURL:{objc_msgSend(MEMORY[0x277D3B238], "systemLibraryURL")}];
   if (_applicationWillEnterForeground__isInitialLaunch)
   {
-    v4 = [MEMORY[0x277D3AD38] systemPhotoLibrary];
+    systemPhotoLibrary = [MEMORY[0x277D3AD38] systemPhotoLibrary];
 
-    [v4 clientApplicationWillEnterForeground];
+    [systemPhotoLibrary clientApplicationWillEnterForeground];
   }
 
   else
@@ -177,7 +177,7 @@
   [(PLPhotosDefaults *)v2 reloadPhotoDefaultValues];
 }
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
   PLDebugEnableCoreDataMultithreadedAsserts();
   dispatch_get_global_queue(25, 0);
@@ -194,14 +194,14 @@
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterAddObserver(DarwinNotifyCenter, self, photosPreferenceChanged, @"com.apple.mobileslideshow.PreferenceChanged", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   _signal_nobind();
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = *MEMORY[0x277D76648];
 
-  [v7 addObserver:self selector:sel__applicationDidBecomeActive_ name:v8 object:0];
+  [defaultCenter3 addObserver:self selector:sel__applicationDidBecomeActive_ name:v8 object:0];
 }
 
 uint64_t __53__PLPhotosApplication_applicationDidFinishLaunching___block_invoke()

@@ -1,9 +1,9 @@
 @interface ScrollViewDelegateForwarder
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (UIScrollViewDelegate)originalDelegate;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)setOriginalDelegate:(id)a3;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)setOriginalDelegate:(id)delegate;
 @end
 
 @implementation ScrollViewDelegateForwarder
@@ -15,29 +15,29 @@
   return WeakRetained;
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  v6 = a3;
+  animationCopy = animation;
   if (self->_respondsTo_scrollViewDidEndScrollingAnimation)
   {
     WeakRetained = objc_loadWeakRetained(&self->_originalDelegate);
-    [WeakRetained scrollViewDidEndScrollingAnimation:v6];
+    [WeakRetained scrollViewDidEndScrollingAnimation:animationCopy];
   }
 
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 postNotificationName:@"ScrollingFinishedNotification" object:v6];
+  [v5 postNotificationName:@"ScrollingFinishedNotification" object:animationCopy];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_originalDelegate);
 
   return WeakRetained;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
-  if ("scrollViewDidEndScrollingAnimation:" == a3)
+  if ("scrollViewDidEndScrollingAnimation:" == selector)
   {
     return 1;
   }
@@ -52,15 +52,15 @@
   {
     v8.receiver = self;
     v8.super_class = ScrollViewDelegateForwarder;
-    v6 = [(ScrollViewDelegateForwarder *)&v8 respondsToSelector:a3];
+    v6 = [(ScrollViewDelegateForwarder *)&v8 respondsToSelector:selector];
   }
 
   return v6;
 }
 
-- (void)setOriginalDelegate:(id)a3
+- (void)setOriginalDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_originalDelegate);
 
   if (WeakRetained != obj)

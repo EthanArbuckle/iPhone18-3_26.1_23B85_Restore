@@ -14,8 +14,8 @@
 
 - (TUNavigationBarCompressibleTitleView)ts_fetchCompressibleTitleView
 {
-  v2 = [a1 ts_contentView];
-  v3 = [a1 fetchCustomTitleViewInView:v2];
+  ts_contentView = [self ts_contentView];
+  v3 = [self fetchCustomTitleViewInView:ts_contentView];
   if (v3)
   {
     v4 = [[TUNavigationBarCompressibleTitleView alloc] initWithCustomTitleView:v3];
@@ -23,7 +23,7 @@
 
   else
   {
-    v5 = [a1 fetchRegularTitleViewInView:v2];
+    v5 = [self fetchRegularTitleViewInView:ts_contentView];
     if (v5)
     {
       v4 = [[TUNavigationBarCompressibleTitleView alloc] initWithRegularTitleView:v5];
@@ -40,8 +40,8 @@
 
 - (id)ts_contentView
 {
-  v2 = [a1 subviews];
-  v3 = [v2 indexOfObjectPassingTest:&__block_literal_global_2];
+  subviews = [self subviews];
+  v3 = [subviews indexOfObjectPassingTest:&__block_literal_global_2];
 
   if (v3 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -50,8 +50,8 @@
 
   else
   {
-    v5 = [a1 subviews];
-    v4 = [v5 objectAtIndex:v3];
+    subviews2 = [self subviews];
+    v4 = [subviews2 objectAtIndex:v3];
   }
 
   return v4;
@@ -60,34 +60,34 @@
 - (void)ts_setBlurthroughBackground
 {
   v4[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DD290] ts_sideBarEffect];
-  v4[0] = v2;
+  ts_sideBarEffect = [MEMORY[0x1E69DD290] ts_sideBarEffect];
+  v4[0] = ts_sideBarEffect;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v4 count:1];
-  [a1 setBackgroundEffects:v3];
+  [self setBackgroundEffects:v3];
 }
 
 - (id)ts_barButtonViews
 {
   v2 = objc_opt_new();
-  v3 = [a1 topItem];
-  v4 = [v3 rightBarButtonItems];
+  topItem = [self topItem];
+  rightBarButtonItems = [topItem rightBarButtonItems];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __44__UINavigationBar_Bridge__ts_barButtonViews__block_invoke;
   v14[3] = &unk_1E84F3F50;
   v5 = v2;
   v15 = v5;
-  [v4 enumerateObjectsUsingBlock:v14];
+  [rightBarButtonItems enumerateObjectsUsingBlock:v14];
 
-  v6 = [a1 topItem];
-  v7 = [v6 leftBarButtonItems];
+  topItem2 = [self topItem];
+  leftBarButtonItems = [topItem2 leftBarButtonItems];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __44__UINavigationBar_Bridge__ts_barButtonViews__block_invoke_2;
   v12[3] = &unk_1E84F3F50;
   v8 = v5;
   v13 = v8;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [leftBarButtonItems enumerateObjectsUsingBlock:v12];
 
   v9 = v13;
   v10 = v8;
@@ -102,8 +102,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v1 = [a1 ts_barButtonViews];
-  v2 = [v1 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  ts_barButtonViews = [self ts_barButtonViews];
+  v2 = [ts_barButtonViews countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v2)
   {
     v3 = v2;
@@ -122,13 +122,13 @@
       {
         if (*v19 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(ts_barButtonViews);
         }
 
         v6 = *(*(&v18 + 1) + 8 * i);
         [v6 setContentAlpha:{1.0, v9, v10, v11, v12, v13, v14, v15, v16}];
-        v7 = [v6 view];
-        v8 = [v7 layer];
+        view = [v6 view];
+        layer = [view layer];
         v17[4] = v16;
         v17[5] = v15;
         v17[6] = v14;
@@ -137,10 +137,10 @@
         v17[1] = v11;
         v17[2] = v10;
         v17[3] = v9;
-        [v8 setTransform:v17];
+        [layer setTransform:v17];
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v3 = [ts_barButtonViews countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v3);
@@ -149,23 +149,23 @@
 
 - (id)ts_fetchTitleView
 {
-  v1 = [a1 ts_fetchCompressibleTitleView];
-  v2 = [v1 view];
+  ts_fetchCompressibleTitleView = [self ts_fetchCompressibleTitleView];
+  view = [ts_fetchCompressibleTitleView view];
 
-  return v2;
+  return view;
 }
 
 - (void)syncBarButtonItems:()Bridge
 {
   v4 = a3;
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__UINavigationBar_Bridge__syncBarButtonItems___block_invoke;
   v6[3] = &unk_1E84F3FA0;
   objc_copyWeak(&v9, &location);
   v7 = v4;
-  v8 = a1;
+  selfCopy = self;
   v5 = v4;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 
@@ -188,8 +188,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [v4 subviews];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -200,10 +200,10 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
-          v11 = [a1 fetchCustomTitleViewInView:*(*(&v13 + 1) + 8 * i)];
+          v11 = [self fetchCustomTitleViewInView:*(*(&v13 + 1) + 8 * i)];
           if (v11)
           {
             v5 = v11;
@@ -212,7 +212,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -246,8 +246,8 @@ LABEL_13:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [v4 subviews];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    subviews = [v4 subviews];
+    v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -258,10 +258,10 @@ LABEL_13:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(subviews);
           }
 
-          v11 = [a1 fetchRegularTitleViewInView:*(*(&v13 + 1) + 8 * i)];
+          v11 = [self fetchRegularTitleViewInView:*(*(&v13 + 1) + 8 * i)];
           if (v11)
           {
             v5 = v11;
@@ -270,7 +270,7 @@ LABEL_13:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;

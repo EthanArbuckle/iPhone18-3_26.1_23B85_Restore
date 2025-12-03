@@ -6,11 +6,11 @@
 - (NSSet)typesToCollect;
 - (id)_queue_dataSourceConfiguration;
 - (void)_queue_finishSetup;
-- (void)clientRemote_didUpdateDataSourceConfiguration:(id)a3 shouldUpdateSampleTypesToCollect:(BOOL)a4;
+- (void)clientRemote_didUpdateDataSourceConfiguration:(id)configuration shouldUpdateSampleTypesToCollect:(BOOL)collect;
 - (void)connectionInterrupted;
 - (void)disableCollectionForType:(HKQuantityType *)quantityType;
 - (void)enableCollectionForType:(HKQuantityType *)quantityType predicate:(NSPredicate *)predicate;
-- (void)unitTest_synchronizeWithCompletion:(id)a3;
+- (void)unitTest_synchronizeWithCompletion:(id)completion;
 - (void)workoutBuilderDidFinish;
 @end
 
@@ -25,9 +25,9 @@
   v9 = [(HKLiveWorkoutDataSource *)&v24 init];
   if (v9)
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v9->_identifier;
-    v9->_identifier = v10;
+    v9->_identifier = uUID;
 
     objc_storeStrong(&v9->_healthStore, healthStore);
     v12 = [(HKWorkoutConfiguration *)v8 copy];
@@ -256,17 +256,17 @@ void __50__HKLiveWorkoutDataSource_workoutBuilderDidFinish__block_invoke(uint64_
   *(v1 + 24) = 0;
 }
 
-- (void)unitTest_synchronizeWithCompletion:(id)a3
+- (void)unitTest_synchronizeWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__HKLiveWorkoutDataSource_unitTest_synchronizeWithCompletion___block_invoke;
   v7[3] = &unk_1E73765F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -344,18 +344,18 @@ void __48__HKLiveWorkoutDataSource_connectionInterrupted__block_invoke_3(uint64_
   }
 }
 
-- (void)clientRemote_didUpdateDataSourceConfiguration:(id)a3 shouldUpdateSampleTypesToCollect:(BOOL)a4
+- (void)clientRemote_didUpdateDataSourceConfiguration:(id)configuration shouldUpdateSampleTypesToCollect:(BOOL)collect
 {
-  v6 = a3;
+  configurationCopy = configuration;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __106__HKLiveWorkoutDataSource_clientRemote_didUpdateDataSourceConfiguration_shouldUpdateSampleTypesToCollect___block_invoke;
   block[3] = &unk_1E7379F98;
-  v11 = a4;
+  collectCopy = collect;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = configurationCopy;
+  v8 = configurationCopy;
   dispatch_sync(queue, block);
 }
 
@@ -387,7 +387,7 @@ void __106__HKLiveWorkoutDataSource_clientRemote_didUpdateDataSourceConfiguratio
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_19197B000, a2, OS_LOG_TYPE_ERROR, "Error getting activity mode %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

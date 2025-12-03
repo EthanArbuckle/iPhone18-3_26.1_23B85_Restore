@@ -1,11 +1,11 @@
 @interface ENUIPublicHealthLegalDocument
 - (_TtC28HealthExposureNotificationUI29ENUIPublicHealthLegalDocument)init;
-- (_TtC28HealthExposureNotificationUI29ENUIPublicHealthLegalDocument)initWithText:(id)a3 version:(id)a4;
+- (_TtC28HealthExposureNotificationUI29ENUIPublicHealthLegalDocument)initWithText:(id)text version:(id)version;
 @end
 
 @implementation ENUIPublicHealthLegalDocument
 
-- (_TtC28HealthExposureNotificationUI29ENUIPublicHealthLegalDocument)initWithText:(id)a3 version:(id)a4
+- (_TtC28HealthExposureNotificationUI29ENUIPublicHealthLegalDocument)initWithText:(id)text version:(id)version
 {
   v5 = sub_251703164();
   v7 = v6;

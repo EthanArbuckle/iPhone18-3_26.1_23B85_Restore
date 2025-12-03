@@ -1,7 +1,7 @@
 @interface PUSectionedGridLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PUSectionedGridLayoutAttributes)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -28,12 +28,12 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = PUSectionedGridLayoutAttributes;
-  if (![(UICollectionViewLayoutAttributes *)&v11 isEqual:v4])
+  if (![(UICollectionViewLayoutAttributes *)&v11 isEqual:equalCopy])
   {
     goto LABEL_6;
   }
@@ -46,11 +46,11 @@
   }
 
   interactiveTransitionProgress = self->_interactiveTransitionProgress;
-  [v4 interactiveTransitionProgress];
-  if (interactiveTransitionProgress == v6 && (exists = self->_exists, exists == [v4 exists]))
+  [equalCopy interactiveTransitionProgress];
+  if (interactiveTransitionProgress == v6 && (exists = self->_exists, exists == [equalCopy exists]))
   {
     extendsTopContent = self->_extendsTopContent;
-    v9 = extendsTopContent == [v4 extendsTopContent];
+    v9 = extendsTopContent == [equalCopy extendsTopContent];
   }
 
   else
@@ -64,11 +64,11 @@ LABEL_8:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PUSectionedGridLayoutAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:zone];
   [v4 setInteractiveTransitionProgress:self->_interactiveTransitionProgress];
   [v4 setExists:self->_exists];
   [v4 setExtendsTopContent:self->_extendsTopContent];

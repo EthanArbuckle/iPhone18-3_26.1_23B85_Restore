@@ -1,7 +1,7 @@
 @interface TSCellularPlanUserConsentViewController
-+ (void)calculateTitleAndDetailsWithName:(id)a3 consentType:(unint64_t)a4 title:(id *)a5 details:(id *)a6;
-- (TSCellularPlanUserConsentViewController)initWithConfirmationCode:(id)a3 consentType:(unint64_t)a4 requireAdditionalConsent:(BOOL)a5 confirmationCode:(id)a6 acceptButtonTapped:(BOOL)a7;
-- (TSCellularPlanUserConsentViewController)initWithName:(id)a3 consentType:(unint64_t)a4 requireAdditionalConsent:(BOOL)a5;
++ (void)calculateTitleAndDetailsWithName:(id)name consentType:(unint64_t)type title:(id *)title details:(id *)details;
+- (TSCellularPlanUserConsentViewController)initWithConfirmationCode:(id)code consentType:(unint64_t)type requireAdditionalConsent:(BOOL)consent confirmationCode:(id)confirmationCode acceptButtonTapped:(BOOL)tapped;
+- (TSCellularPlanUserConsentViewController)initWithName:(id)name consentType:(unint64_t)type requireAdditionalConsent:(BOOL)consent;
 - (TSSIMSetupFlowDelegate)delegate;
 - (void)_acceptButtonTapped;
 - (void)_cancelButtonTapped;
@@ -12,14 +12,14 @@
 
 @implementation TSCellularPlanUserConsentViewController
 
-+ (void)calculateTitleAndDetailsWithName:(id)a3 consentType:(unint64_t)a4 title:(id *)a5 details:(id *)a6
++ (void)calculateTitleAndDetailsWithName:(id)name consentType:(unint64_t)type title:(id *)title details:(id *)details
 {
-  v9 = a3;
-  if (a4 <= 1)
+  nameCopy = name;
+  if (type <= 1)
   {
-    if (a4)
+    if (type)
     {
-      if (a4 != 1)
+      if (type != 1)
       {
         goto LABEL_26;
       }
@@ -37,9 +37,9 @@
     v28 = MEMORY[0x277CCACA8];
     v29 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v30 = [v29 localizedStringForKey:@"ACTIVATE_ESIM" value:&stru_28753DF48 table:@"Localizable"];
-    *a5 = [v28 stringWithFormat:v30];
+    *title = [v28 stringWithFormat:v30];
 
-    if (v9)
+    if (nameCopy)
     {
       v13 = MEMORY[0x277CCACA8];
       v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -51,23 +51,23 @@
     goto LABEL_26;
   }
 
-  switch(a4)
+  switch(type)
   {
     case 2uLL:
       v17 = MEMORY[0x277CCACA8];
       v18 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v19 = [v18 localizedStringForKey:@"CONSENT_NEW_PROFILE_POLICY_TITLE" value:&stru_28753DF48 table:@"Localizable"];
-      *a5 = [v17 stringWithFormat:v19];
+      *title = [v17 stringWithFormat:v19];
 
       v20 = MEMORY[0x277CCACA8];
       v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      if (v9)
+      if (nameCopy)
       {
         v22 = @"CONSENT_NEW_PLAN_CANNOT_BE_DELETED_%@_%@";
 LABEL_14:
         v26 = [v21 localizedStringForKey:v22 value:&stru_28753DF48 table:@"Localizable"];
-        [v20 stringWithFormat:v26, v9, v9];
-        *a6 = LABEL_24:;
+        [v20 stringWithFormat:v26, nameCopy, nameCopy];
+        *details = LABEL_24:;
 
         goto LABEL_25;
       }
@@ -81,11 +81,11 @@ LABEL_23:
       v23 = MEMORY[0x277CCACA8];
       v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v25 = [v24 localizedStringForKey:@"CONSENT_NEW_PROFILE_POLICY_TITLE" value:&stru_28753DF48 table:@"Localizable"];
-      *a5 = [v23 stringWithFormat:v25];
+      *title = [v23 stringWithFormat:v25];
 
       v20 = MEMORY[0x277CCACA8];
       v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      if (v9)
+      if (nameCopy)
       {
         v22 = @"CONSENT_NEW_PLAN_CANNOT_BE_DISABLED_%@_%@";
         goto LABEL_14;
@@ -97,9 +97,9 @@ LABEL_23:
       v10 = MEMORY[0x277CCACA8];
       v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v12 = [v11 localizedStringForKey:@"ACTIVATE_ESIM" value:&stru_28753DF48 table:@"Localizable"];
-      *a5 = [v10 stringWithFormat:v12];
+      *title = [v10 stringWithFormat:v12];
 
-      if (v9)
+      if (nameCopy)
       {
         v13 = MEMORY[0x277CCACA8];
         v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -107,13 +107,13 @@ LABEL_23:
         v16 = @"GENERAL_USER_CONSENT_COMMON_DETAIL_%@";
 LABEL_20:
         v31 = [v14 localizedStringForKey:v16 value:&stru_28753DF48 table:@"Localizable"];
-        *a6 = [v13 stringWithFormat:v31, v9];
+        *details = [v13 stringWithFormat:v31, nameCopy];
 
         break;
       }
 
       v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      *a6 = [v21 localizedStringForKey:@"GENERAL_USER_CONSENT_COMMON_DETAIL" value:&stru_28753DF48 table:@"Localizable"];
+      *details = [v21 localizedStringForKey:@"GENERAL_USER_CONSENT_COMMON_DETAIL" value:&stru_28753DF48 table:@"Localizable"];
 LABEL_25:
 
       break;
@@ -122,11 +122,11 @@ LABEL_25:
 LABEL_26:
 }
 
-- (TSCellularPlanUserConsentViewController)initWithName:(id)a3 consentType:(unint64_t)a4 requireAdditionalConsent:(BOOL)a5
+- (TSCellularPlanUserConsentViewController)initWithName:(id)name consentType:(unint64_t)type requireAdditionalConsent:(BOOL)consent
 {
   v14 = 0;
   v15 = 0;
-  [TSCellularPlanUserConsentViewController calculateTitleAndDetailsWithName:a3 consentType:a4 title:&v15 details:&v14];
+  [TSCellularPlanUserConsentViewController calculateTitleAndDetailsWithName:name consentType:type title:&v15 details:&v14];
   v8 = v15;
   v9 = v14;
   v13.receiver = self;
@@ -136,19 +136,19 @@ LABEL_26:
   if (v10)
   {
     [(TSCellularPlanUserConsentViewController *)v10 setModalInPresentation:1];
-    v11->_consentType = a4;
-    v11->_requireAdditionalConsent = a5;
+    v11->_consentType = type;
+    v11->_requireAdditionalConsent = consent;
   }
 
   return v11;
 }
 
-- (TSCellularPlanUserConsentViewController)initWithConfirmationCode:(id)a3 consentType:(unint64_t)a4 requireAdditionalConsent:(BOOL)a5 confirmationCode:(id)a6 acceptButtonTapped:(BOOL)a7
+- (TSCellularPlanUserConsentViewController)initWithConfirmationCode:(id)code consentType:(unint64_t)type requireAdditionalConsent:(BOOL)consent confirmationCode:(id)confirmationCode acceptButtonTapped:(BOOL)tapped
 {
-  v13 = a6;
+  confirmationCodeCopy = confirmationCode;
   v20 = 0;
   v21 = 0;
-  [TSCellularPlanUserConsentViewController calculateTitleAndDetailsWithName:a3 consentType:a4 title:&v21 details:&v20];
+  [TSCellularPlanUserConsentViewController calculateTitleAndDetailsWithName:code consentType:type title:&v21 details:&v20];
   v14 = v21;
   v15 = v20;
   v19.receiver = self;
@@ -157,10 +157,10 @@ LABEL_26:
   v17 = v16;
   if (v16)
   {
-    v16->_consentType = a4;
-    v16->_requireAdditionalConsent = a5;
-    objc_storeStrong(&v16->_confirmationCode, a6);
-    v17->_acceptButtonTapped = a7;
+    v16->_consentType = type;
+    v16->_requireAdditionalConsent = consent;
+    objc_storeStrong(&v16->_confirmationCode, confirmationCode);
+    v17->_acceptButtonTapped = tapped;
   }
 
   return v17;
@@ -171,8 +171,8 @@ LABEL_26:
   v17.receiver = self;
   v17.super_class = TSCellularPlanUserConsentViewController;
   [(TSOBWelcomeController *)&v17 viewDidLoad];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__updateTrayButtonText_ name:@"esim.install.state.changed" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateTrayButtonText_ name:@"esim.install.state.changed" object:0];
 
   consentType = self->_consentType;
   if (consentType <= 1)
@@ -232,19 +232,19 @@ LABEL_11:
     [(TSCellularPlanUserConsentViewController *)self _acceptButtonTapped];
   }
 
-  v12 = [(TSCellularPlanUserConsentViewController *)self buttonTray];
-  [v12 addButton:self->_acceptButton];
+  buttonTray = [(TSCellularPlanUserConsentViewController *)self buttonTray];
+  [buttonTray addButton:self->_acceptButton];
 
   if (v5)
   {
-    v13 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     v14 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = [v14 localizedStringForKey:@"CONSENT_POLICY_DECLINE" value:&stru_28753DF48 table:@"Localizable"];
-    [v13 setTitle:v15 forState:0];
+    [linkButton setTitle:v15 forState:0];
 
-    [v13 addTarget:self action:sel__declineButtonTapped forControlEvents:64];
-    v16 = [(TSCellularPlanUserConsentViewController *)self buttonTray];
-    [v16 addButton:v13];
+    [linkButton addTarget:self action:sel__declineButtonTapped forControlEvents:64];
+    buttonTray2 = [(TSCellularPlanUserConsentViewController *)self buttonTray];
+    [buttonTray2 addButton:linkButton];
   }
 
   [(TSCellularPlanUserConsentViewController *)self _setNavigationItems];
@@ -260,12 +260,12 @@ LABEL_11:
   {
     if (!+[TSUtilities inBuddy]&& !self->_acceptButtonTapped)
     {
-      v4 = [(OBBaseWelcomeController *)self navigationItem];
-      [v4 setRightBarButtonItem:v6];
+      navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+      [navigationItem setRightBarButtonItem:v6];
     }
 
-    v5 = [(OBBaseWelcomeController *)self navigationItem];
-    [v5 setHidesBackButton:1 animated:0];
+    navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem2 setHidesBackButton:1 animated:0];
   }
 
   else
@@ -275,8 +275,8 @@ LABEL_11:
       goto LABEL_9;
     }
 
-    v5 = [(OBBaseWelcomeController *)self navigationItem];
-    [v5 setLeftBarButtonItem:v6];
+    navigationItem2 = [(OBBaseWelcomeController *)self navigationItem];
+    [navigationItem2 setLeftBarButtonItem:v6];
   }
 
 LABEL_9:
@@ -285,7 +285,7 @@ LABEL_9:
 - (void)_acceptButtonTapped
 {
   v8 = *MEMORY[0x277D85DE8];
-  if (*(a1 + 1248))
+  if (*(self + 1248))
   {
     v2 = "Yes";
   }
@@ -306,14 +306,14 @@ LABEL_9:
 - (void)_declineButtonTapped
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_3(&dword_262AA8000, a1, a3, "[Db] declined @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_3(&dword_262AA8000, self, a3, "[Db] declined @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_cancelButtonTapped
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_3(&dword_262AA8000, a1, a3, "[Db] cancelled @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_3(&dword_262AA8000, self, a3, "[Db] cancelled @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

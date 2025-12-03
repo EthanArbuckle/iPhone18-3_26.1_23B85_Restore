@@ -1,6 +1,6 @@
 @interface PHPersonAvailability
 - (NSDictionary)dictionaryRepresentation;
-- (PHPersonAvailability)initWithRequestedDetectionTypes:(id)a3;
+- (PHPersonAvailability)initWithRequestedDetectionTypes:(id)types;
 @end
 
 @implementation PHPersonAvailability
@@ -24,23 +24,23 @@
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[PHPersonAvailability nonzeroFaceCropsCount](self, "nonzeroFaceCropsCount")}];
   v12[4] = v7;
   v11[5] = @"requestedDetectionTypes";
-  v8 = [(PHPersonAvailability *)self requestedDetectionTypes];
-  v12[5] = v8;
+  requestedDetectionTypes = [(PHPersonAvailability *)self requestedDetectionTypes];
+  v12[5] = requestedDetectionTypes;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:6];
 
   return v9;
 }
 
-- (PHPersonAvailability)initWithRequestedDetectionTypes:(id)a3
+- (PHPersonAvailability)initWithRequestedDetectionTypes:(id)types
 {
-  v5 = a3;
+  typesCopy = types;
   v9.receiver = self;
   v9.super_class = PHPersonAvailability;
   v6 = [(PHPersonAvailability *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestedDetectionTypes, a3);
+    objc_storeStrong(&v6->_requestedDetectionTypes, types);
   }
 
   return v7;

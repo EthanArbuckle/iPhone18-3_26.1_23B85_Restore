@@ -1,24 +1,24 @@
 @interface VisionCoreNamedObjects
-- (BOOL)accessReadOnlyDataForName:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)accessReadOnlyDataForNames:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (IOSurfaceRef)_surfaceForName:(int)a3 allowingAssociatedObject:(void *)a4 error:;
-- (VisionCoreNamedObjects)initWithDictionary:(id)a3;
-- (VisionCoreNamedObjects)initWithNamedObjects:(id)a3;
-- (__CVBuffer)pixelBufferForName:(id)a3 error:(id *)a4;
-- (id)_initWithRetainedDictionary:(id)a3;
-- (id)dataForName:(id)a3 error:(id *)a4;
+- (BOOL)accessReadOnlyDataForName:(id)name usingBlock:(id)block error:(id *)error;
+- (BOOL)accessReadOnlyDataForNames:(id)names usingBlock:(id)block error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (IOSurfaceRef)_surfaceForName:(int)name allowingAssociatedObject:(void *)object error:;
+- (VisionCoreNamedObjects)initWithDictionary:(id)dictionary;
+- (VisionCoreNamedObjects)initWithNamedObjects:(id)objects;
+- (__CVBuffer)pixelBufferForName:(id)name error:(id *)error;
+- (id)_initWithRetainedDictionary:(id)dictionary;
+- (id)dataForName:(id)name error:(id *)error;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_objectForName:(objc_class *)a3 requiredClass:(void *)a4 error:;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_objectForName:(objc_class *)name requiredClass:(void *)class error:;
 @end
 
 @implementation VisionCoreNamedObjects
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -26,7 +26,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_objects isEqualToDictionary:v4->_objects];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NSDictionary *)self->_objects isEqualToDictionary:equalCopy->_objects];
   }
 
   return v5;
@@ -40,11 +40,11 @@
   v3 = [(VisionCoreNamedObjects *)&v23 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(NSDictionary *)self->_objects allKeys];
-  v6 = [v5 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+  allKeys = [(NSDictionary *)self->_objects allKeys];
+  v6 = [allKeys sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
   v7 = [v6 valueForKeyPath:@"@max.length"];
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
   v21 = 0u;
   v22 = 0u;
@@ -67,7 +67,7 @@
 
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = objc_autoreleasePoolPush();
-        v15 = [v13 VisionCore_stringAppendedWithPaddingCharacter:32 toMinimumLength:v8 + 1];
+        v15 = [v13 VisionCore_stringAppendedWithPaddingCharacter:32 toMinimumLength:unsignedIntegerValue + 1];
         v16 = [(NSDictionary *)self->_objects objectForKey:v13];
         [v4 appendFormat:@"\n    %@: %@", v15, v16];
 
@@ -83,7 +83,7 @@
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [VisionCoreMutableNamedObjects alloc];
   objects = self->_objects;
@@ -91,68 +91,68 @@
   return [(VisionCoreMutableNamedObjects *)v4 initWithDictionary:objects];
 }
 
-- (void)_objectForName:(objc_class *)a3 requiredClass:(void *)a4 error:
+- (void)_objectForName:(objc_class *)name requiredClass:(void *)class error:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = [*(a1 + 8) objectForKey:v7];
+    v8 = [*(self + 8) objectForKey:v7];
     if (v8)
     {
-      if (!a3 || (objc_opt_isKindOfClass() & 1) != 0)
+      if (!name || (objc_opt_isKindOfClass() & 1) != 0)
       {
-        a4 = v8;
+        class = v8;
 LABEL_11:
 
         goto LABEL_12;
       }
 
-      if (!a4)
+      if (!class)
       {
         goto LABEL_11;
       }
 
       v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v11 = NSStringFromClass(a3);
+      v11 = NSStringFromClass(name);
       v12 = [v10 initWithFormat:@"%@ is not a %@", v7, v11];
 
-      *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v12];
+      *class = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v12];
     }
 
     else
     {
-      if (!a4)
+      if (!class)
       {
         goto LABEL_11;
       }
 
       v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ has not been assigned", v7];
-      *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v9];
+      *class = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v9];
     }
 
-    a4 = 0;
+    class = 0;
     goto LABEL_11;
   }
 
-  a4 = 0;
+  class = 0;
 LABEL_12:
 
-  return a4;
+  return class;
 }
 
-- (id)dataForName:(id)a3 error:(id *)a4
+- (id)dataForName:(id)name error:(id *)error
 {
-  v6 = a3;
+  nameCopy = name;
   v7 = objc_opt_class();
-  v8 = [(VisionCoreNamedObjects *)self _objectForName:v6 requiredClass:v7 error:a4];
+  v8 = [(VisionCoreNamedObjects *)self _objectForName:nameCopy requiredClass:v7 error:error];
 
   return v8;
 }
 
-- (__CVBuffer)pixelBufferForName:(id)a3 error:(id *)a4
+- (__CVBuffer)pixelBufferForName:(id)name error:(id *)error
 {
-  v6 = a3;
-  v7 = [(VisionCoreNamedObjects *)self _objectForName:v6 requiredClass:0 error:a4];
+  nameCopy = name;
+  v7 = [(VisionCoreNamedObjects *)self _objectForName:nameCopy requiredClass:0 error:error];
   v8 = v7;
   if (!v7)
   {
@@ -165,10 +165,10 @@ LABEL_5:
   v10 = v8;
   if (v9 != CVPixelBufferGetTypeID())
   {
-    if (a4)
+    if (error)
     {
-      v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ is not a CVPixelBuffer", v6];
-      *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v11];
+      nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@ is not a CVPixelBuffer", nameCopy];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:nameCopy];
     }
 
     goto LABEL_5;
@@ -179,16 +179,16 @@ LABEL_6:
   return v10;
 }
 
-- (IOSurfaceRef)_surfaceForName:(int)a3 allowingAssociatedObject:(void *)a4 error:
+- (IOSurfaceRef)_surfaceForName:(int)name allowingAssociatedObject:(void *)object error:
 {
   v7 = a2;
-  if (!a1)
+  if (!self)
   {
     IOSurface = 0;
     goto LABEL_14;
   }
 
-  v8 = [(VisionCoreNamedObjects *)a1 _objectForName:v7 requiredClass:0 error:a4];
+  v8 = [(VisionCoreNamedObjects *)self _objectForName:v7 requiredClass:0 error:object];
   v9 = v8;
   if (!v8)
   {
@@ -199,7 +199,7 @@ LABEL_6:
   IOSurface = v9;
   if (v10 != IOSurfaceGetTypeID())
   {
-    if (a3)
+    if (name)
     {
       if (v10 == CVPixelBufferGetTypeID())
       {
@@ -210,7 +210,7 @@ LABEL_6:
         }
       }
 
-      if (!a4)
+      if (!object)
       {
         goto LABEL_12;
       }
@@ -220,7 +220,7 @@ LABEL_6:
 
     else
     {
-      if (!a4)
+      if (!object)
       {
 LABEL_12:
         IOSurface = 0;
@@ -231,7 +231,7 @@ LABEL_12:
     }
 
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v12, v7];
-    *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v13];
+    *object = [MEMORY[0x1E696ABC0] VisionCoreErrorForUnavailableResourceWithLocalizedDescription:v13];
 
     goto LABEL_12;
   }
@@ -242,12 +242,12 @@ LABEL_14:
   return IOSurface;
 }
 
-- (VisionCoreNamedObjects)initWithNamedObjects:(id)a3
+- (VisionCoreNamedObjects)initWithNamedObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13 = &v15;
-  if (v4)
+  if (objectsCopy)
   {
     do
     {
@@ -260,12 +260,12 @@ LABEL_14:
       }
 
       v8 = v7;
-      [v5 setObject:v7 forKeyedSubscript:v4];
+      [v5 setObject:v7 forKeyedSubscript:objectsCopy];
       v9 = v14;
       v13 = v14 + 1;
       v10 = *v9;
 
-      v4 = v10;
+      objectsCopy = v10;
     }
 
     while (v10);
@@ -276,13 +276,13 @@ LABEL_14:
   return v11;
 }
 
-- (VisionCoreNamedObjects)initWithDictionary:(id)a3
+- (VisionCoreNamedObjects)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    v5 = v4;
-    v6 = [v4 copy];
+    v5 = dictionaryCopy;
+    v6 = [dictionaryCopy copy];
   }
 
   else
@@ -295,33 +295,33 @@ LABEL_14:
   return v7;
 }
 
-- (id)_initWithRetainedDictionary:(id)a3
+- (id)_initWithRetainedDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = VisionCoreNamedObjects;
   v6 = [(VisionCoreNamedObjects *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_objects, a3);
+    objc_storeStrong(&v6->_objects, dictionary);
   }
 
   return v7;
 }
 
-- (BOOL)accessReadOnlyDataForNames:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)accessReadOnlyDataForNames:(id)names usingBlock:(id)block error:(id *)error
 {
   v49 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v31 = a4;
+  namesCopy = names;
+  blockCopy = block;
   v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v35 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v32, "count")}];
+  v35 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(namesCopy, "count")}];
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v32;
+  obj = namesCopy;
   v7 = [obj countByEnumeratingWithState:&v43 objects:v48 count:16];
   if (v7)
   {
@@ -353,10 +353,10 @@ LABEL_3:
 
         if (!v14)
         {
-          if (a5)
+          if (error)
           {
             v21 = v15;
-            *a5 = v15;
+            *error = v15;
           }
 
           goto LABEL_18;
@@ -365,13 +365,13 @@ LABEL_3:
         v16 = IOSurfaceLock(v14, 1u, 0);
         if (v16)
         {
-          if (a5)
+          if (error)
           {
             v22 = objc_alloc(MEMORY[0x1E696AEC0]);
             v23 = [MEMORY[0x1E696AD98] numberWithInt:v16];
             v24 = [v22 initWithFormat:@"Could not unlock IOSurfaceRef %p (%@)", v14, v23];
 
-            *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForKernelReturnCode:v16 localizedDescription:v24];
+            *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForKernelReturnCode:v16 localizedDescription:v24];
           }
 
 LABEL_18:
@@ -408,7 +408,7 @@ LABEL_18:
     }
   }
 
-  v20 = v31[2](v31, v35, a5);
+  v20 = blockCopy[2](blockCopy, v35, error);
 LABEL_19:
 
   v38 = 0u;
@@ -452,19 +452,19 @@ void __91__VisionCoreNamedObjects_DataAccessUtilities__accessReadOnlyDataForName
   }
 }
 
-- (BOOL)accessReadOnlyDataForName:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)accessReadOnlyDataForName:(id)name usingBlock:(id)block error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(VisionCoreNamedObjects *)self dataForName:v8 error:0];
+  nameCopy = name;
+  blockCopy = block;
+  v10 = [(VisionCoreNamedObjects *)self dataForName:nameCopy error:0];
   if (v10)
   {
-    LOBYTE(a5) = v9[2](v9, v10, a5);
+    LOBYTE(error) = blockCopy[2](blockCopy, v10, error);
   }
 
   else
   {
-    v11 = [(VisionCoreNamedObjects *)self surfaceAssociatedWithName:v8 error:0];
+    v11 = [(VisionCoreNamedObjects *)self surfaceAssociatedWithName:nameCopy error:0];
     if (v11)
     {
       v12 = v11;
@@ -474,21 +474,21 @@ void __91__VisionCoreNamedObjects_DataAccessUtilities__accessReadOnlyDataForName
       v17[2] = __90__VisionCoreNamedObjects_DataAccessUtilities__accessReadOnlyDataForName_usingBlock_error___block_invoke;
       v17[3] = &unk_1E86986D8;
       v19 = AllocSize;
-      v18 = v9;
+      v18 = blockCopy;
       v14 = MEMORY[0x1E12C8870](v17);
-      LOBYTE(a5) = VisionCorePerformWithLockedIOSurface(v12, 1u, v14, a5);
+      LOBYTE(error) = VisionCorePerformWithLockedIOSurface(v12, 1u, v14, error);
     }
 
-    else if (a5)
+    else if (error)
     {
-      v15 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Assigned object with name: %@ is either doesn't exist or                                                                exists but the type is neither NSData nor IOSurface", v8];
-      *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForInternalErrorWithLocalizedDescription:v15];
+      nameCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Assigned object with name: %@ is either doesn't exist or                                                                exists but the type is neither NSData nor IOSurface", nameCopy];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForInternalErrorWithLocalizedDescription:nameCopy];
 
-      LOBYTE(a5) = 0;
+      LOBYTE(error) = 0;
     }
   }
 
-  return a5;
+  return error;
 }
 
 uint64_t __90__VisionCoreNamedObjects_DataAccessUtilities__accessReadOnlyDataForName_usingBlock_error___block_invoke(uint64_t a1, __IOSurface *a2)

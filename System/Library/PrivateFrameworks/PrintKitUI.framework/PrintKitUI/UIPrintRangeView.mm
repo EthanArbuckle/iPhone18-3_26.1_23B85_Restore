@@ -1,56 +1,56 @@
 @interface UIPrintRangeView
-- (UIPrintRangeView)initWithFrame:(CGRect)a3 printInfo:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (UIPrintRangeView)initWithFrame:(CGRect)frame printInfo:(id)info;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
 - (void)loadViews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 - (void)reloadTableView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updatePageRangeView;
 @end
 
 @implementation UIPrintRangeView
 
-- (UIPrintRangeView)initWithFrame:(CGRect)a3 printInfo:(id)a4
+- (UIPrintRangeView)initWithFrame:(CGRect)frame printInfo:(id)info
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  infoCopy = info;
   v17.receiver = self;
   v17.super_class = UIPrintRangeView;
-  v10 = [(UIPrintRangeView *)&v17 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(UIPrintRangeView *)&v17 initWithFrame:x, y, width, height];
+  if (height)
   {
-    v11 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    [(UIPrintRangeView *)v10 setBackgroundColor:v11];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    [(UIPrintRangeView *)height setBackgroundColor:systemGroupedBackgroundColor];
 
-    [(UIPrintRangeView *)v10 setPrintInfo:v9];
-    v12 = [v9 pageRanges];
-    v13 = [v12 count];
+    [(UIPrintRangeView *)height setPrintInfo:infoCopy];
+    pageRanges = [infoCopy pageRanges];
+    v13 = [pageRanges count];
 
     if (v13 >= 2)
     {
-      v14 = [v9 pageRanges];
-      [(UIPrintRangeView *)v10 setSavedMultiPageRanges:v14];
+      pageRanges2 = [infoCopy pageRanges];
+      [(UIPrintRangeView *)height setSavedMultiPageRanges:pageRanges2];
     }
 
-    [(UIPrintRangeView *)v10 loadViews];
-    v15 = [(UIPrintRangeView *)v10 printInfo];
-    [v15 addObserver:v10 forKeyPath:0x2871AF1B0 options:0 context:0];
+    [(UIPrintRangeView *)height loadViews];
+    printInfo = [(UIPrintRangeView *)height printInfo];
+    [printInfo addObserver:height forKeyPath:0x2871AF1B0 options:0 context:0];
   }
 
-  return v10;
+  return height;
 }
 
 - (void)dealloc
 {
-  v3 = [(UIPrintRangeView *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF1B0];
+  printInfo = [(UIPrintRangeView *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF1B0];
 
   v4.receiver = self;
   v4.super_class = UIPrintRangeView;
@@ -61,25 +61,25 @@
 {
   v65[5] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277D75B40];
-  v3 = self;
+  selfCopy = self;
   v4 = [v2 alloc];
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v7 = *(MEMORY[0x277CBF3A0] + 16);
   v8 = *(MEMORY[0x277CBF3A0] + 24);
   v9 = [v4 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], v6, v7, v8}];
-  [v9 setDataSource:v3];
-  [v9 setDelegate:v3];
+  [v9 setDataSource:selfCopy];
+  [v9 setDelegate:selfCopy];
 
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v9 setEstimatedSectionFooterHeight:100.0];
-  [(UIPrintRangeView *)v3 setTableView:v9];
+  [(UIPrintRangeView *)selfCopy setTableView:v9];
 
-  v10 = [(UIPrintRangeView *)v3 tableView];
-  [(UIPrintRangeView *)v3 addSubview:v10];
+  tableView = [(UIPrintRangeView *)selfCopy tableView];
+  [(UIPrintRangeView *)selfCopy addSubview:tableView];
 
   v11 = MEMORY[0x277D75840];
-  v12 = v3;
+  v12 = selfCopy;
   v13 = [[v11 alloc] initWithFrame:{v5, v6, v7, v8}];
   [v13 setDataSource:v12];
   [v13 setDelegate:v12];
@@ -110,8 +110,8 @@
   v20 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
   [v17 setFont:v20];
 
-  v21 = [MEMORY[0x277D75348] labelColor];
-  [v17 setTextColor:v21];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  [v17 setTextColor:labelColor];
 
   [v17 setTextAlignment:1];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -119,25 +119,25 @@
   [v17 setContentHuggingPriority:0 forAxis:v22];
   v23 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v5, v6, v7, v8}];
   [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [(UIPrintRangeView *)v15 fromPicker];
-  [v23 addSubview:v24];
+  fromPicker = [(UIPrintRangeView *)v15 fromPicker];
+  [v23 addSubview:fromPicker];
 
-  v25 = [(UIPrintRangeView *)v15 toPicker];
-  [v23 addSubview:v25];
+  toPicker = [(UIPrintRangeView *)v15 toPicker];
+  [v23 addSubview:toPicker];
 
   [v23 addSubview:v17];
   v64[0] = @"table";
-  v26 = [(UIPrintRangeView *)v15 tableView];
-  v65[0] = v26;
+  tableView2 = [(UIPrintRangeView *)v15 tableView];
+  v65[0] = tableView2;
   v65[1] = v23;
   v64[1] = @"pickers";
   v64[2] = @"from";
-  v27 = [(UIPrintRangeView *)v15 fromPicker];
-  v65[2] = v27;
+  fromPicker2 = [(UIPrintRangeView *)v15 fromPicker];
+  v65[2] = fromPicker2;
   v64[3] = @"to";
-  v28 = [(UIPrintRangeView *)v15 toPicker];
+  toPicker2 = [(UIPrintRangeView *)v15 toPicker];
   v64[4] = @"label";
-  v65[3] = v28;
+  v65[3] = toPicker2;
   v65[4] = v17;
   v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v65 forKeys:v64 count:5];
 
@@ -154,24 +154,24 @@
   [(UIPrintRangeView *)v15 addConstraints:v33];
 
   v34 = objc_alloc(MEMORY[0x277D75D18]);
-  v35 = [(UIPrintRangeView *)v15 toPicker];
-  [v35 frame];
+  toPicker3 = [(UIPrintRangeView *)v15 toPicker];
+  [toPicker3 frame];
   v36 = [v34 initWithFrame:?];
   [(UIPrintRangeView *)v15 setPickerView:v36];
 
-  v37 = [(UIPrintRangeView *)v15 pickerView];
-  [v37 addSubview:v23];
+  pickerView = [(UIPrintRangeView *)v15 pickerView];
+  [pickerView addSubview:v23];
 
-  v38 = [(UIPrintRangeView *)v15 pickerView];
+  pickerView2 = [(UIPrintRangeView *)v15 pickerView];
   v39 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|[pickers]|" options:0 metrics:0 views:v29];
-  [v38 addConstraints:v39];
+  [pickerView2 addConstraints:v39];
 
-  v40 = [(UIPrintRangeView *)v15 pickerView];
-  v41 = [v23 centerXAnchor];
-  v42 = [(UIPrintRangeView *)v15 pickerView];
-  v43 = [v42 centerXAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
-  [v40 addConstraint:v44];
+  pickerView3 = [(UIPrintRangeView *)v15 pickerView];
+  centerXAnchor = [v23 centerXAnchor];
+  pickerView4 = [(UIPrintRangeView *)v15 pickerView];
+  centerXAnchor2 = [pickerView4 centerXAnchor];
+  v44 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  [pickerView3 addConstraint:v44];
 
   v45 = [MEMORY[0x277CCAAD0] constraintsWithVisualFormat:@"V:|-(-16.0)-[table]|" options:0 metrics:0 views:v29];
   [(UIPrintRangeView *)v15 addConstraints:v45];
@@ -180,10 +180,10 @@
   v47 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A08]];
   [v46 setFont:v47];
 
-  v48 = [(UIPrintRangeView *)v15 printInfo];
-  v49 = [v48 pageCount];
+  printInfo = [(UIPrintRangeView *)v15 printInfo];
+  pageCount = [printInfo pageCount];
 
-  if (v49 < 1)
+  if (pageCount < 1)
   {
     v57 = 32.0;
   }
@@ -204,11 +204,11 @@
         v51 = v54;
       }
 
-      v55 = [(UIPrintRangeView *)v15 printInfo];
-      v56 = [v55 pageCount];
+      printInfo2 = [(UIPrintRangeView *)v15 printInfo];
+      pageCount2 = [printInfo2 pageCount];
     }
 
-    while (v50 < v56);
+    while (v50 < pageCount2);
     v57 = v51 + 32.0;
   }
 
@@ -229,7 +229,7 @@
   [(UIPrintRangeView *)v15 updatePageRangeView];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -249,75 +249,75 @@
     [UIPrintRangeView updatePageRangeView];
   }
 
-  v6 = [(UIPrintRangeView *)self printInfo];
-  v29 = [v6 pageRanges];
+  printInfo = [(UIPrintRangeView *)self printInfo];
+  pageRanges = [printInfo pageRanges];
 
-  if (v29 && [v29 count] >= 2)
+  if (pageRanges && [pageRanges count] >= 2)
   {
-    [(UIPrintRangeView *)self setSavedMultiPageRanges:v29];
+    [(UIPrintRangeView *)self setSavedMultiPageRanges:pageRanges];
   }
 
-  v7 = [(UIPrintRangeView *)self tableView];
-  [v7 reloadData];
+  tableView = [(UIPrintRangeView *)self tableView];
+  [tableView reloadData];
 
-  v8 = [(UIPrintRangeView *)self fromPicker];
-  [v8 reloadAllComponents];
+  fromPicker = [(UIPrintRangeView *)self fromPicker];
+  [fromPicker reloadAllComponents];
 
-  v9 = [(UIPrintRangeView *)self toPicker];
-  [v9 reloadAllComponents];
+  toPicker = [(UIPrintRangeView *)self toPicker];
+  [toPicker reloadAllComponents];
 
-  v10 = [(UIPrintRangeView *)self printInfo];
-  v11 = [v10 pageRanges];
-  v12 = [v11 count];
-  v13 = [(UIPrintRangeView *)self printInfo];
-  v14 = v13;
+  printInfo2 = [(UIPrintRangeView *)self printInfo];
+  pageRanges2 = [printInfo2 pageRanges];
+  v12 = [pageRanges2 count];
+  printInfo3 = [(UIPrintRangeView *)self printInfo];
+  v14 = printInfo3;
   if (v12 > 1)
   {
-    v19 = [v13 pageCount];
-    v17 = 0;
+    pageCount = [printInfo3 pageCount];
+    rangeValue = 0;
   }
 
   else
   {
-    v15 = [v13 pageRanges];
-    v16 = [v15 firstObject];
-    v17 = [v16 rangeValue];
-    v19 = v18;
+    pageRanges3 = [printInfo3 pageRanges];
+    firstObject = [pageRanges3 firstObject];
+    rangeValue = [firstObject rangeValue];
+    pageCount = v18;
   }
 
-  v20 = [(UIPrintRangeView *)self printInfo];
-  v21 = [v20 pageCount];
+  printInfo4 = [(UIPrintRangeView *)self printInfo];
+  pageCount2 = [printInfo4 pageCount];
 
-  if (v17 > v21)
+  if (rangeValue > pageCount2)
   {
-    v22 = [(UIPrintRangeView *)self printInfo];
-    v17 = [v22 pageCount];
+    printInfo5 = [(UIPrintRangeView *)self printInfo];
+    rangeValue = [printInfo5 pageCount];
   }
 
-  v23 = v17;
-  if (v19 >= 1)
+  pageCount4 = rangeValue;
+  if (pageCount >= 1)
   {
-    v23 = v19 + v17 - 1;
-    v24 = [(UIPrintRangeView *)self printInfo];
-    v25 = [v24 pageCount];
+    pageCount4 = pageCount + rangeValue - 1;
+    printInfo6 = [(UIPrintRangeView *)self printInfo];
+    pageCount3 = [printInfo6 pageCount];
 
-    if (v23 > v25)
+    if (pageCount4 > pageCount3)
     {
-      v26 = [(UIPrintRangeView *)self printInfo];
-      v23 = [v26 pageCount];
+      printInfo7 = [(UIPrintRangeView *)self printInfo];
+      pageCount4 = [printInfo7 pageCount];
     }
   }
 
-  v27 = [(UIPrintRangeView *)self fromPicker];
-  [v27 selectRow:v17 inComponent:0 animated:0];
+  fromPicker2 = [(UIPrintRangeView *)self fromPicker];
+  [fromPicker2 selectRow:rangeValue inComponent:0 animated:0];
 
-  v28 = [(UIPrintRangeView *)self toPicker];
-  [v28 selectRow:v23 inComponent:0 animated:0];
+  toPicker2 = [(UIPrintRangeView *)self toPicker];
+  [toPicker2 selectRow:pageCount4 inComponent:0 animated:0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(UIPrintRangeView *)self savedMultiPageRanges:a3];
+  v4 = [(UIPrintRangeView *)self savedMultiPageRanges:view];
   if (v4)
   {
     v5 = 3;
@@ -331,47 +331,47 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v45 = a4;
-  v6 = [a3 dequeueReusableCellWithIdentifier:@"PageRangeViewCell"];
+  pathCopy = path;
+  v6 = [view dequeueReusableCellWithIdentifier:@"PageRangeViewCell"];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"PageRangeViewCell"];
   }
 
-  v44 = [MEMORY[0x277D756E0] valueCellConfiguration];
-  v7 = [(UIPrintRangeView *)self printInfo];
-  v8 = [v7 pageRanges];
-  v9 = [v8 count];
-  v10 = [(UIPrintRangeView *)self printInfo];
-  v11 = v10;
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+  printInfo = [(UIPrintRangeView *)self printInfo];
+  pageRanges = [printInfo pageRanges];
+  v9 = [pageRanges count];
+  printInfo2 = [(UIPrintRangeView *)self printInfo];
+  v11 = printInfo2;
   if (v9 > 1)
   {
-    v17 = [v10 pageCount];
+    pageCount = [printInfo2 pageCount];
     v18 = 0;
   }
 
   else
   {
-    v12 = [v10 pageRanges];
-    v13 = [v12 firstObject];
-    v14 = self;
-    v15 = [v13 rangeValue];
-    v17 = v16;
+    pageRanges2 = [printInfo2 pageRanges];
+    firstObject = [pageRanges2 firstObject];
+    selfCopy = self;
+    rangeValue = [firstObject rangeValue];
+    pageCount = v16;
 
-    v18 = v15;
-    self = v14;
+    v18 = rangeValue;
+    self = selfCopy;
   }
 
-  if (![v45 row])
+  if (![pathCopy row])
   {
-    v35 = [(UIPrintRangeView *)self printInfo];
-    if (v17 == [v35 pageCount])
+    printInfo3 = [(UIPrintRangeView *)self printInfo];
+    if (pageCount == [printInfo3 pageCount])
     {
-      v36 = [(UIPrintRangeView *)self printInfo];
-      v37 = [v36 pageRanges];
-      v22 = [v37 count] < 2;
+      printInfo4 = [(UIPrintRangeView *)self printInfo];
+      pageRanges3 = [printInfo4 pageRanges];
+      v22 = [pageRanges3 count] < 2;
     }
 
     else
@@ -381,32 +381,32 @@
 
     v39 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v40 = [v39 localizedStringForKey:@"All Pages" value:@"All Pages" table:@"Localizable"];
-    [v44 setText:v40];
+    [valueCellConfiguration setText:v40];
 
-    [v44 setSecondaryText:0];
+    [valueCellConfiguration setSecondaryText:0];
     goto LABEL_18;
   }
 
-  if ([v45 row] == 1)
+  if ([pathCopy row] == 1)
   {
-    v19 = [(UIPrintRangeView *)self savedMultiPageRanges];
+    savedMultiPageRanges = [(UIPrintRangeView *)self savedMultiPageRanges];
 
-    if (v19)
+    if (savedMultiPageRanges)
     {
-      v20 = [(UIPrintRangeView *)self printInfo];
-      v21 = [v20 pageRanges];
-      v22 = [v21 count] > 1;
+      printInfo5 = [(UIPrintRangeView *)self printInfo];
+      pageRanges4 = [printInfo5 pageRanges];
+      v22 = [pageRanges4 count] > 1;
 
       v23 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v24 = [v23 localizedStringForKey:@"Custom Range" value:@"Custom Range" table:@"Localizable"];
-      [v44 setText:v24];
+      [valueCellConfiguration setText:v24];
 
-      v25 = [(UIPrintRangeView *)self savedMultiPageRanges];
-      v26 = SummaryForRange(v25);
-      [v44 setSecondaryText:v26];
+      savedMultiPageRanges2 = [(UIPrintRangeView *)self savedMultiPageRanges];
+      v26 = SummaryForRange(savedMultiPageRanges2);
+      [valueCellConfiguration setSecondaryText:v26];
 
-      v27 = [v44 secondaryTextProperties];
-      [v27 setNumberOfLines:0];
+      secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+      [secondaryTextProperties setNumberOfLines:0];
 
 LABEL_18:
       [v6 setSelectionStyle:3];
@@ -414,15 +414,15 @@ LABEL_18:
     }
   }
 
-  v28 = [(UIPrintRangeView *)self printInfo];
-  v22 = v17 < [v28 pageCount];
+  printInfo6 = [(UIPrintRangeView *)self printInfo];
+  v22 = pageCount < [printInfo6 pageCount];
 
   v29 = LocalizedUnsignedInteger(v18 + 1);
-  v30 = LocalizedUnsignedInteger(v17 + v18);
+  v30 = LocalizedUnsignedInteger(pageCount + v18);
   v31 = MEMORY[0x277CCACA8];
   v32 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v33 = v32;
-  if (v17 == 1)
+  if (pageCount == 1)
   {
     v34 = [v32 localizedStringForKey:@"Page %@" value:@"Page %@" table:@"Localizable"];
   }
@@ -434,13 +434,13 @@ LABEL_18:
   }
 
   v38 = [v31 stringWithFormat:v34, v29, v43];
-  [v44 setText:v38];
+  [valueCellConfiguration setText:v38];
 
-  [v44 setSecondaryText:0];
+  [valueCellConfiguration setSecondaryText:0];
   [v6 setSelectionStyle:0];
 
 LABEL_19:
-  [v6 setContentConfiguration:v44];
+  [v6 setContentConfiguration:valueCellConfiguration];
   if (v22)
   {
     v41 = 3;
@@ -456,39 +456,39 @@ LABEL_19:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if (![v5 row])
+  pathCopy = path;
+  if (![pathCopy row])
   {
-    v6 = [(UIPrintRangeView *)self printInfo];
-    v7 = [v6 pageCount];
+    printInfo = [(UIPrintRangeView *)self printInfo];
+    pageCount = [printInfo pageCount];
 
-    v8 = [MEMORY[0x277CCAE60] valueWithRange:{0, v7}];
+    v8 = [MEMORY[0x277CCAE60] valueWithRange:{0, pageCount}];
     v16[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-    v10 = [(UIPrintRangeView *)self printInfo];
-    [v10 setPageRanges:v9];
+    printInfo2 = [(UIPrintRangeView *)self printInfo];
+    [printInfo2 setPageRanges:v9];
 
-    v11 = [(UIPrintRangeView *)self fromPicker];
-    [v11 selectRow:0 inComponent:0 animated:1];
+    fromPicker = [(UIPrintRangeView *)self fromPicker];
+    [fromPicker selectRow:0 inComponent:0 animated:1];
 
-    v12 = [(UIPrintRangeView *)self toPicker];
-    [v12 selectRow:v7 - 1 inComponent:0 animated:1];
+    toPicker = [(UIPrintRangeView *)self toPicker];
+    [toPicker selectRow:pageCount - 1 inComponent:0 animated:1];
 
     [(UIPrintRangeView *)self reloadTableView];
   }
 
-  if ([v5 row] == 1)
+  if ([pathCopy row] == 1)
   {
-    v13 = [(UIPrintRangeView *)self savedMultiPageRanges];
+    savedMultiPageRanges = [(UIPrintRangeView *)self savedMultiPageRanges];
 
-    if (v13)
+    if (savedMultiPageRanges)
     {
-      v14 = [(UIPrintRangeView *)self savedMultiPageRanges];
-      v15 = [(UIPrintRangeView *)self printInfo];
-      [v15 setPageRanges:v14];
+      savedMultiPageRanges2 = [(UIPrintRangeView *)self savedMultiPageRanges];
+      printInfo3 = [(UIPrintRangeView *)self printInfo];
+      [printInfo3 setPageRanges:savedMultiPageRanges2];
 
       [(UIPrintRangeView *)self reloadTableView];
     }
@@ -497,63 +497,63 @@ LABEL_19:
 
 - (void)reloadTableView
 {
-  v3 = [(UIPrintRangeView *)self tableView];
-  [v3 reloadData];
+  tableView = [(UIPrintRangeView *)self tableView];
+  [tableView reloadData];
 
-  v4 = [(UIPrintRangeView *)self tableView];
-  [v4 layoutIfNeeded];
+  tableView2 = [(UIPrintRangeView *)self tableView];
+  [tableView2 layoutIfNeeded];
 }
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
-  v4 = [(UIPrintRangeView *)self printInfo:a3];
-  v5 = [v4 pageCount];
+  v4 = [(UIPrintRangeView *)self printInfo:view];
+  pageCount = [v4 pageCount];
 
-  return v5;
+  return pageCount;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(UIPrintRangeView *)self fromPicker];
-  v8 = [v7 selectedRowInComponent:0];
+  viewCopy = view;
+  fromPicker = [(UIPrintRangeView *)self fromPicker];
+  v8 = [fromPicker selectedRowInComponent:0];
 
-  v9 = [(UIPrintRangeView *)self toPicker];
-  v10 = [v9 selectedRowInComponent:0];
+  toPicker = [(UIPrintRangeView *)self toPicker];
+  v10 = [toPicker selectedRowInComponent:0];
 
-  v11 = [(UIPrintRangeView *)self fromPicker];
+  fromPicker2 = [(UIPrintRangeView *)self fromPicker];
 
-  v12 = [(UIPrintRangeView *)self toPicker];
-  v13 = v12;
-  if (v11 == v6 && v8 > v10)
+  toPicker2 = [(UIPrintRangeView *)self toPicker];
+  fromPicker3 = toPicker2;
+  if (fromPicker2 == viewCopy && v8 > v10)
   {
-    [v12 selectRow:v8 inComponent:0 animated:1];
+    [toPicker2 selectRow:v8 inComponent:0 animated:1];
     v10 = v8;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v13 == v6 && v8 > v10)
+  if (fromPicker3 == viewCopy && v8 > v10)
   {
-    v13 = [(UIPrintRangeView *)self fromPicker];
-    [v13 selectRow:v10 inComponent:0 animated:1];
+    fromPicker3 = [(UIPrintRangeView *)self fromPicker];
+    [fromPicker3 selectRow:v10 inComponent:0 animated:1];
     v8 = v10;
     goto LABEL_7;
   }
 
 LABEL_8:
-  v14 = [(UIPrintRangeView *)self printInfo];
-  v15 = [v14 pageRanges];
-  v16 = [v15 firstObject];
-  [v16 rangeValue];
+  printInfo = [(UIPrintRangeView *)self printInfo];
+  pageRanges = [printInfo pageRanges];
+  firstObject = [pageRanges firstObject];
+  [firstObject rangeValue];
 
   v17 = [MEMORY[0x277CCAE60] valueWithRange:{v8, v10 - v8 + 1}];
   v20[0] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-  v19 = [(UIPrintRangeView *)self printInfo];
-  [v19 setPageRanges:v18];
+  printInfo2 = [(UIPrintRangeView *)self printInfo];
+  [printInfo2 setPageRanges:v18];
 
   [(UIPrintRangeView *)self reloadTableView];
 }

@@ -1,12 +1,12 @@
 @interface MapsExternalDevice
-+ (id)_destinationHandoffErrorWithReason:(int64_t)a3;
-+ (id)_localizedReasonForHandoffError:(int64_t)a3;
-+ (id)_stringRepresentationOfDictionary:(id)a3;
++ (id)_destinationHandoffErrorWithReason:(int64_t)reason;
++ (id)_localizedReasonForHandoffError:(int64_t)error;
++ (id)_stringRepresentationOfDictionary:(id)dictionary;
 + (id)sharedInstance;
-+ (void)_presentActivityControllerForDestination:(id)a3 completion:(id)a4;
-+ (void)_presentActivityControllerForDestination:(id)a3 searchResult:(id)a4 dictionary:(id)a5 completion:(id)a6;
++ (void)_presentActivityControllerForDestination:(id)destination completion:(id)completion;
++ (void)_presentActivityControllerForDestination:(id)destination searchResult:(id)result dictionary:(id)dictionary completion:(id)completion;
 + (void)initialize;
-- (BOOL)_checkScreenOwnershipIfNeeded:(id)a3;
+- (BOOL)_checkScreenOwnershipIfNeeded:(id)needed;
 - (BOOL)_destinationHandoffTestingEnabled;
 - (BOOL)_isCarPlaySessionActive;
 - (BOOL)_isCurrentStateEqualLastPostedState;
@@ -14,31 +14,31 @@
 - (BOOL)externalAccessoryIsNavigating;
 - (BOOL)isConnected;
 - (MapsExternalDevice)init;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_handleIOHIDEvent:(__IOHIDEvent *)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_handleIOHIDEvent:(__IOHIDEvent *)event;
 - (void)_postNotificationIfNeeded;
 - (void)_registerForAVNotifications;
 - (void)_setupCarCluster;
 - (void)_unregisterForAVNotifications;
-- (void)_updateStateForRecievedNotification:(id)a3;
-- (void)borrowScreenIfNeededForReason:(id)a3;
+- (void)_updateStateForRecievedNotification:(id)notification;
+- (void)borrowScreenIfNeededForReason:(id)reason;
 - (void)checkForActiveCarPlayConnection;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
-- (void)handoffDestination:(id)a3 completion:(id)a4;
-- (void)navigation:(id)a3 accessoryAttached:(id)a4;
-- (void)navigation:(id)a3 accessoryDetached:(id)a4;
-- (void)navigation:(id)a3 startRouteGuidance:(id)a4 componentList:(id)a5;
-- (void)navigation:(id)a3 stopRouteGuidance:(id)a4 componentList:(id)a5;
-- (void)navigationOwnershipChangedToOwner:(unint64_t)a3;
-- (void)presentConfirmationAlertFrom:(id)a3 completion:(id)a4;
+- (void)forwardInvocation:(id)invocation;
+- (void)handoffDestination:(id)destination completion:(id)completion;
+- (void)navigation:(id)navigation accessoryAttached:(id)attached;
+- (void)navigation:(id)navigation accessoryDetached:(id)detached;
+- (void)navigation:(id)navigation startRouteGuidance:(id)guidance componentList:(id)list;
+- (void)navigation:(id)navigation stopRouteGuidance:(id)guidance componentList:(id)list;
+- (void)navigationOwnershipChangedToOwner:(unint64_t)owner;
+- (void)presentConfirmationAlertFrom:(id)from completion:(id)completion;
 - (void)relinquishScreenIfNeeded;
-- (void)sessionDidConnect:(id)a3;
-- (void)sessionDidDisconnect:(id)a3;
-- (void)setCarPlayIsNavigating:(BOOL)a3;
-- (void)setCurrentState:(id)a3;
-- (void)setExternalDevice:(id)a3;
-- (void)setRouteGuidanceBeingShownInApp:(BOOL)a3;
+- (void)sessionDidConnect:(id)connect;
+- (void)sessionDidDisconnect:(id)disconnect;
+- (void)setCarPlayIsNavigating:(BOOL)navigating;
+- (void)setCurrentState:(id)state;
+- (void)setExternalDevice:(id)device;
+- (void)setRouteGuidanceBeingShownInApp:(BOOL)app;
 - (void)startMonitoringIOHIDRepeatCurrentGuidance;
 - (void)stopMonitoringIOHIDRepeatCurrentGuidance;
 @end
@@ -47,7 +47,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = +[NSUserDefaults standardUserDefaults];
     [v2 registerDefaults:&off_1016EE498];
@@ -112,8 +112,8 @@ LABEL_15:
   {
     v9 = [CARNavigationOwnershipManager alloc];
     v10 = +[NSBundle mainBundle];
-    v11 = [v10 bundleIdentifier];
-    v12 = [v9 initWithIdentifier:v11 delegate:v2];
+    bundleIdentifier = [v10 bundleIdentifier];
+    v12 = [v9 initWithIdentifier:bundleIdentifier delegate:v2];
     navigationOwnershipManager = v2->_navigationOwnershipManager;
     v2->_navigationOwnershipManager = v12;
   }
@@ -129,8 +129,8 @@ LABEL_15:
     }
 
     v15 = +[MapsCarPlayExternalDeviceMonitor sharedInstance];
-    v16 = [v15 carPlayExternalDevice];
-    [(MapsExternalDevice *)v2 setExternalDevice:v16];
+    carPlayExternalDevice = [v15 carPlayExternalDevice];
+    [(MapsExternalDevice *)v2 setExternalDevice:carPlayExternalDevice];
   }
 
   [(CARSessionStatus *)v2->_carSessionStatus addSessionObserver:v2];
@@ -144,8 +144,8 @@ LABEL_16:
 
 - (BOOL)_isCarPlaySessionActive
 {
-  v2 = [(CARSessionStatus *)self->_carSessionStatus currentSession];
-  v3 = v2 != 0;
+  currentSession = [(CARSessionStatus *)self->_carSessionStatus currentSession];
+  v3 = currentSession != 0;
 
   return v3;
 }
@@ -183,28 +183,28 @@ LABEL_16:
 
     v11 = v10;
 
-    v12 = [v11 BOOLValue];
-    if (v12)
+    bOOLValue = [v11 BOOLValue];
+    if (bOOLValue)
     {
       v13 = [ACCNavigationAccessory alloc];
-      v14 = [(MapsExternalDevice *)self navigationProvider];
-      v15 = [v13 initWithAccessoryUID:@"1124" provider:v14];
+      navigationProvider = [(MapsExternalDevice *)self navigationProvider];
+      v15 = [v13 initWithAccessoryUID:@"1124" provider:navigationProvider];
 
       v16 = objc_opt_new();
       [v16 setMaxCapacity_GuidanceManeuver:4];
       [v16 setIdentifier:713];
-      v17 = [(MapsExternalDevice *)self navigationProvider];
+      navigationProvider2 = [(MapsExternalDevice *)self navigationProvider];
       v19 = v16;
       v18 = [NSArray arrayWithObjects:&v19 count:1];
-      [(MapsExternalDevice *)self navigation:v17 startRouteGuidance:v15 componentList:v18];
+      [(MapsExternalDevice *)self navigation:navigationProvider2 startRouteGuidance:v15 componentList:v18];
     }
   }
 }
 
 - (BOOL)isConnected
 {
-  v2 = [(MapsExternalDevice *)self externalDevice];
-  v3 = v2 != 0;
+  externalDevice = [(MapsExternalDevice *)self externalDevice];
+  v3 = externalDevice != 0;
 
   return v3;
 }
@@ -217,12 +217,12 @@ LABEL_16:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] suppressing notification while initialising MapsExternalDevice", buf, 0xCu);
     }
 
-    v4 = [(MapsExternalDevice *)self currentState];
-    v5 = [v4 copy];
+    currentState = [(MapsExternalDevice *)self currentState];
+    v5 = [currentState copy];
     [(MapsExternalDevice *)self setLastPostedState:v5];
   }
 
@@ -233,7 +233,7 @@ LABEL_16:
     v12[1] = 3221225472;
     v13 = sub_10006AF74;
     v14 = &unk_101661B18;
-    v15 = self;
+    selfCopy2 = self;
     v7 = &_dispatch_main_q;
     v8 = v12;
     label = dispatch_queue_get_label(&_dispatch_main_q);
@@ -293,11 +293,11 @@ LABEL_16:
     }
   }
 
-  v6 = [(MapsExternalDevice *)self lastPostedState];
-  v7 = [(MapsExternalDevice *)self currentState];
-  if (v6 | v7)
+  lastPostedState = [(MapsExternalDevice *)self lastPostedState];
+  currentState = [(MapsExternalDevice *)self currentState];
+  if (lastPostedState | currentState)
   {
-    v8 = [v6 isEqual:v7];
+    v8 = [lastPostedState isEqual:currentState];
   }
 
   else
@@ -308,86 +308,86 @@ LABEL_16:
   return v8;
 }
 
-- (void)presentConfirmationAlertFrom:(id)a3 completion:(id)a4
+- (void)presentConfirmationAlertFrom:(id)from completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1001126E8(v8, sub_1000D2CB0, v7);
+  fromCopy = from;
+  selfCopy = self;
+  sub_1001126E8(fromCopy, sub_1000D2CB0, v7);
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v6.receiver = self;
   v6.super_class = MapsExternalDevice;
   v4 = [(MapsExternalDevice *)&v6 methodSignatureForSelector:?];
   if (!v4)
   {
-    v4 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v4 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
     if (!v4)
     {
-      v4 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+      v4 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
     }
   }
 
   return v4;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  if ([objc_opt_class() instancesRespondToSelector:{objc_msgSend(v4, "selector")}])
+  invocationCopy = invocation;
+  if ([objc_opt_class() instancesRespondToSelector:{objc_msgSend(invocationCopy, "selector")}])
   {
-    v5 = [(MapsExternalDevice *)self currentState];
+    currentState = [(MapsExternalDevice *)self currentState];
   }
 
   else
   {
-    if (![objc_opt_class() instancesRespondToSelector:{objc_msgSend(v4, "selector")}])
+    if (![objc_opt_class() instancesRespondToSelector:{objc_msgSend(invocationCopy, "selector")}])
     {
       v7.receiver = self;
       v7.super_class = MapsExternalDevice;
-      [(MapsExternalDevice *)&v7 forwardInvocation:v4];
+      [(MapsExternalDevice *)&v7 forwardInvocation:invocationCopy];
       goto LABEL_7;
     }
 
-    v5 = +[MapsExternalAccessory sharedInstance];
+    currentState = +[MapsExternalAccessory sharedInstance];
   }
 
-  v6 = v5;
-  [v4 invokeWithTarget:v5];
+  v6 = currentState;
+  [invocationCopy invokeWithTarget:currentState];
 
 LABEL_7:
 }
 
-- (void)navigation:(id)a3 stopRouteGuidance:(id)a4 componentList:(id)a5
+- (void)navigation:(id)navigation stopRouteGuidance:(id)guidance componentList:(id)list
 {
-  v7 = a4;
-  v8 = a5;
+  guidanceCopy = guidance;
+  listCopy = list;
   v9 = sub_100896688();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134349570;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
-    v25 = v7;
+    v25 = guidanceCopy;
     v26 = 2112;
-    v27 = v8;
+    v27 = listCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] StopRouteGuidance accessory=%@ components=%@", buf, 0x20u);
   }
 
-  v10 = [(MapsExternalDevice *)self navigationAccessories];
-  v11 = [v10 objectForKey:v7];
+  navigationAccessories = [(MapsExternalDevice *)self navigationAccessories];
+  v11 = [navigationAccessories objectForKey:guidanceCopy];
 
-  if (v8)
+  if (listCopy)
   {
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v12 = v8;
+    v12 = listCopy;
     v13 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v13)
     {
@@ -421,32 +421,32 @@ LABEL_7:
   }
 }
 
-- (void)navigation:(id)a3 startRouteGuidance:(id)a4 componentList:(id)a5
+- (void)navigation:(id)navigation startRouteGuidance:(id)guidance componentList:(id)list
 {
-  v7 = a4;
-  v8 = a5;
+  guidanceCopy = guidance;
+  listCopy = list;
   v9 = sub_100896688();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 134349570;
-    v43 = self;
+    selfCopy = self;
     v44 = 2112;
-    v45 = v7;
+    v45 = guidanceCopy;
     v46 = 2112;
-    v47 = v8;
+    v47 = listCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] StartRouteGuidance accessory=%@ components=%@", buf, 0x20u);
   }
 
-  v10 = [(MapsExternalDevice *)self navigationAccessories];
-  v11 = [v10 objectForKey:v7];
+  navigationAccessories = [(MapsExternalDevice *)self navigationAccessories];
+  v11 = [navigationAccessories objectForKey:guidanceCopy];
 
   v29 = v11;
   if (!v11)
   {
     v12 = +[NSMapTable strongToStrongObjectsMapTable];
-    v13 = [(MapsExternalDevice *)self navigationAccessories];
+    navigationAccessories2 = [(MapsExternalDevice *)self navigationAccessories];
     v29 = v12;
-    [v13 setObject:v12 forKey:v7];
+    [navigationAccessories2 setObject:v12 forKey:guidanceCopy];
   }
 
   +[MNNavigationService sharedService];
@@ -456,18 +456,18 @@ LABEL_7:
   v14 = v38[3] = &unk_10162CE90;
   v39 = v14;
   v15 = objc_retainBlock(v38);
-  if (v8)
+  if (listCopy)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = v8;
+    obj = listCopy;
     v16 = [obj countByEnumeratingWithState:&v30 objects:v40 count:16];
     if (v16)
     {
       v17 = v16;
-      v27 = v8;
+      v27 = listCopy;
       v18 = *v31;
       do
       {
@@ -479,22 +479,22 @@ LABEL_7:
           }
 
           v20 = *(*(&v30 + 1) + 8 * i);
-          v21 = v7;
-          v22 = [[CarClusterNavigationController alloc] initWithAccessory:v7 component:v20];
+          v21 = guidanceCopy;
+          v22 = [[CarClusterNavigationController alloc] initWithAccessory:guidanceCopy component:v20];
           [v29 setObject:v22 forKey:v20];
           if ([v14 isInNavigatingState])
           {
             (v15[2])(v15, v22);
           }
 
-          v7 = v21;
+          guidanceCopy = v21;
         }
 
         v17 = [obj countByEnumeratingWithState:&v30 objects:v40 count:16];
       }
 
       while (v17);
-      v8 = v27;
+      listCopy = v27;
     }
 
 LABEL_24:
@@ -538,52 +538,52 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)navigation:(id)a3 accessoryDetached:(id)a4
+- (void)navigation:(id)navigation accessoryDetached:(id)detached
 {
-  v5 = a4;
+  detachedCopy = detached;
   v6 = sub_100896688();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v5;
+    v11 = detachedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] accessoryDetached=%@", &v8, 0x16u);
   }
 
-  v7 = [(MapsExternalDevice *)self navigationAccessories];
-  [v7 removeObjectForKey:v5];
+  navigationAccessories = [(MapsExternalDevice *)self navigationAccessories];
+  [navigationAccessories removeObjectForKey:detachedCopy];
 }
 
-- (void)navigation:(id)a3 accessoryAttached:(id)a4
+- (void)navigation:(id)navigation accessoryAttached:(id)attached
 {
-  v5 = a4;
+  attachedCopy = attached;
   v6 = sub_100896688();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v9 = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2112;
-    v12 = v5;
+    v12 = attachedCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] accessoryAttached=%@", &v9, 0x16u);
   }
 
-  v7 = [(MapsExternalDevice *)self navigationAccessories];
+  navigationAccessories = [(MapsExternalDevice *)self navigationAccessories];
   v8 = +[NSMapTable strongToStrongObjectsMapTable];
-  [v7 setObject:v8 forKey:v5];
+  [navigationAccessories setObject:v8 forKey:attachedCopy];
 }
 
-- (void)setRouteGuidanceBeingShownInApp:(BOOL)a3
+- (void)setRouteGuidanceBeingShownInApp:(BOOL)app
 {
-  v3 = a3;
+  appCopy = app;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [(MapsExternalDevice *)self navigationAccessories];
-  v5 = [v4 objectEnumerator];
+  navigationAccessories = [(MapsExternalDevice *)self navigationAccessories];
+  objectEnumerator = [navigationAccessories objectEnumerator];
 
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v25 count:16];
   if (v6)
   {
     v7 = v6;
@@ -595,7 +595,7 @@ LABEL_25:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v20 + 1) + 8 * v9);
@@ -603,8 +603,8 @@ LABEL_25:
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v11 = [v10 objectEnumerator];
-        v12 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        objectEnumerator2 = [v10 objectEnumerator];
+        v12 = [objectEnumerator2 countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v12)
         {
           v13 = v12;
@@ -616,15 +616,15 @@ LABEL_25:
             {
               if (*v17 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(objectEnumerator2);
               }
 
-              [*(*(&v16 + 1) + 8 * v15) setRouteGuidanceBeingShownInApp:v3];
+              [*(*(&v16 + 1) + 8 * v15) setRouteGuidanceBeingShownInApp:appCopy];
               v15 = v15 + 1;
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v13 = [objectEnumerator2 countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v13);
@@ -634,7 +634,7 @@ LABEL_25:
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v25 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v20 objects:v25 count:16];
     }
 
     while (v7);
@@ -710,13 +710,13 @@ LABEL_25:
   }
 }
 
-- (void)_handleIOHIDEvent:(__IOHIDEvent *)a3
+- (void)_handleIOHIDEvent:(__IOHIDEvent *)event
 {
   v4 = sub_100896688();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349312;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
     Type = IOHIDEventGetType();
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] event=%d", buf, 0x12u);
@@ -733,23 +733,23 @@ LABEL_25:
   objc_destroyWeak(buf);
 }
 
-- (void)handoffDestination:(id)a3 completion:(id)a4
+- (void)handoffDestination:(id)destination completion:(id)completion
 {
-  v6 = a3;
+  destinationCopy = destination;
   v55[0] = _NSConcreteStackBlock;
   v55[1] = 3221225472;
   v55[2] = sub_100897B5C;
   v55[3] = &unk_1016382C0;
-  v7 = a4;
-  v56 = v7;
+  completionCopy = completion;
+  v56 = completionCopy;
   v8 = objc_retainBlock(v55);
   if ([(MapsExternalDevice *)self destinationHandoffEnabled])
   {
-    v9 = [SearchResult carSearchResultFromDestination:v6];
+    v9 = [SearchResult carSearchResultFromDestination:destinationCopy];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 _maps_externalDeviceDictionaryRepresentation];
+      _maps_externalDeviceDictionaryRepresentation = [v9 _maps_externalDeviceDictionaryRepresentation];
       if ([(MapsExternalDevice *)self _destinationHandoffTestingEnabled])
       {
         v12 = sub_100896688();
@@ -760,19 +760,19 @@ LABEL_25:
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Destination hand-off testing enabled, will present activity controller instead.", buf, 0xCu);
         }
 
-        [objc_opt_class() _presentActivityControllerForDestination:v6 searchResult:v10 dictionary:v11 completion:v7];
+        [objc_opt_class() _presentActivityControllerForDestination:destinationCopy searchResult:v10 dictionary:_maps_externalDeviceDictionaryRepresentation completion:completionCopy];
       }
 
       else
       {
         v17 = +[NSUUID UUID];
-        v34 = [v17 UUIDString];
+        uUIDString = [v17 UUIDString];
 
         v18 = +[NSUserDefaults standardUserDefaults];
         [v18 doubleForKey:@"__internal__CarDestinationHandoffTimeoutInterval"];
         v20 = v19;
 
-        if (v7)
+        if (completionCopy)
         {
           *buf = 0;
           *&buf[8] = buf;
@@ -795,12 +795,12 @@ LABEL_25:
           v41[3] = &unk_10162CE30;
           objc_copyWeak(&v47, &location);
           v23 = EAAccessoryDestinationStatusNotification;
-          v24 = v34;
+          v24 = uUIDString;
           v45 = &v49;
           v46 = buf;
           v42 = v24;
-          v43 = self;
-          v44 = v7;
+          selfCopy = self;
+          v44 = completionCopy;
           v25 = [v21 addObserverForName:v23 object:0 queue:v22 usingBlock:v41];
           v26 = *(*&buf[8] + 40);
           *(*&buf[8] + 40) = v25;
@@ -814,7 +814,7 @@ LABEL_25:
           v40[1] = v20;
           v36 = v27;
           v39 = buf;
-          v37 = self;
+          selfCopy2 = self;
           v38 = v8;
           v28 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v35 block:*&v20];
           v29 = v50[5];
@@ -832,11 +832,11 @@ LABEL_25:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
           v31 = [NSNumber numberWithDouble:*&v20];
-          v32 = [objc_opt_class() _stringRepresentationOfDictionary:v11];
+          v32 = [objc_opt_class() _stringRepresentationOfDictionary:_maps_externalDeviceDictionaryRepresentation];
           *buf = 134349826;
           *&buf[4] = self;
           *&buf[12] = 2112;
-          *&buf[14] = v34;
+          *&buf[14] = uUIDString;
           *&buf[22] = 2112;
           v58 = v31;
           LOWORD(v59) = 2112;
@@ -845,7 +845,7 @@ LABEL_25:
         }
 
         v33 = +[MapsExternalAccessory sharedInstance];
-        [v33 sendDestinationInformation:v11 identifier:v34];
+        [v33 sendDestinationInformation:_maps_externalDeviceDictionaryRepresentation identifier:uUIDString];
       }
     }
 
@@ -863,8 +863,8 @@ LABEL_25:
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "[%{public}p] Unable to convert destination to a SearchResult (destination:%@)", buf, 0x16u);
       }
 
-      v11 = [objc_opt_class() _destinationHandoffErrorWithReason:2];
-      (v8[2])(v8, 0, v11);
+      _maps_externalDeviceDictionaryRepresentation = [objc_opt_class() _destinationHandoffErrorWithReason:2];
+      (v8[2])(v8, 0, _maps_externalDeviceDictionaryRepresentation);
     }
   }
 
@@ -909,9 +909,9 @@ LABEL_25:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       v9 = 134349312;
-      v10 = self;
+      selfCopy = self;
       v11 = 1024;
-      v12 = [v3 destinationHandoffEnabled];
+      destinationHandoffEnabled = [v3 destinationHandoffEnabled];
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "[%{public}p] Checking if destination handoff is enabled (%d), but accessory not connected", &v9, 0x12u);
     }
   }
@@ -939,24 +939,24 @@ LABEL_25:
   return v5;
 }
 
-- (void)navigationOwnershipChangedToOwner:(unint64_t)a3
+- (void)navigationOwnershipChangedToOwner:(unint64_t)owner
 {
   v5 = sub_100896688();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"none";
-    if (a3 == 2)
+    if (owner == 2)
     {
       v6 = @"car";
     }
 
-    if (a3 == 1)
+    if (owner == 1)
     {
       v6 = @"iOS";
     }
 
     *buf = 134349314;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
     v11 = v6;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}p] Navigation owner changed to %{public}@", buf, 0x16u);
@@ -966,39 +966,39 @@ LABEL_25:
   block[1] = 3221225472;
   block[2] = sub_100898344;
   block[3] = &unk_1016611D0;
-  block[4] = a3;
+  block[4] = owner;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setCarPlayIsNavigating:(BOOL)a3
+- (void)setCarPlayIsNavigating:(BOOL)navigating
 {
-  if (self->_carPlayIsNavigating != a3)
+  if (self->_carPlayIsNavigating != navigating)
   {
-    v3 = a3;
-    self->_carPlayIsNavigating = a3;
+    navigatingCopy = navigating;
+    self->_carPlayIsNavigating = navigating;
     v5 = sub_100896688();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       carPlayIsNavigating = self->_carPlayIsNavigating;
       v9 = 134349312;
-      v10 = self;
+      selfCopy = self;
       v11 = 1024;
       v12 = carPlayIsNavigating;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] iOS navigation state became %d", &v9, 0x12u);
     }
 
-    v7 = [(MapsExternalDevice *)self navigationOwnershipManager];
-    v8 = v7;
-    if (v3)
+    navigationOwnershipManager = [(MapsExternalDevice *)self navigationOwnershipManager];
+    v8 = navigationOwnershipManager;
+    if (navigatingCopy)
     {
-      [v7 requestNavigationOwnership];
+      [navigationOwnershipManager requestNavigationOwnership];
 
       [(CarPlayMetadataUpdater *)self->_metadataUpdater requestNavigationOwnership];
     }
 
     else
     {
-      [v7 releaseNavigationOwnership];
+      [navigationOwnershipManager releaseNavigationOwnership];
 
       [(CarPlayMetadataUpdater *)self->_metadataUpdater releaseNavigationOwnership];
     }
@@ -1016,16 +1016,16 @@ LABEL_25:
 
   else
   {
-    v5 = [(MapsExternalDevice *)self navigationOwnershipManager];
-    v6 = [v5 owner] == 2;
+    navigationOwnershipManager = [(MapsExternalDevice *)self navigationOwnershipManager];
+    v6 = [navigationOwnershipManager owner] == 2;
 
     return v6;
   }
 }
 
-- (BOOL)_checkScreenOwnershipIfNeeded:(id)a3
+- (BOOL)_checkScreenOwnershipIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -1037,7 +1037,7 @@ LABEL_25:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
       {
         v32 = 136316418;
-        v33 = "[MapsExternalDevice _checkScreenOwnershipIfNeeded:]";
+        selfCopy4 = "[MapsExternalDevice _checkScreenOwnershipIfNeeded:]";
         v34 = 2080;
         v35 = "MapsExternalDevice.m";
         v36 = 1024;
@@ -1058,7 +1058,7 @@ LABEL_25:
         {
           v31 = +[NSThread callStackSymbols];
           v32 = 138412290;
-          v33 = v31;
+          selfCopy4 = v31;
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%@", &v32, 0xCu);
         }
       }
@@ -1072,14 +1072,14 @@ LABEL_25:
 
   v8 = sub_100896688();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (v4)
+  if (neededCopy)
   {
     if (v9)
     {
       maxScreenOwnershipChecks = self->_maxScreenOwnershipChecks;
       v11 = maxScreenOwnershipChecks - self->_screenOwnershipChecksRemaining + 1;
       v32 = 134349568;
-      v33 = self;
+      selfCopy4 = self;
       v34 = 2048;
       v35 = v11;
       v36 = 2048;
@@ -1095,16 +1095,16 @@ LABEL_25:
     if (v9)
     {
       v32 = 134349056;
-      v33 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] screen ownership check (not scheduled)...", &v32, 0xCu);
     }
   }
 
-  v12 = [(MapsExternalDevice *)self externalDevice];
-  if (v12)
+  externalDevice = [(MapsExternalDevice *)self externalDevice];
+  if (externalDevice)
   {
-    v13 = [(MapsExternalDevice *)self externalDevice];
-    v14 = [v13 ownsScreen] ^ 1;
+    externalDevice2 = [(MapsExternalDevice *)self externalDevice];
+    v14 = [externalDevice2 ownsScreen] ^ 1;
   }
 
   else
@@ -1112,8 +1112,8 @@ LABEL_25:
     v14 = 0;
   }
 
-  v15 = [(MapsExternalDevice *)self externalDevice];
-  v16 = (v15 == 0) | v14;
+  externalDevice3 = [(MapsExternalDevice *)self externalDevice];
+  v16 = (externalDevice3 == 0) | v14;
 
   if (self->_screenOwnershipChecksRemaining)
   {
@@ -1138,15 +1138,15 @@ LABEL_25:
     }
 
     v25 = v24;
-    v26 = [(MapsExternalDevice *)self externalDeviceDescription];
+    externalDeviceDescription = [(MapsExternalDevice *)self externalDeviceDescription];
     v32 = 134349826;
-    v33 = self;
+    selfCopy4 = self;
     v34 = 2048;
     v35 = screenOwnershipChecksRemaining;
     v36 = 2112;
     *v37 = v24;
     *&v37[8] = 2112;
-    *&v37[10] = v26;
+    *&v37[10] = externalDeviceDescription;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}p] cancelling screen ownership checks (remaining: %lu, we own screen: %@, device: %@)", &v32, 0x2Au);
   }
 
@@ -1160,13 +1160,13 @@ LABEL_25:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v32 = 134349056;
-      v33 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] screen ownership changed to us (or device disappeared), update state and schedule notification", &v32, 0xCu);
     }
 
     v18 = [MapsExternalDeviceState alloc];
-    v19 = [(MapsExternalDevice *)self externalDevice];
-    v20 = [(MapsExternalDeviceState *)v18 initWithExternalDevice:v19];
+    externalDevice4 = [(MapsExternalDevice *)self externalDevice];
+    v20 = [(MapsExternalDeviceState *)v18 initWithExternalDevice:externalDevice4];
     [(MapsExternalDevice *)self setCurrentState:v20];
 
     v21 = 1;
@@ -1181,9 +1181,9 @@ LABEL_30:
   return v21;
 }
 
-- (void)_updateStateForRecievedNotification:(id)a3
+- (void)_updateStateForRecievedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -1195,7 +1195,7 @@ LABEL_30:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
         v16 = 136316418;
-        v17 = "[MapsExternalDevice _updateStateForRecievedNotification:]";
+        selfCopy = "[MapsExternalDevice _updateStateForRecievedNotification:]";
         v18 = 2080;
         v19 = "MapsExternalDevice.m";
         v20 = 1024;
@@ -1216,7 +1216,7 @@ LABEL_30:
         {
           v15 = +[NSThread callStackSymbols];
           v16 = 138412290;
-          v17 = v15;
+          selfCopy = v15;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "%@", &v16, 0xCu);
         }
       }
@@ -1226,23 +1226,23 @@ LABEL_30:
   v8 = sub_100896688();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v4 name];
+    name = [notificationCopy name];
     v16 = 134349314;
-    v17 = self;
+    selfCopy = self;
     v18 = 2112;
-    v19 = v9;
+    v19 = name;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] handling notification: %@", &v16, 0x16u);
   }
 
   v10 = [MapsExternalDeviceState alloc];
-  v11 = [(MapsExternalDevice *)self externalDevice];
-  v12 = [(MapsExternalDeviceState *)v10 initWithExternalDevice:v11];
+  externalDevice = [(MapsExternalDevice *)self externalDevice];
+  v12 = [(MapsExternalDeviceState *)v10 initWithExternalDevice:externalDevice];
   [(MapsExternalDevice *)self setCurrentState:v12];
 }
 
-- (void)setCurrentState:(id)a3
+- (void)setCurrentState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v7 = dispatch_queue_get_label(0);
   if (label != v7)
@@ -1254,7 +1254,7 @@ LABEL_30:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v14 = 136316418;
-        v15 = "[MapsExternalDevice setCurrentState:]";
+        selfCopy = "[MapsExternalDevice setCurrentState:]";
         v16 = 2080;
         v17 = "MapsExternalDevice.m";
         v18 = 1024;
@@ -1275,40 +1275,40 @@ LABEL_30:
         {
           v13 = +[NSThread callStackSymbols];
           v14 = 138412290;
-          v15 = v13;
+          selfCopy = v13;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@", &v14, 0xCu);
         }
       }
     }
   }
 
-  objc_storeStrong(&self->_currentState, a3);
+  objc_storeStrong(&self->_currentState, state);
   v9 = sub_100896688();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(MapsExternalDevice *)self externalDeviceDescription];
+    externalDeviceDescription = [(MapsExternalDevice *)self externalDeviceDescription];
     v14 = 134349570;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v10;
+    v17 = externalDeviceDescription;
     v18 = 2112;
-    *v19 = v5;
+    *v19 = stateCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] state updated for device: %@\n currentState=%@", &v14, 0x20u);
   }
 
   [(MapsExternalDevice *)self _postNotificationIfNeeded];
 }
 
-- (void)setExternalDevice:(id)a3
+- (void)setExternalDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   externalDevice = self->_externalDevice;
-  v6 = [[MapsExternalDeviceState alloc] initWithExternalDevice:v4];
-  v7 = v4 != 0;
+  v6 = [[MapsExternalDeviceState alloc] initWithExternalDevice:deviceCopy];
+  v7 = deviceCopy != 0;
   v40 = v6;
-  if (!v4 || v6)
+  if (!deviceCopy || v6)
   {
-    if ((v4 != 0) == (externalDevice != 0))
+    if ((deviceCopy != 0) == (externalDevice != 0))
     {
       goto LABEL_19;
     }
@@ -1319,14 +1319,14 @@ LABEL_30:
   v8 = sub_100896688();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v9 = v4;
+    v9 = deviceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v10 = objc_opt_class();
       v11 = [v9 ID];
-      v12 = [v9 name];
-      v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@<%p> (ID: %@, name: %@, transportType: %ld)", v10, v9, v11, v12, [v9 transportType]);
+      name = [v9 name];
+      v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@<%p> (ID: %@, name: %@, transportType: %ld)", v10, v9, v11, name, [v9 transportType]);
     }
 
     else
@@ -1335,14 +1335,14 @@ LABEL_30:
     }
 
     *buf = 134349314;
-    v44 = self;
+    selfCopy4 = self;
     v45 = 2114;
     v46 = v13;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%{public}p] no state created for device, treating as nil: %{public}@", buf, 0x16u);
   }
 
   v7 = 0;
-  v4 = 0;
+  deviceCopy = 0;
   if (externalDevice)
   {
 LABEL_11:
@@ -1361,7 +1361,7 @@ LABEL_11:
       }
 
       *buf = 134349570;
-      v44 = self;
+      selfCopy4 = self;
       if (v7)
       {
         v15 = @"YES";
@@ -1382,14 +1382,14 @@ LABEL_19:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     externalDeviceDescription = self->_externalDeviceDescription;
-    v20 = v4;
+    v20 = deviceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v21 = objc_opt_class();
       v22 = [v20 ID];
-      v23 = [v20 name];
-      v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@<%p> (ID: %@, name: %@, transportType: %ld)", v21, v20, v22, v23, [v20 transportType]);
+      name2 = [v20 name];
+      v24 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@<%p> (ID: %@, name: %@, transportType: %ld)", v21, v20, v22, name2, [v20 transportType]);
     }
 
     else
@@ -1398,7 +1398,7 @@ LABEL_19:
     }
 
     *buf = 134349570;
-    v44 = self;
+    selfCopy4 = self;
     v45 = 2114;
     v46 = externalDeviceDescription;
     v47 = 2114;
@@ -1408,15 +1408,15 @@ LABEL_19:
 
   if (v7)
   {
-    objc_storeStrong(&self->_externalDevice, v4);
-    v25 = v4;
+    objc_storeStrong(&self->_externalDevice, deviceCopy);
+    v25 = deviceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v26 = objc_opt_class();
       v27 = [v25 ID];
-      v28 = [v25 name];
-      v29 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@<%p> (ID: %@, name: %@, transportType: %ld)", v26, v25, v27, v28, [v25 transportType]);
+      name3 = [v25 name];
+      v29 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@<%p> (ID: %@, name: %@, transportType: %ld)", v26, v25, v27, name3, [v25 transportType]);
     }
 
     else
@@ -1438,7 +1438,7 @@ LABEL_19:
       {
         screenOwnershipChecksRemaining = self->_screenOwnershipChecksRemaining;
         *buf = 134349568;
-        v44 = self;
+        selfCopy4 = self;
         v45 = 2048;
         v46 = screenOwnershipChecksRemaining;
         v47 = 2048;
@@ -1468,7 +1468,7 @@ LABEL_19:
   else
   {
     [(MapsExternalDevice *)self _unregisterForAVNotifications];
-    objc_storeStrong(&self->_externalDevice, v4);
+    objc_storeStrong(&self->_externalDevice, deviceCopy);
     v30 = self->_externalDeviceDescription;
     self->_externalDeviceDescription = 0;
   }
@@ -1476,8 +1476,8 @@ LABEL_19:
   [(MapsExternalDevice *)self setCurrentState:v40];
   if (self->_carPlayIsNavigating)
   {
-    v38 = [(MapsExternalDevice *)self navigationOwnershipManager];
-    [v38 requestNavigationOwnership];
+    navigationOwnershipManager = [(MapsExternalDevice *)self navigationOwnershipManager];
+    [navigationOwnershipManager requestNavigationOwnership];
 
     [(CarPlayMetadataUpdater *)self->_metadataUpdater requestNavigationOwnership];
   }
@@ -1486,7 +1486,7 @@ LABEL_19:
 - (void)checkForActiveCarPlayConnection
 {
   v3 = +[MapsCarPlayExternalDeviceMonitor sharedInstance];
-  v4 = [v3 carPlayExternalDevice];
+  carPlayExternalDevice = [v3 carPlayExternalDevice];
 
   if (![(MapsExternalDevice *)self isConnected])
   {
@@ -1497,14 +1497,14 @@ LABEL_19:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v26 = self;
+    selfCopy8 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] asked to check for active CarPlay connection, already have one (but will check it's ok)", buf, 0xCu);
   }
 
-  v6 = [(MapsExternalDevice *)self externalDevice];
-  v7 = [v6 transportType];
+  externalDevice = [(MapsExternalDevice *)self externalDevice];
+  transportType = [externalDevice transportType];
 
-  if (!v4 || !v7)
+  if (!carPlayExternalDevice || !transportType)
   {
     v8 = sub_100896688();
     if (!os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1514,17 +1514,17 @@ LABEL_16:
 LABEL_17:
       v15 = sub_100896688();
       v16 = os_log_type_enabled(v15, OS_LOG_TYPE_INFO);
-      if (v4)
+      if (carPlayExternalDevice)
       {
         if (v16)
         {
           *buf = 134349056;
-          v26 = self;
+          selfCopy8 = self;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] asked to check for active CarPlay connection, found one", buf, 0xCu);
         }
 
-        v17 = self;
-        v18 = v4;
+        selfCopy7 = self;
+        v18 = carPlayExternalDevice;
       }
 
       else
@@ -1532,23 +1532,23 @@ LABEL_17:
         if (v16)
         {
           *buf = 134349056;
-          v26 = self;
+          selfCopy8 = self;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}p] asked to check for active CarPlay connection, found none", buf, 0xCu);
         }
 
         if ([(MapsExternalDevice *)self isConnected])
         {
           v19 = +[MapsExternalAccessory sharedInstance];
-          v20 = [v19 isConnected];
+          isConnected = [v19 isConnected];
 
-          if (v20)
+          if (isConnected)
           {
             v21 = sub_100896688();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
             {
               v22 = +[MapsExternalAccessory sharedInstance];
               *buf = 134349314;
-              v26 = self;
+              selfCopy8 = self;
               v27 = 2112;
               v28 = v22;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "[%{public}p] no current CarPlay AV device, but we still have our reference and ExternalAccessory is apparently connected: %@", buf, 0x16u);
@@ -1561,25 +1561,25 @@ LABEL_17:
           v23 = sub_100896688();
           if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
           {
-            v24 = [(CARSessionStatus *)self->_carSessionStatus currentSession];
+            currentSession = [(CARSessionStatus *)self->_carSessionStatus currentSession];
             *buf = 134349314;
-            v26 = self;
+            selfCopy8 = self;
             v27 = 2112;
-            v28 = v24;
+            v28 = currentSession;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "[%{public}p] no current CarPlay AV device, but we still have our reference and a CarPlay session is apparently active: %@", buf, 0x16u);
           }
         }
 
-        v17 = self;
+        selfCopy7 = self;
         v18 = 0;
       }
 
-      [(MapsExternalDevice *)v17 setExternalDevice:v18];
+      [(MapsExternalDevice *)selfCopy7 setExternalDevice:v18];
       goto LABEL_35;
     }
 
-    v9 = v4;
-    if (!v4)
+    v9 = carPlayExternalDevice;
+    if (!carPlayExternalDevice)
     {
       v14 = @"<nil>";
       goto LABEL_15;
@@ -1604,11 +1604,11 @@ LABEL_13:
 
 LABEL_15:
     *buf = 134349570;
-    v26 = self;
+    selfCopy8 = self;
     v27 = 2112;
     v28 = v14;
     v29 = 2048;
-    v30 = v7;
+    v30 = transportType;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%{public}p] something has gone wrong with our externalDevice reference! treating as nil... (device: %@, transportType: %ld)", buf, 0x20u);
 
     goto LABEL_16;
@@ -1619,24 +1619,24 @@ LABEL_35:
 
 - (void)relinquishScreenIfNeeded
 {
-  v3 = [(MapsExternalDevice *)self screenBorrowToken];
+  screenBorrowToken = [(MapsExternalDevice *)self screenBorrowToken];
 
-  if (v3)
+  if (screenBorrowToken)
   {
 
     [(MapsExternalDevice *)self setScreenBorrowToken:0];
   }
 }
 
-- (void)borrowScreenIfNeededForReason:(id)a3
+- (void)borrowScreenIfNeededForReason:(id)reason
 {
-  v8 = a3;
+  reasonCopy = reason;
   if ([(MapsExternalDevice *)self ownsScreen]&& !self->_screenBorrowToken)
   {
-    v4 = [(MapsExternalDevice *)self externalDevice];
+    externalDevice = [(MapsExternalDevice *)self externalDevice];
     v5 = +[NSBundle mainBundle];
-    v6 = [v5 bundleIdentifier];
-    v7 = [v4 borrowScreenForClient:v6 reason:v8];
+    bundleIdentifier = [v5 bundleIdentifier];
+    v7 = [externalDevice borrowScreenForClient:bundleIdentifier reason:reasonCopy];
     [(MapsExternalDevice *)self setScreenBorrowToken:v7];
   }
 }
@@ -1649,7 +1649,7 @@ LABEL_35:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v18 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] stop observing AV device notifications", buf, 0xCu);
     }
 
@@ -1739,15 +1739,15 @@ LABEL_35:
   }
 }
 
-- (void)sessionDidDisconnect:(id)a3
+- (void)sessionDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = &_dispatch_main_q;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v13 = sub_10089A200;
   v14 = &unk_101661B18;
-  v15 = self;
+  selfCopy = self;
   v6 = &_dispatch_main_q;
   v7 = v12;
   label = dispatch_queue_get_label(&_dispatch_main_q);
@@ -1765,15 +1765,15 @@ LABEL_35:
   }
 }
 
-- (void)sessionDidConnect:(id)a3
+- (void)sessionDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = &_dispatch_main_q;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v13 = sub_10089A3E0;
   v14 = &unk_101661B18;
-  v15 = self;
+  selfCopy = self;
   v6 = &_dispatch_main_q;
   v7 = v12;
   label = dispatch_queue_get_label(&_dispatch_main_q);
@@ -1797,7 +1797,7 @@ LABEL_35:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -1809,32 +1809,32 @@ LABEL_35:
   [(MapsExternalDevice *)&v5 dealloc];
 }
 
-+ (id)_stringRepresentationOfDictionary:(id)a3
++ (id)_stringRepresentationOfDictionary:(id)dictionary
 {
-  v3 = a3;
-  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  dictionaryCopy = dictionary;
+  +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [dictionaryCopy count]);
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10089A690;
   v8 = v7[3] = &unk_1016555A0;
   v4 = v8;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   v5 = [v4 componentsJoinedByString:{@", "}];
 
   return v5;
 }
 
-+ (id)_localizedReasonForHandoffError:(int64_t)a3
++ (id)_localizedReasonForHandoffError:(int64_t)error
 {
-  if ((a3 - 1) > 3)
+  if ((error - 1) > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_10162CF18[a3 - 1];
+    v3 = off_10162CF18[error - 1];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:@"localized string not found" table:0];
   }
@@ -1842,14 +1842,14 @@ LABEL_35:
   return v5;
 }
 
-+ (id)_destinationHandoffErrorWithReason:(int64_t)a3
++ (id)_destinationHandoffErrorWithReason:(int64_t)reason
 {
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"Destination handoff failure alert title [CarPlay]" value:@"localized string not found" table:0];
 
   v7 = [NSMutableDictionary dictionaryWithObject:v6 forKey:NSLocalizedDescriptionKey];
-  v8 = [a1 _localizedReasonForHandoffError:a3];
-  v9 = [NSNumber numberWithInteger:a3];
+  v8 = [self _localizedReasonForHandoffError:reason];
+  v9 = [NSNumber numberWithInteger:reason];
   [v7 setObject:v9 forKeyedSubscript:@"__handoff_error_key"];
 
   if (v8)
@@ -1857,17 +1857,17 @@ LABEL_35:
     [v7 setObject:v8 forKeyedSubscript:NSLocalizedFailureReasonErrorKey];
   }
 
-  v10 = [a1 _errorWithCode:1 userInfo:v7];
+  v10 = [self _errorWithCode:1 userInfo:v7];
 
   return v10;
 }
 
-+ (void)_presentActivityControllerForDestination:(id)a3 searchResult:(id)a4 dictionary:(id)a5 completion:(id)a6
++ (void)_presentActivityControllerForDestination:(id)destination searchResult:(id)result dictionary:(id)dictionary completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  destinationCopy = destination;
+  resultCopy = result;
+  dictionaryCopy = dictionary;
+  completionCopy = completion;
   if (+[NSThread isMainThread])
   {
     v14 = +[NSMutableDictionary dictionary];
@@ -1875,9 +1875,9 @@ LABEL_35:
     v16 = [v15 description];
     [v14 setObject:v16 forKeyedSubscript:@"timestamp"];
 
-    if (v12)
+    if (dictionaryCopy)
     {
-      v17 = v12;
+      v17 = dictionaryCopy;
     }
 
     else
@@ -1901,11 +1901,11 @@ LABEL_35:
 
     [v14 setObject:v21 forKeyedSubscript:@"type"];
 
-    v22 = [v11 name];
-    v23 = v22;
-    if (v22)
+    name = [resultCopy name];
+    v23 = name;
+    if (name)
     {
-      v24 = v22;
+      v24 = name;
     }
 
     else
@@ -1942,14 +1942,14 @@ LABEL_35:
       v44[1] = 3221225472;
       v44[2] = sub_10089AE98;
       v44[3] = &unk_1016566B8;
-      v45 = v13;
+      v45 = completionCopy;
       [v30 setCompletionWithItemsHandler:v44];
       v32 = +[UIApplication sharedMapsDelegate];
-      v33 = [v32 chromeViewController];
-      v34 = [v33 topMostPresentedViewController];
+      chromeViewController = [v32 chromeViewController];
+      topMostPresentedViewController = [chromeViewController topMostPresentedViewController];
 
       v26 = v42;
-      [v34 presentViewController:v30 animated:1 completion:0];
+      [topMostPresentedViewController presentViewController:v30 animated:1 completion:0];
 
       v25 = v41;
     }
@@ -1961,13 +1961,13 @@ LABEL_35:
       {
         [v26 localizedDescription];
         v36 = v43 = v26;
-        v37 = [v43 localizedFailureReason];
+        localizedFailureReason = [v43 localizedFailureReason];
         *buf = 134349570;
-        v59 = a1;
+        selfCopy = self;
         v60 = 2112;
         v61 = v36;
         v62 = 2112;
-        v63 = v37;
+        v63 = localizedFailureReason;
         _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "[%{public}p] Error serializing debug JSON (%@, %@)", buf, 0x20u);
 
         v26 = v43;
@@ -1978,14 +1978,14 @@ LABEL_35:
       [v27 addAction:v38];
 
       v39 = +[UIApplication sharedMapsDelegate];
-      v40 = [v39 chromeViewController];
+      chromeViewController2 = [v39 chromeViewController];
       v46[0] = _NSConcreteStackBlock;
       v46[1] = 3221225472;
       v46[2] = sub_10089AE74;
       v46[3] = &unk_101661090;
-      v48 = v13;
+      v48 = completionCopy;
       v47 = v26;
-      [v40 _maps_topMostPresentViewController:v27 animated:1 completion:v46];
+      [chromeViewController2 _maps_topMostPresentViewController:v27 animated:1 completion:v46];
 
       v30 = v48;
     }
@@ -1997,29 +1997,29 @@ LABEL_35:
     block[1] = 3221225472;
     block[2] = sub_10089AE60;
     block[3] = &unk_10164E610;
-    v55 = a1;
-    v51 = v10;
-    v52 = v11;
-    v53 = v12;
-    v54 = v13;
+    selfCopy2 = self;
+    v51 = destinationCopy;
+    v52 = resultCopy;
+    v53 = dictionaryCopy;
+    v54 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     v14 = v51;
   }
 }
 
-+ (void)_presentActivityControllerForDestination:(id)a3 completion:(id)a4
++ (void)_presentActivityControllerForDestination:(id)destination completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  destinationCopy = destination;
+  completionCopy = completion;
   if (+[NSThread isMainThread])
   {
-    v8 = [SearchResult carSearchResultFromDestination:v6];
+    v8 = [SearchResult carSearchResultFromDestination:destinationCopy];
     if (v8)
     {
       v9 = v8;
-      v10 = [v8 _maps_externalDeviceDictionaryRepresentation];
-      [a1 _presentActivityControllerForDestination:v6 searchResult:v9 dictionary:v10 completion:v7];
+      _maps_externalDeviceDictionaryRepresentation = [v8 _maps_externalDeviceDictionaryRepresentation];
+      [self _presentActivityControllerForDestination:destinationCopy searchResult:v9 dictionary:_maps_externalDeviceDictionaryRepresentation completion:completionCopy];
     }
 
     else
@@ -2030,16 +2030,16 @@ LABEL_35:
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
         *buf = 134349314;
-        v20 = a1;
+        selfCopy = self;
         v21 = 2112;
         v22 = v13;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[%{public}p] Unable to convert destination to a SearchResult (destination:%@)", buf, 0x16u);
       }
 
-      if (v7)
+      if (completionCopy)
       {
         v14 = [objc_opt_class() _destinationHandoffErrorWithReason:2];
-        v7[2](v7, 0, v14);
+        completionCopy[2](completionCopy, 0, v14);
       }
 
       v9 = 0;
@@ -2052,9 +2052,9 @@ LABEL_35:
     block[1] = 3221225472;
     block[2] = sub_10089B0BC;
     block[3] = &unk_1016589F8;
-    v18 = a1;
-    v16 = v6;
-    v17 = v7;
+    selfCopy2 = self;
+    v16 = destinationCopy;
+    v17 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     v9 = v16;

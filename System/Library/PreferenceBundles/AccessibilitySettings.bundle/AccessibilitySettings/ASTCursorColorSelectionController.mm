@@ -1,8 +1,8 @@
 @interface ASTCursorColorSelectionController
 - (ASTCursorColorSelectionControllerDelegate)delegate;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -13,10 +13,10 @@
   v6.receiver = self;
   v6.super_class = ASTCursorColorSelectionController;
   [(ASTCursorColorSelectionController *)&v6 viewDidLoad];
-  v3 = [(ASTCursorColorSelectionController *)self table];
+  table = [(ASTCursorColorSelectionController *)self table];
   v4 = objc_opt_class();
   v5 = +[AXColorChooserCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 }
 
 - (id)specifiers
@@ -31,8 +31,8 @@
     v24 = PSSpecifierIsSearchableKey;
     do
     {
-      v5 = [(ASTCursorColorSelectionController *)self delegate];
-      if (!v5 || (v6 = v5, -[ASTCursorColorSelectionController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) == 0) || (-[ASTCursorColorSelectionController delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 cursorColorSelectionController:self allowsCursorColor:v4], v9, v10))
+      delegate = [(ASTCursorColorSelectionController *)self delegate];
+      if (!delegate || (v6 = delegate, -[ASTCursorColorSelectionController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_opt_respondsToSelector(), v7, v6, (v8 & 1) == 0) || (-[ASTCursorColorSelectionController delegate](self, "delegate"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 cursorColorSelectionController:self allowsCursorColor:v4], v9, v10))
       {
         v11 = AXAssistiveTouchScannerColorDescription();
         v12 = AXSAssistiveTouchCursorColor();
@@ -72,21 +72,21 @@
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = ASTCursorColorSelectionController;
-  v5 = [(ASTCursorColorSelectionController *)&v12 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 specifier];
-  v7 = [v6 propertyForKey:@"cursorColor"];
-  v8 = [v7 integerValue];
+  v5 = [(ASTCursorColorSelectionController *)&v12 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v5 specifier];
+  v7 = [specifier propertyForKey:@"cursorColor"];
+  integerValue = [v7 integerValue];
 
-  v9 = [(ASTCursorColorSelectionController *)self delegate];
+  delegate = [(ASTCursorColorSelectionController *)self delegate];
 
-  if (v9)
+  if (delegate)
   {
-    v10 = [(ASTCursorColorSelectionController *)self delegate];
-    [v5 setChecked:{objc_msgSend(v10, "selectedColorForSelectionController:", self) == v8}];
+    delegate2 = [(ASTCursorColorSelectionController *)self delegate];
+    [v5 setChecked:{objc_msgSend(delegate2, "selectedColorForSelectionController:", self) == integerValue}];
   }
 
   else
@@ -97,27 +97,27 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = ASTCursorColorSelectionController;
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ASTCursorColorSelectionController *)&v14 tableView:v7 cellForRowAtIndexPath:v6];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"cursorColor"];
-  v11 = [v10 integerValue];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(ASTCursorColorSelectionController *)&v14 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"cursorColor"];
+  integerValue = [v10 integerValue];
 
-  v12 = [(ASTCursorColorSelectionController *)self delegate];
+  delegate = [(ASTCursorColorSelectionController *)self delegate];
 
-  if (v12)
+  if (delegate)
   {
-    v13 = [(ASTCursorColorSelectionController *)self delegate];
-    [v13 cursorColorSelectionController:self selectedCursorColor:v11];
+    delegate2 = [(ASTCursorColorSelectionController *)self delegate];
+    [delegate2 cursorColorSelectionController:self selectedCursorColor:integerValue];
   }
 
-  [(ASTCursorColorSelectionController *)self updateTableCheckedSelection:v6];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [(ASTCursorColorSelectionController *)self updateTableCheckedSelection:pathCopy];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 - (ASTCursorColorSelectionControllerDelegate)delegate

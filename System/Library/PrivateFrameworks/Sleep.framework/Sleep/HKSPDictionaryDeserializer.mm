@@ -1,34 +1,34 @@
 @interface HKSPDictionaryDeserializer
-- (BOOL)decodeBoolForKey:(id)a3;
-- (HKSPDictionaryDeserializer)initWithAllowedClasses:(id)a3 serializedDictionary:(id)a4 serializationOptions:(unint64_t)a5;
-- (double)decodeDoubleForKey:(id)a3;
-- (float)decodeFloatForKey:(id)a3;
-- (id)_decodeDeserializable:(id)a3 error:(id *)a4;
-- (id)_decodeObject:(id)a3 error:(id *)a4;
-- (id)decodeObjectForKey:(id)a3;
-- (id)decodeTopLevelObjectOfClass:(Class)a3 forKey:(id)a4 error:(id *)a5;
-- (id)deserializeObjectOfClass:(Class)a3 error:(id *)a4;
-- (int)decodeInt32ForKey:(id)a3;
-- (int)decodeIntForKey:(id)a3;
-- (int64_t)decodeInt64ForKey:(id)a3;
-- (int64_t)decodeIntegerForKey:(id)a3;
+- (BOOL)decodeBoolForKey:(id)key;
+- (HKSPDictionaryDeserializer)initWithAllowedClasses:(id)classes serializedDictionary:(id)dictionary serializationOptions:(unint64_t)options;
+- (double)decodeDoubleForKey:(id)key;
+- (float)decodeFloatForKey:(id)key;
+- (id)_decodeDeserializable:(id)deserializable error:(id *)error;
+- (id)_decodeObject:(id)object error:(id *)error;
+- (id)decodeObjectForKey:(id)key;
+- (id)decodeTopLevelObjectOfClass:(Class)class forKey:(id)key error:(id *)error;
+- (id)deserializeObjectOfClass:(Class)class error:(id *)error;
+- (int)decodeInt32ForKey:(id)key;
+- (int)decodeIntForKey:(id)key;
+- (int64_t)decodeInt64ForKey:(id)key;
+- (int64_t)decodeIntegerForKey:(id)key;
 @end
 
 @implementation HKSPDictionaryDeserializer
 
-- (HKSPDictionaryDeserializer)initWithAllowedClasses:(id)a3 serializedDictionary:(id)a4 serializationOptions:(unint64_t)a5
+- (HKSPDictionaryDeserializer)initWithAllowedClasses:(id)classes serializedDictionary:(id)dictionary serializationOptions:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a4;
+  classesCopy = classes;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = HKSPDictionaryDeserializer;
   v11 = [(HKSPDictionaryDeserializer *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_allowedClasses, a3);
-    objc_storeStrong(&v12->_serializedDictionary, a4);
-    v12->_serializationOptions = a5;
+    objc_storeStrong(&v11->_allowedClasses, classes);
+    objc_storeStrong(&v12->_serializedDictionary, dictionary);
+    v12->_serializationOptions = options;
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     stack = v12->_stack;
     v12->_stack = v13;
@@ -39,36 +39,36 @@
   return v12;
 }
 
-- (id)deserializeObjectOfClass:(Class)a3 error:(id *)a4
+- (id)deserializeObjectOfClass:(Class)class error:(id *)error
 {
-  v7 = HKSPSerializableKeyForClass(a3);
-  v8 = [(HKSPDictionaryDeserializer *)self decodeTopLevelObjectOfClass:a3 forKey:v7 error:a4];
+  v7 = HKSPSerializableKeyForClass(class);
+  v8 = [(HKSPDictionaryDeserializer *)self decodeTopLevelObjectOfClass:class forKey:v7 error:error];
 
   return v8;
 }
 
-- (id)decodeTopLevelObjectOfClass:(Class)a3 forKey:(id)a4 error:(id *)a5
+- (id)decodeTopLevelObjectOfClass:(Class)class forKey:(id)key error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  keyCopy = key;
   if ([(NSDictionary *)self->_serializedDictionary hksp_isSerialized])
   {
-    v8 = [v7 substringFromIndex:1];
-    v9 = [(NSDictionary *)self->_serializedDictionary hksp_serializedClassName];
-    if ([v8 isEqualToString:v9])
+    v8 = [keyCopy substringFromIndex:1];
+    hksp_serializedClassName = [(NSDictionary *)self->_serializedDictionary hksp_serializedClassName];
+    if ([v8 isEqualToString:hksp_serializedClassName])
     {
-      v10 = [(HKSPDictionaryDeserializer *)self _decodeObject:self->_serializedDictionary error:a5];
+      v10 = [(HKSPDictionaryDeserializer *)self _decodeObject:self->_serializedDictionary error:error];
     }
 
     else
     {
-      if (a5)
+      if (error)
       {
         v12 = MEMORY[0x277CCA9B8];
-        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected class %@", v9, *MEMORY[0x277CCA450]];
+        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unexpected class %@", hksp_serializedClassName, *MEMORY[0x277CCA450]];
         v18 = v13;
         v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-        *a5 = [v12 errorWithDomain:@"com.apple.sleep.serialization" code:2 userInfo:v14];
+        *error = [v12 errorWithDomain:@"com.apple.sleep.serialization" code:2 userInfo:v14];
       }
 
       v10 = 0;
@@ -77,14 +77,14 @@
     goto LABEL_10;
   }
 
-  if (a5)
+  if (error)
   {
     v11 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277CCA450];
     v20[0] = @"Invalid serialized dictionary";
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
     [v11 errorWithDomain:@"com.apple.sleep.serialization" code:1 userInfo:v8];
-    *a5 = v10 = 0;
+    *error = v10 = 0;
 LABEL_10:
 
     goto LABEL_11;
@@ -98,67 +98,67 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)decodeBoolForKey:(id)a3
+- (BOOL)decodeBoolForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  LOBYTE(v4) = [v6 BOOLValue];
-  return v4;
+  LOBYTE(keyCopy) = [v6 BOOLValue];
+  return keyCopy;
 }
 
-- (int64_t)decodeIntegerForKey:(id)a3
+- (int64_t)decodeIntegerForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  v7 = [v6 integerValue];
-  return v7;
+  integerValue = [v6 integerValue];
+  return integerValue;
 }
 
-- (int)decodeIntForKey:(id)a3
+- (int)decodeIntForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  LODWORD(v4) = [v6 intValue];
-  return v4;
+  LODWORD(keyCopy) = [v6 intValue];
+  return keyCopy;
 }
 
-- (int)decodeInt32ForKey:(id)a3
+- (int)decodeInt32ForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  LODWORD(v4) = [v6 intValue];
-  return v4;
+  LODWORD(keyCopy) = [v6 intValue];
+  return keyCopy;
 }
 
-- (int64_t)decodeInt64ForKey:(id)a3
+- (int64_t)decodeInt64ForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
-  v7 = [v6 longLongValue];
-  return v7;
+  longLongValue = [v6 longLongValue];
+  return longLongValue;
 }
 
-- (float)decodeFloatForKey:(id)a3
+- (float)decodeFloatForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
   [v6 floatValue];
   v8 = v7;
@@ -166,12 +166,12 @@ LABEL_11:
   return v8;
 }
 
-- (double)decodeDoubleForKey:(id)a3
+- (double)decodeDoubleForKey:(id)key
 {
   stack = self->_stack;
-  v4 = a3;
-  v5 = [(NSMutableArray *)stack lastObject];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v6 = [lastObject objectForKeyedSubscript:keyCopy];
 
   [v6 doubleValue];
   v8 = v7;
@@ -179,35 +179,35 @@ LABEL_11:
   return v8;
 }
 
-- (id)decodeObjectForKey:(id)a3
+- (id)decodeObjectForKey:(id)key
 {
   stack = self->_stack;
-  v5 = a3;
-  v6 = [(NSMutableArray *)stack lastObject];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  lastObject = [(NSMutableArray *)stack lastObject];
+  v7 = [lastObject objectForKeyedSubscript:keyCopy];
 
   v8 = [(HKSPDictionaryDeserializer *)self _decodeObject:v7 error:0];
 
   return v8;
 }
 
-- (id)_decodeObject:(id)a3 error:(id *)a4
+- (id)_decodeObject:(id)object error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
+    v7 = objectCopy;
     if ([v7 hksp_isSerialized])
     {
-      v8 = [(HKSPDictionaryDeserializer *)self _decodeDeserializable:v7 error:a4];
+      v8 = [(HKSPDictionaryDeserializer *)self _decodeDeserializable:v7 error:error];
     }
 
     else
     {
-      v28 = v6;
-      v17 = [MEMORY[0x277CBEB38] dictionary];
+      v28 = objectCopy;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
@@ -229,8 +229,8 @@ LABEL_11:
 
             v23 = *(*(&v33 + 1) + 8 * i);
             v24 = [v18 objectForKeyedSubscript:v23];
-            v25 = [(HKSPDictionaryDeserializer *)self _decodeObject:v24 error:a4];
-            [v17 setObject:v25 forKeyedSubscript:v23];
+            v25 = [(HKSPDictionaryDeserializer *)self _decodeObject:v24 error:error];
+            [dictionary setObject:v25 forKeyedSubscript:v23];
           }
 
           v20 = [v18 countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -239,8 +239,8 @@ LABEL_11:
         while (v20);
       }
 
-      v8 = [v17 copy];
-      v6 = v28;
+      v8 = [dictionary copy];
+      objectCopy = v28;
     }
   }
 
@@ -248,13 +248,13 @@ LABEL_11:
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v8 = v6;
+    v8 = objectCopy;
     if ((isKindOfClass & 1) == 0)
     {
       goto LABEL_22;
     }
 
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
@@ -274,8 +274,8 @@ LABEL_11:
             objc_enumerationMutation(v11);
           }
 
-          v16 = [(HKSPDictionaryDeserializer *)self _decodeObject:*(*(&v29 + 1) + 8 * j) error:a4];
-          [v10 addObject:v16];
+          v16 = [(HKSPDictionaryDeserializer *)self _decodeObject:*(*(&v29 + 1) + 8 * j) error:error];
+          [array addObject:v16];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v29 objects:v37 count:16];
@@ -284,7 +284,7 @@ LABEL_11:
       while (v13);
     }
 
-    v8 = [v10 copy];
+    v8 = [array copy];
   }
 
 LABEL_22:
@@ -293,35 +293,35 @@ LABEL_22:
   return v8;
 }
 
-- (id)_decodeDeserializable:(id)a3 error:(id *)a4
+- (id)_decodeDeserializable:(id)deserializable error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 hksp_serializedKey];
-  v8 = [v6 objectForKeyedSubscript:v7];
+  deserializableCopy = deserializable;
+  hksp_serializedKey = [deserializableCopy hksp_serializedKey];
+  v8 = [deserializableCopy objectForKeyedSubscript:hksp_serializedKey];
   [(NSMutableArray *)self->_stack addObject:v8];
-  v9 = [v6 hksp_serializedClassName];
+  hksp_serializedClassName = [deserializableCopy hksp_serializedClassName];
 
-  if ([(NSSet *)self->_allowedClasses containsObject:NSClassFromString(v9)])
+  if ([(NSSet *)self->_allowedClasses containsObject:NSClassFromString(hksp_serializedClassName)])
   {
-    a4 = [objc_alloc(NSClassFromString(v9)) initWithCoder:self];
+    error = [objc_alloc(NSClassFromString(hksp_serializedClassName)) initWithCoder:self];
     [(NSMutableArray *)self->_stack removeObject:v8];
   }
 
-  else if (a4)
+  else if (error)
   {
     v10 = MEMORY[0x277CCA9B8];
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Disallowed class %@", v9, *MEMORY[0x277CCA450]];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"Disallowed class %@", hksp_serializedClassName, *MEMORY[0x277CCA450]];
     v16[0] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-    *a4 = [v10 errorWithDomain:@"com.apple.sleep.serialization" code:2 userInfo:v12];
+    *error = [v10 errorWithDomain:@"com.apple.sleep.serialization" code:2 userInfo:v12];
 
-    a4 = 0;
+    error = 0;
   }
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return a4;
+  return error;
 }
 
 @end

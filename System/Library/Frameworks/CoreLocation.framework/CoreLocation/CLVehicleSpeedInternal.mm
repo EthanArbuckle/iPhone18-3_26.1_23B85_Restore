@@ -1,16 +1,16 @@
 @interface CLVehicleSpeedInternal
-- (CLVehicleSpeedInternal)initWithClientVehicleSpeed:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLVehicleSpeedInternal)initWithClientVehicleSpeed:(id)speed;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CLVehicleSpeedInternal
 
-- (CLVehicleSpeedInternal)initWithClientVehicleSpeed:(id)a3
+- (CLVehicleSpeedInternal)initWithClientVehicleSpeed:(id)speed
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = speed.var3;
+  var2 = speed.var2;
+  var1 = speed.var1;
+  var0 = speed.var0;
   v8.receiver = self;
   v8.super_class = CLVehicleSpeedInternal;
   result = [(CLVehicleSpeedInternal *)&v8 init];
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   speed = self->fSpeed.speed;
   timestamp = self->fSpeed.timestamp;
   machContinuousTime = self->fSpeed.machContinuousTime;

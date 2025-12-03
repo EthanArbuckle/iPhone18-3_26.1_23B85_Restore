@@ -1,28 +1,28 @@
 @interface NTKAppleEncryptedArchiveHandle
-- (AAArchiveStream_impl)openReturningError:(id *)a3;
-- (BOOL)closeReturningError:(id *)a3;
-- (NTKAppleEncryptedArchiveHandle)initWithArchiveURL:(id)a3 symmetricKey:(id)a4;
-- (id)errorWithCode:(void *)a1;
-- (id)errorWithCode:(void *)a3 userInfo:;
+- (AAArchiveStream_impl)openReturningError:(id *)error;
+- (BOOL)closeReturningError:(id *)error;
+- (NTKAppleEncryptedArchiveHandle)initWithArchiveURL:(id)l symmetricKey:(id)key;
+- (id)errorWithCode:(void *)code;
+- (id)errorWithCode:(void *)code userInfo:;
 - (void)dealloc;
 @end
 
 @implementation NTKAppleEncryptedArchiveHandle
 
-- (NTKAppleEncryptedArchiveHandle)initWithArchiveURL:(id)a3 symmetricKey:(id)a4
+- (NTKAppleEncryptedArchiveHandle)initWithArchiveURL:(id)l symmetricKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  keyCopy = key;
   v14.receiver = self;
   v14.super_class = NTKAppleEncryptedArchiveHandle;
   v8 = [(NTKAppleEncryptedArchiveHandle *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     archiveURL = v8->_archiveURL;
     v8->_archiveURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [keyCopy copy];
     symmetricKey = v8->_symmetricKey;
     v8->_symmetricKey = v11;
   }
@@ -41,14 +41,14 @@
   [(NTKAppleEncryptedArchiveHandle *)&v3 dealloc];
 }
 
-- (AAArchiveStream_impl)openReturningError:(id *)a3
+- (AAArchiveStream_impl)openReturningError:(id *)error
 {
   if (!self->_encryptedStream)
   {
-    v6 = [(NTKAppleEncryptedArchiveHandle *)self archiveURL];
-    v7 = [v6 absoluteURL];
-    v8 = [v7 path];
-    self->_encryptedStream = AAFileStreamOpenWithPath([v8 fileSystemRepresentation], 16777472, 0);
+    archiveURL = [(NTKAppleEncryptedArchiveHandle *)self archiveURL];
+    absoluteURL = [archiveURL absoluteURL];
+    path = [absoluteURL path];
+    self->_encryptedStream = AAFileStreamOpenWithPath([path fileSystemRepresentation], 16777472, 0);
 
     encryptedStream = self->_encryptedStream;
     if (encryptedStream)
@@ -57,13 +57,13 @@
       self->_context = v10;
       if (v10 && (v11 = v10, -[NTKAppleEncryptedArchiveHandle symmetricKey](self, "symmetricKey"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 bytes], -[NTKAppleEncryptedArchiveHandle symmetricKey](self, "symmetricKey"), v14 = objc_claimAutoreleasedReturnValue(), LODWORD(v11) = AEAContextSetFieldBlob(v11, 9u, 0, v13, objc_msgSend(v14, "length")), v14, v12, !v11) && (v15 = AEADecryptionInputStreamOpen(self->_encryptedStream, self->_context, 0xC010000000000001, 0), (self->_decryptedStream = v15) != 0))
       {
-        v16 = [(NTKAppleEncryptedArchiveHandle *)self archiveEntryEvent];
+        archiveEntryEvent = [(NTKAppleEncryptedArchiveHandle *)self archiveEntryEvent];
 
         decryptedStream = self->_decryptedStream;
-        if (v16)
+        if (archiveEntryEvent)
         {
-          v18 = [(NTKAppleEncryptedArchiveHandle *)self archiveEntryEvent];
-          self->_archiveStream = AADecodeArchiveInputStreamOpen(decryptedStream, v18, invokeBlockForArchiveEvent, 0xC010000000000001, 0);
+          archiveEntryEvent2 = [(NTKAppleEncryptedArchiveHandle *)self archiveEntryEvent];
+          self->_archiveStream = AADecodeArchiveInputStreamOpen(decryptedStream, archiveEntryEvent2, invokeBlockForArchiveEvent, 0xC010000000000001, 0);
 
           archiveStream = self->_archiveStream;
           if (archiveStream)
@@ -109,11 +109,11 @@ LABEL_12:
     self->_context = 0;
     AAByteStreamClose(self->_encryptedStream);
     self->_encryptedStream = 0;
-    if (a3)
+    if (error)
     {
-      if (*a3)
+      if (*error)
       {
-        v22 = *a3;
+        v22 = *error;
       }
 
       else
@@ -122,7 +122,7 @@ LABEL_12:
       }
 
       archiveStream = 0;
-      *a3 = v22;
+      *error = v22;
     }
 
     else
@@ -133,37 +133,37 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!error)
   {
     return 0;
   }
 
-  if (!*a3)
+  if (!*error)
   {
-    [(NTKAppleEncryptedArchiveHandle *)self openReturningError:a3];
+    [(NTKAppleEncryptedArchiveHandle *)self openReturningError:error];
     return 0;
   }
 
   archiveStream = 0;
-  *a3 = *a3;
+  *error = *error;
   return archiveStream;
 }
 
-- (BOOL)closeReturningError:(id *)a3
+- (BOOL)closeReturningError:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
   if (!self->_encryptedStream)
   {
-    if (a3)
+    if (error)
     {
-      if (*a3)
+      if (*error)
       {
         v11 = 0;
-        *a3 = *a3;
+        *error = *error;
         return v11;
       }
 
-      [(NTKAppleEncryptedArchiveHandle *)self openReturningError:a3];
+      [(NTKAppleEncryptedArchiveHandle *)self openReturningError:error];
     }
 
     return 0;
@@ -219,11 +219,11 @@ LABEL_12:
 
   self->_encryptedStream = 0;
   v11 = v8 == 0;
-  if (a3 && v8)
+  if (error && v8)
   {
-    if (*a3)
+    if (*error)
     {
-      *a3 = *a3;
+      *error = *error;
     }
 
     else
@@ -232,36 +232,36 @@ LABEL_12:
       v16[0] = v8;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
       v13 = [(NTKAppleEncryptedArchiveHandle *)self errorWithCode:v12 userInfo:?];
-      *a3 = v13;
+      *error = v13;
     }
   }
 
   return v11;
 }
 
-- (id)errorWithCode:(void *)a1
+- (id)errorWithCode:(void *)code
 {
-  if (a1)
+  if (code)
   {
-    a1 = [(NTKAppleEncryptedArchiveHandle *)a1 errorWithCode:a2 userInfo:MEMORY[0x277CBEC10]];
+    code = [(NTKAppleEncryptedArchiveHandle *)code errorWithCode:a2 userInfo:MEMORY[0x277CBEC10]];
     v2 = vars8;
   }
 
-  return a1;
+  return code;
 }
 
-- (id)errorWithCode:(void *)a3 userInfo:
+- (id)errorWithCode:(void *)code userInfo:
 {
-  if (a1)
+  if (self)
   {
-    v5 = [a3 mutableCopy];
+    v5 = [code mutableCopy];
     v6 = *MEMORY[0x277CCA760];
     v7 = [v5 objectForKey:*MEMORY[0x277CCA760]];
 
     if (!v7)
     {
-      v8 = [a1 archiveURL];
-      [v5 setObject:v8 forKey:v6];
+      archiveURL = [self archiveURL];
+      [v5 setObject:archiveURL forKey:v6];
     }
 
     v9 = MEMORY[0x277CCA9B8];

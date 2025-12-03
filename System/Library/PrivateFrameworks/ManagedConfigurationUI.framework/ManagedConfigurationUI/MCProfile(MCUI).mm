@@ -6,14 +6,14 @@
 
 - (uint64_t)isHRNProfile
 {
-  v1 = [a1 payloadsWithClass:objc_opt_class()];
-  v2 = [v1 firstObject];
+  v1 = [self payloadsWithClass:objc_opt_class()];
+  firstObject = [v1 firstObject];
 
-  v3 = [v2 pollingIntervalMinutes];
-  v4 = v3;
-  if (v2)
+  pollingIntervalMinutes = [firstObject pollingIntervalMinutes];
+  v4 = pollingIntervalMinutes;
+  if (firstObject)
   {
-    v5 = v3 == 0;
+    v5 = pollingIntervalMinutes == 0;
   }
 
   else

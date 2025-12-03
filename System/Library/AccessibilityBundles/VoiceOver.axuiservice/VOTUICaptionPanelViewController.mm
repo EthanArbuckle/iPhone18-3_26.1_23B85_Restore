@@ -2,16 +2,16 @@
 - (VOTUICaptionPanelViewController)init;
 - (double)_captionTextBottomInset;
 - (void)_accessibilityLoadInvertColors;
-- (void)_animateTextBack:(BOOL)a3;
+- (void)_animateTextBack:(BOOL)back;
 - (void)_hostContextId;
 - (void)_unhostContextId;
 - (void)_updateCaptionPanelHeight;
-- (void)parseMessage:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)parseMessage:(id)message;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation VOTUICaptionPanelViewController
@@ -52,14 +52,14 @@
   v21.receiver = self;
   v21.super_class = VOTUICaptionPanelViewController;
   [(VOTUICaptionPanelViewController *)&v21 viewWillLayoutSubviews];
-  v3 = [(VOTUICaptionPanelViewController *)self view];
-  [v3 bounds];
+  view = [(VOTUICaptionPanelViewController *)self view];
+  [view bounds];
   v5 = v4;
   [(VOTUICaptionPanelViewController *)self captionPanelHeight];
   v7 = v5 - v6;
 
-  v8 = [(VOTUICaptionPanelViewController *)self view];
-  [v8 frame];
+  view2 = [(VOTUICaptionPanelViewController *)self view];
+  [view2 frame];
   v10 = v9;
   [(VOTUICaptionPanelViewController *)self captionPanelHeight];
   [(UIView *)self->_backgroundView setFrame:0.0, v7, v10, v11];
@@ -75,10 +75,10 @@
   [(UITextView *)self->_captionPanelText setFrame:v17 + 8.0, v18 + 2.0, v19 + -16.0, v20 - (v16 + 2.0)];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(VOTUICaptionPanelViewController *)self captionPanelHeight];
   v8 = height - v7;
   [(VOTUICaptionPanelViewController *)self captionPanelHeight];
@@ -115,15 +115,15 @@
   if ([(VOTUICaptionPanelViewController *)self _isTV])
   {
     v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle2];
-    v4 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    [v4 setFont:v14];
+    captionPanelText = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    [captionPanelText setFont:v14];
 
-    v5 = [(VOTUICaptionPanelViewController *)self view];
-    [v5 frame];
+    view = [(VOTUICaptionPanelViewController *)self view];
+    [view frame];
     [(VOTUICaptionPanelViewController *)self setCaptionPanelHeight:v3 + v6 / 10.0];
 
-    v7 = [(VOTUICaptionPanelViewController *)self view];
-    [v7 setNeedsLayout];
+    view2 = [(VOTUICaptionPanelViewController *)self view];
+    [view2 setNeedsLayout];
   }
 
   else
@@ -131,16 +131,16 @@
     v8 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:UIContentSizeCategoryLarge];
     v14 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1 compatibleWithTraitCollection:v8];
 
-    v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-    v9 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    [v9 setFont:v7];
+    view2 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
+    captionPanelText2 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    [captionPanelText2 setFont:view2];
 
-    [v7 lineHeight];
+    [view2 lineHeight];
     v11 = v10 + 20.0;
     [v14 lineHeight];
     [(VOTUICaptionPanelViewController *)self setCaptionPanelHeight:v3 + v11 - v12 + 14.0];
-    v13 = [(VOTUICaptionPanelViewController *)self view];
-    [v13 setNeedsLayout];
+    view3 = [(VOTUICaptionPanelViewController *)self view];
+    [view3 setNeedsLayout];
   }
 }
 
@@ -149,8 +149,8 @@
   v45.receiver = self;
   v45.super_class = VOTUICaptionPanelViewController;
   [(VOTUICaptionPanelViewController *)&v45 viewDidLoad];
-  v3 = [(VOTUICaptionPanelViewController *)self view];
-  [v3 setAccessibilityElementsHidden:1];
+  view = [(VOTUICaptionPanelViewController *)self view];
+  [view setAccessibilityElementsHidden:1];
 
   v4 = [UIView alloc];
   y = CGRectZero.origin.y;
@@ -160,8 +160,8 @@
   backgroundView = self->_backgroundView;
   self->_backgroundView = v8;
 
-  v10 = [(VOTUICaptionPanelViewController *)self view];
-  [v10 addSubview:self->_backgroundView];
+  view2 = [(VOTUICaptionPanelViewController *)self view];
+  [view2 addSubview:self->_backgroundView];
 
   v41 = [UIBlurEffect effectWithStyle:1102];
   v11 = [[UIVisualEffectView alloc] initWithEffect:v41];
@@ -173,48 +173,48 @@
   v13 = [[UIScrollView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(VOTUICaptionPanelViewController *)self setScrollView:v13];
 
-  v14 = [(VOTUICaptionPanelViewController *)self scrollView];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  scrollView = [(VOTUICaptionPanelViewController *)self scrollView];
+  [scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v15 = [[UITextView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(VOTUICaptionPanelViewController *)self setCaptionPanelText:v15];
 
   v16 = +[UIColor clearColor];
-  v17 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  [v17 setBackgroundColor:v16];
+  captionPanelText = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  [captionPanelText setBackgroundColor:v16];
 
-  v18 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  captionPanelText2 = [(VOTUICaptionPanelViewController *)self captionPanelText];
   v19 = +[UIColor systemWhiteColor];
-  [v18 setTextColor:v19];
+  [captionPanelText2 setTextColor:v19];
 
-  v20 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  [v20 setTextAlignment:0];
+  captionPanelText3 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  [captionPanelText3 setTextAlignment:0];
 
-  v21 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  [v21 setAdjustsFontForContentSizeCategory:1];
+  captionPanelText4 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  [captionPanelText4 setAdjustsFontForContentSizeCategory:1];
 
   v22 = self->_backgroundView;
-  v23 = [(VOTUICaptionPanelViewController *)self scrollView];
-  [(UIView *)v22 addSubview:v23];
+  scrollView2 = [(VOTUICaptionPanelViewController *)self scrollView];
+  [(UIView *)v22 addSubview:scrollView2];
 
-  v24 = [(VOTUICaptionPanelViewController *)self scrollView];
-  v25 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  [v24 addSubview:v25];
+  scrollView3 = [(VOTUICaptionPanelViewController *)self scrollView];
+  captionPanelText5 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  [scrollView3 addSubview:captionPanelText5];
 
-  v40 = [(VOTUICaptionPanelViewController *)self scrollView];
-  v39 = [v40 widthAnchor];
-  v38 = [(UIView *)self->_backgroundView widthAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38 multiplier:0.9];
+  scrollView4 = [(VOTUICaptionPanelViewController *)self scrollView];
+  widthAnchor = [scrollView4 widthAnchor];
+  widthAnchor2 = [(UIView *)self->_backgroundView widthAnchor];
+  v37 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.9];
   v47[0] = v37;
-  v26 = [(VOTUICaptionPanelViewController *)self scrollView];
-  v27 = [v26 heightAnchor];
-  v28 = [(UIView *)self->_backgroundView heightAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28 multiplier:1.0];
+  scrollView5 = [(VOTUICaptionPanelViewController *)self scrollView];
+  heightAnchor = [scrollView5 heightAnchor];
+  heightAnchor2 = [(UIView *)self->_backgroundView heightAnchor];
+  v29 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.0];
   v47[1] = v29;
-  v30 = [(VOTUICaptionPanelViewController *)self scrollView];
-  v31 = [v30 centerXAnchor];
-  v32 = [(UIView *)self->_backgroundView centerXAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32 constant:0.0];
+  scrollView6 = [(VOTUICaptionPanelViewController *)self scrollView];
+  centerXAnchor = [scrollView6 centerXAnchor];
+  centerXAnchor2 = [(UIView *)self->_backgroundView centerXAnchor];
+  v33 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:0.0];
   v47[2] = v33;
   v34 = [NSArray arrayWithObjects:v47 count:3];
   [NSLayoutConstraint activateConstraints:v34];
@@ -235,28 +235,28 @@
   objc_destroyWeak(&location);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VOTUICaptionPanelViewController;
-  [(VOTUICaptionPanelViewController *)&v4 viewDidAppear:a3];
+  [(VOTUICaptionPanelViewController *)&v4 viewDidAppear:appear];
   [(VOTUICaptionPanelViewController *)self _hostContextId];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = VOTUICaptionPanelViewController;
-  [(VOTUICaptionPanelViewController *)&v4 viewWillDisappear:a3];
+  [(VOTUICaptionPanelViewController *)&v4 viewWillDisappear:disappear];
   [(VOTUICaptionPanelViewController *)self _unhostContextId];
 }
 
 - (void)_hostContextId
 {
   v5 = +[AXSpringBoardServer server];
-  v3 = [(VOTUICaptionPanelViewController *)self view];
-  v4 = [v3 window];
-  [v5 setCaptionPanelContextId:{objc_msgSend(v4, "_contextId")}];
+  view = [(VOTUICaptionPanelViewController *)self view];
+  window = [view window];
+  [v5 setCaptionPanelContextId:{objc_msgSend(window, "_contextId")}];
 }
 
 - (void)_unhostContextId
@@ -265,12 +265,12 @@
   [v2 setCaptionPanelContextId:0];
 }
 
-- (void)parseMessage:(id)a3
+- (void)parseMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   [(VOTUICaptionPanelViewController *)self _hostContextId];
-  v5 = [v4 objectForKey:@"VoiceOverCaptionText"];
-  v6 = [v4 objectForKey:@"VoiceOverCaptionSpokenRange"];
+  v5 = [messageCopy objectForKey:@"VoiceOverCaptionText"];
+  v6 = [messageCopy objectForKey:@"VoiceOverCaptionSpokenRange"];
 
   v7 = NSRangeFromString(v6);
   length = v7.length;
@@ -286,9 +286,9 @@
 
   v11 = [v5 stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 
-  v12 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  v13 = [v12 text];
-  v14 = [(__CFString *)v11 isEqualToString:v13];
+  captionPanelText = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  text = [captionPanelText text];
+  v14 = [(__CFString *)v11 isEqualToString:text];
 
   v15 = [NSMutableAttributedString alloc];
   if (v11)
@@ -305,14 +305,14 @@
   v18 = +[UIColor whiteColor];
   [v17 addAttribute:NSForegroundColorAttributeName value:v18 range:{0, objc_msgSend(v17, "length")}];
 
-  v19 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  v20 = [v19 font];
+  captionPanelText2 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  font = [captionPanelText2 font];
 
-  if (v20)
+  if (font)
   {
-    v21 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    v22 = [v21 font];
-    [v17 addAttribute:NSFontAttributeName value:v22 range:{0, objc_msgSend(v17, "length")}];
+    captionPanelText3 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    font2 = [captionPanelText3 font];
+    [v17 addAttribute:NSFontAttributeName value:font2 range:{0, objc_msgSend(v17, "length")}];
 
     length = v7.length;
   }
@@ -333,23 +333,23 @@
     [v17 addAttribute:NSUnderlineStyleAttributeName value:&off_40198 range:{v24.location, v24.length}];
   }
 
-  v26 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  [v26 setAttributedText:v17];
+  captionPanelText4 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  [captionPanelText4 setAttributedText:v17];
 
-  v27 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  v28 = [(VOTUICaptionPanelViewController *)self scrollView];
-  [v28 frame];
-  [v27 sizeThatFits:{3.40282347e38, v29}];
+  captionPanelText5 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  scrollView = [(VOTUICaptionPanelViewController *)self scrollView];
+  [scrollView frame];
+  [captionPanelText5 sizeThatFits:{3.40282347e38, v29}];
   v31 = v30;
 
   if ((v14 & 1) == 0)
   {
-    v32 = [(VOTUICaptionPanelViewController *)self scrollView];
-    [v32 setContentOffset:0 animated:{0.0, 0.0}];
+    scrollView2 = [(VOTUICaptionPanelViewController *)self scrollView];
+    [scrollView2 setContentOffset:0 animated:{0.0, 0.0}];
 
     [(UIViewPropertyAnimator *)self->_scrollingAnimator stopAnimation:1];
-    v33 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    [v33 frame];
+    captionPanelText6 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    [captionPanelText6 frame];
     v35 = v34;
 
     if (AXDeviceHasHomeButton())
@@ -363,31 +363,31 @@
     }
 
     v37 = v31 + 10.0;
-    v38 = [(VOTUICaptionPanelViewController *)self scrollView];
-    [v38 frame];
+    scrollView3 = [(VOTUICaptionPanelViewController *)self scrollView];
+    [scrollView3 frame];
     v40 = v39;
 
-    v41 = [(VOTUICaptionPanelViewController *)self scrollView];
-    [v41 frame];
+    scrollView4 = [(VOTUICaptionPanelViewController *)self scrollView];
+    [scrollView4 frame];
     v43 = v42;
 
     if (v31 + 10.0 < v43)
     {
-      v44 = [(VOTUICaptionPanelViewController *)self scrollView];
-      [v44 frame];
+      scrollView5 = [(VOTUICaptionPanelViewController *)self scrollView];
+      [scrollView5 frame];
       v37 = v45;
     }
 
-    v46 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    [v46 setFrame:{0.0, v36, v37, v40}];
+    captionPanelText7 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    [captionPanelText7 setFrame:{0.0, v36, v37, v40}];
 
-    v47 = [(VOTUICaptionPanelViewController *)self scrollView];
-    [v47 setContentSize:{v37, v40}];
+    scrollView6 = [(VOTUICaptionPanelViewController *)self scrollView];
+    [scrollView6 setContentSize:{v37, v40}];
   }
 
   v48 = objc_opt_new();
-  v49 = [(VOTUICaptionPanelViewController *)self view];
-  [v49 bounds];
+  view = [(VOTUICaptionPanelViewController *)self view];
+  [view bounds];
   v51 = v50;
 
   if (v31 <= v51)
@@ -402,8 +402,8 @@
 
   [v48 setAlignment:v52];
   [v17 addAttribute:NSParagraphStyleAttributeName value:v48 range:{0, objc_msgSend(v17, "length")}];
-  v53 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  [v53 setAttributedText:v17];
+  captionPanelText8 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  [captionPanelText8 setAttributedText:v17];
 
   resetColorsTimer = self->_resetColorsTimer;
   [(VOTUICaptionPanelViewController *)self marqueeEnableDelay];
@@ -416,7 +416,7 @@
   v105 = v57;
   v58 = v17;
   v106 = v58;
-  v107 = self;
+  selfCopy = self;
   v59 = v48;
   v108 = v59;
   [(AXDispatchTimer *)resetColorsTimer afterDelay:v104 processBlock:v56];
@@ -430,34 +430,34 @@
   [(AXDispatchTimer *)scrollingStartTimer afterDelay:v103 processBlock:?];
   if (location != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v61 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    v62 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    [v62 beginningOfDocument];
+    captionPanelText9 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    captionPanelText10 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    [captionPanelText10 beginningOfDocument];
     v64 = v63 = length;
-    v65 = [v61 positionFromPosition:v64 offset:location];
+    v65 = [captionPanelText9 positionFromPosition:v64 offset:location];
 
-    v66 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    v67 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    v68 = [v67 beginningOfDocument];
-    v69 = [v66 positionFromPosition:v68 offset:location + v63];
+    captionPanelText11 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    captionPanelText12 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    beginningOfDocument = [captionPanelText12 beginningOfDocument];
+    v69 = [captionPanelText11 positionFromPosition:beginningOfDocument offset:location + v63];
 
-    v70 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    v71 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    v72 = [v71 textRangeFromPosition:v65 toPosition:v69];
-    [v70 firstRectForRange:v72];
+    captionPanelText13 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    captionPanelText14 = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    v72 = [captionPanelText14 textRangeFromPosition:v65 toPosition:v69];
+    [captionPanelText13 firstRectForRange:v72];
     v74 = v73;
     v76 = v75;
     v78 = v77;
     v80 = v79;
 
-    v81 = [(VOTUICaptionPanelViewController *)self scrollView];
-    [v81 contentOffset];
+    scrollView7 = [(VOTUICaptionPanelViewController *)self scrollView];
+    [scrollView7 contentOffset];
     v83 = v82;
-    v84 = [(VOTUICaptionPanelViewController *)self scrollView];
-    [v84 frame];
+    scrollView8 = [(VOTUICaptionPanelViewController *)self scrollView];
+    [scrollView8 frame];
     v86 = v85;
-    v87 = [(VOTUICaptionPanelViewController *)self scrollView];
-    [v87 frame];
+    scrollView9 = [(VOTUICaptionPanelViewController *)self scrollView];
+    [scrollView9 frame];
     v89 = v88;
 
     v117.origin.x = v74;
@@ -510,8 +510,8 @@
 
       else if (UIAccessibilityIsReduceMotionEnabled())
       {
-        v97 = [(VOTUICaptionPanelViewController *)self scrollView];
-        [v97 setContentOffset:0 animated:{v74 + v86 / -5.0, 0.0}];
+        scrollView10 = [(VOTUICaptionPanelViewController *)self scrollView];
+        [scrollView10 setContentOffset:0 animated:{v74 + v86 / -5.0, 0.0}];
       }
 
       else
@@ -528,20 +528,20 @@
   }
 }
 
-- (void)_animateTextBack:(BOOL)a3
+- (void)_animateTextBack:(BOOL)back
 {
-  v3 = a3;
+  backCopy = back;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_FE88;
   v23[3] = &unk_3D218;
   v23[4] = self;
   [UIView performWithoutAnimation:v23];
-  v5 = [(VOTUICaptionPanelViewController *)self scrollView];
-  [v5 contentSize];
+  scrollView = [(VOTUICaptionPanelViewController *)self scrollView];
+  [scrollView contentSize];
   v7 = v6;
-  v8 = [(VOTUICaptionPanelViewController *)self scrollView];
-  [v8 bounds];
+  scrollView2 = [(VOTUICaptionPanelViewController *)self scrollView];
+  [scrollView2 bounds];
   v10 = v7 - v9;
 
   if (v10 <= 0.0)
@@ -549,13 +549,13 @@
     [(UIViewPropertyAnimator *)self->_scrollingAnimator stopAnimation:1];
   }
 
-  else if (v3)
+  else if (backCopy)
   {
     objc_initWeak(&location, self);
     v11 = [UIViewPropertyAnimator alloc];
-    v12 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-    v13 = [v12 text];
-    v14 = [v11 initWithDuration:3 curve:0 animations:{objc_msgSend(v13, "length") / 10.0}];
+    captionPanelText = [(VOTUICaptionPanelViewController *)self captionPanelText];
+    text = [captionPanelText text];
+    v14 = [v11 initWithDuration:3 curve:0 animations:{objc_msgSend(text, "length") / 10.0}];
     scrollingAnimator = self->_scrollingAnimator;
     self->_scrollingAnimator = v14;
 
@@ -583,8 +583,8 @@
 
 - (void)_accessibilityLoadInvertColors
 {
-  v3 = [(VOTUICaptionPanelViewController *)self captionPanelText];
-  [v3 setAccessibilityIgnoresInvertColors:1];
+  captionPanelText = [(VOTUICaptionPanelViewController *)self captionPanelText];
+  [captionPanelText setAccessibilityIgnoresInvertColors:1];
 
   effectView = self->_effectView;
 

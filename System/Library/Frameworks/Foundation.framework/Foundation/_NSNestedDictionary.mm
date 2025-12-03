@@ -1,11 +1,11 @@
 @interface _NSNestedDictionary
 - (id)keyEnumerator;
 - (id)objectEnumerator;
-- (id)objectForKey:(id)a3;
+- (id)objectForKey:(id)key;
 - (uint64_t)_recursiveAllKeys;
 - (uint64_t)_recursiveAllValues;
 - (unint64_t)count;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation _NSNestedDictionary
@@ -13,29 +13,29 @@
 - (uint64_t)_recursiveAllKeys
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  Class = object_getClass(*(a1 + 16));
-  v3 = *(a1 + 16);
+  Class = object_getClass(*(self + 16));
+  v3 = *(self + 16);
   if (Class == _NSNestedDictionary)
   {
-    v4 = [(_NSNestedDictionary *)v3 _recursiveAllKeys];
+    _recursiveAllKeys = [(_NSNestedDictionary *)v3 _recursiveAllKeys];
   }
 
   else
   {
-    v4 = [v3 allKeys];
+    _recursiveAllKeys = [v3 allKeys];
   }
 
-  v5 = v4;
-  if (*(a1 + 8))
+  allObjects = _recursiveAllKeys;
+  if (*(self + 8))
   {
-    if (v4)
+    if (_recursiveAllKeys)
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v4];
+      v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:_recursiveAllKeys];
     }
 
     else
@@ -48,7 +48,7 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = *(a1 + 8);
+    v8 = *(self + 8);
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v14 count:16];
     if (v9)
     {
@@ -72,43 +72,43 @@
       while (v10);
     }
 
-    v5 = [v7 allObjects];
+    allObjects = [v7 allObjects];
   }
 
-  if (!v5)
+  if (!allObjects)
   {
     return [MEMORY[0x1E695DEC8] array];
   }
 
-  return v5;
+  return allObjects;
 }
 
 - (uint64_t)_recursiveAllValues
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  Class = object_getClass(*(a1 + 16));
-  v3 = *(a1 + 16);
+  Class = object_getClass(*(self + 16));
+  v3 = *(self + 16);
   if (Class == _NSNestedDictionary)
   {
-    v4 = [(_NSNestedDictionary *)v3 _recursiveAllValues];
+    _recursiveAllValues = [(_NSNestedDictionary *)v3 _recursiveAllValues];
   }
 
   else
   {
-    v4 = [v3 allValues];
+    _recursiveAllValues = [v3 allValues];
   }
 
-  v5 = v4;
-  if (*(a1 + 8))
+  allObjects = _recursiveAllValues;
+  if (*(self + 8))
   {
-    if (v4)
+    if (_recursiveAllValues)
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v4];
+      v6 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:_recursiveAllValues];
     }
 
     else
@@ -121,7 +121,7 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v8 = *(a1 + 8);
+    v8 = *(self + 8);
     v9 = [v8 countByEnumeratingWithState:&v15 objects:v14 count:16];
     if (v9)
     {
@@ -136,7 +136,7 @@
             objc_enumerationMutation(v8);
           }
 
-          [v7 addObject:{objc_msgSend(*(a1 + 8), "objectForKey:", *(*(&v15 + 1) + 8 * i))}];
+          [v7 addObject:{objc_msgSend(*(self + 8), "objectForKey:", *(*(&v15 + 1) + 8 * i))}];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v15 objects:v14 count:16];
@@ -145,15 +145,15 @@
       while (v10);
     }
 
-    v5 = [v7 allObjects];
+    allObjects = [v7 allObjects];
   }
 
-  if (!v5)
+  if (!allObjects)
   {
     return [MEMORY[0x1E695DEC8] array];
   }
 
-  return v5;
+  return allObjects;
 }
 
 - (unint64_t)count
@@ -161,9 +161,9 @@
   bindings = self->_bindings;
   if (bindings && self->_locals)
   {
-    v4 = [(_NSNestedDictionary *)self _recursiveAllKeys];
+    _recursiveAllKeys = [(_NSNestedDictionary *)self _recursiveAllKeys];
 
-    return [v4 count];
+    return [_recursiveAllKeys count];
   }
 
   else
@@ -173,14 +173,14 @@
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   result = [self->_locals objectForKey:?];
   if (!result)
   {
     bindings = self->_bindings;
 
-    return [bindings objectForKey:a3];
+    return [bindings objectForKey:key];
   }
 
   return result;
@@ -188,19 +188,19 @@
 
 - (id)keyEnumerator
 {
-  v2 = [(_NSNestedDictionary *)self _recursiveAllKeys];
+  _recursiveAllKeys = [(_NSNestedDictionary *)self _recursiveAllKeys];
 
-  return [v2 objectEnumerator];
+  return [_recursiveAllKeys objectEnumerator];
 }
 
 - (id)objectEnumerator
 {
-  v2 = [(_NSNestedDictionary *)self _recursiveAllValues];
+  _recursiveAllValues = [(_NSNestedDictionary *)self _recursiveAllValues];
 
-  return [v2 objectEnumerator];
+  return [_recursiveAllValues objectEnumerator];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   locals = self->_locals;
   if (!locals)
@@ -209,7 +209,7 @@
     self->_locals = locals;
   }
 
-  [locals setObject:a3 forKey:a4];
+  [locals setObject:object forKey:key];
 }
 
 @end

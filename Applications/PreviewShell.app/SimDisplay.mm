@@ -2,7 +2,7 @@
 - (FBSDisplayConfiguration)displayConfiguration;
 - (NSString)name;
 - (_TtC12PreviewShell10SimDisplay)init;
-- (_TtC12PreviewShell10SimDisplay)initWithName:(id)a3 displayID:(unsigned int)a4 displayConfiguration:(id)a5 capabilitiesPath:(id)a6;
+- (_TtC12PreviewShell10SimDisplay)initWithName:(id)name displayID:(unsigned int)d displayConfiguration:(id)configuration capabilitiesPath:(id)path;
 @end
 
 @implementation SimDisplay
@@ -19,22 +19,22 @@
 
 - (FBSDisplayConfiguration)displayConfiguration
 {
-  v2 = [*(self + OBJC_IVAR____TtC12PreviewShell10SimDisplay_capabilities + 8) displayConfiguration];
+  displayConfiguration = [*(self + OBJC_IVAR____TtC12PreviewShell10SimDisplay_capabilities + 8) displayConfiguration];
 
-  return v2;
+  return displayConfiguration;
 }
 
-- (_TtC12PreviewShell10SimDisplay)initWithName:(id)a3 displayID:(unsigned int)a4 displayConfiguration:(id)a5 capabilitiesPath:(id)a6
+- (_TtC12PreviewShell10SimDisplay)initWithName:(id)name displayID:(unsigned int)d displayConfiguration:(id)configuration capabilitiesPath:(id)path
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a6)
+  if (path)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v12 = a5;
-  sub_10000FC78(v9, v11, a4, v12);
+  configurationCopy = configuration;
+  sub_10000FC78(v9, v11, d, configurationCopy);
   v14 = v13;
 
   return v14;

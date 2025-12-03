@@ -1,22 +1,22 @@
 @interface EKReminderUneditableButtonDetailItem
-- (EKReminderUneditableButtonDetailItem)initWithUneditableButtonDetailItemDelegate:(id)a3;
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (EKReminderUneditableButtonDetailItem)initWithUneditableButtonDetailItemDelegate:(id)delegate;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (void)reset;
-- (void)uneditableButtonCellRequestedShowFirstUncompletedReminder:(id)a3;
+- (void)uneditableButtonCellRequestedShowFirstUncompletedReminder:(id)reminder;
 @end
 
 @implementation EKReminderUneditableButtonDetailItem
 
-- (EKReminderUneditableButtonDetailItem)initWithUneditableButtonDetailItemDelegate:(id)a3
+- (EKReminderUneditableButtonDetailItem)initWithUneditableButtonDetailItemDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = EKReminderUneditableButtonDetailItem;
   v6 = [(EKReminderUneditableButtonDetailItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uneditableButtonDetailItemDelegate, a3);
+    objc_storeStrong(&v6->_uneditableButtonDetailItemDelegate, delegate);
   }
 
   return v7;
@@ -31,7 +31,7 @@
   self->_cell = 0;
 }
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   cell = self->_cell;
   if (!cell)
@@ -39,15 +39,15 @@
     v5 = [EKReminderUneditableButtonDetailCell alloc];
     if (self->_uneditableButtonDetailItemDelegate)
     {
-      v6 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v6 = 0;
+      selfCopy = 0;
     }
 
-    v7 = [(EKReminderUneditableButtonDetailCell *)v5 initWithEvent:self->super._event uneditableButtonCellDelegate:v6];
+    v7 = [(EKReminderUneditableButtonDetailCell *)v5 initWithEvent:self->super._event uneditableButtonCellDelegate:selfCopy];
     v8 = self->_cell;
     self->_cell = v7;
 
@@ -57,10 +57,10 @@
   return cell;
 }
 
-- (void)uneditableButtonCellRequestedShowFirstUncompletedReminder:(id)a3
+- (void)uneditableButtonCellRequestedShowFirstUncompletedReminder:(id)reminder
 {
-  v4 = [(EKEvent *)self->super._event CUIK_currentReminder];
-  [(EKReminderUneditableButtonDetailItemDelegate *)self->_uneditableButtonDetailItemDelegate uneditableButtonDetailItem:self requestsShowEvent:v4];
+  cUIK_currentReminder = [(EKEvent *)self->super._event CUIK_currentReminder];
+  [(EKReminderUneditableButtonDetailItemDelegate *)self->_uneditableButtonDetailItemDelegate uneditableButtonDetailItem:self requestsShowEvent:cUIK_currentReminder];
 }
 
 @end

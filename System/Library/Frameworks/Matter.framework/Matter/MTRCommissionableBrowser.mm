@@ -1,26 +1,26 @@
 @interface MTRCommissionableBrowser
 - (BOOL)start;
 - (BOOL)stop;
-- (MTRCommissionableBrowser)initWithDelegate:(id)a3 controller:(id)a4 queue:(id)a5;
+- (MTRCommissionableBrowser)initWithDelegate:(id)delegate controller:(id)controller queue:(id)queue;
 - (id).cxx_construct;
 @end
 
 @implementation MTRCommissionableBrowser
 
-- (MTRCommissionableBrowser)initWithDelegate:(id)a3 controller:(id)a4 queue:(id)a5
+- (MTRCommissionableBrowser)initWithDelegate:(id)delegate controller:(id)controller queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  controllerCopy = controller;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = MTRCommissionableBrowser;
   v12 = [(MTRCommissionableBrowser *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_delegate, a3);
-    objc_storeWeak(&v13->_controller, v10);
-    objc_storeStrong(&v13->_queue, a5);
+    objc_storeStrong(&v12->_delegate, delegate);
+    objc_storeWeak(&v13->_controller, controllerCopy);
+    objc_storeStrong(&v13->_queue, queue);
   }
 
   return v13;
@@ -28,12 +28,12 @@
 
 - (BOOL)start
 {
-  v2 = self;
+  selfCopy = self;
   delegate = self->_delegate;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
-  LOBYTE(v2) = sub_2393A9A98(&v2->_browser, delegate, WeakRetained, v2->_queue) == 0;
+  LOBYTE(selfCopy) = sub_2393A9A98(&selfCopy->_browser, delegate, WeakRetained, selfCopy->_queue) == 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)stop

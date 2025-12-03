@@ -1,82 +1,82 @@
 @interface _DASConditionScore
-+ (BOOL)isPremiumClient:(id)a3;
-+ (BOOL)shouldCacheMetadataForActivity:(id)a3;
-+ (double)preOptimalRelaxationFactor:(unint64_t)a3;
-+ (double)relaxationFactorForTimeSlot:(int64_t)a3 activityPriority:(unint64_t)a4;
-+ (double)scoreForActivity:(id)a3 withState:(id)a4 response:(int64_t *)a5;
-+ (double)thresholdScoreForActivity:(id)a3;
-+ (id)getResponseStringForPolicy:(id)a3 response:(id)a4 appliesToActivity:(BOOL)a5 weightForActivity:(double)a6;
-+ (id)lastDenialResponses:(id)a3;
-+ (int64_t)getTimeSlotForActivity:(id)a3;
-+ (void)computeOptimalScoreAndDateForActivity:(id)a3;
-+ (void)setActivityShouldBypassPredictions:(id)a3;
++ (BOOL)isPremiumClient:(id)client;
++ (BOOL)shouldCacheMetadataForActivity:(id)activity;
++ (double)preOptimalRelaxationFactor:(unint64_t)factor;
++ (double)relaxationFactorForTimeSlot:(int64_t)slot activityPriority:(unint64_t)priority;
++ (double)scoreForActivity:(id)activity withState:(id)state response:(int64_t *)response;
++ (double)thresholdScoreForActivity:(id)activity;
++ (id)getResponseStringForPolicy:(id)policy response:(id)response appliesToActivity:(BOOL)activity weightForActivity:(double)forActivity;
++ (id)lastDenialResponses:(id)responses;
++ (int64_t)getTimeSlotForActivity:(id)activity;
++ (void)computeOptimalScoreAndDateForActivity:(id)activity;
++ (void)setActivityShouldBypassPredictions:(id)predictions;
 @end
 
 @implementation _DASConditionScore
 
-+ (BOOL)isPremiumClient:(id)a3
++ (BOOL)isPremiumClient:(id)client
 {
-  v3 = a3;
-  v4 = [v3 schedulingPriority];
-  if (v4 >= _DASSchedulingPriorityUserInitiated || +[_DASPhotosPolicy isiCPLActivity:](_DASPhotosPolicy, "isiCPLActivity:", v3) || ([v3 requiresSignificantUserInactivity] & 1) != 0)
+  clientCopy = client;
+  schedulingPriority = [clientCopy schedulingPriority];
+  if (schedulingPriority >= _DASSchedulingPriorityUserInitiated || +[_DASPhotosPolicy isiCPLActivity:](_DASPhotosPolicy, "isiCPLActivity:", clientCopy) || ([clientCopy requiresSignificantUserInactivity] & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v7 = [v3 fastPass];
-    if (v7)
+    fastPass = [clientCopy fastPass];
+    if (fastPass)
     {
       v5 = 1;
     }
 
     else
     {
-      v8 = [v3 name];
-      v5 = [v8 containsString:@"apple.backupd."];
+      name = [clientCopy name];
+      v5 = [name containsString:@"apple.backupd."];
     }
   }
 
   return v5;
 }
 
-+ (void)setActivityShouldBypassPredictions:(id)a3
++ (void)setActivityShouldBypassPredictions:(id)predictions
 {
-  v8 = a3;
-  v3 = [v8 schedulingPriority];
-  if (v3 >= _DASSchedulingPriorityUserInitiated || +[_DASPhotosPolicy isiCPLActivity:](_DASPhotosPolicy, "isiCPLActivity:", v8) || +[_DASPhotosPolicy isAppLibraryActivity:](_DASPhotosPolicy, "isAppLibraryActivity:", v8) || ([v8 launchReason], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", _DASLaunchReasonBackgroundRemoteNotification), v4, (v5 & 1) != 0))
+  predictionsCopy = predictions;
+  schedulingPriority = [predictionsCopy schedulingPriority];
+  if (schedulingPriority >= _DASSchedulingPriorityUserInitiated || +[_DASPhotosPolicy isiCPLActivity:](_DASPhotosPolicy, "isiCPLActivity:", predictionsCopy) || +[_DASPhotosPolicy isAppLibraryActivity:](_DASPhotosPolicy, "isAppLibraryActivity:", predictionsCopy) || ([predictionsCopy launchReason], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", _DASLaunchReasonBackgroundRemoteNotification), v4, (v5 & 1) != 0))
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v8 fastPass];
+    fastPass = [predictionsCopy fastPass];
 
-    v6 = v7 != 0;
+    v6 = fastPass != 0;
   }
 
-  [v8 setBypassesPredictions:v6];
+  [predictionsCopy setBypassesPredictions:v6];
 }
 
-+ (double)scoreForActivity:(id)a3 withState:(id)a4 response:(int64_t *)a5
++ (double)scoreForActivity:(id)activity withState:(id)state response:(int64_t *)response
 {
-  v6 = a3;
-  v75 = a4;
+  activityCopy = activity;
+  stateCopy = state;
   v70 = os_transaction_create();
   context = objc_autoreleasePoolPush();
   v7 = +[_DASPolicyManager allPoliciesForPlatform];
-  v8 = v6;
+  v8 = activityCopy;
   objc_sync_enter(v8);
   obj = v8;
-  v9 = [v8 policyResponseMetadata];
-  v73 = [v9 objectForKeyedSubscript:?];
+  policyResponseMetadata = [v8 policyResponseMetadata];
+  v73 = [policyResponseMetadata objectForKeyedSubscript:?];
 
   [obj setPolicyResponseMetadata:0];
   [obj setLastDenialValue:0];
-  v10 = [obj policyResponseMetadata];
-  [v10 removeAllObjects];
+  policyResponseMetadata2 = [obj policyResponseMetadata];
+  [policyResponseMetadata2 removeAllObjects];
 
   objc_sync_exit(obj);
   v74 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v7 count]);
@@ -110,38 +110,38 @@
         if (v17)
         {
           v20 = objc_autoreleasePoolPush();
-          v21 = [v15 responseForActivity:obj withState:v75];
+          policyName4 = [v15 responseForActivity:obj withState:stateCopy];
           objc_autoreleasePoolPop(v20);
-          v22 = [v21 policyDecision];
-          if (v11 <= v22)
+          policyDecision = [policyName4 policyDecision];
+          if (v11 <= policyDecision)
           {
-            v11 = v22;
+            v11 = policyDecision;
           }
 
-          v23 = [v15 policyName];
-          v24 = [_DASConditionScore getResponseStringForPolicy:v23 response:v21 appliesToActivity:1 weightForActivity:v19];
+          policyName = [v15 policyName];
+          v24 = [_DASConditionScore getResponseStringForPolicy:policyName response:policyName4 appliesToActivity:1 weightForActivity:v19];
 
-          if ([v21 policyDecision])
+          if ([policyName4 policyDecision])
           {
             v25 = v79;
           }
 
           else
           {
-            [v21 score];
+            [policyName4 score];
             v13 = v13 + v19 * v26;
             v12 = v12 + v19;
             v25 = v74;
           }
 
           [v25 addObject:v24];
-          [v21 score];
+          [policyName4 score];
           if (v27 <= 0.0)
           {
             v28 = obj;
             objc_sync_enter(v28);
-            v29 = [v15 policyName];
-            [v28 setLastDenialValue:{objc_msgSend(v28, "lastDenialValue") | +[_DASPolicyManager bitmaskForPolicy:](_DASPolicyManager, "bitmaskForPolicy:", v29)}];
+            policyName2 = [v15 policyName];
+            [v28 setLastDenialValue:{objc_msgSend(v28, "lastDenialValue") | +[_DASPolicyManager bitmaskForPolicy:](_DASPolicyManager, "bitmaskForPolicy:", policyName2)}];
 
             objc_sync_exit(v28);
           }
@@ -151,13 +151,13 @@
             v30 = obj;
             objc_sync_enter(v30);
             v31 = [_DASInternalPolicyEvaluationMetadata alloc];
-            [v21 score];
+            [policyName4 score];
             v33 = v32;
-            v34 = [v21 rationale];
-            v35 = [v31 initWithScore:objc_msgSend(v34 reason:"responseOptions") decision:{objc_msgSend(v21, "policyDecision"), v33}];
-            v36 = [v30 policyResponseMetadata];
-            v37 = [v15 policyName];
-            [v36 setObject:v35 forKeyedSubscript:v37];
+            rationale = [policyName4 rationale];
+            v35 = [v31 initWithScore:objc_msgSend(rationale reason:"responseOptions") decision:{objc_msgSend(policyName4, "policyDecision"), v33}];
+            policyResponseMetadata3 = [v30 policyResponseMetadata];
+            policyName3 = [v15 policyName];
+            [policyResponseMetadata3 setObject:v35 forKeyedSubscript:policyName3];
 
             objc_sync_exit(v30);
           }
@@ -165,8 +165,8 @@
 
         else
         {
-          v21 = [v15 policyName];
-          v24 = [_DASConditionScore getResponseStringForPolicy:v21 response:0 appliesToActivity:0 weightForActivity:v19];
+          policyName4 = [v15 policyName];
+          v24 = [_DASConditionScore getResponseStringForPolicy:policyName4 response:0 appliesToActivity:0 weightForActivity:v19];
           [v79 addObject:v24];
         }
 
@@ -198,15 +198,15 @@
   {
     v39 = obj;
     objc_sync_enter(v39);
-    v40 = [v39 policyResponseMetadata];
+    policyResponseMetadata4 = [v39 policyResponseMetadata];
     v41 = +[_DASApplicationPolicy policyInstance];
-    v42 = [v41 policyName];
-    v43 = [v40 objectForKeyedSubscript:v42];
+    policyName5 = [v41 policyName];
+    v43 = [policyResponseMetadata4 objectForKeyedSubscript:policyName5];
 
-    v44 = [v39 policyResponseMetadata];
+    policyResponseMetadata5 = [v39 policyResponseMetadata];
     v45 = +[_DASGroupSchedulingPolicy policyInstance];
-    v46 = [v45 policyName];
-    v47 = [v44 objectForKeyedSubscript:v46];
+    policyName6 = [v45 policyName];
+    v47 = [policyResponseMetadata5 objectForKeyedSubscript:policyName6];
 
     if ([v47 reason])
     {
@@ -233,9 +233,9 @@
     objc_sync_exit(v39);
   }
 
-  if (a5)
+  if (response)
   {
-    *a5 = v11;
+    *response = v11;
   }
 
   v50 = 0.0;
@@ -254,15 +254,15 @@
 
   v51 = obj;
   objc_sync_enter(v51);
-  v52 = [v51 policyResponseMetadata];
-  [v52 setObject:v73 forKeyedSubscript:@"scoreWhenRun"];
+  policyResponseMetadata6 = [v51 policyResponseMetadata];
+  [policyResponseMetadata6 setObject:v73 forKeyedSubscript:@"scoreWhenRun"];
 
   objc_sync_exit(v51);
   if (v11)
   {
     v53 = [v79 componentsJoinedByString:&stru_1001BA3C0];
     v54 = v53;
-    v55 = [v53 UTF8String];
+    uTF8String = [v53 UTF8String];
 
     v56 = [_DASDaemonLogger logForCategory:@"scoring"];
     if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
@@ -271,7 +271,7 @@
       *buf = 138543874;
       v90 = v51;
       v91 = 2082;
-      v92 = v55;
+      v92 = uTF8String;
       v93 = 2114;
       v94 = *&v57;
       _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEFAULT, "%{public}@:[\n%{public}s ], Decision: %{public}@}", buf, 0x20u);
@@ -309,7 +309,7 @@
 
   v62 = [v79 componentsJoinedByString:&stru_1001BA3C0];
   v63 = v62;
-  v64 = [v62 UTF8String];
+  uTF8String2 = [v62 UTF8String];
 
   if (v12 == 0.0)
   {
@@ -346,7 +346,7 @@
     *buf = 138544642;
     v90 = v51;
     v91 = 2082;
-    v92 = v64;
+    v92 = uTF8String2;
     v93 = 2048;
     v94 = v13;
     v95 = 2048;
@@ -366,28 +366,28 @@ LABEL_58:
   return v50;
 }
 
-+ (BOOL)shouldCacheMetadataForActivity:(id)a3
++ (BOOL)shouldCacheMetadataForActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = +[_DASDaemon sharedInstance];
-  v5 = [v4 testModeParameters];
+  testModeParameters = [v4 testModeParameters];
 
-  if (v5 || [_DASPhotosPolicy isPhotosSyncActivity:v3])
+  if (testModeParameters || [_DASPhotosPolicy isPhotosSyncActivity:activityCopy])
   {
-    v6 = 1;
+    isContinuedProcessingTask = 1;
   }
 
   else
   {
-    v6 = [v3 isContinuedProcessingTask];
+    isContinuedProcessingTask = [activityCopy isContinuedProcessingTask];
   }
 
-  return v6;
+  return isContinuedProcessingTask;
 }
 
-+ (void)computeOptimalScoreAndDateForActivity:(id)a3
++ (void)computeOptimalScoreAndDateForActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = os_transaction_create();
   if (qword_10020B4E8 != -1)
   {
@@ -395,42 +395,42 @@ LABEL_58:
   }
 
   v5 = objc_autoreleasePoolPush();
-  if ([v3 bypassesPredictions])
+  if ([activityCopy bypassesPredictions])
   {
     v6 = [_DASDaemonLogger logForCategory:@"scoring"];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      sub_100121F88(v3, v6);
+      sub_100121F88(activityCopy, v6);
     }
 
-    v7 = [v3 startAfter];
-    [v3 setPredictedOptimalStartDate:v7];
+    startAfter = [activityCopy startAfter];
+    [activityCopy setPredictedOptimalStartDate:startAfter];
 
-    [v3 setPredictedOptimalScore:0.01];
+    [activityCopy setPredictedOptimalScore:0.01];
     goto LABEL_61;
   }
 
-  v8 = [v3 startAfter];
+  startAfter2 = [activityCopy startAfter];
   v9 = +[NSDate date];
-  [v8 timeIntervalSinceDate:v9];
+  [startAfter2 timeIntervalSinceDate:v9];
   if (v10 > 75600.0)
   {
-    v11 = [v3 startAfter];
-    [v3 setPredictedOptimalStartDate:v11];
+    startAfter3 = [activityCopy startAfter];
+    [activityCopy setPredictedOptimalStartDate:startAfter3];
 
-    [v3 setPredictedOptimalScore:0.01];
+    [activityCopy setPredictedOptimalScore:0.01];
     v12 = [_DASDaemonLogger logForCategory:@"scoring"];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v75 = v3;
+      v75 = activityCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%@ start beyond the 21 hour interval", buf, 0xCu);
     }
 
     goto LABEL_60;
   }
 
-  v64 = v8;
+  v64 = startAfter2;
   v61 = v4;
   v62 = v9;
   v60 = v5;
@@ -460,7 +460,7 @@ LABEL_58:
         }
 
         v22 = *(*(&v70 + 1) + 8 * i);
-        if ([v22 appliesToActivity:v3])
+        if ([v22 appliesToActivity:activityCopy])
         {
           if ([v22 conformsToProtocol:&OBJC_PROTOCOL____DASActivityPolicyPredicting])
           {
@@ -469,11 +469,11 @@ LABEL_58:
 
           else
           {
-            [v22 weightForActivity:v3];
+            [v22 weightForActivity:activityCopy];
             v24 = v23;
             if (objc_opt_respondsToSelector())
             {
-              [v22 baselineScoreForActivity:v3];
+              [v22 baselineScoreForActivity:activityCopy];
               v20 = v20 + v24 * v25;
             }
 
@@ -511,27 +511,27 @@ LABEL_58:
     v27 = v64;
   }
 
-  v8 = v27;
+  startAfter2 = v27;
 
   if (![v15 count])
   {
-    [v3 setPredictedOptimalStartDate:v8];
+    [activityCopy setPredictedOptimalStartDate:startAfter2];
     v33 = v20 / v19;
     if (v19 < 0.001)
     {
       v33 = 0.01;
     }
 
-    [v3 setPredictedOptimalScore:v33];
+    [activityCopy setPredictedOptimalScore:v33];
     v34 = [_DASDaemonLogger logForCategory:@"scoring"];
     v4 = v61;
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
-      [v3 predictedOptimalScore];
+      [activityCopy predictedOptimalScore];
       v36 = v35;
-      v37 = [qword_10020B4F0 stringFromDate:v8];
+      v37 = [qword_10020B4F0 stringFromDate:startAfter2];
       *buf = 138412802;
-      v75 = v3;
+      v75 = activityCopy;
       v76 = 2048;
       v77 = v36;
       v78 = 2112;
@@ -542,8 +542,8 @@ LABEL_58:
     goto LABEL_59;
   }
 
-  v28 = [v3 startBefore];
-  [v28 timeIntervalSinceDate:v8];
+  startBefore = [activityCopy startBefore];
+  [startBefore timeIntervalSinceDate:startAfter2];
   v30 = v29;
 
   v31 = fmax(fmin(v30, 86400.0), 0.0);
@@ -555,7 +555,7 @@ LABEL_58:
 
   else if (v31 > 14400.0)
   {
-    if ([v3 requestsApplicationLaunch])
+    if ([activityCopy requestsApplicationLaunch])
     {
       v32 = 900.0;
     }
@@ -566,7 +566,7 @@ LABEL_58:
     }
   }
 
-  v38 = v8;
+  v38 = startAfter2;
   v39 = 0.01;
   v59 = v31;
   v63 = v38;
@@ -601,9 +601,9 @@ LABEL_58:
 
         v48 = *(*(&v66 + 1) + 8 * j);
         v49 = objc_autoreleasePoolPush();
-        [v48 weightForActivity:v3];
+        [v48 weightForActivity:activityCopy];
         v51 = v50;
-        [v48 predictedScoreForActivity:v3 atDate:v38];
+        [v48 predictedScoreForActivity:activityCopy atDate:v38];
         v45 = v45 + v51 * v52;
         v46 = v46 + v51;
         objc_autoreleasePoolPop(v49);
@@ -628,34 +628,34 @@ LABEL_58:
     }
 
 LABEL_55:
-    v8 = [v38 dateByAddingTimeInterval:v32];
+    startAfter2 = [v38 dateByAddingTimeInterval:v32];
 
     v31 = v31 - v32;
     objc_autoreleasePoolPop(v40);
-    v38 = v8;
+    v38 = startAfter2;
     if (v31 < 0.0)
     {
       goto LABEL_56;
     }
   }
 
-  v8 = v38;
+  startAfter2 = v38;
 
   if (v53 <= 0.9)
   {
-    v63 = v8;
+    v63 = startAfter2;
     v39 = v53;
     goto LABEL_55;
   }
 
   objc_autoreleasePoolPop(v65);
-  v63 = v8;
+  v63 = startAfter2;
   v39 = v53;
 LABEL_56:
-  [v3 setPredictedOptimalScore:v39];
-  [v3 setPredictedOptimalStartDate:v63];
-  v54 = [v3 startAfter];
-  v55 = [NSDate dateWithTimeInterval:v54 sinceDate:v59];
+  [activityCopy setPredictedOptimalScore:v39];
+  [activityCopy setPredictedOptimalStartDate:v63];
+  startAfter4 = [activityCopy startAfter];
+  v55 = [NSDate dateWithTimeInterval:startAfter4 sinceDate:v59];
 
   v56 = [_DASDaemonLogger logForCategory:@"scoring"];
   if (os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT))
@@ -663,7 +663,7 @@ LABEL_56:
     v57 = [qword_10020B4F0 stringFromDate:v63];
     v58 = [qword_10020B4F0 stringFromDate:v55];
     *buf = 138413058;
-    v75 = v3;
+    v75 = activityCopy;
     v76 = 2048;
     v77 = v39;
     v78 = 2112;
@@ -684,37 +684,37 @@ LABEL_61:
   objc_autoreleasePoolPop(v5);
 }
 
-+ (double)thresholdScoreForActivity:(id)a3
++ (double)thresholdScoreForActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 bypassesPredictions])
+  activityCopy = activity;
+  if ([activityCopy bypassesPredictions])
   {
     v4 = 0.01;
   }
 
   else
   {
-    v5 = [_DASConditionScore getTimeSlotForActivity:v3];
-    v6 = [v3 schedulingPriority];
-    [v3 predictedOptimalScore];
-    [_DASConditionScore getScoreForTimeSlot:v5 activityPriority:v6 activityScore:?];
+    v5 = [_DASConditionScore getTimeSlotForActivity:activityCopy];
+    schedulingPriority = [activityCopy schedulingPriority];
+    [activityCopy predictedOptimalScore];
+    [_DASConditionScore getScoreForTimeSlot:v5 activityPriority:schedulingPriority activityScore:?];
     v4 = v7;
   }
 
   return v4;
 }
 
-+ (int64_t)getTimeSlotForActivity:(id)a3
++ (int64_t)getTimeSlotForActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 predictedOptimalStartDate];
-  v5 = [v3 startBefore];
+  activityCopy = activity;
+  predictedOptimalStartDate = [activityCopy predictedOptimalStartDate];
+  startBefore = [activityCopy startBefore];
 
-  [v5 timeIntervalSinceDate:v4];
+  [startBefore timeIntervalSinceDate:predictedOptimalStartDate];
   v7 = v6;
 
   v8 = +[NSDate date];
-  [v8 timeIntervalSinceDate:v4];
+  [v8 timeIntervalSinceDate:predictedOptimalStartDate];
   v10 = v9;
 
   if (v7 >= 0.01)
@@ -741,31 +741,31 @@ LABEL_61:
   return v13;
 }
 
-+ (double)relaxationFactorForTimeSlot:(int64_t)a3 activityPriority:(unint64_t)a4
++ (double)relaxationFactorForTimeSlot:(int64_t)slot activityPriority:(unint64_t)priority
 {
-  [_DASConditionScore preOptimalRelaxationFactor:a4];
+  [_DASConditionScore preOptimalRelaxationFactor:priority];
   v7 = v6;
-  if (a3)
+  if (slot)
   {
-    if (_DASSchedulingPriorityUserInitiated <= a4)
+    if (_DASSchedulingPriorityUserInitiated <= priority)
     {
       v8 = 100.0;
       v9 = 1.0;
     }
 
-    else if (_DASSchedulingPriorityUtility == a4)
+    else if (_DASSchedulingPriorityUtility == priority)
     {
       v8 = 110.0;
       v9 = 1.35;
     }
 
-    else if (_DASSchedulingPriorityDefault == a4)
+    else if (_DASSchedulingPriorityDefault == priority)
     {
       v8 = 105.0;
       v9 = 1.2;
     }
 
-    else if (_DASSchedulingPriorityBackground == a4)
+    else if (_DASSchedulingPriorityBackground == priority)
     {
       v9 = 1.5;
       v8 = 120.0;
@@ -774,40 +774,40 @@ LABEL_61:
     else
     {
       v9 = 1.0;
-      if (_DASSchedulingPriorityMaintenance == a4)
+      if (_DASSchedulingPriorityMaintenance == priority)
       {
         v9 = 1.7;
       }
 
       v8 = 100.0;
-      if (_DASSchedulingPriorityMaintenance == a4)
+      if (_DASSchedulingPriorityMaintenance == priority)
       {
         v8 = 130.0;
       }
     }
 
-    return v7 * (1.0 - pow((10 * a3) / v8, v9));
+    return v7 * (1.0 - pow((10 * slot) / v8, v9));
   }
 
   return v7;
 }
 
-+ (double)preOptimalRelaxationFactor:(unint64_t)a3
++ (double)preOptimalRelaxationFactor:(unint64_t)factor
 {
   result = 0.75;
-  if (_DASSchedulingPriorityUserInitiated > a3)
+  if (_DASSchedulingPriorityUserInitiated > factor)
   {
-    if (_DASSchedulingPriorityUtility == a3)
+    if (_DASSchedulingPriorityUtility == factor)
     {
       return 0.925;
     }
 
-    else if (_DASSchedulingPriorityDefault == a3)
+    else if (_DASSchedulingPriorityDefault == factor)
     {
       return 0.9;
     }
 
-    else if (_DASSchedulingPriorityBackground == a3)
+    else if (_DASSchedulingPriorityBackground == factor)
     {
       return 0.95;
     }
@@ -815,7 +815,7 @@ LABEL_61:
     else
     {
       result = 0.975;
-      if (_DASSchedulingPriorityMaintenance != a3)
+      if (_DASSchedulingPriorityMaintenance != factor)
       {
         return 0.75;
       }
@@ -825,16 +825,16 @@ LABEL_61:
   return result;
 }
 
-+ (id)lastDenialResponses:(id)a3
++ (id)lastDenialResponses:(id)responses
 {
-  v3 = a3;
-  if ([v3 lastDenialValue])
+  responsesCopy = responses;
+  if ([responsesCopy lastDenialValue])
   {
     v4 = +[NSMutableArray array];
-    v5 = [v3 lastDenialValue];
+    lastDenialValue = [responsesCopy lastDenialValue];
     for (i = 0; i != 64; ++i)
     {
-      if (v5)
+      if (lastDenialValue)
       {
         v7 = [_DASPolicyManager policyForBitIndex:i];
         if (v7)
@@ -843,7 +843,7 @@ LABEL_61:
         }
       }
 
-      v5 >>= 1;
+      lastDenialValue >>= 1;
     }
   }
 
@@ -855,19 +855,19 @@ LABEL_61:
   return v4;
 }
 
-+ (id)getResponseStringForPolicy:(id)a3 response:(id)a4 appliesToActivity:(BOOL)a5 weightForActivity:(double)a6
++ (id)getResponseStringForPolicy:(id)policy response:(id)response appliesToActivity:(BOOL)activity weightForActivity:(double)forActivity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v10 && ([v10 policyDecision] || (objc_msgSend(v11, "score"), v12 < 0.9)))
+  policyCopy = policy;
+  responseCopy = response;
+  v11 = responseCopy;
+  if (responseCopy && ([responseCopy policyDecision] || (objc_msgSend(v11, "score"), v12 < 0.9)))
   {
     v13 = objc_opt_new();
-    [(__CFString *)v13 appendFormat:@"\t{name: %@, ", v9];
-    if (a5)
+    [(__CFString *)v13 appendFormat:@"\t{name: %@, ", policyCopy];
+    if (activity)
     {
       v14 = [v11 description];
-      [(__CFString *)v13 appendFormat:@"policyWeight: %2.3lf, response: %@}\n", *&a6, v14];
+      [(__CFString *)v13 appendFormat:@"policyWeight: %2.3lf, response: %@}\n", *&forActivity, v14];
     }
 
     else

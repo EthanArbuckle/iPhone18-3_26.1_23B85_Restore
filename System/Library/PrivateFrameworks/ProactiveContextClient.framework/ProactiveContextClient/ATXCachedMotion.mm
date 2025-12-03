@@ -1,7 +1,7 @@
 @interface ATXCachedMotion
-- (ATXCachedMotion)initWithATXMotion:(id)a3;
+- (ATXCachedMotion)initWithATXMotion:(id)motion;
 - (BOOL)isExpired;
-- (void)update:(id)a3;
+- (void)update:(id)update;
 @end
 
 @implementation ATXCachedMotion
@@ -18,28 +18,28 @@
   return v3 < -5.0;
 }
 
-- (ATXCachedMotion)initWithATXMotion:(id)a3
+- (ATXCachedMotion)initWithATXMotion:(id)motion
 {
-  v4 = a3;
+  motionCopy = motion;
   v8.receiver = self;
   v8.super_class = ATXCachedMotion;
   v5 = [(ATXCachedMotion *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ATXCachedMotion *)v5 update:v4];
+    [(ATXCachedMotion *)v5 update:motionCopy];
   }
 
   return v6;
 }
 
-- (void)update:(id)a3
+- (void)update:(id)update
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  updateCopy = update;
+  v9 = updateCopy;
+  if (updateCopy)
   {
-    v5 = v4;
+    v5 = updateCopy;
   }
 
   else
@@ -50,9 +50,9 @@
   currentMotion = self->_currentMotion;
   self->_currentMotion = v5;
 
-  v7 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   lastUpdated = self->lastUpdated;
-  self->lastUpdated = v7;
+  self->lastUpdated = date;
 }
 
 @end

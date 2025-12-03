@@ -1,12 +1,12 @@
 @interface ActionView
-- (_TtC7Measure10ActionView)initWithCoder:(id)a3;
-- (_TtC7Measure10ActionView)initWithFrame:(CGRect)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (_TtC7Measure10ActionView)initWithCoder:(id)coder;
+- (_TtC7Measure10ActionView)initWithFrame:(CGRect)frame;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation ActionView
 
-- (_TtC7Measure10ActionView)initWithCoder:(id)a3
+- (_TtC7Measure10ActionView)initWithCoder:(id)coder
 {
   *&self->delegate[OBJC_IVAR____TtC7Measure10ActionView_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -15,17 +15,17 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   sub_10001B92C();
   sub_10001B978();
   v6 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a4;
-  v8 = self;
-  sub_10001B4B8(v6, a4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_10001B4B8(v6, event);
 }
 
-- (_TtC7Measure10ActionView)initWithFrame:(CGRect)a3
+- (_TtC7Measure10ActionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

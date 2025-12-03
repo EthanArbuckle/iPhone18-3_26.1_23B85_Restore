@@ -1,23 +1,23 @@
 @interface SFThemeColorBarTheme
-- (BOOL)isEqual:(id)a3;
-- (SFThemeColorBarTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (SFThemeColorBarTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor;
 - (id)backdropEffect;
 - (id)backdropEffects;
-- (void)applyBackdropEffectsToView:(id)a3;
+- (void)applyBackdropEffectsToView:(id)view;
 @end
 
 @implementation SFThemeColorBarTheme
 
-- (SFThemeColorBarTheme)initWithBarTintStyle:(int64_t)a3 preferredBarTintColor:(id)a4 controlsTintColor:(id)a5
+- (SFThemeColorBarTheme)initWithBarTintStyle:(int64_t)style preferredBarTintColor:(id)color controlsTintColor:(id)tintColor
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69C8880] isSolariumEnabled];
-  v12 = v11;
+  colorCopy = color;
+  tintColorCopy = tintColor;
+  isSolariumEnabled = [MEMORY[0x1E69C8880] isSolariumEnabled];
+  v12 = isSolariumEnabled;
   v13 = 0;
-  if (!v10 && (v11 & 1) == 0)
+  if (!tintColorCopy && (isSolariumEnabled & 1) == 0)
   {
-    v14 = v9;
+    v14 = colorCopy;
     if ([MEMORY[0x1E69C9890] shouldOverrideTintColorForThemeColor:v14])
     {
       if ([v14 safari_meetsThresholdForDarkAppearance])
@@ -37,17 +37,17 @@
       v15 = 0;
     }
 
-    v10 = v15;
-    v13 = v10;
+    tintColorCopy = v15;
+    v13 = tintColorCopy;
   }
 
   v24.receiver = self;
   v24.super_class = SFThemeColorBarTheme;
-  v16 = [(_SFBarTheme *)&v24 initWithBarTintStyle:a3 preferredBarTintColor:v9 controlsTintColor:v10];
+  v16 = [(_SFBarTheme *)&v24 initWithBarTintStyle:style preferredBarTintColor:colorCopy controlsTintColor:tintColorCopy];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_themeColor, a4);
+    objc_storeStrong(&v16->_themeColor, color);
     if (v13)
     {
       v18 = v13;
@@ -55,28 +55,28 @@
 
     else
     {
-      v18 = v10;
+      v18 = tintColorCopy;
     }
 
     objc_storeStrong(&v17->_overrideTintColor, v18);
-    v19 = [(_SFBarTheme *)v17 overrideUserInterfaceStyle];
-    v17->_userInterfaceStyle = v19;
-    if (!((v9 == 0) | v12 & 1))
+    overrideUserInterfaceStyle = [(_SFBarTheme *)v17 overrideUserInterfaceStyle];
+    v17->_userInterfaceStyle = overrideUserInterfaceStyle;
+    if (!((colorCopy == 0) | v12 & 1))
     {
-      if ([v9 safari_meetsThresholdForDarkAppearance])
+      if ([colorCopy safari_meetsThresholdForDarkAppearance])
       {
-        v19 = 2;
+        overrideUserInterfaceStyle = 2;
       }
 
       else
       {
-        v19 = 1;
+        overrideUserInterfaceStyle = 1;
       }
 
-      v17->_userInterfaceStyle = v19;
+      v17->_userInterfaceStyle = overrideUserInterfaceStyle;
     }
 
-    v20 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:v19];
+    v20 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:overrideUserInterfaceStyle];
     traitCollection = v17->_traitCollection;
     v17->_traitCollection = v20;
 
@@ -86,34 +86,34 @@
   return v17;
 }
 
-- (void)applyBackdropEffectsToView:(id)a3
+- (void)applyBackdropEffectsToView:(id)view
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SFThemeColorBarTheme *)self themeColor];
-  if (v5)
+  viewCopy = view;
+  themeColor = [(SFThemeColorBarTheme *)self themeColor];
+  if (themeColor)
   {
-    v6 = [(SFThemeColorBarTheme *)self backdropEffect];
-    v11[0] = v6;
+    backdropEffect = [(SFThemeColorBarTheme *)self backdropEffect];
+    v11[0] = backdropEffect;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v4 setBackgroundEffects:v7];
+    [viewCopy setBackgroundEffects:v7];
 
-    [v4 setContentEffects:MEMORY[0x1E695E0F0]];
-    v8 = [v5 colorWithAlphaComponent:0.85];
-    v9 = [v4 contentView];
-    [v9 setBackgroundColor:v8];
+    [viewCopy setContentEffects:MEMORY[0x1E695E0F0]];
+    v8 = [themeColor colorWithAlphaComponent:0.85];
+    contentView = [viewCopy contentView];
+    [contentView setBackgroundColor:v8];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SFThemeColorBarTheme;
-    [(_SFBarTheme *)&v10 applyBackdropEffectsToView:v4];
+    [(_SFBarTheme *)&v10 applyBackdropEffectsToView:viewCopy];
   }
 
   if (self->_backdropGroupName)
   {
-    [v4 _setGroupName:?];
+    [viewCopy _setGroupName:?];
   }
 }
 
@@ -122,46 +122,46 @@
   overrideBackdropEffect = self->_overrideBackdropEffect;
   if (overrideBackdropEffect)
   {
-    v3 = overrideBackdropEffect;
+    backdropEffect = overrideBackdropEffect;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SFThemeColorBarTheme;
-    v3 = [(_SFBarTheme *)&v5 backdropEffect];
+    backdropEffect = [(_SFBarTheme *)&v5 backdropEffect];
   }
 
-  return v3;
+  return backdropEffect;
 }
 
 - (id)backdropEffects
 {
   v10.receiver = self;
   v10.super_class = SFThemeColorBarTheme;
-  v3 = [(_SFBarTheme *)&v10 backdropEffects];
-  v4 = v3;
+  backdropEffects = [(_SFBarTheme *)&v10 backdropEffects];
+  v4 = backdropEffects;
   if (self->_appliesDarkeningOverlay)
   {
     v5 = MEMORY[0x1E69DD290];
-    v6 = [MEMORY[0x1E69DC888] blackColor];
-    v7 = [v5 effectCompositingColor:v6 withMode:0 alpha:0.03];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v7 = [v5 effectCompositingColor:blackColor withMode:0 alpha:0.03];
 
     v8 = [v4 arrayByAddingObject:v7];
   }
 
   else
   {
-    v8 = v3;
+    v8 = backdropEffects;
   }
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -170,9 +170,9 @@
   {
     v8.receiver = self;
     v8.super_class = SFThemeColorBarTheme;
-    if ([(_SFBarTheme *)&v8 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(_SFBarTheme *)&v8 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (self->_appliesDarkeningOverlay == v5[104] && WBSIsEqual())
       {
         v6 = WBSIsEqual();

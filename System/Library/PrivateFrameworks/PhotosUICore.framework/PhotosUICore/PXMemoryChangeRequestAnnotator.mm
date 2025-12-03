@@ -1,15 +1,15 @@
 @interface PXMemoryChangeRequestAnnotator
-+ (void)setMemoryChangeRequest:(id)a3 userCreatedFromSourceObject:(id)a4;
++ (void)setMemoryChangeRequest:(id)request userCreatedFromSourceObject:(id)object;
 - (PXMemoryChangeRequestAnnotator)init;
 @end
 
 @implementation PXMemoryChangeRequestAnnotator
 
-+ (void)setMemoryChangeRequest:(id)a3 userCreatedFromSourceObject:(id)a4
++ (void)setMemoryChangeRequest:(id)request userCreatedFromSourceObject:(id)object
 {
-  v5 = a3;
+  requestCopy = request;
   swift_unknownObjectRetain();
-  _s12PhotosUICore28MemoryChangeRequestAnnotatorC03setcdE0_27userCreatedFromSourceObjectySo08PHMemorydE0C_yXlSgtFZ_0(v5, a4);
+  _s12PhotosUICore28MemoryChangeRequestAnnotatorC03setcdE0_27userCreatedFromSourceObjectySo08PHMemorydE0C_yXlSgtFZ_0(requestCopy, object);
 
   swift_unknownObjectRelease();
 }

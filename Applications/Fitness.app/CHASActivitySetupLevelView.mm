@@ -1,16 +1,16 @@
 @interface CHASActivitySetupLevelView
 - (CGSize)intrinsicContentSize;
-- (CHASActivitySetupLevelView)initWithFrame:(CGRect)a3;
+- (CHASActivitySetupLevelView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CHASActivitySetupLevelView
 
-- (CHASActivitySetupLevelView)initWithFrame:(CGRect)a3
+- (CHASActivitySetupLevelView)initWithFrame:(CGRect)frame
 {
   v19.receiver = self;
   v19.super_class = CHASActivitySetupLevelView;
-  v3 = [(CHASActivitySetupLevelView *)&v19 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHASActivitySetupLevelView *)&v19 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UISegmentedControl alloc];

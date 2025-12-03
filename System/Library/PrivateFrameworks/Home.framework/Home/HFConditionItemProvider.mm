@@ -1,6 +1,6 @@
 @interface HFConditionItemProvider
 - (HFConditionItemProvider)init;
-- (HFConditionItemProvider)initWithConditions:(id)a3 home:(id)a4;
+- (HFConditionItemProvider)initWithConditions:(id)conditions home:(id)home;
 - (id)reloadItems;
 @end
 
@@ -8,25 +8,25 @@
 
 - (HFConditionItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithConditions_home_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFConditionItemProvider.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFConditionItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFConditionItemProvider.m" lineNumber:26 description:{@"%s is unavailable; use %@ instead", "-[HFConditionItemProvider init]", v5}];
 
   return 0;
 }
 
-- (HFConditionItemProvider)initWithConditions:(id)a3 home:(id)a4
+- (HFConditionItemProvider)initWithConditions:(id)conditions home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  conditionsCopy = conditions;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HFConditionItemProvider;
   v9 = [(HFItemProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_conditions, a3);
-    objc_storeStrong(&v10->_home, a4);
+    objc_storeStrong(&v9->_conditions, conditions);
+    objc_storeStrong(&v10->_home, home);
     v11 = [MEMORY[0x277CBEB58] set];
     conditionItems = v10->_conditionItems;
     v10->_conditionItems = v11;
@@ -37,17 +37,17 @@
 
 - (id)reloadItems
 {
-  v3 = [(HFConditionItemProvider *)self home];
+  home = [(HFConditionItemProvider *)self home];
   objc_initWeak(&location, self);
-  v4 = [(HFConditionItemProvider *)self conditions];
-  v5 = [v4 allObjects];
+  conditions = [(HFConditionItemProvider *)self conditions];
+  allObjects = [conditions allObjects];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __38__HFConditionItemProvider_reloadItems__block_invoke_3;
   v12[3] = &unk_277E00FC8;
-  v6 = v3;
+  v6 = home;
   v13 = v6;
-  v7 = [(HFItemProvider *)self reloadItemsWithObjects:v5 keyAdaptor:&__block_literal_global_214 itemAdaptor:&__block_literal_global_10_11 filter:0 itemMap:v12];
+  v7 = [(HFItemProvider *)self reloadItemsWithObjects:allObjects keyAdaptor:&__block_literal_global_214 itemAdaptor:&__block_literal_global_10_11 filter:0 itemMap:v12];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __38__HFConditionItemProvider_reloadItems__block_invoke_4;

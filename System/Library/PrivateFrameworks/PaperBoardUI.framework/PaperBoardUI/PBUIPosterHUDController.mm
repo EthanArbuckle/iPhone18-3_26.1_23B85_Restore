@@ -3,9 +3,9 @@
 + (id)sharedInstance;
 - (CGPoint)lastPosition;
 - (PBUIPosterHUDController)init;
-- (id)_createAttachmentForImage:(id)a3;
-- (id)_createLabelWithAlignment:(int64_t)a3;
-- (id)_createThumbnailFromImage:(id)a3;
+- (id)_createAttachmentForImage:(id)image;
+- (id)_createLabelWithAlignment:(int64_t)alignment;
+- (id)_createThumbnailFromImage:(id)image;
 @end
 
 @implementation PBUIPosterHUDController
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = __41__PBUIPosterHUDController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -52,31 +52,31 @@ uint64_t __41__PBUIPosterHUDController_sharedInstance__block_invoke(uint64_t a1)
 
 + (BOOL)isHUDEnabled
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"SHOW_POSTER_HUD"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"SHOW_POSTER_HUD"];
 
   return v3;
 }
 
-- (id)_createLabelWithAlignment:(int64_t)a3
+- (id)_createLabelWithAlignment:(int64_t)alignment
 {
   v4 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v4 setNumberOfLines:0];
-  v5 = [MEMORY[0x277D75348] clearColor];
-  [v4 setBackgroundColor:v5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v4 setBackgroundColor:clearColor];
 
-  v6 = [MEMORY[0x277D75348] whiteColor];
-  [v4 setTextColor:v6];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [v4 setTextColor:whiteColor];
 
   [v4 setAdjustsFontSizeToFitWidth:0];
-  [v4 setTextAlignment:a3];
+  [v4 setTextAlignment:alignment];
 
   return v4;
 }
 
-- (id)_createAttachmentForImage:(id)a3
+- (id)_createAttachmentForImage:(id)image
 {
-  v3 = [(PBUIPosterHUDController *)self _createThumbnailFromImage:a3];
+  v3 = [(PBUIPosterHUDController *)self _createThumbnailFromImage:image];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D74270]);
@@ -96,13 +96,13 @@ uint64_t __41__PBUIPosterHUDController_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (id)_createThumbnailFromImage:(id)a3
+- (id)_createThumbnailFromImage:(id)image
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  imageCopy = image;
+  v4 = imageCopy;
+  if (imageCopy)
   {
-    [v3 size];
+    [imageCopy size];
     v6 = v5;
     [v4 size];
     v8 = 0;

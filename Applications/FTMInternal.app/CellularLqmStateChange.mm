@@ -1,41 +1,41 @@
 @interface CellularLqmStateChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsCongestionReason:(id)a3;
-- (int)StringAsHiPowerEvent:(id)a3;
-- (int)StringAsHiPowerExitReason:(id)a3;
+- (int)StringAsCongestionReason:(id)reason;
+- (int)StringAsHiPowerEvent:(id)event;
+- (int)StringAsHiPowerExitReason:(id)reason;
 - (int)congestionReason;
 - (int)hiPowerEvent;
 - (int)hiPowerExitReason;
 - (unint64_t)hash;
-- (void)addLteChanInfo:(id)a3;
-- (void)addUmtsChanInfo:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasBbInHiPowerState:(BOOL)a3;
-- (void)setHasCellId:(BOOL)a3;
-- (void)setHasCongestionReason:(BOOL)a3;
-- (void)setHasDurationSec:(BOOL)a3;
-- (void)setHasFgAppActiveDuringCongestion:(BOOL)a3;
-- (void)setHasHiPowerEvent:(BOOL)a3;
-- (void)setHasHiPowerExitReason:(BOOL)a3;
-- (void)setHasIsScreenOn:(BOOL)a3;
-- (void)setHasLqmType:(BOOL)a3;
-- (void)setHasMcc:(BOOL)a3;
-- (void)setHasMnc:(BOOL)a3;
-- (void)setHasNumMncDigits:(BOOL)a3;
-- (void)setHasSwimWorkoutActive:(BOOL)a3;
-- (void)setHasSysMode:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addLteChanInfo:(id)info;
+- (void)addUmtsChanInfo:(id)info;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasBbInHiPowerState:(BOOL)state;
+- (void)setHasCellId:(BOOL)id;
+- (void)setHasCongestionReason:(BOOL)reason;
+- (void)setHasDurationSec:(BOOL)sec;
+- (void)setHasFgAppActiveDuringCongestion:(BOOL)congestion;
+- (void)setHasHiPowerEvent:(BOOL)event;
+- (void)setHasHiPowerExitReason:(BOOL)reason;
+- (void)setHasIsScreenOn:(BOOL)on;
+- (void)setHasLqmType:(BOOL)type;
+- (void)setHasMcc:(BOOL)mcc;
+- (void)setHasMnc:(BOOL)mnc;
+- (void)setHasNumMncDigits:(BOOL)digits;
+- (void)setHasSwimWorkoutActive:(BOOL)active;
+- (void)setHasSysMode:(BOOL)mode;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CellularLqmStateChange
 
-- (void)setHasDurationSec:(BOOL)a3
+- (void)setHasDurationSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 8;
   }
@@ -48,9 +48,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasLqmType:(BOOL)a3
+- (void)setHasLqmType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -63,9 +63,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasSysMode:(BOOL)a3
+- (void)setHasSysMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 1024;
   }
@@ -78,9 +78,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasIsScreenOn:(BOOL)a3
+- (void)setHasIsScreenOn:(BOOL)on
 {
-  if (a3)
+  if (on)
   {
     v3 = 0x2000;
   }
@@ -93,45 +93,45 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)addLteChanInfo:(id)a3
+- (void)addLteChanInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   lteChanInfos = self->_lteChanInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!lteChanInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_lteChanInfos;
     self->_lteChanInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     lteChanInfos = self->_lteChanInfos;
   }
 
-  [(NSMutableArray *)lteChanInfos addObject:v4];
+  [(NSMutableArray *)lteChanInfos addObject:infoCopy];
 }
 
-- (void)addUmtsChanInfo:(id)a3
+- (void)addUmtsChanInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   umtsChanInfos = self->_umtsChanInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!umtsChanInfos)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_umtsChanInfos;
     self->_umtsChanInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     umtsChanInfos = self->_umtsChanInfos;
   }
 
-  [(NSMutableArray *)umtsChanInfos addObject:v4];
+  [(NSMutableArray *)umtsChanInfos addObject:infoCopy];
 }
 
-- (void)setHasBbInHiPowerState:(BOOL)a3
+- (void)setHasBbInHiPowerState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2048;
   }
@@ -157,9 +157,9 @@
   }
 }
 
-- (void)setHasHiPowerEvent:(BOOL)a3
+- (void)setHasHiPowerEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     v3 = 16;
   }
@@ -172,55 +172,55 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (int)StringAsHiPowerEvent:(id)a3
+- (int)StringAsHiPowerEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LQM_EVENT_RLC_MAX_RETX"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"LQM_EVENT_RLC_MAX_RETX"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_RACH_FAILURE"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_RACH_FAILURE"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_LTE_PHY_ABORT"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_LTE_PHY_ABORT"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_LTE_HI_POWER"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_LTE_HI_POWER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_WCDMA_HI_POWER"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_WCDMA_HI_POWER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_LTE_POOR_SIGNAL_CONDITION"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_LTE_POOR_SIGNAL_CONDITION"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_WCDMA_POOR_SIGNAL_CONDITION"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_WCDMA_POOR_SIGNAL_CONDITION"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_WCDMA_RACH_FAILURE"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_WCDMA_RACH_FAILURE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_EXCESSIVE_IRAT"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_EXCESSIVE_IRAT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"LQM_EVENT_MAX"])
+  else if ([eventCopy isEqualToString:@"LQM_EVENT_MAX"])
   {
     v4 = 255;
   }
@@ -233,9 +233,9 @@
   return v4;
 }
 
-- (void)setHasSwimWorkoutActive:(BOOL)a3
+- (void)setHasSwimWorkoutActive:(BOOL)active
 {
-  if (a3)
+  if (active)
   {
     v3 = 0x4000;
   }
@@ -261,9 +261,9 @@
   }
 }
 
-- (void)setHasHiPowerExitReason:(BOOL)a3
+- (void)setHasHiPowerExitReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 32;
   }
@@ -276,25 +276,25 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (int)StringAsHiPowerExitReason:(id)a3
+- (int)StringAsHiPowerExitReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LQM_HPM_EXIT_REASON_GUARD_TIMER_EXPIRY"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"LQM_HPM_EXIT_REASON_GUARD_TIMER_EXPIRY"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LQM_HPM_EXIT_REASON_SIGNAL_IMPROVEMENT"])
+  else if ([reasonCopy isEqualToString:@"LQM_HPM_EXIT_REASON_SIGNAL_IMPROVEMENT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LQM_HPM_EXIT_REASON_USER_ACTIVITY"])
+  else if ([reasonCopy isEqualToString:@"LQM_HPM_EXIT_REASON_USER_ACTIVITY"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LQM_HPM_EXIT_REASON_MAX"])
+  else if ([reasonCopy isEqualToString:@"LQM_HPM_EXIT_REASON_MAX"])
   {
     v4 = 255;
   }
@@ -320,9 +320,9 @@
   }
 }
 
-- (void)setHasCongestionReason:(BOOL)a3
+- (void)setHasCongestionReason:(BOOL)reason
 {
-  if (a3)
+  if (reason)
   {
     v3 = 4;
   }
@@ -335,45 +335,45 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (int)StringAsCongestionReason:(id)a3
+- (int)StringAsCongestionReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LQM_CONGESTION_REASON_RRC_REJECT"])
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"LQM_CONGESTION_REASON_RRC_REJECT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LQM_CONGESTION_REASON_NAS_REJECT"])
+  else if ([reasonCopy isEqualToString:@"LQM_CONGESTION_REASON_NAS_REJECT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LQM_CONGESTION_REASON_ACCESS_BARRED"])
+  else if ([reasonCopy isEqualToString:@"LQM_CONGESTION_REASON_ACCESS_BARRED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LQM_CONGESTION_REASON_RACH_FAILURES"])
+  else if ([reasonCopy isEqualToString:@"LQM_CONGESTION_REASON_RACH_FAILURES"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LQM_CONGESTION_REASON_TRICKLING_GRANT"])
+  else if ([reasonCopy isEqualToString:@"LQM_CONGESTION_REASON_TRICKLING_GRANT"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"LQM_CONGESTION_REASON_RLC_MAX_RETX"])
+  else if ([reasonCopy isEqualToString:@"LQM_CONGESTION_REASON_RLC_MAX_RETX"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"LQM_CONGESTION_REASON_POOR_SIGNAL_CONDITIONS"])
+  else if ([reasonCopy isEqualToString:@"LQM_CONGESTION_REASON_POOR_SIGNAL_CONDITIONS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"LQM_CONGESTION_REASON_MAX"])
+  else if ([reasonCopy isEqualToString:@"LQM_CONGESTION_REASON_MAX"])
   {
     v4 = 255;
   }
@@ -386,9 +386,9 @@
   return v4;
 }
 
-- (void)setHasCellId:(BOOL)a3
+- (void)setHasCellId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -401,9 +401,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasNumMncDigits:(BOOL)a3
+- (void)setHasNumMncDigits:(BOOL)digits
 {
-  if (a3)
+  if (digits)
   {
     v3 = 512;
   }
@@ -416,9 +416,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasMcc:(BOOL)a3
+- (void)setHasMcc:(BOOL)mcc
 {
-  if (a3)
+  if (mcc)
   {
     v3 = 128;
   }
@@ -431,9 +431,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasMnc:(BOOL)a3
+- (void)setHasMnc:(BOOL)mnc
 {
-  if (a3)
+  if (mnc)
   {
     v3 = 256;
   }
@@ -446,9 +446,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasFgAppActiveDuringCongestion:(BOOL)a3
+- (void)setHasFgAppActiveDuringCongestion:(BOOL)congestion
 {
-  if (a3)
+  if (congestion)
   {
     v3 = 4096;
   }
@@ -466,8 +466,8 @@
   v7.receiver = self;
   v7.super_class = CellularLqmStateChange;
   v3 = [(CellularLqmStateChange *)&v7 description];
-  v4 = [(CellularLqmStateChange *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(CellularLqmStateChange *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -545,8 +545,8 @@ LABEL_7:
   rachConnInfo = self->_rachConnInfo;
   if (rachConnInfo)
   {
-    v7 = [(RachConnInfo *)rachConnInfo dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"rach_conn_info"];
+    dictionaryRepresentation = [(RachConnInfo *)rachConnInfo dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"rach_conn_info"];
   }
 
   if ([(NSMutableArray *)self->_lteChanInfos count])
@@ -571,8 +571,8 @@ LABEL_7:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation2 = [*(*(&v45 + 1) + 8 * i) dictionaryRepresentation];
+          [v8 addObject:dictionaryRepresentation2];
         }
 
         v11 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v45 objects:v50 count:16];
@@ -606,8 +606,8 @@ LABEL_7:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v41 + 1) + 8 * j) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation3 = [*(*(&v41 + 1) + 8 * j) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation3];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -936,9 +936,9 @@ LABEL_38:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1205,14 +1205,14 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 46) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 46) |= 1u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -1231,8 +1231,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 6) = self->_durationSec;
-  *(v4 + 46) |= 8u;
+  *(toCopy + 6) = self->_durationSec;
+  *(toCopy + 46) |= 8u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -1246,8 +1246,8 @@ LABEL_4:
   }
 
 LABEL_33:
-  *(v4 + 9) = self->_lqmType;
-  *(v4 + 46) |= 0x40u;
+  *(toCopy + 9) = self->_lqmType;
+  *(toCopy + 46) |= 0x40u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -1261,29 +1261,29 @@ LABEL_5:
   }
 
 LABEL_34:
-  *(v4 + 18) = self->_sysMode;
-  *(v4 + 46) |= 0x400u;
+  *(toCopy + 18) = self->_sysMode;
+  *(toCopy + 46) |= 0x400u;
   if ((*&self->_has & 0x2000) != 0)
   {
 LABEL_6:
-    *(v4 + 90) = self->_isScreenOn;
-    *(v4 + 46) |= 0x2000u;
+    *(toCopy + 90) = self->_isScreenOn;
+    *(toCopy + 46) |= 0x2000u;
   }
 
 LABEL_7:
-  v15 = v4;
+  v15 = toCopy;
   if (self->_rachConnInfo)
   {
-    [v4 setRachConnInfo:?];
+    [toCopy setRachConnInfo:?];
   }
 
   if ([(CellularLqmStateChange *)self lteChanInfosCount])
   {
     [v15 clearLteChanInfos];
-    v6 = [(CellularLqmStateChange *)self lteChanInfosCount];
-    if (v6)
+    lteChanInfosCount = [(CellularLqmStateChange *)self lteChanInfosCount];
+    if (lteChanInfosCount)
     {
-      v7 = v6;
+      v7 = lteChanInfosCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(CellularLqmStateChange *)self lteChanInfoAtIndex:i];
@@ -1295,10 +1295,10 @@ LABEL_7:
   if ([(CellularLqmStateChange *)self umtsChanInfosCount])
   {
     [v15 clearUmtsChanInfos];
-    v10 = [(CellularLqmStateChange *)self umtsChanInfosCount];
-    if (v10)
+    umtsChanInfosCount = [(CellularLqmStateChange *)self umtsChanInfosCount];
+    if (umtsChanInfosCount)
     {
-      v11 = v10;
+      v11 = umtsChanInfosCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(CellularLqmStateChange *)self umtsChanInfoAtIndex:j];
@@ -1447,9 +1447,9 @@ LABEL_27:
 LABEL_28:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -1514,7 +1514,7 @@ LABEL_6:
   }
 
 LABEL_7:
-  v8 = [(RachConnInfo *)self->_rachConnInfo copyWithZone:a3];
+  v8 = [(RachConnInfo *)self->_rachConnInfo copyWithZone:zone];
   v9 = v6[8];
   v6[8] = v8;
 
@@ -1537,7 +1537,7 @@ LABEL_7:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v28 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v28 + 1) + 8 * i) copyWithZone:zone];
         [v6 addLteChanInfo:v15];
       }
 
@@ -1566,7 +1566,7 @@ LABEL_7:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{a3, v24}];
+        v21 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{zone, v24}];
         [v6 addUmtsChanInfo:v21];
       }
 
@@ -1716,19 +1716,19 @@ LABEL_31:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   has = self->_has;
-  v6 = *(v4 + 46);
+  v6 = *(equalCopy + 46);
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_36;
     }
@@ -1741,7 +1741,7 @@ LABEL_31:
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_durationSec != *(v4 + 6))
+    if ((v6 & 8) == 0 || self->_durationSec != *(equalCopy + 6))
     {
       goto LABEL_36;
     }
@@ -1754,7 +1754,7 @@ LABEL_31:
 
   if ((has & 0x40) != 0)
   {
-    if ((v6 & 0x40) == 0 || self->_lqmType != *(v4 + 9))
+    if ((v6 & 0x40) == 0 || self->_lqmType != *(equalCopy + 9))
     {
       goto LABEL_36;
     }
@@ -1767,52 +1767,52 @@ LABEL_31:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 46) & 0x400) == 0 || self->_sysMode != *(v4 + 18))
+    if ((*(equalCopy + 46) & 0x400) == 0 || self->_sysMode != *(equalCopy + 18))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 46) & 0x400) != 0)
+  else if ((*(equalCopy + 46) & 0x400) != 0)
   {
     goto LABEL_36;
   }
 
   if ((*&self->_has & 0x2000) != 0)
   {
-    if ((*(v4 + 46) & 0x2000) == 0)
+    if ((*(equalCopy + 46) & 0x2000) == 0)
     {
       goto LABEL_36;
     }
 
-    v14 = *(v4 + 90);
+    v14 = *(equalCopy + 90);
     if (self->_isScreenOn)
     {
-      if ((*(v4 + 90) & 1) == 0)
+      if ((*(equalCopy + 90) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 90))
+    else if (*(equalCopy + 90))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 46) & 0x2000) != 0)
+  else if ((*(equalCopy + 46) & 0x2000) != 0)
   {
     goto LABEL_36;
   }
 
   rachConnInfo = self->_rachConnInfo;
-  if (rachConnInfo | *(v4 + 8) && ![(RachConnInfo *)rachConnInfo isEqual:?])
+  if (rachConnInfo | *(equalCopy + 8) && ![(RachConnInfo *)rachConnInfo isEqual:?])
   {
     goto LABEL_36;
   }
 
   lteChanInfos = self->_lteChanInfos;
-  if (lteChanInfos | *(v4 + 5))
+  if (lteChanInfos | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)lteChanInfos isEqual:?])
     {
@@ -1821,7 +1821,7 @@ LABEL_31:
   }
 
   umtsChanInfos = self->_umtsChanInfos;
-  if (umtsChanInfos | *(v4 + 10))
+  if (umtsChanInfos | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)umtsChanInfos isEqual:?])
     {
@@ -1830,37 +1830,37 @@ LABEL_31:
   }
 
   v10 = self->_has;
-  v11 = *(v4 + 46);
+  v11 = *(equalCopy + 46);
   if ((v10 & 0x800) != 0)
   {
-    if ((*(v4 + 46) & 0x800) == 0)
+    if ((*(equalCopy + 46) & 0x800) == 0)
     {
       goto LABEL_36;
     }
 
-    v15 = *(v4 + 88);
+    v15 = *(equalCopy + 88);
     if (self->_bbInHiPowerState)
     {
-      if ((*(v4 + 88) & 1) == 0)
+      if ((*(equalCopy + 88) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 88))
+    else if (*(equalCopy + 88))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 46) & 0x800) != 0)
+  else if ((*(equalCopy + 46) & 0x800) != 0)
   {
     goto LABEL_36;
   }
 
   if ((v10 & 0x10) != 0)
   {
-    if ((v11 & 0x10) == 0 || self->_hiPowerEvent != *(v4 + 7))
+    if ((v11 & 0x10) == 0 || self->_hiPowerEvent != *(equalCopy + 7))
     {
       goto LABEL_36;
     }
@@ -1873,34 +1873,34 @@ LABEL_31:
 
   if ((*&self->_has & 0x4000) != 0)
   {
-    if ((*(v4 + 46) & 0x4000) == 0)
+    if ((*(equalCopy + 46) & 0x4000) == 0)
     {
       goto LABEL_36;
     }
 
-    v16 = *(v4 + 91);
+    v16 = *(equalCopy + 91);
     if (self->_swimWorkoutActive)
     {
-      if ((*(v4 + 91) & 1) == 0)
+      if ((*(equalCopy + 91) & 1) == 0)
       {
         goto LABEL_36;
       }
     }
 
-    else if (*(v4 + 91))
+    else if (*(equalCopy + 91))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 46) & 0x4000) != 0)
+  else if ((*(equalCopy + 46) & 0x4000) != 0)
   {
     goto LABEL_36;
   }
 
   if ((v10 & 0x20) != 0)
   {
-    if ((v11 & 0x20) == 0 || self->_hiPowerExitReason != *(v4 + 8))
+    if ((v11 & 0x20) == 0 || self->_hiPowerExitReason != *(equalCopy + 8))
     {
       goto LABEL_36;
     }
@@ -1913,7 +1913,7 @@ LABEL_31:
 
   if ((v10 & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_congestionReason != *(v4 + 5))
+    if ((v11 & 4) == 0 || self->_congestionReason != *(equalCopy + 5))
     {
       goto LABEL_36;
     }
@@ -1926,7 +1926,7 @@ LABEL_31:
 
   if ((v10 & 2) != 0)
   {
-    if ((v11 & 2) == 0 || self->_cellId != *(v4 + 4))
+    if ((v11 & 2) == 0 || self->_cellId != *(equalCopy + 4))
     {
       goto LABEL_36;
     }
@@ -1939,20 +1939,20 @@ LABEL_31:
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 46) & 0x200) == 0 || self->_numMncDigits != *(v4 + 14))
+    if ((*(equalCopy + 46) & 0x200) == 0 || self->_numMncDigits != *(equalCopy + 14))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 46) & 0x200) != 0)
+  else if ((*(equalCopy + 46) & 0x200) != 0)
   {
     goto LABEL_36;
   }
 
   if ((v10 & 0x80) != 0)
   {
-    if ((v11 & 0x80) == 0 || self->_mcc != *(v4 + 12))
+    if ((v11 & 0x80) == 0 || self->_mcc != *(equalCopy + 12))
     {
       goto LABEL_36;
     }
@@ -1965,13 +1965,13 @@ LABEL_31:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 46) & 0x100) == 0 || self->_mnc != *(v4 + 13))
+    if ((*(equalCopy + 46) & 0x100) == 0 || self->_mnc != *(equalCopy + 13))
     {
       goto LABEL_36;
     }
   }
 
-  else if ((*(v4 + 46) & 0x100) != 0)
+  else if ((*(equalCopy + 46) & 0x100) != 0)
   {
     goto LABEL_36;
   }
@@ -1982,17 +1982,17 @@ LABEL_31:
     goto LABEL_37;
   }
 
-  if ((*(v4 + 46) & 0x1000) != 0)
+  if ((*(equalCopy + 46) & 0x1000) != 0)
   {
     if (self->_fgAppActiveDuringCongestion)
     {
-      if (*(v4 + 89))
+      if (*(equalCopy + 89))
       {
         goto LABEL_96;
       }
     }
 
-    else if (!*(v4 + 89))
+    else if (!*(equalCopy + 89))
     {
 LABEL_96:
       v12 = 1;
@@ -2214,16 +2214,16 @@ LABEL_22:
   return v5 ^ v4 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 46);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 46);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 46);
+    v6 = *(fromCopy + 46);
     if ((v6 & 8) == 0)
     {
 LABEL_3:
@@ -2241,9 +2241,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_durationSec = *(v4 + 6);
+  self->_durationSec = *(fromCopy + 6);
   *&self->_has |= 8u;
-  v6 = *(v4 + 46);
+  v6 = *(fromCopy + 46);
   if ((v6 & 0x40) == 0)
   {
 LABEL_4:
@@ -2256,9 +2256,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_lqmType = *(v4 + 9);
+  self->_lqmType = *(fromCopy + 9);
   *&self->_has |= 0x40u;
-  v6 = *(v4 + 46);
+  v6 = *(fromCopy + 46);
   if ((v6 & 0x400) == 0)
   {
 LABEL_5:
@@ -2271,12 +2271,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_sysMode = *(v4 + 18);
+  self->_sysMode = *(fromCopy + 18);
   *&self->_has |= 0x400u;
-  if ((*(v4 + 46) & 0x2000) != 0)
+  if ((*(fromCopy + 46) & 0x2000) != 0)
   {
 LABEL_6:
-    self->_isScreenOn = *(v4 + 90);
+    self->_isScreenOn = *(fromCopy + 90);
     *&self->_has |= 0x2000u;
   }
 

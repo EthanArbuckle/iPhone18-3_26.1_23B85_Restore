@@ -1,5 +1,5 @@
 @interface _TVOrganizerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -8,11 +8,11 @@
 
 @implementation _TVOrganizerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVOrganizerView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"_TVOrganizerView" hasProperty:@"components" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVOrganizerView" hasInstanceMethod:@"layoutSubviews" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"_TVOrganizerView" hasProperty:@"components" withType:"@"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,30 +24,30 @@
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v2 = [(_TVOrganizerViewAccessibility *)self _accessibleSubviews];
-  v3 = [v2 axFilterObjectsUsingBlock:&__block_literal_global_8];
+  _accessibleSubviews = [(_TVOrganizerViewAccessibility *)self _accessibleSubviews];
+  v3 = [_accessibleSubviews axFilterObjectsUsingBlock:&__block_literal_global_8];
 
   return v3;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(_TVOrganizerViewAccessibility *)self isAccessibilityUserDefinedElement];
-  v4 = [v3 BOOLValue];
+  isAccessibilityUserDefinedElement = [(_TVOrganizerViewAccessibility *)self isAccessibilityUserDefinedElement];
+  bOOLValue = [isAccessibilityUserDefinedElement BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
-    v5 = [(_TVOrganizerViewAccessibility *)self _accessibilityTextForSubhierarchyIncludingHeaders:1 focusableItems:0 exclusions:0];
+    accessibilityLabel = [(_TVOrganizerViewAccessibility *)self _accessibilityTextForSubhierarchyIncludingHeaders:1 focusableItems:0 exclusions:0];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _TVOrganizerViewAccessibility;
-    v5 = [(_TVOrganizerViewAccessibility *)&v7 accessibilityLabel];
+    accessibilityLabel = [(_TVOrganizerViewAccessibility *)&v7 accessibilityLabel];
   }
 
-  return v5;
+  return accessibilityLabel;
 }
 
 - (void)layoutSubviews

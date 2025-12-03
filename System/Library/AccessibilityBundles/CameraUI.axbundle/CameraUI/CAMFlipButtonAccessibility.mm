@@ -1,15 +1,15 @@
 @interface CAMFlipButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation CAMFlipButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentDevicePosition" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"CAMViewfinderView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMViewfinderViewController" hasInstanceMethod:@"_currentDevicePosition" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"CAMViewfinderView"];
 }
 
 - (id)accessibilityValue
@@ -25,8 +25,8 @@
   else
   {
     v4 = [(CAMFlipButtonAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_11 startWithSelf:1];
-    v11 = [v4 _accessibilityViewController];
-    v6 = [v11 safeValueForKey:@"_effectsController"];
+    _accessibilityViewController = [v4 _accessibilityViewController];
+    v6 = [_accessibilityViewController safeValueForKey:@"_effectsController"];
   }
 
   v7 = [v6 safeIntegerForKey:@"_currentDevicePosition"];

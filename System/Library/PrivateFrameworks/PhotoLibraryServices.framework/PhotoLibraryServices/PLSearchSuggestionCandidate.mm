@@ -1,14 +1,14 @@
 @interface PLSearchSuggestionCandidate
-+ (id)updateCandidates:(id)a3 withTimestampsFromPreviouslyStoredCandidates:(id)a4;
++ (id)updateCandidates:(id)candidates withTimestampsFromPreviouslyStoredCandidates:(id)storedCandidates;
 - (BOOL)hasDateFilter;
 - (BOOL)hasFirstCategory;
 - (BOOL)hasSecondCategory;
-- (BOOL)isEqual:(id)a3;
-- (PLSearchSuggestionCandidate)initWithSearchSuggestionTemplate:(id)a3 firstGroup:(id)a4 secondGroup:(id)a5 assetIdsForDateFilter:(__CFArray *)a6 minAssetResultCountPerSuggestion:(unint64_t)a7;
+- (BOOL)isEqual:(id)equal;
+- (PLSearchSuggestionCandidate)initWithSearchSuggestionTemplate:(id)template firstGroup:(id)group secondGroup:(id)secondGroup assetIdsForDateFilter:(__CFArray *)filter minAssetResultCountPerSuggestion:(unint64_t)suggestion;
 - (float)rankingScore;
 - (id)description;
 - (id)jsonDictionary;
-- (id)populatedTemplateQueryStringInLocalization:(id)a3;
+- (id)populatedTemplateQueryStringInLocalization:(id)localization;
 - (unint64_t)hash;
 - (unint64_t)intersectionCount;
 - (void)dealloc;
@@ -48,58 +48,58 @@
   v31[2] = v27;
   v30[3] = @"style_type";
   v5 = MEMORY[0x1E696AD98];
-  v26 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v25 = [v5 numberWithUnsignedInteger:{objc_msgSend(v26, "templateStyleType")}];
+  suggestionTemplate = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  v25 = [v5 numberWithUnsignedInteger:{objc_msgSend(suggestionTemplate, "templateStyleType")}];
   v31[3] = v25;
   v30[4] = @"query_string";
-  v24 = [(PLSearchSuggestionCandidate *)self populatedTemplateQueryString];
-  v6 = [v24 string];
-  v7 = v6;
-  if (!v6)
+  populatedTemplateQueryString = [(PLSearchSuggestionCandidate *)self populatedTemplateQueryString];
+  string = [populatedTemplateQueryString string];
+  v7 = string;
+  if (!string)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    string = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v6;
-  v31[4] = v6;
+  v21 = string;
+  v31[4] = string;
   v30[5] = @"suggestion_template";
-  v22 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v8 = [v22 suggestionTemplateKey];
-  v9 = v8;
-  if (!v8)
+  suggestionTemplate2 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  suggestionTemplateKey = [suggestionTemplate2 suggestionTemplateKey];
+  v9 = suggestionTemplateKey;
+  if (!suggestionTemplateKey)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    suggestionTemplateKey = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[5] = v8;
+  v31[5] = suggestionTemplateKey;
   v30[6] = @"first_group";
-  v10 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
-  v11 = [v10 jsonDictionary];
-  v12 = v11;
-  if (!v11)
+  firstRankedGroup = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+  jsonDictionary = [firstRankedGroup jsonDictionary];
+  null = jsonDictionary;
+  if (!jsonDictionary)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[6] = v12;
+  v31[6] = null;
   v30[7] = @"second_group";
-  v13 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
-  v14 = [v13 jsonDictionary];
-  v15 = v14;
-  if (!v14)
+  secondRankedGroup = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
+  jsonDictionary2 = [secondRankedGroup jsonDictionary];
+  null2 = jsonDictionary2;
+  if (!jsonDictionary2)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31[7] = v15;
+  v31[7] = null2;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:8];
   v17 = [v23 initWithDictionary:v16];
 
-  if (!v14)
+  if (!jsonDictionary2)
   {
   }
 
-  if (!v11)
+  if (!jsonDictionary)
   {
   }
 
@@ -131,24 +131,24 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v4 = [v3 hash];
-  v5 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
-  v6 = [v5 group];
-  v7 = [v6 groupId] ^ v4;
-  v8 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
-  v9 = [v8 group];
-  v10 = [v9 groupId];
-  v11 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v12 = v10 ^ [v11 templateStyleType];
+  suggestionTemplate = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  v4 = [suggestionTemplate hash];
+  firstRankedGroup = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+  group = [firstRankedGroup group];
+  v7 = [group groupId] ^ v4;
+  secondRankedGroup = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
+  group2 = [secondRankedGroup group];
+  groupId = [group2 groupId];
+  suggestionTemplate2 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  v12 = groupId ^ [suggestionTemplate2 templateStyleType];
 
   return v7 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v24 = 1;
   }
@@ -158,20 +158,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-      v7 = [v6 templateStyleType];
-      v8 = [(PLSearchSuggestionCandidate *)v5 suggestionTemplate];
-      v9 = [v8 templateStyleType];
+      v5 = equalCopy;
+      suggestionTemplate = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+      templateStyleType = [suggestionTemplate templateStyleType];
+      suggestionTemplate2 = [(PLSearchSuggestionCandidate *)v5 suggestionTemplate];
+      templateStyleType2 = [suggestionTemplate2 templateStyleType];
 
-      if (v7 == v9 && (-[PLSearchSuggestionCandidate suggestionTemplate](self, "suggestionTemplate"), v10 = objc_claimAutoreleasedReturnValue(), -[PLSearchSuggestionCandidate suggestionTemplate](v5, "suggestionTemplate"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqual:v11], v11, v10, v12) && (-[PLSearchSuggestionCandidate firstRankedGroup](self, "firstRankedGroup"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "group"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "groupId"), -[PLSearchSuggestionCandidate firstRankedGroup](v5, "firstRankedGroup"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "group"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "groupId"), v17, v16, v14, v13, v15 == v18))
+      if (templateStyleType == templateStyleType2 && (-[PLSearchSuggestionCandidate suggestionTemplate](self, "suggestionTemplate"), v10 = objc_claimAutoreleasedReturnValue(), -[PLSearchSuggestionCandidate suggestionTemplate](v5, "suggestionTemplate"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqual:v11], v11, v10, v12) && (-[PLSearchSuggestionCandidate firstRankedGroup](self, "firstRankedGroup"), v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "group"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "groupId"), -[PLSearchSuggestionCandidate firstRankedGroup](v5, "firstRankedGroup"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "group"), v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "groupId"), v17, v16, v14, v13, v15 == v18))
       {
-        v19 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
-        v20 = [v19 group];
-        v21 = [v20 groupId];
-        v22 = [(PLSearchSuggestionCandidate *)v5 secondRankedGroup];
-        v23 = [v22 group];
-        v24 = v21 == [v23 groupId];
+        secondRankedGroup = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
+        group = [secondRankedGroup group];
+        groupId = [group groupId];
+        secondRankedGroup2 = [(PLSearchSuggestionCandidate *)v5 secondRankedGroup];
+        group2 = [secondRankedGroup2 group];
+        v24 = groupId == [group2 groupId];
       }
 
       else
@@ -191,36 +191,36 @@
 
 - (BOOL)hasDateFilter
 {
-  v3 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v4 = [v3 templateStyleType];
+  suggestionTemplate = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  templateStyleType = [suggestionTemplate templateStyleType];
 
-  if (v4 == 1)
+  if (templateStyleType == 1)
   {
     return 0;
   }
 
-  v6 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v5 = [v6 templateDateType] != 0;
+  suggestionTemplate2 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  v5 = [suggestionTemplate2 templateDateType] != 0;
 
   return v5;
 }
 
 - (BOOL)hasSecondCategory
 {
-  v3 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v4 = [v3 templateStyleType];
+  suggestionTemplate = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  templateStyleType = [suggestionTemplate templateStyleType];
 
-  if (v4 == 1)
+  if (templateStyleType == 1)
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v6 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-    v7 = [v6 templateType];
+    suggestionTemplate2 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+    templateType = [suggestionTemplate2 templateType];
 
-    return (v7 >> 1) & 1;
+    return (templateType >> 1) & 1;
   }
 
   return v5;
@@ -228,64 +228,64 @@
 
 - (BOOL)hasFirstCategory
 {
-  v3 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v4 = [v3 templateStyleType];
+  suggestionTemplate = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  templateStyleType = [suggestionTemplate templateStyleType];
 
-  if (v4 == 1)
+  if (templateStyleType == 1)
   {
     return 1;
   }
 
-  v6 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v7 = [v6 templateType];
+  suggestionTemplate2 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  templateType = [suggestionTemplate2 templateType];
 
-  return v7 & 1;
+  return templateType & 1;
 }
 
-- (id)populatedTemplateQueryStringInLocalization:(id)a3
+- (id)populatedTemplateQueryStringInLocalization:(id)localization
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
-  v6 = [v5 displayString];
+  localizationCopy = localization;
+  firstRankedGroup = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+  displayString = [firstRankedGroup displayString];
 
-  v7 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
-  v8 = [v7 displayString];
+  secondRankedGroup = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
+  displayString2 = [secondRankedGroup displayString];
 
-  v9 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v10 = [v9 templateStyleType];
+  suggestionTemplate = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  templateStyleType = [suggestionTemplate templateStyleType];
 
   v11 = @"SINGLE_ENTITY_KEY";
-  if (v10 != 1)
+  if (templateStyleType != 1)
   {
     v11 = 0;
   }
 
   v12 = v11;
-  if (v4)
+  if (localizationCopy)
   {
-    v13 = PLPhotoLibraryServicesFrameworkBundle();
-    v14 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-    v15 = [v14 suggestionTemplateKey];
-    v16 = [v13 localizedStringForKey:v15 value:&stru_1F0F06D80 table:@"PhotoLibraryServices" localization:v4];
+    suggestionTemplate3 = PLPhotoLibraryServicesFrameworkBundle();
+    suggestionTemplate2 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+    suggestionTemplateKey = [suggestionTemplate2 suggestionTemplateKey];
+    v16 = [suggestionTemplate3 localizedStringForKey:suggestionTemplateKey value:&stru_1F0F06D80 table:@"PhotoLibraryServices" localization:localizationCopy];
   }
 
   else
   {
-    v13 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-    v14 = [v13 suggestionTemplateKey];
+    suggestionTemplate3 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+    suggestionTemplate2 = [suggestionTemplate3 suggestionTemplateKey];
     v16 = PLServicesLocalizedFrameworkString();
   }
 
-  if (v10 != 1 && ![v16 length])
+  if (templateStyleType != 1 && ![v16 length])
   {
     v21 = PLSearchBackendInitialSuggestionsGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v33 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-      v34 = [v33 suggestionTemplateKey];
+      suggestionTemplate4 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+      suggestionTemplateKey2 = [suggestionTemplate4 suggestionTemplateKey];
       *buf = 138412290;
-      v50 = v34;
+      v50 = suggestionTemplateKey2;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Unable to locate template for key: %@.", buf, 0xCu);
 
 LABEL_25:
@@ -296,48 +296,48 @@ LABEL_26:
     goto LABEL_54;
   }
 
-  v17 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v18 = [v17 isDateOnlyTemplate];
+  suggestionTemplate5 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  isDateOnlyTemplate = [suggestionTemplate5 isDateOnlyTemplate];
 
-  v19 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-  v20 = [(__CFString *)v19 isMeTemplate];
+  suggestionTemplate6 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+  isMeTemplate = [(__CFString *)suggestionTemplate6 isMeTemplate];
 
   v48 = v16;
-  if (v10 != 1)
+  if (templateStyleType != 1)
   {
     if ([(PLSearchSuggestionCandidate *)self hasFirstCategory]&& [(PLSearchSuggestionCandidate *)self hasSecondCategory])
     {
-      if (v20)
+      if (isMeTemplate)
       {
-        v28 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
-        v29 = [v28 isMePerson];
+        firstRankedGroup2 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+        isMePerson = [firstRankedGroup2 isMePerson];
 
-        if (v29)
+        if (isMePerson)
         {
-          v46 = v8;
+          v46 = displayString2;
         }
 
         else
         {
-          v38 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
-          v39 = [v38 isMePerson];
+          secondRankedGroup2 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
+          isMePerson2 = [secondRankedGroup2 isMePerson];
 
-          if (!v39)
+          if (!isMePerson2)
           {
             v21 = 0;
 LABEL_45:
             if ([v21 length:v46])
             {
               v23 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v21];
-              v40 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
-              v22 = v6;
-              v41 = [v21 rangeOfString:v6];
-              v19 = @"PLSearchQueryRankedGroupAttribute";
-              [v23 addAttribute:@"PLSearchQueryRankedGroupAttribute" value:v40 range:{v41, v42}];
+              firstRankedGroup3 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+              v22 = displayString;
+              v41 = [v21 rangeOfString:displayString];
+              suggestionTemplate6 = @"PLSearchQueryRankedGroupAttribute";
+              [v23 addAttribute:@"PLSearchQueryRankedGroupAttribute" value:firstRankedGroup3 range:{v41, v42}];
 
-              v25 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
-              v24 = v8;
-              v31 = [v21 rangeOfString:v8];
+              secondRankedGroup3 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
+              v24 = displayString2;
+              v31 = [v21 rangeOfString:displayString2];
               v32 = v23;
               goto LABEL_22;
             }
@@ -345,7 +345,7 @@ LABEL_45:
             goto LABEL_47;
           }
 
-          v46 = v6;
+          v46 = displayString;
         }
 
 LABEL_44:
@@ -353,19 +353,19 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      if ([(__CFString *)v6 length]&& [(__CFString *)v8 length])
+      if ([(__CFString *)displayString length]&& [(__CFString *)displayString2 length])
       {
-        v46 = v6;
-        v47 = v8;
+        v46 = displayString;
+        v47 = displayString2;
         goto LABEL_44;
       }
 
       v21 = PLSearchBackendInitialSuggestionsGetLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v33 = [(PLSearchSuggestionCandidate *)self description];
+        suggestionTemplate4 = [(PLSearchSuggestionCandidate *)self description];
         *buf = 138412290;
-        v50 = v33;
+        v50 = suggestionTemplate4;
         _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "Unable to populate template with mutliple categories: %@.", buf, 0xCu);
         goto LABEL_25;
       }
@@ -375,29 +375,29 @@ LABEL_44:
 
     if ([(PLSearchSuggestionCandidate *)self hasFirstCategory])
     {
-      v19 = v6;
-      if ([(__CFString *)v6 length])
+      suggestionTemplate6 = displayString;
+      if ([(__CFString *)displayString length])
       {
-        v24 = v8;
+        v24 = displayString2;
         v21 = PFStringWithValidatedFormat();
         if ([v21 length])
         {
           v23 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v21];
-          v25 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+          secondRankedGroup3 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
           v26 = v21;
-          v22 = v19;
-          v27 = v19;
+          v22 = suggestionTemplate6;
+          v27 = suggestionTemplate6;
           goto LABEL_21;
         }
 
-        v22 = v19;
+        v22 = suggestionTemplate6;
 LABEL_48:
         v23 = 0;
         goto LABEL_49;
       }
 
-      v22 = v6;
-      v24 = v8;
+      v22 = displayString;
+      v24 = displayString2;
       v35 = PLSearchBackendInitialSuggestionsGetLog();
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
@@ -411,9 +411,9 @@ LABEL_48:
 
     else
     {
-      v22 = v6;
-      v24 = v8;
-      if (v18)
+      v22 = displayString;
+      v24 = displayString2;
+      if (isDateOnlyTemplate)
       {
         v21 = v48;
         if ([v21 length])
@@ -442,46 +442,46 @@ LABEL_34:
     goto LABEL_49;
   }
 
-  v21 = v6;
+  v21 = displayString;
   if (![v21 length])
   {
 LABEL_47:
-    v22 = v6;
-    v24 = v8;
+    v22 = displayString;
+    v24 = displayString2;
     goto LABEL_48;
   }
 
-  v22 = v6;
+  v22 = displayString;
   v23 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v21];
-  v24 = v8;
+  v24 = displayString2;
   if ([(PLSearchSuggestionCandidate *)self hasFirstCategory])
   {
-    v25 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+    secondRankedGroup3 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
     v26 = v21;
     v27 = v21;
 LABEL_21:
     v31 = [v26 rangeOfString:v27];
     v32 = v23;
 LABEL_22:
-    [v32 addAttribute:@"PLSearchQueryRankedGroupAttribute" value:v25 range:{v31, v30}];
+    [v32 addAttribute:@"PLSearchQueryRankedGroupAttribute" value:secondRankedGroup3 range:{v31, v30}];
   }
 
 LABEL_49:
   v43 = [(__CFString *)v12 length];
-  v44 = v12;
+  suggestionTemplateKey3 = v12;
   if (!v43)
   {
-    v19 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-    v44 = [(__CFString *)v19 suggestionTemplateKey];
+    suggestionTemplate6 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+    suggestionTemplateKey3 = [(__CFString *)suggestionTemplate6 suggestionTemplateKey];
   }
 
-  [v23 addAttribute:@"PLSearchQueryTemplateTypeAttribute" value:v44 range:{0, objc_msgSend(v23, "length")}];
+  [v23 addAttribute:@"PLSearchQueryTemplateTypeAttribute" value:suggestionTemplateKey3 range:{0, objc_msgSend(v23, "length")}];
   if (!v43)
   {
   }
 
-  v8 = v24;
-  v6 = v22;
+  displayString2 = v24;
+  displayString = v22;
   v16 = v48;
 LABEL_54:
 
@@ -493,14 +493,14 @@ LABEL_54:
   result = self->_rankingScore;
   if (result == 9.2234e18)
   {
-    v4 = [(PLSearchSuggestionCandidate *)self intersectionCount];
-    v5 = [(PLSearchSuggestionCandidate *)self minAssetResultCountPerSuggestion];
+    intersectionCount = [(PLSearchSuggestionCandidate *)self intersectionCount];
+    minAssetResultCountPerSuggestion = [(PLSearchSuggestionCandidate *)self minAssetResultCountPerSuggestion];
     v6 = 1.0;
-    if (v4 < v5)
+    if (intersectionCount < minAssetResultCountPerSuggestion)
     {
-      if (v5)
+      if (minAssetResultCountPerSuggestion)
       {
-        v6 = (v4 / v5);
+        v6 = (intersectionCount / minAssetResultCountPerSuggestion);
       }
 
       else
@@ -511,11 +511,11 @@ LABEL_54:
 
     if ([(PLSearchSuggestionCandidate *)self hasFirstCategory]&& [(PLSearchSuggestionCandidate *)self hasSecondCategory])
     {
-      v7 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
-      [v7 rankingScore];
+      firstRankedGroup = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+      [firstRankedGroup rankingScore];
       v9 = v8 * 0.25 + v6 * 0.5;
-      v10 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
-      [v10 rankingScore];
+      secondRankedGroup = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
+      [secondRankedGroup rankingScore];
       v12 = v9 + v11 * 0.25;
       self->_rankingScore = v12;
     }
@@ -527,17 +527,17 @@ LABEL_54:
         goto LABEL_12;
       }
 
-      v7 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
-      [v7 rankingScore];
+      firstRankedGroup = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+      [firstRankedGroup rankingScore];
       v14 = v13 * 0.5 + v6 * 0.5;
       self->_rankingScore = v14;
     }
 
 LABEL_12:
-    v15 = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
-    v16 = [v15 isDateOnlyTemplate];
+    suggestionTemplate = [(PLSearchSuggestionCandidate *)self suggestionTemplate];
+    isDateOnlyTemplate = [suggestionTemplate isDateOnlyTemplate];
 
-    if (v16)
+    if (isDateOnlyTemplate)
     {
       [PSISuggestionRanker initialSuggestionScoreForIndexCategory:1102];
       result = v17;
@@ -558,53 +558,53 @@ LABEL_12:
   result = self->_intersectionCount;
   if (result == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
-    v5 = [v4 group];
-    v6 = [v5 assetIds];
+    firstRankedGroup = [(PLSearchSuggestionCandidate *)self firstRankedGroup];
+    group = [firstRankedGroup group];
+    assetIds = [group assetIds];
 
-    v7 = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
-    v8 = [v7 group];
-    v9 = [v8 assetIds];
+    secondRankedGroup = [(PLSearchSuggestionCandidate *)self secondRankedGroup];
+    group2 = [secondRankedGroup group];
+    assetIds2 = [group2 assetIds];
 
-    v10 = [(PLSearchSuggestionCandidate *)self assetIdsForDateFilter];
+    assetIdsForDateFilter = [(PLSearchSuggestionCandidate *)self assetIdsForDateFilter];
     cf = 0;
     if ([(PLSearchSuggestionCandidate *)self hasFirstCategory]&& [(PLSearchSuggestionCandidate *)self hasSecondCategory])
     {
       Copy = 0;
-      if (v6)
+      if (assetIds)
       {
-        Copy = CFArrayCreateCopy(0, v6);
+        Copy = CFArrayCreateCopy(0, assetIds);
       }
 
       cf = Copy;
-      [PLScopedSearchUtilities intersectSortedArray:&cf withOtherSortedArray:v9 intersectionLimit:500];
+      [PLScopedSearchUtilities intersectSortedArray:&cf withOtherSortedArray:assetIds2 intersectionLimit:500];
     }
 
     else if ([(PLSearchSuggestionCandidate *)self hasFirstCategory])
     {
       v12 = 0;
-      if (v6)
+      if (assetIds)
       {
-        v12 = CFArrayCreateCopy(0, v6);
+        v12 = CFArrayCreateCopy(0, assetIds);
       }
 
       cf = v12;
     }
 
-    v13 = [(PLSearchSuggestionCandidate *)self hasDateFilter];
+    hasDateFilter = [(PLSearchSuggestionCandidate *)self hasDateFilter];
     result = cf;
-    if (v13)
+    if (hasDateFilter)
     {
       if (cf)
       {
-        [PLScopedSearchUtilities intersectSortedArray:&cf withOtherSortedArray:v10 intersectionLimit:500];
+        [PLScopedSearchUtilities intersectSortedArray:&cf withOtherSortedArray:assetIdsForDateFilter intersectionLimit:500];
         result = cf;
         goto LABEL_18;
       }
 
-      if (v10)
+      if (assetIdsForDateFilter)
       {
-        result = v10;
+        result = assetIdsForDateFilter;
 LABEL_18:
         result = CFArrayGetCount(result);
         v14 = cf;
@@ -632,15 +632,15 @@ LABEL_18:
   return result;
 }
 
-- (PLSearchSuggestionCandidate)initWithSearchSuggestionTemplate:(id)a3 firstGroup:(id)a4 secondGroup:(id)a5 assetIdsForDateFilter:(__CFArray *)a6 minAssetResultCountPerSuggestion:(unint64_t)a7
+- (PLSearchSuggestionCandidate)initWithSearchSuggestionTemplate:(id)template firstGroup:(id)group secondGroup:(id)secondGroup assetIdsForDateFilter:(__CFArray *)filter minAssetResultCountPerSuggestion:(unint64_t)suggestion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = [v13 templateStyleType];
-  if (v16 == 1)
+  templateCopy = template;
+  groupCopy = group;
+  secondGroupCopy = secondGroup;
+  templateStyleType = [templateCopy templateStyleType];
+  if (templateStyleType == 1)
   {
-    if (!v13 || !v14)
+    if (!templateCopy || !groupCopy)
     {
       v17 = PLSearchBackendInitialSuggestionsGetLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -652,12 +652,12 @@ LABEL_18:
 
 LABEL_17:
 
-      v21 = 0;
+      selfCopy = 0;
       goto LABEL_18;
     }
   }
 
-  else if (!v16 && !v13)
+  else if (!templateStyleType && !templateCopy)
   {
     v17 = PLSearchBackendInitialSuggestionsGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -678,39 +678,39 @@ LABEL_16:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_firstRankedGroup, a4);
-    objc_storeStrong(&v20->_suggestionTemplate, a3);
-    if (![v13 templateStyleType])
+    objc_storeStrong(&v19->_firstRankedGroup, group);
+    objc_storeStrong(&v20->_suggestionTemplate, template);
+    if (![templateCopy templateStyleType])
     {
-      objc_storeStrong(&v20->_secondRankedGroup, a5);
-      if (a6)
+      objc_storeStrong(&v20->_secondRankedGroup, secondGroup);
+      if (filter)
       {
-        v20->_assetIdsForDateFilter = CFRetain(a6);
+        v20->_assetIdsForDateFilter = CFRetain(filter);
       }
     }
 
-    v20->_minAssetResultCountPerSuggestion = a7;
+    v20->_minAssetResultCountPerSuggestion = suggestion;
     v20->_intersectionCount = 0x7FFFFFFFFFFFFFFFLL;
     v20->_rankingScore = 9.2234e18;
   }
 
   self = v20;
-  v21 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v21;
+  return selfCopy;
 }
 
-+ (id)updateCandidates:(id)a3 withTimestampsFromPreviouslyStoredCandidates:(id)a4
++ (id)updateCandidates:(id)candidates withTimestampsFromPreviouslyStoredCandidates:(id)storedCandidates
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (![v6 count])
+  candidatesCopy = candidates;
+  storedCandidatesCopy = storedCandidates;
+  if (![storedCandidatesCopy count])
   {
-    if (v5)
+    if (candidatesCopy)
     {
-      v7 = v5;
+      v7 = candidatesCopy;
     }
 
     else
@@ -723,14 +723,14 @@ LABEL_24:
     goto LABEL_26;
   }
 
-  if ([v5 count])
+  if ([candidatesCopy count])
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v21 = v5;
-    v7 = v5;
+    v21 = candidatesCopy;
+    v7 = candidatesCopy;
     v8 = [v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v8)
     {
@@ -751,7 +751,7 @@ LABEL_24:
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v13 = v6;
+          v13 = storedCandidatesCopy;
           v14 = [v13 countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v14)
           {
@@ -795,7 +795,7 @@ LABEL_18:
       while (v9);
     }
 
-    v5 = v21;
+    candidatesCopy = v21;
     goto LABEL_24;
   }
 

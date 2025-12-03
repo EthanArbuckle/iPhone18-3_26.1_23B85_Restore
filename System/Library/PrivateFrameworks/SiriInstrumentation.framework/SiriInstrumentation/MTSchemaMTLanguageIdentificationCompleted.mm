@@ -1,43 +1,43 @@
 @interface MTSchemaMTLanguageIdentificationCompleted
-- (BOOL)isEqual:(id)a3;
-- (MTSchemaMTLanguageIdentificationCompleted)initWithDictionary:(id)a3;
-- (MTSchemaMTLanguageIdentificationCompleted)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSchemaMTLanguageIdentificationCompleted)initWithDictionary:(id)dictionary;
+- (MTSchemaMTLanguageIdentificationCompleted)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addLidConfidence:(id)a3;
-- (void)setHasTopLocale:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addLidConfidence:(id)confidence;
+- (void)setHasTopLocale:(BOOL)locale;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTLanguageIdentificationCompleted
 
-- (MTSchemaMTLanguageIdentificationCompleted)initWithDictionary:(id)a3
+- (MTSchemaMTLanguageIdentificationCompleted)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = MTSchemaMTLanguageIdentificationCompleted;
   v5 = [(MTSchemaMTLanguageIdentificationCompleted *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"inputSource"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"inputSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTLanguageIdentificationCompleted setInputSource:](v5, "setInputSource:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"topLocale"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"topLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTLanguageIdentificationCompleted setTopLocale:](v5, "setTopLocale:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"lidConfidence"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"lidConfidence"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,30 +91,30 @@
   return v5;
 }
 
-- (MTSchemaMTLanguageIdentificationCompleted)initWithJSON:(id)a3
+- (MTSchemaMTLanguageIdentificationCompleted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTLanguageIdentificationCompleted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTLanguageIdentificationCompleted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTLanguageIdentificationCompleted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -128,7 +128,7 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [(MTSchemaMTLanguageIdentificationCompleted *)self inputSource]- 1;
@@ -142,12 +142,12 @@
       v5 = off_1E78D9FB8[v4];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"inputSource"];
+    [dictionary setObject:v5 forKeyedSubscript:@"inputSource"];
   }
 
   if ([(NSArray *)self->_lidConfidences count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -167,16 +167,16 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v12)
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v6 addObject:v12];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v13 = [MEMORY[0x1E695DFB0] null];
-            [v6 addObject:v13];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -186,7 +186,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"lidConfidence"];
+    [dictionary setObject:array forKeyedSubscript:@"lidConfidence"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -202,12 +202,12 @@
       v15 = off_1E78D9FD8[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"topLocale"];
+    [dictionary setObject:v15 forKeyedSubscript:@"topLocale"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -236,16 +236,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSArray *)self->_lidConfidences hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -254,27 +254,27 @@ LABEL_3:
   if (*&has)
   {
     inputSource = self->_inputSource;
-    if (inputSource != [v4 inputSource])
+    if (inputSource != [equalCopy inputSource])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (topLocale = self->_topLocale, topLocale == [v4 topLocale]))
+    if (!v8 || (topLocale = self->_topLocale, topLocale == [equalCopy topLocale]))
     {
-      v10 = [(MTSchemaMTLanguageIdentificationCompleted *)self lidConfidences];
-      v11 = [v4 lidConfidences];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      lidConfidences = [(MTSchemaMTLanguageIdentificationCompleted *)self lidConfidences];
+      lidConfidences2 = [equalCopy lidConfidences];
+      v12 = lidConfidences2;
+      if ((lidConfidences != 0) != (lidConfidences2 == 0))
       {
-        v13 = [(MTSchemaMTLanguageIdentificationCompleted *)self lidConfidences];
-        if (!v13)
+        lidConfidences3 = [(MTSchemaMTLanguageIdentificationCompleted *)self lidConfidences];
+        if (!lidConfidences3)
         {
 
 LABEL_17:
@@ -282,10 +282,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(MTSchemaMTLanguageIdentificationCompleted *)self lidConfidences];
-        v16 = [v4 lidConfidences];
-        v17 = [v15 isEqual:v16];
+        v14 = lidConfidences3;
+        lidConfidences4 = [(MTSchemaMTLanguageIdentificationCompleted *)self lidConfidences];
+        lidConfidences5 = [equalCopy lidConfidences];
+        v17 = [lidConfidences4 isEqual:lidConfidences5];
 
         if (v17)
         {
@@ -306,10 +306,10 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -351,27 +351,27 @@ LABEL_15:
   }
 }
 
-- (void)addLidConfidence:(id)a3
+- (void)addLidConfidence:(id)confidence
 {
-  v4 = a3;
+  confidenceCopy = confidence;
   lidConfidences = self->_lidConfidences;
-  v8 = v4;
+  v8 = confidenceCopy;
   if (!lidConfidences)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_lidConfidences;
-    self->_lidConfidences = v6;
+    self->_lidConfidences = array;
 
-    v4 = v8;
+    confidenceCopy = v8;
     lidConfidences = self->_lidConfidences;
   }
 
-  [(NSArray *)lidConfidences addObject:v4];
+  [(NSArray *)lidConfidences addObject:confidenceCopy];
 }
 
-- (void)setHasTopLocale:(BOOL)a3
+- (void)setHasTopLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 2;
   }
@@ -384,14 +384,14 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MTSchemaMTLanguageIdentificationCompleted;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MTSchemaMTLanguageIdentificationCompleted *)self lidConfidences:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(MTSchemaMTLanguageIdentificationCompleted *)self setLidConfidences:v7];
 

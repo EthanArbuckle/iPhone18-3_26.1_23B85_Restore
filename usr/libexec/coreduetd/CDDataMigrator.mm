@@ -6,7 +6,7 @@
 + (BOOL)spotlightViewerEventsMigration;
 + (CDDataMigrator)sharedInstance;
 + (void)_migrateSpotlightEvents;
-+ (void)removeFileAtPath:(id)a3;
++ (void)removeFileAtPath:(id)path;
 - (CDDataMigrator)init;
 @end
 
@@ -115,17 +115,17 @@
   return 1;
 }
 
-+ (void)removeFileAtPath:(id)a3
++ (void)removeFileAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  v5 = [v4 fileExistsAtPath:pathCopy];
 
   if (v5)
   {
     v6 = +[NSFileManager defaultManager];
     v8 = 0;
-    [v6 removeItemAtPath:v3 error:&v8];
+    [v6 removeItemAtPath:pathCopy error:&v8];
     v7 = v8;
 
     if (v7)
@@ -167,8 +167,8 @@
   v14 = 0;
   ppDb = 0;
   sqlite3_open("/var/mobile/Library/CoreDuet/coreduetdClassD.db", &ppDb);
-  v4 = [@"SELECT ZINTEGERID from ZCDDMATTRIBUTENAMEMAPPER where ZNAME==com.apple.spotlightviewer.events;" UTF8String];
-  sqlite3_exec(ppDb, v4, sub_10001E100, 0, 0);
+  uTF8String = [@"SELECT ZINTEGERID from ZCDDMATTRIBUTENAMEMAPPER where ZNAME==com.apple.spotlightviewer.events;" UTF8String];
+  sqlite3_exec(ppDb, uTF8String, sub_10001E100, 0, 0);
   sqlite3_close(ppDb);
   ppDb = 0;
   if (!qword_100044628)
@@ -184,10 +184,10 @@
   }
 
   sqlite3_open("/var/mobile/Library/CoreDuet/coreduetd.db", &v14);
-  v5 = [NSString stringWithFormat:@"SELECT ZVALUE, ZCREATIONDATE from ZCDDMSTRINGATTRIBUTE where ZINTEGERID==%lld", qword_100044628];
-  v6 = [v5 UTF8String];
+  qword_100044628 = [NSString stringWithFormat:@"SELECT ZVALUE, ZCREATIONDATE from ZCDDMSTRINGATTRIBUTE where ZINTEGERID==%lld", qword_100044628];
+  uTF8String2 = [qword_100044628 UTF8String];
 
-  sqlite3_exec(v14, v6, sub_10001E180, v2, 0);
+  sqlite3_exec(v14, uTF8String2, sub_10001E180, v2, 0);
   sqlite3_close(v14);
   v14 = 0;
   if ([v2 count])
@@ -247,7 +247,7 @@ LABEL_12:
   if (v5)
   {
     v7 = objc_autoreleasePoolPush();
-    [a1 _migrateSpotlightEvents];
+    [self _migrateSpotlightEvents];
     objc_autoreleasePoolPop(v7);
     v18 = 0u;
     v19 = 0u;
@@ -313,40 +313,40 @@ LABEL_12:
   [v11 setIncludeRemoteResults:1];
   [v11 setRemoteHistogramLimit:1];
   v12 = [v4 executeQuery:v11 error:0];
-  v13 = [v12 identifier];
+  identifier = [v12 identifier];
 
-  if (v13)
+  if (identifier)
   {
     v34 = v8;
     v14 = +[NSMutableArray array];
-    v15 = [v12 identifier];
-    v16 = [NSPredicate predicateWithFormat:@"identifier != %@", v15];
+    identifier2 = [v12 identifier];
+    v16 = [NSPredicate predicateWithFormat:@"identifier != %@", identifier2];
     [v14 addObject:v16];
 
-    v17 = [v12 stream];
+    stream = [v12 stream];
 
-    if (v17)
+    if (stream)
     {
-      v18 = [v12 stream];
-      v19 = [v18 name];
-      v20 = [NSPredicate predicateWithFormat:@"streamName = %@", v19];
+      stream2 = [v12 stream];
+      name = [stream2 name];
+      v20 = [NSPredicate predicateWithFormat:@"streamName = %@", name];
       [v14 addObject:v20];
     }
 
-    v21 = [v12 deviceIdentifiers];
-    v22 = [v21 count];
+    deviceIdentifiers = [v12 deviceIdentifiers];
+    v22 = [deviceIdentifiers count];
 
     if (v22)
     {
-      v23 = [v12 deviceIdentifiers];
-      v24 = [v23 firstObject];
-      v25 = [NSPredicate predicateWithFormat:@"deviceIdentifier = %@", v24];
+      deviceIdentifiers2 = [v12 deviceIdentifiers];
+      firstObject = [deviceIdentifiers2 firstObject];
+      v25 = [NSPredicate predicateWithFormat:@"deviceIdentifier = %@", firstObject];
       [v14 addObject:v25];
     }
 
     v26 = [NSCompoundPredicate andPredicateWithSubpredicates:v14];
-    v27 = [v4 storage];
-    v28 = [v27 managedObjectContextFor:NSFileProtectionCompleteUntilFirstUserAuthentication identifier:@"com.apple.coreduet.datamigrator"];
+    storage = [v4 storage];
+    v28 = [storage managedObjectContextFor:NSFileProtectionCompleteUntilFirstUserAuthentication identifier:@"com.apple.coreduet.datamigrator"];
     LOBYTE(v33) = 1;
     v29 = [_DKCoreDataStorage deleteObjectsInContext:v28 entityName:@"Histogram" predicate:v26 sortDescriptors:0 fetchLimit:0x7FFFFFFFFFFFFFFFLL includeSubentities:1 includePendingChanges:v33];
 
@@ -362,7 +362,7 @@ LABEL_12:
     v8 = v34;
   }
 
-  return v13 != 0;
+  return identifier != 0;
 }
 
 @end

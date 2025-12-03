@@ -1,9 +1,9 @@
 @interface BMHomeKitClientActionSetEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMHomeKitClientActionSetEvent)initWithBase:(id)a3 actionSetUniqueIdentifier:(id)a4 actionSetType:(id)a5 associatedAccessoryUniqueIdentifiers:(id)a6 actionSetName:(id)a7 homeName:(id)a8;
-- (BMHomeKitClientActionSetEvent)initWithProto:(id)a3;
-- (BMHomeKitClientActionSetEvent)initWithProtoData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMHomeKitClientActionSetEvent)initWithBase:(id)base actionSetUniqueIdentifier:(id)identifier actionSetType:(id)type associatedAccessoryUniqueIdentifiers:(id)identifiers actionSetName:(id)name homeName:(id)homeName;
+- (BMHomeKitClientActionSetEvent)initWithProto:(id)proto;
+- (BMHomeKitClientActionSetEvent)initWithProtoData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -11,26 +11,26 @@
 
 @implementation BMHomeKitClientActionSetEvent
 
-- (BMHomeKitClientActionSetEvent)initWithBase:(id)a3 actionSetUniqueIdentifier:(id)a4 actionSetType:(id)a5 associatedAccessoryUniqueIdentifiers:(id)a6 actionSetName:(id)a7 homeName:(id)a8
+- (BMHomeKitClientActionSetEvent)initWithBase:(id)base actionSetUniqueIdentifier:(id)identifier actionSetType:(id)type associatedAccessoryUniqueIdentifiers:(id)identifiers actionSetName:(id)name homeName:(id)homeName
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  baseCopy = base;
+  identifierCopy = identifier;
+  typeCopy = type;
+  identifiersCopy = identifiers;
+  nameCopy = name;
+  homeNameCopy = homeName;
   v24.receiver = self;
   v24.super_class = BMHomeKitClientActionSetEvent;
   v18 = [(BMEventBase *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_base, a3);
-    objc_storeStrong(&v19->_actionSetUniqueIdentifier, a4);
-    objc_storeStrong(&v19->_actionSetType, a5);
-    objc_storeStrong(&v19->_associatedAccessoryUniqueIdentifiers, a6);
-    objc_storeStrong(&v19->_actionSetName, a7);
-    objc_storeStrong(&v19->_homeName, a8);
+    objc_storeStrong(&v18->_base, base);
+    objc_storeStrong(&v19->_actionSetUniqueIdentifier, identifier);
+    objc_storeStrong(&v19->_actionSetType, type);
+    objc_storeStrong(&v19->_associatedAccessoryUniqueIdentifiers, identifiers);
+    objc_storeStrong(&v19->_actionSetName, name);
+    objc_storeStrong(&v19->_homeName, homeName);
   }
 
   return v19;
@@ -46,10 +46,10 @@
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4)
+  dataCopy = data;
+  if (version)
   {
     v7 = __biome_log_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -62,7 +62,7 @@
 
   else
   {
-    v8 = [[a1 alloc] initWithProtoData:v6];
+    v8 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   return v8;
@@ -70,19 +70,19 @@
 
 - (id)encodeAsProto
 {
-  v2 = [(BMHomeKitClientActionSetEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMHomeKitClientActionSetEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMHomeKitClientActionSetEvent)initWithProto:(id)a3
+- (BMHomeKitClientActionSetEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (!v4)
+  protoCopy = proto;
+  if (!protoCopy)
   {
 LABEL_7:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
@@ -98,139 +98,139 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = v4;
+  v5 = protoCopy;
   v6 = [BMHomeKitClientBase alloc];
-  v7 = [v5 base];
-  v8 = [(BMHomeKitClientBase *)v6 initWithProto:v7];
-  v9 = [v5 actionSetUniqueIdentifier];
-  v10 = [v5 actionSetType];
-  v11 = [v5 associatedAccessoryUniqueIdentifiers];
-  v12 = [v5 actionSetName];
-  v13 = [v5 homeName];
+  base = [v5 base];
+  v8 = [(BMHomeKitClientBase *)v6 initWithProto:base];
+  actionSetUniqueIdentifier = [v5 actionSetUniqueIdentifier];
+  actionSetType = [v5 actionSetType];
+  associatedAccessoryUniqueIdentifiers = [v5 associatedAccessoryUniqueIdentifiers];
+  actionSetName = [v5 actionSetName];
+  homeName = [v5 homeName];
 
-  self = [(BMHomeKitClientActionSetEvent *)self initWithBase:v8 actionSetUniqueIdentifier:v9 actionSetType:v10 associatedAccessoryUniqueIdentifiers:v11 actionSetName:v12 homeName:v13];
-  v14 = self;
+  self = [(BMHomeKitClientActionSetEvent *)self initWithBase:v8 actionSetUniqueIdentifier:actionSetUniqueIdentifier actionSetType:actionSetType associatedAccessoryUniqueIdentifiers:associatedAccessoryUniqueIdentifiers actionSetName:actionSetName homeName:homeName];
+  selfCopy = self;
 LABEL_8:
 
-  return v14;
+  return selfCopy;
 }
 
-- (BMHomeKitClientActionSetEvent)initWithProtoData:(id)a3
+- (BMHomeKitClientActionSetEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBHomeKitClientActionSetEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBHomeKitClientActionSetEvent alloc] initWithData:dataCopy];
 
     self = [(BMHomeKitClientActionSetEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMHomeKitClientActionSetEvent *)self base];
-  v5 = [v4 proto];
-  [v3 setBase:v5];
+  base = [(BMHomeKitClientActionSetEvent *)self base];
+  proto = [base proto];
+  [v3 setBase:proto];
 
-  v6 = [(BMHomeKitClientActionSetEvent *)self actionSetUniqueIdentifier];
-  [v3 setActionSetUniqueIdentifier:v6];
+  actionSetUniqueIdentifier = [(BMHomeKitClientActionSetEvent *)self actionSetUniqueIdentifier];
+  [v3 setActionSetUniqueIdentifier:actionSetUniqueIdentifier];
 
-  v7 = [(BMHomeKitClientActionSetEvent *)self actionSetType];
-  [v3 setActionSetType:v7];
+  actionSetType = [(BMHomeKitClientActionSetEvent *)self actionSetType];
+  [v3 setActionSetType:actionSetType];
 
   v8 = MEMORY[0x1E695DF70];
-  v9 = [(BMHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiers];
-  v10 = [v8 arrayWithArray:v9];
+  associatedAccessoryUniqueIdentifiers = [(BMHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiers];
+  v10 = [v8 arrayWithArray:associatedAccessoryUniqueIdentifiers];
   [v3 setAssociatedAccessoryUniqueIdentifiers:v10];
 
-  v11 = [(BMHomeKitClientActionSetEvent *)self actionSetName];
-  [v3 setActionSetName:v11];
+  actionSetName = [(BMHomeKitClientActionSetEvent *)self actionSetName];
+  [v3 setActionSetName:actionSetName];
 
-  v12 = [(BMHomeKitClientActionSetEvent *)self homeName];
-  [v3 setHomeName:v12];
+  homeName = [(BMHomeKitClientActionSetEvent *)self homeName];
+  [v3 setHomeName:homeName];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v9 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
-    v11 = [(BMHomeKitClientActionSetEvent *)self base];
-    if (v11 || ([v10 base], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    v10 = equalCopy;
+    base = [(BMHomeKitClientActionSetEvent *)self base];
+    if (base || ([v10 base], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v4 = [(BMHomeKitClientActionSetEvent *)self base];
-      v5 = [v10 base];
-      v29 = [v4 isEqual:v5];
+      base2 = [(BMHomeKitClientActionSetEvent *)self base];
+      base3 = [v10 base];
+      v29 = [base2 isEqual:base3];
 
-      if (v11)
+      if (base)
       {
 LABEL_9:
 
-        v13 = [(BMHomeKitClientActionSetEvent *)self actionSetUniqueIdentifier];
-        if (v13 || ([v10 actionSetUniqueIdentifier], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+        actionSetUniqueIdentifier = [(BMHomeKitClientActionSetEvent *)self actionSetUniqueIdentifier];
+        if (actionSetUniqueIdentifier || ([v10 actionSetUniqueIdentifier], (base2 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v5 = [(BMHomeKitClientActionSetEvent *)self actionSetUniqueIdentifier];
-          v6 = [v10 actionSetUniqueIdentifier];
-          v28 = [v5 isEqual:v6];
+          base3 = [(BMHomeKitClientActionSetEvent *)self actionSetUniqueIdentifier];
+          actionSetUniqueIdentifier2 = [v10 actionSetUniqueIdentifier];
+          v28 = [base3 isEqual:actionSetUniqueIdentifier2];
 
-          if (v13)
+          if (actionSetUniqueIdentifier)
           {
 LABEL_15:
 
-            v14 = [(BMHomeKitClientActionSetEvent *)self actionSetType];
-            if (v14 || ([v10 actionSetType], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+            actionSetType = [(BMHomeKitClientActionSetEvent *)self actionSetType];
+            if (actionSetType || ([v10 actionSetType], (base3 = objc_claimAutoreleasedReturnValue()) != 0))
             {
-              v6 = [(BMHomeKitClientActionSetEvent *)self actionSetType];
-              v7 = [v10 actionSetType];
-              v15 = [v6 isEqual:v7];
+              actionSetUniqueIdentifier2 = [(BMHomeKitClientActionSetEvent *)self actionSetType];
+              actionSetType2 = [v10 actionSetType];
+              v15 = [actionSetUniqueIdentifier2 isEqual:actionSetType2];
 
-              if (v14)
+              if (actionSetType)
               {
 LABEL_21:
 
-                v16 = [(BMHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiers];
-                if (v16 || ([v10 associatedAccessoryUniqueIdentifiers], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+                associatedAccessoryUniqueIdentifiers = [(BMHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiers];
+                if (associatedAccessoryUniqueIdentifiers || ([v10 associatedAccessoryUniqueIdentifiers], (actionSetUniqueIdentifier2 = objc_claimAutoreleasedReturnValue()) != 0))
                 {
-                  v7 = [(BMHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiers];
-                  v17 = [v10 associatedAccessoryUniqueIdentifiers];
-                  v18 = [v7 isEqual:v17];
+                  actionSetType2 = [(BMHomeKitClientActionSetEvent *)self associatedAccessoryUniqueIdentifiers];
+                  associatedAccessoryUniqueIdentifiers2 = [v10 associatedAccessoryUniqueIdentifiers];
+                  v18 = [actionSetType2 isEqual:associatedAccessoryUniqueIdentifiers2];
 
-                  if (v16)
+                  if (associatedAccessoryUniqueIdentifiers)
                   {
 LABEL_27:
 
-                    v19 = [(BMHomeKitClientActionSetEvent *)self actionSetName];
-                    if (v19 || ([v10 actionSetName], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+                    actionSetName = [(BMHomeKitClientActionSetEvent *)self actionSetName];
+                    if (actionSetName || ([v10 actionSetName], (actionSetType2 = objc_claimAutoreleasedReturnValue()) != 0))
                     {
-                      v20 = [(BMHomeKitClientActionSetEvent *)self actionSetName];
-                      v21 = [v10 actionSetName];
-                      v22 = [v20 isEqual:v21];
+                      actionSetName2 = [(BMHomeKitClientActionSetEvent *)self actionSetName];
+                      actionSetName3 = [v10 actionSetName];
+                      v22 = [actionSetName2 isEqual:actionSetName3];
 
-                      if (v19)
+                      if (actionSetName)
                       {
 LABEL_33:
 
-                        v23 = [(BMHomeKitClientActionSetEvent *)self homeName];
-                        if (v23 || ([v10 homeName], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+                        homeName = [(BMHomeKitClientActionSetEvent *)self homeName];
+                        if (homeName || ([v10 homeName], (actionSetType2 = objc_claimAutoreleasedReturnValue()) != 0))
                         {
-                          v24 = [(BMHomeKitClientActionSetEvent *)self homeName];
-                          v25 = [v10 homeName];
-                          v26 = [v24 isEqual:v25];
+                          homeName2 = [(BMHomeKitClientActionSetEvent *)self homeName];
+                          homeName3 = [v10 homeName];
+                          v26 = [homeName2 isEqual:homeName3];
 
-                          if (v23)
+                          if (homeName)
                           {
 LABEL_39:
 

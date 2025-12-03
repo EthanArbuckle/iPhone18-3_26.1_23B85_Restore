@@ -1,34 +1,34 @@
 @interface SGDomainWhitelistChecker
-+ ($30CD494556BCE78BE9FDF48ACEFE6DD0)payloadForDomain:(id)a3;
-+ ($30CD494556BCE78BE9FDF48ACEFE6DD0)payloadWithStartChar:(const char *)a3 andSize:(unint64_t)a4;
-+ (BOOL)isStructuredEventCandidateForEmailDomain:(id)a3;
-+ (BOOL)isStructuredEventCandidateForURL:(id)a3 title:(id)a4;
++ ($30CD494556BCE78BE9FDF48ACEFE6DD0)payloadForDomain:(id)domain;
++ ($30CD494556BCE78BE9FDF48ACEFE6DD0)payloadWithStartChar:(const char *)char andSize:(unint64_t)size;
++ (BOOL)isStructuredEventCandidateForEmailDomain:(id)domain;
++ (BOOL)isStructuredEventCandidateForURL:(id)l title:(id)title;
 + (id)lock;
-+ (void)_setTrieFromPath:(id)a3 guardedData:(id)a4;
-+ (void)setTrieFromPath:(id)a3;
++ (void)_setTrieFromPath:(id)path guardedData:(id)data;
++ (void)setTrieFromPath:(id)path;
 @end
 
 @implementation SGDomainWhitelistChecker
 
-+ (BOOL)isStructuredEventCandidateForEmailDomain:(id)a3
++ (BOOL)isStructuredEventCandidateForEmailDomain:(id)domain
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 isEqualToString:&stru_284703F00] & 1) == 0)
+  domainCopy = domain;
+  v5 = domainCopy;
+  if (domainCopy && ([domainCopy isEqualToString:&stru_284703F00] & 1) == 0)
   {
     v13 = 0;
     v14 = &v13;
     v15 = 0x2020000000;
     v16 = 0;
-    v7 = [a1 lock];
+    lock = [self lock];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __69__SGDomainWhitelistChecker_isStructuredEventCandidateForEmailDomain___block_invoke;
     v9[3] = &unk_27894E1B0;
-    v12 = a1;
+    selfCopy = self;
     v10 = v5;
     v11 = &v13;
-    [v7 runWithLockAcquired:v9];
+    [lock runWithLockAcquired:v9];
 
     v6 = *(v14 + 24);
     _Block_object_dispose(&v13, 8);
@@ -60,19 +60,19 @@ void __69__SGDomainWhitelistChecker_isStructuredEventCandidateForEmailDomain___b
   }
 }
 
-+ (BOOL)isStructuredEventCandidateForURL:(id)a3 title:(id)a4
++ (BOOL)isStructuredEventCandidateForURL:(id)l title:(id)title
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (l)
   {
-    v5 = [a3 host];
-    if ([v5 length] <= 0x64)
+    host = [l host];
+    if ([host length] <= 0x64)
     {
       v15 = 0;
       memset(v14, 0, sizeof(v14));
       v7 = v14;
       LOBYTE(v6) = 0;
-      if ([v5 getCString:v14 maxLength:100 encoding:1])
+      if ([host getCString:v14 maxLength:100 encoding:1])
       {
         v8 = strnlen(v14, 0x64uLL);
         v9 = v14 + v8;
@@ -90,7 +90,7 @@ void __69__SGDomainWhitelistChecker_isStructuredEventCandidateForEmailDomain___b
           }
         }
 
-        v6 = ([a1 payloadWithStartChar:v7 andSize:i] >> 2) & 1;
+        v6 = ([self payloadWithStartChar:v7 andSize:i] >> 2) & 1;
       }
     }
 
@@ -109,26 +109,26 @@ void __69__SGDomainWhitelistChecker_isStructuredEventCandidateForEmailDomain___b
   return v6;
 }
 
-+ ($30CD494556BCE78BE9FDF48ACEFE6DD0)payloadWithStartChar:(const char *)a3 andSize:(unint64_t)a4
++ ($30CD494556BCE78BE9FDF48ACEFE6DD0)payloadWithStartChar:(const char *)char andSize:(unint64_t)size
 {
   v9 = 0;
   v10 = &v9;
   v11 = 0x2410000000;
   v12 = "";
   v13 = 0;
-  v6 = [a1 lock];
+  lock = [self lock];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__SGDomainWhitelistChecker_payloadWithStartChar_andSize___block_invoke;
   v8[3] = &unk_27894E188;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = char;
+  v8[6] = size;
   v8[4] = &v9;
-  [v6 runWithLockAcquired:v8];
+  [lock runWithLockAcquired:v8];
 
-  LODWORD(a3) = *(v10 + 8);
+  LODWORD(char) = *(v10 + 8);
   _Block_object_dispose(&v9, 8);
-  return a3;
+  return char;
 }
 
 uint64_t __57__SGDomainWhitelistChecker_payloadWithStartChar_andSize___block_invoke(void *a1, uint64_t a2)
@@ -155,28 +155,28 @@ uint64_t __57__SGDomainWhitelistChecker_payloadWithStartChar_andSize___block_inv
   return result;
 }
 
-+ ($30CD494556BCE78BE9FDF48ACEFE6DD0)payloadForDomain:(id)a3
++ ($30CD494556BCE78BE9FDF48ACEFE6DD0)payloadForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2410000000;
   v14 = "";
   v15 = 0;
-  v5 = [a1 lock];
+  lock = [self lock];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__SGDomainWhitelistChecker_payloadForDomain___block_invoke;
   v8[3] = &unk_27894E160;
-  v6 = v4;
+  v6 = domainCopy;
   v9 = v6;
   v10 = &v11;
-  [v5 runWithLockAcquired:v8];
+  [lock runWithLockAcquired:v8];
 
-  LODWORD(v5) = *(v12 + 8);
+  LODWORD(lock) = *(v12 + 8);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return lock;
 }
 
 uint64_t __45__SGDomainWhitelistChecker_payloadForDomain___block_invoke(uint64_t a1, uint64_t a2)
@@ -203,31 +203,31 @@ uint64_t __45__SGDomainWhitelistChecker_payloadForDomain___block_invoke(uint64_t
   return result;
 }
 
-+ (void)setTrieFromPath:(id)a3
++ (void)setTrieFromPath:(id)path
 {
-  v4 = a3;
-  v5 = [a1 lock];
+  pathCopy = path;
+  lock = [self lock];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SGDomainWhitelistChecker_setTrieFromPath___block_invoke;
   v7[3] = &unk_27894E138;
-  v8 = v4;
-  v9 = a1;
-  v6 = v4;
-  [v5 runWithLockAcquired:v7];
+  v8 = pathCopy;
+  selfCopy = self;
+  v6 = pathCopy;
+  [lock runWithLockAcquired:v7];
 }
 
-+ (void)_setTrieFromPath:(id)a3 guardedData:(id)a4
++ (void)_setTrieFromPath:(id)path guardedData:(id)data
 {
-  if (a3)
+  if (path)
   {
     v5 = MEMORY[0x277D42558];
-    v6 = a4;
-    v7 = a3;
-    v8 = [[v5 alloc] initWithPath:v7];
+    dataCopy = data;
+    pathCopy = path;
+    v8 = [[v5 alloc] initWithPath:pathCopy];
 
-    v9 = v6[1];
-    v6[1] = v8;
+    v9 = dataCopy[1];
+    dataCopy[1] = v8;
   }
 }
 
@@ -237,7 +237,7 @@ uint64_t __45__SGDomainWhitelistChecker_payloadForDomain___block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __32__SGDomainWhitelistChecker_lock__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (lock_onceToken != -1)
   {
     dispatch_once(&lock_onceToken, block);

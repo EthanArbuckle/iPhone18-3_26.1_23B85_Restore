@@ -1,26 +1,26 @@
 @interface UISUISecurityContext
-- (UISUISecurityContext)initWithCoder:(id)a3;
-- (UISUISecurityContext)initWithSecurityScopedResources:(id)a3;
+- (UISUISecurityContext)initWithCoder:(id)coder;
+- (UISUISecurityContext)initWithSecurityScopedResources:(id)resources;
 - (id)accessibleURLs;
 - (id)description;
-- (id)securityScopedResourcesMatchingPredicate:(id)a3;
+- (id)securityScopedResourcesMatchingPredicate:(id)predicate;
 - (void)activate;
 - (void)deactivate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISUISecurityContext
 
-- (UISUISecurityContext)initWithSecurityScopedResources:(id)a3
+- (UISUISecurityContext)initWithSecurityScopedResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = UISUISecurityContext;
   v6 = [(UISUISecurityContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_securityScopedResources, a3);
+    objc_storeStrong(&v6->_securityScopedResources, resources);
     v7->_activationCount = 0;
   }
 
@@ -31,9 +31,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UISUISecurityContext *)self isActive];
+  isActive = [(UISUISecurityContext *)self isActive];
   v6 = @"NO";
-  if (v5)
+  if (isActive)
   {
     v6 = @"YES";
   }
@@ -41,32 +41,32 @@
   return [v3 stringWithFormat:@"<%@: %p> active = %@, resources = %@", v4, self, v6, self->_securityScopedResources];
 }
 
-- (id)securityScopedResourcesMatchingPredicate:(id)a3
+- (id)securityScopedResourcesMatchingPredicate:(id)predicate
 {
-  v4 = a3;
-  if (v4)
+  predicateCopy = predicate;
+  if (predicateCopy)
   {
-    v5 = [MEMORY[0x1E695DF70] array];
-    v6 = [(UISUISecurityContext *)self securityScopedResources];
+    array = [MEMORY[0x1E695DF70] array];
+    securityScopedResources = [(UISUISecurityContext *)self securityScopedResources];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __65__UISUISecurityContext_securityScopedResourcesMatchingPredicate___block_invoke;
     v11[3] = &unk_1E71FAEE0;
-    v13 = v4;
-    v7 = v5;
+    v13 = predicateCopy;
+    v7 = array;
     v12 = v7;
-    [v6 enumerateObjectsUsingBlock:v11];
+    [securityScopedResources enumerateObjectsUsingBlock:v11];
 
     v8 = v12;
-    v9 = v7;
+    securityScopedResources2 = v7;
   }
 
   else
   {
-    v9 = [(UISUISecurityContext *)self securityScopedResources];
+    securityScopedResources2 = [(UISUISecurityContext *)self securityScopedResources];
   }
 
-  return v9;
+  return securityScopedResources2;
 }
 
 void __65__UISUISecurityContext_securityScopedResourcesMatchingPredicate___block_invoke(uint64_t a1, void *a2)
@@ -78,25 +78,25 @@ void __65__UISUISecurityContext_securityScopedResourcesMatchingPredicate___block
   }
 }
 
-- (UISUISecurityContext)initWithCoder:(id)a3
+- (UISUISecurityContext)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
   v8 = NSStringFromSelector(sel_securityScopedResources);
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:v8];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:v8];
 
   v10 = [(UISUISecurityContext *)self initWithSecurityScopedResources:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   securityScopedResources = self->_securityScopedResources;
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_securityScopedResources);
-  [v4 encodeObject:securityScopedResources forKey:v5];
+  [coderCopy encodeObject:securityScopedResources forKey:v5];
 }
 
 - (void)activate
@@ -106,9 +106,9 @@ void __65__UISUISecurityContext_securityScopedResourcesMatchingPredicate___block
   self->_activationCount = activationCount + 1;
   if (!activationCount)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     URLsBeingAccessed = self->_URLsBeingAccessed;
-    self->_URLsBeingAccessed = v4;
+    self->_URLsBeingAccessed = array;
 
     v15 = 0u;
     v16 = 0u;

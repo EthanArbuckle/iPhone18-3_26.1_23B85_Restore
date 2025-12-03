@@ -1,6 +1,6 @@
 @interface GKLeaderboardChallengeParticipantInternal
 + (id)secureCodedPropertyKeys;
-- (GKLeaderboardChallengeParticipantInternal)initWithServerFragment:(id)a3;
+- (GKLeaderboardChallengeParticipantInternal)initWithServerFragment:(id)fragment;
 @end
 
 @implementation GKLeaderboardChallengeParticipantInternal
@@ -37,27 +37,27 @@ void __68__GKLeaderboardChallengeParticipantInternal_secureCodedPropertyKeys__bl
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKLeaderboardChallengeParticipantInternal)initWithServerFragment:(id)a3
+- (GKLeaderboardChallengeParticipantInternal)initWithServerFragment:(id)fragment
 {
-  v4 = a3;
+  fragmentCopy = fragment;
   v12.receiver = self;
   v12.super_class = GKLeaderboardChallengeParticipantInternal;
   v5 = [(GKLeaderboardChallengeParticipantInternal *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"player-id"];
+    v6 = [fragmentCopy objectForKeyedSubscript:@"player-id"];
     [(GKLeaderboardChallengeParticipantInternal *)v5 setPlayerID:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"formatted-score-value"];
+    v7 = [fragmentCopy objectForKeyedSubscript:@"formatted-score-value"];
     [(GKLeaderboardChallengeParticipantInternal *)v5 setFormattedScoreValue:v7];
 
-    v8 = [v4 objectForKeyedSubscript:@"score-value"];
+    v8 = [fragmentCopy objectForKeyedSubscript:@"score-value"];
     [(GKLeaderboardChallengeParticipantInternal *)v5 setScoreValue:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"attempt-count"];
+    v9 = [fragmentCopy objectForKeyedSubscript:@"attempt-count"];
     [(GKLeaderboardChallengeParticipantInternal *)v5 setAttemptCount:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"rank"];
+    v10 = [fragmentCopy objectForKeyedSubscript:@"rank"];
     [(GKLeaderboardChallengeParticipantInternal *)v5 setRank:v10];
   }
 

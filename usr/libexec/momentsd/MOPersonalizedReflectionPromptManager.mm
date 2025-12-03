@@ -1,34 +1,34 @@
 @interface MOPersonalizedReflectionPromptManager
 + (void)initializeStringArrays;
 - (MOMomentsIntelligenceServiceManager)intelligenceServiceManager;
-- (MOPersonalizedReflectionPromptManager)initWithUniverse:(id)a3;
-- (id)_convertResultStringToDict:(id)a3;
-- (id)_createReflectionBundleWithStrings:(id)a3;
-- (id)_dayOfWeekString:(unint64_t)a3;
-- (id)_generateEventDescriptionfromBundle:(id)a3;
+- (MOPersonalizedReflectionPromptManager)initWithUniverse:(id)universe;
+- (id)_convertResultStringToDict:(id)dict;
+- (id)_createReflectionBundleWithStrings:(id)strings;
+- (id)_dayOfWeekString:(unint64_t)string;
+- (id)_generateEventDescriptionfromBundle:(id)bundle;
 - (id)_generateSystemPrompt;
-- (id)_getActivityStringFromBundle:(id)a3;
-- (id)_getPersonStringFromBundle:(id)a3;
-- (id)_getPlaceStringFromBundle:(id)a3;
-- (id)_selectOneRandomStringFromArray:(id)a3;
-- (void)_generateReflectionBundlesForType:(id)a3 WithBundles:(id)a4 handler:(id)a5;
-- (void)_generateReflectionBundlesWithBundles:(id)a3 handler:(id)a4;
-- (void)_generateReflectionBundlesWithSystemPrompt:(id)a3 UserInput:(id)a4 handler:(id)a5;
-- (void)generateReflectionBundlesWithBundles:(id)a3 handler:(id)a4;
+- (id)_getActivityStringFromBundle:(id)bundle;
+- (id)_getPersonStringFromBundle:(id)bundle;
+- (id)_getPlaceStringFromBundle:(id)bundle;
+- (id)_selectOneRandomStringFromArray:(id)array;
+- (void)_generateReflectionBundlesForType:(id)type WithBundles:(id)bundles handler:(id)handler;
+- (void)_generateReflectionBundlesWithBundles:(id)bundles handler:(id)handler;
+- (void)_generateReflectionBundlesWithSystemPrompt:(id)prompt UserInput:(id)input handler:(id)handler;
+- (void)generateReflectionBundlesWithBundles:(id)bundles handler:(id)handler;
 @end
 
 @implementation MOPersonalizedReflectionPromptManager
 
-- (MOPersonalizedReflectionPromptManager)initWithUniverse:(id)a3
+- (MOPersonalizedReflectionPromptManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v12.receiver = self;
   v12.super_class = MOPersonalizedReflectionPromptManager;
   v6 = [(MOPersonalizedReflectionPromptManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fUniverse, a3);
+    objc_storeStrong(&v6->_fUniverse, universe);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("MOPersonalizedReflectionPromptManager", v8);
     queue = v7->_queue;
@@ -79,36 +79,36 @@ void __63__MOPersonalizedReflectionPromptManager_initializeStringArrays__block_i
   timeStrings = &off_10036DBC0;
 }
 
-- (void)generateReflectionBundlesWithBundles:(id)a3 handler:(id)a4
+- (void)generateReflectionBundlesWithBundles:(id)bundles handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOPersonalizedReflectionPromptManager *)self queue];
+  bundlesCopy = bundles;
+  handlerCopy = handler;
+  queue = [(MOPersonalizedReflectionPromptManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __86__MOPersonalizedReflectionPromptManager_generateReflectionBundlesWithBundles_handler___block_invoke;
   block[3] = &unk_100336A58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = bundlesCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = bundlesCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_generateReflectionBundlesWithBundles:(id)a3 handler:(id)a4
+- (void)_generateReflectionBundlesWithBundles:(id)bundles handler:(id)handler
 {
-  v26 = a3;
-  v21 = a4;
+  bundlesCopy = bundles;
+  handlerCopy = handler;
   v5 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedReflection);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v26 count];
+    *(&buf + 4) = [bundlesCopy count];
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "generateReflectionBundlesWithBundles, input bundles count,  %lu", &buf, 0xCu);
   }
 
-  if (![v26 count])
+  if (![bundlesCopy count])
   {
     v20 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedReflection);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -130,7 +130,7 @@ void __63__MOPersonalizedReflectionPromptManager_initializeStringArrays__block_i
 
 LABEL_21:
 
-    (*(v21 + 2))(v21, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
     goto LABEL_22;
   }
 
@@ -165,7 +165,7 @@ LABEL_21:
 
         v11 = *(*(&v34 + 1) + 8 * i);
         v12 = [NSPredicate predicateWithFormat:@"bundleSuperType == %luu", [MOEventBundle getSuperTypeEnum:v11]];
-        v13 = [v26 filteredArrayUsingPredicate:v12];
+        v13 = [bundlesCopy filteredArrayUsingPredicate:v12];
         v14 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:0];
         v38 = v14;
         v15 = [NSArray arrayWithObjects:&v38 count:1];
@@ -200,14 +200,14 @@ LABEL_21:
     while (v9);
   }
 
-  v19 = [(MOPersonalizedReflectionPromptManager *)self queue];
+  queue = [(MOPersonalizedReflectionPromptManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __87__MOPersonalizedReflectionPromptManager__generateReflectionBundlesWithBundles_handler___block_invoke_3;
   block[3] = &unk_10033AF18;
   v29 = &buf;
-  v28 = v21;
-  dispatch_group_notify(v7, v19, block);
+  v28 = handlerCopy;
+  dispatch_group_notify(v7, queue, block);
 
   _Block_object_dispose(&buf, 8);
 LABEL_22:
@@ -258,18 +258,18 @@ uint64_t __87__MOPersonalizedReflectionPromptManager__generateReflectionBundlesW
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)_generateReflectionBundlesForType:(id)a3 WithBundles:(id)a4 handler:(id)a5
+- (void)_generateReflectionBundlesForType:(id)type WithBundles:(id)bundles handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 count])
+  typeCopy = type;
+  bundlesCopy = bundles;
+  handlerCopy = handler;
+  if (![bundlesCopy count])
   {
     v11 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedReflection);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v33 = v8;
+      v33 = typeCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "generateReflectionBundlesForType, no bundle for type %@.", buf, 0xCu);
     }
   }
@@ -279,7 +279,7 @@ uint64_t __87__MOPersonalizedReflectionPromptManager__generateReflectionBundlesW
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = v9;
+  v13 = bundlesCopy;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v14)
   {
@@ -311,7 +311,7 @@ uint64_t __87__MOPersonalizedReflectionPromptManager__generateReflectionBundlesW
     while (v15);
   }
 
-  v19 = [(MOPersonalizedReflectionPromptManager *)self _generateSystemPrompt];
+  _generateSystemPrompt = [(MOPersonalizedReflectionPromptManager *)self _generateSystemPrompt];
   v20 = [v12 componentsJoinedByString:@"\n"];
   v21 = [(MOPersonalizedReflectionPromptManager *)self _generateUserInputWithEventsDescription:v20];
 
@@ -319,11 +319,11 @@ uint64_t __87__MOPersonalizedReflectionPromptManager__generateReflectionBundlesW
   v24[1] = 3221225472;
   v24[2] = __95__MOPersonalizedReflectionPromptManager__generateReflectionBundlesForType_WithBundles_handler___block_invoke;
   v24[3] = &unk_100337850;
-  v25 = v8;
-  v26 = v10;
-  v22 = v8;
-  v23 = v10;
-  [(MOPersonalizedReflectionPromptManager *)self _generateReflectionBundlesWithSystemPrompt:v19 UserInput:v21 handler:v24];
+  v25 = typeCopy;
+  v26 = handlerCopy;
+  v22 = typeCopy;
+  v23 = handlerCopy;
+  [(MOPersonalizedReflectionPromptManager *)self _generateReflectionBundlesWithSystemPrompt:_generateSystemPrompt UserInput:v21 handler:v24];
 }
 
 void __95__MOPersonalizedReflectionPromptManager__generateReflectionBundlesForType_WithBundles_handler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -387,20 +387,20 @@ void __95__MOPersonalizedReflectionPromptManager__generateReflectionBundlesForTy
   v7();
 }
 
-- (void)_generateReflectionBundlesWithSystemPrompt:(id)a3 UserInput:(id)a4 handler:(id)a5
+- (void)_generateReflectionBundlesWithSystemPrompt:(id)prompt UserInput:(id)input handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MOPersonalizedReflectionPromptManager *)self intelligenceServiceManager];
+  handlerCopy = handler;
+  inputCopy = input;
+  promptCopy = prompt;
+  intelligenceServiceManager = [(MOPersonalizedReflectionPromptManager *)self intelligenceServiceManager];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __102__MOPersonalizedReflectionPromptManager__generateReflectionBundlesWithSystemPrompt_UserInput_handler___block_invoke;
   v13[3] = &unk_10033AF40;
   v13[4] = self;
-  v14 = v8;
-  v12 = v8;
-  [v11 generatePersonalizedReflectionPromptsWithSystemPrompt:v10 Input:v9 WithReply:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [intelligenceServiceManager generatePersonalizedReflectionPromptsWithSystemPrompt:promptCopy Input:inputCopy WithReply:v13];
 }
 
 void __102__MOPersonalizedReflectionPromptManager__generateReflectionBundlesWithSystemPrompt_UserInput_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -465,34 +465,34 @@ void __102__MOPersonalizedReflectionPromptManager__generateReflectionBundlesWith
   }
 }
 
-- (id)_generateEventDescriptionfromBundle:(id)a3
+- (id)_generateEventDescriptionfromBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = objc_alloc_init(NSDateFormatter);
   [v5 setDateFormat:@"MM/dd/yyyy"];
-  v6 = [v4 startDate];
+  startDate = [bundleCopy startDate];
   v26 = v5;
-  v7 = [v5 stringFromDate:v6];
+  v7 = [v5 stringFromDate:startDate];
 
   v8 = +[NSCalendar currentCalendar];
-  v9 = [v4 localStartDate];
-  v10 = [v8 component:512 fromDate:v9];
+  localStartDate = [bundleCopy localStartDate];
+  v10 = [v8 component:512 fromDate:localStartDate];
 
   v11 = [(MOPersonalizedReflectionPromptManager *)self _dayOfWeekString:v10];
-  v12 = [v4 localStartDate];
+  localStartDate2 = [bundleCopy localStartDate];
   v24 = v8;
-  v13 = [v8 components:96 fromDate:v12];
+  v13 = [v8 components:96 fromDate:localStartDate2];
 
   v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%.1f", [v13 minute] / 60.0 + objc_msgSend(v13, "hour"));
-  v15 = [(MOPersonalizedReflectionPromptManager *)self _getActivityStringFromBundle:v4];
-  [v4 duration];
+  v15 = [(MOPersonalizedReflectionPromptManager *)self _getActivityStringFromBundle:bundleCopy];
+  [bundleCopy duration];
   v17 = [NSString stringWithFormat:@"%.1f", v16 / 3600.0];
   v25 = v7;
   v18 = [NSString stringWithFormat:@"On %@, a %@, at hour %@, I engaged in a %@ for %@ hours.", v7, v11, v14, v15, v17];
   v19 = [v18 mutableCopy];
 
-  v20 = [(MOPersonalizedReflectionPromptManager *)self _getPlaceStringFromBundle:v4];
-  v21 = [(MOPersonalizedReflectionPromptManager *)self _getPersonStringFromBundle:v4];
+  v20 = [(MOPersonalizedReflectionPromptManager *)self _getPlaceStringFromBundle:bundleCopy];
+  v21 = [(MOPersonalizedReflectionPromptManager *)self _getPersonStringFromBundle:bundleCopy];
   if (v20)
   {
     [v19 appendString:v20];
@@ -509,7 +509,7 @@ void __102__MOPersonalizedReflectionPromptManager__generateReflectionBundlesWith
     *buf = 138412546;
     v28 = v19;
     v29 = 2112;
-    v30 = v4;
+    v30 = bundleCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "generateEventDescriptionfromBundle, description, %@, for bundle, %@", buf, 0x16u);
   }
 
@@ -518,8 +518,8 @@ void __102__MOPersonalizedReflectionPromptManager__generateReflectionBundlesWith
 
 - (id)_generateSystemPrompt
 {
-  v3 = [lengthDict allKeys];
-  v4 = [(MOPersonalizedReflectionPromptManager *)self _selectOneRandomStringFromArray:v3];
+  allKeys = [lengthDict allKeys];
+  v4 = [(MOPersonalizedReflectionPromptManager *)self _selectOneRandomStringFromArray:allKeys];
 
   v5 = [(MOPersonalizedReflectionPromptManager *)self _selectOneRandomStringFromArray:topicStrings];
   v6 = [(MOPersonalizedReflectionPromptManager *)self _selectOneRandomStringFromArray:specStrings];
@@ -539,30 +539,30 @@ void __102__MOPersonalizedReflectionPromptManager__generateReflectionBundlesWith
   return v11;
 }
 
-- (id)_selectOneRandomStringFromArray:(id)a3
+- (id)_selectOneRandomStringFromArray:(id)array
 {
-  v3 = a3;
-  v4 = [v3 objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(v3, "count"))}];
+  arrayCopy = array;
+  v4 = [arrayCopy objectAtIndexedSubscript:{arc4random_uniform(objc_msgSend(arrayCopy, "count"))}];
 
   return v4;
 }
 
-- (id)_getActivityStringFromBundle:(id)a3
+- (id)_getActivityStringFromBundle:(id)bundle
 {
-  v3 = a3;
-  if ([v3 bundleSuperType] == 1)
+  bundleCopy = bundle;
+  if ([bundleCopy bundleSuperType] == 1)
   {
     v4 = @"outing";
   }
 
-  else if ([v3 bundleSuperType] == 2 || objc_msgSend(v3, "bundleSuperType") == 3)
+  else if ([bundleCopy bundleSuperType] == 2 || objc_msgSend(bundleCopy, "bundleSuperType") == 3)
   {
-    v5 = [v3 getSuperTypeString];
-    v6 = [v5 stringByAppendingString:@"/"];
+    getSuperTypeString = [bundleCopy getSuperTypeString];
+    v6 = [getSuperTypeString stringByAppendingString:@"/"];
 
-    v7 = [v3 action];
-    v8 = [v7 actionName];
-    v4 = [v6 stringByAppendingString:v8];
+    action = [bundleCopy action];
+    actionName = [action actionName];
+    v4 = [v6 stringByAppendingString:actionName];
   }
 
   else
@@ -573,52 +573,52 @@ void __102__MOPersonalizedReflectionPromptManager__generateReflectionBundlesWith
   return v4;
 }
 
-- (id)_getPlaceStringFromBundle:(id)a3
+- (id)_getPlaceStringFromBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [v3 place];
-  v5 = [v4 placeName];
+  bundleCopy = bundle;
+  place = [bundleCopy place];
+  placeName = [place placeName];
 
-  if (!v5)
+  if (!placeName)
   {
     v22 = 0;
     goto LABEL_9;
   }
 
-  v6 = [v3 place];
-  v7 = [v6 placeName];
+  place2 = [bundleCopy place];
+  placeName2 = [place2 placeName];
 
-  v8 = [v3 place];
-  [v8 distanceToHomeInMiles];
+  place3 = [bundleCopy place];
+  [place3 distanceToHomeInMiles];
   v10 = v9;
 
   v11 = [NSString stringWithFormat:@"%.1f", v10];
-  v12 = [v3 place];
-  v13 = [v12 poiCategory];
-  if (!v13)
+  place4 = [bundleCopy place];
+  poiCategory = [place4 poiCategory];
+  if (!poiCategory)
   {
 
     goto LABEL_7;
   }
 
-  v14 = v13;
-  v15 = [v3 place];
-  v16 = [v15 poiCategory];
-  v17 = [v16 isEqualToString:@"RTMapItemPOICategoryUndefined"];
+  v14 = poiCategory;
+  place5 = [bundleCopy place];
+  poiCategory2 = [place5 poiCategory];
+  v17 = [poiCategory2 isEqualToString:@"RTMapItemPOICategoryUndefined"];
 
   if (v17)
   {
 LABEL_7:
-    v22 = [NSString stringWithFormat:@"I did this at %@, approximately %@ miles from my house.", v7, v11];
+    v22 = [NSString stringWithFormat:@"I did this at %@, approximately %@ miles from my house.", placeName2, v11];
     goto LABEL_8;
   }
 
-  v18 = [v3 place];
-  v19 = [v18 poiCategory];
-  v20 = [v19 stringByReplacingOccurrencesOfString:@"GEOPOICategory" withString:&stru_1003416B0];
+  place6 = [bundleCopy place];
+  poiCategory3 = [place6 poiCategory];
+  v20 = [poiCategory3 stringByReplacingOccurrencesOfString:@"GEOPOICategory" withString:&stru_1003416B0];
 
   v21 = [NSString stringWithFormat:@"which I think is a %@", v20];
-  v22 = [NSString stringWithFormat:@"I did this at %@ %@, approximately %@ miles from my house.", v7, v21, v11];
+  v22 = [NSString stringWithFormat:@"I did this at %@ %@, approximately %@ miles from my house.", placeName2, v21, v11];
 
 LABEL_8:
 LABEL_9:
@@ -626,12 +626,12 @@ LABEL_9:
   return v22;
 }
 
-- (id)_getPersonStringFromBundle:(id)a3
+- (id)_getPersonStringFromBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 persons];
-  v6 = [v5 count];
+  persons = [bundleCopy persons];
+  v6 = [persons count];
 
   if (v6)
   {
@@ -639,8 +639,8 @@ LABEL_9:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v3 persons];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    persons2 = [bundleCopy persons];
+    v8 = [persons2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -651,14 +651,14 @@ LABEL_9:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(persons2);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) name];
-          [v4 addObject:v12];
+          name = [*(*(&v16 + 1) + 8 * i) name];
+          [v4 addObject:name];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [persons2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v9);
@@ -679,55 +679,55 @@ LABEL_9:
   return v14;
 }
 
-- (id)_dayOfWeekString:(unint64_t)a3
+- (id)_dayOfWeekString:(unint64_t)string
 {
-  if (a3 - 1 > 6)
+  if (string - 1 > 6)
   {
     return @"undefined";
   }
 
   else
   {
-    return off_10033AF60[a3 - 1];
+    return off_10033AF60[string - 1];
   }
 }
 
-- (id)_convertResultStringToDict:(id)a3
+- (id)_convertResultStringToDict:(id)dict
 {
-  v3 = a3;
+  dictCopy = dict;
   v4 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedReflection);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v3;
+    v19 = dictCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "result string, %@", buf, 0xCu);
   }
 
-  v5 = [v3 rangeOfString:@"{" options:2];
+  v5 = [dictCopy rangeOfString:@"{" options:2];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v3 substringFromIndex:&v5[v6 - 1]];
+    v7 = [dictCopy substringFromIndex:&v5[v6 - 1]];
 
-    v3 = v7;
+    dictCopy = v7;
   }
 
-  v8 = [v3 rangeOfString:@"}" options:4];
+  v8 = [dictCopy rangeOfString:@"}" options:4];
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v3 substringToIndex:v8 + 1];
+    v9 = [dictCopy substringToIndex:v8 + 1];
 
-    v3 = v9;
+    dictCopy = v9;
   }
 
   v10 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedReflection);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v19 = v3;
+    v19 = dictCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "input string for converting to dictionary, %@", buf, 0xCu);
   }
 
-  v11 = [v3 dataUsingEncoding:4];
+  v11 = [dictCopy dataUsingEncoding:4];
   v17 = 0;
   v12 = [NSJSONSerialization JSONObjectWithData:v11 options:0 error:&v17];
   v13 = v17;
@@ -750,9 +750,9 @@ LABEL_9:
   return v14;
 }
 
-- (id)_createReflectionBundleWithStrings:(id)a3
+- (id)_createReflectionBundleWithStrings:(id)strings
 {
-  v3 = a3;
+  stringsCopy = strings;
   v4 = [MOEventBundle alloc];
   v5 = +[NSUUID UUID];
   v6 = +[NSDate date];
@@ -765,7 +765,7 @@ LABEL_9:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v3;
+  v9 = stringsCopy;
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {

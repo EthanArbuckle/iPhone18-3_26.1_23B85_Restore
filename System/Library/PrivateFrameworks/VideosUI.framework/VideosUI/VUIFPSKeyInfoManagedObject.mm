@@ -1,65 +1,65 @@
 @interface VUIFPSKeyInfoManagedObject
-- (void)populateFromKeyRequest:(id)a3 video:(id)a4;
+- (void)populateFromKeyRequest:(id)request video:(id)video;
 @end
 
 @implementation VUIFPSKeyInfoManagedObject
 
-- (void)populateFromKeyRequest:(id)a3 video:(id)a4
+- (void)populateFromKeyRequest:(id)request video:(id)video
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  videoCopy = video;
   [(VUIFPSKeyInfoManagedObject *)self setIsInvalid:0];
-  v8 = [MEMORY[0x1E695DF00] date];
-  [(VUIFPSKeyInfoManagedObject *)self setRetrievalDate:v8];
+  date = [MEMORY[0x1E695DF00] date];
+  [(VUIFPSKeyInfoManagedObject *)self setRetrievalDate:date];
 
-  v9 = [v6 keyIdentifier];
-  [(VUIFPSKeyInfoManagedObject *)self setKeyURI:v9];
+  keyIdentifier = [requestCopy keyIdentifier];
+  [(VUIFPSKeyInfoManagedObject *)self setKeyURI:keyIdentifier];
 
-  v10 = [v6 keyResponseData];
-  [(VUIFPSKeyInfoManagedObject *)self setKeyData:v10];
+  keyResponseData = [requestCopy keyResponseData];
+  [(VUIFPSKeyInfoManagedObject *)self setKeyData:keyResponseData];
 
-  v11 = [v6 expirationDate];
-  [(VUIFPSKeyInfoManagedObject *)self setExpirationDate:v11];
+  expirationDate = [requestCopy expirationDate];
+  [(VUIFPSKeyInfoManagedObject *)self setExpirationDate:expirationDate];
 
-  v12 = [v6 contentID];
-  [(VUIFPSKeyInfoManagedObject *)self setContentID:v12];
+  contentID = [requestCopy contentID];
+  [(VUIFPSKeyInfoManagedObject *)self setContentID:contentID];
 
-  v13 = [v6 renewalDate];
-  [(VUIFPSKeyInfoManagedObject *)self setRenewalDate:v13];
+  renewalDate = [requestCopy renewalDate];
+  [(VUIFPSKeyInfoManagedObject *)self setRenewalDate:renewalDate];
 
-  v14 = [v6 renewalInterval];
-  [(VUIFPSKeyInfoManagedObject *)self setRenewalInterval:v14];
+  renewalInterval = [requestCopy renewalInterval];
+  [(VUIFPSKeyInfoManagedObject *)self setRenewalInterval:renewalInterval];
 
-  -[VUIFPSKeyInfoManagedObject setIsLowValue:](self, "setIsLowValue:", [v6 isLowValueKey]);
-  v15 = [v6 playbackDuration];
-  [(VUIFPSKeyInfoManagedObject *)self setPlaybackDuration:v15];
+  -[VUIFPSKeyInfoManagedObject setIsLowValue:](self, "setIsLowValue:", [requestCopy isLowValueKey]);
+  playbackDuration = [requestCopy playbackDuration];
+  [(VUIFPSKeyInfoManagedObject *)self setPlaybackDuration:playbackDuration];
 
-  -[VUIFPSKeyInfoManagedObject setAllowsManualRenewal:](self, "setAllowsManualRenewal:", [v6 allowManualRenewal]);
-  [(VUIFPSKeyInfoManagedObject *)self setVideo:v7];
-  if (([v7 markedAsDeleted] & 1) == 0)
+  -[VUIFPSKeyInfoManagedObject setAllowsManualRenewal:](self, "setAllowsManualRenewal:", [requestCopy allowManualRenewal]);
+  [(VUIFPSKeyInfoManagedObject *)self setVideo:videoCopy];
+  if (([videoCopy markedAsDeleted] & 1) == 0)
   {
-    v16 = [v6 availabilityEndDate];
-    [v7 setAvailabilityEndDate:v16];
+    availabilityEndDate = [requestCopy availabilityEndDate];
+    [videoCopy setAvailabilityEndDate:availabilityEndDate];
 
-    v17 = [v6 expirationDate];
+    expirationDate2 = [requestCopy expirationDate];
 
-    if (v17)
+    if (expirationDate2)
     {
-      [v7 setHasExpirationDate:1];
+      [videoCopy setHasExpirationDate:1];
     }
 
-    [v7 setAllowsManualRenewal:{objc_msgSend(v6, "allowManualRenewal")}];
+    [videoCopy setAllowsManualRenewal:{objc_msgSend(requestCopy, "allowManualRenewal")}];
   }
 
-  v18 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v6, "offlineKeyRenewalPolicy")}];
-  [v7 setOfflineKeyRenewalPolicy:v18];
+  v18 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(requestCopy, "offlineKeyRenewalPolicy")}];
+  [videoCopy setOfflineKeyRenewalPolicy:v18];
 
-  v19 = [v6 additionalRequestParamsFromResponse];
-  v20 = [v7 additionalFPSRequestParams];
-  v21 = v20;
-  if (v20)
+  additionalRequestParamsFromResponse = [requestCopy additionalRequestParamsFromResponse];
+  additionalFPSRequestParams = [videoCopy additionalFPSRequestParams];
+  v21 = additionalFPSRequestParams;
+  if (additionalFPSRequestParams)
   {
-    v22 = [v20 mutableCopy];
+    v22 = [additionalFPSRequestParams mutableCopy];
   }
 
   else
@@ -68,9 +68,9 @@
   }
 
   v23 = v22;
-  if (v19)
+  if (additionalRequestParamsFromResponse)
   {
-    [v22 addEntriesFromDictionary:v19];
+    [v22 addEntriesFromDictionary:additionalRequestParamsFromResponse];
   }
 
   if ([v23 count] && objc_msgSend(MEMORY[0x1E696ACB0], "isValidJSONObject:", v23))
@@ -80,7 +80,7 @@
     v25 = v26;
     if ([v24 length])
     {
-      [v7 setAdditionalFPSRequestParamsJSONData:v24];
+      [videoCopy setAdditionalFPSRequestParamsJSONData:v24];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))

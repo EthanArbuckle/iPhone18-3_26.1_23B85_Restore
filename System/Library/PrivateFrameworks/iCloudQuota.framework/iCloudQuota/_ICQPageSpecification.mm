@@ -1,6 +1,6 @@
 @interface _ICQPageSpecification
 - (NSString)pageClassIdentifier;
-- (id)copyWithBindings:(id)a3;
+- (id)copyWithBindings:(id)bindings;
 - (id)debugDescription;
 @end
 
@@ -13,10 +13,10 @@
   v12.super_class = _ICQPageSpecification;
   v4 = [(_ICQPageSpecification *)&v12 debugDescription];
   v5 = MEMORY[0x277CCACA8];
-  v6 = [(_ICQPageSpecification *)self pageClassIdentifier];
-  v7 = [(_ICQPageSpecification *)self pageIdentifier];
-  v8 = [(_ICQPageSpecification *)self pageTitle];
-  v9 = [v5 stringWithFormat:@"<%@: %@: %@>", v6, v7, v8];
+  pageClassIdentifier = [(_ICQPageSpecification *)self pageClassIdentifier];
+  pageIdentifier = [(_ICQPageSpecification *)self pageIdentifier];
+  pageTitle = [(_ICQPageSpecification *)self pageTitle];
+  v9 = [v5 stringWithFormat:@"<%@: %@: %@>", pageClassIdentifier, pageIdentifier, pageTitle];
   v10 = [v3 stringWithFormat:@"%@: %@", v4, v9];
 
   return v10;
@@ -29,7 +29,7 @@
   return NSStringFromClass(v2);
 }
 
-- (id)copyWithBindings:(id)a3
+- (id)copyWithBindings:(id)bindings
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))

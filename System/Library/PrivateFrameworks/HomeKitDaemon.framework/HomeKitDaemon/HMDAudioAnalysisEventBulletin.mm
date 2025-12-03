@@ -1,45 +1,45 @@
 @interface HMDAudioAnalysisEventBulletin
-- (HMDAudioAnalysisEventBulletin)initWithCoder:(id)a3;
-- (HMDAudioAnalysisEventBulletin)initWithDictionary:(id)a3;
-- (HMDAudioAnalysisEventBulletin)initWithReason:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 notificationUUID:(id)a6 state:(unint64_t)a7 soundIdentifier:(id)a8 name:(id)a9 threadIdentifier:(id)a10 accessoryUUID:(id)a11 title:(id)a12;
+- (HMDAudioAnalysisEventBulletin)initWithCoder:(id)coder;
+- (HMDAudioAnalysisEventBulletin)initWithDictionary:(id)dictionary;
+- (HMDAudioAnalysisEventBulletin)initWithReason:(unint64_t)reason startDate:(id)date endDate:(id)endDate notificationUUID:(id)d state:(unint64_t)state soundIdentifier:(id)identifier name:(id)name threadIdentifier:(id)self0 accessoryUUID:(id)self1 title:(id)self2;
 - (id)localizedKeyForBody;
-- (id)localizedKeyForEventEndWithDropIn:(BOOL)a3 homeName:(id)a4;
-- (id)localizedKeyForEventStartWithDropIn:(BOOL)a3 homeName:(id)a4;
+- (id)localizedKeyForEventEndWithDropIn:(BOOL)in homeName:(id)name;
+- (id)localizedKeyForEventStartWithDropIn:(BOOL)in homeName:(id)name;
 - (id)localizedKeyForTitle;
 - (id)serialize;
-- (id)stringForAudioAnalysisReasonWithHomeName:(id)a3;
+- (id)stringForAudioAnalysisReasonWithHomeName:(id)name;
 - (void)configureAccessoryNameComposer;
-- (void)configureWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)configureWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDAudioAnalysisEventBulletin
 
-- (HMDAudioAnalysisEventBulletin)initWithCoder:(id)a3
+- (HMDAudioAnalysisEventBulletin)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCF2F0]];
-  v17 = [v18 unsignedIntegerValue];
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinDateKey"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinNotificationUUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinState"];
-  v15 = [v6 unsignedIntValue];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinSoundIdentifier"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinTitleKey"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinAccessoryUUIDKey"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinNameKey"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinThreadIdentifierKey"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinStartDateKey"];
+  coderCopy = coder;
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCF2F0]];
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinDateKey"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinNotificationUUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinState"];
+  unsignedIntValue = [v6 unsignedIntValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinSoundIdentifier"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinTitleKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinAccessoryUUIDKey"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinNameKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinThreadIdentifierKey"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAudioAnalysisEventBulletinStartDateKey"];
 
-  v13 = [(HMDAudioAnalysisEventBulletin *)self initWithReason:v17 startDate:v12 endDate:v16 notificationUUID:v5 state:v15 soundIdentifier:v7 name:v10 threadIdentifier:v11 accessoryUUID:v9 title:v8];
+  v13 = [(HMDAudioAnalysisEventBulletin *)self initWithReason:unsignedIntegerValue startDate:v12 endDate:v16 notificationUUID:v5 state:unsignedIntValue soundIdentifier:v7 name:v10 threadIdentifier:v11 accessoryUUID:v9 title:v8];
   return v13;
 }
 
-- (HMDAudioAnalysisEventBulletin)initWithDictionary:(id)a3
+- (HMDAudioAnalysisEventBulletin)initWithDictionary:(id)dictionary
 {
   v3 = *MEMORY[0x277CCF2F0];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:v3];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:v3];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -53,8 +53,8 @@
 
   v7 = v6;
 
-  v34 = [v7 unsignedIntValue];
-  v8 = [v4 objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinState"];
+  unsignedIntValue = [v7 unsignedIntValue];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinState"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -68,10 +68,10 @@
 
   v10 = v9;
 
-  v33 = [v10 unsignedIntValue];
-  v11 = [v4 hmf_UUIDForKey:@"HMDAudioAnalysisEventBulletinAccessoryUUIDKey"];
+  unsignedIntValue2 = [v10 unsignedIntValue];
+  v11 = [dictionaryCopy hmf_UUIDForKey:@"HMDAudioAnalysisEventBulletinAccessoryUUIDKey"];
   v12 = MEMORY[0x277CBEAA8];
-  v13 = [v4 objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinDateKey"];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinDateKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -89,13 +89,13 @@
   v17 = v16;
 
   v18 = [v12 dateWithTimeIntervalSince1970:v17];
-  v19 = [v4 objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinNameKey"];
-  v20 = [v4 hmf_UUIDForKey:@"HMDAudioAnalysisEventBulletinNotificationUUID"];
-  v21 = [v4 objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinSoundIdentifier"];
-  v22 = [v4 objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinTitleKey"];
-  v23 = [v4 objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinThreadIdentifierKey"];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinNameKey"];
+  v20 = [dictionaryCopy hmf_UUIDForKey:@"HMDAudioAnalysisEventBulletinNotificationUUID"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinSoundIdentifier"];
+  v22 = [dictionaryCopy objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinTitleKey"];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinThreadIdentifierKey"];
   v24 = MEMORY[0x277CBEAA8];
-  v25 = [v4 objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinStartDateKey"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"HMDAudioAnalysisEventBulletinStartDateKey"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -119,7 +119,7 @@
     v30 = [MEMORY[0x277CBEAA8] now];
   }
 
-  v31 = [(HMDAudioAnalysisEventBulletin *)self initWithReason:v34 startDate:v30 endDate:v18 notificationUUID:v20 state:v33 soundIdentifier:v21 name:v19 threadIdentifier:v23 accessoryUUID:v11 title:v22];
+  v31 = [(HMDAudioAnalysisEventBulletin *)self initWithReason:unsignedIntValue startDate:v30 endDate:v18 notificationUUID:v20 state:unsignedIntValue2 soundIdentifier:v21 name:v19 threadIdentifier:v23 accessoryUUID:v11 title:v22];
 
   return v31;
 }
@@ -133,168 +133,168 @@
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAudioAnalysisEventBulletin state](self, "state")}];
   [v3 setObject:v5 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinState"];
 
-  v6 = [(HMDAudioAnalysisEventBulletin *)self accessoryUUID];
-  v7 = [v6 UUIDString];
-  [v3 setObject:v7 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinAccessoryUUIDKey"];
+  accessoryUUID = [(HMDAudioAnalysisEventBulletin *)self accessoryUUID];
+  uUIDString = [accessoryUUID UUIDString];
+  [v3 setObject:uUIDString forKeyedSubscript:@"HMDAudioAnalysisEventBulletinAccessoryUUIDKey"];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(HMDAudioAnalysisEventBulletin *)self startDate];
-  [v9 timeIntervalSince1970];
+  startDate = [(HMDAudioAnalysisEventBulletin *)self startDate];
+  [startDate timeIntervalSince1970];
   v10 = [v8 numberWithDouble:?];
   [v3 setObject:v10 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinStartDateKey"];
 
   v11 = MEMORY[0x277CCABB0];
-  v12 = [(HMDAudioAnalysisEventBulletin *)self dateOfOccurrence];
-  [v12 timeIntervalSince1970];
+  dateOfOccurrence = [(HMDAudioAnalysisEventBulletin *)self dateOfOccurrence];
+  [dateOfOccurrence timeIntervalSince1970];
   v13 = [v11 numberWithDouble:?];
   [v3 setObject:v13 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinDateKey"];
 
-  v14 = [(HMDAudioAnalysisEventBulletin *)self name];
-  [v3 setObject:v14 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinNameKey"];
+  name = [(HMDAudioAnalysisEventBulletin *)self name];
+  [v3 setObject:name forKeyedSubscript:@"HMDAudioAnalysisEventBulletinNameKey"];
 
-  v15 = [(HMDAudioAnalysisEventBulletin *)self notificationUUID];
-  v16 = [v15 UUIDString];
-  [v3 setObject:v16 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinNotificationUUID"];
+  notificationUUID = [(HMDAudioAnalysisEventBulletin *)self notificationUUID];
+  uUIDString2 = [notificationUUID UUIDString];
+  [v3 setObject:uUIDString2 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinNotificationUUID"];
 
-  v17 = [(HMDAudioAnalysisEventBulletin *)self soundIdentifier];
-  [v3 setObject:v17 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinSoundIdentifier"];
+  soundIdentifier = [(HMDAudioAnalysisEventBulletin *)self soundIdentifier];
+  [v3 setObject:soundIdentifier forKeyedSubscript:@"HMDAudioAnalysisEventBulletinSoundIdentifier"];
 
-  v18 = [(HMDAudioAnalysisEventBulletin *)self title];
-  [v3 setObject:v18 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinTitleKey"];
+  title = [(HMDAudioAnalysisEventBulletin *)self title];
+  [v3 setObject:title forKeyedSubscript:@"HMDAudioAnalysisEventBulletinTitleKey"];
 
-  v19 = [(HMDAudioAnalysisEventBulletin *)self threadIdentifier];
-  [v3 setObject:v19 forKeyedSubscript:@"HMDAudioAnalysisEventBulletinThreadIdentifierKey"];
+  threadIdentifier = [(HMDAudioAnalysisEventBulletin *)self threadIdentifier];
+  [v3 setObject:threadIdentifier forKeyedSubscript:@"HMDAudioAnalysisEventBulletinThreadIdentifierKey"];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[HMDAudioAnalysisEventBulletin reason](self, "reason")}];
-  [v5 encodeObject:v6 forKey:*MEMORY[0x277CCF2F0]];
+  [coderCopy encodeObject:v6 forKey:*MEMORY[0x277CCF2F0]];
 
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDAudioAnalysisEventBulletin state](self, "state")}];
-  [v5 encodeObject:v7 forKey:@"HMDAudioAnalysisEventBulletinState"];
+  [coderCopy encodeObject:v7 forKey:@"HMDAudioAnalysisEventBulletinState"];
 
-  v8 = [(HMDAudioAnalysisEventBulletin *)self accessoryUUID];
-  [v5 encodeObject:v8 forKey:@"HMDAudioAnalysisEventBulletinAccessoryUUIDKey"];
+  accessoryUUID = [(HMDAudioAnalysisEventBulletin *)self accessoryUUID];
+  [coderCopy encodeObject:accessoryUUID forKey:@"HMDAudioAnalysisEventBulletinAccessoryUUIDKey"];
 
-  v9 = [(HMDAudioAnalysisEventBulletin *)self dateOfOccurrence];
-  [v5 encodeObject:v9 forKey:@"HMDAudioAnalysisEventBulletinDateKey"];
+  dateOfOccurrence = [(HMDAudioAnalysisEventBulletin *)self dateOfOccurrence];
+  [coderCopy encodeObject:dateOfOccurrence forKey:@"HMDAudioAnalysisEventBulletinDateKey"];
 
-  v10 = [(HMDAudioAnalysisEventBulletin *)self startDate];
-  [v5 encodeObject:v10 forKey:@"HMDAudioAnalysisEventBulletinStartDateKey"];
+  startDate = [(HMDAudioAnalysisEventBulletin *)self startDate];
+  [coderCopy encodeObject:startDate forKey:@"HMDAudioAnalysisEventBulletinStartDateKey"];
 
-  v11 = [(HMDAudioAnalysisEventBulletin *)self name];
-  [v5 encodeObject:v11 forKey:@"HMDAudioAnalysisEventBulletinNameKey"];
+  name = [(HMDAudioAnalysisEventBulletin *)self name];
+  [coderCopy encodeObject:name forKey:@"HMDAudioAnalysisEventBulletinNameKey"];
 
-  v12 = [(HMDAudioAnalysisEventBulletin *)self notificationUUID];
-  [v5 encodeObject:v12 forKey:@"HMDAudioAnalysisEventBulletinNotificationUUID"];
+  notificationUUID = [(HMDAudioAnalysisEventBulletin *)self notificationUUID];
+  [coderCopy encodeObject:notificationUUID forKey:@"HMDAudioAnalysisEventBulletinNotificationUUID"];
 
-  v13 = [(HMDAudioAnalysisEventBulletin *)self soundIdentifier];
-  [v5 encodeObject:v13 forKey:@"HMDAudioAnalysisEventBulletinSoundIdentifier"];
+  soundIdentifier = [(HMDAudioAnalysisEventBulletin *)self soundIdentifier];
+  [coderCopy encodeObject:soundIdentifier forKey:@"HMDAudioAnalysisEventBulletinSoundIdentifier"];
 
-  v14 = [(HMDAudioAnalysisEventBulletin *)self title];
-  [v5 encodeObject:v14 forKey:@"HMDAudioAnalysisEventBulletinTitleKey"];
+  title = [(HMDAudioAnalysisEventBulletin *)self title];
+  [coderCopy encodeObject:title forKey:@"HMDAudioAnalysisEventBulletinTitleKey"];
 
-  v15 = [(HMDAudioAnalysisEventBulletin *)self threadIdentifier];
-  [v5 encodeObject:v15 forKey:@"HMDAudioAnalysisEventBulletinThreadIdentifierKey"];
+  threadIdentifier = [(HMDAudioAnalysisEventBulletin *)self threadIdentifier];
+  [coderCopy encodeObject:threadIdentifier forKey:@"HMDAudioAnalysisEventBulletinThreadIdentifierKey"];
 }
 
 - (id)localizedKeyForBody
 {
-  v3 = [(HMDAudioAnalysisEventBulletin *)self title];
-  v4 = [(HMDAudioAnalysisEventBulletin *)self stringForAudioAnalysisReasonWithHomeName:v3];
+  title = [(HMDAudioAnalysisEventBulletin *)self title];
+  v4 = [(HMDAudioAnalysisEventBulletin *)self stringForAudioAnalysisReasonWithHomeName:title];
 
   return v4;
 }
 
 - (void)configureAccessoryNameComposer
 {
-  v3 = [(HMDAudioAnalysisEventBulletin *)self context];
-  v14 = [v3 accessory];
+  context = [(HMDAudioAnalysisEventBulletin *)self context];
+  accessory = [context accessory];
 
-  v4 = [v14 room];
-  v5 = [v4 name];
+  room = [accessory room];
+  name = [room name];
 
-  v6 = [v14 category];
-  v7 = [v6 name];
+  category = [accessory category];
+  name2 = [category name];
 
-  v8 = [v14 configuredName];
-  v9 = v8;
-  if (v8)
+  configuredName = [accessory configuredName];
+  v9 = configuredName;
+  if (configuredName)
   {
-    v10 = v8;
+    v10 = configuredName;
   }
 
   else
   {
-    v10 = v7;
+    v10 = name2;
   }
 
   v11 = v10;
 
-  v12 = [[HMDAccessoryNameComposer alloc] initWithRawAccessoryName:v11 rawRoomName:v5];
+  v12 = [[HMDAccessoryNameComposer alloc] initWithRawAccessoryName:v11 rawRoomName:name];
   accessoryNameComposer = self->_accessoryNameComposer;
   self->_accessoryNameComposer = v12;
 }
 
-- (void)configureWithContext:(id)a3
+- (void)configureWithContext:(id)context
 {
-  objc_storeStrong(&self->_context, a3);
+  objc_storeStrong(&self->_context, context);
 
   [(HMDAudioAnalysisEventBulletin *)self configureAccessoryNameComposer];
 }
 
-- (HMDAudioAnalysisEventBulletin)initWithReason:(unint64_t)a3 startDate:(id)a4 endDate:(id)a5 notificationUUID:(id)a6 state:(unint64_t)a7 soundIdentifier:(id)a8 name:(id)a9 threadIdentifier:(id)a10 accessoryUUID:(id)a11 title:(id)a12
+- (HMDAudioAnalysisEventBulletin)initWithReason:(unint64_t)reason startDate:(id)date endDate:(id)endDate notificationUUID:(id)d state:(unint64_t)state soundIdentifier:(id)identifier name:(id)name threadIdentifier:(id)self0 accessoryUUID:(id)self1 title:(id)self2
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  threadIdentifierCopy = threadIdentifier;
+  iDCopy = iD;
+  titleCopy = title;
   v45.receiver = self;
   v45.super_class = HMDAudioAnalysisEventBulletin;
   v25 = [(HMDAudioAnalysisEventBulletin *)&v45 init];
   v26 = v25;
   if (v25)
   {
-    v25->_reason = a3;
-    v27 = [v18 copy];
+    v25->_reason = reason;
+    v27 = [endDateCopy copy];
     dateOfOccurrence = v26->_dateOfOccurrence;
     v26->_dateOfOccurrence = v27;
 
-    v29 = [v17 copy];
+    v29 = [dateCopy copy];
     startDate = v26->_startDate;
     v26->_startDate = v29;
 
-    v31 = [v19 copy];
+    v31 = [dCopy copy];
     notificationUUID = v26->_notificationUUID;
     v26->_notificationUUID = v31;
 
-    v26->_state = a7;
-    v33 = [v20 copy];
+    v26->_state = state;
+    v33 = [identifierCopy copy];
     soundIdentifier = v26->_soundIdentifier;
     v26->_soundIdentifier = v33;
 
-    v35 = [v23 copy];
+    v35 = [iDCopy copy];
     accessoryUUID = v26->_accessoryUUID;
     v26->_accessoryUUID = v35;
 
-    v37 = [v24 copy];
+    v37 = [titleCopy copy];
     title = v26->_title;
     v26->_title = v37;
 
-    v39 = [v21 copy];
+    v39 = [nameCopy copy];
     name = v26->_name;
     v26->_name = v39;
 
-    v41 = [v22 copy];
+    v41 = [threadIdentifierCopy copy];
     threadIdentifier = v26->_threadIdentifier;
     v26->_threadIdentifier = v41;
   }
@@ -302,27 +302,27 @@
   return v26;
 }
 
-- (id)stringForAudioAnalysisReasonWithHomeName:(id)a3
+- (id)stringForAudioAnalysisReasonWithHomeName:(id)name
 {
-  v4 = a3;
-  v5 = [(HMDAudioAnalysisEventBulletin *)self state];
-  if (v5 != 1)
+  nameCopy = name;
+  state = [(HMDAudioAnalysisEventBulletin *)self state];
+  if (state != 1)
   {
-    if (v5)
+    if (state)
     {
       goto LABEL_9;
     }
 
-    v6 = [(HMDAudioAnalysisEventBulletin *)self reason];
-    if (v6 == 4)
+    reason = [(HMDAudioAnalysisEventBulletin *)self reason];
+    if (reason == 4)
     {
       goto LABEL_9;
     }
 
-    if (v6 == 1)
+    if (reason == 1)
     {
-      v7 = [(HMDAudioAnalysisEventBulletin *)self context];
-      v8 = -[HMDAudioAnalysisEventBulletin localizedKeyForEventStartWithDropIn:homeName:](self, "localizedKeyForEventStartWithDropIn:homeName:", [v7 dropInEnabled], v4);
+      context = [(HMDAudioAnalysisEventBulletin *)self context];
+      v8 = -[HMDAudioAnalysisEventBulletin localizedKeyForEventStartWithDropIn:homeName:](self, "localizedKeyForEventStartWithDropIn:homeName:", [context dropInEnabled], nameCopy);
 LABEL_8:
       v9 = v8;
 
@@ -332,8 +332,8 @@ LABEL_8:
 
   if ([(HMDAudioAnalysisEventBulletin *)self reason]== 1)
   {
-    v7 = [(HMDAudioAnalysisEventBulletin *)self context];
-    v8 = -[HMDAudioAnalysisEventBulletin localizedKeyForEventEndWithDropIn:homeName:](self, "localizedKeyForEventEndWithDropIn:homeName:", [v7 dropInEnabled], v4);
+    context = [(HMDAudioAnalysisEventBulletin *)self context];
+    v8 = -[HMDAudioAnalysisEventBulletin localizedKeyForEventEndWithDropIn:homeName:](self, "localizedKeyForEventEndWithDropIn:homeName:", [context dropInEnabled], nameCopy);
     goto LABEL_8;
   }
 
@@ -346,33 +346,33 @@ LABEL_10:
 
 - (id)localizedKeyForTitle
 {
-  v3 = [(HMDAudioAnalysisEventBulletin *)self context];
-  if (v3 && (v4 = v3, -[HMDAudioAnalysisEventBulletin context](self, "context"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 dropInEnabled], v5, v4, v6))
+  context = [(HMDAudioAnalysisEventBulletin *)self context];
+  if (context && (v4 = context, -[HMDAudioAnalysisEventBulletin context](self, "context"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 dropInEnabled], v5, v4, v6))
   {
-    v7 = HMDLocalizedStringForKey(@"AUDIOANALYSIS_ALARM_NOTIFICATION_TITLE");
+    title = HMDLocalizedStringForKey(@"AUDIOANALYSIS_ALARM_NOTIFICATION_TITLE");
   }
 
   else
   {
-    v7 = [(HMDAudioAnalysisEventBulletin *)self title];
+    title = [(HMDAudioAnalysisEventBulletin *)self title];
   }
 
-  return v7;
+  return title;
 }
 
-- (id)localizedKeyForEventEndWithDropIn:(BOOL)a3 homeName:(id)a4
+- (id)localizedKeyForEventEndWithDropIn:(BOOL)in homeName:(id)name
 {
-  v4 = a3;
+  inCopy = in;
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  nameCopy = name;
   v7 = objc_opt_new();
   [v7 setUnitsStyle:3];
   [v7 setAllowedUnits:64];
   [v7 setFormattingContext:2];
   [v7 setMaximumUnitCount:2];
-  v8 = [(HMDAudioAnalysisEventBulletin *)self dateOfOccurrence];
-  v9 = [(HMDAudioAnalysisEventBulletin *)self startDate];
-  [v8 timeIntervalSinceDate:v9];
+  dateOfOccurrence = [(HMDAudioAnalysisEventBulletin *)self dateOfOccurrence];
+  startDate = [(HMDAudioAnalysisEventBulletin *)self startDate];
+  [dateOfOccurrence timeIntervalSinceDate:startDate];
   v11 = v10;
 
   if (v11 >= 60.0 && v11 < 120.0)
@@ -392,15 +392,15 @@ LABEL_6:
   v13 = [v7 stringFromTimeInterval:v11];
 LABEL_8:
   v14 = v13;
-  v15 = [(HMDAudioAnalysisEventBulletin *)self accessoryNameComposer];
-  v16 = [v15 composedString];
+  accessoryNameComposer = [(HMDAudioAnalysisEventBulletin *)self accessoryNameComposer];
+  composedString = [accessoryNameComposer composedString];
 
   v17 = MEMORY[0x277CCACA8];
-  if (v4)
+  if (inCopy)
   {
     v18 = HMDLocalizedStringForKey(@"AUDIOANALYSIS_ALARM_END_CHECK_IN");
     v30 = 0;
-    v19 = [v17 localizedStringWithValidatedFormat:v18 validFormatSpecifiers:@"%@ %@ %@" error:&v30, v6, v14, v16];
+    v19 = [v17 localizedStringWithValidatedFormat:v18 validFormatSpecifiers:@"%@ %@ %@" error:&v30, nameCopy, v14, composedString];
     v20 = v30;
 
     if (!v19)
@@ -433,7 +433,7 @@ LABEL_16:
   {
     v24 = HMDLocalizedStringForKey(@"AUDIOANALYSIS_ALARM_END_NO_CHECK_IN");
     v29 = 0;
-    v19 = [v17 localizedStringWithValidatedFormat:v24 validFormatSpecifiers:@"%@ %@" error:&v29, v16, v14];
+    v19 = [v17 localizedStringWithValidatedFormat:v24 validFormatSpecifiers:@"%@ %@" error:&v29, composedString, v14];
     v20 = v29;
 
     if (!v19)
@@ -471,20 +471,20 @@ LABEL_18:
   return v19;
 }
 
-- (id)localizedKeyForEventStartWithDropIn:(BOOL)a3 homeName:(id)a4
+- (id)localizedKeyForEventStartWithDropIn:(BOOL)in homeName:(id)name
 {
-  v4 = a3;
+  inCopy = in;
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(HMDAudioAnalysisEventBulletin *)self accessoryNameComposer];
-  v8 = [v7 composedString];
+  nameCopy = name;
+  accessoryNameComposer = [(HMDAudioAnalysisEventBulletin *)self accessoryNameComposer];
+  composedString = [accessoryNameComposer composedString];
 
   v9 = MEMORY[0x277CCACA8];
-  if (v4)
+  if (inCopy)
   {
     v10 = HMDLocalizedStringForKey(@"AUDIOANALYSIS_ALARM_START_CHECK_IN");
     v22 = 0;
-    v11 = [v9 localizedStringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@" error:&v22, v6, v8];
+    v11 = [v9 localizedStringWithValidatedFormat:v10 validFormatSpecifiers:@"%@ %@" error:&v22, nameCopy, composedString];
     v12 = v22;
 
     if (!v11)
@@ -517,7 +517,7 @@ LABEL_9:
   {
     v16 = HMDLocalizedStringForKey(@"AUDIOANALYSIS_ALARM_START_NO_CHECK_IN");
     v21 = 0;
-    v11 = [v9 localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:&v21, v8];
+    v11 = [v9 localizedStringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:&v21, composedString];
     v12 = v21;
 
     if (!v11)

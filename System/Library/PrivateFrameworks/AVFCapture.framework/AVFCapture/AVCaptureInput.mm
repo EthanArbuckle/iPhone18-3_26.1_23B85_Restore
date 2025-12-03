@@ -1,10 +1,10 @@
 @interface AVCaptureInput
 - (id)initSubclass;
-- (void)attachToFigCaptureSession:(OpaqueFigCaptureSession *)a3;
+- (void)attachToFigCaptureSession:(OpaqueFigCaptureSession *)session;
 - (void)dealloc;
-- (void)detachFromFigCaptureSession:(OpaqueFigCaptureSession *)a3;
-- (void)performFigCaptureSessionOperationSafelyUsingBlock:(id)a3;
-- (void)setSession:(id)a3;
+- (void)detachFromFigCaptureSession:(OpaqueFigCaptureSession *)session;
+- (void)performFigCaptureSessionOperationSafelyUsingBlock:(id)block;
+- (void)setSession:(id)session;
 @end
 
 @implementation AVCaptureInput
@@ -35,22 +35,22 @@
   [(AVCaptureInput *)&v3 dealloc];
 }
 
-- (void)setSession:(id)a3
+- (void)setSession:(id)session
 {
   inputInternal = self->_inputInternal;
-  if (inputInternal->session != a3)
+  if (inputInternal->session != session)
   {
-    v6 = [a3 isEqual:?];
+    v6 = [session isEqual:?];
     inputInternal = self->_inputInternal;
     if ((v6 & 1) == 0)
     {
-      v7 = [(AVCaptureSession *)inputInternal->session isRunning];
+      isRunning = [(AVCaptureSession *)inputInternal->session isRunning];
       inputInternal = self->_inputInternal;
-      if (!v7)
+      if (!isRunning)
       {
-        v8 = [(AVCaptureSession *)inputInternal->session isBeingConfigured];
+        isBeingConfigured = [(AVCaptureSession *)inputInternal->session isBeingConfigured];
         inputInternal = self->_inputInternal;
-        if (!v8)
+        if (!isBeingConfigured)
         {
           if (inputInternal->figCaptureSession)
           {
@@ -62,10 +62,10 @@
     }
   }
 
-  inputInternal->session = a3;
+  inputInternal->session = session;
 }
 
-- (void)attachToFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)attachToFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   figCaptureSessionSyncQueue = self->_inputInternal->figCaptureSessionSyncQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -73,7 +73,7 @@
   v4[2] = __44__AVCaptureInput_attachToFigCaptureSession___block_invoke;
   v4[3] = &unk_1E786ECD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   dispatch_sync(figCaptureSessionSyncQueue, v4);
 }
 
@@ -104,7 +104,7 @@ const void *__44__AVCaptureInput_attachToFigCaptureSession___block_invoke(uint64
   return result;
 }
 
-- (void)detachFromFigCaptureSession:(OpaqueFigCaptureSession *)a3
+- (void)detachFromFigCaptureSession:(OpaqueFigCaptureSession *)session
 {
   figCaptureSessionSyncQueue = self->_inputInternal->figCaptureSessionSyncQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -112,7 +112,7 @@ const void *__44__AVCaptureInput_attachToFigCaptureSession___block_invoke(uint64
   v4[2] = __46__AVCaptureInput_detachFromFigCaptureSession___block_invoke;
   v4[3] = &unk_1E786ECD0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = session;
   dispatch_sync(figCaptureSessionSyncQueue, v4);
 }
 
@@ -137,7 +137,7 @@ const void *__46__AVCaptureInput_detachFromFigCaptureSession___block_invoke(uint
   return result;
 }
 
-- (void)performFigCaptureSessionOperationSafelyUsingBlock:(id)a3
+- (void)performFigCaptureSessionOperationSafelyUsingBlock:(id)block
 {
   figCaptureSessionSyncQueue = self->_inputInternal->figCaptureSessionSyncQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -145,7 +145,7 @@ const void *__46__AVCaptureInput_detachFromFigCaptureSession___block_invoke(uint
   v4[2] = __68__AVCaptureInput_performFigCaptureSessionOperationSafelyUsingBlock___block_invoke;
   v4[3] = &unk_1E786F078;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = block;
   dispatch_sync(figCaptureSessionSyncQueue, v4);
 }
 

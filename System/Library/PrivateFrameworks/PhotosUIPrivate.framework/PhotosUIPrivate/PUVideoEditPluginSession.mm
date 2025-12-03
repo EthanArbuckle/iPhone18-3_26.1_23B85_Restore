@@ -1,17 +1,17 @@
 @interface PUVideoEditPluginSession
 - (id)videoDataSource;
 - (unint64_t)pluginManagerMediaType;
-- (void)loadItemProviderWithSupportedAdjustmentData:(id)a3 loadHandler:(id)a4;
-- (void)setAllowLoopingVideoExtensions:(BOOL)a3;
+- (void)loadItemProviderWithSupportedAdjustmentData:(id)data loadHandler:(id)handler;
+- (void)setAllowLoopingVideoExtensions:(BOOL)extensions;
 @end
 
 @implementation PUVideoEditPluginSession
 
-- (void)loadItemProviderWithSupportedAdjustmentData:(id)a3 loadHandler:(id)a4
+- (void)loadItemProviderWithSupportedAdjustmentData:(id)data loadHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUVideoEditPluginSession *)self videoDataSource];
+  dataCopy = data;
+  handlerCopy = handler;
+  videoDataSource = [(PUVideoEditPluginSession *)self videoDataSource];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -33,7 +33,7 @@
   v25 = v28;
   v10 = v9;
   v24 = v10;
-  [v8 editPluginSession:self loadPlaceholderImageWithHandler:v23];
+  [videoDataSource editPluginSession:self loadPlaceholderImageWithHandler:v23];
   dispatch_group_enter(v10);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -42,7 +42,7 @@
   v22 = v26;
   v11 = v10;
   v21 = v11;
-  [v8 editPluginSession:self loadVideoURLWithHandler:v20];
+  [videoDataSource editPluginSession:self loadVideoURLWithHandler:v20];
   v12 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -50,11 +50,11 @@
   block[3] = &unk_1E7B7FC38;
   v19 = v28;
   block[4] = self;
-  v16 = v6;
-  v17 = v7;
+  v16 = dataCopy;
+  v17 = handlerCopy;
   v18 = v26;
-  v13 = v7;
-  v14 = v6;
+  v13 = handlerCopy;
+  v14 = dataCopy;
   dispatch_group_notify(v11, v12, block);
 
   _Block_object_dispose(v26, 8);
@@ -143,14 +143,14 @@ void __84__PUVideoEditPluginSession_loadItemProviderWithSupportedAdjustmentData_
 
 - (id)videoDataSource
 {
-  v4 = [(PUEditPluginSession *)self dataSource];
-  if (([v4 conformsToProtocol:&unk_1F2C63F20] & 1) == 0)
+  dataSource = [(PUEditPluginSession *)self dataSource];
+  if (([dataSource conformsToProtocol:&unk_1F2C63F20] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PUVideoEditPluginSession.m" lineNumber:51 description:@"data source must conform to PUVideoEditPluginSessionDataSource"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUVideoEditPluginSession.m" lineNumber:51 description:@"data source must conform to PUVideoEditPluginSessionDataSource"];
   }
 
-  return v4;
+  return dataSource;
 }
 
 - (unint64_t)pluginManagerMediaType
@@ -166,11 +166,11 @@ void __84__PUVideoEditPluginSession_loadItemProviderWithSupportedAdjustmentData_
   }
 }
 
-- (void)setAllowLoopingVideoExtensions:(BOOL)a3
+- (void)setAllowLoopingVideoExtensions:(BOOL)extensions
 {
-  if (self->_allowLoopingVideoExtensions != a3)
+  if (self->_allowLoopingVideoExtensions != extensions)
   {
-    self->_allowLoopingVideoExtensions = a3;
+    self->_allowLoopingVideoExtensions = extensions;
     [(PUEditPluginSession *)self updatePluginManager];
   }
 }

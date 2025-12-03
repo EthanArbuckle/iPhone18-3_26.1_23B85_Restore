@@ -1,37 +1,37 @@
 @interface SDPMini
-+ (BOOL)setPayload:(int)a3 mediaLine:(id)a4;
-- (BOOL)getBasebandCodecType:(id *)a3 sampleRate:(id *)a4;
-- (BOOL)getUseSbr:(BOOL *)a3 blockSize:(int *)a4 forAACFormat:(int)a5;
-- (BOOL)setVideoPayloads:(int *)a3 count:(int)a4;
++ (BOOL)setPayload:(int)payload mediaLine:(id)line;
+- (BOOL)getBasebandCodecType:(id *)type sampleRate:(id *)rate;
+- (BOOL)getUseSbr:(BOOL *)sbr blockSize:(int *)size forAACFormat:(int)format;
+- (BOOL)setVideoPayloads:(int *)payloads count:(int)count;
 - (SDPMini)init;
-- (SDPMini)initWithString:(id)a3;
+- (SDPMini)initWithString:(id)string;
 - (id)SDPUsername;
-- (id)composeAudioFMTPForPayload:(id)a3;
+- (id)composeAudioFMTPForPayload:(id)payload;
 - (id)composeAudioString;
 - (id)composeBandwidthString;
 - (id)composeFLSString;
 - (id)composeSessionString;
-- (id)getMediaLineForType:(int)a3;
-- (id)mediaTypeToString:(int)a3;
-- (id)parseIP:(id)a3;
-- (id)parseRTCPPort:(id)a3;
-- (id)parseRTPID:(id)a3;
-- (id)toStringWithVideoEnabled:(BOOL)a3;
-- (int)rulesFramerate:(int)a3;
-- (void)addMediaLine:(id)a3 mediaType:(int)a4;
-- (void)createVideoImageAttr:(int)a3 direction:(int)a4 dimensions:(imageTag *)a5 count:(int)a6;
+- (id)getMediaLineForType:(int)type;
+- (id)mediaTypeToString:(int)string;
+- (id)parseIP:(id)p;
+- (id)parseRTCPPort:(id)port;
+- (id)parseRTPID:(id)d;
+- (id)toStringWithVideoEnabled:(BOOL)enabled;
+- (int)rulesFramerate:(int)framerate;
+- (void)addMediaLine:(id)line mediaType:(int)type;
+- (void)createVideoImageAttr:(int)attr direction:(int)direction dimensions:(imageTag *)dimensions count:(int)count;
 - (void)dealloc;
-- (void)getNegotiatedResolutionForPayload:(int)a3 forInterface:(int)a4 withRule:(id)a5 direction:(int)a6 result:(imageTag *)a7 remoteSupportsHD:(BOOL)a8 screenSharing:(BOOL)a9;
-- (void)parseAudioFormatAttribute:(id)a3;
-- (void)parseAudioMediaAttributes:(id)a3;
-- (void)parseBandwidth:(id)a3;
-- (void)parseMediaLine:(id)a3;
-- (void)parseSDPFromString:(id)a3;
-- (void)parseSessionAttributes:(id)a3;
-- (void)rulesImageSizeForExternalPayload:(int)a3 pWidth:(int *)a4 pHeight:(int *)a5;
-- (void)setBasebandCodecType:(id)a3 sampleRate:(id)a4;
-- (void)setUseSbr:(BOOL)a3 blockSize:(int)a4 forAACFormat:(int)a5;
-- (void)setVideoRTCPFB:(BOOL)a3 useNACK:(BOOL)a4;
+- (void)getNegotiatedResolutionForPayload:(int)payload forInterface:(int)interface withRule:(id)rule direction:(int)direction result:(imageTag *)result remoteSupportsHD:(BOOL)d screenSharing:(BOOL)sharing;
+- (void)parseAudioFormatAttribute:(id)attribute;
+- (void)parseAudioMediaAttributes:(id)attributes;
+- (void)parseBandwidth:(id)bandwidth;
+- (void)parseMediaLine:(id)line;
+- (void)parseSDPFromString:(id)string;
+- (void)parseSessionAttributes:(id)attributes;
+- (void)rulesImageSizeForExternalPayload:(int)payload pWidth:(int *)width pHeight:(int *)height;
+- (void)setBasebandCodecType:(id)type sampleRate:(id)rate;
+- (void)setUseSbr:(BOOL)sbr blockSize:(int)size forAACFormat:(int)format;
+- (void)setVideoRTCPFB:(BOOL)b useNACK:(BOOL)k;
 @end
 
 @implementation SDPMini
@@ -87,7 +87,7 @@
   return v2;
 }
 
-- (SDPMini)initWithString:(id)a3
+- (SDPMini)initWithString:(id)string
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -100,7 +100,7 @@
     v4->secondaryAudioPayloads = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:3];
     v4->_mediaLines = objc_opt_new();
     v5 = objc_autoreleasePoolPush();
-    [(SDPMini *)v4 parseSDPFromString:a3];
+    [(SDPMini *)v4 parseSDPFromString:string];
     objc_autoreleasePoolPop(v5);
   }
 
@@ -116,52 +116,52 @@
   [(SDPMini *)&v3 dealloc];
 }
 
-- (id)getMediaLineForType:(int)a3
+- (id)getMediaLineForType:(int)type
 {
-  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:a3];
+  v4 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:type];
   v5 = [(NSMutableDictionary *)self->_mediaLines objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)addMediaLine:(id)a3 mediaType:(int)a4
+- (void)addMediaLine:(id)line mediaType:(int)type
 {
-  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:a4];
-  [(NSMutableDictionary *)self->_mediaLines setObject:a3 forKeyedSubscript:v6];
+  v6 = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:type];
+  [(NSMutableDictionary *)self->_mediaLines setObject:line forKeyedSubscript:v6];
 }
 
-- (id)mediaTypeToString:(int)a3
+- (id)mediaTypeToString:(int)string
 {
-  if ((a3 - 1) > 2)
+  if ((string - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E85F6358[a3 - 1];
+    return off_1E85F6358[string - 1];
   }
 }
 
-+ (BOOL)setPayload:(int)a3 mediaLine:(id)a4
++ (BOOL)setPayload:(int)payload mediaLine:(id)line
 {
-  if (a3 != 100 && a3 != 126 && a3 != 123)
+  if (payload != 100 && payload != 126 && payload != 123)
   {
     return 0;
   }
 
-  [a4 addPayload:? rtpMap:? formatParameters:?];
+  [line addPayload:? rtpMap:? formatParameters:?];
   return 1;
 }
 
-- (BOOL)setVideoPayloads:(int *)a3 count:(int)a4
+- (BOOL)setVideoPayloads:(int *)payloads count:(int)count
 {
-  if (!a4)
+  if (!count)
   {
     return 0;
   }
 
-  LODWORD(v4) = a4;
+  LODWORD(v4) = count;
   v6 = [(SDPMini *)self getMediaLineForType:2];
   if (v4 < 1)
   {
@@ -172,7 +172,7 @@
   v4 = v4;
   do
   {
-    v8 = *a3++;
+    v8 = *payloads++;
     if (![SDPMini setPayload:v8 mediaLine:v7])
     {
       break;
@@ -185,7 +185,7 @@
   return v4 == 0;
 }
 
-- (id)toStringWithVideoEnabled:(BOOL)a3
+- (id)toStringWithVideoEnabled:(BOOL)enabled
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:512];
@@ -211,7 +211,7 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if (a3 || [*(*(&v15 + 1) + 8 * i) intValue] != 2)
+        if (enabled || [*(*(&v15 + 1) + 8 * i) intValue] != 2)
         {
           v12 = [(NSMutableDictionary *)self->_mediaLines objectForKeyedSubscript:v11];
           [v5 appendFormat:@"%@=%@ %@ %@ %@%@", @"m", -[SDPMini mediaTypeToString:](self, "mediaTypeToString:", objc_msgSend(v11, "intValue")), @"%VRTP-PORT%", @"RTP/AVP", objc_msgSend(objc_msgSend(v12, "payloads"), "componentsJoinedByString:", @" ", @"\r\n"];
@@ -228,14 +228,14 @@
   return v5;
 }
 
-- (void)setBasebandCodecType:(id)a3 sampleRate:(id)a4
+- (void)setBasebandCodecType:(id)type sampleRate:(id)rate
 {
-  self->basebandCodecSampleRate = a4;
+  self->basebandCodecSampleRate = rate;
 
-  self->basebandCodecType = [a3 copy];
+  self->basebandCodecType = [type copy];
 }
 
-- (BOOL)getBasebandCodecType:(id *)a3 sampleRate:(id *)a4
+- (BOOL)getBasebandCodecType:(id *)type sampleRate:(id *)rate
 {
   if (!self->basebandCodecSampleRate)
   {
@@ -248,41 +248,41 @@
     return 0;
   }
 
-  if (a3)
+  if (type)
   {
-    *a3 = basebandCodecType;
+    *type = basebandCodecType;
   }
 
-  if (a4)
+  if (rate)
   {
-    *a4 = self->basebandCodecSampleRate;
+    *rate = self->basebandCodecSampleRate;
   }
 
   return 1;
 }
 
-- (void)createVideoImageAttr:(int)a3 direction:(int)a4 dimensions:(imageTag *)a5 count:(int)a6
+- (void)createVideoImageAttr:(int)attr direction:(int)direction dimensions:(imageTag *)dimensions count:(int)count
 {
-  v6 = *&a6;
-  v8 = *&a4;
-  v9 = *&a3;
+  v6 = *&count;
+  v8 = *&direction;
+  v9 = *&attr;
   v10 = [(SDPMini *)self getMediaLineForType:2];
 
-  [v10 createVideoImageAttr:v9 direction:v8 dimensions:a5 count:v6];
+  [v10 createVideoImageAttr:v9 direction:v8 dimensions:dimensions count:v6];
 }
 
-- (void)getNegotiatedResolutionForPayload:(int)a3 forInterface:(int)a4 withRule:(id)a5 direction:(int)a6 result:(imageTag *)a7 remoteSupportsHD:(BOOL)a8 screenSharing:(BOOL)a9
+- (void)getNegotiatedResolutionForPayload:(int)payload forInterface:(int)interface withRule:(id)rule direction:(int)direction result:(imageTag *)result remoteSupportsHD:(BOOL)d screenSharing:(BOOL)sharing
 {
-  v13 = *&a3;
+  v13 = *&payload;
   v80 = *MEMORY[0x1E69E9840];
-  if (![a5 count])
+  if (![rule count])
   {
-    a7->var2 = 0;
-    a7->var5 = 0;
+    result->var2 = 0;
+    result->var5 = 0;
     return;
   }
 
-  if (a9)
+  if (sharing)
   {
     v15 = 3;
   }
@@ -297,15 +297,15 @@
   if (v17)
   {
     v18 = v17;
-    v59 = a5;
-    v60 = self;
-    v62 = a7;
-    v61 = [a5 count];
+    ruleCopy = rule;
+    selfCopy = self;
+    resultCopy = result;
+    v61 = [rule count];
     v63 = v18;
-    if (a6)
+    if (direction)
     {
       v19 = [v16 getVideoRecvImages:v18];
-      v65 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v71 = 0u;
       v72 = 0u;
       v73 = 0u;
@@ -330,9 +330,9 @@
             v68 = -1431655766;
             v69 = -1431655766;
             [SDPMediaLine fillImageStruct:v25 imageStruct:v67];
-            if (v69 != a4)
+            if (v69 != interface)
             {
-              [v65 addObject:v25];
+              [array addObject:v25];
             }
           }
 
@@ -343,10 +343,10 @@
         while (v21);
       }
 
-      [v19 removeObjectsInArray:v65];
+      [v19 removeObjectsInArray:array];
       if (v19 && [v19 count])
       {
-        [v19 sortUsingFunction:compareByPref context:v60];
+        [v19 sortUsingFunction:compareByPref context:selfCopy];
         v26 = [v19 count];
         if (v26 >= 1)
         {
@@ -373,14 +373,14 @@ LABEL_26:
           v31 = v61 + 1;
           while (1)
           {
-            v32 = [v59 objectAtIndexedSubscript:v31 - 2];
+            v32 = [ruleCopy objectAtIndexedSubscript:v31 - 2];
             v33 = v32;
-            if (a8 || (v34 = [v32 iWidth], (objc_msgSend(v33, "iHeight") * v34) <= 407040))
+            if (d || (v34 = [v32 iWidth], (objc_msgSend(v33, "iHeight") * v34) <= 407040))
             {
-              v35 = [v33 iWidth];
-              v36 = [v33 iHeight];
+              iWidth = [v33 iWidth];
+              iHeight = [v33 iHeight];
               [v33 fRate];
-              if ([v16 supportImage:v30 width:v35 height:v36 rate:v37])
+              if ([v16 supportImage:v30 width:iWidth height:iHeight rate:v37])
               {
                 break;
               }
@@ -392,16 +392,16 @@ LABEL_26:
             }
           }
 
-          a7->var0 = [v33 iWidth];
-          a7->var2 = [v33 iWidth];
-          a7->var3 = [v33 iHeight];
-          a7->var5 = [v33 iHeight];
+          result->var0 = [v33 iWidth];
+          result->var2 = [v33 iWidth];
+          result->var3 = [v33 iHeight];
+          result->var5 = [v33 iHeight];
           [v33 fRate];
-          a7->var6 = v55;
+          result->var6 = v55;
           v57 = v33;
 LABEL_51:
           [v57 fPref];
-          a7->var7 = v58;
+          result->var7 = v58;
         }
 
         goto LABEL_52;
@@ -411,7 +411,7 @@ LABEL_51:
     else
     {
       v19 = [v16 getVideoSendImages:v18];
-      v66 = [MEMORY[0x1E695DF70] array];
+      array2 = [MEMORY[0x1E695DF70] array];
       v76 = 0u;
       v77 = 0u;
       v78 = 0u;
@@ -436,9 +436,9 @@ LABEL_51:
             v68 = -1431655766;
             v69 = -1431655766;
             [SDPMediaLine fillImageStruct:v44 imageStruct:v67];
-            if (v69 != a4)
+            if (v69 != interface)
             {
-              [v66 addObject:v44];
+              [array2 addObject:v44];
             }
           }
 
@@ -449,10 +449,10 @@ LABEL_51:
         while (v40);
       }
 
-      [v19 removeObjectsInArray:v66];
+      [v19 removeObjectsInArray:array2];
       if (v19 && [v19 count])
       {
-        [v19 sortUsingFunction:compareByPref context:v60];
+        [v19 sortUsingFunction:compareByPref context:selfCopy];
         v45 = [v19 count];
         if (v61 >= 1)
         {
@@ -461,23 +461,23 @@ LABEL_51:
           do
           {
             v48 = v47--;
-            v49 = [v59 objectAtIndexedSubscript:v47];
+            v49 = [ruleCopy objectAtIndexedSubscript:v47];
             v50 = v46;
             while (v50 >= 1)
             {
               v51 = [v19 objectAtIndexedSubscript:--v50];
-              v52 = [v49 iWidth];
-              v53 = [v49 iHeight];
+              iWidth2 = [v49 iWidth];
+              iHeight2 = [v49 iHeight];
               [v49 fRate];
-              if ([v16 supportImage:v51 width:v52 height:v53 rate:v54])
+              if ([v16 supportImage:v51 width:iWidth2 height:iHeight2 rate:v54])
               {
-                a7 = v62;
-                v62->var0 = [v49 iWidth];
-                v62->var2 = [v49 iWidth];
-                v62->var3 = [v49 iHeight];
-                v62->var5 = [v49 iHeight];
+                result = resultCopy;
+                resultCopy->var0 = [v49 iWidth];
+                resultCopy->var2 = [v49 iWidth];
+                resultCopy->var3 = [v49 iHeight];
+                resultCopy->var5 = [v49 iHeight];
                 [v49 fRate];
-                v62->var6 = v56;
+                resultCopy->var6 = v56;
                 v57 = v49;
                 goto LABEL_51;
               }
@@ -491,8 +491,8 @@ LABEL_51:
       }
     }
 
-    a7->var2 = 0;
-    a7->var5 = 0;
+    result->var2 = 0;
+    result->var5 = 0;
 LABEL_52:
   }
 }
@@ -519,10 +519,10 @@ LABEL_52:
   [v3 appendFormat:@"%@=%@ 0 0 IN %@ %@\r\n", @"o", self->origin, @"%RTP-IP-AF%", @"%RTP-IP%"];
   [v3 appendFormat:@"%@=%@\r\n", @"s", -[SDPMini SDPUsername](self, "SDPUsername")];
   [v3 appendFormat:@"%@=IN %@ %@\r\n", @"c", @"%RTP-IP-AF%", @"%RTP-IP%"];
-  v4 = [(SDPMini *)self composeBandwidthString];
-  if (v4)
+  composeBandwidthString = [(SDPMini *)self composeBandwidthString];
+  if (composeBandwidthString)
   {
-    [v3 appendFormat:@"%@=%@\r\n", @"b", v4];
+    [v3 appendFormat:@"%@=%@\r\n", @"b", composeBandwidthString];
   }
 
   [v3 appendFormat:@"%@=0 0\r\n", @"t"];
@@ -579,15 +579,15 @@ uint64_t __41__SDPMini_SDPComposing__composeFLSString__block_invoke(uint64_t a1,
   }
 }
 
-- (id)composeAudioFMTPForPayload:(id)a3
+- (id)composeAudioFMTPForPayload:(id)payload
 {
   v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-  if ([(NSMutableArray *)self->secondaryAudioPayloads containsObject:a3])
+  if ([(NSMutableArray *)self->secondaryAudioPayloads containsObject:payload])
   {
     [v5 addObject:@"sec"];
   }
 
-  [v5 addObjectsFromArray:{-[NSMutableDictionary objectForKeyedSubscript:](self->_audioParameters, "objectForKeyedSubscript:", a3)}];
+  [v5 addObjectsFromArray:{-[NSMutableDictionary objectForKeyedSubscript:](self->_audioParameters, "objectForKeyedSubscript:", payload)}];
   v6 = [v5 componentsJoinedByString:@";"];
 
   return v6;
@@ -658,9 +658,9 @@ uint64_t __41__SDPMini_SDPComposing__composeFLSString__block_invoke(uint64_t a1,
   return v3;
 }
 
-- (id)parseIP:(id)a3
+- (id)parseIP:(id)p
 {
-  v3 = [a3 componentsSeparatedByString:@" "];
+  v3 = [p componentsSeparatedByString:@" "];
   if ([v3 count] < 3)
   {
     return 0;
@@ -669,9 +669,9 @@ uint64_t __41__SDPMini_SDPComposing__composeFLSString__block_invoke(uint64_t a1,
   return [v3 objectAtIndexedSubscript:2];
 }
 
-- (void)parseBandwidth:(id)a3
+- (void)parseBandwidth:(id)bandwidth
 {
-  v4 = [a3 componentsSeparatedByString:@":"];
+  v4 = [bandwidth componentsSeparatedByString:@":"];
   if ([v4 count] >= 2)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objc_msgSend(v4, "objectAtIndexedSubscript:", 1), "intValue")}];
@@ -687,18 +687,18 @@ uint64_t __41__SDPMini_SDPComposing__composeFLSString__block_invoke(uint64_t a1,
   }
 }
 
-- (void)parseMediaLine:(id)a3
+- (void)parseMediaLine:(id)line
 {
   v27 = *MEMORY[0x1E69E9840];
   v20 = -1;
   v5 = objc_opt_new();
   v19 = -1;
-  [a3 parseMediaLineHeader:objc_msgSend(a3 mediaType:"fieldValue") supportedPayloads:&v20 rtpPort:{v5, &v19}];
-  [a3 nextLine];
+  [line parseMediaLineHeader:objc_msgSend(line mediaType:"fieldValue") supportedPayloads:&v20 rtpPort:{v5, &v19}];
+  [line nextLine];
   if (v20 - 2 < 2)
   {
     v6 = [SDPMediaLine alloc];
-    v7 = [(SDPMediaLine *)v6 initWithParser:a3 rtpPort:v19 payloads:v5];
+    v7 = [(SDPMediaLine *)v6 initWithParser:line rtpPort:v19 payloads:v5];
     if (!v7)
     {
       [SDPMini(SDPParsing) parseMediaLine:?];
@@ -763,27 +763,27 @@ LABEL_23:
   v14 = 0;
   do
   {
-    if ([a3 parsingDone])
+    if ([line parsingDone])
     {
       break;
     }
 
-    v15 = [a3 fieldType];
+    fieldType = [line fieldType];
     v16 = v14;
-    if ((v15 - 1) >= 4)
+    if ((fieldType - 1) >= 4)
     {
-      if (v15 != 5)
+      if (fieldType != 5)
       {
         break;
       }
 
-      [v13 addObject:{objc_msgSend(a3, "fieldValue")}];
+      [v13 addObject:{objc_msgSend(line, "fieldValue")}];
       LOBYTE(v14) = 0;
       v16 = 1;
     }
 
     v17 = v14;
-    [a3 nextLine];
+    [line nextLine];
     v14 = v16;
   }
 
@@ -796,23 +796,23 @@ LABEL_23:
 LABEL_24:
 }
 
-- (void)parseSDPFromString:(id)a3
+- (void)parseSDPFromString:(id)string
 {
-  v8 = [[SDPParser alloc] initWithString:a3];
+  v8 = [[SDPParser alloc] initWithString:string];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   while (![(SDPParser *)v8 parsingDone])
   {
-    v5 = [(SDPParser *)v8 fieldType];
-    if (v5 > 4)
+    fieldType = [(SDPParser *)v8 fieldType];
+    if (fieldType > 4)
     {
-      if (v5 == 5)
+      if (fieldType == 5)
       {
         [v4 addObject:{-[SDPParser fieldValue](v8, "fieldValue")}];
         goto LABEL_12;
       }
 
       v6 = v8;
-      if (v5 != 15)
+      if (fieldType != 15)
       {
         goto LABEL_13;
       }
@@ -822,7 +822,7 @@ LABEL_24:
 
     else
     {
-      if (v5 == 2)
+      if (fieldType == 2)
       {
         v7 = [(SDPMini *)self parseIP:[(SDPParser *)v8 fieldValue]];
         v6 = v8;
@@ -831,7 +831,7 @@ LABEL_24:
       }
 
       v6 = v8;
-      if (v5 != 3)
+      if (fieldType != 3)
       {
         goto LABEL_13;
       }
@@ -847,9 +847,9 @@ LABEL_13:
   [(SDPMini *)self parseSessionAttributes:v4];
 }
 
-- (id)parseRTPID:(id)a3
+- (id)parseRTPID:(id)d
 {
-  v3 = [a3 componentsSeparatedByString:@":"];
+  v3 = [d componentsSeparatedByString:@":"];
   if ([v3 count] < 2)
   {
     return 0;
@@ -861,9 +861,9 @@ LABEL_13:
   return [v4 numberWithUnsignedLong:v5];
 }
 
-- (id)parseRTCPPort:(id)a3
+- (id)parseRTCPPort:(id)port
 {
-  v3 = [a3 componentsSeparatedByString:@":"];
+  v3 = [port componentsSeparatedByString:@":"];
   if ([v3 count] < 2)
   {
     return 0;
@@ -881,7 +881,7 @@ LABEL_13:
   return [v5 numberWithInt:v6];
 }
 
-- (void)parseSessionAttributes:(id)a3
+- (void)parseSessionAttributes:(id)attributes
 {
   v41 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -889,7 +889,7 @@ LABEL_13:
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v37 objects:v36 count:16];
+  v6 = [attributes countByEnumeratingWithState:&v37 objects:v36 count:16];
   if (v6)
   {
     v8 = v6;
@@ -902,7 +902,7 @@ LABEL_13:
       {
         if (*v38 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(attributes);
         }
 
         v11 = *(*(&v37 + 1) + 8 * i);
@@ -1046,7 +1046,7 @@ LABEL_12:
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v37 objects:v36 count:16];
+      v8 = [attributes countByEnumeratingWithState:&v37 objects:v36 count:16];
     }
 
     while (v8);
@@ -1055,20 +1055,20 @@ LABEL_12:
   self->featureListDict = v5;
 }
 
-- (void)parseAudioFormatAttribute:(id)a3
+- (void)parseAudioFormatAttribute:(id)attribute
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [a3 rangeOfString:@" "];
+  v5 = [attribute rangeOfString:@" "];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = v5;
-    v7 = [objc_msgSend(a3 substringToIndex:{v5), "componentsSeparatedByString:", @":"}];
+    v7 = [objc_msgSend(attribute substringToIndex:{v5), "componentsSeparatedByString:", @":"}];
     if ([v7 count] >= 2)
     {
       v8 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(objc_msgSend(v7, "objectAtIndexedSubscript:", 1), "intValue")}];
       if ([(NSMutableArray *)self->audioPayloads containsObject:v8])
       {
-        v9 = [objc_msgSend(a3 substringFromIndex:{v6), "componentsSeparatedByString:", @";"}];
+        v9 = [objc_msgSend(attribute substringFromIndex:{v6), "componentsSeparatedByString:", @";"}];
         if ([v9 count])
         {
           v17 = 0u;
@@ -1114,14 +1114,14 @@ LABEL_15:
   }
 }
 
-- (void)parseAudioMediaAttributes:(id)a3
+- (void)parseAudioMediaAttributes:(id)attributes
 {
   v23 = *MEMORY[0x1E69E9840];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v19 objects:v18 count:16];
+  v5 = [attributes countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1134,7 +1134,7 @@ LABEL_15:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(attributes);
         }
 
         v10 = *(*(&v19 + 1) + 8 * v9);
@@ -1182,7 +1182,7 @@ LABEL_15:
       }
 
       while (v6 != v9);
-      v17 = [a3 countByEnumeratingWithState:&v19 objects:v18 count:16];
+      v17 = [attributes countByEnumeratingWithState:&v19 objects:v18 count:16];
       v6 = v17;
     }
 
@@ -1190,9 +1190,9 @@ LABEL_15:
   }
 }
 
-- (int)rulesFramerate:(int)a3
+- (int)rulesFramerate:(int)framerate
 {
-  v3 = *&a3;
+  v3 = *&framerate;
   v22 = *MEMORY[0x1E69E9840];
   v4 = [(SDPMini *)self getMediaLineForType:2];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"fmtp:%d", v3];
@@ -1200,8 +1200,8 @@ LABEL_15:
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [v4 attributes];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v17 count:16];
+  attributes = [v4 attributes];
+  v7 = [attributes countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1212,7 +1212,7 @@ LABEL_3:
     {
       if (*v19 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(attributes);
       }
 
       v11 = *(*(&v18 + 1) + 8 * v10);
@@ -1231,7 +1231,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v18 objects:v17 count:16];
+        v8 = [attributes countByEnumeratingWithState:&v18 objects:v17 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -1255,9 +1255,9 @@ LABEL_3:
   return 10;
 }
 
-- (void)rulesImageSizeForExternalPayload:(int)a3 pWidth:(int *)a4 pHeight:(int *)a5
+- (void)rulesImageSizeForExternalPayload:(int)payload pWidth:(int *)width pHeight:(int *)height
 {
-  v7 = *&a3;
+  v7 = *&payload;
   v25 = *MEMORY[0x1E69E9840];
   v8 = [(SDPMini *)self getMediaLineForType:2];
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"fmtp:%d", v7];
@@ -1265,8 +1265,8 @@ LABEL_3:
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [v8 attributes];
-  v11 = [v10 countByEnumeratingWithState:&v21 objects:v20 count:16];
+  attributes = [v8 attributes];
+  v11 = [attributes countByEnumeratingWithState:&v21 objects:v20 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1277,7 +1277,7 @@ LABEL_3:
     {
       if (*v22 != v13)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(attributes);
       }
 
       v15 = *(*(&v21 + 1) + 8 * v14);
@@ -1296,7 +1296,7 @@ LABEL_3:
 
       if (v12 == ++v14)
       {
-        v11 = [v10 countByEnumeratingWithState:&v21 objects:v20 count:16];
+        v11 = [attributes countByEnumeratingWithState:&v21 objects:v20 count:16];
         v12 = v11;
         if (v11)
         {
@@ -1322,7 +1322,7 @@ LABEL_3:
 
     v19 = [objc_msgSend(v18 objectAtIndexedSubscript:{1), "intValue"}];
     LODWORD(v11) = [objc_msgSend(v18 objectAtIndexedSubscript:{2), "intValue"}];
-    if (a4)
+    if (width)
     {
       goto LABEL_18;
     }
@@ -1332,26 +1332,26 @@ LABEL_3:
   {
 LABEL_17:
     v19 = 0;
-    if (a4)
+    if (width)
     {
 LABEL_18:
-      *a4 = v19;
+      *width = v19;
     }
   }
 
-  if (a5)
+  if (height)
   {
-    *a5 = v11;
+    *height = v11;
   }
 }
 
-- (void)setUseSbr:(BOOL)a3 blockSize:(int)a4 forAACFormat:(int)a5
+- (void)setUseSbr:(BOOL)sbr blockSize:(int)size forAACFormat:(int)format
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v7 = a3;
+  v5 = *&format;
+  v6 = *&size;
+  sbrCopy = sbr;
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
-  if (v7)
+  if (sbrCopy)
   {
     [v10 addObject:@"sbr"];
   }
@@ -1362,20 +1362,20 @@ LABEL_18:
   -[NSMutableDictionary setObject:forKeyedSubscript:](self->_audioParameters, "setObject:forKeyedSubscript:", v10, [MEMORY[0x1E696AD98] numberWithInt:v5]);
 }
 
-- (BOOL)getUseSbr:(BOOL *)a3 blockSize:(int *)a4 forAACFormat:(int)a5
+- (BOOL)getUseSbr:(BOOL *)sbr blockSize:(int *)size forAACFormat:(int)format
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (sbr)
   {
-    *a3 = 0;
+    *sbr = 0;
   }
 
-  if (a4)
+  if (size)
   {
-    *a4 = 0;
+    *size = 0;
   }
 
-  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_audioParameters, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:*&a5]);
+  v7 = -[NSMutableDictionary objectForKeyedSubscript:](self->_audioParameters, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithInt:*&format]);
   v8 = v7;
   if (v7)
   {
@@ -1399,22 +1399,22 @@ LABEL_18:
 
           v13 = [*(*(&v19 + 1) + 8 * i) stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "whitespaceCharacterSet")}];
           v14 = v13;
-          if (a4 && [v13 hasPrefix:@"block "])
+          if (size && [v13 hasPrefix:@"block "])
           {
             v15 = [v14 substringFromIndex:{objc_msgSend(@"block ", "length")}];
             if (v15)
             {
-              v16 = [v15 integerValue];
-              if ((v16 - 1) <= 0x3FF)
+              integerValue = [v15 integerValue];
+              if ((integerValue - 1) <= 0x3FF)
               {
-                *a4 = v16;
+                *size = integerValue;
               }
             }
           }
 
-          else if (a3 && ![v14 caseInsensitiveCompare:@"sbr"])
+          else if (sbr && ![v14 caseInsensitiveCompare:@"sbr"])
           {
-            *a3 = 1;
+            *sbr = 1;
           }
         }
 
@@ -1428,12 +1428,12 @@ LABEL_18:
   return v8 != 0;
 }
 
-- (void)setVideoRTCPFB:(BOOL)a3 useNACK:(BOOL)a4
+- (void)setVideoRTCPFB:(BOOL)b useNACK:(BOOL)k
 {
-  v4 = a4;
-  if (a3 || a4)
+  kCopy = k;
+  if (b || k)
   {
-    if (a3)
+    if (b)
     {
       v5 = " rpsi";
     }
@@ -1445,7 +1445,7 @@ LABEL_18:
 
     v6 = [(SDPMini *)self getMediaLineForType:2];
     v7 = " nack";
-    if (!v4)
+    if (!kCopy)
     {
       v7 = "";
     }

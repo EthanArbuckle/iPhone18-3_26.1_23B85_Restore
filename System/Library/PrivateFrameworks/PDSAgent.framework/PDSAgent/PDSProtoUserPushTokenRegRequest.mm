@@ -1,52 +1,52 @@
 @interface PDSProtoUserPushTokenRegRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addDeviceInfo:(id)a3;
-- (void)addTopic:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addDeviceInfo:(id)info;
+- (void)addTopic:(id)topic;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDSProtoUserPushTokenRegRequest
 
-- (void)addDeviceInfo:(id)a3
+- (void)addDeviceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   deviceInfos = self->_deviceInfos;
-  v8 = v4;
+  v8 = infoCopy;
   if (!deviceInfos)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_deviceInfos;
     self->_deviceInfos = v6;
 
-    v4 = v8;
+    infoCopy = v8;
     deviceInfos = self->_deviceInfos;
   }
 
-  [(NSMutableArray *)deviceInfos addObject:v4];
+  [(NSMutableArray *)deviceInfos addObject:infoCopy];
 }
 
-- (void)addTopic:(id)a3
+- (void)addTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   topics = self->_topics;
-  v8 = v4;
+  v8 = topicCopy;
   if (!topics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_topics;
     self->_topics = v6;
 
-    v4 = v8;
+    topicCopy = v8;
     topics = self->_topics;
   }
 
-  [(NSMutableArray *)topics addObject:v4];
+  [(NSMutableArray *)topics addObject:topicCopy];
 }
 
 - (id)description
@@ -55,8 +55,8 @@
   v8.receiver = self;
   v8.super_class = PDSProtoUserPushTokenRegRequest;
   v4 = [(PDSProtoUserPushTokenRegRequest *)&v8 description];
-  v5 = [(PDSProtoUserPushTokenRegRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PDSProtoUserPushTokenRegRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -64,12 +64,12 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   userPushToken = self->_userPushToken;
   if (userPushToken)
   {
-    v5 = [(PDSProtoUserPushToken *)userPushToken dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"user_push_token"];
+    dictionaryRepresentation = [(PDSProtoUserPushToken *)userPushToken dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"user_push_token"];
   }
 
   if ([(NSMutableArray *)self->_deviceInfos count])
@@ -94,8 +94,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -104,13 +104,13 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"device_info"];
+    [dictionary setObject:v6 forKey:@"device_info"];
   }
 
   if (*&self->_has)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_ttl];
-    [v3 setObject:v13 forKey:@"ttl"];
+    [dictionary setObject:v13 forKey:@"ttl"];
   }
 
   if ([(NSMutableArray *)self->_topics count])
@@ -135,8 +135,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation3 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation3];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -145,24 +145,24 @@
       while (v17);
     }
 
-    [v3 setObject:v14 forKey:@"topic"];
+    [dictionary setObject:v14 forKey:@"topic"];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (!self->_userPushToken)
   {
     [PDSProtoUserPushTokenRegRequest writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteSubmessage();
   v26 = 0u;
   v27 = 0u;
@@ -237,52 +237,52 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
-  [v12 setUserPushToken:self->_userPushToken];
+  toCopy = to;
+  [toCopy setUserPushToken:self->_userPushToken];
   if ([(PDSProtoUserPushTokenRegRequest *)self deviceInfosCount])
   {
-    [v12 clearDeviceInfos];
-    v4 = [(PDSProtoUserPushTokenRegRequest *)self deviceInfosCount];
-    if (v4)
+    [toCopy clearDeviceInfos];
+    deviceInfosCount = [(PDSProtoUserPushTokenRegRequest *)self deviceInfosCount];
+    if (deviceInfosCount)
     {
-      v5 = v4;
+      v5 = deviceInfosCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDSProtoUserPushTokenRegRequest *)self deviceInfoAtIndex:i];
-        [v12 addDeviceInfo:v7];
+        [toCopy addDeviceInfo:v7];
       }
     }
   }
 
   if (*&self->_has)
   {
-    *(v12 + 1) = self->_ttl;
-    *(v12 + 40) |= 1u;
+    *(toCopy + 1) = self->_ttl;
+    *(toCopy + 40) |= 1u;
   }
 
   if ([(PDSProtoUserPushTokenRegRequest *)self topicsCount])
   {
-    [v12 clearTopics];
-    v8 = [(PDSProtoUserPushTokenRegRequest *)self topicsCount];
-    if (v8)
+    [toCopy clearTopics];
+    topicsCount = [(PDSProtoUserPushTokenRegRequest *)self topicsCount];
+    if (topicsCount)
     {
-      v9 = v8;
+      v9 = topicsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PDSProtoUserPushTokenRegRequest *)self topicAtIndex:j];
-        [v12 addTopic:v11];
+        [toCopy addTopic:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDSProtoUserPushToken *)self->_userPushToken copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDSProtoUserPushToken *)self->_userPushToken copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -306,7 +306,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v26 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addDeviceInfo:v13];
 
         ++v12;
@@ -345,7 +345,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{a3, v22}];
+        v19 = [*(*(&v22 + 1) + 8 * v18) copyWithZone:{zone, v22}];
         [v5 addTopic:v19];
 
         ++v18;
@@ -362,16 +362,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
   userPushToken = self->_userPushToken;
-  if (userPushToken | *(v4 + 4))
+  if (userPushToken | *(equalCopy + 4))
   {
     if (![(PDSProtoUserPushToken *)userPushToken isEqual:?])
     {
@@ -380,7 +380,7 @@
   }
 
   deviceInfos = self->_deviceInfos;
-  if (deviceInfos | *(v4 + 2))
+  if (deviceInfos | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)deviceInfos isEqual:?])
     {
@@ -388,16 +388,16 @@
     }
   }
 
-  v7 = *(v4 + 40);
+  v7 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_ttl != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_ttl != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -405,7 +405,7 @@ LABEL_13:
   }
 
   topics = self->_topics;
-  if (topics | *(v4 + 3))
+  if (topics | *(equalCopy + 3))
   {
     v9 = [(NSMutableArray *)topics isEqual:?];
   }
@@ -437,12 +437,12 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ [(NSMutableArray *)self->_topics hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   userPushToken = self->_userPushToken;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (userPushToken)
   {
     if (v6)
@@ -460,7 +460,7 @@ LABEL_14:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v8)
   {
@@ -484,9 +484,9 @@ LABEL_14:
     while (v9);
   }
 
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_ttl = *(v4 + 1);
+    self->_ttl = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -494,7 +494,7 @@ LABEL_14:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = *(v4 + 3);
+  v12 = *(fromCopy + 3);
   v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {

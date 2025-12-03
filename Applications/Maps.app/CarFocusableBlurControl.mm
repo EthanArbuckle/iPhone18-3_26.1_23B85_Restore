@@ -1,6 +1,6 @@
 @interface CarFocusableBlurControl
 - (CarFocusableBlurControl)init;
-- (CarFocusableBlurControl)initWithFrame:(CGRect)a3;
+- (CarFocusableBlurControl)initWithFrame:(CGRect)frame;
 - (id)backgroundColor;
 - (id)contentView;
 - (void)_commonInit;
@@ -8,12 +8,12 @@
 - (void)_updateShadow;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setCastsShadow:(BOOL)a3;
-- (void)setHidesBlur:(BOOL)a3;
-- (void)setRoundedCornerRadius:(double)a3;
-- (void)setRoundedCorners:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setCastsShadow:(BOOL)shadow;
+- (void)setHidesBlur:(BOOL)blur;
+- (void)setRoundedCornerRadius:(double)radius;
+- (void)setRoundedCorners:(unint64_t)corners;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CarFocusableBlurControl
@@ -28,24 +28,24 @@
   roundedCorners = self->_roundedCorners;
   if (!v3 || roundedCorners != self->_lastRoundedCorners || self->_roundedCornerRadius != self->_lastRoundedCornerRadius)
   {
-    v5 = [(CarFocusableBlurControl *)self needsContinuousRoundedCorners];
-    [(CarDynamicBlurView *)self->_blurView _setCornerRadius:v5 continuous:roundedCorners & 0xF maskedCorners:self->_roundedCornerRadius];
+    needsContinuousRoundedCorners = [(CarFocusableBlurControl *)self needsContinuousRoundedCorners];
+    [(CarDynamicBlurView *)self->_blurView _setCornerRadius:needsContinuousRoundedCorners continuous:roundedCorners & 0xF maskedCorners:self->_roundedCornerRadius];
     roundedCornerRadius = self->_roundedCornerRadius;
-    v7 = [(CarFocusableBlurControl *)self layer];
-    [v7 setCornerRadius:roundedCornerRadius];
+    layer = [(CarFocusableBlurControl *)self layer];
+    [layer setCornerRadius:roundedCornerRadius];
 
     v8 = &kCACornerCurveContinuous;
-    if (!v5)
+    if (!needsContinuousRoundedCorners)
     {
       v8 = &kCACornerCurveCircular;
     }
 
     v9 = *v8;
-    v10 = [(CarFocusableBlurControl *)self layer];
-    [v10 setCornerCurve:v9];
+    layer2 = [(CarFocusableBlurControl *)self layer];
+    [layer2 setCornerCurve:v9];
 
-    v11 = [(CarFocusableBlurControl *)self layer];
-    [v11 setMaskedCorners:roundedCorners & 0xF];
+    layer3 = [(CarFocusableBlurControl *)self layer];
+    [layer3 setMaskedCorners:roundedCorners & 0xF];
 
     [(CarFocusableBlurControl *)self bounds];
     self->_lastBounds.origin.x = v12;
@@ -59,10 +59,10 @@
 
 - (id)backgroundColor
 {
-  v2 = [(CarDynamicBlurView *)self->_blurView contentView];
-  v3 = [v2 backgroundColor];
+  contentView = [(CarDynamicBlurView *)self->_blurView contentView];
+  backgroundColor = [contentView backgroundColor];
 
-  return v3;
+  return backgroundColor;
 }
 
 - (void)didMoveToWindow
@@ -70,9 +70,9 @@
   v4.receiver = self;
   v4.super_class = CarFocusableBlurControl;
   [(CarFocusableBlurControl *)&v4 didMoveToWindow];
-  v3 = [(CarFocusableBlurControl *)self window];
+  window = [(CarFocusableBlurControl *)self window];
 
-  if (v3)
+  if (window)
   {
     [(CarFocusableBlurControl *)self _updateShadow];
   }
@@ -88,69 +88,69 @@
 
   else
   {
-    v3 = [(CarFocusableBlurControl *)self layer];
-    [v3 setShadowRadius:0.0];
+    layer = [(CarFocusableBlurControl *)self layer];
+    [layer setShadowRadius:0.0];
 
-    v4 = [(CarFocusableBlurControl *)self layer];
-    [v4 setShadowOpacity:0.0];
+    layer2 = [(CarFocusableBlurControl *)self layer];
+    [layer2 setShadowOpacity:0.0];
   }
 }
 
-- (void)setCastsShadow:(BOOL)a3
+- (void)setCastsShadow:(BOOL)shadow
 {
-  if (self->_castsShadow != a3)
+  if (self->_castsShadow != shadow)
   {
-    self->_castsShadow = a3;
+    self->_castsShadow = shadow;
     [(CarFocusableBlurControl *)self _updateShadow];
   }
 }
 
-- (void)setHidesBlur:(BOOL)a3
+- (void)setHidesBlur:(BOOL)blur
 {
-  if (self->_hidesBlur != a3)
+  if (self->_hidesBlur != blur)
   {
-    self->_hidesBlur = a3;
-    [(CarDynamicBlurView *)self->_blurView setAlpha:!a3];
+    self->_hidesBlur = blur;
+    [(CarDynamicBlurView *)self->_blurView setAlpha:!blur];
   }
 }
 
-- (void)setRoundedCornerRadius:(double)a3
+- (void)setRoundedCornerRadius:(double)radius
 {
-  if (self->_roundedCornerRadius != a3)
+  if (self->_roundedCornerRadius != radius)
   {
-    self->_roundedCornerRadius = a3;
+    self->_roundedCornerRadius = radius;
     [(CarFocusableBlurControl *)self setNeedsLayout];
   }
 }
 
-- (void)setRoundedCorners:(unint64_t)a3
+- (void)setRoundedCorners:(unint64_t)corners
 {
-  if (self->_roundedCorners != a3)
+  if (self->_roundedCorners != corners)
   {
-    self->_roundedCorners = a3;
+    self->_roundedCorners = corners;
     [(CarFocusableBlurControl *)self setNeedsLayout];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   blurView = self->_blurView;
-  v4 = a3;
-  v5 = [(CarDynamicBlurView *)blurView contentView];
-  [v5 setBackgroundColor:v4];
+  colorCopy = color;
+  contentView = [(CarDynamicBlurView *)blurView contentView];
+  [contentView setBackgroundColor:colorCopy];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = CarFocusableBlurControl;
-  v4 = a3;
-  [(CarFocusableControl *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(CarFocusableControl *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(CarFocusableBlurControl *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(CarFocusableBlurControl *)self _updateShadow];
   }
@@ -162,11 +162,11 @@
   [(CarFocusableBlurControl *)self _prepareBlurViewIfNeeded];
   [(CarFocusableBlurControl *)self setClipsToBounds:!self->_castsShadow];
   castsShadow = self->_castsShadow;
-  v4 = [(CarFocusableBlurControl *)self layer];
-  [v4 setMasksToBounds:!castsShadow];
+  layer = [(CarFocusableBlurControl *)self layer];
+  [layer setMasksToBounds:!castsShadow];
 
-  v5 = [(CarFocusableBlurControl *)self layer];
-  [v5 setShadowPathIsBounds:1];
+  layer2 = [(CarFocusableBlurControl *)self layer];
+  [layer2 setShadowPathIsBounds:1];
 
   [(CarFocusableBlurControl *)self setRoundedCorners:-1];
 }
@@ -179,9 +179,9 @@
     blurView = self->_blurView;
     self->_blurView = v3;
 
-    v5 = [(CarDynamicBlurView *)self->_blurView wantsCornerMasking];
-    v6 = [(CarDynamicBlurView *)self->_blurView layer];
-    [v6 setMasksToBounds:v5];
+    wantsCornerMasking = [(CarDynamicBlurView *)self->_blurView wantsCornerMasking];
+    layer = [(CarDynamicBlurView *)self->_blurView layer];
+    [layer setMasksToBounds:wantsCornerMasking];
   }
 }
 
@@ -193,11 +193,11 @@
   return [(CarDynamicBlurView *)blurView contentView];
 }
 
-- (CarFocusableBlurControl)initWithFrame:(CGRect)a3
+- (CarFocusableBlurControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CarFocusableBlurControl;
-  v3 = [(CarFocusableControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarFocusableControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

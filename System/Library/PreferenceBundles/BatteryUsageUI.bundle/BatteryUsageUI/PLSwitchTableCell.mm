@@ -1,23 +1,23 @@
 @interface PLSwitchTableCell
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PLSwitchTableCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v9.receiver = self;
   v9.super_class = PLSwitchTableCell;
-  v4 = a3;
-  [(PLSwitchTableCell *)&v9 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PLSwitchTableCell *)&v9 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(PLSwitchTableCell *)self control:v9.receiver];
   [(PLSwitchTableCell *)self setAccessoryView:v5];
 
-  v6 = [v4 identifier];
+  identifier = [specifierCopy identifier];
 
-  v7 = [v6 stringByAppendingString:@"_SWITCH"];
-  v8 = [(PLSwitchTableCell *)self control];
-  [v8 setAccessibilityIdentifier:v7];
+  v7 = [identifier stringByAppendingString:@"_SWITCH"];
+  control = [(PLSwitchTableCell *)self control];
+  [control setAccessibilityIdentifier:v7];
 }
 
 @end

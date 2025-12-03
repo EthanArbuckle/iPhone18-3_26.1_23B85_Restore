@@ -1,6 +1,6 @@
 @interface MBPeerEmptyMessage
 - (MBPeerEmptyMessage)init;
-- (MBPeerEmptyMessage)initWithDictionary:(id)a3 error:(id *)a4;
+- (MBPeerEmptyMessage)initWithDictionary:(id)dictionary error:(id *)error;
 @end
 
 @implementation MBPeerEmptyMessage
@@ -12,11 +12,11 @@
   return [(MBPeerEmptyMessage *)&v3 init];
 }
 
-- (MBPeerEmptyMessage)initWithDictionary:(id)a3 error:(id *)a4
+- (MBPeerEmptyMessage)initWithDictionary:(id)dictionary error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = MBPeerEmptyMessage;
-  return [(MBPeerEmptyMessage *)&v5 init:a3];
+  return [(MBPeerEmptyMessage *)&v5 init:dictionary];
 }
 
 @end

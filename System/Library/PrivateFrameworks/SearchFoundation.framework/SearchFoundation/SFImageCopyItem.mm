@@ -1,12 +1,12 @@
 @interface SFImageCopyItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFImageCopyItem)initWithCoder:(id)a3;
-- (SFImageCopyItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFImageCopyItem)initWithCoder:(id)coder;
+- (SFImageCopyItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFImageCopyItem
@@ -16,38 +16,38 @@
   v7.receiver = self;
   v7.super_class = SFImageCopyItem;
   v3 = [(SFCopyItem *)&v7 hash];
-  v4 = [(SFImageCopyItem *)self image];
-  v5 = [v4 hash];
+  image = [(SFImageCopyItem *)self image];
+  v5 = [image hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFImageCopyItem *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFImageCopyItem, [(SFCopyItem *)&v13 isEqual:v4]))
+  else if ([(SFImageCopyItem *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFImageCopyItem, [(SFCopyItem *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFImageCopyItem *)self image];
-    v7 = [(SFImageCopyItem *)v5 image];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    image = [(SFImageCopyItem *)self image];
+    image2 = [(SFImageCopyItem *)v5 image];
+    if ((image != 0) == (image2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFImageCopyItem *)self image];
-      if (v8)
+      image3 = [(SFImageCopyItem *)self image];
+      if (image3)
       {
-        v9 = [(SFImageCopyItem *)self image];
-        v10 = [(SFImageCopyItem *)v5 image];
-        v11 = [v9 isEqual:v10];
+        image4 = [(SFImageCopyItem *)self image];
+        image5 = [(SFImageCopyItem *)v5 image];
+        v11 = [image4 isEqual:image5];
       }
 
       else
@@ -65,13 +65,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFImageCopyItem;
-  v4 = [(SFCopyItem *)&v8 copyWithZone:a3];
-  v5 = [(SFImageCopyItem *)self image];
-  v6 = [v5 copy];
+  v4 = [(SFCopyItem *)&v8 copyWithZone:zone];
+  image = [(SFImageCopyItem *)self image];
+  v6 = [image copy];
   [v4 setImage:v6];
 
   return v4;
@@ -80,31 +80,31 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBImageCopyItem alloc] initWithFacade:self];
-  v3 = [(_SFPBImageCopyItem *)v2 jsonData];
+  jsonData = [(_SFPBImageCopyItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBImageCopyItem alloc] initWithFacade:self];
-  v3 = [(_SFPBImageCopyItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBImageCopyItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBImageCopyItem alloc] initWithFacade:self];
-  v5 = [(_SFPBImageCopyItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBImageCopyItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFImageCopyItem)initWithCoder:(id)a3
+- (SFImageCopyItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBImageCopyItem alloc] initWithData:v5];
   v7 = [(SFImageCopyItem *)self initWithProtobuf:v6];
@@ -112,21 +112,21 @@
   return v7;
 }
 
-- (SFImageCopyItem)initWithProtobuf:(id)a3
+- (SFImageCopyItem)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFImageCopyItem;
   v5 = [(SFImageCopyItem *)&v12 init];
   if (v5)
   {
-    v6 = [v4 image];
+    image = [protobufCopy image];
 
-    if (v6)
+    if (image)
     {
       v7 = [SFImage alloc];
-      v8 = [v4 image];
-      v9 = [(SFImage *)v7 initWithProtobuf:v8];
+      image2 = [protobufCopy image];
+      v9 = [(SFImage *)v7 initWithProtobuf:image2];
       [(SFImageCopyItem *)v5 setImage:v9];
     }
 

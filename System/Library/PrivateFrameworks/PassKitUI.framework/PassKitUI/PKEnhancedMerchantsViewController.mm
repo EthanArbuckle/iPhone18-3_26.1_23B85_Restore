@@ -1,28 +1,28 @@
 @interface PKEnhancedMerchantsViewController
-- (PKEnhancedMerchantsViewController)initWithAccount:(id)a3 accountService:(id)a4 paymentPass:(id)a5 enhancedMerchantsFetcher:(id)a6;
+- (PKEnhancedMerchantsViewController)initWithAccount:(id)account accountService:(id)service paymentPass:(id)pass enhancedMerchantsFetcher:(id)fetcher;
 - (id)_nonNilSections;
-- (void)navigateToRewardsHubDestination:(int64_t)a3;
-- (void)openURL:(id)a3 sensitive:(BOOL)a4 preferInApp:(BOOL)a5;
-- (void)preflightWithCompletion:(id)a3;
-- (void)presentDisplayableError:(id)a3;
-- (void)reportEventIfNecessary:(id)a3;
-- (void)scrollToMerchantWithPrivateIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)navigateToRewardsHubDestination:(int64_t)destination;
+- (void)openURL:(id)l sensitive:(BOOL)sensitive preferInApp:(BOOL)app;
+- (void)preflightWithCompletion:(id)completion;
+- (void)presentDisplayableError:(id)error;
+- (void)reportEventIfNecessary:(id)necessary;
+- (void)scrollToMerchantWithPrivateIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PKEnhancedMerchantsViewController
 
-- (PKEnhancedMerchantsViewController)initWithAccount:(id)a3 accountService:(id)a4 paymentPass:(id)a5 enhancedMerchantsFetcher:(id)a6
+- (PKEnhancedMerchantsViewController)initWithAccount:(id)account accountService:(id)service paymentPass:(id)pass enhancedMerchantsFetcher:(id)fetcher
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  accountCopy = account;
+  serviceCopy = service;
+  passCopy = pass;
+  fetcherCopy = fetcher;
   v22.receiver = self;
   v22.super_class = PKEnhancedMerchantsViewController;
   v15 = [(PKDynamicCollectionViewController *)&v22 init];
@@ -30,10 +30,10 @@
   if (v15)
   {
     [(PKDynamicCollectionViewController *)v15 setUseItemIdentityWhenUpdating:1];
-    objc_storeStrong(&v16->_account, a3);
-    objc_storeStrong(&v16->_accountService, a4);
-    objc_storeStrong(&v16->_paymentPass, a5);
-    objc_storeStrong(&v16->_enhancedMerchantsFetcher, a6);
+    objc_storeStrong(&v16->_account, account);
+    objc_storeStrong(&v16->_accountService, service);
+    objc_storeStrong(&v16->_paymentPass, pass);
+    objc_storeStrong(&v16->_enhancedMerchantsFetcher, fetcher);
     v24[0] = @"PKEnhancedMerchantsListSectionMerchantList";
     v24[1] = @"PKEnhancedMerchantsListSectionMerchantDisclosures";
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
@@ -49,10 +49,10 @@
   return v16;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  completionCopy = completion;
   v4 = dispatch_group_create();
   v26[0] = 0;
   v26[1] = v26;
@@ -63,13 +63,13 @@
   v24[2] = 0x2810000000;
   v24[3] = &unk_1BE347799;
   v25 = 0;
-  v10 = [(PKEnhancedMerchantsViewController *)self _nonNilSections];
+  _nonNilSections = [(PKEnhancedMerchantsViewController *)self _nonNilSections];
   v22 = 0u;
   v23 = 0u;
   v21 = 0u;
   v20 = 0u;
-  v5 = [(PKEnhancedMerchantsViewController *)self _nonNilSections];
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  _nonNilSections2 = [(PKEnhancedMerchantsViewController *)self _nonNilSections];
+  v6 = [_nonNilSections2 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v6)
   {
     v7 = *v21;
@@ -79,7 +79,7 @@
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_nonNilSections2);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
@@ -94,21 +94,21 @@
         [v9 preflightWithCompletion:v16];
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v6 = [_nonNilSections2 countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v6);
   }
 
-  if (v11)
+  if (completionCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __61__PKEnhancedMerchantsViewController_preflightWithCompletion___block_invoke_2;
     block[3] = &unk_1E8014B30;
     block[4] = self;
-    v13 = v10;
-    v14 = v11;
+    v13 = _nonNilSections;
+    v14 = completionCopy;
     v15 = v26;
     dispatch_group_notify(v4, MEMORY[0x1E69E96A0], block);
   }
@@ -151,15 +151,15 @@ uint64_t __61__PKEnhancedMerchantsViewController_preflightWithCompletion___block
   v5 = [v4 actionWithHandler:&v10];
   v6 = [v3 initWithBarButtonSystemItem:24 primaryAction:{v5, v10, v11, v12, v13}];
 
-  v7 = [(PKEnhancedMerchantsViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(PKEnhancedMerchantsViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
-  v8 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v8 setShowsVerticalScrollIndicator:1];
-  [v8 setAlwaysBounceVertical:1];
-  [v8 setBounces:1];
-  v9 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [v8 setBackgroundColor:v9];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView setShowsVerticalScrollIndicator:1];
+  [collectionView setAlwaysBounceVertical:1];
+  [collectionView setBounces:1];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [collectionView setBackgroundColor:systemBackgroundColor];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -172,53 +172,53 @@ void __48__PKEnhancedMerchantsViewController_viewDidLoad__block_invoke(uint64_t 
   [v1 dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = PKEnhancedMerchantsViewController;
-  [(PKDynamicCollectionViewController *)&v5 viewDidAppear:a3];
+  [(PKDynamicCollectionViewController *)&v5 viewDidAppear:appear];
   v6 = *MEMORY[0x1E69BA680];
   v7[0] = *MEMORY[0x1E69BA818];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [(PKEnhancedMerchantsViewController *)self reportEventIfNecessary:v4];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = PKEnhancedMerchantsViewController;
-  [(PKEnhancedMerchantsViewController *)&v5 viewDidDisappear:a3];
+  [(PKEnhancedMerchantsViewController *)&v5 viewDidDisappear:disappear];
   v6 = *MEMORY[0x1E69BA680];
   v7[0] = *MEMORY[0x1E69BA820];
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v7 forKeys:&v6 count:1];
   [(PKEnhancedMerchantsViewController *)self reportEventIfNecessary:v4];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = PKEnhancedMerchantsViewController;
-  [(PKEnhancedMerchantsViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(PKEnhancedMerchantsViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   [(PKDynamicCollectionViewController *)self reloadDataWithoutRebuildingDataStores];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = PKEnhancedMerchantsViewController;
-  [(PKEnhancedMerchantsViewController *)&v10 traitCollectionDidChange:v4];
-  v5 = [(PKEnhancedMerchantsViewController *)self traitCollection];
-  v6 = v5;
-  if (v4)
+  [(PKEnhancedMerchantsViewController *)&v10 traitCollectionDidChange:changeCopy];
+  traitCollection = [(PKEnhancedMerchantsViewController *)self traitCollection];
+  v6 = traitCollection;
+  if (changeCopy)
   {
-    if (v5)
+    if (traitCollection)
     {
-      v7 = [v4 preferredContentSizeCategory];
-      v8 = [v6 preferredContentSizeCategory];
-      v9 = UIContentSizeCategoryCompareToCategory(v7, v8);
+      preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+      preferredContentSizeCategory2 = [v6 preferredContentSizeCategory];
+      v9 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, preferredContentSizeCategory2);
 
       if (v9)
       {
@@ -228,26 +228,26 @@ void __48__PKEnhancedMerchantsViewController_viewDidLoad__block_invoke(uint64_t 
   }
 }
 
-- (void)scrollToMerchantWithPrivateIdentifier:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)scrollToMerchantWithPrivateIdentifier:(id)identifier animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __95__PKEnhancedMerchantsViewController_scrollToMerchantWithPrivateIdentifier_animated_completion___block_invoke;
   aBlock[3] = &unk_1E8010AD8;
-  v9 = v8;
+  v9 = completionCopy;
   v16 = v9;
   v10 = _Block_copy(aBlock);
   v11 = v10;
-  if (v7)
+  if (identifierCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __95__PKEnhancedMerchantsViewController_scrollToMerchantWithPrivateIdentifier_animated_completion___block_invoke_2;
     v12[3] = &unk_1E8012300;
     v12[4] = self;
-    v13 = v7;
+    v13 = identifierCopy;
     v14 = v11;
     dispatch_async(MEMORY[0x1E69E96A0], v12);
   }
@@ -281,9 +281,9 @@ void __95__PKEnhancedMerchantsViewController_scrollToMerchantWithPrivateIdentifi
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)navigateToRewardsHubDestination:(int64_t)a3
+- (void)navigateToRewardsHubDestination:(int64_t)destination
 {
-  if (!a3)
+  if (!destination)
   {
     v7[3] = v3;
     v7[4] = v4;
@@ -312,37 +312,37 @@ void __69__PKEnhancedMerchantsViewController_navigateToRewardsHubDestination___b
   }
 }
 
-- (void)openURL:(id)a3 sensitive:(BOOL)a4 preferInApp:(BOOL)a5
+- (void)openURL:(id)l sensitive:(BOOL)sensitive preferInApp:(BOOL)app
 {
-  v5 = a3;
-  if (v5)
+  lCopy = l;
+  if (lCopy)
   {
-    v6 = v5;
+    v6 = lCopy;
     PKOpenURL();
-    v5 = v6;
+    lCopy = v6;
   }
 }
 
-- (void)reportEventIfNecessary:(id)a3
+- (void)reportEventIfNecessary:(id)necessary
 {
-  v5 = [a3 mutableCopy];
+  v5 = [necessary mutableCopy];
   [v5 setObject:*MEMORY[0x1E69BA650] forKey:*MEMORY[0x1E69BABE8]];
   v3 = MEMORY[0x1E69B8540];
   v4 = [v5 copy];
   [v3 reportAccountRewardsEventIfNecessary:v4];
 }
 
-- (void)presentDisplayableError:(id)a3
+- (void)presentDisplayableError:(id)error
 {
-  v4 = PKAlertForDisplayableErrorWithHandlers(a3, 0, 0, 0);
+  v4 = PKAlertForDisplayableErrorWithHandlers(error, 0, 0, 0);
   [(PKEnhancedMerchantsViewController *)self presentViewController:v4 animated:1 completion:0];
 }
 
 - (id)_nonNilSections
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_enhancedMerchantsListSectionController];
-  v4 = [v3 copy];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_enhancedMerchantsListSectionController];
+  v4 = [array copy];
 
   return v4;
 }

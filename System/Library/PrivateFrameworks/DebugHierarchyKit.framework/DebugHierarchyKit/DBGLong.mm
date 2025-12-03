@@ -1,7 +1,7 @@
 @interface DBGLong
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withValue:(int64_t)a3;
-- (DBGLong)initWithLong:(int64_t)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withValue:(int64_t)value;
+- (DBGLong)initWithLong:(int64_t)long;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -10,21 +10,21 @@
 
 @implementation DBGLong
 
-+ (id)withValue:(int64_t)a3
++ (id)withValue:(int64_t)value
 {
-  v3 = [[a1 alloc] initWithLong:a3];
+  v3 = [[self alloc] initWithLong:value];
 
   return v3;
 }
 
-- (DBGLong)initWithLong:(int64_t)a3
+- (DBGLong)initWithLong:(int64_t)long
 {
   v5.receiver = self;
   v5.super_class = DBGLong;
   result = [(DBGLong *)&v5 init];
   if (result)
   {
-    result->_longValue = a3;
+    result->_longValue = long;
   }
 
   return result;
@@ -32,15 +32,15 @@
 
 - (id)objectValue
 {
-  v2 = [(DBGLong *)self longValue];
+  longValue = [(DBGLong *)self longValue];
 
-  return [NSNumber numberWithLong:v2];
+  return [NSNumber numberWithLong:longValue];
 }
 
 - (NSString)description
 {
-  v2 = [(DBGLong *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGLong *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -55,37 +55,37 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  if ([a4 isEqualToString:@"l"])
+  valueCopy = value;
+  if ([format isEqualToString:@"l"])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 longValue];
+      longValue = [valueCopy longValue];
 LABEL_6:
-      v10 = v9;
+      v10 = longValue;
       goto LABEL_10;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 dbgLongValue];
+      longValue = [valueCopy dbgLongValue];
       goto LABEL_6;
     }
   }
 
   v10 = 0;
-  if (!v8 && a5)
+  if (!valueCopy && error)
   {
     v10 = 0;
-    *a5 = 0;
+    *error = 0;
   }
 
 LABEL_10:
-  v11 = [a1 withValue:v10];
+  v11 = [self withValue:v10];
 
   return v11;
 }

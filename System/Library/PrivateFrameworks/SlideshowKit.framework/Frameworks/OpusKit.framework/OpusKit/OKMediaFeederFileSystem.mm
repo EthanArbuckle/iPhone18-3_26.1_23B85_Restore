@@ -1,14 +1,14 @@
 @interface OKMediaFeederFileSystem
-+ (id)mediaFeederWithDirectoryURL:(id)a3;
++ (id)mediaFeederWithDirectoryURL:(id)l;
 + (id)supportedSettings;
 - (OKMediaFeederFileSystem)init;
-- (OKMediaFeederFileSystem)initWithDirectoryURL:(id)a3;
-- (OKMediaFeederFileSystem)initWithSettings:(id)a3;
+- (OKMediaFeederFileSystem)initWithDirectoryURL:(id)l;
+- (OKMediaFeederFileSystem)initWithSettings:(id)settings;
 - (id)feederSettings;
-- (id)indexesForMediaObjects:(id)a3;
-- (id)mediaObjectURLsAtIndexes:(id)a3;
-- (id)mediaObjectsAtIndexes:(id)a3;
-- (id)reloadMediaObjectsWithCompletionHandler:(id)a3;
+- (id)indexesForMediaObjects:(id)objects;
+- (id)mediaObjectURLsAtIndexes:(id)indexes;
+- (id)mediaObjectsAtIndexes:(id)indexes;
+- (id)reloadMediaObjectsWithCompletionHandler:(id)handler;
 - (unint64_t)numberOfMediaObjects;
 - (void)dealloc;
 @end
@@ -28,33 +28,33 @@
   return result;
 }
 
-- (OKMediaFeederFileSystem)initWithDirectoryURL:(id)a3
+- (OKMediaFeederFileSystem)initWithDirectoryURL:(id)l
 {
   v4 = [(OKMediaFeederFileSystem *)self init];
   if (v4)
   {
-    v4->_directoryURL = a3;
+    v4->_directoryURL = l;
     v4->_mediaURLs = 0;
   }
 
   return v4;
 }
 
-+ (id)mediaFeederWithDirectoryURL:(id)a3
++ (id)mediaFeederWithDirectoryURL:(id)l
 {
-  v3 = [[OKMediaFeederFileSystem alloc] initWithDirectoryURL:a3];
+  v3 = [[OKMediaFeederFileSystem alloc] initWithDirectoryURL:l];
 
   return v3;
 }
 
-- (OKMediaFeederFileSystem)initWithSettings:(id)a3
+- (OKMediaFeederFileSystem)initWithSettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = OKMediaFeederFileSystem;
   v4 = [(OKMediaFeeder *)&v7 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"directory"];
+    v5 = [settings objectForKey:@"directory"];
     if (v5)
     {
       v4->_directoryURL = [v5 copy];
@@ -88,7 +88,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKMediaFeederFileSystem;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"directory";
@@ -112,14 +112,14 @@
   return v3;
 }
 
-- (id)reloadMediaObjectsWithCompletionHandler:(id)a3
+- (id)reloadMediaObjectsWithCompletionHandler:(id)handler
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __67__OKMediaFeederFileSystem_reloadMediaObjectsWithCompletionHandler___block_invoke;
   v4[3] = &unk_279C90DA0;
   v4[4] = self;
-  return [OKMediaFeeder operationWithBlock:v4 cancellationBlock:&__block_literal_global_21 completionHandler:a3];
+  return [OKMediaFeeder operationWithBlock:v4 cancellationBlock:&__block_literal_global_21 completionHandler:handler];
 }
 
 uint64_t __67__OKMediaFeederFileSystem_reloadMediaObjectsWithCompletionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -184,34 +184,34 @@ uint64_t __67__OKMediaFeederFileSystem_reloadMediaObjectsWithCompletionHandler__
 
 - (unint64_t)numberOfMediaObjects
 {
-  v2 = [(OKMediaFeederFileSystem *)self mediaURLs];
+  mediaURLs = [(OKMediaFeederFileSystem *)self mediaURLs];
 
-  return [(NSArray *)v2 count];
+  return [(NSArray *)mediaURLs count];
 }
 
-- (id)mediaObjectsAtIndexes:(id)a3
+- (id)mediaObjectsAtIndexes:(id)indexes
 {
-  v4 = [(OKMediaFeederFileSystem *)self mediaURLs];
+  mediaURLs = [(OKMediaFeederFileSystem *)self mediaURLs];
 
-  return [(NSArray *)v4 objectsAtIndexes:a3];
+  return [(NSArray *)mediaURLs objectsAtIndexes:indexes];
 }
 
-- (id)mediaObjectURLsAtIndexes:(id)a3
+- (id)mediaObjectURLsAtIndexes:(id)indexes
 {
-  v4 = [(OKMediaFeederFileSystem *)self mediaURLs];
+  mediaURLs = [(OKMediaFeederFileSystem *)self mediaURLs];
 
-  return [(NSArray *)v4 objectsAtIndexes:a3];
+  return [(NSArray *)mediaURLs objectsAtIndexes:indexes];
 }
 
-- (id)indexesForMediaObjects:(id)a3
+- (id)indexesForMediaObjects:(id)objects
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [objects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -223,7 +223,7 @@ uint64_t __67__OKMediaFeederFileSystem_reloadMediaObjectsWithCompletionHandler__
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(objects);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -233,18 +233,18 @@ uint64_t __67__OKMediaFeederFileSystem_reloadMediaObjectsWithCompletionHandler__
           v10 = [+[OKMediaManager defaultManager](OKMediaManager "defaultManager")];
         }
 
-        [v5 addObject:v10];
+        [array addObject:v10];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [objects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  return [(NSArray *)[(OKMediaFeederFileSystem *)self mediaURLs] indexesOfObjects:v5];
+  return [(NSArray *)[(OKMediaFeederFileSystem *)self mediaURLs] indexesOfObjects:array];
 }
 
 @end

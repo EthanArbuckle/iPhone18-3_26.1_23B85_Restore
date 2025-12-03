@@ -9,7 +9,7 @@
 - (NSString)simplifiedDeviceCodeName;
 - (TLCapabilitiesManager)init;
 - (void)_checkRingtoneStoreAvailability;
-- (void)_updateRingtoneStoreAvailabilityWithAvailableKinds:(id)a3 error:(id)a4;
+- (void)_updateRingtoneStoreAvailabilityWithAvailableKinds:(id)kinds error:(id)error;
 - (void)dealloc;
 @end
 
@@ -43,9 +43,9 @@ uint64_t __50__TLCapabilitiesManager_sharedCapabilitiesManager__block_invoke()
   if (v2)
   {
     *(v2 + 9) = 0;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v5 = getSSDeviceAvailableItemKindsChangedNotification();
-    [v4 addObserver:v3 selector:sel__handleStoreAvailableItemKindsChangedNotification_ name:v5 object:0];
+    [defaultCenter addObserver:v3 selector:sel__handleStoreAvailableItemKindsChangedNotification_ name:v5 object:0];
 
     [(TLCapabilitiesManager *)v3 _checkRingtoneStoreAvailability];
     deviceCodeNameSimplicationMapping = v3->_deviceCodeNameSimplicationMapping;
@@ -59,9 +59,9 @@ uint64_t __50__TLCapabilitiesManager_sharedCapabilitiesManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = getSSDeviceAvailableItemKindsChangedNotification();
-  [v3 removeObserver:self name:v4 object:0];
+  [defaultCenter removeObserver:self name:v4 object:0];
 
   v5.receiver = self;
   v5.super_class = TLCapabilitiesManager;
@@ -90,21 +90,21 @@ uint64_t __50__TLCapabilitiesManager_sharedCapabilitiesManager__block_invoke()
 
     v4 = v3;
     _Block_object_dispose(&v8, 8);
-    v5 = [v3 currentDevice];
+    currentDevice = [v3 currentDevice];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __56__TLCapabilitiesManager__checkRingtoneStoreAvailability__block_invoke;
     v6[3] = &unk_1E8579920;
     v6[4] = self;
-    [v5 getAvailableItemKindsWithBlock:v6];
+    [currentDevice getAvailableItemKindsWithBlock:v6];
   }
 }
 
-- (void)_updateRingtoneStoreAvailabilityWithAvailableKinds:(id)a3 error:(id)a4
+- (void)_updateRingtoneStoreAvailabilityWithAvailableKinds:(id)kinds error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  kindsCopy = kinds;
+  errorCopy = error;
+  if (!errorCopy)
   {
     v13 = 0;
     v14 = &v13;
@@ -122,7 +122,7 @@ uint64_t __50__TLCapabilitiesManager_sharedCapabilitiesManager__block_invoke()
     _Block_object_dispose(&v13, 8);
     if (v8)
     {
-      self->_isRingtoneStoreAvailable = [v6 containsObject:*v8];
+      self->_isRingtoneStoreAvailable = [kindsCopy containsObject:*v8];
       v13 = 0;
       v14 = &v13;
       v15 = 0x2020000000;
@@ -139,7 +139,7 @@ uint64_t __50__TLCapabilitiesManager_sharedCapabilitiesManager__block_invoke()
       _Block_object_dispose(&v13, 8);
       if (v10)
       {
-        self->_isAlertToneStoreAvailable = [v6 containsObject:*v10];
+        self->_isAlertToneStoreAvailable = [kindsCopy containsObject:*v10];
         goto LABEL_10;
       }
     }
@@ -183,12 +183,12 @@ LABEL_10:
 - (BOOL)supportsNanoEncore
 {
   v29 = *MEMORY[0x1E69E9840];
-  v2 = [getNRPairedDeviceRegistryClass() activePairedDeviceSelectorBlock];
-  v3 = [getNRPairedDeviceRegistryClass() sharedInstance];
-  v4 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v2];
+  activePairedDeviceSelectorBlock = [getNRPairedDeviceRegistryClass() activePairedDeviceSelectorBlock];
+  sharedInstance = [getNRPairedDeviceRegistryClass() sharedInstance];
+  v4 = [sharedInstance getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
 
-  v5 = [v4 firstObject];
-  if (v5)
+  firstObject = [v4 firstObject];
+  if (firstObject)
   {
     v21 = 0;
     v22 = &v21;
@@ -216,11 +216,11 @@ LABEL_10:
       __break(1u);
     }
 
-    v9 = [v5 valueForProperty:*v6];
+    v9 = [firstObject valueForProperty:*v6];
     v10 = MEMORY[0x1E696AEC0];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v10 stringWithFormat:@"<%@: %p name = %@>", v12, v5, v9];;
+    v13 = [v10 stringWithFormat:@"<%@: %p name = %@>", v12, firstObject, v9];;
   }
 
   else
@@ -229,7 +229,7 @@ LABEL_10:
   }
 
   v14 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"9B2FB519-D14B-49AB-BB91-67A6BF4E2B9A"];
-  v15 = [v5 supportsCapability:v14];
+  v15 = [firstObject supportsCapability:v14];
 
   v16 = TLLogToneManagement();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -267,7 +267,7 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543618;
-      v8 = self;
+      selfCopy = self;
       v9 = 1024;
       v10 = v3;
       _os_log_impl(&dword_1D9356000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: -hasSynchronizedVibrationsCapability. MobileGestalt returned %{BOOL}u for the deviceSupportsHaptics capability.", &v7, 0x12u);
@@ -296,7 +296,7 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138544130;
-      v11 = self;
+      selfCopy = self;
       v12 = 1024;
       v13 = v3;
       v14 = 1024;
@@ -354,13 +354,13 @@ LABEL_12:
 
 - (NSString)simplifiedDeviceCodeName
 {
-  v3 = [(TLCapabilitiesManager *)self deviceCodeName];
-  if (v3)
+  deviceCodeName = [(TLCapabilitiesManager *)self deviceCodeName];
+  if (deviceCodeName)
   {
-    v4 = [(NSDictionary *)self->_deviceCodeNameSimplicationMapping objectForKey:v3];
+    v4 = [(NSDictionary *)self->_deviceCodeNameSimplicationMapping objectForKey:deviceCodeName];
     if (!v4)
     {
-      v4 = v3;
+      v4 = deviceCodeName;
     }
   }
 

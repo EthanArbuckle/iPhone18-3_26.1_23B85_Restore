@@ -1,5 +1,5 @@
 @interface FormatLayeredMediaView
-- (_TtC8NewsFeed22FormatLayeredMediaView)initWithFrame:(CGRect)a3;
+- (_TtC8NewsFeed22FormatLayeredMediaView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -20,12 +20,12 @@
   }
 }
 
-- (_TtC8NewsFeed22FormatLayeredMediaView)initWithFrame:(CGRect)a3
+- (_TtC8NewsFeed22FormatLayeredMediaView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed22FormatLayeredMediaView_identifier);
   *v9 = 0;

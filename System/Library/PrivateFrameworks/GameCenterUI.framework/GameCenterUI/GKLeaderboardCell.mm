@@ -1,11 +1,11 @@
 @interface GKLeaderboardCell
 - (void)addVisualEffect;
 - (void)awakeFromNib;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLeaderboard:(id)a3;
-- (void)setLeaderboardSet:(id)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLeaderboard:(id)leaderboard;
+- (void)setLeaderboardSet:(id)set;
+- (void)setSelected:(BOOL)selected;
 - (void)setupFallbackIcon;
 - (void)updateImage;
 - (void)updateLayout;
@@ -20,34 +20,34 @@
   v16.receiver = self;
   v16.super_class = GKLeaderboardCell;
   [(GKLeaderboardCell *)&v16 awakeFromNib];
-  v3 = [(UILabel *)self->_titleLabel textColor];
-  [(GKLeaderboardCell *)self setTitleLabelColor:v3];
+  textColor = [(UILabel *)self->_titleLabel textColor];
+  [(GKLeaderboardCell *)self setTitleLabelColor:textColor];
 
   [(GKLeaderboardCell *)self setClipsToBounds:0];
-  v4 = [(GKLeaderboardCell *)self iconView];
-  [v4 setContentMode:2];
+  iconView = [(GKLeaderboardCell *)self iconView];
+  [iconView setContentMode:2];
 
   v5 = [MEMORY[0x277D74300] _gkPreferredFontForTextStyle:*MEMORY[0x277D76918] symbolicTraits:2];
-  v6 = [(GKLeaderboardCell *)self titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [(GKLeaderboardCell *)self titleLabel];
+  [titleLabel setFont:v5];
 
   v7 = *MEMORY[0x277CDA5E8];
-  v8 = [(GKLeaderboardCell *)self countLabel];
-  v9 = [v8 layer];
-  [v9 setCompositingFilter:v7];
+  countLabel = [(GKLeaderboardCell *)self countLabel];
+  layer = [countLabel layer];
+  [layer setCompositingFilter:v7];
 
-  v10 = [(GKLeaderboardCell *)self contentView];
-  v11 = [v10 layer];
-  [v11 setCornerRadius:14.0];
+  contentView = [(GKLeaderboardCell *)self contentView];
+  layer2 = [contentView layer];
+  [layer2 setCornerRadius:14.0];
 
   v12 = *MEMORY[0x277CDA138];
-  v13 = [(GKLeaderboardCell *)self contentView];
-  v14 = [v13 layer];
-  [v14 setCornerCurve:v12];
+  contentView2 = [(GKLeaderboardCell *)self contentView];
+  layer3 = [contentView2 layer];
+  [layer3 setCornerCurve:v12];
 
   [(GKLeaderboardCell *)self addVisualEffect];
-  v15 = [(GKLeaderboardCell *)self countLabel];
-  [v15 setText:&stru_28612D290];
+  countLabel2 = [(GKLeaderboardCell *)self countLabel];
+  [countLabel2 setText:&stru_28612D290];
 
   [(GKLeaderboardCell *)self _gkDisableDefaultFocusEffect];
   [(GKLeaderboardCell *)self setupFallbackIcon];
@@ -56,52 +56,52 @@
 - (void)addVisualEffect
 {
   v8 = objc_alloc_init(MEMORY[0x277D75D68]);
-  v3 = [MEMORY[0x277D75D58] _gkGameLayerModuleVisualEffect];
-  [v8 setBackgroundEffects:v3];
+  _gkGameLayerModuleVisualEffect = [MEMORY[0x277D75D58] _gkGameLayerModuleVisualEffect];
+  [v8 setBackgroundEffects:_gkGameLayerModuleVisualEffect];
 
-  v4 = [v8 backgroundEffects];
-  [(GKLeaderboardCell *)self setCustomBackgroundBlur:v4];
+  backgroundEffects = [v8 backgroundEffects];
+  [(GKLeaderboardCell *)self setCustomBackgroundBlur:backgroundEffects];
 
   [v8 _setGroupName:@"gameLayerGroup"];
-  v5 = [(GKLeaderboardCell *)self contentView];
-  [v5 insertSubview:v8 atIndex:0];
+  contentView = [(GKLeaderboardCell *)self contentView];
+  [contentView insertSubview:v8 atIndex:0];
 
   [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
   v6 = MEMORY[0x277CCAAD0];
-  v7 = [(GKLeaderboardCell *)self contentView];
-  [v6 _gkInstallEdgeConstraintsForView:v8 containedWithinParentView:v7];
+  contentView2 = [(GKLeaderboardCell *)self contentView];
+  [v6 _gkInstallEdgeConstraintsForView:v8 containedWithinParentView:contentView2];
 
   [(GKLeaderboardCell *)self setEffectView:v8];
 }
 
 - (void)setupFallbackIcon
 {
-  v7 = [(GKLeaderboardCell *)self iconView];
+  iconView = [(GKLeaderboardCell *)self iconView];
   v2 = [MEMORY[0x277D755B8] _systemImageNamed:@"list.bullet.below.star.filled"];
   v3 = [v2 imageWithRenderingMode:2];
 
-  [v7 setImage:v3];
-  v4 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [v7 setTintColor:v4];
+  [iconView setImage:v3];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [iconView setTintColor:tertiaryLabelColor];
 
-  [v7 setContentMode:2];
+  [iconView setContentMode:2];
   v5 = *MEMORY[0x277CDA5E8];
-  v6 = [v7 layer];
-  [v6 setCompositingFilter:v5];
+  layer = [iconView layer];
+  [layer setCompositingFilter:v5];
 }
 
-- (void)setLeaderboardSet:(id)a3
+- (void)setLeaderboardSet:(id)set
 {
-  v5 = a3;
-  if (self->_leaderboardSet != v5)
+  setCopy = set;
+  if (self->_leaderboardSet != setCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->_leaderboardSet, a3);
-    v6 = [(GKLeaderboardSet *)v13 title];
-    [(UILabel *)self->_titleLabel setText:v6];
+    v13 = setCopy;
+    objc_storeStrong(&self->_leaderboardSet, set);
+    title = [(GKLeaderboardSet *)v13 title];
+    [(UILabel *)self->_titleLabel setText:title];
 
-    v7 = [(GKLeaderboardSet *)v13 leaderboardIdentifiers];
-    [v7 count];
+    leaderboardIdentifiers = [(GKLeaderboardSet *)v13 leaderboardIdentifiers];
+    [leaderboardIdentifiers count];
     v8 = MEMORY[0x277CCACA8];
     v9 = GKGameCenterUIFrameworkBundle();
     v10 = GKGetLocalizedStringFromTableInBundle();
@@ -112,28 +112,28 @@
     [(UILabel *)self->_countLabel setText:v12];
     [(GKLeaderboardCell *)self updateLayout];
     [(GKLeaderboardCell *)self updateImage];
-    v5 = v13;
+    setCopy = v13;
   }
 }
 
-- (void)setLeaderboard:(id)a3
+- (void)setLeaderboard:(id)leaderboard
 {
-  v8 = a3;
-  if (self->_leaderboard != v8)
+  leaderboardCopy = leaderboard;
+  if (self->_leaderboard != leaderboardCopy)
   {
-    objc_storeStrong(&self->_leaderboard, a3);
-    if (_os_feature_enabled_impl() && [(GKLeaderboard *)v8 releaseState]== 2)
+    objc_storeStrong(&self->_leaderboard, leaderboard);
+    if (_os_feature_enabled_impl() && [(GKLeaderboard *)leaderboardCopy releaseState]== 2)
     {
-      v5 = [(GKLeaderboard *)v8 title];
-      v6 = [(GKLeaderboard *)v8 description];
-      v7 = [_TtC12GameCenterUI20ItemWithReleaseState titleTextWithTitle:v5 accessibilityDescription:v6 systemSymbolName:@"clock.fill" tooltipText:0 paragraphStyle:0];
+      title = [(GKLeaderboard *)leaderboardCopy title];
+      v6 = [(GKLeaderboard *)leaderboardCopy description];
+      v7 = [_TtC12GameCenterUI20ItemWithReleaseState titleTextWithTitle:title accessibilityDescription:v6 systemSymbolName:@"clock.fill" tooltipText:0 paragraphStyle:0];
       [(UILabel *)self->_titleLabel setAttributedText:v7];
     }
 
     else
     {
-      v5 = [(GKLeaderboard *)v8 title];
-      [(UILabel *)self->_titleLabel setText:v5];
+      title = [(GKLeaderboard *)leaderboardCopy title];
+      [(UILabel *)self->_titleLabel setText:title];
     }
 
     [(GKLeaderboardCell *)self updateLayout];
@@ -144,14 +144,14 @@
 
 - (void)updateLayout
 {
-  v3 = [(GKLeaderboardCell *)self traitCollection];
-  v4 = [v3 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v4);
+  traitCollection = [(GKLeaderboardCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
-    v6 = [(GKLeaderboardCell *)self iconContainerHeight];
-    [v6 setConstant:335.0];
+    iconContainerHeight = [(GKLeaderboardCell *)self iconContainerHeight];
+    [iconContainerHeight setConstant:335.0];
 
     v7 = 2;
   }
@@ -159,8 +159,8 @@
   else
   {
     v8 = dbl_24E3679E0[self->_leaderboardSet == 0];
-    v9 = [(GKLeaderboardCell *)self iconContainerHeight];
-    [v9 setConstant:v8];
+    iconContainerHeight2 = [(GKLeaderboardCell *)self iconContainerHeight];
+    [iconContainerHeight2 setConstant:v8];
 
     if (self->_leaderboardSet)
     {
@@ -173,8 +173,8 @@
     }
   }
 
-  v10 = [(GKLeaderboardCell *)self titleLabel];
-  [v10 setNumberOfLines:v7];
+  titleLabel = [(GKLeaderboardCell *)self titleLabel];
+  [titleLabel setNumberOfLines:v7];
 }
 
 - (void)updateSummary
@@ -182,25 +182,25 @@
   v14 = self->_leaderboard;
   if ([(GKLeaderboard *)v14 type]== GKLeaderboardTypeRecurring)
   {
-    v3 = [(GKLeaderboard *)v14 startDate];
+    startDate = [(GKLeaderboard *)v14 startDate];
     [(GKLeaderboard *)v14 duration];
-    v4 = [v3 dateByAddingTimeInterval:?];
+    v4 = [startDate dateByAddingTimeInterval:?];
 
     v5 = objc_alloc_init(MEMORY[0x277CCA968]);
-    v6 = [MEMORY[0x277CBEAF8] currentLocale];
-    [v5 setLocale:v6];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    [v5 setLocale:currentLocale];
 
     [v5 setLocalizedDateFormatFromTemplate:{@"MMM d, jj:mm"}];
-    v7 = [MEMORY[0x277CBEBB0] localTimeZone];
-    [v5 setTimeZone:v7];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    [v5 setTimeZone:localTimeZone];
 
     v8 = [v5 stringFromDate:v4];
     v9 = MEMORY[0x277CCACA8];
     v10 = GKGameCenterUIFrameworkBundle();
     v11 = GKGetLocalizedStringFromTableInBundle();
     v12 = [v9 stringWithFormat:v11, v8];
-    v13 = [(GKLeaderboardCell *)self countLabel];
-    [v13 setText:v12];
+    countLabel = [(GKLeaderboardCell *)self countLabel];
+    [countLabel setText:v12];
   }
 
   else
@@ -211,24 +211,24 @@
 
 - (void)updateRank
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [v3 UUIDString];
-  [(GKLeaderboardCell *)self setDataToken:v4];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [(GKLeaderboardCell *)self setDataToken:uUIDString];
 
-  v5 = [(GKLeaderboardCell *)self dataToken];
+  dataToken = [(GKLeaderboardCell *)self dataToken];
   v6 = self->_leaderboard;
-  v7 = [MEMORY[0x277D0C048] currentGame];
-  v8 = [v7 gameDescriptor];
+  currentGame = [MEMORY[0x277D0C048] currentGame];
+  gameDescriptor = [currentGame gameDescriptor];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __31__GKLeaderboardCell_updateRank__block_invoke;
   v11[3] = &unk_27966CB48;
-  v12 = v5;
-  v13 = self;
+  v12 = dataToken;
+  selfCopy = self;
   v14 = v6;
   v9 = v6;
-  v10 = v5;
-  [(GKLeaderboard *)v9 loadEntriesWithGameDescriptor:v8 playerScope:1 timeScope:2 range:1 completionHandler:600, v11];
+  v10 = dataToken;
+  [(GKLeaderboard *)v9 loadEntriesWithGameDescriptor:gameDescriptor playerScope:1 timeScope:2 range:1 completionHandler:600, v11];
 }
 
 void __31__GKLeaderboardCell_updateRank__block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, void *a5)
@@ -385,20 +385,20 @@ void __31__GKLeaderboardCell_updateRank__block_invoke_69(uint64_t a1, void *a2)
   v22 = __Block_byref_object_copy__8;
   v23 = __Block_byref_object_dispose__8;
   v24 = 0;
-  v3 = [(GKLeaderboardCell *)self iconView];
-  v4 = [v3 layer];
-  [v4 setCompositingFilter:0];
+  iconView = [(GKLeaderboardCell *)self iconView];
+  layer = [iconView layer];
+  [layer setCompositingFilter:0];
 
   if (self->_leaderboardSet)
   {
-    v5 = [MEMORY[0x277D0C8C8] sharedTheme];
-    [v5 iconLeaderboardSetListSource];
+    mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+    [mEMORY[0x277D0C8C8] iconLeaderboardSetListSource];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D0C8C8] sharedTheme];
-    [v5 iconLeaderboardListSource];
+    mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+    [mEMORY[0x277D0C8C8] iconLeaderboardListSource];
   }
   v6 = ;
 
@@ -427,8 +427,8 @@ void __31__GKLeaderboardCell_updateRank__block_invoke_69(uint64_t a1, void *a2)
   if (v7)
   {
 LABEL_9:
-    v12 = [(GKLeaderboardCell *)self iconView];
-    [v12 setImage:v7];
+    iconView2 = [(GKLeaderboardCell *)self iconView];
+    [iconView2 setImage:v7];
 
     [(GKLeaderboardCell *)self updateOverlay];
     [(GKLeaderboardCell *)self setNeedsDisplay];
@@ -505,18 +505,18 @@ LABEL_4:
 LABEL_8:
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = GKLeaderboardCell;
-  v6 = a4;
-  [(GKLeaderboardCell *)&v8 didUpdateFocusInContext:a3 withAnimationCoordinator:v6];
+  coordinatorCopy = coordinator;
+  [(GKLeaderboardCell *)&v8 didUpdateFocusInContext:context withAnimationCoordinator:coordinatorCopy];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__GKLeaderboardCell_didUpdateFocusInContext_withAnimationCoordinator___block_invoke;
   v7[3] = &unk_2796699A8;
   v7[4] = self;
-  [v6 addCoordinatedAnimations:v7 completion:0];
+  [coordinatorCopy addCoordinatedAnimations:v7 completion:0];
 }
 
 uint64_t __70__GKLeaderboardCell_didUpdateFocusInContext_withAnimationCoordinator___block_invoke(uint64_t a1)
@@ -545,7 +545,7 @@ uint64_t __70__GKLeaderboardCell_didUpdateFocusInContext_withAnimationCoordinato
   return [v11 layoutIfNeeded];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v7.receiver = self;
   v7.super_class = GKLeaderboardCell;
@@ -555,7 +555,7 @@ uint64_t __70__GKLeaderboardCell_didUpdateFocusInContext_withAnimationCoordinato
   v5[2] = __36__GKLeaderboardCell_setHighlighted___block_invoke;
   v5[3] = &unk_27966A890;
   v5[4] = self;
-  v6 = a3;
+  highlightedCopy = highlighted;
   [MEMORY[0x277D75D18] animateWithDuration:v5 animations:0 completion:0.05];
 }
 
@@ -576,29 +576,29 @@ void __36__GKLeaderboardCell_setHighlighted___block_invoke(uint64_t a1)
   [v3 setOpacity:v2];
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = GKLeaderboardCell;
   [(GKLeaderboardCell *)&v8 setSelected:?];
-  v5 = [(GKLeaderboardCell *)self layer];
-  [v5 setBackgroundColor:0];
+  layer = [(GKLeaderboardCell *)self layer];
+  [layer setBackgroundColor:0];
 
-  if (v3)
+  if (selectedCopy)
   {
-    v6 = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
+    _gkSelectedCellBackgroundColor = [MEMORY[0x277D75348] _gkSelectedCellBackgroundColor];
   }
 
   else
   {
-    v6 = 0;
+    _gkSelectedCellBackgroundColor = 0;
   }
 
-  v7 = [(GKLeaderboardCell *)self contentView];
-  [v7 setBackgroundColor:v6];
+  contentView = [(GKLeaderboardCell *)self contentView];
+  [contentView setBackgroundColor:_gkSelectedCellBackgroundColor];
 
-  if (v3)
+  if (selectedCopy)
   {
   }
 }

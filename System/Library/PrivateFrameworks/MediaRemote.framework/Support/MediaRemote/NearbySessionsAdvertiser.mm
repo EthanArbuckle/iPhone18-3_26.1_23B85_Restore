@@ -1,11 +1,11 @@
 @interface NearbySessionsAdvertiser
-+ (id)createWithDelegate:(id)a3;
++ (id)createWithDelegate:(id)delegate;
 - (_TtC12mediaremoted24NearbySessionsAdvertiser)init;
 @end
 
 @implementation NearbySessionsAdvertiser
 
-+ (id)createWithDelegate:(id)a3
++ (id)createWithDelegate:(id)delegate
 {
   v3 = objc_allocWithZone(type metadata accessor for NearbySessionsAdvertiserImplementation());
   v4 = swift_unknownObjectRetain();

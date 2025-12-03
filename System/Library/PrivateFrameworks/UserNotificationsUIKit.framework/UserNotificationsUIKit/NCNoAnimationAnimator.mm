@@ -1,26 +1,26 @@
 @interface NCNoAnimationAnimator
 - (NCNoAnimationAnimator)init;
-- (void)animateByRetargetingType:(unint64_t)a3 animations:(id)a4 completion:(id)a5;
-- (void)animateUsingSpringBehavior:(id)a3 tracking:(BOOL)a4 type:(unint64_t)a5 animations:(id)a6 completion:(id)a7;
-- (void)animateUsingSpringWithTension:(double)a3 friction:(double)a4 interactive:(BOOL)a5 type:(unint64_t)a6 animations:(id)a7 completion:(id)a8;
-- (void)animateWithDecomposedAnimations:(id)a3 completion:(id)a4;
-- (void)performAnimationType:(unint64_t)a3 withoutAnimation:(id)a4;
+- (void)animateByRetargetingType:(unint64_t)type animations:(id)animations completion:(id)completion;
+- (void)animateUsingSpringBehavior:(id)behavior tracking:(BOOL)tracking type:(unint64_t)type animations:(id)animations completion:(id)completion;
+- (void)animateUsingSpringWithTension:(double)tension friction:(double)friction interactive:(BOOL)interactive type:(unint64_t)type animations:(id)animations completion:(id)completion;
+- (void)animateWithDecomposedAnimations:(id)animations completion:(id)completion;
+- (void)performAnimationType:(unint64_t)type withoutAnimation:(id)animation;
 @end
 
 @implementation NCNoAnimationAnimator
 
-- (void)performAnimationType:(unint64_t)a3 withoutAnimation:(id)a4
+- (void)performAnimationType:(unint64_t)type withoutAnimation:(id)animation
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(animation);
   v4[2]();
 
   _Block_release(v4);
 }
 
-- (void)animateByRetargetingType:(unint64_t)a3 animations:(id)a4 completion:(id)a5
+- (void)animateByRetargetingType:(unint64_t)type animations:(id)animations completion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  v7 = _Block_copy(a5);
+  v6 = _Block_copy(animations);
+  v7 = _Block_copy(completion);
   if (v7)
   {
     *(swift_allocObject() + 16) = v7;
@@ -44,10 +44,10 @@
   }
 }
 
-- (void)animateUsingSpringBehavior:(id)a3 tracking:(BOOL)a4 type:(unint64_t)a5 animations:(id)a6 completion:(id)a7
+- (void)animateUsingSpringBehavior:(id)behavior tracking:(BOOL)tracking type:(unint64_t)type animations:(id)animations completion:(id)completion
 {
-  v8 = _Block_copy(a6);
-  v9 = _Block_copy(a7);
+  v8 = _Block_copy(animations);
+  v9 = _Block_copy(completion);
   if (v9)
   {
     *(swift_allocObject() + 16) = v9;
@@ -71,10 +71,10 @@
   }
 }
 
-- (void)animateUsingSpringWithTension:(double)a3 friction:(double)a4 interactive:(BOOL)a5 type:(unint64_t)a6 animations:(id)a7 completion:(id)a8
+- (void)animateUsingSpringWithTension:(double)tension friction:(double)friction interactive:(BOOL)interactive type:(unint64_t)type animations:(id)animations completion:(id)completion
 {
-  v9 = _Block_copy(a7);
-  v10 = _Block_copy(a8);
+  v9 = _Block_copy(animations);
+  v10 = _Block_copy(completion);
   if (v10)
   {
     *(swift_allocObject() + 16) = v10;
@@ -98,9 +98,9 @@
   }
 }
 
-- (void)animateWithDecomposedAnimations:(id)a3 completion:(id)a4
+- (void)animateWithDecomposedAnimations:(id)animations completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for NCDecomposedAnimation(v5);
   v6 = sub_21E92A528();
   if (v5)
@@ -109,7 +109,7 @@
     v5 = sub_21E799850;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_21E913F14(v6);
   sub_21E792E48(v5);
 }

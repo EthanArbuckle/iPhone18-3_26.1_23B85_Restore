@@ -6,13 +6,13 @@
 
 - (uint64_t)hexStringWithLength:()DYNSDataHexConversion
 {
-  v5 = [a1 bytes];
-  if (v5)
+  bytes = [self bytes];
+  if (bytes)
   {
-    v6 = v5;
-    if ([a1 length] <= a3)
+    v6 = bytes;
+    if ([self length] <= a3)
     {
-      a3 = [a1 length];
+      a3 = [self length];
     }
 
     v7 = [MEMORY[0x277CCAB68] stringWithCapacity:a3];

@@ -1,9 +1,9 @@
 @interface CATArbitrator
 - (CATArbitrator)init;
 - (id)debugDescription;
-- (unint64_t)unregisterResourceForKey:(id)a3;
-- (void)registerResource:(id)a3 forKey:(id)a4;
-- (void)registerResource:(id)a3 forKey:(id)a4 maxConcurrentCount:(unint64_t)a5;
+- (unint64_t)unregisterResourceForKey:(id)key;
+- (void)registerResource:(id)resource forKey:(id)key;
+- (void)registerResource:(id)resource forKey:(id)key maxConcurrentCount:(unint64_t)count;
 @end
 
 @implementation CATArbitrator
@@ -35,13 +35,13 @@
   return v5;
 }
 
-- (void)registerResource:(id)a3 forKey:(id)a4
+- (void)registerResource:(id)resource forKey:(id)key
 {
-  v7 = a3;
-  v6 = a4;
-  if (v7)
+  resourceCopy = resource;
+  keyCopy = key;
+  if (resourceCopy)
   {
-    if (v6)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -50,7 +50,7 @@
   else
   {
     [CATArbitrator registerResource:forKey:];
-    if (v6)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -58,23 +58,23 @@
 
   [CATArbitrator registerResource:forKey:];
 LABEL_3:
-  [(CATArbitrator *)self registerResource:v7 forKey:v6 maxConcurrentCount:1];
+  [(CATArbitrator *)self registerResource:resourceCopy forKey:keyCopy maxConcurrentCount:1];
 }
 
-- (void)registerResource:(id)a3 forKey:(id)a4 maxConcurrentCount:(unint64_t)a5
+- (void)registerResource:(id)resource forKey:(id)key maxConcurrentCount:(unint64_t)count
 {
-  v15 = a3;
-  v9 = a4;
-  if (v15)
+  resourceCopy = resource;
+  keyCopy = key;
+  if (resourceCopy)
   {
-    if (v9)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
     [CATArbitrator registerResource:forKey:maxConcurrentCount:];
-    if (a5)
+    if (count)
     {
       goto LABEL_4;
     }
@@ -83,13 +83,13 @@ LABEL_10:
   }
 
   [CATArbitrator registerResource:forKey:maxConcurrentCount:];
-  if (!v9)
+  if (!keyCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (a5)
+  if (count)
   {
     goto LABEL_4;
   }
@@ -97,43 +97,43 @@ LABEL_3:
 LABEL_11:
   [CATArbitrator registerResource:forKey:maxConcurrentCount:];
 LABEL_4:
-  v10 = [[_CATArbitratorRegistrationEntry alloc] initWithResource:v15 maxConcurrentCount:a5];
+  v10 = [[_CATArbitratorRegistrationEntry alloc] initWithResource:resourceCopy maxConcurrentCount:count];
   v11 = self->mRegistrationByKey;
   objc_sync_enter(v11);
-  v12 = [(NSMutableDictionary *)self->mRegistrationByKey objectForKeyedSubscript:v9];
+  v12 = [(NSMutableDictionary *)self->mRegistrationByKey objectForKeyedSubscript:keyCopy];
 
   if (v12)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v14 = NSStringFromSelector(a2);
-    [v13 handleFailureInMethod:a2 object:self file:@"CATArbitrator.m" lineNumber:245 description:{@"%@ cannot call %@ when key (%@) is already registered", self, v14, v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CATArbitrator.m" lineNumber:245 description:{@"%@ cannot call %@ when key (%@) is already registered", self, v14, keyCopy}];
   }
 
-  [(NSMutableDictionary *)self->mRegistrationByKey setObject:v10 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->mRegistrationByKey setObject:v10 forKeyedSubscript:keyCopy];
   objc_sync_exit(v11);
 }
 
-- (unint64_t)unregisterResourceForKey:(id)a3
+- (unint64_t)unregisterResourceForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = self->mRegistrationByKey;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->mRegistrationByKey objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->mRegistrationByKey objectForKeyedSubscript:keyCopy];
   if (v6)
   {
-    [(NSMutableDictionary *)self->mRegistrationByKey removeObjectForKey:v4];
-    v7 = [v6 currentCount];
+    [(NSMutableDictionary *)self->mRegistrationByKey removeObjectForKey:keyCopy];
+    currentCount = [v6 currentCount];
   }
 
   else
   {
-    v7 = 0;
+    currentCount = 0;
   }
 
   objc_sync_exit(v5);
 
   [v6 invalidate];
-  return v7;
+  return currentCount;
 }
 
 - (void)resourceForKey:exclusive:.cold.1()

@@ -1,17 +1,17 @@
 @interface CPLDirectPushChangeSession
 + (id)selfCrashResetReason;
-- (void)beginDirectSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)commitChangeBatch:(id)a3 withCompletionHandler:(id)a4;
-- (void)finalizeWithCompletionHandler:(id)a3;
+- (void)beginDirectSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler;
+- (void)commitChangeBatch:(id)batch withCompletionHandler:(id)handler;
+- (void)finalizeWithCompletionHandler:(id)handler;
 @end
 
 @implementation CPLDirectPushChangeSession
 
-- (void)beginDirectSessionWithKnownLibraryVersion:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)beginDirectSessionWithKnownLibraryVersion:(id)version context:(id)context completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  versionCopy = version;
+  contextCopy = context;
+  handlerCopy = handler;
   if ([(CPLDirectChangeSession *)self tearedDown])
   {
     if ((_CPLSilentLogging & 1) == 0)
@@ -30,34 +30,34 @@
     v37[1] = 3221225472;
     v37[2] = sub_10013D254;
     v37[3] = &unk_100271E98;
-    v38 = v11;
-    v14 = v11;
+    v38 = handlerCopy;
+    v14 = handlerCopy;
     [(CPLDirectChangeSession *)self dispatchCallback:v37];
     v15 = v38;
   }
 
   else
   {
-    v16 = [(CPLDirectPushChangeSession *)self abstractObject];
-    v17 = [v16 libraryManager];
-    v18 = [v17 platformObject];
-    v19 = [v18 engineLibrary];
-    objc_storeWeak((&self->_lastSeenLibraryVersion + 1), v19);
+    abstractObject = [(CPLDirectPushChangeSession *)self abstractObject];
+    libraryManager = [abstractObject libraryManager];
+    platformObject = [libraryManager platformObject];
+    engineLibrary = [platformObject engineLibrary];
+    objc_storeWeak((&self->_lastSeenLibraryVersion + 1), engineLibrary);
 
     WeakRetained = objc_loadWeakRetained((&self->_lastSeenLibraryVersion + 1));
     [WeakRetained clientIsPushingChanges];
 
     v21 = objc_loadWeakRetained((&self->_lastSeenLibraryVersion + 1));
-    v22 = [v21 store];
-    objc_storeWeak((&self->_engineLibrary + 1), v22);
+    store = [v21 store];
+    objc_storeWeak((&self->_engineLibrary + 1), store);
 
     v23 = objc_loadWeakRetained((&self->_engineLibrary + 1));
-    v24 = [v23 pushRepository];
-    objc_storeWeak((&self->_store + 1), v24);
+    pushRepository = [v23 pushRepository];
+    objc_storeWeak((&self->_store + 1), pushRepository);
 
     v25 = objc_loadWeakRetained((&self->_lastSeenLibraryVersion + 1));
-    v26 = [v25 scheduler];
-    objc_storeWeak((&self->_pushRepository + 1), v26);
+    scheduler = [v25 scheduler];
+    objc_storeWeak((&self->_pushRepository + 1), scheduler);
 
     v27 = objc_alloc_init(NSMutableSet);
     v28 = *(&self->_scheduler + 1);
@@ -69,24 +69,24 @@
     v34[2] = sub_10013D2B8;
     v34[3] = &unk_1002797C0;
     v34[4] = self;
-    v35 = v9;
-    v36 = v10;
+    v35 = versionCopy;
+    v36 = contextCopy;
     v32[0] = _NSConcreteStackBlock;
     v32[1] = 3221225472;
     v32[2] = sub_10013D478;
     v32[3] = &unk_10027A198;
     v32[4] = self;
-    v33 = v11;
-    v30 = v11;
+    v33 = handlerCopy;
+    v30 = handlerCopy;
     v31 = [v29 performWriteTransactionWithBlock:v34 completionHandler:v32];
 
     v15 = v35;
   }
 }
 
-- (void)finalizeWithCompletionHandler:(id)a3
+- (void)finalizeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained((&self->_lastSeenLibraryVersion + 1));
   [WeakRetained clientIsPushingChanges];
 
@@ -109,8 +109,8 @@
     v17[1] = 3221225472;
     v17[2] = sub_10013D784;
     v17[3] = &unk_100271E98;
-    v18 = v5;
-    v9 = v5;
+    v18 = handlerCopy;
+    v9 = handlerCopy;
     [(CPLDirectChangeSession *)self dispatchCallback:v17];
     v10 = v18;
   }
@@ -128,18 +128,18 @@
     v14[2] = sub_10013D930;
     v14[3] = &unk_10027A198;
     v14[4] = self;
-    v15 = v5;
-    v12 = v5;
+    v15 = handlerCopy;
+    v12 = handlerCopy;
     v13 = [v11 performWriteTransactionWithBlock:v16 completionHandler:v14];
 
     v10 = v15;
   }
 }
 
-- (void)commitChangeBatch:(id)a3 withCompletionHandler:(id)a4
+- (void)commitChangeBatch:(id)batch withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  batchCopy = batch;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained((&self->_lastSeenLibraryVersion + 1));
   [WeakRetained clientIsPushingChanges];
 
@@ -162,7 +162,7 @@
     v28[1] = 3221225472;
     v28[2] = sub_10013DDC0;
     v28[3] = &unk_100271E98;
-    v29 = v8;
+    v29 = handlerCopy;
     [(CPLDirectChangeSession *)self dispatchCallback:v28];
   }
 
@@ -190,7 +190,7 @@
     v19[2] = sub_10013DE30;
     v19[3] = &unk_10027AF38;
     v19[4] = self;
-    v20 = v7;
+    v20 = batchCopy;
     v21 = v26;
     p_buf = &buf;
     v23 = a2;
@@ -201,7 +201,7 @@
     v16 = &buf;
     v17 = v24;
     v14[4] = self;
-    v15 = v8;
+    v15 = handlerCopy;
     v18 = v26;
     v13 = [v12 performWriteTransactionWithBlock:v19 completionHandler:v14];
 

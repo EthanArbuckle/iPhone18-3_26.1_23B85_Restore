@@ -1,6 +1,6 @@
 @interface AXMAXElementVisionEngine
 - (AXMAXElementDetectorNode)axElementDetector;
-- (AXMAXElementVisionEngine)initWithIdentifier:(id)a3;
+- (AXMAXElementVisionEngine)initWithIdentifier:(id)identifier;
 - (AXMBrailleEdgesDetectorNode)brailleEdgeDetector;
 - (AXMIconClassDetectorNode)iconClassDetector;
 - (AXMImageNode)imageNode;
@@ -10,11 +10,11 @@
 
 @implementation AXMAXElementVisionEngine
 
-- (AXMAXElementVisionEngine)initWithIdentifier:(id)a3
+- (AXMAXElementVisionEngine)initWithIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = AXMAXElementVisionEngine;
-  v3 = [(AXMVisionEngine *)&v11 initWithIdentifier:a3];
+  v3 = [(AXMVisionEngine *)&v11 initWithIdentifier:identifier];
   [(AXMVisionEngine *)v3 setMaximumQueueSize:10];
   if (v3)
   {

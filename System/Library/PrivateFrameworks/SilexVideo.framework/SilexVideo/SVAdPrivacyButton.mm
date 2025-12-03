@@ -4,7 +4,7 @@
 + (id)font;
 + (id)title;
 - (CGSize)intrinsicContentSize;
-- (SVAdPrivacyButton)initWithFrame:(CGRect)a3;
+- (SVAdPrivacyButton)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 @end
 
@@ -29,8 +29,8 @@
 
 + (double)height
 {
-  v2 = [a1 font];
-  [v2 capHeight];
+  font = [self font];
+  [font capHeight];
   v4 = round(v3) + 12.0;
 
   return v4;
@@ -56,35 +56,35 @@
   return result;
 }
 
-- (SVAdPrivacyButton)initWithFrame:(CGRect)a3
+- (SVAdPrivacyButton)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = SVAdPrivacyButton;
-  v3 = [(SVButton *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SVButton *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SVAdPrivacyButton *)v3 titleLabel];
-    [v5 setAdjustsFontForContentSizeCategory:1];
+    titleLabel = [(SVAdPrivacyButton *)v3 titleLabel];
+    [titleLabel setAdjustsFontForContentSizeCategory:1];
 
     v6 = +[SVAdPrivacyButton title];
     [(SVAdPrivacyButton *)v4 setTitle:v6 forState:0];
 
     v7 = +[SVAdPrivacyButton font];
-    v8 = [(SVAdPrivacyButton *)v4 titleLabel];
-    [v8 setFont:v7];
+    titleLabel2 = [(SVAdPrivacyButton *)v4 titleLabel];
+    [titleLabel2 setFont:v7];
 
-    v9 = [(SVAdPrivacyButton *)v4 titleLabel];
-    [v9 setTextAlignment:1];
+    titleLabel3 = [(SVAdPrivacyButton *)v4 titleLabel];
+    [titleLabel3 setTextAlignment:1];
 
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    [(SVAdPrivacyButton *)v4 setTitleColor:v10 forState:0];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(SVAdPrivacyButton *)v4 setTitleColor:whiteColor forState:0];
 
     v11 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.2];
     [(SVAdPrivacyButton *)v4 setTitleColor:v11 forState:1];
 
-    v12 = [MEMORY[0x277D75348] systemTealColor];
-    [(SVAdPrivacyButton *)v4 setBackgroundColor:v12];
+    systemTealColor = [MEMORY[0x277D75348] systemTealColor];
+    [(SVAdPrivacyButton *)v4 setBackgroundColor:systemTealColor];
 
     [(SVAdPrivacyButton *)v4 _setContinuousCornerRadius:6.0];
     [(SVButton *)v4 setTouchInsets:-10.0, -10.0, -10.0, -10.0];
@@ -97,8 +97,8 @@
 {
   +[SVAdPrivacyButton height];
   v4 = v3;
-  v5 = [(SVAdPrivacyButton *)self titleLabel];
-  [v5 intrinsicContentSize];
+  titleLabel = [(SVAdPrivacyButton *)self titleLabel];
+  [titleLabel intrinsicContentSize];
   v7 = v6 + 14.0;
 
   v8 = v7;
@@ -110,10 +110,10 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(SVAdPrivacyButton *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(SVAdPrivacyButton *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
 @end

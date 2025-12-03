@@ -10,13 +10,13 @@
   objc_opt_class();
   v3 = __UIAccessibilityCastAsSafeCategory();
   v4 = [(CKRichLinkReplyPreviewBalloonViewAccessibility *)self safeValueForKey:@"linkView"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  v6 = [v3 _axMessageSender];
-  v7 = [v3 _axReplyDescription];
-  v8 = [v3 _axStickerDescription];
-  v9 = [v3 _axAcknowledgmentDescription];
-  v12 = [v3 _axMessageTime];
+  _axMessageSender = [v3 _axMessageSender];
+  _axReplyDescription = [v3 _axReplyDescription];
+  _axStickerDescription = [v3 _axStickerDescription];
+  _axAcknowledgmentDescription = [v3 _axAcknowledgmentDescription];
+  _axMessageTime = [v3 _axMessageTime];
   v10 = __UIAXStringForVariables();
 
   return v10;
@@ -28,7 +28,7 @@
   v4 = v3;
   if (v3 && [v3 safeBoolForKey:@"isReplyContextPreview"])
   {
-    v5 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     objc_initWeak(&location, self);
     v6 = objc_alloc(MEMORY[0x29EDC78E0]);
     v7 = accessibilityLocalizedString(@"balloon.message.openthread.action");
@@ -39,7 +39,7 @@
     objc_copyWeak(&v12, &location);
     v8 = [v6 initWithName:v7 actionHandler:v11];
 
-    [v5 axSafelyAddObject:v8];
+    [array axSafelyAddObject:v8];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -48,10 +48,10 @@
   {
     v10.receiver = self;
     v10.super_class = CKRichLinkReplyPreviewBalloonViewAccessibility;
-    v5 = [(CKRichLinkReplyPreviewBalloonViewAccessibility *)&v10 accessibilityCustomActions];
+    array = [(CKRichLinkReplyPreviewBalloonViewAccessibility *)&v10 accessibilityCustomActions];
   }
 
-  return v5;
+  return array;
 }
 
 uint64_t __76__CKRichLinkReplyPreviewBalloonViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)

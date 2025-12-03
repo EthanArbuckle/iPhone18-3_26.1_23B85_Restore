@@ -1,20 +1,20 @@
 @interface MTRCommissioningOperationDeviceAttestationDelegate
 - (MTRCommissioningOperation)commissioningOperation;
-- (void)deviceAttestationCompletedForController:(id)a3 opaqueDeviceHandle:(void *)a4 attestationDeviceInfo:(id)a5 error:(id)a6;
+- (void)deviceAttestationCompletedForController:(id)controller opaqueDeviceHandle:(void *)handle attestationDeviceInfo:(id)info error:(id)error;
 @end
 
 @implementation MTRCommissioningOperationDeviceAttestationDelegate
 
-- (void)deviceAttestationCompletedForController:(id)a3 opaqueDeviceHandle:(void *)a4 attestationDeviceInfo:(id)a5 error:(id)a6
+- (void)deviceAttestationCompletedForController:(id)controller opaqueDeviceHandle:(void *)handle attestationDeviceInfo:(id)info error:(id)error
 {
-  v14 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MTRCommissioningOperationDeviceAttestationDelegate *)self commissioningOperation];
-  v13 = v12;
-  if (v12)
+  controllerCopy = controller;
+  infoCopy = info;
+  errorCopy = error;
+  commissioningOperation = [(MTRCommissioningOperationDeviceAttestationDelegate *)self commissioningOperation];
+  v13 = commissioningOperation;
+  if (commissioningOperation)
   {
-    [v12 deviceAttestationCompletedForController:v14 opaqueDeviceHandle:a4 attestationDeviceInfo:v10 error:v11];
+    [commissioningOperation deviceAttestationCompletedForController:controllerCopy opaqueDeviceHandle:handle attestationDeviceInfo:infoCopy error:errorCopy];
   }
 }
 

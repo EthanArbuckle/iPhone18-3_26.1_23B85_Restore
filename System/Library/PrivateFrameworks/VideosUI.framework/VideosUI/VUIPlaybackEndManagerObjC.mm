@@ -1,8 +1,8 @@
 @interface VUIPlaybackEndManagerObjC
 + (id)playbackBroadcastDidEndHandler;
-+ (void)monitor:(id)a3;
-+ (void)remove:(id)a3;
-+ (void)setPlaybackBroadcastDidEndHandler:(id)a3;
++ (void)monitor:(id)monitor;
++ (void)remove:(id)remove;
++ (void)setPlaybackBroadcastDidEndHandler:(id)handler;
 @end
 
 @implementation VUIPlaybackEndManagerObjC
@@ -29,9 +29,9 @@
   return v4;
 }
 
-+ (void)setPlaybackBroadcastDidEndHandler:(id)a3
++ (void)setPlaybackBroadcastDidEndHandler:(id)handler
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(handler);
   if (v3)
   {
     v4 = v3;
@@ -48,16 +48,16 @@
   static PlaybackEndManagerObjC.playbackBroadcastDidEndHandler.setter(v3, v5);
 }
 
-+ (void)monitor:(id)a3
++ (void)monitor:(id)monitor
 {
-  v3 = a3;
-  static PlaybackEndManagerObjC.monitor(_:)(v3);
+  monitorCopy = monitor;
+  static PlaybackEndManagerObjC.monitor(_:)(monitorCopy);
 }
 
-+ (void)remove:(id)a3
++ (void)remove:(id)remove
 {
-  v3 = a3;
-  static PlaybackEndManagerObjC.remove(_:)(v3);
+  removeCopy = remove;
+  static PlaybackEndManagerObjC.remove(_:)(removeCopy);
 }
 
 @end

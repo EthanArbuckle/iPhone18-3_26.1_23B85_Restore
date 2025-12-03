@@ -1,41 +1,41 @@
 @interface UGCPhotoCreditSectionHeaderView
 + (NSString)reuseIdentifier;
-- (UGCPhotoCreditSectionHeaderView)initWithFrame:(CGRect)a3;
+- (UGCPhotoCreditSectionHeaderView)initWithFrame:(CGRect)frame;
 - (void)_didTapSubtitleActionButton;
-- (void)_invokeSelectionWithSourceType:(int64_t)a3;
+- (void)_invokeSelectionWithSourceType:(int64_t)type;
 - (void)_setupView;
-- (void)setAccessoryActionTitle:(id)a3 selectionHandler:(id)a4;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleActionTitle:(id)a3 completionHandler:(id)a4;
-- (void)setTitle:(id)a3;
+- (void)setAccessoryActionTitle:(id)title selectionHandler:(id)handler;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleActionTitle:(id)title completionHandler:(id)handler;
+- (void)setTitle:(id)title;
 @end
 
 @implementation UGCPhotoCreditSectionHeaderView
 
-- (void)setAccessoryActionTitle:(id)a3 selectionHandler:(id)a4
+- (void)setAccessoryActionTitle:(id)title selectionHandler:(id)handler
 {
   accessoryActionButton = self->_accessoryActionButton;
-  v7 = a4;
-  [(MapsThemeButton *)accessoryActionButton setTitle:a3 forState:0];
-  [(UGCPhotoCreditSectionHeaderView *)self setPhotoSelectionHandler:v7];
+  handlerCopy = handler;
+  [(MapsThemeButton *)accessoryActionButton setTitle:title forState:0];
+  [(UGCPhotoCreditSectionHeaderView *)self setPhotoSelectionHandler:handlerCopy];
 }
 
-- (void)setSubtitleActionTitle:(id)a3 completionHandler:(id)a4
+- (void)setSubtitleActionTitle:(id)title completionHandler:(id)handler
 {
   subtitleButton = self->_subtitleButton;
-  v7 = a4;
-  [(UIButton *)subtitleButton setTitle:a3 forState:0];
-  [(UGCPhotoCreditSectionHeaderView *)self setSubtitleActionHandler:v7];
+  handlerCopy = handler;
+  [(UIButton *)subtitleButton setTitle:title forState:0];
+  [(UGCPhotoCreditSectionHeaderView *)self setSubtitleActionHandler:handlerCopy];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_subtitle != v4)
+  subtitleCopy = subtitle;
+  v5 = subtitleCopy;
+  if (self->_subtitle != subtitleCopy)
   {
-    v9 = v4;
-    v6 = [(NSString *)v4 isEqual:?];
+    v9 = subtitleCopy;
+    v6 = [(NSString *)subtitleCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -49,12 +49,12 @@
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = v4;
-  v9 = v4;
-  if (self->_title != v4 || (v6 = [(NSString *)v4 isEqualToString:?], v5 = v9, (v6 & 1) == 0))
+  titleCopy = title;
+  v5 = titleCopy;
+  v9 = titleCopy;
+  if (self->_title != titleCopy || (v6 = [(NSString *)titleCopy isEqualToString:?], v5 = v9, (v6 & 1) == 0))
   {
     v7 = [(NSString *)v5 copy];
     title = self->_title;
@@ -65,33 +65,33 @@
   }
 }
 
-- (void)_invokeSelectionWithSourceType:(int64_t)a3
+- (void)_invokeSelectionWithSourceType:(int64_t)type
 {
-  v5 = [(UGCPhotoCreditSectionHeaderView *)self photoSelectionHandler];
+  photoSelectionHandler = [(UGCPhotoCreditSectionHeaderView *)self photoSelectionHandler];
 
-  if (v5)
+  if (photoSelectionHandler)
   {
-    v6 = [(UGCPhotoCreditSectionHeaderView *)self photoSelectionHandler];
-    v6[2](v6, a3);
+    photoSelectionHandler2 = [(UGCPhotoCreditSectionHeaderView *)self photoSelectionHandler];
+    photoSelectionHandler2[2](photoSelectionHandler2, type);
   }
 }
 
 - (void)_didTapSubtitleActionButton
 {
   [GEOAPPortal captureUserAction:340 target:666 value:0];
-  v3 = [(UGCPhotoCreditSectionHeaderView *)self subtitleActionHandler];
+  subtitleActionHandler = [(UGCPhotoCreditSectionHeaderView *)self subtitleActionHandler];
 
-  if (v3)
+  if (subtitleActionHandler)
   {
-    v4 = [(UGCPhotoCreditSectionHeaderView *)self subtitleActionHandler];
-    v4[2]();
+    subtitleActionHandler2 = [(UGCPhotoCreditSectionHeaderView *)self subtitleActionHandler];
+    subtitleActionHandler2[2]();
   }
 }
 
 - (void)_setupView
 {
-  v3 = [(MapsThemeCollectionReusableView *)self contentView];
-  [v3 setAccessibilityIdentifier:@"UGCPhotoCreditSectionHeaderView"];
+  contentView = [(MapsThemeCollectionReusableView *)self contentView];
+  [contentView setAccessibilityIdentifier:@"UGCPhotoCreditSectionHeaderView"];
 
   v4 = [UILabel alloc];
   y = CGRectZero.origin.y;
@@ -109,8 +109,8 @@
   [(UILabel *)self->_titleLabel setTextColor:v11];
 
   [(UILabel *)self->_titleLabel setAccessibilityIdentifier:@"TitleLabel"];
-  v12 = [(MapsThemeCollectionReusableView *)self contentView];
-  [v12 addSubview:self->_titleLabel];
+  contentView2 = [(MapsThemeCollectionReusableView *)self contentView];
+  [contentView2 addSubview:self->_titleLabel];
 
   v13 = [[UIButton alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   subtitleButton = self->_subtitleButton;
@@ -122,14 +122,14 @@
   [(UIButton *)v15 setTitleColor:v16 forState:0];
 
   v17 = +[UIFont system15];
-  v18 = [(UIButton *)self->_subtitleButton titleLabel];
-  [v18 setFont:v17];
+  titleLabel = [(UIButton *)self->_subtitleButton titleLabel];
+  [titleLabel setFont:v17];
 
   [(UIButton *)self->_subtitleButton setLineBreakMode:0];
   [(UIButton *)self->_subtitleButton addTarget:self action:"_didTapSubtitleActionButton" forControlEvents:0x2000];
   [(UIButton *)self->_subtitleButton setAccessibilityIdentifier:@"SubtitleButton"];
-  v19 = [(MapsThemeCollectionReusableView *)self contentView];
-  [v19 addSubview:self->_subtitleButton];
+  contentView3 = [(MapsThemeCollectionReusableView *)self contentView];
+  [contentView3 addSubview:self->_subtitleButton];
 
   v20 = [MapsThemeButton buttonWithType:0];
   accessoryActionButton = self->_accessoryActionButton;
@@ -144,8 +144,8 @@
   [(MapsThemeButton *)self->_accessoryActionButton setContentCompressionResistancePriority:0 forAxis:v23];
   [(MapsThemeButton *)self->_accessoryActionButton setContentVerticalAlignment:2];
   v24 = +[UIFont system15];
-  v25 = [(MapsThemeButton *)self->_accessoryActionButton titleLabel];
-  [v25 setFont:v24];
+  titleLabel2 = [(MapsThemeButton *)self->_accessoryActionButton titleLabel];
+  [titleLabel2 setFont:v24];
 
   v26 = self->_accessoryActionButton;
   v27 = +[UIColor systemBlueColor];
@@ -168,57 +168,57 @@
   [(MapsThemeButton *)self->_accessoryActionButton setMenu:v28];
 
   [(MapsThemeButton *)self->_accessoryActionButton addTarget:self action:"_captureAccessoryButtonTapEvent" forControlEvents:0x4000];
-  v29 = [(MapsThemeCollectionReusableView *)self contentView];
-  [v29 addSubview:self->_accessoryActionButton];
+  contentView4 = [(MapsThemeCollectionReusableView *)self contentView];
+  [contentView4 addSubview:self->_accessoryActionButton];
 
-  v67 = [(UILabel *)self->_titleLabel leadingAnchor];
-  v69 = [(MapsThemeCollectionReusableView *)self contentView];
-  v68 = [v69 layoutMarginsGuide];
-  v66 = [v68 leadingAnchor];
-  v65 = [v67 constraintEqualToAnchor:v66];
+  leadingAnchor = [(UILabel *)self->_titleLabel leadingAnchor];
+  contentView5 = [(MapsThemeCollectionReusableView *)self contentView];
+  layoutMarginsGuide = [contentView5 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v65 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v75[0] = v65;
-  v64 = [(UILabel *)self->_titleLabel trailingAnchor];
-  v63 = [(MapsThemeButton *)self->_accessoryActionButton leadingAnchor];
-  v62 = [v64 constraintLessThanOrEqualToAnchor:v63 constant:-8.0];
+  trailingAnchor = [(UILabel *)self->_titleLabel trailingAnchor];
+  leadingAnchor3 = [(MapsThemeButton *)self->_accessoryActionButton leadingAnchor];
+  v62 = [trailingAnchor constraintLessThanOrEqualToAnchor:leadingAnchor3 constant:-8.0];
   v75[1] = v62;
-  v60 = [(UILabel *)self->_titleLabel topAnchor];
-  v61 = [(MapsThemeCollectionReusableView *)self contentView];
-  v59 = [v61 topAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59];
+  topAnchor = [(UILabel *)self->_titleLabel topAnchor];
+  contentView6 = [(MapsThemeCollectionReusableView *)self contentView];
+  topAnchor2 = [contentView6 topAnchor];
+  v58 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v75[2] = v58;
-  v55 = [(UIButton *)self->_subtitleButton leadingAnchor];
-  v57 = [(MapsThemeCollectionReusableView *)self contentView];
-  v56 = [v57 layoutMarginsGuide];
-  v54 = [v56 leadingAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  leadingAnchor4 = [(UIButton *)self->_subtitleButton leadingAnchor];
+  contentView7 = [(MapsThemeCollectionReusableView *)self contentView];
+  layoutMarginsGuide2 = [contentView7 layoutMarginsGuide];
+  leadingAnchor5 = [layoutMarginsGuide2 leadingAnchor];
+  v53 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v75[3] = v53;
-  v52 = [(UIButton *)self->_subtitleButton trailingAnchor];
-  v51 = [(MapsThemeButton *)self->_accessoryActionButton leadingAnchor];
-  v50 = [v52 constraintLessThanOrEqualToAnchor:v51 constant:-8.0];
+  trailingAnchor2 = [(UIButton *)self->_subtitleButton trailingAnchor];
+  leadingAnchor6 = [(MapsThemeButton *)self->_accessoryActionButton leadingAnchor];
+  v50 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:leadingAnchor6 constant:-8.0];
   v75[4] = v50;
-  v49 = [(UIButton *)self->_subtitleButton topAnchor];
-  v48 = [(UILabel *)self->_titleLabel bottomAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48];
+  topAnchor3 = [(UIButton *)self->_subtitleButton topAnchor];
+  bottomAnchor = [(UILabel *)self->_titleLabel bottomAnchor];
+  v47 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v75[5] = v47;
-  v45 = [(UIButton *)self->_subtitleButton bottomAnchor];
-  v46 = [(MapsThemeCollectionReusableView *)self contentView];
-  v44 = [v46 bottomAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  bottomAnchor2 = [(UIButton *)self->_subtitleButton bottomAnchor];
+  contentView8 = [(MapsThemeCollectionReusableView *)self contentView];
+  bottomAnchor3 = [contentView8 bottomAnchor];
+  v43 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v75[6] = v43;
-  v41 = [(MapsThemeButton *)self->_accessoryActionButton topAnchor];
-  v42 = [(MapsThemeCollectionReusableView *)self contentView];
-  v40 = [v42 topAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  topAnchor4 = [(MapsThemeButton *)self->_accessoryActionButton topAnchor];
+  contentView9 = [(MapsThemeCollectionReusableView *)self contentView];
+  topAnchor5 = [contentView9 topAnchor];
+  v39 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v75[7] = v39;
-  v30 = [(MapsThemeButton *)self->_accessoryActionButton trailingAnchor];
-  v31 = [(MapsThemeCollectionReusableView *)self contentView];
-  v32 = [v31 layoutMarginsGuide];
-  v33 = [v32 trailingAnchor];
-  v34 = [v30 constraintEqualToAnchor:v33];
+  trailingAnchor3 = [(MapsThemeButton *)self->_accessoryActionButton trailingAnchor];
+  contentView10 = [(MapsThemeCollectionReusableView *)self contentView];
+  layoutMarginsGuide3 = [contentView10 layoutMarginsGuide];
+  trailingAnchor4 = [layoutMarginsGuide3 trailingAnchor];
+  v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v75[8] = v34;
-  v35 = [(UIButton *)self->_subtitleButton firstBaselineAnchor];
-  v36 = [(MapsThemeButton *)self->_accessoryActionButton firstBaselineAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  firstBaselineAnchor = [(UIButton *)self->_subtitleButton firstBaselineAnchor];
+  firstBaselineAnchor2 = [(MapsThemeButton *)self->_accessoryActionButton firstBaselineAnchor];
+  v37 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
   v75[9] = v37;
   v38 = [NSArray arrayWithObjects:v75 count:10];
   [NSLayoutConstraint activateConstraints:v38];
@@ -228,11 +228,11 @@
   objc_destroyWeak(&location);
 }
 
-- (UGCPhotoCreditSectionHeaderView)initWithFrame:(CGRect)a3
+- (UGCPhotoCreditSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UGCPhotoCreditSectionHeaderView;
-  v3 = [(MapsThemeCollectionReusableView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapsThemeCollectionReusableView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

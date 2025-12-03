@@ -1,5 +1,5 @@
 @interface ASProtocolCapabilities
-- (ASProtocolCapabilities)initWithProtocolVersionString:(id)a3;
+- (ASProtocolCapabilities)initWithProtocolVersionString:(id)string;
 - (id)_abConstraintsPlistPath;
 - (id)_calConstraintsPlistPath;
 - (id)addressBookConstraintsPath;
@@ -8,33 +8,33 @@
 
 @implementation ASProtocolCapabilities
 
-- (ASProtocolCapabilities)initWithProtocolVersionString:(id)a3
+- (ASProtocolCapabilities)initWithProtocolVersionString:(id)string
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"16.1"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"16.1"])
   {
     v5 = off_278FC6F70;
   }
 
-  else if ([v4 isEqualToString:@"16.0"])
+  else if ([stringCopy isEqualToString:@"16.0"])
   {
     v5 = off_278FC6F68;
   }
 
-  else if ([v4 isEqualToString:@"14.1"])
+  else if ([stringCopy isEqualToString:@"14.1"])
   {
     v5 = off_278FC6F60;
   }
 
-  else if ([v4 isEqualToString:@"14.0"])
+  else if ([stringCopy isEqualToString:@"14.0"])
   {
     v5 = off_278FC6F58;
   }
 
   else
   {
-    v6 = [v4 isEqualToString:@"12.1"];
+    v6 = [stringCopy isEqualToString:@"12.1"];
     v5 = off_278FC6F48;
     if (v6)
     {
@@ -71,8 +71,8 @@
   calConstraintsPlistPath = self->_calConstraintsPlistPath;
   if (!calConstraintsPlistPath)
   {
-    v4 = [(ASProtocolCapabilities *)self _calConstraintsPlistPath];
-    v5 = [v4 copy];
+    _calConstraintsPlistPath = [(ASProtocolCapabilities *)self _calConstraintsPlistPath];
+    v5 = [_calConstraintsPlistPath copy];
     v6 = self->_calConstraintsPlistPath;
     self->_calConstraintsPlistPath = v5;
 
@@ -95,8 +95,8 @@
   abConstraintsPlistPath = self->_abConstraintsPlistPath;
   if (!abConstraintsPlistPath)
   {
-    v4 = [(ASProtocolCapabilities *)self _abConstraintsPlistPath];
-    v5 = [v4 copy];
+    _abConstraintsPlistPath = [(ASProtocolCapabilities *)self _abConstraintsPlistPath];
+    v5 = [_abConstraintsPlistPath copy];
     v6 = self->_abConstraintsPlistPath;
     self->_abConstraintsPlistPath = v5;
 

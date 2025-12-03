@@ -2,13 +2,13 @@
 - (MPSCNNLocalContrastNormalization)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNLocalContrastNormalization)initWithDevice:(id)device;
 - (MPSCNNLocalContrastNormalization)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4;
-- (id)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4;
-- (void)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationImages:(id)a5;
-- (void)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationImage:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (id)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images;
+- (id)encodeToCommandBuffer:(id)buffer sourceImage:(id)image;
+- (void)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationImages:(id)destinationImages;
+- (void)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationImage:(id)destinationImage;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNLocalContrastNormalization
@@ -89,59 +89,59 @@
   return 0;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4 destinationImage:(id)a5
+- (void)encodeToCommandBuffer:(id)buffer sourceImage:(id)image destinationImage:(id)destinationImage
 {
   v5.receiver = self;
   v5.super_class = MPSCNNLocalContrastNormalization;
-  [(MPSCNNKernel *)&v5 encodeToCommandBuffer:a3 sourceImage:a4 destinationImage:a5];
+  [(MPSCNNKernel *)&v5 encodeToCommandBuffer:buffer sourceImage:image destinationImage:destinationImage];
 }
 
-- (void)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4 destinationImages:(id)a5
+- (void)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images destinationImages:(id)destinationImages
 {
   v5.receiver = self;
   v5.super_class = MPSCNNLocalContrastNormalization;
-  [(MPSCNNKernel *)&v5 encodeBatchToCommandBuffer:a3 sourceImages:a4 destinationImages:a5];
+  [(MPSCNNKernel *)&v5 encodeBatchToCommandBuffer:buffer sourceImages:images destinationImages:destinationImages];
 }
 
-- (id)encodeToCommandBuffer:(id)a3 sourceImage:(id)a4
+- (id)encodeToCommandBuffer:(id)buffer sourceImage:(id)image
 {
   v5.receiver = self;
   v5.super_class = MPSCNNLocalContrastNormalization;
-  return [(MPSCNNKernel *)&v5 encodeToCommandBuffer:a3 sourceImage:a4];
+  return [(MPSCNNKernel *)&v5 encodeToCommandBuffer:buffer sourceImage:image];
 }
 
-- (id)encodeBatchToCommandBuffer:(id)a3 sourceImages:(id)a4
+- (id)encodeBatchToCommandBuffer:(id)buffer sourceImages:(id)images
 {
   v5.receiver = self;
   v5.super_class = MPSCNNLocalContrastNormalization;
-  return [(MPSCNNKernel *)&v5 encodeBatchToCommandBuffer:a3 sourceImages:a4];
+  return [(MPSCNNKernel *)&v5 encodeBatchToCommandBuffer:buffer sourceImages:images];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v47.receiver = self;
   v47.super_class = MPSCNNLocalContrastNormalization;
   [(MPSCNNKernel *)&v47 encodeWithCoder:?];
   *&v5 = self->_alpha;
-  objc_msgSend_encodeFloat_forKey_(a3, v6, @"MPSCNNLocalContrastNormalization.alpha", v7, v8, v9, v10, v11, v5);
+  objc_msgSend_encodeFloat_forKey_(coder, v6, @"MPSCNNLocalContrastNormalization.alpha", v7, v8, v9, v10, v11, v5);
   *&v12 = self->_beta;
-  objc_msgSend_encodeFloat_forKey_(a3, v13, @"MPSCNNLocalContrastNormalization.beta", v14, v15, v16, v17, v18, v12);
+  objc_msgSend_encodeFloat_forKey_(coder, v13, @"MPSCNNLocalContrastNormalization.beta", v14, v15, v16, v17, v18, v12);
   *&v19 = self->_delta;
-  objc_msgSend_encodeFloat_forKey_(a3, v20, @"MPSCNNLocalContrastNormalization.delta", v21, v22, v23, v24, v25, v19);
+  objc_msgSend_encodeFloat_forKey_(coder, v20, @"MPSCNNLocalContrastNormalization.delta", v21, v22, v23, v24, v25, v19);
   *&v26 = self->_p0;
-  objc_msgSend_encodeFloat_forKey_(a3, v27, @"MPSCNNLocalContrastNormalization.p0", v28, v29, v30, v31, v32, v26);
+  objc_msgSend_encodeFloat_forKey_(coder, v27, @"MPSCNNLocalContrastNormalization.p0", v28, v29, v30, v31, v32, v26);
   *&v33 = self->_pm;
-  objc_msgSend_encodeFloat_forKey_(a3, v34, @"MPSCNNLocalContrastNormalization.pm", v35, v36, v37, v38, v39, v33);
+  objc_msgSend_encodeFloat_forKey_(coder, v34, @"MPSCNNLocalContrastNormalization.pm", v35, v36, v37, v38, v39, v33);
   *&v40 = self->_ps;
-  objc_msgSend_encodeFloat_forKey_(a3, v41, @"MPSCNNLocalContrastNormalization.ps", v42, v43, v44, v45, v46, v40);
+  objc_msgSend_encodeFloat_forKey_(coder, v41, @"MPSCNNLocalContrastNormalization.ps", v42, v43, v44, v45, v46, v40);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSCNNLocalContrastNormalization;
-  result = [(MPSCNNKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSCNNKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 82) = LODWORD(self->_alpha);

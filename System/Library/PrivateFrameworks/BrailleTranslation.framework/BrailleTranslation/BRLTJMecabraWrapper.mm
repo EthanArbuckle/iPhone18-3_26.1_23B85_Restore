@@ -1,14 +1,14 @@
 @interface BRLTJMecabraWrapper
 - (BOOL)moveToNextCandidate;
-- (BRLTJMecabraWrapper)initWithUnitTesting:(BOOL)a3;
-- (void)analyzeString:(id)a3;
+- (BRLTJMecabraWrapper)initWithUnitTesting:(BOOL)testing;
+- (void)analyzeString:(id)string;
 - (void)dealloc;
-- (void)learnCandidate:(id)a3;
+- (void)learnCandidate:(id)candidate;
 @end
 
 @implementation BRLTJMecabraWrapper
 
-- (BRLTJMecabraWrapper)initWithUnitTesting:(BOOL)a3
+- (BRLTJMecabraWrapper)initWithUnitTesting:(BOOL)testing
 {
   v15.receiver = self;
   v15.super_class = BRLTJMecabraWrapper;
@@ -18,16 +18,16 @@
     v5 = NSHomeDirectory();
     v6 = [v5 stringByAppendingPathComponent:@"/Library/Accessibility/brailleLearningDict_ja"];
 
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    v8 = [v7 fileExistsAtPath:v6];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v8 = [defaultManager fileExistsAtPath:v6];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      [v9 createDirectoryAtPath:v6 withIntermediateDirectories:0 attributes:0 error:0];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager2 createDirectoryAtPath:v6 withIntermediateDirectories:0 attributes:0 error:0];
     }
 
-    if (!a3)
+    if (!testing)
     {
       [MEMORY[0x277CBEBC0] fileURLWithPath:v6];
     }
@@ -66,18 +66,18 @@
   [(BRLTJMecabraWrapper *)&v3 dealloc];
 }
 
-- (void)analyzeString:(id)a3
+- (void)analyzeString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   if (self->_mecabra)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_string, a3);
+    v9 = stringCopy;
+    objc_storeStrong(&self->_string, string);
     string = self->_string;
     mecabra = self->_mecabra;
     context = self->_context;
     MecabraAnalyzeStringWithContext();
-    v5 = v9;
+    stringCopy = v9;
   }
 }
 
@@ -116,9 +116,9 @@
   return NextCandidate;
 }
 
-- (void)learnCandidate:(id)a3
+- (void)learnCandidate:(id)candidate
 {
-  if ([(NSMutableDictionary *)self->_candidateRefForSurface objectForKey:a3])
+  if ([(NSMutableDictionary *)self->_candidateRefForSurface objectForKey:candidate])
   {
     context = self->_context;
     MecabraContextAddInlineCandidate();

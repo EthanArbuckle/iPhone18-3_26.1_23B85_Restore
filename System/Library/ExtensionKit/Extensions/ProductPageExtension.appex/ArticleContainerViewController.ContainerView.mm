@@ -1,8 +1,8 @@
 @interface ArticleContainerViewController.ContainerView
 - (CGRect)frame;
-- (_TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView)initWithCoder:(id)a3;
-- (_TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView)initWithFrame:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (_TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView)initWithCoder:(id)coder;
+- (_TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView)initWithFrame:(CGRect)frame;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation ArticleContainerViewController.ContainerView
@@ -19,25 +19,25 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for ArticleContainerViewController.ContainerView();
   v25.receiver = self;
   v25.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(ArticleContainerViewController.ContainerView *)&v25 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v24.receiver = v9;
+  v24.receiver = selfCopy;
   v24.super_class = v8;
   [(ArticleContainerViewController.ContainerView *)&v24 setFrame:x, y, width, height];
-  [(ArticleContainerViewController.ContainerView *)v9 frame];
+  [(ArticleContainerViewController.ContainerView *)selfCopy frame];
   v27.origin.x = v18;
   v27.origin.y = v19;
   v27.size.width = v20;
@@ -48,7 +48,7 @@
   v26.size.height = v17;
   if (!CGRectEqualToRect(v26, v27))
   {
-    v22 = *(&v9->super.super.super.isa + OBJC_IVAR____TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView_frameUpdatedCallback);
+    v22 = *(&selfCopy->super.super.super.isa + OBJC_IVAR____TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView_frameUpdatedCallback);
     if (v22)
     {
 
@@ -58,12 +58,12 @@
   }
 }
 
-- (_TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView)initWithFrame:(CGRect)a3
+- (_TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = (&self->super.super.super.isa + OBJC_IVAR____TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView_frameUpdatedCallback);
   v9 = type metadata accessor for ArticleContainerViewController.ContainerView();
   *v8 = 0;
@@ -73,15 +73,15 @@
   return [(ArticleContainerViewController.ContainerView *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView)initWithCoder:(id)a3
+- (_TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView)initWithCoder:(id)coder
 {
   v4 = (&self->super.super.super.isa + OBJC_IVAR____TtCC20ProductPageExtension30ArticleContainerViewControllerP33_DBD3BDFA863817F76B447E10483B1F7213ContainerView_frameUpdatedCallback);
   *v4 = 0;
   v4[1] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ArticleContainerViewController.ContainerView();
-  v5 = a3;
-  v6 = [(ArticleContainerViewController.ContainerView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ArticleContainerViewController.ContainerView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

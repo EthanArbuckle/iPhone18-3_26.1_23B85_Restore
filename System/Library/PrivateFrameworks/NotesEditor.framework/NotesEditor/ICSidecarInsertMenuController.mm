@@ -6,10 +6,10 @@
 - (id)menuDidChange;
 - (void)cancel;
 - (void)dealloc;
-- (void)setDidReceiveItems:(id)a3;
-- (void)setMenuDidChange:(id)a3;
-- (void)setPresentingSourceRect:(CGRect)a3;
-- (void)sidecarDevicesDidChange:(id)a3;
+- (void)setDidReceiveItems:(id)items;
+- (void)setMenuDidChange:(id)change;
+- (void)setPresentingSourceRect:(CGRect)rect;
+- (void)sidecarDevicesDidChange:(id)change;
 @end
 
 @implementation ICSidecarInsertMenuController
@@ -29,12 +29,12 @@
   return result;
 }
 
-- (void)setPresentingSourceRect:(CGRect)a3
+- (void)setPresentingSourceRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = (self + OBJC_IVAR___ICSidecarInsertMenuController_presentingSourceRect);
   swift_beginAccess();
   *v7 = x;
@@ -61,11 +61,11 @@
 {
   ObjectType = swift_getObjectType();
   v4 = objc_opt_self();
-  v5 = self;
-  v6 = [v4 defaultCenter];
-  [v6 removeObserver_];
+  selfCopy = self;
+  defaultCenter = [v4 defaultCenter];
+  [defaultCenter removeObserver_];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(ICSidecarInsertMenuController *)&v7 dealloc];
 }
@@ -94,9 +94,9 @@
   return v4;
 }
 
-- (void)setMenuDidChange:(id)a3
+- (void)setMenuDidChange:(id)change
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(change);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -114,13 +114,13 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_2151AF750(v7);
 }
 
 - (id)menu
 {
-  v2 = self;
+  selfCopy = self;
   inserted = SidecarInsertMenuController.menu()();
 
   return inserted;
@@ -130,7 +130,7 @@
 {
   v3 = swift_allocObject();
   *(v3 + 16) = self;
-  v4 = self;
+  selfCopy = self;
   sub_2153958C4(sub_215397108, v3);
 }
 
@@ -158,9 +158,9 @@
   return v4;
 }
 
-- (void)setDidReceiveItems:(id)a3
+- (void)setDidReceiveItems:(id)items
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(items);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -178,18 +178,18 @@
   v7 = *v6;
   *v6 = v4;
   v6[1] = v5;
-  v8 = self;
+  selfCopy = self;
   sub_2151AF750(v7);
 }
 
-- (void)sidecarDevicesDidChange:(id)a3
+- (void)sidecarDevicesDidChange:(id)change
 {
   v4 = sub_21549E19C();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21549E16C();
-  v8 = self;
+  selfCopy = self;
   sub_2153965B8();
 
   (*(v5 + 8))(v7, v4);

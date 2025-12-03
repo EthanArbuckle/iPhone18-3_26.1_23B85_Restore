@@ -74,10 +74,10 @@
 
 - (id)outputImage
 {
-  v3 = [(CIPortraitLocalContrast *)self _convertToGrayscale];
+  _convertToGrayscale = [(CIPortraitLocalContrast *)self _convertToGrayscale];
   [(CIImage *)self->inputImage extent];
   inputImage = self->inputImage;
-  v8 = [v3 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), v4, v5, v6, v7}];
+  v8 = [_convertToGrayscale applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &inputImage, 1), v4, v5, v6, v7}];
   [(CIVector *)self->inputScale X];
   v10 = v9;
   [(CIVector *)self->inputScale Y];
@@ -85,9 +85,9 @@
   [(NSNumber *)self->inputBlur floatValue];
   if (v13 > 0.0)
   {
-    v14 = [v8 imageByClampingToExtent];
+    imageByClampingToExtent = [v8 imageByClampingToExtent];
     [(NSNumber *)self->inputBlur doubleValue];
-    v15 = [v14 imageByApplyingGaussianBlurWithSigma:?];
+    v15 = [imageByClampingToExtent imageByApplyingGaussianBlurWithSigma:?];
 LABEL_5:
     v22 = v15;
     [(CIImage *)self->inputImage extent];
@@ -101,9 +101,9 @@ LABEL_5:
   if (v18 < 1.0)
   {
     v19 = v18;
-    v20 = [v8 imageByClampingToExtent];
+    imageByClampingToExtent2 = [v8 imageByClampingToExtent];
     CGAffineTransformMakeScale(&v29, v19, v19);
-    v21 = [v20 imageByApplyingTransform:&v29 highQualityDownsample:1];
+    v21 = [imageByClampingToExtent2 imageByApplyingTransform:&v29 highQualityDownsample:1];
     v31 = @"inputScale";
     v32 = [NSNumber numberWithDouble:1.0 / v19];
     v15 = [v21 imageByApplyingFilter:@"CISoftCubicUpsample" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v32, &v31, 1)}];
@@ -111,12 +111,12 @@ LABEL_5:
   }
 
 LABEL_6:
-  v23 = [(CIPortraitLocalContrast *)self _kernelLocalContrast];
+  _kernelLocalContrast = [(CIPortraitLocalContrast *)self _kernelLocalContrast];
   [(CIImage *)self->inputImage extent];
   v30[0] = self->inputImage;
   v30[1] = v8;
   v30[2] = self->inputStrength;
-  return [v23 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v30, 3), v24, v25, v26, v27}];
+  return [_kernelLocalContrast applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v30, 3), v24, v25, v26, v27}];
 }
 
 @end

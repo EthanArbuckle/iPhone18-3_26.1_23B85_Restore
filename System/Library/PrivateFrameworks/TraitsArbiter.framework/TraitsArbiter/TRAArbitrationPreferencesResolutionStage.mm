@@ -1,23 +1,23 @@
 @interface TRAArbitrationPreferencesResolutionStage
 - (TRAArbiter)arbiter;
-- (TRAArbitrationPreferencesResolutionStage)initWithParticipantsRoles:(id)a3 preferencesType:(int64_t)a4 arbiter:(id)a5;
+- (TRAArbitrationPreferencesResolutionStage)initWithParticipantsRoles:(id)roles preferencesType:(int64_t)type arbiter:(id)arbiter;
 - (id)_setupStateDump;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (void)dealloc;
-- (void)updateResolutionWithContext:(id)a3;
+- (void)updateResolutionWithContext:(id)context;
 @end
 
 @implementation TRAArbitrationPreferencesResolutionStage
 
 - (id)succinctDescription
 {
-  v2 = [(TRAArbitrationPreferencesResolutionStage *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAArbitrationPreferencesResolutionStage *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -29,14 +29,14 @@
   return v3;
 }
 
-- (TRAArbitrationPreferencesResolutionStage)initWithParticipantsRoles:(id)a3 preferencesType:(int64_t)a4 arbiter:(id)a5
+- (TRAArbitrationPreferencesResolutionStage)initWithParticipantsRoles:(id)roles preferencesType:(int64_t)type arbiter:(id)arbiter
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  rolesCopy = roles;
+  arbiterCopy = arbiter;
+  v10 = arbiterCopy;
+  if (rolesCopy)
   {
-    if (v9)
+    if (arbiterCopy)
     {
       goto LABEL_3;
     }
@@ -60,26 +60,26 @@ LABEL_3:
   if (v11)
   {
     objc_storeWeak(&v11->_arbiter, v10);
-    v12->_preferencesType = a4;
-    v13 = [v8 copy];
+    v12->_preferencesType = type;
+    v13 = [rolesCopy copy];
     participantsRoles = v12->_participantsRoles;
     v12->_participantsRoles = v13;
 
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     resolutionPolicySpecifiers = v12->_resolutionPolicySpecifiers;
-    v12->_resolutionPolicySpecifiers = v15;
+    v12->_resolutionPolicySpecifiers = array;
 
-    v17 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     nodesSpecsSpecifiers = v12->_nodesSpecsSpecifiers;
-    v12->_nodesSpecsSpecifiers = v17;
+    v12->_nodesSpecsSpecifiers = array2;
 
-    v19 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     stageResolvers = v12->_stageResolvers;
-    v12->_stageResolvers = v19;
+    v12->_stageResolvers = array3;
 
-    v21 = [(TRAArbitrationPreferencesResolutionStage *)v12 _setupStateDump];
+    _setupStateDump = [(TRAArbitrationPreferencesResolutionStage *)v12 _setupStateDump];
     stateDumpHandle = v12->_stateDumpHandle;
-    v12->_stateDumpHandle = v21;
+    v12->_stateDumpHandle = _setupStateDump;
   }
 
   return v12;
@@ -93,10 +93,10 @@ LABEL_3:
   [(TRAArbitrationPreferencesResolutionStage *)&v3 dealloc];
 }
 
-- (void)updateResolutionWithContext:(id)a3
+- (void)updateResolutionWithContext:(id)context
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -117,8 +117,8 @@ LABEL_3:
         }
 
         v10 = *(*(&v42 + 1) + 8 * i);
-        v11 = [v4 acquiredParticipants];
-        [v10 updateStageParticipantsResolutionPolicies:v11 context:v4];
+        acquiredParticipants = [contextCopy acquiredParticipants];
+        [v10 updateStageParticipantsResolutionPolicies:acquiredParticipants context:contextCopy];
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v42 objects:v52 count:16];
@@ -153,7 +153,7 @@ LABEL_3:
         objc_enumerationMutation(v12);
       }
 
-      v15 = [*(*(&v38 + 1) + 8 * v17) updateStageTreeNodesSpecifications:v18 stageParticipantsRoles:self->_participantsRoles context:v4];
+      v15 = [*(*(&v38 + 1) + 8 * v17) updateStageTreeNodesSpecifications:v18 stageParticipantsRoles:self->_participantsRoles context:contextCopy];
 
       ++v17;
       v18 = v15;
@@ -198,16 +198,16 @@ LABEL_18:
           objc_enumerationMutation(v23);
         }
 
-        [*(*(&v34 + 1) + 8 * v28) resolveStagePreferencesWithContext:v4 preferencesTree:{self->_stagePreferencesTree, v33, v34}];
+        [*(*(&v34 + 1) + 8 * v28) resolveStagePreferencesWithContext:contextCopy preferencesTree:{self->_stagePreferencesTree, v33, v34}];
         v29 = TRALogCommon();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
           v30 = TRAStringFromTraitsPreferencesType(self->_preferencesType);
-          v31 = [(TRAPreferencesTree *)self->_stagePreferencesTree recursiveDescription];
+          recursiveDescription = [(TRAPreferencesTree *)self->_stagePreferencesTree recursiveDescription];
           *buf = v33;
           v47 = v30;
           v48 = 2114;
-          v49 = v31;
+          v49 = recursiveDescription;
           _os_log_debug_impl(&dword_26F353000, v29, OS_LOG_TYPE_DEBUG, "Current stage tree %{public}@: %{public}@", buf, 0x16u);
         }
 
@@ -234,49 +234,49 @@ uint64_t __86__TRAArbitrationPreferencesResolutionStage__addStageComponent_toArr
   return v7;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAArbitrationPreferencesResolutionStage *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAArbitrationPreferencesResolutionStage *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(TRAArbitrationPreferencesResolutionStage *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(TRAArbitrationPreferencesResolutionStage *)self succinctDescriptionBuilder];
   v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", -[NSMutableArray count](self->_resolutionPolicySpecifiers, "count")];
-  [v4 appendString:v5 withName:@"resolutionPolicySpecifiers count"];
+  [succinctDescriptionBuilder appendString:v5 withName:@"resolutionPolicySpecifiers count"];
 
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", -[NSMutableArray count](self->_nodesSpecsSpecifiers, "count")];
-  [v4 appendString:v6 withName:@"nodesSpecificationSpecifiers count"];
+  [succinctDescriptionBuilder appendString:v6 withName:@"nodesSpecificationSpecifiers count"];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", -[NSMutableArray count](self->_stageResolvers, "count")];
-  [v4 appendString:v7 withName:@"stageResolvers count"];
+  [succinctDescriptionBuilder appendString:v7 withName:@"stageResolvers count"];
 
-  v8 = [v4 appendUnsignedInteger:-[NSMutableArray count](self->_participantsRoles withName:{"count"), @"participantsRoles count"}];
+  v8 = [succinctDescriptionBuilder appendUnsignedInteger:-[NSMutableArray count](self->_participantsRoles withName:{"count"), @"participantsRoles count"}];
   if (self->_stagePreferencesTree)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __82__TRAArbitrationPreferencesResolutionStage_descriptionBuilderWithMultilinePrefix___block_invoke;
     v12[3] = &unk_279DD48D0;
-    v13 = v4;
-    v14 = self;
+    v13 = succinctDescriptionBuilder;
+    selfCopy = self;
     [v13 appendBodySectionWithName:@"Preference Tree" multilinePrefix:0 block:v12];
   }
 
   else
   {
-    v9 = [0 recursiveDescription];
-    [v4 appendString:v9 withName:@"Preference Tree"];
+    recursiveDescription = [0 recursiveDescription];
+    [succinctDescriptionBuilder appendString:recursiveDescription withName:@"Preference Tree"];
   }
 
-  [v4 appendArraySection:self->_resolutionPolicySpecifiers withName:@"Resolution Policy Specifiers" skipIfEmpty:0];
-  [v4 appendArraySection:self->_stageResolvers withName:@"Resolvers" skipIfEmpty:0];
-  v10 = [v4 appendUnsignedInteger:-[NSMutableArray count](self->_participantsRoles withName:{"count"), @"Managed Roles"}];
+  [succinctDescriptionBuilder appendArraySection:self->_resolutionPolicySpecifiers withName:@"Resolution Policy Specifiers" skipIfEmpty:0];
+  [succinctDescriptionBuilder appendArraySection:self->_stageResolvers withName:@"Resolvers" skipIfEmpty:0];
+  v10 = [succinctDescriptionBuilder appendUnsignedInteger:-[NSMutableArray count](self->_participantsRoles withName:{"count"), @"Managed Roles"}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 void __82__TRAArbitrationPreferencesResolutionStage_descriptionBuilderWithMultilinePrefix___block_invoke(uint64_t a1)

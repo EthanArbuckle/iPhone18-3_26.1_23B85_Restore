@@ -1,6 +1,6 @@
 @interface CKKTEnhancedProtectionStatusCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKKTEnhancedProtectionStatusCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 state:(int64_t)a5 delegate:(id)a6 handlesInChat:(id)a7 verifiedHandles:(id)a8 titleString:(id)a9 shouldShowMacHeader:(BOOL)a10;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKKTEnhancedProtectionStatusCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier state:(int64_t)state delegate:(id)delegate handlesInChat:(id)chat verifiedHandles:(id)handles titleString:(id)string shouldShowMacHeader:(BOOL)self0;
 - (CKKTEnhancedProtectionStatusCellDelegate)delegate;
 - (id)clearWarningAction;
 - (id)ktStatusMenu;
@@ -19,41 +19,41 @@
 - (void)setupStatusButton;
 - (void)setupTitleLabel;
 - (void)setupView;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateTitleAndStatusButtonConfiguration;
 @end
 
 @implementation CKKTEnhancedProtectionStatusCell
 
-- (CKKTEnhancedProtectionStatusCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 state:(int64_t)a5 delegate:(id)a6 handlesInChat:(id)a7 verifiedHandles:(id)a8 titleString:(id)a9 shouldShowMacHeader:(BOOL)a10
+- (CKKTEnhancedProtectionStatusCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier state:(int64_t)state delegate:(id)delegate handlesInChat:(id)chat verifiedHandles:(id)handles titleString:(id)string shouldShowMacHeader:(BOOL)self0
 {
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  delegateCopy = delegate;
+  chatCopy = chat;
+  handlesCopy = handles;
+  stringCopy = string;
   v23.receiver = self;
   v23.super_class = CKKTEnhancedProtectionStatusCell;
-  v20 = [(CKDetailsCell *)&v23 initWithStyle:a3 reuseIdentifier:a4];
+  v20 = [(CKDetailsCell *)&v23 initWithStyle:style reuseIdentifier:identifier];
   v21 = v20;
   if (v20)
   {
-    v20->_enhancedProtectionStatusCellState = a5;
-    objc_storeWeak(&v20->_delegate, v16);
-    v21->_handlesInChatCount = [v17 count];
-    v21->_verifiedHandlesCount = [v18 count];
-    objc_storeStrong(&v21->_titleString, a9);
-    v21->_shouldShowMacHeader = a10;
+    v20->_enhancedProtectionStatusCellState = state;
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    v21->_handlesInChatCount = [chatCopy count];
+    v21->_verifiedHandlesCount = [handlesCopy count];
+    objc_storeStrong(&v21->_titleString, string);
+    v21->_shouldShowMacHeader = header;
     [(CKKTEnhancedProtectionStatusCell *)v21 setupView];
   }
 
   return v21;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = CKKTEnhancedProtectionStatusCell;
-  [(CKKTEnhancedProtectionStatusCell *)&v4 traitCollectionDidChange:a3];
+  [(CKKTEnhancedProtectionStatusCell *)&v4 traitCollectionDidChange:change];
   [(CKKTEnhancedProtectionStatusCell *)self activateConstraints];
 }
 
@@ -65,18 +65,18 @@
   [(CKKTEnhancedProtectionStatusCell *)self activateConstraints];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(CKKTEnhancedProtectionStatusCell *)self contentView:a3.width];
+  width = fits.width;
+  v5 = [(CKKTEnhancedProtectionStatusCell *)self contentView:fits.width];
   [v5 layoutMargins];
   v7 = v6;
-  v8 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v8 layoutMargins];
+  contentView = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView layoutMargins];
   v10 = v7 + v9;
 
-  v11 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v11 frame];
+  contentView2 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView2 frame];
   v13 = v12 - v10;
 
   [(UIButton *)self->_ktStatusButton sizeThatFits:v13, 1.79769313e308];
@@ -110,11 +110,11 @@
     v26 = v19 + v26 + v28;
   }
 
-  v29 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v29 layoutMargins];
+  contentView3 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView3 layoutMargins];
   v31 = v26 + v30;
-  v32 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v32 layoutMargins];
+  contentView4 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView4 layoutMargins];
   v34 = v31 + v33;
 
   v35 = width;
@@ -135,8 +135,8 @@
     [(CKKTEnhancedProtectionStatusCell *)self setupMacHeaderLabel];
   }
 
-  v3 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v3 setBackgroundColor:0];
+  contentView = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView setBackgroundColor:0];
 
   [(CKKTEnhancedProtectionStatusCell *)self setupConstraintsForLayouts];
 }
@@ -157,8 +157,8 @@
   [(UILabel *)self->_ktTitleLabel setLineBreakMode:0];
   [(UILabel *)self->_ktTitleLabel setNumberOfLines:0];
   [(UILabel *)self->_ktTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v8 addSubview:self->_ktTitleLabel];
+  contentView = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView addSubview:self->_ktTitleLabel];
 }
 
 - (id)statusButtonConfiguration
@@ -189,8 +189,8 @@
           v36 = [MEMORY[0x1E69DCAD8] configurationWithScale:1];
           v37 = [v35 imageWithSymbolConfiguration:v36];
 
-          v38 = [MEMORY[0x1E69DC888] redColor];
-          v39 = [v37 imageWithTintColor:v38];
+          redColor = [MEMORY[0x1E69DC888] redColor];
+          v39 = [v37 imageWithTintColor:redColor];
 
           v40 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
           [v40 setImage:v39];
@@ -209,7 +209,7 @@
           v18 = [v10 copy];
 LABEL_24:
 
-          v21 = [MEMORY[0x1E69DC888] systemRedColor];
+          systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
           v22 = MEMORY[0x1E69DCAB8];
           v23 = @"exclamationmark.triangle.fill";
 LABEL_25:
@@ -244,11 +244,11 @@ LABEL_23:
 
   if (enhancedProtectionStatusCellState == 1)
   {
-    v12 = [(CKKTEnhancedProtectionStatusCell *)self handlesInChatCount];
+    handlesInChatCount = [(CKKTEnhancedProtectionStatusCell *)self handlesInChatCount];
     v13 = objc_alloc(MEMORY[0x1E696AAB0]);
     v14 = CKFrameworkBundle();
     v15 = v14;
-    if (v12 == 1)
+    if (handlesInChatCount == 1)
     {
       v16 = @"KT_SINGLE_VERIFIED";
     }
@@ -262,8 +262,8 @@ LABEL_23:
     v18 = [v13 initWithString:v17];
 
     v19 = +[CKUIBehavior sharedBehaviors];
-    v20 = [v19 theme];
-    v21 = [v20 secondaryLabelColor];
+    theme = [v19 theme];
+    systemRedColor = [theme secondaryLabelColor];
 
     v22 = MEMORY[0x1E69DCAB8];
     v23 = @"checkmark.circle.fill";
@@ -293,10 +293,10 @@ LABEL_23:
     v27 = [v26 localizedStringForKey:@"N_OF_N_VERIFIED" value:&stru_1F04268F8 table:@"ChatKitFormats-Key-Transparency"];
     v28 = [v25 localizedStringWithFormat:v27, -[CKKTEnhancedProtectionStatusCell verifiedHandlesCount](self, "verifiedHandlesCount"), -[CKKTEnhancedProtectionStatusCell handlesInChatCount](self, "handlesInChatCount")];
 
-    v29 = [MEMORY[0x1E69DC668] sharedApplication];
-    v30 = [v29 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v30 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v31 = @"\u200F";
     }
@@ -321,42 +321,42 @@ LABEL_27:
 
 LABEL_28:
   v47 = +[CKUIBehavior sharedBehaviors];
-  v48 = [v47 theme];
-  v21 = [v48 secondaryLabelColor];
+  theme2 = [v47 theme];
+  systemRedColor = [theme2 secondaryLabelColor];
 
   v45 = 0;
 LABEL_29:
-  v49 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-  [v49 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-  [v49 setAttributedTitle:v18];
-  [v49 setBaseForegroundColor:v21];
-  [v49 setBaseBackgroundColor:v21];
+  plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+  [plainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+  [plainButtonConfiguration setAttributedTitle:v18];
+  [plainButtonConfiguration setBaseForegroundColor:systemRedColor];
+  [plainButtonConfiguration setBaseBackgroundColor:systemRedColor];
   v50 = [MEMORY[0x1E69DCAD8] configurationWithScale:1];
   v51 = [v45 imageWithSymbolConfiguration:v50];
 
-  [v49 setImage:v51];
+  [plainButtonConfiguration setImage:v51];
   v52 = +[CKUIBehavior sharedBehaviors];
   [v52 ktStatusCellImagePadding];
-  [v49 setImagePadding:?];
+  [plainButtonConfiguration setImagePadding:?];
 
-  [v49 setImagePlacement:2];
-  [v49 setTitleAlignment:1];
+  [plainButtonConfiguration setImagePlacement:2];
+  [plainButtonConfiguration setTitleAlignment:1];
 
-  return v49;
+  return plainButtonConfiguration;
 }
 
 - (void)setupStatusButton
 {
   v3 = MEMORY[0x1E69DC738];
-  v4 = [(CKKTEnhancedProtectionStatusCell *)self statusButtonConfiguration];
-  v5 = [v3 buttonWithConfiguration:v4 primaryAction:0];
+  statusButtonConfiguration = [(CKKTEnhancedProtectionStatusCell *)self statusButtonConfiguration];
+  v5 = [v3 buttonWithConfiguration:statusButtonConfiguration primaryAction:0];
   ktStatusButton = self->_ktStatusButton;
   self->_ktStatusButton = v5;
 
   [(UIButton *)self->_ktStatusButton setPreferredBehavioralStyle:1];
   v7 = self->_ktStatusButton;
-  v8 = [(CKKTEnhancedProtectionStatusCell *)self ktStatusMenu];
-  [(UIButton *)v7 setMenu:v8];
+  ktStatusMenu = [(CKKTEnhancedProtectionStatusCell *)self ktStatusMenu];
+  [(UIButton *)v7 setMenu:ktStatusMenu];
 
   [(UIButton *)self->_ktStatusButton setShowsMenuAsPrimaryAction:1];
   if ((self->_enhancedProtectionStatusCellState - 1) <= 2)
@@ -365,30 +365,30 @@ LABEL_29:
   }
 
   [(UIButton *)self->_ktStatusButton setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v9 addSubview:self->_ktStatusButton];
+  contentView = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView addSubview:self->_ktStatusButton];
 }
 
 - (void)reconfigureStatusButton
 {
   ktStatusButton = self->_ktStatusButton;
-  v4 = [(CKKTEnhancedProtectionStatusCell *)self statusButtonConfiguration];
-  [(UIButton *)ktStatusButton setConfiguration:v4];
+  statusButtonConfiguration = [(CKKTEnhancedProtectionStatusCell *)self statusButtonConfiguration];
+  [(UIButton *)ktStatusButton setConfiguration:statusButtonConfiguration];
 
   v6 = self->_ktStatusButton;
-  v5 = [(CKKTEnhancedProtectionStatusCell *)self ktStatusMenu];
-  [(UIButton *)v6 setMenu:v5];
+  ktStatusMenu = [(CKKTEnhancedProtectionStatusCell *)self ktStatusMenu];
+  [(UIButton *)v6 setMenu:ktStatusMenu];
 
   [(UIButton *)v6 setUserInteractionEnabled:(self->_enhancedProtectionStatusCellState - 4) < 0xFFFFFFFFFFFFFFFDLL];
 }
 
 - (void)setupSeparators
 {
-  v3 = [(CKDetailsCell *)self topSeperator];
-  [v3 setHidden:1];
+  topSeperator = [(CKDetailsCell *)self topSeperator];
+  [topSeperator setHidden:1];
 
-  v4 = [(CKDetailsCell *)self bottomSeperator];
-  [v4 setHidden:1];
+  bottomSeperator = [(CKDetailsCell *)self bottomSeperator];
+  [bottomSeperator setHidden:1];
 
   [(CKDetailsCell *)self setIndentTopSeperator:1];
 
@@ -398,13 +398,13 @@ LABEL_29:
 - (void)setupConstraintsForLayouts
 {
   v135[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   horizontalLayoutConstraints = self->_horizontalLayoutConstraints;
-  self->_horizontalLayoutConstraints = v3;
+  self->_horizontalLayoutConstraints = array;
 
-  v5 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   verticalLayoutConstraints = self->_verticalLayoutConstraints;
-  self->_verticalLayoutConstraints = v5;
+  self->_verticalLayoutConstraints = array2;
 
   if (CKIsRunningInMacCatalyst())
   {
@@ -414,61 +414,61 @@ LABEL_29:
       if (self->_shouldShowMacHeader)
       {
         v90 = self->_horizontalLayoutConstraints;
-        v120 = [(UILabel *)macHeaderLabel topAnchor];
-        v128 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-        v125 = [v128 layoutMarginsGuide];
-        v110 = [v125 topAnchor];
+        topAnchor = [(UILabel *)macHeaderLabel topAnchor];
+        contentView = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+        layoutMarginsGuide = [contentView layoutMarginsGuide];
+        topAnchor2 = [layoutMarginsGuide topAnchor];
         v115 = +[CKUIBehavior sharedBehaviors];
         [v115 detailsSectionHeaderPaddingAbove];
-        v105 = [v120 constraintEqualToAnchor:v110 constant:?];
+        v105 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
         v135[0] = v105;
-        v95 = [(UILabel *)self->_macHeaderLabel heightAnchor];
-        v100 = [(UILabel *)self->_macHeaderLabel font];
-        [v100 pointSize];
-        v85 = [v95 constraintEqualToConstant:?];
+        heightAnchor = [(UILabel *)self->_macHeaderLabel heightAnchor];
+        font = [(UILabel *)self->_macHeaderLabel font];
+        [font pointSize];
+        v85 = [heightAnchor constraintEqualToConstant:?];
         v135[1] = v85;
-        v73 = [(UILabel *)self->_macHeaderLabel leadingAnchor];
-        v82 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-        v78 = [v82 layoutMarginsGuide];
-        v71 = [v78 leadingAnchor];
+        leadingAnchor = [(UILabel *)self->_macHeaderLabel leadingAnchor];
+        contentView2 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+        layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+        leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
         v8 = +[CKUIBehavior sharedBehaviors];
         [v8 detailsSectionHeaderPaddingLeading];
-        v9 = [v73 constraintEqualToAnchor:v71 constant:?];
+        v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
         v135[2] = v9;
-        v10 = [(UILabel *)self->_macHeaderLabel trailingAnchor];
-        v11 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-        v12 = [v11 layoutMarginsGuide];
-        v13 = [v12 trailingAnchor];
-        v14 = [v10 constraintEqualToAnchor:v13];
+        trailingAnchor = [(UILabel *)self->_macHeaderLabel trailingAnchor];
+        contentView3 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+        layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+        trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+        v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v135[3] = v14;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v135 count:4];
         [(NSMutableArray *)v90 addObjectsFromArray:v15];
 
         v101 = self->_verticalLayoutConstraints;
-        v121 = [(UILabel *)self->_macHeaderLabel topAnchor];
-        v129 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-        v126 = [v129 layoutMarginsGuide];
-        v111 = [v126 topAnchor];
+        topAnchor3 = [(UILabel *)self->_macHeaderLabel topAnchor];
+        contentView4 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+        layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+        topAnchor4 = [layoutMarginsGuide4 topAnchor];
         v116 = +[CKUIBehavior sharedBehaviors];
         [v116 detailsSectionHeaderPaddingAbove];
-        v106 = [v121 constraintEqualToAnchor:v111 constant:?];
+        v106 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:?];
         v134[0] = v106;
-        v91 = [(UILabel *)self->_macHeaderLabel heightAnchor];
-        v96 = [(UILabel *)self->_macHeaderLabel font];
-        [v96 pointSize];
-        v86 = [v91 constraintEqualToConstant:?];
+        heightAnchor2 = [(UILabel *)self->_macHeaderLabel heightAnchor];
+        font2 = [(UILabel *)self->_macHeaderLabel font];
+        [font2 pointSize];
+        v86 = [heightAnchor2 constraintEqualToConstant:?];
         v134[1] = v86;
-        v77 = [(UILabel *)self->_macHeaderLabel leadingAnchor];
-        v81 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-        v74 = [v81 layoutMarginsGuide];
-        v16 = [v74 leadingAnchor];
-        v17 = [v77 constraintEqualToAnchor:v16];
+        leadingAnchor3 = [(UILabel *)self->_macHeaderLabel leadingAnchor];
+        contentView5 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+        layoutMarginsGuide5 = [contentView5 layoutMarginsGuide];
+        leadingAnchor4 = [layoutMarginsGuide5 leadingAnchor];
+        v17 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v134[2] = v17;
-        v18 = [(UILabel *)self->_macHeaderLabel trailingAnchor];
-        v19 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-        v20 = [v19 layoutMarginsGuide];
-        v21 = [v20 trailingAnchor];
-        v22 = [v18 constraintEqualToAnchor:v21];
+        trailingAnchor3 = [(UILabel *)self->_macHeaderLabel trailingAnchor];
+        contentView6 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+        layoutMarginsGuide6 = [contentView6 layoutMarginsGuide];
+        trailingAnchor4 = [layoutMarginsGuide6 trailingAnchor];
+        v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v134[3] = v22;
         v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v134 count:4];
         [(NSMutableArray *)v101 addObjectsFromArray:v23];
@@ -477,7 +477,7 @@ LABEL_29:
   }
 
   v117 = self->_verticalLayoutConstraints;
-  v24 = [(UILabel *)self->_ktTitleLabel topAnchor];
+  topAnchor5 = [(UILabel *)self->_ktTitleLabel topAnchor];
   v25 = self->_macHeaderLabel;
   v122 = v25;
   if (v25)
@@ -487,28 +487,28 @@ LABEL_29:
 
   else
   {
-    v81 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-    v77 = [v81 layoutMarginsGuide];
-    [v77 topAnchor];
+    contentView5 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+    leadingAnchor3 = [contentView5 layoutMarginsGuide];
+    [leadingAnchor3 topAnchor];
   }
   v26 = ;
   v112 = +[CKUIBehavior sharedBehaviors];
   [v112 detailsCellLabelPadding];
-  v102 = [v24 constraintEqualToAnchor:v26 constant:?];
+  v102 = [topAnchor5 constraintEqualToAnchor:v26 constant:?];
   v133[0] = v102;
-  v92 = [(UILabel *)self->_ktTitleLabel leadingAnchor];
-  v97 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v97 layoutMarginsGuide];
-  v87 = v107 = v24;
-  v27 = [v87 leadingAnchor];
-  v28 = [v92 constraintEqualToAnchor:v27];
+  leadingAnchor5 = [(UILabel *)self->_ktTitleLabel leadingAnchor];
+  contentView7 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView7 layoutMarginsGuide];
+  v87 = v107 = topAnchor5;
+  leadingAnchor6 = [v87 leadingAnchor];
+  v28 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v133[1] = v28;
-  v29 = [(UILabel *)self->_ktTitleLabel trailingAnchor];
-  v30 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v30 layoutMarginsGuide];
+  trailingAnchor5 = [(UILabel *)self->_ktTitleLabel trailingAnchor];
+  contentView8 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView8 layoutMarginsGuide];
   v32 = v31 = v26;
-  v33 = [v32 trailingAnchor];
-  v34 = [v29 constraintLessThanOrEqualToAnchor:v33];
+  trailingAnchor6 = [v32 trailingAnchor];
+  v34 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
   v133[2] = v34;
   v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v133 count:3];
   [(NSMutableArray *)v117 addObjectsFromArray:v35];
@@ -516,41 +516,41 @@ LABEL_29:
   if (!v122)
   {
 
-    v31 = v81;
+    v31 = contentView5;
   }
 
   v88 = self->_verticalLayoutConstraints;
-  v123 = [(UIButton *)self->_ktStatusButton topAnchor];
-  v113 = [(UILabel *)self->_ktTitleLabel bottomAnchor];
+  topAnchor6 = [(UIButton *)self->_ktStatusButton topAnchor];
+  bottomAnchor = [(UILabel *)self->_ktTitleLabel bottomAnchor];
   v118 = +[CKUIBehavior sharedBehaviors];
   [v118 detailsCellLabelPadding];
-  v108 = [v123 constraintEqualToAnchor:v113 constant:v36 + v36];
+  v108 = [topAnchor6 constraintEqualToAnchor:bottomAnchor constant:v36 + v36];
   v132[0] = v108;
-  v98 = [(UIButton *)self->_ktStatusButton leadingAnchor];
-  v103 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  v93 = [v103 layoutMarginsGuide];
-  v83 = [v93 leadingAnchor];
-  v79 = [v98 constraintEqualToAnchor:v83];
+  leadingAnchor7 = [(UIButton *)self->_ktStatusButton leadingAnchor];
+  contentView9 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  layoutMarginsGuide7 = [contentView9 layoutMarginsGuide];
+  leadingAnchor8 = [layoutMarginsGuide7 leadingAnchor];
+  v79 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
   v132[1] = v79;
-  v72 = [(UIButton *)self->_ktStatusButton trailingAnchor];
-  v75 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  v70 = [v75 layoutMarginsGuide];
-  v37 = [v70 trailingAnchor];
-  v38 = [v72 constraintLessThanOrEqualToAnchor:v37];
+  trailingAnchor7 = [(UIButton *)self->_ktStatusButton trailingAnchor];
+  contentView10 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  layoutMarginsGuide8 = [contentView10 layoutMarginsGuide];
+  trailingAnchor8 = [layoutMarginsGuide8 trailingAnchor];
+  v38 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8];
   v132[2] = v38;
-  v39 = [(UIButton *)self->_ktStatusButton bottomAnchor];
-  v40 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  v41 = [v40 layoutMarginsGuide];
-  v42 = [v41 bottomAnchor];
+  bottomAnchor2 = [(UIButton *)self->_ktStatusButton bottomAnchor];
+  contentView11 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  layoutMarginsGuide9 = [contentView11 layoutMarginsGuide];
+  bottomAnchor3 = [layoutMarginsGuide9 bottomAnchor];
   v43 = +[CKUIBehavior sharedBehaviors];
   [v43 detailsCellLabelPadding];
-  v45 = [v39 constraintEqualToAnchor:v42 constant:-v44];
+  v45 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-v44];
   v132[3] = v45;
   v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:v132 count:4];
   [(NSMutableArray *)v88 addObjectsFromArray:v46];
 
   v119 = self->_horizontalLayoutConstraints;
-  v47 = [(UILabel *)self->_ktTitleLabel topAnchor];
+  topAnchor7 = [(UILabel *)self->_ktTitleLabel topAnchor];
   v48 = self->_macHeaderLabel;
   v127 = v48;
   if (v48)
@@ -560,34 +560,34 @@ LABEL_29:
 
   else
   {
-    v72 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-    v70 = [v72 layoutMarginsGuide];
-    [v70 topAnchor];
+    trailingAnchor7 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+    layoutMarginsGuide8 = [trailingAnchor7 layoutMarginsGuide];
+    [layoutMarginsGuide8 topAnchor];
   }
   v49 = ;
   v124 = +[CKUIBehavior sharedBehaviors];
   [v124 detailsCellLabelPadding];
-  v114 = [v47 constraintEqualToAnchor:v49 constant:?];
+  v114 = [topAnchor7 constraintEqualToAnchor:v49 constant:?];
   v131[0] = v114;
-  v99 = [(UILabel *)self->_ktTitleLabel bottomAnchor];
-  v109 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  v104 = [v109 layoutMarginsGuide];
-  v84 = [v104 bottomAnchor];
+  bottomAnchor4 = [(UILabel *)self->_ktTitleLabel bottomAnchor];
+  contentView12 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  layoutMarginsGuide10 = [contentView12 layoutMarginsGuide];
+  bottomAnchor5 = [layoutMarginsGuide10 bottomAnchor];
   v89 = +[CKUIBehavior sharedBehaviors];
   [v89 detailsCellLabelPadding];
-  v80 = [v99 constraintEqualToAnchor:v84 constant:-v50];
+  v80 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-v50];
   v131[1] = v80;
-  v76 = [(UILabel *)self->_ktTitleLabel leadingAnchor];
-  v51 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  v52 = [v51 layoutMarginsGuide];
-  v53 = [v52 leadingAnchor];
-  [v76 constraintEqualToAnchor:v53];
-  v54 = v94 = v47;
+  leadingAnchor9 = [(UILabel *)self->_ktTitleLabel leadingAnchor];
+  contentView13 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  layoutMarginsGuide11 = [contentView13 layoutMarginsGuide];
+  leadingAnchor10 = [layoutMarginsGuide11 leadingAnchor];
+  [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
+  v54 = v94 = topAnchor7;
   v131[2] = v54;
   [(UILabel *)self->_ktTitleLabel trailingAnchor];
   v56 = v55 = v49;
-  v57 = [(UIButton *)self->_ktStatusButton leadingAnchor];
-  v58 = [v56 constraintLessThanOrEqualToAnchor:v57];
+  leadingAnchor11 = [(UIButton *)self->_ktStatusButton leadingAnchor];
+  v58 = [v56 constraintLessThanOrEqualToAnchor:leadingAnchor11];
   v131[3] = v58;
   v59 = [MEMORY[0x1E695DEC8] arrayWithObjects:v131 count:4];
   [(NSMutableArray *)v119 addObjectsFromArray:v59];
@@ -595,19 +595,19 @@ LABEL_29:
   if (!v127)
   {
 
-    v55 = v72;
+    v55 = trailingAnchor7;
   }
 
   v60 = self->_horizontalLayoutConstraints;
-  v61 = [(UIButton *)self->_ktStatusButton trailingAnchor];
-  v62 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  v63 = [v62 layoutMarginsGuide];
-  v64 = [v63 trailingAnchor];
-  v65 = [v61 constraintEqualToAnchor:v64];
+  trailingAnchor9 = [(UIButton *)self->_ktStatusButton trailingAnchor];
+  contentView14 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  layoutMarginsGuide12 = [contentView14 layoutMarginsGuide];
+  trailingAnchor10 = [layoutMarginsGuide12 trailingAnchor];
+  v65 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
   v130[0] = v65;
-  v66 = [(UIButton *)self->_ktStatusButton centerYAnchor];
-  v67 = [(UILabel *)self->_ktTitleLabel centerYAnchor];
-  v68 = [v66 constraintEqualToAnchor:v67];
+  centerYAnchor = [(UIButton *)self->_ktStatusButton centerYAnchor];
+  centerYAnchor2 = [(UILabel *)self->_ktTitleLabel centerYAnchor];
+  v68 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v130[1] = v68;
   v69 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:2];
   [(NSMutableArray *)v60 addObjectsFromArray:v69];
@@ -616,26 +616,26 @@ LABEL_29:
 - (void)activateConstraints
 {
   ktStatusButton = self->_ktStatusButton;
-  v4 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v4 frame];
+  contentView = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView frame];
   [(UIButton *)ktStatusButton sizeThatFits:v5, 1.79769313e308];
   v7 = v6;
 
   ktTitleLabel = self->_ktTitleLabel;
-  v9 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v9 frame];
+  contentView2 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView2 frame];
   [(UILabel *)ktTitleLabel sizeThatFits:v10, 1.79769313e308];
   v12 = v11;
 
-  v13 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v13 layoutMargins];
+  contentView3 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView3 layoutMargins];
   v15 = v14;
-  v16 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v16 layoutMargins];
+  contentView4 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView4 layoutMargins];
   v18 = v15 + v17;
 
-  v19 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
-  [v19 frame];
+  contentView5 = [(CKKTEnhancedProtectionStatusCell *)self contentView];
+  [contentView5 frame];
   v21 = v20 - v18;
 
   [MEMORY[0x1E696ACD8] deactivateConstraints:self->_horizontalLayoutConstraints];
@@ -668,61 +668,61 @@ LABEL_29:
   enhancedProtectionStatusCellState = self->_enhancedProtectionStatusCellState;
   if ((enhancedProtectionStatusCellState - 6) < 2)
   {
-    v3 = [(CKKTEnhancedProtectionStatusCell *)self menuForKTStatusUnavailable];
+    menuForKTStatusUnavailable = [(CKKTEnhancedProtectionStatusCell *)self menuForKTStatusUnavailable];
   }
 
   else if (enhancedProtectionStatusCellState == 4)
   {
-    v3 = [(CKKTEnhancedProtectionStatusCell *)self menuForKTStatusError];
+    menuForKTStatusUnavailable = [(CKKTEnhancedProtectionStatusCell *)self menuForKTStatusError];
   }
 
   else if (enhancedProtectionStatusCellState == 5)
   {
-    v3 = [(CKKTEnhancedProtectionStatusCell *)self menuForKTStatusTurnedOff];
+    menuForKTStatusUnavailable = [(CKKTEnhancedProtectionStatusCell *)self menuForKTStatusTurnedOff];
   }
 
   else
   {
-    v3 = 0;
+    menuForKTStatusUnavailable = 0;
   }
 
-  return v3;
+  return menuForKTStatusUnavailable;
 }
 
 - (id)menuForKTStatusError
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKKTEnhancedProtectionStatusCell *)self learnMoreAction];
-  v5 = [(CKKTEnhancedProtectionStatusCell *)self reportToAppleAction];
-  v6 = [(CKKTEnhancedProtectionStatusCell *)self verifyConversationAction];
-  v7 = [(CKKTEnhancedProtectionStatusCell *)self clearWarningAction];
+  array = [MEMORY[0x1E695DF70] array];
+  learnMoreAction = [(CKKTEnhancedProtectionStatusCell *)self learnMoreAction];
+  reportToAppleAction = [(CKKTEnhancedProtectionStatusCell *)self reportToAppleAction];
+  verifyConversationAction = [(CKKTEnhancedProtectionStatusCell *)self verifyConversationAction];
+  clearWarningAction = [(CKKTEnhancedProtectionStatusCell *)self clearWarningAction];
   v8 = MEMORY[0x1E69DCC60];
-  v17[0] = v7;
+  v17[0] = clearWarningAction;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   v10 = [v8 menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v9];
 
   v16[0] = v10;
-  v16[1] = v6;
-  v16[2] = v5;
-  v16[3] = v4;
+  v16[1] = verifyConversationAction;
+  v16[2] = reportToAppleAction;
+  v16[3] = learnMoreAction;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:4];
-  [v3 addObjectsFromArray:v11];
+  [array addObjectsFromArray:v11];
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isKeyTransparencyReportToAppleEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isKeyTransparencyReportToAppleEnabled = [mEMORY[0x1E69A8070] isKeyTransparencyReportToAppleEnabled];
 
-  if ((v13 & 1) == 0)
+  if ((isKeyTransparencyReportToAppleEnabled & 1) == 0)
   {
-    [v3 removeObject:v5];
+    [array removeObject:reportToAppleAction];
   }
 
   if (self->_handlesInChatCount >= 2)
   {
-    [v3 removeObject:v6];
+    [array removeObject:verifyConversationAction];
   }
 
-  v14 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:v3];
+  v14 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:array];
 
   return v14;
 }
@@ -730,30 +730,30 @@ LABEL_29:
 - (id)menuForKTStatusUnavailable
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKKTEnhancedProtectionStatusCell *)self learnMoreAction];
-  v5 = [(CKKTEnhancedProtectionStatusCell *)self reportToAppleAction];
-  v6 = [(CKKTEnhancedProtectionStatusCell *)self clearWarningAction];
+  array = [MEMORY[0x1E695DF70] array];
+  learnMoreAction = [(CKKTEnhancedProtectionStatusCell *)self learnMoreAction];
+  reportToAppleAction = [(CKKTEnhancedProtectionStatusCell *)self reportToAppleAction];
+  clearWarningAction = [(CKKTEnhancedProtectionStatusCell *)self clearWarningAction];
   v7 = MEMORY[0x1E69DCC60];
-  v16[0] = v6;
+  v16[0] = clearWarningAction;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v9 = [v7 menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v8];
 
   v15[0] = v9;
-  v15[1] = v5;
-  v15[2] = v4;
+  v15[1] = reportToAppleAction;
+  v15[2] = learnMoreAction;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:3];
-  [v3 addObjectsFromArray:v10];
+  [array addObjectsFromArray:v10];
 
-  v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v12 = [v11 isKeyTransparencyReportToAppleEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isKeyTransparencyReportToAppleEnabled = [mEMORY[0x1E69A8070] isKeyTransparencyReportToAppleEnabled];
 
-  if ((v12 & 1) == 0)
+  if ((isKeyTransparencyReportToAppleEnabled & 1) == 0)
   {
-    [v3 removeObject:v5];
+    [array removeObject:reportToAppleAction];
   }
 
-  v13 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:v3];
+  v13 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:array];
 
   return v13;
 }
@@ -761,20 +761,20 @@ LABEL_29:
 - (id)menuForKTStatusTurnedOff
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKKTEnhancedProtectionStatusCell *)self learnMoreAction];
-  v5 = [(CKKTEnhancedProtectionStatusCell *)self clearWarningAction];
+  array = [MEMORY[0x1E695DF70] array];
+  learnMoreAction = [(CKKTEnhancedProtectionStatusCell *)self learnMoreAction];
+  clearWarningAction = [(CKKTEnhancedProtectionStatusCell *)self clearWarningAction];
   v6 = MEMORY[0x1E69DCC60];
-  v13[0] = v5;
+  v13[0] = clearWarningAction;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v8 = [v6 menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v7];
 
   v12[0] = v8;
-  v12[1] = v4;
+  v12[1] = learnMoreAction;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:2];
-  [v3 addObjectsFromArray:v9];
+  [array addObjectsFromArray:v9];
 
-  v10 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:v3];
+  v10 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 children:array];
 
   return v10;
 }

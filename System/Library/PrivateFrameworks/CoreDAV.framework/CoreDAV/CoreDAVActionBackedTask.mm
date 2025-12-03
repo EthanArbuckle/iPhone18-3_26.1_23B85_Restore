@@ -12,8 +12,8 @@
   v4 = [(CoreDAVTask *)&v7 description];
   [v3 appendFormat:@"[%@ ", v4];
 
-  v5 = [(CoreDAVActionBackedTask *)self backingAction];
-  [v3 appendFormat:@"| Backing Action: [%@]", v5];
+  backingAction = [(CoreDAVActionBackedTask *)self backingAction];
+  [v3 appendFormat:@"| Backing Action: [%@]", backingAction];
 
   [v3 appendFormat:@"]"];
 

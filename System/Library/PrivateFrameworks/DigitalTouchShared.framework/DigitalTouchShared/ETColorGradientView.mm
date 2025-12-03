@@ -1,17 +1,17 @@
 @interface ETColorGradientView
-- (ETColorGradientView)initWithFrame:(CGRect)a3;
-- (void)hideColorWheelWithRotation:(double)a3 completion:(id)a4;
-- (void)prepareToAnimateColorWheelWithRotation:(double)a3;
-- (void)revealColorWheelWithCompletion:(id)a3;
+- (ETColorGradientView)initWithFrame:(CGRect)frame;
+- (void)hideColorWheelWithRotation:(double)rotation completion:(id)completion;
+- (void)prepareToAnimateColorWheelWithRotation:(double)rotation;
+- (void)revealColorWheelWithCompletion:(id)completion;
 @end
 
 @implementation ETColorGradientView
 
-- (ETColorGradientView)initWithFrame:(CGRect)a3
+- (ETColorGradientView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = ETColorGradientView;
-  v3 = [(ETColorGradientView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ETColorGradientView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (SetupSpecValuesIfNeeded_onceToken_0 != -1)
@@ -19,8 +19,8 @@
       [ETColorGradientView initWithFrame:];
     }
 
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(ETColorGradientView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(ETColorGradientView *)v3 setBackgroundColor:clearColor];
 
     v5 = objc_alloc(MEMORY[0x277D755E8]);
     [(ETColorGradientView *)v3 bounds];
@@ -37,9 +37,9 @@
   return v3;
 }
 
-- (void)prepareToAnimateColorWheelWithRotation:(double)a3
+- (void)prepareToAnimateColorWheelWithRotation:(double)rotation
 {
-  v15 = [(ETColorGradientView *)self layer];
+  layer = [(ETColorGradientView *)self layer];
   [(ETColorGradientView *)self bounds];
   x = v17.origin.x;
   y = v17.origin.y;
@@ -51,31 +51,31 @@
   v18.size.width = width;
   v18.size.height = height;
   MidY = CGRectGetMidY(v18);
-  v11 = [MEMORY[0x277CD9F90] layer];
-  [v11 setLineWidth:49.5];
-  v12 = [MEMORY[0x277D75348] clearColor];
-  [v11 setFillColor:{objc_msgSend(v12, "CGColor")}];
+  layer2 = [MEMORY[0x277CD9F90] layer];
+  [layer2 setLineWidth:49.5];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [layer2 setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  v13 = [MEMORY[0x277D75348] blackColor];
-  [v11 setStrokeColor:{objc_msgSend(v13, "CGColor")}];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [layer2 setStrokeColor:{objc_msgSend(blackColor, "CGColor")}];
 
-  [v11 setLineCap:*MEMORY[0x277CDA780]];
-  [v15 bounds];
-  [v11 setFrame:?];
+  [layer2 setLineCap:*MEMORY[0x277CDA780]];
+  [layer bounds];
+  [layer2 setFrame:?];
   Mutable = CGPathCreateMutable();
-  CGPathAddArc(Mutable, 0, MidX, MidY, 52.25, a3 + 3.14159265, a3 + 9.42477796, 0);
-  [v11 setPath:Mutable];
+  CGPathAddArc(Mutable, 0, MidX, MidY, 52.25, rotation + 3.14159265, rotation + 9.42477796, 0);
+  [layer2 setPath:Mutable];
   CFRelease(Mutable);
-  [v15 setMask:v11];
+  [layer setMask:layer2];
 }
 
-- (void)revealColorWheelWithCompletion:(id)a3
+- (void)revealColorWheelWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ETColorGradientView *)self layer];
-  v6 = [v5 mask];
-  [v6 setStrokeStart:0.4999];
-  [v6 setStrokeEnd:0.5];
+  completionCopy = completion;
+  layer = [(ETColorGradientView *)self layer];
+  mask = [layer mask];
+  [mask setStrokeStart:0.4999];
+  [mask setStrokeEnd:0.5];
   v7 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
   [v7 setDuration:0.275];
   v8 = *MEMORY[0x277CDA7B0];
@@ -113,13 +113,13 @@
   v24 = 3221225472;
   v25 = __54__ETColorGradientView_revealColorWheelWithCompletion___block_invoke;
   v26 = &unk_278F79F38;
-  v27 = v5;
-  v28 = v4;
-  v21 = v4;
-  v22 = v5;
+  v27 = layer;
+  v28 = completionCopy;
+  v21 = completionCopy;
+  v22 = layer;
   [v20 setCompletionBlock:&v23];
-  [v6 addAnimation:v7 forKey:{@"strokeEnd", v23, v24, v25, v26}];
-  [v6 addAnimation:v15 forKey:@"strokeStart"];
+  [mask addAnimation:v7 forKey:{@"strokeEnd", v23, v24, v25, v26}];
+  [mask addAnimation:v15 forKey:@"strokeStart"];
 
   [MEMORY[0x277CD9FF0] commit];
 }
@@ -139,13 +139,13 @@ uint64_t __54__ETColorGradientView_revealColorWheelWithCompletion___block_invoke
   return result;
 }
 
-- (void)hideColorWheelWithRotation:(double)a3 completion:(id)a4
+- (void)hideColorWheelWithRotation:(double)rotation completion:(id)completion
 {
-  v28 = a4;
-  v6 = [(ETColorGradientView *)self layer];
-  v7 = [v6 mask];
-  [v7 setStrokeStart:0.0];
-  [v7 setStrokeEnd:1.0];
+  completionCopy = completion;
+  layer = [(ETColorGradientView *)self layer];
+  mask = [layer mask];
+  [mask setStrokeStart:0.0];
+  [mask setStrokeEnd:1.0];
   v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"strokeEnd"];
   [v8 setDuration:0.275];
   v9 = *MEMORY[0x277CDA7C0];
@@ -182,7 +182,7 @@ uint64_t __54__ETColorGradientView_revealColorWheelWithCompletion___block_invoke
   [v21 setAdditive:1];
   [v21 setRemovedOnCompletion:0];
   [v21 setFillMode:v11];
-  *&v22 = a3;
+  *&v22 = rotation;
   v23 = [MEMORY[0x277CCABB0] numberWithFloat:v22];
   [v21 setToValue:v23];
 
@@ -193,16 +193,16 @@ uint64_t __54__ETColorGradientView_revealColorWheelWithCompletion___block_invoke
   v29[1] = 3221225472;
   v29[2] = __61__ETColorGradientView_hideColorWheelWithRotation_completion___block_invoke;
   v29[3] = &unk_278F7A208;
-  v30 = v6;
-  v31 = self;
-  v32 = v28;
-  v25 = v28;
-  v26 = v6;
+  v30 = layer;
+  selfCopy = self;
+  v32 = completionCopy;
+  v25 = completionCopy;
+  v26 = layer;
   [v24 setCompletionBlock:v29];
-  [v7 addAnimation:v8 forKey:@"strokeEnd"];
-  [v7 addAnimation:v16 forKey:@"strokeStart"];
-  v27 = [(UIImageView *)self->_imageView layer];
-  [v27 addAnimation:v21 forKey:@"transform.rotation.z"];
+  [mask addAnimation:v8 forKey:@"strokeEnd"];
+  [mask addAnimation:v16 forKey:@"strokeStart"];
+  layer2 = [(UIImageView *)self->_imageView layer];
+  [layer2 addAnimation:v21 forKey:@"transform.rotation.z"];
 
   [MEMORY[0x277CD9FF0] commit];
 }

@@ -1,7 +1,7 @@
 @interface GCIOObject
-- (BOOL)isEqualTo:(id)a3;
+- (BOOL)isEqualTo:(id)to;
 - (GCIOObject)init;
-- (GCIOObject)initWithPort:(unsigned int)a3 error:(id *)a4;
+- (GCIOObject)initWithPort:(unsigned int)port error:(id *)error;
 - (NSString)className;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -12,16 +12,16 @@
 
 @implementation GCIOObject
 
-- (GCIOObject)initWithPort:(unsigned int)a3 error:(id *)a4
+- (GCIOObject)initWithPort:(unsigned int)port error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = GCIOObject;
   v6 = [(GCIOObject *)&v14 init];
-  v7 = IOObjectRetain(a3);
+  v7 = IOObjectRetain(port);
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v10 = MEMORY[0x1E696ABC0];
       v11 = *MEMORY[0x1E696A5A0];
@@ -29,20 +29,20 @@
       v15 = *MEMORY[0x1E696A580];
       v16[0] = @"Error incrementing port retain count.";
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      *a4 = [v10 errorWithDomain:v11 code:v12 userInfo:v13];
+      *error = [v10 errorWithDomain:v11 code:v12 userInfo:v13];
 
-      a4 = 0;
+      error = 0;
     }
   }
 
   else
   {
-    v6->_port = a3;
-    a4 = v6;
+    v6->_port = port;
+    error = v6;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return a4;
+  return error;
 }
 
 - (GCIOObject)init
@@ -73,15 +73,15 @@
   return v2;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    if (v4)
+    if (toCopy)
     {
-      v5 = v4[2];
+      v5 = toCopy[2];
     }
 
     else
@@ -103,8 +103,8 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GCIOObject *)self className];
-  v5 = v4;
+  className = [(GCIOObject *)self className];
+  v5 = className;
   if (self)
   {
     port = self->_port;
@@ -115,9 +115,9 @@
     port = 0;
   }
 
-  v7 = [v3 stringWithFormat:@"<Kernel/%@ port='%#08x'>", v4, port];
+  port = [v3 stringWithFormat:@"<Kernel/%@ port='%#08x'>", className, port];
 
-  return v7;
+  return port;
 }
 
 - (uint64_t)port
@@ -133,8 +133,8 @@
 - (id)redactedDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GCIOObject *)self className];
-  v5 = v4;
+  className = [(GCIOObject *)self className];
+  v5 = className;
   if (self)
   {
     port = self->_port;
@@ -145,9 +145,9 @@
     port = 0;
   }
 
-  v7 = [v3 stringWithFormat:@"<Kernel/%@ port='%#08x'>", v4, port];
+  port = [v3 stringWithFormat:@"<Kernel/%@ port='%#08x'>", className, port];
 
-  return v7;
+  return port;
 }
 
 - (NSString)debugDescription
@@ -155,8 +155,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(GCIOObject *)self className];
-  v7 = v6;
+  className = [(GCIOObject *)self className];
+  v7 = className;
   if (self)
   {
     port = self->_port;
@@ -167,9 +167,9 @@
     port = 0;
   }
 
-  v9 = [v3 stringWithFormat:@"<%@ %p Kernel/%@ port='%#08x'>", v5, self, v6, port];
+  port = [v3 stringWithFormat:@"<%@ %p Kernel/%@ port='%#08x'>", v5, self, className, port];
 
-  return v9;
+  return port;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface WBSFluidProgressState
-+ (double)_estimatedLoadTimeRemainingFromProgressValue:(double)a3;
++ (double)_estimatedLoadTimeRemainingFromProgressValue:(double)value;
 - (BOOL)isFluidProgressStalled;
-- (WBSFluidProgressState)initWithType:(int64_t)a3;
+- (WBSFluidProgressState)initWithType:(int64_t)type;
 - (double)_adjustProgressPosition:(double)result;
 - (double)_animationDuration;
-- (double)_fractionCompleteAtElapsedTime:(double)a3;
-- (double)_nextProgressPosition:(double)a3;
+- (double)_fractionCompleteAtElapsedTime:(double)time;
+- (double)_nextProgressPosition:(double)position;
 - (id)description;
 - (void)_updateLinearFunction;
-- (void)setMinProgressPosition:(double)a3;
-- (void)setWebKitProgressValue:(double)a3;
+- (void)setMinProgressPosition:(double)position;
+- (void)setWebKitProgressValue:(double)value;
 - (void)updateFluidProgressValue;
 - (void)updateNextFluidProgressAnimation;
 @end
 
 @implementation WBSFluidProgressState
 
-- (WBSFluidProgressState)initWithType:(int64_t)a3
+- (WBSFluidProgressState)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = WBSFluidProgressState;
@@ -24,7 +24,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_fluidProgressType = a3;
+    v4->_fluidProgressType = type;
     v4->_startTimeForFluidProgress = CFAbsoluteTimeGetCurrent();
     [(WBSFluidProgressState *)v5 setMinProgressPosition:0.1];
     v5->_fluidProgressAnimationPhase = 1;
@@ -57,26 +57,26 @@
   return v6;
 }
 
-- (void)setWebKitProgressValue:(double)a3
+- (void)setWebKitProgressValue:(double)value
 {
-  if (self->_minProgressPosition <= a3 && self->_webKitProgressValue != a3 && (self->_fluidProgressAnimationPhase & 0xFFFFFFFFFFFFFFFELL) != 4 && !self->_hasCompletedLoad && self->_previousDestinationPosition != 0.4)
+  if (self->_minProgressPosition <= value && self->_webKitProgressValue != value && (self->_fluidProgressAnimationPhase & 0xFFFFFFFFFFFFFFFELL) != 4 && !self->_hasCompletedLoad && self->_previousDestinationPosition != 0.4)
   {
     self->_fluidProgressAnimationPhase = 1;
-    self->_webKitProgressValue = a3;
+    self->_webKitProgressValue = value;
     self->_lastTimeProgressValueWasUpdated = CFAbsoluteTimeGetCurrent();
 
     [(WBSFluidProgressState *)self _updateLinearFunction];
   }
 }
 
-- (void)setMinProgressPosition:(double)a3
+- (void)setMinProgressPosition:(double)position
 {
-  if (a3 > 0.4)
+  if (position > 0.4)
   {
-    a3 = 0.4;
+    position = 0.4;
   }
 
-  self->_minProgressPosition = a3 / 0.4;
+  self->_minProgressPosition = position / 0.4;
 }
 
 - (void)updateFluidProgressValue
@@ -113,12 +113,12 @@
     goto LABEL_2;
   }
 
-  v10 = [(WBSFluidProgressState *)self isFluidProgressStalled];
+  isFluidProgressStalled = [(WBSFluidProgressState *)self isFluidProgressStalled];
   if (self->_previousDestinationPosition > 0.37 && self->_fluidProgressAnimationPhase == 1)
   {
     self->_fluidProgressAnimationPhase = 3;
     self->_previousDestinationPosition = 0.4;
-    if (v10)
+    if (isFluidProgressStalled)
     {
       goto LABEL_19;
     }
@@ -128,7 +128,7 @@ LABEL_2:
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!isFluidProgressStalled)
   {
     goto LABEL_2;
   }
@@ -218,16 +218,16 @@ LABEL_3:
   return 0.2;
 }
 
-+ (double)_estimatedLoadTimeRemainingFromProgressValue:(double)a3
++ (double)_estimatedLoadTimeRemainingFromProgressValue:(double)value
 {
   v3 = 2.5;
-  if (a3 <= 0.85)
+  if (value <= 0.85)
   {
     v3 = 3.0;
-    if (a3 <= 0.8)
+    if (value <= 0.8)
     {
       v3 = 5.0;
-      if (a3 <= 0.5)
+      if (value <= 0.5)
       {
         return 30.0;
       }
@@ -237,12 +237,12 @@ LABEL_3:
   return v3;
 }
 
-- (double)_fractionCompleteAtElapsedTime:(double)a3
+- (double)_fractionCompleteAtElapsedTime:(double)time
 {
   v3 = 1.0;
   if (self->_fluidProgressAnimationPhase != 4)
   {
-    v4 = self->_linearFunctionB + self->_linearFunctionM * a3;
+    v4 = self->_linearFunctionB + self->_linearFunctionM * time;
     if (v4 < 0.0)
     {
       v4 = 0.0;
@@ -258,7 +258,7 @@ LABEL_3:
   return v3;
 }
 
-- (double)_nextProgressPosition:(double)a3
+- (double)_nextProgressPosition:(double)position
 {
   fluidProgressAnimationPhase = self->_fluidProgressAnimationPhase;
   if (fluidProgressAnimationPhase == 4)
@@ -285,7 +285,7 @@ LABEL_3:
     else
     {
       [(WBSFluidProgressState *)self secondsElapsedSinceLoadBegan];
-      [(WBSFluidProgressState *)self _fractionCompleteAtElapsedTime:v8 + a3];
+      [(WBSFluidProgressState *)self _fractionCompleteAtElapsedTime:v8 + position];
     }
 
     [(WBSFluidProgressState *)self _adjustProgressPosition:webKitProgressValue];

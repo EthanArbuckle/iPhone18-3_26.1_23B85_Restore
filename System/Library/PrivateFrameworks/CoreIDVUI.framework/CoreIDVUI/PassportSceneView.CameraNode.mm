@@ -1,6 +1,6 @@
 @interface PassportSceneView.CameraNode
 - (_TtCC9CoreIDVUI17PassportSceneView10CameraNode)init;
-- (_TtCC9CoreIDVUI17PassportSceneView10CameraNode)initWithCoder:(id)a3;
+- (_TtCC9CoreIDVUI17PassportSceneView10CameraNode)initWithCoder:(id)coder;
 - (void)removeAllActions;
 @end
 
@@ -19,7 +19,7 @@
   return v5;
 }
 
-- (_TtCC9CoreIDVUI17PassportSceneView10CameraNode)initWithCoder:(id)a3
+- (_TtCC9CoreIDVUI17PassportSceneView10CameraNode)initWithCoder:(id)coder
 {
   result = sub_2459115D4();
   __break(1u);

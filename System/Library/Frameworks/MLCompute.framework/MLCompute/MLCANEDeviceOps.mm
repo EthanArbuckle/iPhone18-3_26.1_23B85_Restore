@@ -1,23 +1,23 @@
 @interface MLCANEDeviceOps
-- (MLCANEDeviceOps)initWithType:(int)a3 params:(id)a4;
+- (MLCANEDeviceOps)initWithType:(int)type params:(id)params;
 @end
 
 @implementation MLCANEDeviceOps
 
-- (MLCANEDeviceOps)initWithType:(int)a3 params:(id)a4
+- (MLCANEDeviceOps)initWithType:(int)type params:(id)params
 {
-  v7 = a4;
+  paramsCopy = params;
   v18.receiver = self;
   v18.super_class = MLCANEDeviceOps;
   v8 = [(MLCDeviceOps *)&v18 initWithSource:0 secondarySource:0 result:0 batchSize:1];
   v9 = v8;
   if (v8)
   {
-    v8->_deviceOpType = a3;
+    v8->_deviceOpType = type;
     units = v8->_units;
     v8->_units = 0;
 
-    objc_storeStrong(&v9->_params, a4);
+    objc_storeStrong(&v9->_params, params);
     procedureName = v9->_procedureName;
     v9->_procedureName = 0;
 

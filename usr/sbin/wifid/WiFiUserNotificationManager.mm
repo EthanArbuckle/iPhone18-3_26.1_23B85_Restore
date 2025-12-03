@@ -1,27 +1,27 @@
 @interface WiFiUserNotificationManager
-+ (unint64_t)defaultThrottlingPeriodForBlacklistingType:(int)a3 source:(int64_t)a4 count:(unint64_t)a5;
-- (WiFiUserNotificationManager)initWithQueue:(id)a3 supportsWAPI:(BOOL)a4 manager:(__WiFiManager *)a5;
-- (int)dispatchNotificationWithAskToJoinHotspotRecommendation:(id)a3;
-- (int)dispatchNotificationWithRecommendation:(id)a3 currentLocation:(id)a4 force:(BOOL)a5;
++ (unint64_t)defaultThrottlingPeriodForBlacklistingType:(int)type source:(int64_t)source count:(unint64_t)count;
+- (WiFiUserNotificationManager)initWithQueue:(id)queue supportsWAPI:(BOOL)i manager:(__WiFiManager *)manager;
+- (int)dispatchNotificationWithAskToJoinHotspotRecommendation:(id)recommendation;
+- (int)dispatchNotificationWithRecommendation:(id)recommendation currentLocation:(id)location force:(BOOL)force;
 - (void)_cancelTimer;
-- (void)_startTimerForNotificationWithUserInfo:(id)a3;
-- (void)_submitAnalyticsEventForJoinAlertReason:(int)a3 action:(unint64_t)a4 visibleDuration:(double)a5;
-- (void)_submitAnalyticsEventForRecommendation:(id)a3 action:(unint64_t)a4 visibleDuration:(double)a5 location:(id)a6;
-- (void)_timeoutTimerDidFire:(id)a3;
+- (void)_startTimerForNotificationWithUserInfo:(id)info;
+- (void)_submitAnalyticsEventForJoinAlertReason:(int)reason action:(unint64_t)action visibleDuration:(double)duration;
+- (void)_submitAnalyticsEventForRecommendation:(id)recommendation action:(unint64_t)action visibleDuration:(double)duration location:(id)location;
+- (void)_timeoutTimerDidFire:(id)fire;
 - (void)dealloc;
 - (void)dismissJoinAlerts;
-- (void)dispatchAccessoryJoinAlertForNetwork:(id)a3 unsecured:(BOOL)a4;
-- (void)dispatchNotificationWithColocatedScanResult:(id)a3 fromScanResult:(id)a4;
-- (void)dispatchNotificationWithRandomMAC:(id)a3;
-- (void)registerCallback:(id)a3 withContext:(void *)a4;
+- (void)dispatchAccessoryJoinAlertForNetwork:(id)network unsecured:(BOOL)unsecured;
+- (void)dispatchNotificationWithColocatedScanResult:(id)result fromScanResult:(id)scanResult;
+- (void)dispatchNotificationWithRandomMAC:(id)c;
+- (void)registerCallback:(id)callback withContext:(void *)context;
 - (void)reset;
 - (void)startListening;
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler;
 @end
 
 @implementation WiFiUserNotificationManager
 
-- (WiFiUserNotificationManager)initWithQueue:(id)a3 supportsWAPI:(BOOL)a4 manager:(__WiFiManager *)a5
+- (WiFiUserNotificationManager)initWithQueue:(id)queue supportsWAPI:(BOOL)i manager:(__WiFiManager *)manager
 {
   v12.receiver = self;
   v12.super_class = WiFiUserNotificationManager;
@@ -29,9 +29,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_queue = a3;
-    v8->_supportsWAPI = a4;
-    v8->_managerRef = a5;
+    v8->_queue = queue;
+    v8->_supportsWAPI = i;
+    v8->_managerRef = manager;
     v10 = [[UNUserNotificationCenter alloc] initWithBundleIdentifier:@"com.apple.wifid.usernotification"];
     v9->_userNotificationCenterWiFi = v10;
     [(UNUserNotificationCenter *)v10 setDelegate:v9];
@@ -80,12 +80,12 @@
   objc_autoreleasePoolPop(v2);
 }
 
-+ (unint64_t)defaultThrottlingPeriodForBlacklistingType:(int)a3 source:(int64_t)a4 count:(unint64_t)a5
++ (unint64_t)defaultThrottlingPeriodForBlacklistingType:(int)type source:(int64_t)source count:(unint64_t)count
 {
   result = 2592000;
-  if (a3 != 1)
+  if (type != 1)
   {
-    if (a4 == 3)
+    if (source == 3)
     {
       if (os_variant_has_internal_content() && (_os_feature_enabled_impl() & 1) != 0)
       {
@@ -101,12 +101,12 @@
     else
     {
       v6 = 604800;
-      if (a5 != 2)
+      if (count != 2)
       {
         v6 = 2592000;
       }
 
-      if (a5 >= 2)
+      if (count >= 2)
       {
         return v6;
       }
@@ -121,18 +121,18 @@
   return result;
 }
 
-- (void)userNotificationCenter:(id)a3 didReceiveNotificationResponse:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center didReceiveNotificationResponse:(id)response withCompletionHandler:(id)handler
 {
   [(WiFiUserNotificationManager *)self _cancelTimer];
-  v8 = [objc_msgSend(objc_msgSend(a4 "notification")];
+  v8 = [objc_msgSend(objc_msgSend(response "notification")];
   v9 = [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self notificationMapping] objectForKey:v8];
   v10 = [v9 objectForKey:@"SSID"];
   v11 = [v9 objectForKey:@"BrokenBackhaulNetworkName"];
   v39 = [v9 objectForKey:@"Recommendation"];
   [-[NSMutableDictionary objectForKey:](-[WiFiUserNotificationManager recentNotifications](self "recentNotifications")];
   v13 = v12;
-  v14 = [a4 actionIdentifier];
-  v15 = [objc_msgSend(objc_msgSend(objc_msgSend(a4 "notification")];
+  actionIdentifier = [response actionIdentifier];
+  v15 = [objc_msgSend(objc_msgSend(objc_msgSend(response "notification")];
   v16 = objc_autoreleasePoolPush();
   if (!v10)
   {
@@ -149,7 +149,7 @@
   v17 = -v13;
   if (off_100298C40)
   {
-    [off_100298C40 WFLog:3 message:{"%s: Handle action %@ for notification %@ (SSID: %@, category: %@) visibleDuration %f", "-[WiFiUserNotificationManager userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]", v14, v8, v10, v15, *&v17}];
+    [off_100298C40 WFLog:3 message:{"%s: Handle action %@ for notification %@ (SSID: %@, category: %@) visibleDuration %f", "-[WiFiUserNotificationManager userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:]", actionIdentifier, v8, v10, v15, *&v17}];
   }
 
   objc_autoreleasePoolPop(v16);
@@ -157,7 +157,7 @@
   v37 = v11;
   if (v18)
   {
-    v19 = a5;
+    handlerCopy7 = handler;
     v38 = 0;
     v20 = 0;
     v21 = 2;
@@ -165,7 +165,7 @@
 
   else if ([v15 isEqualToString:@"recommendation"])
   {
-    v19 = a5;
+    handlerCopy7 = handler;
     v20 = 0;
     v38 = 1;
     v21 = 1;
@@ -173,7 +173,7 @@
 
   else if ([v15 isEqualToString:@"lowdatamodealert"])
   {
-    v19 = a5;
+    handlerCopy7 = handler;
     v38 = 0;
     v20 = 0;
     v21 = 3;
@@ -181,7 +181,7 @@
 
   else if ([v15 isEqualToString:@"randommac"])
   {
-    v19 = a5;
+    handlerCopy7 = handler;
     v38 = 0;
     v20 = 0;
     v21 = 4;
@@ -189,7 +189,7 @@
 
   else if ([v15 isEqualToString:@"colocatedssid"])
   {
-    v19 = a5;
+    handlerCopy7 = handler;
     v38 = 0;
     v21 = 5;
     v20 = 1;
@@ -199,11 +199,11 @@
   {
     if ([v15 isEqualToString:@"asktojoinpersonalhotspot"])
     {
-      if (([v14 isEqualToString:@"join"] & 1) == 0)
+      if (([actionIdentifier isEqualToString:@"join"] & 1) == 0)
       {
-        if (![v14 isEqualToString:@"autojoin"])
+        if (![actionIdentifier isEqualToString:@"autojoin"])
         {
-          v19 = a5;
+          handlerCopy7 = handler;
           v38 = 0;
           v20 = 0;
           v21 = 6;
@@ -240,7 +240,7 @@ LABEL_77:
       goto LABEL_78;
     }
 
-    v19 = a5;
+    handlerCopy7 = handler;
     v25 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
@@ -253,12 +253,12 @@ LABEL_77:
     v21 = 0;
   }
 
-  if (([v14 isEqualToString:@"join"] & 1) == 0)
+  if (([actionIdentifier isEqualToString:@"join"] & 1) == 0)
   {
-    [v14 isEqualToString:@"autojoin"];
+    [actionIdentifier isEqualToString:@"autojoin"];
     v36 = 0;
 LABEL_31:
-    if ([v14 isEqualToString:@"settings"])
+    if ([actionIdentifier isEqualToString:@"settings"])
     {
       v28 = [v9 objectForKey:@"Reason"];
       if (v28)
@@ -268,7 +268,7 @@ LABEL_31:
 LABEL_37:
         v9 = v10;
 LABEL_38:
-        a5 = v19;
+        handler = handlerCopy7;
         v24 = v39;
         goto LABEL_39;
       }
@@ -278,7 +278,7 @@ LABEL_38:
       goto LABEL_96;
     }
 
-    if ([v14 isEqualToString:@"disconnect"])
+    if ([actionIdentifier isEqualToString:@"disconnect"])
     {
       v29 = [v9 objectForKey:@"Reason"];
       if (v29)
@@ -295,13 +295,13 @@ LABEL_96:
       goto LABEL_97;
     }
 
-    if (![v14 isEqualToString:@"joincolocated"])
+    if (![actionIdentifier isEqualToString:@"joincolocated"])
     {
-      if (([v14 isEqualToString:@"com.apple.UNNotificationSilenceActionIdentifier"] & 1) != 0 || objc_msgSend(v14, "isEqualToString:", UNNotificationDismissActionIdentifier))
+      if (([actionIdentifier isEqualToString:@"com.apple.UNNotificationSilenceActionIdentifier"] & 1) != 0 || objc_msgSend(actionIdentifier, "isEqualToString:", UNNotificationDismissActionIdentifier))
       {
         if (v38)
         {
-          a5 = v19;
+          handler = handlerCopy7;
           v24 = v39;
           if (!v39)
           {
@@ -361,7 +361,7 @@ LABEL_41:
         if (v18)
         {
           v33 = [v9 objectForKey:@"Reason"];
-          a5 = v19;
+          handler = handlerCopy7;
           if (!v33)
           {
             sub_1001AE758();
@@ -393,7 +393,7 @@ LABEL_41:
               v9 = 0;
             }
 
-            a5 = v19;
+            handler = handlerCopy7;
             v11 = v37;
             if (!v36)
             {
@@ -412,7 +412,7 @@ LABEL_41:
             goto LABEL_97;
           }
 
-          a5 = v19;
+          handler = handlerCopy7;
           if (![v9 objectForKey:@"FromScanResult"])
           {
             sub_1001AE678(v8);
@@ -429,7 +429,7 @@ LABEL_41:
         goto LABEL_39;
       }
 
-      v34 = [objc_msgSend(a4 "actionIdentifier")];
+      v34 = [objc_msgSend(response "actionIdentifier")];
       if (v34)
       {
         v23 = 4;
@@ -459,7 +459,7 @@ LABEL_41:
       goto LABEL_93;
     }
 
-    a5 = v19;
+    handler = handlerCopy7;
     v24 = v39;
     if ([v9 objectForKey:@"FromScanResult"])
     {
@@ -489,12 +489,12 @@ LABEL_93:
     v23 = 0;
     v9 = 0;
 LABEL_97:
-    a5 = v19;
+    handler = handlerCopy7;
     goto LABEL_81;
   }
 
   v26 = [v9 objectForKey:@"Location"];
-  a5 = v19;
+  handler = handlerCopy7;
   if (!v26)
   {
     v27 = objc_autoreleasePoolPush();
@@ -531,35 +531,35 @@ LABEL_81:
     dispatch_sync(v35, v40);
   }
 
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5);
+    (*(handler + 2))(handler);
   }
 
   [(WiFiUserNotificationManager *)self setVisibleRequest:0];
 }
 
-- (int)dispatchNotificationWithRecommendation:(id)a3 currentLocation:(id)a4 force:(BOOL)a5
+- (int)dispatchNotificationWithRecommendation:(id)recommendation currentLocation:(id)location force:(BOOL)force
 {
-  if (a3)
+  if (recommendation)
   {
-    v5 = a5;
+    forceCopy = force;
     if (os_variant_has_internal_content() && _os_feature_enabled_impl())
     {
       v9 = objc_autoreleasePoolPush();
       if (off_100298C40)
       {
-        [off_100298C40 WFLog:3 message:{"%s: [NearbyCaptiveAssistTestable] Location/time-based banner suppression policy for recommended networks is DISABLED: %@", "-[WiFiUserNotificationManager dispatchNotificationWithRecommendation:currentLocation:force:]", objc_msgSend(a3, "SSID")}];
+        [off_100298C40 WFLog:3 message:{"%s: [NearbyCaptiveAssistTestable] Location/time-based banner suppression policy for recommended networks is DISABLED: %@", "-[WiFiUserNotificationManager dispatchNotificationWithRecommendation:currentLocation:force:]", objc_msgSend(recommendation, "SSID")}];
       }
 
       goto LABEL_18;
     }
 
-    v10 = -[WiFiUserNotificationHistory canPresentRecommendationForSSID:currentLocation:](-[WiFiUserNotificationManager notificationHistory](self, "notificationHistory"), "canPresentRecommendationForSSID:currentLocation:", [a3 SSID], a4);
+    v10 = -[WiFiUserNotificationHistory canPresentRecommendationForSSID:currentLocation:](-[WiFiUserNotificationManager notificationHistory](self, "notificationHistory"), "canPresentRecommendationForSSID:currentLocation:", [recommendation SSID], location);
     v11 = v10;
-    if (v5 || !v10)
+    if (forceCopy || !v10)
     {
-      if (!v5)
+      if (!forceCopy)
       {
         goto LABEL_19;
       }
@@ -567,7 +567,7 @@ LABEL_81:
       v9 = objc_autoreleasePoolPush();
       if (off_100298C40)
       {
-        [off_100298C40 WFLog:3 message:{"%s: forcing notification for %@", "-[WiFiUserNotificationManager dispatchNotificationWithRecommendation:currentLocation:force:]", a3}];
+        [off_100298C40 WFLog:3 message:{"%s: forcing notification for %@", "-[WiFiUserNotificationManager dispatchNotificationWithRecommendation:currentLocation:force:]", recommendation}];
       }
 
 LABEL_18:
@@ -581,24 +581,24 @@ LABEL_19:
         v34[2] = sub_1001129B8;
         v34[3] = &unk_100262FB0;
         v34[4] = self;
-        v34[5] = a3;
-        v34[6] = a4;
-        v35 = v5;
+        v34[5] = recommendation;
+        v34[6] = location;
+        v35 = forceCopy;
         [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] getDeliveredNotificationsWithCompletionHandler:v34];
         return v11;
       }
 
-      if ([objc_msgSend(a3 "network")] == 2 || objc_msgSend(objc_msgSend(a3, "network"), "source") == 3)
+      if ([objc_msgSend(recommendation "network")] == 2 || objc_msgSend(objc_msgSend(recommendation, "network"), "source") == 3)
       {
-        v14 = [(WiFiUserNotificationManager *)self shouldTimeOutRecommendation];
+        shouldTimeOutRecommendation = [(WiFiUserNotificationManager *)self shouldTimeOutRecommendation];
       }
 
       else
       {
-        v14 = 0;
+        shouldTimeOutRecommendation = 0;
       }
 
-      v15 = [+[NSUUID UUID](NSUUID UUIDString];
+      uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
       v16 = objc_alloc_init(UNMutableNotificationContent);
       if (self->_supportsWAPI)
       {
@@ -611,40 +611,40 @@ LABEL_19:
       }
 
       [v16 setTitle:sub_10010E234(v17)];
-      if ([objc_msgSend(a3 "network")] == 1)
+      if ([objc_msgSend(recommendation "network")] == 1)
       {
         v18 = @"WIFI_RECOMMENDATION_BODY_WALLET";
       }
 
       else
       {
-        if ([objc_msgSend(a3 "network")] == 3 && objc_msgSend(objc_msgSend(a3, "network"), "receivedFromDeviceName"))
+        if ([objc_msgSend(recommendation "network")] == 3 && objc_msgSend(objc_msgSend(recommendation, "network"), "receivedFromDeviceName"))
         {
-          v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(@"WIFI_RECOMMENDATION_BODY_WITH_DEVICE_NAME"), [objc_msgSend(a3 "network")], objc_msgSend(objc_msgSend(a3, "network"), "receivedFromDeviceName"));
+          v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(@"WIFI_RECOMMENDATION_BODY_WITH_DEVICE_NAME"), [objc_msgSend(recommendation "network")], objc_msgSend(objc_msgSend(recommendation, "network"), "receivedFromDeviceName"));
           goto LABEL_35;
         }
 
         v18 = @"WIFI_RECOMMENDATION_BODY";
       }
 
-      v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(v18), [objc_msgSend(a3 "network")], v28);
+      v19 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(v18), [objc_msgSend(recommendation "network")], v28);
 LABEL_35:
       v20 = v19;
       if (self->_enableTestMode)
       {
-        v21 = [objc_msgSend(a3 "network")];
-        v22 = [a3 network];
+        v21 = [objc_msgSend(recommendation "network")];
+        network = [recommendation network];
         if (v21 == 2)
         {
-          v23 = -[NSString stringByAppendingFormat:](v20, "stringByAppendingFormat:", @"\nSource: 3Bars\nScore: %lu\nAccessPoints: %lu\nBSSID: %@", [objc_msgSend(v22 "popularityScore")], objc_msgSend(objc_msgSend(objc_msgSend(a3, "network"), "accessPoints"), "count"), objc_msgSend(objc_msgSend(a3, "scannedNetwork"), "BSSID"));
+          v23 = -[NSString stringByAppendingFormat:](v20, "stringByAppendingFormat:", @"\nSource: 3Bars\nScore: %lu\nAccessPoints: %lu\nBSSID: %@", [objc_msgSend(network "popularityScore")], objc_msgSend(objc_msgSend(objc_msgSend(recommendation, "network"), "accessPoints"), "count"), objc_msgSend(objc_msgSend(recommendation, "scannedNetwork"), "BSSID"));
 LABEL_40:
           v20 = v23;
           goto LABEL_41;
         }
 
-        if ([v22 source] == 1)
+        if ([network source] == 1)
         {
-          v23 = -[NSString stringByAppendingFormat:](v20, "stringByAppendingFormat:", @"\nSource: Wallet\nIdentifier: %@", [objc_msgSend(a3 "network")], v29, v30);
+          v23 = -[NSString stringByAppendingFormat:](v20, "stringByAppendingFormat:", @"\nSource: Wallet\nIdentifier: %@", [objc_msgSend(recommendation "network")], v29, v30);
           goto LABEL_40;
         }
       }
@@ -653,7 +653,7 @@ LABEL_41:
       [v16 setBody:v20];
       [v16 setCategoryIdentifier:@"recommendation"];
       [v16 setShouldSuppressDefaultAction:1];
-      if ([objc_msgSend(a3 "network")] == 3)
+      if ([objc_msgSend(recommendation "network")] == 3)
       {
         v24 = 1;
       }
@@ -673,24 +673,24 @@ LABEL_41:
       v31[1] = 3221225472;
       v31[2] = sub_100112B60;
       v31[3] = &unk_100262FD8;
-      v32 = v14;
-      v31[4] = v15;
-      v31[5] = a3;
-      v31[6] = a4;
+      v32 = shouldTimeOutRecommendation;
+      v31[4] = uUIDString;
+      v31[5] = recommendation;
+      v31[6] = location;
       v31[7] = v33;
-      [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] addNotificationRequest:[UNNotificationRequest withCompletionHandler:"requestWithIdentifier:content:trigger:destinations:" requestWithIdentifier:v15 content:v16 trigger:0 destinations:v24], v31];
+      [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] addNotificationRequest:[UNNotificationRequest withCompletionHandler:"requestWithIdentifier:content:trigger:destinations:" requestWithIdentifier:uUIDString content:v16 trigger:0 destinations:v24], v31];
       v25 = +[NSMutableDictionary dictionary];
       v26 = v25;
-      if (a4)
+      if (location)
       {
-        [v25 setObject:a4 forKey:@"Location"];
+        [v25 setObject:location forKey:@"Location"];
       }
 
-      [v26 setObject:a3 forKey:@"Recommendation"];
-      [v26 setObject:objc_msgSend(a3 forKey:{"SSID"), @"SSID"}];
-      [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self notificationMapping] setObject:v26 forKey:v15];
-      -[WiFiUserNotificationHistory presentedNotificationForSSID:type:currentLocation:](-[WiFiUserNotificationManager notificationHistory](self, "notificationHistory"), "presentedNotificationForSSID:type:currentLocation:", [a3 SSID], 1, a4);
-      [(WiFiUserNotificationManager *)self setLastRecommendationLocation:a4];
+      [v26 setObject:recommendation forKey:@"Recommendation"];
+      [v26 setObject:objc_msgSend(recommendation forKey:{"SSID"), @"SSID"}];
+      [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self notificationMapping] setObject:v26 forKey:uUIDString];
+      -[WiFiUserNotificationHistory presentedNotificationForSSID:type:currentLocation:](-[WiFiUserNotificationManager notificationHistory](self, "notificationHistory"), "presentedNotificationForSSID:type:currentLocation:", [recommendation SSID], 1, location);
+      [(WiFiUserNotificationManager *)self setLastRecommendationLocation:location];
       if (v16)
       {
         CFRelease(v16);
@@ -703,13 +703,13 @@ LABEL_41:
     v12 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: unable to dispatch recommendation for %@, reason: %@", "-[WiFiUserNotificationManager dispatchNotificationWithRecommendation:currentLocation:force:]", objc_msgSend(a3, "SSID"), sub_100095E40(v11)}];
+      [off_100298C40 WFLog:3 message:{"%s: unable to dispatch recommendation for %@, reason: %@", "-[WiFiUserNotificationManager dispatchNotificationWithRecommendation:currentLocation:force:]", objc_msgSend(recommendation, "SSID"), sub_100095E40(v11)}];
     }
 
     objc_autoreleasePoolPop(v12);
     if (v11 == 2)
     {
-      -[WiFiUserNotificationHistory resetAttemptsForSSID:](-[WiFiUserNotificationManager notificationHistory](self, "notificationHistory"), "resetAttemptsForSSID:", [a3 SSID]);
+      -[WiFiUserNotificationHistory resetAttemptsForSSID:](-[WiFiUserNotificationManager notificationHistory](self, "notificationHistory"), "resetAttemptsForSSID:", [recommendation SSID]);
     }
   }
 
@@ -728,9 +728,9 @@ LABEL_41:
   return v11;
 }
 
-- (void)dispatchNotificationWithRandomMAC:(id)a3
+- (void)dispatchNotificationWithRandomMAC:(id)c
 {
-  if (a3)
+  if (c)
   {
     if ([(WiFiUserNotificationManager *)self visibleRequest])
     {
@@ -739,13 +739,13 @@ LABEL_41:
       v14[2] = sub_100113050;
       v14[3] = &unk_100263000;
       v14[4] = self;
-      v14[5] = a3;
+      v14[5] = c;
       [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] getDeliveredNotificationsWithCompletionHandler:v14];
     }
 
     else
     {
-      v6 = [+[NSUUID UUID](NSUUID UUIDString];
+      uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
       v7 = objc_alloc_init(UNMutableNotificationContent);
       if (self->_supportsWAPI)
       {
@@ -757,7 +757,7 @@ LABEL_41:
         v8 = @"WIFI_RANDOM_MAC_TITLE";
       }
 
-      v9 = [NSString stringWithFormat:sub_10010E234(v8), a3];
+      v9 = [NSString stringWithFormat:sub_10010E234(v8), c];
       v10 = sub_10010E234(@"WIFI_RANDOM_MAC_BODY");
       [v7 setTitle:v9];
       [v7 setBody:v10];
@@ -773,14 +773,14 @@ LABEL_41:
       v12[1] = 3221225472;
       v12[2] = sub_100113164;
       v12[3] = &unk_100263028;
-      v12[4] = v6;
+      v12[4] = uUIDString;
       v12[5] = v13;
-      [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] addNotificationRequest:[UNNotificationRequest withCompletionHandler:"requestWithIdentifier:content:trigger:destinations:" requestWithIdentifier:v6 content:v7 trigger:0 destinations:1], v12];
-      v11 = [(WiFiUserNotificationManager *)self notificationMapping];
+      [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] addNotificationRequest:[UNNotificationRequest withCompletionHandler:"requestWithIdentifier:content:trigger:destinations:" requestWithIdentifier:uUIDString content:v7 trigger:0 destinations:1], v12];
+      notificationMapping = [(WiFiUserNotificationManager *)self notificationMapping];
       v15 = @"SSID";
-      v16 = a3;
-      [(NSMutableDictionary *)v11 setObject:[NSDictionary forKey:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:&v15 forKeys:1 count:?], v6];
-      [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self recentNotifications] setObject:+[NSDate forKey:"date"], a3];
+      cCopy = c;
+      [(NSMutableDictionary *)notificationMapping setObject:[NSDictionary forKey:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:&v15 forKeys:1 count:?], uUIDString];
+      [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self recentNotifications] setObject:+[NSDate forKey:"date"], c];
       if (v7)
       {
         CFRelease(v7);
@@ -802,9 +802,9 @@ LABEL_41:
   }
 }
 
-- (void)dispatchAccessoryJoinAlertForNetwork:(id)a3 unsecured:(BOOL)a4
+- (void)dispatchAccessoryJoinAlertForNetwork:(id)network unsecured:(BOOL)unsecured
 {
-  if (a4)
+  if (unsecured)
   {
     v4 = 7;
   }
@@ -814,14 +814,14 @@ LABEL_41:
     v4 = 6;
   }
 
-  [(WiFiUserNotificationManager *)self dispatchJoinAlertForNetwork:a3 withProviderName:0 andReason:v4];
+  [(WiFiUserNotificationManager *)self dispatchJoinAlertForNetwork:network withProviderName:0 andReason:v4];
 }
 
-- (void)dispatchNotificationWithColocatedScanResult:(id)a3 fromScanResult:(id)a4
+- (void)dispatchNotificationWithColocatedScanResult:(id)result fromScanResult:(id)scanResult
 {
-  if ([a3 networkName])
+  if ([result networkName])
   {
-    if ([a4 networkName])
+    if ([scanResult networkName])
     {
       if ([(WiFiUserNotificationManager *)self visibleRequest])
       {
@@ -830,13 +830,13 @@ LABEL_41:
         v23[2] = sub_1001144D8;
         v23[3] = &unk_1002630C8;
         v23[4] = self;
-        v23[5] = a3;
-        v23[6] = a4;
+        v23[5] = result;
+        v23[6] = scanResult;
         [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] getDeliveredNotificationsWithCompletionHandler:v23];
         return;
       }
 
-      v8 = [+[NSUUID UUID](NSUUID UUIDString];
+      uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
       v9 = objc_alloc_init(UNMutableNotificationContent);
       if (self->_supportsWAPI)
       {
@@ -858,8 +858,8 @@ LABEL_41:
         v11 = @"WIFI_COLOCATED_SSID_BODY";
       }
 
-      v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(v10), [a3 networkName]);
-      v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(v11), [a3 networkName]);
+      v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(v10), [result networkName]);
+      v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(v11), [result networkName]);
       if (os_variant_has_internal_content())
       {
         v14 = [+[NSUserDefaults standardUserDefaults](NSUserDefaults objectForKey:"objectForKey:", @"ColocatedSSIDNotificationTitleOverride"];
@@ -879,16 +879,16 @@ LABEL_41:
       [v9 setBody:v13];
       [v9 setShouldSuppressDefaultAction:1];
       [v9 setCategoryIdentifier:@"colocatedssid"];
-      v16 = [UNNotificationRequest requestWithIdentifier:v8 content:v9 trigger:0 destinations:1];
-      v17 = [(WiFiUserNotificationManager *)self notificationMapping];
+      v16 = [UNNotificationRequest requestWithIdentifier:uUIDString content:v9 trigger:0 destinations:1];
+      notificationMapping = [(WiFiUserNotificationManager *)self notificationMapping];
       v24[0] = @"SSID";
-      v25[0] = [a3 networkName];
+      v25[0] = [result networkName];
       v24[1] = @"ToScanResult";
-      v25[1] = [a3 scanRecord];
+      v25[1] = [result scanRecord];
       v24[2] = @"FromScanResult";
-      v25[2] = [a4 scanRecord];
-      [(NSMutableDictionary *)v17 setObject:[NSDictionary forKey:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:v25 forKeys:v24 count:3], v8];
-      -[NSMutableDictionary setObject:forKey:](-[WiFiUserNotificationManager recentNotifications](self, "recentNotifications"), "setObject:forKey:", +[NSDate date](NSDate, "date"), [a3 networkName]);
+      v25[2] = [scanResult scanRecord];
+      [(NSMutableDictionary *)notificationMapping setObject:[NSDictionary forKey:"dictionaryWithObjects:forKeys:count:" dictionaryWithObjects:v25 forKeys:v24 count:3], uUIDString];
+      -[NSMutableDictionary setObject:forKey:](-[WiFiUserNotificationManager recentNotifications](self, "recentNotifications"), "setObject:forKey:", +[NSDate date](NSDate, "date"), [result networkName]);
       if (os_variant_has_internal_content() && (v18 = [+[NSUserDefaults objectForKey:"objectForKey:"]!= 0)
       {
         v19 = objc_autoreleasePoolPush();
@@ -922,7 +922,7 @@ LABEL_41:
         v20[1] = 3221225472;
         v20[2] = sub_10011466C;
         v20[3] = &unk_100263028;
-        v20[4] = v8;
+        v20[4] = uUIDString;
         v20[5] = v21;
         [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] addNotificationRequest:v16 withCompletionHandler:v20];
         _Block_object_dispose(v21, 8);
@@ -955,9 +955,9 @@ LABEL_41:
   objc_autoreleasePoolPop(v7);
 }
 
-- (int)dispatchNotificationWithAskToJoinHotspotRecommendation:(id)a3
+- (int)dispatchNotificationWithAskToJoinHotspotRecommendation:(id)recommendation
 {
-  if (a3)
+  if (recommendation)
   {
     if ([(WiFiUserNotificationManager *)self visibleRequest])
     {
@@ -970,8 +970,8 @@ LABEL_41:
       return 5;
     }
 
-    v7 = [(WiFiUserNotificationManager *)self shouldTimeOutRecommendation];
-    v8 = [+[NSUUID UUID](NSUUID UUIDString];
+    shouldTimeOutRecommendation = [(WiFiUserNotificationManager *)self shouldTimeOutRecommendation];
+    uUIDString = [+[NSUUID UUID](NSUUID UUIDString];
     v9 = objc_alloc_init(UNMutableNotificationContent);
     v10 = +[NSMutableDictionary dictionary];
     if ([objc_msgSend(+[WiFiXPCManager sharedXPCManager](WiFiXPCManager "sharedXPCManager")] - 3 <= 1 && (v11 = objc_msgSend(objc_msgSend(+[WiFiXPCManager sharedXPCManager](WiFiXPCManager, "sharedXPCManager"), "coreWiFiInterface"), "networkName")) != 0)
@@ -983,14 +983,14 @@ LABEL_41:
       }
 
       [v9 setTitle:sub_10010E234(@"PERSONAL_HOTSPOT_BBH_BANNER_TITLE")];
-      [v9 setBody:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(@"PERSONAL_HOTSPOT_BBH_BANNER_BODY"), a3)}];
+      [v9 setBody:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(@"PERSONAL_HOTSPOT_BBH_BANNER_BODY"), recommendation)}];
       [v10 setObject:v12 forKeyedSubscript:@"BrokenBackhaulNetworkName"];
     }
 
     else
     {
       [v9 setTitle:sub_10010E234(@"PERSONAL_HOTSPOT_NEARBY_BANNER_TITLE")];
-      [v9 setBody:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(@"PERSONAL_HOTSPOT_NEARBY_BANNER_BODY"), a3)}];
+      [v9 setBody:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", sub_10010E234(@"PERSONAL_HOTSPOT_NEARBY_BANNER_BODY"), recommendation)}];
       v12 = 0;
     }
 
@@ -1007,16 +1007,16 @@ LABEL_41:
     v13[1] = 3221225472;
     v13[2] = sub_100114BF0;
     v13[3] = &unk_100262FD8;
-    v14 = v7;
-    v13[4] = v8;
-    v13[5] = a3;
+    v14 = shouldTimeOutRecommendation;
+    v13[4] = uUIDString;
+    v13[5] = recommendation;
     v13[6] = v12;
     v13[7] = v15;
-    [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] addNotificationRequest:[UNNotificationRequest withCompletionHandler:"requestWithIdentifier:content:trigger:destinations:" requestWithIdentifier:v8 content:v9 trigger:0 destinations:1], v13];
-    [v10 setObject:a3 forKey:@"SSID"];
+    [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] addNotificationRequest:[UNNotificationRequest withCompletionHandler:"requestWithIdentifier:content:trigger:destinations:" requestWithIdentifier:uUIDString content:v9 trigger:0 destinations:1], v13];
+    [v10 setObject:recommendation forKey:@"SSID"];
     [v10 setObject:&off_1002820E8 forKey:@"type"];
-    [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self notificationMapping] setObject:v10 forKey:v8];
-    [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self recentNotifications] setObject:+[NSDate forKey:"date"], a3];
+    [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self notificationMapping] setObject:v10 forKey:uUIDString];
+    [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self recentNotifications] setObject:+[NSDate forKey:"date"], recommendation];
     if (v9)
     {
       CFRelease(v9);
@@ -1039,11 +1039,11 @@ LABEL_41:
   }
 }
 
-- (void)registerCallback:(id)a3 withContext:(void *)a4
+- (void)registerCallback:(id)callback withContext:(void *)context
 {
-  [(WiFiUserNotificationManager *)self setCallback:_Block_copy(a3)];
+  [(WiFiUserNotificationManager *)self setCallback:_Block_copy(callback)];
 
-  [(WiFiUserNotificationManager *)self setCallbackContext:a4];
+  [(WiFiUserNotificationManager *)self setCallbackContext:context];
 }
 
 - (void)dismissJoinAlerts
@@ -1058,9 +1058,9 @@ LABEL_41:
       v5 = [v3 objectForKey:@"type"];
       if (v5)
       {
-        v6 = [v5 intValue];
+        intValue = [v5 intValue];
         v7 = [v4 objectForKey:@"SSID"];
-        if (v6 == 6)
+        if (intValue == 6)
         {
           v8 = v7;
           if (v7)
@@ -1072,13 +1072,13 @@ LABEL_41:
             }
 
             objc_autoreleasePoolPop(v9);
-            v10 = [(WiFiUserNotificationManager *)self callback];
-            (v10)[2](v10, 6, v8, 5, [(WiFiUserNotificationManager *)self callbackContext]);
+            callback = [(WiFiUserNotificationManager *)self callback];
+            (callback)[2](callback, 6, v8, 5, [(WiFiUserNotificationManager *)self callbackContext]);
             [(WiFiUserNotificationManager *)self _cancelTimer];
             [(WiFiUserNotificationManager *)self setVisibleRequest:0];
-            v11 = [(WiFiUserNotificationManager *)self notificationMapping];
+            notificationMapping = [(WiFiUserNotificationManager *)self notificationMapping];
 
-            [(NSMutableDictionary *)v11 removeAllObjects];
+            [(NSMutableDictionary *)notificationMapping removeAllObjects];
           }
         }
       }
@@ -1086,14 +1086,14 @@ LABEL_41:
   }
 }
 
-- (void)_startTimerForNotificationWithUserInfo:(id)a3
+- (void)_startTimerForNotificationWithUserInfo:(id)info
 {
   if (self->_timeoutTimer)
   {
     v4 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
-      [off_100298C40 WFLog:3 message:{"%s: previous timer already in progress, bailing for new userInfo %@", "-[WiFiUserNotificationManager _startTimerForNotificationWithUserInfo:]", a3}];
+      [off_100298C40 WFLog:3 message:{"%s: previous timer already in progress, bailing for new userInfo %@", "-[WiFiUserNotificationManager _startTimerForNotificationWithUserInfo:]", info}];
     }
 
     objc_autoreleasePoolPop(v4);
@@ -1101,7 +1101,7 @@ LABEL_41:
 
   else
   {
-    v6 = [a3 copy];
+    v6 = [info copy];
     v7 = objc_autoreleasePoolPush();
     if (off_100298C40)
     {
@@ -1130,10 +1130,10 @@ LABEL_41:
   }
 }
 
-- (void)_timeoutTimerDidFire:(id)a3
+- (void)_timeoutTimerDidFire:(id)fire
 {
   [(WiFiUserNotificationManager *)self _cancelTimer];
-  v5 = [a3 objectForKeyedSubscript:@"identifier"];
+  v5 = [fire objectForKeyedSubscript:@"identifier"];
   v6 = objc_autoreleasePoolPush();
   if (off_100298C40)
   {
@@ -1143,18 +1143,18 @@ LABEL_41:
   objc_autoreleasePoolPop(v6);
   if ([(NSString *)[(WiFiUserNotificationManager *)self visibleRequest] isEqualToString:v5])
   {
-    v7 = [a3 objectForKeyedSubscript:@"ssid"];
-    v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"type", "intValue"}];
+    v7 = [fire objectForKeyedSubscript:@"ssid"];
+    v8 = [objc_msgSend(fire objectForKeyedSubscript:{@"type", "intValue"}];
     v15 = v5;
     [(UNUserNotificationCenter *)[(WiFiUserNotificationManager *)self userNotificationCenterWiFi] removeDeliveredNotificationsWithIdentifiers:[NSArray arrayWithObjects:&v15 count:1]];
-    v9 = [(WiFiUserNotificationManager *)self callback];
-    v9[2](v9, v8, v7, 5, [(WiFiUserNotificationManager *)self callbackContext]);
+    callback = [(WiFiUserNotificationManager *)self callback];
+    callback[2](callback, v8, v7, 5, [(WiFiUserNotificationManager *)self callbackContext]);
     v10 = [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self notificationMapping] objectForKey:v5];
     [-[NSMutableDictionary objectForKey:](-[WiFiUserNotificationManager recentNotifications](self "recentNotifications")];
     v12 = -v11;
     if (v8 == 1)
     {
-      v13 = [a3 objectForKeyedSubscript:@"location"];
+      v13 = [fire objectForKeyedSubscript:@"location"];
       if (!v13)
       {
         v14 = objc_autoreleasePoolPush();
@@ -1180,12 +1180,12 @@ LABEL_41:
   }
 }
 
-- (void)_submitAnalyticsEventForRecommendation:(id)a3 action:(unint64_t)a4 visibleDuration:(double)a5 location:(id)a6
+- (void)_submitAnalyticsEventForRecommendation:(id)recommendation action:(unint64_t)action visibleDuration:(double)duration location:(id)location
 {
-  v10 = [objc_msgSend(a3 "scannedNetwork")];
-  if ([objc_msgSend(a3 "network")])
+  v10 = [objc_msgSend(recommendation "scannedNetwork")];
+  if ([objc_msgSend(recommendation "network")])
   {
-    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [objc_msgSend(objc_msgSend(a3 "network")]);
+    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [objc_msgSend(objc_msgSend(recommendation "network")]);
   }
 
   else
@@ -1193,11 +1193,11 @@ LABEL_41:
     v11 = 0;
   }
 
-  v12 = [objc_msgSend(a3 "network")] - 1;
+  v12 = [objc_msgSend(recommendation "network")] - 1;
   if (v12 > 2)
   {
     v13 = 0;
-    if (a6)
+    if (location)
     {
       goto LABEL_6;
     }
@@ -1206,27 +1206,27 @@ LABEL_41:
   else
   {
     v13 = qword_1001CE860[v12];
-    if (a6)
+    if (location)
     {
 LABEL_6:
-      [a6 coordinate];
+      [location coordinate];
       v14 = [NSNumber numberWithDouble:?];
-      [a6 coordinate];
-      a6 = [NSNumber numberWithDouble:v15];
+      [location coordinate];
+      location = [NSNumber numberWithDouble:v15];
       goto LABEL_9;
     }
   }
 
   v14 = 0;
 LABEL_9:
-  v16 = [TBJoinAnalyticsEvent joinRecommendationEventWithSource:v13 action:a4 BSSID:v10 latitude:v14 longitude:a6 score:v11 visibleDuration:[NSNumber numberWithInteger:llround(a5)]];
+  v16 = [TBJoinAnalyticsEvent joinRecommendationEventWithSource:v13 action:action BSSID:v10 latitude:v14 longitude:location score:v11 visibleDuration:[NSNumber numberWithInteger:llround(duration)]];
 
   [TBAnalytics captureEvent:v16];
 }
 
-- (void)_submitAnalyticsEventForJoinAlertReason:(int)a3 action:(unint64_t)a4 visibleDuration:(double)a5
+- (void)_submitAnalyticsEventForJoinAlertReason:(int)reason action:(unint64_t)action visibleDuration:(double)duration
 {
-  v5 = (a3 - 1);
+  v5 = (reason - 1);
   if (v5 >= 3)
   {
     v6 = 0;
@@ -1237,7 +1237,7 @@ LABEL_9:
     v6 = v5 + 3;
   }
 
-  v7 = [TBJoinAnalyticsEvent joinAlertEventWithSource:v6 action:a4 visibleDuration:[NSNumber numberWithInteger:llround(a5)]];
+  v7 = [TBJoinAnalyticsEvent joinAlertEventWithSource:v6 action:action visibleDuration:[NSNumber numberWithInteger:llround(duration)]];
 
   [TBAnalytics captureEvent:v7];
 }
@@ -1260,9 +1260,9 @@ LABEL_9:
 
   objc_autoreleasePoolPop(v4);
   [(NSMutableDictionary *)[(WiFiUserNotificationManager *)self recentNotifications] removeAllObjects];
-  v5 = [(WiFiUserNotificationManager *)self notificationHistory];
+  notificationHistory = [(WiFiUserNotificationManager *)self notificationHistory];
 
-  [(WiFiUserNotificationHistory *)v5 reset];
+  [(WiFiUserNotificationHistory *)notificationHistory reset];
 }
 
 - (void)_cancelTimer

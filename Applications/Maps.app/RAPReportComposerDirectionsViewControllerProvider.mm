@@ -1,28 +1,28 @@
 @interface RAPReportComposerDirectionsViewControllerProvider
-- (id)rapViewControllerWithReport:(id)a3 completion:(id)a4;
+- (id)rapViewControllerWithReport:(id)report completion:(id)completion;
 @end
 
 @implementation RAPReportComposerDirectionsViewControllerProvider
 
-- (id)rapViewControllerWithReport:(id)a3 completion:(id)a4
+- (id)rapViewControllerWithReport:(id)report completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 _context];
-  v8 = [v7 directionsHistory];
-  v9 = [v8 count];
+  reportCopy = report;
+  completionCopy = completion;
+  _context = [reportCopy _context];
+  directionsHistory = [_context directionsHistory];
+  v9 = [directionsHistory count];
 
   if (v9)
   {
-    v10 = [v5 _context];
-    v11 = [v10 directionsHistory];
-    v12 = [v11 firstObject];
-    v17 = v12;
+    _context2 = [reportCopy _context];
+    directionsHistory2 = [_context2 directionsHistory];
+    firstObject = [directionsHistory2 firstObject];
+    v17 = firstObject;
     v13 = [NSArray arrayWithObjects:&v17 count:1];
 
-    v14 = [[RAPDirectionsWhichOneQuestion alloc] initWithReport:v5 parentQuestion:0 selectableDirectionRequests:v13];
-    [v5 setInitialQuestion:v14];
-    v15 = [[RAPReportComposerDirectionsViewController alloc] initWithReport:v5 question:v14 completion:v6];
+    v14 = [[RAPDirectionsWhichOneQuestion alloc] initWithReport:reportCopy parentQuestion:0 selectableDirectionRequests:v13];
+    [reportCopy setInitialQuestion:v14];
+    v15 = [[RAPReportComposerDirectionsViewController alloc] initWithReport:reportCopy question:v14 completion:completionCopy];
   }
 
   else

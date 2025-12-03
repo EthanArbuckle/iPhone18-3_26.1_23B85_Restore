@@ -1,39 +1,39 @@
 @interface _CDSharedMemoryContextPersisting
-+ (id)persistenceWithSharedMemoryKeyValueStore:(id)a3;
-+ (id)sharedMemoryKeyFromKeyPath:(id)a3;
-+ (id)sharedMemoryKeyFromRegistration:(id)a3;
-- (_CDSharedMemoryContextPersisting)initWithSharedMemoryKeyValueStore:(id)a3;
++ (id)persistenceWithSharedMemoryKeyValueStore:(id)store;
++ (id)sharedMemoryKeyFromKeyPath:(id)path;
++ (id)sharedMemoryKeyFromRegistration:(id)registration;
+- (_CDSharedMemoryContextPersisting)initWithSharedMemoryKeyValueStore:(id)store;
 - (id)allKeysForContextStore;
 - (id)loadRegistrations;
 - (id)loadValues;
 - (void)deleteAllData;
-- (void)deleteKeyPaths:(id)a3;
-- (void)deleteRegistration:(id)a3;
-- (void)saveRegistration:(id)a3;
-- (void)saveValue:(id)a3 forKeyPath:(id)a4;
+- (void)deleteKeyPaths:(id)paths;
+- (void)deleteRegistration:(id)registration;
+- (void)saveRegistration:(id)registration;
+- (void)saveValue:(id)value forKeyPath:(id)path;
 @end
 
 @implementation _CDSharedMemoryContextPersisting
 
-- (_CDSharedMemoryContextPersisting)initWithSharedMemoryKeyValueStore:(id)a3
+- (_CDSharedMemoryContextPersisting)initWithSharedMemoryKeyValueStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v19.receiver = self;
   v19.super_class = _CDSharedMemoryContextPersisting;
   v6 = [(_CDSharedMemoryContextPersisting *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_create("com.apple.coreduetcontext.service.sharedmemorypersistence", v8);
     queue = v7->_queue;
     v7->_queue = v9;
 
     v11 = +[_CDDevice localDevice];
-    v12 = [v11 deviceID];
+    deviceID = [v11 deviceID];
     localDeviceID = v7->_localDeviceID;
-    v7->_localDeviceID = v12;
+    v7->_localDeviceID = deviceID;
 
     v14 = [MEMORY[0x1E696AB50] set];
     keyPathRegistrationCount = v7->_keyPathRegistrationCount;
@@ -47,42 +47,42 @@
   return v7;
 }
 
-+ (id)persistenceWithSharedMemoryKeyValueStore:(id)a3
++ (id)persistenceWithSharedMemoryKeyValueStore:(id)store
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSharedMemoryKeyValueStore:v4];
+  storeCopy = store;
+  v5 = [[self alloc] initWithSharedMemoryKeyValueStore:storeCopy];
 
   return v5;
 }
 
-+ (id)sharedMemoryKeyFromKeyPath:(id)a3
++ (id)sharedMemoryKeyFromKeyPath:(id)path
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 key];
+  pathCopy = path;
+  v5 = [pathCopy key];
   v6 = MEMORY[0x1E696AD98];
-  v7 = [v4 isUserCentric];
+  isUserCentric = [pathCopy isUserCentric];
 
-  v8 = [v6 numberWithBool:v7];
+  v8 = [v6 numberWithBool:isUserCentric];
   v9 = [v3 stringWithFormat:@"%@.%@.%@", @"context.keyPath", v5, v8];
 
   return v9;
 }
 
-+ (id)sharedMemoryKeyFromRegistration:(id)a3
++ (id)sharedMemoryKeyFromRegistration:(id)registration
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [a3 identifier];
-  v5 = [v3 stringWithFormat:@"%@.%@", @"context.registration", v4];
+  identifier = [registration identifier];
+  v5 = [v3 stringWithFormat:@"%@.%@", @"context.registration", identifier];
 
   return v5;
 }
 
-- (void)saveValue:(id)a3 forKeyPath:(id)a4
+- (void)saveValue:(id)value forKeyPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 value];
+  valueCopy = value;
+  pathCopy = path;
+  value = [valueCopy value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -90,12 +90,12 @@
 
   else
   {
-    v9 = [v7 deviceID];
-    if (v9)
+    deviceID = [pathCopy deviceID];
+    if (deviceID)
     {
-      v10 = v9;
-      v11 = [v7 deviceID];
-      v12 = [v11 isEqualToString:self->_localDeviceID];
+      v10 = deviceID;
+      deviceID2 = [pathCopy deviceID];
+      v12 = [deviceID2 isEqualToString:self->_localDeviceID];
 
       if (!v12)
       {
@@ -112,48 +112,48 @@
     block[1] = 3221225472;
     block[2] = __57___CDSharedMemoryContextPersisting_saveValue_forKeyPath___block_invoke;
     block[3] = &unk_1E7886228;
-    v15 = v7;
-    v16 = self;
-    v17 = v6;
+    v15 = pathCopy;
+    selfCopy = self;
+    v17 = valueCopy;
     dispatch_sync(queue, block);
   }
 
 LABEL_8:
 }
 
-- (void)deleteKeyPaths:(id)a3
+- (void)deleteKeyPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51___CDSharedMemoryContextPersisting_deleteKeyPaths___block_invoke;
   v7[3] = &unk_1E7886250;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = pathsCopy;
+  selfCopy = self;
+  v6 = pathsCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)saveRegistration:(id)a3
+- (void)saveRegistration:(id)registration
 {
-  v4 = a3;
+  registrationCopy = registration;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53___CDSharedMemoryContextPersisting_saveRegistration___block_invoke;
   v7[3] = &unk_1E7886250;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = registrationCopy;
+  selfCopy = self;
+  v6 = registrationCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)deleteRegistration:(id)a3
+- (void)deleteRegistration:(id)registration
 {
-  v4 = a3;
-  v5 = [v4 predicate];
-  v6 = [v5 keyPaths];
+  registrationCopy = registration;
+  predicate = [registrationCopy predicate];
+  keyPaths = [predicate keyPaths];
 
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -161,24 +161,24 @@ LABEL_8:
   block[2] = __55___CDSharedMemoryContextPersisting_deleteRegistration___block_invoke;
   block[3] = &unk_1E7886228;
   block[4] = self;
-  v11 = v4;
-  v12 = v6;
-  v8 = v6;
-  v9 = v4;
+  v11 = registrationCopy;
+  v12 = keyPaths;
+  v8 = keyPaths;
+  v9 = registrationCopy;
   dispatch_sync(queue, block);
   [(_CDSharedMemoryContextPersisting *)self deleteKeyPaths:v8];
 }
 
 - (id)allKeysForContextStore
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __58___CDSharedMemoryContextPersisting_allKeysForContextStore__block_invoke;
   v9[3] = &unk_1E7886250;
   v9[4] = self;
-  v5 = v3;
+  v5 = array;
   v10 = v5;
   dispatch_sync(queue, v9);
   v6 = v10;
@@ -189,15 +189,15 @@ LABEL_8:
 
 - (id)loadValues
 {
-  v2 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(_CDSharedMemoryContextPersisting *)self allKeysForContextStore];
-  v29 = [MEMORY[0x1E695DF90] dictionary];
+  allKeysForContextStore = [(_CDSharedMemoryContextPersisting *)self allKeysForContextStore];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v4 = v3;
+  v4 = allKeysForContextStore;
   v5 = [v4 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v5)
   {
@@ -219,7 +219,7 @@ LABEL_8:
         v11 = *(*(&v32 + 1) + 8 * v10);
         if ([v11 hasPrefix:{v8, v28}])
         {
-          v12 = [(_CDSharedMemoryKeyValueStore *)v2->_store dataForKey:v11];
+          v12 = [(_CDSharedMemoryKeyValueStore *)selfCopy->_store dataForKey:v11];
           if (v12)
           {
             v13 = MEMORY[0x1E696ACD0];
@@ -237,17 +237,17 @@ LABEL_8:
               if (v15)
               {
 LABEL_11:
-                v17 = [v15 value];
+                value = [v15 value];
                 [v15 keyPath];
                 v30 = v16;
                 v18 = v7;
                 v19 = v9;
                 v20 = v8;
                 v21 = v4;
-                v23 = v22 = v2;
-                [v29 setObject:v17 forKeyedSubscript:v23];
+                v23 = v22 = selfCopy;
+                [dictionary setObject:value forKeyedSubscript:v23];
 
-                v2 = v22;
+                selfCopy = v22;
                 v4 = v21;
                 v8 = v20;
                 v9 = v19;
@@ -274,7 +274,7 @@ LABEL_11:
     while (v24);
   }
 
-  v25 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v29];
+  v25 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
 
   v26 = *MEMORY[0x1E69E9840];
 
@@ -284,13 +284,13 @@ LABEL_11:
 - (id)loadRegistrations
 {
   v32 = *MEMORY[0x1E69E9840];
-  v3 = [(_CDSharedMemoryContextPersisting *)self allKeysForContextStore];
-  v21 = [MEMORY[0x1E695DF70] array];
+  allKeysForContextStore = [(_CDSharedMemoryContextPersisting *)self allKeysForContextStore];
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v4 = v3;
+  v4 = allKeysForContextStore;
   v5 = [v4 countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v5)
   {
@@ -329,7 +329,7 @@ LABEL_11:
               if (v14)
               {
 LABEL_11:
-                [v21 addObject:v14];
+                [array addObject:v14];
               }
             }
 
@@ -351,7 +351,7 @@ LABEL_11:
     while (v16);
   }
 
-  v17 = [MEMORY[0x1E695DEC8] arrayWithArray:v21];
+  v17 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   v18 = *MEMORY[0x1E69E9840];
 
@@ -360,9 +360,9 @@ LABEL_11:
 
 - (void)deleteAllData
 {
-  v5 = [(_CDSharedMemoryContextPersisting *)self allKeysForContextStore];
+  allKeysForContextStore = [(_CDSharedMemoryContextPersisting *)self allKeysForContextStore];
   store = self->_store;
-  v4 = [MEMORY[0x1E695DEC8] arrayWithArray:v5];
+  v4 = [MEMORY[0x1E695DEC8] arrayWithArray:allKeysForContextStore];
   [(_CDSharedMemoryKeyValueStore *)store removeDataForKeys:v4];
 }
 

@@ -1,13 +1,13 @@
 @interface OAuthAuthorizationViewController
-- (_TtC26AppDistributionLaunchAngel32OAuthAuthorizationViewController)initWithCoder:(id)a3;
-- (_TtC26AppDistributionLaunchAngel32OAuthAuthorizationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3;
+- (_TtC26AppDistributionLaunchAngel32OAuthAuthorizationViewController)initWithCoder:(id)coder;
+- (_TtC26AppDistributionLaunchAngel32OAuthAuthorizationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)presentationAnchorForWebAuthenticationSession:(id)session;
 - (int64_t)preferredStatusBarStyle;
 @end
 
 @implementation OAuthAuthorizationViewController
 
-- (_TtC26AppDistributionLaunchAngel32OAuthAuthorizationViewController)initWithCoder:(id)a3
+- (_TtC26AppDistributionLaunchAngel32OAuthAuthorizationViewController)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -39,7 +39,7 @@
   return 1;
 }
 
-- (_TtC26AppDistributionLaunchAngel32OAuthAuthorizationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC26AppDistributionLaunchAngel32OAuthAuthorizationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -54,7 +54,7 @@
   return result;
 }
 
-- (id)presentationAnchorForWebAuthenticationSession:(id)a3
+- (id)presentationAnchorForWebAuthenticationSession:(id)session
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -64,8 +64,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = a3;
-  v6 = self;
+  sessionCopy = session;
+  selfCopy = self;
   sub_1000439BC();
   v8 = v7;
 

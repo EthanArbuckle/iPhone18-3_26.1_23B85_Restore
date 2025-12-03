@@ -1,15 +1,15 @@
 @interface RAPAnnotation
 - (CLLocationCoordinate2D)coordinate;
 - (RAPAnnotation)init;
-- (RAPAnnotation)initWithMapItem:(id)a3;
+- (RAPAnnotation)initWithMapItem:(id)item;
 @end
 
 @implementation RAPAnnotation
 
 - (CLLocationCoordinate2D)coordinate
 {
-  v2 = [(MKMapItem *)self->_item placemark];
-  [v2 coordinate];
+  placemark = [(MKMapItem *)self->_item placemark];
+  [placemark coordinate];
   v4 = v3;
   v6 = v5;
 
@@ -20,16 +20,16 @@
   return result;
 }
 
-- (RAPAnnotation)initWithMapItem:(id)a3
+- (RAPAnnotation)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = RAPAnnotation;
   v6 = [(RAPAnnotation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_item, a3);
+    objc_storeStrong(&v6->_item, item);
   }
 
   return v7;

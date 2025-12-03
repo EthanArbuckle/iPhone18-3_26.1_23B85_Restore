@@ -1,10 +1,10 @@
 @interface PUPinchedTileTracker
-- (PUPinchedTileTracker)initWithPinchGestureRecognizer:(id)a3 tilingView:(id)a4 direction:(int64_t)a5;
+- (PUPinchedTileTracker)initWithPinchGestureRecognizer:(id)recognizer tilingView:(id)view direction:(int64_t)direction;
 - (id)tileControllerToTrack;
 - (void)_updateTargetLayoutInfoIfNeeded;
 - (void)completeTracking;
-- (void)configureTileReattachmentContext:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)configureTileReattachmentContext:(id)context;
+- (void)setDelegate:(id)delegate;
 - (void)startTileControllerTracking;
 - (void)updateGestureRecognizerTracking;
 - (void)updateTileControllerTracking;
@@ -14,13 +14,13 @@
 
 - (void)_updateTargetLayoutInfoIfNeeded
 {
-  v3 = [(PUPinchedTileTracker *)self _targetLayoutInfo];
+  _targetLayoutInfo = [(PUPinchedTileTracker *)self _targetLayoutInfo];
 
-  if (!v3 && self->_delegateFlags.respondsToFinalLayoutInfoForTileWithLayoutInfo)
+  if (!_targetLayoutInfo && self->_delegateFlags.respondsToFinalLayoutInfoForTileWithLayoutInfo)
   {
-    v6 = [(PUPinchedTileTracker *)self _initialLayoutInfo];
-    v4 = [(PUInteractiveTileTracker *)self delegate];
-    v5 = [v4 pinchedTiledTracker:self finalLayoutInfoForTileWithLayoutInfo:v6];
+    _initialLayoutInfo = [(PUPinchedTileTracker *)self _initialLayoutInfo];
+    delegate = [(PUInteractiveTileTracker *)self delegate];
+    v5 = [delegate pinchedTiledTracker:self finalLayoutInfoForTileWithLayoutInfo:_initialLayoutInfo];
 
     [(PUPinchedTileTracker *)self _setTargetLayoutInfo:v5];
   }
@@ -28,8 +28,8 @@
 
 - (id)tileControllerToTrack
 {
-  v3 = [(PUPinchedTileTracker *)self pinchGestureRecognizer];
-  if ([v3 numberOfTouches] >= 2)
+  pinchGestureRecognizer = [(PUPinchedTileTracker *)self pinchGestureRecognizer];
+  if ([pinchGestureRecognizer numberOfTouches] >= 2)
   {
     v19 = 0;
     v20 = &v19;
@@ -37,14 +37,14 @@
     v22 = __Block_byref_object_copy__69602;
     v23 = __Block_byref_object_dispose__69603;
     v24 = 0;
-    v5 = [(PUInteractiveTileTracker *)self tilingView];
-    [v3 locationInView:v5];
+    tilingView = [(PUInteractiveTileTracker *)self tilingView];
+    [pinchGestureRecognizer locationInView:tilingView];
     v7 = v6;
     v9 = v8;
-    [v3 locationOfTouch:0 inView:v5];
+    [pinchGestureRecognizer locationOfTouch:0 inView:tilingView];
     v11 = v10;
     v13 = v12;
-    [v3 locationOfTouch:1 inView:v5];
+    [pinchGestureRecognizer locationOfTouch:1 inView:tilingView];
     v18[0] = 0;
     v18[1] = v18;
     v18[2] = 0x2020000000;
@@ -57,7 +57,7 @@
     v17[7] = v9;
     v17[4] = v18;
     v17[5] = &v19;
-    [v5 enumeratePresentedTileControllersInRect:v17 usingBlock:{fmin(v11, v14), fmin(v13, v15), vabdd_f64(v11, v14), vabdd_f64(v13, v15)}];
+    [tilingView enumeratePresentedTileControllersInRect:v17 usingBlock:{fmin(v11, v14), fmin(v13, v15), vabdd_f64(v11, v14), vabdd_f64(v13, v15)}];
     v4 = v20[5];
     _Block_object_dispose(v18, 8);
 
@@ -91,31 +91,31 @@ void __45__PUPinchedTileTracker_tileControllerToTrack__block_invoke(uint64_t a1,
   }
 }
 
-- (void)configureTileReattachmentContext:(id)a3
+- (void)configureTileReattachmentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6.receiver = self;
   v6.super_class = PUPinchedTileTracker;
-  [(PUInteractiveTileTracker *)&v6 configureTileReattachmentContext:v4];
+  [(PUInteractiveTileTracker *)&v6 configureTileReattachmentContext:contextCopy];
   if ([(PUPinchedTileTracker *)self direction]== 1)
   {
     if ([(PUInteractiveTileTracker *)self shouldEnd])
     {
-      v5 = [(PUInteractiveTileTracker *)self shouldFinish];
+      shouldFinish = [(PUInteractiveTileTracker *)self shouldFinish];
     }
 
     else
     {
-      v5 = 1;
+      shouldFinish = 1;
     }
   }
 
   else
   {
-    v5 = 0;
+    shouldFinish = 0;
   }
 
-  [v4 setZoomingIn:v5];
+  [contextCopy setZoomingIn:shouldFinish];
 }
 
 - (void)completeTracking
@@ -123,11 +123,11 @@ void __45__PUPinchedTileTracker_tileControllerToTrack__block_invoke(uint64_t a1,
   v5.receiver = self;
   v5.super_class = PUPinchedTileTracker;
   [(PUInteractiveTileTracker *)&v5 completeTracking];
-  v3 = [(PUPinchedTileTracker *)self _pinchTracker];
-  v4 = v3;
-  if (v3)
+  _pinchTracker = [(PUPinchedTileTracker *)self _pinchTracker];
+  v4 = _pinchTracker;
+  if (_pinchTracker)
   {
-    [v3 setUpdateHandler:0];
+    [_pinchTracker setUpdateHandler:0];
     [(PUPinchedTileTracker *)self _setPinchTracker:0];
   }
 
@@ -140,28 +140,28 @@ void __45__PUPinchedTileTracker_tileControllerToTrack__block_invoke(uint64_t a1,
   v30.receiver = self;
   v30.super_class = PUPinchedTileTracker;
   [(PUInteractiveTileTracker *)&v30 updateTileControllerTracking];
-  v3 = [(PUPinchedTileTracker *)self pinchGestureRecognizer];
-  v4 = [(PUInteractiveTileTracker *)self tilingView];
-  v5 = [v4 superview];
+  pinchGestureRecognizer = [(PUPinchedTileTracker *)self pinchGestureRecognizer];
+  tilingView = [(PUInteractiveTileTracker *)self tilingView];
+  superview = [tilingView superview];
 
-  v6 = [(PUPinchedTileTracker *)self _pinchTracker];
-  if (v6)
+  _pinchTracker = [(PUPinchedTileTracker *)self _pinchTracker];
+  if (_pinchTracker)
   {
-    [v3 locationOfTouch:0 inView:v5];
+    [pinchGestureRecognizer locationOfTouch:0 inView:superview];
     v8 = v7;
     v10 = v9;
-    [v3 locationOfTouch:1 inView:v5];
-    [v6 setPinchLocation1:v8 location2:{v10, v11, v12}];
+    [pinchGestureRecognizer locationOfTouch:1 inView:superview];
+    [_pinchTracker setPinchLocation1:v8 location2:{v10, v11, v12}];
   }
 
   [(PUPinchedTileTracker *)self _pinchProgress];
   if ((*&v13 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    [v3 scale];
+    [pinchGestureRecognizer scale];
     v15 = v14;
-    v16 = [(PUPinchedTileTracker *)self direction];
+    direction = [(PUPinchedTileTracker *)self direction];
     v13 = v15 + -1.0;
-    if (v16 != 1)
+    if (direction != 1)
     {
       v13 = (1.0 - v15) * 1.5;
     }
@@ -173,18 +173,18 @@ void __45__PUPinchedTileTracker_tileControllerToTrack__block_invoke(uint64_t a1,
   }
 
   [(PUInteractiveTileTracker *)self setProgress:fmin(v13, 1.0)];
-  v17 = [(PUPinchedTileTracker *)self _horizontalVelocityFilter];
-  [v17 outputValue];
+  _horizontalVelocityFilter = [(PUPinchedTileTracker *)self _horizontalVelocityFilter];
+  [_horizontalVelocityFilter outputValue];
   v19 = v18;
 
-  v20 = [(PUPinchedTileTracker *)self _verticalVelocityFilter];
-  [v20 outputValue];
+  _verticalVelocityFilter = [(PUPinchedTileTracker *)self _verticalVelocityFilter];
+  [_verticalVelocityFilter outputValue];
   v22 = v21;
 
-  [v3 velocity];
+  [pinchGestureRecognizer velocity];
   v24 = v23;
-  v25 = [(PUPinchedTileTracker *)self _angularVelocityFilter];
-  [v25 outputValue];
+  _angularVelocityFilter = [(PUPinchedTileTracker *)self _angularVelocityFilter];
+  [_angularVelocityFilter outputValue];
   v27 = v26;
 
   v28 = PLOneUpGetLog();
@@ -204,9 +204,9 @@ void __45__PUPinchedTileTracker_tileControllerToTrack__block_invoke(uint64_t a1,
   v50.receiver = self;
   v50.super_class = PUPinchedTileTracker;
   [(PUInteractiveTileTracker *)&v50 startTileControllerTracking];
-  v3 = [(PUInteractiveTileTracker *)self trackedTileController];
-  v4 = [(PUInteractiveTileTracker *)self tilingView];
-  v5 = [v4 freezeTileController:v3];
+  trackedTileController = [(PUInteractiveTileTracker *)self trackedTileController];
+  tilingView = [(PUInteractiveTileTracker *)self tilingView];
+  v5 = [tilingView freezeTileController:trackedTileController];
   [(PUPinchedTileTracker *)self _setInitialLayoutInfo:v5];
   [v5 center];
   v7 = v6;
@@ -224,8 +224,8 @@ void __45__PUPinchedTileTracker_tileControllerToTrack__block_invoke(uint64_t a1,
 
   if (self->_delegateFlags.respondsToInitialAspectRatioForTileWithLayoutInfo)
   {
-    v14 = [(PUInteractiveTileTracker *)self delegate];
-    [v14 pinchedTiledTracker:self initialAspectRatioForTileWithLayoutInfo:v5];
+    delegate = [(PUInteractiveTileTracker *)self delegate];
+    [delegate pinchedTiledTracker:self initialAspectRatioForTileWithLayoutInfo:v5];
     v16 = v15;
 
     v17 = v16 < 0.0 || ((*&v16 & 0x7FFFFFFFFFFFFFFFuLL) - 0x10000000000000) >> 53 > 0x3FE;
@@ -266,7 +266,7 @@ void __45__PUPinchedTileTracker_tileControllerToTrack__block_invoke(uint64_t a1,
   v33 = &unk_1E7B7D358;
   v24 = v5;
   v34 = v24;
-  v25 = v3;
+  v25 = trackedTileController;
   v35 = v25;
   v26 = v21;
   v36 = v26;
@@ -274,7 +274,7 @@ void __45__PUPinchedTileTracker_tileControllerToTrack__block_invoke(uint64_t a1,
   v37 = v27;
   v28 = v23;
   v38 = v28;
-  v39 = self;
+  selfCopy = self;
   v42 = v11;
   v43 = v13;
   v41 = &v44;
@@ -396,21 +396,21 @@ LABEL_6:
   v11.receiver = self;
   v11.super_class = PUPinchedTileTracker;
   [(PUInteractiveTileTracker *)&v11 updateGestureRecognizerTracking];
-  v3 = [(PUPinchedTileTracker *)self pinchGestureRecognizer];
-  [v3 scale];
+  pinchGestureRecognizer = [(PUPinchedTileTracker *)self pinchGestureRecognizer];
+  [pinchGestureRecognizer scale];
   v5 = v4;
-  v6 = [(PUPinchedTileTracker *)self _pinchGestureRecognizerScaleDirectionValueFilter];
-  if (!v6)
+  _pinchGestureRecognizerScaleDirectionValueFilter = [(PUPinchedTileTracker *)self _pinchGestureRecognizerScaleDirectionValueFilter];
+  if (!_pinchGestureRecognizerScaleDirectionValueFilter)
   {
-    v6 = objc_alloc_init(PUChangeDirectionValueFilter);
-    [(PUChangeDirectionValueFilter *)v6 setMinimumChangeValue:0.05];
-    [(PUPinchedTileTracker *)self _setPinchGestureRecognizerScaleDirectionValueFilter:v6];
+    _pinchGestureRecognizerScaleDirectionValueFilter = objc_alloc_init(PUChangeDirectionValueFilter);
+    [(PUChangeDirectionValueFilter *)_pinchGestureRecognizerScaleDirectionValueFilter setMinimumChangeValue:0.05];
+    [(PUPinchedTileTracker *)self _setPinchGestureRecognizerScaleDirectionValueFilter:_pinchGestureRecognizerScaleDirectionValueFilter];
   }
 
-  [(PUValueFilter *)v6 setInputValue:v5];
-  v7 = ([v3 state] - 3) < 2 || objc_msgSend(v3, "numberOfTouches") < 2;
+  [(PUValueFilter *)_pinchGestureRecognizerScaleDirectionValueFilter setInputValue:v5];
+  v7 = ([pinchGestureRecognizer state] - 3) < 2 || objc_msgSend(pinchGestureRecognizer, "numberOfTouches") < 2;
   [(PUInteractiveTileTracker *)self setShouldEnd:v7];
-  [(PUValueFilter *)v6 outputValue];
+  [(PUValueFilter *)_pinchGestureRecognizerScaleDirectionValueFilter outputValue];
   v9 = v8;
   if ([(PUPinchedTileTracker *)self direction]== 1)
   {
@@ -425,29 +425,29 @@ LABEL_6:
   [(PUInteractiveTileTracker *)self setShouldFinish:v10];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(PUInteractiveTileTracker *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(PUInteractiveTileTracker *)self delegate];
 
-  if (v5 != v4)
+  if (delegate != delegateCopy)
   {
     v7.receiver = self;
     v7.super_class = PUPinchedTileTracker;
-    [(PUInteractiveTileTracker *)&v7 setDelegate:v4];
+    [(PUInteractiveTileTracker *)&v7 setDelegate:delegateCopy];
     p_delegateFlags = &self->_delegateFlags;
     p_delegateFlags->respondsToInitialAspectRatioForTileWithLayoutInfo = objc_opt_respondsToSelector() & 1;
     p_delegateFlags->respondsToFinalLayoutInfoForTileWithLayoutInfo = objc_opt_respondsToSelector() & 1;
   }
 }
 
-- (PUPinchedTileTracker)initWithPinchGestureRecognizer:(id)a3 tilingView:(id)a4 direction:(int64_t)a5
+- (PUPinchedTileTracker)initWithPinchGestureRecognizer:(id)recognizer tilingView:(id)view direction:(int64_t)direction
 {
-  v10 = a3;
-  v11 = a4;
-  if (v10)
+  recognizerCopy = recognizer;
+  viewCopy = view;
+  if (recognizerCopy)
   {
-    if (a5)
+    if (direction)
     {
       goto LABEL_3;
     }
@@ -455,27 +455,27 @@ LABEL_6:
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"PUPinchedTileTracker.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"pinchGestureRecognizer != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUPinchedTileTracker.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"pinchGestureRecognizer != nil"}];
 
-    if (a5)
+    if (direction)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"PUPinchedTileTracker.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"direction != PUPinchedTileTrackerDirectionUndefined"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUPinchedTileTracker.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"direction != PUPinchedTileTrackerDirectionUndefined"}];
 
 LABEL_3:
   v17.receiver = self;
   v17.super_class = PUPinchedTileTracker;
-  v12 = [(PUInteractiveTileTracker *)&v17 initWithTilingView:v11];
+  v12 = [(PUInteractiveTileTracker *)&v17 initWithTilingView:viewCopy];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_pinchGestureRecognizer, a3);
-    v13->_direction = a5;
+    objc_storeStrong(&v12->_pinchGestureRecognizer, recognizer);
+    v13->_direction = direction;
   }
 
   return v13;

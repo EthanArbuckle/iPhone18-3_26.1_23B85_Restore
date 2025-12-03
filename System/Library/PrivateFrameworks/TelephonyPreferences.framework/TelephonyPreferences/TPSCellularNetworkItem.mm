@@ -1,8 +1,8 @@
 @interface TPSCellularNetworkItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCellularNetworkItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCellularNetworkItem:(id)item;
 - (TPSCellularNetworkItem)init;
-- (TPSCellularNetworkItem)initWithIdentifier:(id)a3 name:(id)a4 localizedName:(id)a5;
+- (TPSCellularNetworkItem)initWithIdentifier:(id)identifier name:(id)name localizedName:(id)localizedName;
 - (unint64_t)hash;
 @end
 
@@ -15,25 +15,25 @@
   return 0;
 }
 
-- (TPSCellularNetworkItem)initWithIdentifier:(id)a3 name:(id)a4 localizedName:(id)a5
+- (TPSCellularNetworkItem)initWithIdentifier:(id)identifier name:(id)name localizedName:(id)localizedName
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  localizedNameCopy = localizedName;
   v19.receiver = self;
   v19.super_class = TPSCellularNetworkItem;
   v11 = [(TPSCellularNetworkItem *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v14;
 
-    v16 = [v10 copy];
+    v16 = [localizedNameCopy copy];
     localizedName = v11->_localizedName;
     v11->_localizedName = v16;
   }
@@ -41,41 +41,41 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSCellularNetworkItem *)self isEqualToCellularNetworkItem:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSCellularNetworkItem *)self isEqualToCellularNetworkItem:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(TPSCellularNetworkItem *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(TPSCellularNetworkItem *)self name];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(TPSCellularNetworkItem *)self localizedName];
-  v8 = [v7 hash];
+  identifier = [(TPSCellularNetworkItem *)self identifier];
+  v4 = [identifier hash];
+  name = [(TPSCellularNetworkItem *)self name];
+  v6 = [name hash] ^ v4;
+  localizedName = [(TPSCellularNetworkItem *)self localizedName];
+  v8 = [localizedName hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqualToCellularNetworkItem:(id)a3
+- (BOOL)isEqualToCellularNetworkItem:(id)item
 {
-  v4 = a3;
-  v5 = [(TPSCellularNetworkItem *)self identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToString:v6])
+  itemCopy = item;
+  identifier = [(TPSCellularNetworkItem *)self identifier];
+  identifier2 = [itemCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
-    v7 = [(TPSCellularNetworkItem *)self name];
-    v8 = [v4 name];
-    if ([v7 isEqualToString:v8])
+    name = [(TPSCellularNetworkItem *)self name];
+    name2 = [itemCopy name];
+    if ([name isEqualToString:name2])
     {
-      v9 = [(TPSCellularNetworkItem *)self localizedName];
-      v10 = [v4 localizedName];
-      v11 = [v9 isEqualToString:v10];
+      localizedName = [(TPSCellularNetworkItem *)self localizedName];
+      localizedName2 = [itemCopy localizedName];
+      v11 = [localizedName isEqualToString:localizedName2];
     }
 
     else

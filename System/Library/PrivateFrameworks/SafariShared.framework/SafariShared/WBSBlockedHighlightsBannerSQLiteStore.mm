@@ -1,43 +1,43 @@
 @interface WBSBlockedHighlightsBannerSQLiteStore
 + (NSURL)defaultDatabaseURL;
-- (WBSBlockedHighlightsBannerSQLiteStore)initWithDatabaseURL:(id)a3;
+- (WBSBlockedHighlightsBannerSQLiteStore)initWithDatabaseURL:(id)l;
 - (int64_t)_schemaVersion;
 - (void)_closeDatabaseOnDatabaseQueue;
 - (void)_configureDatabase;
 - (void)_createDatabaseSchemaIfNeeded;
 - (void)_openDatabase;
 - (void)_openDatabaseIfNeeded;
-- (void)clearAllBannedHighlightsWithCompletionHandler:(id)a3;
-- (void)clearBlockedBannerHighlightsAfterDate:(id)a3 beforeDate:(id)a4 withCompletionHandler:(id)a5;
+- (void)clearAllBannedHighlightsWithCompletionHandler:(id)handler;
+- (void)clearBlockedBannerHighlightsAfterDate:(id)date beforeDate:(id)beforeDate withCompletionHandler:(id)handler;
 - (void)closeDatabase;
-- (void)fetchAllBlockedHighlightsWithCompletionHandler:(id)a3;
-- (void)removeBlockedBannerhighlightWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)storeBlockedHighlightWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)verifyIfHighlightIsBlockedWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)fetchAllBlockedHighlightsWithCompletionHandler:(id)handler;
+- (void)removeBlockedBannerhighlightWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)storeBlockedHighlightWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)verifyIfHighlightIsBlockedWithIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation WBSBlockedHighlightsBannerSQLiteStore
 
 + (NSURL)defaultDatabaseURL
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 safari_settingsDirectoryURL];
-  v4 = [v3 URLByAppendingPathComponent:@"BlockedBannerHighlights.db" isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  safari_settingsDirectoryURL = [defaultManager safari_settingsDirectoryURL];
+  v4 = [safari_settingsDirectoryURL URLByAppendingPathComponent:@"BlockedBannerHighlights.db" isDirectory:0];
 
   return v4;
 }
 
-- (WBSBlockedHighlightsBannerSQLiteStore)initWithDatabaseURL:(id)a3
+- (WBSBlockedHighlightsBannerSQLiteStore)initWithDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = WBSBlockedHighlightsBannerSQLiteStore;
   v5 = [(WBSBlockedHighlightsBannerSQLiteStore *)&v13 init];
   if (v5)
   {
-    if (v4)
+    if (lCopy)
     {
-      v6 = v4;
+      v6 = lCopy;
     }
 
     else
@@ -59,17 +59,17 @@
   return v5;
 }
 
-- (void)fetchAllBlockedHighlightsWithCompletionHandler:(id)a3
+- (void)fetchAllBlockedHighlightsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __88__WBSBlockedHighlightsBannerSQLiteStore_fetchAllBlockedHighlightsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 
@@ -113,20 +113,20 @@ void __88__WBSBlockedHighlightsBannerSQLiteStore_fetchAllBlockedHighlightsWithCo
   }
 }
 
-- (void)storeBlockedHighlightWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)storeBlockedHighlightWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__WBSBlockedHighlightsBannerSQLiteStore_storeBlockedHighlightWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -178,20 +178,20 @@ uint64_t __95__WBSBlockedHighlightsBannerSQLiteStore_storeBlockedHighlightWithId
   return result;
 }
 
-- (void)verifyIfHighlightIsBlockedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)verifyIfHighlightIsBlockedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__WBSBlockedHighlightsBannerSQLiteStore_verifyIfHighlightIsBlockedWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -219,17 +219,17 @@ void __100__WBSBlockedHighlightsBannerSQLiteStore_verifyIfHighlightIsBlockedWith
   }
 }
 
-- (void)clearAllBannedHighlightsWithCompletionHandler:(id)a3
+- (void)clearAllBannedHighlightsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__WBSBlockedHighlightsBannerSQLiteStore_clearAllBannedHighlightsWithCompletionHandler___block_invoke;
   v7[3] = &unk_1E7FB6F08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(databaseQueue, v7);
 }
 
@@ -278,23 +278,23 @@ uint64_t __87__WBSBlockedHighlightsBannerSQLiteStore_clearAllBannedHighlightsWit
   return result;
 }
 
-- (void)clearBlockedBannerHighlightsAfterDate:(id)a3 beforeDate:(id)a4 withCompletionHandler:(id)a5
+- (void)clearBlockedBannerHighlightsAfterDate:(id)date beforeDate:(id)beforeDate withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  beforeDateCopy = beforeDate;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __112__WBSBlockedHighlightsBannerSQLiteStore_clearBlockedBannerHighlightsAfterDate_beforeDate_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E7FB6F58;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v16 = dateCopy;
+  v17 = beforeDateCopy;
+  v18 = handlerCopy;
+  v12 = beforeDateCopy;
+  v13 = dateCopy;
+  v14 = handlerCopy;
   dispatch_async(databaseQueue, v15);
 }
 
@@ -346,20 +346,20 @@ uint64_t __112__WBSBlockedHighlightsBannerSQLiteStore_clearBlockedBannerHighligh
   return result;
 }
 
-- (void)removeBlockedBannerhighlightWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)removeBlockedBannerhighlightWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   databaseQueue = self->_databaseQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __102__WBSBlockedHighlightsBannerSQLiteStore_removeBlockedBannerhighlightWithIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E7FB6F30;
-  v12 = v6;
-  v13 = v7;
+  v12 = identifierCopy;
+  v13 = handlerCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = identifierCopy;
+  v10 = handlerCopy;
   dispatch_async(databaseQueue, block);
 }
 
@@ -426,17 +426,17 @@ uint64_t __102__WBSBlockedHighlightsBannerSQLiteStore_removeBlockedBannerhighlig
 - (void)_configureDatabase
 {
   *buf = 138477827;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1BB6F3000, log, OS_LOG_TYPE_ERROR, "Failed to acquire exclusive access to Blocked Banner Highlights SQLite store at %{private}@", buf, 0xCu);
 }
 
 - (void)_createDatabaseSchemaIfNeeded
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(WBSBlockedHighlightsBannerSQLiteStore *)self _schemaVersion];
-  if (v3 <= 1)
+  _schemaVersion = [(WBSBlockedHighlightsBannerSQLiteStore *)self _schemaVersion];
+  if (_schemaVersion <= 1)
   {
-    if (v3 && SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_database, 0, @"DROP TABLE BlockedBannerHighlights") != 101)
+    if (_schemaVersion && SafariShared::_WBSSQLiteDatabaseExecuteAndReturnError<>(self->_database, 0, @"DROP TABLE BlockedBannerHighlights") != 101)
     {
       v10 = WBS_LOG_CHANNEL_PREFIXInterstellar();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -463,9 +463,9 @@ uint64_t __102__WBSBlockedHighlightsBannerSQLiteStore_removeBlockedBannerhighlig
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
           v13 = [(WBSSQLiteDatabase *)self->_database lastErrorWithMethodName:"[WBSBlockedHighlightsBannerSQLiteStore _createDatabaseSchemaIfNeeded]"];
-          v14 = [v13 safari_privacyPreservingDescription];
+          safari_privacyPreservingDescription = [v13 safari_privacyPreservingDescription];
           *buf = 138543618;
-          v16 = v14;
+          v16 = safari_privacyPreservingDescription;
           v17 = 1024;
           v18 = v7;
           _os_log_error_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_ERROR, "Failed to set Blocked Banner Highlights database schema version: %{public}@ (%d)", buf, 0x12u);
@@ -479,9 +479,9 @@ uint64_t __102__WBSBlockedHighlightsBannerSQLiteStore_removeBlockedBannerhighlig
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
           v11 = [(WBSSQLiteDatabase *)self->_database lastErrorWithMethodName:"[WBSBlockedHighlightsBannerSQLiteStore _createDatabaseSchemaIfNeeded]"];
-          v12 = [v11 safari_privacyPreservingDescription];
+          safari_privacyPreservingDescription2 = [v11 safari_privacyPreservingDescription];
           *buf = 138543618;
-          v16 = v12;
+          v16 = safari_privacyPreservingDescription2;
           v17 = 1024;
           v18 = v9;
           _os_log_error_impl(&dword_1BB6F3000, v8, OS_LOG_TYPE_ERROR, "Failed to create BlockedBannerHighlights table: %{public}@ (%d)", buf, 0x12u);
@@ -494,11 +494,11 @@ uint64_t __102__WBSBlockedHighlightsBannerSQLiteStore_removeBlockedBannerhighlig
 - (int64_t)_schemaVersion
 {
   v2 = SafariShared::WBSSQLiteDatabaseFetch<>(self->_database, @"PRAGMA user_version");
-  v3 = [v2 nextObject];
-  v4 = [v3 intAtIndex:0];
+  nextObject = [v2 nextObject];
+  v4 = [nextObject intAtIndex:0];
 
-  v5 = [v2 statement];
-  [v5 invalidate];
+  statement = [v2 statement];
+  [statement invalidate];
 
   return v4;
 }

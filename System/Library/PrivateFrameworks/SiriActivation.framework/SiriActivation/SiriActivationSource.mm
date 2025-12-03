@@ -1,7 +1,7 @@
 @interface SiriActivationSource
 - (BOOL)isEnabled;
 - (SiriActivationSource)init;
-- (void)activeChangedTo:(id)a3;
+- (void)activeChangedTo:(id)to;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -15,10 +15,10 @@
   v2 = [(SiriActivationSource *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v2->_identifier;
-    v2->_identifier = v4;
+    v2->_identifier = uUIDString;
 
     v2->_lock._os_unfair_lock_opaque = 0;
   }
@@ -41,10 +41,10 @@
   if ([v3 siriIsSupported])
   {
     v4 = +[SASSystemState sharedSystemState];
-    v5 = [v4 siriIsEnabled];
+    siriIsEnabled = [v4 siriIsEnabled];
     if (v2)
     {
-      v6 = v5;
+      v6 = siriIsEnabled;
     }
 
     else
@@ -85,10 +85,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)activeChangedTo:(id)a3
+- (void)activeChangedTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
   {
@@ -96,7 +96,7 @@
     active = self->_active;
     v8 = v5;
     v9 = [v6 numberWithBool:active];
-    v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "BOOLValue")}];
+    v10 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(toCopy, "BOOLValue")}];
     v12 = 136315650;
     v13 = "[SiriActivationSource activeChangedTo:]";
     v14 = 2112;
@@ -106,7 +106,7 @@
     _os_log_impl(&dword_1C8137000, v8, OS_LOG_TYPE_DEFAULT, "%s #activation old availability: %@, new availability: %@", &v12, 0x20u);
   }
 
-  self->_active = [v4 BOOLValue];
+  self->_active = [toCopy BOOLValue];
   self->_knowsIfActive = 1;
 
   v11 = *MEMORY[0x1E69E9840];

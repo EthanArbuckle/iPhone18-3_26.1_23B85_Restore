@@ -6,7 +6,7 @@
 
 - (GCHIDElementSnapshot)gc_snapshot
 {
-  v1 = [[GCHIDElementSnapshot alloc] initWithHIDElement:a1];
+  v1 = [[GCHIDElementSnapshot alloc] initWithHIDElement:self];
 
   return v1;
 }

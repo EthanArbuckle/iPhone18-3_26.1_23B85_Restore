@@ -1,6 +1,6 @@
 @interface DeleteJournalMoveEntriesViewController
 - (CGSize)preferredContentSize;
-- (_TtC7Journal38DeleteJournalMoveEntriesViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7Journal38DeleteJournalMoveEntriesViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didTapDelete;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -19,35 +19,35 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004A0FD4();
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = self;
-  v3 = [(DeleteJournalMoveEntriesViewController *)v2 view];
-  if (!v3)
+  selfCopy = self;
+  view = [(DeleteJournalMoveEntriesViewController *)selfCopy view];
+  if (!view)
   {
     __break(1u);
     goto LABEL_5;
   }
 
-  v6 = v3;
-  [v3 layoutIfNeeded];
+  v6 = view;
+  [view layoutIfNeeded];
 
-  v7 = [(DeleteJournalMoveEntriesViewController *)v2 view];
-  if (!v7)
+  view2 = [(DeleteJournalMoveEntriesViewController *)selfCopy view];
+  if (!view2)
   {
 LABEL_5:
     __break(1u);
     goto LABEL_6;
   }
 
-  v10 = v7;
+  v10 = view2;
   LODWORD(v8) = 1148846080;
   LODWORD(v9) = 1112014848;
-  [v7 systemLayoutSizeFittingSize:350.0 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v8, v9}];
+  [view2 systemLayoutSizeFittingSize:350.0 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v8, v9}];
   v12 = v11;
 
   v4 = 350.0;
@@ -60,11 +60,11 @@ LABEL_6:
 
 - (void)didTapDelete
 {
-  v2 = self;
+  selfCopy = self;
   sub_1004A4AA8();
 }
 
-- (_TtC7Journal38DeleteJournalMoveEntriesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7Journal38DeleteJournalMoveEntriesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

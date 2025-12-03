@@ -1,8 +1,8 @@
 @interface SCLTimeIntervalsFormatter
 - (SCLTimeIntervalsFormatter)init;
-- (id)stringForObjectValue:(id)a3;
-- (id)stringFromTimeIntervals:(id)a3;
-- (void)setLocale:(id)a3;
+- (id)stringForObjectValue:(id)value;
+- (id)stringFromTimeIntervals:(id)intervals;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation SCLTimeIntervalsFormatter
@@ -24,33 +24,33 @@
     v2->_listFormatter = v5;
 
     [(NSListFormatter *)v2->_listFormatter setItemFormatter:v2->_intervalFormatter];
-    v7 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
-    [(SCLTimeIntervalsFormatter *)v2 setLocale:v7];
+    autoupdatingCurrentLocale = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    [(SCLTimeIntervalsFormatter *)v2 setLocale:autoupdatingCurrentLocale];
   }
 
   return v2;
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v4 = a3;
-  if (!v4)
+  localeCopy = locale;
+  if (!localeCopy)
   {
-    v4 = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
+    localeCopy = [MEMORY[0x277CBEAF8] autoupdatingCurrentLocale];
   }
 
-  v5 = v4;
-  [(SCLScheduleIntervalFormatter *)self->_intervalFormatter setLocale:v4];
+  v5 = localeCopy;
+  [(SCLScheduleIntervalFormatter *)self->_intervalFormatter setLocale:localeCopy];
   [(NSListFormatter *)self->_listFormatter setLocale:v5];
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(SCLTimeIntervalsFormatter *)self stringFromTimeIntervals:v4];
+    v5 = [(SCLTimeIntervalsFormatter *)self stringFromTimeIntervals:valueCopy];
   }
 
   else
@@ -61,43 +61,43 @@
   return v5;
 }
 
-- (id)stringFromTimeIntervals:(id)a3
+- (id)stringFromTimeIntervals:(id)intervals
 {
-  v4 = a3;
-  if ([v4 count])
+  intervalsCopy = intervals;
+  if ([intervalsCopy count])
   {
-    v5 = [v4 count];
-    v6 = [(SCLTimeIntervalsFormatter *)self intervalFormatter];
-    v7 = v6;
+    v5 = [intervalsCopy count];
+    intervalFormatter = [(SCLTimeIntervalsFormatter *)self intervalFormatter];
+    v7 = intervalFormatter;
     if (v5 == 1)
     {
-      [v6 setPrefersHoursOnly:{-[SCLTimeIntervalsFormatter prefersHoursOnly](self, "prefersHoursOnly")}];
+      [intervalFormatter setPrefersHoursOnly:{-[SCLTimeIntervalsFormatter prefersHoursOnly](self, "prefersHoursOnly")}];
 
-      v8 = [(SCLTimeIntervalsFormatter *)self intervalFormatter];
-      [v8 setCoalescesAMPMSymbols:0];
+      intervalFormatter2 = [(SCLTimeIntervalsFormatter *)self intervalFormatter];
+      [intervalFormatter2 setCoalescesAMPMSymbols:0];
 
-      v9 = [v4 firstObject];
-      v10 = [(SCLTimeIntervalsFormatter *)self intervalFormatter];
-      v11 = [v9 startTime];
-      v12 = [v9 endTime];
-      v13 = [v10 stringFromTime:v11 toTime:v12];
+      firstObject = [intervalsCopy firstObject];
+      intervalFormatter3 = [(SCLTimeIntervalsFormatter *)self intervalFormatter];
+      startTime = [firstObject startTime];
+      endTime = [firstObject endTime];
+      v13 = [intervalFormatter3 stringFromTime:startTime toTime:endTime];
 
       goto LABEL_7;
     }
 
-    [v6 setPrefersHoursOnly:1];
+    [intervalFormatter setPrefersHoursOnly:1];
 
-    v15 = [(SCLTimeIntervalsFormatter *)self intervalFormatter];
-    [v15 setCoalescesAMPMSymbols:0];
+    intervalFormatter4 = [(SCLTimeIntervalsFormatter *)self intervalFormatter];
+    [intervalFormatter4 setCoalescesAMPMSymbols:0];
 
-    v9 = [(SCLTimeIntervalsFormatter *)self listFormatter];
-    v14 = [v9 stringFromItems:v4];
+    firstObject = [(SCLTimeIntervalsFormatter *)self listFormatter];
+    v14 = [firstObject stringFromItems:intervalsCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v14 = [v9 localizedStringForKey:@"ScheduleOff" value:&stru_287622948 table:@"SchoolTimeFormatters"];
+    firstObject = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    v14 = [firstObject localizedStringForKey:@"ScheduleOff" value:&stru_287622948 table:@"SchoolTimeFormatters"];
   }
 
   v13 = v14;

@@ -1,26 +1,26 @@
 @interface TVRCFilmographyCategory
-+ (id)filmographyCategoryWithDictionary:(id)a3;
++ (id)filmographyCategoryWithDictionary:(id)dictionary;
 - (NSArray)orderedItems;
-- (TVRCFilmographyCategory)initWithDictionary:(id)a3;
+- (TVRCFilmographyCategory)initWithDictionary:(id)dictionary;
 @end
 
 @implementation TVRCFilmographyCategory
 
-- (TVRCFilmographyCategory)initWithDictionary:(id)a3
+- (TVRCFilmographyCategory)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = TVRCFilmographyCategory;
   v5 = [(TVRCFilmographyCategory *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v9 = [v4 objectForKeyedSubscript:@"items"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"items"];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -61,10 +61,10 @@
   return v5;
 }
 
-+ (id)filmographyCategoryWithDictionary:(id)a3
++ (id)filmographyCategoryWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
@@ -73,13 +73,13 @@
 {
   if (!self->_orderedItems)
   {
-    v3 = [(TVRCFilmographyCategory *)self items];
-    v4 = [v3 count];
+    items = [(TVRCFilmographyCategory *)self items];
+    v4 = [items count];
 
     if (v4)
     {
-      v5 = [(TVRCFilmographyCategory *)self items];
-      v6 = [v5 mutableCopy];
+      items2 = [(TVRCFilmographyCategory *)self items];
+      v6 = [items2 mutableCopy];
 
       [(NSArray *)v6 sortUsingComparator:&__block_literal_global];
       orderedItems = self->_orderedItems;

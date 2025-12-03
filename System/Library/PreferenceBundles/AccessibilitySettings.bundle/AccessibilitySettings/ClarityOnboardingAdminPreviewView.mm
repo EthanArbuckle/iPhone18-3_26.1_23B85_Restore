@@ -1,16 +1,16 @@
 @interface ClarityOnboardingAdminPreviewView
-- (ClarityOnboardingAdminPreviewView)initWithCoder:(id)a3;
-- (ClarityOnboardingAdminPreviewView)initWithFrame:(CGRect)a3;
+- (ClarityOnboardingAdminPreviewView)initWithCoder:(id)coder;
+- (ClarityOnboardingAdminPreviewView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ClarityOnboardingAdminPreviewView
 
-- (ClarityOnboardingAdminPreviewView)initWithCoder:(id)a3
+- (ClarityOnboardingAdminPreviewView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ClarityOnboardingAdminPreviewView();
-  v4 = a3;
-  v5 = [(ClarityOnboardingAdminPreviewView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ClarityOnboardingAdminPreviewView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -19,7 +19,7 @@
   return v5;
 }
 
-- (ClarityOnboardingAdminPreviewView)initWithFrame:(CGRect)a3
+- (ClarityOnboardingAdminPreviewView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

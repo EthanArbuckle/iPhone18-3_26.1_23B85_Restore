@@ -1,24 +1,24 @@
 @interface HDSPSleepModeExitDetector
 - (HDSPEnvironment)environment;
-- (HDSPSleepModeExitDetector)initWithEnvironment:(id)a3;
+- (HDSPSleepModeExitDetector)initWithEnvironment:(id)environment;
 - (HDSPWakeDetectorDelegate)wakeDetectorDelegate;
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5;
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason;
 - (void)startDetecting;
 - (void)stopDetecting;
 @end
 
 @implementation HDSPSleepModeExitDetector
 
-- (HDSPSleepModeExitDetector)initWithEnvironment:(id)a3
+- (HDSPSleepModeExitDetector)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v9.receiver = self;
   v9.super_class = HDSPSleepModeExitDetector;
   v5 = [(HDSPSleepModeExitDetector *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = v6;
   }
 
@@ -41,8 +41,8 @@
 
     self->_isDetecting = 1;
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v6 = [WeakRetained sleepModeManager];
-    [v6 addObserver:self];
+    sleepModeManager = [WeakRetained sleepModeManager];
+    [sleepModeManager addObserver:self];
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -62,35 +62,35 @@
 
   self->_isDetecting = 0;
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained sleepModeManager];
-  [v6 removeObserver:self];
+  sleepModeManager = [WeakRetained sleepModeManager];
+  [sleepModeManager removeObserver:self];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepModeDidChange:(int64_t)a3 previousMode:(int64_t)a4 reason:(unint64_t)a5
+- (void)sleepModeDidChange:(int64_t)change previousMode:(int64_t)mode reason:(unint64_t)reason
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = [(HDSPSleepModeExitDetector *)self environment:a3];
-  v8 = [v7 currentContext];
+  v7 = [(HDSPSleepModeExitDetector *)self environment:change];
+  currentContext = [v7 currentContext];
 
-  if (!a3 && HKSPSleepModeChangeReasonTreatedAsUserRequestedLocally() && [(HDSPSleepModeExitDetector *)self isDetecting])
+  if (!change && HKSPSleepModeChangeReasonTreatedAsUserRequestedLocally() && [(HDSPSleepModeExitDetector *)self isDetecting])
   {
-    v9 = [v8 source];
+    source = [currentContext source];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v8 source];
-      v11 = [v10 dontSync];
+      source2 = [currentContext source];
+      dontSync = [source2 dontSync];
 
-      if (v11)
+      if (dontSync)
       {
-        v12 = HKSPLogForCategory();
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        wakeDetectorDelegate = HKSPLogForCategory();
+        if (os_log_type_enabled(wakeDetectorDelegate, OS_LOG_TYPE_DEFAULT))
         {
           v21 = 138543362;
           v22 = objc_opt_class();
           v13 = v22;
-          _os_log_impl(&dword_269B11000, v12, OS_LOG_TYPE_DEFAULT, "[%{public}@] ignoring remote sleep mode exit", &v21, 0xCu);
+          _os_log_impl(&dword_269B11000, wakeDetectorDelegate, OS_LOG_TYPE_DEFAULT, "[%{public}@] ignoring remote sleep mode exit", &v21, 0xCu);
         }
 
 LABEL_12:
@@ -112,11 +112,11 @@ LABEL_12:
       _os_log_impl(&dword_269B11000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleep mode manually exited, treating as wake up event", &v21, 0xCu);
     }
 
-    v12 = [(HDSPSleepModeExitDetector *)self wakeDetectorDelegate];
+    wakeDetectorDelegate = [(HDSPSleepModeExitDetector *)self wakeDetectorDelegate];
     WeakRetained = objc_loadWeakRetained(&self->_environment);
-    v17 = [WeakRetained currentDateProvider];
-    v19 = v17[2](v17, v18);
-    [v12 wakeDetector:self didDetectWakeUpEventOnDate:v19];
+    currentDateProvider = [WeakRetained currentDateProvider];
+    v19 = currentDateProvider[2](currentDateProvider, v18);
+    [wakeDetectorDelegate wakeDetector:self didDetectWakeUpEventOnDate:v19];
 
     goto LABEL_12;
   }

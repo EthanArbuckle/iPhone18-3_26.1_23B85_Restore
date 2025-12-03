@@ -1,37 +1,37 @@
 @interface CKHyperlinkBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range;
 @end
 
 @implementation CKHyperlinkBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKHyperlinkBalloonView" hasInstanceMethod:@"textView:shouldInteractWithURL:inRange:" withFullSignature:{"B", "@", "@", "{_NSRange=QQ}", 0}];
-  [v3 validateClass:@"CKHyperlinkBalloonView" isKindOfClass:@"CKTextBalloonView"];
-  [v3 validateClass:@"CKTextBalloonView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKHyperlinkBalloonView" hasInstanceMethod:@"textView:shouldInteractWithURL:inRange:" withFullSignature:{"B", "@", "@", "{_NSRange=QQ}", 0}];
+  [validationsCopy validateClass:@"CKHyperlinkBalloonView" isKindOfClass:@"CKTextBalloonView"];
+  [validationsCopy validateClass:@"CKTextBalloonView" hasInstanceMethod:@"textView" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityActivate
 {
   v2 = [(CKHyperlinkBalloonViewAccessibility *)self safeValueForKey:@"textView"];
-  v3 = [v2 accessibilityActivate];
+  accessibilityActivate = [v2 accessibilityActivate];
 
-  return v3;
+  return accessibilityActivate;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = a3;
-  v10 = a4;
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  lCopy = l;
   v11 = objc_opt_new();
-  v12 = [v11 isClarityBoardEnabled];
+  isClarityBoardEnabled = [v11 isClarityBoardEnabled];
 
-  if (v12)
+  if (isClarityBoardEnabled)
   {
     v13 = 0;
   }
@@ -40,7 +40,7 @@
   {
     v15.receiver = self;
     v15.super_class = CKHyperlinkBalloonViewAccessibility;
-    v13 = [(CKHyperlinkBalloonViewAccessibility *)&v15 textView:v9 shouldInteractWithURL:v10 inRange:location, length];
+    v13 = [(CKHyperlinkBalloonViewAccessibility *)&v15 textView:viewCopy shouldInteractWithURL:lCopy inRange:location, length];
   }
 
   return v13;

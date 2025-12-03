@@ -1,13 +1,13 @@
 @interface WFSmartPromptHostingControllerFactory
-+ (id)makeHostingController:(id)a3;
++ (id)makeHostingController:(id)controller;
 @end
 
 @implementation WFSmartPromptHostingControllerFactory
 
-+ (id)makeHostingController:(id)a3
++ (id)makeHostingController:(id)controller
 {
-  v3 = a3;
-  v4 = sub_27489154C(v3);
+  controllerCopy = controller;
+  v4 = sub_27489154C(controllerCopy);
 
   return v4;
 }

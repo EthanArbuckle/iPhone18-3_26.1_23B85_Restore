@@ -2,7 +2,7 @@
 + (id)sharedManager;
 - (RDSpeechSynthesis)init;
 - (void)_waitAndFinishSpeaking;
-- (void)speakString:(id)a3 toURL:(id)a4 withLanguageCode:(id)a5 withCallback:(RDSpeechSynthesisCallback *)a6;
+- (void)speakString:(id)string toURL:(id)l withLanguageCode:(id)code withCallback:(RDSpeechSynthesisCallback *)callback;
 @end
 
 @implementation RDSpeechSynthesis
@@ -36,13 +36,13 @@
   return v2;
 }
 
-- (void)speakString:(id)a3 toURL:(id)a4 withLanguageCode:(id)a5 withCallback:(RDSpeechSynthesisCallback *)a6
+- (void)speakString:(id)string toURL:(id)l withLanguageCode:(id)code withCallback:(RDSpeechSynthesisCallback *)callback
 {
-  v10 = a4;
-  v11 = a5;
-  self->m_callback = *a6;
-  v12 = [AVSpeechUtterance speechUtteranceWithString:a3];
-  v13 = [AVSpeechSynthesisVoice voiceWithLanguage:v11];
+  lCopy = l;
+  codeCopy = code;
+  self->m_callback = *callback;
+  v12 = [AVSpeechUtterance speechUtteranceWithString:string];
+  v13 = [AVSpeechSynthesisVoice voiceWithLanguage:codeCopy];
   [v12 setVoice:v13];
   LODWORD(v14) = 0.5;
   [v12 setRate:v14];
@@ -58,7 +58,7 @@
   v20 = sub_10000724C;
   v21 = &unk_1000FE080;
   v23 = &v24;
-  v16 = v10;
+  v16 = lCopy;
   v22 = v16;
   [(AVSpeechSynthesizer *)m_synth writeUtterance:v12 toBufferCallback:&v18];
   [(RDSpeechSynthesis *)self _waitAndFinishSpeaking:v18];

@@ -1,6 +1,6 @@
 @interface CRLMovieItem
 + (CGSize)defaultAudioItemSize;
-+ (CGSize)defaultVideoItemSizeWithOriginalSize:(CGSize)a3;
++ (CGSize)defaultVideoItemSizeWithOriginalSize:(CGSize)size;
 - (BOOL)canCopyStyle;
 - (BOOL)isAnimatedImage;
 - (BOOL)isAudioOnly;
@@ -22,24 +22,24 @@
 - (double)posterTime;
 - (double)startTime;
 - (float)volume;
-- (id)commandToSetLoopingEnabled:(BOOL)a3;
-- (id)commandToSetRoundedCornersEnabled:(BOOL)a3;
+- (id)commandToSetLoopingEnabled:(BOOL)enabled;
+- (id)commandToSetRoundedCornersEnabled:(BOOL)enabled;
 - (id)generateEmptyPosterImage;
-- (id)makeAVAssetAndReturnError:(id *)a3;
-- (id)makeAVAssetWithOptionsWithOptions:(id)a3 error:(id *)a4;
-- (id)promisedDataForPublicType:(id)a3;
+- (id)makeAVAssetAndReturnError:(id *)error;
+- (id)makeAVAssetWithOptionsWithOptions:(id)options error:(id *)error;
+- (id)promisedDataForPublicType:(id)type;
 - (id)synchronouslyGenerateDefaultPosterImage;
 - (id)synchronouslyGenerateDefaultPosterImageForAnimatedImage;
-- (void)setAssetMediaWithMovieData:(id)a3 posterImageData:(id)a4 posterTime:(double)a5 startTime:(double)a6 endTime:(double)a7 isAudioOnly:(BOOL)a8 title:(id)a9 creator:(id)a10 isLooping:(BOOL)a11;
-- (void)setCornerRadius:(float)a3;
-- (void)setEndTime:(double)a3;
-- (void)setIsAudioOnly:(BOOL)a3;
-- (void)setIsLooping:(BOOL)a3;
-- (void)setPosterImageData:(id)a3;
-- (void)setPosterTime:(double)a3;
-- (void)setStartTime:(double)a3;
-- (void)setVolume:(float)a3;
-- (void)takePropertiesFromReplacedBoardItem:(id)a3;
+- (void)setAssetMediaWithMovieData:(id)data posterImageData:(id)imageData posterTime:(double)time startTime:(double)startTime endTime:(double)endTime isAudioOnly:(BOOL)only title:(id)title creator:(id)self0 isLooping:(BOOL)self1;
+- (void)setCornerRadius:(float)radius;
+- (void)setEndTime:(double)time;
+- (void)setIsAudioOnly:(BOOL)only;
+- (void)setIsLooping:(BOOL)looping;
+- (void)setPosterImageData:(id)data;
+- (void)setPosterTime:(double)time;
+- (void)setStartTime:(double)time;
+- (void)setVolume:(float)volume;
+- (void)takePropertiesFromReplacedBoardItem:(id)item;
 @end
 
 @implementation CRLMovieItem
@@ -52,7 +52,7 @@
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&qword_101A28680);
     CRRegister.wrappedValue.getter();
@@ -71,10 +71,10 @@
   return result;
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  v4 = self;
-  sub_100D8F61C(a3);
+  selfCopy = self;
+  sub_100D8F61C(time);
 }
 
 - (double)endTime
@@ -85,7 +85,7 @@
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&qword_101A28680);
     CRRegister.wrappedValue.getter();
@@ -104,10 +104,10 @@
   return result;
 }
 
-- (void)setEndTime:(double)a3
+- (void)setEndTime:(double)time
 {
-  v4 = self;
-  sub_100D8FDFC(a3);
+  selfCopy = self;
+  sub_100D8FDFC(time);
 }
 
 - (BOOL)isAudioOnly
@@ -118,7 +118,7 @@
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&qword_101A28680);
     CRRegister.wrappedValue.getter();
@@ -137,10 +137,10 @@
   return result;
 }
 
-- (void)setIsAudioOnly:(BOOL)a3
+- (void)setIsAudioOnly:(BOOL)only
 {
-  v4 = self;
-  sub_100D905D0(a3);
+  selfCopy = self;
+  sub_100D905D0(only);
 }
 
 - (BOOL)isLooping
@@ -151,7 +151,7 @@
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&qword_101A28680);
     CRRegister.wrappedValue.getter();
@@ -170,15 +170,15 @@
   return result;
 }
 
-- (void)setIsLooping:(BOOL)a3
+- (void)setIsLooping:(BOOL)looping
 {
-  v4 = self;
-  sub_100D90AD4(a3);
+  selfCopy = self;
+  sub_100D90AD4(looping);
 }
 
 - (BOOL)isSpatial
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D90D20();
 
   return v3 & 1;
@@ -192,7 +192,7 @@
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&qword_101A28680);
     CRRegister.wrappedValue.getter();
@@ -211,10 +211,10 @@
   return result;
 }
 
-- (void)setPosterTime:(double)a3
+- (void)setPosterTime:(double)time
 {
-  v4 = self;
-  sub_100D91088(a3);
+  selfCopy = self;
+  sub_100D91088(time);
 }
 
 - (float)volume
@@ -223,7 +223,7 @@
   {
     swift_beginAccess();
     type metadata accessor for CRLMovieItemCRDTData(0);
-    v3 = self;
+    selfCopy = self;
 
     sub_1005B981C(&unk_101A2C7E0);
     CRRegister.wrappedValue.getter();
@@ -244,12 +244,12 @@
   return result;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
-  v3 = self;
-  if (sub_1011255D0(v3))
+  selfCopy = self;
+  if (sub_1011255D0(selfCopy))
   {
-    if (**&v3->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
+    if (**&selfCopy->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
     {
       swift_beginAccess();
       type metadata accessor for CRLMovieItemCRDTData(0);
@@ -270,10 +270,10 @@
   }
 }
 
-- (void)setCornerRadius:(float)a3
+- (void)setCornerRadius:(float)radius
 {
-  v4 = self;
-  sub_100D91544(v4, a3);
+  selfCopy = self;
+  sub_100D91544(selfCopy, radius);
 }
 
 - (NSString)title
@@ -284,7 +284,7 @@
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&qword_101A28680);
     CRRegister.wrappedValue.getter();
@@ -322,7 +322,7 @@
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&qword_101A28680);
     CRRegister.wrappedValue.getter();
@@ -354,7 +354,7 @@
 
 - (_TtC8Freeform8CRLAsset)movieAssetPayload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D91F80();
 
   return v3;
@@ -362,7 +362,7 @@
 
 - (_TtC8Freeform8CRLAsset)posterImageAssetPayload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D92904();
 
   return v3;
@@ -370,13 +370,13 @@
 
 - (CGSize)mediaRawPixelSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D92904();
   if (v3)
   {
     v4 = v3;
-    v5 = [objc_opt_self() sharedPool];
-    v6 = [v5 providerForAsset:v4 shouldValidate:1];
+    sharedPool = [objc_opt_self() sharedPool];
+    v6 = [sharedPool providerForAsset:v4 shouldValidate:1];
 
     [v6 naturalSize];
     v8 = v7;
@@ -397,27 +397,27 @@
   return result;
 }
 
-- (void)setPosterImageData:(id)a3
+- (void)setPosterImageData:(id)data
 {
-  v5 = a3;
-  v6 = self;
-  sub_100D93D5C(a3);
+  dataCopy = data;
+  selfCopy = self;
+  sub_100D93D5C(data);
 }
 
-- (void)setAssetMediaWithMovieData:(id)a3 posterImageData:(id)a4 posterTime:(double)a5 startTime:(double)a6 endTime:(double)a7 isAudioOnly:(BOOL)a8 title:(id)a9 creator:(id)a10 isLooping:(BOOL)a11
+- (void)setAssetMediaWithMovieData:(id)data posterImageData:(id)imageData posterTime:(double)time startTime:(double)startTime endTime:(double)endTime isAudioOnly:(BOOL)only title:(id)title creator:(id)self0 isLooping:(BOOL)self1
 {
-  v27 = a11;
-  v11 = a10;
-  v12 = a8;
-  if (a9)
+  loopingCopy = looping;
+  creatorCopy = creator;
+  onlyCopy = only;
+  if (title)
   {
     v19 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v21 = v20;
-    if (v11)
+    if (creatorCopy)
     {
 LABEL_3:
       v22 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-      v11 = v23;
+      creatorCopy = v23;
       goto LABEL_6;
     }
   }
@@ -426,7 +426,7 @@ LABEL_3:
   {
     v19 = 0;
     v21 = 0;
-    if (a10)
+    if (creator)
     {
       goto LABEL_3;
     }
@@ -434,10 +434,10 @@ LABEL_3:
 
   v22 = 0;
 LABEL_6:
-  v24 = a3;
-  v25 = a4;
-  v26 = self;
-  sub_100D94028(a3, a4, v12, v19, v21, v22, v11, v27, a5, a6, a7);
+  dataCopy = data;
+  imageDataCopy = imageData;
+  selfCopy = self;
+  sub_100D94028(data, imageData, onlyCopy, v19, v21, v22, creatorCopy, loopingCopy, time, startTime, endTime);
 }
 
 - (BOOL)supportsTogglingShadowAndRoundedCorners
@@ -448,7 +448,7 @@ LABEL_6:
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&qword_101A28680);
     CRRegister.wrappedValue.getter();
@@ -467,14 +467,14 @@ LABEL_6:
   return result;
 }
 
-- (id)commandToSetRoundedCornersEnabled:(BOOL)a3
+- (id)commandToSetRoundedCornersEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v16 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (v3)
+  if (enabledCopy)
   {
     v9 = 10.0;
   }
@@ -486,7 +486,7 @@ LABEL_6:
 
   v10 = objc_allocWithZone(type metadata accessor for CRLCommandSetMovieCornerRadius(0));
   (*(**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 264))();
-  v11 = self;
+  selfCopy = self;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v6 + 8))(v8, v5);
   *&v13 = v9;
@@ -495,33 +495,33 @@ LABEL_6:
   return v14;
 }
 
-- (id)commandToSetLoopingEnabled:(BOOL)a3
+- (id)commandToSetLoopingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = type metadata accessor for UUID();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = objc_allocWithZone(type metadata accessor for CRLCommandSetMovieLooping(0));
   (*(**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] + 264))();
-  v10 = self;
+  selfCopy = self;
   isa = UUID._bridgeToObjectiveC()().super.isa;
   (*(v6 + 8))(v8, v5);
-  v12 = [v9 initWithId:isa isLooping:v3];
+  v12 = [v9 initWithId:isa isLooping:enabledCopy];
 
   return v12;
 }
 
-- (void)takePropertiesFromReplacedBoardItem:(id)a3
+- (void)takePropertiesFromReplacedBoardItem:(id)item
 {
-  v4 = a3;
-  v5 = self;
-  sub_100D958D8(v4);
+  itemCopy = item;
+  selfCopy = self;
+  sub_100D958D8(itemCopy);
 }
 
 - (BOOL)placeHolderDataNeedsDownload
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D95C20();
 
   return v3 & 1;
@@ -529,7 +529,7 @@ LABEL_6:
 
 - (NSString)previewTooltip
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D95E44();
   v4 = v3;
 
@@ -548,7 +548,7 @@ LABEL_6:
 
 - (Class)layoutClass
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D96090();
 
   return swift_getObjCClassFromMetadata();
@@ -556,7 +556,7 @@ LABEL_6:
 
 - (Class)repClass
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D96258();
   v4 = v3;
 
@@ -575,9 +575,9 @@ LABEL_6:
   return swift_getObjCClassFromMetadata();
 }
 
-- (id)makeAVAssetAndReturnError:(id *)a3
+- (id)makeAVAssetAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_100D91F80();
   v5 = *(v4 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24);
   v6 = *(v4 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 32);
@@ -587,10 +587,10 @@ LABEL_6:
   return v7;
 }
 
-- (id)makeAVAssetWithOptionsWithOptions:(id)a3 error:(id *)a4
+- (id)makeAVAssetWithOptionsWithOptions:(id)options error:(id *)error
 {
   v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_100D91F80();
   v8 = *(v7 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 24);
   v9 = *(v7 + OBJC_IVAR____TtC8Freeform8CRLAsset_storage + 32);
@@ -602,7 +602,7 @@ LABEL_6:
 
 - (id)generateEmptyPosterImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D9AA04();
 
   return v3;
@@ -610,7 +610,7 @@ LABEL_6:
 
 - (BOOL)isAnimatedImage
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100D9AFEC();
 
   return v3 & 1;
@@ -618,7 +618,7 @@ LABEL_6:
 
 - (id)synchronouslyGenerateDefaultPosterImageForAnimatedImage
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D9B278();
   v4 = v3;
 
@@ -627,7 +627,7 @@ LABEL_6:
 
 - (id)synchronouslyGenerateDefaultPosterImage
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D9B52C();
   v4 = v3;
 
@@ -636,7 +636,7 @@ LABEL_6:
 
 - (NSArray)customPublicTypesToPromiseWhenCopyingSingleBoardItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_100D9C288();
 
   v3.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -644,14 +644,14 @@ LABEL_6:
   return v3.super.isa;
 }
 
-- (id)promisedDataForPublicType:(id)a3
+- (id)promisedDataForPublicType:(id)type
 {
   v5 = type metadata accessor for UTType();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v17 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v9 = a3;
-  v10 = self;
+  typeCopy = type;
+  selfCopy = self;
   static UTType._unconditionallyBridgeFromObjectiveC(_:)();
 
   v11 = sub_100D8E784(v8);
@@ -677,7 +677,7 @@ LABEL_6:
   if (**&self->super.super.super._TtC8Freeform12CRLBoardItem_opaque[OBJC_IVAR____TtC8Freeform16CRLBoardItemBase_itemData] == &off_1019F58C8)
   {
     swift_beginAccess();
-    v7 = self;
+    selfCopy = self;
 
     sub_1005B981C(&qword_101A28680);
     CRRegister.wrappedValue.getter();
@@ -706,9 +706,9 @@ LABEL_6:
   return result;
 }
 
-+ (CGSize)defaultVideoItemSizeWithOriginalSize:(CGSize)a3
++ (CGSize)defaultVideoItemSizeWithOriginalSize:(CGSize)size
 {
-  v3 = sub_100121E8C(a3.width, a3.height, 300.0, 300.0);
+  v3 = sub_100121E8C(size.width, size.height, 300.0, 300.0);
   result.height = v4;
   result.width = v3;
   return result;

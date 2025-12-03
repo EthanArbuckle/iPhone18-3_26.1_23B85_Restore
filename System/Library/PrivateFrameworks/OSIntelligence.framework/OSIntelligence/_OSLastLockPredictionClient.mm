@@ -1,35 +1,35 @@
 @interface _OSLastLockPredictionClient
 - (BOOL)hasEnoughActivityHistory;
-- (BOOL)overrideRecommendedRequeryTimeTo:(double)a3;
+- (BOOL)overrideRecommendedRequeryTimeTo:(double)to;
 - (BOOL)restoreLastLockModel;
 - (BOOL)restoreRecommendedRequeryTime;
 - (_OSLastLockPredictionClient)init;
 - (double)recommendedRequeryTime;
 - (id)activityHistoryDiagnosis;
 - (id)deviceUsageDiagnosis;
-- (id)fixModelOutput:(id)a3;
-- (id)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withError:(id *)a5;
-- (id)lastLockPredictionResultWithError:(id *)a3;
+- (id)fixModelOutput:(id)output;
+- (id)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withError:(id *)error;
+- (id)lastLockPredictionResultWithError:(id *)error;
 - (id)modelDescription;
 - (id)modelMetadata;
 - (id)unfixModelOutput;
 - (id)validConnection;
-- (void)activityHistoryDiagnosisWithHandler:(id)a3;
+- (void)activityHistoryDiagnosisWithHandler:(id)handler;
 - (void)dealloc;
-- (void)deviceUsageDiagnosisWithHandler:(id)a3;
-- (void)fixModelOutput:(id)a3 withHandler:(id)a4;
+- (void)deviceUsageDiagnosisWithHandler:(id)handler;
+- (void)fixModelOutput:(id)output withHandler:(id)handler;
 - (void)handleInterruption;
-- (void)hasEnoughActivityHistoryWithHandler:(id)a3;
+- (void)hasEnoughActivityHistoryWithHandler:(id)handler;
 - (void)initConnection;
-- (void)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withHandler:(id)a5;
-- (void)lastLockPredictionResultWithHandler:(id)a3;
-- (void)modelDescriptionWithHandler:(id)a3;
-- (void)modelMetadataWithHandler:(id)a3;
-- (void)overrideRecommendedRequeryTimeTo:(double)a3 withHandler:(id)a4;
-- (void)recommendedRequeryTimeWithHandler:(id)a3;
-- (void)restoreLastLockModelWithHandler:(id)a3;
-- (void)restoreRecommendedRequeryTimeWithHandler:(id)a3;
-- (void)unfixModelOutputWithHandler:(id)a3;
+- (void)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withHandler:(id)handler;
+- (void)lastLockPredictionResultWithHandler:(id)handler;
+- (void)modelDescriptionWithHandler:(id)handler;
+- (void)modelMetadataWithHandler:(id)handler;
+- (void)overrideRecommendedRequeryTimeTo:(double)to withHandler:(id)handler;
+- (void)recommendedRequeryTimeWithHandler:(id)handler;
+- (void)restoreLastLockModelWithHandler:(id)handler;
+- (void)restoreRecommendedRequeryTimeWithHandler:(id)handler;
+- (void)unfixModelOutputWithHandler:(id)handler;
 @end
 
 @implementation _OSLastLockPredictionClient
@@ -128,8 +128,8 @@
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v2 = [(_OSLastLockPredictionClient *)self validConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_0];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v3 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_0];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53___OSLastLockPredictionClient_recommendedRequeryTime__block_invoke_76;
@@ -150,8 +150,8 @@
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v2 = [(_OSLastLockPredictionClient *)self validConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_79];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v3 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_79];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47___OSLastLockPredictionClient_modelDescription__block_invoke_80;
@@ -173,8 +173,8 @@
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v2 = [(_OSLastLockPredictionClient *)self validConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_83];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v3 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_83];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44___OSLastLockPredictionClient_modelMetadata__block_invoke_84;
@@ -194,8 +194,8 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(_OSLastLockPredictionClient *)self validConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_87];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v3 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_87];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55___OSLastLockPredictionClient_hasEnoughActivityHistory__block_invoke_88;
@@ -203,9 +203,9 @@
   v5[4] = &v6;
   [v3 hasEnoughActivityHistoryWithHandler:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(validConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return validConnection;
 }
 
 - (id)activityHistoryDiagnosis
@@ -216,8 +216,8 @@
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v2 = [(_OSLastLockPredictionClient *)self validConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_91];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v3 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_91];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __55___OSLastLockPredictionClient_activityHistoryDiagnosis__block_invoke_92;
@@ -239,8 +239,8 @@
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v2 = [(_OSLastLockPredictionClient *)self validConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_94];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v3 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_94];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51___OSLastLockPredictionClient_deviceUsageDiagnosis__block_invoke_95;
@@ -254,7 +254,7 @@
   return v4;
 }
 
-- (id)lastLockPredictionResultWithError:(id *)a3
+- (id)lastLockPredictionResultWithError:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -268,8 +268,8 @@
   v12 = __Block_byref_object_copy__1;
   v13 = __Block_byref_object_dispose__1;
   v14 = 0;
-  v4 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_97];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_97];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65___OSLastLockPredictionClient_lastLockPredictionResultWithError___block_invoke_98;
@@ -278,9 +278,9 @@
   v8[5] = &v9;
   [v5 lastLockPredictionResultWithHandler:v8];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v10[5];
+    *error = v10[5];
   }
 
   v6 = v16[5];
@@ -291,9 +291,9 @@
   return v6;
 }
 
-- (id)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withError:(id *)a5
+- (id)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withError:(id *)error
 {
-  v8 = a3;
+  dateCopy = date;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -306,26 +306,26 @@
   v21 = __Block_byref_object_copy__1;
   v22 = __Block_byref_object_dispose__1;
   v23 = 0;
-  v9 = [(_OSLastLockPredictionClient *)self validConnection];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __92___OSLastLockPredictionClient_lastLockPredictionResultAtDate_withTimeSinceActive_withError___block_invoke;
   v15[3] = &unk_2799C1690;
-  v10 = v8;
+  v10 = dateCopy;
   v16 = v10;
-  v17 = a4;
-  v11 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v15];
+  activeCopy = active;
+  v11 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:v15];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __92___OSLastLockPredictionClient_lastLockPredictionResultAtDate_withTimeSinceActive_withError___block_invoke_100;
   v14[3] = &unk_2799C1920;
   v14[4] = &v24;
   v14[5] = &v18;
-  [v11 lastLockPredictionResultAtDate:v10 withTimeSinceActive:v14 withHandler:a4];
+  [v11 lastLockPredictionResultAtDate:v10 withTimeSinceActive:v14 withHandler:active];
 
-  if (a5)
+  if (error)
   {
-    *a5 = v19[5];
+    *error = v19[5];
   }
 
   v12 = v25[5];
@@ -336,23 +336,23 @@
   return v12;
 }
 
-- (id)fixModelOutput:(id)a3
+- (id)fixModelOutput:(id)output
 {
-  v4 = a3;
+  outputCopy = output;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__1;
   v14 = __Block_byref_object_dispose__1;
   v15 = 0;
-  v5 = [(_OSLastLockPredictionClient *)self validConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_102];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v6 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_102];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46___OSLastLockPredictionClient_fixModelOutput___block_invoke_103;
   v9[3] = &unk_2799C15F0;
   v9[4] = &v10;
-  [v6 fixModelOutput:v4 withHandler:v9];
+  [v6 fixModelOutput:outputCopy withHandler:v9];
 
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
@@ -368,8 +368,8 @@
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v2 = [(_OSLastLockPredictionClient *)self validConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_105];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v3 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_105];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47___OSLastLockPredictionClient_unfixModelOutput__block_invoke_106;
@@ -383,24 +383,24 @@
   return v4;
 }
 
-- (BOOL)overrideRecommendedRequeryTimeTo:(double)a3
+- (BOOL)overrideRecommendedRequeryTimeTo:(double)to
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_108];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_108];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __64___OSLastLockPredictionClient_overrideRecommendedRequeryTimeTo___block_invoke_109;
   v7[3] = &unk_2799C18F8;
   v7[4] = &v8;
-  [v5 overrideRecommendedRequeryTimeTo:v7 withHandler:a3];
+  [v5 overrideRecommendedRequeryTimeTo:v7 withHandler:to];
 
-  LOBYTE(v4) = *(v9 + 24);
+  LOBYTE(validConnection) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return v4;
+  return validConnection;
 }
 
 - (BOOL)restoreRecommendedRequeryTime
@@ -409,8 +409,8 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(_OSLastLockPredictionClient *)self validConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_111];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v3 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_111];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60___OSLastLockPredictionClient_restoreRecommendedRequeryTime__block_invoke_112;
@@ -418,9 +418,9 @@
   v5[4] = &v6;
   [v3 restoreRecommendedRequeryTimeWithHandler:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(validConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return validConnection;
 }
 
 - (BOOL)restoreLastLockModel
@@ -429,8 +429,8 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(_OSLastLockPredictionClient *)self validConnection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_114];
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v3 = [validConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_114];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __51___OSLastLockPredictionClient_restoreLastLockModel__block_invoke_115;
@@ -438,122 +438,122 @@
   v5[4] = &v6;
   [v3 restoreLastLockModelWithHandler:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(validConnection) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return validConnection;
 }
 
-- (void)recommendedRequeryTimeWithHandler:(id)a3
+- (void)recommendedRequeryTimeWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_117];
-  [v5 recommendedRequeryTimeWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_117];
+  [v5 recommendedRequeryTimeWithHandler:handlerCopy];
 }
 
-- (void)modelDescriptionWithHandler:(id)a3
+- (void)modelDescriptionWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_119];
-  [v5 modelDescriptionWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_119];
+  [v5 modelDescriptionWithHandler:handlerCopy];
 }
 
-- (void)modelMetadataWithHandler:(id)a3
+- (void)modelMetadataWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_121];
-  [v5 modelMetadataWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_121];
+  [v5 modelMetadataWithHandler:handlerCopy];
 }
 
-- (void)activityHistoryDiagnosisWithHandler:(id)a3
+- (void)activityHistoryDiagnosisWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_123];
-  [v5 activityHistoryDiagnosisWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_123];
+  [v5 activityHistoryDiagnosisWithHandler:handlerCopy];
 }
 
-- (void)hasEnoughActivityHistoryWithHandler:(id)a3
+- (void)hasEnoughActivityHistoryWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_125];
-  [v5 hasEnoughActivityHistoryWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_125];
+  [v5 hasEnoughActivityHistoryWithHandler:handlerCopy];
 }
 
-- (void)deviceUsageDiagnosisWithHandler:(id)a3
+- (void)deviceUsageDiagnosisWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_127];
-  [v5 deviceUsageDiagnosisWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_127];
+  [v5 deviceUsageDiagnosisWithHandler:handlerCopy];
 }
 
-- (void)lastLockPredictionResultWithHandler:(id)a3
+- (void)lastLockPredictionResultWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_129];
-  [v5 lastLockPredictionResultWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_129];
+  [v5 lastLockPredictionResultWithHandler:handlerCopy];
 }
 
-- (void)lastLockPredictionResultAtDate:(id)a3 withTimeSinceActive:(double)a4 withHandler:(id)a5
+- (void)lastLockPredictionResultAtDate:(id)date withTimeSinceActive:(double)active withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(_OSLastLockPredictionClient *)self validConnection];
+  dateCopy = date;
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __94___OSLastLockPredictionClient_lastLockPredictionResultAtDate_withTimeSinceActive_withHandler___block_invoke;
   v16 = &unk_2799C1690;
-  v17 = v8;
-  v18 = a4;
-  v11 = v8;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:&v13];
-  [v12 lastLockPredictionResultAtDate:v11 withTimeSinceActive:v9 withHandler:{a4, v13, v14, v15, v16}];
+  v17 = dateCopy;
+  activeCopy = active;
+  v11 = dateCopy;
+  v12 = [validConnection remoteObjectProxyWithErrorHandler:&v13];
+  [v12 lastLockPredictionResultAtDate:v11 withTimeSinceActive:handlerCopy withHandler:{active, v13, v14, v15, v16}];
 }
 
-- (void)fixModelOutput:(id)a3 withHandler:(id)a4
+- (void)fixModelOutput:(id)output withHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(_OSLastLockPredictionClient *)self validConnection];
-  v8 = [v9 remoteObjectProxyWithErrorHandler:&__block_literal_global_131];
-  [v8 fixModelOutput:v7 withHandler:v6];
+  handlerCopy = handler;
+  outputCopy = output;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v8 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_131];
+  [v8 fixModelOutput:outputCopy withHandler:handlerCopy];
 }
 
-- (void)unfixModelOutputWithHandler:(id)a3
+- (void)unfixModelOutputWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_133];
-  [v5 unfixModelOutputWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_133];
+  [v5 unfixModelOutputWithHandler:handlerCopy];
 }
 
-- (void)overrideRecommendedRequeryTimeTo:(double)a3 withHandler:(id)a4
+- (void)overrideRecommendedRequeryTimeTo:(double)to withHandler:(id)handler
 {
-  v6 = a4;
-  v8 = [(_OSLastLockPredictionClient *)self validConnection];
-  v7 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_135];
-  [v7 overrideRecommendedRequeryTimeTo:v6 withHandler:a3];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v7 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_135];
+  [v7 overrideRecommendedRequeryTimeTo:handlerCopy withHandler:to];
 }
 
-- (void)restoreRecommendedRequeryTimeWithHandler:(id)a3
+- (void)restoreRecommendedRequeryTimeWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_137];
-  [v5 restoreRecommendedRequeryTimeWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_137];
+  [v5 restoreRecommendedRequeryTimeWithHandler:handlerCopy];
 }
 
-- (void)restoreLastLockModelWithHandler:(id)a3
+- (void)restoreLastLockModelWithHandler:(id)handler
 {
-  v4 = a3;
-  v6 = [(_OSLastLockPredictionClient *)self validConnection];
-  v5 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_139];
-  [v5 restoreLastLockModelWithHandler:v4];
+  handlerCopy = handler;
+  validConnection = [(_OSLastLockPredictionClient *)self validConnection];
+  v5 = [validConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_139];
+  [v5 restoreLastLockModelWithHandler:handlerCopy];
 }
 
 @end

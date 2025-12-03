@@ -1,7 +1,7 @@
 @interface SRUIFAceCommandRecord
-- (SRUIFAceCommandRecord)initWithAceCommand:(id)a3 andCompletion:(id)a4;
+- (SRUIFAceCommandRecord)initWithAceCommand:(id)command andCompletion:(id)completion;
 - (SRUIFAceCommandRecordDelegate)delegate;
-- (void)_setResult:(int64_t)a3;
+- (void)_setResult:(int64_t)result;
 - (void)incrementNumberOfStartedActions;
 - (void)incrementNumberOfStoppedActions;
 - (void)incrementNumberOfSuccessfullyCompletedActions;
@@ -28,17 +28,17 @@
 {
   v24 = *MEMORY[0x277D85DE8];
   [(SRUIFAceCommandRecord *)self _setNumberOfSuccessfullyCompletedActions:[(SRUIFAceCommandRecord *)self numberOfSuccessfullyCompletedActions]+ 1];
-  v3 = [(SRUIFAceCommandRecord *)self numberOfSuccessfullyCompletedActions];
-  v4 = [(SRUIFAceCommandRecord *)self numberOfStoppedActions]+ v3;
-  v5 = [(SRUIFAceCommandRecord *)self numberOfStartedActions];
+  numberOfSuccessfullyCompletedActions = [(SRUIFAceCommandRecord *)self numberOfSuccessfullyCompletedActions];
+  v4 = [(SRUIFAceCommandRecord *)self numberOfStoppedActions]+ numberOfSuccessfullyCompletedActions;
+  numberOfStartedActions = [(SRUIFAceCommandRecord *)self numberOfStartedActions];
   if ([(SRUIFAceCommandRecord *)self result]== 2 || [(SRUIFAceCommandRecord *)self numberOfStartedActions]!= v4)
   {
-    if ([(SRUIFAceCommandRecord *)self result]== 2 || v4 - v5 != 1)
+    if ([(SRUIFAceCommandRecord *)self result]== 2 || v4 - numberOfStartedActions != 1)
     {
-      v12 = [(SRUIFAceCommandRecord *)self result];
+      result = [(SRUIFAceCommandRecord *)self result];
       v13 = *MEMORY[0x277CEF098];
       v14 = os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT);
-      if (v12 == 2)
+      if (result == 2)
       {
         if (!v14)
         {
@@ -46,12 +46,12 @@
         }
 
         v15 = v13;
-        v16 = [(SRUIFAceCommandRecord *)self aceCommand];
-        v17 = [v16 aceId];
+        aceCommand = [(SRUIFAceCommandRecord *)self aceCommand];
+        aceId = [aceCommand aceId];
         *v21 = 136315394;
         *&v21[4] = "[SRUIFAceCommandRecord incrementNumberOfSuccessfullyCompletedActions]";
         *&v21[12] = 2112;
-        *&v21[14] = v17;
+        *&v21[14] = aceId;
         _os_log_impl(&dword_26951F000, v15, OS_LOG_TYPE_DEFAULT, "%s #aceCommandRecord Not marking ace command %@ as succeeded, because result is SRUIFAceCommandResultFailed.", v21, 0x16u);
       }
 
@@ -63,14 +63,14 @@
         }
 
         v15 = v13;
-        v18 = [(SRUIFAceCommandRecord *)self aceCommand];
-        v19 = [v18 aceId];
+        aceCommand2 = [(SRUIFAceCommandRecord *)self aceCommand];
+        aceId2 = [aceCommand2 aceId];
         *v21 = 136316162;
         *&v21[4] = "[SRUIFAceCommandRecord incrementNumberOfSuccessfullyCompletedActions]";
         *&v21[12] = 2112;
-        *&v21[14] = v19;
+        *&v21[14] = aceId2;
         *&v21[22] = 2048;
-        v22 = [(SRUIFAceCommandRecord *)self numberOfStartedActions];
+        numberOfStartedActions2 = [(SRUIFAceCommandRecord *)self numberOfStartedActions];
         *v23 = 2048;
         *&v23[2] = [(SRUIFAceCommandRecord *)self numberOfSuccessfullyCompletedActions];
         *&v23[10] = 2048;
@@ -85,14 +85,14 @@
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v7 = v11;
-      v8 = [(SRUIFAceCommandRecord *)self aceCommand];
-      v9 = [v8 aceId];
+      aceCommand3 = [(SRUIFAceCommandRecord *)self aceCommand];
+      aceId3 = [aceCommand3 aceId];
       *v21 = 136316162;
       *&v21[4] = "[SRUIFAceCommandRecord incrementNumberOfSuccessfullyCompletedActions]";
       *&v21[12] = 2112;
-      *&v21[14] = v9;
+      *&v21[14] = aceId3;
       *&v21[22] = 2048;
-      v22 = [(SRUIFAceCommandRecord *)self numberOfSuccessfullyCompletedActions];
+      numberOfStartedActions2 = [(SRUIFAceCommandRecord *)self numberOfSuccessfullyCompletedActions];
       *v23 = 2048;
       *&v23[2] = [(SRUIFAceCommandRecord *)self numberOfStoppedActions];
       *&v23[10] = 2048;
@@ -108,14 +108,14 @@
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(SRUIFAceCommandRecord *)self aceCommand];
-      v9 = [v8 aceId];
+      aceCommand3 = [(SRUIFAceCommandRecord *)self aceCommand];
+      aceId3 = [aceCommand3 aceId];
       *v21 = 136316162;
       *&v21[4] = "[SRUIFAceCommandRecord incrementNumberOfSuccessfullyCompletedActions]";
       *&v21[12] = 2112;
-      *&v21[14] = v9;
+      *&v21[14] = aceId3;
       *&v21[22] = 2048;
-      v22 = [(SRUIFAceCommandRecord *)self numberOfStartedActions];
+      numberOfStartedActions2 = [(SRUIFAceCommandRecord *)self numberOfStartedActions];
       *v23 = 2048;
       *&v23[2] = [(SRUIFAceCommandRecord *)self numberOfSuccessfullyCompletedActions];
       *&v23[10] = 2048;
@@ -126,23 +126,23 @@ LABEL_9:
     }
   }
 
-  [(SRUIFAceCommandRecord *)self _setResult:1, *v21, *&v21[16], v22, *v23, *&v23[16]];
+  [(SRUIFAceCommandRecord *)self _setResult:1, *v21, *&v21[16], numberOfStartedActions2, *v23, *&v23[16]];
 LABEL_17:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (SRUIFAceCommandRecord)initWithAceCommand:(id)a3 andCompletion:(id)a4
+- (SRUIFAceCommandRecord)initWithAceCommand:(id)command andCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  completionCopy = completion;
   v14.receiver = self;
   v14.super_class = SRUIFAceCommandRecord;
   v9 = [(SRUIFAceCommandRecord *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_aceCommand, a3);
-    v11 = _Block_copy(v8);
+    objc_storeStrong(&v9->_aceCommand, command);
+    v11 = _Block_copy(completionCopy);
     commandCompletion = v10->_commandCompletion;
     v10->_commandCompletion = v11;
 
@@ -152,13 +152,13 @@ LABEL_17:
   return v10;
 }
 
-- (void)_setResult:(int64_t)a3
+- (void)_setResult:(int64_t)result
 {
-  if (self->_result != a3)
+  if (self->_result != result)
   {
-    self->_result = a3;
-    v5 = [(SRUIFAceCommandRecord *)self delegate];
-    [v5 aceCommandRecordDidChangeResult:self];
+    self->_result = result;
+    delegate = [(SRUIFAceCommandRecord *)self delegate];
+    [delegate aceCommandRecordDidChangeResult:self];
   }
 }
 

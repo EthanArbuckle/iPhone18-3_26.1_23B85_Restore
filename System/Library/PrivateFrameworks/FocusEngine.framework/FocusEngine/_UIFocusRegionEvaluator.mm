@@ -1,26 +1,26 @@
 @interface _UIFocusRegionEvaluator
-+ (CGRect)frameForRegion:(id)a3 inCoordinateSpace:(id)a4;
-+ (id)__regionsByEvaluatingOcclusionsForBaseRegions:(id)a3 occludingRegions:(id)a4 baseRegionsCanOccludeEachOther:(BOOL)a5 inSnapshot:(id)a6;
-+ (id)_visibleSubregionsWhenRegion:(id)a3 occludedByRegion:(id)a4 inSnapshot:(id)a5;
-+ (id)regionsByEvaluatingOcclusionsForRegions:(id)a3 inSnapshot:(id)a4;
-+ (id)regionsByOccludingRegions:(id)a3 beneathRegions:(id)a4 inSnapshot:(id)a5;
-+ (id)subregionFromRegion:(id)a3 withSnapshotFrame:(CGRect)a4 inSnapshot:(id)a5;
++ (CGRect)frameForRegion:(id)region inCoordinateSpace:(id)space;
++ (id)__regionsByEvaluatingOcclusionsForBaseRegions:(id)regions occludingRegions:(id)occludingRegions baseRegionsCanOccludeEachOther:(BOOL)other inSnapshot:(id)snapshot;
++ (id)_visibleSubregionsWhenRegion:(id)region occludedByRegion:(id)byRegion inSnapshot:(id)snapshot;
++ (id)regionsByEvaluatingOcclusionsForRegions:(id)regions inSnapshot:(id)snapshot;
++ (id)regionsByOccludingRegions:(id)regions beneathRegions:(id)beneathRegions inSnapshot:(id)snapshot;
++ (id)subregionFromRegion:(id)region withSnapshotFrame:(CGRect)frame inSnapshot:(id)snapshot;
 @end
 
 @implementation _UIFocusRegionEvaluator
 
-+ (id)subregionFromRegion:(id)a3 withSnapshotFrame:(CGRect)a4 inSnapshot:(id)a5
++ (id)subregionFromRegion:(id)region withSnapshotFrame:(CGRect)frame inSnapshot:(id)snapshot
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v13 = a5;
-  v14 = v13;
-  if (v12)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  regionCopy = region;
+  snapshotCopy = snapshot;
+  v14 = snapshotCopy;
+  if (regionCopy)
   {
-    if (v13)
+    if (snapshotCopy)
     {
       goto LABEL_3;
     }
@@ -28,8 +28,8 @@
 
   else
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"region"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"region"}];
 
     if (v14)
     {
@@ -37,27 +37,27 @@
     }
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"snapshot"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"snapshot"}];
 
 LABEL_3:
-  v15 = [v14 coordinateSpace];
-  v16 = [v12 _focusRegionWithAdjustedFrame:v15 coordinateSpace:{x, y, width, height}];
+  coordinateSpace = [v14 coordinateSpace];
+  v16 = [regionCopy _focusRegionWithAdjustedFrame:coordinateSpace coordinateSpace:{x, y, width, height}];
 
-  [v14 _trackSubregion:v16 forRegion:v12];
+  [v14 _trackSubregion:v16 forRegion:regionCopy];
 
   return v16;
 }
 
-+ (CGRect)frameForRegion:(id)a3 inCoordinateSpace:(id)a4
++ (CGRect)frameForRegion:(id)region inCoordinateSpace:(id)space
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  regionCopy = region;
+  spaceCopy = space;
+  v9 = spaceCopy;
+  if (!regionCopy)
   {
-    v27 = [MEMORY[0x277CCA890] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"region"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"region"}];
 
     if (v9)
     {
@@ -65,27 +65,27 @@ LABEL_3:
     }
 
 LABEL_8:
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:31 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!spaceCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  v10 = [v7 regionCoordinateSpace];
-  [v7 regionFrame];
+  regionCoordinateSpace = [regionCopy regionCoordinateSpace];
+  [regionCopy regionFrame];
   v15 = v11;
   v16 = v12;
   v17 = v13;
   v18 = v14;
-  if (v10 && v10 != v9)
+  if (regionCoordinateSpace && regionCoordinateSpace != v9)
   {
-    [v9 convertRect:v10 fromCoordinateSpace:{v11, v12, v13, v14}];
+    [v9 convertRect:regionCoordinateSpace fromCoordinateSpace:{v11, v12, v13, v14}];
     v15 = v19;
     v16 = v20;
     v17 = v21;
@@ -103,15 +103,15 @@ LABEL_3:
   return result;
 }
 
-+ (id)_visibleSubregionsWhenRegion:(id)a3 occludedByRegion:(id)a4 inSnapshot:(id)a5
++ (id)_visibleSubregionsWhenRegion:(id)region occludedByRegion:(id)byRegion inSnapshot:(id)snapshot
 {
   v88[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  regionCopy = region;
+  byRegionCopy = byRegion;
+  snapshotCopy = snapshot;
+  if (regionCopy)
   {
-    if (v10)
+    if (byRegionCopy)
     {
       goto LABEL_3;
     }
@@ -119,45 +119,45 @@ LABEL_3:
 
   else
   {
-    v58 = [MEMORY[0x277CCA890] currentHandler];
-    [v58 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"occludedRegion"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"occludedRegion"}];
 
-    if (v10)
+    if (byRegionCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v59 = [MEMORY[0x277CCA890] currentHandler];
-  [v59 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"occludingRegion"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"occludingRegion"}];
 
 LABEL_3:
-  if (v9 == v10)
+  if (regionCopy == byRegionCopy)
   {
-    v60 = [MEMORY[0x277CCA890] currentHandler];
-    [v60 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"occludedRegion != occludingRegion"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"occludedRegion != occludingRegion"}];
 
-    if (v11)
+    if (snapshotCopy)
     {
       goto LABEL_5;
     }
   }
 
-  else if (v11)
+  else if (snapshotCopy)
   {
     goto LABEL_5;
   }
 
-  v61 = [MEMORY[0x277CCA890] currentHandler];
-  [v61 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"snapshot"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"snapshot"}];
 
 LABEL_5:
-  [v11 snapshotFrameForRegion:v9];
+  [snapshotCopy snapshotFrameForRegion:regionCopy];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  [v11 snapshotFrameForRegion:v10];
+  [snapshotCopy snapshotFrameForRegion:byRegionCopy];
   v21 = v20;
   v23 = v22;
   v25 = v24;
@@ -171,7 +171,7 @@ LABEL_5:
   v90.size.height = v19;
   if (CGRectIsNull(v90) || (v91.origin.x = v21, v91.origin.y = v23, v91.size.width = v25, v91.size.height = v27, CGRectIsNull(v91)) || ((v76 = v13, v92.origin.x = v13, v92.size.width = v17, v92.origin.y = v15, v92.size.height = v19, v93 = CGRectStandardize(v92), v28 = v93.origin.x, v29 = v93.origin.y, v30 = v93.size.width, v31 = v93.size.height, v70 = v23, v72 = v21, v93.origin.x = v21, v93.origin.y = v23, v74 = v25, v93.size.width = v25, v93.size.height = v27, v94 = CGRectStandardize(v93), v32 = v94.origin.x, v33 = v94.origin.y, v34 = v94.size.width, v35 = v94.size.height, v80 = v29, v82 = v28, v94.origin.x = v28, v94.origin.y = v29, v78 = v30, v94.size.width = v30, v36 = v31, v37 = v32, v94.size.height = v36, v38 = CGRectGetMinX(v94) + 0.0001, v95.origin.x = v37, v95.origin.y = v33, v95.size.width = v34, v95.size.height = v35, v38 <= CGRectGetMaxX(v95)) ? (v96.origin.y = v80, v96.origin.x = v28, v96.size.width = v78, v96.size.height = v36, v40 = CGRectGetMaxX(v96) + -0.0001, v97.origin.x = v37, v97.origin.y = v33, v97.size.width = v34, v97.size.height = v35, v39 = v40 >= CGRectGetMinX(v97)) : (v39 = 0), (v98.origin.y = v80, v98.origin.x = v28, v98.size.width = v78, v98.size.height = v36, v41 = CGRectGetMinY(v98) + 0.0001, v99.origin.x = v37, v99.origin.y = v33, v99.size.width = v34, v99.size.height = v35, v41 > CGRectGetMaxY(v99)) || ((v100.origin.y = v80, v100.origin.x = v82, v100.size.width = v78, v100.size.height = v36, v42 = CGRectGetMaxY(v100) + -0.0001, v101.origin.x = v37, v101.origin.y = v33, v101.size.width = v34, v101.size.height = v35, v42 >= CGRectGetMinY(v101)) ? (v43 = v39) : (v43 = 0), !v43)))
   {
-    v88[0] = v9;
+    v88[0] = regionCopy;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:1];
   }
 
@@ -290,64 +290,64 @@ LABEL_5:
       v51 = CGRectGetHeight(v121);
       if (v77 > 0.0 && v71 - v68 > 0.0)
       {
-        v52 = [a1 subregionFromRegion:v9 withSnapshotFrame:v11 inSnapshot:{MinX, MinY, v77, v71 - v68}];
+        v52 = [self subregionFromRegion:regionCopy withSnapshotFrame:snapshotCopy inSnapshot:{MinX, MinY, v77, v71 - v68}];
         [v44 addObject:v52];
       }
 
       if (v81 > 0.0 && v79 > 0.0)
       {
-        v53 = [a1 subregionFromRegion:v9 withSnapshotFrame:v11 inSnapshot:{v76, v87, v81, v79}];
+        v53 = [self subregionFromRegion:regionCopy withSnapshotFrame:snapshotCopy inSnapshot:{v76, v87, v81, v79}];
         [v44 addObject:v53];
       }
 
       v54 = v75 - v50;
       if (v84 > 0.0 && v73 - v69 > 0.0)
       {
-        v55 = [a1 subregionFromRegion:v9 withSnapshotFrame:v11 inSnapshot:{v67, MaxY, v84, v73 - v69}];
+        v55 = [self subregionFromRegion:regionCopy withSnapshotFrame:snapshotCopy inSnapshot:{v67, MaxY, v84, v73 - v69}];
         [v44 addObject:v55];
       }
 
       if (v54 > 0.0 && v51 > 0.0)
       {
-        v56 = [a1 subregionFromRegion:v9 withSnapshotFrame:v11 inSnapshot:{MaxX, v62, v54, v51}];
+        v56 = [self subregionFromRegion:regionCopy withSnapshotFrame:snapshotCopy inSnapshot:{MaxX, v62, v54, v51}];
         [v44 addObject:v56];
       }
     }
 
-    [v11 _trackOccludingRegion:v10 forRegion:v9];
+    [snapshotCopy _trackOccludingRegion:byRegionCopy forRegion:regionCopy];
   }
 
   return v44;
 }
 
-+ (id)__regionsByEvaluatingOcclusionsForBaseRegions:(id)a3 occludingRegions:(id)a4 baseRegionsCanOccludeEachOther:(BOOL)a5 inSnapshot:(id)a6
++ (id)__regionsByEvaluatingOcclusionsForBaseRegions:(id)regions occludingRegions:(id)occludingRegions baseRegionsCanOccludeEachOther:(BOOL)other inSnapshot:(id)snapshot
 {
-  v7 = a5;
+  otherCopy = other;
   v66 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v11)
+  regionsCopy = regions;
+  occludingRegionsCopy = occludingRegions;
+  snapshotCopy = snapshot;
+  if (!occludingRegionsCopy)
   {
     [MEMORY[0x277CCA890] currentHandler];
-    v46 = v45 = v10;
-    [v46 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"occludingRegions"}];
+    v46 = v45 = regionsCopy;
+    [v46 handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:145 description:{@"Invalid parameter not satisfying: %@", @"occludingRegions"}];
 
-    v10 = v45;
+    regionsCopy = v45;
   }
 
-  v47 = v10;
-  if (v10)
+  v47 = regionsCopy;
+  if (regionsCopy)
   {
-    v13 = [v10 count];
-    v14 = v10;
+    v13 = [regionsCopy count];
+    v14 = regionsCopy;
     if (v13)
     {
-      if ([v10 count] != 1 || (v15 = objc_msgSend(v11, "count"), v14 = v10, v15))
+      if ([regionsCopy count] != 1 || (v15 = objc_msgSend(occludingRegionsCopy, "count"), v14 = regionsCopy, v15))
       {
-        v16 = [MEMORY[0x277CBEB18] array];
-        v17 = v10;
-        v18 = v16;
+        array = [MEMORY[0x277CBEB18] array];
+        v17 = regionsCopy;
+        v18 = array;
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
@@ -360,7 +360,7 @@ LABEL_5:
         }
 
         v50 = *v61;
-        v49 = !v7;
+        v49 = !otherCopy;
         while (1)
         {
           for (i = 0; i != v51; ++i)
@@ -371,7 +371,7 @@ LABEL_5:
             }
 
             v54 = *(*(&v60 + 1) + 8 * i);
-            v20 = [v11 count];
+            v20 = [occludingRegionsCopy count];
             if (!v20)
             {
               v36 = 0;
@@ -388,25 +388,25 @@ LABEL_36:
             v23 = 0;
             while (!v22)
             {
-              v24 = v54;
+              firstObject = v54;
 LABEL_18:
-              v25 = v24;
-              v26 = [v11 objectAtIndex:v23];
-              v27 = [v12 originalRegionForRegion:v25];
-              v28 = [v12 originalRegionForRegion:v26];
+              v25 = firstObject;
+              v26 = [occludingRegionsCopy objectAtIndex:v23];
+              v27 = [snapshotCopy originalRegionForRegion:v25];
+              v28 = [snapshotCopy originalRegionForRegion:v26];
               if ([v25 _canBeOccludedByRegionsAbove] && v27 != v28)
               {
-                v29 = [a1 _visibleSubregionsWhenRegion:v25 occludedByRegion:v26 inSnapshot:v12];
+                v29 = [self _visibleSubregionsWhenRegion:v25 occludedByRegion:v26 inSnapshot:snapshotCopy];
                 v30 = v22;
                 v31 = v21;
-                v32 = v12;
-                v33 = v11;
+                v32 = snapshotCopy;
+                v33 = occludingRegionsCopy;
                 v34 = v29;
 
                 v55 = [v34 count] == 0;
                 v35 = v34;
-                v11 = v33;
-                v12 = v32;
+                occludingRegionsCopy = v33;
+                snapshotCopy = v32;
                 v21 = v31;
                 v22 = v35;
               }
@@ -421,7 +421,7 @@ LABEL_18:
 
             if ([v22 count] == 1)
             {
-              v24 = [v22 firstObject];
+              firstObject = [v22 firstObject];
               goto LABEL_18;
             }
 
@@ -432,9 +432,9 @@ LABEL_18:
               goto LABEL_28;
             }
 
-            v37 = [v11 mutableCopy];
+            v37 = [occludingRegionsCopy mutableCopy];
             [v37 removeObjectsInRange:{0, v23}];
-            v38 = [a1 __regionsByEvaluatingOcclusionsForBaseRegions:v22 occludingRegions:v37 baseRegionsCanOccludeEachOther:0 inSnapshot:v12];
+            v38 = [self __regionsByEvaluatingOcclusionsForBaseRegions:v22 occludingRegions:v37 baseRegionsCanOccludeEachOther:0 inSnapshot:snapshotCopy];
 
             v55 = 0;
             v22 = v38;
@@ -478,7 +478,7 @@ LABEL_28:
 LABEL_37:
             if (((v49 | v36) & 1) == 0 && [v54 _canOccludeRegionsBelow])
             {
-              [v11 insertObject:v54 atIndex:0];
+              [occludingRegionsCopy insertObject:v54 atIndex:0];
             }
           }
 
@@ -505,14 +505,14 @@ LABEL_45:
   return v18;
 }
 
-+ (id)regionsByEvaluatingOcclusionsForRegions:(id)a3 inSnapshot:(id)a4
++ (id)regionsByEvaluatingOcclusionsForRegions:(id)regions inSnapshot:(id)snapshot
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  regionsCopy = regions;
+  snapshotCopy = snapshot;
+  v9 = snapshotCopy;
+  if (regionsCopy)
   {
-    if (v8)
+    if (snapshotCopy)
     {
       goto LABEL_3;
     }
@@ -520,8 +520,8 @@ LABEL_45:
 
   else
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"regions"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"regions"}];
 
     if (v9)
     {
@@ -529,33 +529,33 @@ LABEL_45:
     }
   }
 
-  v14 = [MEMORY[0x277CCA890] currentHandler];
-  [v14 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"snapshot"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:213 description:{@"Invalid parameter not satisfying: %@", @"snapshot"}];
 
 LABEL_3:
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [a1 __regionsByEvaluatingOcclusionsForBaseRegions:v7 occludingRegions:v10 baseRegionsCanOccludeEachOther:1 inSnapshot:v9];
+  array = [MEMORY[0x277CBEB18] array];
+  v11 = [self __regionsByEvaluatingOcclusionsForBaseRegions:regionsCopy occludingRegions:array baseRegionsCanOccludeEachOther:1 inSnapshot:v9];
 
   return v11;
 }
 
-+ (id)regionsByOccludingRegions:(id)a3 beneathRegions:(id)a4 inSnapshot:(id)a5
++ (id)regionsByOccludingRegions:(id)regions beneathRegions:(id)beneathRegions inSnapshot:(id)snapshot
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  regionsCopy = regions;
+  beneathRegionsCopy = beneathRegions;
+  snapshotCopy = snapshot;
+  if (regionsCopy)
   {
-    if (v10)
+    if (beneathRegionsCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"occludingRegions"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:222 description:{@"Invalid parameter not satisfying: %@", @"occludingRegions"}];
 
-    if (v11)
+    if (snapshotCopy)
     {
       goto LABEL_4;
     }
@@ -563,27 +563,27 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"regions"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"regions"}];
 
-  if (!v10)
+  if (!beneathRegionsCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v11)
+  if (snapshotCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"_UIFocusRegionEvaluator.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"snapshot"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"_UIFocusRegionEvaluator.m" lineNumber:223 description:{@"Invalid parameter not satisfying: %@", @"snapshot"}];
 
 LABEL_4:
-  v12 = [v10 mutableCopy];
-  v13 = [a1 __regionsByEvaluatingOcclusionsForBaseRegions:v9 occludingRegions:v12 baseRegionsCanOccludeEachOther:0 inSnapshot:v11];
+  v12 = [beneathRegionsCopy mutableCopy];
+  v13 = [self __regionsByEvaluatingOcclusionsForBaseRegions:regionsCopy occludingRegions:v12 baseRegionsCanOccludeEachOther:0 inSnapshot:snapshotCopy];
 
   return v13;
 }

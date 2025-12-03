@@ -1,33 +1,33 @@
 @interface CKMentionsTextContainerOverlayView
-- (CKMentionsTextContainerOverlayView)initWithFrame:(CGRect)a3 textView:(id)a4;
-- (void)__drawGlyph:(unsigned __int16)a3 textPosition:(CGPoint)a4 glyphPosition:(CGPoint)a5 font:(__CTFont *)a6 attributes:(id)a7 layoutFragment:(id)a8;
-- (void)_drawAnimatedMentionRun:(__CTRun *)a3 textPosition:(CGPoint)a4 rippler:(id)a5 layoutFragment:(id)a6;
-- (void)drawRect:(CGRect)a3;
-- (void)updateUsingAnimations:(id)a3;
+- (CKMentionsTextContainerOverlayView)initWithFrame:(CGRect)frame textView:(id)view;
+- (void)__drawGlyph:(unsigned __int16)glyph textPosition:(CGPoint)position glyphPosition:(CGPoint)glyphPosition font:(__CTFont *)font attributes:(id)attributes layoutFragment:(id)fragment;
+- (void)_drawAnimatedMentionRun:(__CTRun *)run textPosition:(CGPoint)position rippler:(id)rippler layoutFragment:(id)fragment;
+- (void)drawRect:(CGRect)rect;
+- (void)updateUsingAnimations:(id)animations;
 @end
 
 @implementation CKMentionsTextContainerOverlayView
 
-- (CKMentionsTextContainerOverlayView)initWithFrame:(CGRect)a3 textView:(id)a4
+- (CKMentionsTextContainerOverlayView)initWithFrame:(CGRect)frame textView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v16.receiver = self;
   v16.super_class = CKMentionsTextContainerOverlayView;
-  v11 = [(CKMentionsTextContainerOverlayView *)&v16 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(CKMentionsTextContainerOverlayView *)&v16 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_textView, a4);
+    objc_storeStrong(&height->_textView, view);
     mentionAnimations = v12->_mentionAnimations;
     v12->_mentionAnimations = MEMORY[0x1E695E0F8];
 
     [(CKMentionsTextContainerOverlayView *)v12 setUserInteractionEnabled:1];
-    v14 = [(CKMentionsTextContainerOverlayView *)v12 layer];
-    [v14 setMasksToBounds:1];
+    layer = [(CKMentionsTextContainerOverlayView *)v12 layer];
+    [layer setMasksToBounds:1];
 
     [(CKMentionsTextContainerOverlayView *)v12 setClipsToBounds:1];
     [(CKMentionsTextContainerOverlayView *)v12 setContentMode:3];
@@ -36,35 +36,35 @@
   return v12;
 }
 
-- (void)updateUsingAnimations:(id)a3
+- (void)updateUsingAnimations:(id)animations
 {
-  [(CKMentionsTextContainerOverlayView *)self setMentionAnimations:a3];
+  [(CKMentionsTextContainerOverlayView *)self setMentionAnimations:animations];
 
   [(CKMentionsTextContainerOverlayView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v20.receiver = self;
   v20.super_class = CKMentionsTextContainerOverlayView;
-  [(CKMentionsTextContainerOverlayView *)&v20 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 set];
+  [(CKMentionsTextContainerOverlayView *)&v20 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [clearColor set];
 
   [(CKMentionsTextContainerOverlayView *)self bounds];
   UIRectFill(v21);
-  v5 = [(CKMentionsTextContainerOverlayView *)self textView];
-  v6 = [v5 textLayoutManager];
+  textView = [(CKMentionsTextContainerOverlayView *)self textView];
+  textLayoutManager = [textView textLayoutManager];
 
-  v7 = [(CKMentionsTextContainerOverlayView *)self textView];
-  [v7 textContainerInset];
+  textView2 = [(CKMentionsTextContainerOverlayView *)self textView];
+  [textView2 textContainerInset];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [v6 documentRange];
-  v17 = [v16 location];
+  documentRange = [textLayoutManager documentRange];
+  location = [documentRange location];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __47__CKMentionsTextContainerOverlayView_drawRect___block_invoke;
@@ -74,7 +74,7 @@
   v19[7] = v13;
   v19[8] = v15;
   v19[4] = self;
-  v18 = [v6 enumerateTextLayoutFragmentsFromLocation:v17 options:4 usingBlock:v19];
+  v18 = [textLayoutManager enumerateTextLayoutFragmentsFromLocation:location options:4 usingBlock:v19];
 }
 
 uint64_t __47__CKMentionsTextContainerOverlayView_drawRect___block_invoke(uint64_t a1, void *a2)
@@ -167,20 +167,20 @@ uint64_t __47__CKMentionsTextContainerOverlayView_drawRect___block_invoke(uint64
   return 1;
 }
 
-- (void)_drawAnimatedMentionRun:(__CTRun *)a3 textPosition:(CGPoint)a4 rippler:(id)a5 layoutFragment:(id)a6
+- (void)_drawAnimatedMentionRun:(__CTRun *)run textPosition:(CGPoint)position rippler:(id)rippler layoutFragment:(id)fragment
 {
-  y = a4.y;
-  x = a4.x;
-  v30 = a5;
-  v12 = a6;
-  Attributes = CTRunGetAttributes(a3);
+  y = position.y;
+  x = position.x;
+  ripplerCopy = rippler;
+  fragmentCopy = fragment;
+  Attributes = CTRunGetAttributes(run);
   Value = CFDictionaryGetValue(Attributes, *MEMORY[0x1E6965658]);
   if (!Value)
   {
     [CKMentionsTextContainerOverlayView _drawAnimatedMentionRun:a2 textPosition:self rippler:? layoutFragment:?];
   }
 
-  GlyphCount = CTRunGetGlyphCount(a3);
+  GlyphCount = CTRunGetGlyphCount(run);
   if (GlyphCount)
   {
     v16 = GlyphCount;
@@ -188,26 +188,26 @@ uint64_t __47__CKMentionsTextContainerOverlayView_drawRect___block_invoke(uint64
     v18 = malloc_type_calloc(v16, 2uLL, 0x1000040BDFB0063uLL);
     v32.location = 0;
     v32.length = 0;
-    CTRunGetGlyphs(a3, v32, v18);
+    CTRunGetGlyphs(run, v32, v18);
     v33.location = 0;
     v33.length = 0;
     v29 = v17;
-    CTRunGetPositions(a3, v33, v17);
-    v19 = [v30 currentTimeIndex];
+    CTRunGetPositions(run, v33, v17);
+    currentTimeIndex = [ripplerCopy currentTimeIndex];
     if (v16 >= 1)
     {
-      v20 = v19;
+      v20 = currentTimeIndex;
       v21 = 0;
       p_y = &v17->y;
       do
       {
-        v23 = v12;
+        v23 = fragmentCopy;
         v24 = v18[v21];
         v25 = *(p_y - 1);
         v26 = *p_y;
-        v27 = [CKMentionsRenderingAttributes newWithValuesFromRippler:v30 timeIndex:v20 glyphIndex:v21 glyphCount:v16, v29];
+        v27 = [CKMentionsRenderingAttributes newWithValuesFromRippler:ripplerCopy timeIndex:v20 glyphIndex:v21 glyphCount:v16, v29];
         v28 = v24;
-        v12 = v23;
+        fragmentCopy = v23;
         [(CKMentionsTextContainerOverlayView *)self __drawGlyph:v28 textPosition:Value glyphPosition:v27 font:v23 attributes:x layoutFragment:y, v25, v26];
 
         ++v21;
@@ -222,21 +222,21 @@ uint64_t __47__CKMentionsTextContainerOverlayView_drawRect___block_invoke(uint64
   }
 }
 
-- (void)__drawGlyph:(unsigned __int16)a3 textPosition:(CGPoint)a4 glyphPosition:(CGPoint)a5 font:(__CTFont *)a6 attributes:(id)a7 layoutFragment:(id)a8
+- (void)__drawGlyph:(unsigned __int16)glyph textPosition:(CGPoint)position glyphPosition:(CGPoint)glyphPosition font:(__CTFont *)font attributes:(id)attributes layoutFragment:(id)fragment
 {
-  x = a5.x;
-  y = a4.y;
-  v12 = a4.x;
-  positions.y = a5.y;
-  glyphs = a3;
-  v13 = a8;
-  v14 = a7;
+  x = glyphPosition.x;
+  y = position.y;
+  v12 = position.x;
+  positions.y = glyphPosition.y;
+  glyphs = glyph;
+  fragmentCopy = fragment;
+  attributesCopy = attributes;
   CurrentContext = UIGraphicsGetCurrentContext();
   CGContextSaveGState(CurrentContext);
   v28 = 0.0;
-  [v14 _applyInContext:CurrentContext fontPointSize:&v28 getAdjustedFontSize:CTFontGetSize(a6)];
+  [attributesCopy _applyInContext:CurrentContext fontPointSize:&v28 getAdjustedFontSize:CTFontGetSize(font)];
 
-  CopyWithAttributes = CTFontCreateCopyWithAttributes(a6, v28, 0, 0);
+  CopyWithAttributes = CTFontCreateCopyWithAttributes(font, v28, 0, 0);
   memset(&v27, 0, sizeof(v27));
   CGContextGetTextMatrix(&v27, CurrentContext);
   v25 = v27;
@@ -245,7 +245,7 @@ uint64_t __47__CKMentionsTextContainerOverlayView_drawRect___block_invoke(uint64
   v25 = v26;
   CGContextSetTextMatrix(CurrentContext, &v25);
   CGContextSetTextPosition(CurrentContext, v12, y);
-  [v13 layoutFragmentFrame];
+  [fragmentCopy layoutFragmentFrame];
   v18 = v17;
   v20 = v19;
   v22 = v21;

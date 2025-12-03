@@ -1,5 +1,5 @@
 @interface HeadphonePauseMediaOnSleepViewController
-- (_TtC20HeadphoneProxService40HeadphonePauseMediaOnSleepViewController)initWithContentView:(id)a3;
+- (_TtC20HeadphoneProxService40HeadphonePauseMediaOnSleepViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002E104();
 }
 
-- (_TtC20HeadphoneProxService40HeadphonePauseMediaOnSleepViewController)initWithContentView:(id)a3
+- (_TtC20HeadphoneProxService40HeadphonePauseMediaOnSleepViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   v6 = OBJC_IVAR____TtC20HeadphoneProxService40HeadphonePauseMediaOnSleepViewController_headphoneProxFeatureManager;
   type metadata accessor for HeadphoneProxFeatureManager();
-  v7 = a3;
+  viewCopy = view;
   *&self->PRXCardContentViewController_opaque[v6] = static HeadphoneProxFeatureManager.shared.getter();
   *&self->headphoneProxFeatureManager[OBJC_IVAR____TtC20HeadphoneProxService40HeadphonePauseMediaOnSleepViewController_presenter] = 0;
   swift_unknownObjectWeakInit();
@@ -27,7 +27,7 @@
   (*(*(v9 - 8) + 56))(&self->PRXCardContentViewController_opaque[v8], 1, 1, v9);
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = [(HeadphonePauseMediaOnSleepViewController *)&v12 initWithContentView:v7];
+  v10 = [(HeadphonePauseMediaOnSleepViewController *)&v12 initWithContentView:viewCopy];
 
   return v10;
 }

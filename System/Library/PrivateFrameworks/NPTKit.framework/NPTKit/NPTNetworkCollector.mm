@@ -1,13 +1,13 @@
 @interface NPTNetworkCollector
-- (void)startCollectingWithCompletion:(id)a3;
+- (void)startCollectingWithCompletion:(id)completion;
 - (void)stopCollecting;
 @end
 
 @implementation NPTNetworkCollector
 
-- (void)startCollectingWithCompletion:(id)a3
+- (void)startCollectingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = objc_alloc_init(MEMORY[0x277D7BB68]);
   [(NPTNetworkCollector *)self setClient:v6];
@@ -17,53 +17,53 @@
   [(NPTNetworkCollector *)self setCachedMetadata:v8];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v10 = [(NPTNetworkCollector *)self cachedMetadata];
-  [v10 setObject:v9 forKeyedSubscript:@"initial_state"];
+  cachedMetadata = [(NPTNetworkCollector *)self cachedMetadata];
+  [cachedMetadata setObject:v9 forKeyedSubscript:@"initial_state"];
 
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = [(NPTNetworkCollector *)self cachedMetadata];
-  [v12 setObject:v11 forKeyedSubscript:@"events"];
+  cachedMetadata2 = [(NPTNetworkCollector *)self cachedMetadata];
+  [cachedMetadata2 setObject:v11 forKeyedSubscript:@"events"];
 
-  v13 = [(NPTNetworkCollector *)self client];
+  client = [(NPTNetworkCollector *)self client];
   v27 = 0;
-  v14 = [v13 queryStatusForPeer:0 error:&v27];
+  v14 = [client queryStatusForPeer:0 error:&v27];
   v15 = v27;
 
-  v16 = [v14 network];
+  network = [v14 network];
 
-  if (v16)
+  if (network)
   {
-    v17 = [v14 network];
-    v18 = [v17 dictionary];
-    [v5 addEntriesFromDictionary:v18];
+    network2 = [v14 network];
+    dictionary = [network2 dictionary];
+    [v5 addEntriesFromDictionary:dictionary];
   }
 
   objc_initWeak(&location, self);
-  v19 = [(NPTNetworkCollector *)self client];
+  client2 = [(NPTNetworkCollector *)self client];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __53__NPTNetworkCollector_startCollectingWithCompletion___block_invoke;
   v24[3] = &unk_2789D4360;
   objc_copyWeak(&v25, &location);
-  [v19 setEventCallback:v24];
+  [client2 setEventCallback:v24];
 
   [(NPTNetworkCollector *)self setEventsToMonitor:&unk_2848CF4C8];
-  v20 = [(NPTNetworkCollector *)self client];
-  v21 = [(NPTNetworkCollector *)self eventsToMonitor];
-  [v20 startMonitoringEvents:v21];
+  client3 = [(NPTNetworkCollector *)self client];
+  eventsToMonitor = [(NPTNetworkCollector *)self eventsToMonitor];
+  [client3 startMonitoringEvents:eventsToMonitor];
 
-  v22 = [(NPTNetworkCollector *)self cachedMetadata];
-  [v22 setObject:v5 forKeyedSubscript:@"initial_state"];
+  cachedMetadata3 = [(NPTNetworkCollector *)self cachedMetadata];
+  [cachedMetadata3 setObject:v5 forKeyedSubscript:@"initial_state"];
 
   if (v15)
   {
     [v7 addObject:v15];
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v23 = [v7 copy];
-    v4[2](v4, v5, v23);
+    completionCopy[2](completionCopy, v5, v23);
   }
 
   objc_destroyWeak(&v25);
@@ -111,9 +111,9 @@ void __53__NPTNetworkCollector_startCollectingWithCompletion___block_invoke(uint
 
 - (void)stopCollecting
 {
-  v3 = [(NPTNetworkCollector *)self client];
-  v4 = [(NPTNetworkCollector *)self eventsToMonitor];
-  [v3 stopMonitoringEvents:v4];
+  client = [(NPTNetworkCollector *)self client];
+  eventsToMonitor = [(NPTNetworkCollector *)self eventsToMonitor];
+  [client stopMonitoringEvents:eventsToMonitor];
 
   [(NPTNetworkCollector *)self setClient:0];
 }

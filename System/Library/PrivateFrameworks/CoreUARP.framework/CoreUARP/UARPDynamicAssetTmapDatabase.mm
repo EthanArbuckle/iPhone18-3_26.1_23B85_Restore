@@ -1,5 +1,5 @@
 @interface UARPDynamicAssetTmapDatabase
-- (BOOL)addTmapMapping:(id)a3;
+- (BOOL)addTmapMapping:(id)mapping;
 - (BOOL)cleanUpTmapDatabaseFiles;
 - (BOOL)createTmapDatabaseFile;
 - (BOOL)decomposeUARP;
@@ -7,13 +7,13 @@
 - (BOOL)loadPlist;
 - (BOOL)tmapDatabaseFileExists;
 - (UARPDynamicAssetTmapDatabase)init;
-- (UARPDynamicAssetTmapDatabase)initWithCoder:(id)a3;
-- (UARPDynamicAssetTmapDatabase)initWithUrl:(id)a3;
+- (UARPDynamicAssetTmapDatabase)initWithCoder:(id)coder;
+- (UARPDynamicAssetTmapDatabase)initWithUrl:(id)url;
 - (id)description;
 - (id)findTmapDatabaseFileUrl;
-- (id)findTmapforAppleModel:(id)a3;
-- (id)initTmapDatabase:(id)a3;
-- (id)initTmapDatabaseWithPlist:(id)a3;
+- (id)findTmapforAppleModel:(id)model;
+- (id)initTmapDatabase:(id)database;
+- (id)initTmapDatabaseWithPlist:(id)plist;
 - (void)cleanUpTmapDatabaseFiles;
 - (void)createTmapDatabaseFile;
 - (void)decomposeUARP;
@@ -28,9 +28,9 @@
   return 0;
 }
 
-- (id)initTmapDatabase:(id)a3
+- (id)initTmapDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   v18.receiver = self;
   v18.super_class = UARPDynamicAssetTmapDatabase;
   v6 = [(UARPDynamicAssetTmapDatabase *)&v18 init];
@@ -40,8 +40,8 @@
 
   if ([v6 tmapDatabaseFileExists])
   {
-    v9 = [v6 findTmapDatabaseFileUrl];
-    if (!v9)
+    findTmapDatabaseFileUrl = [v6 findTmapDatabaseFileUrl];
+    if (!findTmapDatabaseFileUrl)
     {
       if (os_log_type_enabled(*(v6 + 5), OS_LOG_TYPE_ERROR))
       {
@@ -51,15 +51,15 @@
       goto LABEL_12;
     }
 
-    v10 = v9;
-    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v9];
+    v10 = findTmapDatabaseFileUrl;
+    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:findTmapDatabaseFileUrl];
     v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:0];
 
     v6 = v12;
   }
 
   v13 = *(v6 + 4);
-  if (!(v5 | v13))
+  if (!(databaseCopy | v13))
   {
 LABEL_12:
     v16 = 0;
@@ -73,9 +73,9 @@ LABEL_12:
     *(v6 + 4) = v14;
   }
 
-  if (v5)
+  if (databaseCopy)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(v6 + 1, database);
   }
 
   v6 = v6;
@@ -85,9 +85,9 @@ LABEL_13:
   return v16;
 }
 
-- (id)initTmapDatabaseWithPlist:(id)a3
+- (id)initTmapDatabaseWithPlist:(id)plist
 {
-  v5 = a3;
+  plistCopy = plist;
   v18.receiver = self;
   v18.super_class = UARPDynamicAssetTmapDatabase;
   v6 = [(UARPDynamicAssetTmapDatabase *)&v18 init];
@@ -97,8 +97,8 @@ LABEL_13:
 
   if ([v6 tmapDatabaseFileExists])
   {
-    v9 = [v6 findTmapDatabaseFileUrl];
-    if (!v9)
+    findTmapDatabaseFileUrl = [v6 findTmapDatabaseFileUrl];
+    if (!findTmapDatabaseFileUrl)
     {
       if (os_log_type_enabled(*(v6 + 5), OS_LOG_TYPE_ERROR))
       {
@@ -108,15 +108,15 @@ LABEL_13:
       goto LABEL_12;
     }
 
-    v10 = v9;
-    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v9];
+    v10 = findTmapDatabaseFileUrl;
+    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:findTmapDatabaseFileUrl];
     v12 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:0];
 
     v6 = v12;
   }
 
   v13 = *(v6 + 4);
-  if (!(v5 | v13))
+  if (!(plistCopy | v13))
   {
 LABEL_12:
     v16 = 0;
@@ -130,9 +130,9 @@ LABEL_12:
     *(v6 + 4) = v14;
   }
 
-  if (v5)
+  if (plistCopy)
   {
-    objc_storeStrong(v6 + 2, a3);
+    objc_storeStrong(v6 + 2, plist);
   }
 
   v6 = v6;
@@ -142,21 +142,21 @@ LABEL_13:
   return v16;
 }
 
-- (UARPDynamicAssetTmapDatabase)initWithUrl:(id)a3
+- (UARPDynamicAssetTmapDatabase)initWithUrl:(id)url
 {
-  v4 = a3;
+  urlCopy = url;
   v5 = os_log_create("com.apple.accessoryupdater.uarp", "tmap");
   log = self->_log;
   self->_log = v5;
 
-  if (v4)
+  if (urlCopy)
   {
-    v7 = v4;
+    v7 = urlCopy;
     v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v7];
     v9 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v8 error:0];
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
@@ -166,16 +166,16 @@ LABEL_13:
       [UARPDynamicAssetTmapDatabase initWithUrl:];
     }
 
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (UARPDynamicAssetTmapDatabase)initWithCoder:(id)a3
+- (UARPDynamicAssetTmapDatabase)initWithCoder:(id)coder
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = UARPDynamicAssetTmapDatabase;
   v5 = [(UARPDynamicAssetTmapDatabase *)&v16 init];
@@ -186,7 +186,7 @@ LABEL_13:
     v17[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"tmap"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"tmap"];
 
     v10 = [v9 mutableCopy];
     tmapDatabase = v5->_tmapDatabase;
@@ -250,11 +250,11 @@ LABEL_13:
 
 - (BOOL)flushToDisk
 {
-  v3 = [(UARPDynamicAssetTmapDatabase *)self findTmapDatabaseFileUrl];
-  if (v3)
+  findTmapDatabaseFileUrl = [(UARPDynamicAssetTmapDatabase *)self findTmapDatabaseFileUrl];
+  if (findTmapDatabaseFileUrl)
   {
     v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-    v5 = [v4 writeToURL:v3 atomically:1];
+    v5 = [v4 writeToURL:findTmapDatabaseFileUrl atomically:1];
   }
 
   else
@@ -295,8 +295,8 @@ LABEL_13:
           }
 
           v10 = *(*(&v33 + 1) + 8 * i);
-          v11 = [v10 payloadTag];
-          v12 = [v11 tag];
+          payloadTag = [v10 payloadTag];
+          v12 = [payloadTag tag];
           v13 = [v5 tag];
 
           if (v12 == v13)
@@ -385,8 +385,8 @@ LABEL_25:
 - (BOOL)loadPlist
 {
   v3 = MEMORY[0x277CBEAC0];
-  v4 = [(NSURL *)self->_plistURL path];
-  v5 = [v3 dictionaryWithContentsOfFile:v4];
+  path = [(NSURL *)self->_plistURL path];
+  v5 = [v3 dictionaryWithContentsOfFile:path];
 
   v6 = [(UARPDynamicAssetTmapDatabase *)self addTmapMapping:v5];
   if (v6 && self->_tmapDatabase)
@@ -397,10 +397,10 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)addTmapMapping:(id)a3
+- (BOOL)addTmapMapping:(id)mapping
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mappingCopy = mapping;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -408,11 +408,11 @@ LABEL_25:
     _os_log_impl(&dword_247AA7000, log, OS_LOG_TYPE_INFO, "Adding TMAP Mapping", &v15, 2u);
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"AppleModelNumber"];
+  v6 = [mappingCopy objectForKeyedSubscript:@"AppleModelNumber"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 objectForKeyedSubscript:@"Endian"];
+    v7 = [mappingCopy objectForKeyedSubscript:@"Endian"];
     if (!v7)
     {
       v7 = @"BigEndian";
@@ -430,7 +430,7 @@ LABEL_25:
       goto LABEL_28;
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"Events"];
+    v8 = [mappingCopy objectForKeyedSubscript:@"Events"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -501,10 +501,10 @@ LABEL_29:
   return v12;
 }
 
-- (id)findTmapforAppleModel:(id)a3
+- (id)findTmapforAppleModel:(id)model
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -524,7 +524,7 @@ LABEL_29:
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 isEqualAppleModel:{v4, v12}])
+        if ([v9 isEqualAppleModel:{modelCopy, v12}])
         {
           v6 = v9;
           goto LABEL_11;
@@ -575,9 +575,9 @@ LABEL_11:
   v4 = UARPStringTmapDirectoryPath();
   UARPUtilsCreateTemporaryFolder(v4);
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v6 = UARPStringTmapDatabaseFilePath();
-  v3 = [v5 createFileAtPath:v6 contents:0 attributes:0];
+  v3 = [defaultManager createFileAtPath:v6 contents:0 attributes:0];
 
   if ((v3 & 1) == 0)
   {
@@ -593,19 +593,19 @@ LABEL_11:
 
 - (BOOL)tmapDatabaseFileExists
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v3 = UARPStringTmapDatabaseFilePath();
-  v4 = [v2 fileExistsAtPath:v3];
+  v4 = [defaultManager fileExistsAtPath:v3];
 
   return v4;
 }
 
 - (BOOL)cleanUpTmapDatabaseFiles
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v4 = UARPStringTmapDirectoryPath();
   v9 = 0;
-  v5 = [v3 removeItemAtPath:v4 error:&v9];
+  v5 = [defaultManager removeItemAtPath:v4 error:&v9];
   v6 = v9;
 
   if ((v5 & 1) == 0)
@@ -624,7 +624,7 @@ LABEL_11:
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = 138412546;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2112;
   v7 = a2;
   _os_log_error_impl(&dword_247AA7000, log, OS_LOG_TYPE_ERROR, "TMAP Data is nil or not a dictionary: TMAP Value: %@, Error: %@", &v4, 0x16u);
@@ -634,11 +634,11 @@ LABEL_11:
 - (void)createTmapDatabaseFile
 {
   v5 = *MEMORY[0x277D85DE8];
-  v1 = a1;
+  selfCopy = self;
   v2 = UARPStringTmapDatabaseFilePath();
   v4[0] = 136315394;
   OUTLINED_FUNCTION_2();
-  _os_log_error_impl(&dword_247AA7000, v1, OS_LOG_TYPE_ERROR, "%s: Unable to create file at %@", v4, 0x16u);
+  _os_log_error_impl(&dword_247AA7000, selfCopy, OS_LOG_TYPE_ERROR, "%s: Unable to create file at %@", v4, 0x16u);
 
   v3 = *MEMORY[0x277D85DE8];
 }
@@ -646,13 +646,13 @@ LABEL_11:
 - (void)cleanUpTmapDatabaseFiles
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a1;
+  selfCopy = self;
   v4 = UARPStringTmapDirectoryPath();
   v7[0] = 136315650;
   OUTLINED_FUNCTION_2();
   v8 = v5;
   v9 = a2;
-  _os_log_error_impl(&dword_247AA7000, v3, OS_LOG_TYPE_ERROR, "%s: Unable to remove files at %@ (%@)", v7, 0x20u);
+  _os_log_error_impl(&dword_247AA7000, selfCopy, OS_LOG_TYPE_ERROR, "%s: Unable to remove files at %@ (%@)", v7, 0x20u);
 
   v6 = *MEMORY[0x277D85DE8];
 }

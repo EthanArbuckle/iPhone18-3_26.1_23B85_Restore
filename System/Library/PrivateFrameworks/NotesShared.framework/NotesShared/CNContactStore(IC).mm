@@ -11,13 +11,13 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [v6 userIdentity];
-  v9 = [v8 lookupInfo];
-  v10 = [v9 emailAddress];
+  userIdentity = [v6 userIdentity];
+  lookupInfo = [userIdentity lookupInfo];
+  emailAddress = [lookupInfo emailAddress];
 
-  if (v10)
+  if (emailAddress)
   {
-    v11 = [a1 ic_contactForEmailAddressString:v10 keysToFetch:v7];
+    v11 = [self ic_contactForEmailAddressString:emailAddress keysToFetch:v7];
   }
 
   else
@@ -25,13 +25,13 @@
     v11 = 0;
   }
 
-  v12 = [v6 userIdentity];
-  v13 = [v12 lookupInfo];
-  v14 = [v13 phoneNumber];
+  userIdentity2 = [v6 userIdentity];
+  lookupInfo2 = [userIdentity2 lookupInfo];
+  phoneNumber = [lookupInfo2 phoneNumber];
 
-  if (!v11 && v14)
+  if (!v11 && phoneNumber)
   {
-    v11 = [a1 ic_contatForPhoneNumberString:v14 keysToFetch:v7];
+    v11 = [self ic_contatForPhoneNumberString:phoneNumber keysToFetch:v7];
   }
 
   if (!v11)
@@ -54,15 +54,15 @@
   v7 = a4;
   if (![v6 length])
   {
-    v11 = 0;
+    firstObject = 0;
     goto LABEL_12;
   }
 
   v8 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v6];
   v21 = 0;
-  v9 = [a1 unifiedContactsMatchingPredicate:v8 keysToFetch:v7 error:&v21];
+  v9 = [self unifiedContactsMatchingPredicate:v8 keysToFetch:v7 error:&v21];
   v10 = v21;
-  v11 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
   if (v10)
   {
@@ -73,7 +73,7 @@
     }
   }
 
-  else if (v11)
+  else if (firstObject)
   {
     v10 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -84,12 +84,12 @@
     goto LABEL_11;
   }
 
-  v11 = 0;
+  firstObject = 0;
 LABEL_11:
 
 LABEL_12:
 
-  return v11;
+  return firstObject;
 }
 
 - (id)ic_contatForPhoneNumberString:()IC keysToFetch:
@@ -98,16 +98,16 @@ LABEL_12:
   v7 = a4;
   if (!v6 || (v8 = [objc_alloc(MEMORY[0x277CBDB70]) initWithStringValue:v6]) == 0)
   {
-    v13 = 0;
+    firstObject = 0;
     goto LABEL_13;
   }
 
   v9 = v8;
   v10 = [MEMORY[0x277CBDA58] predicateForContactsMatchingPhoneNumber:v8];
   v23 = 0;
-  v11 = [a1 unifiedContactsMatchingPredicate:v10 keysToFetch:v7 error:&v23];
+  v11 = [self unifiedContactsMatchingPredicate:v10 keysToFetch:v7 error:&v23];
   v12 = v23;
-  v13 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
   if (v12)
   {
@@ -118,7 +118,7 @@ LABEL_12:
     }
   }
 
-  else if (v13)
+  else if (firstObject)
   {
     v12 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -129,21 +129,21 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v13 = 0;
+  firstObject = 0;
 LABEL_12:
 
 LABEL_13:
 
-  return v13;
+  return firstObject;
 }
 
 - (id)ic_contactForHandleString:()IC keysToFetch:
 {
   v6 = a3;
   v7 = a4;
-  if (!v6 || ([a1 ic_contactForEmailAddressString:v6 keysToFetch:v7], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v6 || ([self ic_contactForEmailAddressString:v6 keysToFetch:v7], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v8 = [a1 ic_contatForPhoneNumberString:v6 keysToFetch:v7];
+    v8 = [self ic_contatForPhoneNumberString:v6 keysToFetch:v7];
   }
 
   return v8;

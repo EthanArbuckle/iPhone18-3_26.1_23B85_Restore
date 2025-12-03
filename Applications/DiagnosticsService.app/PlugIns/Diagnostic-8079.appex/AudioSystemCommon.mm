@@ -1,49 +1,49 @@
 @interface AudioSystemCommon
-+ (BOOL)setCode:(int64_t)a3 forError:(id *)a4;
++ (BOOL)setCode:(int64_t)code forError:(id *)error;
 - (BOOL)isDeviceConnectedToAccessory;
 - (BOOL)isSoundRecognitionRequired;
 - (id)archiveNameTemplate;
-- (id)createNewTestSequenceWithOutput:(id)a3 andStimulusFile:(id)a4;
-- (id)pathToSoundFile:(id)a3;
+- (id)createNewTestSequenceWithOutput:(id)output andStimulusFile:(id)file;
+- (id)pathToSoundFile:(id)file;
 - (id)testID;
 - (id)writeCurrentResultsToJson;
 - (void)cancel;
 - (void)deleteTemporaryFiles;
-- (void)downloadFilesWithResponder:(id)a3;
-- (void)failedToExecuteWithError:(id)a3;
-- (void)parseTestResults:(id)a3 fromOutput:(id)a4 withFile:(id)a5 parsedResults:(id)a6 sequenceIndex:(id)a7 error:(id)a8;
-- (void)performAnalysisOnAVResult:(id)a3 fromOutput:(id)a4 withSourceSignalData:(id)a5 intoDKResult:(id)a6 error:(id)a7;
-- (void)receivedInterruptNotification:(id)a3;
+- (void)downloadFilesWithResponder:(id)responder;
+- (void)failedToExecuteWithError:(id)error;
+- (void)parseTestResults:(id)results fromOutput:(id)output withFile:(id)file parsedResults:(id)parsedResults sequenceIndex:(id)index error:(id)error;
+- (void)performAnalysisOnAVResult:(id)result fromOutput:(id)output withSourceSignalData:(id)data intoDKResult:(id)kResult error:(id)error;
+- (void)receivedInterruptNotification:(id)notification;
 - (void)restoreAccesibilityStateIfRequired;
 - (void)restoreOriginalVolumes;
 - (void)saveOriginalVolumes;
 - (void)setAccessibilityStateIfRequired;
 - (void)setUpEventNotifications;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
-- (void)testSequence:(id)a3 completionSemaphore:(id)a4;
+- (void)testSequence:(id)sequence completionSemaphore:(id)semaphore;
 @end
 
 @implementation AudioSystemCommon
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a4;
-  v7 = a3;
+  responderCopy = responder;
+  inputsCopy = inputs;
   v8 = +[NSDate date];
   [v8 timeIntervalSince1970];
   [(AudioSystemCommon *)self setStartTime:?];
 
-  [(AudioSystemCommon *)self setInputs:v7];
+  [(AudioSystemCommon *)self setInputs:inputsCopy];
   [(AudioSystemCommon *)self setPreviousAudioChanged:0];
-  [(AudioSystemCommon *)self setDiagnosticResponder:v6];
+  [(AudioSystemCommon *)self setDiagnosticResponder:responderCopy];
   v9 = +[AVAudioSession sharedInstance];
   if ([v9 isOtherAudioPlaying])
   {
-    v10 = [(AudioSystemCommon *)self isSoundRecognitionRequired];
+    isSoundRecognitionRequired = [(AudioSystemCommon *)self isSoundRecognitionRequired];
 
-    if ((v10 & 1) == 0)
+    if ((isSoundRecognitionRequired & 1) == 0)
     {
       v11 = DiagnosticLogHandleForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -68,17 +68,17 @@
   v14 = MGCopyAnswer();
   [(AudioSystemCommon *)self setDeviceName:v14];
 
-  v15 = [(AudioSystemCommon *)self deviceName];
-  -[AudioSystemCommon setIsDeviceiPhone:](self, "setIsDeviceiPhone:", [v15 isEqualToString:@"iPhone"]);
+  deviceName = [(AudioSystemCommon *)self deviceName];
+  -[AudioSystemCommon setIsDeviceiPhone:](self, "setIsDeviceiPhone:", [deviceName isEqualToString:@"iPhone"]);
 
-  v16 = [(AudioSystemCommon *)self deviceName];
-  -[AudioSystemCommon setIsDeviceiPod:](self, "setIsDeviceiPod:", [v16 isEqualToString:@"iPod touch"]);
+  deviceName2 = [(AudioSystemCommon *)self deviceName];
+  -[AudioSystemCommon setIsDeviceiPod:](self, "setIsDeviceiPod:", [deviceName2 isEqualToString:@"iPod touch"]);
 
-  v17 = [(AudioSystemCommon *)self deviceName];
-  -[AudioSystemCommon setIsDeviceiPad:](self, "setIsDeviceiPad:", [v17 isEqualToString:@"iPad"]);
+  deviceName3 = [(AudioSystemCommon *)self deviceName];
+  -[AudioSystemCommon setIsDeviceiPad:](self, "setIsDeviceiPad:", [deviceName3 isEqualToString:@"iPad"]);
 
-  v18 = [(AudioSystemCommon *)self deviceName];
-  -[AudioSystemCommon setIsDeviceWatch:](self, "setIsDeviceWatch:", [v18 isEqualToString:@"Apple Watch"]);
+  deviceName4 = [(AudioSystemCommon *)self deviceName];
+  -[AudioSystemCommon setIsDeviceWatch:](self, "setIsDeviceWatch:", [deviceName4 isEqualToString:@"Apple Watch"]);
 
   if (![(AudioSystemCommon *)self isDeviceiPhone]&& ![(AudioSystemCommon *)self isDeviceiPod]&& ![(AudioSystemCommon *)self isDeviceiPad])
   {
@@ -87,27 +87,27 @@ LABEL_17:
     v22 = [NSURL fileURLWithPath:v21 isDirectory:1];
     [(AudioSystemCommon *)self setTmpdir:v22];
 
-    [(AudioSystemCommon *)self downloadFilesWithResponder:v6];
+    [(AudioSystemCommon *)self downloadFilesWithResponder:responderCopy];
     goto LABEL_18;
   }
 
-  v19 = [(AudioSystemCommon *)self inputs];
-  if (![v19 isAccessoryDetectorActive])
+  inputs = [(AudioSystemCommon *)self inputs];
+  if (![inputs isAccessoryDetectorActive])
   {
 
 LABEL_15:
     [(AudioSystemCommon *)self setAccessibilityStateIfRequired];
-    if ([v6 conformsToProtocol:&OBJC_PROTOCOL___DKVolumeHUDResponder])
+    if ([responderCopy conformsToProtocol:&OBJC_PROTOCOL___DKVolumeHUDResponder])
     {
-      [v6 enableVolumeHUD:0];
+      [responderCopy enableVolumeHUD:0];
     }
 
     goto LABEL_17;
   }
 
-  v20 = [(AudioSystemCommon *)self isDeviceConnectedToAccessory];
+  isDeviceConnectedToAccessory = [(AudioSystemCommon *)self isDeviceConnectedToAccessory];
 
-  if (v20)
+  if (isDeviceConnectedToAccessory)
   {
     goto LABEL_15;
   }
@@ -127,13 +127,13 @@ LABEL_18:
   v3 = objc_alloc_init([(AudioSystemCommon *)self avAudioDeviceTestClass]);
   [(AudioSystemCommon *)self setAudioTest:v3];
 
-  v4 = [(AudioSystemCommon *)self audioTest];
-  [v4 setProcessSequenceAsynchronously:1];
+  audioTest = [(AudioSystemCommon *)self audioTest];
+  [audioTest setProcessSequenceAsynchronously:1];
 
-  v5 = [(AudioSystemCommon *)self inputs];
-  v6 = [v5 saveRawRecording];
+  inputs = [(AudioSystemCommon *)self inputs];
+  saveRawRecording = [inputs saveRawRecording];
 
-  if (v6)
+  if (saveRawRecording)
   {
     v7 = objc_alloc_init(NSMutableArray);
     [(AudioSystemCommon *)self setRawRecordings:v7];
@@ -151,7 +151,7 @@ LABEL_18:
   v9[2] = sub_100004820;
   v9[3] = &unk_100014528;
   v9[4] = self;
-  v10 = v6;
+  v10 = saveRawRecording;
   dispatch_async(v8, v9);
 }
 
@@ -159,72 +159,72 @@ LABEL_18:
 {
   [(AudioSystemCommon *)self restoreAccesibilityStateIfRequired];
   [(AudioSystemCommon *)self restoreOriginalVolumes];
-  v3 = [(AudioSystemCommon *)self inputs];
-  v4 = [v3 isMotionDetectorActive];
+  inputs = [(AudioSystemCommon *)self inputs];
+  isMotionDetectorActive = [inputs isMotionDetectorActive];
 
-  if (v4)
+  if (isMotionDetectorActive)
   {
-    v5 = [(AudioSystemCommon *)self motionDetector];
-    [v5 stop];
+    motionDetector = [(AudioSystemCommon *)self motionDetector];
+    [motionDetector stop];
   }
 
-  v6 = [(AudioSystemCommon *)self inputs];
-  v7 = [v6 isAccessoryDetectorActive];
+  inputs2 = [(AudioSystemCommon *)self inputs];
+  isAccessoryDetectorActive = [inputs2 isAccessoryDetectorActive];
 
-  if (v7)
+  if (isAccessoryDetectorActive)
   {
-    v8 = [(AudioSystemCommon *)self accessoryDisconnectDetector];
-    [v8 stop];
+    accessoryDisconnectDetector = [(AudioSystemCommon *)self accessoryDisconnectDetector];
+    [accessoryDisconnectDetector stop];
   }
 
-  v9 = [(AudioSystemCommon *)self inputs];
-  v10 = [v9 isHeadphonesDetectorActive];
+  inputs3 = [(AudioSystemCommon *)self inputs];
+  isHeadphonesDetectorActive = [inputs3 isHeadphonesDetectorActive];
 
-  if (v10)
+  if (isHeadphonesDetectorActive)
   {
-    v11 = [(AudioSystemCommon *)self headphoneDetector];
-    [v11 stop];
+    headphoneDetector = [(AudioSystemCommon *)self headphoneDetector];
+    [headphoneDetector stop];
   }
 
-  v12 = [(AudioSystemCommon *)self inputs];
-  v13 = [v12 isOrientationDetectorActive];
+  inputs4 = [(AudioSystemCommon *)self inputs];
+  isOrientationDetectorActive = [inputs4 isOrientationDetectorActive];
 
-  if (v13)
+  if (isOrientationDetectorActive)
   {
-    v14 = [(AudioSystemCommon *)self orientationDetector];
-    [v14 stop];
+    orientationDetector = [(AudioSystemCommon *)self orientationDetector];
+    [orientationDetector stop];
   }
 
   v15 = +[NSNotificationCenter defaultCenter];
   [v15 removeObserver:self];
 
-  v16 = [(AudioSystemCommon *)self diagnosticResponder];
-  v17 = [v16 conformsToProtocol:&OBJC_PROTOCOL___DKVolumeHUDResponder];
+  diagnosticResponder = [(AudioSystemCommon *)self diagnosticResponder];
+  v17 = [diagnosticResponder conformsToProtocol:&OBJC_PROTOCOL___DKVolumeHUDResponder];
 
   if (v17)
   {
-    v18 = [(AudioSystemCommon *)self diagnosticResponder];
-    [v18 enableVolumeHUD:1];
+    diagnosticResponder2 = [(AudioSystemCommon *)self diagnosticResponder];
+    [diagnosticResponder2 enableVolumeHUD:1];
   }
 
-  v19 = [(AudioSystemCommon *)self audioTest];
-  [v19 cancel];
+  audioTest = [(AudioSystemCommon *)self audioTest];
+  [audioTest cancel];
 }
 
 - (void)cancel
 {
-  v2 = [(AudioSystemCommon *)self audioTest];
-  [v2 cancel];
+  audioTest = [(AudioSystemCommon *)self audioTest];
+  [audioTest cancel];
 }
 
-- (void)failedToExecuteWithError:(id)a3
+- (void)failedToExecuteWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "failedToExecuteWithError called for error %@", buf, 0xCu);
   }
 
@@ -233,9 +233,9 @@ LABEL_18:
   v8[2] = sub_1000055F8;
   v8[3] = &unk_100014550;
   v8[4] = self;
-  v9 = v4;
+  v9 = errorCopy;
   failedToExecuteOnceToken = self->_failedToExecuteOnceToken;
-  v7 = v4;
+  v7 = errorCopy;
   if (failedToExecuteOnceToken != -1)
   {
     dispatch_once(&self->_failedToExecuteOnceToken, v8);
@@ -244,66 +244,66 @@ LABEL_18:
 
 - (void)setUpEventNotifications
 {
-  v3 = [(AudioSystemCommon *)self inputs];
-  v4 = [v3 isMotionDetectorActive];
+  inputs = [(AudioSystemCommon *)self inputs];
+  isMotionDetectorActive = [inputs isMotionDetectorActive];
 
-  if (v4)
+  if (isMotionDetectorActive)
   {
     v5 = +[NSNotificationCenter defaultCenter];
     [v5 addObserver:self selector:"receivedInterruptNotification:" name:@"MotionDetectedNotification" object:0];
 
     v6 = [DAMotionDetector alloc];
-    v7 = [(AudioSystemCommon *)self inputs];
-    v8 = [v7 motionDetectorThreshold];
-    v9 = [(DAMotionDetector *)v6 initWithThreshold:v8];
+    inputs2 = [(AudioSystemCommon *)self inputs];
+    motionDetectorThreshold = [inputs2 motionDetectorThreshold];
+    v9 = [(DAMotionDetector *)v6 initWithThreshold:motionDetectorThreshold];
     [(AudioSystemCommon *)self setMotionDetector:v9];
 
-    v10 = [(AudioSystemCommon *)self motionDetector];
-    [v10 start];
+    motionDetector = [(AudioSystemCommon *)self motionDetector];
+    [motionDetector start];
   }
 
-  v11 = [(AudioSystemCommon *)self inputs];
-  v12 = [v11 isOrientationDetectorActive];
+  inputs3 = [(AudioSystemCommon *)self inputs];
+  isOrientationDetectorActive = [inputs3 isOrientationDetectorActive];
 
-  if (v12)
+  if (isOrientationDetectorActive)
   {
     v13 = +[NSNotificationCenter defaultCenter];
     [v13 addObserver:self selector:"receivedInterruptNotification:" name:@"IncorrectOrientationNotification" object:0];
 
     v14 = [DAOrientationDetector alloc];
-    v15 = [(AudioSystemCommon *)self inputs];
-    v16 = [v15 orientationDetectorXThreshold];
-    v17 = [(AudioSystemCommon *)self inputs];
-    v18 = [v17 orientationDetectorZThreshold];
-    v19 = [(DAOrientationDetector *)v14 initWithxThreshold:v16 zThreshold:v18];
+    inputs4 = [(AudioSystemCommon *)self inputs];
+    orientationDetectorXThreshold = [inputs4 orientationDetectorXThreshold];
+    inputs5 = [(AudioSystemCommon *)self inputs];
+    orientationDetectorZThreshold = [inputs5 orientationDetectorZThreshold];
+    v19 = [(DAOrientationDetector *)v14 initWithxThreshold:orientationDetectorXThreshold zThreshold:orientationDetectorZThreshold];
     [(AudioSystemCommon *)self setOrientationDetector:v19];
 
-    v20 = [(AudioSystemCommon *)self orientationDetector];
-    [v20 start];
+    orientationDetector = [(AudioSystemCommon *)self orientationDetector];
+    [orientationDetector start];
   }
 
-  v21 = [(AudioSystemCommon *)self inputs];
-  v22 = [v21 isAccessoryDetectorActive];
+  inputs6 = [(AudioSystemCommon *)self inputs];
+  isAccessoryDetectorActive = [inputs6 isAccessoryDetectorActive];
 
-  if (v22)
+  if (isAccessoryDetectorActive)
   {
     v23 = +[NSNotificationCenter defaultCenter];
     [v23 addObserver:self selector:"receivedInterruptNotification:" name:@"AccessoryDisconnectedNotification" object:0];
 
     v24 = [DAAccessoryDisconnectDetector alloc];
-    v25 = [(AudioSystemCommon *)self inputs];
-    v26 = [v25 accessoryDetectorModelNumbers];
-    v27 = [(DAAccessoryDisconnectDetector *)v24 initWithModelNumbers:v26];
+    inputs7 = [(AudioSystemCommon *)self inputs];
+    accessoryDetectorModelNumbers = [inputs7 accessoryDetectorModelNumbers];
+    v27 = [(DAAccessoryDisconnectDetector *)v24 initWithModelNumbers:accessoryDetectorModelNumbers];
     [(AudioSystemCommon *)self setAccessoryDisconnectDetector:v27];
 
-    v28 = [(AudioSystemCommon *)self accessoryDisconnectDetector];
-    [v28 start];
+    accessoryDisconnectDetector = [(AudioSystemCommon *)self accessoryDisconnectDetector];
+    [accessoryDisconnectDetector start];
   }
 
-  v29 = [(AudioSystemCommon *)self inputs];
-  v30 = [v29 isHeadphonesDetectorActive];
+  inputs8 = [(AudioSystemCommon *)self inputs];
+  isHeadphonesDetectorActive = [inputs8 isHeadphonesDetectorActive];
 
-  if (v30)
+  if (isHeadphonesDetectorActive)
   {
     v31 = +[NSNotificationCenter defaultCenter];
     [v31 addObserver:self selector:"receivedInterruptNotification:" name:@"HeadphonesConnectedNotification" object:0];
@@ -311,24 +311,24 @@ LABEL_18:
     v32 = objc_alloc_init(DAHeadphonesDetector);
     [(AudioSystemCommon *)self setHeadphoneDetector:v32];
 
-    v33 = [(AudioSystemCommon *)self headphoneDetector];
-    [v33 start];
+    headphoneDetector = [(AudioSystemCommon *)self headphoneDetector];
+    [headphoneDetector start];
   }
 }
 
-- (void)receivedInterruptNotification:(id)a3
+- (void)receivedInterruptNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v23 = v4;
+    v23 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Recieved interrupt notification %@", buf, 0xCu);
   }
 
-  v6 = [v4 name];
-  v7 = [v6 isEqualToString:@"MotionDetectedNotification"];
+  name = [notificationCopy name];
+  v7 = [name isEqualToString:@"MotionDetectedNotification"];
 
   if (v7)
   {
@@ -340,8 +340,8 @@ LABEL_18:
 
   else
   {
-    v11 = [v4 name];
-    v12 = [v11 isEqualToString:@"IncorrectOrientationNotification"];
+    name2 = [notificationCopy name];
+    v12 = [name2 isEqualToString:@"IncorrectOrientationNotification"];
 
     if (v12)
     {
@@ -353,8 +353,8 @@ LABEL_18:
 
     else
     {
-      v13 = [v4 name];
-      v14 = [v13 isEqualToString:@"AccessoryDisconnectedNotification"];
+      name3 = [notificationCopy name];
+      v14 = [name3 isEqualToString:@"AccessoryDisconnectedNotification"];
 
       if (v14)
       {
@@ -366,8 +366,8 @@ LABEL_18:
 
       else
       {
-        v15 = [v4 name];
-        v16 = [v15 isEqualToString:@"HeadphonesConnectedNotification"];
+        name4 = [notificationCopy name];
+        v16 = [name4 isEqualToString:@"HeadphonesConnectedNotification"];
 
         if (!v16)
         {
@@ -396,9 +396,9 @@ LABEL_12:
   v18 = 0u;
   v19 = 0u;
   v3 = +[EAAccessoryManager sharedAccessoryManager];
-  v4 = [v3 connectedAccessories];
+  connectedAccessories = [v3 connectedAccessories];
 
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [connectedAccessories countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -410,19 +410,19 @@ LABEL_12:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedAccessories);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(AudioSystemCommon *)self inputs];
-        v12 = [v11 accessoryDetectorModelNumbers];
-        v13 = [v10 modelNumber];
-        v14 = [v12 containsObject:v13];
+        inputs = [(AudioSystemCommon *)self inputs];
+        accessoryDetectorModelNumbers = [inputs accessoryDetectorModelNumbers];
+        modelNumber = [v10 modelNumber];
+        v14 = [accessoryDetectorModelNumbers containsObject:modelNumber];
 
         v7 |= v14;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [connectedAccessories countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v6);
@@ -436,19 +436,19 @@ LABEL_12:
   return v7 & 1;
 }
 
-+ (BOOL)setCode:(int64_t)a3 forError:(id *)a4
++ (BOOL)setCode:(int64_t)code forError:(id *)error
 {
-  if (a4)
+  if (error)
   {
-    *a4 = [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:a3 userInfo:0];
+    *error = [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:code userInfo:0];
   }
 
-  return a4 != 0;
+  return error != 0;
 }
 
-- (void)downloadFilesWithResponder:(id)a3
+- (void)downloadFilesWithResponder:(id)responder
 {
-  v29 = a3;
+  responderCopy = responder;
   [(AudioSystemCommon *)self deleteTemporaryFiles];
   v30 = dispatch_semaphore_create(0);
   v4 = +[NSMutableDictionary dictionary];
@@ -458,8 +458,8 @@ LABEL_12:
   v46 = 0u;
   v44 = 0u;
   v43 = 0u;
-  v5 = [(AudioSystemCommon *)self inputs];
-  obj = [v5 sources];
+  inputs = [(AudioSystemCommon *)self inputs];
+  obj = [inputs sources];
 
   v6 = [obj countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (!v6)
@@ -491,8 +491,8 @@ LABEL_12:
         goto LABEL_25;
       }
 
-      v13 = [(AudioSystemCommon *)self tmpdir];
-      v8 = [v13 URLByAppendingPathComponent:v12];
+      tmpdir = [(AudioSystemCommon *)self tmpdir];
+      v8 = [tmpdir URLByAppendingPathComponent:v12];
 
       v37 = 0;
       v38 = &v37;
@@ -507,10 +507,10 @@ LABEL_12:
       v36 = &v37;
       v14 = v30;
       v35 = v14;
-      [v29 getAsset:v12 completion:v34];
-      v15 = [(AudioSystemCommon *)self inputs];
-      v16 = [v15 fileDownloadTimeout];
-      v17 = dispatch_time(0, 1000000000 * [v16 unsignedLongValue]);
+      [responderCopy getAsset:v12 completion:v34];
+      inputs2 = [(AudioSystemCommon *)self inputs];
+      fileDownloadTimeout = [inputs2 fileDownloadTimeout];
+      v17 = dispatch_time(0, 1000000000 * [fileDownloadTimeout unsignedLongValue]);
       dispatch_semaphore_wait(v14, v17);
 
       if (!v38[5])
@@ -548,8 +548,8 @@ LABEL_12:
 
       if (v20)
       {
-        v22 = [(AudioSystemCommon *)self fileNameToURL];
-        [v22 setObject:v8 forKeyedSubscript:v12];
+        fileNameToURL = [(AudioSystemCommon *)self fileNameToURL];
+        [fileNameToURL setObject:v8 forKeyedSubscript:v12];
 
         v23 = 1;
 LABEL_15:
@@ -604,10 +604,10 @@ LABEL_26:
 - (void)deleteTemporaryFiles
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(AudioSystemCommon *)self tmpdir];
+  tmpdir = [(AudioSystemCommon *)self tmpdir];
   v25 = 0;
   v19 = v3;
-  v5 = [v3 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:&__NSArray0__struct options:0 error:&v25];
+  v5 = [v3 contentsOfDirectoryAtURL:tmpdir includingPropertiesForKeys:&__NSArray0__struct options:0 error:&v25];
   v6 = v25;
 
   if (v6)
@@ -640,12 +640,12 @@ LABEL_26:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 path];
-        if (v14)
+        path = [v13 path];
+        if (path)
         {
           v15 = +[NSFileManager defaultManager];
           v20 = 0;
-          [v15 removeItemAtPath:v14 error:&v20];
+          [v15 removeItemAtPath:path error:&v20];
           v16 = v20;
 
           if (v16)
@@ -677,43 +677,43 @@ LABEL_26:
   }
 }
 
-- (void)testSequence:(id)a3 completionSemaphore:(id)a4
+- (void)testSequence:(id)sequence completionSemaphore:(id)semaphore
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 outputs];
-  v9 = [v8 firstObject];
+  sequenceCopy = sequence;
+  semaphoreCopy = semaphore;
+  outputs = [sequenceCopy outputs];
+  firstObject = [outputs firstObject];
 
-  v10 = [(AudioSystemCommon *)self inputs];
-  v11 = [v10 sources];
-  v12 = [v9 source];
-  v13 = [v11 objectAtIndexedSubscript:{objc_msgSend(v12, "integerValue")}];
+  inputs = [(AudioSystemCommon *)self inputs];
+  sources = [inputs sources];
+  source = [firstObject source];
+  v13 = [sources objectAtIndexedSubscript:{objc_msgSend(source, "integerValue")}];
 
-  v14 = [(AudioSystemCommon *)self createNewTestSequenceWithOutput:v9 andStimulusFile:v13];
-  v15 = [(AudioSystemCommon *)self audioTest];
+  v14 = [(AudioSystemCommon *)self createNewTestSequenceWithOutput:firstObject andStimulusFile:v13];
+  audioTest = [(AudioSystemCommon *)self audioTest];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100006818;
   v21[3] = &unk_1000145A0;
   v21[4] = self;
   v22 = v14;
-  v23 = v7;
-  v24 = v9;
+  v23 = semaphoreCopy;
+  v24 = firstObject;
   v25 = v13;
-  v26 = v6;
-  v16 = v6;
+  v26 = sequenceCopy;
+  v16 = sequenceCopy;
   v17 = v13;
-  v18 = v9;
-  v19 = v7;
+  v18 = firstObject;
+  v19 = semaphoreCopy;
   v20 = v14;
-  [v15 startWithSequence:v20 completion:v21];
+  [audioTest startWithSequence:v20 completion:v21];
 }
 
-- (id)pathToSoundFile:(id)a3
+- (id)pathToSoundFile:(id)file
 {
-  v4 = a3;
-  v5 = [(AudioSystemCommon *)self fileNameToURL];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  fileCopy = file;
+  fileNameToURL = [(AudioSystemCommon *)self fileNameToURL];
+  v6 = [fileNameToURL objectForKeyedSubscript:fileCopy];
 
   return v6;
 }
@@ -733,8 +733,8 @@ LABEL_26:
   [v3 setObject:v8 forKeyedSubscript:@"_id"];
 
   [v3 setObject:&off_1000154F8 forKeyedSubscript:@"d"];
-  v9 = [(AudioSystemCommon *)self testID];
-  [v3 setObject:v9 forKeyedSubscript:@"k"];
+  testID = [(AudioSystemCommon *)self testID];
+  [v3 setObject:testID forKeyedSubscript:@"k"];
 
   [v3 setObject:&off_100015410 forKeyedSubscript:@"e"];
   v10 = +[NSDate date];
@@ -744,13 +744,13 @@ LABEL_26:
   v14 = [NSNumber numberWithDouble:v12 - v13];
   [v3 setObject:v14 forKeyedSubscript:@"t"];
 
-  v15 = [(AudioSystemCommon *)self result];
-  v16 = [v15 statusCode];
-  [v3 setObject:v16 forKeyedSubscript:@"s"];
+  result = [(AudioSystemCommon *)self result];
+  statusCode = [result statusCode];
+  [v3 setObject:statusCode forKeyedSubscript:@"s"];
 
-  v17 = [(AudioSystemCommon *)self result];
-  v18 = [v17 data];
-  [v3 setObject:v18 forKeyedSubscript:@"data"];
+  result2 = [(AudioSystemCommon *)self result];
+  data = [result2 data];
+  [v3 setObject:data forKeyedSubscript:@"data"];
 
   v29 = 0;
   v19 = [NSJSONSerialization dataWithJSONObject:v3 options:1 error:&v29];
@@ -771,8 +771,8 @@ LABEL_26:
   else
   {
     v21 = [[NSString alloc] initWithData:v19 encoding:4];
-    v22 = [(AudioSystemCommon *)self tmpdir];
-    v23 = [v22 URLByAppendingPathComponent:@"results.json"];
+    tmpdir = [(AudioSystemCommon *)self tmpdir];
+    v23 = [tmpdir URLByAppendingPathComponent:@"results.json"];
 
     v28 = 0;
     v24 = [v21 writeToURL:v23 atomically:1 encoding:4 error:&v28];
@@ -799,23 +799,23 @@ LABEL_26:
   return v25;
 }
 
-- (void)parseTestResults:(id)a3 fromOutput:(id)a4 withFile:(id)a5 parsedResults:(id)a6 sequenceIndex:(id)a7 error:(id)a8
+- (void)parseTestResults:(id)results fromOutput:(id)output withFile:(id)file parsedResults:(id)parsedResults sequenceIndex:(id)index error:(id)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v56 = a6;
-  v52 = a7;
-  v17 = a8;
-  v57 = v16;
-  v18 = [(AudioSystemCommon *)self pathToSoundFile:v16];
-  v58 = [v18 absoluteString];
+  resultsCopy = results;
+  outputCopy = output;
+  fileCopy = file;
+  parsedResultsCopy = parsedResults;
+  indexCopy = index;
+  errorCopy = error;
+  v57 = fileCopy;
+  v18 = [(AudioSystemCommon *)self pathToSoundFile:fileCopy];
+  absoluteString = [v18 absoluteString];
 
   v63 = 0u;
   v64 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v14;
+  obj = resultsCopy;
   v54 = [obj countByEnumeratingWithState:&v61 objects:v73 count:16];
   if (!v54)
   {
@@ -824,8 +824,8 @@ LABEL_26:
 
   v55 = *v62;
   v19 = &EXDisplayPipeClose_ptr;
-  v59 = self;
-  v51 = v15;
+  selfCopy = self;
+  v51 = outputCopy;
   while (2)
   {
     for (i = 0; i != v54; i = i + 1)
@@ -839,8 +839,8 @@ LABEL_26:
       v22 = v19[89];
       [v21 sampleRate];
       v23 = [v22 numberWithDouble:?];
-      v60 = v17;
-      v24 = [AudioCrossCorrelation convertWAVtoNSDataWithFileStringURL:v58 withSampleRate:v23 error:&v60];
+      v60 = errorCopy;
+      v24 = [AudioCrossCorrelation convertWAVtoNSDataWithFileStringURL:absoluteString withSampleRate:v23 error:&v60];
       v25 = v60;
 
       if (!v24)
@@ -852,7 +852,7 @@ LABEL_26:
             v47 = DiagnosticLogHandleForCategory();
             if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
             {
-              sub_100009774(v57, v15);
+              sub_100009774(v57, outputCopy);
             }
           }
         }
@@ -866,10 +866,10 @@ LABEL_26:
         goto LABEL_32;
       }
 
-      v26 = [(AudioSystemCommon *)self inputs];
-      v27 = [v26 inputValueToName];
+      inputs = [(AudioSystemCommon *)self inputs];
+      inputValueToName = [inputs inputValueToName];
       v28 = [v19[89] numberWithInteger:{objc_msgSend(v21, "inputID")}];
-      v29 = [v27 objectForKey:v28];
+      v29 = [inputValueToName objectForKey:v28];
 
       if (!v29)
       {
@@ -886,43 +886,43 @@ LABEL_26:
 
         [(AudioSystemCommon *)self failedToExecuteWithError:v50];
 LABEL_32:
-        v17 = v25;
+        errorCopy = v25;
         goto LABEL_33;
       }
 
       v30 = objc_alloc_init([(AudioSystemCommon *)self audioSystemResultClass]);
       [v30 setInput:v29];
-      v31 = [v15 outputDevice];
-      [v30 setOutput:v31];
+      outputDevice = [outputCopy outputDevice];
+      [v30 setOutput:outputDevice];
 
       [v30 setSource:v57];
-      [(AudioSystemCommon *)self performAnalysisOnAVResult:v21 fromOutput:v15 withSourceSignalData:v24 intoDKResult:v30 error:v25];
-      v32 = [v30 dictionaryValue];
-      [v56 addObject:v32];
+      [(AudioSystemCommon *)self performAnalysisOnAVResult:v21 fromOutput:outputCopy withSourceSignalData:v24 intoDKResult:v30 error:v25];
+      dictionaryValue = [v30 dictionaryValue];
+      [parsedResultsCopy addObject:dictionaryValue];
 
-      v33 = [(AudioSystemCommon *)self inputs];
-      v34 = [v33 saveRawRecording];
+      inputs2 = [(AudioSystemCommon *)self inputs];
+      saveRawRecording = [inputs2 saveRawRecording];
 
-      if (v34)
+      if (saveRawRecording)
       {
-        v35 = [v30 output];
-        v36 = [v30 source];
-        v37 = [v29 stringByAppendingFormat:@"Mic-%@Speaker-File%@-Sequence%@.wav", v35, v36, v52];
+        output = [v30 output];
+        source = [v30 source];
+        indexCopy = [v29 stringByAppendingFormat:@"Mic-%@Speaker-File%@-Sequence%@.wav", output, source, indexCopy];
 
-        if (([v37 containsString:@".wav"] & 1) == 0)
+        if (([indexCopy containsString:@".wav"] & 1) == 0)
         {
-          v38 = [v37 stringByAppendingString:@".wav"];
+          v38 = [indexCopy stringByAppendingString:@".wav"];
 
-          v37 = v38;
+          indexCopy = v38;
         }
 
-        v39 = [(AudioSystemCommon *)self tmpdir];
-        v40 = [v39 URLByAppendingPathComponent:v37];
+        tmpdir = [(AudioSystemCommon *)self tmpdir];
+        v40 = [tmpdir URLByAppendingPathComponent:indexCopy];
 
-        v41 = [v21 data];
-        [AudioCrossCorrelation convertNSDataToWAV:v41 atURL:v40 error:v25];
+        data = [v21 data];
+        [AudioCrossCorrelation convertNSDataToWAV:data atURL:v40 error:v25];
 
-        v42 = self;
+        selfCopy2 = self;
         v43 = v25 == 0;
         if (v25)
         {
@@ -939,26 +939,26 @@ LABEL_32:
           v65 = NSLocalizedDescriptionKey;
           v66 = @"Failed to save recording data.";
           v45 = [NSDictionary dictionaryWithObjects:&v66 forKeys:&v65 count:1];
-          v17 = [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:-60 userInfo:v45];
+          errorCopy = [NSError errorWithDomain:@"DAAudioQualityErrorDomain" code:-60 userInfo:v45];
 
-          [(AudioSystemCommon *)v59 failedToExecuteWithError:v17];
+          [(AudioSystemCommon *)selfCopy failedToExecuteWithError:errorCopy];
         }
 
         else
         {
-          v46 = [(AudioSystemCommon *)v42 rawRecordings];
-          [v46 addObject:v40];
+          rawRecordings = [(AudioSystemCommon *)selfCopy2 rawRecordings];
+          [rawRecordings addObject:v40];
 
-          v17 = 0;
+          errorCopy = 0;
         }
 
-        v15 = v51;
+        outputCopy = v51;
       }
 
       else
       {
         v43 = 1;
-        v17 = v25;
+        errorCopy = v25;
       }
 
       v19 = &EXDisplayPipeClose_ptr;
@@ -967,7 +967,7 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      self = v59;
+      self = selfCopy;
     }
 
     v54 = [obj countByEnumeratingWithState:&v61 objects:v73 count:16];
@@ -982,7 +982,7 @@ LABEL_32:
 LABEL_33:
 }
 
-- (void)performAnalysisOnAVResult:(id)a3 fromOutput:(id)a4 withSourceSignalData:(id)a5 intoDKResult:(id)a6 error:(id)a7
+- (void)performAnalysisOnAVResult:(id)result fromOutput:(id)output withSourceSignalData:(id)data intoDKResult:(id)kResult error:(id)error
 {
   v7 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -991,40 +991,40 @@ LABEL_33:
   }
 }
 
-- (id)createNewTestSequenceWithOutput:(id)a3 andStimulusFile:(id)a4
+- (id)createNewTestSequenceWithOutput:(id)output andStimulusFile:(id)file
 {
-  v6 = a4;
-  v7 = a3;
+  fileCopy = file;
+  outputCopy = output;
   v8 = objc_alloc_init([(AudioSystemCommon *)self avAudioDeviceTestSequenceClass]);
-  v9 = [(AudioSystemCommon *)self inputs];
-  v10 = [v9 outputSpecifications];
-  v11 = [v7 outputDevice];
-  v12 = [v10 objectForKeyedSubscript:v11];
-  v13 = [v12 channel];
-  [v8 setOutputID:{objc_msgSend(v13, "integerValue")}];
+  inputs = [(AudioSystemCommon *)self inputs];
+  outputSpecifications = [inputs outputSpecifications];
+  outputDevice = [outputCopy outputDevice];
+  v12 = [outputSpecifications objectForKeyedSubscript:outputDevice];
+  channel = [v12 channel];
+  [v8 setOutputID:{objc_msgSend(channel, "integerValue")}];
 
-  v14 = [v7 volume];
-  [v14 floatValue];
+  volume = [outputCopy volume];
+  [volume floatValue];
   [v8 setVolume:?];
 
-  v15 = [(AudioSystemCommon *)self pathToSoundFile:v6];
+  v15 = [(AudioSystemCommon *)self pathToSoundFile:fileCopy];
 
   [v8 setStimulusURL:v15];
-  v16 = [(AudioSystemCommon *)self inputs];
-  v17 = [v16 outputSpecifications];
-  v18 = [v7 outputDevice];
+  inputs2 = [(AudioSystemCommon *)self inputs];
+  outputSpecifications2 = [inputs2 outputSpecifications];
+  outputDevice2 = [outputCopy outputDevice];
 
-  v19 = [v17 objectForKeyedSubscript:v18];
-  v20 = [v19 mode];
-  [v8 setOutputMode:{objc_msgSend(v20, "integerValue")}];
+  v19 = [outputSpecifications2 objectForKeyedSubscript:outputDevice2];
+  mode = [v19 mode];
+  [v8 setOutputMode:{objc_msgSend(mode, "integerValue")}];
 
-  v21 = [(AudioSystemCommon *)self inputs];
-  [v8 setCalculateCrossCorrelationPeak:{objc_msgSend(v21, "isUsingDBValuesFromSystem")}];
+  inputs3 = [(AudioSystemCommon *)self inputs];
+  [v8 setCalculateCrossCorrelationPeak:{objc_msgSend(inputs3, "isUsingDBValuesFromSystem")}];
 
-  v22 = [(AudioSystemCommon *)self inputs];
-  v23 = [v22 isUsingMeasurementMode];
+  inputs4 = [(AudioSystemCommon *)self inputs];
+  isUsingMeasurementMode = [inputs4 isUsingMeasurementMode];
   v24 = &AVAudioSessionModeMeasurement;
-  if (!v23)
+  if (!isUsingMeasurementMode)
   {
     v24 = &AVAudioSessionModeRaw;
   }
@@ -1068,25 +1068,25 @@ LABEL_33:
 
   if ([(AudioSystemCommon *)self balanceChanged])
   {
-    v3 = [(AudioSystemCommon *)self originalBalance];
-    [v3 floatValue];
+    originalBalance = [(AudioSystemCommon *)self originalBalance];
+    [originalBalance floatValue];
     _AXSSetLeftRightAudioBalance();
   }
 
   if ([(AudioSystemCommon *)self soundRecognitionChanged])
   {
     v5 = +[AXSDSettings sharedInstance];
-    v4 = [(AudioSystemCommon *)self systemSoundDetectionState];
-    [v5 setSoundDetectionState:v4 source:AXSDSettingsEventSourceInternal];
+    systemSoundDetectionState = [(AudioSystemCommon *)self systemSoundDetectionState];
+    [v5 setSoundDetectionState:systemSoundDetectionState source:AXSDSettingsEventSourceInternal];
   }
 }
 
 - (BOOL)isSoundRecognitionRequired
 {
   v2 = +[AXSDSettings sharedInstance];
-  v3 = [v2 soundDetectionEnabled];
+  soundDetectionEnabled = [v2 soundDetectionEnabled];
 
-  return v3;
+  return soundDetectionEnabled;
 }
 
 - (void)setAccessibilityStateIfRequired
@@ -1117,8 +1117,8 @@ LABEL_33:
     -[AudioSystemCommon setSystemSoundDetectionState:](self, "setSystemSoundDetectionState:", [v5 soundDetectionState]);
 
     v7 = +[AXSDSettings sharedInstance];
-    v6 = [(AudioSystemCommon *)self systemSoundDetectionState];
-    [v7 setSoundDetectionState:v6 source:AXSDSettingsEventSourceInternal];
+    systemSoundDetectionState = [(AudioSystemCommon *)self systemSoundDetectionState];
+    [v7 setSoundDetectionState:systemSoundDetectionState source:AXSDSettingsEventSourceInternal];
   }
 }
 
